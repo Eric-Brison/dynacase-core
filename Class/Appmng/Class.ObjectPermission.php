@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ObjectPermission.php,v 1.9 2002/06/19 12:28:28 eric Exp $
+// $Id: Class.ObjectPermission.php,v 1.10 2002/09/18 11:06:03 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ObjectPermission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 
-$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.9 2002/06/19 12:28:28 eric Exp $';
+$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.10 2002/09/18 11:06:03 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
@@ -252,12 +252,12 @@ create unique index i_operm on operm (id_user, id_obj, id_class); ';
   function PostDelete() {
     $this->ids_acl="";
   }
-  function Control(&$object, $method)
+  function Control( $method)
     {
       // return "" if the current user can apply method on object
       // else return string error
       $this->GetPrivileges();
-      $err = $this-> ControlOid(  $object->classid, $method);
+      $err = $this-> ControlOid( $this->id_class , $method);
       //print "Control : $this->id_user, $object->oid, $this->id_obj, $object->classid, $method : $err<BR>";
       //print "<BR>up<BR>";print_r($this->upprivileges);
       //print "<BR>un<BR>";print_r($this->unprivileges);
