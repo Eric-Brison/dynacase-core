@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: htmlhead.php,v 1.3 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: htmlhead.php,v 1.4 2005/01/21 17:47:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,7 @@
  /**
  */
 
-// $Id: htmlhead.php,v 1.3 2003/08/18 15:46:42 eric Exp $
+// $Id: htmlhead.php,v 1.4 2005/01/21 17:47:40 eric Exp $
 
 
 include_once('Class.QueryDb.php');
@@ -21,7 +21,6 @@ function htmlhead(&$action) {
 
 
   $title = GetHttpVars("title");
-    
   $action->lay->set("TITLE", $title);
 
 

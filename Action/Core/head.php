@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: head.php,v 1.17 2004/07/08 08:52:57 eric Exp $
+ * @version $Id: head.php,v 1.18 2005/01/21 17:47:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.17 2004/07/08 08:52:57 eric Exp $
+// $Id: head.php,v 1.18 2005/01/21 17:47:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -46,7 +46,8 @@ function head(&$action) {
   $query->basic_elem->sup_where=array("available='Y'","displayable='Y'");
   $list = $query->Query(0,0,"TABLE");
 
-
+  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
+ 
 
   // remove applications that need access perm
   $tab = array();

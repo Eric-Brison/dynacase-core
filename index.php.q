@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.6 2004/03/25 10:49:53 eric Exp $
+// $Id: index.php.q,v 1.7 2005/01/21 17:47:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -251,6 +251,7 @@ else
 	    // copy JS ref & code from action to header
 	    $head->jsref = $action->parent->GetJsRef();
 	    $head->jscode = $action->parent->GetJsCode();
+	    $head->set("TITLE", _($action->parent->short_name));
 	    $deb=gettimeofday();
             $tic4= $deb["sec"]+$deb["usec"]/1000000;
 	    

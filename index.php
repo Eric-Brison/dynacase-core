@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.26 2004/08/30 11:09:21 yannick Exp $
+ * @version $Id: index.php,v 1.27 2005/01/21 17:47:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -14,7 +14,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.26 2004/08/30 11:09:21 yannick Exp $
+// $Id: index.php,v 1.27 2005/01/21 17:47:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -249,7 +249,7 @@ else
 	    // copy JS ref & code from action to header
 	    $head->jsref = $action->parent->GetJsRef();
 	    $head->jscode = $action->parent->GetJsCode();
-	    
+	    $head->set("TITLE", _($action->parent->short_name));	    
 	    echo($head->gen());
 	    // write HTML body
 	    echo ($body);
