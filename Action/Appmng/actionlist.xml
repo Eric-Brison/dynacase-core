@@ -1,5 +1,5 @@
 <!-- 
-  $Id: actionlist.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
+  $Id: actionlist.xml,v 1.2 2002/01/30 13:44:54 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/actionlist.xml,v $
 -->
 
@@ -59,7 +59,6 @@
   <td width="20" class="CORETblCell">&nbsp;</td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:name]</span></td>
   <td class="CORETblCell" nowrap><span class="CORETblBold">[TEXT:short_name]</span></td>
-  <td class="CORETblCell" nowrap><span class="CORETblBold">[TEXT:long_name]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:available]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:acl]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:root]</span></td>
@@ -74,10 +73,11 @@
 [BLOCK TABLEBODY]
 <tr>
   <td width="20">
-       <a href="#" OnClick="javascript:[edit]">[imgedit]</a></td>
+       <a href="#" onclick="javascript:submit_withpar(330,350,'edit','[id]','[CORE_BASEURL]app=APPMNG&action=ACTION_EDIT&sole=Y&id=[id]')">
+      <img border=0 src="[IMG:edit.gif]"  alt="Edit" title="[TEXT:edit]">
+    </a></td>
   <td class="[CLASS]"><span class="CORETbl">[name]</span></td>
   <td nowrap class="[CLASS]"><span class="CORETbl">[short_name]&nbsp;</span></td>
-  <td nowrap class="[CLASS]"><span class="CORETbl">[long_name]&nbsp;</span></td>
   <td class="[CLASS]"><span class="CORETbl">[available]</span></td>
   <td class="[CLASS]"><span class="CORETbl">[acl]</span></td>
   <td class="[CLASS]"><span class="CORETbl">[root]</span></td>
@@ -116,3 +116,5 @@
 
 
 [MAINFORM]
+
+[QUERY_FORM]

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: actionlist.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: actionlist.php,v 1.2 2002/01/30 13:44:54 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/actionlist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: actionlist.php,v $
+// Revision 1.2  2002/01/30 13:44:54  eric
+// i18n & remise en marche modif action
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -38,6 +41,7 @@
 // ---------------------------------------------------------------
 include_once("Class.TableLayout.php");
 include_once("Class.QueryDb.php");
+include_once("Class.QueryGen.php");
 include_once("Class.Action.php");
 include_once("Class.SubForm.php");
 // -----------------------------------
@@ -113,53 +117,42 @@ function actionlist(&$action) {
   $action->parent->AddJsCode($form->GetMainJs());
   $action->lay->set("MAINFORM",$form->GetMainForm());
 
-  // Set the table elements
-  $tablelay= new TableLayout($action->lay);
 
-  $query = new QueryDb("","Action");
-  $query->basic_elem->sup_where=array ("id_application=$appl_id");
-  $query->order_by="id_application,name";
   
-  $tablelay->start=GetHttpVars("start");
-  $tablelay->slice=10;
-  $tablelay->array = $query->Query($tablelay->start,$tablelay->slice,"LISTC");
-  $tablelay->nb_tot = $query->nb;
 
-  if ($tablelay->nb_tot!=0) {
-      ### $tablelay->fields= array("name","id_application","imgedit","edit","delete","short_name","long_name","script","layout","available","acl","root","toc");
-      $tablelay->fields= array("name","id_application","imgedit","edit","short_name","long_name","script","layout","available","acl","root","toc");
-    $jsscript=$form->GetLinkJsMainCall();
-    // Affect the modif icons
-    reset ($tablelay->array);
-    while(list($k,$v) = each($tablelay->array)) {
-      $tablelay->array[$k]->imgedit = "<img border=0 src=\"".$action->GetImageUrl("edit.gif")."\" alt=\"".$action->text("edit")."\">";
-      $tablelay->array[$k]->edit = str_replace("[id]",$v->id,$jsscript);
-      ###$tablelay->array[$k]->delete = "<img border=0 src=\"".$action->GetImageUrl("delete.gif")."\" alt=\"".$action->text("delaction")."\">";
 
-    } 
-  } else {
-    ### $tablelay->fields= array("name","imgedit","delete","short_name","long_name","script","layout","available","acl","root","toc","toc_order");
-    $tablelay->fields= array("name","imgedit","short_name","long_name","script","layout","available","acl","root","toc","toc_order");
-    $tablelay->array[0]->imgedit='&nbsp;';
-    ### $tablelay->array[0]->delete='&nbsp;';
-    $tablelay->array[0]->name='--&nbsp;';
-    $tablelay->array[0]->acl='&nbsp;';
-    $tablelay->array[0]->toc='&nbsp;';
-    $tablelay->array[0]->available='&nbsp;';
-    $tablelay->array[0]->root='&nbsp;';
-    $tablelay->array[0]->short_name='&nbsp;';
-    $tablelay->array[0]->long_name='&nbsp;';
-    $tablelay->array[0]->id_application='';
-    $action->lay->Set("ERR_MSG", "$err<BR>Pas d'action d&eacute;finies pour cette application");
-  } 
-      $baseurl=$action->GetParam("CORE_BASEURL");
 
-      $tablelay->page_link= $baseurl."app=".$action->parent->name."&action=".$action->name."&start=%s";
 
-      $tablelay->prev="<img border=0 src=\"".$action->GetImageUrl("prev.png")."\">";
-      $tablelay->next="<img  border=0 src=\"".$action->GetImageUrl("next.png")."\">";
+  // Set the table element
+  
 
-      $tablelay->Set();
+  $query = new QueryGen("","Action",$action);
+  
+  $query->AddQuery("id_application=$appl_id");
+  $query->order_by = "name";
+  
+  $query->table->headsortfields = array ( "name" => "name");
+  $query->table->headcontent = array ("name" => $action->text("name"));
+   $query->Query();
+  
+  // Affect the modif icons
+
+  $jsscript=$form->GetLinkJsMainCall();
+  while(list($k,$v) = each($query->table->array)) {
+    $query->table->array[$k]["imgedit"] = "<img border=0 src=\"".$action->GetImageUrl("edit.gif")."\" alt=\"".$action->text("edit")."\">";
+    $query->table->array[$k]["short_name"] = $action->text($query->table->array[$k]["short_name"]);
+
+  }
+    
+
+  $query->table->fields= array("id","name","imgedit","short_name","script","layout","available","acl","root","toc","toc_order");
+
+
+
+
+  $action->lay->Set("TABLE", $query->table->Set());
+
+
 
 
 }

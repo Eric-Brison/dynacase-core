@@ -109,7 +109,7 @@
     <td colspan="4" align="center" class="CORETblHeadCell">
       <font size="-1"><input class="CORETblHead" type="reset" onClick="self.close()" name="Annuler" value="[TEXT:butclosew]">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input class="CORETblHead" type="reset" 
+      <input class="CORETblHead" type="submit" 
         onClick="return Valid_Send()" name="Creer" value="[BUTTONTYPE]">
       </font>
     </td>
