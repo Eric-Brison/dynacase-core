@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_list.php,v 1.3 2002/05/27 14:51:30 eric Exp $
+// $Id: param_list.php,v 1.4 2002/05/28 09:00:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_list.php,v $
+// Revision 1.4  2002/05/28 09:00:26  eric
+// mise au point paramètres & style
+//
 // Revision 1.3  2002/05/27 14:51:30  eric
 // ajout gestion des styles
 //
@@ -114,15 +117,18 @@ function param_list(&$action) {
     while (list($k,$v)= each ($tparam)) {
       if (isset($v[$vsection])) {
 	if ($v[$vsection] != $precApp) {
+	  
 	  $action->lay->SetBlockData("PARAM$precApp",$tincparam);
 	  $tincparam=array();
 	  $precApp = $v[$vsection];
 	  
 	  $app1=new Application($action->dbaccess,$precApp);
 
-	  $appinc[$precApp]["appname"]=$app1->name;
-	  $appinc[$precApp]["appdesc"]=$action->text($app1->short_name);
-	  $appinc[$precApp]["PARAM"]="PARAM$precApp";
+	  if ($action->AppInstalled($app1->name)) {
+	    $appinc[$precApp]["appname"]=$app1->name;
+	    $appinc[$precApp]["appdesc"]=$action->text($app1->short_name);
+	    $appinc[$precApp]["PARAM"]="PARAM$precApp";
+          }
 	}
 	$tincparam[$k]=$v;
 	// to show difference between global, user and application parameters

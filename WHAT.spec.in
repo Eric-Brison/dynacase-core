@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.10 2002/04/03 09:33:08 eric Exp $
+#  $Id: WHAT.spec.in,v 1.11 2002/05/28 09:00:25 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -83,6 +83,9 @@ else
   /home/httpd/what/wsh.php --api=appadmin --method=update --appname=AUTHENT
   /home/httpd/what/wsh.php --api=appadmin --method=update --appname=ACCESS
   su - postgres -c "psql anakeen anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
+
+  /home/httpd/what/wsh.php  --api=import_style --name=RED
+  /home/httpd/what/wsh.php  --api=import_style --name=GREEN
 fi
 
 # merge @PACKAGE@ translation for i18n
@@ -156,6 +159,7 @@ fi
 %{destdir}/AUTHENT/*
 %{destdir}/APPMNG/*
 %{destdir}/API/*
+%{destdir}/STYLE/*
 %{pidir}/*
 %dir %{destdir}/locale
 %{destdir}/locale/*

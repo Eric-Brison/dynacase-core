@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-05-24 11:16+0200\n"
+	"POT-Creation-Date: 2002-05-27 17:08+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -182,37 +182,21 @@ msgstr	""
 msgid	"only current user parameters can be modified with its action"
 msgstr	""
 
-msgid	"edit"
-msgstr	"Edit"
-
-msgid	"delparam"
-msgstr	"Delete"
-
 msgid	"err_mod_param"
 msgstr	"Can't modify parameter"
-
-msgid	"titlestylecreate"
-msgstr	"Add style"
-
-msgid	"titlestylemodify"
-msgstr	"Modify style"
-
-msgid	"titleaction"
-msgstr	"Application actions List"
-
-#, fuzzy
-msgid	"err_add_style"
-msgstr	"Can't create style"
-
-#, fuzzy
-msgid	"err_mod_style"
-msgstr	"Can't modify style"
 
 msgid	"name"
 msgstr	"Name"
 
+msgid	"edit"
+msgstr	"Edit"
+
 msgid	"short_name"
 msgstr	"Short Name"
+
+#, fuzzy
+msgid	"descr"
+msgstr	"Description"
 
 #, c-format
 msgid	"function '%s' not available for application %s (%d)"
@@ -276,10 +260,35 @@ msgid	"Core Application Manager"
 msgstr	""
 
 #, fuzzy
+msgid	"application version"
+msgstr	"Delete"
+
+msgid	"default style"
+msgstr	""
+
+#, fuzzy
 msgid	"language"
 msgstr	"Lastname"
 
-msgid	"nc"
+msgid	"button color"
+msgstr	""
+
+msgid	"background color or image"
+msgstr	""
+
+msgid	"background color or image in security mode"
+msgstr	""
+
+msgid	"background image for bar"
+msgstr	""
+
+msgid	"background color for table cells"
+msgstr	""
+
+msgid	"second background color"
+msgstr	""
+
+msgid	"highlight background color"
 msgstr	""
 
 msgid	"inverse video background color"
@@ -288,10 +297,13 @@ msgstr	""
 msgid	"text color"
 msgstr	""
 
-msgid	"inverse video text"
+msgid	"inverse video color text"
 msgstr	""
 
 msgid	"anchor color"
+msgstr	""
+
+msgid	"error color"
 msgstr	""
 
 msgid	"default font"
@@ -386,10 +398,6 @@ msgstr	""
 #, fuzzy
 msgid	"styles parameters"
 msgstr	"Add parameter"
-
-#, fuzzy
-msgid	"styles"
-msgstr	"New style"
 
 #, fuzzy
 msgid	"application parameters"
@@ -558,6 +566,9 @@ msgstr	"Root"
 msgid	"toc"
 msgstr	"Toc"
 
+msgid	"titleaction"
+msgstr	"Application actions List"
+
 msgid	"addparam"
 msgstr	"New Parameter"
 
@@ -587,11 +598,13 @@ msgstr	"Value"
 msgid	"application parameters list"
 msgstr	"New Application"
 
-msgid	"titlestyle"
-msgstr	"Styles List"
+#, fuzzy
+msgid	"select a style"
+msgstr	"Modify"
 
-msgid	"delconfirmparam"
-msgstr	"Sure to delete parameter"
+#, fuzzy
+msgid	"style parameters list"
+msgstr	"Add parameter"
 
 msgid	"delconfirmstyle"
 msgstr	"Sure to delete style"
@@ -611,6 +624,33 @@ msgstr	"Can't modify parameter"
 #, fuzzy
 msgid	"unmodifiable parameter"
 msgstr	"Can't modify parameter"
+
+#~ msgid	"delparam"
+#~ msgstr	"Delete"
+
+#~ msgid	"titlestylecreate"
+#~ msgstr	"Add style"
+
+#~ msgid	"titlestylemodify"
+#~ msgstr	"Modify style"
+
+#, fuzzy
+#~ msgid	"err_add_style"
+#~ msgstr	"Can't create style"
+
+#, fuzzy
+#~ msgid	"err_mod_style"
+#~ msgstr	"Can't modify style"
+
+#, fuzzy
+#~ msgid	"styles"
+#~ msgstr	"New style"
+
+#~ msgid	"titlestyle"
+#~ msgstr	"Styles List"
+
+#~ msgid	"delconfirmparam"
+#~ msgstr	"Sure to delete parameter"
 
 #~ msgid	"titleparam"
 #~ msgstr	"Application parameters List"

@@ -64,6 +64,8 @@ if [ "$1" = 1 ] ; then
   /home/httpd/what/wsh.php --api=appadmin  --appname=AUTHENT
   /home/httpd/what/wsh.php --api=appadmin  --appname=ACCESS
 
+  /home/httpd/what/wsh.php  --api=import_style --name=RED
+  /home/httpd/what/wsh.php  --api=import_style --name=GREEN
 fi
 
 

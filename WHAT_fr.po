@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-05-24 11:16+0200\n"
+	"POT-Creation-Date: 2002-05-27 17:08+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -157,7 +157,6 @@ msgid	"only user parameters can be deleted with its action"
 msgstr	"seul les paramêtres utilisateurs peuvent être supprimés avec cette "
 	"action"
 
-#, fuzzy
 msgid	"only current user parameters can be deleted with its action"
 msgstr	"seul les paramêtres utilisateurs peuvent être supprimés avec cette "
 	"action"
@@ -178,40 +177,24 @@ msgid	"only user parameters can be modified with its action"
 msgstr	"seul les paramêtres utilisateurs peuvent être modifiés avec cette "
 	"action"
 
-#, fuzzy
 msgid	"only current user parameters can be modified with its action"
 msgstr	"seul les paramêtres utilisateurs peuvent être modifiés avec cette "
 	"action"
 
-msgid	"edit"
-msgstr	"Modifier"
-
-msgid	"delparam"
-msgstr	"Supprimer"
-
 msgid	"err_mod_param"
 msgstr	"Impossible de modifier le param&egrave;tre"
-
-msgid	"titlestylecreate"
-msgstr	"Cr&eacute;ation de style "
-
-msgid	"titlestylemodify"
-msgstr	"Modification du style "
-
-msgid	"titleaction"
-msgstr	"Liste des actions de l'application"
-
-msgid	"err_add_style"
-msgstr	"Impossible de creer le style"
-
-msgid	"err_mod_style"
-msgstr	"Impossible de modifier le style"
 
 msgid	"name"
 msgstr	"Nom"
 
+msgid	"edit"
+msgstr	"Modifier"
+
 msgid	"short_name"
 msgstr	"Nom abr&eacute;g&eacute;"
+
+msgid	"descr"
+msgstr	"Description"
 
 #, c-format
 msgid	"function '%s' not available for application %s (%d)"
@@ -273,55 +256,80 @@ msgstr	"Noyau"
 msgid	"Core Application Manager"
 msgstr	"Page d'accueil WHAT"
 
+msgid	"application version"
+msgstr "version application"
+
+msgid	"default style"
+msgstr "style par défaut"
+
 msgid	"language"
 msgstr	"langue"
 
-msgid	"nc"
-msgstr	"nc"
+msgid	"button color"
+msgstr "couleur du bouton"
+
+msgid	"background color or image"
+msgstr "image ou couleur de fond"
+
+msgid	"background color or image in security mode"
+msgstr "image ou couleur de fond en mode sécurité"
+
+msgid	"background image for bar"
+msgstr "image de fond pour les barres"
+
+msgid	"background color for table cells"
+msgstr "couleur de fond de cellules"
+
+msgid	"second background color"
+msgstr "couleur secondaire pour le fond"
+
+msgid	"highlight background color"
+msgstr "couleur de fond pour la mise en évidence"
 
 msgid	"inverse video background color"
-msgstr	""
+msgstr "couleur de fond en inverse vidéo"
 
 msgid	"text color"
-msgstr	""
+msgstr "couleur du texte"
 
-msgid	"inverse video text"
-msgstr	""
+msgid	"inverse video color text"
+msgstr "couleur du texte en inverse vidéo"
 
 msgid	"anchor color"
-msgstr	""
+msgstr "couleur des liens"
+
+msgid	"error color"
+msgstr "couleur messages d'erreur"
 
 msgid	"default font"
-msgstr	""
+msgstr "police par défaut"
 
 msgid	"menu font"
-msgstr	""
+msgstr "police des menus"
 
 msgid	"top url to find help documentation"
-msgstr	""
+msgstr "url pour la documentation en ligne"
 
 msgid	"font size"
-msgstr	""
+msgstr "taille de la police"
 
 msgid	"frame size"
-msgstr	""
+msgstr "taille de la fenêtre"
 
 msgid	"frame border size"
-msgstr	""
+msgstr "taille de la bordure de la fenêtre"
 
-#, fuzzy
 msgid	"client name"
-msgstr	"Nom"
+msgstr "nom du client"
 
 msgid	"anakeen"
-msgstr	""
+msgstr "anakeen"
 
-#, fuzzy
 msgid	"use object cache"
-msgstr	"Effacer le cache objets"
+msgstr "utiliser le cache objets"
 
 msgid	"number of cached object by class"
-msgstr	""
+msgstr "nombre d'objet caché par classes"
 
 msgid	"Access"
 msgstr	"Accessibilités"
@@ -380,18 +388,14 @@ msgstr	"préférences utilisateur"
 msgid	"styles parameters"
 msgstr	"paramètres de style"
 
-msgid	"styles"
-msgstr	"les styles"
-
 msgid	"application parameters"
 msgstr	"paramètres applicatif"
 
 msgid	"user parameters"
 msgstr	"paramètres utilisateur"
 
-#, fuzzy
 msgid	"current user parameters"
-msgstr	"suppression de paramètres utilisateur"
+msgstr "paramètres utilisateur courant"
 
 msgid	"actions"
 msgstr	"les actions"
@@ -535,6 +539,9 @@ msgstr	"Root"
 msgid	"toc"
 msgstr	"Toc"
 
+msgid	"titleaction"
+msgstr	"Liste des actions de l'application"
+
 msgid	"addparam"
 msgstr	"Ajouter un param&egrave;tre"
 
@@ -562,11 +569,11 @@ msgstr	"Valeur"
 msgid	"application parameters list"
 msgstr	"Liste des paramètres applicatif"
 
-msgid	"titlestyle"
-msgstr	"Liste des param&egrave;tres du style"
+msgid	"select a style"
+msgstr "Sélectionnez un style"
 
-msgid	"delconfirmparam"
-msgstr	"Confirmez-vous la suppression du param&egrave;tre "
+msgid	"style parameters list"
+msgstr "Liste des paramètres style"
 
 msgid	"delconfirmstyle"
 msgstr	"Confirmez-vous la suppression du style"
@@ -577,13 +584,38 @@ msgstr	"Sélectionnez un utilisateur"
 msgid	"user parameters list"
 msgstr	"Liste des paramètres utilisateur"
 
-#, fuzzy
 msgid	"my parameters"
-msgstr	"modification des paramètres"
+msgstr "mes paramètres"
 
-#, fuzzy
 msgid	"unmodifiable parameter"
-msgstr	"modification des paramètres"
+msgstr "paramètre non modifiable"
+
+#~ msgid	"delparam"
+#~ msgstr	"Supprimer"
+
+#~ msgid	"titlestylecreate"
+#~ msgstr	"Cr&eacute;ation de style "
+
+#~ msgid	"titlestylemodify"
+#~ msgstr	"Modification du style "
+
+#~ msgid	"err_add_style"
+#~ msgstr	"Impossible de creer le style"
+
+#~ msgid	"err_mod_style"
+#~ msgstr	"Impossible de modifier le style"
+
+#~ msgid	"nc"
+#~ msgstr	"nc"
+
+#~ msgid	"styles"
+#~ msgstr	"les styles"
+
+#~ msgid	"titlestyle"
+#~ msgstr	"Liste des param&egrave;tres du style"
+
+#~ msgid	"delconfirmparam"
+#~ msgstr	"Confirmez-vous la suppression du param&egrave;tre "
 
 #~ msgid	"titleparam"
 #~ msgstr	"Liste des param&egrave;tres de l'application"

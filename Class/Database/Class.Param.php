@@ -18,12 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.5 2002/05/27 14:51:30 eric Exp $
+//  $Id: Class.Param.php,v 1.6 2002/05/28 09:00:25 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.5 2002/05/27 14:51:30 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.6 2002/05/28 09:00:25 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -106,7 +106,7 @@ function GetAll($appid="",$userid=ANONYMOUS_ID,$styleid="0")
 			 " OR (type='".PARAM_STYLE.$styleid."' and appid=$appid)".
 			 " order by name, type desc");
 
-   //print $query->LastQuery;
+   //print $query->LastQuery."<HR>";
    if ($query->nb != 0) {
      while(list($k,$v)=each($list)) {
        $out[$v["name"]]=$v["val"];
@@ -115,7 +115,7 @@ function GetAll($appid="",$userid=ANONYMOUS_ID,$styleid="0")
      $out = NULL;
      $this->log->debug("$appid no constant define for this application");
    }
-
+   //   print_r2($out);
    return($out);
 }
  

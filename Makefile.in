@@ -19,7 +19,7 @@ GZIP_ENV = --best
 export targetdir
 export utildir
 
-SUBDIR= Style Class Images Action Zone App Api Share Doc
+SUBDIR= Class Images Action Zone App Api Share Doc Style
 
 TOP_MODULES = index.php wsh.php dbaccess.php apache.conf 
 

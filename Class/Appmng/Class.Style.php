@@ -18,9 +18,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Style.php,v 1.2 2002/05/27 14:51:30 eric Exp $
+//  $Id: Class.Style.php,v 1.3 2002/05/28 09:00:25 eric Exp $
 //
-$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.2 2002/05/27 14:51:30 eric Exp $';
+$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.3 2002/05/28 09:00:25 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Param.php');
@@ -43,7 +43,6 @@ var $dbtable = "style";
 
 
 
-var $param;
 
 
 function Set(&$parent)
@@ -53,13 +52,6 @@ function Set(&$parent)
 
 
 
-
-
-function InitParam()
-{
-  $this->param = new Param($this->dbaccess);
-  $this->param->SetKey($this->id);
-}
 
 function GetImageUrl($img,$default) {
   $root = $this->parent->Getparam("CORE_PUBDIR");
@@ -78,55 +70,6 @@ function GetLayoutFile($layname,$default="") {
   if (file_exists($file))  return($file);
   
   return($default);
-}
-
-
-  
-function InitStyle($id) {
-
-  $this->log->debug("Init : $id");
-  if (file_exists("STYLE/{$id}/{$id}.sty")) {
-     global $sty_desc,$sty_const;
-     include("./STYLE/{$id}/{$id}.sty");
-     if (sizeof($sty_desc)>0) {
-       $sty = new Style($this->dbaccess);
-       reset($sty_desc);
-       while (list($k,$v) = each ($sty_desc)) {
-         $sty->$k = $v;
-       }
-       $sty->Add();
-       $this=$sty;
-     } else {
-       die ("can't init $id");
-     }
-
-     // init param
-     if (isset($sty_const)) {
-       reset($sty_const);
-       while (list($k,$v) = each ($sty_const)) {
-            $this->SetParam($k,$v);
-       }
-     }
-     
-  } else {
-    die ("No ${id}.sty available");
-  }
-}
-      
-function UpdateStyle() {
-  $name=$this->name;
-  $this->DeleteStyle();
-  $this->InitStyle($name);
-}
-
-function DeleteStyle() {
-
-  // delete params
-  $param = new Param($this->dbaccess);
-  $param->DelAll($this->id);
-
-  // delete Style
-  $this->Delete();
 }
 
 
