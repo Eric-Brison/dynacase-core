@@ -2,4 +2,5 @@
 
 pubdir="/home/httpd/what";
 /usr/bin/php -q $pubdir/API/updateclass.php  --class=User
+/usr/bin/php -q $pubdir/API/updateclass.php  --class=Domain
 
