@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.5 2004/02/24 08:29:53 eric Exp $
+ * @version $Id: Class.Group.php,v 1.6 2004/02/24 16:29:21 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,7 +30,8 @@ Class Group extends DbObj
 create table groups ( iduser      int not null,
                       idgroup    int not null);
 create index groups_idx1 on groups(iduser);
-create unique index groups_idx2 on groups(iduser,idgroup);";
+create unique index groups_idx2 on groups(iduser,idgroup);
+create trigger t_nogrouploop before insert or update on groups for each row execute procedure nogrouploop();";
 
   var $groups = array(); // user groups
 
@@ -108,5 +109,7 @@ create unique index groups_idx2 on groups(iduser,idgroup);";
 
       return $allg;
     }
+
+
 }
 ?>

@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.23 2004/02/24 08:29:53 eric Exp $
+ * @version $Id: Class.User.php,v 1.24 2004/02/24 16:29:21 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.23 2004/02/24 08:29:53 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.24 2004/02/24 16:29:21 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -485,7 +485,7 @@ create sequence seq_id_users start 10";
    * @param int $id group identificator
    * @return array of user array
    */
-  function GetRUsersList($id) {
+  function GetRUsersList($id,$r=array()) {
     $query = new QueryDb($this->dbaccess, "User");
     $list = $query->Query(0,0,"TABLE",
 			  "select users.* from users, groups where ".
@@ -496,10 +496,13 @@ create sequence seq_id_users start 10";
     $uid=array();
 
     if ($query->nb >0) {
-      while (list($k,$v) = each($list)) {
+      foreach($list as $k=>$v) {
 	$uid[$v["id"]] = $v;
 	if ($v["isgroup"]=="Y") {
-	  $uid += $this->GetRUsersList($v["id"]);
+	  if (! in_array($v["id"],$r)) {
+	    array_push($r,$v["id"]);
+	    $uid += $this->GetRUsersList($v["id"],$r);
+	  }
 	}
       }
     

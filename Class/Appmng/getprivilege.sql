@@ -188,3 +188,49 @@ end if;
 return  narr;
 end;
 ' language 'plpgsql';
+
+
+
+-- a_G2 is a sub group of a_G1  ?
+create or replace function subgroup(int,int,int) 
+returns bool as '
+declare 
+  a_G1 alias for $1;
+  a_G2 alias for $2;
+  a_level alias for $3;
+  xgid RECORD;
+  bing bool;
+begin
+   if (a_G1 = a_G2) then
+      return true;
+   end if;
+
+  if (a_level > 20) then
+      raise exception ''level reached'';
+  end if;
+  for xgid in select idgroup from groups where iduser=a_G2 loop
+	bing := subgroup(a_G1, xgid.idgroup, a_level + 1);
+    	if bing then 
+           return true;
+	end if;
+   end loop;
+return false;
+end;
+' language 'plpgsql';
+
+
+
+create or replace function nogrouploop() 
+returns trigger as '
+declare 
+  notgood bool;
+begin
+   notgood:=subgroup(NEW.iduser,NEW.idgroup,0);
+
+   if notgood then
+      raise exception ''group loop'';
+   end if;
+
+return NEW;
+end;
+' language 'plpgsql';
