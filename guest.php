@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.9 2004/08/30 11:10:38 yannick Exp $
+ * @version $Id: guest.php,v 1.10 2004/09/20 11:39:18 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: guest.php,v 1.9 2004/08/30 11:10:38 yannick Exp $
+// $Id: guest.php,v 1.10 2004/09/20 11:39:18 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -80,15 +80,20 @@ if ($session->userid != ANONYMOUS_ID) {
   $session->Set("");
   setcookie ("session",$session->id,0,"/");
 }
+if ($session->userid != ANONYMOUS_ID) { 
+  // reverify
+  print "<B>:~((</B>";
+  exit;
+}
+
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
-
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
 // Init PUBLISH URL from script name
-if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
+if (ereg("(.*)/guest\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 
   // determine publish url (detect ssl require)
  
@@ -112,6 +117,7 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 $core->SetVolatileParam("CORE_ROOTURL", "guest.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "guest.php?sole=A&");
 $core->SetVolatileParam("CORE_STANDURL","guest.php?sole=Y&");
+$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
 
 
 // ----------------------------------------
