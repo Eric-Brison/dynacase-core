@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: applist.php,v 1.6 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: applist.php,v 1.7 2004/10/26 06:29:51 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.6 2003/08/18 15:46:41 eric Exp $
+// $Id: applist.php,v 1.7 2004/10/26 06:29:51 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.7  2004/10/26 06:29:51  marc
+// Add version in application list
+//
 // Revision 1.6  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -82,6 +85,7 @@
 include_once("Class.TableLayout.php");
 include_once("Class.QueryGen.php");
 include_once("Class.SubForm.php");
+include_once("Class.Param.php");
 
 // -----------------------------------
 function applist(&$action) {
@@ -142,15 +146,20 @@ function applist(&$action) {
 
   while(list($k,$v) = each($query->table->array)) {
     
+      $id = $query->table->array[$k]["id"];
+      $p = new Param($action->dbaccess, array("VERSION", PARAM_APP, $id));
+      $version = (isset($p->val)?$p->val:"");
+
       $query->table->array[$k]["update"] = "";
       $query->table->array[$k]["edit"] = "";
       $query->table->array[$k]["delete"] = "";
+      $query->table->array[$k]["version"] = $version;
       $query->table->array[$k]["description"] = $action->text($query->table->array[$k]["description"]);
     
   }
     
 
-  $query->table->fields= array("id", "update","edit","delete","name","description","available","access_free","displayable","ssl","machine");
+  $query->table->fields= array("id", "update","edit","delete","name", "version", "description","available","access_free","displayable","ssl","machine");
 
 
   
