@@ -1,3 +1,8 @@
+0.1.1 r 2
+    par défaut, pas d'onglet messagerie (action pas en toc)
+    dans les prefs. utilisateurs. 
+    En mis en toc lors de l'installation de MAIL
+
 0.1.1
     preference utilisateur : ajout de la messagerie et profil
     suppression de l'application Appmng de la liste des apps.

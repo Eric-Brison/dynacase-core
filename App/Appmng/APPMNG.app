@@ -49,7 +49,7 @@ $action_desc = array (
   array(
    "name"               =>"PARAM_CUMAIL",
    "short_name"         =>N_("current user mail configuration"),
-   "toc"                =>"Y",
+   "toc"                =>"N",
    "acl"                =>"USER"
   ) ,
   array(
