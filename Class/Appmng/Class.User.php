@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.User.php,v 1.2 2002/01/10 11:13:11 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,67 +21,8 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Class.User.php,v $
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.19  2002/01/04 16:32:16  eric
-// modif order_by
-//
-// Revision 1.18  2001/10/08 12:13:20  eric
-// correction fonction SetLogin et checkpasword pour les groupes
-//
-// Revision 1.17  2001/09/12 10:17:36  eric
-// no login group
-//
-// Revision 1.16  2001/08/29 13:28:09  eric
-// droit par défaut sur les groupes
-//
-// Revision 1.15  2001/08/28 10:08:57  eric
-// Gestion des groupes d'utilisateurs
-//
-// Revision 1.14  2001/08/21 08:49:23  eric
-// suppression fonction SetPermission => reporté dans Class Permission SetUserPermission
-//
-// Revision 1.13  2001/07/23 16:21:24  eric
-// droit par défaut
-//
-// Revision 1.12  2001/02/06 16:23:28  yannick
-// QueryGen : first release
-//
-// Revision 1.11  2000/11/02 15:33:05  yannick
-// Possibilité de creer des utilisateurs avec mot de passe crypté
-//
-// Revision 1.10  2000/10/31 16:37:48  yannick
-// AJout du makeqmailconf + Test existance domaine
-//
-// Revision 1.9  2000/10/26 14:10:27  yannick
-// Suite au login/domain => Modelage des sessions
-//
-// Revision 1.8  2000/10/26 12:52:13  yannick
-// Bug : perte du mot de passe
-//
-// Revision 1.7  2000/10/26 07:54:50  yannick
-// Gestion du domaine sur les utilisateur
-//
-// Revision 1.6  2000/10/23 14:13:45  yannick
-// Contrôle des accès
-//
-// Revision 1.5  2000/10/21 16:40:50  yannick
-// Gestion blocks imbriqués
-//
-// Revision 1.4  2000/10/18 14:55:34  yannick
-// Prise en compte des références
-//
-// Revision 1.3  2000/10/11 13:09:47  yannick
-// Mise au point Authentification/Session
-//
-// Revision 1.2  2000/10/11 12:18:41  yannick
-// Gestion des sessions
-//
-//
-// ---------------------------------------------------------------------------
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.2 2002/01/10 11:13:11 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');

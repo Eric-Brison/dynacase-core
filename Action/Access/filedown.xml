@@ -1,3 +1,8 @@
+[BLOCK THEUSERS]
+U|[login]@[iddomain]|[passwd]|[firstname]|[lastname]|[isgroup]|[groups]
+[ENDBLOCK THEUSERS]
+
+
 [BLOCK APPLICATION]
-[BLOCK [name]][app_name]|[user_name]@[iddomain]|[acl_name] 
+[BLOCK [name]]A|[app_name]|[login]@[iddomain]|[acl_name] 
 [ENDBLOCK [name]] [ENDBLOCK APPLICATION]

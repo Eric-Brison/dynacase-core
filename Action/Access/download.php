@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: download.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: download.php,v 1.2 2002/01/10 11:13:11 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/download.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: download.php,v $
+// Revision 1.2  2002/01/10 11:13:11  eric
+// modif pour import export utilisateur
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -70,37 +73,67 @@ function download(&$action) {
   $q->AddQuery("(objectclass isnull) OR (objectclass != 'Y')");
   $applist = $q->Query();
 
-  $u = new QueryDb($action->dbaccess,"User");
-  $u->basic_elem->sup_where=array("id != 1");
-  $userlist = $u->Query();
+  $u = new User($action->dbaccess);
+  $userlist = $u->GetUserAndGroupList();
   
   $lay = new Layout($action->GetLayoutFile("filedown.xml"));
 
   $tab=array();
   $tab2=array();
+  $tabuser=array();
+
+  while (list($k2,$v2)=each($userlist)) {
+
+    if ($v2->id == 1) continue;
+    $tabuser[$k2]["login"]=$v2->login;
+    $domain = new Domain($action->dbaccess, $v2->iddomain);
+
+    $tabuser[$k2]["passwd"]=$v2->password;
+    $tabuser[$k2]["firstname"]=$v2->firstname;
+    $tabuser[$k2]["lastname"]=$v2->lastname;
+    $tabuser[$k2]["isgroup"]=$v2->isgroup;
+    $tabuser[$k2]["iddomain"]=$domain->name;
+
+    $group = new Group($action->dbaccess,$v2->id);
+
+    $tabuser[$k2]["groups"]="";
+    while (list($kg,$g)=each($group->groups)) {
+
+      $ug = new User($action->dbaccess, $g);
+      $domain = new Domain($action->dbaccess, $v2->iddomain);
+	  
+      $tabuser[$k2]["groups"].=$ug->login."@".$domain->name.";";
+    }
+  }
+
   while (list($k,$v)=each($applist)) {
-    $tab[$k]["name"]=$v->name;
-    reset($userlist);
     $q=new QueryDb("","Acl");
     $q->basic_elem->sup_where=array("id_application={$v->id}");
     $aclist = $q->Query();
     if ($q->nb == 0) continue;
 
     $ip=0; // permission index
+    reset($userlist);
     while (list($k2,$v2)=each($userlist)) {
+      
+      if ($v2->id == 1) continue;
       $access = new Permission($action->dbaccess,array($v2->id,$v->id));
-
 
       $action->log->debug("Acces {$v2->login} à {$v->name}  :");
       $action->log->debug("   Aclid = {$access->id_acl}");
       if ((count($access->upprivileges) == 0) &&
 	  (count($access->unprivileges) == 0))  { // no specific privilege
-	$tab2[$ip]["user_name"]=$v2->login;
+
+	$tab2[$ip]["login"]=$v2->login;
 	$domain = new Domain($action->dbaccess, $v2->iddomain);
 	$tab2[$ip]["iddomain"]=$domain->name;
 
+
+
         $tab2[$ip]["acl_name"]="NONE";
         $tab2[$ip]["app_name"]="#".$v->name;
+
+
 	$ip++;
       } else {
 
@@ -109,7 +142,7 @@ function download(&$action) {
 	// write positive privilege
 	if (count($access->upprivileges) > 0) {
 	  while(list($k3,$aclid)=each($access->upprivileges)) {
-	    $tab2[$ip]["user_name"]=$v2->login;
+	    $tab2[$ip]["login"]=$v2->login;
 	    $tab2[$ip]["iddomain"]=$domain->name;
 	  
 	    $acl=new Acl($action->dbaccess,  $aclid);
@@ -122,7 +155,8 @@ function download(&$action) {
 	// write negative privilege
 	if (count($access->unprivileges) > 0) {
 	  while(list($k3,$aclid)=each($access->unprivileges)) {
-	    $tab2[$ip]["user_name"]=$v2->login;	    $tab2[$ip]["iddomain"]=$domain->name;
+	    $tab2[$ip]["login"]=$v2->login;	    
+	    $tab2[$ip]["iddomain"]=$domain->name;
 	  
 	    $acl=new Acl($action->dbaccess,  $aclid);
 	    $tab2[$ip]["acl_name"]='-'.$acl->name;
@@ -133,10 +167,13 @@ function download(&$action) {
 	}
       }
     }
+    $tab[$k]["name"]=$v->name;
     $lay->SetBlockData($v->name,$tab2);
     $tab2=array();
   }
+  $lay->SetBlockData("THEUSERS",$tabuser);
   $lay->SetBlockData("APPLICATION",$tab);
+
 
   $out = $lay->gen(); 
 

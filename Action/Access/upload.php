@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: upload.php,v 1.2 2002/01/10 11:13:11 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,37 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: upload.php,v $
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.3  2001/10/08 12:11:19  eric
-// correction import/export du aux modifs accessibilité (positif/négatif)
-//
-// Revision 1.2  2001/08/20 16:48:58  eric
-// changement des controles d'accessibilites
-//
-// Revision 1.1  2000/10/24 17:15:22  yannick
-// Import/Export
-//
-// Revision 1.2  2000/10/23 12:36:04  yannick
-// Ajout de l'acces aux applications
-//
-// Revision 1.1  2000/10/23 09:10:27  marc
-// Mise au point des utilisateurs
-//
-// Revision 1.1.1.1  2000/10/21 16:44:39  yannick
-// Importation initiale
-//
-// Revision 1.2  2000/10/19 16:47:23  marc
-// Evo TableLayout
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.QueryDb.php");
 include_once("Class.Application.php");
 include_once("Class.User.php");
