@@ -80,7 +80,22 @@ function GetFileVersion($topdir) {
   }
   return ($tver);
 }
-
+/** compare version like 1.2.3-4 
+ * @param string $v1 version one
+ * @param string $v2 version two
+ * @return int 0 if equal -1 if ($v1<$v2) 1 if ($v2>$1)
+ */
+function vercmp($v1,$v2) {
+  if ($v1==$v2) return 0;
+  $tv1=array_reverse(explode(".",str_replace("-",".",$v1)));
+  $tv2=array_reverse(explode(".",str_replace("-",".",$v2)));
+  $iv1=0;
+  $iv2=0;
+  foreach ($tv1 as $k=>$v) $iv1+=$v*(pow(100,$k));
+  foreach ($tv2 as $k=>$v) $iv2+=$v*(pow(100,$k));
+  if ($iv1 > $iv2) return 1;
+  else return -1;
+}
 
 //---------------------------------------------------
 
@@ -136,7 +151,7 @@ if (! $dbid) {
       $chk[$v]="I";
     } else if ( $tvfile[$v] == "") {
       $chk[$v]="D";    
-    } else if ($tvdb[$v] > $tvfile[$v]) {
+    } else if (vercmp($tvdb[$v], $tvfile[$v])== 1) {
       $chk[$v]="R";    
     } else {
       $chk[$v]="U";    
