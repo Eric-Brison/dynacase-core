@@ -1,7 +1,7 @@
 <?php
 
 // ---------------------------------------------------------------
-// $Id: logo.php,v 1.1 2002/08/06 09:35:58 eric Exp $
+// $Id: logo.php,v 1.2 2002/08/09 07:57:53 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/logo.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -28,6 +28,9 @@
 // -----------------------------------
 function logo(&$action) {
   global $PHP_AUTH_USER;
+  global $CacheObj;
+
+  $CacheObj=array();
   session_unregister("CacheObj"); // clearcache
   $action->lay->set("PHP_AUTH_USER",$PHP_AUTH_USER);
 }
