@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.4 2002/02/04 14:44:36 eric Exp $
+//  $Id: Class.Application.php,v 1.5 2002/02/14 16:08:41 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.4 2002/02/04 14:44:36 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.5 2002/02/14 16:08:41 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -530,7 +530,7 @@ function InitApp($name,$update=FALSE) {
      }
      
   } else {
-    die ("No ${name}_init.app available");
+    die ("No {$name}/{$name}.app available");
   }
 }
       
@@ -606,9 +606,9 @@ function Text($code, $args=NULL) {
 
 
   if (!$set) {
-    $this->log->debug("gettext [$code]");
+
     $this->text->fmttxt = _("$code");
-    $this->log->debug("_gettext [".$this->text->fmttxt."]");
+
   }
   return $this->text->fmttxt;
 }
