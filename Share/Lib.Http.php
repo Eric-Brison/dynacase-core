@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.8 2002/07/11 13:16:44 eric Exp $
+// $Id: Lib.Http.php,v 1.9 2002/07/31 09:46:44 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -23,7 +23,7 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.8 2002/07/11 13:16:44 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.9 2002/07/31 09:46:44 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -57,6 +57,12 @@ function GetHttpCookie($name, $def="") {
   global $HTTP_COOKIE_VARS;
   if (isset($HTTP_COOKIE_VARS[$name])) return $HTTP_COOKIE_VARS[$name];
   return($def);
+}
+
+function SetHttpVar($name, $def) {
+
+  global $ZONE_ARGS;
+  $ZONE_ARGS[$name]=$def;
 }
 
 function GetMimeType($ext) {
