@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Change what from syslog
+echo "Remove what.log from syslog"
+cp /etc/syslog.conf /etc/syslog.conf.sav
+cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
+
+echo "local6.!debug				/var/log/what.log" >> /etc/syslog.conf
+/etc/rc.d/init.d/syslog restart

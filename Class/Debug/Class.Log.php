@@ -18,7 +18,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.4 2002/05/23 16:14:40 eric Exp $
+// $Id: Class.Log.php,v 1.5 2002/08/07 09:23:38 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -118,7 +118,7 @@ function wlog($sta, $str, $args=NULL) {
     } else {
       switch($sta) {
       case "D" :
-	$pri = LOG_DEBUG;
+	$pri = LOG_NOTICE;
 	break;
       case "I" :
 	$pri = LOG_INFO;
