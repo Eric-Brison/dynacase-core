@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.2 2002/02/18 10:55:16 eric Exp $
+// $Id: edit.php,v 1.3 2002/02/27 08:36:28 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -119,7 +119,7 @@ function edit_main(&$action, $userId, $appId, $coid) {
   //print "$userId -  $appId - $coid";
 
   $app=new Application($action->dbaccess, $appId);
-  $action->lay->Set("appname",$app->short_name);
+  $action->lay->Set("appname",$action->text($app->short_name));
   
   if ($coid > 0) {
     // control view acl permission first

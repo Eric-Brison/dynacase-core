@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: helpview.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: helpview.php,v 1.2 2002/02/27 08:36:28 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/helpview.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -28,11 +28,15 @@
 function helpview(&$action) {
 // -----------------------------------
   
-  $id = strtoupper (GetHttpVars("id"));
+  $appname = strtoupper (GetHttpVars("appname"));
+  $id = strtoupper (GetHttpVars("sectid"));
 
-  include $action->GetParam("HELP_PUBURL")."/helpid.php";
+  global $helpids;
+  include $action->GetParam("CORE_PUBDIR")."/$appname/doc/helpid.php";
+
 
   $kid = "";
+
   while(list($hid,$file) = each($helpids)) {
     if (strtoupper($hid) == $id) {
       $kid = $hid;
@@ -41,7 +45,7 @@ function helpview(&$action) {
   }
 
   if ($kid != "") {
-    $ret = Header  ("Location: ".$action->GetParam("CORE_PUBURL")."/doc/aide/html/".$helpids[$kid]."#".$kid);
+    $ret = Header  ("Location: ".$action->GetParam("CORE_PUBURL")."/$appname/doc/html/".$helpids[$kid]."#".$kid);
   
     exit;
   } else {

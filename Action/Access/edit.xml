@@ -102,7 +102,7 @@ function moinsacl(id)
 <input type="hidden" name="returnact" value="[returnact]">
 <input type="hidden" name="userid" value="[userid]">
 <input type="hidden" name="oid" value="[oid]">
-<H3 style="text-align:center">[TEXT:accessfor] <i>[appname]</i></H3>
+<H3 style="text-align:center">[TEXT:accessfor] <br><i>[appname]</i></H3>
 <H4 style="text-align:center">[title]</H4>
 
 
