@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.13 2002/06/05 07:52:34 eric Exp $
+#  $Id: WHAT.spec.in,v 1.14 2002/06/06 07:27:52 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -9,9 +9,6 @@
 
 %define apachedir /etc/httpd
 %define destdir /home/httpd/what
-%define pidir /var/post-install/bin
-%define pirange 010
-%define purange 990
 
 Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
@@ -55,7 +52,7 @@ The WHAT application toolkit gives common interface element to develop web appli
 %install
 autoconf
 ./configure --with-pubrule=`pwd`
-make pubdir=$RPM_BUILD_ROOT%{destdir} pidir=$RPM_BUILD_ROOT%{pidir} 
+make pubdir=$RPM_BUILD_ROOT%{destdir} 
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
