@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.16 2002/11/15 16:11:39 eric Exp $
+//  $Id: Class.Application.php,v 1.17 2002/12/07 15:32:54 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.16 2002/11/15 16:11:39 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.17 2002/12/07 15:32:54 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -391,7 +391,6 @@ function GetImageFile($img) {
 }
 
 function GetImageUrl($img) {
-
   // try style first 
   $url = $this->style->GetImageUrl($img,"");
   if ($url != "") return $url;
@@ -402,8 +401,10 @@ function GetImageUrl($img) {
   if (file_exists($root."/".$this->name."/Images/".$img)) {
     return ($this->name."/Images/".$img);
   } else { // perhaps generic application
-    if (file_exists($root."/".$this->childof."/Images/".$img)) {
+    if (($this->childof != "") && (file_exists($root."/".$this->childof."/Images/".$img))) {
       return ($this->childof."/Images/".$img);
+    } else  if (file_exists($root."/Images/".$img)) {
+      return ("Images/".$img);
     } 
   }
   
