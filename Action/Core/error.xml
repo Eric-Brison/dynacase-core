@@ -1,5 +1,12 @@
 
 [ZONE CORE:HTMLHEAD]
+<script language="javascript">
+if (window.name == 'fhidden') {
+  alert('[error]');
+}
+
+</script>
+
 <div  class="COREError" style="border:ridge 3pt">
 
 <HR width="50%" color="[CORE_FGCOLOR]">
