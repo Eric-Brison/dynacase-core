@@ -1,7 +1,10 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.2 2002/02/04 14:48:07 eric Exp $
+ * $Id: core.css,v 1.3 2002/02/14 16:10:53 eric Exp $
  * ---------------------------------------------------------------------------
  * $Log: core.css,v $
+ * Revision 1.3  2002/02/14 16:10:53  eric
+ * force oprion trans_id à 0: pas de code auto généré
+ *
  * Revision 1.2  2002/02/04 14:48:07  eric
  * utilisation de ZONE avec arguments
  *
@@ -58,6 +61,7 @@ body, .core {
 P {
   font-family: [CORE_FONTLIST1];
   font-size: [CORE_FONTBASESIZE];
+  color: [CORE_TEXTFGCOLOR];
 }
 TD {
 /*  background: [CORE_BGCELLCOLOR];*/
@@ -68,6 +72,7 @@ TD {
 }
 TR {
   background: [CORE_BGCELLCOLOR];
+  color: [CORE_TEXTFGCOLOR];
 }
 
 /*
@@ -87,7 +92,7 @@ TR {
 }
 
 .tableborder {
-	border : [CORE_FGCOLOR] groove 4pt;
+	border : [CORE_FGCOLOR] inset 1pt;
 	border-spacing: 0px;
 	empty-cells: show;
 }
@@ -273,11 +278,8 @@ div.detail {
 
 DIV.TITLE { color : black;
 	text-align:center;
-	border-style : groove;
+	border-style : inset;
 	border-color : [CORE_FGCOLOR];
-	border-width: 4pt;
-	padding : 3pt;
-
-	
-	
+	border-width: 1pt;
+	padding : 3pt;		
 }
