@@ -39,7 +39,7 @@ if [ "$1" = "I" ] ; then
 
 
 # Add What log facility in syslog
-  echo "local6.!debug				/var/log/what.log" >> /etc/syslog.conf
+  echo "local6.info				/var/log/what.log" >> /etc/syslog.conf
   /etc/rc.d/init.d/syslog restart
   echo "/var/log/what.log {"               >  /etc/logrotate.d/what
   echo "   missingok"                      >> /etc/logrotate.d/what
