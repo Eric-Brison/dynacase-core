@@ -106,6 +106,7 @@ function moinsacl(id)
 <H4 style="text-align:center">[title]</H4>
 
 
+        <H5 style="text-align:center">[dboperm]</H5>
 
 
 <table cellspacing="0" cellpadding="0" width="100%" border="0">

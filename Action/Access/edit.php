@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.6 2002/03/08 14:37:36 eric Exp $
+// $Id: edit.php,v 1.7 2002/04/03 09:33:31 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -161,7 +161,7 @@ function edit_main(&$action, $userId, $appId, $coid) {
   $action->lay->Set("userid",$userId);
   $action->lay->Set("oid",$coid);
   $action->lay->Set("appid",$appId);
-
+  $action->lay->Set("dboperm", ""); 
 
 
     //-------------------
