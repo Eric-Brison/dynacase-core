@@ -1,6 +1,9 @@
 <?php
-// $Id: error.php,v 1.3 2002/09/19 15:36:01 eric Exp $
+// $Id: error.php,v 1.4 2002/09/25 08:27:55 eric Exp $
 // $Log: error.php,v $
+// Revision 1.4  2002/09/25 08:27:55  eric
+// correction message d'erreur
+//
 // Revision 1.3  2002/09/19 15:36:01  eric
 // modif look message erreur
 //
@@ -34,7 +37,7 @@ function error(&$action) {
   $app = new Application();
   
   $app->Set($action->Read("LAST_ACT","CORE"), $action->parent);
-  $action->lay->set("error", stripslashes($action->Read("FT_ERROR","Session Error")));
+  $action->lay->set("error", $action->Read("FT_ERROR","Session Error"));
 
   $action->lay->set("appname", _($app->description));
 
@@ -51,8 +54,10 @@ function error(&$action) {
     if ($actname != "") {
       $action->lay->set("appact", _($actname));
       $act = new Action();
-      $act->Set($actname, $app);
-      $action->lay->set("appact", _($act->short_name));
+      if ($act->Exists($actname,$app->id)) {
+	$act->Set($actname, $app);
+	$action->lay->set("appact", _($act->short_name));
+      } 
       
     }
     

@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.9 2002/08/26 13:04:58 eric Exp $
+//  $Id: Class.Action.php,v 1.10 2002/09/25 08:27:55 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.9 2002/08/26 13:04:58 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.10 2002/09/25 08:27:55 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -319,7 +319,7 @@ function execute()
 // display  error to user
 function ExitError($texterr)
 {
-  $this->Register("FT_ERROR",addslashes($texterr));
+  $this->Register("FT_ERROR",$texterr);
   $this->Register("FT_ERROR_APP",$this->parent->name);
   $this->Register("FT_ERROR_ACT",$this->name);
 
