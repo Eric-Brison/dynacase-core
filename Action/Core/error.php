@@ -1,6 +1,9 @@
 <?php
-// $Id: error.php,v 1.4 2002/09/25 08:27:55 eric Exp $
+// $Id: error.php,v 1.5 2002/12/13 11:11:02 eric Exp $
 // $Log: error.php,v $
+// Revision 1.5  2002/12/13 11:11:02  eric
+// prise en compte nl dans msg erreur
+//
 // Revision 1.4  2002/09/25 08:27:55  eric
 // correction message d'erreur
 //
@@ -37,7 +40,7 @@ function error(&$action) {
   $app = new Application();
   
   $app->Set($action->Read("LAST_ACT","CORE"), $action->parent);
-  $action->lay->set("error", $action->Read("FT_ERROR","Session Error"));
+  $action->lay->set("error", nl2br($action->Read("FT_ERROR","Session Error")));
 
   $action->lay->set("appname", _($app->description));
 
