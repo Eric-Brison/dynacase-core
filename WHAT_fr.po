@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-04-15 16:13+0200\n"
+	"POT-Creation-Date: 2002-04-29 13:42+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -23,7 +23,7 @@ msgid	"butcreate"
 msgstr	"Créer"
 
 msgid	"Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
+msgstr	"Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
 msgid	"titlemodifyg"
 msgstr	"Modification du groupe"
@@ -222,7 +222,7 @@ msgid	"last"
 msgstr	"dernier"
 
 msgid	"locked files of "
-msgstr "fichiers verrouillés par"
+msgstr	"fichiers verrouillés par"
 
 msgid	"What User Management"
 msgstr	"Gestion des utilisateurs"
@@ -369,7 +369,7 @@ msgid	"powered by"
 msgstr	"produit par"
 
 msgid	"clear object cache"
-msgstr "Effacer le cache objets"
+msgstr	"Effacer le cache objets"
 
 # ne pas mettre de '
 msgid	"Homepage"
@@ -402,7 +402,7 @@ msgstr	"Voir les utilisateurs"
 msgid	"viewgroup"
 msgstr	"Voir les groupes"
 
-msgid	"close"
+msgid	"Close"
 msgstr	"Fermer"
 
 msgid	"accessfor"
