@@ -17,9 +17,10 @@ function loginform(&$action) {
     $domain = GetHttpVars("domain");
 
     $session = $action->session;
-    switch ($session->status) {
 
+    switch ($session->status) {
     case $session->SESSION_CT_EXIST:
+    case $session->SESSION_CT_ACTIVE:
       if ($auth_user != "") {
         if ($auth_user == "admin") $domain = 1;
         $u = new User();
@@ -84,8 +85,7 @@ function loginform(&$action) {
     $dl = new Domain("");
     $dl->ListAll();
     $action->debug("Domaines :{$dl->qcount}");
-    $list[0]= array( "iddomain" => 1,"name" => $action->text("nodomain"));
-    $sel = 0; $il = 1;
+    $sel = 0; $il = 0;
     if ($dl->qcount > 0) {
       while (list($k,$v) = each($dl->qlist)) {
         $list[$il]["name"] = $v->name;
@@ -97,6 +97,7 @@ function loginform(&$action) {
         $il++;
       }
     }
+    $list[]= array( "iddomain" => 1,"name" => $action->text("nodomain"));
     if ($sel==0) $list[0]["selected"]="selected";
     reset($list);
     $action->lay->SetBlockCorresp("SELDOMAIN","selected");

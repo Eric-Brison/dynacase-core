@@ -16,91 +16,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.5 2002/01/29 14:43:07 eric Exp $
-//
-// $Log: Class.Session.php,v $
-// Revision 1.5  2002/01/29 14:43:07  eric
-// suppression des session obsoletes
-//
-// Revision 1.4  2002/01/28 16:55:29  eric
-// modif pour update cache pour autre session
-//
-// Revision 1.3  2002/01/25 14:31:37  eric
-// gestion de cache objet - variable de session
-//
-// Revision 1.2  2002/01/18 08:12:32  eric
-// optimization for speed
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.14  2001/05/21 13:07:46  yannick
-// Mise au point
-//
-// Revision 1.13  2001/05/21 10:23:00  yannick
-// Problème sur les variables de sessions(tourne-page...)
-//
-// Revision 1.12  2001/02/26 15:11:25  yannick
-// Optimization
-//
-// Revision 1.11  2001/02/07 11:30:44  yannick
-// Traitement résultat vide, 1 seule page
-//
-// Revision 1.10  2001/01/25 15:54:33  marianne
-// Suppression du 'register(user_id)' dans Activate ....
-//
-// Revision 1.9  2001/01/25 03:22:09  marianne
-// register du user_id dans Activate
-//
-// Revision 1.8  2000/10/26 18:18:13  marc
-// - Gestion des references multiples à des JS
-// - Gestion de variables de session
-//
-// Revision 1.7  2000/10/26 15:18:51  yannick
-// Ajout du Unregister sur Action
-//
-// Revision 1.6  2000/10/26 14:10:27  yannick
-// Suite au login/domain => Modelage des sessions
-//
-// Revision 1.5  2000/10/24 21:17:32  marc
-// Valeur de retour specifiee si pas de variable de session trouvee
-//
-// Revision 1.4  2000/10/23 09:07:36  marc
-// Ajout des sessions dans Action
-//
-// Revision 1.3  2000/10/11 13:19:13  yannick
-// Function GCollector OK
-//
-// Revision 1.2  2000/10/11 12:18:41  yannick
-// Gestion des sessions
-//
-// Revision 1.1  2000/10/09 10:44:02  yannick
-// Déplacement des sessions
-//
-// Revision 1.1.1.1  2000/10/05 17:29:10  yannick
-// Importation
-//
-// Revision 1.7  2000/08/16 12:30:10  marc
-// Initialisation du champ criteria ("")
-//
-// Revision 1.6  2000/08/10 16:02:28  yannick
-// Contournement Query et mise à jour du TTL
-//
-// Revision 1.5  2000/07/09 09:27:09  yannick
-// Conflits avec phplib (sessions)
-//
-// Revision 1.4  2000/07/05 12:24:50  yannick
-// Utilisation de LIBPHPINCLUDE !!!!!!!!!!!!!!!
-//
-// Revision 1.3  2000/07/04 17:32:19  marc
-// Mise en conf
-//
-// Revision 1.2  2000/06/30 15:29:24  marc
-// Mise en conf, version initiale 2
-//
-// Revision 1.1  2000/06/30 15:24:49  marc
-// Mise en conf, version initiale
-//
+// $Id: Class.Session.php,v 1.6 2002/04/03 16:47:10 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -109,7 +25,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.5 2002/01/29 14:43:07 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.6 2002/04/03 16:47:10 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -228,7 +144,7 @@ var $sessiondb;
       }
       $this->id         = $idsess;
       $this->timetolive = $this->SetTTL();
-      $this->userid   = 0;
+      $this->userid   = ANONYMOUS_ID;
       $this->Add();
       $this->log->debug("Nouvelle Session : {$this->id}");
     }
@@ -262,7 +178,7 @@ var $sessiondb;
       if ($HTTP_CONNECTION != "") {
 	session_unset();
       }
-      $this->userid = 0;
+      $this->userid = ANONYMOUS_ID;
       $this->timetolive = $this->SetTTL();
       $this->Modify();
       $this->status = $this->SESSION_CT_EXIST;

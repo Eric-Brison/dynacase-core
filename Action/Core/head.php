@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.7 2002/03/21 17:52:38 eric Exp $
+// $Id: head.php,v 1.8 2002/04/03 16:47:10 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -115,7 +115,7 @@ function userlogin(&$action) {
 // This function is used to show curent user if set
 // TODO
 
-  if (!isset($action->user)) {
+  if ((!isset($action->user)) || ($action->user->id == ANONYMOUS_ID)) {
     $action->lay->set("USER","");
     $action->lay->set("ONOUT",$action->parent->GetImageUrl("bblue.gif"));
     $action->lay->set("ONOVER",$action->parent->GetImageUrl("bgreen.gif"));

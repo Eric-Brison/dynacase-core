@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.4 2002/03/08 14:36:28 eric Exp $
+// $Id: Class.User.php,v 1.5 2002/04/03 16:47:10 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,12 +22,14 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.4 2002/03/08 14:36:28 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.5 2002/04/03 16:47:10 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
 include_once('Class.Application.php');
 include_once('Class.Group.php');
+
+define("ANONYMOUS_ID", 3);
 
 Class User extends DbObj
 {
@@ -166,6 +168,15 @@ function PostInit() {
   $group->Add();
   
   
+  // Create anonymous user
+  $this->iddomain=1;
+  $this->id=ANONYMOUS_ID;
+  $this->lastname="anonymous";
+  $this->firstname="guest";
+  $this->login="anonymous";
+  $this->isgroup="N";
+  $this->Add();
+
 
   // Store error messages
      
