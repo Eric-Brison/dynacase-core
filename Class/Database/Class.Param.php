@@ -1,4 +1,4 @@
-<?
+<?php
 // ---------------------------------------------------------------------------
 // Param
 // ---------------------------------------------------------------------------
@@ -18,12 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.Param.php,v 1.2 2002/01/18 08:10:34 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.2 2002/01/18 08:10:34 eric Exp $';
 
 Class Param extends DbObj
 {
@@ -47,7 +47,7 @@ var $buffer=array();
 function PreInsert( )
 {
     if (strpos($this->name," ")!=0) {
-      return "Le nom du param&egrave;tre ne doit pas contenir d'espace";
+      return "Le nom du paramètre ne doit pas contenir d'espace";
     }
 }
 
@@ -92,10 +92,10 @@ function GetAll($key="")
    if ($key=="") $key=$this->key;
    $query = new QueryDb($this->dbaccess,"Param");
    $query->basic_elem->sup_where = array ("key=$key");
-   $list = $query->Query();
+   $list = $query->Query(0,0,"TABLE");
    if ($query->nb != 0) {
      while(list($k,$v)=each($list)) {
-       $out[$v->name]=$v->val;
+       $out[$v["name"]]=$v["val"];
      }
    } else {
      $out = NULL;

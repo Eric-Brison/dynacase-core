@@ -16,9 +16,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.Session.php,v 1.2 2002/01/18 08:12:32 eric Exp $
 //
 // $Log: Class.Session.php,v $
+// Revision 1.2  2002/01/18 08:12:32  eric
+// optimization for speed
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -97,7 +100,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.2 2002/01/18 08:12:32 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -278,9 +281,9 @@ var $sessiondb;
      $query = new QueryDb($this->dbaccess,"SessionVar");
      $this->log->debug("InitBuffer");
      $query->basic_elem->sup_where = array("session='{$this->id}'");
-     $list=$query->Query();
+     $list=$query->Query(0,0,"TABLE");
      while (list($k,$v)=each($list)) {
-        $this->buffer[$v->key]=$v->val;
+        $this->buffer[$v["key"]]=$v["val"];
      }
   }
   
