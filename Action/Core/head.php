@@ -1,6 +1,9 @@
 <?php
-// $Id: head.php,v 1.2 2002/01/25 14:31:37 eric Exp $
+// $Id: head.php,v 1.3 2002/01/28 16:56:49 eric Exp $
 // $Log: head.php,v $
+// Revision 1.3  2002/01/28 16:56:49  eric
+// animation bouton bleu & suppression appel username
+//
 // Revision 1.2  2002/01/25 14:31:37  eric
 // gestion de cache objet - variable de session
 //
@@ -117,5 +120,33 @@ function head(&$action) {
   $lay = new Layout($jslauch, $action);
   $action->parent->AddJsCode($lay->gen());
 
+  // update username
+  login($action);
+
 }
+
+
+function login(&$action) {
+
+// This function is used to show curent user if set
+// TODO
+
+  if (!isset($action->user)) {
+    $action->lay->set("USER","");
+    $action->lay->set("ONOUT",$action->parent->GetImageUrl("bblue.gif"));
+    $action->lay->set("ONOVER",$action->parent->GetImageUrl("bgreen.gif"));
+    $action->lay->set("ALTLOGINOUT","login");
+    $action->lay->set("ACTION","");
+    $action->lay->set("anim","true");
+  } else {
+    $action->lay->set("USER",$action->user->firstname." ".$action->user->lastname);
+    $action->lay->set("ONOUT",$action->parent->GetImageUrl("bgreen.gif"));
+    $action->lay->set("ONOVER",$action->parent->GetImageUrl("bred.gif"));
+    $action->lay->set("ALTLOGINOUT","logout");
+    $action->lay->set("ACTION","LOGOUT");
+    $action->lay->set("OUT","");
+    $action->lay->set("anim","false");
+  }
+}
+
 ?>

@@ -1,5 +1,39 @@
 
 [ZONE CORE:HTMLHEAD]
+<script language="JavaScript">
+
+
+
+  function reSizeLogo() { 
+      winH=getFrameHeight();
+      winW=getFrameWidth()
+    
+      if ((winH>0) && (winW>0))
+         document.logo.height= winH/1.2;
+    
+  }
+
+  if ([anim])  window.onload = AnimLogin;
+
+
+  var dx = 1;
+  function AnimLogin() { 
+      ilogin = document.getElementById('ilogin');
+
+
+      if ((ilogin.height < 20) && (ilogin.height > 10)) {
+         setTimeout("AnimLogin()",30); // each 30ms
+         ilogin.height += dx;
+      } else {
+         dx = -dx;
+         ilogin.height += dx;
+         if (dx > 0)  setTimeout("AnimLogin()",1000); // each 1s
+         else setTimeout("AnimLogin()",50); // each 1s
+      }
+    return true;
+  }
+
+</script>
 
 
 <table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
@@ -14,7 +48,15 @@
 </td>
   [ENDBLOCK FUNCTION]
 
-  <td class="headcell" align="right" ><span class="headtitle">[ZONE CORE:USERNAME]&nbsp;</span><a href="#"><img onClick="lauch_action(this.src,'CORE','Welcome Page');" align="absmiddle" alt="[WHAT] Welcome Page" title="[WHAT] Welcome Page" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a></td>
+  <td class="headcell" align="right" ><span class="headtitle">
+     [USER]&nbsp;<a target="body" href="[CORE_BASEURL]app=AUTHENT&action=[ACTION]" >
+     <img id="ilogin" 
+          onMouseOut="src='[ONOUT]'" 
+          onMouseOver="this.src='[ONOVER]'" *
+          src="[ONOUT]"   
+          alt="[ALTLOGINOUT]" title="[ALTLOGINOUT]" 
+          border=0 align="absmiddle"></a>&nbsp;</span>
+     <a href="#"><img onClick="lauch_action(this.src,'CORE','Welcome Page');" align="absmiddle" alt="[WHAT] Welcome Page" title="[WHAT] Welcome Page" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a></td>
 </tr>
 </table>
 
