@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.7 2002/08/06 09:35:58 eric Exp $
+// $Id: Class.User.php,v 1.8 2002/10/10 10:11:28 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.7 2002/08/06 09:35:58 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.8 2002/10/10 10:11:28 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -33,17 +33,17 @@ define("ANONYMOUS_ID", 3);
 
 Class User extends DbObj
 {
-var $fields = array ( "id","iddomain","lastname","firstname","login","password","isgroup");
+  var $fields = array ( "id","iddomain","lastname","firstname","login","password","isgroup");
 
-var $id_fields = array ("id");
+  var $id_fields = array ("id");
 
-var $dbtable = "users";
+  var $dbtable = "users";
 
-var $order_by="lastname, isgroup desc";
+  var $order_by="lastname, isgroup desc";
 
-var $fulltextfields = array ("login","lastname","firstname");
+  var $fulltextfields = array ("login","lastname","firstname");
 
-var $sqlcreate = "
+  var $sqlcreate = "
 create table users ( id      int not null,
                      iddomain int not null,
                 primary key (id),
@@ -59,178 +59,198 @@ create sequence seq_id_users start 10";
 
 
 
-function SetLoginName($loginDomain)
-{
-  $query = new QueryDb($this->dbaccess,"User");
-  if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
+  function SetLoginName($loginDomain)
+    {
+      $query = new QueryDb($this->dbaccess,"User");
+      if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
     
-    $queryd = new QueryDb($this->dbaccess,"Domain");
-    $queryd->AddQuery("name='".$reg[2]."'");
-    $list = $queryd->Query();
+	$queryd = new QueryDb($this->dbaccess,"Domain");
+	$queryd->AddQuery("name='".$reg[2]."'");
+	$list = $queryd->Query();
 
-    if ($queryd->nb == 1) {
-      $domainId=$list[0]->iddomain;
-      $query->AddQuery("iddomain='$domainId'");
-      $query->AddQuery("login='".$reg[1]."'");
-    } else {
-      return false;
+	if ($queryd->nb == 1) {
+	  $domainId=$list[0]->iddomain;
+	  $query->AddQuery("iddomain='$domainId'");
+	  $query->AddQuery("login='".$reg[1]."'");
+	} else {
+	  return false;
+	}
+    
+      } else {
+
+	$query->AddQuery("login='$loginDomain'");
+      }
+      $list = $query->Query();
+
+      if ($query->nb == 1) {
+	$this=$list[0];
+      } else {
+	return FALSE;
+      }
+
+      return TRUE;
     }
-    
-  } else {
+  function SetLogin($login,$domain)
+    {
+      $query = new QueryDb($this->dbaccess,"User");
 
-    $query->AddQuery("login='$loginDomain'");
-  }
-  $list = $query->Query();
+      $query->basic_elem->sup_where=array("login='$login'",
+					  "iddomain=$domain");
 
-  if ($query->nb == 1) {
-    $this=$list[0];
-  } else {
-    return FALSE;
-  }
+      $list = $query->Query();
 
-  return TRUE;
-}
-function SetLogin($login,$domain)
-{
-  $query = new QueryDb($this->dbaccess,"User");
+      if ($query->nb != 0) {
+	$this=$list[0];
+      } else {
+	return FALSE;
+      }
 
-  $query->basic_elem->sup_where=array("login='$login'",
-				      "iddomain=$domain");
+      return TRUE;
+    }
 
-  $list = $query->Query();
+  function PreInsert()
+    {
 
-  if ($query->nb != 0) {
-    $this=$list[0];
-  } else {
-    return FALSE;
-  }
+      if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";
+      if ($this->id == "") {
+	$res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
+	$arr = pg_fetch_array ($res, 0);
+	$this->id = $arr[0];
+      }
+      if (isset($this->isgroup) && ($this->isgroup == "Y")) {
+	$this->password_new="no"; // no passwd for group
+      } else {
+	$this->isgroup = "N";
+      }
+      if (isset($this->password_new) && ($this->password_new!="")) {
+	$this->computepass($this->password_new, $this->password);
+      }
+    }
 
-  return TRUE;
-}
-
-function PreInsert()
-{
-
-  if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";
-  if ($this->id == "") {
-    $res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
-    $arr = pg_fetch_array ($res, 0);
-    $this->id = $arr[0];
-  }
-  if (isset($this->isgroup) && ($this->isgroup == "Y")) {
-    $this->password_new="no"; // no passwd for group
-  } else {
-    $this->isgroup = "N";
-  }
-  if (isset($this->password_new) && ($this->password_new!="")) {
-    $this->computepass($this->password_new, $this->password);
-  }
-}
-
-function PostInsert()     
-{
-  // create default ACL for each application
-  // only for group
-  if ($this->isgroup == "Y") {
-    $app = new Application();
-    $app-> UpdateUserAcl($this->id);
-  }
+  function PostInsert()     
+    {
+      // create default ACL for each application
+      // only for group
+      if ($this->isgroup == "Y") {
+	$app = new Application();
+	$app-> UpdateUserAcl($this->id);
+      }
   
-}
+    }
 
-function PreUpdate()
-{
-  if (isset($this->password_new) && ($this->password_new!="")) {
-    $this->computepass($this->password_new, $this->password);
-  }
-}
-function PostDelete()
-{
-  // delete reference in group table
-  $group = new Group($this->dbaccess, $this->id);
-  $group-> Delete();
-}
-// --------------------------------------------------------------------
-function computepass($pass, &$passk)
-{
-        srand((double)microtime()*1000000);
-        $salt = chr(rand(59,122)).chr(rand(59,122));
-        $passk = crypt($pass, $salt);
-}
+  function PreUpdate()
+    {
+      if (isset($this->password_new) && ($this->password_new!="")) {
+	$this->computepass($this->password_new, $this->password);
+      }
+    }
+  function PostDelete()
+    {
+      // delete reference in group table
+      $group = new Group($this->dbaccess, $this->id);
+      $group-> Delete();
+    }
+  // --------------------------------------------------------------------
+  function computepass($pass, &$passk)
+    {
+      srand((double)microtime()*1000000);
+      $salt = chr(rand(59,122)).chr(rand(59,122));
+      $passk = crypt($pass, $salt);
+    }
 
-function checkpassword($pass)
-{
-  if ($this->isgroup == 'Y') return false; // don't log in group 
-  return($this->checkpass($pass,$this->password));
-}    
+  function checkpassword($pass)
+    {
+      if ($this->isgroup == 'Y') return false; // don't log in group 
+      return($this->checkpass($pass,$this->password));
+    }    
 
-// --------------------------------------------------------------------
-function checkpass($pass, $passk)
-{
-        $salt = substr($passk, 0, 2);
-        $passres = crypt($pass, $salt);
-        return ($passres == $passk);
-} 
+  // --------------------------------------------------------------------
+  function checkpass($pass, $passk)
+    {
+      $salt = substr($passk, 0, 2);
+      $passres = crypt($pass, $salt);
+      return ($passres == $passk);
+    } 
 
-function PostInit() {
+  function PostInit() {
 
 
-  $group = new group($this->dbaccess);
+    $group = new group($this->dbaccess);
 
-  // Create admin user
-  $this->iddomain=1;
-  $this->id=1;
-  $this->lastname="Master";
-  $this->firstname="What";
-  $this->password_new="anakeen";
-  $this->login="admin";
-  $this->Add();
-  $group->iduser=$this->id;
+    // Create admin user
+    $this->iddomain=1;
+    $this->id=1;
+    $this->lastname="Master";
+    $this->firstname="What";
+    $this->password_new="anakeen";
+    $this->login="admin";
+    $this->Add();
+    $group->iduser=$this->id;
 
-  // Create default group
-  $this->iddomain=1;
-  $this->id=2;
-  $this->lastname="Default";
-  $this->firstname="What Group";
-  $this->login="all";
-  $this->isgroup="Y";
-  $this->Add();
-  $group->idgroup=$this->id;
-  $group->Add();
+    // Create default group
+    $this->iddomain=1;
+    $this->id=2;
+    $this->lastname="Default";
+    $this->firstname="What Group";
+    $this->login="all";
+    $this->isgroup="Y";
+    $this->Add();
+    $group->idgroup=$this->id;
+    $group->Add();
   
   
-  // Create anonymous user
-  $this->iddomain=1;
-  $this->id=ANONYMOUS_ID;
-  $this->lastname="anonymous";
-  $this->firstname="guest";
-  $this->login="anonymous";
-  $this->isgroup="N";
-  $this->Add();
+    // Create anonymous user
+    $this->iddomain=1;
+    $this->id=ANONYMOUS_ID;
+    $this->lastname="anonymous";
+    $this->firstname="guest";
+    $this->login="anonymous";
+    $this->isgroup="N";
+    $this->Add();
 
 
-  // Store error messages
+    // Store error messages
      
-}
+  }
 
-function GetUserList($qtype="LIST") {
-  $query = new QueryDb($this->dbaccess,"User");
-  $query->order_by="lastname";
-  $query-> AddQuery("(isgroup != 'Y') OR (isgroup isnull)");
-  return($query->Query(0,0,$qtype));
-}
+  function GetUserList($qtype="LIST") {
+    $query = new QueryDb($this->dbaccess,"User");
+    $query->order_by="lastname";
+    $query-> AddQuery("(isgroup != 'Y') OR (isgroup isnull)");
+    return($query->Query(0,0,$qtype));
+  }
 
-function GetGroupList($qtype="LIST") {
-  $query = new QueryDb($this->dbaccess,"User");
-  $query->order_by="lastname";
-  $query-> AddQuery("isgroup = 'Y'");
-  return($query->Query(0,0,$qtype));
-}
+  function GetGroupList($qtype="LIST") {
+    $query = new QueryDb($this->dbaccess,"User");
+    $query->order_by="lastname";
+    $query-> AddQuery("isgroup = 'Y'");
+    return($query->Query(0,0,$qtype));
+  }
 
-function GetUserAndGroupList() {
-  $query = new QueryDb($this->dbaccess,"User");
-  $query->order_by="isgroup desc, lastname";
-  return($query->Query());
-}
+  function GetUserAndGroupList() {
+    $query = new QueryDb($this->dbaccess,"User");
+    $query->order_by="isgroup desc, lastname";
+    return($query->Query());
+  }
+
+
+  function GetGroupsId() {
+    $query = new QueryDb($this->dbaccess, "Group");
+
+    $query-> AddQuery("iduser='{$this->id}'");
+
+    $list = $query->Query();
+    $groupsid=array();
+
+    if ($query->nb >0) {
+      while (list($k,$v) = each($list)) {
+	$groupsid[] = $v->idgroup;
+      }
+    
+    } 
+
+    return $groupsid;
+
+  }
 }
 ?>
