@@ -1,6 +1,9 @@
 <?php
-// $Id: head.php,v 1.3 2002/01/28 16:56:49 eric Exp $
+// $Id: head.php,v 1.4 2002/01/29 10:26:02 eric Exp $
 // $Log: head.php,v $
+// Revision 1.4  2002/01/29 10:26:02  eric
+// chg nom de fonction cause conflit
+//
 // Revision 1.3  2002/01/28 16:56:49  eric
 // animation bouton bleu & suppression appel username
 //
@@ -121,12 +124,12 @@ function head(&$action) {
   $action->parent->AddJsCode($lay->gen());
 
   // update username
-  login($action);
+  userlogin($action);
 
 }
 
 
-function login(&$action) {
+function userlogin(&$action) {
 
 // This function is used to show curent user if set
 // TODO
