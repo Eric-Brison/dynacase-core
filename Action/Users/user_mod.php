@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.2 2002/07/29 11:15:18 marc Exp $
+// $Id: user_mod.php,v 1.3 2003/03/24 13:43:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,62 +21,8 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: user_mod.php,v $
-// Revision 1.2  2002/07/29 11:15:18  marc
-// Release 0.1.1, see ChangeLog
-//
-// Revision 1.16  2001/08/31 13:22:46  eric
-// modification pour éviter la récursivité dans les groupes
-//
-// Revision 1.15  2001/08/28 10:14:07  eric
-// modification pour la prise en comptes des groupes d'utilisateurs
-//
-// Revision 1.14  2001/07/23 17:11:23  marc
-// Release 0.3.3, see CHANGELOG
-//
-// Revision 1.13  2001/03/27 21:08:50  marc
-// User creation : set permissions for Squid (FULL if exists) & Mail (USER if
-// user have a mail account).
-//
-// Revision 1.12  2000/12/22 19:58:45  marc
-// Connexion login/compte messagerie
-//
-// Revision 1.11  2000/11/16 14:07:25  yannick
-// Destruction de l'utilisateur possible
-//
-// Revision 1.10  2000/10/26 19:48:34  marc
-// Correction petits bugs lors de la creation d'un user sur domaine messagerie
-//
-// Revision 1.9  2000/10/26 15:18:18  yannick
-// Gestion des erreurs
-//
-// Revision 1.8  2000/10/26 12:52:05  yannick
-// Bug : perte du mot de passe
-//
-// Revision 1.7  2000/10/26 10:41:03  yannick
-// Edition par l'utilisateur
-//
-// Revision 1.6  2000/10/26 08:09:30  yannick
-// Traitement de la modification du mot de passe
-//
-// Revision 1.5  2000/10/26 07:54:27  yannick
-// Gestion du domaine sur les utilisateur
-//
-// Revision 1.4  2000/10/23 14:11:45  yannick
-// récupération de mot de passe
-//
-// Revision 1.3  2000/10/23 10:40:07  marc
-// Stable release with mail account creation
-//
-// Revision 1.2  2000/10/22 16:27:04  marc
-// Connexion avec la messagerie
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
-// ---------------------------------------------------------------
+
+
 include_once("Class.SubForm.php");
 include_once("Class.User.php");
 include_once("Class.MailAccount.php");

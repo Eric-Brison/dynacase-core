@@ -1,5 +1,5 @@
 <?
-// $Id: Class.Permission.php,v 1.2 2002/01/25 14:31:37 eric Exp $
+// $Id: Class.Permission.php,v 1.3 2003/03/24 13:43:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Permission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -20,46 +20,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Class.Permission.php,v $
-// Revision 1.2  2002/01/25 14:31:37  eric
-// gestion de cache objet - variable de session
+
 //
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.10  2001/09/07 16:48:59  eric
-// gestion des droits sur les objets
-//
-// Revision 1.9  2001/08/29 13:28:09  eric
-// droit par défaut sur les groupes
-//
-// Revision 1.8  2001/08/28 10:08:57  eric
-// Gestion des groupes d'utilisateurs
-//
-// Revision 1.7  2001/08/21 08:50:00  eric
-// ajout fonction SetUserPermission
-//
-// Revision 1.6  2001/08/20 16:41:38  eric
-// changement des controles d'accessibilites
-//
-// Revision 1.5  2001/02/26 13:50:58  yannick
-// Optimization
-//
-// Revision 1.4  2001/01/25 17:17:03  yannick
-// Gestion des updates applications
-//
-// Revision 1.3  2000/10/23 15:32:04  yannick
-// gestion des grant level
-//
-// Revision 1.2  2000/10/23 09:07:36  marc
-// Ajout des sessions dans Action
-//
-// Revision 1.1  2000/10/19 16:40:39  yannick
-// Gestion des permissions
-//
-// ---------------------------------------------------------------------------
-//
-$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
+$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.3 2003/03/24 13:43:36 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -175,9 +138,9 @@ function ListApplicationUsers($app) {
   return($res);
 }
 
-function Exists($userid,$application,$aclid=0) {
+function Exists($userid,$applicationid,$aclid=0) {
   $query = new QueryDb($this->dbaccess,"Permission");
-  $query->basic_elem->sup_where = array ("id_application='{$application->id}'",
+  $query->basic_elem->sup_where = array ("id_application='$applicationid'",
                                          "id_user='{$userid}'");
   if ($aclid != 0) {
     $naclid= - $aclid;

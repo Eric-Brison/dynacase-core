@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.9 2002/11/15 16:12:41 eric Exp $
+// $Id: Class.User.php,v 1.10 2003/03/24 13:43:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.9 2002/11/15 16:12:41 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.10 2003/03/24 13:43:36 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -131,10 +131,10 @@ create sequence seq_id_users start 10";
     {
       // create default ACL for each application
       // only for group
-      if ($this->isgroup == "Y") {
-	$app = new Application();
-	$app-> UpdateUserAcl($this->id);
-      }
+      //    if ($this->isgroup == "Y") {
+      // 	$app = new Application();
+      // 	$app-> UpdateUserAcl($this->id);
+      //       }
   
     }
 
