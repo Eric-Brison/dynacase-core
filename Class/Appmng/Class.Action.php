@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.4 2002/03/02 18:04:40 eric Exp $
+//  $Id: Class.Action.php,v 1.5 2002/03/21 15:37:42 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.4 2002/03/02 18:04:40 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.5 2002/03/21 15:37:42 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -177,6 +177,11 @@ function GetImageUrl($name) {
   }
 }
 
+function GetImageFile($name) {
+  if (isset ($this->parent)) {
+   return($this->parent->GetImageFile($name));
+  }
+}
 function GetIcon($name,$text,$width="",$height="") {
   
   if ($width != "")

@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.5 2002/02/14 16:08:41 eric Exp $
+//  $Id: Class.Application.php,v 1.6 2002/03/21 15:37:42 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.5 2002/02/14 16:08:41 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.6 2002/03/21 15:37:42 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -340,6 +340,18 @@ function GetRootApp() {
   }
 }
 
+function GetImageFile($img) {
+  $root = $this->Getparam("CORE_PUBDIR");
+  $app = "";
+  if (file_exists($root."/".$this->name."/Images/".$img)) {
+    return $root."/".$this->name."/Images/".$img;
+  } else { // perhaps generic application
+    if (file_exists($root."/".$this->childof."/Images/".$img)) {
+      return $root."/".$this->name."/Images/".$img;
+    } 
+  }
+  return false;
+}
 function GetImageUrl($img) {
   $root = $this->Getparam("CORE_PUBDIR");
   $app = "";

@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.4 2002/03/14 09:37:14 eric Exp $
+// $Id: Lib.Http.php,v 1.5 2002/03/21 15:37:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Lib.Http.php,v $
+// Revision 1.5  2002/03/21 15:37:42  eric
+// ajout methode getimagefile
+//
 // Revision 1.4  2002/03/14 09:37:14  eric
 // ajout fonction print_r2 pour debug
 //
@@ -70,7 +73,7 @@
 //
 // ---------------------------------------------------------------
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.4 2002/03/14 09:37:14 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.5 2002/03/21 15:37:42 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -133,7 +136,7 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE) {
    $mime_type = GetMimeType($ext);
    if ($add_ext) $name=$name.".".$ext;
    header("Content-Disposition: form-data;filename=$name");
-   header("CONTENT-TYPE: ".$mime_type);
+   header("Content-type: ".$mime_type);
    echo $src;
 }
 
@@ -141,7 +144,7 @@ function Http_DownloadFile($filename,$name,$mime_type='') {
 
    
    header("Content-Disposition: form-data;filename=$name");
-   header("CONTENT-TYPE: ".$mime_type);
+   header("Content-type: ".$mime_type);
    $fd = fopen($filename, "r");
    while (! feof($fd)) {
      $contents = fread($fd, 4096);
