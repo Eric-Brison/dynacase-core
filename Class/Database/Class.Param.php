@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.14 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.Param.php,v 1.15 2003/10/16 09:36:47 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,13 +30,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.14 2003/08/18 15:46:42 eric Exp $
+//  $Id: Class.Param.php,v 1.15 2003/10/16 09:36:47 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 include_once('Class.ParamDef.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.14 2003/08/18 15:46:42 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.15 2003/10/16 09:36:47 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -88,7 +88,13 @@ function Set($name,$val,$type=PARAM_GLB,$appid='')
   $this->name = $name;
   $this->val = $val;
   $this->type = $type;
+  $pdef = new paramdef($this->dbaccess,$name);
+
+  if ($pdef->isAffected()) {
+    if ($pdef->isglob=='Y') $appid=$pdef->appid;
+  }
   $this->appid = $appid;
+
 
   $paramt = new Param($this->dbaccess,array($name,$type,$appid));
   if ($paramt->isAffected()) $this->Modify();
