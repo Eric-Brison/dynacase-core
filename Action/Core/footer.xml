@@ -11,8 +11,7 @@
             title="[TEXT:view log]" src="[IMG:log.gif]" 
             onclick="with (document.getElementById('slog')) { if ((options.length > 0)&&(style.display=='none')) style.display='inline'; else style.display='none';}">
        <select id="slog" class="anakeen" style="display:none"></select></td>
-  <td align="right"><span class="anakeen">[TEXT:Hosted by] 
-       <b>WHAT</b>, [TEXT:powered by] <b>[CORE_ANAKEEN]</span></td>
+  <td align="right">[CORE_RFOOT]</td>
 </tr>
 
 </table>

@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.18 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.19 2003/10/16 10:12:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -192,6 +192,10 @@ $app_const = array (
 							"global"=>"Y"),
 		    "CORE_PASSWDDELAY"		=>array("val"=>"0",
 							"descr"=>N_("default delay before expiration of password in day"),
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_RFOOT"		=>array("val"=>"<B>Freedom</B>",
+							"descr"=>N_("name displayed in the right of the foot"),
 							"style"=>"N",
 							"global"=>"Y")
 		    );
