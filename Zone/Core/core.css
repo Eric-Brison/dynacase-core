@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.19 2003/05/19 10:24:46 eric Exp $
+ * $Id: core.css,v 1.20 2003/06/06 09:13:11 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -199,9 +199,15 @@ A:link, A:visited {
   color: [CORE_ERRORCOLOR];
   font-weight: bold;
   padding:20px;
-  background-image:url('CORE/Images/t4.gif');
+  background-color:#F0F0F0;
+  filter:alpha(opacity=80);
+  -moz-opacity:.5;
   border:solid 1px;
   text-align:center;
+}
+.CORETextError {
+  filter:alpha(opacity=100);
+  -moz-opacity:.99;
 }
 .COREErrorBg {
   color: [CORE_ERRORCOLOR];

@@ -10,8 +10,8 @@ if (window.name == 'fhidden') {
 <div  class="COREError" style="border:ridge 3pt">
 
 <HR width="50%" color="[CORE_FGCOLOR]">
-<H4>[error]</H4>
-<H5>[appname]/[appact]</H5>
+<H4 class="CoreTextError">[error]</H4>
+<H5 class="CoreTextError">[appname]/[appact]</H5>
 <HR width="50%" color="[CORE_FGCOLOR]">
 
 
