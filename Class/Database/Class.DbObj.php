@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.24 2004/01/13 09:05:38 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.25 2004/01/27 17:58:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.24 2004/01/13 09:05:38 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.25 2004/01/27 17:58:09 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ include_once('Class.Log.php');
 include_once('Class.Cache.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.24 2004/01/13 09:05:38 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.25 2004/01/27 17:58:09 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -401,23 +401,31 @@ function Add($nopost=false)
  * @see PreUpdate()
  * @see PostUpdate()
  */
-function Modify($nopost=false)
+function Modify($nopost=false,$sfields="")
   {
     if ($this->dbid == -1) return FALSE;
     $msg=$this->PreUpdate();
     if ($msg!='') return $msg;
     $sql = "update ".$this->dbtable." set ";
     
-    reset($this->id_fields);
+    
+   
     $nb_keys=0;
-    while (list($k,$v) = each ($this->id_fields)) {
+    foreach ($this->id_fields as $k=>$v) {
       $notset[$v]="Y";
       $nb_keys++;
     }
+
+    if (! is_array($sfields)) $fields=$this->fields;
+    else {
+      $fields=$sfields;
+      foreach ($this->id_fields as $k=>$v) $fields[]=$v;
+    }
+    
+
     $setstr="";
     $wstr="";
-    reset ($this->fields);
-    while (list($k,$v) = each ($this->fields)) {
+    foreach ($fields as $k=>$v) {
       if (!isset($notset[$v])) {
         $setstr=$setstr." ".$v."=".$this->lw(AddSlashes($this->$v)).",";
       } else {
