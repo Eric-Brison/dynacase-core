@@ -4,7 +4,8 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2003-08-12 11:23+0200\n"
+	"Report-Msgid-Bugs-To: \n"
+	"POT-Creation-Date: 2004-06-28 13:48+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -13,20 +14,11 @@ msgstr	"Project-Id-Version: WHAT 1.3\n"
 	"Content-Transfer-Encoding: 8-bit\n"
 	"\n"
 
-msgid	"the user identification is unknow"
-msgstr	"l'identification de l'utilisateur est inconnue"
-
 msgid	"titlecreateg"
 msgstr	"Création d'un groupe"
 
 msgid	"titlecreateu"
 msgstr	"Création d'utilisateur"
-
-msgid	"butcreate"
-msgstr	"Créer"
-
-msgid	"Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr	"Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
 msgid	"titlemodifyg"
 msgstr	"Modification du groupe"
@@ -34,17 +26,24 @@ msgstr	"Modification du groupe"
 msgid	"titlemodifyu"
 msgstr	"Modification de l'utilisateur"
 
+msgid	"expire date format is not correct : will be set to default"
+msgstr	"le format de la date d'expiration est incorrecte : la date par "
+	"défaut sera prise en compte"
+
+msgid	"err_add_user"
+msgstr	"Impossible de creer l'utilisateur"
+
+msgid	"butcreate"
+msgstr	"Créer"
+
+msgid	"Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
+msgstr	"Non autorisé : nécessite le privilège DOMAIN_MASTER"
+
 msgid	"butmodify"
 msgstr	"Modifier"
 
 msgid	"nomail"
 msgstr	"Pas de compte mail"
-
-msgid	"expire date format is not correct : will be set to default"
-msgstr "le format de la date d'expiration est incorrecte : la date par défaut sera prise en compte"
-
-msgid	"err_add_user"
-msgstr	"Impossible de creer l'utilisateur"
 
 msgid	"titlegroup"
 msgstr	"Liste des groupes"
@@ -69,6 +68,9 @@ msgstr	"Nom de connexion"
 
 msgid	"expires"
 msgstr	"expiration"
+
+msgid	"the user identification is unknow"
+msgstr	"l'identification de l'utilisateur est inconnue"
 
 msgid	"description"
 msgstr	"Description"
@@ -97,14 +99,9 @@ msgid	"nodomain"
 msgstr	"pas de domaine"
 
 msgid	"Vous devez entrer un nom d'utilisateur valide et un mot de passe "
-	"correct pour accder  cette ressource"
-msgstr	""
-
-msgid	"user"
-msgstr	"utilisateur"
-
-msgid	"object"
-msgstr	"objet"
+	"correct pour acceder a cette ressource"
+msgstr	"Vous devez entrer un nom d'utilisateur valide et un mot de passe "
+	"correct pour accéder à cette ressource"
 
 msgid	"userlogin"
 msgstr	"Login"
@@ -117,6 +114,12 @@ msgstr	"Droits"
 
 msgid	"none"
 msgstr	"Aucun"
+
+msgid	"user"
+msgstr	"utilisateur"
+
+msgid	"object"
+msgstr	"objet"
 
 #, c-format
 msgid	"user %s %s has been modified\n"
@@ -148,20 +151,29 @@ msgstr	"Impossible de creer l'action"
 msgid	"err_mod_action"
 msgstr	"Impossible de modifier l'action"
 
+msgid	"name"
+msgstr	"Nom"
+
+msgid	"edit"
+msgstr	"Modifier"
+
+msgid	"short_name"
+msgstr	"Nom abr&eacute;g&eacute;"
+
 msgid	"titlecreate"
 msgstr	"Cr&eacute;ation d'application"
 
 msgid	"titlemodify"
 msgstr	"Modification de l'application"
 
-msgid	"title"
-msgstr	"Liste des applications"
-
 msgid	"err_add_application"
 msgstr	"Impossible de creer l'application"
 
 msgid	"err_mod_application"
 msgstr	"Impossible de modifier l'application"
+
+msgid	"title"
+msgstr	"Liste des applications"
 
 msgid	"Remove parameter"
 msgstr	"Suppression de paramètre"
@@ -201,15 +213,6 @@ msgstr	"seul les paramêtres utilisateurs peuvent être modifiés avec cette "
 msgid	"err_mod_param"
 msgstr	"Impossible de modifier le param&egrave;tre"
 
-msgid	"name"
-msgstr	"Nom"
-
-msgid	"edit"
-msgstr	"Modifier"
-
-msgid	"short_name"
-msgstr	"Nom abr&eacute;g&eacute;"
-
 msgid	"descr"
 msgstr	"Description"
 
@@ -219,6 +222,10 @@ msgstr	"fonction %s non disponible pour l'application %s (%d)"
 
 msgid	"Access denied"
 msgstr	"Accès refusé"
+
+# ne pas modifier laisser à vide
+msgid	"$code"
+msgstr	""
 
 msgid	"modify object acl"
 msgstr	"modification des droits"
@@ -230,9 +237,8 @@ msgstr	"voir les droits"
 msgid	"Object Permission : permission %s needed (%s) - # %d"
 msgstr	"Permission objet :: permission %s requise (%s) - n° %d"
 
-# ne pas modifier laisser à vide
-msgid	"$code"
-msgstr	""
+msgid	"login must not be empty"
+msgstr	"le login ne doit pas être vide"
 
 msgid	"prev"
 msgstr	"précédent"
@@ -246,9 +252,6 @@ msgstr	"premier"
 msgid	"last"
 msgstr	"dernier"
 
-msgid	"locked files of "
-msgstr	"fichiers verrouillés par"
-
 msgid	"cannot access to  database $db\n"
 msgstr	"accès à la base de données $db refusé\n"
 
@@ -257,6 +260,10 @@ msgstr	"accès à la base de données $db autorisé\n"
 
 msgid	"no referer url found"
 msgstr	"pas d'URL reférence trouvée"
+
+#, c-format
+msgid	"file not found : %s"
+msgstr	"fichier %s non trouvé."
 
 msgid	"What User Management"
 msgstr	"Gestion des utilisateurs"
@@ -393,6 +400,9 @@ msgstr	"reférence au plug du footer"
 msgid	"default delay before expiration of password in day"
 msgstr	"délai d'expiration du mot de passe par défaut (en jours)"
 
+msgid	"name displayed in the right of the foot"
+msgstr	"nom affiché dans le bas de la fenêtre (à droite)"
+
 msgid	"Access"
 msgstr	"Accessibilités"
 
@@ -495,6 +505,10 @@ msgstr	"les mots de passes ne sont pas identiques : mot de passe inchangé"
 msgid	"empty password : not changed"
 msgstr	"mot de passe vide : non changé"
 
+#, c-format
+msgid	"API file %s not found"
+msgstr	"fichier API %s non trouvé."
+
 msgid	"firstname"
 msgstr	"Prénom"
 
@@ -561,14 +575,17 @@ msgstr	"Confirmez-vous la suppression de l`utilisateur"
 msgid	"Click here to login"
 msgstr	"Cliquer ici pour se connecter"
 
+msgid	"Javascript must be enabled in your navigator"
+msgstr "Javascript doit être activé dans votre navigateur"
+
+msgid	"Your navigator does not accept cookies.\n"
+	"Cookies must be enabled to use correctly this application"
+msgstr	"Votre navigateur n'accepte pas les cookies.\n"
+	"Vous devez autoriser les cookies pour utiliser correctement "
+	"l'application."
+
 msgid	"view log"
 msgstr	"voir les messages"
-
-msgid	"Hosted by"
-msgstr	"Hébergé par"
-
-msgid	"powered by"
-msgstr	"produit par"
 
 # ne pas mettre de '
 msgid	"Homepage"
@@ -731,6 +748,15 @@ msgstr	"Liste des paramètres utilisateur"
 
 msgid	"unmodifiable parameter"
 msgstr	"paramètre non modifiable"
+
+#~ msgid	"locked files of "
+#~ msgstr	"fichiers verrouillés par"
+
+#~ msgid	"Hosted by"
+#~ msgstr	"Hébergé par"
+
+#~ msgid	"powered by"
+#~ msgstr	"produit par"
 
 #~ msgid	"functionerr"
 #~ msgstr	"Détection d'une erreur"
