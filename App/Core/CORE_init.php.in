@@ -150,6 +150,11 @@ $app_const = array (
 							"descr"=>N_("number of cached object by class"),
 							"user"=>"N",
 							"style"=>"N",
+							"global"=>"Y"),
+		    "GATE_URL"		=>array("val"=>"",
+							"descr"=>N_("gate urls"),
+							"user"=>"Y",
+							"style"=>"N",
 							"global"=>"Y")
 		    );
 
