@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.10 2003/03/24 13:43:36 eric Exp $
+// $Id: Class.User.php,v 1.11 2003/04/23 16:47:45 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.10 2003/03/24 13:43:36 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.11 2003/04/23 16:47:45 marc Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -255,13 +255,15 @@ create sequence seq_id_users start 10";
 
   // only use for group
   // get user member of group
-  function getGroupUserList($qtype="LIST") {
+  function getGroupUserList($qtype="LIST", $withgroup=0) {
     $query = new QueryDb($this->dbaccess,"User");
     $query->order_by="isgroup desc, lastname";
+    $selgroup = "and (isgroup != 'Y' or isgroup is null)";
+    if ($withgroup) $selgroup = "";
     return ($query->Query(0,0,$qtype,
 			  "select users.* from users, groups where ".
 			  "groups.iduser=users.id and ".
-			  "idgroup={$this->id} and (isgroup != 'Y' or isgroup is null);"));
+			  "idgroup={$this->id} {$selgroup};"));
   }
 }
 ?>
