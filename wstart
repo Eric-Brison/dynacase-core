@@ -2,3 +2,9 @@
 
 pubdir="/home/httpd/what";
 /bin/cp $pubdir/WHAT/index.php $pubdir
+if [ ! -d $pubdir/Images ] ; then
+    mkdir $pubdir/Images
+fi
+pushd $pubdir/Images > /dev/null
+ln -sf ../*/Images/* .
+popd > /dev/null
