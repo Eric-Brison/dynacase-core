@@ -3,7 +3,7 @@
  * Parameters modification
  *
  * @author Anakeen 2000 
- * @version $Id: param_mod.php,v 1.6 2004/01/14 16:12:42 eric Exp $
+ * @version $Id: param_mod.php,v 1.7 2004/05/14 14:52:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -45,9 +45,10 @@ function param_mod(&$action) {
   
   // reopen a new session to update parameters cache
   //unset($_SESSION["CacheObj"]);
+  $prevact=$action->Read("PARAM_ACT","PARAM_ALIST");
   $action->parent->session->close();
   //      unset($_SESSION["CacheObj"]);
-   redirect($action,"APPMNG",$action->Read("PARAM_ACT","PARAM_ALIST"));
+   redirect($action,"APPMNG",$prevact);
   
 }
 
