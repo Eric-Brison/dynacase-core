@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.14 2003/07/17 07:14:04 eric Exp $
+// $Id: Class.User.php,v 1.15 2003/08/01 14:55:35 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.14 2003/07/17 07:14:04 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.15 2003/08/01 14:55:35 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -299,6 +299,26 @@ create sequence seq_id_users start 10";
   }
 
   
+  function GetUsersGroupList($gid) {
+    $query = new QueryDb($this->dbaccess, "User");
+    $list = $query->Query(0,0,"TABLE",
+			  "select users.* from users, groups where ".
+			  "groups.iduser=users.id and ".
+			  "idgroup=$gid ;");
+
+
+    $uid=array();
+
+    if ($query->nb >0) {
+      while (list($k,$v) = each($list)) {
+	$uid[$v["id"]] = $v;	
+      }
+    
+    } 
+
+    return $uid;
+
+  }
 
   // only use for group
   // get user member of group
