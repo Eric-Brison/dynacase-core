@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.10 2002/06/21 08:06:51 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.11 2002/10/08 10:36:50 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -266,7 +266,7 @@ function PostSelect($id)
     // This function should be replaced by the Child Class
   }
 
-function Add()
+function Add($nopost=false)
   {
     if ($this->dbid == -1) return FALSE;
     
@@ -290,12 +290,12 @@ function Add()
       return $msg_err;
     }
     
-    $msg=$this->PostInsert();
+    if (!$nopost) $msg=$this->PostInsert();
     $this->ClearCache();
     if ($msg!='') return $msg;
   }
 
-function Modify()
+function Modify($nopost=false)
   {
     if ($this->dbid == -1) return FALSE;
     $msg=$this->PreUpdate();
@@ -332,13 +332,13 @@ function Modify()
 	return $msg_err;
       }
     
-    $msg=$this->PostUpdate();
+    if (!$nopost) $msg=$this->PostUpdate();
     
     $this->ClearCache();
     if ($msg!='') return $msg;
   }	
 
-function Delete()
+function Delete($nopost=false)
   {
     $msg=$this->PreDelete();
     if ($msg!='') return $msg;
@@ -363,7 +363,7 @@ function Delete()
       return $msg_err;
     }
     
-    $msg=$this->PostDelete();
+    if (!$nopost) $msg=$this->PostDelete();
     $this->ClearCache();
     if ($msg!='') return $msg;
   }
