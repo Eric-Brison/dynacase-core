@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.13 2003/01/06 16:07:50 yannick Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.14 2003/03/11 17:06:24 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -384,9 +384,15 @@ function Create($nopost=false)
     if (isset($this->sqlcreate)) {
       
       // step by step
+      if (is_array($this->sqlcreate)) {
+	while (list($k,$sqlquery)=each($this->sqlcreate)) {
+	  $msg=$this->exec_query($sqlquery,1);
+	}
+      } else {	
 	$sqlcmds = explode(";",$this->sqlcreate);
-      while (list($k,$sqlquery)=each($sqlcmds)) {
-	$msg=$this->exec_query($sqlquery,1);
+	while (list($k,$sqlquery)=each($sqlcmds)) {
+	  $msg=$this->exec_query($sqlquery,1);
+	}
       }
       $this->log->debug("DbObj::Create : {$this->sqlcreate}");
     }
@@ -415,7 +421,7 @@ function init_dbid() {
   }
   global $CORE_DBID;
   if (!isset($CORE_DBID) || !isset($CORE_DBID[$this->dbaccess])) {
-    $CORE_DBID[$this->dbaccess] = pg_connect($this->dbaccess);
+    $CORE_DBID[$this->dbaccess] = pg_pconnect($this->dbaccess);
   } 
   $this->dbid=$CORE_DBID[$this->dbaccess];
   //    print "DBID:".$this->dbaccess.$this->dbid."<BR>";
