@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2003-02-12 10:44+0100\n"
+	"POT-Creation-Date: 2003-04-07 18:48+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -247,7 +247,7 @@ msgid	"access granted to  database $db\n"
 msgstr	"accès à la base de données $db autorisé\n"
 
 msgid	"no referer url found"
-msgstr "pas d'URL reférence trouvée"
+msgstr	"pas d'URL reférence trouvée"
 
 msgid	"What User Management"
 msgstr	"Gestion des utilisateurs"
@@ -503,25 +503,39 @@ msgid	"Welcome Page"
 msgstr	"Page d'accueil WHAT"
 
 msgid	"You use an too old Netscape navigator"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+msgstr	"Vous utilisez un navigateur de type Netscape trop ancien"
 
 msgid	"please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr "Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) ou Mozilla 1.0.1 (ou supérieur)"
+msgstr	"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou "
+	"supérieur) ou Mozilla 1.0.1 (ou supérieur)"
 
 msgid	"mozilla site"
-msgstr "site de Mozilla"
+msgstr	"site de Mozilla"
 
 msgid	"nestcape site"
-msgstr "Site de Netscape"
+msgstr	"Site de Netscape"
+
+msgid	"Gate"
+msgstr "Portail"
 
 msgid	"You use an too old Internet explorer navigator"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+msgstr	"Vous utilisez un navigateur de type Internet Explorer trop ancien"
 
 msgid	"please upgrade to Internet explorer 6.0 or greater"
-msgstr "Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou supérieur) "
+msgstr	"Mettez votre navigateur à jour avec une version Internet Explorer "
+	"6.0 (ou supérieur) "
 
 msgid	"Internet explorer site"
-msgstr "Site de Microsoft"
+msgstr	"Site de Microsoft"
+
+msgid	"Edit Url Gate"
+msgstr "édition des URLs pour le portail"
+
+msgid	"Save geometry"
+msgstr "Sauver la disposition"
+
+msgid	"Choose Gate Urls"
+msgstr "Choix des URLs"
 
 msgid	"warning_pass"
 msgstr	"La saisie de votre mot de passe est obligatoire :"
