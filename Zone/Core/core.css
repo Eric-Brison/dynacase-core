@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.17 2003/04/29 07:11:58 eric Exp $
+ * $Id: core.css,v 1.18 2003/05/12 15:46:59 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -200,6 +200,14 @@ A:link, A:visited {
   font-weight: bold;
   padding:20px;
   background-image:url('CORE/Images/t4.gif');
+  border:solid 1px;
+  text-align:center;
+}
+.COREErrorBg {
+  color: [CORE_ERRORCOLOR];
+  font-weight: bold;
+  padding:20px;
+  background:[CORE_BGCOLOR];
   border:solid 1px;
   text-align:center;
 }
