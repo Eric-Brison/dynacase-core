@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.29 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: Class.User.php,v 1.30 2004/08/12 10:28:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.29 2004/08/05 09:31:22 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.30 2004/08/12 10:28:22 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -155,8 +155,19 @@ create sequence seq_id_users start 10";
     //Add default group to user
     $group=new group($this->dbaccess);
     $group->iduser=$this->id;
-    //2 = default group
-    $group->idgroup=2;
+    $gid=2;//2 = default group
+    if ($this->iddomain > 1) {
+      $qu = new QueryDb($this->dbaccess, "User");
+      $qu->AddQuery("login='all'");
+      $qu->AddQuery("iddomain=".$this->iddomain);
+      $qu->AddQuery("id !=".$this->id);
+      $lu=$qu->Query(0,0,"TABLE");
+      if ($lu) {
+	$gid = $lu[0]["id"];
+      }
+    } 
+    
+    $group->idgroup=$gid;
     $group->Add();       
 
       $err=$this->FreedomWhatUser();  
@@ -192,15 +203,22 @@ create sequence seq_id_users start 10";
     }
 
 
-  function PostDelete()
-    {
-      // delete reference in group table
-      $group = new Group($this->dbaccess, $this->id);
-      $group-> Delete();
+  function PostDelete() {
+    // delete reference in group table
+    $group = new Group($this->dbaccess, $this->id);
+    $ugroups=$group->groups;
+    $err=$group->Delete();
+    if ($err == "") {
       //remove MailAccount
-      //$mailaccount=new MailAccount("",$this->id);
-      //$mailaccount-> Remove();
+      if (@include_once("Class.MailAccount.php")) {
+	$mailaccount=new MailAccount("",$this->id);
+	$mailaccount-> Remove();
+      }
+      if (@include_once("FDL/Lib.Usercard.php")) {
+	refreshGroups($ugroups,true);
+      }
     }
+  }
 
 
   function CheckLogin($login,$domain,$whatid)
@@ -236,6 +254,9 @@ create sequence seq_id_users start 10";
       $this->password_new=$pwd2;   
     }
 
+    if (($iddomain > 1) && ($this->iddomain != $iddomain)) $needmail=true;
+    else $needmail=false;
+    $this->iddomain=$iddomain;  
     if ($this->iddomain == 0) {
       $this->iddomain=1;
     }
@@ -252,22 +273,21 @@ create sequence seq_id_users start 10";
     }  
 
     if ($err == "") {
-      if ($iddomain > 1) {
-	if ($this->iddomain < 2) {
-	  include_once("Class.MailAccount.php");
-	  $this->iddomain=$iddomain;     
-	  // create mail account
-	  $mailapp = new Application();
-	  if ($mailapp->Exists("MAILADMIN")) {
-	    $mailapp->Set("MAILADMIN", $action->parent);
-	    $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
-	    $uacc->iddomain    = $this->iddomain ;
-	    $uacc->iduser      = $this->id;
-	    $uacc->login       = $this->login;
-	    $err=$uacc->Add(true);
-	    if ($err == "") $err=$this->Modify(true);
-	  }          
-	} 
+      if ($needmail) {
+	include_once("Class.MailAccount.php");
+	$this->iddomain=$iddomain;     
+	// create mail account
+	$mailapp = new Application();
+	if ($mailapp->Exists("MAILADMIN")) {
+	  $mailapp->Set("MAILADMIN", $action->parent);
+	  $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
+	  $uacc->iddomain    = $this->iddomain ;
+	  $uacc->iduser      = $this->id;
+	  $uacc->login       = $this->login;
+	  $err=$uacc->Add(true);
+	  if ($err == "") $err=$this->Modify(true);
+	}          
+	
 	 
       }  
      
@@ -286,10 +306,11 @@ create sequence seq_id_users start 10";
     if ($gname!="") $this->lastname=$gname;
     if (($this->login=="")&&($login!="")) $this->login=$login;
 
-  
-
+    if (($iddomain > 1) && ($this->iddomain != $iddomain)) $needmail=true;
+    else $needmail=false;
+    $this->iddomain=$iddomain;     
     if ($this->iddomain == 0) {
-       $this->iddomain=1;
+      $this->iddomain=1;
     }
     
     $this->fid=$fid;
@@ -301,22 +322,21 @@ create sequence seq_id_users start 10";
     }  
 
     if ($err == "") {
-      if ($iddomain > 1) {
-	if ($this->iddomain < 2) {
-	  include_once("Class.MailAccount.php");
-	  $this->iddomain=$iddomain;     
-	  // create mail account
-	  $mailapp = new Application();
-	  if ($mailapp->Exists("MAILADMIN")) {
-	    $mailapp->Set("MAILADMIN", $action->parent);
-	    $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
-	    $uacc->iddomain    = $this->iddomain ;
-	    $uacc->iduser      = $this->id;
-	    $uacc->login       = $this->login;
-	    $err=$uacc->Add();
-	    if ($err == "") $err=$this->Modify();
-	  }          
-	} 
+      if ($needmail) {
+	include_once("Class.MailAccount.php");
+	    
+	// create mail account
+	$mailapp = new Application();
+	if ($mailapp->Exists("MAILADMIN")) {
+	  $mailapp->Set("MAILADMIN", $action->parent);
+	  $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
+	  $uacc->iddomain    = $this->iddomain ;
+	  $uacc->iduser      = $this->id;
+	  $uacc->login       = $this->login;
+	  $err=$uacc->Add();
+	  if ($err == "") $err=$this->Modify();
+	}          
+
 	
       }
     }

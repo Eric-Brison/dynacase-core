@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.11 2004/08/09 07:55:45 eric Exp $
+ * @version $Id: Class.Group.php,v 1.12 2004/08/12 10:28:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -88,6 +88,9 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     $this->FreedomCopyGroup();
   }
   function PostDelete() {
+    // delete unavailable group
+    $err = $this->exec_query("delete from groups where idgroup not in (select id from users)");
+    $err = $this->exec_query("delete from groups where iduser not in (select id from users)");
     $this->FreedomCopyGroup();
   }
   function PostInsert() {
