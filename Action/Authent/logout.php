@@ -5,7 +5,7 @@ include_once('Lib.Http.php');
 
 function logout(&$action) {
 
-   $action->session->DeActivate();
+   $action->session->Close();
    
    redirect($action,"CORE","",$action->GetParam("CORE_ROOTURL"));
 
