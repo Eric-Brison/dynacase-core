@@ -71,10 +71,10 @@ o.style.position='static';
 }
 
 var csel=false; // selected icon object
-var izoom=15;
+var izoom=45;
 function fadeIt(th) {     
-   th.width-=izoom; 
-   th.height-=izoom;
+   th.width=30; 
+   th.height=30;
    //setTimeout("dz('"+th.id+"')",100);
    th.style.position='static';
     if (th.className != 'Select') {
@@ -87,11 +87,11 @@ function unFadeIt(th) {
   th.style.left=AnchorPosition_getPageOffsetLeft(th.parentNode.parentNode);
   th.style.position='absolute';
   
-  th.width+=izoom; 
-  th.height+=izoom;
+  th.width=izoom; 
+  th.height=izoom;
   //setTimeout("iz('"+th.id+"')",100);
 
-  if (th.className != 'imgSelect') {
+  if (th.className != 'Select') {
     th.className='NotFade';
     th.parentNode.parentNode.className='NotFade';
   }
