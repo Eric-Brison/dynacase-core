@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.2 2004/01/08 10:59:27 eric Exp $
+// $Id: index.php.q,v 1.3 2004/01/13 09:28:10 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -47,6 +47,7 @@ include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
 global $SQLDELAY, $SQLDEBUG;
+       global $TSQLDELAY;	
 $SQLDEBUG=true;
 define("PORT_SSL", 443); // the default port for https
 // ----------------------------------------
@@ -71,7 +72,7 @@ $standalone = GetHttpVars("sole");
 
 //$sess_num=GetHttpVars("session");
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
-else $sess_num=$HTTP_GET_VARS["session"];
+else $sess_num=GetHttpVars("session");//$HTTP_GET_VARS["session"];
 
 $session=new Session();
 if (!  $session->Set($sess_num))  {
@@ -121,6 +122,7 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
+$core->SetVolatileParam("CORE_SBASEURL", "index.php?sole=A&session={$session->id}&");
 
 
 // ----------------------------------------
@@ -278,10 +280,12 @@ if (isset($HTTP_SESSION_VARS["CacheObj"])) {
 
 
 
-printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>[Q %.2fs]</I></SUP>",
+printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <A href=\"#\" onclick=\"alert('%s')\"><I>[Q %.2fs]</I></a></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
        $tic4-$tic1,
        $tic3-$tic2,$nbcache,
+       str_replace("\n","\\n",addslashes(print_r($TSQLDELAY,true))),
        $SQLDELAY);
+
 ?>
