@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.22 2004/02/17 10:34:05 eric Exp $
+ * @version $Id: Class.User.php,v 1.23 2004/02/24 08:29:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.22 2004/02/17 10:34:05 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.23 2004/02/24 08:29:53 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -109,7 +109,8 @@ create sequence seq_id_users start 10";
     }
 
   function PreInsert()    {
-    if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";                                                                                      
+    if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";                                            
+    if ($this->login=="") return _("login must not be empty");                                          
     if ($this->id == "") {
       $res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
       $arr = pg_fetch_array ($res, 0);
@@ -221,6 +222,7 @@ create sequence seq_id_users start 10";
   function SetUsers($fid,$lname,$fname,$expires,$passdelay,
 		    $login,$status,
 		    $pwd1,$pwd2,$iddomain)  {
+
     $this->lastname=$lname;
     $this->firstname=$fname;	
     $this->status=$status;
@@ -232,7 +234,7 @@ create sequence seq_id_users start 10";
     }
 
     if ($this->iddomain == 0) {
-       $this->iddomain=1;
+      $this->iddomain=1;
     }
     
     if ($expires>0) $this->expires=$expires;
@@ -263,8 +265,11 @@ create sequence seq_id_users start 10";
 	    if ($err == "") $err=$this->Modify();
 	  }          
 	} 
-	
-      }
+	 
+      }  
+     
+    
+    
     }
     return $err;
   }
@@ -286,6 +291,7 @@ create sequence seq_id_users start 10";
     
     $this->fid=$fid;
     if (! $this->isAffected()) {    
+      $this->isgroup="Y";
       $err=$this->Add();
     } else { 
       $err=$this->Modify();
@@ -451,7 +457,9 @@ create sequence seq_id_users start 10";
   }
 
 
-  // get All ascendant group ids of the object user
+  /**
+   * get All ascendant group ids of the user object 
+   */
   function GetGroupsId() {
     $query = new QueryDb($this->dbaccess, "Group");
 
@@ -472,7 +480,11 @@ create sequence seq_id_users start 10";
   }
 
   
-  // for group :: get All user & groups ids in all descendant(recursive);
+  /**
+   * for group :: get All user & groups ids in all descendant(recursive);
+   * @param int $id group identificator
+   * @return array of user array
+   */
   function GetRUsersList($id) {
     $query = new QueryDb($this->dbaccess, "User");
     $list = $query->Query(0,0,"TABLE",
@@ -497,7 +509,11 @@ create sequence seq_id_users start 10";
 
   }
 
-  
+   
+  /**
+   * for group :: get All direct user & groups ids 
+   * @param int $id group identificator
+   */
   function GetUsersGroupList($gid) {
     $query = new QueryDb($this->dbaccess, "User");
     $list = $query->Query(0,0,"TABLE",
@@ -516,8 +532,10 @@ create sequence seq_id_users start 10";
     } 
 
     return $uid;
-
   }
+
+ 
+  
 
   // only use for group
   // get user member of group
