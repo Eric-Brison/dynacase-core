@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.35 2004/03/31 08:52:08 eric Exp $
+#  $Id: WHAT.spec.in,v 1.36 2004/06/21 12:50:47 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -28,6 +28,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(id -u -n)
 Conflicts: AUTHENT USERS CORE APPMNG ACCESS libwhat libjs
 #BuildRequires: docbook-dtd41-sgml
 #BuildRequires: docbook-utils
+BuildRequires: apache-devel
 Requires: php >= 4.2
 %if %{_apache2}
 Requires: apache >= 2.0
