@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Cache.php,v 1.10 2004/04/23 15:35:20 eric Exp $
+ * @version $Id: Class.Cache.php,v 1.11 2005/03/01 17:23:08 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -124,12 +124,12 @@ Class Cache {
 
   function ClearCache($reallyset = true) {
     global $_SERVER; // use only cache with HTTP
-    if ($_SERVER['HTTP_HOST'] == "")  return false;
 
     if ($this->isCacheble) {
       // global $CacheObj;
       $this->ClearCacheIndex($this->cacheclass(), $reallyset);
       
+      if ($_SERVER['HTTP_HOST'] == "")  return false;
       if (is_array($_SESSION["CacheObj"])) {
 	//
 	foreach ($_SESSION["CacheObj"] as $k=>$v) {
@@ -155,10 +155,8 @@ Class Cache {
 	    $this->ClearCacheIndex($k, $reallyset);
 	  }
 	}
-      }
-      
+      }      
     }
-
   }
 
   // clear one entry of the object cache
@@ -166,10 +164,8 @@ Class Cache {
     
 
       unset($_SESSION["CacheObj"][$index]);
-
       global $ClearedIndex;
       $ClearedIndex[$index]=true;
-
       if ($reallyset) { // to alert other user of modification
 	$scache = new SessionCache("", $index);
 	$scache->SetTime();
@@ -228,26 +224,29 @@ Class Cache {
   function InitCache() {
     global $_SERVER; // use only cache with HTTP
     if ($_SERVER['HTTP_HOST'] == "")  return false;
+    global $core;
 
-    // session_register("AccessCacheObj");
-    $accessobject = new QueryDb("","SessionCache");
-    $tao= $accessobject->Query(0,0,"TABLE");
-    if ($accessobject->nb > 0) {
-      //      global $AccessCacheObj;
-      while (list($k,$v) = each ($tao)) {
-	if (isset($_SESSION["AccessCacheObj"][$v["index"]])) {
-	  //print "test cache ".$v["index"].":".$v["lasttime"].">".$AccessCacheObj[$v["index"]]."<BR>";
-	  if (intval($v["lasttime"]) > intval($_SESSION["AccessCacheObj"][$v["index"]])) {
-	    //  print "need update ".$v["index"]."<BR>";
-	    $this->ClearCacheIndex($v["index"], false);
-	  }
-	} else {
+    if ($core) $usecache = $core->GetParam("CORE_USECACHE","zou");
+    if ($usecache == "yes") {
+      // session_register("AccessCacheObj");
+      $accessobject = new QueryDb("","SessionCache");
+      $tao= $accessobject->Query(0,0,"TABLE");
+      if ($accessobject->nb > 0) {
+	//      global $AccessCacheObj;
+	while (list($k,$v) = each ($tao)) {
+	  if (isset($_SESSION["AccessCacheObj"][$v["index"]])) {
+	    //print "test cache ".$v["index"].":".$v["lasttime"].">".$AccessCacheObj[$v["index"]]."<BR>";
+	    if (intval($v["lasttime"]) > intval($_SESSION["AccessCacheObj"][$v["index"]])) {
+	      //  print "need update ".$v["index"]."<BR>";
+	      $this->ClearCacheIndex($v["index"], false);
+	    }
+	  } else {
 	  
-	  $date = gettimeofday();
-	  //	  $AccessCacheObj[$v["index"]]=$date['sec'];
-	  $_SESSION["AccessCacheObj"][$v["index"]]=$date['sec'];
-	} 
-
+	    $date = gettimeofday();
+	    //	  $AccessCacheObj[$v["index"]]=$date['sec'];
+	    $_SESSION["AccessCacheObj"][$v["index"]]=$date['sec'];
+	  } 
+	}
       }
     }
   }
