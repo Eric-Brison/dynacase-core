@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2003-05-19 12:16+0200\n"
+	"POT-Creation-Date: 2003-08-12 11:23+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -12,6 +12,9 @@ msgstr	"Project-Id-Version: WHAT 1.3\n"
 	"Content-Type: text/plain; charset=ISO-8859-1\n"
 	"Content-Transfer-Encoding: 8-bit\n"
 	"\n"
+
+msgid	"the user identification is unknow"
+msgstr	"l'identification de l'utilisateur est inconnue"
 
 msgid	"titlecreateg"
 msgstr	"Création d'un groupe"
@@ -37,6 +40,9 @@ msgstr	"Modifier"
 msgid	"nomail"
 msgstr	"Pas de compte mail"
 
+msgid	"expire date format is not correct : will be set to default"
+msgstr "le format de la date d'expiration est incorrecte : la date par défaut sera prise en compte"
+
 msgid	"err_add_user"
 msgstr	"Impossible de creer l'utilisateur"
 
@@ -60,6 +66,9 @@ msgstr	"Utilisateur"
 
 msgid	"login"
 msgstr	"Nom de connexion"
+
+msgid	"expires"
+msgstr	"expiration"
 
 msgid	"description"
 msgstr	"Description"
@@ -270,6 +279,18 @@ msgstr	"les utilisateurs"
 msgid	"group list"
 msgstr	"les groupes"
 
+msgid	"user account edition"
+msgstr	"éditer compte utilisateur"
+
+msgid	"user own account edition"
+msgstr	"éditer compte personnel"
+
+msgid	"user account modification"
+msgstr	"modifier compte utilisateur"
+
+msgid	"user own account modification"
+msgstr	"modifier compte personnel"
+
 msgid	"Core"
 msgstr	"Noyau"
 
@@ -316,7 +337,7 @@ msgid	"inverse video color text"
 msgstr	"couleur du texte en inverse vidéo"
 
 msgid	"input color bg"
-msgstr "couleur des champs de saisie"
+msgstr	"couleur des champs de saisie"
 
 msgid	"anchor color"
 msgstr	"couleur des liens"
@@ -361,13 +382,16 @@ msgid	"gate urls"
 msgstr	"urls du portail"
 
 msgid	"gate geometry"
-msgstr "disposition du portail"
+msgstr	"disposition du portail"
 
 msgid	"society style"
-msgstr "style société"
+msgstr	"style société"
 
 msgid	"plug inserted in footer"
-msgstr "reférence au plug du footer"
+msgstr	"reférence au plug du footer"
+
+msgid	"default delay before expiration of password in day"
+msgstr	"délai d'expiration du mot de passe par défaut (en jours)"
 
 msgid	"Access"
 msgstr	"Accessibilités"
@@ -459,6 +483,18 @@ msgstr	"suppression de paramètres utilisateur"
 msgid	"modify user parameters"
 msgstr	"modification des paramètres utilisateur"
 
+msgid	"no login : passwd unchanged"
+msgstr	"pas de login : mot de passe inchangé"
+
+msgid	"unknown login : passwd unchanged"
+msgstr	"login incoonu : mot de passe inchangé"
+
+msgid	"password are not identicals : not changed"
+msgstr	"les mots de passes ne sont pas identiques : mot de passe inchangé"
+
+msgid	"empty password : not changed"
+msgstr	"mot de passe vide : non changé"
+
 msgid	"firstname"
 msgstr	"Prénom"
 
@@ -467,6 +503,27 @@ msgstr	"Nom"
 
 msgid	"password"
 msgstr	"Mot de passe"
+
+msgid	"expire default delay (in day)"
+msgstr	"délai d'expiration par défaut (en jours)"
+
+msgid	" 0 means no delay"
+msgstr	" 0 signifie pas de limite"
+
+msgid	"expire date"
+msgstr	"date d'expiration"
+
+msgid	"if not set, will be the current date more delay"
+msgstr	"si vide, ce sera la date courante plus le délai"
+
+msgid	"user status"
+msgstr	"état utilisateur"
+
+msgid	"active user"
+msgstr	"Utilisateur activé"
+
+msgid	"desactived user"
+msgstr	"Utilisateur désactivé"
 
 msgid	"groups"
 msgstr	"Groupes"
@@ -488,6 +545,9 @@ msgstr	"recherche"
 
 msgid	"clear"
 msgstr	"Effacer"
+
+msgid	"adduser"
+msgstr	"Ajouter un utilisateur"
 
 msgid	"print"
 msgstr	"Impression de la page"
@@ -680,9 +740,6 @@ msgstr	"paramètre non modifiable"
 
 #~ msgid	"clear object cache"
 #~ msgstr	"Effacer le cache objets"
-
-#~ msgid	"adduser"
-#~ msgstr	"Ajouter un utilisateur"
 
 #~ msgid	"delparam"
 #~ msgstr	"Supprimer"

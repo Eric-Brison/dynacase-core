@@ -29,7 +29,7 @@ include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE \
-	     whattext wcheck wstop wstart httpd.pam
+	     whattext wcheck wstop wstart httpd.pam httpdwa.pam 
 
 
 
@@ -47,5 +47,7 @@ $(rootprefix)/etc/pam.d:
 	mkdir -p $@
 $(rootprefix)/etc/pam.d/httpd: $(rootprefix)/etc/pam.d
 	cp httpd.pam $@
+$(rootprefix)/etc/pam.d/httpdwa: $(rootprefix)/etc/pam.d
+	cp httpdwa.pam $@
 
-publish: $(rootprefix)/etc/pam.d/httpd
+publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa

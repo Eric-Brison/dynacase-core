@@ -1,6 +1,5 @@
 <?php
 include_once('Class.User.php');
-include_once('Class.Session.php');
 
 function authenticate() {
   //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
@@ -17,8 +16,8 @@ if(!isset($PHP_AUTH_USER) || ($SeenBefore == 1 && !strcmp($OldAuth, $PHP_AUTH_US
   authenticate();
 }
 else {
-
-  Header("Location:index.php?sole=R");
+  global $SERVER_NAME;
+  Header("Location: http://".$SERVER_NAME."/what/index.php?sole=R");
   exit;
 }
 ?>

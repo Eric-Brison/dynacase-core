@@ -6,8 +6,13 @@ if ($HTTP_POST_VARS["login"] == "") {
   print _("no login : passwd unchanged");
   exit;
 }
-include_once("Class.SessionCache.php");
+include_once("Class.Application.php");
 include_once("Class.User.php");
+include_once('Class.SessionCache.php');
+
+bindtextdomain ("what", "/home/httpd/what/locale");
+textdomain ("what");
+setlocale(LC_MESSAGES,getenv("LANG"));
 $u = new User();
 $u->setLoginName($HTTP_POST_VARS["login"]);
 
@@ -28,6 +33,8 @@ $u->password_new=$HTTP_POST_VARS["passwd1"];
 $u->expires = 0;
 $u->modify();
 
-  Header("Location:index.php?sole=R");
-  exit;
+global $SERVER_NAME;
+
+Header("Location: http://".$SERVER_NAME."/what/index.php?sole=R");
+exit;
 ?>

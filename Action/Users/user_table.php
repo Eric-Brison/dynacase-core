@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.5 2003/08/11 15:41:37 eric Exp $
+// $Id: user_table.php,v 1.6 2003/08/12 12:17:05 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -41,37 +41,7 @@ function user_table(&$action, $group=false) {
 
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
 
-  // Set the edit form element
-  if ($group) {
-    $paramedit="&group=yes";
-    $paction = "GROUP_TABLE";
-    $isgroup = "yes";
-    $title = $action->text("titlecreateg");
-  } else {
-    $paramedit="&group=no";
-    $paction = "USER_TABLE";
-    $isgroup = "no";
-    $title = $action->text("titlecreateu");
-  }
-    
-  $action->lay->set("createuser",$title);
-
-//   $form = new SubForm("edit",350,330,$standurl."app=USERS&action=USER_MOD$paramedit",
-//                                      $standurl."app=USERS&action=USER_EDIT$paramedit");
-//   $form->SetParam("id","-1");
-//   $form->SetParam("firstname","");
-//   $form->SetParam("lastname","");
-//   $form->SetParam("login","");
-//   $form->SetParam("passwd","");
-//   $form->SetParam("domainid");
-//   $form->SetParam("groupselect[]");
-
-//   $form->SetKey("id");
-
-//   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
-//   $action->parent->AddJsCode($form->GetMainJs());
-//   $action->lay->set("MAINFORM",$form->GetMainForm());
-
+   
 
 
   // Set the search elements
@@ -81,9 +51,15 @@ function user_table(&$action, $group=false) {
   if ($group) {
     $query-> AddQuery("isgroup = 'Y'");
     $action->lay->set("title",$action->text("titlegroup"));
+    $action->lay->set("createuser",$action->text("titlecreateg"));
+    $action->lay->set("duser","none");
+    $action->lay->set("yngroup","Y");
   } else {
     $query-> AddQuery("(isgroup != 'Y') OR (isgroup isnull)");
     $action->lay->set("title",$action->text("titleuser"));
+    $action->lay->set("createuser",$action->text("titlecreateu"));
+    $action->lay->set("duser","");
+    $action->lay->set("yngroup","N");
   }
 
   // The content depends on Access Permission
@@ -100,10 +76,11 @@ function user_table(&$action, $group=false) {
   }
 
   // Give some global elements for the table layout
-  $query->table->fields= array("domain", "id","edit","lastname","delete","fullname","login",  "group");
+  $query->table->fields= array("domain", "id","edit","lastname","delete","fullname","login",  "group", "expires");
 
   $query->table->headsortfields = array ( "head_lastname" => "lastname",
-                                         "head_login" => "login");
+                                         "head_login" => "login",
+                                         "head_expires" => "expires");
   if ($group) {
     $query->table->headcontent = array (
                                     "head_lastname" => $action->text("groupdesc"),
@@ -113,7 +90,8 @@ function user_table(&$action, $group=false) {
       $query->table->headcontent = array (
                                     "head_lastname" => $action->text("fullname"),
                                     "head_domain" => $action->text("domain"),
-                                    "head_login" => $action->text("login"));
+                                    "head_login" => $action->text("login"),
+                                    "head_expires" => $action->text("expires"));
   }
 
 
@@ -131,6 +109,8 @@ function user_table(&$action, $group=false) {
       $query->table->array[$k]["fullname"] = 
         ucfirst((isset($query->table->array[$k]["firstname"])?$query->table->array[$k]["firstname"]:"(?)"))." "
         .ucfirst((isset($query->table->array[$k]["lastname"])?$query->table->array[$k]["lastname"]:"(?)"));
+
+      $query->table->array[$k]["expires"]= intval($v["expires"])==0?"":strftime("%d/%m/%Y %X",intval($v["expires"]));
     } else {
       $query->table->array[$k]["fullname"] = ucfirst(isset($query->table->array[$k]["lastname"])?$query->table->array[$k]["lastname"]:"(?)");
     }

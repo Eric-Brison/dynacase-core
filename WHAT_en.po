@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2003-05-19 12:16+0200\n"
+	"POT-Creation-Date: 2003-08-12 11:23+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -12,6 +12,9 @@ msgstr	"Project-Id-Version: WHAT 1.3\n"
 	"Content-Type: text/plain; charset=ISO-8859-1\n"
 	"Content-Transfer-Encoding: 8-bit\n"
 	"\n"
+
+msgid	"the user identification is unknow"
+msgstr	""
 
 msgid	"titlecreateg"
 msgstr	"Add group"
@@ -37,6 +40,9 @@ msgstr	"Modify"
 msgid	"nomail"
 msgstr	"No mail account"
 
+msgid	"expire date format is not correct : will be set to default"
+msgstr	""
+
 msgid	"err_add_user"
 msgstr	"Can't create user"
 
@@ -60,6 +66,10 @@ msgstr	"Username"
 
 msgid	"login"
 msgstr	"Login name"
+
+#, fuzzy
+msgid	"expires"
+msgstr	"Your login has expired"
 
 msgid	"description"
 msgstr	"Description"
@@ -273,6 +283,19 @@ msgstr	"Login"
 msgid	"group list"
 msgstr	"Groups"
 
+#, fuzzy
+msgid	"user account edition"
+msgstr	"Add parameter"
+
+msgid	"user own account edition"
+msgstr	""
+
+msgid	"user account modification"
+msgstr	""
+
+msgid	"user own account modification"
+msgstr	""
+
 msgid	"Core"
 msgstr	""
 
@@ -375,6 +398,9 @@ msgid	"society style"
 msgstr	"Modify"
 
 msgid	"plug inserted in footer"
+msgstr	""
+
+msgid	"default delay before expiration of password in day"
 msgstr	""
 
 #, fuzzy
@@ -483,6 +509,18 @@ msgstr	"Add parameter"
 msgid	"modify user parameters"
 msgstr	"Add parameter"
 
+msgid	"no login : passwd unchanged"
+msgstr	""
+
+msgid	"unknown login : passwd unchanged"
+msgstr	""
+
+msgid	"password are not identicals : not changed"
+msgstr	""
+
+msgid	"empty password : not changed"
+msgstr	""
+
 msgid	"firstname"
 msgstr	"Firstname"
 
@@ -491,6 +529,30 @@ msgstr	"Lastname"
 
 msgid	"password"
 msgstr	"Password"
+
+msgid	"expire default delay (in day)"
+msgstr	""
+
+msgid	" 0 means no delay"
+msgstr	""
+
+#, fuzzy
+msgid	"expire date"
+msgstr	"Your login has expired"
+
+msgid	"if not set, will be the current date more delay"
+msgstr	""
+
+#, fuzzy
+msgid	"user status"
+msgstr	"Login"
+
+#, fuzzy
+msgid	"active user"
+msgstr	"User List"
+
+msgid	"desactived user"
+msgstr	""
 
 msgid	"groups"
 msgstr	"Groups"
@@ -514,6 +576,9 @@ msgstr	"user"
 #, fuzzy
 msgid	"clear"
 msgstr	"Close"
+
+msgid	"adduser"
+msgstr	"New user"
 
 msgid	"print"
 msgstr	"Print this page"
@@ -713,9 +778,6 @@ msgstr	"Can't modify parameter"
 
 #~ msgid	"functionerr"
 #~ msgstr	"Functions error detected"
-
-#~ msgid	"adduser"
-#~ msgstr	"New user"
 
 #~ msgid	"delparam"
 #~ msgstr	"Delete"

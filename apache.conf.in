@@ -39,7 +39,7 @@ Alias /what @prefix@
       AuthName 'WHAT Connection'
       AuthPAM_Enabled  on
       AuthPAM_FallThrough off
-      AuthPAM_Service httpdcool
+      AuthPAM_Service httpdwa
       Require valid-user
     </FilesMatch>
 </Directory>

@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.26 2003/04/02 12:42:26 eric Exp $
+#  $Id: WHAT.spec.in,v 1.27 2003/08/12 12:17:05 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -40,7 +40,7 @@ Requires: php-mhash
 Requires: apache-mod_auth
 Requires: apache-mod_auth_pam
 Requires: apache-mod_dir
-Requires: pam_what
+Requires: pam_what >= 0.2.0
 Requires: ankpsql-tools
 Requires: gettext
 Requires: gettext-devel > 0.11
@@ -124,6 +124,7 @@ fi
 %dir %{destdir}/USERS
 %dir %{destdir}/CORE
 %dir %{destdir}/WHAT
+%dir %{destdir}/expire
 
 %{destdir}/ACCESS/*
 %{destdir}/API/*
@@ -133,6 +134,7 @@ fi
 %{destdir}/USERS/*
 %{destdir}/CORE/*
 %{destdir}/WHAT/*
+%{destdir}/expire/*
 
 %{destdir}/apache.conf
 %{destdir}/guest.php
@@ -146,6 +148,7 @@ fi
 %{destdir}/log.sh
 %config(noreplace) %{destdir}/dbaccess.php
 %config(noreplace) /etc/pam.d/httpd
+%config(noreplace) /etc/pam.d/httpdwa
 
 %changelog
 * Tue Oct 30 2000 Yannick Le Briquer <yannick.lebriquer@anakeen.com>

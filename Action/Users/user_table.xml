@@ -1,5 +1,5 @@
 <!-- 
-  $Id: user_table.xml,v 1.4 2003/08/11 15:41:37 eric Exp $
+  $Id: user_table.xml,v 1.5 2003/08/12 12:17:05 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.xml,v $
 -->
 
@@ -18,7 +18,7 @@
   <td class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[title]</span></td>
   <td valign="baseline" align="right" class="CORETblHeadCell"><span class="CORETblHead">
 
-<a href="#" onclick="subwindow(300,400,'useredit','[CORE_BASEURL]&app=USERS&action=USER_EDIT&group=[group]')"><img border=0 src="[IMG:edit.gif]" alt="[TEXT:adduser]" title="[createuser]"></a>
+<a href="#" onclick="subwindow(300,400,'useredit','[CORE_BASEURL]&app=USERS&action=USER_EDIT&group=[yngroup]')"><img border=0 src="[IMG:edit.gif]" alt="[TEXT:adduser]" title="[createuser]"></a>
     <a href="#" onclick="self.print()">
       <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
       </a>
@@ -49,7 +49,7 @@
   &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
 
   </td>
-  <td align="right" colspan="2" class="CORETblCell">
+  <td align="right" colspan="3" class="CORETblCell">
 
   &nbsp;[TABLE_NEXT]&nbsp;[TABLE_LAST]
 
@@ -58,18 +58,19 @@
 <!-- /TABLEPAGING -->
 
 <!-- TABLEHEAD -->
-<tr><td colspan="4" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <tr>
   <td width="50" class="CORETblCell">&nbsp;</td>
   <td  class="CORETblCell"><span class="CORETblBold">[head_lastname]</span></td>
   <td  class="CORETblCell"><span class="CORETblBold">[head_login]</span></td>
   <td  class="CORETblCell"><span class="CORETblBold">[head_domain]</span></td>
+  <td  class="CORETblCell" style="display:[duser]"><span class="CORETblBold">[head_expires]</span></td>
 </tr>
 
 <!-- /TABLEHEAD -->
 
-<tr><td colspan="4" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <!-- TABLEBODY -->
 [BLOCK TABLEBODY]
@@ -80,14 +81,15 @@
   <td  class="[CLASS]"><span class="CORETbl">[fullname]</span></td>
   <td  class="[CLASS]"><span class="CORETbl">[login]</span></td>
   <td  class="[CLASS]"><span class="CORETbl">[domain]</span></td>
+  <td  class="[CLASS]" style="display:[duser]"><span class="CORETbl">[expires]&nbsp;</span></td>
 </tr>
 [ENDBLOCK TABLEBODY]
 <!-- /TABLEBODY -->
 
-<tr><td colspan="4" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 
-<tr><td colspan="4" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <!-- TABLEPAGING -->
 <tr>
@@ -96,7 +98,7 @@
   &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
 
   </td>
-  <td align="center" colspan="2" class="CORETblCell">
+  <td align="center" colspan="3" class="CORETblCell">
 
   <span class="CORETblBold">[TABLE_NUM]&nbsp;/&nbsp;[TABLE_NB]</span>
 
@@ -108,7 +110,7 @@
   </td>
 </tr>
 <!-- /TABLEPAGING -->
-<tr><td colspan="4" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 </td> </tr>
 </table>
 <br>

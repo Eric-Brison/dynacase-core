@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.6 2003/08/11 15:41:37 eric Exp $
+// $Id: user_edit.php,v 1.7 2003/08/12 12:17:05 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -38,18 +38,12 @@ function user_edit(&$action) {
   if ($id==-1) $id="";
 
   // initialise if user group or single user
-  $group = (GetHttpVars("group") == "yes");
+  $group = (GetHttpVars("group") == "Y");
 
   $tpasswd =array();
   $tpasswd[0]["passwd"]="";   
 
  
-  if ($group) { // dont't see passwd
-    $action->lay->SetBlockData("HIDDENPASSWD", $tpasswd );
-  } else {
-    // in user mode : display passwd field
-    $action->lay->SetBlockData("PASSWD", $tpasswd );
-  }
 
   $action->lay->Set("selected_desactive","");
   $action->lay->Set("daydelay",$action->getParam("CORE_PASSWDDELAY"));
@@ -96,6 +90,7 @@ function user_edit(&$action) {
   } else {
     $user = new User($action->GetParam("CORE_USERDB"),$id);
     $action->lay->Set("id",$id);
+    $group=$user->isgroup; // reset group to value of user
     if ($group) $action->lay->SetBlockData("HIDDENFIRSTNAME", $tfirstname );
     else {
       $tfirstname[0]["firstname"] = $user->firstname;
@@ -152,6 +147,12 @@ function user_edit(&$action) {
   $action->lay->SetBlockData("SELECTDOMAIN", $tab);
 
 
+  if ($group) { // dont't see passwd
+    $action->lay->SetBlockData("HIDDENPASSWD", $tpasswd );
+  } else {
+    // in user mode : display passwd field
+    $action->lay->SetBlockData("PASSWD", $tpasswd );
+  }
 
   // search user group
   $tab = array();

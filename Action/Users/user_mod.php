@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.5 2003/08/11 15:41:37 eric Exp $
+// $Id: user_mod.php,v 1.6 2003/08/12 12:17:05 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -59,7 +59,7 @@ function user_mod(&$action) {
       $exptime=mktime($reg[4],$reg[5],$reg[6],$reg[2],$reg[1],$reg[3]);
       
     } else {
-      $action->AddWarningMsg(_("expire date format is not correct : will be set to %s"));
+      $action->AddWarningMsg(_("expire date format is not correct : will be set to default"));
     }
   }
 
