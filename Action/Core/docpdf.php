@@ -3,7 +3,7 @@
  * View PDF document manuals
  *
  * @author Anakeen 2004
- * @version $Id: docpdf.php,v 1.1 2004/10/05 10:26:12 eric Exp $
+ * @version $Id: docpdf.php,v 1.2 2004/10/11 15:40:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -26,7 +26,7 @@ if ($handle = opendir($pubdir)) {
    /* Ceci est la façon correcte de traverser un dossier. */
    $tpdfdoc=array();
    while (false !== ($file = readdir($handle))) {
-     if ($file[0]!= ".") {
+     if (($file != "") && ($file[0]!= ".")) {
        $info=`strings $pubdir/$file | grep -A 10 "/Title"`;
 
        $title=$file;

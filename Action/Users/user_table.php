@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_table.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: user_table.php,v 1.8 2004/10/11 15:40:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+// $Id: user_table.php,v 1.8 2004/10/11 15:40:27 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -74,6 +74,7 @@ function user_table(&$action, $group=false) {
     $action->lay->set("yngroup","N");
   }
 
+  $action->lay->set("fhelp",($action->Read("navigator","")=="EXPLORER")?"_blank":"fhidden");
   // The content depends on Access Permission
   if (!isset ($action->user)) {
     $action->log->info("Attempt to use {$action->parent->name}/{$action->name} without permission");

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_access.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: user_access.php,v 1.8 2004/10/11 15:40:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+// $Id: user_access.php,v 1.8 2004/10/11 15:40:27 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -65,6 +65,7 @@ function user_access(&$action, $group=false) {
   // Set 
   $action->lay->set("ACTION_CHG","ACCESS_USER_CHG$paramedit");
   $action->lay->set("ACTION_MOD","USER_ACCESS_MOD$paramedit");
+  $action->lay->set("fhelp",($action->Read("navigator","")=="EXPLORER")?"_blank":"fhidden");
 
   $action->lay->set("shortname",_($action->text("appname")));
   $action->lay->set("desc",_($action->text("appdesc")));

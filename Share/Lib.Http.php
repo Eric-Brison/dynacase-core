@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.18 2004/08/30 11:09:29 yannick Exp $
+ * @version $Id: Lib.Http.php,v 1.19 2004/10/11 15:40:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -114,7 +114,8 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE) {
 
    $mime_type = GetMimeType($ext);
    if ($add_ext) $name=$name.".".$ext;
-  header("Cache-control: private"); // for IE : don't know why !!
+   header("Cache-control: private"); // for IE : don't know why !!
+   header('Content-Length: '.strlen($src));
    header("Content-Disposition: form-data;filename=$name");
    header("Content-type: ".$mime_type);
    echo $src;
