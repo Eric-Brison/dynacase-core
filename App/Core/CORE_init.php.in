@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.20 2004/08/09 07:55:45 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.21 2004/08/23 12:48:19 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -58,6 +58,11 @@ $app_const = array (
 							"global"=>"N"),
 		    "CORE_FGIMG"		=>array("val"=>"none",
 							"descr"=>N_("background image for bar"),
+							"user"=>"Y",
+							"style"=>"Y",
+							"global"=>"N"),
+		    "CORE_FGIMGMENU"		=>array("val"=>"none",
+							"descr"=>N_("background image for menu"),
 							"user"=>"Y",
 							"style"=>"Y",
 							"global"=>"N"),

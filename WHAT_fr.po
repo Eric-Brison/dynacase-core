@@ -2,842 +2,910 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-msgid	""
-msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2004-07-05 16:02+0200\n"
-	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
-	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
-	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
-	"MIME-Version: 1.0\n"
-	"Content-Type: text/plain; charset=ISO-8859-1\n"
-	"Content-Transfer-Encoding: 8-bit\n"
-	"\n"
+msgid ""
+msgstr ""
+"Project-Id-Version: WHAT 1.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-08-23 12:47+0000\n"
+"PO-Revision-Date: 2004-08-23 14:47+0200\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: french-anakeen <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"\n"
 
-msgid	"titlecreateg"
-msgstr	"Création d'un groupe"
+msgid "titlecreateg"
+msgstr "Création d'un groupe"
 
-msgid	"titlecreateu"
-msgstr	"Création d'utilisateur"
+msgid "titlecreateu"
+msgstr "Création d'utilisateur"
 
-msgid	"titlemodifyg"
-msgstr	"Modification du groupe"
+msgid "titlemodifyg"
+msgstr "Modification du groupe"
 
-msgid	"titlemodifyu"
-msgstr	"Modification de l'utilisateur"
+msgid "titlemodifyu"
+msgstr "Modification de l'utilisateur"
 
-msgid	"expire date format is not correct : will be set to default"
-msgstr	"le format de la date d'expiration est incorrecte : la date par "
-	"défaut sera prise en compte"
+msgid "expire date format is not correct : will be set to default"
+msgstr ""
+"le format de la date d'expiration est incorrecte : la date par défaut sera "
+"prise en compte"
 
-msgid	"err_add_user"
-msgstr	"Impossible de creer l'utilisateur"
+msgid "err_add_user"
+msgstr "Impossible de creer l'utilisateur"
 
-msgid	"butcreate"
-msgstr	"Créer"
+msgid "butcreate"
+msgstr "Créer"
 
-msgid	"Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr	"Non autorisé : nécessite le privilège DOMAIN_MASTER"
+msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
+msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
-msgid	"butmodify"
-msgstr	"Modifier"
+msgid "butmodify"
+msgstr "Modifier"
 
-msgid	"nomail"
-msgstr	"Pas de compte mail"
+msgid "nomail"
+msgstr "Pas de compte mail"
 
-msgid	"titlegroup"
-msgstr	"Liste des groupes"
+msgid "titlegroup"
+msgstr "Liste des groupes"
 
-msgid	"titleuser"
-msgstr	"Liste des utilisateurs"
+msgid "titleuser"
+msgstr "Liste des utilisateurs"
 
-msgid	"groupdesc"
-msgstr	"Description"
+msgid "groupdesc"
+msgstr "Description"
 
-msgid	"domain"
-msgstr	"Domaine"
+msgid "domain"
+msgstr "Domaine"
 
-msgid	"group"
-msgstr	"Groupe"
+msgid "group"
+msgstr "Groupe"
 
-msgid	"fullname"
-msgstr	"Utilisateur"
+msgid "fullname"
+msgstr "Utilisateur"
 
-msgid	"login"
-msgstr	"Nom de connexion"
+msgid "login"
+msgstr "Nom de connexion"
 
-msgid	"expires"
-msgstr	"expiration"
+msgid "expires"
+msgstr "expiration"
 
-msgid	"the user identification is unknow"
-msgstr	"l'identification de l'utilisateur est inconnue"
+msgid "the user identification is unknow"
+msgstr "l'identification de l'utilisateur est inconnue"
 
-msgid	"description"
-msgstr	"Description"
-
-#, c-format
-msgid	"no documentation available for %s application"
-msgstr	"pas de documentation  disponible pour l'application %s"
+msgid "description"
+msgstr "Description"
 
 #, c-format
-msgid	"index %s not found."
-msgstr	"index %s non trouvé."
-
-msgid	"auth_failure"
-msgstr	"Echec de l'authentification : Ré-essayez"
-
-msgid	"auth_expired"
-msgstr	"Votre authentification a expiré"
-
-msgid	"auth_welcome"
-msgstr	"Merci de vous authentifier"
-
-msgid	"welcome"
-msgstr	"Bienvenue !"
-
-msgid	"nodomain"
-msgstr	"pas de domaine"
-
-msgid	"Vous devez entrer un nom d'utilisateur valide et un mot de passe "
-	"correct pour acceder a cette ressource"
-msgstr	"Vous devez entrer un nom d'utilisateur valide et un mot de passe "
-	"correct pour accéder à cette ressource"
-
-msgid	"userlogin"
-msgstr	"Login"
-
-msgid	"username"
-msgstr	"Nom"
-
-msgid	"permissions"
-msgstr	"Droits"
-
-msgid	"none"
-msgstr	"Aucun"
-
-msgid	"user"
-msgstr	"utilisateur"
-
-msgid	"object"
-msgstr	"objet"
+msgid "no documentation available for %s application"
+msgstr "pas de documentation  disponible pour l'application %s"
 
 #, c-format
-msgid	"user %s %s has been modified\n"
-msgstr	"l'utilisateur %s %s a été modifié\n"
+msgid "index %s not found."
+msgstr "index %s non trouvé."
+
+msgid "auth_failure"
+msgstr "Echec de l'authentification : Ré-essayez"
+
+msgid "auth_expired"
+msgstr "Votre authentification a expiré"
+
+msgid "auth_welcome"
+msgstr "Merci de vous authentifier"
+
+msgid "welcome"
+msgstr "Bienvenue !"
+
+msgid "nodomain"
+msgstr "pas de domaine"
+
+msgid ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour acceder a cette ressource"
+msgstr ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour accéder à cette ressource"
+
+msgid "userlogin"
+msgstr "Login"
+
+msgid "username"
+msgstr "Nom"
+
+msgid "permissions"
+msgstr "Droits"
+
+msgid "none"
+msgstr "Aucun"
+
+msgid "user"
+msgstr "utilisateur"
+
+msgid "object"
+msgstr "objet"
 
 #, c-format
-msgid	"user %s %s has been added\n"
-msgstr	"l'utilisateur %s %s a été ajouté\n"
+msgid "user %s %s has been modified\n"
+msgstr "l'utilisateur %s %s a été modifié\n"
 
 #, c-format
-msgid	"add acl %s for %s %s\n"
-msgstr	"ajout privilège %s pour %s %s\n"
-
-msgid	"appname"
-msgstr	"Application"
-
-msgid	"appdesc"
-msgstr	"Description"
-
-msgid	"titlecreateaction"
-msgstr	"Cr&eacute;ation d'action"
-
-msgid	"titlemodifyaction"
-msgstr	"Modification de l'action"
-
-msgid	"err_add_action"
-msgstr	"Impossible de creer l'action"
-
-msgid	"err_mod_action"
-msgstr	"Impossible de modifier l'action"
-
-msgid	"name"
-msgstr	"Nom"
-
-msgid	"edit"
-msgstr	"Modifier"
-
-msgid	"short_name"
-msgstr	"Nom abr&eacute;g&eacute;"
-
-msgid	"titlecreate"
-msgstr	"Cr&eacute;ation d'application"
-
-msgid	"titlemodify"
-msgstr	"Modification de l'application"
-
-msgid	"err_add_application"
-msgstr	"Impossible de creer l'application"
-
-msgid	"err_mod_application"
-msgstr	"Impossible de modifier l'application"
-
-msgid	"title"
-msgstr	"Liste des applications"
-
-msgid	"Remove parameter"
-msgstr	"Suppression de paramètre"
+msgid "user %s %s has been added\n"
+msgstr "l'utilisateur %s %s a été ajouté\n"
 
 #, c-format
-msgid	"the '%s' parameter cannot be removed"
-msgstr	"le parametre '%s' n'a pu être supprimé"
+msgid "add acl %s for %s %s\n"
+msgstr "ajout privilège %s pour %s %s\n"
 
-msgid	"only user parameters can be deleted with its action"
-msgstr	"seul les paramêtres utilisateurs peuvent être supprimés avec cette "
-	"action"
+msgid "appname"
+msgstr "Application"
 
-msgid	"only current user parameters can be deleted with its action"
-msgstr	"seul les paramêtres utilisateurs peuvent être supprimés avec cette "
-	"action"
+msgid "appdesc"
+msgstr "Description"
 
-msgid	"titleparamcreate"
-msgstr	"Cr&eacute;ation d'un param&egrave;tre "
+msgid "titlecreateaction"
+msgstr "Cr&eacute;ation d'action"
 
-msgid	"titleparammodify"
-msgstr	"Modification de param&egrave;tre"
+msgid "titlemodifyaction"
+msgstr "Modification de l'action"
 
-msgid	"err_add_param"
-msgstr	"Impossible de creer le param&egrave;tre"
+msgid "err_add_action"
+msgstr "Impossible de creer l'action"
 
-msgid	"err_mod_parameter"
-msgstr	"Impossible de modifier le param&egrave;tre"
+msgid "err_mod_action"
+msgstr "Impossible de modifier l'action"
 
-msgid	"only user parameters can be modified with its action"
-msgstr	"seul les paramêtres utilisateurs peuvent être modifiés avec cette "
-	"action"
+msgid "name"
+msgstr "Nom"
 
-msgid	"only current user parameters can be modified with its action"
-msgstr	"seul les paramêtres utilisateurs peuvent être modifiés avec cette "
-	"action"
+msgid "edit"
+msgstr "Modifier"
 
-msgid	"err_mod_param"
-msgstr	"Impossible de modifier le param&egrave;tre"
+msgid "short_name"
+msgstr "Nom abr&eacute;g&eacute;"
 
-msgid	"descr"
-msgstr	"Description"
+msgid "titlecreate"
+msgstr "Cr&eacute;ation d'application"
+
+msgid "titlemodify"
+msgstr "Modification de l'application"
+
+msgid "err_add_application"
+msgstr "Impossible de creer l'application"
+
+msgid "err_mod_application"
+msgstr "Impossible de modifier l'application"
+
+msgid "title"
+msgstr "Liste des applications"
+
+msgid "Remove parameter"
+msgstr "Suppression de paramètre"
 
 #, c-format
-msgid	"function '%s' not available for application %s (%d)"
-msgstr	"fonction %s non disponible pour l'application %s (%d)"
+msgid "the '%s' parameter cannot be removed"
+msgstr "le parametre '%s' n'a pu être supprimé"
 
-msgid	"Access denied"
-msgstr	"Accès refusé"
+msgid "only user parameters can be deleted with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
+
+msgid "only current user parameters can be deleted with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
+
+msgid "titleparamcreate"
+msgstr "Cr&eacute;ation d'un param&egrave;tre "
+
+msgid "titleparammodify"
+msgstr "Modification de param&egrave;tre"
+
+msgid "err_add_param"
+msgstr "Impossible de creer le param&egrave;tre"
+
+msgid "err_mod_parameter"
+msgstr "Impossible de modifier le param&egrave;tre"
+
+msgid "only user parameters can be modified with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+
+msgid "only current user parameters can be modified with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+
+msgid "err_mod_param"
+msgstr "Impossible de modifier le param&egrave;tre"
+
+msgid "descr"
+msgstr "Description"
+
+#, c-format
+msgid "function '%s' not available for application %s (%d)"
+msgstr "fonction %s non disponible pour l'application %s (%d)"
+
+msgid "Access denied"
+msgstr "Accès refusé"
 
 # ne pas modifier laisser à vide
-msgid	"$code"
-msgstr	""
+msgid "$code"
+msgstr ""
 
-msgid	"modify object acl"
-msgstr	"modification des droits"
+msgid "modify object acl"
+msgstr "modification des droits"
 
-msgid	"view object acl"
-msgstr	"voir les droits"
-
-#, c-format
-msgid	"Object Permission : permission %s needed (%s) - # %d"
-msgstr	"Permission objet :: permission %s requise (%s) - n° %d"
-
-msgid	"login must not be empty"
-msgstr	"le login ne doit pas être vide"
-
-msgid	"prev"
-msgstr	"précédent"
-
-msgid	"next"
-msgstr	"suivant"
-
-msgid	"first"
-msgstr	"premier"
-
-msgid	"last"
-msgstr	"dernier"
-
-msgid	"cannot access to  database $db\n"
-msgstr	"accès à la base de données $db refusé\n"
-
-msgid	"access granted to  database $db\n"
-msgstr	"accès à la base de données $db autorisé\n"
-
-msgid	"no referer url found"
-msgstr	"pas d'URL reférence trouvée"
+msgid "view object acl"
+msgstr "voir les droits"
 
 #, c-format
-msgid	"file not found : %s"
-msgstr	"fichier %s non trouvé."
+msgid "Object Permission : permission %s needed (%s) - # %d"
+msgstr "Permission objet :: permission %s requise (%s) - n° %d"
 
-msgid	"What User Management"
-msgstr	"Gestion des utilisateurs"
+msgid "login must not be empty"
+msgstr "le login ne doit pas être vide"
 
-msgid	"Access To All Users"
-msgstr	"Accès à tous les utilisateurs"
+msgid "DbObj::Adds error in multiple insertion"
+msgstr "DbObj::Adds erreur dans insertion multiple"
 
-msgid	"Access To All Users in my domain"
-msgstr	"Acces aux utilisateurs de mon domaine"
+msgid "prev"
+msgstr "précédent"
 
-msgid	"Access To My Own account"
-msgstr	"Accès à mon propre compte"
+msgid "next"
+msgstr "suivant"
 
-msgid	"admin view"
-msgstr	"vue administrateur"
+msgid "first"
+msgstr "premier"
 
-msgid	"users list"
-msgstr	"les utilisateurs"
+msgid "last"
+msgstr "dernier"
 
-msgid	"group list"
-msgstr	"les groupes"
+msgid "cannot access to  database $db\n"
+msgstr "accès à la base de données $db refusé\n"
 
-msgid	"user account edition"
-msgstr	"éditer compte utilisateur"
-
-msgid	"user own account edition"
-msgstr	"éditer compte personnel"
-
-msgid	"user account modification"
-msgstr	"modifier compte utilisateur"
-
-msgid	"user own account modification"
-msgstr	"modifier compte personnel"
-
-msgid	"Core"
-msgstr	"Noyau"
-
-msgid	"Core Application Manager"
-msgstr	"Page d'accueil WHAT"
-
-msgid	"application version"
-msgstr	"version application"
-
-msgid	"default style"
-msgstr	"style par défaut"
-
-msgid	"language"
-msgstr	"langue"
-
-msgid	"button color"
-msgstr	"couleur du bouton"
-
-msgid	"background color or image"
-msgstr	"image ou couleur de fond"
-
-msgid	"background color or image in security mode"
-msgstr	"image ou couleur de fond en mode sécurité"
-
-msgid	"background image for bar"
-msgstr	"image de fond pour les barres"
-
-msgid	"background color for table cells"
-msgstr	"couleur de fond de cellules"
-
-msgid	"second background color"
-msgstr	"couleur secondaire pour le fond"
-
-msgid	"highlight background color"
-msgstr	"couleur de fond pour la mise en évidence"
-
-msgid	"inverse video background color"
-msgstr	"couleur de fond en inverse vidéo"
-
-msgid	"text color"
-msgstr	"couleur du texte"
-
-msgid	"inverse video color text"
-msgstr	"couleur du texte en inverse vidéo"
-
-msgid	"input color bg"
-msgstr	"couleur des champs de saisie"
-
-msgid	"anchor color"
-msgstr	"couleur des liens"
-
-msgid	"error color"
-msgstr	"couleur messages d'erreur"
-
-msgid	"default font"
-msgstr	"police par défaut"
-
-msgid	"menu font"
-msgstr	"police des menus"
-
-msgid	"top url to find help documentation"
-msgstr	"url pour la documentation en ligne"
-
-msgid	"font size"
-msgstr	"taille de la police"
-
-msgid	"frame size"
-msgstr	"taille de la fenêtre"
-
-msgid	"frame border size"
-msgstr	"taille de la bordure de la fenêtre"
-
-msgid	"client name"
-msgstr	"nom du client"
-
-msgid	"client logo"
-msgstr	"logo du client"
-
-msgid	"anakeen"
-msgstr	"anakeen"
-
-msgid	"use object cache"
-msgstr	"utiliser le cache objets"
-
-msgid	"number of cached object by class"
-msgstr	"nombre d'objet caché par classes"
-
-msgid	"gate urls"
-msgstr	"urls du portail"
-
-msgid	"gate geometry"
-msgstr	"disposition du portail"
-
-msgid	"society style"
-msgstr	"style société"
-
-msgid	"plug inserted in footer"
-msgstr	"reférence au plug du footer"
-
-msgid	"default delay before expiration of password in day"
-msgstr	"délai d'expiration du mot de passe par défaut (en jours)"
-
-msgid	"name displayed in the right of the foot"
-msgstr	"nom affiché dans le bas de la fenêtre (à droite)"
-
-msgid	"Access"
-msgstr	"Accessibilités"
-
-msgid	"What Access Management"
-msgstr	"Gestion des accessibilités"
-
-msgid	"Admin Access"
-msgstr	"Accès administrateur"
-
-msgid	"object control"
-msgstr	"contrôle des objets"
-
-msgid	"User Access"
-msgstr	"Accès des utilisateurs"
-
-msgid	"Group Access"
-msgstr	"Accès des groupes"
-
-msgid	"Application Access"
-msgstr	"Accès des applications"
-
-msgid	"Object Access"
-msgstr	"Accès des objets"
-
-msgid	"Modify any access"
-msgstr	"Modifier n'importe quel objet"
-
-msgid	"Modify object access"
-msgstr	"Modifier certains objets"
-
-msgid	"Import/Export"
-msgstr	"Import/Export"
-
-msgid	"Edit any access"
-msgstr	"Editer n'importe quel accès"
-
-msgid	"Edit object access by user"
-msgstr	"Editer les accès sur les objets par utilisateur"
-
-msgid	"Edit object access"
-msgstr	"Editer les accès sur les objets"
-
-msgid	"Application manager"
-msgstr	"Gestion des applications"
-
-msgid	"What Application Management"
-msgstr	"Gestion des applications"
-
-msgid	"SuperUser permission"
-msgstr	"Accès administration"
-
-msgid	"user preference"
-msgstr	"préférences utilisateur"
-
-msgid	"styles parameters"
-msgstr	"paramètres de style"
-
-msgid	"application parameters"
-msgstr	"paramètres applicatif"
-
-msgid	"user parameters"
-msgstr	"paramètres utilisateur"
-
-msgid	"current user parameters"
-msgstr	"mes paramètres"
-
-msgid	"current user mail configuration"
-msgstr	"ma messagerie"
-
-msgid	"current user account"
-msgstr	"mon compte"
-
-msgid	"actions"
-msgstr	"les actions"
-
-msgid	"applications"
-msgstr	"les applications"
-
-msgid	"delete parameters"
-msgstr	"suppression de paramètres"
-
-msgid	"modify parameters"
-msgstr	"modification des paramètres"
-
-msgid	"delete user parameters"
-msgstr	"suppression de paramètres utilisateur"
-
-msgid	"modify user parameters"
-msgstr	"modification des paramètres utilisateur"
-
-msgid	"no login : passwd unchanged"
-msgstr	"pas de login : mot de passe inchangé"
-
-msgid	"unknown login : passwd unchanged"
-msgstr	"login incoonu : mot de passe inchangé"
-
-msgid	"password are not identicals : not changed"
-msgstr	"les mots de passes ne sont pas identiques : mot de passe inchangé"
-
-msgid	"empty password : not changed"
-msgstr	"mot de passe vide : non changé"
+msgid "access granted to  database $db\n"
+msgstr "accès à la base de données $db autorisé\n"
 
 #, c-format
-msgid	"API file %s not found"
-msgstr	"fichier API %s non trouvé."
+msgid "Attribute %s not found\n"
+msgstr "Attribut %s non trouvé.\n"
 
-msgid	"firstname"
-msgstr	"Prénom"
+#, c-format
+msgid ""
+"Attribute %s found is not alone\n"
+"Must precise request with userid or appid arguments\n"
+msgstr ""
+"L'attribut %s trouvé n'est pas seul\n"
+"Préciser la requête en uitilisant les arguments userid et appid\n"
 
-msgid	"lastname"
-msgstr	"Nom"
+#, c-format
+msgid "Attribute %s not modified : %s\n"
+msgstr "Attribut %s non modifié : %s\n"
 
-msgid	"password"
-msgstr	"Mot de passe"
+#, c-format
+msgid "Attribute %s modified to %s"
+msgstr "Attribut %s modifié par %s"
 
-msgid	"expire default delay (in day)"
-msgstr	"délai d'expiration par défaut (en jours)"
+msgid "no referer url found"
+msgstr "pas d'URL reférence trouvée"
 
-msgid	" 0 means no delay"
-msgstr	" 0 signifie pas de limite"
+#, c-format
+msgid "file not found : %s"
+msgstr "fichier %s non trouvé."
 
-msgid	"expire date"
-msgstr	"date d'expiration"
+msgid "terminal too small (must ne at least 80 columns by 24 lines)"
+msgstr ""
+"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
 
-msgid	"if not set, will be the current date more delay"
-msgstr	"si vide, ce sera la date courante plus le délai"
+msgid "What User Management"
+msgstr "Gestion des utilisateurs"
 
-msgid	"user status"
-msgstr	"état utilisateur"
+msgid "Access To All Users"
+msgstr "Accès à tous les utilisateurs"
 
-msgid	"active user"
-msgstr	"Utilisateur activé"
+msgid "Access To All Users in my domain"
+msgstr "Acces aux utilisateurs de mon domaine"
 
-msgid	"desactived user"
-msgstr	"Utilisateur désactivé"
+msgid "Access To My Own account"
+msgstr "Accès à mon propre compte"
 
-msgid	"groups"
-msgstr	"Groupes"
+msgid "admin view"
+msgstr "vue administrateur"
 
-msgid	"changegroup"
-msgstr	"Changement de groupe"
+msgid "users list"
+msgstr "les utilisateurs"
 
-msgid	"domaingroup"
-msgstr	"Domaine"
+msgid "group list"
+msgstr "les groupes"
 
-msgid	"othergroup"
-msgstr	"Autres"
+msgid "user account edition"
+msgstr "éditer compte utilisateur"
 
-msgid	"butclosew"
-msgstr	"Fermer la fenêtre"
+msgid "user own account edition"
+msgstr "éditer compte personnel"
 
-msgid	"search"
-msgstr	"recherche"
+msgid "user account modification"
+msgstr "modifier compte utilisateur"
 
-msgid	"clear"
-msgstr	"Effacer"
+msgid "user own account modification"
+msgstr "modifier compte personnel"
 
-msgid	"adduser"
-msgstr	"Ajouter un utilisateur"
+msgid "Core"
+msgstr "Noyau"
 
-msgid	"print"
-msgstr	"Impression de la page"
+msgid "Core Application Manager"
+msgstr "Page d'accueil WHAT"
 
-msgid	"help"
-msgstr	"Aide"
+msgid "application version"
+msgstr "version application"
 
-msgid	"delconfirm"
-msgstr	"Confirmez-vous la suppression de l`utilisateur"
+msgid "default style"
+msgstr "style par défaut"
 
-# ne pas mettre de '
-msgid	"Homepage"
-msgstr	"Accueil WHAT"
+msgid "language"
+msgstr "langue"
 
-msgid	"gate page"
-msgstr "Page du portail"
+msgid "button color"
+msgstr "couleur du bouton"
 
-msgid	"New GATE page"
+msgid "background color or image"
+msgstr "image ou couleur de fond"
+
+msgid "background color or image in security mode"
+msgstr "image ou couleur de fond en mode sécurité"
+
+msgid "background image for bar"
+msgstr "image de fond pour les barres"
+
+msgid "background image for menu"
+msgstr "image de fond pour les menus"
+
+msgid "background color for table cells"
+msgstr "couleur de fond de cellules"
+
+msgid "second background color"
+msgstr "couleur secondaire pour le fond"
+
+msgid "highlight background color"
+msgstr "couleur de fond pour la mise en évidence"
+
+msgid "inverse video background color"
+msgstr "couleur de fond en inverse vidéo"
+
+msgid "text color"
+msgstr "couleur du texte"
+
+msgid "inverse video color text"
+msgstr "couleur du texte en inverse vidéo"
+
+msgid "input color bg"
+msgstr "couleur des champs de saisie"
+
+msgid "anchor color"
+msgstr "couleur des liens"
+
+msgid "error color"
+msgstr "couleur messages d'erreur"
+
+msgid "default font"
+msgstr "police par défaut"
+
+msgid "menu font"
+msgstr "police des menus"
+
+msgid "top url to find help documentation"
+msgstr "url pour la documentation en ligne"
+
+msgid "font size"
+msgstr "taille de la police"
+
+msgid "frame size"
+msgstr "taille de la fenêtre"
+
+msgid "frame border size"
+msgstr "taille de la bordure de la fenêtre"
+
+msgid "client name"
+msgstr "nom du client"
+
+msgid "client logo"
+msgstr "logo du client"
+
+msgid "anakeen"
+msgstr "anakeen"
+
+msgid "use object cache"
+msgstr "utiliser le cache objets"
+
+msgid "number of cached object by class"
+msgstr "nombre d'objet caché par classes"
+
+msgid "gate urls"
+msgstr "urls du portail"
+
+msgid "gate geometry"
+msgstr "disposition du portail"
+
+msgid "society style"
+msgstr "style société"
+
+msgid "plug inserted in footer"
+msgstr "reférence au plug du footer"
+
+msgid "default delay before expiration of password in day"
+msgstr "délai d'expiration du mot de passe par défaut (en jours)"
+
+msgid "name displayed in the right of the foot"
+msgstr "nom affiché dans le bas de la fenêtre (à droite)"
+
+msgid "realm name for http authenticate"
+msgstr "nom du royaume pour authentification HTTP"
+
+msgid "Access"
+msgstr "Accessibilités"
+
+msgid "What Access Management"
+msgstr "Gestion des accessibilités"
+
+msgid "Admin Access"
+msgstr "Accès administrateur"
+
+msgid "object control"
+msgstr "contrôle des objets"
+
+msgid "User Access"
+msgstr "Accès des utilisateurs"
+
+msgid "Group Access"
+msgstr "Accès des groupes"
+
+msgid "Application Access"
+msgstr "Accès des applications"
+
+msgid "Object Access"
+msgstr "Accès des objets"
+
+msgid "Modify any access"
+msgstr "Modifier n'importe quel objet"
+
+msgid "Modify object access"
+msgstr "Modifier certains objets"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "Edit any access"
+msgstr "Editer n'importe quel accès"
+
+msgid "Edit object access by user"
+msgstr "Editer les accès sur les objets par utilisateur"
+
+msgid "Edit object access"
+msgstr "Editer les accès sur les objets"
+
+msgid "Application manager"
+msgstr "Gestion des applications"
+
+msgid "What Application Management"
+msgstr "Gestion des applications"
+
+msgid "SuperUser permission"
+msgstr "Accès administration"
+
+msgid "user preference"
+msgstr "préférences utilisateur"
+
+msgid "styles parameters"
+msgstr "paramètres de style"
+
+msgid "application parameters"
+msgstr "paramètres applicatif"
+
+msgid "user parameters"
+msgstr "paramètres utilisateur"
+
+msgid "current user parameters"
+msgstr "mes paramètres"
+
+msgid "current user mail configuration"
+msgstr "ma messagerie"
+
+msgid "current user account"
+msgstr "mon compte"
+
+msgid "actions"
+msgstr "les actions"
+
+msgid "applications"
+msgstr "les applications"
+
+msgid "delete parameters"
+msgstr "suppression de paramètres"
+
+msgid "modify parameters"
+msgstr "modification des paramètres"
+
+msgid "delete user parameters"
+msgstr "suppression de paramètres utilisateur"
+
+msgid "modify user parameters"
+msgstr "modification des paramètres utilisateur"
+
+#, c-format
+msgid "Create other database for %s (%s)"
+msgstr "Création d'autres bases pour %s (%s)"
+
+msgid "Command failed"
+msgstr "échec de la commande"
+
+msgid "Name of anakeen database ?"
+msgstr "Nom de la base anakeen ?"
+
+#, c-format
+msgid "Virtual host : [%s]"
+msgstr "Hôte virtual : [%s]"
+
+#, c-format
+msgid "Database : [%s]"
+msgstr "Base de données : [%s]"
+
+msgid "Continue (Y|N) ?"
+msgstr "Continuer (Y (oui) |N (non)) ?"
+
+msgid "no login : passwd unchanged"
+msgstr "pas de login : mot de passe inchangé"
+
+msgid "unknown login : passwd unchanged"
+msgstr "login incoonu : mot de passe inchangé"
+
+msgid "password are not identicals : not changed"
+msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
+
+msgid "empty password : not changed"
+msgstr "mot de passe vide : non changé"
+
+#, c-format
+msgid "API file %s not found"
+msgstr "fichier API %s non trouvé."
+
+#, c-format
+msgid "Choose database in %s (%s)"
+msgstr "Choix de la base de données dans %s (%s)"
+
+msgid "firstname"
+msgstr "Prénom"
+
+msgid "lastname"
+msgstr "Nom"
+
+msgid "password"
+msgstr "Mot de passe"
+
+msgid "expire default delay (in day)"
+msgstr "délai d'expiration par défaut (en jours)"
+
+msgid " 0 means no delay"
+msgstr " 0 signifie pas de limite"
+
+msgid "expire date"
+msgstr "date d'expiration"
+
+msgid "if not set, will be the current date more delay"
+msgstr "si vide, ce sera la date courante plus le délai"
+
+msgid "user status"
+msgstr "état utilisateur"
+
+msgid "active user"
+msgstr "Utilisateur activé"
+
+msgid "desactived user"
+msgstr "Utilisateur désactivé"
+
+msgid "groups"
+msgstr "Groupes"
+
+msgid "changegroup"
+msgstr "Changement de groupe"
+
+msgid "domaingroup"
+msgstr "Domaine"
+
+msgid "othergroup"
+msgstr "Autres"
+
+msgid "butclosew"
+msgstr "Fermer la fenêtre"
+
+msgid "search"
+msgstr "recherche"
+
+msgid "clear"
+msgstr "Effacer"
+
+msgid "adduser"
+msgstr "Ajouter un utilisateur"
+
+msgid "print"
+msgstr "Impression de la page"
+
+msgid "help"
+msgstr "Aide"
+
+msgid "delconfirm"
+msgstr "Confirmez-vous la suppression de l`utilisateur"
+
+msgid "Javascript must be enabled in your navigator"
+msgstr "Javascript doit être activé dans votre navigateur"
+
+msgid ""
+"Your navigator does not accept cookies.\n"
+"Cookies must be enabled to use correctly this application"
+msgstr ""
+"Votre navigateur n'accepte pas les cookies.\n"
+"Vous devez autoriser les cookies pour utiliser correctement l'application."
+
+msgid "You use an too old Internet explorer navigator"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "please upgrade to Internet explorer 6.0 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
+"supérieur) "
+
+msgid "Internet explorer site"
+msgstr "Site de Microsoft"
+
+msgid "You use an too old Netscape navigator"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
+"ou Mozilla 1.0.1 (ou supérieur)"
+
+msgid "mozilla site"
+msgstr "site de Mozilla"
+
+msgid "nestcape site"
+msgstr "Site de Netscape"
+
+msgid "Gate"
 msgstr "Portail"
 
-msgid	"Click here to login"
-msgstr	"Cliquer ici pour se connecter"
+msgid "view log"
+msgstr "voir les messages"
 
-msgid	"Javascript must be enabled in your navigator"
-msgstr	"Javascript doit être activé dans votre navigateur"
+msgid "Edit Url Gate"
+msgstr "édition des URLs pour le portail"
 
-msgid	"Your navigator does not accept cookies.\n"
-	"Cookies must be enabled to use correctly this application"
-msgstr	"Votre navigateur n'accepte pas les cookies.\n"
-	"Vous devez autoriser les cookies pour utiliser correctement "
-	"l'application."
+msgid "Save geometry"
+msgstr "Sauver la disposition"
 
-msgid	"view log"
-msgstr	"voir les messages"
+msgid "Click here to login"
+msgstr "Cliquer ici pour se connecter"
 
-msgid	"Welcome Page"
-msgstr	"Page d'accueil WHAT"
+msgid "Choose Gate Urls"
+msgstr "Choix des URLs"
 
-msgid	"You use an too old Netscape navigator"
-msgstr	"Vous utilisez un navigateur de type Netscape trop ancien"
+# ne pas mettre de '
+msgid "Homepage"
+msgstr "Accueil WHAT"
 
-msgid	"please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr	"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou "
-	"supérieur) ou Mozilla 1.0.1 (ou supérieur)"
+msgid "Welcome Page"
+msgstr "Page d'accueil WHAT"
 
-msgid	"mozilla site"
-msgstr	"site de Mozilla"
+msgid "gate page"
+msgstr "Page du portail"
 
-msgid	"nestcape site"
-msgstr	"Site de Netscape"
+msgid "New GATE page"
+msgstr "Portail"
 
-msgid	"Gate"
-msgstr	"Portail"
+msgid "Progress bar"
+msgstr "Barre de progression"
 
-msgid	"You use an too old Internet explorer navigator"
-msgstr	"Vous utilisez un navigateur de type Internet Explorer trop ancien"
+msgid "warning_name"
+msgstr "La saisie de votre nom est obligatoire :"
 
-msgid	"please upgrade to Internet explorer 6.0 or greater"
-msgstr	"Mettez votre navigateur à jour avec une version Internet Explorer "
-	"6.0 (ou supérieur) "
+msgid "warning_pass"
+msgstr "La saisie de votre mot de passe est obligatoire :"
 
-msgid	"Internet explorer site"
-msgstr	"Site de Microsoft"
+msgid "yourusername"
+msgstr "Votre nom d'utilisateur :"
 
-msgid	"Edit Url Gate"
-msgstr	"édition des URLs pour le portail"
+msgid "yourpassword"
+msgstr "Votre mot de passe :"
 
-msgid	"Save geometry"
-msgstr	"Sauver la disposition"
+msgid "controlaccess"
+msgstr "Contrôle des accès"
 
-msgid	"Choose Gate Urls"
-msgstr	"Choix des URLs"
+msgid "accessfor"
+msgstr "Contrôle des accès pour"
 
-msgid	"warning_pass"
-msgstr	"La saisie de votre mot de passe est obligatoire :"
+msgid "modify"
+msgstr "Modifier"
 
-msgid	"yourusername"
-msgstr	"Votre nom d'utilisateur :"
+msgid "Close"
+msgstr "Fermer"
 
-msgid	"yourpassword"
-msgstr	"Votre mot de passe :"
+msgid " Access Control for"
+msgstr "Contrôle des accès pour"
 
-msgid	"controlaccess"
-msgstr	"Contrôle des accès"
+msgid "viewuser"
+msgstr "Voir les utilisateurs"
 
-msgid	" Access Control for"
-msgstr	"Contrôle des accès pour"
+msgid "viewgroup"
+msgstr "Voir les groupes"
 
-msgid	"modify"
-msgstr	"Modifier"
+msgid "download"
+msgstr "Télécharger le fichier d'acces"
 
-msgid	"viewuser"
-msgstr	"Voir les utilisateurs"
+msgid "needfile"
+msgstr "Le nom du fichier doit être spécifié"
 
-msgid	"viewgroup"
-msgstr	"Voir les groupes"
+msgid "upload"
+msgstr "Charger un fichier d'acces"
 
-msgid	"Close"
-msgstr	"Fermer"
+msgid "choose document"
+msgstr "choisi un document"
 
-msgid	"accessfor"
-msgstr	"Contrôle des accès pour"
+msgid "edit by object"
+msgstr "édition par objet"
 
-msgid	"choose document"
-msgstr	"choisi un document"
+msgid "in database"
+msgstr "dans la base de données"
 
-msgid	"edit by object"
-msgstr	"édition par objet"
+msgid "long_name"
+msgstr "Nom complet"
 
-msgid	"in database"
-msgstr	"dans la base de données"
+msgid "available"
+msgstr "Dispo"
 
-msgid	"download"
-msgstr	"Télécharger le fichier d'acces"
+msgid "acl"
+msgstr "Acl"
 
-msgid	"needfile"
-msgstr	"Le nom du fichier doit être spécifié"
+msgid "root"
+msgstr "Root"
 
-msgid	"upload"
-msgstr	"Charger un fichier d'acces"
+msgid "toc"
+msgstr "Toc"
 
-msgid	"my parameters"
-msgstr	"mes paramètres"
+msgid "titleaction"
+msgstr "Liste des actions de l'application"
 
-msgid	"long_name"
-msgstr	"Nom complet"
+msgid "addparam"
+msgstr "Ajouter un param&egrave;tre"
 
-msgid	"available"
-msgstr	"Dispo"
+msgid "addstyle"
+msgstr "Ajouter un style"
 
-msgid	"acl"
-msgstr	"Acl"
+msgid "access_free"
+msgstr "Acces libre"
 
-msgid	"root"
-msgstr	"Root"
+msgid "appssl"
+msgstr "Sécurisée"
 
-msgid	"toc"
-msgstr	"Toc"
+msgid "displayable"
+msgstr "Affichable"
 
-msgid	"titleaction"
-msgstr	"Liste des actions de l'application"
+msgid "machine"
+msgstr "machine"
 
-msgid	"addparam"
-msgstr	"Ajouter un param&egrave;tre"
+msgid "appmachine"
+msgstr "machine distante"
 
-msgid	"addstyle"
-msgstr	"Ajouter un style"
+msgid "update"
+msgstr "mise à jour"
 
-msgid	"access_free"
-msgstr	"Acces libre"
+msgid "delete"
+msgstr "Détruire"
 
-msgid	"appssl"
-msgstr	"Sécurisée"
+msgid "application parameters list"
+msgstr "Liste des paramètres applicatif"
 
-msgid	"displayable"
-msgstr	"Affichable"
+msgid "my parameters"
+msgstr "mes paramètres"
 
-msgid	"machine"
-msgstr	"machine"
+msgid "val"
+msgstr "Valeur"
 
-msgid	"appmachine"
-msgstr	"machine distante"
+msgid "select a user"
+msgstr "Sélectionnez un utilisateur"
 
-msgid	"update"
-msgstr	"mise à jour"
+msgid "user parameters list"
+msgstr "Liste des paramètres utilisateur"
 
-msgid	"delete"
-msgstr	"Détruire"
+msgid "select a style"
+msgstr "Sélectionnez un style"
 
-msgid	"val"
-msgstr	"Valeur"
+msgid "style parameters list"
+msgstr "Liste des paramètres style"
 
-msgid	"application parameters list"
-msgstr	"Liste des paramètres applicatif"
+msgid "delconfirmstyle"
+msgstr "Confirmez-vous la suppression du style"
 
-msgid	"select a style"
-msgstr	"Sélectionnez un style"
+msgid "unmodifiable parameter"
+msgstr "paramètre non modifiable"
 
-msgid	"style parameters list"
-msgstr	"Liste des paramètres style"
+msgid "delconfirmparam"
+msgstr "Confirmez-vous la suppression du param&egrave;tre "
 
-msgid	"delconfirmstyle"
-msgstr	"Confirmez-vous la suppression du style"
+#~ msgid "locked files of "
+#~ msgstr "fichiers verrouillés par"
 
-msgid	"select a user"
-msgstr	"Sélectionnez un utilisateur"
+#~ msgid "Hosted by"
+#~ msgstr "Hébergé par"
 
-msgid	"user parameters list"
-msgstr	"Liste des paramètres utilisateur"
+#~ msgid "powered by"
+#~ msgstr "produit par"
 
-msgid	"unmodifiable parameter"
-msgstr	"paramètre non modifiable"
+#~ msgid "functionerr"
+#~ msgstr "Détection d'une erreur"
 
-#~ msgid	"locked files of "
-#~ msgstr	"fichiers verrouillés par"
+#~ msgid "Return to"
+#~ msgstr "Retour à"
 
-#~ msgid	"Hosted by"
-#~ msgstr	"Hébergé par"
+#~ msgid "clear object cache"
+#~ msgstr "Effacer le cache objets"
 
-#~ msgid	"powered by"
-#~ msgstr	"produit par"
+#~ msgid "delparam"
+#~ msgstr "Supprimer"
 
-#~ msgid	"functionerr"
-#~ msgstr	"Détection d'une erreur"
+#~ msgid "titlestylecreate"
+#~ msgstr "Cr&eacute;ation de style "
 
-#~ msgid	"Return to"
-#~ msgstr	"Retour à"
+#~ msgid "titlestylemodify"
+#~ msgstr "Modification du style "
 
-#~ msgid	"clear object cache"
-#~ msgstr	"Effacer le cache objets"
+#~ msgid "err_add_style"
+#~ msgstr "Impossible de creer le style"
 
-#~ msgid	"delparam"
-#~ msgstr	"Supprimer"
+#~ msgid "err_mod_style"
+#~ msgstr "Impossible de modifier le style"
 
-#~ msgid	"titlestylecreate"
-#~ msgstr	"Cr&eacute;ation de style "
+#~ msgid "nc"
+#~ msgstr "nc"
 
-#~ msgid	"titlestylemodify"
-#~ msgstr	"Modification du style "
+#~ msgid "styles"
+#~ msgstr "les styles"
 
-#~ msgid	"err_add_style"
-#~ msgstr	"Impossible de creer le style"
+#~ msgid "titlestyle"
+#~ msgstr "Liste des param&egrave;tres du style"
 
-#~ msgid	"err_mod_style"
-#~ msgstr	"Impossible de modifier le style"
+#~ msgid "titleparam"
+#~ msgstr "Liste des param&egrave;tres de l'application"
 
-#~ msgid	"nc"
-#~ msgstr	"nc"
+#~ msgid "permission"
+#~ msgstr "Droit"
 
-#~ msgid	"styles"
-#~ msgstr	"les styles"
+#~ msgid "anyoid"
+#~ msgstr "objet commun"
 
-#~ msgid	"titlestyle"
-#~ msgstr	"Liste des param&egrave;tres du style"
+#~ msgid "script"
+#~ msgstr "Script"
 
-#~ msgid	"delconfirmparam"
-#~ msgstr	"Confirmez-vous la suppression du param&egrave;tre "
+#~ msgid "icon"
+#~ msgstr "Icone"
 
-#~ msgid	"titleparam"
-#~ msgstr	"Liste des param&egrave;tres de l'application"
+#~ msgid "layout"
+#~ msgstr "Layout"
 
-#~ msgid	"permission"
-#~ msgstr	"Droit"
+#~ msgid "addapplication"
+#~ msgstr "Ajouter une application"
 
-#~ msgid	"anyoid"
-#~ msgstr	"objet commun"
+#~ msgid "modapplication"
+#~ msgstr "Modifier"
 
-#~ msgid	"warning_name"
-#~ msgstr	"La saisie de votre nom est obligatoire :"
+#~ msgid "moduser"
+#~ msgstr "Supprimer"
 
-#~ msgid	"script"
-#~ msgstr	"Script"
+#~ msgid "yes"
+#~ msgstr "Oui"
 
-#~ msgid	"icon"
-#~ msgstr	"Icone"
+#~ msgid "no"
+#~ msgstr "Non"
 
-#~ msgid	"layout"
-#~ msgstr	"Layout"
+#~ msgid "chggroup"
+#~ msgstr "Changer de groupe"
 
-#~ msgid	"addapplication"
-#~ msgstr	"Ajouter une application"
-
-#~ msgid	"modapplication"
-#~ msgstr	"Modifier"
-
-#~ msgid	"moduser"
-#~ msgstr	"Supprimer"
-
-#~ msgid	"yes"
-#~ msgstr	"Oui"
-
-#~ msgid	"no"
-#~ msgstr	"Non"
-
-#~ msgid	"chggroup"
-#~ msgstr	"Changer de groupe"
-
-#~ msgid	"Invalid Session"
-#~ msgstr	"Session invalide"
+#~ msgid "Invalid Session"
+#~ msgstr "Session invalide"
