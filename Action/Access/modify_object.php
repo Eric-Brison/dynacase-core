@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: modify_object.php,v 1.4 2002/03/05 18:14:51 eric Exp $
+// $Id: modify_object.php,v 1.5 2002/04/15 14:18:25 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/modify_object.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -43,7 +43,7 @@ function modify_object(&$action) {
   $op=new ObjectPermission($action->dbaccess,array($action->parent->user->id,
 						   $coid,
 						   $appId));
-  if (($err = $op-> Control( $appId, "modifyacl")) != "") {
+  if (($err = $op-> ControlOid( $appId, "modifyacl")) != "") {
 	$action -> ExitError($err);
   }
       

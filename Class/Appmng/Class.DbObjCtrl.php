@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.DbObjCtrl.php,v 1.4 2002/04/03 08:43:39 eric Exp $
+// $Id: Class.DbObjCtrl.php,v 1.5 2002/04/15 14:18:05 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.DbObjCtrl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -24,7 +24,7 @@
 
 
 
-$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.4 2002/04/03 08:43:39 eric Exp $';
+$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.5 2002/04/15 14:18:05 eric Exp $';
 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');
@@ -112,14 +112,23 @@ Class DbObjCtrl extends DbObj
                                          array($this->userid,
 				               $this->id,
 					       $this->classid ));
+
+      $this->operm->Delete();
       $acl =new Acl();
 
       $acl-> Set("modifyacl", $this->classid);
-      $this->operm->id_acl = $acl->id;
-      $this->operm->Add();
+      $this->operm->AddAcl($acl->id);
 
       $acl-> Set("viewacl", $this->classid);
-      $this->operm->id_acl = $acl->id;
+      $this->operm->AddAcl($acl->id);
+
+
+      // set all permissions  
+      while(list($k,$v) = each($this->obj_acl)) {
+	$acl-> Set($v["name"], $this->classid);
+	$this->operm->AddAcl($acl->id);	
+      }
+      
       $this->operm->Add();
     }
 

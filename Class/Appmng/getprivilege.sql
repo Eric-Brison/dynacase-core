@@ -111,7 +111,7 @@ end if;
 -- try now in group permission
 
 for group in select idgroup from groups where iduser=arg_user loop
-   if ( hasprivilege(group.idgroup, arg_obj, arg_class, arg_acl)) then
+   if ( hasprivilege_(group.idgroup, arg_obj, arg_class, arg_acl)) then
       return true;
    end if;
 
