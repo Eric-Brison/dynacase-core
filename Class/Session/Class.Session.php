@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.10 2004/01/08 10:59:27 eric Exp $
+ * @version $Id: Class.Session.php,v 1.11 2004/01/13 09:31:57 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.10 2004/01/08 10:59:27 eric Exp $
+// $Id: Class.Session.php,v 1.11 2004/01/13 09:31:57 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.10 2004/01/08 10:59:27 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.11 2004/01/13 09:31:57 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -136,6 +136,7 @@ var $sessiondb;
       }
 
       $this->GCollector();
+      setcookie ("session",$this->id,0,"/");
       return true;
     }
 
@@ -152,6 +153,7 @@ var $sessiondb;
       }
       $this->Delete();
       $this->status = $this->SESSION_CT_CLOSE;
+      setcookie ("session","",0,"/");
       return $this->status;
     }  
   
@@ -217,10 +219,14 @@ var $sessiondb;
 	$this->status = $this->SESSION_CT_ARGS;
 	return $this->status;
       }
-  
+      //      global $_SESSION;
+      //      $$k=$v;
+
       global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {	
+      if ($HTTP_CONNECTION != "") {
+	//	session_register($k);
 	$_SESSION[$k]=$v;
+	syslog(LOG_WARNING,( "session W)".session_id()." ==$k:".$_SESSION[$k]));
       }
 
       return true;
@@ -232,7 +238,15 @@ var $sessiondb;
   // $v est une chaine !
   // --------------------------------
   function Read($k = "", $d="") {    
-   if (isset($_SESSION[$k])) {  
+
+    // global $_SESSION;
+    //  if (session_is_registered ($k)) {
+
+	syslog(LOG_WARNING,( "session R)".session_id()." ==$k:".$_SESSION[$k]));
+ 
+    if (isset($_SESSION[$k])) {
+      //	global $$k;
+      // return($$k);
       return $_SESSION[$k];
     } else {
       return($d);

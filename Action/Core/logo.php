@@ -3,7 +3,7 @@
  * Display WHAT logo
  *
  * @author Anakeen 1999
- * @version $Id: logo.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: logo.php,v 1.6 2004/01/13 09:31:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: logo.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+// $Id: logo.php,v 1.6 2004/01/13 09:31:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/logo.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -44,7 +44,8 @@ function logo(&$action) {
   global $CacheObj;
 
   $CacheObj=array();
-  session_unregister("CacheObj"); // clearcache
+ 
+  unset($_SESSION["CacheObj"]);// clearcache
   $action->lay->set("PHP_AUTH_USER",$PHP_AUTH_USER);    
 
   $action->lay->set("navigator",$action->Read("navigator"));  
