@@ -2,7 +2,7 @@
 [ZONE CORE:HTMLHEAD]
 <script language="javascript">
 if (window.name == 'fhidden') {
-  alert('[error]');
+  alert('[serror]');
 }
 
 </script>
