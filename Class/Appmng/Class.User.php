@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.18 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.User.php,v 1.19 2004/02/02 10:18:42 caroline Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.18 2003/08/18 15:46:42 eric Exp $
+// $Id: Class.User.php,v 1.19 2004/02/02 10:18:42 caroline Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,12 +34,14 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.18 2003/08/18 15:46:42 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.19 2004/02/02 10:18:42 caroline Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
 include_once('Class.Application.php');
 include_once('Class.Group.php');
+include_once('FDL/Class.Doc.php');
+include_once('FDL/Lib.Dir.php');
 
 define("ANONYMOUS_ID", 3);
 
@@ -123,65 +125,288 @@ create sequence seq_id_users start 10";
       return TRUE;
     }
 
-  function PreInsert()
+function CheckLogin($login,$domain,$whatid)
     {
-
-      if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";
-      if ($this->id == "") {
-	$res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
-	$arr = pg_fetch_array ($res, 0);
-	$this->id = $arr[0];
-      }
-      if (isset($this->isgroup) && ($this->isgroup == "Y")) {
-	$this->password_new="no"; // no passwd for group
-      } else {
-	$this->isgroup = "N";
-      }
-      $this->login = strtolower($this->login);
-      if (isset($this->password_new) && ($this->password_new!="")) {
-	$this->computepass($this->password_new, $this->password);
-      }
+      $query = new QueryDb($this->dbaccess,"User");                                                                                    
+                                                                                      
+      $query->basic_elem->sup_where=array("login='$login'",
+                                          "iddomain=$domain");                                                                                      
+                                                                                      
+      $list = $query->Query();
+      if ($query->nb==0 or ($query->nb==1 and $list[0]->id==$whatid))
+        {return true;}
+      else {return false;}
+                                                                                      
+                                                                                      
     }
 
-  function PostInsert()     
+
+  function SetUsers($lname,$fname,$expires,$passdelay,$login,$status,$pwd1,$pwd2,$fid,$expiresd,$expirest,$daydelay,$iddomain,$domain)
+  {
+	$this->lastname=$lname;
+	$this->firstname=$fname;	
+	$this->status=$status;
+	$this->login=$login;
+
+//ne modifie pas le password en base même si contrainte forcée 
+	if ($pwd1==$pwd2 and $pwd1<>"")
+	{$this->password_new=$pwd2;   
+        $this->password=$pwd1;
+	}
+
+	$this->old_iddomain=$this->iddomain;
+
+        $this->iddomain=$iddomain;               
+	$this->domain=$domain;
+        if ($this->iddomain=="") {$this->iddomain=1;$this->domain="Pas de compte mail";}
+
+        $this->daydelay=$daydelay;
+        $this->expires=$expires;
+        $this->expiresd=$expiresd;
+        $this->expirest=$expirest; 
+ 
+//convert date 
+	$expdate=$this->expiresd." ".$this->expirest.":00";
+	$exptime=0;
+        if ($expdate != "") {
+          if (ereg("([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])", $expdate, $reg)) {                                             $exptime=mktime($reg[4],$reg[5],$reg[6],$reg[2],$reg[1],$reg[3]);                                                                                          } 
+        }
+
+       if (($exptime>0) && ($exptime != $this->expires))  $this->expires=$exptime;
+       else  $this->expires=0;   	  
+
+       $this->passdelay=($this->daydelay)*3600*24;
+       $this->fid=$fid;
+                                                                                                                                                          
+}
+
+//Add and Update expires and passdelay for password
+//Call in PreUpdate and PreInsert
+function GetExpires()
+{
+if (intval($this->passdelay) == 0) {$this->expires="0"; $this->passdelay="0";$this->daydelay="0";}// nether expire
+      else if (intval($this->expires)==0)
+              {$this->expires=time()+$this->passdelay;
+              }
+
+$this->daydelay=$this->passdelay/(3600*24);
+
+if (intval($this->expires)>0)
+    {$this->expiresd=strftime("%d/%m/%Y",intval($this->expires));
+     $this->expirest=strftime("%X",intval($this->expires));
+    }
+
+
+}
+
+//Affect mail in PreUpdate and PreInsert
+function GetMailUser()
+{
+ if ($this->iddomain<>1)
+ {
+   $mail=new MailAccount("",$this->id);
+   $mail->login=$this->login;
+                                                                                                                                                             
+   if ($this->old_iddomain==1)
+   {//create a new  mail account
+   $mail->iddomain=$this->iddomain;
+   $mail->iduser=$this->id;
+   $mail->Add();
+   }
+   else
+   {//update login if olddomain<>1 
+   $mail->Modify();
+   }
+ }
+}
+
+function PreInsert()
     {
+//     if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";                                                                                      
+        if ($this->id == "") {
+        $res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
+        $arr = pg_fetch_array ($res, 0);
+        $this->id = $arr[0];
+      }
+                                                                                      
+                                                                                        
+                                                                                     
+      if (isset($this->isgroup) && ($this->isgroup == "Y")) {
+        $this->password_new="no"; // no passwd for group
+      } else {
+        $this->isgroup = "N";
+      }
+
+//Add default group to user
+	$group=new group($this->dbaccess);
+	$group->iduser=$this->id;
+	//2 = default group
+	$group->idgroup=2;
+	$group->Add();                                                                                      
+
+/*
+      $this->login = strtolower($this->login);
+*/
+
+      if (isset($this->password_new) && ($this->password_new!="")) {
+        $this->computepass($this->password_new, $this->password);
+      }
+
+
+                                                                                      
+//expires and passdelay
+     $this->GetExpires(); 	    
+
+//MailAccount
+     $this->GetMailUser(); 
+
+}
+   
+
+function PostInsert()     
+ {
       // create default ACL for each application
       // only for group
       //    if ($this->isgroup == "Y") {
       // 	$app = new Application();
       // 	$app-> UpdateUserAcl($this->id);
       //       }
-      $this->FreedomWhatUser();
-  
-    }
-  function PostUpdate()     
+   $this->FreedomWhatUser();  
+ }
+
+function PostUpdate()     
     {
       $this->FreedomWhatUser();  
     }
 
-  function PreUpdate()
-    {
+
+function PreUpdate()
+  {
       if (isset($this->password_new) && ($this->password_new!="")) {
 	$this->computepass($this->password_new, $this->password);
-      }
-      if (intval($this->passdelay) == 0) $this->expires="0"; // nether expire
-      else if (intval($this->expires)==0) $this->expires=time()+$this->passdelay;
-    }
-  function PostDelete()
+       }
+
+//expires and passdelay
+     $this->GetExpires();
+                                                                                                                                                             
+//MailAccount
+     $this->GetMailUser();
+}
+
+
+function PostDelete()
     {
       // delete reference in group table
       $group = new Group($this->dbaccess, $this->id);
       $group-> Delete();
+      //remove MailAccount
+      //$mailaccount=new MailAccount("",$this->id);
+      //$mailaccount-> Remove();
     }
 
-  function FreedomWhatUser() {
-  
+
+function FreedomWhatUser() {
+
+   $dbaccess=GetParam("FREEDOM_DB");
+
+   if ($this->fid<>"") { $iuser=new Doc($dbaccess,$this->fid); 
+
+   $iuser->SetValue("US_WHATID",$this->id);
+   $iuser->SetValue("US_LNAME",$this->lastname);
+   $iuser->SetValue("US_FNAME",$this->firstname);
+   $iuser->SetValue("US_PASSWD",$this->password);
+   $iuser->SetValue("US_PASSWD1"," ");
+   $iuser->SetValue("US_PASSWD2"," ");
+   $iuser->SetValue("US_LOGIN",$this->login);
+   $iuser->SetValue("US_STATUS",$this->status);
+   $iuser->SetValue("US_PASSDELAY",$this->passdelay);
+   $iuser->SetValue("US_EXPIRES",$this->expires);
+   $iuser->SetValue("US_DAYDELAY",$this->daydelay);
+   $iuser->SetValue("US_IDDOMAIN",$this->iddomain);
+   $iuser->SetValue("US_DOMAIN",$this->domain);
+   
+   if ($this->passdelay<>0)
+   { 
+   $iuser->SetValue("US_EXPIRESD",$this->expiresd);
+   $iuser->SetValue("US_EXPIREST",$this->expirest);
+   }
+   else 
+   {
+   $iuser->SetValue("US_EXPIRESD"," ");
+   $iuser->SetValue("US_EXPIREST"," ");
+   }
+
+   $iuser->modify();
+
+
+}
+
+//Update from what
+else {
+$filter = array("us_whatid = ".$this->id);
+$tdoc = getChildDoc($dbaccess, 0,0,"ALL", $filter,1,"LIST",getFamIdFromName($dbaccess,"IUSER"));
+if (count ($tdoc)==0)
+{                                                                                               
+//Create a new doc IUSER                                                       
+   $iuser = createDoc($dbaccess,getFamIdFromName($dbaccess,"IUSER"));
+   $iuser->SetValue("US_WHATID",$this->id);
+   $iuser->SetValue("US_LNAME",$this->lastname);
+   $iuser->SetValue("US_FNAME",$this->firstname);
+   $iuser->SetValue("US_PASSWD",$this->password);
+   $iuser->SetValue("US_PASSWD1"," ");
+   $iuser->SetValue("US_PASSWD2"," ");
+   $iuser->SetValue("US_LOGIN",$this->login);
+   $iuser->SetValue("US_STATUS",$this->status);
+   $iuser->SetValue("US_PASSDELAY",$this->passdelay);
+   $iuser->SetValue("US_DAYDELAY",$this->daydelay);
+   $iuser->SetValue("US_EXPIRESD",$this->expiresd);
+   $iuser->SetValue("US_EXPIREST",$this->expirest);
+   $iuser->SetValue("US_EXPIRES",$this->expires);
+   $iuser->SetValue("US_IDDOMAIN",$this->iddomain);
+   $iuser->SetValue("US_DOMAIN",$this->domain);
+
+   $iuser->Add();$iuser->modify();
+
+}                                                                                                                                                   
+ 
+
+else {
+   $tdoc[0]->SetValue("US_WHATID",$this->id);
+   $tdoc[0]->SetValue("US_LNAME",$this->lastname);
+   $tdoc[0]->SetValue("US_FNAME",$this->firstname);
+   $tdoc[0]->SetValue("US_PASSWD",$this->password);
+   $tdoc[0]->SetValue("US_PASSWD1"," ");
+   $tdoc[0]->SetValue("US_PASSWD2"," ");
+   $tdoc[0]->SetValue("US_LOGIN",$this->login);
+   $tdoc[0]->SetValue("US_STATUS",$this->status);
+   $tdoc[0]->SetValue("US_PASSDELAY",$this->passdelay);
+   $tdoc[0]->SetValue("US_DAYDELAY",$this->daydelay);
+   $tdoc[0]->SetValue("US_EXPIRES",$this->expires);
+   $tdoc[0]->SetValue("US_IDDOMAIN",$this->iddomain);
+   $tdoc[0]->SetValue("US_DOMAIN",$this->domain);
+
+   if ($this->passdelay<>0)
+   {$tdoc[0]->SetValue("US_EXPIRESD",$this->expiresd);
+   $tdoc[0]->SetValue("US_EXPIREST",$this->expirest);                                                                                                           }                                                                                                                                                            
+  else
+  {$tdoc[0]->SetValue("US_EXPIRESD"," ");
+   $tdoc[0]->SetValue("US_EXPIREST"," ");
+  }
+
+   $tdoc[0]->modify();
+
+}	
+
+}                                                                                                                                                           
+/*
     $wsh = GetParam("CORE_PUBDIR")."/wsh.php";
     $cmd = $wsh . " --api=usercard_iuser --whatid={$this->id}";
-
-
     exec($cmd);
+*/
+
   }
+
+
   // --------------------------------------------------------------------
   function computepass($pass, &$passk)
     {
