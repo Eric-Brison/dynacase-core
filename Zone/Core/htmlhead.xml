@@ -6,7 +6,7 @@
 
 <LINK REL="icon" HREF="CORE/Images/logo16.ico" >
 <LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo32.ico" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_BASEURL]app=CORE&action=GENCSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_BASEURL]app=CORE&action=CORE_CSS" >
    <title>[WHAT] [TITLE]</title>
 
 

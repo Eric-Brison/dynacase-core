@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.4 2003/04/07 12:33:04 eric Exp $
+// $Id: CORE.app,v 1.5 2003/04/23 08:35:50 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -64,6 +64,10 @@ $action_desc = array (
   ),
   array(
    "name"               =>"GENCSS",
+   "layout"		=>"core.css"
+  ),
+  array(
+   "name"               =>"CORE_CSS",
    "layout"		=>"core.css"
   ),
   array(

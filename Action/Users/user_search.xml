@@ -1,6 +1,6 @@
 <html>
 <head>
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_BASEURL]app=CORE&action=GENCSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_BASEURL]app=CORE&action=CORE_CSS" >
 
 [JS:REF]
 <script language="JavaScript">
