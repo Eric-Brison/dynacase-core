@@ -1,6 +1,9 @@
 <?php
-// $Id: head.php,v 1.4 2002/01/29 10:26:02 eric Exp $
+// $Id: head.php,v 1.5 2002/01/30 15:00:57 eric Exp $
 // $Log: head.php,v $
+// Revision 1.5  2002/01/30 15:00:57  eric
+// correction problème de '
+//
 // Revision 1.4  2002/01/29 10:26:02  eric
 // chg nom de fonction cause conflit
 //
@@ -91,7 +94,7 @@ function head(&$action) {
 	  
         } else { continue; }
       }
-      $appli["description"]=_($appli["description"]); // translate
+      $appli["description"]= $action->text($appli["description"]); // translate
       $tab[$i++]=$appli;
     }
   }
