@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.DbObjCtrl.php,v 1.5 2002/04/15 14:18:05 eric Exp $
+// $Id: Class.DbObjCtrl.php,v 1.6 2002/06/19 12:21:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.DbObjCtrl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -24,7 +24,7 @@
 
 
 
-$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.5 2002/04/15 14:18:05 eric Exp $';
+$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.6 2002/06/19 12:21:41 eric Exp $';
 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');
@@ -41,11 +41,11 @@ Class DbObjCtrl extends DbObj
 
     global $action; // necessary to see information about user privilege
 
-
-    $this->classid = $action->parent->GetIdFromName(get_class($this)); 
-    $cid = $this->classid;
-    $this->userid=$action->parent->user->id;
-
+    if (isset($action)) {
+      $this->classid = $action->parent->GetIdFromName(get_class($this)); 
+      $cid = $this->classid;
+      $this->userid=$action->parent->user->id;
+    }
     DbObj::DbObj($dbaccess, $id,$res,$dbid);
 
 
@@ -141,6 +141,7 @@ Class DbObjCtrl extends DbObj
       
       if (!isset($this->id)) return "";
 
+      $this->operm->delete();
       $cobj = new ControlObject("", array($this->id, $this->classid));
 
       $cobj->Delete();
