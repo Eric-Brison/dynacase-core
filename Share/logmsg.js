@@ -15,8 +15,8 @@ function displayLogMsg(logmsg) {
   }
   
   if (log) {
-    var classn = 'CORETblCell'        
-      var k=0;
+    var classn = 'CORETblCell';    
+    var k=0;
     
     if ((log.options) && (log.options.length > 0)) {
       if (log.options[log.options.length-1].className == "CORETblCell") 
@@ -30,8 +30,9 @@ function displayLogMsg(logmsg) {
     }
     log.selectedIndex=log.options.length-1;
     
-    if ((! log.options) || (log.options.length == 0)) log.style.display='none';
-    else log.style.display='inline';
+    logi=top.foot.document.getElementById('ilog');
+    if ((! log.options) || (log.options.length == 0)) logi.style.display='none';
+    else logi.style.display='inline';
   }
   
   
