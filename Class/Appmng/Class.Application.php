@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.6 2002/03/21 15:37:42 eric Exp $
+//  $Id: Class.Application.php,v 1.7 2002/04/08 15:13:47 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.6 2002/03/21 15:37:42 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.7 2002/04/08 15:13:47 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -32,6 +32,7 @@ include_once('Class.Permission.php');
 include_once('Class.Lang.php');
 include_once('Class.Style.php');
 include_once('Lib.Http.php');
+include_once('Lib.Common.php');
 
 function N_($s) {return ($s);} // to tag gettext without change text immediatly
 
@@ -80,6 +81,7 @@ var $param;
 
 var $jsref=array();
 var $jscode=array();
+var $logmsg=array();
 
 var $cssref=array();
 var $csscode=array();
@@ -225,6 +227,17 @@ function AddJsCode($code)
   }
 }
 
+function AddLogMsg($code) 
+{
+  // Js Code are stored in the top level application
+  if ($this->parent!="") {
+     $this->parent->AddLogMsg($code);
+  } else {    
+     $logmsg=$this->session->read("logmsg", array());
+     $logmsg[]=strftime("%H:%M - ").str_replace("\n","\\n",addslashes(substr($code,0,80)));
+     $this->session->register("logmsg",$logmsg);
+  }
+}
 function GetJsRef() 
 {
   if ($this->parent!="") {
@@ -243,7 +256,15 @@ function GetJsCode()
   }
 }
    
+function GetLogMsg() 
+{  
+    return($this->session->read("logmsg", array()));
+}
 
+function ClearLogMsg() 
+{
+     $this->session->unregister("logmsg");
+}
 function AddCssRef($ref) 
 {
   // Css Ref are stored in the top level application

@@ -4,19 +4,20 @@
 <table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
 
 <tr>
-  <td colspan="2" class="headcell" height="1" align="left">
+  <td colspan="3" class="headcell" height="1" align="left">
      <img border="0" src="[IMG:1x1.png]"></td>
 </tr>
 <tr>
-  <td colspan="2" height="1" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+  <td colspan="3" height="1" align="left"><img border="0" src="[IMG:1x1.png]"></td>
 </tr>
 <tr>
   <td align="left"><span class="anakeen">[CORE_CLIENT]</span></td>
+<td ><select id="slog" class="anakeen"></select></td>
   <td align="right"><span class="anakeen">[TEXT:Hosted by] 
        <b>WHAT</b>, [TEXT:powered by] <b>[CORE_ANAKEEN]</span></td>
 </tr>
 <tr>
-  <td colspan="2" class="headcell" height="1" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+  <td colspan="3" class="headcell" height="1" align="left"><img border="0" src="[IMG:1x1.png]"></td>
 </tr>
 </table>
 

@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.2 2002/02/04 14:48:07 eric Exp $
+//  $Id: Class.Layout.php,v 1.3 2002/04/08 15:13:47 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -232,6 +232,8 @@ var $strip='Y';
   function GenJsRef() {
     $js = "";
     $list = $this->action->parent->GetJsRef();
+
+    $list[]=$this->action->GetParam("CORE_JSURL")."/logmsg.js";
     reset($list);
     while(list($k,$v) = each($list)) {
       $js .= "<script language=\"JavaScript1.2\" src=\"$v\"></script>\n";
@@ -246,6 +248,14 @@ var $strip='Y';
     while(list($k,$v) = each($list)) {
       $out .= $v."\n";
     }
+    $list = $this->action->parent->GetLogMsg();
+    reset($list);
+    $out .= "var logmsg=new Array();\n";
+    while(list($k,$v) = each($list)) {
+      $out .= "logmsg[$k]='$v';\n";
+    }
+    $out .= "displayLogMsg(logmsg);\n";
+    $this->action->parent->ClearLogMsg();
     return($out);
   }
 
@@ -262,6 +272,7 @@ var $strip='Y';
   function GenCssRef() {
     $js = "";
     $list = $this->action->parent->GetCssRef();
+
     reset($list);
     while(list($k,$v) = each($list)) {
       $js .= "<style type=\"text/css\" src=\"$v\"></style>\n";

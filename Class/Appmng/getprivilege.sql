@@ -177,7 +177,11 @@ if (dim > 0) then
     end if;
   end loop;
 end if;
-narr:= substr(narr,1,char_length(narr)-1)||''}'';
+if (char_length(narr) > 1) then 
+   narr:= substr(narr,1,char_length(narr)-1)||''}'';
+else
+   narr:=''{}'';
+end if;
 
 return  narr;
 end;

@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.5 2002/03/21 15:37:42 eric Exp $
+// $Id: Lib.Http.php,v 1.6 2002/04/08 15:13:47 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,59 +21,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Lib.Http.php,v $
-// Revision 1.5  2002/03/21 15:37:42  eric
-// ajout methode getimagefile
-//
-// Revision 1.4  2002/03/14 09:37:14  eric
-// ajout fonction print_r2 pour debug
-//
-// Revision 1.3  2002/03/08 14:36:58  eric
-// add PrintAllHttpVars function for debug
-//
-// Revision 1.2  2002/02/04 14:48:07  eric
-// utilisation de ZONE avec arguments
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.11  2001/11/14 15:11:22  eric
-// ajout fonction dowload file
-//
-// Revision 1.10  2001/06/14 14:59:17  eric
-// multi frame : ajout param optionnel à redirect
-//
-// Revision 1.9  2000/11/08 11:04:56  marc
-// Stop php execution after Redirect
-//
-// Revision 1.8  2000/10/27 15:55:58  yannick
-// Valeur du cookie par défaut
-//
-// Revision 1.7  2000/10/27 07:49:43  marc
-// Mise au point MAILADMIN
-//
-// Revision 1.6  2000/10/26 07:54:50  yannick
-// Gestion du domaine sur les utilisateur
-//
-// Revision 1.5  2000/10/24 17:44:55  yannick
-// Ajout du download
-//
-// Revision 1.4  2000/10/23 14:13:45  yannick
-// Contrôle des accès
-//
-// Revision 1.3  2000/10/23 14:23:04  marc
-// Default value
-//
-// Revision 1.2  2000/10/11 12:18:41  yannick
-// Gestion des sessions
-//
-// Revision 1.1  2000/10/09 10:41:35  yannick
-// Ajout de LibHttp
-//
-//
-// ---------------------------------------------------------------
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.5 2002/03/21 15:37:42 eric Exp $';
+
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.6 2002/04/08 15:13:47 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -164,10 +114,5 @@ function PrintAllHttpVars() { // just to debug
   print "</PRE>";
 }
 
-function print_r2($z) {
-  print "<PRE>";
-  print_r($z);
-  print "</PRE>";
-}
 
 ?>
