@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.9 2002/09/12 08:44:00 eric Exp $
+// $Id: wsh.php,v 1.10 2002/09/18 11:07:14 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -77,7 +77,8 @@ while (list($k, $v) = each($argv)) {
 
 $core = new Application();
 $core->Set("CORE",$CoreNull);
-$core->user=new User("",1); //admin 
+if (isset($HTTP_GET_VARS["userid"])) $core->user=new User("",$HTTP_GET_VARS["userid"]); //special user
+else $core->user=new User("",1); //admin 
 
 $core->session=new Session($core->GetParam("CORE_SESSION_DB"));
 
