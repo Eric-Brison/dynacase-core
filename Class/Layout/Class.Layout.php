@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.9 2002/08/27 06:46:22 eric Exp $
+//  $Id: Class.Layout.php,v 1.10 2002/09/24 13:57:40 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -116,6 +116,10 @@ var $strip='Y';
    }
   }
 
+  function GetBlockData($p_nom_block) {
+    if (isset($this->data["$p_nom_block"])) return $this->data["$p_nom_block"];
+    return false;
+  }
   function SetBlock($name,$block) {
     if ($this->strip=='Y') {
       $block = StripSlashes($block);
@@ -215,13 +219,8 @@ var $strip='Y';
            
 
   function set($tag,$val) {
-    if ((! isset($this->pkey)) ||  (! in_array("/\[$tag\]/",$this->pkey))) {
-     $this->pkey[]="/\[$tag\]/";
-     $this->rkey[]=$val;
-    } else {
-       $key = array_search("/\[$tag\]/",$this->pkey);
-       if ($key) $this->rkey[$key]=$val;
-    }
+     $this->pkey[$tag]="/\[$tag\]/";
+     $this->rkey[$tag]=$val;
   }
 
   function ParseRef(&$out) {
