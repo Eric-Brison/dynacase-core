@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.35 2005/01/21 17:48:26 eric Exp $
+ * @version $Id: Class.Application.php,v 1.36 2005/03/01 17:22:45 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -224,9 +224,10 @@ function AddJsRef($ref,$needparse=false)
      $this->parent->AddJsRef($ref,$needparse);
   } else {
      (!isset($this->jscount) ? $this->jscount = 0 : $this->jscount++);
-     $this->jsref[$ref]=$ref;
      if ($needparse) {
        $this->jsref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
+     } else {
+       $this->jsref[$ref]=$ref;
      }
      $this->log->debug("AddJsRef [{$this->jscount}] = <{$this->jsref[$this->jscount]}>");
   }
@@ -315,9 +316,10 @@ function AddCssRef($ref,$needparse=false)
      $this->parent->AddCssRef($ref,$needparse);
   } else {
      (!isset($this->csscount) ? $this->csscount = 0 : $this->csscount++);
-     $this->cssref[$this->csscount]=$ref;
      if ($needparse) {
        $this->cssref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
+     } else {
+       $this->cssref[$this->csscount]=$ref;
      }
      $this->log->debug("AddCssRef [{$this->csscount}] = <{$this->cssref[$this->csscount]}>");
   }
