@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.29 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.30 2004/07/28 12:07:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.29 2004/03/22 15:21:40 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.30 2004/07/28 12:07:17 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ include_once('Class.Log.php');
 include_once('Class.Cache.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.29 2004/03/22 15:21:40 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.30 2004/07/28 12:07:17 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -481,7 +481,42 @@ function Delete($nopost=false)
     $this->ClearCache();
     if ($msg!='') return $msg;
   }
+/** 
+ * Add several objects to the database
+ * no post neither preInsert are called
+ * @param bool $nopost PostInsert method not apply if true
+ * @return string error message, if no error empty string
+ * @see PreInsert()
+ * @see PostInsert()
+ */
+function Adds(&$tcopy, $nopost=false)
+  {
+    if ($this->dbid == -1) return FALSE;
+    
+    
+    $sfields = implode(",",$this->fields);
+    $sql = "copy ".$this->dbtable. "($sfields) from STDIN;\n";
+    
+    $trow=array();
+    foreach ($tcopy as $kc=>$vc) {
+      $trow[$kc]="";
+      foreach($this->fields as $k=>$v) {
+	$trow[$kc] .= "".((isset($vc[$v]))?$vc[$v]:$this->$v)."\t";
+	//$trow[$kc][$k] .= ((isset($vc[$v]))?$vc[$v]:$this->$v);
+      }
+      $trow[$kc]=substr($trow[$kc],0,-1);
+    }
+    
+    // exécution de la requête
+    $berr= pg_copy_from($this->dbid,$this->dbtable,$trow,"\t");
+	 
+    if (! $berr) return sprintf(_("DbObj::Adds error in multiple insertion"));
 
+    
+    if (!$nopost) $msg=$this->PostInsert();
+    $this->ClearCache();
+    if ($msg!='') return $msg;
+  }
 function lw($prop)
   {
     $result = ($prop==''?"null":"'$prop'");
