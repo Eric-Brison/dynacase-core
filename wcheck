@@ -87,13 +87,13 @@ echo _("WHAT Checking\n\n");
 include("$pubdir/dbaccess.php");
 
 print "default database:"."[1m".$dbaccess."[0m";
-$dbid=pg_connect($dbaccess);
+$dbid=@pg_connect($dbaccess);
 
 $wsh=array(); // application update
 $migr=array();// migration
 $post=array();// post install 
 $pre=array(); // pre install 
-
+$dump=array();
 print "\n";
 if (! $dbid) {
   print _("cannot access to default database\n");
@@ -188,16 +188,20 @@ if (! $dbid) {
   
 }
 
-$dump[] = "su - postgres -c 'pg_dumpall > /tmp/".uniqid("whatdb")."'";
-$dump[] = "/etc/rc.d/init.d/httpd stop";
-$dump[] = "$pubdir/whattext";
+if ($dbid) {
+  $dump[] = "su - postgres -c 'pg_dumpall > /tmp/".uniqid("whatdb")."'";
+  $dump[] = "/etc/rc.d/init.d/httpd stop";
+  $dump[] = "$pubdir/whattext";
+}
 $actions = array_merge($dump,
 		       array_merge($pre,
 				   array_merge($migr,
 					       array_merge($wsh, 
 							   $post))));
-$actions[] = "$pubdir/wstart";
-$actions[] = "/etc/rc.d/init.d/httpd start";
+if ($dbid) {
+  $actions[] = "$pubdir/wstart";
+  $actions[] = "/etc/rc.d/init.d/httpd start";
+}
 print_r($actions);
 echo "continue (Y|N) ?";
 $stdin=fopen("php://stdin","r");;

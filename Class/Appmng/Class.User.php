@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.24 2004/02/24 16:29:21 eric Exp $
+ * @version $Id: Class.User.php,v 1.25 2004/03/01 08:34:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.24 2004/02/24 16:29:21 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.25 2004/03/01 08:34:16 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -23,7 +23,9 @@ include_once('Class.Group.php');
 require_once 'PEAR.php';
 require_once 'Crypt/CHAP.php';
 
+define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
+define("GADMIN_ID", 4);
 
 Class User extends DbObj
 {
@@ -159,7 +161,7 @@ create sequence seq_id_users start 10";
        // double pass to compute dynamic profil on itself
       if ($this->fid<>"") { 
 
- 	$wsh = GetParam("CORE_PUBDIR")."/wsh.php";
+ 	$wsh = GetParam("CORE_PUBDIR","/home/httpd/what")."/wsh.php";
  	$cmd = $wsh . " --api=usercard_iuser --whatid={$this->id}";
  	exec($cmd);
       }
@@ -280,8 +282,8 @@ create sequence seq_id_users start 10";
    * @param int $iddomain mail domain identificator
    */
   function SetGroups($fid,$gname,$login,$iddomain)  {
-    $this->lastname=$gname;
-    if ($this->login=="") $this->login=$login;
+    if ($gname!="") $this->lastname=$gname;
+    if (($this->login=="")&&($login!="")) $this->login=$login;
 
   
 
@@ -336,37 +338,38 @@ create sequence seq_id_users start 10";
     }
 
   function FreedomWhatUser() {
+   
+    if (@include_once('FDL/Lib.Dir.php')) {
 
-    include_once('FDL/Lib.Dir.php');
+      $dbaccess=GetParam("FREEDOM_DB");
 
-    $dbaccess=GetParam("FREEDOM_DB");
+      if ($this->fid<>"") { 
+	$iuser=new Doc($dbaccess,$this->fid); 
 
-    if ($this->fid<>"") { 
-      $iuser=new Doc($dbaccess,$this->fid); 
-
-      $err=$iuser->RefreshDocUser(); 
-
-    } //Update from what
-    else {
-      if ($this->isgroup=="Y") $fam="IGROUP";
-      else $fam="IUSER";;
-      $filter = array("us_whatid = ".$this->id);
-      $tdoc = getChildDoc($dbaccess, 0,0,"ALL", $filter,1,"LIST",$fam);
-      if (count ($tdoc)==0)  {
-	//Create a new doc IUSER                                        
-	$iuser = createDoc($dbaccess,$fam);
-	$iuser->SetValue("US_WHATID",$this->id);   
-	$iuser->Add();
 	$err=$iuser->RefreshDocUser(); 
-      } else {
-	$this->fid=$tdoc[0]->id;
-	$this->modify();
-	$err=$tdoc[0]->RefreshDocUser(); 
-	
-      }
 
+      } //Update from what
+      else {
+	if ($this->isgroup=="Y") $fam="IGROUP";
+	else $fam="IUSER";;
+	$filter = array("us_whatid = ".$this->id);
+	$tdoc = getChildDoc($dbaccess, 0,0,"ALL", $filter,1,"LIST",$fam);
+	if (count ($tdoc)==0)  {
+	  //Create a new doc IUSER                                        
+	  $iuser = createDoc($dbaccess,$fam);
+	  $iuser->SetValue("US_WHATID",$this->id);   
+	  $iuser->Add();
+	  $err=$iuser->RefreshDocUser(); 
+	} else {
+	  $this->fid=$tdoc[0]->id;
+	  $this->modify();
+	  $err=$tdoc[0]->RefreshDocUser(); 
+	
+	}
+
+      }
+      return $err;
     }
-    return $err;
   }
 
 
@@ -394,7 +397,6 @@ create sequence seq_id_users start 10";
 
   function PostInit() {
 
-
     $group = new group($this->dbaccess);
 
     // Create admin user
@@ -404,19 +406,19 @@ create sequence seq_id_users start 10";
     $this->firstname="What";
     $this->password_new="anakeen";
     $this->login="admin";
-    $this->Add();
+    $this->Add(true);
     $group->iduser=$this->id;
 
     // Create default group
     $this->iddomain=1;
-    $this->id=2;
-    $this->lastname="Default";
-    $this->firstname="What Group";
+    $this->id=GALL_ID;
+    $this->lastname="Default What Group";
+    $this->firstname="";
     $this->login="all";
     $this->isgroup="Y";
-    $this->Add();
+    $this->Add(true);
     $group->idgroup=$this->id;
-    $group->Add();
+    $group->Add(true);
   
   
     // Create anonymous user
@@ -426,8 +428,19 @@ create sequence seq_id_users start 10";
     $this->firstname="guest";
     $this->login="anonymous";
     $this->isgroup="N";
-    $this->Add();
+    $this->Add(true);
 
+    // Create admin group
+    $this->iddomain=1;
+    $this->id=GADMIN_ID;
+    $this->lastname="Admin Group";
+    $this->firstname="";
+    $this->login="gadmin";
+    $this->isgroup="Y";
+    $this->Add(true);
+    $group->idgroup=GALL_ID;
+    $group->iduser=GADMIN_ID;
+    $group->Add(true);
 
     // Store error messages
      

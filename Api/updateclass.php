@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php,v 1.4 2004/02/17 10:34:05 eric Exp $
+ * @version $Id: updateclass.php,v 1.5 2004/03/01 08:34:31 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: updateclass.php,v 1.4 2004/02/17 10:34:05 eric Exp $
+// $Id: updateclass.php,v 1.5 2004/03/01 08:34:31 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/Attic/updateclass.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -92,7 +92,7 @@ if (! $dbid) {
 } else print _("access granted to  database $db\n");
 
 $sql=array();
-$rq=pg_exec ($dbid, "select * from ".$o->dbtable." LIMIT 1;");
+$rq=@pg_query ($dbid, "select * from ".$o->dbtable." LIMIT 1;");
 if (!$rq) {
   // table not exist : just create
   $o->Create();
@@ -102,17 +102,19 @@ if (!$rq) {
 //       $sql[]=$sqlquery;
   // }
 } else {
-
-  $row= pg_fetch_array($rq,0,PGSQL_ASSOC);
-
+  $row=0;
 
 
-  if ($row) {
-    $fieds = array_intersect($o->fields,array_keys($row));
-    $sql[]= "CREATE TABLE ".$o->dbtable."_old AS SELECT * FROM ".$o->dbtable.";";
+  if (pg_result_error($rq) == "") {
+    if (pg_num_rows($rq) > 0 ) {
+      $row= pg_fetch_array($rq,0,PGSQL_ASSOC);
+      if ($row) {
+	$fieds = array_intersect($o->fields,array_keys($row));
+	$sql[]= "CREATE TABLE ".$o->dbtable."_old AS SELECT * FROM ".$o->dbtable.";";
+      }
+    }
+    $sql[]= "DROP TABLE ".$o->dbtable.";";
   }
-  $sql[]= "DROP TABLE ".$o->dbtable.";";
-  
   $sqlcmds = explode(";",$o->sqlcreate);
   while (list($k,$sqlquery)=each($sqlcmds)) {
     if (chop($sqlquery) != "")

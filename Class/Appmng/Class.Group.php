@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.6 2004/02/24 16:29:21 eric Exp $
+ * @version $Id: Class.Group.php,v 1.7 2004/03/01 08:34:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -47,7 +47,6 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
       $query-> AddQuery("iduser='{$this->iduser}'");
 
       $list = $query->Query();
-  
       if ($query->nb >0) {
 	while (list($k,$v) = each($list)) {
 	  $this->groups[] = $v->idgroup;
@@ -66,8 +65,10 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
    */
   function SuppressUser($uid) {
       $err="";
-      if ($this->isAffected() && ($uid > 0)) {
+
+      if (($this->iduser>0) && ($uid > 0)) {
 	$err = $this->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=$uid");
+	$this->PostDelete();
       }
       return $err;			   
   }
@@ -91,6 +92,10 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
   
     $wsh = GetParam("CORE_PUBDIR")."/wsh.php";
     $cmd = $wsh . " --api=freedom_groups";
+
+    exec($cmd);
+    $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
+    $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
 
     exec($cmd);
   }
