@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.28 2004/10/29 09:33:36 eric Exp $
+ * $Id: core.css,v 1.29 2005/01/20 16:48:32 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -21,6 +21,13 @@ TD {
   font-size: [CORE_FONTBASESIZE];
 	empty-cells: show;
 	border-style : inherit;
+}
+TH {
+  font-family: [CORE_FONTLIST1];
+  font-size: [CORE_FONTBASESIZE];
+  empty-cells: show;
+  border-style : inherit;
+  font-weight: bold;
 }
 TR {
   background: [CORE_BGCELLCOLOR];
