@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.7 2002/04/29 15:30:00 eric Exp $
+// $Id: Lib.Http.php,v 1.8 2002/07/11 13:16:44 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -23,7 +23,7 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.7 2002/04/29 15:30:00 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.8 2002/07/11 13:16:44 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -90,6 +90,7 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE) {
 
    $mime_type = GetMimeType($ext);
    if ($add_ext) $name=$name.".".$ext;
+  header("Cache-control: private"); // for IE : don't know why !!
    header("Content-Disposition: form-data;filename=$name");
    header("Content-type: ".$mime_type);
    echo $src;
@@ -98,7 +99,9 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE) {
 function Http_DownloadFile($filename,$name,$mime_type='') {
 
    
+  header("Cache-control: private"); // for IE : don't know why !!
    header("Content-Disposition: form-data;filename=$name");
+   header("Cache-control: private"); // for IE : don't know why !!
    header("Content-type: ".$mime_type);
    $fd = fopen($filename, "r");
    while (! feof($fd)) {
