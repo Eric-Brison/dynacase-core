@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.17 2002/12/07 15:32:54 eric Exp $
+//  $Id: Class.Application.php,v 1.18 2003/01/14 18:19:06 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.17 2002/12/07 15:32:54 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.18 2003/01/14 18:19:06 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -36,6 +36,10 @@ include_once('Lib.Http.php');
 include_once('Lib.Common.php');
 
 function N_($s) {return ($s);} // to tag gettext without change text immediatly
+function f_paramglog($var) { // filter to select only not global
+    return (! ((isset($var["global"]) && ($var["global"] == 'Y'))));
+}
+
 
 Class Application extends DbObj
 {
@@ -487,6 +491,7 @@ function SetParamDef($key,$val)
     $pdef->name=$key;
     $pdef->isuser="N";
     $pdef->isstyle="N";
+    $pdef->isglob="N";  
     $pdef->appid=$this->id;
     $pdef->descr="";
     $pdef->kind="text";
@@ -495,7 +500,8 @@ function SetParamDef($key,$val)
     if (isset($val["kind"]))  $pdef->kind=$val["kind"];
     if (isset($val["user"]) && $val["user"]=="Y") $pdef->isuser="Y";
     if (isset($val["style"]) && $val["style"]=="Y") $pdef->isstyle="Y";
-    if (isset($val["descr"])) $pdef->descr=$val["descr"];    
+    if (isset($val["descr"])) $pdef->descr=$val["descr"];  
+    if (isset($val["global"]) && $val["global"]=="Y") $pdef->isglob="Y";  
     if ($pdef->Add() != "") $pdef->Modify();
   } else {
     $pdef->Add();
@@ -632,7 +638,7 @@ function InitApp($name,$update=FALSE) {
      if (file_exists("{$this->childof}/{$this->childof}_init.php")) {
         include("{$this->childof}/{$this->childof}_init.php");
         global $app_const;
-        $this->InitAllParam($app_const,true);
+        $this->InitAllParam(array_filter($app_const,"f_paramglog"),true);
      }
 
      if ($this->id > 1) {

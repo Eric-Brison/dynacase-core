@@ -59,7 +59,7 @@ function GetFileVersion($topdir) {
   if ($dir = @opendir($topdir)) {
     while (($file = readdir($dir)) !== false) {
       $inifile = $topdir."/$file/${file}_init.php";
-      if (is_file($inifile)) {
+      if (@is_file($inifile)) {
 
 	$fini = fopen($inifile,"r");
 	while (! feof($fini)) {
