@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_mod.php,v 1.8 2004/03/17 17:47:10 eric Exp $
+ * @version $Id: user_mod.php,v 1.9 2004/07/27 09:51:19 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.8 2004/03/17 17:47:10 eric Exp $
+// $Id: user_mod.php,v 1.9 2004/07/27 09:51:19 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -121,7 +121,7 @@ function user_mod(&$action) {
     if (($exptime>0) && ($exptime != $user->expires))  $user->expires=$exptime;	 
   }
     
-  $user->Modify(true);
+  $user->Modify();
     
   $ugroup = new Group($action->dbaccess,$user->id);
   if ($ugroup-> IsAffected()) {
