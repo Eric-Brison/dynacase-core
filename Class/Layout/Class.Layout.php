@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.13 2003/05/14 17:11:49 eric Exp $
+//  $Id: Class.Layout.php,v 1.14 2003/07/30 08:55:08 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -276,6 +276,8 @@ var $strip='Y';
     while(list($k,$v) = each($list)) {
       $out .= $v."\n";
     }
+
+    // Add log messages
     $list = $this->action->parent->GetLogMsg();
     reset($list);
     $out .= "var logmsg=new Array();\n";
@@ -284,6 +286,12 @@ var $strip='Y';
     }
     $out .= "displayLogMsg(logmsg);\n";
     $this->action->parent->ClearLogMsg();
+
+    // Add warning messages
+    $list = $this->action->parent->GetWarningMsg();   
+    if (count($list) > 0) $out .= "displayWarningMsg('".implode("\\n---------\\n",$list)."');\n";
+    $this->action->parent->ClearWarningMsg();
+
     return($out);
   }
 

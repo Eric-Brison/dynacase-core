@@ -1,4 +1,4 @@
-<?
+<?php
 // ---------------------------------------------------------------------------
 // anakeen 2000 - Yannick Le Briquer
 // ---------------------------------------------------------------------------
@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.14 2003/06/02 13:51:27 eric Exp $
+//  $Id: Class.Action.php,v 1.15 2003/07/30 08:55:08 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.14 2003/06/02 13:51:27 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.15 2003/07/30 08:55:08 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -190,6 +190,11 @@ function AddLogMsg($msg) {
   }
 }
 
+function AddWarningMsg($msg) {
+  if (isset ($this->parent)) {
+   return($this->parent->AddWarningMsg($msg));
+  }
+}
 function GetIcon($name,$text,$width="",$height="") {
   
   if ($width != "")

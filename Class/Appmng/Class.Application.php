@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.26 2003/07/25 12:41:27 eric Exp $
+//  $Id: Class.Application.php,v 1.27 2003/07/30 08:55:08 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.26 2003/07/25 12:41:27 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.27 2003/07/30 08:55:08 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -261,6 +261,19 @@ function AddLogMsg($code)
      $this->log->info($suser.$code);
   }
 }
+function AddWarningMsg($code) 
+{
+  if ($code =="") return;
+  // Js Code are stored in the top level application
+  if ($this->parent!="") {
+     $this->parent->AddWarningMsg($code);
+  } else {    
+     $logmsg=$this->session->read("warningmsg", array());
+     $logmsg[]=str_replace("\n","\\n",addslashes($code));
+     $this->session->register("warningmsg",$logmsg);
+   
+  }
+}
 function GetJsRef() 
 {
   if ($this->parent!="") {
@@ -287,6 +300,15 @@ function GetLogMsg()
 function ClearLogMsg() 
 {
      $this->session->unregister("logmsg");
+}   
+function GetWarningMsg() 
+{  
+    return($this->session->read("warningmsg", array()));
+}
+
+function ClearWarningMsg() 
+{
+     $this->session->unregister("warningmsg");
 }
 function AddCssRef($ref) 
 {

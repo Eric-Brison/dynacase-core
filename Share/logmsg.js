@@ -107,6 +107,11 @@ function windowExist(Name, NoOpen) {
   }
   return w;
 }
+var warnmsg='';
+function displayWarningMsg(logmsg) {
+  warnmsg=logmsg;
+  setTimeout('alert(warnmsg)',1000);
+}
 function displayLogMsg(logmsg) {
 
   if (logmsg.length == 0) return;
