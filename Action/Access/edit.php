@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.3 2002/02/27 08:36:28 eric Exp $
+// $Id: edit.php,v 1.4 2002/03/02 18:06:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -79,8 +79,8 @@ function edit_oid(&$action) {
   $coid= intval(GetHttpVars("oid")) ;  
   $appId=GetHttpVars("appid");
 
-  $action->lay->Set("modifyact", "MODIFY_OBJECT");
-  $action->lay->Set("returnact","EDIT_OBJECT"); // 
+  $action->lay->Set("modifyact", "MODIFY");
+  $action->lay->Set("returnact","EDIT_OBJECT_USER&oid=$coid&userid=$userId&appid=$appId"); // 
   $action->lay->Set("target", "_self");
 
   if ($userId == 0) $userId=$action->Read("access_user_id");
@@ -131,8 +131,7 @@ function edit_main(&$action, $userId, $appId, $coid) {
       // compute acl for userId
     $uperm = new ObjectPermission($action->dbaccess,array($userId, $coid));
 
-    // display in same time dprivilege and gprivilege
-    $uperm->gprivileges = array_merge($uperm->gprivileges, $uperm->dprivileges);
+
   } else {
     $uperm = new Permission($action->dbaccess,array($userId, $appId));
   }

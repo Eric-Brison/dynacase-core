@@ -63,6 +63,8 @@ function chgacl(iduser, idacl) {
 <p style="text-align:left">
 <input class="CORETblHead" type="submit" 
          name="Modify" value="[TEXT:modify]"  >
+<input class="CORETblHead" type="button" onClick="self.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT&oid=[oid]&appid=[appid]&viewuser=yes'" name="viewuser" value="[TEXT:viewuser]">
+<input class="CORETblHead" type="button" onClick="self.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT&oid=[oid]&appid=[appid]&viewuser=no'" name="viewgroup" value="[TEXT:viewgroup]">
 <input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:close]">
 </p>
 </form>

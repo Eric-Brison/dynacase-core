@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: modify_object.php,v 1.2 2002/02/18 10:55:16 eric Exp $
+// $Id: modify_object.php,v 1.3 2002/03/02 18:06:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/modify_object.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: modify_object.php,v $
+// Revision 1.3  2002/03/02 18:06:26  eric
+// correction et optimisation pour droit objet
+//
 // Revision 1.2  2002/02/18 10:55:16  eric
 // modif id_fields de objectcontrol : cause pas unique
 //
@@ -69,7 +72,7 @@ function modify_object(&$action) {
 
   // test if current user can modify ACL 
   $op=new ObjectPermission($action->dbaccess,array($action->parent->user->id,
-                           $coid));
+						   $coid));
   if (($err = $op-> ControlOid( $appId, "modifyacl")) != "") {
 	$action -> ExitError($err);
   }
@@ -80,12 +83,14 @@ function modify_object(&$action) {
 
 
 
+
   while (list($userId,$aclon) = each ($acls)) {     
   
       // modif permission for a particular user
     $p=new ObjectPermission($action->dbaccess,array($userId,$coid));
 
-    $gp = array_unique(array_merge($p->gprivileges,$p->dprivileges));
+    $gp = array_unique($p->gprivileges);
+
 
 
     // delete old permissions

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: modify.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: modify.php,v 1.2 2002/03/02 18:06:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/modify.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: modify.php,v $
+// Revision 1.2  2002/03/02 18:06:26  eric
+// correction et optimisation pour droit objet
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -73,7 +76,7 @@ function modify(&$action) {
     // test if current user could modify ACL 
       $p=new ObjectPermission($action->dbaccess,array($action->parent->user->id,
 						      $coid));
-      if (($err = $p-> ControlOid($coid, $appId, "modifyacl")) != "") {
+      if (($err = $p-> ControlOid( $appId, "modifyacl")) != "") {
 	$action -> ExitError($err);
       }
     

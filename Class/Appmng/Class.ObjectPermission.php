@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ObjectPermission.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.ObjectPermission.php,v 1.2 2002/03/02 18:06:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ObjectPermission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -21,6 +21,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Class.ObjectPermission.php,v $
+// Revision 1.2  2002/03/02 18:06:26  eric
+// correction et optimisation pour droit objet
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -37,7 +40,7 @@
 //
 // ---------------------------------------------------------------------------
 //
-$CLASS_PERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_PERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.2 2002/03/02 18:06:26 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
@@ -60,7 +63,8 @@ create index operm_idx1 on operm(id_user);
   var $classid=0; // if 0 not a controlled object
   var $description="";
   var $coid=array();
-  var $dprivileges = array(); // default privilege from permission table
+  var $privileges = array(); // default privilege from permission table
+  var $gprivileges= array();// privileges array for the group user
   var $iscomplete = false; // indicate if all privileges are computed
 
   function ObjectPermission($dbaccess='', $id='',$res='',$dbid=0)
@@ -85,17 +89,17 @@ create index operm_idx1 on operm(id_user);
 	  $this->Affect(array("id_user" => $id[0],
 			      "id_obj" => $id[1]));
       }
+    }
+  function GetDescription()
+    {
       $octrl = new ControlObject("",$this->id_obj);
 
       if ( $octrl->IsAffected()) {
 	$this->classid = $octrl->id_class;
 	$this->description = $octrl->description;
       }
-      
+      return $this->description;
 
-      $uperm = new Permission("", array($this->id_user, $this->classid));    
-      $this->dprivileges = $uperm->privileges; 
-      $this->privileges = $this->dprivileges;
     }
 
   function PostSelect($id)
@@ -148,7 +152,7 @@ create index operm_idx1 on operm(id_user);
     if ( $this->iscomplete) return ($this->privileges);
 
     $this->privileges= array(); 
-    $this->upprivileges= array();// privileges array for a user (including group) in an application
+    $this->upprivileges= array();// privileges array for a user (not including group) in an application
     $this->unprivileges= array();// specifific NO privileges array for a user in an application
 
     $this->gprivileges= array();// privileges array for the group user
@@ -201,7 +205,7 @@ create index operm_idx1 on operm(id_user);
       }
     }
 
-    $this->AddDefaultPrivileges();
+    //    $this->AddDefaultPrivileges();
     $this->iscomplete= true; // to avoid another computing
     return($this->privileges);
   }
@@ -271,7 +275,7 @@ create index operm_idx1 on operm(id_user);
 	
 
       if (! $this->HasPrivilege($acl->id)) {
-	$err = "Object Permission : permission $acl->description needed ($this->description - #".$this->id_obj.")";
+	$err = "Object Permission : permission $acl->description needed (".$this->GetDescription()." - #".$this->id_obj.")";
 	$this->coid[$method]=$err; // memo for optimization (no new computing)
 	return $err;
 	           	  		

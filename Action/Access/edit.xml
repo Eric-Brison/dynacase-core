@@ -116,7 +116,7 @@ function moinsacl(id)
     <TD class="CORETblHeadCell"><span class="CORETblHead">R</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
     <TD class="CORETblHeadCell" align="right">&nbsp;
       [BLOCK USERS]
-       <select name="suserid" onChange="document.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT&mod=app&isclass=yes&oid=[oid]&userid='+this.options[this.selectedIndex].value">
+       <select name="suserid" onChange="document.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[oid]&appid=[appid]&userid='+this.options[this.selectedIndex].value">
         [BLOCK USER]
 	<option value=[userid] [selecteduser]>[descuser]</option>
         [ENDBLOCK USER]
@@ -125,7 +125,6 @@ function moinsacl(id)
 
       [BLOCK OBJECTCLASS]
        <select name="soid" onChange="document.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT&mod=app&isclass=yes&id=[userid]&oid='+this.options[this.selectedIndex].value">
-	<option value=0>[TEXT:anyoid]</option>
         [BLOCK OID]
 	<option value=[oid] [selectedoid]>[descoid]</option>
         [ENDBLOCK OID]

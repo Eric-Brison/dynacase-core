@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit_object.php,v 1.2 2002/02/18 10:55:16 eric Exp $
+// $Id: edit_object.php,v 1.3 2002/03/02 18:06:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit_object.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -33,6 +33,7 @@ function edit_object(&$action) {
 
   $coid = GetHttpVars("oid",0);
   $appid = GetHttpVars("appid",0);
+  $viewuser = (GetHttpVars("viewuser","no")=="yes");
     // contruct user id list
 
   // write title : oid description
@@ -55,8 +56,8 @@ function edit_object(&$action) {
 
   // define ACL for  each user
     $ouser = new User();
-  //$tiduser = $ouser->GetUserAndGroupList();
-    $tiduser = $ouser->GetGroupList();
+  if ($viewuser) $tiduser = $ouser->GetUserList();
+  else    $tiduser = $ouser->GetGroupList();
     $userids= array();
     while(list($k,$v) = each($tiduser)) {
       if ($v->id == 1) continue; // except admin : don't need privilege
