@@ -144,7 +144,7 @@ pg_close($dbid);
       $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
       break;
     case "D":
-      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=delete --appname=$k";
+      $wsh[] = "#$pubdir/wsh.php --api=appadmin --method=delete --appname=$k";
       break;
 
     }
