@@ -1,7 +1,4 @@
-<!-- 
-  $Id: import_export.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
-  $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/import_export.xml,v $
--->
+
 <table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
 <tr><td colspan="2">
 [ZONE CORE:TABINDEX] 
@@ -15,7 +12,7 @@
   </td>
   <td valign="top">
    <form ENCTYPE="multipart/form-data" name="ffile" method="POST" action="[CORE_STANDURL]app=ACCESS&action=UPLOAD">
-     <a href="#" onClick="if (document.ffile.upfile.value == '') alert('[TEXT:needfile]'); else submit();">
+     <a href="#" onclick="if (document.ffile.upfile.value == '') alert('[TEXT:needfile]'); else document.ffile.submit();">
        <img border="0" align="center" src="[IMG:upload.gif]" alt="[TEXT:upload]" title="[TEXT:upload]">
      </a>
      <input type="FILE" name="upfile">
