@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: appl_access.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: appl_access.php,v 1.2 2002/03/08 14:37:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/appl_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,58 +21,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: appl_access.php,v $
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.9  2001/09/19 14:39:55  eric
-// correction pour login identique : all group
-//
-// Revision 1.8  2001/09/07 16:52:01  eric
-// gestion des droits sur les objets
-//
-// Revision 1.7  2001/08/28 10:12:50  eric
-// modification pour la prise en comptes des groupes d'utilisateurs
-//
-// Revision 1.6  2001/08/20 16:48:58  eric
-// changement des controles d'accessibilites
-//
-// Revision 1.5  2001/02/08 09:04:04  yannick
-// Mise au point
-//
-// Revision 1.4  2001/02/07 17:21:51  yannick
-// Integration de querygen
-//
-// Revision 1.3  2000/11/01 19:12:30  yannick
-// Effet de bords sur les listes de droits des applications
-//
-// Revision 1.2  2000/10/24 17:14:33  yannick
-// Import/Export
-//
-// Revision 1.1  2000/10/23 12:36:47  yannick
-// Ajout de l'acces aux applications
-//
-// Revision 1.2  2000/10/23 09:09:37  marc
-// Mise au point des utilisateurs
-//
-// Revision 1.1.1.1  2000/10/21 16:44:39  yannick
-// Importation initiale
-//
-// Revision 1.2  2000/10/19 16:47:23  marc
-// Evo TableLayout
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.QueryDb.php");
 include_once("Class.SubForm.php");
 include_once("Class.QueryGen.php");
 
 // -----------------------------------
-function appl_access(&$action, $isclass=false) {
+function appl_access(&$action, $oid=0) {
 // -----------------------------------
 
   $baseurl=$action->GetParam("CORE_BASEURL");
@@ -85,14 +40,14 @@ function appl_access(&$action, $isclass=false) {
 
   // affect the select form elements
   $query = new QueryDb("","Application");
-  if (! $isclass) {
+  if ($oid == 0) {
     $query-> AddQuery("(objectclass != 'Y' ) OR ( objectclass isnull)");
     $varreg = "access_appl_id";
     $paramedit="&isclass=no";
   } else {
     $query->AddQuery("objectclass = 'Y'");
     $varreg = "access_class_id";
-    $paramedit="&isclass=yes";
+    $paramedit="&isclass=yes&oid=$oid";
   }
   $applist = $query->Query();
   unset($query);
@@ -102,7 +57,7 @@ function appl_access(&$action, $isclass=false) {
 
   // select the first user if not set
   $appl_id=$action->Read($varreg);
-  $action->log->debug("appl_id : $appl_id");
+
   if ($appl_id == "") $appl_id=0; 
 
   // Set the edit form element
@@ -131,7 +86,7 @@ function appl_access(&$action, $isclass=false) {
 	$appl_id=$v->id;
 	$action->Register($varreg,$appl_id);
       }
-      if ($isclass) $tab[$i]["text"]=$v->short_name;
+      if ($oid != 0) $tab[$i]["text"]=_($v->short_name);
       else $tab[$i]["text"]=$v->name;
       $tab[$i]["id"]=$v->id;
       if ($appl_id == $v->id) {
@@ -159,9 +114,9 @@ function appl_access(&$action, $isclass=false) {
 					   "desc"=>"lastname");
 
     $query->table->headcontent = array (
-					"shortname" =>$action->text("userlogin"),
-					"desc" =>$action->text("username"),
-					"permission" => $action->text("permission"));
+					"shortname" =>_("userlogin"),
+					"desc" =>_("username"),
+					"permission" => _("permissions"));
 
 
     // 1) Get all users except admin
@@ -178,11 +133,14 @@ function appl_access(&$action, $isclass=false) {
       if (!isset($v["login"])) continue;
     
     
-      $uperm = new Permission($action->dbaccess,array($v["id"], $appl_sel->id));
+      if ($oid == 0) $uperm = new Permission($action->dbaccess,array($v["id"], $appl_sel->id));
+      else $uperm = new ObjectPermission($action->dbaccess,array($v["id"],
+								 $oid,
+								 $appl_sel->id));
       $name = $v["login"];
 
       $tab=array();
-      $aclids = $uperm-> privileges;
+      $aclids = $uperm->privileges;
       if (! $aclids) { // no privilege
 	$aclids=array(0);
 
@@ -224,6 +182,5 @@ function appl_access(&$action, $isclass=false) {
   }
   
 
-  $action->log->debug("FINACCESS : $appl_id");
 }
 ?>

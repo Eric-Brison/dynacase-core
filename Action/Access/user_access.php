@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: user_access.php,v 1.2 2002/03/08 14:37:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,55 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: user_access.php,v $
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.12  2001/10/17 15:41:11  eric
-// mise en place de i18n via gettext
-//
-// Revision 1.11  2001/09/19 14:39:55  eric
-// correction pour login identique : all group
-//
-// Revision 1.10  2001/09/07 16:52:01  eric
-// gestion des droits sur les objets
-//
-// Revision 1.9  2001/08/28 10:12:51  eric
-// modification pour la prise en comptes des groupes d'utilisateurs
-//
-// Revision 1.8  2001/08/20 16:48:58  eric
-// changement des controles d'accessibilites
-//
-// Revision 1.7  2001/02/07 17:21:51  yannick
-// Integration de querygen
-//
-// Revision 1.6  2001/01/18 22:39:27  marc
-// Init du user_sel lors du premier acces à lapage
-//
-// Revision 1.5  2000/11/01 19:12:30  yannick
-// Effet de bords sur les listes de droits des applications
-//
-// Revision 1.4  2000/10/24 17:14:33  yannick
-// Import/Export
-//
-// Revision 1.3  2000/10/23 12:36:04  yannick
-// Ajout de l'acces aux applications
-//
-// Revision 1.2  2000/10/23 09:09:37  marc
-// Mise au point des utilisateurs
-//
-// Revision 1.1.1.1  2000/10/21 16:44:39  yannick
-// Importation initiale
-//
-// Revision 1.2  2000/10/19 16:47:23  marc
-// Evo TableLayout
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.QueryDb.php");
 include_once("Class.QueryGen.php");
 include_once("Class.SubForm.php");
@@ -164,7 +116,7 @@ function user_access(&$action, $group=false) {
   $query->table->headcontent = array (
                               "shortname" =>$action->text("appname"),
                               "desc" =>$action->text("appdesc"),
-                              "permission" => $action->text("permission"));
+                              "permission" => $action->text("permissions"));
 
   $query->table->fields= array("id","name","selname","description","edit");
 

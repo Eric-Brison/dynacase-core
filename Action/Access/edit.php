@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.5 2002/03/05 18:14:51 eric Exp $
+// $Id: edit.php,v 1.6 2002/03/08 14:37:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -35,6 +35,7 @@ function edit(&$action) {
 
   $group = (GetHttpVars("group") == "yes");
   $isclass= (GetHttpVars("isclass") == "yes");
+  $coid= intval(GetHttpVars("oid")) ;
   // the modification can come from action user_access or appl_access
   if (GetHttpVars("mod") == "user") {    
     $appId=GetHttpVars("id");
@@ -49,7 +50,7 @@ function edit(&$action) {
      $userId=GetHttpVars("id");
     if ($isclass) {
        $appId=$action->Read("access_class_id");
-      $action->lay->Set("returnact","OBJECT_ACCESS"); // for return previous page
+      $action->lay->Set("returnact","OBJECT_ACCESS&oid=$coid"); // for return previous page
     } else {      
        $appId=$action->Read("access_appl_id");
       $action->lay->Set("returnact","APPL_ACCESS"); // for return previous page
@@ -58,7 +59,6 @@ function edit(&$action) {
   $action->lay->Set("modifyact", "MODIFY");
   $action->lay->Set("target", "body");
 
-  $coid= intval(GetHttpVars("oid")) ;
 
   if (($isclass) || ($coid > 0)) {
     // oid list for object class only
@@ -80,8 +80,8 @@ function edit_oid(&$action) {
   $appId=GetHttpVars("appid");
 
   $action->lay->Set("modifyact", "MODIFY");
-  $action->lay->Set("returnact","EDIT_OBJECT_USER&oid=$coid&userid=$userId&appid=$appId"); // 
-  $action->lay->Set("target", "_self");
+  $action->lay->Set("returnact","OBJECT_ACCESS&oid=$coid&userid=$userId&appid=$appId"); // 
+  $action->lay->Set("target", "body");
 
   if ($userId == 0) $userId=$action->Read("access_user_id");
   if ($coid == 0) $coid=$action->Read("access_object_id");
@@ -92,7 +92,7 @@ function edit_oid(&$action) {
   $action->lay->SetBlockData("USERS",array(array("zou")));
 
   // write title : oid description
-  $oid = new ControlObject($action->dbaccess, array($coid,$appId));
+  $oid = new ControlObject("", array($coid,$appId));
 
   // register for next time : same parameters
   $action->Register("access_object_id",$coid);
@@ -109,6 +109,7 @@ function edit_oid(&$action) {
 function edit_main(&$action, $userId, $appId, $coid) {
 // ------------------------
 
+//  print "$userId -  $appId - $coid";
   // Get all the params  
   $isclass= (GetHttpVars("isclass") == "yes");
 
@@ -132,14 +133,35 @@ function edit_main(&$action, $userId, $appId, $coid) {
     $action->lay->SetBlockData("OID",$oids); 
 
 
+    // contruct user id list
 
-    if (!($coid > 0))    $coid= $oids[0]["oid"]; // get first if no selected
+
+    $ouser = new User();
+    $tiduser = $ouser->GetUserAndGroupList();
+    $userids= array();
+    while(list($k,$v) = each($tiduser)) {
+      if ($v->id == 1) continue; // except admin : don't need privilege
+      if ($v->id == $userId) $userids[$k]["selecteduser"] = "selected";
+      else $userids[$k]["selecteduser"]="";
+      $userids[$k]["userid"]= $v->id;
+      $userids[$k]["descuser"]=$v->firstname." ".$v->lastname;
+    }
+
+
+    $action->lay->SetBlockData("USER",$userids); 
+    
+    $action->lay->Set("nbinput", 5); 
+  } else {
+    $action->lay->Set("nbinput", 4); 
+  
+  }
+
+  if (($isclass) && (!($coid > 0)))    $coid= $oids[0]["oid"]; // get first if no selected
     
   $action->lay->Set("userid",$userId);
   $action->lay->Set("oid",$coid);
   $action->lay->Set("appid",$appId);
 
-  //print "$userId -  $appId - $coid";
 
 
     //-------------------
@@ -149,14 +171,18 @@ function edit_main(&$action, $userId, $appId, $coid) {
   
   if ($coid > 0) {
     // control view acl permission first
-    $p=new ObjectPermission($action->dbaccess,array($action->parent->user->id,
+    $p=new ObjectPermission("",array($action->parent->user->id,
 						    $coid, 
 						    $appId));
+    if (ereg ("dbname=(.*)",$p->dbaccess, $reg)) {
+      $action->lay->Set("dboperm", $reg[1]); 
+    }
+
     if (($err = $p-> ControlOid( $appId, "viewacl")) != "") {
       $action -> ExitError($err);
     }
       // compute acl for userId
-    $uperm = new ObjectPermission($action->dbaccess,array($userId, $coid, $appId));
+    $uperm = new ObjectPermission("",array($userId, $coid, $appId));
     $uperm->GetGroupPrivileges();
 
   } else {
@@ -206,28 +232,6 @@ function edit_main(&$action, $userId, $appId, $coid) {
 
 
 
-
-    // contruct user id list
-
-
-    $ouser = new User();
-    $tiduser = $ouser->GetUserAndGroupList();
-    $userids= array();
-    while(list($k,$v) = each($tiduser)) {
-      if ($v->id == 1) continue; // except admin : don't need privilege
-      if ($v->id == $userId) $userids[$k]["selecteduser"] = "selected";
-      else $userids[$k]["selecteduser"]="";
-      $userids[$k]["userid"]= $v->id;
-      $userids[$k]["descuser"]=$v->firstname." ".$v->lastname;
-    }
-
-
-    $action->lay->SetBlockData("USER",$userids); 
-    
-    $action->lay->Set("nbinput", 5); 
-  } else {
-    $action->lay->Set("nbinput", 4); 
-  }
 
 }
 

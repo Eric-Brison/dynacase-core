@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ObjectPermission.php,v 1.3 2002/03/05 18:14:51 eric Exp $
+// $Id: Class.ObjectPermission.php,v 1.4 2002/03/08 14:37:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ObjectPermission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 
-$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.3 2002/03/05 18:14:51 eric Exp $';
+$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.4 2002/03/08 14:37:36 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
@@ -56,6 +56,11 @@ create unique index i_operm on operm (id_user, id_obj, id_class); ';
 			      "id_obj" => $id[1],
 			      "id_class" => $id[2]));
       }
+
+      // change DB for permission : see 'dboperm' session var
+      global $action;
+      $dbaccess= $action->Read("dboperm");
+
 
       if (! $this->DbObj ($dbaccess, $id,$res,$dbid)) {
       
@@ -206,7 +211,7 @@ create unique index i_operm on operm (id_user, id_obj, id_class); ';
 		       "select getprivilege({$this->id_user},{$this->id_obj},{$this->id_class},false)");
     if (pg_numrows ($result) > 0) {
       $arr = pg_fetch_array ($result, 0);
-      $this->privileges = explode(",",substr($arr[0],1,-1));
+      $this->privileges = array_unique(explode(",",substr($arr[0],1,-1)));
     }
     // print_r( $this->privileges);
 

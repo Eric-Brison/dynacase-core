@@ -1,5 +1,5 @@
 <!-- 
-  $Id: user_access.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
+  $Id: user_access.xml,v 1.2 2002/03/08 14:37:36 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.xml,v $
 -->
 
@@ -17,35 +17,57 @@
      </font>
   </td>
   <td>
-    <table align="left"  border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
+
+
+
+<table  border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
     <tr> 
-    <form name="access_chg" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[ACTION_CHG]">
-      <td class="CORETblHeadCell">
-     <font size="-1">
+    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=[ACTION_CHG]">
+      <td width="1px" valign="middle" class="CORETblHeadCell">
        <select name="id" onChange="submit()">
 [BLOCK SELUSER]
          <option [selected] value="[id]">[text]</option> [ENDBLOCK SELUSER]
        </select>
-     </font>
-     </td></form>      
-      <td valign="baseline" colspan="3" align="right" class="CORETblHeadCell">
+      </td>
+    </form>  
+[BLOCK ZONOID]    
+    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=OBJECT_ACCESS">
+      <td   class="CORETblHeadCell" >
+[BLOCK ZONSELOID] 
+       <select name="oid" onChange="submit()">
+[BLOCK OID]
+         <option [selectedoid] value="[coid]">[descoid]</option> [ENDBLOCK OID]
+       </select>        
+        <a href="#" 
+           onClick="javascript:subwindow(300,500,'access_oid','[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[soid]&userid=2&appid=[appid]')">
+          <img align="absmiddle" height="20" alt="[TEXT:edit by object]" title="[TEXT:edit by object]" border="0" src="[IMG:access.gif]">
+        </a>       
+[ENDBLOCK ZONSELOID] 
+        <input type="hidden" value="[dboperm]" name="dboperm"></input>
+       <span class="CORETblHead">[TEXT:in database]</span>
+       <select name="dbopname" onChange="submit()"> 
+[BLOCK DBNAME]
+         <option [selecteddb] value="[dbopname]">[dbopname]</option>
+[ENDBLOCK DBNAME]
+       </select>         
+      </td>   
+    </form> 
+[ENDBLOCK ZONOID] 
+      <td  valign="baseline"  align="right" class="CORETblHeadCell">
        <span class="CORETblHead">
-
         <a href="#" onclick="self.print()">
           <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
-        </a>
-        <a href="#" 
-           onClick="javascript:subwindow(300,500,'[CORE_BASEURL]app=HELP&happ=ACCESS&hact=USERS_ACCESS')">
-          <img alt="[TEXT:help]" title="[TEXT:help]" border="0" src="[IMG:help.gif]">
         </a>
        </span>
       </td>
      </tr>
+</table>
 
+<table   border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
 <!-- TABLEPAGING -->
-<form name="access_mod" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[ACTION_MOD]">
+
 <tr>
-<input type="hidden" name="id" value="">
+
   <td align="left" class="CORETblCell">
 
   &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
@@ -64,9 +86,9 @@
 <tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <tr>
-  <td width="20%" class="CORETblCell"><span class="CORETblBold">[shortname]</span></td>
-  <td width="50%" class="CORETblCell"><span class="CORETblBold">[desc]</span></td>
-  <td width="30%" class="CORETblCell"><span class="CORETblBold">[permission]</span></td>
+  <td  class="CORETblCell"><span class="CORETblBold">[shortname]</span></td>
+  <td  class="CORETblCell"><span class="CORETblBold">[desc]</span></td>
+  <td  class="CORETblCell"><span class="CORETblBold">[permission]</span></td>
 </tr>
 
 <!-- /TABLEHEAD -->
@@ -76,14 +98,12 @@
 <!-- TABLEBODY -->
 [BLOCK TABLEBODY]
 <tr>
-  <td width="30%" ><a href="#" OnClick="javascript:[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
-  <td width="50%" ><span class="CORETbl">[description]</span></td>
-  <td width="30%" ><span class="CORETbl">
-  <font size="-1">
-  <select name="[selname]"  >
-      [BLOCK [id]]<option  value="[aclid]">[aclname]</option>
-      [ENDBLOCK [id]]
-  </select></font></span></td>
+  <td  ><a href="#" OnClick="javascript:[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
+  <td  ><span class="CORETbl">[description]</span></td>
+  <td  ><span class="CORETbl">
+
+      [BLOCK [id]][aclname] &#149; 
+      [ENDBLOCK [id]]</td>
    
 </tr>
 [ENDBLOCK TABLEBODY]
@@ -108,7 +128,7 @@
 
   </td>
 </tr>
-</form>
+
 <!-- /TABLEPAGING -->
 <tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td></tr>
 
@@ -116,4 +136,4 @@
 </table>
 </td></tr>
 </table>
-</form>
+

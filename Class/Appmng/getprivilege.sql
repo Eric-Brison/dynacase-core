@@ -1,7 +1,7 @@
 
 
-create or replace function getprivilege(operm.id_user%TYPE, operm.id_obj%TYPE, operm.id_class%TYPE, bool) 
-returns operm.ids_acl%TYPE as '
+create or replace function getprivilege(int, int, int, bool) 
+returns int[] as '
 declare 
   arg_user alias for $1;
   arg_obj alias for $2;
@@ -53,7 +53,7 @@ end;
 ' language 'plpgsql';
 
 
-create or replace function hasprivilege(operm.id_user%TYPE, operm.id_obj%TYPE, operm.id_class%TYPE, acl.id%TYPE) 
+create or replace function hasprivilege(int, int, int, int) 
 returns bool as '
 declare 
   arg_user alias for $1;

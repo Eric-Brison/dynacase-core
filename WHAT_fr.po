@@ -399,7 +399,7 @@ msgid	"close"
 msgstr	"Fermer"
 
 msgid	"accessfor"
-msgstr	"Contrôle des accès pour application"
+msgstr "Contrôle des accès pour"
 
 msgid	"download"
 msgstr	"Télécharger le fichier d'acces"

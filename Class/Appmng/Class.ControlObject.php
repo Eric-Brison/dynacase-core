@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ControlObject.php,v 1.3 2002/03/05 18:14:51 eric Exp $
+// $Id: Class.ControlObject.php,v 1.4 2002/03/08 14:37:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ControlObject.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -20,23 +20,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Class.ControlObject.php,v $
-// Revision 1.3  2002/03/05 18:14:51  eric
-// refonte object permission
+
 //
-// Revision 1.2  2002/02/18 10:55:16  eric
-// modif id_fields de objectcontrol : cause pas unique
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.1  2001/09/07 16:48:59  eric
-// gestion des droits sur les objets
-//
-//
-// ---------------------------------------------------------------------------
-//
-$CLASS_PERMISSION_PHP = '$Id: Class.ControlObject.php,v 1.3 2002/03/05 18:14:51 eric Exp $';
+$CLASS_CONTROLOBJECT_PHP = '$Id: Class.ControlObject.php,v 1.4 2002/03/08 14:37:36 eric Exp $';
 include_once('Class.DbObjCtrl.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -67,6 +53,21 @@ create unique index i_octrl on octrl (id_obj, id_class);';
  
 
   // --------------------------------------------------------------------
+  function ControlObject($dbaccess='', $id='',$res='',$dbid=0)
+  // --------------------------------------------------------------------
+    {
+      
+
+      // change DB for permission : see 'dboperm' session var
+      global $action;
+      $dbaccess= $action->Read("dboperm");
+
+
+      DbObj::DbObj($dbaccess, $id,$res,$dbid);
+      
+      
+
+    }
 
   // --------------------------------------------------------------------
   
