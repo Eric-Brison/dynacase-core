@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.7 2002/01/29 14:43:07 eric Exp $
+// $Id: index.php,v 1.8 2002/02/04 14:44:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -39,6 +39,7 @@ include_once('Class.Log.php');
 include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
+define("PORT_SSL", 443); // the default port for https
 
 // ----------------------------------------
 // pre include for session cache
@@ -72,9 +73,13 @@ $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 // Init PUBLISH URL from script name
 global $SERVER_NAME;
 global $SCRIPT_NAME;
+global $SERVER_PORT;
 
 if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
-  $puburl = "http://".$SERVER_NAME.$reg[1];
+
+  // determine publish url (detect ssl require)
+  if ($SERVER_PORT != PORT_SSL)   $puburl = "http://".$SERVER_NAME.$reg[1];
+  else $puburl = "https://".$SERVER_NAME.$reg[1];
 } else {
   // it is not allowed
   print "<B>:~(</B>";
@@ -94,6 +99,7 @@ $core->SetVolatileParam("CORE_ROOTURL", "index.php?session={$session->id}&sole=R
 $core->SetVolatileParam("CORE_BASEURL", "index.php?session={$session->id}&sole=A&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?session={$session->id}&sole=Y&");
 
+
 // ----------------------------------------
 // Init Application & Actions Objects
 if (($standalone == "") || ($standalone == "N")) {
@@ -103,6 +109,35 @@ if (($standalone == "") || ($standalone == "N")) {
   $appl = new Application();
   $appl->Set($HTTP_GET_VARS["app"],$core);
 
+  // ----------------------------------------
+    // test SSL mode needed or not
+    // redirect if needed
+  if ($appl->ssl == "Y") {
+    if ($SERVER_PORT != PORT_SSL) {
+      global $REQUEST_URI;   
+
+      // redirect to go to ssl http
+      $sslurl = "https://$SERVER_NAME/$REQUEST_URI";
+      Header("Location: $sslurl");
+      exit;
+    }     
+    
+    $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
+  } else {
+    if ($SERVER_PORT == PORT_SSL) {
+      global $REQUEST_URI;   
+
+      // redirect to  suppress ssl http
+      $puburl = "http://$SERVER_NAME/$REQUEST_URI";
+
+      Header("Location: $puburl");
+      exit;
+    }
+  }
+
+  
+  // -----------------------------------------------
+    // now we are in correct protocol (http or https)
 
   $action = new Action();
   $action->Set($HTTP_GET_VARS["action"],$appl,$session);

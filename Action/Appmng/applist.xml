@@ -1,5 +1,5 @@
 <!-- 
-  $Id: applist.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
+  $Id: applist.xml,v 1.2 2002/02/04 14:44:36 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.xml,v $
 -->
 
@@ -69,7 +69,7 @@ function confirmdel(id, name) {
   &nbsp;[TABLE_PREV]
 
   </td>
-  <td align="right" colspan="3" class="CORETblCell">
+  <td align="right" colspan="4" class="CORETblCell">
 
   &nbsp;[TABLE_NEXT]
 
@@ -78,20 +78,21 @@ function confirmdel(id, name) {
 <!-- /TABLEPAGING -->
 
 <!-- TABLEHEAD -->
-<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <tr>
-  <td width="5%" class="CORETblCell"><a href="[CORE_BASEURL]app=APPMNG&action=APP_UPDATEALL"><img border=0 src="[IMG:reload.gif]"  alt="UpdateAll" title="UpdateAll"></a></td>
-  <td width="15%" class="CORETblCell"><span class="CORETblBold">[name]</span></td>
-  <td width="50%" class="CORETblCell"><span class="CORETblBold">[description]</span></td>
-  <td width="10%" class="CORETblCell"><span class="CORETblBold">[available]</span></td>
-  <td width="10%" class="CORETblCell"><span class="CORETblBold">[access_free]</span></td>
-  <td width="10%" class="CORETblCell"><span class="CORETblBold">[displayable]</span></td>
+  <td  class="CORETblCell"><a href="[CORE_BASEURL]app=APPMNG&action=APP_UPDATEALL"><img border=0 src="[IMG:reload.gif]"  alt="UpdateAll" title="UpdateAll"></a></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:appname]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:description]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:available]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:access_free]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:displayable]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:appssl]</span></td>
 </tr>
 
 <!-- /TABLEHEAD -->
 
-<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <!-- TABLEBODY -->
 [BLOCK TABLEBODY]
@@ -107,19 +108,20 @@ function confirmdel(id, name) {
       <img border=0 src="[IMG:delete.gif]"  alt="Uninstall" title="[TEXT:delete]">
     </a>
   </td>
-  <td width="10%" class="[CLASS]"><span class="CORETbl">[name]</span></td>
-  <td width="50%" class="[CLASS]"><span class="CORETbl">[description]</span></td>
-  <td width="10%" class="[CLASS]"><span class="CORETbl">[available]</span></td>
-  <td width="10%" class="[CLASS]"><span class="CORETbl">[access_free]</span></td>
-  <td width="10%" class="[CLASS]"><span class="CORETbl">[displayable]</span></td>
+  <td ><span class="CORETbl">[name]</span></td>
+  <td ><span class="CORETbl">[description]</span></td>
+  <td ><span class="CORETbl">[available]</span></td>
+  <td ><span class="CORETbl">[access_free]</span></td>
+  <td ><span class="CORETbl">[displayable]</span></td>
+  <td ><span class="CORETbl">[ssl]</span></td>
 </tr>
 [ENDBLOCK TABLEBODY]
 <!-- /TABLEBODY -->
 
-<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 
-<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <!-- TABLEPAGING -->
 <tr>
@@ -128,7 +130,7 @@ function confirmdel(id, name) {
   &nbsp;[TABLE_PREV]
 
   </td>
-  <td align="center" colspan="4" class="CORETblCell">
+  <td align="center" colspan="5" class="CORETblCell">
 
   <span class="CORETblBold">[TABLE_NUM]&nbsp;/&nbsp;[TABLE_NB]</span>
 
@@ -140,7 +142,7 @@ function confirmdel(id, name) {
   </td>
 </tr>
 <!-- /TABLEPAGING -->
-<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 </table>
 

@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.3 2002/01/25 14:31:37 eric Exp $
+//  $Id: Class.Application.php,v 1.4 2002/02/04 14:44:36 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.3 2002/01/25 14:31:37 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.4 2002/02/04 14:44:36 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -37,7 +37,7 @@ function N_($s) {return ($s);} // to tag gettext without change text immediatly
 
 Class Application extends DbObj
 {
-var $fields = array ( "id",  "name","short_name",  "description",  "access_free",	 "available", "icon", "displayable", "with_frame", "childof","objectclass");
+var $fields = array ( "id",  "name","short_name",  "description",  "access_free",	 "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl");
 
 var $id_fields = array ( "id");
 
@@ -54,7 +54,8 @@ create table application ( 	id 	int not null,
                         displayable varchar(1),
                         with_frame varchar(1),
                         childof varchar(20),
-                        objectclass varchar(1));
+                        objectclass varchar(1),
+                        ssl varchar(1));
 create index application_idx1 on application(id);
 create index application_idx2 on application(name);
 create sequence SEQ_ID_APPLICATION start 10;

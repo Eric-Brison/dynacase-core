@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.2 2002/01/30 13:44:01 eric Exp $
+// $Id: applist.php,v 1.3 2002/02/04 14:44:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.3  2002/02/04 14:44:36  eric
+// https
+//
 // Revision 1.2  2002/01/30 13:44:01  eric
 // i18n
 //
@@ -87,6 +90,7 @@ function applist(&$action) {
   $form->SetParam("available");
   $form->SetParam("displayable");
   $form->SetParam("access_free");
+  $form->SetParam("ssl");
 
   $form->SetKey("id");
 
@@ -122,7 +126,7 @@ function applist(&$action) {
   }
     
 
-  $query->table->fields= array("id", "update","edit","delete","name","description","available","access_free","displayable");
+  $query->table->fields= array("id", "update","edit","delete","name","description","available","access_free","displayable","ssl");
 
 
   

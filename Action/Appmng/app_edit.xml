@@ -67,7 +67,19 @@
     </SELECT
     </span></td>
   </tr>
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:appssl] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+    <SELECT NAME="ssl" SIZE=1>
+      [BLOCK SELECTSSL]
 
+        <option value="[ssl]" [selected]>[ssl]</option>
+
+      [ENDBLOCK SELECTSSL]
+
+    </SELECT
+    </span></td>
+  </tr>
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:available] : </span></td>
     <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">

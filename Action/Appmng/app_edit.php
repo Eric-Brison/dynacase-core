@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: app_edit.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: app_edit.php,v 1.2 2002/02/04 14:44:36 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/app_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: app_edit.php,v $
+// Revision 1.2  2002/02/04 14:44:36  eric
+// https
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -79,6 +82,20 @@ function app_edit(&$action) {
   $tab[1]["access_free"] = "N";
 
   $action->lay->SetBlockData("SELECTACCESS", $tab);
+  unset($tab);
+
+  $tab = array();
+  if ($AppCour->ssl=='Y') {
+    $tab[0]["selected"] = "selected";
+    $tab[1]["selected"] = "";
+  } else {
+    $tab[0]["selected"] = "";
+    $tab[1]["selected"] = "selected";
+  }
+  $tab[0]["ssl"] = "Y";
+  $tab[1]["ssl"] = "N";
+
+  $action->lay->SetBlockData("SELECTSSL", $tab);
 
   unset($tab);
   $tab = array();
@@ -132,6 +149,7 @@ function app_edit(&$action) {
   $form->SetParam("available","","sel");
   $form->SetParam("displayable","","sel");
   $form->SetParam("access_free","","sel");
+  $form->SetParam("ssl","","sel");
   $form->SetParam("id");
   $action->parent->AddJsCode($form->GetSubJs());
   $control=$action->GetLayoutFile("app_control.js");
