@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.31 2005/01/28 17:05:15 eric Exp $
+ * $Id: core.css,v 1.32 2005/01/31 17:50:15 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -240,18 +240,27 @@ IMG.click:hover {
   text-align:center;
 }
 
-.imgFade {
+IMG.Fade {
 	filter:alpha(opacity=50);
 	-moz-opacity:.5;	
 }
-.imgNotFade {
+IMG.NotFade {
 	filter:alpha(opacity=99);
 	-moz-opacity:.99;	
 }
-.imgSelect {
+IMG.Select {
 	filter:alpha(opacity=99);
 	-moz-opacity:.99;	
 }
+TD.Fade {
+}
+TD.Select {
+}
+TD.NotFade {
+/*	background-image:url('[IMG:bgunfade.png]');*/
+	/*background-color:[CORE_BGCOLORALTERN];*/
+}
+
 div.detail {
   visibily: hidden ;
   font-family : helvetica ;

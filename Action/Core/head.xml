@@ -71,16 +71,19 @@ o.style.position='static';
 }
 
 var csel=false; // selected icon object
-var izoom=18;
+var izoom=15;
 function fadeIt(th) {     
    th.width-=izoom; 
    th.height-=izoom;
    //setTimeout("dz('"+th.id+"')",100);
    th.style.position='static';
-    if (th.className != 'imgSelect') th.className='imgFade';
+    if (th.className != 'Select') {
+      th.className='Fade';
+      th.parentNode.parentNode.className='Fade';
+    }
 }
 function unFadeIt(th) {
-  th.style.top=AnchorPosition_getPageOffsetTop(th.parentNode.parentNode)-3;
+  th.style.top=AnchorPosition_getPageOffsetTop(th.parentNode.parentNode)-1;
   th.style.left=AnchorPosition_getPageOffsetLeft(th.parentNode.parentNode);
   th.style.position='absolute';
   
@@ -88,12 +91,16 @@ function unFadeIt(th) {
   th.height+=izoom;
   //setTimeout("iz('"+th.id+"')",100);
 
-  if (th.className != 'imgSelect')   th.className='imgNotFade';
+  if (th.className != 'imgSelect') {
+    th.className='NotFade';
+    th.parentNode.parentNode.className='NotFade';
+  }
 }
 function selectIt(th) {
-  csel.className='imgFade';
+  csel.className='Fade';
   
-  th.className='imgSelect';
+  th.className='Select';
+    th.parentNode.parentNode.className='Select';
   csel=th;
 }
 </script>
@@ -101,7 +108,7 @@ function selectIt(th) {
 
 <table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
 <tr class="headcell">
-  <td height="45" width="1%"   ><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
+  <td height="40" width="1%"   ><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
   <td  align="left" width="25%"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
 
 
@@ -109,7 +116,7 @@ function selectIt(th) {
 <td width="40"  align="center"
      onMouseOver="unFadeIt(i[name]);" 
      onMouseOut="fadeIt(i[name]);"  >
-     <a href="#"><img  class="imgFade"  id="i[name]" onclick="selectIt(this);lauch_action(event,this.src,'[name]','[descriptionsla]');" 
+     <a href="#"><img  class="Fade"  id="i[name]" onclick="selectIt(this);lauch_action(event,this.src,'[name]','[descriptionsla]');" 
      src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
