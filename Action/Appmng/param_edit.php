@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_edit.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: param_edit.php,v 1.2 2002/05/23 16:14:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_edit.php,v $
+// Revision 1.2  2002/05/23 16:14:40  eric
+// paramètres utilisateur
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -38,43 +41,33 @@ function param_edit(&$action) {
 
 
   // Get all the params      
-  $appl_id=$action->Read("param_appl_id");
-  global $HTTP_POST_VARS;
   $name=GetHttpVars("id");
+  $vtype=GetHttpVars("vtype");
+  $atype=GetHttpVars("atype",PARAM_APP);
 
-  $form = new SubForm("edit");
+    $action->lay->Set("vtype",$vtype);
+    $action->lay->Set("atype",$atype);
+
   if ($name == "") {
-  $form->SetParam("creation","Y");
     $input_name = new Layout($action->GetLayoutFile("input_name.xml"),$action);
     $action->lay->Set("NAME_EDIT",$input_name->gen());
     $param = new Param("");
-    $action->lay->Set("id",$appl_id);
     $action->lay->Set("name","");
     $action->lay->Set("val","");
     $action->lay->Set("TITRE",$action->text("titleparamcreate"));
     $action->lay->Set("BUTTONTYPE",$action->text("butcreate"));
   } else {
-  $form->SetParam("creation","N");
-    $param = new Param( "", array($appl_id,$name));
+    $param = new Param($action->dbaccess, array($name,$atype,$vtype));
     $input_name = new Layout($action->GetLayoutFile("aff_name.xml"),$action);
-    $input_name->Set( "NAME",$param->name);
+    $input_name->Set( "NAME",$name);
     $action->lay->Set("NAME_EDIT",$input_name->gen());
-    $action->lay->Set("id",$appl_id);
-    $action->lay->Set("name",$param->name);
+    $action->lay->Set("name",$name);
     $action->lay->Set("val",$param->val);
     $action->lay->Set("TITRE",$action->text("titleparammodify"));
     $action->lay->Set("BUTTONTYPE",$action->text("butmodify"));
   }
 
-//=====================================//
 
-  $form->SetParam("id",$appl_id);
-  $form->SetParam("name");
-  $form->SetParam("val");
-  $action->parent->AddJsCode($form->GetSubJs());
-  $control=$action->GetLayoutFile("param_control.js");
-  $lay = new Layout($control);
-  $action->parent->AddJsCode($lay->gen());
 
 }
 ?>

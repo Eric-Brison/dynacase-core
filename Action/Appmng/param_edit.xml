@@ -9,6 +9,14 @@
 <script language="JavaScript">
 <!--
 [JS:CODE]
+
+function sendform() {
+  with (document.edit) {
+    target=self.opener.name;
+    submit();
+    setTimeout('self.close()',10);    
+  }
+}
 //-->
 </script>
 
@@ -16,14 +24,15 @@
 
 <body>
 
-<form name="edit" method="POST">
-<input type="hidden" name="id" value="[id]">
+<form name="edit" method="POST" onsubmit="sendform()" action="[CORE_BASEURL]app=APPMNG&action=PARAM_MOD">
+<input type="hidden" name="vtype" value="[vtype]">
+<input type="hidden" name="atype" value="[atype]">
 
-<table align="center"  border="0" cellspacing="1" cellpadding="1">
+<table align="center"  border="0" cellspacing="1" cellpadding="1" width="100%">
 <tr>
 <td class="CORETblHeadCell">
 
-  <table align="center"  border="0" cellspacing="0" cellpadding="2">
+  <table align="center"  border="0" cellspacing="0" cellpadding="2" width="100%">
   <tr>
     <td colspan="3" align="center" class="CORETblHeadCell"><span class="CORETblHead">
     [TITRE] 
@@ -55,8 +64,8 @@
     <td colspan="3" align="center" class="CORETblHeadCell">
       <font size="-1"><input class="CORETblHead" type="reset" onClick="self.close()" name="Annuler" value="[TEXT:butclosew]">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input class="CORETblHead" type="reset" 
-        onClick="return Valid_Send()" name="Creer" value="[BUTTONTYPE]">
+      <input class="CORETblHead" type="submit" 
+         name="Creer" value="[BUTTONTYPE]">
       </font>
     </td>
 

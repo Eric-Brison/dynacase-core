@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.10 2002/04/29 15:58:23 eric Exp $
+//  $Id: Class.Application.php,v 1.11 2002/05/23 16:14:40 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.10 2002/04/29 15:58:23 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.11 2002/05/23 16:14:40 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -31,6 +31,7 @@ include_once('Class.User.php');
 include_once('Class.Permission.php');
 include_once('Class.Lang.php');
 include_once('Class.Style.php');
+include_once('Class.ParamDef.php');
 include_once('Lib.Http.php');
 include_once('Lib.Common.php');
 
@@ -118,8 +119,6 @@ function Set($name,&$parent)
      }
   }
 
-  $this->param=new Param();
-  $this->param->SetKey($this->id);
 
   $this->parent=&$parent;
   if (is_object($this->parent) && isset($this->parent->session)) {
@@ -134,6 +133,9 @@ function Set($name,&$parent)
       $this->permission=&$permission;
     }
   }
+
+  $this->param=new Param();
+  $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID);
 
   if ($this->available == "N") 
    Redirect($this,"CORE","",$action->GetParam("CORE_ROOTURL"));
@@ -158,6 +160,8 @@ function SetSession(&$session) {
       $this->log->debug("User not set ");
     }
   }
+  
+  $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID);
 }
 
 
@@ -385,12 +389,12 @@ function GetImageUrl($img) {
   }
   if ($app != "") {
      $url = $this->style->GetImageUrl($img,
-            $this->Getparam("CORE_PUBURL")."/".$app."/Images/".$img);
+            $app."/Images/".$img);
      return($url);
   }
   if ($this->parent != "") return($this->parent->getImageUrl($img));
   return  $this->style->GetImageUrl($img,
-                     $this->Getparam("CORE_PUBURL")."/CORE/Images/noimage.png");
+                     "CORE/Images/noimage.png");
 }
 
 function GetLayoutFile($layname) {
@@ -444,10 +448,34 @@ function OldGetLayoutFile($layname) {
 }
 
 function SetParam($key,$val)
-{
-  $this->param->Set($key,$val);
+{       
+  if (is_array($val)) {
+    if (isset($val["global"]) && $val["global"]=="Y") $type=PARAM_GLB; else $type=PARAM_APP;
+    $this->param->Set($key,$val["val"],$type,$this->id);
+  } else { // old method
+    $this->param->Set($key,$val,PARAM_APP,$this->id);
+  }
 }
 
+function SetParamDef($key,$val)
+{
+    // add new param definition
+    $pdef = new ParamDef($this->dbaccess);
+    $pdef->name=$key;
+    $pdef->isuser="N";
+    $pdef->isstyle="N";
+    $pdef->appid=$this->id;
+    $pdef->descr="";
+    $pdef->kind="text";
+    
+  if (is_array($val)) {
+    if (isset($val["kind"]))  $pdef->kind=$val["kind"];
+    if (isset($val["user"]) && $val["user"]=="Y") $pdef->isuser="Y";
+    if (isset($val["style"]) && $val["style"]=="Y") $pdef->isstyle="Y";
+    if (isset($val["descr"])) $pdef->descr=$val["descr"];    
+  }
+    if ($pdef->Add() != "") $pdef->Modify();
+}
 function SetVolatileParam($key,$val)
 {
   $this->param->SetVolatile($key,$val);
@@ -456,12 +484,33 @@ function SetVolatileParam($key,$val)
 function GetParam($key,$default="")
 { 
   if (!isset($this->param)) return ($default);
-  if (($this->param->exists($key)) && isset($this->style)){
-    return($this->style->GetParam($key,$this->param->Get($key)));
+  $z=$this->param->Get($key,"z");
+  if ($z=="z") {
+    if ($this->parent != "") return $this->parent->GetParam($key,$default);
+  } else {
+    return ($z);
   }
-  if ($this->parent!="") return($this->parent->GetParam($key,$default));
+
   return ($default);
 }
+
+function InitAllParam($tparam,$update=false) {
+  if (is_array($tparam)) {
+    reset($tparam);
+    while (list($k,$v) = each ($tparam)) {
+      $this->SetParamDef($k,$v); // update definition
+	if ($update) { 
+	  // don't modify old parameters
+
+	    if (($this->param->Get($k) == "") || 
+		(is_array($v) && isset($v["kind"]) && (	$v["kind"] == "static")))
+	      $this->SetParam($k,$v);// set only new parameters or static variable like VERSION
+	} else {
+	  $this->SetParam($k,$v);
+	}
+    }
+  }
+} 
 
 function GetAllParam()
 {
@@ -471,6 +520,7 @@ function GetAllParam()
     $list = array_merge($this->param->buffer,$list2);
   }
   $list3 = array_merge($list,$this->style->GetAllParam());
+
   return($list3);
 }
   
@@ -504,7 +554,7 @@ function InitApp($name,$update=FALSE) {
          $app->Add();
          $this=$app;
          $this->param=new Param();
-         $this->param->SetKey($this->id);
+         $this->param->SetKey($this->id,$this->user->id);
        }
      } else {
        die ("can't init $name");
@@ -538,41 +588,31 @@ function InitApp($name,$update=FALSE) {
      }
 
 
-     // init father application constant
+     //----------------------------------
+     // init application constant
+     if (file_exists("{$name}/{$name}_init.php")) {
+
+        include("{$name}/{$name}_init.php");
+        global $app_const;
+        if (isset($app_const)) $this->InitAllParam($app_const,$update);
+         
+     }
+     
+     //----------------------------------
+     // add init father application constant
      if (file_exists("{$this->childof}/{$this->childof}_init.php")) {
         include("{$this->childof}/{$this->childof}_init.php");
         global $app_const;
-        if (isset($app_const)) {
-          reset($app_const);
-          while (list($k,$v) = each ($app_const)) {
-	    if ($update) { // don't modify old parameters
-	      if ($this->GetParam($k) == "")		
-		$this->SetParam($k,$v);// set only new parameters
-	    } else {
-	      $this->SetParam($k,$v);
-	    }
-          }
-        }
+        $this->InitAllParam($app_const,$update);
      }
 
-     // init application constant
-     if (file_exists("{$name}/{$name}_init.php")) {
-        include("{$name}/{$name}_init.php");
-        global $app_const;
-        if (isset($app_const)) {
-          reset($app_const);
-          while (list($k,$v) = each ($app_const)) {
-	    if ($update) { // don't modify old parameters
-	      if ($this->GetParam($k) == "")		
-		$this->SetParam($k,$v);// set only new parameters
-	    } else {
-	      $this->SetParam($k,$v);
-	    }
-          }
-        }
+     if ($this->id > 1) {
+       $this->SetParamDef("APPNAME",array("val"=>$name,
+					  "kind"=>"static")); // use by generic application
+       $this->SetParam("APPNAME",array("val"=>$name,
+				       "kind"=>"static")); // use by generic application
+
      }
-     
-     if ($this->id > 1) $this->SetParam("APPNAME",$name); // use by generic application
 
      // Load app texts catalog
      if (file_exists("{$name}/{$name}_txt.php")) {
@@ -605,7 +645,8 @@ function InitApp($name,$update=FALSE) {
     die ("No {$name}/{$name}.app available");
   }
 }
-      
+     
+
 function UpdateApp() {
   $name=$this->name;
   $this->InitApp($name,TRUE);
@@ -618,7 +659,7 @@ function UpdateAllApp()
   $query = new QueryDb($this->dbaccess,$this->dbtable);
   $query -> AddQuery("available = 'Y'");
   $allapp = $query->Query();
-
+  
   while (list($k,$app)=each($allapp)) {
     $application = new Application($this->dbaccess, $app->id);
     
@@ -628,18 +669,18 @@ function UpdateAllApp()
   
 }
 function DeleteApp() {
-
+  
   // delete acl
-  $acl = new Acl($this->dbaccess);
+    $acl = new Acl($this->dbaccess);
   $acl->DelAppAcl($this->id);
-
-
+  
+  
   // delete actions
-  $this->log->debug("Delete {$this->name}");
+    $this->log->debug("Delete {$this->name}");
   $query = new QueryDb("","Action");
   $query->basic_elem->sup_where=array ("id_application = {$this->id}");
   $list = $query->Query();
-
+  
   if ( $query->nb>0) {
     reset ($list);
     while (list($k,$v) = each($list)) {
@@ -648,39 +689,39 @@ function DeleteApp() {
     }
   }
   unset($query);
-
+  
   unset($list);
-
+  
   // delete params
-  $param = new Param($this->dbaccess);
+    $param = new Param($this->dbaccess);
   $param->DelAll($this->id);
-
+  
   // Delete lang catalog
-  $lang = new Lang();
+    $lang = new Lang();
   $lang->deletecatalog($this->id);
   
   // delete application
-  $this->Delete();
+    $this->Delete();
 }
 
 
 function Text($code, $args=NULL) {
   $set = false;
-
-
+  
+  
   if (!isset($this->text->buffer)) $this->InitText( );
-
+  
   if ($code == "") return "";
-
+  
   if ($this->text->GetText($code)) {
-	$set = true;
-      }
-
-
+    $set = true;
+  }
+  
+  
   if (!$set) {
-
+    
     $this->text->fmttxt = _("$code");
-
+    
   }
   return $this->text->fmttxt;
 }
@@ -693,21 +734,21 @@ function UpdateUserAcl($iduser)
   $query -> AddQuery("available = 'Y'");
   $allapp = $query->Query();
   $acl = new Acl($this->dbaccess);
-
+  
   while (list($k,$v)=each($allapp)) {
-	$permission = new Permission($this->dbaccess);
-	$permission->id_user=$iduser;
-	$permission->id_application=$v->id;
-
-	$privileges = $acl-> getDefaultAcls($v->id);
-			
-	while (list($k2,$aclid)=each($privileges)) {
-	  $permission->id_acl=$aclid;
-	  if (($permission->id_acl > 0) &&
-	      (! $permission->Exists($permission->id_user,$v->id))) {
-	    $permission->Add();
-	  }
-	}
+    $permission = new Permission($this->dbaccess);
+    $permission->id_user=$iduser;
+    $permission->id_application=$v->id;
+    
+    $privileges = $acl-> getDefaultAcls($v->id);
+    
+    while (list($k2,$aclid)=each($privileges)) {
+      $permission->id_acl=$aclid;
+      if (($permission->id_acl > 0) &&
+	  (! $permission->Exists($permission->id_user,$v->id))) {
+	$permission->Add();
+      }
+    }
   }
   
 }

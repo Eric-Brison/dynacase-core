@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.9 2002/02/14 16:09:16 eric Exp $
+// $Id: index.php,v 1.10 2002/05/23 16:14:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -91,8 +91,8 @@ $core->SetVolatileParam("CORE_PUBURL", $puburl);
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
-$core->SetSession($session);
 
+$core->SetSession($session);
 
 
 $core->SetVolatileParam("CORE_ROOTURL", "index.php?session={$session->id}&sole=R&");

@@ -1,0 +1,127 @@
+<!-- 
+  $Id: param_list.xml,v 1.1 2002/05/23 16:14:40 eric Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.xml,v $
+-->
+<div id="dedit" style="display:none">
+<form name="fedit" id="fedit" method="POST"  action="[CORE_BASEURL]app=APPMNG&action=[ACTIONMOD]">
+<input type="hidden" name="vtype" >
+<input type="hidden" name="atype" >
+<input type="hidden" name="aname" >
+<input type="text" size="35" name="val" id="val" value="">     
+</form>
+</div>
+
+
+<script language="JavaScript">
+<!--
+[JS:CODE]
+
+var cp = new ColorPicker();
+var op = new OptionPicker();
+
+function pickColor(color) {
+	document.fedit.val.value = color;
+	document.fedit.val.style.backgroundColor=color;
+	document.fedit.val.focus();
+	}
+
+function pickOption(value) {
+	document.fedit.val.value = value;
+	document.fedit.val.focus();
+	}
+
+
+var editedParam='';
+function movediv(th,Aname,Atype,Vtype,Kind,Value) {
+
+  if (Kind == 'static') {
+    alert('[TEXT:unmodifiable parameter]');
+    return;
+  } 
+
+  if ((editedParam != '') && (editedParam.id == th.id)) return;
+
+  // undisplay cell containt
+  var kids=th.childNodes;
+  for (var i=0; i< kids.length; i++) {
+     kids[i].style.display='none';
+  }
+  document.getElementById('dedit').style.display='block';
+  th.appendChild(document.getElementById('dedit'));
+  with (document.getElementById('fedit')) {
+      vtype.value=Vtype;
+      atype.value=Atype;
+      aname.value=Aname;
+      val.value=Value;
+      val.focus();
+      val.select();
+  }
+  
+  // redisplay precedent cell 
+  if (editedParam != '') {
+     
+     var kids=editedParam.childNodes;
+     for (var i=0; i< kids.length; i++) {
+         kids[i].style.display='inline';
+     }
+  }
+
+  editedParam=th;
+  
+  // show color picker if needed
+  if (Kind == 'color') cp.show('dedit');
+  else if (Kind.substr(0,4) == 'enum') {
+     op.show('dedit');
+     op.setOptions(Kind.substr(5,Kind.length-6).split('|'));
+  }
+  
+}
+//-->
+</script>
+<style>
+TD.highlight {
+  background-color: [CORE_BGCOLORHIGH];
+}
+</style>
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+
+
+<!-- /TABLEPAGING -->
+
+<!-- TABLEHEAD -->
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<tr>
+  <td width="40" class="CORETblCell">&nbsp;</td>
+  <td  class="CORETblCell"><span class="CORETblBold">[TEXT:name]</span></td>
+  <td  class="CORETblCell"><span class="CORETblBold">[TEXT:val]</span></td>
+</tr>
+
+<!-- /TABLEHEAD -->
+
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+[BLOCK APPLI] 
+<tr><td colspan="3" class="CORETblHeadCell"><span class="CORETblHead">[appname] : [appdesc]</span></td></tr>
+<!-- TABLEBODY -->
+[BLOCK [PARAM]]
+<tr>
+  <td  >
+       
+       <a href="[CORE_STANDURL]&app=APPMNG&action=[ACTIONDEL]&id=[name]&vtype=[vtype]&atype=[type]" onClick="return confirm('[TEXT:delconfirmparam] [name]')"><img class="[classtype]" border=0 src="[IMG:delete.gif]" title="[TEXT:delete]"></a> </td>
+  <td  class="[classtype]"><span class="CORETbl">[name]:[descr]</span></td>
+  <td  id="v[name]" 
+       class="[classtype]";
+       onmouseover="this.className='highlight'"
+       onmouseout="this.className='[classtype]'"
+       onclick="movediv(this,'[name]','[type]','[vtype]','[kind]','[sval]')"><span>[val]</span></td>
+</tr>
+[ENDBLOCK [PARAM]]
+[ENDBLOCK APPLI]
+<!-- /TABLEBODY -->
+
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+
+
+</table>
+

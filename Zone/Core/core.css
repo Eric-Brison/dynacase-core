@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.7 2002/04/29 15:29:34 eric Exp $
+ * $Id: core.css,v 1.8 2002/05/23 16:14:40 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -55,7 +55,7 @@ TR {
   color: [CORE_TEXTBGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
-  font-size: 90%;
+  font-size: 100%;
 }
 
 .headcell {
@@ -69,13 +69,13 @@ TR {
 
 .historique {
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
   color: [CORE_TEXTFGCOLOR];
 }  
 
 .anakeen {
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
   color: [CORE_TEXTFGCOLOR];
 }
 
@@ -88,7 +88,7 @@ TR {
 
 .toctitle {
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
   font-weight: bold;
   color: [CORE_FGCOLOR];
 }  
@@ -97,13 +97,13 @@ TR {
   background-color: [CORE_FGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
-  font-size: 80%;
+  font-size: 100%;
   color: [CORE_BGCELLCOLOR];
 }  
 
 .tocitem0off {
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
   color: [CORE_FGCOLOR];
 }  
 
@@ -116,7 +116,7 @@ TR {
 A {
   color: [CORE_ACOLOR];
   font-family: [CORE_FONTLIST1];
-  font-size: 90%;
+  font-size: 100%;
   text-decoration: none;
 }
 
@@ -137,12 +137,12 @@ A {
 .TABLabelSelected {
   color: [CORE_TEXTBGCOLOR];
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
 }
 .TABLabel {
   color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
 }
 
 
@@ -157,7 +157,7 @@ A {
   background-color: [CORE_FGCOLOR];
   background-image: [CORE_FGIMG];
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
 }
 
 .CORETblHeadBold {
@@ -166,7 +166,7 @@ A {
   background-image: [CORE_FGIMG];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
-  font-size: 80%;
+  font-size: 100%;
 }
 .CORETblHeadCell {
   background-color: [CORE_FGCOLOR];
@@ -183,13 +183,13 @@ A {
 .CORETbl {
   color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];
-  font-size: 80%;
+  font-size: 100%;
 }
 .CORETblBold {
   color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
-  font-size: 80%;
+  font-size: 100%;
 }
 
 .CORETblCell {
@@ -229,7 +229,7 @@ div.detail {
    background-color: #000000;
    color: #eaea67;
    font-family : courier;
-   font-size: 90%;
+   font-size: 100%;
 }
 
 

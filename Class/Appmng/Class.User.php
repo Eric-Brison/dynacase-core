@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.5 2002/04/03 16:47:10 eric Exp $
+// $Id: Class.User.php,v 1.6 2002/05/23 16:14:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.5 2002/04/03 16:47:10 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.6 2002/05/23 16:14:40 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -182,18 +182,18 @@ function PostInit() {
      
 }
 
-function GetUserList() {
+function GetUserList($qtype="LIST") {
   $query = new QueryDb($this->dbaccess,"User");
   $query->order_by="lastname";
   $query-> AddQuery("(isgroup != 'Y') OR (isgroup isnull)");
-  return($query->Query());
+  return($query->Query(0,0,$qtype));
 }
 
-function GetGroupList() {
+function GetGroupList($qtype="LIST") {
   $query = new QueryDb($this->dbaccess,"User");
   $query->order_by="lastname";
   $query-> AddQuery("isgroup = 'Y'");
-  return($query->Query());
+  return($query->Query(0,0,$qtype));
 }
 
 function GetUserAndGroupList() {

@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-04-29 13:42+0200\n"
+	"POT-Creation-Date: 2002-05-21 14:26+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -146,23 +146,36 @@ msgstr	"Impossible de creer l'application"
 msgid	"err_mod_application"
 msgstr	"Impossible de modifier l'application"
 
+msgid	"Remove parameter"
+msgstr "Suppression de paramètre"
+
+#, c-format
+msgid	"the '%s' parameter cannot be removed"
+msgstr "le parametre '%s' n'a pu être supprimé"
+
+msgid	"only user parameters can be deleted with its action"
+msgstr "seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
+
 msgid	"titleparamcreate"
 msgstr	"Cr&eacute;ation d'un param&egrave;tre "
 
 msgid	"titleparammodify"
 msgstr	"Modification de param&egrave;tre"
 
-msgid	"edit"
-msgstr	"Modifier"
-
-msgid	"delparam"
-msgstr	"Supprimer"
-
 msgid	"err_add_param"
 msgstr	"Impossible de creer le param&egrave;tre"
 
 msgid	"err_mod_parameter"
 msgstr	"Impossible de modifier le param&egrave;tre"
+
+msgid	"only user parameters can be modified with its action"
+msgstr "seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+
+msgid	"edit"
+msgstr	"Modifier"
+
+msgid	"delparam"
+msgstr	"Supprimer"
 
 msgid	"err_mod_param"
 msgstr	"Impossible de modifier le param&egrave;tre"
@@ -248,6 +261,12 @@ msgstr	"Noyau"
 msgid	"Core Application Manager"
 msgstr	"Page d'accueil WHAT"
 
+msgid	"language"
+msgstr "langue"
+
+msgid	"nc"
+msgstr "nc"
+
 msgid	"Access"
 msgstr	"Accessibilités"
 
@@ -299,20 +318,38 @@ msgstr	"Gestion des applications"
 msgid	"SuperUser permission"
 msgstr	"Accès administration"
 
+msgid	"user preference"
+msgstr "préférences utilisateur"
+
 msgid	"styles parameters"
 msgstr	"paramètres de style"
 
 msgid	"styles"
 msgstr	"les styles"
 
-msgid	"parameters"
-msgstr	"les paramètres"
+msgid	"application parameters"
+msgstr "paramètres applicatif"
+
+msgid	"user parameters"
+msgstr "paramètres utilisateur"
 
 msgid	"actions"
 msgstr	"les actions"
 
 msgid	"applications"
 msgstr	"les applications"
+
+msgid	"delete parameters"
+msgstr "suppression de paramètres"
+
+msgid	"modify parameters"
+msgstr "modification des paramètres"
+
+msgid	"delete user parameters"
+msgstr "suppression de paramètres utilisateur"
+
+msgid	"modify user parameters"
+msgstr "modification des paramètres utilisateur"
 
 msgid	"adduser"
 msgstr	"Ajouter un utilisateur"
@@ -462,17 +499,26 @@ msgstr	"Détruire"
 msgid	"val"
 msgstr	"Valeur"
 
-msgid	"titleparam"
-msgstr	"Liste des param&egrave;tres de l'application"
-
-msgid	"delconfirmparam"
-msgstr	"Confirmez-vous la suppression du param&egrave;tre "
+msgid	"application parameters list"
+msgstr "Liste des paramètres applicatif"
 
 msgid	"titlestyle"
 msgstr	"Liste des param&egrave;tres du style"
 
+msgid	"delconfirmparam"
+msgstr	"Confirmez-vous la suppression du param&egrave;tre "
+
 msgid	"delconfirmstyle"
 msgstr	"Confirmez-vous la suppression du style"
+
+msgid	"select a user"
+msgstr "Sélectionnez un utilisateur"
+
+msgid	"user parameters list"
+msgstr "Liste des paramètres utilisateur"
+
+#~ msgid	"titleparam"
+#~ msgstr	"Liste des param&egrave;tres de l'application"
 
 #~ msgid	"permission"
 #~ msgstr	"Droit"
@@ -496,9 +542,6 @@ msgstr	"Confirmez-vous la suppression du style"
 #~ msgstr	"Ajouter une application"
 
 #~ msgid	"modapplication"
-#~ msgstr	"Modifier"
-
-#~ msgid	"deluser"
 #~ msgstr	"Modifier"
 
 #~ msgid	"moduser"

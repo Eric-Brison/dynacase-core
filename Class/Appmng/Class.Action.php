@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.7 2002/04/08 15:13:47 eric Exp $
+//  $Id: Class.Action.php,v 1.8 2002/05/23 16:14:40 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.7 2002/04/08 15:13:47 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.8 2002/05/23 16:14:40 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -165,9 +165,9 @@ function PreUpdate()
   if ($this->Exists( $this->name,$this->id_application,$this->id)) return "Action {$this->name} already exists...";    
 }
 
-function GetParam($key, $def="") {
+function GetParam($name, $def="") {
   if (isset ($this->parent)) {
-   return($this->parent->GetParam($key, $def));
+   return($this->parent->GetParam($name, $def));
   }
 }
 

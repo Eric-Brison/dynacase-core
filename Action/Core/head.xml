@@ -51,7 +51,7 @@
   [ENDBLOCK FUNCTION]
 
   <td class="headcell" align="right" ><span class="headtitle">
-     [USER]&nbsp;
+     <a class="headtitle" href="[CORE_BASEURL]app=APPMNG&action=PARAM_CULIST" target="body">[USER]</a>
      <a href="[CORE_BASEURL]app=CORE&action=CLEARCACHE" >
      <img style="display:[dcache]" src="[IMG:bgrey.gif]"   
            title="[TEXT:clear object cache]"

@@ -18,7 +18,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.3 2002/04/15 14:18:55 eric Exp $
+// $Id: Class.Log.php,v 1.4 2002/05/23 16:14:40 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -102,6 +102,7 @@ function pop() {
 // ------------------------------------------------------------------------
 function wlog($sta, $str, $args=NULL) {
 
+  global $HTTP_CONNECTION; // use only syslog with HTTP
   global $REMOTE_ADDR, $CORE_LOGLEVEL;
 
   if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta))) {
@@ -134,10 +135,16 @@ function wlog($sta, $str, $args=NULL) {
       default:
 	$pri = LOG_NOTICE;
       }
-      define_syslog_variables();    
-      openlog("{$appf}", 0, LOG_LOCAL6);
-      syslog($pri, "[{$REMOTE_ADDR}] ".$str);
-      closelog();
+      if ($HTTP_CONNECTION == "") {
+
+	
+	print "LOG::($sta)::".$str."\n";
+      } else {
+	define_syslog_variables();    
+	openlog("{$appf}", 0, LOG_LOCAL6);
+	syslog($pri, "[{$REMOTE_ADDR}] ".$str);
+	closelog();
+      }
     }
     AddLogMsg("LOG($sta): $str");
   }

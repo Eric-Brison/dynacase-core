@@ -18,28 +18,34 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.2 2002/01/18 08:10:34 eric Exp $
+//  $Id: Class.Param.php,v 1.3 2002/05/23 16:14:40 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.2 2002/01/18 08:10:34 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.3 2002/05/23 16:14:40 eric Exp $';
+
+define("PARAM_APP","A");
+define("PARAM_GLB","G");
+define("PARAM_USER","U");
+define("PARAM_STYLE","S");
 
 Class Param extends DbObj
 {
-var $fields = array ("key","name","val");
+var $fields = array ("name","type","vtype","val");
 
-var $id_fields = array ("key","name");
+var $id_fields = array ("name","type","vtype");
 
-var $dbtable = "param";
+var $dbtable = "paramv";
 
 var $sqlcreate = '
-      create table param (
-              key    int not null,
+      create table paramv (
               name    varchar(50),
+              type   varchar(1),
+              vtype  int4,
               val    varchar(200));
-      create index param_idx1 on param(key);
-      create index param_idx2 on param(name);
+      create index paramv_idx2 on paramv(name);
+      create unique index paramv_idx3 on paramv(name,type,vtype);
                  ';
 
 var $buffer=array();
@@ -56,20 +62,21 @@ function PreUpdate( )
    $this->PreInsert(); 
 }
 
-function SetKey($key) {
-  $this->key=$key;
-  $this->buffer=$this->GetAll($key);
+function SetKey($appid,$userid=ANONYMOUS_ID) {
+  $this->appid=$appid;
+  $this->buffer=array_merge($this->buffer,$this->GetAll($appid,$userid));
 }
 
-function Set($name,$val)
+function Set($name,$val,$type=PARAM_GLB,$vtype='')
 {
   $this->name = $name;
   $this->val = $val;
-  if ($this->Exists($name)) {
+  $this->type = $type;
+  $this->vtype = $vtype;
+
+  if ($this->Add() != "") {
     $this->Modify();
-  } else {
-    $this->Add();
-  }
+  } 
   $this->buffer[$name]=$val;
 }
 
@@ -81,50 +88,89 @@ function SetVolatile($name,$val)
 function Get($name,$def="")
 {
    if (isset($this->buffer[$name])) {
+     //print "$name : ".$this->buffer[$name]."<HR>";
      return ($this->buffer[$name]);
    } else {
+     //  print "NO $name : ".$def."<HR>";
+     // print_r2($this->buffer);
      return ($def);
    }
 }
    
-function GetAll($key="")
+function GetAll($appid="",$userid=ANONYMOUS_ID)
 {
-   if ($key=="") $key=$this->key;
+   if ($appid=="") $appid=$this->appid;
    $query = new QueryDb($this->dbaccess,"Param");
-   $query->basic_elem->sup_where = array ("key=$key");
-   $list = $query->Query(0,0,"TABLE");
+   
+   $list = $query->Query(0,0,"TABLE","select distinct on(name) * from {$this->dbtable} where ". 
+			 "(type = '".PARAM_GLB."') ".
+			 " OR (type='".PARAM_APP."' and vtype=$appid)".
+			 " OR (type='".PARAM_USER."' and vtype=$userid)".
+			 " order by name, type desc");
+
+   //print $query->LastQuery."<BR>";
    if ($query->nb != 0) {
      while(list($k,$v)=each($list)) {
        $out[$v["name"]]=$v["val"];
      }
    } else {
      $out = NULL;
-     $this->log->debug("$key, no constant define for this key");
+     $this->log->debug("$appid no constant define for this application");
    }
+   //print_r2($out);
    return($out);
 }
-
-function DelAll($key="")
+ 
+function GetUser($userid=ANONYMOUS_ID)
 {
-   if ($key=="") $key=$this->key;
    $query = new QueryDb($this->dbaccess,"Param");
-   $query->basic_elem->sup_where = array ("key=$key");
-   $list = $query->Query();
-   if ($query->nb != 0) {
-     while(list($k,$v)=each($list)) {
-       $v->Delete();
-     }
-   } else {
-     $out = NULL;
-     $this->log->debug("$key, no constant define for this key");
-   }
-   $this->buffer=array();
+   
+   $tlist = $query->Query(0,0,"TABLE","select distinct on(name) paramv.*, paramdef.appid, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isuser='Y' and (". 
+			 " (type = '".PARAM_GLB."') ".
+			 " OR (type='".PARAM_APP."')".
+			 " OR (type='".PARAM_USER."' and vtype=$userid))".
+			 " order by name, type desc");
+
+
+   return($tlist);
 }
 
-function Exists($name)
+
+function GetApps()
 {
-   return(isset($this->buffer[$name]));
+   $query = new QueryDb($this->dbaccess,"Param");
+   
+   $tlist = $query->Query(0,0,"TABLE","select  paramv.*, paramdef.appid, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and  (". 
+			 " (type = '".PARAM_GLB."') ".
+			 " OR (type='".PARAM_APP."'))".
+			 " order by vtype,  type desc");
+
+
+   return($tlist);
 }
+
+
+
+
+function DelAll($appid="")
+{
+  return;
+//    if ($key=="") $key=$this->key;
+//    $query = new QueryDb($this->dbaccess,"Param");
+//    $query->basic_elem->sup_where = array ("key=$key");
+//    $list = $query->Query();
+//    if ($query->nb != 0) {
+//      while(list($k,$v)=each($list)) {
+//        $v->Delete();
+//      }
+//    } else {
+//      $out = NULL;
+//      $this->log->debug("$key, no constant define for this key");
+//    }
+//    $this->buffer=array();
+}
+
+
 // FIN DE CLASSE
 }
 ?>

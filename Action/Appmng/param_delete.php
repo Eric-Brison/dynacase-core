@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_delete.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: param_delete.php,v 1.2 2002/05/23 16:14:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_delete.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,28 +21,38 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: param_delete.php,v $
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.1  2001/01/29 15:50:59  marianne
-// prise en compte de la gestion des parametres
-//
-//
-//
-// ---------------------------------------------------------------
-include_once("Class.TableLayout.php");
-include_once("Class.QueryDb.php");
+
 include_once("Class.Param.php");
 
 // -----------------------------------
 function param_delete(&$action) {
 // -----------------------------------
-  $id=GetHttpVars("id");
-  $name=GetHttpVars("name");
-  $parametre = new Param("",array($id,$name));
-  $action->log->info("Remove ".$parametre->name);
-  $parametre->Delete();
-  redirect($action,"APPMNG","PARAMLIST");
+
+  $name=GetHttpVars("id");
+  $vtype=GetHttpVars("vtype");
+  $atype=GetHttpVars("atype",PARAM_APP);
+
+
+  $parametre = new Param($action->dbaccess,array($name,$atype,$vtype));
+  if ($parametre->isAffected()) {
+    $action->log->info(_("Remove parameter").$parametre->name);
+    $parametre->Delete();
+  } else $action->addLogMsg(sprintf(_("the '%s' parameter cannot be removed"),$name));
+  redirect($action,"APPMNG",$action->Read("PARAM_ACT","PARAM_ALIST"));
 }
+
+// -----------------------------------
+function param_udelete(&$action) {
+// -----------------------------------
+
+ 
+  $atype=GetHttpVars("atype",PARAM_APP);
+  $vtype=GetHttpVars("vtype");
+  if ($atype != PARAM_USER) $action->exitError(_("only user parameters can be deleted with its action"));
+  if ($vtype != $action->user->id) $action->exitError(_("only current user parameters can be deleted with its action"));
+
+
+  param_delete(&$action);
+}
+
 ?>

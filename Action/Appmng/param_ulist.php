@@ -1,9 +1,9 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: appadmin.php,v 1.4 2002/05/23 16:14:40 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Api/appadmin.php,v $
+// $Id: param_ulist.php,v 1.1 2002/05/23 16:14:40 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_ulist.php,v $
 // ---------------------------------------------------------------
-//  O   Anakeen - 2001
+//  O   Anakeen - 2000
 // O*O  Anakeen development team
 //  O   dev@anakeen.com
 // ---------------------------------------------------------------
@@ -21,18 +21,25 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
+// -----------------------------------
+function param_ulist(&$action) {
+  // -----------------------------------
+    
+  $userid=GetHttpVars("userid");
 
-include_once("Class.Application.php");
+    
+  $action->register("PARAM_ACT","PARAM_ULIST&userid=$userid");
+  $u = new User();
+    $list = $u-> GetUserList("TABLE");
 
-$appname = GetHttpVars("appname");
-$method = GetHttpVars("method","init");
-
-echo " $appname...$method";
-$app=new Application();
-$Null = "";
-$app->Set($appname,$Null);
-if ($method == "reinit") $app->InitApp($appname,false);
-if ($method == "update") $app->InitApp($appname,true);
-if ($method == "delete") $app->DeleteApp();
-
+  // select the wanted user
+    while (list($k,$v)=each($list)) {
+	if ($v["id"] == $userid) $list[$k]["selected"]="selected";
+	else $list[$k]["selected"]="";
+    }
+  $action->lay->SetBlockData("SELUSER",$list);
+    return;
+  
+  
+}
 ?>

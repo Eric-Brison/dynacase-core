@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_mod.php,v 1.2 2002/04/29 15:32:24 eric Exp $
+// $Id: param_mod.php,v 1.3 2002/05/23 16:14:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_mod.php,v $
+// Revision 1.3  2002/05/23 16:14:40  eric
+// paramètres utilisateur
+//
 // Revision 1.2  2002/04/29 15:32:24  eric
 // correction id pour cache multibase
 //
@@ -38,33 +41,44 @@ include_once("Class.Param.php");
 
 // -----------------------------------
 function param_mod(&$action) {
-// -----------------------------------
-  // Get all the params      
-  $appl_id=GetHttpVars("id");
-  $creation=GetHttpVars("creation");
-  $name=GetHttpVars("name");
-  if ($creation == "Y") {
-    $ParamCour = new Param($action->GetParam("CORE_USERDB"));
-  } else {
-    $ParamCour = new Param($action->GetParam("CORE_USERDB"),array($appl_id,$name));
-  }
-  $ParamCour->key=$appl_id;
-  $ParamCour->name=GetHttpVars("name");
-  $ParamCour->val=GetHttpVars("val");
-
-  if ($creation == "Y") {
+  // -----------------------------------
+    // Get all the params      
+      $vtype=GetHttpVars("vtype");
+  $name =GetHttpVars("aname");
+  $atype=GetHttpVars("atype",PARAM_APP);
+  $val  =GetHttpVars("val");
+  
+  $ParamCour = new Param($action->dbaccess,array($name,$atype,$vtype));
+  if (! $ParamCour->isAffected()) {
+    $ParamCour->vtype=$vtype;
+    $ParamCour->type=$atype;
+    $ParamCour->name=$name;
+    $ParamCour->val=$val;
     $res=$ParamCour->Add();
     if ($res != "") { 
-      $txt = $action->text("err_add_param")." : $res";
-      $action->Register("err_add_parameter",AddSlashes($txt));
+      $action->addLogMsg( $action->text("err_add_param")." : $res");
     }
   } else {
+    $ParamCour->val=$val;
     $res=$ParamCour->Modify();
     if ($res != "") { 
-      $txt = $action->text("err_mod_parameter")." : $res";
-      $action->Register("err_add_parameter",AddSlashes($txt));
+      $action->addLogMsg( $action->text("err_mod_parameter")." : $res");
     }
   }
-  redirect($action,"APPMNG","PARAMLIST");
+  redirect($action,"APPMNG",$action->Read("PARAM_ACT","PARAM_ALIST"));
 }
+
+// -----------------------------------
+function param_umod(&$action) {
+// -----------------------------------
+
+ 
+  $atype=GetHttpVars("atype",PARAM_APP);
+  $vtype=GetHttpVars("vtype");
+  if ($atype != PARAM_USER) $action->exitError(_("only user parameters can be modified with its action"));
+  if ($vtype != $action->user->id) $action->exitError(_("only current user parameters can be modified with its action"));
+
+  param_mod(&$action);
+}
+
 ?>

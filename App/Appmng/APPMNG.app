@@ -14,8 +14,11 @@ $app_acl = array (
   array (
    "name"		=>"ADMIN",
    "description"	=>N_("SuperUser permission"),
-   "grant_level"	=>10,
-   "admin"		=>TRUE)
+   "admin"		=>TRUE),
+  array (
+   "name"		=>"USER",
+   "description"	=>N_("user preference"),
+   "group_default"	=>"Y")
 );
 
 $action_desc = array (
@@ -33,10 +36,22 @@ $action_desc = array (
    "root"		=>"Y"
   ) ,
   array(
-   "name"               =>"PARAMLIST",
-   "short_name"         =>N_("parameters"),
+   "name"               =>"PARAM_ALIST",
+   "short_name"         =>N_("application parameters"),
    "toc"                =>"Y",
    "acl"                =>"ADMIN"
+  ) ,
+  array(
+   "name"               =>"PARAM_ULIST",
+   "short_name"         =>N_("user parameters"),
+   "toc"                =>"Y",
+   "acl"                =>"ADMIN"
+  ) ,
+  array(
+   "name"               =>"PARAM_CULIST",
+   "short_name"         =>N_("current user parameters"),
+   "toc"                =>"N",
+   "acl"                =>"USER"
   ) ,
   array(
    "name"               =>"ACTIONLIST",
@@ -95,11 +110,27 @@ $action_desc = array (
   ),
   array(
    "acl"                =>"ADMIN",
+   "short_name"         =>N_("delete parameters"),
    "name"               =>"PARAM_DELETE"
   ),
   array(
    "acl"                =>"ADMIN",
+   "short_name"         =>N_("modify parameters"),
    "name"               =>"PARAM_MOD"
+  ),
+  array(
+   "acl"                =>"USER",
+   "short_name"         =>N_("delete user parameters"),
+   "name"               =>"PARAM_UDELETE",
+   "function"           =>"param_udelete",
+   "script"		=>"param_delete.php"
+  ),
+  array(
+   "acl"                =>"USER",
+   "short_name"         =>N_("modify user parameters"),
+   "name"               =>"PARAM_UMOD",
+   "function"           =>"param_umod",
+   "script"		=>"param_mod.php"
   ),
   array(
    "acl"                =>"ADMIN",
@@ -136,11 +167,6 @@ $action_desc = array (
   array(
    "name"               =>"PARAM_APPL_CHG",
    "acl"                =>"ADMIN"
-  ),
-
-  array(
-   "acl"                =>"ADMIN",
-   "name"               =>"PARAM_DELETE"
   )
                       );
    
