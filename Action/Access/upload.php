@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.3 2002/01/14 15:13:13 eric Exp $
+// $Id: upload.php,v 1.4 2002/01/14 16:54:22 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -66,7 +66,7 @@ function upload(&$action) {
   redirect($action,"ACCESS","USER_ACCESS");
 }
 
-function changeuser(&$action, $line) {
+function changeuser(&$action, $line, $verbose=false) {
   
     $col = explode("|",$line);
 
@@ -85,11 +85,18 @@ function changeuser(&$action, $line) {
     $use->lastname=  $col[3];
     $use->isgroup=   $col[4];
     if ($use->IsAffected()) {
-      $use->Modify();
+      $err= $use->Modify();
+      if ($err != "") print $err;
+      
+      if ($verbose) printf( _("user %s %s has been modfied\n"),
+			       $use->firstname,$use->lastname);
     } else {
       $use->iddomain = $domain->iddomain;
       $use->login = $uname;
-      $use->Add();
+      $err = $use->Add();
+      if ($err != "") print $err;
+      if ($verbose) printf( _("user %s %s has been added\n",
+				 $use->firstname,$use->lastname));
     }
     
 
@@ -132,7 +139,7 @@ function changeuser(&$action, $line) {
     }
     
 }
-function changeacl(&$action, $line) {
+function changeacl(&$action, $line, $verbose=false) {
 
   // INCIDENT|all@cir.fr|INCIDENT_READ;INCIDENT
 
@@ -197,9 +204,14 @@ function changeacl(&$action, $line) {
 	  $perm->id_acl = $aclid;
 	  
 	  
-	  if ($aclid != 0) {
+	  if ($aclid != 0) {	   
 	    //print "ADD "."-".$perm->id_application."-". $perm->id_user."-". $perm->id_acl."<BR>";
-	    $perm->Add();
+	    $err = $perm->Add();
+	    if ($err != "") print $err;
+	    if ($verbose) printf( _("add acl %s for %s %s\n"),
+				   $perm->id_acl, $use->firstname,$use->lastname);
+	    
+	    
 	  }
 	  
 	}
