@@ -21,7 +21,6 @@
 
 // select the group domain in group list
   function selectGroupDomain (domain) {
-
       var odomain=0; //option group domain
       var oall =0;   //option group all
 
@@ -107,8 +106,8 @@ function groupVisibility() { // hidden or visible
        }
     }
     if (! groupdisplayed) {
-     //document.getElementById('changegroup').style.visibility = 'visible';    
-     document.getElementById('changegroup').style.display = 'inline';
+     //document.getElementById('changegroup').style.visibility = 'visible';  
+      document.getElementById('changegroup').style.display = 'block'; 
     } else {
      //document.getElementById('changegroup').style.visibility = 'hidden';
      document.getElementById('changegroup').style.display = 'none';
@@ -168,10 +167,12 @@ function Valid_Send()
 	      grview.options[i].disabled=false;
   }
 	
+  document.getElementById('domainid').disabled=false;
+
   document.edit.submit();
-  if (document.edit.id.value == "") {
+  if (document.edit.id.value == "") {    
     document.edit.reset();
-    selectGroupDomain(0);
+    selectGroupDomain(document.getElementById('domainid').options[document.getElementById('domainid').selectedIndex].text);
     return true;
   } else {
     // close after submited is done

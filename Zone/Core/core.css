@@ -1,7 +1,10 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.5 2002/03/02 18:03:33 eric Exp $
+ * $Id: core.css,v 1.6 2002/03/11 10:24:34 eric Exp $
  * ---------------------------------------------------------------------------
  * $Log: core.css,v $
+ * Revision 1.6  2002/03/11 10:24:34  eric
+ * correction pour création utilisateur avec postmaster
+ *
  * Revision 1.5  2002/03/02 18:03:33  eric
  * ajout couleur sur input
  *
@@ -290,7 +293,7 @@ DIV.TITLE { color : black;
 	padding : 3pt;		
 }
 
-INPUT, SELECT {
+INPUT, SELECT, TEXTAREA, FILE {
    color:[CORE_FGTEXTCOLOR];
    background-color:[CORE_BGCOLORALTERN];
 }

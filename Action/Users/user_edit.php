@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: user_edit.php,v 1.2 2002/03/11 10:24:34 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,59 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: user_edit.php,v $
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.15  2001/09/12 10:31:41  eric
-// seul domain_master peut changer les groupes
-//
-// Revision 1.14  2001/08/31 13:22:46  eric
-// modification pour éviter la récursivité dans les groupes
-//
-// Revision 1.13  2001/08/29 14:01:04  eric
-// choix du groupe du domaine
-//
-// Revision 1.12  2001/08/28 10:14:07  eric
-// modification pour la prise en comptes des groupes d'utilisateurs
-//
-// Revision 1.11  2000/11/13 11:38:16  marc
-// Edition d'un nouvel utilisateur : ne fonctionnait pas, le domaine
-// 'local' n'étant pas récupéré
-//
-// Revision 1.10  2000/10/27 10:28:28  marc
-// Utilisation de la derniere version de Class.Domain.php
-//
-// Revision 1.9  2000/10/26 15:58:51  yannick
-// L'utilisateur ne peut pas modifier son domaine
-//
-// Revision 1.8  2000/10/26 12:52:05  yannick
-// Bug : perte du mot de passe
-//
-// Revision 1.7  2000/10/26 10:41:03  yannick
-// Edition par l'utilisateur
-//
-// Revision 1.6  2000/10/26 08:09:30  yannick
-// Traitement de la modification du mot de passe
-//
-// Revision 1.5  2000/10/26 07:54:27  yannick
-// Gestion du domaine sur les utilisateur
-//
-// Revision 1.4  2000/10/23 11:05:40  marc
-// Domain mngt
-//
-// Revision 1.3  2000/10/23 10:40:07  marc
-// Stable release with mail account creation
-//
-// Revision 1.2  2000/10/22 16:27:04  marc
-// Connexion avec la messagerie
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.SubForm.php");
 include_once("Class.Domain.php");
 include_once("Class.MailAccount.php");
@@ -122,13 +70,19 @@ function user_edit(&$action) {
     $login->set("login","");
     if ($action->HasPermission("ADMIN")) {
       $seldom=1;
+      $ugroup = array("2"); // default group
     } else if ($action->HasPermission("DOMAIN_MASTER")) {
       $seldom=$action->user->iddomain;
+      $query=new QueryDb($action->dbaccess, "User");
+      $query->AddQuery("iddomain=$seldom");
+      $query->AddQuery("login='all'");
+      $table=$query->Query();
+      if ($query->nb>0) $ugroup = array($table[0]->id); // default domain group 
+      else $ugroup = array("2"); // default group
     } else {
-      $action->info("Not Allowed Access Attempt");
+      $action->exitError(_("Not Allowed Access Attempt : need DOMAIN_MASTER privilege"));
     }
     
-    $ugroup = array("2"); // default group
 
   } else {
     $user = new User($action->GetParam("CORE_USERDB"),$id);
