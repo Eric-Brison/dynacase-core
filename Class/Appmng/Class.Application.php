@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.31 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: Class.Application.php,v 1.32 2004/04/23 15:34:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,10 +30,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.31 2004/03/22 15:21:40 eric Exp $
+//  $Id: Class.Application.php,v 1.32 2004/04/23 15:34:07 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.31 2004/03/22 15:21:40 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.32 2004/04/23 15:34:07 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -244,7 +244,7 @@ function AddJsRef($ref)
      $this->parent->AddJsRef($ref);
   } else {
      (!isset($this->jscount) ? $this->jscount = 0 : $this->jscount++);
-     $this->jsref[$this->jscount]=$ref;
+     $this->jsref[$ref]=$ref;
      $this->log->debug("AddJsRef [{$this->jscount}] = <{$this->jsref[$this->jscount]}>");
   }
 }
