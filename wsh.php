@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.6 2002/05/27 14:51:30 eric Exp $
+// $Id: wsh.php,v 1.7 2002/06/04 16:09:56 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -123,5 +123,5 @@ if (isset($HTTP_GET_VARS["api"])) {
   echo ($action->execute ());
 }
 
-
+return(0);
 ?>

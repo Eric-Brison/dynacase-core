@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. /var/post-install/share/pi-functions.sh
+
+log "Add plpgsql language"
+sulog postgres "createlang --dbname=anakeen --pglib=/usr/lib/pgsql plpgsql"

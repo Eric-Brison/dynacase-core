@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.13 2002/05/28 16:36:44 eric Exp $
+//  $Id: Class.Application.php,v 1.14 2002/06/04 16:09:56 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.13 2002/05/28 16:36:44 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.14 2002/06/04 16:09:56 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -464,8 +464,11 @@ function SetParam($key,$val)
   if (is_array($val)) {
     if (isset($val["global"]) && $val["global"]=="Y") $type=PARAM_GLB; else $type=PARAM_APP;
     $this->param->Set($key,$val["val"],$type,$this->id);
+
   } else { // old method
+
     $this->param->Set($key,$val,PARAM_APP,$this->id);
+
   }
 }
 
@@ -514,8 +517,7 @@ function InitAllParam($tparam,$update=false) {
     while (list($k,$v) = each ($tparam)) {
       $this->SetParamDef($k,$v); // update definition
 	if ($update) { 
-	  // delete paramters that cannot be change after initialisation to be change now
-	  $this->param->DelStatic($this->id);
+
 	  // don't modify old parameters
 	    
 	    if ($this->param->Get($k) == "") 
@@ -569,10 +571,11 @@ function InitApp($name,$update=FALSE) {
          $app->Add();
          $this=$app;
          $this->param=new Param();
-         $this->param->SetKey($this->id,$this->user->id);
+         $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID);
        }
      } else {
-       die ("can't init $name");
+       $this->log->info ("can't init $name");
+       return false;
      }
 
      // init acl
@@ -608,6 +611,9 @@ function InitApp($name,$update=FALSE) {
      if (file_exists("{$name}/{$name}_init.php")) {
 
         include("{$name}/{$name}_init.php");
+
+	// delete paramters that cannot be change after initialisation to be change now
+	  if ($update)   $this->param->DelStatic($this->id);
         global $app_const;
         if (isset($app_const)) $this->InitAllParam($app_const,$update);
          
@@ -618,7 +624,7 @@ function InitApp($name,$update=FALSE) {
      if (file_exists("{$this->childof}/{$this->childof}_init.php")) {
         include("{$this->childof}/{$this->childof}_init.php");
         global $app_const;
-        $this->InitAllParam($app_const,$update);
+        $this->InitAllParam($app_const,true);
      }
 
      if ($this->id > 1) {
@@ -657,7 +663,8 @@ function InitApp($name,$update=FALSE) {
      }
      
   } else {
-    die ("No {$name}/{$name}.app available");
+    $this->log->info ("No {$name}/{$name}.app available");
+    return false;
   }
 }
      

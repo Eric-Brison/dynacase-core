@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.11 2002/05/28 09:00:25 eric Exp $
+#  $Id: WHAT.spec.in,v 1.12 2002/06/04 16:09:56 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -13,7 +13,7 @@
 %define pirange 010
 %define purange 990
 
-Summary: The CORE What
+Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
 Version: @VERSION@
 Release: @RELEASE@
@@ -44,7 +44,7 @@ Prereq: SysVinit
 Prereq: gettext
 
 %description
-The WHAT application tools  gives common interface element to applications
+The WHAT application toolkit gives common interface element to develop web applications
 
 
 %prep
@@ -67,80 +67,25 @@ if [ "$1" = 1 ] ; then
   # Add apache options for what
   echo "Include %{destdir}/apache.conf" >>/etc/httpd/conf/httpd.conf
 
-
- 
-  # try execute post install now
-  %{pidir}/@PACKAGE@_post.sh 1
-  if [ $? -ne 0 ]; then
-     ln -s %{pidir}/@PACKAGE@_post.sh %{pidir}/PI%{pirange}@PACKAGE@
-  fi
-else   
-
-  # just update
-  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=CORE  
-  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=USERS
-  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=APPMNG
-  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=AUTHENT
-  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=ACCESS
-  su - postgres -c "psql anakeen anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
-
-  /home/httpd/what/wsh.php  --api=import_style --name=RED
-  /home/httpd/what/wsh.php  --api=import_style --name=GREEN
-fi
-
-# merge @PACKAGE@ translation for i18n
-for lang in en fr ; do
-    pushd /home/httpd/what/locale/$lang/LC_MESSAGES >/dev/null
-    if [ -f what.mo ] ; then
-      msgunfmt --force-po @PACKAGE@.mo -o @PACKAGE@.po
-      msgunfmt --force-po what.mo -o what.po
-      msgfmt what.po @PACKAGE@.po -o what.mo
-      rm -f *.po
-    else
-	cp @PACKAGE@.mo what.mo
-    fi
-    popd >/dev/null
-done
-
-%preun
-if [ "$1" = 0 ] ; then
-  # Remove the App from the database
-  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=CORE  
-  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=USERS
-  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=APPMNG
-  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=AUTHENT
-  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=ACCESS
-  
-  # copy uninstall shell to be execute in post-uninstall section
-  cp %{pidir}/@PACKAGE@_post.sh %{pidir}/PT%{purange}@PACKAGE@_post.sh
-fi
-
-%postun
-if [ "$1" = 0 ] ; then
-  grep -v 'Include %{destdir}/apache.conf' /etc/httpd/conf/httpd.conf > /tmp/httpd.conf
-  mv /tmp/httpd.conf /etc/httpd/conf/httpd.conf
-
-
-  # Post uninstall - will be re-execute at next boot if cannot be perform
-  # correctly now
-  %{pidir}/PT%{purange}@PACKAGE@_post.sh 0
-#  if [ $? -eq 0 ]; then
-   /bin/rm -f %{pidir}/PT%{purange}@PACKAGE@_post.sh
-#  fi
-
-# Remove what from syslog
-  echo "Remove what.log from syslog"
-  cp /etc/syslog.conf /etc/syslog.conf.sav
-  cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
-  /etc/rc.d/init.d/syslog restart
-  rm -f /etc/logrotate.d/what
-
-# Restart Apache if running
+  # Restart Apache if running
   run=`/etc/rc.d/init.d/httpd status |grep pid|wc -l`
   if [ $run = 1 ] ; then
      /etc/rc.d/init.d/httpd restart
   fi
+
+else   
+
+  # just update
+  echo
 fi
+%{destdir}/wstop
+
+
+%preun
+
+
+%postun
+
 
 
 %files
@@ -148,9 +93,7 @@ fi
 %dir %{destdir}
 %dir %{destdir}/%{name}
 %doc ChangeLog
-%{destdir}/index.php
-%{destdir}/wsh.php
-%{destdir}/dbaccess.php
+%{destdir}/*.php
 %{destdir}/apache.conf
 %{destdir}/%{name}/*
 %{destdir}/CORE/*

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+function whattext ()
+{
+    
+    for lang in en fr ; do
+	pushd /home/httpd/what/locale/$lang/LC_MESSAGES >/dev/null
+	mv what.mo what.mo.old
+	msgunfmt --force-po *.mo -o what.po
+	msgfmt what.po  -o what.mo
+	rm -f *.po *.old
+	popd >/dev/null
+    done
+
+}
+whattext
+exit 0

@@ -18,12 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.6 2002/05/28 09:00:25 eric Exp $
+//  $Id: Class.Param.php,v 1.7 2002/06/04 16:09:57 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.6 2002/05/28 09:00:25 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.7 2002/06/04 16:09:57 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -174,12 +174,15 @@ function DelStatic($appid)
     if ($query->nb != 0) {
       while(list($k,$v)=each($list)) {
         $v->Delete();
+	if (isset($this->buffer[$v->name])) unset($this->buffer[$v->name]);
       }
     } 
 
 }
 
-
+function PostDelete() {
+  if (isset($this->buffer[$this->name])) unset($this->buffer[$this->name]);
+}
 
 function DelAll($appid="")
 {

@@ -21,15 +21,22 @@ export utildir
 
 SUBDIR= Class Images Action Zone App Api Share Doc Style
 
-TOP_MODULES = index.php wsh.php dbaccess.php apache.conf 
+TOP_MODULES = index.php wsh.php  dbaccess.php apache.conf  whattext wcheck wstop
 
 
 include $(utildir)/PubRule
 
 DISTFILES = $(SUBDIR) configure.in  \
-            Makefile.in index.php wsh.php dbaccess.php.in \
+            Makefile.in index.php wsh.php  dbaccess.php.in \
             apache.conf.in WHAT.spec.in ChangeLog  VERSION RELEASE \
-	    $(PACKAGE)_en.po $(PACKAGE)_fr.po 
+	    $(PACKAGE)_en.po $(PACKAGE)_fr.po whattext wcheck wstop
 
 
 PIFILES = $(PACKAGE)_post.sh
+
+$(pubdir)/whattext: whattext
+	cp $< $@
+$(pubdir)/wcheck: wcheck
+	cp $< $@
+$(pubdir)/wstop: wstop
+	cp $< $@
