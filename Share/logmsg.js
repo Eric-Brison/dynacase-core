@@ -1,6 +1,11 @@
 function displayLogMsg(logmsg) {
+  var log=false;
   if (top.foot) {
-    var log=top.foot.document.getElementById('slog');
+    log=top.foot.document.getElementById('slog');
+  } else {
+    wfoot = window.open('','foot','');
+    log=wfoot.document.getElementById('slog');
+  }
     if (log) {
       var classn = 'CORETblCell'        
       var k=0;
@@ -21,5 +26,5 @@ function displayLogMsg(logmsg) {
       else log.style.display='inline';
     }
     
-  }
+  
 }
