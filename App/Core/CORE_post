@@ -52,6 +52,17 @@ if [ "$1" = "I" ] ; then
   echo "}"                                 >> /etc/logrotate.d/what
 
 
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Application
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Action
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Style
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=ParamDef
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Param
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=User
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Group
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Permission
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Acl
+  /usr/bin/php -q $pubdir/API/updateclass.php  --class=Session
+
 
 fi
 
