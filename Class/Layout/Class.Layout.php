@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.10 2002/09/24 13:57:40 eric Exp $
+//  $Id: Class.Layout.php,v 1.11 2003/01/29 16:05:49 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -221,6 +221,10 @@ var $strip='Y';
   function set($tag,$val) {
      $this->pkey[$tag]="/\[$tag\]/";
      $this->rkey[$tag]=$val;
+  }
+  function get($tag) {
+    if (isset($this->rkey)) return $this->rkey[$tag];
+    return "";
   }
 
   function ParseRef(&$out) {
