@@ -16,12 +16,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryGen.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.QueryGen.php,v 1.2 2003/01/14 17:59:50 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // This class is designed to design easily pages with query/order elements
 //
-$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.2 2003/01/14 17:59:50 eric Exp $';
 
 include_once('Class.QueryDb.php');
 include_once('Class.TableLayout.php');
@@ -87,7 +87,7 @@ function QueryGen  ($dbaccess,$class,&$action) {
   $i=0;
   while ($i<$this->slice) {
     $this->Init("criteria","",$i);
-    if ($this->criteria[$i]=="") break;
+    if (($this->criteria=="") || ($this->criteria[$i]=="")) break;
     $this->Init("operator","",$i);
     $this->Init("value","",$i);
     $this->Init("connector","",$i);
