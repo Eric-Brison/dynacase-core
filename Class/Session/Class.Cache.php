@@ -35,6 +35,8 @@ function get_ancestors_class($classname) {
   return $ancestors;
 }
 
+
+
 Class Cache {
 
   var $isCacheble= true;
@@ -168,14 +170,30 @@ Class Cache {
   function Cacheble() {
 
     // detect if cache enable
-    if ($this->isCacheble) {
-      global $core;
-      if (is_object($core)) {
-	$this->isCacheble = ($core->GetParam("CORE_USECACHE","yes") == "yes");
-      }
-    }
+      if ($this->isCacheble) {
 
+
+	global $CORE_USECACHE;
+      
+	if (! isset($CORE_USECACHE))  {
+      
+	  global $core;
+	  if (is_object($core)) {
+	    $usecache = $core->GetParam("CORE_USECACHE","zou");
+	    if ($usecache != "zou") {
+	      $CORE_USECACHE = ($usecache == "yes");
+	      $this->isCacheble = $CORE_USECACHE;
+	    }
+	  } else { // not yet initialised
+		     ; // is cachebled (by default)
+		 }
+	  
+	} else {
+	  $this->isCacheble = $CORE_USECACHE;
+	}
+      }
   }
+
   function ReallySetCache() {
     //just to trace
 
