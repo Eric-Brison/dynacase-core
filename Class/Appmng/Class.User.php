@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.30 2004/08/12 10:28:22 eric Exp $
+ * @version $Id: Class.User.php,v 1.31 2004/08/23 12:00:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.30 2004/08/12 10:28:22 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.31 2004/08/23 12:00:13 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -144,14 +144,7 @@ create sequence seq_id_users start 10";
   }
    
 
-  function PostInsert()     
-    {
-      // create default ACL for each application
-      // only for group
-      //    if ($this->isgroup == "Y") {
-      // 	$app = new Application();
-      // 	$app-> UpdateUserAcl($this->id);
-      //       }
+  function PostInsert()    {
     //Add default group to user
     $group=new group($this->dbaccess);
     $group->iduser=$this->id;
@@ -170,16 +163,19 @@ create sequence seq_id_users start 10";
     $group->idgroup=$gid;
     $group->Add();       
 
-      $err=$this->FreedomWhatUser();  
-       // double pass to compute dynamic profil on itself
-      return $err;
-      if ($this->fid<>"") { 	
- 	$wsh = getWshCmd();
- 	$cmd = $wsh . "--api=usercard_iuser --whatid={$this->id}";
- 	exec($cmd);
-      }
-      return $err;
+    $err=$this->FreedomWhatUser();  
+    if (@include_once("FDL/Lib.Usercard.php")) {
+      refreshGroups(array($gid),true);
     }
+    // double pass to compute dynamic profil on itself
+    return $err;
+    if ($this->fid<>"") { 	
+      $wsh = getWshCmd();
+      $cmd = $wsh . "--api=usercard_iuser --whatid={$this->id}";
+      exec($cmd);
+    }
+    return $err;
+  }
 
   function PostUpdate()     
     {
