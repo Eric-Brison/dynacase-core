@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.21 2003/02/19 17:47:19 eric Exp $
+//  $Id: Class.Application.php,v 1.22 2003/05/14 17:11:49 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.21 2003/02/19 17:47:19 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.22 2003/05/14 17:11:49 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -43,7 +43,7 @@ function f_paramglog($var) { // filter to select only not global
 
 Class Application extends DbObj
 {
-var $fields = array ( "id",  "name","short_name",  "description",  "access_free",	 "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine");
+var $fields = array ( "id",  "name","short_name",  "description",  "access_free",  "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine");
 
 var $id_fields = array ( "id");
 
@@ -425,28 +425,9 @@ function GetLayoutFile($layname) {
   $nav=$this->session->Read("navigator");
   $ver=doubleval($this->session->Read("navversion"));
 
-  $minver = 1000; // i think no more navigator version greater than 1000
+  
   $laydir = $this->Getparam("CORE_PUBDIR")."/".$this->name."/Layout/";
   $file = $laydir.$layname; // default file
-
-  if ($dir = @opendir($laydir)) {
-    while ($xfile = readdir($dir)) {
-      if (ereg($nav."-([0-9.]+)-".$layname,$xfile,$reg)) {
-	$fver = doubleval($reg[1]); // file version 
-	
-	// search the file version  more or equal the navigator version
-	// but if more than one try the nearest
-	if ($fver >= $ver) {
-	  if ($fver < $minver) { 
-	    $file = $laydir.$xfile;
-	    $minver = $fver;
-	  }
-	}
-      }  
-    }
-    closedir($dir);
-  }
-
  
   
   if (file_exists($file)) {

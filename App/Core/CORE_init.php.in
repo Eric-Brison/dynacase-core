@@ -155,6 +155,10 @@ $app_const = array (
 							"descr"=>N_("gate urls"),
 							"user"=>"Y",
 							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_SOCSTYLE"		=>array("val"=>"",
+							"descr"=>N_("society style"),
+							"style"=>"N",
 							"global"=>"Y")
 		    );
 

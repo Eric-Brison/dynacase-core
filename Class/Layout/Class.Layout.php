@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.12 2003/03/21 11:05:44 eric Exp $
+//  $Id: Class.Layout.php,v 1.13 2003/05/14 17:11:49 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -77,7 +77,18 @@ var $strip='Y';
 //#  
 //#
 
-//# Constructor
+
+
+// --------------------------------------------------------------------------
+// Constructor
+//              
+// I               caneva : file of the template
+//
+// Return          none
+//
+// Date            May, 14 2003 - 18:46:17
+// Author          Yannick Lebriquer	(Anakeen)
+// --------------------------------------------------------------------------
  function Layout($caneva="",$action="",$template="[OUT]") {
     $this->LOG = new Log("","Layout");     
     $this->template = $template;

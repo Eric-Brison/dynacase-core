@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Common.php,v 1.5 2003/05/13 08:52:38 eric Exp $
+// $Id: Lib.Common.php,v 1.6 2003/05/14 17:11:49 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Common.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,7 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-$LIB_COMMON = '$Id: Lib.Common.php,v 1.5 2003/05/13 08:52:38 eric Exp $';
+$LIB_COMMON = '$Id: Lib.Common.php,v 1.6 2003/05/14 17:11:49 eric Exp $';
 
 // library of utilies functions
 
@@ -55,6 +55,17 @@ function GetParam($name, $def="") {
   if ($action)  return $action->getParam($name,$def);
 }
 
+function getLayoutFile($app, $layfile) {
+  $socStyle = Getparam("CORE_SOCSTYLE");
+  if ($socStyle != "") {
+    $root = Getparam("CORE_PUBDIR");
+    $file = $root."/$app/Layout/$socStyle/$layfile";
+
+    if (file_exists($file))  return($file);
+    
+  }
+  return $app."/Layout/".$layfile;
+}
 
 function microtime_diff($a,$b) {
     list($a_micro, $a_int)=explode(' ',$a);

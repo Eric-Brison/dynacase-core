@@ -18,9 +18,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Style.php,v 1.3 2002/05/28 09:00:25 eric Exp $
+//  $Id: Class.Style.php,v 1.4 2003/05/14 17:11:49 eric Exp $
 //
-$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.3 2002/05/28 09:00:25 eric Exp $';
+$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.4 2003/05/14 17:11:49 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Param.php');
@@ -56,7 +56,14 @@ function Set(&$parent)
 function GetImageUrl($img,$default) {
   $root = $this->parent->Getparam("CORE_PUBDIR");
 
+  $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
+  // first see if i have an society style
 
+  if (($socStyle != "") && file_exists($root."/STYLE/".$socStyle."/Images/".$img)) {
+    return("STYLE/".$socStyle."/Images/".$img); 
+  }
+
+  
   if (file_exists($root."/STYLE/".$this->name."/Images/".$img)) {
     return("STYLE/".$this->name."/Images/".$img); 
   } else {
@@ -66,6 +73,14 @@ function GetImageUrl($img,$default) {
 
 function GetLayoutFile($layname,$default="") {
   $root = $this->parent->Getparam("CORE_PUBDIR");
+
+  $socStyle = $this->parent->Getparam("CORE_SOCSTYLE");
+  // first see if i have an society style
+  if ($socStyle != "") {
+    $file = $root."/STYLE/".$socStyle."/Layout/".$layname;
+    if (file_exists($file))  return($file);
+  }
+
   $file = $root."/STYLE/".$this->name."/Layout/".$layname;
   if (file_exists($file))  return($file);
   
