@@ -47,7 +47,7 @@ if [ "$1" = "I" ] ; then
   echo "/var/log/what.log {"               >  /etc/logrotate.d/what
   echo "   missingok"                      >> /etc/logrotate.d/what
   echo "   postrotate"                     >> /etc/logrotate.d/what
-  echo "   /usr/bin/killall -HUP syslogd"  >> /etc/logrotate.d/what
+  echo "   /usr/bin/killall -HUP syslog-ng"  >> /etc/logrotate.d/what
   echo "   endscript"                      >> /etc/logrotate.d/what
   echo "}"                                 >> /etc/logrotate.d/what
 
