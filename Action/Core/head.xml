@@ -35,6 +35,23 @@
     return true;
   }
 
+var csel=false; // selected icon object
+function fadeIt(th) {
+  th.width-=6; 
+  th.height-=6;
+    if (th.className != 'imgSelect') th.className='imgFade';
+}
+function unFadeIt(th) {
+  th.width+=6; 
+  th.height+=6;
+  if (th.className != 'imgSelect')   th.className='imgNotFade';
+}
+function selectIt(th) {
+  csel.className='imgFade';
+  
+  th.className='imgSelect';
+  csel=th;
+}
 </script>
 
 
@@ -46,9 +63,10 @@
 
  [BLOCK FUNCTION]
 <td width="40"  align="center" >
-     <a href="#"><img  onClick="lauch_action(this.src,'[name]','[descriptionsla]');" 
-     onMouseOver="this.width+=6; this.height+=6;" 
-     onMouseOut="this.width-=6; this.height-=6;" src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
+     <a href="#"><img  class="imgFade"  onclick="selectIt(this);lauch_action(this.src,'[name]','[descriptionsla]');" 
+     onMouseOver="unFadeIt(this);" 
+     onMouseOut="fadeIt(this);" 
+     src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
 

@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.20 2003/06/06 09:13:11 eric Exp $
+ * $Id: core.css,v 1.21 2003/06/19 09:44:39 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -218,6 +218,18 @@ A:link, A:visited {
   text-align:center;
 }
 
+.imgFade {
+	filter:alpha(opacity=50);
+	-moz-opacity:.5;	
+}
+.imgNotFade {
+	filter:alpha(opacity=99);
+	-moz-opacity:.99;	
+}
+.imgSelect {
+	filter:alpha(opacity=99);
+	-moz-opacity:.99;	
+}
 div.detail {
   visibily: hidden ;
   font-family : helvetica ;

@@ -1,3 +1,14 @@
+function getMouseButton(event) {
+  // 1 is the left, 2 the middle, 3 the right button
+  var button;
+  if (window.event) {
+      button=window.event.button;
+  } else  {
+      button= event.button +1;
+  }
+  return button;
+}
+
 
 var windows= new Object();;
 
