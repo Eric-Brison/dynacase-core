@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: updateclass.php,v 1.4 2004/02/17 10:34:05 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: updateclass.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+// $Id: updateclass.php,v 1.4 2004/02/17 10:34:05 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/Attic/updateclass.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -37,7 +37,7 @@
 // ---------------------------------------------------------------
 
 $pubdir="/home/httpd/what";
-ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT");
+ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT:/usr/share/pear");
 
 function GetArg($name, $def="") {
 

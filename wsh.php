@@ -5,14 +5,14 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.13 2003/12/02 14:38:57 eric Exp $
+ * @version $Id: wsh.php,v 1.14 2004/02/17 10:34:05 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.13 2003/12/02 14:38:57 eric Exp $
+// $Id: wsh.php,v 1.14 2004/02/17 10:34:05 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -35,7 +35,7 @@
 // ---------------------------------------------------------------
 
 // WHAT SHELL
-ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT");
+ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT:/usr/share/pear");
 ini_set("max_execution_time", "3600");
 
 include_once('Class.Action.php');

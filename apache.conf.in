@@ -2,7 +2,7 @@ Alias /what @prefix@
 
 
 <Directory "@prefix@">
-    php_value include_path ".:@prefix@:@prefix@/WHAT:/home/httpd/advGraph"
+    php_value include_path ".:@prefix@:@prefix@/WHAT:/home/httpd/advGraph:/usr/share/pear"
     php_value session.use_cookies 1
     php_value session.name "session"
     php_value session.use_trans_sid 0
