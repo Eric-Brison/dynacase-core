@@ -43,3 +43,17 @@ function getKeyPress(event)
   alert('key:'+intKeyCode);
   return intKeyCode;
 }
+
+function autoHresize() {
+  if (window != top) return;
+
+  if (document.body.scrollHeight > self.screen.availHeight) 
+    dh=self.screen.availHeight-document.body.clientHeight;
+  else 
+    dh=document.body.scrollHeight-document.body.clientHeight;
+
+  dw=0;
+  if (dh > 0) window.resizeBy(dw,dh);
+}
+
+

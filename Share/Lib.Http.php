@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.9 2002/07/31 09:46:44 eric Exp $
+// $Id: Lib.Http.php,v 1.10 2002/09/12 08:41:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -23,7 +23,7 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.9 2002/07/31 09:46:44 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.10 2002/09/12 08:41:16 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -104,10 +104,12 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE) {
 
 function Http_DownloadFile($filename,$name,$mime_type='') {
 
-   
-  header("Cache-control: private"); // for IE : don't know why !!
-   header("Content-Disposition: form-data;filename=$name");
-   header("Cache-control: private"); // for IE : don't know why !!
+  
+   header("Content-Disposition: form-data;filename=$name");   
+   header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
+
+   header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
+   header("Pragma: "); // HTTP 1.0
    header("Content-type: ".$mime_type);
    $fd = fopen($filename, "r");
    while (! feof($fd)) {

@@ -15,7 +15,7 @@ function subwindow(h, w, name, url) {
   me.focus();
 
     
-  return false;
+  return me;
 }
 
 // with menu
@@ -37,5 +37,5 @@ function subwindowm(h, w, name, url) {
   me.focus();
 
     
-  return false;
+  return me;
 }
