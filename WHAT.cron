@@ -1,0 +1,8 @@
+#!/bin/sh
+# ---------------------------------------------------------
+# $Id: WHAT.cron,v 1.1 2004/01/14 17:12:27 eric Exp $
+# 
+# Distribued under GPL 2 licence terms
+# ---------------------------------------------------------
+find /var/run/php/ -name 'sess_*' -exec /bin/rm {} \;
+echo "delete from sessions" | psql anakeen anakeen  > /dev/null
