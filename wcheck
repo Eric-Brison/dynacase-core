@@ -190,8 +190,12 @@ if (! $dbid) {
 
 $dump[] = "su - postgres -c 'pg_dumpall > /tmp/".uniqid("whatdb")."'";
 $dump[] = "/etc/rc.d/init.d/httpd stop";
-$actions = array_merge($dump,array_merge($pre,array_merge($migr,array_merge($wsh, $post))));
 $actions[] = "$pubdir/whattext";
+$actions += array_merge($dump,
+		       array_merge($pre,
+				   array_merge($migr,
+					       array_merge($wsh, 
+							   $post))));
 $actions[] = "/bin/cp $pubdir/WHAT/index.php $pubdir";
 $actions[] = "/etc/rc.d/init.d/httpd start";
 print_r($actions);
@@ -201,6 +205,7 @@ $cont=fread($stdin,1);
 
 if (strtoupper($cont[0]) != "Y") exit;
      
+     reset($actions);
 while (list($k,$v) = each ($actions)) {
   echo "--------------------------------------------------------------------------------\n";
 	
