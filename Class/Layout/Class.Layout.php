@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.11 2003/01/29 16:05:49 eric Exp $
+//  $Id: Class.Layout.php,v 1.12 2003/03/21 11:05:44 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -170,12 +170,14 @@ var $strip='Y';
     if ($this->action=="") return ("Layout not used in a core environment");
 
     // analyse action & its args
+    $actionargn=str_replace(":","--",$actionargn); //For buggy function parse_url in PHP 4.3.1
     $acturl = parse_url($actionargn);
     $actionname =  $acturl ["path"];
 
     global $ZONE_ARGS;
 
     if (isset($acturl ["query"])) {
+      $acturl["query"]=str_replace("--",":",$acturl["query"]); //For buggy function parse_url in PHP 4.3.1
       $zargs = explode("&", $acturl ["query"] );
       while (list($k, $v) = each($zargs)) {
 	if (ereg("([^=]*)=(.*)",$v, $regs)) {
@@ -207,7 +209,9 @@ var $strip='Y';
 
       }
       if ($res == "") {
-        return($act->execute());
+        return(
+	       $act->execute()
+	       );        
       } else {
         return($res);
       }
