@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.22 2003/10/30 08:57:09 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.23 2003/11/18 09:39:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.22 2003/10/30 08:57:09 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.23 2003/11/18 09:39:11 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -38,8 +38,9 @@
 
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
+include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.22 2003/10/30 08:57:09 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.23 2003/11/18 09:39:11 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects

@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.23 2003/08/12 12:16:56 eric Exp $
+ * $Id: core.css,v 1.24 2003/11/18 09:39:11 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -273,9 +273,18 @@ INPUT, SELECT, TEXTAREA, FILE {
    color:[CORE_FGTEXTCOLOR];
    background-color:[CORE_INPUTBGCOLOR];
 }
-input[type="button"] { -moz-border-radius:25px }
-input[type="submit"] { -moz-border-radius:25px }
-input[type="reset"] { -moz-border-radius:25px }
+input[type="button"] { -moz-border-radius:25px;
+   }
+input[type="submit"] { -moz-border-radius:25px;
+   }
+input[type="select"] { -moz-border-radius:25px;
+  }
+input[type="reset"] { -moz-border-radius:25px ;
+ }
+/* input[type="submit"]:hover, input[type="reset"]:hover,input[type="button"]:hover {
+ background-image:url('Images/bgaqua.png');   
+    -moz-opacity:.8;		
+} */
 input[type="image"] { 
   border-style : none;
   background-color:transparent;
