@@ -1,4 +1,4 @@
-/* $Id: anakeen-doc.css,v 1.2 2002/03/12 14:19:31 marc Exp $ */
+/* $Id: anakeen-doc.css,v 1.1 2002/03/13 18:28:27 marc Exp $ */
 .BOOK .TITLE          { color : #FE911C ;text-align: center }
 .BOOK .SUBTITLE       { text-align: center }
 .BOOK .CORPAUTHOR     { text-align: center }
@@ -9,7 +9,7 @@
 .BOOK .GRAPHIC        { text-align: center }
 
 .MEDIAOBJECT { text-align: center }
-.ARTICLE .TITLE          { text-align: center }
+.ARTICLE .TITLE          { color : #FE911C ;text-align: center }
 .ARTICLE .SUBTITLE       { color : #FE911C ;text-align: center }
 .ARTICLE .CORPAUTHOR     { text-align: center }
 .ARTICLE .AUTHOR         { color : #FE911C ;text-align: center }
@@ -21,7 +21,8 @@
                            margin-right: 0.5in;
                            font-style: italic }
 
-A { color : #FE911C ; }
+A.hlink { color : #FE911C ; }
+H1,H2,H3,H4 { color : #FE911C ; }
 
 .NAVHEADER, .NAVFOOTER {
    color : #02472A ;
@@ -29,18 +30,20 @@ A { color : #FE911C ; }
    font-size : 10pt;
   }
 
-P {font-family : helvetica;
-   color : #02472A ;
-   text-align : justify;
-   font-size : 10pt;
-  }
+P {
+	font-family : helvetica;
+	color : #02472A ;
+	text-align : justify;
+	font-size : 10pt;
+        margin-left: 12pt; 
+}
 
 P:first-letter {
-   font-family : helvetica;
-   color : #FE911C ;
-   font-size : 12pt;
-   font-variant: small-caps;
-  }
+	font-family : helvetica;
+	color : #FE911C ;
+	font-size : 12pt;
+	font-variant: small-caps;
+}
 
 LI P:first-letter {font-family : helvetica;
    		   color : #02472A ;
