@@ -155,6 +155,10 @@ Class Cache {
     
       global $CacheObj;
       unset($CacheObj[$index]);
+
+      global $ClearedIndex;
+      $ClearedIndex[$index]=true;
+
       if ($reallyset) { // to alert other user of modification
 	$scache = new SessionCache("", $index);
 	$scache->SetTime();
@@ -170,8 +174,13 @@ Class Cache {
   function Cacheble() {
 
     // detect if cache enable
-      if ($this->isCacheble) {
+    if ($this->isCacheble) {
+      global $ClearedIndex;
 
+      // don't reuse a cleared index
+      if (isset($ClearedIndex[$this->cacheclass()])) $this->isCacheble = false;
+      else {
+	
 
 	global $CORE_USECACHE;
       
@@ -185,13 +194,14 @@ Class Cache {
 	      $this->isCacheble = $CORE_USECACHE;
 	    }
 	  } else { // not yet initialised
-		     ; // is cachebled (by default)
-		 }
+	    ; // is cachebled (by default)
+	  }
 	  
 	} else {
 	  $this->isCacheble = $CORE_USECACHE;
 	}
       }
+    }
   }
 
   function ReallySetCache() {
