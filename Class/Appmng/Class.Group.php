@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.7 2004/03/01 08:34:16 eric Exp $
+ * @version $Id: Class.Group.php,v 1.8 2004/03/17 17:46:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -90,14 +90,16 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
   }
   function FreedomCopyGroup() {
   
-    $wsh = GetParam("CORE_PUBDIR")."/wsh.php";
-    $cmd = $wsh . " --api=freedom_groups";
+    if (@include_once('FDL/Lib.Dir.php')) {
+      $wsh = GetParam("CORE_PUBDIR")."/wsh.php";
+      $cmd = $wsh . " --api=freedom_groups";
 
-    exec($cmd);
-    $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
-    $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
+      exec($cmd);
+      $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
+      $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
 
-    exec($cmd);
+      exec($cmd);
+    }
   }
 
   /**
