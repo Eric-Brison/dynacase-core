@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.27 2004/03/04 13:45:59 eric Exp $
+ * @version $Id: Class.User.php,v 1.28 2004/07/28 12:08:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.27 2004/03/04 13:45:59 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.28 2004/07/28 12:08:52 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -163,7 +163,6 @@ create sequence seq_id_users start 10";
        // double pass to compute dynamic profil on itself
       return $err;
       if ($this->fid<>"") { 
-
  	$wsh = GetParam("CORE_PUBDIR","/home/httpd/what")."/wsh.php";
  	$cmd = $wsh . " --api=usercard_iuser --whatid={$this->id}";
  	exec($cmd);
@@ -232,7 +231,6 @@ create sequence seq_id_users start 10";
     $this->firstname=$fname;	
     $this->status=$status;
     if ($this->login=="") $this->login=$login;
-
     //ne modifie pas le password en base même si contrainte forcée 
     if ($pwd1==$pwd2 and $pwd1<>"") {
       $this->password_new=$pwd2;   
@@ -266,8 +264,8 @@ create sequence seq_id_users start 10";
 	    $uacc->iddomain    = $this->iddomain ;
 	    $uacc->iduser      = $this->id;
 	    $uacc->login       = $this->login;
-	    $err=$uacc->Add();
-	    if ($err == "") $err=$this->Modify();
+	    $err=$uacc->Add(true);
+	    if ($err == "") $err=$this->Modify(true);
 	  }          
 	} 
 	 
@@ -477,7 +475,6 @@ create sequence seq_id_users start 10";
    */
   function GetGroupsId() {
     $query = new QueryDb($this->dbaccess, "Group");
-
     $query-> AddQuery("iduser='{$this->id}'");
 
     $list = $query->Query(0,0,"TABLE");
@@ -485,7 +482,7 @@ create sequence seq_id_users start 10";
 
     if ($query->nb >0) {
       while (list($k,$v) = each($list)) {
-	$groupsid[] = $v["idgroup"];
+	$groupsid[$v["idgroup"]] = $v["idgroup"];
       }
     
     } 

@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.8 2004/03/17 17:46:42 eric Exp $
+ * @version $Id: Class.Group.php,v 1.9 2004/07/28 12:08:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -57,18 +57,23 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 
       return true;
     }
+
+
+
   /**
    * suppress a user from the group 
    *
    * @param int $uid user identificator to suppress
    * @return string error message 
    */
-  function SuppressUser($uid) {
+  function SuppressUser($uid,$nopost=false) {
       $err="";
 
       if (($this->iduser>0) && ($uid > 0)) {
 	$err = $this->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=$uid");
-	$this->PostDelete();
+	
+	if (!$nopost) $this->PostDelete();
+	$this->ClearCache(); // needed because not call to ::delete method
       }
       return $err;			   
   }
@@ -95,15 +100,15 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
       $cmd = $wsh . " --api=freedom_groups";
 
       exec($cmd);
-      $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
-      $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
+//       $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
+//       $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
 
-      exec($cmd);
+//       exec($cmd);
     }
   }
 
   /**
-   * get direct group and group of group
+   * get ascendant direct group and group of group
    */
   function GetAllGroups()
     {
@@ -117,6 +122,87 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
       return $allg;
     }
 
+  /**
+   * get all child (descendant) group of this group
+   * @return array id
+   */
+  function getChildsGroupId($pgid="") {
+    if ($pgid=="") $pgid=$this->id;
+    $this->_initAllGroup();
 
+      
+    $groupsid=array();
+
+    if ($this->allgroups) {
+      foreach($this->allgroups as $k=>$v) {
+	if ($v["idgroup"]==$pgid) {
+	  $uid=$v["iduser"];
+	  $groupsid[$uid] = $uid;
+	  //	  $groupsid=array_merge($groupsid, $this->getChildsGroup($v["iduser"]));
+	  $groupsid += $this->getChildsGroupId($uid);
+	}
+      }
+    }
+    return $groupsid;
+  } 
+  /**
+   * get all parent (ascendant) group of this group
+   * @return array id
+   */
+  function getParentsGroupId($pgid="", $level=0) {
+    if ($pgid=="") $pgid=$this->id;
+    $this->_initAllGroup();
+      
+    $groupsid=array();
+
+    if ($this->allgroups) {
+      foreach($this->allgroups as $k=>$v) {
+	if ($v["iduser"]==$pgid) {
+	  $gid=$v["idgroup"];
+	  $groupsid[$gid] = $gid;
+	  $this->levgid[$gid] = max($level,$this->levgid[$gid]);
+
+	  $groupsid += $this->getParentsGroupId($gid,$level+1);
+	}
+      }
+    }
+    return $groupsid;
+  }
+
+  /**
+   * get all parent (ascendant) group of this group
+   * @return array id
+   */
+  function getDirectParentsGroupId($pgid="",&$uasid) {
+    $this->levgid=array();
+    $this->getParentsGroupId($pgid);
+    print_r2($this->levgid);
+    $groupsid=array();
+    asort($this->levgid);
+    foreach ($this->levgid as $k=>$v) {
+      if ($v==0) $groupsid[$k]=$k;
+      else $uasid[$k]=$k;
+    }
+    return $groupsid;
+
+  }
+  function _initAllGroup() {
+    if (!isset($this->allgroups)) {
+      /* alone groups : not needed
+      $query = new QueryDb($this->dbaccess, "User");  
+      $query->AddQuery("isgroup='Y'");
+      $list= $query->Query(0,0,"TABLE");
+      
+      foreach ($list as $v) {
+	$this->allgroups[$v["id"]]="";
+      }
+      */
+      $query = new QueryDb($this->dbaccess, "Group");           
+      $list = $query->Query(0,0,"TABLE","select * from groups where iduser in (select id from users where isgroup='Y')");
+      foreach ($list as $v) {
+	$this->allgroups[]=$v;
+      }
+    }
+  }
 }
 ?>

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_mod.php,v 1.9 2004/07/27 09:51:19 eric Exp $
+ * @version $Id: user_mod.php,v 1.10 2004/07/28 12:08:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.9 2004/07/27 09:51:19 eric Exp $
+// $Id: user_mod.php,v 1.10 2004/07/28 12:08:52 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -41,12 +41,13 @@ include_once("Class.MailAccount.php");
 
 // -----------------------------------
 function user_mod(&$action) {
-// -----------------------------------
+  // -----------------------------------
 
   $action->log->info("USERMOD ");
   // Get all the params      
   $id=GetHttpVars("id");
-  $newgroup=GetHttpVars("groupview");
+  $newgroup=GetHttpVars("groupview",array());
+  
 
   if ($id == "") {
     $user = new User($action->GetParam("CORE_USERDB"));
@@ -112,10 +113,10 @@ function user_mod(&$action) {
     }
   }
   if (GetHttpVars("passwd")!="") {
-       $user->password_new=GetHttpVars("passwd");
+    $user->password_new=GetHttpVars("passwd");
        
-       if (($exptime>0) && ($exptime != $user->expires))  $user->expires=$exptime;
-       else  $user->expires=0; // means recompute expire date if needed
+    if (($exptime>0) && ($exptime != $user->expires))  $user->expires=$exptime;
+    else  $user->expires=0; // means recompute expire date if needed
        
   } else {
     if (($exptime>0) && ($exptime != $user->expires))  $user->expires=$exptime;	 
@@ -123,22 +124,31 @@ function user_mod(&$action) {
     
   $user->Modify();
     
-  $ugroup = new Group($action->dbaccess,$user->id);
-  if ($ugroup-> IsAffected()) {
+  $rgid=$user->GetGroupsId();
+
+  if ((count($rgid)!=count($newgroup)) || (count(array_diff($rgid,$newgroup))!=0)) {
+      
+    $ugroup = new Group($action->dbaccess,$user->id);
+    if ($ugroup-> IsAffected()) {
       $ugroup -> Delete(true); // delete all before add
     } else { // new group
       $ugroup->iduser = $user->id;
     }
-  if ( (is_array($newgroup))) {
-    while(list($k,$v) = each($newgroup)) {
-      $ugroup->idgroup = $v;
-      $ugroup-> Add(true);
+    if ( (is_array($newgroup))) {
+      while(list($k,$v) = each($newgroup)) {
+	$ugroup->idgroup = $v;
+	$ugroup-> Add(true);
+      }
+    }
+  
+    // only at the end : it is not necessary before
+    $ugroup->FreedomCopyGroup();
+    if (@include_once("FDL/Lib.Usercard.php")) {
+      $gdif=array_merge(array_diff($rgid,$newgroup),array_diff($newgroup,$rgid));
+
+      refreshGroups($gdif,true);
     }
   }
-  
-  // only at the end : it is not necessary before
-  $ugroup->FreedomCopyGroup();
-  
 
   if ($group) {
     redirect($action,"USERS","GROUP_TABLE");
