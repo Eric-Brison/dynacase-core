@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.5 2002/03/14 09:36:46 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.6 2002/04/03 13:42:51 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -413,6 +413,7 @@ function init_dbid() {
     } 
     $this->dbid=$CORE_DBID[$this->dbaccess];
     //    print "DBID:".$this->dbaccess.$this->dbid."<BR>";
+    return $this->dbid;
   
 }
 function exec_query($sql,$lvl=0)
