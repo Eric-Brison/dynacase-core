@@ -135,7 +135,7 @@ $app_const = array (
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
-		    "CORE_ANAKEEN"		=>array("val"=>"Anakeen&nbsp;2002",
+		    "CORE_ANAKEEN"		=>array("val"=>"Anakeen&nbsp;2003",
 							"descr"=>N_("anakeen"),
 							"user"=>"N",
 							"style"=>"N",

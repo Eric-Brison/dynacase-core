@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.20 2003/01/31 14:29:31 eric Exp $
+//  $Id: Class.Application.php,v 1.21 2003/02/19 17:47:19 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.20 2003/01/31 14:29:31 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.21 2003/02/19 17:47:19 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -53,7 +53,7 @@ create table application ( 	id 	int not null,
      		primary key (id),
 			name 	    varchar(20) not null,
 			short_name varchar(30) ,
-			description varchar(60) ,
+			description text ,
 			access_free  varchar(20),
 			available  varchar(1),
                         icon varchar(30),
