@@ -1,5 +1,5 @@
 #!/bin/bash
-pubdir=/home/httpd/what
+export pubdir=/home/httpd/what
 
 . $pubdir/log.sh
 
