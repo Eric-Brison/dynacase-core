@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.25 2004/03/01 08:34:16 eric Exp $
+ * @version $Id: Class.User.php,v 1.26 2004/03/04 09:08:14 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.25 2004/03/01 08:34:16 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.26 2004/03/04 09:08:14 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -159,6 +159,7 @@ create sequence seq_id_users start 10";
       //       }
       $err=$this->FreedomWhatUser();  
        // double pass to compute dynamic profil on itself
+      return $err;
       if ($this->fid<>"") { 
 
  	$wsh = GetParam("CORE_PUBDIR","/home/httpd/what")."/wsh.php";
@@ -337,8 +338,7 @@ create sequence seq_id_users start 10";
 
     }
 
-  function FreedomWhatUser() {
-   
+  function FreedomWhatUser() {   
     if (@include_once('FDL/Lib.Dir.php')) {
 
       $dbaccess=GetParam("FREEDOM_DB");
