@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.29 2003/10/30 08:57:09 eric Exp $
+ * @version $Id: Class.Application.php,v 1.30 2004/02/24 08:20:37 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,10 +30,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.29 2003/10/30 08:57:09 eric Exp $
+//  $Id: Class.Application.php,v 1.30 2004/02/24 08:20:37 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.29 2003/10/30 08:57:09 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.30 2004/02/24 08:20:37 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -275,7 +275,7 @@ function AddLogMsg($code)
 }
 function AddWarningMsg($code) 
 {
-  if ($code =="") return;
+  if (($code =="") || ($code =="-")) return;
   // Js Code are stored in the top level application
   if ($this->parent!="") {
      $this->parent->AddWarningMsg($code);
@@ -369,7 +369,8 @@ function HasPermission($acl_name)
      $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
      return FALSE;
   }
-
+  if ($this->user==1) return true; // admin can do everything
+  
   $acl=new Acl($this->dbaccess);
   if ( ! $acl->Set($acl_name,$this->id)) {
     $this->log->warning("Acl $acl_name not available for App $this->name");    
