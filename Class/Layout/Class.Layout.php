@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.22 2005/01/18 08:45:13 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.23 2005/01/20 10:34:15 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.22 2005/01/18 08:45:13 eric Exp $
+//  $Id: Class.Layout.php,v 1.23 2005/01/20 10:34:15 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -176,13 +176,19 @@ var $strip='Y';
 
   function TestIf($name,$block,$not=false) {    
     $out = "";     
-
-    if ($this->rif[$name] xor $not)  {
+    if ( isset($this->rif[$name])) {
+     if ($this->rif[$name] xor $not)  {
       if ($this->strip=='Y') {
 	$block = str_replace("\\\"","\"",$block);
       }
       $out=$block;      
       $this->ParseBlock($out);
+     }
+    } else {
+      if ($this->strip=='Y') $block = str_replace("\\\"","\"",$block);
+      
+      if ($not) $out="[IFNOT $name]".$block."[ENDIF $name]";
+      else $out="[IF $name]".$block."[ENDIF $name]";
     }
     return ($out);
   } 
