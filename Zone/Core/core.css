@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.22 2003/07/30 08:55:08 eric Exp $
+ * $Id: core.css,v 1.23 2003/08/12 12:16:56 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -130,6 +130,13 @@ A:link, A:visited {
   background-color: [CORE_BGCOLORALTERN];
   color: [CORE_TEXTBGCOLOR];
 }
+.TABOdd {
+  background-color: [CORE_BGCOLORALTERN];
+  border-color: [CORE_BGCOLORALTERN];
+  border-style:inset none none none;;
+  border-width 2px 0pt 0pt 0pt;
+  color: [CORE_TEXTBGCOLOR];
+}
 .TABLabelSelected {
   color: [CORE_TEXTBGCOLOR];
   font-family: [CORE_FONTLIST1];
@@ -176,6 +183,7 @@ A:link, A:visited {
   color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];
 }
+
 .CORETblBold {
   color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];

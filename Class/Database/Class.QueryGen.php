@@ -16,12 +16,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryGen.php,v 1.3 2003/08/11 15:41:37 eric Exp $
+//  $Id: Class.QueryGen.php,v 1.4 2003/08/12 12:16:56 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // This class is designed to design easily pages with query/order elements
 //
-$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.3 2003/08/11 15:41:37 eric Exp $';
+$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.4 2003/08/12 12:16:56 eric Exp $';
 
 include_once('Class.QueryDb.php');
 include_once('Class.TableLayout.php');
@@ -171,7 +171,7 @@ function GenMainForm($name,$height,$width,$mainurl,$suburl="") {
    $this->table->fields[]="CLASS";
    reset ($this->table->array);
    while(list($k,$v) = each($this->table->array)) {
-     $this->table->array[$k]["CLASS"]=($k%2)?"TABBackground":"";
+     $this->table->array[$k]["CLASS"]=($k%2)?"TABOdd":"";
    }
   
    reset ($this->table->array);
