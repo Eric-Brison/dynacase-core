@@ -63,7 +63,7 @@ function selectIt(th) {
 
  [BLOCK FUNCTION]
 <td width="40"  align="center" >
-     <a href="#"><img  class="imgFade"  onclick="selectIt(this);lauch_action(this.src,'[name]','[descriptionsla]');" 
+     <a href="#"><img  class="imgFade"  onclick="selectIt(this);lauch_action(event,this.src,'[name]','[descriptionsla]');" 
      onMouseOver="unFadeIt(this);" 
      onMouseOut="fadeIt(this);" 
      src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
@@ -76,7 +76,7 @@ function selectIt(th) {
 
      &nbsp;</span>
  [BLOCK NOFREEGATE]
-     <a href="#"><img onClick="lauch_action(this.src,'CORE','[TEXT:Homepage]');" 
+     <a href="#"><img onClick="lauch_action(event,this.src,'CORE','[TEXT:Homepage]');" 
           align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a>
  [ENDBLOCK NOFREEGATE]
  [BLOCK FREEGATE]
