@@ -74,9 +74,10 @@ function autoHresize() {
 
   var dw=0;
   var dh=0;
+  availHeight=self.screen.availHeight-300;
 
-  if (document.body.scrollHeight > self.screen.availHeight) 
-    dh=self.screen.availHeight-document.body.clientHeight;
+  if (document.body.scrollHeight > availHeight) 
+    dh=availHeight-document.body.clientHeight;
   else 
     dh=document.body.scrollHeight-document.body.clientHeight;
 
@@ -84,7 +85,7 @@ function autoHresize() {
     window.resizeBy(dw,dh);
 
     // double resize for mozilla ?
-    if (document.body.scrollHeight < self.screen.availHeight) {
+    if (document.body.scrollHeight < availHeight) {
       if (document.body.scrollHeight > document.body.clientHeight) {
     
 	dh=document.body.scrollHeight-document.body.clientHeight;
