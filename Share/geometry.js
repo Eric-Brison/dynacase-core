@@ -66,28 +66,42 @@ function getKeyPress(event)
   return intKeyCode;
 }
 
+
 function autoHresize() {
   if (window != top) return;
+
+  var dw=0;
+  var dh=0;
 
   if (document.body.scrollHeight > self.screen.availHeight) 
     dh=self.screen.availHeight-document.body.clientHeight;
   else 
     dh=document.body.scrollHeight-document.body.clientHeight;
 
-  dw=0;
-  if (dh > 0) window.resizeBy(dw,dh);
-}
+  if (dh > 0) {
+    window.resizeBy(dw,dh);
 
+    // double resize for mozilla ?
+    if (document.body.scrollHeight < self.screen.availHeight) {
+      if (document.body.scrollHeight > document.body.clientHeight) {
+    
+	dh=document.body.scrollHeight-document.body.clientHeight;
+	if (dh > 0) window.resizeBy(dw,dh);
+      }
+    }
+  }
+}
 
 function autoVresize() {
   if (window != top) return;
 
+  var dw=0;
+  var dh=0;
   if (document.body.scrollWidth > self.screen.availWidth) 
     dw=self.screen.availWidth-document.body.clientWidth;
   else 
     dw=document.body.scrollWidth-document.body.clientWidth;
 
-  dh=0;
   if (dw > 0) window.resizeBy(dw,dh);
 }
 
