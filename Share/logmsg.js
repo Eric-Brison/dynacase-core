@@ -69,8 +69,6 @@ function getChildFrames(w) {
 }
 
 function windowExist(Name, NoOpen) {
-  var dy=self.screen.availHeight;
-  var dx=self.screen.availWidth;
  
   getChildFrames(window);
 
@@ -96,6 +94,8 @@ function windowExist(Name, NoOpen) {
   // ---------------------
   // Try open
   if (NoOpen == '') {
+    var dy=self.screen.availHeight;
+    var dx=self.screen.availWidth;
     var w=window.open('',Name,'top='+dy+',left='+dx+'menubar=no,resizable=no,scrollbars=no,width=1,height=1');
     if (w.opener && (w.opener.location.href == self.location.href) && (w.location.href=='about:blank')) {
       w.close();
