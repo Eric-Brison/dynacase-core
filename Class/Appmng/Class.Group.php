@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Class.Group.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.Group.php,v 1.2 2002/11/15 16:12:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Group.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Class.Group.php,v $
+// Revision 1.2  2002/11/15 16:12:41  eric
+// modif pour usage groupe dans freedom
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -33,7 +36,7 @@
 //
 
 // ---------------------------------------------------------------------------
-$CLASS_USER_PHP = '$Id: Class.Group.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.Group.php,v 1.2 2002/11/15 16:12:41 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -80,6 +83,22 @@ function PostSelect()
   $this->GetGroups();
 }
 
+function PostUpdate() {
+  $this->FreedomCopyGroup();
+}
+function PostDelete() {
+  $this->FreedomCopyGroup();
+}
+function PostInsert() {
+  $this->FreedomCopyGroup();
+}
+function FreedomCopyGroup() {
+  
+  $wsh = GetParam("CORE_PUBDIR")."/wsh.php";
+  $cmd = $wsh . " --api=freedom_groups";
+
+  exec($cmd);
+}
 // get direct group and group of group
 function GetAllGroups()
 {

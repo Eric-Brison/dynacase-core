@@ -1,7 +1,6 @@
 
 [ZONE CORE:HTMLHEAD]
 <div  class="COREError" style="border:ridge 3pt">
-<H2 >[TEXT:functionerr]<H2>
 
 <HR width="50%" color="[CORE_FGCOLOR]">
 <H4>[error]</H4>

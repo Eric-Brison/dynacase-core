@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.8 2002/10/10 10:11:28 eric Exp $
+// $Id: Class.User.php,v 1.9 2002/11/15 16:12:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.8 2002/10/10 10:11:28 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.9 2002/11/15 16:12:41 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -240,17 +240,28 @@ create sequence seq_id_users start 10";
     $query-> AddQuery("iduser='{$this->id}'");
 
     $list = $query->Query();
-    $groupsid=array();
+    $groupsid=array(0,0,"TABLE");
 
     if ($query->nb >0) {
       while (list($k,$v) = each($list)) {
-	$groupsid[] = $v->idgroup;
+	$groupsid[] = $v["idgroup"];
       }
     
     } 
 
     return $groupsid;
 
+  }
+
+  // only use for group
+  // get user member of group
+  function getGroupUserList($qtype="LIST") {
+    $query = new QueryDb($this->dbaccess,"User");
+    $query->order_by="isgroup desc, lastname";
+    return ($query->Query(0,0,$qtype,
+			  "select users.* from users, groups where ".
+			  "groups.iduser=users.id and ".
+			  "idgroup={$this->id} and (isgroup != 'Y' or isgroup is null);"));
   }
 }
 ?>
