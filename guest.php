@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: guest.php,v 1.2 2002/08/26 13:04:58 eric Exp $
+// $Id: guest.php,v 1.3 2003/08/08 15:40:49 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -64,9 +64,9 @@ $session->Set($sess_num);
 
 if ($session->userid != ANONYMOUS_ID) { 
   // reopen a new anonymous session
+  unset($PHP_AUTH_USER); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
   $session->Set("");
 }
-
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 

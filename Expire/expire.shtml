@@ -1,0 +1,21 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-2">
+<TITLE>
+<!--#echo var="title"-->
+</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+
+<H1>PASSWORD EXPIRED</H1>
+<H2><!--#echo var="REMOTE_USER"--></H2>
+
+<FORM method="POST" action="chgpasswd.php">
+<input name="login" type="hidden" value="<!--#echo var="REMOTE_USER"-->">
+<input name="passwd1" type="password">
+<input name="passwd2" type="password">
+<input type="submit">
+
+</FOEM
+</BODY>
+</HTML>

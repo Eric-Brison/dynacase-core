@@ -1,29 +1,26 @@
 Alias /what @prefix@
 
+
 <Directory "@prefix@">
-    php_value include_path ".:@prefix@:@prefix@/@PACKAGE@:/home/httpd/advGraph"
+    php_value include_path ".:@prefix@:@prefix@/WHAT:/home/httpd/advGraph"
     php_value session.use_cookies 0
     php_value session.name "session"
     php_value session.use_trans_sid 0
     AddType application/x-httpd-php .php
     DirectoryIndex  index.php
+    ErrorDocument 401 /what/expire/tryexpire.html
     <Files ~ "index.php">
       AuthType Basic
       AuthName 'WHAT Connection'
       AuthPAM_Enabled  on
-      AuthPAM_FallThrough off
-      require valid-user
+      AuthPAM_FallThrough on
+      AuthPAM_Service httpd
+      Require valid-user
     </Files>
     <FilesMatch "\.conf|dbaccess.php|wstop|wcheck|wsh.php">
        Order Deny,Allow
        Deny from All   
     </FilesMatch>
-</Directory>
-
-
- <DirectoryMatch @prefix@/[^CALENDAR].*>
-     Order Deny,Allow
-     Deny from All   
     <FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css)$">
        Order Deny,Allow
        Allow from All   
@@ -34,19 +31,42 @@ Alias /what @prefix@
       AuthName 'WHAT Connection'
       AuthPAM_Enabled  on
       AuthPAM_FallThrough off
-      require valid-user
+      Require valid-user
     </FilesMatch>
+    <FilesMatch "expire.shtml|chgpasswd.php">
+      Allow from All   
+      AuthType Basic
+      AuthName 'WHAT Connection'
+      AuthPAM_Enabled  on
+      AuthPAM_FallThrough off
+      AuthPAM_Service httpdcool
+      Require valid-user
+    </FilesMatch>
+</Directory>
 
- </DirectoryMatch> 
+
+
+ <Directory ~ @prefix@/[A-B,D-Z]|C[^A]>
+     Order Deny,Allow
+     Deny from All   
+ </Directory> 
+
+<Directory "@prefix@/expire/">
+    ErrorDocument 401 "lost password ?"   
+    Options IncludesNoExec FollowSymLinks
+ 
+</Directory>
+
 
  <Directory @prefix@/CALENDAR>
+    AllowOverride None
+    ErrorDocument 401 "lost password ?"   
     AuthType Basic
     AuthName 'WHAT Connection'
     AuthPAM_Enabled  on
     AuthPAM_FallThrough off
     require valid-user
-
  </Directory>
 
-Alias /whatsync @prefix@/CALENDAR
 
+Alias /whatsync @prefix@/CALENDAR

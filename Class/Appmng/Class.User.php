@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.15 2003/08/01 14:55:35 eric Exp $
+// $Id: Class.User.php,v 1.16 2003/08/08 15:40:49 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.15 2003/08/01 14:55:35 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.16 2003/08/08 15:40:49 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -33,7 +33,7 @@ define("ANONYMOUS_ID", 3);
 
 Class User extends DbObj
 {
-  var $fields = array ( "id","iddomain","lastname","firstname","login","password","isgroup");
+  var $fields = array ( "id","iddomain","lastname","firstname","login","password","isgroup","expires");
 
   var $id_fields = array ("id");
 
@@ -51,7 +51,8 @@ create table users ( id      int not null,
                         firstname  text,
                         login      text not null,
                         password   varchar(30) not null,
-                        isgroup      char);
+                        isgroup    char,
+                        expires    int);
 create index users_idx1 on users(id);
 create index users_idx2 on users(lastname);
 create index users_idx3 on users(login);

@@ -4,7 +4,7 @@ include_once('Class.Session.php');
 
 function authenticate() {
   //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
-  Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\"");
+  Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
   Header( "HTTP/1.0 401 Unauthorized");
   // Header("Location:guest.php");
   echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour accéder à cette ressource");
