@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.33 2004/10/04 09:10:46 eric Exp $
+ * @version $Id: Class.User.php,v 1.34 2004/10/06 15:59:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.33 2004/10/04 09:10:46 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.34 2004/10/06 15:59:53 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -64,6 +64,7 @@ create sequence seq_id_users start 10";
 
   function SetLoginName($loginDomain)
     {
+      include_once("Class.Domain.php");
       $query = new QueryDb($this->dbaccess,"User");
       if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
     
