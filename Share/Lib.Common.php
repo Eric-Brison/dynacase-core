@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.13 2004/10/04 09:10:46 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.14 2004/10/29 09:32:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -42,6 +42,15 @@ function getMailAddr($userid) {
 function GetParam($name, $def="") {
   global $action;
   if ($action)  return $action->getParam($name,$def);
+
+  // case of without what context
+  include_once("Class.Action.php");
+  $core = new Application();
+  $core->Set("CORE",$CoreNull);
+  $act = new Action();
+  $act->Set("",$core);
+  return  $act->getParam($name, $def);
+
 }
 
 function getLayoutFile($app, $layfile) {
