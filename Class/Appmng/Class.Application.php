@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.24 2003/05/19 13:38:55 eric Exp $
+//  $Id: Class.Application.php,v 1.25 2003/06/02 13:51:27 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.24 2003/05/19 13:38:55 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.25 2003/06/02 13:51:27 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -256,6 +256,8 @@ function AddLogMsg($code)
      $logmsg=$this->session->read("logmsg", array());
      $logmsg[]=strftime("%H:%M - ").str_replace("\n","\\n",addslashes(substr($code,0,80)));
      $this->session->register("logmsg",$logmsg);
+     $suser = sprintf("%s %s [%d] - ",$this->user->firstname, $this->user->lastname, $this->user->id);
+     $this->log->info($suser.$code);
   }
 }
 function GetJsRef() 

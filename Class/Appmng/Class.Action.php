@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.13 2003/05/19 13:38:55 eric Exp $
+//  $Id: Class.Action.php,v 1.14 2003/06/02 13:51:27 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.13 2003/05/19 13:38:55 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.14 2003/06/02 13:51:27 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -265,6 +265,13 @@ function execute()
 
   }
   
+  if ($this->id>0) {
+    global $QUERY_STRING;
+    $suser = sprintf("%s %s [%d] - ",$this->user->firstname, $this->user->lastname, $this->user->id);
+    $this->log->info("$suser{$this->parent->name}:{$this->name} [".substr($QUERY_STRING,48)."]");
+
+  }
+    
   $this->log->push("{$this->parent->name}:{$this->name}");
   $pubdir = $this->parent->GetParam("CORE_PUBDIR");
   $nav=$this->Read("navigator");

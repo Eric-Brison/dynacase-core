@@ -18,7 +18,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.5 2002/08/07 09:23:38 eric Exp $
+// $Id: Class.Log.php,v 1.6 2003/06/02 13:51:27 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -144,9 +144,9 @@ function wlog($sta, $str, $args=NULL) {
 	openlog("{$appf}", 0, LOG_LOCAL6);
 	syslog($pri, "[{$REMOTE_ADDR}] ".$str);
 	closelog();
+
       }
     }
-    AddLogMsg("LOG($sta): $str");
   }
  
 }
