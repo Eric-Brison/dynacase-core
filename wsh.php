@@ -1,18 +1,17 @@
 #! /usr/bin/php -q
-
 <?php
 /**
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.16 2004/04/23 15:36:24 eric Exp $
+ * @version $Id: wsh.php,v 1.17 2004/08/05 09:31:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.16 2004/04/23 15:36:24 eric Exp $
+// $Id: wsh.php,v 1.17 2004/08/05 09:31:22 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -69,7 +68,7 @@ if (count($argv) == 1) {
 
 while (list($k, $v) = each($argv)) {
   
-  if (ereg("--(.+)=(.+)", $v , $reg)) {
+  if (ereg("--([^=]+)=(.+)", $v , $reg)) {
     $_GET[$reg[1]]=$reg[2];
   }  else if (ereg("--(.+)", $v , $reg)) {
     if ($reg[1] == "listapi") {
@@ -125,7 +124,6 @@ setlocale(LC_MESSAGES,$core->Getparam("CORE_LANG"));
 putenv ("LANG=".$core->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "/home/httpd/what/locale");
 textdomain ("what");
-  
   
 
 

@@ -3,9 +3,12 @@
 
 $pubdir="/home/httpd/what";
 
-global $HTTP_CONNECTION;
+include("WHAT/Lib.Common.php");
+include("WHAT/wncurses.php");
 
-if ($HTTP_CONNECTION != "")     {
+global $_SERVER;
+
+if ($_SERVER['HTTP_HOST'] != "")     {
   print "<BR><H1>:~(</H1>";
   exit;
 }
@@ -80,13 +83,21 @@ function GetFileVersion($topdir) {
 
 
 //---------------------------------------------------
-echo _("WHAT Checking\n\n");
+
+$dbaccess=getDbAccess();
+$dbank=getDbName($dbaccess);
+ncurses_winit("WHAT Checking");
+
+
+ncurses_getmaxyx(&$fullscreen, $lines, $columns);
+
+$IP=chop(`hostname -i`);
+ncurses_color_set(6);
+ncurses_mvaddstr(2,5,sprintf(_("Database: %s"), $dbaccess));
+ncurses_refresh();
 
 
 
-include("$pubdir/dbaccess.php");
-
-print "default database:"."[1m".$dbaccess."[0m";
 $dbid=@pg_connect($dbaccess);
 
 $wsh=array(); // application update
@@ -94,12 +105,12 @@ $migr=array();// migration
 $post=array();// post install 
 $pre=array(); // pre install 
 $dump=array();
-print "\n";
+array_shift($argv);
 if (! $dbid) {
-  print _("cannot access to default database\n");
-  $post[] = "$pubdir/CORE/CORE_post I";
+  ncurses_mvaddstr(4,5, _("cannot access to default database [$dbaccess]"));
+  $post[] = "$pubdir/CORE/CORE_post  I";
 } else {
-  print _("access to default database : granted\n");
+  ncurses_mvaddstr(4,5,  _("access to default database : granted"));
   
   
   $tvdb= GetDbVersion($dbid);
@@ -109,13 +120,13 @@ if (! $dbid) {
   $tapp = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
   
   
-  print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
-  print sprintf("|%12s|%10s|%10s|%10s|\n",
+  $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
+  $line[]= sprintf("|%12s|%10s|%10s|%10s|",
 		_("application"),
 		_("db "),
 		_("file "),
 		" N I U D");
-  print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
+  $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
   while (list($k,$v) = each ($tapp)) {
     if (($tmachine[$v] != "") && ($tmachine[$v] != $HOSTNAME))
       $chk[$v]="?";
@@ -130,7 +141,7 @@ if (! $dbid) {
     } else {
       $chk[$v]="U";    
     }
-    print sprintf("|%12s|%10s|%10s|%10s|%s\n",
+    $line[]= sprintf("|%12s|%10s|%10s|%10s|%s",
 		  $v,
 		  $tvdb[$v],
 		  $tvfile[$v],
@@ -139,20 +150,21 @@ if (! $dbid) {
   
   }
 
-  print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
+  ncurses_list($line);
+  
   
   reset($chk);
   while (list($k,$v) = each ($chk)) {
     switch ($v) {
     case "I":
-      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=init --appname=$k";
-    $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
+      $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=init --appname=$k";
+    $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
     break;
     case "U":
-      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
+      $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
     break;
     case "D":
-      $wsh[] = "#$pubdir/wsh.php --api=appadmin --method=delete --appname=$k";
+      $wsh[] = "#$pubdir/wsh.php  --api=appadmin --method=delete --appname=$k";
     break;
     case "R":
       $wsh[] = "#rpm -Uvh $k-".$tvdb[$k];
@@ -163,12 +175,12 @@ if (! $dbid) {
     // search POST install
     if (($v != "") && (is_file("$pubdir/$k/{$k}_post"))) {
       if ($v == "I") {
-	$pre[] = "$pubdir/$k/{$k}_post $v";
-	$post[] = "$pubdir/$k/{$k}_post U";
+	$pre[] = "$pubdir/$k/{$k}_post  $v";
+	$post[] = "$pubdir/$k/{$k}_post  U";
       } else {
 	if (($v != "R") && ($v != "?")) {
-	  if ($v == "D") $post[] = "#$pubdir/$k/{$k}_post $v";
-	  else $post[] = "$pubdir/$k/{$k}_post $v";
+	  if ($v == "D") $post[] = "#$pubdir/$k/{$k}_post  $v";
+	  else $post[] = "$pubdir/$k/{$k}_post  $v";
 	}
       }
     }
@@ -193,6 +205,7 @@ if ($dbid) {
   $dump[] = "/etc/rc.d/init.d/httpd stop";
   $dump[] = "$pubdir/whattext";
 }
+
 $actions = array_merge($dump,
 		       array_merge($pre,
 				   array_merge($migr,
@@ -202,27 +215,13 @@ if ($dbid) {
   $actions[] = "$pubdir/wstart";
   $actions[] = "/etc/rc.d/init.d/httpd start";
 }
-print_r($actions);
-echo "continue (Y|N) ?";
-$stdin=fopen("php://stdin","r");;
-$cont=fread($stdin,1);
 
-if (strtoupper($cont[0]) != "Y") exit;
-     
-     reset($actions);
-while (list($k,$v) = each ($actions)) {
-  echo "--------------------------------------------------------------------------------\n";
-	
-  echo "[5;34;49m";
-  echo $v.":";	
-  echo "[0m";
 
-  $err=system ("echo `date` \"$v\" >>/tmp/whatchk.log");
-  $err=system ($v.">>/tmp/whatchk.log");
-  if ($err === false) 
-    echo "[1;31;40mKO[0m\n";
-  else echo "[1;32;40mOK[0m\n";
-}
-echo "see file log /tmp/whatchk.log\n";
+ncurses_execute($actions);
+
+
+ncurses_mvaddstr($lines-2, 4, _("Finished. Detail log in /tmp/whatchk.log"));
+$pressed = ncurses_getch();// wait for a user keypress
+ncurses_end();
 
 ?>

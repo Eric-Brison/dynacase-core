@@ -3,36 +3,14 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.10 2003/10/30 08:57:09 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.11 2004/08/05 09:31:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
  */
 /**
  */
-// ---------------------------------------------------------------
-// $Id: Lib.Common.php,v 1.10 2003/10/30 08:57:09 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Common.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2000
-// O*O  Anakeen Development Team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
-$LIB_COMMON = '$Id: Lib.Common.php,v 1.10 2003/10/30 08:57:09 eric Exp $';
+
 
 // library of utilies functions
 
@@ -116,4 +94,51 @@ function getDbid($dbaccess) {
         } 
     return $CORE_DBID["$dbaccess"];
 }
+
+function getDbAccess() {
+  global $CORE_DBANK;;
+
+  if ($CORE_DBANK != "") return $CORE_DBANK;
+  $dbaccess="";
+
+  $root = "/home/httpd/what";
+  $dbank=getenv("dbanakeen");
+  
+ 
+  if ($dbank != "") {
+    $filename="$root/virtual/$dbank/dbaccess.php";    
+    if (file_exists($filename)) {
+      include($filename);
+    }    
+  }
+  if ($dbaccess=="") include("dbaccess.php");
+  $CORE_DBANK=$dbaccess;
+  return $CORE_DBANK;
+  
+}
+
+
+function getDbName($dbaccess) {
+  if (ereg("dbname=([a-z]+)",$dbaccess,$reg)) {
+    return $reg[1];
+  }
+}
+
+
+function getDbUser($dbaccess) {
+  if (ereg("user=([a-z]+)",$dbaccess,$reg)) {
+    return $reg[1];
+  }
+}
+
+
+function getWshCmd($nice=false) {
+  $dbname=getDbName(getDbAccess());
+  $wsh="export dbanakeen=$dbname;";
+  if ($nice) $wsh.= "nice -n +10 ";
+  $wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
+  return $wsh;
+}
+
+
 ?>

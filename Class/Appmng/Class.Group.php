@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.9 2004/07/28 12:08:52 eric Exp $
+ * @version $Id: Class.Group.php,v 1.10 2004/08/05 09:31:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -96,7 +96,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
   function FreedomCopyGroup() {
   
     if (@include_once('FDL/Lib.Dir.php')) {
-      $wsh = GetParam("CORE_PUBDIR")."/wsh.php";
+      $wsh = getWshCmd();
       $cmd = $wsh . " --api=freedom_groups";
 
       exec($cmd);
@@ -115,7 +115,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
       $allg = $this->groups;
       while (list($k,$gid) = each($this->groups)) {
 	$og = new Group($this->dbaccess, $gid);
-	$allg = array_merge($allg, $og-> GetAllGroups());
+	$allg = array_merge($allg, $og->GetAllGroups());
       }
       $allg = array_unique($allg);
 

@@ -4,7 +4,7 @@
  *
  * The action also delete mail account of the user
  * @author Anakeen 2000 
- * @version $Id: user_del.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: user_del.php,v 1.4 2004/08/05 09:31:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -13,7 +13,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_del.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+// $Id: user_del.php,v 1.4 2004/08/05 09:31:22 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_del.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -56,7 +56,15 @@ function user_del(&$action) {
           (($action->HasPermission("DOMAIN_MASTER")) && 
            ($action->user->iddomain == $user->iddomain) && 
            ($action->user->id != $user->id)))) {
-      $user->Delete();
+      $fid=$user->fid;
+      $err=$user->Delete();
+
+      if (($err=="") && ($fid > 0)) {
+	include_once("FDL/Class.Doc.php");
+	$du=new Doc($action->getParam("FREEDOM_DB"),$fid);
+	$du->Delete();
+      }
+
       $mailapp = new Application();
       if (($action->user->isgroup != "Y") && $mailapp->Exists("MAILADMIN")) {
         $mailapp->Set("MAILADMIN", $action->parent);

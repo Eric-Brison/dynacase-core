@@ -1,0 +1,15 @@
+NameVirtualHost @IP@
+<VirtualHost @IP@>
+ServerName @VIRTUALNAME@
+SetEnv dbanakeen @DBNAME@
+<Directory "/home/httpd/what">
+    <Files ~ "index.php">
+      AuthType Basic
+      AuthName '@Dbname@ Connection'
+      AuthPAM_Enabled  on
+      AuthPAM_FallThrough off
+      AuthPAM_Service httpd_@dbname@
+      Require valid-user
+    </Files>
+</Directory>
+</VirtualHost>

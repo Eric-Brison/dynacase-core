@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.1 2002/01/08 12:41:33 eric Exp $)
+AC_REVISION($Id: configure.in,v 1.2 2004/08/05 09:31:22 eric Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -57,9 +57,10 @@ DBPORT=5432
 AC_ARG_WITH(dbport,
 [  --with-dbport=port number  the database port (default 5432)], DBPORT=$withval)
 
-AC_OUTPUT(Makefile:Makefile.in  dbaccess.php:dbaccess.php.in WHAT.spec:WHAT.spec.in apache.conf:apache.conf.in \
-          App/Core/CORE_init.php:App/Core/CORE_init.php.in \
-          App/Users/USERS_init.php:App/Users/USERS_init.php.in \
-          App/Access/ACCESS_init.php:App/Access/ACCESS_init.php.in \
-          App/Authent/AUTHENT_init.php:App/Authent/AUTHENT_init.php.in \
-          App/Appmng/APPMNG_init.php:App/Appmng/APPMNG_init.php.in)
+AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf \
+          App/Core/CORE_init.php \
+          App/Users/USERS_init.php \
+          App/Access/ACCESS_init.php \
+          App/Authent/AUTHENT_init.php \
+          App/Appmng/APPMNG_init.php \
+	  httpd.pam)

@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.30 2004/07/28 12:07:17 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.31 2004/08/05 09:31:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.30 2004/07/28 12:07:17 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.31 2004/08/05 09:31:22 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ include_once('Class.Log.php');
 include_once('Class.Cache.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.30 2004/07/28 12:07:17 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.31 2004/08/05 09:31:22 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -492,7 +492,7 @@ function Delete($nopost=false)
 function Adds(&$tcopy, $nopost=false)
   {
     if ($this->dbid == -1) return FALSE;
-    
+    if (! is_array($tcopy)) return FALSE;
     
     $sfields = implode(",",$this->fields);
     $sql = "copy ".$this->dbtable. "($sfields) from STDIN;\n";
@@ -566,7 +566,7 @@ function init_dbid() {
   if ($this->dbaccess=="") {
     // don't test if file exist or must be searched in include_path 
       include("dbaccess.php");
-    $this->dbaccess=$dbaccess;
+    $this->dbaccess=getDbAccess();
     
   }
   $this->dbid= getDbid($this->dbaccess);

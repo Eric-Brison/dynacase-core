@@ -234,3 +234,31 @@ begin
 return NEW;
 end;
 ' language 'plpgsql';
+
+-- str_replace r1 by r2 in s1
+create or replace function str_replace(text, text, text) 
+returns text as '
+declare 
+  s1 alias for $1;
+  r1 alias for $2;
+  r2 alias for $3;
+  s2 text;
+  sw text;
+  p  int;
+begin
+  p := position(r1 in s1);
+  sw := s1;
+
+  while (p > 0) loop
+    s2 := substring(sw FROM 0 FOR p);
+    s2 := s2 || r2;
+    p:= p+length(r1);
+    s2 := s2 || substring(sw FROM p);
+
+    -- try again
+    p := position(r1 in s2);
+    sw := s2;
+  end loop;
+  return sw;
+end;
+' language 'plpgsql';

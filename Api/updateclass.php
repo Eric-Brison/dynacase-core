@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php,v 1.7 2004/04/23 15:36:24 eric Exp $
+ * @version $Id: updateclass.php,v 1.8 2004/08/05 09:31:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: updateclass.php,v 1.7 2004/04/23 15:36:24 eric Exp $
+// $Id: updateclass.php,v 1.8 2004/08/05 09:31:22 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/Attic/updateclass.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -79,7 +79,10 @@ $dbname = Getarg("dbname");
 
 include("$pubdir/dbaccess.php");
 if ($dbname != "")   $db = ereg_replace("dbname=([^ ]+)","dbname=$dbname", $dbaccess);
-else $db = $dbaccess;
+else {
+  include_once("Lib.Common.php");
+  $db = getDbAccess();
+}
 
 include_once("$pubdir/$appclass/Class.$class.php");
 

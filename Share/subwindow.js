@@ -17,11 +17,17 @@ function subwindow(h, w, name, url) {
 		       url,
 		       name,
 		       'resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
-    getConnexeWindows(me);
+     if (!me) {
+       if (confirm("Ouverture fenêtre impossible.\nVoulez vous affichez la page dans la fenêtre courante ?")) {
+	 window.location.href=url;
+       }
+     } else {
+       getConnexeWindows(me);
+     }
    } else {
      me.location.href=url;
    }
-  me.focus();
+  if (me) me.focus();
 
     
   return me;

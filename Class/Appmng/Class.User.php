@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.28 2004/07/28 12:08:52 eric Exp $
+ * @version $Id: Class.User.php,v 1.29 2004/08/05 09:31:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.28 2004/07/28 12:08:52 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.29 2004/08/05 09:31:22 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -162,9 +162,9 @@ create sequence seq_id_users start 10";
       $err=$this->FreedomWhatUser();  
        // double pass to compute dynamic profil on itself
       return $err;
-      if ($this->fid<>"") { 
- 	$wsh = GetParam("CORE_PUBDIR","/home/httpd/what")."/wsh.php";
- 	$cmd = $wsh . " --api=usercard_iuser --whatid={$this->id}";
+      if ($this->fid<>"") { 	
+ 	$wsh = getWshCmd();
+ 	$cmd = $wsh . "--api=usercard_iuser --whatid={$this->id}";
  	exec($cmd);
       }
       return $err;
@@ -359,6 +359,8 @@ create sequence seq_id_users start 10";
 	  $iuser = createDoc($dbaccess,$fam);
 	  $iuser->SetValue("US_WHATID",$this->id);   
 	  $iuser->Add();
+	  $this->fid=$iuser->id;
+	  $this->modify();
 	  $err=$iuser->RefreshDocUser(); 
 	} else {
 	  $this->fid=$tdoc[0]->id;
