@@ -1,6 +1,9 @@
 <?php
-// $Id: login.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: login.php,v 1.2 2002/01/25 14:31:37 eric Exp $
 // $Log: login.php,v $
+// Revision 1.2  2002/01/25 14:31:37  eric
+// gestion de cache objet - variable de session
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -31,7 +34,7 @@ function login(&$action) {
 
   if (!isset($action->user)) {
     $action->lay->set("USER","");
-    $action->lay->set("ONOUT",$action->parent->GetImageUrl("byellow.gif"));
+    $action->lay->set("ONOUT",$action->parent->GetImageUrl("bblue.gif"));
     $action->lay->set("ONOVER",$action->parent->GetImageUrl("bgreen.gif"));
     $action->lay->set("ALTLOGINOUT","login");
     $action->lay->set("ACTION","");

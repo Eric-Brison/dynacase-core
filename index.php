@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.3 2002/01/08 17:52:03 eric Exp $
+// $Id: index.php,v 1.4 2002/01/25 14:31:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -36,7 +36,15 @@ include_once('Class.Application.php');
 include_once('Class.Session.php');
 include_once('Lib.Http.php');
 include_once('Class.Log.php');
+include_once('Class.Domain.php');
+include_once('Class.DbObj.php');
 
+
+// ----------------------------------------
+// pre include for session cache
+if (file_exists($HTTP_GET_VARS["app"]."/include.php")) {
+        include($HTTP_GET_VARS["app"]."/include.php");
+}
 
 $log=new Log("","index.php");
 
@@ -52,29 +60,42 @@ $standalone = GetHttpVars("sole");
 
 $sess_num=GetHttpVars("session");
 
-
 $core = new Application();
 $core->Set("CORE",$CoreNull);
-
-$CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
-
-
-$puburl = $core->GetParam("CORE_PUBURL","");
-if ($puburl == "") {
-  global $HTTP_HOST,$REDIRECT_URL;
-  $core->SetParam("CORE_PUBURL","http://".$HTTP_HOST.$REDIRECT_URL);
-  $core->SetParam("CORE_JSURL","http://".$HTTP_HOST.$REDIRECT_URL."/WHAT/Layout");
-  $puburl= $core->GetParam("CORE_PUBURL","");;
-}
 
 
 $session=new Session($core->GetParam("CORE_SESSION_DB"));
 $session->Set($sess_num);
+$CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
+
+// ----------------------------------------
+// Init URL from script name
+global $SERVER_NAME;
+global $SCRIPT_NAME;
+
+if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
+  $puburl = "http://".$SERVER_NAME.$reg[1];
+} else {
+  // it is not allowed
+  print "<B>:~(</B>";
+  exit;
+}
+
+
+$core->SetVolatileParam("CORE_PUBURL", $puburl);
+$core->SetVolatileParam("CORE_JSURL", $puburl."/WHAT/Layout");
+
+
 $core->SetSession($session);
+
+
+
 $core->SetVolatileParam("CORE_ROOTURL", $puburl."/index.php?session={$session->id}&sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", $puburl."/index.php?session={$session->id}&sole=A&");
 $core->SetVolatileParam("CORE_STANDURL", $puburl."/index.php?session={$session->id}&sole=Y&");
 
+// ----------------------------------------
+// Init Application & Actions Objects
 if (($standalone == "") || ($standalone == "N")) {
   $action = new Action();
   $action->Set("MAIN",$core,$session);

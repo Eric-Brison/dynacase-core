@@ -1,6 +1,9 @@
 <?php
-// $Id: head.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: head.php,v 1.2 2002/01/25 14:31:37 eric Exp $
 // $Log: head.php,v $
+// Revision 1.2  2002/01/25 14:31:37  eric
+// gestion de cache objet - variable de session
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -45,6 +48,8 @@ function head(&$action) {
   $query=new QueryDb($action->dbaccess,"Application");
   $query->basic_elem->sup_where=array("available='Y'","displayable='Y'");
   $list = $query->Query(0,0,"TABLE");
+
+
 
   // remove applications that need access perm
   $tab = array();
@@ -106,6 +111,7 @@ function head(&$action) {
   $action->lay->set("APP_TITLE", _($app->description));
   $action->lay->set("SESSION",$action->session->id);
 
+ $action->lay->set("sid",session_id());
 
   $jslauch=$action->GetLayoutFile("lauch_action.js");
   $lay = new Layout($jslauch, $action);

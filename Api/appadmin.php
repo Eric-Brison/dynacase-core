@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: appadmin.php,v 1.1 2002/01/09 16:22:47 eric Exp $
+// $Id: appadmin.php,v 1.2 2002/01/25 14:31:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/appadmin.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -31,7 +31,7 @@ echo " appname...$method";
 $app=new Application();
 $Null = "";
 $app->Set($appname,$Null);
-if ($method == "update") $app->Update();
+if ($method == "update") $app->InitApp($appname,true);
 if ($method == "delete") $app->DeleteApp();
 
 ?>

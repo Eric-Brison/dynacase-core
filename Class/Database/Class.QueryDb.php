@@ -16,8 +16,11 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryDb.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.QueryDb.php,v 1.2 2002/01/25 14:31:37 eric Exp $
 //  $Log: Class.QueryDb.php,v $
+//  Revision 1.2  2002/01/25 14:31:37  eric
+//  gestion de cache objet - variable de session
+//
 //  Revision 1.1  2002/01/08 12:41:34  eric
 //  first
 //
@@ -99,11 +102,11 @@
 //
 // It gives the HTML/JScript element for the gui
 // and it gives the result of the query
-$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
 
 include_once('Class.Log.php');
 
-Class QueryDb {
+Class QueryDb  {
 
 var $nb=0;
 var $LastQuery="";
@@ -146,13 +149,14 @@ var $casse = "NON";
 
 var $criteria="";
 var $order_by="";
+ var $list= array();
 
 function QueryDb ($dbaccess,$class) 
     {
       // 
       $this->log = new Log("","Query","$class");
       $this->basic_elem = new $class($dbaccess);
-
+      if ($this->basic_elem->cached) print "BIG ERROR";
       $this->dbaccess = $dbaccess;
       $this->class = $class;
 
@@ -168,9 +172,11 @@ function QueryDb ($dbaccess,$class)
   function Query($start=0,$slice=0,$res_type="LIST",$p_query="")
   {
     if ($start=="") $start=0;
+    
     if ($p_query=='') { 
       // select construct
       $select="";
+
       reset($this->basic_elem->fields);
       while (list($k,$v) = each($this->basic_elem->fields)) {
         $select=$select." ".$this->basic_elem->dbtable.".".$v.",";
@@ -234,18 +240,42 @@ function QueryDb ($dbaccess,$class)
       $query=$p_query;
     }
 
+    $this->res_type=$res_type;
+    $this->slice=$slice;
+    $this->start=$start;
+    $this->LastQuery=$query;
 
-      $this->LastQuery=$query;
+    // try cache query first
+    if ($this->basic_elem->isCacheble) {
+      $ocache = new CacheQuery();
+      
+      $ocache->cacheclass=strtolower($this->class);
+	if ($ocache->GetCache($this->cacheId())) {	  
+	  $this->list = $ocache->list;
+	  $this->nb = $ocache->nb;
+
+	  return $this->list;
+	}
+    }
+
+
 
       $res = $this->basic_elem->exec_query($query);
-
+    //	print "$query $res_type $p_query<BR>\n";
       if ($res != "") {
          return($res);
       }
 
       $this->nb = $this->basic_elem->numrows();    
       
-      if ($this->nb ==0) return FALSE;
+      if ($this->nb ==0) {
+	if ($this->basic_elem->isCacheble) {
+	  $ocache = new CacheQuery($this);
+
+	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
+	}
+	return FALSE;
+      }
 
       if ($start >= $this->nb) {$start=0;}
       if ($slice == 0) {$slice = $this->nb;}
@@ -267,9 +297,39 @@ function QueryDb ($dbaccess,$class)
           }
         }
       }
+      //      global ${$this->hsql};
+      // print "record ".$this->hsql."#".count($this->list)."<BR>";
+      
+
+      if ($this->basic_elem->isCacheble)
+	{
+	  $ocache = new CacheQuery($this);
+	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
+	}
       return($this->list);
     }
       
+
+function cacheId() {
+  $hsql = bin2hex(mhash(MHASH_MD5,
+			$this->class.$this->res_type.$this->LastQuery.$this->start.'_'.$this->slice));
+  
+  return $hsql;
+}
+
+
+  function AffectCache($id) {  
+    global $CacheObj;
+    $CacheObj[$id]=$this->list;
+  }
+  function RestoreCache($id) {  
+    global $CacheObj;
+    $this->list=$CacheObj[$id];
+  }
+
+  function GetCachePart() {
+    return "list";
+  }
   function CriteriaClause() {
     $out = "";
     if (isset($this->criteria) && ($this->criteria != "") && ($this->operator != "none")) {
@@ -326,6 +386,19 @@ function QueryDb ($dbaccess,$class)
 
   function AddQuery($contraint) {
     $this->basic_elem->sup_where[]=$contraint;
+  }
+}
+
+Class CacheQuery extends Cache {
+  var $list=array();
+  var $nb=0;
+
+  function CacheQuery($queryobj=NULL) {
+    if ($queryobj != NULL) {
+      $this->list= $queryobj->list;
+      $this->nb = $queryobj->nb;
+      $this->cacheclass=strtolower($queryobj->class);
+    }
   }
 }
 ?>

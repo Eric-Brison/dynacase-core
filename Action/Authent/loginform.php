@@ -32,6 +32,7 @@ function loginform(&$action) {
         if (isset($u->id)) {
           $auth = $u->checkpassword($auth_pass);
         }
+
         if (!$auth) {
           $action->log->debug("Unsuccessfull Authent");
           $action->lay->set("MESSAGE",$action->text("auth_failure"));

@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.4 2002/01/10 11:13:11 eric Exp $
+#  $Id: WHAT.spec.in,v 1.5 2002/01/25 14:31:37 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -66,15 +66,22 @@ if [ "$1" = 1 ] ; then
   # Add apache options for what
   echo "Include %{destdir}/apache.conf" >>/etc/httpd/conf/httpd.conf
 
-fi
 
  
-# try execute post install now
-%{pidir}/@PACKAGE@_post.sh 1
-if [ $? -ne 0 ]; then
-   ln -s %{pidir}/@PACKAGE@_post.sh %{pidir}/PI%{pirange}@PACKAGE@
-fi
+  # try execute post install now
+  %{pidir}/@PACKAGE@_post.sh 1
+  if [ $? -ne 0 ]; then
+     ln -s %{pidir}/@PACKAGE@_post.sh %{pidir}/PI%{pirange}@PACKAGE@
+  fi
+else   
 
+  # just update
+  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=CORE  
+  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=USERS
+  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=APPMNG
+  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=AUTHENT
+  /home/httpd/what/wsh.php --api=appadmin --method=update --appname=ACCESS
+fi
 
 # merge @PACKAGE@ translation for i18n
 for lang in en fr ; do
@@ -104,7 +111,7 @@ if [ "$1" = 0 ] ; then
   popd >/dev/null
   
   # copy uninstall shell to be execute in post-uninstall section
-  cp %{pidir}/@PACKAGE@_post.sh %{pidir}/PU%{purange}@PACKAGE@_post.sh
+  #  cp %{pidir}/@PACKAGE@_post.sh %{pidir}/PU%{purange}@PACKAGE@_post.sh
 fi
 
 %postun
@@ -119,9 +126,9 @@ if [ "$1" = 0 ] ; then
   if [ $? -eq 0 ]; then
     rm %{pidir}/PU%{purange}@PACKAGE@_post.sh
   fi
-fi
 
 # Remove what from syslog
+  echo "Remove what.log from syslog"
   cp /etc/syslog.conf /etc/syslog.conf.sav
   cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
   /etc/rc.d/init.d/syslog restart
@@ -132,6 +139,7 @@ fi
   if [ $run = 1 ] ; then
      /etc/rc.d/init.d/httpd restart
   fi
+fi
 
 
 %files

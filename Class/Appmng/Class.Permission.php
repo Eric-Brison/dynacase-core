@@ -1,5 +1,5 @@
 <?
-// $Id: Class.Permission.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.Permission.php,v 1.2 2002/01/25 14:31:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Permission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,6 +21,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Class.Permission.php,v $
+// Revision 1.2  2002/01/25 14:31:37  eric
+// gestion de cache objet - variable de session
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -56,7 +59,7 @@
 //
 // ---------------------------------------------------------------------------
 //
-$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -90,7 +93,8 @@ create index permission_idx3 on permission(id_acl);
 
 function Permission($dbaccess='', $id='',$res='',$dbid=0)
   {
-    if (! $this->DbObj ($dbaccess, $id,$res,$dbid)) {
+    DbObj::DbObj ($dbaccess, $id,$res,$dbid);
+    if (! $this->isAffected()) {
       
 	if (is_array($id)) {
 	  $this->Affect(array("id_user" => $id[0],

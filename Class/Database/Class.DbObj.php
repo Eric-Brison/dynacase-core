@@ -18,104 +18,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.DbObj.php,v 1.1 2002/01/08 12:41:34 eric Exp $
-//  $Log: Class.DbObj.php,v $
-//  Revision 1.1  2002/01/08 12:41:34  eric
-//  first
-//
-//  Revision 1.16  2002/01/04 16:33:06  eric
-//  ajout message d'erreur sur create
-//
-//  Revision 1.15  2001/11/21 16:07:17  eric
-//  prise en compte des AddSlahes pour les champs
-//
-//  Revision 1.14  2001/10/10 15:55:31  eric
-//  correction pour champ oid
-//
-//  Revision 1.13  2001/10/04 08:09:18  eric
-//  ajout includepath pour php sur update
-//
-//  Revision 1.12  2001/09/07 16:48:59  eric
-//  gestion des droits sur les objets
-//
-//  Revision 1.11  2001/08/28 10:08:06  eric
-//  ajout option execution postinit sur create
-//
-//  Revision 1.10  2001/08/20 16:43:35  eric
-//  ajout fonction IsAffected pour savoir si champs remplis
-//
-//  Revision 1.9  2001/07/25 12:43:46  eric
-//  ajout migration des bases automatique : fonction update
-//
-//  Revision 1.8  2001/02/26 14:13:12  yannick
-//  Optimization and compatibility with php 4.0.4
-//
-//  Revision 1.7  2001/02/07 16:41:22  yannick
-//  Gestion des header et tris
-//
-//  Revision 1.6  2001/02/06 16:23:28  yannick
-//  QueryGen : first release
-//
-//  Revision 1.5  2000/10/31 16:37:48  yannick
-//  AJout du makeqmailconf + Test existance domaine
-//
-//  Revision 1.4  2000/10/26 07:54:50  yannick
-//  Gestion du domaine sur les utilisateur
-//
-//  Revision 1.3  2000/10/16 17:23:07  yannick
-//  utilisation preg dans Layout et ménage dans les logs
-//
-//  Revision 1.2  2000/10/11 12:18:41  yannick
-//  Gestion des sessions
-//
-//  Revision 1.1.1.1  2000/10/05 17:29:10  yannick
-//  Importation
-//
-//  Revision 1.14  2000/09/05 10:18:10  marianne
-//  Ajout PreSelect et PostSelect
-//
-//  Revision 1.13  2000/09/05 08:41:39  marianne
-//  Mise au point Pre/Post insert/delete/update
-//
-//  Revision 1.12  2000/09/04 15:54:17  marianne
-//  Ajout Pro/Pre Insert/Update/Delete + prise en compte tables sans clefs
-//
-//  Revision 1.11  2000/08/17 13:04:34  marianne
-//  Correction bug sur retour suppression
-//
-//  Revision 1.9  2000/08/08 13:40:59  marianne
-//  prise en compte des sup_fields
-//
-//  Revision 1.8  2000/07/07 10:11:08  yannick
-//  Mise au point
-//
-//  Revision 1.7  2000/07/06 15:51:54  yannick
-//  Mise au point Authent
-//
-//  Revision 1.6  2000/07/05 13:19:59  yannick
-//  Mise au point
-//
-//  Revision 1.5  2000/06/30 12:45:46  yannick
-//  Retourne faux si le DbId n'existe pas
-//
-//  Revision 1.4  2000/06/06 12:49:42  yannick
-//  suppression des warning de forme
-//
-//  Revision 1.3  2000/06/05 16:13:55  yannick
-//  Fonction tournepage OK
-//
-//  Revision 1.2  2000/06/05 13:58:27  yannick
-//  Mise au point
-//
-//  Revision 1.1  2000/05/30 15:03:32  yannick
-//  Nouveau
-//
-//  Revision 1.3  2000/05/26 14:28:57  xavier
-//  Gestion du delete
-//
-//  Revision 1.2  2000/05/26 08:24:28  xavier
-//  mise à jour du 05 26
-//
+
 // ---------------------------------------------------------------------------
 // Fonctions : 
 //  This class is a generic DB Class that can be used to create objects
@@ -124,10 +27,11 @@
 // ---------------------------------------------------------------------------
 //
 include_once('Class.Log.php');
+include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
 
-Class DbObj
+Class DbObj extends Cache
 {
 var $dbid = -1;
 var $dbaccess = '';
@@ -142,62 +46,93 @@ var $sup_tables=array ();
 var $fulltextfields=array ();
 
 var $order_by="";
-
 var $isset = false; // indicate if fields has been affected (call affect methods)
-
 
 //----------------------------------------------------------------------------
 function DbObj ($dbaccess='', $id='',$res='',$dbid=0)
-{
-        $this->log = new Log("","DbObj",$this->dbtable);
-        if ($dbaccess=="") {
-          // don't test if file exist or must be searched in include_path 
-             include("dbaccess.php");
-           
-        }
+  {
+    
+    $this->dbaccess = $dbaccess;
+    $this->init_dbid();
 
-        // Use only one connection to increase performances and
-        // to avoid the multi connection bug (known in 4.01 and 4.0.1pl1)
-        global $CORE_DBID;
-	if (!isset($CORE_DBID) || !isset($CORE_DBID["$dbaccess"])) {
-           $CORE_DBID["$dbaccess"] = pg_connect("$dbaccess");
-        } 
-        $this->dbid=$CORE_DBID["$dbaccess"];
+    //    $this->oname="zz";
+    //    if (($this->isCacheble) && ($this->cache($dbaccess, $id, $res))) return true;
+    if ($this->GetCache($this->CacheId($id, $res))) return true;
+  
+    //global ${$this->oname};
+    $this->log = new Log("","DbObj",$this->dbtable);
+    
 
-	$this->dbaccess = $dbaccess;
-	if ($this->dbid == 0) {
-		$this->dbid = -1;
-		return FALSE;
-	}
+    if ($this->dbid == 0) {
+      $this->dbid = -1;
+      return FALSE;
+    }
 
-        $this->selectstring="";
-        // SELECTED FIELDS
-        reset($this->fields);
-        while(list($k,$v) = each($this->fields)) {
-           $this->selectstring=$this->selectstring.$this->dbtable.".".$v.",";
-           $this->$v="";
-        }
-	// add oid fields : always to identify
-	if (! in_array("oid",$this->sup_fields))
-	  $this->sup_fields[]="oid";
-        reset($this->sup_fields);
-        while (list($k,$v) = each($this->sup_fields)) {
-           $this->selectstring=$this->selectstring."".$v.",";
-           $this->$v="";
-        }  
-        $this->selectstring=substr($this->selectstring,0,strlen($this->selectstring)-1);
+    $this->selectstring="";
+    // SELECTED FIELDS
+    reset($this->fields);
+    while(list($k,$v) = each($this->fields)) {
+      $this->selectstring=$this->selectstring.$this->dbtable.".".$v.",";
+      $this->$v="";
+    }
+    // add oid fields : always to identify
+    if (! in_array("oid",$this->sup_fields))
+      $this->sup_fields[]="oid";
+    reset($this->sup_fields);
+    while (list($k,$v) = each($this->sup_fields)) {
+      $this->selectstring=$this->selectstring."".$v.",";
+      $this->$v="";
+    }  
+    $this->selectstring=substr($this->selectstring,0,strlen($this->selectstring)-1);
 
-	// select with the id
-	if (($id!='') || (is_array($id)) || (!isset($this->id_fields[0])) ) {
-		$ret=$this->Select($id);
-                return($ret);
-	}
-	// affect with a query result
-	if (is_array($res)) {
-		$this->Affect($res);
-	}
-	return TRUE;
-}
+    // select with the id
+    if (($id!='') || (is_array($id)) || (!isset($this->id_fields[0])) ) {
+      $ret=$this->Select($id);
+      $this->SetCache($this->CacheId($id, $res));// set to the dbobj cache
+      //      ${$this->oname} = $this;// set to the dbobj cache
+      return($ret);
+    }
+    // affect with a query result
+    if (is_array($res)) {
+      $this->Affect($res);
+    }
+    //${$this->oname} = $this;// set to the dbobj cache
+      $this->SetCache($this->CacheId($id, $res));// set to the dbobj cache
+    return TRUE;
+  }
+
+
+
+
+
+ function CacheId($id, $res) {
+
+   $soid = "";
+   if (is_array($id)) {
+    
+     while(list($k,$v) = each($id)) {
+       $soid.= $v."_";
+     }
+   } elseif  (intval($id) > 0) 
+       $soid = $id;
+   else if (isset($res[$this->id_fields[0]])) {    
+     while(list($k,$v) = each($this->id_fields)) {
+       $soid.= $res[$this->id_fields[$k]]."_";
+     }
+   }
+
+
+   if (count($this->id_fields) == 1) {
+     if  (intval($id) > 0) $soid = $id;
+     else if (isset($res[$this->id_fields[0]])) {
+       $soid = $res[$this->id_fields[0]];
+       //print "soid=$soid";
+     }
+   } //print "soid=$soid<BR>";
+   
+   if ($soid != "") $soid=get_class($this)."::".$soid;
+   return $soid;
+ }
 
 function Select($id)
 {
@@ -346,6 +281,7 @@ function Add()
   }
 	
   $msg=$this->PostInsert();
+  $this->ClearCache();
   if ($msg!='') return $msg;
 }
 
@@ -387,6 +323,8 @@ function Modify()
   }
 
   $msg=$this->PostUpdate();
+
+  $this->ClearCache();
   if ($msg!='') return $msg;
 }	
 
@@ -416,6 +354,7 @@ function Delete()
   }
 
   $msg=$this->PostDelete();
+  $this->ClearCache();
   if ($msg!='') return $msg;
 }
 
@@ -457,13 +396,36 @@ function Create($nopost=false)
 function PostInit() {
 }
 
+function init_dbid() {
+
+     if ($this->dbaccess=="") {
+      // don't test if file exist or must be searched in include_path 
+      include("dbaccess.php");
+      $this->dbaccess=$dbaccess;
+           
+    }
+    global $CORE_DBID;
+    if (!isset($CORE_DBID) || !isset($CORE_DBID[$this->dbaccess])) {
+      $CORE_DBID[$this->dbaccess] = pg_connect($this->dbaccess);
+    } 
+    $this->dbid=$CORE_DBID[$this->dbaccess];
+    //    print "DBID:".$this->dbaccess.$this->dbid."<BR>";
+  
+}
 function exec_query($sql,$lvl=0)
 {
+
+ 
+  $this->init_dbid();
    error_reporting(4);
    $this->log->debug("exec_query : $sql");
+   
    $this->res=pg_exec($this->dbid,$sql);
+
    error_reporting(15);
+
    $pgmess = pg_errormessage($this->dbid);
+
    $this->msg_err = chop(ereg_replace("ERROR:  ","",$pgmess));
 
 

@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.2 2002/01/08 17:52:03 eric Exp $
+//  $Id: Class.Application.php,v 1.3 2002/01/25 14:31:37 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.2 2002/01/08 17:52:03 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.3 2002/01/25 14:31:37 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -422,7 +422,7 @@ function SetVolatileParam($key,$val)
 function GetParam($key,$default="")
 { 
   if (!isset($this->param)) return ($default);
-  if ($this->param->exists($key)) {
+  if (($this->param->exists($key)) && isset($this->style)){
     return($this->style->GetParam($key,$this->param->Get($key)));
   }
   if ($this->parent!="") return($this->parent->GetParam($key,$default));

@@ -16,9 +16,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.2 2002/01/18 08:12:32 eric Exp $
+// $Id: Class.Session.php,v 1.3 2002/01/25 14:31:37 eric Exp $
 //
 // $Log: Class.Session.php,v $
+// Revision 1.3  2002/01/25 14:31:37  eric
+// gestion de cache objet - variable de session
+//
 // Revision 1.2  2002/01/18 08:12:32  eric
 // optimization for speed
 //
@@ -100,7 +103,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.2 2002/01/18 08:12:32 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.3 2002/01/25 14:31:37 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -131,6 +134,7 @@ var $sqlcreate = "create table sessions ( id         varchar(100),
   var $SESSION_CT_ARGS                = -3;
   var $SESSION_CT_OOOPS               = -99;
 
+ var $isCacheble= false;
 var $sessiondb;
 
   function status2str($st)
@@ -196,8 +200,11 @@ var $sessiondb;
   // ------------------------------------
   function Close()
     {
+      global $HTTP_CONNECTION; // use only cache with HTTP
+      if ($HTTP_CONNECTION != "") {
+	session_destroy();
+      }
       $this->Delete();
-      $this->removesessionvars();
       $this->status = $this->SESSION_CT_CLOSE;
       return $this->status;
     }  
@@ -205,6 +212,11 @@ var $sessiondb;
   function Open()
     {
       $idsess  = $this->newId();
+      global $HTTP_CONNECTION; // use only cache with HTTP
+      if ($HTTP_CONNECTION != "") {
+	session_id($idsess);
+	session_start();
+      }
       $this->id         = $idsess;
       $this->timetolive = $this->SetTTL();
       $this->userid   = 0;
@@ -220,6 +232,11 @@ var $sessiondb;
 	$this->status = $this->SESSION_CT_ARGS;
 	return $this->status;
       }
+      global $HTTP_CONNECTION; // use only cache with HTTP
+      if ($HTTP_CONNECTION != "") {
+	session_id($this->id);
+	session_start();
+      }
       $this->userid = $userid;
       $this->timetolive = $this->SetTTL();
       $this->Modify();
@@ -229,6 +246,10 @@ var $sessiondb;
   
   function DeActivate()
     {
+      global $HTTP_CONNECTION; // use only cache with HTTP
+      if ($HTTP_CONNECTION != "") {
+	session_unset();
+      }
       $this->userid = 0;
       $this->timetolive = $this->SetTTL();
       $this->Modify();
@@ -242,24 +263,21 @@ var $sessiondb;
   // --------------------------------
   function Register($k = "", $v = "")
     {
+
       if ($k == "" ){
 	$this->status = $this->SESSION_CT_ARGS;
 	return $this->status;
       }
-      $var = new SessionVar($this->dbaccess,array($this->id,$k));
-      if (isset($var->key) && ($var->key != "") ) {
-	  $var->val = $v;
-	  $var->Modify();
-      } else {
-          $var->session = $this->id;
-          $var->key     = $k;
-	  $var->val = $v;
-	  $var->Add();
+      global $$k;
+      $$k=$v;
+
+      global $HTTP_CONNECTION; // use only cache with HTTP
+      if ($HTTP_CONNECTION != "") {
+	session_register($k);
       }
-      $this->buffer[$k]=$v;
-      $this->log->debug("Register() {$k} = [{$v}]");
-      unset($var);
-      return TRUE;
+
+      return true;
+
     }       
   
   // --------------------------------
@@ -267,8 +285,11 @@ var $sessiondb;
   // $v est une chaine !
   // --------------------------------
   function Read($k = "", $d="") {
-      if (isset($this->buffer[$k])) {
-        return($this->buffer[$k]);
+    
+      global $HTTP_SESSION_VARS;
+
+      if (isset($HTTP_SESSION_VARS[$k])) {
+        return($HTTP_SESSION_VARS[$k]);
       } else {
         return($d);
       }
@@ -278,13 +299,7 @@ var $sessiondb;
   // Get all vars
   //
   function InitBuffer() {
-     $query = new QueryDb($this->dbaccess,"SessionVar");
-     $this->log->debug("InitBuffer");
-     $query->basic_elem->sup_where = array("session='{$this->id}'");
-     $list=$query->Query(0,0,"TABLE");
-     while (list($k,$v)=each($list)) {
-        $this->buffer[$v["key"]]=$v["val"];
-     }
+    return;
   }
   
   // --------------------------------
@@ -293,14 +308,10 @@ var $sessiondb;
   // --------------------------------
   function Unregister($k = "")
     {
-      if ($k == "" ){
-	$this->status = $this->SESSION_CT_ARGS;
-	return $this->status;
+      global $HTTP_CONNECTION; // use only cache with HTTP
+      if ($HTTP_CONNECTION != "") {
+	session_unregister($k);
       }
-      $vs = new SessionVar($this->dbaccess, array($this->id, $k));
-      $vs->Delete();
-      unset($this->buffer[$k]);
-      unset($vs);
       return;
     }       
   
@@ -319,8 +330,8 @@ var $sessiondb;
 	$liste = $query->Query();
 	$i = 0;
 	while ($i<$query->nb) {
-	  // 1, supression des variables de session
-	  $liste[$i]->removesessionvars();
+	  // 1, suppression des variables de session
+	  // automaticaly deleted by php session 'session.gc_maxlifetime'
           $this->log->debug("Remove session: {$liste[$i]->id}");
 	  // 2, suppression de la session
 	  $liste[$i]->Delete();

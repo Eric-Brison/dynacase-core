@@ -1,6 +1,6 @@
-<?
+<?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.2 2002/01/10 11:13:11 eric Exp $
+// $Id: Class.User.php,v 1.3 2002/01/25 14:31:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.2 2002/01/10 11:13:11 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.3 2002/01/25 14:31:37 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');

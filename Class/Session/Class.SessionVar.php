@@ -16,9 +16,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.SessionVar.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.SessionVar.php,v 1.2 2002/01/25 14:31:37 eric Exp $
 //
 // $Log: Class.SessionVar.php,v $
+// Revision 1.2  2002/01/25 14:31:37  eric
+// gestion de cache objet - variable de session
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -36,7 +39,7 @@
 //
 //
 // ---------------------------------------------------------------------------
-$DROITS_CLASS_SESSIONVAR_PHP = '$Id: Class.SessionVar.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$DROITS_CLASS_SESSIONVAR_PHP = '$Id: Class.SessionVar.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
 
 include_once('Class.DbObj.php');
 
@@ -53,5 +56,6 @@ var $sqlcreate = "create table session_vars ( session varchar(100),
 			    key	    varchar(50),
 			    val	    varchar(200));
 create index session_vars_idx on session_vars(session,key);";
+ var $isCacheble= false;
 }
 ?>

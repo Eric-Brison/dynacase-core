@@ -28,6 +28,8 @@ $app_const = array (
 "CORE_TDMTITLE"		=>"Table des matières",
 "CORE_CLIENT"		=>"&lt;N O M&nbsp;&nbsp;&nbsp;&nbsp;D U&nbsp;&nbsp;&nbsp;&nbsp;C L I E N T&gt;",
 "CORE_ANAKEEN"		=>"Anakeen&nbsp;2002",
+"CORE_USECACHE"		=>"no",
+"CORE_MAXOBJCACHE"	=>"50"
 );
 
 ?>

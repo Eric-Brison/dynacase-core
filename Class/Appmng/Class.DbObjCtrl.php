@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.DbObjCtrl.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.DbObjCtrl.php,v 1.2 2002/01/25 14:31:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.DbObjCtrl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Class.DbObjCtrl.php,v $
+// Revision 1.2  2002/01/25 14:31:37  eric
+// gestion de cache objet - variable de session
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -51,7 +54,7 @@
 // ---------------------------------------------------------------
 
 
-$CLASS_CONTROLLED_PHP = '$Id: Class.DbObjCtrl.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_CONTROLLED_PHP = '$Id: Class.DbObjCtrl.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');
@@ -65,27 +68,28 @@ Class DbObjCtrl extends DbObj
   // --------------------------------------------------------------------
   function DbObjCtrl ($dbaccess='', $id='',$res='',$dbid=0) {
     // --------------------------------------------------------------------
+
     global $action; // necessary to see information about user privilege
-    $this->action=&$action;
 
     $app = new Application(); // to get class id
     $this->classid = $app->GetIdFromName(get_class($this)); 
+    $cid = $this->classid;
+    $this->userid=$action->parent->user->id;
 
     DbObj::DbObj($dbaccess, $id,$res,$dbid);
 
 
-
-    
 
       
   }
 
   function PostSelect()
     {
+
       if ($this->IsControlled()) {
 
     $this->operm= new ObjectPermission("", 
-                                       array($this->action->parent->user->id,
+                                       array($this->userid,
 				             $this->id ));
       }
 
@@ -102,7 +106,7 @@ Class DbObjCtrl extends DbObj
 	return $this->operm->Control($this, $aclname);
       else return "";
 
-    return "object not initialized ; $aclname";
+    return "object not initialized : $aclname";
   }
   // --------------------------------------------------------------------
   function PostUpdate()
@@ -134,7 +138,7 @@ Class DbObjCtrl extends DbObj
       $cobj->Add();
 
       $this->operm= new ObjectPermission("", 
-                                         array($this->action->parent->user->id,
+                                         array($this->userid,
 				               $this->id ));
       $acl =new Acl();
 
