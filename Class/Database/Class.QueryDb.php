@@ -16,7 +16,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryDb.php,v 1.5 2002/06/19 12:28:28 eric Exp $
+//  $Id: Class.QueryDb.php,v 1.6 2002/09/12 08:40:15 eric Exp $
 
 // ---------------------------------------------------------------------------
 // This class is designed to perform query constructs on objects
@@ -24,7 +24,7 @@
 //
 // It gives the HTML/JScript element for the gui
 // and it gives the result of the query
-$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.5 2002/06/19 12:28:28 eric Exp $';
+$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.6 2002/09/12 08:40:15 eric Exp $';
 
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
@@ -310,6 +310,11 @@ function cacheId() {
 
   function AddQuery($contraint) {
     $this->basic_elem->sup_where[]=$contraint;
+  }
+
+  function AddField($sqlattr, $resultname="") {
+    if ($resultname == "")   $this->basic_elem->sup_fields[]=$sqlattr;
+    else $this->basic_elem->sup_fields[]="$sqlattr as $resultname";
   }
 }
 
