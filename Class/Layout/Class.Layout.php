@@ -1,9 +1,9 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.15 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.16 2003/10/16 09:34:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.15 2003/08/18 15:46:42 eric Exp $
+//  $Id: Class.Layout.php,v 1.16 2003/10/16 09:34:22 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -91,16 +91,13 @@ var $strip='Y';
 
 
 
-// --------------------------------------------------------------------------
-// Constructor
-//              
-// I               caneva : file of the template
-//
-// Return          none
-//
-// Date            May, 14 2003 - 18:46:17
-// Author          Yannick Lebriquer	(Anakeen)
-// --------------------------------------------------------------------------
+/**
+   * construct layout for view card containt
+   *
+   * @param string $caneva file of the template
+   * @param Action $action current action
+   * @param string $template default template
+   */
  function Layout($caneva="",$action="",$template="[OUT]") {
     $this->LOG = new Log("","Layout");     
     $this->template = $template;
