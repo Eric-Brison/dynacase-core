@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.19 2003/01/28 08:59:23 eric Exp $
+//  $Id: Class.Application.php,v 1.20 2003/01/31 14:29:31 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.19 2003/01/28 08:59:23 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.20 2003/01/31 14:29:31 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -488,13 +488,15 @@ function SetParamDef($key,$val)
 {
     // add new param definition
     $pdef = new ParamDef($this->dbaccess,$key);
-    $pdef->name=$key;
-    $pdef->isuser="N";
-    $pdef->isstyle="N";
-    $pdef->isglob="N";  
-    $pdef->appid=$this->id;
-    $pdef->descr="";
-    $pdef->kind="text";
+    if (! $pdef->isAffected()) {
+      $pdef->name=$key;
+      $pdef->isuser="N";
+      $pdef->isstyle="N";
+      $pdef->isglob="N";  
+      $pdef->appid=$this->id;
+      $pdef->descr="";
+      $pdef->kind="text";
+    }
     
   if (is_array($val)) {
     if (isset($val["kind"]))  $pdef->kind=$val["kind"];

@@ -18,13 +18,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.11 2003/01/20 10:06:09 eric Exp $
+//  $Id: Class.Param.php,v 1.12 2003/01/31 14:29:31 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 include_once('Class.ParamDef.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.11 2003/01/20 10:06:09 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.12 2003/01/31 14:29:31 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -176,10 +176,10 @@ function DelStatic($appid)
 {
 
     $query = new QueryDb($this->dbaccess,"Param");
-    $query->AddQuery ("appid=$appid");
-    $query->AddQuery ("kind='static'");
-    $list = $query->Query(0,0,"LIST","select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramv.appid=$appid");
+    $list = $query->Query(0,0,"LIST","select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramv.appid=$appid;");
+
     if ($query->nb != 0) {
+      reset($list);
       while(list($k,$v)=each($list)) {
         $v->Delete();
 	if (isset($this->buffer[$v->name])) unset($this->buffer[$v->name]);
