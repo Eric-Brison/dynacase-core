@@ -117,6 +117,7 @@ $dbid=@pg_connect($dbaccess);
 
 $wsh=array(); // application update
 $migr=array();// migration
+$pmigr=array();// post migration
 $post=array();// post install 
 $pre=array(); // pre install 
 $dump=array();
@@ -210,7 +211,20 @@ if (! $dbid) {
 	    $migr[]="$pubdir/$k/$file";
 	}
       }
-    }      
+    }   
+
+
+    // search Post Migration file
+    if ($dir = @opendir("$pubdir/$k")) {
+      while (($file = readdir($dir)) !== false) {
+	if (ereg("{$k}_pmigr_([0-9\.]+)$", $file, $reg)) {
+
+	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
+	    $pmigr[]="$pubdir/$k/$file";
+	}
+      }
+    }   
+    
   }
   
 }
@@ -225,7 +239,7 @@ $actions = array_merge($dump,
 		       array_merge($pre,
 				   array_merge($migr,
 					       array_merge($wsh, 
-							   $post))));
+							   array_merge($post,$pmigr)))));
 if ($dbid) {
   if ($dbank != "anakeen") $actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
   $actions[] = "$pubdir/wstart";
