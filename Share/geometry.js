@@ -13,18 +13,20 @@ function GetXY(event) {
     Ypos = event.clientY + window.scrollY;
   }    
 }
-function getFrameWidth() {
-      winW = window.innerWidth;
+function getFrameWidth(w) {
+  if (! w) w=window;
+      winW = w.innerWidth;
       if (! winW)	   
-            winW = document.body.offsetWidth;
+            winW = w.document.body.offsetWidth;
 
       return (winW);
   }
 
-function getFrameHeight() {
-      winH= window.innerHeight;
+function getFrameHeight(w) {
+  if (! w) w=window;
+      winH= w.innerHeight;
       if (! winH)	
-           winH = document.body.offsetHeight;
+           winH = w.document.body.offsetHeight;
       return (winH);
   }
 

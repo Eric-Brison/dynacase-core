@@ -18,13 +18,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.12 2003/01/31 14:29:31 eric Exp $
+//  $Id: Class.Param.php,v 1.13 2003/04/07 12:33:04 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 include_once('Class.ParamDef.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.12 2003/01/31 14:29:31 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.13 2003/04/07 12:33:04 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -44,7 +44,7 @@ var $sqlcreate = '
               name   varchar(50),
               type   varchar(21),
               appid  int4,
-              val    varchar(200));
+              val    text);
       create index paramv_idx2 on paramv(name);
       create unique index paramv_idx3 on paramv(name,type,appid);
                  ';

@@ -119,7 +119,7 @@ DIV.TITLE {
 	    onclick="document.authent .submit()"
 	    title="[TEXT:Click here to login]"
 	    alt="[WHAT] Web Hosting Application Toolkit" src="[IMG:logo-1.png]">
-   </button>
+
        <img id="logoc" onload="CenterLogo();window.setTimeout('MoveLogoC()',10);" style="position:absolute; top:0px; left:0px"
              title="[CORE_CLIENT]" 
              alt="[CORE_CLIENT]" src="[CORE_LOGOCLIENT]">

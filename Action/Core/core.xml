@@ -21,7 +21,7 @@ if (window != top) top.location.href = location.href;
 <frameset name="what" id="what" frameborder="0" framespacing="0" border="0" rows="70,*,40,0pt" >
 
   <frame name="head" src="[CORE_STANDURL]&app=CORE&action=HEAD" scrolling="needed">
-  <frame name="body" src="[CORE_BASEURL]&app=[appd]&action=[actd]" scrolling="needed">
+  <frame name="body" src="[CORE_STANDURL]&app=[appd]&action=[actd]" scrolling="needed">
   <frame name="foot" src="[CORE_STANDURL]&app=CORE&action=FOOTER" scrolling="no">
   <frame name="fhidden" src="about:blank" noresize  style="border-style:none" scrolling="no">
 

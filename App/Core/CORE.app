@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.3 2003/03/18 18:27:03 eric Exp $
+// $Id: CORE.app,v 1.4 2003/04/07 12:33:04 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -30,20 +30,37 @@ $app_desc= array (
 "access_free"	=>"Y",                   //Access type (ALL,RESTRICT)
 "icon"		=>"core.png",            //Icon
 "displayable"	=>"N",                    //Should be displayed on an app list
+"with_frame"	=>"Y"			//Use multiframe ? (Y,N)
 );
 
 $action_desc = array (
   array(
    "name"               =>"LOGO",
    "layout"             =>"logo.xml",
-   "root"               =>"Y"
+   "root"               =>"N"
   ) ,
   array(
    "name"               =>"MAIN",
    "layout"		=>"core.xml"
   ),
   array(
-   "name"               =>"GATE"
+   "name"               =>"GATE",
+   "root"               =>"Y"
+  ),
+  array(
+   "name"               =>"GATE_EDIT"
+  ),
+  array(
+   "name"               =>"GATE_SAVEGEO"
+  ),
+  array(
+   "name"               =>"GATE_EDITURL"
+  ),
+  array(
+   "name"               =>"GATE_MODURL"
+  ),
+  array(
+   "name"               =>"BLANK"
   ),
   array(
    "name"               =>"GENCSS",

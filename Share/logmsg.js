@@ -28,10 +28,23 @@ function getConnexeWindows(w) {
 function getChildFrames(w) {
   
   var fnames='';
+  var fname='';
 
+  try {
+      fname=w.frames;      
+  }
+  catch (ex) {
+    return fnames;
+  }
   for (var i=0;i<w.frames.length;i++) {
-    if (w.frames[i].name && (w.frames[i].name != '')) windows[w.frames[i].name]=w.frames[i];
-    fnames = fnames + ' ' +i + w.frames[i].name;
+    try {
+      fname=w.frames[i].name;      
+    }
+    catch (ex) {
+      fname='';
+    }
+    if (fname && (fname != '')) windows[fname]=w.frames[i];
+    fnames = fnames + ' ' +i + fname;
  
     fnames = fnames+getChildFrames(w.frames[i]);
     

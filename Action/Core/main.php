@@ -1,6 +1,9 @@
 <?php
-// $Id: main.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: main.php,v 1.2 2003/04/07 12:33:04 eric Exp $
 // $Log: main.php,v $
+// Revision 1.2  2003/04/07 12:33:04  eric
+// portail
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -24,7 +27,7 @@ function main(&$action) {
   $action->lay->set("SESSION",$action->session->id);
 
   $appd = GetHttpVars("appd","CORE");
-  $actd = GetHttpVars("actd","");
+  $actd = GetHttpVars("actd","GATE");
   $action->lay->set("appd", $appd);
   $action->lay->set("actd", $actd);
       

@@ -11,6 +11,7 @@ function subwindow(h, w, name, url) {
    win_top  = screen_height - h - 20;
    win_left = screen_width  - w  - 20;
    me = windowExist(name, true);
+  
    if (! me) {
      me  = window.open(
 		       url,
