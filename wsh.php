@@ -5,14 +5,14 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.12 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: wsh.php,v 1.13 2003/12/02 14:38:57 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.12 2003/08/18 15:46:41 eric Exp $
+// $Id: wsh.php,v 1.13 2003/12/02 14:38:57 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -130,7 +130,9 @@ textdomain ("what");
 
 
 if (isset($HTTP_GET_VARS["api"])) {
-  include "API/".$HTTP_GET_VARS["api"].".php";
+  if (!include "API/".$HTTP_GET_VARS["api"].".php") {
+    echo sprintf(_("API file %s not found"),"API/".$HTTP_GET_VARS["api"].".php");
+  }
 } else {
   echo ($action->execute ());
 }

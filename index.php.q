@@ -1,21 +1,7 @@
 <?php
-/**
- * Main program to activate action in WHAT software
- *
- * All HTTP requests call index.php to execute action within application
- *
- * @author Anakeen 2000 
- * @version $Id: index.php,v 1.19 2003/12/02 14:38:57 eric Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package WHAT
- * @subpackage 
- */
- /**
- */
-
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.19 2003/12/02 14:38:57 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
+// $Id: index.php.q,v 1.1 2003/12/02 14:38:57 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
 // O*O  Anakeen development team
@@ -48,6 +34,9 @@ if(!isset($PHP_AUTH_USER)  ) {
   Header("Location:guest.php");
   exit;
 }
+   $deb=gettimeofday();
+  $tic1 = $deb["sec"]+$deb["usec"]/1000000;
+
 
 include_once('Class.Action.php');
 include_once('Class.Application.php');
@@ -57,6 +46,8 @@ include_once('Class.Log.php');
 include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
+global $SQLDELAY, $SQLDEBUG;
+$SQLDEBUG=true;
 define("PORT_SSL", 443); // the default port for https
 // ----------------------------------------
 // pre include for session cache
@@ -64,6 +55,8 @@ if (file_exists($HTTP_GET_VARS["app"]."/include.php")) {
         include($HTTP_GET_VARS["app"]."/include.php");
 }
 
+   $deb=gettimeofday();
+  $tic2 = $deb["sec"]+$deb["usec"]/1000000;
 $log=new Log("","index.php");
 
 $CoreNull = "";
@@ -89,13 +82,13 @@ if (!  $session->Set($sess_num))  {
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 
+   $deb=gettimeofday();
+  $tic3 = $deb["sec"]+$deb["usec"]/1000000;
 if ($core->user->login != $PHP_AUTH_USER) {
   // reopen a new session
   $session->Set("");
   $core->SetSession($session);
 }
-//$core->SetSession($session);
-
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
@@ -107,7 +100,6 @@ global $SERVER_PORT;
 if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
 
   // determine publish url (detect ssl require)
- 
   if ($SERVER_PORT != PORT_SSL)   $puburl = "http://".$SERVER_NAME.$reg[1];
   else $puburl = "https://".$SERVER_NAME.$reg[1];
 } else {
@@ -117,7 +109,7 @@ if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
 }
 
 
-$core->SetVolatileParam("CORE_PUBURL", "."); // relative links
+$core->SetVolatileParam("CORE_PUBURL", ".");
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
@@ -137,13 +129,6 @@ if (($standalone == "") || ($standalone == "N")) {
 } else {
   $appl = new Application();
   $appl->Set($HTTP_GET_VARS["app"],$core);
-
-  if (($appl->machine != "") && ($SERVER_NAME != $appl->machine)) { // special machine to redirect    
-      $puburl = "http://".$appl->machine.$REQUEST_URI;
-
-      Header("Location: $puburl");
-      exit;
-  }
 
   // ----------------------------------------
     // test SSL mode needed or not
@@ -198,8 +183,6 @@ if ($action->Read("navigator","") == "") {
 // init for gettext
 setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
 setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
-setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
-//print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "/home/httpd/what/locale");
 textdomain ("what");
@@ -209,7 +192,11 @@ textdomain ("what");
 
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
 {
-  echo ($action->execute ());
+
+  $out=$action->execute ();
+  $deb=gettimeofday();
+  $tic4= $deb["sec"]+$deb["usec"]/1000000;
+  echo ($out);
 } 
 else 
   if ($standalone == "R")
@@ -227,6 +214,8 @@ else
 	     ($k != "action") )
 	$getargs .= "&".$k."=".$v;
       }
+      $deb=gettimeofday();
+      $tic4= $deb["sec"]+$deb["usec"]/1000000;
       redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}".urlencode($getargs),$action->GetParam("CORE_STANDURL"));
     }
   else
@@ -245,7 +234,8 @@ else
 	    // copy JS ref & code from action to header
 	    $head->jsref = $action->parent->GetJsRef();
 	    $head->jscode = $action->parent->GetJsCode();
-	    
+	    $deb=gettimeofday();
+            $tic4= $deb["sec"]+$deb["usec"]/1000000;
 	    echo($head->gen());
 	    // write HTML body
 	    echo ($body);
@@ -256,10 +246,40 @@ else
 	else
 	  {
 	    // This document is completed 
-	    echo ($action->execute ());
+	    $out=$action->execute ();  
+	    $deb=gettimeofday();
+            $tic4= $deb["sec"]+$deb["usec"]/1000000;
+            echo $out;
+
 	  }
 	  
       }
 
 
+
+   $deb=gettimeofday(); 
+  $tic5 = $deb["sec"]+$deb["usec"]/1000000;
+global $HTTP_SESSION_VARS;
+
+
+//while (list ($k, $v) = each ($HTTP_SESSION_VARS)) {
+//  print $k.":$v<BR>";
+//}
+  $nbcache = 0;
+if (isset($HTTP_SESSION_VARS["CacheObj"])) {
+  reset($HTTP_SESSION_VARS["CacheObj"]);
+  while (list ($k, $v) = each ($HTTP_SESSION_VARS["CacheObj"])) {
+  //print $k.":".count($v)."<BR>";
+    $nbcache += count($v);
+  }
+}
+
+
+
+printf("<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>[Q %.2fs]</I></SUP>",
+       $tic5-$tic1,
+       $tic5-$tic4,
+       $tic4-$tic1,
+       $tic3-$tic2,$nbcache,
+       $SQLDELAY);
 ?>
