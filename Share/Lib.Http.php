@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.10 2002/09/12 08:41:16 eric Exp $
+// $Id: Lib.Http.php,v 1.11 2003/02/05 17:00:09 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -23,10 +23,10 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.10 2002/09/12 08:41:16 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.11 2003/02/05 17:00:09 eric Exp $';
 
 
-function Redirect($action,$appname,$actionname,$otherurl="")
+function Redirect(&$action,$appname,$actionname,$otherurl="")
 {
   if ($otherurl == "")
     $baseurl=$action->GetParam("CORE_BASEURL");
@@ -38,6 +38,23 @@ function Redirect($action,$appname,$actionname,$otherurl="")
   exit;
 }
 
+function RedirectSender(&$action)
+{
+  global $HTTP_SERVER_VARS;
+
+  if ($HTTP_SERVER_VARS["HTTP_REFERER"] != "") {
+    Header("Location: ".$HTTP_SERVER_VARS["HTTP_REFERER"]); // return to sender
+    exit;
+  }
+  $referer=GetHttpVars("http_referer");
+  if ($referer!="") {
+    Header("Location: ".$referer); // return to sender
+    exit;
+  }
+  
+  $action->exitError(_("no referer url found"));
+  exit;
+}
 function GetHttpVars($name, $def="") {
 
   global $HTTP_GET_VARS,$HTTP_POST_VARS,$ZONE_ARGS;
