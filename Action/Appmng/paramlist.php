@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: paramlist.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: paramlist.php,v 1.2 2002/03/21 17:52:38 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/Attic/paramlist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: paramlist.php,v $
+// Revision 1.2  2002/03/21 17:52:38  eric
+// prise en compte application répartie sur plusieurs machines
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -73,19 +76,21 @@ function paramlist(&$action) {
   $i=0;
   reset($applist);
   while(list($k,$v)=each($applist)) {
-    if ($appl_id == 0) {
-      $appl_id=$v->id;
-      $action->Register("param_appl_id",$appl_id);
+    if ($action->AppInstalled($v->name)) {
+      if ($appl_id == 0) {
+	$appl_id=$v->id;
+	$action->Register("param_appl_id",$appl_id);
+      }
+      $tab[$i]["text"]=$v->name;
+      $tab[$i]["id"]=$v->id;
+      if ($appl_id == $v->id) {
+	$appl_sel=$v;
+	$tab[$i]["selected"]="selected";
+      } else {
+	$tab[$i]["selected"]="";
+      }
+      $i++;
     }
-    $tab[$i]["text"]=$v->name;
-    $tab[$i]["id"]=$v->id;
-    if ($appl_id == $v->id) {
-      $appl_sel=$v;
-      $tab[$i]["selected"]="selected";
-    } else {
-      $tab[$i]["selected"]="";
-    }
-    $i++;
   }
 
   $action->lay->SetBlockData("SELAPPLI",$tab);
@@ -119,7 +124,7 @@ function paramlist(&$action) {
   $query->order_by="key,name";
   
   $tablelay->start=GetHttpVars("start");
-  $tablelay->slice=10;
+  $tablelay->slice=20;
   $tablelay->array = $query->Query($tablelay->start,$tablelay->slice,"LISTC");
   $tablelay->nb_tot = $query->nb;
 

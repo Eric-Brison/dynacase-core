@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: actionlist.php,v 1.2 2002/01/30 13:44:54 eric Exp $
+// $Id: actionlist.php,v 1.3 2002/03/21 17:52:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/actionlist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: actionlist.php,v $
+// Revision 1.3  2002/03/21 17:52:37  eric
+// prise en compte application répartie sur plusieurs machines
+//
 // Revision 1.2  2002/01/30 13:44:54  eric
 // i18n & remise en marche modif action
 //
@@ -78,19 +81,21 @@ function actionlist(&$action) {
   $i=0;
   reset($applist);
   while(list($k,$v)=each($applist)) {
-    if ($appl_id == 0) {
-      $appl_id=$v->id;
-      $action->Register("action_appl_id",$appl_id);
+    if ($action->AppInstalled($v->name)) {
+      if ($appl_id == 0) {
+	$appl_id=$v->id;
+	$action->Register("action_appl_id",$appl_id);
+      }
+      $tab[$i]["text"]=$v->name;
+      $tab[$i]["id"]=$v->id;
+      if ($appl_id == $v->id) {
+	$appl_sel=$v;
+	$tab[$i]["selected"]="selected";
+      } else {
+	$tab[$i]["selected"]="";
+      }
+      $i++;
     }
-    $tab[$i]["text"]=$v->name;
-    $tab[$i]["id"]=$v->id;
-    if ($appl_id == $v->id) {
-      $appl_sel=$v;
-      $tab[$i]["selected"]="selected";
-    } else {
-      $tab[$i]["selected"]="";
-    }
-    $i++;
   }
 
   $action->lay->SetBlockData("SELAPPLI",$tab);
@@ -129,6 +134,7 @@ function actionlist(&$action) {
   $query = new QueryGen("","Action",$action);
   
   $query->AddQuery("id_application=$appl_id");
+  $query->slice=20;
   $query->order_by = "name";
   
   $query->table->headsortfields = array ( "name" => "name");

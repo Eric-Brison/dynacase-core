@@ -1,54 +1,27 @@
 <?php
-// $Id: head.php,v 1.6 2002/02/15 13:53:23 eric Exp $
-// $Log: head.php,v $
-// Revision 1.6  2002/02/15 13:53:23  eric
-// correction pour titre appli avec des '
+// ---------------------------------------------------------------
+// $Id: head.php,v 1.7 2002/03/21 17:52:38 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
+// ---------------------------------------------------------------
+//  O   Anakeen - 2001
+// O*O  Anakeen development team
+//  O   dev@anakeen.com
+// ---------------------------------------------------------------
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or (at
+//  your option) any later version.
 //
-// Revision 1.5  2002/01/30 15:00:57  eric
-// correction problème de '
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+// for more details.
 //
-// Revision 1.4  2002/01/29 10:26:02  eric
-// chg nom de fonction cause conflit
-//
-// Revision 1.3  2002/01/28 16:56:49  eric
-// animation bouton bleu & suppression appel username
-//
-// Revision 1.2  2002/01/25 14:31:37  eric
-// gestion de cache objet - variable de session
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.10  2002/01/04 12:51:45  eric
-// correction mineure
-//
-// Revision 1.9  2001/10/17 09:09:26  eric
-// mise en place de i18n via gettext
-//
-// Revision 1.8  2001/08/30 14:58:36  eric
-// changement mise en forme de la frame header
-//
-// Revision 1.7  2001/08/20 16:45:12  eric
-// changement des controles d'accessibilites
-//
-// Revision 1.6  2001/07/26 09:43:09  eric
-// visibilité des icones ssi action root possible
-//
-// Revision 1.5  2001/06/13 13:51:03  eric
-// multi frame support
-//
-// Revision 1.4  2000/10/23 17:09:17  yannick
-// Conneries
-//
-// Revision 1.3  2000/10/23 14:11:22  yannick
-// Gestion des droits
-//
-// Revision 1.2  2000/10/11 16:31:33  yannick
-// Nouvelle gestion de l'init
-//
-// Revision 1.1.1.1  2000/10/05 17:29:10  yannick
-// Importation
-//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+// ---------------------------------------------------------------
+
 
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -68,6 +41,7 @@ function head(&$action) {
   if ($query->nb > 0) {
     $i=0;
     while(list($k,$appli)=each($list)) {
+      if (! $action->AppInstalled($appli["name"])) continue;
       if ($appli["access_free"] == "N") {
         $action->log->debug("Access not free for :".$appli["name"]);
         if (isset($action->user)) {

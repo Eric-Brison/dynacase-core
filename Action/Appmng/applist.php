@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.3 2002/02/04 14:44:36 eric Exp $
+// $Id: applist.php,v 1.4 2002/03/21 17:52:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.4  2002/03/21 17:52:37  eric
+// prise en compte application répartie sur plusieurs machines
+//
 // Revision 1.3  2002/02/04 14:44:36  eric
 // https
 //
@@ -112,17 +115,21 @@ function applist(&$action) {
 
   $query = new QueryGen("","Application",$action);
   $query-> AddQuery("(objectclass != 'Y' ) OR ( objectclass isnull)");
-  
+  $query->slice=20;
   
    $query->Query();
   
   // Affect the modif icons
 
   while(list($k,$v) = each($query->table->array)) {
-    $query->table->array[$k]["update"] = "";
-    $query->table->array[$k]["edit"] = "";
-    $query->table->array[$k]["delete"] = "";
-    $query->table->array[$k]["description"] = $action->text($query->table->array[$k]["description"]);
+    if ($action->AppInstalled($v["name"])) {
+      $query->table->array[$k]["update"] = "";
+      $query->table->array[$k]["edit"] = "";
+      $query->table->array[$k]["delete"] = "";
+      $query->table->array[$k]["description"] = $action->text($query->table->array[$k]["description"]);
+    } else {
+      unset($query->table->array[$k]);
+    }
   }
     
 

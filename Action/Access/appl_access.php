@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: appl_access.php,v 1.2 2002/03/08 14:37:36 eric Exp $
+// $Id: appl_access.php,v 1.3 2002/03/21 17:52:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/appl_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -78,25 +78,28 @@ function appl_access(&$action, $oid=0) {
   if (is_array($applist)) {
     reset($applist);
     while(list($k,$v)=each($applist)) {
-      $query = new QueryDb("","Acl");
-      $query->basic_elem->sup_where=array("id_application={$v->id}");
-      $acl_list = $query->Query("","","TABLE");
-      if ($query->nb == 0) continue;
-      if ($appl_id == 0) {
-	$appl_id=$v->id;
-	$action->Register($varreg,$appl_id);
+      
+      if (($v->objectclass=="Y") || ($action->AppInstalled($v->name))) {
+	$query = new QueryDb("","Acl");
+	$query->basic_elem->sup_where=array("id_application={$v->id}");
+	$acl_list = $query->Query("","","TABLE");
+	if ($query->nb == 0) continue;
+	if ($appl_id == 0) {
+	  $appl_id=$v->id;
+	  $action->Register($varreg,$appl_id);
+	}
+	if ($oid != 0) $tab[$i]["text"]=_($v->short_name);
+	else $tab[$i]["text"]=$v->name;
+	$tab[$i]["id"]=$v->id;
+	if ($appl_id == $v->id) {
+	  $appl_sel=$v;
+	  $appl_sel->acl=$acl_list;
+	  $tab[$i]["selected"]="selected";
+	} else {
+	  $tab[$i]["selected"]="";
+	}
+	$i++;
       }
-      if ($oid != 0) $tab[$i]["text"]=_($v->short_name);
-      else $tab[$i]["text"]=$v->name;
-      $tab[$i]["id"]=$v->id;
-      if ($appl_id == $v->id) {
-	$appl_sel=$v;
-	$appl_sel->acl=$acl_list;
-	$tab[$i]["selected"]="selected";
-      } else {
-	$tab[$i]["selected"]="";
-      }
-      $i++;
     }
     
     $action->lay->SetBlockData("SELUSER",$tab);
@@ -121,6 +124,7 @@ function appl_access(&$action, $oid=0) {
 
     // 1) Get all users except admin
     $query->AddQuery("id != 1");
+    $query->slice=20;
     $query->Query();
 
 
