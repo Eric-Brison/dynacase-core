@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.2 2002/01/08 17:52:03 eric Exp $
+// $Id: wsh.php,v 1.3 2002/01/09 16:22:47 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -41,6 +41,23 @@ global $CORE_LOGLEVEL;
 
 
 
+// get param
+global $HTTP_GET_VARS;
+global $HTTP_CONNECTION;
+
+if ($HTTP_CONNECTION != "")     {
+  print "<BR><H1>:~(</H1>";
+  exit;
+}
+
+while (list($k, $v) = each($argv)) {
+  
+  if (ereg("--(.+)=(.+)", $v , $reg)) {
+    $HTTP_GET_VARS[$reg[1]]=$reg[2];
+  }
+}
+
+
 
 $core = new Application();
 $core->Set("CORE",$CoreNull);
@@ -54,30 +71,38 @@ $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 $puburl = $core->GetParam("CORE_PUBURL","");
 
 
-
+if (isset($HTTP_GET_VARS["app"])) {
   $appl = new Application();
-  $appl->Set($argv[1],$core);
+  $appl->Set($HTTP_GET_VARS["app"],
+	     $core);
+} else {
+  $appl = $core;
+}
 
-
-  $action = new Action();
-  $action->Set($argv[2],$appl);
+$action = new Action();
+if (isset($HTTP_GET_VARS["action"])) {
+  $action->Set($HTTP_GET_VARS["action"],
+	       $appl);
+} else {
+  $action->Set("",$appl);
+}
 
 
 
 
 
   // init for gettext
-  //  setlocale(LC_MESSAGES,$this->Getparam("CORE_LANG"));
   
-  putenv ("LC_MESSAGES=".$action->Getparam("CORE_LANG"));
-  putenv ("LANG=".$action->Getparam("CORE_LANG"));
   bindtextdomain ("what", "/home/httpd/what/locale");
   textdomain ("what");
   
-  $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
+  
 
+if (isset($HTTP_GET_VARS["api"])) {
+  include "API/".$HTTP_GET_VARS["api"].".php";
+} else {
   echo ($action->execute ());
-
+}
 
 
 ?>
