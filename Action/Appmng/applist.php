@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: applist.php,v 1.2 2002/01/30 13:44:01 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.2  2002/01/30 13:44:01  eric
+// i18n
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -115,6 +118,7 @@ function applist(&$action) {
     $query->table->array[$k]["update"] = "";
     $query->table->array[$k]["edit"] = "";
     $query->table->array[$k]["delete"] = "";
+    $query->table->array[$k]["description"] = $action->text($query->table->array[$k]["description"]);
   }
     
 
