@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Common.php,v 1.2 2002/09/18 11:08:23 eric Exp $
+// $Id: Lib.Common.php,v 1.3 2002/09/30 09:06:50 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Common.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,7 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-$LIB_COMMON = '$Id: Lib.Common.php,v 1.2 2002/09/18 11:08:23 eric Exp $';
+$LIB_COMMON = '$Id: Lib.Common.php,v 1.3 2002/09/30 09:06:50 eric Exp $';
 
 // library of utilies functions
 
@@ -49,4 +49,10 @@ function getMailAddr($userid) {
     return $from;
 }
 
+
+function GetParam($name, $def="") {
+  global $action;
+
+  return $action->getParam($name,$def);
+}
 ?>
