@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.10 2002/05/23 16:14:40 eric Exp $
+// $Id: index.php,v 1.11 2002/05/27 14:51:30 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -60,13 +60,15 @@ if (!isset($HTTP_GET_VARS["action"])) $HTTP_GET_VARS["action"]="";
 $standalone = GetHttpVars("sole");
 
 $sess_num=GetHttpVars("session");
+$session=new Session();
+$session->Set($sess_num);
+
 
 $core = new Application();
-$core->Set("CORE",$CoreNull);
+$core->Set("CORE",$CoreNull,$session);
 
+//$core->SetSession($session);
 
-$session=new Session($core->GetParam("CORE_SESSION_DB"));
-$session->Set($sess_num);
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
@@ -92,7 +94,6 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
-$core->SetSession($session);
 
 
 $core->SetVolatileParam("CORE_ROOTURL", "index.php?session={$session->id}&sole=R&");

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: action_mod.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: action_mod.php,v 1.2 2002/05/27 14:51:30 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/action_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: action_mod.php,v $
+// Revision 1.2  2002/05/27 14:51:30  eric
+// ajout gestion des styles
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -39,6 +42,8 @@ function action_mod(&$action) {
   // Get all the params      
   $id=GetHttpVars("id");
   $appl_id=$action->Read("action_appl_id");
+
+
 
   if ($id == "") {
     $ActionCour = new Action($action->GetParam("CORE_USERDB"));

@@ -1,5 +1,5 @@
 <!-- 
-  $Id: param_ulist.xml,v 1.2 2002/05/24 09:23:07 eric Exp $
+  $Id: param_ulist.xml,v 1.3 2002/05/27 14:51:30 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_ulist.xml,v $
 -->
 
@@ -10,7 +10,11 @@ TD.gparam, TD.aparam{
 TD.uparam {   
    font-weight:bold;
 }
-IMG.gparam, IMG.aparam {   
+TD.sparam {   
+   font-weight:medium; 
+   font-style:italic;
+}
+IMG.gparam, IMG.aparam, IMG.sparam {   
    display:none;
 }
 </style>
@@ -45,5 +49,5 @@ IMG.gparam, IMG.aparam {
 </table>
 
 
-[ZONE APPMNG:PARAM_LIST?puser=all]
+[ZONE APPMNG:PARAM_LIST?pview=alluser]
 

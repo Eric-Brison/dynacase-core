@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.5 2002/04/15 14:19:37 eric Exp $
+// $Id: wsh.php,v 1.6 2002/05/27 14:51:30 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -115,6 +115,7 @@ bindtextdomain ("what", "/home/httpd/what/locale");
 textdomain ("what");
   
   
+
 
 if (isset($HTTP_GET_VARS["api"])) {
   include "API/".$HTTP_GET_VARS["api"].".php";

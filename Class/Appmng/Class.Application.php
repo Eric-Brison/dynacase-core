@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.11 2002/05/23 16:14:40 eric Exp $
+//  $Id: Class.Application.php,v 1.12 2002/05/27 14:51:30 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.11 2002/05/23 16:14:40 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.12 2002/05/27 14:51:30 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -87,7 +87,7 @@ var $logmsg=array();
 var $cssref=array();
 var $csscode=array();
 
-function Set($name,&$parent)
+function Set($name,&$parent, $session="")
 {
 
 
@@ -134,15 +134,19 @@ function Set($name,&$parent)
     }
   }
 
-  $this->param=new Param();
-  $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID);
-
   if ($this->available == "N") 
    Redirect($this,"CORE","",$action->GetParam("CORE_ROOTURL"));
 
-
+  if ($session != "") $this->SetSession($session);
 
   $this->InitStyle( );
+
+  $this->param=new Param();
+  $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID,$this->style->name);
+
+
+
+
 
 }
 
@@ -161,7 +165,7 @@ function SetSession(&$session) {
     }
   }
   
-  $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID);
+
 }
 
 
@@ -328,9 +332,16 @@ function HasPermission($acl_name)
 
 function InitStyle()
 {
-  $this->style = new Style($this->dbaccess);
-  $style = $this->param->Get("STYLE","");
-  $this->style->Set($style,$this);
+  if (isset($this->user))
+    $pstyle = new Param($this->dbaccess,array("STYLE",PARAM_USER.$this->user->id,"1"));
+  else 
+    $pstyle = new Param($this->dbaccess,array("STYLE",PARAM_USER.ANONYMOUS_ID,"1"));
+  if (! $pstyle->isAffected()) $pstyle = new Param($this->dbaccess,array("STYLE",PARAM_APP,"1"));
+
+  $style = $pstyle->val;
+  $this->style=new Style($this->dbaccess,$style);
+
+  $this->style->Set($this);
 }
 
 function InitText()
@@ -367,37 +378,36 @@ function GetRootApp() {
 
 function GetImageFile($img) {
   $root = $this->Getparam("CORE_PUBDIR");
-  $app = "";
-  if (file_exists($root."/".$this->name."/Images/".$img)) {
-    return $root."/".$this->name."/Images/".$img;
-  } else { // perhaps generic application
-    if (file_exists($root."/".$this->childof."/Images/".$img)) {
-      return $root."/".$this->name."/Images/".$img;
-    } 
-  }
-  return false;
+  
+  return $root."/".$this->GetImageUrl($img);
 }
+
 function GetImageUrl($img) {
+
+  // try style first 
+  $url = $this->style->GetImageUrl($img,"");
+  if ($url != "") return $url;
+
+  // try application 
   $root = $this->Getparam("CORE_PUBDIR");
-  $app = "";
+
   if (file_exists($root."/".$this->name."/Images/".$img)) {
-    $app = $this->name;
+    return ($this->name."/Images/".$img);
   } else { // perhaps generic application
     if (file_exists($root."/".$this->childof."/Images/".$img)) {
-      $app = $this->childof;
+      return ($this->childof."/Images/".$img);
     } 
   }
-  if ($app != "") {
-     $url = $this->style->GetImageUrl($img,
-            $app."/Images/".$img);
-     return($url);
-  }
+  
+  // try in parent 
   if ($this->parent != "") return($this->parent->getImageUrl($img));
-  return  $this->style->GetImageUrl($img,
-                     "CORE/Images/noimage.png");
+  return ("CORE/Images/noimage.png");
 }
 
 function GetLayoutFile($layname) {
+
+  $file= $this->style->GetLayoutFile($layname,"");
+  if ($file != "") return $file;
 
   $nav=$this->session->Read("navigator");
   $ver=doubleval($this->session->Read("navversion"));
@@ -426,11 +436,13 @@ function GetLayoutFile($layname) {
 
   
 
-  $file= $this->style->GetLayoutFile($layname,$file);
+  
   if (file_exists($file)) {
-     ###$file= $this->style->GetLayoutFile($layname,$file);
      return($file);
-  } else {
+  } else { 
+    // perhaps generic application
+      $file = $this->Getparam("CORE_PUBDIR")."/".$this->childof."/Layout/$layname";
+    if (file_exists($file))  return ($file);    
   }
   if ($this->parent != "") return($this->parent->GetLayoutFile($layname));
   return ("");
@@ -473,8 +485,10 @@ function SetParamDef($key,$val)
     if (isset($val["user"]) && $val["user"]=="Y") $pdef->isuser="Y";
     if (isset($val["style"]) && $val["style"]=="Y") $pdef->isstyle="Y";
     if (isset($val["descr"])) $pdef->descr=$val["descr"];    
-  }
     if ($pdef->Add() != "") $pdef->Modify();
+  } else {
+    $pdef->Add();
+  }
 }
 function SetVolatileParam($key,$val)
 {
@@ -500,10 +514,11 @@ function InitAllParam($tparam,$update=false) {
     while (list($k,$v) = each ($tparam)) {
       $this->SetParamDef($k,$v); // update definition
 	if ($update) { 
+	  // delete paramters that cannot be change after initialisation to be change now
+	  $this->param->DelStatic($this->id);
 	  // don't modify old parameters
-
-	    if (($this->param->Get($k) == "") || 
-		(is_array($v) && isset($v["kind"]) && (	$v["kind"] == "static")))
+	    
+	    if ($this->param->Get($k) == "") 
 	      $this->SetParam($k,$v);// set only new parameters or static variable like VERSION
 	} else {
 	  $this->SetParam($k,$v);
@@ -519,9 +534,9 @@ function GetAllParam()
     $list2 = $this->parent->GetAllParam();
     $list = array_merge($this->param->buffer,$list2);
   }
-  $list3 = array_merge($list,$this->style->GetAllParam());
 
-  return($list3);
+
+  return($list);
 }
   
 function InitApp($name,$update=FALSE) {

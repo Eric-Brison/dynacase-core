@@ -28,13 +28,6 @@ $action_desc = array (
    "toc"                =>"Y",
    "acl"                =>"ADMIN"
   ) ,
-  array( 
-   "name"		=>"STYLESLIST",
-   "toc"                =>"Y",
-   "short_name"		=>N_("styles"),
-   "acl"		=>"ADMIN",
-   "root"		=>"Y"
-  ) ,
   array(
    "name"               =>"PARAM_ALIST",
    "short_name"         =>N_("application parameters"),
@@ -77,10 +70,6 @@ $action_desc = array (
   array(
    "acl"		=>"ADMIN",
    "name"		=>"APP_MOD"
-  ),
-  array(
-   "acl"		=>"ADMIN",
-   "name"		=>"STYLES_UPDATE"
   ),
   array(
    "acl"		=>"ADMIN",
@@ -131,35 +120,7 @@ $action_desc = array (
    "name"               =>"PARAM_UMOD",
    "function"           =>"param_umod",
    "script"		=>"param_mod.php"
-  ),
-  array(
-   "acl"                =>"ADMIN",
-   "name"               =>"STYLES_EDIT"
-  ),
-  array(
-   "acl"                =>"ADMIN",
-   "name"               =>"STYLES_DELETE"
-  ),
-  array(
-   "acl"                =>"ADMIN",
-   "name"               =>"STYLES_MOD"
-  ),
-  array(
-   "acl"                =>"ADMIN",
-   "name"               =>"STYLE_EDIT"
-  ),
-  array(
-   "acl"                =>"ADMIN",
-   "name"               =>"STYLE_DELETE"
-  ),
-  array(
-   "acl"                =>"ADMIN",
-   "name"               =>"STYLE_MOD"
-  ),
-  array(
-   "name"               =>"PARAM_STYLE_CHG",
-   "acl"                =>"ADMIN"
-  ),
+  ), 
   array(
    "name"               =>"ACTION_APPL_CHG",
    "acl"                =>"ADMIN"

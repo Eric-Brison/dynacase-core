@@ -18,104 +18,41 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Style.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.Style.php,v 1.2 2002/05/27 14:51:30 eric Exp $
 //
-$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.2 2002/05/27 14:51:30 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Param.php');
-include_once('Class.Lang.php');
-include_once('Lib.Http.php');
 
 Class Style extends DbObj
 {
-var $fields = array ( "id","name","description");
+var $fields = array ( "name","description");
 
-var $id_fields = array ( "id");
+var $id_fields = array ( "name");
 
 var $sqlcreate = '
-create table style ( 	id 	int not null,
-     		primary key (id),
-			name 	    varchar(20) not null,
+create table style ( 	name 	    varchar(20) not null,
+     		primary key (name),
 			description varchar(60) );
-create index style_idx1 on style(id);
-create index style_idx2 on style(name);
 create sequence SEQ_ID_STYLE start 10000;
 ';
 
 var $dbtable = "style";
 
-var $def = array ( "criteria" => "",
-                   "order_by" => "name"
-                 );
-
-var $criterias = array (
-             "name" => array ("libelle" => "Nom",
-                             "type" => "TXT")
-                               );
 
 
 
 var $param;
 
 
-function Set($name,&$parent)
-{
-  if ($name != "") {
-    $query=new QueryDb($this->dbaccess,"Style");
-    $query->order_by = "";
-    $query->criteria = "name";
-    $query->operator = "=";
-    $query->string = "'".$name."'";
-    $list = $query->Query();
-    if ($query->nb != 0) {
-       $this=$list[0];
-       $this->log->debug("Set style to $name");
-    } else {
-       // Init the database with the style file if it exists
-       $this->InitStyle($name);
-    }
-    $this->InitParam();
-  }
-  $this->parent=$parent;
+function Set(&$parent)
+{  
+  $this->parent=&$parent;
 }
 
-function Complete() {
-}
 
-function PreInsert( )
-{
-  if ($this->Exists( $this->name)) return "Ce nom de style existe deja...";  
-  $res = $this->exec_query("select nextval ('seq_id_style')");
-  $arr = $this->fetch_array (0);
-  $this->id = $arr[0];
-}
 
-function PreUpdate()
-{
-  if ($this->dbid == -1) return FALSE;
-  if ($this->Exists( $this->name,$this->id)) return "Ce Style existe deja..."; 
-}
-
-function Exists($name,$id='')
-{
-  $query=new QueryDb($this->dbaccess,"application");
-  $query->order_by="";
-  $query->criteria="";
-
-  if ($id='') {
-    $query->basic_elem->sup_where = array ("name='$name'","id!=$id");
-
-  } else {
-    $query->criteria="name";
-    $query->operator="=";
-    $query->string="'".$name."'";
-  }
-
-  $query->Query();
-
-  return ($query->nb > 0);
-}
 
 
 function InitParam()
@@ -127,60 +64,23 @@ function InitParam()
 function GetImageUrl($img,$default) {
   $root = $this->parent->Getparam("CORE_PUBDIR");
 
+
   if (file_exists($root."/STYLE/".$this->name."/Images/".$img)) {
-    return($this->parent->Getparam("CORE_PUBURL")."/STYLE/".$this->name."/Images/".$img); 
+    return("STYLE/".$this->name."/Images/".$img); 
   } else {
     return($default);
   }
 }
 
-function GetLayoutFile($layname,$default) {
+function GetLayoutFile($layname,$default="") {
   $root = $this->parent->Getparam("CORE_PUBDIR");
   $file = $root."/STYLE/".$this->name."/Layout/".$layname;
-  if (file_exists($file)) {
-     return($file);
-  } else {
-    if (file_exists($default)) {
-      return($default);
-    } else {
-      // perhaps generic application
-      $genlayfile = $root."/".$this->parent->childof."/Layout/".$layname;
-      //print ($genlayfile)."<BR>";
-      if (file_exists($genlayfile))
-	  return ($genlayfile);
-    }
-    
-  }
+  if (file_exists($file))  return($file);
+  
   return($default);
 }
 
-function SetParam($key,$val)
-{
-  $this->param->Set($key,$val);
-}
 
-function SetVolatileParam($key,$val)
-{
-  $this->param->SetVolatile($key,$val);
-}
-
-function GetParam($key,$default="")
-{ 
-  if (isset($this->param)) {
-    return($this->param->Get($key,$default));
-  } else {
-    return($default);
-  }
-}
-
-function GetAllParam()
-{
-  if (isset($this->param)) {
-    return($this->param->buffer);
-  } else {
-    return(array());
-  }
-}
   
 function InitStyle($id) {
 
@@ -228,6 +128,8 @@ function DeleteStyle() {
   // delete Style
   $this->Delete();
 }
+
+
 
 
 }

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_list.php,v 1.2 2002/05/24 09:23:07 eric Exp $
+// $Id: param_list.php,v 1.3 2002/05/27 14:51:30 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_list.php,v $
+// Revision 1.3  2002/05/27 14:51:30  eric
+// ajout gestion des styles
+//
 // Revision 1.2  2002/05/24 09:23:07  eric
 // changement structure table paramv
 //
@@ -53,9 +56,10 @@ function param_list(&$action) {
   // -----------------------------------
 
     // Get Param
-      $puser=GetHttpVars("puser");  // set to "yes" if display user parameters
+
   $userid=GetHttpVars("userid");
-  $puser=(GetHttpVars("puser")); // set to "all" or "single" if user parameters
+  $styleid=GetHttpVars("styleid");
+  $pview=GetHttpVars("pview"); // set to "all" or "single" if user parameters
 
 
     // Set the globals elements
@@ -77,25 +81,36 @@ function param_list(&$action) {
   $tincparam=array();
   $appinc=array();
   
-  if (($puser == "")  || ($userid>0)) {
-    $query = new QueryDb("","Param");
 
-    
-    if ($userid == "")  {
-      
+
+
+    switch ($pview) {
+    case "allapp":
       $tparam = $action->parent->param->GetApps();
-      $vsection="appid"; // variable use to determine new section
-
-    }  else {
-      $tparam = $action->parent->param->GetUser($userid);
+      break;
+    case "alluser":
+      if ($userid == "") $tparam = array();
+      else $tparam = $action->parent->param->GetUser($userid);
       uasort($tparam,"cmpappid");
-      $vsection="appid";
+      break;
+    case "singleuser":
+      if ($userid == "") $tparam = array();
+      else $tparam = $action->parent->param->GetUser($userid,$action->getParam("STYLE"));
+      uasort($tparam,"cmpappid");
+      break;
+    case "allstyle":
+      if ($styleid == "") $tparam = array();
+      else $tparam = $action->parent->param->GetStyle($styleid);
+      break;
     }
     
     
     
+    
+      $vsection="appid";
+    
     $precApp=0;
-
+  $tincparam=array();
     while (list($k,$v)= each ($tparam)) {
       if (isset($v[$vsection])) {
 	if ($v[$vsection] != $precApp) {
@@ -113,16 +128,21 @@ function param_list(&$action) {
 	// to show difference between global, user and application parameters
 	  if ($v["type"][0] == PARAM_APP) $tincparam[$k]["classtype"]="aparam";
 	  else if ($v["type"][0] == PARAM_USER) $tincparam[$k]["classtype"]="uparam";
+	  else if ($v["type"][0] == PARAM_STYLE) $tincparam[$k]["classtype"]="sparam";
 	  else $tincparam[$k]["classtype"]="gparam";
 	$tincparam[$k]["sval"]=addslashes($v["val"]);
 	
 	// force type user if user mode
 	  if ($userid > 0) $tincparam[$k]["type"]=PARAM_USER.$userid;
+	else if ($styleid != "") $tincparam[$k]["type"]=PARAM_STYLE.$styleid;
+
+	if ($tincparam[$k]["descr"]=="") $tincparam[$k]["descr"]=$tincparam[$k]["name"];
+	else $tincparam[$k]["descr"]=_($tincparam[$k]["descr"]);
       }
     }
     
     $action->lay->SetBlockData("PARAM$precApp",$tincparam);
-    if ($puser == "single") { // chg action because of acl USER/ADMIN
+    if ($pview == "singleuser") { // chg action because of acl USER/ADMIN
       $action->lay->Set("ACTIONDEL","PARAM_UDELETE");     
       $action->lay->Set("ACTIONMOD","PARAM_UMOD");     
     } else {
@@ -130,7 +150,7 @@ function param_list(&$action) {
       $action->lay->Set("ACTIONMOD","PARAM_MOD");     
     }
 
-  }
+  
 
   uasort($appinc,"cmpappname");
   $action->lay->SetBlockData("APPLI",$appinc);
