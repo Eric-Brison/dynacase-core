@@ -6,7 +6,7 @@
   function getFrameWidth() {
       winW = window.innerWidth;
       if (! winW)	   
-            winW = document.body.offsetWidth;
+            winW = document.body.clientWidth;
 
       return (winW);
   }
@@ -14,7 +14,7 @@
   function getFrameHeight() {
       winH= window.innerHeight;
       if (! winH)	
-           winH = document.body.offsetHeight;
+           winH = document.body.clientHeight;
       return (winH);
   }
  
