@@ -6,7 +6,8 @@
 
 
   <table>
-  
+
+[BLOCK FIRSTNAME] 
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:firstname] : </span></td>
     <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
@@ -14,6 +15,10 @@
     </span></td>
     
   </tr>
+[ENDBLOCK FIRSTNAME]
+[BLOCK HIDDENFIRSTNAME]
+  <input type="hidden"  name="firstname" value="">
+[ENDBLOCK HIDDENFIRSTNAME]
 
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:lastname] : </span></td>

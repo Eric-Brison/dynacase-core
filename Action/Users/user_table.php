@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.2 2002/07/29 11:15:18 marc Exp $
+// $Id: user_table.php,v 1.3 2003/04/14 18:47:10 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: user_table.php,v $
+// Revision 1.3  2003/04/14 18:47:10  marc
+// Groupe : suppression du prénom
+//
 // Revision 1.2  2002/07/29 11:15:18  marc
 // Release 0.1.1, see ChangeLog
 //
@@ -197,9 +200,13 @@ function user_table(&$action, $group=false) {
     $query->table->array[$k]["paction"] = $paction;
     $query->table->array[$k]["group"] = $isgroup;
 
-    $query->table->array[$k]["fullname"] = 
-      ucfirst((isset($query->table->array[$k]["firstname"])?$query->table->array[$k]["firstname"]:"(?)"))." "
-      .ucfirst((isset($query->table->array[$k]["lastname"])?$query->table->array[$k]["lastname"]:"(?)"));
+    if (!$group) {
+      $query->table->array[$k]["fullname"] = 
+        ucfirst((isset($query->table->array[$k]["firstname"])?$query->table->array[$k]["firstname"]:"(?)"))." "
+        .ucfirst((isset($query->table->array[$k]["lastname"])?$query->table->array[$k]["lastname"]:"(?)"));
+    } else {
+      $query->table->array[$k]["fullname"] = ucfirst(isset($query->table->array[$k]["lastname"])?$query->table->array[$k]["lastname"]:"(?)");
+    }
     $query->table->array[$k]["edit"] = str_replace("[id]",$v["id"],$jsscript);
     if (($query->table->array[$k]["id"] != 1) &&
         ($query->table->array[$k]["lastname"] != "Postmaster") &&

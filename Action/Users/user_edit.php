@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.4 2002/07/29 11:15:18 marc Exp $
+// $Id: user_edit.php,v 1.5 2003/04/14 18:47:10 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -58,7 +58,13 @@ function user_edit(&$action) {
   if (!$action->HasPermission("DOMAIN_MASTER")) {
     $id=$action->user->id;
   }
+  $tfirstname =array();
+  $tfirstname[0]["firstname"]="";
   if ($id == "") {
+
+    if ($group) $action->lay->SetBlockData("HIDDENFIRSTNAME", $tfirstname );
+    else $action->lay->SetBlockData("FIRSTNAME", $tfirstname );
+
     $action->lay->Set("firstname","");
     $action->lay->Set("lastname","");
     
@@ -91,7 +97,11 @@ function user_edit(&$action) {
   } else {
     $user = new User($action->GetParam("CORE_USERDB"),$id);
     $action->lay->Set("id",$id);
-    $action->lay->Set("firstname",$user->firstname);
+    if ($group) $action->lay->SetBlockData("HIDDENFIRSTNAME", $tfirstname );
+    else {
+      $tfirstname[0]["firstname"] = $user->firstname;
+      $action->lay->SetBlockData("FIRSTNAME", $tfirstname );
+    }
     $action->lay->Set("lastname",$user->lastname);
 
     if ($group) {
