@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.8 2002/02/04 14:44:36 eric Exp $
+// $Id: index.php,v 1.9 2002/02/14 16:09:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -117,7 +117,7 @@ if (($standalone == "") || ($standalone == "N")) {
       global $REQUEST_URI;   
 
       // redirect to go to ssl http
-      $sslurl = "https://$SERVER_NAME/$REQUEST_URI";
+      $sslurl = "https://${SERVER_NAME}${REQUEST_URI}";
       Header("Location: $sslurl");
       exit;
     }     
@@ -128,7 +128,7 @@ if (($standalone == "") || ($standalone == "N")) {
       global $REQUEST_URI;   
 
       // redirect to  suppress ssl http
-      $puburl = "http://$SERVER_NAME/$REQUEST_URI";
+      $puburl = "http://${SERVER_NAME}${REQUEST_URI}";
 
       Header("Location: $puburl");
       exit;
