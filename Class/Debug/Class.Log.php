@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Log.php,v 1.7 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.Log.php,v 1.8 2004/03/17 17:44:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,7 +30,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.7 2003/08/18 15:46:42 eric Exp $
+// $Id: Class.Log.php,v 1.8 2004/03/17 17:44:44 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -148,9 +148,8 @@ function wlog($sta, $str, $args=NULL) {
 	$pri = LOG_NOTICE;
       }
       if ($HTTP_CONNECTION == "") {
-
-	
-	print "LOG::($sta)::".$str."\n";
+	$stderr = fopen('php://stderr', 'w');
+	fwrite($stderr, "LOG::($sta)::".$str."\n");
       } else {
 	define_syslog_variables();    
 	openlog("{$appf}", 0, LOG_LOCAL6);
