@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.12 2004/01/14 17:08:49 eric Exp $
+ * @version $Id: Class.Session.php,v 1.13 2004/01/28 08:14:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.12 2004/01/14 17:08:49 eric Exp $
+// $Id: Class.Session.php,v 1.13 2004/01/28 08:14:49 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.12 2004/01/14 17:08:49 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.13 2004/01/28 08:14:49 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -141,7 +141,6 @@ var $sessiondb;
       if ($HTTP_CONNECTION != "") {
 	//	session_register($k);
 	$_SESSION[$k]=$v;
-	syslog(LOG_WARNING,( "session W)".session_id()." ==$k:".$_SESSION[$k]));
       }
 
       return true;
@@ -157,7 +156,6 @@ var $sessiondb;
     // global $_SESSION;
     //  if (session_is_registered ($k)) {
 
-	syslog(LOG_WARNING,( "session R)".session_id()." ==$k:".$_SESSION[$k]));
  
     if (isset($_SESSION[$k])) {
       //	global $$k;
