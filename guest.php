@@ -1,9 +1,9 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.11 2004/09/20 12:32:53 eric Exp $
+ * @version $Id: guest.php,v 1.12 2005/03/31 18:03:15 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -11,28 +11,7 @@
  /**
  */
 
-// ---------------------------------------------------------------
-// $Id: guest.php,v 1.11 2004/09/20 12:32:53 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2001
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
+
 
 #
 # This is the main body of App manager
@@ -106,8 +85,8 @@ if (ereg("(.*)/guest\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 }
 
 
-
-$core->SetVolatileParam("CORE_PUBURL", $puburl);
+$core->SetVolatileParam("CORE_PUBURL", "."); // relative links
+$core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
@@ -180,6 +159,7 @@ $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
   if ( $pos>0) {
     $action->Register("navigator","EXPLORER");
+    $core->SetVolatileParam("ISIE", true);
     if (ereg("MSIE ([0-9.]+).*",$nav,$reg)) {
       $action->Register("navversion",$reg[1]);      
     }
@@ -190,8 +170,11 @@ if ($action->Read("navigator","") == "") {
     }
   }
 }
+$core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
 // init for gettext
 setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
+setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
+setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
 //print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "/home/httpd/what/locale");
@@ -238,7 +221,7 @@ else
 	    // copy JS ref & code from action to header
 	    $head->jsref = $action->parent->GetJsRef();
 	    $head->jscode = $action->parent->GetJsCode();
-	    
+	    $head->set("TITLE", _($action->parent->short_name));	    
 	    echo($head->gen());
 	    // write HTML body
 	    echo ($body);
