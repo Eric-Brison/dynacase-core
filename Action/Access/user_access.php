@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.5 2002/08/26 13:04:58 eric Exp $
+// $Id: user_access.php,v 1.6 2003/03/24 13:44:21 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -83,7 +83,7 @@ function user_access(&$action, $group=false) {
   $user_sel=$list[0];
   while (list($k,$v) = each($list)) {
     if ($v->id == 1) continue;
-    if (($user_id == 0) && ($k == 0)) {
+    if ($user_id == 0)  {
        $user_id = $v->id;
        $action->Register($varreg,$user_id);  
     }
