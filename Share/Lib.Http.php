@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.3 2002/03/08 14:36:58 eric Exp $
+// $Id: Lib.Http.php,v 1.4 2002/03/14 09:37:14 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Lib.Http.php,v $
+// Revision 1.4  2002/03/14 09:37:14  eric
+// ajout fonction print_r2 pour debug
+//
 // Revision 1.3  2002/03/08 14:36:58  eric
 // add PrintAllHttpVars function for debug
 //
@@ -67,7 +70,7 @@
 //
 // ---------------------------------------------------------------
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.3 2002/03/08 14:36:58 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.4 2002/03/14 09:37:14 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -158,6 +161,10 @@ function PrintAllHttpVars() { // just to debug
   print "</PRE>";
 }
 
-
+function print_r2($z) {
+  print "<PRE>";
+  print_r($z);
+  print "</PRE>";
+}
 
 ?>
