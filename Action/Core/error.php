@@ -1,5 +1,5 @@
 <?php
-// $Id: error.php,v 1.7 2003/03/18 18:26:32 eric Exp $
+// $Id: error.php,v 1.8 2003/03/28 13:30:25 eric Exp $
 
 //
 //
@@ -13,7 +13,7 @@ function error(&$action) {
   $app->Set($action->Read("LAST_ACT","CORE"), $action->parent);
   $action->lay->set("error", nl2br($action->Read("FT_ERROR","Session Error")));
 
-  $action->lay->set("serror", addslashes($action->Read("FT_ERROR","Session Error")));
+  $action->lay->set("serror", str_replace("\n","\\n",addslashes($action->Read("FT_ERROR","Session Error"))));
 
   $action->lay->set("appname", _($app->description));
 

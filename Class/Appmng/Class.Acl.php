@@ -1,5 +1,5 @@
 <?
-// $Id: Class.Acl.php,v 1.2 2002/07/31 09:47:31 eric Exp $
+// $Id: Class.Acl.php,v 1.3 2003/03/28 13:30:25 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Acl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -20,55 +20,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Class.Acl.php,v $
-// Revision 1.2  2002/07/31 09:47:31  eric
-// modif recherche parametres
+
 //
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.13  2001/09/05 17:17:05  eric
-// changement user_default par group_default
-//
-// Revision 1.12  2001/08/29 13:28:09  eric
-// droit par défaut sur les groupes
-//
-// Revision 1.11  2001/08/28 10:08:57  eric
-// Gestion des groupes d'utilisateurs
-//
-// Revision 1.10  2001/08/21 08:50:25  eric
-// correction init user_default
-//
-// Revision 1.9  2001/08/20 16:41:38  eric
-// changement des controles d'accessibilites
-//
-// Revision 1.8  2001/07/26 10:20:16  eric
-// correction pour Acl inconnu
-//
-// Revision 1.7  2001/07/25 12:38:26  eric
-// ajout fonction pour update auto des droit par défaut
-//
-// Revision 1.6  2001/07/23 16:21:24  eric
-// droit par défaut
-//
-// Revision 1.5  2001/01/25 17:17:03  yannick
-// Gestion des updates applications
-//
-// Revision 1.4  2000/10/26 12:53:13  yannick
-// Menage du debug
-//
-// Revision 1.3  2000/10/23 15:32:04  yannick
-// gestion des grant level
-//
-// Revision 1.2  2000/10/23 14:13:45  yannick
-// Contrôle des accès
-//
-// Revision 1.1  2000/10/19 16:40:39  yannick
-// Gestion des permissions
-//
-// ---------------------------------------------------------------------------
-//
-$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.2 2002/07/31 09:47:31 eric Exp $';
+$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.3 2003/03/28 13:30:25 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -223,7 +177,7 @@ function Init($app,$app_acl,$update=FALSE)
       $permission->id_user=1;
       $permission->id_application=$app->id;
       $permission->id_acl=$acl->id;
-      if ($permission->Exists($permission->id_user,$app,$permission->id_acl)) {
+      if ($permission->Exists($permission->id_user,$app->id,$permission->id_acl)) {
 	$this->log->info("Modify admin permission : {$acl->name}");
 	$permission->Modify();
       } else {
@@ -286,7 +240,7 @@ function Init($app,$app_acl,$update=FALSE)
       $permission->id_user=$v->id;
       $permission->id_application=$app->id;
       $permission->id_acl=$aclid;
-      if (! $permission->Exists($permission->id_user,$app,$permission->id_acl)) {
+      if (! $permission->Exists($permission->id_user,$app->id,$permission->id_acl)) {
 	$permission->Add();
       }
     }
