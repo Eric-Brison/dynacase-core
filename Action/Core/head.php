@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.12 2002/12/18 15:03:17 eric Exp $
+// $Id: head.php,v 1.13 2002/12/23 09:07:34 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -77,6 +77,8 @@ function head(&$action) {
       else $appli["pubdir"]=$action->getParam("CORE_PUBURL");
 
       $appli["iconsrc"]=$action->GetImageUrl($appli["icon"]);
+      if ($appli["iconsrc"]=="CORE/Images/noimage.png") $appli["iconsrc"]=$appli["name"]."/Images/".$appli["icon"];
+
       $tab[$i++]=$appli;
     }
   }
