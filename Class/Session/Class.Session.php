@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.13 2004/01/28 08:14:49 eric Exp $
+ * @version $Id: Class.Session.php,v 1.14 2004/02/17 10:34:54 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.13 2004/01/28 08:14:49 eric Exp $
+// $Id: Class.Session.php,v 1.14 2004/02/17 10:34:54 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.13 2004/01/28 08:14:49 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.14 2004/02/17 10:34:54 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -73,6 +73,8 @@ var $sessiondb;
       $list = $query->Query();
       if ($query->nb != 0) {
         $this=$list[0];
+	session_id($id);
+	@session_start();
         
       } else {
 	global $PHP_AUTH_USER;
@@ -140,6 +142,7 @@ var $sessiondb;
       global $HTTP_CONNECTION; // use only cache with HTTP
       if ($HTTP_CONNECTION != "") {
 	//	session_register($k);
+
 	$_SESSION[$k]=$v;
       }
 
