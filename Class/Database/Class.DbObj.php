@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.23 2003/11/18 09:39:11 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.24 2004/01/13 09:05:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.23 2003/11/18 09:39:11 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.24 2004/01/13 09:05:38 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ include_once('Class.Log.php');
 include_once('Class.Cache.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.23 2003/11/18 09:39:11 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.24 2004/01/13 09:05:38 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -588,7 +588,11 @@ function exec_query($sql,$lvl=0)
       $this->log->warning("PostgreSQL Error : ".$this->msg_err);
     }
     
-     if ($SQLDEBUG) $SQLDELAY+=microtime_diff(microtime(),$sqlt1);// to test delay of request
+     if ($SQLDEBUG) {
+       global $TSQLDELAY;
+       $SQLDELAY+=microtime_diff(microtime(),$sqlt1);// to test delay of request
+       $TSQLDELAY[]="t=>".microtime_diff(microtime(),$sqlt1)."s=>$sql";
+     }
     return ($this->msg_err);
   }
 
