@@ -28,7 +28,7 @@ TOP_MODULES = index.php wsh.php  guest.php dbaccess.php apache.conf  whattext wc
 include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
-             ChangeLog  VERSION RELEASE \
+             ChangeLog  VERSION RELEASE WHAT.cron \
 	     whattext wcheck wstop wstart httpd.pam httpdwa.pam 
 
 
@@ -50,4 +50,10 @@ $(rootprefix)/etc/pam.d/httpd: $(rootprefix)/etc/pam.d
 $(rootprefix)/etc/pam.d/httpdwa: $(rootprefix)/etc/pam.d
 	cp httpdwa.pam $@
 
-publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa
+$(rootprefix)/etc/cron.daily:
+	mkdir -p $@
+
+$(rootprefix)/etc/cron.daily/WHAT.cron:WHAT.cron $(rootprefix)/etc/cron.daily
+	cp WHAT.cron $@
+
+publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron
