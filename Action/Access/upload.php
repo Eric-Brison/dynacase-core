@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: upload.php,v 1.8 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: upload.php,v 1.9 2004/03/04 13:45:59 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.8 2003/08/18 15:46:41 eric Exp $
+// $Id: upload.php,v 1.9 2004/03/04 13:45:59 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -97,7 +97,7 @@ function changeuser(&$action, $line, $verbose=false) {
     $use->lastname=  $col[3];
     $use->isgroup=   $col[4];
     if ($use->IsAffected()) {
-      $err= $use->Modify();
+      $err= $use->Modify(true);
       if ($err != "") print $err;
       
       if ($verbose) printf( _("user %s %s has been modified\n"),
@@ -105,7 +105,7 @@ function changeuser(&$action, $line, $verbose=false) {
     } else {
       $use->iddomain = $domain->iddomain;
       $use->login = $uname;
-      $err = $use->Add();
+      $err = $use->Add(true);
       if ($err != "") print $err;
       if ($verbose) printf( _("user %s %s has been added\n"),
 				 $use->firstname,$use->lastname);
@@ -121,8 +121,8 @@ function changeuser(&$action, $line, $verbose=false) {
         $uacc->iddomain    = $use->iddomain ;
         $uacc->iduser      = $use->id;
         $uacc->login       = $use->login;
-	if ($uacc->isAffected()) $uacc->Modify;
-	else $uacc->Add();
+	if ($uacc->isAffected()) $uacc->Modify(true);
+	else $uacc->Add(true);
       }
     }
 
@@ -130,7 +130,7 @@ function changeuser(&$action, $line, $verbose=false) {
     $groups = explode(";",$col[5]);
     
     $group = new Group($action->dbaccess, $use->id);
-    if ($group->isAffected()) $group->delete();
+    if ($group->isAffected()) $group->delete(true);
 
     while(list($kg,$gd)=each($groups)) {
       
@@ -146,7 +146,7 @@ function changeuser(&$action, $line, $verbose=false) {
       if ($gr->IsAffected()) {
 	$group->iduser = $use->id;
 	$group->idgroup = $gr->id;
-	$group->add();
+	$group->add(true);
 
       }
     }

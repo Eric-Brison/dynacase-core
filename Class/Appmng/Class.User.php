@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.26 2004/03/04 09:08:14 eric Exp $
+ * @version $Id: Class.User.php,v 1.27 2004/03/04 13:45:59 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.26 2004/03/04 09:08:14 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.27 2004/03/04 13:45:59 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -127,12 +127,7 @@ create sequence seq_id_users start 10";
       $this->isgroup = "N";
     }
 
-    //Add default group to user
-    $group=new group($this->dbaccess);
-    $group->iduser=$this->id;
-    //2 = default group
-    $group->idgroup=2;
-    $group->Add();        
+ 
 
     $this->login = strtolower($this->login);
 
@@ -157,6 +152,13 @@ create sequence seq_id_users start 10";
       // 	$app = new Application();
       // 	$app-> UpdateUserAcl($this->id);
       //       }
+    //Add default group to user
+    $group=new group($this->dbaccess);
+    $group->iduser=$this->id;
+    //2 = default group
+    $group->idgroup=2;
+    $group->Add();       
+
       $err=$this->FreedomWhatUser();  
        // double pass to compute dynamic profil on itself
       return $err;
