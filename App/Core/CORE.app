@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.2 2002/04/15 14:19:59 eric Exp $
+// $Id: CORE.app,v 1.3 2003/03/18 18:27:03 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -20,33 +20,7 @@
 // You should have received a copy of the GNU General Public License along
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
-// $Log: CORE.app,v $
-// Revision 1.2  2002/04/15 14:19:59  eric
-// ajout clear cache objet
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.15  2001/11/14 15:19:29  eric
-// change name action CORE -> LOGO
-//
-// Revision 1.14  2001/10/17 10:01:43  eric
-// mise en place de i18n via gettext
-//
-// Revision 1.13  2001/08/29 13:01:42  yannick
-// Ajout du tabindex multiframe
-//
-// Revision 1.12  2001/08/10 08:06:03  eric
-// ajout action ERROR
-//
-// Revision 1.11  2001/06/28 10:31:32  eric
-// multiframe support
-//
-// Revision 1.10  2001/06/13 13:24:03  eric
-// multi frame support
-//
-// ---------------------------------------------------------------
+// ------------------------------------------------------
 global $app_desc,$action_desc;
 
 $app_desc= array (
@@ -67,6 +41,9 @@ $action_desc = array (
   array(
    "name"               =>"MAIN",
    "layout"		=>"core.xml"
+  ),
+  array(
+   "name"               =>"GATE"
   ),
   array(
    "name"               =>"GENCSS",

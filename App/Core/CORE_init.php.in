@@ -11,8 +11,8 @@ $app_const = array (
 							"descr"=>N_("default style"),
 							"user"=>"Y"),
 		    "CORE_PUBDIR"		=>"@prefix@",
-		    "CORE_SESSION_DB"	        =>"host=@DBHOST@ user=@DBUSER@ port=@DBPORT@ dbname=@DBNAME@",
-		    "CORE_USERDB"		=>"host=@DBHOST@ user=@DBUSER@ port=@DBPORT@ dbname=@DBNAME@",
+		    "CORE_SESSION_DB"	        =>"user=@DBUSER@ dbname=@DBNAME@",
+		    "CORE_USERDB"		=>"user=@DBUSER@ dbname=@DBNAME@",
 
 		    "CORE_LANG"		        =>array("val"=>"@LANG@",
 							"descr"=>N_("language"),
