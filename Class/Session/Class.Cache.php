@@ -107,8 +107,10 @@ Class Cache {
       if ($this->cacheclass == "") $this->cacheclass = get_class($this);
       return $this->cacheclass;
   }
-  function ClearCache($reallyset = true) {
 
+  function ClearCache($reallyset = true) {
+    global $HTTP_CONNECTION; // use only cache with HTTP
+    if ($HTTP_CONNECTION == "")  return false;
 
     if ($this->isCacheble) {
       global $CacheObj;
@@ -185,6 +187,8 @@ Class Cache {
 
   // to remove obolete index
   function InitCache() {
+    global $HTTP_CONNECTION; // use only cache with HTTP
+    if ($HTTP_CONNECTION == "")  return false;
 
     session_register("AccessCacheObj");
     $accessobject = new QueryDb("","SessionCache");
