@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.2 2002/02/04 14:48:07 eric Exp $
+// $Id: Lib.Http.php,v 1.3 2002/03/08 14:36:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Lib.Http.php,v $
+// Revision 1.3  2002/03/08 14:36:58  eric
+// add PrintAllHttpVars function for debug
+//
 // Revision 1.2  2002/02/04 14:48:07  eric
 // utilisation de ZONE avec arguments
 //
@@ -64,7 +67,7 @@
 //
 // ---------------------------------------------------------------
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.2 2002/02/04 14:48:07 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.3 2002/03/08 14:36:58 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -142,8 +145,19 @@ function Http_DownloadFile($filename,$name,$mime_type='') {
      echo $contents;
    }
    fclose($fd);
-
-
-
    
 }
+
+function PrintAllHttpVars() { // just to debug
+
+  global $HTTP_GET_VARS,$HTTP_POST_VARS,$ZONE_ARGS;
+  print "<PRE>";
+  if (isset($ZONE_ARGS)) print_r($ZONE_ARGS);
+  if (isset($HTTP_GET_VARS)) print_r($HTTP_GET_VARS);
+  if (isset($HTTP_POST_VARS)) print_r($HTTP_POST_VARS);
+  print "</PRE>";
+}
+
+
+
+?>
