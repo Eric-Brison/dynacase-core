@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.3 2002/02/18 10:55:16 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.4 2002/02/22 14:01:21 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -189,8 +189,8 @@ function Select($id)
         } 
        
         $sql=$sql." ".$wherestr;
+
 	$resultat = $this->exec_query($sql);
-        
 
         if ($this->numrows() > 0) {
            $res = $this->fetch_array (0);
@@ -434,11 +434,11 @@ function exec_query($sql,$lvl=0)
 
    $action_needed= "none";
    if ($lvl==0) { // to avoid recursivity
-     if ((ereg("Relation '([a-zA-Z_]*)' does not exist",$this->msg_err) ||
+     if ((ereg("Relation ['\"]([a-zA-Z_]*)['\"] does not exist",$this->msg_err) ||
 	  ereg("class \"([a-zA-Z_]*)\" not found",$this->msg_err)) ) {
        $action_needed = "create";
      } else if ((ereg("No such attribute or function '([a-zA-Z_]*)'",$this->msg_err)) ||
-		(ereg("Attribute '([a-zA-Z_]*)' not found",$this->msg_err))) {
+		(ereg("Attribute ['\"]([a-zA-Z_]*)['\"] not found",$this->msg_err))) {
        $action_needed = "update";
      }
    }
@@ -453,7 +453,8 @@ function exec_query($sql,$lvl=0)
          return "Table {$this->dbtable} doesn't exist and can't be created"; 
       }
        break;
-     case "update":
+    case "update":
+       $this->log->warning("try update :: ".$this->msg_err);
       $st = $this->Update();
       if ($st == "") {
          $this->msg_err = $this->exec_query($sql);
@@ -483,6 +484,7 @@ function numrows()
 
 function fetch_array($c,$type=PGSQL_BOTH)
 {
+
    return(pg_fetch_array($this->res,$c,$type));
 }
 
