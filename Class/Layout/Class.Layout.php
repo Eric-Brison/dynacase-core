@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.6 2002/06/19 12:23:30 eric Exp $
+//  $Id: Class.Layout.php,v 1.7 2002/07/26 15:02:41 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -164,7 +164,7 @@ var $strip='Y';
     $actionname =  $acturl ["path"];
 
     global $ZONE_ARGS;
-    $ZONE_ARGS=array();
+
     if (isset($acturl ["query"])) {
       $zargs = explode("&", $acturl ["query"] );
       while (list($k, $v) = each($zargs)) {
