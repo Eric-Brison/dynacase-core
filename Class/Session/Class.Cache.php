@@ -20,6 +20,21 @@
 // ---------------------------------------------------------------------------
 
 
+// return all ancestor classes
+function get_ancestors_class($classname) {
+  $father = get_parent_class($classname);
+
+  
+  if ($father != "") {
+
+    $ancestors = get_ancestors_class($father);
+    $ancestors[] = $father;
+  } else {
+    $ancestors = array();
+  }
+  return $ancestors;
+}
+
 Class Cache {
 
   var $isCacheble= true;
@@ -27,7 +42,7 @@ Class Cache {
 
   var $max=50; // default value
   var $cacheclass="";
- 
+  var $relatedCacheClass= array(); // class must ne cleaned also in case of modify
 
   function SetCache($id) {    
     global $HTTP_CONNECTION; // use only cache with HTTP
@@ -93,35 +108,58 @@ Class Cache {
       return $this->cacheclass;
   }
   function ClearCache($reallyset = true) {
+
+
     if ($this->isCacheble) {
-      if ($reallyset) {
+      global $CacheObj;
+      $this->ClearCacheIndex($this->cacheclass(), $reallyset);
 
-
-	global $clearedClass;
-	if (! isset($clearedClass[$this->cacheclass()])) {
-	  $query = new QueryDb("", "Session");
-	  $query -> AddQuery("userid > 0");
-	  $tablesession = $query->Query(0,0,"TABLE");
-	  if ($query->nb > 0) {
-	    while (list($k,$v) = each ($tablesession)) {
-
-	      global $CacheObj;
-	      unset($CacheObj[$this->cacheclass()]);
-	      //global $HTTP_VERSION_VARS;
-	      //  unset($HTTP_VERSION_VARS["CacheObj"][$this->cacheclass()]);
-	      session_write_close();
-	  
-	      session_id($v["id"]);
-	      @session_start();
-	    }
-	  }
-	  $clearedClass[$this->cacheclass()]=1;
+      reset($CacheObj);
+      while (list($k,$v) = each ($CacheObj)) {
+	// uset all father class also
+	if (is_subclass_of ($this, $k)) {
+	    $this->ClearCacheIndex($k, $reallyset);
 	}
       }
-    } else {
-      global $CacheObj;
-      unset($CacheObj[$this->cacheclass()]);
+      
+      
+      // unset all related class 
+      while (list($k,$v) = each ($this->relatedCacheClass)) {
+	$this->relatedCacheClass[$k] = strtolower($v);
+	$this->ClearCacheIndex($this->relatedCacheClass[$k], $reallyset);
+
+      }
+
+      // unset all childs of related class 
+      reset($CacheObj);
+      while (list($k,$v) = each ($CacheObj)) {
+
+	$anc = get_ancestors_class($k);
+	if (count(array_intersect($anc, $this->relatedCacheClass)) > 0) {
+	  $this->ClearCacheIndex($k, $reallyset);
+	}
+      }
+
+      
     }
+
+  }
+
+  // clear one entry of the object cache
+  function ClearCacheIndex($index, $reallyset = true) {
+    
+      global $CacheObj;
+      unset($CacheObj[$index]);
+      if ($reallyset) { // to alert other user of modification
+	$scache = new SessionCache("", $index);
+	$scache->SetTime();
+      }
+      // reset access last time because it is empty
+      // to avoid unnessecessary reinit (by other users)
+      global $AccessCacheObj;
+      $date = gettimeofday();
+      $AccessCacheObj[$index]=$date['sec'];
+      
   }
 
   function Cacheble() {
@@ -143,6 +181,32 @@ Class Cache {
     //just to trace  
   }
 
-}
 
+  // to remove obolete index
+  function InitCache() {
+
+    session_register("AccessCacheObj");
+    $accessobject = new QueryDb("","SessionCache");
+    $tao= $accessobject->Query(0,0,"TABLE");
+    if ($accessobject->nb > 0) {
+      global $AccessCacheObj;
+      while (list($k,$v) = each ($tao)) {
+	if (isset($AccessCacheObj[$v["index"]])) {
+	  //print "test cache ".$v["index"].":".$v["lasttime"].">".$AccessCacheObj[$v["index"]]."<BR>";
+	  if (intval($v["lasttime"]) > intval($AccessCacheObj[$v["index"]])) {
+	    //  print "need update ".$v["index"]."<BR>";
+	    $this->ClearCacheIndex($v["index"], false);
+	  }
+	} else {
+	  
+	  $date = gettimeofday();
+	  $AccessCacheObj[$v["index"]]=$date['sec'];
+	} 
+
+      }
+    }
+  }
+
+  //-------end class
+}
 ?>

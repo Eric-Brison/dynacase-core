@@ -16,9 +16,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.3 2002/01/25 14:31:37 eric Exp $
+// $Id: Class.Session.php,v 1.4 2002/01/28 16:55:29 eric Exp $
 //
 // $Log: Class.Session.php,v $
+// Revision 1.4  2002/01/28 16:55:29  eric
+// modif pour update cache pour autre session
+//
 // Revision 1.3  2002/01/25 14:31:37  eric
 // gestion de cache objet - variable de session
 //
@@ -103,12 +106,13 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.3 2002/01/25 14:31:37 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.4 2002/01/28 16:55:29 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
-include_once('Class.SessionVar.php');
+
 include_once('Class.SessionConf.php');
+include_once ("Class.SessionCache.php");
 
 Class Session extends DbObj{
 
@@ -236,6 +240,8 @@ var $sessiondb;
       if ($HTTP_CONNECTION != "") {
 	session_id($this->id);
 	session_start();
+	$ocache = new SessionCache();
+	$ocache->InitCache();
       }
       $this->userid = $userid;
       $this->timetolive = $this->SetTTL();
@@ -299,6 +305,8 @@ var $sessiondb;
   // Get all vars
   //
   function InitBuffer() {
+	$ocache = new SessionCache();
+	$ocache->InitCache();
     return;
   }
   
