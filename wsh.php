@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.4 2002/01/09 16:51:18 eric Exp $
+// $Id: wsh.php,v 1.5 2002/04/15 14:19:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -108,8 +108,11 @@ if (isset($HTTP_GET_VARS["action"])) {
 
   // init for gettext
   
-  bindtextdomain ("what", "/home/httpd/what/locale");
-  textdomain ("what");
+// init for gettext
+setlocale(LC_MESSAGES,$core->Getparam("CORE_LANG"));  
+putenv ("LANG=".$core->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
+bindtextdomain ("what", "/home/httpd/what/locale");
+textdomain ("what");
   
   
 
