@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.30 2004/02/24 08:20:37 eric Exp $
+ * @version $Id: Class.Application.php,v 1.31 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,10 +30,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.30 2004/02/24 08:20:37 eric Exp $
+//  $Id: Class.Application.php,v 1.31 2004/03/22 15:21:40 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.30 2004/02/24 08:20:37 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.31 2004/03/22 15:21:40 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -137,8 +137,8 @@ function Set($name,&$parent, $session="")
        $this->parent=&$parent;
        Redirect($this,$this->name,"");
      } else {
-       global $HTTP_REFERER;
-       Header("Location: $HTTP_REFERER");
+       global $_SERVER;
+       Header("Location: ".$_SERVER['HTTP_REFERER']);
      }
   }
 

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: head.php,v 1.14 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: head.php,v 1.15 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.14 2003/08/18 15:46:41 eric Exp $
+// $Id: head.php,v 1.15 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -105,13 +105,13 @@ function head(&$action) {
   
 
   // update application name
-  global $HTTP_GET_VARS;
+  global $_GET;
   $app = new Application();
 
-  if (isset($HTTP_GET_VARS["capp"]))
-    $app->Set($HTTP_GET_VARS["capp"], $action->parent);
+  if (isset($_GET["capp"]))
+    $app->Set($_GET["capp"], $action->parent);
   else
-    $app->Set($HTTP_GET_VARS["app"], $action->parent);
+    $app->Set($_GET["app"], $action->parent);
     
   $action->lay->set("APP_TITLE", _($app->description));
   $action->lay->set("SESSION",$action->session->id);

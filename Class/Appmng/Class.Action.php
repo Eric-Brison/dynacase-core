@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.18 2004/01/08 10:59:27 eric Exp $
+ * @version $Id: Class.Action.php,v 1.19 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,10 +28,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.18 2004/01/08 10:59:27 eric Exp $
+//  $Id: Class.Action.php,v 1.19 2004/03/22 15:21:40 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.18 2004/01/08 10:59:27 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.19 2004/03/22 15:21:40 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -265,9 +265,9 @@ function execute()
       $this->ExitError(_("Access denied"));
     } else {
       //$this->ExitError(_("Invalid Session"));
-      global $HTTP_GET_VARS;
+      global $_GET;
       $getargs="";
-      while (list($k, $v) =each($HTTP_GET_VARS)) {
+      while (list($k, $v) =each($_GET)) {
 	if ( ($k != "session") &&
 	     ($k != "app") &&
 	     ($k != "sole") &&

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: setactpar.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: setactpar.php,v 1.3 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: setactpar.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: setactpar.php,v 1.3 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/setactpar.php,v $
 // ---------------------------------------------------------------
 //    O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: setactpar.php,v $
+// Revision 1.3  2004/03/22 15:21:40  eric
+// change HTTP variable name to put register_globals = Off
+//
 // Revision 1.2  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -60,8 +63,8 @@ include_once("Class.Action.php");
 // -----------------------------------
 function setactpar(&$action) {
 // -----------------------------------
-  global $HTTP_POST_VARS;
-  reset($HTTP_POST_VARS);
+  global $_POST;
+  reset($_POST);
   $sapp = GetHttpVars("sapp",$action->name);
   $sact = GetHttpVars("sact",$action->parent->name);
 
@@ -77,9 +80,9 @@ function setactpar(&$action) {
       $val = GetHttpVars("$key","");
       $act->ActRegister($key,$val);
     } else {
-      global $HTTP_POST_VARS;
-      reset($HTTP_POST_VARS);
-      while (list($k,$v)=each($HTTP_POST_VARS)) {
+      global $_POST;
+      reset($_POST);
+      while (list($k,$v)=each($_POST)) {
         if (($k != "key") && ($k != "sapp") && ($k != "sact")) {
           $act->ActRegister($k,$v);
         }

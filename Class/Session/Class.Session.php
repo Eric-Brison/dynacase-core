@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.15 2004/02/24 08:22:49 eric Exp $
+ * @version $Id: Class.Session.php,v 1.16 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.15 2004/02/24 08:22:49 eric Exp $
+// $Id: Class.Session.php,v 1.16 2004/03/22 15:21:40 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.15 2004/02/24 08:22:49 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.16 2004/03/22 15:21:40 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -77,12 +77,12 @@ var $sessiondb;
 	@session_start();
         
       } else {
-	global $PHP_AUTH_USER;
+	global $_SERVER;
         // Init the database with the app file if it exists
 
 	
 	$u = new User();
-	if ($u->SetLoginName($PHP_AUTH_USER)) {	  	
+	if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	  	
 	  $this->open($u->id);	
 	} else {
 	  return false;
@@ -100,8 +100,8 @@ var $sessiondb;
   // ------------------------------------
   function Close()
     {
-      global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {
+      global $_SERVER; // use only cache with HTTP
+      if ($_SERVER['HTTP_CONNECTION'] != "") {
 	session_unset();
 	@session_destroy();
       }
@@ -114,8 +114,8 @@ var $sessiondb;
   function Open($uid=ANONYMOUS_ID)
     {
       $idsess  = $this->newId();
-      global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {
+      global $_SERVER; // use only cache with HTTP
+      if ($_SERVER['HTTP_CONNECTION'] != "") {
 	session_id($idsess);
 	@session_start();
       }
@@ -139,8 +139,8 @@ var $sessiondb;
       //      global $_SESSION;
       //      $$k=$v;
 
-      global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {
+      global $_SERVER; // use only cache with HTTP
+      if ($_SERVER['HTTP_CONNECTION'] != "") {
 	//	session_register($k);
 
 	$_SESSION[$k]=$v;
@@ -176,8 +176,8 @@ var $sessiondb;
   // --------------------------------
   function Unregister($k = "")
     {
-      global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {
+      global $_SERVER; // use only cache with HTTP
+      if ($_SERVER['HTTP_CONNECTION'] != "") {
 	//session_unregister($k);
 	//	global $_SESSION;
 	unset($_SESSION[$k]);

@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: loginform.php,v 1.6 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -24,7 +24,7 @@ include_once('Lib.Http.php');
  */
 function loginform(&$action) {
 
-    global $HTTP_COOKIE_VARS;
+    global $_COOKIE;
 
     $auth_user = GetHttpVars("auth_user");
     $auth_pass = GetHttpVars("auth_pass");

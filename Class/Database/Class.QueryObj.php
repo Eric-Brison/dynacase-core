@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryObj.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.QueryObj.php,v 1.3 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,8 +28,11 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryObj.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+//  $Id: Class.QueryObj.php,v 1.3 2004/03/22 15:21:40 eric Exp $
 //  $Log: Class.QueryObj.php,v $
+//  Revision 1.3  2004/03/22 15:21:40  eric
+//  change HTTP variable name to put register_globals = Off
+//
 //  Revision 1.2  2003/08/18 15:46:42  eric
 //  phpdoc
 //
@@ -102,7 +105,7 @@
 //
 // It gives the HTML/JScript element for the gui
 // and it gives the result of the query
-$CLASS_QUERYOBJ_PHP = '$Id: Class.QueryObj.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
+$CLASS_QUERYOBJ_PHP = '$Id: Class.QueryObj.php,v 1.3 2004/03/22 15:21:40 eric Exp $';
 
 include_once('Class.Out.php');
 include_once('Class.Table.php');
@@ -439,9 +442,9 @@ function GenPage($url,$nores,$complete="FALSE",$display_form="YES") {
   
   function init($attr,$default)
     {
-      global $HTTP_POST_VARS;
-      if (is_array($HTTP_POST_VARS) && isset($HTTP_POST_VARS["p_$attr"])) {
-        $this->$attr=$HTTP_POST_VARS["p_$attr"];
+      global $_POST;
+      if (is_array($_POST) && isset($_POST["p_$attr"])) {
+        $this->$attr=$_POST["p_$attr"];
       } else { 
         if (isset($this->basic_elem->def[$attr])) {
            $this->$attr=$this->basic_elem->def[$attr];

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Cache.php,v 1.8 2004/02/17 10:34:19 eric Exp $
+ * @version $Id: Class.Cache.php,v 1.9 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -59,8 +59,8 @@ Class Cache {
   var $relatedCacheClass= array(); // class must ne cleaned also in case of modify
 
   function SetCache($id) {    
-    global $HTTP_CONNECTION; // use only cache with HTTP
-    if ($HTTP_CONNECTION == "")  return false;
+    global $_SERVER; // use only cache with HTTP
+    if ($_SERVER['HTTP_CONNECTION'] == "")  return false;
    
     $this->Cacheble();
 
@@ -90,8 +90,8 @@ Class Cache {
   }
 
   function GetCache($id) {
-    global $HTTP_CONNECTION; // use only cache with HTTP
-    if ($HTTP_CONNECTION == "")  return false;
+    global $_SERVER; // use only cache with HTTP
+    if ($_SERVER['HTTP_CONNECTION'] == "")  return false;
 
     $this->Cacheble();
 
@@ -123,8 +123,8 @@ Class Cache {
   }
 
   function ClearCache($reallyset = true) {
-    global $HTTP_CONNECTION; // use only cache with HTTP
-    if ($HTTP_CONNECTION == "")  return false;
+    global $_SERVER; // use only cache with HTTP
+    if ($_SERVER['HTTP_CONNECTION'] == "")  return false;
 
     if ($this->isCacheble) {
       // global $CacheObj;
@@ -226,8 +226,8 @@ Class Cache {
 
   // to remove obolete index
   function InitCache() {
-    global $HTTP_CONNECTION; // use only cache with HTTP
-    if ($HTTP_CONNECTION == "")  return false;
+    global $_SERVER; // use only cache with HTTP
+    if ($_SERVER['HTTP_CONNECTION'] == "")  return false;
 
     // session_register("AccessCacheObj");
     $accessobject = new QueryDb("","SessionCache");

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: upload.php,v 1.9 2004/03/04 13:45:59 eric Exp $
+ * @version $Id: upload.php,v 1.10 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.9 2004/03/04 13:45:59 eric Exp $
+// $Id: upload.php,v 1.10 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -47,15 +47,15 @@ include_once("Lib.Http.php");
 function upload(&$action) {
 // -----------------------------------
 
-  global $HTTP_POST_FILES;
+  global $_FILES;
   $action->log->debug("UPLOAD");
   // select the first user if not set
   // What user are we working on ? ask session.
-  $filename = ($HTTP_POST_FILES["upfile"]["tmp_name"]);
+  $filename = ($_FILES["upfile"]["tmp_name"]);
 
 
   if (!file_exists($filename)) {
-    $action->ExitError("File not found : $filename : ".$HTTP_POST_FILES["upfile"]["name"]);
+    $action->ExitError("File not found : $filename : ".$_FILES["upfile"]["name"]);
   }
   $content = file($filename);
 

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: toc.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: toc.php,v 1.3 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: toc.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: toc.php,v 1.3 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/toc.php,v $
 // ---------------------------------------------------------------
 //    O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: toc.php,v $
+// Revision 1.3  2004/03/22 15:21:40  eric
+// change HTTP variable name to put register_globals = Off
+//
 // Revision 1.2  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -54,9 +57,9 @@ include_once("Class.Action.php");
 // -----------------------------------
 function toc(&$action) {
 // -----------------------------------
-  global $HTTP_GET_VARS;
-  $app = $HTTP_GET_VARS["app"];
-  $act = $HTTP_GET_VARS["action"];
+  global $_GET;
+  $app = $_GET["app"];
+  $act = $_GET["action"];
 
   echo "GET[app] = [".$app.", GET[action] = [".$act."]<br>";
 

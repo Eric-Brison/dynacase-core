@@ -5,14 +5,14 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.14 2004/02/17 10:34:05 eric Exp $
+ * @version $Id: wsh.php,v 1.15 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.14 2004/02/17 10:34:05 eric Exp $
+// $Id: wsh.php,v 1.15 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -53,10 +53,10 @@ global $CORE_LOGLEVEL;
 
 
 // get param
-global $HTTP_GET_VARS;
-global $HTTP_CONNECTION;
+global $_GET;
+global $_SERVER;
 
-if ($HTTP_CONNECTION != "")     {
+if ($_SERVER['HTTP_CONNECTION'] != "")     {
   print "<BR><H1>:~(</H1>";
   exit;
 }
@@ -70,7 +70,7 @@ if (count($argv) == 1) {
 while (list($k, $v) = each($argv)) {
   
   if (ereg("--(.+)=(.+)", $v , $reg)) {
-    $HTTP_GET_VARS[$reg[1]]=$reg[2];
+    $_GET[$reg[1]]=$reg[2];
   }  else if (ereg("--(.+)", $v , $reg)) {
     if ($reg[1] == "listapi") {
       print "application list :\n";
@@ -79,7 +79,7 @@ while (list($k, $v) = each($argv)) {
       echo "\n";
       exit;
     }
-    $HTTP_GET_VARS[$reg[1]]=true;
+    $_GET[$reg[1]]=true;
   }
 }
 
@@ -87,7 +87,7 @@ while (list($k, $v) = each($argv)) {
 
 $core = new Application();
 $core->Set("CORE",$CoreNull);
-if (isset($HTTP_GET_VARS["userid"])) $core->user=new User("",$HTTP_GET_VARS["userid"]); //special user
+if (isset($_GET["userid"])) $core->user=new User("",$_GET["userid"]); //special user
 else $core->user=new User("",1); //admin 
 
 $core->session=new Session($core->GetParam("CORE_SESSION_DB"));
@@ -98,17 +98,17 @@ $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 $puburl = $core->GetParam("CORE_PUBURL","");
 
 
-if (isset($HTTP_GET_VARS["app"])) {
+if (isset($_GET["app"])) {
   $appl = new Application();
-  $appl->Set($HTTP_GET_VARS["app"],
+  $appl->Set($_GET["app"],
 	     $core);
 } else {
   $appl = $core;
 }
 
 $action = new Action();
-if (isset($HTTP_GET_VARS["action"])) {
-  $action->Set($HTTP_GET_VARS["action"],
+if (isset($_GET["action"])) {
+  $action->Set($_GET["action"],
 	       $appl);
 } else {
   $action->Set("",$appl);
@@ -129,9 +129,9 @@ textdomain ("what");
   
 
 
-if (isset($HTTP_GET_VARS["api"])) {
-  if (!include "API/".$HTTP_GET_VARS["api"].".php") {
-    echo sprintf(_("API file %s not found"),"API/".$HTTP_GET_VARS["api"].".php");
+if (isset($_GET["api"])) {
+  if (!include "API/".$_GET["api"].".php") {
+    echo sprintf(_("API file %s not found"),"API/".$_GET["api"].".php");
   }
 } else {
   echo ($action->execute ());

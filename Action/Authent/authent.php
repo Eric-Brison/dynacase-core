@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.9 2004/03/17 17:47:47 eric Exp $
+ * @version $Id: authent.php,v 1.10 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,15 +30,14 @@ function authenticate() {
   exit;
 }
 
+  global $_SERVER;
 //print "$PHP_AUTH_USER $SeenBefore $OldAuth";
-if(!isset($PHP_AUTH_USER) || ($SeenBefore == 1 && !strcmp($OldAuth, $PHP_AUTH_USER)) ) {
+if(!isset($_SERVER['PHP_AUTH_USER']) || ($SeenBefore == 1 && !strcmp($OldAuth,$_SERVER['PHP_AUTH_USER'] )) ) {
 
   authenticate();
 }
 else {
-  global $SERVER_NAME;
-  global $SERVER_PORT;
-  Header("Location: http://".$SERVER_NAME.":".$SERVER_PORT."/what/index.php?sole=R");
+  Header("Location: http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/what/index.php?sole=R");
   exit;
 }
 ?>

@@ -3,38 +3,16 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.15 2004/01/08 10:59:27 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.16 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
  */
 /**
  */
-// ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.15 2004/01/08 10:59:27 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2000
-// O*O  Anakeen Development Team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.15 2004/01/08 10:59:27 eric Exp $';
+
 
 
 function Redirect(&$action,$appname,$actionname,$otherurl="")
@@ -53,10 +31,10 @@ function Redirect(&$action,$appname,$actionname,$otherurl="")
 
 function RedirectSender(&$action)
 {
-  global $HTTP_SERVER_VARS;
+  global $_SERVER;
 
-  if ($HTTP_SERVER_VARS["HTTP_REFERER"] != "") {
-    Header("Location: ".$HTTP_SERVER_VARS["HTTP_REFERER"]); // return to sender
+  if ($_SERVER["HTTP_REFERER"] != "") {
+    Header("Location: ".$_SERVER["HTTP_REFERER"]); // return to sender
     exit;
   }
   $referer=GetHttpVars("http_referer");
@@ -70,22 +48,22 @@ function RedirectSender(&$action)
 }
 function GetHttpVars($name, $def="") {
 
-  global $HTTP_GET_VARS,$HTTP_POST_VARS,$ZONE_ARGS;
+  global $_GET,$_POST,$ZONE_ARGS;
 
   // it's necessary to strip slashes because HTTP add slashes automatically
   if (isset($ZONE_ARGS[$name])) return stripslashes($ZONE_ARGS[$name]); // try zone args first : it is set be Layout::execute for a zone
-  if (isset($HTTP_GET_VARS[$name])) return stripslashes($HTTP_GET_VARS[$name]);
-  if (isset($HTTP_POST_VARS[$name])) {
-    if (is_array($HTTP_POST_VARS[$name])) return $HTTP_POST_VARS[$name];
-    else return stripslashes($HTTP_POST_VARS[$name]);
+  if (isset($_GET[$name])) return stripslashes($_GET[$name]);
+  if (isset($_POST[$name])) {
+    if (is_array($_POST[$name])) return $_POST[$name];
+    else return stripslashes($_POST[$name]);
   }
   return($def);
 }
 
 function GetHttpCookie($name, $def="") {
 
-  global $HTTP_COOKIE_VARS;
-  if (isset($HTTP_COOKIE_VARS[$name])) return $HTTP_COOKIE_VARS[$name];
+  global $_COOKIE;
+  if (isset($_COOKIE[$name])) return $_COOKIE[$name];
   return($def);
 }
 
@@ -157,11 +135,11 @@ function Http_DownloadFile($filename,$name,$mime_type='') {
 
 function PrintAllHttpVars() { // just to debug
 
-  global $HTTP_GET_VARS,$HTTP_POST_VARS,$ZONE_ARGS;
+  global $_GET,$_POST,$ZONE_ARGS;
   print "<PRE>";
   if (isset($ZONE_ARGS)) print_r($ZONE_ARGS);
-  if (isset($HTTP_GET_VARS)) print_r($HTTP_GET_VARS);
-  if (isset($HTTP_POST_VARS)) print_r($HTTP_POST_VARS);
+  if (isset($_GET)) print_r($_GET);
+  if (isset($_POST)) print_r($_POST);
   print "</PRE>";
 }
 

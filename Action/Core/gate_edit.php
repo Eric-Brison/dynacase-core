@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: gate_edit.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: gate_edit.php,v 1.3 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: gate_edit.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: gate_edit.php,v 1.3 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/gate_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -39,12 +39,12 @@ function gate_edit(&$action) {
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
 
   
-  global $PHP_AUTH_USER;
+  global $_SERVER;
   global $CacheObj;
 
   $CacheObj=array();
   session_unregister("CacheObj"); // clearcache
-  $action->lay->set("PHP_AUTH_USER",$PHP_AUTH_USER);    
+  $action->lay->set("PHP_AUTH_USER",$_SERVER['PHP_AUTH_USER']);    
 
 }
 

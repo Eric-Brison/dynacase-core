@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_edit.php,v 1.9 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: user_edit.php,v 1.10 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.9 2003/08/18 15:46:41 eric Exp $
+// $Id: user_edit.php,v 1.10 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -45,7 +45,7 @@ function user_edit(&$action) {
 
 
   // Get all the params      
-  global $HTTP_POST_VARS;
+  global $_POST;
   $id=GetHttpVars("id");
   if ($id==-1) $id="";
 

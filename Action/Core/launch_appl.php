@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: launch_appl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: launch_appl.php,v 1.3 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,8 +11,11 @@
  /**
  */
 
-// $Id: launch_appl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: launch_appl.php,v 1.3 2004/03/22 15:21:40 eric Exp $
 // $Log: launch_appl.php,v $
+// Revision 1.3  2004/03/22 15:21:40  eric
+// change HTTP variable name to put register_globals = Off
+//
 // Revision 1.2  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -39,7 +42,7 @@ function launch_appl(&$action) {
 // This function is used to launch a function in an application
 // get the app and function name
 
-  global $HTTP_GET_VARS;
+  global $_GET;
   $appl = new Application();
   $appl->Set(GetHttpVars("app"),$action->parent);
   
@@ -52,7 +55,7 @@ function launch_appl(&$action) {
 
 function app_title(&$action) {
 
-  global $HTTP_GET_VARS;
+  global $_GET;
   $appl = new Application();
   $appl->Set(GetHttpVars("app"),$action->parent);
 

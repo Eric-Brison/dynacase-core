@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.6 2004/01/08 10:59:27 eric Exp $
+ * @version $Id: guest.php,v 1.7 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: guest.php,v 1.6 2004/01/08 10:59:27 eric Exp $
+// $Id: guest.php,v 1.7 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -54,8 +54,8 @@ define("PORT_SSL", 443); // the default port for https
 
 // ----------------------------------------
 // pre include for session cache
-if (file_exists($HTTP_GET_VARS["app"]."/include.php")) {
-        include($HTTP_GET_VARS["app"]."/include.php");
+if (file_exists($_GET["app"]."/include.php")) {
+        include($_GET["app"]."/include.php");
 }
 
 $log=new Log("","guest.php");
@@ -63,9 +63,9 @@ $log=new Log("","guest.php");
 $CoreNull = "";
 global $CORE_LOGLEVEL;
 
-global $HTTP_GET_VARS;
-if (!isset($HTTP_GET_VARS["app"])) $HTTP_GET_VARS["app"]="CORE";
-if (!isset($HTTP_GET_VARS["action"])) $HTTP_GET_VARS["action"]="";
+global $_GET;
+if (!isset($_GET["app"])) $_GET["app"]="CORE";
+if (!isset($_GET["action"])) $_GET["action"]="";
 
 
 $standalone = GetHttpVars("sole");
@@ -76,7 +76,7 @@ $session->Set($sess_num);
 
 if ($session->userid != ANONYMOUS_ID) { 
   // reopen a new anonymous session
-  unset($PHP_AUTH_USER); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
+  unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
   $session->Set("");
   setcookie ("session",$session->id,0,"/");
 }
@@ -88,20 +88,18 @@ $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
 // Init PUBLISH URL from script name
-global $SERVER_NAME;
-global $SCRIPT_NAME;
-global $SERVER_PORT;
-
-if (ereg("(.*)/guest\.php", $SCRIPT_NAME, $reg)) {
+if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 
   // determine publish url (detect ssl require)
-  if ($SERVER_PORT != PORT_SSL)   $puburl = "http://".$SERVER_NAME.$reg[1];
-  else $puburl = "https://".$SERVER_NAME.$reg[1];
+ 
+  if ($_SERVER['SERVER_PORT'] != PORT_SSL)   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
+  else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
 } else {
   // it is not allowed
   print "<B>:~(</B>";
   exit;
 }
+
 
 
 $core->SetVolatileParam("CORE_PUBURL", $puburl);
@@ -123,34 +121,33 @@ if (($standalone == "") || ($standalone == "N")) {
   $action->Set("MAIN",$core,$session);
 } else {
   $appl = new Application();
-  $appl->Set($HTTP_GET_VARS["app"],$core);
+  $appl->Set($_GET["app"],$core);
 
-  if (($appl->machine != "") && ($SERVER_NAME != $appl->machine)) { // special machine to redirect    
+   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
       $puburl = "http://".$appl->machine.$REQUEST_URI;
 
       Header("Location: $puburl");
       exit;
   }
+
   // ----------------------------------------
     // test SSL mode needed or not
     // redirect if needed
   if ($appl->ssl == "Y") {
-    if ($SERVER_PORT != PORT_SSL) {
-      global $REQUEST_URI;   
+    if ($_SERVER['SERVER_PORT'] != PORT_SSL) {
 
       // redirect to go to ssl http
-      $sslurl = "https://${SERVER_NAME}${REQUEST_URI}";
+      $sslurl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
       Header("Location: $sslurl");
       exit;
     }     
     
     $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
   } else {
-    if ($SERVER_PORT == PORT_SSL) {
-      global $REQUEST_URI;   
+    if ($_SERVER['SERVER_PORT'] == PORT_SSL) {
 
       // redirect to  suppress ssl http
-      $puburl = "http://${SERVER_NAME}${REQUEST_URI}";
+      $sslurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
 
       Header("Location: $puburl");
       exit;
@@ -162,11 +159,11 @@ if (($standalone == "") || ($standalone == "N")) {
     // now we are in correct protocol (http or https)
 
   $action = new Action();
-  $action->Set($HTTP_GET_VARS["action"],$appl,$session);
+  $action->Set($_GET["action"],$appl,$session);
 
 }
 
-$nav=$HTTP_USER_AGENT;
+$nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
   if ( $pos>0) {
@@ -202,9 +199,9 @@ else
       $act = GetHttpVars("action","");
 
       // compute others argument to propagate to redirect url
-      global $HTTP_GET_VARS;
+      global $_GET;
       $getargs="";
-      while (list($k, $v) =each($HTTP_GET_VARS)) {
+      while (list($k, $v) =each($_GET)) {
 	if ( ($k != "session") &&
 	     ($k != "app") &&
 	     ($k != "sole") &&

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Log.php,v 1.8 2004/03/17 17:44:44 eric Exp $
+ * @version $Id: Class.Log.php,v 1.9 2004/03/22 15:21:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,7 +30,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.8 2004/03/17 17:44:44 eric Exp $
+// $Id: Class.Log.php,v 1.9 2004/03/22 15:21:40 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -114,7 +114,7 @@ function pop() {
 // ------------------------------------------------------------------------
 function wlog($sta, $str, $args=NULL) {
 
-  global $HTTP_CONNECTION; // use only syslog with HTTP
+  global $_SERVER; // use only syslog with HTTP
   global $REMOTE_ADDR, $CORE_LOGLEVEL;
 
   if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta))) {
@@ -147,7 +147,7 @@ function wlog($sta, $str, $args=NULL) {
       default:
 	$pri = LOG_NOTICE;
       }
-      if ($HTTP_CONNECTION == "") {
+      if ($_SERVER['HTTP_CONNECTION'] == "") {
 	$stderr = fopen('php://stderr', 'w');
 	fwrite($stderr, "LOG::($sta)::".$str."\n");
       } else {
