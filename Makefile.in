@@ -7,7 +7,7 @@ utildir=@PUBRULE@
 appname = @PACKAGE@
 pubdir = @prefix@
 srcdir = @srcdir@
-pidir = /var/post-install/bin
+
 
 export pubdir utildir appname pidir
 
@@ -31,7 +31,6 @@ DISTFILES += $(SUBDIR)  \
 	     whattext wcheck wstop
 
 
-PIFILES = $(PACKAGE)_post.sh
 
 $(pubdir)/whattext: whattext
 	cp $< $@
