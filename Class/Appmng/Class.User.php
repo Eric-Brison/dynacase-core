@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.20 2004/02/03 09:13:57 caroline Exp $
+ * @version $Id: Class.User.php,v 1.21 2004/02/04 08:41:34 caroline Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.20 2004/02/03 09:13:57 caroline Exp $
+// $Id: Class.User.php,v 1.21 2004/02/04 08:41:34 caroline Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,7 +34,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.20 2004/02/03 09:13:57 caroline Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.21 2004/02/04 08:41:34 caroline Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -178,6 +178,9 @@ function CheckLogin($login,$domain,$whatid)
        $this->passdelay=($this->daydelay)*3600*24;
        $this->fid=$fid;
 
+
+/*
+//probleme car $this->id ="" pour les nouveaux users
 //Affect mailAccount
 if ($this->iddomain<>1)
  {
@@ -194,7 +197,10 @@ if ($this->iddomain<>1)
    {//update login if olddomain<>1
    $mail->Modify();
    }
- }                                                                                                                                                     
+ }
+*/
+
+                                                                                                                                                     
 }
 
 
