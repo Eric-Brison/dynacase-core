@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.7 2003/08/12 12:17:05 eric Exp $
+// $Id: user_edit.php,v 1.8 2003/08/14 09:43:50 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -90,7 +90,7 @@ function user_edit(&$action) {
   } else {
     $user = new User($action->GetParam("CORE_USERDB"),$id);
     $action->lay->Set("id",$id);
-    $group=$user->isgroup; // reset group to value of user
+    $group=($user->isgroup=='Y'); // reset group to value of user
     if ($group) $action->lay->SetBlockData("HIDDENFIRSTNAME", $tfirstname );
     else {
       $tfirstname[0]["firstname"] = $user->firstname;
