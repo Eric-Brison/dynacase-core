@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ObjectPermission.php,v 1.2 2002/03/02 18:06:26 eric Exp $
+// $Id: Class.ObjectPermission.php,v 1.3 2002/03/05 18:14:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ObjectPermission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -20,58 +20,41 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Class.ObjectPermission.php,v $
-// Revision 1.2  2002/03/02 18:06:26  eric
-// correction et optimisation pour droit objet
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.3  2001/11/14 15:16:45  eric
-// modif pour optimisation
-//
-// Revision 1.2  2001/09/10 16:58:06  eric
-// objet accessibilité
-//
-// Revision 1.1  2001/09/07 16:48:59  eric
-// gestion des droits sur les objets
-//
 
-//
-// ---------------------------------------------------------------------------
-//
-$CLASS_PERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.2 2002/03/02 18:06:26 eric Exp $';
+
+$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.3 2002/03/05 18:14:51 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
 include_once('Class.ControlObject.php');
 Class ObjectPermission extends DbObj
 {
-  var $fields = array ( "id_user","id_obj","id_acl");
+  var $fields = array ( "id_user","id_obj","id_class","ids_acl");
 
-  var $id_fields = array ( "id_user","id_obj");
+  var $id_fields = array ( "id_user","id_obj","id_class");
 
   var $dbtable = "operm";
 
   var $sqlcreate = '
 create table operm (id_user int ,
                     id_obj int not null,
-                    id_acl int not null);
-create index operm_idx1 on operm(id_user);
-                 ';
+                    id_class int not null,
+                    ids_acl int[] );
+create unique index i_operm on operm (id_user, id_obj, id_class); ';
 
   var $classid=0; // if 0 not a controlled object
   var $description="";
   var $coid=array();
   var $privileges = array(); // default privilege from permission table
-  var $gprivileges= array();// privileges array for the group user
+
   var $iscomplete = false; // indicate if all privileges are computed
 
   function ObjectPermission($dbaccess='', $id='',$res='',$dbid=0)
     {
       if (is_array($id)) {
 	  $this->Affect(array("id_user" => $id[0],
-			      "id_obj" => $id[1]));
+			      "id_obj" => $id[1],
+			      "id_class" => $id[2]));
       }
 
       if (! $this->DbObj ($dbaccess, $id,$res,$dbid)) {
@@ -87,12 +70,13 @@ create index operm_idx1 on operm(id_user);
     {
       if (is_array($id)) {
 	  $this->Affect(array("id_user" => $id[0],
-			      "id_obj" => $id[1]));
+			      "id_obj" => $id[1],
+			      "id_class" => $id[2]));
       }
     }
   function GetDescription()
     {
-      $octrl = new ControlObject("",$this->id_obj);
+      $octrl = new ControlObject("",array($this->id_obj,$this->id_class));
 
       if ( $octrl->IsAffected()) {
 	$this->classid = $octrl->id_class;
@@ -120,32 +104,84 @@ create index operm_idx1 on operm(id_user);
       $this-> GetPrivileges();
     }
 
-  function PreInsert( )
-    {
-      // no duplicate items
-      if ($this->Exists($this->id_user,$this->id_obj,$this->id_acl)) return "ObjectPermission ({$this->id_user},{$this->id_obj},{$this->id_acl}) already exists...";  
-  
-      return "";
-  
-    }
-
-  
-  function Exists($userid,$oid,$aclid=0) {
-    $query = new QueryDb($this->dbaccess,"ObjectPermission");
-    $query->basic_elem->sup_where = array ("id_obj='{$oid}'",
-					   "id_user='{$userid}'");
-    if ($aclid != 0) {
-      $naclid= - $aclid;
-      $query->AddQuery("(id_acl={$aclid}) OR (id_acl= {$naclid}) ");
-    }
-    $list = $query->Query();
-
-    return($query->nb>0);
-  }
 
 
 
   // return ACL list for a user and a oid
+//   function GetPrivilegesOld() {
+
+    
+//     if ( $this->iscomplete) return ($this->privileges);
+
+//     $this->privileges= array(); 
+//     $this->upprivileges= array();// privileges array for a user (not including group) in an application
+//     $this->unprivileges= array();// specifific NO privileges array for a user in an application
+
+
+//     if (true){
+//     // add groups privilege
+//     $ugroup = new Group($this->dbaccess,
+// 			$this->id_user);
+  
+    
+//     while (list($k,$gid) = each($ugroup->groups)) {
+
+//       $gperm = new ObjectPermission($this->dbaccess, 
+// 				    array($gid, 
+// 					  $this->id_obj,
+// 					  $this->id_class));
+    
+//       // add group 
+
+//       while (list($k2,$gacl) = each($gperm->privileges)) {
+// 	if (! in_array($gacl, $this->privileges)) {
+// 	  $this->gprivileges[]= $gacl;
+// 	  $this->privileges[]= $gacl;
+// 	}    
+//       }
+//     }
+//     }
+
+    
+//     if (is_array($this->ids_acl) ) {
+//       while (list($k,$v) = each($this->ids_acl)) {
+// 	if ($v->id_acl > 0) {
+// 	  // add privilege
+// 	  $this->upprivileges[]= $v->id_acl;
+// 	  if (! in_array($v->id_acl, $this->privileges)) {
+// 	    $this->privileges[]= $v->id_acl;
+// 	  } 
+// 	}else { 
+// 	  // suppress privilege
+// 	  $this->unprivileges[]= -($v->id_acl);
+	
+// 	  $nk=array_search(-($v->id_acl), $this->privileges, false);
+// 	  if (is_integer($nk)) {
+// 	    unset($this->privileges[$nk]);
+// 	  }
+// 	}
+      
+//       }
+//     }
+
+//     //    $this->AddDefaultPrivileges();
+//     $this->iscomplete= true; // to avoid another computing
+//     return($this->privileges);
+//   }
+  // return ACL list for a user and a oid
+
+
+  function GetGroupPrivileges() {
+    if (isset($this->gprivileges)) return ($this->gprivileges);
+
+     $this->gprivileges= array();// group privilege
+     $result = pg_exec($this->dbid,
+		       "select getprivilege({$this->id_user},{$this->id_obj},{$this->id_class},true)");
+    if (pg_numrows ($result) > 0) {
+      $arr = pg_fetch_array ($result, 0);
+      $this->gprivileges = explode(",",substr($arr[0],1,-1));
+    }
+  }
   function GetPrivileges() {
 
     
@@ -154,61 +190,32 @@ create index operm_idx1 on operm(id_user);
     $this->privileges= array(); 
     $this->upprivileges= array();// privileges array for a user (not including group) in an application
     $this->unprivileges= array();// specifific NO privileges array for a user in an application
-
-    $this->gprivileges= array();// privileges array for the group user
-
-    if (true){
-    // add groups privilege
-    $ugroup = new Group($this->dbaccess,
-			$this->id_user);
-  
     
-    while (list($k,$gid) = each($ugroup->groups)) {
 
-      $gperm = new ObjectPermission($this->dbaccess, 
-				    array($gid, 
-					  $this->id_obj));
-    
-      // add group 
 
-      while (list($k2,$gacl) = each($gperm->privileges)) {
-	if (! in_array($gacl, $this->privileges)) {
-	  $this->gprivileges[]= $gacl;
-	  $this->privileges[]= $gacl;
-	}    
-      }
-    }
-    }
-
-    $query = new QueryDb($this->dbaccess,"ObjectPermission");
-    $query->basic_elem->sup_where = array ("id_obj='{$this->id_obj}'",
-					   "id_user='{$this->id_user}'");
-    $list = $query->Query();
-    if ($query->nb > 0) {
-      while (list($k,$v) = each($list)) {
-	if ($v->id_acl > 0) {
-	  // add privilege
-	  $this->upprivileges[]= $v->id_acl;
-	  if (! in_array($v->id_acl, $this->privileges)) {
-	    $this->privileges[]= $v->id_acl;
-	  } 
-	}else { 
-	  // suppress privilege
-	  $this->unprivileges[]= -($v->id_acl);
-	
-	  $nk=array_search(-($v->id_acl), $this->privileges, false);
-	  if (is_integer($nk)) {
-	    unset($this->privileges[$nk]);
-	  }
-	}
       
-      }
-    }
+      $acls = explode(",",substr($this->ids_acl,1,-1));
 
-    //    $this->AddDefaultPrivileges();
+      while (list($k,$v) = each($acls)) {
+	if ($v>0) $this->upprivileges[] = $v;
+	else $this->unprivileges[] = -$v;
+      }
+
+
+     $result = pg_exec($this->dbid,
+		       "select getprivilege({$this->id_user},{$this->id_obj},{$this->id_class},false)");
+    if (pg_numrows ($result) > 0) {
+      $arr = pg_fetch_array ($result, 0);
+      $this->privileges = explode(",",substr($arr[0],1,-1));
+    }
+    // print_r( $this->privileges);
+
+
+
     $this->iscomplete= true; // to avoid another computing
     return($this->privileges);
   }
+
 
   // recompute privilege with default permission
  
@@ -223,6 +230,12 @@ create index operm_idx1 on operm(id_user);
     
   }
 
+
+  function AddAcl($idacl) {
+    if ($this->ids_acl == "") $this->ids_acl = "{".$idacl."}";
+    else   $this->ids_acl=str_replace("}",",$idacl}",$this->ids_acl) ;    
+  }
+
   function HasPrivilege($idacl)
     {
       return(($this->id_user == 1) || // admin user
@@ -230,6 +243,9 @@ create index operm_idx1 on operm(id_user);
     }
 
 
+  function PostDelete() {
+    $this->ids_acl="";
+  }
   function Control(&$object, $method)
     {
       // return "" if the current user can apply method on object
@@ -275,7 +291,11 @@ create index operm_idx1 on operm(id_user);
 	
 
       if (! $this->HasPrivilege($acl->id)) {
-	$err = "Object Permission : permission $acl->description needed (".$this->GetDescription()." - #".$this->id_obj.")";
+	$err = sprintf(_("Object Permission : permission %s needed (%s) - # %d"),
+		       _($acl->description),
+		       $this->GetDescription(),
+		       $this->id_obj);
+	//	$err = "Object Permission : permission $acl->description needed (".$this->GetDescription()." - #".$this->id_obj.")";
 	$this->coid[$method]=$err; // memo for optimization (no new computing)
 	return $err;
 	           	  		

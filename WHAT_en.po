@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-02-01 10:42+0100\n"
+	"POT-Creation-Date: 2002-03-05 18:02+0100\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -101,7 +101,7 @@ msgid	"object"
 msgstr	"object"
 
 #, c-format
-msgid	"user %s %s has been modfied\n"
+msgid	"user %s %s has been modified\n"
 msgstr	""
 
 #, c-format
@@ -201,6 +201,10 @@ msgid	"modify object acl"
 msgstr	""
 
 msgid	"view object acl"
+msgstr	""
+
+#, c-format
+msgid	"Object Permission : permission %s needed (%s) - # %d"
 msgstr	""
 
 msgid	"$code"
@@ -401,14 +405,19 @@ msgstr	""
 msgid	"modify"
 msgstr	"Modify"
 
+#, fuzzy
+msgid	"viewuser"
+msgstr	"User List"
+
+#, fuzzy
+msgid	"viewgroup"
+msgstr	"Group List"
+
 msgid	"close"
 msgstr	"Close"
 
 msgid	"accessfor"
 msgstr	"Control access for application"
-
-msgid	"anyoid"
-msgstr	"common object"
 
 msgid	"download"
 msgstr	"Download access file"
@@ -470,6 +479,9 @@ msgstr	"Styles List"
 
 msgid	"delconfirmstyle"
 msgstr	"Sure to delete style"
+
+#~ msgid	"anyoid"
+#~ msgstr	"common object"
 
 #~ msgid	"script"
 #~ msgstr	"Script"

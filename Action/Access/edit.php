@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.4 2002/03/02 18:06:26 eric Exp $
+// $Id: edit.php,v 1.5 2002/03/05 18:14:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -112,25 +112,52 @@ function edit_main(&$action, $userId, $appId, $coid) {
   // Get all the params  
   $isclass= (GetHttpVars("isclass") == "yes");
 
+
+  //-------------------
+  // contruct object id list
+  if (($isclass) || ($coid > 0)) {
+
+    $octrl = new ControlObject();
+    $toid = $octrl->GetOids($appId);
+    $oids= array();
+    while(list($k,$v) = each($toid)) {
+
+      if ($v->id_obj == $coid) $oids[$k]["selectedoid"] = "selected";
+      else $oids[$k]["selectedoid"]="";
+      $oids[$k]["oid"]= $v->id_obj;
+      $oids[$k]["descoid"]=$v->description;
+    }
+
+
+    $action->lay->SetBlockData("OID",$oids); 
+
+
+
+    if (!($coid > 0))    $coid= $oids[0]["oid"]; // get first if no selected
+    
   $action->lay->Set("userid",$userId);
   $action->lay->Set("oid",$coid);
   $action->lay->Set("appid",$appId);
 
   //print "$userId -  $appId - $coid";
 
+
+    //-------------------
+    // compute permission
   $app=new Application($action->dbaccess, $appId);
   $action->lay->Set("appname",$action->text($app->short_name));
   
   if ($coid > 0) {
     // control view acl permission first
     $p=new ObjectPermission($action->dbaccess,array($action->parent->user->id,
-						    $coid));
+						    $coid, 
+						    $appId));
     if (($err = $p-> ControlOid( $appId, "viewacl")) != "") {
       $action -> ExitError($err);
     }
       // compute acl for userId
-    $uperm = new ObjectPermission($action->dbaccess,array($userId, $coid));
-
+    $uperm = new ObjectPermission($action->dbaccess,array($userId, $coid, $appId));
+    $uperm->GetGroupPrivileges();
 
   } else {
     $uperm = new Permission($action->dbaccess,array($userId, $appId));
@@ -178,22 +205,6 @@ function edit_main(&$action, $userId, $appId, $coid) {
 
 
 
-  // contruct object id list
-  if (($isclass) || ($coid > 0)) {
-
-    $octrl = new ControlObject();
-    $toid = $octrl->GetOids($appId);
-    $oids= array();
-    while(list($k,$v) = each($toid)) {
-
-      if ($v->id_obj == $coid) $oids[$k]["selectedoid"] = "selected";
-      else $oids[$k]["selectedoid"]="";
-      $oids[$k]["oid"]= $v->id_obj;
-      $oids[$k]["descoid"]=$v->description;
-    }
-
-
-    $action->lay->SetBlockData("OID",$oids); 
 
 
     // contruct user id list

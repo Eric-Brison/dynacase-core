@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ControlObject.php,v 1.2 2002/02/18 10:55:16 eric Exp $
+// $Id: Class.ControlObject.php,v 1.3 2002/03/05 18:14:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ControlObject.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -21,6 +21,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Class.ControlObject.php,v $
+// Revision 1.3  2002/03/05 18:14:51  eric
+// refonte object permission
+//
 // Revision 1.2  2002/02/18 10:55:16  eric
 // modif id_fields de objectcontrol : cause pas unique
 //
@@ -33,7 +36,7 @@
 //
 // ---------------------------------------------------------------------------
 //
-$CLASS_PERMISSION_PHP = '$Id: Class.ControlObject.php,v 1.2 2002/02/18 10:55:16 eric Exp $';
+$CLASS_PERMISSION_PHP = '$Id: Class.ControlObject.php,v 1.3 2002/03/05 18:14:51 eric Exp $';
 include_once('Class.DbObjCtrl.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -55,7 +58,7 @@ Class ControlObject extends DbObj
 create table octrl (id_obj int not null,
                     id_class  int not null,
                     description varchar(256));
-                 ';
+create unique index i_octrl on octrl (id_obj, id_class);';
 
 
   // --------------------------------------------------------------------

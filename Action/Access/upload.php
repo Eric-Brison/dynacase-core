@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.5 2002/01/17 18:10:56 eric Exp $
+// $Id: upload.php,v 1.6 2002/03/05 18:14:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -88,7 +88,7 @@ function changeuser(&$action, $line, $verbose=false) {
       $err= $use->Modify();
       if ($err != "") print $err;
       
-      if ($verbose) printf( _("user %s %s has been modfied\n"),
+      if ($verbose) printf( _("user %s %s has been modified\n"),
 			       $use->firstname,$use->lastname);
     } else {
       $use->iddomain = $domain->iddomain;

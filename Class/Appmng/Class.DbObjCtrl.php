@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.DbObjCtrl.php,v 1.2 2002/01/25 14:31:37 eric Exp $
+// $Id: Class.DbObjCtrl.php,v 1.3 2002/03/05 18:14:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.DbObjCtrl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -21,40 +21,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Class.DbObjCtrl.php,v $
-// Revision 1.2  2002/01/25 14:31:37  eric
-// gestion de cache objet - variable de session
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.7  2001/12/11 08:16:15  eric
-// correction oid -> id
-//
-// Revision 1.6  2001/11/28 16:47:21  eric
-// correction for possible external database
-//
-// Revision 1.5  2001/11/21 16:06:21  eric
-// modif methode initialisation
-//
-// Revision 1.4  2001/11/14 15:16:38  eric
-// modif pour optimisation
-//
-// Revision 1.3  2001/10/12 10:21:50  eric
-// ajout method IsControlled
-//
-// Revision 1.2  2001/10/10 12:04:41  eric
-// a
-//
-// Revision 1.1  2001/09/07 16:48:59  eric
-// gestion des droits sur les objets
-//
-
-//
-// ---------------------------------------------------------------
 
 
-$CLASS_CONTROLLED_PHP = '$Id: Class.DbObjCtrl.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
+
+$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.3 2002/03/05 18:14:51 eric Exp $';
 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');
@@ -90,7 +60,8 @@ Class DbObjCtrl extends DbObj
 
     $this->operm= new ObjectPermission("", 
                                        array($this->userid,
-				             $this->id ));
+				             $this->id,
+					     $this->classid ));
       }
 
 
@@ -139,7 +110,8 @@ Class DbObjCtrl extends DbObj
 
       $this->operm= new ObjectPermission("", 
                                          array($this->userid,
-				               $this->id ));
+				               $this->id,
+					       $this->classid ));
       $acl =new Acl();
 
       $acl-> Set("modifyacl", $this->classid);

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit_object.php,v 1.3 2002/03/02 18:06:26 eric Exp $
+// $Id: edit_object.php,v 1.4 2002/03/05 18:14:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit_object.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -66,7 +66,7 @@ function edit_object(&$action) {
       $userids[$k]["SELECTACL"]= "selectacl_$k";
 
       // compute acl for userId
-      $uperm = new ObjectPermission($action->dbaccess,array($v->id, $coid));
+      $uperm = new ObjectPermission($action->dbaccess,array($v->id, $coid, $appid));
 
       $tacl=array();
       reset($appacls);

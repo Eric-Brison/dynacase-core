@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-02-01 10:42+0100\n"
+	"POT-Creation-Date: 2002-03-05 18:02+0100\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -99,16 +99,16 @@ msgid	"object"
 msgstr	"objet"
 
 #, c-format
-msgid	"user %s %s has been modfied\n"
-msgstr	""
+msgid	"user %s %s has been modified\n"
+msgstr "l'utilisateur %s %s a été modifié\n"
 
 #, c-format
 msgid	"user %s %s has been added\n"
-msgstr	""
+msgstr "l'utilisateur %s %s a été ajouté\n"
 
 #, c-format
 msgid	"add acl %s for %s %s\n"
-msgstr	""
+msgstr "ajout privilège %s pour %s %s\n"
 
 msgid	"appname"
 msgstr	"Application"
@@ -187,9 +187,9 @@ msgstr	"Nom"
 msgid	"short_name"
 msgstr	"Nom abr&eacute;g&eacute;"
 
-#, fuzzy, c-format
+#, c-format
 msgid	"function '%s' not available for application %s (%d)"
-msgstr	"fonction %s non disponible"
+msgstr "fonction %s non disponible pour l'application %s (%d)"
 
 msgid	"Access denied"
 msgstr	"Accès refusé"
@@ -199,6 +199,10 @@ msgstr	"modification des droits"
 
 msgid	"view object acl"
 msgstr	"voir les droits"
+
+#, c-format
+msgid	"Object Permission : permission %s needed (%s) - # %d"
+msgstr	"Permission objet :: permission %s requise (%s) - n° %d"
 
 # ne pas modifier laisser à vide
 msgid	"$code"
@@ -276,9 +280,8 @@ msgstr	"Import/Export"
 msgid	"Edit any access"
 msgstr	"Editer n'importe quel accès"
 
-#, fuzzy
 msgid	"Edit object access by user"
-msgstr	"Editer les accès sur les objets"
+msgstr "Editer les accès sur les objets par utilisateur"
 
 msgid	"Edit object access"
 msgstr	"Editer les accès sur les objets"
@@ -334,13 +337,11 @@ msgstr	"Autres"
 msgid	"butclosew"
 msgstr	"Fermer la fenêtre"
 
-#, fuzzy
 msgid	"search"
-msgstr	"utilisateur"
+msgstr "recherche"
 
-#, fuzzy
 msgid	"clear"
-msgstr	"Fermer"
+msgstr "Effacer"
 
 msgid	"print"
 msgstr	"Impression de la page"
@@ -388,14 +389,17 @@ msgstr	"Contrôle des accès pour"
 msgid	"modify"
 msgstr	"Modifier"
 
+msgid	"viewuser"
+msgstr "Voir les utilisateurs"
+
+msgid	"viewgroup"
+msgstr "Voir les groupes"
+
 msgid	"close"
 msgstr	"Fermer"
 
 msgid	"accessfor"
 msgstr	"Contrôle des accès pour application"
-
-msgid	"anyoid"
-msgstr	"objet commun"
 
 msgid	"download"
 msgstr	"Télécharger le fichier d'acces"
@@ -431,7 +435,7 @@ msgid	"access_free"
 msgstr	"Acces libre"
 
 msgid	"appssl"
-msgstr "Sécurisée"
+msgstr	"Sécurisée"
 
 msgid	"displayable"
 msgstr	"Affichable"
@@ -456,6 +460,9 @@ msgstr	"Liste des param&egrave;tres du style"
 
 msgid	"delconfirmstyle"
 msgstr	"Confirmez-vous la suppression du style"
+
+#~ msgid	"anyoid"
+#~ msgstr	"objet commun"
 
 #~ msgid	"warning_name"
 #~ msgstr	"La saisie de votre nom est obligatoire :"

@@ -20,6 +20,9 @@ if [ "$1" = 1 ] ; then
   log "Create anakeen database user"
   sulog postgres "createuser -d -a anakeen" 
  
+  log "Add plpgsql language"
+  sulog postgres "createlang --dbname=anakeen --pglib=/usr/lib/pgsql plpgsql"
+
   log "Register DB anakeen for automatic dump"
   ll=0
   if [ -f /etc/ankpsql-tools/base-list ] ; then
@@ -47,8 +50,8 @@ if [ "$1" = 1 ] ; then
   # now all functions must return 0
   set -e
 
-  #test if user and database creation are good
-  sulog postgres "echo '\q' | psql anakeen anakeen"
+  #add permission functionnalities
+  sulog postgres "psql anakeen anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
 
   # Init the database with all App
   log "Initiate Database elements"
