@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Common.php,v 1.6 2003/05/14 17:11:49 eric Exp $
+// $Id: Lib.Common.php,v 1.7 2003/06/06 09:13:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Common.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,7 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-$LIB_COMMON = '$Id: Lib.Common.php,v 1.6 2003/05/14 17:11:49 eric Exp $';
+$LIB_COMMON = '$Id: Lib.Common.php,v 1.7 2003/06/06 09:13:51 eric Exp $';
 
 // library of utilies functions
 
@@ -45,6 +45,14 @@ function getMailAddr($userid) {
     if ($ma->isAffected()) {
       $dom = new Domain("",$ma->iddomain);
       $from = $ma->login."@".$dom->name;
+    } else {
+      $user = new User("",$userid);
+
+      if ($user->isAffected() && ($user->isgroup=="Y") && ($user->iddomain > 1)) {
+	$dom = new Domain("",$user->iddomain);
+	$from = $user->login."@".$dom->name;
+	
+      }
     }
     return $from;
 }
