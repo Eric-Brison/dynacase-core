@@ -1,6 +1,9 @@
 <?php
-// $Id: error.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: error.php,v 1.2 2002/03/02 18:05:28 eric Exp $
 // $Log: error.php,v $
+// Revision 1.2  2002/03/02 18:05:28  eric
+// correction pour les zones
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -36,15 +39,14 @@ function error(&$action) {
     $app = new Application();
   
     $app->Set($action->Read("FT_ERROR_APP","CORE"), $action->parent);
-    $erract= new Action();
-    $erract->Set($action->Read("FT_ERROR_ACT","MAIN"), $app);
+
+    $actname = $action->Read("FT_ERROR_ACT","MAIN");
+
 
 
     $action->lay->set("appact", "");
-    if ($erract->long_name != "")
-      $action->lay->set("appact", _($erract->name)." ("._($erract->long_name).")");
-    else if ($erract->name != "")
-      $action->lay->set("appact", _($erract->name));
+    if ($actname != "")
+      $action->lay->set("appact", _($actname));
     
   } 
   
