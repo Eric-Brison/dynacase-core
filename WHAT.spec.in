@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.25 2003/04/02 12:40:21 eric Exp $
+#  $Id: WHAT.spec.in,v 1.26 2003/04/02 12:42:26 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -28,11 +28,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(id -u -n)
 Conflicts: AUTHENT USERS CORE APPMNG ACCESS libwhat libjs
 BuildRequires: docbook-dtd41-sgml
 BuildRequires: docbook-utils
-%{?_with_cerbere2:Requires: php >= 4.2}
-%{!?_with_cerbere2:Requires: php >= 4.0.5}
+Requires: php >= 4.2
 Requires: apache
 Requires: postgresql >= 7.2
-%{?_with_cerbere2:Requires: postgresql-module-plpgsql}
+Requires: postgresql-module-plpgsql
 Requires: php-pgsql
 Requires: php-gettext
 Requires: php-pcre
@@ -43,11 +42,11 @@ Requires: apache-mod_auth_pam
 Requires: apache-mod_dir
 Requires: pam_what
 Requires: ankpsql-tools
+Requires: gettext
+Requires: gettext-devel > 0.11
 Prereq: apache
 Prereq: grep
 Prereq: SysVinit
-Prereq: gettext
-Prereq: gettext-devel > 0.11
 
 %description
 The WHAT application toolkit gives common interface element to develop web applications
