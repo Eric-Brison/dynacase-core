@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.8 2002/04/16 12:07:27 eric Exp $
+//  $Id: Class.Application.php,v 1.9 2002/04/22 14:08:18 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.8 2002/04/16 12:07:27 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.9 2002/04/22 14:08:18 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -533,7 +533,7 @@ function InitApp($name,$update=FALSE) {
 
        // init actions
        $action = new Action($this->dbaccess);
-       $action->Init($app,$action_desc,$update);
+       $action->Init($app,$action_desc,false);
        
      }
 
