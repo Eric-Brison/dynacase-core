@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * WHAT Choose database
+ *
+ * @author Anakeen 2004
+ * @version $Id: wchoose.php,v 1.4 2004/10/05 10:29:49 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ */
+/**
+ */
 $pubdir="/home/httpd/what";
 
 include("WHAT/Lib.Common.php");

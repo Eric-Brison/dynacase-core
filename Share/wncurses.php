@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * WHAT ncurses utilities functions
+ *
+ * @author Anakeen 2004
+ * @version $Id: wncurses.php,v 1.2 2004/10/05 10:30:00 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ */
+/**
+ */
 
 define ("NCURSES_KEY_CR",13);
 global $fullscreen;
