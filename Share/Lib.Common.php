@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Common.php,v 1.3 2002/09/30 09:06:50 eric Exp $
+// $Id: Lib.Common.php,v 1.4 2002/11/19 14:15:00 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Common.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,7 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-$LIB_COMMON = '$Id: Lib.Common.php,v 1.3 2002/09/30 09:06:50 eric Exp $';
+$LIB_COMMON = '$Id: Lib.Common.php,v 1.4 2002/11/19 14:15:00 eric Exp $';
 
 // library of utilies functions
 
@@ -54,5 +54,24 @@ function GetParam($name, $def="") {
   global $action;
 
   return $action->getParam($name,$def);
+}
+
+
+function microtime_diff($a,$b) {
+    list($a_micro, $a_int)=explode(' ',$a);
+     list($b_micro, $b_int)=explode(' ',$b);
+     if ($a_int>$b_int) {
+        return ($a_int-$b_int)+($a_micro-$b_micro);
+     } elseif ($a_int==$b_int) {
+        if ($a_micro>$b_micro) {
+          return ($a_int-$b_int)+($a_micro-$b_micro);
+        } elseif ($a_micro<$b_micro) {
+           return ($b_int-$a_int)+($b_micro-$a_micro);
+        } else {
+          return 0;
+        }
+     } else { // $a_int<$b_int
+        return ($b_int-$a_int)+($b_micro-$a_micro);
+     }
 }
 ?>
