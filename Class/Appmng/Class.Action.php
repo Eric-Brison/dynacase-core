@@ -16,8 +16,11 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.Action.php,v 1.2 2002/01/10 11:11:56 eric Exp $
 //  $Log: Class.Action.php,v $
+//  Revision 1.2  2002/01/10 11:11:56  eric
+//  modif pour pour authentification sur perte de session
+//
 //  Revision 1.1  2002/01/08 12:41:34  eric
 //  first
 //
@@ -170,7 +173,7 @@
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.2 2002/01/10 11:11:56 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -378,6 +381,7 @@ function execute()
       while (list($k, $v) =each($HTTP_GET_VARS)) {
 	if ( ($k != "session") &&
 	     ($k != "app") &&
+	     ($k != "sole") &&
 	     ($k != "action") )
 	$getargs .= "&".$k."=".$v;
       }

@@ -38,7 +38,7 @@ function loginform(&$action) {
         } else {
           $session->activate($u->id);  
           $root=$action->parent->GetRootApp();
-          $root->SetVolatileParam("CORE_BASEURL",$root->GetParam("CORE_PUBURL")."/index.php?session=".$session->id."&");
+          $root->SetVolatileParam("CORE_BASEURL",$root->GetParam("CORE_PUBURL")."/index.php?session=".$session->id."&sole=R&");
 	  
           redirect($action,$app_redir,$act_redir.$arg_redir,$action->GetParam("CORE_BASEURL"));
         }
