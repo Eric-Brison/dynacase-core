@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_mod.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: param_mod.php,v 1.2 2002/04/29 15:32:24 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_mod.php,v $
+// Revision 1.2  2002/04/29 15:32:24  eric
+// correction id pour cache multibase
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -48,6 +51,7 @@ function param_mod(&$action) {
   $ParamCour->key=$appl_id;
   $ParamCour->name=GetHttpVars("name");
   $ParamCour->val=GetHttpVars("val");
+
   if ($creation == "Y") {
     $res=$ParamCour->Add();
     if ($res != "") { 

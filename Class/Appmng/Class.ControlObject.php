@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ControlObject.php,v 1.4 2002/03/08 14:37:36 eric Exp $
+// $Id: Class.ControlObject.php,v 1.5 2002/04/29 15:32:24 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ControlObject.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 //
-$CLASS_CONTROLOBJECT_PHP = '$Id: Class.ControlObject.php,v 1.4 2002/03/08 14:37:36 eric Exp $';
+$CLASS_CONTROLOBJECT_PHP = '$Id: Class.ControlObject.php,v 1.5 2002/04/29 15:32:24 eric Exp $';
 include_once('Class.DbObjCtrl.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -60,7 +60,7 @@ create unique index i_octrl on octrl (id_obj, id_class);';
 
       // change DB for permission : see 'dboperm' session var
       global $action;
-      $dbaccess= $action->Read("dboperm");
+      $dbaccess= $action->Read("dboperm",$dbaccess);
 
 
       DbObj::DbObj($dbaccess, $id,$res,$dbid);
