@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: updateclass.php,v 1.1 2003/04/25 12:44:21 eric Exp $
+// $Id: updateclass.php,v 1.2 2003/05/13 08:52:38 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/Attic/updateclass.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -64,22 +64,23 @@ else $db = $dbaccess;
 include_once("$pubdir/$appclass/Class.$class.php");
 
 
-$o= new $class();
+$o= new $class($db);
 $dbid=pg_connect($db);
 if (! $dbid) {
   print _("cannot access to  database $db\n");
   exit(1);
 } else print _("access granted to  database $db\n");
 
-
+$sql=array();
 $rq=pg_exec ($dbid, "select * from ".$o->dbtable." LIMIT 1;");
 if (!$rq) {
   // table not exist : just create
-  $sqlcmds = explode(";",$o->sqlcreate);
-  while (list($k,$sqlquery)=each($sqlcmds)) {
-    if (chop($sqlquery) != "")
-      $sql[]=$sqlquery;
-  }
+  $o->Create();
+  // $sqlcmds = explode(";",$o->sqlcreate);
+//   while (list($k,$sqlquery)=each($sqlcmds)) {
+//     if (chop($sqlquery) != "")
+//       $sql[]=$sqlquery;
+  // }
 } else {
 
   $row= pg_fetch_array($rq,0,PGSQL_ASSOC);
