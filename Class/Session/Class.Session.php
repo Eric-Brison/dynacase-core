@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.17 2004/04/23 15:35:20 eric Exp $
+ * @version $Id: Class.Session.php,v 1.18 2004/09/20 12:35:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.17 2004/04/23 15:35:20 eric Exp $
+// $Id: Class.Session.php,v 1.18 2004/09/20 12:35:07 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.17 2004/04/23 15:35:20 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.18 2004/09/20 12:35:07 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -80,12 +80,12 @@ var $sessiondb;
 	global $_SERVER;
         // Init the database with the app file if it exists
 
-	
 	$u = new User();
-	if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	  	
+	if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	
+
 	  $this->open($u->id);	
 	} else {
-	  return false;
+	  $this->open();//anonymous session
 	}
       }
 
