@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.10 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: Class.Group.php,v 1.11 2004/08/09 07:55:45 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -199,8 +199,10 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
       */
       $query = new QueryDb($this->dbaccess, "Group");           
       $list = $query->Query(0,0,"TABLE","select * from groups where iduser in (select id from users where isgroup='Y')");
-      foreach ($list as $v) {
-	$this->allgroups[]=$v;
+      if ($list) {
+	foreach ($list as $v) {
+	  $this->allgroups[]=$v;
+	}
       }
     }
   }

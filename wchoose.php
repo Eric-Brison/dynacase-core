@@ -53,7 +53,8 @@ ncurses_wrefresh($wact);
 $stderr = fopen('php://stderr', 'w');
 fwrite($stderr,"export dbanakeen=$dbank\n");
 
-
+ncurses_end();
+exit(0);
 $cpress=strtoupper(chr($pressed));
 
 
