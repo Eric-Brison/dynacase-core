@@ -1,8 +1,11 @@
 #!/bin/sh
 # ---------------------------------------------------------
-# $Id: WHAT.cron,v 1.2 2004/01/14 17:26:42 eric Exp $
+# $Id: WHAT.cron,v 1.3 2004/08/12 10:27:17 eric Exp $
 #  
 # Distribued under GPL 2 licence terms
 # ---------------------------------------------------------
 find /var/run/php/ -name 'sess_*' -exec /bin/rm {} \;
+find /tmp/ -name 'wbar*' -exec /bin/rm {} \;
+find /tmp/ -name 'bgexec*' -exec /bin/rm {} \;
+find /tmp/ -name 'bgtar*' -exec /bin/rm {} \;
 echo "delete from sessions" | psql anakeen anakeen  > /dev/null
