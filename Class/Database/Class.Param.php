@@ -18,12 +18,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.9 2002/07/31 09:47:31 eric Exp $
+//  $Id: Class.Param.php,v 1.10 2002/08/09 13:55:41 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
+include_once('Class.ParamDef.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.9 2002/07/31 09:47:31 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.10 2002/08/09 13:55:41 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -56,7 +57,10 @@ function PreInsert( )
       return "Le nom du paramètre ne doit pas contenir d'espace";
     }
 }
-
+ function PostInit() {
+   $opd=new Paramdef();
+   $opd->create();
+ }
 function PreUpdate( )
 {
    $this->PreInsert(); 
