@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.4 2002/04/16 12:07:27 eric Exp $
+//  $Id: Class.Layout.php,v 1.5 2002/04/22 14:08:56 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -236,7 +236,7 @@ var $strip='Y';
     $list[]=$this->action->GetParam("CORE_JSURL")."/logmsg.js";
     reset($list);
     while(list($k,$v) = each($list)) {
-      $js .= "<script language=\"JavaScript1.2\" src=\"$v\"></script>\n";
+      $js .= "<script language=\"JavaScript\" src=\"$v\"></script>\n";
     }
     return $js;
   }
