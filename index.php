@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.27 2005/01/21 17:47:40 eric Exp $
+ * @version $Id: index.php,v 1.28 2005/03/01 17:19:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -14,7 +14,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.27 2005/01/21 17:47:40 eric Exp $
+// $Id: index.php,v 1.28 2005/03/01 17:19:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -189,6 +189,7 @@ $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
   if ( $pos>0) {
     $action->Register("navigator","EXPLORER");
+    $core->SetVolatileParam("ISIE", true);
     if (ereg("MSIE ([0-9.]+).*",$nav,$reg)) {
       $action->Register("navversion",$reg[1]);      
     }
@@ -199,6 +200,7 @@ if ($action->Read("navigator","") == "") {
     }
   }
 }
+$core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
 // init for gettext
 setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
 setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
