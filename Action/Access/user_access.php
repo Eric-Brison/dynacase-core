@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.4 2002/03/21 17:52:37 eric Exp $
+// $Id: user_access.php,v 1.5 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -130,10 +130,7 @@ function user_access(&$action, $group=false) {
 
   while (list ($k,$v) = each($query->table->array)) {
     
-    if (! $action->AppInstalled($v["name"])) { // verify first application is installed ?
-      unset($query->table->array[$k]);
-      continue;
-    }
+    
     if (!isset($v["id"])) continue;
     // test if application is controled
     $acl=new Acl($action->dbaccess);

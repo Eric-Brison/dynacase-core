@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: appl_access.php,v 1.3 2002/03/21 17:52:37 eric Exp $
+// $Id: appl_access.php,v 1.4 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/appl_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -79,7 +79,7 @@ function appl_access(&$action, $oid=0) {
     reset($applist);
     while(list($k,$v)=each($applist)) {
       
-      if (($v->objectclass=="Y") || ($action->AppInstalled($v->name))) {
+      if (($v->objectclass=="Y") || (true)) {
 	$query = new QueryDb("","Acl");
 	$query->basic_elem->sup_where=array("id_application={$v->id}");
 	$acl_list = $query->Query("","","TABLE");

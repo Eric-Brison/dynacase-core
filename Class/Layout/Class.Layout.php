@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.7 2002/07/26 15:02:41 eric Exp $
+//  $Id: Class.Layout.php,v 1.8 2002/08/26 13:04:58 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -127,12 +127,12 @@ var $strip='Y';
         reset($this->corresp["$name"]);
         $loc=$block;
         while(list($k2,$v2) = each ($this->corresp["$name"])) {
-          if (isset($v[$v2])) {
-            $loc = str_replace( $k2, $v[$v2], $loc);
-          } else {
-            $loc = str_replace( $k2, "", $loc);
-          }
-        }
+           if (isset($v[$v2])) {
+	     $loc = str_replace( $k2, $v[$v2], $loc);
+	   } else {
+	     $loc = str_replace( $k2, "", $loc);
+	   }
+	}
         $out .= $loc;
       }
     }
@@ -154,6 +154,12 @@ var $strip='Y';
        $out);
   }
 
+  function ParseKey(&$out) {
+    if (isset ($this->rkey)) {
+      $out=preg_replace($this->pkey,$this->rkey,$out);
+    }
+  }
+
   function execute($appname,$actionargn) {
 
 
@@ -170,9 +176,7 @@ var $strip='Y';
       while (list($k, $v) = each($zargs)) {
 	if (ereg("([^=]*)=(.*)",$v, $regs)) {
 	  // memo zone args for next action execute
-	  if ($regs[2][0] == "*") { // its a layout variable
-	    $ZONE_ARGS[$regs[1]]=$this->corresptab["[".substr($regs[2],1)."]"];
-	  } else   $ZONE_ARGS[$regs[1]]=$regs[2];
+	   $ZONE_ARGS[$regs[1]]=$regs[2];
 	}
       }
     }
@@ -211,7 +215,8 @@ var $strip='Y';
            
 
   function set($tag,$val) {
-     $this->corresptab["[$tag]"]=$val;
+     $this->pkey[]="/\[$tag\]/";
+     $this->rkey[]=$val;
   }
 
   function ParseRef(&$out) {
@@ -315,13 +320,7 @@ var $strip='Y';
 
     // Parse IMG: and LAY: tags
     $this->ParseRef($out);
-
-    if (isset ($this->corresptab)) {
-      reset($this->corresptab); 
-      while (list($k,$v) = each($this->corresptab)) {
-        $out = str_replace($k,$v,$out);
-      }
-    }
+    $this->ParseKey($out);
 
     $this->ParseZone($out);
     $this->ParseJs($out);

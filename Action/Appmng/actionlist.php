@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: actionlist.php,v 1.3 2002/03/21 17:52:37 eric Exp $
+// $Id: actionlist.php,v 1.4 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/actionlist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: actionlist.php,v $
+// Revision 1.4  2002/08/26 13:04:58  eric
+// application multi-machine
+//
 // Revision 1.3  2002/03/21 17:52:37  eric
 // prise en compte application répartie sur plusieurs machines
 //
@@ -81,7 +84,7 @@ function actionlist(&$action) {
   $i=0;
   reset($applist);
   while(list($k,$v)=each($applist)) {
-    if ($action->AppInstalled($v->name)) {
+
       if ($appl_id == 0) {
 	$appl_id=$v->id;
 	$action->Register("action_appl_id",$appl_id);
@@ -95,7 +98,7 @@ function actionlist(&$action) {
 	$tab[$i]["selected"]="";
       }
       $i++;
-    }
+    
   }
 
   $action->lay->SetBlockData("SELAPPLI",$tab);

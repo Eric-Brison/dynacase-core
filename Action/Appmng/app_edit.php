@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: app_edit.php,v 1.2 2002/02/04 14:44:36 eric Exp $
+// $Id: app_edit.php,v 1.3 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/app_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: app_edit.php,v $
+// Revision 1.3  2002/08/26 13:04:58  eric
+// application multi-machine
+//
 // Revision 1.2  2002/02/04 14:44:36  eric
 // https
 //
@@ -64,6 +67,7 @@ function app_edit(&$action) {
     $AppCour = new Application($action->GetParam("CORE_USERDB"),$id);
     $action->lay->Set("id",$id);
     $action->lay->Set("name",$AppCour->name);
+    $action->lay->Set("machine",$AppCour->machine);
     $action->lay->Set("short_name",$AppCour->short_name);
     $action->lay->Set("description",$AppCour->description);
     $action->lay->Set("passwd","");
@@ -150,6 +154,7 @@ function app_edit(&$action) {
   $form->SetParam("displayable","","sel");
   $form->SetParam("access_free","","sel");
   $form->SetParam("ssl","","sel");
+  $form->SetParam("machine");
   $form->SetParam("id");
   $action->parent->AddJsCode($form->GetSubJs());
   $control=$action->GetLayoutFile("app_control.js");

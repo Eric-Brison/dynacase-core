@@ -39,20 +39,20 @@
 
 
 <table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
-<tr>
-  <td height="45" width="1%" class="headcell"  ><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
-  <td class="headcell" align="left" width="25%"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
+<tr class="headcell">
+  <td height="45" width="1%"   ><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
+  <td  align="left" width="25%"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
 
 
  [BLOCK FUNCTION]
-<td width="40" class="headcell" align="center">
+<td width="40"  align="center" >
      <a href="#"><img  onClick="lauch_action(this.src,'[name]','[descriptionsla]');" 
      onMouseOver="this.width+=6; this.height+=6;" 
-     onMouseOut="this.width-=6; this.height-=6;" src="[CORE_PUBURL]/[name]/Images/[icon]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
+     onMouseOut="this.width-=6; this.height-=6;" src="[pubdir]/[name]/Images/[icon]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
 
-  <td class="headcell" align="right" ><span class="headtitle">
+  <td  align="right" ><span class="headtitle">
      <a class="headtitle" href="[CORE_BASEURL]app=APPMNG&action=PARAM_CULIST" target="body">[USER]</a>
      
 

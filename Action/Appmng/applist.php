@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.4 2002/03/21 17:52:37 eric Exp $
+// $Id: applist.php,v 1.5 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.5  2002/08/26 13:04:58  eric
+// application multi-machine
+//
 // Revision 1.4  2002/03/21 17:52:37  eric
 // prise en compte application répartie sur plusieurs machines
 //
@@ -94,6 +97,7 @@ function applist(&$action) {
   $form->SetParam("displayable");
   $form->SetParam("access_free");
   $form->SetParam("ssl");
+  $form->SetParam("machine");
 
   $form->SetKey("id");
 
@@ -122,18 +126,16 @@ function applist(&$action) {
   // Affect the modif icons
 
   while(list($k,$v) = each($query->table->array)) {
-    if ($action->AppInstalled($v["name"])) {
+    
       $query->table->array[$k]["update"] = "";
       $query->table->array[$k]["edit"] = "";
       $query->table->array[$k]["delete"] = "";
       $query->table->array[$k]["description"] = $action->text($query->table->array[$k]["description"]);
-    } else {
-      unset($query->table->array[$k]);
-    }
+    
   }
     
 
-  $query->table->fields= array("id", "update","edit","delete","name","description","available","access_free","displayable","ssl");
+  $query->table->fields= array("id", "update","edit","delete","name","description","available","access_free","displayable","ssl","machine");
 
 
   

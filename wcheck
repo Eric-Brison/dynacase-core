@@ -13,15 +13,18 @@ if ($HTTP_CONNECTION != "")     {
 
 //---------------------------------------------------
 function GetDbVersion($dbid) {
-  
+  global $tmachine;
+
   $tver=array();
-  $rq=pg_exec ($dbid, "select paramv.val, application.name from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
+  $tmachine=array();
+  $rq=pg_exec ($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
 
   if ($rq === false) return GetDbOldVersion($dbid);
 
   for ($i=0; $i<pg_numrows($rq); $i++) {
     $row= pg_fetch_array($rq,$i);
     $tver[$row["name"]]=$row["val"];
+    $tmachine[$row["name"]]=$row["machine"];
   }
 
 
@@ -102,7 +105,7 @@ if (! $dbid) {
   $tvdb= GetDbVersion($dbid);
   $tvfile=GetFileVersion("$pubdir");
   
-pg_close($dbid);
+  pg_close($dbid);
   $tapp = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
   
   
@@ -114,23 +117,28 @@ pg_close($dbid);
 		" N I U D");
   print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
   while (list($k,$v) = each ($tapp)) {
-    if ($tvdb[$v] == $tvfile[$v]) {
+    if (($tmachine[$v] != "") && ($tmachine[$v] != $HOSTNAME))
+      $chk[$v]="?";
+    else if ($tvdb[$v] == $tvfile[$v]) {
       $chk[$v]="";
     } else if ($tvdb[$v] == "" ) {
       $chk[$v]="I";
-    } else if ($tvdb[$v] > $tvfile[$v]) {
+    } else if ( $tvfile[$v] == "") {
       $chk[$v]="D";    
+    } else if ($tvdb[$v] > $tvfile[$v]) {
+      $chk[$v]="R";    
     } else {
       $chk[$v]="U";    
     }
-    print sprintf("|%12s|%10s|%10s|%10s|\n",
+    print sprintf("|%12s|%10s|%10s|%10s|%s\n",
 		  $v,
 		  $tvdb[$v],
 		  $tvfile[$v],
-		  $chk[$v]);
+		  $chk[$v],
+		  $tmachine[$v]);
   
   }
-  
+
   print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
   
   reset($chk);
@@ -138,14 +146,17 @@ pg_close($dbid);
     switch ($v) {
     case "I":
       $wsh[] = "$pubdir/wsh.php --api=appadmin --method=init --appname=$k";
-      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
-      break;
+    $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
+    break;
     case "U":
       $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
-      break;
+    break;
     case "D":
       $wsh[] = "#$pubdir/wsh.php --api=appadmin --method=delete --appname=$k";
-      break;
+    break;
+    case "R":
+      $wsh[] = "#rpm -Uvh $k-".$tvdb[$k];
+    break;
 
     }
 
@@ -155,7 +166,10 @@ pg_close($dbid);
 	$pre[] = "$pubdir/$k/{$k}_post $v";
 	$post[] = "$pubdir/$k/{$k}_post U";
       } else {
-	$post[] = "$pubdir/$k/{$k}_post $v";
+	if (($v != "R") && ($v != "?")) {
+	  if ($v == "D") $post[] = "#$pubdir/$k/{$k}_post $v";
+	  else $post[] = "$pubdir/$k/{$k}_post $v";
+	}
       }
     }
     
@@ -187,19 +201,19 @@ $cont=fread($stdin,1);
 
 if (strtoupper($cont[0]) != "Y") exit;
      
-     while (list($k,$v) = each ($actions)) {
-       echo "--------------------------------------------------------------------------------\n";
+while (list($k,$v) = each ($actions)) {
+  echo "--------------------------------------------------------------------------------\n";
 	
-       echo "[5;34;49m";
-       echo $v.":";	
-       echo "[0m";
+  echo "[5;34;49m";
+  echo $v.":";	
+  echo "[0m";
 
-       $err=system ("echo `date` \"$v\" >>/tmp/whatchk.log");
-       $err=system ($v.">>/tmp/whatchk.log");
-       if ($err === false) 
-	 echo "[1;31;40mKO[0m\n";
-       else echo "[1;32;40mOK[0m\n";
-     }
-     echo "see file log /tmp/whatchk.log\n";
+  $err=system ("echo `date` \"$v\" >>/tmp/whatchk.log");
+  $err=system ($v.">>/tmp/whatchk.log");
+  if ($err === false) 
+    echo "[1;31;40mKO[0m\n";
+  else echo "[1;32;40mOK[0m\n";
+}
+echo "see file log /tmp/whatchk.log\n";
 
-  ?>
+?>

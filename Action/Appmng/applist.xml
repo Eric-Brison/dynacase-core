@@ -1,5 +1,5 @@
 <!-- 
-  $Id: applist.xml,v 1.2 2002/02/04 14:44:36 eric Exp $
+  $Id: applist.xml,v 1.3 2002/08/26 13:04:58 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.xml,v $
 -->
 
@@ -64,7 +64,7 @@ function confirmdel(id, name) {
 
 <!-- TABLEPAGING -->
 <tr>
-  <td align="left" colspan="3" class="CORETblCell">
+  <td align="left" colspan="4" class="CORETblCell">
 
   &nbsp;[TABLE_PREV]
 
@@ -78,7 +78,7 @@ function confirmdel(id, name) {
 <!-- /TABLEPAGING -->
 
 <!-- TABLEHEAD -->
-<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <tr>
   <td  class="CORETblCell"><a href="[CORE_BASEURL]app=APPMNG&action=APP_UPDATEALL"><img border=0 src="[IMG:reload.gif]"  alt="UpdateAll" title="UpdateAll"></a></td>
@@ -88,11 +88,12 @@ function confirmdel(id, name) {
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:access_free]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:displayable]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:appssl]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:appmachine]</span></td>
 </tr>
 
 <!-- /TABLEHEAD -->
 
-<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <!-- TABLEBODY -->
 [BLOCK TABLEBODY]
@@ -114,14 +115,15 @@ function confirmdel(id, name) {
   <td ><span class="CORETbl">[access_free]</span></td>
   <td ><span class="CORETbl">[displayable]</span></td>
   <td ><span class="CORETbl">[ssl]</span></td>
+  <td ><span class="CORETbl">[machine]</span></td>
 </tr>
 [ENDBLOCK TABLEBODY]
 <!-- /TABLEBODY -->
 
-<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 
-<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 <!-- TABLEPAGING -->
 <tr>
@@ -130,7 +132,7 @@ function confirmdel(id, name) {
   &nbsp;[TABLE_PREV]
 
   </td>
-  <td align="center" colspan="5" class="CORETblCell">
+  <td align="center" colspan="6" class="CORETblCell">
 
   <span class="CORETblBold">[TABLE_NUM]&nbsp;/&nbsp;[TABLE_NB]</span>
 
@@ -142,7 +144,7 @@ function confirmdel(id, name) {
   </td>
 </tr>
 <!-- /TABLEPAGING -->
-<tr><td colspan="7" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
 </table>
 

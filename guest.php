@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: guest.php,v 1.1 2002/08/06 09:35:58 eric Exp $
+// $Id: guest.php,v 1.2 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -112,6 +112,12 @@ if (($standalone == "") || ($standalone == "N")) {
   $appl = new Application();
   $appl->Set($HTTP_GET_VARS["app"],$core);
 
+  if (($appl->machine != "") && ($SERVER_NAME != $appl->machine)) { // special machine to redirect    
+      $puburl = "http://".$appl->machine.$REQUEST_URI;
+
+      Header("Location: $puburl");
+      exit;
+  }
   // ----------------------------------------
     // test SSL mode needed or not
     // redirect if needed

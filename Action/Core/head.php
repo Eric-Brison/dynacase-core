@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.10 2002/04/15 14:19:59 eric Exp $
+// $Id: head.php,v 1.11 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -41,7 +41,7 @@ function head(&$action) {
   if ($query->nb > 0) {
     $i=0;
     while(list($k,$appli)=each($list)) {
-      if (! $action->AppInstalled($appli["name"])) continue;
+      //      if (! $action->AppInstalled($appli["name"])) continue;
       if ($appli["access_free"] == "N") {
         $action->log->debug("Access not free for :".$appli["name"]);
         if (isset($action->user)) {
@@ -73,6 +73,8 @@ function head(&$action) {
       }
       $appli["description"]= $action->text($appli["description"]); // translate
       $appli["descriptionsla"]= addslashes($appli["description"]); // because its in between '' in layout
+      if ($appli["machine"] != "") $appli["pubdir"]= "http://".$appli["machine"]."/what";
+      else $appli["pubdir"]=$action->getParam("CORE_PUBURL");
       $tab[$i++]=$appli;
     }
   }

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: app_mod.php,v 1.2 2002/02/04 14:44:36 eric Exp $
+// $Id: app_mod.php,v 1.3 2002/08/26 13:04:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/app_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: app_mod.php,v $
+// Revision 1.3  2002/08/26 13:04:58  eric
+// application multi-machine
+//
 // Revision 1.2  2002/02/04 14:44:36  eric
 // https
 //
@@ -56,6 +59,7 @@ function app_mod(&$action) {
   $AppCour->displayable=GetHttpVars("displayable");
   $AppCour->available=GetHttpVars("available");
   $AppCour->access_free=GetHttpVars("access_free");
+  $AppCour->machine=GetHttpVars("machine");
   $AppCour->ssl=GetHttpVars("ssl");
 
   if ($id == "") {

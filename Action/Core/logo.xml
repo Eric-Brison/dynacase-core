@@ -108,7 +108,7 @@ DIV.TITLE {
 }
 
 </style>
-<form action="[CORE_PUBURL]/AUTHENT/authent.php" method=post name="authent">
+<form action="[CORE_PUBURL]/AUTHENT/authent.php?[CORE_SESSIONID]" method=post name="authent">
    <input type=hidden NAME="SeenBefore" VALUE="1">
    <input type=hidden NAME="logout" VALUE="Y">
    <input type=hidden NAME="OldAuth" VALUE="[PHP_AUTH_USER]">

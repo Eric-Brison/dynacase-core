@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.8 2002/05/23 16:14:40 eric Exp $
+//  $Id: Class.Action.php,v 1.9 2002/08/26 13:04:58 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.8 2002/05/23 16:14:40 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.9 2002/08/26 13:04:58 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -429,7 +429,7 @@ function fatal($msg) {
   $this->logaction->fatal($msg);
 }
 
-// verify if the application is really installed
+// verify if the application is really installed in localhost
 function AppInstalled($appname) {
   
   $pubdir = $this->parent->GetParam("CORE_PUBDIR");
