@@ -23,6 +23,9 @@ if [ "$1" = 1 ] ; then
   log "Add plpgsql language"
   sulog postgres "createlang --dbname=anakeen --pglib=/usr/lib/pgsql plpgsql"
 
+  log "Add plpgsql functions"
+  sulog postgres "psql freedom anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
+
   log "Register DB anakeen for automatic dump"
   ll=0
   if [ -f /etc/ankpsql-tools/base-list ] ; then
