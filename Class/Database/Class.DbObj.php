@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.6 2002/04/03 13:42:51 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.7 2002/04/29 15:31:36 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -210,7 +210,7 @@ function Affect($array)
         reset($array);
         while(list($k,$v) = each($array)) {
           if (!is_integer($k)) {
-            $this->$k = stripslashes($v);
+            $this->$k = $v;
           }
         }
         $this->Complete();
