@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.31 2004/08/23 12:00:13 eric Exp $
+ * @version $Id: Class.User.php,v 1.32 2004/09/15 08:06:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.31 2004/08/23 12:00:13 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.32 2004/09/15 08:06:10 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -317,25 +317,7 @@ create sequence seq_id_users start 10";
       $err=$this->Modify();
     }  
 
-    if ($err == "") {
-      if ($needmail) {
-	include_once("Class.MailAccount.php");
-	    
-	// create mail account
-	$mailapp = new Application();
-	if ($mailapp->Exists("MAILADMIN")) {
-	  $mailapp->Set("MAILADMIN", $action->parent);
-	  $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
-	  $uacc->iddomain    = $this->iddomain ;
-	  $uacc->iduser      = $this->id;
-	  $uacc->login       = $this->login;
-	  $err=$uacc->Add();
-	  if ($err == "") $err=$this->Modify();
-	}          
 
-	
-      }
-    }
     return $err;
   }
 
