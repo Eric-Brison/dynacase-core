@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.32 2004/09/15 08:06:10 eric Exp $
+ * @version $Id: Class.User.php,v 1.33 2004/10/04 09:10:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.32 2004/09/15 08:06:10 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.33 2004/10/04 09:10:46 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -29,7 +29,7 @@ define("GADMIN_ID", 4);
 
 Class User extends DbObj
 {
-  var $fields = array ( "id","iddomain","lastname","firstname","login","password","isgroup","expires","passdelay","status","ntpasswordhash","lmpasswordhash","fid");
+  var $fields = array ( "id","iddomain","lastname","firstname","login","password","isgroup","expires","passdelay","status","mail","ntpasswordhash","lmpasswordhash","fid");
 
   var $id_fields = array ("id");
 
@@ -51,6 +51,7 @@ create table users ( id      int not null,
                         expires    int,
                         passdelay  int,
                         status     char,
+                        mail       text,
                         ntpasswordhash text,
                         lmpasswordhash text,
                         fid int);
@@ -239,7 +240,7 @@ create sequence seq_id_users start 10";
    */
   function SetUsers($fid,$lname,$fname,$expires,$passdelay,
 		    $login,$status,
-		    $pwd1,$pwd2,$iddomain)  {
+		    $pwd1,$pwd2,$iddomain,$extmail)  {
 
     $this->lastname=$lname;
     $this->firstname=$fname;	
@@ -249,12 +250,33 @@ create sequence seq_id_users start 10";
     if ($pwd1==$pwd2 and $pwd1<>"") {
       $this->password_new=$pwd2;   
     }
-
-    if (($iddomain > 1) && ($this->iddomain != $iddomain)) $needmail=true;
+    if (($iddomain > 1) && ($this->iddomain != $iddomain)&& ($this->iddomain < 2)) $needmail=true;
     else $needmail=false;
-    $this->iddomain=$iddomain;  
-    if ($this->iddomain == 0) {
-      $this->iddomain=1;
+
+    if ($iddomain == 0) {
+      if ($extmail != "") {
+	$this->mail=$extmail;
+	$this->iddomain = "0";    
+      } 
+    } else {
+      if ($iddomain == 1) {
+	$this->mail=""; // no mail
+	$this->iddomain=$iddomain;  
+      } elseif ($this->iddomain != $iddomain) {
+	if ($this->iddomain > 1) {
+	  // need change mail account
+	  
+	  include_once("Class.MailAccount.php");
+	  $uacc = new MailAccount(GetParam("MAILDB"),$this->id);
+	  if ($uacc->isAffected()) {
+	    $uacc->iddomain=$iddomain;
+	    $uacc->modify();
+	  }
+	}
+	$this->iddomain=$iddomain;  
+	$this->mail=$this->getMail(true);
+
+      }
     }
     
     if ($expires>0) $this->expires=$expires;
@@ -267,6 +289,7 @@ create sequence seq_id_users start 10";
     } else { 
       $err=$this->Modify();
     }  
+
 
     if ($err == "") {
       if ($needmail) {
@@ -281,17 +304,17 @@ create sequence seq_id_users start 10";
 	  $uacc->iduser      = $this->id;
 	  $uacc->login       = $this->login;
 	  $err=$uacc->Add(true);
-	  if ($err == "") $err=$this->Modify(true);
-	}          
-	
-	 
-      }  
-     
-    
-    
+	  if ($err == "") {
+	    $this->mail=$this->getMail(true);
+
+	    $err=$this->Modify(true);
+	  } 
+	}          		 
+      }               
     }
     return $err;
   }
+
  /**
    * update user from FREEDOM IUSER document
    * @param int $fid document id
@@ -302,13 +325,12 @@ create sequence seq_id_users start 10";
     if ($gname!="") $this->lastname=$gname;
     if (($this->login=="")&&($login!="")) $this->login=$login;
 
-    if (($iddomain > 1) && ($this->iddomain != $iddomain)) $needmail=true;
-    else $needmail=false;
     $this->iddomain=$iddomain;     
     if ($this->iddomain == 0) {
       $this->iddomain=1;
     }
     
+    $this->mail=$this->getMail(true);
     $this->fid=$fid;
     if (! $this->isAffected()) {    
       $this->isgroup="Y";
@@ -395,6 +417,35 @@ create sequence seq_id_users start 10";
       return ($passres == $passk);
     } 
 
+  /**
+   * return mail adress
+   * @param bool $reinit recompute adress from mail account
+   * @return string mail address empty if no mail
+   */
+  function getMail($reinit=false) {
+
+    if (($this->mail != "") && (! $reinit)) return $this->mail;
+
+    if ($this->iddomain == 1) return "";
+    if ($this->iddomain == 0) return $this->mail;
+
+    include_once("Class.MailAccount.php");
+    $from="";
+    $ma = new MailAccount("",$this->id);
+    if ($ma->isAffected()) {
+      $dom = new Domain("",$this->iddomain);
+      $from = $ma->login."@".$dom->name;
+    } else {
+
+      if ($this->isAffected() && ($this->isgroup=="Y") && ($this->iddomain > 1)) {
+	$dom = new Domain("",$this->iddomain);
+	$from = $this->login."@".$dom->name;
+	
+      }
+    }
+    return $from;
+    
+  }
   function PostInit() {
 
     $group = new group($this->dbaccess);

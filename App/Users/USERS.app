@@ -6,7 +6,7 @@ $app_desc = array (
 "description"	=>N_("What User Management"),//long description
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"users.gif",		//Icon
-"displayable"	=>"Y"			//Should be displayed on an app list (Y,N)
+"displayable"	=>"N"			//Should be displayed on an app list (Y,N)
 );
 
 $app_acl = array (

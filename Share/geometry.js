@@ -97,7 +97,6 @@ function autoHresize() {
 
 function autoVresize() {
   if (window != top) return;
-
   var dw=0;
   var dh=0;
   if (document.body.scrollWidth > self.screen.availWidth) 

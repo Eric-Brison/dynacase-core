@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.12 2004/08/12 10:28:04 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.13 2004/10/04 09:10:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -32,23 +32,10 @@ function AddWarningMsg($msg) {
 }
 
 function getMailAddr($userid) {
-    include_once("Class.MailAccount.php");
 
-    $from="";
-    $ma = new MailAccount("",$userid);
-    if ($ma->isAffected()) {
-      $dom = new Domain("",$ma->iddomain);
-      $from = $ma->login."@".$dom->name;
-    } else {
-      $user = new User("",$userid);
-
-      if ($user->isAffected() && ($user->isgroup=="Y") && ($user->iddomain > 1)) {
-	$dom = new Domain("",$user->iddomain);
-	$from = $user->login."@".$dom->name;
-	
-      }
-    }
-    return $from;
+    $user = new User("",$userid);
+    if ($user->isAffected()) return $user->getMail();
+    return false;
 }
 
 
