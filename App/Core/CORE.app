@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.6 2004/08/12 10:27:42 eric Exp $
+// $Id: CORE.app,v 1.7 2004/10/05 10:26:12 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -61,6 +61,9 @@ $action_desc = array (
   ),
   array(
    "name"               =>"BLANK"
+  ),
+  array(
+   "name"               =>"DOCPDF"
   ),
   array(
    "name"               =>"GENCSS",

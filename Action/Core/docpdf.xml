@@ -1,0 +1,13 @@
+[ZONE CORE:HTMLHEAD?title=[TEXT:Manuals]]
+[BLOCK PDFDOC]
+<div class="detail" width="200px" >
+<a href="[CORE_STANDURL]&app=CORE&action=HELPVIEW&&filename=[filename]">[title]</a><hr>
+
+<p>[subject]</p>
+<p align="right">[cdate]</p>
+</div>
+<br>
+[ENDBLOCK PDFDOC]
+
+
+[ZONE CORE:HTMLFOOT]

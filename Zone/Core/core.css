@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.26 2004/02/24 08:27:33 eric Exp $
+ * $Id: core.css,v 1.27 2004/10/05 10:30:13 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -113,6 +113,13 @@ A:link, A:visited {
   color: [CORE_ACOLOR];
   font-family: [CORE_FONTLIST1];
   text-decoration: none;
+}
+
+IMG.click:hover {
+  	cursor: pointer;
+}
+IMG.click:hover {
+        background-color: [CORE_BGCOLORHIGH]; 
 }
 
 /*
@@ -248,6 +255,13 @@ div.detail {
   border-color: [CORE_FGCOLOR];
   border-width: 1pt;
   background: #FFFFFF;
+  float:left;
+  width:300px;
+  padding:10px;
+  margin:10px;
+  spacing:10px;
+	
+  -moz-border-radius:25px;
 }
 
 /*
