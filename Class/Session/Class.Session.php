@@ -16,7 +16,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.7 2002/08/06 09:35:58 eric Exp $
+// $Id: Class.Session.php,v 1.8 2003/05/19 12:58:30 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -25,7 +25,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.7 2002/08/06 09:35:58 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.8 2003/05/19 12:58:30 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -87,7 +87,6 @@ var $sessiondb;
  
   function Set($id)
     {
-      $this->GCollector();
       $query=new QueryDb($this->dbaccess,"Session");
       $query->criteria = "id";
       $query->operator = "=";
@@ -124,6 +123,7 @@ var $sessiondb;
 	}
       }
 
+      $this->GCollector();
       return true;
     }
 
