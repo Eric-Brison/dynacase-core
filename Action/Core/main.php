@@ -1,9 +1,9 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Main page for WHAT
  *
  * @author Anakeen 2000 
- * @version $Id: main.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: main.php,v 1.4 2004/01/13 09:32:33 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,28 +11,9 @@
  /**
  */
 
-// $Id: main.php,v 1.3 2003/08/18 15:46:41 eric Exp $
-// $Log: main.php,v $
-// Revision 1.3  2003/08/18 15:46:41  eric
-// phpdoc
-//
-// Revision 1.2  2003/04/07 12:33:04  eric
-// portail
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.3  2001/11/14 15:23:45  eric
-// modif mode opératoire pour standalone = 'R'
-//
-// Revision 1.2  2001/01/19 02:11:25  marianne
-// Ajout param session sur retour au sommaire
-//
-// Revision 1.1  2000/10/13 08:52:39  marc
-// Creation
-//
-//
+
 include_once('Class.Application.php');
+include_once('Class.Session.php');
 
 function main(&$action) {
   global $HTTP_GET_VARS;
@@ -46,5 +27,8 @@ function main(&$action) {
   $action->lay->set("appd", $appd);
   $action->lay->set("actd", $actd);
       
+  // reopen a new session
+  $action->parent->session->Set("");
+  $action->parent->SetSession($action->parent->session);
 }
 ?>
