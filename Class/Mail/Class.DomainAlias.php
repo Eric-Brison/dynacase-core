@@ -18,9 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.DomainAlias.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.DomainAlias.php,v 1.2 2003/04/21 11:18:28 marc Exp $
 //
 // $Log: Class.DomainAlias.php,v $
+// Revision 1.2  2003/04/21 11:18:28  marc
+// Version 0.2.3, see ChangeLog
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -60,7 +63,7 @@ include_once('Class.Pop.php');
 
 Class DomainAlias extends DbObj {
 
-var $Class = '$Id: Class.DomainAlias.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+var $Class = '$Id: Class.DomainAlias.php,v 1.2 2003/04/21 11:18:28 marc Exp $';
 
 var $fields = array ( "iddomainalias",
                       "iddomain",
@@ -77,7 +80,7 @@ create table domainalias(
      iddomainalias   int not null,
      iddomain   int not null,
      primary key (iddomainalias),
-     name	varchar(100),
+     name	varchar(100) unique,
      removed    int,
      uptime     int );
 create index domainalias_idx on domainalias(iddomainalias);

@@ -18,9 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Domain.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.Domain.php,v 1.2 2003/04/21 11:18:28 marc Exp $
 //
 // $Log: Class.Domain.php,v $
+// Revision 1.2  2003/04/21 11:18:28  marc
+// Version 0.2.3, see ChangeLog
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -73,7 +76,7 @@ include_once('Class.Pop.php');
 
 Class Domain extends DbObj {
 
-var $Class = '$Id: Class.Domain.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+var $Class = '$Id: Class.Domain.php,v 1.2 2003/04/21 11:18:28 marc Exp $';
 
 var $fields = array ( "iddomain",
 		      "name",
@@ -81,7 +84,13 @@ var $fields = array ( "iddomain",
                       "root",
                       "gentime",
                       "quotast",
-                      "quota" );
+                      "quota",
+		      "quotaalert",
+		      "quotatext",
+		      "nobodymsg",
+		      "nobodyalert",
+		      "autoreplaymsg"
+		      );
 
 var $id_fields = array ( "iddomain" );
 
@@ -96,7 +105,13 @@ create table domain(
      root	varchar(255),
      gentime	int,
      quotast   int,
-     quota      int );
+     quota      int,
+     quotaalert varchar(255),
+     quotatext  varchar(255),
+     nobodymsg  varchar(255),
+     nobodyalert varchar(255),
+     autoreplaymsg varchar(255)
+     );
 create index domain_idx on domain(iddomain);
 create sequence seq_iddomain start 10; 
 ";
