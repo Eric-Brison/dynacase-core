@@ -30,7 +30,7 @@ function getFrameHeight() {
 
 
 
-  function CenterDiv(eid) { 
+function CenterDiv(eid) { 
       var winH=getFrameHeight();
       var winW=getFrameWidth();
 
@@ -49,7 +49,7 @@ function getFrameHeight() {
     
        }
     return true;
-  }
+}
 
 function getKeyPress(event)
 {

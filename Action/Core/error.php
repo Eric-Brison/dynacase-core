@@ -1,35 +1,6 @@
 <?php
-// $Id: error.php,v 1.5 2002/12/13 11:11:02 eric Exp $
-// $Log: error.php,v $
-// Revision 1.5  2002/12/13 11:11:02  eric
-// prise en compte nl dans msg erreur
-//
-// Revision 1.4  2002/09/25 08:27:55  eric
-// correction message d'erreur
-//
-// Revision 1.3  2002/09/19 15:36:01  eric
-// modif look message erreur
-//
-// Revision 1.2  2002/03/02 18:05:28  eric
-// correction pour les zones
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.5  2002/01/04 12:51:45  eric
-// correction mineure
-//
-// Revision 1.4  2001/11/14 15:22:38  eric
-// ajout test en cas d'erreur
-//
-// Revision 1.3  2001/10/17 10:01:43  eric
-// mise en place de i18n via gettext
-//
-// Revision 1.2  2001/08/20 16:46:09  eric
-// correction cas limite
-//
-// Revision 1.1  2001/08/10 08:06:03  eric
-// ajout action ERROR
+// $Id: error.php,v 1.6 2003/02/05 17:01:03 eric Exp $
+
 //
 //
 //

@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.13 2002/09/19 15:36:01 eric Exp $
+ * $Id: core.css,v 1.14 2003/02/05 17:01:03 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -124,6 +124,7 @@ A {
   background-color: [CORE_FGCOLOR];
   background-image: [CORE_FGIMG];
   color: [CORE_TEXTFGCOLOR];
+  font-weight: bold;
 }
 .TABBackground {
   background-color: [CORE_BGCOLORALTERN];

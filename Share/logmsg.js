@@ -1,3 +1,26 @@
+
+function windowExist(Name) {
+  var dy=self.screen.availHeight;
+  var dx=self.screen.availWidth;
+ 
+
+  
+  if (window[Name]  ) {
+    
+    if ( window[Name]=='none') return false;
+    if (window[Name].closed) return false;
+    else return  window[Name];
+  }
+
+  var w=window.open('',Name,'top='+dy+',left='+dx+'menubar=no,resizable=no,scrollbars=no,width=1,height=1');
+  if (w.opener && (w.opener.location.href == self.location.href) && (w.location.href=='about:blank')) {
+    w.close();
+    window[Name]='none';
+    return false;
+  }
+  window[Name]=w;
+  return w;
+}
 function displayLogMsg(logmsg) {
 
   if (logmsg.length == 0) return;
@@ -7,9 +30,9 @@ function displayLogMsg(logmsg) {
     log=top.foot.document.getElementById('slog');
   } else {
     // redirect to foot function
-      if (window .name != "foot") {
-	var wfoot = window.open('','foot','');
-	wfoot.displayLogMsg(logmsg);
+      if (window.name != "foot") {
+	var wfoot = windowExist('foot');
+	if (wfoot)  wfoot.displayLogMsg(logmsg);
       }
     return;
   }
