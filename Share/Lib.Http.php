@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.17 2004/06/23 15:03:10 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.18 2004/08/30 11:09:29 yannick Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -152,5 +152,16 @@ function PrintAllHttpVars() { // just to debug
   print "</PRE>";
 }
 
+function glue_url($parsed) {
+  if (! is_array($parsed)) return false;
+  $uri = $parsed['scheme'] ? $parsed['scheme'].':'.((strtolower($parsed['scheme']) == 'mailto') ? '':'//'): '';
+  $uri .= $parsed['user'] ? $parsed['user'].($parsed['pass']? ':'.$parsed['pass']:'').'@':'';
+  $uri .= $parsed['host'] ? $parsed['host'] : '';
+  $uri .= $parsed['port'] ? ':'.$parsed['port'] : '';
+  $uri .= $parsed['path'] ? $parsed['path'] : '';
+  $uri .= $parsed['query'] ? '?'.$parsed['query'] : '';
+  $uri .= $parsed['fragment'] ? '#'.$parsed['fragment'] : '';
+  return $uri;
+}
 
 ?>

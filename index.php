@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.25 2004/03/25 10:49:53 eric Exp $
+ * @version $Id: index.php,v 1.26 2004/08/30 11:09:21 yannick Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -14,7 +14,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.25 2004/03/25 10:49:53 eric Exp $
+// $Id: index.php,v 1.26 2004/08/30 11:09:21 yannick Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -139,7 +139,13 @@ if (($standalone == "") || ($standalone == "N")) {
   $appl->Set($_GET["app"],$core);
 
   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
-      $puburl = "http://".$appl->machine.$_SERVER['REQUEST_URI'];
+      if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {
+         $aquest=parse_url($_SERVER['REQUEST_URI']);
+	 $aquest['host']=$appl->machine;
+	 $puburl=glue_url($aquest);
+      } else {
+         $puburl = "http://".$appl->machine.$_SERVER['REQUEST_URI'];
+      }
 
       Header("Location: $puburl");
       exit;
