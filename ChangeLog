@@ -1,3 +1,9 @@
+0.0.2
+       implantation du cache des objets
+
+0.0.1
+	fusion des applications CORE, APPMNG, ACCESS, USERS, HELP, AUTHENT
+	======================^ nouveau WHAT ^===================
 0.4.4 -> 0.4.5
     - modif pour droit d'accès
     - bouchage du trou de tabindex
