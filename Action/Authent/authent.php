@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.10 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: authent.php,v 1.11 2004/07/08 08:52:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -26,7 +26,7 @@ function authenticate() {
   header('WWW-Authenticate: Basic realm="WHAT Connection"');
   header('HTTP/1.0 401 Unauthorized');
   // Header("Location:guest.php");
-  echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour accéder à cette ressource");
+  echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
   exit;
 }
 

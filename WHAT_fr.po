@@ -5,7 +5,7 @@
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2004-06-28 13:48+0200\n"
+	"POT-Creation-Date: 2004-07-05 16:02+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -572,11 +572,21 @@ msgstr	"Aide"
 msgid	"delconfirm"
 msgstr	"Confirmez-vous la suppression de l`utilisateur"
 
+# ne pas mettre de '
+msgid	"Homepage"
+msgstr	"Accueil WHAT"
+
+msgid	"gate page"
+msgstr "Page du portail"
+
+msgid	"New GATE page"
+msgstr "Portail"
+
 msgid	"Click here to login"
 msgstr	"Cliquer ici pour se connecter"
 
 msgid	"Javascript must be enabled in your navigator"
-msgstr "Javascript doit être activé dans votre navigateur"
+msgstr	"Javascript doit être activé dans votre navigateur"
 
 msgid	"Your navigator does not accept cookies.\n"
 	"Cookies must be enabled to use correctly this application"
@@ -586,10 +596,6 @@ msgstr	"Votre navigateur n'accepte pas les cookies.\n"
 
 msgid	"view log"
 msgstr	"voir les messages"
-
-# ne pas mettre de '
-msgid	"Homepage"
-msgstr	"Accueil WHAT"
 
 msgid	"Welcome Page"
 msgstr	"Page d'accueil WHAT"
