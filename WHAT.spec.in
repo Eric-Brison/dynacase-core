@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.28 2003/08/14 09:44:46 eric Exp $
+#  $Id: WHAT.spec.in,v 1.29 2003/09/17 15:33:04 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -139,6 +139,7 @@ fi
 %{destdir}/apache.conf
 %{destdir}/guest.php
 %{destdir}/index.php
+%{destdir}/authent.php
 %{destdir}/locale
 %{destdir}/wcheck
 %{destdir}/whattext
