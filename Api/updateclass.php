@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php,v 1.6 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: updateclass.php,v 1.7 2004/04/23 15:36:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: updateclass.php,v 1.6 2004/03/22 15:21:40 eric Exp $
+// $Id: updateclass.php,v 1.7 2004/04/23 15:36:24 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/Attic/updateclass.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -66,7 +66,7 @@ function GetArg($name, $def="") {
 
 global $_SERVER;
 
-if ($_SERVER['HTTP_CONNECTION'] != "")     {
+if ($_SERVER['HTTP_HOST'] != "")     {
   print "<BR><H1>:~(</H1>";
   exit;
 }

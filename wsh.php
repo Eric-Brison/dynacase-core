@@ -5,14 +5,14 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.15 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: wsh.php,v 1.16 2004/04/23 15:36:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.15 2004/03/22 15:21:40 eric Exp $
+// $Id: wsh.php,v 1.16 2004/04/23 15:36:24 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -56,7 +56,7 @@ global $CORE_LOGLEVEL;
 global $_GET;
 global $_SERVER;
 
-if ($_SERVER['HTTP_CONNECTION'] != "")     {
+if ($_SERVER['HTTP_HOST'] != "")     {
   print "<BR><H1>:~(</H1>";
   exit;
 }
