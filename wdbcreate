@@ -76,6 +76,7 @@ if ($dbid) {
 
 
 $actions[] = "mkdir -p $pubdir/virtual/$dbank/FDLGEN";
+$actions[] = "chown http: $pubdir/virtual/$dbank/FDLGEN";
 $actions[] = "cd $pubdir/FDLGEN;ln -s  ../virtual/$dbank/FDLGEN ".strtoupper($dbfree);
 $actions[] = "sed -e 's/dbname=anakeen/dbname=$dbank/' $pubdir/dbaccess.php > $pubdir/virtual/$dbank/dbaccess.php";
 $actions[] = "sed -e 's/@DBNAME@/$dbank/g' $pubdir/httpd.pam.in > /etc/pam.d/httpd_$dbank"; 
