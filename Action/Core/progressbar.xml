@@ -1,0 +1,18 @@
+<html>
+<head>
+
+<title>[WHAT] [TEXT:Progress bar]</title>
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="icon" HREF="CORE/Images/logo16.ico" >
+
+
+</head>
+<frameset name="top" id="fgtop" frameborder="0" framespacing="0" border="0"  rows="*,0">
+
+
+  <frame name="PB1" src="[CORE_STANDURL]&app=CORE&action=PROGRESSBAR1" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+  <frame name="PB2" src="[CORE_STANDURL]&app=CORE&action=PROGRESSBAR2&bar=[bar]" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+  </frameset>
+       
+
+</html>

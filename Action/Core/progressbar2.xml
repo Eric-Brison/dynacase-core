@@ -1,0 +1,42 @@
+<html>
+<head>
+<script>
+var wpb1=parent.PB1;
+var texts= new Array();
+texts=[texts];
+if (wpb1) {
+  var ibar=wpb1.document.getElementById('imgbar');
+  var reste=wpb1.document.getElementById('reste');
+  var done=wpb1.document.getElementById('done');
+  var total=wpb1.document.getElementById('total');
+  var text=wpb1.document.getElementById('text');
+  var tddone=wpb1.document.getElementById('tddone');
+  if ([total] > 0) {
+     if (ibar) {
+       ibar.style.width='[pc]';
+       ibar.title='[pc]';
+     }
+          
+     if (tddone) tddone.style.width='[pc]';
+     if ((reste) && ([reste] >= 0)) reste.innerHTML='[reste]';
+     if ((total) && ([total] >= 0)) total.innerHTML='[total]';
+     if (done) done.innerHTML='[done]';
+  }
+
+   if (text) {
+     for (var i=0;i<texts.length;i++) {
+       if (texts[i] != '') {     
+ 	text.options[text.options.length]=new Option(texts[i],text.options.length,false,true);
+       }
+     }
+  }
+  
+if ([reste] > 0) {
+  setTimeout('window.location.href=window.location.href',5000);
+}
+}
+</script>
+</head>
+<body>
+</body>
+</html>
