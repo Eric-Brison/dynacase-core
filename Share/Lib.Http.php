@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.16 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.17 2004/06/23 15:03:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -15,7 +15,7 @@
 
 
 
-function Redirect(&$action,$appname,$actionname,$otherurl="")
+function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=false)
 {
   if ($otherurl == "")
     $baseurl=$action->GetParam("CORE_BASEURL");
@@ -25,6 +25,15 @@ function Redirect(&$action,$appname,$actionname,$otherurl="")
   $action->log->debug("Redirect : $location");
 
   $location .= "&session=".$action->session->id;
+
+  if ($httpparamredirect) {
+    //add ZONE_ARGS
+    global $ZONE_ARGS;
+    if (is_array($ZONE_ARGS))
+      foreach ($ZONE_ARGS as $k=>$v)  $location .= "&$k=$v";
+    
+  }
+
   Header("Location: $location");
   exit;
 }
