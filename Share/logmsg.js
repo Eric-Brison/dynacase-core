@@ -21,7 +21,7 @@ function getConnexeWindows(w) {
   cw=getChildFrames(w.top);
 
   
-   if (w.top.opener) cw=cw+getConnexeWindows(w.top.opener);
+   if ((w.top.opener)&& (w.top.opener != w.top) ) cw=cw+getConnexeWindows(w.top.opener);
 
   return cw;
 }
