@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Class.Group.php,v 1.2 2002/11/15 16:12:41 eric Exp $
+// $Id: Class.Group.php,v 1.3 2003/06/06 09:14:15 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Group.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,22 +21,8 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Class.Group.php,v $
-// Revision 1.2  2002/11/15 16:12:41  eric
-// modif pour usage groupe dans freedom
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.2  2001/08/31 13:27:56  eric
-// ajout fonction pour avoir tous les groupes ascendant d'un utilisateur
-//
-// Revision 1.1  2001/08/28 10:08:57  eric
-// Gestion des groupes d'utilisateurs
-//
 
-// ---------------------------------------------------------------------------
-$CLASS_USER_PHP = '$Id: Class.Group.php,v 1.2 2002/11/15 16:12:41 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.Group.php,v 1.3 2003/06/06 09:14:15 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');

@@ -12,7 +12,7 @@ Copyright 2002 Danny Goodman.  All Rights Reserved.
 // Release 2.0. Supports NN4, IE, and W3C DOMs.
 
 // Global variables
-var isCSS, isW3C, isIE4, isNN4;
+var isCSS, isW3C, isIE4, isNN4, isIE6CSS;
 // initialize upon load to let all browsers establish content objects
 function initDHTMLAPI() {
     if (document.images) {

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.12 2003/05/19 13:38:55 eric Exp $
+// $Id: Class.User.php,v 1.13 2003/06/06 09:14:15 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.12 2003/05/19 13:38:55 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.13 2003/06/06 09:14:15 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -135,7 +135,12 @@ create sequence seq_id_users start 10";
       // 	$app = new Application();
       // 	$app-> UpdateUserAcl($this->id);
       //       }
+      $this->FreedomWhatUser();
   
+    }
+  function PostUpdate()     
+    {
+      $this->FreedomWhatUser();  
     }
 
   function PreUpdate()
@@ -150,6 +155,15 @@ create sequence seq_id_users start 10";
       $group = new Group($this->dbaccess, $this->id);
       $group-> Delete();
     }
+
+  function FreedomWhatUser() {
+  
+    $wsh = GetParam("CORE_PUBDIR")."/wsh.php";
+    $cmd = $wsh . " --api=usercard_iuser --whatid={$this->id}";
+
+
+    exec($cmd);
+  }
   // --------------------------------------------------------------------
   function computepass($pass, &$passk)
     {
@@ -213,6 +227,7 @@ create sequence seq_id_users start 10";
      
   }
 
+  // get All Users (not group)
   function GetUserList($qtype="LIST") {
     $query = new QueryDb($this->dbaccess,"User");
     $query->order_by="lastname";
@@ -220,6 +235,7 @@ create sequence seq_id_users start 10";
     return($query->Query(0,0,$qtype));
   }
 
+  // get All groups
   function GetGroupList($qtype="LIST") {
     $query = new QueryDb($this->dbaccess,"User");
     $query->order_by="lastname";
@@ -227,6 +243,7 @@ create sequence seq_id_users start 10";
     return($query->Query(0,0,$qtype));
   }
 
+  // get All users & groups
   function GetUserAndGroupList() {
     $query = new QueryDb($this->dbaccess,"User");
     $query->order_by="isgroup desc, lastname";
@@ -234,13 +251,14 @@ create sequence seq_id_users start 10";
   }
 
 
+  // get All ascendant group ids of the object user
   function GetGroupsId() {
     $query = new QueryDb($this->dbaccess, "Group");
 
     $query-> AddQuery("iduser='{$this->id}'");
 
-    $list = $query->Query();
-    $groupsid=array(0,0,"TABLE");
+    $list = $query->Query(0,0,"TABLE");
+    $groupsid=array();
 
     if ($query->nb >0) {
       while (list($k,$v) = each($list)) {
@@ -253,9 +271,37 @@ create sequence seq_id_users start 10";
 
   }
 
+  
+  // for group :: get All user & groups ids in all descendant(recursive);
+  function GetRUsersList($id) {
+    $query = new QueryDb($this->dbaccess, "User");
+    $list = $query->Query(0,0,"TABLE",
+			  "select users.* from users, groups where ".
+			  "groups.iduser=users.id and ".
+			  "idgroup=$id ;");
+
+
+    $uid=array();
+
+    if ($query->nb >0) {
+      while (list($k,$v) = each($list)) {
+	$uid[$v["id"]] = $v;
+	if ($v["isgroup"]=="Y") {
+	  $uid += $this->GetRUsersList($v["id"]);
+	}
+      }
+    
+    } 
+
+    return $uid;
+
+  }
+
+  
+
   // only use for group
   // get user member of group
-  function getGroupUserList($qtype="LIST", $withgroup=0) {
+  function getGroupUserList($qtype="LIST", $withgroup=false) {
     $query = new QueryDb($this->dbaccess,"User");
     $query->order_by="isgroup desc, lastname";
     $selgroup = "and (isgroup != 'Y' or isgroup is null)";
