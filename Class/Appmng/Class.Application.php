@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.9 2002/04/22 14:08:18 eric Exp $
+//  $Id: Class.Application.php,v 1.10 2002/04/29 15:58:23 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.9 2002/04/22 14:08:18 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.10 2002/04/29 15:58:23 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -572,8 +572,7 @@ function InitApp($name,$update=FALSE) {
         }
      }
      
-     
-     $this->SetParam("APPNAME",$name); // use by generic application
+     if ($this->id > 1) $this->SetParam("APPNAME",$name); // use by generic application
 
      // Load app texts catalog
      if (file_exists("{$name}/{$name}_txt.php")) {
