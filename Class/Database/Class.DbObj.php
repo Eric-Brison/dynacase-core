@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.27 2004/03/01 08:39:21 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.28 2004/03/17 17:45:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.27 2004/03/01 08:39:21 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.28 2004/03/17 17:45:16 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ include_once('Class.Log.php');
 include_once('Class.Cache.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.27 2004/03/01 08:39:21 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.28 2004/03/17 17:45:16 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -549,9 +549,9 @@ function exec_query($sql,$lvl=0)
     $this->init_dbid();
     $this->log->debug("exec_query : $sql");
     
-    $this->res=@pg_exec($this->dbid,$sql);
-    //     print "<HR>exec_query $sql;".$this->dbid; print " - <B>".microtime_diff(microtime(),$mb)."</B>";
-    $pgmess = pg_errormessage($this->dbid);
+    $this->res=@pg_query($this->dbid,$sql);
+    //    print "<HR>exec_query $sql;".$this->dbid; print " - <B>".microtime_diff(microtime(),$mb)."</B>";
+    $pgmess = pg_last_error($this->dbid);
     //    if ($pgmess != "") print "[$sql]";
     
     $this->msg_err = chop(ereg_replace("ERROR:  ","",$pgmess));
@@ -607,7 +607,7 @@ function exec_query($sql,$lvl=0)
 function numrows()
   {
     if ($this->msg_err == "") {
-      return(pg_numrows($this->res));
+      return(pg_num_rows($this->res));
     } else {
       return(0);
     }
