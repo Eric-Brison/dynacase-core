@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: head.php,v 1.15 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: head.php,v 1.16 2004/07/05 13:44:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.15 2004/03/22 15:21:40 eric Exp $
+// $Id: head.php,v 1.16 2004/07/05 13:44:24 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -122,6 +122,12 @@ function head(&$action) {
   $lay = new Layout($jslauch, $action);
   $action->parent->AddJsCode($lay->gen());
 
+
+  if ($action->parent->exists("FREEGATE")) {    
+    $action->lay->setblockdata("FREEGATE",array(array("zou")));
+  } else {
+    $action->lay->setblockdata("NOFREEGATE",array(array("zou")));
+  }
 
   if ($action->GetParam("CORE_USECACHE") == "yes") $action->lay->set("dcache","inline");
   else $action->lay->set("dcache","none");

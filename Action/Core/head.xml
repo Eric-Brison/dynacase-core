@@ -75,8 +75,14 @@ function selectIt(th) {
      
 
      &nbsp;</span>
+ [BLOCK NOFREEGATE]
      <a href="#"><img onClick="lauch_action(this.src,'CORE','[TEXT:Homepage]');" 
-          align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:Welcome Page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a></td>
+          align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a>
+ [ENDBLOCK NOFREEGATE]
+ [BLOCK FREEGATE]
+     <a href="#"><img onClick="top.body.location.href='[CORE_STANDURL]&app=FREEGATE&action=FREEGATE_VIEWGATE'" 
+          align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:New GATE page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a>
+ [ENDBLOCK FREEGATE]</td>
 </tr>
 </table>
 
