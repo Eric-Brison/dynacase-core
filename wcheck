@@ -189,7 +189,7 @@ if (! $dbid) {
 }
 
 if ($dbid) {
-  $dump[] = "su - postgres -c 'pg_dumpall > /tmp/".uniqid("whatdb")."'";
+  $dump[] = "su - postgres -c 'pg_dumpall -D > /tmp/".uniqid("whatdb")."'";
   $dump[] = "/etc/rc.d/init.d/httpd stop";
   $dump[] = "$pubdir/whattext";
 }
