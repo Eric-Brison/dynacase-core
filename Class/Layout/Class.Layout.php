@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.20 2004/09/08 08:09:41 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.21 2004/09/15 08:06:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.20 2004/09/08 08:09:41 eric Exp $
+//  $Id: Class.Layout.php,v 1.21 2004/09/15 08:06:27 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -146,9 +146,11 @@ var $strip='Y';
   }
   function SetBlock($name,$block) {
     if ($this->strip=='Y') {
-      $block = StripSlashes($block);
+      //      $block = StripSlashes($block);
+      $block = str_replace("\\\"","\"",$block);
     }
     $out = "";
+  
     if (isset ($this->data) && isset ($this->data["$name"]) && is_array($this->data["$name"])) {
       foreach($this->data["$name"] as $k=>$v) {
         $loc=$block;
@@ -354,14 +356,12 @@ var $strip='Y';
 
     $this->ParseBlock($out);
 
-
     // Parse IMG: and LAY: tags
     $this->ParseRef($out);
     $this->ParseKey($out);
     $this->ParseZone($out);
     $this->ParseJs($out);
     $this->ParseCss($out);
-
 
     return($out);
   }
