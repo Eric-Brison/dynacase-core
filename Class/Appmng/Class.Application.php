@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.23 2003/05/19 09:59:12 eric Exp $
+//  $Id: Class.Application.php,v 1.24 2003/05/19 13:38:55 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.23 2003/05/19 09:59:12 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.24 2003/05/19 13:38:55 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -52,16 +52,16 @@ var $sqlcreate = '
 create table application ( 	id 	int not null,
      		primary key (id),
 			name 	    varchar(20) not null,
-			short_name varchar(30) ,
+			short_name text,
 			description text ,
 			access_free  varchar(20),
-			available  varchar(1),
-                        icon varchar(30),
-                        displayable varchar(1),
-                        with_frame varchar(1),
+			available  char,
+                        icon text,
+                        displayable char,
+                        with_frame char,
                         childof varchar(20),
-                        objectclass varchar(1),
-                        ssl varchar(1),
+                        objectclass char,
+                        ssl char,
                         machine text);
 create index application_idx1 on application(id);
 create index application_idx2 on application(name);

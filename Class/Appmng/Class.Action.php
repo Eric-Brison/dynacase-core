@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.12 2003/02/19 17:47:19 eric Exp $
+//  $Id: Class.Action.php,v 1.13 2003/05/19 13:38:55 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.12 2003/02/19 17:47:19 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.13 2003/05/19 13:38:55 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -49,9 +49,9 @@ create table action (id int not null,
                    available varchar(3),
                    acl varchar(20),
                    grant_level int,
-                   root varchar(1),
+                   root char,
                    icon varchar(100),
-                   toc  varchar(1),
+                   toc  char,
                    father int ,
                    toc_order int);
 create index action_idx1 on action(id);

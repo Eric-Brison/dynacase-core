@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.11 2003/04/23 16:47:45 marc Exp $
+// $Id: Class.User.php,v 1.12 2003/05/19 13:38:55 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.11 2003/04/23 16:47:45 marc Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.12 2003/05/19 13:38:55 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -47,11 +47,11 @@ Class User extends DbObj
 create table users ( id      int not null,
                      iddomain int not null,
                 primary key (id),
-                        lastname   varchar(30),
-                        firstname  varchar(20),
-                        login      varchar(30) not null,
+                        lastname   text,
+                        firstname  text,
+                        login      text not null,
                         password   varchar(30) not null,
-                        isgroup      varchar(1));
+                        isgroup      char);
 create index users_idx1 on users(id);
 create index users_idx2 on users(lastname);
 create index users_idx3 on users(login);
