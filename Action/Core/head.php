@@ -1,6 +1,9 @@
 <?php
-// $Id: head.php,v 1.5 2002/01/30 15:00:57 eric Exp $
+// $Id: head.php,v 1.6 2002/02/15 13:53:23 eric Exp $
 // $Log: head.php,v $
+// Revision 1.6  2002/02/15 13:53:23  eric
+// correction pour titre appli avec des '
+//
 // Revision 1.5  2002/01/30 15:00:57  eric
 // correction problème de '
 //
@@ -95,15 +98,16 @@ function head(&$action) {
         } else { continue; }
       }
       $appli["description"]= $action->text($appli["description"]); // translate
+      $appli["descriptionsla"]= addslashes($appli["description"]); // because its in between '' in layout
       $tab[$i++]=$appli;
     }
   }
 
   $action->lay->set("DATE",strftime("%a %d %B %Y  %H:%M",time()));
 
-  $action->lay->SetBlockCorresp("FUNCTION","NAME","name");
-  $action->lay->SetBlockCorresp("FUNCTION","IMAGE","icon");
-  $action->lay->SetBlockCorresp("FUNCTION","DESCR","description");
+  //  $action->lay->SetBlockCorresp("FUNCTION","NAME","name");
+  //$action->lay->SetBlockCorresp("FUNCTION","IMAGE","icon");
+  //$action->lay->SetBlockCorresp("FUNCTION","DESCR","description");
 
   $action->lay->SetBlockData("FUNCTION",$tab);
   

@@ -46,7 +46,7 @@
 
  [BLOCK FUNCTION]
 <td width="36" class="headcell" align="center">
-     <a href="#"><img  onClick="lauch_action(this.src,'[NAME]','[DESCR]');" onMouseOver="this.width+=6; this.height+=6;" onMouseOut="this.width-=6; this.height-=6;" src="[CORE_PUBURL]/[NAME]/Images/[IMAGE]" border="0" width="30" height="30" alt="[DESCR]" title="[DESCR]" ></a>
+     <a href="#"><img  onClick="lauch_action(this.src,'[name]','[descriptionsla]');" onMouseOver="this.width+=6; this.height+=6;" onMouseOut="this.width-=6; this.height-=6;" src="[CORE_PUBURL]/[name]/Images/[icon]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
 
