@@ -18,16 +18,16 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.ParamDef.php,v 1.1 2002/05/23 16:14:40 eric Exp $
+//  $Id: Class.ParamDef.php,v 1.2 2002/07/31 09:47:31 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.1 2002/05/23 16:14:40 eric Exp $';
+$CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.2 2002/07/31 09:47:31 eric Exp $';
 
 Class ParamDef extends DbObj
 {
-var $fields = array ("name","isuser","isstyle","appid","descr","kind");
+var $fields = array ("name","isuser","isstyle","isglob","appid","descr","kind");
 
 var $id_fields = array ("name");
 
@@ -38,6 +38,7 @@ var $sqlcreate = '
               name    varchar(50),
               isuser   varchar(1),
               isstyle   varchar(1),
+              isglob   varchar(1),
               appid  int4,
               descr    varchar(200),
               kind    varchar(50));

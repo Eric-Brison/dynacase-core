@@ -18,12 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.8 2002/06/05 07:52:02 eric Exp $
+//  $Id: Class.Param.php,v 1.9 2002/07/31 09:47:31 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.8 2002/06/05 07:52:02 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.9 2002/07/31 09:47:31 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -99,14 +99,17 @@ function GetAll($appid="",$userid=ANONYMOUS_ID,$styleid="0")
    if ($appid=="") $appid=$this->appid;
    $query = new QueryDb($this->dbaccess,"Param");
    
-   $list = $query->Query(0,0,"TABLE","select distinct on(name) * from {$this->dbtable} where ". 
-			 "(type = '".PARAM_GLB."') ".
-			 " OR (type='".PARAM_APP."' and appid=$appid)".
-			 " OR (type='".PARAM_USER.$userid."' and appid=$appid)".
-			 " OR (type='".PARAM_STYLE.$styleid."' and appid=$appid)".
-			 " order by name, type desc");
+   $list = $query->Query(0,0,"TABLE","select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where ". 
+			 
+			 "(paramv.type = '".PARAM_GLB."') ".
+			 " OR (paramv.type='".PARAM_APP."' and paramv.appid=$appid)".
+			 " OR (paramv.type='".PARAM_USER.$userid."' and paramv.appid=$appid)".
+			 " OR (paramv.type='".PARAM_USER.$userid."' and paramdef.isglob='Y')".
+			 " OR (paramv.type='".PARAM_STYLE.$styleid."' and paramv.appid=$appid)".
+			 " OR (paramv.type='".PARAM_STYLE.$styleid."' and paramdef.isglob='Y')".
+			 " order by paramv.name, paramv.type desc");
 
-   //print $query->LastQuery."<HR>";
+   // print $query->LastQuery."<HR>";
    if ($query->nb != 0) {
      while(list($k,$v)=each($list)) {
        $out[$v["name"]]=$v["val"];

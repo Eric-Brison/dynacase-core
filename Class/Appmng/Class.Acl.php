@@ -1,5 +1,5 @@
 <?
-// $Id: Class.Acl.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.Acl.php,v 1.2 2002/07/31 09:47:31 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Acl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,6 +21,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Class.Acl.php,v $
+// Revision 1.2  2002/07/31 09:47:31  eric
+// modif recherche parametres
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -65,7 +68,7 @@
 //
 // ---------------------------------------------------------------------------
 //
-$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.2 2002/07/31 09:47:31 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -290,33 +293,33 @@ function Init($app,$app_acl,$update=FALSE)
   }
 
     // Remove unused Acl in case of update
-  if ($update) {
-    $query=new QueryDb($this->dbaccess,"Acl");
-    $query->basic_elem->sup_where=array ("id_application = {$app->id}");
-    $list=$query->Query();
-    while (list($k,$v)=each($list)) {
-      // Check if the ACL still exists
-      $find=FALSE;
-      reset($app_acl);
-      while ( (list($k2,$v2) = each($app_acl)) && ($find==FALSE) ) {
-        $find=( $v2["name"] == $v->name );
-      }
-      if (!$find) {
-        // remove the ACL and all associated permissions
-        $this->log->info("Removing the {$v->name} ACL");
-        $query2 = new QueryDb($this->dbaccess,"Permission");
-        $query2->basic_elem->sup_where=array("id_application= {$app->id}",
-                                             "id_acl = {$v->id}");
-        $list_perm = $query2->Query();
-        if ($query2->nb>0) {
-          while (list($k2,$p) = each ($list_perm)) {
-            $p->Delete();
-          }
-        }
-        $v->Delete();
-      }
-    }
-  }
+//   if ($update) {
+//     $query=new QueryDb($this->dbaccess,"Acl");
+//     $query->basic_elem->sup_where=array ("id_application = {$app->id}");
+//     $list=$query->Query();
+//     while (list($k,$v)=each($list)) {
+//       // Check if the ACL still exists
+//       $find=FALSE;
+//       reset($app_acl);
+//       while ( (list($k2,$v2) = each($app_acl)) && ($find==FALSE) ) {
+//         $find=( $v2["name"] == $v->name );
+//       }
+//       if (!$find) {
+//         // remove the ACL and all associated permissions
+//         $this->log->info("Removing the {$v->name} ACL");
+//         $query2 = new QueryDb($this->dbaccess,"Permission");
+//         $query2->basic_elem->sup_where=array("id_application= {$app->id}",
+//                                              "id_acl = {$v->id}");
+//         $list_perm = $query2->Query();
+//         if ($query2->nb>0) {
+//           while (list($k2,$p) = each ($list_perm)) {
+//             $p->Delete();
+//           }
+//         }
+//         $v->Delete();
+//       }
+//     }
+//   }
 
   
 
