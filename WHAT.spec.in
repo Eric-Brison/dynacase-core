@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.24 2003/03/06 18:03:54 eric Exp $
+#  $Id: WHAT.spec.in,v 1.25 2003/04/02 12:40:21 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -47,6 +47,7 @@ Prereq: apache
 Prereq: grep
 Prereq: SysVinit
 Prereq: gettext
+Prereq: gettext-devel > 0.11
 
 %description
 The WHAT application toolkit gives common interface element to develop web applications
