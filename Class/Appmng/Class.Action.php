@@ -16,167 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.3 2002/02/04 14:48:07 eric Exp $
-//  $Log: Class.Action.php,v $
-//  Revision 1.3  2002/02/04 14:48:07  eric
-//  utilisation de ZONE avec arguments
-//
-//  Revision 1.2  2002/01/10 11:11:56  eric
-//  modif pour pour authentification sur perte de session
-//
-//  Revision 1.1  2002/01/08 12:41:34  eric
-//  first
-//
-//  Revision 1.48  2002/01/04 16:34:22  eric
-//  precision msg erreur
-//
-//  Revision 1.47  2001/11/28 15:12:58  eric
-//  correction pour ajout arg. sur connexion lors de perte de session
-//
-//  Revision 1.46  2001/11/21 16:05:15  eric
-//  correction hauteur sur getIcon
-//
-//  Revision 1.45  2001/11/14 15:15:14  eric
-//  ecriture sur stdout fonction non possible si inexistante
-//
-//  Revision 1.44  2001/10/17 09:08:49  eric
-//  mise en place de i18n via gettext
-//
-//  Revision 1.43  2001/10/05 15:30:36  eric
-//  modif pour aspect exiterror
-//
-//  Revision 1.42  2001/08/31 09:27:01  eric
-//  ajout possibilité de choix layout par version de navigateur
-//
-//  Revision 1.41  2001/08/29 15:50:45  yannick
-//  See Changelog
-//
-//  Revision 1.40  2001/08/29 13:26:24  eric
-//  ajout tag TITLE pour afficher les popup image
-//
-//  Revision 1.39  2001/08/20 16:41:38  eric
-//  changement des controles d'accessibilites
-//
-//  Revision 1.38  2001/08/10 08:07:34  eric
-//  ajout fonction ExitError pour action CORE ERROR
-//
-//  Revision 1.37  2001/07/05 10:35:48  eric
-//  correction erreur de guillemet dans geticon
-//
-//  Revision 1.36  2001/06/22 08:42:09  eric
-//  gestion application générique
-//
-//  Revision 1.35  2001/06/14 14:53:52  eric
-//  modif param du redirect suite au multi frame
-//
-//  Revision 1.34  2001/02/26 13:50:57  yannick
-//  Optimization
-//
-//  Revision 1.33  2001/02/09 17:32:42  yannick
-//  Anomalies diverses
-//
-//  Revision 1.32  2001/02/07 11:30:44  yannick
-//  Traitement résultat vide, 1 seule page
-//
-//  Revision 1.31  2001/02/06 16:23:28  yannick
-//  QueryGen : first release
-//
-//  Revision 1.30  2001/02/06 11:52:19  marianne
-//  prise en compte du navigateur
-//
-//  Revision 1.29  2001/01/25 17:17:03  yannick
-//  Gestion des updates applications
-//
-//  Revision 1.28  2001/01/19 01:47:44  marianne
-//  Prise en compte des styles
-//
-//  Revision 1.27  2000/11/13 11:40:19  marc
-//  Action : retour $def sur GetParam....
-//  Domain : selection domaine local.
-//
-//  Revision 1.26  2000/11/10 14:02:13  yannick
-//  Version 0.2.0 et insertion des actions
-//
-//  Revision 1.25  2000/11/08 11:04:13  marc
-//  Trace for unauthorized access
-//
-//  Revision 1.24  2000/10/26 19:43:20  marc
-//  isser -> isset
-//
-//  Revision 1.23  2000/10/26 18:18:13  marc
-//  - Gestion des references multiples à des JS
-//  - Gestion de variables de session
-//
-//  Revision 1.22  2000/10/26 16:05:21  yannick
-//  test user
-//
-//  Revision 1.21  2000/10/26 15:18:51  yannick
-//  Ajout du Unregister sur Action
-//
-//  Revision 1.20  2000/10/26 14:10:27  yannick
-//  Suite au login/domain => Modelage des sessions
-//
-//  Revision 1.19  2000/10/26 12:52:13  yannick
-//  Bug : perte du mot de passe
-//
-//  Revision 1.18  2000/10/24 21:16:42  marc
-//  Retour demande si pas de variable de session touvee
-//
-//  Revision 1.17  2000/10/23 14:13:45  yannick
-//  Contrôle des accès
-//
-//  Revision 1.16  2000/10/23 09:07:36  marc
-//  Ajout des sessions dans Action
-//
-//  Revision 1.15  2000/10/21 16:40:50  yannick
-//  Gestion blocks imbriqués
-//
-//  Revision 1.14  2000/10/19 17:07:10  yannick
-//  *** empty log message ***
-//
-//  Revision 1.13  2000/10/19 16:34:45  yannick
-//  Pour Marc
-//
-//  Revision 1.12  2000/10/19 10:15:13  marc
-//  Finalisation de l'internationalisation
-//
-//  Revision 1.11  2000/10/18 19:55:43  marc
-//  Internationalisation
-//
-//  Revision 1.10  2000/10/18 16:11:21  yannick
-//  Pb d'init sur base vide CORE = id 1
-//
-//  Revision 1.9  2000/10/18 14:55:34  yannick
-//  Prise en compte des références
-//
-//  Revision 1.8  2000/10/16 17:23:07  yannick
-//  utilisation preg dans Layout et ménage dans les logs
-//
-//  Revision 1.7  2000/10/13 14:10:49  yannick
-//  Ajout de GetLayoutFile et possibilite des Get* dans Action
-//
-//  Revision 1.6  2000/10/11 16:31:51  yannick
-//  Nouvelle gestion de l'init App et Action
-//
-//  Revision 1.5  2000/10/11 13:09:47  yannick
-//  Mise au point Authentification/Session
-//
-//  Revision 1.4  2000/10/11 12:18:41  yannick
-//  Gestion des sessions
-//
-//  Revision 1.3  2000/10/10 19:03:40  marc
-//  Mise au point
-//
-//  Revision 1.2  2000/10/06 14:01:10  yannick
-//  Ajout des règles de codage
-//
-//  Revision 1.1.1.1  2000/10/05 17:29:10  yannick
-//  Importation
-//
-// ---------------------------------------------------------------------------
+//  $Id: Class.Action.php,v 1.4 2002/03/02 18:04:40 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.3 2002/02/04 14:48:07 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.4 2002/03/02 18:04:40 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -232,7 +75,6 @@ var $grant_level=0;
 
 function Set($name,&$parent)
 {
-
   
     $query=new QueryDb($this->dbaccess,"Action");
     if ($name!="") {
@@ -268,6 +110,8 @@ function CompleteSet(&$parent) {
 
   // Init a log attribute
   $this->logaction = new Log("",$this->parent->name,$this->name);
+
+
 
   return "";
 }
