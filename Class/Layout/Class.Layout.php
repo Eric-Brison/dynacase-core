@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.18 2004/06/18 13:56:16 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.19 2004/07/28 12:07:43 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.18 2004/06/18 13:56:16 eric Exp $
+//  $Id: Class.Layout.php,v 1.19 2004/07/28 12:07:43 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -150,16 +150,11 @@ var $strip='Y';
     }
     $out = "";
     if (isset ($this->data) && isset ($this->data["$name"]) && is_array($this->data["$name"])) {
-      reset($this->data["$name"]);
-      while(list($k,$v) = each($this->data["$name"])) {
-        reset($this->corresp["$name"]);
+      foreach($this->data["$name"] as $k=>$v) {
         $loc=$block;
-        while(list($k2,$v2) = each ($this->corresp["$name"])) {
-           if (isset($v[$v2])) {
+        foreach ($this->corresp["$name"] as $k2=>$v2) {
 	     $loc = str_replace( $k2, $v[$v2], $loc);
-	   } else {
-	     $loc = str_replace( $k2, "", $loc);
-	   }
+           
 	}
         $out .= $loc;
       }
@@ -365,10 +360,10 @@ var $strip='Y';
     // Parse IMG: and LAY: tags
     $this->ParseRef($out);
     $this->ParseKey($out);
-
     $this->ParseZone($out);
     $this->ParseJs($out);
     $this->ParseCss($out);
+
 
     return($out);
   }
