@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ObjectPermission.php,v 1.8 2002/04/29 15:32:24 eric Exp $
+// $Id: Class.ObjectPermission.php,v 1.9 2002/06/19 12:28:28 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ObjectPermission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 
-$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.8 2002/04/29 15:32:24 eric Exp $';
+$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.9 2002/06/19 12:28:28 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
@@ -301,7 +301,7 @@ create unique index i_operm on operm (id_user, id_obj, id_class); ';
 		       _($acl->description),
 		       $this->GetDescription(),
 		       $this->id_obj);
-	//	$err = "Object Permission : permission $acl->description needed (".$this->GetDescription()." - #".$this->id_obj.")";
+	
 	$this->coid[$method]=$err; // memo for optimization (no new computing)
 	return $err;
 	           	  		

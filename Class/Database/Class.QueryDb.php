@@ -16,101 +16,18 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryDb.php,v 1.4 2002/04/29 15:32:24 eric Exp $
-//  $Log: Class.QueryDb.php,v $
-//  Revision 1.4  2002/04/29 15:32:24  eric
-//  correction id pour cache multibase
-//
-//  Revision 1.3  2002/02/18 10:55:16  eric
-//  modif id_fields de objectcontrol : cause pas unique
-//
-//  Revision 1.2  2002/01/25 14:31:37  eric
-//  gestion de cache objet - variable de session
-//
-//  Revision 1.1  2002/01/08 12:41:34  eric
-//  first
-//
-//  Revision 1.5  2001/07/05 10:37:22  eric
-//  ajout fonction AggQuery au niveau de querydb
-//
-//  Revision 1.4  2001/06/14 14:32:30  eric
-//  correction parenthesage condition SQL sur SupClause
-//
-//  Revision 1.3  2000/10/24 17:44:55  yannick
-//  Ajout du download
-//
-//  Revision 1.2  2000/10/13 15:53:36  yannick
-//  Erreur Layout
-//
-//  Revision 1.1.1.1  2000/10/05 17:29:10  yannick
-//  Importation
-//
-//  Revision 1.17  2000/09/15 07:48:23  marianne
-//  Modif libelle N'est pad Vide
-//
-//  Revision 1.16  2000/09/15 07:47:27  marianne
-//  Correction bug sur 'null' et 'not null'
-//
-//  Revision 1.15  2000/09/04 14:50:24  marianne
-//  Ajout booleen dans GenPage pour ne pas afficher le filtre
-//
-//  Revision 1.14  2000/09/01 12:37:45  marianne
-//  suppression d'un /input en trop et modif classe Total
-//
-//  Revision 1.13  2000/09/01 12:35:58  marianne
-//  celspacing=>cellspacing
-//
-//  Revision 1.12  2000/08/03 14:11:55  marianne
-//  initialisation de dtart et slice
-//
-//  Revision 1.11  2000/07/29 08:39:10  marc
-//  Mise en forme formulaire de recherche
-//
-//  Revision 1.10  2000/07/09 08:00:55  yannick
-//  Mise au point V2.0
-//
-//  Revision 1.9  2000/07/07 10:11:08  yannick
-//  Mise au point
-//
-//  Revision 1.8  2000/07/03 13:30:35  yannick
-//  Ajout Last Query
-//
-//  Revision 1.7  2000/06/30 12:45:46  yannick
-//  Retourne faux si le DbId n'existe pas
-//
-//  Revision 1.6  2000/06/16 16:04:36  yannick
-//  mise au point
-//
-//  Revision 1.5  2000/06/07 14:33:54  yannick
-//  RAZ num page sur changement de lettre
-//
-//  Revision 1.4  2000/06/07 14:17:55  yannick
-//  QueryObj
-//
-//  Revision 1.3  2000/06/05 16:13:55  yannick
-//  Fonction tournepage OK
-//
-//  Revision 1.2  2000/06/05 13:58:27  yannick
-//  Mise au point
-//
-//  Revision 1.1  2000/05/30 15:03:32  yannick
-//  Nouveau
-//
-//  Revision 1.4  2000/05/30 09:33:50  xavier
-//  mise à jour du 05 30
-//
-//  Revision 1.1  2000/05/19 09:56:15  admin
-//  init
-//
+//  $Id: Class.QueryDb.php,v 1.5 2002/06/19 12:28:28 eric Exp $
+
 // ---------------------------------------------------------------------------
 // This class is designed to perform query constructs on objects
 // It returns a table of objects that match the query
 //
 // It gives the HTML/JScript element for the gui
 // and it gives the result of the query
-$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.4 2002/04/29 15:32:24 eric Exp $';
+$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.5 2002/06/19 12:28:28 eric Exp $';
 
 include_once('Class.Log.php');
+include_once('Class.Cache.php');
 
 Class QueryDb  {
 

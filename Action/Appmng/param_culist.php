@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_culist.php,v 1.1 2002/05/23 16:14:40 eric Exp $
+// $Id: param_culist.php,v 1.2 2002/06/19 12:28:28 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_culist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000

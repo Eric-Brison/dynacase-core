@@ -27,3 +27,19 @@ function getFrameHeight() {
            winH = document.body.offsetHeight;
       return (winH);
   }
+
+
+function getKeyPress(event)
+{
+  var intKeyCode;
+
+  if (window.event) {
+    intKeyCode = window.event.keyCode;
+    alert(window.event.type);
+  } else {
+    intKeyCode = event.which;
+    alert(event.type);
+  }
+  alert('key:'+intKeyCode);
+  return intKeyCode;
+}
