@@ -18,9 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.MailAlias.php,v 1.2 2002/08/09 17:28:00 marc Exp $
+// $Id: Class.MailAlias.php,v 1.3 2002/08/09 18:03:16 marc Exp $
 //
 // $Log: Class.MailAlias.php,v $
+// Revision 1.3  2002/08/09 18:03:16  marc
+// 0.1.3-5 Modification pour gestion multi-pop
+//
 // Revision 1.2  2002/08/09 17:28:00  marc
 // 0.1.3-5 Modification pour gestion multi-pop
 //
@@ -49,7 +52,7 @@ include_once('Class.Domain.php');
 
 Class MailAlias extends DbObj
 {
-var $Class = '$Id: Class.MailAlias.php,v 1.2 2002/08/09 17:28:00 marc Exp $';
+var $Class = '$Id: Class.MailAlias.php,v 1.3 2002/08/09 18:03:16 marc Exp $';
 
 var $fields = array ( "idalias",
                       "iddomain",
@@ -112,7 +115,7 @@ create sequence seqidalias;
    if ($q->nb > 0) $this = $l[0];
  }
 
- function CheckUptime($time=0) {
+ function CheckUptime($domain, $time) {
    $q = new QueryDb($this->dbaccess,"MailAlias");
    $q->basic_elem->sup_where=array("iddomain={$domain->iddomain}","uptime>$time");
    $l = $q->Query();
