@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_mod.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: user_mod.php,v 1.8 2004/03/17 17:47:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+// $Id: user_mod.php,v 1.8 2004/03/17 17:47:10 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -80,7 +80,7 @@ function user_mod(&$action) {
     $user->iddomain = GetHttpVars("domainid"); 
     $user->password_new=GetHttpVars("passwd");
     $user->isgroup = ($group) ? 'Y' : 'N'; 
-    $res = $user->Add();
+    $res = $user->Add(true);
     if ($res != "") { 
       $txt = $action->text("err_add_user")." : $res";
       $action->Register("USERS_ERROR",AddSlashes($txt));
@@ -121,20 +121,23 @@ function user_mod(&$action) {
     if (($exptime>0) && ($exptime != $user->expires))  $user->expires=$exptime;	 
   }
     
-  $user->Modify();
+  $user->Modify(true);
     
   $ugroup = new Group($action->dbaccess,$user->id);
   if ($ugroup-> IsAffected()) {
-      $ugroup -> Delete(); // delete all before add
+      $ugroup -> Delete(true); // delete all before add
     } else { // new group
       $ugroup->iduser = $user->id;
     }
   if ( (is_array($newgroup))) {
     while(list($k,$v) = each($newgroup)) {
       $ugroup->idgroup = $v;
-      $ugroup-> Add();
+      $ugroup-> Add(true);
     }
   }
+  
+  // only at the end : it is not necessary before
+  $ugroup->FreedomCopyGroup();
   
 
   if ($group) {
