@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: helpview.php,v 1.2 2002/02/27 08:36:28 eric Exp $
+// $Id: helpview.php,v 1.3 2002/05/28 16:36:44 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/helpview.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -31,19 +31,28 @@ function helpview(&$action) {
   $appname = strtoupper (GetHttpVars("appname"));
   $id = strtoupper (GetHttpVars("sectid"));
 
+
+
   global $helpids;
-  include $action->GetParam("CORE_PUBDIR")."/$appname/doc/helpid.php";
+if (! @include $action->GetParam("CORE_PUBDIR")."/$appname/doc/helpid.php") 
+    $action->ExitError(sprintf(_("no documentation available for %s application"),$appname));
 
-
+   
   $kid = "";
 
-  while(list($hid,$file) = each($helpids)) {
-    if (strtoupper($hid) == $id) {
-      $kid = $hid;
-      break;
+  if ($id == "") {
+    $k = array_keys($helpids);
+    $kid = $k[0];
+  }
+  else {
+
+    while(list($hid,$file) = each($helpids)) {
+      if (strtoupper($hid) == $id) {
+	$kid = $hid;
+	break;
+      }
     }
   }
-
   if ($kid != "") {
     $ret = Header  ("Location: ".$action->GetParam("CORE_PUBURL")."/$appname/doc/html/".$helpids[$kid]."#".$kid);
   

@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.12 2002/05/27 14:51:30 eric Exp $
+//  $Id: Class.Application.php,v 1.13 2002/05/28 16:36:44 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.12 2002/05/27 14:51:30 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.13 2002/05/28 16:36:44 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -774,6 +774,7 @@ function GetIdFromName($name)
   $query -> AddQuery("name = '$name'");
   $app = $query->Query();
   if (is_array($app)) {
+
     return $app[0]->id;
   }
   return 0;
