@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.4 2004/01/14 17:12:16 eric Exp $
+// $Id: index.php.q,v 1.5 2004/02/02 08:29:12 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -113,6 +113,7 @@ if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
 
 
 $core->SetVolatileParam("CORE_PUBURL", ".");
+$core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 

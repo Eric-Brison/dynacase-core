@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.22 2004/01/13 09:05:58 eric Exp $
+ * @version $Id: index.php,v 1.23 2004/02/02 08:29:12 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -14,7 +14,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.22 2004/01/13 09:05:58 eric Exp $
+// $Id: index.php,v 1.23 2004/02/02 08:29:12 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -119,7 +119,7 @@ if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
 
 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
-$core->SetVolatileParam("CORE_ABSURL", $puburl); // absolute links
+$core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
