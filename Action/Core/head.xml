@@ -35,15 +35,59 @@
     return true;
   }
 
+
+
+function iz(id) {
+  var o=document.getElementById(id);   
+  if (o) {
+    o.width=o.width+1;
+    o.height=o.height+1;   
+    if (o.width > 40) return false;    
+    if (o.dz) {
+      return false
+    }
+    setTimeout("iz('"+o.id+"')",1);
+    o.iz=true;
+    return true;
+  }
+  return false;
+}
+
+function dz(id) {
+  var o=document.getElementById(id);   
+  if (o) {
+    o.width=o.width-1;
+    o.height=o.height-1;   
+    if (o.width < 31) {
+o.style.position='static';
+      o.dz=false;
+      return false;    
+    }
+    setTimeout("dz('"+o.id+"')",1);
+    o.dz=true;
+    return true;
+  }
+  return false;
+}
+
 var csel=false; // selected icon object
-function fadeIt(th) {
-  th.width-=6; 
-  th.height-=6;
+var izoom=18;
+function fadeIt(th) {     
+   th.width-=izoom; 
+   th.height-=izoom;
+   //setTimeout("dz('"+th.id+"')",100);
+   th.style.position='static';
     if (th.className != 'imgSelect') th.className='imgFade';
 }
 function unFadeIt(th) {
-  th.width+=6; 
-  th.height+=6;
+  th.style.top=AnchorPosition_getPageOffsetTop(th.parentNode.parentNode)-3;
+  th.style.left=AnchorPosition_getPageOffsetLeft(th.parentNode.parentNode);
+  th.style.position='absolute';
+  
+  th.width+=izoom; 
+  th.height+=izoom;
+  //setTimeout("iz('"+th.id+"')",100);
+
   if (th.className != 'imgSelect')   th.className='imgNotFade';
 }
 function selectIt(th) {
@@ -62,10 +106,10 @@ function selectIt(th) {
 
 
  [BLOCK FUNCTION]
-<td width="40"  align="center" >
-     <a href="#"><img  class="imgFade"  onclick="selectIt(this);lauch_action(event,this.src,'[name]','[descriptionsla]');" 
-     onMouseOver="unFadeIt(this);" 
-     onMouseOut="fadeIt(this);" 
+<td width="40"  align="center"
+     onMouseOver="unFadeIt(i[name]);" 
+     onMouseOut="fadeIt(i[name]);"  >
+     <a href="#"><img  class="imgFade"  id="i[name]" onclick="selectIt(this);lauch_action(event,this.src,'[name]','[descriptionsla]');" 
      src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
