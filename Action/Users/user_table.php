@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.3 2003/04/14 18:47:10 marc Exp $
+// $Id: user_table.php,v 1.4 2003/07/17 06:39:08 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,73 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: user_table.php,v $
-// Revision 1.3  2003/04/14 18:47:10  marc
-// Groupe : suppression du prénom
-//
-// Revision 1.2  2002/07/29 11:15:18  marc
-// Release 0.1.1, see ChangeLog
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.18  2001/08/29 14:01:04  eric
-// choix du groupe du domaine
-//
-// Revision 1.17  2001/08/28 10:14:07  eric
-// modification pour la prise en comptes des groupes d'utilisateurs
-//
-// Revision 1.16  2001/03/21 20:12:59  marc
-// Bug... 1 replacé sans testé
-//
-// Revision 1.15  2001/02/26 12:28:22  marc
-// Filtre Postmaster pour ne pas proposer sa suppression
-//
-// Revision 1.14  2001/02/07 16:40:41  yannick
-// Gestion des header et tris
-//
-// Revision 1.13  2001/02/06 16:34:29  yannick
-// Add a QueryGen call
-//
-// Revision 1.12  2000/10/26 16:25:06  yannick
-// dimmensions de la fenêtre d'édition
-//
-// Revision 1.11  2000/10/26 15:18:18  yannick
-// Gestion des erreurs
-//
-// Revision 1.10  2000/10/26 10:41:03  yannick
-// Edition par l'utilisateur
-//
-// Revision 1.9  2000/10/26 08:09:11  yannick
-// Utilisateurs classés par login
-//
-// Revision 1.8  2000/10/26 07:54:27  yannick
-// Gestion du domaine sur les utilisateur
-//
-// Revision 1.7  2000/10/25 12:46:26  yannick
-// Plus de debug
-//
-// Revision 1.6  2000/10/24 21:11:05  marc
-// Bug : les comptes mails supprimes apparaissaient toutjours
-//
-// Revision 1.5  2000/10/24 08:09:26  yannick
-// Gestion du tourne page
-//
-// Revision 1.4  2000/10/23 10:40:07  marc
-// Stable release with mail account creation
-//
-// Revision 1.3  2000/10/22 16:27:04  marc
-// Connexion avec la messagerie
-//
-// Revision 1.2  2000/10/19 16:47:23  marc
-// Evo TableLayout
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.TableLayout.php");
 include_once("Class.QueryDb.php");
 include_once("Class.SubForm.php");

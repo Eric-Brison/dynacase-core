@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.6 2002/03/05 18:14:51 eric Exp $
+// $Id: upload.php,v 1.7 2003/07/17 06:39:08 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -105,11 +105,12 @@ function changeuser(&$action, $line, $verbose=false) {
       $mailapp = new Application();
       if ($mailapp->Exists("MAILADMIN")) {
         $mailapp->Set("MAILADMIN", $action->parent);
-        $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
+        $uacc = new MailAccount($mailapp->GetParam("MAILDB"),$use->id);
         $uacc->iddomain    = $use->iddomain ;
         $uacc->iduser      = $use->id;
         $uacc->login       = $use->login;
-        $uacc->Add();
+	if ($uacc->isAffected()) $uacc->Modify;
+	else $uacc->Add();
       }
     }
 
