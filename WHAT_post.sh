@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -norc 
 
 
 . /var/post-install/share/pi-functions.sh
@@ -8,6 +8,12 @@
 #------------------------------
 if [ "$1" = 1 ] ; then
 
+  run=`pidof postmaster`
+  if [ "x$run" = "x" ] ; then
+    log "postgresql is not running ..Init is delayed"
+    exit 1
+  fi
+
   log "Create anakeen database"
   sulog postgres "createdb anakeen"
   
@@ -15,7 +21,10 @@ if [ "$1" = 1 ] ; then
   sulog postgres "createuser -d -a anakeen" 
  
   log "Register DB anakeen for automatic dump"
-  ll=`cat /etc/ankpsql-tools/base-list | grep "^anakeen$" | wc -l`
+  ll=0
+  if [ -f /etc/ankpsql-tools/base-list ] ; then
+    ll=`cat /etc/ankpsql-tools/base-list | grep "^anakeen$" | wc -l`
+  fi
   if [ $ll -eq 0 ]; then 
     echo "Register DB anakeen for automatic dump"
     echo "anakeen" >> /etc/ankpsql-tools/base-list
@@ -42,25 +51,13 @@ if [ "$1" = 1 ] ; then
   sulog postgres "echo '\q' | psql anakeen anakeen"
 
   # Init the database with all App
-  pushd /home/httpd/what >/dev/null
-  echo '<?
-  ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT");
-  include_once("Class.Application.php");
-  $app=new Application();
-  $Null = "";
-  $app->Set("CORE",$Null);
-  $app->Set("USERS",$Null);
-  $app->Set("APPMNG",$Null);
-  $app->Set("AUTHENT",$Null);
-  $app->Set("ACCESS",$Null);
-  ?>' | /usr/bin/php -q 
-  popd >/dev/null
+  log "Initiate Database elements"
+  /home/httpd/what/wsh.php --api=appadmin  --appname=CORE
+  /home/httpd/what/wsh.php --api=appadmin  --appname=USERS
+  /home/httpd/what/wsh.php --api=appadmin  --appname=APPMNG
+  /home/httpd/what/wsh.php --api=appadmin  --appname=AUTHENT
+  /home/httpd/what/wsh.php --api=appadmin  --appname=ACCESS
 
-  # Restart Apache if running
-  run=`/etc/rc.d/init.d/httpd status |grep pid |wc -l`
-  if [ $run = 1 ] ; then
-     /etc/rc.d/init.d/httpd restart
-  fi
 fi
 
 
