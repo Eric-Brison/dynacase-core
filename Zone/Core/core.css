@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.30 2005/01/21 17:47:09 eric Exp $
+ * $Id: core.css,v 1.31 2005/01/28 17:05:15 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -293,6 +293,7 @@ INPUT, SELECT, OPTION, TEXTAREA, FILE {
    /*color:[CORE_TEXTFGCOLOR];*/
    background:[CORE_INPUTBGCOLOR];
    font-size: [CORE_FONTBASESIZE];
+   margin:0pt;
 /*  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:bg.png]',sizingMethod='scale');*/
 }
 OPTION {
@@ -300,7 +301,7 @@ OPTION {
 }
 input[type="button"] { 
 	-moz-border-radius:25px;
-	padding:1pt;
+	padding:0pt;
    }
 input:hover { 
 	border-style:inset;
@@ -311,6 +312,17 @@ input[type="select"] { -moz-border-radius:25px;
   }
 input[type="reset"] { -moz-border-radius:25px ;
  }
+input[type="text"] { 
+  -moz-border-radius:7px ;
+
+  border:inset 1px [CORE_TEXTFGCOLOR];
+ }
+TEXTAREA { 
+  -moz-border-radius:7px ;
+  border:inset 1px [CORE_TEXTFGCOLOR];
+ }
+
+
 /* input[type="submit"]:hover, input[type="reset"]:hover,input[type="button"]:hover {
  background-image:url('Images/bgaqua.png');   
     -moz-opacity:.8;		
