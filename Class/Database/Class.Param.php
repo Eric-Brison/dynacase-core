@@ -18,12 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.7 2002/06/04 16:09:57 eric Exp $
+//  $Id: Class.Param.php,v 1.8 2002/06/05 07:52:02 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.7 2002/06/04 16:09:57 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.8 2002/06/05 07:52:02 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -186,20 +186,12 @@ function PostDelete() {
 
 function DelAll($appid="")
 {
+  $query = new QueryDb($this->dbaccess,"Param");
+
+  // delete all parameters not used by application
+  $query->Query(0,0,"TABLE","delete from paramv where appid not in (select id from application) ");
   return;
-//    if ($key=="") $key=$this->key;
-//    $query = new QueryDb($this->dbaccess,"Param");
-//    $query->basic_elem->sup_where = array ("key=$key");
-//    $list = $query->Query();
-//    if ($query->nb != 0) {
-//      while(list($k,$v)=each($list)) {
-//        $v->Delete();
-//      }
-//    } else {
-//      $out = NULL;
-//      $this->log->debug("$key, no constant define for this key");
-//    }
-//    $this->buffer=array();
+
 }
 
 
