@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.11 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.12 2004/08/12 10:28:04 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -140,5 +140,40 @@ function getWshCmd($nice=false) {
   return $wsh;
 }
 
+/**
+ * exec list of unix command in background
+ * @param array $tcmd unix command strings
+ */
+function bgexec($tcmd,&$result,&$err) {
+  $foutname = uniqid("/tmp/bgexec");
+  $fout = fopen($foutname,"w+");
+  fwrite($fout,"#!/bin/bash\n");
+  foreach ($tcmd as $v) {
+    fwrite($fout,"$v\n");
+  }
+  fclose($fout);
+  chmod($foutname,0700);
 
+
+  //  if (session_id()) session_write_close(); // necessary to close if not background cmd 
+  exec("exec nohup $foutname > /dev/null 2>&1 &",$result,$err); 
+  //if (session_id()) @session_start();
+}
+
+function wbar($reste,$total,$text="",$fbar=false) {
+if (!$fbar) $fbar = GetHttpVars("bar"); // for progress bar
+ if ($fbar) {
+   
+      
+      if (file_exists("$fbar.lck")) {
+	$wmode="w";
+	unlink("$fbar.lck");
+      } else {
+	$wmode="a";	
+      }
+      $ffbar=fopen($fbar,$wmode);
+      fputs($ffbar,"$reste/$total/$text\n");
+      fclose($ffbar);      
+    }
+}
 ?>
