@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.4 2002/01/25 14:31:37 eric Exp $
+// $Id: index.php,v 1.5 2002/01/28 17:42:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -143,7 +143,18 @@ else
     {      
       $app = GetHttpVars("app","CORE");
       $act = GetHttpVars("action","");
-      redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}",$action->GetParam("CORE_STANDURL"));
+
+      // compute others argument to propagate to redirect url
+      global $HTTP_GET_VARS;
+      $getargs="";
+      while (list($k, $v) =each($HTTP_GET_VARS)) {
+	if ( ($k != "session") &&
+	     ($k != "app") &&
+	     ($k != "sole") &&
+	     ($k != "action") )
+	$getargs .= "&".$k."=".$v;
+      }
+      redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}".urlencode($getargs),$action->GetParam("CORE_STANDURL"));
     }
   else
     if ($standalone == "A")
