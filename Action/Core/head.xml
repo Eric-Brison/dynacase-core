@@ -48,7 +48,7 @@
 <td width="40"  align="center" >
      <a href="#"><img  onClick="lauch_action(this.src,'[name]','[descriptionsla]');" 
      onMouseOver="this.width+=6; this.height+=6;" 
-     onMouseOut="this.width-=6; this.height-=6;" src="[pubdir]/[name]/Images/[icon]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
+     onMouseOut="this.width-=6; this.height-=6;" src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
 
