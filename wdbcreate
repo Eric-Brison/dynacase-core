@@ -85,7 +85,7 @@ $actions[] = "$pubdir/CORE/CORE_post I ";
 
 $actions[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=CORE";
 $actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
-$actions[] = "echo \"update paramv set val= '".ucfirst(strtolower($dbank))." Connection' where val ='CORE_REALM'\" | psql $dbank anakeen";
+$actions[] = "echo \"update paramv set val= '".ucfirst(strtolower($dbank))." Connection' where name ='CORE_REALM'\" | psql $dbank anakeen";
 $actions[] = "$pubdir/wsh.php --api=appadmin --method=init --appname=FDL";
 $actions[] = "$pubdir/wsh.php --api=set_param --param=FREEDOM_DB --value=\"user=anakeen dbname=$dbfree\"";
 $actions[] = "$pubdir/wsh.php --api=set_param --param=CORE_CLIENT --value=\"$dbank\"";
