@@ -24,7 +24,7 @@ Alias /what @prefix@
  <DirectoryMatch /home/httpd/what/[^CALENDAR].*>
      Order Deny,Allow
      Deny from All   
-    <FilesMatch "\.(gif|jpe?g|png|xpm|ico|js)$">
+    <FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css)$">
        Order Deny,Allow
        Allow from All   
     </FilesMatch>
