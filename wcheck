@@ -212,6 +212,7 @@ $actions = array_merge($dump,
 					       array_merge($wsh, 
 							   $post))));
 if ($dbid) {
+  if ($dbank != "anakeen") $actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
   $actions[] = "$pubdir/wstart";
   $actions[] = "/etc/rc.d/init.d/httpd start";
 }
