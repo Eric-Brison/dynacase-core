@@ -16,10 +16,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.10 2002/09/25 08:27:55 eric Exp $
+//  $Id: Class.Action.php,v 1.11 2003/02/05 17:00:47 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.10 2002/09/25 08:27:55 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.11 2003/02/05 17:00:47 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -213,6 +213,7 @@ function GetLayoutFile($layname) {
 
 function Exists($name,$idapp,$id_func='')
 {
+  if ($idapp=='') return false;
   $query=new QueryDb($this->dbaccess,"Action");
 
   if ($id_func!='') {
