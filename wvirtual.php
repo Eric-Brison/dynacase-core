@@ -20,10 +20,10 @@ $dbaccess="user=anakeen dbname=$dbank";
 $dbfree="free$dbank";
 if ($argv[1]!="") $dbfree=$argv[1];
 
-ncurses_winit(sprintf(_("Create other database for %s"),gethostbyname(`hostname -f`)));
+ncurses_winit(sprintf(_("Create other database for %s (%s)"),trim(`hostname -f`),trim(`hostname -i`)));
 
 
-  ncurses_getmaxyx(&$fullscreen, $lines, $columns); 
+ncurses_getmaxyx(&$fullscreen, $lines, $columns); 
 
 //---------------------------------------------------
 
@@ -53,7 +53,7 @@ foreach ($outlist as $k=>$v) {
 
 
 
-$select=ncurses_select($post);
+$select=ncurses_select($post,"Select virtual host");
 
 $virtual=$post[$select];
 

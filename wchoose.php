@@ -32,7 +32,7 @@ if (is_dir($dvir)) {
 }
 
 
-ncurses_winit(sprintf(_("Choose database in %s"),gethostbyname(`hostname -f`)));
+ncurses_winit(sprintf(_("Choose database in %s (%s)"),trim(`hostname -f`),trim(`hostname -i`)));
 
 
 ncurses_getmaxyx(&$fullscreen, $lines, $columns); 
@@ -40,7 +40,7 @@ ncurses_getmaxyx(&$fullscreen, $lines, $columns);
 //---------------------------------------------------
 
 
-$select=ncurses_select($post);
+$select=ncurses_select($post,"Select database");
 
 $dbank=$post[$select];
 
