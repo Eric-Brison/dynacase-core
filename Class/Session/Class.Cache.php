@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Cache.php,v 1.7 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.Cache.php,v 1.8 2004/02/17 10:34:19 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -64,7 +64,7 @@ Class Cache {
    
     $this->Cacheble();
 
-    global $CacheObj;
+    // global $CacheObj;
     if (($this->isCacheble)&& ($id != "")) {
 
       
@@ -74,9 +74,9 @@ Class Cache {
       if (is_object($core)) {
 	$this->max = $core->GetParam("CORE_MAXOBJCACHE", $this->max);
       }
-      if ((!isset( $CacheObj[$this->cacheclass()])) || 
-	  (count( $CacheObj[$this->cacheclass()]) < $this->max)) {
-	$CacheObj[$this->cacheclass()][$id]=$this;
+      if ((!isset( $_SESSION["CacheObj"][$this->cacheclass()])) || 
+	  (count( $_SESSION["CacheObj"][$this->cacheclass()]) < $this->max)) {
+	$_SESSION["CacheObj"][$this->cacheclass()][$id]=$this;
 	
 	//		print "SET:".$this->cacheclass().$id."<BR>";
 	$this->ReallySetCache();
@@ -95,17 +95,17 @@ Class Cache {
 
     $this->Cacheble();
 
-    global $CacheObj;
+    //global $CacheObj;
     if (($this->isCacheble) && ($id != "")) {
 
 
-      session_register("CacheObj");
-      if (isset($CacheObj[$this->cacheclass()][$id]) && 
-	  ((is_object($CacheObj[$this->cacheclass()][$id])) || 
-	   (is_array($CacheObj[$this->cacheclass()][$id])))
+      // session_register("CacheObj");$_SESSION["CacheObj"]
+      if (isset($_SESSION["CacheObj"][$this->cacheclass()][$id]) && 
+	  ((is_object($_SESSION["CacheObj"][$this->cacheclass()][$id])) || 
+	   (is_array($_SESSION["CacheObj"][$this->cacheclass()][$id])))
 	  ) {
 
-	$this=$CacheObj[$this->cacheclass()][$id];
+	$this=$_SESSION["CacheObj"][$this->cacheclass()][$id];
 	$this->cached = true;
 	$this->ReallyGetCache();
 	//	print "GET:".$this->cacheclass().$id."<BR>";
@@ -127,12 +127,12 @@ Class Cache {
     if ($HTTP_CONNECTION == "")  return false;
 
     if ($this->isCacheble) {
-      global $CacheObj;
+      // global $CacheObj;
       $this->ClearCacheIndex($this->cacheclass(), $reallyset);
       
-      if (is_array($CacheObj)) {
-	reset($CacheObj);
-	while (list($k,$v) = each ($CacheObj)) {
+      if (is_array($_SESSION["CacheObj"])) {
+	//
+	foreach ($_SESSION["CacheObj"] as $k=>$v) {
 	  // uset all father class also
 	  if (is_subclass_of ($this, $k)) {
 	    $this->ClearCacheIndex($k, $reallyset);
@@ -148,8 +148,7 @@ Class Cache {
 	}
 
 	// unset all childs of related class 
-	reset($CacheObj);
-	while (list($k,$v) = each ($CacheObj)) {
+	foreach ($_SESSION["CacheObj"] as $k=>$v) {
 
 	  $anc = get_ancestors_class($k);
 	  if (count(array_intersect($anc, $this->relatedCacheClass)) > 0) {
@@ -165,8 +164,8 @@ Class Cache {
   // clear one entry of the object cache
   function ClearCacheIndex($index, $reallyset = true) {
     
-      global $CacheObj;
-      unset($CacheObj[$index]);
+
+      unset($_SESSION["CacheObj"][$index]);
 
       global $ClearedIndex;
       $ClearedIndex[$index]=true;
@@ -177,9 +176,9 @@ Class Cache {
       }
       // reset access last time because it is empty
       // to avoid unnessecessary reinit (by other users)
-      global $AccessCacheObj;
+      //      global $AccessCacheObj;
       $date = gettimeofday();
-      $AccessCacheObj[$index]=$date['sec'];
+      $_SESSION["AccessCacheObj"][$index]=$date['sec'];
       
   }
 
@@ -230,22 +229,23 @@ Class Cache {
     global $HTTP_CONNECTION; // use only cache with HTTP
     if ($HTTP_CONNECTION == "")  return false;
 
-    session_register("AccessCacheObj");
+    // session_register("AccessCacheObj");
     $accessobject = new QueryDb("","SessionCache");
     $tao= $accessobject->Query(0,0,"TABLE");
     if ($accessobject->nb > 0) {
-      global $AccessCacheObj;
+      //      global $AccessCacheObj;
       while (list($k,$v) = each ($tao)) {
-	if (isset($AccessCacheObj[$v["index"]])) {
+	if (isset($_SESSION["AccessCacheObj"][$v["index"]])) {
 	  //print "test cache ".$v["index"].":".$v["lasttime"].">".$AccessCacheObj[$v["index"]]."<BR>";
-	  if (intval($v["lasttime"]) > intval($AccessCacheObj[$v["index"]])) {
+	  if (intval($v["lasttime"]) > intval($_SESSION["AccessCacheObj"][$v["index"]])) {
 	    //  print "need update ".$v["index"]."<BR>";
 	    $this->ClearCacheIndex($v["index"], false);
 	  }
 	} else {
 	  
 	  $date = gettimeofday();
-	  $AccessCacheObj[$v["index"]]=$date['sec'];
+	  //	  $AccessCacheObj[$v["index"]]=$date['sec'];
+	  $_SESSION["AccessCacheObj"][$v["index"]]=$date['sec'];
 	} 
 
       }
