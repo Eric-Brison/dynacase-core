@@ -15,7 +15,7 @@ if [ "$1" = 1 ] ; then
   fi
 
   log "Create anakeen database"
-  sulog postgres "createdb anakeen"
+  sulog postgres "createdb --encoding LATIN1 anakeen"
   
   log "Create anakeen database user"
   sulog postgres "createuser -d -a anakeen" 

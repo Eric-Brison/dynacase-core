@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_mod.php,v 1.3 2002/05/23 16:14:40 eric Exp $
+// $Id: param_mod.php,v 1.4 2002/05/24 09:23:07 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_mod.php,v $
+// Revision 1.4  2002/05/24 09:23:07  eric
+// changement structure table paramv
+//
 // Revision 1.3  2002/05/23 16:14:40  eric
 // paramètres utilisateur
 //
@@ -43,14 +46,15 @@ include_once("Class.Param.php");
 function param_mod(&$action) {
   // -----------------------------------
     // Get all the params      
-      $vtype=GetHttpVars("vtype");
+
+      $appid=GetHttpVars("appid");
   $name =GetHttpVars("aname");
   $atype=GetHttpVars("atype",PARAM_APP);
   $val  =GetHttpVars("val");
   
-  $ParamCour = new Param($action->dbaccess,array($name,$atype,$vtype));
+  $ParamCour = new Param($action->dbaccess,array($name,$atype,$appid));
   if (! $ParamCour->isAffected()) {
-    $ParamCour->vtype=$vtype;
+    $ParamCour->appid=$appid;
     $ParamCour->type=$atype;
     $ParamCour->name=$name;
     $ParamCour->val=$val;
@@ -74,9 +78,9 @@ function param_umod(&$action) {
 
  
   $atype=GetHttpVars("atype",PARAM_APP);
-  $vtype=GetHttpVars("vtype");
-  if ($atype != PARAM_USER) $action->exitError(_("only user parameters can be modified with its action"));
-  if ($vtype != $action->user->id) $action->exitError(_("only current user parameters can be modified with its action"));
+  $appid=GetHttpVars("appid");
+  if ($atype[0] != PARAM_USER) $action->exitError(_("only user parameters can be modified with its action"));
+  if (substr($atype,1) != $action->user->id) $action->exitError(_("only current user parameters can be modified with its action"));
 
   param_mod(&$action);
 }

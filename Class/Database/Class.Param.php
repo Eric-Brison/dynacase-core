@@ -18,12 +18,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.3 2002/05/23 16:14:40 eric Exp $
+//  $Id: Class.Param.php,v 1.4 2002/05/24 09:23:07 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.3 2002/05/23 16:14:40 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.4 2002/05/24 09:23:07 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -32,20 +32,20 @@ define("PARAM_STYLE","S");
 
 Class Param extends DbObj
 {
-var $fields = array ("name","type","vtype","val");
+var $fields = array ("name","type","appid","val");
 
-var $id_fields = array ("name","type","vtype");
+var $id_fields = array ("name","type","appid");
 
 var $dbtable = "paramv";
 
 var $sqlcreate = '
       create table paramv (
-              name    varchar(50),
-              type   varchar(1),
-              vtype  int4,
+              name   varchar(50),
+              type   varchar(10),
+              appid  int4,
               val    varchar(200));
       create index paramv_idx2 on paramv(name);
-      create unique index paramv_idx3 on paramv(name,type,vtype);
+      create unique index paramv_idx3 on paramv(name,type,appid);
                  ';
 
 var $buffer=array();
@@ -67,12 +67,12 @@ function SetKey($appid,$userid=ANONYMOUS_ID) {
   $this->buffer=array_merge($this->buffer,$this->GetAll($appid,$userid));
 }
 
-function Set($name,$val,$type=PARAM_GLB,$vtype='')
+function Set($name,$val,$type=PARAM_GLB,$appid='')
 {
   $this->name = $name;
   $this->val = $val;
   $this->type = $type;
-  $this->vtype = $vtype;
+  $this->appid = $appid;
 
   if ($this->Add() != "") {
     $this->Modify();
@@ -88,11 +88,8 @@ function SetVolatile($name,$val)
 function Get($name,$def="")
 {
    if (isset($this->buffer[$name])) {
-     //print "$name : ".$this->buffer[$name]."<HR>";
      return ($this->buffer[$name]);
    } else {
-     //  print "NO $name : ".$def."<HR>";
-     // print_r2($this->buffer);
      return ($def);
    }
 }
@@ -104,11 +101,11 @@ function GetAll($appid="",$userid=ANONYMOUS_ID)
    
    $list = $query->Query(0,0,"TABLE","select distinct on(name) * from {$this->dbtable} where ". 
 			 "(type = '".PARAM_GLB."') ".
-			 " OR (type='".PARAM_APP."' and vtype=$appid)".
-			 " OR (type='".PARAM_USER."' and vtype=$userid)".
+			 " OR (type='".PARAM_APP."' and appid=$appid)".
+			 " OR (type='".PARAM_USER.$userid."' and appid=$appid)".
 			 " order by name, type desc");
 
-   //print $query->LastQuery."<BR>";
+
    if ($query->nb != 0) {
      while(list($k,$v)=each($list)) {
        $out[$v["name"]]=$v["val"];
@@ -117,7 +114,7 @@ function GetAll($appid="",$userid=ANONYMOUS_ID)
      $out = NULL;
      $this->log->debug("$appid no constant define for this application");
    }
-   //print_r2($out);
+
    return($out);
 }
  
@@ -125,11 +122,11 @@ function GetUser($userid=ANONYMOUS_ID)
 {
    $query = new QueryDb($this->dbaccess,"Param");
    
-   $tlist = $query->Query(0,0,"TABLE","select distinct on(name) paramv.*, paramdef.appid, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isuser='Y' and (". 
+   $tlist = $query->Query(0,0,"TABLE","select  distinct on(paramv.name, paramv.appid) paramv.*,  paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isuser='Y' and (". 
 			 " (type = '".PARAM_GLB."') ".
 			 " OR (type='".PARAM_APP."')".
-			 " OR (type='".PARAM_USER."' and vtype=$userid))".
-			 " order by name, type desc");
+			 " OR (type='".PARAM_USER.$userid."' ))".
+			 " order by paramv.name, paramv.appid, paramv.type desc");
 
 
    return($tlist);
@@ -140,10 +137,11 @@ function GetApps()
 {
    $query = new QueryDb($this->dbaccess,"Param");
    
-   $tlist = $query->Query(0,0,"TABLE","select  paramv.*, paramdef.appid, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and  (". 
+   $tlist = $query->Query(0,0,"TABLE","select  paramv.*, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and  (". 
 			 " (type = '".PARAM_GLB."') ".
 			 " OR (type='".PARAM_APP."'))".
-			 " order by vtype,  type desc");
+			 " order by paramv.appid,  type desc");
+
 
 
    return($tlist);

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_delete.php,v 1.2 2002/05/23 16:14:40 eric Exp $
+// $Id: param_delete.php,v 1.3 2002/05/24 09:23:07 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_delete.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -29,11 +29,11 @@ function param_delete(&$action) {
 // -----------------------------------
 
   $name=GetHttpVars("id");
-  $vtype=GetHttpVars("vtype");
+  $appid=GetHttpVars("appid");
   $atype=GetHttpVars("atype",PARAM_APP);
 
 
-  $parametre = new Param($action->dbaccess,array($name,$atype,$vtype));
+  $parametre = new Param($action->dbaccess,array($name,$atype,$appid));
   if ($parametre->isAffected()) {
     $action->log->info(_("Remove parameter").$parametre->name);
     $parametre->Delete();
@@ -45,11 +45,10 @@ function param_delete(&$action) {
 function param_udelete(&$action) {
 // -----------------------------------
 
- 
   $atype=GetHttpVars("atype",PARAM_APP);
-  $vtype=GetHttpVars("vtype");
-  if ($atype != PARAM_USER) $action->exitError(_("only user parameters can be deleted with its action"));
-  if ($vtype != $action->user->id) $action->exitError(_("only current user parameters can be deleted with its action"));
+  $appid=GetHttpVars("appid");
+  if ($atype[0] != PARAM_USER) $action->exitError(_("only user parameters can be deleted with its action"));
+  if (substr($atype,1) != $action->user->id) $action->exitError(_("only current user parameters can be deleted with its action"));
 
 
   param_delete(&$action);

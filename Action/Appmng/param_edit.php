@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: param_edit.php,v 1.2 2002/05/23 16:14:40 eric Exp $
+// $Id: param_edit.php,v 1.3 2002/05/24 09:23:07 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_edit.php,v $
+// Revision 1.3  2002/05/24 09:23:07  eric
+// changement structure table paramv
+//
 // Revision 1.2  2002/05/23 16:14:40  eric
 // paramètres utilisateur
 //
@@ -42,10 +45,10 @@ function param_edit(&$action) {
 
   // Get all the params      
   $name=GetHttpVars("id");
-  $vtype=GetHttpVars("vtype");
+  $appid=GetHttpVars("appid");
   $atype=GetHttpVars("atype",PARAM_APP);
 
-    $action->lay->Set("vtype",$vtype);
+    $action->lay->Set("appid",$appid);
     $action->lay->Set("atype",$atype);
 
   if ($name == "") {
@@ -57,7 +60,7 @@ function param_edit(&$action) {
     $action->lay->Set("TITRE",$action->text("titleparamcreate"));
     $action->lay->Set("BUTTONTYPE",$action->text("butcreate"));
   } else {
-    $param = new Param($action->dbaccess, array($name,$atype,$vtype));
+    $param = new Param($action->dbaccess, array($name,$atype,$appid));
     $input_name = new Layout($action->GetLayoutFile("aff_name.xml"),$action);
     $input_name->Set( "NAME",$name);
     $action->lay->Set("NAME_EDIT",$input_name->gen());
