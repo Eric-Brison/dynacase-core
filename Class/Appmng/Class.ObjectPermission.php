@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ObjectPermission.php,v 1.10 2002/09/18 11:06:03 eric Exp $
+// $Id: Class.ObjectPermission.php,v 1.11 2002/09/24 13:57:13 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ObjectPermission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 
-$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.10 2002/09/18 11:06:03 eric Exp $';
+$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.11 2002/09/24 13:57:13 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
@@ -81,7 +81,7 @@ create unique index i_operm on operm (id_user, id_obj, id_class); ';
     }
   function GetDescription()
     {
-      $octrl = new ControlObject("",array($this->id_obj,$this->id_class));
+      $octrl = new ControlObject($this->dbaccess,array($this->id_obj,$this->id_class));
 
       if ( $octrl->IsAffected()) {
 	$this->classid = $octrl->id_class;

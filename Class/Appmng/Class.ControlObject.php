@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ControlObject.php,v 1.5 2002/04/29 15:32:24 eric Exp $
+// $Id: Class.ControlObject.php,v 1.6 2002/09/24 13:57:13 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ControlObject.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 //
-$CLASS_CONTROLOBJECT_PHP = '$Id: Class.ControlObject.php,v 1.5 2002/04/29 15:32:24 eric Exp $';
+$CLASS_CONTROLOBJECT_PHP = '$Id: Class.ControlObject.php,v 1.6 2002/09/24 13:57:13 eric Exp $';
 include_once('Class.DbObjCtrl.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -69,6 +69,18 @@ create unique index i_octrl on octrl (id_obj, id_class);';
 
     }
 
+  // --------------------------------------------------------------------
+  function PostDelete()    
+    // --------------------------------------------------------------------
+    {
+      // ------------------------------
+      // delete object permision  object
+      
+      $dq = new QueryDb($this->dbaccess,"ObjectPermission");
+      $dq -> Query(0,0,"TABLE","delete from operm where id_obj not in (select id_obj from octrl)");
+
+
+    }
   // --------------------------------------------------------------------
   
 

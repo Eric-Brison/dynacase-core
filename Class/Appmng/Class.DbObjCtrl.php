@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.DbObjCtrl.php,v 1.7 2002/09/18 11:06:03 eric Exp $
+// $Id: Class.DbObjCtrl.php,v 1.8 2002/09/24 13:57:13 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.DbObjCtrl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -24,7 +24,7 @@
 
 
 
-$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.7 2002/09/18 11:06:03 eric Exp $';
+$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.8 2002/09/24 13:57:13 eric Exp $';
 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');
@@ -166,7 +166,7 @@ Class DbObjCtrl extends DbObj
       // ------------------------------
       // delete control object
       
-      $cobj = new ControlObject("", array($this->id, $this->classid ));
+      $cobj = new ControlObject($this->dbaccess, array($this->id, $this->classid ));
       $cobj-> Delete();
 
     }
