@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.9 2002/04/04 13:38:17 eric Exp $
+// $Id: head.php,v 1.10 2002/04/15 14:19:59 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -104,6 +104,9 @@ function head(&$action) {
   $lay = new Layout($jslauch, $action);
   $action->parent->AddJsCode($lay->gen());
 
+
+  if ($action->GetParam("CORE_USECACHE") == "yes") $action->lay->set("dcache","inline");
+  else $action->lay->set("dcache","none");
   // update username
   userlogin($action);
 

@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: CORE.app,v 1.2 2002/04/15 14:19:59 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: CORE.app,v $
+// Revision 1.2  2002/04/15 14:19:59  eric
+// ajout clear cache objet
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -71,6 +74,9 @@ $action_desc = array (
   ),
   array(
    "name"               =>"HEAD"
+  ),
+  array(
+   "name"               =>"CLEARCACHE"
   ),
   array(
    "name"               =>"TABINDEX"
