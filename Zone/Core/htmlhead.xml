@@ -6,7 +6,7 @@
 
 <LINK REL="icon" HREF="CORE/Images/logo16.ico" >
 <LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo32.ico" >
-   <title>[WHAT] [APP_TITLE]</title>
+   <title>[WHAT] [TITLE]</title>
 
    <style>
 [ZONE CORE:GENCSS]
