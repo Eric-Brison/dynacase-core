@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: download.php,v 1.3 2002/01/14 15:13:13 eric Exp $
+// $Id: download.php,v 1.4 2002/02/26 10:02:30 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/download.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -91,7 +91,7 @@ function download(&$action) {
   //------------------------------
   $tabacl=array();
   $query = new QueryDb($action->dbaccess,"User");
-  $applist=$query->Query(0,0,"TABLE",
+  $applistp=$query->Query(0,0,"TABLE",
 			  "select  application.name as app, users.login||'@'||domain.name as login,  acl.name as acl ".
 			 "from application, acl, permission, users, domain ".
 			 "where (permission.id_user = users.id) and ".
@@ -104,7 +104,7 @@ function download(&$action) {
 			 "order by app, login");
 
   // same for negative acls : just add '-' sign
-  $applist=$query->Query(0,0,"TABLE",
+  $applistn=$query->Query(0,0,"TABLE",
 			  "select  application.name as app, users.login||'@'||domain.name as login,  '-'||acl.name as acl ".
 			 "from application, acl, permission, users, domain ".
 			 "where (permission.id_user = users.id) and ".
@@ -116,6 +116,9 @@ function download(&$action) {
 			 "((application.objectclass isnull)  OR (application.objectclass != 'Y') ) ".
 			 "order by app, login");
 
+
+  if (is_array($applistn)) $applist = array_merge($applistp, $applistn);
+  else $applist = $applistp;
   sort($applist);
 
   $ka=0;
