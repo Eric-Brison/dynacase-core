@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.13 2003/06/06 09:14:15 eric Exp $
+// $Id: Class.User.php,v 1.14 2003/07/17 07:14:04 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.13 2003/06/06 09:14:15 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.14 2003/07/17 07:14:04 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -122,6 +122,7 @@ create sequence seq_id_users start 10";
       } else {
 	$this->isgroup = "N";
       }
+      $this->login = strtolower($this->login);
       if (isset($this->password_new) && ($this->password_new!="")) {
 	$this->computepass($this->password_new, $this->password);
       }
