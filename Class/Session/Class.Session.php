@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.11 2004/01/13 09:31:57 eric Exp $
+ * @version $Id: Class.Session.php,v 1.12 2004/01/14 17:08:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.11 2004/01/13 09:31:57 eric Exp $
+// $Id: Class.Session.php,v 1.12 2004/01/14 17:08:49 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.11 2004/01/13 09:31:57 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.12 2004/01/14 17:08:49 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -47,55 +47,22 @@ include_once ("Class.SessionCache.php");
 
 Class Session extends DbObj{
 
-var $fields = array ( "id","userid", "timetolive");
+var $fields = array ( "id","userid");
 
 var $id_fields = array ("id");
 
 var $dbtable = "sessions";
 
 var $sqlcreate = "create table sessions ( id         varchar(100),
-                        userid   int,
-                        timetolive int);
+                        userid   intt);
                   create index sessions_idx on sessions(id);";
 
 
-  // Status constant 
-  var $SESSION_CT_INIT                = 0;
-  var $SESSION_CT_EXIST               = 1;
-  var $SESSION_CT_ACTIVE              = 2;
-  var $SESSION_CT_CLOSE               = 3;
-  var $SESSION_CT_TIMEOUT             = -1;
-  var $SESSION_CT_NONE                = -2;
-  var $SESSION_CT_ARGS                = -3;
-  var $SESSION_CT_OOOPS               = -99;
 
  var $isCacheble= false;
 var $sessiondb;
 
-  function status2str($st)
-    {
-      switch($st) {
-      case $this->SESSION_CT_INIT:
-	return "SESSION_CT_INIT";
-      case $this->SESSION_CT_EXIST:
-	return "SESSION_CT_EXIST";
-      case $this->SESSION_CT_ACTIVE:
-	return "SESSION_CT_ACTIVE";
-      case $this->SESSION_CT_CLOSE:
-	return "SESSION_CT_CLOSE";
-      case $this->SESSION_CT_TIMEOUT:
-	return "SESSION_CT_TIMEOUT";
-      case $this->SESSION_CT_NONE:
-	return "SESSION_CT_NONE";
-      case $this->SESSION_CT_ARGS:
-	return "SESSION_CT_ARGS";
-      case $this->SESSION_CT_ARGS:
-	return "SESSION_CT_ARGS";
-     default:
-	return "SESSION_CT_OOOPS";
-      }
-    }
-
+  
  
   function Set($id)
     {
@@ -106,37 +73,22 @@ var $sessiondb;
       $list = $query->Query();
       if ($query->nb != 0) {
         $this=$list[0];
-        if (isset($this->timetolive) && $this->timetolive < time()) {
-          $this->Close();
-          $this->Open();
-          $this->status = $this->SESSION_CT_TIMEOUT;
-        } else if ($this->userid == 0) {
-          $this->status     = $this->SESSION_CT_EXIST;
-          $this->timetolive = $this->SetTTL();
-          $this->InitBuffer();
-          $this->Modify();
-        } else {
-          $this->status     = $this->SESSION_CT_ACTIVE;
-          $this->timetolive = $this->SetTTL();
-          $this->InitBuffer();
-          $this->Modify();
-        }
+        
       } else {
 	global $PHP_AUTH_USER;
         // Init the database with the app file if it exists
-        $this->Open();
-        $this->status     = $this->SESSION_CT_EXIST;
+
 	
 	$u = new User();
 	if ($u->SetLoginName($PHP_AUTH_USER)) {	  	
-	  $this->activate($u->id);	
+	  $this->open($u->id);	
 	} else {
 	  return false;
 	}
       }
 
-      $this->GCollector();
-      setcookie ("session",$this->id,0,"/");
+      // set cookie session
+      setcookie ("session",$this->id,$this->SetTTL(),"/");
       return true;
     }
 
@@ -157,7 +109,7 @@ var $sessiondb;
       return $this->status;
     }  
   
-  function Open()
+  function Open($uid=ANONYMOUS_ID)
     {
       $idsess  = $this->newId();
       global $HTTP_CONNECTION; // use only cache with HTTP
@@ -166,48 +118,11 @@ var $sessiondb;
 	@session_start();
       }
       $this->id         = $idsess;
-      $this->timetolive = $this->SetTTL();
-      $this->userid   = ANONYMOUS_ID;
+      $this->userid   = $uid;
       $this->Add();
       $this->log->debug("Nouvelle Session : {$this->id}");
     }
-  // ----------------------
-  // Rend active la session
-  // ----------------------
-  function Activate(&$userid)
-    {
-      if ($userid == "" ){
-	$this->status = $this->SESSION_CT_ARGS;
-	return $this->status;
-      }
-      global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {
-	session_id($this->id);
-	@session_start();
-	// see if the object cache is up-to-date
-	$ocache = new SessionCache();
-	$ocache->InitCache();
-      }
-      $this->userid = $userid;
-      $this->timetolive = $this->SetTTL();
-      $this->Modify();
-      $this->status = $this->SESSION_CT_ACTIVE;
-      return $this->status;
-    }
-  
-  function DeActivate()
-    {
-      global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {
-	session_unset();
-      }
-      $this->userid = ANONYMOUS_ID;
-      $this->timetolive = $this->SetTTL();
-      $this->Modify();
-      $this->status = $this->SESSION_CT_EXIST;
-      return $this->status;
-
-    }
+ 
   // --------------------------------
   // Stocke une variable de session args
   // $v est une chaine !
@@ -253,14 +168,6 @@ var $sessiondb;
     }
   }       
 
-  // -------------------------------
-  // Get all vars
-  //
-  function InitBuffer() {
-	$ocache = new SessionCache();
-	$ocache->InitCache();
-    return;
-  }
   
   // --------------------------------
   // Détruit une variable de session
@@ -277,63 +184,7 @@ var $sessiondb;
       return;
     }       
   
-  // --------------------------------
-  // --------------------------------
-  function GCollector()
-    {
-      global $HTTP_CONNECTION; // use only cache with HTTP
-      $gcdate = $this->GetGCDate();
-      if (time() >= $gcdate) {
-
-        $this->log->debug("GCollector");
-	$query = new QueryDb($this->dbaccess, "Session");
-	$query->AddQuery("timetolive < ".time());
-
-	$liste = $query->Query();
-	$i = 0;
-	$current_sid = session_id();
-
-	while ($i<$query->nb) {
-	  // 1, suppression des variables de session
-	  // automaticaly deleted by php session 'session.gc_maxlifetime'
-          $this->log->debug("Remove session: {$liste[$i]->id}");
-
-	  if ($HTTP_CONNECTION != "") {
-	    @session_start();
-	    session_id($liste[$i]->id);
-	  }
-	  // 2, suppression de la session
-	  $liste[$i]->Close();
-	  
-	  $i++;
-	}
-	if ($HTTP_CONNECTION != "") {
-	  session_id($current_sid);
-	  @session_start();
-	}
-	$this->SetGCDate((time()+$this->GetGCInterval()));
-	unset($query);
-      }
-      return;
-    }
-
-  
-  function removesessionvars()
-    {
-      $qvar = new QueryDb($this->dbaccess, "SessionVar");
-      $qvar->order_by='';
-      $qvar->criteria = "";
-      $lvar = $qvar->Query(0,0,"LIST",
-			   "select session_vars.session, session_vars.key, session_vars.val "
-			   ." from session_vars where session_vars.session = ' {$this->id}'");
-      $j = 0;
-      while ($j<$qvar->nb) {
-	$lvar[$j]->Delete();
-	$j++;
-      }
-      unset($qvar);
-      unset($this->buffer);
-    }
+ 
   
   
   // ------------------------------------------------------------------------
@@ -358,28 +209,6 @@ var $sessiondb;
       return (time() + $ttliv);
     }
   
-  function GetGCInterval()
-    {
-      $t = new SessionConf($this->dbaccess, "GC_INTERVAL");
-      $tv = $t->val;
-      unset($t);
-      return $tv;
-    }
-
-  function GetGCDate()
-    {
-      $t = new SessionConf($this->dbaccess, "GC_DATE");
-      $tv = $t->val;
-      unset($t);
-      return $tv;
-    }
-
-  function SetGCDate($gcd)
-    {
-      $t = new SessionConf($this->dbaccess, "GC_DATE");
-      $t->val = $gcd;
-      $t->Modify();;
-      return;
-    }
+ 
 } // Class Session
 ?>
