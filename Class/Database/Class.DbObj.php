@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.17 2003/03/28 13:28:28 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.18 2003/05/19 09:59:00 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -434,8 +434,12 @@ function init_dbid() {
 }
 function exec_query($sql,$lvl=0)
   {
-    
+    global $SQLDELAY,$SQLDEBUG;
+
     if ($sql == "") return;
+
+    if ($SQLDEBUG) $sqlt1=microtime(); // to test delay of request
+
     $this->init_dbid();
     $this->log->debug("exec_query : $sql");
     
@@ -486,6 +490,7 @@ function exec_query($sql,$lvl=0)
       $this->log->warning("PostgreSQL Error : ".$this->msg_err);
     }
     
+     if ($SQLDEBUG) $SQLDELAY+=microtime_diff(microtime(),$sqlt1);// to test delay of request
     return ($this->msg_err);
   }
 
