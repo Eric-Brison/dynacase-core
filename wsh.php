@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.7 2002/06/04 16:09:56 eric Exp $
+// $Id: wsh.php,v 1.8 2002/09/12 08:41:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -26,6 +26,7 @@
 
 // WHAT SHELL
 ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT");
+ini_set("max_execution_time", "3600");
 
 include_once('Class.Action.php');
 include_once('Class.Application.php');
