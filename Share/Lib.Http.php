@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.6 2002/04/08 15:13:47 eric Exp $
+// $Id: Lib.Http.php,v 1.7 2002/04/29 15:30:00 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -23,7 +23,7 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.6 2002/04/08 15:13:47 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.7 2002/04/29 15:30:00 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -41,9 +41,14 @@ function Redirect($action,$appname,$actionname,$otherurl="")
 function GetHttpVars($name, $def="") {
 
   global $HTTP_GET_VARS,$HTTP_POST_VARS,$ZONE_ARGS;
-  if (isset($ZONE_ARGS[$name])) return $ZONE_ARGS[$name]; // try zone args first : it is set be Layout::execute for a zone
-  if (isset($HTTP_GET_VARS[$name])) return $HTTP_GET_VARS[$name];
-  if (isset($HTTP_POST_VARS[$name])) return $HTTP_POST_VARS[$name];
+
+  // it's necessary to strip slashes because HTTP add slashes automatically
+  if (isset($ZONE_ARGS[$name])) return stripslashes($ZONE_ARGS[$name]); // try zone args first : it is set be Layout::execute for a zone
+  if (isset($HTTP_GET_VARS[$name])) return stripslashes($HTTP_GET_VARS[$name]);
+  if (isset($HTTP_POST_VARS[$name])) {
+    if (is_array($HTTP_POST_VARS[$name])) return $HTTP_POST_VARS[$name];
+    else return stripslashes($HTTP_POST_VARS[$name]);
+  }
   return($def);
 }
 
