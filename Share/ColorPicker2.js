@@ -11,16 +11,15 @@
 // use. That means, you can include it in your product, or your web
 // site, or any other form where the code is actually being used. You
 // may not put the plain javascript up on your site for download or
-// include it in your javascript libraries for download. Instead,
-// please just point to my URL to ensure the most up-to-date versions
-// of the files. Thanks.
+// include it in your javascript libraries for download. 
+// If you wish to share this code with others, please just point them
+// to the URL instead.
+// Please DO NOT link directly to my .js files from your site. Copy
+// the files to your server and use them there. Thank you.
 // ===================================================================
 
-
 /* 
-ColorPicker.js
-Author: Matt Kruse
-Last modified: 6/19/01
+Last modified: 02/24/2003
 
 DESCRIPTION: This widget is used to select a color, in hexadecimal #RRGGBB 
 form. It uses a color "swatch" to display the standard 216-color web-safe 
@@ -40,12 +39,17 @@ var cp = new ColorPicker('window');
 // Add a link in your page to trigger the popup. For example:
 <A HREF="#" onClick="cp.show('pick');return false;" NAME="pick" ID="pick">Pick</A>
 
+// Or use the built-in "select" function to do the dirty work for you:
+<A HREF="#" onClick="cp.select(document.forms[0].color,'pick');return false;" NAME="pick" ID="pick">Pick</A>
+
 // If using DHTML popup, write out the required DIV tag near the bottom
 // of your page.
 <SCRIPT LANGUAGE="JavaScript">cp.writeDiv()</SCRIPT>
 
 // Write the 'pickColor' function that will be called when the user clicks
-// a color and do something with the value
+// a color and do something with the value. This is only required if you
+// want to do something other than simply populate a form field, which is 
+// what the 'select' function will give you.
 function pickColor(color) {
 	field.value = color;
 	}
@@ -65,9 +69,9 @@ NOTES:
    an event handler for 'onmouseup' after you define a ColorPicker object or
    the color picker will not hide itself correctly.
 */ 
-
+ColorPicker_targetInput = null;
 function ColorPicker_writeDiv() {
-	document.writeln("<DIV ID=\"colorPickerDiv\" STYLE=\"border:solid 1px;position:absolute;visibility:hidden;\"> </DIV>");
+	document.writeln("<DIV ID=\"colorPickerDiv\" STYLE=\"position:absolute;visibility:hidden;\"> </DIV>");
 	}
 
 function ColorPicker_show(anchorname) {
@@ -76,12 +80,30 @@ function ColorPicker_show(anchorname) {
 
 function ColorPicker_pickColor(color,obj) {
 	obj.hidePopup();
-	if (window.pickColor) {
-		pickColor(color);
+	pickColor(color);
+	}
+
+// A Default "pickColor" function to accept the color passed back from popup.
+// User can over-ride this with their own function.
+function pickColor(color) {
+	if (ColorPicker_targetInput==null) {
+		alert("Target Input is null, which means you either didn't use the 'select' function or you have no defined your own 'pickColor' function to handle the picked color!");
+		return;
 		}
-	else {
-		alert("You must define a function named 'pickColor' to receive the value clicked!");
+	ColorPicker_targetInput.value = color;
+	ColorPicker_targetInput.style.backgroundColor = color;
+	}
+
+// This function is the easiest way to popup the window, select a color, and
+// have the value populate a form field, which is what most people want to do.
+function ColorPicker_select(inputobj,linkname) {
+	if (inputobj.type!="text" && inputobj.type!="hidden" && inputobj.type!="textarea") { 
+		alert("colorpicker.select: Input object passed is not a valid form input object"); 
+		window.ColorPicker_targetInput=null;
+		return;
 		}
+	window.ColorPicker_targetInput = inputobj;
+	this.show(linkname);
 	}
 	
 // This function runs when you move your mouse over a color block, if you have a newer browser
@@ -122,6 +144,7 @@ function ColorPicker() {
 	cp.writeDiv = ColorPicker_writeDiv;
 	cp.highlightColor = ColorPicker_highlightColor;
 	cp.show = ColorPicker_show;
+	cp.select = ColorPicker_select;
 
 	// Code to populate color picker window
 	var colors = new Array("#000000","#000033","#000066","#000099","#0000CC","#0000FF","#330000","#330033","#330066","#330099","#3300CC",
@@ -158,7 +181,7 @@ function ColorPicker() {
 		if ((i % width) == 0) { cp_contents += "<TR>"; }
 		if (use_highlight) { var mo = 'onMouseOver="'+windowRef+'ColorPicker_highlightColor(\''+colors[i]+'\',window.document)"'; }
 		else { mo = ""; }
-		cp_contents += '<TD width=10px BGCOLOR="'+colors[i]+'" style="cursor:pointer" onClick="'+windowRef+'ColorPicker_pickColor(\''+colors[i]+'\','+windowRef+'window.popupWindowObjects['+cp.index+']);return false;" '+mo+' >&nbsp;</TD>';
+		cp_contents += '<TD width=10px BGCOLOR="'+colors[i]+'"><FONT SIZE="-3"><A HREF="#" onClick="'+windowRef+'ColorPicker_pickColor(\''+colors[i]+'\','+windowRef+'window.popupWindowObjects['+cp.index+']);return false;" '+mo+' STYLE="text-decoration:none;">&nbsp;&nbsp;&nbsp;</A></FONT></TD>';
 		if ( ((i+1)>=total) || (((i+1) % width) == 0)) { 
 			cp_contents += "</TR>";
 			}
@@ -176,7 +199,7 @@ function ColorPicker() {
 	// end populate code
 
 	// Write the contents to the popup object
-	cp.populate(cp_contents);
+	cp.populate(cp_contents+"\n");
 	// Move the table down a bit so you can see it
 	cp.offsetY = 25;
 	cp.autoHide();
