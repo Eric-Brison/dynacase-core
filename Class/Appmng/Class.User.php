@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.6 2002/05/23 16:14:40 eric Exp $
+// $Id: Class.User.php,v 1.7 2002/08/06 09:35:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.6 2002/05/23 16:14:40 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.7 2002/08/06 09:35:58 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -59,6 +59,37 @@ create sequence seq_id_users start 10";
 
 
 
+function SetLoginName($loginDomain)
+{
+  $query = new QueryDb($this->dbaccess,"User");
+  if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
+    
+    $queryd = new QueryDb($this->dbaccess,"Domain");
+    $queryd->AddQuery("name='".$reg[2]."'");
+    $list = $queryd->Query();
+
+    if ($queryd->nb == 1) {
+      $domainId=$list[0]->iddomain;
+      $query->AddQuery("iddomain='$domainId'");
+      $query->AddQuery("login='".$reg[1]."'");
+    } else {
+      return false;
+    }
+    
+  } else {
+
+    $query->AddQuery("login='$loginDomain'");
+  }
+  $list = $query->Query();
+
+  if ($query->nb == 1) {
+    $this=$list[0];
+  } else {
+    return FALSE;
+  }
+
+  return TRUE;
+}
 function SetLogin($login,$domain)
 {
   $query = new QueryDb($this->dbaccess,"User");

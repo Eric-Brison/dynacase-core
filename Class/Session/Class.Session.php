@@ -16,7 +16,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.6 2002/04/03 16:47:10 eric Exp $
+// $Id: Class.Session.php,v 1.7 2002/08/06 09:35:58 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -25,7 +25,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.6 2002/04/03 16:47:10 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.7 2002/08/06 09:35:58 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -111,11 +111,20 @@ var $sessiondb;
           $this->Modify();
         }
       } else {
+	global $PHP_AUTH_USER;
         // Init the database with the app file if it exists
         $this->Open();
         $this->status     = $this->SESSION_CT_EXIST;
+	
+	$u = new User();
+	if ($u->SetLoginName($PHP_AUTH_USER)) {	  	
+	  $this->activate($u->id);	
+	} else {
+	  return false;
+	}
       }
 
+      return true;
     }
 
        

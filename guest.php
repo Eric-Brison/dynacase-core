@@ -1,7 +1,7 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.13 2002/08/06 09:35:58 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
+// $Id: guest.php,v 1.1 2002/08/06 09:35:58 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
 // O*O  Anakeen development team
@@ -29,11 +29,6 @@
 # element
 #
 #
-// First control
-if(!isset($PHP_AUTH_USER)  ) {
-  Header("Location:guest.php");
-  exit;
-}
 
 include_once('Class.Action.php');
 include_once('Class.Application.php');
@@ -44,13 +39,14 @@ include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
 define("PORT_SSL", 443); // the default port for https
+
 // ----------------------------------------
 // pre include for session cache
 if (file_exists($HTTP_GET_VARS["app"]."/include.php")) {
         include($HTTP_GET_VARS["app"]."/include.php");
 }
 
-$log=new Log("","index.php");
+$log=new Log("","guest.php");
 
 $CoreNull = "";
 global $CORE_LOGLEVEL;
@@ -63,24 +59,17 @@ if (!isset($HTTP_GET_VARS["action"])) $HTTP_GET_VARS["action"]="";
 $standalone = GetHttpVars("sole");
 
 $sess_num=GetHttpVars("session");
-
 $session=new Session();
-if (!  $session->Set($sess_num))  {
-    print "<B>:~((</B>";
-    exit;
-  };
+$session->Set($sess_num);
 
-
+if ($session->userid != ANONYMOUS_ID) { 
+  // reopen a new anonymous session
+  $session->Set("");
+}
 
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 
-if ($core->user->login != $PHP_AUTH_USER) {
-  // reopen a new session
-  $session->Set("");
-  $core->SetSession($session);
-}
-//$core->SetSession($session);
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
@@ -90,7 +79,7 @@ global $SERVER_NAME;
 global $SCRIPT_NAME;
 global $SERVER_PORT;
 
-if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
+if (ereg("(.*)/guest\.php", $SCRIPT_NAME, $reg)) {
 
   // determine publish url (detect ssl require)
   if ($SERVER_PORT != PORT_SSL)   $puburl = "http://".$SERVER_NAME.$reg[1];
@@ -109,9 +98,9 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
-$core->SetVolatileParam("CORE_ROOTURL", "index.php?session={$session->id}&sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "index.php?session={$session->id}&sole=A&");
-$core->SetVolatileParam("CORE_STANDURL","index.php?session={$session->id}&sole=Y&");
+$core->SetVolatileParam("CORE_ROOTURL", "guest.php?session={$session->id}&sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "guest.php?session={$session->id}&sole=A&");
+$core->SetVolatileParam("CORE_STANDURL","guest.php?session={$session->id}&sole=Y&");
 
 
 // ----------------------------------------

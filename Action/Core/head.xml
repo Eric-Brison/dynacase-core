@@ -13,7 +13,7 @@
     
   }
 
-  if ([anim])  window.onload = AnimLogin;
+//  if ([anim])  window.onload = AnimLogin;
 
   var anim=[anim];
   var dx = 1;
@@ -46,23 +46,17 @@
 
  [BLOCK FUNCTION]
 <td width="40" class="headcell" align="center">
-     <a href="#"><img  onClick="lauch_action(this.src,'[name]','[descriptionsla]');" onMouseOver="this.width+=6; this.height+=6;" onMouseOut="this.width-=6; this.height-=6;" src="[CORE_PUBURL]/[name]/Images/[icon]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
+     <a href="#"><img  onClick="lauch_action(this.src,'[name]','[descriptionsla]');" 
+     onMouseOver="this.width+=6; this.height+=6;" 
+     onMouseOut="this.width-=6; this.height-=6;" src="[CORE_PUBURL]/[name]/Images/[icon]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
 
   <td class="headcell" align="right" ><span class="headtitle">
      <a class="headtitle" href="[CORE_BASEURL]app=APPMNG&action=PARAM_CULIST" target="body">[USER]</a>
-     <a href="[CORE_BASEURL]app=CORE&action=CLEARCACHE" >
-     <img style="display:[dcache]" src="[IMG:bgrey.gif]"   
-           title="[TEXT:clear object cache]"
-          border=0 align="absmiddle"></a>
-     <a target="body" href="[CORE_BASEURL]app=AUTHENT&action=[ACTION]" >
-     <img id="ilogin" 
-          onMouseOut="src='[ONOUT]'" 
-          onMouseOver="this.src='[ONOVER]';anim=false;this.height=15" 
-          src="[ONOUT]"   
-          alt="[ALTLOGINOUT]" title="[ALTLOGINOUT]" 
-          border=0 align="absmiddle"></a>&nbsp;</span>
+     
+
+     &nbsp;</span>
      <a href="#"><img onClick="lauch_action(this.src,'CORE','[TEXT:Homepage]');" 
           align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:Welcome Page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a></td>
 </tr>
