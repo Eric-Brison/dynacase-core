@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.11 2002/10/08 10:36:50 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.12 2002/11/15 16:11:11 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -75,9 +75,7 @@ function DbObj ($dbaccess='', $id='',$res='',$dbid=0)
       $this->selectstring=$this->selectstring.$this->dbtable.".".$v.",";
       $this->$v="";
     }
-    // add oid fields : always to identify
-    if (! in_array("oid",$this->sup_fields))
-      $this->sup_fields[]="oid";
+
     reset($this->sup_fields);
     while (list($k,$v) = each($this->sup_fields)) {
       $this->selectstring=$this->selectstring."".$v.",";
@@ -273,7 +271,8 @@ function Add($nopost=false)
     $msg=$this->PreInsert();
     if ($msg!='') return $msg;
     
-    $sql = "insert into ".$this->dbtable." values (";
+    $sfields = implode(",",$this->fields);
+    $sql = "insert into ".$this->dbtable. "($sfields) values (";
     
     $valstring = "";
     reset($this->fields);
@@ -326,7 +325,7 @@ function Modify($nopost=false)
     }
     
     $msg_err = $this->exec_query($sql);
-    
+
     // sortie
       if ($msg_err!=''){
 	return $msg_err;
@@ -499,9 +498,10 @@ function fetch_array($c,$type=PGSQL_BOTH)
 
 function Update()
   {
-    print("need update table ".$this->dbtable);
+	print $this->msg_err;
+    print(" - need update table ".$this->dbtable);
     $this->log->error("need Update table ".$this->dbtable);
-    return;
+    exit;
     $this->log->info("Update table ".$this->dbtable);
     
     // need to exec altering queries
