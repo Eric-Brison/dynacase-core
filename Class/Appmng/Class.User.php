@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.37 2004/12/20 13:28:51 eric Exp $
+ * @version $Id: Class.User.php,v 1.38 2005/02/10 17:26:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,6 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.37 2004/12/20 13:28:51 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -217,8 +216,21 @@ create sequence seq_id_users start 10";
 	refreshGroups($ugroups,true);
       }
     }
+    $msg=$this->deleteWebCal();
+    return $msg;
   }
 
+  function deleteWebCal() {
+    $a = new Application();
+    if ($a->Exists("CALENDAR")) {
+      $db="user=anakeen dbname=webcalendar";
+      $dbidc=pg_connect($db);
+      if ($dbidc) {
+	$rq=@pg_query ($dbidc, "delete  from webcal_user where wid=".$this->id);
+	return "webcal deleted".$this->id;
+      }
+    }
+  }
 
   function CheckLogin($login,$domain,$whatid)
     {
