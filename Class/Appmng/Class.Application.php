@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.15 2002/08/26 13:04:58 eric Exp $
+//  $Id: Class.Application.php,v 1.16 2002/11/15 16:11:39 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.15 2002/08/26 13:04:58 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.16 2002/11/15 16:11:39 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -95,6 +95,12 @@ function Set($name,&$parent, $session="")
   
   $this->log->debug("Entering : Set application to $name");
 
+  global $gApps;
+
+  if (isset($gApps[$name]))  {
+    $this=$gApps[$name];
+    return true;
+  }
 
   $query=new QueryDb($this->dbaccess,"Application");
   $query->order_by = "";
@@ -147,6 +153,7 @@ function Set($name,&$parent, $session="")
 
 
 
+  $gApps[$name]=&$this; // optimize for speed : don't recompute next time
 
 
 }
@@ -435,8 +442,7 @@ function GetLayoutFile($layname) {
     closedir($dir);
   }
 
-  
-
+ 
   
   if (file_exists($file)) {
      return($file);
