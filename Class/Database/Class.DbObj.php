@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.4 2002/02/22 14:01:21 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.5 2002/03/14 09:36:46 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -437,8 +437,8 @@ function exec_query($sql,$lvl=0)
      if ((ereg("Relation ['\"]([a-zA-Z_]*)['\"] does not exist",$this->msg_err) ||
 	  ereg("class \"([a-zA-Z_]*)\" not found",$this->msg_err)) ) {
        $action_needed = "create";
-     } else if ((ereg("No such attribute or function '([a-zA-Z_]*)'",$this->msg_err)) ||
-		(ereg("Attribute ['\"]([a-zA-Z_]*)['\"] not found",$this->msg_err))) {
+     } else if ((ereg("No such attribute or function '([a-zA-Z_0-9]*)'",$this->msg_err)) ||
+		(ereg("Attribute ['\"]([a-zA-Z_0-9]*)['\"] not found",$this->msg_err))) {
        $action_needed = "update";
      }
    }
@@ -454,6 +454,7 @@ function exec_query($sql,$lvl=0)
       }
        break;
     case "update":
+       $this->log->warning("sql fail: $sql");
        $this->log->warning("try update :: ".$this->msg_err);
       $st = $this->Update();
       if ($st == "") {
@@ -564,7 +565,7 @@ function Update()
       $values = "(";
       reset($inter_fields);
       while (list($k,$v)=each($inter_fields)) {
-	$values.= "'".$row[$v]."',";
+	$values.= "'".addslashes($row[$v])."',";
       }
       $values=substr($values,0,strlen($values)-1); // remove last comma
       $values .= ")";
