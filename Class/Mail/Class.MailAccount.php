@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.MailAccount.php,v 1.4 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.MailAccount.php,v 1.5 2004/12/28 13:26:06 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,79 +11,13 @@
  /**
  */
 
-// ---------------------------------------------------------------------------
-//    O   Anakeen - 2000
-//   O*O  Marc Claverie
-//    O   marc.claverie@anakeen.com
-// ---------------------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-// 
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------------------
-// $Id: Class.MailAccount.php,v 1.4 2003/08/18 15:46:42 eric Exp $
-//
-// $Log: Class.MailAccount.php,v $
-// Revision 1.4  2003/08/18 15:46:42  eric
-// phpdoc
-//
-// Revision 1.3  2002/08/09 18:03:16  marc
-// 0.1.3-5 Modification pour gestion multi-pop
-//
-// Revision 1.2  2002/08/09 17:28:00  marc
-// 0.1.3-5 Modification pour gestion multi-pop
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.10  2001/03/22 11:03:37  marc
-// Release 0.4.1, see CHANGELOG
-//
-// Revision 1.9  2001/02/09 17:32:42  yannick
-// Anomalies diverses
-//
-// Revision 1.8  2000/12/22 21:37:36  marc
-// Stable version....
-//
-// Revision 1.7  2000/10/31 16:37:48  yannick
-// AJout du makeqmailconf + Test existance domaine
-//
-// Revision 1.6  2000/10/30 10:41:55  marc
-// Renommage de Delete en Remove
-//
-// Revision 1.5  2000/10/27 10:09:32  marc
-// MAILADMIN version 1.0.0
-//
-// Revision 1.4  2000/10/24 21:14:41  marc
-// En cours...
-//
-// Revision 1.3  2000/10/23 18:09:03  marc
-// Conf du soir...
-//
-// Revision 1.2  2000/10/23 10:40:38  marc
-// bugs correction
-//
-// Revision 1.1.1.1  2000/10/22 18:30:20  marc
-// Initial release
-//
-//
-// ---------------------------------------------------------------------------
 include_once('Class.DbObj.php');
 include_once('Class.Domain.php');
 include_once('Class.MailAlias.php');
 
 Class MailAccount extends DbObj
 {
-var $Class = '$Id: Class.MailAccount.php,v 1.4 2003/08/18 15:46:42 eric Exp $';
+var $Class = '$Id: Class.MailAccount.php,v 1.5 2004/12/28 13:26:06 eric Exp $';
 
 var $fields = array ( "iddomain",
 		      "iduser",
@@ -111,7 +45,7 @@ create table mailaccount(
      login	varchar(100),
      pop	varchar(100),
      vacst	int,
-     vacmsg	varchar(300),
+     vacmsg	text,
      fwdst	int,
      fwdadd	varchar(300),
      type	int,
