@@ -68,8 +68,8 @@ if [ "$1" = 0 ] ; then
 
   set -e
   # drop anakeen database and user
-  log "The anakeen database will be dropped, we save a dump in /tmp/anakeen.dump"
-  sulog  postgres  "pg_dump -d anakeen >/tmp/anakeen.dump"
+  log "The anakeen database will be dropped, we save a dump in /tmp/anakeen$$.dump"
+  sulog  postgres  "pg_dump -d anakeen >/tmp/anakeen$$.dump"
   sulog  postgres  "dropuser anakeen" 
   sulog  postgres  "dropdb anakeen"
 

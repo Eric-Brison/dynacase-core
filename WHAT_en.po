@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-01-08 12:10+0100\n"
+	"POT-Creation-Date: 2002-01-29 16:20+0100\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -100,6 +100,18 @@ msgstr	"user"
 msgid	"object"
 msgstr	"object"
 
+#, c-format
+msgid	"user %s %s has been modfied\n"
+msgstr	""
+
+#, c-format
+msgid	"user %s %s has been added\n"
+msgstr	""
+
+#, c-format
+msgid	"add acl %s for %s %s\n"
+msgstr	""
+
 msgid	"appname"
 msgstr	"Application"
 
@@ -179,13 +191,13 @@ msgstr	""
 msgid	"Access denied"
 msgstr	"Access denied"
 
-msgid	"$code"
-msgstr	""
-
 msgid	"modify object acl"
 msgstr	""
 
 msgid	"view object acl"
+msgstr	""
+
+msgid	"$code"
 msgstr	""
 
 msgid	"prev"
@@ -356,6 +368,10 @@ msgstr	""
 
 msgid	"powered by"
 msgstr	""
+
+#, fuzzy
+msgid	"Welcome Page"
+msgstr	"Welcome !"
 
 msgid	"warning_pass"
 msgstr	"Your password is required"

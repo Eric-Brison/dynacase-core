@@ -57,7 +57,7 @@
           src="[ONOUT]"   
           alt="[ALTLOGINOUT]" title="[ALTLOGINOUT]" 
           border=0 align="absmiddle"></a>&nbsp;</span>
-     <a href="#"><img onClick="lauch_action(this.src,'CORE','Welcome Page');" align="absmiddle" alt="[WHAT] Welcome Page" title="[WHAT] Welcome Page" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a></td>
+     <a href="#"><img onClick="lauch_action(this.src,'CORE','[TEXT:Welcome Page]');" align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:Welcome Page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a></td>
 </tr>
 </table>
 

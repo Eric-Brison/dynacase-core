@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.6 2002/01/29 10:26:27 eric Exp $
+#  $Id: WHAT.spec.in,v 1.7 2002/01/29 15:38:29 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -101,18 +101,14 @@ done
 %preun
 if [ "$1" = 0 ] ; then
   # Remove the App from the database
-  pushd /home/httpd/what >/dev/null
-  echo '<?
-  include_once("Class.Application.php");
-  $app=new Application();
-  $Null = "";
-  $app->Set("@PACKAGE@",$Null);
-  $app->DeleteApp();
-  ?>' | /usr/bin/php 2>&1 >>/dev/null
-  popd >/dev/null
+  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=CORE  
+  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=USERS
+  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=APPMNG
+  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=AUTHENT
+  /home/httpd/what/wsh.php --api=appadmin --method=delete --appname=ACCESS
   
   # copy uninstall shell to be execute in post-uninstall section
-  #  cp %{pidir}/@PACKAGE@_post.sh %{pidir}/PU%{purange}@PACKAGE@_post.sh
+  cp %{pidir}/@PACKAGE@_post.sh %{pidir}/PT%{purange}@PACKAGE@_post.sh
 fi
 
 %postun
@@ -123,10 +119,10 @@ if [ "$1" = 0 ] ; then
 
   # Post uninstall - will be re-execute at next boot if cannot be perform
   # correctly now
-  %{pidir}/PU%{purange}@PACKAGE@_post.sh 0
-  if [ $? -eq 0 ]; then
-    rm %{pidir}/PU%{purange}@PACKAGE@_post.sh
-  fi
+  %{pidir}/PT%{purange}@PACKAGE@_post.sh 0
+#  if [ $? -eq 0 ]; then
+   /bin/rm -f %{pidir}/PT%{purange}@PACKAGE@_post.sh
+#  fi
 
 # Remove what from syslog
   echo "Remove what.log from syslog"

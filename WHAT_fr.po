@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-01-08 12:10+0100\n"
+	"POT-Creation-Date: 2002-01-29 16:20+0100\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -63,7 +63,7 @@ msgstr	"Description"
 
 #, c-format
 msgid	"index %s not found."
-msgstr "index %s non trouvé."
+msgstr	"index %s non trouvé."
 
 msgid	"auth_failure"
 msgstr	"Echec de l'authentification : Ré-essayez"
@@ -78,7 +78,7 @@ msgid	"welcome"
 msgstr	"Bienvenue !"
 
 msgid	"nodomain"
-msgstr "pas de domaine"
+msgstr	"pas de domaine"
 
 msgid	"userlogin"
 msgstr	"Login"
@@ -97,6 +97,18 @@ msgstr	"utilisateur"
 
 msgid	"object"
 msgstr	"objet"
+
+#, c-format
+msgid	"user %s %s has been modfied\n"
+msgstr	""
+
+#, c-format
+msgid	"user %s %s has been added\n"
+msgstr	""
+
+#, c-format
+msgid	"add acl %s for %s %s\n"
+msgstr	""
 
 msgid	"appname"
 msgstr	"Application"
@@ -176,15 +188,15 @@ msgstr	"fonction %s non disponible"
 msgid	"Access denied"
 msgstr	"Accès refusé"
 
-# ne pas modifier laisser à vide
-msgid	"$code"
-msgstr	""
-
 msgid	"modify object acl"
 msgstr	"modification des droits"
 
 msgid	"view object acl"
 msgstr	"voir les droits"
+
+# ne pas modifier laisser à vide
+msgid	"$code"
+msgstr	""
 
 msgid	"prev"
 msgstr	"précédent"
@@ -220,7 +232,7 @@ msgid	"Core"
 msgstr	"Noyau"
 
 msgid	"Core Application Manager"
-msgstr	"Gestion du noyau des applications"
+msgstr	"Page d'accueil WHAT"
 
 msgid	"Access"
 msgstr	"Accessibilités"
@@ -266,28 +278,28 @@ msgid	"Edit object access"
 msgstr	"Editer les accès sur les objets"
 
 msgid	"Application manager"
-msgstr "Gestion des applications"
+msgstr	"Gestion des applications"
 
 msgid	"What Application Management"
-msgstr "Gestion des applications"
+msgstr	"Gestion des applications"
 
 msgid	"SuperUser permission"
-msgstr "Accès administration"
+msgstr	"Accès administration"
 
 msgid	"styles parameters"
-msgstr "paramètres de style"
+msgstr	"paramètres de style"
 
 msgid	"styles"
-msgstr "les styles"
+msgstr	"les styles"
 
 msgid	"parameters"
-msgstr "les paramètres"
+msgstr	"les paramètres"
 
 msgid	"actions"
-msgstr "les actions"
+msgstr	"les actions"
 
 msgid	"applications"
-msgstr "les applications"
+msgstr	"les applications"
 
 msgid	"adduser"
 msgstr	"Ajouter un utilisateur"
@@ -345,6 +357,9 @@ msgstr	"Hébergé par"
 msgid	"powered by"
 msgstr	"produit par"
 
+msgid	"Welcome Page"
+msgstr "Page d'accueil WHAT"
+
 msgid	"warning_pass"
 msgstr	"La saisie de votre mot de passe est obligatoire :"
 
@@ -358,7 +373,7 @@ msgid	"controlaccess"
 msgstr	"Contrôle des accès"
 
 msgid	" Access Control for"
-msgstr "Contrôle des accès pour"
+msgstr	"Contrôle des accès pour"
 
 msgid	"modify"
 msgstr	"Modifier"
@@ -415,7 +430,7 @@ msgid	"displayable"
 msgstr	"Affichable"
 
 msgid	"update"
-msgstr "mise à jour"
+msgstr	"mise à jour"
 
 msgid	"delete"
 msgstr	"Détruire"
