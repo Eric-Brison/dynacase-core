@@ -26,7 +26,7 @@ if (navigator.appName=="Netscape") {
 if (navigator.appVersion.indexOf("MSIE")!=-1){
   temp=navigator.appVersion.split("MSIE");
   version=parseFloat(temp[1]);
-  if (version < 6) alert('[TEXT:You use version an to old version of Internet Explorer]:'+version+'\n'+'[TEXT:You must upgrade to version 6 or more]');
+  if (version < 5.5) alert('[TEXT:You use version an to old version of Internet Explorer]:'+version+'\n'+'[TEXT:You must upgrade to version 6 or more]');
 }
   //-->
    </script>
