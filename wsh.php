@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.18 2004/08/12 10:29:19 eric Exp $
+ * @version $Id: wsh.php,v 1.19 2004/12/09 14:48:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -73,7 +73,17 @@ $core->session=new Session($core->GetParam("CORE_SESSION_DB"));
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 
-$puburl = $core->GetParam("CORE_PUBURL","");
+$puburl = $core->GetParam("CORE_PUBURL","http://".`hostname -f`."/what");
+
+
+
+$core->SetVolatileParam("CORE_PUBURL", "."); // relative links
+$core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
+$core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
+$core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
+$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
+$core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
 
 if (isset($_GET["app"])) {
   $appl = new Application();
@@ -90,7 +100,6 @@ if (isset($_GET["action"])) {
 } else {
   $action->Set("",$appl);
 }
-
 
 
 
