@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.5 2002/01/28 17:42:26 eric Exp $
+// $Id: index.php,v 1.6 2002/01/29 10:26:54 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -69,7 +69,7 @@ $session->Set($sess_num);
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
-// Init URL from script name
+// Init PUBLISH URL from script name
 global $SERVER_NAME;
 global $SCRIPT_NAME;
 
@@ -83,16 +83,16 @@ if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
 
 
 $core->SetVolatileParam("CORE_PUBURL", $puburl);
-$core->SetVolatileParam("CORE_JSURL", $puburl."/WHAT/Layout");
+$core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 $core->SetSession($session);
 
 
 
-$core->SetVolatileParam("CORE_ROOTURL", $puburl."/index.php?session={$session->id}&sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", $puburl."/index.php?session={$session->id}&sole=A&");
-$core->SetVolatileParam("CORE_STANDURL", $puburl."/index.php?session={$session->id}&sole=Y&");
+$core->SetVolatileParam("CORE_ROOTURL", "index.php?session={$session->id}&sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "index.php?session={$session->id}&sole=A&");
+$core->SetVolatileParam("CORE_STANDURL","index.php?session={$session->id}&sole=Y&");
 
 // ----------------------------------------
 // Init Application & Actions Objects
