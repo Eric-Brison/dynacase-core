@@ -53,7 +53,7 @@ Alias /what @prefix@
  </Directory> 
 
 <Directory "@prefix@/expire/">
-    ErrorDocument 401 "lost password ?"   
+    ErrorDocument 401 "connection refused"   
     Options IncludesNoExec FollowSymLinks
  
 </Directory>
@@ -61,7 +61,7 @@ Alias /what @prefix@
 
  <Directory @prefix@/CALENDAR>
     AllowOverride None
-    ErrorDocument 401 "lost password ?"   
+    ErrorDocument 401 "connection refused"   
     AuthType Basic
     AuthName 'WHAT Connection'
     AuthPAM_Enabled  on

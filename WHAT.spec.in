@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.40 2004/10/04 09:10:46 eric Exp $
+#  $Id: WHAT.spec.in,v 1.41 2004/10/06 15:59:28 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -46,15 +46,18 @@ Requires: php-ncurses
 Requires: apache-mod_auth
 Requires: apache-mod_auth_pam 
 Requires: apache-mod_dir
-Requires: pam_what >= 0.2.0
+Requires: pam_what >= 0.4.0
 Requires: ankpsql-tools
 Requires: gettext
 Requires: gettext-devel > 0.11
 Requires: php-pear-Crypt_CHAP
+Requires: binutils
+
 Prereq: apache
 Prereq: grep
 Prereq: SysVinit
 Conflicts: FREEDOM-USERCARD < 0.4.0
+Conflicts: libuser < 2.2.3
 
 %description
 The WHAT application toolkit gives common interface element to develop web applications
