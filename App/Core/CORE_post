@@ -62,6 +62,7 @@ if [ "$1" = "U" ] ; then
   su - postgres -c "psql anakeen anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
   /home/httpd/what/wsh.php  --api=import_style --name=RED
   /home/httpd/what/wsh.php  --api=import_style --name=GREEN
+  echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql anakeen anakeen
 
 fi
 #------------------------------
