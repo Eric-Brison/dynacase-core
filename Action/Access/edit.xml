@@ -161,7 +161,7 @@ function moinsacl(id)
 <p style="text-align:left">
 <input class="CORETblHead" type="submit" 
          name="Modify" value="[TEXT:modify]"  >
-<input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:close]">
+<input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
 </p>
 </form>
 </body>
