@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.5 2002/04/22 14:08:56 eric Exp $
+//  $Id: Class.Layout.php,v 1.6 2002/06/19 12:23:30 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -275,7 +275,7 @@ var $strip='Y';
 
     reset($list);
     while(list($k,$v) = each($list)) {
-      $js .= "<style type=\"text/css\" src=\"$v\"></style>\n";
+      $js .= "<link rel=stylesheet type=\"text/css\" href=\"$v\">\n";
     }
     return $js;
   }
