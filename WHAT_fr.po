@@ -14,7 +14,7 @@ msgstr	"Project-Id-Version: WHAT 1.3\n"
 	"\n"
 
 msgid	"titlecreateg"
-msgstr	"Création dun groupe"
+msgstr "Création d'un groupe"
 
 msgid	"titlecreateu"
 msgstr	"Création d'utilisateur"

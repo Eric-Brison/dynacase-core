@@ -1,5 +1,5 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.0//EN">
-<article id="users" lang="fr" revision="$Id: users.sgml,v 1.1 2002/03/20 11:26:03 marc Exp $">
+<article id="users" lang="fr" revision="$Id: users.sgml,v 1.2 2002/03/28 13:07:08 eric Exp $">
   <title>
 
   <inlinemediaobject>
@@ -14,9 +14,15 @@
       
       <revision>
         <revnumber>0.1</revnumber>
-        <date>Mars 2002</date>
+        <date>20 Mars 2002</date>
         <authorinitials>MC</authorinitials>
 	<revremark>Version initiale</revremark>
+      </revision>
+      <revision>
+        <revnumber>0.2</revnumber>
+        <date>28 Mars 2002</date>
+        <authorinitials>EB</authorinitials>
+	<revremark>Accès des utilisateurs, modification groupe à la création</revremark>
       </revision>
       
     </revhistory>
@@ -38,7 +44,7 @@
       
       <para>WHAT peut intégrer deux type d'applications :</para>
       <orderedlist>
-	<listitem><para>des applications WEB (base contacts/LDAP, base documentaire, 
+	<listitem><para>des applications WEB (carnet d'adresses/LDAP, base documentaire, 
                         suivi d'incidents...);</para></listitem>
 	<listitem><para>des applications permettant d'administrer ou de surveiller des services 
                         de type messagerie, proxy accès Internet, connexions nomades...
@@ -52,7 +58,7 @@
             </para>
 
       <para>Afin de simplifier la gestion des utilisateurs et en particulier, la gestion de leur droits
-            d'accès aux différents applications, fonctions et services, l'administrateur peut définir
+            d'accès aux différentes applications, fonctions et services, l'administrateur peut définir
             des <emphasis>groupes</emphasis>. Un groupe rassemble un ensemble d'utilisateurs ayant des droits
             identiques (pour la majorité d'entre eux au moins; la possibilité de modifier les droits d'un
             utilisateur -suppression ou ajout par rapport au groupe- reste possible).
@@ -258,10 +264,49 @@
      <warning><para>Le nom identifiant doit être unique. Il n'est pas modifiable par la suite.
                     </para></warning>
 
+	<para>Le groupe peut hériter d'un autre groupe : les droits du groupe seront, par
+              défaut, ceux du groupe dont il hérite. La particularisation des droits pour
+              le groupe reste possible. Pour plus d'information se reporter au manuel
+              <ulink url="/what/ACCESS/doc/html/access.html">Gestion des droits d'accès</ulink>.</para>
+
+	<para>Lors de la modification du domaine de messagerie, le groupe <literal>all@&lt;domain&gt;</literal> est proposé par défaut.</para>
+	
+	<para>Il est possible de spécifier les groupes dont
+              hérite le groupe en cours de création.
+              L'accès à cette fonction est réalisée en cliquant
+              sur l'icone <inlinemediaobject><imageobject><imagedata align="center"
+				   scale="25" fileref="./images/group-small.jpg"></imageobject>
+	                     </inlinemediaobject>. La fenêtre est alors complétée comme il suit
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/group-004.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Création</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+</para>
+
+	<para>Le fenêtre présente alors 2 listes :</para>
+	<orderedlist>
+	  <listitem><para>à gauche, les groupes associés à des domaines de messagerie;
+               </para></listitem>
+	  <listitem><para>à droite, les autres groupes.
+               </para></listitem>
+	</orderedlist>
+	  
+	<para>Le groupe en modification hérite des groupes sélectionnés.
+              La sélection/déselection d'un groupe se fait en combinant le maintien
+              de la touche <literal>Ctrl</literal> enfoncée et le clic avec le bouton
+              gauche de la souris.</para>
+
 	<para>La création est effective lors de l'appui sur le bouton <literal>Créer</literal>.
-              La fenêtre reste ouverte et permet de créer un nouveau groupe. Le bouton
-              <literal>Fermer la fenêtre</literal> permet de terminer la création.
-              Durant la création, la liste des groupes est mise à jour.</para>
+              La fenêtre reste ouverte et permet de créer un nouveau groupe. Durant la création, la liste 
+              des groupes est mise à jour. Le bouton
+              <literal>Fermer la fenêtre</literal> permet d'arrêter la création.
+              </para>
 
     </sect3>
 
@@ -285,42 +330,6 @@
               du groupe ne peut plus être modifié, ni son éventuel domaine de messagerie
               de rattachement.
               </para>
-
-	<para>Le groupe peut hériter d'un autre groupe : les droits du groupe seront, par
-              défaut, ceux du groupe dont il hérite. La particularisation des droits pour
-              le groupe reste possible. Pour plus d'information se reporter au manuel
-              <ulink url="/what/ACCESS/doc/html/access.html">Gestion des droits d'accès</ulink>.</para>
-
-	<para>Lors de la modification du groupe, il est possible de spécifier les groupes dont
-              hérite le groupe en cours de modification.
-              L'accès à cette fonction est réalisée en cliquant
-              sur l'icone <inlinemediaobject><imageobject><imagedata align="center"
-				   scale="25" fileref="./images/group-small.jpg"></imageobject>
-	                     </inlinemediaobject>. La fenêtre est alors complétée comme il suit
-	<screenshot>
-	  <mediaobject>
-	    <imageobject>
-	      <imagedata align="center" scale="75" fileref="./images/group-003.jpg">
-	    </imageobject>
-	    <textobject>
-	      <phrase>Création</phrase>
-	    </textobject>
-	  </mediaobject>
-	</screenshot>     
-</para>
-
-	<para>Le fenêtre présente alors 2 listes :</para>
-	<orderedlist>
-	  <listitem><para>à gauche, les groupes associés à des domaines de messagerie;
-               </para></listitem>
-	  <listitem><para>à droite, les autres groupes.
-               </para></listitem>
-	</orderedlist>
-	  
-	<para>Le groupe en modification hérite des groupes sélectionnés.
-              La sélection/déselection d'un groupe se fait en combinant le maintien
-              de la touche <literal>Ctrl</literal> enfoncée et le clic avec le bouton
-              gauche de la souris.</para>
 
 	<para>La modification est effective lors de l'appui sur le bouton <literal>Modifier</literal>.
               </para>
@@ -445,8 +454,7 @@
                           de messagerie peut être proposée.</para></listitem>
 	</itemizedlist>
  
-	<caution><para>Le rattachement de l'utilisateur à un groupe est réalisable 
-                    par une modification ultérieure de l'utilisateur.</para>
+	<caution>
 	  
 	  <para>Le nom de connexion doit être unique. Il n'est pas modifiable par la suite.
                     </para> 
@@ -486,7 +494,7 @@
               </para>
 
 	<para>Lors de la modification de l'utilisateur, il est possible de gérer les groupes
-              auxquels on souhaite le rattacher. L'accès à cette fonction est réalisée en cliquant
+              auxquels on souhaite le rattacher. L'accès à cette fonction est réalisé en cliquant
               sur l'icone <inlinemediaobject><imageobject><imagedata align="center"
 				   scale="25" fileref="./images/group-small.jpg"></imageobject>
 	                     </inlinemediaobject>. La fenêtre est alors complétée comme il suit
@@ -523,10 +531,27 @@
     
   </sect1>
 
-  <sect1 id="users.ihm">
-    <title id="users.ihm.title">Interface utilisateur</title>
-       <para>
+  <sect1 id="users.access">
+    <title id="users.access.title">Droits d'accès</title>
+       <para>Trois droits d'accès à l'application User sont définis. Ils sont les suivants :
            </para>
+	<itemizedlist>
+      <listitem><para><emphasis>USER</emphasis> : permet de modifier son propre mot de passe ainsi que son nom et prénom</para></listitem>
+      <listitem><para><emphasis>DOMAIN_MASTER</emphasis> : permet de créer et de modifier des utilisateurs dans son domaine de messagerie. Ce droit est généralement réservé à l'utilisateur <emphasis>postmaster</emphasis></para></listitem>
+      <listitem><para><emphasis>ADMIN</emphasis> : permet de créer et de modifier les utilisateurs dans tous les domaines</para></listitem>
+	  
+	</itemizedlist>
+    <para>Ces droits sont modifiables via l'application <emphasis>ACCESS</emphasis>. Par défaut le droit pour un utilisateur est restreint à USER.</para>
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/accessuser.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Accès USER</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
   </sect1>
 
 </article>

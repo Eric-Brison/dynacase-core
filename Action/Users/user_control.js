@@ -131,6 +131,7 @@ function Valid_Send()
   if (document.edit.id.value == "" &&
       (document.edit.login.value == "postmaster"
     || document.edit.login.value == "webmaster"
+    || document.edit.login.value == "all"
     || document.edit.login.value == "hostmaster"
     || document.edit.login.value == "admin")) {
     alert('Ce nom de login n\'est pas autorisé !');

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.2 2002/03/11 10:24:34 eric Exp $
+// $Id: user_edit.php,v 1.3 2002/03/28 13:07:08 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -159,13 +159,13 @@ function user_edit(&$action) {
 
   $action->lay->Set("imgchggroup",""); 
 
-  if ($id != "") {       
+
     if ($action->HasPermission("DOMAIN_MASTER")) {
       $action->lay->Set("imgchggroup",$action->GetIcon("users.gif",
 						       "chggroup",15)); 
     
     }
-  }  
+    
   
   
 
