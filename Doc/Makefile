@@ -1,12 +1,12 @@
 # ============================================
-# $Id: Makefile,v 1.2 2004/09/09 08:20:11 caroline Exp $
+# $Id: Makefile,v 1.3 2004/10/29 09:33:59 eric Exp $
 # ============================================
 
 
 export targetdir
 export utildir
 
-SUBDIR= Users
+#SUBDIR= Users
 
 
 include $(utildir)/PubRule
