@@ -82,6 +82,12 @@ $app_const = array (
 							"kind"=>"color",
 							 "style"=>"Y",
 							 "global"=>"N"),         // inverse video text
+		    "CORE_INPUTBGCOLOR"	         =>array("val"=>"#b8ceef",
+							 "descr"=>N_("input color bg"),
+							 "user"=>"Y",
+							"kind"=>"color",
+							 "style"=>"Y",
+							 "global"=>"N"),         // input color bg
 		    "CORE_ACOLOR"		=>array("val"=>"dodgerblue",
 							"descr"=>N_("anchor color"),
 							"user"=>"Y",

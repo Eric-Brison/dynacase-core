@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.18 2003/05/12 15:46:59 eric Exp $
+ * $Id: core.css,v 1.19 2003/05/19 10:24:46 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -245,7 +245,7 @@ DIV.TITLE { color : black;
 
 INPUT, SELECT, TEXTAREA, FILE {
    color:[CORE_FGTEXTCOLOR];
-   background-color:[CORE_BGCOLORALTERN];
+   background-color:[CORE_INPUTBGCOLOR];
 }
 input[type="button"] { -moz-border-radius:25px }
 input[type="submit"] { -moz-border-radius:25px }

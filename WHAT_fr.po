@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2003-05-13 12:40+0200\n"
+	"POT-Creation-Date: 2003-05-19 12:16+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -315,6 +315,9 @@ msgstr	"couleur du texte"
 msgid	"inverse video color text"
 msgstr	"couleur du texte en inverse vidéo"
 
+msgid	"input color bg"
+msgstr "couleur des champs de saisie"
+
 msgid	"anchor color"
 msgstr	"couleur des liens"
 
@@ -355,7 +358,16 @@ msgid	"number of cached object by class"
 msgstr	"nombre d'objet caché par classes"
 
 msgid	"gate urls"
-msgstr "urls du portail"
+msgstr	"urls du portail"
+
+msgid	"gate geometry"
+msgstr "disposition du portail"
+
+msgid	"society style"
+msgstr "style société"
+
+msgid	"plug inserted in footer"
+msgstr "reférence au plug du footer"
 
 msgid	"Access"
 msgstr	"Accessibilités"
