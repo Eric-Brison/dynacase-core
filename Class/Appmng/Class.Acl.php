@@ -1,5 +1,17 @@
-<?
-// $Id: Class.Acl.php,v 1.4 2003/07/25 14:22:47 eric Exp $
+<?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.Acl.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
+// $Id: Class.Acl.php,v 1.5 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Acl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +34,7 @@
 // ---------------------------------------------------------------
 
 //
-$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.4 2003/07/25 14:22:47 eric Exp $';
+$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.5 2003/08/18 15:46:41 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');

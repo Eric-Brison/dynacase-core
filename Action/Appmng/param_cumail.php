@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: param_cumail.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage APPMNG
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: param_cumail.php,v 1.1 2002/07/29 11:15:18 marc Exp $
+// $Id: param_cumail.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_cumail.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000

@@ -1,6 +1,19 @@
 <?php
+/**
+ * Action to delete a user account 
+ *
+ * The action also delete mail account of the user
+ * @author Anakeen 2000 
+ * @version $Id: user_del.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage USERS
+ */
+/**
+ */
+
 // ---------------------------------------------------------------
-// $Id: user_del.php,v 1.2 2003/04/14 18:35:16 marc Exp $
+// $Id: user_del.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_del.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -19,41 +32,17 @@
 //
 // You should have received a copy of the GNU General Public License along
 // with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
-// $Log: user_del.php,v $
-// Revision 1.2  2003/04/14 18:35:16  marc
-// Groupe : pas d'ajout et suppression de compte de messagerie
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.6  2001/08/29 14:01:04  eric
-// choix du groupe du domaine
-//
-// Revision 1.5  2000/11/16 14:07:25  yannick
-// Destruction de l'utilisateur possible
-//
-// Revision 1.4  2000/10/30 10:28:44  marc
-// Delete -> Remove pour MailAccount
-//
-// Revision 1.3  2000/10/26 10:41:03  yannick
-// Edition par l'utilisateur
-//
-// Revision 1.2  2000/10/22 16:27:04  marc
-// Connexion avec la messagerie
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
+// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USAr
 // ---------------------------------------------------------------
 include_once("Class.SubForm.php");
 include_once("Class.MailAccount.php");
 include_once("Class.User.php");
-
-// -----------------------------------
+/**
+ * Action to delete a user account 
+ *
+ * The action also delete mail account of the user
+ * @param Action current action
+ */
 function user_del(&$action) {
 // -----------------------------------
 

@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: helpview.php,v 1.4 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: helpview.php,v 1.3 2002/05/28 16:36:44 eric Exp $
+// $Id: helpview.php,v 1.4 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/helpview.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

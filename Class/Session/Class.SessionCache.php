@@ -1,4 +1,16 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.SessionCache.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // Marc Claverie (marc.claverie@anakeen.com)- anakeen 2000 
 // ---------------------------------------------------------------------------
@@ -16,9 +28,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.SessionCache.php,v 1.1 2002/01/28 16:55:29 eric Exp $
+// $Id: Class.SessionCache.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 // ---------------------------------------------------------------------------
-$DROITS_CLASS_SESSIONVAR_PHP = '$Id: Class.SessionCache.php,v 1.1 2002/01/28 16:55:29 eric Exp $';
+$DROITS_CLASS_SESSIONVAR_PHP = '$Id: Class.SessionCache.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
 
 include_once('Class.DbObj.php');
 

@@ -1,15 +1,20 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Main program to activate action in WHAT software
+ *
+ * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.17 2003/08/14 09:44:46 eric Exp $
- * @package 
- * @subpackage /home/eric/anakeen/what/What/index.php
+ * @version $Id: index.php,v 1.18 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage 
+ */
+ /**
  */
 
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.17 2003/08/14 09:44:46 eric Exp $
+// $Id: index.php,v 1.18 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: object_access.php,v 1.4 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage ACCESS
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: object_access.php,v 1.3 2002/04/29 15:33:24 eric Exp $
+// $Id: object_access.php,v 1.4 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/object_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: object_access.php,v $
+// Revision 1.4  2003/08/18 15:46:41  eric
+// phpdoc
+//
 // Revision 1.3  2002/04/29 15:33:24  eric
 // correction id pour cache multibase + CORE_FGIMG
 //

@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: modify_object.php,v 1.6 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage ACCESS
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: modify_object.php,v 1.5 2002/04/15 14:18:25 eric Exp $
+// $Id: modify_object.php,v 1.6 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/modify_object.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000

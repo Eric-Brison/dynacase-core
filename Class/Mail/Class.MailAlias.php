@@ -1,4 +1,16 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.MailAlias.php,v 1.4 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 //    O   Anakeen - 2000
 //   O*O  Marc Claverie
@@ -18,9 +30,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.MailAlias.php,v 1.3 2002/08/09 18:03:16 marc Exp $
+// $Id: Class.MailAlias.php,v 1.4 2003/08/18 15:46:42 eric Exp $
 //
 // $Log: Class.MailAlias.php,v $
+// Revision 1.4  2003/08/18 15:46:42  eric
+// phpdoc
+//
 // Revision 1.3  2002/08/09 18:03:16  marc
 // 0.1.3-5 Modification pour gestion multi-pop
 //
@@ -52,7 +67,7 @@ include_once('Class.Domain.php');
 
 Class MailAlias extends DbObj
 {
-var $Class = '$Id: Class.MailAlias.php,v 1.3 2002/08/09 18:03:16 marc Exp $';
+var $Class = '$Id: Class.MailAlias.php,v 1.4 2003/08/18 15:46:42 eric Exp $';
 
 var $fields = array ( "idalias",
                       "iddomain",

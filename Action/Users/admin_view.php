@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: admin_view.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage USERS
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: admin_view.php,v 1.1 2002/07/29 11:15:18 marc Exp $
+// $Id: admin_view.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/admin_view.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: admin_view.php,v $
+// Revision 1.2  2003/08/18 15:46:41  eric
+// phpdoc
+//
 // Revision 1.1  2002/07/29 11:15:18  marc
 // Release 0.1.1, see ChangeLog
 //

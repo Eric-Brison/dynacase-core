@@ -1,6 +1,17 @@
 <?php
+/**
+ * Common util functions
+ *
+ * @author Anakeen 2002
+ * @version $Id: Lib.Common.php,v 1.9 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: Lib.Common.php,v 1.8 2003/07/30 08:55:08 eric Exp $
+// $Id: Lib.Common.php,v 1.9 2003/08/18 15:46:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Common.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,7 +32,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-$LIB_COMMON = '$Id: Lib.Common.php,v 1.8 2003/07/30 08:55:08 eric Exp $';
+$LIB_COMMON = '$Id: Lib.Common.php,v 1.9 2003/08/18 15:46:42 eric Exp $';
 
 // library of utilies functions
 

@@ -1,4 +1,16 @@
-<?
+<?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.Upload.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 //--------------------------------#
 // LICENSE
 //--------------------------------#
@@ -30,8 +42,11 @@
 //(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 //THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // ---------------------------------------------------------------------------
-//  $Id: Class.Upload.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.Upload.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 //  $Log: Class.Upload.php,v $
+//  Revision 1.2  2003/08/18 15:46:42  eric
+//  phpdoc
+//
 //  Revision 1.1  2002/01/08 12:41:34  eric
 //  first
 //

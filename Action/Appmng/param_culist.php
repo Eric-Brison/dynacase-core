@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: param_culist.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage APPMNG
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: param_culist.php,v 1.2 2002/06/19 12:28:28 eric Exp $
+// $Id: param_culist.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_culist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000

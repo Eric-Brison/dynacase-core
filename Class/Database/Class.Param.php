@@ -1,4 +1,16 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.Param.php,v 1.14 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // Param
 // ---------------------------------------------------------------------------
@@ -18,13 +30,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.13 2003/04/07 12:33:04 eric Exp $
+//  $Id: Class.Param.php,v 1.14 2003/08/18 15:46:42 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 include_once('Class.ParamDef.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.13 2003/04/07 12:33:04 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.14 2003/08/18 15:46:42 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");

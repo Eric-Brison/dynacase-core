@@ -1,6 +1,18 @@
 <?php
+/**
+ * export USER login and acl
+ * the result is printed on stdout
+ *
+ * @author Anakeen 2002
+ * @version $Id: export_useracl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage WSH
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: export_useracl.php,v 1.1 2002/01/14 16:54:22 eric Exp $
+// $Id: export_useracl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/export_useracl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

@@ -2,16 +2,17 @@
 
 <?php
 /**
- * Generated Header (not documented yet)
+ * WHAT SHELL
  *
- * @author Anakeen 2000 
- * @version $Id: wsh.php,v 1.11 2003/08/14 09:44:46 eric Exp $
- * @package 
- * @subpackage /home/eric/anakeen/what/What/guest.php
+ * @author Anakeen 2002
+ * @version $Id: wsh.php,v 1.12 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
  */
-
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.11 2003/08/14 09:44:46 eric Exp $
+// $Id: wsh.php,v 1.12 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

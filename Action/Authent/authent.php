@@ -1,6 +1,24 @@
 <?php
+/**
+ * Re-authenticate a user
+ * Send a 401 Unauthorized HTTP header to force re-authentification or by redirect to index.php
+ * which need also an authentification
+ *
+ * @author Anakeen 2003
+ * @version $Id: authent.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 include_once('Class.User.php');
 
+
+
+/**
+ * Send a 401 Unauthorized HTTP header
+ */
 function authenticate() {
   //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");

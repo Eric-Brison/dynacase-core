@@ -3,13 +3,16 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.4 2003/08/14 09:44:46 eric Exp $
- * @package 
- * @subpackage /home/eric/anakeen/what/What/guest.php
+ * @version $Id: guest.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage 
+ */
+ /**
  */
 
 // ---------------------------------------------------------------
-// $Id: guest.php,v 1.4 2003/08/14 09:44:46 eric Exp $
+// $Id: guest.php,v 1.5 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: param_mod.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage APPMNG
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: param_mod.php,v 1.4 2002/05/24 09:23:07 eric Exp $
+// $Id: param_mod.php,v 1.5 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_mod.php,v $
+// Revision 1.5  2003/08/18 15:46:41  eric
+// phpdoc
+//
 // Revision 1.4  2002/05/24 09:23:07  eric
 // changement structure table paramv
 //

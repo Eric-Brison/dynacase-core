@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: user_access.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage ACCESS
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.6 2003/03/24 13:44:21 eric Exp $
+// $Id: user_access.php,v 1.7 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000

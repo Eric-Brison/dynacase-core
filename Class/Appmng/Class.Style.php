@@ -1,4 +1,16 @@
-<?
+<?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.Style.php,v 1.5 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // PHP PROMAN Task Class
 // ---------------------------------------------------------------------------
@@ -18,9 +30,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Style.php,v 1.4 2003/05/14 17:11:49 eric Exp $
+//  $Id: Class.Style.php,v 1.5 2003/08/18 15:46:42 eric Exp $
 //
-$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.4 2003/05/14 17:11:49 eric Exp $';
+$CLASS_STYLE_PHP = '$Id: Class.Style.php,v 1.5 2003/08/18 15:46:42 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Param.php');

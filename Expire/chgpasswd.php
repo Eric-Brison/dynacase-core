@@ -1,4 +1,15 @@
 <?php
+/**
+ * Display interface to change password in case of expiration
+ *
+ * @author Anakeen 2003
+ * @version $Id: chgpasswd.php,v 1.4 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage 
+ */
+/**
+ */
 
 global $HTTP_POST_VARS;
 

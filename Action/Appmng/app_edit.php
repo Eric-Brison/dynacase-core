@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: app_edit.php,v 1.4 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage APPMNG
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: app_edit.php,v 1.3 2002/08/26 13:04:58 eric Exp $
+// $Id: app_edit.php,v 1.4 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/app_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: app_edit.php,v $
+// Revision 1.4  2003/08/18 15:46:41  eric
+// phpdoc
+//
 // Revision 1.3  2002/08/26 13:04:58  eric
 // application multi-machine
 //

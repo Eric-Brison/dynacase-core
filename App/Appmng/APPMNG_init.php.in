@@ -1,4 +1,15 @@
 <?php
+/**
+ * Application parameters 
+ *
+ * @author Anakeen 2002
+ * @version $Id: APPMNG_init.php.in,v 1.4 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage APPMNG
+ */
+/**
+ */
 
 global $app_const;
 $app_const= array(

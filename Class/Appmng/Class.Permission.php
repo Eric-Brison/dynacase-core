@@ -1,5 +1,17 @@
-<?
-// $Id: Class.Permission.php,v 1.3 2003/03/24 13:43:36 eric Exp $
+<?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.Permission.php,v 1.4 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
+// $Id: Class.Permission.php,v 1.4 2003/08/18 15:46:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Permission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +34,7 @@
 // ---------------------------------------------------------------
 
 //
-$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.3 2003/03/24 13:43:36 eric Exp $';
+$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.4 2003/08/18 15:46:42 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');

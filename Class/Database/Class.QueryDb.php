@@ -1,4 +1,16 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.QueryDb.php,v 1.7 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // anakeen 2000 - Yannick Le Briquer
 // ---------------------------------------------------------------------------
@@ -16,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryDb.php,v 1.6 2002/09/12 08:40:15 eric Exp $
+//  $Id: Class.QueryDb.php,v 1.7 2003/08/18 15:46:42 eric Exp $
 
 // ---------------------------------------------------------------------------
 // This class is designed to perform query constructs on objects
@@ -24,7 +36,7 @@
 //
 // It gives the HTML/JScript element for the gui
 // and it gives the result of the query
-$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.6 2002/09/12 08:40:15 eric Exp $';
+$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.7 2003/08/18 15:46:42 eric Exp $';
 
 include_once('Class.Log.php');
 include_once('Class.Cache.php');

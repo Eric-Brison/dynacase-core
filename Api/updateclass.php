@@ -1,6 +1,20 @@
 <?php
+/**
+ * Update the SQL structure of a table of a DbObj Object
+ *
+ * @param string $appc the application directory (WHAT, FDL, ...)
+ * @param string $class the class name of the DbObj Class
+ * @param string $dbname the SQL database name (anakeen, freedom)
+ * @author Anakeen 2002
+ * @version $Id: updateclass.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: updateclass.php,v 1.2 2003/05/13 08:52:38 eric Exp $
+// $Id: updateclass.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/Attic/updateclass.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -50,6 +64,12 @@ function GetArg($name, $def="") {
     return($def);
 }
 
+global $HTTP_CONNECTION;
+
+if ($HTTP_CONNECTION != "")     {
+  print "<BR><H1>:~(</H1>";
+  exit;
+}
 
 
 $appclass = Getarg("appc","WHAT");

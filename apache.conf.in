@@ -46,7 +46,7 @@ Alias /what @prefix@
 
 
 
- <Directory ~ @prefix@/[A-B,D-Z]|C[^A]>
+ <Directory ~ @prefix@/[A-B,D-Z]|@prefix@/C[^A]>
      Order Deny,Allow
      Deny from All   
  </Directory> 

@@ -1,5 +1,17 @@
-<?
-// $Id: Class.ControlObject.php,v 1.6 2002/09/24 13:57:13 eric Exp $
+<?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.ControlObject.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
+// $Id: Class.ControlObject.php,v 1.7 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ControlObject.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +34,7 @@
 // ---------------------------------------------------------------
 
 //
-$CLASS_CONTROLOBJECT_PHP = '$Id: Class.ControlObject.php,v 1.6 2002/09/24 13:57:13 eric Exp $';
+$CLASS_CONTROLOBJECT_PHP = '$Id: Class.ControlObject.php,v 1.7 2003/08/18 15:46:41 eric Exp $';
 include_once('Class.DbObjCtrl.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');

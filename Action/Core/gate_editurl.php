@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: gate_editurl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: gate_editurl.php,v 1.1 2003/04/07 12:33:04 eric Exp $
+// $Id: gate_editurl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/gate_editurl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

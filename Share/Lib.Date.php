@@ -1,4 +1,15 @@
-<?
+<?php
+/**
+ * Set of usefull Date and Time functions
+ *
+ * @author Anakeen 2000
+ * @version $Id: Lib.Date.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 // ---------------------------------------------------------------------------
 // Date
 // ---------------------------------------------------------------------------
@@ -18,42 +29,9 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Lib.Date.php,v 1.1 2002/01/08 12:41:34 eric Exp $
-//  $Log: Lib.Date.php,v $
-//  Revision 1.1  2002/01/08 12:41:34  eric
-//  first
-//
-//  Revision 1.3  2000/10/12 19:40:00  marc
-//  Ajout de la fonction retournant le 1er jour de la semaine courante
-//
-//  Revision 1.2  2000/10/11 18:53:24  marc
-//  Yo
-//
-//  Revision 1.1  2000/10/10 19:05:17  marc
-//  Creation
-//
-//  Revision 1.2  2000/08/12 10:41:21  marc
-//  Ajout des fonctions prev/nextmonth et prev/nextday
-//
-//  Revision 1.1  2000/06/05 13:45:07  yannick
-//  Ajout des classes de manipulation de date/calendrier
-//
-//  Revision 1.1  2000/05/30 15:03:32  yannick
-//  Nouveau
-//
-//  Revision 1.3  2000/05/26 14:28:57  xavier
-//  Gestion du delete
-//
-//  Revision 1.2  2000/05/26 08:24:28  xavier
-//  mise à jour du 05 26
-//
-// ---------------------------------------------------------------------------
-// Fonctions : 
-//  This is not a Class,
-//  This is a set of usefull Date and Time functions
-// ---------------------------------------------------------------------------
-//
-$LIB_DATE_PHP = '$Id: Lib.Date.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+//  $Id: Lib.Date.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+
+$LIB_DATE_PHP = '$Id: Lib.Date.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
 
 
 function DayRound (&$timestamp) {

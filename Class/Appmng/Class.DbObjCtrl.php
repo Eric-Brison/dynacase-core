@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.DbObjCtrl.php,v 1.9 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: Class.DbObjCtrl.php,v 1.8 2002/09/24 13:57:13 eric Exp $
+// $Id: Class.DbObjCtrl.php,v 1.9 2003/08/18 15:46:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.DbObjCtrl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -24,7 +36,7 @@
 
 
 
-$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.8 2002/09/24 13:57:13 eric Exp $';
+$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.9 2003/08/18 15:46:42 eric Exp $';
 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');

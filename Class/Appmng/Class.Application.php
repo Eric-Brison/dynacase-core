@@ -1,4 +1,16 @@
-<?
+<?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.Application.php,v 1.28 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // PHP PROMAN Task Class
 // ---------------------------------------------------------------------------
@@ -18,10 +30,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.27 2003/07/30 08:55:08 eric Exp $
+//  $Id: Class.Application.php,v 1.28 2003/08/18 15:46:41 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.27 2003/07/30 08:55:08 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.28 2003/08/18 15:46:41 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');

@@ -1,7 +1,18 @@
 <?php
+/**
+ * Display WHAT logo
+ *
+ * @author Anakeen 1999
+ * @version $Id: logo.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 
 // ---------------------------------------------------------------
-// $Id: logo.php,v 1.4 2003/02/12 09:50:02 eric Exp $
+// $Id: logo.php,v 1.5 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/logo.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -25,7 +36,9 @@
 
 
 
-// -----------------------------------
+/**
+ * Display WHAT logo and clear object cache
+ */
 function logo(&$action) {
   global $PHP_AUTH_USER;
   global $CacheObj;

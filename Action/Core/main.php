@@ -1,6 +1,21 @@
 <?php
-// $Id: main.php,v 1.2 2003/04/07 12:33:04 eric Exp $
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: main.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
+// $Id: main.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Log: main.php,v $
+// Revision 1.3  2003/08/18 15:46:41  eric
+// phpdoc
+//
 // Revision 1.2  2003/04/07 12:33:04  eric
 // portail
 //

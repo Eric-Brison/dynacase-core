@@ -1,6 +1,17 @@
-<?
+<?php
+/**
+ * Set of usefull HTTP functions
+ *
+ * @author Anakeen 2000
+ * @version $Id: Lib.Http.php,v 1.13 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.12 2003/03/06 10:44:06 eric Exp $
+// $Id: Lib.Http.php,v 1.13 2003/08/18 15:46:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -23,7 +34,7 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.12 2003/03/06 10:44:06 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.13 2003/08/18 15:46:42 eric Exp $';
 
 
 function Redirect(&$action,$appname,$actionname,$otherurl="")

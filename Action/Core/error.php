@@ -1,5 +1,17 @@
 <?php
-// $Id: error.php,v 1.8 2003/03/28 13:30:25 eric Exp $
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: error.php,v 1.9 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
+// $Id: error.php,v 1.9 2003/08/18 15:46:41 eric Exp $
 
 //
 //

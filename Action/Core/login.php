@@ -1,6 +1,21 @@
 <?php
-// $Id: login.php,v 1.2 2002/01/25 14:31:37 eric Exp $
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: login.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
+// $Id: login.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Log: login.php,v $
+// Revision 1.3  2003/08/18 15:46:41  eric
+// phpdoc
+//
 // Revision 1.2  2002/01/25 14:31:37  eric
 // gestion de cache objet - variable de session
 //

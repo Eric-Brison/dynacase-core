@@ -1,7 +1,20 @@
-<?
+<?php
+/**
+ * This class is a generic DB Class that can be used to create objects
+ * based on the description of a DB Table. 
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.DbObj.php,v 1.20 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.19 2003/08/14 09:44:46 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.20 2003/08/18 15:46:42 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -26,35 +39,73 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.19 2003/08/14 09:44:46 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.20 2003/08/18 15:46:42 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
  * based on the description of a DB Table. More Complex Objects will 
  * inherit from this basic Class.
  *
- * @author Anakeen 2000 - yannick.lebriquer@anakeen.com
- * @version $Id: Class.DbObj.php,v 1.19 2003/08/14 09:44:46 eric Exp $
- * @package WHAT
  */
 Class DbObj extends Cache
 {
+
+/**
+ * the database connection resource
+ * @var resource 
+ */
 var $dbid = -1;
+/**
+ * coordinates to access to database
+ * @var string 
+ */
 var $dbaccess = '';
 
+/**
+ * array of SQL fields use for the object 
+ * @var array 
+ */
 var $fields=array ('*');
+
+/**
+ * name of the SQL table
+ * @var string  
+ */
 var $dbtable='';
 
 var $criterias=array();
+/**
+ * array of other SQL fields, not in attribute of object
+ * @var array 
+ */
 var $sup_fields=array ();
 var $sup_where=array ();
 var $sup_tables=array ();
 var $fulltextfields=array ();
 
+/**
+ * sql field to order
+ * @var string 
+ */
 var $order_by="";
+/**
+ * indicates if fields has been affected 
+ * @var string 
+ * @see Affect()
+ */
 var $isset = false; // indicate if fields has been affected (call affect methods)
 
 //----------------------------------------------------------------------------
+/** 
+ * Database Object constructor
+ * 
+ * 
+ * @param string $dbaccess database specification
+ * @param int $id identificator of the object
+ * @param array $res array of result issue to QueryDb {@link QueryDb::Query()}
+ * @param resource $dbid the database connection resource
+ * @return bool false if error occured
+ */
 function DbObj ($dbaccess='', $id='',$res='',$dbid=0)
   {
     

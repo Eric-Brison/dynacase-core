@@ -1,6 +1,23 @@
 <?php
+/**
+ * Change an attribute of an WHAT Action
+ * 
+ *
+ * @param string $appname internal name of the application
+ * @param string $actname internal name of the action
+ * @param string $attribute internal name of the field of the action
+ * @param string $value new value for the attribute
+ * @author Anakeen 2003
+ * @version $Id: change_action.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage WSH
+ */
+/**
+ */
+
 // ---------------------------------------------------------------
-// $Id: change_action.php,v 1.1 2002/07/29 12:54:53 marc Exp $
+// $Id: change_action.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/change_action.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

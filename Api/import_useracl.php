@@ -1,6 +1,18 @@
 <?php
+/**
+ * import USER login and acl
+ *
+ * @param string $filename the file which contain new login or ACLs
+ * @author Anakeen 2002
+ * @version $Id: import_useracl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage WSH
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: import_useracl.php,v 1.1 2002/01/14 16:54:22 eric Exp $
+// $Id: import_useracl.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/import_useracl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

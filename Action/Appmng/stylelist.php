@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: stylelist.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage APPMNG
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: stylelist.php,v 1.2 2002/05/27 14:51:30 eric Exp $
+// $Id: stylelist.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/stylelist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: stylelist.php,v $
+// Revision 1.3  2003/08/18 15:46:41  eric
+// phpdoc
+//
 // Revision 1.2  2002/05/27 14:51:30  eric
 // ajout gestion des styles
 //

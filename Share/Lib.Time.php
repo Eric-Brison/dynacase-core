@@ -1,6 +1,17 @@
 <?php
+/**
+ * Set of usefull Time functions
+ *
+ * @author Anakeen 2000
+ * @version $Id: Lib.Time.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: Lib.Time.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Lib.Time.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Time.php,v $
 // ---------------------------------------------------------------
 //    O   Anakeen - 2000
@@ -21,21 +32,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: Lib.Time.php,v $
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.3  2000/11/06 20:18:42  marc
-// ???
-//
-// Revision 1.2  2000/10/11 18:53:24  marc
-// Yo
-//
-// Revision 1.1  2000/10/10 19:05:17  marc
-// Creation
-//
-//
-// ---------------------------------------------------------------
+
 
 function hour2sec($h=0, $m=0, $s=0) {
   return (($h * 3600) + ($m * 60) + $s);

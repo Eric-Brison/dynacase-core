@@ -1,6 +1,20 @@
 <?php
+/**
+ * Add, modify or delete WHAT application
+ * 
+ *
+ * @param string $appname internal name of the application
+ * @param string $method may be "init","reinit","update","delete"
+ * @author Anakeen 2003
+ * @version $Id: appadmin.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage WSH
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: appadmin.php,v 1.4 2002/05/23 16:14:40 eric Exp $
+// $Id: appadmin.php,v 1.5 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/appadmin.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

@@ -1,6 +1,18 @@
 <?php
+/**
+ * update list of available style
+ *
+ * analyze sub-directories presents in STYLE directory
+ * @author Anakeen 2002
+ * @version $Id: import_style.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage WSH
+ */
+/**
+ */
 // ---------------------------------------------------------------
-// $Id: import_style.php,v 1.1 2002/05/27 14:51:30 eric Exp $
+// $Id: import_style.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/import_style.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

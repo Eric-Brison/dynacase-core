@@ -1,6 +1,18 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: user_table.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage USERS
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.6 2003/08/12 12:17:05 eric Exp $
+// $Id: user_table.php,v 1.7 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000

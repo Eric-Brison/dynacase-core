@@ -1,4 +1,16 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.ParamDef.php,v 1.3 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // Param
 // ---------------------------------------------------------------------------
@@ -18,12 +30,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.ParamDef.php,v 1.2 2002/07/31 09:47:31 eric Exp $
+//  $Id: Class.ParamDef.php,v 1.3 2003/08/18 15:46:42 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.2 2002/07/31 09:47:31 eric Exp $';
+$CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.3 2003/08/18 15:46:42 eric Exp $';
 
 Class ParamDef extends DbObj
 {

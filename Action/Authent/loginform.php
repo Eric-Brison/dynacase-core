@@ -1,10 +1,27 @@
-<?
+<?php
+/**
+ * PHP Authentification control
+ *
+ * @author Anakeen 1999
+ * @version $Id: loginform.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ * @deprecated since HTTP Authentification
+ */
+/**
+ */
 include_once('Class.Session.php');
 include_once('Class.User.php');
 include_once('Class.Domain.php');
 include_once('Class.QueryDb.php');
 include_once('Lib.Http.php');
 
+/**
+ * PHP Authentification control
+ *
+ * @deprecated since HTTP Authentification
+ */
 function loginform(&$action) {
 
     global $HTTP_COOKIE_VARS;

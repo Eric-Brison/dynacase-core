@@ -1,4 +1,15 @@
-<?
+<?php
+/**
+ * Set of usefull system file functions
+ *
+ * @author Anakeen 2000
+ * @version $Id: Lib.FileDir.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 function create_dir($dir,$access,$owner="",$group="") {
   clearstatcache();
   if (!file_exists($dir)) {

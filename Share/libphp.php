@@ -1,29 +1,23 @@
 <?php
+/**
+ * Set of include functions
+ *
+ * @author Anakeen 1999
+ * @version $Id: libphp.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ * @deprecated 
+ */
+/**
+ */
 // ---------------------------------------------------------------
 //
-// $Id: libphp.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: libphp.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 // (c) anakeen 1999       marc.claverie@anakeen.com
 //                    yannick.lebriquer@anakeen.com
 //                   marianne.lebriquer@anakeen.com
 //
-// $Log: libphp.php,v $
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.1  2001/02/10 09:56:49  yannick
-// Ajout de vieilles classes
-//
-// Revision 1.6  2000/07/29 10:30:05  marc
-// Syntax error
-//
-// Revision 1.5  2000/07/05 13:19:59  yannick
-// Mise au point
-//
-// Revision 1.4  1999/12/06 21:31:47  marc
-// Define pour inclusion multiple
-//
-// Revision 1.3  1999/12/02 10:47:02  marc
-// Ahout de la fonction libphpshowvar
 //
 //
 // Include libphp and control if they are not already included 
@@ -34,7 +28,11 @@
 
 $LIBPHP_PHP = "";
 $LEVEL="";
-
+/**
+ * like include_once
+ *
+ * @deprecated until PHP 4.0
+ */
 function libphpinclude($module) {
 
   $defname = strtoupper($module);
@@ -47,6 +45,11 @@ function libphpinclude($module) {
   }
 }
 
+/**
+ * like print_r
+ *
+ * @deprecated until PHP 4.0
+ */
 function libphpshowvar($name, $var, $f=1)
 {
   $out="";

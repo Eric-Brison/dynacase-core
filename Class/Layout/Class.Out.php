@@ -1,10 +1,25 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.Out.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // --------------------------------------------------------------------------
-// $Id: Class.Out.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Class.Out.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 // anakeen 1999 - marc.claverie@anakeen.com
 // --------------------------------------------------------------------------
 //
 // $Log: Class.Out.php,v $
+// Revision 1.2  2003/08/18 15:46:42  eric
+// phpdoc
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //

@@ -1,4 +1,16 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: Class.OldQueryObj.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+ /**
+ */
+
 // ---------------------------------------------------------------------------
 // anakeen 2000 - Yannick Le Briquer
 // ---------------------------------------------------------------------------
@@ -16,8 +28,11 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.OldQueryObj.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.OldQueryObj.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 //  $Log: Class.OldQueryObj.php,v $
+//  Revision 1.2  2003/08/18 15:46:42  eric
+//  phpdoc
+//
 //  Revision 1.1  2002/01/08 12:41:34  eric
 //  first
 //
@@ -30,7 +45,7 @@
 //
 // It gives the HTML/JScript element for the gui
 // and it gives the result of the query
-$CLASS_OLDQUERYOBJ_PHP = '$Id: Class.OldQueryObj.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_OLDQUERYOBJ_PHP = '$Id: Class.OldQueryObj.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
 
 include_once('Class.Out.php');
 include_once('Class.Table.php');
