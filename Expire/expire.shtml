@@ -2,7 +2,7 @@
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
 <TITLE>
-<!--#echo var="title"-->
+EXPIRATION MOT DE PASSE
 </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF">
@@ -11,6 +11,7 @@
 <H2><!--#echo var="REMOTE_USER"--></H2>
 
 <FORM method="POST" action="chgpasswd.php">
+<P>Mettez un nouveau mot de passe</P>
 <input name="login" type="hidden" value="<!--#echo var="REMOTE_USER"-->">
 <input name="passwd1" type="password">
 <input name="passwd2" type="password">
