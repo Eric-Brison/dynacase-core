@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.16 2003/10/16 09:34:22 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.17 2004/05/14 14:52:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.16 2003/10/16 09:34:22 eric Exp $
+//  $Id: Class.Layout.php,v 1.17 2004/05/14 14:52:41 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -202,7 +202,7 @@ var $strip='Y';
       while (list($k, $v) = each($zargs)) {
 	if (ereg("([^=]*)=(.*)",$v, $regs)) {
 	  // memo zone args for next action execute
-	   $ZONE_ARGS[$regs[1]]=$regs[2];
+	   $ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
 	}
       }
     }
