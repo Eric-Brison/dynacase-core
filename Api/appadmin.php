@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: appadmin.php,v 1.2 2002/01/25 14:31:37 eric Exp $
+// $Id: appadmin.php,v 1.3 2002/04/03 09:24:54 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/appadmin.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -27,7 +27,7 @@ include_once("Class.Application.php");
 $appname = GetHttpVars("appname");
 $method = GetHttpVars("method","init");
 
-echo " appname...$method";
+echo " $appname...$method";
 $app=new Application();
 $Null = "";
 $app->Set($appname,$Null);
