@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.16 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: Class.Action.php,v 1.17 2003/12/09 10:46:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,10 +28,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.16 2003/08/18 15:46:41 eric Exp $
+//  $Id: Class.Action.php,v 1.17 2003/12/09 10:46:46 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.16 2003/08/18 15:46:41 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.17 2003/12/09 10:46:46 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -329,7 +329,6 @@ function execute()
   // Memo last application to return case of error
   $err = $this->Read("FT_ERROR","");
   if ($err == "") {
-    global $HTTP_REFERER;
     if ($this->parent->name != "CORE") {
       $this->register("LAST_ACT",$this->parent->name);
     }
