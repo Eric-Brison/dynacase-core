@@ -1,7 +1,10 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.3 2002/02/14 16:10:53 eric Exp $
+ * $Id: core.css,v 1.4 2002/02/15 13:52:52 eric Exp $
  * ---------------------------------------------------------------------------
  * $Log: core.css,v $
+ * Revision 1.4  2002/02/15 13:52:52  eric
+ * correction pour prise en compte couleur de texte
+ *
  * Revision 1.3  2002/02/14 16:10:53  eric
  * force oprion trans_id à 0: pas de code auto généré
  *
@@ -117,13 +120,13 @@ TR {
 .historique {
   font-family: [CORE_FONTLIST1];
   font-size: 80%;
-  color: [CORE_FGCOLOR];
+  color: [CORE_TEXTFGCOLOR];
 }  
 
 .anakeen {
   font-family: [CORE_FONTLIST1];
   font-size: 80%;
-  color: [CORE_FGCOLOR];
+  color: [CORE_TEXTFGCOLOR];
 }
 
 
@@ -228,7 +231,7 @@ A {
   font-size: 80%;
 }
 .CORETblBold {
-  color: [CORE_FGCOLOR];
+  color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
   font-size: 80%;
