@@ -9,8 +9,8 @@ function whattext ()
         for mo in `ls *.mo` ; do
 	    msgunfmt --force-po $mo -o $mo.po
 	done
-	msgcat *.po > all.po
-	msguniq --use-first all.po -o what.po
+	msgcat  --use-first  *.po > what.po
+
 	msgfmt what.po  -o what.mo
 	rm -f *.po *.old
 	popd >/dev/null
