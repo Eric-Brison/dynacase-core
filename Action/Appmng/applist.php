@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: applist.php,v 1.7 2004/10/26 06:29:51 marc Exp $
+ * @version $Id: applist.php,v 1.8 2004/10/26 06:30:44 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.7 2004/10/26 06:29:51 marc Exp $
+// $Id: applist.php,v 1.8 2004/10/26 06:30:44 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.8  2004/10/26 06:30:44  marc
+// Add version in application list
+//
 // Revision 1.7  2004/10/26 06:29:51  marc
 // Add version in application list
 //
@@ -138,7 +141,7 @@ function applist(&$action) {
 
   $query = new QueryGen("","Application",$action);
   $query-> AddQuery("(objectclass != 'Y' ) OR ( objectclass isnull)");
-  $query->slice=20;
+  $query->slice=100;
   
    $query->Query();
   
