@@ -3,7 +3,7 @@
  * Display interface to change password in case of expiration
  *
  * @author Anakeen 2003
- * @version $Id: chgpasswd.php,v 1.4 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: chgpasswd.php,v 1.5 2003/12/18 09:44:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -45,7 +45,8 @@ $u->expires = 0;
 $u->modify();
 
 global $SERVER_NAME;
+global $SERVER_PORT;
 
-Header("Location: http://".$SERVER_NAME."/what/index.php?sole=R");
+Header("Location: http://".$SERVER_NAME.":".$SERVER_PORT."/what/index.php?sole=R");
 exit;
 ?>

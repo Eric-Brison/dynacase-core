@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.7 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: authent.php,v 1.8 2003/12/18 09:44:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -35,7 +35,8 @@ if(!isset($PHP_AUTH_USER) || ($SeenBefore == 1 && !strcmp($OldAuth, $PHP_AUTH_US
 }
 else {
   global $SERVER_NAME;
-  Header("Location: http://".$SERVER_NAME."/what/index.php?sole=R");
+  global $SERVER_PORT;
+  Header("Location: http://".$SERVER_NAME.":".$SERVER_PORT."/what/index.php?sole=R");
   exit;
 }
 ?>
