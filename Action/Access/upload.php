@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.4 2002/01/14 16:54:22 eric Exp $
+// $Id: upload.php,v 1.5 2002/01/17 18:10:56 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -95,8 +95,8 @@ function changeuser(&$action, $line, $verbose=false) {
       $use->login = $uname;
       $err = $use->Add();
       if ($err != "") print $err;
-      if ($verbose) printf( _("user %s %s has been added\n",
-				 $use->firstname,$use->lastname));
+      if ($verbose) printf( _("user %s %s has been added\n"),
+				 $use->firstname,$use->lastname);
     }
     
 
