@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.9 2002/06/04 16:09:57 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.10 2002/06/21 08:06:51 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -500,6 +500,8 @@ function fetch_array($c,$type=PGSQL_BOTH)
 function Update()
   {
     print("need update table ".$this->dbtable);
+    $this->log->error("need Update table ".$this->dbtable);
+    return;
     $this->log->info("Update table ".$this->dbtable);
     
     // need to exec altering queries
