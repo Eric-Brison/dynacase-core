@@ -3,6 +3,9 @@
 
 <title>[WHAT] [APP_TITLE]</title>
 
+<noscript>
+<H1>[TEXT:Javascript must be enabled in your navigator]</H1>
+</noscript>
 <LINK REL="icon" HREF="CORE/Images/logo16.ico" >
 <LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo32.ico" >
 
@@ -12,6 +15,7 @@
   <!--
     // this page must be on top frame
 if (window != top) top.location.href = location.href;
+if (! navigator.cookieEnabled) alert ('[TEXT:Your navigator does not accept cookies.\nCookies must be enabled to use correctly this application]');
   
   //-->
    </script>
