@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.21 2004/09/15 08:06:27 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.22 2005/01/18 08:45:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.21 2004/09/15 08:06:27 eric Exp $
+//  $Id: Class.Layout.php,v 1.22 2005/01/18 08:45:13 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -158,6 +158,8 @@ var $strip='Y';
 	     $loc = str_replace( $k2, $v[$v2], $loc);
            
 	}
+	$this->rif=&$v;
+	$this->ParseIf($loc);
         $out .= $loc;
       }
     }
@@ -167,8 +169,27 @@ var $strip='Y';
 
   function ParseBlock(&$out) {
     $out = preg_replace(
-       "/(?m)\[BLOCK\s*([^\]]*)\]((.*\n)*.*)\[ENDBLOCK\s*\\1\]/e", 
+       "/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/se", 
        "\$this->SetBlock('\\1','\\2')",
+       $out);
+  }
+
+  function TestIf($name,$block,$not=false) {    
+    $out = "";     
+
+    if ($this->rif[$name] xor $not)  {
+      if ($this->strip=='Y') {
+	$block = str_replace("\\\"","\"",$block);
+      }
+      $out=$block;      
+      $this->ParseBlock($out);
+    }
+    return ($out);
+  } 
+  function ParseIf(&$out) {
+    $out = preg_replace(
+       "/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", 
+       "\$this->TestIf('\\2','\\3','\\1')",
        $out);
   }
 
@@ -350,11 +371,12 @@ var $strip='Y';
       while (list($k,$v)=each($list)) {
         $this->set($k,$v);
       }
-    }
-    
+    }  
     $out = $this->template;
 
     $this->ParseBlock($out);
+    $this->rif=&$this->rkey;
+    $this->ParseIf($out);
 
     // Parse IMG: and LAY: tags
     $this->ParseRef($out);
