@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.20 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.21 2003/08/28 15:16:54 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.20 2003/08/18 15:46:42 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.21 2003/08/28 15:16:54 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.20 2003/08/18 15:46:42 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.21 2003/08/28 15:16:54 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -278,8 +278,13 @@ function Affect($array)
     $this->Complete();
     $this->isset = true;
   }
-
-function IsAffected()
+ /**
+   * verify that the object exists 
+   *
+   * if true values of the object has been set
+   * @return bool
+   */
+function isAffected()
   {
     return $this->isset;
   }
