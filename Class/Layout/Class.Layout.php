@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.19 2004/07/28 12:07:43 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.20 2004/09/08 08:09:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.19 2004/07/28 12:07:43 eric Exp $
+//  $Id: Class.Layout.php,v 1.20 2004/09/08 08:09:41 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -194,7 +194,7 @@ var $strip='Y';
     $actionname =  $acturl ["path"];
 
     global $ZONE_ARGS;
-
+    $OLD_ZONE_ARGS=$ZONE_ARGS;
     if (isset($acturl ["query"])) {
       $acturl["query"]=str_replace("--",":",$acturl["query"]); //For buggy function parse_url in PHP 4.3.1
       $zargs = explode("&", $acturl ["query"] );
@@ -228,12 +228,10 @@ var $strip='Y';
 
       }
       if ($res == "") {
-        return(
-	       $act->execute()
-	       );        
-      } else {
-        return($res);
-      }
+	$res=$act->execute();
+      } 
+      $ZONE_ARGS=$OLD_ZONE_ARGS; // restore old zone args
+      return($res);
     } else {
       return("Fatal loop : $actionname is called in $actionname");
     }
