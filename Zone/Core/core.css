@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.29 2005/01/20 16:48:32 eric Exp $
+ * $Id: core.css,v 1.30 2005/01/21 17:47:09 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -290,7 +290,7 @@ DIV.TITLE { color : black;
 }
 
 INPUT, SELECT, OPTION, TEXTAREA, FILE {
-   color:[CORE_FGTEXTCOLOR];
+   /*color:[CORE_TEXTFGCOLOR];*/
    background:[CORE_INPUTBGCOLOR];
    font-size: [CORE_FONTBASESIZE];
 /*  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:bg.png]',sizingMethod='scale');*/
