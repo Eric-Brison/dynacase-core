@@ -53,7 +53,29 @@ end;
 ' language 'plpgsql';
 
 
+
 create or replace function hasprivilege(int, int, int, int) 
+returns bool as '
+declare 
+  arg_user alias for $1;
+  arg_obj alias for $2;
+  arg_class alias for $3;
+  arg_acl alias for $4;
+  control int;
+begin
+   if (arg_user = 1) then 
+     return true; -- it is admin user
+   end if;
+   select into control count(*) from octrl where  (id_obj=arg_obj) and (id_class=arg_class);
+   if (control = 0) then 
+	return true; -- no controlled object
+   end if;
+   return hasprivilege_(arg_user, arg_obj, arg_class ,arg_acl ) ;
+end;
+' language 'plpgsql';
+
+
+create or replace function hasprivilege_(int, int, int, int) 
 returns bool as '
 declare 
   arg_user alias for $1;

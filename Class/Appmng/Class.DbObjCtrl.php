@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.DbObjCtrl.php,v 1.3 2002/03/05 18:14:51 eric Exp $
+// $Id: Class.DbObjCtrl.php,v 1.4 2002/04/03 08:43:39 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.DbObjCtrl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -24,7 +24,7 @@
 
 
 
-$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.3 2002/03/05 18:14:51 eric Exp $';
+$CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.4 2002/04/03 08:43:39 eric Exp $';
 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');
@@ -41,8 +41,8 @@ Class DbObjCtrl extends DbObj
 
     global $action; // necessary to see information about user privilege
 
-    $app = new Application(); // to get class id
-    $this->classid = $app->GetIdFromName(get_class($this)); 
+
+    $this->classid = $action->parent->GetIdFromName(get_class($this)); 
     $cid = $this->classid;
     $this->userid=$action->parent->user->id;
 
