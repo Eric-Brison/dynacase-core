@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.35 2004/10/11 15:40:27 eric Exp $
+ * @version $Id: Class.User.php,v 1.36 2004/11/12 11:20:37 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,7 +13,7 @@
 
 
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.35 2004/10/11 15:40:27 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.36 2004/11/12 11:20:37 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -281,9 +281,13 @@ create sequence seq_id_users start 10";
     }
     
     if ($expires>0) $this->expires=$expires;
+    if ($passdelay>0) $this->passdelay=$passdelay;
+    elseif ($passdelay==-1) {// suppress expire date
+      $this->expires=0;
+      $this->passdelay=0;      
+    }
  
      	  
-    if ($passdelay>0) $this->passdelay=$passdelay;
 
     $this->fid=$fid;
     if (! $this->isAffected()) {    
