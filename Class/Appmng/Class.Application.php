@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.25 2003/06/02 13:51:27 eric Exp $
+//  $Id: Class.Application.php,v 1.26 2003/07/25 12:41:27 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.25 2003/06/02 13:51:27 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.26 2003/07/25 12:41:27 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -249,6 +249,7 @@ function AddJsCode($code)
 
 function AddLogMsg($code) 
 {
+  if ($code =="") return;
   // Js Code are stored in the top level application
   if ($this->parent!="") {
      $this->parent->AddLogMsg($code);
