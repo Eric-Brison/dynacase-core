@@ -190,8 +190,8 @@ if (! $dbid) {
 
 $dump[] = "su - postgres -c 'pg_dumpall > /tmp/".uniqid("whatdb")."'";
 $dump[] = "/etc/rc.d/init.d/httpd stop";
-$actions[] = "$pubdir/whattext";
-$actions += array_merge($dump,
+$dump[] = "$pubdir/whattext";
+$actions = array_merge($dump,
 		       array_merge($pre,
 				   array_merge($migr,
 					       array_merge($wsh, 
