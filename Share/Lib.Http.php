@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: Lib.Http.php,v 1.2 2002/02/04 14:48:07 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Lib.Http.php,v $
+// Revision 1.2  2002/02/04 14:48:07  eric
+// utilisation de ZONE avec arguments
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -61,7 +64,7 @@
 //
 // ---------------------------------------------------------------
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.2 2002/02/04 14:48:07 eric Exp $';
 
 
 function Redirect($action,$appname,$actionname,$otherurl="")
@@ -78,7 +81,8 @@ function Redirect($action,$appname,$actionname,$otherurl="")
 
 function GetHttpVars($name, $def="") {
 
-  global $HTTP_GET_VARS,$HTTP_POST_VARS;
+  global $HTTP_GET_VARS,$HTTP_POST_VARS,$ZONE_ARGS;
+  if (isset($ZONE_ARGS[$name])) return $ZONE_ARGS[$name]; // try zone args first : it is set be Layout::execute for a zone
   if (isset($HTTP_GET_VARS[$name])) return $HTTP_GET_VARS[$name];
   if (isset($HTTP_POST_VARS[$name])) return $HTTP_POST_VARS[$name];
   return($def);

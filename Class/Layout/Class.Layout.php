@@ -1,62 +1,62 @@
 <?php
-# 
-# PHP Layout Class
-#   this class is designed to perform the final page layout of
-#   an application.
-#   this class uses a template with three dynamic zones header,toc and main 
-#   doc.
-#   
-# 
-# Layout Class can manage three kind of datas :
-#  
-# 1) Simple tags :
-#    those tags are enclosed into brackets [] and can be replaced with any
-#    dynamic data given with the Set method.
-#    e.g : [MYDATA]  => $this->Set("MYDATA","this is my text");
-#
-# 2) Block of Data :
-#    those tags are used to manage repeated set of data (as table for instance)
-#    You can assign a table of data to a specific block.
-#    e.g : $table = array ( "0" => array ( "name" => "John",
-#                                          "surname" => "Smith"),
-#                           "1" => array ( "name" => "Robert",
-#                                          "surname" => "Martin"));
-#
-#    the block : [BLOCK IDENTITY]
-#                <tr><td align="left">[NAME]</td>
-#                    <td align="right">[SURNAME]</td>
-#                </tr>
-#                [ENDBLOCK IDENTITY]
-#
-#   the code :   $lay = new Layout ("file containing the block");
-#                $lay->SetBlockCorresp("IDENTITY","NAME","name");
-#                $lay->SetBlockCorresp("IDENTITY","SURNAME","surname");
-#                $lay->SetBlockData("IDENTITY",$table);
-#   
-#                $out = $lay->gen();
-#
-#      $out  :   <tr><td align="left">John</td>
-#                    <td align="right">Smith</td>
-#                </tr>
-#                <tr><td align="left">Robert</td>
-#                    <td align="right">Martin</td>
-#                </tr>
-#
-# 3) Call a specific script (need Core App Environment to work)
-#   tag syntax : [ZONE zonename]
-#
-#     the zone name is linked to a specific application/function
-#
-#          eg :  [ZONE CORE:APPLIST]
-#        
-#         then the APPLIST function in the CORE Application is called
-#           this function can then use another layout etc......
-#
-#
-# Copyright (c) 1999 Anakeen S.A.
-#               Yannick Le Briquer
-#
-#  $Id: Class.Layout.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// 
+// PHP Layout Class
+//   this class is designed to perform the final page layout of
+//   an application.
+//   this class uses a template with three dynamic zones header,toc and main 
+//   doc.
+//   
+// 
+// Layout Class can manage three kind of datas :
+//  
+// 1) Simple tags :
+//    those tags are enclosed into brackets [] and can be replaced with any
+//    dynamic data given with the Set method.
+//    e.g : [MYDATA]  => $this->Set("MYDATA","this is my text");
+//
+// 2) Block of Data :
+//    those tags are used to manage repeated set of data (as table for instance)
+//    You can assign a table of data to a specific block.
+//    e.g : $table = array ( "0" => array ( "name" => "John",
+//                                          "surname" => "Smith"),
+//                           "1" => array ( "name" => "Robert",
+//                                          "surname" => "Martin"));
+//
+//    the block : [BLOCK IDENTITY]
+//                <tr><td align="left">[NAME]</td>
+//                    <td align="right">[SURNAME]</td>
+//                </tr>
+//                [ENDBLOCK IDENTITY]
+//
+//   the code :   $lay = new Layout ("file containing the block");
+//                $lay->SetBlockCorresp("IDENTITY","NAME","name");
+//                $lay->SetBlockCorresp("IDENTITY","SURNAME","surname");
+//                $lay->SetBlockData("IDENTITY",$table);
+//   
+//                $out = $lay->gen();
+//
+//      $out  :   <tr><td align="left">John</td>
+//                    <td align="right">Smith</td>
+//                </tr>
+//                <tr><td align="left">Robert</td>
+//                    <td align="right">Martin</td>
+//                </tr>
+//
+// 3) Call a specific script (need Core App Environment to work)
+//   tag syntax : [ZONE zonename]
+//
+//     the zone name is linked to a specific application/function
+//
+//          eg :  [ZONE CORE:APPLIST]
+//        
+//         then the APPLIST function in the CORE Application is called
+//           this function can then use another layout etc......
+//
+//
+// Copyright (c) 1999 Anakeen S.A.
+//               Yannick Le Briquer
+//
+//  $Id: Class.Layout.php,v 1.2 2002/02/04 14:48:07 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -66,19 +66,19 @@ include_once('Class.Application.php');
 
 class Layout {
 
-#############################################
-## Private var
-##
+//############################################
+//# Private var
+//#
 
 var $strip='Y';
 
-#########################################################################
-## Public methods
-##  
-##
+//########################################################################
+//# Public methods
+//#  
+//#
 
-## Constructor
-  function Layout($caneva="",$action="",$template="[OUT]") {
+//# Constructor
+ function Layout($caneva="",$action="",$template="[OUT]") {
     $this->LOG = new Log("","Layout");     
     $this->template = $template;
     $this->action=$action;
@@ -95,7 +95,7 @@ var $strip='Y';
   }
 
 
-  function SetBlockCorresp($p_nom_block,$p_nom_modele,$p_nom=NULL) {
+ function SetBlockCorresp($p_nom_block,$p_nom_modele,$p_nom=NULL) {
    $this->corresp["$p_nom_block"]["[$p_nom_modele]"]=($p_nom==NULL?$p_nom_modele:"$p_nom");
   }
 
@@ -154,10 +154,29 @@ var $strip='Y';
        $out);
   }
 
-  function execute($appname,$actionname) {
+  function execute($appname,$actionargn) {
 
 
     if ($this->action=="") return ("Layout not used in a core environment");
+
+    // analyse action & its args
+    $acturl = parse_url($actionargn);
+    $actionname =  $acturl ["path"];
+
+    global $ZONE_ARGS;
+    $ZONE_ARGS=array();
+    if (isset($acturl ["query"])) {
+      $zargs = explode("&", $acturl ["query"] );
+      while (list($k, $v) = each($zargs)) {
+	if (ereg("([^=]*)=(.*)",$v, $regs)) {
+	  // memo zone args for next action execute
+	  if ($regs[2][0] == "*") { // its a layout variable
+	    $ZONE_ARGS[$regs[1]]=$this->corresptab["[".substr($regs[2],1)."]"];
+	  } else   $ZONE_ARGS[$regs[1]]=$regs[2];
+	}
+      }
+    }
+
     if ($appname != $this->action->parent->name) {
       $appl = new Application();
       $appl->Set($appname,$this->action->parent);
@@ -168,8 +187,17 @@ var $strip='Y';
     
     if ($actionname != $this->action->name) {
       $act = new Action();
-      $res = $act->Set($actionname,$appl);
 
+      if ($act->Exists($actionname, $appl->id)) {
+
+	$res = $act->Set($actionname,$appl);
+      } else {
+	// it's a no-action zone (no ACL, cannot be call directly by URL)
+	$act->name = $actionname;
+      
+	$res = $act->CompleteSet($appl);
+
+      }
       if ($res == "") {
         return($act->execute());
       } else {

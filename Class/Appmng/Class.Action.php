@@ -16,8 +16,11 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.2 2002/01/10 11:11:56 eric Exp $
+//  $Id: Class.Action.php,v 1.3 2002/02/04 14:48:07 eric Exp $
 //  $Log: Class.Action.php,v $
+//  Revision 1.3  2002/02/04 14:48:07  eric
+//  utilisation de ZONE avec arguments
+//
 //  Revision 1.2  2002/01/10 11:11:56  eric
 //  modif pour pour authentification sur perte de session
 //
@@ -173,7 +176,7 @@
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.2 2002/01/10 11:11:56 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.3 2002/02/04 14:48:07 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -229,24 +232,33 @@ var $grant_level=0;
 
 function Set($name,&$parent)
 {
-  $query=new QueryDb($this->dbaccess,"Action");
-  if ($name!="") {
-    $query->basic_elem->sup_where = array ("name='$name'","id_application={$parent->id}");
-  } else {
-    $query->basic_elem->sup_where = array ("root='Y'","id_application={$parent->id}");
-  }
-  $query->Query();
 
-  if ($query->nb > 0) {
-    $this = $query->list[0];
-    $this->log->debug("Set Action to {$this->name}");
-  } else {
+  
+    $query=new QueryDb($this->dbaccess,"Action");
+    if ($name!="") {
+      $query->basic_elem->sup_where = array ("name='$name'","id_application={$parent->id}");
+    } else {
+      $query->basic_elem->sup_where = array ("root='Y'","id_application={$parent->id}");
+    }
+    $query->Query();
+
+    if ($query->nb > 0) {
+      $this = $query->list[0];
+      $this->log->debug("Set Action to {$this->name}");
+    } else {
     
-    $err = sprintf(_("function '%s' not available for application %s (%d)"), $name, $parent->name, $parent->id);
-    print $err;
-    exit;
-  }
+      $err = sprintf(_("function '%s' not available for application %s (%d)"), $name, $parent->name, $parent->id);
+      print $err;
+      exit;
+    }
+  
+  $this->CompleteSet(&$parent);
+}
+
+function CompleteSet(&$parent) {
   $this->parent=&$parent;
+  if ($this->script=="") $this->script=strtolower($this->name).".php";
+  if ($this->layout=="") $this->layout=strtolower($this->name).".xml";
   if ($this->function=="") $this->function = substr($this->script,0,strpos($this->script,'.php'));
   $this->session=&$parent->session;
 
@@ -256,6 +268,8 @@ function Set($name,&$parent)
 
   // Init a log attribute
   $this->logaction = new Log("",$this->parent->name,$this->name);
+
+  return "";
 }
 
 function Complete() 

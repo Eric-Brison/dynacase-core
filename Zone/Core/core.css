@@ -1,7 +1,10 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.1 2002/01/10 11:13:11 eric Exp $
+ * $Id: core.css,v 1.2 2002/02/04 14:48:07 eric Exp $
  * ---------------------------------------------------------------------------
  * $Log: core.css,v $
+ * Revision 1.2  2002/02/04 14:48:07  eric
+ * utilisation de ZONE avec arguments
+ *
  * Revision 1.1  2002/01/10 11:13:11  eric
  * modif pour import export utilisateur
  *
@@ -92,7 +95,7 @@ TR {
 
 
 .headtitle {
-  color: [CORE_BGCELLCOLOR];
+  color: [CORE_TEXTBGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
   font-size: 90%;
@@ -153,10 +156,9 @@ TR {
  * ------------------------------------------
  */
 A {
-  color: [CORE_FGCOLOR];
+  color: [CORE_ACOLOR];
   font-family: [CORE_FONTLIST1];
   font-size: 90%;
-  color: [CORE_FGCOLOR];
   text-decoration: none;
 }
 
@@ -167,17 +169,19 @@ A {
  */
 .TABBackgroundSelected {
   background-color: [CORE_FGCOLOR];
+  color: [CORE_TEXTFGCOLOR];
 }
 .TABBackground {
   background-color: [CORE_BGCOLORALTERN];
+  color: [CORE_TEXTBGCOLOR];
 }
 .TABLabelSelected {
-  color: [CORE_BGCELLCOLOR];
+  color: [CORE_TEXTBGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-size: 80%;
 }
 .TABLabel {
-  color: [CORE_FGCOLOR];
+  color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-size: 80%;
 }
@@ -190,14 +194,14 @@ A {
  */
 
 .CORETblHead {
-  color: [CORE_BGCELLCOLOR];
+  color: [CORE_TEXTBGCOLOR];
   background-color: [CORE_FGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-size: 80%;
 }
 
 .CORETblHeadBold {
-  color: [CORE_BGCELLCOLOR];
+  color: [CORE_TEXTBGCOLOR];
   background-color: [CORE_FGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
@@ -214,7 +218,7 @@ A {
 }
 
 .CORETbl {
-  color: [CORE_FGCOLOR];
+  color: [CORE_TEXTFGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-size: 80%;
 }
