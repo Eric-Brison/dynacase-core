@@ -1,0 +1,166 @@
+<html>
+<head>
+<style>
+
+[ZONE CORE:GENCSS]
+
+</style>
+[JS:REF]
+<script language="JavaScript">
+<!--
+[JS:CODE]
+
+
+
+
+//-->
+</script>
+
+</head>
+
+<body>
+
+<form target="body" name="edit" method="POST" action="[CORE_STANDURL]app=USERS&action=USER_MOD">
+<input type="hidden" name="id" value="[id]">
+
+<table align="left"  border="0" cellspacing="1" cellpadding="1" WIDTH="100%">
+<tr>
+<td class="CORETblHeadCell">
+
+  <table align="left"  border="0" cellspacing="0" cellpadding="2" WIDTH="100%">
+  <tr>
+    <td colspan="3" align="center" class="CORETblHeadCell"><span class="CORETblHead">
+    [TITRE] 
+    </span></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="left" class="CORETblCell">&nbsp;</td>
+  </tr>
+  
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:firstname] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><input type="text" size="25" name="firstname" value="[firstname]"></font>
+    </span></td>
+    
+  </tr>
+
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:lastname] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><input type="text" size="25" name="lastname" value="[lastname]"></font>
+    </span></td>
+  </tr>
+
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:login] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell">
+     [LOGIN_MOD]
+    </td>
+  </tr>
+
+[BLOCK PASSWD]
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:password] : </span></td>
+    <td valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><input type="password" size="12" name="passwd" value=""></font>
+    </span></td>
+    <td valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><input type="password" size="12" name="passwdchk" value=""></font>
+    </span></td>
+  </tr>
+<input type="hidden" name="group" value="no">
+[ENDBLOCK PASSWD]
+[BLOCK HIDDENPASSWD]
+<input type="hidden" name="passwd" value="">
+<input type="hidden" name="passwdchk" value="">
+<input type="hidden" name="group" value="yes">
+[ENDBLOCK HIDDENPASSWD]
+
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:domain] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><select onChange="selectGroupDomain(this.options[this.selectedIndex].text)" name="domainid" [disableddomain]>
+
+      [BLOCK SELECTDOMAIN]
+
+        <option value="[domainid]" [selected]>[domainname]</option>
+
+      [ENDBLOCK SELECTDOMAIN]
+      </select>
+      </font>
+    </span></td>
+  </tr>
+  <tr>
+
+    <td valign="center" align="right" class="CORETblCell"><A href="#xou" onClick="groupVisibility()">[imgchggroup]</A><span class="CORETbl">[TEXT:groups] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><select   multiple size="[sizegv]" id="groupview" name="groupview[]" onClick="if (this.size<this.length) this.size++" >
+
+      [BLOCK VIEWGROUP]
+        <option value="[groupid]" disabled  >[groupname]</option>        
+      [ENDBLOCK VIEWGROUP]
+      </select>
+      </font>
+    </span></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="left" class="CORETbCell">&nbsp;
+
+<!-- ----------- GROUP DIV ------------ -->
+<A name="xou">
+<div id="changegroup" style="display:none">
+
+<table align="center"  border="0" cellspacing="0" cellpadding="0" cols="2">
+<tr>
+<td colspan="2" class="CORETblHeadCell"><span class="CORETblHead">
+    [TEXT:changegroup]
+</span></td>
+</tr>
+  <tr>    
+    <td align="center" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+    [TEXT:domaingroup]<BR>
+      <select  multiple size="8" onMouseUp="setTimeout('refreshGroupView()',10)" id="domaingroup" name="groupselect[]">
+      [BLOCK SELECTDOMAINGROUP]
+        <option value="[groupid]"  [selectgroup]>[groupname]</option>        
+      [ENDBLOCK SELECTDOMAINGROUP]        
+      </select>
+    </span></td>
+    <td align="center" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+    [TEXT:othergroup]<BR>
+      <select  multiple size="8" onMouseUp="setTimeout('refreshGroupView()',10)" id="othergroup" name="groupselect[]">
+      [BLOCK SELECTOTHERGROUP]
+        <option value="[groupid]"  [selectgroup]>[groupname]</option>        
+      [ENDBLOCK SELECTOTHERGROUP]
+      </select>
+    </span></td>
+  </tr>
+  
+</table>
+</div>
+<!-- ----------- END GROUP DIV ------------ -->
+
+    </td>
+  </tr>
+  <tr>
+
+    <td colspan="3" align="center" class="CORETblHeadCell">
+      <font size="-1"><input class="CORETblHead" type="button" 
+        onClick="return Valid_Send()" name="Creer" value="[BUTTONTYPE]">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input class="CORETblHead" type="reset" onClick="self.close()" name="Annuler" value="[TEXT:butclosew]">      
+      </font>
+    </td>
+
+  </tr>
+  </table>
+
+</td>
+</tr>
+</table>
+</form>
+
+
+
+</body>
+</html>

@@ -1,0 +1,487 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid	""
+msgstr	"Project-Id-Version: WHAT 1.3\n"
+	"POT-Creation-Date: 2002-01-08 12:10+0100\n"
+	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
+	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
+	"MIME-Version: 1.0\n"
+	"Content-Type: text/plain; charset=ISO-8859-1\n"
+	"Content-Transfer-Encoding: 8-bit\n"
+	"\n"
+
+msgid	"titlecreateg"
+msgstr	"Création dun groupe"
+
+msgid	"titlecreateu"
+msgstr	"Création d'utilisateur"
+
+msgid	"butcreate"
+msgstr	"Créer"
+
+msgid	"titlemodifyg"
+msgstr	"Modification du groupe"
+
+msgid	"titlemodifyu"
+msgstr	"Modification de l'utilisateur"
+
+msgid	"butmodify"
+msgstr	"Modifier"
+
+msgid	"nomail"
+msgstr	"Pas de compte mail"
+
+msgid	"err_add_user"
+msgstr	"Impossible de creer l'utilisateur"
+
+msgid	"titlegroup"
+msgstr	"Liste des groupes"
+
+msgid	"titleuser"
+msgstr	"Liste des utilisateurs"
+
+msgid	"groupdesc"
+msgstr	"Description"
+
+msgid	"domain"
+msgstr	"Domaine"
+
+msgid	"group"
+msgstr	"Groupe"
+
+msgid	"fullname"
+msgstr	"Utilisateur"
+
+msgid	"login"
+msgstr	"Nom de connexion"
+
+msgid	"description"
+msgstr	"Description"
+
+#, c-format
+msgid	"index %s not found."
+msgstr "index %s non trouvé."
+
+msgid	"auth_failure"
+msgstr	"Echec de l'authentification : Ré-essayez"
+
+msgid	"auth_expired"
+msgstr	"Votre authentification a expiré"
+
+msgid	"auth_welcome"
+msgstr	"Merci de vous authentifier"
+
+msgid	"welcome"
+msgstr	"Bienvenue !"
+
+msgid	"nodomain"
+msgstr "pas de domaine"
+
+msgid	"userlogin"
+msgstr	"Login"
+
+msgid	"username"
+msgstr	"Nom"
+
+msgid	"permission"
+msgstr	"Droit"
+
+msgid	"none"
+msgstr	"Aucun"
+
+msgid	"user"
+msgstr	"utilisateur"
+
+msgid	"object"
+msgstr	"objet"
+
+msgid	"appname"
+msgstr	"Application"
+
+msgid	"appdesc"
+msgstr	"Description"
+
+msgid	"titlecreateaction"
+msgstr	"Cr&eacute;ation d'action"
+
+msgid	"titlemodifyaction"
+msgstr	"Modification de l'action"
+
+msgid	"edit"
+msgstr	"Modifier"
+
+msgid	"err_add_action"
+msgstr	"Impossible de creer l'action"
+
+msgid	"err_mod_action"
+msgstr	"Impossible de modifier l'action"
+
+msgid	"titlecreate"
+msgstr	"Cr&eacute;ation d'application"
+
+msgid	"titlemodify"
+msgstr	"Modification de l'application"
+
+msgid	"title"
+msgstr	"Liste des applications"
+
+msgid	"err_add_application"
+msgstr	"Impossible de creer l'application"
+
+msgid	"err_mod_application"
+msgstr	"Impossible de modifier l'application"
+
+msgid	"titleparamcreate"
+msgstr	"Cr&eacute;ation d'un param&egrave;tre "
+
+msgid	"titleparammodify"
+msgstr	"Modification de param&egrave;tre"
+
+msgid	"delparam"
+msgstr	"Supprimer"
+
+msgid	"err_add_param"
+msgstr	"Impossible de creer le param&egrave;tre"
+
+msgid	"err_mod_parameter"
+msgstr	"Impossible de modifier le param&egrave;tre"
+
+msgid	"err_mod_param"
+msgstr	"Impossible de modifier le param&egrave;tre"
+
+msgid	"titlestylecreate"
+msgstr	"Cr&eacute;ation de style "
+
+msgid	"titlestylemodify"
+msgstr	"Modification du style "
+
+msgid	"titleaction"
+msgstr	"Liste des actions de l'application"
+
+#, fuzzy
+msgid	"err_add_style"
+msgstr	"Impossible de creer le style"
+
+#, fuzzy
+msgid	"err_mod_style"
+msgstr	"Impossible de modifier le style"
+
+#, fuzzy, c-format
+msgid	"function '%s' not available for application %s (%d)"
+msgstr	"fonction %s non disponible"
+
+msgid	"Access denied"
+msgstr	"Accès refusé"
+
+# ne pas modifier laisser à vide
+msgid	"$code"
+msgstr	""
+
+msgid	"modify object acl"
+msgstr	"modification des droits"
+
+msgid	"view object acl"
+msgstr	"voir les droits"
+
+msgid	"prev"
+msgstr	"précédent"
+
+msgid	"next"
+msgstr	"suivant"
+
+msgid	"first"
+msgstr	"premier"
+
+msgid	"last"
+msgstr	"dernier"
+
+msgid	"What User Management"
+msgstr	"Gestion des utilisateurs"
+
+msgid	"Access To All Users"
+msgstr	"Accès à tous les utilisateurs"
+
+msgid	"Access To All Users in my domain"
+msgstr	"Acces aux utilisateurs de mon domaine"
+
+msgid	"Access To My Own account"
+msgstr	"Accès à mon propre compte"
+
+msgid	"users list"
+msgstr	"les utilisateurs"
+
+msgid	"group list"
+msgstr	"les groupes"
+
+msgid	"Core"
+msgstr	"Noyau"
+
+msgid	"Core Application Manager"
+msgstr	"Gestion du noyau des applications"
+
+msgid	"Access"
+msgstr	"Accessibilités"
+
+msgid	"What Access Management"
+msgstr	"Gestion des accessibilités"
+
+msgid	"Admin Access"
+msgstr	"Accès administrateur"
+
+msgid	"object control"
+msgstr	"contrôle des objets"
+
+msgid	"User Access"
+msgstr	"Accès des utilisateurs"
+
+msgid	"Group Access"
+msgstr	"Accès des groupes"
+
+msgid	"Application Access"
+msgstr	"Accès des applications"
+
+msgid	"Object Access"
+msgstr	"Accès des objets"
+
+msgid	"Modify any access"
+msgstr	"Modifier n'importe quel objet"
+
+msgid	"Modify object access"
+msgstr	"Modifier certains objets"
+
+msgid	"Import/Export"
+msgstr	"Import/Export"
+
+msgid	"Edit any access"
+msgstr	"Editer n'importe quel accès"
+
+#, fuzzy
+msgid	"Edit object access by user"
+msgstr	"Editer les accès sur les objets"
+
+msgid	"Edit object access"
+msgstr	"Editer les accès sur les objets"
+
+msgid	"Application manager"
+msgstr "Gestion des applications"
+
+msgid	"What Application Management"
+msgstr "Gestion des applications"
+
+msgid	"SuperUser permission"
+msgstr "Accès administration"
+
+msgid	"styles parameters"
+msgstr "paramètres de style"
+
+msgid	"styles"
+msgstr "les styles"
+
+msgid	"parameters"
+msgstr "les paramètres"
+
+msgid	"actions"
+msgstr "les actions"
+
+msgid	"applications"
+msgstr "les applications"
+
+msgid	"adduser"
+msgstr	"Ajouter un utilisateur"
+
+msgid	"firstname"
+msgstr	"Prénom"
+
+msgid	"lastname"
+msgstr	"Nom"
+
+msgid	"password"
+msgstr	"Mot de passe"
+
+msgid	"groups"
+msgstr	"Groupes"
+
+msgid	"changegroup"
+msgstr	"Changement de groupe"
+
+msgid	"domaingroup"
+msgstr	"Domaine"
+
+msgid	"othergroup"
+msgstr	"Autres"
+
+msgid	"butclosew"
+msgstr	"Fermer la fenêtre"
+
+#, fuzzy
+msgid	"search"
+msgstr	"utilisateur"
+
+#, fuzzy
+msgid	"clear"
+msgstr	"Fermer"
+
+msgid	"print"
+msgstr	"Impression de la page"
+
+msgid	"help"
+msgstr	"Aide"
+
+msgid	"delconfirm"
+msgstr	"Confirmez-vous la suppression de l`utilisateur"
+
+msgid	"functionerr"
+msgstr	"Détection d'une erreur"
+
+msgid	"Return to"
+msgstr	"Retour à"
+
+msgid	"Hosted by"
+msgstr	"Hébergé par"
+
+msgid	"powered by"
+msgstr	"produit par"
+
+msgid	"warning_pass"
+msgstr	"La saisie de votre mot de passe est obligatoire :"
+
+msgid	"yourusername"
+msgstr	"Votre nom d'utilisateur :"
+
+msgid	"yourpassword"
+msgstr	"Votre mot de passe :"
+
+msgid	"controlaccess"
+msgstr	"Contrôle des accès"
+
+msgid	" Access Control for"
+msgstr "Contrôle des accès pour"
+
+msgid	"modify"
+msgstr	"Modifier"
+
+msgid	"close"
+msgstr	"Fermer"
+
+msgid	"accessfor"
+msgstr	"Contrôle des accès pour application"
+
+msgid	"anyoid"
+msgstr	"objet commun"
+
+msgid	"download"
+msgstr	"Télécharger le fichier d'acces"
+
+msgid	"needfile"
+msgstr	"Le nom du fichier doit être spécifié"
+
+msgid	"upload"
+msgstr	"Charger un fichier d'acces"
+
+msgid	"name"
+msgstr	"Nom"
+
+msgid	"short_name"
+msgstr	"Nom abr&eacute;g&eacute;"
+
+msgid	"long_name"
+msgstr	"Nom complet"
+
+msgid	"available"
+msgstr	"Dispo"
+
+msgid	"acl"
+msgstr	"Acl"
+
+msgid	"root"
+msgstr	"Root"
+
+msgid	"toc"
+msgstr	"Toc"
+
+msgid	"addparam"
+msgstr	"Ajouter un param&egrave;tre"
+
+msgid	"addstyle"
+msgstr	"Ajouter un style"
+
+msgid	"access_free"
+msgstr	"Acces libre"
+
+msgid	"displayable"
+msgstr	"Affichable"
+
+msgid	"update"
+msgstr "mise à jour"
+
+msgid	"delete"
+msgstr	"Détruire"
+
+msgid	"val"
+msgstr	"Valeur"
+
+msgid	"titleparam"
+msgstr	"Liste des param&egrave;tres de l'application"
+
+msgid	"delconfirmparam"
+msgstr	"Confirmez-vous la suppression du param&egrave;tre "
+
+msgid	"titlestyle"
+msgstr	"Liste des param&egrave;tres du style"
+
+msgid	"delconfirmstyle"
+msgstr	"Confirmez-vous la suppression du style"
+
+#~ msgid	"warning_name"
+#~ msgstr	"La saisie de votre nom est obligatoire :"
+
+#~ msgid	"script"
+#~ msgstr	"Script"
+
+#~ msgid	"icon"
+#~ msgstr	"Icone"
+
+#~ msgid	"layout"
+#~ msgstr	"Layout"
+
+#~ msgid	"addapplication"
+#~ msgstr	"Ajouter une application"
+
+#~ msgid	"modapplication"
+#~ msgstr	"Modifier"
+
+#~ msgid	"deluser"
+#~ msgstr	"Modifier"
+
+#~ msgid	"moduser"
+#~ msgstr	"Supprimer"
+
+#~ msgid	"yes"
+#~ msgstr	"Oui"
+
+#~ msgid	"no"
+#~ msgstr	"Non"
+
+#~ msgid	"chggroup"
+#~ msgstr	"Changer de groupe"
+
+#~ msgid	"Invalid Session"
+#~ msgstr	"Session invalide"

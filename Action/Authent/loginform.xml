@@ -1,0 +1,132 @@
+<script language="JavaScript">
+<!--
+
+var isNN = (navigator.appName.indexOf("Netscape") != -1);
+if (isNN) {
+  document.captureEvents(Event.KEYPRESS)
+}
+document.onkeypress = trackEnter
+
+function trackEnter(evt)
+{
+  var intKeyCode;
+
+  if (isNN)
+    intKeyCode = evt.which;
+  else
+    intKeyCode = window.event.keyCode;
+
+  if (intKeyCode == 13) { // enter key
+    login(document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');
+    return false;
+  } else
+    return true;
+}
+
+function login(aform, usermsg, passmsg)
+{
+  var user = aform.auth_user.value;
+  var pass = aform.auth_pass.value;
+  if (user == "") {
+    alert(usermsg);
+    return;
+  }
+  if (pass == "") {
+    alert(passmsg);
+    return;
+  }
+  aform.submit();
+}
+
+function open_win(win_location) {
+   var screen_width, screen_height;
+   var win_top, win_left;
+   var HelpWin;
+   screen_height        = 0;     screen_width      = 0;
+   win_top              = 0;     win_left          = 0;
+   var help_win_width   = 315;
+   var help_win_height  = 270;
+   if (window.innerWidth) screen_width = window.innerWidth;
+   if (window.innerHeight) screen_height = window.innerHeight;
+   win_top  = screen_height - help_win_height - 20;
+   win_left = screen_width  - help_win_width  - 20;
+   HelpWin  = window.open(
+              win_location,
+              'LoginHelp',
+              'width='+help_win_width+',height='+help_win_height+',top='+win_top+',left='+win_left);
+   HelpWin.focus();
+}
+-->
+
+</script>
+<form action="[CORE_BASEURL]app=AUTHENT&action=LOGINFORM" method="post" name="loginform">
+<input type="hidden" name="appd" value="[app_redir]">
+<input type="hidden" name="actd" value="[act_redir]">
+<input type="hidden" name="argd" value="[arg_redir]">
+<table cellpadding="1" cellspacing="0" class="CORETblHead" border="0" align="center" width="400"><tr><td class="CORETblHeadCell">
+
+<table cellpadding="1" cellspacing="0" class="CORETbl" border="0" align="center" width="100%">
+<tr>
+  <td colspan="2" align="left" class="CORETblHeadCell">
+    <span class="CORETblHeadBold">[title]</span>
+  </td>
+</tr>
+<tr class="CORETbl">
+  <td colspan="2" align="center" class="CORETblCell">
+      <br><br><span class="CORETblBold"> [MESSAGE] </span><br><br>
+  </td>
+</tr>
+<tr class="CORETbl">
+   <td align="right" class="CORETblCell">
+   <span class="CORETbl">[TEXT:domain]</span>
+   </td>
+   <td align="left" class="CORETblCell">
+    <font size="-1" >
+     <select name="domain">
+     [BLOCK SELDOMAIN]
+       <option value="[iddomain]" [selected]>[name]</option>[ENDBLOCK SELDOMAIN]
+     </select>
+    </font>
+   </td>
+</tr>
+
+<tr class="CORETbl">
+   <td align="right" class="CORETblCell">
+   <span class="CORETbl">[TEXT:yourusername]</span>
+   </td>
+   <td align="left" class="CORETblCell">
+    <font size="-1" >
+     <input name="auth_user" type="text" value="[defuser]" size="30">
+    </font>
+   </td>
+</tr>
+<tr class="CORETbl">
+    <td align="right" class="CORETblCell">
+     <span class="CORETbl">[TEXT:yourpassword]</span>
+    </td>
+    <td align="left" class="CORETblCell">
+     <font size="-1" >
+      <input name="auth_pass" type="password" value="" size="30">
+     </font>
+    </td>
+</tr>
+<tr>
+     <td colspan="2" align="center">&nbsp;</td>
+</tr>
+<tr> <td colspan="2" class="CORETblHeadCell"><img src="[CORE_PUBURL]/CORE/Images/1x1.png" border="0"></td> </tr>
+
+<tr>
+  <td valign="baseline" align="left" class="CORETblCell">
+    <a href="javascript:open_win('[CORE_STANDURL]app=AUTHENT&action=LOGINHELP');">
+    <img src="[IMG:help.gif]" alt="[TEXT:help]" height="14" border="0">
+  </td>
+     <td align="right" class="CORETblCell">
+         <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">
+    <img src="[IMG:go.gif]" height="18" border="0">
+     </td>
+</tr>
+<tr> <td colspan="2" class="CORETblHeadCell"><img src="[CORE_PUBURL]/CORE/Images/1x1.png" border="0"></td> </tr>
+</table>
+</td></tr></table>
+</form>
+

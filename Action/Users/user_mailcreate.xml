@@ -1,0 +1,15 @@
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:domain] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><select name="domainid">
+
+      [BLOCK SELECTDOMAIN]
+
+        <option value="[domainid]" [selected]>[domainname]</option>
+
+      [ENDBLOCK SELECTDOMAIN]
+      </select>
+      </font>
+    </span></td>
+  </tr>
+

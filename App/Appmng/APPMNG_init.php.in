@@ -1,0 +1,7 @@
+<?
+
+$app_const= array(
+  "INIT" => "yes",
+  "VERSION" => "@VERSION@" );
+
+?>

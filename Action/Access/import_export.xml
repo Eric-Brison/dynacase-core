@@ -1,0 +1,24 @@
+<!-- 
+  $Id: import_export.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/import_export.xml,v $
+-->
+<table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
+<tr><td colspan="2">
+[ZONE CORE:TABINDEX] 
+</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr>
+  <td  valign="top">
+    <a href="[CORE_STANDURL]app=ACCESS&action=DOWNLOAD">
+       <img border="0" src="[IMG:download.gif]" alt="[TEXT:download]" title="[TEXT:download]">
+    </a>
+  </td>
+  <td valign="top">
+   <form ENCTYPE="multipart/form-data" name="ffile" method="POST" action="[CORE_STANDURL]app=ACCESS&action=UPLOAD">
+     <a href="#" onClick="if (document.ffile.upfile.value == '') alert('[TEXT:needfile]'); else submit();">
+       <img border="0" align="center" src="[IMG:upload.gif]" alt="[TEXT:upload]" title="[TEXT:upload]">
+     </a>
+     <input type="FILE" name="upfile">
+   </form>
+</td></tr>
+</table>

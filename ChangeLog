@@ -1,0 +1,29 @@
+0.4.4 -> 0.4.5
+    - modif pour droit d'accès
+    - bouchage du trou de tabindex
+    - gestion tabindex dans une application multiframe
+    - ajout du style "console"
+
+0.4.2 -> 0.4.3
+   - modif pour post-install
+
+0.4.1 -> 0.4.2
+   - head.php : visibilité des icones ssi action root possible
+
+0.4.1 -> 0.4.2
+   - multiframe
+
+0.3.0 -> 0.4.0
+   - index.php : new init with libphp optimization
+
+0.2.3 -> 0.3.0
+   - Add setactpar to register action-session variables
+
+0.2.2 -> 0.2.3
+   - Ajout de la détection du navigateur , ajouté en variable de session
+     navigator
+
+   - Ajout de la session dans le lien à la page d'acceuil 
+
+   - Le Rpm d'installation crée les données en base et sait gérer le 
+     update

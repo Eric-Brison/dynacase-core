@@ -1,0 +1,35 @@
+# ============================================
+# $id: Makefile.in,v 1.14 2002/01/04 16:04:35 eric Exp $
+# ============================================
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+utildir=@PUBRULE@
+appname = @PACKAGE@
+pubdir = @prefix@
+srcdir = @srcdir@
+pidir = /var/post-install/bin
+
+export pubdir utildir appname pidir
+
+TAR = gtar
+GZIP_ENV = --best
+
+
+
+export targetdir
+export utildir
+
+SUBDIR= Class Images Css Action Zone App Api Share
+
+TOP_MODULES = index.php wsh.php dbaccess.php apache.conf
+
+
+include $(utildir)/PubRule
+
+DISTFILES = $(SUBDIR) configure.in  \
+            Makefile.in index.php wsh.php dbaccess.php.in \
+            apache.conf.in WHAT.spec.in ChangeLog  VERSION RELEASE \
+	    $(PACKAGE)_en.po $(PACKAGE)_fr.po 
+
+
+PIFILES = $(PACKAGE)_post.sh

@@ -1,0 +1,48 @@
+<html>
+<head><title>Aide à la connexion</title> 
+<style>
+[ZONE CORE:GENCSS]
+</style>
+
+</head>
+<body>
+<script language="JavaScript">
+<!--
+function close_help_win() {
+  document.all[ '<?php echo $HTTP_GET_VARS["winname"]; ?>' ].close();
+}
+//-->
+</script>
+<table width="100%" align="center" cellspacing="1" cellpadding="0" border="0">
+<tr>
+  <td class="CORETblHeadCell" align="center">
+   <span class="headtitle"> Aide à la connexion</span>
+  </td>
+</tr>
+<tr>
+  <td align="left" class="CORETbl"><font size=-1><br>
+Cette fenêtre permet de vous identifier, c'est à dire indiquer aux applications qui vous êtes.
+<br>
+Ceci est nécessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-même. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en possédez pas adressez vous à l'administrateur du site).i
+<br><br>
+Attention, ce mot de passe est le moyen garantissant votre identification : conservez le précieusement et ne le diffusez pas !.
+<br><br>
+Il est important de respecter la casse (utilisation des caractères majuscule et minuscule) lors de la saisie des vos nom d'utilisateur et mot de passe!<br>
+   </font>
+ </td>
+</tr>
+<tr>
+  <td class="CORETblHeadCell" align="center">
+<a href="javascript:parent.close()">
+   <span class="headtitle">
+  <font size="-1">
+    fermer la fenêtre
+   </font>
+   </span>
+  </a>
+  </td>
+</tr>
+</table>
+</body>
+</html>
+

@@ -1,0 +1,167 @@
+<html>
+<head>
+
+<title>[TEXT:controlaccess]</title>
+<style>
+
+[ZONE CORE:GENCSS]
+
+</style>
+[JS:REF]
+<script language="JavaScript">
+<!--
+[JS:CODE]
+var nbinput=[nbinput];
+
+function inhib(ckbut)
+{
+ ckbut.checked = (! ckbut.checked);
+
+ return true;
+}
+function computeglobacl(id)
+{
+  // compute final ACL
+  var idgroup = nbinput+ id*4;
+  var idplus  = idgroup+1;
+  var idmoins = idgroup+2;
+  var idglob = idgroup+3;
+
+  if (document.edit.elements[idmoins].checked) {
+    document.edit.elements[idglob].checked=false;
+  } else {     
+    if ((document.edit.elements[idgroup].checked) || 
+        (document.edit.elements[idplus].checked)) {
+      document.edit.elements[idglob].checked=true;
+    } else {
+      document.edit.elements[idglob].checked=false;
+    }
+  }
+    
+  
+}
+function globacl(id)
+{
+  var idgroup = nbinput+ id*4;
+  var idplus  = idgroup+1;
+  var idmoins = idgroup+2;
+  var idglob = idgroup+3;
+
+  if (document.edit.elements[idglob].checked) {
+     document.edit.elements[idmoins].checked=false;
+     if (! document.edit.elements[idgroup].checked) {
+        document.edit.elements[idplus].checked=true;
+     }
+  } else {
+     document.edit.elements[idplus].checked=false;
+     if (document.edit.elements[idgroup].checked) {
+        document.edit.elements[idmoins].checked=true;
+     }
+  }
+
+  return true;
+}
+function plusacl(id)
+{
+  var idgroup = nbinput+ id*4;
+  var idplus  = idgroup+1;
+  var idmoins = idgroup+2;
+  var idglob = idgroup+3;
+
+
+  if (document.edit.elements[idplus].checked) {
+     document.edit.elements[idmoins].checked=false;
+  }
+  computeglobacl(id);
+  return true;
+}
+function moinsacl(id)
+{
+  var idgroup = nbinput+ id*4;
+  var idplus  = idgroup+1;
+  var idmoins = idgroup+2;
+  var idglob = idgroup+3;
+
+  if (document.edit.elements[idmoins].checked)
+    document.edit.elements[idplus].checked=false;
+  computeglobacl(id);
+  return true;
+}
+
+//-->
+</script>
+
+</head>
+
+<body>
+
+<form target="[target]" name="edit" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[modifyact]">
+
+
+<input type="hidden" name="appid" value="[appid]">
+<input type="hidden" name="returnact" value="[returnact]">
+<input type="hidden" name="userid" value="[userid]">
+<input type="hidden" name="oid" value="[oid]">
+<H3 style="text-align:center">[TEXT:accessfor] <i>[appname]</i></H3>
+<H4 style="text-align:center">[title]</H4>
+
+
+
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
+
+<TR align="center">
+    <TD class="CORETblHeadCell"><span class="CORETblHead">G</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell"><span class="CORETblHead">UP</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell"><span class="CORETblHead">UN</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell"><span class="CORETblHead">R</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell" align="right">&nbsp;
+      [BLOCK USERS]
+       <select name="suserid" onChange="document.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT&mod=app&isclass=yes&oid=[oid]&userid='+this.options[this.selectedIndex].value">
+        [BLOCK USER]
+	<option value=[userid] [selecteduser]>[descuser]</option>
+        [ENDBLOCK USER]
+	</select>
+      [ENDBLOCK USERS]
+
+      [BLOCK OBJECTCLASS]
+       <select name="soid" onChange="document.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT&mod=app&isclass=yes&id=[userid]&oid='+this.options[this.selectedIndex].value">
+	<option value=0>[TEXT:anyoid]</option>
+        [BLOCK OID]
+	<option value=[oid] [selectedoid]>[descoid]</option>
+        [ENDBLOCK OID]
+	</select>
+      [ENDBLOCK OBJECTCLASS]
+    </TD>
+  
+<TR>
+
+                                [BLOCK SELECTACL]
+<TR>
+  <TD align="center" ><input   type="checkbox"  name="aclg[[iacl]]" value="[aclid]" [selectedg] onClick="inhib(this)" disabled></input>
+  </TD>
+  <TD align="center">+</TD>
+  <TD align="center">
+     <input align="top" type="checkbox"  name="aclup[[iacl]]" value="[aclid]" [selectedup] onClick="plusacl([iacl])">
+  </TD>
+  <TD align="center">-</TD>
+  <TD align="center">
+    <input align="top" type="checkbox" name="aclun[[iacl]]" value="[aclid]" [selectedun] onClick="moinsacl([iacl])">
+  </TD>
+  <TD align="center">=</TD>
+  <TD align="center">
+      <input align="top" type="checkbox" name="acls[[iacl]]" value="[aclid]" [selected] onClick="globacl([iacl])">
+  </TD>
+  <TD class="CORETblCell"><span class="CORETbl">[aclname]</span></TD>
+  <TD class="CORETblCell" align="right"><span class="CORETbl">[acldesc]</span></TD>
+</TR>
+                                [ENDBLOCK SELECTACL]
+</TABLE>
+<BR>
+<p style="text-align:left">
+<input class="CORETblHead" type="submit" 
+         name="Modify" value="[TEXT:modify]"  >
+<input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:close]">
+</p>
+</form>
+</body>
+</html>

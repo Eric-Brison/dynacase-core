@@ -1,0 +1,354 @@
+<?
+// $Id: Class.Acl.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Acl.php,v $
+// ---------------------------------------------------------------
+//  O   Anakeen - 2000
+// O*O  Anakeen Development Team
+//  O   dev@anakeen.com
+// ---------------------------------------------------------------
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or (at
+//  your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+// for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+// ---------------------------------------------------------------
+// $Log: Class.Acl.php,v $
+// Revision 1.1  2002/01/08 12:41:34  eric
+// first
+//
+// Revision 1.13  2001/09/05 17:17:05  eric
+// changement user_default par group_default
+//
+// Revision 1.12  2001/08/29 13:28:09  eric
+// droit par défaut sur les groupes
+//
+// Revision 1.11  2001/08/28 10:08:57  eric
+// Gestion des groupes d'utilisateurs
+//
+// Revision 1.10  2001/08/21 08:50:25  eric
+// correction init user_default
+//
+// Revision 1.9  2001/08/20 16:41:38  eric
+// changement des controles d'accessibilites
+//
+// Revision 1.8  2001/07/26 10:20:16  eric
+// correction pour Acl inconnu
+//
+// Revision 1.7  2001/07/25 12:38:26  eric
+// ajout fonction pour update auto des droit par défaut
+//
+// Revision 1.6  2001/07/23 16:21:24  eric
+// droit par défaut
+//
+// Revision 1.5  2001/01/25 17:17:03  yannick
+// Gestion des updates applications
+//
+// Revision 1.4  2000/10/26 12:53:13  yannick
+// Menage du debug
+//
+// Revision 1.3  2000/10/23 15:32:04  yannick
+// gestion des grant level
+//
+// Revision 1.2  2000/10/23 14:13:45  yannick
+// Contrôle des accès
+//
+// Revision 1.1  2000/10/19 16:40:39  yannick
+// Gestion des permissions
+//
+// ---------------------------------------------------------------------------
+//
+$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+include_once('Class.DbObj.php');
+include_once('Class.QueryDb.php');
+include_once('Class.Application.php');
+include_once('Class.User.php');
+
+Class Acl extends DbObj
+{
+var $fields = array ( "id","id_application","name","grant_level","description","group_default");
+
+var $id_fields = array ( "id");
+
+var $dbtable = "acl";
+
+var $sqlcreate = '
+create table acl (id int not null,
+                  id_application int not null,
+                  name varchar(30) not null,
+                  grant_level int not null,
+                  description varchar(100),
+                  group_default varchar(1));
+create index acl_idx1 on acl(id);
+create index acl_idx2 on acl(id_application);
+create index acl_idx3 on acl(name);
+create sequence SEQ_ID_ACL;
+                 ';
+
+
+
+function Set($name,$id_app)
+{
+  $query=new QueryDb($this->dbaccess,"Acl");
+  $query->basic_elem->sup_where = array ("name='$name'","id_application=$id_app");
+  $query->Query();
+
+  if ($query->nb > 0) {
+    $this = $query->list[0];
+  } else {
+    return false;
+  }
+  return true;
+}
+
+function Complete() 
+{
+}
+
+
+function PreInsert( )
+{
+  if ($this->Exists($this->name,$this->id_application)) return "Acl {$this->name} already exists...";  
+  $msg_res = $this->exec_query("select nextval ('seq_id_acl')");
+  $arr = $this->fetch_array (0);
+  $this->id = $arr[0];
+  
+}
+function PreUpdate()
+{
+  if ($this->dbid == -1) return FALSE;
+}
+
+
+function Exists($name,$id_app)
+{
+  $query=new QueryDb($this->dbaccess,"Acl");
+  $query->basic_elem->sup_where = array ("name='$name'","id_application=$id_app");
+  $query->Query();
+  return ($query->nb > 0);
+}
+
+function DelAppAcl($id)
+{
+  $query=new QueryDb($this->dbaccess,"Acl");
+  $query->basic_elem->sup_where = array ("id_application=$id");
+  $list = $query->Query();
+  if ($query->nb >0) {
+    while (list($k,$v)=each($list)) {
+      $v->Delete();
+    }
+  }
+  // Remove Permission
+    $permission = new Permission($this->dbaccess);
+    $permission-> DelAppPerm($id);
+}
+
+
+function Init($app,$app_acl,$update=FALSE)
+{
+  if (sizeof($app_acl)==0) {
+    $this->log->debug("No acl available");
+    return("");
+  }
+
+  $default_grant_level_found= false; // indicate user default set explicitly
+  if (isset($app_acl[0]["grant_level"]))
+    $oldacl = true; // for old ACL description (for compatibility with old application)
+  else
+    $oldacl = false;
+  
+
+
+ 
+
+  // read init file
+  $default_user_acl = array();             // default acl ids  
+  $default_acl=false;             // to update default acl id
+
+  while (list($k,$tab) = each ($app_acl)) {
+    $acl=new Acl($this->dbaccess);
+    if ($acl->Exists($tab["name"],$app->id)) {
+      $acl->Set($tab["name"],$app->id);
+    }
+    $acl->id_application = $app->id;
+    $acl->name = $tab["name"];
+    if (isset($tab["description"])) {
+      $acl->description=$tab["description"];
+    }
+    if (isset($tab["grant_level"])) {
+      $acl->grant_level=$tab["grant_level"];
+    } else {
+      $acl->grant_level=1;
+    }
+    // initialise grant level default 
+    if ((isset($tab["group_default"])) && ($tab["group_default"] == "Y")) {
+      if ($oldacl) {
+	$default_grant_level = $tab["grant_level"];
+	$default_grant_level_found = true;
+      }
+      $acl->group_default="Y";
+      $default_acl=true;
+    } else {
+      $acl->group_default="N";
+
+      if ($oldacl) {
+	if (( ! $default_grant_level_found ) && 
+	    ((!isset($smalestgrant)) || ( $tab["grant_level"] < $smalestgrant)) &&
+	    (! ((isset($tab["admin"]) && $tab["admin"])))) {
+	  // default acl admin must be specified explicitly
+	  $smalestgrant = $tab["grant_level"];
+	}
+      }	
+    }
+
+    if ($acl->Exists($acl->name,$acl->id_application)) {
+      $this->log->info("Acl Modify : {$acl->name}, {$acl->description}");
+      $acl->Modify();
+    } else {
+      $this->log->info("Acl Add : {$acl->name}, {$acl->description}");
+      $acl->Add();
+    }
+    if (isset($tab["admin"]) && $tab["admin"]) {
+      $permission = new Permission($this->dbaccess);
+      $permission->id_user=1;
+      $permission->id_application=$app->id;
+      $permission->id_acl=$acl->id;
+      if ($permission->Exists($permission->id_user,$app,$permission->id_acl)) {
+	$this->log->info("Modify admin permission : {$acl->name}");
+	$permission->Modify();
+      } else {
+	$this->log->info("Create admin permission : {$acl->name}");
+	$permission->Add();
+      }
+    }
+    if ($default_acl) {
+      $default_user_acl[] = $acl->id;
+      $default_acl=false;
+    }
+      
+      
+  }
+
+
+  // default privilige is the smallest if no definition (for old old application)
+  if (count($default_user_acl) == 0) {
+    if (isset($smalestgrant)) {
+      $default_user_acl[] = $smalestgrant;
+      $default_grant_level = $smalestgrant;
+    }
+  }
+
+  
+  if ($oldacl) {
+    // ----------------------------------------------
+    // for old acl form definition (with grant_level)
+    // set default acl for grant level under the default
+    if (isset($default_grant_level)) {
+      $query=new QueryDb($this->dbaccess,"Acl");
+      $query -> AddQuery("id_application = ".$app->id);
+      $query -> AddQuery("grant_level < $default_grant_level");
+      if ($qacl = $query->Query()) {
+	while (list($k2,$acl)=each($qacl)) {
+	  if (! in_array($acl->id, $default_user_acl)) {
+	    $default_user_acl[] = $acl->id;
+	  }
+	}
+      }
+    }
+  }
+
+  
+  // create default permission
+  reset($default_user_acl);
+  while (list($ka,$aclid)=each($default_user_acl)) {
+    
+    // set the default user access 
+    $defaultacl=new Acl($this->dbaccess, $aclid);
+    $defaultacl->group_default="Y";
+    $defaultacl->Modify();
+
+    $user = new User($this->dbaccess);
+    $userlist = $user-> GetGroupList();
+
+
+    while (list($k,$v)=each($userlist)) {
+      $permission = new Permission($this->dbaccess);
+      $permission->id_user=$v->id;
+      $permission->id_application=$app->id;
+      $permission->id_acl=$aclid;
+      if (! $permission->Exists($permission->id_user,$app,$permission->id_acl)) {
+	$permission->Add();
+      }
+    }
+  }
+
+    // Remove unused Acl in case of update
+  if ($update) {
+    $query=new QueryDb($this->dbaccess,"Acl");
+    $query->basic_elem->sup_where=array ("id_application = {$app->id}");
+    $list=$query->Query();
+    while (list($k,$v)=each($list)) {
+      // Check if the ACL still exists
+      $find=FALSE;
+      reset($app_acl);
+      while ( (list($k2,$v2) = each($app_acl)) && ($find==FALSE) ) {
+        $find=( $v2["name"] == $v->name );
+      }
+      if (!$find) {
+        // remove the ACL and all associated permissions
+        $this->log->info("Removing the {$v->name} ACL");
+        $query2 = new QueryDb($this->dbaccess,"Permission");
+        $query2->basic_elem->sup_where=array("id_application= {$app->id}",
+                                             "id_acl = {$v->id}");
+        $list_perm = $query2->Query();
+        if ($query2->nb>0) {
+          while (list($k2,$p) = each ($list_perm)) {
+            $p->Delete();
+          }
+        }
+        $v->Delete();
+      }
+    }
+  }
+
+  
+
+  
+}
+
+
+// get default ACL for an application
+function getDefaultAcls($idapp)
+{
+
+  $aclids = array();
+    $query=new QueryDb($this->dbaccess,"Acl");
+    $query -> AddQuery("id_application = $idapp");
+    $query -> AddQuery("group_default = 'Y'");
+    if ($qacl = $query->Query()) {
+	while (list($k2,$acl)=each($qacl)) {
+	  $aclids[] = $acl->id;
+	}
+    }
+    return $aclids;
+}
+
+
+function getAclApplication($idapp)
+{
+
+    $query=new QueryDb($this->dbaccess,"Acl");
+    $query -> AddQuery("id_application = $idapp");
+    if ($qacl = $query->Query())
+      return $qacl;
+    return 0;
+}
+}
+?>

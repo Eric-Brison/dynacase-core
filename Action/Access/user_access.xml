@@ -1,0 +1,119 @@
+<!-- 
+  $Id: user_access.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.xml,v $
+-->
+
+<table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
+<tr><td colspan="8">
+[ZONE CORE:TABINDEX] 
+</td></tr>
+
+<tr>
+  <td width="100" valign="top">
+     [QUERY_FORM]
+     
+     <font size="-1">
+      [FULLTEXTFORM]
+     </font>
+  </td>
+  <td>
+    <table align="left"  border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
+    <tr> 
+    <form name="access_chg" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[ACTION_CHG]">
+      <td class="CORETblHeadCell">
+     <font size="-1">
+       <select name="id" onChange="submit()">
+[BLOCK SELUSER]
+         <option [selected] value="[id]">[text]</option> [ENDBLOCK SELUSER]
+       </select>
+     </font>
+     </td></form>      
+      <td valign="baseline" colspan="3" align="right" class="CORETblHeadCell">
+       <span class="CORETblHead">
+
+        <a href="#" onclick="self.print()">
+          <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
+        </a>
+        <a href="#" 
+           onClick="javascript:subwindow(300,500,'[CORE_BASEURL]app=HELP&happ=ACCESS&hact=USERS_ACCESS')">
+          <img alt="[TEXT:help]" title="[TEXT:help]" border="0" src="[IMG:help.gif]">
+        </a>
+       </span>
+      </td>
+     </tr>
+
+<!-- TABLEPAGING -->
+<form name="access_mod" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[ACTION_MOD]">
+<tr>
+<input type="hidden" name="id" value="">
+  <td align="left" class="CORETblCell">
+
+  &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
+
+  </td>
+     
+  <td align="right" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]&nbsp;[TABLE_LAST]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+
+<!-- TABLEHEAD -->
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<tr>
+  <td width="20%" class="CORETblCell"><span class="CORETblBold">[shortname]</span></td>
+  <td width="50%" class="CORETblCell"><span class="CORETblBold">[desc]</span></td>
+  <td width="30%" class="CORETblCell"><span class="CORETblBold">[permission]</span></td>
+</tr>
+
+<!-- /TABLEHEAD -->
+
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEBODY -->
+[BLOCK TABLEBODY]
+<tr>
+  <td width="30%" ><a href="#" OnClick="javascript:[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
+  <td width="50%" ><span class="CORETbl">[description]</span></td>
+  <td width="30%" ><span class="CORETbl">
+  <font size="-1">
+  <select name="[selname]"  >
+      [BLOCK [id]]<option  value="[aclid]">[aclname]</option>
+      [ENDBLOCK [id]]
+  </select></font></span></td>
+   
+</tr>
+[ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left"  class="CORETblCell">
+
+  &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
+
+  </td>
+  <td class="CORETblCell">
+   [TABLE_NUM]/[TABLE_NB]
+  </td>
+  <td align="right"  class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]&nbsp;[TABLE_LAST]
+
+  </td>
+</tr>
+</form>
+<!-- /TABLEPAGING -->
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td></tr>
+
+
+</table>
+</td></tr>
+</table>
+</form>

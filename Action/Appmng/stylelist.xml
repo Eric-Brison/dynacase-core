@@ -1,0 +1,108 @@
+<!-- 
+  $Id: stylelist.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/stylelist.xml,v $
+-->
+
+
+
+
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+ <tr><td colspan="2">[ZONE CORE:TABINDEX]   </td></tr>
+ <tr>
+  <td width="100" valign="top">
+    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=APPMNG&action=[ACTION_CHG]">
+    <font size="-1">
+       <select name="id" onChange="submit()">
+[BLOCK SELAPPLI]
+         <option [selected] value="[id]">[text]</option> [ENDBLOCK SELAPPLI]
+       </select>
+     </font>
+    </form>
+  </td>
+  <td>
+   <table align="center"  border="0" cellspacing="0" cellpadding="0" width="90%">
+    <tr>
+     <td class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[TEXT:titlestyle]</span></td>
+     <td valign="baseline" align="right" class="CORETblHeadCell"><span class="CORETblHead">
+    [ADD_ICON]
+    <a href="#" onclick="self.print()">
+      <img height="22" alt="[TEXT:print]" border="0" src="[IMG:print.gif]">
+      </a>
+    <a href="#" 
+       onClick="javascript:subwindow(300,500,'[CORE_BASEURL]app=HELP&happ=35H&hact=IMPUTATION')">
+      <img alt="[TEXT:help]" border="0" src="[IMG:help.gif]">
+      </a></span>
+    </td>
+ </tr>
+</table>
+
+
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="right" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+
+<!-- TABLEHEAD -->
+<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<tr>
+  <td width="10%" class="CORETblCell"></td>
+  <td width="20%" class="CORETblCell"><span class="CORETblBold">[TEXT:name]</span></td>
+  <td width="70%" class="CORETblCell"><span class="CORETblBold">[TEXT:val]</span></td>
+</tr>
+
+<!-- /TABLEHEAD -->
+
+<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEBODY -->
+[BLOCK TABLEBODY]
+<tr>
+  <td width="10%" class="[CLASS]">
+       <a href="#" OnClick="javascript:[edit]">[imgedit]</a>
+       <a href="[CORE_STANDURL]&app=APPMNG&action=STYLE_DELETE&id=[key]&name=[name]" onClick="return confirm('[TEXT:delconfirmparam] [name]')">[delete]</a> </td>
+  <td width="20%" class="[CLASS]"><span class="CORETbl">[name]</span></td>
+  <td width="70%" class="[CLASS]"><span class="CORETbl">[val]</span></td>
+</tr>
+[ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+
+<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+
+<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="right" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+<tr><td colspan="6" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+</table>
+   </tr>
+</table>
+
+
+[MAINFORM]

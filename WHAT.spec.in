@@ -1,0 +1,199 @@
+#! /:/bin/rpm
+#
+#  File: libwhat.spec
+#  $Id: WHAT.spec.in,v 1.1 2002/01/08 12:41:33 eric Exp $
+#
+#  This is the SPEC file for the What CORE
+#  Anakeen What Application
+#
+
+%define apachedir /etc/httpd
+%define destdir /home/httpd/what
+%define pidir /var/post-install/bin
+%define pirange 010
+%define purange 990
+
+Summary: The CORE What
+Name: @PACKAGE@
+Version: @VERSION@
+Release: @RELEASE@
+Copyright: GPL
+Group: Applications/Web
+Source: ftp://ftp.souillac.anakeen.com/pub/anakeen/%{name}-%{version}.tar.gz
+# post-2.2.0 fix (can go away with next release):
+Vendor: Anakeen           
+URL: http://www.anakeen.com/
+Packager: Yannick Le Briquer <yannick.lebriquer@anakeen.com>
+BuildArchitectures: noarch
+BuildRoot: /tmp/anakeen-root
+Requires: php >= 4.0.5
+Requires: apache
+Requires: postgresql >= 7.0.0
+Requires: php-pgsql
+Requires: php-gettext
+Requires: php-pcre
+Requires: php-shell
+Prereq: ankpsql-tools
+Prereq: php-shell >= 4.0.2
+Prereq: apache
+Prereq: grep
+Prereq: anakeen-post-install
+Prereq: SysVinit
+Prereq: gettext
+
+%description
+The CORE gives common interface element to applications
+
+
+%prep
+%setup -q -n %{name}-%{version}
+
+%build
+
+%install
+autoconf
+./configure --with-pubrule=`pwd`
+make pubdir=$RPM_BUILD_ROOT%{destdir} pidir=$RPM_BUILD_ROOT%{pidir} 
+
+%clean
+[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+
+%post
+
+if [ "$1" = 1 ] ; then
+
+  # Add apache options for what
+  echo "Include %{destdir}/apache.conf" >>/etc/httpd/conf/httpd.conf
+
+
+ 
+  # try execute post install now
+  %{pidir}/@PACKAGE@_post.sh 1
+  if [ $? -ne 0 ]; then
+    ln -s %{pidir}/@PACKAGE@_post.sh %{pidir}/PI%{pirange}@PACKAGE@
+  fi
+
+else
+  # Update the database with Core App
+  echo "update Core Database"
+  pushd /home/httpd/what >/dev/null
+  echo '<?
+  include_once("Class.Application.php");
+  $app=new Application();
+  $Null = "";
+  $app->Set("@PACKAGE@",$Null);
+  $app->Update();
+  ?>' | /usr/bin/php -q 2>&1 >>/dev/null
+  popd >/dev/null
+
+  ll=`cat /etc/ankpsql-tools/base-list | grep "^@DBNAME@$" | wc -l`
+  if [ $ll -eq 0 ]; then 
+    echo "Register DB @DBNAME@ for automatic dump"
+    echo "@DBNAME@" >> /etc/ankpsql-tools/base-list
+  fi
+fi
+# merge @PACKAGE@ translation for i18n
+for lang in en fr ; do
+    pushd /home/httpd/what/locale/$lang/LC_MESSAGES >/dev/null
+    if [ -f what.mo ] ; then
+      msgunfmt --force-po @PACKAGE@.mo -o @PACKAGE@.po
+      msgunfmt --force-po what.mo -o what.po
+      msgfmt what.po @PACKAGE@.po -o what.mo
+      rm -f *.po
+    else
+	cp @PACKAGE@.mo what.mo
+    fi
+    popd >/dev/null
+done
+
+%preun
+if [ "$1" = 0 ] ; then
+  # Remove the App from the database
+  pushd /home/httpd/what
+  echo '<?
+  include_once("Class.Application.php");
+  $app=new Application();
+  $Null = "";
+  $app->Set("@PACKAGE@",$Null);
+  $app->DeleteApp();
+  ?>' | /usr/bin/php 2>&1 >>/dev/null
+  popd
+  
+  # copy uninstall shell to be execute in post-uninstall section
+  cp %{pidir}/@PACKAGE@_post.sh %{pidir}/PU%{purange}@PACKAGE@_post.sh
+fi
+
+%postun
+if [ "$1" = 0 ] ; then
+  grep -v 'Include %{destdir}/apache.conf' /etc/httpd/conf/httpd.conf > /tmp/httpd.conf
+  mv /tmp/httpd.conf /etc/httpd/conf/httpd.conf
+
+  # Restart Apache if running
+  run=`/etc/rc.d/init.d/httpd status |grep running|wc -l`
+  if [ $run = 1 ] ; then
+     /etc/rc.d/init.d/httpd restart
+  fi
+
+  # Post uninstall - will be re-execute at next boot if cannot be perform
+  # correctly now
+  %{pidir}/PU%{purange}@PACKAGE@_post.sh 0
+  if [ $? -eq 0 ]; then
+    rm %{pidir}/PU%{purange}@PACKAGE@_post.sh
+  fi
+fi
+# Remove phpinclude in the include path of php
+if [ "$1" = 0 ] ; then
+echo "Remove libwhat in php_ini"
+echo '
+<? $php_ini=file("/etc/php/php.ini");
+   $out = fopen("/etc/php/php.ini.tmp","w");
+   while (list($k,$v)=each($php_ini)) {
+     $pos = strpos ($v,"include_path");
+     if ( $pos === false) {
+       fputs($out,$v);
+     } else {
+       $res = str_replace(":%{contentdir}/libwhat","",$v);
+       $res = str_replace(":%{contentdir}/what","",$res);
+       fputs($out,$res);
+     }
+   }
+   fclose($out);
+   rename("/etc/php/php.ini.tmp","/etc/php/php.ini");
+
+?> ' | /usr/bin/php -q
+# Remove what from syslog
+  cp /etc/syslog.conf /etc/syslog.conf.sav
+  cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
+  /etc/rc.d/init.d/syslog restart
+  rm -f /etc/logrotate.d/what
+
+# Restart Apache if running
+  run=`/etc/rc.d/init.d/httpd status |grep running|wc -l`
+  if [ $run = 1 ] ; then
+     /etc/rc.d/init.d/httpd restart
+  fi
+
+fi
+%files
+%defattr(-,root,root)
+%dir %{destdir}
+%dir %{destdir}/%{name}
+%doc ChangeLog
+%{destdir}/index.php
+%{destdir}/wsh.php
+%{destdir}/dbaccess.php
+%{destdir}/apache.conf
+%{destdir}/%{name}/*
+%{destdir}/CORE/*
+%{destdir}/USERS/*
+%{destdir}/ACCESS/*
+%{destdir}/AUTHENT/*
+%{destdir}/APPMNG/*
+%{pidir}/*
+%dir %{destdir}/locale
+%{destdir}/locale/*
+
+%changelog
+* Tue Oct 30 2000 Yannick Le Briquer <yannick.lebriquer@anakeen.com>
+- Build first RPM
+

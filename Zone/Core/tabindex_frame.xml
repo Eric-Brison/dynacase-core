@@ -1,0 +1,8 @@
+<!-- Tabindex with frame -->
+<!-- $Id: tabindex_frame.xml,v 1.1 2002/01/08 12:41:34 eric Exp $ -->
+<!-- $Source: /home/cvsroot/anakeen/freedom/core/Zone/Core/tabindex_frame.xml,v $ -->
+[ZONE CORE:HTMLHEAD]
+
+[ZONE CORE:TABINDEX]
+
+[ZONE CORE:HTMLFOOT]

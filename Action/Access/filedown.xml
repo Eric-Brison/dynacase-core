@@ -1,0 +1,3 @@
+[BLOCK APPLICATION]
+[BLOCK [name]][app_name]|[user_name]@[iddomain]|[acl_name] 
+[ENDBLOCK [name]] [ENDBLOCK APPLICATION]

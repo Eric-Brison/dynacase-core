@@ -1,0 +1,3 @@
+<?
+$dbaccess="host=@DBHOST@ user=@DBUSER@ port=@DBPORT@ dbname=@DBNAME@";
+?>

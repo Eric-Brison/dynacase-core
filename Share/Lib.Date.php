@@ -1,0 +1,155 @@
+<?
+// ---------------------------------------------------------------------------
+// Date
+// ---------------------------------------------------------------------------
+// Anakeen 2000 - yannick.lebriquer@anakeen.com
+// ---------------------------------------------------------------------------
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or (at
+//  your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+// for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+// ---------------------------------------------------------------------------
+//  $Id: Lib.Date.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Log: Lib.Date.php,v $
+//  Revision 1.1  2002/01/08 12:41:34  eric
+//  first
+//
+//  Revision 1.3  2000/10/12 19:40:00  marc
+//  Ajout de la fonction retournant le 1er jour de la semaine courante
+//
+//  Revision 1.2  2000/10/11 18:53:24  marc
+//  Yo
+//
+//  Revision 1.1  2000/10/10 19:05:17  marc
+//  Creation
+//
+//  Revision 1.2  2000/08/12 10:41:21  marc
+//  Ajout des fonctions prev/nextmonth et prev/nextday
+//
+//  Revision 1.1  2000/06/05 13:45:07  yannick
+//  Ajout des classes de manipulation de date/calendrier
+//
+//  Revision 1.1  2000/05/30 15:03:32  yannick
+//  Nouveau
+//
+//  Revision 1.3  2000/05/26 14:28:57  xavier
+//  Gestion du delete
+//
+//  Revision 1.2  2000/05/26 08:24:28  xavier
+//  mise à jour du 05 26
+//
+// ---------------------------------------------------------------------------
+// Fonctions : 
+//  This is not a Class,
+//  This is a set of usefull Date and Time functions
+// ---------------------------------------------------------------------------
+//
+$LIB_DATE_PHP = '$Id: Lib.Date.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+
+
+function DayRound (&$timestamp) {
+
+  return mktime(0,0,0,
+		strftime("%m",$timestamp),
+		strftime("%d",$timestamp),
+		strftime("%Y",$timestamp));
+}
+  
+function IncDay($timestamp,$inc) {
+  return mktime(0,0,0,
+		strftime("%m",$timestamp),
+		strftime("%d",$timestamp)+$inc,
+		strftime("%Y",$timestamp));
+}
+ 
+// Return the next requested day
+function GoNextWeekDay($now, $daynumber) {
+   $inc = ($daynumber - strftime("%w",$now))%7;
+   return  mktime(0,0,0,
+		  strftime("%m",$now),
+		  strftime("%d",$now)+$inc,
+		  strftime("%Y",$now));
+}
+
+// Return the week first day as an epoch time
+function FirstWeekDay($now) {
+   $inc = (7 - strftime("%w",$now));
+   return  mktime(0,0,0,
+		  strftime("%m",$now),
+		  strftime("%d",$now) - $inc,
+		  strftime("%Y",$now));
+}
+ 
+/*
+function UpdateFields() {
+  $this->year      = strftime("%Y",$this->timestamp);
+  $this->monthnum  = strftime("%m",$this->timestamp);
+  $this->lmonthstr = strftime("%B",$this->timestamp);
+  $this->smonthstr = strftime("%b",$this->timestamp);
+  $this->daynum    = strftime("%d",$this->timestamp);
+  $this->ldaystr   = strftime("%A",$this->timestamp);
+  $this->sdaystr   = strftime("%a",$this->timestamp);
+  $this->hour      = strftime("%H",$this->timestamp);
+  $this->minute    = strftime("%M",$this->timestamp);
+  $this->second    = strftime("%S",$this->timestamp);
+}
+*/
+
+// Return day count for a month
+function daycount($m,$y) {
+  return date("t",mktime(0,0,0,$m,1,$y));
+}
+
+// Return the next day
+function nextday($d, $m, $y, &$nd, &$nm, &$ny) {
+  $nd = ($d==daycount($m,$y)?1:$d+1);
+  if ($nd==1) nextmonth($m, $y, $nm, $ny);
+  else {
+    $nm = $m;
+    $ny = $y;
+  }
+}
+
+// Return the previous day
+function prevday($d, $m, $y, &$pd, &$pm, &$py) {
+  $pd = ($d==1?daycount(($m-1),$y):$d-1);
+  if ($pd==daycount(($m-1),$y)) prevmonth($m, $y, $pm, $py);
+  else {
+    $pm = $m;
+    $py = $y;
+  }
+}
+
+// Return the next month
+function nextmonth($m, $y, &$nm, &$ny) {
+  $nm = ($m==12?1:$m+1);
+  $ny = ($nm==1?$y+1:$y);
+}
+
+// Return the previous month
+function prevmonth($m, $y, &$pm, &$py) {
+  $pm = ($m==1?12:$m-1);
+  $py = ($pm==12?$y-1:$y);
+}
+
+// Return the week number (weeks start on Monday)
+function WeekNumber($epoch) {
+  return strftime("%W", $epoch);
+}
+
+// Return the week first day as an epoch time
+function GetWeekFirstDay($now, $epoch) {
+  
+  return strftime("%W", $epoch);
+}
+
+?>

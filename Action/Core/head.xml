@@ -1,0 +1,21 @@
+
+[ZONE CORE:HTMLHEAD]
+
+
+<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
+<tr>
+  <td height="45" width="1%" class="headcell"  ><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
+  <td class="headcell" align="left" width="25%"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
+
+
+ [BLOCK FUNCTION]
+<td width="36" class="headcell" align="center">
+     <a href="#"><img  onClick="lauch_action(this.src,'[NAME]','[DESCR]');" onMouseOver="this.width+=6; this.height+=6;" onMouseOut="this.width-=6; this.height-=6;" src="[CORE_PUBURL]/[NAME]/Images/[IMAGE]" border="0" width="30" height="30" alt="[DESCR]" title="[DESCR]" ></a>
+</td>
+  [ENDBLOCK FUNCTION]
+
+  <td class="headcell" align="right" ><span class="headtitle">[ZONE CORE:USERNAME]&nbsp;</span><a href="#"><img onClick="lauch_action(this.src,'CORE','Welcome Page');" align="absmiddle" alt="[WHAT] Welcome Page" title="[WHAT] Welcome Page" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a>&nbsp;</td>
+</tr>
+</table>
+
+[ZONE CORE:HTMLFOOT]

@@ -1,0 +1,30 @@
+<html>
+<head>
+
+<title>[WHAT] [APP_TITLE]</title>
+
+<LINK REL="icon" HREF="CORE/Images/logo-1-mini.gif" TYPE="image/gif">
+<LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo-1-mini.gif" TYPE="image/gif">
+
+
+
+   <script language="JavaScript">
+  <!--
+    // this page must be on top frame
+if (window != top) top.location.href = location.href;
+
+   // if (parent.frames[1])
+   //    parent.location.href = self.location.href;
+  //-->
+   </script>
+</head>
+
+
+<frameset name="what" id="what" frameborder="0" framespacing="0" border="0" rows="70,*,40" >
+
+  <frame name="head" src="[CORE_STANDURL]&app=CORE&action=HEAD" scrolling="needed">
+  <frame name="body" src="[CORE_BASEURL]&app=[appd]&action=[actd]" scrolling="needed">
+  <frame name="foot" src="[CORE_STANDURL]&app=CORE&action=FOOTER" scrolling="no">
+
+</frameset>
+</html>

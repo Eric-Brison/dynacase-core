@@ -1,0 +1,33 @@
+<?
+
+global $app_const;
+$app_const = array (
+"INIT"			=>"yes",
+"CORE_LOGLEVEL"		=>"@LOGLEVEL@",
+"CORE_PUBDIR"		=>"@prefix@",
+"CORE_SESSION_DB"	=>"host=@DBHOST@ user=@DBUSER@ port=@DBPORT@ dbname=@DBNAME@",
+"CORE_USERDB"		=>"host=@DBHOST@ user=@DBUSER@ port=@DBPORT@ dbname=@DBNAME@",
+
+"CORE_LANG"		=>"@LANG@",
+
+// Layout Param
+"CORE_APPBUTTONBGCOLOR"	=>"#FEFEFE",
+"CORE_BGCOLOR"		=>"url('CORE/Images/bg.gif')",
+"CORE_BGCELLCOLOR"	=>"#FFFFFF",
+"CORE_BGCOLORALTERN"	=>"#DEDEEF",
+"CORE_BGCOLORHIGH"	=>"cyan",
+"CORE_ERRORCOLOR"	=>"#E51616",
+"CORE_FONTLIST1"	=>"Helvetica, Arial, sans-serif",
+"CORE_FONTLIST2"	=>"Helvetica, Arial, sans-serif",
+"CORE_FONTBASESIZE"	=>"12pt",
+"CORE_FGCOLOR"		=>"#224b89",
+"CORE_FULLWIDTH"	=>"100%",
+"CORE_TDMWIDTH"		=>"110",
+"CORE_SEPWIDTH"		=>"5",
+"CORE_PAGEWIDTH"	=>"655",
+"CORE_TDMTITLE"		=>"Table des matières",
+"CORE_CLIENT"		=>"&lt;N O M&nbsp;&nbsp;&nbsp;&nbsp;D U&nbsp;&nbsp;&nbsp;&nbsp;C L I E N T&gt;",
+"CORE_ANAKEEN"		=>"Anakeen&nbsp;2002",
+);
+
+?>

@@ -1,0 +1,57 @@
+
+[ZONE CORE:HTMLHEAD]
+<script language="JavaScript">
+
+
+  function getFrameWidth() {
+      winW = window.innerWidth;
+      if (! winW)	   
+            winW = document.body.offsetWidth;
+
+      return (winW);
+  }
+
+  function getFrameHeight() {
+      winH= window.innerHeight;
+      if (! winH)	
+           winH = document.body.offsetHeight;
+      return (winH);
+  }
+ 
+
+  
+  var winH=getFrameHeight();
+  var winW=getFrameWidth();
+
+  function reSizeLogo() { 
+      winH=getFrameHeight();
+      winW=getFrameWidth()
+    
+      if ((winH>0) && (winW>0))
+         document.logo.height= winH/1.2;
+    
+  }
+  window.onresize = reSizeLogo;
+
+
+  function DisplayLogo() { 
+    if ((winH>0) && (winW>0))
+
+      if (document.logo.height < (winH/1.2)) {  
+        document.logo.height= document.logo.height+1+(document.logo.height/50);     
+        setTimeout("DisplayLogo()",1); // each 1ms
+      }
+    return true;
+  }
+
+</script>
+
+
+<table width="100%"<TR>
+<TD align="center"><img  name="logo"   onLoad="document.logo.height=20;reSizeLogo()"  alt="[WHAT] Web Hosting Application Toolkit" src="[IMG:logo-1.png]"></TD>
+<TR>
+</table>
+
+
+
+[ZONE CORE:HTMLFOOT]

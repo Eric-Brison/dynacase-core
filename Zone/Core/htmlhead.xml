@@ -1,0 +1,34 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+
+<LINK REL="icon" HREF="CORE/Images/logo-1-mini.gif" TYPE="image/gif">
+<LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo-1-mini.gif" >
+   <title>[WHAT] [APP_TITLE]</title>
+
+   <style>
+[ZONE CORE:GENCSS]
+   </style>
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="core">
+
+<!-- END HEAD HTML -->
