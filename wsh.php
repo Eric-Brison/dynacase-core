@@ -1,8 +1,17 @@
 #! /usr/bin/php -q
 
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: wsh.php,v 1.11 2003/08/14 09:44:46 eric Exp $
+ * @package 
+ * @subpackage /home/eric/anakeen/what/What/guest.php
+ */
+
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.10 2002/09/18 11:07:14 eric Exp $
+// $Id: wsh.php,v 1.11 2003/08/14 09:44:46 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001

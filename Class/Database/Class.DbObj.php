@@ -1,6 +1,7 @@
 <?
 // ---------------------------------------------------------------------------
 // Db Object
+// @version $Id: Class.DbObj.php,v 1.19 2003/08/14 09:44:46 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -19,18 +20,23 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
 
-// ---------------------------------------------------------------------------
-// Fonctions : 
-//  This class is a generic DB Class that can be used to create objects
-//  based on the description of a DB Table. More Complex Objects will 
-//  inherit from this basic Class.
-// ---------------------------------------------------------------------------
-//
+
+
+
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.18 2003/05/19 09:59:00 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.19 2003/08/14 09:44:46 eric Exp $';
 
+/**
+ * This class is a generic DB Class that can be used to create objects
+ * based on the description of a DB Table. More Complex Objects will 
+ * inherit from this basic Class.
+ *
+ * @author Anakeen 2000 - yannick.lebriquer@anakeen.com
+ * @version $Id: Class.DbObj.php,v 1.19 2003/08/14 09:44:46 eric Exp $
+ * @package WHAT
+ */
 Class DbObj extends Cache
 {
 var $dbid = -1;
@@ -231,18 +237,49 @@ function Complete()
   {
     // This function should be replaced by the Child Class
   }
+
+/** 
+ * Method use before Add method
+ * This method should be replaced by the Child Class
+ * 
+ * @return string error message, if no error empty string
+ * @see Add()
+ */
 function PreInsert()
   {
     // This function should be replaced by the Child Class
   }
+/** 
+ * Method use after Add method
+ * This method should be replaced by the Child Class
+ * 
+ * @return string error message, if no error empty string, if message
+ * error not empty the Add method is not completed
+ * @see Add()
+ */
 function PostInsert()
   {
     // This function should be replaced by the Child Class
   }
+/** 
+ * Method use before Modify method
+ * This method should be replaced by the Child Class
+ * 
+ * @return string error message, if no error empty string
+ * @see Modify()
+ */
 function PreUpdate()
   {
     // This function should be replaced by the Child Class
   }
+/** 
+ * Method use after Modify method
+ * This method should be replaced by the Child Class
+ * 
+ * @return string error message, if no error empty string, if message
+ * error not empty the Modify method is not completed
+ * @see Modify()
+ */
 function PostUpdate()
   {
     // This function should be replaced by the Child Class
@@ -264,6 +301,13 @@ function PostSelect($id)
     // This function should be replaced by the Child Class
   }
 
+/** 
+ * Add the object to the database
+ * @param bool $nopost PostInsert method not apply if true
+ * @return string error message, if no error empty string
+ * @see PreInsert()
+ * @see PostInsert()
+ */
 function Add($nopost=false)
   {
     if ($this->dbid == -1) return FALSE;
@@ -293,7 +337,13 @@ function Add($nopost=false)
     $this->ClearCache();
     if ($msg!='') return $msg;
   }
-
+/** 
+ * Add the object to the database
+ * @param bool $nopost PostUpdate() method not apply if true
+ * @return string error message, if no error empty string
+ * @see PreUpdate()
+ * @see PostUpdate()
+ */
 function Modify($nopost=false)
   {
     if ($this->dbid == -1) return FALSE;

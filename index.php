@@ -1,6 +1,15 @@
 <?php
+/**
+ * Generated Header (not documented yet)
+ *
+ * @author Anakeen 2000 
+ * @version $Id: index.php,v 1.17 2003/08/14 09:44:46 eric Exp $
+ * @package 
+ * @subpackage /home/eric/anakeen/what/What/index.php
+ */
+
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.16 2003/06/18 14:55:56 eric Exp $
+// $Id: index.php,v 1.17 2003/08/14 09:44:46 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
