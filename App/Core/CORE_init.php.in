@@ -14,6 +14,7 @@ $app_const = array (
 "CORE_APPBUTTONBGCOLOR"	=>"#FEFEFE",
 "CORE_BGCOLOR"		=>"url('CORE/Images/bg.gif')",
 "CORE_SSLBGCOLOR"	=>"url('CORE/Images/bgssl.gif')",
+"CORE_FGIMG"		=>"none",
 "CORE_BGCELLCOLOR"	=>"snow",          // normal bg in cells
 "CORE_BGCOLORALTERN"	=>"#DEDEEF",
 "CORE_BGCOLORHIGH"	=>"lightsteelblue",
