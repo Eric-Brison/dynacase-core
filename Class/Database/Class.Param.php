@@ -18,13 +18,13 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Param.php,v 1.10 2002/08/09 13:55:41 eric Exp $
+//  $Id: Class.Param.php,v 1.11 2003/01/20 10:06:09 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 include_once('Class.ParamDef.php');
 
-$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.10 2002/08/09 13:55:41 eric Exp $';
+$CLASS_PARAM_PHP = '$Id: Class.Param.php,v 1.11 2003/01/20 10:06:09 eric Exp $';
 
 define("PARAM_APP","A");
 define("PARAM_GLB","G");
@@ -78,9 +78,10 @@ function Set($name,$val,$type=PARAM_GLB,$appid='')
   $this->type = $type;
   $this->appid = $appid;
 
-  if ($this->Add() != "") {
-    $this->Modify();
-  } 
+  $paramt = new Param($this->dbaccess,array($name,$type,$appid));
+  if ($paramt->isAffected()) $this->Modify();
+  else $this->Add();
+
   $this->buffer[$name]=$val;
 }
 
