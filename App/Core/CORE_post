@@ -48,7 +48,11 @@ if [ "$1" = "I" ] ; then
   sulog postgres "createuser -d -a anakeen" 
  
   log "Add plpgsql language"
-  sulog postgres "createlang --dbname=anakeen --pglib=/usr/lib/pgsql plpgsql"
+  if [ -f /usr/lib/pgsql/plpgsql.so ]; then
+    sulog postgres "createlang --dbname=anakeen --pglib=/usr/lib/pgsql plpgsql"
+  else
+    sulog postgres "createlang --dbname=anakeen --pglib=/usr/lib/postgresql plpgsql"
+  fi
 
   log "Add plpgsql functions"
   sulog postgres "psql anakeen anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
@@ -64,10 +68,7 @@ if [ "$1" = "I" ] ; then
   fi
 
 
-
-# Add What log facility in syslog
-  echo "local6.info				/var/log/what.log" >> /etc/syslog.conf
-  /etc/rc.d/init.d/syslog restart
+  # Add logrotate
   echo "/var/log/what.log {"               >  /etc/logrotate.d/what
   echo "   missingok"                      >> /etc/logrotate.d/what
   echo "   postrotate"                     >> /etc/logrotate.d/what

@@ -1,10 +1,12 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.21 2003/01/20 10:06:22 eric Exp $
+#  $Id: WHAT.spec.in,v 1.22 2003/01/21 12:12:34 yannick Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
+# Conditional build
+#  _with_cerbere2       - make rpm for cerbere 2.0
 #
 
 %define apachedir /etc/httpd
@@ -26,22 +28,23 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(id -u -n)
 Conflicts: AUTHENT USERS CORE APPMNG ACCESS libwhat libjs
 BuildRequires: docbook-dtd41-sgml
 BuildRequires: docbook-utils
-Requires: php >= 4.0.5
+%{?_with_cerbere2:Requires: php >= 4.2}
+%{!?_with_cerbere2:Requires: php >= 4.0.5}
 Requires: apache
 Requires: postgresql >= 7.2
-# Requires: postgresql-module-plpgsql
+%{?_with_cerbere2:Requires: postgresql-module-plpgsql}
 Requires: php-pgsql
 Requires: php-gettext
 Requires: php-pcre
-Requires: php-shell
+%{!?_with_cerbere2:Requires: php-shell}
+%{?_with_cerbere2:Requires: php-cgi}
 Requires: php-mhash
 Requires: apache-mod_auth
 Requires: apache-mod_auth_pam
 Requires: apache-mod_dir
 Requires: pam_what
-#Requires: gettext-devel
+%{?_with_cerbere2:Requires: gettext-devel}
 Requires: ankpsql-tools
-Prereq: php-shell
 Prereq: apache
 Prereq: grep
 Prereq: SysVinit
@@ -97,10 +100,11 @@ fi
   if [ "$1" = 0 ] ; then 
     if [ -f /etc/httpd/conf/httpd.conf ] ; then
        grep -v "Include %{destdir}/apache.conf" /etc/httpd/conf/httpd.conf >/etc/httpd/conf/httpd.conf.tmp
+       mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf
     else
-       grep -v "Include %{destdir}/apache.conf" /etc/httpd/conf/httpd.conf >/etc/httpd/conf/httpd.conf.tmp
+       grep -v "Include %{destdir}/apache.conf" /etc/httpd/httpd.conf >/etc/httpd/httpd.conf.tmp
+       mv /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
     fi
-    mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf
 
     # Restart Apache if running
     run=`/etc/rc.d/init.d/httpd status |grep pid|wc -l`
