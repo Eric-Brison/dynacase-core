@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.18 2003/01/14 18:19:06 eric Exp $
+//  $Id: Class.Application.php,v 1.19 2003/01/28 08:59:23 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.18 2003/01/14 18:19:06 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.19 2003/01/28 08:59:23 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -487,7 +487,7 @@ function SetParam($key,$val)
 function SetParamDef($key,$val)
 {
     // add new param definition
-    $pdef = new ParamDef($this->dbaccess);
+    $pdef = new ParamDef($this->dbaccess,$key);
     $pdef->name=$key;
     $pdef->isuser="N";
     $pdef->isstyle="N";
@@ -501,11 +501,11 @@ function SetParamDef($key,$val)
     if (isset($val["user"]) && $val["user"]=="Y") $pdef->isuser="Y";
     if (isset($val["style"]) && $val["style"]=="Y") $pdef->isstyle="Y";
     if (isset($val["descr"])) $pdef->descr=$val["descr"];  
-    if (isset($val["global"]) && $val["global"]=="Y") $pdef->isglob="Y";  
-    if ($pdef->Add() != "") $pdef->Modify();
-  } else {
-    $pdef->Add();
+    if (isset($val["global"]) && $val["global"]=="Y") $pdef->isglob="Y";       
   }
+
+  if ($pdef->isAffected()) $pdef->Modify();
+  else $pdef->Add();
 }
 function SetVolatileParam($key,$val)
 {
