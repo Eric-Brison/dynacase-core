@@ -53,7 +53,7 @@
   [ENDBLOCK FUNCTION]
 
   <td  align="right" ><span class="headtitle">
-     <a class="headtitle" href="[CORE_BASEURL]app=APPMNG" target="body">[USER]</a>
+     <a class="headtitle" style="color:[CORE_TEXTBGCOLOR];" href="[CORE_BASEURL]app=APPMNG" target="body">[USER]</a>
      
 
      &nbsp;</span>

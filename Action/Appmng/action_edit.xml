@@ -1,10 +1,6 @@
 <html>
 <head>
-<style>
-
-[ZONE CORE:GENCSS]
-
-</style>
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_BASEURL]app=CORE&action=GENCSS" >
 [JS:REF]
 <script language="JavaScript">
 <!--

@@ -6,11 +6,9 @@
 
 <LINK REL="icon" HREF="CORE/Images/logo16.ico" >
 <LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo32.ico" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_BASEURL]app=CORE&action=GENCSS" >
    <title>[WHAT] [TITLE]</title>
 
-   <style>
-[ZONE CORE:GENCSS]
-   </style>
 
 
 [CSS:REF]

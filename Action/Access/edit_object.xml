@@ -2,11 +2,8 @@
 <head>
 
 <title>[TEXT:controlaccess]</title>
-<style>
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_BASEURL]app=CORE&action=GENCSS" >
 
-[ZONE CORE:GENCSS]
-
-</style>
 [JS:REF]
 <script language="JavaScript">
 <!--

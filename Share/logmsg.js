@@ -18,11 +18,15 @@ function displayPropertyNames(obj) {
 function getConnexeWindows(w) {
   var cw;
 
-  cw=getChildFrames(w.top);
+   try {
+     cw=getChildFrames(w.top);
 
   
-   if ((w.top.opener)&& (w.top.opener != w.top) ) cw=cw+getConnexeWindows(w.top.opener);
+     if ((w.top.opener)&& (w.top.opener != w.top) ) cw=cw+getConnexeWindows(w.top.opener);
 
+   }
+   catch (ex) {
+   }
   return cw;
 }
 function getChildFrames(w) {
