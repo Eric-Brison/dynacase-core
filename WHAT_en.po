@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-09-30 15:25+0200\n"
+	"POT-Creation-Date: 2003-02-12 10:44+0100\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -90,7 +90,7 @@ msgid	"nodomain"
 msgstr	"Domain"
 
 msgid	"Vous devez entrer un nom d'utilisateur valide et un mot de passe "
-	"correct pour accéder à cette ressource"
+	"correct pour accder  cette ressource"
 msgstr	""
 
 msgid	"user"
@@ -245,6 +245,9 @@ msgid	"cannot access to  database $db\n"
 msgstr	""
 
 msgid	"access granted to  database $db\n"
+msgstr	""
+
+msgid	"no referer url found"
 msgstr	""
 
 msgid	"What User Management"
@@ -508,9 +511,6 @@ msgstr	"Sure to delete user"
 msgid	"Click here to login"
 msgstr	""
 
-msgid	"functionerr"
-msgstr	"Functions error detected"
-
 #, fuzzy
 msgid	"view log"
 msgstr	"Lastname"
@@ -528,6 +528,27 @@ msgstr	"Welcome !"
 #, fuzzy
 msgid	"Welcome Page"
 msgstr	"Welcome !"
+
+msgid	"You use an too old Netscape navigator"
+msgstr	""
+
+msgid	"please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr	""
+
+msgid	"mozilla site"
+msgstr	""
+
+msgid	"nestcape site"
+msgstr	""
+
+msgid	"You use an too old Internet explorer navigator"
+msgstr	""
+
+msgid	"please upgrade to Internet explorer 6.0 or greater"
+msgstr	""
+
+msgid	"Internet explorer site"
+msgstr	""
 
 msgid	"warning_pass"
 msgstr	"Your password is required"
@@ -661,6 +682,9 @@ msgstr	"Add parameter"
 #, fuzzy
 msgid	"unmodifiable parameter"
 msgstr	"Can't modify parameter"
+
+#~ msgid	"functionerr"
+#~ msgstr	"Functions error detected"
 
 #~ msgid	"adduser"
 #~ msgstr	"New user"

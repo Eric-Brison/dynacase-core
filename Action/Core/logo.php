@@ -1,7 +1,7 @@
 <?php
 
 // ---------------------------------------------------------------
-// $Id: logo.php,v 1.3 2002/08/26 13:04:58 eric Exp $
+// $Id: logo.php,v 1.4 2003/02/12 09:50:02 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/logo.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -34,6 +34,8 @@ function logo(&$action) {
   session_unregister("CacheObj"); // clearcache
   $action->lay->set("PHP_AUTH_USER",$PHP_AUTH_USER);    
 
+  $action->lay->set("navigator",$action->Read("navigator"));  
+  $action->lay->set("navversion",$action->Read("navversion")); 
   global $zou;
   $zou="1";
   session_register("zou");

@@ -1,0 +1,12 @@
+
+<script language="JavaScript">
+  <!--
+    // this page must be on top frame
+if (window != top) top.location.href = location.href;
+  //-->
+</script>
+
+
+<H1>[TEXT:You use an too old Internet explorer navigator] [navigator] [navversion]</H1>
+<H2>[TEXT:please upgrade to Internet explorer 6.0 or greater]</H2>
+<A href="http://www.microsoft.com">[TEXT:Internet explorer site]</A>
