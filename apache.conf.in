@@ -21,7 +21,7 @@ Alias /what @prefix@
 </Directory>
 
 
- <DirectoryMatch /home/httpd/what/[^CALENDAR].*>
+ <DirectoryMatch @prefix@/[^CALENDAR].*>
      Order Deny,Allow
      Deny from All   
     <FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css)$">
@@ -39,7 +39,7 @@ Alias /what @prefix@
 
  </DirectoryMatch> 
 
- <Directory /home/httpd/what/CALENDAR>
+ <Directory @prefix@/CALENDAR>
     AuthType Basic
     AuthName 'WHAT Connection'
     AuthPAM_Enabled  on
@@ -47,4 +47,6 @@ Alias /what @prefix@
     require valid-user
 
  </Directory>
+
+Alias /whatsync @prefix@/CALENDAR
 
