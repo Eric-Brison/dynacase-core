@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.21 2003/08/28 15:16:54 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.22 2003/10/30 08:57:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.21 2003/08/28 15:16:54 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.22 2003/10/30 08:57:09 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.21 2003/08/28 15:16:54 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.22 2003/10/30 08:57:09 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -525,16 +525,7 @@ function init_dbid() {
     $this->dbaccess=$dbaccess;
     
   }
-  //    $this->dbid=pg_pconnect($this->dbaccess);
-  //return $this->dbid;
-
-  // old manner
-  global $CORE_DBID;
-  if (!isset($CORE_DBID) || !isset($CORE_DBID[$this->dbaccess])) {
-    $CORE_DBID[$this->dbaccess] = pg_connect($this->dbaccess);
-  } 
-  $this->dbid=$CORE_DBID[$this->dbaccess];
-  //    print "DBID:".$this->dbaccess.$this->dbid."<BR>";
+  $this->dbid= getDbid($this->dbaccess);
   return $this->dbid;
   
 }
@@ -545,12 +536,12 @@ function exec_query($sql,$lvl=0)
     if ($sql == "") return;
 
     if ($SQLDEBUG) $sqlt1=microtime(); // to test delay of request
-
+    //    $mb=microtime();
     $this->init_dbid();
     $this->log->debug("exec_query : $sql");
     
     $this->res=pg_exec($this->dbid,$sql);
-    
+    //     print "<HR>exec_query $sql;".$this->dbid; print " - <B>".microtime_diff(microtime(),$mb)."</B>";
     $pgmess = pg_errormessage($this->dbid);
     if ($pgmess != "") print "[$sql]";
     

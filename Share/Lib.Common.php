@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.9 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.10 2003/10/30 08:57:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: Lib.Common.php,v 1.9 2003/08/18 15:46:42 eric Exp $
+// $Id: Lib.Common.php,v 1.10 2003/10/30 08:57:09 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Common.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -32,7 +32,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-$LIB_COMMON = '$Id: Lib.Common.php,v 1.9 2003/08/18 15:46:42 eric Exp $';
+$LIB_COMMON = '$Id: Lib.Common.php,v 1.10 2003/10/30 08:57:09 eric Exp $';
 
 // library of utilies functions
 
@@ -107,5 +107,13 @@ function microtime_diff($a,$b) {
      } else { // $a_int<$b_int
         return ($b_int-$a_int)+($b_micro-$a_micro);
      }
+}
+
+function getDbid($dbaccess) {
+    global $CORE_DBID;
+	if (!isset($CORE_DBID) || !isset($CORE_DBID["$dbaccess"])) {
+           $CORE_DBID["$dbaccess"] = pg_connect("$dbaccess");
+        } 
+    return $CORE_DBID["$dbaccess"];
 }
 ?>

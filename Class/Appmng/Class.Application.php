@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.28 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: Class.Application.php,v 1.29 2003/10/30 08:57:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,10 +30,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.28 2003/08/18 15:46:41 eric Exp $
+//  $Id: Class.Application.php,v 1.29 2003/10/30 08:57:09 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.28 2003/08/18 15:46:41 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.29 2003/10/30 08:57:09 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -164,7 +164,7 @@ function Set($name,&$parent, $session="")
 
   $this->InitStyle( );
 
-  $this->param=new Param();
+  $this->param=new Param($this->dbaccess);
   $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID,$this->style->name);
 
 

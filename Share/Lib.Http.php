@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.13 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.14 2003/10/30 08:57:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.13 2003/08/18 15:46:42 eric Exp $
+// $Id: Lib.Http.php,v 1.14 2003/10/30 08:57:09 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,7 +34,7 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.13 2003/08/18 15:46:42 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.14 2003/10/30 08:57:09 eric Exp $';
 
 
 function Redirect(&$action,$appname,$actionname,$otherurl="")
@@ -141,11 +141,15 @@ function Http_DownloadFile($filename,$name,$mime_type='') {
    header("Pragma: "); // HTTP 1.0
    header("Content-type: ".$mime_type);
    $fd = fopen($filename, "r");
-   while (! feof($fd)) {
-     $contents = fread($fd, 4096);
-     echo $contents;
+   if ($fd) {
+     while (! feof($fd)) {
+       $contents = fread($fd, 4096);
+       echo $contents;
+     }
+     fclose($fd);
+   } else {
+     printf(_("file not found : %s"),$filename);
    }
-   fclose($fd);
    
 }
 
