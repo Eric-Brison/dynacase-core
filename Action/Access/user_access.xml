@@ -1,5 +1,5 @@
 <!-- 
-  $Id: user_access.xml,v 1.4 2003/08/11 15:41:37 eric Exp $
+  $Id: user_access.xml,v 1.5 2004/08/27 10:38:19 caroline Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.xml,v $
 -->
 
@@ -59,6 +59,9 @@
         <a href="#" onclick="self.print()">
           <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
         </a>
+	<a id="helpwhat" target="fhidden"  href="[CORE_BASEURL]app=CORE&action=HELPVIEW&appname=ACCESS&sectid=access" >
+      <img alt="[TEXT:help]" title="[TEXT:help]"border="0" src="[IMG:help.gif]">
+      </a>
        </span>
       </td>
      </tr>
