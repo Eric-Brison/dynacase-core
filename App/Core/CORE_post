@@ -1,4 +1,4 @@
-#!/bin/sh -norc 
+#!/bin/bash
 
 
 . /var/post-install/share/pi-functions.sh
