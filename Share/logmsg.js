@@ -1,24 +1,82 @@
 
-function windowExist(Name) {
+var windows= new Object();;
+
+
+
+function displayPropertyNames(obj) {
+  var names="";
+  for (var name in obj) {
+   try {
+     names += name +" - " + obj[name] + "][";
+   }
+   catch (ex) {
+     names += name +" - " + "unreadable" + "][";
+   }
+  }
+  alert(names);
+}
+function getConnexeWindows(w) {
+  var cw;
+
+  cw=getChildFrames(w.top);
+
+  
+   if (w.top.opener) cw=cw+getConnexeWindows(w.top.opener);
+
+  return cw;
+}
+function getChildFrames(w) {
+  
+  var fnames='';
+
+  for (var i=0;i<w.frames.length;i++) {
+    if (w.frames[i].name && (w.frames[i].name != '')) windows[w.frames[i].name]=w.frames[i];
+    fnames = fnames + ' ' +i + w.frames[i].name;
+ 
+    fnames = fnames+getChildFrames(w.frames[i]);
+    
+  }
+  
+  return fnames;
+}
+
+function windowExist(Name, NoOpen) {
   var dy=self.screen.availHeight;
   var dx=self.screen.availWidth;
  
+  getChildFrames(window);
 
-  
-  if (window[Name]  ) {
+  if (windows[Name]  ) {
     
-    if ( window[Name]=='none') return false;
-    if (window[Name].closed) return false;
-    else return  window[Name];
+    if ( windows[Name]=='none') return false;
+
+    if (windows[Name].closed) return false;
+    
+    try {
+      var w=windows[Name].document;
+    }
+    catch (ex) {
+      windows[Name]='none';
+      return false;
+    }
+    return  windows[Name];
   }
 
-  var w=window.open('',Name,'top='+dy+',left='+dx+'menubar=no,resizable=no,scrollbars=no,width=1,height=1');
-  if (w.opener && (w.opener.location.href == self.location.href) && (w.location.href=='about:blank')) {
-    w.close();
-    window[Name]='none';
-    return false;
+  getConnexeWindows(window);
+  if (windows[Name]) return  windows[Name];
+
+  // ---------------------
+  // Try open
+  if (NoOpen == '') {
+    var w=window.open('',Name,'top='+dy+',left='+dx+'menubar=no,resizable=no,scrollbars=no,width=1,height=1');
+    if (w.opener && (w.opener.location.href == self.location.href) && (w.location.href=='about:blank')) {
+      w.close();
+      windows[Name]='none';
+      return false;
+    }
+    windows[Name]=w;
+    getConnexeWindows(w);
   }
-  window[Name]=w;
   return w;
 }
 function displayLogMsg(logmsg) {

@@ -1,3 +1,5 @@
+
+
 function subwindow(h, w, name, url) {
    var screen_width, screen_height;
    var win_top, win_left;
@@ -8,10 +10,16 @@ function subwindow(h, w, name, url) {
    if (window.innerHeight) screen_height = window.innerHeight;
    win_top  = screen_height - h - 20;
    win_left = screen_width  - w  - 20;
-   me  = window.open(
-              url,
-              name,
-              'resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
+   me = windowExist(name, true);
+   if (! me) {
+     me  = window.open(
+		       url,
+		       name,
+		       'resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
+    getConnexeWindows(me);
+   } else {
+     me.location.href=url;
+   }
   me.focus();
 
     
@@ -30,10 +38,16 @@ function subwindowm(h, w, name, url) {
    if (window.innerHeight) screen_height = window.innerHeight;
    win_top  = screen_height - h - 20;
    win_left = screen_width  - w  - 20;
-   me  = window.open(
-              url,
-              name,
-              'menubar=yes,resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
+   me = windowExist(name, true);
+   if (! me) {
+     me  = window.open(
+		       url,
+		       name,
+		       'menubar=yes,resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
+     getConnexeWindows(me);
+   } else {
+     me.location.href=url;
+   }
   me.focus();
 
     
