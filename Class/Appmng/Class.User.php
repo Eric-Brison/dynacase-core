@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: Class.User.php,v 1.3 2002/01/25 14:31:37 eric Exp $
+// $Id: Class.User.php,v 1.4 2002/03/08 14:36:28 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.User.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
-$CLASS_USER_PHP = '$Id: Class.User.php,v 1.3 2002/01/25 14:31:37 eric Exp $';
+$CLASS_USER_PHP = '$Id: Class.User.php,v 1.4 2002/03/08 14:36:28 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
@@ -37,7 +37,7 @@ var $id_fields = array ("id");
 
 var $dbtable = "users";
 
-var $order_by="lastname";
+var $order_by="lastname, isgroup desc";
 
 var $fulltextfields = array ("login","lastname","firstname");
 
