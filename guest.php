@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.7 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: guest.php,v 1.8 2004/03/25 10:49:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: guest.php,v 1.7 2004/03/22 15:21:40 eric Exp $
+// $Id: guest.php,v 1.8 2004/03/25 10:49:53 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -124,7 +124,7 @@ if (($standalone == "") || ($standalone == "N")) {
   $appl->Set($_GET["app"],$core);
 
    if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
-      $puburl = "http://".$appl->machine.$REQUEST_URI;
+      $puburl = "http://".$appl->machine.$_SERVER['REQUEST_URI'];
 
       Header("Location: $puburl");
       exit;

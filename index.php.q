@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.5 2004/02/02 08:29:12 eric Exp $
+// $Id: index.php.q,v 1.6 2004/03/25 10:49:53 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -30,12 +30,13 @@
 #
 #
 // First control
-if(!isset($PHP_AUTH_USER)  ) {
+if(!isset($_SERVER['PHP_AUTH_USER'])  ) {
   Header("Location:guest.php");
   exit;
 }
-   $deb=gettimeofday();
-  $tic1 = $deb["sec"]+$deb["usec"]/1000000;
+
+$deb=gettimeofday();
+$tic1 = $deb["sec"]+$deb["usec"]/1000000;
 
 
 include_once('Class.Action.php');
@@ -52,9 +53,12 @@ $SQLDEBUG=true;
 define("PORT_SSL", 443); // the default port for https
 // ----------------------------------------
 // pre include for session cache
-if (file_exists($HTTP_GET_VARS["app"]."/include.php")) {
-        include($HTTP_GET_VARS["app"]."/include.php");
+// pre include for session cache
+if (file_exists($_GET["app"]."/include.php")) {
+        include($_GET["app"]."/include.php");
 }
+
+
 
    $deb=gettimeofday();
   $tic2 = $deb["sec"]+$deb["usec"]/1000000;
@@ -63,16 +67,16 @@ $log=new Log("","index.php");
 $CoreNull = "";
 global $CORE_LOGLEVEL;
 
-global $HTTP_GET_VARS;
-if (!isset($HTTP_GET_VARS["app"])) $HTTP_GET_VARS["app"]="CORE";
-if (!isset($HTTP_GET_VARS["action"])) $HTTP_GET_VARS["action"]="";
+
+global $_GET;
+if (!isset($_GET["app"])) $_GET["app"]="CORE";
+if (!isset($_GET["action"])) $_GET["action"]="";
 
 
 $standalone = GetHttpVars("sole");
 
-//$sess_num=GetHttpVars("session");
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
-else $sess_num=GetHttpVars("session");//$HTTP_GET_VARS["session"];
+else $sess_num=GetHttpVars("session");//$_GET["session"];
 
 $session=new Session();
 if (!  $session->Set($sess_num))  {
@@ -87,24 +91,24 @@ $core->Set("CORE",$CoreNull,$session);
 
    $deb=gettimeofday();
   $tic3 = $deb["sec"]+$deb["usec"]/1000000;
-if ($core->user->login != $PHP_AUTH_USER) {
+if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
   // reopen a new session
   $session->Set("");
   $core->SetSession($session);
 }
+//$core->SetSession($session);
+
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
 // Init PUBLISH URL from script name
-global $SERVER_NAME;
-global $SCRIPT_NAME;
-global $SERVER_PORT;
 
-if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
+if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 
   // determine publish url (detect ssl require)
-  if ($SERVER_PORT != PORT_SSL)   $puburl = "http://".$SERVER_NAME.$reg[1];
-  else $puburl = "https://".$SERVER_NAME.$reg[1];
+ 
+  if ($_SERVER['SERVER_PORT'] != PORT_SSL)   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
+  else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
 } else {
   // it is not allowed
   print "<B>:~(</B>";
@@ -112,7 +116,7 @@ if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
 }
 
 
-$core->SetVolatileParam("CORE_PUBURL", ".");
+$core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
@@ -122,8 +126,8 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
+$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
-$core->SetVolatileParam("CORE_SBASEURL", "index.php?sole=A&session={$session->id}&");
 
 
 // ----------------------------------------
@@ -133,28 +137,33 @@ if (($standalone == "") || ($standalone == "N")) {
   $action->Set("MAIN",$core,$session);
 } else {
   $appl = new Application();
-  $appl->Set($HTTP_GET_VARS["app"],$core);
+  $appl->Set($_GET["app"],$core);
+
+  if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
+      $puburl = "http://".$appl->machine.$_SERVER['REQUEST_URI'];
+
+      Header("Location: $puburl");
+      exit;
+  }
 
   // ----------------------------------------
     // test SSL mode needed or not
     // redirect if needed
   if ($appl->ssl == "Y") {
-    if ($SERVER_PORT != PORT_SSL) {
-      global $REQUEST_URI;   
+    if ($_SERVER['SERVER_PORT'] != PORT_SSL) {
 
       // redirect to go to ssl http
-      $sslurl = "https://${SERVER_NAME}${REQUEST_URI}";
+      $sslurl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
       Header("Location: $sslurl");
       exit;
     }     
     
     $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
   } else {
-    if ($SERVER_PORT == PORT_SSL) {
-      global $REQUEST_URI;   
+    if ($_SERVER['SERVER_PORT'] == PORT_SSL) {
 
       // redirect to  suppress ssl http
-      $puburl = "http://${SERVER_NAME}${REQUEST_URI}";
+      $sslurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
 
       Header("Location: $puburl");
       exit;
@@ -166,11 +175,11 @@ if (($standalone == "") || ($standalone == "N")) {
     // now we are in correct protocol (http or https)
 
   $action = new Action();
-  $action->Set($HTTP_GET_VARS["action"],$appl,$session);
+  $action->Set($_GET["action"],$appl,$session);
 
 }
 
-$nav=$HTTP_USER_AGENT;
+$nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
   if ( $pos>0) {
@@ -188,6 +197,8 @@ if ($action->Read("navigator","") == "") {
 // init for gettext
 setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
 setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
+setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
+//print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "/home/httpd/what/locale");
 textdomain ("what");
@@ -197,11 +208,11 @@ textdomain ("what");
 
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
 {
+	$out=$action->execute ();
+   $deb=gettimeofday();
+   $tic4= $deb["sec"]+$deb["usec"]/1000000;
+   echo ($out);
 
-  $out=$action->execute ();
-  $deb=gettimeofday();
-  $tic4= $deb["sec"]+$deb["usec"]/1000000;
-  echo ($out);
 } 
 else 
   if ($standalone == "R")
@@ -210,15 +221,16 @@ else
       $act = GetHttpVars("action","");
 
       // compute others argument to propagate to redirect url
-      global $HTTP_GET_VARS;
+      global $_GET;
       $getargs="";
-      while (list($k, $v) =each($HTTP_GET_VARS)) {
+      while (list($k, $v) =each($_GET)) {
 	if ( ($k != "session") &&
 	     ($k != "app") &&
 	     ($k != "sole") &&
 	     ($k != "action") )
 	$getargs .= "&".$k."=".$v;
       }
+	
       $deb=gettimeofday();
       $tic4= $deb["sec"]+$deb["usec"]/1000000;
       redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}".urlencode($getargs),$action->GetParam("CORE_STANDURL"));
@@ -241,6 +253,7 @@ else
 	    $head->jscode = $action->parent->GetJsCode();
 	    $deb=gettimeofday();
             $tic4= $deb["sec"]+$deb["usec"]/1000000;
+	    
 	    echo($head->gen());
 	    // write HTML body
 	    echo ($body);
@@ -255,7 +268,6 @@ else
 	    $deb=gettimeofday();
             $tic4= $deb["sec"]+$deb["usec"]/1000000;
             echo $out;
-
 	  }
 	  
       }
