@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.2 2002/03/08 14:37:36 eric Exp $
+// $Id: user_access.php,v 1.3 2002/03/08 14:43:27 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -56,7 +56,7 @@ function user_access(&$action, $group=false) {
 
   $action->lay->set("shortname",_($action->text("appname")));
   $action->lay->set("desc",_($action->text("appdesc")));
-  $action->lay->set("permission",$action->text("permission"));
+  $action->lay->set("permission",$action->text("permissions"));
 
   $action->lay->set("QUERY_FORM","");
   $action->lay->set("FULLTEXTFORM","");

@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-03-05 18:02+0100\n"
+	"POT-Creation-Date: 2002-03-08 15:16+0100\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -86,8 +86,8 @@ msgstr	"Login"
 msgid	"username"
 msgstr	"Nom"
 
-msgid	"permission"
-msgstr	"Droit"
+msgid	"permissions"
+msgstr "Droits"
 
 msgid	"none"
 msgstr	"Aucun"
@@ -100,21 +100,24 @@ msgstr	"objet"
 
 #, c-format
 msgid	"user %s %s has been modified\n"
-msgstr "l'utilisateur %s %s a été modifié\n"
+msgstr	"l'utilisateur %s %s a été modifié\n"
 
 #, c-format
 msgid	"user %s %s has been added\n"
-msgstr "l'utilisateur %s %s a été ajouté\n"
+msgstr	"l'utilisateur %s %s a été ajouté\n"
 
 #, c-format
 msgid	"add acl %s for %s %s\n"
-msgstr "ajout privilège %s pour %s %s\n"
+msgstr	"ajout privilège %s pour %s %s\n"
 
 msgid	"appname"
 msgstr	"Application"
 
 msgid	"appdesc"
 msgstr	"Description"
+
+msgid	"permission"
+msgstr	"Droit"
 
 msgid	"titlecreateaction"
 msgstr	"Cr&eacute;ation d'action"
@@ -173,11 +176,9 @@ msgstr	"Modification du style "
 msgid	"titleaction"
 msgstr	"Liste des actions de l'application"
 
-#, fuzzy
 msgid	"err_add_style"
 msgstr	"Impossible de creer le style"
 
-#, fuzzy
 msgid	"err_mod_style"
 msgstr	"Impossible de modifier le style"
 
@@ -189,7 +190,7 @@ msgstr	"Nom abr&eacute;g&eacute;"
 
 #, c-format
 msgid	"function '%s' not available for application %s (%d)"
-msgstr "fonction %s non disponible pour l'application %s (%d)"
+msgstr	"fonction %s non disponible pour l'application %s (%d)"
 
 msgid	"Access denied"
 msgstr	"Accès refusé"
@@ -281,7 +282,7 @@ msgid	"Edit any access"
 msgstr	"Editer n'importe quel accès"
 
 msgid	"Edit object access by user"
-msgstr "Editer les accès sur les objets par utilisateur"
+msgstr	"Editer les accès sur les objets par utilisateur"
 
 msgid	"Edit object access"
 msgstr	"Editer les accès sur les objets"
@@ -338,10 +339,10 @@ msgid	"butclosew"
 msgstr	"Fermer la fenêtre"
 
 msgid	"search"
-msgstr "recherche"
+msgstr	"recherche"
 
 msgid	"clear"
-msgstr "Effacer"
+msgstr	"Effacer"
 
 msgid	"print"
 msgstr	"Impression de la page"
@@ -390,16 +391,16 @@ msgid	"modify"
 msgstr	"Modifier"
 
 msgid	"viewuser"
-msgstr "Voir les utilisateurs"
+msgstr	"Voir les utilisateurs"
 
 msgid	"viewgroup"
-msgstr "Voir les groupes"
+msgstr	"Voir les groupes"
 
 msgid	"close"
 msgstr	"Fermer"
 
 msgid	"accessfor"
-msgstr "Contrôle des accès pour"
+msgstr	"Contrôle des accès pour"
 
 msgid	"download"
 msgstr	"Télécharger le fichier d'acces"
@@ -409,6 +410,12 @@ msgstr	"Le nom du fichier doit être spécifié"
 
 msgid	"upload"
 msgstr	"Charger un fichier d'acces"
+
+msgid	"edit by object"
+msgstr "édition par objet"
+
+msgid	"in database"
+msgstr "dans la base de données"
 
 msgid	"long_name"
 msgstr	"Nom complet"
