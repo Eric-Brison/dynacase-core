@@ -44,6 +44,7 @@ $action_desc = array (
    "name"               =>"PARAM_CULIST",
    "short_name"         =>N_("current user parameters"),
    "toc"                =>"Y",
+   "root"		=>"Y",
    "acl"                =>"USER"
   ) ,
   array(
@@ -68,8 +69,7 @@ $action_desc = array (
    "name"		=>"APPLIST",
    "toc"                =>"Y",
    "short_name"		=>N_("applications"),
-   "acl"		=>"ADMIN",
-   "root"		=>"Y"
+   "acl"		=>"ADMIN"
   ) ,
   array(
    "acl"		=>"ADMIN",
