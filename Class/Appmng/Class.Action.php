@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.17 2003/12/09 10:46:46 eric Exp $
+ * @version $Id: Class.Action.php,v 1.18 2004/01/08 10:59:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,10 +28,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.17 2003/12/09 10:46:46 eric Exp $
+//  $Id: Class.Action.php,v 1.18 2004/01/08 10:59:27 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.17 2003/12/09 10:46:46 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.18 2004/01/08 10:59:27 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -136,7 +136,7 @@ function Read($k, $d="") {
   if (is_object($this->session)) {
     return($this->session->Read($k, $d));
   }
-  return($d);
+  return($d."--");
 }
 
 function Register($k,$v) {
@@ -346,7 +346,6 @@ function ExitError($texterr)
   $this->Register("FT_ERROR",$texterr);
   $this->Register("FT_ERROR_APP",$this->parent->name);
   $this->Register("FT_ERROR_ACT",$this->name);
-
   redirect($this,"CORE&sole=Y","ERROR");
   exit;
 }

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.1 2003/12/02 14:38:57 eric Exp $
+// $Id: index.php.q,v 1.2 2004/01/08 10:59:27 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -69,7 +69,9 @@ if (!isset($HTTP_GET_VARS["action"])) $HTTP_GET_VARS["action"]="";
 
 $standalone = GetHttpVars("sole");
 
-$sess_num=GetHttpVars("session");
+//$sess_num=GetHttpVars("session");
+if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
+else $sess_num=$HTTP_GET_VARS["session"];
 
 $session=new Session();
 if (!  $session->Set($sess_num))  {
@@ -116,9 +118,9 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
-$core->SetVolatileParam("CORE_ROOTURL", "index.php?session={$session->id}&sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "index.php?session={$session->id}&sole=A&");
-$core->SetVolatileParam("CORE_STANDURL","index.php?session={$session->id}&sole=Y&");
+$core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
+$core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
 
 
 // ----------------------------------------
@@ -276,7 +278,7 @@ if (isset($HTTP_SESSION_VARS["CacheObj"])) {
 
 
 
-printf("<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>[Q %.2fs]</I></SUP>",
+printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>[Q %.2fs]</I></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
        $tic4-$tic1,

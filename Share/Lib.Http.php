@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.14 2003/10/30 08:57:09 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.15 2004/01/08 10:59:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: Lib.Http.php,v 1.14 2003/10/30 08:57:09 eric Exp $
+// $Id: Lib.Http.php,v 1.15 2004/01/08 10:59:27 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Http.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,7 +34,7 @@
 // ---------------------------------------------------------------
 
 
-$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.14 2003/10/30 08:57:09 eric Exp $';
+$LIB_HTTP_PHP = '$Id: Lib.Http.php,v 1.15 2004/01/08 10:59:27 eric Exp $';
 
 
 function Redirect(&$action,$appname,$actionname,$otherurl="")
@@ -45,6 +45,8 @@ function Redirect(&$action,$appname,$actionname,$otherurl="")
     $baseurl=$otherurl;
   $location = $baseurl."app=".$appname."&action=".$actionname;
   $action->log->debug("Redirect : $location");
+
+  $location .= "&session=".$action->session->id;
   Header("Location: $location");
   exit;
 }

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: guest.php,v 1.6 2004/01/08 10:59:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: guest.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+// $Id: guest.php,v 1.6 2004/01/08 10:59:27 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/guest.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -78,6 +78,7 @@ if ($session->userid != ANONYMOUS_ID) {
   // reopen a new anonymous session
   unset($PHP_AUTH_USER); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
   $session->Set("");
+  setcookie ("session",$session->id,0,"/");
 }
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
@@ -110,9 +111,9 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
-$core->SetVolatileParam("CORE_ROOTURL", "guest.php?session={$session->id}&sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "guest.php?session={$session->id}&sole=A&");
-$core->SetVolatileParam("CORE_STANDURL","guest.php?session={$session->id}&sole=Y&");
+$core->SetVolatileParam("CORE_ROOTURL", "guest.php?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "guest.php?sole=A&");
+$core->SetVolatileParam("CORE_STANDURL","guest.php?sole=Y&");
 
 
 // ----------------------------------------

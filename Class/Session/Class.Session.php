@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.9 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.Session.php,v 1.10 2004/01/08 10:59:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.9 2003/08/18 15:46:42 eric Exp $
+// $Id: Class.Session.php,v 1.10 2004/01/08 10:59:27 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.9 2003/08/18 15:46:42 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.10 2004/01/08 10:59:27 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -217,12 +217,10 @@ var $sessiondb;
 	$this->status = $this->SESSION_CT_ARGS;
 	return $this->status;
       }
-      global $$k;
-      $$k=$v;
-
+  
       global $HTTP_CONNECTION; // use only cache with HTTP
-      if ($HTTP_CONNECTION != "") {
-	session_register($k);
+      if ($HTTP_CONNECTION != "") {	
+	$_SESSION[$k]=$v;
       }
 
       return true;
@@ -234,14 +232,12 @@ var $sessiondb;
   // $v est une chaine !
   // --------------------------------
   function Read($k = "", $d="") {    
-
-      if (session_is_registered ($k)) {
-	global $$k;
-        return($$k);
-      } else {
-        return($d);
-      }
-    }       
+   if (isset($_SESSION[$k])) {  
+      return $_SESSION[$k];
+    } else {
+      return($d);
+    }
+  }       
 
   // -------------------------------
   // Get all vars
@@ -260,7 +256,9 @@ var $sessiondb;
     {
       global $HTTP_CONNECTION; // use only cache with HTTP
       if ($HTTP_CONNECTION != "") {
-	session_unregister($k);
+	//session_unregister($k);
+	//	global $_SESSION;
+	unset($_SESSION[$k]);
       }
       return;
     }       

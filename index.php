@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.20 2003/12/09 09:24:41 eric Exp $
+ * @version $Id: index.php,v 1.21 2004/01/08 10:59:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -14,7 +14,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.20 2003/12/09 09:24:41 eric Exp $
+// $Id: index.php,v 1.21 2004/01/08 10:59:27 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -76,7 +76,8 @@ if (!isset($HTTP_GET_VARS["action"])) $HTTP_GET_VARS["action"]="";
 
 $standalone = GetHttpVars("sole");
 
-$sess_num=GetHttpVars("session");
+if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
+else $sess_num=$HTTP_GET_VARS["session"];
 
 $session=new Session();
 if (!  $session->Set($sess_num))  {
@@ -93,6 +94,7 @@ if ($core->user->login != $PHP_AUTH_USER) {
   // reopen a new session
   $session->Set("");
   $core->SetSession($session);
+  setcookie ("session",$session->id,0,"/");
 }
 //$core->SetSession($session);
 
@@ -108,8 +110,8 @@ if (ereg("(.*)/index\.php", $SCRIPT_NAME, $reg)) {
 
   // determine publish url (detect ssl require)
  
-  if ($SERVER_PORT != PORT_SSL)   $puburl = "http://".$SERVER_NAME.$reg[1];
-  else $puburl = "https://".$SERVER_NAME.$reg[1];
+  if ($SERVER_PORT != PORT_SSL)   $puburl = "http://".$SERVER_NAME.":".$SERVER_PORT.$reg[1];
+  else $puburl = "https://".$SERVER_NAME.":".$SERVER_PORT.$reg[1];
 } else {
   // it is not allowed
   print "<B>:~(</B>";
@@ -125,9 +127,9 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
-$core->SetVolatileParam("CORE_ROOTURL", "index.php?session={$session->id}&sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "index.php?session={$session->id}&sole=A&");
-$core->SetVolatileParam("CORE_STANDURL","index.php?session={$session->id}&sole=Y&");
+$core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
+$core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
 
 
 // ----------------------------------------
@@ -154,7 +156,7 @@ if (($standalone == "") || ($standalone == "N")) {
       global $REQUEST_URI;   
 
       // redirect to go to ssl http
-      $sslurl = "https://${SERVER_NAME}${REQUEST_URI}";
+      $sslurl = "https://${SERVER_NAME}:${SERVER_PORT}${REQUEST_URI}";
       Header("Location: $sslurl");
       exit;
     }     
@@ -165,7 +167,7 @@ if (($standalone == "") || ($standalone == "N")) {
       global $REQUEST_URI;   
 
       // redirect to  suppress ssl http
-      $puburl = "http://${SERVER_NAME}${REQUEST_URI}";
+      $puburl = "http://${SERVER_NAME}:${SERVER_PORT}${REQUEST_URI}";
 
       Header("Location: $puburl");
       exit;
