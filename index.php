@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.21 2004/01/08 10:59:27 eric Exp $
+ * @version $Id: index.php,v 1.22 2004/01/13 09:05:58 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -14,7 +14,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.21 2004/01/08 10:59:27 eric Exp $
+// $Id: index.php,v 1.22 2004/01/13 09:05:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -77,7 +77,7 @@ if (!isset($HTTP_GET_VARS["action"])) $HTTP_GET_VARS["action"]="";
 $standalone = GetHttpVars("sole");
 
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
-else $sess_num=$HTTP_GET_VARS["session"];
+else $sess_num=GetHttpVars("session");//$HTTP_GET_VARS["session"];
 
 $session=new Session();
 if (!  $session->Set($sess_num))  {
@@ -94,7 +94,6 @@ if ($core->user->login != $PHP_AUTH_USER) {
   // reopen a new session
   $session->Set("");
   $core->SetSession($session);
-  setcookie ("session",$session->id,0,"/");
 }
 //$core->SetSession($session);
 
@@ -129,6 +128,7 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
+$core->SetVolatileParam("CORE_SBASEURL", "index.php?sole=A&session={$session->id}&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
 
 
