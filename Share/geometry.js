@@ -79,3 +79,19 @@ function autoHresize() {
 }
 
 
+function autoVresize() {
+  if (window != top) return;
+
+  if (document.body.scrollWidth > self.screen.availWidth) 
+    dw=self.screen.availWidth-document.body.clientWidth;
+  else 
+    dw=document.body.scrollWidth-document.body.clientWidth;
+
+  dh=0;
+  if (dw > 0) window.resizeBy(dw,dh);
+}
+
+function autoWresize() {
+  autoVresize();
+  autoHresize();
+}
