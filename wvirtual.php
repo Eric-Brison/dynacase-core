@@ -31,7 +31,7 @@ ncurses_getmaxyx(&$fullscreen, $lines, $columns);
 
 
 
-$lhost= exec("dig `domainname` axfr | grep `hostname -f` | grep CNAME | cut -f1 -d \" \"",$outlist,$ret);
+$lhost= exec("dig `domainname` axfr | grep `hostname -f` | grep CNAME | awk '{print $1}'",$outlist,$ret);
 
 if ($ret != 0) {
 
