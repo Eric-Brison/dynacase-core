@@ -4,36 +4,14 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.17 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: wsh.php,v 1.18 2004/08/12 10:29:19 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
-// ---------------------------------------------------------------
-// $Id: wsh.php,v 1.17 2004/08/05 09:31:22 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2001
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
 
-// WHAT SHELL
+
 ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT:/usr/share/pear");
 ini_set("max_execution_time", "3600");
 
@@ -43,6 +21,7 @@ include_once('Class.Session.php');
 include_once('Class.Log.php');
 
 
+wbar(1,-1,"initialisation");
 $log=new Log("","index.php");
 
 $CoreNull = "";
@@ -96,7 +75,6 @@ $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 $puburl = $core->GetParam("CORE_PUBURL","");
 
-
 if (isset($_GET["app"])) {
   $appl = new Application();
   $appl->Set($_GET["app"],
@@ -134,6 +112,8 @@ if (isset($_GET["api"])) {
 } else {
   echo ($action->execute ());
 }
+
+wbar(0,0,"completed");
 
 return(0);
 ?>
