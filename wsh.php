@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.3 2002/01/09 16:22:47 eric Exp $
+// $Id: wsh.php,v 1.4 2002/01/09 16:51:18 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -49,11 +49,26 @@ if ($HTTP_CONNECTION != "")     {
   print "<BR><H1>:~(</H1>";
   exit;
 }
+if (count($argv) == 1) {
+  print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n".
+    "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n".
+    "\twsh.php --listapi                     : view api list\n";
+  exit;
+}
 
 while (list($k, $v) = each($argv)) {
   
   if (ereg("--(.+)=(.+)", $v , $reg)) {
     $HTTP_GET_VARS[$reg[1]]=$reg[2];
+  }  else if (ereg("--(.+)", $v , $reg)) {
+    if ($reg[1] == "listapi") {
+      print "application list :\n";
+      echo "\t- ";
+      echo str_replace("\n","\n\t- ",shell_exec ("cd /home/httpd/what/API;ls -1 *.php| cut -f1 -d'.'"));
+      echo "\n";
+      exit;
+    }
+    $HTTP_GET_VARS[$reg[1]]=true;
   }
 }
 
