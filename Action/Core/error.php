@@ -1,6 +1,9 @@
 <?php
-// $Id: error.php,v 1.2 2002/03/02 18:05:28 eric Exp $
+// $Id: error.php,v 1.3 2002/09/19 15:36:01 eric Exp $
 // $Log: error.php,v $
+// Revision 1.3  2002/09/19 15:36:01  eric
+// modif look message erreur
+//
 // Revision 1.2  2002/03/02 18:05:28  eric
 // correction pour les zones
 //
@@ -31,8 +34,8 @@ function error(&$action) {
   $app = new Application();
   
   $app->Set($action->Read("LAST_ACT","CORE"), $action->parent);
-  $action->lay->set("error", $action->Read("FT_ERROR"),"Session Error");
-  $action->lay->set("nexturl", $action->GetParam("CORE_BASEURL")."app=".$app->name);
+  $action->lay->set("error", stripslashes($action->Read("FT_ERROR","Session Error")));
+
   $action->lay->set("appname", _($app->description));
 
   if ($app->name != "CORE") {
@@ -45,8 +48,13 @@ function error(&$action) {
 
 
     $action->lay->set("appact", "");
-    if ($actname != "")
+    if ($actname != "") {
       $action->lay->set("appact", _($actname));
+      $act = new Action();
+      $act->Set($actname, $app);
+      $action->lay->set("appact", _($act->short_name));
+      
+    }
     
   } 
   

@@ -1,14 +1,14 @@
 
 [ZONE CORE:HTMLHEAD]
-<div class="TITLE">
-<H2 class="COREError">[TEXT:functionerr]<H2>
-<HR width="50%">
+<div  class="COREError" style="border:ridge 3pt">
+<H2 >[TEXT:functionerr]<H2>
+
+<HR width="50%" color="[CORE_FGCOLOR]">
 <H4>[error]</H4>
-<H5>[appact]</H5>
+<H5>[appname]/[appact]</H5>
 <HR width="50%" color="[CORE_FGCOLOR]">
 
 
-<A HREF="[nexturl]" target="body">[TEXT:Return to] [appname]</A>
-<HR width="50%" color="[CORE_FGCOLOR]">
+
 </div>
 [ZONE CORE:HTMLFOOT]
