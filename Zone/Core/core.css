@@ -1,7 +1,10 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.4 2002/02/15 13:52:52 eric Exp $
+ * $Id: core.css,v 1.5 2002/03/02 18:03:33 eric Exp $
  * ---------------------------------------------------------------------------
  * $Log: core.css,v $
+ * Revision 1.5  2002/03/02 18:03:33  eric
+ * ajout couleur sur input
+ *
  * Revision 1.4  2002/02/15 13:52:52  eric
  * correction pour prise en compte couleur de texte
  *
@@ -285,4 +288,9 @@ DIV.TITLE { color : black;
 	border-color : [CORE_FGCOLOR];
 	border-width: 1pt;
 	padding : 3pt;		
+}
+
+INPUT, SELECT {
+   color:[CORE_FGTEXTCOLOR];
+   background-color:[CORE_BGCOLORALTERN];
 }
