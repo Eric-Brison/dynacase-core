@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.32 2004/04/23 15:34:07 eric Exp $
+ * @version $Id: Class.Application.php,v 1.33 2004/09/08 09:34:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,10 +30,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.32 2004/04/23 15:34:07 eric Exp $
+//  $Id: Class.Application.php,v 1.33 2004/09/08 09:34:11 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.32 2004/04/23 15:34:07 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.33 2004/09/08 09:34:11 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -363,21 +363,47 @@ function GetCssCode()
     return($this->csscode);
   }
 }
-function HasPermission($acl_name) 
-{
+
+/**
+ * Test permission for currennt user in current application
+ * 
+ * @param string $acl_name acl name to test
+ * @param string $app_name application if test for other application
+ * @return bool true if permission granted
+ */
+function HasPermission($acl_name,$app_name="") {
+
   if (!isset($this->user) || !is_object($this->user)) {
-     $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
-     return FALSE;
-  }
-  if ($this->user==1) return true; // admin can do everything
-  
-  $acl=new Acl($this->dbaccess);
-  if ( ! $acl->Set($acl_name,$this->id)) {
-    $this->log->warning("Acl $acl_name not available for App $this->name");    
+    $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
     return FALSE;
   }
+  if ($this->user->id==1) return true; // admin can do everything
+  if ($app_name=="") {
+  
+    $acl=new Acl($this->dbaccess);
+    if ( ! $acl->Set($acl_name,$this->id)) {
+      $this->log->warning("Acl $acl_name not available for App $this->name");    
+      return FALSE;
+    }
 
-  return($this->permission->HasPrivilege($acl->id));
+    return($this->permission->HasPrivilege($acl->id));
+  } else {
+    // test permission for other application
+    $appid=$this->GetIdFromName($app_name);
+    $wperm=new Permission($this->dbaccess, array($this->user->id,$appid));
+    if ($wperm->isAffected()) {
+      $acl=new Acl($this->dbaccess);
+      if ( ! $acl->Set($acl_name,$appid)) {
+	$this->log->warning("Acl $acl_name not available for App $this->name");    
+	return false;
+      } else {
+	return($wperm->HasPrivilege($acl->id));
+	
+      }
+    }
+			     
+  }
+  return false;
 }
 
 function InitStyle()
