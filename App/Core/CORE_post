@@ -1,34 +1,9 @@
 #!/bin/bash
-defaultlog=/var/log/Core_Install.log
+pubdir=/home/httpd/what
 
-# $1 : message
-log() {
-    echo `date +"%b %e %T"` `hostname -s` $0 $1 >> $defaultlog
-    return 0
-}
+. $pubdir/log.sh
 
 
-#$1 : login
-#$2 : cmde
-sulog() {
-    status=1
-
-    log "su $1 '$2'"
-    su - $1 -c "$2 2>&1 > /tmp/log$$;echo \$? > /tmp/logst$$"
-    status=$?
-    if [ $status -eq 0 ] ; then
-        if [ -f /tmp/logst$$ ]; then
-            status=`cat /tmp/logst$$`
-            /bin/rm /tmp/logst$$
-        fi
-    fi
-    # log stderr and stdout of child process
-    if [ -f /tmp/log$$ ]; then
-        log "`cat /tmp/log$$`"
-        rm /tmp/log$$
-    fi
-    return $status
-}
 
 #------------------------------
 #post installation
@@ -55,7 +30,7 @@ if [ "$1" = "I" ] ; then
   fi
 
   log "Add plpgsql functions"
-  sulog postgres "psql anakeen anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
+  sulog postgres "psql anakeen anakeen -f $pubdir/WHAT/getprivilege.sql"
 
   log "Register DB anakeen for automatic dump"
   ll=0
@@ -87,10 +62,10 @@ fi
 if [ "$1" = "U" ] ; then
 
   #add permission functionnalities
-  su - postgres -c "psql anakeen anakeen -f /home/httpd/what/WHAT/getprivilege.sql"
-  /home/httpd/what/wsh.php  --api=import_style --name=RED
-  /home/httpd/what/wsh.php  --api=import_style --name=GREEN
-  /home/httpd/what/wsh.php  --api=import_style --name=AQUA
+  su - postgres -c "psql anakeen anakeen -f $pubdir/WHAT/getprivilege.sql"
+  $pubdir/wsh.php  --api=import_style --name=RED
+  $pubdir/wsh.php  --api=import_style --name=GREEN
+  $pubdir/wsh.php  --api=import_style --name=AQUA
   echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql anakeen anakeen
 
 fi
