@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.3 2003/03/24 13:43:36 eric Exp $
+// $Id: user_mod.php,v 1.4 2003/04/14 18:35:16 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -61,7 +61,7 @@ function user_mod(&$action) {
       $txt = $action->text("err_add_user")." : $res";
       $action->Register("USERS_ERROR",AddSlashes($txt));
     }
-    if ($user->iddomain != 1) {
+    if (!$group && $user->iddomain != 1) {
       $mailapp = new Application();
       if ($mailapp->Exists("MAILADMIN")) {
         $mailapp->Set("MAILADMIN", $action->parent);
@@ -74,7 +74,7 @@ function user_mod(&$action) {
     }
   } else {
     // Affect the user to a domain
-    if (($user->iddomain == 1) && (GetHttpVars("domainid") !=1)) {
+    if (!$group && ($user->iddomain == 1) && (GetHttpVars("domainid") !=1)) {
       $user->iddomain = GetHttpVars("domainid");
       $mailapp = new Application();
       if ($mailapp->Exists("MAILADMIN")) {

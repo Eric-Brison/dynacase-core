@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_del.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: user_del.php,v 1.2 2003/04/14 18:35:16 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_del.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: user_del.php,v $
+// Revision 1.2  2003/04/14 18:35:16  marc
+// Groupe : pas d'ajout et suppression de compte de messagerie
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -66,7 +69,7 @@ function user_del(&$action) {
            ($action->user->id != $user->id)))) {
       $user->Delete();
       $mailapp = new Application();
-      if ($mailapp->Exists("MAILADMIN")) {
+      if (($action->user->isgroup != "Y") && $mailapp->Exists("MAILADMIN")) {
         $mailapp->Set("MAILADMIN", $action->parent);
         $acc = new MailAccount($mailapp->Getparam("MAILDB"),$id);
         $acc->Remove();
