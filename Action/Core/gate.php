@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: gate.php,v 1.2 2003/04/14 12:47:12 eric Exp $
+// $Id: gate.php,v 1.3 2003/04/29 07:11:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/gate.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -27,6 +27,7 @@ function gate(&$action) {
   $geo = $action->GetParam("GATE_GEO");
   $url = $action->GetParam("GATE_URL");
 
+  $action->lay->set("bw","30px");
   $turl=explode(",",$url);
   if (count($turl) != 6) {
     for ($i=0;$i<6;$i++) $turl[$i]="";
@@ -41,7 +42,6 @@ function gate(&$action) {
     $G2H=($turl[3]=="")?"0%":"*";
     $G3H=($turl[5]=="")?"0%":"*";
   } else {
-
     list($G1W,$G1H)=explode("x",$tgeo[0]);
     list($G2W,$G2H)=explode("x",$tgeo[2]);
     list($G3W,$G3H)=explode("x",$tgeo[4]);
@@ -96,7 +96,7 @@ function gate(&$action) {
   $action->lay->set("urlG22",$turl[3]);
   $action->lay->set("urlG31",$turl[4]);
   $action->lay->set("urlG32",$turl[5]);
-
+  if (($G1W == "0%") && ($G2W == "0%") && ($G3W == "0%")) $action->lay->set("bw","*");
 }
 
 

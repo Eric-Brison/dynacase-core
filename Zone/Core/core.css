@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.16 2003/04/18 16:34:08 eric Exp $
+ * $Id: core.css,v 1.17 2003/04/29 07:11:58 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -242,3 +242,7 @@ INPUT, SELECT, TEXTAREA, FILE {
 input[type="button"] { -moz-border-radius:25px }
 input[type="submit"] { -moz-border-radius:25px }
 input[type="reset"] { -moz-border-radius:25px }
+input[type="image"] { 
+  border-style : none;
+  background-color:transparent;
+ }

@@ -8,7 +8,7 @@
 </head>
 
 
-<frameset id="WGATE" name="WGATE" frameborder="yes" framespacing="1" border="3" cols="30px,[G1W],[G2W],[G3W]" >
+<frameset id="WGATE" name="WGATE" frameborder="yes" framespacing="1" border="3" cols="[bw],[G1W],[G2W],[G3W]" >
 
 <frame name="G0" src="[CORE_STANDURL]&app=CORE&action=GATE_EDIT" scrolling="no" noresize marginwidth="0">
 <frameset id="WGATE1" name="WGATE1"  frameborder="yes" framespacing="1" border="3" rows="[G1H],*" >
