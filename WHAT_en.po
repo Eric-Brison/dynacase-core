@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-05 10:27+0000\n"
+"POT-Creation-Date: 2005-01-06 15:38+0100\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -277,14 +277,14 @@ msgstr ""
 msgid "Attribute %s modified to %s"
 msgstr ""
 
-msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-
 msgid "no referer url found"
 msgstr ""
 
 #, c-format
 msgid "file not found : %s"
+msgstr ""
+
+msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 msgstr ""
 
 msgid "What User Management"
@@ -582,10 +582,6 @@ msgstr ""
 msgid "API file %s not found"
 msgstr ""
 
-#, c-format
-msgid "Choose database in %s (%s)"
-msgstr ""
-
 msgid "firstname"
 msgstr "Firstname"
 
@@ -654,16 +650,24 @@ msgstr "Help"
 msgid "delconfirm"
 msgstr "Sure to delete user"
 
-#, fuzzy
-msgid "view log"
-msgstr "Lastname"
-
 msgid "Javascript must be enabled in your navigator"
 msgstr ""
 
 msgid ""
 "Your navigator does not accept cookies.\n"
 "Cookies must be enabled to use correctly this application"
+msgstr ""
+
+msgid "You use version an to old version of Netscape (Mozilla)"
+msgstr ""
+
+msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
+msgstr ""
+
+msgid "You use version an to old version of Internet Explorer"
+msgstr ""
+
+msgid "You must upgrade to version 6 or more"
 msgstr ""
 
 msgid "You use an too old Internet explorer navigator"
@@ -689,6 +693,10 @@ msgstr ""
 
 msgid "Gate"
 msgstr ""
+
+#, fuzzy
+msgid "view log"
+msgstr "Lastname"
 
 msgid "All manuals"
 msgstr ""
@@ -863,6 +871,10 @@ msgstr "Can't modify parameter"
 
 msgid "delconfirmparam"
 msgstr "Sure to delete parameter"
+
+#, c-format
+msgid "Choose database in %s (%s)"
+msgstr ""
 
 #~ msgid "functionerr"
 #~ msgstr "Functions error detected"

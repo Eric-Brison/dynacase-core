@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-05 10:27+0000\n"
-"PO-Revision-Date: 2004-10-05 12:28+0200\n"
+"POT-Creation-Date: 2005-01-06 15:38+0100\n"
+"PO-Revision-Date: 2005-01-06 15:40+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -281,16 +281,16 @@ msgstr "Attribut %s non modifié : %s\n"
 msgid "Attribute %s modified to %s"
 msgstr "Attribut %s modifié par %s"
 
-msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
-
 msgid "no referer url found"
 msgstr "pas d'URL reférence trouvée"
 
 #, c-format
 msgid "file not found : %s"
 msgstr "fichier %s non trouvé."
+
+msgid "terminal too small (must ne at least 80 columns by 24 lines)"
+msgstr ""
+"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
 
 msgid "What User Management"
 msgstr "Gestion des utilisateurs"
@@ -563,10 +563,6 @@ msgstr "mot de passe vide : non changé"
 msgid "API file %s not found"
 msgstr "fichier API %s non trouvé."
 
-#, c-format
-msgid "Choose database in %s (%s)"
-msgstr "Choix de la base de données dans %s (%s)"
-
 msgid "firstname"
 msgstr "Prénom"
 
@@ -630,9 +626,6 @@ msgstr "Aide"
 msgid "delconfirm"
 msgstr "Confirmez-vous la suppression de l`utilisateur"
 
-msgid "view log"
-msgstr "voir les messages"
-
 msgid "Javascript must be enabled in your navigator"
 msgstr "Javascript doit être activé dans votre navigateur"
 
@@ -642,6 +635,18 @@ msgid ""
 msgstr ""
 "Votre navigateur n'accepte pas les cookies.\n"
 "Vous devez autoriser les cookies pour utiliser correctement l'application."
+
+msgid "You use version an to old version of Netscape (Mozilla)"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
+msgstr "Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
+
+msgid "You use version an to old version of Internet Explorer"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "You must upgrade to version 6 or more"
+msgstr "Vous devez mettre à jour avec la version 6 au minimum"
 
 msgid "You use an too old Internet explorer navigator"
 msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
@@ -670,6 +675,9 @@ msgstr "Site de Netscape"
 
 msgid "Gate"
 msgstr "Portail"
+
+msgid "view log"
+msgstr "voir les messages"
 
 msgid "All manuals"
 msgstr "Tous les manuels"
@@ -830,6 +838,10 @@ msgstr "paramètre non modifiable"
 
 msgid "delconfirmparam"
 msgstr "Confirmez-vous la suppression du param&egrave;tre "
+
+#, c-format
+msgid "Choose database in %s (%s)"
+msgstr "Choix de la base de données dans %s (%s)"
 
 #~ msgid "no documentation available for %s application"
 #~ msgstr "pas de documentation  disponible pour l'application %s"

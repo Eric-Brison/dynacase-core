@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.33 2004/09/08 09:34:11 eric Exp $
+ * @version $Id: Class.Application.php,v 1.34 2005/01/07 16:59:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,10 +30,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.33 2004/09/08 09:34:11 eric Exp $
+//  $Id: Class.Application.php,v 1.34 2005/01/07 16:59:39 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.33 2004/09/08 09:34:11 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.34 2005/01/07 16:59:39 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -234,17 +234,21 @@ function Exists($app_name,$id_application='')
   return ($query->nb > 0)?$r[0]["id"]:false;
 }
 
-function AddJsRef($ref) 
+function AddJsRef($ref,$needparse=false) 
 {
   // Js Ref are stored in the top level application
   $root = $this->Getparam("CORE_PUBDIR");
-  if (file_exists($root."/".$this->name."/Layout/".$ref)) 
+  if (file_exists($root."/".$this->name."/Layout/".$ref)) {
      $ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
+  }
   if ($this->parent!="") {
-     $this->parent->AddJsRef($ref);
+     $this->parent->AddJsRef($ref,$needparse);
   } else {
      (!isset($this->jscount) ? $this->jscount = 0 : $this->jscount++);
      $this->jsref[$ref]=$ref;
+     if ($needparse) {
+       $this->jsref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
+     }
      $this->log->debug("AddJsRef [{$this->jscount}] = <{$this->jsref[$this->jscount]}>");
   }
 }
@@ -322,17 +326,20 @@ function ClearWarningMsg()
 {
      $this->session->unregister("warningmsg");
 }
-function AddCssRef($ref) 
+function AddCssRef($ref,$needparse=false) 
 {
   // Css Ref are stored in the top level application
   $root = $this->Getparam("CORE_PUBDIR");
   if (file_exists($root."/".$this->name."/Layout/".$ref)) 
      $ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
   if ($this->parent!="") {
-     $this->parent->AddCssRef($ref);
+     $this->parent->AddCssRef($ref,$needparse);
   } else {
      (!isset($this->csscount) ? $this->csscount = 0 : $this->csscount++);
      $this->cssref[$this->csscount]=$ref;
+     if ($needparse) {
+       $this->cssref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
+     }
      $this->log->debug("AddCssRef [{$this->csscount}] = <{$this->cssref[$this->csscount]}>");
   }
 }

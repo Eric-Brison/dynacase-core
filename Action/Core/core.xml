@@ -16,7 +16,18 @@
     // this page must be on top frame
 if (window != top) top.location.href = location.href;
 if (! navigator.cookieEnabled) alert ('[TEXT:Your navigator does not accept cookies.\nCookies must be enabled to use correctly this application]');
-  
+//alert (navigator.userAgent+'\n'+navigator.appVersion);
+  //Detect IE5.5+
+var version=0
+if (navigator.appName=="Netscape") {
+  version=parseFloat(navigator.appVersion);
+  if (version < 5)  alert('[TEXT:You use version an to old version of Netscape (Mozilla)]:'+version+'\n'+'[TEXT:You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)]');
+}
+if (navigator.appVersion.indexOf("MSIE")!=-1){
+  temp=navigator.appVersion.split("MSIE");
+  version=parseFloat(temp[1]);
+  if (version < 6) alert('[TEXT:You use version an to old version of Internet Explorer]:'+version+'\n'+'[TEXT:You must upgrade to version 6 or more]');
+}
   //-->
    </script>
 </head>

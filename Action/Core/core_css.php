@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: core_css.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: core_css.php,v 1.4 2005/01/07 16:59:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: core_css.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+// $Id: core_css.php,v 1.4 2005/01/07 16:59:34 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/core_css.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -37,6 +37,13 @@
 
 function core_css(&$action) {
   
+  $layout=getHttpVars("layout");
+
+  if (ereg("([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}", $layout, $reg)) {
+    $lfile= getLayoutFile($reg[1],strtolower($reg[2]));
+    if ($lfile) $action->lay = new Layout(getLayoutFile($reg[1],strtolower($reg[2])), $action);
+  }
+
    header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
 
    header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
