@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.15 2003/06/02 09:39:10 eric Exp $
+// $Id: index.php,v 1.16 2003/06/18 14:55:56 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -183,6 +183,7 @@ if ($action->Read("navigator","") == "") {
 // init for gettext
 setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
 setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
+setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
 //print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "/home/httpd/what/locale");
