@@ -12,8 +12,8 @@ function authenticate() {
 }
 
 //print "$PHP_AUTH_USER $SeenBefore $OldAuth";
-//if(!isset($PHP_AUTH_USER) || ($SeenBefore == 1 && !strcmp($OldAuth, $PHP_AUTH_USER)) ) {
-if(!isset($PHP_AUTH_USER) || ($SeenBefore == 1 ))  {
+if(!isset($PHP_AUTH_USER) || ($SeenBefore == 1 && !strcmp($OldAuth, $PHP_AUTH_USER)) ) {
+
   authenticate();
 }
 else {
