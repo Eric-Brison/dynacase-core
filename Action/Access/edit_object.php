@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit_object.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: edit_object.php,v 1.2 2002/02/18 10:55:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit_object.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -32,12 +32,13 @@ function edit_object(&$action) {
 
 
   $coid = GetHttpVars("oid",0);
+  $appid = GetHttpVars("appid",0);
     // contruct user id list
 
   // write title : oid description
-  $oid = new ControlObject($action->dbaccess, $coid);
+  $oid = new ControlObject($action->dbaccess, array($coid,$appid));
   $action->lay->Set("title",$oid->description);
-  $action->lay->Set("appid",$oid->id_class);
+  $action->lay->Set("appid",$appid);
   $action->lay->Set("oid",$coid);
 
 

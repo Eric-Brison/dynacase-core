@@ -46,7 +46,7 @@ function chgacl(iduser, idacl) {
       [BLOCK USERS]
 <TR align="center">
   <TD class="CORETblHeadCellLine" align="right">
-    <a class="CORETblHead" href="[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[oid]&userid=[userid]">[descuser]</a>
+    <a class="CORETblHead" href="[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[oid]&appid=[appid]&userid=[userid]">[descuser]</a>
     <input type="hidden"  name="acls[[userid]][0]" value="nc">
   </TD>
                                 [BLOCK [SELECTACL]]

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: modify_object.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: modify_object.php,v 1.2 2002/02/18 10:55:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/modify_object.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: modify_object.php,v $
+// Revision 1.2  2002/02/18 10:55:16  eric
+// modif id_fields de objectcontrol : cause pas unique
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -77,11 +80,7 @@ function modify_object(&$action) {
 
 
 
-  while (list($userId,$aclon) = each ($acls)) {
-
-   
-  
-
+  while (list($userId,$aclon) = each ($acls)) {     
   
       // modif permission for a particular user
     $p=new ObjectPermission($action->dbaccess,array($userId,$coid));

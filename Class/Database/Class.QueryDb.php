@@ -16,8 +16,11 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryDb.php,v 1.2 2002/01/25 14:31:37 eric Exp $
+//  $Id: Class.QueryDb.php,v 1.3 2002/02/18 10:55:16 eric Exp $
 //  $Log: Class.QueryDb.php,v $
+//  Revision 1.3  2002/02/18 10:55:16  eric
+//  modif id_fields de objectcontrol : cause pas unique
+//
 //  Revision 1.2  2002/01/25 14:31:37  eric
 //  gestion de cache objet - variable de session
 //
@@ -102,7 +105,7 @@
 //
 // It gives the HTML/JScript element for the gui
 // and it gives the result of the query
-$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
+$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.3 2002/02/18 10:55:16 eric Exp $';
 
 include_once('Class.Log.php');
 
@@ -313,6 +316,7 @@ function QueryDb ($dbaccess,$class)
 function cacheId() {
   $hsql = bin2hex(mhash(MHASH_MD5,
 			$this->class.$this->res_type.$this->LastQuery.$this->start.'_'.$this->slice));
+
   
   return $hsql;
 }

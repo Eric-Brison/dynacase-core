@@ -29,7 +29,7 @@
 include_once('Class.Log.php');
 include_once('Class.Cache.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.2 2002/01/25 14:31:37 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.3 2002/02/18 10:55:16 eric Exp $';
 
 Class DbObj extends Cache
 {
@@ -130,7 +130,10 @@ function DbObj ($dbaccess='', $id='',$res='',$dbid=0)
      }
    } //print "soid=$soid<BR>";
    
+   
    if ($soid != "") $soid=get_class($this)."::".$soid;
+   //      if ($soid != "")print "soid=$soid<HR>";
+
    return $soid;
  }
 

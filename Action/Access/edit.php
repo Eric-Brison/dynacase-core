@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: edit.php,v 1.2 2002/02/18 10:55:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -76,7 +76,9 @@ function edit_oid(&$action) {
 // -----------------------------------
   
   $userId= intval(GetHttpVars("userid")) ; // can be affected by session var
-  $coid= intval(GetHttpVars("oid")) ;
+  $coid= intval(GetHttpVars("oid")) ;  
+  $appId=GetHttpVars("appid");
+
   $action->lay->Set("modifyact", "MODIFY_OBJECT");
   $action->lay->Set("returnact","EDIT_OBJECT"); // 
   $action->lay->Set("target", "_self");
@@ -90,7 +92,7 @@ function edit_oid(&$action) {
   $action->lay->SetBlockData("USERS",array(array("zou")));
 
   // write title : oid description
-  $oid = new ControlObject($action->dbaccess, $coid);
+  $oid = new ControlObject($action->dbaccess, array($coid,$appId));
 
   // register for next time : same parameters
   $action->Register("access_object_id",$coid);
