@@ -7,6 +7,7 @@ utildir=@PUBRULE@
 appname = @PACKAGE@
 pubdir = @prefix@
 srcdir = @srcdir@
+rootprefix=$(RPM_BUILD_ROOT)
 
 
 export pubdir utildir appname pidir
@@ -28,7 +29,7 @@ include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE \
-	     whattext wcheck wstop
+	     whattext wcheck wstop httpd.pam
 
 
 
@@ -38,3 +39,11 @@ $(pubdir)/wcheck: wcheck
 	cp $< $@
 $(pubdir)/wstop: wstop
 	cp $< $@
+
+
+$(rootprefix)/etc/pam.d:
+	mkdir -p $@
+$(rootprefix)/etc/pam.d/httpd: $(rootprefix)/etc/pam.d
+	cp httpd.pam $@
+
+publish: $(rootprefix)/etc/pam.d/httpd
