@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Log.php,v 1.10 2004/04/23 15:35:20 eric Exp $
+ * @version $Id: Class.Log.php,v 1.11 2004/07/27 09:49:28 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,7 +30,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.10 2004/04/23 15:35:20 eric Exp $
+// $Id: Class.Log.php,v 1.11 2004/07/27 09:49:28 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -66,25 +66,26 @@ function warning($string, $args=NULL) { $this->wlog("W",$string); }
 function error($string, $args=NULL) { $this->wlog("E",$string); }
 function fatal($string, $args=NULL) { $this->wlog("F",$string); }
 
-function start() {
+function start($text="") {
    $deb=gettimeofday();
    $this->deb=$deb["sec"]+$deb["usec"]/1000000;
    $this->tic=$this->deb;
+   $this->ptext=$text; // prefix
 }
 
 function tic($text) {
    $tic=gettimeofday();
    $now=$tic["sec"]+$tic["usec"]/1000000;
-   $duree=$now-$this->tic;
-   $this->info("CHRONO-INT [$text] : $duree");
+   $duree=round($now-$this->tic,3);
+   $this->info("CHRONO-INT [$this->ptext]/[$text] : $duree");
    $this->tic=$now;
 }
 
 function end($text) {
    $fin=gettimeofday();
    $this->fin=$fin["sec"]+$fin["usec"]/1000000;
-   $duree=$this->fin-$this->deb;
-   $this->info("CHRONO [$text] : $duree");
+   $duree=round($this->fin-$this->deb,3);
+   $this->info("CHRONO [$this->ptext]/[$text] : $duree");
 }
 
 function push($string) {
