@@ -22,14 +22,14 @@ export utildir
 
 SUBDIR= Class Images Action Zone App Api Share Doc Style
 
-TOP_MODULES = index.php wsh.php  guest.php dbaccess.php apache.conf  whattext wcheck wstop 
+TOP_MODULES = index.php wsh.php  guest.php dbaccess.php apache.conf  whattext wcheck wstop wstart
 
 
 include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE \
-	     whattext wcheck wstop httpd.pam
+	     whattext wcheck wstop wstart httpd.pam
 
 
 
@@ -38,6 +38,8 @@ $(pubdir)/whattext: whattext
 $(pubdir)/wcheck: wcheck
 	cp $< $@
 $(pubdir)/wstop: wstop
+	cp $< $@
+$(pubdir)/wstart: wstart
 	cp $< $@
 
 

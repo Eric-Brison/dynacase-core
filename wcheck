@@ -196,7 +196,7 @@ $actions = array_merge($dump,
 				   array_merge($migr,
 					       array_merge($wsh, 
 							   $post))));
-$actions[] = "/bin/cp $pubdir/WHAT/index.php $pubdir";
+$actions[] = "$pubdir/wstart";
 $actions[] = "/etc/rc.d/init.d/httpd start";
 print_r($actions);
 echo "continue (Y|N) ?";
