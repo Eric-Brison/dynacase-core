@@ -28,6 +28,14 @@ Alias /what @prefix@
        Order Deny,Allow
        Allow from All   
     </FilesMatch>
+    <FilesMatch "geticon.php">
+      Allow from All   
+      AuthType Basic
+      AuthName 'WHAT Connection'
+      AuthPAM_Enabled  on
+      AuthPAM_FallThrough off
+      require valid-user
+    </FilesMatch>
 
  </DirectoryMatch> 
 
