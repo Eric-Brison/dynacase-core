@@ -29,6 +29,28 @@ function getFrameHeight() {
   }
 
 
+
+  function CenterDiv(eid) { 
+      var winH=getFrameHeight();
+      var winW=getFrameWidth();
+
+
+      if (document.getElementById) { // DOM3 = IE5, NS6
+         var divlogo = document.getElementById(eid);
+	 divlogo.style.display = 'inline';
+
+     
+         if ((winH>0) && (winW>0)) {
+	   
+           divlogo.style.top = winH/2 - (divlogo.offsetHeight/2)+ document.body.scrollTop;
+           divlogo.style.left = winW/2 - (divlogo.offsetWidth/2);
+
+         }
+    
+       }
+    return true;
+  }
+
 function getKeyPress(event)
 {
   var intKeyCode;
