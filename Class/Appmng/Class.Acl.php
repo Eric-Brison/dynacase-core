@@ -1,5 +1,5 @@
 <?
-// $Id: Class.Acl.php,v 1.3 2003/03/28 13:30:25 eric Exp $
+// $Id: Class.Acl.php,v 1.4 2003/07/25 14:22:47 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Acl.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 //
-$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.3 2003/03/28 13:30:25 eric Exp $';
+$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.4 2003/07/25 14:22:47 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -231,17 +231,16 @@ function Init($app,$app_acl,$update=FALSE)
     $defaultacl->group_default="Y";
     $defaultacl->Modify();
 
-    $user = new User($this->dbaccess);
-    $userlist = $user-> GetGroupList();
 
-
-    while (list($k,$v)=each($userlist)) {
+    if (!$update) {
+      // set default access to 'all' group only
       $permission = new Permission($this->dbaccess);
-      $permission->id_user=$v->id;
+      $permission->id_user=2;
       $permission->id_application=$app->id;
       $permission->id_acl=$aclid;
       if (! $permission->Exists($permission->id_user,$app->id,$permission->id_acl)) {
 	$permission->Add();
+      
       }
     }
   }
