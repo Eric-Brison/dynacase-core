@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.2 2002/01/08 15:13:32 eric Exp $
+#  $Id: WHAT.spec.in,v 1.3 2002/01/08 17:52:03 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -66,33 +66,16 @@ if [ "$1" = 1 ] ; then
   # Add apache options for what
   echo "Include %{destdir}/apache.conf" >>/etc/httpd/conf/httpd.conf
 
+fi
 
  
-  # try execute post install now
-  %{pidir}/@PACKAGE@_post.sh 1
-  if [ $? -ne 0 ]; then
-    ln -s %{pidir}/@PACKAGE@_post.sh %{pidir}/PI%{pirange}@PACKAGE@
-  fi
-
-else
-  # Update the database with Core App
-  echo "update Core Database"
-  pushd /home/httpd/what >/dev/null
-  echo '<?
-  include_once("Class.Application.php");
-  $app=new Application();
-  $Null = "";
-  $app->Set("@PACKAGE@",$Null);
-  $app->Update();
-  ?>' | /usr/bin/php -q 2>&1 >>/dev/null
-  popd >/dev/null
-
-  ll=`cat /etc/ankpsql-tools/base-list | grep "^@DBNAME@$" | wc -l`
-  if [ $ll -eq 0 ]; then 
-    echo "Register DB @DBNAME@ for automatic dump"
-    echo "@DBNAME@" >> /etc/ankpsql-tools/base-list
-  fi
+# try execute post install now
+%{pidir}/@PACKAGE@_post.sh 1
+if [ $? -ne 0 ]; then
+   ln -s %{pidir}/@PACKAGE@_post.sh %{pidir}/PI%{pirange}@PACKAGE@
 fi
+
+
 # merge @PACKAGE@ translation for i18n
 for lang in en fr ; do
     pushd /home/httpd/what/locale/$lang/LC_MESSAGES >/dev/null
@@ -129,11 +112,6 @@ if [ "$1" = 0 ] ; then
   grep -v 'Include %{destdir}/apache.conf' /etc/httpd/conf/httpd.conf > /tmp/httpd.conf
   mv /tmp/httpd.conf /etc/httpd/conf/httpd.conf
 
-  # Restart Apache if running
-  run=`/etc/rc.d/init.d/httpd status |grep running|wc -l`
-  if [ $run = 1 ] ; then
-     /etc/rc.d/init.d/httpd restart
-  fi
 
   # Post uninstall - will be re-execute at next boot if cannot be perform
   # correctly now
@@ -142,26 +120,7 @@ if [ "$1" = 0 ] ; then
     rm %{pidir}/PU%{purange}@PACKAGE@_post.sh
   fi
 fi
-# Remove phpinclude in the include path of php
-if [ "$1" = 0 ] ; then
-echo "Remove libwhat in php_ini"
-echo '
-<? $php_ini=file("/etc/php/php.ini");
-   $out = fopen("/etc/php/php.ini.tmp","w");
-   while (list($k,$v)=each($php_ini)) {
-     $pos = strpos ($v,"include_path");
-     if ( $pos === false) {
-       fputs($out,$v);
-     } else {
-       $res = str_replace(":%{contentdir}/libwhat","",$v);
-       $res = str_replace(":%{contentdir}/what","",$res);
-       fputs($out,$res);
-     }
-   }
-   fclose($out);
-   rename("/etc/php/php.ini.tmp","/etc/php/php.ini");
 
-?> ' | /usr/bin/php -q
 # Remove what from syslog
   cp /etc/syslog.conf /etc/syslog.conf.sav
   cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
@@ -169,7 +128,7 @@ echo '
   rm -f /etc/logrotate.d/what
 
 # Restart Apache if running
-  run=`/etc/rc.d/init.d/httpd status |grep running|wc -l`
+  run=`/etc/rc.d/init.d/httpd status |grep pid|wc -l`
   if [ $run = 1 ] ; then
      /etc/rc.d/init.d/httpd restart
   fi

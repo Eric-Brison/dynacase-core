@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.2 2002/01/08 15:13:32 eric Exp $
+// $Id: index.php,v 1.3 2002/01/08 17:52:03 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -21,33 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: index.php,v $
-// Revision 1.2  2002/01/08 15:13:32  eric
-// *** empty log message ***
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.16  2001/12/03 13:58:46  eric
-// i18n
-//
-// Revision 1.15  2001/11/28 15:55:02  eric
-// transfert ft N_ vers Class.application
-//
-// Revision 1.14  2001/11/14 15:21:50  eric
-// modif mode opératoire pour standalone = 'R'
-//
-// Revision 1.13  2001/10/17 09:09:26  eric
-// mise en place de i18n via gettext
-//
-// Revision 1.12  2001/08/28 10:09:57  eric
-// ajout version navigateur dans variables de session
-//
-// Revision 1.11  2001/06/13 10:57:59  eric
-//
-// multi frame support
-//
-// ---------------------------------------------------------------#
+
 #
 # This is the main body of App manager
 # It is used to launch application and 
@@ -56,7 +30,6 @@
 #
 #
 
-ini_set("include_path", ".:/usr/lib/php:/home/httpd/what:/home/httpd/what/WHAT");
 
 include_once('Class.Action.php');
 include_once('Class.Application.php');
@@ -90,7 +63,7 @@ $puburl = $core->GetParam("CORE_PUBURL","");
 if ($puburl == "") {
   global $HTTP_HOST,$REDIRECT_URL;
   $core->SetParam("CORE_PUBURL","http://".$HTTP_HOST.$REDIRECT_URL);
-  $core->SetParam("CORE_JSURL","http://".$HTTP_HOST.$REDIRECT_URL."/JavaScript");
+  $core->SetParam("CORE_JSURL","http://".$HTTP_HOST.$REDIRECT_URL."/WHAT/Layout");
   $puburl= $core->GetParam("CORE_PUBURL","");;
 }
 

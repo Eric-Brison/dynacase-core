@@ -2,7 +2,7 @@
 
 <?php
 // ---------------------------------------------------------------
-// $Id: wsh.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: wsh.php,v 1.2 2002/01/08 17:52:03 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/wsh.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -25,6 +25,8 @@
 // ---------------------------------------------------------------
 
 // WHAT SHELL
+ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT");
+
 include_once('Class.Action.php');
 include_once('Class.Application.php');
 include_once('Class.Session.php');

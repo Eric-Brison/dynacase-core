@@ -15,7 +15,11 @@ if [ "$1" = 1 ] ; then
   sulog postgres "createuser -d -a anakeen" 
  
   log "Register DB anakeen for automatic dump"
-  echo "anakeen" >> /etc/ankpsql-tools/base-list
+  ll=`cat /etc/ankpsql-tools/base-list | grep "^anakeen$" | wc -l`
+  if [ $ll -eq 0 ]; then 
+    echo "Register DB anakeen for automatic dump"
+    echo "anakeen" >> /etc/ankpsql-tools/base-list
+  fi
 
 
 
@@ -40,6 +44,7 @@ if [ "$1" = 1 ] ; then
   # Init the database with all App
   pushd /home/httpd/what >/dev/null
   echo '<?
+  ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT");
   include_once("Class.Application.php");
   $app=new Application();
   $Null = "";
@@ -48,7 +53,7 @@ if [ "$1" = 1 ] ; then
   $app->Set("APPMNG",$Null);
   $app->Set("AUTHENT",$Null);
   $app->Set("ACCESS",$Null);
-  ?>' | /usr/bin/php -q 2>&1 >>/dev/null
+  ?>' | /usr/bin/php -q 
   popd >/dev/null
 
   # Restart Apache if running

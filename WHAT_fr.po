@@ -363,6 +363,7 @@ msgstr	"produit par"
 msgid	"warning_pass"
 msgstr	"La saisie de votre mot de passe est obligatoire :"
 
+#, fuzzy
 msgid	"yourusername"
 msgstr	"Votre nom d'utilisateur :"
 

@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+//  $Id: Class.Application.php,v 1.2 2002/01/08 17:52:03 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.1 2002/01/08 12:41:34 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.2 2002/01/08 17:52:03 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -312,11 +312,15 @@ function InitText()
   
   // old init
   $this->text = new Lang($this->dbaccess);
-  $this->text->SetEnv($this->id,$this->Getparam("CORE_LANG"),"en");
+  $this->text->SetEnv($this->id,
+		      substr($this->Getparam("CORE_LANG"),0,2),
+		      "en");
 
   // add parent text : CORE text
   if (isset($this->parent->id)) {
-    $this->text->SetEnv($this->parent->id,$this->Getparam("CORE_LANG"),"en");
+    $this->text->SetEnv($this->parent->id,
+			substr($this->Getparam("CORE_LANG"),0,2),
+			"en");
   }
 }
 
