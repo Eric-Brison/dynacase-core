@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.19 2004/10/11 15:40:27 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.20 2005/03/04 17:20:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -165,4 +165,16 @@ function glue_url($parsed) {
   return $uri;
 }
 
+
+/**
+ * set in cache one hour
+ */
+function setHeaderCache() {
+   header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
+
+   header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
+   header("Pragma: "); // HTTP 1.0
+   header("Content-type: text/css");
+  
+}
 ?>

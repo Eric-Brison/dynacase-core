@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: core_css.php,v 1.4 2005/01/07 16:59:34 eric Exp $
+ * @version $Id: core_css.php,v 1.5 2005/03/04 17:20:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: core_css.php,v 1.4 2005/01/07 16:59:34 eric Exp $
+// $Id: core_css.php,v 1.5 2005/03/04 17:20:02 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/core_css.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -44,10 +44,6 @@ function core_css(&$action) {
     if ($lfile) $action->lay = new Layout(getLayoutFile($reg[1],strtolower($reg[2])), $action);
   }
 
-   header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
-
-   header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
-   header("Pragma: "); // HTTP 1.0 
-   header("Content-type: text/css");
+  setHeaderCache();
 
 }
