@@ -1,5 +1,5 @@
 <?
-// $Id: Class.ObjectPermission.php,v 1.11 2002/09/24 13:57:13 eric Exp $
+// $Id: Class.ObjectPermission.php,v 1.12 2003/03/18 18:27:50 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.ObjectPermission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------
 
 
-$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.11 2002/09/24 13:57:13 eric Exp $';
+$CLASS_OBJECTPERMISSION_PHP = '$Id: Class.ObjectPermission.php,v 1.12 2003/03/18 18:27:50 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
@@ -91,23 +91,23 @@ create unique index i_operm on operm (id_user, id_obj, id_class); ';
 
     }
 
-  function PostSelect($id)
-    {      
+//   function PostSelect($id)
+//     {      
 
-      // init privileges
-      $this-> GetPrivileges();
-    }
-  function PostDelete()
-    {
-      // update privileges
-      $this-> GetPrivileges();
-    }
+//       // init privileges
+//       $this-> GetPrivileges();
+//     }
+//   function PostDelete()
+//     {
+//       // update privileges
+//       $this-> GetPrivileges();
+//     }
 
-  function PostUpdate()
-    {
-      // update privileges
-      $this-> GetPrivileges();
-    }
+//   function PostUpdate()
+//     {
+//       // update privileges
+//       $this-> GetPrivileges();
+//     }
 
 
 
