@@ -1,56 +1,100 @@
 
 [ZONE CORE:HTMLHEAD]
 <script language="JavaScript">
-
-
+  var coin=0;
+  var logoc;
+  var logo;
+  var leftc;
+  var topc;
   function getFrameWidth() {
-      winW = window.innerWidth;
+      var winW = window.innerWidth;
       if (! winW)	   
-            winW = document.body.clientWidth;
+            winW = document.body.offsetWidth;
 
       return (winW);
   }
 
   function getFrameHeight() {
-      winH= window.innerHeight;
+      var winH= window.innerHeight;
       if (! winH)	
-           winH = document.body.clientHeight;
+           winH = document.body.offsetHeight;
       return (winH);
   }
- 
 
-  
-  var winH=getFrameHeight();
-  var winW=getFrameWidth();
 
-  function reSizeLogo() { 
-      winH=getFrameHeight();
-      winW=getFrameWidth()
+
+  function CenterLogo() { 
+      var winH=getFrameHeight();
+      var winW=getFrameWidth();
+
+
+      if (document.getElementById) { // DOM3 = IE5, NS6
+         logo = document.getElementById('logo');
+
+         logoc = document.getElementById('logoc');
+     
+         if ((winH>0) && (winW>0)) {
+           logo.style.top = winH/2 - (logo.offsetHeight/2);
+           logo.style.left = winW/2 - (logo.offsetWidth/2);
+	   topc = winH/2 - (logo.offsetHeight/2)+logo.height;
+	   leftc = winW/2 - (logo.offsetWidth/2)+logo.width;
+	   logoc.style.left=leftc;
+	   logoc.style.top=topc;
+         }
     
-      if ((winH>0) && (winW>0))
-         document.logo.height= winH/1.2;
-    
-  }
-  window.onresize = reSizeLogo;
-
-
-  function DisplayLogo() { 
-    if ((winH>0) && (winW>0))
-
-      if (document.logo.height < (winH/1.2)) {  
-        document.logo.height= document.logo.height+1+(document.logo.height/50);     
-        setTimeout("DisplayLogo()",1); // each 1ms
-      }
+       }
     return true;
   }
 
+  
+
+  function MoveLogoC() { 
+      var winH=getFrameHeight();
+      var winW=getFrameWidth();
+
+     switch (coin) {
+       case 0:          
+         if (leftc > winW/2 - (logo.offsetWidth/2)-logoc.width) {        
+           leftc -= 1;
+           logoc.style.left = leftc;
+         } else coin = 1;
+	 break;
+
+       case 1:          
+         if (topc >  winH/2 - (logo.offsetHeight/2)-logoc.height) {        
+           topc -= 1;
+           logoc.style.top = topc;
+         } else coin = 2;
+	 break;
+       
+       case 2:          
+         if (leftc <  winW/2 - (logo.offsetWidth/2)+logo.width) {        
+           leftc += 1;
+           logoc.style.left = leftc;
+         } else coin = 3;
+	 break;
+
+       case 3:          
+         if (topc <  winH/2 - (logo.offsetHeight/2)+logo.height) {        
+           topc += 1;
+           logoc.style.top = topc;
+         } else coin = 0;
+	 break;
+       }
+
+
+  }
+  window.onresize = CenterLogo;
+  window.onload = CenterLogo;
+
+
+
 </script>
 
-
-<table width="100%"<TR>
-<TD align="center"><img  name="logo"   onLoad="document.logo.height=20;reSizeLogo()"  alt="[WHAT] Web Hosting Application Toolkit" src="[IMG:logo-1.png]"></TD>
-<TR>
-</table>
+       <img id="logo" style="position:absolute; top:0px; left:0px" alt="[WHAT] Web Hosting Application Toolkit" src="[IMG:logo-1.png]">
+       <img id="logoc" onload="window.setInterval('MoveLogoC()',10);" style="position:absolute; top:0px; left:0px"
+             title="[CORE_CLIENT]" 
+             alt="[CORE_CLIENT]" src="[CORE_LOGOCLIENT]">
 
 
 
