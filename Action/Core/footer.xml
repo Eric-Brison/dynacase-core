@@ -3,15 +3,10 @@
 
 <table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
 
+
 <tr>
-  <td colspan="3" class="headcell" height="1" align="left">
-     <img border="0" src="[IMG:1x1.png]"></td>
-</tr>
-<tr>
-  <td colspan="3" height="1" align="left"><img border="0" src="[IMG:1x1.png]"></td>
-</tr>
-<tr>
-  <td align="left"><span class="anakeen">[CORE_CLIENT]</span></td>
+  <td align="left"><span class="anakeen">[CORE_CLIENT]</span>
+</td><td>[plugzone]</td>
   <td ><img id="ilog" style="display:none" 
             title="[TEXT:view log]" src="[IMG:log.gif]" 
             onclick="with (document.getElementById('slog')) { if ((options.length > 0)&&(style.display=='none')) style.display='inline'; else style.display='none';}">
@@ -19,9 +14,7 @@
   <td align="right"><span class="anakeen">[TEXT:Hosted by] 
        <b>WHAT</b>, [TEXT:powered by] <b>[CORE_ANAKEEN]</span></td>
 </tr>
-<tr>
-  <td colspan="3" class="headcell" height="1" align="left"><img border="0" src="[IMG:1x1.png]"></td>
-</tr>
+
 </table>
 
 

@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.22 2003/05/14 17:11:49 eric Exp $
+//  $Id: Class.Application.php,v 1.23 2003/05/19 09:59:12 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.22 2003/05/14 17:11:49 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.23 2003/05/19 09:59:12 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -217,9 +217,9 @@ function Exists($app_name,$id_application='')
     $query->string="'".$app_name."'";
   }
 
-  $query->Query();
+  $r=$query->Query(0,0,"TABLE");
 
-  return ($query->nb > 0);
+  return ($query->nb > 0)?$r[0]["id"]:false;
 }
 
 function AddJsRef($ref) 
