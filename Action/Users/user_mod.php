@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: user_mod.php,v 1.2 2002/07/29 11:15:18 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,8 +22,8 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: user_mod.php,v $
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
+// Revision 1.2  2002/07/29 11:15:18  marc
+// Release 0.1.1, see ChangeLog
 //
 // Revision 1.16  2001/08/31 13:22:46  eric
 // modification pour éviter la récursivité dans les groupes
@@ -96,6 +96,10 @@ function user_mod(&$action) {
     $user = new User($action->GetParam("CORE_USERDB"),$id);
   } 
 
+  $papp = GetHttpVars("papp","APPMNG");
+  $paction = GetHttpVars("paction","PARAM_CUACCOUNT");
+  $pargs = GetHttpVars("pargs","");
+
   $group = (GetHttpVars("group") == "yes");
 
   $user->firstname=GetHttpVars("firstname");
@@ -159,7 +163,7 @@ function user_mod(&$action) {
   if ($group) {
     redirect($action,"USERS","GROUP_TABLE");
   } else {
-    redirect($action,"USERS","USER_TABLE");
+    redirect($action,$papp,$paction);
   }
 }
 ?>

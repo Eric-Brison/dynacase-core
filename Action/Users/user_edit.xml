@@ -1,41 +1,11 @@
-<html>
-<head>
-<style>
-
-[ZONE CORE:GENCSS]
-
-</style>
-[JS:REF]
-<script language="JavaScript">
-<!--
-[JS:CODE]
-
-
-
-
-//-->
-</script>
-
-</head>
-
-<body>
-
 <form target="body" name="edit" method="POST" action="[CORE_STANDURL]app=USERS&action=USER_MOD">
 <input type="hidden" name="id" value="[id]">
+<input type="hidden" name="papp" value="[APP]">
+<input type="hidden" name="paction" value="[ACTION]">
+<input type="hidden" name="pargs" value="[ARGS]">
 
-<table align="left"  border="0" cellspacing="1" cellpadding="1" WIDTH="100%">
-<tr>
-<td class="CORETblHeadCell">
 
-  <table align="left"  border="0" cellspacing="0" cellpadding="2" WIDTH="100%">
-  <tr>
-    <td colspan="3" align="center" class="CORETblHeadCell"><span class="CORETblHead">
-    [TITRE] 
-    </span></td>
-  </tr>
-  <tr>
-    <td colspan="3" align="left" class="CORETblCell">&nbsp;</td>
-  </tr>
+  <table>
   
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:firstname] : </span></td>
@@ -144,23 +114,14 @@
   </tr>
   <tr>
 
-    <td colspan="3" align="center" class="CORETblHeadCell">
+    <td colspan="3" align="center" class="CORETblCell">
       <font size="-1"><input class="CORETblHead" type="button" 
         onClick="return Valid_Send()" name="Creer" value="[BUTTONTYPE]">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input class="CORETblHead" type="reset" onClick="self.close()" name="Annuler" value="[TEXT:butclosew]">      
       </font>
     </td>
 
   </tr>
   </table>
 
-</td>
-</tr>
-</table>
 </form>
-
-
-
-</body>
-</html>

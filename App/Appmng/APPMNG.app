@@ -7,7 +7,7 @@ $app_desc = array (
 "description"	=>N_("What Application Management"),//long description
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"appmng.gif",		//Icon
-"displayable"	=>"Y"			//Should be displayed on an app list (Y,N)
+"displayable"	=>"N"			//Should be displayed on an app list (Y,N)
 );
 
 $app_acl = array (
@@ -43,7 +43,19 @@ $action_desc = array (
   array(
    "name"               =>"PARAM_CULIST",
    "short_name"         =>N_("current user parameters"),
-   "toc"                =>"N",
+   "toc"                =>"Y",
+   "acl"                =>"USER"
+  ) ,
+  array(
+   "name"               =>"PARAM_CUMAIL",
+   "short_name"         =>N_("current user mail configuration"),
+   "toc"                =>"Y",
+   "acl"                =>"USER"
+  ) ,
+  array(
+   "name"               =>"PARAM_CUACCOUNT",
+   "short_name"         =>N_("current user account"),
+   "toc"                =>"Y",
    "acl"                =>"USER"
   ) ,
   array(

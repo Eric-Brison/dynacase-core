@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.1 2002/01/08 12:41:34 eric Exp $
+// $Id: user_table.php,v 1.2 2002/07/29 11:15:18 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: user_table.php,v $
+// Revision 1.2  2002/07/29 11:15:18  marc
+// Release 0.1.1, see ChangeLog
+//
 // Revision 1.1  2002/01/08 12:41:34  eric
 // first
 //
@@ -103,8 +106,14 @@ function user_table(&$action, $group=false) {
   // Set the edit form element
   if ($group) {
     $paramedit="&group=yes";
+    $paction = "GROUP_TABLE";
+    $isgroup = "yes";
+    $title = $action->text("titlecreateg");
   } else {
     $paramedit="&group=no";
+    $paction = "USER_TABLE";
+    $isgroup = "no";
+    $title = $action->text("titlecreateu");
   }
     
   $form = new SubForm("edit",350,330,$standurl."app=USERS&action=USER_MOD$paramedit",
@@ -124,8 +133,10 @@ function user_table(&$action, $group=false) {
   $action->lay->set("MAINFORM",$form->GetMainForm());
 
   if ($action->HasPermission("DOMAIN_MASTER")) {
-    $add_icon = new Layout($action->GetLayoutFile("add_icon.xml"),$action);
-    $add_icon->set("JSCALL",$form->GetEmptyJsMainCall());
+    $add_icon = new Layout($action->GetLayoutFile("add_icon.xml" ),$action);
+    $add_icon->set("group",$isgroup);
+    $add_icon->set("title",$title);
+    $add_icon->set("paction",$paction);
     $action->lay->set("ADD_ICON",$add_icon->gen());
   } else {
     $action->lay->set("ADD_ICON","");
@@ -157,7 +168,7 @@ function user_table(&$action, $group=false) {
   }
 
   // Give some global elements for the table layout
-  $query->table->fields= array("domain", "id","edit","lastname","delete","fullname","login");
+  $query->table->fields= array("domain", "id","edit","lastname","delete","fullname","login", "papp", "paction", "group");
 
   $query->table->headsortfields = array ( "head_lastname" => "lastname",
                                          "head_login" => "login");
@@ -182,6 +193,10 @@ function user_table(&$action, $group=false) {
   $jsscript=$form->GetLinkJsMainCall();
   reset ($query->table->array);
   while(list($k,$v) = each($query->table->array)) {
+    $query->table->array[$k]["papp"] = "USERS";
+    $query->table->array[$k]["paction"] = $paction;
+    $query->table->array[$k]["group"] = $isgroup;
+
     $query->table->array[$k]["fullname"] = 
       ucfirst((isset($query->table->array[$k]["firstname"])?$query->table->array[$k]["firstname"]:"(?)"))." "
       .ucfirst((isset($query->table->array[$k]["lastname"])?$query->table->array[$k]["lastname"]:"(?)"));

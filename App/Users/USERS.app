@@ -28,10 +28,16 @@ $app_acl = array (
 
 $action_desc = array (
   array( 
+   "name"		=>"ADMIN_VIEW",
+   "short_name"		=>N_("admin view"),
+   "toc"		=>"N",
+   "acl"		=>"DOMAIN_MASTER"
+  ) ,
+  array( 
    "name"		=>"USER_TABLE",
    "short_name"		=>N_("users list"),
    "toc"		=>"Y",
-   "acl"		=>"USER",
+   "acl"		=>"DOMAIN_MASTER",
    "root"		=>"Y"
   ) ,
   array( 

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.3 2002/03/28 13:07:08 eric Exp $
+// $Id: user_edit.php,v 1.4 2002/07/29 11:15:18 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -35,6 +35,10 @@ function user_edit(&$action) {
   // Get all the params      
   global $HTTP_POST_VARS;
   $id=GetHttpVars("id");
+  if ($id==-1) $id="";
+  $papp = GetHttpVars("papp","APPMNG");
+  $paction = GetHttpVars("paction","PARAM_CUACCOUNT");
+  $pargs = GetHttpVars("pargs","");
 
   // initialise if user group or single user
   $group = (GetHttpVars("group") == "yes");
@@ -210,6 +214,9 @@ function user_edit(&$action) {
 	}
       }
   
+  $action->lay->Set("APP", $papp);
+  $action->lay->Set("ACTION", $paction);
+  $action->lay->Set("ARGS", $pargs);
 
   $action->lay->SetBlockData("SELECTDOMAINGROUP", $tabd);
   $action->lay->SetBlockData("SELECTOTHERGROUP", $tabo);

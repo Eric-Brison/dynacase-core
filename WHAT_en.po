@@ -4,7 +4,7 @@
 #
 msgid	""
 msgstr	"Project-Id-Version: WHAT 1.3\n"
-	"POT-Creation-Date: 2002-05-27 17:08+0200\n"
+	"POT-Creation-Date: 2002-07-29 11:40+0200\n"
 	"PO-Revision-Date: 2001-03-14 00:54-0500\n"
 	"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 	"Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -12,78 +12,6 @@ msgstr	"Project-Id-Version: WHAT 1.3\n"
 	"Content-Type: text/plain; charset=ISO-8859-1\n"
 	"Content-Transfer-Encoding: 8-bit\n"
 	"\n"
-
-msgid	"titlecreateg"
-msgstr	"Add group"
-
-msgid	"titlecreateu"
-msgstr	"Add user"
-
-msgid	"butcreate"
-msgstr	"Create"
-
-msgid	"Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr	""
-
-msgid	"titlemodifyg"
-msgstr	"Modify group"
-
-msgid	"titlemodifyu"
-msgstr	"Modify user"
-
-msgid	"butmodify"
-msgstr	"Modify"
-
-msgid	"nomail"
-msgstr	"No mail account"
-
-msgid	"err_add_user"
-msgstr	"Can't create user"
-
-msgid	"titlegroup"
-msgstr	"Group List"
-
-msgid	"titleuser"
-msgstr	"User List"
-
-msgid	"groupdesc"
-msgstr	"Description"
-
-msgid	"domain"
-msgstr	"Domain"
-
-msgid	"group"
-msgstr	"Group"
-
-msgid	"fullname"
-msgstr	"Username"
-
-msgid	"login"
-msgstr	"Login name"
-
-msgid	"description"
-msgstr	"Description"
-
-#, c-format
-msgid	"index %s not found."
-msgstr	""
-
-msgid	"auth_failure"
-msgstr	"Authentification failed : try again"
-
-msgid	"auth_expired"
-msgstr	"Your login has expired"
-
-#, fuzzy
-msgid	"auth_welcome"
-msgstr	"Welcome !"
-
-msgid	"welcome"
-msgstr	"Welcome !"
-
-#, fuzzy
-msgid	"nodomain"
-msgstr	"Domain"
 
 msgid	"userlogin"
 msgstr	"Login"
@@ -122,11 +50,20 @@ msgstr	"Application"
 msgid	"appdesc"
 msgstr	"Description"
 
+msgid	"description"
+msgstr	"Description"
+
 msgid	"titlecreateaction"
 msgstr	"Add action"
 
+msgid	"butcreate"
+msgstr	"Create"
+
 msgid	"titlemodifyaction"
 msgstr	"Modify action"
+
+msgid	"butmodify"
+msgstr	"Modify"
 
 msgid	"err_add_action"
 msgstr	"Can't create action"
@@ -134,20 +71,29 @@ msgstr	"Can't create action"
 msgid	"err_mod_action"
 msgstr	"Can't modify action"
 
+msgid	"name"
+msgstr	"Name"
+
+msgid	"edit"
+msgstr	"Edit"
+
+msgid	"short_name"
+msgstr	"Short Name"
+
 msgid	"titlecreate"
 msgstr	"Add Application"
 
 msgid	"titlemodify"
 msgstr	"Modify Application"
 
-msgid	"title"
-msgstr	"Applications List"
-
 msgid	"err_add_application"
 msgstr	"Can't create Application"
 
 msgid	"err_mod_application"
 msgstr	"Can't modify Application"
+
+msgid	"title"
+msgstr	"Applications List"
 
 #, fuzzy
 msgid	"Remove parameter"
@@ -185,156 +131,71 @@ msgstr	""
 msgid	"err_mod_param"
 msgstr	"Can't modify parameter"
 
-msgid	"name"
-msgstr	"Name"
+msgid	"auth_failure"
+msgstr	"Authentification failed : try again"
 
-msgid	"edit"
-msgstr	"Edit"
-
-msgid	"short_name"
-msgstr	"Short Name"
+msgid	"auth_expired"
+msgstr	"Your login has expired"
 
 #, fuzzy
-msgid	"descr"
+msgid	"auth_welcome"
+msgstr	"Welcome !"
+
+msgid	"welcome"
+msgstr	"Welcome !"
+
+#, fuzzy
+msgid	"nodomain"
+msgstr	"Domain"
+
+#, c-format
+msgid	"no documentation available for %s application"
+msgstr	""
+
+#, c-format
+msgid	"index %s not found."
+msgstr	""
+
+msgid	"err_add_user"
+msgstr	"Can't create user"
+
+msgid	"titlecreateg"
+msgstr	"Add group"
+
+msgid	"titlecreateu"
+msgstr	"Add user"
+
+msgid	"titlegroup"
+msgstr	"Group List"
+
+msgid	"titleuser"
+msgstr	"User List"
+
+msgid	"groupdesc"
 msgstr	"Description"
 
-#, c-format
-msgid	"function '%s' not available for application %s (%d)"
-msgstr	""
+msgid	"domain"
+msgstr	"Domain"
 
-msgid	"Access denied"
-msgstr	"Access denied"
+msgid	"group"
+msgstr	"Group"
 
-msgid	"modify object acl"
-msgstr	""
+msgid	"fullname"
+msgstr	"Username"
 
-msgid	"view object acl"
-msgstr	""
+msgid	"login"
+msgstr	"Login name"
 
-#, c-format
-msgid	"Object Permission : permission %s needed (%s) - # %d"
-msgstr	""
+msgid	"nomail"
+msgstr	"No mail account"
 
-msgid	"$code"
-msgstr	""
+msgid	"titlemodifyg"
+msgstr	"Modify group"
 
-msgid	"prev"
-msgstr	""
+msgid	"titlemodifyu"
+msgstr	"Modify user"
 
-msgid	"next"
-msgstr	""
-
-msgid	"first"
-msgstr	""
-
-msgid	"last"
-msgstr	""
-
-msgid	"locked files of "
-msgstr	""
-
-msgid	"What User Management"
-msgstr	""
-
-msgid	"Access To All Users"
-msgstr	""
-
-msgid	"Access To All Users in my domain"
-msgstr	""
-
-msgid	"Access To My Own account"
-msgstr	""
-
-#, fuzzy
-msgid	"users list"
-msgstr	"Login"
-
-#, fuzzy
-msgid	"group list"
-msgstr	"Groups"
-
-msgid	"Core"
-msgstr	""
-
-msgid	"Core Application Manager"
-msgstr	""
-
-#, fuzzy
-msgid	"application version"
-msgstr	"Delete"
-
-msgid	"default style"
-msgstr	""
-
-#, fuzzy
-msgid	"language"
-msgstr	"Lastname"
-
-msgid	"button color"
-msgstr	""
-
-msgid	"background color or image"
-msgstr	""
-
-msgid	"background color or image in security mode"
-msgstr	""
-
-msgid	"background image for bar"
-msgstr	""
-
-msgid	"background color for table cells"
-msgstr	""
-
-msgid	"second background color"
-msgstr	""
-
-msgid	"highlight background color"
-msgstr	""
-
-msgid	"inverse video background color"
-msgstr	""
-
-msgid	"text color"
-msgstr	""
-
-msgid	"inverse video color text"
-msgstr	""
-
-msgid	"anchor color"
-msgstr	""
-
-msgid	"error color"
-msgstr	""
-
-msgid	"default font"
-msgstr	""
-
-msgid	"menu font"
-msgstr	""
-
-msgid	"top url to find help documentation"
-msgstr	""
-
-msgid	"font size"
-msgstr	""
-
-msgid	"frame size"
-msgstr	""
-
-msgid	"frame border size"
-msgstr	""
-
-#, fuzzy
-msgid	"client name"
-msgstr	"Lastname"
-
-msgid	"anakeen"
-msgstr	""
-
-msgid	"use object cache"
-msgstr	""
-
-msgid	"number of cached object by class"
+msgid	"Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
 msgstr	""
 
 #, fuzzy
@@ -412,6 +273,14 @@ msgid	"current user parameters"
 msgstr	"Add parameter"
 
 #, fuzzy
+msgid	"current user mail configuration"
+msgstr	"Add parameter"
+
+#, fuzzy
+msgid	"current user account"
+msgstr	"Add parameter"
+
+#, fuzzy
 msgid	"actions"
 msgstr	"Function"
 
@@ -435,49 +304,283 @@ msgstr	"Add parameter"
 msgid	"modify user parameters"
 msgstr	"Add parameter"
 
-msgid	"adduser"
-msgstr	"New user"
+#, fuzzy
+msgid	"application version"
+msgstr	"Delete"
 
-msgid	"firstname"
-msgstr	"Firstname"
+msgid	"default style"
+msgstr	""
 
-msgid	"lastname"
+#, fuzzy
+msgid	"language"
 msgstr	"Lastname"
 
-msgid	"password"
-msgstr	"Password"
+msgid	"button color"
+msgstr	""
 
-msgid	"groups"
+msgid	"background color or image"
+msgstr	""
+
+msgid	"background color or image in security mode"
+msgstr	""
+
+msgid	"background image for bar"
+msgstr	""
+
+msgid	"background color for table cells"
+msgstr	""
+
+msgid	"second background color"
+msgstr	""
+
+msgid	"highlight background color"
+msgstr	""
+
+msgid	"inverse video background color"
+msgstr	""
+
+msgid	"text color"
+msgstr	""
+
+msgid	"inverse video color text"
+msgstr	""
+
+msgid	"anchor color"
+msgstr	""
+
+msgid	"error color"
+msgstr	""
+
+msgid	"default font"
+msgstr	""
+
+msgid	"menu font"
+msgstr	""
+
+msgid	"top url to find help documentation"
+msgstr	""
+
+msgid	"font size"
+msgstr	""
+
+msgid	"frame size"
+msgstr	""
+
+msgid	"frame border size"
+msgstr	""
+
+#, fuzzy
+msgid	"client name"
+msgstr	"Lastname"
+
+#, fuzzy
+msgid	"client logo"
+msgstr	"Lastname"
+
+msgid	"anakeen"
+msgstr	""
+
+msgid	"use object cache"
+msgstr	""
+
+msgid	"number of cached object by class"
+msgstr	""
+
+msgid	"Core"
+msgstr	""
+
+msgid	"Core Application Manager"
+msgstr	""
+
+msgid	"What User Management"
+msgstr	""
+
+msgid	"Access To All Users"
+msgstr	""
+
+msgid	"Access To All Users in my domain"
+msgstr	""
+
+msgid	"Access To My Own account"
+msgstr	""
+
+msgid	"admin view"
+msgstr	""
+
+#, fuzzy
+msgid	"users list"
+msgstr	"Login"
+
+#, fuzzy
+msgid	"group list"
 msgstr	"Groups"
 
-msgid	"changegroup"
-msgstr	"Group Change"
+#, c-format
+msgid	"function '%s' not available for application %s (%d)"
+msgstr	""
 
-msgid	"domaingroup"
-msgstr	"Domain"
+msgid	"Access denied"
+msgstr	"Access denied"
 
-msgid	"othergroup"
-msgstr	"Others"
+msgid	"$code"
+msgstr	""
 
-msgid	"butclosew"
-msgstr	"Close window"
+msgid	"modify object acl"
+msgstr	""
+
+msgid	"view object acl"
+msgstr	""
+
+#, c-format
+msgid	"Object Permission : permission %s needed (%s) - # %d"
+msgstr	""
+
+msgid	"prev"
+msgstr	""
+
+msgid	"next"
+msgstr	""
+
+msgid	"first"
+msgstr	""
+
+msgid	"last"
+msgstr	""
 
 #, fuzzy
-msgid	"search"
-msgstr	"user"
+msgid	"descr"
+msgstr	"Description"
+
+msgid	"controlaccess"
+msgstr	"Access Control"
+
+msgid	"accessfor"
+msgstr	"Control access for application"
+
+msgid	"modify"
+msgstr	"Modify"
 
 #, fuzzy
-msgid	"clear"
+msgid	"Close"
 msgstr	"Close"
+
+msgid	" Access Control for"
+msgstr	""
+
+#, fuzzy
+msgid	"viewuser"
+msgstr	"User List"
+
+#, fuzzy
+msgid	"viewgroup"
+msgstr	"Group List"
+
+msgid	"download"
+msgstr	"Download access file"
+
+msgid	"needfile"
+msgstr	"Need upload file"
+
+msgid	"upload"
+msgstr	"Upload Access File"
+
+#, fuzzy
+msgid	"edit by object"
+msgstr	"object"
+
+msgid	"in database"
+msgstr	""
 
 msgid	"print"
 msgstr	"Print this page"
 
+msgid	"long_name"
+msgstr	"Complete name"
+
+msgid	"available"
+msgstr	"Avail"
+
+msgid	"acl"
+msgstr	"Acl"
+
+msgid	"root"
+msgstr	"Root"
+
+msgid	"toc"
+msgstr	"Toc"
+
+msgid	"butclosew"
+msgstr	"Close window"
+
+msgid	"titleaction"
+msgstr	"Application actions List"
+
 msgid	"help"
 msgstr	"Help"
 
+msgid	"addparam"
+msgstr	"New Parameter"
+
+msgid	"addstyle"
+msgstr	"New style"
+
+msgid	"access_free"
+msgstr	"Access Free"
+
+#, fuzzy
+msgid	"appssl"
+msgstr	"Description"
+
+msgid	"displayable"
+msgstr	"Displayable"
+
+msgid	"update"
+msgstr	""
+
 msgid	"delconfirm"
 msgstr	"Sure to delete user"
+
+msgid	"delete"
+msgstr	"Delete"
+
+#, fuzzy
+msgid	"application parameters list"
+msgstr	"New Application"
+
+#, fuzzy
+msgid	"my parameters"
+msgstr	"Can't modify parameter"
+
+msgid	"val"
+msgstr	"Value"
+
+#, fuzzy
+msgid	"select a user"
+msgstr	"Modify"
+
+#, fuzzy
+msgid	"user parameters list"
+msgstr	"Add parameter"
+
+#, fuzzy
+msgid	"select a style"
+msgstr	"Modify"
+
+#, fuzzy
+msgid	"style parameters list"
+msgstr	"Add parameter"
+
+msgid	"delconfirmstyle"
+msgstr	"Sure to delete style"
+
+msgid	"warning_pass"
+msgstr	"Your password is required"
+
+msgid	"yourusername"
+msgstr	"Your name :"
+
+msgid	"yourpassword"
+msgstr	"Your password :"
 
 msgid	"functionerr"
 msgstr	"Functions error detected"
@@ -502,128 +605,41 @@ msgstr	"Welcome !"
 msgid	"Welcome Page"
 msgstr	"Welcome !"
 
-msgid	"warning_pass"
-msgstr	"Your password is required"
+msgid	"firstname"
+msgstr	"Firstname"
 
-msgid	"yourusername"
-msgstr	"Your name :"
+msgid	"lastname"
+msgstr	"Lastname"
 
-msgid	"yourpassword"
-msgstr	"Your password :"
+msgid	"password"
+msgstr	"Password"
 
-msgid	"controlaccess"
-msgstr	"Access Control"
+msgid	"groups"
+msgstr	"Groups"
 
-msgid	" Access Control for"
-msgstr	""
+msgid	"changegroup"
+msgstr	"Group Change"
 
-msgid	"modify"
-msgstr	"Modify"
+msgid	"domaingroup"
+msgstr	"Domain"
 
-#, fuzzy
-msgid	"viewuser"
-msgstr	"User List"
-
-#, fuzzy
-msgid	"viewgroup"
-msgstr	"Group List"
+msgid	"othergroup"
+msgstr	"Others"
 
 #, fuzzy
-msgid	"Close"
+msgid	"search"
+msgstr	"user"
+
+#, fuzzy
+msgid	"clear"
 msgstr	"Close"
-
-msgid	"accessfor"
-msgstr	"Control access for application"
-
-msgid	"download"
-msgstr	"Download access file"
-
-msgid	"needfile"
-msgstr	"Need upload file"
-
-msgid	"upload"
-msgstr	"Upload Access File"
-
-#, fuzzy
-msgid	"edit by object"
-msgstr	"object"
-
-msgid	"in database"
-msgstr	""
-
-msgid	"long_name"
-msgstr	"Complete name"
-
-msgid	"available"
-msgstr	"Avail"
-
-msgid	"acl"
-msgstr	"Acl"
-
-msgid	"root"
-msgstr	"Root"
-
-msgid	"toc"
-msgstr	"Toc"
-
-msgid	"titleaction"
-msgstr	"Application actions List"
-
-msgid	"addparam"
-msgstr	"New Parameter"
-
-msgid	"addstyle"
-msgstr	"New style"
-
-msgid	"access_free"
-msgstr	"Access Free"
-
-#, fuzzy
-msgid	"appssl"
-msgstr	"Description"
-
-msgid	"displayable"
-msgstr	"Displayable"
-
-msgid	"update"
-msgstr	""
-
-msgid	"delete"
-msgstr	"Delete"
-
-msgid	"val"
-msgstr	"Value"
-
-#, fuzzy
-msgid	"application parameters list"
-msgstr	"New Application"
-
-#, fuzzy
-msgid	"select a style"
-msgstr	"Modify"
-
-#, fuzzy
-msgid	"style parameters list"
-msgstr	"Add parameter"
-
-msgid	"delconfirmstyle"
-msgstr	"Sure to delete style"
-
-#, fuzzy
-msgid	"select a user"
-msgstr	"Modify"
-
-#, fuzzy
-msgid	"user parameters list"
-msgstr	"Add parameter"
-
-#, fuzzy
-msgid	"my parameters"
-msgstr	"Can't modify parameter"
 
 #, fuzzy
 msgid	"unmodifiable parameter"
 msgstr	"Can't modify parameter"
+
+#~ msgid	"adduser"
+#~ msgstr	"New user"
 
 #~ msgid	"delparam"
 #~ msgstr	"Delete"
