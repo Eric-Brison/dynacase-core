@@ -18,10 +18,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Application.php,v 1.7 2002/04/08 15:13:47 eric Exp $
+//  $Id: Class.Application.php,v 1.8 2002/04/16 12:07:27 eric Exp $
 //
 
-$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.7 2002/04/08 15:13:47 eric Exp $';
+$CLASS_APPLICATION_PHP = '$Id: Class.Application.php,v 1.8 2002/04/16 12:07:27 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Action.php');
@@ -518,6 +518,43 @@ function InitApp($name,$update=FALSE) {
      $action = new Action($this->dbaccess);
      $action->Init($app,$action_desc,$update);
 
+
+     // init father if has
+     if ($app->childof != "") {
+       
+       // init ACL & ACTION
+       $app_acl=array();
+       $action_desc=array();
+       include("{$this->childof}/{$this->childof}.app");
+       
+       // init acl
+       $acl = new Acl($this->dbaccess);
+       $acl->Init($app,$app_acl,$update);
+
+       // init actions
+       $action = new Action($this->dbaccess);
+       $action->Init($app,$action_desc,$update);
+       
+     }
+
+
+     // init father application constant
+     if (file_exists("{$this->childof}/{$this->childof}_init.php")) {
+        include("{$this->childof}/{$this->childof}_init.php");
+        global $app_const;
+        if (isset($app_const)) {
+          reset($app_const);
+          while (list($k,$v) = each ($app_const)) {
+	    if ($update) { // don't modify old parameters
+	      if ($this->GetParam($k) == "")		
+		$this->SetParam($k,$v);// set only new parameters
+	    } else {
+	      $this->SetParam($k,$v);
+	    }
+          }
+        }
+     }
+
      // init application constant
      if (file_exists("{$name}/{$name}_init.php")) {
         include("{$name}/{$name}_init.php");
@@ -535,6 +572,9 @@ function InitApp($name,$update=FALSE) {
         }
      }
      
+     
+     $this->SetParam("APPNAME",$name); // use by generic application
+
      // Load app texts catalog
      if (file_exists("{$name}/{$name}_txt.php")) {
        include("{$name}/{$name}_txt.php");

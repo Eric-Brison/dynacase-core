@@ -56,7 +56,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.3 2002/04/08 15:13:47 eric Exp $
+//  $Id: Class.Layout.php,v 1.4 2002/04/16 12:07:27 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -312,7 +312,6 @@ var $strip='Y';
 
     $this->ParseBlock($out);
 
-    $this->ParseZone($out);
 
     // Parse IMG: and LAY: tags
     $this->ParseRef($out);
@@ -324,6 +323,7 @@ var $strip='Y';
       }
     }
 
+    $this->ParseZone($out);
     $this->ParseJs($out);
     $this->ParseCss($out);
 
