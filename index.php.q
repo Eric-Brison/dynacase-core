@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.3 2004/01/13 09:28:10 eric Exp $
+// $Id: index.php.q,v 1.4 2004/01/14 17:12:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -277,7 +277,15 @@ if (isset($HTTP_SESSION_VARS["CacheObj"])) {
     $nbcache += count($v);
   }
 }
+function sortqdelay($a,$b) {
+	$xa=doubleval(substr($a,4));
+	$xb=doubleval(substr($b,4));
+	if ($xa > $xb) return -1;
+	else if ($xa < $xb) return 1;
+	return 0;
+}
 
+usort($TSQLDELAY,sortqdelay);
 
 
 printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <A href=\"#\" onclick=\"alert('%s')\"><I>[Q %.2fs]</I></a></SUP>",
