@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.12 2002/06/04 16:09:56 eric Exp $
+#  $Id: WHAT.spec.in,v 1.13 2002/06/05 07:52:34 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -91,21 +91,8 @@ fi
 %files
 %defattr(-,root,root)
 %dir %{destdir}
-%dir %{destdir}/%{name}
 %doc ChangeLog
-%{destdir}/*.php
-%{destdir}/apache.conf
-%{destdir}/%{name}/*
-%{destdir}/CORE/*
-%{destdir}/USERS/*
-%{destdir}/ACCESS/*
-%{destdir}/AUTHENT/*
-%{destdir}/APPMNG/*
-%{destdir}/API/*
-%{destdir}/STYLE/*
-%{pidir}/*
-%dir %{destdir}/locale
-%{destdir}/locale/*
+%{destdir}/*
 
 %changelog
 * Tue Oct 30 2000 Yannick Le Briquer <yannick.lebriquer@anakeen.com>

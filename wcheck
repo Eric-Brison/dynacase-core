@@ -1,0 +1,205 @@
+#!/usr/bin/php -q
+<?php
+
+$pubdir="/home/httpd/what";
+
+global $HTTP_CONNECTION;
+
+if ($HTTP_CONNECTION != "")     {
+  print "<BR><H1>:~(</H1>";
+  exit;
+}
+
+
+//---------------------------------------------------
+function GetDbVersion($dbid) {
+  
+  $tver=array();
+  $rq=pg_exec ($dbid, "select paramv.val, application.name from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
+
+  if ($rq === false) return GetDbOldVersion($dbid);
+
+  for ($i=0; $i<pg_numrows($rq); $i++) {
+    $row= pg_fetch_array($rq,$i);
+    $tver[$row["name"]]=$row["val"];
+  }
+
+
+  return ($tver);
+}
+
+
+//---------------------------------------------------
+function GetDbOldVersion($dbid) {
+  print "GetDbOldVersion";
+  $tver=array();
+  $rq=pg_exec ($dbid, "select param.val, application.name from param, application  where param.name='VERSION' and param.key=application.id");
+
+  for ($i=0; $i<pg_numrows($rq); $i++) {
+    $row= pg_fetch_array($rq,$i);
+    $tver[$row["name"]]=$row["val"];
+    if ($row["name"] == "USERS") {
+      $tver["CORE"]   =$row["val"];
+      $tver["ACCESS"] =$row["val"];
+      $tver["APPMNG"] =$row["val"];
+      $tver["AUTHENT"]=$row["val"];
+    }
+  }
+
+
+  return ($tver);
+}
+//---------------------------------------------------
+function GetFileVersion($topdir) {
+
+  $tver=array();
+  if ($dir = @opendir($topdir)) {
+    while (($file = readdir($dir)) !== false) {
+      $inifile = $topdir."/$file/${file}_init.php";
+      if (is_file($inifile)) {
+
+	$fini = fopen($inifile,"r");
+	while (! feof($fini)) {
+	  $line = fgets($fini,256);
+	  if (ereg("VERSION.*=>[ \t]*\"[ \t]*([0-9\.\-]+)", $line, $reg)) {
+	    if (isset($reg[1])) $tver[$file]=$reg[1];
+
+	  }
+	}
+	fclose($fini);
+	print_r($app_const);
+      }
+    }  
+    closedir($dir);
+  }
+  return ($tver);
+}
+
+
+//---------------------------------------------------
+echo _("WHAT Checking\n\n");
+
+
+
+include("$pubdir/dbaccess.php");
+
+print "default database:"."[1m".$dbaccess."[0m";
+$dbid=pg_connect($dbaccess);
+
+$wsh=array(); // application update
+$migr=array();// migration
+$post=array();// post install 
+$pre=array(); // pre install 
+
+print "\n";
+if (! $dbid) {
+  print _("cannot access to default database\n");
+  $post[] = "$pubdir/CORE/CORE_post I";
+} else {
+  print _("access to default database : granted\n");
+  
+  
+  $tvdb= GetDbVersion($dbid);
+  $tvfile=GetFileVersion("$pubdir");
+  
+pg_close($dbid);
+  $tapp = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
+  
+  
+  print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
+  print sprintf("|%12s|%10s|%10s|%10s|\n",
+		_("application"),
+		_("db "),
+		_("file "),
+		" N I U D");
+  print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
+  while (list($k,$v) = each ($tapp)) {
+    if ($tvdb[$v] == $tvfile[$v]) {
+      $chk[$v]="";
+    } else if ($tvdb[$v] == "" ) {
+      $chk[$v]="I";
+    } else if ($tvdb[$v] > $tvfile[$v]) {
+      $chk[$v]="D";    
+    } else {
+      $chk[$v]="U";    
+    }
+    print sprintf("|%12s|%10s|%10s|%10s|\n",
+		  $v,
+		  $tvdb[$v],
+		  $tvfile[$v],
+		  $chk[$v]);
+  
+  }
+  
+  print "+++++++++++++++++++++++++++++++++++++++++++++++\n";
+  
+  reset($chk);
+  while (list($k,$v) = each ($chk)) {
+    switch ($v) {
+    case "I":
+      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=init --appname=$k";
+      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
+      break;
+    case "U":
+      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=$k";
+      break;
+    case "D":
+      $wsh[] = "$pubdir/wsh.php --api=appadmin --method=delete --appname=$k";
+      break;
+
+    }
+
+    // search POST install
+    if (($v != "") && (is_file("$pubdir/$k/{$k}_post"))) {
+      if ($v == "I") {
+	$pre[] = "$pubdir/$k/{$k}_post $v";
+	$post[] = "$pubdir/$k/{$k}_post U";
+      } else {
+	$post[] = "$pubdir/$k/{$k}_post $v";
+      }
+    }
+    
+
+    // search Migration file
+    if ($dir = @opendir("$pubdir/$k")) {
+      while (($file = readdir($dir)) !== false) {
+	if (ereg("{$k}_migr_([0-9\.]+)$", $file, $reg)) {
+
+	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
+	    $migr[]="$pubdir/$k/$file";
+	}
+      }
+    }      
+  }
+  
+}
+
+$dump[] = "su - postgres -c 'pg_dumpall > /tmp/".uniqid("whatdb")."'";
+$dump[] = "/etc/rc.d/init.d/httpd stop";
+$actions = array_merge($dump,array_merge($pre,array_merge($migr,array_merge($wsh, $post))));
+$actions[] = "$pubdir/whattext";
+$actions[] = "/bin/cp $pubdir/WHAT/index.php $pubdir";
+$actions[] = "/etc/rc.d/init.d/httpd start";
+print_r($actions);
+echo "continue (Y|N) ?";
+$stdin=fopen("php://stdin","r");;
+$cont=fread($stdin,1);
+
+if (strtoupper($cont[0]) != "Y") exit;
+     
+     while (list($k,$v) = each ($actions)) {
+       echo "--------------------------------------------------------------------------------\n";
+	
+       echo "[5;34;49m";
+       echo $v.":";	
+       echo "[0m";
+
+       $err=system ("echo `date` \"$v\" >>/tmp/whatchk.log");
+       $err=system ($v.">>/tmp/whatchk.log");
+       if ($err === false) 
+	 echo "[1;31;40mKO[0m\n";
+       else echo "[1;32;40mOK[0m\n";
+     }
+     echo "see file log /tmp/whatchk.log\n";
+
+  ?>
