@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.7 2004/10/05 10:26:12 eric Exp $
+// $Id: CORE.app,v 1.8 2005/03/03 17:16:43 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -61,6 +61,9 @@ $action_desc = array (
   ),
   array(
    "name"               =>"BLANK"
+  ),
+  array(
+   "name"               =>"CLOSE"
   ),
   array(
    "name"               =>"DOCPDF"
