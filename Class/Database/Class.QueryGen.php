@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryGen.php,v 1.5 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.QueryGen.php,v 1.6 2004/07/28 12:07:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,12 +28,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryGen.php,v 1.5 2003/08/18 15:46:42 eric Exp $
+//  $Id: Class.QueryGen.php,v 1.6 2004/07/28 12:07:26 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // This class is designed to design easily pages with query/order elements
 //
-$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.5 2003/08/18 15:46:42 eric Exp $';
+$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.6 2004/07/28 12:07:26 eric Exp $';
 
 include_once('Class.QueryDb.php');
 include_once('Class.TableLayout.php');
@@ -171,10 +171,10 @@ function GenMainForm($name,$height,$width,$mainurl,$suburl="") {
    $this->table->desc=$this->desc;
    $this->table->order_by=$this->order_by;
    $this->table->slice=$this->slice;
-   $this->table->prev=$this->action->GetIcon("prev.png","prev");
-   $this->table->next=$this->action->GetIcon("next.png","next");
-   $this->table->first=$this->action->GetIcon("first.png","first");
-   $this->table->last=$this->action->GetIcon("last.png","last");
+   $this->table->prev=$this->action->GetIcon("prev.png","prev",16);
+   $this->table->next=$this->action->GetIcon("next.png","next",16);
+   $this->table->first=$this->action->GetIcon("first.png","first",16);
+   $this->table->last=$this->action->GetIcon("last.png","last",16);
    $this->up=$this->action->GetIcon("up.png","up");
    $this->down=$this->action->GetIcon("down.png","down");
    $this->SetFullTextForm($this->fulltext);
