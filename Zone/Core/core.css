@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.27 2004/10/05 10:30:13 eric Exp $
+ * $Id: core.css,v 1.28 2004/10/29 09:33:36 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -134,11 +134,11 @@ IMG.click:hover {
   font-weight: bold;
 }
 .TABBackground {
-  background-color: [CORE_BGCOLORALTERN];
+  background: [CORE_BGCOLORALTERN];
   color: [CORE_TEXTBGCOLOR];
 }
 .TABOdd {
-  background-color: [CORE_BGCOLORALTERN];
+  background: [CORE_BGCOLORALTERN];
   border-color: [CORE_BGCOLORALTERN];
   border-style:inset none none none;;
   border-width 2px 0pt 0pt 0pt;
@@ -207,7 +207,7 @@ IMG.click:hover {
 }
 
 .CORETblCellAltern {
-  background-color: [CORE_BGCOLORALTERN];
+  background: [CORE_BGCOLORALTERN];
 }
 
 .COREError {
@@ -249,8 +249,7 @@ div.detail {
   visibily: hidden ;
   font-family : helvetica ;
   font-weight : bold ;
-  background-color:[CORE_BGCOLORALTERN];
-  layer-background-color:[CORE_BGCOLORALTERN];
+  background:[CORE_BGCOLORALTERN];
   border: solid ;
   border-color: [CORE_FGCOLOR];
   border-width: 1pt;
@@ -283,10 +282,14 @@ DIV.TITLE { color : black;
 	padding : 3pt;		
 }
 
-INPUT, SELECT, TEXTAREA, FILE {
+INPUT, SELECT, OPTION, TEXTAREA, FILE {
    color:[CORE_FGTEXTCOLOR];
-   background-color:[CORE_INPUTBGCOLOR];
+   background:[CORE_INPUTBGCOLOR];
    font-size: [CORE_FONTBASESIZE];
+/*  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:bg.png]',sizingMethod='scale');*/
+}
+OPTION {
+   background: [CORE_INPUTBGCOLOR];
 }
 input[type="button"] { 
 	-moz-border-radius:25px;
