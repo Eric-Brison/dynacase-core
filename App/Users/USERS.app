@@ -13,16 +13,13 @@ $app_acl = array (
   array(
    "name"		=>"ADMIN",
    "description"	=>N_("Access To All Users"),
-   "grant_level"	=>10,
    "admin"		=>TRUE),
   array(
    "name"               =>"DOMAIN_MASTER",
-   "description"        =>N_("Access To All Users in my domain"),
-   "grant_level"        =>8),
+   "description"        =>N_("Access To All Users in my domain")),
   array(
    "name"               =>"USER",
    "description"        =>N_("Access To My Own account"),
-   "grant_level"        =>2,
    "group_default"       =>"Y" )
 );
 
@@ -49,6 +46,12 @@ $action_desc = array (
   ) ,
   array(
    "name"		=>"USER_EDIT",
+   "short_name"		=>N_("user account edition"),
+   "acl"		=>"DOMAIN_MASTER"
+  ),
+  array(
+   "name"		=>"USER_UEDIT",
+   "short_name"		=>N_("user own account edition"),
    "acl"		=>"USER"
   ),
   array(
@@ -57,11 +60,17 @@ $action_desc = array (
   ),
   array(
    "name"		=>"USER_MOD",
+   "short_name"		=>N_("user account modification"),
+   "acl"		=>"DOMAIN_MASTER"
+  ),
+  array(
+   "name"		=>"USER_UMOD",
+   "short_name"		=>N_("user own account modification"),
    "acl"		=>"USER"
   ),
   array(
    "name"		=>"USER_DEL",
-   "acl"		=>"USER"
+   "acl"		=>"DOMAIN_MASTER"
   )
                       );
    

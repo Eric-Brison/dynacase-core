@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.4 2003/04/14 18:35:16 marc Exp $
+// $Id: user_mod.php,v 1.5 2003/08/11 15:41:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -42,14 +42,26 @@ function user_mod(&$action) {
     $user = new User($action->GetParam("CORE_USERDB"),$id);
   } 
 
-  $papp = GetHttpVars("papp","APPMNG");
-  $paction = GetHttpVars("paction","PARAM_CUACCOUNT");
-  $pargs = GetHttpVars("pargs","");
+ 
 
   $group = (GetHttpVars("group") == "yes");
 
   $user->firstname=GetHttpVars("firstname");
   $user->lastname=GetHttpVars("lastname");
+  $user->status=GetHttpVars("status");
+  $user->passdelay=intval(GetHttpVars("passdelay"))*3600*24; // day to second
+
+  $expdate= GetHttpVars("expdate");
+  $exptime=0;
+  if ($expdate != "") {
+    if (ereg("([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])", $expdate, $reg)) {
+   
+      $exptime=mktime($reg[4],$reg[5],$reg[6],$reg[2],$reg[1],$reg[3]);
+      
+    } else {
+      $action->AddWarningMsg(_("expire date format is not correct : will be set to %s"));
+    }
+  }
 
   if ($id == "") {
     $user->login=GetHttpVars("login");
@@ -86,11 +98,18 @@ function user_mod(&$action) {
         $uacc->Add();
       }
     }
-    if (GetHttpVars("passwd")!="") {
-       $user->password_new=GetHttpVars("passwd");
-    }
-    $user->Modify();
   }
+  if (GetHttpVars("passwd")!="") {
+       $user->password_new=GetHttpVars("passwd");
+       
+       if (($exptime>0) && ($exptime != $user->expires))  $user->expires=$exptime;
+       else  $user->expires=0; // means recompute expire date if needed
+       
+  } else {
+    if (($exptime>0) && ($exptime != $user->expires))  $user->expires=$exptime;	 
+  }
+    
+  $user->Modify();
     
   $ugroup = new Group($action->dbaccess,$user->id);
   if ($ugroup-> IsAffected()) {
@@ -109,7 +128,7 @@ function user_mod(&$action) {
   if ($group) {
     redirect($action,"USERS","GROUP_TABLE");
   } else {
-    redirect($action,$papp,$paction);
+    redirect($action,"USERS","USER_TABLE");
   }
 }
 ?>

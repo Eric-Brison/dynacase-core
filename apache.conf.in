@@ -13,7 +13,7 @@ Alias /what @prefix@
       AuthType Basic
       AuthName 'WHAT Connection'
       AuthPAM_Enabled  on
-      AuthPAM_FallThrough on
+      AuthPAM_FallThrough off
       AuthPAM_Service httpd
       Require valid-user
     </Files>

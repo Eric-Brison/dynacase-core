@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.4 2003/07/17 06:39:08 eric Exp $
+// $Id: user_table.php,v 1.5 2003/08/11 15:41:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -39,6 +39,7 @@ function user_table(&$action, $group=false) {
   $baseurl=$action->GetParam("CORE_BASEURL");
   $standurl=$action->GetParam("CORE_STANDURL");
 
+  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
 
   // Set the edit form element
   if ($group) {
@@ -53,36 +54,30 @@ function user_table(&$action, $group=false) {
     $title = $action->text("titlecreateu");
   }
     
-  $form = new SubForm("edit",350,330,$standurl."app=USERS&action=USER_MOD$paramedit",
-                                     $standurl."app=USERS&action=USER_EDIT$paramedit");
-  $form->SetParam("id","-1");
-  $form->SetParam("firstname","");
-  $form->SetParam("lastname","");
-  $form->SetParam("login","");
-  $form->SetParam("passwd","");
-  $form->SetParam("domainid");
-  $form->SetParam("groupselect[]");
+  $action->lay->set("createuser",$title);
 
-  $form->SetKey("id");
+//   $form = new SubForm("edit",350,330,$standurl."app=USERS&action=USER_MOD$paramedit",
+//                                      $standurl."app=USERS&action=USER_EDIT$paramedit");
+//   $form->SetParam("id","-1");
+//   $form->SetParam("firstname","");
+//   $form->SetParam("lastname","");
+//   $form->SetParam("login","");
+//   $form->SetParam("passwd","");
+//   $form->SetParam("domainid");
+//   $form->SetParam("groupselect[]");
 
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
-  $action->parent->AddJsCode($form->GetMainJs());
-  $action->lay->set("MAINFORM",$form->GetMainForm());
+//   $form->SetKey("id");
 
-  if ($action->HasPermission("DOMAIN_MASTER")) {
-    $add_icon = new Layout($action->GetLayoutFile("add_icon.xml" ),$action);
-    $add_icon->set("group",$isgroup);
-    $add_icon->set("title",$title);
-    $add_icon->set("paction",$paction);
-    $action->lay->set("ADD_ICON",$add_icon->gen());
-  } else {
-    $action->lay->set("ADD_ICON","");
-  }
+//   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
+//   $action->parent->AddJsCode($form->GetMainJs());
+//   $action->lay->set("MAINFORM",$form->GetMainForm());
+
 
 
   // Set the search elements
   $query = new QueryGen($action->GetParam("CORE_USERDB"),"User",$action);
-   
+  $query->slice=20;
+  $action->lay->set("slice9",$query->slice+9);
   if ($group) {
     $query-> AddQuery("isgroup = 'Y'");
     $action->lay->set("title",$action->text("titlegroup"));
@@ -105,7 +100,7 @@ function user_table(&$action, $group=false) {
   }
 
   // Give some global elements for the table layout
-  $query->table->fields= array("domain", "id","edit","lastname","delete","fullname","login", "papp", "paction", "group");
+  $query->table->fields= array("domain", "id","edit","lastname","delete","fullname","login",  "group");
 
   $query->table->headsortfields = array ( "head_lastname" => "lastname",
                                          "head_login" => "login");
@@ -127,11 +122,9 @@ function user_table(&$action, $group=false) {
 
 
   // Affect the modif icons and the fullname field
-  $jsscript=$form->GetLinkJsMainCall();
+  //  $jsscript=$form->GetLinkJsMainCall();
   reset ($query->table->array);
   while(list($k,$v) = each($query->table->array)) {
-    $query->table->array[$k]["papp"] = "USERS";
-    $query->table->array[$k]["paction"] = $paction;
     $query->table->array[$k]["group"] = $isgroup;
 
     if (!$group) {
@@ -141,7 +134,7 @@ function user_table(&$action, $group=false) {
     } else {
       $query->table->array[$k]["fullname"] = ucfirst(isset($query->table->array[$k]["lastname"])?$query->table->array[$k]["lastname"]:"(?)");
     }
-    $query->table->array[$k]["edit"] = str_replace("[id]",$v["id"],$jsscript);
+    // $query->table->array[$k]["edit"] = str_replace("[id]",$v["id"],$jsscript);
     if (($query->table->array[$k]["id"] != 1) &&
         ($query->table->array[$k]["lastname"] != "Postmaster") &&
         ($query->table->array[$k]["login"] != "all") &&

@@ -1,9 +1,8 @@
 <!-- 
-  $Id: user_table.xml,v 1.3 2002/07/29 11:15:18 marc Exp $
+  $Id: user_table.xml,v 1.4 2003/08/11 15:41:37 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.xml,v $
 -->
 
-[MAINFORM]
 
 [QUERY_FORM]
 
@@ -19,8 +18,7 @@
   <td class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[title]</span></td>
   <td valign="baseline" align="right" class="CORETblHeadCell"><span class="CORETblHead">
 
-    [ADD_ICON]
-
+<a href="#" onclick="subwindow(300,400,'useredit','[CORE_BASEURL]&app=USERS&action=USER_EDIT&group=[group]')"><img border=0 src="[IMG:edit.gif]" alt="[TEXT:adduser]" title="[createuser]"></a>
     <a href="#" onclick="self.print()">
       <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
       </a>
@@ -34,7 +32,7 @@
 
 <table align="center" border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
 <tr>
- <td rowspan="25" align="left" valign="top">
+ <td rowspan="[slice9]" align="left" valign="top">
   <span class="CORETblBold">[TEXT:search]</span>
   <span class="CORETbl">
   <font size="-1">
@@ -77,7 +75,7 @@
 [BLOCK TABLEBODY]
 <tr>
   <td width="50" class="[CLASS]">
-       <a href="[CORE_BASEURL]&app=USERS&action=ADMIN_VIEW&id=[id]&group=[group]&papp=USERS&paction=[paction]"><img border=0 src="[IMG:edit.gif]" alt="[TEXT:edit]" title="[TEXT:edit]"></a>
+       <a href="#" onclick="subwindow(300,400,'useredit','[CORE_BASEURL]&app=USERS&action=USER_EDIT&id=[id]&group=[group]')"><img border=0 src="[IMG:edit.gif]" alt="[TEXT:edit]" title="[TEXT:edit]"></a>
        <a href="[CORE_STANDURL]&app=USERS&action=USER_DEL&id=[id]" onClick="return confirm('[TEXT:delconfirm] [login]')">[delete]</a> </td>
   <td  class="[CLASS]"><span class="CORETbl">[fullname]</span></td>
   <td  class="[CLASS]"><span class="CORETbl">[login]</span></td>

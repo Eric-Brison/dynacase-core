@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.5 2003/04/14 18:47:10 marc Exp $
+// $Id: user_edit.php,v 1.6 2003/08/11 15:41:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -36,9 +36,6 @@ function user_edit(&$action) {
   global $HTTP_POST_VARS;
   $id=GetHttpVars("id");
   if ($id==-1) $id="";
-  $papp = GetHttpVars("papp","APPMNG");
-  $paction = GetHttpVars("paction","PARAM_CUACCOUNT");
-  $pargs = GetHttpVars("pargs","");
 
   // initialise if user group or single user
   $group = (GetHttpVars("group") == "yes");
@@ -54,7 +51,9 @@ function user_edit(&$action) {
     $action->lay->SetBlockData("PASSWD", $tpasswd );
   }
 
-
+  $action->lay->Set("selected_desactive","");
+  $action->lay->Set("daydelay",$action->getParam("CORE_PASSWDDELAY"));
+  $action->lay->Set("expdate","");
   if (!$action->HasPermission("DOMAIN_MASTER")) {
     $id=$action->user->id;
   }
@@ -104,6 +103,9 @@ function user_edit(&$action) {
     }
     $action->lay->Set("lastname",$user->lastname);
 
+    $action->lay->Set("selected_desactive",$user->status=="D"?"selected":"");
+    $action->lay->Set("daydelay",intval($user->passdelay/(3600*24))); // second to day
+    if (intval($user->expires)>0) $action->lay->Set("expdate",strftime("%d/%m/%Y %X",intval($user->expires)));
     if ($group) {
       $action->lay->Set("TITRE",$action->text("titlemodifyg"));
     } else {      
@@ -224,12 +226,11 @@ function user_edit(&$action) {
 	}
       }
   
-  $action->lay->Set("APP", $papp);
-  $action->lay->Set("ACTION", $paction);
-  $action->lay->Set("ARGS", $pargs);
 
   $action->lay->SetBlockData("SELECTDOMAINGROUP", $tabd);
   $action->lay->SetBlockData("SELECTOTHERGROUP", $tabo);
+
+  
   
   $action->lay->Set("LOGIN_MOD",$login->gen());
   $form = new SubForm("edit");

@@ -180,3 +180,15 @@ function Valid_Send()
     setTimeout('self.close()',10);
   }
 }
+
+
+function Valid_Passwd()
+{
+  if (document.edit.passwd.value != document.edit.passwdchk.value) {
+      alert("Les mots de passe saisis sont différents !\nRecommencez.");
+      document.edit.passwd.value = "";
+      document.edit.passwdchk.value = "";
+      return false;
+  }
+  return true;
+}

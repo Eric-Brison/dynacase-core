@@ -1,5 +1,5 @@
 <!-- 
-  $Id: user_access.xml,v 1.3 2002/09/18 11:07:53 eric Exp $
+  $Id: user_access.xml,v 1.4 2003/08/11 15:41:37 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.xml,v $
 -->
 
@@ -99,9 +99,9 @@
 <!-- TABLEBODY -->
 [BLOCK TABLEBODY]
 <tr>
-  <td  ><a href="#" OnClick="javascript:[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
-  <td  ><span class="CORETbl">[description]</span></td>
-  <td  ><span class="CORETbl">
+  <td class="[CLASS]" ><a href="#" OnClick="javascript:[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
+  <td class="[CLASS]" ><span class="CORETbl">[description]</span></td>
+  <td class="[CLASS]" ><span class="CORETbl">
 
       [BLOCK [id]][aclname] &#149; 
       [ENDBLOCK [id]]</td>

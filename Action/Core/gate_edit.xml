@@ -71,7 +71,7 @@ var w,h;
 </div>
 <BR><BR><BR>
 <div align="center">
-<form action="[CORE_PUBURL]/AUTHENT/authent.php?[CORE_SESSIONID]" method=post name="authent">
+<form action="[CORE_PUBURL]/authent.php?[CORE_SESSIONID]" method=post name="authent">
 
    <img id="logo" 
 	    onclick="document.authent.submit()"

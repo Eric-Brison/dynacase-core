@@ -1,5 +1,5 @@
 # ============================================
-# $Id: Makefile,v 1.1 2002/01/08 12:41:33 eric Exp $
+# $Id: Makefile,v 1.2 2003/08/11 15:41:37 eric Exp $
 # ============================================
 
 # get the new appname (basename in uppercase)
@@ -12,3 +12,8 @@ include $(utildir)/PubRule
 
 
 
+
+$(pubdir)/authent.php: authent.php
+	ln -sf  $(pubdir)/$(appname)/$< $@
+
+publish: $(pubdir)/authent.php

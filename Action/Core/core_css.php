@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: core_css.php,v 1.1 2003/04/23 08:35:50 eric Exp $
+// $Id: core_css.php,v 1.2 2003/08/11 15:41:37 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/core_css.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -28,5 +28,7 @@ function core_css(&$action) {
    header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
 
    header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
-   header("Pragma: "); // HTTP 1.0
+   header("Pragma: "); // HTTP 1.0 
+   header("Content-type: text/css");
+
 }

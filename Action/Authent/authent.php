@@ -18,7 +18,7 @@ if(!isset($PHP_AUTH_USER) || ($SeenBefore == 1 && !strcmp($OldAuth, $PHP_AUTH_US
 }
 else {
 
-  Header("Location:../index.php?sole=R");
+  Header("Location:index.php?sole=R");
   exit;
 }
 ?>

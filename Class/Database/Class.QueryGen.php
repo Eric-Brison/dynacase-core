@@ -16,12 +16,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryGen.php,v 1.2 2003/01/14 17:59:50 eric Exp $
+//  $Id: Class.QueryGen.php,v 1.3 2003/08/11 15:41:37 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // This class is designed to design easily pages with query/order elements
 //
-$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.2 2003/01/14 17:59:50 eric Exp $';
+$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.3 2003/08/11 15:41:37 eric Exp $';
 
 include_once('Class.QueryDb.php');
 include_once('Class.TableLayout.php');
@@ -50,7 +50,6 @@ var $fulltextform='
                       onreset="javascript:set_form_par(\'query\',\'fulltext\',\'\',0);set_form_par(\'query\',\'start\',0,0);set_form_par(\'query\',\'all\',\'\',1);">
   <input name="text" type="text" value="%s" size="10">
 </form>';
-
 
 var $up="&nbsp;^";
 var $down="&nbsp;v";
@@ -143,7 +142,7 @@ function GenMainForm($name,$height,$width,$mainurl,$suburl="") {
    return($this->form->GetMainForm());
 }
 
-function Query($type="TABLE") {
+ function Query($type="TABLE") {
 
    $this->query->order_by=$this->order_by;
    $this->query->desc=$this->desc;
@@ -168,6 +167,14 @@ function Query($type="TABLE") {
    $this->down=$this->action->GetIcon("down.png","down");
    $this->SetFullTextForm($this->fulltext);
 
+   // color row table
+   $this->table->fields[]="CLASS";
+   reset ($this->table->array);
+   while(list($k,$v) = each($this->table->array)) {
+     $this->table->array[$k]["CLASS"]=($k%2)?"TABBackground":"";
+   }
+  
+   reset ($this->table->array);
    if (($this->order_by != "") && ($this->desc != "")) {
      $desc=$this->desc;
      reset($this->table->headsortfields);
@@ -177,7 +184,7 @@ function Query($type="TABLE") {
        }
      }
    }
-}
+ }
 
 
 function AddFulltextQuery()

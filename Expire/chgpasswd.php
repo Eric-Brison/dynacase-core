@@ -25,7 +25,9 @@ if ($HTTP_POST_VARS["passwd1"] == "") {
   exit;
 }
 $u->password_new=$HTTP_POST_VARS["passwd1"];
-$u->expires = time() + 60;
+$u->expires = 0;
 $u->modify();
-print "OK";
+
+  Header("Location:index.php?sole=R");
+  exit;
 ?>
