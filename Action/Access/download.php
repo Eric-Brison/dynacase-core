@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: download.php,v 1.2 2002/01/10 11:13:11 eric Exp $
+// $Id: download.php,v 1.3 2002/01/14 15:13:13 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/download.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -21,40 +21,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
-// $Log: download.php,v $
-// Revision 1.2  2002/01/10 11:13:11  eric
-// modif pour import export utilisateur
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.3  2001/10/08 12:11:19  eric
-// correction import/export du aux modifs accessibilité (positif/négatif)
-//
-// Revision 1.2  2001/08/20 16:48:58  eric
-// changement des controles d'accessibilites
-//
-// Revision 1.1  2000/10/24 17:15:22  yannick
-// Import/Export
-//
-// Revision 1.2  2000/10/23 12:36:04  yannick
-// Ajout de l'acces aux applications
-//
-// Revision 1.1  2000/10/23 09:10:27  marc
-// Mise au point des utilisateurs
-//
-// Revision 1.1.1.1  2000/10/21 16:44:39  yannick
-// Importation initiale
-//
-// Revision 1.2  2000/10/19 16:47:23  marc
-// Evo TableLayout
-//
-// Revision 1.1.1.1  2000/10/19 10:35:49  yannick
-// Import initial
-//
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.QueryDb.php");
 include_once("Class.Application.php");
 include_once("Class.User.php");
@@ -73,106 +40,114 @@ function download(&$action) {
   $q->AddQuery("(objectclass isnull) OR (objectclass != 'Y')");
   $applist = $q->Query();
 
-  $u = new User($action->dbaccess);
-  $userlist = $u->GetUserAndGroupList();
+  // specific query due to optimize
+  $query = new QueryDb($action->dbaccess,"User");
+  $userlist=$query->Query(0,0,"TABLE",
+			  "select  u1.login||'@'||d1.name as login , u1.password, u1.firstname, u1.lastname, u1.isgroup, u2.login||'@'||d2.name as group ".
+			  "from users u1, users u2, domain d1, domain d2, groups ".
+			  "where (u1.iddomain=d1.iddomain) and (iduser=u1.id) and (idgroup=u2.id) and (u2.iddomain = d2.iddomain) and (u1.id != 1)".
+			  "order by login");
   
+
   $lay = new Layout($action->GetLayoutFile("filedown.xml"));
 
   $tab=array();
   $tab2=array();
   $tabuser=array();
 
+
+  //------------------------------
+  // view user list
+  //------------------------------
+  $ku=0;
+  $oldlogin = "";
   while (list($k2,$v2)=each($userlist)) {
 
     if ($v2->id == 1) continue;
-    $tabuser[$k2]["login"]=$v2->login;
-    $domain = new Domain($action->dbaccess, $v2->iddomain);
-
-    $tabuser[$k2]["passwd"]=$v2->password;
-    $tabuser[$k2]["firstname"]=$v2->firstname;
-    $tabuser[$k2]["lastname"]=$v2->lastname;
-    $tabuser[$k2]["isgroup"]=$v2->isgroup;
-    $tabuser[$k2]["iddomain"]=$domain->name;
-
-    $group = new Group($action->dbaccess,$v2->id);
-
-    $tabuser[$k2]["groups"]="";
-    while (list($kg,$g)=each($group->groups)) {
-
-      $ug = new User($action->dbaccess, $g);
-      $domain = new Domain($action->dbaccess, $v2->iddomain);
-	  
-      $tabuser[$k2]["groups"].=$ug->login."@".$domain->name.";";
+    if ($oldlogin != $v2["login"]) {
+      if (($ku>0) &&($tabuser[$ku]["groups"]!="")) // delete last ';'
+	$tabuser[$ku]["groups"]=substr($tabuser[$ku]["groups"], 0, -1);
+      $ku++;
+      $tabuser[$ku]["login"]=$v2["login"];
+      $tabuser[$ku]["passwd"]=$v2["password"];
+      $tabuser[$ku]["firstname"]=$v2["firstname"];
+      $tabuser[$ku]["lastname"]=$v2["lastname"];
+      $tabuser[$ku]["isgroup"]=$v2["isgroup"];
+      $tabuser[$ku]["groups"]=$v2["group"].";";
+    } else {
+      $tabuser[$ku]["groups"].=$v2["group"].";";
     }
+
+    $oldlogin = $v2["login"];
+
   }
-
-  while (list($k,$v)=each($applist)) {
-    $q=new QueryDb("","Acl");
-    $q->basic_elem->sup_where=array("id_application={$v->id}");
-    $aclist = $q->Query();
-    if ($q->nb == 0) continue;
-
-    $ip=0; // permission index
-    reset($userlist);
-    while (list($k2,$v2)=each($userlist)) {
-      
-      if ($v2->id == 1) continue;
-      $access = new Permission($action->dbaccess,array($v2->id,$v->id));
-
-      $action->log->debug("Acces {$v2->login} à {$v->name}  :");
-      $action->log->debug("   Aclid = {$access->id_acl}");
-      if ((count($access->upprivileges) == 0) &&
-	  (count($access->unprivileges) == 0))  { // no specific privilege
-
-	$tab2[$ip]["login"]=$v2->login;
-	$domain = new Domain($action->dbaccess, $v2->iddomain);
-	$tab2[$ip]["iddomain"]=$domain->name;
+  // delete last ";"
+  if ($tabuser[$ku]["groups"]!="") // delete last ';'
+	$tabuser[$ku]["groups"]=substr($tabuser[$ku]["groups"], 0, -1);
 
 
+  //------------------------------
+  // view acls list
+  //------------------------------
+  $tabacl=array();
+  $query = new QueryDb($action->dbaccess,"User");
+  $applist=$query->Query(0,0,"TABLE",
+			  "select  application.name as app, users.login||'@'||domain.name as login,  acl.name as acl ".
+			 "from application, acl, permission, users, domain ".
+			 "where (permission.id_user = users.id) and ".
+			 "(permission.id_acl = acl.id) and ".
+			 "(users.iddomain = domain.iddomain) and ".
+			 "(acl.id_application = application.id) and ". 
+			 "(permission.id_application=  application.id) and ".
+			 "(users.id != 1) and ".
+			 "((application.objectclass isnull)  OR (application.objectclass != 'Y') ) ".
+			 "order by app, login");
 
-        $tab2[$ip]["acl_name"]="NONE";
-        $tab2[$ip]["app_name"]="#".$v->name;
+  // same for negative acls : just add '-' sign
+  $applist=$query->Query(0,0,"TABLE",
+			  "select  application.name as app, users.login||'@'||domain.name as login,  '-'||acl.name as acl ".
+			 "from application, acl, permission, users, domain ".
+			 "where (permission.id_user = users.id) and ".
+			 "(- permission.id_acl = acl.id) and ".
+			 "(users.iddomain = domain.iddomain) and ".
+			 "(acl.id_application = application.id) and ". 
+			 "(permission.id_application=  application.id) and ".
+			 "(users.id != 1) and ".
+			 "((application.objectclass isnull)  OR (application.objectclass != 'Y') ) ".
+			 "order by app, login");
 
+  sort($applist);
 
-	$ip++;
-      } else {
+  $ka=0;
+  $oldlogin = "";
+  while (list($k2,$v2)=each($applist)) {
 
-	$domain = new Domain($action->dbaccess, $v2->iddomain);
-	    
-	// write positive privilege
-	if (count($access->upprivileges) > 0) {
-	  while(list($k3,$aclid)=each($access->upprivileges)) {
-	    $tab2[$ip]["login"]=$v2->login;
-	    $tab2[$ip]["iddomain"]=$domain->name;
-	  
-	    $acl=new Acl($action->dbaccess,  $aclid);
-	    $tab2[$ip]["acl_name"]=$acl->name;
-	    $tab2[$ip]["app_name"]=$v->name;
-
-	    $ip++;
-	  }
-	}
-	// write negative privilege
-	if (count($access->unprivileges) > 0) {
-	  while(list($k3,$aclid)=each($access->unprivileges)) {
-	    $tab2[$ip]["login"]=$v2->login;	    
-	    $tab2[$ip]["iddomain"]=$domain->name;
-	  
-	    $acl=new Acl($action->dbaccess,  $aclid);
-	    $tab2[$ip]["acl_name"]='-'.$acl->name;
-	    $tab2[$ip]["app_name"]=$v->name;
-
-	    $ip++;
-	  }
-	}
-      }
+    if ($v2->id == 1) continue;
+    if (($oldlogin != $v2["login"]) || 
+	($oldapp != $v2["app"])) {
+      if (($ka >0) && ($tabacl[$ka]["acl_name"]!="")) // delete last ';'
+	$tabacl[$ka]["acl_name"]=substr($tabacl[$ka]["acl_name"], 0, -1);
+      $ka++;
+      $tabacl[$ka]["login"]=$v2["login"];
+      $tabacl[$ka]["app_name"]=$v2["app"];
+      $tabacl[$ka]["acl_name"]=$v2["acl"].";";
+    } else {
+      $tabacl[$ka]["acl_name"].=$v2["acl"].";";
     }
-    $tab[$k]["name"]=$v->name;
-    $lay->SetBlockData($v->name,$tab2);
-    $tab2=array();
+
+    $oldlogin = $v2["login"];
+    $oldapp = $v2["app"];
+
   }
+  // delete last ";"
+  if ($tabacl[$ka]["acl_name"]!="") // delete last ';'
+	$tabacl[$ka]["acl_name"]=substr($tabacl[$ka]["acl_name"], 0, -1);
+
+
+
+
   $lay->SetBlockData("THEUSERS",$tabuser);
-  $lay->SetBlockData("APPLICATION",$tab);
+  $lay->SetBlockData("APPLICATION",$tabacl);
 
 
   $out = $lay->gen(); 

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: upload.php,v 1.2 2002/01/10 11:13:11 eric Exp $
+// $Id: upload.php,v 1.3 2002/01/14 15:13:13 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/upload.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -27,6 +27,7 @@ include_once("Class.Application.php");
 include_once("Class.User.php");
 include_once("Class.Acl.php");
 include_once("Class.Domain.php");
+include_once("Class.MailAccount.php");
 include_once("Class.Permission.php");
 include_once("Lib.Http.php");
 
@@ -47,46 +48,152 @@ function upload(&$action) {
   $content = file($filename);
 
 
-  $prev_userid=0; // to detect change user & application
-  $prev_appid=0; 
 
 
   $tnewacl=array();  
   while (list($k,$v) = each($content)) {
-    $col = explode("|",$v);
+    switch (substr($v, 0, 1)) {
+    case "U":
+      changeuser($action, substr($v,2));
+      break;
+    case "A":
+      changeacl($action, substr($v,2));
+      break;
+    }
+  }
+
+
+  redirect($action,"ACCESS","USER_ACCESS");
+}
+
+function changeuser(&$action, $line) {
+  
+    $col = explode("|",$line);
+
+    // eric.brison@local|hb7Qj/yFqxCGs|eric|brison|N|all@local;
+
+    list($uname, $udom) = explode("@",$col[0]);
+    $udom=chop($udom);
+    $use= new User($action->dbaccess);
+    $domain = new Domain($action->dbaccess);
+    $domain-> Set($udom);
+
+
+    $use->SetLogin($uname,$domain->iddomain);
+    $use->password=  $col[1];
+    $use->firstname= $col[2];
+    $use->lastname=  $col[3];
+    $use->isgroup=   $col[4];
+    if ($use->IsAffected()) {
+      $use->Modify();
+    } else {
+      $use->iddomain = $domain->iddomain;
+      $use->login = $uname;
+      $use->Add();
+    }
+    
+
+    // add mail account if needed
+    if ($use->iddomain != 1) {
+      $mailapp = new Application();
+      if ($mailapp->Exists("MAILADMIN")) {
+        $mailapp->Set("MAILADMIN", $action->parent);
+        $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
+        $uacc->iddomain    = $use->iddomain ;
+        $uacc->iduser      = $use->id;
+        $uacc->login       = $use->login;
+        $uacc->Add();
+      }
+    }
+
+    // add group 
+    $groups = explode(";",$col[5]);
+    
+    $group = new Group($action->dbaccess, $use->id);
+    if ($group->isAffected()) $group->delete();
+
+    while(list($kg,$gd)=each($groups)) {
+      
+      list($grname, $grdomain) = explode("@",$gd);
+
+      $gr = new User($action->dbaccess);
+      $gd = new Domain($action->dbaccess);
+      $grdomain = chop($grdomain);
+      $gd-> Set($grdomain);
+
+
+      $gr->SetLogin($grname,$gd->iddomain);
+      if ($gr->IsAffected()) {
+	$group->iduser = $use->id;
+	$group->idgroup = $gr->id;
+	$group->add();
+
+      }
+    }
+    
+}
+function changeacl(&$action, $line) {
+
+  // INCIDENT|all@cir.fr|INCIDENT_READ;INCIDENT
+
+    $col = explode("|",$line);
     if (! is_array($col)) continue;
     if (count($col) != 3) continue;
-    if (substr($v, 0, 1) == "#") continue; // comment line
+    if (substr($line, 0, 1) == "#") continue; // comment line
 
 
     $app= new Application($action->dbaccess);
     $app->Set($col[0],$action->parent);
 
     
-    $usedom = explode("@",$col[1]);
+    list($uname, $udom) = explode("@",$col[1]);
+    $udom=chop($udom);
 
     $use= new User($action->dbaccess);
     $domain = new Domain($action->dbaccess);
-    $domain-> Set($usedom[1]);
+    $domain-> Set($udom);
 
-    $use->SetLogin($usedom[0],$domain->iddomain);
+    $use->SetLogin($uname,$domain->iddomain);
 
-    if (($prev_userid > 0) && ($prev_appid > 0) &&
-	(($use->id != $prev_userid ) ||
-	 ($app->id != $prev_appid ))) {
-      // update the permission in database
-      // first remove then add
-      $perm = new Permission($action->dbaccess,
-      array($prev_userid,
-      $prev_appid)); 
-      if (! $perm-> IsAffected()) {
-	$perm->Affect(array("id_user" => $prev_userid,
-			    "id_application" =>$prev_appid ));
-      } 
+    
+    // update the permission in database
+    // first remove then add
+    $perm = new Permission($action->dbaccess,
+			   array($use->id,
+				 $app->id)); 
+    if (! $perm-> IsAffected()) {
+	$perm->Affect(array("id_user" => $use->id,
+			    "id_application" =>$app->id ));
+    } 
+    $taclname = explode(";",$col[2]);
 
-      if (count($tnewacl) > 0) {
+
+    if (count($taclname) > 0) {
 	$perm->Delete();
-	foreach ($tnewacl as $aclid ) {
+	$taclid=array();
+	foreach ($taclname as $aclname ) {
+	  $unp = false; // is negative privilege ?
+
+	  $aclname=chop($aclname);
+	  if (substr($aclname, 0, 1) == "-") {
+	    $aclname=substr($aclname, 1);
+	    $unp = true;
+	  };
+	  // search acl id
+	  $acl =new Acl($action->dbaccess);
+	  $acl-> Set($aclname,$app->id);
+
+	  if ($acl->id == "") continue;   
+
+
+	  if ($unp) {
+	    $taclid[] = -$acl->id;
+	  } else {
+	    $taclid[] = $acl->id;	    
+	  }
+	}
+
+	foreach ($taclid as $aclid ) {
 	  $perm->id_acl = $aclid;
 	  
 	  
@@ -97,48 +204,12 @@ function upload(&$action) {
 	  
 	}
       }
-      $tnewacl=array();  // new array for new user
-    }
+
     
-    // update for next line
-    $prev_userid = $use->id;
-    $prev_appid = $app->id;
+    
 
-
-
-    //    print "<pre>         $v</pre><BR>";
-    if (chop($col[2]) !="NONE") {
-      $acl = new Acl($action->dbaccess);
-      $aclname=chop($col[2]);
-      $unp = false; // is negative privilege ?
-      if (substr($aclname, 0, 1) == "-") {
-	$aclname=substr($aclname, 1);
-	$unp = true;
-      };
-
-
-      // search acl id
-      $acl-> Set($aclname,$app->id);
-
-      if ($acl->id == "") continue;      
-
-      if ($unp) {
-	$tnewacl[] = -$acl->id;
-      } else {
-	$tnewacl[] = $acl->id;
-
-      }
-
-      
-    } else {
-      $tnewacl[] = 0;
-      
-      
-    }
      
   }
 
 
-  redirect($action,"ACCESS","USER_ACCESS");
-}
 ?>
