@@ -113,33 +113,34 @@ Class Cache {
     if ($this->isCacheble) {
       global $CacheObj;
       $this->ClearCacheIndex($this->cacheclass(), $reallyset);
-
-      reset($CacheObj);
-      while (list($k,$v) = each ($CacheObj)) {
-	// uset all father class also
-	if (is_subclass_of ($this, $k)) {
+      
+      if (is_array($CacheObj)) {
+	reset($CacheObj);
+	while (list($k,$v) = each ($CacheObj)) {
+	  // uset all father class also
+	  if (is_subclass_of ($this, $k)) {
 	    $this->ClearCacheIndex($k, $reallyset);
+	  }
 	}
-      }
       
       
-      // unset all related class 
-      while (list($k,$v) = each ($this->relatedCacheClass)) {
-	$this->relatedCacheClass[$k] = strtolower($v);
-	$this->ClearCacheIndex($this->relatedCacheClass[$k], $reallyset);
+	// unset all related class 
+	while (list($k,$v) = each ($this->relatedCacheClass)) {
+	  $this->relatedCacheClass[$k] = strtolower($v);
+	  $this->ClearCacheIndex($this->relatedCacheClass[$k], $reallyset);
 
-      }
+	}
 
-      // unset all childs of related class 
-      reset($CacheObj);
-      while (list($k,$v) = each ($CacheObj)) {
+	// unset all childs of related class 
+	reset($CacheObj);
+	while (list($k,$v) = each ($CacheObj)) {
 
-	$anc = get_ancestors_class($k);
-	if (count(array_intersect($anc, $this->relatedCacheClass)) > 0) {
-	  $this->ClearCacheIndex($k, $reallyset);
+	  $anc = get_ancestors_class($k);
+	  if (count(array_intersect($anc, $this->relatedCacheClass)) > 0) {
+	    $this->ClearCacheIndex($k, $reallyset);
+	  }
 	}
       }
-
       
     }
 
