@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php,v 1.1 2002/01/08 12:41:33 eric Exp $
+// $Id: index.php,v 1.2 2002/01/08 15:13:32 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/index.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: index.php,v $
+// Revision 1.2  2002/01/08 15:13:32  eric
+// *** empty log message ***
+//
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first
 //
@@ -52,6 +55,9 @@
 # element
 #
 #
+
+ini_set("include_path", ".:/usr/lib/php:/home/httpd/what:/home/httpd/what/WHAT");
+
 include_once('Class.Action.php');
 include_once('Class.Application.php');
 include_once('Class.Session.php');

@@ -1,6 +1,7 @@
 Alias /what @prefix@
 
 <Directory "@prefix@">
+    SetEnv PHP_INCLUDE_PATH /home/httpd/what:/home/httpd/what/WHAT
     AddType application/x-httpd-php .php
     DirectoryIndex  index.php
 </Directory>

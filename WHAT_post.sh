@@ -19,27 +19,6 @@ if [ "$1" = 1 ] ; then
 
 
 
-# Add phpinclude in the include path of php
-  echo "Add path to WHAT & what in php.ini"
-  echo '
-<? $phpini=file("/etc/php/php.ini");
-   $out = fopen("/etc/php/php.ini.tmp","w");
-   while (list($k,$v)=each($phpini)) {
-     $pos = strpos ($v,"include_path");
-     if ( $pos === false) {
-       fputs($out,$v);
-     } else {
-       $res = 
-         preg_replace("/include_path\s*=\s*\"([A-Za-z0-9_:\.\/]*)\"\s*;([^\n]*)/",
-                      "include_path = \"\\1:/home/httpd/what/WHAT:/home/httpd/what\" ; \\2",
-                      $v);
-       fputs($out,$res);
-     }
-   }
-   fclose($out);
-   rename("/etc/php/php.ini.tmp","/etc/php/php.ini");
-?> ' | /usr/bin/php -q
-
 # Add What log facility in syslog
   echo "local6.*				/var/log/what.log" >> /etc/syslog.conf
   /etc/rc.d/init.d/syslog restart
