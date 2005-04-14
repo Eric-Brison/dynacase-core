@@ -1,5 +1,5 @@
 <!-- 
-  $Id: param_list.xml,v 1.3 2002/05/27 14:51:30 eric Exp $
+  $Id: param_list.xml,v 1.4 2005/04/14 09:53:50 marc Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.xml,v $
 -->
 <div id="dedit" style="display:none">
@@ -76,6 +76,31 @@ function movediv(th,Aname,Atype,Appid,Kind,Value) {
   }
   
 }
+function switchVisibility(app) {
+  eltApp = document.getElementById(app);
+  eltAppP = document.getElementById('P'+app);
+  if (eltAppP.style.display == '' ) {
+    eltAppP.style.display = 'none';
+    eltApp.className = 'CORETblCellAltern';
+  } else {
+    eltAppP.style.display = '';
+    eltApp.className = 'CORETblHeadCell';
+  }
+}
+var AppList = new Array( [AppList] );
+function showAllParam() {
+  for (iapp in AppList) {
+    eltApp = document.getElementById(AppList[iapp]);
+    if (!eltApp) {
+      //alert(iapp+' '+AppList[iapp]);
+    } else {
+      eltAppP = document.getElementById('P'+AppList[iapp]);
+      eltAppP.style.display = '';
+      eltApp.className = 'CORETblHeadCell';
+    }
+  }
+}
+
 //-->
 </script>
 <style>
@@ -101,21 +126,24 @@ TD.highlight {
 
 <tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 [BLOCK APPLI] 
-<tr><td colspan="3" class="CORETblHeadCell"><span class="CORETblHead">[appname] : [appdesc]</span></td></tr>
+<tr title="[appname] : [appdesc]" id="[appname]" style="cursor:pointer;" onclick="switchVisibility('[appname]')" class="CORETblCellAltern">
+<td colspan="2" width="15%">[appdesc]</td><td align="right"><!-- [appname] --></td></tr>
+<tr><td colspan="3" ><table style="display:none" id="P[appname]" width="100%">
 <!-- TABLEBODY -->
 [BLOCK [PARAM]]
-<tr>
-  <td  >
+<tr title="[tooltip]">
+  <td width="5%"  >
        
        <a href="[CORE_STANDURL]&app=APPMNG&action=[ACTIONDEL]&id=[name]&appid=[appid]&atype=[type]" onClick="return confirm('[TEXT:delconfirmparam] [name]')"><img class="[classtype]" border=0 src="[IMG:delete.gif]" title="[TEXT:delete]"></a> </td>
-  <td  class="[classtype]"><span class="CORETbl">[descr]</span></td>
-  <td  id="v[name]" 
+  <td  width="40%" class="[classtype]"><span class="CORETbl">[descr]</span></td>
+  <td  width="55%" id="v[name]" 
        class="[classtype]";
        onmouseover="this.className='highlight'"
        onmouseout="this.className='[classtype]'"
        onclick="movediv(this,'[name]','[type]','[appid]','[kind]','[sval]')"><span>[val]</span></td>
 </tr>
 [ENDBLOCK [PARAM]]
+</td></tr></table>
 [ENDBLOCK APPLI]
 <!-- /TABLEBODY -->
 

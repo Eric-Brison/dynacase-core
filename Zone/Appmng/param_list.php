@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: param_list.php,v 1.6 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: param_list.php,v 1.7 2005/04/14 09:53:50 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: param_list.php,v 1.6 2003/08/18 15:46:42 eric Exp $
+// $Id: param_list.php,v 1.7 2005/04/14 09:53:50 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: param_list.php,v $
+// Revision 1.7  2005/04/14 09:53:50  marc
+// Show/Hide parameters by application
+//
 // Revision 1.6  2003/08/18 15:46:42  eric
 // phpdoc
 //
@@ -132,6 +135,7 @@ function param_list(&$action) {
     
     $precApp=0;
   $tincparam=array();
+  $applist = "";
     while (list($k,$v)= each ($tparam)) {
       if (isset($v[$vsection])) {
 	if ($v[$vsection] != $precApp) {
@@ -144,6 +148,8 @@ function param_list(&$action) {
 
 
 	  $appinc[$precApp]["appname"]=$app1->name;
+          $applist .= ($applist==""?"":",");
+          $applist .= "'".$app1->name."'";
 	  $appinc[$precApp]["appdesc"]=$action->text($app1->short_name);
 	  $appinc[$precApp]["PARAM"]="PARAM$precApp";
           
@@ -162,6 +168,8 @@ function param_list(&$action) {
 
 	if ($tincparam[$k]["descr"]=="") $tincparam[$k]["descr"]=$tincparam[$k]["name"];
 	else $tincparam[$k]["descr"]=_($tincparam[$k]["descr"]);
+	$tincparam[$k]["tooltip"] = $tincparam[$k]["name"] . " : " .$tincparam[$k]["descr"];
+
       }
     }
     
@@ -177,6 +185,7 @@ function param_list(&$action) {
   
 
   uasort($appinc,"cmpappname");
+  $action->lay->set("AppList",$applist);
   $action->lay->SetBlockData("APPLI",$appinc);
   
   
