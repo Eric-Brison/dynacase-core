@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.16 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: Class.Param.php,v 1.17 2005/04/14 07:49:25 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -173,7 +173,7 @@ function DelStatic($appid)
 {
 
     $query = new QueryDb($this->dbaccess,"Param");
-    $list = $query->Query(0,0,"LIST","select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramv.appid=$appid;");
+    $list = $query->Query(0,0,"LIST","select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramdef.isuser!='Y' and paramv.appid=$appid;");
 
     if ($query->nb != 0) {
       reset($list);
