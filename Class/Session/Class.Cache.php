@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Cache.php,v 1.11 2005/03/01 17:23:08 eric Exp $
+ * @version $Id: Class.Cache.php,v 1.12 2005/04/15 08:23:23 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -162,7 +162,7 @@ Class Cache {
   // clear one entry of the object cache
   function ClearCacheIndex($index, $reallyset = true) {
     
-
+    include_once('Class.SessionCache.php');
       unset($_SESSION["CacheObj"][$index]);
       global $ClearedIndex;
       $ClearedIndex[$index]=true;
