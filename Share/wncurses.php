@@ -3,7 +3,7 @@
  * WHAT ncurses utilities functions
  *
  * @author Anakeen 2004
- * @version $Id: wncurses.php,v 1.2 2004/10/05 10:30:00 eric Exp $
+ * @version $Id: wncurses.php,v 1.3 2005/04/18 12:53:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -27,7 +27,7 @@ function ncurses_exit() {
 
 function ncurses_select($tr,$msg="Select",$iselect=0,$pairsel=0) {
   global $fullscreen;
-  ncurses_getmaxyx(&$fullscreen, $lines, $columns);
+  ncurses_getmaxyx($fullscreen, $lines, $columns);
   $wsel = ncurses_newwin($lines-9, $columns-4, 7, 2);
   ncurses_wborder($wsel,0,0, 0,0, 0,0, 0,0);
   ncurses_wcolor_set($wsel,3);
@@ -63,7 +63,7 @@ function ncurses_select($tr,$msg="Select",$iselect=0,$pairsel=0) {
       if ($iselect < $maxsel) $iselect++;
       break;
     }
-    ncurses_getyx (&$wsel, $y, $x);
+    ncurses_getyx ($wsel, $y, $x);
     ncurses_select($tr,$msg,$iselect,1);
     $pressed = ncurses_getch();
 
@@ -124,7 +124,7 @@ function ncurses_winit($title) {
   if (!$fullscreen) {
     ncurses_exit();
   }
-  ncurses_getmaxyx(&$fullscreen, $lines, $columns); 
+  ncurses_getmaxyx($fullscreen, $lines, $columns); 
   // draw a border around the whole thing.
   ncurses_border(0,0, 0,0, 0,0, 0,0);
   if(ncurses_has_colors()){
@@ -159,7 +159,7 @@ function ncurses_getchw($chars) {
 }
 function ncurses_execute(&$actions) {
   global $fullscreen;
-  ncurses_getmaxyx(&$fullscreen, $lines, $columns);
+  ncurses_getmaxyx($fullscreen, $lines, $columns);
   
 
   $wact = ncurses_newwin($lines-9, $columns-4, 7, 2);
@@ -247,7 +247,7 @@ function ncurses_execute(&$actions) {
 
 function ncurses_list(&$actions,$start=0,$wlist="",$nogetch=false) {
   global $fullscreen;
-  ncurses_getmaxyx(&$fullscreen, $lines, $columns);
+  ncurses_getmaxyx($fullscreen, $lines, $columns);
   $slice=$lines-14;
   if ($wlist=="")  $wlist = ncurses_newwin($lines-9, $columns-4, 7, 2);
   ncurses_wborder($wlist,0,0, 0,0, 0,0, 0,0);
