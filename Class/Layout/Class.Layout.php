@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.25 2005/03/08 17:54:40 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.26 2005/05/02 14:01:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.25 2005/03/08 17:54:40 eric Exp $
+//  $Id: Class.Layout.php,v 1.26 2005/05/02 14:01:27 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -176,15 +176,16 @@ var $strip='Y';
 
   function TestIf($name,$block,$not=false) {    
     $out = "";     
-    if ( isset($this->rif[$name])) {
-     if ($this->rif[$name] xor $not)  {
-      if ($this->strip=='Y') {
-	$block = str_replace("\\\"","\"",$block);
+    if (isset($this->rif[$name]) || isset($this->rkey[$name]) ) {
+      $n = (isset($this->rif[$name]))?$this->rif[$name]:$this->rkey[$name];
+      if ($n xor $not)  {
+	if ($this->strip=='Y') {
+	  $block = str_replace("\\\"","\"",$block);
+	}
+	$out=$block;      
+	$this->ParseBlock($out);
+	$this->ParseIf($out);
       }
-      $out=$block;      
-      $this->ParseBlock($out);
-      $this->ParseIf($out);
-     }
     } else {
       if ($this->strip=='Y') $block = str_replace("\\\"","\"",$block);
       
