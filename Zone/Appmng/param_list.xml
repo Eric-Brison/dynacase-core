@@ -1,5 +1,5 @@
 <!-- 
-  $Id: param_list.xml,v 1.4 2005/04/14 09:53:50 marc Exp $
+  $Id: param_list.xml,v 1.5 2005/05/13 16:07:03 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.xml,v $
 -->
 <div id="dedit" style="display:none">
@@ -106,6 +106,10 @@ function showAllParam() {
 <style>
 TD.highlight {
   background-color: [CORE_BGCOLORHIGH];
+  cursor:pointer;
+}
+TD.static {  
+  cursor:not-allowed;
 }
 </style>
 <table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
@@ -131,16 +135,15 @@ TD.highlight {
 <tr><td colspan="3" ><table style="display:none" id="P[appname]" width="100%">
 <!-- TABLEBODY -->
 [BLOCK [PARAM]]
-<tr title="[tooltip]">
-  <td width="5%"  >
-       
+<tr title="[tooltip]" >
+  <td width="5%"  >       
        <a href="[CORE_STANDURL]&app=APPMNG&action=[ACTIONDEL]&id=[name]&appid=[appid]&atype=[type]" onClick="return confirm('[TEXT:delconfirmparam] [name]')"><img class="[classtype]" border=0 src="[IMG:delete.gif]" title="[TEXT:delete]"></a> </td>
-  <td  width="40%" class="[classtype]"><span class="CORETbl">[descr]</span></td>
+  <td  width="40%" class="[classtype]"><span class="CORETbl" style="color:[colorstatic]">[descr]</span></td>
   <td  width="55%" id="v[name]" 
        class="[classtype]";
-       onmouseover="this.className='highlight'"
+       onmouseover="if ('[kind]'!='static') this.className='highlight'; else this.className='static'"
        onmouseout="this.className='[classtype]'"
-       onclick="movediv(this,'[name]','[type]','[appid]','[kind]','[sval]')"><span>[val]</span></td>
+       onclick="movediv(this,'[name]','[type]','[appid]','[kind]','[sval]')"><span style="color:[colorstatic]">[val]</span></td>
 </tr>
 [ENDBLOCK [PARAM]]
 </td></tr></table>
