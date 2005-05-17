@@ -47,7 +47,7 @@ Alias /what @prefix@
 
 
 
- <Directory ~ @prefix@/[A-B,D-Z]|@prefix@/C[^A]>
+ <Directory ~ @prefix@/[A-V,X-Z]|@prefix@/W[^G]>
      Order Deny,Allow
      Deny from All   
  </Directory> 
@@ -55,19 +55,4 @@ Alias /what @prefix@
 <Directory "@prefix@/expire/">
     ErrorDocument 401 "connection refused"   
     Options IncludesNoExec FollowSymLinks
- 
 </Directory>
-
-
- <Directory @prefix@/CALENDAR>
-    AllowOverride None
-    ErrorDocument 401 "connection refused"   
-    AuthType Basic
-    AuthName 'WHAT Connection'
-    AuthPAM_Enabled  on
-    AuthPAM_FallThrough off
-    require valid-user
- </Directory>
-
-
-Alias /whatsync @prefix@/CALENDAR
