@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.36 2005/03/01 17:23:49 eric Exp $
+ * $Id: core.css,v 1.37 2005/05/19 13:48:17 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -222,8 +222,8 @@ IMG.click:hover {
   border-width : 1px;
 }
 
-.CORETblCellAltern {
-  background: [CORE_BGCOLORALTERN];
+.CORETblCellAltern, OPTION.CORETblCellAltern {
+  background-color: [CORE_BGCOLORALTERN]!important;
 }
 
 .COREError {
