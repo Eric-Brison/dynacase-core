@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.31 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.32 2005/05/19 13:48:01 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.31 2004/08/05 09:31:22 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.32 2005/05/19 13:48:01 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@ include_once('Class.Log.php');
 include_once('Class.Cache.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.31 2004/08/05 09:31:22 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.32 2005/05/19 13:48:01 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -396,15 +396,17 @@ function Add($nopost=false)
   }
 /** 
  * Add the object to the database
- * @param bool $nopost PostUpdate() method not apply if true
+ * @param bool $nopost PostUpdate() and method not apply if true
+ * @param string $sfields only this column will ne updated if empty all fields
+ * @param bool $nopre PreUpdate() method not apply if true
  * @return string error message, if no error empty string
  * @see PreUpdate()
  * @see PostUpdate()
  */
-function Modify($nopost=false,$sfields="")
+function Modify($nopost=false,$sfields="",$nopre=false)
   {
     if ($this->dbid == -1) return FALSE;
-    $msg=$this->PreUpdate();
+    if (!$nopre) $msg=$this->PreUpdate();
     if ($msg!='') return $msg;
     $sql = "update ".$this->dbtable." set ";
     

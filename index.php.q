@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.8 2005/03/01 17:20:03 eric Exp $
+// $Id: index.php.q,v 1.9 2005/05/19 13:48:31 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -302,13 +302,14 @@ function sortqdelay($a,$b) {
 usort($TSQLDELAY,sortqdelay);
 
 
-printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"alert('%s')\"><I>[Q %.2fs]</I></a></SUP>",
+printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"alert('%s')\"><I>[Q %.2fs §%d]</I></a></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
        $tic4-$tic1,
        $tic3-$tic2,$nbcache,			
        round(memory_get_usage()/1024),	
        str_replace("\n","\\n",addslashes(print_r($TSQLDELAY,true))),
-       $SQLDELAY);
+       $SQLDELAY,
+	count($TSQLDELAY));
 
 ?>
