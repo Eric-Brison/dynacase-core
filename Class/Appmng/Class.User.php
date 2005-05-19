@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.38 2005/02/10 17:26:46 eric Exp $
+ * @version $Id: Class.User.php,v 1.39 2005/05/19 13:47:29 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -269,9 +269,9 @@ create sequence seq_id_users start 10";
 
     if ($iddomain == 0) {
       if ($extmail != "") {
-	$this->mail=$extmail;
-	$this->iddomain = "0";    
+	$this->mail=$extmail;  
       } 
+      $this->iddomain = "0";
     } else {
       if ($iddomain == 1) {
 	$this->mail=""; // no mail
@@ -303,7 +303,7 @@ create sequence seq_id_users start 10";
      	  
 
     $this->fid=$fid;
-    if (! $this->isAffected()) {    
+    if (! $this->isAffected()) {  
       $err=$this->Add();
     } else { 
       $err=$this->Modify();
