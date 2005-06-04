@@ -1,5 +1,5 @@
 <!-- 
-  $Id: param_list.xml,v 1.5 2005/05/13 16:07:03 eric Exp $
+  $Id: param_list.xml,v 1.6 2005/06/04 06:35:05 marc Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.xml,v $
 -->
 <div id="dedit" style="display:none">
@@ -131,7 +131,7 @@ TD.static {
 <tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 [BLOCK APPLI] 
 <tr title="[appname] : [appdesc]" id="[appname]" style="cursor:pointer;" onclick="switchVisibility('[appname]')" class="CORETblCellAltern">
-<td colspan="2" width="15%">[appdesc]</td><td align="right"><!-- [appname] --></td></tr>
+<td colspan="2" width="15%"><img border="0" width="25" src="[appicon]">[appdesc]</td><td align="right"><!-- [appname] --></td></tr>
 <tr><td colspan="3" ><table style="display:none" id="P[appname]" width="100%">
 <!-- TABLEBODY -->
 [BLOCK [PARAM]]

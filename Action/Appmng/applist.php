@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: applist.php,v 1.8 2004/10/26 06:30:44 marc Exp $
+ * @version $Id: applist.php,v 1.9 2005/06/04 06:35:05 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.8 2004/10/26 06:30:44 marc Exp $
+// $Id: applist.php,v 1.9 2005/06/04 06:35:05 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.9  2005/06/04 06:35:05  marc
+// Add application icons in application & param management
+//
 // Revision 1.8  2004/10/26 06:30:44  marc
 // Add version in application list
 //
@@ -158,11 +161,11 @@ function applist(&$action) {
       $query->table->array[$k]["delete"] = "";
       $query->table->array[$k]["version"] = $version;
       $query->table->array[$k]["description"] = $action->text($query->table->array[$k]["description"]);
-    
+      $query->table->array[$k]["appicon"] = $action->getImageUrl($query->table->array[$k]["icon"]);
   }
     
 
-  $query->table->fields= array("id", "update","edit","delete","name", "version", "description","available","access_free","displayable","ssl","machine");
+  $query->table->fields= array("id", "update","edit","delete","name", "appicon", "version", "description","available","access_free","displayable","ssl","machine");
 
 
   

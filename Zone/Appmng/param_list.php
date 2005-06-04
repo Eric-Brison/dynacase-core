@@ -3,7 +3,7 @@
  * Display parameters
  *
  * @author Anakeen 2000 
- * @version $Id: param_list.php,v 1.8 2005/05/13 16:07:03 eric Exp $
+ * @version $Id: param_list.php,v 1.9 2005/06/04 06:35:05 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -88,6 +88,7 @@ function param_list(&$action) {
 
 
 	  $appinc[$precApp]["appname"]=$app1->name;
+	  $appinc[$precApp]["appicon"]=$action->getImageUrl($app1->icon);
           $applist .= ($applist==""?"":",");
           $applist .= "'".$app1->name."'";
 	  $appinc[$precApp]["appdesc"]=$action->text($app1->short_name);
