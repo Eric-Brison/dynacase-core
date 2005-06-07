@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.37 2005/05/19 13:48:17 eric Exp $
+ * $Id: core.css,v 1.38 2005/06/07 16:10:40 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -157,7 +157,7 @@ IMG.click:hover {
   background: [CORE_BGCOLORALTERN];
   border-color: [CORE_BGCOLORALTERN];
   border-style:inset none none none;;
-  border-width 2px 0pt 0pt 0pt;
+  border-width: 2px 0pt 0pt 0pt;
   color: [CORE_TEXTBGCOLOR];
 }
 .TABLabelSelected {
@@ -231,13 +231,13 @@ IMG.click:hover {
   font-weight: bold;
   padding:20px;
   background-color:#F0F0F0;
-  filter:alpha(opacity=80);
+  [IF ISIE]filter:alpha(opacity=80);[ENDIF ISIE]
   -moz-opacity:.5;
   border:solid 1px;
   text-align:center;
 }
 .CORETextError {
-  filter:alpha(opacity=100);
+  [IF ISIE]filter:alpha(opacity=100);[ENDIF ISIE]
   -moz-opacity:.99;
 }
 .COREErrorBg {
@@ -250,7 +250,7 @@ IMG.click:hover {
 }
 
 IMG.Fade {
-	filter:alpha(opacity=50);
+	[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE]
 	-moz-opacity:.5;	
 }
 IMG.NotFade {
@@ -267,7 +267,6 @@ TD.NotFade {
 }
 
 div.detail {
-  visibily: hidden ;
   font-family : helvetica ;
   font-weight : bold ;
   background:[CORE_BGCOLORALTERN];
@@ -279,7 +278,6 @@ div.detail {
   width:300px;
   padding:10px;
   margin:10px;
-  spacing:10px;
 	
   -moz-border-radius:25px;
 }
