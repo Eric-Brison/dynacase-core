@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.29 2005/03/31 18:03:15 eric Exp $
+ * @version $Id: index.php,v 1.30 2005/06/07 16:09:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -106,6 +106,7 @@ $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
 $core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
+$core->SetVolatileParam("CORE_SSTANDURL","index.php?sole=Y&session={$session->id}&");
 
 
 // ----------------------------------------
