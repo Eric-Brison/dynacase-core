@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.9 2005/05/19 13:48:31 eric Exp $
+// $Id: index.php.q,v 1.10 2005/06/09 16:43:56 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -128,6 +128,7 @@ $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
 $core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
+$core->SetVolatileParam("CORE_SSTANDURL","index.php?sole=Y&session={$session->id}&");
 
 
 // ----------------------------------------

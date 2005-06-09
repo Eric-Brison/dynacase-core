@@ -10,6 +10,7 @@
 <LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo32.ico" >
 
 
+<script language="JavaScript" src="CORE/wversion.js"></script>
 
    <script language="JavaScript">
   <!--
@@ -28,6 +29,7 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
   version=parseFloat(temp[1]);
   if (version < 5.5) alert('[TEXT:You use version an to old version of Internet Explorer]:'+version+'\n'+'[TEXT:You must upgrade to version 6 or more]');
 }
+if (getVersion() != '[WVERSION]') alert('[TEXT:New version has been  installed.\nYou must clear navigator cache.]');
   //-->
    </script>
 </head>

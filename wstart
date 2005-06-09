@@ -18,3 +18,4 @@ popd > /dev/null
 pushd $pubdir/Docs > /dev/null
 ln -sf ../*/Docs/* .
 popd > /dev/null
+$pubdir/wsh.php --api=refreshjsversion

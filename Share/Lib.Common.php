@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.14 2004/10/29 09:32:39 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.15 2005/06/09 16:43:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -171,5 +171,18 @@ if (!$fbar) $fbar = GetHttpVars("bar"); // for progress bar
       fputs($ffbar,"$reste/$total/$text\n");
       fclose($ffbar);      
     }
+}
+
+function getJsVersion() {
+  include_once("Class.QueryDb.php");
+  $q=new QueryDb("","param");
+  $q->AddQuery("name='VERSION'");
+  $l=$q->Query(0,0,"TABLE");
+  $nv=0;
+  foreach ($l as $k=>$v) {  
+    $nv+=intval(str_replace('.','',$v["val"]));
+  }
+
+  return $nv;
 }
 ?>
