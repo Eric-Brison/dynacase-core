@@ -102,6 +102,7 @@ function selectIt(th) {
   th.className='Select';
     th.parentNode.parentNode.className='Select';
   csel=th;
+  subwindow(10,10,'fhidden','[CORE_STANDURL]&app=CORE&action=WVERSION');
 }
 </script>
 

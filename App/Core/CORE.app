@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.8 2005/03/03 17:16:43 eric Exp $
+// $Id: CORE.app,v 1.9 2005/06/10 13:05:18 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -125,6 +125,9 @@ $action_desc = array (
    "name"               =>"PROGRESSBAR2", 
    "script"             =>"progressbar.php",
    "function"           =>"progressbar2"	
+  ),
+  array(
+   "name"               =>"WVERSION", 
   )
                      );
   

@@ -43,6 +43,8 @@ Alias /what @prefix@
       AuthPAM_Service httpdwa
       Require valid-user
     </FilesMatch>
+    ExpiresActive On
+    ExpiresByType application/x-javascript  A31536000
 </Directory>
 
 

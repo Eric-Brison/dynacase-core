@@ -18,4 +18,8 @@ popd > /dev/null
 pushd $pubdir/Docs > /dev/null
 ln -sf ../*/Docs/* .
 popd > /dev/null
-$pubdir/wsh.php --api=refreshjsversion
+#refresh version identificator
+$pubdir/wsh.php --api=refreshjsversion >/dev/null
+#clear current sessions
+/bin/rm /var/run/php/sess_*
+

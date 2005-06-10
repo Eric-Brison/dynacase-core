@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.21 2004/08/23 12:48:19 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.22 2005/06/10 13:05:18 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -22,6 +22,10 @@ $app_const = array (
 		    "VERSION"			=>array("val"=>"@VERSION@-@RELEASE@",
 							"descr"=>N_("application version"),
 							"kind"=>"static"),
+		    "WVERSION"			=>array("val"=>"@VERSION@-@RELEASE@",
+							"descr"=>N_("version identificator"),
+							"kind"=>"static",
+							"global"=>"Y"),
 		    "STYLE"	                =>array("val"=>"",
 							"descr"=>N_("default style"),
 							"user"=>"Y"),

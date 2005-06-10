@@ -8,23 +8,14 @@
 <LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo32.ico" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
    <title>[WHAT] [TITLE]</title>
-
-
-
 [CSS:REF]
-
-
    <style type="text/css">
 [CSS:CODE]
-
    </style>
-
 [JS:REF]
-
    <script language="JavaScript">
   <!--
     [JS:CODE]
-
   //-->
    </script>
  </head>

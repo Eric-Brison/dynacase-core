@@ -3,7 +3,7 @@
  * Main page for WHAT
  *
  * @author Anakeen 2000 
- * @version $Id: main.php,v 1.8 2005/06/09 16:43:56 eric Exp $
+ * @version $Id: main.php,v 1.9 2005/06/10 13:05:18 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -33,7 +33,6 @@ function main(&$action) {
     $action->lay->set("actd", $actd);
   }
 
-  $action->lay->set("WVERSION", getJsVersion());
   // reopen a new session
   $action->parent->session->Set("");
   $action->parent->SetSession($action->parent->session);

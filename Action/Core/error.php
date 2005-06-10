@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: error.php,v 1.10 2004/01/08 10:59:27 eric Exp $
+ * @version $Id: error.php,v 1.11 2005/06/10 13:05:18 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,7 @@
  /**
  */
 
-// $Id: error.php,v 1.10 2004/01/08 10:59:27 eric Exp $
+// $Id: error.php,v 1.11 2005/06/10 13:05:18 eric Exp $
 
 //
 //
@@ -23,7 +23,7 @@ function error(&$action) {
   $app = new Application();
   
   $app->Set($action->Read("LAST_ACT","CORE"), $action->parent);
-  $action->lay->set("error", nl2br($action->Read("FT_ERROR","Session Error")));
+  $action->lay->set("error", nl2br($action->Read("FT_ERROR",getHttpVars("err","Session Error"))));
 
   $action->lay->set("serror", str_replace("\n","\\n",addslashes($action->Read("FT_ERROR","Session Error"))));
 
@@ -34,7 +34,7 @@ function error(&$action) {
   
     $app->Set($action->Read("FT_ERROR_APP","CORE"), $action->parent);
 
-    $actname = $action->Read("FT_ERROR_ACT","MAIN");
+    $actname = $action->Read("FT_ERROR_ACT","");
 
 
 
@@ -44,7 +44,7 @@ function error(&$action) {
       $act = new Action();
       if ($act->Exists($actname,$app->id)) {
 	$act->Set($actname, $app);
-	$action->lay->set("appact", _($act->short_name));
+	if ($act->short_name != "")	$action->lay->set("appact", _($act->short_name));
       } 
       
     }
