@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.15 2005/06/09 16:43:56 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.16 2005/06/13 16:22:59 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -31,10 +31,16 @@ function AddWarningMsg($msg) {
       $action->parent->AddWarningMsg($msg);
 }
 
-function getMailAddr($userid) {
+function getMailAddr($userid, $full=false) {
 
     $user = new User("",$userid);
-    if ($user->isAffected()) return $user->getMail();
+    if ($user->isAffected()) {
+      $pren = $postn = "";
+      if ($full) {
+	$pren = ucfirst(strtolower($user->lastname))." ".ucfirst(strtolower($user->firstname))." <";
+	$postn = ">";
+      }
+      return $pren.$user->getMail().$postn;
     return false;
 }
 
