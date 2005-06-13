@@ -1,0 +1,12 @@
+#!/bin/bash
+
+pubdir="/home/httpd/what";
+
+if [ -f /etc/httpd/httpd.conf/71_mod_what.conf.rpmnew ]; then
+    cd /etc/httpd/httpd.conf
+    mv 71_mod_what.conf 71_mod_what.conf.bak
+    mv 71_mod_what.conf.rpmnew 71_mod_what.conf
+    /etc/rc.d/init.d/httpd restart
+fi
+
+
