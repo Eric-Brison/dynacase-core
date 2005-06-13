@@ -11,7 +11,7 @@
 
 
    <script language="JavaScript">
-if (getVersion() != '[WVERSION]') top.location.href="[CORE_STANDURL]&app=CORE&action=ERROR&err=[TEXT:New version has been installed.]\n[TEXT:You must clear navigator cache.]";
+if (getVersion() != '[WVERSION]') top.location.href="[CORE_STANDURL]&app=CORE&action=ERROR&err=[TEXT:New version has been installed.]<br>[TEXT:You must clear navigator cache.]";
 
    </script>
  </head>
