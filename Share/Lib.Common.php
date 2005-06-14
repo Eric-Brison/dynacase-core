@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.16 2005/06/13 16:22:59 marc Exp $
+ * @version $Id: Lib.Common.php,v 1.17 2005/06/14 03:50:34 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -41,6 +41,7 @@ function getMailAddr($userid, $full=false) {
 	$postn = ">";
       }
       return $pren.$user->getMail().$postn;
+    }
     return false;
 }
 
