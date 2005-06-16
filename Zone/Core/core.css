@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.38 2005/06/07 16:10:40 eric Exp $
+ * $Id: core.css,v 1.39 2005/06/16 12:26:19 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -193,6 +193,9 @@ IMG.click:hover {
 .CORETblHeadCell {
   background-color: [CORE_FGCOLOR];
   background-image: [CORE_FGIMG];
+}
+.CORETblHeadCell TD{
+  color: [CORE_TEXTBGCOLOR];
 }
 .CORETblHeadCellLine {
   background-color: [CORE_FGCOLOR];
