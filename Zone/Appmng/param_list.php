@@ -3,7 +3,7 @@
  * Display parameters
  *
  * @author Anakeen 2000 
- * @version $Id: param_list.php,v 1.9 2005/06/04 06:35:05 marc Exp $
+ * @version $Id: param_list.php,v 1.10 2005/06/16 12:23:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -101,7 +101,7 @@ function param_list(&$action) {
 	  else if ($v["type"][0] == PARAM_USER) $tincparam[$k]["classtype"]="uparam";
 	  else if ($v["type"][0] == PARAM_STYLE) $tincparam[$k]["classtype"]="sparam";
 	  else $tincparam[$k]["classtype"]="gparam";
-	$tincparam[$k]["sval"]=addslashes($v["val"]);
+	$tincparam[$k]["sval"]=str_replace(array("'","\""),array("\'","&quot;"),$v["val"]);
 	
 	$tincparam[$k]["colorstatic"]=($v["kind"]=="static")?"#666666":"";
 
