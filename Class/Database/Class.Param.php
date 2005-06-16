@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.17 2005/04/14 07:49:25 marc Exp $
+ * @version $Id: Class.Param.php,v 1.18 2005/06/16 17:17:47 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -167,6 +167,14 @@ function GetApps()
    return($tlist);
 }
 
+function GetUParam($p, $u=ANONYMOUS_ID, $appid="") {
+   if ($appid=="") $appid=$this->appid;
+   $req = "select val from paramv where name='".$p."' and type='U".$u."' and appid=".$appid.";";
+   $query = new QueryDb($this->dbaccess,"Param");
+   $tlist = $query->Query(0,0,"TABLE",$req);
+   if ($query->nb != 0) return $tlist[0]["val"];
+   return "";
+}
 
 // delete paramters that cannot be change after initialisation
 function DelStatic($appid)
