@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.20 2005/03/04 17:20:02 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.21 2005/06/17 13:11:35 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -60,7 +60,7 @@ function GetHttpVars($name, $def="") {
   global $_GET,$_POST,$ZONE_ARGS;
 
   // it's necessary to strip slashes because HTTP add slashes automatically
-  if (isset($ZONE_ARGS[$name])) return stripslashes($ZONE_ARGS[$name]); // try zone args first : it is set be Layout::execute for a zone
+  if (isset($ZONE_ARGS[$name])) return ($ZONE_ARGS[$name]); // try zone args first : it is set be Layout::execute for a zone
   if (isset($_GET[$name])) return stripslashes($_GET[$name]);
   if (isset($_POST[$name])) {
     if (is_array($_POST[$name])) return $_POST[$name];
