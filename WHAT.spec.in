@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.43 2005/06/13 13:20:49 eric Exp $
+#  $Id: WHAT.spec.in,v 1.44 2005/06/21 13:02:48 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -53,6 +53,7 @@ Requires: ankpsql-tools
 Requires: gettext
 Requires: gettext-devel > 0.11
 Requires: php-pear-Crypt_CHAP >= 1.0.0
+Requires: php-pear-PEAR
 Requires: binutils
 
 Prereq: apache
