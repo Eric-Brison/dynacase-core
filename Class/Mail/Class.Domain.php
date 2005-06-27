@@ -3,7 +3,7 @@
  * Mail Domain
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Domain.php,v 1.4 2004/10/04 09:10:46 eric Exp $
+ * @version $Id: Class.Domain.php,v 1.5 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -17,7 +17,7 @@ include_once('Class.Pop.php');
 
 Class Domain extends DbObj {
 
-var $Class = '$Id: Class.Domain.php,v 1.4 2004/10/04 09:10:46 eric Exp $';
+var $Class = '$Id: Class.Domain.php,v 1.5 2005/06/27 13:02:44 eric Exp $';
 
 var $fields = array ( "iddomain",
 		      "name",
@@ -103,9 +103,9 @@ create sequence seq_iddomain start 10;
    if ($name==NULL) return FALSE;
    $query = new QueryDb($this->dbaccess, "Domain");
    $query->basic_elem->sup_where[] = "name = '$name'" ;
-   $list = $query->Query();
+   $list = $query->Query(0,0,"TABLE");
    if ($query->nb>0) {
-     $this=$list[0];
+     $this->Affect($list[0]);
      return TRUE;
    } else {
      $this->log->warning("No such domain {$query->string}");

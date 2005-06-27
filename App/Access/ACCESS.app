@@ -52,13 +52,6 @@ $action_desc = array (
    "short_name"		=>N_("Application Access")
   ),
   array(
-   "name"		=>"OBJECT_ACCESS",
-   "toc"		=>"Y",
-   "acl"		=>"ADMIN",
-   "layout"		=>"user_access.xml",
-   "short_name"		=>N_("Object Access")
-  ),
-  array(
    "name"		=>"MODIFY",
    "acl"		=>"ADMIN",
    "short_name"		=>N_("Modify any access")

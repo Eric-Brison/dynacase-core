@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.MailAlias.php,v 1.4 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.MailAlias.php,v 1.5 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,9 +30,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.MailAlias.php,v 1.4 2003/08/18 15:46:42 eric Exp $
+// $Id: Class.MailAlias.php,v 1.5 2005/06/27 13:02:44 eric Exp $
 //
 // $Log: Class.MailAlias.php,v $
+// Revision 1.5  2005/06/27 13:02:44  eric
+// PHP5
+//
 // Revision 1.4  2003/08/18 15:46:42  eric
 // phpdoc
 //
@@ -67,7 +70,7 @@ include_once('Class.Domain.php');
 
 Class MailAlias extends DbObj
 {
-var $Class = '$Id: Class.MailAlias.php,v 1.4 2003/08/18 15:46:42 eric Exp $';
+var $Class = '$Id: Class.MailAlias.php,v 1.5 2005/06/27 13:02:44 eric Exp $';
 
 var $fields = array ( "idalias",
                       "iddomain",
@@ -126,8 +129,8 @@ create sequence seqidalias;
  function Set($d, $u) {
    $q = new QueryDb($this->dbaccess,"MailAlias");
    $q->basic_elem->sup_where = array("iddomain={$this->iddomain}", "iduser={$this->iduser}");
-   $l = $q->Query();
-   if ($q->nb > 0) $this = $l[0];
+   $l = $q->Query(0,0,"TABLE");
+   if ($q->nb > 0) $this->Affect($l[0]);
  }
 
  function CheckUptime($domain, $time) {

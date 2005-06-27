@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Pop.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.Pop.php,v 1.3 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,9 +30,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Pop.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+// $Id: Class.Pop.php,v 1.3 2005/06/27 13:02:44 eric Exp $
 //
 // $Log: Class.Pop.php,v $
+// Revision 1.3  2005/06/27 13:02:44  eric
+// PHP5
+//
 // Revision 1.2  2003/08/18 15:46:42  eric
 // phpdoc
 //
@@ -64,7 +67,7 @@ include_once('Class.DbObj.php');
 
 Class Pop extends DbObj {
 
-var $Class = '$Id: Class.Pop.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
+var $Class = '$Id: Class.Pop.php,v 1.3 2005/06/27 13:02:44 eric Exp $';
 
 var $fields = array ( "idpop",
 		      "iddomain",
@@ -128,9 +131,9 @@ grant all on seq_idpop to anakeen;
    } else {
      $query->basic_elem->sup_where = array ("idpop = $id");
    }
-   $list = $query->Query();
+   $list = $query->Query(0,0,"TABLE");
    if ($query->nb>0) {
-     $this=$list[0];
+     $this->Affect($list[0]);
      return TRUE;
    } else {
      $this->log->warning("No such pop host {$query->string}");

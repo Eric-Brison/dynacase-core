@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.19 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: Class.Action.php,v 1.20 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,10 +28,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.19 2004/03/22 15:21:40 eric Exp $
+//  $Id: Class.Action.php,v 1.20 2005/06/27 13:02:44 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.19 2004/03/22 15:21:40 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.20 2005/06/27 13:02:44 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -88,16 +88,16 @@ var $grant_level=0;
 function Set($name,&$parent)
 {
   
-    $query=new QueryDb($this->dbaccess,"Action");
+    $query=new QueryDb($this->dbaccess,"Action","TABLE");
     if ($name!="") {
       $query->basic_elem->sup_where = array ("name='$name'","id_application={$parent->id}");
     } else {
       $query->basic_elem->sup_where = array ("root='Y'","id_application={$parent->id}");
     }
-    $query->Query();
+    $query->Query(0,0,"TABLE");
 
     if ($query->nb > 0) {
-      $this = $query->list[0];
+      $this->Affect($query->list[0]);
       $this->log->debug("Set Action to {$this->name}");
     } else {
     

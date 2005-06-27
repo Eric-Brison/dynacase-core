@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.19 2005/03/01 17:23:08 eric Exp $
+ * @version $Id: Class.Session.php,v 1.20 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.19 2005/03/01 17:23:08 eric Exp $
+// $Id: Class.Session.php,v 1.20 2005/06/27 13:02:44 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.19 2005/03/01 17:23:08 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.20 2005/06/27 13:02:44 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -70,12 +70,12 @@ var $sessiondb;
       $query->criteria = "id";
       $query->operator = "=";
       $query->string = "'".$id."'";
-      $list = $query->Query();
+      $list = $query->Query(0,0,"TABLE");
       if ($query->nb != 0) {
-        $this=$list[0];
+        $this->Affect($list[0]);
 	session_id($id);
 	@session_start();
-	$this->initCache();
+	//	$this->initCache();
         
       } else {
 	global $_SERVER;
@@ -119,7 +119,7 @@ var $sessiondb;
       if ($_SERVER['HTTP_HOST'] != "") {
 	session_id($idsess);
 	@session_start();
-	$this->initCache();
+	//	$this->initCache();
       }
       $this->id         = $idsess;
       $this->userid   = $uid;

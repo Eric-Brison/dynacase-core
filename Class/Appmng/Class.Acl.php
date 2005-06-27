@@ -1,9 +1,9 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Access Control for application
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Acl.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: Class.Acl.php,v 1.6 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,30 +11,7 @@
  /**
  */
 
-// $Id: Class.Acl.php,v 1.5 2003/08/18 15:46:41 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Acl.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2000
-// O*O  Anakeen Development Team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
 
-//
-$CLASS_ACL_PHP = '$Id: Class.Acl.php,v 1.5 2003/08/18 15:46:41 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -67,10 +44,10 @@ function Set($name,$id_app)
 {
   $query=new QueryDb($this->dbaccess,"Acl");
   $query->basic_elem->sup_where = array ("name='$name'","id_application=$id_app");
-  $query->Query();
+  $query->Query(0,0,"TABLE");
 
   if ($query->nb > 0) {
-    $this = $query->list[0];
+    $this->Affect($query->list[0]);
   } else {
     return false;
   }

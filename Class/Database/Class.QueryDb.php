@@ -1,9 +1,9 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Query to Database
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryDb.php,v 1.8 2004/03/01 08:36:07 eric Exp $
+ * @version $Id: Class.QueryDb.php,v 1.9 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,35 +11,8 @@
  /**
  */
 
-// ---------------------------------------------------------------------------
-// anakeen 2000 - Yannick Le Briquer
-// ---------------------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-// 
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------------------
-//  $Id: Class.QueryDb.php,v 1.8 2004/03/01 08:36:07 eric Exp $
-
-// ---------------------------------------------------------------------------
-// This class is designed to perform query constructs on objects
-// It returns a table of objects that match the query
-//
-// It gives the HTML/JScript element for the gui
-// and it gives the result of the query
-$CLASS_QUERYDB_PHP = '$Id: Class.QueryDb.php,v 1.8 2004/03/01 08:36:07 eric Exp $';
 
 include_once('Class.Log.php');
-include_once('Class.Cache.php');
 
 Class QueryDb  {
 
@@ -91,7 +64,6 @@ function QueryDb ($dbaccess,$class)
       // 
       $this->log = new Log("","Query","$class");
       $this->basic_elem = new $class($dbaccess);
-      if ($this->basic_elem->cached) print "BIG ERROR";
       $this->dbaccess = $this->basic_elem->dbaccess;
       $this->class = $class;
 
@@ -181,17 +153,17 @@ function QueryDb ($dbaccess,$class)
     $this->LastQuery=$query;
 
     // try cache query first
-    if ($this->basic_elem->isCacheble) {
-      $ocache = new CacheQuery();
+//     if ($this->basic_elem->isCacheble) {
+//       $ocache = new CacheQuery();
       
-      $ocache->cacheclass=strtolower($this->class);
-	if ($ocache->GetCache($this->cacheId())) {	  
-	  $this->list = $ocache->list;
-	  $this->nb = $ocache->nb;
+//       $ocache->cacheclass=strtolower($this->class);
+// 	if ($ocache->GetCache($this->cacheId())) {	  
+// 	  $this->list = $ocache->list;
+// 	  $this->nb = $ocache->nb;
 
-	  return $this->list;
-	}
-    }
+// 	  return $this->list;
+// 	}
+//     }
 
 
 
@@ -204,11 +176,11 @@ function QueryDb ($dbaccess,$class)
       $this->nb = $this->basic_elem->numrows();    
       
       if ($this->nb ==0) {
-	if ($this->basic_elem->isCacheble) {
-	  $ocache = new CacheQuery($this);
+// 	if ($this->basic_elem->isCacheble) {
+// 	  $ocache = new CacheQuery($this);
 
-	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
-	}
+// 	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
+// 	}
 	return FALSE;
       }
 
@@ -236,11 +208,11 @@ function QueryDb ($dbaccess,$class)
       // print "record ".$this->hsql."#".count($this->list)."<BR>";
       
 
-      if ($this->basic_elem->isCacheble)
-	{
-	  $ocache = new CacheQuery($this);
-	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
-	}
+  //     if ($this->basic_elem->isCacheble)
+// 	{
+// 	  $ocache = new CacheQuery($this);
+// 	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
+// 	}
       return($this->list);
     }
       
@@ -330,16 +302,16 @@ function cacheId() {
   }
 }
 
-Class CacheQuery extends Cache {
-  var $list=array();
-  var $nb=0;
+// Class CacheQuery extends Cache {
+//   var $list=array();
+//   var $nb=0;
 
-  function CacheQuery($queryobj=NULL) {
-    if ($queryobj != NULL) {
-      $this->list= $queryobj->list;
-      $this->nb = $queryobj->nb;
-      $this->cacheclass=strtolower($queryobj->class);
-    }
-  }
-}
+//   function CacheQuery($queryobj=NULL) {
+//     if ($queryobj != NULL) {
+//       $this->list= $queryobj->list;
+//       $this->nb = $queryobj->nb;
+//       $this->cacheclass=strtolower($queryobj->class);
+//     }
+//   }
+//}
 ?>

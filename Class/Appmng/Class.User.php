@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.40 2005/06/13 13:20:49 eric Exp $
+ * @version $Id: Class.User.php,v 1.41 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -84,9 +84,9 @@ create sequence seq_id_users start 10";
 	$query->AddQuery("login='$loginDomain'");
       }
       $query->order_by='iddomain';
-      $list = $query->Query();
+      $list = $query->Query(0,0,"TABLE");
       if ($query->nb > 0) {
-	$this=$list[0];
+	$this->Affect($list[0]);
       } else {
 	return FALSE;
       }
@@ -101,10 +101,10 @@ create sequence seq_id_users start 10";
       $query->basic_elem->sup_where=array("login='$login'",
 					  "iddomain=$domain");
 
-      $list = $query->Query();
+      $list = $query->Query(0,0,"TABLE");
 
       if ($query->nb != 0) {
-	$this=$list[0];
+	$this->Affect($list[0]);
       } else {
 	return FALSE;
       }

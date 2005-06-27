@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.18 2005/06/16 17:17:47 marc Exp $
+ * @version $Id: Class.Param.php,v 1.19 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -111,7 +111,7 @@ function GetAll($appid="",$userid=ANONYMOUS_ID,$styleid="0")
 			 " OR (paramv.type='".PARAM_STYLE.$styleid."' and paramdef.isglob='Y')".
 			 " order by paramv.name, paramv.type desc");
 
-   // print $query->LastQuery."<HR>";
+   $out=array();
    if ($query->nb != 0) {
      while(list($k,$v)=each($list)) {
        $out[$v["name"]]=$v["val"];

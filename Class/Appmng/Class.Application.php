@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.36 2005/03/01 17:22:45 eric Exp $
+ * @version $Id: Class.Application.php,v 1.37 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -20,7 +20,6 @@ include_once('Class.Layout.php');
 include_once('Class.Param.php');
 include_once('Class.User.php');
 include_once('Class.Permission.php');
-include_once('Class.Lang.php');
 include_once('Class.Style.php');
 include_once('Class.ParamDef.php');
 include_once('Lib.Http.php');
@@ -90,21 +89,16 @@ function Set($name,&$parent, $session="")
   
   $this->log->debug("Entering : Set application to $name");
 
-  global $gApps;
-
-  if (isset($gApps[$name]))  {
-    $this=$gApps[$name];
-    return true;
-  }
+ 
 
   $query=new QueryDb($this->dbaccess,"Application");
   $query->order_by = "";
   $query->criteria = "name";
   $query->operator = "=";
   $query->string = "'".$name."'";
-  $list = $query->Query();
+  $list = $query->Query(0,0,"TABLE");
   if ($query->nb != 0) {
-     $this=$list[0];
+     $this->affect($list[0]);
      $this->log->debug("Set application to $name");
      if (!isset ($parent)) {
        $this->log->debug("Parent not set");
@@ -145,10 +139,6 @@ function Set($name,&$parent, $session="")
 
   $this->param=new Param($this->dbaccess);
   $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID,$this->style->name);
-
-
-
-  $gApps[$name]=&$this; // optimize for speed : don't recompute next time
 
 
 }
@@ -408,22 +398,7 @@ function InitStyle()
   $this->style->Set($this);
 }
 
-function InitText()
-{
-  
-  // old init
-  $this->text = new Lang($this->dbaccess);
-  $this->text->SetEnv($this->id,
-		      substr($this->Getparam("CORE_LANG"),0,2),
-		      "en");
 
-  // add parent text : CORE text
-  if (isset($this->parent->id)) {
-    $this->text->SetEnv($this->parent->id,
-			substr($this->Getparam("CORE_LANG"),0,2),
-			"en");
-  }
-}
 
 
 function SetLayoutVars($lay) {
@@ -603,22 +578,18 @@ function InitApp($name,$update=FALSE) {
      include("{$name}/{$name}.app");
 
      if (sizeof($app_desc)>0) {
-       if ($update) {
-         $app=&$this;
-       } else {
+       if (! $update) {
          $this->log->debug("InitApp :  new application ");
-         $app = new Application($this->dbaccess);
        }
        reset($app_desc);
        while (list($k,$v) = each ($app_desc)) {
-         $app->$k = $v;
+         $this->$k = $v;
        }
-       $app->available = "Y";
+       $this->available = "Y";
        if ($update) {
-         $app->Modify();
+         $this->Modify();
        } else {
-         $app->Add();
-         $this=$app;
+         $this->Add();
          $this->param=new Param();
          $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID);
        }
@@ -684,32 +655,7 @@ function InitApp($name,$update=FALSE) {
 
      }
 
-     // Load app texts catalog
-     if (file_exists("{$name}/{$name}_txt.php")) {
-       include("{$name}/{$name}_txt.php");
-       global $texts;
-
-       // Load generic app texts catalog
-       if (file_exists("{$this->childof}/{$this->childof}_txt.php")) {
-	 $text1 = $texts;
-	 include("{$this->childof}/{$this->childof}_txt.php");
-	 $texts = array_merge($text1, $texts);	 	 
-       }
-
-       if (isset($texts)) {
-	 $lang = new Lang();
-	 reset($texts);
-	 while (list($k, $v) = each($texts)) {
-	   while (list($kl, $vl) = each($v)) {
-	     $lang->store($this->id, $k, $kl, $vl);
-	   }
-	 }
-       } else {
-	 $this->log->Debug("Pas de catalogue de messages");
-       }
-     } else {
-       $this->log->Debug("Pas de catalogue de messages");
-     }
+     
      
   } else {
     $this->log->info ("No {$name}/{$name}.app available");
@@ -776,25 +722,9 @@ function DeleteApp() {
 }
 
 
-function Text($code, $args=NULL) {
-  $set = false;
-  
-  
-  if (!isset($this->text->buffer)) $this->InitText( );
-  
-  if ($code == "") return "";
-  
-  if ($this->text->GetText($code)) {
-    $set = true;
-  }
-  
-  
-  if (!$set) {
-    
-    $this->text->fmttxt = _("$code");
-    
-  }
-  return $this->text->fmttxt;
+function Text($code, $args=NULL) {     
+  if ($code == "") return "";  
+  return _("$code");
 }
 
 // Write default ACL when new user is created

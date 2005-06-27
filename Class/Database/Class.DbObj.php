@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.32 2005/05/19 13:48:01 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.33 2005/06/27 13:02:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.32 2005/05/19 13:48:01 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.33 2005/06/27 13:02:44 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -37,10 +37,9 @@
 
 
 include_once('Class.Log.php');
-include_once('Class.Cache.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.32 2005/05/19 13:48:01 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.33 2005/06/27 13:02:44 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -48,7 +47,7 @@ $CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.32 2005/05/19 13:48:01 eric Exp $';
  * inherit from this basic Class.
  *
  */
-Class DbObj extends Cache
+Class DbObj 
 {
 
 /**
@@ -113,9 +112,7 @@ function DbObj ($dbaccess='', $id='',$res='',$dbid=0)
     $this->dbaccess = $dbaccess;
     $this->init_dbid();
 
-    //    $this->oname="zz";
-    //    if (($this->isCacheble) && ($this->cache($dbaccess, $id, $res))) return true;
-    if ($this->GetCache($this->CacheId($id, $res))) return true;
+
   
     //global ${$this->oname};
     $this->log = new Log("","DbObj",$this->dbtable);
@@ -144,16 +141,15 @@ function DbObj ($dbaccess='', $id='',$res='',$dbid=0)
     // select with the id
     if (($id!='') || (is_array($id)) || (!isset($this->id_fields[0])) ) {
       $ret=$this->Select($id);
-      $this->SetCache($this->CacheId($id, $res));// set to the dbobj cache
-      //      ${$this->oname} = $this;// set to the dbobj cache
+
       return($ret);
     }
     // affect with a query result
     if (is_array($res)) {
       $this->Affect($res);
     }
-    //${$this->oname} = $this;// set to the dbobj cache
-      $this->SetCache($this->CacheId($id, $res));// set to the dbobj cache
+
+
     return TRUE;
   }
 
@@ -161,44 +157,6 @@ function DbObj ($dbaccess='', $id='',$res='',$dbid=0)
 
 
 
-function CacheId($id, $res) {
-
-  $soid = "";
-  if (($id != "") && ($res != "")) {
-    if (is_array($id)) {
-    
-      while(list($k,$v) = each($id)) {
-	$soid.= $v."_";
-      }
-    } elseif  (intval($id) > 0) 
-      $soid = $id;
-    else if (isset($res[$this->id_fields[0]])) {    
-      while(list($k,$v) = each($this->id_fields)) {
-	$soid.= $res[$this->id_fields[$k]]."_";
-      }
-    }
-
-
-    if (count($this->id_fields) == 1) {
-      if  (intval($id) > 0) $soid = $id;
-      else if (isset($res[$this->id_fields[0]])) {
-	$soid = $res[$this->id_fields[0]];
-	//print "soid=$soid";
-      }
-    } //print "soid=$soid<BR>";
-    
-    
-    if ($soid != "") {
-      $soid=get_class($this)."::".$soid;
-      if (ereg ("(.*)dbname=(.*)",$this->dbaccess, $reg)) {
-	$soid.="::".$reg[2];
-      }
-    }
-  }
-  //      if ($soid != "")print "soid=$soid<HR>";
-  
-  return $soid;
-}
 
 function Select($id)
   {
@@ -391,7 +349,6 @@ function Add($nopost=false)
     }
     
     if (!$nopost) $msg=$this->PostInsert();
-    $this->ClearCache();
     if ($msg!='') return $msg;
   }
 /** 
@@ -450,7 +407,6 @@ function Modify($nopost=false,$sfields="",$nopre=false)
     
     if (!$nopost) $msg=$this->PostUpdate();
     
-    $this->ClearCache();
     if ($msg!='') return $msg;
   }	
 
@@ -480,7 +436,6 @@ function Delete($nopost=false)
     }
     
     if (!$nopost) $msg=$this->PostDelete();
-    $this->ClearCache();
     if ($msg!='') return $msg;
   }
 /** 
@@ -516,7 +471,6 @@ function Adds(&$tcopy, $nopost=false)
 
     
     if (!$nopost) $msg=$this->PostInsert();
-    $this->ClearCache();
     if ($msg!='') return $msg;
   }
 function lw($prop)
@@ -599,6 +553,7 @@ function exec_query($sql,$lvl=0)
       if ($this->msg_err != "") {
 	//print "\n\t\t[".$this->msg_err."]";
 		     if ((eregi("Relation ['\"]([a-zA-Z_]*)['\"] does not exist",$this->msg_err) ||
+			  eregi("Relation ['«]([a-zA-Z_]*)['»] n'existe pas",$this->msg_err) ||
 			  eregi("class \"([a-zA-Z_]*)\" not found",$this->msg_err)) ) {
 		       $action_needed = "create";
 		     } else if ((eregi("No such attribute or function '([a-zA-Z_0-9]*)'",$this->msg_err)) ||
