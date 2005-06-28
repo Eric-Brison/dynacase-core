@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Permission.php,v 1.5 2004/01/28 08:20:32 eric Exp $
+ * @version $Id: Class.Permission.php,v 1.6 2005/06/28 13:53:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,7 @@
  /**
  */
 
-// $Id: Class.Permission.php,v 1.5 2004/01/28 08:20:32 eric Exp $
+// $Id: Class.Permission.php,v 1.6 2005/06/28 13:53:24 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Appmng/Class.Permission.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,7 +34,7 @@
 // ---------------------------------------------------------------
 
 //
-$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.5 2004/01/28 08:20:32 eric Exp $';
+$CLASS_PERMISSION_PHP = '$Id: Class.Permission.php,v 1.6 2005/06/28 13:53:24 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
@@ -66,9 +66,9 @@ create index permission_idx3 on permission(id_acl);
 
   var $actions = array(); // actions array for a user (including group) in an application
 
-  function Permission($dbaccess='', $id='',$res='',$dbid=0)
+  function __construct($dbaccess='', $id='',$res='',$dbid=0)
     {
-      DbObj::DbObj ($dbaccess, $id,$res,$dbid);
+      parent::__construct($dbaccess, $id,$res,$dbid);
       if (! $this->isAffected()) {
       
 	if (is_array($id)) {

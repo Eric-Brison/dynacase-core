@@ -3,7 +3,7 @@
  * Cache session date of validated
  *
  * @author Anakeen 2000 
- * @version $Id: Class.SessionCache.php,v 1.3 2005/03/01 17:23:08 eric Exp $
+ * @version $Id: Class.SessionCache.php,v 1.4 2005/06/28 13:53:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -27,8 +27,8 @@ var $sqlcreate = "create table session_cache ( index varchar(100),
  var $isCacheble= false;
 
 
- function SessionCache($dbaccess='', $id='',$res='',$dbid=0) {
-   DbObj::DbObj($dbaccess, $id,$res,$dbid);
+ function __construct($dbaccess='', $id='',$res='',$dbid=0) {
+   parent::__construct($dbaccess, $id,$res,$dbid);
    if ((! $this->isAffected()) && ($id != '')) {
      $this->index = $id;
      

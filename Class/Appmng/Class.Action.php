@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.20 2005/06/27 13:02:44 eric Exp $
+ * @version $Id: Class.Action.php,v 1.21 2005/06/28 13:53:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,10 +28,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.20 2005/06/27 13:02:44 eric Exp $
+//  $Id: Class.Action.php,v 1.21 2005/06/28 13:53:24 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.20 2005/06/27 13:02:44 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.21 2005/06/28 13:53:24 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -95,12 +95,10 @@ function Set($name,&$parent)
       $query->basic_elem->sup_where = array ("root='Y'","id_application={$parent->id}");
     }
     $query->Query(0,0,"TABLE");
-
     if ($query->nb > 0) {
       $this->Affect($query->list[0]);
       $this->log->debug("Set Action to {$this->name}");
-    } else {
-    
+    } else {    
       $err = sprintf(_("function '%s' not available for application %s (%d)"), $name, $parent->name, $parent->id);
       print $err;
       exit;
@@ -114,6 +112,7 @@ function CompleteSet(&$parent) {
   if ($this->script=="") $this->script=strtolower($this->name).".php";
   if ($this->layout=="") $this->layout=strtolower($this->name).".xml";
   if ($this->function=="") $this->function = substr($this->script,0,strpos($this->script,'.php'));
+   
   $this->session=&$parent->session;
 
   $this->user= &$parent->user;
@@ -122,8 +121,6 @@ function CompleteSet(&$parent) {
 
   // Init a log attribute
   $this->logaction = new Log("",$this->parent->name,$this->name);
-
-
 
   return "";
 }

@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.12 2004/08/09 07:55:45 eric Exp $
+ * @version $Id: authent.php,v 1.13 2005/06/28 13:53:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -38,8 +38,11 @@ function authenticate() {
 }
 
 global $_SERVER;
-//print "$PHP_AUTH_USER $SeenBefore $OldAuth";
-if(!isset($_SERVER['PHP_AUTH_USER']) || ($SeenBefore == 1 && !strcmp($OldAuth,$_SERVER['PHP_AUTH_USER'] )) ) {
+global $_POST;
+
+
+
+if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {
 
   authenticate();
 }

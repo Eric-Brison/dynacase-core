@@ -6,35 +6,14 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php,v 1.8 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: updateclass.php,v 1.9 2005/06/28 13:53:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
  */
 /**
  */
-// ---------------------------------------------------------------
-// $Id: updateclass.php,v 1.8 2004/08/05 09:31:22 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Api/Attic/updateclass.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2001
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
+
 
 $pubdir="/home/httpd/what";
 ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT:/usr/share/pear");
@@ -88,6 +67,7 @@ include_once("$pubdir/$appclass/Class.$class.php");
 
 
 $o= new $class($db);
+
 $dbid=pg_connect($db);
 if (! $dbid) {
   print _("cannot access to  database $db\n");

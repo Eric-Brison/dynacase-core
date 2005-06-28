@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.41 2005/06/27 13:02:44 eric Exp $
+ * @version $Id: Class.User.php,v 1.42 2005/06/28 13:53:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -383,7 +383,7 @@ create sequence seq_id_users start 10";
       $dbaccess=GetParam("FREEDOM_DB");
 
       if ($this->fid<>"") { 
-	$iuser=new Doc($dbaccess,$this->fid); 
+	$iuser=new_Doc($dbaccess,$this->fid); 
 
 	$err=$iuser->RefreshDocUser(); 
 

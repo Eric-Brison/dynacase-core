@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.19 2004/12/09 14:48:48 eric Exp $
+ * @version $Id: wsh.php,v 1.20 2005/06/28 13:53:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -34,7 +34,7 @@ global $CORE_LOGLEVEL;
 global $_GET;
 global $_SERVER;
 
-if ($_SERVER['HTTP_HOST'] != "")     {
+if (isset($_SERVER['HTTP_HOST']))     {
   print "<BR><H1>:~(</H1>";
   exit;
 }
@@ -82,7 +82,7 @@ $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
+$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
 
 if (isset($_GET["app"])) {
