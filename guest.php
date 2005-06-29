@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.12 2005/03/31 18:03:15 eric Exp $
+ * @version $Id: guest.php,v 1.13 2005/06/29 14:43:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -97,6 +97,7 @@ $core->SetVolatileParam("CORE_ROOTURL", "guest.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "guest.php?sole=A&");
 $core->SetVolatileParam("CORE_STANDURL","guest.php?sole=Y&");
 $core->SetVolatileParam("CORE_SBASEURL","guest.php?sole=A&session={$session->id}&");
+$core->SetVolatileParam("CORE_SSTANDURL","guest.php?sole=Y&session={$session->id}&");
 
 
 // ----------------------------------------
