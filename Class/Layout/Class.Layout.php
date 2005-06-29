@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.26 2005/05/02 14:01:27 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.27 2005/06/29 14:43:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.26 2005/05/02 14:01:27 eric Exp $
+//  $Id: Class.Layout.php,v 1.27 2005/06/29 14:43:42 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -105,6 +105,9 @@ var $strip='Y';
    $this->generation="";
    $file = $caneva;
    $this->file="";
+   if ((! file_exists($file))&&($file[0]!='/')) {
+     $file=GetParam("CORE_PUBDIR")."/$file"; // try absolute
+   }
    if (file_exists($file)) {
      if (filesize($file) > 0) {
        $fd = fopen($file,"r");
