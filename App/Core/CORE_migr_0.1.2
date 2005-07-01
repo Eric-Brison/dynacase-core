@@ -4,4 +4,4 @@ pubdir="/home/httpd/what";
 /usr/bin/php -q $pubdir/API/updateclass.php  --class=ParamDef
 
 
-echo "update paramdef set isglob='N';update paramdef set isglob='Y' from paramv where paramv.name=paramdef.name and paramv.type='G';" | psql anakeen anakeen;
+echo "update paramdef set isglob='N';update paramdef set isglob='Y' from paramv where paramv.name=paramdef.name and paramv.type='G';" | psql $dbpsql;

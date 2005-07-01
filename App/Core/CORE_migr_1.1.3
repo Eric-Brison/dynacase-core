@@ -1,5 +1,5 @@
 #!/bin/bash
 
 pubdir="/home/httpd/what";
-psql anakeen anakeen -f $pubdir/WHAT/getprivilege.sql
-echo "select alter_table_column('mailaccount','vacmsg','text');" | psql anakeen anakeen
+psql $dbpsql -f $pubdir/WHAT/getprivilege.sql
+echo "select alter_table_column('mailaccount','vacmsg','text');" | psql $dbpsql

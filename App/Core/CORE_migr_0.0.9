@@ -9,4 +9,5 @@ pubdir="/home/httpd/what";
 $pubdir/wsh.php --api=appadmin --method=update --appname=CORE
 $pubdir/wsh.php --app=APPMNG --action=APP_UPDATEALL
 
-echo "update paramv set val=param.val from param where param.name = paramv.name and param.key=paramv.appid;" | psql anakeen anakeen;
+echo "update paramv set val=param.val from param where param.name = paramv.name and param.key=paramv.appid;" | psql $dbpsql
+

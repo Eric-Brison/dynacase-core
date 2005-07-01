@@ -2,5 +2,5 @@
 
 pubdir="/home/httpd/what";
 /usr/bin/php -q $pubdir/API/updateclass.php  --class=User
-echo "update users set mail=(select users.login||'@'||domain.name from  domain where users.iddomain=domain.iddomain and users.iddomain > 1) where users.iddomain > 1;" | psql anakeen anakeen
-echo "INSERT INTO domain (iddomain, name, status, root, gentime, quotast, quota, quotaalert, quotatext, nobodymsg, nobodyalert, autoreplaymsg) VALUES (0, 'externe', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);" | psql anakeen anakeen
+echo "update users set mail=(select users.login||'@'||domain.name from  domain where users.iddomain=domain.iddomain and users.iddomain > 1) where users.iddomain > 1;" | psql $dbpsql
+echo "INSERT INTO domain (iddomain, name, status, root, gentime, quotast, quota, quotaalert, quotatext, nobodymsg, nobodyalert, autoreplaymsg) VALUES (0, 'externe', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);" | psql $dbpsql

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 pubdir="/home/httpd/what";
-psql anakeen anakeen -f $pubdir/WHAT/getprivilege.sql
+psql $dbpsql -f $pubdir/WHAT/getprivilege.sql
 /usr/bin/php -q $pubdir/API/updateclass.php  --class=User
 /usr/bin/php -q $pubdir/API/updateclass.php  --class=Group
 
-echo "INSERT INTO users (id, iddomain, lastname, firstname, login, password, isgroup, expires, passdelay, status, ntpasswordhash, lmpasswordhash, fid) VALUES (4, 1, 'Admin Group', '', 'gadmin', 'bfKAF/hhDUUSI', 'Y', 0, 0, 'A', '', '', NULL);INSERT INTO groups (iduser, idgroup) VALUES (4, 2);" | psql anakeen anakeen
+echo "INSERT INTO users (id, iddomain, lastname, firstname, login, password, isgroup, expires, passdelay, status, ntpasswordhash, lmpasswordhash, fid) VALUES (4, 1, 'Admin Group', '', 'gadmin', 'bfKAF/hhDUUSI', 'Y', 0, 0, 'A', '', '', NULL);INSERT INTO groups (iduser, idgroup) VALUES (4, 2);" | psql $dbpsql;
 
