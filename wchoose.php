@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wchoose.php,v 1.5 2005/07/01 08:36:47 eric Exp $
+ * @version $Id: wchoose.php,v 1.6 2005/07/01 15:06:18 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -15,8 +15,9 @@ include("WHAT/wncurses.php");
 
 global $_SERVER;
 function writedbenv($dba) {
-  if ($dba=="anakeen") $dbf=getenv("wpub")."/dbaccess.php";
-  else $dbf=getenv("wpub")."/virtual/$dba/dbaccess.php";
+  $wpub=getenv("wpub");
+  if ($dba=="anakeen") $dbf="$wpub/dbaccess.php";
+  else $dbf="$wpub/virtual/$dba/dbaccess.php";
   $dbcoord=file_get_contents($dbf);
   if (ereg('"([^"]*)"',$dbcoord,$reg)) {
     $dbcoord=$reg[1];
@@ -45,6 +46,9 @@ function writedbenv($dba) {
   fwrite($stderr,"export dbport=$dbport\n");
   fwrite($stderr,"export dbname=$dbname\n");
   fwrite($stderr,"export dbpsql='$dbpsql'\n");
+  fwrite($stderr,"export dbfree='".trim(`$wpub/wsh.php --api=fdl_dbaccess`)."'\n");
+
+
 }
 
 
