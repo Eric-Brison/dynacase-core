@@ -47,6 +47,8 @@ $(pubdir)/wstart: wstart
 	cp $< $@
 $(pubdir)/httpd.pam.in: httpd.pam.in
 	cp $< $@
+$(pubdir)/httpdwa.pam.in: httpdwa.pam.in
+	cp $< $@
 $(pubdir)/apachev.conf.in: apachev.conf.in
 	cp $< $@
 $(pubdir)/apachevi.conf.in: apachevi.conf.in

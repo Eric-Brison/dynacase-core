@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.38 2005/06/28 13:53:24 eric Exp $
+ * @version $Id: Class.Application.php,v 1.39 2005/07/01 12:41:31 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -567,7 +567,7 @@ create sequence SEQ_ID_APPLICATION start 10;
   function InitApp($name,$update=FALSE) {
 
     $this->log->info("Init : $name");
-    if (file_exists("{$name}/{$name}.app")) {
+    if (file_exists(GetParam("CORE_PUBDIR")."/{$name}/{$name}.app")) {
       global $app_desc, $app_acl, $action_desc;
 
       // init global array
@@ -627,7 +627,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 
       //----------------------------------
       // init application constant
-      if (file_exists("{$name}/{$name}_init.php")) {
+      if (file_exists(GetParam("CORE_PUBDIR")."/{$name}/{$name}_init.php")) {
 
         include("{$name}/{$name}_init.php");
 
@@ -640,7 +640,7 @@ create sequence SEQ_ID_APPLICATION start 10;
      
       //----------------------------------
       // add init father application constant
-      if (file_exists("{$this->childof}/{$this->childof}_init.php")) {
+      if (file_exists(GetParam("CORE_PUBDIR")."/{$this->childof}/{$this->childof}_init.php")) {
         include("{$this->childof}/{$this->childof}_init.php");
         global $app_const;
         $this->InitAllParam(array_filter($app_const,"f_paramglog"),true);

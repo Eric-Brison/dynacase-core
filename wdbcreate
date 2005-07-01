@@ -80,6 +80,7 @@ $actions[] = "chown http: $pubdir/virtual/$dbank/FDLGEN";
 $actions[] = "cd $pubdir/FDLGEN;ln -s  ../virtual/$dbank/FDLGEN ".strtoupper($dbfree);
 $actions[] = "sed -e 's/dbname=anakeen/dbname=$dbank/' $pubdir/dbaccess.php > $pubdir/virtual/$dbank/dbaccess.php";
 $actions[] = "sed -e 's/@DBNAME@/$dbank/g' $pubdir/httpd.pam.in > /etc/pam.d/httpd_$dbank"; 
+$actions[] = "sed -e 's/@DBNAME@/$dbank/g' $pubdir/httpdwa.pam.in > /etc/pam.d/httpdwa_$dbank"; 
 $actions[] = "sed -e 's/@DBNAME@/anakeen/g'  -e 's/@IP@/$IP/g' -e 's/@VIRTUALNAME@/".trim(`hostname -f`)."/g' $pubdir/apachevi.conf.in > /etc/httpd/httpd.conf/71_mod_what_anakeen.conf";
 $actions[] = "sed -e 's/@DBNAME@/$dbank/g' -e 's/@dbname@/".strtolower($dbank)."/g' -e 's/@Dbname@/".ucfirst(strtolower($dbank))."/g' -e 's/@IP@/$IP/g' -e 's/@VIRTUALNAME@/$virtual/g' $pubdir/apachev.conf.in > /etc/httpd/httpd.conf/71_mod_what_$dbank.conf";
 $actions[] = "$pubdir/CORE/CORE_post I ";
