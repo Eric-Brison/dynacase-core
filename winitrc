@@ -19,6 +19,7 @@ function wchoose()
     php -q $wpub/wchoose.php $1 2>/tmp/wcho$$
     if [ $? == 0 ]; then
     . /tmp/wcho$$
+    export dbfree=`$wpub/wsh.php --api=fdl_dbaccess`
       PS1="[\u@\h[1m($dbanakeen)[0m\W]\\$ "
     fi
     /bin/rm -f /tmp/wcho$$

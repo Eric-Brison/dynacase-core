@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wchoose.php,v 1.6 2005/07/01 15:06:18 eric Exp $
+ * @version $Id: wchoose.php,v 1.7 2005/07/01 15:20:20 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -46,9 +46,6 @@ function writedbenv($dba) {
   fwrite($stderr,"export dbport=$dbport\n");
   fwrite($stderr,"export dbname=$dbname\n");
   fwrite($stderr,"export dbpsql='$dbpsql'\n");
-  fwrite($stderr,"export dbfree='".trim(`$wpub/wsh.php --api=fdl_dbaccess`)."'\n");
-
-
 }
 
 
