@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.20 2005/06/28 13:53:24 eric Exp $
+ * @version $Id: wsh.php,v 1.21 2005/07/05 08:16:03 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -64,6 +64,11 @@ while (list($k, $v) = each($argv)) {
 
 
 $core = new Application();
+if ($core->dbid < 0){
+  print "Cannot access to main database";
+  exit(1);
+}
+
 $core->Set("CORE",$CoreNull);
 if (isset($_GET["userid"])) $core->user=new User("",$_GET["userid"]); //special user
 else $core->user=new User("",1); //admin 

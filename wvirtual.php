@@ -2,7 +2,7 @@
 /** WHAT Create another database
  *
  * @author Anakeen 2004
- * @version $Id: wvirtual.php,v 1.4 2004/10/05 10:29:49 eric Exp $
+ * @version $Id: wvirtual.php,v 1.5 2005/07/05 08:16:03 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -12,6 +12,7 @@ $pubdir="/home/httpd/what";
 
 include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");
+include("WHAT/wenv.php");
 
 global $_SERVER;
 
@@ -74,10 +75,10 @@ ncurses_mvwaddstr($wact, 3, 4, sprintf(_("Virtual host : [%s]"),$virtual));
 ncurses_mvwaddstr($wact, 5, 4, sprintf(_("Database : [%s]"),$dbank));
 
 ncurses_wrefresh($wact);
-$stderr = fopen('php://stderr', 'w');
-fwrite($stderr,"export dbanakeen=$dbank\n");
-fwrite($stderr,"export snwhat=$virtual\n");
 
+writedbenv($dbank);
+$stderr = fopen('php://stderr', 'w');
+fwrite($stderr,"export snwhat=$virtual\n");
 
 $cpress=strtoupper(chr($pressed));
 

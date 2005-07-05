@@ -14,7 +14,7 @@ SetEnv dbanakeen @DBNAME@
    <FilesMatch "expire.shtml|chgpasswd.php">
       Allow from All   
       AuthType Basic
-      AuthName Dbname@ Connection'
+      AuthName '@Dbname@ Connection'
       AuthPAM_Enabled  on
       AuthPAM_FallThrough off
       AuthPAM_Service httpdwa_@dbname@

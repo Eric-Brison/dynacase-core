@@ -22,20 +22,20 @@ if [ "$1" = "I" ] ; then
   fi
 
   log "Create $dbname database"
-  sulog postgres "createdb --encoding LATIN1 $dbname"
+  sulog postgres "createdb --encoding LATIN1 --host=$dbhost --port=$dbport $dbname"
   
   log "Create anakeen database user"
-  sulog postgres "createuser -d -a anakeen" 
+  sulog postgres "createuser -d -a --host=$dbhost --port=$dbport anakeen" 
  
   log "Add plpgsql language"
   if [ -f /usr/lib/pgsql/plpgsql.so ]; then
-    sulog postgres "createlang --dbname=$dbname --pglib=/usr/lib/pgsql plpgsql"
+    sulog postgres "createlang $dbpsql --pglib=/usr/lib/pgsql plpgsql"
   else
-    sulog postgres "createlang --dbname=$dbname --pglib=/usr/lib/postgresql plpgsql"
+    sulog postgres "createlang $dbpsql --pglib=/usr/lib/postgresql plpgsql"
   fi
 
   log "Add plpgsql functions"
-  sulog postgres "psql $dbname anakeen -f $pubdir/WHAT/getprivilege.sql"
+  sulog postgres "psql $dbpsql -f $pubdir/WHAT/getprivilege.sql"
 
   log "Register DB $dbname for automatic dump"
   ll=0

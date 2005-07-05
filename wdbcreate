@@ -16,6 +16,7 @@ if ($_SERVER['HTTP_HOST'] != "")     {
 
 $dbank=getenv("dbanakeen");
 $virtual=getenv("snwhat"); // server name
+$dbpsql=getenv("dbpsql");
 $dbaccess="user=anakeen dbname=$dbank";
 $dbfree="free$dbank";
 if ($argv[1]!="") $dbfree=$argv[1];
@@ -86,8 +87,8 @@ $actions[] = "sed -e 's/@DBNAME@/$dbank/g' -e 's/@dbname@/".strtolower($dbank)."
 $actions[] = "$pubdir/CORE/CORE_post I ";
 
 $actions[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=CORE";
-$actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
-$actions[] = "echo \"update paramv set val= '".ucfirst(strtolower($dbank))." Connection' where name ='CORE_REALM'\" | psql $dbank anakeen";
+$actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbpsql";
+$actions[] = "echo \"update paramv set val= '".ucfirst(strtolower($dbank))." Connection' where name ='CORE_REALM'\" | psql $dbpsql";
 $actions[] = "$pubdir/wsh.php --api=appadmin --method=init --appname=FDL";
 $actions[] = "$pubdir/wsh.php --api=set_param --param=FREEDOM_DB --value=\"user=anakeen dbname=$dbfree\"";
 $actions[] = "$pubdir/wsh.php --api=set_param --param=CORE_CLIENT --value=\"$dbank\"";
