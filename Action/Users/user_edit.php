@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_edit.php,v 1.10 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: user_edit.php,v 1.11 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_edit.php,v 1.10 2004/03/22 15:21:40 eric Exp $
+// $Id: user_edit.php,v 1.11 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -100,7 +100,7 @@ function user_edit(&$action) {
     
 
   } else {
-    $user = new User($action->GetParam("CORE_USERDB"),$id);
+    $user = new User($action->GetParam("CORE_DB"),$id);
     $action->lay->Set("id",$id);
     $group=($user->isgroup=='Y'); // reset group to value of user
     if ($group) $action->lay->SetBlockData("HIDDENFIRSTNAME", $tfirstname );
@@ -124,7 +124,7 @@ function user_edit(&$action) {
     $login->set("login",$user->login);
     $seldom=$user->iddomain;
     
-    $ug = new Group($action->GetParam("CORE_USERDB"),$user->id);
+    $ug = new Group($action->GetParam("CORE_DB"),$user->id);
     $ugroup = $ug->groups;  // direct group 
   }
 
@@ -134,7 +134,7 @@ function user_edit(&$action) {
   if ($seldom == 1) {
     if ($action->HasPermission("ADMIN")) {
 
-      $dom = new Domain($action->GetParam("CORE_USERDB"));
+      $dom = new Domain($action->GetParam("CORE_DB"));
       $dom->ListAll(0);
     
       while (list($k, $v) = each($dom->qlist)) {
@@ -150,7 +150,7 @@ function user_edit(&$action) {
     $action->lay->Set("disableddomain","");
   } else {
     $tab[0]["selected"] = "selected";
-    $dom = new Domain($action->GetParam("CORE_USERDB"),$seldom);
+    $dom = new Domain($action->GetParam("CORE_DB"),$seldom);
     $tab[0]["domainid"]=$dom->iddomain; 
     $tab[0]["domainname"]=$dom->name; 
     $action->lay->Set("disableddomain","disabled");
@@ -171,9 +171,9 @@ function user_edit(&$action) {
 
   // 
   while (list($k, $v) = each($ugroup)) {
-    $gu = new User($action->GetParam("CORE_USERDB"), $v);
+    $gu = new User($action->GetParam("CORE_DB"), $v);
         $tab[$k]["groupid"] = $v;
-	$dom = new Domain($action->GetParam("CORE_USERDB"),$gu->iddomain);
+	$dom = new Domain($action->GetParam("CORE_DB"),$gu->iddomain);
         $tab[$k]["groupname"] = "{$gu->login}@{$dom->name}";
       }
   
@@ -203,7 +203,7 @@ function user_edit(&$action) {
   $tabo = array(); // other table
 
   // 
-  $bduser = new User($action->GetParam("CORE_USERDB"));
+  $bduser = new User($action->GetParam("CORE_DB"));
   $allgroups = $bduser-> GetGroupList();
 
   while (list($k, $g) = each($allgroups)) {
@@ -214,13 +214,13 @@ function user_edit(&$action) {
 	} else {
 	  $infogroup["selectgroup"] = ""; 
 	}
-	$dom = new Domain($action->GetParam("CORE_USERDB"),$g->iddomain);
+	$dom = new Domain($action->GetParam("CORE_DB"),$g->iddomain);
         $infogroup["groupname"] = "{$g->login}@{$dom->name}";
 
 	
 	if (isset($user)) {
 	  // search group inherit in group to avoid recursion
-	  $ug = new Group($action->GetParam("CORE_USERDB"), $g->id);
+	  $ug = new Group($action->GetParam("CORE_DB"), $g->id);
 
 	  if (($user->isgroup != "Y") ||
 	      ((! in_array($user->id, $ug-> GetAllGroups())) && // don

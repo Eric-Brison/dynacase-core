@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_uedit.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: user_uedit.php,v 1.3 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_uedit.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: user_uedit.php,v 1.3 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_uedit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -74,11 +74,11 @@ function user_uedit(&$action) {
   $action->lay->Set("expdate",$user->expires>0?strftime("%d/%m/%Y %X",intval($user->expires)):"no date limit");
 
     
-  $dom = new Domain($action->GetParam("CORE_USERDB"),$user->iddomain);
+  $dom = new Domain($action->GetParam("CORE_DB"),$user->iddomain);
   $action->lay->Set("domain",$dom->name);
     
 
-  $ug = new Group($action->GetParam("CORE_USERDB"),$user->id);
+  $ug = new Group($action->GetParam("CORE_DB"),$user->id);
   $ugroup = $ug->groups;  // direct group 
   
 
@@ -92,9 +92,9 @@ function user_uedit(&$action) {
 
   // 
   while (list($k, $v) = each($ugroup)) {
-    $gu = new User($action->GetParam("CORE_USERDB"), $v);
+    $gu = new User($action->GetParam("CORE_DB"), $v);
     $tab[$k]["groupid"] = $v;
-    $dom = new Domain($action->GetParam("CORE_USERDB"),$gu->iddomain);
+    $dom = new Domain($action->GetParam("CORE_DB"),$gu->iddomain);
     $tab[$k]["groupname"] = "{$gu->login}@{$dom->name}";
   }
   

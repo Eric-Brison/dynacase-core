@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_table.php,v 1.8 2004/10/11 15:40:27 eric Exp $
+ * @version $Id: user_table.php,v 1.9 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_table.php,v 1.8 2004/10/11 15:40:27 eric Exp $
+// $Id: user_table.php,v 1.9 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -57,7 +57,7 @@ function user_table(&$action, $group=false) {
 
 
   // Set the search elements
-  $query = new QueryGen($action->GetParam("CORE_USERDB"),"User",$action);
+  $query = new QueryGen($action->GetParam("CORE_DB"),"User",$action);
   $query->slice=20;
   $action->lay->set("slice9",$query->slice+9);
   if ($group) {
@@ -137,7 +137,7 @@ function user_table(&$action, $group=false) {
     if ($v["iddomain"] == 1) {
       $query->table->array[$k]["domain"] = $action->text("nomail");
     } else { 
-      $dom = new Domain($action->GetParam("CORE_USERDB"), $v["iddomain"]);
+      $dom = new Domain($action->GetParam("CORE_DB"), $v["iddomain"]);
       $query->table->array[$k]["domain"] = $dom->name;
     }
   }

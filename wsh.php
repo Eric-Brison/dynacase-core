@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.21 2005/07/05 08:16:03 eric Exp $
+ * @version $Id: wsh.php,v 1.22 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -27,7 +27,7 @@ $log=new Log("","index.php");
 $CoreNull = "";
 global $CORE_LOGLEVEL;
 
-
+define("DEFAULT_PUBDIR","/home/httpd/what");
 
 
 // get param
@@ -73,7 +73,7 @@ $core->Set("CORE",$CoreNull);
 if (isset($_GET["userid"])) $core->user=new User("",$_GET["userid"]); //special user
 else $core->user=new User("",1); //admin 
 
-$core->session=new Session($core->GetParam("CORE_SESSION_DB"));
+$core->session=new Session();
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 

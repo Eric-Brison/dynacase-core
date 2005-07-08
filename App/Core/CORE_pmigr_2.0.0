@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+
+echo "UPDATE paramv set val = (select val from paramv where name='CORE_USERDB') where name = 'CORE_DB';" | psql $dbpsql
+echo "delete from paramdef where name='CORE_USERDB';" | psql $dbpsql
+echo "delete from paramv where name='CORE_USERDB';" | psql $dbpsql
+echo "delete from paramdef where name='CORE_SESSION_DB';" | psql $dbpsql
+echo "delete from paramv where name='CORE_SESSION_DB';" | psql $dbpsql

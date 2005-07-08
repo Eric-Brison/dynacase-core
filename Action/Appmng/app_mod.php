@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: app_mod.php,v 1.4 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: app_mod.php,v 1.5 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: app_mod.php,v 1.4 2003/08/18 15:46:41 eric Exp $
+// $Id: app_mod.php,v 1.5 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/app_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: app_mod.php,v $
+// Revision 1.5  2005/07/08 15:29:51  eric
+// suppress CORE_USERDB
+//
 // Revision 1.4  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -64,9 +67,9 @@ function app_mod(&$action) {
   $id=GetHttpVars("id");
 
   if ($id == "") {
-    $AppCour = new Application($action->GetParam("CORE_USERDB"));
+    $AppCour = new Application($action->GetParam("CORE_DB"));
   } else {
-    $AppCour = new Application($action->GetParam("CORE_USERDB"),$id);
+    $AppCour = new Application($action->GetParam("CORE_DB"),$id);
   }
   $AppCour->name=GetHttpVars("name");
   $AppCour->short_name=GetHttpVars("short_name");

@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php,v 1.9 2005/06/28 13:53:24 eric Exp $
+ * @version $Id: updateclass.php,v 1.10 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -62,7 +62,6 @@ else {
   include_once("Lib.Common.php");
   $db = getDbAccess();
 }
-
 include_once("$pubdir/$appclass/Class.$class.php");
 
 

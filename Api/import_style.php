@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_style.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: import_style.php,v 1.3 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -12,7 +12,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: import_style.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: import_style.php,v 1.3 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/import_style.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -40,17 +40,18 @@ include_once("Class.Style.php");
 $name = GetHttpVars("name");
 
 $param = new Param();
-PrintAllHttpVars();
-if (file_exists("STYLE/{$name}/{$name}.sty")) {
+
+if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/{$name}.sty")) {
      global $sty_desc,$sty_const;
-     include("./STYLE/{$name}/{$name}.sty");
+     include("STYLE/{$name}/{$name}.sty");
      if (sizeof($sty_desc)>0) {
-       $sty = new Style();
+       $sty = new Style("",$name);
        reset($sty_desc);
        while (list($k,$v) = each ($sty_desc)) {
          $sty->$k = $v;
        }
-       if ($sty->Add() != "") $sty->Modify();
+       if (! $sty->isAffected()) $sty->Add();
+       $sty->Modify();
 
      } 
 

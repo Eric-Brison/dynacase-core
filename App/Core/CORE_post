@@ -67,7 +67,7 @@ if [ "$1" = "I" ] ; then
   /usr/bin/php -q $pubdir/API/updateclass.php   --class=Permission
   /usr/bin/php -q $pubdir/API/updateclass.php   --class=Acl
   /usr/bin/php -q $pubdir/API/updateclass.php   --class=Session
-  /usr/bin/php -q $pubdir/API/appadmin.php   
+  $pubdir/wsh.php  --api=appadmin
 
 
 fi

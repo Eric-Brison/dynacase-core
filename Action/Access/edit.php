@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: edit.php,v 1.8 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: edit.php,v 1.9 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.8 2003/08/18 15:46:41 eric Exp $
+// $Id: edit.php,v 1.9 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -78,7 +78,7 @@ function edit(&$action) {
   }
   
   // write title : user name
-  $user = new User($action->GetParam("CORE_USERDB"),$userId);
+  $user = new User($action->GetParam("CORE_DB"),$userId);
   $action->lay->Set("title",$action->text("user")." : ".$user->firstname." ".$user->lastname);
   edit_main($action, $userId, $appId, $coid);
 }

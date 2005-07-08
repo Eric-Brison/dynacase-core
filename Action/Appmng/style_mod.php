@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: style_mod.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: style_mod.php,v 1.3 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: style_mod.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: style_mod.php,v 1.3 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/style_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: style_mod.php,v $
+// Revision 1.3  2005/07/08 15:29:51  eric
+// suppress CORE_USERDB
+//
 // Revision 1.2  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -56,9 +59,9 @@ function style_mod(&$action) {
   $creation=GetHttpVars("creation");
   $name=GetHttpVars("name");
   if ($creation == "Y") {
-    $ParamCour = new Param($action->GetParam("CORE_USERDB"));
+    $ParamCour = new Param($action->GetParam("CORE_DB"));
   } else {
-    $ParamCour = new Param($action->GetParam("CORE_USERDB"),array($style_id,$name));
+    $ParamCour = new Param($action->GetParam("CORE_DB"),array($style_id,$name));
   }
   $ParamCour->key=$style_id;
   $ParamCour->name=GetHttpVars("name");

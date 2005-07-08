@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.22 2005/06/10 13:05:18 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.23 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,8 +30,7 @@ $app_const = array (
 							"descr"=>N_("default style"),
 							"user"=>"Y"),
 		    "CORE_PUBDIR"		=>"@prefix@",
-		    "CORE_SESSION_DB"	        =>"user=@DBUSER@ dbname=@DBNAME@",
-		    "CORE_USERDB"		=>"user=@DBUSER@ dbname=@DBNAME@",
+		    "CORE_DB"	        =>"user=@DBUSER@ dbname=@DBNAME@",
 
 		    "CORE_LANG"		        =>array("val"=>"@LANG@",
 							"descr"=>N_("language"),

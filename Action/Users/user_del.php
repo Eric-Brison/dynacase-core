@@ -4,7 +4,7 @@
  *
  * The action also delete mail account of the user
  * @author Anakeen 2000 
- * @version $Id: user_del.php,v 1.5 2005/06/28 13:53:24 eric Exp $
+ * @version $Id: user_del.php,v 1.6 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -28,7 +28,7 @@ function user_del(&$action) {
   $id=GetHttpVars("id");
 
   if ($id !== "" && $id != 1) {
-    $user = new User($action->GetParam("CORE_USERDB"),$id);
+    $user = new User($action->GetParam("CORE_DB"),$id);
     if ( (isset($action->user)) && 
          ($action->HasPermission("ADMIN") ||
           (($action->HasPermission("DOMAIN_MASTER")) && 

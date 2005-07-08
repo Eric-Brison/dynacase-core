@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: action_mod.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: action_mod.php,v 1.4 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: action_mod.php,v 1.3 2003/08/18 15:46:41 eric Exp $
+// $Id: action_mod.php,v 1.4 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/action_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: action_mod.php,v $
+// Revision 1.4  2005/07/08 15:29:51  eric
+// suppress CORE_USERDB
+//
 // Revision 1.3  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -61,9 +64,9 @@ function action_mod(&$action) {
 
 
   if ($id == "") {
-    $ActionCour = new Action($action->GetParam("CORE_USERDB"));
+    $ActionCour = new Action($action->GetParam("CORE_DB"));
   } else {
-    $ActionCour = new Action($action->GetParam("CORE_USERDB"),array( $id,$appl_id));
+    $ActionCour = new Action($action->GetParam("CORE_DB"),array( $id,$appl_id));
   }
   $ActionCour->name=GetHttpVars("name");
   $ActionCour->short_name=GetHttpVars("short_name");

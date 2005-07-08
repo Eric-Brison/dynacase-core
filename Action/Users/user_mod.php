@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_mod.php,v 1.10 2004/07/28 12:08:52 eric Exp $
+ * @version $Id: user_mod.php,v 1.11 2005/07/08 15:29:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.10 2004/07/28 12:08:52 eric Exp $
+// $Id: user_mod.php,v 1.11 2005/07/08 15:29:51 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -50,9 +50,9 @@ function user_mod(&$action) {
   
 
   if ($id == "") {
-    $user = new User($action->GetParam("CORE_USERDB"));
+    $user = new User($action->GetParam("CORE_DB"));
   } else {
-    $user = new User($action->GetParam("CORE_USERDB"),$id);
+    $user = new User($action->GetParam("CORE_DB"),$id);
   } 
 
  
