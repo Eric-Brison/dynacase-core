@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.10 2005/06/09 16:43:56 eric Exp $
+// $Id: index.php.q,v 1.11 2005/07/19 06:45:33 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -185,6 +185,7 @@ $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
   if ( $pos>0) {
     $action->Register("navigator","EXPLORER");
+    $core->SetVolatileParam("ISIE", true);
     if (ereg("MSIE ([0-9.]+).*",$nav,$reg)) {
       $action->Register("navversion",$reg[1]);      
     }
@@ -195,6 +196,7 @@ if ($action->Read("navigator","") == "") {
     }
   }
 }
+$core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
 // init for gettext
 setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
 setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
