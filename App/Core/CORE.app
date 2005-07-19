@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.9 2005/06/10 13:05:18 eric Exp $
+// $Id: CORE.app,v 1.10 2005/07/19 16:29:12 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -128,6 +128,9 @@ $action_desc = array (
   ),
   array(
    "name"               =>"WVERSION", 
+  ),
+  array(
+   "name"               =>"MSGCACHE", 
   )
                      );
   

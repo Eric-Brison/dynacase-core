@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.39 2005/06/16 12:26:19 eric Exp $
+ * $Id: core.css,v 1.40 2005/07/19 16:29:12 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -9,6 +9,8 @@ body, .core {
   background: [CORE_BGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-size: [CORE_FONTBASESIZE];
+  margin:2px;
+  -moz-border-radius:10px;
 }
 P {
   font-family: [CORE_FONTLIST1];

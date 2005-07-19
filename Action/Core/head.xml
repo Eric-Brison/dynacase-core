@@ -106,10 +106,9 @@ function selectIt(th) {
 }
 </script>
 
-
-<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
-<tr class="headcell">
-  <td height="40" width="1%"   ><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
+<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
+<tr class="headcell" >
+  <td height="40" width="1%"><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
   <td  align="left" style="width:150px;"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
 
 
