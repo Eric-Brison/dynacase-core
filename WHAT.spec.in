@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.46 2005/06/28 13:54:10 eric Exp $
+#  $Id: WHAT.spec.in,v 1.47 2005/07/19 07:14:03 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -184,6 +184,7 @@ done
 %{destdir}/apachev.conf.in
 %{destdir}/apachevi.conf.in
 %{destdir}/httpd.pam.in
+%{destdir}/httpdwa.pam.in
 %{destdir}/wchoose.php
 %{destdir}/wdbcreate
 %{destdir}/winitrc
