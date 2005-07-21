@@ -33,7 +33,7 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 </head>
 
 
-<frameset name="what" id="what" frameborder="0" framespacing="0" border="0" rows="47,*,40,0pt" >
+<frameset name="what" id="what" frameborder="0" framespacing="0" border="0" rows="47,*,35,0pt" >
 
   <frame name="head" src="[CORE_STANDURL]&app=CORE&action=HEAD" scrolling="needed">
   <frame name="body" src="[CORE_STANDURL]&app=[appd]&action=[actd]" scrolling="needed">
