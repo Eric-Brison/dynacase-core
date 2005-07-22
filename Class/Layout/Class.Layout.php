@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.27 2005/06/29 14:43:42 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.28 2005/07/22 07:59:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.27 2005/06/29 14:43:42 eric Exp $
+//  $Id: Class.Layout.php,v 1.28 2005/07/22 07:59:13 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -98,28 +98,28 @@ var $strip='Y';
    * @param Action $action current action
    * @param string $template default template
    */
- function Layout($caneva="",$action="",$template="[OUT]") {
-   $this->LOG = new Log("","Layout");     
-   $this->template = $template;
-   $this->action=$action;
-   $this->generation="";
-   $file = $caneva;
-   $this->file="";
-   if ((! file_exists($file))&&($file[0]!='/')) {
-     $file=GetParam("CORE_PUBDIR")."/$file"; // try absolute
-   }
-   if (file_exists($file)) {
-     if (filesize($file) > 0) {
-       $fd = fopen($file,"r");
-       if ($fd) {
-	 $this->file=$file;
-	 $this->template = fread($fd,filesize($file));
-       }
-     } else {
-       $this->template = "";
-     } 
-   }
- }
+  function Layout($caneva="",$action="",$template="[OUT]") {
+    $this->LOG = new Log("","Layout");     
+    $this->template = $template;
+    $this->action=$action;
+    $this->generation="";
+    $file = $caneva;
+    $this->file="";
+    if ($caneva != "") {
+      if ((! file_exists($file))&&($file[0]!='/')) {
+	$file=GetParam("CORE_PUBDIR")."/$file"; // try absolute
+      }
+      if (file_exists($file)) {
+	if (filesize($file) > 0) {
+	  $fd = fopen($file,"r");
+	  if ($fd) {
+	    $this->file=$file;
+	    $this->template = fread($fd,filesize($file));
+	  }
+	}
+      } 
+    }
+  }
 
 
  function SetBlockCorresp($p_nom_block,$p_nom_modele,$p_nom=NULL) {
