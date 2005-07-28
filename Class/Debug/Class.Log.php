@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Log.php,v 1.11 2004/07/27 09:49:28 eric Exp $
+ * @version $Id: Class.Log.php,v 1.12 2005/07/28 16:45:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,7 +30,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.11 2004/07/27 09:49:28 eric Exp $
+// $Id: Class.Log.php,v 1.12 2005/07/28 16:45:38 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -38,7 +38,9 @@ $CLASS_LOG_PHP="";
 
 Class Log {
 
-
+  public $loghead;
+  public $application;
+  public $function;
 // ------------------------------------------------------------------------
 function Log($logfile="",$application="",$function="") {
   $this->usesyslog = 0;
@@ -115,15 +117,17 @@ function pop() {
 // ------------------------------------------------------------------------
 function wlog($sta, $str, $args=NULL) {
 
-  global $_SERVER; // use only syslog with HTTP
-  global $REMOTE_ADDR, $CORE_LOGLEVEL;
+  global $_SERVER; 
+  global  $CORE_LOGLEVEL;
 
   if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta))) {
+    $addr=$_SERVER["REMOTE_ADDR"];
     $appf = "[{$sta}] What";
     $appf .= ($this->application!=""?":".$this->application:"");
     $appf .= ($this->function!=""?":".$this->function:"");
+    $str=' '.$this->loghead.': '.$str;
     if (!$this->usesyslog) {
-      $xx = date("d/m/Y H:i:s",time()) . " {$appf} [{$REMOTE_ADDR}] ";
+      $xx = date("d/m/Y H:i:s",time()) . " {$appf} [{$addr}] ";
       $xx = $xx . $str . "\n";
       $fd = fopen($this->logfile,"a");
       fputs($fd,$xx);
@@ -150,14 +154,14 @@ function wlog($sta, $str, $args=NULL) {
       }
       if ($_SERVER['HTTP_HOST'] == "") {
 	$stderr = fopen('php://stderr', 'w');
-	fwrite($stderr, "LOG::($sta)::".$str."\n");
-      } else {
-	define_syslog_variables();    
-	openlog("{$appf}", 0, LOG_LOCAL6);
-	syslog($pri, "[{$REMOTE_ADDR}] ".$str);
-	closelog();
+	fwrite($stderr, "LOG::$appf".$str."\n");
+      } 
+      define_syslog_variables();    
+      openlog("{$appf}", 0, LOG_LOCAL6);
+      syslog($pri, "[{$addr}] ".$str);
+      closelog();
 
-      }
+      
     }
   }
  

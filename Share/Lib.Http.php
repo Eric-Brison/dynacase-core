@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.21 2005/06/17 13:11:35 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.22 2005/07/28 16:45:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -17,6 +17,12 @@
 
 function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=false)
 {
+  global $_SERVER; // use only  with HTTP
+  if ($_SERVER['HTTP_HOST'] == "") {
+    print "\n--Redirect $appname $actionname--\n";
+    return;
+  }
+
   if ($otherurl == "")
     $baseurl=$action->GetParam("CORE_BASEURL");
   else

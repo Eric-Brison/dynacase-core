@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.22 2005/07/08 15:29:51 eric Exp $
+ * @version $Id: wsh.php,v 1.23 2005/07/28 16:45:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -89,6 +89,7 @@ $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
 $core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&");
 $core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
+$core->SetVolatileParam("CORE_SSTANDURL","index.php?sole=Y&");
 
 if (isset($_GET["app"])) {
   $appl = new Application();
@@ -124,7 +125,26 @@ if (isset($_GET["api"])) {
     echo sprintf(_("API file %s not found"),"API/".$_GET["api"].".php");
   }
 } else {
-  echo ($action->execute ());
+  if (! isset($_GET["wshfldid"])) {
+    echo ($action->execute ());
+  } else {
+    // REPEAT EXECUTION FOR FREEDOM FOLDERS
+    $dbaccess=$appl->GetParam("FREEDOM_DB");
+    if ($dbaccess == "") {
+      print "Freedom Database not found : param FREEDOM_DB";
+      exit;
+    }
+    include_once("FDL/Class.Doc.php");
+    $http_iddoc="id"; // default correspondance
+    if (isset($_GET["wshfldhttpdocid"])) $http_iddoc=$_GET["wshfldhttpdocid"];
+    $fld=new_Doc($dbaccess,$_GET["wshfldid"]);
+    $ld=$fld->getContent();
+    foreach ($ld as $k=>$v) {
+      $_GET[$http_iddoc]=$v["id"];
+      echo ($action->execute ());
+    }
+
+  }
 }
 
 wbar(0,0,"completed");
