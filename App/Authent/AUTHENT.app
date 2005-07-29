@@ -7,7 +7,7 @@ $app_desc = array (
 "short_name"	=>"Authent",		//Short name
 "description"	=>"Authentification Application",	//long description
 "access_free"	=>"Y",			//Access free ? (Y,N)
-"icon"		=>"login.png",		//Icon
+"icon"		=>"authent.gif",		//Icon
 "displayable"	=>"N"			//Should be displayed on an app list (Y,N)
 );
 
