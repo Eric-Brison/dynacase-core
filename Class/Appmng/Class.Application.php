@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.40 2005/07/08 15:29:51 eric Exp $
+ * @version $Id: Class.Application.php,v 1.41 2005/08/17 09:47:31 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -421,25 +421,27 @@ create sequence SEQ_ID_APPLICATION start 10;
   }
 
   function GetImageUrl($img) {
+    if ($img != "") {
     // try style first 
-    $url = $this->style->GetImageUrl($img,"");
-    if ($url != "") return $url;
+      $url = $this->style->GetImageUrl($img,"");
+      if ($url != "") return $url;
 
-    // try application 
-    $root = $this->Getparam("CORE_PUBDIR");
+      // try application 
+      $root = $this->Getparam("CORE_PUBDIR");
 
-    if (file_exists($root."/".$this->name."/Images/".$img)) {
-      return ($this->name."/Images/".$img);
-    } else { // perhaps generic application
-      if (($this->childof != "") && (file_exists($root."/".$this->childof."/Images/".$img))) {
-	return ($this->childof."/Images/".$img);
-      } else  if (file_exists($root."/Images/".$img)) {
-	return ("Images/".$img);
-      } 
-    }
+      if (file_exists($root."/".$this->name."/Images/".$img)) {
+	return ($this->name."/Images/".$img);
+      } else { // perhaps generic application
+	if (($this->childof != "") && (file_exists($root."/".$this->childof."/Images/".$img))) {
+	  return ($this->childof."/Images/".$img);
+	} else  if (file_exists($root."/Images/".$img)) {
+	  return ("Images/".$img);
+	} 
+      }
   
-    // try in parent 
-    if ($this->parent != "") return($this->parent->getImageUrl($img));
+      // try in parent 
+      if ($this->parent != "") return($this->parent->getImageUrl($img));
+    }
     return ("CORE/Images/noimage.png");
   }
 
@@ -712,9 +714,6 @@ create sequence SEQ_ID_APPLICATION start 10;
     $param = new Param($this->dbaccess);
     $param->DelAll($this->id);
   
-    // Delete lang catalog
-    $lang = new Lang();
-    $lang->deletecatalog($this->id);
   
     // delete application
     $this->Delete();
