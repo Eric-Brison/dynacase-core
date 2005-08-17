@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.31 2005/07/05 08:16:03 eric Exp $
+ * @version $Id: index.php,v 1.32 2005/08/17 09:46:45 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -38,10 +38,8 @@ include_once('Class.DbObj.php');
 
 define("PORT_SSL", 443); // the default port for https
 // ----------------------------------------
-// pre include for session cache
-if (file_exists($_GET["app"]."/include.php")) {
-        include($_GET["app"]."/include.php");
-}
+
+
 
 $log=new Log("","index.php");
 

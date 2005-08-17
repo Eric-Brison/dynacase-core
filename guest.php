@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.13 2005/06/29 14:43:56 eric Exp $
+ * @version $Id: guest.php,v 1.14 2005/08/17 09:46:45 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -31,11 +31,6 @@ include_once('Class.DbObj.php');
 
 define("PORT_SSL", 443); // the default port for https
 
-// ----------------------------------------
-// pre include for session cache
-if (file_exists($_GET["app"]."/include.php")) {
-        include($_GET["app"]."/include.php");
-}
 
 $log=new Log("","guest.php");
 
