@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.23 2005/08/18 09:21:35 eric Exp $
+ * @version $Id: Class.Action.php,v 1.24 2005/08/18 13:51:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,10 +28,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.23 2005/08/18 09:21:35 eric Exp $
+//  $Id: Class.Action.php,v 1.24 2005/08/18 13:51:40 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.23 2005/08/18 09:21:35 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.24 2005/08/18 13:51:40 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -248,9 +248,44 @@ function Exists($name,$idapp,$id_func='')
 function HasPermission($acl_name="",$app_name="")
 {
   if ($acl_name == "") return(true); // no control for this action
-  return($this->parent->HasPermission($acl_name,$app_nam));
+  return($this->parent->HasPermission($acl_name,$app_name));
+}
+/** 
+   * return true if user can execute the specified action
+   * @param string $actname action name
+   * @param string $appid application name or id (default itself)
+   * @return string error message (empty if no error)
+   *
+   */
+function canExecute($actname,$appid="") {
+  if ($this->user->id==1) return;
+  if ($appid=="") $appid=$this->parent->id;
+  elseif (! is_numeric($appid)) $appid=$this->parent->GetIdFromName($appid);
+
+  $aclname=$this->getAcl($actname,$appid);
+  $acl=new Acl($this->dbaccess);
+  if ( ! $acl->Set($aclname,$appid)) {
+    return sprintf(_("Acl [%s] not available for App %s"),$aclname,$appid);
+  }
+  $p = new Permission($this->dbaccess,array($this->user->id, $appid));
+  if (! $p->HasPrivilege($acl->id)) return sprintf("no privilege %s for %s %s",$aclname,$appid,$actname);
 }
 
+/**
+   * return id from name for an application
+   * @param string $actname action name
+   * @param string $appid application id (default itself)
+   * @return string (false if not found)
+   */
+  function GetAcl($actname,$appid="") {
+    if ($appid=="") $appid=$this->parent->id;
+      $query = new QueryDb($this->dbaccess,$this->dbtable);
+      $query -> AddQuery("name = '$actname'");
+      $query -> AddQuery("id_application = $appid");
+      $q = $query->Query(0,0,"TABLE");
+      if (is_array($q)) return $q[0]["acl"];
+      return false;
+    }
 function execute()
 {
  

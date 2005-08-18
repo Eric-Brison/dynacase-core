@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: head.php,v 1.19 2005/01/28 17:04:59 eric Exp $
+ * @version $Id: head.php,v 1.20 2005/08/18 13:51:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: head.php,v 1.19 2005/01/28 17:04:59 eric Exp $
+// $Id: head.php,v 1.20 2005/08/18 13:51:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/head.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -54,13 +54,13 @@ function head(&$action) {
   $tab = array();
   if ($query->nb > 0) {
     $i=0;
-    while(list($k,$appli)=each($list)) {
+    foreach($list as $k=>$appli) {
       //      if (! $action->AppInstalled($appli["name"])) continue;
       if ($appli["access_free"] == "N") {
         $action->log->debug("Access not free for :".$appli["name"]);
         if (isset($action->user)) {
 	  if ($action->user->id != 1) { // no control for user Admin
-	    $p = new Permission($action->dbaccess,array($action->user->id, $appli["id"]));
+	   
 	    //if ($p->id_acl == "") continue;
 
 	    // test if acl of root action is granted
@@ -70,17 +70,9 @@ function head(&$action) {
 	    $queryact=new QueryDb($action->dbaccess,"Action");
 	    $queryact->AddQuery("id_application=".$appli["id"]);
 	    $queryact->AddQuery("root='Y'");
-	    $listact = $queryact->Query();
-	    $root_acl_name=$listact[0]->acl;
-
-	    // Get the id acl from acl name
-	    $acl=new Acl($action->dbaccess);
-	    if ( ! $acl->Set($root_acl_name,$appli["id"])) {
-	      $action->log->warning("Acl $root_acl_name not available for App ".$appli["id"]);
-	      continue;
-	    }
-
-	    if (! $p->HasPrivilege($acl->id)) continue;
+	    $listact = $queryact->Query(0,0,"TABLE");
+	    $root_acl_name=$listact[0]["acl"];
+	    if (! $action->HasPermission($root_acl_name,$appli["id"])) continue;
 	  }
 	  
         } else { continue; }

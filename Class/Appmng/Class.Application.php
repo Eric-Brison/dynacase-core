@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.41 2005/08/17 09:47:31 eric Exp $
+ * @version $Id: Class.Application.php,v 1.42 2005/08/18 13:51:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -349,7 +349,6 @@ create sequence SEQ_ID_APPLICATION start 10;
    * @return bool true if permission granted
    */
   function HasPermission($acl_name,$app_name="") {
-
     if (!isset($this->user) || !is_object($this->user)) {
       $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
       return FALSE;
@@ -366,7 +365,9 @@ create sequence SEQ_ID_APPLICATION start 10;
       return($this->permission->HasPrivilege($acl->id));
     } else {
       // test permission for other application
-      $appid=$this->GetIdFromName($app_name);
+      if (! is_numeric($app_name)) $appid=$this->GetIdFromName($app_name);
+      else $appid=$app_name;
+
       $wperm=new Permission($this->dbaccess, array($this->user->id,$appid));
       if ($wperm->isAffected()) {
 	$acl=new Acl($this->dbaccess);
@@ -752,15 +753,16 @@ create sequence SEQ_ID_APPLICATION start 10;
   
     }
 
-  function GetIdFromName($name)
-    {
+  /**
+   * return id from name for an application
+   * @param string $name
+   * @return int (0 if not found)
+   */
+  function GetIdFromName($name) {
       $query = new QueryDb($this->dbaccess,$this->dbtable);
       $query -> AddQuery("name = '$name'");
-      $app = $query->Query();
-      if (is_array($app)) {
-
-	return $app[0]->id;
-      }
+      $app = $query->Query(0,0,"TABLE");
+      if (is_array($app)) return $app[0]["id"];
       return 0;
     }
 
