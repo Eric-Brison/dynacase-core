@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.22 2005/07/28 16:45:38 eric Exp $
+ * @version $Id: Class.Action.php,v 1.23 2005/08/18 09:21:35 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,10 +28,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.Action.php,v 1.22 2005/07/28 16:45:38 eric Exp $
+//  $Id: Class.Action.php,v 1.23 2005/08/18 09:21:35 eric Exp $
 // ---------------------------------------------------------------------------
 //
-$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.22 2005/07/28 16:45:38 eric Exp $';
+$CLASS_PAGE_PHP = '$Id: Class.Action.php,v 1.23 2005/08/18 09:21:35 eric Exp $';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
@@ -245,10 +245,10 @@ function Exists($name,$idapp,$id_func='')
   return ($query->nb > 0);
 }
 
-function HasPermission($acl_name="")
+function HasPermission($acl_name="",$app_name="")
 {
   if ($acl_name == "") return(true); // no control for this action
-  return($this->parent->HasPermission($acl_name));
+  return($this->parent->HasPermission($acl_name,$app_nam));
 }
 
 function execute()
