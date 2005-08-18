@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.11 2005/07/19 06:45:33 eric Exp $
+// $Id: index.php.q,v 1.12 2005/08/18 13:50:01 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -51,12 +51,7 @@ global $SQLDELAY, $SQLDEBUG;
        global $TSQLDELAY;	
 $SQLDEBUG=true;
 define("PORT_SSL", 443); // the default port for https
-// ----------------------------------------
-// pre include for session cache
-// pre include for session cache
-if (file_exists($_GET["app"]."/include.php")) {
-        include($_GET["app"]."/include.php");
-}
+
 
 
 
@@ -295,8 +290,8 @@ if (isset($HTTP_SESSION_VARS["CacheObj"])) {
   }
 }
 function sortqdelay($a,$b) {
-	$xa=doubleval(substr($a,4));
-	$xb=doubleval(substr($b,4));
+	$xa=doubleval($a["t"]);
+	$xb=doubleval($b["t"]);
 	if ($xa > $xb) return -1;
 	else if ($xa < $xb) return 1;
 	return 0;
@@ -305,14 +300,23 @@ function sortqdelay($a,$b) {
 usort($TSQLDELAY,sortqdelay);
 
 
-printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"alert('%s')\"><I>[Q %.2fs §%d]</I></a></SUP>",
+printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"document.getElementById('TSQLDELAY').style.display='';\"><I>[Q %.2fs §%d]</I></a></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
        $tic4-$tic1,
        $tic3-$tic2,$nbcache,			
        round(memory_get_usage()/1024),	
-       str_replace("\n","\\n",addslashes(print_r($TSQLDELAY,true))),
        $SQLDELAY,
 	count($TSQLDELAY));
+print("<table style=\"display:none\" id='TSQLDELAY'>");
+foreach ($TSQLDELAY as $k=>$v) {
+  print "<tr>";
+  if (! is_array($v)) print "ERIIR $v";
+  foreach ($v as $kk=>$vv) {
+    print "<td>".(str_replace("\n","",$vv))."</td>";
+  }	         
+  print "</tr>";
+}
+print("</table>");
 
 ?>
