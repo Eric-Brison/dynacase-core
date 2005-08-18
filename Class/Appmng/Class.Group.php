@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.12 2004/08/12 10:28:22 eric Exp $
+ * @version $Id: Class.Group.php,v 1.13 2005/08/18 15:27:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -73,7 +73,6 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	$err = $this->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=$uid");
 	
 	if (!$nopost) $this->PostDelete();
-	$this->ClearCache(); // needed because not call to ::delete method
       }
       return $err;			   
   }
