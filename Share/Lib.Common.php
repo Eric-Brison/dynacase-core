@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.18 2005/08/24 10:15:35 marc Exp $
+ * @version $Id: Lib.Common.php,v 1.19 2005/08/24 10:16:34 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // library of utilies functions
 
-function print_r2($z,ret=false) {
+function print_r2($z,$ret=false) {
   print "<PRE>";
   print_r($z, $ret);
   print "</PRE>";
