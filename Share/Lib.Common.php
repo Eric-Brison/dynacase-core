@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.19 2005/08/24 10:16:34 marc Exp $
+ * @version $Id: Lib.Common.php,v 1.20 2005/09/05 07:36:04 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -37,7 +37,7 @@ function getMailAddr($userid, $full=false) {
     if ($user->isAffected()) {
       $pren = $postn = "";
       if ($full) {
-	$pren = ucfirst(strtolower($user->getTitle())." <";
+	$pren = ucfirst(strtolower($user->getTitle()))." <";
 	$postn = ">";
       }
       return $pren.$user->getMail().$postn;
