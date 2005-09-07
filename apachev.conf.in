@@ -2,7 +2,7 @@ NameVirtualHost @IP@
 <VirtualHost @IP@>
 ServerName @VIRTUALNAME@
 SetEnv dbanakeen @DBNAME@
-<Directory "/home/httpd/what">
+<Directory "@prefix@">
     <Files ~ "index.php">
       AuthType Basic
       AuthName '@Dbname@ Connection'

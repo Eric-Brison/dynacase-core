@@ -1,7 +1,7 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.12 2005/08/18 13:50:01 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
+// $Id: index.php.q.in,v 1.1 2005/09/07 09:03:25 yannick Exp $
+// $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q.in,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
 // O*O  Anakeen development team
@@ -198,7 +198,7 @@ setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
 setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
 //print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
-bindtextdomain ("what", "/home/httpd/what/locale");
+bindtextdomain ("what", "@prefix@/locale");
 textdomain ("what");
 
   
