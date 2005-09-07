@@ -1,5 +1,5 @@
 # ============================================
-# $Id: Makefile,v 1.1 2002/01/08 15:20:32 eric Exp $
+# $Id: Makefile,v 1.2 2005/09/07 14:50:55 yannick Exp $
 # ============================================
 
 # get the new appname (basename in uppercase)
@@ -9,6 +9,8 @@ export appname
 
 
 include $(utildir)/PubRule
+
+DISTFILES += appadmin.php.in updateclass.php.in
 
 
 

@@ -6,7 +6,7 @@
  * @param string $appname internal name of the application
  * @param string $method may be "init","reinit","update","delete"
  * @author Anakeen 2003
- * @version $Id: appadmin.php,v 1.6 2005/06/27 13:02:44 eric Exp $
+ * @version $Id: appadmin.php.in,v 1.1 2005/09/07 14:48:59 yannick Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -15,7 +15,7 @@
  */
 
 
-ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT:/usr/share/pear");
+ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/pear");
 include_once("Class.Application.php");
 
 $appname = GetHttpVars("appname","CORE");
