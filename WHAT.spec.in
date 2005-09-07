@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.47 2005/07/19 07:14:03 eric Exp $
+#  $Id: WHAT.spec.in,v 1.48 2005/09/07 11:58:05 yannick Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -9,9 +9,16 @@
 #  _with_cerbere2       - make rpm for cerbere 2.0
 #
 
-%define apachedir /etc/httpd
+%define destdir @prefix@
+%define apacheconfdir @APACHECONFDIR@
+%define cerbere		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'none' && echo 1 || echo 0)
+%if %{cerbere}
 %define destdir /home/httpd/what
-%define	_apache2	%(rpm -q apache-devel 2> /dev/null | grep -Eq '\\-2\\.[0-9]+\\.' && echo 1 || echo 0)
+%define apacheconfdir /etc/httpd/httpd.conf
+%else
+%define destdir /usr/share/what
+%define apacheconfdir /etc/httpd/conf.d
+%endif
 Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
 Version: @VERSION@
@@ -28,30 +35,34 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-root-%(id -u -n)
 Conflicts: AUTHENT USERS CORE APPMNG ACCESS libwhat libjs
 #BuildRequires: docbook-dtd41-sgml
 #BuildRequires: docbook-utils
+%if %{cerbere}
 BuildRequires: apache-devel
-Requires: php >= 5.0
-%if %{_apache2}
-Requires: apache >= 2.0
-%else
-Requires: apache < 2.0
 %endif
+Requires: php >= 5.0
+Requires: apache >= 2.0
 Requires: postgresql >= 7.2
 Requires: postgresql-module-plpgsql
 Requires: php-pgsql
+%if %{cerbere}
 Requires: php-gettext
 Requires: php-pcre
 Requires: php-cgi
 Requires: php-mhash
 Requires: php-mcrypt
+%endif
 Requires: php-ncurses
+%if %{cerbere}
 Requires: apache-mod_auth
-Requires: apache-mod_auth_pam 
 Requires: apache-mod_dir
 Requires: apache-mod_expires
+%endif
+Requires: apache-mod_auth_pam 
 Requires: pam_what >= 0.4.0
 Requires: ankpsql-tools
 Requires: gettext
+%if %{cerbere}
 Requires: gettext-devel > 0.11
+%endif
 Requires: php-pear-Crypt_CHAP >= 1.0.0
 Requires: php-pear-PEAR
 Requires: binutils
@@ -60,7 +71,9 @@ Prereq: apache
 Prereq: grep
 Prereq: SysVinit
 Conflicts: FREEDOM-USERCARD < 0.4.0
+%if %{cerbere}
 Conflicts: libuser < 2.2.3
+%endif
 
 %description
 The WHAT application toolkit gives common interface element to develop web applications
@@ -73,10 +86,12 @@ The WHAT application toolkit gives common interface element to develop web appli
 
 %install
 autoconf
-./configure --with-pubrule=`pwd`
+./configure --with-pubrule=`pwd` \
+	    --with-apacheconfdir=%{apacheconfdir} \
+	    --with-prefix=%{destdir}
 make -i pubdir=$RPM_BUILD_ROOT%{destdir} 
-install -d $RPM_BUILD_ROOT/etc/httpd/httpd.conf
-install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/etc/httpd/httpd.conf/71_mod_what.conf
+install -d $RPM_BUILD_ROOT%{apacheconfdir}
+install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/71_mod_what.conf
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
@@ -84,14 +99,6 @@ install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/etc/httpd/httpd.c
 %post
 
 if [ "$1" = 1 ] ; then
-%if ! %{_apache2}
-  # Add apache options for what
-  if [ -f /etc/httpd/conf/httpd.conf ] ; then
-     echo "Include %{destdir}/apache.conf" >>/etc/httpd/conf/httpd.conf
-  else
-     echo "Include %{destdir}/apache.conf" >>/etc/httpd/httpd.conf
-  fi  
-%endif
 
   # Restart Apache if running
 if [ -f /var/lock/subsys/httpd ]; then
@@ -123,14 +130,6 @@ done
 
   if [ "$1" = 0 ] ; then 
 
-    if [ -f /etc/httpd/conf/httpd.conf ] ; then
-       grep -v "Include %{destdir}/apache.conf" /etc/httpd/conf/httpd.conf >/etc/httpd/conf/httpd.conf.tmp
-       mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf
-    else if [ -f /etc/httpd/httpd.conf ] ; then
-       grep -v "Include %{destdir}/apache.conf" /etc/httpd/httpd.conf >/etc/httpd/httpd.conf.tmp
-       mv /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
-       fi
-    fi
     for fbash in  ~/.bashrc ~/.bash_profile; do
 	ll=0
 	if [ -f $fbash ] ; then
@@ -194,9 +193,7 @@ done
 %config(noreplace) /etc/pam.d/httpd
 %config(noreplace) /etc/pam.d/httpdwa
 /etc/cron.daily/*
-%if %{_apache2}
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/httpd/httpd.conf/*_mod_*.conf
-%endif
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/*_mod_*.conf
 
 %changelog
 * Tue Oct 30 2000 Yannick Le Briquer <yannick.lebriquer@anakeen.com>

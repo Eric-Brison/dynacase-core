@@ -1,7 +1,7 @@
 #!/usr/bin/php -q
 <?php
 
-$pubdir="/home/httpd/what";
+$pubdir="@prefix@";
 
 include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");
@@ -105,7 +105,7 @@ $dbpsql=getenv('dbpsql');
 if ($dbpsql=="") {
   
   $stderr = fopen('php://stderr', 'w');
-  fwrite($stderr,"WHAT environnement variables not set.\nPlease reload your .bashrc or the file /home/httpd/what/winitrc.\n");
+  fwrite($stderr,"WHAT environnement variables not set.\nPlease reload your .bashrc or the file @prefix@/winitrc.\n");
   exit(1);
 }
 

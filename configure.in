@@ -7,12 +7,12 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.4 2005/09/07 09:03:25 yannick Exp $)
+AC_REVISION($Id: configure.in,v 1.5 2005/09/07 11:58:05 yannick Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
 AC_PREREQ(2.13)
-AC_INIT(./index.php)
+AC_INIT(./index.php.in)
 AC_SUBST(VERSION)
 VERSION=`cat VERSION`
 AC_SUBST(RELEASE)
@@ -52,15 +52,25 @@ DBUSER=anakeen
 AC_ARG_WITH(dbuser,
 [  --with-dbuser=username  the database user (default anakeen)], DBUSER=$withval)
 
+AC_SUBST(DBPATH)
+DBPATH=anakeen
+AC_ARG_WITH(dbuser,
+[  --with-dbpath=passwd  the database passwd (default anakeen)], DBPATH=$withval)
+
 AC_SUBST(DBPORT)
 DBPORT=5432
 AC_ARG_WITH(dbport,
 [  --with-dbport=port number  the database port (default 5432)], DBPORT=$withval)
 
-AC_OUTPUT(Makefile  dbaccess.php WHAT.spec WHAT-Fedora.spec apache.conf \
+AC_SUBST(APACHECONFDIR)
+APACHECONFDIR=/etc/httpd/httpd.conf
+AC_ARG_WITH(dbport,
+[  --with-apacheconfdir=apache config dir (default /etc/httpd/httpd.conf)], APACHECONFDIR=$withval)
+
+AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf \
           App/Core/CORE_init.php \
           App/Users/USERS_init.php \
           App/Access/ACCESS_init.php \
           App/Authent/AUTHENT_init.php \
           App/Appmng/APPMNG_init.php \
-	  httpd.pam guest.php)
+	  httpd.pam guest.php index.php index.php.q wcheck wdbcreate)

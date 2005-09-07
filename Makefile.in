@@ -77,4 +77,5 @@ clean:
 	      dbaccess.php apache.conf App/Core/CORE_init.php \
 	      App/Users/USERS_init.php App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php App/Appmng/APPMNG_init.php \
-	      httpd.pam
+	      httpd.pam guest.php index.php index.php.q wcheck wdbcreate \
+	      
