@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.20 2005/09/05 07:36:04 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.21 2005/09/07 10:46:25 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -119,7 +119,34 @@ function getDbAccess() {
   return $CORE_DBANK;
   
 }
+ 
+/**
+ * transform php postgresql connexion syntax for psql syntax connection
+ * @param string postgresql string connection (like : dbname=anakeen user=admin)
+ * @return string like --username admin --dbname anakeen
+ */
+function php2DbSql($dbcoord,$withdbname=true) {
+    if (ereg('dbname=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+      $dbname=$reg[1];
+    }
+    if (ereg('host=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+      $dbhost=$reg[1];
+    }
+    if (ereg('port=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+      $dbport=$reg[1];
+    }
+    if (ereg('user=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+      $dbuser=$reg[1];
+    }
+    $dbpsql="";
+    if ($dbhost != "")  $dbpsql.= "--host $dbhost ";
+    if ($dbport != "")  $dbpsql.= "--port $dbport ";
+    if ($dbuser != "")  $dbpsql.= "--username $dbuser ";
+    if ($withdbname) $dbpsql.= "--dbname $dbname ";
+    return $dbpsql;
+  
 
+}
 
 function getDbName($dbaccess) {
   if (ereg("dbname=([a-z]+)",$dbaccess,$reg)) {
