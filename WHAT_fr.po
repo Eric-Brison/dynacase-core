@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-10 13:16+0000\n"
-"PO-Revision-Date: 2005-06-13 12:16+0200\n"
+"PO-Revision-Date: 2005-09-06 16:46+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -330,7 +330,7 @@ msgid "Core"
 msgstr "Noyau"
 
 msgid "Core Application Manager"
-msgstr "Page d'accueil WHAT"
+msgstr "Page d'accueil"
 
 msgid "application version"
 msgstr "version application"
@@ -690,10 +690,10 @@ msgstr "Manuels"
 
 # ne pas mettre de '
 msgid "Homepage"
-msgstr "Accueil WHAT"
+msgstr "Accueil"
 
 msgid "Welcome Page"
-msgstr "Page d'accueil WHAT"
+msgstr "Page d'accueil"
 
 msgid "gate page"
 msgstr "Page du portail"
