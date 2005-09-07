@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.2 2004/08/05 09:31:22 eric Exp $)
+AC_REVISION($Id: configure.in,v 1.3 2005/09/07 08:38:47 yannick Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -57,7 +57,7 @@ DBPORT=5432
 AC_ARG_WITH(dbport,
 [  --with-dbport=port number  the database port (default 5432)], DBPORT=$withval)
 
-AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf \
+AC_OUTPUT(Makefile  dbaccess.php WHAT.spec WHAT-Fedora.spec apache.conf \
           App/Core/CORE_init.php \
           App/Users/USERS_init.php \
           App/Access/ACCESS_init.php \
