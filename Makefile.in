@@ -78,4 +78,5 @@ clean:
 	      App/Users/USERS_init.php App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php App/Appmng/APPMNG_init.php \
 	      httpd.pam guest.php index.php index.php.q wcheck wdbcreate \
-	      whattext winitrc wsh.php wstart wstop wvirtual
+	      whattext winitrc wsh.php wstart wstop wvirtual.php \
+	      Api/appadmin.php Api/updateclass.php App/Core/CORE_post
