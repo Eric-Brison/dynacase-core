@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php.in,v 1.1 2005/09/07 14:48:59 yannick Exp $
+ * @version $Id: updateclass.php.in,v 1.2 2005/09/07 16:00:53 yannick Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -16,7 +16,7 @@
 
 
 $pubdir="@prefix@";
-ini_set("include_path", ".:@prefix@:@prefix@:/usr/share/pear");
+ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/pear");
 
 function GetArg($name, $def="") {
 

@@ -112,7 +112,7 @@ if ($dbpsql=="") {
 ncurses_winit("WHAT Checking");
 
 
-ncurses_getmaxyx(&$fullscreen, $lines, $columns);
+ncurses_getmaxyx($fullscreen, $lines, $columns);
 
 $IP=chop(`hostname -i`);
 ncurses_color_set(6);
