@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.48 2005/09/07 11:58:05 yannick Exp $
+#  $Id: WHAT.spec.in,v 1.49 2005/09/07 12:46:37 yannick Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -22,7 +22,11 @@
 Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
 Version: @VERSION@
+%if %{cerbere}
 Release: @RELEASE@
+%else
+Release: @RELEASE@fc
+%endif
 License: GPL
 Group: Applications/Web
 Source: ftp://ftp.souillac.anakeen.com/pub/anakeen/%{name}-%{version}.tar.gz

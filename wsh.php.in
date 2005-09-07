@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.23 2005/07/28 16:45:38 eric Exp $
+ * @version $Id: wsh.php.in,v 1.1 2005/09/07 12:46:37 yannick Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -12,7 +12,7 @@
  */
 
 
-ini_set("include_path", ".:/home/httpd/what:/home/httpd/what/WHAT:/usr/share/pear");
+ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/pear");
 ini_set("max_execution_time", "3600");
 
 include_once('Class.Action.php');
@@ -27,7 +27,7 @@ $log=new Log("","index.php");
 $CoreNull = "";
 global $CORE_LOGLEVEL;
 
-define("DEFAULT_PUBDIR","/home/httpd/what");
+define("DEFAULT_PUBDIR","@prefix@");
 
 
 // get param
@@ -53,7 +53,7 @@ while (list($k, $v) = each($argv)) {
     if ($reg[1] == "listapi") {
       print "application list :\n";
       echo "\t- ";
-      echo str_replace("\n","\n\t- ",shell_exec ("cd /home/httpd/what/API;ls -1 *.php| cut -f1 -d'.'"));
+      echo str_replace("\n","\n\t- ",shell_exec ("cd @prefix@/API;ls -1 *.php| cut -f1 -d'.'"));
       echo "\n";
       exit;
     }
@@ -115,7 +115,7 @@ if (isset($_GET["action"])) {
 // init for gettext
 setlocale(LC_MESSAGES,$core->Getparam("CORE_LANG"));  
 putenv ("LANG=".$core->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
-bindtextdomain ("what", "/home/httpd/what/locale");
+bindtextdomain ("what", "@prefix@/locale");
 textdomain ("what");
   
 

@@ -4,7 +4,7 @@ function whattext ()
 {
     
     for lang in en fr ; do
-	pushd /home/httpd/what/locale/$lang/LC_MESSAGES >/dev/null
+	pushd @prefix@/locale/$lang/LC_MESSAGES >/dev/null
 	mv what.mo what.mo.old
         for mo in `ls *.mo` ; do
 	    msgunfmt --force-po $mo -o $mo.po

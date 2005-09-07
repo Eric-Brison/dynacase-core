@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pubdir="/home/httpd/what";
+pubdir="@prefix@";
 /bin/cp $pubdir/WHAT/index.php $pubdir
 
 

@@ -1,4 +1,4 @@
-export wpub="/home/httpd/what/";
+export wpub="@prefix@";
 if [ $TERM == "xterm" ]; then
     export TERM=xterm-color
 fi
