@@ -29,7 +29,7 @@ include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam httpdwa.pam 
+	     whattext.in wcheck.in wstop.in wstart.in wdbcreate.in winitrc.in httpd.pam.in httpdwa.pam.in guest.php.in index.php.in index.php.q.in
 
 
 

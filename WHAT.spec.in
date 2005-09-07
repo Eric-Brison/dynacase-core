@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.50 2005/09/07 14:56:31 yannick Exp $
+#  $Id: WHAT.spec.in,v 1.51 2005/09/07 15:48:32 yannick Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -103,7 +103,7 @@ The WHAT application toolkit gives common interface element to develop web appli
 autoconf
 ./configure --with-pubrule=`pwd` \
 	    --with-apacheconfdir=%{apacheconfdir} \
-	    --with-prefix=%{destdir}
+	    --prefix=%{destdir}
 make -i pubdir=$RPM_BUILD_ROOT%{destdir} 
 install -d $RPM_BUILD_ROOT%{apacheconfdir}
 install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/71_mod_what.conf
