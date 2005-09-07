@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.21 2005/08/18 09:21:55 eric Exp $
+ * @version $Id: Class.Session.php,v 1.22 2005/09/07 10:45:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.21 2005/08/18 09:21:55 eric Exp $
+// $Id: Class.Session.php,v 1.22 2005/09/07 10:45:34 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.21 2005/08/18 09:21:55 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.22 2005/09/07 10:45:34 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -69,7 +69,7 @@ var $sessiondb;
       $query=new QueryDb($this->dbaccess,"Session");
       $query->criteria = "id";
       $query->operator = "=";
-      $query->string = "'".$id."'";
+      $query->string = "'".pg_escape_string($id)."'";
       $query->casse = "OUI";
       $list = $query->Query(0,0,"TABLE");
       if ($query->nb != 0) {

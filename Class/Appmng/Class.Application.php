@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.42 2005/08/18 13:51:40 eric Exp $
+ * @version $Id: Class.Application.php,v 1.43 2005/09/07 10:45:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -95,7 +95,7 @@ create sequence SEQ_ID_APPLICATION start 10;
       $query->order_by = "";
       $query->criteria = "name";
       $query->operator = "=";
-      $query->string = "'".$name."'";
+      $query->string = "'".pg_escape_string($name)."'";
       $list = $query->Query(0,0,"TABLE");
       if ($query->nb != 0) {
 	$this->affect($list[0]);
