@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.36 2005/08/18 13:50:01 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.37 2005/09/09 16:26:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.36 2005/08/18 13:50:01 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.37 2005/09/09 16:26:46 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.36 2005/08/18 13:50:01 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.37 2005/09/09 16:26:46 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -550,15 +550,15 @@ function exec_query($sql,$lvl=0)
     $action_needed= "none";
     if ($lvl==0) { // to avoid recursivity
       if ($this->msg_err != "") {
-	//print "\n\t\t[".$this->msg_err."]";
 		     if ((eregi("Relation ['\"]([a-zA-Z_]*)['\"] does not exist",$this->msg_err) ||
-			  eregi("Relation ['«]([a-zA-Z_]*)['»] n'existe pas",$this->msg_err) ||
+			  eregi("Relation (.*) n'existe pas",$this->msg_err) ||
 			  eregi("class \"([a-zA-Z_]*)\" not found",$this->msg_err)) ) {
 		       $action_needed = "create";
 		     } else if ((eregi("No such attribute or function '([a-zA-Z_0-9]*)'",$this->msg_err)) ||
 				(eregi("Attribute ['\"]([a-zA-Z_0-9]*)['\"] not found",$this->msg_err))) {
 		       $action_needed = "update";
 		     }
+		     //print "\n\t\t[".$this->msg_err."]:$action_needed";exit;
 		     
       }
     }
