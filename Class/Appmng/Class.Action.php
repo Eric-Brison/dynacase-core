@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.25 2005/09/07 10:45:34 eric Exp $
+ * @version $Id: Class.Action.php,v 1.26 2005/09/09 16:26:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -358,7 +358,11 @@ function ExitError($texterr)
   $this->Register("FT_ERROR",$texterr);
   $this->Register("FT_ERROR_APP",$this->parent->name);
   $this->Register("FT_ERROR_ACT",$this->name);
-  redirect($this,"CORE&sole=Y","ERROR");
+  if ($_SERVER['HTTP_HOST'] != "") {
+    redirect($this,"CORE&sole=Y","ERROR");
+  } else {
+    printf("$texterr [%s/%s]",$this->parent->name,$this->name);
+  }
   exit;
 }
 // unregister FT error 
