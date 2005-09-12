@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php.in,v 1.1 2005/09/07 12:46:37 yannick Exp $
+ * @version $Id: wsh.php.in,v 1.2 2005/09/12 16:31:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -141,7 +141,14 @@ if (isset($_GET["api"])) {
     $ld=$fld->getContent();
     foreach ($ld as $k=>$v) {
       $_GET[$http_iddoc]=$v["id"];
-      echo ($action->execute ());
+      try {
+	echo ($action->execute ());
+      }
+      catch (Exception $e) {
+	echo sprintf(_("Caught Exception : %s<br>\n"),$e->getMessage());
+      }
+      echo "<hr>";
+
     }
 
   }

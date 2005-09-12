@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.26 2005/09/09 16:26:24 eric Exp $
+ * @version $Id: Class.Action.php,v 1.27 2005/09/12 16:31:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -360,10 +360,10 @@ function ExitError($texterr)
   $this->Register("FT_ERROR_ACT",$this->name);
   if ($_SERVER['HTTP_HOST'] != "") {
     redirect($this,"CORE&sole=Y","ERROR");
-  } else {
-    printf("$texterr [%s/%s]",$this->parent->name,$this->name);
+    exit;
+  } else {    
+    throw new Exception(sprintf("$texterr [%s/%s]",$this->parent->name,$this->name));   
   }
-  exit;
 }
 // unregister FT error 
 function ClearError()
