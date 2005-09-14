@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.27 2005/09/12 16:31:13 eric Exp $
+ * @version $Id: Class.Action.php,v 1.28 2005/09/14 15:15:24 yannick Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -84,7 +84,7 @@ function Set($name,&$parent)
       exit;
     }
   
-  $this->CompleteSet(&$parent);
+  $this->CompleteSet($parent);
 }
 
 function CompleteSet(&$parent) {
