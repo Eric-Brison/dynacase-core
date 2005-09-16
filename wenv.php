@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.1 2005/07/05 08:16:03 eric Exp $
+ * @version $Id: wenv.php,v 1.2 2005/09/16 13:12:58 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -17,6 +17,9 @@ function writedbenv($dba) {
   if ($dba=="anakeen") $dbf="$wpub/dbaccess.php";
   else $dbf="$wpub/virtual/$dba/dbaccess.php";
   $dbcoord=file_get_contents($dbf);
+  $dbhost="localhost";
+  $dbport="5432";
+  $dbfree="--username anakeen --dbname freedom";
   if (ereg('"([^"]*)"',$dbcoord,$reg)) {
     $dbcoord=$reg[1];
     if (ereg('dbname=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
@@ -44,7 +47,12 @@ function writedbenv($dba) {
   fwrite($stderr,"export dbport=$dbport\n");
   fwrite($stderr,"export dbname=$dbname\n");
   fwrite($stderr,"export dbpsql='$dbpsql'\n");
-  fwrite($stderr,"export dbfree='".trim(`$wpub/wsh.php --api=fdl_dbaccess`)."'\n");
+  $dbf=trim(`$wpub/wsh.php --api=fdl_dbaccess 2>/dev/null`);
+  //  print $dbf;
+
+  if (! strstr($dbf,"pg_connect")) $dbfree=$dbf;
+    
+  fwrite($stderr,"export dbfree='$dbfree'\n");
 
 
 }
