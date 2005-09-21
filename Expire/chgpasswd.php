@@ -3,7 +3,7 @@
  * Display interface to change password in case of expiration
  *
  * @author Anakeen 2003
- * @version $Id: chgpasswd.php,v 1.7 2004/06/22 14:32:46 eric Exp $
+ * @version $Id: chgpasswd.php,v 1.8 2005/09/21 09:43:19 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -47,7 +47,7 @@ if ($_POST["passwd1"] == "") {
   print _("empty password : not changed");
   exit;
 }
-$core->user->password_new=$_POST["passwd1"];
+$core->user->password_new = stripslashes($_POST["passwd1"]);
 $core->user->expires = 0;
 $core->user->modify();
 
