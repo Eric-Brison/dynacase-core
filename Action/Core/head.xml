@@ -108,7 +108,7 @@ function selectIt(th) {
 
 <table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="headcell" >
-  <td height="40" width="1%"><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-1-mini.gif]"></td>
+  <td height="40" width="1%"><img border="0" align="absmiddle"  height="40" width="40" name="imgapp" src="[IMG:logo-mini.png]"></td>
   <td  align="left" style="width:150px;"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
 
 
@@ -128,12 +128,12 @@ function selectIt(th) {
      &nbsp;</span>
  [BLOCK NOFREEGATE]
      <a href="#"><img onClick="lauch_action(event,this.src,'CORE','[TEXT:Homepage]');" 
-          align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a>
+          align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="22" src="[IMG:logo-mini.png]" border="0"></a>
  [ENDBLOCK NOFREEGATE]
  [BLOCK FREEGATE]
      <a href="#"><img onClick="top.body.location.href='[CORE_STANDURL]&app=FREEGATE&action=FREEGATE_VIEWGATE'" 
           align="absmiddle" alt="[TEXT:Welcome Page]" 
-	  title="[TEXT:New GATE page]" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a>
+	  title="[TEXT:New GATE page]" height="22" src="[IMG:logo-mini.png]" border="0"></a>
  [ENDBLOCK FREEGATE]</td>
 </tr>
 </table>
