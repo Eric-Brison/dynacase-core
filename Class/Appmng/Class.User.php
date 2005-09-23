@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.42 2005/06/28 13:53:24 eric Exp $
+ * @version $Id: Class.User.php,v 1.43 2005/09/23 12:30:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -188,9 +188,11 @@ create sequence seq_id_users start 10";
   function PreUpdate()
     {
       if (isset($this->password_new) && ($this->password_new!="")) {
-        $this->cryptEngine = new Crypt_CHAP_MSv1;
-	$this->ntpasswordhash = strtoupper(bin2hex($this->cryptEngine->ntPasswordHash($this->password_new)));
-	$this->lmpasswordhash = strtoupper(bin2hex($this->cryptEngine->lmPasswordHash($this->password_new)));
+	if (function_exists("mhash")) {
+	  $this->cryptEngine = new Crypt_CHAP_MSv1;
+	  $this->ntpasswordhash = strtoupper(bin2hex($this->cryptEngine->ntPasswordHash($this->password_new)));
+	  $this->lmpasswordhash = strtoupper(bin2hex($this->cryptEngine->lmPasswordHash($this->password_new)));
+	}
 	$this->computepass($this->password_new, $this->password);
       }
 
