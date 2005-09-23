@@ -3,7 +3,7 @@
  * Query to Database
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryDb.php,v 1.10 2005/09/12 16:31:59 eric Exp $
+ * @version $Id: Class.QueryDb.php,v 1.11 2005/09/23 15:31:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -297,6 +297,7 @@ function cacheId() {
   }
   function resetQuery() {
     $this->basic_elem->sup_where=array();
+    unset($this->list);
   }
   function AddField($sqlattr, $resultname="") {
     if ($resultname == "")   $this->basic_elem->sup_fields[]=$sqlattr;
