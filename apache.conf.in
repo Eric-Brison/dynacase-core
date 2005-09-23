@@ -14,7 +14,7 @@ Alias /what @prefix@
     ErrorDocument 401 /what/expire/tryexpire.html
     <Files ~ "index.php">
       AuthType Basic
-      AuthName 'WHAT Connection'
+      AuthName 'FREEDOM Connection'
       AuthPAM_Enabled  on
       AuthPAM_FallThrough off
       AuthPAM_Service httpd
@@ -31,7 +31,7 @@ Alias /what @prefix@
     <FilesMatch "geticon.php">
       Allow from All   
       AuthType Basic
-      AuthName 'WHAT Connection'
+      AuthName 'FREEDOM Connection'
       AuthPAM_Enabled  on
       AuthPAM_FallThrough off
       Require valid-user
@@ -39,7 +39,7 @@ Alias /what @prefix@
     <FilesMatch "expire.shtml|chgpasswd.php">
       Allow from All   
       AuthType Basic
-      AuthName 'WHAT Connection'
+      AuthName 'FREEDOM Connection'
       AuthPAM_Enabled  on
       AuthPAM_FallThrough off
       AuthPAM_Service httpdwa
@@ -67,7 +67,7 @@ Alias /what @prefix@
     AllowOverride None
     ErrorDocument 401 "connection refused"   
     AuthType Basic
-    AuthName 'WHAT Connection'
+    AuthName 'FREEDOM Connection'
     AuthPAM_Enabled  on
     AuthPAM_FallThrough off
     require valid-user

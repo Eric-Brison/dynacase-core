@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.23 2005/07/08 15:29:51 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.24 2005/09/23 08:02:19 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -206,7 +206,7 @@ $app_const = array (
 							"descr"=>N_("name displayed in the right of the foot"),
 							"style"=>"N",
 							"global"=>"Y"),
-		    "CORE_REALM"		=>array("val"=>"WHAT Connection",
+		    "CORE_REALM"		=>array("val"=>"FREEDOM Connection",
 							"descr"=>N_("realm name for http authenticate"),
 							"style"=>"N",
 							"global"=>"Y")
