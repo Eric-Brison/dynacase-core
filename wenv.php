@@ -1,9 +1,9 @@
 <?php
 /**
- * WHAT Choose database
+ * WHAT Environnement
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.2 2005/09/16 13:12:58 eric Exp $
+ * @version $Id: wenv.php,v 1.3 2005/09/23 08:01:55 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -50,7 +50,7 @@ function writedbenv($dba) {
   $dbf=trim(`$wpub/wsh.php --api=fdl_dbaccess 2>/dev/null`);
   //  print $dbf;
 
-  if (! strstr($dbf,"pg_connect")) $dbfree=$dbf;
+  if (strstr($dbf,"--dbname")) $dbfree=$dbf;
     
   fwrite($stderr,"export dbfree='$dbfree'\n");
 
