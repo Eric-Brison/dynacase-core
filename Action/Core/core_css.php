@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: core_css.php,v 1.5 2005/03/04 17:20:02 eric Exp $
+ * @version $Id: core_css.php,v 1.6 2005/09/27 15:01:15 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: core_css.php,v 1.5 2005/03/04 17:20:02 eric Exp $
+// $Id: core_css.php,v 1.6 2005/09/27 15:01:15 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/core_css.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -47,3 +47,4 @@ function core_css(&$action) {
   setHeaderCache();
 
 }
+?>
