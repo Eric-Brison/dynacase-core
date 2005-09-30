@@ -108,7 +108,7 @@ function selectIt(th) {
 
 <table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="headcell" >
-  <td  width="48px" height="40px"><img border="0" align="absmiddle"  style="max-width:48px;position:absolute;top:0px;left:2px" name="imgapp" src="[IMG:logo-mini.png]"></td>
+  <td  width="48px" height="40px"><img border="0" align="absmiddle"  style="max-width:48px;position:absolute;top:0px;left:2px" id="imgapp" src="[IMG:logo-mini.png]"></td>
   <td  align="left" style="width:150px;"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
 
 
@@ -116,7 +116,7 @@ function selectIt(th) {
 <td width="40"  align="center"
      onMouseOver="unFadeIt(i[name]);" 
      onMouseOut="fadeIt(i[name]);"  >
-     <a href="#"><img  class="Fade"  id="i[name]" onclick="selectIt(this);lauch_action(event,this.src,'[name]','[descriptionsla]');" 
+     <a href="#"><img  class="Fade"  id="i[name]" onclick="selectIt(this);lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
      src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]

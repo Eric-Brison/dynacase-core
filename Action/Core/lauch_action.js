@@ -17,8 +17,18 @@ function lauch_action(event, img, appname, descr) {
 
   top.document.title="FREEDOM - "+descr;
 
-  document.imgapp.src=img
 
+  var limg=document.getElementById('imgapp');
+  if (limg) {
+    if (limg.src) limg.src=img;
+    else {
+      if (!isNetscape) {
+	limg.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+	  img + "',sizingMethod='scale')";
+      }
+      
+    }
+  }
   etitle = document.getElementById('apptitle2');
   if (etitle) {
     //    alert(etitle.innerHTML);
