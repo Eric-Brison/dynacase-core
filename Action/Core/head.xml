@@ -127,7 +127,7 @@ function selectIt(th) {
 
      &nbsp;</span>
  [BLOCK NOFREEGATE]
-     <a href="#"><img onClick="lauch_action(event,this.src,'CORE','[TEXT:Homepage]');" 
+     <a href="#"><img onClick="lauch_action(event,'[IMG:logo-mini.png]','CORE','[TEXT:Homepage]');" 
           align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="22" src="[IMG:logo-mini.png]" border="0"></a>
  [ENDBLOCK NOFREEGATE]
  [BLOCK FREEGATE]
