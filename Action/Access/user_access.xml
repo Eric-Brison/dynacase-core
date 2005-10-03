@@ -1,5 +1,5 @@
 <!-- 
-  $Id: user_access.xml,v 1.6 2004/10/11 15:40:27 eric Exp $
+  $Id: user_access.xml,v 1.7 2005/10/03 10:06:06 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.xml,v $
 -->
 
@@ -41,7 +41,7 @@
        </select>        
         <a href="#" 
            onClick="javascript:subwindow(300,500,'access_oid','[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[soid]&userid=2&appid=[appid]')">
-          <img align="absmiddle" height="20" alt="[TEXT:edit by object]" title="[TEXT:edit by object]" border="0" src="[IMG:access.gif]">
+          <img align="absmiddle" height="22" alt="[TEXT:edit by object]" title="[TEXT:edit by object]" border="0" src="[IMG:access.gif]">
         </a>       
 [ENDBLOCK ZONSELOID] 
         <input type="hidden" value="[dboperm]" name="dboperm"></input>
