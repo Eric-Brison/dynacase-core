@@ -169,26 +169,23 @@ function delEvent(o,e,f){
 function correctPNG() {// correctly handle PNG transparency in Win IE 5.5 or higher.
    for(var i=0; i<document.images.length; i++)
       {
-	  var img = document.images[i]
-	  var imgName = img.src.toUpperCase()
-	  if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
-	     {
-		 var imgID = (img.id) ? "id='" + img.id + "' " : ""
-		 var imgClass = (img.className) ? "class='" + img.className + "' " : ""
-		 var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
-		 var imgStyle = "display:inline-block;" + img.style.cssText 
-		 if (img.align == "left") imgStyle = "float:left;" + imgStyle
-		 if (img.align == "right") imgStyle = "float:right;" + imgStyle
-		 if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle		
-		 var strNewHTML = "<span " + imgID + imgClass + imgTitle
-		 + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
-	     + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
-		 + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" 
-		 img.outerHTML = strNewHTML
-		 i = i-1
-	     }
+	correctOnePNG(document.images[i]);
       }
 }
-
+function correctOnePNG(img) {// correctly handle PNG transparency in Win IE 5.5 or higher.	 
+  var imgName = img.src.toUpperCase();
+  if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+	     {		
+	       //img.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity=0) progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +img.src+"',sizingMethod='scale') ";
+	        img.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +img.src+"',sizingMethod='scale') ";
+		//img.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity=30) progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +'Images/brushed.png'+"',sizingMethod='scale') ";
+	       // img.runtimeStyle.filter="alpha(opacity=30)";
+		 img.style.width = img.width;
+		 img.style.height = img.height;
+		 //		 img.style.visibility='hidden';
+	       img.src='Images/1x1.gif';
+	     }
+      
+}
 
 if (! isNetscape) addEvent(window,"load",correctPNG);

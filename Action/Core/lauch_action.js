@@ -21,13 +21,13 @@ function lauch_action(event, img, appname, descr) {
   var limg=document.getElementById('imgapp');
   if (limg) {
     if (limg.src) limg.src=img;
-    else {
+    
       if (!isNetscape) {
-	limg.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
-	  img + "',sizingMethod='scale')";
+	limg.style.filter='';
+	correctOnePNG(limg);
       }
       
-    }
+    
   }
   etitle = document.getElementById('apptitle2');
   if (etitle) {

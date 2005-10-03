@@ -72,28 +72,28 @@ o.style.position='static';
 
 var csel=false; // selected icon object
 var izoom=45;
-function fadeIt(th) {     
-   th.width=30; 
-   th.height=30;
+function fadeIt(oimg) {     
+   oimg.style.width=30; 
+   oimg.style.height=30;
    //setTimeout("dz('"+th.id+"')",100);
-   th.style.position='static';
-    if (th.className != 'Select') {
-      th.className='Fade';
-      th.parentNode.parentNode.className='Fade';
+   oimg.style.position='static';
+    if (oimg.className != 'Select') {
+      oimg.className='Fade';
+      oimg.parentNode.parentNode.className='Fade';
     }
 }
-function unFadeIt(th) {
-  th.style.top=AnchorPosition_getPageOffsetTop(th.parentNode.parentNode)-1;
-  th.style.left=AnchorPosition_getPageOffsetLeft(th.parentNode.parentNode);
-  th.style.position='absolute';
+function unFadeIt(oimg) {
+  oimg.style.top=AnchorPosition_getPageOffsetTop(oimg.parentNode.parentNode)-1;
+  oimg.style.left=AnchorPosition_getPageOffsetLeft(oimg.parentNode.parentNode);
+  oimg.style.position='absolute';
   
-  th.width=izoom; 
-  th.height=izoom;
+  oimg.style.width=izoom; 
+  oimg.style.height=izoom;
   //setTimeout("iz('"+th.id+"')",100);
 
-  if (th.className != 'Select') {
-    th.className='NotFade';
-    th.parentNode.parentNode.className='NotFade';
+  if (oimg.className != 'Select') {
+    oimg.className='NotFade';
+    oimg.parentNode.parentNode.className='NotFade';
   }
 }
 function selectIt(th) {
@@ -108,7 +108,7 @@ function selectIt(th) {
 
 <table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="headcell" >
-  <td  width="48px" height="40px"><img border="0" align="absmiddle"  style="max-width:48px;position:absolute;top:0px;left:2px" id="imgapp" src="[IMG:logo-mini.png]"></td>
+  <td  width="48px" height="40px"><img  border="0" align="absmiddle"  style="max-width:48px;position:absolute;top:0px;left:2px" id="imgapp" src="[IMG:logo-mini.png]"></td>
   <td  align="left" style="width:150px;"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
 
 
