@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.43 2005/09/07 10:45:34 eric Exp $
+ * @version $Id: Class.Application.php,v 1.44 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -169,7 +169,7 @@ create sequence SEQ_ID_APPLICATION start 10;
       } else {
 	$res = $this->exec_query("select nextval ('seq_id_application')");
 	$arr = $this->fetch_array (0);
-	$this->id = $arr[0];
+	$this->id = $arr["nextval"];
       }
   
     }

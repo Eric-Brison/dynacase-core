@@ -3,7 +3,7 @@
  * WHAT Environnement
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.3 2005/09/23 08:01:55 eric Exp $
+ * @version $Id: wenv.php,v 1.4 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -12,14 +12,14 @@
 
 
 global $_SERVER;
-function writedbenv($dba) {
+function writedbenv($dba,$dbcoord="",$dbfree="") {
   $wpub=getenv("wpub");
   if ($dba=="anakeen") $dbf="$wpub/dbaccess.php";
   else $dbf="$wpub/virtual/$dba/dbaccess.php";
-  $dbcoord=file_get_contents($dbf);
+  if ($dbcoord=="") $dbcoord=file_get_contents($dbf);
+  else $dbcoord="\"$dbcoord\"";
   $dbhost="localhost";
   $dbport="5432";
-  $dbfree="--username anakeen --dbname freedom";
   if (ereg('"([^"]*)"',$dbcoord,$reg)) {
     $dbcoord=$reg[1];
     if (ereg('dbname=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
@@ -47,11 +47,14 @@ function writedbenv($dba) {
   fwrite($stderr,"export dbport=$dbport\n");
   fwrite($stderr,"export dbname=$dbname\n");
   fwrite($stderr,"export dbpsql='$dbpsql'\n");
-  $dbf=trim(`$wpub/wsh.php --api=fdl_dbaccess 2>/dev/null`);
-  //  print $dbf;
 
-  if (strstr($dbf,"--dbname")) $dbfree=$dbf;
-    
+  if ($dbfree=="") {
+    $dbfree="--username anakeen --dbname freedom";
+    $dbf=trim(`$wpub/wsh.php --api=fdl_dbaccess 2>/dev/null`);
+    //  print $dbf;
+
+    if (strstr($dbf,"--dbname")) $dbfree=$dbf;
+  }
   fwrite($stderr,"export dbfree='$dbfree'\n");
 
 

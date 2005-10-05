@@ -1,9 +1,9 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Mail Alias
  *
  * @author Anakeen 2000 
- * @version $Id: Class.MailAlias.php,v 1.5 2005/06/27 13:02:44 eric Exp $
+ * @version $Id: Class.MailAlias.php,v 1.6 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,66 +11,14 @@
  /**
  */
 
-// ---------------------------------------------------------------------------
-//    O   Anakeen - 2000
-//   O*O  Marc Claverie
-//    O   marc.claverie@anakeen.com
-// ---------------------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but 
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-// 
-// You should have received a copy of the GNU General Public License along 
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------------------
-// $Id: Class.MailAlias.php,v 1.5 2005/06/27 13:02:44 eric Exp $
-//
-// $Log: Class.MailAlias.php,v $
-// Revision 1.5  2005/06/27 13:02:44  eric
-// PHP5
-//
-// Revision 1.4  2003/08/18 15:46:42  eric
-// phpdoc
-//
-// Revision 1.3  2002/08/09 18:03:16  marc
-// 0.1.3-5 Modification pour gestion multi-pop
-//
-// Revision 1.2  2002/08/09 17:28:00  marc
-// 0.1.3-5 Modification pour gestion multi-pop
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.5  2000/12/22 21:37:36  marc
-// Stable version....
-//
-// Revision 1.4  2000/11/01 18:19:32  yannick
-// Passage de l'utilisateur et du mode
-//
-// Revision 1.3  2000/10/31 16:37:48  yannick
-// AJout du makeqmailconf + Test existance domaine
-//
-// Revision 1.2  2000/10/24 21:14:41  marc
-// En cours...
-//
-// Revision 1.1.1.1  2000/10/22 18:30:20  marc
-// Initial release
-//
-//
+
 // ---------------------------------------------------------------------------
 include_once('Class.DbObj.php');
 include_once('Class.Domain.php');
 
 Class MailAlias extends DbObj
 {
-var $Class = '$Id: Class.MailAlias.php,v 1.5 2005/06/27 13:02:44 eric Exp $';
+var $Class = '$Id: Class.MailAlias.php,v 1.6 2005/10/05 16:28:42 eric Exp $';
 
 var $fields = array ( "idalias",
                       "iddomain",
@@ -102,7 +50,7 @@ create sequence seqidalias;
    if ($this->Exists($this->alias,$this->iddomain)) return("alias already exists");
    $res = $this->exec_query("select nextval ('seqidalias')");
    $arr = $this->fetch_array (0);
-   $this->idalias = $arr[0];
+   $this->idalias = $arr["nextval"];
    $this->uptime = time();
    $this->remove = '0';
  }

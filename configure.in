@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.9 2005/10/05 14:38:07 eric Exp $)
+AC_REVISION($Id: configure.in,v 1.10 2005/10/05 16:28:42 eric Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -64,8 +64,13 @@ AC_ARG_WITH(dbport,
 
 AC_SUBST(APACHECONFDIR)
 APACHECONFDIR=/etc/httpd/httpd.conf
-AC_ARG_WITH(dbport,
+AC_ARG_WITH(apacheconfdir,
 [  --with-apacheconfdir=apache config dir (default /etc/httpd/httpd.conf)], APACHECONFDIR=$withval)
+
+AC_SUBST(HTTPUSER)
+HTTPUSER=http
+AC_ARG_WITH(httpuser,
+[  --with-httpuser=user id for httpd process (default http)], HTTPUSER=$withval)
 
 AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf freedom.conf \
           App/Core/CORE_init.php \

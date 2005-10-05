@@ -3,7 +3,7 @@
  * Access Control for application
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Acl.php,v 1.6 2005/06/27 13:02:44 eric Exp $
+ * @version $Id: Class.Acl.php,v 1.7 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -64,7 +64,7 @@ function PreInsert( )
   if ($this->Exists($this->name,$this->id_application)) return "Acl {$this->name} already exists...";  
   $msg_res = $this->exec_query("select nextval ('seq_id_acl')");
   $arr = $this->fetch_array (0);
-  $this->id = $arr[0];
+  $this->id = $arr["nextval"];
   
 }
 function PreUpdate()

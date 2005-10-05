@@ -3,7 +3,7 @@
  * Mail Domain
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Domain.php,v 1.5 2005/06/27 13:02:44 eric Exp $
+ * @version $Id: Class.Domain.php,v 1.6 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -17,7 +17,7 @@ include_once('Class.Pop.php');
 
 Class Domain extends DbObj {
 
-var $Class = '$Id: Class.Domain.php,v 1.5 2005/06/27 13:02:44 eric Exp $';
+var $Class = '$Id: Class.Domain.php,v 1.6 2005/10/05 16:28:42 eric Exp $';
 
 var $fields = array ( "iddomain",
 		      "name",
@@ -62,7 +62,7 @@ create sequence seq_iddomain start 10;
    if ($this->iddomain == "") {
      $res = $this->exec_query("select nextval ('seq_iddomain')");
      $arr = $this->fetch_array (0);
-     $this->iddomain = $arr[0];
+     $this->iddomain = $arr["nextval"];
    }
    $this->name = strtolower($this->name);
    $this->status = '1';

@@ -2,7 +2,7 @@
 /** WHAT Create another database
  *
  * @author Anakeen 2004
- * @version $Id: wvirtual.php.in,v 1.1 2005/09/07 12:48:33 yannick Exp $
+ * @version $Id: wvirtual.php.in,v 1.2 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -32,7 +32,7 @@ if ($argv[1]!="") $dbfree=$argv[1];
 ncurses_winit(sprintf(_("Create other database for %s (%s)"),trim(`hostname -f`),trim(`hostname -i`)));
 
 
-ncurses_getmaxyx(&$fullscreen, $lines, $columns); 
+ncurses_getmaxyx($fullscreen, $lines, $columns); 
 
 //---------------------------------------------------
 
@@ -69,16 +69,17 @@ $virtual=$post[$select];
 ncurses_mvaddstr($lines-2, 4, _("Name of anakeen database ?"));
 
 $dbank=strtolower(ncurses_getln());
-ncurses_wclear(&$wact);
+ncurses_wclear($wact);
 
 ncurses_mvwaddstr($wact, 3, 4, sprintf(_("Virtual host : [%s]"),$virtual));
 ncurses_mvwaddstr($wact, 5, 4, sprintf(_("Database : [%s]"),$dbank));
 
 ncurses_wrefresh($wact);
 
-writedbenv($dbank);
+writedbenv($dbank,"--dbname=$dbank","--username anakeen --dbname free$dbank" );
 $stderr = fopen('php://stderr', 'w');
 fwrite($stderr,"export snwhat=$virtual\n");
+fwrite($stderr,"export wpub=$pubdir\n");
 
 $cpress=strtoupper(chr($pressed));
 

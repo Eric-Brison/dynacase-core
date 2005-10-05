@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.44 2005/09/23 14:44:30 eric Exp $
+ * @version $Id: Class.User.php,v 1.45 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -118,7 +118,7 @@ create sequence seq_id_users start 10";
     if ($this->id == "") {
       $res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
       $arr = pg_fetch_array ($res, 0);
-      $this->id = $arr[0];
+      $this->id = $arr["nextval"];
     }
                                                                                       
                                                                                         

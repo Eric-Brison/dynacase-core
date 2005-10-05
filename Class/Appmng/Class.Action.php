@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.28 2005/09/14 15:15:24 yannick Exp $
+ * @version $Id: Class.Action.php,v 1.29 2005/10/05 16:28:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -145,8 +145,8 @@ function PreInsert( )
 {
   if ($this->Exists( $this->name, $this->id_application)) return "Action {$this->name} already exists...";  
   $msg_res = $this->exec_query("select nextval ('seq_id_action')");
-  $arr = $this->fetch_array (0);
-  $this->id = $arr[0];
+  $arr = $this->fetch_array(0);
+  $this->id = $arr["nextval"];
   
 }
 function PreUpdate()
