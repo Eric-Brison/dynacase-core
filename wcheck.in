@@ -101,13 +101,7 @@ function vercmp($v1,$v2) {
 
 $dbaccess=getDbAccess();
 $dbank=getDbName($dbaccess);
-$dbpsql=getenv('dbpsql');
-if ($dbpsql=="") {
-  
-  $stderr = fopen('php://stderr', 'w');
-  fwrite($stderr,"WHAT environnement variables not set.\nPlease load the file @prefix@/winitrc.\n");
-  exit(1);
-}
+
 
 ncurses_winit("WHAT Checking");
 

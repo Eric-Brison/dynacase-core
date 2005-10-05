@@ -1,5 +1,9 @@
 #!/bin/bash
 
-pubdir="/home/httpd/what";
-/usr/bin/php -q $pubdir/API/updateclass.php  --class=Param
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+/usr/bin/php -q $wpub/API/updateclass.php  --class=Param
 

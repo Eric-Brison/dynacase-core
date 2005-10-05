@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.13 2005/06/28 13:53:24 eric Exp $
+ * @version $Id: authent.php,v 1.14 2005/10/05 14:38:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -29,7 +29,6 @@ function authenticate() {
   $core->Set("CORE",$CoreNull);
   $action = new Action();
   $action->Set("",$core);
-
   header('WWW-Authenticate: Basic realm="'.$action->getParam("CORE_REALM","WHAT Connection").'"');
   header('HTTP/1.0 401 Unauthorized');
   // Header("Location:guest.php");
@@ -39,8 +38,6 @@ function authenticate() {
 
 global $_SERVER;
 global $_POST;
-
-
 
 if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {
 

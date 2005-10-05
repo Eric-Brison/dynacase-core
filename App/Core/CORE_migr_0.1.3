@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
 # Change what from syslog
 echo "Remove what.log from syslog"
 cp /etc/syslog.conf /etc/syslog.conf.sav

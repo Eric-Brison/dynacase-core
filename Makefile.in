@@ -29,7 +29,7 @@ include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext.in wcheck.in wstop.in wstart.in wdbcreate.in winitrc.in httpd.pam.in httpdwa.pam.in guest.php.in index.php.in index.php.q.in
+	     whattext.in wcheck.in wstop.in wstart.in wdbcreate.in winitrc httpd.pam.in httpdwa.pam.in guest.php.in index.php.in index.php.q.in freedom.conf.in
 
 
 
@@ -62,6 +62,8 @@ $(rootprefix)/etc/pam.d/httpd: $(rootprefix)/etc/pam.d
 	cp httpd.pam $@
 $(rootprefix)/etc/pam.d/httpdwa: $(rootprefix)/etc/pam.d
 	cp httpdwa.pam $@
+$(rootprefix)/etc/freedom.conf: 
+	cp freedom.conf $@
 
 $(rootprefix)/etc/cron.daily:
 	mkdir -p $@
@@ -69,7 +71,7 @@ $(rootprefix)/etc/cron.daily:
 $(rootprefix)/etc/cron.daily/WHAT.cron:WHAT.cron $(rootprefix)/etc/cron.daily
 	cp WHAT.cron $@
 
-publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron
+publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \

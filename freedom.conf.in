@@ -27,7 +27,5 @@ function wchoose()
 alias wcheck=$wpub/wcheck
 alias wsh=$wpub/wsh.php
 alias wtext="$wpub/whattext; /etc/rc.d/init.d/httpd restart"
-if [ "$dbpsql" == "" ]; then
-   wchoose -b
-fi
+
 

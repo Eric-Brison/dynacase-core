@@ -1,6 +1,10 @@
 #!/bin/bash
 
-pubdir="/home/httpd/what";
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
 
 if [ -f /etc/httpd/httpd.conf/71_mod_what.conf.rpmnew ]; then
     cd /etc/httpd/httpd.conf

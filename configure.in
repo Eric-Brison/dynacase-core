@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.8 2005/09/07 15:48:32 yannick Exp $)
+AC_REVISION($Id: configure.in,v 1.9 2005/10/05 14:38:07 eric Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -67,13 +67,12 @@ APACHECONFDIR=/etc/httpd/httpd.conf
 AC_ARG_WITH(dbport,
 [  --with-apacheconfdir=apache config dir (default /etc/httpd/httpd.conf)], APACHECONFDIR=$withval)
 
-AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf \
+AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf freedom.conf \
           App/Core/CORE_init.php \
-          App/Core/CORE_post \
           App/Users/USERS_init.php \
           App/Access/ACCESS_init.php \
           App/Authent/AUTHENT_init.php \
           App/Appmng/APPMNG_init.php httpdwa.pam\
           Api/appadmin.php Api/updateclass.php \
 	  httpd.pam guest.php index.php index.php.q wcheck wdbcreate
-	  whattext winitrc wsh.php wstart wstop wvirtual.php)
+	  whattext wsh.php wstart wstop wvirtual.php)

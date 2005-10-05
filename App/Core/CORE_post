@@ -1,14 +1,11 @@
 #!/bin/bash
-export pubdir=@prefix@
-
-. $pubdir/log.sh
-
-
-if [ "$dbanakeen" = "" ]; then
-    dbname="anakeen"
-else
-    dbname=$dbanakeen
+if [ "$dbpsql" == "" ]; then
+  . /etc/freedom.conf
+   wchoose -b
 fi
+
+. $wpub/log.sh
+
 
 #------------------------------
 #post installation
@@ -35,7 +32,7 @@ if [ "$1" = "I" ] ; then
   fi
 
   log "Add plpgsql functions"
-  sulog postgres "psql $dbpsql -f $pubdir/WHAT/getprivilege.sql"
+  sulog postgres "psql $dbpsql -f $wpub/WHAT/getprivilege.sql"
 
   log "Register DB $dbname for automatic dump"
   ll=0
@@ -57,17 +54,17 @@ if [ "$1" = "I" ] ; then
   echo "}"                                 >> /etc/logrotate.d/what
 
 
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Application
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Action
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Style
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=ParamDef
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Param
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=User
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Group
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Permission
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Acl
-  /usr/bin/php -q $pubdir/API/updateclass.php   --class=Session
-  $pubdir/wsh.php  --api=appadmin
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Application
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Action
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Style
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=ParamDef
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Param
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=User
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Group
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Permission
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Acl
+  /usr/bin/php -q $wpub/API/updateclass.php   --class=Session
+  $wpub/wsh.php  --api=appadmin
 
 
 fi
@@ -79,11 +76,11 @@ fi
 if [ "$1" = "U" ] ; then
 
   #add permission functionnalities
-  su - postgres -c "psql $dbname anakeen -f $pubdir/WHAT/getprivilege.sql"
-  $pubdir/wsh.php  --api=import_style --name=RED
-  $pubdir/wsh.php  --api=import_style --name=GREEN
-  $pubdir/wsh.php  --api=import_style --name=AQUA
-  $pubdir/wsh.php  --api=import_style --name=BLUE
+  su - postgres -c "psql $dbname anakeen -f $wpub/WHAT/getprivilege.sql"
+  $wpub/wsh.php  --api=import_style --name=RED
+  $wpub/wsh.php  --api=import_style --name=GREEN
+  $wpub/wsh.php  --api=import_style --name=AQUA
+  $wpub/wsh.php  --api=import_style --name=BLUE
   echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql $dbname anakeen
 
 fi
