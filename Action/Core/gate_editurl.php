@@ -3,7 +3,7 @@
  * Edit Url for gate
  *
  * @author Anakeen 2000 
- * @version $Id: gate_editurl.php,v 1.3 2005/10/05 14:38:07 eric Exp $
+ * @version $Id: gate_editurl.php,v 1.4 2005/10/11 12:25:47 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,7 @@
  /**
  */
 
-/
+
 // -----------------------------------
 function gate_editurl(&$action) {
 
