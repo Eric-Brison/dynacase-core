@@ -146,7 +146,7 @@ if (! $dbid) {
 		" N I U D");
   $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
   while (list($k,$v) = each ($tapp)) {
-    if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($HOSTNAME)))
+    if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"])))
       $chk[$v]="?";
     else if ($tvdb[$v] == $tvfile[$v]) {
       $chk[$v]="";
