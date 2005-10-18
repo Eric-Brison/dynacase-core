@@ -3,14 +3,14 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.22 2005/09/09 16:27:33 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.23 2005/10/18 14:12:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
  */
 /**
  */
-
+include_once("Lib.Prefix.php");
 
 // library of utilies functions
 

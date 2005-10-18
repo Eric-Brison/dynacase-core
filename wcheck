@@ -1,0 +1,69 @@
+#!/usr/bin/php -q
+<?php
+
+
+include("WHAT/Lib.Common.php");
+include("WHAT/wncurses.php");
+include("WHAT/Lib.WCheck.php");
+
+global $_SERVER;
+
+if ($_SERVER['HTTP_HOST'] != "")     {
+  print "<BR><H1>:~(</H1>";
+  exit;
+}
+
+
+
+
+
+
+
+
+
+$err=getCheckApp($pubdir,$applications);
+
+ncurses_winit("FREEDOM Checking");
+ncurses_getmaxyx($fullscreen, $lines, $columns);
+ncurses_color_set(6);
+ncurses_mvaddstr(2,5,sprintf(_("Database: %s"), $dbaccess));
+ncurses_refresh();
+
+if ($err!="") {
+  ncurses_mvaddstr(4,5, $err);
+  $actions[] = "$pubdir/CORE/CORE_post  I";
+} else {
+  ncurses_mvaddstr(4,5,  _("access to default database : granted"));
+  
+  
+  $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
+  $line[]= sprintf("|%12s|%10s|%10s|%10s|",
+		_("application"),
+		_("db "),
+		_("file "),
+		" N I U D");
+  $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
+  foreach ($applications as $k=>$v) {
+    
+    $line[]= sprintf("|%12s|%10s|%10s|%10s|%s",
+		  $v["name"],
+		  $v["vdb"],
+		  $v["vfile"],
+		  $v["chk"],
+		  $v["machine"]);
+  }
+  ncurses_list($line);
+  
+  $err=getCheckActions($pubdir,$applications,$actions);
+}
+
+
+
+ncurses_execute($actions);
+
+
+ncurses_mvaddstr($lines-2, 4, _("Finished. Detail log in /tmp/whatchk.log"));
+$pressed = ncurses_getch();// wait for a user keypress
+ncurses_end();
+
+?>

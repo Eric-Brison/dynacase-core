@@ -2,13 +2,12 @@
 /** WHAT Create another database
  *
  * @author Anakeen 2004
- * @version $Id: wvirtual.php.in,v 1.2 2005/10/05 16:28:42 eric Exp $
+ * @version $Id: wvirtual.php,v 1.7 2005/10/18 14:12:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
-$pubdir="@prefix@";
 
 include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");

@@ -1,0 +1,32 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+if [ -h $wpub/index.php ] ; then
+  /bin/rm $wpub/index.php
+fi
+/bin/cp $wpub/WHAT/index.php $wpub
+
+
+# link images file to be used in several applications
+if [ ! -d $wpub/Images ] ; then
+    mkdir $wpub/Images
+fi
+if [ ! -d $wpub/Docs ] ; then
+    mkdir $wpub/Docs
+fi
+pushd $wpub/Images > /dev/null
+ln -sf ../*/Images/* .
+popd > /dev/null
+
+pushd $wpub/Docs > /dev/null
+ln -sf ../*/Docs/* .
+popd > /dev/null
+#refresh version identificator
+$wpub/wsh.php --api=refreshjsversion >/dev/null
+#clear current sessions
+/bin/rm -f /var/run/php/sess_*
+

@@ -1,11 +1,9 @@
 <?php
 /**
- * Main program to activate action in WHAT software
- *
- * All HTTP requests call index.php to execute action within application
+ * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: index.php.in,v 1.2 2005/09/16 08:06:42 eric Exp $
+ * @version $Id: guest.php,v 1.16 2005/10/18 14:12:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -22,11 +20,6 @@
 # element
 #
 #
-// First control
-if(!isset($_SERVER['PHP_AUTH_USER'])  ) {
-  Header("Location:guest.php");
-  exit;
-}
 
 include_once('Class.Action.php');
 include_once('Class.Application.php');
@@ -37,11 +30,9 @@ include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
 define("PORT_SSL", 443); // the default port for https
-// ----------------------------------------
 
 
-
-$log=new Log("","index.php");
+$log=new Log("","guest.php");
 
 $CoreNull = "";
 global $CORE_LOGLEVEL;
@@ -55,31 +46,28 @@ $standalone = GetHttpVars("sole");
 
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
 else $sess_num=GetHttpVars("session");//$_GET["session"];
-
 $session=new Session();
-if (!  $session->Set($sess_num))  {
-    print "<B>:~((</B>";
-    exit;
-  };
-
-
-
+$session->Set($sess_num);
+if ($session->userid != ANONYMOUS_ID) { 
+  // reopen a new anonymous session
+  setcookie ("session",$session->id,0,"/");
+  unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
+  $session->Set("");
+  //setcookie ("session",$session->id,0,"/");
+}
+if ($session->userid != ANONYMOUS_ID) { 
+  // reverify
+  print "<B>:~((</B>";
+  exit;
+}
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
-
-if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
-  // reopen a new session
-  $session->Set("");
-  $core->SetSession($session);
-}
-//$core->SetSession($session);
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
 // Init PUBLISH URL from script name
-
-if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
+if (ereg("(.*)/guest\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 
   // determine publish url (detect ssl require)
  
@@ -100,11 +88,12 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
-$core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
-$core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL","index.php?sole=Y&session={$session->id}&");
+$core->SetVolatileParam("CORE_ROOTURL", "guest.php?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "guest.php?sole=A&");
+$core->SetVolatileParam("CORE_STANDURL","guest.php?sole=Y&");
+$core->SetVolatileParam("CORE_SBASEURL","guest.php?sole=A&session={$session->id}&");
+$core->SetVolatileParam("CORE_SSTANDURL","guest.php?sole=Y&session={$session->id}&");
+
 
 // ----------------------------------------
 // Init Application & Actions Objects
@@ -115,11 +104,11 @@ if (($standalone == "") || ($standalone == "N")) {
   $appl = new Application();
   $appl->Set($_GET["app"],$core);
 
-  if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
+   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
       if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {
          $aquest=parse_url($_SERVER['REQUEST_URI']);
-	 $aquest['host']=$appl->machine;
-	 $puburl=glue_url($aquest);
+         $aquest['host']=$appl->machine;
+         $puburl=glue_url($aquest);
       } else {
          $puburl = "http://".$appl->machine.$_SERVER['REQUEST_URI'];
       }
@@ -184,8 +173,7 @@ setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
 setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
 //print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
-bindtextdomain ("what", "@prefix@/locale");
-bind_textdomain_codeset("what", 'ISO-8859-15');
+bindtextdomain ("what", "$pubdir/locale");
 textdomain ("what");
 
   

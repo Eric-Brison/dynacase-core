@@ -1,5 +1,0 @@
-#!/bin/bash
-
-pubdir="@prefix@";
-cp $pubdir/WHAT/stop.php $pubdir/index.php
-echo "check update needed  ($pubdir/wcheck)"

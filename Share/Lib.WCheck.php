@@ -1,22 +1,17 @@
-#!/usr/bin/php -q
 <?php
-
-$pubdir="@prefix@";
-
-include("WHAT/Lib.Common.php");
-include("WHAT/wncurses.php");
-
-global $_SERVER;
-
-if ($_SERVER['HTTP_HOST'] != "")     {
-  print "<BR><H1>:~(</H1>";
-  exit;
-}
-
-
+/**
+ * Util function for update and initialize application
+ *
+ * @author Anakeen 2005
+ * @version $Id: Lib.WCheck.php,v 1.1 2005/10/18 14:12:42 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 //---------------------------------------------------
-function GetDbVersion($dbid) {
-  global $tmachine;
+function GetDbVersion($dbid,&$tmachine) {
 
   $tver=array();
   $tmachine=array();
@@ -55,6 +50,7 @@ function GetDbOldVersion($dbid) {
 
   return ($tver);
 }
+
 //---------------------------------------------------
 function GetFileVersion($topdir) {
 
@@ -97,108 +93,95 @@ function vercmp($v1,$v2) {
   else return -1;
 }
 
-//---------------------------------------------------
 
-$dbaccess=getDbAccess();
-$dbank=getDbName($dbaccess);
+function getCheckApp($pubdir,&$tapp) {
+  global $_SERVER;
+  $dbaccess=getDbAccess();
+  $dbank=getDbName($dbaccess);
+  $IP=chop(`hostname -i`);
+  $dbid=@pg_connect($dbaccess);
 
-
-ncurses_winit("WHAT Checking");
-
-
-ncurses_getmaxyx($fullscreen, $lines, $columns);
-
-$IP=chop(`hostname -i`);
-ncurses_color_set(6);
-ncurses_mvaddstr(2,5,sprintf(_("Database: %s"), $dbaccess));
-ncurses_refresh();
-
-
-
-$dbid=@pg_connect($dbaccess);
-
-$wsh=array(); // application update
-$migr=array();// migration
-$pmigr=array();// post migration
-$post=array();// post install 
-$pre=array(); // pre install 
-$dump=array();
-array_shift($argv);
-if (! $dbid) {
-  ncurses_mvaddstr(4,5, _("cannot access to default database [$dbaccess]"));
-  $post[] = "$pubdir/CORE/CORE_post  I";
-} else {
-  ncurses_mvaddstr(4,5,  _("access to default database : granted"));
+  if ($err!="") {
+    $err= _("cannot access to default database [$dbaccess]");
   
+  } else {
   
-  $tvdb= GetDbVersion($dbid);
-  $tvfile=GetFileVersion("$pubdir");
+    $tvdb= GetDbVersion($dbid,$tmachine);
+    $tvfile=GetFileVersion("$pubdir");
+
   
-  pg_close($dbid);
-  $tapp = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
+    pg_close($dbid);
+    $ta = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
+
+
+    foreach ($ta as $k=>$v) {
+      if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"])))
+	$chk[$v]="?";
+      else if ($tvdb[$v] == $tvfile[$v]) {
+	$chk[$v]="";
+      } else if ($tvdb[$v] == "" ) {
+	$chk[$v]="I";
+      } else if ( $tvfile[$v] == "") {
+	$chk[$v]="D";    
+      } else if (vercmp($tvdb[$v], $tvfile[$v])== 1) {
+	$chk[$v]="R";    
+      } else {
+	$chk[$v]="U";    
+      }
+      $tapp[$v]=array("name"=>$v,
+		    "vdb"=>$tvdb[$v],
+		    "vfile"=>$tvfile[$v],
+		    "chk"=>$chk[$v],
+		    "machine"=>$tmachine[$v]);
   
-  
-  $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
-  $line[]= sprintf("|%12s|%10s|%10s|%10s|",
-		_("application"),
-		_("db "),
-		_("file "),
-		" N I U D");
-  $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
-  while (list($k,$v) = each ($tapp)) {
-    if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"])))
-      $chk[$v]="?";
-    else if ($tvdb[$v] == $tvfile[$v]) {
-      $chk[$v]="";
-    } else if ($tvdb[$v] == "" ) {
-      $chk[$v]="I";
-    } else if ( $tvfile[$v] == "") {
-      $chk[$v]="D";    
-    } else if (vercmp($tvdb[$v], $tvfile[$v])== 1) {
-      $chk[$v]="R";    
-    } else {
-      $chk[$v]="U";    
     }
-    $line[]= sprintf("|%12s|%10s|%10s|%10s|%s",
-		  $v,
-		  $tvdb[$v],
-		  $tvfile[$v],
-		  $chk[$v],
-		  $tmachine[$v]);
-  
-  }
 
-  ncurses_list($line);
-  
-  
-  reset($chk);
-  while (list($k,$v) = each ($chk)) {
-    switch ($v) {
+  }
+}
+
+
+
+
+
+
+function getCheckActions($pubdir,$tapp,&$tact) {
+
+  $wsh=array(); // application update
+  $migr=array();// migration
+  $pmigr=array();// post migration
+  $post=array();// post install 
+  $pre=array(); // pre install 
+  $dump=array();
+  $dbaccess=getDbAccess();
+  $dbank=getDbName($dbaccess);
+
+  foreach ($tapp as $k=>$v) {
+    switch ($v["chk"]) {
     case "I":
       $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=init --appname=$k";
-    $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
-    break;
+      $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
+      break;
     case "U":
       $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
-    break;
+      break;
     case "D":
       $wsh[] = "#$pubdir/wsh.php  --api=appadmin --method=delete --appname=$k";
-    break;
+      break;
     case "R":
-      $wsh[] = "#rpm -Uvh $k-".$tvdb[$k];
-    break;
+      $wsh[] = "#rpm -Uvh $k-".$v["vdb"];
+      break;
 
     }
 
     // search POST install
-    if (($v != "") && (is_file("$pubdir/$k/{$k}_post"))) {
-      if ($v == "I") {
-	$pre[] = "$pubdir/$k/{$k}_post  $v";
+    if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
+      if ($v["chk"] == "I") {
+	$pre[] = "$pubdir/$k/{$k}_post  ".$v["chk"];
 	$post[] = "$pubdir/$k/{$k}_post  U";
       } else {
-	if (($v != "R") && ($v != "?")) {
-	  if ($v == "D") $post[] = "#$pubdir/$k/{$k}_post  $v";
-	  else $post[] = "$pubdir/$k/{$k}_post  $v";
+	if (($v["chk"] != "R") && ($v["chk"] != "?")) {
+	  if ($v["chk"] == "D") $post[] = "#$pubdir/$k/{$k}_post ".$v["chk"];
+	  else $post[] = "$pubdir/$k/{$k}_post ".$v["chk"];
 	}
       }
     }
@@ -229,31 +212,20 @@ if (! $dbid) {
     
   }
   
-}
-
-if ($dbid) {
   $dump[] = "su - postgres -c 'pg_dumpall -D > /tmp/".uniqid("whatdb")."'";
   $dump[] = "/etc/rc.d/init.d/httpd stop";
   $dump[] = "$pubdir/whattext";
+  
+
+  $tact = array_merge($dump,
+		      array_merge($pre,
+				  array_merge($migr,
+					      array_merge($wsh, 
+							  array_merge($post,$pmigr)))));
+  
+  if ($dbank != "anakeen") $tact[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
+  $tact[] = "$pubdir/wstart";
+  $tact[] = "/etc/rc.d/init.d/httpd start";
+  
 }
-
-$actions = array_merge($dump,
-		       array_merge($pre,
-				   array_merge($migr,
-					       array_merge($wsh, 
-							   array_merge($post,$pmigr)))));
-if ($dbid) {
-  if ($dbank != "anakeen") $actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
-  $actions[] = "$pubdir/wstart";
-  $actions[] = "/etc/rc.d/init.d/httpd start";
-}
-
-
-ncurses_execute($actions);
-
-
-ncurses_mvaddstr($lines-2, 4, _("Finished. Detail log in /tmp/whatchk.log"));
-$pressed = ncurses_getch();// wait for a user keypress
-ncurses_end();
-
 ?>

@@ -1,7 +1,6 @@
 #!/usr/bin/php -q
 <?php
 
-$pubdir="@prefix@";
 
 include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");

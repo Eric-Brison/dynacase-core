@@ -7,12 +7,12 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.10 2005/10/05 16:28:42 eric Exp $)
+AC_REVISION($Id: configure.in,v 1.11 2005/10/18 14:12:42 eric Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
 AC_PREREQ(2.13)
-AC_INIT(./index.php.in)
+AC_INIT(./index.php)
 AC_SUBST(VERSION)
 VERSION=`cat VERSION`
 AC_SUBST(RELEASE)
@@ -79,5 +79,6 @@ AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf freedom.conf \
           App/Authent/AUTHENT_init.php \
           App/Appmng/APPMNG_init.php httpdwa.pam\
           Api/appadmin.php Api/updateclass.php \
-	  httpd.pam guest.php index.php index.php.q wcheck wdbcreate
-	  whattext wsh.php wstart wstop wvirtual.php)
+          Share/Lib.Prefix.php  \
+	  httpd.pam  wdbcreate
+	  wsh.php )
