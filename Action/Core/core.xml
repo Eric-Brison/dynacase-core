@@ -33,11 +33,11 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 </head>
 
 
-<frameset name="what" id="what" frameborder="0" framespacing="0" border="0" rows="52,*,35,0pt" >
+<frameset name="what" id="what" frameborder="0" framespacing="0" border="0" rows="[headerSize],[mainSize],[footerSize],0pt" >
 
-  <frame name="head" src="[CORE_STANDURL]&app=CORE&action=HEAD" scrolling="needed">
-  <frame name="body" src="[CORE_STANDURL]&app=[appd]&action=[actd]" scrolling="needed">
-  <frame name="foot" src="[CORE_STANDURL]&app=CORE&action=FOOTER" scrolling="no">
+  <frame name="head" src="[CORE_STANDURL]&app=[headerApp]&action=[headerAct]" scrolling="needed">
+  <frame name="body" src="[CORE_STANDURL]&app=[mainApp]&action=[mainAct]" scrolling="needed">
+  <frame name="foot" src="[CORE_STANDURL]&app=[footerApp]&action=[footerAct]" scrolling="no">
   <frame name="fhidden" src="[CORE_STANDURL]&app=CORE&action=WVERSION" noresize  style="border-style:none" scrolling="no">
 
 </frameset>
