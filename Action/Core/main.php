@@ -3,7 +3,7 @@
  * Main page for WHAT
  *
  * @author Anakeen 2000 
- * @version $Id: main.php,v 1.11 2005/10/18 15:01:13 marc Exp $
+ * @version $Id: main.php,v 1.12 2005/10/18 15:22:46 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -27,7 +27,7 @@ function main(&$action) {
   $izone = 0; 
   $zonedef = array();
   $isOk = array( false, false, false );
-  if ($mainpdescr!="") {
+  if ($mainpdescr!="" && $action->user->id!=1) {
     $tzone = explode("|", $mainpdescr);
     if (count($tzone)!=3) continue;
     foreach ($tzone as $k => $v) {

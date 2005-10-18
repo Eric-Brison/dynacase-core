@@ -3,18 +3,20 @@
 <tr class="core">
 
 <td width="30%">
-<iframe style="height:50%; border:0px" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_TODOVIEW&dtodo=-1"></iframe>
-<iframe style="height:50%; border:0px" src="http://fr.weather.com/weather/tenday/FRXX0099?day=0&vert=WeatherCity"></iframe>
+<iframe style="height:50%; border:1px inset [CORE_BGCOLORALTERN]" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_TODOVIEW&dtodo=-1"></iframe>
+<iframe style="height:50%; border:1px inset [CORE_BGCOLORALTERN]" src="http://fr.weather.com/weather/tenday/FRXX0099?day=0&vert=WeatherCity"></iframe>
 
 </td>
 
-<td width="30%" style="padding:5">
-<iframe style="height:60%; border:0px" src="[CORE_STANDURL]&sole=Y&app=USERCARD&action=FADDBOOK_SPEEDSEARCH"></iframe>
-<iframe style="height:40%; border:0px" src="[CORE_STANDURL]&sole=Y&app=USERCARD&action=FADDBOOK_PREFERED"></iframe>
-</td>
+<td width="30%" height="100%" style="padding:5">
+<div style="position:relative; align:top; border:1px outset [CORE_BGCOLORALTERN]; background-color:[CORE_FGCOLOR]">Contacts</div>
+<div style="position:relative; height:90%; border:1px inset [CORE_BGCOLORALTERN]">
+<iframe style="padding:5; height:50%; border:0px" src="[CORE_STANDURL]&sole=Y&app=USERCARD&action=FADDBOOK_SPEEDSEARCH"></iframe>
+<iframe style="height:50%; border:0px" src="[CORE_STANDURL]&sole=Y&app=USERCARD&action=FADDBOOK_PREFERED"></iframe>
+</div></td>
 
 <td width="30%" style="padding:5">
-<iframe style="height:100%; border:0px" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_PORTAL"></iframe>
+<iframe style="height:100%; border:1px inset [CORE_BGCOLORALTERN]" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_PORTAL"></iframe>
 </td>
 
 </tr></table>
