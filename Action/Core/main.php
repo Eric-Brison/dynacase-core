@@ -3,7 +3,7 @@
  * Main page for WHAT
  *
  * @author Anakeen 2000 
- * @version $Id: main.php,v 1.10 2005/10/18 09:41:26 marc Exp $
+ * @version $Id: main.php,v 1.11 2005/10/18 15:01:13 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -29,17 +29,17 @@ function main(&$action) {
   $isOk = array( false, false, false );
   if ($mainpdescr!="") {
     $tzone = explode("|", $mainpdescr);
-    if ($count($tzone)!=3) continue;
+    if (count($tzone)!=3) continue;
     foreach ($tzone as $k => $v) {
       $zargs = explode(":", $v);
       if (count($zargs)!=3) continue;
-      if ($zargs[0]=="" || $zargs[1]=="" || $zargs[3]=="") continue;
+      if ($zargs[0]=="" || $zargs[1]=="" || $zargs[2]=="") continue;
       $zonedef[$izone]["app"] = $zargs[0];
       $zonedef[$izone]["action"] = $zargs[1];
       $zonedef[$izone]["size"] = $zargs[2];
       $isOk[$izone] = true;
-    }
-    $izone++; 
+      $izone++; 
+   }
   }
   
     
@@ -71,9 +71,9 @@ function main(&$action) {
       $mainApp  = $zonedef[1]["app"];
       $mainAct  = $zonedef[1]["action"];
       
-      $footerSize = $zonedef[1]["size"];
-      $footerApp  = $zonedef[1]["app"];
-      $footerAct  = $zonedef[1]["action"];
+      $footerSize = $zonedef[2]["size"];
+      $footerApp  = $zonedef[2]["app"];
+      $footerAct  = $zonedef[2]["action"];
       
     } 
   }

@@ -1,0 +1,57 @@
+[ZONE CORE:HTMLHEAD]
+<script language="JavaScript">
+var csel=false; // selected icon object
+var izoom=45;
+function fadeIt(oimg) {     
+   oimg.style.width=30; 
+   oimg.style.height=30;
+   //setTimeout("dz('"+th.id+"')",100);
+   oimg.style.position='static';
+    if (oimg.className != 'Select') {
+      oimg.className='Fade';
+      oimg.parentNode.parentNode.className='Fade';
+    }
+}
+function unFadeIt(oimg) {
+  oimg.style.top=AnchorPosition_getPageOffsetTop(oimg.parentNode.parentNode)-1;
+  oimg.style.left=AnchorPosition_getPageOffsetLeft(oimg.parentNode.parentNode);
+  oimg.style.position='absolute';
+  
+  oimg.style.width=izoom; 
+  oimg.style.height=izoom;
+  //setTimeout("iz('"+th.id+"')",100);
+
+  if (oimg.className != 'Select') {
+    oimg.className='NotFade';
+    oimg.parentNode.parentNode.className='NotFade';
+  }
+}
+function selectIt(th) {
+  csel.className='Fade';
+  
+  th.className='Select';
+    th.parentNode.parentNode.className='Select';
+  csel=th;
+  subwindow(10,10,'fhidden','[CORE_STANDURL]&app=CORE&action=WVERSION');
+}
+</script>
+<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
+<tr class="headcell">
+
+<td  width="42"><img  border="0" align="absmiddle"  style="max-width:40px;position:absolute;top:0px;left:2px" id="imgapp" src="[CORE_LOGOCLIENT]"></td>
+
+<td  align="left" ">
+<div class="headtitle" style="font-size:80%">[CORE_CLIENT]&nbsp;</div>
+<div class="headtitle" style="font-size:80%">[USER]&nbsp;</div>
+</td>
+
+
+<td align="right">
+<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" witdh="100%"><tr class="headcell">
+ [BLOCK FUNCTION]<td width="40"  align="center" onMouseOver="unFadeIt(i[name]);"  onMouseOut="fadeIt(i[name]);"><a target="body" href="[CORE_STANDURL]&app=[name]"><img  onclick="selectIt(this)" class="Fade"  id="i[name]" src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a></td>[ENDBLOCK FUNCTION]
+<td width="40">&nbsp;</td></tr></table>
+</td>
+</tr>
+</table>
+
+[ZONE CORE:HTMLFOOT]

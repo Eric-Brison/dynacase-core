@@ -1,0 +1,22 @@
+[ZONE CORE:HTMLHEAD]
+<table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]"><tr valign="top" class="core" >
+
+<td align="left" valign="top" height="30px">
+<a href="index.php?sole=Y&&app=USERCARD&action=FADDBOOK_SPEEDSEARCH" target="_search"><img   title="[TEXT:contacts speed search]" style="cursor:pointer;border:none" align="absmiddle" height="22" style="border:0" src="CORE/Images/ngcontactss.png"></a>
+<a href="index.php?sole=Y&&app=USERCARD&action=FADDBOOK_PREFERED" target="_search"><img   title="[TEXT:my favorites contacts]" style="cursor:pointer;border:none" align="absmiddle" height="22" style="border:0" src="CORE/Images/ngfavorite.png"></a>
+<a href="index.php?sole=Y&&app=WGCAL&action=WGCAL_PORTAL" target="_search"><img   title="[TEXT:agenda portal]" style=" vertical-align: top; cursor:pointer;border:none" height="22" style="border:0" src="WGCAL/Images/wgcal.gif"></a>
+</td>
+
+<td align="right" height="30px" style="font-size:75%">
+<a href="index.php?sole=Y&&app=CORE&action=NGMAIN" target="body"><img   title="[TEXT:return to the portal]" style="vertical-align: top; cursor:pointer;border:none" align="absmiddle" height="22" style="border:0" src="CORE/Images/ngportal.png"></a>
+<img id="logo" height="22"  style=" vertical-align: top; cursor:pointer;border:none" onclick="document.authent.submit()" title="[TEXT:Click here to login]" src="[IMG:connect.gif]">&nbsp;powered by <a target="_blank" href="http://freedom.cesamnet.fr">Freedom</a>
+</td>
+
+</tr></table>
+<form style="display:none" target="body" action="[CORE_PUBURL]/authent.php?[CORE_SESSIONID]" method=post name="authent">
+   <input type=hidden NAME="SeenBefore" VALUE="1">
+   <input type=hidden NAME="logout" VALUE="Y">
+   <input type=hidden NAME="OldAuth" VALUE="[PHP_AUTH_USER]">
+</form>
+
+[ZONE CORE:HTMLFOOT]
