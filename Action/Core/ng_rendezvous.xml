@@ -1,0 +1,14 @@
+<div width="100%">[TEXT:Rendez-vous]</div>
+
+<div><div>[TEXT:pending rendez-vous]</div>
+[IF noWRv][TEXT:no rendez-vous pending][ENDIF noWRv]
+[BLOCK RVW]<div><span>[hour]</span><span>[title]</span><span>[owner]</span></div>[ENDBLOCK RVW]
+</div>
+
+<div>
+<div>[TEXT:next rendez-vous]</div>
+[IF noRv][TEXT:no rendez-vous][ENDIF noRv]
+[BLOCK DAYS]<div><div>[date]</div>
+[BLOCK RV[iday]]<div><span>[hour]</span><span>[title]</span><span>[owner]</span></div>[ENDBLOCK RV[iday]]
+</div>[ENDBLOCK DAYS]</div>
+</div>

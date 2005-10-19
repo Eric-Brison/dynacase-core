@@ -16,7 +16,8 @@
 </div></td>
 
 <td width="30%" style="padding:5">
-<iframe style="height:100%; border:1px inset [CORE_BGCOLORALTERN]" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_PORTAL"></iframe>
+[ZONE CORE:NG_RENDEZVOUS]
+<!-- iframe style="height:100%; border:1px inset [CORE_BGCOLORALTERN]" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_PORTAL"></iframe -->
 </td>
 
 </tr></table>
