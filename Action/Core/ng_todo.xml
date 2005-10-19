@@ -1,0 +1,7 @@
+<div class="rubrique" width="100%">
+<div class="rubrique_title">[TEXT:todo box]</div>
+
+[BLOCK TODO]
+<div class="rubrique_item"><span style="background-color:[color]">&nbsp;</span>&nbsp;<span>[title]</span>&nbsp;<span class="rubrique_date">([date])</span></div>[ENDBLOCK TODO]
+
+</div>

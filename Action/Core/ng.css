@@ -1,0 +1,53 @@
+.rubrique {
+  margin  : 10 10 10 10;
+  padding : 5px;
+  border-style : solid;
+  border-color : [CORE_BGCOLORHIGH];
+  border-width : 1px;
+}  
+.rubrique_title {
+  border-style : outset;
+  border-width : 1px;
+  border-color : [CORE_BGCOLORHIGH];
+  background-color: [CORE_BGCOLORALTERN];
+  font-weight: bold;
+}
+.rubrique_subtitle {
+  padding : 5px 0px 0px 0px;
+  font-weight: bold;
+  border-style : none none solid none;
+  border-width : 1px;
+  border-color : [CORE_BGCOLORHIGH];
+}
+.rubrique_subtitle1 {
+  font-weight: bold;
+  font-style : italic;
+  border-style : none none dotted none;
+  border-width : 1px;
+  border-color : [CORE_BGCOLORHIGH];
+}
+.rubrique_date, .new_date {
+  font-style : italic;
+  font-size : 75%;
+}
+.rubrique_item {
+  padding : 0px 2px 0px 10px;
+}
+
+
+.new_box {
+  margin : 0px 2px 0px 10px;
+  padding : 3px;
+  -moz-border-radius: 10px;
+  border-style : solid;
+  border-width : 1px;
+  border-color: [CORE_BGCOLORHIGH];
+}  
+.new_title {
+  font-weight: bold;
+  font-style: bold;
+  font-style: bold;
+  font-variant: small-caps;
+}
+.new_content {
+}

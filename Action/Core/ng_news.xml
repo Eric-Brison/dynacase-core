@@ -1,0 +1,25 @@
+<div class="rubrique" width="100%">
+<div class="rubrique_title">[TEXT:new box]</div>
+
+[BLOCK NEWS]<br><div class="new_box"><table width="100%" cellspacing="0">
+
+<tr>
+<td align="left"><span class="new_title">[title]</span></td>
+<td align="right"><img width="25" src="[icon]" border="0"></td>
+</tr>
+
+<tr>
+<td colspan="2"><div class="new_content">
+[content]
+</td>
+</tr>
+
+<tr>
+<td align="left"><span class="new_author"><a href="mailto:[mail]">[author]</a></span></td>
+<td align="right"><span class="new_date">[date]</span></td>
+</tr>
+
+</table></div>[ENDBLOCK NEWS]
+
+
+</div>

@@ -1,0 +1,30 @@
+<div class="rubrique" width="100%">
+<script language="JavaScript"><!--
+
+function showHideMbox(i) {
+  var idm = document.getElementById('mbox'+i);
+  var idi = document.getElementById('img'+i);
+
+  if (idm.style.display!='') {
+    idm.style.display = '';
+    idi.src = '[IMG:nb_mbox_close.png]';
+  } else {
+    idm.style.display = 'none';
+    idi.src = '[IMG:nb_mbox_open.png]';
+  }
+}
+
+//--></script>
+
+<div class="rubrique_title">[TEXT:mail box]</div>
+
+[BLOCK MBOX]<div class="rubrique_item" title="[name] / [account]" onclick="[IF showh]showHideMbox([imbox])[ENDIF showh]">
+<img id="img[imbox]" width="16px" src="[IF showh][IMG:nb_mbox_open.png][ENDIF showh][IFNOT showh][IMG:nb_mbox_empty.png][ENDIF showh]" border="0">
+<span width="70%">[name]</span>&nbsp;<span style="text-align:right" width="30%">[new]/[inbox]</span>
+<img width="16px" src="[IF newM][IMG:nb_mbox_happy.png][ENDIF newM][IFNOT newM][IMG:nb_mbox_poor.png][ENDIF newM]" border="0">
+<div id="mbox[imbox]" style="display:none" class="rubrique">
+[BLOCK HEAD[imbox]]<div>[title] <span class="rubrique_date">([from])</span></div>[ENDBLOCK HEAD[imbox]]</div>
+
+</div>[ENDBLOCK MBOX]
+
+</div>

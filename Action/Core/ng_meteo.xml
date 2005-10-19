@@ -1,0 +1,8 @@
+<div class="rubrique" align="center" width="100%">
+<div class="rubrique_date">Météo 
+<select style="font-size:90%" onchange="window.meteo.location='http://perso0.free.fr/cgi-bin/meteo.pl?dep='+this.options[this.selectedIndex].value">
+[BLOCK DEPS]<option style="font-size:90%" value="[no]">[name][ENDBLOCK DEPS]
+</select>
+</div>
+<iframe height="auto" name="meteo" style="border:0" src="http://perso0.free.fr/cgi-bin/meteo.pl?dep=31"></iframe>
+</div>
