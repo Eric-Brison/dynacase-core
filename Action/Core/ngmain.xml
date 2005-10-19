@@ -2,22 +2,19 @@
 <table  height="100%" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="core">
 
-<td width="30%">
-<iframe style="height:50%; border:1px inset [CORE_BGCOLORALTERN]" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_TODOVIEW&dtodo=-1"></iframe>
-<iframe style="height:50%; border:1px inset [CORE_BGCOLORALTERN]" src="http://fr.weather.com/weather/tenday/FRXX0099?day=0&vert=WeatherCity"></iframe>
-
+<td width="20%" valign="top" style="padding:5">
+[ZONE CORE:NG_METEO]
+[ZONE CORE:NG_GOOGLE]
 </td>
 
-<td width="30%" height="100%" style="padding:5">
-<div style="position:relative; align:top; border:1px outset [CORE_BGCOLORALTERN]; background-color:[CORE_FGCOLOR]">Contacts</div>
-<div style="position:relative; height:90%; border:1px inset [CORE_BGCOLORALTERN]">
-<iframe style="padding:5; height:50%; border:0px" src="[CORE_STANDURL]&sole=Y&app=USERCARD&action=FADDBOOK_SPEEDSEARCH"></iframe>
-<iframe style="height:50%; border:0px" src="[CORE_STANDURL]&sole=Y&app=USERCARD&action=FADDBOOK_PREFERED"></iframe>
-</div></td>
-
-<td width="30%" style="padding:5">
+<td width="40%" valign="top" style="padding:5">
 [ZONE CORE:NG_RENDEZVOUS]
-<!-- iframe style="height:100%; border:1px inset [CORE_BGCOLORALTERN]" src="[CORE_STANDURL]&sole=Y&app=WGCAL&action=WGCAL_PORTAL"></iframe -->
+[ZONE CORE:NG_TODO]
+[ZONE CORE:NG_MAIL]
+</td>
+
+<td width="40%" valign="top" style="padding:5">
+[ZONE CORE:NG_NEWS]
 </td>
 
 </tr></table>

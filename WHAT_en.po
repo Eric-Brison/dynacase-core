@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-26 09:31+0200\n"
+"POT-Creation-Date: 2005-10-19 16:59+0200\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -212,6 +212,14 @@ msgid "the user identification is unknow"
 msgstr ""
 
 #, c-format
+msgid "API file %s not found"
+msgstr ""
+
+#, c-format
+msgid "Caught Exception : %s<br>\n"
+msgstr ""
+
+#, c-format
 msgid "Choose database in %s (%s)"
 msgstr ""
 
@@ -349,6 +357,9 @@ msgstr "Add parameter"
 #, fuzzy
 msgid "application version"
 msgstr "Delete"
+
+msgid "Freedom frotpage description"
+msgstr ""
 
 msgid "version identificator"
 msgstr ""
@@ -563,6 +574,9 @@ msgid "file not found : %s"
 msgstr ""
 
 msgid "terminal too small (must ne at least 80 columns by 24 lines)"
+msgstr ""
+
+msgid "cannot access to default database [$dbaccess]"
 msgstr ""
 
 #, fuzzy
@@ -797,14 +811,51 @@ msgstr ""
 msgid "New GATE page"
 msgstr ""
 
+msgid "Progress bar"
+msgstr ""
+
 msgid "New version has been installed."
 msgstr ""
 
 msgid "You must clear navigator cache."
 msgstr ""
 
-msgid "Progress bar"
+msgid "contacts speed search"
 msgstr ""
+
+msgid "my favorites contacts"
+msgstr ""
+
+msgid "agenda portal"
+msgstr ""
+
+msgid "return to the portal"
+msgstr ""
+
+msgid "todo box"
+msgstr ""
+
+msgid "agenda box"
+msgstr ""
+
+msgid "pending rendez-vous"
+msgstr ""
+
+msgid "no rendez-vous pending"
+msgstr ""
+
+msgid "next rendez-vous"
+msgstr ""
+
+msgid "no rendez-vous"
+msgstr ""
+
+msgid "mail box"
+msgstr ""
+
+#, fuzzy
+msgid "search box"
+msgstr "user"
 
 msgid "firstname"
 msgstr "Firstname"
@@ -868,14 +919,6 @@ msgstr "Can't modify parameter"
 
 msgid "delconfirmparam"
 msgstr "Sure to delete parameter"
-
-#, c-format
-msgid "API file %s not found"
-msgstr ""
-
-#, c-format
-msgid "Caught Exception : %s<br>\n"
-msgstr ""
 
 #, c-format
 msgid "Create other database for %s (%s)"

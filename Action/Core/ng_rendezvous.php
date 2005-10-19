@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ng_rendezvous.php,v 1.1 2005/10/19 05:39:45 marc Exp $
+ * @version $Id: ng_rendezvous.php,v 1.2 2005/10/19 17:19:58 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -11,7 +11,6 @@
 include_once("WGCAL/Api.WGCal.php");
 
 function ng_rendezvous(&$action) {
-
 
 
   $rvw = WgcalGetWaitingRendezVous();

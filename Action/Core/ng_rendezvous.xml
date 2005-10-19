@@ -1,14 +1,17 @@
-<div width="100%">[TEXT:Rendez-vous]</div>
+<div class="rubrique" width="100%">
+<div class="rubrique_title">[TEXT:agenda box]</div>
 
-<div><div>[TEXT:pending rendez-vous]</div>
+<div><div class="rubrique_subtitle">[TEXT:pending rendez-vous]</div>
 [IF noWRv][TEXT:no rendez-vous pending][ENDIF noWRv]
-[BLOCK RVW]<div><span>[hour]</span><span>[title]</span><span>[owner]</span></div>[ENDBLOCK RVW]
+[BLOCK RVW]<div class="rubrique_item"><span class="rubrique_date">[hour]</span>&nbsp;<span>[title]</span>&nbsp;<span class="rubrique_date">[owner]</span></div>[ENDBLOCK RVW]
 </div>
 
 <div>
-<div>[TEXT:next rendez-vous]</div>
+<div  class="rubrique_subtitle">[TEXT:next rendez-vous]</div>
 [IF noRv][TEXT:no rendez-vous][ENDIF noRv]
-[BLOCK DAYS]<div><div>[date]</div>
-[BLOCK RV[iday]]<div><span>[hour]</span><span>[title]</span><span>[owner]</span></div>[ENDBLOCK RV[iday]]
+[BLOCK DAYS]<div class="rubrique_item"><div class="rubrique_subtitle1">[date]</div>
+[BLOCK RV[iday]]<div class="rubrique_item"><span class="rubrique_date">[hour]</span>&nbsp;<span>[title]</span>&nbsp;<span class="rubrique_date">[owner]</span></div>[ENDBLOCK RV[iday]]
 </div>[ENDBLOCK DAYS]</div>
+</div>
+
 </div>
