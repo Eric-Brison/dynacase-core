@@ -1,0 +1,71 @@
+// famille texte;;;id;class;name;;;;;;;
+BEGIN;0;Nouvelles;;;NGNEWS;;;;;;;
+;;;;;;;;;;;;
+TYPE;C;;;;;;;;;;;
+//METHOD;Method.News.php;;;;;;;;;;;
+ICON;ng_news.png;;;;;;;;;;;
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc
+;;;;;;;;;;;;
+ATTR;NGN_NEWS;;Nouvelles;N;N;frame;10;;;;;
+ATTR;NGN_TITLE;NE_NEWS;Titre;Y;N;text;20;O;Y;;;
+ATTR;NGN_STATE;NE_NEWS;Mise en évidence;N;N;enum;30;W;;;;0|,1|à lire,2|important
+ATTR;NGN_AUTHOR;NE_NEWS;Auteur;N;Y;text;40;W;Y;%S%&app=FDL&action=FDL_CARD&id=%NGN_AUTHORID%;fdl.php;lfamily(D,IUSER,NGN_AUTHOR):NGN_AUTHORID,NGN_AUTHOR
+ATTR;NGN_AUTHORID;NE_NEWS;Id  Auteur;N;N;docid;50;H;Y;;;::getTitle(NGN_AUTHORID):NGN_AUTHOR
+ATTR;NGN_AUTHORMAIL;NE_NEWS;Mail auteur;N;Y;text;60;R;;mailto:%NGN_AUTHORMAIL%;;::getDocValue(NGN_AUTHORID,us_mail):NGN_AUTHORMAIL
+ATTR;NGN_PEREMPTION;NE_NEWS;Date de péremption;N;N;timestamp;70;W;Y;;;
+ATTR;NGN_TEXT;NE_NEWS;Texte;N;N;longtext;80;W;;;;
+DEFAULT;NGN_AUTHORID;::userDocid();;;;;;;;;;
+DEFAULT;NGN_AUTHOR;::getTitle(NGN_AUTHORID);;;;;;;;;;
+END;-;;;;;;;;;;;
+// famille texte;;;id;class;name;;;;;;;
+BEGIN;0;Portail Utilisateur;;;NPORTAIL;;;;;;;
+;;;;;;;;;;;;
+TYPE;C;;;;;;;;;;;
+METHOD;Method.nPortal.php;;;;;;;;;;;
+ICON;ng_portal.png;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+ATTR;NGP_USER;;Utilisateur;N;N;frame;10;;;;;
+ATTR;NGP_OWNER;NGP_USER;Propriétaire;N;Y;text;20;R;Y;%S%&app=FDL&action=FDL_CARD&id=%NGP_OWNERID%;fdl.php;lfamily(D,IUSER,NGP_OWNER):NGP_OWNERID,NGP_OWNER
+ATTR;NGP_OWNERID;NGP_USER;Id Propriétaire;N;N;docid;30;H;Y;;;::getTitle(NGP_OWNERID):NGP_OWNER
+;;;;;;;;;;;;
+ATTR;NGP_MAIL;;Messageries;N;N;frame;100;;;;;
+ATTR;NGP_MAILACCOUNTS;;Comptes de messagerie;N;N;array;110;W;;;;
+ATTR;NGP_MA_NAME;NGP_MAILACCOUNTS;Nom;N;N;text;120;W;Y;;;
+ATTR;NGP_MA_CHECKED;NGP_MAILACCOUNTS;Contrôlé;N;N;enum;130;W;;;;0|--,1|Controlée
+ATTR;NGP_MA_MLIST;NGP_MAILACCOUNTS;Liste des messages;N;N;enum;140;W;;;;0|--,1|Affichés
+ATTR;NGP_MA_LOGIN;NGP_MAILACCOUNTS;Login;N;N;text;150;W;Y;;;
+ATTR;NGP_MA_PASSWORD;NGP_MAILACCOUNTS;Mot de passe;N;N;password;160;W;Y;;;
+ATTR;NGP_MA_INBOXNAME;NGP_MAILACCOUNTS;Espace;N;N;text;170;H;;;;
+ATTR;NGP_MA_SERVER;NGP_MAILACCOUNTS;Serveur;N;N;text;180;W;Y;;;
+ATTR;NGP_MA_MODE;NGP_MAILACCOUNTS;Mode;N;N;enum;190;W;Y;;;110/pop3|Pop3,995/pop3/ssl/novalidate-cert|Pop3 sécurisé (tls),143/imap/notls|Imap4,993/imap/ssl/novalidate-cert|Imap4 sécurisé (tls)
+ATTR;NGP_MA_FLAGS;NGP_MAILACCOUNTS;Flag;N;N;text;200;W;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+ATTR;NGP_RSS;;Fil d'information;N;N;frame;200;;;;;
+ATTR;NGP_RSS_LIST;NGP_RSS;Liste des fils d'information;N;N;array;210;W;;;;
+ATTR;NGP_RSS_URL;NGP_RSS_LIST;Url;N;N;text;220;W;Y;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+ATTR;NGP_OTHER;;Autres préférences;N;N;frame;500;;;;;
+ATTR;NGP_OTH_METEODEP;NGP_OTHER;Météo, département;N;N;int;510;W;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+DEFAULT;NGP_OWNERID;::userDocid();;;;;;;;;;
+DEFAULT;NGP_OWNER;::getTitle(NGP_OWNERID);;;;;;;;;;
+;;;;;;;;;;;;
+DEFAULT;NGP_MA_CHECKED;1;;;;;;;;;;
+DEFAULT;NGP_MA_MLIST;1;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+END;;;;;;;;;;;;

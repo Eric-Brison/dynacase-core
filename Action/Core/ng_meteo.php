@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ng_meteo.php,v 1.1 2005/10/19 17:24:11 marc Exp $
+ * @version $Id: ng_meteo.php,v 1.2 2005/10/25 08:39:35 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -13,8 +13,7 @@ function ng_meteo(&$action) {
 
 
 
-
-
+  $def = 31;
   $deps = array("1" => "Ain",
 		"2" => "Aisne",
 		"3" => "Allier",
@@ -110,14 +109,15 @@ function ng_meteo(&$action) {
 		"92" => "Hauts-de-Seine",
 		"93" => "Seine-Saint-Denis",
 		"94" => "Val-de-Marne",
-		"95" => "Val-d'Oise",
-		"971" => "Guadeloupe",
-		"972" => "Martinique",
-		"973" => "Guyane",
-		"974" => "Réunion" );
+		"95" => "Val-d'Oise" );
+// 		"971" => "Guadeloupe",
+// 		"972" => "Martinique",
+// 		"973" => "Guyane",
+// 		"974" => "Réunion" );
   $tdeps = array();
   foreach ($deps as $k => $v ) {
-    $tdeps[] = array( "no" => $k, "name" => $v );
+    $tdeps[] = array( "no" => $k, "name" => "$k ".substr($v,0,15).(strlen($v)>15?"...":""), "check" => ($k==$def?"selected":"") );
+    if ($k==$def) $action->lay->set("dep", $v);
   }
   $action->lay->setBlockData("DEPS", $tdeps);
 

@@ -1,29 +1,30 @@
 <div class="rubrique" width="100%">
 <script language="JavaScript"><!--
 
-function showHideMbox(i) {
-  var idm = document.getElementById('mbox'+i);
-  var idi = document.getElementById('img'+i);
-
-  if (idm.style.display!='') {
-    idm.style.display = '';
-    idi.src = '[IMG:nb_mbox_close.png]';
+function showHideElt(i) {
+  var content = document.getElementById('c'+i);
+  var image = document.getElementById('i'+i);
+  if (content.style.display!='') {
+    content.style.display = '';
+    image.src = '[IMG:ng_elt_close.png]';
   } else {
-    idm.style.display = 'none';
-    idi.src = '[IMG:nb_mbox_open.png]';
+    content.style.display = 'none';
+    image.src = '[IMG:ng_elt_open.png]';
   }
 }
 
 //--></script>
+<div class="rubrique_title">
+<img width="25px" valign="absmiddle" src="[IMG:ng_mails.png]" border="0">&nbsp;[TEXT:mail box]</div>
 
-<div class="rubrique_title">[TEXT:mail box]</div>
-
-[BLOCK MBOX]<div class="rubrique_item" title="[name] / [account]" onclick="[IF showh]showHideMbox([imbox])[ENDIF showh]">
-<img id="img[imbox]" width="16px" src="[IF showh][IMG:nb_mbox_open.png][ENDIF showh][IFNOT showh][IMG:nb_mbox_empty.png][ENDIF showh]" border="0">
-<span width="70%">[name]</span>&nbsp;<span style="text-align:right" width="30%">[new]/[inbox]</span>
+[BLOCK MBOX]
+<div class="ngbutton" title="[name] / [account] / [sec] sec." onclick="[IF showh]showHideElt('mail[imbox]')[ENDIF showh]">
+<img id="imail[imbox]" width="16px" src="[IF showh][IMG:nb_mbox_open.png][ENDIF showh]
+[IFNOT showh][IMG:nb_mbox_empty.png][ENDIF showh]" border="0">
+<span style="[IF newM]font-weight:bold;[ENDIF newM]" width="70%">[name]</span>&nbsp;<span style="text-align:right" width="30%">[new]/[inbox]</span>
 <img width="16px" src="[IF newM][IMG:nb_mbox_happy.png][ENDIF newM][IFNOT newM][IMG:nb_mbox_poor.png][ENDIF newM]" border="0">
-<div id="mbox[imbox]" style="display:none" class="rubrique">
-[BLOCK HEAD[imbox]]<div>[title] <span class="rubrique_date">([from])</span></div>[ENDBLOCK HEAD[imbox]]</div>
+<div id="cmail[imbox]" style="display:none" class="mail_title">
+[BLOCK HEAD[imbox]]<div>&bull;&nbsp;[title] <span class="rubrique_date">([from])</span></div>[ENDBLOCK HEAD[imbox]]</div>
 
 </div>[ENDBLOCK MBOX]
 

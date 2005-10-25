@@ -1,8 +1,11 @@
-<div class="rubrique" align="center" width="100%">
-<div class="rubrique_date">Météo 
-<select style="font-size:90%" onchange="window.meteo.location='http://perso0.free.fr/cgi-bin/meteo.pl?dep='+this.options[this.selectedIndex].value">
-[BLOCK DEPS]<option style="font-size:90%" value="[no]">[name][ENDBLOCK DEPS]
+<div class="rubrique" width="100%">
+<div class="rubrique_item"><div id="dep" class="rubrique_subtitle1">[dep]</div>
+<iframe  width="100%" height="80px" name="meteo" style="border:0" src="http://perso0.free.fr/cgi-bin/meteo.pl?dep=31"></iframe>
+</div>
+<div onclick="showHideElt('meteo0')" class="rubrique_date ngbutton"><img id="imeteo0" width="16px" src="[IMG:ng_elt_open.png]" border="0">[TEXT:change department]</div>
+<div id="cmeteo0" style="display:none" class="rubrique_date">
+<select style="font-size:95%" onchange="document.getElementById('dep').innerHTML = this.options[this.selectedIndex].text; window.meteo.location='http://perso0.free.fr/cgi-bin/meteo.pl?dep='+this.options[this.selectedIndex].value; showHideElt('meteo0')"">
+[BLOCK DEPS]<option style="font-size:100%" value="[no]" [checked]>[name][ENDBLOCK DEPS]
 </select>
 </div>
-<iframe height="auto" name="meteo" style="border:0" src="http://perso0.free.fr/cgi-bin/meteo.pl?dep=31"></iframe>
 </div>

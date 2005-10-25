@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ng_todo.php,v 1.1 2005/10/19 17:24:11 marc Exp $
+ * @version $Id: ng_todo.php,v 1.2 2005/10/25 08:39:35 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -15,26 +15,22 @@ function ng_todo(&$action) {
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $todoviewday = $action->getParam("WGCAL_U_TODODAYS", -1);
   $todowarn = $action->getParam("WGCAL_U_TODOWARN", 2);
-
-  $today = time();
   
   $filter = array();
   $filter[] = "todo_idowner=".$action->user->fid;
-  $todos = getChildDoc($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "TABLE", "TODO", false, "todo_date asc", true);
+  $todos = getChildDoc($dbaccess, 0, 0, "ALL", $filter, $action->user->id, "TABLE", "TODO", false, "todo_date desc", true);
   $td = array(); $itd = 0;
   foreach ($todos as $k => $v) {
-    $d = $v["todo_date"];
-    $ctime = mktime(0,0,0,substr($d,3,2),substr($d,0,2),substr($d,6,4));
-    if ($ctime<$today) {
+    $cdate = w_dbdate2ts($v["todo_date"]);
+    if ($cdate<$today) {
       $td[$itd]["color"] = "red";
-    } else if ($ctime<($today+($todowarn*24*3600))) {
+    } else if ($cdate<($today+($todowarn*24*3600))) {
       $td[$itd]["color"] = "orange";
     } else {
       $td[$itd]["color"] = "#00ff00";
     }
-    $td[$itd]["title"] = $v["todo_title"];
-    $td[$itd]["date"] = strftime("%d %B %y", $ctime);
-    $itd++;
+    $td[$itd]["title"] = $v["title"];
+    $td[$itd]["date"] = $v["todo_date"];
   }
   $action->lay->setBlockData("TODO", $td);
 }

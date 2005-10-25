@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.11 2005/10/18 15:01:13 marc Exp $
+// $Id: CORE.app,v 1.12 2005/10/25 08:39:35 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -139,6 +139,12 @@ $action_desc = array (
   array(
    "name"               =>"NGMAIN",
    "root"               =>"Y"
+  ),
+  array(
+   "name"               =>"NG_MYPORTAL",
+  ),
+  array(
+   "name"               =>"NG_RSS",
   ),
   array(
    "name"               =>"NGFOOTER",

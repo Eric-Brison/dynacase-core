@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ng_mail.php,v 1.1 2005/10/19 17:24:11 marc Exp $
+ * @version $Id: ng_mail.php,v 1.2 2005/10/25 08:39:35 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -62,6 +62,7 @@ $mailaccounts = array(
    $account = $v["account"];
    if ( $v["check"])  {
      
+     $otime = time();
      $mbox = imap_open($mboxspec, $v["account"], $v["pass"]);
      
      if (!$mbox) {
@@ -88,11 +89,13 @@ $mailaccounts = array(
        }
        imap_close($mbox);
      }
+     $ftime = time() - $otime;
      $mailbox[] = array( "imbox" => $k,
 			 "showh" => ($cnew>0 ? true : false),
 			 "newM" => ($cnew>0 ? true : false),
-			 "name" => $name, 
+			 "name" => substr($name,0,10), 
 			 "account" => $account, 
+			 "sec" => $ftime, 
 			 "new" => $cnew, "inbox" => $cinbox );
    }
  }

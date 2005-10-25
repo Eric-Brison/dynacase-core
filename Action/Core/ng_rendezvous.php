@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ng_rendezvous.php,v 1.2 2005/10/19 17:19:58 marc Exp $
+ * @version $Id: ng_rendezvous.php,v 1.3 2005/10/25 08:39:35 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,6 +12,10 @@ include_once("WGCAL/Api.WGCal.php");
 
 function ng_rendezvous(&$action) {
 
+
+  $dbaccess = $action->GetParam("FREEDOM_DB");
+  $fam = createDoc($dbaccess, "CALEVENT", false);
+  $action->lay->set("icon", $fam->getIcon());
 
   $rvw = WgcalGetWaitingRendezVous();
   if (count($rvw)==0) {

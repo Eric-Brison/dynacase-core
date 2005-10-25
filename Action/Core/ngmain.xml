@@ -2,19 +2,25 @@
 <table  height="100%" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="core">
 
-<td width="20%" valign="top" style="padding:5">
+<td colspan="2 valign="top">Mot of the day</td>
+<td valign="top"></tr>
+</tr>
+
+<tr class="core">
+<td width="100px" valign="top">
 [ZONE CORE:NG_METEO]
 [ZONE CORE:NG_GOOGLE]
-</td>
-
-<td width="40%" valign="top" style="padding:5">
-[ZONE CORE:NG_RENDEZVOUS]
-[ZONE CORE:NG_TODO]
 [ZONE CORE:NG_MAIL]
 </td>
 
-<td width="40%" valign="top" style="padding:5">
+<td width="30%" valign="top">
+[ZONE CORE:NG_RENDEZVOUS]
+[ZONE CORE:NG_TODO]
+</td>
+
+<td width="50%" valign="top">
 [ZONE CORE:NG_NEWS]
+[ZONE CORE:NG_RSS]
 </td>
 
 </tr></table>

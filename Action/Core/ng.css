@@ -1,3 +1,32 @@
+.nglink {  
+  background-color: transparent;
+  background-image: url([IMG:ng_ico_link.png]);
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 13px;
+}
+.nglink:hover {  
+  border-style : none none solid none;
+  border-color : [CORE_ACOLOR];
+  border-width : 1px;
+}
+.ngmail {  
+  background-color: transparent;
+  background-image: url([IMG:ng_ico_mail.png]);
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 15px;
+}
+.ngmail:hover {  
+  border-style : none none solid none;
+  border-color : [CORE_ACOLOR];
+  border-width : 1px;
+}
+
+.ngbutton {
+  cursor : pointer;
+}
+
 .rubrique {
   margin  : 10 10 10 10;
   padding : 5px;
@@ -45,9 +74,23 @@
 }  
 .new_title {
   font-weight: bold;
-  font-style: bold;
-  font-style: bold;
   font-variant: small-caps;
 }
 .new_content {
+  font-size : 85%;
+  margin : 0px 0px 0px 15px;
+  padding : 3px;
+  -moz-border-radius: 10px;
+  border-style : solid;
+  border-width : 1px;
+  border-color: [CORE_BGCOLORHIGH];
 }
+.rss {
+  font-size : 85%;
+}
+
+.mail_title {
+  padding : 0px 2px 0px 10px;
+  font-size : 85%;
+}
+

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ngheader.php,v 1.1 2005/10/18 15:01:13 marc Exp $
+ * @version $Id: ngheader.php,v 1.2 2005/10/25 08:39:35 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: ngheader.php,v 1.1 2005/10/18 15:01:13 marc Exp $
+// $Id: ngheader.php,v 1.2 2005/10/25 08:39:35 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/Attic/ngheader.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -44,7 +44,7 @@ function ngheader(&$action) {
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
  
   
-  $list = array( "WGCAL", "USERCARD" );
+  $list = array( "WGCAL", "USERCARD", "FREEDOM" ); 
 
   $i=0;
   foreach($list as $k => $appname) {

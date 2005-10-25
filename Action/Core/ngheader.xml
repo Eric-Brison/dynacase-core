@@ -41,8 +41,8 @@ function selectIt(th) {
 <td  width="42"><img  border="0" align="absmiddle"  style="max-width:40px;position:absolute;top:0px;left:2px" id="imgapp" src="[CORE_LOGOCLIENT]"></td>
 
 <td  align="left" ">
-<div class="headtitle" style="font-size:80%">[CORE_CLIENT]&nbsp;</div>
-<div class="headtitle" style="font-size:80%">[USER]&nbsp;</div>
+<div class="headtitle" >[CORE_CLIENT]&nbsp;</div>
+<div class="headtitle" >[USER]&nbsp;</div>
 </td>
 
 

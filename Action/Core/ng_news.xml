@@ -1,25 +1,18 @@
 <div class="rubrique" width="100%">
-<div class="rubrique_title">[TEXT:new box]</div>
+<div class="rubrique_title"><img width="25px" valign="absmiddle" src="[icon]" border="0">&nbsp;[TEXT:new box]</div>
 
-[BLOCK NEWS]<br><div class="new_box"><table width="100%" cellspacing="0">
+[BLOCK NEWS]<div style="padding:  5px 0px 0px 0px">
 
-<tr>
-<td align="left"><span class="new_title">[title]</span></td>
-<td align="right"><img width="25" src="[icon]" border="0"></td>
-</tr>
-
-<tr>
-<td colspan="2"><div class="new_content">
-[content]
-</td>
-</tr>
-
-<tr>
-<td align="left"><span class="new_author"><a href="mailto:[mail]">[author]</a></span></td>
-<td align="right"><span class="new_date">[date]</span></td>
-</tr>
-
-</table></div>[ENDBLOCK NEWS]
+<span class="new_title ngbutton" onclick="showHideElt('news[id]')">
+<img id="inews[id]" width="16px" src="[IMG:ng_elt_open.png]" border="0">
+[title]</span>
 
 
+<span style="width:30%;"  class="new_date">(par
+<a class="ngmail" href="mailto:[mail]">[author]</a> - [date])</span>
+
+<div id="cnews[id]" style="display:none" class="new_content">[content]</div>
+
+</div>[ENDBLOCK NEWS]
 </div>
+
