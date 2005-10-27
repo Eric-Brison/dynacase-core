@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.43 2005/10/17 14:04:19 eric Exp $
+ * $Id: core.css,v 1.44 2005/10/27 14:22:20 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -132,8 +132,9 @@ A {
   color: [CORE_ACOLOR];
   cursor:pointer  
 }
-IMG.click:hover {
+IMG.click {
   	cursor: pointer;
+	border:none;
 }
 IMG.click:hover {
         background-color: [CORE_BGCOLORHIGH]; 
@@ -319,6 +320,12 @@ INPUT, SELECT, OPTION, TEXTAREA, FILE {
 OPTION {
    background: [CORE_INPUTBGCOLOR];
 }
+BUTTON { 
+	-moz-border-radius:25px;
+	padding:0pt;
+	background-color:[CORE_APPBUTTONBGCOLOR];
+   }
+
 input[type="button"] { 
 	-moz-border-radius:25px;
 	padding:0pt;
@@ -338,6 +345,7 @@ input[type="text"] {
   border:inset 1px [CORE_TEXTFGCOLOR];
  }
 input[disabled], textarea[disabled] {
+   color: #DDDDDD;
    color: #666666;
    background-color:[CORE_BGCOLORALTERN];
 }
