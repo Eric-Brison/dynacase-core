@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.28 2005/07/22 07:59:13 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.29 2005/10/27 14:25:50 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.28 2005/07/22 07:59:13 eric Exp $
+//  $Id: Class.Layout.php,v 1.29 2005/10/27 14:25:50 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -248,7 +248,7 @@ var $strip='Y';
     }
 
     
-    if ($actionname != $this->action->name) {
+    if (($actionname != $this->action->name)||($OLD_ZONE_ARGS!=$ZONE_ARGS)) {
       $act = new Action();
 
       if ($act->Exists($actionname, $appl->id)) {
