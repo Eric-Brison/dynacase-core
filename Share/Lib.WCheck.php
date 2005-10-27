@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.1 2005/10/18 14:12:42 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.2 2005/10/27 14:24:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -101,8 +101,12 @@ function getCheckApp($pubdir,&$tapp) {
   $IP=chop(`hostname -i`);
   $dbid=@pg_connect($dbaccess);
 
-  if ($err!="") {
+  if (!$dbid) {
     $err= _("cannot access to default database [$dbaccess]");
+    exec("psql -c '\q' anakeen anakeen",$out);
+    print_r($out);
+    $err.=implode(",",$out);
+    
   
   } else {
   
@@ -137,6 +141,7 @@ function getCheckApp($pubdir,&$tapp) {
     }
 
   }
+  return $err;
 }
 
 
