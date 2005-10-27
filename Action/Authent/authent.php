@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.14 2005/10/05 14:38:07 eric Exp $
+ * @version $Id: authent.php,v 1.15 2005/10/27 14:25:25 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -29,7 +29,7 @@ function authenticate() {
   $core->Set("CORE",$CoreNull);
   $action = new Action();
   $action->Set("",$core);
-  header('WWW-Authenticate: Basic realm="'.$action->getParam("CORE_REALM","WHAT Connection").'"');
+  header('WWW-Authenticate: Basic realm="'.$action->getParam("CORE_REALM","FREEDOM Connection").'"');
   header('HTTP/1.0 401 Unauthorized');
   // Header("Location:guest.php");
   echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
@@ -44,7 +44,7 @@ if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_
   authenticate();
 }
 else {
-  Header("Location: http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/what/index.php?sole=R");
+  Header("Location: /what/index.php?sole=R");
   exit;
 }
 ?>
