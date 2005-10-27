@@ -3,7 +3,7 @@
  * Access Control for application
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Acl.php,v 1.7 2005/10/05 16:28:42 eric Exp $
+ * @version $Id: Class.Acl.php,v 1.8 2005/10/27 14:26:05 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -77,7 +77,7 @@ function Exists($name,$id_app)
 {
   $query=new QueryDb($this->dbaccess,"Acl");
   $query->basic_elem->sup_where = array ("name='$name'","id_application=$id_app");
-  $query->Query();
+  $query->Query(0,0,"TABLE");
   return ($query->nb > 0);
 }
 

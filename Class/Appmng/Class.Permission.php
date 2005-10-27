@@ -3,7 +3,7 @@
  * Permission to execute actions
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Permission.php,v 1.7 2005/08/18 13:51:40 eric Exp $
+ * @version $Id: Class.Permission.php,v 1.8 2005/10/27 14:26:05 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -134,7 +134,7 @@ create index permission_idx3 on permission(id_acl);
       $naclid= - $aclid;
       $query->AddQuery("(id_acl={$aclid}) OR (id_acl= {$naclid}) ");
     }
-    $list = $query->Query();
+    $list = $query->Query(0,0,"TABLE");
 
     return($query->nb>0);
   }
