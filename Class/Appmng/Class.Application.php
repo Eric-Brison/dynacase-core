@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.44 2005/10/05 16:28:42 eric Exp $
+ * @version $Id: Class.Application.php,v 1.45 2005/10/28 15:10:54 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -578,13 +578,12 @@ create sequence SEQ_ID_APPLICATION start 10;
       $app_desc=array();
       $action_desc=array();
       include("{$name}/{$name}.app");
-
+      $action_desc_ini=$action_desc;
       if (sizeof($app_desc)>0) {
 	if (! $update) {
 	  $this->log->debug("InitApp :  new application ");
 	}
-	reset($app_desc);
-	while (list($k,$v) = each ($app_desc)) {
+	foreach ($app_desc as $k=>$v) {
 	  $this->$k = $v;
 	}
 	$this->available = "Y";
@@ -600,13 +599,11 @@ create sequence SEQ_ID_APPLICATION start 10;
 	return false;
       }
 
+      $action_desc=$action_desc_ini;
       // init acl
       $acl = new Acl($this->dbaccess);
       $acl->Init($this,$app_acl,$update);
 
-      // init actions
-      $action = new Action($this->dbaccess);
-      $action->Init($this,$action_desc,$update);
 
 
       // init father if has
@@ -627,6 +624,10 @@ create sequence SEQ_ID_APPLICATION start 10;
        
       }
 
+      // init actions
+      $action = new Action($this->dbaccess);
+     
+      $action->Init($this,array_merge($action_desc,$action_desc_ini),$update);
 
       //----------------------------------
       // init application constant

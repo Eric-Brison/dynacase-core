@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.29 2005/10/05 16:28:42 eric Exp $
+ * @version $Id: Class.Action.php,v 1.30 2005/10/28 15:10:54 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -379,8 +379,8 @@ function Init($app,$action_desc,$update=FALSE)
     return("");
   }
   $father[0]="";
-  reset($action_desc);
-  while (list($k,$node)= each ($action_desc)) {
+
+  foreach ($action_desc as $k=>$node) {
     // set some default values
     $action=new Action($this->dbaccess);
     $action->root="N";
