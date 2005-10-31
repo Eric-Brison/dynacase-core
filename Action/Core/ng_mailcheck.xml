@@ -1,0 +1,13 @@
+[IF noaccount]<div class="mboxerror">[TEXT:no mail account]</div>[ENDIF noaccount]
+[IFNOT noaccount]
+<div id="z[imbox]">
+<img id="g[imbox]" src="[IMG:nb_mbox_open.png]" title="[TEXT:open/close mailbox]" class="ngbutton" onclick="ShowHideMbox([imbox])" ondblclick="editAccount([imbox], 'addmail');">
+<img class="ngbutton" src="[IMG:nb_mbox_view.png]" class="bgbutton" title="[TEXT:retrieve mailbox informations]" onclick="SendMboxRequest([imbox])">&nbsp;<span [IF newmail]style="font-weight:bold"[ENDIF newmail]>[name]</span>&nbsp<span [IF newmail]style="font-weight:bold"[ENDIF newmail]>[newmails]</span> / [oldmails]
+</div>
+[IF nomessage]<div class="mboxerror">[TEXT:no message on server]</div>[ENDIF nomessage]
+[IFNOT nomessage]
+<div style="display:none" id="r[imbox]" class="mboxinfo">
+[BLOCK MAILS]
+<div class="mailcontent"><span style="font-weight:bold">[from]</span> [subject]</div>[ENDBLOCK MAILS]
+</div>
+[ENDIF nomessage][ENDIF noaccount]

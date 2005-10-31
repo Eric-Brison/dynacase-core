@@ -35,21 +35,21 @@ function selectIt(th) {
   subwindow(10,10,'fhidden','[CORE_STANDURL]&app=CORE&action=WVERSION');
 }
 </script>
-<table  style="padding: 2px; border-style:outset; border-width:2px; background:[CORE_BGCOLORHIGH]; border-color:[CORE_BGCOLORHIGH]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
+<table  style="padding: 2px; border-style:outset; border-width:2px; background:[CORE_FGCOLOR]; border-color:[CORE_BGCOLORHIGH]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="core" >
 
-<td  width="42"><img  border="0" align="absmiddle"  style="max-width:40px;position:absolute;top:0px;left:2px" id="imgapp" src="[CORE_LOGOCLIENT]"></td>
+<td style="background:[CORE_FGCOLOR]"  width="42"><img  border="0" align="absmiddle"  style="max-width:40px;position:absolute;top:0px;left:2px" id="imgapp" src="[CORE_LOGOCLIENT]"></td>
 
-<td  align="left">
+<td style="background:[CORE_FGCOLOR]"  align="left">
 <div class="headtitle" >[CORE_CLIENT]&nbsp;</div>
 <div class="headtitle" >[USER]&nbsp;</div>
 </td>
 
 
-<td align="right">
-<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" witdh="100%"><tr class="core">
- [BLOCK FUNCTION]<td width="40"  align="center" onMouseOver="unFadeIt(i[name]);"  onMouseOut="fadeIt(i[name]);"><a target="fbody" href="[CORE_STANDURL]&app=[name]"><img  onclick="selectIt(this)" class="Fade"  id="i[name]" src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a></td>[ENDBLOCK FUNCTION]
-<td width="40">&nbsp;</td></tr></table>
+<td style="background:[CORE_FGCOLOR]" align="right">
+<table bgcolor="[CORE_FGCOLOR]" cellspacing="0" cellpadding="0" border="0" witdh="100%"><tr class="core">
+ [BLOCK FUNCTION]<td style="background:[CORE_FGCOLOR]"  width="40"  align="center" onMouseOver="unFadeIt(i[name]);"  onMouseOut="fadeIt(i[name]);"><a target="fbody" href="[CORE_STANDURL]&app=[name]"><img  onclick="selectIt(this)" class="Fade"  id="i[name]" src="[pubdir]/[iconsrc]" border="0" width="30" height="30" alt="[description]" title="[description]" ></a></td>[ENDBLOCK FUNCTION]
+<td style="background:[CORE_FGCOLOR]"  width="40">&nbsp;</td></tr></table>
 </td>
 </tr>
 </table>

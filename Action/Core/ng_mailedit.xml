@@ -1,0 +1,45 @@
+<form name="editacc" method="POST" target="_self" action="[CORE_STANDURL]app=CORE&action=NG_MAILSAVE">
+<input type="hidden" name="accid" value="[accid]">
+<input type="hidden" name="accchecked" value="[accchecked]">
+<input type="hidden" name="accmlisted" value="[accmlisted]">
+<input type="hidden" name="accflag" value="[accflag]">
+<table cellspacing="0">
+<tr>
+[IF edit]<input type="hidden" name="accname" value="[accname]">
+<td colspan="3" align="center"[TEXT:account name] [accname]</td>[ENDIF edit]
+[IFNOT edit]
+<td align="right">[TEXT:account name]</td>
+<td>&nbsp;:&nbsp;</td>
+<td><input type="text" name="accname" value="[accname]"></td>[ENDIF edit]
+</tr>
+<tr>
+<td align="right">[TEXT:account login]</td>
+<td>&nbsp;:&nbsp;</td>
+<td><input type="text" name="acclogin" value="[acclogin]"></td>
+</tr>
+<tr>
+<td align="right">[TEXT:account password]</td>
+<td>&nbsp;:&nbsp;</td>
+<td><input type="password" name="accpassword" value="[accpassword]"></td>
+</tr>
+<tr>
+<td align="right">[TEXT:account server]</td>
+<td>&nbsp;:&nbsp;</td>
+<td><input type="text" name="accserver" value="[accserver]"></td>
+</tr>
+<tr>
+<td align="right">[TEXT:account mode]</td>
+<td>&nbsp;:&nbsp;</td>
+<td><select name="accmode">
+[BLOCK MODE]<option value="[accmodek]" [accmodes]>[accmodev][ENDBLOCK MODE]</select>
+</td>
+</tr>
+<tr>
+<td colspan="3" align="right">
+<input class="ngbutton ngbuttonb" type="button" value="[TEXT:save]" onclick="this.form.submit(); document.getElementById('[atgt]').style.display = 'none'">
+&nbsp;
+<input class="ngbutton ngbuttonb" type="button" value="[TEXT:cancel]" onclick="document.getElementById('[atgt]').style.display = 'none'">
+</td>
+</tr>
+</table>
+</form>

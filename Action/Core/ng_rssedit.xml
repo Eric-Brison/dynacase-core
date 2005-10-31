@@ -1,0 +1,31 @@
+<form name="rssedit" method="POST" target="_self" action="[CORE_STANDURL]app=CORE&action=NG_RSSCHANGE">
+<table cellspacing="0">
+<tr><td colspan="2" class="rubrique_subtitle">[TEXT:rss syndication management]</td></tr>
+
+[BLOCK RSS]<tr>
+<td colspan="2"><input type="checkbox" name="rss_d[[rssid]]" title="[TEXT:select to remove rss]">&nbsp;[rsstitle]</td>
+</tr>[ENDBLOCK RSS]
+
+<tr><td colspan="2"></td></tr>
+<tr><td class="rubrique_subtitle" colspan="2">[TEXT:add new rss here]</td></tr>
+
+<tr>
+<td align="right">[TEXT:rss title]</td><td><input type="text" size="30" name="rss_title" id="rss_title" value="[TEXT:add new rss description here]" title="[TEXT:add new rss description here]" onclick="this.value='';"></td>
+</tr>
+<tr>
+<td align="right">[TEXT:rss url]</td><td><input type="text" size="30" name="rss_url" id="rss_url" value="[TEXT:add new rss url here]" title="[TEXT:add new rss url here]" onclick="this.value=''; this.vchange = true;"></td>
+</tr>
+
+
+<tr><td colspan="2"></td></tr>
+
+<tr>
+<td colspan="2" align="right">
+<input class="ngbutton ngbuttonb" type="button" value="[TEXT:save]" onclick="if (!document.getElementById('rss_url').vchange) document.getElementById('rss_url').value=''; this.form.submit(); document.getElementById('[atgt]').style.display = 'none'">
+&nbsp;
+<input class="ngbutton ngbuttonb" type="button" value="[TEXT:close]" onclick="document.getElementById('[atgt]').style.display = 'none'">
+</td>
+</tr>
+
+</table>
+</form>
