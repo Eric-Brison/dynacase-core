@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.44 2005/10/27 14:22:20 eric Exp $
+ * $Id: core.css,v 1.45 2005/10/31 11:51:58 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -239,21 +239,21 @@ IMG.click:hover {
   color: [CORE_ERRORCOLOR];
   font-weight: bold;
   padding:20px;
-  background-color:#F0F0F0;
-  [IF ISIE]filter:alpha(opacity=80);[ENDIF ISIE]
-  -moz-opacity:.5;
+
+[IFNOT ISIE]background-image:url('Images/op20.png');[ENDIF ISIE]
+  [IF ISIE]filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Images/op20.png',sizingMethod='scale');float:left;[ENDIF ISIE]
   border:solid 1px;
   text-align:center;
 }
 .CORETextError {
-  [IF ISIE]filter:alpha(opacity=100);[ENDIF ISIE]
-  -moz-opacity:.99;
+
 }
 .COREErrorBg {
   color: [CORE_ERRORCOLOR];
   font-weight: bold;
   padding:20px;
-  background:[CORE_BGCOLOR];
+  background-color:[CORE_BGCOLOR];
+
   border:solid 1px;
   text-align:center;
 }
@@ -325,13 +325,17 @@ BUTTON {
 	padding:0pt;
 	background-color:[CORE_APPBUTTONBGCOLOR];
    }
+BUTTON:hover { 	
+	border-style:inset;
+   }
 
 input[type="button"] { 
 	-moz-border-radius:25px;
 	padding:0pt;
    }
-input:hover { 
+input:hover,input:focus,  TEXTAREA:hover, TEXTAREA:focus, SELECT:hover, SELECT:focus { 
 	border-style:inset;
+	background-image:url('Images/op20.png');
    }
 input[type="submit"] { -moz-border-radius:25px;
    }
