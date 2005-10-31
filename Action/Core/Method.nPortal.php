@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Method.nPortal.php,v 1.2 2005/10/31 14:05:56 marc Exp $
+ * @version $Id: Method.nPortal.php,v 1.3 2005/10/31 15:26:14 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package FREEDOM
  * @subpackage 
@@ -95,7 +95,13 @@ function MailAccounts() {
 }
 
 function RssList() {
-  return $this->getTValue("ngp_rss_url");
+  $urls = $this->getTValue("ngp_rss_url");
+  $descr = $this->getTValue("ngp_rss_desc");
+  $rss = array();
+  foreach ($urls as $k => $v) {
+    $rss[] = array( "desc" => $descr[$k], "url" => $urls[$k] );
+  }
+  return $rss;
 }
 
 ?>

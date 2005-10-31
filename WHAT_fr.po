@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-28 17:05+0200\n"
+"POT-Creation-Date: 2005-10-31 16:24+0100\n"
 "PO-Revision-Date: 2005-09-06 16:46+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -453,6 +453,9 @@ msgstr "nom affiché dans le bas de la fenêtre (à droite)"
 msgid "realm name for http authenticate"
 msgstr "nom du royaume pour authentification HTTP"
 
+msgid "mot of the day"
+msgstr "Mot Of The Day"
+
 msgid "Core"
 msgstr "Noyau"
 
@@ -803,10 +806,6 @@ msgstr "Mes contacts préférés"
 msgid "agenda portal"
 msgstr "Portail de l'agenda"
 
-#, fuzzy
-msgid "view my portal configuration"
-msgstr "ma messagerie"
-
 msgid "return to the portal"
 msgstr "Retourner au portail"
 
@@ -831,11 +830,14 @@ msgstr "Pas de rendez-vous"
 msgid "rss box"
 msgstr "Fil d'informations"
 
+msgid "select rss to display"
+msgstr "Sélectionner le fil d'information à afficher"
+
 msgid "mail box"
 msgstr "Boîtes aux lettres"
 
 msgid "open/close mailbox"
-msgstr ""
+msgstr "Afficher/Cacher les messages reçus"
 
 msgid "retrieve mailbox informations"
 msgstr "récupérer les informations"
@@ -846,8 +848,8 @@ msgstr "pas d'information disponible"
 msgid "waiting server respons"
 msgstr "en atttente de la réponse de serveur"
 
-msgid "change department"
-msgstr "changer de département"
+msgid "click to change departement"
+msgstr "cliquer ici pour changer de département"
 
 msgid "search box"
 msgstr "Recherches"
@@ -881,6 +883,33 @@ msgstr "Sauver"
 
 msgid "cancel"
 msgstr "Annuler"
+
+msgid "rss syndication management"
+msgstr "Gestion des fils d'information"
+
+msgid "select to remove rss"
+msgstr "Sélectionner pour supprimer le fil..."
+
+msgid "add new rss here"
+msgstr "Ajouter un nouveau fil d'information"
+
+msgid "rss title"
+msgstr "Titre"
+
+msgid "add new rss description here"
+msgstr "description..."
+
+msgid "rss url"
+msgstr "Url"
+
+msgid "add new rss url here"
+msgstr "url..."
+
+msgid "close"
+msgstr "Fermer"
+
+msgid "mot edition"
+msgstr "édition du MOTD"
 
 msgid "firstname"
 msgstr "Prénom"
@@ -955,6 +984,10 @@ msgstr "Hôte virtual : [%s]"
 
 msgid "Continue (Y|N) ?"
 msgstr "Continuer (Y (oui) |N (non)) ?"
+
+#, fuzzy
+#~ msgid "view my portal configuration"
+#~ msgstr "ma messagerie"
 
 #~ msgid "Object Access"
 #~ msgstr "Accès des objets"

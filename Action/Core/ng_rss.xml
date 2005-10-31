@@ -1,8 +1,8 @@
-
 [IF ShowHeader]
 <div class="rubrique" width="100%">
 <div class="rubrique_title"><img class="ngbutton" width="25px" valign="absmiddle" src="[IMG:ng_rss.png]" border="0" onclick="editRss('rssfed');">&nbsp;[TEXT:rss box]
-<select id="rsslist" onchange="showRss(this.selectedIndex);">
+<select id="rsslist" onchange="if (this.selectedIndex>0) showRss(this.selectedIndex);">
+<option value="0" selected>[TEXT:select rss to display]
 [BLOCK RSSLINK]
 <option value="[rssid]">[rsstitle][ENDBLOCK RSSLINK]</select>
 </div>

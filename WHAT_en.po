@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-28 17:05+0200\n"
+"POT-Creation-Date: 2005-10-31 16:24+0100\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -470,6 +470,9 @@ msgstr ""
 msgid "realm name for http authenticate"
 msgstr ""
 
+msgid "mot of the day"
+msgstr ""
+
 msgid "Core"
 msgstr ""
 
@@ -829,10 +832,6 @@ msgstr ""
 msgid "agenda portal"
 msgstr ""
 
-#, fuzzy
-msgid "view my portal configuration"
-msgstr "Add parameter"
-
 msgid "return to the portal"
 msgstr ""
 
@@ -857,6 +856,9 @@ msgstr ""
 msgid "rss box"
 msgstr ""
 
+msgid "select rss to display"
+msgstr ""
+
 msgid "mail box"
 msgstr ""
 
@@ -874,7 +876,7 @@ msgstr "Avail"
 msgid "waiting server respons"
 msgstr ""
 
-msgid "change department"
+msgid "click to change departement"
 msgstr ""
 
 #, fuzzy
@@ -914,6 +916,38 @@ msgstr ""
 #, fuzzy
 msgid "cancel"
 msgstr "Acl"
+
+#, fuzzy
+msgid "rss syndication management"
+msgstr "New Application"
+
+#, fuzzy
+msgid "select to remove rss"
+msgstr "Modify"
+
+msgid "add new rss here"
+msgstr ""
+
+#, fuzzy
+msgid "rss title"
+msgstr "Applications List"
+
+msgid "add new rss description here"
+msgstr ""
+
+msgid "rss url"
+msgstr ""
+
+msgid "add new rss url here"
+msgstr ""
+
+#, fuzzy
+msgid "close"
+msgstr "Close"
+
+#, fuzzy
+msgid "mot edition"
+msgstr "Add parameter"
 
 msgid "firstname"
 msgstr "Firstname"
@@ -994,6 +1028,10 @@ msgstr ""
 
 msgid "Continue (Y|N) ?"
 msgstr ""
+
+#, fuzzy
+#~ msgid "view my portal configuration"
+#~ msgstr "Add parameter"
 
 #~ msgid "functionerr"
 #~ msgstr "Functions error detected"
