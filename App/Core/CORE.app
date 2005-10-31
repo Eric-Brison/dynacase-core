@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.12 2005/10/25 08:39:35 marc Exp $
+// $Id: CORE.app,v 1.13 2005/10/31 14:05:56 marc Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -133,25 +133,21 @@ $action_desc = array (
    "name"               =>"MSGCACHE", 
   ),
 
-  array(
-   "name"               =>"NGHEADER",
-  ),
-  array(
-   "name"               =>"NGMAIN",
-   "root"               =>"Y"
-  ),
-  array(
-   "name"               =>"NG_MYPORTAL",
-  ),
-  array(
-   "name"               =>"NG_RSS",
-  ),
-  array(
-   "name"               =>"NGFOOTER",
-  )
+  array( "name" => "NGHEADER" ),
+  array( "name" => "NGMAIN", "root" =>"Y" ),
+  array( "name" => "NG_MYPORTAL" ),
+  array( "name" => "NG_MOTDCHANGE" ),
+  array( "name" => "NG_SETMETEO" ),
+  array( "name" => "NG_RSS"  ),
+  array( "name" => "NG_RSSEDIT"  ),
+  array( "name" => "NG_RSSCHANGE"  ),
+  array( "name" => "NG_MAILCHECK"  ),
+  array( "name" => "NG_MAILEDIT"  ),
+  array( "name" => "NG_MAILSAVE"  ),
+  array( "name" => "NGFOOTER" )
 
-
-                     );
+	
+        	             );
   
 
 ?>

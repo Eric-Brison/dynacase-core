@@ -1,17 +1,21 @@
 <div class="rubrique" width="100%">
-<div class="rubrique_title"><img width="25px" valign="absmiddle" src="[icon]" border="0">&nbsp;[TEXT:new box]</div>
+<div class="rubrique_title"><img width="25px" valign="absmiddle" src="[icon]" border="0"
+onclick="subwindow(500,350,'addnew','[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid=NGNEWS&onlysubfam=NGNEWS');"
+class="ngbutton">&nbsp;[TEXT:new box]</div>
 
 [BLOCK NEWS]<div style="padding:  5px 0px 0px 0px">
 
-<span class="new_title ngbutton" onclick="showHideElt('news[id]')">
-<img id="inews[id]" width="16px" src="[IMG:ng_elt_open.png]" border="0">
+<span class="new_title ngbutton" onclick="showHideElt('[id]')">
+<img id="i[id]" width="16px" src="[IMG:ng_elt_open.png]" border="0">
 [title]</span>
 
-
-<span style="width:30%;"  class="new_date">(par
+<span style="width:30%;"  class="new_date">([IF edit]
+<img width="12" valign="absmiddle" src="[icon]" border="0"
+onclick="subwindow(500,350,'editnew','[CORE_STANDURL]sole=Y&app=GENERIC&action=GENERIC_EDIT&id=[id]');" class="ngbutton">&nbsp;
+[ENDIF edit]par
 <a class="ngmail" href="mailto:[mail]">[author]</a> - [date])</span>
 
-<div id="cnews[id]" style="display:none" class="new_content">[content]</div>
+<div id="c[id]" style="display:none" class="new_content">[content]</div>
 
 </div>[ENDBLOCK NEWS]
 </div>

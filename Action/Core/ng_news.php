@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ng_news.php,v 1.2 2005/10/25 08:39:35 marc Exp $
+ * @version $Id: ng_news.php,v 1.3 2005/10/31 14:05:56 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -27,7 +27,7 @@ function ng_news(&$action) {
   $it = 0;
   if (count($news)>0) {
     foreach ($news as $k => $v) {
-      $tn[] = array( "id" => $it,
+      $tn[] = array( "id" => $v["id"],
 		     "title" => $v["ngn_title"],
 		     "mark" => ($v["ngn_state"]>0?true:false),
 		     "color" => $markcolor[$v["ngn_state"]],
@@ -35,7 +35,8 @@ function ng_news(&$action) {
 		     "content" => $v["ngn_text"], //		     "content" => substr($v["ngn_text"],0,100),
 		     "mail" => $v["ngn_authormail"],
 		     "author" => $v["ngn_author"],
-		     "date" => strftime("%d/%m/%y",$v["revdate"] ) 
+		     "date" => strftime("%d/%m/%y",$v["revdate"] ),
+		     "edit" => ($action->user->fid==$v["ngn_authorid"]?true:false)
 		     );
       $it++;
     }

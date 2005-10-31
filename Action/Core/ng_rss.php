@@ -3,21 +3,20 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: ng_rss.php,v 1.1 2005/10/25 08:39:35 marc Exp $
+ * @version $Id: ng_rss.php,v 1.2 2005/10/31 14:05:56 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
  */
 include_once("XML/RSS.php");
+include_once("CORE/Lib.Ng.php");
 
 function ng_rss(&$action) {
 
-
   $action->parent->addCssRef("CORE:NG.CSS",true);
-  $rssf = array( "--",
-		 "http://linuxfr.org/backend/news/rss20.rss", 
-		 "http://planet.mozilla.org/rss20.xml" 
-		 );
+
+  $myportal = ng_myportal();
+  $rssf = $myportal->RssList();
     
   $rss = GetHttpVars("rss", "");
 

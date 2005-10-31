@@ -31,20 +31,20 @@ ATTR;NGP_OWNERID;NGP_USER;Id Propriétaire;N;N;docid;30;H;Y;;;::getTitle(NGP_OWNE
 ;;;;;;;;;;;;
 ATTR;NGP_MAIL;;Messageries;N;N;frame;100;;;;;
 ATTR;NGP_MAILACCOUNTS;;Comptes de messagerie;N;N;array;110;W;;;;
-ATTR;NGP_MA_NAME;NGP_MAILACCOUNTS;Nom;N;N;text;120;W;Y;;;
+ATTR;NGP_MA_NAME;NGP_MAILACCOUNTS;Nom;N;N;text;120;W;;;;
 ATTR;NGP_MA_CHECKED;NGP_MAILACCOUNTS;Contrôlé;N;N;enum;130;W;;;;0|--,1|Controlée
 ATTR;NGP_MA_MLIST;NGP_MAILACCOUNTS;Liste des messages;N;N;enum;140;W;;;;0|--,1|Affichés
-ATTR;NGP_MA_LOGIN;NGP_MAILACCOUNTS;Login;N;N;text;150;W;Y;;;
-ATTR;NGP_MA_PASSWORD;NGP_MAILACCOUNTS;Mot de passe;N;N;password;160;W;Y;;;
+ATTR;NGP_MA_LOGIN;NGP_MAILACCOUNTS;Login;N;N;text;150;W;;;;
+ATTR;NGP_MA_PASSWORD;NGP_MAILACCOUNTS;Mot de passe;N;N;password;160;W;;;;
 ATTR;NGP_MA_INBOXNAME;NGP_MAILACCOUNTS;Espace;N;N;text;170;H;;;;
-ATTR;NGP_MA_SERVER;NGP_MAILACCOUNTS;Serveur;N;N;text;180;W;Y;;;
-ATTR;NGP_MA_MODE;NGP_MAILACCOUNTS;Mode;N;N;enum;190;W;Y;;;110/pop3|Pop3,995/pop3/ssl/novalidate-cert|Pop3 sécurisé (tls),143/imap/notls|Imap4,993/imap/ssl/novalidate-cert|Imap4 sécurisé (tls)
+ATTR;NGP_MA_SERVER;NGP_MAILACCOUNTS;Serveur;N;N;text;180;W;;;;
+ATTR;NGP_MA_MODE;NGP_MAILACCOUNTS;Mode;N;N;enum;190;W;;;;110/pop3|Pop3,995/pop3/ssl/novalidate-cert|Pop3 sécurisé (tls),143/imap/notls|Imap4,993/imap/ssl/novalidate-cert|Imap4 sécurisé (tls)
 ATTR;NGP_MA_FLAGS;NGP_MAILACCOUNTS;Flag;N;N;text;200;W;;;;
 ;;;;;;;;;;;;
 ;;;;;;;;;;;;
 ATTR;NGP_RSS;;Fil d'information;N;N;frame;200;;;;;
 ATTR;NGP_RSS_LIST;NGP_RSS;Liste des fils d'information;N;N;array;210;W;;;;
-ATTR;NGP_RSS_URL;NGP_RSS_LIST;Url;N;N;text;220;W;Y;;;
+ATTR;NGP_RSS_URL;NGP_RSS_LIST;Url;N;N;text;220;W;;;;
 ;;;;;;;;;;;;
 ;;;;;;;;;;;;
 ;;;;;;;;;;;;
@@ -54,7 +54,7 @@ ATTR;NGP_RSS_URL;NGP_RSS_LIST;Url;N;N;text;220;W;Y;;;
 ;;;;;;;;;;;;
 ATTR;NGP_OTHER;;Autres préférences;N;N;frame;500;;;;;
 ATTR;NGP_OTH_METEODEP;NGP_OTHER;Météo, département;N;N;int;510;W;;;;
-;;;;;;;;;;;;
+ATTR;NGP_APPLIST;NGP_OTHER;Liste des applications disponible;N;N;text;520;H;;;;
 ;;;;;;;;;;;;
 ;;;;;;;;;;;;
 ;;;;;;;;;;;;
@@ -64,7 +64,7 @@ DEFAULT;NGP_OWNER;::getTitle(NGP_OWNERID);;;;;;;;;;
 ;;;;;;;;;;;;
 DEFAULT;NGP_MA_CHECKED;1;;;;;;;;;;
 DEFAULT;NGP_MA_MLIST;1;;;;;;;;;;
-;;;;;;;;;;;;
+DEFAULT;NGP_APPLIST;WGCAL|USERCARD|FREEDOM;;;;;;;;;;
 ;;;;;;;;;;;;
 ;;;;;;;;;;;;
 ;;;;;;;;;;;;

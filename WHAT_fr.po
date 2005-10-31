@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-20 13:52+0200\n"
+"POT-Creation-Date: 2005-10-28 17:05+0200\n"
 "PO-Revision-Date: 2005-09-06 16:46+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -803,6 +803,10 @@ msgstr "Mes contacts préférés"
 msgid "agenda portal"
 msgstr "Portail de l'agenda"
 
+#, fuzzy
+msgid "view my portal configuration"
+msgstr "ma messagerie"
+
 msgid "return to the portal"
 msgstr "Retourner au portail"
 
@@ -830,6 +834,18 @@ msgstr "Fil d'informations"
 msgid "mail box"
 msgstr "Boîtes aux lettres"
 
+msgid "open/close mailbox"
+msgstr ""
+
+msgid "retrieve mailbox informations"
+msgstr "récupérer les informations"
+
+msgid "not available"
+msgstr "pas d'information disponible"
+
+msgid "waiting server respons"
+msgstr "en atttente de la réponse de serveur"
+
 msgid "change department"
 msgstr "changer de département"
 
@@ -837,7 +853,34 @@ msgid "search box"
 msgstr "Recherches"
 
 msgid "new box"
-msgstr ""
+msgstr "Nouvelles"
+
+msgid "no mail account"
+msgstr "pas de compte de messagerie"
+
+msgid "no message on server"
+msgstr "pas de message"
+
+msgid "account name"
+msgstr "Nom du compte"
+
+msgid "account login"
+msgstr "Utilisateur / Login"
+
+msgid "account password"
+msgstr "Mot de passe"
+
+msgid "account server"
+msgstr "Serveur"
+
+msgid "account mode"
+msgstr "Protocole"
+
+msgid "save"
+msgstr "Sauver"
+
+msgid "cancel"
+msgstr "Annuler"
 
 msgid "firstname"
 msgstr "Prénom"
