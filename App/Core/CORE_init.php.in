@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.26 2005/10/31 14:05:56 marc Exp $
+ * @version $Id: CORE_init.php.in,v 1.27 2005/10/31 15:14:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -216,7 +216,13 @@ $app_const = array (
                     "CORE_MOTD"              =>array("val"=>"",
                                                         "descr"=>N_("mot of the day"),
                                                         "style"=>"N",
-                                                        "global"=>"Y")
+						     "global"=>"Y"),
+		    "CORE_ICONSIZE"		=>array("val"=>"small",
+							"descr"=>N_("icon size"),
+							"user"=>"Y",
+							"style"=>"N",
+							"kind"=>"enum(small|normal)",
+							"global"=>"Y")
 		    );
 
 ?>

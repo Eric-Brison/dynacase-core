@@ -72,8 +72,8 @@ o.style.position='static';
 var csel=false; // selected icon object
 var izoom=48;
 function fadeIt(oimg) {     
-   oimg.style.width=22; 
-   oimg.style.height=22;
+   oimg.style.width=[izpx]; 
+   oimg.style.height=[izpx];
    //setTimeout("dz('"+th.id+"')",100);
    oimg.style.position='static';
     if (oimg.className != 'Select') {
@@ -107,16 +107,16 @@ function selectIt(th) {
 
 <table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="headcell" >
-  <td  width="40px"><img  border="0" align="absmiddle"  style="width:32px;position:absolute;top:0px;left:2px" id="imgapp" src="[IMG:logo-mini.png]"></td>
+  <td  width="[izbpx]px"><img  border="0" align="absmiddle"  style="width:[izbpx]px;position:absolute;top:0px;left:2px" id="imgapp" src="[IMG:logo-mini.png]"></td>
   <td  align="left" style="width:150px;"><span id="apptitle2" class="headtitle">[APP_TITLE]&nbsp;</span></td>
 
 
  [BLOCK FUNCTION]
-<td width="40"  align="center"
+<td width="[izbpx]"  align="center"
      onMouseOver="unFadeIt(i[name]);" 
      onMouseOut="fadeIt(i[name]);"  >
      <a href="#"><img  class="Fade"  id="i[name]" onclick="selectIt(this);lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
-     src="[pubdir]/[iconsrc]" border="0" width="22" height="22" alt="[description]" title="[description]" ></a>
+     src="[pubdir]/[iconsrc]" border="0" width="[izpx]" height="[izpx]" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
 
@@ -127,7 +127,7 @@ function selectIt(th) {
      &nbsp;</span>
  [BLOCK NOFREEGATE]
      <a href="#"><img onClick="lauch_action(event,'[IMG:logo-mini.png]','CORE','[TEXT:Homepage]');" 
-          align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="22" src="[IMG:logo-mini.png]" border="0"></a>
+          align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="[izpx]" src="[IMG:logo-mini.png]" border="0"></a>
  [ENDBLOCK NOFREEGATE]
  [BLOCK FREEGATE]
      <a href="#"><img onClick="fbody.location.href='[CORE_STANDURL]&app=FREEGATE&action=FREEGATE_VIEWGATE'" 
