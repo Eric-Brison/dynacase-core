@@ -13,6 +13,8 @@ function lauch_action(event, img, appname, descr) {
   }
 
   if (parent && parent.body && (!ctrlKey)) parent.body.location.replace('[CORE_BASEURL]app='+appname);
+  else if (this.fbody && (!ctrlKey)) this.fbody.location.replace('[CORE_BASEURL]app='+appname);
+  
   else subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'wbody'+appname,'[CORE_BASEURL]app='+appname);
 
   top.document.title=descr;

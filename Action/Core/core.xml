@@ -8,9 +8,23 @@
 </noscript>
 <LINK REL="icon" HREF="CORE/Images/logo16.ico" >
 <LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo16.ico" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 
 
+ 
+<script language="JavaScript" src="WHAT/Layout/geometry.js"></script>
+<script language="JavaScript" src="WHAT/Layout/AnchorPosition.js"></script>
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+[JS:REF]
    <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>  
+<script language="JavaScript">
   <!--
     // this page must be on top frame
 if (window != top) top.location.href = location.href;
@@ -27,18 +41,25 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
   version=parseFloat(temp[1]);
   if (version < 5.5) alert('[TEXT:You use version an to old version of Internet Explorer]:'+version+'\n'+'[TEXT:You must upgrade to version 6 or more]');
 }
-
+function resizeIurl() {
+var eiurl=document.getElementById("fbody");
+var xy=getAnchorPosition("fbody");
+var hiurl=getFrameHeight();
+var nh=hiurl - xy.y - 20; // offset for scrollbar
+// alert(window.document.body.nodeType);
+  nh=nh-20; // heigth of footer
+eiurl.height=nh;
+}
+window.onresize=resizeIurl;
+addEvent(window,"load",resizeIurl);
   //-->
    </script>
 </head>
+<body>
+[ZONE [headerApp]:[headerAct]]
 
-
-<frameset name="what" id="what" frameborder="0" framespacing="0" border="0" rows="[headerSize],[mainSize],[footerSize],0pt" >
-
-  <frame name="head" src="[CORE_STANDURL]&app=[headerApp]&action=[headerAct]" scrolling="needed">
-  <frame name="body" src="[CORE_STANDURL]&app=[mainApp]&action=[mainAct]" scrolling="needed">
-  <frame name="foot" src="[CORE_STANDURL]&app=[footerApp]&action=[footerAct]" scrolling="no">
-  <frame name="fhidden" src="[CORE_STANDURL]&app=CORE&action=WVERSION" noresize  style="border-style:none" scrolling="no">
-
-</frameset>
+<iframe style="border:none;margin:0px" id="fbody" width="100%" height="90%" name="fbody" src="[CORE_STANDURL]&app=[mainApp]&action=[mainAct]" scrolling="needed"></iframe>
+<iframe style="display:none" name="fhidden" src="[CORE_STANDURL]&app=CORE&action=WVERSION" noresize  style="border-style:none" scrolling="no"></iframe>
+[ZONE [footerApp]:[footerAct]]
+</body>
 </html>
