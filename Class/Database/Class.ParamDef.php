@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.ParamDef.php,v 1.3 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,12 +30,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.ParamDef.php,v 1.3 2003/08/18 15:46:42 eric Exp $
+//  $Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $
 //
 include_once('Class.Log.php');
 include_once('Class.DbObj.php');
 
-$CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.3 2003/08/18 15:46:42 eric Exp $';
+$CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $';
 
 Class ParamDef extends DbObj
 {
@@ -47,13 +47,13 @@ var $dbtable = "paramdef";
 
 var $sqlcreate = '
       create table paramdef (
-              name    varchar(50),
+              name    text,
               isuser   varchar(1),
               isstyle   varchar(1),
               isglob   varchar(1),
               appid  int4,
-              descr    varchar(200),
-              kind    varchar(50));
+              descr    text,
+              kind    text);
       create unique index paramdef_idx1 on paramdef(name);
                  ';
 
