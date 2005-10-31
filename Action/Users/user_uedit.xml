@@ -1,4 +1,4 @@
-<form target="body" name="edit" method="POST"  onsubmit="return Valid_Passwd()" action="[CORE_STANDURL]app=USERS&action=USER_UMOD">
+<form target="fbody" name="edit" method="POST"  onsubmit="return Valid_Passwd()" action="[CORE_STANDURL]app=USERS&action=USER_UMOD">
 <input type="hidden" name="papp" value="[APP]">
 <input type="hidden" name="paction" value="[ACTION]">
 <input type="hidden" name="pargs" value="[ARGS]">

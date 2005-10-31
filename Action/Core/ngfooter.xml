@@ -10,14 +10,14 @@
 
 <td align="right" height="30px" style="font-size:75%">
 
-<a href="index.php?sole=Y&&app=CORE&action=NG_MYPORTAL" target="body"><img   title="[TEXT:view my portal configuration]" style="vertical-align: top; cursor:pointer;border:none" align="absmiddle" height="22" style="border:0" src="CORE/Images/ngportalpreferences.png"></a>
+<a href="index.php?sole=Y&&app=CORE&action=NG_MYPORTAL" target="fbody"><img   title="[TEXT:view my portal configuration]" style="vertical-align: top; cursor:pointer;border:none" align="absmiddle" height="22" style="border:0" src="CORE/Images/ngportalpreferences.png"></a>
 
-<a href="index.php?sole=Y&&app=CORE&action=NGMAIN" target="body"><img   title="[TEXT:return to the portal]" style="vertical-align: top; cursor:pointer;border:none" align="absmiddle" height="22" style="border:0" src="CORE/Images/ngportal.png"></a>
+<a href="index.php?sole=Y&&app=CORE&action=NGMAIN" target="fbody"><img   title="[TEXT:return to the portal]" style="vertical-align: top; cursor:pointer;border:none" align="absmiddle" height="22" style="border:0" src="CORE/Images/ngportal.png"></a>
 <img id="logo" height="22"  style=" vertical-align: top; cursor:pointer;border:none" onclick="document.authent.submit()" title="[TEXT:Click here to login]" src="[IMG:connect.gif]">&nbsp;powered by <a target="_blank" href="http://freedom.cesamnet.fr">Freedom</a>
 </td>
 
 </tr></table>
-<form style="display:none" target="body" action="[CORE_PUBURL]/authent.php?[CORE_SESSIONID]" method=post name="authent">
+<form style="display:none" target="fbody" action="[CORE_PUBURL]/authent.php?[CORE_SESSIONID]" method=post name="authent">
    <input type=hidden NAME="SeenBefore" VALUE="1">
    <input type=hidden NAME="logout" VALUE="Y">
    <input type=hidden NAME="OldAuth" VALUE="[PHP_AUTH_USER]">

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: edit.php,v 1.9 2005/07/08 15:29:51 eric Exp $
+ * @version $Id: edit.php,v 1.10 2005/10/31 11:51:29 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.9 2005/07/08 15:29:51 eric Exp $
+// $Id: edit.php,v 1.10 2005/10/31 11:51:29 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -69,7 +69,7 @@ function edit(&$action) {
     }
   }
   $action->lay->Set("modifyact", "MODIFY");
-  $action->lay->Set("target", "body");
+  $action->lay->Set("target", "fbody");
 
 
   if (($isclass) || ($coid > 0)) {
