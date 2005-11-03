@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: head.php,v 1.21 2005/10/31 15:14:17 eric Exp $
+ * @version $Id: head.php,v 1.22 2005/11/03 08:28:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,8 +30,10 @@ function head(&$action) {
   $iz=$action->getParam("CORE_ICONSIZE");
   if ($iz == "small") {
     $izpx=22;
+    $action->lay->set("wtitle",180);
   } else {
     $izpx=38;	
+    $action->lay->set("wtitle",150);
   }
   $action->lay->set("izpx",$izpx);
   $action->lay->set("izbpx",$izpx+10);
