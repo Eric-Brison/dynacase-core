@@ -1,4 +1,5 @@
 export wpub="@prefix@";
+export httpuser="@HTTPUSER@";
 if [ $TERM == "xterm" ]; then
     export TERM=xterm-color
 fi

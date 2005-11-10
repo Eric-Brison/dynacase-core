@@ -28,5 +28,6 @@ popd > /dev/null
 #refresh version identificator
 $wpub/wsh.php --api=refreshjsversion >/dev/null
 #clear current sessions
-/bin/rm -f /var/run/php/sess_*
+#/bin/rm -f /var/run/php/sess_*
+#/bin/rm -f /var/lib/php/session/sess_*
 

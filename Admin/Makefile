@@ -1,16 +1,18 @@
 # ============================================
-# $Id: Makefile,v 1.1 2005/11/08 17:16:34 eric Exp $
+# $Id: Makefile,v 1.2 2005/11/10 15:43:56 eric Exp $
 # ============================================
 
 
 
 appname = admin
 export appname
-
+SUBDIR= Images
 include $(utildir)/PubRule
-DISTFILES += winit.html
+DISTFILES += $(SUBDIR) winit.html shttpd
 
 $(pubdir)/admin/winit.html: winit.html $(pubdir)/admin
 	cp $< $@
+$(pubdir)/admin/shttpd: shttpd $(pubdir)/admin
+	cp $< $@
 
-publish:   $(pubdir)/admin/winit.html
+publish:   $(pubdir)/admin/winit.html $(pubdir)/admin/shttpd

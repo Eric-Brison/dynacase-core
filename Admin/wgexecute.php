@@ -16,10 +16,10 @@ if (!$sid) {
     $cmd=$actions[$number];
       if ($cmd[0]!='#') {
         exec ( $cmd , $out ,$err );
-	if ($err==0) 	$code="OK";
+	if ($err==0) $code="OK";
 	else $code=$err;
+	foreach ($out as $k=>$v) $out[$k]=htmlentities($v);
 	$msg=implode("<br/>",$out);
-
       } else {
 	$code="SKIP";
       }

@@ -12,27 +12,31 @@ fi
 #------------------------------
 if [ "$1" = "I" ] ; then
 
-  run=`pidof postmaster`
-  if [ "x$run" = "x" ] ; then
+  run=`/etc/rc.d/init.d/postgresql status`
+  if [ $? != 0 ] ; then
     log "postgresql is not running ..Init is delayed"
     exit 1
   fi
 
   log "Create $dbname database"
-  sulog postgres "createdb --encoding LATIN1 --host=$dbhost --port=$dbport $dbname"
+  createdb --encoding LATIN1 --username=postgres --host=$dbhost --port=$dbport $dbname
   
+  if [ $? != 0 ] ; then
+    log "cannot create db $dbname"
+    exit 1
+  fi
   log "Create anakeen database user"
-  sulog postgres "createuser -d -a --host=$dbhost --port=$dbport anakeen" 
+  createuser -d -a --username=postgres --host=$dbhost --port=$dbport anakeen
  
   log "Add plpgsql language"
   if [ -f /usr/lib/pgsql/plpgsql.so ]; then
-    sulog postgres "createlang $dbpsql --pglib=/usr/lib/pgsql plpgsql"
+      createlang  --username=postgres $dbpsql --pglib=/usr/lib/pgsql plpgsql
   else
-    sulog postgres "createlang $dbpsql --pglib=/usr/lib/postgresql plpgsql"
+      createlang  --username=postgres $dbpsql --pglib=/usr/lib/postgresql plpgsql
   fi
 
   log "Add plpgsql functions"
-  sulog postgres "psql $dbpsql -f $wpub/WHAT/getprivilege.sql"
+  psql  --username=postgres $dbpsql -f $wpub/WHAT/getprivilege.sql
 
   log "Register DB $dbname for automatic dump"
   ll=0

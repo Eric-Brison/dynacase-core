@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo '/etc/rc.d/init.d/httpd restart' | at now + 1minutes
+echo "httpd will be restarted in one minute"

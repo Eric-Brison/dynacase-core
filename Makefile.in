@@ -20,9 +20,9 @@ GZIP_ENV = --best
 export targetdir
 export utildir
 
-SUBDIR= Expire Class Action Zone Share App Api Images Style Doc
+SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc
 
-TOP_MODULES =  wsh.php wvirtual.php wchoose.php guest.php dbaccess.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in winit.html
+TOP_MODULES =  wsh.php wvirtual.php wchoose.php guest.php dbaccess.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in 
 
 
 include $(utildir)/PubRule
@@ -53,11 +53,9 @@ $(pubdir)/apachev.conf.in: apachev.conf.in
 	cp $< $@
 $(pubdir)/apachevi.conf.in: apachevi.conf.in
 	cp $< $@
-$(pubdir)/winit.html: winit.html
-	cp $< $@
 
-
-
+$(pubdir)/admin:
+	mkdir -p $@
 $(rootprefix)/etc/pam.d:
 	mkdir -p $@
 $(rootprefix)/etc/pam.d/httpd: $(rootprefix)/etc/pam.d
@@ -73,7 +71,7 @@ $(rootprefix)/etc/cron.daily:
 $(rootprefix)/etc/cron.daily/WHAT.cron:WHAT.cron $(rootprefix)/etc/cron.daily
 	cp WHAT.cron $@
 
-publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf  winit.html
+publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf 
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \

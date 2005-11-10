@@ -12,8 +12,8 @@ Alias /freedom @prefix@
     php_value default_charset  "iso-8859-1"
     AddType application/x-httpd-php .php
     DirectoryIndex  index.php
-    ErrorDocument 401 /what/expire/tryexpire.html
     <Files ~ "index.php">
+      ErrorDocument 401 /what/expire/tryexpire.html
       AuthType Basic
       AuthName 'FREEDOM Connection'
       AuthPAM_Enabled  on
@@ -59,8 +59,15 @@ Alias /freedom @prefix@
 
 <Directory "@prefix@/expire/">
     ErrorDocument 401 "connection refused"   
-    Options IncludesNoExec FollowSymLinks
- 
+    Options IncludesNoExec FollowSymLinks 
+</Directory>
+<Directory "@prefix@/admin/">
+    DirectoryIndex  index.html     
+    php_value session.name "adminsession"
+    AuthType Basic
+    AuthName "FREEDOM Administration"
+    AuthUserFile @prefix@/admin/.htpasswd
+    Require valid-user
 </Directory>
 
 

@@ -1,3 +1,10 @@
+<html><head>
+<title>FREEDOM Create Databases</title>
+<LINK REL="stylesheet" type="text/css" HREF="Layout/wg.css" >
+
+</head>
+<body>
+<div class="frame">
 <?php
 
 include("WHAT/Lib.Common.php");
@@ -8,13 +15,25 @@ $err=checkPGConnection();
 if ($err=="") {
   $err=getCheckApp($pubdir,$applications);
   if ($err) {
-        exec ( "$pubdir/CORE/CORE_post I" , $out ,$err );
-	//$out = shell_exec("$pubdir/CORE/CORE_post I 2>/tmp/w");
-    print "$pubdir/CORE/CORE_post I<br>";
-    print_r2($out);
-    print("<br>err:$err");
+    exec ( "$pubdir/CORE/CORE_post I" , $out ,$err );
+    //$out = shell_exec("$pubdir/CORE/CORE_post I 2>/tmp/w");
+      
+    if ($err == 0) {
+      print("<table width=\"100%\"><tr><td><H1 style=\"float:left\">Databases created</H1></td><td align=\"right\">");
+      print '<div  class="bouton"  onclick="document.location.href=\'wgcheck.php\'">Next</div></td></tr></table>';
+      $class="logG";// Good
+    } else {
+      print("<H1 class=\"E\">Error in creation see log</H1>");   
+      $class="logE";// Error
+    }
+    print sprintf("<div class=\"%s\"><fieldset><legend>Log</legend>%s</fieldset></div>",$class,implode("<br/>",$out));
+  } else {
+    print("<H1>Databases already created</H1>");
   }
+ } else {
+  print("<H1 class=\"E\">Cannot Access PostgreSQL Server</H1>");
  }
 
 
 ?>
+</div></body></html>

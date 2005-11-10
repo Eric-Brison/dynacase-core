@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.1 2005/11/08 17:16:34 eric Exp $
+ * @version $Id: wgcheck.php,v 1.2 2005/11/10 15:43:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,35 +14,13 @@
 <html><head>
 <title>FREEDOM check applications</title>
 
-<style type="text/css">
-    TABLE.app TD { border-top:solid blue 1px;
-  }
-    TABLE.app {
-    border: 1px solid;width:80%;
-    }
-TABLE.app TR {background-color:green;}
-TABLE.app TR.U {background-color:orange;}
-TABLE.app TR.E {background-color:magenta;}
-TABLE.app TR.D {background-color:red;}
-TABLE.app TR.I {background-color:yellow;}
-.msg {
- height:40px;
- overflow:hidden;
- font-family:courier;
- font-size:7pt;
- width:200px;
-}
-BUTTON {
- border:outset;
-}
-BUTTON.over {
- border:inset;
-  background-color:lightgreen;
-}
-</style>
+<LINK REL="stylesheet" type="text/css" HREF="Layout/wg.css" >
+<script language="JavaScript" src="../WHAT/Layout/logmsg.js"></script>
 <script>
 var req;
-var cmdcontinue=true;
+var cmdcontinue=false;
+var ncmd=0;
+var maxcmd=0;
 function sendCmds(n) {
   
 }
@@ -61,10 +39,22 @@ function sendCmd(n) {
         req.open("POST", 'wgexecute.php', true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
         req.send("number="+n);
-	var o=document.getElementById('sp'+n);
+	var o=document.getElementById('err'+n);
 	if (o) o.innerHTML="<blink>Executing...</blink>";
 
     }
+    var off=document.location.href.lastIndexOf('#');
+    ncmd=n+1; // next cmd
+    if (n>2) {
+      n=n-2;
+      if (off > 0) {
+	document.location.href=document.location.href.substring(0,off)+'#trname'+n;
+      } else {
+	document.location.href=document.location.href+'#trname'+n;
+      }
+    }
+
+
 }
 function processReqChange() {
     // only if req shows "loaded"
@@ -73,26 +63,37 @@ function processReqChange() {
         if (req.status == 200) {
             // ...processing statements go here...
 	  //  alert(req.responseText);
-	  var statuss = req.responseXML.getElementsByTagName("status");
-	  var status=statuss[0];
-	  var code=status.getAttribute("code");
-	  var number=status.getAttribute("number");
-	  var o=document.getElementById('cmd'+number);
-	  if (o) {
-	    if (code=="OK") {
-	      o.className="G";
-	    } else {
-	      o.className="E";
-	    }
-	    o=document.getElementById('sp'+number);
-	    if (o) o.innerHTML=code;
-	    statuss = req.responseXML.getElementsByTagName("msg");
-	    status=statuss[0];
+	  if (req.responseXML) {
+	    var elts = req.responseXML.getElementsByTagName("status");
+	    if (elts.length == 1) {
+	    var elt=elts[0];
+	    var code=elt.getAttribute("code");
+	    var number=elt.getAttribute("number");
+	    var o=document.getElementById('spi'+number);
+	    if (o) {
+	      if (code=="OK") {
+		o.className="G";
+	      } else {
+		o.className="E";
+	      }
+	      o=document.getElementById('sp'+number);
+	      if (o && (code != 'OK')) o.innerHTML=code;
+	      elts = req.responseXML.getElementsByTagName("msg");
+	      elt=elts[0];
 
-	    o=document.getElementById('err'+number);
-	    if (o) o.innerHTML=status.firstChild.nodeValue;
-	    if (code=="OK") sendCmd(parseInt(number)+1);
-	  }
+	      o=document.getElementById('err'+number);
+	      if (o) o.innerHTML=elt.firstChild.nodeValue;
+	      if ((code=="OK") && cmdcontinue) {
+		if ((parseInt(number)+1) < maxcmd)	sendCmd(parseInt(number)+1);
+		else if (confirm('Finish\nGo to FREEDOM now ?')) {
+		  document.location.href="../";
+		}
+	      }
+	      if ((code!="OK")&& cmdcontinue) alert(code+' : update aborted');
+	    }
+	    } else alert('no status\n'+req.responseText);
+	  } else alert('no xml\n'+req.responseText);
+	  
 	  
         } else {
             alert("There was a problem retrieving the XML data:\n" +
@@ -100,16 +101,10 @@ function processReqChange() {
         }
     }
 }
+addEvent(window,"load",function al() {document.getElementById('dcmd').style.display='none';});
 </script>
 </head>
-<body style="background-image:url('../CORE/Images/bg.gif')">
-
-
-<div style="width:80%;border: groove 4px red">
-
-<table width="100%"><tr><td><H1>Applications state</H1></td><td align="right"><a  href="#"><button onmouseover="this.className='over'" onmouseout="this.className=''"><img width="50px" style="border:none;" src="../CORE/Images/freeeye.png"></button></a></td></tr></table>
-
-<table cellspacing="0" align="center" class="app"><tr><th>Application</th><th>DB version</th><th>file version</th><th>State</th><th>Machine</th></tr>
+<body>
 <?php
 
 include("WHAT/Lib.Common.php");
@@ -118,7 +113,6 @@ include("WHAT/Lib.WCheck.php");
 session_start();
 global $_COOKIE;
 $sid=$_COOKIE['adminsession'];
-print "sid:$sid";
 if ($sid) session_id($sid);
 else $sid=session_id();
 $uri=$_SERVER["REQUEST_URI"];
@@ -130,14 +124,27 @@ if ($err=="") {
   $err=getCheckApp($pubdir,$applications);
   if ($err) $msg=_("create databases ?");
  }
+?>
 
+<div id="dcr" class="frame">
+
+<table width="100%"><tr><td><H1>Applications state</H1></td><td align="right"><div class="bouton" onclick="document.getElementById('dcr').style.display='none';document.getElementById('dcmd').style.display='';"
+<?php if ($err) print "style=\"display:none\"";?>
+>Next</div>
+
+</td></tr></table>
+
+<table cellspacing="0" align="center" class="app"><tr><th>Application</th><th>DB version</th><th>file version</th><th>State</th><th>Machine</th></tr>
+
+<?php
 if ($err == "") {
   foreach ($applications as $k=>$v) {
-    print sprintf("<tr class=\"%s\"><td>%s</td><td>%s&nbsp;</td><td>%s</td><td>%s&nbsp;</td><td>%s&nbsp;</td></tr>",
-		  $v["chk"],
+
+    print sprintf("<tr><td>%s</td><td>%s&nbsp;</td><td>%s</td><td ><span class=\"%s\"><img src=\"Images/option.png\"></span>%s&nbsp;</td><td>%s&nbsp;</td></tr>",
 		  $v["name"],
 		  $v["vdb"],
 		  $v["vfile"],
+		  ($v["chk"]=="")?"G":$v["chk"],
 		  $v["chk"],
 		  $v["machine"]);
   } 
@@ -152,18 +159,24 @@ if ($err == "") {
 ?>
 </table></div>
 
-<div style="width:80%;border: groove 4px red">
+<div id="dcmd" class="frame"  style="display:">
 
-<table width="100%"><tr><td><H1>Applications state</H1></td><td align="right"><a  href="#"><button onmouseover="this.className='over'" onmouseout="this.className=''"><img width="50px" style="border:none;" src="../CORE/Images/freeeye.png"></button></a></td></tr></table>
+<table width="100%"><tr><td><H1>Update part</H1></td><td align="right"><div id="bstart" class="bouton" onclick="cmdcontinue=true;sendCmd(ncmd);this.style.display='none';document.getElementById('bstop').style.display=''">Next</div><div id="bstop" class="bouton" style="display:none" onclick="cmdcontinue=false;this.style.display='none';document.getElementById('bstart').style.display=''">Stop</div></td></tr></table>
 
 <table cellspacing="0" align="center" class="app"><tr><th>Commande</th><th>Status</th><th>Message</th></tr>
 <?php
-$err=getCheckActions($pubdir,$applications,$actions);
-$_SESSION["actions"] = $actions;
-$_SESSION["coucou"] = "coucou";
-foreach ($actions as $k=>$v) {
-  print sprintf("<tr id=\"cmd%s\" class=\"I\"><td>%s</td><td>&nbsp;<span id=\"sp%s\" onclick=\"sendCmd(%s)\">Go</span></td><td><div  class=\"msg\" id=\"err%s\"></div></td></tr>",
-		  $k,$v,$k,$k,$k);
+if ($err=="") {
+  $err=getCheckActions($pubdir,$applications,$actions);
+  if ($err=="") {
+    $_SESSION["actions"] = $actions;
+    foreach ($actions as $k=>$v) {
+      print sprintf("<tr  id=\"cmd%s\" ><td><a name=\"trname%s\">%s</a></td><td>&nbsp;<img class=\"button\" onclick=\"sendCmd(%s)\"  id=\"spi%s\" src=\"Images/option.png\"><span  id=\"sp%s\" ></span></td><td><div  class=\"msg\" id=\"err%s\"></div></td></tr>",
+		    $k,$k,$v,$k,$k,$k,$k);
+    }
+    print sprintf("<script> maxcmd=%d;</script>",count($actions));
+  } else {
+    print sprintf("<tr class=\"E\"><td colspan=\"5\">%s</td></tr>",$err);
+  }
 }
 
 ?>
