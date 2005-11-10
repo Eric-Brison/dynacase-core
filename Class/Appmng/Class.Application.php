@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.45 2005/10/28 15:10:54 eric Exp $
+ * @version $Id: Class.Application.php,v 1.46 2005/11/10 15:45:06 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -111,7 +111,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	  Redirect($this,$this->name,"");
 	} else {
 	  global $_SERVER;
-	  Header("Location: ".$_SERVER['HTTP_REFERER']);
+	  if ($_SERVER['HTTP_HOST'] != "") Header("Location: ".$_SERVER['HTTP_REFERER']);
 	}
       }
 

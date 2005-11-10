@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.22 2005/09/07 10:45:34 eric Exp $
+ * @version $Id: Class.Session.php,v 1.23 2005/11/10 15:45:06 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.22 2005/09/07 10:45:34 eric Exp $
+// $Id: Class.Session.php,v 1.23 2005/11/10 15:45:06 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.22 2005/09/07 10:45:34 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.23 2005/11/10 15:45:06 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -66,6 +66,7 @@ var $sessiondb;
  
   function Set($id)
     {
+      global $_SERVER;
       $query=new QueryDb($this->dbaccess,"Session");
       $query->criteria = "id";
       $query->operator = "=";
@@ -79,7 +80,6 @@ var $sessiondb;
 	//	$this->initCache();
         
       } else {
-	global $_SERVER;
         // Init the database with the app file if it exists
 
 	$u = new User();
@@ -92,7 +92,7 @@ var $sessiondb;
       }
 
       // set cookie session
-      setcookie ("session",$this->id,$this->SetTTL(),"/");
+      if ($_SERVER['HTTP_HOST'] != "") setcookie ("session",$this->id,$this->SetTTL(),"/");
       return true;
     }
 
@@ -106,10 +106,10 @@ var $sessiondb;
       if ($_SERVER['HTTP_HOST'] != "") {
 	session_unset();
 	@session_destroy();
+	$this->Delete();
+	setcookie ("session","",0,"/");
       }
-      $this->Delete();
       $this->status = $this->SESSION_CT_CLOSE;
-      setcookie ("session","",0,"/");
       return $this->status;
     }  
   
