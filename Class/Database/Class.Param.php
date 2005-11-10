@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.19 2005/06/27 13:02:44 eric Exp $
+ * @version $Id: Class.Param.php,v 1.20 2005/11/10 15:45:23 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -116,11 +116,9 @@ function GetAll($appid="",$userid=ANONYMOUS_ID,$styleid="0")
      while(list($k,$v)=each($list)) {
        $out[$v["name"]]=$v["val"];
      }
-   } else {
-     $out = NULL;
+   } else {     
      $this->log->debug("$appid no constant define for this application");
    }
-   //   print_r2($out);
    return($out);
 }
  

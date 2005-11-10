@@ -3,7 +3,7 @@
  * Parameters modification
  *
  * @author Anakeen 2000 
- * @version $Id: param_mod.php,v 1.7 2004/05/14 14:52:07 eric Exp $
+ * @version $Id: param_mod.php,v 1.8 2005/11/10 15:43:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -62,7 +62,7 @@ function param_umod(&$action) {
   if ($atype[0] != PARAM_USER) $action->exitError(_("only user parameters can be modified with its action"));
   if (substr($atype,1) != $action->user->id) $action->exitError(_("only current user parameters can be modified with its action"));
 
-  param_mod(&$action);
+  param_mod($action);
 }
 
 ?>
