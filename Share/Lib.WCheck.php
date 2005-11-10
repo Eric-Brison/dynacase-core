@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.3 2005/11/10 15:46:47 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.5 2005/11/10 16:34:50 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
