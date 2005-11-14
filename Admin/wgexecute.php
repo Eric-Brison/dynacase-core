@@ -1,5 +1,4 @@
 <?php header('Content-type: text/xml; charset=utf-8'); 
-print '<?xml version="1.0" encoding="UTF-8"?>';
 global $_POST;
 $number=$_POST["number"];
 
@@ -7,6 +6,7 @@ session_start();
 global $_COOKIE;
 $sid=$_COOKIE['adminsession'];
 session_id($sid);
+print '<?xml version="1.0" encoding="UTF-8"?>';
 
 if (!$sid) {
   $code="SESSION ERROR";

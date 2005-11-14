@@ -3,13 +3,21 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.2 2005/11/10 15:43:56 eric Exp $
+ * @version $Id: wgcheck.php,v 1.3 2005/11/14 13:30:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
  */
 /**
  */
+session_start();
+global $_COOKIE;
+$sid=$_COOKIE['adminsession'];
+if ($sid) session_id($sid);
+else $sid=session_id();
+$uri=$_SERVER["REQUEST_URI"];
+$buri=substr($uri,0,strrpos($uri,"/")+1);
+setcookie("adminsession",$sid , time()+3600, "$buri");
 ?>
 <html><head>
 <title>FREEDOM check applications</title>
@@ -83,13 +91,13 @@ function processReqChange() {
 
 	      o=document.getElementById('err'+number);
 	      if (o) o.innerHTML=elt.firstChild.nodeValue;
-	      if ((code=="OK") && cmdcontinue) {
+	      if (((code=="OK")||(code=="SKIP")) && cmdcontinue) {
 		if ((parseInt(number)+1) < maxcmd)	sendCmd(parseInt(number)+1);
 		else if (confirm('Finish\nGo to FREEDOM now ?')) {
 		  document.location.href="../";
 		}
 	      }
-	      if ((code!="OK")&& cmdcontinue) alert(code+' : update aborted');
+	      if (((code!="OK")&&(code!="SKIP")) && cmdcontinue) alert(code+' : update aborted');
 	    }
 	    } else alert('no status\n'+req.responseText);
 	  } else alert('no xml\n'+req.responseText);
@@ -110,14 +118,6 @@ addEvent(window,"load",function al() {document.getElementById('dcmd').style.disp
 include("WHAT/Lib.Common.php");
 include("WHAT/Lib.WCheck.php");
 
-session_start();
-global $_COOKIE;
-$sid=$_COOKIE['adminsession'];
-if ($sid) session_id($sid);
-else $sid=session_id();
-$uri=$_SERVER["REQUEST_URI"];
-$buri=substr($uri,0,strrpos($uri,"/")+1);
-setcookie("adminsession",$sid , time()+3600, "$buri");
 
 $err=checkPGConnection();
 if ($err=="") {
@@ -140,7 +140,7 @@ if ($err=="") {
 if ($err == "") {
   foreach ($applications as $k=>$v) {
 
-    print sprintf("<tr><td>%s</td><td>%s&nbsp;</td><td>%s</td><td ><span class=\"%s\"><img src=\"Images/option.png\"></span>%s&nbsp;</td><td>%s&nbsp;</td></tr>",
+    print sprintf("<tr><td>%s</td><td>%s&nbsp;</td><td>%s&nbsp;</td><td ><span class=\"%s\"><img src=\"Images/option.png\"></span>%s&nbsp;</td><td>%s&nbsp;</td></tr>",
 		  $v["name"],
 		  $v["vdb"],
 		  $v["vfile"],
