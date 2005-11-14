@@ -3,7 +3,7 @@
  * Display interface to change password in case of expiration
  *
  * @author Anakeen 2003
- * @version $Id: chgpasswd.php,v 1.8 2005/09/21 09:43:19 jerome Exp $
+ * @version $Id: chgpasswd.php,v 1.9 2005/11/14 17:13:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -20,8 +20,9 @@ if ($_POST["login"] == "") {
 include_once("Class.Application.php");
 include_once("Class.User.php");
 include_once('Class.SessionCache.php');
+include_once('Lib.Prefix.php');
 
-bindtextdomain ("what", "/home/httpd/what/locale");
+bindtextdomain ("what", "$pubdir/locale");
 textdomain ("what");
 setlocale(LC_MESSAGES,getenv("LANG"));
 

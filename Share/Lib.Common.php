@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.23 2005/10/18 14:12:42 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.24 2005/11/14 17:13:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -100,16 +100,16 @@ function getDbid($dbaccess) {
 
 function getDbAccess() {
   global $CORE_DBANK;;
+  global $pubdir;
 
   if ($CORE_DBANK != "") return $CORE_DBANK;
   $dbaccess="";
 
-  $root = "/home/httpd/what";
   $dbank=getenv("dbanakeen");
   
  
   if ($dbank != "") {
-    $filename="$root/virtual/$dbank/dbaccess.php";    
+    $filename="$pubdir/virtual/$dbank/dbaccess.php";    
     if (file_exists($filename)) {
       include($filename);
     }    
