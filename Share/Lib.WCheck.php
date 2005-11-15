@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.7 2005/11/15 08:00:58 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.8 2005/11/15 12:53:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -69,12 +69,37 @@ function GetFileVersion($topdir) {
 	  }
 	}
 	fclose($fini);
-	print_r($app_const);
       }
     }  
     closedir($dir);
   }
   return ($tver);
+}
+/**
+ * get iorder value in .app files
+ * @param string $topdir publish directory
+ * @return array of iorder
+ */
+function getAppOrder($topdir) {
+
+  $tiorder=array();
+  if ($dir = @opendir($topdir)) {
+    while (($file = readdir($dir)) !== false) {
+      $inifile = $topdir."/$file/${file}.app";
+      if (@is_file($inifile)) {
+	unset($app_desc);
+	include($inifile);
+
+	if (isset($app_desc)) {
+	  if (isset($app_desc["iorder"]))  $tiorder[$file]=$app_desc["iorder"];
+	}
+
+
+      }
+    }  
+    closedir($dir);
+  }
+  return ($tiorder);
 }
 /** compare version like 1.2.3-4 
  * @param string $v1 version one
@@ -173,49 +198,59 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   $dbid=@pg_connect($dbaccess);
 
   $tvdb= GetDbVersion($dbid,$tmachine);
+  $tiorder=getAppOrder($pubdir);
+  
+  foreach ($tiorder as $k=>$v) {
+    $tapp[$k]["iorder"]=$v;
+  }
+  uasort($tapp,"cmpapp");
   foreach ($tapp as $k=>$v) {
-    switch ($v["chk"]) {
-    case "I":
-      $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=init --appname=$k";
-      $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
-      break;
-    case "U":
-      $wsh[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
-      break;
-    case "D":
-      $wsh[] = "#$pubdir/wsh.php  --api=appadmin --method=delete --appname=$k";
-      break;
-    case "R":
-      $wsh[] = "#rpm -Uvh $k-".$v["vdb"];
-      break;
-
-    }
-
-    // search POST install
-    if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
-      if ($v["chk"] == "I") {
-	$pre[] = "$pubdir/$k/{$k}_post  ".$v["chk"];
-	$post[] = "$pubdir/$k/{$k}_post  U";
-      } else {
-	if (($v["chk"] != "R") && ($v["chk"] != "?")) {
-	  if ($v["chk"] == "D") $post[] = "#$pubdir/$k/{$k}_post ".$v["chk"];
-	  else $post[] = "$pubdir/$k/{$k}_post ".$v["chk"];
-	}
-      }
-    }
-    
-
     // search Migration file
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
 	if (ereg("{$k}_migr_([0-9\.]+)$", $file, $reg)) {
 
 	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
-	    $migr[]="$pubdir/$k/$file";
+	    $cmd[]="$pubdir/$k/$file";
 	}
       }
     }   
 
+    // search PRE install
+    if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
+      if ($v["chk"] == "I") {
+	$cmd[] = "$pubdir/$k/{$k}_post  ".$v["chk"];
+      } 
+    }
+    switch ($v["chk"]) {
+    case "I":
+      $cmd[] = "$pubdir/wsh.php  --api=appadmin --method=init --appname=$k";
+      $cmd[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
+      break;
+    case "U":
+      $cmd[] = "$pubdir/wsh.php  --api=appadmin --method=update --appname=$k";
+      break;
+    case "D":
+      $cmd[] = "#$pubdir/wsh.php  --api=appadmin --method=delete --appname=$k";
+      break;
+    case "R":
+      $cmd[] = "#rpm -Uvh $k-".$v["vdb"];
+      break;
+
+    }
+
+    // search POST install
+    if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
+      if ($v["chk"] == "I")  {
+	$cmd[] = "$pubdir/$k/{$k}_post  U";
+      } else {
+	if (($v["chk"] != "R") && ($v["chk"] != "?")) {
+	  if ($v["chk"] == "D") $cmd[] = "#$pubdir/$k/{$k}_post ".$v["chk"];
+	  else $cmd[] = "$pubdir/$k/{$k}_post ".$v["chk"];
+	}
+      }
+    }
+    
 
     // search Post Migration file
     if ($dir = @opendir("$pubdir/$k")) {
@@ -223,7 +258,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
 	if (ereg("{$k}_pmigr_([0-9\.]+)$", $file, $reg)) {
 
 	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
-	    $pmigr[]="$pubdir/$k/$file";
+	    $cmd[]="$pubdir/$k/$file";
 	}
       }
     }   
@@ -236,16 +271,21 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   $dump[] = "$pubdir/whattext";
   
 
-  $tact = array_merge($dump,
-		      array_merge($pre,
-				  array_merge($migr,
-					      array_merge($wsh, 
-							  array_merge($post,$pmigr)))));
+  $tact = array_merge($dump,$cmd);
   
   if ($dbank != "anakeen") $tact[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
   $tact[] = "$pubdir/wsh.php  --api=freedom_clean";
   $tact[] = "$pubdir/wstart";
   $tact[] = "sudo $pubdir/admin/shttpd";
   
+}
+
+function cmpapp($a,$b) {
+  if (isset($a["iorder"]) && isset($b["iorder"])) {
+    if ($a["iorder"]>$b["iorder"]) return 1;
+    else if ($a["iorder"]<$b["iorder"]) return -1;
+    return 0;
+  }
+  return -1;
 }
 ?>
