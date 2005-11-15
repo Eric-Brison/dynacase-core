@@ -115,7 +115,7 @@ function selectIt(th) {
 <td width="[izbpx]"  align="center"
      onMouseOver="unFadeIt(i[name]);" 
      onMouseOut="fadeIt(i[name]);"  >
-     <a href="#"><img  class="Fade"  id="i[name]" onclick="selectIt(this);lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
+     <a ><img  class="Fade"  id="i[name]" onclick="selectIt(this);lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
      src="[pubdir]/[iconsrc]" border="0" width="[izpx]" height="[izpx]" alt="[description]" title="[description]" ></a>
 </td>
   [ENDBLOCK FUNCTION]
@@ -126,11 +126,11 @@ function selectIt(th) {
 
      &nbsp;</span>
  [BLOCK NOFREEGATE]
-     <a href="#"><img onClick="lauch_action(event,'[IMG:logo-mini.png]','CORE','[TEXT:Homepage]');" 
+     <a ><img onClick="lauch_action(event,'[IMG:logo-mini.png]','CORE','[TEXT:Homepage]');" 
           align="absmiddle" alt="[TEXT:Welcome Page]" title="[TEXT:gate page]" height="[izpx]" src="[IMG:logo-mini.png]" border="0"></a>
  [ENDBLOCK NOFREEGATE]
  [BLOCK FREEGATE]
-     <a href="#"><img onClick="fbody.location.href='[CORE_STANDURL]&app=FREEGATE&action=FREEGATE_VIEWGATE'" 
+     <a ><img onClick="fbody.location.href='[CORE_STANDURL]&app=FREEGATE&action=FREEGATE_VIEWGATE'" 
           align="absmiddle" alt="[TEXT:Welcome Page]" 
 	  title="[TEXT:New GATE page]" height="22" src="[IMG:logo-mini.png]" border="0"></a>
  [ENDBLOCK FREEGATE]</td>

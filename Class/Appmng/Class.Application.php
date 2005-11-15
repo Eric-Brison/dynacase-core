@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.46 2005/11/10 15:45:06 eric Exp $
+ * @version $Id: Class.Application.php,v 1.47 2005/11/15 12:55:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -25,7 +25,6 @@ include_once('Class.ParamDef.php');
 include_once('Lib.Http.php');
 include_once('Lib.Common.php');
 
-function N_($s) {return ($s);} // to tag gettext without change text immediatly
 function f_paramglog($var) { // filter to select only not global
     return (! ((isset($var["global"]) && ($var["global"] == 'Y'))));
 }
@@ -33,7 +32,7 @@ function f_paramglog($var) { // filter to select only not global
 
 Class Application extends DbObj
 {
-  public $fields = array ( "id",  "name","short_name",  "description",  "access_free",  "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine");
+  public $fields = array ( "id",  "name","short_name",  "description",  "access_free",  "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine","iorder");
 
   public $id_fields = array ( "id");
 
@@ -52,7 +51,8 @@ create table application ( 	id 	int not null,
                         childof varchar(20),
                         objectclass char,
                         ssl char,
-                        machine text);
+                        machine text,
+                        iorder int);
 create index application_idx1 on application(id);
 create index application_idx2 on application(name);
 create sequence SEQ_ID_APPLICATION start 10;

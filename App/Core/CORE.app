@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.13 2005/10/31 14:05:56 marc Exp $
+// $Id: CORE.app,v 1.14 2005/11/15 12:55:34 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -30,7 +30,8 @@ $app_desc= array (
 "access_free"	=>"Y",                   //Access type (ALL,RESTRICT)
 "icon"		=>"core.png",            //Icon
 "displayable"	=>"N",                    //Should be displayed on an app list
-"with_frame"	=>"Y"			//Use multiframe ? (Y,N)
+"with_frame"	=>"Y",			//Use multiframe ? (Y,N)
+"iorder"         =>0                     // install order first
 );
 
 $action_desc = array (

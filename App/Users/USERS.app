@@ -7,7 +7,8 @@ $app_desc = array (
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"users.gif",		//Icon
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
-"available"	=>"N"			//deprecated application
+"available"	=>"N",			//deprecated application
+"iorder"	        =>10,
 );
 
 $app_acl = array (

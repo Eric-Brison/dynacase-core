@@ -8,7 +8,8 @@ $app_desc = array (
 "description"	=>N_("What Access Management"),//long description
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"access.gif",		//Icon
-"displayable"	=>"Y"		//Should be displayed on an app list (Y,N)
+"displayable"	=>"Y",		//Should be displayed on an app list (Y,N)
+"iorder"         =>10         // install order
 );
 
 $app_acl = array (

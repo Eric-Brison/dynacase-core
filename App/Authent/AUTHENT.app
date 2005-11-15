@@ -8,7 +8,8 @@ $app_desc = array (
 "description"	=>"Authentification Application",	//long description
 "access_free"	=>"Y",			//Access free ? (Y,N)
 "icon"		=>"authent.gif",		//Icon
-"displayable"	=>"N"			//Should be displayed on an app list (Y,N)
+"displayable"	=>"N",			//Should be displayed on an app list (Y,N)
+"iorder"         =>10                  // install order
 );
 
 $action_desc = array (

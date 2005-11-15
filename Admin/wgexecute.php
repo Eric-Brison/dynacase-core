@@ -18,7 +18,7 @@ if (!$sid) {
         exec ( $cmd , $out ,$err );
 	if ($err==0) $code="OK";
 	else $code=$err;
-	foreach ($out as $k=>$v) $out[$k]=htmlentities($v);
+	foreach ($out as $k=>$v) $out[$k]=str_replace("","",htmlentities($v));
 	$msg=implode("<br/>",$out);
       } else {
 	$code="SKIP";

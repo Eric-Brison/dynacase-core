@@ -7,7 +7,8 @@ $app_desc = array (
 "description"	=>N_("What Application Management"),//long description
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"appmng.gif",		//Icon
-"displayable"	=>"N"			//Should be displayed on an app list (Y,N)
+"displayable"	=>"N",			//Should be displayed on an app list (Y,N)
+"iorder"         =>10                    // install order
 );
 
 $app_acl = array (

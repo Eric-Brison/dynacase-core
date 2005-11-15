@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.24 2005/11/14 17:13:10 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.25 2005/11/15 12:55:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,6 +12,7 @@
  */
 include_once("Lib.Prefix.php");
 
+function N_($s) {return ($s);} // to tag gettext without change text immediatly
 // library of utilies functions
 
 function print_r2($z,$ret=false) {

@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.3 2005/11/14 13:30:07 eric Exp $
+ * @version $Id: wgcheck.php,v 1.4 2005/11/15 12:55:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -29,11 +29,13 @@ var req;
 var cmdcontinue=false;
 var ncmd=0;
 var maxcmd=0;
+var inprogress=false;
 function sendCmds(n) {
   
 }
 
 function sendCmd(n) {
+  if (inprogress) return; // one request only
     // branch for native XMLHttpRequest object
     if (window.XMLHttpRequest) {
         req = new XMLHttpRequest(); 
@@ -48,14 +50,15 @@ function sendCmd(n) {
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
         req.send("number="+n);
 	var o=document.getElementById('err'+n);
-	if (o) o.innerHTML="<blink>Executing...</blink>";
+	if (o) o.innerHTML="<img src=\"Images/progressbar.gif\"><blink>Executing...</blink>";
+	inprogress=true;
 
     }
     var off=document.location.href.lastIndexOf('#');
     ncmd=n+1; // next cmd
     if (n>2) {
       n=n-2;
-      if (off > 0) {
+      if (cmdcontinue && (off > 0)) {
 	document.location.href=document.location.href.substring(0,off)+'#trname'+n;
       } else {
 	document.location.href=document.location.href+'#trname'+n;
@@ -66,6 +69,7 @@ function sendCmd(n) {
 }
 function processReqChange() {
     // only if req shows "loaded"
+  inprogress=false;
     if (req.readyState == 4) {
         // only if "OK"
         if (req.status == 200) {
