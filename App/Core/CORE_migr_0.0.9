@@ -1,13 +1,17 @@
 #!/bin/bash
 
-pubdir="/home/httpd/what";
-/usr/bin/php -q $pubdir/API/updateclass.php  --class=Application
-/usr/bin/php -q $pubdir/API/updateclass.php  --class=Style
-/usr/bin/php -q $pubdir/API/updateclass.php  --class=ParamDef
-/usr/bin/php -q $pubdir/API/updateclass.php  --class=Param
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+/usr/bin/php -q $wpub/API/updateclass.php  --class=Application
+/usr/bin/php -q $wpub/API/updateclass.php  --class=Style
+/usr/bin/php -q $wpub/API/updateclass.php  --class=ParamDef
+/usr/bin/php -q $wpub/API/updateclass.php  --class=Param
 
-$pubdir/wsh.php --api=appadmin --method=update --appname=CORE
-$pubdir/wsh.php --app=APPMNG --action=APP_UPDATEALL
+$wpub/wsh.php --api=appadmin --method=update --appname=CORE
+$wpub/wsh.php --app=APPMNG --action=APP_UPDATEALL
 
 echo "update paramv set val=param.val from param where param.name = paramv.name and param.key=paramv.appid;" | psql $dbpsql
 
