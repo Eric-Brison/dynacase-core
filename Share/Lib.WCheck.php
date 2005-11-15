@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.6 2005/11/14 17:13:10 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.7 2005/11/15 08:00:58 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -170,6 +170,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   $dump=array();
   $dbaccess=getDbAccess();
   $dbank=getDbName($dbaccess);
+  $dbid=@pg_connect($dbaccess);
 
   $tvdb= GetDbVersion($dbid,$tmachine);
   foreach ($tapp as $k=>$v) {
