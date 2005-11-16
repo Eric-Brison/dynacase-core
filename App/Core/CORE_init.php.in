@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.27 2005/10/31 15:14:17 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.28 2005/11/16 16:35:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -162,12 +162,12 @@ $app_const = array (
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
-		    "CORE_LOGOCLIENT"		=>array("val"=>"CORE/Images/logo-1-mini.gif",
+		    "CORE_LOGOCLIENT"		=>array("val"=>"CORE/Images/logo-mini.png",
 							"descr"=>N_("client logo"),
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
-		    "CORE_ANAKEEN"		=>array("val"=>"Anakeen&nbsp;2003",
+		    "CORE_ANAKEEN"		=>array("val"=>"Anakeen&nbsp;2005",
 							"descr"=>N_("anakeen"),
 							"user"=>"N",
 							"style"=>"N",
@@ -180,6 +180,11 @@ $app_const = array (
 							"global"=>"Y"),
 		    "CORE_MAXOBJCACHE"	        =>array("val"=>"50",
 							"descr"=>N_("number of cached object by class"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "MEMORY_LIMIT"	        =>array("val"=>"32",
+							"descr"=>N_("memory max for PHP in Mo"),
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),

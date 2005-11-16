@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php.in,v 1.2 2005/09/12 16:31:13 eric Exp $
+ * @version $Id: wsh.php.in,v 1.3 2005/11/16 16:35:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -81,6 +81,7 @@ $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 $puburl = $core->GetParam("CORE_PUBURL","http://".`hostname -f`."/what");
 
 
+ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links

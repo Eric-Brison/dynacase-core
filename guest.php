@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.16 2005/10/18 14:12:42 eric Exp $
+ * @version $Id: guest.php,v 1.17 2005/11/16 16:35:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -64,6 +64,7 @@ $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
+ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 
 // ----------------------------------------
 // Init PUBLISH URL from script name

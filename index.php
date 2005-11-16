@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.34 2005/10/18 14:12:42 eric Exp $
+ * @version $Id: index.php,v 1.35 2005/11/16 16:35:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -75,7 +75,7 @@ if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
 //$core->SetSession($session);
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
-
+ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 // ----------------------------------------
 // Init PUBLISH URL from script name
 
@@ -90,7 +90,6 @@ if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
   print "<B>:~(</B>";
   exit;
 }
-
 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
