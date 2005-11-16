@@ -1,12 +1,13 @@
 #!/bin/bash
 # ---------------------------------------------------------
-# $Id: WHAT.cron,v 1.4 2005/11/10 15:48:38 eric Exp $
+# $Id: WHAT.cron,v 1.5 2005/11/16 16:34:10 eric Exp $
 #  
 # Distribued under GPL 2 licence terms
 # ---------------------------------------------------------
 if [ -d /var/run/php ] ; then
   find /var/run/php/ -name 'sess_*' -exec /bin/rm {} \;
-fiif [ -d /var/lib/php ] ; then
+fi
+if [ -d /var/lib/php ] ; then
   find /var/lib/php/ -name 'sess_*' -exec /bin/rm {} \;
 fi
 find /tmp/ -name 'wbar*' -exec /bin/rm {} \;
