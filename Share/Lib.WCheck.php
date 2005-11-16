@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.8 2005/11/15 12:53:16 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.9 2005/11/16 16:36:04 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -188,10 +188,10 @@ function getCheckApp($pubdir,&$tapp) {
 function getCheckActions($pubdir,$tapp,&$tact) {
 
   $wsh=array(); // application update
-  $migr=array();// migration
-  $pmigr=array();// post migration
-  $post=array();// post install 
-  $pre=array(); // pre install 
+
+
+
+  $cmd=array(); // pre/post install 
   $dump=array();
   $dbaccess=getDbAccess();
   $dbank=getDbName($dbaccess);
@@ -286,6 +286,8 @@ function cmpapp($a,$b) {
     else if ($a["iorder"]<$b["iorder"]) return -1;
     return 0;
   }
-  return -1;
+  if (isset($a["iorder"])) return -1;
+  if (isset($b["iorder"])) return 1;
+  return 0;
 }
 ?>
