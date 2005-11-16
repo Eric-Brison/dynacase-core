@@ -14,6 +14,7 @@
  
 <script language="JavaScript" src="WHAT/Layout/geometry.js"></script>
 <script language="JavaScript" src="WHAT/Layout/AnchorPosition.js"></script>
+<script language="JavaScript" src="WHAT/Layout/DHTMLapi.js"></script>
 [CSS:REF]
    <style type="text/css">
 [CSS:CODE]
@@ -45,10 +46,12 @@ function resizeIurl() {
 var eiurl=document.getElementById("fbody");
 var xy=getAnchorPosition("fbody");
 var hiurl=getFrameHeight();
-var nh=hiurl - xy.y - 20; // offset for scrollbar
+var nh=hiurl - xy.y ; // offset for scrollbar
+ var hf;
 // alert(window.document.body.nodeType);
-  nh=nh-20; // heigth of footer
-eiurl.height=nh;
+ hf=getObjectHeight(document.getElementById("dfooter"));
+  nh=nh-hf; // heigth of footer
+eiurl.height=nh-7;
 }
 window.onresize=resizeIurl;
 addEvent(window,"load",resizeIurl);
@@ -58,8 +61,8 @@ addEvent(window,"load",resizeIurl);
 <body>
 [ZONE [headerApp]:[headerAct]]
 
-<iframe style="border:none;margin:0px" id="fbody" width="100%" height="90%" name="fbody" src="[CORE_STANDURL]&app=[mainApp]&action=[mainAct]" scrolling="needed"></iframe>
+<iframe style="border:none;margin:0px" id="fbody" width="100%" height="85%" name="fbody" src="[CORE_STANDURL]&app=[mainApp]&action=[mainAct]" scrolling="needed"></iframe>
 <iframe style="display:none" name="fhidden" src="[CORE_STANDURL]&app=CORE&action=WVERSION" noresize  style="border-style:none" scrolling="no"></iframe>
-[ZONE [footerApp]:[footerAct]]
+<div id="dfooter">[ZONE [footerApp]:[footerAct]]</div>
 </body>
 </html>
