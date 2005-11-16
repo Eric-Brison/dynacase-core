@@ -37,7 +37,7 @@ if [ "$1" = "I" ] ; then
 
   log "Add plpgsql functions"
   psql  --username=postgres $dbpsql -f $wpub/WHAT/getprivilege.sql
-
+  echo "ALTER DATABASE $dbname set DateStyle = sql,european;" | psql  --username=postgres $dbpsql
   log "Register DB $dbname for automatic dump"
   ll=0
   if [ -f /etc/ankpsql-tools/base-list ] ; then
