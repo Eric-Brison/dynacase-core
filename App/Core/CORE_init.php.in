@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.29 2005/11/17 11:07:05 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.30 2005/11/17 13:42:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -23,7 +23,8 @@ $app_const = array (
 							"descr"=>N_("application version"),
 							"kind"=>"static"),
 		    "CORE_FRONTPAGE"		=>array("val"=>"",
-							"descr"=>N_("Freedom frontpage description")),
+							"descr"=>N_("Freedom frontpage description"),
+							"kind"=>"text"),
 		    "WVERSION"			=>array("val"=>"@VERSION@-@RELEASE@",
 							"descr"=>N_("version identificator"),
 							"kind"=>"static",
