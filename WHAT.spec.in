@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.60 2005/11/16 16:34:29 eric Exp $
+#  $Id: WHAT.spec.in,v 1.61 2005/11/17 10:39:42 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -143,7 +143,7 @@ sed -i '/shttpd/d' /etc/sudoers
 echo "%{httpuser} ALL=NOPASSWD:%{destdir}/admin/shttpd" >> /etc/sudoers
 if [ ! -f %{destdir}/admin/index.html ]; then
        cd %{destdir}/admin
-       ln -s %{destdir}/winit.html index.html
+       ln -s %{destdir}/admin/winit.html index.html
        cd - > /dev/null
 fi
 
