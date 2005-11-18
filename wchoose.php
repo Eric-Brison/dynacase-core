@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wchoose.php,v 1.10 2005/10/05 16:28:42 eric Exp $
+ * @version $Id: wchoose.php,v 1.11 2005/11/18 16:01:06 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -59,14 +59,16 @@ function choosedb() {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-if ($_SERVER['HTTP_HOST'] != "")     {
+if (isset($_SERVER['HTTP_HOST']))     {
   print "<BR><H1>:~(</H1>";
   exit;
 }
-if ($argv[1]=="-b") $dbank="anakeen";
-else if ($argv[1]!="") $dbank=$argv[1];
-else $dbank=choosedb();
-writedbenv($dbank);
+if (isset($argv[1])) {
+  if ($argv[1]=="-b") $dbank="anakeen";
+  else if ($argv[1]!="") $dbank=$argv[1];
+ } else $dbank=choosedb();
+if (! $dbank) exit(1);
+ else writedbenv($dbank);
 exit(0);
 
 ?>

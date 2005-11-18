@@ -3,7 +3,7 @@
  * WHAT Environnement
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.4 2005/10/05 16:28:42 eric Exp $
+ * @version $Id: wenv.php,v 1.5 2005/11/18 16:01:06 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -16,6 +16,7 @@ function writedbenv($dba,$dbcoord="",$dbfree="") {
   $wpub=getenv("wpub");
   if ($dba=="anakeen") $dbf="$wpub/dbaccess.php";
   else $dbf="$wpub/virtual/$dba/dbaccess.php";
+  if (! file_exists($dbf)) return false;
   if ($dbcoord=="") $dbcoord=file_get_contents($dbf);
   else $dbcoord="\"$dbcoord\"";
   $dbhost="localhost";
