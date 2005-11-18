@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.17 2005/11/16 16:35:11 eric Exp $
+ * @version $Id: guest.php,v 1.18 2005/11/18 16:01:25 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -29,7 +29,7 @@ include_once('Class.Log.php');
 include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
-define("PORT_SSL", 443); // the default port for https
+
 
 
 $log=new Log("","guest.php");
@@ -72,7 +72,7 @@ if (ereg("(.*)/guest\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 
   // determine publish url (detect ssl require)
  
-  if ($_SERVER['SERVER_PORT'] != PORT_SSL)   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
+  if ($_SERVER['HTTPS'] != 'on')   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
   else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
 } else {
   // it is not allowed
@@ -122,7 +122,7 @@ if (($standalone == "") || ($standalone == "N")) {
     // test SSL mode needed or not
     // redirect if needed
   if ($appl->ssl == "Y") {
-    if ($_SERVER['SERVER_PORT'] != PORT_SSL) {
+    if ($_SERVER['HTTPS'] != 'on') {
 
       // redirect to go to ssl http
       $sslurl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
@@ -131,16 +131,7 @@ if (($standalone == "") || ($standalone == "N")) {
     }     
     
     $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
-  } else {
-    if ($_SERVER['SERVER_PORT'] == PORT_SSL) {
-
-      // redirect to  suppress ssl http
-      $sslurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
-
-      Header("Location: $puburl");
-      exit;
-    }
-  }
+  } 
 
   
   // -----------------------------------------------
