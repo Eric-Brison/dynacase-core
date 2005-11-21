@@ -17,7 +17,7 @@ if ($err=="") {
   if ($err) {
     exec ( "$pubdir/CORE/CORE_post I" , $out ,$err );
     //$out = shell_exec("$pubdir/CORE/CORE_post I 2>/tmp/w");
-      
+    $out2=array();
     if ($err == 0) {
     
       exec ( "$pubdir/CORE/CORE_post U" , $out2 ,$err );

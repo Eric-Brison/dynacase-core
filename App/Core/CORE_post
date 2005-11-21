@@ -12,9 +12,9 @@ fi
 #------------------------------
 if [ "$1" = "I" ] ; then
 
-  run=`/etc/rc.d/init.d/postgresql status`
+  run=`ps ax | grep postmaster`
   if [ $? != 0 ] ; then
-    log "postgresql is not running ..Init is delayed"
+    echo "postgresql is not running ..Init is delayed"
     exit 1
   fi
 
