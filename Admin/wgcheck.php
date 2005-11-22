@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.5 2005/11/22 09:37:58 eric Exp $
+ * @version $Id: wgcheck.php,v 1.6 2005/11/22 13:47:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -169,7 +169,7 @@ if ($err=="") {
     print '<table width="100%"><tr>';
     print '<td rowspan="2" width="85px"><div align="right" title="Click to launch easy install" class="bouton" onclick="cmdcontinue=true;sendCmd(ncmd)">Easy</div></td><td style="height:30px;">';
     foreach ($actions as $k=>$v) {
-      print sprintf("<img class=\"button\" onclick=\"if (!easy) sendCmd(%s)\"  id=\"spi%s\" src=\"Images/option.png\">",  $k,$k);
+      print sprintf("<img class=\"button\" style=\"float:left\" onclick=\"if (!easy) sendCmd(%s)\"  id=\"spi%s\" src=\"Images/option.png\">",  $k,$k);
     } 
     print '</td><td  width="85px" rowspan="2" align="right"><div title="Click for special install for expert" class="bouton" onclick="document.getElementById(\'dcr\').style.display=\'\';document.getElementById(\'dsimple\').style.display=\'none\'">Expert</div></td></tr>';
     print '<tr><td><span id="easycr"></span></td></tr>';
@@ -177,7 +177,7 @@ if ($err=="") {
   }
 ?>
 </div>
-<div id="dcr" class="frame" style="display:none">
+<div id="dcr" class="frame" <?php if ($err == "") print "style=\"display:none\"";?>>
 
 <table width="100%"><tr><td><H1>Applications state</H1></td><td align="right"><div class="bouton" onclick="displaynext()"
 <?php if ($err) print "style=\"display:none\"";?>
