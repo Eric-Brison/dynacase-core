@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.4 2005/11/15 12:55:34 eric Exp $
+ * @version $Id: wgcheck.php,v 1.5 2005/11/22 09:37:58 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -27,6 +27,7 @@ setcookie("adminsession",$sid , time()+3600, "$buri");
 <script>
 var req;
 var cmdcontinue=false;
+var easy=true;
 var ncmd=0;
 var maxcmd=0;
 var inprogress=false;
@@ -51,25 +52,28 @@ function sendCmd(n) {
         req.send("number="+n);
 	var o=document.getElementById('err'+n);
 	if (o) o.innerHTML="<img src=\"Images/progressbar.gif\"><blink>Executing...</blink>";
+	o=document.getElementById('easycr');
+	if (o) o.innerHTML="<img src=\"Images/progressbar.gif\"><br><blink>Executing "+n+"...</blink>";
+	
 	inprogress=true;
 
     }
-    var off=document.location.href.lastIndexOf('#');
     ncmd=n+1; // next cmd
     if (n>2) {
       n=n-2;
+      var off=document.location.href.indexOf('#');
       if (cmdcontinue && (off > 0)) {
 	document.location.href=document.location.href.substring(0,off)+'#trname'+n;
-      } else {
-	document.location.href=document.location.href+'#trname'+n;
-      }
+      } 
     }
 
 
 }
 function processReqChange() {
     // only if req shows "loaded"
-  inprogress=false;
+  inprogress=false; 
+  var o=document.getElementById('easycr');
+  if (o) o.innerHTML='Done';
     if (req.readyState == 4) {
         // only if "OK"
         if (req.status == 200) {
@@ -81,7 +85,7 @@ function processReqChange() {
 	    var elt=elts[0];
 	    var code=elt.getAttribute("code");
 	    var number=elt.getAttribute("number");
-	    var o=document.getElementById('spi'+number);
+	     o=document.getElementById('spi'+number);
 	    if (o) {
 	      if (code=="OK") {
 		o.className="G";
@@ -101,18 +105,41 @@ function processReqChange() {
 		  document.location.href="../";
 		}
 	      }
-	      if (((code!="OK")&&(code!="SKIP")) && cmdcontinue) alert(code+' : update aborted');
+	      if (((code!="OK")&&(code!="SKIP")) && cmdcontinue) {
+		alert(code+' : update aborted');
+		displaynext();
+	      }
 	    }
-	    } else alert('no status\n'+req.responseText);
-	  } else alert('no xml\n'+req.responseText);
+	    } else {
+	      alert('no status\n'+req.responseText);
+	      displaynext();
+	    }
+	  } else {
+	    alert('no xml\n'+req.responseText);
+	    displaynext();
+	  }
 	  
 	  
         } else {
             alert("There was a problem retrieving the XML data:\n" +
                 req.statusText);
+	    displaynext();
         }
     }
 }
+function displaynext() {
+  var n,i,o,oi;
+  document.getElementById('dsimple').style.display='none';
+  document.getElementById('dcr').style.display='none';
+  document.getElementById('dcmd').style.display='';
+  easy=false;
+  for (i=0;i<maxcmd;i++) {
+      o=document.getElementById('tdi'+i);
+      oi=document.getElementById('spi'+i);
+      if (o && oi) o.appendChild(oi);
+    }
+  }
+
 addEvent(window,"load",function al() {document.getElementById('dcmd').style.display='none';});
 </script>
 </head>
@@ -127,12 +154,32 @@ $err=checkPGConnection();
 if ($err=="") {
   $err=getCheckApp($pubdir,$applications);
   if ($err) $msg=_("create databases ?");
+  if ($err=="") {
+    $err=getCheckActions($pubdir,$applications,$actions);
+    if ($err == "") {
+      $_SESSION["actions"] = $actions;
+    }
+ }
  }
 ?>
 
-<div id="dcr" class="frame">
+<div id="dsimple" class="frame">
+<?php
+  if ($err == "") {
+    print '<table width="100%"><tr>';
+    print '<td rowspan="2" width="85px"><div align="right" title="Click to launch easy install" class="bouton" onclick="cmdcontinue=true;sendCmd(ncmd)">Easy</div></td><td style="height:30px;">';
+    foreach ($actions as $k=>$v) {
+      print sprintf("<img class=\"button\" onclick=\"if (!easy) sendCmd(%s)\"  id=\"spi%s\" src=\"Images/option.png\">",  $k,$k);
+    } 
+    print '</td><td  width="85px" rowspan="2" align="right"><div title="Click for special install for expert" class="bouton" onclick="document.getElementById(\'dcr\').style.display=\'\';document.getElementById(\'dsimple\').style.display=\'none\'">Expert</div></td></tr>';
+    print '<tr><td><span id="easycr"></span></td></tr>';
+    print '</table>';
+  }
+?>
+</div>
+<div id="dcr" class="frame" style="display:none">
 
-<table width="100%"><tr><td><H1>Applications state</H1></td><td align="right"><div class="bouton" onclick="document.getElementById('dcr').style.display='none';document.getElementById('dcmd').style.display='';"
+<table width="100%"><tr><td><H1>Applications state</H1></td><td align="right"><div class="bouton" onclick="displaynext()"
 <?php if ($err) print "style=\"display:none\"";?>
 >Next</div>
 
@@ -169,19 +216,16 @@ if ($err == "") {
 
 <table cellspacing="0" align="center" class="app"><tr><th>Commande</th><th>Status</th><th>Message</th></tr>
 <?php
-if ($err=="") {
-  $err=getCheckActions($pubdir,$applications,$actions);
   if ($err=="") {
-    $_SESSION["actions"] = $actions;
     foreach ($actions as $k=>$v) {
-      print sprintf("<tr  id=\"cmd%s\" ><td><a name=\"trname%s\">%s</a></td><td>&nbsp;<img class=\"button\" onclick=\"sendCmd(%s)\"  id=\"spi%s\" src=\"Images/option.png\"><span  id=\"sp%s\" ></span></td><td><div  class=\"msg\" id=\"err%s\"></div></td></tr>",
-		    $k,$k,$v,$k,$k,$k,$k);
+      print sprintf("<tr  id=\"cmd%s\" ><td><a name=\"trname%s\">%s</a></td><td id=\"tdi%s\">&nbsp;<span  id=\"sp%s\" ></span></td><td><div  class=\"msg\" id=\"err%s\"></div></td></tr>",
+		    $k,$k,$v,$k,$k,$k,$k,$k);
     }
     print sprintf("<script> maxcmd=%d;</script>",count($actions));
   } else {
     print sprintf("<tr class=\"E\"><td colspan=\"5\">%s</td></tr>",$err);
   }
-}
+
 
 ?>
 
