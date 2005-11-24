@@ -1,4 +1,14 @@
-<?php header('Content-type: text/xml; charset=utf-8'); 
+<?php 
+/**
+ * Install command executing
+ *
+ * @author Anakeen 2005
+ * @version $Id: wgexecute.php,v 1.5 2005/11/24 09:11:18 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+header('Content-type: text/xml; charset=utf-8'); 
 global $_POST;
 $number=$_POST["number"];
 

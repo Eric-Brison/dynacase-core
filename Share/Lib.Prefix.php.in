@@ -1,3 +1,14 @@
 <?php
+/**
+ * Default install directory
+ *
+ * @author Anakeen 2005
+ * @version $Id: Lib.Prefix.php.in,v 1.2 2005/11/24 09:11:26 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 $pubdir="@prefix@";
 ?>

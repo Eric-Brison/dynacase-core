@@ -1,3 +1,14 @@
+<?php
+/**
+ * Database creation
+ *
+ * @author Anakeen 2005
+ * @version $Id: wgdbcreate.php,v 1.5 2005/11/24 09:11:18 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+?>
 <html><head>
 <title>FREEDOM Create Databases</title>
 <LINK REL="stylesheet" type="text/css" HREF="Layout/wg.css" >
