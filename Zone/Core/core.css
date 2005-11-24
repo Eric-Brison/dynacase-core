@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.45 2005/10/31 11:51:58 eric Exp $
+ * $Id: core.css,v 1.46 2005/11/24 09:10:43 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -252,7 +252,7 @@ IMG.click:hover {
   color: [CORE_ERRORCOLOR];
   font-weight: bold;
   padding:20px;
-  background-color:[CORE_BGCOLOR];
+  background:[CORE_BGCOLOR];
 
   border:solid 1px;
   text-align:center;
