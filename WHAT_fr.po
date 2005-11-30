@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-31 16:24+0100\n"
+"POT-Creation-Date: 2005-11-24 15:26+0100\n"
 "PO-Revision-Date: 2005-09-06 16:46+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -214,359 +214,25 @@ msgid "the user identification is unknow"
 msgstr "l'identification de l'utilisateur est inconnue"
 
 #, c-format
-msgid "API file %s not found"
-msgstr "fichier API %s non trouvé."
+msgid "Create other database for %s (%s)"
+msgstr "Création d'autres bases pour %s (%s)"
+
+msgid "Command failed"
+msgstr "échec de la commande"
+
+msgid "Name of anakeen database ?"
+msgstr "Nom de la base anakeen ?"
 
 #, c-format
-msgid "Caught Exception : %s<br>\n"
-msgstr ""
-
-#, c-format
-msgid "Choose database in %s (%s)"
-msgstr "Choix de la base de données dans %s (%s)"
+msgid "Virtual host : [%s]"
+msgstr "Hôte virtual : [%s]"
 
 #, c-format
 msgid "Database : [%s]"
 msgstr "Base de données : [%s]"
 
-#, c-format
-msgid "Attribute %s not found\n"
-msgstr "Attribut %s non trouvé.\n"
-
-#, c-format
-msgid ""
-"Attribute %s found is not alone\n"
-"Must precise request with userid or appid arguments\n"
-msgstr ""
-"L'attribut %s trouvé n'est pas seul\n"
-"Préciser la requête en uitilisant les arguments userid et appid\n"
-
-#, c-format
-msgid "Attribute %s not modified : %s\n"
-msgstr "Attribut %s non modifié : %s\n"
-
-#, c-format
-msgid "Attribute %s modified to %s"
-msgstr "Attribut %s modifié par %s"
-
-msgid "cannot access to  database $db\n"
-msgstr "accès à la base de données $db refusé\n"
-
-msgid "access granted to  database $db\n"
-msgstr "accès à la base de données $db autorisé\n"
-
-msgid "Access"
-msgstr "Accessibilités"
-
-msgid "What Access Management"
-msgstr "Gestion des accessibilités"
-
-msgid "Admin Access"
-msgstr "Accès administrateur"
-
-msgid "object control"
-msgstr "contrôle des objets"
-
-msgid "User Access"
-msgstr "Accès des utilisateurs"
-
-msgid "Group Access"
-msgstr "Accès des groupes"
-
-msgid "Application Access"
-msgstr "Accès des applications"
-
-msgid "Modify any access"
-msgstr "Modifier n'importe quel objet"
-
-msgid "Modify object access"
-msgstr "Modifier certains objets"
-
-msgid "Import/Export"
-msgstr "Import/Export"
-
-msgid "Edit any access"
-msgstr "Editer n'importe quel accès"
-
-msgid "Edit object access by user"
-msgstr "Editer les accès sur les objets par utilisateur"
-
-msgid "Edit object access"
-msgstr "Editer les accès sur les objets"
-
-msgid "Application manager"
-msgstr "Gestion des applications"
-
-msgid "What Application Management"
-msgstr "Gestion des applications"
-
-msgid "SuperUser permission"
-msgstr "Accès administration"
-
-msgid "user preference"
-msgstr "préférences utilisateur"
-
-msgid "styles parameters"
-msgstr "paramètres de style"
-
-msgid "application parameters"
-msgstr "paramètres applicatif"
-
-msgid "user parameters"
-msgstr "paramètres utilisateur"
-
-msgid "current user parameters"
-msgstr "mes paramètres"
-
-msgid "current user mail configuration"
-msgstr "ma messagerie"
-
-msgid "current user account"
-msgstr "mon compte"
-
-msgid "actions"
-msgstr "les actions"
-
-msgid "applications"
-msgstr "les applications"
-
-msgid "delete parameters"
-msgstr "suppression de paramètres"
-
-msgid "modify parameters"
-msgstr "modification des paramètres"
-
-msgid "delete user parameters"
-msgstr "suppression de paramètres utilisateur"
-
-msgid "modify user parameters"
-msgstr "modification des paramètres utilisateur"
-
-msgid "application version"
-msgstr "version application"
-
-msgid "Freedom frotpage description"
-msgstr ""
-
-msgid "version identificator"
-msgstr "identificateur de version"
-
-msgid "default style"
-msgstr "style par défaut"
-
-msgid "language"
-msgstr "langue"
-
-msgid "button color"
-msgstr "couleur du bouton"
-
-msgid "background color or image"
-msgstr "image ou couleur de fond"
-
-msgid "background color or image in security mode"
-msgstr "image ou couleur de fond en mode sécurité"
-
-msgid "background image for bar"
-msgstr "image de fond pour les barres"
-
-msgid "background image for menu"
-msgstr "image de fond pour les menus"
-
-msgid "background color for table cells"
-msgstr "couleur de fond de cellules"
-
-msgid "second background color"
-msgstr "couleur secondaire pour le fond"
-
-msgid "highlight background color"
-msgstr "couleur de fond pour la mise en évidence"
-
-msgid "inverse video background color"
-msgstr "couleur de fond en inverse vidéo"
-
-msgid "text color"
-msgstr "couleur du texte"
-
-msgid "inverse video color text"
-msgstr "couleur du texte en inverse vidéo"
-
-msgid "input color bg"
-msgstr "couleur des champs de saisie"
-
-msgid "anchor color"
-msgstr "couleur des liens"
-
-msgid "error color"
-msgstr "couleur messages d'erreur"
-
-msgid "default font"
-msgstr "police par défaut"
-
-msgid "menu font"
-msgstr "police des menus"
-
-msgid "top url to find help documentation"
-msgstr "url pour la documentation en ligne"
-
-msgid "font size"
-msgstr "taille de la police"
-
-msgid "frame size"
-msgstr "taille de la fenêtre"
-
-msgid "frame border size"
-msgstr "taille de la bordure de la fenêtre"
-
-msgid "client name"
-msgstr "nom du client"
-
-msgid "client logo"
-msgstr "logo du client"
-
-msgid "anakeen"
-msgstr "anakeen"
-
-msgid "use object cache"
-msgstr "utiliser le cache objets"
-
-msgid "number of cached object by class"
-msgstr "nombre d'objet caché par classes"
-
-msgid "gate urls"
-msgstr "urls du portail"
-
-msgid "gate geometry"
-msgstr "disposition du portail"
-
-msgid "society style"
-msgstr "style société"
-
-msgid "plug inserted in footer"
-msgstr "reférence au plug du footer"
-
-msgid "default delay before expiration of password in day"
-msgstr "délai d'expiration du mot de passe par défaut (en jours)"
-
-msgid "name displayed in the right of the foot"
-msgstr "nom affiché dans le bas de la fenêtre (à droite)"
-
-msgid "realm name for http authenticate"
-msgstr "nom du royaume pour authentification HTTP"
-
-msgid "mot of the day"
-msgstr "Mot Of The Day"
-
-msgid "Core"
-msgstr "Noyau"
-
-msgid "Core Application Manager"
-msgstr "Page d'accueil"
-
-msgid "What User Management"
-msgstr "Gestion des utilisateurs"
-
-msgid "Access To All Users"
-msgstr "Accès à tous les utilisateurs"
-
-msgid "Access To All Users in my domain"
-msgstr "Acces aux utilisateurs de mon domaine"
-
-msgid "Access To My Own account"
-msgstr "Accès à mon propre compte"
-
-msgid "admin view"
-msgstr "vue administrateur"
-
-msgid "users list"
-msgstr "les utilisateurs"
-
-msgid "group list"
-msgstr "les groupes"
-
-msgid "user account edition"
-msgstr "éditer compte utilisateur"
-
-msgid "user own account edition"
-msgstr "éditer compte personnel"
-
-msgid "user account modification"
-msgstr "modifier compte utilisateur"
-
-msgid "user own account modification"
-msgstr "modifier compte personnel"
-
-#, c-format
-msgid "function '%s' not available for application %s (%d)"
-msgstr "fonction %s non disponible pour l'application %s (%d)"
-
-#, fuzzy, c-format
-msgid "Acl [%s] not available for App %s"
-msgstr "fonction %s non disponible pour l'application %s (%d)"
-
-msgid "Access denied"
-msgstr "Accès refusé"
-
-# ne pas modifier laisser à vide
-msgid "$code"
-msgstr ""
-
-msgid "modify object acl"
-msgstr "modification des droits"
-
-msgid "view object acl"
-msgstr "voir les droits"
-
-#, c-format
-msgid "Object Permission : permission %s needed (%s) - # %d"
-msgstr "Permission objet :: permission %s requise (%s) - n° %d"
-
-msgid "login must not be empty"
-msgstr "le login ne doit pas être vide"
-
-msgid "DbObj::Adds error in multiple insertion"
-msgstr "DbObj::Adds erreur dans insertion multiple"
-
-msgid "prev"
-msgstr "précédent"
-
-msgid "next"
-msgstr "suivant"
-
-msgid "first"
-msgstr "premier"
-
-msgid "last"
-msgstr "dernier"
-
-msgid "no login : passwd unchanged"
-msgstr "pas de login : mot de passe inchangé"
-
-msgid "unknown login : passwd unchanged"
-msgstr "login incoonu : mot de passe inchangé"
-
-msgid "password are not identicals : not changed"
-msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
-
-msgid "empty password : not changed"
-msgstr "mot de passe vide : non changé"
-
-msgid "no referer url found"
-msgstr "pas d'URL reférence trouvée"
-
-#, c-format
-msgid "file not found : %s"
-msgstr "fichier %s non trouvé."
-
-msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
-
-#, fuzzy
-msgid "cannot access to default database [$dbaccess]"
-msgstr "accès à la base de données $db refusé\n"
-
-msgid "descr"
-msgstr "Description"
+msgid "Continue (Y|N) ?"
+msgstr "Continuer (Y (oui) |N (non)) ?"
 
 msgid "controlaccess"
 msgstr "Contrôle des accès"
@@ -788,128 +454,14 @@ msgstr "Page du portail"
 msgid "New GATE page"
 msgstr "Portail"
 
-msgid "Progress bar"
-msgstr "Barre de progression"
-
 msgid "New version has been installed."
 msgstr "Une nouvelle version vient d'être installée."
 
 msgid "You must clear navigator cache."
 msgstr "Vous devez effacer le cache de votre navigateur."
 
-msgid "contacts speed search"
-msgstr "Recherche rapide de contacts"
-
-msgid "my favorites contacts"
-msgstr "Mes contacts préférés"
-
-msgid "agenda portal"
-msgstr "Portail de l'agenda"
-
-msgid "return to the portal"
-msgstr "Retourner au portail"
-
-msgid "todo box"
-msgstr "Taches"
-
-msgid "agenda box"
-msgstr "Agenda"
-
-msgid "pending rendez-vous"
-msgstr "Rendez-vous en attente"
-
-msgid "no rendez-vous pending"
-msgstr "Pas de rendez-vous"
-
-msgid "next rendez-vous"
-msgstr "Rendez-vous à venir"
-
-msgid "no rendez-vous"
-msgstr "Pas de rendez-vous"
-
-msgid "rss box"
-msgstr "Fil d'informations"
-
-msgid "select rss to display"
-msgstr "Sélectionner le fil d'information à afficher"
-
-msgid "mail box"
-msgstr "Boîtes aux lettres"
-
-msgid "open/close mailbox"
-msgstr "Afficher/Cacher les messages reçus"
-
-msgid "retrieve mailbox informations"
-msgstr "récupérer les informations"
-
-msgid "not available"
-msgstr "pas d'information disponible"
-
-msgid "waiting server respons"
-msgstr "en atttente de la réponse de serveur"
-
-msgid "click to change departement"
-msgstr "cliquer ici pour changer de département"
-
-msgid "search box"
-msgstr "Recherches"
-
-msgid "new box"
-msgstr "Nouvelles"
-
-msgid "no mail account"
-msgstr "pas de compte de messagerie"
-
-msgid "no message on server"
-msgstr "pas de message"
-
-msgid "account name"
-msgstr "Nom du compte"
-
-msgid "account login"
-msgstr "Utilisateur / Login"
-
-msgid "account password"
-msgstr "Mot de passe"
-
-msgid "account server"
-msgstr "Serveur"
-
-msgid "account mode"
-msgstr "Protocole"
-
-msgid "save"
-msgstr "Sauver"
-
-msgid "cancel"
-msgstr "Annuler"
-
-msgid "rss syndication management"
-msgstr "Gestion des fils d'information"
-
-msgid "select to remove rss"
-msgstr "Sélectionner pour supprimer le fil..."
-
-msgid "add new rss here"
-msgstr "Ajouter un nouveau fil d'information"
-
-msgid "rss title"
-msgstr "Titre"
-
-msgid "add new rss description here"
-msgstr "description..."
-
-msgid "rss url"
-msgstr "Url"
-
-msgid "add new rss url here"
-msgstr "url..."
-
-msgid "close"
-msgstr "Fermer"
-
-msgid "mot edition"
-msgstr "édition du MOTD"
+msgid "Progress bar"
+msgstr "Barre de progression"
 
 msgid "firstname"
 msgstr "Prénom"
@@ -969,21 +521,480 @@ msgid "delconfirmparam"
 msgstr "Confirmez-vous la suppression du param&egrave;tre "
 
 #, c-format
-msgid "Create other database for %s (%s)"
-msgstr "Création d'autres bases pour %s (%s)"
-
-msgid "Command failed"
-msgstr "échec de la commande"
-
-msgid "Name of anakeen database ?"
-msgstr "Nom de la base anakeen ?"
+msgid "Choose database in %s (%s)"
+msgstr "Choix de la base de données dans %s (%s)"
 
 #, c-format
-msgid "Virtual host : [%s]"
-msgstr "Hôte virtual : [%s]"
+msgid "API file %s not found"
+msgstr "fichier API %s non trouvé."
 
-msgid "Continue (Y|N) ?"
-msgstr "Continuer (Y (oui) |N (non)) ?"
+#, c-format
+msgid "Caught Exception : %s<br>\n"
+msgstr ""
+
+#, c-format
+msgid "Attribute %s not found\n"
+msgstr "Attribut %s non trouvé.\n"
+
+#, c-format
+msgid ""
+"Attribute %s found is not alone\n"
+"Must precise request with userid or appid arguments\n"
+msgstr ""
+"L'attribut %s trouvé n'est pas seul\n"
+"Préciser la requête en uitilisant les arguments userid et appid\n"
+
+#, c-format
+msgid "Attribute %s not modified : %s\n"
+msgstr "Attribut %s non modifié : %s\n"
+
+#, c-format
+msgid "Attribute %s modified to %s"
+msgstr "Attribut %s modifié par %s"
+
+msgid "cannot access to  database $db\n"
+msgstr "accès à la base de données $db refusé\n"
+
+msgid "access granted to  database $db\n"
+msgstr "accès à la base de données $db autorisé\n"
+
+msgid "Access"
+msgstr "Accessibilités"
+
+msgid "What Access Management"
+msgstr "Gestion des accessibilités"
+
+msgid "Admin Access"
+msgstr "Accès administrateur"
+
+msgid "object control"
+msgstr "contrôle des objets"
+
+msgid "User Access"
+msgstr "Accès des utilisateurs"
+
+msgid "Group Access"
+msgstr "Accès des groupes"
+
+msgid "Application Access"
+msgstr "Accès des applications"
+
+msgid "Modify any access"
+msgstr "Modifier n'importe quel objet"
+
+msgid "Modify object access"
+msgstr "Modifier certains objets"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "Edit any access"
+msgstr "Editer n'importe quel accès"
+
+msgid "Edit object access by user"
+msgstr "Editer les accès sur les objets par utilisateur"
+
+msgid "Edit object access"
+msgstr "Editer les accès sur les objets"
+
+msgid "Application manager"
+msgstr "Gestion des applications"
+
+msgid "What Application Management"
+msgstr "Gestion des applications"
+
+msgid "SuperUser permission"
+msgstr "Accès administration"
+
+msgid "user preference"
+msgstr "préférences utilisateur"
+
+msgid "styles parameters"
+msgstr "paramètres de style"
+
+msgid "application parameters"
+msgstr "paramètres applicatif"
+
+msgid "user parameters"
+msgstr "paramètres utilisateur"
+
+msgid "current user parameters"
+msgstr "mes paramètres"
+
+msgid "current user mail configuration"
+msgstr "ma messagerie"
+
+msgid "current user account"
+msgstr "mon compte"
+
+msgid "actions"
+msgstr "les actions"
+
+msgid "applications"
+msgstr "les applications"
+
+msgid "delete parameters"
+msgstr "suppression de paramètres"
+
+msgid "modify parameters"
+msgstr "modification des paramètres"
+
+msgid "delete user parameters"
+msgstr "suppression de paramètres utilisateur"
+
+msgid "modify user parameters"
+msgstr "modification des paramètres utilisateur"
+
+msgid "application version"
+msgstr "version application"
+
+msgid "Freedom frontpage description"
+msgstr ""
+
+msgid "version identificator"
+msgstr "identificateur de version"
+
+msgid "default style"
+msgstr "style par défaut"
+
+msgid "language"
+msgstr "langue"
+
+msgid "button color"
+msgstr "couleur du bouton"
+
+msgid "background color or image"
+msgstr "image ou couleur de fond"
+
+msgid "background color or image in security mode"
+msgstr "image ou couleur de fond en mode sécurité"
+
+msgid "background image for bar"
+msgstr "image de fond pour les barres"
+
+msgid "background image for menu"
+msgstr "image de fond pour les menus"
+
+msgid "background color for table cells"
+msgstr "couleur de fond de cellules"
+
+msgid "second background color"
+msgstr "couleur secondaire pour le fond"
+
+msgid "highlight background color"
+msgstr "couleur de fond pour la mise en évidence"
+
+msgid "inverse video background color"
+msgstr "couleur de fond en inverse vidéo"
+
+msgid "text color"
+msgstr "couleur du texte"
+
+msgid "inverse video color text"
+msgstr "couleur du texte en inverse vidéo"
+
+msgid "input color bg"
+msgstr "couleur des champs de saisie"
+
+msgid "anchor color"
+msgstr "couleur des liens"
+
+msgid "error color"
+msgstr "couleur messages d'erreur"
+
+msgid "default font"
+msgstr "police par défaut"
+
+msgid "menu font"
+msgstr "police des menus"
+
+msgid "top url to find help documentation"
+msgstr "url pour la documentation en ligne"
+
+msgid "font size"
+msgstr "taille de la police"
+
+msgid "frame size"
+msgstr "taille de la fenêtre"
+
+msgid "frame border size"
+msgstr "taille de la bordure de la fenêtre"
+
+msgid "client name"
+msgstr "nom du client"
+
+msgid "client logo"
+msgstr "logo du client"
+
+msgid "anakeen"
+msgstr "anakeen"
+
+msgid "use object cache"
+msgstr "utiliser le cache objets"
+
+msgid "number of cached object by class"
+msgstr "nombre d'objet caché par classes"
+
+msgid "memory max for PHP in Mo"
+msgstr ""
+
+msgid "gate urls"
+msgstr "urls du portail"
+
+msgid "gate geometry"
+msgstr "disposition du portail"
+
+msgid "society style"
+msgstr "style société"
+
+msgid "plug inserted in footer"
+msgstr "reférence au plug du footer"
+
+msgid "default delay before expiration of password in day"
+msgstr "délai d'expiration du mot de passe par défaut (en jours)"
+
+msgid "name displayed in the right of the foot"
+msgstr "nom affiché dans le bas de la fenêtre (à droite)"
+
+msgid "realm name for http authenticate"
+msgstr "nom du royaume pour authentification HTTP"
+
+msgid "mot of the day"
+msgstr "Mot Of The Day"
+
+#, fuzzy
+msgid "icon size"
+msgstr "taille de la police"
+
+msgid "Core"
+msgstr "Noyau"
+
+msgid "Core Application Manager"
+msgstr "Page d'accueil"
+
+msgid "What User Management"
+msgstr "Gestion des utilisateurs"
+
+msgid "Access To All Users"
+msgstr "Accès à tous les utilisateurs"
+
+msgid "Access To All Users in my domain"
+msgstr "Acces aux utilisateurs de mon domaine"
+
+msgid "Access To My Own account"
+msgstr "Accès à mon propre compte"
+
+msgid "admin view"
+msgstr "vue administrateur"
+
+msgid "users list"
+msgstr "les utilisateurs"
+
+msgid "group list"
+msgstr "les groupes"
+
+msgid "user account edition"
+msgstr "éditer compte utilisateur"
+
+msgid "user own account edition"
+msgstr "éditer compte personnel"
+
+msgid "user account modification"
+msgstr "modifier compte utilisateur"
+
+msgid "user own account modification"
+msgstr "modifier compte personnel"
+
+#, c-format
+msgid "function '%s' not available for application %s (%d)"
+msgstr "fonction %s non disponible pour l'application %s (%d)"
+
+#, fuzzy, c-format
+msgid "Acl [%s] not available for App %s"
+msgstr "fonction %s non disponible pour l'application %s (%d)"
+
+msgid "Access denied"
+msgstr "Accès refusé"
+
+# ne pas modifier laisser à vide
+msgid "$code"
+msgstr ""
+
+msgid "modify object acl"
+msgstr "modification des droits"
+
+msgid "view object acl"
+msgstr "voir les droits"
+
+#, c-format
+msgid "Object Permission : permission %s needed (%s) - # %d"
+msgstr "Permission objet :: permission %s requise (%s) - n° %d"
+
+msgid "login must not be empty"
+msgstr "le login ne doit pas être vide"
+
+msgid "DbObj::Adds error in multiple insertion"
+msgstr "DbObj::Adds erreur dans insertion multiple"
+
+msgid "prev"
+msgstr "précédent"
+
+msgid "next"
+msgstr "suivant"
+
+msgid "first"
+msgstr "premier"
+
+msgid "last"
+msgstr "dernier"
+
+msgid "no login : passwd unchanged"
+msgstr "pas de login : mot de passe inchangé"
+
+msgid "unknown login : passwd unchanged"
+msgstr "login incoonu : mot de passe inchangé"
+
+msgid "password are not identicals : not changed"
+msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
+
+msgid "empty password : not changed"
+msgstr "mot de passe vide : non changé"
+
+msgid "no referer url found"
+msgstr "pas d'URL reférence trouvée"
+
+#, c-format
+msgid "file not found : %s"
+msgstr "fichier %s non trouvé."
+
+msgid "terminal too small (must ne at least 80 columns by 24 lines)"
+msgstr ""
+"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
+
+#, fuzzy
+msgid "cannot access to default database [$dbaccess]"
+msgstr "accès à la base de données $db refusé\n"
+
+msgid "descr"
+msgstr "Description"
+
+#, fuzzy
+msgid "create databases ?"
+msgstr "Nom de la base anakeen ?"
+
+#~ msgid "contacts speed search"
+#~ msgstr "Recherche rapide de contacts"
+
+#~ msgid "my favorites contacts"
+#~ msgstr "Mes contacts préférés"
+
+#~ msgid "agenda portal"
+#~ msgstr "Portail de l'agenda"
+
+#~ msgid "return to the portal"
+#~ msgstr "Retourner au portail"
+
+#~ msgid "todo box"
+#~ msgstr "Taches"
+
+#~ msgid "agenda box"
+#~ msgstr "Agenda"
+
+#~ msgid "pending rendez-vous"
+#~ msgstr "Rendez-vous en attente"
+
+#~ msgid "no rendez-vous pending"
+#~ msgstr "Pas de rendez-vous"
+
+#~ msgid "next rendez-vous"
+#~ msgstr "Rendez-vous à venir"
+
+#~ msgid "no rendez-vous"
+#~ msgstr "Pas de rendez-vous"
+
+#~ msgid "rss box"
+#~ msgstr "Fil d'informations"
+
+#~ msgid "select rss to display"
+#~ msgstr "Sélectionner le fil d'information à afficher"
+
+#~ msgid "mail box"
+#~ msgstr "Boîtes aux lettres"
+
+#~ msgid "open/close mailbox"
+#~ msgstr "Afficher/Cacher les messages reçus"
+
+#~ msgid "retrieve mailbox informations"
+#~ msgstr "récupérer les informations"
+
+#~ msgid "not available"
+#~ msgstr "pas d'information disponible"
+
+#~ msgid "waiting server respons"
+#~ msgstr "en atttente de la réponse de serveur"
+
+#~ msgid "click to change departement"
+#~ msgstr "cliquer ici pour changer de département"
+
+#~ msgid "search box"
+#~ msgstr "Recherches"
+
+#~ msgid "new box"
+#~ msgstr "Nouvelles"
+
+#~ msgid "no mail account"
+#~ msgstr "pas de compte de messagerie"
+
+#~ msgid "no message on server"
+#~ msgstr "pas de message"
+
+#~ msgid "account name"
+#~ msgstr "Nom du compte"
+
+#~ msgid "account login"
+#~ msgstr "Utilisateur / Login"
+
+#~ msgid "account password"
+#~ msgstr "Mot de passe"
+
+#~ msgid "account server"
+#~ msgstr "Serveur"
+
+#~ msgid "account mode"
+#~ msgstr "Protocole"
+
+#~ msgid "save"
+#~ msgstr "Sauver"
+
+#~ msgid "cancel"
+#~ msgstr "Annuler"
+
+#~ msgid "rss syndication management"
+#~ msgstr "Gestion des fils d'information"
+
+#~ msgid "select to remove rss"
+#~ msgstr "Sélectionner pour supprimer le fil..."
+
+#~ msgid "add new rss here"
+#~ msgstr "Ajouter un nouveau fil d'information"
+
+#~ msgid "rss title"
+#~ msgstr "Titre"
+
+#~ msgid "add new rss description here"
+#~ msgstr "description..."
+
+#~ msgid "rss url"
+#~ msgstr "Url"
+
+#~ msgid "add new rss url here"
+#~ msgstr "url..."
+
+#~ msgid "close"
+#~ msgstr "Fermer"
+
+#~ msgid "mot edition"
+#~ msgstr "édition du MOTD"
 
 #, fuzzy
 #~ msgid "view my portal configuration"
