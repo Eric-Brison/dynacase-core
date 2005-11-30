@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.46 2005/10/28 15:10:31 eric Exp $
+ * @version $Id: Class.User.php,v 1.47 2005/11/30 13:59:59 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -484,7 +484,7 @@ create sequence seq_id_users start 10";
     // Create default group
     $this->iddomain=1;
     $this->id=GALL_ID;
-    $this->lastname="Groupe Utilisateurs";
+    $this->lastname="Utilisateurs";
     $this->firstname="";
     $this->login="all";
     $this->isgroup="Y";
@@ -505,7 +505,7 @@ create sequence seq_id_users start 10";
     // Create admin group
     $this->iddomain=1;
     $this->id=GADMIN_ID;
-    $this->lastname="Groupe Administration";
+    $this->lastname="Administration";
     $this->firstname="";
     $this->login="gadmin";
     $this->isgroup="Y";
