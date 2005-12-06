@@ -32,6 +32,7 @@ ncurses_refresh();
 if ($err!="") {
   ncurses_mvaddstr(4,5, $err);
   $actions[] = "$pubdir/CORE/CORE_post  I";
+  $actions[] = "$pubdir/CORE/CORE_post  U";
 } else {
   ncurses_mvaddstr(4,5,  _("access to default database : granted"));
   

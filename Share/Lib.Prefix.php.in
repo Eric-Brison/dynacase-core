@@ -3,7 +3,7 @@
  * Default install directory
  *
  * @author Anakeen 2005
- * @version $Id: Lib.Prefix.php.in,v 1.3 2005/11/30 14:05:12 eric Exp $
+ * @version $Id: Lib.Prefix.php.in,v 1.4 2005/12/06 16:36:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,4 +12,7 @@
  */
 global $pubdir;
 $pubdir="@prefix@";
+ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/pear");
+
+define("DEFAULT_PUBDIR","@prefix@");
 ?>
