@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.47 2005/11/15 12:55:34 eric Exp $
+ * @version $Id: Class.Application.php,v 1.48 2005/12/06 16:36:12 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -218,7 +218,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	} else {
 	  $this->jsref[$ref]=$ref;
 	}
-	$this->log->debug("AddJsRef [{$this->jscount}] = <{$this->jsref[$this->jscount]}>");
+	$this->log->debug("AddJsRef [$ref] = <{$this->jsref[$ref]}>");
       }
     }
 
