@@ -3,7 +3,7 @@
  * View PDF document manuals
  *
  * @author Anakeen 2004
- * @version $Id: docpdf.php,v 1.2 2004/10/11 15:40:27 eric Exp $
+ * @version $Id: docpdf.php,v 1.3 2005/12/12 09:23:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -32,7 +32,7 @@ if ($handle = opendir($pubdir)) {
        $title=$file;
        $subject="";
        $cdate="";
-	if (ereg("/Title <([^>]*)>",$info,$reg)) {
+	if (ereg("<< /Title <([^>]*)>",$info,$reg)) {
 	  $title=String2utf8($reg[1]);
 	}
 	if (ereg("/Subject <([^>]*)>",$info,$reg)) {
