@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.15 2005/11/18 16:01:35 eric Exp $
+// $Id: index.php.q,v 1.16 2006/01/03 08:45:59 jerome Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -103,7 +103,7 @@ if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 
   // determine publish url (detect ssl require)
  
-  if ($_SERVER['SERVER_PORT'] != PORT_SSL)   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
+  if ($_SERVER['HTTPS'] != 'on')   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
   else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
 } else {
   // it is not allowed
@@ -137,7 +137,13 @@ if (($standalone == "") || ($standalone == "N")) {
   $appl->Set($_GET["app"],$core);
 
   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
-      $puburl = "http://".$appl->machine.$_SERVER['REQUEST_URI'];
+      if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {
+         $aquest=parse_url($_SERVER['REQUEST_URI']);
+	 $aquest['host']=$appl->machine;
+	 $puburl=glue_url($aquest);
+      } else {
+         $puburl = "http://".$appl->machine.$_SERVER['REQUEST_URI'];
+      }
 
       Header("Location: $puburl");
       exit;
@@ -147,7 +153,7 @@ if (($standalone == "") || ($standalone == "N")) {
     // test SSL mode needed or not
     // redirect if needed
   if ($appl->ssl == "Y") {
-    if ($_SERVER['SERVER_PORT'] != PORT_SSL) {
+    if ($_SERVER['HTTPS'] != 'on') {
 
       // redirect to go to ssl http
       $sslurl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
@@ -156,16 +162,7 @@ if (($standalone == "") || ($standalone == "N")) {
     }     
     
     $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
-  } else {
-    if ($_SERVER['SERVER_PORT'] == PORT_SSL) {
-
-      // redirect to  suppress ssl http
-      $sslurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$_SERVER['REQUEST_URI'];
-
-      Header("Location: $puburl");
-      exit;
-    }
-  }
+  } 
 
   
   // -----------------------------------------------
