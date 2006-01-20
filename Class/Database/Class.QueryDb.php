@@ -3,7 +3,7 @@
  * Query to Database
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryDb.php,v 1.11 2005/09/23 15:31:41 eric Exp $
+ * @version $Id: Class.QueryDb.php,v 1.12 2006/01/20 13:24:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -69,18 +69,10 @@ function QueryDb ($dbaccess,$class)
 
     }
 
-// Perform the query : the result can be a table or a list of objects
-// depending on the third arg. 
-//   the third ARG should be :
-//         LIST  : means a table of objects
-//         LISTC : means a table of completed objects
-//         TABLE : means a table of table fields
 
-  function Query($start=0,$slice=0,$res_type="LIST",$p_query="")
-  {
+ private function initQuery($start=0,$slice=0,$p_query="") {
     if ($start=="") $start=0;
-    
-    if ($p_query=='') { 
+     if ($p_query=='') { 
       // select construct
       $select="";
 
@@ -147,43 +139,39 @@ function QueryDb ($dbaccess,$class)
       $query=$p_query;
     }
 
-    $this->res_type=$res_type;
     $this->slice=$slice;
     $this->start=$start;
     $this->LastQuery=$query;
+    return $query;
+ }
 
-    // try cache query first
-//     if ($this->basic_elem->isCacheble) {
-//       $ocache = new CacheQuery();
+
+ /**
+  * Perform the query : the result can be a table or a list of objects
+  * depending on the third arg. 
+  *   the third ARG should be :
+  *        LIST  : means a table of objects
+  *        LISTC : means a table of completed objects
+  *        TABLE : means a table of table fields
+  *        ITEM  : means a ressource to step by step use table field rows
+  */
+  function Query($start=0,$slice=0,$res_type="LIST",$p_query="")  {
       
-//       $ocache->cacheclass=strtolower($this->class);
-// 	if ($ocache->GetCache($this->cacheId())) {	  
-// 	  $this->list = $ocache->list;
-// 	  $this->nb = $ocache->nb;
-
-// 	  return $this->list;
-// 	}
-//     }
-
-
-
-      $res = $this->basic_elem->exec_query($query);
+    $query=$this->initQuery($start,$slice,$p_query);
+    $this->res_type=$res_type;
+    $err = $this->basic_elem->exec_query($query);
     //	print "$query $res_type $p_query<BR>\n";
-      if ($res != "") {
-         return($res);
-      }
+    if ($err != "") return($err);      
 
-      $this->nb = $this->basic_elem->numrows();    
+    $this->nb = $this->basic_elem->numrows();    
       
       if ($this->nb ==0) {
-// 	if ($this->basic_elem->isCacheble) {
-// 	  $ocache = new CacheQuery($this);
-
-// 	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
-// 	}
 	return FALSE;
       }
-
+      if ($res_type == "ITEM") {
+	$this->cindex=0; // current index row
+	return $this->basic_elem->res;
+      }
       if ($start >= $this->nb) {$start=0;}
       if ($slice == 0) {$slice = $this->nb;}
 
@@ -204,40 +192,12 @@ function QueryDb ($dbaccess,$class)
           }
         }
       }
-      //      global ${$this->hsql};
-      // print "record ".$this->hsql."#".count($this->list)."<BR>";
-      
 
-  //     if ($this->basic_elem->isCacheble)
-// 	{
-// 	  $ocache = new CacheQuery($this);
-// 	  $ocache->SetCache($this->cacheId()); // set to the querydb cache 
-// 	}
       return($this->list);
-    }
+  }
       
 
-function cacheId() {
-  $hsql = bin2hex(mhash(MHASH_MD5,$this->dbaccess.
-			$this->class.$this->res_type.$this->LastQuery.$this->start.'_'.$this->slice));
 
-  
-  return $hsql;
-}
-
-
-  function AffectCache($id) {  
-    global $CacheObj;
-    $CacheObj[$id]=$this->list;
-  }
-  function RestoreCache($id) {  
-    global $CacheObj;
-    $this->list=$CacheObj[$id];
-  }
-
-  function GetCachePart() {
-    return "list";
-  }
   function CriteriaClause() {
     $out = "";
     if (isset($this->criteria) && ($this->criteria != "") && ($this->operator != "none")) {
