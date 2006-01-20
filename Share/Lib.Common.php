@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.25 2005/11/15 12:55:34 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.26 2006/01/20 13:26:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -19,6 +19,7 @@ function print_r2($z,$ret=false) {
   print "<PRE>";
   print_r($z, $ret);
   print "</PRE>";
+  flush();
 }
 
 function AddLogMsg($msg) {
