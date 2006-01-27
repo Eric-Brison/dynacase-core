@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.48 2005/12/01 15:44:41 eric Exp $
+ * @version $Id: Class.User.php,v 1.49 2006/01/27 16:38:30 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -383,7 +383,7 @@ create sequence seq_id_users start 10";
     if (@include_once('FDL/Lib.Dir.php')) {
 
       $dbaccess=GetParam("FREEDOM_DB");
-
+      if ($dbaccess=="") return _("no freedom DB access");
       if ($this->fid<>"") { 
 	$iuser=new_Doc($dbaccess,$this->fid); 
 
@@ -391,7 +391,8 @@ create sequence seq_id_users start 10";
 
       } //Update from what
       else {
-	if ($this->isgroup=="Y") $fam="IGROUP";
+	if ($this->famid != "") $fam=$this->famid;
+	elseif ($this->isgroup=="Y") $fam="IGROUP";
 	else $fam="IUSER";;
 	$filter = array("us_whatid = ".$this->id);
 	$tdoc = getChildDoc($dbaccess, 0,0,"ALL", $filter,1,"LIST",$fam);
