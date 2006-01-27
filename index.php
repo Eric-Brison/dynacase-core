@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.36 2005/11/18 16:01:25 eric Exp $
+ * @version $Id: index.php,v 1.37 2006/01/27 16:36:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -38,9 +38,9 @@ include_once('Class.DbObj.php');
 
 // ----------------------------------------
 
-
-
-$log=new Log("","index.php");
+$indexphp=basename($_SERVER["SCRIPT_NAME"]);
+ 
+$log=new Log("",$indexphp);
 
 $CoreNull = "";
 global $CORE_LOGLEVEL;
@@ -78,17 +78,13 @@ ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 // ----------------------------------------
 // Init PUBLISH URL from script name
 
-if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
 
-  // determine publish url (detect ssl require)
+
+// determine publish url (detect ssl require)
  
-  if ($_SERVER['HTTPS'] != 'on')   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
-  else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
-} else {
-  // it is not allowed
-  print "<B>:~(</B>";
-  exit;
-}
+if ($_SERVER['HTTPS'] != 'on')   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/$indexphp";
+ else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/$indexphp";
+
 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
@@ -98,11 +94,11 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
-$core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
-$core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL","index.php?sole=Y&session={$session->id}&");
+$core->SetVolatileParam("CORE_ROOTURL", "$indexphp?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "$indexphp?sole=A&");
+$core->SetVolatileParam("CORE_SBASEURL","$indexphp?sole=A&session={$session->id}&");
+$core->SetVolatileParam("CORE_STANDURL","$indexphp?sole=Y&");
+$core->SetVolatileParam("CORE_SSTANDURL","$indexphp?sole=Y&session={$session->id}&");
 
 // ----------------------------------------
 // Init Application & Actions Objects
