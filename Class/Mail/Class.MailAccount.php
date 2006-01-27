@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.MailAccount.php,v 1.5 2004/12/28 13:26:06 eric Exp $
+ * @version $Id: Class.MailAccount.php,v 1.6 2006/01/27 07:49:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -17,7 +17,7 @@ include_once('Class.MailAlias.php');
 
 Class MailAccount extends DbObj
 {
-var $Class = '$Id: Class.MailAccount.php,v 1.5 2004/12/28 13:26:06 eric Exp $';
+var $Class = '$Id: Class.MailAccount.php,v 1.6 2006/01/27 07:49:38 eric Exp $';
 
 var $fields = array ( "iddomain",
 		      "iduser",
@@ -31,7 +31,8 @@ var $fields = array ( "iddomain",
                       "keepfwd",
                       "uptime",
                       "remove",
-                      "quota" );
+                      "quota",
+                      "filterspam" );
 
 var $id_fields = array ("iduser");
 
@@ -49,10 +50,11 @@ create table mailaccount(
      fwdst	int,
      fwdadd	varchar(300),
      type	int,
-     keepfwd int,
-     uptime  int,
-     remove   int,
-     quota    int );
+     keepfwd    int,
+     uptime     int,
+     remove     int,
+     quota      int,
+     filterspam int );
 create index mailaccount_idx on mailaccount(iduser);
 ";
 
@@ -72,6 +74,7 @@ function PreInsert() {
   $this->setdef($this->fwdst, '0');
   $this->setdef($this->fwdadd, "");
   $this->setdef($this->keepfwd, '1');
+  $this->setdef($this->filterspam, '0');
   $this->uptime = time();
   $this->type = '0';
   $this->remove = '0';
