@@ -1,13 +1,10 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.46 2005/11/24 09:10:43 eric Exp $
+ * $Id: core.css,v 1.47 2006/02/01 16:44:22 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
  */
 
-* {
-  color: [CORE_TEXTFGCOLOR];
-}
 
 body, .core {
   background: [CORE_BGCOLOR];
@@ -267,12 +264,15 @@ IMG.NotFade {
 IMG.Select {	
 }
 TD.Fade {
+	border-left:2px transparent solid;
+	border-right:2px transparent solid;
 }
 TD.Select {
 }
 TD.NotFade {
 /*	background-image:url('[IMG:bgunfade.png]');*/
 	/*background-color:[CORE_BGCOLORALTERN];*/
+	border:2px outset [CORE_BGCOLORALTERN];
 }
 
 div.detail {

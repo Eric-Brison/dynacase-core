@@ -71,35 +71,39 @@ o.style.position='static';
 
 var csel=false; // selected icon object
 var izoom=48;
-function fadeIt(oimg) {     
-   oimg.style.width=[izpx]; 
-   oimg.style.height=[izpx];
-   //setTimeout("dz('"+th.id+"')",100);
-   oimg.style.position='static';
+function fadeIt(o,oimg) {    
+  o.style.backgroundImage='inherit'; 
+  // oimg.style.width=[izpx]; 
+  //  oimg.style.height=[izpx];
+//    //setTimeout("dz('"+th.id+"')",100);
+  //  oimg.style.position='static';
     if (oimg.className != 'Select') {
       oimg.className='Fade';
       oimg.parentNode.parentNode.className='Fade';
     }
 }
-function unFadeIt(oimg) {
-  oimg.style.top=AnchorPosition_getPageOffsetTop(oimg.parentNode.parentNode)-1;
-  oimg.style.left=AnchorPosition_getPageOffsetLeft(oimg.parentNode.parentNode);
-  oimg.style.position='absolute';
+function unFadeIt(o,oimg) {
+//    oimg.style.top=AnchorPosition_getPageOffsetTop(oimg.parentNode.parentNode)+30;
+//    oimg.style.left=AnchorPosition_getPageOffsetLeft(oimg.parentNode.parentNode);
+//    oimg.style.position='absolute';
   
-  oimg.style.width=izoom; 
-  oimg.style.height=izoom;
+//    oimg.style.width=izoom; 
+//    oimg.style.height=izoom;
   //setTimeout("iz('"+th.id+"')",100);
 
+  o.style.backgroundImage="url('Images/op20.png')";
   if (oimg.className != 'Select') {
     oimg.className='NotFade';
     oimg.parentNode.parentNode.className='NotFade';
   }
 }
-function selectIt(th) {
+
+
+function selectIt(o,th) {
   csel.className='Fade';
   
   th.className='Select';
-    th.parentNode.parentNode.className='Select';
+  o.className='Select';
   csel=th;
   subwindow(10,10,'fhidden','[CORE_STANDURL]&app=CORE&action=WVERSION');
 }
@@ -112,11 +116,11 @@ function selectIt(th) {
 
 
  [BLOCK FUNCTION]
-<td width="[izbpx]"  align="center"
-     onMouseOver="unFadeIt(i[name]);" 
-     onMouseOut="fadeIt(i[name]);"  >
-     <a ><img  class="Fade"  id="i[name]" onclick="selectIt(this);lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
-     src="[pubdir]/[iconsrc]" border="0" width="[izpx]" height="[izpx]" alt="[description]" title="[description]" ></a>
+<td width="[izbpx]" class="Fade"  align="center" title="[description]" style="cursor:pointer" onclick="selectIt(this,i[name]);lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
+     onMouseOver="unFadeIt(this,i[name]);" 
+     onMouseOut="fadeIt(this,i[name]);"  >
+     <a ><img  class="Fade"  id="i[name]" 
+     src="[pubdir]/[iconsrc]" border="0" width="[izpx]" height="[izpx]" alt="[description]"  ></a>
 </td>
   [ENDBLOCK FUNCTION]
 
