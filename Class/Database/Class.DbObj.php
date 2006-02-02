@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.39 2005/10/05 17:01:09 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.40 2006/02/02 08:55:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.39 2005/10/05 17:01:09 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.40 2006/02/02 08:55:44 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.39 2005/10/05 17:01:09 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.40 2006/02/02 08:55:44 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -213,7 +213,7 @@ function Select($id)
     $resultat = $this->exec_query($sql);
     
     if ($this->numrows() > 0) {
-      $res = $this->fetch_array (0);
+      $res = $this->fetch_array(0);
       $retour = $this->Affect($res);
       
     } else {
@@ -608,7 +608,7 @@ function numrows()
     }
   }
 
-function fetch_array($c,$type=PGSQL_BOTH)
+function fetch_array($c,$type=PGSQL_ASSOC)
   {
     
     return(pg_fetch_array($this->res,$c,$type));
