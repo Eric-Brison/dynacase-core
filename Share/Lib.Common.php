@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.26 2006/01/20 13:26:40 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.27 2006/02/03 15:56:30 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -131,7 +131,7 @@ function php2DbSql($dbcoord,$withdbname=true) {
     if (ereg('dbname=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
       $dbname=$reg[1];
     }
-    if (ereg('host=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+    if (ereg('host=[ ]*([a-z_0-9\.]*)',$dbcoord,$reg)) {  
       $dbhost=$reg[1];
     }
     if (ereg('port=[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
