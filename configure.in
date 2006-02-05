@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.12 2005/12/06 16:36:24 eric Exp $)
+AC_REVISION($Id: configure.in,v 1.13 2006/02/05 09:48:26 marc Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -37,15 +37,31 @@ LANG=fr_FR
 AC_ARG_WITH(lang,
 [  --with-lang=lang   Set Lang ], LANG=$withval)
 
+
+AC_SUBST(DBSERV)
+DBSERV=
+AC_ARG_WITH(dbserv,
+[  --with-dbserv=virutal host (default empty)  ], DBSERV=$withval)
+
 AC_SUBST(DBHOST)
 DBHOST=localhost
 AC_ARG_WITH(dbhost,
 [  --with-dbhost=host the PostgreSql Host (default localhost)  ], DBHOST=$withval)
 
+AC_SUBST(DBENV)
+DBENV=anakeen
+AC_ARG_WITH(dbenv,
+[  --with-dbenv=name  the database environnement (default anakeen)], DBENV=$withval)
+
 AC_SUBST(DBNAME)
 DBNAME=anakeen
 AC_ARG_WITH(dbname,
-[  --with-dbname=name  the database name (default anakeen)], DBNAME=$withval)
+[  --with-dbname=name  the core database name (default anakeen)], DBNAME=$withval)
+
+AC_SUBST(DBFREEDOM)
+DBFREEDOM=freedom
+AC_ARG_WITH(dbfreedom,
+[  --with-dbfreedom=name  the freedom database name (default freedom)], DBFREEDOM=$withval)
 
 AC_SUBST(DBUSER)
 DBUSER=anakeen
@@ -72,7 +88,7 @@ HTTPUSER=http
 AC_ARG_WITH(httpuser,
 [  --with-httpuser=user id for httpd process (default http)], HTTPUSER=$withval)
 
-AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf freedom.conf \
+AC_OUTPUT(Makefile  dbaccess.php dbaccess.sh WHAT.spec apache.conf freedom.conf \
           App/Core/CORE_init.php \
           App/Users/USERS_init.php \
           App/Access/ACCESS_init.php \
@@ -80,4 +96,4 @@ AC_OUTPUT(Makefile  dbaccess.php WHAT.spec apache.conf freedom.conf \
           App/Appmng/APPMNG_init.php httpdwa.pam\
           Api/appadmin.php Api/updateclass.php \
           Share/Lib.Prefix.php  \
-	  httpd.pam  wdbcreate )
+	  httpd.pam  )

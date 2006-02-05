@@ -4,6 +4,7 @@
 
 include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");
+include("WHAT/wenv.php");
 
 global $_SERVER;
 
@@ -13,35 +14,19 @@ if ($_SERVER['HTTP_HOST'] != "")     {
 }
 
 
-$dbank=getenv("dbanakeen");
-$virtual=getenv("snwhat"); // server name
-$dbpsql=getenv("dbpsql");
-$dbaccess="user=anakeen dbname=$dbank";
-$dbfree="free$dbank";
-if ($argv[1]!="") $dbfree=$argv[1];
+$env = getCurrentDb();
+include_once(getPhpEnv($env));
 
-
-ncurses_winit("WHAT Create Database");
+ncurses_winit("Freedom Create Database");
 ncurses_getmaxyx(&$fullscreen, $lines, $columns);
 
 $IP=chop(`hostname -i`);
 ncurses_color_set(6);
-ncurses_mvaddstr(2,5,sprintf(_("Database: %s"), $dbaccess));
-ncurses_mvaddstr(4,5,sprintf(_("Virtual Host: %s on %s"), $virtual,$IP));
+ncurses_mvaddstr(2,5,sprintf(_("Database     : %s"), $dbaccess));
+ncurses_mvaddstr(4,5,sprintf(_("Virtual Host : %s on %s"), $servername,$IP));
 ncurses_refresh();
 
-
-
-
-
-
-
 //---------------------------------------------------
-
-
-
-
-
 
 $dbid=@pg_connect($dbaccess);
 
@@ -75,22 +60,24 @@ if ($dbid) {
   
 
 
-$actions[] = "mkdir -p $pubdir/virtual/$dbank/FDLGEN";
-$actions[] = "chown @HTTPUSER@: $pubdir/virtual/$dbank/FDLGEN";
-$actions[] = "cd $pubdir/FDLGEN;ln -s  ../virtual/$dbank/FDLGEN ".strtoupper($dbfree);
-$actions[] = "sed -e 's/dbname=anakeen/dbname=$dbank/' $pubdir/dbaccess.php > $pubdir/virtual/$dbank/dbaccess.php";
-$actions[] = "sed -e 's/@DBNAME@/$dbank/g' $pubdir/httpd.pam.in > /etc/pam.d/httpd_$dbank"; 
-$actions[] = "sed -e 's/@DBNAME@/$dbank/g' $pubdir/httpdwa.pam.in > /etc/pam.d/httpdwa_$dbank"; 
-$actions[] = "sed -e 's/@DBNAME@/anakeen/g'  -e 's/@IP@/$IP/g' -e 's/@VIRTUALNAME@/".trim(`hostname -f`)."/g' $pubdir/apachevi.conf.in > @APACHECONFDIR@/71_mod_what_anakeen.conf";
-$actions[] = "sed -e 's/@DBNAME@/$dbank/g' -e 's/@dbname@/".strtolower($dbank)."/g' -e 's/@Dbname@/".ucfirst(strtolower($dbank))."/g' -e 's/@IP@/$IP/g' -e 's/@VIRTUALNAME@/$virtual/g' $pubdir/apachev.conf.in > /@APACHECONFDIR@/71_mod_what_$dbank.conf";
+$actions[] = "mkdir -p $pubdir/virtual/$virtual/FDLGEN";
+$actions[] = "chown $httpuser $pubdir/virtual/$virtual/FDLGEN";
+$actions[] = "cd $pubdir/FDLGEN; ln -s  ../virtual/$virtual/FDLGEN ".strtoupper($dbfree);
+
+$actions[] = "sed -e 's/@DBNAME@/$dbname/g' $pubdir/httpd.pam.in > /etc/pam.d/httpd_$virtual"; 
+$actions[] = "sed -e 's/@DBNAME@/$dbname/g' $pubdir/httpdwa.pam.in > /etc/pam.d/httpdwa_$virtual"; 
+
+$actions[] = "sed -e 's/@DBNAME@/anakeen/g'  -e 's/@IP@/$IP/g' -e 's/@VIRTUALNAME@/".trim(`hostname -f`)."/g' $pubdir/apachevi.conf.in > $httpconf/71_mod_what_anakeen.conf";
+$actions[] = "sed -e 's,@prefix@,$pubdir,g' -e 's/@DBNAME@/$dbname/g' -e 's/@dbname@/".strtolower($dbname)."/g' -e 's/@Dbname@/".ucfirst(strtolower($dbname))."/g' -e 's/@IP@/$IP/g' -e 's/@VIRTUALNAME@/$servername/g' $pubdir/apachev.conf.in > $httpconf/71_mod_what_$virtual.conf";
+
 $actions[] = "$pubdir/CORE/CORE_post I ";
 
 $actions[] = "$pubdir/wsh.php --api=appadmin --method=update --appname=CORE";
-$actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbpsql";
-$actions[] = "echo \"update paramv set val= '".ucfirst(strtolower($dbank))." Connection' where name ='CORE_REALM'\" | psql $dbpsql";
+$actions[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbname') where val ~ 'dbname'\" | psql $dbpsql";
+$actions[] = "echo \"update paramv set val= '".ucfirst(strtolower($dbvirtual))." Connection' where name ='CORE_REALM'\" | psql $dbpsql";
 $actions[] = "$pubdir/wsh.php --api=appadmin --method=init --appname=FDL";
 $actions[] = "$pubdir/wsh.php --api=set_param --param=FREEDOM_DB --value=\"user=anakeen dbname=$dbfree\"";
-$actions[] = "$pubdir/wsh.php --api=set_param --param=CORE_CLIENT --value=\"$dbank\"";
+$actions[] = "$pubdir/wsh.php --api=set_param --param=CORE_CLIENT --value=\"$dbname\"";
 $actions[] = "$pubdir/wsh.php --api=set_param --param=CORE_RFOOT --value=\"$dbfree\"";
 
 $actions[] = "$pubdir/FDL/FDL_post I ";

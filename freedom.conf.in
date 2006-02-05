@@ -1,30 +1,29 @@
 export wpub="@prefix@";
 export httpuser="@HTTPUSER@";
+export httpdir="@APACHECONFDIR@";
 if [ $TERM == "xterm" ]; then
     export TERM=xterm-color
 fi
-function wvirtual()
-{
-    php -q $wpub/wvirtual.php 2>/tmp/wvir$$
-    if [ $? == 0 ]; then
-      . /tmp/wvir$$
-      PS1="[\u@\h[1m($dbanakeen)[0m\W]\\$ "
-      $wpub/wdbcreate
-    fi
-    /bin/rm -f /tmp/wvir$$
-    
-}
 
 function wchoose()
 {
-    php -q $wpub/wchoose.php $1 2>/tmp/wcho$$
-    if [ $? == 0 ]; then
-      . /tmp/wcho$$
-#      export dbfree=`$wpub/wsh.php --api=fdl_dbaccess`
-      PS1="[\u@\h[1m($dbanakeen)[0m\W]\\$ "
-    fi
-    /bin/rm -f /tmp/wcho$$
+    php -q $wpub/wchoose.php $1 2>/dev/null
+    dba=`cat $wpub/.freedom`
+    . $wpub/.freedom.sh
+    PS1="[\u@\h[1m($virtual)[0m\W]\\$ "
 }
+
+function wvirtual()
+{
+    php -q $wpub/wvirtual.php 2> /dev/null
+    if [ $? == 0 ]; then
+	. $wpub/.freedom.sh
+	PS1="[\u@\h[1m($virtual)[0m\W]\\$ "
+        # $wpub/wdbcreate
+    fi
+    
+}
+
 alias wcheck=$wpub/wcheck
 alias wsh=$wpub/wsh.php
 alias wtext="$wpub/whattext; /etc/rc.d/init.d/httpd restart"

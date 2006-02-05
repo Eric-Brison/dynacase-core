@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wchoose.php,v 1.11 2005/11/18 16:01:06 eric Exp $
+ * @version $Id: wchoose.php,v 1.12 2006/02/05 09:48:26 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -22,23 +22,24 @@ function choosedb() {
   $pubdir=getenv("wpub");
   $dvir="$pubdir/virtual";
 
-  $post=array();
-  if (is_dir($dvir)) {
-    if ($dh = opendir($dvir)) {
-      while (($file = readdir($dh)) !== false) {
-	$dbaccess="";
-	if (@include("$dvir/$file/dbaccess.php")) {
+//   $post=array();
+//   if (is_dir($dvir)) {
+//     if ($dh = opendir($dvir)) {
+//       while (($file = readdir($dh)) !== false) {
+// 	$dbaccess="";
+// 	if (@include("$dvir/$file/dbaccess.php")) {
 	   
-	  if ($dbaccess != "")  $post[]=getDBname($dbaccess);
+// 	  if ($dbaccess != "")  $post[]=getDBname($dbaccess);
 	   
-	}
+// 	}
 	 
 
-      }
-      closedir($dh);
-    }
-  }
+//       }
+//       closedir($dh);
+//     }
+//   }
 
+  $post = getBaseDirList();
 
   ncurses_winit(sprintf(_("Choose database in %s (%s)"),trim(`hostname -f`),trim(`hostname -i`)));
   ncurses_getmaxyx($fullscreen, $lines, $columns); 
@@ -63,12 +64,13 @@ if (isset($_SERVER['HTTP_HOST']))     {
   print "<BR><H1>:~(</H1>";
   exit;
 }
-if (isset($argv[1])) {
-  if ($argv[1]=="-b") $dbank="anakeen";
-  else if ($argv[1]!="") $dbank=$argv[1];
- } else $dbank=choosedb();
-if (! $dbank) exit(1);
- else writedbenv($dbank);
-exit(0);
 
+if (!isset($argv[1]) || $argv[1]=="-b") $dbank="anakeen";
+if ($argv[1]=="-i") $dbank=choosedb();
+ else {
+   if (isRealDb($argv[1])) $dbank=$argv[1];
+ }
+
+setCurrentDb($dbank);
+exit(0);
 ?>

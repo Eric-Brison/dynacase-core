@@ -2,7 +2,7 @@
 /** WHAT Create another database
  *
  * @author Anakeen 2004
- * @version $Id: wvirtual.php,v 1.7 2005/10/18 14:12:42 eric Exp $
+ * @version $Id: wvirtual.php,v 1.8 2006/02/05 09:48:26 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -20,69 +20,46 @@ if ($_SERVER['HTTP_HOST'] != "")     {
   exit;
 }
 
-
-
-
 $dbank=getenv("dbanakeen");
 $dbaccess="user=anakeen dbname=$dbank";
 $dbfree="free$dbank";
 if ($argv[1]!="") $dbfree=$argv[1];
 
 ncurses_winit(sprintf(_("Create other database for %s (%s)"),trim(`hostname -f`),trim(`hostname -i`)));
-
-
 ncurses_getmaxyx($fullscreen, $lines, $columns); 
 
 //---------------------------------------------------
 
-
-
-
-
-$lhost= exec("dig `domainname` axfr | grep `hostname -f` | grep CNAME | awk '{print $1}'",$outlist,$ret);
-
-if ($ret != 0) {
-
-     ncurses_error(_("Command failed"));
-
+$lhost=exec("dig `domainname` axfr | grep `hostname -f` | grep CNAME | awk '{print $1}'",$outlist,$ret);
+if (count($outlist)==0) {
+     ncurses_error(_("I can't find hostname alias"));
 } 
-  
 
 foreach ($outlist as $k=>$v) {
   $post[] =  substr($v,0,-1);
 }
- 
 
-  
-
-  $wact = ncurses_newwin($lines-9, $columns-4, 7, 2);
-  ncurses_wborder($wact,0,0, 0,0, 0,0, 0,0);
-  ncurses_wcolor_set($wact,3);
-
-
+$wact = ncurses_newwin($lines-9, $columns-4, 7, 2);
+ncurses_wborder($wact,0,0, 0,0, 0,0, 0,0);
+ncurses_wcolor_set($wact,3);
 
 $select=ncurses_select($post,"Select virtual host");
 
 $virtual=$post[$select];
 
-ncurses_mvaddstr($lines-2, 4, _("Name of anakeen database ?"));
+ncurses_mvaddstr($lines-2, 4, _("Enter name for database ? "));
 
 $dbank=strtolower(ncurses_getln());
 ncurses_wclear($wact);
 
 ncurses_mvwaddstr($wact, 3, 4, sprintf(_("Virtual host : [%s]"),$virtual));
-ncurses_mvwaddstr($wact, 5, 4, sprintf(_("Database : [%s]"),$dbank));
+ncurses_mvwaddstr($wact, 5, 4, sprintf(_("Database     : [%s]"),$dbank));
 
 ncurses_wrefresh($wact);
 
-writedbenv($dbank,"--dbname=$dbank","--username anakeen --dbname free$dbank" );
-$stderr = fopen('php://stderr', 'w');
-fwrite($stderr,"export snwhat=$virtual\n");
-fwrite($stderr,"export wpub=$pubdir\n");
+initDbEnv($dbank, $virtual, $dbank."core", $dbank."freedom", "localhost", "5432", "anakeen" );
 
 $cpress=strtoupper(chr($pressed));
-
-
 
 ncurses_mvaddstr($lines-2, 4, _("Continue (Y|N) ?").str_repeat(" ",40));
 $pressed = ncurses_getch();// wait for a user keypress
