@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.37 2006/01/27 16:36:53 eric Exp $
+ * @version $Id: index.php,v 1.38 2006/02/07 16:00:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -78,12 +78,18 @@ ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 // ----------------------------------------
 // Init PUBLISH URL from script name
 
+if (ereg("(.*)/$indexphp", $_SERVER['SCRIPT_NAME'], $reg)) {
 
-
-// determine publish url (detect ssl require)
+  // determine publish url (detect ssl require)
  
-if ($_SERVER['HTTPS'] != 'on')   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/$indexphp";
- else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/$indexphp";
+  if ($_SERVER['HTTPS'] != 'on')   $puburl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
+  else $puburl = "https://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].$reg[1];
+} else {
+  // it is not allowed
+  print "<B>:~(</B>";
+  exit;
+}
+
 
 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
