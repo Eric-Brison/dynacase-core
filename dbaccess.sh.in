@@ -1,9 +1,8 @@
 export wpub="@prefix@"
-export virtual="@DBENV@"
 export dbcoord="dbname=@DBNAME@ host=@DBHOST@ port=@DBPORT@ user=@DBUSER@"
 export dbhost=@DBHOST@
 export dbport=@DBPORT@ 
-export dbanakeen="@DBNAME@"
+export dbanakeen="@DBENV@"
 export dbname=@DBNAME@
 export dbpsql="--host @DBHOST@ --port @DBPORT@ --username @DBUSER@ --dbname @DBNAME@"
 export dbfree="--host @DBHOST@ --port @DBPORT@ --username @DBUSER@ --dbname @DBFREEDOM@"

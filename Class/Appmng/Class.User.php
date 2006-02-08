@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.49 2006/01/27 16:38:30 eric Exp $
+ * @version $Id: Class.User.php,v 1.50 2006/02/08 14:52:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -476,7 +476,9 @@ create sequence seq_id_users start 10";
     $this->iddomain=1;
     $this->id=1;
     $this->lastname="Master";
-    $this->firstname="Freedom";
+    $dbenv=getDbEnv();
+    if ($dbenv=="") $this->firstname="Freedom";
+    else $this->firstname=ucfirst("$dbenv");
     $this->password_new="anakeen";
     $this->login="admin";
     $this->Add(true);

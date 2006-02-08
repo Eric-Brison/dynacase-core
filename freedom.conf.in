@@ -1,6 +1,6 @@
 export wpub="@prefix@";
 export httpuser="@HTTPUSER@";
-export httpdir="@APACHECONFDIR@";
+export httpconf="@APACHECONFDIR@";
 if [ $TERM == "xterm" ]; then
     export TERM=xterm-color
 fi
@@ -18,7 +18,7 @@ function wvirtual()
     php -q $wpub/wvirtual.php 2> /dev/null
     if [ $? == 0 ]; then
 	. $wpub/.freedom.sh
-	PS1="[\u@\h[1m($virtual)[0m\W]\\$ "
+	PS1="[\u@\h[1m($dbanakeen)[0m\W]\\$ "
         # $wpub/wdbcreate
     fi
     

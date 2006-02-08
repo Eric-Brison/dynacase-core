@@ -3,7 +3,7 @@
  * WHAT Environnement
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.6 2006/02/05 09:48:26 marc Exp $
+ * @version $Id: wenv.php,v 1.7 2006/02/08 14:52:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -94,11 +94,11 @@ function initDbEnv( $dbenv="anakeen",
   if (file_exists($dbf)) return false;
 
   $httpu = getenv("httpuser");
-  $httpconf = getenv("httpdir");
+  $httpconf = getenv("httpconf");
 
   $command = "sed -e 's,@prefix@,".DEFAULT_PUBDIR.",g' "
-    .        "    -e 's/@HTTPU@/$httpu/g'"
-    .        "    -e 's,@HTTPC@,$httpconf,g'"
+    .        "    -e 's/@HTTPUSER@/$httpu/g'"
+    .        "    -e 's,@APACHECONFDIR@,$httpconf,g'"
     .        "    -e 's/@DBENV@/$dbenv/g'"
     .        "    -e 's/@DBSERV@/$dbserv/g'"
     .        "    -e 's/@DBNAME@/$dbcore/g'"

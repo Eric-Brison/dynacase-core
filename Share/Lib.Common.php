@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.27 2006/02/03 15:56:30 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.28 2006/02/08 14:52:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -107,7 +107,7 @@ function getDbAccess() {
   if ($CORE_DBANK != "") return $CORE_DBANK;
   $dbaccess="";
 
-  $dbank=getenv("dbanakeen");
+  $dbank=getenv("dbanakeen"); // choose when several databases
   
  
   if ($dbank != "") {
@@ -122,6 +122,12 @@ function getDbAccess() {
   
 }
  
+function getDbEnv() {
+   $dbank=getenv("dbanakeen"); // choose when several databases
+   if ($dbank == "anakeen") return "";
+   return $dbank;
+}
+
 /**
  * transform php postgresql connexion syntax for psql syntax connection
  * @param string postgresql string connection (like : dbname=anakeen user=admin)
@@ -145,11 +151,34 @@ function php2DbSql($dbcoord,$withdbname=true) {
     if ($dbport != "")  $dbpsql.= "--port $dbport ";
     if ($dbuser != "")  $dbpsql.= "--username $dbuser ";
     if ($withdbname) $dbpsql.= "--dbname $dbname ";
-    return $dbpsql;
-  
-
+    return $dbpsql;  
 }
-
+ 
+/**
+ * transform psql syntax connection syntax to php postgresql connexion
+ * @param string psql string connection (like : --dbname=anakeen --username=admin)
+ * @return string like user admin dbname anakeen
+ */
+function DbSql2php($dbcoord,$withdbname=true) {
+    if (ereg('--dbname[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+      $dbname=$reg[1];
+    }
+    if (ereg('--host[ ]*([a-z_0-9\.]*)',$dbcoord,$reg)) {  
+      $dbhost=$reg[1];
+    }
+    if (ereg('--port[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+      $dbport=$reg[1];
+    }
+    if (ereg('--username[ ]*([a-z_0-9]*)',$dbcoord,$reg)) {  
+      $dbuser=$reg[1];
+    }
+    $dbpsql="";
+    if ($dbhost != "")  $dbpsql.= "host=$dbhost ";
+    if ($dbport != "")  $dbpsql.= "port=$dbport ";
+    if ($dbuser != "")  $dbpsql.= "user=$dbuser ";
+    if ($withdbname) $dbpsql.= "dbname=$dbname ";
+    return $dbpsql;  
+}
 function getDbName($dbaccess) {
   if (ereg("dbname=([a-z]+)",$dbaccess,$reg)) {
     return $reg[1];
@@ -165,8 +194,8 @@ function getDbUser($dbaccess) {
 
 
 function getWshCmd($nice=false) {
-  $dbname=getDbName(getDbAccess());
-  $wsh="export dbanakeen=$dbname;";
+  $dbank=getenv("dbanakeen"); // choose when several databases
+  $wsh="export dbanakeen=$dbank;";
   if ($nice) $wsh.= "nice -n +10 ";
   $wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
   return $wsh;

@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.9 2005/11/16 16:36:04 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.10 2006/02/08 14:52:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -194,6 +194,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   $cmd=array(); // pre/post install 
   $dump=array();
   $dbaccess=getDbAccess();
+  $dbpsql=php2DbSql($dbaccess);
   $dbank=getDbName($dbaccess);
   $dbid=@pg_connect($dbaccess);
 
@@ -273,10 +274,12 @@ function getCheckActions($pubdir,$tapp,&$tact) {
 
   $tact = array_merge($dump,$cmd);
   
-  if ($dbank != "anakeen") $tact[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbank anakeen";
+  if ($dbank != "anakeen") $tact[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbpsql";
   $tact[] = "$pubdir/wsh.php  --api=freedom_clean";
   $tact[] = "$pubdir/wstart";
-  $tact[] = "sudo $pubdir/admin/shttpd";
+  global $_SERVER;
+  if ($_SERVER['HTTP_HOST'] != "")  $tact[] = "sudo $pubdir/admin/shttpd";
+  else $tact[] = "/etc/rc.d/init.d/httpd restart";
   
 }
 

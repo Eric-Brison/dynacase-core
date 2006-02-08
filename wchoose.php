@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wchoose.php,v 1.12 2006/02/05 09:48:26 marc Exp $
+ * @version $Id: wchoose.php,v 1.13 2006/02/08 14:52:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -40,7 +40,6 @@ function choosedb() {
 //   }
 
   $post = getBaseDirList();
-
   ncurses_winit(sprintf(_("Choose database in %s (%s)"),trim(`hostname -f`),trim(`hostname -i`)));
   ncurses_getmaxyx($fullscreen, $lines, $columns); 
 

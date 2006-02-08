@@ -1,11 +1,10 @@
 <?
-// $Id: dbaccess.php.in,v 1.3 2006/02/05 09:48:26 marc Exp $
+// $Id: dbaccess.php.in,v 1.4 2006/02/08 14:52:22 eric Exp $
 $pubdir="@prefix@";
-$virtual="@DBENV@";
-$httpuser="@HTTPU@";
-$httpconf="@HTTPC@";
+$httpuser="@HTTPUSER@";
+$httpconf="@APACHECONFDIR@";
 $servername="@DBSERV@";
-$dbanakeen="@DBNAME@";
+$dbanakeen="@DBENV@";
 $dbname="@DBNAME@";
 $dbfree="@DBFREEDOM@";
 $dbpsql="--host @DBHOST@ --port @DBPORT@ --username @DBUSER@ --dbname @DBNAME@";
