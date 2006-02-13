@@ -49,7 +49,7 @@ var w,h;
 
 <div align="center">
 <img  id="urls" 
-	    onclick="subwindow(300,400,'body','[CORE_BASEURL]app=CORE&action=GATE_EDITURL')";
+	    onclick="subwindow(300,400,'fbody','[CORE_BASEURL]app=CORE&action=GATE_EDITURL')";
 	    title="[TEXT:Edit Url Gate]"
 	    alt="FREEDOM - Web Hosting Application Toolkit" src="[IMG:urlpref.gif]">
 </div>
