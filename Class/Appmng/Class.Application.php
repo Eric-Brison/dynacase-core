@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.48 2005/12/06 16:36:12 eric Exp $
+ * @version $Id: Class.Application.php,v 1.49 2006/02/13 15:34:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -134,10 +134,18 @@ create sequence SEQ_ID_APPLICATION start 10;
 
       if ($session != "") $this->SetSession($session);
 
-      $this->InitStyle( );
 
       $this->param=new Param($this->dbaccess);
-      $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID,$this->style->name);
+      if ($this->session) $sessparam=$this->session->read("sessparam".$this->id,false);
+      if ($sessparam) {
+	$this->param->appid=$this->id;
+	$this->param->buffer=$sessparam;
+	$this->InitStyle(false);
+      } else {
+	$this->InitStyle();
+	$this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID,$this->style->name);
+	if ($this->session) $this->session->register("sessparam".$this->id,$this->param->buffer);
+      }
 
 
     }
@@ -384,8 +392,8 @@ create sequence SEQ_ID_APPLICATION start 10;
     return false;
   }
 
-  function InitStyle()
-    {
+  function InitStyle($init=true)    {
+    if ($init==true) {
       if (isset($this->user))
 	$pstyle = new Param($this->dbaccess,array("STYLE",PARAM_USER.$this->user->id,"1"));
       else 
@@ -396,7 +404,13 @@ create sequence SEQ_ID_APPLICATION start 10;
       $this->style=new Style($this->dbaccess,$style);
 
       $this->style->Set($this);
+    } else {
+      $style = $this->getParam("STYLE");     
+      $this->style=new Style($this->dbaccess,$style);
+
+      $this->style->Set($this);
     }
+  }
 
 
 

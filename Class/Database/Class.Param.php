@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.20 2005/11/10 15:45:23 eric Exp $
+ * @version $Id: Class.Param.php,v 1.21 2006/02/13 15:34:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -80,6 +80,7 @@ function Set($name,$val,$type=PARAM_GLB,$appid='')
   else $this->Add();
 
   $this->buffer[$name]=$val;
+  unset($_SESSION["sessparam".$this->appid]);
 }
 
 function SetVolatile($name,$val)
