@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.47 2006/02/01 16:44:22 eric Exp $
+ * $Id: core.css,v 1.48 2006/02/13 15:35:10 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -257,22 +257,37 @@ IMG.click:hover {
 
 IMG.Fade {
 	[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE]
-	-moz-opacity:.5;	
+	[IFNOT ISIE]-moz-opacity:.5;[ENDIF ISIE]
 }
 IMG.NotFade {
 }
 IMG.Select {	
 }
 TD.Fade {
+[IF ISIE]
+	padding-left:2px;
+	padding-right:2px;
+        border-left-style:none;
+        border-right-style:none;[ENDIF ISIE]
+[IFNOT ISIE]
 	border-left:2px transparent solid;
-	border-right:2px transparent solid;
+	border-right:2px transparent solid;[ENDIF ISIE]
 }
 TD.Select {
+[IF ISIE]
+	padding-left:2px;
+	padding-right:2px;[ENDIF ISIE]
+[IFNOT ISIE]
+	border-left:2px transparent solid;
+	border-right:2px transparent solid;[ENDIF ISIE]
 }
 TD.NotFade {
 /*	background-image:url('[IMG:bgunfade.png]');*/
 	/*background-color:[CORE_BGCOLORALTERN];*/
 	border:2px outset [CORE_BGCOLORALTERN];
+[IF ISIE]
+	padding-left:0px;
+	padding-right:0px;[ENDIF ISIE]
 }
 
 div.detail {

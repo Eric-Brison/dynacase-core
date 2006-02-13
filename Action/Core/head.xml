@@ -72,7 +72,11 @@ o.style.position='static';
 var csel=false; // selected icon object
 var izoom=48;
 function fadeIt(o,oimg) {    
-  o.style.backgroundImage='inherit'; 
+  if (isNetscape) {
+    o.style.backgroundImage='none'; 
+  } else {
+    o.style.filter="";
+  }
   // oimg.style.width=[izpx]; 
   //  oimg.style.height=[izpx];
 //    //setTimeout("dz('"+th.id+"')",100);
@@ -90,8 +94,12 @@ function unFadeIt(o,oimg) {
 //    oimg.style.width=izoom; 
 //    oimg.style.height=izoom;
   //setTimeout("iz('"+th.id+"')",100);
-
-  o.style.backgroundImage="url('Images/op20.png')";
+  if (isNetscape) {
+    o.style.backgroundImage="url('Images/op20.png')";
+  } else {
+    o.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +'Images/op20.png'+"',sizingMethod='scale')";
+    
+  }
   if (oimg.className != 'Select') {
     oimg.className='NotFade';
     oimg.parentNode.parentNode.className='NotFade';
