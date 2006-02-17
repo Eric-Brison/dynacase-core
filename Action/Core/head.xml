@@ -73,7 +73,7 @@ var csel=false; // selected icon object
 var izoom=48;
 function fadeIt(o,oimg) {    
   if (isNetscape) {
-    o.style.backgroundImage='none'; 
+    o.style.backgroundImage='inherit'; 
   } else {
     o.style.filter="";
   }
