@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.23 2005/11/10 15:45:06 eric Exp $
+ * @version $Id: Class.Session.php,v 1.24 2006/02/17 10:36:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.23 2005/11/10 15:45:06 eric Exp $
+// $Id: Class.Session.php,v 1.24 2006/02/17 10:36:53 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.23 2005/11/10 15:45:06 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.24 2006/02/17 10:36:53 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -98,8 +98,9 @@ var $sessiondb;
 
        
 
-  // Closes session and removes all datas
-  // ------------------------------------
+  /** 
+   * Closes session and removes all datas
+   */
   function Close()
     {
       global $_SERVER; // use only cache with HTTP
@@ -109,6 +110,16 @@ var $sessiondb;
 	$this->Delete();
 	setcookie ("session","",0,"/");
       }
+      $this->status = $this->SESSION_CT_CLOSE;
+      return $this->status;
+    }  
+
+  /** 
+   * Closes all session 
+   */
+  function CloseAll()
+    {
+      $this->exec_query("delete from sessions");
       $this->status = $this->SESSION_CT_CLOSE;
       return $this->status;
     }  

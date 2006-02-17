@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: param_delete.php,v 1.5 2006/02/13 15:34:52 eric Exp $
+ * @version $Id: param_delete.php,v 1.6 2006/02/17 10:36:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: param_delete.php,v 1.5 2006/02/13 15:34:52 eric Exp $
+// $Id: param_delete.php,v 1.6 2006/02/17 10:36:53 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_delete.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -52,7 +52,11 @@ function param_delete(&$action) {
   } else $action->addLogMsg(sprintf(_("the '%s' parameter cannot be removed"),$name));
 
   // reopen a new session to update parameters cache
-  $action->parent->session->close();
+  if ($atype[0] == PARAM_USER) {
+    $action->parent->session->close();
+  } else {
+    $action->parent->session->closeAll();
+  }
 
   redirect($action,"APPMNG",$action->Read("PARAM_ACT","PARAM_ALIST"));
 }
