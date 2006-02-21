@@ -22,7 +22,7 @@ export utildir
 
 SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc
 
-TOP_MODULES =  wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh dbaccess.sh.in dbaccess.php dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in 
+TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh dbaccess.sh.in dbaccess.php dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in 
 
 
 include $(utildir)/PubRule
@@ -33,6 +33,8 @@ DISTFILES += $(SUBDIR)  \
 
 
 
+$(pubdir)/index.php.q: index.php.q
+	cp $< $@
 $(pubdir)/whattext: whattext
 	cp $< $@
 $(pubdir)/dbaccess.php.in : dbaccess.php.in
