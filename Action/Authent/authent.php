@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.15 2005/10/27 14:25:25 eric Exp $
+ * @version $Id: authent.php,v 1.16 2006/02/28 08:06:18 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -18,6 +18,7 @@ include_once('Class.User.php');
 
 /**
  * Send a 401 Unauthorized HTTP header
+ * @deprecated use logout action instead
  */
 function authenticate() {
   //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
