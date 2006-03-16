@@ -1,4 +1,6 @@
 var isNetscape = navigator.appName=="Netscape";
+var isIE = navigator.appName=="Microsoft Internet Explorer";
+
 function getMouseButton(event) {
   // 1 is the left, 2 the middle, 3 the right button
   var button;
@@ -176,16 +178,12 @@ function correctOnePNG(img) {// correctly handle PNG transparency in Win IE 5.5 
   var imgName = img.src.toUpperCase();
   if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
 	     {		
-	       //img.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity=0) progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +img.src+"',sizingMethod='scale') ";
 	        img.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +img.src+"',sizingMethod='scale') ";
-		//img.style.filter="progid:DXImageTransform.Microsoft.Alpha(opacity=30) progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +'Images/brushed.png'+"',sizingMethod='scale') ";
-	       // img.runtimeStyle.filter="alpha(opacity=30)";
 		 img.style.width = img.width;
 		 img.style.height = img.height;
-		 //		 img.style.visibility='hidden';
-	       img.src='Images/1x1.gif';
+		 img.src='Images/1x1.gif';
 	     }
       
 }
 
-if (! isNetscape) addEvent(window,"load",correctPNG);
+if (isIE) addEvent(window,"load",correctPNG);
