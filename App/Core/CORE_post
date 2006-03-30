@@ -29,11 +29,7 @@ if [ "$1" = "I" ] ; then
   createuser -d -a --username=postgres --host=$dbhost --port=$dbport anakeen
  
   log "Add plpgsql language"
-  if [ -f /usr/lib/pgsql/plpgsql.so ]; then
-      createlang  --username=postgres $dbpsql --pglib=/usr/lib/pgsql plpgsql
-  else
-      createlang  --username=postgres $dbpsql --pglib=/usr/lib/postgresql plpgsql
-  fi
+  createlang --username=postgres --dbname=template1 plpgsql
 
   log "Add plpgsql functions"
   psql  --username=postgres $dbpsql -f $wpub/WHAT/getprivilege.sql
