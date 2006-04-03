@@ -3,7 +3,7 @@
  * Permission to execute actions
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Permission.php,v 1.8 2005/10/27 14:26:05 eric Exp $
+ * @version $Id: Class.Permission.php,v 1.9 2006/04/03 14:58:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -178,7 +178,7 @@ create index permission_idx3 on permission(id_acl);
   /**
    * return ACL list for a user
    */
- private function GetPrivileges() {
+ public function GetPrivileges() {
 
     $this->privileges= array();
     $this->upprivileges= array();
