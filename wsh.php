@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.25 2005/12/06 16:36:24 eric Exp $
+ * @version $Id: wsh.php,v 1.26 2006/04/06 16:46:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -151,7 +151,7 @@ if (isset($_GET["api"])) {
   }
 }
 
-wbar(0,0,"completed");
+wbar(-1,-1,"completed");
 
 return(0);
 ?>

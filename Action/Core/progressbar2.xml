@@ -21,6 +21,16 @@ if (wpb1) {
      if ((reste) && ([reste] >= 0)) reste.innerHTML='[reste]';
      if ((total) && ([total] >= 0)) total.innerHTML='[total]';
      if (done) done.innerHTML='[done]';
+  } else {
+    if ([reste] == 0) {
+     if (ibar) {
+       ibar.style.width='100%';
+       ibar.title='100%';
+       reste.innerHTML='[reste]';
+       reste.innerHTML='[total]';
+     }
+    }
+    
   }
 
    if (text) {

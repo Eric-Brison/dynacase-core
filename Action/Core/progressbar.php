@@ -3,7 +3,7 @@
  * progress bar tool
  *
  * @author Anakeen 2000 
- * @version $Id: progressbar.php,v 1.1 2004/08/23 13:48:25 eric Exp $
+ * @version $Id: progressbar.php,v 1.2 2006/04/06 16:46:53 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -35,12 +35,11 @@ function progressbar2(&$action) {
    foreach ($rf as $line) {
      if (ereg("([0-9\-]+)/([0-9\-]+)/(.*)",$line,$reg)) {
        $texts[]=addslashes(trim($reg[3]));
-       if ((intval($reg[2]) > 0) || (intval($reg[1]) > 0)){
-	 $reste=intval($reg[1]);
-	 $total=intval($reg[2]);
-       }
-     }
+       if (intval($reg[2]) >= 0) $total=intval($reg[2]);
+       if (intval($reg[1]) >= 0) $reste=intval($reg[1]);	 
+     }     
    }
+
    // $action->lay->set("text",trim(addslashes($text)));
    $action->lay->set("texts","['".implode("','",($texts))."']");
    $action->lay->set("reste",$reste);
