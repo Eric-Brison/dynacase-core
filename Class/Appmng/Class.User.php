@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.50 2006/02/08 14:52:22 eric Exp $
+ * @version $Id: Class.User.php,v 1.51 2006/04/07 09:18:33 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -163,11 +163,13 @@ create sequence seq_id_users start 10";
     } 
     
     $group->idgroup=$gid;
-    $group->Add();       
+    // not added here it is added by freedom (generally)
+    if (! $this->fid)   $group->Add();       
 
     $err=$this->FreedomWhatUser();  
     if (@include_once("FDL/Lib.Usercard.php")) {
-      refreshGroups(array($gid),true);
+      // not need now, set by cron because can be use long time if many users on group
+      // refreshGroups(array($gid),true);
     }
     // double pass to compute dynamic profil on itself
     return $err;
