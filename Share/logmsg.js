@@ -175,9 +175,11 @@ function correctPNG() {// correctly handle PNG transparency in Win IE 5.5 or hig
       }
 }
 function correctOnePNG(img) {// correctly handle PNG transparency in Win IE 5.5 or higher.	 
+  if (img.className == 'icon') return;
   var imgName = img.src.toUpperCase();
   if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
 	     {		
+
 	        img.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +img.src+"',sizingMethod='scale') ";
 		 img.style.width = img.width;
 		 img.style.height = img.height;
