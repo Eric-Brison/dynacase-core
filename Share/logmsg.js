@@ -189,3 +189,17 @@ function correctOnePNG(img) {// correctly handle PNG transparency in Win IE 5.5 
 }
 
 if (isIE) addEvent(window,"load",correctPNG);
+
+function sendActionNotification(code,arg) {
+  if (window.opener) {
+    if (window.opener.receiptActionNotification) {
+      window.opener.receiptActionNotification(code,arg);
+    }
+  }
+  if (window.parent) {
+    if (window.parent.receiptActionNotification) {
+      window.parent.receiptActionNotification(code,arg);
+    }
+  }
+  
+}

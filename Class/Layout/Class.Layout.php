@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.29 2005/10/27 14:25:50 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.30 2006/04/28 14:32:29 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.29 2005/10/27 14:25:50 eric Exp $
+//  $Id: Class.Layout.php,v 1.30 2006/04/28 14:32:29 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -332,6 +332,18 @@ var $strip='Y';
     if (count($list) > 0) $out .= "displayWarningMsg('".implode("\\n---------\\n",$list)."');\n";
     $this->action->parent->ClearWarningMsg();
 
+    // Add action notification messages
+    $this->action->getActionDone($actcode,$actarg);
+    if (count($actcode) > 0) {
+    $out .= "var actcode=new Array();\n";
+    $out .= "var actarg=new Array();\n";
+    foreach ($actcode as $k=>$v) {
+      $out .= "actcode[$k]='$v';\n";    
+      $out .= "actarg[$k]='".$actarg[$k]."';\n";      
+    }
+    $out .= "sendActionNotification(actcode,actarg);\n"; 
+    $this->action->clearActionDone();
+    }
     return($out);
   }
 

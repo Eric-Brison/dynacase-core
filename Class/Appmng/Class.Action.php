@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.31 2006/02/01 17:21:37 eric Exp $
+ * @version $Id: Class.Action.php,v 1.32 2006/04/28 14:32:29 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -184,6 +184,41 @@ create sequence SEQ_ID_ACTION;
     if (isset ($this->parent)) {
       return($this->parent->AddWarningMsg($msg));
     }
+  }
+
+  /**
+   * store action done to be use in refreshing main window interface
+   * @param string $actdone the code of action
+   * @param string $args the argument of action
+   */
+  function AddActionDone($actdone,$arg="") {
+    if ($actdone != "") {
+	$sact=$this->session->read("actdone_name", array());
+	$sarg=$this->session->read("actdone_arg", array());
+	$sact[]=$actdone;
+	$sarg[]=$arg;
+	$sact=$this->session->register("actdone_name",$sact);
+	$sarg=$this->session->register("actdone_arg", $sarg);
+    }
+  }
+  /**
+   * clear action done to be use in refreshing main window interface
+   * @param string $actdone the code of action
+   * @param string $args the argument of action
+   */
+  function ClearActionDone() {
+    $this->session->unregister("actdone_name");
+    $this->session->unregister("actdone_arg");    
+  }
+  /**
+   * get action code and argument for action code done 
+   * to be use in refreshing main window interface
+   * @param string &$actdone the code of action
+   * @param string &$args the argument of action
+   */
+  function GetActionDone(&$actdone,&$arg) {
+    $actdone=$this->session->read("actdone_name", array());
+    $arg=$this->session->read("actdone_arg", array());
   }
   function GetIcon($name,$text,$width="",$height="") {
   
