@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2004
- * @version $Id: set_param.php,v 1.2 2005/07/08 15:29:51 eric Exp $
+ * @version $Id: set_param.php,v 1.3 2006/04/28 14:31:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -16,17 +16,20 @@ include_once("Class.QueryDb.php");
 $parname = GetHttpVars("param"); // parameter name
 $parval = GetHttpVars("value"); // parameter value
 $paruser = GetHttpVars("userid"); // parameter user id (option)
-$parapp = GetHttpVars("appid"); // parameter app id (option)
+$parapp = GetHttpVars("appname"); // parameter app name (option)
 
-
+if ($parapp != "") {
+  $appid=$core->GetIdFromName($parapp);
+ }
 
 $param = new QueryDb($dbaccess,"Param");
 $param->AddQuery("name='$parname'");
+if ($appid) $param->AddQuery("appid=$appid");
 $list=$param->Query(0,2);
 if ($param->nb==0) {
   printf(_("Attribute %s not found\n"),$parname);
 } elseif ($param->nb > 1) {
-  printf(_("Attribute %s found is not alone\nMust precise request with userid or appid arguments\n"),$parname);  
+  printf(_("Attribute %s found is not alone\nMust precise request with appname arguments\n"),$parname);  
 } else {
   $p = $list[0];
   $p->val = $parval;
