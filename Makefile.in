@@ -87,5 +87,5 @@ clean:
 	      dbaccess.sh dbaccess.php apache.conf App/Core/CORE_init.php \
 	      App/Users/USERS_init.php App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php App/Appmng/APPMNG_init.php \
-	      httpd.pam  wdbcreate \
+	      httpd.pam \
 	      Api/appadmin.php Api/updateclass.php App/Core/CORE_post

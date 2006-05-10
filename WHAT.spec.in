@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.64 2006/02/21 14:59:54 marc Exp $
+#  $Id: WHAT.spec.in,v 1.65 2006/05/10 14:06:06 jerome Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -12,19 +12,26 @@
 %define destdir @prefix@
 %define apacheconfdir @APACHECONFDIR@
 %define cerbere		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'none' && echo 1 || echo 0)
+%define pld		%(uname -o | grep -c PLD)
 %if %{cerbere}
 %define destdir /home/httpd/what
 %define apacheconfdir /etc/httpd/httpd.conf
+%define httpuser http
+%else
+%if %{pld}
+%define destdir /usr/share/what
+%define apacheconfdir /etc/webapps/what
 %define httpuser http
 %else
 %define destdir /usr/share/what
 %define apacheconfdir /etc/httpd/conf.d
 %define httpuser apache
 %endif
+%endif
 Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
 Version: @VERSION@
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Release: @RELEASE@
 %else
 Release: @RELEASE@fc
@@ -43,23 +50,23 @@ Conflicts: MAIL < 0.5.1
 Conflicts: FREEDOM < 2.0.0
 #BuildRequires: docbook-dtd41-sgml
 #BuildRequires: docbook-utils
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 BuildRequires: apache-devel
 %endif
 Requires: php >= 5.0
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Requires: apache >= 2.0
 %else
 Requires: httpd >= 2.0
 %endif
 Requires: postgresql >= 7.2
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Requires: postgresql-module-plpgsql
 %else
 Requires: postgresql-pl
 %endif
 Requires: php-pgsql
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Requires: php-gettext
 Requires: php-pcre
 Requires: php-cgi
@@ -67,7 +74,7 @@ Requires: php-mhash
 Requires: php-mcrypt
 %endif
 Requires: php-ncurses
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Requires: apache-mod_auth
 Requires: apache-mod_dir
 Requires: apache-mod_expires
@@ -76,14 +83,14 @@ Requires: apache-mod_auth_pam
 Requires: pam_what >= 0.4.0
 Requires: ankpsql-tools
 Requires: gettext
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Requires: gettext-devel > 0.11
 Requires: php-pear-PEAR
 %endif
 Requires: php-pear-Crypt_CHAP >= 1.0.0
 Requires: php-pear
 
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Prereq: apache
 %else
 Prereq: httpd
@@ -92,7 +99,7 @@ Prereq: grep
 Prereq: SysVinit
 Prereq: sudo
 Conflicts: FREEDOM-USERCARD < 0.4.0
-%if %{cerbere}
+%if %{cerbere} || %{pld}
 Conflicts: libuser < 2.2.3
 %endif
 
@@ -113,12 +120,20 @@ autoconf
 	    --prefix=%{destdir}
 make -i pubdir=$RPM_BUILD_ROOT%{destdir} 
 install -d $RPM_BUILD_ROOT%{apacheconfdir}
+%if %{pld}
+install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/httpd.conf
+%else
 install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/71_mod_what.conf
+%endif
 
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
 %post
+
+if [ -x /usr/sbin/webapp -a -d %{apacheconfdir} ]; then
+	/usr/sbin/webapp register httpd what
+fi
 
 if [ "$1" = 1 ] ; then
  if [ -f %{destdir}/index.php ]; then
@@ -230,7 +245,11 @@ fi
 %config(noreplace) /etc/pam.d/httpdwa
 %config /etc/freedom.conf
 /etc/cron.daily/*
+%if %{pld}
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/httpd.conf
+%else
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/*_mod_*.conf
+%endif
 
 %changelog
 * Tue Oct 30 2000 Yannick Le Briquer <yannick.lebriquer@anakeen.com>
