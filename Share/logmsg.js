@@ -174,10 +174,10 @@ function correctPNG() {// correctly handle PNG transparency in Win IE 5.5 or hig
 	correctOnePNG(document.images[i]);
       }
 }
-function correctOnePNG(img) {// correctly handle PNG transparency in Win IE 5.5 or higher.	 
+function correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency in Win IE 5.5 or higher.	 
   if (img.className == 'icon') return;
   var imgName = img.src.toUpperCase();
-  if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+  if ((iknowitisapng==true) || (imgName.substring(imgName.length-3, imgName.length) == "PNG") )
 	     {		
 
 	        img.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +img.src+"',sizingMethod='scale') ";
