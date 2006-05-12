@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.23 2005/11/24 09:10:28 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.24 2006/05/12 15:43:01 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -127,10 +127,10 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE) {
    echo $src;
 }
 
-function Http_DownloadFile($filename,$name,$mime_type='') {
+function Http_DownloadFile($filename,$name,$mime_type='',$inline=false) {
 
   
-   header("Content-Disposition: form-data;filename=\"$name\"");   
+  if (!$inline) header("Content-Disposition: form-data;filename=\"$name\"");   
    header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
 
    header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
