@@ -203,3 +203,78 @@ function sendActionNotification(code,arg) {
   }
   
 }
+
+
+var  CGCURSOR='auto'; // current global cursor
+function globalcursor(c,w) {
+  var theSheet;
+
+  if (!w) w=window;
+  if ((!w) && (c==CGCURSOR)) return;
+  if (!w.document.styleSheets) { 
+    if (w.document.createStyleSheet) { 
+      w.document.createStyleSheet("javascript:''"); } 
+    else {
+      var newSS = w.document.createElement('link'); 
+      newSS.rel='stylesheet'; 
+      newSS.href='data:text/css';
+    }
+
+  } 
+ 
+  unglobalcursor();
+  w.document.body.style.cursor=c;
+
+  
+  if (w.document.styleSheets.length==1) theSheet=w.document.styleSheets[0];
+  else theSheet=w.document.styleSheets[1];
+
+ 
+  if (! theSheet) return;
+  if (theSheet.addRule) {
+	  theSheet.addRule("*","cursor:"+c+" ! important",0);
+  } else if (theSheet.insertRule) {
+	  theSheet.insertRule("*{cursor:"+c+" ! important;}", 0); 
+  }
+  CGCURSOR=c;
+		
+}
+function unglobalcursor(w) {
+  if (!w) w=window;
+  if (!w.document.styleSheets) return;
+  var theRules;
+  var theSheet;
+  var r0;
+  var s='';
+
+  w.document.body.style.cursor='auto';
+
+
+  if (w.document.styleSheets.length==1) theSheet=w.document.styleSheets[0];
+  else theSheet=w.document.styleSheets[1];
+  if (! theSheet) return;
+  if (theSheet.cssRules)
+    theRules = theSheet.cssRules;
+  else if (theSheet.rules)
+    theRules = theSheet.rules;
+  else return;
+  if (theRules.length > 0) {
+    r0=theRules[0].selectorText; 
+    /* for (var i=0; i<theSheet.rules.length; i++) {
+       s=s+'\n'+theSheet.rules[i].selectorText;
+       s=s+'-'+theSheet.rules[i].style;
+       }*/
+    //  alert(s);
+
+    if ((r0 == '*')||(r0 == '')) {
+
+      if (theSheet.removeRule) {   
+	theSheet.removeRule(0);
+      } else if (theSheet.deleteRule) {
+	theSheet.deleteRule(0); 
+      }
+    }
+  }
+  CGCURSOR='auto';;
+		
+}
