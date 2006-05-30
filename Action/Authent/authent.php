@@ -5,7 +5,7 @@
  * which need also an authentification
  *
  * @author Anakeen 2003
- * @version $Id: authent.php,v 1.16 2006/02/28 08:06:18 eric Exp $
+ * @version $Id: authent.php,v 1.17 2006/05/30 16:55:10 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -40,12 +40,14 @@ function authenticate() {
 global $_SERVER;
 global $_POST;
 
+$target = GetHttpVars("url", "/freedom/index.php?sole=R");
+
 if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {
 
   authenticate();
 }
 else {
-  Header("Location: /what/index.php?sole=R");
+  Header("Location: $target");
   exit;
 }
 ?>
