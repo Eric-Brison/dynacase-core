@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.49 2006/02/13 15:34:52 eric Exp $
+ * @version $Id: Class.Application.php,v 1.50 2006/06/01 12:53:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -130,7 +130,7 @@ create sequence SEQ_ID_APPLICATION start 10;
       }
 
       if ($this->available == "N") 
-	Redirect($this,"CORE","",$action->GetParam("CORE_ROOTURL"));
+	Redirect($this,"CORE","",GetParam("CORE_ROOTURL"));
 
       if ($session != "") $this->SetSession($session);
 
