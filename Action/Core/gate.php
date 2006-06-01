@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: gate.php,v 1.5 2005/09/27 15:01:15 eric Exp $
+ * @version $Id: gate.php,v 1.6 2006/06/01 12:54:33 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: gate.php,v 1.5 2005/09/27 15:01:15 eric Exp $
+// $Id: gate.php,v 1.6 2006/06/01 12:54:33 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/gate.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -109,6 +109,7 @@ function gate(&$action) {
   $action->lay->set("urlG31",$turl[4]);
   $action->lay->set("urlG32",$turl[5]);
   if (($G1W == "0%") && ($G2W == "0%") && ($G3W == "0%")) $action->lay->set("bw","*");
+  $action->session->Close(); // reinit session
 }
 
 
