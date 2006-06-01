@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.16 2006/01/03 08:45:59 jerome Exp $
+// $Id: index.php.q,v 1.17 2006/06/01 12:55:33 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,6 +22,15 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 
+global $tic1;
+function ptic($text) {
+  global $tic1;
+  static $ptic=0;
+  $deb=gettimeofday();
+  $tuc1= $deb["sec"]+$deb["usec"]/1000000;
+  print sprintf("%s : %.03f  -- %.03f<br>",$text,($tuc1-$tic1),($tuc1-$ptic));
+  $ptic=$tuc1;
+}
 #
 # This is the main body of App manager
 # It is used to launch application and 
@@ -203,6 +212,9 @@ textdomain ("what");
   
   $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
 
+$deb=gettimeofday();
+$ticainit= $deb["sec"]+$deb["usec"]/1000000;
+
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
 {
 	$out=$action->execute ();
@@ -299,10 +311,11 @@ function sortqdelay($a,$b) {
 usort($TSQLDELAY,sortqdelay);
 
 
-printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"document.getElementById('TSQLDELAY').style.display='';\"><I>[Q %.2fs §%d]</I></a></SUP>",
+printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[Init:%.3fs]</I> <I>[App:%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"document.getElementById('TSQLDELAY').style.display='';\"><I>[Q %.2fs §%d]</I></a></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
-       $tic4-$tic1,
+       $ticainit-$tic1,
+       $tic4-$ticainit,
        $tic3-$tic2,$nbcache,			
        round(memory_get_usage()/1024),	
        $SQLDELAY,
