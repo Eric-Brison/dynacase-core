@@ -223,7 +223,7 @@ function globalcursor(c,w) {
   } 
  
   unglobalcursor();
-  w.document.body.style.cursor=c;
+  //  w.document.body.style.cursor=c;
 
   
   if (w.document.styleSheets.length==1) theSheet=w.document.styleSheets[0];
@@ -247,7 +247,7 @@ function unglobalcursor(w) {
   var r0;
   var s='';
 
-  w.document.body.style.cursor='auto';
+  //  w.document.body.style.cursor='auto';
 
 
   if (w.document.styleSheets.length==1) theSheet=w.document.styleSheets[0];
