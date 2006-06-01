@@ -3,7 +3,7 @@
  * Permission to execute actions
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Permission.php,v 1.9 2006/04/03 14:58:26 eric Exp $
+ * @version $Id: Class.Permission.php,v 1.10 2006/06/01 12:54:05 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -27,9 +27,9 @@ Class Permission extends DbObj
 
   var $dbtable = "permission";
   var $privileges = array(); // privileges array for a user (including group) in an application
-  var $upprivileges = array(); // specifific privileges array for a user in an application
-  var $unprivileges = array(); // specifific NO privileges array for a user in an application
-  var $gprivileges = array(); // privileges array for the group user
+  private $upprivileges = false; // specifific privileges array for a user in an application
+  private $unprivileges = false; // specifific NO privileges array for a user in an application
+  private $gprivileges = false; // privileges array for the group user
 
   var $sqlcreate = '
 create table permission (id_user int not null,
@@ -174,12 +174,49 @@ create index permission_idx3 on permission(id_acl);
     }
   }
 
+  /**
+   * return ACL up list for a user
+   */
+ public function GetUpPrivileges() {
+   if ($this->upprivileges === false) {
+     $this->GetPrivileges(true);
+   }
+   return $this->upprivileges;
+ }
+  /**
+   * return ACL un list for a user
+   */
+ public function GetUnPrivileges() {
+   if ($this->unprivileges === false) {
+     $this->GetPrivileges(true);
+   }
+   return $this->unprivileges;
+ }
+  /**
+   * return ACL un list for a user
+   */
+ public function GetGPrivileges() {
+   if ($this->gprivileges === false) {
+     $this->GetPrivileges(true);
+   }
+   return $this->gprivileges;
+ }
 
   /**
    * return ACL list for a user
    */
- public function GetPrivileges() {
+ public function GetPrivileges($force=false) {
+   global $session;
 
+   if (! $force) {
+     if ($session) {
+     $privileges=$session->read("PERM".$this->id_application."_".$this->id_user);
+     if ($privileges !== "") {
+       $this->privileges=$privileges;
+       return;
+     }
+     }
+   }
     $this->privileges= array();
     $this->upprivileges= array();
     $this->unprivileges= array();
@@ -231,6 +268,7 @@ create index permission_idx3 on permission(id_acl);
       }
     }
 
+    if ($session) $session->register("PERM".$this->id_application."_".$this->id_user,$this->privileges);
 
     return($this->privileges);
   }

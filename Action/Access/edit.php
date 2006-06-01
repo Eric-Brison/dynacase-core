@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: edit.php,v 1.10 2005/10/31 11:51:29 eric Exp $
+ * @version $Id: edit.php,v 1.11 2006/06/01 12:55:08 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.10 2005/10/31 11:51:29 eric Exp $
+// $Id: edit.php,v 1.11 2006/06/01 12:55:08 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -221,17 +221,17 @@ function edit_main(&$action, $userId, $appId, $coid) {
       }
       $tableacl[$k]["iacl"]="$k"; // index for table in xml
 
-      if (in_array($v->id, $uperm->unprivileges)) {
+      if (in_array($v->id, $uperm->GetUnPrivileges())) {
 	    $tableacl[$k]["selectedun"]="checked";
       } else {
 	    $tableacl[$k]["selectedun"]="";
       } 
-      if (in_array($v->id, $uperm->upprivileges)) {	
+      if (in_array($v->id, $uperm->GetUpPrivileges())) {	
 	    $tableacl[$k]["selectedup"]="checked";
       } else {
 	    $tableacl[$k]["selectedup"]="";
       }
-      if (in_array($v->id, $uperm->gprivileges)) {	
+      if (in_array($v->id, $uperm->GetGPrivileges())) {	
 	    $tableacl[$k]["selectedg"]="checked";
       } else {
 	    $tableacl[$k]["selectedg"]="";
