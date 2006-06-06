@@ -21,10 +21,10 @@ function displayPropertyNames(obj) {
   var names="";
   for (var name in obj) {
    try {
-     names += name +" - " + obj[name] + "][";
+     names += name +" - [" + obj[name] + "]\n";
    }
    catch (ex) {
-     names += name +" - " + "unreadable" + "][";
+     names += name +" - [" + "unreadable" + "]\n";
    }
   }
   alert(names);
