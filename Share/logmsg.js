@@ -191,6 +191,13 @@ function correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency 
 if (isIE) addEvent(window,"load",correctPNG);
 
 function sendActionNotification(code,arg) {
+  
+  if (window) {
+    if (window.receiptActionNotification) {
+      window.receiptActionNotification(code,arg);
+    }
+  }
+
   if (window.opener) {
     if (window.opener.receiptActionNotification) {
       window.opener.receiptActionNotification(code,arg);
