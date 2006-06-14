@@ -11,7 +11,7 @@
             onclick="with (document.getElementById('slog')) { if ((options.length > 0)&&(style.display=='none')) style.display='inline'; else style.display='none';}">
        <select id="slog" class="anakeen" style="display:none"></select></td>
   <td align="right">[CORE_RFOOT]</td>
-  <td align="right"><img class="click" src="[IMG:help.gif]" title="[TEXT:All manuals]" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'fhelplist','[CORE_STANDURL]&app=CORE&action=DOCPDF')"</td>
+  <td align="right"><img class="click" src="[IMG:help.gif]" title="[TEXT:All manuals]" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'fhelplist','[CORE_STANDURL]&app=CORE&action=DOCPDF')"></td>
 </tr>
 
 </table>
