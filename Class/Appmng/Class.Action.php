@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.32 2006/04/28 14:32:29 eric Exp $
+ * @version $Id: Class.Action.php,v 1.33 2006/06/14 16:22:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -489,10 +489,9 @@ create sequence SEQ_ID_ACTION;
   }
 
 
-  function Text($code, $args=NULL) {
-    if (isset ($this->parent)) {
-      return($this->parent->Text($code, $args));
-    }
+  function Text($code, $args=NULL) {  
+    if ($code == "") return "";  
+    return _("$code");
   }
 
   // Log functions
