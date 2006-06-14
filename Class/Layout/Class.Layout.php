@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.30 2006/04/28 14:32:29 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.31 2006/06/14 16:21:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.30 2006/04/28 14:32:29 eric Exp $
+//  $Id: Class.Layout.php,v 1.31 2006/06/14 16:21:39 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -214,6 +214,16 @@ var $strip='Y';
   function ParseKey(&$out) {
     if (isset ($this->rkey)) {
       $out=preg_replace($this->pkey,$this->rkey,$out);
+    }
+  }
+
+  /**
+   * define new encoding text
+   * default is iso8859-1
+   */
+  function setEncoding($enc) {
+    if ($enc=="utf-8") {
+      bind_textdomain_codeset("what", 'UTF-8');
     }
   }
 

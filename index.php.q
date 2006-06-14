@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.17 2006/06/01 12:55:33 eric Exp $
+// $Id: index.php.q,v 1.18 2006/06/14 16:21:39 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -127,6 +127,7 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 
 
 
+$core->SetVolatileParam("TRACETIME", "true");
 
 
 $core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
@@ -211,15 +212,24 @@ textdomain ("what");
 
   
   $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
-
+$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/tracetime.js");
 $deb=gettimeofday();
 $ticainit= $deb["sec"]+$deb["usec"]/1000000;
-
+$trace["url"]=$_SERVER["REQUEST_URI"];
+$trace["init"]=sprintf("%.03fs" ,$ticainit-$tic1);
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
 {
 	$out=$action->execute ();
    $deb=gettimeofday();
    $tic4= $deb["sec"]+$deb["usec"]/1000000;
+   $trace["app"]=sprintf("%.03fs" ,$tic4-$ticainit);
+   $trace["memory"]=sprintf("%dkb" ,round(memory_get_usage()/1024));
+   $trace["queries"]=sprintf("%.03fs #%d",$SQLDELAY, count($TSQLDELAY));
+   $trace["server all"]=sprintf("%.03fs" ,$tic4-$tic1);
+   $trace["n"]="-------------";
+   $strace='var TTRACE=new Object();'."\n";
+   foreach ($trace as $k=>$v) $strace.=sprintf(" TTRACE['%s']='%s';\n",$k,$v);
+   $out=str_replace("<head>","<head><script>$strace</script>",$out);
    echo ($out);
 
 } 
@@ -274,7 +284,7 @@ else
 	else
 	  {
 	    // This document is completed 
-	    $out=$action->execute ();  
+	    $out=$action->execute();  
 	    $deb=gettimeofday();
             $tic4= $deb["sec"]+$deb["usec"]/1000000;
             echo $out;
@@ -310,7 +320,7 @@ function sortqdelay($a,$b) {
 
 usort($TSQLDELAY,sortqdelay);
 
-
+if (false) {
 printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[Init:%.3fs]</I> <I>[App:%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"document.getElementById('TSQLDELAY').style.display='';\"><I>[Q %.2fs §%d]</I></a></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
@@ -330,5 +340,5 @@ foreach ($TSQLDELAY as $k=>$v) {
   print "</tr>";
 }
 print("</table>");
-
+ }
 ?>
