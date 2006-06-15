@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.27 2006/06/06 14:50:42 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.28 2006/06/15 08:33:45 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -39,7 +39,22 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
       foreach ($ZONE_ARGS as $k=>$v)  $location .= "&$k=$v";
     
   }
+  global $SQLDEBUG;
+  if ($SQLDEBUG) {
+    global $ticainit,$tic1,$trace;
 
+    $trace["__url"]=$trace["url"];
+    $trace["__init"]=$trace["init"];
+    unset($trace["url"]);
+    unset($trace["init"]);
+    $deb=gettimeofday();
+    $tic4= $deb["sec"]+$deb["usec"]/1000000;
+    $trace["__app"]=sprintf("%.03fs" ,$tic4-$ticainit);
+    $trace["__memory"]=sprintf("%dkb" ,round(memory_get_usage()/1024));
+    $trace["__queries"]=sprintf("%.03fs #%d",$SQLDELAY, count($TSQLDELAY));
+    $trace["__server all"]=sprintf("%.03fs" ,$tic4-$tic1);
+    $action->register("trace",$trace);    
+  }
   Header("Location: $location");
   exit;
 }

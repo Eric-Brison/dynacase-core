@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.19 2006/06/15 07:25:26 eric Exp $
+// $Id: index.php.q,v 1.20 2006/06/15 08:33:45 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -215,6 +215,7 @@ textdomain ("what");
 $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/tracetime.js");
 $deb=gettimeofday();
 $ticainit= $deb["sec"]+$deb["usec"]/1000000;
+$trace=$action->read("trace");
 $trace["url"]=$_SERVER["REQUEST_URI"];
 $trace["init"]=sprintf("%.03fs" ,$ticainit-$tic1);
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
@@ -231,6 +232,7 @@ if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
    foreach ($trace as $k=>$v) $strace.=sprintf(" TTRACE['%s']='%s';\n",$k,$v);
    $out=str_replace("<head>","<head><script>$strace</script>",$out);
    echo ($out);
+   $action->unregister("trace");   
 
 } 
 else 
@@ -296,6 +298,7 @@ else
 	    foreach ($trace as $k=>$v) $strace.=sprintf(" TTRACE['%s']='%s';\n",$k,$v);
 	    $out=str_replace("<head>","<head><script>$strace</script>",$out);
             echo $out;
+	    $action->unregister("trace");  
 	  }
 	  
       }
