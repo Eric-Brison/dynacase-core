@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.30 2005/11/17 13:42:11 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.31 2006/06/16 15:35:03 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -44,12 +44,7 @@ $app_const = array (
 
 
 		    // Layout Param
-		    "CORE_APPBUTTONBGCOLOR"	=>array("val"=>"#FEFEFE",
-							"descr"=>N_("button color"),
-							"user"=>"Y",
-							"style"=>"Y",
-							"kind"=>"color",
-							"global"=>"N"),
+		   
 		    "CORE_BGCOLOR"		=>array("val"=>"url('CORE/Images/bg.gif')",
 							"descr"=>N_("background color or image"),
 							"user"=>"Y",
@@ -96,7 +91,7 @@ $app_const = array (
 							"kind"=>"color",
 							"style"=>"Y",
 							"global"=>"N"), // inverse video bg
-		    "CORE_TEXTFGCOLOR"	        =>array("val"=>"midnightblue",
+		    "CORE_TEXTFGCOLOR"	        =>array("val"=>"black",
 							"descr"=>N_("text color"),
 							"user"=>"Y",
 							"kind"=>"color",

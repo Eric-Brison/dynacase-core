@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.48 2006/02/13 15:35:10 eric Exp $
+ * $Id: core.css,v 1.49 2006/06/16 15:35:03 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -7,34 +7,19 @@
 
 
 body, .core {
-  background: [CORE_BGCOLOR];
-  font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
   margin:2px;
 }
-P {
-  font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
-  color: [CORE_TEXTFGCOLOR];
-}
+
 TD {
-/*  background: [CORE_BGCELLCOLOR];*/
-  font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
 	empty-cells: show;
 	border-style : inherit;
 }
 TH {
-  font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
   empty-cells: show;
   border-style : inherit;
   font-weight: bold;
 }
-TR {
-  background: [CORE_BGCELLCOLOR];
-  color: [CORE_TEXTFGCOLOR];
-}
+
 
 /*
  *
@@ -75,9 +60,6 @@ TR.headcell  {
   border: none;
 }
 
-.headcellappbuttons {
-  background-color: [CORE_APPBUTTONBGCOLOR];
-}
 
 .historique {
   font-family: [CORE_FONTLIST1];
@@ -121,14 +103,9 @@ TR.headcell  {
  * ------------------------------------------
  */
 A:link, A:visited {
-  color: [CORE_ACOLOR];
-  font-family: [CORE_FONTLIST1];
   text-decoration: none;
 }
-A {
-  color: [CORE_ACOLOR];
-  cursor:pointer  
-}
+
 IMG.click {
   	cursor: pointer;
 	border:none;
@@ -325,61 +302,4 @@ DIV.TITLE { color : black;
 	padding : 3pt;		
 }
 
-INPUT, SELECT, OPTION, TEXTAREA, FILE {
-   color:[CORE_TEXTFGCOLOR];
-   background:[CORE_INPUTBGCOLOR];
-   font-size: [CORE_FONTBASESIZE];
-   margin:0pt;
-/*  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:bg.png]',sizingMethod='scale');*/
-}
-OPTION {
-   background: [CORE_INPUTBGCOLOR];
-}
-BUTTON { 
-	-moz-border-radius:25px;
-	padding:0pt;
-	background-color:[CORE_APPBUTTONBGCOLOR];
-   }
-BUTTON:hover { 	
-	border-style:inset;
-   }
-
-input[type="button"] { 
-	-moz-border-radius:25px;
-	padding:0pt;
-   }
-input:hover,input:focus,  TEXTAREA:hover, TEXTAREA:focus, SELECT:hover, SELECT:focus { 
-	border-style:inset;
-	background-image:url('Images/op20.png');
-   }
-input[type="submit"] { -moz-border-radius:25px;
-   }
-input[type="select"] { -moz-border-radius:25px;
-  }
-input[type="reset"] { -moz-border-radius:25px ;
- }
-input[type="text"] { 
-  -moz-border-radius:7px ;
-
-  border:inset 1px [CORE_TEXTFGCOLOR];
- }
-input[disabled], textarea[disabled] {
-   color: #DDDDDD;
-   color: #666666;
-   background-color:[CORE_BGCOLORALTERN];
-}
-TEXTAREA { 
-  -moz-border-radius:7px ;
-  border:inset 1px [CORE_TEXTFGCOLOR];
- }
-
-
-/* input[type="submit"]:hover, input[type="reset"]:hover,input[type="button"]:hover {
- background-image:url('Images/bgaqua.png');   
-    -moz-opacity:.8;		
-} */
-input[type="image"] { 
-  border-style : none;
-  background-color:transparent;
- }
 
