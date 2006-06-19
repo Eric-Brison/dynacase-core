@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_style.php,v 1.4 2006/06/16 15:35:03 eric Exp $
+ * @version $Id: import_style.php,v 1.5 2006/06/19 15:30:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -12,7 +12,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: import_style.php,v 1.4 2006/06/16 15:35:03 eric Exp $
+// $Id: import_style.php,v 1.5 2006/06/19 15:30:22 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/import_style.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -70,7 +70,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
      if (isset($sty_colors)) {
        // compute all derived color
        foreach ($sty_colors as $k=>$v) {
-	 $basecolor=$v["color"];
+	 $basecolor=$v;
 	 if ($basecolor[0]=='#') {
 	   $r=hexdec(substr($basecolor,1,2));
 	   $g=hexdec(substr($basecolor,3,2));

@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.39 2006/06/16 15:35:03 eric Exp $
+ * @version $Id: index.php,v 1.40 2006/06/19 15:30:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -181,7 +181,6 @@ textdomain ("what");
 
   
 $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
-$action->parent->AddCssRef("STYLE/BRUSHED/Layout/gen.css");
 
 
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))

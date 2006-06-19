@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.49 2006/06/16 15:35:03 eric Exp $
+ * $Id: core.css,v 1.50 2006/06/19 15:33:51 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -51,6 +51,11 @@ TH {
   color: [CORE_TEXTBGCOLOR];
   font-family: [CORE_FONTLIST1];
   font-weight: bold;
+}
+A.headtitle:hover {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: [CORE_FGCOLOR];
+  background-image: [CORE_FGIMG];
 }
 
 TR.headcell  {
@@ -237,6 +242,11 @@ IMG.Fade {
 	[IFNOT ISIE]-moz-opacity:.5;[ENDIF ISIE]
 }
 IMG.NotFade {
+} 
+TD.NotFade A:hover {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: inherit;
+  background-image: inherit;
 }
 IMG.Select {	
 }
