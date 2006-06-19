@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.50 2006/06/01 12:53:44 eric Exp $
+ * @version $Id: Class.Application.php,v 1.51 2006/06/19 15:33:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -121,7 +121,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	if (isset($this->parent->user) && is_object($this->parent->user)) {
 	  $this->user=$this->parent->user;
 	  $permission = new Permission($this->dbaccess, array($this->user->id,$this->id));
-	  if (! $permission-> IsAffected()) { // case of no permission available
+	  if (! $permission->IsAffected()) { // case of no permission available
 	    $permission->Affect(array("id_user" => $this->user->id,
 				      "id_application" => $this->id ));
 	  } 
@@ -303,22 +303,30 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
       $this->session->unregister("warningmsg");
     }
-  function AddCssRef($ref,$needparse=false) 
-    {
-      // Css Ref are stored in the top level application
-      $root = $this->Getparam("CORE_PUBDIR");
-      if (file_exists($root."/".$this->name."/Layout/".$ref)) 
-	$ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
+  function AddCssRef($ref,$needparse=false)   {
       if ($this->hasParent()) {
 	$this->parent->AddCssRef($ref,$needparse);
       } else {
-	(!isset($this->csscount) ? $this->csscount = 0 : $this->csscount++);
+      // Css Ref are stored in the top level application
+      $root = $this->Getparam("CORE_PUBDIR");
+	  
+      if (! $needparse) {
+	$fccs=false;
+	if (file_exists($root."/".$ref)) $fccs=true;
+	elseif (file_exists($root."/".$this->name."/Layout/".$ref)) {
+	  $ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
+	  $fccs=true;
+	}
+	if (! $fccs) {
+	  return false; // css file bot found
+	}
+      }
+
 	if ($needparse) {
 	  $this->cssref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
 	} else {
-	  $this->cssref[$this->csscount]=$ref;
+	  $this->cssref[$ref]=$ref;
 	}
-	$this->log->debug("AddCssRef [{$this->csscount}] = <{$this->cssref[$this->csscount]}>");
       }
     }
 
@@ -409,7 +417,9 @@ create sequence SEQ_ID_APPLICATION start 10;
       $this->style=new Style($this->dbaccess,$style);
 
       $this->style->Set($this);
+
     }
+      $this->AddCssRef("STYLE/$style/Layout/gen.css");
   }
 
 
