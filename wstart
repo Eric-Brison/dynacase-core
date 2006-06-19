@@ -28,7 +28,7 @@ popd > /dev/null
 #refresh version identificator
 $wpub/wsh.php --api=refreshjsversion >/dev/null
 #clear current sessions
-echo "delete from sessions" | psql $dbpsql
+echo "delete from sessions" | psql $dbpsql >/dev/null
 #/bin/rm -f /var/run/php/sess_*
 #/bin/rm -f /var/lib/php/session/sess_*
 
