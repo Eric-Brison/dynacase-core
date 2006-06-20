@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.32 2006/06/19 15:33:36 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.33 2006/06/20 16:18:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.32 2006/06/19 15:33:36 eric Exp $
+//  $Id: Class.Layout.php,v 1.33 2006/06/20 16:18:07 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -98,7 +98,7 @@ var $strip='Y';
    * @param Action $action current action
    * @param string $template default template
    */
-  function Layout($caneva="",&$action="",$template="[OUT]") {
+  function Layout($caneva="",$action="",$template="[OUT]") {
     $this->LOG = new Log("","Layout");     
     $this->template = $template;
     $this->action=&$action;

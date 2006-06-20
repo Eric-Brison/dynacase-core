@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.SubForm.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+ * @version $Id: Class.SubForm.php,v 1.3 2006/06/20 16:18:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------------------
-// $Id: Class.SubForm.php,v 1.2 2003/08/18 15:46:42 eric Exp $
+// $Id: Class.SubForm.php,v 1.3 2006/06/20 16:18:07 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Form/Class.SubForm.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: Class.SubForm.php,v $
+// Revision 1.3  2006/06/20 16:18:07  eric
+// new font size theme
+//
 // Revision 1.2  2003/08/18 15:46:42  eric
 // phpdoc
 //
@@ -51,7 +54,7 @@
 //
 //
 
-$CLASS_SUBFORM_PHP = '$Id: Class.SubForm.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
+$CLASS_SUBFORM_PHP = '$Id: Class.SubForm.php,v 1.3 2006/06/20 16:18:07 eric Exp $';
 
 Class SubForm
 {
@@ -112,7 +115,7 @@ function SetKey($key) {
 }
 
 function GetMainForm() {
-  $lay = new Layout("","",$this->mainform);
+  $lay = new Layout("",null,$this->mainform);
   $tab=array();
   reset($this->param);
   $c = -1;
@@ -129,14 +132,14 @@ function GetMainForm() {
   
 
 function GetMainJs() {
-  $lay = new Layout("","",$this->mainjs);
+  $lay = new Layout("",null,$this->mainjs);
   $lay->Set("formname",$this->name);
   $lay->Set("id",$this->key);
   return($lay->gen()); 
 }
 
 function GetSubJs() {
-  $lay = new Layout("","",$this->subjs);
+  $lay = new Layout("",null,$this->subjs);
   $tab=array();
   reset($this->param);
   $isel = $c = -1;

@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.21 2006/02/13 15:34:52 eric Exp $
+ * @version $Id: Class.Param.php,v 1.22 2006/06/20 16:18:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -100,6 +100,10 @@ function Get($name,$def="")
 function GetAll($appid="",$userid=ANONYMOUS_ID,$styleid="0")
 {
    if ($appid=="") $appid=$this->appid;
+   $psize = new Param($this->dbaccess,array("FONTSIZE",PARAM_USER.$userid,"1"));
+   if ($psize->val != '')  $size=$psize->val;
+   else $size='normal';
+   $size='SIZE_'.strtoupper($size);
    $query = new QueryDb($this->dbaccess,"Param");
    
    $list = $query->Query(0,0,"TABLE","select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where ". 
@@ -110,8 +114,9 @@ function GetAll($appid="",$userid=ANONYMOUS_ID,$styleid="0")
 			 " OR (paramv.type='".PARAM_USER.$userid."' and paramdef.isglob='Y')".
 			 " OR (paramv.type='".PARAM_STYLE.$styleid."' and paramv.appid=$appid)".
 			 " OR (paramv.type='".PARAM_STYLE.$styleid."' and paramdef.isglob='Y')".
+			 " OR (paramv.type='".PARAM_STYLE.$size."')".
 			 " order by paramv.name, paramv.type desc");
-
+   
    $out=array();
    if ($query->nb != 0) {
      while(list($k,$v)=each($list)) {

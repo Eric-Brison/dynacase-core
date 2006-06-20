@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.51 2006/06/19 15:33:16 eric Exp $
+ * @version $Id: Class.Application.php,v 1.52 2006/06/20 16:18:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -420,6 +420,8 @@ create sequence SEQ_ID_APPLICATION start 10;
 
     }
       $this->AddCssRef("STYLE/$style/Layout/gen.css");
+      $size=$this->getParam("FONTSIZE","normal");      
+      $this->AddCssRef("WHAT/Layout/size-$size.css");
   }
 
 

@@ -1,0 +1,41 @@
+/* ---------------------------------------------------------------------------
+ * $Id: size.css,v 1.1 2006/06/20 16:18:07 eric Exp $
+ * ---------------------------------------------------------------------------
+ 
+ * ---------------------------------------------------------------------------
+ */
+
+* {
+  font-size: [SIZE_MEDIUM];
+}
+
+body, .core, P {
+  font-size: [SIZE_MEDIUM];
+}
+H1 {
+  font-size: [SIZE_XX-LARGE];
+}
+TD, TR, TH {
+  font-size: [SIZE_MEDIUM];
+}
+
+
+
+
+/* ------------------------------------------
+ * POPUPMENU
+ * ------------------------------------------
+ */
+
+
+
+.popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , .popup a.separator {
+  
+  font-size:[SIZE_SMALL];
+  font-weight: normal;
+}
+
+
+.popup a:link {
+  font-size:[SIZE_SMALL];
+}

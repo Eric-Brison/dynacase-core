@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: BRUSHED.css,v 1.2 2006/06/19 15:33:51 eric Exp $
+ * $Id: BRUSHED.css,v 1.3 2006/06/20 16:18:07 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -11,7 +11,6 @@ body, .core {
   background-color: transparent;
   background-image: [CORE_BGIMAGE];
   font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
   color: [CORE_TEXTFGCOLOR];
 }
 P,TR,H1,H2,H3 {
@@ -22,16 +21,13 @@ TD {
 }
 P {
   font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
 }
 
 TD {
   font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
 }
 TH {
   font-family: [CORE_FONTLIST1];
-  font-size: [CORE_FONTBASESIZE];
 }
 TR {
   background: [CORE_BGCELLCOLOR];
@@ -68,7 +64,6 @@ A:hover {
 INPUT, SELECT, OPTION, TEXTAREA, FILE {
    color:[input-text-normal-color];
    background-color:[input-background-normal-color];
-   font-size: [CORE_FONTBASESIZE];
    margin:0pt;
 /*  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:bg.png]',sizingMethod='scale');*/
 }
@@ -145,13 +140,11 @@ input[type="image"] {
 
 .popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , .popup a.separator {
   color: [menu-text-normal-color]!important;
-  font-size:7pt;
   font-weight: normal;
 }
 
  .popup a.menuItemDisabled, .popup a.menuItemDisabled:link, .popup a.menuItemDisabled:visited,.popup a.menuItemCtrlDisabled,.popup a.menuItemCtrlDisabled:link,.popup a.menuItemCtrlDisabled:visited {
   color: [menu-text-disabled-color]!important;
-  font-size:7pt;
   font-weight: normal;
 }
 .popup a.separator {
