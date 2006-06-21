@@ -78,6 +78,7 @@ if [ "$1" = "U" ] ; then
   #add permission functionnalities
   su - postgres -c "psql $dbname anakeen -f $wpub/WHAT/getprivilege.sql"
   $wpub/wsh.php  --api=import_size 
+  $wpub/wsh.php  --api=import_style --name=DEFAULT
   $wpub/wsh.php  --api=import_style --name=RED
   $wpub/wsh.php  --api=import_style --name=GREEN
   $wpub/wsh.php  --api=import_style --name=AQUA

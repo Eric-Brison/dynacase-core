@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.1 2006/06/21 10:14:26 eric Exp $
+ * $Id: DEFAULT.css,v 1.2 2006/06/21 13:51:38 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -8,7 +8,7 @@
 
 
 body, .core {
-  background-color: transparent;
+  background-color: [CORE_BGCOLOR];
   background-image: [CORE_BGIMAGE];
   font-family: [CORE_FONTLIST1];
   color: [CORE_TEXTFGCOLOR];

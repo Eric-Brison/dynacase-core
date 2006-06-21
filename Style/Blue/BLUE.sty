@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: BLUE.sty,v 1.2 2004/09/15 08:06:42 eric Exp $
+// $Id: BLUE.sty,v 1.3 2006/06/21 13:51:38 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Style/Blue/Attic/BLUE.sty,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: BLUE.sty,v $
+// Revision 1.3  2006/06/21 13:51:38  eric
+// new style
+//
 // Revision 1.2  2004/09/15 08:06:42  eric
 // Changes for blue style
 //
@@ -39,15 +42,11 @@ $sty_desc= array (
 "description"	=> N_("blue")   //long description
 );
 
+$sty_inherit="DEFAULT";
 
-$sty_const= array (  
-		   "CORE_BGCOLOR"			=>"url('STYLE/BLUE/Images/lightblue-wet.jpg')",
-		   "CORE_FGIMGMENU"                     =>"url('STYLE/BLUE/Images/liquid-blue.jpg')",
-		   "CORE_FGIMG"                         =>"url('STYLE/BLUE/Images/liquid-blue.jpg')",
-		   "CORE_TEXTBGCOLOR"			=>"black",
-		   "CORE_FGCOLOR"                       =>"#d7dff6"
-
-		  );
   
+$sty_colors = array("A"=>'#3550f9', // blue
+			 "B"=>'#edf935', //orange
+			  "C"=>"#c3b649"); // orange
 
 ?>

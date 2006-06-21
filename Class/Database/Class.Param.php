@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.22 2006/06/20 16:18:07 eric Exp $
+ * @version $Id: Class.Param.php,v 1.23 2006/06/21 13:51:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -142,18 +142,26 @@ function GetUser($userid=ANONYMOUS_ID,$styleid="")
 
    return($tlist);
 }
-
-function GetStyle($styleid)
+/**
+ * get list of parameters for a style
+ * @param bool $onlystyle if false return all parameters excepts user parameters with style parameters
+ * if true return only parameters redifined by the style
+ * @return array of parameters values
+ */
+function GetStyle($styleid,$onlystyle=false)
 {
    $query = new QueryDb($this->dbaccess,"Param");
-   
+   if ($onlystyle) {
+     $query->AddQuery("type='".PARAM_STYLE.$styleid."'");
+     $tlist = $query->Query(0,0,"TABLE");
+   } else {
    $tlist = $query->Query(0,0,"TABLE","select  distinct on(paramv.name, paramv.appid) paramv.*,  paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and paramdef.isstyle='Y' and (". 
 			 " (type = '".PARAM_GLB."') ".
 			 " OR (type='".PARAM_APP."')".
 			 " OR (type='".PARAM_STYLE.$styleid."' ))".
 			 " order by paramv.name, paramv.appid, paramv.type desc");
 
-   
+   }
    return($tlist);
 }
 

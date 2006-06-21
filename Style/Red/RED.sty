@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: RED.sty,v 1.1 2002/05/27 14:51:30 eric Exp $
+// $Id: RED.sty,v 1.2 2006/06/21 13:51:38 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Style/Red/Attic/RED.sty,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: RED.sty,v $
+// Revision 1.2  2006/06/21 13:51:38  eric
+// new style
+//
 // Revision 1.1  2002/05/27 14:51:30  eric
 // ajout gestion des styles
 //
@@ -33,15 +36,11 @@ $sty_desc= array (
 "description"	=> N_("administration")   //long description
 );
 
+$sty_inherit="DEFAULT";
 
-$sty_const= array (  
-		   "CORE_FGCOLOR"			=>"#CC0000",
-		   "CORE_BGCOLORALTERN"			=>"#FF9966",
-		   "CORE_BGCOLORHIGH"			=>"#FFCCFF",
-		   "CORE_ACOLOR"			=>"#CC0000",
-		   "CORE_TEXTFGCOLOR"			=>"#996600"
-
-		  );
+$sty_colors = array("A"=>'#f6463e', // red
+			 "B"=>'#ef7615', //orange
+			  "C"=>"#efa415"); // orange
   
 
 ?>

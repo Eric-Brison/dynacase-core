@@ -4,47 +4,57 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_style.php,v 1.5 2006/06/19 15:30:22 eric Exp $
+ * @version $Id: import_style.php,v 1.6 2006/06/21 13:51:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
  */
 /**
  */
-// ---------------------------------------------------------------
-// $Id: import_style.php,v 1.5 2006/06/19 15:30:22 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Api/import_style.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2001
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
+
 
 
 include_once("Class.Style.php");
 include_once("FDL/Lib.Color.php");
 
-$name = GetHttpVars("name");
+function getStyleInherit($name,&$sty_colorsh,&$sty_consth,&$sty_localsh) {
+  if (file_exists(GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/{$name}.sty")) {
+  //  global $sty_desc,$sty_const,$sty_colors,$sty_local;
+     include("STYLE/{$name}/{$name}.sty");
 
+     $sty_consth=$sty_const;
+     $sty_colorsh=$sty_colors;
+     $sty_localsh=$sty_local;
+  }
+}
+
+
+$name = GetHttpVars("name");
+$thparam=array(); // array of inherited paramters
 $param = new Param();
 
 if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/{$name}.sty")) {
-  global $sty_desc,$sty_const,$sty_colors,$sty_local;
+  //  global $sty_desc,$sty_const,$sty_colors,$sty_local;
      include("STYLE/{$name}/{$name}.sty");
+
+     // inherit 
+     if (isset($sty_inherit)) {
+       $thparam=$param->GetStyle($sty_inherit,true);
+       getStyleInherit($sty_inherit,$sty_colors_inherit,$sty_const_inherit,$sty_local_inherit);
+       print_r($sty_const);
+       if (isset($sty_const)) {
+	 foreach ($sty_const_inherit as $k=>$v) {
+	   if (! isset($sty_const[$k])) $sty_const[$k]=$v;
+	 }
+       } else {
+	 $sty_const=$sty_const_inherit;
+       } 
+       if (! isset($sty_colors)) $sty_colors=$sty_colors_inherit;
+       print_r($sty_const);
+       
+     }
+
+
      if (sizeof($sty_desc)>0) {
        $sty = new Style("",$name);
        reset($sty_desc);
@@ -66,22 +76,33 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
        }
      }
 
+     // init param
+     foreach ($thparam as $k=>$v) {	 
+	 $param->Set($v["name"],$v["val"],PARAM_STYLE.$name,1);
+	 $action->parent->SetVolatileParam($v["name"],$v["val"]);
+     }
      
      if (isset($sty_colors)) {
        // compute all derived color
+       $dark=false;
+       if (isset($sty_const["CORE_WHITE"])) {
+	 $basehsl=srgb2hsl($sty_const["CORE_WHITE"]);
+       }
+       $dark=($basehsl[2]<0.5);
+       
        foreach ($sty_colors as $k=>$v) {
 	 $basecolor=$v;
 	 if ($basecolor[0]=='#') {
 	   $r=hexdec(substr($basecolor,1,2));
 	   $g=hexdec(substr($basecolor,3,2));
 	   $b=hexdec(substr($basecolor,5,2));
-	   $basehsl=RGB2HSL ($r, $g, $b);
+	   $basehsl=srgb2hsl($basecolor);
 	   $h=$basehsl[0];
 	   $s=$basehsl[1];
 	   $l=$basehsl[2];
-	   print_r($basehsl);
 	   print "<table><tr>";
-	   $idx=(1-$l)/10;
+	   if ($dark) $idx=-($l/10);
+	   else $idx=(1-$l)/10;
 	   $il=$l;
 	   for ($i=0;$i<10;$i++) {
 
@@ -97,14 +118,17 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
        }
      }
 
-     // init param
      if (isset($sty_const)) {
        reset($sty_const);
        while (list($k,$v) = each ($sty_const)) {
 	 $vv=$action->getParam($v,$v);
-
-            $param->Set($k,$vv,PARAM_STYLE.$name,1);
-	    $action->parent->SetVolatileParam($k, $vv); // to compose css with new paramters
+	 $param->Set($k,$vv,PARAM_STYLE.$name,1);
+	 $action->parent->SetVolatileParam($k, $vv); // to compose css with new paramters
+       }
+     }
+     if (isset($sty_local_inherit)) {
+       foreach ($sty_local_inherit as $k=>$v) {
+	 $action->parent->SetVolatileParam($k, $action->getParam($v,$v)); // to compose css with new paramters
        }
      }
      if (isset($sty_local)) {
@@ -112,10 +136,29 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
 	 $action->parent->SetVolatileParam($k, $action->getParam($v,$v)); // to compose css with new paramters
        }
      }
+
      $inputlay=new Layout("STYLE/$name/Layout/$name.css",$action);
+     if ($sty_inherit) {
+       if ($inputlay->file =="") {
+	 $inputlay=new Layout("STYLE/$sty_inherit/Layout/$sty_inherit.css",$action);
+       }
+       else {
+	 // concat css
+	 $inputlayh=new Layout("STYLE/$sty_inherit/Layout/$sty_inherit.css",$action);
+	 
+	 if ($inputlayh->file !="") {
+	   $inputlay->template=$inputlayh->template."\n".$inputlay->template;
+	 }
+	 
+       }
+     }
+
 
      $out=$inputlay->gen();
 
+     if (! is_dir($action->GetParam("CORE_PUBDIR")."/STYLE/$name/Layout")) {
+       mkdir($action->GetParam("CORE_PUBDIR")."/STYLE/$name/Layout");
+     }
      file_put_contents($action->GetParam("CORE_PUBDIR")."/STYLE/$name/Layout/gen.css",$out);
      // update style list for STYLE parameter definition
        
