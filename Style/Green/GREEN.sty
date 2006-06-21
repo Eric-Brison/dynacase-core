@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: GREEN.sty,v 1.2 2002/05/28 09:00:26 eric Exp $
+// $Id: GREEN.sty,v 1.3 2006/06/21 10:14:26 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Style/Green/Attic/GREEN.sty,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -22,6 +22,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: GREEN.sty,v $
+// Revision 1.3  2006/06/21 10:14:26  eric
+// default style
+//
 // Revision 1.2  2002/05/28 09:00:26  eric
 // mise au point paramètres & style
 //
@@ -29,25 +32,19 @@
 // ajout gestion des styles
 //
 
-global $sty_desc, $sty_const;
+//global $sty_desc, $sty_const;
 
 $sty_desc= array (
 "name" 		=> "GREEN",              //Name
 "description"	=> N_("rolland garros")   //long description
 );
-
-
+$sty_inherit="BRUSHED";
 $sty_const= array (  
-		   "CORE_FGCOLOR"			=>"#CC6022",
-		   "CORE_BGCOLOR"			=>"url('STYLE/GREEN/Images/wp2_1024.jpg')",
-		   "CORE_BGCOLORALTERN"			=>"#CC9900",
-		   "CORE_BGCOLORHIGH"			=>"#33CC99",
-		   "CORE_BGCELLCOLOR"			=>"#006600",
-		   "CORE_ACOLOR"			=>"#33CCCC",
-		   "CORE_FGIMG"				=>"url('STYLE/GREEN/Images/7a.jpg')",
-		   "CORE_TEXTFGCOLOR"			=>"white",
-		   "CORE_TEXTBGCOLOR"			=>"#FFFF66"		   
-		  );
+		   "CORE_BGIMAGE"	=>"url('../Images/wp2_1024.jpg')",
+		   );
+$sty_colors = array("A"=>'#175f2b', // dark green
+				    "B"=>'#68d5a3', //medium green
+				    "C"=>"#93d568"); // yellow green
   
 
 ?>
