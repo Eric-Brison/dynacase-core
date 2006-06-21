@@ -147,28 +147,9 @@ function ColorPicker() {
 	cp.select = ColorPicker_select;
 
 	// Code to populate color picker window
-	var colors = new Array("#000000","#000033","#000066","#000099","#0000CC","#0000FF","#330000","#330033","#330066","#330099","#3300CC",
-							"#3300FF","#660000","#660033","#660066","#660099","#6600CC","#6600FF","#990000","#990033","#990066","#990099",
-							"#9900CC","#9900FF","#CC0000","#CC0033","#CC0066","#CC0099","#CC00CC","#CC00FF","#FF0000","#FF0033","#FF0066",
-							"#FF0099","#FF00CC","#FF00FF","#003300","#003333","#003366","#003399","#0033CC","#0033FF","#333300","#333333",
-							"#333366","#333399","#3333CC","#3333FF","#663300","#663333","#663366","#663399","#6633CC","#6633FF","#993300",
-							"#993333","#993366","#993399","#9933CC","#9933FF","#CC3300","#CC3333","#CC3366","#CC3399","#CC33CC","#CC33FF",
-							"#FF3300","#FF3333","#FF3366","#FF3399","#FF33CC","#FF33FF","#006600","#006633","#006666","#006699","#0066CC",
-							"#0066FF","#336600","#336633","#336666","#336699","#3366CC","#3366FF","#666600","#666633","#666666","#666699",
-							"#6666CC","#6666FF","#996600","#996633","#996666","#996699","#9966CC","#9966FF","#CC6600","#CC6633","#CC6666",
-							"#CC6699","#CC66CC","#CC66FF","#FF6600","#FF6633","#FF6666","#FF6699","#FF66CC","#FF66FF","#009900","#009933",
-							"#009966","#009999","#0099CC","#0099FF","#339900","#339933","#339966","#339999","#3399CC","#3399FF","#669900",
-							"#669933","#669966","#669999","#6699CC","#6699FF","#999900","#999933","#999966","#999999","#9999CC","#9999FF",
-							"#CC9900","#CC9933","#CC9966","#CC9999","#CC99CC","#CC99FF","#FF9900","#FF9933","#FF9966","#FF9999","#FF99CC",
-							"#FF99FF","#00CC00","#00CC33","#00CC66","#00CC99","#00CCCC","#00CCFF","#33CC00","#33CC33","#33CC66","#33CC99",
-							"#33CCCC","#33CCFF","#66CC00","#66CC33","#66CC66","#66CC99","#66CCCC","#66CCFF","#99CC00","#99CC33","#99CC66",
-							"#99CC99","#99CCCC","#99CCFF","#CCCC00","#CCCC33","#CCCC66","#CCCC99","#CCCCCC","#CCCCFF","#FFCC00","#FFCC33",
-							"#FFCC66","#FFCC99","#FFCCCC","#FFCCFF","#00FF00","#00FF33","#00FF66","#00FF99","#00FFCC","#00FFFF","#33FF00",
-							"#33FF33","#33FF66","#33FF99","#33FFCC","#33FFFF","#66FF00","#66FF33","#66FF66","#66FF99","#66FFCC","#66FFFF",
-							"#99FF00","#99FF33","#99FF66","#99FF99","#99FFCC","#99FFFF","#CCFF00","#CCFF33","#CCFF66","#CCFF99","#CCFFCC",
-							"#CCFFFF","#FFFF00","#FFFF33","#FFFF66","#FFFF99","#FFFFCC","#FFFFFF");
+	var colors = new Array("#4D1A1A","#4D221A","#4D2B1A","#4D331A","#4D3C1A","#4D441A","#4D4D1A","#444D1A","#3C4D1A","#334D1A","#2B4D1A","#224D1A","#1A4D1A","#1A4D22","#1A4D2B","#1A4D33","#1A4D3C","#1A4D44","#1A4D4D","#1A444D","#1A3C4D","#1A334D","#1A2B4D","#1A224D","#1A1A4D","#221A4D","#2B1A4D","#331A4D","#3C1A4D","#441A4D","#4D1A4D","#4D1A44","#4D1A3C","#4D1A33","#4D1A2B","#4D1A22","#732626","#733326","#734026","#734D26","#735926","#736626","#737326","#667326","#597326","#4D7326","#407326","#337326","#267326","#267333","#267340","#26734D","#267359","#267366","#267373","#266673","#265973","#264D73","#264073","#263373","#262673","#332673","#402673","#4D2673","#592673","#662673","#732673","#732666","#732659","#73264D","#732640","#732633","#993333","#994433","#995533","#996633","#997733","#998833","#999933","#889933","#779933","#669933","#559933","#449933","#339933","#339944","#339955","#339966","#339977","#339988","#339999","#338899","#337799","#336699","#335599","#334499","#333399","#443399","#553399","#663399","#773399","#883399","#993399","#993388","#993377","#993366","#993355","#993344","#BF4040","#BF5540","#BF6A40","#BF8040","#BF9540","#BFAA40","#BFBF40","#AABF40","#95BF40","#80BF40","#6ABF40","#55BF40","#40BF40","#40BF55","#40BF6A","#40BF80","#40BF95","#40BFAA","#40BFBF","#40AABF","#4095BF","#4080BF","#406ABF","#4055BF","#4040BF","#5540BF","#6A40BF","#8040BF","#9540BF","#AA40BF","#BF40BF","#BF40AA","#BF4095","#BF4080","#BF406A","#BF4055","#CC6666","#CC7766","#CC8866","#CC9966","#CCAA66","#CCBB66","#CCCC66","#BBCC66","#AACC66","#99CC66","#88CC66","#77CC66","#66CC66","#66CC77","#66CC88","#66CC99","#66CCAA","#66CCBB","#66CCCC","#66BBCC","#66AACC","#6699CC","#6688CC","#6677CC","#6666CC","#7766CC","#8866CC","#9966CC","#AA66CC","#BB66CC","#CC66CC","#CC66BB","#CC66AA","#CC6699","#CC6688","#CC6677","#D98C8C","#D9998C","#D9A68C","#D9B38C","#D9BF8C","#D9CC8C","#D9D98C","#CCD98C","#BFD98C","#B3D98C","#A6D98C","#99D98C","#8CD98C","#8CD999","#8CD9A6","#8CD9B3","#8CD9BF","#8CD9CC","#8CD9D9","#8CCCD9","#8CBFD9","#8CB3D9","#8CA6D9","#8C99D9","#8C8CD9","#998CD9","#A68CD9","#B38CD9","#BF8CD9","#CC8CD9","#D98CD9","#D98CCC","#D98CBF","#D98CB3","#D98CA6","#D98C99","#E6B3B3","#E6BBB3","#E6C4B3","#E6CCB3","#E6D5B3","#E6DDB3","#E6E6B3","#DDE6B3","#D5E6B3","#CCE6B3","#C4E6B3","#BBE6B3","#B3E6B3","#B3E6BB","#B3E6C4","#B3E6CC","#B3E6D5","#B3E6DD","#B3E6E6","#B3DDE6","#B3D5E6","#B3CCE6","#B3C4E6","#B3BBE6","#B3B3E6","#BBB3E6","#C4B3E6","#CCB3E6","#D5B3E6","#DDB3E6","#E6B3E6","#E6B3DD","#E6B3D5","#E6B3CC","#E6B3C4","#E6B3BB","#F2D9D9","#F2DDD9","#F2E1D9","#F2E6D9","#F2EAD9","#F2EED9","#F2F2D9","#EEF2D9","#EAF2D9","#E6F2D9","#E1F2D9","#DDF2D9","#D9F2D9","#D9F2DD","#D9F2E1","#D9F2E6","#D9F2EA","#D9F2EE","#D9F2F2","#D9EEF2","#D9EAF2","#D9E6F2","#D9E1F2","#D9DDF2","#D9D9F2","#DDD9F2","#E1D9F2","#E6D9F2","#EAD9F2","#EED9F2","#F2D9F2","#F2D9EE","#F2D9EA","#F2D9E6","#F2D9E1","#F2D9DD","#000000", "#070707", "#0E0E0E", "#151515", "#1C1C1C", "#232323", "#2B2B2B", "#323232", "#393939", "#404040", "#474747", "#4E4E4E", "#555555", "#5C5C5C", "#636363", "#6A6A6A", "#717171", "#787878", "#808080", "#878787", "#8E8E8E", "#959595", "#9C9C9C", "#A3A3A3", "#AAAAAA", "#B1B1B1", "#B8B8B8", "#BFBFBF", "#C6C6C6", "#CDCDCD", "#D5D5D5", "#DCDCDC", "#E3E3E3", "#EAEAEA", "#F1F1F1", "#F8F8F8", "#FFFFFF");
 	var total = colors.length;
-	var width = 18;
+	var width = 36;
 	var cp_contents = "";
 	var windowRef = (windowMode)?"window.opener.":"";
 	if (windowMode) {
@@ -181,7 +162,7 @@ function ColorPicker() {
 		if ((i % width) == 0) { cp_contents += "<TR>"; }
 		if (use_highlight) { var mo = 'onMouseOver="'+windowRef+'ColorPicker_highlightColor(\''+colors[i]+'\',window.document)"'; }
 		else { mo = ""; }
-		cp_contents += '<TD width=10px BGCOLOR="'+colors[i]+'"><FONT SIZE="-3"><A HREF="#" onClick="'+windowRef+'ColorPicker_pickColor(\''+colors[i]+'\','+windowRef+'window.popupWindowObjects['+cp.index+']);return false;" '+mo+' STYLE="text-decoration:none;">&nbsp;&nbsp;&nbsp;</A></FONT></TD>';
+		cp_contents += '<TD '+mo+' style="width:6px;height:5px;background-color:'+colors[i]+'" onClick="'+windowRef+'ColorPicker_pickColor(\''+colors[i]+'\','+windowRef+'window.popupWindowObjects['+cp.index+']);return false;" </TD>';
 		if ( ((i+1)>=total) || (((i+1) % width) == 0)) { 
 			cp_contents += "</TR>";
 			}
@@ -190,7 +171,7 @@ function ColorPicker() {
 	if (document.getElementById) {
 		var width1 = Math.floor(width/2);
 		var width2 = width = width1;
-		cp_contents += "<TR><TD COLSPAN='"+width1+"' BGCOLOR='#ffffff' ID='colorPickerSelectedColor'>&nbsp;</TD><TD COLSPAN='"+width2+"' ALIGN='CENTER' ID='colorPickerSelectedColorValue'>#FFFFFF</TD></TR>";
+		cp_contents += "<TR><TD COLSPAN='"+width1+"' BGCOLOR='#ffffff' ID='colorPickerSelectedColor'>&nbsp;</TD><TD COLSPAN='"+width2+"' ALIGN='CENTER' style='font-family:monospace' ID='colorPickerSelectedColorValue'>#FFFFFF</TD></TR>";
 		}
 	cp_contents += "</TABLE>";
 	if (windowMode) {
