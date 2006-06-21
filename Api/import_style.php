@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_style.php,v 1.6 2006/06/21 13:51:38 eric Exp $
+ * @version $Id: import_style.php,v 1.7 2006/06/21 14:43:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -167,7 +167,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
      if ($query->nb> 0) {   
        $ndef="enum(";    
        while(list($k,$v)=each($list)) {
-	 $ndef .= $v->name."|";
+	 if (substr($v->name,0,4) != "SIZE")	 $ndef .= $v->name."|";
        }
        $ndef = substr($ndef,0,-1).")";
      } else $ndef="";
