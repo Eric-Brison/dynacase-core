@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_style.php,v 1.7 2006/06/21 14:43:22 eric Exp $
+ * @version $Id: import_style.php,v 1.8 2006/06/22 12:52:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -85,8 +85,8 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
      if (isset($sty_colors)) {
        // compute all derived color
        $dark=false;
-       if (isset($sty_const["CORE_WHITE"])) {
-	 $basehsl=srgb2hsl($sty_const["CORE_WHITE"]);
+       if (isset($sty_const["COLOR_WHITE"])) {
+	 $basehsl=srgb2hsl($sty_const["COLOR_WHITE"]);
        }
        $dark=($basehsl[2]<0.5);
        
