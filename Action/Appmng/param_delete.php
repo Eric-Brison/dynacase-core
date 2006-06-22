@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: param_delete.php,v 1.6 2006/02/17 10:36:53 eric Exp $
+ * @version $Id: param_delete.php,v 1.7 2006/06/22 16:19:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: param_delete.php,v 1.6 2006/02/17 10:36:53 eric Exp $
+// $Id: param_delete.php,v 1.7 2006/06/22 16:19:07 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_delete.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -58,7 +58,7 @@ function param_delete(&$action) {
     $action->parent->session->closeAll();
   }
 
-  redirect($action,"APPMNG",$action->Read("PARAM_ACT","PARAM_ALIST"));
+  redirect($action,"APPMNG",$action->Read("PARAM_ACT","PARAM_CULIST"));
 }
 
 // -----------------------------------
