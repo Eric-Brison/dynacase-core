@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.40 2006/06/19 15:30:22 eric Exp $
+ * @version $Id: index.php,v 1.41 2006/06/23 09:06:48 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -45,12 +45,22 @@ $log=new Log("",$indexphp);
 $CoreNull = "";
 global $CORE_LOGLEVEL;
 
+$access = $_SERVER["FREEDOM_ACCESS"];
+
 global $_GET;
-if (!isset($_GET["app"])) $_GET["app"]="CORE";
-if (!isset($_GET["action"])) $_GET["action"]="";
-
-
 $standalone = GetHttpVars("sole");
+$application="CORE";
+$action="";
+$sole="";
+switch($access) {
+  case "WEBDESK":
+    $application = "WEBDESK";
+    $sole = "Y";
+    break;
+}
+if (!isset($_GET["app"])) $_GET["app"]=$application;
+if (!isset($_GET["action"])) $_GET["action"]=$action;
+if ($standalone=="" && $sole!="")  $standalone = $_GET["sole"] = $sole;
 
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
 else $sess_num=GetHttpVars("session");//$_GET["session"];
