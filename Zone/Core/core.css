@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.50 2006/06/19 15:33:51 eric Exp $
+ * $Id: core.css,v 1.51 2006/06/28 07:15:30 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -49,7 +49,6 @@ TH {
 
 .headtitle {
   color: [CORE_TEXTBGCOLOR];
-  font-family: [CORE_FONTLIST1];
   font-weight: bold;
 }
 A.headtitle:hover {
@@ -67,12 +66,10 @@ TR.headcell  {
 
 
 .historique {
-  font-family: [CORE_FONTLIST1];
   color: [CORE_TEXTFGCOLOR];
 }  
 
 .anakeen {
-  font-family: [CORE_FONTLIST1];
   color: [CORE_TEXTFGCOLOR];
 }
 
@@ -84,20 +81,17 @@ TR.headcell  {
  */
 
 .toctitle {
-  font-family: [CORE_FONTLIST1];
   font-weight: bold;
   color: [CORE_FGCOLOR];
 }  
 
 .tocitem0on {
   background-color: [CORE_FGCOLOR];
-  font-family: [CORE_FONTLIST1];
   font-weight: bold;
   color: [CORE_BGCELLCOLOR];
 }  
 
 .tocitem0off {
-  font-family: [CORE_FONTLIST1];
   color: [CORE_FGCOLOR];
 }  
 
@@ -147,11 +141,9 @@ IMG.click:hover {
 }
 .TABLabelSelected {
   color: [CORE_TEXTBGCOLOR];
-  font-family: [CORE_FONTLIST1];
 }
 .TABLabel {
   color: [CORE_TEXTFGCOLOR];
-  font-family: [CORE_FONTLIST1];
 }
 
 
@@ -165,14 +157,12 @@ IMG.click:hover {
   color: [CORE_TEXTBGCOLOR];
   background-color: [CORE_FGCOLOR];
   background-image: [CORE_FGIMG];
-  font-family: [CORE_FONTLIST1];
 }
 
 .CORETblHeadBold {
   color: [CORE_TEXTBGCOLOR];
   background-color: [CORE_FGCOLOR];
   background-image: [CORE_FGIMG];
-  font-family: [CORE_FONTLIST1];
   font-weight: bold;
 }
 .CORETblHeadCell {
@@ -192,12 +182,10 @@ IMG.click:hover {
 
 .CORETbl {
   color: [CORE_TEXTFGCOLOR];
-  font-family: [CORE_FONTLIST1];
 }
 
 .CORETblBold {
   color: [CORE_TEXTFGCOLOR];
-  font-family: [CORE_FONTLIST1];
   font-weight: bold;
 }
 
@@ -278,7 +266,6 @@ TD.NotFade {
 }
 
 div.detail {
-  font-family : helvetica ;
   font-weight : bold ;
   background:[CORE_BGCOLORALTERN];
   border: solid ;
@@ -299,7 +286,7 @@ div.detail {
 .LOGConsole {
    background-color: #000000;
    color: #eaea67;
-   font-family : courier;
+   font-family : monospace;
 }
 
 
