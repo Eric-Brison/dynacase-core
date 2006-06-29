@@ -203,7 +203,7 @@ function sendActionNotification(code,arg) {
       window.opener.receiptActionNotification(code,arg);
     }
   }
-  if (window.parent) {
+  if (window.parent && (window != window.parent)) {
     if (window.parent.receiptActionNotification) {
       window.parent.receiptActionNotification(code,arg);
     }
