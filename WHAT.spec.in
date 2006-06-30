@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.68 2006/06/30 06:59:47 eric Exp $
+#  $Id: WHAT.spec.in,v 1.69 2006/06/30 13:54:59 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -251,6 +251,7 @@ fi
 /etc/cron.daily/*
 %if %{pld}
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/httpd.conf
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/*_mod_*.conf
 %else
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/*_mod_*.conf
 %endif
