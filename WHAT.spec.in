@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.69 2006/06/30 13:54:59 eric Exp $
+#  $Id: WHAT.spec.in,v 1.70 2006/06/30 15:26:01 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -120,7 +120,7 @@ autoconf
 	    --prefix=%{destdir}
 make -i pubdir=$RPM_BUILD_ROOT%{destdir} 
 install -d $RPM_BUILD_ROOT%{apacheconfdir}
-%if %{pld}
+%if %{pld} && (!%{cerbere})
 install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/httpd.conf
 %else
 install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/71_mod_what.conf
@@ -249,9 +249,8 @@ fi
 %config(noreplace) /etc/pam.d/httpdwa
 %config /etc/freedom.conf
 /etc/cron.daily/*
-%if %{pld}
+%if %{pld} && (!%{cerbere})
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/httpd.conf
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/*_mod_*.conf
 %else
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /%{apacheconfdir}/*_mod_*.conf
 %endif
