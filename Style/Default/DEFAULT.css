@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.4 2006/06/27 07:43:16 eric Exp $
+ * $Id: DEFAULT.css,v 1.5 2006/07/03 15:48:38 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -174,5 +174,5 @@ input[type="image"] {
   color: [menu-text-hover-color]!important;
 }
 .popup a.menuItemDisabled:hover *,.popup a.menuItemCtrlDisabled:hover * {
-  color: [menu-text-hover-color]!important;
+  color: [menu-text-disabled-color]!important;
 }
