@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.5 2006/07/03 15:48:38 eric Exp $
+ * $Id: DEFAULT.css,v 1.6 2006/07/04 15:16:19 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -75,6 +75,7 @@ OPTION {
 BUTTON { 
   -moz-border-radius:25px;
   padding:0pt;
+   color:[input-text-normal-color];
   background-color:[input-background-normal-color];
    }
 BUTTON:hover { 	
