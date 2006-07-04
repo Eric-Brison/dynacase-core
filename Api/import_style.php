@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_style.php,v 1.8 2006/06/22 12:52:40 eric Exp $
+ * @version $Id: import_style.php,v 1.9 2006/07/04 07:18:36 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -30,6 +30,7 @@ function getStyleInherit($name,&$sty_colorsh,&$sty_consth,&$sty_localsh) {
 
 
 $name = GetHttpVars("name");
+$html = (GetHttpVars("html")!="");
 $thparam=array(); // array of inherited paramters
 $param = new Param();
 
@@ -41,7 +42,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
      if (isset($sty_inherit)) {
        $thparam=$param->GetStyle($sty_inherit,true);
        getStyleInherit($sty_inherit,$sty_colors_inherit,$sty_const_inherit,$sty_local_inherit);
-       print_r($sty_const);
+
        if (isset($sty_const)) {
 	 foreach ($sty_const_inherit as $k=>$v) {
 	   if (! isset($sty_const[$k])) $sty_const[$k]=$v;
@@ -50,7 +51,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
 	 $sty_const=$sty_const_inherit;
        } 
        if (! isset($sty_colors)) $sty_colors=$sty_colors_inherit;
-       print_r($sty_const);
+
        
      }
 
@@ -100,7 +101,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
 	   $h=$basehsl[0];
 	   $s=$basehsl[1];
 	   $l=$basehsl[2];
-	   print "<table><tr>";
+	   if ($html) print "<table><tr>";
 	   if ($dark) $idx=-($l/10);
 	   else $idx=(1-$l)/10;
 	   $il=$l;
@@ -111,9 +112,9 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
 	     $param->Set($pcolor,$rgb,PARAM_STYLE.$name,1);
 	     $action->parent->SetVolatileParam($pcolor, $rgb); // to compose css with new paramters
 	     $il+=$idx;
-	     print "<td style='background-color:$rgb'>$pcolor: $rgb</td>\n";
+	      if ($html) print "<td style='background-color:$rgb'>$pcolor: $rgb</td>\n";
 	   }
-	   print "</tr></table>";
+	    if ($html) print "</tr></table>";
 	 }
        }
      }
@@ -176,5 +177,6 @@ if (file_exists($action->GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/
      $pdef->kind=$ndef;
      $pdef->modify();
 
+     print sprintf(_("%s style updated\n"),$name);
    }
 ?>
