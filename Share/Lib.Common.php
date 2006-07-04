@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.28 2006/02/08 14:52:22 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.29 2006/07/04 15:50:26 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -250,4 +250,93 @@ function getJsVersion() {
 
   return $nv;
 }
+
+/**
+ * produce an anchor mailto '<a ...>'
+ * @param string to a valid mail address or list separated by comma -supported by client-
+ * @param string anchor content <a...>anchor content</a>
+ * @param string subject 
+ * @param string cc
+ * @param string bcc
+ * @param array treated as html anchor attribute : key is attribute name and value.. value
+ * @param string force link to be produced according the value
+ * @return string like user admin dbname anakeen
+ */
+function setMailtoAnchor($to, $acontent="", $subject="", $cc="", $bcc="", $from="", $anchorattr=array(), $forcelink="" ) {
+
+  global $action;
+  
+  if ($to=="") return '';
+
+  if ($forcelink=="mailto"||$forcelink=="squirrel") {
+    $target = $forcelink;
+  } else {
+    $target = strtolower(GetParam("CORE_MAIL_LINK", "optimal"));
+    if ($target=="optimal") {
+      $target = "mailto";
+      if ($action->user->iddomain>9) { 
+	$query=new QueryDb($action->dbaccess,"Application");
+	$query->basic_elem->sup_where=array("name='MAIL'","available='Y'", "displayable='Y'");
+	$list = $query->Query(0,0,"TABLE");
+	if ($query->nb>0)  {
+	  $queryact=new QueryDb($action->dbaccess,"Action");
+	  $queryact->AddQuery("id_application=".$list[0]["id"]);
+	  $queryact->AddQuery("root='Y'");
+	  $listact = $queryact->Query(0,0,"TABLE");
+	  $root_acl_name=$listact[0]["acl"];
+	  if ($action->HasPermission($root_acl_name,$list[0]["id"])) {
+	    $target = "squirrel";
+	  }
+	}
+      }
+    }
+  }
+  $prot = ($_SERVER["HTTPS"]=="on" ? "https" : "http" );
+  $host = $_SERVER["SERVER_NAME"];
+  $port = $_SERVER["SERVER_PORT"];
+
+  $attrcode = "";
+  if (is_array($anchorattr)) {
+    foreach ($anchorattr as $k => $v) $attrcode .= ' '.$k.'="'.$v.'"';
+  }
+
+  $subject = str_replace(" ", "%20", $subject);
+
+  switch ($target) {
+
+  case "squirrel" :
+    $link  = ' <a ';
+    $link .= 'href="'.$prot."://".$host.":".$port."/".GetParam("CORE_MAIL_SQUIRRELBASE", "squirrel")."/src/compose.php?";
+    $link .= "&send_to=".$to;
+    $link .= ($subject!="" ? '&subject='.$subject : '');
+    $link .= ($cc!="" ? '&cc='.$cc : '');
+    $link .= ($bcc!="" ? '&bcc='.$bcc : '');
+    $link .= '"';
+    $link .= $attrcode;
+    $link .= '>';
+    $link .= $acontent;
+    $link .= '</a>';
+    break;
+
+  case "mailto":
+    $link  = '<a '; 
+    $link .= 'href="mailto:'.$to.'"';
+    $link .= ($subject!="" ? '&Subject='.$subject : '');
+    $link .= ($cc!="" ? '&cc='.$cc : '');
+    $link .= ($bcc!="" ? '&bcc='.$bcc : '');
+    $link .= '"';
+    $link .= $attrcode;
+    $link .= '>';
+    $link .= $acontent;
+    $link .= '</a>';
+    break;
+    
+  default:   
+    $link = '<span '.$classcode.'>'.$acontent.'</span>';
+}
+return $link;
+
+
+}
+
 ?>
