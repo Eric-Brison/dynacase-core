@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.33 2006/06/20 16:18:07 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.34 2006/07/11 16:17:54 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.33 2006/06/20 16:18:07 eric Exp $
+//  $Id: Class.Layout.php,v 1.34 2006/07/11 16:17:54 marc Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -296,6 +296,10 @@ var $strip='Y';
 
      $out = preg_replace("/\[IMG:([^\]]*)\]/e",
                          "\$this->action->GetImageUrl('\\1')",
+                         $out);
+
+     $out = preg_replace("/\[IMGF:([^\]]*)\]/e",
+                         "\$this->action->GetFilteredImageUrl('\\1')",
                          $out);
 
      $out = preg_replace("/\[SCRIPT:([^\]]*)\]/e",

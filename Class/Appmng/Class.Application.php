@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.52 2006/06/20 16:18:07 eric Exp $
+ * @version $Id: Class.Application.php,v 1.53 2006/07/11 16:17:54 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -447,6 +447,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     return $root."/".$this->GetImageUrl($img);
   }
 
+  var $noimage = "CORE/Images/noimage.png";
   function GetImageUrl($img) {
     if ($img != "") {
     // try style first 
@@ -469,7 +470,50 @@ create sequence SEQ_ID_APPLICATION start 10;
       // try in parent 
       if ($this->parent != "") return($this->parent->getImageUrl($img));
     }
-    return ("CORE/Images/noimage.png");
+    return $this->noimage;
+  }
+
+
+  function ImageFilterColor($image, $fcol, $newcol, $out="/tmp/i.gif") {
+    $im = imagecreatefromgif($image);
+    $idx = imagecolorexact($im, $fcol[0], $fcol[1], $fcol[2]);
+    imagecolorset($im, $idx, $newcol[0], $newcol[1], $newcol[2]);
+    imagegif($im, $out);
+    imagedestroy($im);
+  }
+    
+  function GetFilteredImageUrl($imgf) {
+
+    $ttf = explode(":",$imgf);
+    $img = $ttf[0];
+    $filter = $ttf[1];
+
+    $url = $this->GetImageUrl($img);
+    if ($url==$this->$noimage) return $url;
+
+    $tf = explode("|", $filter);
+    if (count($tf)!=2) return $url;
+
+    $fcol = explode(",", $tf[0]);
+    if (count($fcol)!=3) return $url;
+    
+    if (substr($tf[1],0,1)=='#') $col=$tf[1];
+    else $col=$this->getParam($tf[1]);
+    $ncol[0] = hexdec(substr($col,1,2));
+    $ncol[1] = hexdec(substr($col,3,2));
+    $ncol[2] = hexdec(substr($col,5,2));
+
+
+    $cdir = 'img-cache/';
+    if (!is_dir($cdir)) mkdir($this->Getparam("CORE_PUBDIR").'/'.$cdir);
+
+    $uimg = $cdir.$this->name.'-'.$fcol[0].'.'.$fcol[1].'.'. $fcol[2].'_'.$ncol[0].'.'.$ncol[1].'.'.$ncol[2].'.'.$img;
+    $cimg = $this->Getparam("CORE_PUBDIR").'/'.$uimg;
+    if (file_exists($cimg)) return $uimg;
+    
+    $this->ImageFilterColor($this->Getparam("CORE_PUBDIR").'/'.$url, $fcol, $ncol, $cimg);
+    return $uimg;
+
   }
 
   function GetLayoutFile($layname) {

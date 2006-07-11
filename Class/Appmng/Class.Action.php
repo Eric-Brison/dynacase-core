@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.33 2006/06/14 16:22:09 eric Exp $
+ * @version $Id: Class.Action.php,v 1.34 2006/07/11 16:17:54 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -164,6 +164,12 @@ create sequence SEQ_ID_ACTION;
   function GetImageUrl($name) {
     if (isset ($this->parent)) {
       return($this->parent->GetImageUrl($name));
+    }
+  }
+
+  function GetFilteredImageUrl($name) {
+    if (isset ($this->parent)) {
+      return($this->parent->GetFilteredImageUrl($name));
     }
   }
 
