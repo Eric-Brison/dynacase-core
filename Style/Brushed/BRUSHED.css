@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: BRUSHED.css,v 1.4 2006/06/21 13:51:38 eric Exp $
+ * $Id: BRUSHED.css,v 1.5 2006/07/21 07:31:04 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -8,8 +8,15 @@
 
 
 body, .core {
-  background-color: transparent;
-  background-image: [CORE_BGIMAGE];
+  background-color: transparent!important;
+  background-image: [CORE_BGIMAGE]!important;
   font-family: [CORE_FONTLIST1];
   color: [CORE_TEXTFGCOLOR];
+}
+TABLE.headbarmenu TD {  
+  background-color: transparent!important;
+  background-image: none;
+}
+TABLE.headbarmenu TR.headcell {
+  background-color: transparent;
 }

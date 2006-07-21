@@ -7,7 +7,7 @@
 
 
 </head>
-<frameset name="top" id="fgtop" frameborder="0" framespacing="0" border="0"  rows="*,0">
+<frameset name="top" id="fgtop" frameborder="0" framespacing="0" border="0"  rows="*,0px">
 
 
   <frame name="PB1" src="[CORE_STANDURL]&app=CORE&action=PROGRESSBAR1" scrolling="needed" bordercolor="[CORE_FGCOLOR]">

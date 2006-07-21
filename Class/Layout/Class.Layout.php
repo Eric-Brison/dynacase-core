@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.34 2006/07/11 16:17:54 marc Exp $
+ * @version $Id: Class.Layout.php,v 1.35 2006/07/21 07:31:04 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.34 2006/07/11 16:17:54 marc Exp $
+//  $Id: Class.Layout.php,v 1.35 2006/07/21 07:31:04 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -376,7 +376,7 @@ var $strip='Y';
     $list = $this->action->parent->GetCssRef();
 
     foreach ($list as $k=>$v) {
-      $js .= "<link rel=stylesheet type=\"text/css\" href=\"$v\">\n";
+      $js .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$v\">\n";
     }
     return $js;
   }

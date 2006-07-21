@@ -73,7 +73,7 @@ var csel=false; // selected icon object
 var izoom=48;
 function fadeIt(o,oimg) {    
   if (isNetscape) {
-    o.style.backgroundImage='inherit'; 
+    o.style.backgroundImage='none'; 
   } else {
     o.style.filter="";
   }
@@ -117,7 +117,7 @@ function selectIt(o,th) {
 }
 </script>
 
-<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
+<table class="headbarmenu" bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="headcell" >
   <td  width="[izbpx]px"><img  border="0" align="absmiddle"  style="width:[izbpx]px;position:absolute;top:0px;left:2px" id="imgapp" src="[IMG:logo-mini.png]"></td>
   <td  align="left" valign="center" style="width:[wtitle]px;"><div id="apptitle2" style="padding:0;height:[izbpx]px;overflow:hidden"  class="headtitle">[APP_TITLE]&nbsp;</div></td>
