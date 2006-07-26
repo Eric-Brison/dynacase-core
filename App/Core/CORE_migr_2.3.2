@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+echo "delete from paramv where name in ('CORE_BGCOLOR','CORE_FGIMG','CORE_FGIMGMENU','CORE_BGCELLCOLOR','CORE_BGCOLORALTERN','CORE_BGCOLORHIGH','CORE_FGCOLOR','CORE_TEXTFGCOLOR','CORE_TEXTBGCOLOR','CORE_INPUTBGCOLOR','CORE_ACOLOR','CORE_ERRORCOLOR') and type ~ '^U';" | psql $dbpsql
+echo "delete from paramdef where name in ('CORE_FONTLIST1','CORE_FONTLIST2','CORE_FONTBASESIZE');" | psql $dbpsql
+echo "delete from paramv where name in ('CORE_FONTLIST1','CORE_FONTLIST2','CORE_FONTBASESIZE');" | psql $dbpsql

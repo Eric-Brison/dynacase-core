@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: AQUA.css,v 1.1 2006/06/22 16:19:35 eric Exp $
+ * $Id: AQUA.css,v 1.2 2006/07/26 08:29:58 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -10,4 +10,12 @@
 body, .core {
   background-color: transparent;
   background-image: [CORE_BGIMAGE];
+}
+
+TABLE.headbarmenu TD {  
+  background-color: transparent!important;
+  background-image: none;
+}
+TABLE.headbarmenu TR.headcell {
+  background-color: transparent;
 }
