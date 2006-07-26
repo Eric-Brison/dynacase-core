@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.6 2006/07/04 15:16:19 eric Exp $
+ * $Id: DEFAULT.css,v 1.7 2006/07/26 09:22:59 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -10,7 +10,6 @@
 body, .core {
   background-color: [CORE_BGCOLOR];
   background-image: [CORE_BGIMAGE];
-  font-family: [CORE_FONTLIST1];
   color: [CORE_TEXTFGCOLOR];
 }
 P,TR,H1,H2,H3 {
@@ -20,16 +19,9 @@ TD {
   background-color: inherit;
   background-image: inherit;
 }
-P {
-  font-family: [CORE_FONTLIST1];
-}
 
-TD {
-  font-family: [CORE_FONTLIST1];
-}
-TH {
-  font-family: [CORE_FONTLIST1];
-}
+
+
 TR {
   background: [CORE_BGCELLCOLOR];
   color: [CORE_TEXTFGCOLOR];
@@ -45,7 +37,6 @@ TR {
  */
 A:link, A:visited {
   color: [CORE_ACOLOR];
-  font-family: [CORE_FONTLIST1];
   text-decoration: none;
 }
 A {

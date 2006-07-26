@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.51 2006/06/28 07:15:30 eric Exp $
+ * $Id: core.css,v 1.52 2006/07/26 09:22:59 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -50,6 +50,10 @@ TH {
 .headtitle {
   color: [CORE_TEXTBGCOLOR];
   font-weight: bold;
+}
+
+A.headtitle:link,A.headtitle:visited {
+  color: [CORE_TEXTBGCOLOR];  
 }
 A.headtitle:hover {
   color: [CORE_TEXTBGCOLOR];

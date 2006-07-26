@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: AQUA.css,v 1.2 2006/07/26 08:29:58 eric Exp $
+ * $Id: AQUA.css,v 1.3 2006/07/26 09:22:59 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -15,6 +15,9 @@ body, .core {
 TABLE.headbarmenu TD {  
   background-color: transparent!important;
   background-image: none;
+}
+TABLE.headbarmenu DIV.headtitle, TABLE.headbarmenu A.headtitle { 
+  color:[COLOR_BLACK];
 }
 TABLE.headbarmenu TR.headcell {
   background-color: transparent;

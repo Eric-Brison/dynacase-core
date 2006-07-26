@@ -133,7 +133,7 @@ function selectIt(o,th) {
   [ENDBLOCK FUNCTION]
 
   <td  align="right" ><span class="headtitle">
-     <a class="headtitle" style="color:[CORE_TEXTBGCOLOR];" href="[CORE_BASEURL]app=APPMNG" target="fbody">[USER]</a>
+     <a class="headtitle"  href="[CORE_BASEURL]app=APPMNG" target="fbody">[USER]</a>
      
 
      &nbsp;</span>
