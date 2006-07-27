@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.29 2006/07/04 15:50:26 marc Exp $
+ * @version $Id: Lib.Common.php,v 1.30 2006/07/27 16:03:37 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -201,6 +201,16 @@ function getWshCmd($nice=false) {
   return $wsh;
 }
 
+/**
+ * get the system user id
+ * @return int
+ */
+function getUserId() {
+  global $action;
+  if ($action)  return $action->user->id;
+  
+  return 0;
+}
 /**
  * exec list of unix command in background
  * @param array $tcmd unix command strings
