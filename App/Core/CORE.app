@@ -1,6 +1,6 @@
 <?
 // ---------------------------------------------------------------
-// $Id: CORE.app,v 1.15 2005/11/16 16:36:26 eric Exp $
+// $Id: CORE.app,v 1.16 2006/07/27 16:04:19 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -72,6 +72,10 @@ $action_desc = array (
   array(
    "name"               =>"GENCSS",
    "layout"		=>"core.css"
+  ),
+  array(
+   "name"               =>"SYSTEMCSS",
+   "short_name"		=>N_("concat stylecss+sizecss")
   ),
   array(
    "name"               =>"CORE_CSS",
