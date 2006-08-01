@@ -1,5 +1,7 @@
 var isNetscape = navigator.appName=="Netscape";
 var isIE = navigator.appName=="Microsoft Internet Explorer";
+var isIE6 = /msie 6/i.test(navigator.userAgent);
+var isIE7 = /msie 7/i.test(navigator.userAgent);
 
 function getMouseButton(event) {
   // 1 is the left, 2 the middle, 3 the right button
@@ -29,6 +31,7 @@ function displayPropertyNames(obj) {
   }
   alert(names);
 }
+
 function getConnexeWindows(w) {
   var cw;
 
@@ -168,13 +171,17 @@ function delEvent(o,e,f){
 	else if (o.detachEvent){ return o.detachEvent("on"+e,f); }
 	else { return false; }
 }
-function correctPNG() {// correctly handle PNG transparency in Win IE 5.5 or higher.
+function correctPNG() {// correctly handle PNG transparency in Win IE 5.5 and IE < 7.0
    for(var i=0; i<document.images.length; i++)
       {
-	correctOnePNG(document.images[i]);
+	_correctOnePNG(document.images[i]);
       }
 }
-function correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency in Win IE 5.5 or higher.	 
+function correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency in Win IE 5.5 and < 7.0
+  if (isIE && (!isIE7)) _correctOnePNG(img,iknowitisapng);
+}
+
+function _correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency in Win IE 5.5 or higher.	 
   if (img.className == 'icon') return;
   var imgName = img.src.toUpperCase();
   if ((iknowitisapng==true) || (imgName.substring(imgName.length-3, imgName.length) == "PNG") )
@@ -188,7 +195,7 @@ function correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency 
       
 }
 
-if (isIE) addEvent(window,"load",correctPNG);
+if (isIE && (!isIE7)) addEvent(window,"load",correctPNG);
 
 function sendActionNotification(code,arg) {
   
