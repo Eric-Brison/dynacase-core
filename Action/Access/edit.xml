@@ -2,8 +2,12 @@
 <head>
 
 <title>[TEXT:controlaccess]</title>
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
 [JS:REF]
 <script language="JavaScript">
 <!--
