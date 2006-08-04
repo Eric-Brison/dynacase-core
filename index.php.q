@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.20 2006/06/15 08:33:45 eric Exp $
+// $Id: index.php.q,v 1.21 2006/08/04 12:20:20 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -23,13 +23,20 @@
 // ---------------------------------------------------------------
 
 global $tic1;
-function ptic($text) {
-  global $tic1;
+function dtic($text="") {
   static $ptic=0;
+  static $ptic0=0;
+
   $deb=gettimeofday();
   $tuc1= $deb["sec"]+$deb["usec"]/1000000;
-  print sprintf("%s : %.03f  -- %.03f<br>",$text,($tuc1-$tic1),($tuc1-$ptic));
+  if ($ptic==0) {
+    $ptic=$tuc1;
+    $ptic0=$tuc1;
+  }
+
+  $msg= sprintf("%s : %.03f -  %.03f ",$text,($tuc1-$ptic), ($tuc1-$ptic0));
   $ptic=$tuc1;
+  return $msg;
 }
 #
 # This is the main body of App manager
