@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.35 2006/07/21 07:31:04 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.36 2006/08/07 15:42:18 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.35 2006/07/21 07:31:04 eric Exp $
+//  $Id: Class.Layout.php,v 1.36 2006/08/07 15:42:18 marc Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -127,20 +127,34 @@ var $strip='Y';
   }
 
   function SetBlockData($p_nom_block,$data=NULL) {
-   $this->data["$p_nom_block"]=$data;
-   // affect the corresp block if not
-   if (is_array($data))  {
-     reset($data);
-     $elem = pos($data);
-     if ( isset($elem) && is_array($elem)) {
-       reset($elem);
-       while (list($k,$v)=each($elem)) {
-         if (!isset($this->corresp["$p_nom_block"]["[$k]"])) {
-           $this->SetBlockCorresp($p_nom_block,$k);
-         }
-       }
-     }
-   }
+    if ($data!=null && $this->encoding=="utf-8") {
+      if (is_array($data)) {
+	foreach ($data as $k => $v) {
+	  foreach ($v as $kk => $vk) {
+	    if (!isUTF8($vk)) { 
+	      $data[$k][$kk] = utf8_encode($vk); 
+	    }
+	  }
+	}
+      } else {
+	if (!isUTF8($data)) $data = utf8_encode($data);
+      }
+    }
+    $this->data["$p_nom_block"]=$data;
+    // affect the corresp block if not
+    reset($data);
+    if (is_array($data))  {
+      reset($data);
+      $elem = pos($data);
+      if ( isset($elem) && is_array($elem)) {
+	reset($elem);
+	while (list($k,$v)=each($elem)) {
+	  if (!isset($this->corresp["$p_nom_block"]["[$k]"])) {
+	    $this->SetBlockCorresp($p_nom_block,$k);
+	  }
+	}
+      }
+    }
   }
 
   function GetBlockData($p_nom_block) {
@@ -223,6 +237,7 @@ var $strip='Y';
    */
   function setEncoding($enc) {
     if ($enc=="utf-8") {
+      $this->encoding = $enc;
       bind_textdomain_codeset("what", 'UTF-8');
     }
   }
@@ -284,9 +299,11 @@ var $strip='Y';
            
 
   function set($tag,$val) {
-     $this->pkey[$tag]="/\[$tag\]/";
-     $this->rkey[$tag]=$val;
+    if ($this->encoding=="utf-8" && !isUTF8($val)) $val = utf8_encode($val);
+    $this->pkey[$tag]="/\[$tag\]/";
+    $this->rkey[$tag]=$val;
   }
+
   function get($tag) {
     if (isset($this->rkey)) return $this->rkey[$tag];
     return "";

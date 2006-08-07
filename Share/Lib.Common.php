@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.30 2006/07/27 16:03:37 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.31 2006/08/07 15:42:18 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -343,10 +343,47 @@ function setMailtoAnchor($to, $acontent="", $subject="", $cc="", $bcc="", $from=
     
   default:   
     $link = '<span '.$classcode.'>'.$acontent.'</span>';
+  }
+  return $link;
 }
-return $link;
 
 
+/**
+ * Returns <kbd>true</kbd> if the string or array of string is encoded in UTF8.
+ *
+ * Example of use. If you want to know if a file is saved in UTF8 format :
+ * <code> $array = file('one file.txt');
+ * $isUTF8 = isUTF8($array);
+ * if (!$isUTF8) --> we need to apply utf8_encode() to be in UTF8
+ * else --> we are in UTF8 :)
+ * </code>
+ * @param mixed A string, or an array from a file() function.
+ * @return boolean
+ */
+function isUTF8($string)
+{
+  if (is_array($string))   return seems_utf8(implode('', $string));
+  else return seems_utf8($string);
 }
+/**
+ * Returns <kbd>true</kbd> if the string  is encoded in UTF8.
+ *
+ * @param mixed $Str string
+ * @return boolean
+ */
+function seems_utf8($Str) {
+ for ($i=0; $i<strlen($Str); $i++) {
+  if (ord($Str[$i]) < 0x80) $n=0; # 0bbbbbbb
+  elseif ((ord($Str[$i]) & 0xE0) == 0xC0) $n=1; # 110bbbbb
+  elseif ((ord($Str[$i]) & 0xF0) == 0xE0) $n=2; # 1110bbbb
+  elseif ((ord($Str[$i]) & 0xF0) == 0xF0) $n=3; # 1111bbbb
+  else return false; # Does not match any model
+  for ($j=0; $j<$n; $j++) { # n octets that match 10bbbbbb follow ?
+   if ((++$i == strlen($Str)) || ((ord($Str[$i]) & 0xC0) != 0x80)) return false;
+  }
+ }
+ return true;
+}
+
 
 ?>
