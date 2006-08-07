@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.36 2006/08/07 15:42:18 marc Exp $
+ * @version $Id: Class.Layout.php,v 1.37 2006/08/07 15:55:18 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.36 2006/08/07 15:42:18 marc Exp $
+//  $Id: Class.Layout.php,v 1.37 2006/08/07 15:55:18 marc Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -142,7 +142,6 @@ var $strip='Y';
     }
     $this->data["$p_nom_block"]=$data;
     // affect the corresp block if not
-    reset($data);
     if (is_array($data))  {
       reset($data);
       $elem = pos($data);
