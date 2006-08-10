@@ -87,7 +87,7 @@ if [ "$1" = "U" ] ; then
   $wpub/wsh.php  --api=import_style --name=BLACK
   $wpub/wsh.php  --api=import_style --name=BRUSHED
   $wpub/wsh.php  --api=import_style --name=VEGETAL
-  $wpub/wsh.php  --api=import_style --name=AMETHYSTE.
+  $wpub/wsh.php  --api=import_style --name=AMETHYSTE
   echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql $dbname anakeen
 
 fi
