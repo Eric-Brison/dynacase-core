@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.37 2006/08/07 15:55:18 marc Exp $
+ * @version $Id: Class.Layout.php,v 1.38 2006/08/11 08:46:02 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.37 2006/08/07 15:55:18 marc Exp $
+//  $Id: Class.Layout.php,v 1.38 2006/08/11 08:46:02 marc Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -339,7 +339,7 @@ var $strip='Y';
     return $js;
   }
 
-  function GenJsCode() {
+  function GenJsCode($showlog) {
     $list = $this->action->parent->GetJsCode();
     reset($list);
     $out = "";
@@ -347,20 +347,22 @@ var $strip='Y';
       $out .= $v."\n";
     }
 
-    // Add log messages
-    $list = $this->action->parent->GetLogMsg();
-    reset($list);
-    $out .= "var logmsg=new Array();\n";
-    while(list($k,$v) = each($list)) {
-      $out .= "logmsg[$k]='$v';\n";
+    if ($showlog) {
+      // Add log messages
+      $list = $this->action->parent->GetLogMsg();
+      reset($list);
+      $out .= "var logmsg=new Array();\n";
+      while(list($k,$v) = each($list)) {
+        $out .= "logmsg[$k]='$v';\n";
+      }
+      $out .= "displayLogMsg(logmsg);\n";
+      $this->action->parent->ClearLogMsg();
+  
+      // Add warning messages
+      $list = $this->action->parent->GetWarningMsg();   
+      if (count($list) > 0) $out .= "displayWarningMsg('".implode("\\n---------\\n",$list)."');\n";
+      $this->action->parent->ClearWarningMsg();
     }
-    $out .= "displayLogMsg(logmsg);\n";
-    $this->action->parent->ClearLogMsg();
-
-    // Add warning messages
-    $list = $this->action->parent->GetWarningMsg();   
-    if (count($list) > 0) $out .= "displayWarningMsg('".implode("\\n---------\\n",$list)."');\n";
-    $this->action->parent->ClearWarningMsg();
 
     // Add action notification messages
     $this->action->getActionDone($actcode,$actarg);
@@ -383,7 +385,11 @@ var $strip='Y';
                            $out);
        
        $out = preg_replace("/\[JS:CODE\]/e",
-                           "\$this->GenJsCode()",
+                           "\$this->GenJsCode(true)",
+                           $out);
+       
+       $out = preg_replace("/\[JS:CODENLOG\]/e",
+                           "\$this->GenJsCode(false)",
                            $out);
   }
 
