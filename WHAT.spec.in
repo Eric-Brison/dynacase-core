@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.74 2006/08/16 13:18:57 eric Exp $
+#  $Id: WHAT.spec.in,v 1.75 2006/08/16 13:46:24 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -13,6 +13,7 @@
 %define apacheconfdir @APACHECONFDIR@
 %define cerbere		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'none' && echo 1 || echo 0)
 %define pld		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'PLD' && echo 1 || echo 0)
+%define redhat	        %(rpm -q --queryformat '%{VENDOR}' rpm | grep -q 'Red Hat, Inc.' && echo 1 || echo 0)
 %if %{cerbere}
 %define destdir /home/httpd/what
 %define apacheconfdir /etc/httpd/httpd.conf
@@ -31,10 +32,10 @@
 Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
 Version: @VERSION@
-%if %{cerbere} || %{pld}
-Release: @RELEASE@
-%else
+%if %{redhat}
 Release: @RELEASE@fc
+%else
+Release: @RELEASE@
 %endif
 License: GPL
 Group: Applications/Web
