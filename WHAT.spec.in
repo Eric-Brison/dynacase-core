@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.73 2006/07/17 12:33:33 eric Exp $
+#  $Id: WHAT.spec.in,v 1.74 2006/08/16 13:18:57 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -12,7 +12,7 @@
 %define destdir @prefix@
 %define apacheconfdir @APACHECONFDIR@
 %define cerbere		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'none' && echo 1 || echo 0)
-%define pld		%(uname -o | grep -c PLD)
+%define pld		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'PLD' && echo 1 || echo 0)
 %if %{cerbere}
 %define destdir /home/httpd/what
 %define apacheconfdir /etc/httpd/httpd.conf
@@ -136,13 +136,10 @@ install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/
 
 %post
 
-%if %{cerbere}
-%else
 %if %{pld} 
    if [ -x /usr/sbin/webapp -a -d %{apacheconfdir} ]; then
 	/usr/sbin/webapp register httpd what
    fi
-%endif
 %endif
 
 
