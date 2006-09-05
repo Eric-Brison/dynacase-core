@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.54 2006/07/18 13:10:34 eric Exp $
+ * @version $Id: Class.Application.php,v 1.55 2006/09/05 13:27:51 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -505,7 +505,8 @@ create sequence SEQ_ID_APPLICATION start 10;
 
 
     $cdir = 'img-cache/';
-    if (!is_dir($cdir)) mkdir($this->Getparam("CORE_PUBDIR").'/'.$cdir);
+    $rcdir = $this->Getparam("CORE_PUBDIR").'/'.$cdir;
+    if (!is_dir($rcdir)) mkdir($rcdir);
 
     $uimg = $cdir.$this->name.'-'.$fcol[0].'.'.$fcol[1].'.'. $fcol[2].'_'.$ncol[0].'.'.$ncol[1].'.'.$ncol[2].'.'.$img;
     $cimg = $this->Getparam("CORE_PUBDIR").'/'.$uimg;
