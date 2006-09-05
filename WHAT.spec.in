@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.75 2006/08/16 13:46:24 eric Exp $
+#  $Id: WHAT.spec.in,v 1.76 2006/09/05 16:20:45 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -18,25 +18,24 @@
 %define destdir /home/httpd/what
 %define apacheconfdir /etc/httpd/httpd.conf
 %define httpuser http
-%else
+%define releasepostfix %(echo)
+%endif
 %if %{pld}
 %define destdir /usr/share/what
 %define apacheconfdir /etc/webapps/what
 %define httpuser http
-%else
+%define releasepostfix cb
+%endif
+%if %{redhat}
 %define destdir /usr/share/what
 %define apacheconfdir /etc/httpd/conf.d
 %define httpuser apache
-%endif
+%define releasepostfix fc5
 %endif
 Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
 Version: @VERSION@
-%if %{redhat}
-Release: @RELEASE@fc
-%else
-Release: @RELEASE@
-%endif
+Release: @RELEASE@%{releasepostfix}
 License: GPL
 Group: Applications/Web
 Source: ftp://ftp.souillac.anakeen.com/pub/anakeen/%{name}-%{version}.tar.gz
@@ -84,8 +83,9 @@ Requires: apache-mod_auth_pam
 Requires: pam_what >= 0.4.0
 Requires: ankpsql-tools
 Requires: gettext
+BuildRequires: gettext
 %if %{cerbere} || %{pld}
-Requires: gettext-devel > 0.11
+BuildRequires: gettext-devel > 0.11
 Requires: php-pear-PEAR
 %endif
 Requires: php-pear-Crypt_CHAP >= 1.0.0
@@ -138,7 +138,7 @@ install $RPM_BUILD_ROOT/%{destdir}/apache.conf $RPM_BUILD_ROOT/%{apacheconfdir}/
 %post
 
 %if %{pld} 
-   if [ -x /usr/sbin/webapp -a -d %{apacheconfdir} ]; then
+   if [ -x /usr/sbin/webapp ]; then
 	/usr/sbin/webapp register httpd what
    fi
 %endif
@@ -198,13 +198,10 @@ fi
     fi
   fi
 
-%if %{cerbere}
-%else
-  %if %{pld} 
-    if [ -x /usr/sbin/webapp -a -d %{apacheconfdir} ]; then
+%if %{pld} 
+    if [ -x /usr/sbin/webapp ]; then
 	/usr/sbin/webapp unregister httpd what
     fi
-  %endif
 %endif
 
 
