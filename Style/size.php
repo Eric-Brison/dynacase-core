@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Size font and image definition
+ *
+ * @author Anakeen 2006
+ * @version $Id: size.php,v 1.2 2006/09/06 07:01:34 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ */
+/**
+ */
 $size=array("normal"=>array("xx-small"=> "6pt",
 				"x-small"=>"7pt",
 				"small" => "8pt",
