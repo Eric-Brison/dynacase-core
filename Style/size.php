@@ -3,7 +3,7 @@
  * Size font and image definition
  *
  * @author Anakeen 2006
- * @version $Id: size.php,v 1.2 2006/09/06 07:01:34 eric Exp $
+ * @version $Id: size.php,v 1.3 2006/09/15 12:05:36 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -16,7 +16,8 @@ $size=array("normal"=>array("xx-small"=> "6pt",
 				"large" => "10pt",
 				"x-large" => "12pt",
 				"xx-large" => "14pt",
-				"img-xx-small"=>"12px",
+				"img-xxx-small"=>"12px",
+				"img-xx-small"=>"16px",
 				"img-x-small"=>"20px",
 				"img-small"=>"32px",
 				"img-medium"=>"48px",
@@ -30,7 +31,8 @@ $size=array("normal"=>array("xx-small"=> "6pt",
 			       "large" => "9pt",
 			       "x-large" => "11pt",
 			       "xx-large" => "12pt",
-			       "img-xx-small"=>"10px",
+			       "img-xxx-small"=>"9px",
+			       "img-xx-small"=>"12px",
 			       "img-x-small"=>"16px",
 			       "img-small"=>"24px",
 			       "img-medium"=>"32px",
@@ -44,7 +46,8 @@ $size=array("normal"=>array("xx-small"=> "6pt",
 			       "large" => "12pt",
 			       "x-large" => "14pt",
 			       "xx-large" => "18pt",
-			       "img-xx-small"=>"14px",
+			       "img-xxx-small"=>"12px",
+			       "img-xx-small"=>"18px",
 			       "img-x-small"=>"24px",
 			       "img-small"=>"40px",
 			       "img-medium"=>"54px",
@@ -58,7 +61,8 @@ $size=array("normal"=>array("xx-small"=> "6pt",
 				 "large" => "16pt",
 				 "x-large" => "18pt",
 				 "xx-large" => "24pt",
-				 "img-xx-small"=>"22px",
+				 "img-xxx-small"=>"14px",
+				 "img-xx-small"=>"20px",
 				 "img-x-small"=>"32px",
 				 "img-small"=>"48px",
 				 "img-medium"=>"64px",
