@@ -94,6 +94,11 @@ function windowExist(Name, NoOpen) {
     return  windows[Name];
   }
 
+  if (window.parent) {
+    getChildFrames(window.parent);
+    if (windows[Name]) return  windows[Name];
+  }
+
   getConnexeWindows(window);
   if (windows[Name]) return  windows[Name];
 
