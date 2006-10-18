@@ -15,10 +15,11 @@ Alias /freedom @prefix@
     <Files ~ "index.php">
       ErrorDocument 401 /what/expire/tryexpire.html
       AuthType Basic
-      AuthName 'FREEDOM Connection'
-      AuthPAM_Enabled  on
-      AuthPAM_FallThrough off
-      AuthPAM_Service httpd
+      AuthName 'FREEDOM Connection'      
+      AuthBasicProvider pam
+      AuthnPAMService httpd
+
+
       Require valid-user
     </Files>
     <FilesMatch "\.conf|dbaccess.php|wstop|wcheck|wsh.php">
@@ -32,18 +33,17 @@ Alias /freedom @prefix@
     <FilesMatch "geticon.php">
       Allow from All   
       AuthType Basic
-      AuthName 'FREEDOM Connection'
-      AuthPAM_Enabled  on
-      AuthPAM_FallThrough off
+      AuthName 'FREEDOM Connection'  
+      AuthBasicProvider pam
+      AuthnPAMService httpd
       Require valid-user
     </FilesMatch>
     <FilesMatch "expire.shtml|chgpasswd.php">
       Allow from All   
       AuthType Basic
       AuthName 'FREEDOM Connection'
-      AuthPAM_Enabled  on
-      AuthPAM_FallThrough off
-      AuthPAM_Service httpdwa
+      AuthBasicProvider pam
+      AuthnPAMService httpdwa
       Require valid-user
     </FilesMatch>
     ExpiresActive On
@@ -76,8 +76,8 @@ Alias /freedom @prefix@
     ErrorDocument 401 "connection refused"   
     AuthType Basic
     AuthName 'FREEDOM Connection'
-    AuthPAM_Enabled  on
-    AuthPAM_FallThrough off
+    AuthBasicProvider pam
+    AuthnPAMService httpdwa
     require valid-user
  </Directory>
 

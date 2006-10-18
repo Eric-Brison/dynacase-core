@@ -18,6 +18,9 @@ if [ "$1" = "I" ] ; then
     exit 1
   fi
 
+  log "Add plpgsql language"
+  createlang --username=postgres --dbname=template1 plpgsql
+
   log "Create $dbname database"
   createdb --encoding LATIN1 --username=postgres --host=$dbhost --port=$dbport $dbname
   
@@ -28,8 +31,6 @@ if [ "$1" = "I" ] ; then
   log "Create anakeen database user"
   createuser -d -a --username=postgres --host=$dbhost --port=$dbport anakeen
  
-  log "Add plpgsql language"
-  createlang --username=postgres --dbname=template1 plpgsql
 
   log "Add plpgsql functions"
   psql  --username=postgres $dbpsql -f $wpub/WHAT/getprivilege.sql
