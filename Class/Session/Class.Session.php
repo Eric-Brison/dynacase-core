@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.24 2006/02/17 10:36:53 eric Exp $
+ * @version $Id: Class.Session.php,v 1.25 2006/11/06 09:40:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.24 2006/02/17 10:36:53 eric Exp $
+// $Id: Class.Session.php,v 1.25 2006/11/06 09:40:27 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.24 2006/02/17 10:36:53 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.25 2006/11/06 09:40:27 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -214,9 +214,8 @@ var $sessiondb;
       unset($magic);
       return md5(uniqid($m));
     }
-  
-  function SetTTL()
-    {
+
+  function SetTTL()  {
       $ttli = new SessionConf($this->dbaccess, "TTL_INTERVAL");
       $ttliv = $ttli->val;
       //$ttli->CloseConnect();
