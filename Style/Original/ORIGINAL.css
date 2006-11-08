@@ -1,0 +1,22 @@
+/* ---------------------------------------------------------------------------
+ * $Id: ORIGINAL.css,v 1.1 2006/11/08 17:52:16 eric Exp $
+ * ---------------------------------------------------------------------------
+ 
+ * ---------------------------------------------------------------------------
+ */
+
+
+
+body, .core {
+  background-color: transparent;
+  background-image: [CORE_BGIMAGE]!important;
+}
+
+TABLE.headbarmenu TD {  
+  background-image: none;
+}
+
+
+.popup {
+  background-image: none!important;  
+}

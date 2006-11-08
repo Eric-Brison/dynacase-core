@@ -30,7 +30,21 @@ function getFrameHeight(w) {
       return (winH);
   }
 
-
+// get document object from iframe object
+function getIdocument(ifr) {
+if (ifr.contentDocument) {
+    // For NS6
+    return ifr.contentDocument; 
+  } else if (ifr.contentWindow) {
+    // For IE5.5 and IE6
+    return ifr.contentWindow.document;
+  } else if (ifr.document) {
+    // For IE5
+    return ifr.document;
+  } else {
+    return false;
+  }
+}
 
 function CenterDiv(eid) { 
       var winH=getFrameHeight();
