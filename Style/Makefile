@@ -1,12 +1,12 @@
 # ============================================
-# $Id: Makefile,v 1.11 2006/11/08 17:52:16 eric Exp $
+# $Id: Makefile,v 1.12 2006/11/09 09:45:37 eric Exp $
 # ============================================
 
 
 export targetdir
 export utildir
 
-SUBDIR= Default Original Green Red Aqua Blue Caramel Black Darkblue Brushed Amethyste Vegetal
+SUBDIR= Default Original 
 
 
 include $(utildir)/PubRule

@@ -80,15 +80,7 @@ if [ "$1" = "U" ] ; then
   su - postgres -c "psql $dbname anakeen -f $wpub/WHAT/getprivilege.sql"
   $wpub/wsh.php  --api=import_size 
   $wpub/wsh.php  --api=import_style --name=DEFAULT
-  $wpub/wsh.php  --api=import_style --name=RED
-  $wpub/wsh.php  --api=import_style --name=GREEN
-  $wpub/wsh.php  --api=import_style --name=AQUA
-  $wpub/wsh.php  --api=import_style --name=BLUE
-  $wpub/wsh.php  --api=import_style --name=CARAMEL
-  $wpub/wsh.php  --api=import_style --name=BLACK
-  $wpub/wsh.php  --api=import_style --name=BRUSHED
-  $wpub/wsh.php  --api=import_style --name=VEGETAL
-  $wpub/wsh.php  --api=import_style --name=AMETHYSTE
+  $wpub/wsh.php  --api=import_style --name=ORIGINAL
   echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql $dbname anakeen
 
 fi
