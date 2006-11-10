@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.13 2005/08/18 15:27:39 eric Exp $
+ * @version $Id: Class.Group.php,v 1.14 2006/11/10 15:59:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -71,6 +71,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 
       if (($this->iduser>0) && ($uid > 0)) {
 	$err = $this->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=$uid");
+	$err = $this->exec_query("delete from sessions where userid=$uid");
 	
 	if (!$nopost) $this->PostDelete();
       }
@@ -96,7 +97,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     $this->FreedomCopyGroup();
   }
   function FreedomCopyGroup() {
-  
+    $err = $this->exec_query("delete from sessions where userid=".$this->iduser);
     if (@include_once('FDL/Lib.Dir.php')) {
       $wsh = getWshCmd();
       $cmd = $wsh . " --api=freedom_groups";
