@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.28 2006/06/15 08:33:45 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.29 2006/11/10 15:36:12 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -153,6 +153,15 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
     header("Cache-Control: private");
   }
    header("Pragma: "); // HTTP 1.0
+   if ($inline) {
+     global $_SERVER;
+     $nav=$_SERVER['HTTP_USER_AGENT'];
+     $pos=strpos($nav,"MSIE");
+     if ($pos) {
+       // add special header for extension
+       header("Content-Disposition: form-data;filename=\"$name\"");
+     }
+   } 
    header("Content-type: ".$mime_type);
    $fd = fopen($filename, "r");
    if ($fd) {
