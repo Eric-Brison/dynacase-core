@@ -177,10 +177,7 @@ function delEvent(o,e,f){
 	else { return false; }
 }
 function correctPNG() {// correctly handle PNG transparency in Win IE 5.5 and IE < 7.0
-   for(var i=0; i<document.images.length; i++)
-      {
-	_correctOnePNG(document.images[i]);
-      }
+  if (isIE && (!isIE7)) for(var i=0; i<document.images.length; i++) _correctOnePNG(document.images[i]);
 }
 function correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency in Win IE 5.5 and < 7.0
   if (isIE && (!isIE7)) _correctOnePNG(img,iknowitisapng);
