@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.26 2006/04/06 16:46:53 eric Exp $
+ * @version $Id: wsh.php,v 1.27 2006/11/15 17:16:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -113,6 +113,7 @@ if (isset($_GET["action"])) {
 setlocale(LC_MESSAGES,$core->Getparam("CORE_LANG"));  
 putenv ("LANG=".$core->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "$pubdir/locale");
+bind_textdomain_codeset("what", 'ISO-8859-15');
 textdomain ("what");
   
 
