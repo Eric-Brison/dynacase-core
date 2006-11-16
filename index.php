@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.41 2006/06/23 09:06:48 marc Exp $
+ * @version $Id: index.php,v 1.42 2006/11/16 17:06:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -45,23 +45,21 @@ $log=new Log("",$indexphp);
 $CoreNull = "";
 global $CORE_LOGLEVEL;
 
-$access = $_SERVER["FREEDOM_ACCESS"];
 
 global $_GET;
 $standalone = GetHttpVars("sole");
-$application="CORE";
-$action="";
-$sole="";
-switch($access) {
+if (!isset($_GET["app"])) {
+  $_GET["app"]="CORE";
+  switch($_SERVER["FREEDOM_ACCESS"]) {
   case "WEBDESK":
-    $application = "WEBDESK";
-    $sole = "Y";
+    $_GET["app"] = "WEBDESK";
+    $_GET["action"] = "";
+    $standalone = "Y";
     break;
-}
-if (!isset($_GET["app"])) $_GET["app"]=$application;
-if (!isset($_GET["action"])) $_GET["action"]=$action;
-if ($standalone=="" && $sole!="")  $standalone = $_GET["sole"] = $sole;
+  }
+ }
 
+if (!isset($_GET["action"])) $_GET["action"]="";
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
 else $sess_num=GetHttpVars("session");//$_GET["session"];
 
@@ -69,8 +67,7 @@ $session=new Session();
 if (!  $session->Set($sess_num))  {
     print "<B>:~((</B>";
     exit;
-  };
-
+ };
 
 
 $core = new Application();
@@ -118,12 +115,12 @@ $core->SetVolatileParam("CORE_SSTANDURL","$indexphp?sole=Y&session={$session->id
 
 // ----------------------------------------
 // Init Application & Actions Objects
-if (($standalone == "") || ($standalone == "N")) {
+if (($standalone == "") || ($standalone == "N")) {  
   $action = new Action();
   $action->Set("MAIN",$core,$session);
 } else {
   $appl = new Application();
-  $appl->Set($_GET["app"],$core);
+  $appl->Set($_GET["app"],$core,$session);
 
   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
       if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {

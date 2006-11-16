@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.55 2006/09/05 13:27:51 marc Exp $
+ * @version $Id: Class.Application.php,v 1.56 2006/11/16 17:06:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -82,14 +82,8 @@ create sequence SEQ_ID_APPLICATION start 10;
   public $cssref=array();
   public $csscode=array();
 
-  function Set($name,&$parent, $session="")
-    {
-
-
-  
+  function Set($name,&$parent, $session="")    {  
       $this->log->debug("Entering : Set application to $name");
-
- 
 
       $query=new QueryDb($this->dbaccess,"Application");
       $query->order_by = "";
@@ -119,13 +113,7 @@ create sequence SEQ_ID_APPLICATION start 10;
       if (is_object($this->parent) && isset($this->parent->session)) {
 	$this->session=$this->parent->session;
 	if (isset($this->parent->user) && is_object($this->parent->user)) {
-	  $this->user=$this->parent->user;
-	  $permission = new Permission($this->dbaccess, array($this->user->id,$this->id));
-	  if (! $permission->IsAffected()) { // case of no permission available
-	    $permission->Affect(array("id_user" => $this->user->id,
-				      "id_application" => $this->id ));
-	  } 
-	  $this->permission=&$permission;
+	  $this->user=$this->parent->user;	  
 	}
       }
 
@@ -143,11 +131,9 @@ create sequence SEQ_ID_APPLICATION start 10;
 	$this->InitStyle(false);
       } else {
 	$this->InitStyle();
-	$this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID,$this->style->name);
+	$this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:false,$this->style->name);
 	if ($this->session) $this->session->register("sessparam".$this->id,$this->param->buffer);
       }
-
-
     }
 
   function Complete() {
@@ -376,6 +362,14 @@ create sequence SEQ_ID_APPLICATION start 10;
       if ( ! $acl->Set($acl_name,$this->id)) {
 	$this->log->warning("Acl $acl_name not available for App $this->name");    
 	return FALSE;
+      }
+      if (!$this->permission) {
+	$permission = new Permission($this->dbaccess, array($this->user->id,$this->id));
+	  if (! $permission->IsAffected()) { // case of no permission available
+	    $permission->Affect(array("id_user" => $this->user->id,
+				      "id_application" => $this->id ));
+	  } 
+	  $this->permission=&$permission;
       }
 
       return($this->permission->HasPrivilege($acl->id));

@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.21 2006/08/04 12:20:20 eric Exp $
+// $Id: index.php.q,v 1.22 2006/11/16 17:06:24 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -21,6 +21,10 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
+
+
+file_put_contents(sprintf("/var/tmp/cacheindex-%s-%s.%d", $_GET["app"], $_GET["action"],time()),
+		 sprintf("%s %s", $_GET["app"], $_GET["action"]));	
 
 global $tic1;
 function dtic($text="") {
@@ -80,11 +84,19 @@ global $CORE_LOGLEVEL;
 
 
 global $_GET;
-if (!isset($_GET["app"])) $_GET["app"]="CORE";
-if (!isset($_GET["action"])) $_GET["action"]="";
-
-
 $standalone = GetHttpVars("sole");
+if (!isset($_GET["app"])) {
+  $_GET["app"]="CORE";
+  switch($_SERVER["FREEDOM_ACCESS"]) {
+  case "WEBDESK":
+    $_GET["app"] = "WEBDESK";
+    $_GET["action"] = "";
+    $standalone = "Y";
+    break;
+  }
+ }
+
+if (!isset($_GET["action"])) $_GET["action"]="";
 
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
 else $sess_num=GetHttpVars("session");//$_GET["session"];

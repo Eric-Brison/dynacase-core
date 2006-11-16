@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.18 2005/11/18 16:01:25 eric Exp $
+ * @version $Id: guest.php,v 1.19 2006/11/16 17:06:24 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -38,11 +38,19 @@ $CoreNull = "";
 global $CORE_LOGLEVEL;
 
 global $_GET;
-if (!isset($_GET["app"])) $_GET["app"]="CORE";
-if (!isset($_GET["action"])) $_GET["action"]="";
-
-
 $standalone = GetHttpVars("sole");
+if (!isset($_GET["app"])) {
+  $_GET["app"]="CORE";
+  switch($_SERVER["FREEDOM_ACCESS"]) {
+  case "WEBDESK":
+    $_GET["app"] = "WEBDESK";
+    $_GET["action"] = "";
+    $standalone = "Y";
+    break;
+  }
+ }
+
+if (!isset($_GET["action"])) $_GET["action"]="";
 
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
 else $sess_num=GetHttpVars("session");//$_GET["session"];
