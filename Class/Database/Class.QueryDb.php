@@ -3,7 +3,7 @@
  * Query to Database
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryDb.php,v 1.12 2006/01/20 13:24:46 eric Exp $
+ * @version $Id: Class.QueryDb.php,v 1.13 2006/11/28 17:41:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -70,27 +70,26 @@ function QueryDb ($dbaccess,$class)
     }
 
 
- private function initQuery($start=0,$slice=0,$p_query="") {
+ private function initQuery($start=0,$slice=0,$p_query="",$onlycont=false) {
     if ($start=="") $start=0;
      if ($p_query=='') { 
       // select construct
       $select="";
+      if (!$onlycont) {
+	foreach($this->basic_elem->fields as $k=>$v) {
+	  $select=$select." ".$this->basic_elem->dbtable.".".$v.",";
+	}
 
-      reset($this->basic_elem->fields);
-      while (list($k,$v) = each($this->basic_elem->fields)) {
-        $select=$select." ".$this->basic_elem->dbtable.".".$v.",";
+	foreach($this->basic_elem->sup_fields as $k=>$v) {
+	  $select=$select." ".$v.",";
+	}
+	$select=substr($select,0,strlen($select)-1);
+      } else {
+	$select='count(*)';
       }
-
-      reset($this->basic_elem->sup_fields);
-      while (list($k,$v) = each($this->basic_elem->sup_fields)) {
-        $select=$select." ".$v.",";
-      }
-      $select=substr($select,0,strlen($select)-1);
-
       // from
       $from = $this->basic_elem->dbtable;
-      reset($this->basic_elem->sup_tables);
-      while (list($k,$v) = each($this->basic_elem->sup_tables)) {
+      foreach($this->basic_elem->sup_tables as $k=>$v) {
         $from = $from.",".$v;
       }
 
@@ -196,7 +195,21 @@ function QueryDb ($dbaccess,$class)
       return($this->list);
   }
       
+ /**
+  * Perform the query : return only the count fo rows returned 
+  */
+  function Count($start=0,$slice=0)  {
+      
+    $query=$this->initQuery($start,$slice,"",true);
+    $this->res_type="TABLE";
+    $err = $this->basic_elem->exec_query($query);
 
+    //	print "$query $res_type $p_query<BR>\n";
+    if ($err != "") return($err);      
+
+    $result = $this->basic_elem->fetch_array(0);
+    return ($result["count"]);    
+  }
 
   function CriteriaClause() {
     $out = "";
