@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.13 2006/02/05 09:48:26 marc Exp $)
+AC_REVISION($Id: configure.in,v 1.14 2006/11/28 16:09:26 marc Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -20,7 +20,7 @@ RELEASE=`cat RELEASE`
 AC_SUBST(PACKAGE)
 PACKAGE=WHAT
 
-ac_default_prefix=/home/httpd/what
+ac_default_prefix=/usr/share/what
 
 AC_SUBST(PUBRULE)
 PUBRULE=$HOME/anakeen/what

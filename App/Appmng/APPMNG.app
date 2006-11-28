@@ -42,6 +42,24 @@ $action_desc = array (
    "acl"                =>"ADMIN"
   ) ,
   array(
+   "name"               =>"APPPREFS",
+   "short_name"         =>N_("current user parameters"),
+   "toc"                =>"N",
+   "acl"                =>"USER",
+   "function"           =>"param_culist",
+   "script"             =>"param_culist.php",
+   "layout"             =>"param_culist.xml",
+  ) ,
+  array(
+   "name"               =>"ADMIN",
+   "short_name"         =>N_("current user parameters"),
+   "toc"                =>"N",
+   "acl"                =>"USER",
+   "function"           =>"param_culist",
+   "script"             =>"param_culist.php",
+   "layout"             =>"param_culist.xml",
+  ) ,
+  array(
    "name"               =>"PARAM_CULIST",
    "short_name"         =>N_("current user parameters"),
    "toc"                =>"Y",
