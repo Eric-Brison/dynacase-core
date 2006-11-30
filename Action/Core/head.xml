@@ -124,9 +124,9 @@ function selectIt(o,th) {
 
 
  [BLOCK FUNCTION]
-<td width="[izbpx]" class="Fade"  align="center" title="[description]" style="cursor:pointer" onclick="selectIt(this,i[name]);lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
-     onMouseOver="unFadeIt(this,i[name]);" 
-     onMouseOut="fadeIt(this,i[name]);"  >
+<td width="[izbpx]" class="Fade"  align="center" title="[description]" style="cursor:pointer" onclick="selectIt(this,'i[name]');lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
+     onMouseOver="unFadeIt(this,'i[name]');" 
+     onMouseOut="fadeIt(this,'i[name]');"  >
      <a ><img  class="Fade"  id="i[name]" 
      src="[pubdir]/[iconsrc]" border="0" width="[izpx]" height="[izpx]" alt="[description]"  ></a>
 </td>
