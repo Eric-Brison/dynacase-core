@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.43 2006/11/28 17:41:36 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.44 2006/12/21 18:03:12 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.43 2006/11/28 17:41:36 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.44 2006/12/21 18:03:12 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.43 2006/11/28 17:41:36 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.44 2006/12/21 18:03:12 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -562,7 +562,7 @@ function exec_query($sql,$lvl=0)
 		       $action_needed = "none";		       
 		     }
 		     //print "\n\t\t[".$this->msg_err."]:$action_needed\n";
-		     error_log("DbObj::exec_query [".$this->msg_err."]:$action_needed");
+		     error_log("DbObj::exec_query [".$this->msg_err."]:$action_needed.[$sql]");
 		     
       }
     }
