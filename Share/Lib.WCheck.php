@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.10 2006/02/08 14:52:22 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.11 2006/12/21 18:02:23 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -216,7 +216,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
 	}
       }
     }   
-
+    sort($cmd);
     // search PRE install
     if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
       if ($v["chk"] == "I") {
@@ -266,7 +266,13 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     
   }
   
-  $dump[] = "pg_dumpall -U postgres -D > /var/tmp/".uniqid("whatdb");
+  $dumpank=str_replace("--dbname","",$dbpsql);
+  $freedb=getParam("FREEDOM_DB");
+  $sqlfreedb=php2DbSql($freedb);
+  $dumpfree=str_replace("--dbname","",$sqlfreedb);
+
+  $dump[] = "pg_dump $dumpank  > /var/tmp/".uniqid("$dbank");
+  $dump[] = "pg_dump -D $dumpfree  > /var/tmp/".uniqid(getDbName("$freedb"));
   //  $dump[] = "/etc/rc.d/init.d/httpd stop";
   $dump[] = "$pubdir/wstop";
   $dump[] = "$pubdir/whattext";
