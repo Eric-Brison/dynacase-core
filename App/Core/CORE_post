@@ -77,11 +77,11 @@ fi
 if [ "$1" = "U" ] ; then
 
   #add permission functionnalities
-  su - postgres -c "psql $dbname anakeen -f $wpub/WHAT/getprivilege.sql"
+  su - postgres -c "psql $dbpsql -f $wpub/WHAT/getprivilege.sql"
   $wpub/wsh.php  --api=import_size 
   $wpub/wsh.php  --api=import_style --name=DEFAULT
   $wpub/wsh.php  --api=import_style --name=ORIGINAL
-  echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql $dbname anakeen
+  echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql $dbpsql
 
 fi
 #------------------------------
