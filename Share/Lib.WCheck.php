@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.11 2006/12/21 18:02:23 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.12 2006/12/22 10:23:14 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -206,17 +206,19 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   }
   uasort($tapp,"cmpapp");
   foreach ($tapp as $k=>$v) {
+    $migr=array();
     // search Migration file
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
 	if (ereg("{$k}_migr_([0-9\.]+)$", $file, $reg)) {
 
 	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
-	    $cmd[]="$pubdir/$k/$file";
+	    $migr[]="$pubdir/$k/$file";
 	}
       }
     }   
-    sort($cmd);
+    sort($migr);
+    $cmd=array_merge($cmd,$migr);
     // search PRE install
     if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
       if ($v["chk"] == "I") {
@@ -252,17 +254,21 @@ function getCheckActions($pubdir,$tapp,&$tact) {
       }
     }
     
-
+    
     // search Post Migration file
+    $migr=array();
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
 	if (ereg("{$k}_pmigr_([0-9\.]+)$", $file, $reg)) {
 
 	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
-	    $cmd[]="$pubdir/$k/$file";
+	    $migr[]="$pubdir/$k/$file";
 	}
       }
     }   
+    sort($migr);
+    $cmd=array_merge($cmd,$migr);
+    
     
   }
   
