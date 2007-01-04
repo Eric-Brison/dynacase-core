@@ -23,7 +23,7 @@ function displayPropertyNames(obj) {
   var names="";
   for (var name in obj) {
    try {
-     names += name +" - [" + obj[name] + "]\n";
+     names += "[" + name +" - " + obj[name] + "] ";
    }
    catch (ex) {
      names += name +" - [" + "unreadable" + "]\n";

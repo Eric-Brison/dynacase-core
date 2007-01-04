@@ -24,8 +24,9 @@ function resizeImages() {
 	      sfEls1[i].src='resizeimg.php?size='+w+'&img='+sfEls1[i].src;
 	      sfEls1[i].removeAttribute('needresize');
 	    } else {
-	      displayPropertyNames(sfEls1[i]);
-	      sfEls1[i].style.border='red solid 2px';
+	      //displayPropertyNames(sfEls1[i]);
+	      
+	      //sfEls1[i].style.border='red solid 2px';
 	      
 	    }
 	  }
