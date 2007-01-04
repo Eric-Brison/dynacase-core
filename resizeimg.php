@@ -7,7 +7,7 @@ function rezizelocalimage($img,$size,$basedest) {
   
   $dest=DEFAULT_PUBDIR.$basedest;
 
-  $cmd=sprintf("convert -transparent white -thumbnail %d $source $dest",$size);
+  $cmd=sprintf("convert  -thumbnail %d $source $dest",$size);
   system($cmd);
   //  print($cmd);
   if (file_exists($dest)) return $basedest;
