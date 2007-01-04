@@ -8,6 +8,7 @@ function rezizelocalimage($img,$size,$basedest) {
   $dest=DEFAULT_PUBDIR.$basedest;
 
   $cmd=sprintf("convert  -thumbnail %d $source $dest",$size);
+  //$cmd=sprintf("convert -antialias -sample %dx%d $source $dest",$size,$size);
   system($cmd);
   //  print($cmd);
   if (file_exists($dest)) return $basedest;
@@ -59,7 +60,7 @@ function getVaultPauth($vid) {
 }
 
 function getVaultCacheImage($vid,$size) {
-  $basedest="/img-cache/$size-vid$vid";
+  $basedest="/img-cache/$size-vid$vid.png";
   return $basedest;
 }
 
@@ -76,7 +77,8 @@ if (ereg("vaultid=([0-9]+)",$img,$vids)) {
   } else {
     $localimage=getVaultPauth(intval($vid));
     if ($localimage) {    
-      $location=$dir."/".rezizelocalimage($localimage,$size,$basedest);
+      $newimg=rezizelocalimage($localimage,$size,$basedest);
+      if ($newimg) $location="$dir/$newimg";
     } 
   }
  } else {
@@ -87,17 +89,19 @@ if (ereg("vaultid=([0-9]+)",$img,$vids)) {
   if (strstr($path, $dir ) == $path) {
     $localimage=substr($path,strlen($dir));
 
-    $basedest="/img-cache/$size-".basename($localimage);
+    $basedest="/img-cache/$size-".basename($localimage).".png";
     $dest=DEFAULT_PUBDIR.$basedest;
 
     if (file_exists($dest)) $location= "$dir/$basedest";
     else {
       $newimg=rezizelocalimage(DEFAULT_PUBDIR."/$localimage",$size,$basedest);
-      $location="$dir/$newimg";
+      if ($newimg) $location="$dir/$newimg";
     }
   }
  }
 //print("<hr>Location: $location");
+
+if (!$location) $location=$img;
 Header("Location: $location");
 
 ?>
