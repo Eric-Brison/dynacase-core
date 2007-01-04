@@ -65,22 +65,22 @@ function getVaultCacheImage($vid,$size) {
 
 $size=$_GET["size"];
 $img=$_GET["img"];
+$dir=dirname($_SERVER["SCRIPT_NAME"]);
 if (ereg("vaultid=([0-9]+)",$img,$vids)) {
   // vault file
   $vid=$vids[1];
   $basedest=getVaultCacheImage($vid,$size);
   $dest=DEFAULT_PUBDIR.$basedest;
   if (file_exists($dest)) {
-    $location=$basedest;
+    $location=$dir."/".$basedest;
   } else {
     $localimage=getVaultPauth(intval($vid));
     if ($localimage) {    
-      $location=rezizelocalimage($localimage,$size,$basedest);
+      $location=$dir."/".rezizelocalimage($localimage,$size,$basedest);
     } 
   }
  } else {
   // local file
-  $dir=dirname($_SERVER["SCRIPT_NAME"]);
   $turl=(parse_url($img));
   $path=$turl["path"];
 
@@ -90,10 +90,10 @@ if (ereg("vaultid=([0-9]+)",$img,$vids)) {
     $basedest="/img-cache/$size-".basename($localimage);
     $dest=DEFAULT_PUBDIR.$basedest;
 
-    if (file_exists($dest)) $location= $basedest;
+    if (file_exists($dest)) $location= "$dir/$basedest";
     else {
       $newimg=rezizelocalimage(DEFAULT_PUBDIR."/$localimage",$size,$basedest);
-      $location=$newimg;
+      $location="$dir/$newimg";
     }
   }
  }
