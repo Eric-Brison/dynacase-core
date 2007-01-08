@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.81 2007/01/04 10:18:15 eric Exp $
+#  $Id: WHAT.spec.in,v 1.82 2007/01/08 17:53:14 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -14,6 +14,17 @@
 %define cerbere		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'none' && echo 1 || echo 0)
 %define pld		%(rpm -q --queryformat '%{VENDOR}' rpm |grep -q 'PLD' && echo 1 || echo 0)
 %define redhat	        %(rpm -q --queryformat '%{VENDOR}' rpm | grep -q 'Red Hat, Inc.' && echo 1 || echo 0)
+	
+%{?ncerbere:%define cerbere 1}
+%{?ncerbere:%define redhat 0}
+%{?ncerbere:%define pld 0}
+%{?nredhat:%define cerbere 0}
+%{?nredhat:%define redhat 1}
+%{?nredhat:%define pld 0}
+%{?npld:%define cerbere 0}
+%{?npld:%define redhat 0}
+%{?npld:%define pld 1}
+
 %if %{cerbere}
 %define destdir /home/httpd/what
 %define apacheconfdir /etc/httpd/httpd.conf
@@ -32,6 +43,12 @@
 %define httpuser apache
 %define releasepostfix fc%(cat /etc/fedora-release | sed -e 's/.* release \\([[:digit:]]\\+\\) .*/\\1/')
 %endif
+
+
+%{?ndestdir:%define destdir %{ndestdir}}
+%{?nhttpuser:%define httpuser %{nhttpuser}}
+%{?rpost:%define releasepostfix %{rpost}}
+
 Summary: What Hosting Application Toolkit
 Name: @PACKAGE@
 Version: @VERSION@
