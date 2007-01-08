@@ -100,8 +100,8 @@ if (ereg("vaultid=([0-9]+)",$img,$vids)) {
   }
  }
 //print("<hr>Location: $location");
-
-if (!$location) $location=$img;
+if ($location) $location="/".ltrim($location,"/");
+else $location=$img;
 Header("Location: $location");
 
 ?>
