@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: head.php,v 1.22 2005/11/03 08:28:34 eric Exp $
+ * @version $Id: head.php,v 1.23 2007/01/08 17:52:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -25,6 +25,7 @@ function head(&$action) {
   $list = $query->Query(0,0,"TABLE");
 
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
+  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
  
   $iz=$action->getParam("CORE_ICONSIZE");

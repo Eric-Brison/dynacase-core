@@ -11,34 +11,31 @@ function lauch_action(event, img, appname, descr) {
   
     
   }
-
-  if (parent && parent.body && (!ctrlKey)) parent.body.location.replace('[CORE_BASEURL]app='+appname);
-  else if (this.fbody && (!ctrlKey)) this.fbody.location.replace('[CORE_BASEURL]app='+appname);
-  
-  else subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'wbody'+appname,'[CORE_BASEURL]app='+appname);
-
   top.document.title=descr;
 
 
   var limg=document.getElementById('imgapp');
   if (limg) {
     if (limg.src) limg.src=img;
-    
-      if (!isNetscape) {
+    limg.setAttribute('needresize','1');
+
+    resizeImages();
+    if (!isNetscape) {
 	limg.style.filter='';
 	correctOnePNG(limg);
-      }
-      
-    
+    }          
   }
   etitle = document.getElementById('apptitle2');
   if (etitle) {
-    //    alert(etitle.innerHTML);
-    
-
-
     etitle.innerHTML = descr;
   }
+
+  if (parent && parent.body && (!ctrlKey)) parent.body.location.replace('[CORE_BASEURL]app='+appname);
+  else if (this.fbody && (!ctrlKey)) this.fbody.location.replace('[CORE_BASEURL]app='+appname);
+  
+  else subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'wbody'+appname,'[CORE_BASEURL]app='+appname);
+
+
 
 
 }

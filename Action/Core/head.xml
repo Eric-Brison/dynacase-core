@@ -71,7 +71,8 @@ o.style.position='static';
 
 var csel=false; // selected icon object
 var izoom=48;
-function fadeIt(o,oimg) {    
+function fadeIt(o,iimg) {  
+  var oimg=document.getElementById(iimg);  
   if (isNetscape) {
     o.style.backgroundImage='none'; 
   } else {
@@ -86,7 +87,8 @@ function fadeIt(o,oimg) {
       oimg.parentNode.parentNode.className='Fade';
     }
 }
-function unFadeIt(o,oimg) {
+function unFadeIt(o,iimg) {
+  var oimg=document.getElementById(iimg);
 //    oimg.style.top=AnchorPosition_getPageOffsetTop(oimg.parentNode.parentNode)+30;
 //    oimg.style.left=AnchorPosition_getPageOffsetLeft(oimg.parentNode.parentNode);
 //    oimg.style.position='absolute';
@@ -119,7 +121,7 @@ function selectIt(o,th) {
 
 <table class="headbarmenu" bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]" >
 <tr class="headcell" >
-  <td  width="[izbpx]px"><img  border="0" align="absmiddle"  style="width:[izbpx]px;position:absolute;top:0px;left:2px" id="imgapp" src="[IMG:logo-mini.png]"></td>
+  <td  width="[izbpx]px"><img  border="0" align="absmiddle"  style="width:[izbpx]px;position:absolute;top:0px;left:2px" id="imgapp" needresize="1" src="[IMG:logo-mini.png]"></td>
   <td  align="left" valign="center" style="width:[wtitle]px;"><div id="apptitle2" style="padding:0;height:[izbpx]px;overflow:hidden"  class="headtitle">[APP_TITLE]&nbsp;</div></td>
 
 
@@ -127,7 +129,7 @@ function selectIt(o,th) {
 <td width="[izbpx]" class="Fade"  align="center" title="[description]" style="cursor:pointer" onclick="selectIt(this,'i[name]');lauch_action(event,'[pubdir]/[iconsrc]','[name]','[descriptionsla]');" 
      onMouseOver="unFadeIt(this,'i[name]');" 
      onMouseOut="fadeIt(this,'i[name]');"  >
-     <a ><img  class="Fade"  id="i[name]" 
+     <a ><img  class="Fade"  id="i[name]" needresize="1"
      src="[pubdir]/[iconsrc]" border="0" width="[izpx]" height="[izpx]" alt="[description]"  ></a>
 </td>
   [ENDBLOCK FUNCTION]
