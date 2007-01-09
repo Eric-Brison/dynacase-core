@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.82 2007/01/08 17:53:14 eric Exp $
+#  $Id: WHAT.spec.in,v 1.83 2007/01/09 09:48:36 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -24,6 +24,7 @@
 %{?npld:%define cerbere 0}
 %{?npld:%define redhat 0}
 %{?npld:%define pld 1}
+%{?nobuildrequired:%define pld 1}
 
 %if %{cerbere}
 %define destdir /home/httpd/what
@@ -68,7 +69,7 @@ Conflicts: FREEDOM < 2.0.0
 #BuildRequires: docbook-dtd41-sgml
 #BuildRequires: docbook-utils
 %if %{cerbere} || %{pld}
-BuildRequires: apache-devel
+#BuildRequires: apache-devel
 %endif
 %if %{cerbere} || %{pld}
 Requires: apache >= 2.0
@@ -109,7 +110,7 @@ Requires: ankpsql-tools
 Requires: gettext
 BuildRequires: gettext
 %if %{cerbere} || %{pld}
-BuildRequires: gettext-devel > 0.11
+%{!?nobuildrequire:BuildRequires: gettext-devel > 0.11}
 Requires: php-pear-PEAR
 Requires: php-gd
 %endif
