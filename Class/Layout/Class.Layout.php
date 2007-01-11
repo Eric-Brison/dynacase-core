@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.38 2006/08/11 08:46:02 marc Exp $
+ * @version $Id: Class.Layout.php,v 1.39 2007/01/11 09:23:37 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.38 2006/08/11 08:46:02 marc Exp $
+//  $Id: Class.Layout.php,v 1.39 2007/01/11 09:23:37 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -171,7 +171,7 @@ var $strip='Y';
       foreach($this->data["$name"] as $k=>$v) {
         $loc=$block;
         foreach ($this->corresp["$name"] as $k2=>$v2) {
-	     $loc = str_replace( $k2, $v[$v2], $loc);
+	  if ((! is_object($v[$v2])) && (! is_array($v[$v2]))) $loc = str_replace( $k2, $v[$v2], $loc);
            
 	}
 	$this->rif=&$v;
