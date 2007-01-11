@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.84 2007/01/09 12:10:52 eric Exp $
+#  $Id: WHAT.spec.in,v 1.85 2007/01/11 13:46:56 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -24,7 +24,6 @@
 %{?npld:%define cerbere 0}
 %{?npld:%define redhat 0}
 %{?npld:%define pld 1}
-%{?nobuildrequired:%define pld 1}
 
 %if %{cerbere}
 %define destdir /home/httpd/what
