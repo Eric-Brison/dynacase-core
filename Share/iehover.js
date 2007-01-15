@@ -27,6 +27,11 @@ currentSheet, doc = window.document, hoverEvents = [], activators = {
 	onhover:{on:'onmouseover', off:'onmouseout'},
 	onactive:{on:'onmousedown', off:'onmouseup'}
 }
+var csshoverExl = /(^|\s)((select)|(option)):(hover|active)/i,
+currentSheet, doc = window.document, hoverEvents = [], activators = {
+	onhover:{on:'onmouseover', off:'onmouseout'},
+	onactive:{on:'onmousedown', off:'onmouseup'}
+}
 
 function parseStylesheets() {
 	if(!/MSIE (5|6|7)/.test(navigator.userAgent)) return;
@@ -52,6 +57,7 @@ function parseStylesheets() {
 	function parseCSSRule(rule) {
 		var select = rule.selectorText, style = rule.style.cssText;
 		if(!csshoverReg.test(select) || !style) return;
+		if(csshoverExl.test(select) ) return;
 
 		var pseudo = select.replace(/[^:]+:([a-z-]+).*/i, 'on$1');
 		var newSelect = select.replace(/(\.([a-z0-9_-]+):[a-z]+)|(:[a-z]+)/gi, '.$2' + pseudo);
