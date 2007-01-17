@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.33 2007/01/17 09:38:39 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.34 2007/01/17 09:40:32 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -160,16 +160,16 @@ function php2DbSql($dbcoord,$withdbname=true) {
  * @return string like user admin dbname anakeen
  */
 function DbSql2php($dbcoord,$withdbname=true) {
-    if (eregi('--dbname[ ]*([a-z_0-9][^ ]*)',$dbcoord,$reg)) {  
+    if (eregi('--dbname[ ]*([a-z_0-9\'][^ ]*)',$dbcoord,$reg)) {  
       $dbname=$reg[1];
     }
-    if (eregi('--host[ ]*([a-z_0-9][^ ]*)',$dbcoord,$reg)) {  
+    if (eregi('--host[ ]*([a-z_0-9\'][^ ]*)',$dbcoord,$reg)) {  
       $dbhost=$reg[1];
     }
-    if (eregi('--port[ ]*([0-9]*)',$dbcoord,$reg)) {  
+    if (eregi('--port[ ]*([0-9\']*)',$dbcoord,$reg)) {  
       $dbport=$reg[1];
     }
-    if (eregi('--username[ ]*([a-z_0-9][^ ]*)',$dbcoord,$reg)) {  
+    if (eregi('--username[ ]*([a-z_0-9\'][^ ]*)',$dbcoord,$reg)) {  
       $dbuser=$reg[1];
     }
     $dbpsql="";
