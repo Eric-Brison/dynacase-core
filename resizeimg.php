@@ -8,9 +8,9 @@ function rezizelocalimage($img,$size,$basedest) {
   $dest=DEFAULT_PUBDIR.$basedest;
 
   $cmd=sprintf("convert  -thumbnail %d $source $dest",$size);
-  //$cmd=sprintf("convert -antialias -sample %dx%d $source $dest",$size,$size);
+  //$cmd=sprintf("convert  -scale %dx%d $source $dest",$size,$size);
   system($cmd);
-  //  print($cmd);
+    print($cmd);
   if (file_exists($dest)) return $basedest;
   return false;
 }

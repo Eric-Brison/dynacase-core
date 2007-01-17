@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.32 2006/12/14 10:33:25 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.33 2007/01/17 09:38:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -134,16 +134,16 @@ function getDbEnv() {
  * @return string like --username admin --dbname anakeen
  */
 function php2DbSql($dbcoord,$withdbname=true) {
-    if (eregi('dbname=[ ]*([a-z_0-9][^ ]*)',$dbcoord,$reg)) {  
+    if (eregi('dbname=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
       $dbname=$reg[1];
     }
-    if (eregi('host=[ ]*([a-z_0-9][^ ]*)',$dbcoord,$reg)) {  
+    if (eregi('host=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
       $dbhost=$reg[1];
     }
-    if (eregi('port=[ ]*([0-9]*)',$dbcoord,$reg)) {  
+    if (eregi('port=[ ]*([0-9\'"]*)',$dbcoord,$reg)) {  
       $dbport=$reg[1];
     }
-    if (eregi('user=[ ]*([a-z_0-9][^ ]*)',$dbcoord,$reg)) {  
+    if (eregi('user=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
       $dbuser=$reg[1];
     }
     $dbpsql="";
