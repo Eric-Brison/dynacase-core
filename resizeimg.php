@@ -31,26 +31,27 @@ function getVaultPauth($vid) {
 	  $result = pg_query("select id_dir,name from vaultdiskstorage where id_file=$vid");
 	  if ($result) {
 	    $row = pg_fetch_row($result);
-	    $iddir=$row[0];
-	    $name=$row[1];
+	    if ($row) {
+	      $iddir=$row[0];
+	      $name=$row[1];
 
-	    if (preg_match('/\.([^\.]*)$/',$name,$reg)) {
-	      $ext=$reg[1];
+	      if (preg_match('/\.([^\.]*)$/',$name,$reg)) {
+		$ext=$reg[1];
+	      }
+
+	      $result = pg_query("SELECT l_path,id_fs from vaultdiskdirstorage where id_dir = $iddir");
+	      $row = pg_fetch_row($result);
+	      $lpath=$row[0];
+	      $idfs=$row[1];
+	      $result = pg_query("SELECT r_path from vaultdiskfsstorage where id_fs = $idfs");
+	      $row = pg_fetch_row($result);
+	      $rpath=$row[0];
+
+
+	      $localimg="$rpath/$lpath/$vid.$ext";
+	      if (file_exists($localimg)) return $localimg;
+	
 	    }
-
-	    $result = pg_query("SELECT l_path,id_fs from vaultdiskdirstorage where id_dir = $iddir");
-	    $row = pg_fetch_row($result);
-	    $lpath=$row[0];
-	    $idfs=$row[1];
-	    $result = pg_query("SELECT r_path from vaultdiskfsstorage where id_fs = $idfs");
-	    $row = pg_fetch_row($result);
-	    $rpath=$row[0];
-
-
-	    $localimg="$rpath/$lpath/$vid.$ext";
-	    if (file_exists($localimg)) return $localimg;
-	
-	
 	  }
 	}      
       }
