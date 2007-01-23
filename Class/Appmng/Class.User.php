@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.51 2006/04/07 09:18:33 eric Exp $
+ * @version $Id: Class.User.php,v 1.52 2007/01/23 17:02:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -404,11 +404,11 @@ create sequence seq_id_users start 10";
 	  $iuser->SetValue("US_WHATID",$this->id);   
 	  $iuser->Add();
 	  $this->fid=$iuser->id;
-	  $this->modify();
+	  $this->modify(true,array('fid'),true);
 	  $err=$iuser->RefreshDocUser(); 
 	} else {
 	  $this->fid=$tdoc[0]->id;
-	  $this->modify();
+	  $this->modify(true,array('fid'),true);
 	  $err=$tdoc[0]->RefreshDocUser(); 
 	
 	}
