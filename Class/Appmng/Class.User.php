@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.52 2007/01/23 17:02:26 eric Exp $
+ * @version $Id: Class.User.php,v 1.53 2007/01/26 09:42:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -64,6 +64,7 @@ create sequence seq_id_users start 10";
   function SetLoginName($loginDomain)
     {
       include_once("Class.Domain.php");
+      $loginDomain=strtolower($loginDomain);
       $query = new QueryDb($this->dbaccess,"User");
       if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
     
@@ -74,14 +75,14 @@ create sequence seq_id_users start 10";
 	if ($queryd->nb == 1) {
 	  $domainId=$list[0]->iddomain;
 	  $query->AddQuery("iddomain='$domainId'");
-	  $query->AddQuery("login='".$reg[1]."'");
+	  $query->AddQuery("login='".pg_escape_string($reg[1])."'");
 	} else {
 	  return false;
 	}
     
       } else {
 
-	$query->AddQuery("login='$loginDomain'");
+	$query->AddQuery("login='".pg_escape_string($loginDomain)."'");
       }
       $query->order_by='iddomain';
       $list = $query->Query(0,0,"TABLE");
@@ -96,9 +97,11 @@ create sequence seq_id_users start 10";
 
   function SetLogin($login,$domain)
     {
+      $login=strtolower($login);
+      $domain=strtolower($domain);
       $query = new QueryDb($this->dbaccess,"User");
 
-      $query->basic_elem->sup_where=array("login='$login'",
+      $query->basic_elem->sup_where=array("login='".pg_escape_string($login)."'",
 					  "iddomain=$domain");
 
       $list = $query->Query(0,0,"TABLE");
@@ -164,7 +167,7 @@ create sequence seq_id_users start 10";
     
     $group->idgroup=$gid;
     // not added here it is added by freedom (generally)
-    if (! $this->fid)   $group->Add();       
+    //    if (! $this->fid)   $group->Add();       
 
     $err=$this->FreedomWhatUser();  
     if (@include_once("FDL/Lib.Usercard.php")) {
@@ -240,7 +243,7 @@ create sequence seq_id_users start 10";
     {
       $query = new QueryDb($this->dbaccess,"User");                  
                                                                                       
-      $query->basic_elem->sup_where=array("login='$login'",
+      $query->basic_elem->sup_where=array("login='".pg_escape_string($login)."'",
                                           "iddomain=$domain");     
                                                                                       
       $list = $query->Query();
