@@ -10,7 +10,6 @@ function rezizelocalimage($img,$size,$basedest) {
   $cmd=sprintf("convert  -thumbnail %d $source $dest",$size);
   //$cmd=sprintf("convert  -scale %dx%d $source $dest",$size,$size);
   system($cmd);
-    print($cmd);
   if (file_exists($dest)) return $basedest;
   return false;
 }
