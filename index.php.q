@@ -1,6 +1,6 @@
 <?php
 // ---------------------------------------------------------------
-// $Id: index.php.q,v 1.22 2006/11/16 17:06:24 eric Exp $
+// $Id: index.php.q,v 1.23 2007/02/01 16:58:28 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -23,8 +23,7 @@
 // ---------------------------------------------------------------
 
 
-file_put_contents(sprintf("/var/tmp/cacheindex-%s-%s.%d", $_GET["app"], $_GET["action"],time()),
-		 sprintf("%s %s", $_GET["app"], $_GET["action"]));	
+//file_put_contents(sprintf("/var/tmp/cacheindex-%s-%s.%d", $_GET["app"], $_GET["action"],time()), sprintf("%s %s", $_GET["app"], $_GET["action"]));
 
 global $tic1;
 function dtic($text="") {
@@ -77,7 +76,10 @@ define("PORT_SSL", 443); // the default port for https
 
    $deb=gettimeofday();
   $tic2 = $deb["sec"]+$deb["usec"]/1000000;
-$log=new Log("","index.php");
+
+$indexphp=basename($_SERVER["SCRIPT_NAME"]);
+ 
+$log=new Log("",$indexphp);
 
 $CoreNull = "";
 global $CORE_LOGLEVEL;
@@ -97,7 +99,6 @@ if (!isset($_GET["app"])) {
  }
 
 if (!isset($_GET["action"])) $_GET["action"]="";
-
 if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
 else $sess_num=GetHttpVars("session");//$_GET["session"];
 
@@ -105,8 +106,7 @@ $session=new Session();
 if (!  $session->Set($sess_num))  {
     print "<B>:~((</B>";
     exit;
-  };
-
+ };
 
 
 $core = new Application();
@@ -127,7 +127,7 @@ ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 // ----------------------------------------
 // Init PUBLISH URL from script name
 
-if (ereg("(.*)/index\.php", $_SERVER['SCRIPT_NAME'], $reg)) {
+if (ereg("(.*)/$indexphp", $_SERVER['SCRIPT_NAME'], $reg)) {
 
   // determine publish url (detect ssl require)
  
@@ -149,12 +149,11 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 $core->SetVolatileParam("TRACETIME", "true");
 
 
-$core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&session={$session->id}&");
-$core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL","index.php?sole=Y&session={$session->id}&");
-
+$core->SetVolatileParam("CORE_ROOTURL", "$indexphp?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "$indexphp?sole=A&");
+$core->SetVolatileParam("CORE_SBASEURL","$indexphp?sole=A&session={$session->id}&");
+$core->SetVolatileParam("CORE_STANDURL","$indexphp?sole=Y&");
+$core->SetVolatileParam("CORE_SSTANDURL","$indexphp?sole=Y&session={$session->id}&");
 
 // ----------------------------------------
 // Init Application & Actions Objects
@@ -163,7 +162,7 @@ if (($standalone == "") || ($standalone == "N")) {
   $action->Set("MAIN",$core,$session);
 } else {
   $appl = new Application();
-  $appl->Set($_GET["app"],$core);
+  $appl->Set($_GET["app"],$core,$session);
 
   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
       if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {
