@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.15 2006/11/16 17:06:24 eric Exp $
+ * @version $Id: Class.Group.php,v 1.16 2007/02/01 16:59:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -83,6 +83,17 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
   function PostSelect() {      
       $this->GetGroups();
     }
+
+  function preInsert() {
+    // verify is exists
+    
+    $err = $this->exec_query(sprintf("select * from groups where idgroup=%s and iduser=%s",
+				     $this->idgroup,$this->iduser));
+    if ($this->numrows() > 0) {
+      $err="OK"; // just to say it is not a real error
+    }
+    return $err;
+  }
 
   function PostUpdate() {
     $this->FreedomCopyGroup();
@@ -180,7 +191,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
   function getDirectParentsGroupId($pgid="",&$uasid) {
     $this->levgid=array();
     $this->getParentsGroupId($pgid);
-    print_r2($this->levgid);
+    //print_r2($this->levgid);
     $groupsid=array();
     asort($this->levgid);
     foreach ($this->levgid as $k=>$v) {
