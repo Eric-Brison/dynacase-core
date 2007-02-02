@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.34 2006/07/11 16:17:54 marc Exp $
+ * @version $Id: Class.Action.php,v 1.35 2007/02/02 09:05:12 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -319,25 +319,8 @@ create sequence SEQ_ID_ACTION;
 
     // check if this action is permitted
     if (!$this->HasPermission($this->acl)) { 
-      if ($this->session->status == $this->session->SESSION_CT_ACTIVE) {
-	$this->ExitError(_("Access denied"));
-      } else {
-	//$this->ExitError(_("Invalid Session"));
-	global $_GET;
-	$getargs="";
-	while (list($k, $v) =each($_GET)) {
-	  if ( ($k != "session") &&
-	       ($k != "app") &&
-	       ($k != "sole") &&
-	       ($k != "action") )
-	    $getargs .= "&".$k."=".$v;
-	}
-
-	Redirect($this,"AUTHENT",
-		 "LOGINFORM&appd=".$this->parent->name."&actd=".$this->name."&argd=".urlencode($getargs), 
-		 $this->parent->GetParam("CORE_BASEURL"));
-      }
-
+      $this->ExitError(sprintf(_("Access denied\nNeed ACL %s for action %s [%s]"),
+			       $this->acl,$this->short_name,$this->name));   
     }
   
     if ($this->id>0) {
