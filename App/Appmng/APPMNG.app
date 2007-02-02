@@ -26,7 +26,7 @@ $action_desc = array (
   array(
    "name"               =>"STYLELIST",
    "short_name"         =>N_("styles parameters"),
-   "toc"                =>"Y",
+   "toc"                =>"N",
    "acl"                =>"ADMIN"
   ) ,
   array(
