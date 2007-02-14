@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: access_user_chg.php,v 1.3 2007/02/14 13:22:41 eric Exp $
+ * @version $Id: access_user_chg.php,v 1.4 2007/02/14 15:13:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: access_user_chg.php,v 1.3 2007/02/14 13:22:41 eric Exp $
+// $Id: access_user_chg.php,v 1.4 2007/02/14 15:13:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/access_user_chg.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: access_user_chg.php,v $
+// Revision 1.4  2007/02/14 15:13:16  eric
+// Fixes for session values in access interfaces
+//
 // Revision 1.3  2007/02/14 13:22:41  eric
 // Add user filter on ACCES when too many users
 //
@@ -78,7 +81,7 @@ function access_user_chg(&$action) {
   $user_id=GetHttpVars("id");
   $group = (GetHttpVars("group") == "yes");
   $filteruser=getHttpVars("userfilter");
-
+ 
   $action->log->debug("user_id : ".$user_id);
 
   if ($group) {

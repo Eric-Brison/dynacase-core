@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_access.php,v 1.9 2007/02/14 13:22:41 eric Exp $
+ * @version $Id: user_access.php,v 1.10 2007/02/14 15:13:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.9 2007/02/14 13:22:41 eric Exp $
+// $Id: user_access.php,v 1.10 2007/02/14 15:13:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -50,12 +50,13 @@ function user_access(&$action, $group=false) {
   $action->lay->set("userfilter",$filteruser);
   // Set the edit form element
   if ($group) {
-    $paramedit="&group=yes&userfilter=$filteruser";
+    $paramedit="&group=yes";
   } else {
-    $paramedit="&group=no&userfilter=$filteruser";
+    $paramedit="&group=no";
   }
+
   $form = new SubForm("edit",500,330,"app=ACCESS&action=MODIFY$paramedit",
-                                     $standurl."app=ACCESS&action=EDIT&mod=user$paramedit");
+                                     $standurl."app=ACCESS&action=EDIT&mod=user&userfilter=$filteruser$paramedit");
   
   $form->SetKey("id");
 
@@ -93,6 +94,7 @@ function user_access(&$action, $group=false) {
 
   // select the first user if not set
   if ($user_id=="") $user_id=$action->Read($varreg);
+  else $action->register($varreg,$user_id);
   $action->log->debug("user_id : $user_id");
   if ($user_id == "") $user_id=0; 
 
@@ -121,7 +123,7 @@ function user_access(&$action, $group=false) {
   $action->lay->SetBlockData("SELUSER",$tab);
   $action->parent->AddJsRef("change_acl.js");
 
-
+  $action->register($varreg,$user_sel["id"]);
 
 
   // 1) Get all application

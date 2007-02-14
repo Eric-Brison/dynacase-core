@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: modify.php,v 1.6 2007/02/14 13:22:41 eric Exp $
+ * @version $Id: modify.php,v 1.7 2007/02/14 15:13:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: modify.php,v 1.6 2007/02/14 13:22:41 eric Exp $
+// $Id: modify.php,v 1.7 2007/02/14 15:13:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/modify.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -95,14 +95,22 @@ function modify_app(&$action) {
     }
   }
 
-  $action->parent->session->closeAll();
+  
+  global $_SESSION;
+  $savesession=$_SESSION;
+  foreach ($savesession as $k=>$v) {
+    if (substr($k,0,4)=='PERM') unset($_SESSION[$k]);
+    elseif (substr($k,0,4)=='sess') unset($_SESSION[$k]);
+  }
 
-
+  $action->parent->session->closeAll(); 
+  $action->parent->session->set(""); // reset session to save current
+ 
+  
   if ($returnact == "") exit(0);
   redirect($action,"ACCESS",$returnact."&uid=".$userId);
 
 }
-
 
 // -----------------------------------
 function modify_oid(&$action) {
