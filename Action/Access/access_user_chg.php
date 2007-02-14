@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: access_user_chg.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: access_user_chg.php,v 1.3 2007/02/14 13:22:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: access_user_chg.php,v 1.2 2003/08/18 15:46:41 eric Exp $
+// $Id: access_user_chg.php,v 1.3 2007/02/14 13:22:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/access_user_chg.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: access_user_chg.php,v $
+// Revision 1.3  2007/02/14 13:22:41  eric
+// Add user filter on ACCES when too many users
+//
 // Revision 1.2  2003/08/18 15:46:41  eric
 // phpdoc
 //
@@ -74,6 +77,7 @@ function access_user_chg(&$action) {
   // What user are we working on ? ask session.
   $user_id=GetHttpVars("id");
   $group = (GetHttpVars("group") == "yes");
+  $filteruser=getHttpVars("userfilter");
 
   $action->log->debug("user_id : ".$user_id);
 
@@ -82,7 +86,7 @@ function access_user_chg(&$action) {
     redirect($action,"ACCESS","GROUP_ACCESS");
   } else {
     $action->Register("access_user_id",$user_id);
-    redirect($action,"ACCESS","USER_ACCESS");
+    redirect($action,"ACCESS","USER_ACCESS&userfilter=$filteruser");
   }
 
 }

@@ -88,7 +88,15 @@ function moinsacl(id)
   computeglobacl(id);
   return true;
 }
-
+function findtarget() {
+  if (document.edit) {
+    if (window.opener) {
+      var n=window.opener.name;
+      if (n) document.edit.target=n;
+    }
+  }
+}
+addEvent(window,"load",findtarget);
 //-->
 </script>
 
@@ -96,8 +104,8 @@ function moinsacl(id)
 
 <body>
 
-<form target="[target]" name="edit" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[modifyact]">
-
+<form target="[target]" name="edit" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[modifyact]"
+      onsubmit="window.setTimeout('self.close()',2000);">
 
 <input type="hidden" name="appid" value="[appid]">
 <input type="hidden" name="returnact" value="[returnact]">
@@ -161,7 +169,7 @@ function moinsacl(id)
 <BR>
 <p style="text-align:left">
 <input class="CORETblHead" type="submit" 
-         name="Modify" value="[TEXT:modify]"  >
+         name="Modify" value="[TEXT:modify]" onclick="this.disabled=true;" >
 <input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
 </p>
 </form>

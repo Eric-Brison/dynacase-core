@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: modify.php,v 1.5 2006/10/05 09:47:45 eric Exp $
+ * @version $Id: modify.php,v 1.6 2007/02/14 13:22:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: modify.php,v 1.5 2006/10/05 09:47:45 eric Exp $
+// $Id: modify.php,v 1.6 2007/02/14 13:22:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/modify.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -99,7 +99,7 @@ function modify_app(&$action) {
 
 
   if ($returnact == "") exit(0);
-  redirect($action,"ACCESS",$returnact);
+  redirect($action,"ACCESS",$returnact."&uid=".$userId);
 
 }
 

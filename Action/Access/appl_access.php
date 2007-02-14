@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: appl_access.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: appl_access.php,v 1.6 2007/02/14 13:22:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: appl_access.php,v 1.5 2003/08/18 15:46:41 eric Exp $
+// $Id: appl_access.php,v 1.6 2007/02/14 13:22:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/appl_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -44,11 +44,9 @@ function appl_access(&$action, $oid=0) {
 
   $baseurl=$action->GetParam("CORE_BASEURL");
   $standurl=$action->GetParam("CORE_STANDURL");
-
-
-
-
   
+  $action->lay->set("usefilter",false);
+  $action->lay->set("maxreach",false);
 
   // affect the select form elements
   $query = new QueryDb("","Application");

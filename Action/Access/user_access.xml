@@ -1,5 +1,5 @@
 <!-- 
-  $Id: user_access.xml,v 1.7 2005/10/03 10:06:06 eric Exp $
+  $Id: user_access.xml,v 1.8 2007/02/14 13:22:41 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.xml,v $
 -->
 
@@ -20,19 +20,21 @@
 
 
 
-<table  border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
     <tr> 
+      <td  valign="middle" class="CORETblHeadCell">
     <form name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=[ACTION_CHG]">
-      <td width="1px" valign="middle" class="CORETblHeadCell">
        <select name="id" onChange="submit()">
 [BLOCK SELUSER]
          <option [selected] value="[id]">[text]</option> [ENDBLOCK SELUSER]
+        [IF maxreach]<option disabled value="">[TEXT:Max user reach. Use search filter]</option>[ENDIF maxreach]
        </select>
-      </td>
+       [IF usefilter][TEXT:Search]:<input value="[userfilter]" title="[TEXT:filter on login and lastname]" name="userfilter">[ENDIF usefilter]
     </form>  
+      </td>
 [BLOCK ZONOID]    
-    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=OBJECT_ACCESS">
       <td   class="CORETblHeadCell" >
+    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=OBJECT_ACCESS">
 [BLOCK ZONSELOID] 
        <select name="oid" onChange="if (this.options[this.selectedIndex] != '0') submit()">
          <option value="0">[TEXT:choose document]</option>
@@ -40,7 +42,7 @@
          <option [selectedoid] value="[coid]">[descoid]</option> [ENDBLOCK OID]
        </select>        
         <a href="#" 
-           onClick="javascript:subwindow(300,500,'access_oid','[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[soid]&userid=2&appid=[appid]')">
+           onClick="subwindow(300,500,'access_oid','[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[soid]&userid=2&appid=[appid]')">
           <img align="absmiddle" height="22" alt="[TEXT:edit by object]" title="[TEXT:edit by object]" border="0" src="[IMG:access.gif]">
         </a>       
 [ENDBLOCK ZONSELOID] 
@@ -50,9 +52,9 @@
 [BLOCK DBNAME]
          <option [selecteddb] value="[dbopname]">[dbopname]</option>
 [ENDBLOCK DBNAME]
-       </select>         
+       </select>  
+    </form>        
       </td>   
-    </form> 
 [ENDBLOCK ZONOID] 
       <td  valign="baseline"  align="right" class="CORETblHeadCell">
        <span class="CORETblHead">
@@ -102,7 +104,7 @@
 <!-- TABLEBODY -->
 [BLOCK TABLEBODY]
 <tr>
-  <td class="[CLASS]" ><a href="#" OnClick="javascript:[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
+  <td class="[CLASS]" ><a href="#" OnClick="[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
   <td class="[CLASS]" ><span class="CORETbl">[description]</span></td>
   <td class="[CLASS]" ><span class="CORETbl">
 

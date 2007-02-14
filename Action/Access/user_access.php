@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_access.php,v 1.8 2004/10/11 15:40:27 eric Exp $
+ * @version $Id: user_access.php,v 1.9 2007/02/14 13:22:41 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.8 2004/10/11 15:40:27 eric Exp $
+// $Id: user_access.php,v 1.9 2007/02/14 13:22:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -45,13 +45,14 @@ function user_access(&$action, $group=false) {
 
   $baseurl=$action->GetParam("CORE_BASEURL");
   $standurl=$action->GetParam("CORE_STANDURL");
-
-  
+  $filteruser=getHttpVars("userfilter");
+  $user_id=getHttpVars("uid");
+  $action->lay->set("userfilter",$filteruser);
   // Set the edit form element
   if ($group) {
-    $paramedit="&group=yes";
+    $paramedit="&group=yes&userfilter=$filteruser";
   } else {
-    $paramedit="&group=no";
+    $paramedit="&group=no&userfilter=$filteruser";
   }
   $form = new SubForm("edit",500,330,"app=ACCESS&action=MODIFY$paramedit",
                                      $standurl."app=ACCESS&action=EDIT&mod=user$paramedit");
@@ -74,39 +75,43 @@ function user_access(&$action, $group=false) {
   $action->lay->set("QUERY_FORM","");
   $action->lay->set("FULLTEXTFORM","");
 
+  $action->lay->set("maxreach",false);
+  $action->lay->set("usefilter",false);
   // affect the select form elements
   $u = new User();
   if ($group) {
-    $list = $u-> GetGroupList();
+    $list = $u->GetGroupList("TABLE");
     $varreg = "access_group_id";
     $action->lay->set("imgaccess",$action->GetIcon("access2.gif", "modify",20));
   } else {
-    $list = $u-> GetUserList();
+    $list = $u->GetUserList("TABLE",0,30,$filteruser);
+    $action->lay->set("maxreach",(count($list)==30));
+    $action->lay->set("usefilter",true);
     $varreg = "access_user_id";
     $action->lay->set("imgaccess",$action->GetIcon("access.gif", "modify",18));
   }
 
   // select the first user if not set
-  $user_id=$action->Read($varreg);
+  if ($user_id=="") $user_id=$action->Read($varreg);
   $action->log->debug("user_id : $user_id");
   if ($user_id == "") $user_id=0; 
 
   $tab = array();
   reset($list);
   $user_sel=$list[0];
-  while (list($k,$v) = each($list)) {
-    if ($v->id == 1) continue;
+  foreach($list as $k=>$v) {
+    if ($v["id"] == 1) continue;
     if ($user_id == 0)  {
-       $user_id = $v->id;
+       $user_id = $v["id"];
        $action->Register($varreg,$user_id);  
     }
-    if (($v->lastname == "") && ($v->firstname == "")) {
-      $tab[$k]["text"]=$v->login;
+    if (($v["lastname"] == "") && ($v["firstname"] == "")) {
+      $tab[$k]["text"]=$v["login"];
     } else {
-      $tab[$k]["text"]=$v->lastname." ".$v->firstname;
+      $tab[$k]["text"]=$v["lastname"]." ".$v["firstname"]." - ".$v["login"];
     }
-    $tab[$k]["id"]=$v->id;
-    if ($user_id == $v->id) {
+    $tab[$k]["id"]=$v["id"];
+    if ($user_id == $v["id"]) {
       $user_sel=$v;
       $tab[$k]["selected"]="selected";
     } else {
@@ -151,7 +156,7 @@ function user_access(&$action, $group=false) {
 
 
     // get user permissions
-    $uperm = new Permission($action->dbaccess,array($user_sel->id, $v["id"]));
+    $uperm = new Permission($action->dbaccess,array($user_sel["id"], $v["id"]));
     
     
     $name = $v["name"];
