@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: edit.php,v 1.11 2006/06/01 12:55:08 eric Exp $
+ * @version $Id: edit.php,v 1.12 2007/02/14 13:22:58 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: edit.php,v 1.11 2006/06/01 12:55:08 eric Exp $
+// $Id: edit.php,v 1.12 2007/02/14 13:22:58 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/edit.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -50,12 +50,13 @@ function edit(&$action) {
   $coid= intval(GetHttpVars("oid")) ;
   // the modification can come from action user_access or appl_access
   if (GetHttpVars("mod") == "user") {    
-    $appId=GetHttpVars("id");
+    $appId=GetHttpVars("id");  
+    $filteruser=getHttpVars("userfilter");
     if ($group) {
-      $action->lay->Set("returnact","GROUP_ACCESS");
+      $action->lay->Set("returnact","GROUP_ACCESS&userfilter=$filteruser");
      $userId=$action->Read("access_group_id");
     } else {
-      $action->lay->Set("returnact","USER_ACCESS"); // for return previous page
+      $action->lay->Set("returnact","USER_ACCESS&userfilter=$filteruser"); // for return previous page
       $userId=$action->Read("access_user_id");
     }
   } else {
