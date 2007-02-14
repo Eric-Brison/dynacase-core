@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.53 2007/01/26 09:42:09 eric Exp $
+ * @version $Id: Class.User.php,v 1.54 2007/02/14 13:24:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -527,11 +527,13 @@ create sequence seq_id_users start 10";
   }
 
   // get All Users (not group)
-  function GetUserList($qtype="LIST") {
+  function GetUserList($qtype="LIST",$start=0,$slice=0,$filteruser) {
     $query = new QueryDb($this->dbaccess,"User");
     $query->order_by="lastname";
     $query-> AddQuery("(isgroup != 'Y') OR (isgroup isnull)");
-    return($query->Query(0,0,$qtype));
+    if ($filteruser) $query->AddQuery("(login ~* '".pg_escape_string($filteruser)."')" ." or ".
+				      "(lastname ~* '".pg_escape_string($filteruser)."')" );
+    return($query->Query($start,$slice,$qtype));
   }
 
   // get All groups
