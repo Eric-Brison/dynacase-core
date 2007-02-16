@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.34 2007/01/17 09:40:32 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.35 2007/02/16 07:39:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -231,12 +231,19 @@ function bgexec($tcmd,&$result,&$err) {
   //if (session_id()) @session_start();
 }
 
+function wbartext($text) {
+  wbar('-','-',$text);
+}
 function wbar($reste,$total,$text="",$fbar=false) {
-if (!$fbar) $fbar = GetHttpVars("bar"); // for progress bar
- if ($fbar) {
+  static $preste,$ptotal;
+  if (!$fbar) $fbar = GetHttpVars("bar"); // for progress bar
+  if ($fbar) {
    
-      
-      if (file_exists("$fbar.lck")) {
+   if ($reste==='-') $reste=$preste;
+   else $preste=$reste;
+   if ($total==='-') $total=$ptotal;
+   else $ptotal=$total;
+   if (file_exists("$fbar.lck")) {
 	$wmode="w";
 	unlink("$fbar.lck");
       } else {
