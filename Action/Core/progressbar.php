@@ -3,7 +3,7 @@
  * progress bar tool
  *
  * @author Anakeen 2000 
- * @version $Id: progressbar.php,v 1.2 2006/04/06 16:46:53 eric Exp $
+ * @version $Id: progressbar.php,v 1.3 2007/02/16 07:38:55 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -21,6 +21,7 @@ function progressbar(&$action) {
 
 function progressbar2(&$action) {
   $fbar = GetHttpVars("bar"); 
+  static $lastline;
 
    if ($fbar) {
      $rf=file($fbar);
@@ -32,7 +33,9 @@ function progressbar2(&$action) {
    $texts=array();
    $reste=0;
    $total=0;
-   foreach ($rf as $line) {
+
+   if ($rf) {
+     foreach ($rf as $line) {
      if (ereg("([0-9\-]+)/([0-9\-]+)/(.*)",$line,$reg)) {
        $texts[]=addslashes(trim($reg[3]));
        if (intval($reg[2]) >= 0) $total=intval($reg[2]);
@@ -50,5 +53,10 @@ function progressbar2(&$action) {
      $action->lay->set("pc1",round(($total-$reste)/$total*100));
    }
    else $action->lay->set("pc","100%");
+   $action->lay->set("waiting",0);    
+   } else {
+     $action->lay->set("waiting",1);     
+   }
+   unlink($fbar);
 }
 ?>

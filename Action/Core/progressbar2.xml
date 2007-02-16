@@ -4,7 +4,10 @@
 var wpb1=parent.PB1;
 var texts= new Array();
 texts=[texts];
+var wainting='[waiting]';
+
 if (wpb1) {
+if  (wainting=='0') {
   var ibar=wpb1.document.getElementById('imgbar');
   var reste=wpb1.document.getElementById('reste');
   var done=wpb1.document.getElementById('done');
@@ -44,7 +47,10 @@ if (wpb1) {
 if ([reste] > 0) {
   setTimeout('window.location.href=window.location.href',5000);
 }
-}
+ } else {
+  setTimeout('window.location.href=window.location.href',5000);
+ }
+ }
 </script>
 </head>
 <body>
