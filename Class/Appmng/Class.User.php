@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.54 2007/02/14 13:24:02 eric Exp $
+ * @version $Id: Class.User.php,v 1.55 2007/02/16 14:11:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -385,7 +385,7 @@ create sequence seq_id_users start 10";
     }
 
   function FreedomWhatUser() {   
-    if (@include_once('FDL/Lib.Dir.php')) {
+    if (@include_once('FDL/Lib.Usercard.php')) {
 
       $dbaccess=GetParam("FREEDOM_DB");
       if ($dbaccess=="") return _("no freedom DB access");
