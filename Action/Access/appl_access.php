@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: appl_access.php,v 1.6 2007/02/14 13:22:41 eric Exp $
+ * @version $Id: appl_access.php,v 1.7 2007/02/16 14:11:14 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: appl_access.php,v 1.6 2007/02/14 13:22:41 eric Exp $
+// $Id: appl_access.php,v 1.7 2007/02/16 14:11:14 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/appl_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -80,6 +80,7 @@ function appl_access(&$action, $oid=0) {
   $action->parent->AddJsCode($form->GetMainJs());
   $jsscript=$form-> GetLinkJsMainCall();
 
+  $action->lay->set("hasuser",true);
 
   // display application / object class
   $tab=array();
