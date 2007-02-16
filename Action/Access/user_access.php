@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: user_access.php,v 1.10 2007/02/14 15:13:16 eric Exp $
+ * @version $Id: user_access.php,v 1.11 2007/02/16 08:32:08 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage ACCESS
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: user_access.php,v 1.10 2007/02/14 15:13:16 eric Exp $
+// $Id: user_access.php,v 1.11 2007/02/16 08:32:08 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -99,7 +99,9 @@ function user_access(&$action, $group=false) {
   if ($user_id == "") $user_id=0; 
 
   $tab = array();
-  reset($list);
+
+  $action->lay->set("hasuser",$list?true:false);
+  if ($list) {
   $user_sel=$list[0];
   foreach($list as $k=>$v) {
     if ($v["id"] == 1) continue;
@@ -120,11 +122,11 @@ function user_access(&$action, $group=false) {
       $tab[$k]["selected"]="";
     }
   }
-  $action->lay->SetBlockData("SELUSER",$tab);
   $action->parent->AddJsRef("change_acl.js");
 
   $action->register($varreg,$user_sel["id"]);
 
+  $action->lay->SetBlockData("SELUSER",$tab);
 
   // 1) Get all application
   $query = new QueryGen($action->dbaccess,"Application",$action);
@@ -193,8 +195,10 @@ function user_access(&$action, $group=false) {
 
   }
 
-  
   $query->table->Set();
+  }
+
+  
 
        
 

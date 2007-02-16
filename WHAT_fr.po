@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-24 15:26+0100\n"
-"PO-Revision-Date: 2005-09-06 16:46+0200\n"
+"POT-Creation-Date: 2007-02-16 09:29+0100\n"
+"PO-Revision-Date: 2007-02-16 09:29+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -15,17 +15,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 "\n"
 
-msgid "userlogin"
-msgstr "Login"
+msgid "appname"
+msgstr "Application"
 
-msgid "username"
-msgstr "Nom"
+msgid "appdesc"
+msgstr "Description"
 
 msgid "permissions"
 msgstr "Droits"
 
 msgid "none"
 msgstr "Aucun"
+
+msgid "description"
+msgstr "Description"
+
+msgid "userlogin"
+msgstr "Login"
+
+msgid "username"
+msgstr "Nom"
 
 msgid "user"
 msgstr "utilisateur"
@@ -44,15 +53,6 @@ msgstr "l'utilisateur %s %s a été ajouté\n"
 #, c-format
 msgid "add acl %s for %s %s\n"
 msgstr "ajout privilège %s pour %s %s\n"
-
-msgid "appname"
-msgstr "Application"
-
-msgid "appdesc"
-msgstr "Description"
-
-msgid "description"
-msgstr "Description"
 
 msgid "titlecreateaction"
 msgstr "Cr&eacute;ation d'action"
@@ -217,22 +217,65 @@ msgstr "l'identification de l'utilisateur est inconnue"
 msgid "Create other database for %s (%s)"
 msgstr "Création d'autres bases pour %s (%s)"
 
-msgid "Command failed"
-msgstr "échec de la commande"
+msgid "I can't find hostname alias"
+msgstr "Alias de hostname introuvable"
 
-msgid "Name of anakeen database ?"
-msgstr "Nom de la base anakeen ?"
+msgid "Enter name for database ? "
+msgstr "Nom de la base de donnée ?"
 
 #, c-format
 msgid "Virtual host : [%s]"
 msgstr "Hôte virtual : [%s]"
 
 #, c-format
-msgid "Database : [%s]"
+msgid "Database     : [%s]"
 msgstr "Base de données : [%s]"
 
 msgid "Continue (Y|N) ?"
 msgstr "Continuer (Y (oui) |N (non)) ?"
+
+#, c-format
+msgid "Choose database in %s (%s)"
+msgstr "Choix de la base de données dans %s (%s)"
+
+#, c-format
+msgid "Database : [%s]"
+msgstr "Base de données : [%s]"
+
+#, c-format
+msgid "API file %s not found"
+msgstr "fichier API %s non trouvé."
+
+#, c-format
+msgid "Caught Exception : %s<br>\n"
+msgstr "Exception : %s<br>\n"
+
+msgid "create databases ?"
+msgstr "Créer les bases de données ?"
+
+msgid "Max user reach. Use search filter"
+msgstr "Utiliser la recherche pour voir la suite"
+
+msgid "Search"
+msgstr "Recherche"
+
+msgid "filter on login and lastname"
+msgstr "filtre sur le login et le nom"
+
+msgid "choose document"
+msgstr "choisi un document"
+
+msgid "edit by object"
+msgstr "édition par objet"
+
+msgid "in database"
+msgstr "dans la base de données"
+
+msgid "print"
+msgstr "Impression de la page"
+
+msgid "help"
+msgstr "Aide"
 
 msgid "controlaccess"
 msgstr "Contrôle des accès"
@@ -264,20 +307,8 @@ msgstr "Le nom du fichier doit être spécifié"
 msgid "upload"
 msgstr "Charger un fichier d'acces"
 
-msgid "choose document"
-msgstr "choisi un document"
-
-msgid "edit by object"
-msgstr "édition par objet"
-
-msgid "in database"
-msgstr "dans la base de données"
-
-msgid "print"
-msgstr "Impression de la page"
-
-msgid "help"
-msgstr "Aide"
+msgid "No user found"
+msgstr "pas d'utilisateur trouvé"
 
 msgid "long_name"
 msgstr "Nom complet"
@@ -368,6 +399,9 @@ msgstr "Votre nom d'utilisateur :"
 
 msgid "yourpassword"
 msgstr "Votre mot de passe :"
+
+msgid "Progress bar"
+msgstr "Barre de progression"
 
 msgid "You use an too old Internet explorer navigator"
 msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
@@ -460,9 +494,6 @@ msgstr "Une nouvelle version vient d'être installée."
 msgid "You must clear navigator cache."
 msgstr "Vous devez effacer le cache de votre navigateur."
 
-msgid "Progress bar"
-msgstr "Barre de progression"
-
 msgid "firstname"
 msgstr "Prénom"
 
@@ -521,16 +552,8 @@ msgid "delconfirmparam"
 msgstr "Confirmez-vous la suppression du param&egrave;tre "
 
 #, c-format
-msgid "Choose database in %s (%s)"
-msgstr "Choix de la base de données dans %s (%s)"
-
-#, c-format
-msgid "API file %s not found"
-msgstr "fichier API %s non trouvé."
-
-#, c-format
-msgid "Caught Exception : %s<br>\n"
-msgstr ""
+msgid "%s style updated\n"
+msgstr "%s style mis à jour\n"
 
 #, c-format
 msgid "Attribute %s not found\n"
@@ -539,10 +562,10 @@ msgstr "Attribut %s non trouvé.\n"
 #, c-format
 msgid ""
 "Attribute %s found is not alone\n"
-"Must precise request with userid or appid arguments\n"
+"Must precise request with appname arguments\n"
 msgstr ""
 "L'attribut %s trouvé n'est pas seul\n"
-"Préciser la requête en uitilisant les arguments userid et appid\n"
+"Préciser la requête en utilisant les arguments userid et appid\n"
 
 #, c-format
 msgid "Attribute %s not modified : %s\n"
@@ -657,11 +680,11 @@ msgstr "identificateur de version"
 msgid "default style"
 msgstr "style par défaut"
 
+msgid "font size"
+msgstr "taille de la police"
+
 msgid "language"
 msgstr "langue"
-
-msgid "button color"
-msgstr "couleur du bouton"
 
 msgid "background color or image"
 msgstr "image ou couleur de fond"
@@ -702,17 +725,8 @@ msgstr "couleur des liens"
 msgid "error color"
 msgstr "couleur messages d'erreur"
 
-msgid "default font"
-msgstr "police par défaut"
-
-msgid "menu font"
-msgstr "police des menus"
-
 msgid "top url to find help documentation"
 msgstr "url pour la documentation en ligne"
-
-msgid "font size"
-msgstr "taille de la police"
 
 msgid "frame size"
 msgstr "taille de la fenêtre"
@@ -736,7 +750,7 @@ msgid "number of cached object by class"
 msgstr "nombre d'objet caché par classes"
 
 msgid "memory max for PHP in Mo"
-msgstr ""
+msgstr "mémoire maximum pour PHP en Mo"
 
 msgid "gate urls"
 msgstr "urls du portail"
@@ -762,15 +776,23 @@ msgstr "nom du royaume pour authentification HTTP"
 msgid "mot of the day"
 msgstr "Mot Of The Day"
 
-#, fuzzy
 msgid "icon size"
-msgstr "taille de la police"
+msgstr "taille des icones"
+
+msgid "produce link for"
+msgstr "produit le lien pour"
+
+msgid "squirrelmail install dir (relative)"
+msgstr "squirrelmail:  répertoire d'installation (relatif)"
 
 msgid "Core"
 msgstr "Noyau"
 
 msgid "Core Application Manager"
 msgstr "Page d'accueil"
+
+msgid "concat stylecss+sizecss"
+msgstr "concaténation style + size css"
 
 msgid "What User Management"
 msgstr "Gestion des utilisateurs"
@@ -809,12 +831,17 @@ msgstr "modifier compte personnel"
 msgid "function '%s' not available for application %s (%d)"
 msgstr "fonction %s non disponible pour l'application %s (%d)"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Acl [%s] not available for App %s"
-msgstr "fonction %s non disponible pour l'application %s (%d)"
+msgstr "ACL %s non valable pour l'application %s"
 
-msgid "Access denied"
-msgstr "Accès refusé"
+#, c-format
+msgid ""
+"Access denied\n"
+"Need ACL %s for action %s [%s]"
+msgstr ""
+"Accès refusé\n"
+"ACL %s nécessaire pour l'action %s [%s]"
 
 # ne pas modifier laisser à vide
 msgid "$code"
@@ -832,6 +859,9 @@ msgstr "Permission objet :: permission %s requise (%s) - n° %d"
 
 msgid "login must not be empty"
 msgstr "le login ne doit pas être vide"
+
+msgid "no freedom DB access"
+msgstr "pas d'accès à la base de données FREEDOM"
 
 msgid "DbObj::Adds error in multiple insertion"
 msgstr "DbObj::Adds erreur dans insertion multiple"
@@ -871,16 +901,29 @@ msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 msgstr ""
 "terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
 
-#, fuzzy
 msgid "cannot access to default database [$dbaccess]"
-msgstr "accès à la base de données $db refusé\n"
+msgstr "accès impossible à la base de données par défaut [$dbaccess]"
 
 msgid "descr"
 msgstr "Description"
 
-#, fuzzy
-msgid "create databases ?"
-msgstr "Nom de la base anakeen ?"
+#~ msgid "Command failed"
+#~ msgstr "échec de la commande"
+
+#~ msgid "Name of anakeen database ?"
+#~ msgstr "Nom de la base anakeen ?"
+
+#~ msgid "button color"
+#~ msgstr "couleur du bouton"
+
+#~ msgid "default font"
+#~ msgstr "police par défaut"
+
+#~ msgid "menu font"
+#~ msgstr "police des menus"
+
+#~ msgid "Access denied"
+#~ msgstr "Accès refusé"
 
 #~ msgid "contacts speed search"
 #~ msgstr "Recherche rapide de contacts"
