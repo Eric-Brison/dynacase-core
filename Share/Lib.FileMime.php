@@ -161,6 +161,10 @@ function getSysMimeFile($f,$fn="") {
     if (preg_match('/\.doc$/',$fn))    return 'application/msword';
     if (preg_match('/\.ppt$/',$fn))    return 'application/vnd.ms-powerpoint';
   }
+  if ($sys=='application/msword') { // for old sys mime info
+    if (preg_match('/\.xls$/',$fn))    return 'application/vnd.ms-excel';
+    if (preg_match('/\.ppt$/',$fn))    return 'application/vnd.ms-powerpoint';
+  }
 
   return $sys;
 }
