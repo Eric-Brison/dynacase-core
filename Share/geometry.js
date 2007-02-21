@@ -81,45 +81,55 @@ function getKeyPress(event)
 }
 
 
-function autoHresize() {
-  if (window != top) return;
-
-  var dw=0;
-  var dh=0;
-  availHeight=self.screen.availHeight-300;
-
-  if (document.body.scrollHeight > availHeight) 
-    dh=availHeight-document.body.clientHeight;
-  else 
-    dh=document.body.scrollHeight-document.body.clientHeight;
-
-  if (dh > 0) {
-    window.resizeBy(dw,dh);
-
-    // double resize for mozilla ?
-    if (document.body.scrollHeight < availHeight) {
-      if (document.body.scrollHeight > document.body.clientHeight) {
-    
-	dh=document.body.scrollHeight-document.body.clientHeight;
-	if (dh > 0) window.resizeBy(dw,dh);
-      }
-    }
-  }
-}
-
 function autoVresize() {
   if (window != top) return;
+
   var dw=0;
   var dh=0;
+  var sh;
+  var ih;
+
+  ih=getFrameHeight()-4;
+
+  availHeight=self.screen.availHeight-300;
+  sh=document.body.scrollHeight;
+
+
+  if (sh > availHeight) 
+    dh=availHeight-ih;
+  else 
+    dh=sh-ih;
+
+  //alert('V['+sh+']['+ih+']['+dh+','+document.body.scrollHeight);
+  if (dh > 0) window.resizeBy(dw,dh);
+
+}
+
+function autoHresize1() {
+  if (window != top) return;
+  var dw=0;
+  var dh=0;
+  var sw;
+  var iw;
+
+  iw=getFrameWidth()-4;
   if (document.body.scrollWidth > self.screen.availWidth) 
     dw=self.screen.availWidth-document.body.clientWidth;
-  else 
-    dw=document.body.scrollWidth-document.body.clientWidth;
+  else {
+    if (document.documentElement) sw=document.documentElement.scrollWidth-4;
+    else sw=document.body.scrollWidth;
+    dw=sw-iw;
+  }
 
+  //alert('H['+sw+']['+iw+']['+dw);
   if (dw > 0) window.resizeBy(dw,dh);
+}
+function autoHresize() {  
+  autoHresize1();
+  autoHresize1(); // need twice when very empty ?!
 }
 
 function autoWresize() {
-  autoVresize();
   autoHresize();
+  autoVresize();
 }
