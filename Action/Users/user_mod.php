@@ -1,9 +1,9 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * User modify properties
  *
  * @author Anakeen 2000 
- * @version $Id: user_mod.php,v 1.11 2005/07/08 15:29:51 eric Exp $
+ * @version $Id: user_mod.php,v 1.12 2007/02/21 11:08:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -11,28 +11,7 @@
  /**
  */
 
-// ---------------------------------------------------------------
-// $Id: user_mod.php,v 1.11 2005/07/08 15:29:51 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_mod.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2000
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
+
 
 
 include_once("Class.SubForm.php");
@@ -143,7 +122,7 @@ function user_mod(&$action) {
   
     // only at the end : it is not necessary before
     $ugroup->FreedomCopyGroup();
-    if (@include_once("FDL/Lib.Usercard.php")) {
+    if (usefreedomuser()) {
       $gdif=array_merge(array_diff($rgid,$newgroup),array_diff($newgroup,$rgid));
 
       refreshGroups($gdif,true);

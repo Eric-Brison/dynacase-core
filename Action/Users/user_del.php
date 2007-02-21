@@ -4,7 +4,7 @@
  *
  * The action also delete mail account of the user
  * @author Anakeen 2000 
- * @version $Id: user_del.php,v 1.6 2005/07/08 15:29:51 eric Exp $
+ * @version $Id: user_del.php,v 1.7 2007/02/21 11:08:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage USERS
@@ -37,8 +37,7 @@ function user_del(&$action) {
       $fid=$user->fid;
       $err=$user->Delete();
 
-      if (($err=="") && ($fid > 0)) {
-	include_once("FDL/Class.Doc.php");
+      if (($err=="") && ($fid > 0) && usefreedomuser()) {
 	$du=new_Doc($action->getParam("FREEDOM_DB"),$fid);
 	$du->Delete();
       }

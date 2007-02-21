@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.56 2007/02/20 14:20:37 eric Exp $
+ * @version $Id: Class.User.php,v 1.57 2007/02/21 11:08:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -170,17 +170,7 @@ create sequence seq_id_users start 10";
     //    if (! $this->fid)   $group->Add();       
 
     $err=$this->FreedomWhatUser();  
-    if (@include_once("FDL/Lib.Usercard.php")) {
-      // not need now, set by cron because can be use long time if many users on group
-      // refreshGroups(array($gid),true);
-    }
-    // double pass to compute dynamic profil on itself
-    return $err;
-    if ($this->fid<>"") { 	
-      $wsh = getWshCmd();
-      $cmd = $wsh . "--api=usercard_iuser --whatid={$this->id}";
-      exec($cmd);
-    }
+  
     return $err;
   }
 
@@ -219,7 +209,7 @@ create sequence seq_id_users start 10";
 	$mailaccount=new MailAccount("",$this->id);
 	$mailaccount-> Remove();
       }
-      if (@include_once("FDL/Lib.Usercard.php")) {
+      if (usefreedomuser()) {
 	refreshGroups($ugroups,true);
       }
     }
@@ -383,10 +373,10 @@ create sequence seq_id_users start 10";
       }
 
     }
+  
 
   function FreedomWhatUser() {   
-    if (@include_once('FDL/Lib.Usercard.php')) {
-
+    if (usefreedomuser()) {
       $dbaccess=GetParam("FREEDOM_DB");
       if ($dbaccess=="") return _("no freedom DB access");
       if ($this->fid<>"") { 

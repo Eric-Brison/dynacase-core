@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-16 09:29+0100\n"
+"POT-Creation-Date: 2007-02-21 12:08+0100\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 "\n"
 
-msgid "appname"
-msgstr "Application"
+msgid "userlogin"
+msgstr "Login"
 
-msgid "appdesc"
-msgstr "Description"
+msgid "username"
+msgstr "Name"
 
 #, fuzzy
 msgid "permissions"
@@ -27,15 +27,6 @@ msgstr "Permission"
 
 msgid "none"
 msgstr "None"
-
-msgid "description"
-msgstr "Description"
-
-msgid "userlogin"
-msgstr "Login"
-
-msgid "username"
-msgstr "Name"
 
 msgid "user"
 msgstr "user"
@@ -54,6 +45,15 @@ msgstr ""
 #, c-format
 msgid "add acl %s for %s %s\n"
 msgstr ""
+
+msgid "appname"
+msgstr "Application"
+
+msgid "appdesc"
+msgstr "Description"
+
+msgid "description"
+msgstr "Description"
 
 msgid "titlecreateaction"
 msgstr "Add action"
@@ -251,32 +251,6 @@ msgstr ""
 msgid "create databases ?"
 msgstr ""
 
-msgid "Max user reach. Use search filter"
-msgstr ""
-
-#, fuzzy
-msgid "Search"
-msgstr "user"
-
-msgid "filter on login and lastname"
-msgstr ""
-
-msgid "choose document"
-msgstr ""
-
-#, fuzzy
-msgid "edit by object"
-msgstr "object"
-
-msgid "in database"
-msgstr ""
-
-msgid "print"
-msgstr "Print this page"
-
-msgid "help"
-msgstr "Help"
-
 msgid "controlaccess"
 msgstr "Access Control"
 
@@ -309,6 +283,32 @@ msgstr "Need upload file"
 
 msgid "upload"
 msgstr "Upload Access File"
+
+msgid "Max user reach. Use search filter"
+msgstr ""
+
+#, fuzzy
+msgid "Search"
+msgstr "user"
+
+msgid "filter on login and lastname"
+msgstr ""
+
+msgid "choose document"
+msgstr ""
+
+#, fuzzy
+msgid "edit by object"
+msgstr "object"
+
+msgid "in database"
+msgstr ""
+
+msgid "print"
+msgstr "Print this page"
+
+msgid "help"
+msgstr "Help"
 
 msgid "No user found"
 msgstr ""
@@ -703,6 +703,9 @@ msgid "Freedom frontpage description"
 msgstr ""
 
 msgid "version identificator"
+msgstr ""
+
+msgid "use freedom user management"
 msgstr ""
 
 msgid "default style"

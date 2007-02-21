@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.35 2007/02/16 07:39:13 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.36 2007/02/21 11:08:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -391,6 +391,16 @@ function seems_utf8($Str) {
  }
  return true;
 }
-
+/**
+   * return true if it is possible to manage USER by FREEDOM
+   * 
+   */
+  function usefreedomuser() {    
+    if (@include_once('FDL/Lib.Usercard.php')) {
+      $usefreedom=(GetParam("USE_FREEDOM_USER")!="no");
+      return $usefreedom;
+    }
+    return false;
+  }
 
 ?>
