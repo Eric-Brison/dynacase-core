@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_size.php,v 1.1 2006/06/20 16:18:07 eric Exp $
+ * @version $Id: import_size.php,v 1.2 2007/02/21 11:07:12 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -12,7 +12,7 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: import_size.php,v 1.1 2006/06/20 16:18:07 eric Exp $
+// $Id: import_size.php,v 1.2 2007/02/21 11:07:12 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Api/import_size.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2001
@@ -36,7 +36,7 @@
 
 
 include_once("Class.Style.php");
-include_once("FDL/Lib.Color.php");
+include_once("Lib.Color.php");
 
 $name = GetHttpVars("name");
 

@@ -4,7 +4,7 @@
  *
  * analyze sub-directories presents in STYLE directory
  * @author Anakeen 2002
- * @version $Id: import_style.php,v 1.9 2006/07/04 07:18:36 eric Exp $
+ * @version $Id: import_style.php,v 1.10 2007/02/21 11:07:12 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
@@ -15,7 +15,7 @@
 
 
 include_once("Class.Style.php");
-include_once("FDL/Lib.Color.php");
+include_once("Lib.Color.php");
 
 function getStyleInherit($name,&$sty_colorsh,&$sty_consth,&$sty_localsh) {
   if (file_exists(GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/STYLE/{$name}/{$name}.sty")) {
