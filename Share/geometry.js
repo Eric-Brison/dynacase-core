@@ -89,18 +89,23 @@ function autoVresize() {
   var sh;
   var ih;
 
-  ih=getFrameHeight()-4;
+  if (isIE) {
+    sh=document.body.scrollHeight+8;
+    ih=document.documentElement.offsetHeight;
+  } else {
+    sh=document.body.scrollHeight;    
+    ih=getFrameHeight()-4;
+  }
 
   availHeight=self.screen.availHeight-300;
-  sh=document.body.scrollHeight;
-
-
+ 
   if (sh > availHeight) 
-    dh=availHeight-ih;
+    dh=availHeight-ih;  
   else 
     dh=sh-ih;
 
-  //alert('V['+sh+']['+ih+']['+dh+','+document.body.scrollHeight);
+ 
+  //    alert('V['+sh+']['+ih+']['+dh+',SH['+document.body.scrollHeight);
   if (dh > 0) window.resizeBy(dw,dh);
 
 }
@@ -112,17 +117,27 @@ function autoHresize1() {
   var sw;
   var iw;
 
-  iw=getFrameWidth()-4;
+  if (isIE) {
+    sw=document.body.clientWidth+4;
+    if (isIE7) sw=document.documentElement.scrollWidth;
+    //sw=document.body.scrollWidth;
+    iw=document.documentElement.offsetWidth;
+  } else {
+    sw=document.documentElement.scrollWidth-4;
+    iw=getFrameWidth()-4;
+  }
   if (document.body.scrollWidth > self.screen.availWidth) 
     dw=self.screen.availWidth-document.body.clientWidth;
-  else {
-    if (document.documentElement) sw=document.documentElement.scrollWidth-4;
-    else sw=document.body.scrollWidth;
+  else {    
     dw=sw-iw;
   }
 
+  //alert('H1['+document.body.clientWidth+']['+document.documentElement.offsetWidth+']['+document.body.offsetWidth+']['+document.documentElement.scrollWidth);
   //alert('H['+sw+']['+iw+']['+dw);
-  if (dw > 0) window.resizeBy(dw,dh);
+  if (dw > 0) {
+    if (isIE) dw+=22; // add scrollbar
+    window.resizeBy(dw,dh);
+  }
 }
 function autoHresize() {  
   autoHresize1();
