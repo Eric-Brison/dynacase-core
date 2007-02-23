@@ -65,11 +65,7 @@ div.bouton:hover {
    background-color:lightgreen;
 }
 .bigbutton {
-  position:relative;
-  left:-150px;
-  top:-100px;
   font-family:Arial,Verdana,Helvetica;
-  font-style:bold;
   font-size:14pt;
   text-decoration:overline underline;;
   background-image:url('../Images/op20.png');	
