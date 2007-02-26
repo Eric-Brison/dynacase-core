@@ -174,7 +174,7 @@ if ($dbr_anakeen) {
     $result = pg_query($rf, "select * from (select name, count(name) as c from doc where name is not null and name != '' and locked != -1 group by name) as Z where Z.c >1");    
     $pout=array();
     while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-      $pout[$row["id"]]=$row["c"];
+      $pout[$row["name"]]=$row["c"];
     }
     if (count($pout) > 0) $msg=sprintf("%d double detected<pre>%s</pre>",count($pout),print_r($pout,true));
     else $msg="";
