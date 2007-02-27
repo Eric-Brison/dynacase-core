@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.57 2007/02/21 11:08:02 eric Exp $
+ * @version $Id: Class.User.php,v 1.58 2007/02/27 12:55:20 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -257,7 +257,7 @@ create sequence seq_id_users start 10";
     $this->firstname=$fname;	
     $this->status=$status;
     if ($this->login=="") $this->login=$login;
-    //ne modifie pas le password en base même si contrainte forcée 
+    //don't modify password in database even if force constraint 
     if ($pwd1==$pwd2 and $pwd1<>"") {
       $this->password_new=$pwd2;   
     }
@@ -386,6 +386,7 @@ create sequence seq_id_users start 10";
 
       } //Update from what
       else {
+	include_once("FDL/Lib.Dir.php");
 	if ($this->famid != "") $fam=$this->famid;
 	elseif ($this->isgroup=="Y") $fam="IGROUP";
 	else $fam="IUSER";;
