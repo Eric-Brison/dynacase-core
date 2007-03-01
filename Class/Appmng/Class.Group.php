@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.18 2007/02/21 11:08:02 eric Exp $
+ * @version $Id: Class.Group.php,v 1.19 2007/03/01 09:35:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -73,6 +73,11 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	$err = $this->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=$uid");
 	$err = $this->exec_query("delete from sessions where userid=$uid");
 	
+	if (usefreedomuser()) {
+	  $dbf=getParam("FREEDOM_DB");
+	  $g=new Group($dbf);
+	  $err = $g->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=$uid");	  
+	}
 	if (!$nopost) $this->PostDelete();
       }
       return $err;			   
@@ -85,8 +90,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     }
 
   function preInsert() {
-    // verify is exists
-    
+    // verify is exists    
     $err = $this->exec_query(sprintf("select * from groups where idgroup=%s and iduser=%s",
 				     $this->idgroup,$this->iduser));
     if ($this->numrows() > 0) {
@@ -95,17 +99,40 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     return $err;
   }
 
-  function PostUpdate() {
-    $this->FreedomCopyGroup();
-  }
+
   function PostDelete() {
     // delete unavailable group
-    $err = $this->exec_query("delete from groups where idgroup not in (select id from users)");
-    $err = $this->exec_query("delete from groups where iduser not in (select id from users)");
-    $this->FreedomCopyGroup();
+    // $err = $this->exec_query("delete from groups where idgroup not in (select id from users)");
+    // $err = $this->exec_query("delete from groups where iduser not in (select id from users)");
+    //    $this->FreedomCopyGroup();    
+
+    if (usefreedomuser()) {
+      $dbf=getParam("FREEDOM_DB");
+      $g=new Group($dbf);
+      $g->iduser=$this->iduser;
+      $g->idgroup=$this->idgroup;
+      $err=$g->Delete(true);
+      if ($err=="") {
+	$g->exec_query("delete from docperm where userid=".$g->iduser); // if it is a user (not a group)
+      }
+    }
+
   }
   function PostInsert() {
-    $this->FreedomCopyGroup();
+    $err = $this->exec_query("delete from sessions where userid=".$this->iduser);
+    //    $this->FreedomCopyGroup();
+    if (usefreedomuser()) {
+      $dbf=getParam("FREEDOM_DB");
+      $g=new Group($dbf);
+      $g->iduser=$this->iduser;
+      $g->idgroup=$this->idgroup;
+      $err=$g->Add(true);
+      if ($err=="") {
+	$g->exec_query("delete from docperm where userid=".$g->iduser); // if it is a user (not a group)
+      }
+    }
+    return $err;
+    
   } 
 
   
