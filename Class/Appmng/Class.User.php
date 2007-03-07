@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.58 2007/02/27 12:55:20 eric Exp $
+ * @version $Id: Class.User.php,v 1.59 2007/03/07 10:21:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -54,9 +54,9 @@ create table users ( id      int not null,
                         ntpasswordhash text,
                         lmpasswordhash text,
                         fid int);
-create index users_idx1 on users(id);
 create index users_idx2 on users(lastname);
 create index users_idx3 on users(login);
+CREATE UNIQUE INDEX uni_users on users (login,iddomain);
 create sequence seq_id_users start 10";
 
 
