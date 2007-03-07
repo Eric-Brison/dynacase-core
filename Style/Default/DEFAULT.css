@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.8 2007/01/03 19:34:29 eric Exp $
+ * $Id: DEFAULT.css,v 1.9 2007/03/07 14:56:10 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -12,9 +12,7 @@ body, .core {
   background-image: [CORE_BGIMAGE];
   color: [CORE_TEXTFGCOLOR];
 }
-P,TR,H1,H2,H3 {
-  background-color: [CORE_BGCOLOR];
-}
+
 TD {
   background-color: inherit;
   background-image: inherit;
