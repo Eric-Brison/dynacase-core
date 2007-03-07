@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.6 2005/11/22 13:47:26 eric Exp $
+ * @version $Id: wgcheck.php,v 1.7 2007/03/07 08:53:29 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -167,11 +167,11 @@ if ($err=="") {
 <?php
   if ($err == "") {
     print '<table width="100%"><tr>';
-    print '<td rowspan="2" width="85px"><div align="right" title="Click to launch easy install" class="bouton" onclick="cmdcontinue=true;sendCmd(ncmd)">Easy</div></td><td style="height:30px;">';
+    print '<td rowspan="2" width="85px"><div align="right" title="Click to launch easy install" class="bouton" onclick="cmdcontinue=true;sendCmd(ncmd)"><span>Easy</span></div></td><td style="height:30px;">';
     foreach ($actions as $k=>$v) {
       print sprintf("<img class=\"button\" style=\"float:left\" onclick=\"if (!easy) sendCmd(%s)\"  id=\"spi%s\" src=\"Images/option.png\">",  $k,$k);
     } 
-    print '</td><td  width="85px" rowspan="2" align="right"><div title="Click for special install for expert" class="bouton" onclick="document.getElementById(\'dcr\').style.display=\'\';document.getElementById(\'dsimple\').style.display=\'none\'">Expert</div></td></tr>';
+    print '</td><td  width="85px" rowspan="2" align="right"><div title="Click for special install for expert" class="bouton" onclick="document.getElementById(\'dcr\').style.display=\'\';document.getElementById(\'dsimple\').style.display=\'none\'"><span>Expert</span></div></td></tr>';
     print '<tr><td><span id="easycr"></span></td></tr>';
     print '</table>';
   }
@@ -181,7 +181,7 @@ if ($err=="") {
 
 <table width="100%"><tr><td><H1>Applications state</H1></td><td align="right"><div class="bouton" onclick="displaynext()"
 <?php if ($err) print "style=\"display:none\"";?>
->Next</div>
+><span>Next</span></div>
 
 </td></tr></table>
 
@@ -212,7 +212,7 @@ if ($err == "") {
 
 <div id="dcmd" class="frame"  style="display:">
 
-<table width="100%"><tr><td><H1>Update part</H1></td><td align="right"><div id="bstart" class="bouton" onclick="cmdcontinue=true;sendCmd(ncmd);this.style.display='none';document.getElementById('bstop').style.display=''">Next</div><div id="bstop" class="bouton" style="display:none" onclick="cmdcontinue=false;this.style.display='none';document.getElementById('bstart').style.display=''">Stop</div></td></tr></table>
+<table width="100%"><tr><td><H1>Update part</H1></td><td align="right"><div id="bstart" class="bouton" onclick="cmdcontinue=true;sendCmd(ncmd);this.style.display='none';document.getElementById('bstop').style.display=''"><span>Next</span></div><div id="bstop" class="bouton" style="display:none" onclick="cmdcontinue=false;this.style.display='none';document.getElementById('bstart').style.display=''"><span>Stop</span></div></td></tr></table>
 
 <table cellspacing="0" align="center" class="app"><tr><th>Commande</th><th>Status</th><th>Message</th></tr>
 <?php

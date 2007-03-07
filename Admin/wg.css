@@ -56,10 +56,14 @@ div.bouton {
    border:grey outset 3px;
    line-height:80px;
    font-family:Arial,Verdana,Helvetica;
-   font-style:bold;
+   font-weight:bold;
    font-size:12pt;
    text-decoration:none;
    cursor:pointer;
+}
+div.bouton span {
+  background-color:white;
+  padding:3px;
 }
 div.bouton:hover {
    background-color:lightgreen;
