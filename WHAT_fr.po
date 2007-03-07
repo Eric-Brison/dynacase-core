@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 12:08+0100\n"
+"POT-Creation-Date: 2007-03-07 11:23+0100\n"
 "PO-Revision-Date: 2007-02-21 12:09+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
@@ -214,6 +214,22 @@ msgid "the user identification is unknow"
 msgstr "l'identification de l'utilisateur est inconnue"
 
 #, c-format
+msgid "Choose database in %s (%s)"
+msgstr "Choix de la base de données dans %s (%s)"
+
+#, c-format
+msgid "Database : [%s]"
+msgstr "Base de données : [%s]"
+
+#, c-format
+msgid "API file %s not found"
+msgstr "fichier API %s non trouvé."
+
+#, c-format
+msgid "Caught Exception : %s<br>\n"
+msgstr "Exception : %s<br>\n"
+
+#, c-format
 msgid "Create other database for %s (%s)"
 msgstr "Création d'autres bases pour %s (%s)"
 
@@ -234,322 +250,8 @@ msgstr "Base de données : [%s]"
 msgid "Continue (Y|N) ?"
 msgstr "Continuer (Y (oui) |N (non)) ?"
 
-#, c-format
-msgid "Choose database in %s (%s)"
-msgstr "Choix de la base de données dans %s (%s)"
-
-#, c-format
-msgid "Database : [%s]"
-msgstr "Base de données : [%s]"
-
-#, c-format
-msgid "API file %s not found"
-msgstr "fichier API %s non trouvé."
-
-#, c-format
-msgid "Caught Exception : %s<br>\n"
-msgstr "Exception : %s<br>\n"
-
 msgid "create databases ?"
 msgstr "Créer les bases de données ?"
-
-msgid "controlaccess"
-msgstr "Contrôle des accès"
-
-msgid "accessfor"
-msgstr "Contrôle des accès pour"
-
-msgid "modify"
-msgstr "Modifier"
-
-msgid "Close"
-msgstr "Fermer"
-
-msgid " Access Control for"
-msgstr "Contrôle des accès pour"
-
-msgid "viewuser"
-msgstr "Voir les utilisateurs"
-
-msgid "viewgroup"
-msgstr "Voir les groupes"
-
-msgid "download"
-msgstr "Télécharger le fichier d'acces"
-
-msgid "needfile"
-msgstr "Le nom du fichier doit être spécifié"
-
-msgid "upload"
-msgstr "Charger un fichier d'acces"
-
-msgid "Max user reach. Use search filter"
-msgstr "Utiliser la recherche pour voir la suite"
-
-msgid "Search"
-msgstr "Recherche"
-
-msgid "filter on login and lastname"
-msgstr "filtre sur le login et le nom"
-
-msgid "choose document"
-msgstr "choisi un document"
-
-msgid "edit by object"
-msgstr "édition par objet"
-
-msgid "in database"
-msgstr "dans la base de données"
-
-msgid "print"
-msgstr "Impression de la page"
-
-msgid "help"
-msgstr "Aide"
-
-msgid "No user found"
-msgstr "pas d'utilisateur trouvé"
-
-msgid "long_name"
-msgstr "Nom complet"
-
-msgid "available"
-msgstr "Dispo"
-
-msgid "acl"
-msgstr "Acl"
-
-msgid "root"
-msgstr "Root"
-
-msgid "toc"
-msgstr "Toc"
-
-msgid "butclosew"
-msgstr "Fermer la fenêtre"
-
-msgid "titleaction"
-msgstr "Liste des actions de l'application"
-
-msgid "addparam"
-msgstr "Ajouter un param&egrave;tre"
-
-msgid "addstyle"
-msgstr "Ajouter un style"
-
-msgid "access_free"
-msgstr "Acces libre"
-
-msgid "appssl"
-msgstr "Sécurisée"
-
-msgid "displayable"
-msgstr "Affichable"
-
-msgid "machine"
-msgstr "machine"
-
-msgid "appmachine"
-msgstr "machine distante"
-
-msgid "update"
-msgstr "mise à jour"
-
-msgid "delconfirm"
-msgstr "Confirmez-vous la suppression de l`utilisateur"
-
-msgid "delete"
-msgstr "Détruire"
-
-msgid "application parameters list"
-msgstr "Liste des paramètres applicatif"
-
-msgid "view all"
-msgstr "tout voir"
-
-msgid "my parameters"
-msgstr "mes paramètres"
-
-msgid "val"
-msgstr "Valeur"
-
-msgid "select a user"
-msgstr "Sélectionnez un utilisateur"
-
-msgid "user parameters list"
-msgstr "Liste des paramètres utilisateur"
-
-msgid "select a style"
-msgstr "Sélectionnez un style"
-
-msgid "style parameters list"
-msgstr "Liste des paramètres style"
-
-msgid "delconfirmstyle"
-msgstr "Confirmez-vous la suppression du style"
-
-msgid "warning_name"
-msgstr "La saisie de votre nom est obligatoire :"
-
-msgid "warning_pass"
-msgstr "La saisie de votre mot de passe est obligatoire :"
-
-msgid "yourusername"
-msgstr "Votre nom d'utilisateur :"
-
-msgid "yourpassword"
-msgstr "Votre mot de passe :"
-
-msgid "Progress bar"
-msgstr "Barre de progression"
-
-msgid "You use an too old Internet explorer navigator"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
-"supérieur) "
-
-msgid "Internet explorer site"
-msgstr "Site de Microsoft"
-
-msgid "You use an too old Netscape navigator"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
-"ou Mozilla 1.0.1 (ou supérieur)"
-
-msgid "mozilla site"
-msgstr "site de Mozilla"
-
-msgid "nestcape site"
-msgstr "Site de Netscape"
-
-msgid "Javascript must be enabled in your navigator"
-msgstr "Javascript doit être activé dans votre navigateur"
-
-msgid ""
-"Your navigator does not accept cookies.\n"
-"Cookies must be enabled to use correctly this application"
-msgstr ""
-"Votre navigateur n'accepte pas les cookies.\n"
-"Vous devez autoriser les cookies pour utiliser correctement l'application."
-
-msgid "You use version an to old version of Netscape (Mozilla)"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
-msgstr ""
-"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
-
-msgid "You use version an to old version of Internet Explorer"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "You must upgrade to version 6 or more"
-msgstr "Vous devez mettre à jour avec la version 6 au minimum"
-
-msgid "Manuals"
-msgstr "Manuels"
-
-msgid "view log"
-msgstr "voir les messages"
-
-msgid "All manuals"
-msgstr "Tous les manuels"
-
-msgid "Gate"
-msgstr "Portail"
-
-msgid "Edit Url Gate"
-msgstr "édition des URLs pour le portail"
-
-msgid "Save geometry"
-msgstr "Sauver la disposition"
-
-msgid "Click here to login"
-msgstr "Cliquer ici pour se connecter"
-
-msgid "Choose Gate Urls"
-msgstr "Choix des URLs"
-
-# ne pas mettre de '
-msgid "Homepage"
-msgstr "Accueil"
-
-msgid "Welcome Page"
-msgstr "Page d'accueil"
-
-msgid "gate page"
-msgstr "Page du portail"
-
-msgid "New GATE page"
-msgstr "Portail"
-
-msgid "New version has been installed."
-msgstr "Une nouvelle version vient d'être installée."
-
-msgid "You must clear navigator cache."
-msgstr "Vous devez effacer le cache de votre navigateur."
-
-msgid "firstname"
-msgstr "Prénom"
-
-msgid "lastname"
-msgstr "Nom"
-
-msgid "password"
-msgstr "Mot de passe"
-
-msgid "expire default delay (in day)"
-msgstr "délai d'expiration par défaut (en jours)"
-
-msgid " 0 means no delay"
-msgstr " 0 signifie pas de limite"
-
-msgid "expire date"
-msgstr "date d'expiration"
-
-msgid "if not set, will be the current date more delay"
-msgstr "si vide, ce sera la date courante plus le délai"
-
-msgid "user status"
-msgstr "état utilisateur"
-
-msgid "active user"
-msgstr "Utilisateur activé"
-
-msgid "desactived user"
-msgstr "Utilisateur désactivé"
-
-msgid "groups"
-msgstr "Groupes"
-
-msgid "changegroup"
-msgstr "Changement de groupe"
-
-msgid "domaingroup"
-msgstr "Domaine"
-
-msgid "othergroup"
-msgstr "Autres"
-
-msgid "search"
-msgstr "recherche"
-
-msgid "clear"
-msgstr "Effacer"
-
-msgid "adduser"
-msgstr "Ajouter un utilisateur"
-
-msgid "unmodifiable parameter"
-msgstr "paramètre non modifiable"
-
-msgid "delconfirmparam"
-msgstr "Confirmez-vous la suppression du param&egrave;tre "
 
 #, c-format
 msgid "%s style updated\n"
@@ -900,15 +602,313 @@ msgstr "pas d'URL reférence trouvée"
 msgid "file not found : %s"
 msgstr "fichier %s non trouvé."
 
+msgid "cannot access to default database [$dbaccess]"
+msgstr "accès impossible à la base de données par défaut [$dbaccess]"
+
 msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 msgstr ""
 "terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
 
-msgid "cannot access to default database [$dbaccess]"
-msgstr "accès impossible à la base de données par défaut [$dbaccess]"
-
 msgid "descr"
 msgstr "Description"
+
+msgid "controlaccess"
+msgstr "Contrôle des accès"
+
+msgid "accessfor"
+msgstr "Contrôle des accès pour"
+
+msgid "modify"
+msgstr "Modifier"
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid " Access Control for"
+msgstr "Contrôle des accès pour"
+
+msgid "viewuser"
+msgstr "Voir les utilisateurs"
+
+msgid "viewgroup"
+msgstr "Voir les groupes"
+
+msgid "download"
+msgstr "Télécharger le fichier d'acces"
+
+msgid "needfile"
+msgstr "Le nom du fichier doit être spécifié"
+
+msgid "upload"
+msgstr "Charger un fichier d'acces"
+
+msgid "Max user reach. Use search filter"
+msgstr "Utiliser la recherche pour voir la suite"
+
+msgid "Search"
+msgstr "Recherche"
+
+msgid "filter on login and lastname"
+msgstr "filtre sur le login et le nom"
+
+msgid "choose document"
+msgstr "choisi un document"
+
+msgid "edit by object"
+msgstr "édition par objet"
+
+msgid "in database"
+msgstr "dans la base de données"
+
+msgid "print"
+msgstr "Impression de la page"
+
+msgid "help"
+msgstr "Aide"
+
+msgid "No user found"
+msgstr "pas d'utilisateur trouvé"
+
+msgid "long_name"
+msgstr "Nom complet"
+
+msgid "available"
+msgstr "Dispo"
+
+msgid "acl"
+msgstr "Acl"
+
+msgid "root"
+msgstr "Root"
+
+msgid "toc"
+msgstr "Toc"
+
+msgid "butclosew"
+msgstr "Fermer la fenêtre"
+
+msgid "titleaction"
+msgstr "Liste des actions de l'application"
+
+msgid "addparam"
+msgstr "Ajouter un param&egrave;tre"
+
+msgid "addstyle"
+msgstr "Ajouter un style"
+
+msgid "access_free"
+msgstr "Acces libre"
+
+msgid "appssl"
+msgstr "Sécurisée"
+
+msgid "displayable"
+msgstr "Affichable"
+
+msgid "machine"
+msgstr "machine"
+
+msgid "appmachine"
+msgstr "machine distante"
+
+msgid "update"
+msgstr "mise à jour"
+
+msgid "delconfirm"
+msgstr "Confirmez-vous la suppression de l`utilisateur"
+
+msgid "delete"
+msgstr "Détruire"
+
+msgid "application parameters list"
+msgstr "Liste des paramètres applicatif"
+
+msgid "view all"
+msgstr "tout voir"
+
+msgid "my parameters"
+msgstr "mes paramètres"
+
+msgid "val"
+msgstr "Valeur"
+
+msgid "select a user"
+msgstr "Sélectionnez un utilisateur"
+
+msgid "user parameters list"
+msgstr "Liste des paramètres utilisateur"
+
+msgid "select a style"
+msgstr "Sélectionnez un style"
+
+msgid "style parameters list"
+msgstr "Liste des paramètres style"
+
+msgid "delconfirmstyle"
+msgstr "Confirmez-vous la suppression du style"
+
+msgid "warning_name"
+msgstr "La saisie de votre nom est obligatoire :"
+
+msgid "warning_pass"
+msgstr "La saisie de votre mot de passe est obligatoire :"
+
+msgid "yourusername"
+msgstr "Votre nom d'utilisateur :"
+
+msgid "yourpassword"
+msgstr "Votre mot de passe :"
+
+msgid "You use an too old Internet explorer navigator"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "please upgrade to Internet explorer 6.0 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
+"supérieur) "
+
+msgid "Internet explorer site"
+msgstr "Site de Microsoft"
+
+msgid "You use an too old Netscape navigator"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
+"ou Mozilla 1.0.1 (ou supérieur)"
+
+msgid "mozilla site"
+msgstr "site de Mozilla"
+
+msgid "nestcape site"
+msgstr "Site de Netscape"
+
+msgid "Javascript must be enabled in your navigator"
+msgstr "Javascript doit être activé dans votre navigateur"
+
+msgid ""
+"Your navigator does not accept cookies.\n"
+"Cookies must be enabled to use correctly this application"
+msgstr ""
+"Votre navigateur n'accepte pas les cookies.\n"
+"Vous devez autoriser les cookies pour utiliser correctement l'application."
+
+msgid "You use version an to old version of Netscape (Mozilla)"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
+msgstr ""
+"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
+
+msgid "You use version an to old version of Internet Explorer"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "You must upgrade to version 6 or more"
+msgstr "Vous devez mettre à jour avec la version 6 au minimum"
+
+msgid "Manuals"
+msgstr "Manuels"
+
+msgid "view log"
+msgstr "voir les messages"
+
+msgid "All manuals"
+msgstr "Tous les manuels"
+
+msgid "Gate"
+msgstr "Portail"
+
+msgid "Edit Url Gate"
+msgstr "édition des URLs pour le portail"
+
+msgid "Save geometry"
+msgstr "Sauver la disposition"
+
+msgid "Click here to login"
+msgstr "Cliquer ici pour se connecter"
+
+msgid "Choose Gate Urls"
+msgstr "Choix des URLs"
+
+# ne pas mettre de '
+msgid "Homepage"
+msgstr "Accueil"
+
+msgid "Welcome Page"
+msgstr "Page d'accueil"
+
+msgid "gate page"
+msgstr "Page du portail"
+
+msgid "New GATE page"
+msgstr "Portail"
+
+msgid "New version has been installed."
+msgstr "Une nouvelle version vient d'être installée."
+
+msgid "You must clear navigator cache."
+msgstr "Vous devez effacer le cache de votre navigateur."
+
+msgid "Progress bar"
+msgstr "Barre de progression"
+
+msgid "firstname"
+msgstr "Prénom"
+
+msgid "lastname"
+msgstr "Nom"
+
+msgid "password"
+msgstr "Mot de passe"
+
+msgid "expire default delay (in day)"
+msgstr "délai d'expiration par défaut (en jours)"
+
+msgid " 0 means no delay"
+msgstr " 0 signifie pas de limite"
+
+msgid "expire date"
+msgstr "date d'expiration"
+
+msgid "if not set, will be the current date more delay"
+msgstr "si vide, ce sera la date courante plus le délai"
+
+msgid "user status"
+msgstr "état utilisateur"
+
+msgid "active user"
+msgstr "Utilisateur activé"
+
+msgid "desactived user"
+msgstr "Utilisateur désactivé"
+
+msgid "groups"
+msgstr "Groupes"
+
+msgid "changegroup"
+msgstr "Changement de groupe"
+
+msgid "domaingroup"
+msgstr "Domaine"
+
+msgid "othergroup"
+msgstr "Autres"
+
+msgid "search"
+msgstr "recherche"
+
+msgid "clear"
+msgstr "Effacer"
+
+msgid "adduser"
+msgstr "Ajouter un utilisateur"
+
+msgid "unmodifiable parameter"
+msgstr "paramètre non modifiable"
+
+msgid "delconfirmparam"
+msgstr "Confirmez-vous la suppression du param&egrave;tre "
 
 #~ msgid "Command failed"
 #~ msgstr "échec de la commande"
