@@ -3,7 +3,7 @@
  * User Group Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Group.php,v 1.21 2007/03/06 18:56:54 eric Exp $
+ * @version $Id: Class.Group.php,v 1.22 2007/03/12 08:25:55 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -100,35 +100,46 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
   }
 
 
-  function PostDelete() {
-    // delete unavailable group
-    // $err = $this->exec_query("delete from groups where idgroup not in (select id from users)");
-    // $err = $this->exec_query("delete from groups where iduser not in (select id from users)");
-    //    $this->FreedomCopyGroup();    
-
+  function PostDelete() {       
     if (usefreedomuser()) {
-      $dbf=getParam("FREEDOM_DB");
-      $g=new Group($dbf);
-      $g->iduser=$this->iduser;
-      $g->idgroup=$this->idgroup;
-      $err=$g->Delete(true);
-      if ($err=="") {
-	$g->exec_query("delete from docperm where userid=".$g->iduser); // if it is a user (not a group)
+      $u=new User("",$this->iduser);
+      if ($u->isgroup=="Y") {
+	// recompute all doc profil
+	$this->FreedomCopyGroup();    
+      } else {
+	$dbf=getParam("FREEDOM_DB");
+	$g=new Group($dbf);
+	$g->iduser=$this->iduser;
+	$g->idgroup=$this->idgroup;
+	$err=$g->Delete(true);
+	if ($err=="") {
+	  // if it is a user (not a group)
+	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 
+	  $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=".$g->iduser);
+	}
       }
     }
-
   }
+
   function PostInsert() {
     $err = $this->exec_query("delete from sessions where userid=".$this->iduser);
     //    $this->FreedomCopyGroup();
     if (usefreedomuser()) {
-      $dbf=getParam("FREEDOM_DB");
-      $g=new Group($dbf);
-      $g->iduser=$this->iduser;
-      $g->idgroup=$this->idgroup;
-      $err=$g->Add(true);
-      if ($err=="") {
-	$g->exec_query("delete from docperm where userid=".$g->iduser); // if it is a user (not a group)
+      $u=new User("",$this->iduser);
+      if ($u->isgroup=="Y") {
+	// recompute all doc profil
+	$this->FreedomCopyGroup();    
+      } else {
+	$dbf=getParam("FREEDOM_DB");
+	$g=new Group($dbf);
+	$g->iduser=$this->iduser;
+	$g->idgroup=$this->idgroup;
+	$err=$g->Add(true);
+	if ($err=="") {
+	  // if it is a user (not a group)
+	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 
+	  $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=".$g->iduser);
+	}
       }
     }
     return $err;
