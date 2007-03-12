@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.39 2007/01/11 09:23:37 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.40 2007/03/12 09:05:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.39 2007/01/11 09:23:37 eric Exp $
+//  $Id: Class.Layout.php,v 1.40 2007/03/12 09:05:17 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -329,7 +329,7 @@ var $strip='Y';
 
   function GenJsRef() {
     $js = "";
-    $list[]=$this->action->GetParam("CORE_JSURL")."/logmsg.js";
+    $list[]=$this->action->GetParam("CORE_JSURL")."/logmsg.js?wv=".$this->action->GetParam("WVERSION");
     $list = array_merge($list,$this->action->parent->GetJsRef());
 
     reset($list);

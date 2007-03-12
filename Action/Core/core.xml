@@ -62,7 +62,7 @@ addEvent(window,"load",resizeIurl);
 [ZONE [headerApp]:[headerAct]]
 
 <iframe style="border:none;margin:0px" id="fbody" width="100%" height="85%" name="fbody" src="[CORE_STANDURL]&app=[mainApp]&action=[mainAct]" scrolling="needed"></iframe>
-<iframe style="display:none" name="fhidden" src="[CORE_STANDURL]&app=CORE&action=WVERSION" noresize  style="border-style:none" scrolling="no"></iframe>
+<iframe style="display:none" name="fhidden" src="about:blank" noresize  style="border-style:none" scrolling="no"></iframe>
 <div id="dfooter">[ZONE [footerApp]:[footerAct]]</div>
 </body>
 </html>

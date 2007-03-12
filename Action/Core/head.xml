@@ -115,7 +115,7 @@ function selectIt(o,th) {
   th.className='Select';
   o.className='Select';
   csel=th;
-  subwindow(10,10,'fhidden','[CORE_STANDURL]&app=CORE&action=WVERSION');
+  //subwindow(10,10,'fhidden','[CORE_STANDURL]&app=CORE&action=WVERSION');
 }
 </script>
 

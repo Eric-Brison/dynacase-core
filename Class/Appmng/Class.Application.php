@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.56 2006/11/16 17:06:24 eric Exp $
+ * @version $Id: Class.Application.php,v 1.57 2007/03/12 09:05:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -210,7 +210,8 @@ create sequence SEQ_ID_APPLICATION start 10;
 	if ($needparse) {
 	  $this->jsref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
 	} else {
-	  $this->jsref[$ref]=$ref;
+	  $c=(strstr($ref, '?'))?'&':'?';
+	  $this->jsref[$ref]=$ref.$c."wv=".$this->getParam("WVERSION");
 	}
 	$this->log->debug("AddJsRef [$ref] = <{$this->jsref[$ref]}>");
       }
@@ -311,7 +312,8 @@ create sequence SEQ_ID_APPLICATION start 10;
 	if ($needparse) {
 	  $this->cssref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
 	} else {
-	  $this->cssref[$ref]=$ref;
+	  $c=(strstr($ref, '?'))?'&':'?';
+	  $this->cssref[$ref]=$ref.$c."wv=".$this->getParam("WVERSION");
 	}
       }
     }
