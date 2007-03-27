@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * Assosiate icon with mime type
+ *
+ * @author Anakeen 2007
+ * @version $Id: Lib.FileMime.php,v 1.3 2007/03/27 15:12:53 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 
 function getIconMimeArray() {
   return array(

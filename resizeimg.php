@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * Resize image (icons) by imagemagick converter
+ *
+ * @author Anakeen 2007
+ * @version $Id: resizeimg.php,v 1.9 2007/03/27 15:12:53 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
 include_once("WHAT/Lib.Prefix.php");
 
 function rezizelocalimage($img,$size,$basedest) {

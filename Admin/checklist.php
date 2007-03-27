@@ -1,3 +1,16 @@
+<?php
+/**
+ * Verify several point for the integrity of the system
+ *
+ * @author Anakeen 2007
+ * @version $Id: checklist.php,v 1.4 2007/03/27 15:12:53 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
+?>
 <html><head>
 <style>
 a.virtual {
