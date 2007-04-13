@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.19 2006/11/16 17:06:24 eric Exp $
+ * @version $Id: guest.php,v 1.20 2007/04/13 14:39:15 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -174,6 +174,7 @@ setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
 //print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "$pubdir/locale");
+bind_textdomain_codeset("what", 'ISO-8859-15');
 textdomain ("what");
 
   
