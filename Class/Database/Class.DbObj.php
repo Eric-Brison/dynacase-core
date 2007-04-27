@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.44 2006/12/21 18:03:12 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.45 2007/04/27 06:43:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.44 2006/12/21 18:03:12 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.45 2007/04/27 06:43:16 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.44 2006/12/21 18:03:12 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.45 2007/04/27 06:43:16 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -340,7 +340,7 @@ function Add($nopost=false)
     $valstring=substr($valstring,0,strlen($valstring)-1);
     $sql=$sql.$valstring.")";
     
-    // exécution de la requête
+    // requery execution
       $msg_err = $this->exec_query($sql);
     
     if ($msg_err!=''){
@@ -487,16 +487,15 @@ function Create($nopost=false)
   {
     $msg = "";
     if (isset($this->sqlcreate)) {
-      
       // step by step
       if (is_array($this->sqlcreate)) {
 	while (list($k,$sqlquery)=each($this->sqlcreate)) {
-	  $msg=$this->exec_query($sqlquery,1);
+	  $msg.=$this->exec_query($sqlquery,1);
 	}
       } else {	
 	$sqlcmds = explode(";",$this->sqlcreate);
 	while (list($k,$sqlquery)=each($sqlcmds)) {
-	  $msg=$this->exec_query($sqlquery,1);
+	  $msg.=$this->exec_query($sqlquery,1);
 	}
       }
       $this->log->debug("DbObj::Create : {$this->sqlcreate}");
