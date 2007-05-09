@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryGen.php,v 1.6 2004/07/28 12:07:26 eric Exp $
+ * @version $Id: Class.QueryGen.php,v 1.7 2007/05/09 15:44:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,12 +28,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-//  $Id: Class.QueryGen.php,v 1.6 2004/07/28 12:07:26 eric Exp $
+//  $Id: Class.QueryGen.php,v 1.7 2007/05/09 15:44:27 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // This class is designed to design easily pages with query/order elements
 //
-$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.6 2004/07/28 12:07:26 eric Exp $';
+$CLASS_QUERYGEN_PHP = '$Id: Class.QueryGen.php,v 1.7 2007/05/09 15:44:27 eric Exp $';
 
 include_once('Class.QueryDb.php');
 include_once('Class.TableLayout.php');
@@ -160,7 +160,7 @@ function GenMainForm($name,$height,$width,$mainurl,$suburl="") {
    $this->query->desc=$this->desc;
    $this->AddFulltextQuery();
    $this->table->array = $this->query->Query($this->start,$this->slice,$type);
-   $this->table->nb_tot = $this->query->nb;
+   $this->table->nb_tot = $this->query->count();
    if ($this->table->nb_tot == 0) {
      $this->table->array=array();
    }

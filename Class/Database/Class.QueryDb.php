@@ -3,7 +3,7 @@
  * Query to Database
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryDb.php,v 1.13 2006/11/28 17:41:48 eric Exp $
+ * @version $Id: Class.QueryDb.php,v 1.14 2007/05/09 15:44:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -126,20 +126,23 @@ function QueryDb ($dbaccess,$class)
 
 
       // Order by
-      if ($this->order_by != "") {
+      if (($this->order_by != "")&&(!$onlycont)) {
         $query = $query." order by ".$this->order_by;
         if (isset($this->desc) && ($this->desc == "up")) {
           $query = $query." desc";
         }
       }
-      $query=$query.';';
-      $query=$query.';';
+      if ($slice > 0) $query.= " limit $slice";   
+      if ($start > 0) $query.= " offset $start";     
+      $query.=';';
+
     } else {
       $query=$p_query;
     }
 
     $this->slice=$slice;
     $this->start=$start;
+
     $this->LastQuery=$query;
     return $query;
  }
@@ -157,7 +160,7 @@ function QueryDb ($dbaccess,$class)
   function Query($start=0,$slice=0,$res_type="LIST",$p_query="")  {
       
     $query=$this->initQuery($start,$slice,$p_query);
-    $this->res_type=$res_type;
+    $this->res_type=$res_type;	
     $err = $this->basic_elem->exec_query($query);
     //	print "$query $res_type $p_query<BR>\n";
     if ($err != "") return($err);      
@@ -180,7 +183,7 @@ function QueryDb ($dbaccess,$class)
         $end = $start + $slice;
       }
       for ($c=0; $c<$this->nb;$c++) {
-        if (($c >= $start) && ($c<$end)) {
+        
           $result = $this->basic_elem->fetch_array($c);
           if (($res_type == "LIST") || ($res_type == "LISTC")) {
              $this->list[$c] = new $this->class($this->dbaccess,"",$result,$this->basic_elem->dbid);
@@ -189,7 +192,7 @@ function QueryDb ($dbaccess,$class)
                $this->list[$c][$k]=$v;
              }
           }
-        }
+        
       }
 
       return($this->list);
