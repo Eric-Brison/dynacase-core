@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.24 2006/11/16 17:06:24 eric Exp $
+ * @version $Id: Class.Param.php,v 1.25 2007/05/10 13:07:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -32,7 +32,7 @@ var $dbtable = "paramv";
 
 var $sqlcreate = '
       create table paramv (
-              name   varchar(50),
+              name   varchar(50) not null,
               type   varchar(21),
               appid  int4,
               val    text);
@@ -45,7 +45,7 @@ var $buffer=array();
 function PreInsert( )
 {
     if (strpos($this->name," ")!=0) {
-      return "Le nom du paramètre ne doit pas contenir d'espace";
+      return _("Parameter name does not include spaces");
     }
 }
  function PostInit() {
