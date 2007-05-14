@@ -3,7 +3,7 @@
  * Log information class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Log.php,v 1.13 2005/09/12 16:31:32 eric Exp $
+ * @version $Id: Class.Log.php,v 1.14 2007/05/14 13:07:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,7 +30,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Log.php,v 1.13 2005/09/12 16:31:32 eric Exp $
+// $Id: Class.Log.php,v 1.14 2007/05/14 13:07:52 eric Exp $
 // yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
 
@@ -153,8 +153,8 @@ function wlog($sta, $str, $args=NULL) {
 	$pri = LOG_NOTICE;
       }
       if ($_SERVER['HTTP_HOST'] == "") {
-	$stderr = fopen('php://stderr', 'w');
-	fwrite($stderr, sprintf("%s LOG::$appf".$str."\n",date("d/m/Y H:i:s",time())));
+	$stderr = fopen('php://stderr', 'w');	
+	fwrite($stderr, sprintf("%s LOG::$appf %s\n",date("d/m/Y H:i:s",time()),$str));
       } 
       define_syslog_variables();    
       openlog("{$appf}", 0, LOG_LOCAL6);
