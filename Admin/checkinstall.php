@@ -102,6 +102,8 @@ $pearmod = 0;
 		"ps2pdf" => "E",
 		"php" => "E",
 		"ldapdelete" => "W",
+		"psql" => "E",
+		"pg_dump" => "W",
   		);
 
   $extensions = array(
