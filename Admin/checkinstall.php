@@ -79,7 +79,7 @@ $pearmod = 0;
 
   testStart("General");
   
-  $versionref = 5.6;
+  $versionref = 5.1;
   $version = phpversion();
   if (floatval($version) >= $versionref) testInfo("PHP Version  : ".$version);
   else testError("PHP Version >= $versionref required (currently $version)");
@@ -113,7 +113,7 @@ $pearmod = 0;
  	"LDAP" => array("f" => "ldap_connect", "l"=>"W", "c"=>"This extension is used for ldap connexion from FreeDom."),
 	);
 			
-  $pearmodules = array ( "Crypt_CHAP", "Net_SMTP",  "Mail_Mime", "Mail_Mimes");
+  $pearmodules = array ( "Crypt_CHAP", "Net_SMTP",  "Mail_Mime");
 
   testStart("Commands used test");
   foreach ($programs as $p => $s) testExecProgram($p, $s);
