@@ -3,7 +3,7 @@
  * Verify several point for the integrity of the system
  *
  * @author Anakeen 2007
- * @version $Id: checklist.php,v 1.4 2007/03/27 15:12:53 eric Exp $
+ * @version $Id: checklist.php,v 1.5 2007/05/21 14:52:56 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,6 +12,7 @@
  */
 ?>
 <html><head>
+<LINK REL="stylesheet" type="text/css" HREF="Layout/wg.css" >
 <style>
 a.virtual {
  border:solid 1px black;
@@ -56,7 +57,7 @@ if (!$wvirtual) $wvirtual="main";
 print "<H1>Check List : <i>$wvirtual</i> </H1>";
 $virtuals[]="main";
 // detect Virtuals
-if ($handle = opendir(DEFAULT_PUBDIR."/virtual")) {
+if ($handle = @opendir(DEFAULT_PUBDIR."/virtual")) {
    /* Ceci est la façon correcte de traverser un dossier. */
    while (false !== ($file = readdir($handle))) {
      if ($file[0]!=".") {
