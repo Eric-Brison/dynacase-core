@@ -113,6 +113,7 @@ $pearmod = 0;
         "XML" => array("f" => "xml_set_default_handler", "l"=>"E", "c"=>""),
         "MHASH" => array("f" => "mhash", "l"=>"W", "c"=>"This function is used by user management to generate informations for samba authentication on FreeDom."),
  	"LDAP" => array("f" => "ldap_connect", "l"=>"W", "c"=>"This extension is used for ldap connexion from FreeDom."),
+ 	"NCURSES" => array("f" => "ncurses_init", "l"=>"W", "c"=>"This extension is used for command line  FreeDom administration."),
 	);
 			
   $pearmodules = array ( "Crypt_CHAP", "Net_SMTP",  "Mail_Mime");
