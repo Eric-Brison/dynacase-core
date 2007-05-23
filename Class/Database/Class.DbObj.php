@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.47 2007/05/10 13:06:22 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.48 2007/05/23 09:57:31 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.47 2007/05/10 13:06:22 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.48 2007/05/23 09:57:31 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.47 2007/05/10 13:06:22 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.48 2007/05/23 09:57:31 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -335,7 +335,7 @@ function Add($nopost=false)
     $valstring = "";
     reset($this->fields);
     while (list($k,$v) = each($this->fields)) {
-      $valstring = $valstring.$this->lw(AddSlashes($this->$v)).",";
+      $valstring = $valstring.$this->lw($this->$v).",";
     }
     $valstring=substr($valstring,0,strlen($valstring)-1);
     $sql=$sql.$valstring.")";
@@ -385,9 +385,10 @@ function Modify($nopost=false,$sfields="",$nopre=false)
     $wstr="";
     foreach ($fields as $k=>$v) {
       if (!isset($notset[$v])) {
-        $setstr=$setstr." ".$v."=".$this->lw(AddSlashes($this->$v)).",";
+        $setstr=$setstr." ".$v."=".$this->lw($this->$v).",";
       } else {
-        $wstr=$wstr." ".$v."='".$this->$v."' AND";
+	$val=pg_escape_string($this->$v);
+        $wstr=$wstr." ".$v."='".$val."' AND";
       } 
     }
     $setstr=substr($setstr,0,strlen($setstr)-1);
@@ -474,7 +475,7 @@ function Adds(&$tcopy, $nopost=false)
   }
 function lw($prop)
   {
-    $result = ($prop==''?"null":"'$prop'");
+    $result = ($prop==''?"null":"'".pg_escape_string($prop)."'");
     return $result;
   }
 function CloseConnect()
@@ -534,12 +535,14 @@ function exec_query($sql,$lvl=0)
     if ($sql == "") return;
 
     if ($SQLDEBUG) $sqlt1=microtime(); // to test delay of request
-    //     $mb=microtime();
+    //   $mb=microtime();
     $this->init_dbid();
     $this->log->debug("exec_query : $sql");
     
     $this->res=@pg_query($this->dbid,$sql);
-    // print "<P> $sql;".$this->dbid; print sprintf(" - <B>%.03f</b></p>",microtime_diff(microtime(),$mb));
+   
+
+    //error_log( sprintf("<P> %s [%d]( <B>%.03f</b></p>",$sql,$this->numrows(),microtime_diff(microtime(),$mb)));
     $pgmess = pg_last_error($this->dbid);
     //    if ($pgmess != "") print "[$sql]";
     
