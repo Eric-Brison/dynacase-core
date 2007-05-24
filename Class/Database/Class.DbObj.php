@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.48 2007/05/23 09:57:31 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.49 2007/05/24 14:56:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.48 2007/05/23 09:57:31 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.49 2007/05/24 14:56:07 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.48 2007/05/23 09:57:31 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.49 2007/05/24 14:56:07 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -458,12 +458,11 @@ function Adds(&$tcopy, $nopost=false)
     foreach ($tcopy as $kc=>$vc) {
       $trow[$kc]="";
       foreach($this->fields as $k=>$v) {
-	$trow[$kc] .= "".((isset($vc[$v]))?$vc[$v]:$this->$v)."\t";
+	$trow[$kc] .= "".((isset($vc[$v]))?$vc[$v]:((($this->$v)!='')?$this->$v:'\N'))."\t";
 	//$trow[$kc][$k] .= ((isset($vc[$v]))?$vc[$v]:$this->$v);
       }
       $trow[$kc]=substr($trow[$kc],0,-1);
     }
-    
     // query execution
     $berr= pg_copy_from($this->dbid,$this->dbtable,$trow,"\t");
 	 
