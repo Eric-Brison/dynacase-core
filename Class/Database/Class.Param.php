@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.25 2007/05/10 13:07:49 eric Exp $
+ * @version $Id: Class.Param.php,v 1.26 2007/05/25 13:43:27 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -64,6 +64,7 @@ function SetKey($appid,$userid,$styleid="0") {
 
 function Set($name,$val,$type=PARAM_GLB,$appid='')
 {
+  unset($_SESSION["sessparam".$appid]);
   $this->name = $name;
   $this->val = $val;
   $this->type = $type;
@@ -79,8 +80,7 @@ function Set($name,$val,$type=PARAM_GLB,$appid='')
   if ($paramt->isAffected()) $this->Modify();
   else $this->Add();
 
-  $this->buffer[$name]=$val;
-  unset($_SESSION["sessparam".$this->appid]);
+  $this->buffer[$name]=$val; 
 }
 
 function SetVolatile($name,$val)
