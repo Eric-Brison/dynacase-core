@@ -3,7 +3,7 @@
  * Assosiate icon with mime type
  *
  * @author Anakeen 2007
- * @version $Id: Lib.FileMime.php,v 1.3 2007/03/27 15:12:53 eric Exp $
+ * @version $Id: Lib.FileMime.php,v 1.4 2007/05/31 07:19:39 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -116,8 +116,14 @@ function getIconMimeFile($sysmime) {
   }
   return $icon;
 }
-
+/**
+ * return system file mime
+ * @param string $f filename
+ * @param string $fn basename of file (can be different of real path)
+ * return string mime like text/html
+ */
 function getSysMimeFile($f,$fn="") {
+  if (! file_exists($f)) return false;
   $sys = trim(`file -bi "$f"`);
   $txt=getTextMimeFile($f);
   error_log("MIME:.file -bi [$f] [$sys]");
