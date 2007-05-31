@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.40 2007/03/12 09:05:17 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.41 2007/05/31 07:17:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.40 2007/03/12 09:05:17 eric Exp $
+//  $Id: Class.Layout.php,v 1.41 2007/05/31 07:17:26 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -79,11 +79,11 @@ include_once('Class.Application.php');
 class Layout {
 
 //############################################
-//# Private var
+
 //#
 
-var $strip='Y';
-
+  private $strip='Y';
+  public $encoding="";
 //########################################################################
 //# Public methods
 //#  
@@ -424,7 +424,7 @@ var $strip='Y';
   function gen() {
 
     // if used in an app , set the app params
-    if ($this->action != "") {
+    if (is_object($this->action)) {
       $list=$this->action->parent->GetAllParam();
       while (list($k,$v)=each($list)) {
         $this->set($k,$v);

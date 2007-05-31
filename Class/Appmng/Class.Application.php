@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.57 2007/03/12 09:05:17 eric Exp $
+ * @version $Id: Class.Application.php,v 1.58 2007/05/31 07:17:26 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -835,7 +835,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     }
 
   function hasParent() {
-    return (($this->parent != "") && ($this->parent !== $this) );
+    return (is_object($this->parent) && ($this->parent !== $this) );
   }
 }
 ?>
