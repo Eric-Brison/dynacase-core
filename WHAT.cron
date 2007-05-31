@@ -1,9 +1,14 @@
 #!/bin/bash
 # ---------------------------------------------------------
-# $Id: WHAT.cron,v 1.5 2005/11/16 16:34:10 eric Exp $
+# $Id: WHAT.cron,v 1.6 2007/05/31 07:19:22 eric Exp $
 #  
 # Distribued under GPL 2 licence terms
 # ---------------------------------------------------------
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
 if [ -d /var/run/php ] ; then
   find /var/run/php/ -name 'sess_*' -exec /bin/rm {} \;
 fi
@@ -13,4 +18,4 @@ fi
 find /tmp/ -name 'wbar*' -exec /bin/rm {} \;
 find /tmp/ -name 'bgexec*' -exec /bin/rm {} \;
 find /tmp/ -name 'bgtar*' -exec /bin/rm {} \;
-echo "delete from sessions" | psql anakeen anakeen  > /dev/null
+echo "delete from sessions" | psql $dbpsql  > /dev/null
