@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.49 2007/05/24 14:56:07 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.50 2007/05/31 07:18:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.49 2007/05/24 14:56:07 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.50 2007/05/31 07:18:11 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.49 2007/05/24 14:56:07 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.50 2007/05/31 07:18:11 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -185,7 +185,7 @@ function Select($id)
 	if ($count >0) {
 	  $wherestr=$wherestr." AND ";
 	}
-	$wherestr=$wherestr."( ".$this->dbtable.".".$v."='".$id[$k]."' )";
+	$wherestr=$wherestr."( ".$this->dbtable.".".$v."='".pg_escape_string($id[$k])."' )";
 	$count=$count+1;
 	
 	//$this->$v = $id[$k];
@@ -194,7 +194,7 @@ function Select($id)
       if (isset($this->id_fields[0])) {
 	$k = $this->id_fields[0];
 	//$this->$k = $id;
-	$wherestr= "where ".$this->dbtable.".".$this->id_fields[0]."='".$id."'" ;
+	$wherestr= "where ".$this->dbtable.".".$this->id_fields[0]."='".pg_escape_string($id)."'" ;
       } else {
 	$wherestr="";
       }
