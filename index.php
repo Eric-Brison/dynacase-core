@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.42 2006/11/16 17:06:24 eric Exp $
+ * @version $Id: index.php,v 1.43 2007/06/01 11:20:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -102,16 +102,11 @@ if (ereg("(.*)/$indexphp", $_SERVER['SCRIPT_NAME'], $reg)) {
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-
-
-
-
-
 $core->SetVolatileParam("CORE_ROOTURL", "$indexphp?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "$indexphp?sole=A&");
 $core->SetVolatileParam("CORE_SBASEURL","$indexphp?sole=A&session={$session->id}&");
 $core->SetVolatileParam("CORE_STANDURL","$indexphp?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL","$indexphp?sole=Y&session={$session->id}&");
+$core->SetVolatileParam("CORE_SSTANDURL","$indexphp?sole=Y&session={$session->id}&");$core->SetVolatileParam("CORE_ASTANDURL","$puburl/$indexphp?sole=Y&"); // absolute links
 
 // ----------------------------------------
 // Init Application & Actions Objects

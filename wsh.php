@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.27 2006/11/15 17:16:26 eric Exp $
+ * @version $Id: wsh.php,v 1.28 2007/06/01 11:20:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -79,14 +79,20 @@ $puburl = $core->GetParam("CORE_PUBURL","http://".`hostname -f`."/what");
 
 ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 
+$absindex=$core->GetParam("CORE_URLINDEX");
+if ($absindex=='') {
+  $absindex="$puburl/index.php";// try default 
+ }
+
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-$core->SetVolatileParam("CORE_ROOTURL", "index.php?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "index.php?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL","index.php?sole=A&");
-$core->SetVolatileParam("CORE_STANDURL","index.php?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL","index.php?sole=Y&");
+$core->SetVolatileParam("CORE_ROOTURL", "$absindex?sole=R&");
+$core->SetVolatileParam("CORE_BASEURL", "$absindex?sole=A&");
+$core->SetVolatileParam("CORE_SBASEURL","$absindex?sole=A&");// no session
+$core->SetVolatileParam("CORE_STANDURL","$absindex?sole=Y&");
+$core->SetVolatileParam("CORE_SSTANDURL","$absindex?sole=Y&"); // no session
+$core->SetVolatileParam("CORE_ASTANDURL","$absindex?sole=Y&"); // absolute links
 
 if (isset($_GET["app"])) {
   $appl = new Application();

@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.36 2007/02/21 11:08:02 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.37 2007/06/01 11:20:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -170,6 +170,11 @@ $app_const = array (
 							"global"=>"Y"),
 		    "CORE_MAXOBJCACHE"	        =>array("val"=>"50",
 							"descr"=>N_("number of cached object by class"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_URLINDEX"	        =>array("val"=>"",
+							"descr"=>N_("url to reach http server index"),
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
