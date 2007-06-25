@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.36 2007/02/21 11:08:02 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.37 2007/06/25 07:09:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -180,9 +180,15 @@ function DbSql2php($dbcoord,$withdbname=true) {
     return $dbpsql;  
 }
 function getDbName($dbaccess) {
-  if (ereg("dbname=([a-z]+)",$dbaccess,$reg)) {
+  if (ereg("dbname=([a-z0-9_]+)",$dbaccess,$reg)) {
     return $reg[1];
   }
+}
+function getDbHost($dbaccess) {
+  if (ereg("host=([^ ]+)",$dbaccess,$reg)) {
+    return $reg[1];
+  }
+  return "localhost";
 }
 
 

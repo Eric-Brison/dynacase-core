@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.13 2007/05/22 15:09:35 marc Exp $
+ * @version $Id: Lib.WCheck.php,v 1.14 2007/06/25 07:09:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -119,7 +119,9 @@ function vercmp($v1,$v2) {
 }
 
 function checkPGConnection() {
-  $dbaccess="user=postgres dbname=template1";
+  $dbaccess=getDbAccess();
+  $host=getDbHost($dbaccess);
+  $dbtemp="user=postgres host=$host dbname=template1";
   $dbid=@pg_connect($dbaccess);
 
   if (!$dbid) {
