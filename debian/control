@@ -1,0 +1,13 @@
+Source: freedom-what
+Section: web
+Priority: extra
+Maintainer: yannick <yannick.lebriquer@anakeen.com>
+Build-Depends: debhelper (>= 5), autoconf
+Standards-Version: 3.7.2
+
+Package: freedom-what
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, libapache2-mod-php5 | php5 , apache2 , postgresql (>= 8.1), sudo
+Description: Web Hosting Application Toolkit
+ This package provides elements to deploy php applications based on
+ WHAT design
