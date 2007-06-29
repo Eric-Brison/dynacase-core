@@ -20,7 +20,7 @@ set -e
 case "$1" in
     remove)
 	a2dissite freedom
-	sed -i 'shttpd/d' /etc/sudoers
+	sed -i '/shttpd/d' /etc/sudoers
     ;;
     upgrade|deconfigure)
     ;;

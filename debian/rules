@@ -63,7 +63,7 @@ install: build
 	# Add here commands to install the package into debian/freedom-what.
 	make -i pubdir=$(CURDIR)/debian/freedom-what/usr/share/what rootprefix=$(CURDIR)/debian/freedom-what publish
 	install -d $(CURDIR)/debian/freedom-what/etc/apache2/sites-available
-	install $(CURDIR)/debian/freedom-what/usr/share/what/apache.conf $(CURDIR)/debian/freedom-what/etc/apache2/sites-available/freedom.conf
+	install $(CURDIR)/debian/freedom-what/usr/share/what/apache.conf $(CURDIR)/debian/freedom-what/etc/apache2/sites-available/freedom
 
 # Build architecture-independent files here.
 binary-indep: build install

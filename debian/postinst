@@ -23,7 +23,7 @@ case "$1" in
 	a2enmod expires
 	a2ensite freedom
 	chown -R www-data /usr/share/what
-        ln -s /usr/share/what/admin/winit.html /usr/share/what/admin/index/html
+        ln -s /usr/share/what/admin/winit.html /usr/share/what/admin/index.html
 	htpasswd -cb /usr/share/what/admin/.htpasswd admin admin
 	sed -i '/shttpd/d' /etc/sudoers
 	echo "www-data ALL=NOPASSWD:/usr/share/what/admin/shttpd" >> /etc/sudoers
