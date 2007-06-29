@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.38 2007/06/29 08:55:44 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.39 2007/06/29 10:37:45 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -50,6 +50,12 @@ $app_const = array (
 							"kind"=>"enum(fr_FR|en_US)",
 							"global"=>"N"),
 
+		    "CORE_DBCONNECT"		        =>array("val"=>"unpersistent",
+								"descr"=>N_("connection type"),
+								"user"=>"N",
+								"style"=>"N",
+								"kind"=>"enum(unpersistent|persistent)",
+								"global"=>"Y"),
 
 		    // Layout Param
 		   

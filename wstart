@@ -29,6 +29,15 @@ popd > /dev/null
 $wpub/wsh.php --api=refreshjsversion >/dev/null
 #clear current sessions
 echo "delete from sessions" | psql $dbpsql >/dev/null
+
+#change pg mode connection
+cdb=`$wpub/wsh.php --api=get_param --param=CORE_DBCONNECT`
+if [ $cdb == 'persistent' ] ; then
+  sed -ibak -e"s/pg_connect/pg_pconnect/g" $wpub/WHAT/Lib.Common.php
+else
+  sed -ibak -e"s/pg_pconnect/pg_connect/g" $wpub/WHAT/Lib.Common.php
+fi
+
 #/bin/rm -f /var/run/php/sess_*
 #/bin/rm -f /var/lib/php/session/sess_*
 
