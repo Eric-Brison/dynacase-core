@@ -21,6 +21,9 @@ case "$1" in
     remove)
 	a2dissite freedom
 	sed -i '/shttpd/d' /etc/sudoers
+	#remove link
+	rm -f /usr/share/what/admin/index.html
+	rm -f /usr/share/what/admin/.htpasswd
     ;;
     upgrade|deconfigure)
     ;;
