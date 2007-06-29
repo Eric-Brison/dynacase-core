@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: head.php,v 1.23 2007/01/08 17:52:46 eric Exp $
+ * @version $Id: head.php,v 1.24 2007/06/29 08:55:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -112,8 +112,6 @@ function head(&$action) {
     $action->lay->setblockdata("NOFREEGATE",array(array("zou")));
   }
 
-  if ($action->GetParam("CORE_USECACHE") == "yes") $action->lay->set("dcache","inline");
-  else $action->lay->set("dcache","none");
   // update username
   userlogin($action);
 

@@ -3,7 +3,7 @@
  * Query to Database
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryDb.php,v 1.14 2007/05/09 15:44:27 eric Exp $
+ * @version $Id: Class.QueryDb.php,v 1.15 2007/06/29 08:55:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -281,16 +281,4 @@ function QueryDb ($dbaccess,$class)
   }
 }
 
-// Class CacheQuery extends Cache {
-//   var $list=array();
-//   var $nb=0;
-
-//   function CacheQuery($queryobj=NULL) {
-//     if ($queryobj != NULL) {
-//       $this->list= $queryobj->list;
-//       $this->nb = $queryobj->nb;
-//       $this->cacheclass=strtolower($queryobj->class);
-//     }
-//   }
-//}
 ?>
