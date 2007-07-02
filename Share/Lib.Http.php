@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.29 2006/11/10 15:36:12 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.30 2007/07/02 07:09:15 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -42,7 +42,7 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
   global $SQLDEBUG;
   if ($SQLDEBUG) {
     global $ticainit,$tic1,$trace;
-
+    global $TSQLDELAY,$SQLDELAY;
     $trace["__url"]=$trace["url"];
     $trace["__init"]=$trace["init"];
     unset($trace["url"]);
