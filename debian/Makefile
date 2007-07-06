@@ -1,5 +1,5 @@
 # ============================================
-# $Id: Makefile,v 1.4 2007/06/29 09:46:53 yannick Exp $
+# $Id: Makefile,v 1.5 2007/07/06 12:45:34 yannick Exp $
 # ============================================
 
 
@@ -12,4 +12,4 @@ export utildir
 include $(utildir)/PubRule
 
 
-DISTFILES+=changelog.in compat control copyright dirs docs postinst prerm rules
+DISTFILES+=changelog compat control copyright dirs docs postinst prerm rules debian.patch freedom.conf

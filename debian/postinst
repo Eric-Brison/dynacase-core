@@ -21,6 +21,7 @@ set -e
 case "$1" in
     configure)
 	a2enmod expires
+	a2enmod php5
 	a2ensite freedom
 	chown -R www-data /usr/share/what
 	if [ ! -f /usr/share/what/admin/index.html ]; then
