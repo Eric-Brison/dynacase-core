@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.88 2007/06/13 13:39:00 eric Exp $
+#  $Id: WHAT.spec.in,v 1.89 2007/07/23 15:09:32 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -107,6 +107,7 @@ Requires: apache-mod_authn_pam
 Requires: pam_what >= 0.4.0
 Requires: ankpsql-tools
 Requires: gettext
+Requires: which
 BuildRequires: gettext
 %if %{cerbere} || %{pld}
 %{!?nobuildrequire:BuildRequires: gettext-devel > 0.11}
