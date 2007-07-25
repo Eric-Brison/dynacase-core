@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.42 2007/07/25 07:35:49 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.43 2007/07/25 13:28:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.42 2007/07/25 07:35:49 eric Exp $
+//  $Id: Class.Layout.php,v 1.43 2007/07/25 13:28:48 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -321,10 +321,16 @@ class Layout {
      $out = preg_replace("/\[SCRIPT:([^\]]*)\]/e",
                          "\$this->action->GetScriptUrl('\\1')",
                          $out);
-
+     if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'UTF-8');
      $out = preg_replace("/\[TEXT:([^\]]*)\]/e",
-                         "\$this->action->Text('\\1')",
+                         "\$this->Text('\\1')",
                          $out);
+     if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'ISO-8859-15'); // restore
+  }
+
+  function Text($s) {
+    if ($s=="") return $s;
+    return _($s);
   }
 
   function GenJsRef() {
