@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.41 2007/05/31 07:17:26 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.42 2007/07/25 07:35:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.41 2007/05/31 07:17:26 eric Exp $
+//  $Id: Class.Layout.php,v 1.42 2007/07/25 07:35:49 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -237,7 +237,7 @@ class Layout {
   function setEncoding($enc) {
     if ($enc=="utf-8") {
       $this->encoding = $enc;
-      bind_textdomain_codeset("what", 'UTF-8');
+      // bind_textdomain_codeset("what", 'UTF-8');
     }
   }
 
