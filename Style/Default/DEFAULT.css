@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.9 2007/03/07 14:56:10 eric Exp $
+ * $Id: DEFAULT.css,v 1.10 2007/08/08 15:37:36 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -62,7 +62,7 @@ OPTION {
    background-color:[input-background-normal-color];
 }
 BUTTON { 
-  -moz-border-radius:25px;
+  /*-moz-border-radius:25px;*/
   padding:0pt;
    color:[input-text-normal-color];
   background-color:[input-background-normal-color];
@@ -72,7 +72,7 @@ BUTTON:hover {
    }
 
 input[type="button"] { 
-	-moz-border-radius:25px;
+	/*-moz-border-radius:25px;*/
 	padding:0pt;
    }
 input:hover,  TEXTAREA:hover,  SELECT:hover { 
@@ -93,14 +93,16 @@ input:focus,  textarea:focus, input.sffocus, textarea.sffocus {
   background-color:[input-background-focus-color];
    }
 */
+/*
 input[type="submit"] { -moz-border-radius:25px;
    }
 input[type="select"] { -moz-border-radius:25px;
   }
 input[type="reset"] { -moz-border-radius:25px ;
  }
+*/
 input[type="text"] { 
-  -moz-border-radius:7px ;
+  /*-moz-border-radius:7px ;*/
 
   border:inset 1px [input-text-normal-color];
  }
@@ -109,7 +111,7 @@ input[disabled], textarea[disabled] {
   background-color:[input-background-disabled-color];
 }
 TEXTAREA { 
-  -moz-border-radius:7px ;
+  /*-moz-border-radius:7px ;*/
   border:inset 1px [input-text-normal-color];
  }
 

@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: ORIGINAL.css,v 1.1 2006/11/08 17:52:16 eric Exp $
+ * $Id: ORIGINAL.css,v 1.2 2007/08/08 15:37:36 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -19,4 +19,12 @@ TABLE.headbarmenu TD {
 
 .popup {
   background-image: none!important;  
+}
+
+input[type="button"],BUTTON,input[type="reset"],input[type="select"],input[type="submit"] {  
+  -moz-border-radius:25px;
+}
+
+input[type="text"],TEXTAREA { 
+  -moz-border-radius:7px;
 }
