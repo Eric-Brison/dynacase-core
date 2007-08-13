@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.28 2007/06/01 11:20:34 eric Exp $
+ * @version $Id: wsh.php,v 1.29 2007/08/13 07:37:30 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -74,16 +74,18 @@ $core->session=new Session();
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 
-$puburl = $core->GetParam("CORE_PUBURL","http://".`hostname -f`."/what");
+$puburl = $core->GetParam("CORE_PUBURL","http://".`hostname -f`."/freedom");
 
 
 ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 
 $absindex=$core->GetParam("CORE_URLINDEX");
 if ($absindex=='') {
-  $absindex="$puburl/index.php";// try default 
+  $absindex="$puburl/";// try default 
  }
-
+if ($urlindex) $core->SetVolatileParam("CORE_EXTERNURL",$urlindex);
+else $core->SetVolatileParam("CORE_EXTERNURL",$puburl."/");
+ 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
