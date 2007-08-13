@@ -15,8 +15,8 @@ function GetXY(event) {
 }
 function getFrameWidth(w) {
   if (! w) w=window;
-      winW = w.innerWidth;
-      if (! winW) winW = w.document.documentElement.offsetWidth;
+      winW = w.document.documentElement.offsetWidth;
+      if (! winW) winW = w.innerWidth;
       if (! winW) winW = w.document.body.offsetWidth;
 
       return (winW);
@@ -24,8 +24,9 @@ function getFrameWidth(w) {
 
 function getFrameHeight(w) {
   if (! w) w=window;
-      winH= w.innerHeight;
-      if (! winH) winH = w.document.documentElement.offsetHeight;
+      winH= winH = w.innerHeight;
+     
+      if (! winH)  winH=w.document.documentElement.offsetHeight;
       if (! winH) winH = w.document.body.offsetHeight;
       return (winH);
   }
