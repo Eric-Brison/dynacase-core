@@ -3,7 +3,7 @@
  * Assosiate icon with mime type
  *
  * @author Anakeen 2007
- * @version $Id: Lib.FileMime.php,v 1.4 2007/05/31 07:19:39 eric Exp $
+ * @version $Id: Lib.FileMime.php,v 1.5 2007/09/04 15:35:01 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -182,7 +182,7 @@ function getSysMimeFile($f,$fn="") {
     if (preg_match('/\.ppt$/',$fn))    return 'application/vnd.ms-powerpoint';
   }
 
-  return $sys;
+  return strtok($sys," \n\t");
 }
 function getTextMimeFile($f) {
   $txt = trim(`file -b "$f"`);
