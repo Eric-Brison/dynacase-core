@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.58 2007/05/31 07:17:26 eric Exp $
+ * @version $Id: Class.Application.php,v 1.59 2007/09/04 11:37:30 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -650,13 +650,21 @@ create sequence SEQ_ID_APPLICATION start 10;
 	if (! $update) {
 	  $this->log->debug("InitApp :  new application ");
 	}
-	foreach ($app_desc as $k=>$v) {
-	  $this->$k = $v;
-	}
-	$this->available = "Y";
 	if ($update) {
 	  $this->Modify();
+	  foreach ($app_desc as $k=>$v) {
+	    switch ($v) {
+	    case 'displayable':
+	      break;
+	    default:
+	      $this->$k = $v;
+	    }
+	  }
 	} else {
+	  foreach ($app_desc as $k=>$v) {
+	    $this->$k = $v;
+	  }
+	  $this->available = "Y";
 	  $this->Add();
 	  $this->param=new Param();
 	  $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:ANONYMOUS_ID);
@@ -687,8 +695,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 
 	// init actions
 	$action = new Action($this->dbaccess);
-	$action->Init($this,$action_desc,false);
-       
+	$action->Init($this,$action_desc,false);       
       }
 
       // init actions
