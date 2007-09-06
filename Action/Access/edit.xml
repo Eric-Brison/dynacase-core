@@ -105,7 +105,7 @@ addEvent(window,"load",findtarget);
 <body>
 
 <form target="[target]" name="edit" method="POST" action="[CORE_STANDURL]app=ACCESS&action=[modifyact]"
-      onsubmit="window.setTimeout('self.close()',2000);">
+      onsubmit="window.setTimeout('self.close()',2000);this.Modify.disabled=true">
 
 <input type="hidden" name="appid" value="[appid]">
 <input type="hidden" name="returnact" value="[returnact]">
@@ -169,7 +169,7 @@ addEvent(window,"load",findtarget);
 <BR>
 <p style="text-align:left">
 <input class="CORETblHead" type="submit" 
-         name="Modify" value="[TEXT:modify]" onclick="this.disabled=true;" >
+         name="Modify" value="[TEXT:modify]"  >
 <input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
 </p>
 </form>
