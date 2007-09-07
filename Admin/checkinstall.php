@@ -1,3 +1,16 @@
+<?php
+/**
+ * Verify several point needed for installation
+ *
+ * @author Anakeen 2007
+ * @version $Id: checkinstall.php,v 1.5 2007/09/07 15:26:55 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage CORE
+ */
+/**
+ */
+?>
 <html>
 <head>
 <title>FreeDom installation check</title>
