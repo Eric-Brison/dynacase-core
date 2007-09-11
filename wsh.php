@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.30 2007/09/07 14:20:22 eric Exp $
+ * @version $Id: wsh.php,v 1.31 2007/09/11 12:57:57 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -86,7 +86,6 @@ if ($absindex=='') {
 if ($absindex) $core->SetVolatileParam("CORE_EXTERNURL",$absindex);
 else $core->SetVolatileParam("CORE_EXTERNURL",$puburl."/");
  
-print $core->getParam("CORE_EXTERNURL");
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
