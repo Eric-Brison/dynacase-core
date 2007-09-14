@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.14 2007/06/25 07:09:56 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.15 2007/09/14 12:36:02 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -122,10 +122,10 @@ function checkPGConnection() {
   $dbaccess=getDbAccess();
   $host=getDbHost($dbaccess);
   $dbtemp="user=postgres host=$host dbname=template1";
-  $dbid=@pg_connect($dbaccess);
+  $dbid=@pg_connect($dbtemp);
 
   if (!$dbid) {
-    $err= _("cannot access to default database [$dbaccess]");
+    $err= _("cannot access to template database [$dbtemp]");
     exec("psql -c '\q' anakeen anakeen",$out);
     $err.=implode(",",$out);
   } else {
