@@ -31,6 +31,7 @@ case "$1" in
 	sed -i '/shttpd/d' /etc/sudoers
 	echo "www-data ALL=NOPASSWD:/usr/share/what/admin/shttpd" >> /etc/sudoers
 	/usr/share/what/wstop
+	chown  www-data /usr/share/what/.freedom
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
