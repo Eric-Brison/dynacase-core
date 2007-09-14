@@ -23,7 +23,7 @@ endif
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	# Add here commands to configure the package.
+# Add here commands to configure the package.
 	autoconf
 	./configure --with-pubrule=`pwd` \
 	            --with-httpuser=www-data \
@@ -38,9 +38,9 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
-	# Add here commands to compile the package.
-	#$(MAKE)
-	#docbook-to-man debian/freedom-what.sgml > freedom-what.1
+# Add here commands to compile the package.
+#$(MAKE)
+#docbook-to-man debian/freedom-what.sgml > freedom-what.1
 
 	touch $@
 
@@ -49,7 +49,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp configure-stamp
 
-	# Add here commands to clean up after the build process.
+# Add here commands to clean up after the build process.
 	-$(MAKE) clean
 
 	dh_clean 
@@ -60,9 +60,10 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/freedom-what.
+# Add here commands to install the package into debian/freedom-what.
 	make -i pubdir=$(CURDIR)/debian/freedom-what/usr/share/what rootprefix=$(CURDIR)/debian/freedom-what publish
 	install -d $(CURDIR)/debian/freedom-what/etc/apache2/sites-available
+	install -d $(CURDIR)/debian/freedom-what/etc/apache2/freedom.d
 	install $(CURDIR)/debian/freedom.conf $(CURDIR)/debian/freedom-what/etc/apache2/sites-available/freedom
 
 # Build architecture-independent files here.
