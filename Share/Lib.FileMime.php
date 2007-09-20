@@ -3,7 +3,7 @@
  * Assosiate icon with mime type
  *
  * @author Anakeen 2007
- * @version $Id: Lib.FileMime.php,v 1.5 2007/09/04 15:35:01 eric Exp $
+ * @version $Id: Lib.FileMime.php,v 1.6 2007/09/20 14:41:28 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -126,7 +126,7 @@ function getSysMimeFile($f,$fn="") {
   if (! file_exists($f)) return false;
   $sys = trim(`file -bi "$f"`);
   $txt=getTextMimeFile($f);
-  error_log("MIME:.file -bi [$f] [$sys]");
+
   // correct errors of file function
   if (preg_match('/Makefile/',$fn)) return 'text/x-makefile';
   if (preg_match('/ASCII C\+\+/',$txt)) {
