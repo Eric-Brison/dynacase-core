@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.31 2007/09/11 12:57:57 eric Exp $
+ * @version $Id: wsh.php,v 1.32 2007/10/01 12:59:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -65,11 +65,11 @@ if ($core->dbid < 0){
   exit(1);
 }
 
-$core->Set("CORE",$CoreNull);
-if (isset($_GET["userid"])) $core->user=new User("",$_GET["userid"]); //special user
-else $core->user=new User("",1); //admin 
 
+if (isset($_GET["userid"])) $core->user=new User("",$_GET["userid"]); //special user
+$core->Set("CORE",$CoreNull);
 $core->session=new Session();
+if (! isset($_GET["userid"])) $core->user=new User("",1); //admin 
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
