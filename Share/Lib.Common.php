@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.37 2007/06/25 07:09:56 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.38 2007/10/01 12:56:05 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -199,11 +199,13 @@ function getDbUser($dbaccess) {
 }
 
 
-function getWshCmd($nice=false) {
+function getWshCmd($nice=false,$userid=0) {
   $dbank=getenv("dbanakeen"); // choose when several databases
   $wsh="export dbanakeen=$dbank;";
   if ($nice) $wsh.= "nice -n +10 ";
   $wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
+  $userid=intval($userid);
+  if ($userid>0) $wsh.="--userid=$userid ";
   return $wsh;
 }
 
