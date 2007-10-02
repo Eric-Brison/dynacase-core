@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.38 2007/10/01 12:56:05 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.39 2007/10/02 07:31:51 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -198,11 +198,19 @@ function getDbUser($dbaccess) {
   }
 }
 
-
-function getWshCmd($nice=false,$userid=0) {
+/**
+ * return shell commande for wsh
+ * depending of database (in case of several instances)
+ * @param bool $nice set to true if want nice mode
+ * @param int $userid the user identificator to send command (if 0 send like admin without specific user parameter)
+ * @param bool $sudo set to true if want to be send with sudo (need /etc/sudoers correctly configured)
+ * @return string the command
+ */
+function getWshCmd($nice=false,$userid=0,$sudo=false) {
   $dbank=getenv("dbanakeen"); // choose when several databases
   $wsh="export dbanakeen=$dbank;";
   if ($nice) $wsh.= "nice -n +10 ";
+  if ($sudo) $wsh.= "sudo ";
   $wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
   $userid=intval($userid);
   if ($userid>0) $wsh.="--userid=$userid ";
