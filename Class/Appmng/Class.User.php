@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.59 2007/03/07 10:21:49 eric Exp $
+ * @version $Id: Class.User.php,v 1.60 2007/10/11 14:22:08 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -64,7 +64,7 @@ create sequence seq_id_users start 10";
   function SetLoginName($loginDomain)
     {
       include_once("Class.Domain.php");
-      $loginDomain=strtolower($loginDomain);
+      $loginDomain=trim(strtolower($loginDomain));
       $query = new QueryDb($this->dbaccess,"User");
       if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
     
