@@ -23,6 +23,7 @@ function resizeImages() {
       w=getImageWidth( sfEls1[i]);
 	    
       if (w > 0) {
+	if (sfEls1[i].src.indexOf('&') != -1) return;
 	sfEls1[i].src='resizeimg.php?size='+w+'&img='+sfEls1[i].src;
 	sfEls1[i].removeAttribute('needresize');
 	c++;
