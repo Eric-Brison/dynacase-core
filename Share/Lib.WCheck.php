@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.15 2007/09/14 12:36:02 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.16 2007/10/12 12:14:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -293,7 +293,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   $tact[] = "$pubdir/wstart";
   global $_SERVER;
   if ($_SERVER['HTTP_HOST'] != "")  $tact[] = "sudo $pubdir/admin/shttpd";
-  else $tact[] = "/etc/rc.d/init.d/httpd restart";
+  else $tact[] = "service httpd restart";
   
 }
 
