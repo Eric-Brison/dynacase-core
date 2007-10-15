@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.35 2007/02/02 09:05:12 eric Exp $
+ * @version $Id: Class.Action.php,v 1.36 2007/10/15 16:10:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -284,6 +284,7 @@ create sequence SEQ_ID_ACTION;
     elseif (! is_numeric($appid)) $appid=$this->parent->GetIdFromName($appid);
 
     $aclname=$this->getAcl($actname,$appid);
+    if (!$aclname) return; // no control
     $acl=new Acl($this->dbaccess);
     if ( ! $acl->Set($aclname,$appid)) {
       return sprintf(_("Acl [%s] not available for App %s"),$aclname,$appid);
