@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.59 2007/09/04 11:37:30 eric Exp $
+ * @version $Id: Class.Application.php,v 1.60 2007/10/15 14:50:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -651,7 +651,6 @@ create sequence SEQ_ID_APPLICATION start 10;
 	  $this->log->debug("InitApp :  new application ");
 	}
 	if ($update) {
-	  $this->Modify();
 	  foreach ($app_desc as $k=>$v) {
 	    switch ($v) {
 	    case 'displayable':
@@ -660,6 +659,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	      $this->$k = $v;
 	    }
 	  }
+	  $this->Modify();
 	} else {
 	  foreach ($app_desc as $k=>$v) {
 	    $this->$k = $v;
