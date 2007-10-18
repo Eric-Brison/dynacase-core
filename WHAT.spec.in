@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: WHAT.spec.in,v 1.90 2007/09/07 09:26:12 eric Exp $
+#  $Id: WHAT.spec.in,v 1.91 2007/10/18 07:38:47 eric Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -55,7 +55,7 @@
 %{?nhttpuser:%define httpuser %{nhttpuser}}
 %{?rpost:%define releasepostfix %{rpost}}
 
-Summary: What Hosting Application Toolkit
+Summary: What Hosting Application Toolkit for freedom ECM
 Name: @PACKAGE@
 Version: @VERSION@
 Release: @RELEASE@%{releasepostfix}
