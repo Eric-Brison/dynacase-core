@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.39 2007/10/02 07:31:51 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.40 2007/10/22 13:10:00 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -418,5 +418,33 @@ function seems_utf8($Str) {
     }
     return false;
   }
+
+/**
+   * Initialise WHAT : set global $action whithout an authorized user
+   * 
+   */
+function WhatInitialisation() {
+  global $action;
+  include_once('Class.User.php');
+  include_once('Class.Session.php');
+
+  $CoreNull="";
+  $core = new Application();
+  $core->Set("CORE",$CoreNull);
+  $core->session=new Session();
+  $action=new Action();
+  $action->Set("",$core);
+
+  // i18n
+  $lang=$action->Getparam("CORE_LANG");
+  setlocale(LC_MESSAGES,$lang);  
+  setlocale(LC_MONETARY, $lang);
+  setlocale(LC_TIME, $lang);
+  bindtextdomain ("what", DEFAULT_PUBDIR."/locale");
+  bind_textdomain_codeset("what", 'ISO-8859-15');
+  textdomain ("what");
+}
+
+
 
 ?>
