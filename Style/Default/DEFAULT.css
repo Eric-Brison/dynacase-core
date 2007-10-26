@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.10 2007/08/08 15:37:36 eric Exp $
+ * $Id: DEFAULT.css,v 1.11 2007/10/26 15:25:10 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -75,6 +75,11 @@ input[type="button"] {
 	/*-moz-border-radius:25px;*/
 	padding:0pt;
    }
+
+OPTION:hover {  
+  color:[input-text-hover-color];
+  background-color:[input-background-hover-color];
+}
 input:hover,  TEXTAREA:hover,  SELECT:hover { 
   border-style:inset;
   color:[input-text-hover-color];
