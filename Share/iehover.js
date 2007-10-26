@@ -128,23 +128,15 @@ function getElementsBySelect(rule) {
 function sfFocus() {
 	var sfEls1 = document.getElementsByTagName("INPUT");
 	var sfEls2 = document.getElementsByTagName("TEXTAREA");
-
-	for (var i=0; i<sfEls1.length; i++) {
-		sfEls1[i].onfocus=function() {
-			this.className+=" sffocus";
-		}
-		sfEls1[i].onblur=function() {
-			this.className=this.className.replace(new RegExp(" sffocus\\b"), "");
-		}
-	}
+	var i;
+	for ( i=0; i<sfEls1.length; i++) {
+		  addEvent(sfEls1[i],"focus",function(event) { event.srcElement.className+=" sffocus";	});
+		  addEvent(sfEls1[i],"blur",function() {  event.srcElement.className=event.srcElement.className.replace(new RegExp(" sffocus\\b"), "");	});		
+	}	
 	for ( i=0; i<sfEls2.length; i++) {
-		sfEls2[i].onfocus=function() {
-			this.className+=" sffocus";
-		}
-		sfEls2[i].onblur=function() {
-			this.className=this.className.replace(new RegExp(" sffocus\\b"), "");
-		}
-	}
+		  addEvent(sfEls2[i],"focus",function(event) { event.srcElement.className+=" sffocus";	});
+		  addEvent(sfEls2[i],"blur",function() {  event.srcElement.className=event.srcElement.className.replace(new RegExp(" sffocus\\b"), "");	});		
+	}	
 }
 
 
