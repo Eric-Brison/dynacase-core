@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.26 2007/05/25 13:43:27 eric Exp $
+ * @version $Id: Class.Param.php,v 1.27 2007/10/26 15:29:50 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -62,9 +62,11 @@ function SetKey($appid,$userid,$styleid="0") {
   $this->buffer=array_merge($this->buffer,$this->GetAll($appid,$userid,$styleid));
 }
 
-function Set($name,$val,$type=PARAM_GLB,$appid='')
-{
-  unset($_SESSION["sessparam".$appid]);
+function Set($name,$val,$type=PARAM_GLB,$appid='') {
+  global $action;
+  if ($action) {
+    $action->parent->session->unregister("sessparam".$appid);
+  }
   $this->name = $name;
   $this->val = $val;
   $this->type = $type;

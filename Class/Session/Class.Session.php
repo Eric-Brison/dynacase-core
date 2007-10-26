@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.25 2006/11/06 09:40:27 eric Exp $
+ * @version $Id: Class.Session.php,v 1.26 2007/10/26 15:29:50 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.25 2006/11/06 09:40:27 eric Exp $
+// $Id: Class.Session.php,v 1.26 2007/10/26 15:29:50 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.25 2006/11/06 09:40:27 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.26 2007/10/26 15:29:50 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -64,8 +64,7 @@ var $sessiondb;
 
   
  
-  function Set($id)
-    {
+  function Set($id)  {
       global $_SERVER;
       $query=new QueryDb($this->dbaccess,"Session");
       $query->criteria = "id";
@@ -77,6 +76,7 @@ var $sessiondb;
         $this->Affect($list[0]);
 	session_id($id);
 	@session_start();
+	@session_write_close(); // avoid block
 	//	$this->initCache();
         
       } else {
@@ -101,12 +101,10 @@ var $sessiondb;
   /** 
    * Closes session and removes all datas
    */
-  function Close()
-    {
+  function Close()  {
       global $_SERVER; // use only cache with HTTP
       if ($_SERVER['HTTP_HOST'] != "") {
 	session_unset();
-	@session_destroy();
 	$this->Delete();
 	setcookie ("session","",0,"/");
       }
@@ -117,20 +115,22 @@ var $sessiondb;
   /** 
    * Closes all session 
    */
-  function CloseAll()
-    {
+  function CloseAll() {
       $this->exec_query("delete from sessions");
       $this->status = $this->SESSION_CT_CLOSE;
       return $this->status;
     }  
   
-  function Open($uid=ANONYMOUS_ID)
-    {
+  function Open($uid=ANONYMOUS_ID)  {
       $idsess  = $this->newId();
       global $_SERVER; // use only cache with HTTP
       if ($_SERVER['HTTP_HOST'] != "") {
-	session_id($idsess);
+	//session_id($idsess);
 	@session_start();
+	@session_write_close(); // avoid block
+	
+	
+	
 	//	$this->initCache();
       }
       $this->id         = $idsess;
@@ -143,8 +143,7 @@ var $sessiondb;
   // Stocke une variable de session args
   // $v est une chaine !
   // --------------------------------
-  function Register($k = "", $v = "")
-    {
+  function Register($k = "", $v = "")   {
 
       if ($k == "" ){
 	$this->status = $this->SESSION_CT_ARGS;
@@ -156,8 +155,10 @@ var $sessiondb;
       global $_SERVER; // use only cache with HTTP
       if ($_SERVER['HTTP_HOST'] != "") {
 	//	session_register($k);
-
+	//	session_id($this->id);
+	@session_start();
 	$_SESSION[$k]=$v;
+	session_write_close();// avoid block
       }
 
       return true;
@@ -188,13 +189,15 @@ var $sessiondb;
   // Détruit une variable de session
   // $v est une chaine !
   // --------------------------------
-  function Unregister($k = "")
-    {
+  function Unregister($k = "")   {
       global $_SERVER; // use only cache with HTTP
       if ($_SERVER['HTTP_HOST'] != "") {
 	//session_unregister($k);
 	//	global $_SESSION;
+	session_id($this->id);
+	@session_start();
 	unset($_SESSION[$k]);
+	session_write_close();// avoid block
       }
       return;
     }       
@@ -206,8 +209,7 @@ var $sessiondb;
   // utilities functions (private)
   // ------------------------------------------------------------------------
   
-  function newId()
-    {
+  function newId()   {
       $this->log->debug("newId");
       $magic = new SessionConf($this->dbaccess, "MAGIC");
       $m = $magic->val;
