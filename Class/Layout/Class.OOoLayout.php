@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.1 2007/11/07 13:15:47 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.2 2007/11/07 15:09:00 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -54,6 +54,8 @@ class OOoLayout extends Layout {
 	if (filesize($file) > 0) {
 	  $this->odf2content($file);
 	  $this->file=$file;
+	  $this->dom=new DOMDocument();
+	  $this->dom->loadXML($this->template);
 	}
       } 
     }
@@ -110,28 +112,23 @@ class OOoLayout extends Layout {
 
  function odf2content($odsfile) {
   if (! file_exists($odsfile)) return "file $odsfile not found";
-  $cibledir=uniqid("/var/tmp/ods");
+  $this->cibledir=uniqid("/var/tmp/odf");
   
-  $cmd = sprintf("unzip  %s content.xml -d %s >/dev/null", $odsfile, $cibledir );
+  $cmd = sprintf("unzip  %s  -d %s >/dev/null", $odsfile, $this->cibledir );
   system($cmd);
   
-  $contentxml=$cibledir."/content.xml";
+  $contentxml=$this->cibledir."/content.xml";
   if (file_exists($contentxml)) {
     $this->template=file_get_contents($contentxml);
     unlink($contentxml);
   }
   
-  rmdir($cibledir);
 }
  function content2odf($odsfile,&$out) {
   if (file_exists($odsfile)) return "file $odsfile must not be present";
-  $cibledir=uniqid("/var/tmp/odf");
   
-  $cmd = sprintf("unzip  %s  -d %s >/dev/null", $this->file, $cibledir );
-  system($cmd);
   
-  print_r2($cmd);
-  $contentxml=$cibledir."/content.xml";
+  $contentxml=$this->cibledir."/content.xml";
   if (file_exists($contentxml)) {
     $this->template=file_get_contents($contentxml);
     unlink($contentxml);
@@ -139,13 +136,13 @@ class OOoLayout extends Layout {
 
   file_put_contents($contentxml,$out);
   
-  $cmd = sprintf("cd %s;zip -r %s * >/dev/null", $cibledir, $odsfile );
-  system($cmd);
-  
-  print_r2($cmd);
-  rmdir($cibledir);
+  $cmd = sprintf("cd %s;zip -r %s * >/dev/null && /bin/rm -fr %s", $this->cibledir, $odsfile, $this->cibledir );
+  system($cmd);  
+  //rmdir($this->cibledir);
 }
-  function execute($appname,$actionargn) {
+
+
+ function execute($appname,$actionargn) {
 
 
     if ($this->action=="") return ("Layout not used in a core environment");
@@ -212,19 +209,8 @@ class OOoLayout extends Layout {
     return "";
   }
 
-  function ParseRef(&$out) {
-
-     $out = preg_replace("/\[IMG:([^\]]*)\]/e",
-                         "\$this->action->GetImageUrl('\\1')",
-                         $out);
-
-     $out = preg_replace("/\[IMGF:([^\]]*)\]/e",
-                         "\$this->action->GetFilteredImageUrl('\\1')",
-                         $out);
-
-     $out = preg_replace("/\[SCRIPT:([^\]]*)\]/e",
-                         "\$this->action->GetScriptUrl('\\1')",
-                         $out);
+  function ParseText(&$out) {
+    
      if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'UTF-8');
      $out = preg_replace("/\[TEXT:([^\]]*)\]/e",
                          "\$this->Text('\\1')",
@@ -232,7 +218,30 @@ class OOoLayout extends Layout {
      if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'ISO-8859-15'); // restore
   }
 
- 
+  function parseDraw() {
+    $draws=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","frame");
+    //    $draws=$this->dom->getElementsByTagName("frame");
+    //    print count($draws);
+    foreach ($draws as $draw) {
+      $name=trim($draw->getAttribute('draw:name'));
+
+      if (substr($name,0,3)=='[V_') {
+	$imgs=$draw->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","image");
+	
+	foreach ($imgs as $img) {
+	  $href=$img->getAttribute('xlink:href');
+	  $name=substr(trim($name),1,-1);
+	  $file=$this->rkey[$name];
+	  if (!copy($file, $this->cibledir.'/'.$href)) {
+	    $err="copy fail";
+	  }
+	}
+      }
+      
+    }
+
+    return $err;
+  }
 
   function GenJsRef() {return "";  }
   function GenJsCode($showlog) { return("");  }
@@ -251,13 +260,16 @@ class OOoLayout extends Layout {
     }  
     $out = $this->template;
 
-    $this->ParseBlock($out);
-    $this->rif=&$this->rkey;
-    $this->ParseIf($out);
+    //    $this->ParseBlock($out);
+    // $this->rif=&$this->rkey;
+    // $this->ParseIf($out);
 
     // Parse IMG: and LAY: tags
-    $this->ParseRef($out);
+    $this->ParseDraw();
+
+    // Parse i18n text
     $this->ParseKey($out);
+    $this->ParseText($out);
     $outfile=uniqid("/var/tmp/odf").'.odt';
     $this->content2odf($outfile,$out);
     return($outfile);
