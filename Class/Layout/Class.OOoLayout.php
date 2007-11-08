@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.3 2007/11/08 09:33:25 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.4 2007/11/08 15:17:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -268,7 +268,7 @@ class OOoLayout extends Layout {
 	    
 	    $key=substr(trim($reg[0]),1,-1);
 	    $vkey=$this->rkey[$key];
-	    $tvkey=explode('<text:line-break/>',$vkey);
+	    $tvkey=explode('<text:tab/>',$vkey);
 	    foreach ($tvkey as $key) {
 	      $clone=$item->cloneNode(true);
 	      $item->parentNode->appendChild($clone);
@@ -281,6 +281,49 @@ class OOoLayout extends Layout {
     $this->template=$this->dom->saveXML();
     return $err;
   }
+
+
+  function parseTableRow() {
+    $lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table");
+    foreach ($lists as $list) {
+      $items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
+      if ($items->length > 0) {
+	$findv=false;
+	foreach ($items as $item) {	    
+	  if (preg_match("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
+	    $findv=true;;
+	    break;
+	  }
+	}
+	if ($findv) {
+	  if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
+	    $reg0=$reg[0];
+	    $tvkey=array();
+	    $maxk=0;
+	    foreach ($reg0 as $k=>$v) {	      
+	      $key=substr(trim($v),1,-1);
+	      $vkey=$this->rkey[$key];
+	      $tvkey[$key]=explode('<text:tab/>',$vkey);
+	      $maxk=max(count($tvkey[$key]),$maxk);
+	    }
+	    if ($maxk > 1) {
+	      for ($i=0;$i<$maxk;$i++) {
+		$clone=$item->cloneNode(true);
+		$item->parentNode->appendChild($clone);
+		foreach ($tvkey as $kk=>$key) {
+		  $this->replaceNodeText($clone,"[$kk]",$key[$i]);
+		}
+	      }
+	      $item->parentNode->removeChild($item);
+	    }	    
+	  }	
+	}
+      }
+    }
+    $this->template=$this->dom->saveXML();
+    return $err;
+  }
+
   function GenJsRef() {return "";  }
   function GenJsCode($showlog) { return("");  }
   function ParseJs(&$out) {  }
@@ -304,6 +347,7 @@ class OOoLayout extends Layout {
     // Parse IMG: and LAY: tags
     $this->ParseDraw();
     $this->parseListItem();
+    $this->parseTableRow();
     // Parse i18n text
     $out = $this->template;
     $this->ParseKey($out);
