@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.36 2007/10/15 16:10:17 eric Exp $
+ * @version $Id: Class.Action.php,v 1.37 2007/11/08 15:16:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -329,7 +329,13 @@ create sequence SEQ_ID_ACTION;
       $this->log->info("{$this->parent->name}:{$this->name} [".substr($QUERY_STRING,48)."]");
 
     }
-    
+     // Memo last application to return case of error
+    $err = $this->Read("FT_ERROR","");
+    if ($err == "") {
+      if ($this->parent->name != "CORE") {
+	$this->register("LAST_ACT",$this->parent->name);
+      }
+    }
     $this->log->push("{$this->parent->name}:{$this->name}");
     $pubdir = $this->parent->GetParam("CORE_PUBDIR");
     $nav=$this->Read("navigator");
@@ -367,13 +373,7 @@ create sequence SEQ_ID_ACTION;
       $this->lay->Set("ERR_MSG","");
     }
 
-    // Memo last application to return case of error
-    $err = $this->Read("FT_ERROR","");
-    if ($err == "") {
-      if ($this->parent->name != "CORE") {
-	$this->register("LAST_ACT",$this->parent->name);
-      }
-    }
+   
 
     $out = $this->lay->gen();
     $this->log->pop();

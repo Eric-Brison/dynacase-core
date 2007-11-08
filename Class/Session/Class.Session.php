@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.26 2007/10/26 15:29:50 eric Exp $
+ * @version $Id: Class.Session.php,v 1.27 2007/11/08 15:16:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.26 2007/10/26 15:29:50 eric Exp $
+// $Id: Class.Session.php,v 1.27 2007/11/08 15:16:49 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.26 2007/10/26 15:29:50 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.27 2007/11/08 15:16:49 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -77,6 +77,7 @@ var $sessiondb;
 	session_id($id);
 	@session_start();
 	@session_write_close(); // avoid block
+	//print_r2("@session_write_close");
 	//	$this->initCache();
         
       } else {
@@ -158,7 +159,7 @@ var $sessiondb;
 	//	session_id($this->id);
 	@session_start();
 	$_SESSION[$k]=$v;
-	session_write_close();// avoid block
+	@session_write_close();// avoid block
       }
 
       return true;
@@ -197,7 +198,7 @@ var $sessiondb;
 	session_id($this->id);
 	@session_start();
 	unset($_SESSION[$k]);
-	session_write_close();// avoid block
+	@session_write_close();// avoid block
       }
       return;
     }       
