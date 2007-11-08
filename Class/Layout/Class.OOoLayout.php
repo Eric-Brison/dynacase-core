@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.2 2007/11/07 15:09:00 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.3 2007/11/08 09:33:25 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -236,13 +236,51 @@ class OOoLayout extends Layout {
 	    $err="copy fail";
 	  }
 	}
-      }
-      
+      }      
     }
 
     return $err;
   }
 
+  function replaceNodeText( &$objNode, $strOldContent,$strNewContent){
+    /*
+    This function replaces a node's string content with strNewContent
+    */
+    $objNodeListNested = &$objNode->childNodes;
+    foreach ( $objNodeListNested as $objNodeNested ){
+      if ($objNodeNested->nodeType == XML_TEXT_NODE) {
+	if ($objNode->nodeValue!="") {
+	  $objNode->nodeValue=str_replace($strOldContent,$strNewContent,$objNode->nodeValue);
+	}
+      }
+      if ($objNodeNested->nodeType == XML_ELEMENT_NODE) $this->replaceNodeText($objNodeNested,$strOldContent,$strNewContent);
+    }
+   
+}
+
+  function parseListItem() {
+    $lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list");
+    foreach ($lists as $list) {
+	$items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
+	if ($items->length > 0) {
+	  $item=$items->item(0);
+	  if (preg_match("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
+	    
+	    $key=substr(trim($reg[0]),1,-1);
+	    $vkey=$this->rkey[$key];
+	    $tvkey=explode('<text:line-break/>',$vkey);
+	    foreach ($tvkey as $key) {
+	      $clone=$item->cloneNode(true);
+	      $item->parentNode->appendChild($clone);
+	      $this->replaceNodeText($clone,$reg[0],$key);
+	    }
+	    $item->parentNode->removeChild($item);	    
+	  }	
+      }
+    }
+    $this->template=$this->dom->saveXML();
+    return $err;
+  }
   function GenJsRef() {return "";  }
   function GenJsCode($showlog) { return("");  }
   function ParseJs(&$out) {  }
@@ -258,7 +296,6 @@ class OOoLayout extends Layout {
         $this->set($k,$v);
       }
     }  
-    $out = $this->template;
 
     //    $this->ParseBlock($out);
     // $this->rif=&$this->rkey;
@@ -266,8 +303,9 @@ class OOoLayout extends Layout {
 
     // Parse IMG: and LAY: tags
     $this->ParseDraw();
-
+    $this->parseListItem();
     // Parse i18n text
+    $out = $this->template;
     $this->ParseKey($out);
     $this->ParseText($out);
     $outfile=uniqid("/var/tmp/odf").'.odt';
