@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.4 2007/11/08 15:17:11 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.5 2007/11/09 11:10:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -228,15 +228,28 @@ class OOoLayout extends Layout {
       if (substr($name,0,3)=='[V_') {
 	$imgs=$draw->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","image");
 	
-	foreach ($imgs as $img) {
+	if ($imgs->length > 0) {
+	  $img=$imgs->item(0);
+	 
 	  $href=$img->getAttribute('xlink:href');
 	  $name=substr(trim($name),1,-1);
 	  $file=$this->rkey[$name];
+	  
 	  if (!copy($file, $this->cibledir.'/'.$href)) {
 	    $err="copy fail";
+	  } 
+	  
+	  if ($err=="") { // need to respect image proportion
+	    $width=$draw->getAttribute('svg:width');
+	    $size=getimagesize($file);
+	    $unit="";
+	    if (ereg("[0-9\.]+(.*)$",$width,$reg)) $unit=$reg[1];	    
+	    $height=sprintf("%.03f%s",(doubleval($width)/$size[0])*$size[1],$unit);
+	    $draw->setAttribute('svg:height',$height);
 	  }
 	}
-      }      
+      }
+        
     }
 
     return $err;
