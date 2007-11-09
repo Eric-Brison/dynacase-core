@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.5 2007/11/09 11:10:56 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.6 2007/11/09 13:46:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -291,7 +291,6 @@ class OOoLayout extends Layout {
 	  }	
       }
     }
-    $this->template=$this->dom->saveXML();
     return $err;
   }
 
@@ -333,7 +332,6 @@ class OOoLayout extends Layout {
 	}
       }
     }
-    $this->template=$this->dom->saveXML();
     return $err;
   }
 
@@ -361,8 +359,10 @@ class OOoLayout extends Layout {
     $this->ParseDraw();
     $this->parseListItem();
     $this->parseTableRow();
+    $this->template=$this->dom->saveXML();
     // Parse i18n text
-    $out = $this->template;
+    $out = &$this->template;
+    $this->ParseIf($out);
     $this->ParseKey($out);
     $this->ParseText($out);
     $outfile=uniqid("/var/tmp/odf").'.odt';
