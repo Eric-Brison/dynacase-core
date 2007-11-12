@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.7 2007/11/12 14:55:57 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.8 2007/11/12 16:07:19 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -90,11 +90,11 @@ class OOoLayout extends Layout {
     }
     return ($out);
   } 
-  function ParseIf(&$out) {
-    $out = preg_replace(
+  function ParseIf() {
+    $this->template = preg_replace(
        "/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", 
        "\$this->TestIf('\\2','\\3','\\1')",
-       $out);
+       $this->template);
   }
 
   function ParseZone(&$out) {
@@ -104,9 +104,10 @@ class OOoLayout extends Layout {
        $out);
   }
 
-  function ParseKey(&$out) {
+  function ParseKey() {
     if (isset ($this->rkey)) {
-      $out=preg_replace($this->pkey,$this->rkey,$out);
+      $this->template=preg_replace($this->pkey,$this->rkey,$this->template);
+      $this->style_template=preg_replace($this->pkey,$this->rkey,$this->style_template);
     }
   }
 
@@ -122,19 +123,22 @@ class OOoLayout extends Layout {
     $this->template=file_get_contents($contentxml);
     unlink($contentxml);
   }
+  $contentxml=$this->cibledir."/styles.xml";
+  if (file_exists($contentxml)) {
+    $this->style_template=file_get_contents($contentxml);
+    unlink($contentxml);
+  }
   
 }
- function content2odf($odsfile,&$out) {
+ function content2odf($odsfile) {
   if (file_exists($odsfile)) return "file $odsfile must not be present";
   
   
   $contentxml=$this->cibledir."/content.xml";
-  if (file_exists($contentxml)) {
-    $this->template=file_get_contents($contentxml);
-    unlink($contentxml);
-  }
-
-  file_put_contents($contentxml,$out);
+  file_put_contents($contentxml,$this->template);
+  
+  $contentxml=$this->cibledir."/styles.xml";
+  file_put_contents($contentxml,$this->style_template);
   
   $cmd = sprintf("cd %s;zip -r %s * >/dev/null && /bin/rm -fr %s", $this->cibledir, $odsfile, $this->cibledir );
   system($cmd);  
@@ -209,12 +213,11 @@ class OOoLayout extends Layout {
     return "";
   }
 
-  function ParseText(&$out) {
-    
+  function ParseText() {    
      if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'UTF-8');
-     $out = preg_replace("/\[TEXT:([^\]]*)\]/e",
+     $this->template = preg_replace("/\[TEXT:([^\]]*)\]/e",
                          "\$this->Text('\\1')",
-                         $out);
+                         $this->template);
      if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'ISO-8859-15'); // restore
   }
 
@@ -344,7 +347,7 @@ class OOoLayout extends Layout {
 
     $dxml=new DomDocument();
     $dxml->loadXML($xmlout);
-    $ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","automatic-styles")
+    $ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","automatic-styles");
     $ot1=$ot->item(0);
     $ass=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","automatic-styles");
 
@@ -383,12 +386,12 @@ class OOoLayout extends Layout {
     $this->addHTMLStyle();
     $this->template=$this->dom->saveXML();
     // Parse i18n text
-    $out = &$this->template;
-    $this->ParseIf($out);
-    $this->ParseKey($out);
-    $this->ParseText($out);
+
+    $this->ParseIf();
+    $this->ParseKey();
+    $this->ParseText();
     $outfile=uniqid("/var/tmp/odf").'.odt';
-    $this->content2odf($outfile,$out);
+    $this->content2odf($outfile);
     return($outfile);
   }
 }
