@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.6 2007/11/09 13:46:10 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.7 2007/11/12 14:55:57 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -335,6 +335,27 @@ class OOoLayout extends Layout {
     return $err;
   }
 
+  function addHTMLStyle() {
+    $xmldata='<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">'."</xhtml:html>";
+
+    $xslt = new xsltProcessor;
+    $xslt->importStyleSheet(DomDocument::load(DEFAULT_PUBDIR."/CORE/Layout/html2odt.xsl"));
+    $xmlout= $xslt->transformToXML(DomDocument::loadXML($xmldata));
+
+    $dxml=new DomDocument();
+    $dxml->loadXML($xmlout);
+    $ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","automatic-styles")
+    $ot1=$ot->item(0);
+    $ass=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","automatic-styles");
+
+    $ass0=$ass->item(0);
+    foreach ($ot1->childNodes as $ots) {
+      $c=$this->dom->importNode($ots,true);
+      $ass0->appendChild($c);
+    }
+
+  }
+
   function GenJsRef() {return "";  }
   function GenJsCode($showlog) { return("");  }
   function ParseJs(&$out) {  }
@@ -359,6 +380,7 @@ class OOoLayout extends Layout {
     $this->ParseDraw();
     $this->parseListItem();
     $this->parseTableRow();
+    $this->addHTMLStyle();
     $this->template=$this->dom->saveXML();
     // Parse i18n text
     $out = &$this->template;

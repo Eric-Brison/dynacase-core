@@ -1,5 +1,5 @@
 # ============================================
-# $Id: Makefile,v 1.3 2005/06/10 13:05:18 eric Exp $
+# $Id: Makefile,v 1.4 2007/11/12 14:55:57 eric Exp $
 # ============================================
 
 # get the new appname (basename in uppercase)
@@ -13,5 +13,9 @@ $(pubdir)/$(appname)/wversion.js.in: wversion.js.in
 include $(utildir)/PubRule
 
 
+DISTFILES += html2odt.xsl
 
-publish:$(pubdir)/$(appname)/wversion.js.in 
+$(pubdir)/$(appname)/Layout/html2odt.xsl: html2odt.xsl
+	cp $< $@
+
+publish:$(pubdir)/$(appname)/wversion.js.in $(pubdir)/$(appname)/Layout/html2odt.xsl
