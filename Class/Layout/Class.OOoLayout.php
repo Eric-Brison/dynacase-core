@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.8 2007/11/12 16:07:19 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.9 2007/11/13 08:01:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -233,9 +233,10 @@ class OOoLayout extends Layout {
 	
 	if ($imgs->length > 0) {
 	  $img=$imgs->item(0);
-	 
+
 	  $href=$img->getAttribute('xlink:href');
 	  $name=substr(trim($name),1,-1);
+	  $draw->setAttribute('draw:name',substr($name,2));
 	  $file=$this->rkey[$name];
 	  
 	  if (!copy($file, $this->cibledir.'/'.$href)) {
