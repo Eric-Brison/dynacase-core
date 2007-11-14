@@ -1,0 +1,339 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"
+	"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns:x="http://ns.adobe.com/Extensibility/1.0/"
+	xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph=""
+	xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" width="116"
+	height="127" viewBox="-0.322 -0.104 116 127" overflow="visible"
+	enable-background="new -0.322 -0.104 116 127" xml:space="preserve">
+	<g id="Layer_1_2_">
+		<g>
+			<path d="M114.828 0.5 L0.5 0.5 L0.5 126.396 L81.201 126.396 L114.828 92.769 z"
+				 style="fill:rgb(255,255,255)"/>
+			<linearGradient id="XMLID_1_" gradientUnits="userSpaceOnUse" x1="57.5845"
+				y1="154.013" x2="57.5845" y2="-101.487">
+				<stop offset="0" style="stop-color:rgb(255,255,255)"/>
+				<stop offset="0.258" style="stop-color:rgb(241,241,241)"/>
+				<stop offset="0.7396" style="stop-color:rgb(206,206,206)"/>
+				<stop offset="0.8595" style="stop-color:rgb(196,196,196)"/>
+				<a:midPointStop offset="0" style="stop-color:#FFFFFF"/>
+				<a:midPointStop offset="0.5674" style="stop-color:#FFFFFF"/>
+				<a:midPointStop offset="0.8595" style="stop-color:#C4C4C4"/>
+			</linearGradient>
+			<path
+				d="M111.398 3.467 L3.93 3.467 L3.77 126.121 L80.227 126.121 L111.399 94.869 L111.399
+					3.467 z"
+				 style="fill:url(#XMLID_1_)"/>
+			<linearGradient id="XMLID_2_" gradientUnits="userSpaceOnUse" x1="-32.6685"
+				y1="-26.8843" x2="49.8302" y2="55.6144">
+				<stop offset="0" style="stop-color:rgb(178,178,178)"/>
+				<stop offset="1" style="stop-color:rgb(130,130,130)"/>
+				<a:midPointStop offset="0" style="stop-color:#B2B2B2"/>
+				<a:midPointStop offset="0.5" style="stop-color:#B2B2B2"/>
+				<a:midPointStop offset="1" style="stop-color:#828282"/>
+			</linearGradient>
+			<path
+				d="M114.828 0 L0 0 L0 126.896 L81.408 126.896 L115.328 92.976 L115.328 0 zM114.328 1
+					C114.328 1.987 114.328 92.152 114.328 92.563 C114.039 92.852 81.283 125.608
+					80.994 125.897 C80.584 125.897 1.984 125.897 1 125.897 C1 124.908 1 1.988
+					1 1 C1.986 1 113.342 1 114.328 1 z"
+				 style="fill:url(#XMLID_2_)"/>
+			<linearGradient id="XMLID_3_" gradientUnits="userSpaceOnUse" x1="36.6865"
+				y1="24.8691" x2="197.669" y2="110.512">
+				<stop offset="0" style="stop-color:rgb(255,255,255)"/>
+				<stop offset="0.5033" style="stop-color:rgb(231,231,231)"/>
+				<stop offset="1" style="stop-color:rgb(212,212,212)"/>
+				<a:midPointStop offset="0" style="stop-color:#FFFFFF"/>
+				<a:midPointStop offset="0.452" style="stop-color:#FFFFFF"/>
+				<a:midPointStop offset="1" style="stop-color:#D4D4D4"/>
+			</linearGradient>
+			<path
+				d="M111.67 14.671 L111.67 3.388 L3.863 3.388 L3.767 68.728 C13.742 73.275 24.918 75.824
+					36.721 75.824 C74.066 75.824 105.119 48.325 111.67 14.671 z"
+				 style="fill:url(#XMLID_3_)"/>
+		</g>
+		<path
+			d="M65.822 82.66 L65.822 69.978 C57.254 73.554 47.899 75.616 38.09 75.793 L38.09 82.66
+				z"
+			 style="fill:none"/>
+		<path
+			d="M53.227 44.28 C49.823 46.36 46.538 50.295 43.463 55.974 C40.361 61.704 38.789 67.482
+				38.789 73.147 C38.789 76.316 39.471 77.715 40.043 78.333 C40.781 79.131
+				41.62 79.471 42.847 79.471 C46.054 79.471 49.692 77.9 53.662 74.801 C57.752
+				71.613 60.82 66.884 62.782 60.742 C62.782 60.742 68.034 44.418 68.972 41.502
+				C67.455 41.325 66.118 41.206 65.122 41.206 C60.567 41.206 56.565 42.24 53.227
+				44.28 z"
+			 style="fill:none"/>
+		<path
+			d="M35.965 75.814 C36.244 77.803 36.861 79.313 37.843 80.373 C39.15 81.784 40.787 82.471
+				42.847 82.471 C46.738 82.471 50.998 80.686 55.507 77.166 C57.374 75.711
+				59.036 73.965 60.509 71.969 C53.024 74.456 45.03 75.824 36.722 75.824 C36.469
+				75.824 36.218 75.816 35.965 75.814 z"
+			 style="fill:none"/>
+		<linearGradient id="XMLID_4_" gradientUnits="userSpaceOnUse" x1="-62.5581"
+			y1="10.0996" x2="68.4835" y2="10.0996">
+			<stop offset="0" style="stop-color:rgb(255,255,255)"/>
+			<stop offset="1" style="stop-color:rgb(255,0,0)"/>
+			<a:midPointStop offset="0" style="stop-color:#FFFFFF"/>
+			<a:midPointStop offset="0.5" style="stop-color:#FFFFFF"/>
+			<a:midPointStop offset="1" style="stop-color:#FF0000"/>
+		</linearGradient>
+		<path d="M111.062 16.471 L3.677 16.471 L3.677 3.728 L111.062 3.728 z"
+			 style="fill:url(#XMLID_4_)"/>
+		<g>
+			<g>
+				<linearGradient id="XMLID_5_" gradientUnits="userSpaceOnUse" x1="57.313"
+					y1="105.186" x2="57.313" y2="61.0993">
+					<stop offset="0" style="stop-color:rgb(158,158,158)"/>
+					<stop offset="1" style="stop-color:rgb(97,97,97)"/>
+				</linearGradient>
+				<path
+					d="M21.149 61.305 C21.005 61.37 20.887 61.481 20.811 61.619 C17.883 66.977 16.399 72.748
+						16.399 78.77 C16.399 84.277 17.651 89.602 20.121 94.595 C20.194 94.742
+						20.314 94.861 20.463 94.932 C28.679 98.824 40.388 100.637 57.313 100.637
+						C74.238 100.637 85.948 98.824 94.164 94.93 C94.313 94.86 94.434 94.742 94.507
+						94.595 C96.976 89.602 98.228 84.277 98.228 78.77 C98.228 72.749 96.744
+						66.977 93.817 61.619 C93.742 61.481 93.623 61.37 93.479 61.305 C83.811 56.897
+						70.967 54.469 57.314 54.469 C43.661 54.469 30.818 56.896 21.149 61.305
+						zM57.313 55.928 C70.654 55.928 83.18 58.277 92.637 62.535 C95.369 67.617
+						96.769 73.076 96.769 78.77 C96.769 83.966 95.593 88.99 93.298 93.714 C85.294
+						97.438 73.856 99.179 57.313 99.179 C40.771 99.179 29.333 97.438 21.329
+						93.715 C19.034 88.99 17.858 83.966 17.858 78.77 C17.858 73.074 19.256 67.616
+						21.99 62.534 C31.447 58.276 43.974 55.928 57.313 55.928 z"
+					 style="fill:url(#XMLID_5_)"/>
+				<linearGradient id="XMLID_6_" gradientUnits="userSpaceOnUse" x1="57.313"
+					y1="61.4932" x2="57.313" y2="92.7065">
+					<stop offset="0.0337" style="stop-color:rgb(255,255,255)"/>
+					<stop offset="1" style="stop-color:rgb(178,178,178)"/>
+				</linearGradient>
+				<path
+					d="M92.809 62.128 C83.728 57.988 71.177 55.426 57.313 55.426 C43.449 55.426 30.899 57.989
+						21.818 62.128 C19.088 67.126 17.54 72.774 17.54 78.759 C17.54 84.236
+						18.838 89.429 21.149 94.103 C30.277 98.428 43.1 99.681 57.313 99.681 C71.526
+						99.681 84.35 98.427 93.478 94.102 C95.79 89.429 97.087 84.236 97.087 78.759
+						C97.087 72.773 95.538 67.126 92.809 62.128 z"
+					 style="fill:url(#XMLID_6_)"/>
+				<path
+					d="M86.147 94.423 L28.479 94.423 L28.479 85.951 L86.148 85.951 L86.148 94.423 z"/>
+				<linearGradient id="XMLID_7_" gradientUnits="userSpaceOnUse" x1="57.313"
+					y1="90.7559" x2="57.313" y2="99.1248">
+					<stop offset="0.0337" style="stop-color:rgb(255,255,255)"/>
+					<stop offset="1" style="stop-color:rgb(178,178,178)"/>
+				</linearGradient>
+				<path
+					d="M86.147 95.093 L28.479 95.093 L28.479 93.859 L86.148 93.859 L86.148 95.093 z"
+					 style="fill:url(#XMLID_7_)"/>
+				<path
+					d="M76.395 85.977 L38.231 85.977 L38.231 89.483 L76.394 89.483 L76.394 85.977 z"
+					 style="opacity:0.15"/>
+				<linearGradient id="XMLID_8_" gradientUnits="userSpaceOnUse" x1="52.3364"
+					y1="95.6133" x2="77.0778" y2="120.354">
+					<stop offset="0.0337" style="stop-color:rgb(255,255,255)"/>
+					<stop offset="1" style="stop-color:rgb(178,178,178)"/>
+				</linearGradient>
+				<path d="M31.332 105.657 L83.293 105.657 L78.155 90.383 L37.327 90.383 z"
+					 style="fill:url(#XMLID_8_)"/>
+				<linearGradient id="XMLID_9_" gradientUnits="userSpaceOnUse" x1="57.313"
+					y1="107.231" x2="57.313" y2="91.9558">
+					<stop offset="0" style="stop-color:rgb(158,158,158)"/>
+					<stop offset="1" style="stop-color:rgb(97,97,97)"/>
+					<a:midPointStop offset="0" style="stop-color:#9E9E9E"/>
+					<a:midPointStop offset="0.5" style="stop-color:#9E9E9E"/>
+					<a:midPointStop offset="1" style="stop-color:#616161"/>
+				</linearGradient>
+				<path
+					d="M37.324 89.658 C37.177 89.658 37.043 89.75 36.989 89.888 L30.993 105.161 C30.949
+						105.272 30.964 105.397 31.03 105.496 C31.098 105.594 31.209 105.654 31.329
+						105.654 L83.291 105.654 C83.407 105.654 83.516 105.597 83.583 105.504 C83.651
+						105.409 83.67 105.288 83.633 105.177 L78.494 89.904 C78.444 89.758 78.307
+						89.658 78.152 89.658 zM77.893 90.38 C78.048 90.841 82.494 104.056 82.789
+						104.933 C81.814 104.933 32.886 104.933 31.857 104.933 C32.213 104.025
+						37.402 90.811 37.571 90.38 C38.054 90.38 77.384 90.38 77.893 90.38 z"
+					 style="fill:url(#XMLID_9_)"/>
+				<path
+					d="M81.731 89.421 L32.895 89.421 L32.895 93.476 L81.732 93.476 L81.732 89.421 z"
+					 style="opacity:0.15"/>
+				<linearGradient id="XMLID_10_" gradientUnits="userSpaceOnUse" x1="57.6577"
+					y1="59.3018" x2="57.6577" y2="85.5095">
+					<stop offset="2.87356%" style="stop-color:rgb(255,255,255)"/>
+					<stop offset="100%" style="stop-opacity:0;stop-color:rgb(255,255,255)"/>
+				</linearGradient>
+				<path a:adobe-blending-mode="screen"
+					d="M57.658 56.036 C44.496 56.036 32.58 58.468 23.958 62.398 C22.259 65.509 21.054 68.889
+						20.416 72.447 C28.268 76.348 42.007 78.936 57.658 78.936 C73.308 78.936
+						87.05 76.348 94.899 72.447 C94.262 68.889 93.057 65.51 91.358 62.398 C82.737
+						58.468 70.821 56.036 57.658 56.036 z"
+					 style="fill:url(#XMLID_10_)"/>
+				<g>
+					<linearGradient id="XMLID_11_" gradientUnits="userSpaceOnUse" x1="27.2646"
+						y1="70.5576" x2="27.2646" y2="66.0297">
+						<stop offset="0" style="stop-color:rgb(255,255,255)"/>
+						<stop offset="0.8483" style="stop-color:rgb(0,205,0)"/>
+						<stop offset="1" style="stop-color:rgb(0,189,0)"/>
+					</linearGradient>
+					<path
+						d="M29.991 65.86 C29.991 67.201 28.77 68.287 27.264 68.287 C25.758 68.287 24.537 67.201
+							24.537 65.86 C24.537 64.52 25.758 63.434 27.264 63.434 C28.77 63.434
+							29.991 64.521 29.991 65.86 z"
+						 style="fill:url(#XMLID_11_)"/>
+					<linearGradient id="XMLID_12_" gradientUnits="userSpaceOnUse" x1="24.7344"
+						y1="62.064" x2="26.2733" y2="64.3724">
+						<stop offset="0.0112" style="stop-color:rgb(0,149,0)"/>
+						<stop offset="0.2978" style="stop-color:rgb(0,144,0)"/>
+						<stop offset="1" style="stop-color:rgb(0,91,0)"/>
+					</linearGradient>
+					<path
+						d="M24.409 65.86 C24.409 67.262 25.69 68.403 27.264 68.403 C28.839 68.403 30.12 67.262
+							30.12 65.86 C30.12 64.459 28.839 63.318 27.264 63.318 C25.69 63.318 24.409
+							64.459 24.409 65.86 zM24.668 65.86 C24.668 64.587 25.834 63.55 27.265
+							63.55 C28.697 63.55 29.862 64.586 29.862 65.86 C29.862 67.135 28.697 68.172
+							27.265 68.172 C25.834 68.172 24.668 67.136 24.668 65.86 z"
+						 style="fill:url(#XMLID_12_)"/>
+					<linearGradient id="XMLID_13_" gradientUnits="userSpaceOnUse" x1="27.1895"
+						y1="63.6675" x2="27.1895" y2="66.2548">
+						<stop offset="0" style="stop-color:rgb(255,255,255)"/>
+						<stop offset="0.1147" style="stop-color:rgb(233,250,233)"/>
+						<stop offset="0.3539" style="stop-color:rgb(176,237,176)"/>
+						<stop offset="0.6936" style="stop-color:rgb(87,217,87)"/>
+						<stop offset="1" style="stop-color:rgb(0,197,0)"/>
+					</linearGradient>
+					<path
+						d="M27.276 65.953 C28.225 65.331 29.119 65.119 29.508 65.051 C29.132 64.296 28.281 63.769
+							27.292 63.769 C25.955 63.769 24.869 64.735 24.869 65.925 C24.869 66.113
+							24.896 66.293 24.945 66.467 C25.341 66.531 26.3 66.596 27.276 65.953 z"
+						 style="fill:url(#XMLID_13_)"/>
+				</g>
+				<path a:adobe-blending-mode="multiply"
+					d="M86.147 95.358 L87.686 94.502 L86.147 85.951"
+					 style="opacity:0.3;fill:rgb(102,102,102)"/>
+			</g>
+			<g>
+				<linearGradient id="XMLID_14_" gradientUnits="userSpaceOnUse" x1="57.313"
+					y1="45.1021" x2="57.313" y2="61.2826">
+					<stop offset="0" style="stop-color:rgb(229,229,229)"/>
+					<stop offset="1" style="stop-color:rgb(46,46,46)"/>
+				</linearGradient>
+				<path
+					d="M31.838 58.372 L31.838 56.848 C31.838 54.877 33.485 49.684 35.52 49.684 L79.106 49.684
+						C81.139 49.684 82.789 54.877 82.789 56.848 L82.789 58.372 z"
+					 style="fill:url(#XMLID_14_)"/>
+				<linearGradient id="XMLID_15_" gradientUnits="userSpaceOnUse" x1="52.7412"
+					y1="51.7295" x2="74.536" y2="73.5241">
+					<stop offset="0.0337" style="stop-color:rgb(255,255,255)"/>
+					<stop offset="1" style="stop-color:rgb(178,178,178)"/>
+					<a:midPointStop offset="0.0337" style="stop-color:#FFFFFF"/>
+					<a:midPointStop offset="0.5" style="stop-color:#FFFFFF"/>
+					<a:midPointStop offset="1" style="stop-color:#B2B2B2"/>
+				</linearGradient>
+				<path
+					d="M32.704 58.666 L32.704 57.194 C32.704 55.291 34.296 50.379 36.262 50.379 L78.365
+						50.379 C80.329 50.379 81.922 55.291 81.922 57.194 L81.922 58.666 z"
+					 style="fill:url(#XMLID_15_)"/>
+				<path d="M77.371 50.851 L36.073 50.851 L36.073 52.898 L77.371 52.898 z"/>
+				<g>
+					<linearGradient id="XMLID_16_" gradientUnits="userSpaceOnUse" x1="51.2622"
+						y1="33.0684" x2="77.303" y2="59.109">
+						<stop offset="0.0337" style="stop-color:rgb(255,255,255)"/>
+						<stop offset="1" style="stop-color:rgb(178,178,178)"/>
+						<a:midPointStop offset="0.0337" style="stop-color:#FFFFFF"/>
+						<a:midPointStop offset="0.5" style="stop-color:#FFFFFF"/>
+						<a:midPointStop offset="1" style="stop-color:#B2B2B2"/>
+					</linearGradient>
+					<path d="M75.308 24.885 L38.143 24.885 L38.143 52.177 L75.308 52.177 z"
+						 style="fill:url(#XMLID_16_)"/>
+					<linearGradient id="XMLID_17_" gradientUnits="userSpaceOnUse" x1="56.7251"
+						y1="55.2974" x2="56.7251" y2="28.5471">
+						<stop offset="0" style="stop-color:rgb(158,158,158)"/>
+						<stop offset="1" style="stop-color:rgb(97,97,97)"/>
+						<a:midPointStop offset="0" style="stop-color:#9E9E9E"/>
+						<a:midPointStop offset="0.5" style="stop-color:#9E9E9E"/>
+						<a:midPointStop offset="1" style="stop-color:#616161"/>
+					</linearGradient>
+					<path
+						d="M38.143 24.524 C37.943 24.524 37.782 24.685 37.782 24.884 L37.782 52.176 C37.782
+							52.376 37.943 52.537 38.143 52.537 L75.308 52.537 C75.508 52.537 75.669 52.376
+							75.669 52.176 L75.669 24.885 C75.669 24.686 75.508 24.525 75.308 24.525
+							L38.143 24.525 zM74.947 25.246 C74.947 25.939 74.947 51.124 74.947 51.817
+							C74.246 51.817 39.204 51.817 38.503 51.817 C38.503 51.125 38.503 25.94
+							38.503 25.246 C39.204 25.246 74.246 25.246 74.947 25.246 z"
+						 style="fill:url(#XMLID_17_)"/>
+				</g>
+				<path d="M77.371 51.813 L36.073 51.813 L36.073 52.898 L77.371 52.898 z"/>
+			</g>
+		</g>
+		<g>
+			<radialGradient id="XMLID_18_" cx="102.131" cy="117.697" r="34.7364"
+				fx="102.131" fy="117.697" gradientUnits="userSpaceOnUse">
+				<stop offset="0" style="stop-color:rgb(0,0,0)"/>
+				<stop offset="1" style="stop-color:rgb(0,0,0)"/>
+				<a:midPointStop offset="0" style="stop-color:#000000"/>
+				<a:midPointStop offset="0.5" style="stop-color:#000000"/>
+				<a:midPointStop offset="1" style="stop-color:#000000"/>
+			</radialGradient>
+			<path
+				d="M78.855 90.424 L78.855 126.178 L80.648 126.178 L114.287 92.539 L114.287 90.424 z"
+				
+				 style="opacity:0.1;fill:url(#XMLID_18_)"/>
+			<path d="M81.201 126.396 L114.828 92.769 L81.201 92.769 z"
+				 style="fill:rgb(255,255,255)"/>
+			<linearGradient id="XMLID_19_" gradientUnits="userSpaceOnUse" x1="97.6816"
+				y1="97.6289" x2="88.7534" y2="135.242">
+				<stop offset="0" style="stop-color:rgb(255,255,255)"/>
+				<stop offset="1" style="stop-color:rgb(204,204,204)"/>
+				<a:midPointStop offset="0" style="stop-color:#FFFFFF"/>
+				<a:midPointStop offset="0.5" style="stop-color:#FFFFFF"/>
+				<a:midPointStop offset="1" style="stop-color:#CCCCCC"/>
+			</linearGradient>
+			<path d="M83.529 124.504 L113.123 94.912 L83.529 94.912 z"
+				 style="fill:url(#XMLID_19_)"/>
+			<linearGradient id="XMLID_20_" gradientUnits="userSpaceOnUse" x1="75.9727"
+				y1="87.541" x2="89.7684" y2="101.337">
+				<stop offset="0" style="stop-color:rgb(178,178,178)"/>
+				<stop offset="1" style="stop-color:rgb(130,130,130)"/>
+				<a:midPointStop offset="0" style="stop-color:#B2B2B2"/>
+				<a:midPointStop offset="0.5" style="stop-color:#B2B2B2"/>
+				<a:midPointStop offset="1" style="stop-color:#828282"/>
+			</linearGradient>
+			<path
+				d="M81.201 92.27 C80.924 92.27 80.701 92.493 80.701 92.77 L80.701 126.397 C80.701 126.6
+					80.822 126.782 81.01 126.86 C81.196 126.936 81.412 126.893 81.555 126.751
+					L115.182 93.124 C115.325 92.979 115.368 92.765 115.291 92.579 C115.213 92.391
+					115.031 92.27 114.828 92.27 zM113.621 93.27 C112.041 94.848 83.279 123.61
+					81.701 125.19 C81.701 122.981 81.701 94.204 81.701 93.27 C82.635 93.27
+					111.412 93.27 113.621 93.27 z"
+				 style="fill:url(#XMLID_20_)"/>
+		</g>
+		<g>
+			<path
+				d="M7.106 13.865 L7.106 5.271 L9.889 5.271 C10.943 5.271 11.63 5.314 11.951 5.4 C12.443
+					5.53 12.855 5.81 13.187 6.243 C13.519 6.676 13.685 7.234 13.685 7.919 C13.685
+					8.447 13.589 8.892 13.398 9.251 C13.207 9.611 12.964 9.895 12.669 10.1
+					C12.374 10.306 12.074 10.442 11.77 10.508 C11.356 10.59 10.757 10.631 9.972
+					10.631 L8.84 10.631 L8.84 13.865 zM8.84 6.725 L8.84 9.178 L9.791 9.178
+					C10.475 9.178 10.933 9.133 11.164 9.042 C11.395 8.952 11.576 8.811 11.706 8.618
+					C11.837 8.425 11.903 8.201 11.903 7.945 C11.903 7.631 11.811 7.372 11.627
+					7.167 C11.443 6.963 11.21 6.835 10.929 6.784 C10.722 6.744 10.305 6.724
+					9.679 6.724 L8.84 6.724 z"
+				 style="fill:rgb(255,255,255)"/>
+			<path
+				d="M14.657 11.068 L16.345 10.896 C16.447 11.46 16.653 11.875 16.963 12.139 C17.274 12.405
+					17.692 12.536 18.22 12.536 C18.779 12.536 19.199 12.418 19.483 12.182
+					C19.767 11.946 19.908 11.671 19.908 11.356 C19.908 11.154 19.848 10.981 19.73
+					10.839 C19.611 10.696 19.404 10.573 19.108 10.468 C18.905 10.398 18.444
+					10.273 17.724 10.093 C16.798 9.864 16.147 9.58 15.774 9.243 C15.249 8.77 14.986
+					8.193 14.986 7.513 C14.986 7.075 15.11 6.665 15.357 6.284 C15.604 5.902
+					15.961 5.612 16.426 5.413 C16.891 5.213 17.453 5.113 18.111 5.113 C19.185
+					5.113 19.994 5.351 20.537 5.829 C21.08 6.306 21.365 6.942 21.392 7.738 L19.658
+					7.801 C19.584 7.357 19.426 7.037 19.183 6.843 C18.94 6.649 18.577 6.551
+					18.092 6.551 C17.591 6.551 17.199 6.655 16.916 6.863 C16.733 6.997 16.642
+					7.176 16.642 7.399 C16.642 7.603 16.727 7.777 16.899 7.922 C17.117 8.107
+					17.646 8.298 18.487 8.497 C19.328 8.695 19.95 8.901 20.353 9.115 C20.756 9.328
+					21.071 9.62 21.299 9.989 C21.527 10.359 21.641 10.816 21.641 11.36 C21.641
+					11.853 21.504 12.315 21.231 12.745 C20.958 13.177 20.571 13.496 20.071
+					13.706 C19.571 13.915 18.948 14.019 18.202 14.019 C17.116 14.019 16.282 13.768
+					15.7 13.264 C15.118 12.765 14.77 12.031 14.657 11.068 z"
+				 style="fill:rgb(255,255,255)"/>
+		</g>
+	</g>
+</svg>
