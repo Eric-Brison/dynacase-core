@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.60 2007/10/15 14:50:49 eric Exp $
+ * @version $Id: Class.Application.php,v 1.61 2007/11/16 17:35:20 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -102,7 +102,10 @@ create sequence SEQ_ID_APPLICATION start 10;
 	$this->InitApp($name);
 	if ($parent != "") {
 	  $this->parent=&$parent;
-	  Redirect($this,$this->name,"");
+	  if ($this->name=="") {
+	    print "fatal rrror in application name  $name";
+	    exit;
+	  } else Redirect($this,$this->name,"");
 	} else {
 	  global $_SERVER;
 	  if ($_SERVER['HTTP_HOST'] != "") Header("Location: ".$_SERVER['HTTP_REFERER']);
