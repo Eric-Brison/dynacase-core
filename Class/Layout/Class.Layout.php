@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.43 2007/07/25 13:28:48 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.44 2007/11/16 17:35:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.43 2007/07/25 13:28:48 eric Exp $
+//  $Id: Class.Layout.php,v 1.44 2007/11/16 17:35:48 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -212,14 +212,14 @@ class Layout {
   } 
   function ParseIf(&$out) {
     $out = preg_replace(
-       "/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", 
+       "/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", 
        "\$this->TestIf('\\2','\\3','\\1')",
        $out);
   }
 
   function ParseZone(&$out) {
     $out = preg_replace(
-       "/\[ZONE\s*([^:]*):([^\]]*)\]/e",
+       "/\[ZONE\s+([^:]*):([^\]]*)\]/e",
        "\$this->execute('\\1','\\2')",
        $out);
   }
