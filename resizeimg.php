@@ -3,7 +3,7 @@
  * Resize image (icons) by imagemagick converter
  *
  * @author Anakeen 2007
- * @version $Id: resizeimg.php,v 1.9 2007/03/27 15:12:53 eric Exp $
+ * @version $Id: resizeimg.php,v 1.10 2007/11/30 17:14:09 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -19,6 +19,17 @@ function rezizelocalimage($img,$size,$basedest) {
 
   $cmd=sprintf("convert  -thumbnail %d $source $dest",$size);
   //$cmd=sprintf("convert  -scale %dx%d $source $dest",$size,$size);
+  system($cmd);
+  if (file_exists($dest)) return $basedest;
+  return false;
+}
+
+function copylocalimage($img,$size,$basedest) {
+  $source=$img;
+  
+  $dest=DEFAULT_PUBDIR.$basedest;
+
+  $cmd=sprintf("/bin/cp $source $dest",$size);
   system($cmd);
   if (file_exists($dest)) return $basedest;
   return false;
@@ -76,18 +87,30 @@ function getVaultCacheImage($vid,$size) {
 
 $size=$_GET["size"];
 $img=$_GET["img"];
+if (!$img) {
+  $vid=$_GET["vid"];
+  if ($vid>0) $img="vaultid=$vid";
+ }
+
 $dir=dirname($_SERVER["SCRIPT_NAME"]);
 if (ereg("vaultid=([0-9]+)",$img,$vids)) {
   // vault file
   $vid=$vids[1];
   $basedest=getVaultCacheImage($vid,$size);
-  $dest=DEFAULT_PUBDIR.$basedest;
+  $dest=DEFAULT_PUBDIR.$basedest;  
   if (file_exists($dest)) {
     $location=$dir."/".$basedest;
   } else {
     $localimage=getVaultPauth(intval($vid));
-    if ($localimage) {    
-      $newimg=rezizelocalimage($localimage,$size,$basedest);
+    if ($localimage) {
+      $tsize=getimagesize($localimage);
+
+      $width=intval($tsize[0]);
+      if ($width > $size) {
+	$newimg=rezizelocalimage($localimage,$size,$basedest);	
+      } else {	
+	$newimg=copylocalimage($localimage,$size,$basedest);
+      }
       if ($newimg) $location="$dir/$newimg";
     } 
   }
