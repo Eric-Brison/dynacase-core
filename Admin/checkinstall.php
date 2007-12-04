@@ -3,7 +3,7 @@
  * Verify several point needed for installation
  *
  * @author Anakeen 2007
- * @version $Id: checkinstall.php,v 1.5 2007/09/07 15:26:55 eric Exp $
+ * @version $Id: checkinstall.php,v 1.6 2007/12/04 09:58:07 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -80,7 +80,7 @@ body {
 </head>
 <body>
 <img height="100px" style="float:right; border:none;" src="Images/freeeye.png">
-<h3>FreeDom installation check....</h3><a href="winit.html">Admin page</a>
+<h3>FreeDom installation check....</h3><a href="winit.php">Admin page</a>
 <span class="info">Informational text</span> - <span class="warning">Warning text</span> - <span class="error">Error text</span>
 <?php
 

@@ -63,7 +63,7 @@ Alias /freedom @prefix@
     Options IncludesNoExec FollowSymLinks 
 </Directory>
 <Directory "@prefix@/admin/">
-    DirectoryIndex  index.html     
+    DirectoryIndex  winit.php
     php_value session.name "adminsession"
     AuthType Basic
     AuthName "FREEDOM Administration"

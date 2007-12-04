@@ -37,7 +37,10 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
     <td align="left">  
        <a class="abut"  href="checkinstall.php"><span class="bigbutton">Check installation</span></a><br>
        <a class="abut"  href="wgcheck.php"><span class="bigbutton">Initialisation</span></a><br>
-       <a class="abut"  href="checklist.php"><span class="bigbutton">Check List</span></a>
+       <a class="abut"  href="checklist.php"><span class="bigbutton">Check List</span></a><br>
+<?php if (file_exists("dbmng.php")) { ?>
+       <a class="abut"  href="dbmng.php"><span class="bigbutton">Check DB backups</span></a>
+<?php } ?>
 </td>
 </tr></table>
 
