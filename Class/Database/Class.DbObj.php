@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.54 2007/06/14 15:36:15 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.55 2007/12/11 16:11:40 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.54 2007/06/14 15:36:15 eric Exp $
+// @version $Id: Class.DbObj.php,v 1.55 2007/12/11 16:11:40 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.54 2007/06/14 15:36:15 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.55 2007/12/11 16:11:40 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -233,6 +233,7 @@ function Select($id)  {
     if ($this->dbid == -1) return FALSE;
     
     if (! $this->isAffected()) return false;
+    if (count($fields)==0) return true;
     if ($this->dbtable=='') {
       return("error : No Tables");
     }
