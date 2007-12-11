@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.10 2007/12/11 13:31:50 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.11 2007/12/11 14:24:04 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -156,11 +156,17 @@ class OOoLayout extends Layout {
   
   
   $contentxml=$this->cibledir."/content.xml";
+    $this->template=preg_replace("/<text:span ([^>]*)>\s*<text:section>/s","<text:section>",$this->template);
+   $this->template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->template);
+
+
   $this->template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->template);
   $this->template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->template);
 
-  $this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section>/s","<text:section \\1>",$this->template);
-  $this->template=preg_replace("/<text:p ([^>]*)><text:([^\/]*)\/>\s*<text:section>/s","<text:section \\1><text:\\2/>",$this->template);
+
+
+  $this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section[^>]*>/s","<text:section>",$this->template);
+  $this->template=preg_replace("/<text:p ([^>]*)><text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
   $this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template);
 
 
