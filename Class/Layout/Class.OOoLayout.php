@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.9 2007/11/13 08:01:38 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.10 2007/12/11 13:31:50 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -57,7 +57,9 @@ class OOoLayout extends Layout {
 	  $this->dom=new DOMDocument();
 	  $this->dom->loadXML($this->template);
 	}
-      } 
+      } else {
+	$this->template="file $file not exists";
+      }
     }
   }
 
@@ -105,10 +107,29 @@ class OOoLayout extends Layout {
   }
 
   function ParseKey() {
-    if (isset ($this->rkey)) {
-      $this->template=preg_replace($this->pkey,$this->rkey,$this->template);
-      $this->style_template=preg_replace($this->pkey,$this->rkey,$this->style_template);
+    if (isset ($this->rkey)) {      
+	$this->template=preg_replace($this->pkey,$this->rkey,$this->template);
+	$this->style_template=preg_replace($this->pkey,$this->rkey,$this->style_template);
     }
+  }
+  function ParseKeyXML() {
+    if (isset ($this->rkeyxml)) { 
+     
+      $lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","p");
+      foreach ($this->rkeyxml as $k=>$xmlkey) {
+	print "\n\nserach [$k]\n";
+	foreach ($lists as $list) {
+	  $pstyle=$list->getAttribute("text:style-name");
+	  $content=$this->dom->saveXML($list);
+	  
+	  if (strstr($content, "[$k]")) {
+	      print "\n----------------\nfind C:$xmlkey $k:\n$content";
+	      
+	    }
+
+	}
+      }
+  }
   }
 
  function odf2content($odsfile) {
@@ -135,6 +156,14 @@ class OOoLayout extends Layout {
   
   
   $contentxml=$this->cibledir."/content.xml";
+  $this->template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->template);
+  $this->template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->template);
+
+  $this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section>/s","<text:section \\1>",$this->template);
+  $this->template=preg_replace("/<text:p ([^>]*)><text:([^\/]*)\/>\s*<text:section>/s","<text:section \\1><text:\\2/>",$this->template);
+  $this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template);
+
+
   file_put_contents($contentxml,$this->template);
   
   $contentxml=$this->cibledir."/styles.xml";
@@ -203,9 +232,21 @@ class OOoLayout extends Layout {
            
 
   function set($tag,$val) {
-    if ($this->encoding=="utf-8" && !isUTF8($val)) $val = utf8_encode($val);
-    $this->pkey[$tag]="/\[$tag\]/";
-    $this->rkey[$tag]=$val;
+    if ( !isUTF8($val)) $val = utf8_encode($val);
+    if (! $this->isXml($val)) {
+      $this->pkey[$tag]="/\[$tag\]/";
+      $this->rkey[$tag]=$val;
+    } else {
+      
+      $this->rkeyxml[$tag]=$val;
+      
+    }
+  }
+
+
+  function isXML($val) {
+    return false;
+    return preg_match("/<text:/",$val);
   }
 
   function get($tag) {
@@ -381,6 +422,7 @@ class OOoLayout extends Layout {
     // $this->ParseIf($out);
 
     // Parse IMG: and LAY: tags
+    if ($this->dom) {
     $this->ParseDraw();
     $this->parseListItem();
     $this->parseTableRow();
@@ -389,10 +431,17 @@ class OOoLayout extends Layout {
     // Parse i18n text
 
     $this->ParseIf();
+    //$this->ParseKeyXml();
+    //$this->template=$this->dom->saveXML();
+    //      print $this->template;exit;
     $this->ParseKey();
     $this->ParseText();
+
     $outfile=uniqid("/var/tmp/odf").'.odt';
     $this->content2odf($outfile);
+    } else {
+      $outfile=$this->template;
+    }
     return($outfile);
   }
 }
