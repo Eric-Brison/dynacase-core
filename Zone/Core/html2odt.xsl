@@ -220,6 +220,11 @@
             <xsl:apply-templates/>
             </text:p></text:list-item>
         </xsl:template>
+        <xsl:template match="xhtml:br">
+            <text:line-break>
+            <xsl:apply-templates/>
+            </text:line-break>
+        </xsl:template>
         
         <xsl:template match="xhtml:table">
             <table:table table:name="Table1" table:style-name="Table1">
