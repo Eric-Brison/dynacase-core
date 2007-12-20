@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.60 2007/10/11 14:22:08 eric Exp $
+ * @version $Id: Class.User.php,v 1.61 2007/12/20 08:40:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -60,14 +60,21 @@ CREATE UNIQUE INDEX uni_users on users (login,iddomain);
 create sequence seq_id_users start 10";
 
 
-
-  function SetLoginName($loginDomain)
-    {
-      include_once("Class.Domain.php");
-      $loginDomain=trim(strtolower($loginDomain));
-      $query = new QueryDb($this->dbaccess,"User");
+  /** 
+   * affect user from login name
+   */ 
+  function SetLoginName($loginDomain)  {
+    include_once("Class.Domain.php");
+    $loginDomain=trim(strtolower($loginDomain));
+    $query = new QueryDb($this->dbaccess,"User");
+    $query->AddQuery("login='".pg_escape_string($loginDomain)."'");
+    $query->order_by='iddomain';
+    $list = $query->Query(0,0,"TABLE");
+    if ($query->nb > 0) {
+      $this->Affect($list[0]);
+    } else {
       if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
-    
+	  
 	$queryd = new QueryDb($this->dbaccess,"Domain");
 	$queryd->AddQuery("name='".$reg[2]."'");
 	$list = $queryd->Query();
@@ -78,22 +85,13 @@ create sequence seq_id_users start 10";
 	  $query->AddQuery("login='".pg_escape_string($reg[1])."'");
 	} else {
 	  return false;
-	}
-    
-      } else {
-
-	$query->AddQuery("login='".pg_escape_string($loginDomain)."'");
+	}    
       }
-      $query->order_by='iddomain';
-      $list = $query->Query(0,0,"TABLE");
-      if ($query->nb > 0) {
-	$this->Affect($list[0]);
-      } else {
-	return FALSE;
-      }
-
-      return TRUE;
+      return FALSE;
     }
+
+    return TRUE;
+  }
 
   function SetLogin($login,$domain)
     {
