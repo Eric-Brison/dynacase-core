@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: size.css,v 1.5 2006/12/21 18:02:53 eric Exp $
+ * $Id: size.css,v 1.6 2008/01/02 14:03:25 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -28,7 +28,7 @@ TD, TR, TH {
 
 
 
-.popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , popup a.menuItemDisabled,  .popup a.separator {
+.popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , popup a.menuItemDisabled, popup a.menuItemDisabled:link,  .popup a.separator {
   
   font-size:[SIZE_SMALL];
   font-weight: normal;
