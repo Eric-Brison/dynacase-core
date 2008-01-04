@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.11 2007/12/11 14:24:04 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.12 2008/01/04 09:42:10 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -81,8 +81,8 @@ class OOoLayout extends Layout {
 	  $block = str_replace("\\\"","\"",$block);
 	}
 	$out=$block;      
-	$this->ParseBlock($out);
-	$this->ParseIf($out);
+	//$this->ParseBlock($out);
+	//	$this->ParseIf($out);
       }
     } else {
       if ($this->strip=='Y') $block = str_replace("\\\"","\"",$block);
