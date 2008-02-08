@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-07 11:23+0100\n"
+"POT-Creation-Date: 2008-02-08 16:04+0100\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -405,6 +405,9 @@ msgstr ""
 msgid "language"
 msgstr "Lastname"
 
+msgid "connection type"
+msgstr ""
+
 msgid "background color or image"
 msgstr ""
 
@@ -464,10 +467,7 @@ msgstr "Lastname"
 msgid "anakeen"
 msgstr ""
 
-msgid "use object cache"
-msgstr ""
-
-msgid "number of cached object by class"
+msgid "url to reach http server index"
 msgstr ""
 
 msgid "memory max for PHP in Mo"
@@ -553,6 +553,9 @@ msgstr ""
 msgid "user own account modification"
 msgstr ""
 
+msgid "$code"
+msgstr ""
+
 #, c-format
 msgid "function '%s' not available for application %s (%d)"
 msgstr ""
@@ -567,7 +570,8 @@ msgid ""
 "Need ACL %s for action %s [%s]"
 msgstr ""
 
-msgid "$code"
+#, c-format
+msgid "Application %s (%s) not available"
 msgstr ""
 
 msgid "modify object acl"
@@ -587,6 +591,9 @@ msgid "no freedom DB access"
 msgstr ""
 
 msgid "DbObj::Adds error in multiple insertion"
+msgstr ""
+
+msgid "Parameter name does not include spaces"
 msgstr ""
 
 msgid "prev"
@@ -618,6 +625,9 @@ msgstr ""
 
 #, c-format
 msgid "file not found : %s"
+msgstr ""
+
+msgid "cannot access to template database [$dbtemp]"
 msgstr ""
 
 msgid "cannot access to default database [$dbaccess]"

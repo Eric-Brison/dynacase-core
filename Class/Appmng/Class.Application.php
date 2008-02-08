@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.61 2007/11/16 17:35:20 eric Exp $
+ * @version $Id: Class.Application.php,v 1.62 2008/02/08 15:08:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -120,8 +120,12 @@ create sequence SEQ_ID_APPLICATION start 10;
 	}
       }
 
-      if ($this->available == "N") 
-	Redirect($this,"CORE","",GetParam("CORE_ROOTURL"));
+      if ($this->available == "N") {
+	// error
+	print sprintf(_("Application %s (%s) not available"),$this->name,_($this->short_name));
+	exit;
+      }
+	
 
       if ($session != "") $this->SetSession($session);
 
