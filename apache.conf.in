@@ -33,11 +33,6 @@ Alias /freedom @prefix@
     </FilesMatch>
     <FilesMatch "geticon.php">
       Allow from All   
-      AuthType Basic
-      AuthName 'FREEDOM Connection'  
-      AuthBasicProvider pam
-      AuthnPAMService httpd
-      Require valid-user
     </FilesMatch>
     <FilesMatch "expire.shtml|chgpasswd.php">
       Allow from All   
