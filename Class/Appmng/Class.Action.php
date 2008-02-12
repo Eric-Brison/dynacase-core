@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.37 2007/11/08 15:16:49 eric Exp $
+ * @version $Id: Class.Action.php,v 1.38 2008/02/12 15:20:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -400,8 +400,7 @@ create sequence SEQ_ID_ACTION;
   /**
    * unregister FT error 
    */
-  function ClearError()
-  {
+  function ClearError() {
     $this->Unregister("FT_ERROR");
     $this->Unregister("FT_ERROR_ACT");
   }

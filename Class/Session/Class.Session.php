@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.27 2007/11/08 15:16:49 eric Exp $
+ * @version $Id: Class.Session.php,v 1.28 2008/02/12 15:20:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.27 2007/11/08 15:16:49 eric Exp $
+// $Id: Class.Session.php,v 1.28 2008/02/12 15:20:11 eric Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.27 2007/11/08 15:16:49 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.28 2008/02/12 15:20:11 eric Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -170,15 +170,8 @@ var $sessiondb;
   // Récupère une variable de session
   // $v est une chaine !
   // --------------------------------
-  function Read($k = "", $d="") {    
-
-    // global $_SESSION;
-    //  if (session_is_registered ($k)) {
-
- 
+  function Read($k = "", $d="") {     
     if (isset($_SESSION[$k])) {
-      //	global $$k;
-      // return($$k);
       return $_SESSION[$k];
     } else {
       return($d);
