@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.12 2008/01/04 09:42:10 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.13 2008/02/18 17:24:03 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -386,6 +386,41 @@ class OOoLayout extends Layout {
     return $err;
   }
 
+  /**
+   * Initialize of list
+   * $key must begin with V_ and be uppercase
+   */
+  function setColumn($key,$t) {
+    $this->set($key,implode('<text:tab/>',$t));
+  }
+  function SetBlockData($nothing,$data) {
+    $t=array();
+    if (is_array($data)) {
+      foreach ($data as $k=>$v) {
+	foreach ($v as $ki=>$vi) {
+	  $t[$ki][$k]=$vi;
+	}
+      }
+    }
+    // fill array
+    $max=0;
+    foreach ($t as $k=>$v) {
+      if (count($v) > $max) $max=count($v);
+    }
+    foreach ($t as $k=>$v) {
+      if (count($v) < $max) {
+	$fill=array_fill(0,$max,'');
+	foreach ($v as $idx=>$vi) {
+	  $fill[$idx]=$vi;
+	}
+	$t[$k]=$fill;
+      }
+    }    
+    // affect completed columns
+    foreach ($t as $k=>$v) {
+      $this->setColumn($k,$v);
+    }
+  }
   function addHTMLStyle() {
     $xmldata='<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">'."</xhtml:html>";
 
