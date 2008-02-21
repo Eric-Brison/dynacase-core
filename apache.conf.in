@@ -48,7 +48,7 @@ Alias /freedom @prefix@
 
 
 
- <Directory ~ @prefix@/[A-B,D-Z]|@prefix@/C[^A]>
+ <Directory ~ @prefix@/[A-Z]>
      Order Deny,Allow
      Deny from All   
  </Directory> 
@@ -66,16 +66,3 @@ Alias /freedom @prefix@
     Require valid-user
 </Directory>
 
-
- <Directory @prefix@/CALENDAR>
-    AllowOverride None
-    ErrorDocument 401 "connection refused"   
-    AuthType Basic
-    AuthName 'FREEDOM Connection'
-    AuthBasicProvider pam
-    AuthnPAMService httpdwa
-    require valid-user
- </Directory>
-
-
-#Alias /whatsync @prefix@/CALENDAR
