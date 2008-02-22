@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.12 2008/02/22 14:52:01 eric Exp $
+ * $Id: DEFAULT.css,v 1.13 2008/02/22 15:31:51 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -61,7 +61,7 @@ OPTION {
    color:[input-text-normal-color];
    background-color:[input-background-normal-color];
 }
-BUTTON, input[type="button"]{ 
+BUTTON, input[type="button"], input[type="submit"] { 
   /*-moz-border-radius:25px;*/
   padding:0pt;
   margin:0px;
@@ -74,7 +74,8 @@ BUTTON, input[type="button"]{
    }
 
 TABLE.edittable input[type="button"] {
-  border-left-style:none
+  border-left-style:none;
+  margin-right:1px;
   
 }
 BUTTON:hover { 		
