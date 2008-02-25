@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.38 2008/02/12 15:20:11 eric Exp $
+ * @version $Id: Class.Action.php,v 1.39 2008/02/25 17:23:35 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -15,6 +15,8 @@ include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
+
+define ("THROW_EXITERROR",1968);
 
 Class Action extends DbObj
 {
@@ -394,7 +396,7 @@ create sequence SEQ_ID_ACTION;
       redirect($this,"CORE&sole=Y","ERROR");
       exit;
     } else {    
-      throw new Exception(sprintf("$texterr [%s/%s]",$this->parent->name,$this->name));   
+      throw new Exception($texterr,THROW_EXITERROR);   
     }
   }
   /**
