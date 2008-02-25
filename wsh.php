@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.32 2007/10/01 12:59:49 eric Exp $
+ * @version $Id: wsh.php,v 1.33 2008/02/25 17:23:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -127,8 +127,19 @@ textdomain ("what");
 
 
 if (isset($_GET["api"])) {
-  if (!include "API/".$_GET["api"].".php") {
-    echo sprintf(_("API file %s not found"),"API/".$_GET["api"].".php");
+  try {
+    if (!include "API/".$_GET["api"].".php") {
+      echo sprintf(_("API file %s not found"),"API/".$_GET["api"].".php");
+    } 
+  }
+  catch (Exception $e) {
+    switch ($e->getCode()) {
+    case THROW_EXITERROR:      
+      echo sprintf(_("Error : %s\n"),$e->getMessage());
+      break;
+    default:
+      echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
+    }
   }
 } else {
   if (! isset($_GET["wshfldid"])) {
@@ -151,7 +162,13 @@ if (isset($_GET["api"])) {
 	echo ($action->execute ());
       }
       catch (Exception $e) {
-	echo sprintf(_("Caught Exception : %s<br>\n"),$e->getMessage());
+	switch ($e->getCode()) {
+	case THROW_EXITERROR:      
+	  echo sprintf(_("Error : %s\n"),$e->getMessage());
+	  break;
+	default:
+	  echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
+	}
       }
       echo "<hr>";
 
