@@ -3,7 +3,7 @@
  * Install command executing
  *
  * @author Anakeen 2005
- * @version $Id: wgexecute.php,v 1.5 2005/11/24 09:11:18 eric Exp $
+ * @version $Id: wgexecute.php,v 1.6 2008/02/29 14:08:52 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,10 +12,10 @@ header('Content-type: text/xml; charset=utf-8');
 global $_POST;
 $number=$_POST["number"];
 
-session_start();
 global $_COOKIE;
 $sid=$_COOKIE['adminsession'];
 session_id($sid);
+session_start();
 print '<?xml version="1.0" encoding="UTF-8"?>';
 
 if (!$sid) {
