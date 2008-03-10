@@ -7,7 +7,7 @@ TRACEBUTTON.style.position='absolute';
 TRACEBUTTON.style.top='0px';
 TRACEBUTTON.style.left='0px';
 TRACEBUTTON.style.zIndex=100000;
-TRACEBUTTON.innerHTML='TRACE';
+TRACEBUTTON.innerHTML=TTRACE['server all'];
 TRACEBUTTON.onclick=function ztrace() {displayPropertyNames(TTRACE);};
 TRACEBUTTON.oncontextmenu=function ztraceun() {this.style.display='none';return false;};
 //TRACEBUTTON.style.display='none';
