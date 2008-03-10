@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.62 2008/02/08 15:08:48 eric Exp $
+ * @version $Id: Class.Application.php,v 1.63 2008/03/10 15:09:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -567,7 +567,19 @@ create sequence SEQ_ID_APPLICATION start 10;
 
       }
     }
-
+  
+  /**
+   * set user parameter for current user
+   *
+   * @param string $key parameter identificator
+   * @param string $val value
+   * @return void
+   */
+  function SetParamU($key,$val) {       
+      $this->param->Set($key,$val,
+			PARAM_USER.$this->user->id,
+			$this->id);  
+    }
   function SetParamDef($key,$val)
     {
       // add new param definition

@@ -3,7 +3,7 @@
  * Action Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Action.php,v 1.39 2008/02/25 17:23:35 eric Exp $
+ * @version $Id: Class.Action.php,v 1.40 2008/03/10 15:09:17 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -162,7 +162,12 @@ create sequence SEQ_ID_ACTION;
       return($this->parent->GetParam($name, $def));
     }
   }
-
+  
+ function setParamU($name, $val) {
+    if (isset ($this->parent)) {
+      return($this->parent->setParamU($name, $val));
+    }
+  }
   function GetImageUrl($name) {
     if (isset ($this->parent)) {
       return($this->parent->GetImageUrl($name));
