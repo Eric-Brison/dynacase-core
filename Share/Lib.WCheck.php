@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.16 2007/10/12 12:14:38 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.17 2008/03/13 12:35:55 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -108,13 +108,8 @@ function getAppOrder($topdir) {
  */
 function vercmp($v1,$v2) {
   if ($v1==$v2) return 0;
-  $tv1=array_reverse(explode(".",str_replace("-",".",$v1)));
-  $tv2=array_reverse(explode(".",str_replace("-",".",$v2)));
-  $iv1=0;
-  $iv2=0;
-  foreach ($tv1 as $k=>$v) $iv1+=$v*(pow(100,$k));
-  foreach ($tv2 as $k=>$v) $iv2+=$v*(pow(100,$k));
-  if ($iv1 > $iv2) return 1;
+  
+  if (version2float($v1) > version2float($v2)) return 1;
   else return -1;
 }
 
@@ -185,7 +180,21 @@ function getCheckApp($pubdir,&$tapp) {
 
 
 
+function version2float($ver) {
+  if (preg_match_all('/([0-9]+)/', $ver , $matches)) {
+    $matches=($matches[0]);
+    $sva='';
+    $c=count($matches);
+    if ($c < 4) {
+      for ($i=0;$i < (4-$c);$i++) {
+	$matches[]='0';
+      }
+    }
+    foreach ($matches as $k=>$v)    $sva.=sprintf("%02d",$v);
+    return floatval($sva);
+  }
 
+}
 
 function getCheckActions($pubdir,$tapp,&$tact) {
 
@@ -213,8 +222,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
 	if (ereg("{$k}_migr_([0-9\.]+)$", $file, $reg)) {
-
-	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
+	  if (($tvdb[$k] != "") && (version2float($tvdb[$k]) < version2float($reg[1])))
 	    $migr[]="$pubdir/$k/$file";
 	}
       }
@@ -263,7 +271,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
       while (($file = readdir($dir)) !== false) {
 	if (ereg("{$k}_pmigr_([0-9\.]+)$", $file, $reg)) {
 
-	  if (($tvdb[$k] != "") && ($tvdb[$k] < $reg[1]))
+	  if (($tvdb[$k] != "") && (version2float($tvdb[$k]) < version2float($reg[1])))
 	    $migr[]="$pubdir/$k/$file";
 	}
       }
