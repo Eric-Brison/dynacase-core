@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.16 2007/06/29 09:40:23 yannick Exp $)
+AC_REVISION($Id: configure.in,v 1.17 2008/03/28 08:46:21 eric Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -18,7 +18,9 @@ VERSION=`cat VERSION`
 AC_SUBST(RELEASE)
 RELEASE=`cat RELEASE`
 AC_SUBST(PACKAGE)
-PACKAGE=WHAT
+PACKAGE=freedom-core
+AC_SUBST(APPNAME)
+APPNAME=WHAT
 
 ac_default_prefix=/usr/share/what
 
@@ -88,7 +90,7 @@ HTTPUSER=http
 AC_ARG_WITH(httpuser,
 [  --with-httpuser=user id for httpd process (default http)], HTTPUSER=$withval)
 
-AC_OUTPUT(Makefile  dbaccess.php dbaccess.sh WHAT.spec apache.conf freedom.conf \
+AC_OUTPUT(Makefile  dbaccess.php dbaccess.sh freedom-core.spec apache.conf freedom.conf \
           App/Core/CORE_init.php \
           App/Users/USERS_init.php \
           App/Access/ACCESS_init.php \
