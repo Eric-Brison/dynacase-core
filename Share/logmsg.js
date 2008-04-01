@@ -294,3 +294,42 @@ function unglobalcursor(w) {
   CGCURSOR='auto';;
 		
 }
+
+function include_js(script_filename) {
+  var jsver=is_already_include_js(script_filename);
+  if (jsver >= 0){
+    var html_doc = document.getElementsByTagName('head').item(0);
+    var js = document.createElement('script');
+    js.setAttribute('language', 'javascript');
+    js.setAttribute('type', 'text/javascript');
+    if (jsver > 0) script_filename+='?wv='+jsver;
+    js.setAttribute('src', script_filename);
+    html_doc.appendChild(js);
+  }
+  return false;
+}
+function is_already_include_js(file) {
+    var html_doc = document.getElementsByTagName('script');
+    var i=0;
+    var jssrc;
+    var pat=/wv=([0-9]+)/;
+    var rp;
+    var jsver=0;
+    //    var absfile=getAbsPath(file);
+    for (i=0;i< html_doc.length;i++) {
+      jssrc= html_doc[i].getAttribute('src');
+      if (jssrc) {
+	if (jssrc == file) return -1;
+	if (jssrc.indexOf(file)>=0) return -1;
+	//if (absfile == html_doc[i].src) return -1;
+	if ((!jsver) && ( rp=pat.exec(jssrc))) 	jsver=rp[1];
+	
+      }
+    }
+    return jsver;
+}
+function getAbsPath(file){
+  image1=new Image(); // not terrible: do a download
+  image1.src=file;
+  return image1.src;
+}
