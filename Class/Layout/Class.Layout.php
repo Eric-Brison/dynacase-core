@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.44 2007/11/16 17:35:48 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.45 2008/04/01 07:58:44 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.44 2007/11/16 17:35:48 eric Exp $
+//  $Id: Class.Layout.php,v 1.45 2008/04/01 07:58:44 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -226,7 +226,7 @@ class Layout {
 
   function ParseKey(&$out) {
     if (isset ($this->rkey)) {
-      $out=preg_replace($this->pkey,$this->rkey,$out);
+      $out=str_replace($this->pkey,$this->rkey,$out);
     }
   }
 
@@ -299,7 +299,7 @@ class Layout {
 
   function set($tag,$val) {
     if ($this->encoding=="utf-8" && !isUTF8($val)) $val = utf8_encode($val);
-    $this->pkey[$tag]="/\[$tag\]/";
+    $this->pkey[$tag]="[$tag]";
     $this->rkey[$tag]=$val;
   }
 
