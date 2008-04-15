@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: applist.php,v 1.9 2005/06/04 06:35:05 marc Exp $
+ * @version $Id: applist.php,v 1.10 2008/04/15 16:36:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -12,7 +12,7 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: applist.php,v 1.9 2005/06/04 06:35:05 marc Exp $
+// $Id: applist.php,v 1.10 2008/04/15 16:36:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
 // ---------------------------------------------------------------
 //  O   Anakeen - 2000
@@ -34,6 +34,9 @@
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------
 // $Log: applist.php,v $
+// Revision 1.10  2008/04/15 16:36:42  eric
+// i18n
+//
 // Revision 1.9  2005/06/04 06:35:05  marc
 // Add application icons in application & param management
 //
@@ -178,7 +181,7 @@ function applist(&$action) {
   $action->lay->Set("IMGPRINT", $action->GetImageUrl("print.gif"));
   $action->lay->Set("IMGEDIT", $action->GetImageUrl("edit.gif"));
   $action->lay->Set("IMGSEARCH", $action->GetImageUrl("search.gif"));
-  $action->lay->Set("APPLIST",$action->text("title"));
+  $action->lay->Set("APPLIST",_("Application list"));
 
 }
 ?>
