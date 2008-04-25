@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.17 2008/03/28 08:46:21 eric Exp $)
+AC_REVISION($Id: configure.in,v 1.18 2008/04/25 09:19:03 jerome Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -39,46 +39,20 @@ LANG=fr_FR
 AC_ARG_WITH(lang,
 [  --with-lang=lang   Set Lang ], LANG=$withval)
 
+AC_SUBST(PGSERVICE_CORE)
+PGSERVICE_CORE=anakeen
+AC_ARG_WITH(pgservicecore,
+[  --with-pgservice_core=postgresql service for core database (default "anakeen") ], PGSERVICE_CORE=$withval)
 
-AC_SUBST(DBSERV)
-DBSERV=
-AC_ARG_WITH(dbserv,
-[  --with-dbserv=virutal host (default empty)  ], DBSERV=$withval)
+AC_SUBST(PGSERVICE_FREEDOM)
+PGSERVICE_FREEDOM=freedom
+AC_ARG_WITH(pgservicefreedom,
+[  --with-pgservice_freedom=postgresql service for freedom database (default "freedom") ], PGSERVICE_FREEDOM=$withval)
 
-AC_SUBST(DBHOST)
-DBHOST=localhost
-AC_ARG_WITH(dbhost,
-[  --with-dbhost=host the PostgreSql Host (default localhost)  ], DBHOST=$withval)
-
-AC_SUBST(DBENV)
-DBENV=anakeen
-AC_ARG_WITH(dbenv,
-[  --with-dbenv=name  the database environnement (default anakeen)], DBENV=$withval)
-
-AC_SUBST(DBNAME)
-DBNAME=anakeen
-AC_ARG_WITH(dbname,
-[  --with-dbname=name  the core database name (default anakeen)], DBNAME=$withval)
-
-AC_SUBST(DBFREEDOM)
-DBFREEDOM=freedom
-AC_ARG_WITH(dbfreedom,
-[  --with-dbfreedom=name  the freedom database name (default freedom)], DBFREEDOM=$withval)
-
-AC_SUBST(DBUSER)
-DBUSER=anakeen
-AC_ARG_WITH(dbuser,
-[  --with-dbuser=username  the database user (default anakeen)], DBUSER=$withval)
-
-AC_SUBST(DBPATH)
-DBPATH=anakeen
-AC_ARG_WITH(dbuser,
-[  --with-dbpath=passwd  the database passwd (default anakeen)], DBPATH=$withval)
-
-AC_SUBST(DBPORT)
-DBPORT=5432
-AC_ARG_WITH(dbport,
-[  --with-dbport=port number  the database port (default 5432)], DBPORT=$withval)
+AC_SUBST(FREEDOMENV)
+FREEDOMENV=default
+AC_ARG_WITH(freedomenv,
+[  --with-freedomenv=name of the Freedom environment (default "default") ], FREEDOMENV=$withval)
 
 AC_SUBST(APACHECONFDIR)
 APACHECONFDIR=/etc/httpd/httpd.conf
@@ -90,7 +64,7 @@ HTTPUSER=http
 AC_ARG_WITH(httpuser,
 [  --with-httpuser=user id for httpd process (default http)], HTTPUSER=$withval)
 
-AC_OUTPUT(Makefile  dbaccess.php dbaccess.sh freedom-core.spec apache.conf freedom.conf \
+AC_OUTPUT(Makefile freedom-core.spec apache.conf freedom.conf \
           App/Core/CORE_init.php \
           App/Users/USERS_init.php \
           App/Access/ACCESS_init.php \

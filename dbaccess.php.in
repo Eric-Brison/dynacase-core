@@ -1,12 +1,10 @@
 <?
-// $Id: dbaccess.php.in,v 1.4 2006/02/08 14:52:22 eric Exp $
+// $Id: dbaccess.php.in,v 1.5 2008/04/25 09:19:03 jerome Exp $
 $pubdir="@prefix@";
 $httpuser="@HTTPUSER@";
 $httpconf="@APACHECONFDIR@";
-$servername="@DBSERV@";
-$dbanakeen="@DBENV@";
-$dbname="@DBNAME@";
-$dbfree="@DBFREEDOM@";
-$dbpsql="--host @DBHOST@ --port @DBPORT@ --username @DBUSER@ --dbname @DBNAME@";
-$dbaccess="user=@DBUSER@ dbname=@DBNAME@";
+$pgservice_core="@PGSERVICE_CORE@";
+$pgservice_freedom="@PGSERVICE_FREEDOM@";
+$freedomenv="@FREEDOMENV@";
+$dbpsql=$pgservice_core;
 ?>

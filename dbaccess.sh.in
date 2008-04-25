@@ -1,8 +1,5 @@
 export wpub="@prefix@"
-export dbcoord="dbname=@DBNAME@ host=@DBHOST@ port=@DBPORT@ user=@DBUSER@"
-export dbhost=@DBHOST@
-export dbport=@DBPORT@ 
-export dbanakeen="@DBENV@"
-export dbname=@DBNAME@
-export dbpsql="--host @DBHOST@ --port @DBPORT@ --username @DBUSER@ --dbname @DBNAME@"
-export dbfree="--host @DBHOST@ --port @DBPORT@ --username @DBUSER@ --dbname @DBFREEDOM@"
+export pgservice_core="@PGSERVICE_CORE@"
+export pgservice_freedom="@PGSERVICE_FREEDOM@"
+export freedomenv="@FREEDOMENV@"
+export dbpsql=$pgservice_core
