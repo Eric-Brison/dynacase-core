@@ -45,15 +45,15 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
 
-    log "Checking if DateStyle is 'ISO, DMY'..."
+    log "Checking if DateStyle is 'SQL, DMY'..."
     DATESTYLE=`PGSERVICE="$pgservice_core" psql -At -c "SHOW DateStyle" 2> /dev/null`
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "An error occured while querying DateStyle : $RET"
 	exit $RET
     fi
-    if [ "$DATESTYLE" != "ISO, DMY" ]; then
-	echo "Error: DateStyle is not 'ISO, DMY' on database service $pgservice_core !"
+    if [ "$DATESTYLE" != "SQL, DMY" ]; then
+	echo "Error: DateStyle is not 'SQL, DMY' on database service $pgservice_core !"
 	echo "Please fix it."
 	exit 1
     fi
