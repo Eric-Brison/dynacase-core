@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.42 2008/04/25 09:18:57 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.43 2008/04/25 09:19:29 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -202,7 +202,7 @@ function getServiceName($dbaccess) {
  */
 function getWshCmd($nice=false,$userid=0,$sudo=false) {
   $freedomenv=getFreedomEnv(); // choose when several databases
-  $wsh="export freedomenv=$freedomenv;";
+  $wsh="export freedomenv=\"$freedomenv\";";
   if ($nice) $wsh.= "nice -n +10 ";
   if ($sudo) $wsh.= "sudo ";
   $wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
