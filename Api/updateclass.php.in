@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php.in,v 1.4 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: updateclass.php.in,v 1.5 2008/04/25 09:18:57 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,11 +28,11 @@ function GetArg($name, $def="") {
 
     while (list($k, $v) = each($argv)) {
       
-      if (ereg("--(.+)=\"(.+)\"", $v , $reg)) {
+      if (ereg("--([^=]+)=\"(.+)\"", $v , $reg)) {
 	$ARGS[$reg[1]]=$reg[2];
-      } elseif (ereg("--(.+)=(.+)", $v , $reg)) {
+      } elseif (ereg("--([^=]+)=(.+)", $v , $reg)) {
 	$ARGS[$reg[1]]=$reg[2];
-      }  else if (ereg("--(.+)", $v , $reg)) {    
+      }  else if (ereg("--([^=]+)", $v , $reg)) {    
 	$ARGS[$reg[1]]=true;
       } 
     }
@@ -58,7 +58,7 @@ $dbcoord = Getarg("dbcoord");
 if ($dbcoord != "") {
   $db = $dbcoord;
  } else {
-  $db = getDbAccessFreedom();
+  $db = getDbAccess();
  }
 
 include_once("$pubdir/$appclass/Class.$class.php");

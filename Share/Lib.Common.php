@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.41 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.42 2008/04/25 09:18:57 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -179,6 +179,11 @@ function getServiceFreedomFromEnv($freedomenv="") {
 
   $PGSERVICE_FREEDOM = $pgservice_freedom;
   return $PGSERVICE_FREEDOM;
+}
+
+function getDbName($dbaccess) {
+  error_log("Deprecated call to getDbName(dbaccess) : use getServiceName(dbaccess)");
+  return getServiceName($dbaccess);
 }
 
 function getServiceName($dbaccess) {

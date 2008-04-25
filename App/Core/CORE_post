@@ -76,16 +76,16 @@ if [ "$1" = "I" ] ; then
     echo "   endscript"                      >> /etc/logrotate.d/what
     echo "}"                                 >> /etc/logrotate.d/what
     
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Application
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Action
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Style
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=ParamDef
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Param
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=User
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Group
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Permission
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Acl
-    /usr/bin/php -q $wpub/API/updateclass.php   --class=Session
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Application
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Action
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Style
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=ParamDef
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Param
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=User
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Group
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Permission
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Acl
+    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Session
     $wpub/wsh.php  --api=appadmin
 fi
 
