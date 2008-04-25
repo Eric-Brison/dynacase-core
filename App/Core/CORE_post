@@ -95,6 +95,14 @@ fi
 #------------------------------
 if [ "$1" = "U" ] ; then
 
+    log "Setting CORE_DB in paramv..."
+    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = 'service=''$pgservice_core''' WHERE name = 'CORE_DB'"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error setting CORE_DB"
+        exit $RET
+    fi
+
     #add permission functionnalities
     log "Executing $wpub/WHAT/getprivilege.sql in database service $pgservice_core..."
     PGSERVICE=$pgservice_core pgExecuteSqlFile $wpub/WHAT/getprivilege.sql
@@ -107,7 +115,7 @@ if [ "$1" = "U" ] ; then
     $wpub/wsh.php  --api=import_size 
     $wpub/wsh.php  --api=import_style --name=DEFAULT
     $wpub/wsh.php  --api=import_style --name=ORIGINAL
-    echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | PGSERVICE=$pgservice_core psql $dbpsql
+    echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | PGSERVICE=$pgservice_core psql
 fi
 
 #------------------------------
@@ -117,26 +125,26 @@ if [ "$1" = "D" ] ; then
 
   set -e
 
-  grep -v 'Include %{destdir}/apache.conf' /etc/httpd/conf/httpd.conf > /tmp/httpd.conf
-  mv /tmp/httpd.conf /etc/httpd/conf/httpd.conf
-
-  # Remove what from syslog
-  echo "Remove what.log from syslog"
-  cp /etc/syslog.conf /etc/syslog.conf.sav
-  cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
-  /etc/rc.d/init.d/syslog restart
-  rm -f /etc/logrotate.d/what
-
-  # drop anakeen database and user
-  log "The $dbname database will be dropped, we save a dump in /tmp/anakeen$$.dump"
-  sulog  postgres  "pg_dump -d $dbname >/tmp/anakeen$$.dump"
-  sulog  postgres  "dropuser anakeen" 
-  sulog  postgres  "dropdb $dbname"
-
-  log "Unregister DB $dbname for automatic dump"
-  mv /etc/ankpsql-tools/base-list /etc/ankpsql-tools/base-list.old
-  cat /etc/ankpsql-tools/base-list.old | grep -v "^$dbname$" > /etc/ankpsql-tools/base-list
-  rm -f /etc/ankpsql-tools/base-list.old
+#  grep -v 'Include %{destdir}/apache.conf' /etc/httpd/conf/httpd.conf > /tmp/httpd.conf
+#  mv /tmp/httpd.conf /etc/httpd/conf/httpd.conf
+#
+#  # Remove what from syslog
+#  echo "Remove what.log from syslog"
+#  cp /etc/syslog.conf /etc/syslog.conf.sav
+#  cat /etc/syslog.conf.sav | grep -v "^local6.*/var/log/what.log.*$" > /etc/syslog.conf
+#  /etc/rc.d/init.d/syslog restart
+#  rm -f /etc/logrotate.d/what
+#
+#  # drop anakeen database and user
+#  log "The $dbname database will be dropped, we save a dump in /tmp/anakeen$$.dump"
+#  sulog  postgres  "pg_dump -d $dbname >/tmp/anakeen$$.dump"
+#  sulog  postgres  "dropuser anakeen" 
+#  sulog  postgres  "dropdb $dbname"
+#
+#  log "Unregister DB $dbname for automatic dump"
+#  mv /etc/ankpsql-tools/base-list /etc/ankpsql-tools/base-list.old
+#  cat /etc/ankpsql-tools/base-list.old | grep -v "^$dbname$" > /etc/ankpsql-tools/base-list
+#  rm -f /etc/ankpsql-tools/base-list.old
 fi
 
 exit 0
