@@ -3,7 +3,7 @@
  * Verify several point for the integrity of the system
  *
  * @author Anakeen 2007
- * @version $Id: checklist.php,v 1.5 2007/05/21 14:52:56 marc Exp $
+ * @version $Id: checklist.php,v 1.6 2008/04/25 09:18:15 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -78,89 +78,85 @@ foreach ($virtuals as $k=>$v) {
 }
 print "<hr style=\"clear:both\">";
 
-
-
-
 if ($wvirtual=="" || $wvirtual=="main") include("dbaccess.php");
 
-$r=@pg_connect($dbaccess);
+$r=@pg_connect("service='$pgservice_core'");
 if ($r) $dbr_anakeen=true;
  else $dbr_anakeen=false;
 
 $tout["main connection db"]=array("status"=>$dbr_anakeen?OK:KO,
-					"msg"=>$dbaccess);
-
+					"msg"=>$pgservice_core);
 
 if ($dbr_anakeen) {
   $GP=globalparam($r);
   //  print_r2($GP);
   // TEST groups coherence
+  
+  $result = pg_query($r, "SELECT * from groups where iduser not in (select id from users);");    
+  $pout=array();
+  while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    $pout[$row["iduser"]][]=$row["idgroup"];
+  }
+  if (count($pout) > 0) $msg=sprintf("%d unreference users<pre>%s</pre>",count($pout),print_r($pout,true));
+  else $msg="";
+  $tout["unreference user in group"]=array("status"=>(count($pout)==0)?OK:BOF,
+					   "msg"=>$msg);
 
-    $result = pg_query($r, "SELECT * from groups where iduser not in (select id from users);");    
-    $pout=array();
-    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-      $pout[$row["iduser"]][]=$row["idgroup"];
-    }
-    if (count($pout) > 0) $msg=sprintf("%d unreference users<pre>%s</pre>",count($pout),print_r($pout,true));
-    else $msg="";
-    $tout["unreference user in group"]=array("status"=>(count($pout)==0)?OK:BOF,
-					     "msg"=>$msg);
-
-    $result = pg_query($r, "SELECT distinct(idgroup) from groups where idgroup not in (select id from users where isgroup='Y');");    
-    $pout=array();
-    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-      $pout[]=$row["idgroup"];
-    }
-    if (count($pout) > 0) $msg=sprintf("%d users detected as group<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
-    else $msg="";
-    $tout["user as group"]=array("status"=>(count($pout)==0)?OK:KO,
+  $result = pg_query($r, "SELECT distinct(idgroup) from groups where idgroup not in (select id from users where isgroup='Y');");    
+  $pout=array();
+  while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    $pout[]=$row["idgroup"];
+  }
+  if (count($pout) > 0) $msg=sprintf("%d users detected as group<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
+  else $msg="";
+  $tout["user as group"]=array("status"=>(count($pout)==0)?OK:KO,
+			       "msg"=>$msg);
+  
+  $result = pg_query($r, "SELECT * from action where id_application not in (select id from application);");    
+  $pout=array();
+  while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    $pout[]=$row["name"];
+  }
+  if (count($pout) > 0) $msg=sprintf("%d unreference actions<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
+  else $msg="";
+  $tout["unreference actions"]=array("status"=>(count($pout)==0)?OK:BOF,
+				     "msg"=>$msg);
+  
+  $result = pg_query($r, "SELECT * from paramdef where appid  not in (select id from application);");    
+  $pout=array();
+  while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    $pout[]=$row["name"];
+  }
+  $result = pg_query($r, "SELECT * from paramv where appid  not in (select id from application);");    
+  while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    $pout[]=$row["name"];
+  }
+  if (count($pout) > 0) $msg=sprintf("%d unreference parameters<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
+  else $msg="";
+  $tout["unreference parameters"]=array("status"=>(count($pout)==0)?OK:BOF,
+					"msg"=>$msg);
+  
+  $result = pg_query($r, "SELECT * from acl where id_application not in (select id from application);");    
+  $pout=array();
+  while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    $pout[]=$row["name"];
+  }
+  if (count($pout) > 0) $msg=sprintf("%d unreference acl<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
+  else $msg="";
+  $tout["unreference acl"]=array("status"=>(count($pout)==0)?OK:BOF,
 				 "msg"=>$msg);
-
-    $result = pg_query($r, "SELECT * from action where id_application not in (select id from application);");    
-    $pout=array();
-    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-      $pout[]=$row["name"];
-    }
-    if (count($pout) > 0) $msg=sprintf("%d unreference actions<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
-    else $msg="";
-    $tout["unreference actions"]=array("status"=>(count($pout)==0)?OK:BOF,
-					     "msg"=>$msg);
-
-    $result = pg_query($r, "SELECT * from paramdef where appid  not in (select id from application);");    
-    $pout=array();
-    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-      $pout[]=$row["name"];
-    }
-    $result = pg_query($r, "SELECT * from paramv where appid  not in (select id from application);");    
-    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-      $pout[]=$row["name"];
-    }
-    if (count($pout) > 0) $msg=sprintf("%d unreference parameters<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
-    else $msg="";
-    $tout["unreference parameters"]=array("status"=>(count($pout)==0)?OK:BOF,
-					     "msg"=>$msg);
-
-    $result = pg_query($r, "SELECT * from acl where id_application not in (select id from application);");    
-    $pout=array();
-    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
-      $pout[]=$row["name"];
-    }
-    if (count($pout) > 0) $msg=sprintf("%d unreference acl<br><kbd>%s</kbd>",count($pout),implode(", ",$pout));
-    else $msg="";
-    $tout["unreference acl"]=array("status"=>(count($pout)==0)?OK:BOF,
-					     "msg"=>$msg);
-
-    $result = pg_query($r, "SELECT * from permission where id_acl not in (select id from acl);");    
-    $nb=pg_num_rows($result);
-    $result = pg_query($r, "SELECT * from permission where id_user not in (select id from users);");    
-    $nb+=pg_num_rows($result);
-    $result = pg_query($r, "SELECT * from permission where id_application not in (select id from application);");    
-    $nb+=pg_num_rows($result);
-
-    if ($nb > 0) $msg=sprintf("%d unreference permission",($nb));
-    $tout["unreference permission"]=array("status"=>($nb==0)?OK:BOF,
-					  "msg"=>$msg);
-
+  
+  $result = pg_query($r, "SELECT * from permission where id_acl not in (select id from acl);");    
+  $nb=pg_num_rows($result);
+  $result = pg_query($r, "SELECT * from permission where id_user not in (select id from users);");    
+  $nb+=pg_num_rows($result);
+  $result = pg_query($r, "SELECT * from permission where id_application not in (select id from application);");    
+  $nb+=pg_num_rows($result);
+  
+  if ($nb > 0) $msg=sprintf("%d unreference permission",($nb));
+  $tout["unreference permission"]=array("status"=>($nb==0)?OK:BOF,
+					"msg"=>$msg);
+  
   // Test FREEDOM DB Connection
   $fdb=$GP["FREEDOM_DB"];
   $dbr_freedom=false;
@@ -171,7 +167,7 @@ if ($dbr_anakeen) {
   
   $tout["connection db freedom"]=array("status"=>$dbr_freedom?OK:KO,
 				       "msg"=>$fdb);
-
+  
   if ($rf) {
     // test double in docfrom    
     $result = pg_query($rf, "SELECT * from (SELECT id, count(id) as c  from doc group by id) as Z where Z.c > 1;");    
@@ -183,7 +179,7 @@ if ($dbr_anakeen) {
     else $msg="";
     $tout["double doc id"]=array("status"=>(count($pout)==0)?OK:KO,
 				 "msg"=>$msg);
-
+    
     // test double in docname 
     $result = pg_query($rf, "select * from (select name, count(name) as c from doc where name is not null and name != '' and locked != -1 group by name) as Z where Z.c >1");    
     $pout=array();
@@ -195,8 +191,6 @@ if ($dbr_anakeen) {
     $tout["double doc name"]=array("status"=>(count($pout)==0)?OK:KO,
 				   "msg"=>$msg);
 
-
-    
     // test inheritance
     $result = pg_query($rf, "select * from docfam");    
     $pout=array();
@@ -225,7 +219,6 @@ if ($dbr_anakeen) {
 				      "msg"=>$msg);
 
   }
-  
 
   // Test WEBDAV DB Connection
   $fdb=$GP["WEBDAV_DB"];
@@ -235,13 +228,12 @@ if ($dbr_anakeen) {
       $rw=@pg_connect($fdb);
       if ($rw) $dbr_webdav=true;
     }
-  
+    
     $tout["connection db webdav"]=array("status"=>$dbr_webdav?OK:KO,
 					"msg"=>$fdb);
   }
 
   // Test User LDAP (NetworkUser Module)
-  
   $ldaphost=$GP["NU_LDAP_HOST"];
   if ($ldaphost) {
     $ldapbase=$GP["NU_LDAP_BASE"];
@@ -263,9 +255,7 @@ if ($dbr_anakeen) {
     $tout["connection USER LDAP"]=array("status"=>$ldapstatus,
 					"msg"=>$msg);
   }
- }
-
-
+}
 
 print "<table border=1>";
 foreach ($tout as $k=>$v) {

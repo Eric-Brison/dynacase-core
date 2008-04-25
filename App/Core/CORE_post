@@ -1,73 +1,92 @@
 #!/bin/bash
+
 if [ "$dbpsql" == "" ]; then
   . /etc/freedom.conf
    wchoose -b
 fi
 
 . $wpub/log.sh
+. $wpub/libutil.sh
 
+if [ -z "$pgservice_core" ]; then
+    echo "Env variable pgservice_core is empty !"
+    echo "Check your freedom environment for missing or misconfigured environment."
+    exit 1
+fi
 
 #------------------------------
 #post installation
 #------------------------------
 if [ "$1" = "I" ] ; then
 
-  run=`psql template1 -U postgres -c ""`
-  if [ $? != 0 ] ; then
-    echo "postgresql is not running ..Init is delayed"
-    exit 1
-  fi
+    log "Checking if the database service $pgservice_core is running and available..."
+    PGSERVICE=$pgservice_core pgIsRunning
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Could not connect to database service $pgservice_core) !"
+	echo "Check that your database is running and acessible with the service from pgservice.conf."
+	exit $RET
+    fi
 
-  log "Add plpgsql language"
-  createlang --username=postgres --dbname=template1 plpgsql
+    log "Checking if plpsgql language is active on database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgLanguageExists "plpgsql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Could not find language plpgsql on database service $pgservice_core !"
+	echo "Check that the plpgsql language is correctly enabled on your database service."
+	exit $RET
+    fi
 
-  log "Create $dbname database"
-  createdb --encoding LATIN1 --username=postgres --host=$dbhost --port=$dbport $dbname
-  
-  if [ $? != 0 ] ; then
-    log "cannot create db $dbname"
-    exit 1
-  fi
-  log "Create anakeen database user"
-  createuser -d -a --username=postgres --host=$dbhost --port=$dbport anakeen
- 
+    log "Executing $wpub/WHAT/getprivilege.sql in database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgExecuteSqlFile $wpub/WHAT/getprivilege.sql
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while executing $wpub/WHAT/getprivilege.sql : $RET"
+	exit $RET
+    fi
 
-  log "Add plpgsql functions"
-  psql  --username=postgres $dbpsql -f $wpub/WHAT/getprivilege.sql
-  echo "ALTER DATABASE $dbname set DateStyle = sql,european;" | psql  --username=postgres $dbpsql
-  log "Register DB $dbname for automatic dump"
-  ll=0
-  if [ -f /etc/ankpsql-tools/base-list ] ; then
-    ll=`cat /etc/ankpsql-tools/base-list | grep "^$dbname$" | wc -l`
-  fi
-  if [ $ll -eq 0 ]; then 
-    echo "Register DB $dbname for automatic dump"
-    echo "$dbname" >> /etc/ankpsql-tools/base-list
-  fi
+    log "Checking if DateStyle is 'ISO, DMY'..."
+    DATESTYLE=`PGSERVICE="$pgservice_core" psql -At -c "SHOW DateStyle" 2> /dev/null`
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while querying DateStyle : $RET"
+	exit $RET
+    fi
+    if [ "$DATESTYLE" != "ISO, DMY" ]; then
+	echo "Error: DateStyle is not 'ISO, DMY' on database service $pgservice_core !"
+	echo "Please fix it."
+	exit 1
+    fi
 
-
-  # Add logrotate
-  echo "/var/log/what.log {"               >  /etc/logrotate.d/what
-  echo "   missingok"                      >> /etc/logrotate.d/what
-  echo "   postrotate"                     >> /etc/logrotate.d/what
-  echo "   /usr/bin/killall -HUP syslog-ng"  >> /etc/logrotate.d/what
-  echo "   endscript"                      >> /etc/logrotate.d/what
-  echo "}"                                 >> /etc/logrotate.d/what
-
-
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Application
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Action
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Style
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=ParamDef
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Param
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=User
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Group
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Permission
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Acl
-  /usr/bin/php -q $wpub/API/updateclass.php   --class=Session
-  $wpub/wsh.php  --api=appadmin
-
-
+    log "Register DB $dbname for automatic dump..."
+    ll=0
+    if [ -f /etc/ankpsql-tools/base-list ] ; then
+	ll=`cat /etc/ankpsql-tools/base-list | grep "^$dbname$" | wc -l`
+    fi
+    if [ $ll -eq 0 ]; then 
+	echo "Register DB $dbname for automatic dump"
+	echo "$dbname" >> /etc/ankpsql-tools/base-list
+    fi
+    
+    # Add logrotate
+    echo "/var/log/what.log {"               >  /etc/logrotate.d/what
+    echo "   missingok"                      >> /etc/logrotate.d/what
+    echo "   postrotate"                     >> /etc/logrotate.d/what
+    echo "   /usr/bin/killall -HUP syslog-ng"  >> /etc/logrotate.d/what
+    echo "   endscript"                      >> /etc/logrotate.d/what
+    echo "}"                                 >> /etc/logrotate.d/what
+    
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Application
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Action
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Style
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=ParamDef
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Param
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=User
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Group
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Permission
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Acl
+    /usr/bin/php -q $wpub/API/updateclass.php   --class=Session
+    $wpub/wsh.php  --api=appadmin
 fi
 
 
@@ -76,14 +95,21 @@ fi
 #------------------------------
 if [ "$1" = "U" ] ; then
 
-  #add permission functionnalities
-  su - postgres -c "psql $dbpsql -f $wpub/WHAT/getprivilege.sql"
-  $wpub/wsh.php  --api=import_size 
-  $wpub/wsh.php  --api=import_style --name=DEFAULT
-  $wpub/wsh.php  --api=import_style --name=ORIGINAL
-  echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | psql $dbpsql
+    #add permission functionnalities
+    log "Executing $wpub/WHAT/getprivilege.sql in database service $pgservice_core..."
+    PGSERVICE=$pgservice_core pgExecuteSqlFile $wpub/WHAT/getprivilege.sql
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while executing $wpub/WHAT/getprivilege.sql : $RET"
+	exit $RET
+    fi
 
+    $wpub/wsh.php  --api=import_size 
+    $wpub/wsh.php  --api=import_style --name=DEFAULT
+    $wpub/wsh.php  --api=import_style --name=ORIGINAL
+    echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | PGSERVICE=$pgservice_core psql $dbpsql
 fi
+
 #------------------------------
 #post uninstallation
 #------------------------------

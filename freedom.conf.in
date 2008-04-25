@@ -7,10 +7,10 @@ fi
 
 function wchoose()
 {
-    php -q $wpub/wchoose.php $1 2>/dev/null
+    php -q $wpub/wchoose.php "$1" 2>/dev/null
     dba=`cat $wpub/.freedom`
     . $wpub/.freedom.sh
-    PS1="[\u@\h[1m($dbanakeen)[0m\W]\\$ "
+    PS1="[\u@\h[1m($freedomenv)[0m\W]\\$ "
 }
 
 function wvirtual()
@@ -18,7 +18,7 @@ function wvirtual()
     php -q $wpub/wvirtual.php 2> /dev/null
     if [ $? == 0 ]; then
 	. $wpub/.freedom.sh
-	PS1="[\u@\h[1m($dbanakeen)[0m\W]\\$ "
+	PS1="[\u@\h[1m($freedomenv)[0m\W]\\$ "
         $wpub/wdbcreate
     fi
     

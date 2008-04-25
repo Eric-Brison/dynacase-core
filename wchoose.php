@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wchoose.php,v 1.13 2006/02/08 14:52:22 eric Exp $
+ * @version $Id: wchoose.php,v 1.14 2008/04/25 09:18:15 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -64,7 +64,7 @@ if (isset($_SERVER['HTTP_HOST']))     {
   exit;
 }
 
-if (!isset($argv[1]) || $argv[1]=="-b") $dbank="anakeen";
+if (!isset($argv[1]) || $argv[1]=="-b") $dbank="default";
 if ($argv[1]=="-i") $dbank=choosedb();
  else {
    if (isRealDb($argv[1])) $dbank=$argv[1];

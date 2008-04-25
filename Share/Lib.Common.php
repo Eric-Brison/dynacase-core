@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.40 2007/10/22 13:10:00 marc Exp $
+ * @version $Id: Lib.Common.php,v 1.41 2008/04/25 09:18:15 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -23,35 +23,35 @@ function print_r2($z,$ret=false) {
 }
 
 function AddLogMsg($msg) {
-    global $action;
-    if (isset($action->parent))
-      $action->parent->AddLogMsg($msg);
+  global $action;
+  if (isset($action->parent))
+    $action->parent->AddLogMsg($msg);
 }
+
 function AddWarningMsg($msg) {
-    global $action;
-    if (isset($action->parent))
-      $action->parent->AddWarningMsg($msg);
+  global $action;
+  if (isset($action->parent))
+    $action->parent->AddWarningMsg($msg);
 }
 
-function getMailAddr($userid, $full=false) {
+function getMailAddr($userid, $full=false) { 
+  $user = new User("",$userid);
 
-    $user = new User("",$userid);
-    if ($user->isAffected()) {
-      $pren = $postn = "";
-      if ($full) {
-	//	$pren = ucfirst(strtolower($user->getTitle()))." <";
-	// $postn = ">";
-      }
-      return $pren.$user->getMail().$postn;
+  if ($user->isAffected()) {
+    $pren = $postn = "";
+    if ($full) {
+      //	$pren = ucfirst(strtolower($user->getTitle()))." <";
+      // $postn = ">";
     }
-    return false;
+    return $pren.$user->getMail().$postn;
+  }
+  return false;
 }
-
 
 function GetParam($name, $def="") {
   global $action;
   if ($action)  return $action->getParam($name,$def);
-
+  
   // case of without what context
   include_once("Class.Action.php");
   $core = new Application();
@@ -59,7 +59,6 @@ function GetParam($name, $def="") {
   $act = new Action();
   $act->Set("",$core);
   return  $act->getParam($name, $def);
-
 }
 
 function getLayoutFile($app, $layfile) {
@@ -67,7 +66,7 @@ function getLayoutFile($app, $layfile) {
   if ($socStyle != "") {
     $root = Getparam("CORE_PUBDIR");
     $file = $root."/$app/Layout/$socStyle/$layfile";
-
+    
     if (file_exists($file))  return($file);
     
   }
@@ -93,107 +92,97 @@ function microtime_diff($a,$b) {
 }
 
 function getDbid($dbaccess) {
-    global $CORE_DBID;
-	if (!isset($CORE_DBID) || !isset($CORE_DBID["$dbaccess"])) {
-           $CORE_DBID["$dbaccess"] = pg_connect("$dbaccess");
-        } 
-    return $CORE_DBID["$dbaccess"];
+  global $CORE_DBID;
+
+  if (!isset($CORE_DBID) || !isset($CORE_DBID[$dbaccess])) {
+    $CORE_DBID[$dbaccess] = pg_connect($dbaccess);
+  }
+  return $CORE_DBID[$dbaccess];
 }
 
 function getDbAccess() {
-  global $CORE_DBANK;;
+  return getDbAccessCore();
+}
+
+function getDbAccessCore() {
+  return "service='".getServiceCoreFromEnv()."'";
+}
+
+function getDbAccessFreedom() {
+  return "service='".getServiceFreedomFromEnv()."'";
+}
+
+function getDbEnv() {
+  error_log("Deprecated call to getDbEnv() : use getFreedomEnv()");
+  return getFreedomEnv();
+}
+
+function getFreedomEnv() {
+  $freedomenv=getenv("freedomenv");
+  if( $freedomenv == false || $freedomenv == "" ) {
+    return "default";
+  }
+  return $freedomenv;
+}
+
+function getServiceCoreFromEnv($freedomenv="") {
+  global $PGSERVICE_CORE;
   global $pubdir;
 
-  if ($CORE_DBANK != "") return $CORE_DBANK;
-  $dbaccess="";
+  if ($freedomenv == "") {
+    $freedomenv = getFreedomEnv();
+  }
 
-  $dbank=getenv("dbanakeen"); // choose when several databases
-  
- 
-  if ($dbank != "") {
-    $filename="$pubdir/virtual/$dbank/dbaccess.php";    
+  if ($PGSERVICE_CORE != "") return $PGSERVICE_CORE;
+
+  $pgservice_core = "";
+
+  $freedomenv = getFreedomEnv();
+  if ($freedomenv != "") {
+    $filename="$pubdir/virtual/$freedomenv/dbaccess.php";
     if (file_exists($filename)) {
       include($filename);
     }    
   }
-  if ($dbaccess=="") include("dbaccess.php");
-  $CORE_DBANK=$dbaccess;
-  return $CORE_DBANK;
-  
-}
- 
-function getDbEnv() {
-   $dbank=getenv("dbanakeen"); // choose when several databases
-   if ($dbank == "anakeen") return "";
-   return $dbank;
-}
 
-/**
- * transform php postgresql connexion syntax for psql syntax connection
- * @param string postgresql string connection (like : dbname=anakeen user=admin)
- * @return string like --username admin --dbname anakeen
- */
-function php2DbSql($dbcoord,$withdbname=true) {
-    if (eregi('dbname=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
-      $dbname=$reg[1];
-    }
-    if (eregi('host=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
-      $dbhost=$reg[1];
-    }
-    if (eregi('port=[ ]*([0-9\'"]*)',$dbcoord,$reg)) {  
-      $dbport=$reg[1];
-    }
-    if (eregi('user=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
-      $dbuser=$reg[1];
-    }
-    $dbpsql="";
-    if ($dbhost != "")  $dbpsql.= "--host $dbhost ";
-    if ($dbport != "")  $dbpsql.= "--port $dbport ";
-    if ($dbuser != "")  $dbpsql.= "--username $dbuser ";
-    if ($withdbname) $dbpsql.= "--dbname $dbname ";
-    return $dbpsql;  
-}
- 
-/**
- * transform psql syntax connection syntax to php postgresql connexion
- * @param string psql string connection (like : --dbname=anakeen --username=admin)
- * @return string like user admin dbname anakeen
- */
-function DbSql2php($dbcoord,$withdbname=true) {
-    if (eregi('--dbname[ ]*([a-z_0-9\'][^ ]*)',$dbcoord,$reg)) {  
-      $dbname=$reg[1];
-    }
-    if (eregi('--host[ ]*([a-z_0-9\'][^ ]*)',$dbcoord,$reg)) {  
-      $dbhost=$reg[1];
-    }
-    if (eregi('--port[ ]*([0-9\']*)',$dbcoord,$reg)) {  
-      $dbport=$reg[1];
-    }
-    if (eregi('--username[ ]*([a-z_0-9\'][^ ]*)',$dbcoord,$reg)) {  
-      $dbuser=$reg[1];
-    }
-    $dbpsql="";
-    if ($dbhost != "")  $dbpsql.= "host=$dbhost ";
-    if ($dbport != "")  $dbpsql.= "port=$dbport ";
-    if ($dbuser != "")  $dbpsql.= "user=$dbuser ";
-    if ($withdbname) $dbpsql.= "dbname=$dbname ";
-    return $dbpsql;  
-}
-function getDbName($dbaccess) {
-  if (ereg("dbname=([a-z0-9_]+)",$dbaccess,$reg)) {
-    return $reg[1];
+  if ($pgservice_core == "") {
+    include("dbaccess.php");
   }
+
+  $PGSERVICE_CORE=$pgservice_core;
+  return $PGSERVICE_CORE;  
 }
-function getDbHost($dbaccess) {
-  if (ereg("host=([^ ]+)",$dbaccess,$reg)) {
-    return $reg[1];
+
+function getServiceFreedomFromEnv($freedomenv="") {
+  global $PGSERVICE_FREEDOM;
+  global $pubdir;
+
+  if ($freedomenv == "") {
+    $freedomenv = getFreedomEnv();
   }
-  return "localhost";
+
+  if ($PGSERVICE_FREEDOM != "") return $PGSERVICE_FREEDOM;
+
+  $pgservice_freedom = "";
+
+  $freedomenv = getFreedomEnv();
+  if ($freedomenv != "") {
+    $filename = "$pubdir/virtual/$freedomenv/dbaccess.php";
+    if (file_exists($filename)) {
+      include($filename);
+    }
+  }
+
+  if ($pgservice_freedom == "") {
+    include("dbaccess.php");
+  }
+
+  $PGSERVICE_FREEDOM = $pgservice_freedom;
+  return $PGSERVICE_FREEDOM;
 }
 
-
-function getDbUser($dbaccess) {
-  if (ereg("user=([a-z]+)",$dbaccess,$reg)) {
+function getServiceName($dbaccess) {
+  if (ereg("service='?([a-zA-Z0-9_-.]+)", $dbacces, $reg)) {
     return $reg[1];
   }
 }
@@ -207,8 +196,8 @@ function getDbUser($dbaccess) {
  * @return string the command
  */
 function getWshCmd($nice=false,$userid=0,$sudo=false) {
-  $dbank=getenv("dbanakeen"); // choose when several databases
-  $wsh="export dbanakeen=$dbank;";
+  $freedomenv=getFreedomEnv(); // choose when several databases
+  $wsh="export freedomenv=$freedomenv;";
   if ($nice) $wsh.= "nice -n +10 ";
   if ($sudo) $wsh.= "sudo ";
   $wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
@@ -224,7 +213,7 @@ function getWshCmd($nice=false,$userid=0,$sudo=false) {
 function getUserId() {
   global $action;
   if ($action)  return $action->user->id;
-  
+ 
   return 0;
 }
 /**
@@ -241,7 +230,6 @@ function bgexec($tcmd,&$result,&$err) {
   fclose($fout);
   chmod($foutname,0700);
 
-
   //  if (session_id()) session_write_close(); // necessary to close if not background cmd 
   exec("exec nohup $foutname > /dev/null 2>&1 &",$result,$err); 
   //if (session_id()) @session_start();
@@ -250,25 +238,25 @@ function bgexec($tcmd,&$result,&$err) {
 function wbartext($text) {
   wbar('-','-',$text);
 }
+
 function wbar($reste,$total,$text="",$fbar=false) {
   static $preste,$ptotal;
   if (!$fbar) $fbar = GetHttpVars("bar"); // for progress bar
-  if ($fbar) {
-   
-   if ($reste==='-') $reste=$preste;
-   else $preste=$reste;
-   if ($total==='-') $total=$ptotal;
-   else $ptotal=$total;
-   if (file_exists("$fbar.lck")) {
-	$wmode="w";
-	unlink("$fbar.lck");
-      } else {
-	$wmode="a";	
-      }
-      $ffbar=fopen($fbar,$wmode);
-      fputs($ffbar,"$reste/$total/$text\n");
-      fclose($ffbar);      
+  if ($fbar) {   
+    if ($reste==='-') $reste=$preste;
+    else $preste=$reste;
+    if ($total==='-') $total=$ptotal;
+    else $ptotal=$total;
+    if (file_exists("$fbar.lck")) {
+      $wmode="w";
+      unlink("$fbar.lck");
+    } else {
+      $wmode="a";	
     }
+    $ffbar=fopen($fbar,$wmode);
+    fputs($ffbar,"$reste/$total/$text\n");
+    fclose($ffbar);      
+  }
 }
 
 function getJsVersion() {
@@ -280,7 +268,7 @@ function getJsVersion() {
   foreach ($l as $k=>$v) {  
     $nv+=intval(str_replace('.','',$v["val"]));
   }
-
+  
   return $nv;
 }
 
@@ -388,6 +376,7 @@ function isUTF8($string)
   if (is_array($string))   return seems_utf8(implode('', $string));
   else return seems_utf8($string);
 }
+
 /**
  * Returns <kbd>true</kbd> if the string  is encoded in UTF8.
  *
@@ -407,22 +396,23 @@ function seems_utf8($Str) {
  }
  return true;
 }
-/**
-   * return true if it is possible to manage USER by FREEDOM
-   * 
-   */
-  function usefreedomuser() {    
-    if (@include_once('FDL/Lib.Usercard.php')) {
-      $usefreedom=(GetParam("USE_FREEDOM_USER")!="no");
-      return $usefreedom;
-    }
-    return false;
-  }
 
 /**
-   * Initialise WHAT : set global $action whithout an authorized user
-   * 
-   */
+ * return true if it is possible to manage USER by FREEDOM
+ * 
+ */
+function usefreedomuser() {    
+  if (@include_once('FDL/Lib.Usercard.php')) {
+    $usefreedom=(GetParam("USE_FREEDOM_USER")!="no");
+    return $usefreedom;
+  }
+  return false;
+}
+
+/**
+ * Initialise WHAT : set global $action whithout an authorized user
+ * 
+ */
 function WhatInitialisation() {
   global $action;
   include_once('Class.User.php');
@@ -444,7 +434,5 @@ function WhatInitialisation() {
   bind_textdomain_codeset("what", 'ISO-8859-15');
   textdomain ("what");
 }
-
-
 
 ?>

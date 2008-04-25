@@ -3,21 +3,20 @@
  * WHAT Environnement
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.7 2006/02/08 14:52:22 eric Exp $
+ * @version $Id: wenv.php,v 1.8 2008/04/25 09:18:15 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
 /**
  */
 
-
 global $_SERVER;
 
 function getBaseDirList() {
   include_once('WHAT/Lib.Prefix.php');
-  $bl[] = "anakeen";
+  $bl[] = "default";
   if (!is_dir(DEFAULT_PUBDIR."/virtual/")) return $bl;
-
+  
   if ($dh = opendir(DEFAULT_PUBDIR."/virtual/")) {
     while (($file = readdir($dh)) !== false) {
       if ($file!=".." && $file!="." && is_dir(DEFAULT_PUBDIR."/virtual/".$file)
@@ -27,65 +26,68 @@ function getBaseDirList() {
   }
   return $bl;
 }
-	
-  
-function setBaseDir($dba="anakeen") {
+
+function setBaseDir($freedomenv="default") {
   include_once('WHAT/Lib.Prefix.php');
-  if (is_dir(DEFAULT_PUBDIR."/virtual/".$dba)) return DEFAULT_PUBDIR."/virtual/".$dba;
+  if (is_dir(DEFAULT_PUBDIR."/virtual/".$freedomenv)) return DEFAULT_PUBDIR."/virtual/".$freedomenv;
   else return DEFAULT_PUBDIR;
 }
 
-function isRealDb($dba="anakeen") {
+function isRealDb($freedomenv="default") {
   include_once('WHAT/Lib.Prefix.php');
-  if ($dba=="anakeen") return true;
-  if (file_exists(DEFAULT_PUBDIR."/virtual/".$dba."/dbaccess.php")) return true;
+  if (file_exists(DEFAULT_PUBDIR."/virtual/".$freedomenv."/dbaccess.php")) return true;
   return false;
 }
 
-function getPhpEnv($dba) {
+function getPhpEnv($freedomenv) {
   include_once('WHAT/Lib.Prefix.php');
-  $vdir = setBaseDir($dba);
+  $vdir = setBaseDir($freedomenv);
   if (file_exists($vdir."/dbaccess.php")) $env = $vdir."/dbaccess.php";
   else $env = $vdir."/dbaccess.php";
   return $env;
 }
 
-function getShEnv($dba) {
+function getShEnv($freedomenv) {
   include_once('WHAT/Lib.Prefix.php');
-  $vdir = setBaseDir($dba);
+  $vdir = setBaseDir($freedomenv);
   if (file_exists($vdir."/dbaccess.sh")) $env = $vdir."/dbaccess.sh";
   else $env = $vdir."/dbaccess.sh";
   return $env;
 }
 
-function setCurrentDb($dba="anakeen") {
+function setCurrentDb($freedomenv="default") {
+  error_log("Deprecated call to setCurrentDb() in ".__FILE__." : use setCurrentEnv(envName)");
+  return setCurrentEnv($freedomenv);
+}
+
+function setCurrentEnv($freedomenv="default") {
   include_once('WHAT/Lib.Prefix.php');
   $fcur = fopen(DEFAULT_PUBDIR."/.freedom", 'w');
-  fprintf($fcur, $dba);
+  fprintf($fcur, $freedomenv);
   fclose($fcur);
-  if ($dba=="anakeen") $dpath = DEFAULT_PUBDIR;
-  else $dpath = DEFAULT_PUBDIR."/virtual/".$dba;
-  system("ln -sf $dpath/dbaccess.sh ".DEFAULT_PUBDIR."/.freedom.sh");
+  $dpath = DEFAULT_PUBDIR."/virtual/".$freedomenv;
+  system("ln -sf \"$dpath/dbaccess.sh\" \"".DEFAULT_PUBDIR."/.freedom.sh\"");
 }
 
 function getCurrentDb() {
-  if (file_exists(DEFAULT_PUBDIR."/.freedom")) return file_get_contents(DEFAULT_PUBDIR."/.freedom");
-  return "anakeen";
+  error_log("Deprecated call to getCurrentDb in ".__FILE___." : use getCurrentEnv()");
+  return getCurrentEnv();
 }
 
-function initDbEnv( $dbenv="anakeen", 
-		    $dbserv="",
-		    $dbcore="anakeen", 
-		    $dbfree="freedom", 
-		    $dbhost="localhost", $dbport="5432", $dbuser="anakeen")  {
-  include_once('WHAT/Lib.Prefix.php');
+function getCurrentEnv() {
+  if (file_exists(DEFAULT_PUBDIR."/.freedom")) return file_get_contents(DEFAULT_PUBDIR."/.freedom");
+  return "default";
+}
 
+function initDbEnv( $freedomenv = "default",
+		    $pgservice_core = "anakeen",
+		    $pgservice_freedom = "freedom" ) {
+  include_once('WHAT/Lib.Prefix.php');
+  
   $inphpfile=DEFAULT_PUBDIR."/dbaccess.php.in";
   $inshfile=DEFAULT_PUBDIR."/dbaccess.sh.in";
 
-  if ($dba=="anakeen") return;
-
-  $vdir = DEFAULT_PUBDIR."/virtual/".$dbenv;
+  $vdir = DEFAULT_PUBDIR."/virtual/".$freedomenv;
   $dbfphp="$vdir/dbaccess.php";
   $dbfsh="$vdir/dbaccess.sh";
 
@@ -96,22 +98,14 @@ function initDbEnv( $dbenv="anakeen",
   $httpu = getenv("httpuser");
   $httpconf = getenv("httpconf");
 
-  $command = "sed -e 's,@prefix@,".DEFAULT_PUBDIR.",g' "
-    .        "    -e 's/@HTTPUSER@/$httpu/g'"
-    .        "    -e 's,@APACHECONFDIR@,$httpconf,g'"
-    .        "    -e 's/@DBENV@/$dbenv/g'"
-    .        "    -e 's/@DBSERV@/$dbserv/g'"
-    .        "    -e 's/@DBNAME@/$dbcore/g'"
-    .        "    -e 's/@DBHOST@/$dbhost/g'"
-    .        "    -e 's/@DBPORT@/$dbport/g'"
-    .        "    -e 's/@DBUSER@/$dbuser/g'"
-    .        "    -e 's/@DBFREEDOM@/$dbfree/g'";
+  $command = "sed -e 's,@PGSERVICE_CORE@,$pgservice_core,g'"
+    .        "    -e 's,@PGSERVICE_FREEDOM@,$pgservice_freedom,g'"
+    .        "    -e 's,@FREEDOMENV@,$freedomenv,g'"
+    ;  
   system("cat $inphpfile | $command > $dbfphp");
   system("cat $inshfile | $command > $dbfsh");
 
-  setCurrentDb($dbenv);
+  setCurrentEnv($freedomenv);
 }
-
-
 
 ?>

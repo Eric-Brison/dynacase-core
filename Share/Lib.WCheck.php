@@ -3,39 +3,39 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.17 2008/03/13 12:35:55 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.18 2008/04/25 09:18:15 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
  */
 /**
  */
+
+include_once("WHAT/Lib.System.php");
+
 //---------------------------------------------------
 function GetDbVersion($dbid,&$tmachine) {
-
   $tver=array();
   $tmachine=array();
   $rq=pg_exec ($dbid, "select paramv.val, application.name, application.machine from paramv, application  where paramv.name='VERSION' and paramv.appid=application.id");
-
+  
   if ($rq === false) return GetDbOldVersion($dbid);
-
+  
   for ($i=0; $i<pg_numrows($rq); $i++) {
     $row= pg_fetch_array($rq,$i);
     $tver[$row["name"]]=$row["val"];
     $tmachine[$row["name"]]=$row["machine"];
   }
 
-
   return ($tver);
 }
-
 
 //---------------------------------------------------
 function GetDbOldVersion($dbid) {
   print "GetDbOldVersion";
   $tver=array();
   $rq=pg_exec ($dbid, "select param.val, application.name from param, application  where param.name='VERSION' and param.key=application.id");
-
+  
   for ($i=0; $i<pg_numrows($rq); $i++) {
     $row= pg_fetch_array($rq,$i);
     $tver[$row["name"]]=$row["val"];
@@ -46,8 +46,7 @@ function GetDbOldVersion($dbid) {
       $tver["AUTHENT"]=$row["val"];
     }
   }
-
-
+  
   return ($tver);
 }
 
@@ -65,7 +64,6 @@ function GetFileVersion($topdir) {
 	  $line = fgets($fini,256);
 	  if (ereg("VERSION.*=>[ \t]*\"[ \t]*([0-9\.\-]+)", $line, $reg)) {
 	    if (isset($reg[1])) $tver[$file]=$reg[1];
-
 	  }
 	}
 	fclose($fini);
@@ -75,13 +73,14 @@ function GetFileVersion($topdir) {
   }
   return ($tver);
 }
+
 /**
  * get iorder value in .app files
  * @param string $topdir publish directory
  * @return array of iorder
  */
 function getAppOrder($topdir) {
-
+  
   $tiorder=array();
   if ($dir = @opendir($topdir)) {
     while (($file = readdir($dir)) !== false) {
@@ -89,18 +88,18 @@ function getAppOrder($topdir) {
       if (@is_file($inifile)) {
 	unset($app_desc);
 	include($inifile);
-
+	
 	if (isset($app_desc)) {
 	  if (isset($app_desc["iorder"]))  $tiorder[$file]=$app_desc["iorder"];
 	}
-
-
+	
       }
     }  
     closedir($dir);
   }
   return ($tiorder);
 }
+
 /** compare version like 1.2.3-4 
  * @param string $v1 version one
  * @param string $v2 version two
@@ -108,49 +107,47 @@ function getAppOrder($topdir) {
  */
 function vercmp($v1,$v2) {
   if ($v1==$v2) return 0;
-  
+ 
   if (version2float($v1) > version2float($v2)) return 1;
   else return -1;
 }
 
 function checkPGConnection() {
-  $dbaccess=getDbAccess();
-  $host=getDbHost($dbaccess);
-  $dbtemp="user=postgres host=$host dbname=template1";
-  $dbid=@pg_connect($dbtemp);
+  $dbaccess_core = getDbAccessCore();
+  $pgservice_core = getServiceCoreFromEnv();
 
+  $dbid=@pg_connect($dbaccess_core);
+  
   if (!$dbid) {
-    $err= _("cannot access to template database [$dbtemp]");
-    exec("psql -c '\q' anakeen anakeen",$out);
+    $err= _("cannot access to core database service [service='$pgservice_core']");
+    exec("PGSERVICE=\"$pgservice_core\" psql -c '\q'",$out);
     $err.=implode(",",$out);
   } else {
     pg_close($dbid);
   }
   return $err;
 }
+
 function getCheckApp($pubdir,&$tapp) {
   global $_SERVER;
-  $dbaccess=getDbAccess();
-  $dbank=getDbName($dbaccess);
-  $IP=chop(`hostname -i`);
-  $dbid=@pg_connect($dbaccess);
 
+  $dbaccess_core = getDbAccessCore();
+  $pgservice_core = getServiceCoreFromEnv();
+  $pgservice_freedom = getServiceFreedomFromEnv();
+
+  $IP=LibSystem::getHostIPAddress();
+  $dbid=@pg_connect($dbaccess_core);
+  
   if (!$dbid) {
-    $err= _("cannot access to default database [$dbaccess]");
-    exec("psql -c '\q' anakeen anakeen",$out);
+    $err= _("cannot access to core database service [service='$pgservice_core']");
+    exec("PGSERVICE=\"$pgservice_core\" psql -c '\q'",$out);
     $err.=implode(",",$out);
-    
-  
   } else {
-  
     $tvdb= GetDbVersion($dbid,$tmachine);
     $tvfile=GetFileVersion("$pubdir");
-
-  
     pg_close($dbid);
+
     $ta = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
-
-
     foreach ($ta as $k=>$v) {
       if (($tmachine[$v] != "") && (gethostbyname($tmachine[$v]) != gethostbyname($_SERVER["HOSTNAME"])))
 	$chk[$v]="?";
@@ -166,19 +163,14 @@ function getCheckApp($pubdir,&$tapp) {
 	$chk[$v]="U";    
       }
       $tapp[$v]=array("name"=>$v,
-		    "vdb"=>$tvdb[$v],
-		    "vfile"=>$tvfile[$v],
-		    "chk"=>$chk[$v],
-		    "machine"=>$tmachine[$v]);
-  
+		      "vdb"=>$tvdb[$v],
+		      "vfile"=>$tvfile[$v],
+		      "chk"=>$chk[$v],
+		      "machine"=>$tmachine[$v]);  
     }
-
   }
   return $err;
 }
-
-
-
 
 function version2float($ver) {
   if (preg_match_all('/([0-9]+)/', $ver , $matches)) {
@@ -193,21 +185,18 @@ function version2float($ver) {
     foreach ($matches as $k=>$v)    $sva.=sprintf("%02d",$v);
     return floatval($sva);
   }
-
 }
 
 function getCheckActions($pubdir,$tapp,&$tact) {
 
   $wsh=array(); // application update
-
-
-
   $cmd=array(); // pre/post install 
   $dump=array();
-  $dbaccess=getDbAccess();
-  $dbpsql=php2DbSql($dbaccess);
-  $dbank=getDbName($dbaccess);
-  $dbid=@pg_connect($dbaccess);
+
+  $pgservice_core = getServiceCoreFromEnv();
+  $pgservice_freedom = getServiceFreedomFromEnv();
+
+  $dbid=@pg_connect("service='$pgservice_core'");
 
   $tvdb= GetDbVersion($dbid,$tmachine);
   $tiorder=getAppOrder($pubdir);
@@ -249,9 +238,9 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     case "R":
       $cmd[] = "#rpm -Uvh $k-".$v["vdb"];
       break;
-
+      
     }
-
+    
     // search POST install
     if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
       if ($v["chk"] == "I")  {
@@ -263,7 +252,6 @@ function getCheckActions($pubdir,$tapp,&$tact) {
 	}
       }
     }
-    
     
     // search Post Migration file
     $migr=array();
@@ -278,31 +266,21 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     }   
     sort($migr);
     $cmd=array_merge($cmd,$migr);
-    
-    
   }
   
-  $dumpank=str_replace("--dbname","",$dbpsql);
-  $freedb=getParam("FREEDOM_DB");
-  $sqlfreedb=php2DbSql($freedb);
-  $dumpfree=str_replace("--dbname","",$sqlfreedb);
-
-  $dump[] = "pg_dump $dumpank  > /var/tmp/".uniqid("$dbank");
-  if (trim($dumpfree)!="") $dump[] = "pg_dump -D $dumpfree  > /var/tmp/".uniqid(getDbName("$freedb"));
+  $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > /var/tmp/".uniqid($pgservice_core);
+  if (trim($dumpfree)!="") $dump[] = "PGSERVICE=\"$pgservice_freedom\" pg_dump -D > /var/tmp/".uniqid($pgservice_freedom);
   //  $dump[] = "/etc/rc.d/init.d/httpd stop";
   $dump[] = "$pubdir/wstop";
   $dump[] = "$pubdir/whattext";
   
-
   $tact = array_merge($dump,$cmd);
   
-  if ($dbank != "anakeen") $tact[] = "echo \"update paramv set val= str_replace(val,'dbname=anakeen','dbname=$dbank') where val ~ 'dbname'\" | psql $dbpsql";
   $tact[] = "$pubdir/wsh.php  --api=freedom_clean";
   $tact[] = "$pubdir/wstart";
   global $_SERVER;
   if ($_SERVER['HTTP_HOST'] != "")  $tact[] = "sudo $pubdir/admin/shttpd";
-  else $tact[] = "service httpd restart";
-  
+  else $tact[] = "service httpd restart";  
 }
 
 function cmpapp($a,$b) {
@@ -315,4 +293,5 @@ function cmpapp($a,$b) {
   if (isset($b["iorder"])) return 1;
   return 0;
 }
+
 ?>
