@@ -3,7 +3,7 @@
  * WHAT Environnement
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.8 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: wenv.php,v 1.9 2008/04/25 09:19:10 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -14,7 +14,7 @@ global $_SERVER;
 
 function getBaseDirList() {
   include_once('WHAT/Lib.Prefix.php');
-  $bl[] = "default";
+  # $bl[] = "default";
   if (!is_dir(DEFAULT_PUBDIR."/virtual/")) return $bl;
   
   if ($dh = opendir(DEFAULT_PUBDIR."/virtual/")) {
