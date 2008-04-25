@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.43 2008/04/25 09:19:29 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.44 2008/04/25 09:19:47 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -187,7 +187,7 @@ function getDbName($dbaccess) {
 }
 
 function getServiceName($dbaccess) {
-  if (ereg("service='?([a-zA-Z0-9_-.]+)", $dbacces, $reg)) {
+  if (ereg("service='?([a-zA-Z0-9_.-]+)", $dbaccess, $reg)) {
     return $reg[1];
   }
 }
