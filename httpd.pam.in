@@ -1,6 +1,6 @@
 #%PAM-1.0
-auth    required        /lib/security/pam_what.so host=localhost dbname=@DBNAME@ dbuser=anakeen
-account   required     /lib/security/pam_what.so host=localhost dbname=@DBNAME@ dbuser=anakeen 
+auth    required        /lib/security/pam_what.so host=localhost dbname=anakeen dbuser=anakeen
+account   required     /lib/security/pam_what.so host=localhost dbname=anakeen dbuser=anakeen 
 #auth    required        /lib/security/pam_deny.so
 #account   required        /lib/security/pam_permit.so
 #session   required        /lib/security/pam_permit.so
