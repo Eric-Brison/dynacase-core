@@ -28,7 +28,7 @@ popd > /dev/null
 #refresh version identificator
 $wpub/wsh.php --api=refreshjsversion >/dev/null
 #clear current sessions
-echo "delete from sessions" | psql $dbpsql >/dev/null
+PGSERVICE="$pgservice_core" psql -c "delete from sessions" > /dev/null
 
 #change pg mode connection
 cdb=`$wpub/wsh.php --api=get_param --param=CORE_DBCONNECT`
