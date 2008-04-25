@@ -22,14 +22,14 @@ export utildir
 
 SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
-TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh dbaccess.sh.in dbaccess.php dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh
+TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh.in dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh
 
 
 include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.in dbaccess.sh dbaccess.sh.in
+	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.in dbaccess.sh.in
 
 
 
@@ -40,8 +40,6 @@ $(pubdir)/whattext: whattext
 $(pubdir)/dbaccess.php.in : dbaccess.php.in
 	cp $< $@
 $(pubdir)/dbaccess.sh.in : dbaccess.sh.in
-	cp $< $@
-$(pubdir)/dbaccess.sh : dbaccess.sh
 	cp $< $@
 $(pubdir)/wcheck: wcheck
 	cp $< $@
