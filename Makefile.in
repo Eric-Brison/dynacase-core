@@ -22,6 +22,7 @@ export utildir
 
 SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
+#TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh dbaccess.php
 TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh.in dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh dbaccess.php
 
 
@@ -29,17 +30,13 @@ include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.in dbaccess.sh.in
+	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.in dbaccess.sh.in libutil.sh
 
 
 
 $(pubdir)/index.php.q: index.php.q
 	cp $< $@
 $(pubdir)/whattext: whattext
-	cp $< $@
-$(pubdir)/dbaccess.php.in : dbaccess.php.in
-	cp $< $@
-$(pubdir)/dbaccess.sh.in : dbaccess.sh.in
 	cp $< $@
 $(pubdir)/wcheck: wcheck
 	cp $< $@
@@ -86,9 +83,9 @@ $(pubdir)/FDLGEN/default: $(pubdir)/FDLGEN
 $(pubdir)/virtual/default/FDLGEN:
 	mkdir -p $@
 $(pubdir)/virtual/default/dbaccess.sh: dbaccess.sh $(pubdir)/virtual/default/FDLGEN $(pubdir)/FDLGEN/default
-	cp $< $@
+	mv $< $@
 $(pubdir)/virtual/default/dbaccess.php: dbaccess.php $(pubdir)/virtual/default/FDLGEN $(pubdir)/FDLGEN/default
-	cp $< $@
+	mv $< $@
 	rm $(pubdir)/dbaccess.php
 $(pubdir)/.freedom:
 	echo "default" > $@

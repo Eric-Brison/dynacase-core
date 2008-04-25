@@ -1,7 +1,7 @@
 #! /:/bin/rpm
 #
 #  File: libwhat.spec
-#  $Id: freedom-core.spec.in,v 1.2 2008/03/28 10:46:51 eric Exp $
+#  $Id: freedom-core.spec.in,v 1.3 2008/04/25 14:05:29 marc Exp $
 #
 #  This is the SPEC file for the What CORE
 #  Anakeen What Application
@@ -255,6 +255,8 @@ echo "%{httpuser} ALL=NOPASSWD:%{destdir}/admin/shttpd" >> /etc/sudoers
 %dir %{destdir}/CORE
 %dir %{destdir}/WHAT
 %dir %{destdir}/expire
+%dir %{destdir}/FDLGEN/default
+%dir %{destdir}/virtual/default
 
 %{destdir}/ACCESS/*
 %{destdir}/API/*
@@ -286,12 +288,17 @@ echo "%{httpuser} ALL=NOPASSWD:%{destdir}/admin/shttpd" >> /etc/sudoers
 %attr(755,%{httpuser},%{httpuser}) %{destdir}/wdbcreate
 %{destdir}/winitrc
 %{destdir}/wvirtual.php
+%{destdir}/.freedom.sh
+%{destdir}/.freedom
+%{destdir}/libutil.sh
+%{destdir}/virtual/default/dbaccess.php
+%{destdir}/virtual/default/dbaccess.sh
+%config(noreplace) %{destdir}/virtual/default/dbaccess.php
+%config(noreplace) %{destdir}/virtual/default/dbaccess.sh
 
 %{destdir}/index.php.q
 %{destdir}/dbaccess.php.in
 %{destdir}/dbaccess.sh.in
-%config(noreplace) %{destdir}/dbaccess.php
-%config(noreplace) %{destdir}/dbaccess.sh
 
 %defattr(-,root,root)
 %dir /etc
