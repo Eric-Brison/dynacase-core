@@ -22,7 +22,7 @@ export utildir
 
 SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
-TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh.in dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh
+TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh.in dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh dbaccess.php
 
 
 include $(utildir)/PubRule
@@ -79,7 +79,19 @@ $(rootprefix)/etc/cron.daily:
 $(rootprefix)/etc/cron.daily/WHAT.cron:WHAT.cron $(rootprefix)/etc/cron.daily
 	cp WHAT.cron $@
 
-publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf 
+$(pubdir)/FDLGEN:
+	mkdir -p $@
+$(pubdir)/FDLGEN/default: $(pubdir)/FDLGEN
+	ln -sf ../virtual/default/FDLGEN $@
+$(pubdir)/virtual/default/FDLGEN:
+	mkdir -p $@
+$(pubdir)/virtual/default/dbaccess.sh: dbaccess.sh $(pubdir)/virtual/default/FDLGEN $(pubdir)/FDLGEN/default
+	cp $< $@
+$(pubdir)/virtual/default/dbaccess.php: dbaccess.php $(pubdir)/virtual/default/FDLGEN $(pubdir)/FDLGEN/default
+	cp $< $@
+	rm $(pubdir)/dbaccess.php
+
+publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/virtual/default/dbaccess.sh $(pubdir)/virtual/default/dbaccess.php
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
