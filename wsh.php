@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.33 2008/02/25 17:23:07 eric Exp $
+ * @version $Id: wsh.php,v 1.34 2008/05/05 12:35:55 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -95,6 +95,7 @@ $core->SetVolatileParam("CORE_SBASEURL","$absindex?sole=A&");// no session
 $core->SetVolatileParam("CORE_STANDURL","$absindex?sole=Y&");
 $core->SetVolatileParam("CORE_SSTANDURL","$absindex?sole=Y&"); // no session
 $core->SetVolatileParam("CORE_ASTANDURL","$absindex?sole=Y&"); // absolute links
+$core->SetVolatileParam("ISIE", false);
 
 if (isset($_GET["app"])) {
   $appl = new Application();
