@@ -3,7 +3,7 @@
  * Assosiate icon with mime type
  *
  * @author Anakeen 2007
- * @version $Id: Lib.FileMime.php,v 1.7 2007/11/14 14:51:39 eric Exp $
+ * @version $Id: Lib.FileMime.php,v 1.8 2008/05/05 13:47:55 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -201,7 +201,14 @@ function getExtension($smime) {
   if ($ext) {
     return strtok($ext," \n\t");
   }
+}
 
-
+/**
+ * get extension from file name
+ */
+function getFileExtension($filename) {
+  $ext=false;
+  if ($filename) $ext=substr($filename,strrpos($filename,'.')+1);
+  return $ext;
 }
 ?>
