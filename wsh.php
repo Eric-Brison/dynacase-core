@@ -4,7 +4,7 @@
  * WHAT SHELL
  *
  * @author Anakeen 2002
- * @version $Id: wsh.php,v 1.34 2008/05/05 12:35:55 jerome Exp $
+ * @version $Id: wsh.php,v 1.35 2008/05/06 08:43:33 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -32,13 +32,13 @@ global $_SERVER;
 
 if (isset($_SERVER['HTTP_HOST']))     {
   print "<BR><H1>:~(</H1>";
-  exit;
+  exit(1);
 }
 if (count($argv) == 1) {
   print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n".
     "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n".
     "\twsh.php --listapi                     : view api list\n";
-  exit;
+  exit(1);
 }
 
 while (list($k, $v) = each($argv)) {

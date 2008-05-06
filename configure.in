@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.19 2008/04/25 09:20:36 jerome Exp $)
+AC_REVISION($Id: configure.in,v 1.20 2008/05/06 08:43:33 jerome Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -49,10 +49,10 @@ PGSERVICE_FREEDOM=freedom
 AC_ARG_WITH(pgservicefreedom,
 [  --with-pgservice_freedom=postgresql service for freedom database (default "freedom") ], PGSERVICE_FREEDOM=$withval)
 
-AC_SUBST(FREEDOMENV)
-FREEDOMENV=default
-AC_ARG_WITH(freedomenv,
-[  --with-freedomenv=name of the Freedom environment (default "default") ], FREEDOMENV=$withval)
+AC_SUBST(FREEDOM_CONTEXT)
+FREEDOM_CONTEXT=default
+AC_ARG_WITH(freedomcontext,
+[  --with-freedom_context=name of the Freedom context (default "default") ], FREEDOM_CONTEXT=$withval)
 
 AC_SUBST(APACHECONFDIR)
 APACHECONFDIR=/etc/httpd/httpd.conf

@@ -3,7 +3,7 @@
  * WHAT Choose database
  *
  * @author Anakeen 2004
- * @version $Id: wchoose.php,v 1.14 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: wchoose.php,v 1.15 2008/05/06 08:43:33 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -20,7 +20,7 @@ global $_SERVER;
 function choosedb() {
   global $fullscreen,$lines, $columns;
   $pubdir=getenv("wpub");
-  $dvir="$pubdir/virtual";
+  $dvir="$pubdir/context";
 
 //   $post=array();
 //   if (is_dir($dvir)) {
@@ -64,12 +64,12 @@ if (isset($_SERVER['HTTP_HOST']))     {
   exit;
 }
 
-if (!isset($argv[1]) || $argv[1]=="-b") $dbank="default";
-if ($argv[1]=="-i") $dbank=choosedb();
+if (!isset($argv[1]) || $argv[1]=="-b") $freedomctx="default";
+if ($argv[1]=="-i") $freedomctx=choosedb();
  else {
-   if (isRealDb($argv[1])) $dbank=$argv[1];
+   if (isRealDb($argv[1])) $freedomctx=$argv[1];
  }
 
-setCurrentDb($dbank);
+setCurrentContext($freedomctx);
 exit(0);
 ?>

@@ -78,24 +78,24 @@ $(rootprefix)/etc/cron.daily/WHAT.cron:WHAT.cron $(rootprefix)/etc/cron.daily
 $(pubdir)/FDLGEN:
 	mkdir -p $@
 $(pubdir)/FDLGEN/default: $(pubdir)/FDLGEN
-	ln -sf ../virtual/default/FDLGEN $@
-$(pubdir)/virtual/default/FDLGEN:
+	ln -sf ../context/default/FDLGEN $@
+$(pubdir)/context/default/FDLGEN:
 	mkdir -p $@
-$(pubdir)/virtual/default/dbaccess.sh: dbaccess.sh $(pubdir)/virtual/default/FDLGEN $(pubdir)/FDLGEN/default
-	cp $< $@
-$(pubdir)/virtual/default/dbaccess.php: dbaccess.php $(pubdir)/virtual/default/FDLGEN $(pubdir)/FDLGEN/default
-	cp $< $@
-	rm $(pubdir)/dbaccess.php
+$(pubdir)/context/default/dbaccess.sh: dbaccess.sh $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
+	mv $< $@
+$(pubdir)/context/default/dbaccess.php: dbaccess.php $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
+	mv $< $@
+	rm $(pubdir)/WHAT/dbaccess.php
 $(pubdir)/.freedom:
 	echo "default" > $@
 $(pubdir)/.freedom.sh:
-	ln -sf virtual/default/dbaccess.sh $@
+	ln -sf context/default/dbaccess.sh $@
 $(pubdir)/dbaccess.php.in: dbaccess.php.in
 	cp $< $@
 $(pubdir)/dbaccess.sh.in: dbaccess.sh.in
 	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/virtual/default/dbaccess.sh $(pubdir)/virtual/default/dbaccess.php $(pubdir)/.freedom $(pubdir)/.freedom.sh
+publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.sh $(pubdir)/context/default/dbaccess.php $(pubdir)/.freedom $(pubdir)/.freedom.sh
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \

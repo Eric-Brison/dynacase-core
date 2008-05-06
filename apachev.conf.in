@@ -1,6 +1,6 @@
 <VirtualHost @IP@>
 ServerName @VIRTUALNAME@
-SetEnv dbanakeen @DBNAME@
+SetEnv freedom_context @DBNAME@
 <Directory "@prefix@">
     <Files ~ "index.php">
       AuthType Basic

@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.18 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: Lib.WCheck.php,v 1.19 2008/05/06 08:43:33 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -114,7 +114,7 @@ function vercmp($v1,$v2) {
 
 function checkPGConnection() {
   $dbaccess_core = getDbAccessCore();
-  $pgservice_core = getServiceCoreFromEnv();
+  $pgservice_core = getServiceCore();
 
   $dbid=@pg_connect($dbaccess_core);
   
@@ -132,8 +132,8 @@ function getCheckApp($pubdir,&$tapp) {
   global $_SERVER;
 
   $dbaccess_core = getDbAccessCore();
-  $pgservice_core = getServiceCoreFromEnv();
-  $pgservice_freedom = getServiceFreedomFromEnv();
+  $pgservice_core = getServiceCore();
+  $pgservice_freedom = getServiceFreedom();
 
   $IP=LibSystem::getHostIPAddress();
   $dbid=@pg_connect($dbaccess_core);
@@ -193,8 +193,8 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   $cmd=array(); // pre/post install 
   $dump=array();
 
-  $pgservice_core = getServiceCoreFromEnv();
-  $pgservice_freedom = getServiceFreedomFromEnv();
+  $pgservice_core = getServiceCore();
+  $pgservice_freedom = getServiceFreedom();
 
   $dbid=@pg_connect("service='$pgservice_core'");
 

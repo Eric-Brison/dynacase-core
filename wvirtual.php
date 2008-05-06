@@ -2,7 +2,7 @@
 /** WHAT Create another database
  *
  * @author Anakeen 2004
- * @version $Id: wvirtual.php,v 1.8 2006/02/05 09:48:26 marc Exp $
+ * @version $Id: wvirtual.php,v 1.9 2008/05/06 08:43:33 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -43,21 +43,21 @@ $wact = ncurses_newwin($lines-9, $columns-4, 7, 2);
 ncurses_wborder($wact,0,0, 0,0, 0,0, 0,0);
 ncurses_wcolor_set($wact,3);
 
-$select=ncurses_select($post,"Select virtual host");
+$select=ncurses_select($post,"Select context");
 
-$virtual=$post[$select];
+$context=$post[$select];
 
 ncurses_mvaddstr($lines-2, 4, _("Enter name for database ? "));
 
 $dbank=strtolower(ncurses_getln());
 ncurses_wclear($wact);
 
-ncurses_mvwaddstr($wact, 3, 4, sprintf(_("Virtual host : [%s]"),$virtual));
-ncurses_mvwaddstr($wact, 5, 4, sprintf(_("Database     : [%s]"),$dbank));
+ncurses_mvwaddstr($wact, 3, 4, sprintf(_("Context  : [%s]"),$context));
+ncurses_mvwaddstr($wact, 5, 4, sprintf(_("Database : [%s]"),$dbank));
 
 ncurses_wrefresh($wact);
 
-initDbEnv($dbank, $virtual, $dbank."core", $dbank."freedom", "localhost", "5432", "anakeen" );
+initDbContext($dbank, $context, $dbank."core", $dbank."freedom", "localhost", "5432", "anakeen" );
 
 $cpress=strtoupper(chr($pressed));
 

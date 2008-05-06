@@ -3,7 +3,7 @@
  * Verify several point for the integrity of the system
  *
  * @author Anakeen 2007
- * @version $Id: checklist.php,v 1.6 2008/04/25 09:18:15 jerome Exp $
+ * @version $Id: checklist.php,v 1.7 2008/05/06 08:43:33 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 <html><head>
 <LINK REL="stylesheet" type="text/css" HREF="Layout/wg.css" >
 <style>
-a.virtual {
+a.context {
  border:solid 1px black;
  margin:0px;
  width:100px;
@@ -23,7 +23,7 @@ a.virtual {
  cursor:pointer;
    -moz-border-radius:0px 10px 0px 0px;
 }
-a.virtual:hover {
+a.context:hover {
   background-color:yellow;
 }
 </style>
@@ -52,18 +52,17 @@ function globalparam($conn) {
 //---------------------------------------------------
 //------------------- MAIN -------------------------
 
-$wvirtual=$_GET["virtual"];
-if (!$wvirtual) $wvirtual="main";
-print "<H1>Check List : <i>$wvirtual</i> </H1>";
-$virtuals[]="main";
-// detect Virtuals
-if ($handle = @opendir(DEFAULT_PUBDIR."/virtual")) {
+$wcontext=$_GET["context"];
+if (!$wcontext) $wcontext="default";
+print "<H1>Check List : <i>$wcontext</i> </H1>";
+// detect Contexts
+if ($handle = @opendir(DEFAULT_PUBDIR."/context")) {
    /* Ceci est la façon correcte de traverser un dossier. */
    while (false !== ($file = readdir($handle))) {
      if ($file[0]!=".") {
-       if (file_exists(DEFAULT_PUBDIR."/virtual/".$file."/dbaccess.php")) {
-	 $virtuals[]=$file;
-	 if ($file==$wvirtual) include("virtual/".$file."/dbaccess.php");
+       if (file_exists(DEFAULT_PUBDIR."/context/".$file."/dbaccess.php")) {
+	 $contexts[]=$file;
+	 if ($file==$wcontext) include("context/".$file."/dbaccess.php");
        }
      }
    }
@@ -71,14 +70,13 @@ if ($handle = @opendir(DEFAULT_PUBDIR."/virtual")) {
    closedir($handle);
 }
 
-foreach ($virtuals as $k=>$v) {
-  if ($v==$wvirtual) $sty='style="background-color:lightblue";';
+foreach ($contexts as $k=>$v) {
+  if ($v==$wcontext) $sty='style="background-color:lightblue";';
   else $sty="";
-  print "<a href=\"?virtual=$v\" $sty class=\"virtual\">$v</a>";
+  print "<a href=\"?context=$v\" $sty class=\"context\">$v</a>";
 }
 print "<hr style=\"clear:both\">";
 
-if ($wvirtual=="" || $wvirtual=="main") include("dbaccess.php");
 
 $r=@pg_connect("service='$pgservice_core'");
 if ($r) $dbr_anakeen=true;

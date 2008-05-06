@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.44 2008/04/25 09:19:47 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.45 2008/05/06 08:43:33 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -105,69 +105,70 @@ function getDbAccess() {
 }
 
 function getDbAccessCore() {
-  return "service='".getServiceCoreFromEnv()."'";
+  return "service='".getServiceCore()."'";
 }
 
 function getDbAccessFreedom() {
-  return "service='".getServiceFreedomFromEnv()."'";
+  return "service='".getServiceFreedom()."'";
 }
 
 function getDbEnv() {
-  error_log("Deprecated call to getDbEnv() : use getFreedomEnv()");
-  return getFreedomEnv();
+  error_log("Deprecated call to getDbEnv() : use getFreedomContext()");
+  return getFreedomContext();
 }
 
-function getFreedomEnv() {
-  $freedomenv=getenv("freedomenv");
-  if( $freedomenv == false || $freedomenv == "" ) {
+function getFreedomContext() {
+  $freedomctx=getenv("freedom_context");
+  if( $freedomctx == false || $freedomctx == "" ) {
     return "default";
   }
-  return $freedomenv;
+  return $freedomctx;
 }
 
-function getServiceCoreFromEnv($freedomenv="") {
+function getServiceCore($freedomctx="") {
   global $PGSERVICE_CORE;
   global $pubdir;
 
-  if ($freedomenv == "") {
-    $freedomenv = getFreedomEnv();
+  if ($freedomctx == "") {
+    $freedomctx = getFreedomContext();
   }
 
   if ($PGSERVICE_CORE != "") return $PGSERVICE_CORE;
 
   $pgservice_core = "";
 
-  $freedomenv = getFreedomEnv();
-  if ($freedomenv != "") {
-    $filename="$pubdir/virtual/$freedomenv/dbaccess.php";
+  $freedomctx = getFreedomContext();
+  if ($freedomctx != "") {
+    $filename="$pubdir/context/$freedomctx/dbaccess.php";
     if (file_exists($filename)) {
       include($filename);
-    }    
+    }
   }
 
   if ($pgservice_core == "") {
-    include("dbaccess.php");
+    error_log("Undefined pgservice_core in context=[$freedomctx]");
+    exit(1);
   }
 
   $PGSERVICE_CORE=$pgservice_core;
   return $PGSERVICE_CORE;  
 }
 
-function getServiceFreedomFromEnv($freedomenv="") {
+function getServiceFreedom($freedomctx="") {
   global $PGSERVICE_FREEDOM;
   global $pubdir;
 
-  if ($freedomenv == "") {
-    $freedomenv = getFreedomEnv();
+  if ($freedomctx == "") {
+    $freedomctx = getFreedomContext();
   }
 
   if ($PGSERVICE_FREEDOM != "") return $PGSERVICE_FREEDOM;
 
   $pgservice_freedom = "";
 
-  $freedomenv = getFreedomEnv();
-  if ($freedomenv != "") {
-    $filename = "$pubdir/virtual/$freedomenv/dbaccess.php";
+  $freedomctx = getFreedomContext();
+  if ($freedomctx != "") {
+    $filename = "$pubdir/context/$freedomctx/dbaccess.php";
     if (file_exists($filename)) {
       include($filename);
     }
@@ -201,8 +202,8 @@ function getServiceName($dbaccess) {
  * @return string the command
  */
 function getWshCmd($nice=false,$userid=0,$sudo=false) {
-  $freedomenv=getFreedomEnv(); // choose when several databases
-  $wsh="export freedomenv=\"$freedomenv\";";
+  $freedomctx=getFreedomContext(); // choose when several databases
+  $wsh="export freedom_context=\"$freedomctx\";";
   if ($nice) $wsh.= "nice -n +10 ";
   if ($sudo) $wsh.= "sudo ";
   $wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
