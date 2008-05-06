@@ -22,14 +22,14 @@ export utildir
 
 SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
-TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.sh.in dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh dbaccess.php
+TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh
 
 
 include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.in dbaccess.sh.in libutil.sh
+	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.in libutil.sh
 
 
 
@@ -62,9 +62,9 @@ $(pubdir)/admin:
 	mkdir -p $@
 $(rootprefix)/etc/pam.d:
 	mkdir -p $@
-$(rootprefix)/etc/pam.d/httpd: $(rootprefix)/etc/pam.d
+$(rootprefix)/etc/pam.d/httpd.sample: $(rootprefix)/etc/pam.d
 	cp httpd.pam $@
-$(rootprefix)/etc/pam.d/httpdwa: $(rootprefix)/etc/pam.d
+$(rootprefix)/etc/pam.d/httpdwa.sample: $(rootprefix)/etc/pam.d
 	cp httpdwa.pam $@
 $(rootprefix)/etc/freedom.conf: 
 	cp freedom.conf $@
@@ -81,26 +81,17 @@ $(pubdir)/FDLGEN/default: $(pubdir)/FDLGEN
 	ln -sf ../context/default/FDLGEN $@
 $(pubdir)/context/default/FDLGEN:
 	mkdir -p $@
-$(pubdir)/context/default/dbaccess.sh: dbaccess.sh $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
-	mv $< $@
-$(pubdir)/context/default/dbaccess.php: dbaccess.php $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
+$(pubdir)/context/default/dbaccess.php.sample: dbaccess.php $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
 	mv $< $@
 	rm $(pubdir)/WHAT/dbaccess.php
-$(pubdir)/.freedom:
-	echo "default" > $@
-$(pubdir)/.freedom.sh:
-	ln -sf context/default/dbaccess.sh $@
 $(pubdir)/dbaccess.php.in: dbaccess.php.in
 	cp $< $@
-$(pubdir)/dbaccess.sh.in: dbaccess.sh.in
-	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd $(rootprefix)/etc/pam.d/httpdwa $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.sh $(pubdir)/context/default/dbaccess.php $(pubdir)/.freedom $(pubdir)/.freedom.sh
-
+publish: $(rootprefix)/etc/pam.d/httpd.sample $(rootprefix)/etc/pam.d/httpdwa.sample $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
 	      $(PACKAGE)-Fedora.spec $(PACKAGE)-$(VERSION).tar.gz \
-	      dbaccess.sh dbaccess.php apache.conf App/Core/CORE_init.php \
+	      dbaccess.php apache.conf App/Core/CORE_init.php \
 	      App/Users/USERS_init.php App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php App/Appmng/APPMNG_init.php \
 	      httpd.pam \

@@ -1,7 +1,5 @@
 <?
-// $Id: dbaccess.php.in,v 1.6 2008/05/06 08:43:33 jerome Exp $
-$httpuser="@HTTPUSER@";
-$httpconf="@APACHECONFDIR@";
+// $Id: dbaccess.php.in,v 1.7 2008/05/06 17:04:16 jerome Exp $
 $pgservice_core="@PGSERVICE_CORE@";
 $pgservice_freedom="@PGSERVICE_FREEDOM@";
 $freedom_context="@FREEDOM_CONTEXT@";

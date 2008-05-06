@@ -3,7 +3,7 @@
  * WHAT Environnement
  *
  * @author Anakeen 2004
- * @version $Id: wenv.php,v 1.10 2008/05/06 08:43:33 jerome Exp $
+ * @version $Id: wenv.php,v 1.11 2008/05/06 17:04:16 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  */
@@ -48,6 +48,9 @@ function getPhpEnv($freedomctx) {
 }
 
 function getShEnv($freedomctx) {
+  error_log("Deprecated call to getShEnv()");
+  return "";
+
   include_once('WHAT/Lib.Prefix.php');
   $vdir = setBaseDir($freedomctx);
   if (file_exists($vdir."/dbaccess.sh")) $env = $vdir."/dbaccess.sh";
