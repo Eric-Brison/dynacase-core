@@ -62,9 +62,9 @@ $(pubdir)/admin:
 	mkdir -p $@
 $(rootprefix)/etc/pam.d:
 	mkdir -p $@
-$(rootprefix)/etc/pam.d/httpd.sample: $(rootprefix)/etc/pam.d
+$(rootprefix)/etc/pam.d/httpd.freedom.sample: $(rootprefix)/etc/pam.d
 	cp httpd.pam $@
-$(rootprefix)/etc/pam.d/httpdwa.sample: $(rootprefix)/etc/pam.d
+$(rootprefix)/etc/pam.d/httpdwa.freedom.sample: $(rootprefix)/etc/pam.d
 	cp httpdwa.pam $@
 $(rootprefix)/etc/freedom.conf: 
 	cp freedom.conf $@
@@ -87,7 +87,7 @@ $(pubdir)/context/default/dbaccess.php.sample: dbaccess.php $(pubdir)/context/de
 $(pubdir)/dbaccess.php.in: dbaccess.php.in
 	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd.sample $(rootprefix)/etc/pam.d/httpdwa.sample $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
+publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
 	      $(PACKAGE)-Fedora.spec $(PACKAGE)-$(VERSION).tar.gz \
