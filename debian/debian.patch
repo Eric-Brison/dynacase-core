@@ -1,25 +1,3 @@
---- What/Api/updateclass.php.in.orig	2007-07-04 11:41:53.000000000 +0200
-+++ What/Api/updateclass.php.in	2007-07-04 11:43:48.000000000 +0200
-@@ -16,7 +16,7 @@
- 
- 
- $pubdir="@prefix@";
--ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/pear");
-+ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/php");
- include_once("Lib.Common.php");
- 
- function GetArg($name, $def="") {
---- What/Api/appadmin.php.in.orig	2007-07-04 11:42:46.000000000 +0200
-+++ What/Api/appadmin.php.in	2007-07-04 11:43:31.000000000 +0200
-@@ -15,7 +15,7 @@
-  */
- 
- 
--ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/pear");
-+ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/php");
- include_once("Class.Application.php");
- 
- $appname = GetHttpVars("appname","CORE");
 --- What/Share/Lib.WCheck.php.orig	2007-07-04 15:25:27.000000000 +0200
 +++ What/Share/Lib.WCheck.php	2007-07-04 15:25:41.000000000 +0200
 @@ -291,7 +291,7 @@
@@ -38,14 +16,3 @@
 -?>
 \ Pas de fin de ligne à la fin du fichier.
 +?>
---- What/Share/Lib.Prefix.php.in.orig	2007-07-05 15:22:46.000000000 +0200
-+++ What/Share/Lib.Prefix.php.in	2007-07-05 15:23:00.000000000 +0200
-@@ -12,7 +12,7 @@
-  */
- global $pubdir;
- $pubdir="@prefix@";
--ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/pear");
-+ini_set("include_path", ".:@prefix@:@prefix@/WHAT:/usr/share/php");
- 
- define("DEFAULT_PUBDIR","@prefix@");
- define("HTTP_USER","@HTTPUSER@");

@@ -27,8 +27,9 @@ configure-stamp:
 	autoconf
 	./configure --with-pubrule=`pwd` \
 	            --with-httpuser=www-data \
-		    --with-apacheconfdir=/etc/apache2/sites-available/
-		    --prefix=/usr/share/what
+		    --with-apacheconfdir=/etc/apache2/sites-available/ \
+		    --prefix=/usr/share/what \
+		    --with-pear=/usr/share/php
 
 	touch configure-stamp
 
