@@ -3,7 +3,7 @@ Alias /freedom @prefix@
 
 
 <Directory "@prefix@">
-    php_value include_path ".:@prefix@:@prefix@/WHAT:/usr/share/pear"
+    php_value include_path ".:@prefix@:@prefix@/WHAT:@PEAR@"
     php_value session.use_cookies 0
     php_value session.name "session"
     php_value session.use_trans_sid 0
