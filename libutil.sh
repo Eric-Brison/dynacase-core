@@ -22,7 +22,7 @@ function pgLanguageExists {
     if [ -z $pgLanguage ]; then
 	return 1
     fi
-    LANG=`psql -At -c "select lanname from pg_language where lanname='plpgsql'" 2> /dev/null`
+    LANG=`psql -At -c "select lanname from pg_language where lanname='$pgLanguage' 2> /dev/null`
     RET=$?
     if [ $RET -ne 0 ]; then
 	return $RET
