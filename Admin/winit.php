@@ -3,7 +3,7 @@
  * View interface to access admin pages
  *
  * @author Anakeen 2008
- * @version $Id: winit.php,v 1.2 2008/03/12 09:59:12 eric Exp $
+ * @version $Id: winit.php,v 1.3 2008/05/12 08:01:48 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -52,6 +52,9 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 <?php if (file_exists("dbmng.php")) { ?>
        <a class="abut"  href="dbmng.php"><span class="bigbutton">Check DB backups</span></a>
 <?php } ?>
+<br><br>
+       <a class="abut"  href="appinstall.php"><span class="bigbutton">Install application sources</span></a>
+
 </td>
 </tr></table>
 
