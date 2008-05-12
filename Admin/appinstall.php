@@ -3,7 +3,7 @@
  * View interface to access admin pages
  *
  * @author Anakeen 2008
- * @version $Id: appinstall.php,v 1.1 2008/05/12 08:01:48 marc Exp $
+ * @version $Id: appinstall.php,v 1.2 2008/05/12 08:22:21 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -139,7 +139,7 @@ function trace($m, $err=false) {
   error_log("[freedom-installer] ".$m);
 }
 
- $pubdir=dirname(getcwd());
+  $pubdir=dirname(getcwd());
 
  echo '<div class="head">freedom application installer
 <div class="idir">Installation dir : '.$pubdir.'</div>
@@ -238,8 +238,8 @@ echo "</ul>";
 ?>
 <div class="query">
 <?php } else { ?>
-<div class="step">Step [1] : send application zip file</div>
-<div class="query">application zip file : <input type="file" name="appzip">
+<div class="step">Step [1] : send application archive file </div>
+<div class="query">application archive file (max size <?php echo ini_get("upload_max_filesize") ?>) : <input type="file" name="appzip">
 <?php } ?>
 </div>
 <?php if ($istep!=2) { ?> 
