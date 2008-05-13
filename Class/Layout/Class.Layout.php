@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.46 2008/05/06 14:11:50 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.47 2008/05/13 10:20:06 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.46 2008/05/06 14:11:50 eric Exp $
+//  $Id: Class.Layout.php,v 1.47 2008/05/13 10:20:06 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -100,7 +100,8 @@ class Layout {
    */
   function Layout($caneva="",$action="",$template="[OUT]") {
     $this->LOG = new Log("","Layout");     
-    $this->template = sprintf(_("Template [%s] not found"),$caneva);
+    if ($template=="[OUT]") $this->template = sprintf(_("Template [%s] not found"),$caneva);
+    else $this->template = $template;
     $this->action=&$action;
     $this->generation="";
     $file = $caneva;
