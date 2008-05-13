@@ -42,6 +42,31 @@ class LibSystem {
     return LibSystem::getServerAddr();
   }
 
+  function ssystem($args, $opt=null) {
+    $pid = pcntl_fork();
+    if( $pid == -1 ) {
+      return -1;
+    }
+    if( $pid != 0 ) {
+      $ret = pcntl_waitpid($pid, &$status);
+      if( $ret == -1 ) {
+	return -1;
+      }
+      return pcntl_wexitstatus($status);
+    }
+    if( $opt && array_key_exists('closestdin') && $opt['closestdin'] ) {
+      fclose(STDIN);
+    }
+    if( $opt && array_key_exists('closestdout') && $opt['closestdout'] ) {
+      fclose(STDOUT);
+    }
+    if( $opt && array_ley_exists('closestderr') && $opt['closestderr'] ) {
+      fclose(STDERR);
+    }
+    $cmd = array_shift($args);
+    pcntl_exec($cmd, $args);
   }
+
+}
 
 ?>
