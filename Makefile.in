@@ -22,14 +22,14 @@ export utildir
 
 SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
-TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php dbaccess.php.in apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh
+TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh
 
 
 include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.in libutil.sh
+	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.sample.in libutil.sh
 
 
 
@@ -81,17 +81,14 @@ $(pubdir)/FDLGEN/default: $(pubdir)/FDLGEN
 	ln -sf ../context/default/FDLGEN $@
 $(pubdir)/context/default/FDLGEN:
 	mkdir -p $@
-$(pubdir)/context/default/dbaccess.php.sample: dbaccess.php $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
-	mv $< $@
-	rm $(pubdir)/WHAT/dbaccess.php
-$(pubdir)/dbaccess.php.in: dbaccess.php.in
+$(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
 	cp $< $@
 
 publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
 	      $(PACKAGE)-Fedora.spec $(PACKAGE)-$(VERSION).tar.gz \
-	      dbaccess.php apache.conf App/Core/CORE_init.php \
+	      dbaccess.php.sample apache.conf App/Core/CORE_init.php \
 	      App/Users/USERS_init.php App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php App/Appmng/APPMNG_init.php \
 	      httpd.pam \
