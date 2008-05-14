@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.23 2008/05/13 12:28:36 jerome Exp $)
+AC_REVISION($Id: configure.in,v 1.24 2008/05/14 09:21:24 jerome Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -64,10 +64,25 @@ HTTPUSER=http
 AC_ARG_WITH(httpuser,
 [  --with-httpuser=user id for httpd process (default http)], HTTPUSER=$withval)
 
+dnl get php pear path
 AC_SUBST(PEAR)
-PEAR=/usr/share/pear
-AC_ARG_WITH(pear,
-[ --with-pear=PHP PEAR directory (default "/usr/share/pear")], PEAR=$withval)
+AC_ARG_WITH(pear, \
+  [  --with-pear=PHP PEAR path], \
+  PEAR="$withval",
+  PEAR="" \
+)
+if test "x$PEAR" = "x" ; then
+  AC_CHECK_PROG(PEARCMD, pear, pear)
+  if test "x$PEARCMD" = "x" ; then
+    AC_MSG_ERROR(Could not find the pear command... Specify the PHP Pear path with --with-pear)
+  fi
+  AC_MSG_CHECKING(for pear config-get php_dir)
+  PEAR=`"$PEARCMD" config-get php_dir`
+  if test "x$PEAR" = "x" ; then
+    AC_MSG_ERROR(Looks like the pear command is broken... Specify the PHP Pear path with --with-pear)
+  fi
+  AC_MSG_RESULT($PEAR)
+fi
 
 AC_OUTPUT(Makefile freedom-core.spec apache.conf freedom.conf \
           App/Core/CORE_init.php \
