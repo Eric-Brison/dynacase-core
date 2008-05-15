@@ -48,7 +48,7 @@ class LibSystem {
       return -1;
     }
     if( $pid != 0 ) {
-      $ret = pcntl_waitpid($pid, &$status);
+      $ret = pcntl_waitpid($pid, $status);
       if( $ret == -1 ) {
 	return -1;
       }
