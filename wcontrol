@@ -1,6 +1,7 @@
 #!/usr/bin/php -q
 <?php
 
+require_once('WHAT/Lib.Prefix.php');
 require_once('WHAT/Lib.System.php');
 
 /**
@@ -206,13 +207,13 @@ if( isset($argv[1]) ) {
     error_log("$argv[1] is not a valid file !");
     exit( 1 );
   }
-} else if( ($wpub = getenv('wpub')) == TRUE ) {
-  if( file_exists("$wpub/wcontrol.xml") ) {
-    $configfile="$wpub/wcontrol.xml";
-  }
 } else {
-  error_log("Could not find a wcontrol.xml file !");
-  exit( 1 );
+  if( file_exists("$pubdir/wcontrol.xml") ) {
+    $configfile="$pubdir/wcontrol.xml";
+  } else {
+    error_log("Could not find a wcontrol.xml file !");
+    exit( 1 );
+  }
 }
 
 $xml = simplexml_load_file($configfile);

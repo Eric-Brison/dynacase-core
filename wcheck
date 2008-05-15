@@ -6,6 +6,14 @@ include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");
 include("WHAT/Lib.WCheck.php");
 
+if( system("$pubdir/wcontrol", $status) == FALSE ) {
+  error_log("Error executing $pubdir/wcontrol !");
+  exit( 1 );
+}
+if( $status != 0 ){
+  exit( $status );
+}
+
 global $_SERVER;
 
 if ($_SERVER['HTTP_HOST'] != "")     {
@@ -13,13 +21,7 @@ if ($_SERVER['HTTP_HOST'] != "")     {
   exit;
 }
 
-
-
-
-
 $dbaccess=getDbAccess();
-
-
 
 $err=getCheckApp($pubdir,$applications);
 
@@ -35,7 +37,6 @@ if ($err!="") {
   $actions[] = "$pubdir/CORE/CORE_post  U";
 } else {
   ncurses_mvaddstr(4,5,  _("access to default database : granted"));
-  
   
   $line[]= "+++++++++++++++++++++++++++++++++++++++++++++++";
   $line[]= sprintf("|%12s|%10s|%10s|%10s|",
@@ -58,10 +59,7 @@ if ($err!="") {
   $err=getCheckActions($pubdir,$applications,$actions);
 }
 
-
-
 ncurses_execute($actions);
-
 
 ncurses_mvaddstr($lines-2, 4, _("Finished. Detail log in /tmp/whatchk.log"));
 $pressed = ncurses_getch();// wait for a user keypress
