@@ -22,14 +22,14 @@ export utildir
 
 SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
-TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh
+TOP_MODULES =  index.php.q wsh.php wvirtual.php wchoose.php guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh wcontrol wcontrol.xml
 
 
 include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.sample.in libutil.sh
+	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php index.php.q freedom.conf.in dbaccess.php.sample.in libutil.sh wcontrol wcontrol.xml
 
 
 
@@ -57,6 +57,11 @@ $(pubdir)/apachevi.conf.in: apachevi.conf.in
 	cp $< $@
 $(pubdir)/libutil.sh: libutil.sh
 	cp $< $@
+$(pubdir)/wcontrol: wcontrol
+	cp $< $@
+$(pubdir)/wcontrol.xml: wcontrol.xml
+	cp $< $@
+
 
 $(pubdir)/admin:
 	mkdir -p $@
@@ -85,6 +90,7 @@ $(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/con
 	cp $< $@
 
 publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
+
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
 	      $(PACKAGE)-Fedora.spec $(PACKAGE)-$(VERSION).tar.gz \

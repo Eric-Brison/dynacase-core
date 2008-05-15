@@ -23,7 +23,7 @@ Alias /freedom @prefix@
 
       Require valid-user
     </Files>
-    <FilesMatch "\.conf|dbaccess.php|wstop|wcheck|wsh.php">
+    <FilesMatch "\.conf|dbaccess.php|wstop|wcheck|wcontrol|wsh.php">
        Order Deny,Allow
        Deny from All   
     </FilesMatch>
