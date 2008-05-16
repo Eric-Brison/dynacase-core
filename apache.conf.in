@@ -60,6 +60,7 @@ Alias /freedom @prefix@
 <Directory "@prefix@/admin/">
     DirectoryIndex  winit.php
     php_value session.name "adminsession"
+    php_value session.use_cookies 1
     AuthType Basic
     AuthName "FREEDOM Administration"
     AuthUserFile @prefix@/admin/.htpasswd
