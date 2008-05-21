@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.13 2008/02/18 17:24:03 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.14 2008/05/21 17:26:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -167,7 +167,8 @@ class OOoLayout extends Layout {
 
   $this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section[^>]*>/s","<text:section>",$this->template);
   $this->template=preg_replace("/<text:p ([^>]*)><text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
-  $this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template);
+  $this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template); 
+  $this->template=str_replace("&lt;text:line-break/&gt;","<text:line-break/>",$this->template);
 
 
   file_put_contents($contentxml,$this->template);
