@@ -6,22 +6,27 @@
  * @param string $appname internal name of the application
  * @param string $method may be "init","reinit","update","delete"
  * @author Anakeen 2003
- * @version $Id: appadmin.php.in,v 1.2 2008/05/07 10:02:28 jerome Exp $
+ * @version $Id: appadmin.php,v 1.8 2008/05/21 07:27:02 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage WSH
  */
 /**
  */
-
-
-ini_set("include_path", ".:@prefix@:@prefix@/WHAT:@PEAR@");
 include_once("Class.Application.php");
 
-$appname = GetHttpVars("appname","CORE");
+$appname = GetHttpVars("appname","");
 $method = GetHttpVars("method","init");
 
-echo " $appname...$method";
+if ($appname=="") {
+  echo "[appadmin::$method] missing application. Please set it whith --appname=<application name>\n";
+  exit;
+}
+if ($method!="init" && $method!="reinit" && $method!="update" && $method!="delete") {
+  echo "[appadmin] allowed method : init reinit update delete.\n";
+  exit;
+}
+echo " $appname...$method\n";
 $app=new Application();
 $Null = "";
 $app->Set($appname,$Null);

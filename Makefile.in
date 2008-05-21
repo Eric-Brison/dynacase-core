@@ -98,4 +98,4 @@ clean:
 	      App/Users/USERS_init.php App/Access/ACCESS_init.php \
 	      App/Authent/AUTHENT_init.php App/Appmng/APPMNG_init.php \
 	      httpd.pam \
-	      Api/appadmin.php Api/updateclass.php App/Core/CORE_post
+	      Api/updateclass.php App/Core/CORE_post
