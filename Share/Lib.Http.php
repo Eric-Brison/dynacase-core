@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.31 2008/05/21 11:30:06 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.32 2008/05/30 12:06:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -23,14 +23,17 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
     return;
   }
 
-  if ($otherurl == "")
-    $baseurl=$action->GetParam("CORE_BASEURL");
-  else
-    $baseurl=$otherurl;
-  $location = $baseurl."app=".$appname."&action=".$actionname;
-  $action->log->debug("Redirect : $location");
 
-  $location .= "&session=".$action->session->id;
+  if ($appname=="") {
+    $location = ".";
+  } else {
+    if ($otherurl == "")  $baseurl=$action->GetParam("CORE_BASEURL");
+    else  $baseurl=$otherurl;  
+    $location = $baseurl."app=".$appname."&action=".$actionname;
+    $location .= "&session=".$action->session->id;
+  }
+
+  $action->log->debug("Redirect : $location");
 
   if ($httpparamredirect) {
     //add ZONE_ARGS
