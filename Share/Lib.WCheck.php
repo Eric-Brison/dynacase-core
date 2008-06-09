@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.19 2008/05/06 08:43:33 jerome Exp $
+ * @version $Id: Lib.WCheck.php,v 1.20 2008/06/09 10:32:47 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -269,7 +269,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   }
   
   $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > /var/tmp/".uniqid($pgservice_core);
-  if (trim($dumpfree)!="") $dump[] = "PGSERVICE=\"$pgservice_freedom\" pg_dump -D > /var/tmp/".uniqid($pgservice_freedom);
+  $dump[] = "PGSERVICE=\"$pgservice_freedom\" pg_dump -D > /var/tmp/".uniqid($pgservice_freedom);
   //  $dump[] = "/etc/rc.d/init.d/httpd stop";
   $dump[] = "$pubdir/wstop";
   $dump[] = "$pubdir/whattext";
