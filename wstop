@@ -4,14 +4,5 @@ if [ "$dbpsql" == "" ]; then
    wchoose -b
 fi
 
-
-if [ -f $wpub/index.php ] ; then
-  if [ ! -h $wpub/index.php ] ; then
-    /bin/rm $wpub/index.php
-    /bin/ln -s $wpub/WHAT/stop.php $wpub/index.php
-    echo "check update needed  ($wpub/wcheck)"
-  fi
-else
-    /bin/ln -s $wpub/WHAT/stop.php $wpub/index.php
-    echo "check update needed  ($wpub/wcheck)"
-fi
+touch $wpub/maintenance.lock
+echo "check update needed ($wpub/wcheck)"

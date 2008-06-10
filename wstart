@@ -4,12 +4,9 @@ if [ "$dbpsql" == "" ]; then
    wchoose -b
 fi
 
-
-if [ -h $wpub/index.php ] ; then
-  /bin/rm $wpub/index.php
+if [ -f $wpub/maintenance.lock ]; then
+    /bin/rm $wpub/maintenance.lock
 fi
-/bin/cp $wpub/WHAT/index.php $wpub
-
 
 # link images file to be used in several applications
 if [ ! -d $wpub/Images ] ; then

@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.46 2008/06/10 14:59:58 jerome Exp $
+ * @version $Id: index.php,v 1.47 2008/06/10 15:00:37 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -53,6 +53,14 @@ if( $authtype != 'apache' ) {
   }
   $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
   $_SERVER['PHP_AUTH_PW'] = "Unknown";
+}
+
+if( file_exists('maintenance.lock') ) {
+  if( $_SERVER['PHP_AUTH_USER'] != 'admin' ) {
+    $auth->logout();
+    include_once('WHAT/stop.php');
+    exit(0);
+  }
 }
 
 #
