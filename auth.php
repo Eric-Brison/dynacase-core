@@ -15,6 +15,10 @@ $auth = new Authenticator(
 
 $status = $auth->checkAuthentication();
 if( $status == FALSE ) {
+  session_name('session');
+  session_start();
+  session_regenerate_id();
+  session_commit();
   sendAuthPage();
   exit(0);
 }
