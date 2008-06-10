@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.28 2008/02/12 15:20:11 eric Exp $
+ * @version $Id: Class.Session.php,v 1.29 2008/06/10 15:00:57 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.28 2008/02/12 15:20:11 eric Exp $
+// $Id: Class.Session.php,v 1.29 2008/06/10 15:00:57 jerome Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.28 2008/02/12 15:20:11 eric Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.29 2008/06/10 15:00:57 jerome Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -47,124 +47,136 @@ include_once ("Class.SessionCache.php");
 
 Class Session extends DbObj{
 
-var $fields = array ( "id","userid");
+  var $fields = array ( "id","userid");
 
-var $id_fields = array ("id");
-
-var $dbtable = "sessions";
-
-var $sqlcreate = "create table sessions ( id         varchar(100),
+  var $id_fields = array ("id");
+  
+  var $dbtable = "sessions";
+  
+  var $sqlcreate = "create table sessions ( id         varchar(100),
                         userid   int);
                   create index sessions_idx on sessions(id);";
+    
+  var $isCacheble= false;
+  var $sessiondb;
 
-
-
- var $isCacheble= false;
-var $sessiondb;
-
+  var $useAuthenticator = true;
   
- 
   function Set($id)  {
-      global $_SERVER;
-      $query=new QueryDb($this->dbaccess,"Session");
-      $query->criteria = "id";
-      $query->operator = "=";
-      $query->string = "'".pg_escape_string($id)."'";
-      $query->casse = "OUI";
-      $list = $query->Query(0,0,"TABLE");
-      if ($query->nb != 0) {
-        $this->Affect($list[0]);
+    global $_SERVER;
+    $query=new QueryDb($this->dbaccess,"Session");
+    $query->criteria = "id";
+    $query->operator = "=";
+    $query->string = "'".pg_escape_string($id)."'";
+    $query->casse = "OUI";
+    $list = $query->Query(0,0,"TABLE");
+    if ($query->nb != 0) {
+      $this->Affect($list[0]);
+      if( ! $this->useAuthenticator ) {
 	session_id($id);
 	@session_start();
 	@session_write_close(); // avoid block
 	//print_r2("@session_write_close");
 	//	$this->initCache();
-        
-      } else {
-        // Init the database with the app file if it exists
-
-	$u = new User();
-	if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	
-
-	  $this->open($u->id);	
-	} else {
-	  $this->open();//anonymous session
-	}
       }
-
-      // set cookie session
-      if ($_SERVER['HTTP_HOST'] != "") setcookie ("session",$this->id,$this->SetTTL(),"/");
-      return true;
+    } else {
+      // Init the database with the app file if it exists      
+      $u = new User();
+      if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	
+	$this->open($u->id, $id);
+      } else {
+	$this->open();//anonymous session
+      }
     }
-
-       
-
+    
+    // set cookie session
+    if ($this->useAuthenticator && $_SERVER['HTTP_HOST'] != "") {
+      setcookie ("session",$this->id,$this->SetTTL(),"/");
+    }
+    return true;
+  }
+  
   /** 
    * Closes session and removes all datas
    */
   function Close()  {
-      global $_SERVER; // use only cache with HTTP
-      if ($_SERVER['HTTP_HOST'] != "") {
-	session_unset();
-	$this->Delete();
-	setcookie ("session","",0,"/");
-      }
-      $this->status = $this->SESSION_CT_CLOSE;
-      return $this->status;
-    }  
-
+    global $_SERVER; // use only cache with HTTP
+    if( $this->useAuthenticator ) {
+      return true;
+    }
+    if ($_SERVER['HTTP_HOST'] != "") {
+      session_unset();
+      $this->Delete();
+      setcookie ("session","",0,"/");
+    }
+    $this->status = $this->SESSION_CT_CLOSE;
+    return $this->status;
+  }  
+  
   /** 
    * Closes all session 
    */
   function CloseAll() {
-      $this->exec_query("delete from sessions");
-      $this->status = $this->SESSION_CT_CLOSE;
-      return $this->status;
-    }  
-  
-  function Open($uid=ANONYMOUS_ID)  {
+    $this->exec_query("delete from sessions");
+    $this->status = $this->SESSION_CT_CLOSE;
+    return $this->status;
+  }  
+
+  /**
+   * Delete the session in database
+   *
+   * Note: It's up to you to cleanup the session_id
+    *      with session_unset/session_destroy
+   */
+  function DeleteSession() {
+    $this->Delete();
+    $this->status = $this->SESSION_CT_CLOSE;
+    return $this->status;
+  }
+
+  function Open($uid=ANONYMOUS_ID, $session_id=null)  {
+    if( $session_id == null ) {
       $idsess  = $this->newId();
-      global $_SERVER; // use only cache with HTTP
-      if ($_SERVER['HTTP_HOST'] != "") {
-	//session_id($idsess);
-	@session_start();
-	@session_write_close(); // avoid block
-	
-	
-	
-	//	$this->initCache();
-      }
-      $this->id         = $idsess;
-      $this->userid   = $uid;
-      $this->Add();
-      $this->log->debug("Nouvelle Session : {$this->id}");
+    } else {
+      $idsess = $session_id;
     }
- 
+    global $_SERVER; // use only cache with HTTP
+    if ($session_id == null && $_SERVER['HTTP_HOST'] != "") {
+      //session_id($idsess);
+      @session_start();
+      @session_write_close(); // avoid block
+      //	$this->initCache();
+    }
+    $this->id         = $idsess;
+    $this->userid   = $uid;
+    $this->Add();
+    $this->log->debug("Nouvelle Session : {$this->id}");
+  }
+  
   // --------------------------------
   // Stocke une variable de session args
   // $v est une chaine !
   // --------------------------------
   function Register($k = "", $v = "")   {
-
-      if ($k == "" ){
-	$this->status = $this->SESSION_CT_ARGS;
-	return $this->status;
-      }
-      //      global $_SESSION;
-      //      $$k=$v;
-
-      global $_SERVER; // use only cache with HTTP
-      if ($_SERVER['HTTP_HOST'] != "") {
-	//	session_register($k);
-	//	session_id($this->id);
-	@session_start();
-	$_SESSION[$k]=$v;
-	@session_write_close();// avoid block
-      }
-
-      return true;
-
-    }       
+    
+    if ($k == "" ){
+      $this->status = $this->SESSION_CT_ARGS;
+      return $this->status;
+    }
+    //      global $_SESSION;
+    //      $$k=$v;
+    
+    global $_SERVER; // use only cache with HTTP
+    if ($_SERVER['HTTP_HOST'] != "") {
+      //	session_register($k);
+      //	session_id($this->id);
+      @session_start();
+      $_SESSION[$k]=$v;
+      @session_write_close();// avoid block
+    }
+    
+    return true;
+  }       
   
   // --------------------------------
   // Récupère une variable de session
@@ -177,26 +189,24 @@ var $sessiondb;
       return($d);
     }
   }       
-
   
   // --------------------------------
   // Détruit une variable de session
   // $v est une chaine !
   // --------------------------------
   function Unregister($k = "")   {
-      global $_SERVER; // use only cache with HTTP
-      if ($_SERVER['HTTP_HOST'] != "") {
-	//session_unregister($k);
-	//	global $_SESSION;
-	session_id($this->id);
-	@session_start();
-	unset($_SESSION[$k]);
+    global $_SERVER; // use only cache with HTTP
+    if ($_SERVER['HTTP_HOST'] != "") {
+      //session_unregister($k);
+      //	global $_SESSION;
+      session_id($this->id);
+      @session_start();
+      unset($_SESSION[$k]);
 	@session_write_close();// avoid block
-      }
-      return;
-    }       
+    }
+    return;
+  }       
   
- 
   
   
   // ------------------------------------------------------------------------
@@ -204,21 +214,20 @@ var $sessiondb;
   // ------------------------------------------------------------------------
   
   function newId()   {
-      $this->log->debug("newId");
-      $magic = new SessionConf($this->dbaccess, "MAGIC");
-      $m = $magic->val;
-      unset($magic);
-      return md5(uniqid($m));
-    }
-
-  function SetTTL()  {
-      $ttli = new SessionConf($this->dbaccess, "TTL_INTERVAL");
-      $ttliv = $ttli->val;
-      //$ttli->CloseConnect();
-      unset($ttli);
-      return (time() + $ttliv);
-    }
+    $this->log->debug("newId");
+    $magic = new SessionConf($this->dbaccess, "MAGIC");
+    $m = $magic->val;
+    unset($magic);
+    return md5(uniqid($m));
+  }
   
- 
+  function SetTTL()  {
+    $ttli = new SessionConf($this->dbaccess, "TTL_INTERVAL");
+    $ttliv = $ttli->val;
+    //$ttli->CloseConnect();
+    unset($ttli);
+    return (time() + $ttliv);
+  }
+  
 } // Class Session
 ?>
