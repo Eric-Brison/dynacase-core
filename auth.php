@@ -1,5 +1,6 @@
 <?php
 
+include_once('WHAT/Lib.Common.php');
 include_once('WHAT/Class.Authenticator.php');
 
 $auth = new Authenticator(
@@ -9,7 +10,7 @@ $auth = new Authenticator(
 				'username' => 'username',
 				'password' => 'password',
 				'cookie' => 'session',
-				'connection' => 'host=localhost dbname=anakeen user=anakeen',
+				'connection' => 'service='.getServiceCore(),
 				)
 			  );
 

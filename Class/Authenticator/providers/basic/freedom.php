@@ -14,11 +14,16 @@ Class basicFreedomProvider {
   }
   
   public function checkAuthentication() {
-    if( ! isset($_SERVER['PHP_AUTH_USER']) ) {
+    if( array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true" )  {
+      setcookie('logout', '', time() - 3600);
+      return FALSE;
+    }
+
+    if( ! array_key_exists('PHP_AUTH_USER', $_SERVER) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_USER]");
       return FALSE;
     }
-    if( ! isset($_SERVER['PHP_AUTH_PW']) ) {
+    if( ! array_key_exists('PHP_AUTH_PW', $_SERVER) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_PW] for user ".$_SERVER['PHP_AUTH_USER']);
       return FALSE;
     }
@@ -51,7 +56,14 @@ Class basicFreedomProvider {
       return TRUE;
     }
     return FALSE;
-  }  
+  }
+
+  public function logout($redir_uri) {
+    setcookie('logout', 'true', 0);
+    header('Location: '.$redir_uri);
+    return TRUE;
+  }
+  
 }
 
 ?>

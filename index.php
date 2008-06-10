@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.48 2008/06/10 15:01:43 jerome Exp $
+ * @version $Id: index.php,v 1.49 2008/06/10 15:01:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -16,16 +16,18 @@
 $authtype = 'html';
  
 if( $authtype == 'basic' ) {
+  include_once('WHAT/Lib.Common.php');
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
 			    array(
 				  'type' => 'basic',
 				  'realm' => 'Freedom',
 				  'provider' => 'freedom',
-				  'connection' => 'host=localhost dbname=anakeen user=anakeen',
+				  'connection' => 'service='.getServiceCore(),
 				  )
 			    );
 } else if( $authtype == 'html' ) {
+  include_once('WHAT/Lib.Common.php');
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
 			    array(
@@ -34,7 +36,7 @@ if( $authtype == 'basic' ) {
 				  'username' => 'username',
 				  'password' => 'password',
 				  'cookie' => 'session',
-				  'connection' => 'host=localhost dbname=anakeen user=anakeen',
+				  'connection' => 'service='.getServiceCore(),
 				  'authurl' => 'auth.php',
 				  )
 			    );

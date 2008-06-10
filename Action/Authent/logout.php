@@ -3,7 +3,7 @@
  * Close session
  *
  * @author Anakeen 1999
- * @version $Id: logout.php,v 1.8 2008/06/10 15:01:43 jerome Exp $
+ * @version $Id: logout.php,v 1.9 2008/06/10 15:01:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -25,13 +25,14 @@ function logout(&$action) {
   $authtype = 'html';
   
   if( $authtype == 'basic' ) {
+    include_once('WHAT/Lib.Common.php');
     include_once('WHAT/Class.Authenticator.php');
     $auth = new Authenticator(
 			      array(
 				    'type' => 'basic',
 				    'realm' => 'Freedom',
 				    'provider' => 'freedom',
-				    'connection' => 'host=localhost dbname=anakeen user=anakeen',
+				    'connection' => 'service='.getServiceCore(),
 				    )
     );
   } else if( $authtype == 'html' ) {
@@ -43,7 +44,7 @@ function logout(&$action) {
 				    'username' => 'username',
 				    'password' => 'password',
 				    'cookie' => 'session',
-				    'connection' => 'host=localhost dbname=anakeen user=anakeen',
+				    'connection' => 'service='.getServiceCore(),
 				    )
 			      );
   } else if( $authtype == 'apache' ) {
@@ -66,6 +67,13 @@ function logout(&$action) {
   $raction = GetHttpVars("raction");
   $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
   
+  if( $authtype == 'basic' ) {
+    $action->session->DeleteSession(session_id());
+    $redir_uri = preg_replace('/^([^?]+).*/', '$1', $_SERVER['REQUEST_URI']);
+    $auth->logout($redir_uri);
+    exit(0);
+  }
+
   if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {
     authenticate($action);
   } else {
