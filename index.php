@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.45 2007/07/25 09:40:28 eric Exp $
+ * @version $Id: index.php,v 1.46 2008/06/10 14:59:58 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -13,7 +13,47 @@
  /**
  */
 
+$authtype = 'html';
+ 
+if( $authtype == 'basic' ) {
+  include_once('Authenticator/authenticator.php');
+  $auth = new Authenticator(
+			    array(
+				  'type' => 'basic',
+				  'realm' => 'Freedom',
+				  'provider' => 'freedom',
+				  'connection' => 'host=localhost dbname=anakeen user=anakeen',
+				  )
+			    );
+} else if( $authtype == 'html' ) {
+  include_once('Authenticator/authenticator.php');
+  $auth = new Authenticator(
+			    array(
+				  'type' => 'html',
+				  'provider' => 'freedom',
+				  'username' => 'username',
+				  'password' => 'password',
+				  'cookie' => 'session',
+				  'connection' => 'host=localhost dbname=anakeen user=anakeen',
+				  'authurl' => 'auth.php',
+				  )
+			    );
+} else if( $authtype == 'apache' ) {
+  // Apache has already handled the authentication
+} else {
+  print "Unknown authtype ".$_GET['authtype'];
+  exit;
+}
 
+if( $authtype != 'apache' ) {
+  $status = $auth->checkAuthentication();
+  if( $status == FALSE ) {
+    $auth->askAuthentication();
+    exit(0);
+  }
+  $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
+  $_SERVER['PHP_AUTH_PW'] = "Unknown";
+}
 
 #
 # This is the main body of App manager
@@ -73,10 +113,12 @@ if (!  $session->Set($sess_num))  {
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 
-if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
-  // reopen a new session
-  $session->Set("");
-  $core->SetSession($session);
+if( $authtype == 'apache' ) {
+  if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
+    // reopen a new session
+    $session->Set("");
+    $core->SetSession($session);
+  }
 }
 //$core->SetSession($session);
 
