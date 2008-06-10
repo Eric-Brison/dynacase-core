@@ -3,7 +3,7 @@
  * Close session
  *
  * @author Anakeen 1999
- * @version $Id: logout.php,v 1.7 2008/06/10 14:59:58 jerome Exp $
+ * @version $Id: logout.php,v 1.8 2008/06/10 15:01:43 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -25,7 +25,7 @@ function logout(&$action) {
   $authtype = 'html';
   
   if( $authtype == 'basic' ) {
-    include_once('Authenticator/authenticator.php');
+    include_once('WHAT/Class.Authenticator.php');
     $auth = new Authenticator(
 			      array(
 				    'type' => 'basic',
@@ -35,7 +35,7 @@ function logout(&$action) {
 				    )
     );
   } else if( $authtype == 'html' ) {
-    include_once('Authenticator/authenticator.php');
+    include_once('WHAT/Class.Authenticator.php');
     $auth = new Authenticator(
 			      array(
 				    'type' => 'html',

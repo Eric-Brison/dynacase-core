@@ -1,6 +1,6 @@
 <?php
 
-include_once('Authenticator/authenticator.php');
+include_once('WHAT/Class.Authenticator.php');
 
 $auth = new Authenticator(
 			  array(
