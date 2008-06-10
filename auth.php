@@ -4,14 +4,13 @@ include_once('WHAT/Lib.Common.php');
 include_once('WHAT/Class.Authenticator.php');
 
 $auth = new Authenticator(
-			  array(
-				'type' => 'html',
-				'provider' => 'freedom',
-				'username' => 'username',
-				'password' => 'password',
-				'cookie' => 'session',
-				'connection' => 'service='.getServiceCore(),
-				)
+			  array_merge(
+				      array(
+					    'type' => 'html',
+					    'provider' => getAuthProvider(),
+					    ),
+				      getauthParam()
+				      )
 			  );
 
 $status = $auth->checkAuthentication();

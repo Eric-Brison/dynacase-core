@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.49 2008/06/10 15:01:51 jerome Exp $
+ * @version $Id: index.php,v 1.50 2008/06/10 15:02:14 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -13,31 +13,19 @@
  /**
  */
 
-$authtype = 'html';
+include_once('WHAT/Lib.Common.php');
+
+$authtype = getAuthType();
  
-if( $authtype == 'basic' ) {
-  include_once('WHAT/Lib.Common.php');
+if( $authtype == 'basic' || $authtype == 'html' ) {
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
-			    array(
-				  'type' => 'basic',
-				  'realm' => 'Freedom',
-				  'provider' => 'freedom',
-				  'connection' => 'service='.getServiceCore(),
-				  )
-			    );
-} else if( $authtype == 'html' ) {
-  include_once('WHAT/Lib.Common.php');
-  include_once('WHAT/Class.Authenticator.php');
-  $auth = new Authenticator(
-			    array(
-				  'type' => 'html',
-				  'provider' => 'freedom',
-				  'username' => 'username',
-				  'password' => 'password',
-				  'cookie' => 'session',
-				  'connection' => 'service='.getServiceCore(),
-				  'authurl' => 'auth.php',
+			    array_merge(
+					array(
+					      'type' => getAuthType(),
+					      'provider' => getAuthProvider(),
+					      ),
+					getAuthParam()
 				  )
 			    );
 } else if( $authtype == 'apache' ) {

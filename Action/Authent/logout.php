@@ -3,7 +3,7 @@
  * Close session
  *
  * @author Anakeen 1999
- * @version $Id: logout.php,v 1.9 2008/06/10 15:01:51 jerome Exp $
+ * @version $Id: logout.php,v 1.10 2008/06/10 15:02:14 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -22,30 +22,20 @@ function logout(&$action) {
   global $_SERVER;
   global $_POST;
 
-  $authtype = 'html';
+  include_once('WHAT/Lib.Common.php');
+
+  $authtype = getAuthType();
   
-  if( $authtype == 'basic' ) {
-    include_once('WHAT/Lib.Common.php');
+  if( $authtype == 'basic' || $authtype == 'html' ) {
     include_once('WHAT/Class.Authenticator.php');
     $auth = new Authenticator(
-			      array(
-				    'type' => 'basic',
-				    'realm' => 'Freedom',
-				    'provider' => 'freedom',
-				    'connection' => 'service='.getServiceCore(),
-				    )
-    );
-  } else if( $authtype == 'html' ) {
-    include_once('WHAT/Class.Authenticator.php');
-    $auth = new Authenticator(
-			      array(
-				    'type' => 'html',
-				    'provider' => 'freedom',
-				    'username' => 'username',
-				    'password' => 'password',
-				    'cookie' => 'session',
-				    'connection' => 'service='.getServiceCore(),
-				    )
+			      array_merge(
+					  array(
+						'type' => getauthType(),
+						'provider' => getAuthProvider(),
+						),
+					  getAuthParam()
+					  )
 			      );
   } else if( $authtype == 'apache' ) {
     // Apache has already handled the authentication

@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.45 2008/05/06 08:43:33 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.46 2008/06/10 15:02:14 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -191,6 +191,66 @@ function getServiceName($dbaccess) {
   if (ereg("service='?([a-zA-Z0-9_.-]+)", $dbaccess, $reg)) {
     return $reg[1];
   }
+}
+
+function getAuthType($freedomctx="") {
+  global $pubdir;
+
+  if( $freedomctx == "" ) {
+    $freedomctx = getFreedomContext();
+  }
+  if( $freedomctx != "" ) {
+    $filename = "$pubdir/context/$freedomctx/dbaccess.php";
+    if( file_exists($filename) ) {
+      include($filename);
+    }
+  }
+
+  if( $freedom_authtype == "" ) {
+    $freedom_authtype = "apache";
+  }
+
+  return $freedom_authtype;
+}
+
+function getAuthProvider($freedomctx="") {
+  global $pubdir;
+
+  if( $freedomctx == "" ) {
+    $freedomctx = getFreedomContext();
+  }
+  if( $freedomctx != "" ) {
+    $filename = "$pubdir/context/$freedomctx/dbaccess.php";
+    if( file_exists($filename) ) {
+      include($filename);
+    }
+  }
+
+  if( $freedom_authprovider == "" ) {
+    $freedom_authprovider = "apache";
+  }
+  
+  return $freedom_authprovider;
+}
+      
+function getAuthParam($freedomctx="") {
+  global $pubdir;
+
+  if( $freedomctx == "" ) {
+    $freedomctx = getFreedomContext();
+  }
+  if( $freedomctx != "" ) {
+    $filename = "$pubdir/context/$freedomctx/dbaccess.php";
+    if( file_exists($filename) ) {
+      include($filename);
+    }
+  }
+
+  if( ! is_array($freedom_authparam) ) {
+    $freedom_authparam = array();
+  }
+
+  return $freedom_authparam;
 }
 
 /**
