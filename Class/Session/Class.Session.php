@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.29 2008/06/10 15:00:57 jerome Exp $
+ * @version $Id: Class.Session.php,v 1.30 2008/06/10 15:02:22 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.29 2008/06/10 15:00:57 jerome Exp $
+// $Id: Class.Session.php,v 1.30 2008/06/10 15:02:22 jerome Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.29 2008/06/10 15:00:57 jerome Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.30 2008/06/10 15:02:22 jerome Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -60,8 +60,6 @@ Class Session extends DbObj{
   var $isCacheble= false;
   var $sessiondb;
 
-  var $useAuthenticator = true;
-  
   function Set($id)  {
     global $_SERVER;
     $query=new QueryDb($this->dbaccess,"Session");
@@ -72,7 +70,7 @@ Class Session extends DbObj{
     $list = $query->Query(0,0,"TABLE");
     if ($query->nb != 0) {
       $this->Affect($list[0]);
-      if( ! $this->useAuthenticator ) {
+      if( getAuthType() == 'apache' ) {
 	session_id($id);
 	@session_start();
 	@session_write_close(); // avoid block
@@ -90,7 +88,7 @@ Class Session extends DbObj{
     }
     
     // set cookie session
-    if ($this->useAuthenticator && $_SERVER['HTTP_HOST'] != "") {
+    if (getAuthType() != 'apache' && $_SERVER['HTTP_HOST'] != "") {
       setcookie ("session",$this->id,$this->SetTTL(),"/");
     }
     return true;
@@ -101,7 +99,7 @@ Class Session extends DbObj{
    */
   function Close()  {
     global $_SERVER; // use only cache with HTTP
-    if( $this->useAuthenticator ) {
+    if( getAuthType() != 'apache' ) {
       return true;
     }
     if ($_SERVER['HTTP_HOST'] != "") {
