@@ -63,7 +63,7 @@ function open_win(win_location) {
 <input type="hidden" name="appd" value="[app_redir]">
 <input type="hidden" name="actd" value="[act_redir]">
 <input type="hidden" name="argd" value="[arg_redir]">
-<table cellpadding="1" cellspacing="0" border="0" align="center" width="400"><tr><td >
+<table cellpadding="1" cellspacing="0" border="0" align="center" width="400" height="90%"><tr><td >
 
 <table cellpadding="1" cellspacing="0"  border="0" align="center" width="100%">
 <tr>
