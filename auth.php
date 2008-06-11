@@ -2,7 +2,7 @@
 
 include_once('WHAT/Lib.Common.php');
 include_once('WHAT/Class.Authenticator.php');
-
+ini_set("session.use_cookies", "1");
 $auth = new Authenticator(
 			  array_merge(
 				      array(
@@ -19,6 +19,7 @@ if( $status == FALSE ) {
   session_start();
   session_regenerate_id();
   session_commit();
+  sleep(2); // wait for robots
   sendAuthPage();
   exit(0);
 }
