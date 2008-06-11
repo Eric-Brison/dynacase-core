@@ -34,9 +34,10 @@ function checkauth(&$action) {
     session_start();
     session_regenerate_id();
     session_commit();
-    error_log(__CLASS__."::".__FUNCTION__." ".'Location : '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM');
+    sleep(1); // for robots
+    error_log(__CLASS__."::".__FUNCTION__." ".'Location : '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM&error=1');
     // Redirect to authentication
-    header('Location: '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM');
+    header('Location: '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM&error=1');
     exit(0);
   }
   // Delete the session in database
