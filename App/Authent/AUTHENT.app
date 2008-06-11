@@ -1,4 +1,4 @@
-<?
+<?php
 
 global $app_desc,$action_desc;
 
@@ -18,6 +18,9 @@ $action_desc = array (
    "short_name"		=>"login",
    "root"		=>"Y"
   ) ,
+  array(
+   "name"               =>"CHECKAUTH",
+  ),
   array(
    "name"		=>"LOGINHELP"
   ),

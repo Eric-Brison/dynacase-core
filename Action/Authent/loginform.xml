@@ -59,7 +59,7 @@ function open_win(win_location) {
 -->
 
 </script>
-<form action="[CORE_BASEURL]app=AUTHENT&action=LOGINFORM" method="post" name="loginform">
+<form action="[CORE_BASEURL]app=AUTHENT&action=CHECKAUTH" method="post" name="loginform">
 <input type="hidden" name="appd" value="[app_redir]">
 <input type="hidden" name="actd" value="[act_redir]">
 <input type="hidden" name="argd" value="[arg_redir]">

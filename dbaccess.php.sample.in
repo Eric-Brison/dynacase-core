@@ -1,5 +1,5 @@
 <?
-// $Id: dbaccess.php.sample.in,v 1.2 2008/06/10 15:02:14 jerome Exp $
+// $Id: dbaccess.php.sample.in,v 1.3 2008/06/11 14:11:26 jerome Exp $
 $pgservice_core="@PGSERVICE_CORE@";
 $pgservice_freedom="@PGSERVICE_FREEDOM@";
 $freedom_context="@FREEDOM_CONTEXT@";
@@ -23,6 +23,17 @@ $freedom_authparam=array(
 	'cookie' => 'session',
 	'connection' => 'service='.$pgservice_core,
 	'authurl' => 'auth.php',
+);
+
+// -- HTML auth via AUTHENT Freedom application
+$freedom_authtype="html";
+$freedom_authprovider="freedom";
+$freedom_authparam=array(
+	'username' => 'auth_user',
+	'password' => 'auth_pass',
+	'cookie' => 'session',
+	'connection' => 'service='.$pgservice_core,
+	'authurl' => '/freedom/guest.php?sole=A&app=AUTHENT&action=LOGINFORM',
 );
 */
 	

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.30 2008/06/10 15:02:22 jerome Exp $
+ * @version $Id: Class.Session.php,v 1.31 2008/06/11 14:11:26 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.30 2008/06/10 15:02:22 jerome Exp $
+// $Id: Class.Session.php,v 1.31 2008/06/11 14:11:26 jerome Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.30 2008/06/10 15:02:22 jerome Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.31 2008/06/11 14:11:26 jerome Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -83,12 +83,12 @@ Class Session extends DbObj{
       if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	
 	$this->open($u->id, $id);
       } else {
-	$this->open();//anonymous session
+	$this->open(ANONYMOUS_ID, $id);//anonymous session
       }
     }
     
     // set cookie session
-    if (getAuthType() != 'apache' && $_SERVER['HTTP_HOST'] != "") {
+    if (getAuthType() == 'apache' && $_SERVER['HTTP_HOST'] != "") {
       setcookie ("session",$this->id,$this->SetTTL(),"/");
     }
     return true;
@@ -100,6 +100,9 @@ Class Session extends DbObj{
   function Close()  {
     global $_SERVER; // use only cache with HTTP
     if( getAuthType() != 'apache' ) {
+      $username = $_SESSION['username'];
+      session_unset();
+      $_SESSION['username'] = $username;
       return true;
     }
     if ($_SERVER['HTTP_HOST'] != "") {

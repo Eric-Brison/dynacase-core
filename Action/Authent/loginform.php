@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.6 2004/03/22 15:21:40 eric Exp $
+ * @version $Id: loginform.php,v 1.7 2008/06/11 14:11:26 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -23,6 +23,7 @@ include_once('Lib.Http.php');
  * @deprecated since HTTP Authentification
  */
 function loginform(&$action) {
+    return true;
 
     global $_COOKIE;
 
