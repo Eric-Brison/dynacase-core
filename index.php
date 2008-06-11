@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.50 2008/06/10 15:02:14 jerome Exp $
+ * @version $Id: index.php,v 1.51 2008/06/11 08:37:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -28,8 +28,15 @@ if( $authtype == 'basic' || $authtype == 'html' ) {
 					getAuthParam()
 				  )
 			    );
+
 } else if( $authtype == 'apache' ) {
   // Apache has already handled the authentication
+  global $_SERVER;
+    if ($_SERVER['PHP_AUTH_USER']=="") {
+      header('HTTP/1.0 403 Forbidden');
+      echo _("User must be authenticate");
+      exit;
+    }
 } else {
   print "Unknown authtype ".$_GET['authtype'];
   exit;
@@ -38,6 +45,7 @@ if( $authtype == 'basic' || $authtype == 'html' ) {
 if( $authtype != 'apache' ) {
   $status = $auth->checkAuthentication();
   if( $status == FALSE ) {
+    sleep(2); // wait for robots
     $auth->askAuthentication();
     exit(0);
   }
