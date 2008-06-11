@@ -14,7 +14,7 @@ Class htmlFreedomProvider {
       error_log("Error connecting to database");
       return FALSE;
     }
-    $stmt = pg_prepare($dbh, "get_password", 'SELECT password FROM users WHERE login = $1');
+    $stmt = pg_prepare($dbh, "get_password", 'SELECT password,status FROM users WHERE login = $1');
     if( $stmt == FALSE ) {
       error_log("Error preparing select statement");
       return FALSE;
@@ -25,11 +25,13 @@ Class htmlFreedomProvider {
       return FALSE;
     }
     $encrypted_password = pg_fetch_result($res, 0);
+    $status = pg_fetch_result($res, 1);
+    if ($status=='D') return FALSE; // unactive user
     $ret = preg_match("/^(..)/", $encrypted_password, $salt);
-    if( $ret == 0 ) {
+    if( $ret == 0 ) {      
       return FALSE;
     }
-    if( $encrypted_password == crypt($password, $salt[0]) ) {
+    if( $encrypted_password == crypt($password, $salt[0]) ) {      
       return TRUE;
     }
     return FALSE;
