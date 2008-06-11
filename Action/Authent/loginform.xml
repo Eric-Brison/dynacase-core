@@ -63,44 +63,34 @@ function open_win(win_location) {
 <input type="hidden" name="appd" value="[app_redir]">
 <input type="hidden" name="actd" value="[act_redir]">
 <input type="hidden" name="argd" value="[arg_redir]">
-<table cellpadding="1" cellspacing="0" class="CORETblHead" border="0" align="center" width="400"><tr><td class="CORETblHeadCell">
+<table cellpadding="1" cellspacing="0" border="0" align="center" width="400"><tr><td >
 
-<table cellpadding="1" cellspacing="0" class="CORETbl" border="0" align="center" width="100%">
+<table cellpadding="1" cellspacing="0"  border="0" align="center" width="100%">
 <tr>
-  <td colspan="2" align="left" class="CORETblHeadCell">
-    <span class="CORETblHeadBold">[title]</span>
+  <td colspan="2" align="left" style="background-color:[COLOR_A9];border-color:[COLOR_BLACK];border-width:1px;border-style:solid none solid none">
+    <span class="CORETblBold">[title]</span>
   </td>
 </tr>
 <tr class="CORETbl">
-  <td colspan="2" align="center" class="CORETblCell">
-      <br><br><span class="CORETblBold"> [MESSAGE] </span><br><br>
-  </td>
+  <td  style="text-align:center;vertical-align:middle" class="CORETblCell">
+     <b>[CORE_CLIENT]</b>
+  </td><td class="CORETblCell" style="text-align:right;padding-right:20px"><img width="48px" src="[CORE_LOGOCLIENT]" needresize="1">
+</td>
 </tr>
-<tr class="CORETbl">
-   <td align="right" class="CORETblCell">
-   <span class="CORETbl">[TEXT:domain]</span>
-   </td>
-   <td align="left" class="CORETblCell">
-    <font size="-1" >
-     <select name="domain">
-     [BLOCK SELDOMAIN]
-       <option value="[iddomain]" [selected]>[name]</option>[ENDBLOCK SELDOMAIN]
-     </select>
-    </font>
-   </td>
-</tr>
+<tr class="CORETbl"><td  colspan="2é"style="text-align:center;vertical-align:middle" class="CORETblCell">[CORE_MOTD]</td></tr>
+
 
 <tr class="CORETbl">
    <td align="right" class="CORETblCell">
-   <span class="CORETbl">[TEXT:yourusername]</span>
+   <span class="CORETbl" style="white-space:nowrap">[TEXT:yourusername]</span>
    </td>
    <td align="left" class="CORETblCell">
     <font size="-1" >
-     <input name="auth_user" type="text" value="[defuser]" size="30">
+     <input  name="auth_user" type="text" value="" size="30">
     </font>
    </td>
 </tr>
-<tr class="CORETbl">
+<tr class="CORETbl" >
     <td align="right" class="CORETblCell">
      <span class="CORETbl">[TEXT:yourpassword]</span>
     </td>
@@ -110,23 +100,27 @@ function open_win(win_location) {
      </font>
     </td>
 </tr>
-<tr>
-     <td colspan="2" align="center">&nbsp;</td>
-</tr>
-<tr> <td colspan="2" class="CORETblHeadCell"><img src="[CORE_PUBURL]/CORE/Images/1x1.png" border="0"></td> </tr>
+
+<tr class="CORETbl"><td colspan="2" class="CORETblCell">&nbsp;</td></tr>
+
+<tr ><td colspan="2" style="border-top:solid [COLOR_BLACK] 1px"></td></tr>
 
 <tr>
   <td valign="baseline" align="left" class="CORETblCell">
     <a href="javascript:open_win('[CORE_STANDURL]app=AUTHENT&action=LOGINHELP');">
-    <img src="[IMG:help.gif]" alt="[TEXT:help]" height="14" border="0">
+    <img src="[IMG:info.png]" title="[TEXT:help]" width="14" border="0" needresize="1">
   </td>
      <td align="right" class="CORETblCell">
          <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">
-    <img src="[IMG:go.gif]" height="18" border="0">
+    [TEXT:Do connection]
      </td>
 </tr>
-<tr> <td colspan="2" class="CORETblHeadCell"><img src="[CORE_PUBURL]/CORE/Images/1x1.png" border="0"></td> </tr>
+<tr ><td colspan="2" style="border-top:solid [COLOR_BLACK] 1px"></td></tr>
+
 </table>
 </td></tr></table>
 </form>
 
+<script>
+document.forms['loginform'].elements['auth_user'].focus(); 
+</script>

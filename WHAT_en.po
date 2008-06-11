@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-15 18:34+0200\n"
+"POT-Creation-Date: 2008-06-11 17:03+0200\n"
 "PO-Revision-Date: 2001-03-14 00:54-0500\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -54,9 +54,6 @@ msgstr "Description"
 
 msgid "description"
 msgstr "Description"
-
-msgid "title"
-msgstr "Applications List"
 
 msgid "titlecreateaction"
 msgstr "Add action"
@@ -137,11 +134,6 @@ msgstr ""
 msgid "err_mod_param"
 msgstr "Can't modify parameter"
 
-msgid ""
-"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
-"pour acceder a cette ressource"
-msgstr ""
-
 msgid "auth_failure"
 msgstr "Authentification failed : try again"
 
@@ -158,6 +150,11 @@ msgstr "Welcome !"
 #, fuzzy
 msgid "nodomain"
 msgstr "Domain"
+
+msgid ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour acceder a cette ressource"
+msgstr ""
 
 #, c-format
 msgid "file for %s not found."
@@ -215,338 +212,7 @@ msgstr "Your login has expired"
 msgid "the user identification is unknow"
 msgstr ""
 
-msgid "controlaccess"
-msgstr "Access Control"
-
-msgid "accessfor"
-msgstr "Control access for application"
-
-msgid "modify"
-msgstr "Modify"
-
-#, fuzzy
-msgid "Close"
-msgstr "Close"
-
-msgid " Access Control for"
-msgstr ""
-
-#, fuzzy
-msgid "viewuser"
-msgstr "User List"
-
-#, fuzzy
-msgid "viewgroup"
-msgstr "Group List"
-
-msgid "download"
-msgstr "Download access file"
-
-msgid "needfile"
-msgstr "Need upload file"
-
-msgid "upload"
-msgstr "Upload Access File"
-
-msgid "Max user reach. Use search filter"
-msgstr ""
-
-#, fuzzy
-msgid "Search"
-msgstr "user"
-
-msgid "filter on login and lastname"
-msgstr ""
-
-msgid "choose document"
-msgstr ""
-
-#, fuzzy
-msgid "edit by object"
-msgstr "object"
-
-msgid "in database"
-msgstr ""
-
-msgid "print"
-msgstr "Print this page"
-
-msgid "help"
-msgstr "Help"
-
-msgid "No user found"
-msgstr ""
-
-msgid "long_name"
-msgstr "Complete name"
-
-msgid "available"
-msgstr "Avail"
-
-msgid "acl"
-msgstr "Acl"
-
-msgid "root"
-msgstr "Root"
-
-msgid "toc"
-msgstr "Toc"
-
-msgid "butclosew"
-msgstr "Close window"
-
-msgid "titleaction"
-msgstr "Application actions List"
-
-msgid "addparam"
-msgstr "New Parameter"
-
-msgid "addstyle"
-msgstr "New style"
-
-msgid "access_free"
-msgstr "Access Free"
-
-#, fuzzy
-msgid "appssl"
-msgstr "Description"
-
-msgid "displayable"
-msgstr "Displayable"
-
-#, fuzzy
-msgid "machine"
-msgstr "Domain"
-
-msgid "appmachine"
-msgstr ""
-
-msgid "update"
-msgstr ""
-
-msgid "delconfirm"
-msgstr "Sure to delete user"
-
-msgid "delete"
-msgstr "Delete"
-
-#, fuzzy
-msgid "application parameters list"
-msgstr "New Application"
-
-#, fuzzy
-msgid "view all"
-msgstr "Lastname"
-
-#, fuzzy
-msgid "my parameters"
-msgstr "Can't modify parameter"
-
-msgid "val"
-msgstr "Value"
-
-#, fuzzy
-msgid "select a user"
-msgstr "Modify"
-
-#, fuzzy
-msgid "user parameters list"
-msgstr "Add parameter"
-
-#, fuzzy
-msgid "select a style"
-msgstr "Modify"
-
-#, fuzzy
-msgid "style parameters list"
-msgstr "Add parameter"
-
-msgid "delconfirmstyle"
-msgstr "Sure to delete style"
-
-msgid "warning_name"
-msgstr "Your name is required"
-
-msgid "warning_pass"
-msgstr "Your password is required"
-
-msgid "yourusername"
-msgstr "Your name :"
-
-msgid "yourpassword"
-msgstr "Your password :"
-
-msgid "Progress bar"
-msgstr ""
-
-msgid "You use an too old Internet explorer navigator"
-msgstr ""
-
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-
-msgid "Internet explorer site"
-msgstr ""
-
-msgid "You use an too old Netscape navigator"
-msgstr ""
-
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-
-msgid "mozilla site"
-msgstr ""
-
-msgid "nestcape site"
-msgstr ""
-
-msgid "Javascript must be enabled in your navigator"
-msgstr ""
-
-msgid ""
-"Your navigator does not accept cookies.\n"
-"Cookies must be enabled to use correctly this application"
-msgstr ""
-
-msgid "You use version an to old version of Netscape (Mozilla)"
-msgstr ""
-
-msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
-msgstr ""
-
-msgid "You use version an to old version of Internet Explorer"
-msgstr ""
-
-msgid "You must upgrade to version 6 or more"
-msgstr ""
-
-msgid "Manuals"
-msgstr ""
-
-#, fuzzy
-msgid "view log"
-msgstr "Lastname"
-
-msgid "All manuals"
-msgstr ""
-
-msgid "Gate"
-msgstr ""
-
-msgid "Edit Url Gate"
-msgstr ""
-
-msgid "Save geometry"
-msgstr ""
-
-msgid "Click here to login"
-msgstr ""
-
-msgid "Choose Gate Urls"
-msgstr ""
-
-#, fuzzy
-msgid "Homepage"
-msgstr "Welcome !"
-
-#, fuzzy
-msgid "Welcome Page"
-msgstr "Welcome !"
-
-msgid "gate page"
-msgstr ""
-
-msgid "New GATE page"
-msgstr ""
-
-msgid "New version has been installed."
-msgstr ""
-
-msgid "You must clear navigator cache."
-msgstr ""
-
-msgid "firstname"
-msgstr "Firstname"
-
-msgid "lastname"
-msgstr "Lastname"
-
-msgid "password"
-msgstr "Password"
-
-msgid "expire default delay (in day)"
-msgstr ""
-
-msgid " 0 means no delay"
-msgstr ""
-
-#, fuzzy
-msgid "expire date"
-msgstr "Your login has expired"
-
-msgid "if not set, will be the current date more delay"
-msgstr ""
-
-#, fuzzy
-msgid "user status"
-msgstr "Login"
-
-#, fuzzy
-msgid "active user"
-msgstr "User List"
-
-msgid "desactived user"
-msgstr ""
-
-msgid "groups"
-msgstr "Groups"
-
-msgid "changegroup"
-msgstr "Group Change"
-
-msgid "domaingroup"
-msgstr "Domain"
-
-msgid "othergroup"
-msgstr "Others"
-
-#, fuzzy
-msgid "search"
-msgstr "user"
-
-#, fuzzy
-msgid "clear"
-msgstr "Close"
-
-msgid "adduser"
-msgstr "New user"
-
-#, fuzzy
-msgid "unmodifiable parameter"
-msgstr "Can't modify parameter"
-
-msgid "delconfirmparam"
-msgstr "Sure to delete parameter"
-
-#, c-format
-msgid "Create other database for %s (%s)"
-msgstr ""
-
-msgid "I can't find hostname alias"
-msgstr ""
-
-msgid "Enter name for database ? "
-msgstr ""
-
-#, c-format
-msgid "Virtual host : [%s]"
-msgstr ""
-
-#, c-format
-msgid "Database     : [%s]"
-msgstr ""
-
-msgid "Continue (Y|N) ?"
+msgid "User must be authenticate"
 msgstr ""
 
 #, c-format
@@ -570,6 +236,32 @@ msgid "Caught Exception : %s\n"
 msgstr ""
 
 #, c-format
+msgid "Create other database for %s (%s)"
+msgstr ""
+
+msgid "I can't find hostname alias"
+msgstr ""
+
+msgid "Enter name for database ? "
+msgstr ""
+
+#, c-format
+msgid "Context  : [%s]"
+msgstr ""
+
+msgid "Continue (Y|N) ?"
+msgstr ""
+
+msgid "create databases ?"
+msgstr ""
+
+msgid "cannot access to  database $db\n"
+msgstr ""
+
+msgid "access granted to  database $db\n"
+msgstr ""
+
+#, c-format
 msgid "%s style updated\n"
 msgstr ""
 
@@ -589,12 +281,6 @@ msgstr ""
 
 #, c-format
 msgid "Attribute %s modified to %s"
-msgstr ""
-
-msgid "cannot access to  database $db\n"
-msgstr ""
-
-msgid "access granted to  database $db\n"
 msgstr ""
 
 #, fuzzy
@@ -914,6 +600,10 @@ msgstr ""
 msgid "Parameter name does not include spaces"
 msgstr ""
 
+#, c-format
+msgid "Template [%s] not found"
+msgstr ""
+
 msgid "prev"
 msgstr ""
 
@@ -945,21 +635,334 @@ msgstr ""
 msgid "file not found : %s"
 msgstr ""
 
+msgid "cannot access to core database service [service='$pgservice_core']"
+msgstr ""
+
 msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-
-msgid "cannot access to template database [$dbtemp]"
-msgstr ""
-
-msgid "cannot access to default database [$dbaccess]"
 msgstr ""
 
 #, fuzzy
 msgid "descr"
 msgstr "Description"
 
-msgid "create databases ?"
+msgid "controlaccess"
+msgstr "Access Control"
+
+msgid "accessfor"
+msgstr "Control access for application"
+
+msgid "modify"
+msgstr "Modify"
+
+#, fuzzy
+msgid "Close"
+msgstr "Close"
+
+msgid " Access Control for"
 msgstr ""
+
+#, fuzzy
+msgid "viewuser"
+msgstr "User List"
+
+#, fuzzy
+msgid "viewgroup"
+msgstr "Group List"
+
+msgid "download"
+msgstr "Download access file"
+
+msgid "needfile"
+msgstr "Need upload file"
+
+msgid "upload"
+msgstr "Upload Access File"
+
+msgid "Max user reach. Use search filter"
+msgstr ""
+
+#, fuzzy
+msgid "Search"
+msgstr "user"
+
+msgid "filter on login and lastname"
+msgstr ""
+
+msgid "choose document"
+msgstr ""
+
+#, fuzzy
+msgid "edit by object"
+msgstr "object"
+
+msgid "in database"
+msgstr ""
+
+msgid "print"
+msgstr "Print this page"
+
+msgid "help"
+msgstr "Help"
+
+msgid "No user found"
+msgstr ""
+
+msgid "long_name"
+msgstr "Complete name"
+
+msgid "available"
+msgstr "Avail"
+
+msgid "acl"
+msgstr "Acl"
+
+msgid "root"
+msgstr "Root"
+
+msgid "toc"
+msgstr "Toc"
+
+msgid "butclosew"
+msgstr "Close window"
+
+msgid "titleaction"
+msgstr "Application actions List"
+
+msgid "addparam"
+msgstr "New Parameter"
+
+msgid "addstyle"
+msgstr "New style"
+
+msgid "access_free"
+msgstr "Access Free"
+
+#, fuzzy
+msgid "appssl"
+msgstr "Description"
+
+msgid "displayable"
+msgstr "Displayable"
+
+#, fuzzy
+msgid "machine"
+msgstr "Domain"
+
+msgid "appmachine"
+msgstr ""
+
+msgid "update"
+msgstr ""
+
+msgid "delconfirm"
+msgstr "Sure to delete user"
+
+msgid "delete"
+msgstr "Delete"
+
+#, fuzzy
+msgid "application parameters list"
+msgstr "New Application"
+
+#, fuzzy
+msgid "view all"
+msgstr "Lastname"
+
+#, fuzzy
+msgid "my parameters"
+msgstr "Can't modify parameter"
+
+msgid "val"
+msgstr "Value"
+
+#, fuzzy
+msgid "select a user"
+msgstr "Modify"
+
+#, fuzzy
+msgid "user parameters list"
+msgstr "Add parameter"
+
+#, fuzzy
+msgid "select a style"
+msgstr "Modify"
+
+#, fuzzy
+msgid "style parameters list"
+msgstr "Add parameter"
+
+msgid "delconfirmstyle"
+msgstr "Sure to delete style"
+
+msgid "warning_name"
+msgstr "Your name is required"
+
+msgid "warning_pass"
+msgstr "Your password is required"
+
+msgid "yourusername"
+msgstr "Your name :"
+
+msgid "yourpassword"
+msgstr "Your password :"
+
+msgid "Do connection"
+msgstr ""
+
+msgid "You use an too old Internet explorer navigator"
+msgstr ""
+
+msgid "please upgrade to Internet explorer 6.0 or greater"
+msgstr ""
+
+msgid "Internet explorer site"
+msgstr ""
+
+msgid "You use an too old Netscape navigator"
+msgstr ""
+
+msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr ""
+
+msgid "mozilla site"
+msgstr ""
+
+msgid "nestcape site"
+msgstr ""
+
+msgid "Javascript must be enabled in your navigator"
+msgstr ""
+
+msgid ""
+"Your navigator does not accept cookies.\n"
+"Cookies must be enabled to use correctly this application"
+msgstr ""
+
+msgid "You use version an to old version of Netscape (Mozilla)"
+msgstr ""
+
+msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
+msgstr ""
+
+msgid "You use version an to old version of Internet Explorer"
+msgstr ""
+
+msgid "You must upgrade to version 6 or more"
+msgstr ""
+
+msgid "Manuals"
+msgstr ""
+
+#, fuzzy
+msgid "view log"
+msgstr "Lastname"
+
+msgid "All manuals"
+msgstr ""
+
+msgid "Gate"
+msgstr ""
+
+msgid "Edit Url Gate"
+msgstr ""
+
+msgid "Save geometry"
+msgstr ""
+
+msgid "Click here to login"
+msgstr ""
+
+msgid "Choose Gate Urls"
+msgstr ""
+
+#, fuzzy
+msgid "Homepage"
+msgstr "Welcome !"
+
+#, fuzzy
+msgid "Welcome Page"
+msgstr "Welcome !"
+
+msgid "gate page"
+msgstr ""
+
+msgid "New GATE page"
+msgstr ""
+
+msgid "New version has been installed."
+msgstr ""
+
+msgid "You must clear navigator cache."
+msgstr ""
+
+msgid "Progress bar"
+msgstr ""
+
+msgid "firstname"
+msgstr "Firstname"
+
+msgid "lastname"
+msgstr "Lastname"
+
+msgid "password"
+msgstr "Password"
+
+msgid "expire default delay (in day)"
+msgstr ""
+
+msgid " 0 means no delay"
+msgstr ""
+
+#, fuzzy
+msgid "expire date"
+msgstr "Your login has expired"
+
+msgid "if not set, will be the current date more delay"
+msgstr ""
+
+#, fuzzy
+msgid "user status"
+msgstr "Login"
+
+#, fuzzy
+msgid "active user"
+msgstr "User List"
+
+msgid "desactived user"
+msgstr ""
+
+msgid "groups"
+msgstr "Groups"
+
+msgid "changegroup"
+msgstr "Group Change"
+
+msgid "domaingroup"
+msgstr "Domain"
+
+msgid "othergroup"
+msgstr "Others"
+
+#, fuzzy
+msgid "search"
+msgstr "user"
+
+#, fuzzy
+msgid "clear"
+msgstr "Close"
+
+msgid "adduser"
+msgstr "New user"
+
+#, fuzzy
+msgid "unmodifiable parameter"
+msgstr "Can't modify parameter"
+
+msgid "delconfirmparam"
+msgstr "Sure to delete parameter"
+
+#~ msgid "title"
+#~ msgstr "Applications List"
 
 #~ msgid "Access denied"
 #~ msgstr "Access denied"
