@@ -49,13 +49,21 @@ function checkauth(&$action) {
     error_log(__CLASS__."::".__FUNCTION__." "."Error: _SESSION['username'] should exists");
     exit(0);
   }
+
   $username = $_SESSION['username'];
+  if( array_key_exists('fromuri', $_SESSION) ) {
+    $fromuri = $_SESSION['fromuri'];
+  } else {
+    $fromuri = "index.php";
+  }
+
   session_unset();
   $_SESSION['username'] = $username;
   session_commit();
-  error_log(__CLASS__."::".__FUNCTION__." ".'Location: index.php');
-  // Redirect to main page
-  header('Location: index.php');
+
+  error_log(__CLASS__."::".__FUNCTION__." ".'Redirect Location: '.$fromuri);
+  // Redirect to initial page
+  header('Location: '.$fromuri);
   exit(0);
 }
 

@@ -70,6 +70,26 @@ Class htmlAuthenticator {
   }
 
   public function askAuthentication() {
+    $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
+
+    $referer_uri = "";
+    if( $parsed_referer['path'] != "" ) {
+      $referer_uri .= $parsed_referer['path'];
+    }
+    if( $parsed_referer['query'] != "" ) {
+      $referer_uri .= "?".$parsed_referer['query'];
+    }
+    if( $parsed_referer['fragment'] != "" ) {
+      $referer_uri .= "#".$parsed_referer['fragment'];
+    }
+
+    session_name($this->parms{'cookie'});
+    session_start();
+    if( ! array_key_exists('fromuri', $_SESSION) && $referer_uri != $_SERVER['REQUEST_URI'] ) {
+      $_SESSION['fromuri'] = $_SERVER['REQUEST_URI'];
+    }
+    session_commit();
+
     if( array_key_exists('authurl', $this->parms )) {
       header('Location: '.$this->parms{'authurl'});
       return TRUE;
