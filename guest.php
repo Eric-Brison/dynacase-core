@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.21 2007/10/29 17:26:21 marc Exp $
+ * @version $Id: guest.php,v 1.22 2008/06/12 08:17:31 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -30,6 +30,10 @@ include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
 
+$authtype = getAuthType();
+if( $authtype == 'basic' || $authtype == 'html' ) {
+  ini_set("session.use_cookies","1");
+ }
 
 
 $log=new Log("","guest.php");

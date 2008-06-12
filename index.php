@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.51 2008/06/11 08:37:46 eric Exp $
+ * @version $Id: index.php,v 1.52 2008/06/12 08:17:31 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -18,6 +18,7 @@ include_once('WHAT/Lib.Common.php');
 $authtype = getAuthType();
  
 if( $authtype == 'basic' || $authtype == 'html' ) {
+  ini_set("session.use_cookies","1");
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
 			    array_merge(
@@ -126,10 +127,10 @@ if( $authtype == 'apache' ) {
     $core->SetSession($session);
   }
 }
+ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 //$core->SetSession($session);
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
-ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 // ----------------------------------------
 // Init PUBLISH URL from script name
 
