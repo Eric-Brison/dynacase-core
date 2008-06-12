@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.52 2008/06/12 08:17:31 eric Exp $
+ * @version $Id: index.php,v 1.53 2008/06/12 16:49:17 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -50,6 +50,17 @@ if( $authtype != 'apache' ) {
     $auth->askAuthentication();
     exit(0);
   }
+
+  $status = $auth->checkAuthorization(
+                                      array(
+                                            'username' => $auth->getauthUser(),
+                                            )
+                                      );
+  if( $status == FALSE ) {
+    $auth->logout("guest.php?sole=A&app=AUTHENT&action=UNAUTHORIZED");
+    exit(0);
+  }
+
   $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
   $_SERVER['PHP_AUTH_PW'] = "Unknown";
 }

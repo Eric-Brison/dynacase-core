@@ -29,6 +29,14 @@ Class basicAuthenticator {
     error_log(__CLASS__."::".__FUNCTION__." "."Error: ".$this->parms{'type'}.$this->parms{'provider'}."Provider must implement checkAuthentication()");
     return FALSE;
   }
+
+  public function checkAuthorization($opt) {
+    if( is_callable(array($this->provider, 'checkAuthorization')) ) {
+      return $this->provider->checkAuthorization($opt);
+    }
+
+    return TRUE;
+  }
   
   public function askAuthentication() {
     if( is_callable(array($this->provider, 'askAuthentication')) ) {

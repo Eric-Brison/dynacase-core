@@ -51,6 +51,14 @@ Class htmlAuthenticator {
     session_commit();
     return FALSE;
   }
+
+  function checkAuthorization($opt) {
+    if( is_callable(array($this->provider, 'checkAuthorization')) ) {
+      return $this->provider->checkAuthorization($opt);
+    }
+
+    return TRUE;
+  }
   
   function validateCredential($username, $password) {
     if( is_callable(array($this->provider, 'validateCredential')) ) {

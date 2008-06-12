@@ -23,6 +23,10 @@ Class Authenticator {
   public function checkAuthentication() {
     return $this->authenticator->checkAuthentication();
   }
+
+  public function checkAuthorization($opt=array()) {
+    return $this->authenticator->checkAuthorization($opt);
+  }
   
   public function validateCredential($username, $password) {
     return $this->authenticator->validateCredential($username, $password);

@@ -58,6 +58,34 @@ Class basicFreedomProvider {
     return FALSE;
   }
 
+  public function checkAuthorization($opt) {
+    if( ! array_key_exists('username', $opt) ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Missing username key in opt array");
+      return FALSE;
+    }
+    $dbh = pg_connect($this->parms{'connection'});
+    if( $dbh == FALSE ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error connecting to database");
+      return FALSE;
+    }
+    $stmt = pg_prepare($dbh, "get_status", 'SELECT status FROM users WHERE login = $1');
+    if( $stmt == FALSE ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error preparing select statement");
+      return FALSE;
+    }
+    $res = pg_execute($dbh, "get_status", array($opt['username']));
+    if( $res == FALSE ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error in result of get_status");
+      return FALSE;
+    }
+    $status = pg_fetch_result($res, 0);
+    if( $status == 'D' ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Account ".$opt['username']." has been suspended");
+      return FALSE;
+    }
+    return TRUE;
+  }
+
   public function logout($redir_uri) {
     setcookie('logout', 'true', 0);
     header('Location: '.$redir_uri);

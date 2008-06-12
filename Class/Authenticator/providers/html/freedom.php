@@ -2,7 +2,6 @@
 
 Class htmlFreedomProvider {
   private $parms = array();
-  private $secret = "052c899bf1e3ade928ef23cffc5529b6";
   
   public function __construct($parms) {
     $this->parms = $parms;
@@ -11,30 +10,57 @@ Class htmlFreedomProvider {
   public function validateCredential($username, $password) {  
     $dbh = pg_connect($this->parms{'connection'});
     if( $dbh == FALSE ) {
-      error_log("Error connecting to database");
+      error_log(__CLASS__."::".__FUNCTION__." "."Error: failed connection to database");
       return FALSE;
     }
-    $stmt = pg_prepare($dbh, "get_password", 'SELECT password,status FROM users WHERE login = $1');
+    $stmt = pg_prepare($dbh, "get_password", 'SELECT password FROM users WHERE login = $1');
     if( $stmt == FALSE ) {
-      error_log("Error preparing select statement");
+      error_log(__CLASS__."::".__FUNCTION__." "."Error: pg_prepare(get_password) returned false");
       return FALSE;
     }
     $res = pg_execute($dbh, "get_password", array($username));
     if( $res == FALSE ) {
-      error_log("Error in result of get_password");
+      error_log(__CLASS__."::".__FUNCTION__." "."Error: pg_execute(get_password) returned false. User $username not found ?");
       return FALSE;
     }
     $encrypted_password = pg_fetch_result($res, 0);
-    $status = pg_fetch_result($res, 1);
-    if ($status=='D') return FALSE; // unactive user
     $ret = preg_match("/^(..)/", $encrypted_password, $salt);
-    if( $ret == 0 ) {      
+    if( $ret == 0 ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error: could not get salt from encrypted password for user $username");
       return FALSE;
     }
     if( $encrypted_password == crypt($password, $salt[0]) ) {      
       return TRUE;
     }
     return FALSE;
+  }
+
+  public function checkAuthorization($opt) {
+    if( ! array_key_exists('username', $opt) ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Missing username key in opt array");
+      return FALSE;
+    }
+    $dbh = pg_connect($this->parms{'connection'});
+    if( $dbh == FALSE ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error connecting to database");
+      return FALSE;
+    }
+    $stmt = pg_prepare($dbh, "get_status", 'SELECT status FROM users WHERE login = $1');
+    if( $stmt == FALSE ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error preparing select statement");
+      return FALSE;
+    }
+    $res = pg_execute($dbh, "get_status", array($opt['username']));
+    if( $res == FALSE ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error in result of get_status");
+      return FALSE;
+    }
+    $status = pg_fetch_result($res, 0);
+    if( $status == 'D' ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Account ".$opt['username']." has been suspended");
+      return FALSE;
+    }
+    return TRUE;
   }
 
   /* 

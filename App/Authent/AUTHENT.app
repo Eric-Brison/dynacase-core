@@ -26,6 +26,9 @@ $action_desc = array (
   ),
   array(
    "name"		=>"LOGOUT"
+  ),
+  array(
+   "name"               =>"UNAUTHORIZED"
   )
                       );
    
