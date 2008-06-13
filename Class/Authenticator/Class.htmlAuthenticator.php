@@ -129,6 +129,7 @@ Class htmlAuthenticator {
     session_unset();
     session_destroy();
     $_SESSION = array();
+    session_commit();
 
     if( $redir_uri == "" && array_key_exists('indexurl', $this->parms) ) {
       header('Location: '.$this->parms{'indexurl'});

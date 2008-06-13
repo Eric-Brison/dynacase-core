@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.53 2008/06/12 16:49:17 jerome Exp $
+ * @version $Id: index.php,v 1.54 2008/06/13 14:28:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -157,6 +157,10 @@ if (ereg("(.*)/$indexphp", $_SERVER['SCRIPT_NAME'], $reg)) {
   exit;
 }
 
+$add_args = "";
+if( array_key_exists('authtype', $_GET) ) {
+  $add_args .= "&authtype=".$_GET['authtype'];
+}
 
 $urlindex=$core->getParam("CORE_URLINDEX");
 if ($urlindex) $core->SetVolatileParam("CORE_EXTERNURL",$urlindex);
@@ -165,11 +169,12 @@ else $core->SetVolatileParam("CORE_EXTERNURL",$puburl."/");
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-$core->SetVolatileParam("CORE_ROOTURL", "?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL","?sole=A&session={$session->id}&");
-$core->SetVolatileParam("CORE_STANDURL","?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL","?sole=Y&session={$session->id}&");$core->SetVolatileParam("CORE_ASTANDURL","$puburl/$indexphp?sole=Y&"); // absolute links
+$core->SetVolatileParam("CORE_ROOTURL", "?sole=R$add_args&");
+$core->SetVolatileParam("CORE_BASEURL", "?sole=A$add_args&");
+$core->SetVolatileParam("CORE_SBASEURL","?sole=A&session={$session->id}$add_args&");
+$core->SetVolatileParam("CORE_STANDURL","?sole=Y$add_args&");
+$core->SetVolatileParam("CORE_SSTANDURL","?sole=Y&session={$session->id}$add_args&");
+$core->SetVolatileParam("CORE_ASTANDURL","$puburl/$indexphp?sole=Y$add_args&"); // absolute links
 
 // ----------------------------------------
 // Init Application & Actions Objects

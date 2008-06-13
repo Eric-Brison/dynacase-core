@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.46 2008/06/10 15:02:14 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.47 2008/06/13 14:28:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -196,6 +196,10 @@ function getServiceName($dbaccess) {
 function getAuthType($freedomctx="") {
   global $pubdir;
 
+  if( array_key_exists('authtype', $_GET) ) {
+    return $_GET['authtype'];
+  }
+
   if( $freedomctx == "" ) {
     $freedomctx = getFreedomContext();
   }
@@ -245,12 +249,22 @@ function getAuthParam($freedomctx="") {
       include($filename);
     }
   }
-
+  
   if( ! is_array($freedom_authparam) ) {
-    $freedom_authparam = array();
+    return array();
   }
-
-  return $freedom_authparam;
+  
+  if( ! array_key_exists(getAuthType(), $freedom_authparam) ) {
+    error_log(__CLASS__."::".__FUNCTION__." "."authtype ".getAuthType()." does not exists in freedom_authparam");
+    return array();
+  }
+  
+  if( ! array_key_exists(getAuthProvider(), $freedom_authparam[getAuthType()]) ) {
+    error_log(__CLASS__."::".__FUNCTION__." "."authprovider ".getAuthProvider()." does not exists for authtype ".getAuthType()." in freedom_authparam");
+    return array();
+  }
+  
+  return $freedom_authparam[getAuthType()][getAuthProvider()];
 }
 
 /**

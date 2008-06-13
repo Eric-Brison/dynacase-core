@@ -37,7 +37,7 @@ function checkauth(&$action) {
     sleep(1); // for robots
     error_log(__CLASS__."::".__FUNCTION__." ".'Location : '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM&error=1');
     // Redirect to authentication
-    header('Location: '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM&error=1');
+    redirect($action, 'AUTHENT', 'LOGINFORM&error=1');
     exit(0);
   }
   // Delete the session in database

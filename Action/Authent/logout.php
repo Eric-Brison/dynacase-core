@@ -3,7 +3,7 @@
  * Close session
  *
  * @author Anakeen 1999
- * @version $Id: logout.php,v 1.10 2008/06/10 15:02:14 jerome Exp $
+ * @version $Id: logout.php,v 1.11 2008/06/13 14:28:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -31,7 +31,7 @@ function logout(&$action) {
     $auth = new Authenticator(
 			      array_merge(
 					  array(
-						'type' => getauthType(),
+						'type' => getAuthType(),
 						'provider' => getAuthProvider(),
 						),
 					  getAuthParam()
@@ -46,7 +46,7 @@ function logout(&$action) {
 
   if( $authtype == 'html' ) {
     $action->session->DeleteSession(session_id());
-    $redir_uri = preg_replace('/^([^?]+).*/', '$1', $_SERVER['REQUEST_URI']);
+    $redir_uri = $action->GetParam("CORE_BASEURL");
     $auth->logout($redir_uri);
     exit(0);
   }
@@ -59,7 +59,7 @@ function logout(&$action) {
   
   if( $authtype == 'basic' ) {
     $action->session->DeleteSession(session_id());
-    $redir_uri = preg_replace('/^([^?]+).*/', '$1', $_SERVER['REQUEST_URI']);
+    $redir_uri = $action->GetParam("CORE_BASEURL");
     $auth->logout($redir_uri);
     exit(0);
   }
