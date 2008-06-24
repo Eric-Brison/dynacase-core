@@ -35,6 +35,34 @@ Class htmlFreedomProvider {
     return FALSE;
   }
 
+  public function checkAuthentication() {
+    include_once('WHAT/Class.Session.php');
+
+    $session = new Session($this->parms{'cookie'});
+    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+      $session->Set($_COOKIE[$this->parms{'cookie'}]);
+    } else {
+      $session->Set();
+    }
+    
+    if( $session->read('username') != "" ) {
+      return TRUE;
+    }
+    
+    if( ! array_key_exists($this->parms{'username'}, $_POST) ) {
+      return FALSE;
+    }
+    if( ! array_key_exists($this->parms{'password'}, $_POST) ) {
+      return FALSE;
+    }
+    
+    if( $this->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}]) ) {
+      $session->register('username', $_POST[$this->parms{'username'}]);
+      return TRUE;
+    }
+    return FALSE;
+  }
+
   public function checkAuthorization($opt) {
     if( ! array_key_exists('username', $opt) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Missing username key in opt array");
@@ -80,6 +108,62 @@ Class htmlFreedomProvider {
     return TRUE;
   }
   */
+
+  public function askAuthentication() {
+    include_once('WHAT/Class.Session.php');
+
+    $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
+    
+    $referer_uri = "";
+    if( $parsed_referer['path'] != "" ) {
+      $referer_uri .= $parsed_referer['path'];
+    }
+    if( $parsed_referer['query'] != "" ) {
+      $referer_uri .= "?".$parsed_referer['query'];
+    }
+    if( $parsed_referer['fragment'] != "" ) {
+      $referer_uri .= "#".$parsed_referer['fragment'];
+    }
+    
+    $session = new Session($this->parms{'cookie'});
+    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+      $session->Set($_COOKIE[$this->parms{'cookie'}]);
+    } else {
+      $session->Set();
+    }
+    
+    error_log("referer_uri = ".$referer_uri." / REQUEST_URI = ".$_SERVER['REQUEST_URI']);
+    if( $referer_uri == "" ) {
+      error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
+      $session->register('fromuri', $_SERVER['REQUEST_URI']);
+    } else if( $session->read('fromuri') == "" && $referer_uri != $_SERVER['REQUEST_URI'] ) {
+      error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
+      $session->register('fromuri', $_SERVER['REQUEST_URI']);
+    }
+
+    if( array_key_exists('authurl', $this->parms )) {
+      header('Location: '.$this->parms{'authurl'});
+      return TRUE;
+    }
+    
+    error_log(__CLASS__."::".__FUNCTION__." "."Error: no authurl of askAuthentication() method defined for ".$this->parms{'type'}.$this->parms{'provider'}."Provider");
+    return FALSE;
+  }
+
+  public function logout($redir_uri) {
+    $session_auth = new Session($this->parms{'cookie'});
+    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
+      error_log("Closing auth session for cookie : ".$this->parms{'cookie'});
+      $session_auth->close();
+    }
+    if( $redir_uri == "" && array_key_exists('indexurl', $this->parms) ) {
+      header('Location: '.$this->parms{'indexurl'});
+    } else {
+      header('Location: '.$redir_uri);
+    }
+    return TRUE;
+  }
 
 }
 

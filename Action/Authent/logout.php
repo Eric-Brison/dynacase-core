@@ -3,7 +3,7 @@
  * Close session
  *
  * @author Anakeen 1999
- * @version $Id: logout.php,v 1.11 2008/06/13 14:28:51 jerome Exp $
+ * @version $Id: logout.php,v 1.12 2008/06/24 16:05:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -45,24 +45,24 @@ function logout(&$action) {
   }
 
   if( $authtype == 'html' ) {
-    $action->session->DeleteSession(session_id());
     $redir_uri = $action->GetParam("CORE_BASEURL");
+    $action->session->close();
     $auth->logout($redir_uri);
     exit(0);
   }
-  
-  $action->session->Close();
   
   $rapp = GetHttpVars("rapp");
   $raction = GetHttpVars("raction");
   $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
   
   if( $authtype == 'basic' ) {
-    $action->session->DeleteSession(session_id());
     $redir_uri = $action->GetParam("CORE_BASEURL");
+    $action->session->close();
     $auth->logout($redir_uri);
     exit(0);
   }
+
+  $action->session->close();
 
   if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {
     authenticate($action);

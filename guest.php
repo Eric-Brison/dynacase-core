@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.22 2008/06/12 08:17:31 eric Exp $
+ * @version $Id: guest.php,v 1.23 2008/06/24 16:05:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -32,7 +32,7 @@ include_once('Class.DbObj.php');
 
 $authtype = getAuthType();
 if( $authtype == 'basic' || $authtype == 'html' ) {
-  ini_set("session.use_cookies","1");
+  ini_set("session.use_cookies","0");
  }
 
 
@@ -56,13 +56,13 @@ if (!isset($_GET["app"])) {
 
 if (!isset($_GET["action"])) $_GET["action"]="";
 
-if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
-else $sess_num=GetHttpVars("session");//$_GET["session"];
+if (isset($_COOKIE['freedom_param'])) $sess_num= $_COOKIE['freedom_param'];
+else $sess_num=GetHttpVars('freedom_param');//$_GET["session"];
 $session=new Session();
 $session->Set($sess_num);
 if ($session->userid != ANONYMOUS_ID) { 
   // reopen a new anonymous session
-  setcookie ("session",$session->id,0,"/");
+  setcookie ('freedom_param',$session->id,0,"/");
   unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
   $session->Set("");
   //setcookie ("session",$session->id,0,"/");
@@ -109,8 +109,8 @@ $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 $core->SetVolatileParam("CORE_ROOTURL", "guest.php?sole=R&");
 $core->SetVolatileParam("CORE_BASEURL", "guest.php?sole=A&");
 $core->SetVolatileParam("CORE_STANDURL","guest.php?sole=Y&");
-$core->SetVolatileParam("CORE_SBASEURL","guest.php?sole=A&session={$session->id}&");
-$core->SetVolatileParam("CORE_SSTANDURL","guest.php?sole=Y&session={$session->id}&");
+$core->SetVolatileParam("CORE_SBASEURL","guest.php?sole=A&freedom_param={$session->id}&");
+$core->SetVolatileParam("CORE_SSTANDURL","guest.php?sole=Y&freedom_param={$session->id}&");
 
 
 // ----------------------------------------
@@ -203,7 +203,7 @@ else
       global $_GET;
       $getargs="";
       while (list($k, $v) =each($_GET)) {
-	if ( ($k != "session") &&
+	if ( ($k != "freedom_param") &&
 	     ($k != "app") &&
 	     ($k != "sole") &&
 	     ($k != "action") )

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.31 2008/06/11 14:11:26 jerome Exp $
+ * @version $Id: Class.Session.php,v 1.32 2008/06/24 16:05:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.31 2008/06/11 14:11:26 jerome Exp $
+// $Id: Class.Session.php,v 1.32 2008/06/24 16:05:51 jerome Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,59 +37,64 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.31 2008/06/11 14:11:26 jerome Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.32 2008/06/24 16:05:51 jerome Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
-
+include_once('Class.User.php');
 include_once('Class.SessionConf.php');
 include_once ("Class.SessionCache.php");
 
 Class Session extends DbObj{
 
-  var $fields = array ( "id","userid");
+  var $fields = array ( "id","userid","name");
 
   var $id_fields = array ("id");
   
   var $dbtable = "sessions";
   
   var $sqlcreate = "create table sessions ( id         varchar(100),
-                        userid   int);
+                        userid   int,
+                        name text not null);
                   create index sessions_idx on sessions(id);";
     
   var $isCacheble= false;
   var $sessiondb;
 
+  var $session_name = 'freedom_param';
+
+  function __construct($session_name = 'freedom_param') {
+    parent::__construct();
+    $this->session_name = $session_name;
+  }
+
   function Set($id)  {
     global $_SERVER;
     $query=new QueryDb($this->dbaccess,"Session");
-    $query->criteria = "id";
-    $query->operator = "=";
-    $query->string = "'".pg_escape_string($id)."'";
-    $query->casse = "OUI";
+    $query->addQuery("id = '".pg_escape_string($id)."'");
+    $query->addQuery("name = '".pg_escape_string($this->session_name)."'");
     $list = $query->Query(0,0,"TABLE");
     if ($query->nb != 0) {
       $this->Affect($list[0]);
-      if( getAuthType() == 'apache' ) {
-	session_id($id);
-	@session_start();
-	@session_write_close(); // avoid block
-	//print_r2("@session_write_close");
-	//	$this->initCache();
-      }
+      session_name($this->session_name);
+      session_id($id);
+      @session_start();
+      @session_write_close(); // avoid block
+      //print_r2("@session_write_close");
+      //	$this->initCache();
     } else {
       // Init the database with the app file if it exists      
       $u = new User();
       if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	
-	$this->open($u->id, $id);
+	$this->open($u->id);
       } else {
-	$this->open(ANONYMOUS_ID, $id);//anonymous session
+	$this->open(ANONYMOUS_ID);//anonymous session
       }
     }
     
     // set cookie session
-    if (getAuthType() == 'apache' && $_SERVER['HTTP_HOST'] != "") {
-      setcookie ("session",$this->id,$this->SetTTL(),"/");
+    if ($_SERVER['HTTP_HOST'] != "") {
+      setcookie ($this->name,$this->id,$this->SetTTL(),"/");
     }
     return true;
   }
@@ -99,16 +104,14 @@ Class Session extends DbObj{
    */
   function Close()  {
     global $_SERVER; // use only cache with HTTP
-    if( getAuthType() != 'apache' ) {
-      $username = $_SESSION['username'];
-      session_unset();
-      $_SESSION['username'] = $username;
-      return true;
-    }
     if ($_SERVER['HTTP_HOST'] != "") {
-      session_unset();
+      session_name($this->name);
+      session_id($this->id);
+      @session_unset();
+      @session_destroy();
+      @session_write_close();
+      setcookie ($this->name,"",0,"/");
       $this->Delete();
-      setcookie ("session","",0,"/");
     }
     $this->status = $this->SESSION_CT_CLOSE;
     return $this->status;
@@ -118,37 +121,23 @@ Class Session extends DbObj{
    * Closes all session 
    */
   function CloseAll() {
-    $this->exec_query("delete from sessions");
+    $this->exec_query("delete from sessions where name = '".pg_escape_string($this->name)."'");
     $this->status = $this->SESSION_CT_CLOSE;
     return $this->status;
   }  
 
-  /**
-   * Delete the session in database
-   *
-   * Note: It's up to you to cleanup the session_id
-    *      with session_unset/session_destroy
-   */
-  function DeleteSession() {
-    $this->Delete();
-    $this->status = $this->SESSION_CT_CLOSE;
-    return $this->status;
-  }
-
-  function Open($uid=ANONYMOUS_ID, $session_id=null)  {
-    if( $session_id == null ) {
-      $idsess  = $this->newId();
-    } else {
-      $idsess = $session_id;
-    }
+  function Open($uid=ANONYMOUS_ID)  {
+    $idsess  = $this->newId();
     global $_SERVER; // use only cache with HTTP
-    if ($session_id == null && $_SERVER['HTTP_HOST'] != "") {
-      //session_id($idsess);
+    if ($_SERVER['HTTP_HOST'] != "") {
+      session_name($this->session_name);
+      session_id($idsess);
       @session_start();
       @session_write_close(); // avoid block
       //	$this->initCache();
     }
-    $this->id         = $idsess;
+    $this->name     = $this->session_name;
+    $this->id       = $idsess;
     $this->userid   = $uid;
     $this->Add();
     $this->log->debug("Nouvelle Session : {$this->id}");
@@ -183,12 +172,21 @@ Class Session extends DbObj{
   // Récupère une variable de session
   // $v est une chaine !
   // --------------------------------
-  function Read($k = "", $d="") {     
-    if (isset($_SESSION[$k])) {
-      return $_SESSION[$k];
-    } else {
-      return($d);
+  function Read($k = "", $d="") {
+    if( $_SERVER['HTTP_HOST'] != "" ) {
+      session_name($this->name);
+      session_id($this->id);
+      session_start();
+      if (isset($_SESSION[$k])) {
+	$val = $_SESSION[$k];
+	session_write_close();
+	return $val;
+      } else {
+	session_write_close();
+	return($d);
+      }
     }
+    return($d);
   }       
   
   // --------------------------------
@@ -198,12 +196,11 @@ Class Session extends DbObj{
   function Unregister($k = "")   {
     global $_SERVER; // use only cache with HTTP
     if ($_SERVER['HTTP_HOST'] != "") {
-      //session_unregister($k);
-      //	global $_SESSION;
+      session_name($this->name);
       session_id($this->id);
       @session_start();
       unset($_SESSION[$k]);
-	@session_write_close();// avoid block
+      @session_write_close();// avoid block
     }
     return;
   }       

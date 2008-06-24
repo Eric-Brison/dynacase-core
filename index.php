@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.54 2008/06/13 14:28:51 jerome Exp $
+ * @version $Id: index.php,v 1.55 2008/06/24 16:05:51 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -18,7 +18,7 @@ include_once('WHAT/Lib.Common.php');
 $authtype = getAuthType();
  
 if( $authtype == 'basic' || $authtype == 'html' ) {
-  ini_set("session.use_cookies","1");
+  ini_set("session.use_cookies","0");
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
 			    array_merge(
@@ -118,8 +118,8 @@ if (!isset($_GET["app"])) {
  }
 
 if (!isset($_GET["action"])) $_GET["action"]="";
-if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
-else $sess_num=GetHttpVars("session");//$_GET["session"];
+if (isset($_COOKIE['freedom_param'])) $sess_num= $_COOKIE['freedom_param'];
+else $sess_num=GetHttpVars('freedom_param');//$_GET["session"];
 
 $session=new Session();
 if (!  $session->Set($sess_num))  {
@@ -131,13 +131,12 @@ if (!  $session->Set($sess_num))  {
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 
-if( $authtype == 'apache' ) {
-  if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
-    // reopen a new session
-    $session->Set("");
-    $core->SetSession($session);
-  }
+if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
+  // reopen a new session
+  $session->Set("");
+  $core->SetSession($session);
 }
+
 ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 //$core->SetSession($session);
 
@@ -171,9 +170,9 @@ $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
 $core->SetVolatileParam("CORE_ROOTURL", "?sole=R$add_args&");
 $core->SetVolatileParam("CORE_BASEURL", "?sole=A$add_args&");
-$core->SetVolatileParam("CORE_SBASEURL","?sole=A&session={$session->id}$add_args&");
+$core->SetVolatileParam("CORE_SBASEURL","?sole=A&freedom_param={$session->id}$add_args&");
 $core->SetVolatileParam("CORE_STANDURL","?sole=Y$add_args&");
-$core->SetVolatileParam("CORE_SSTANDURL","?sole=Y&session={$session->id}$add_args&");
+$core->SetVolatileParam("CORE_SSTANDURL","?sole=Y&freedom_param={$session->id}$add_args&");
 $core->SetVolatileParam("CORE_ASTANDURL","$puburl/$indexphp?sole=Y$add_args&"); // absolute links
 
 // ----------------------------------------
@@ -267,7 +266,7 @@ else
       global $_GET;
       $getargs="";
       while (list($k, $v) =each($_GET)) {
-	if ( ($k != "session") &&
+	if ( ($k != "freedom_param") &&
 	     ($k != "app") &&
 	     ($k != "sole") &&
 	     ($k != "action") )

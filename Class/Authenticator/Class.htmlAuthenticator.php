@@ -70,6 +70,10 @@ Class htmlAuthenticator {
   }
 
   public function askAuthentication() {
+    if( is_callable(array($this->provider, 'askAuthentication')) ) {
+      return $this->provider->askAuthentication();
+    }
+
     $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
 
     $referer_uri = "";
@@ -93,10 +97,6 @@ Class htmlAuthenticator {
     if( array_key_exists('authurl', $this->parms )) {
       header('Location: '.$this->parms{'authurl'});
       return TRUE;
-    }
-
-    if( is_callable(array($this->provider, 'askAuthentication')) ) {
-      return $this->provider->askAuthentication();
     }
 
     error_log(__CLASS__."::".__FUNCTION__." "."Error: no authurl of askAuthentication() method defined for ".$this->parms{'type'}.$this->parms{'provider'}."Provider");

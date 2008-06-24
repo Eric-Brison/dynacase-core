@@ -1,7 +1,7 @@
 <?php
 
 Class Authenticator {
-  private $parms = array();
+  public $parms = array();
   private $authenticator = null;
   
   public function __construct($parms) {
