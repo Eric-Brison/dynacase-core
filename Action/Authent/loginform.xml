@@ -104,11 +104,11 @@ Il est important de respecter la casse (utilisation des caract&egrave;res majusc
       <table cellspacing="0">
         <tr>
           <td class="label">[TEXT:yourusername]</td>
-          <td class="input"><input name="auth_user" type="text" value="[auth_user]" size="30" /></td>
+          <td class="input"><input name="auth_user" type="text" value="[auth_user]" /></td>
         </tr>
         <tr>
           <td class="label">[TEXT:yourpassword]</td>
-          <td class="input"><input name="auth_pass" type="password" value="" size="30" /></td>
+          <td class="input"><input name="auth_pass" type="password" value="" /></td>
         </tr>
       </table>
     </div>
