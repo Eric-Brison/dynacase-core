@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.9 2008/06/11 16:03:57 eric Exp $
+ * @version $Id: loginform.php,v 1.10 2008/06/26 09:07:30 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -23,7 +23,9 @@ include_once('Lib.Http.php');
  * @deprecated since HTTP Authentification
  */
 function loginform(&$action) {
+  $action->parent->AddCssRef("AUTHENT:loginform.css",true);
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
+  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
 
     $error = GetHttpVars("error");
     if ($error) $error=_("auth_failure");

@@ -28,100 +28,106 @@ function login(aform, usermsg, passmsg)
   var user = aform.auth_user.value;
   var pass = aform.auth_pass.value;
   if (user == "") {
-    alert(usermsg);
+    document.getElementById('msgerr').innerHTML  = usermsg;
+    document.forms['loginform'].elements['auth_user'].focus(); 
     return;
   }
   if (pass == "") {
-    alert(passmsg);
+    document.getElementById('msgerr').innerHTML  = passmsg;
+    document.forms['loginform'].elements['auth_pass'].focus(); 
     return;
   }
   aform.submit();
 }
 
-function open_win(win_location) {
-   var screen_width, screen_height;
-   var win_top, win_left;
-   var HelpWin;
-   screen_height        = 0;     screen_width      = 0;
-   win_top              = 0;     win_left          = 0;
-   var help_win_width   = 315;
-   var help_win_height  = 270;
-   if (window.innerWidth) screen_width = window.innerWidth;
-   if (window.innerHeight) screen_height = window.innerHeight;
-   win_top  = screen_height - help_win_height - 20;
-   win_left = screen_width  - help_win_width  - 20;
-   HelpWin  = window.open(
-              win_location,
-              'LoginHelp',
-              'width='+help_win_width+',height='+help_win_height+',top='+win_top+',left='+win_left);
-   HelpWin.focus();
+function aumilieu(eid) {
+   var winH=getFrameHeight();
+   var winW=getFrameWidth();
+   if (document.getElementById) { // DOM3 = IE5, NS6
+   var divlogo = document.getElementById(eid);
+   divlogo.style.position = 'absolute';
+   if ((winH>0) && (winW>0)) {
+     divlogo.style.top = (winH/2 - (divlogo.offsetHeight/2)+ document.body.scrollTop)+'px';
+     divlogo.style.left = (winW/2 - (divlogo.offsetWidth/2))+'px';
+     divlogo.style.width = '400px';
+   }
+ }
+ return true;
+}
+
+function display_help() {
+  aumilieu('zonehelp');
+  document.getElementById('zonehelp').style.visibility = 'visible';
+  document.getElementById('zonehelp').style.zIndex = 100;
+}
+function close_help() {
+  document.getElementById('zonehelp').style.visibility = 'hidden';
 }
 -->
 
 </script>
+
+<div id="zonehelp" class="zhelp">
+  <div class="title">Aide &agrave; la connexionn</div>
+  <div class="content">
+Cette fen&egrave;tre permet de vous identifier, c'est &agrave; dire indiquer aux applications qui vous &egrave;tes.
+<br>
+Ceci est n&eacute;cessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-m&egrave;me. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en poss&eacute;dez pas adressez vous &agrave; l'administrateur du site).
+<br><br>
+Attention, ce mot de passe est le moyen garantissant votre identification : conservez le pr&eacute;cieusement et ne le diffusez pas !.
+<br><br>
+Il est important de respecter la casse (utilisation des caract&egrave;res majuscule et minuscule) lors de la saisie des vos nom d'utilisateur et mot de passe!<br>
+  </div>
+  <div class="close"><a href="javascript:close_help()">fermer l'aide</div>
+</div>
+
 <form action="[CORE_BASEURL]app=AUTHENT&action=CHECKAUTH" method="post" name="loginform">
 <input type="hidden" name="appd" value="[app_redir]">
 <input type="hidden" name="actd" value="[act_redir]">
 <input type="hidden" name="argd" value="[arg_redir]">
-<table cellpadding="1" cellspacing="0" border="0" align="center" width="400" height="90%"><tr><td >
 
-<table cellpadding="1" cellspacing="0"  border="0" align="center" width="100%">
-<tr>
-  <td colspan="2" align="left" style="background-color:[COLOR_A9];border-color:[COLOR_BLACK];border-width:1px;border-style:solid none solid none">
-    <span class="CORETblBold">[title]</span>
-  </td>
-</tr>
-<tr class="CORETbl">
-  <td  style="text-align:center;vertical-align:middle" class="CORETblCell">
-     <b>[CORE_CLIENT]</b>
-  </td><td class="CORETblCell" style="text-align:right;padding-right:20px"><img width="48px" src="[CORE_LOGOCLIENT]" needresize="1">
-</td>
-</tr>
-<tr class="CORETbl"><td  colspan="2"style="text-align:center;vertical-align:middle" class="CORETblCell">[CORE_MOTD]</td></tr>
-<tr class="CORETbl"><td  colspan="2"style="text-align:center;vertical-align:middle" class="CORETblCell"><span class="Error">[error]</span></td></tr>
+<div id="authform" class="authmain">
 
+  <div class="form">
 
-<tr class="CORETbl">
-   <td align="right" class="CORETblCell">
-   <span class="CORETbl" style="white-space:nowrap">[TEXT:yourusername]</span>
-   </td>
-   <td align="left" class="CORETblCell">
-    <font size="-1" >
-     <input  name="auth_user" type="text" value="" size="30">
-    </font>
-   </td>
-</tr>
-<tr class="CORETbl" >
-    <td align="right" class="CORETblCell">
-     <span class="CORETbl">[TEXT:yourpassword]</span>
-    </td>
-    <td align="left" class="CORETblCell">
-     <font size="-1" >
-      <input name="auth_pass" type="password" value="" size="30">
-     </font>
-    </td>
-</tr>
+    <div class="banner">
+      <table cellspacing="0"><tr>
+        <td><img width="48px" src="[CORE_LOGOCLIENT]" needresize="1"/></td>
+        <td><span class="societe">[CORE_CLIENT]</span><br>[CORE_REALM]</td>
+      </tr></table>
+    </div>
 
-<tr class="CORETbl"><td colspan="2" class="CORETblCell">&nbsp;</td></tr>
+    <div class="zoneinput">
+      <table cellspacing="0">
+        <tr>
+          <td class="label">[TEXT:yourusername]</td>
+          <td class="input"><input name="auth_user" type="text" value="" size="30" /></td>
+        </tr>
+        <tr>
+          <td class="label">[TEXT:yourpassword]</td>
+          <td class="input"><input name="auth_pass" type="password" value="" size="30" /></td>
+        </tr>
+      </table>
+    </div>
 
-<tr ><td colspan="2" style="border-top:solid [COLOR_BLACK] 1px"></td></tr>
+    <div id="msgerr" class="message">[error]</div>
 
-<tr>
-  <td valign="baseline" align="left" class="CORETblCell">
-    <a href="javascript:open_win('[CORE_STANDURL]app=AUTHENT&action=LOGINHELP');">
-    <img src="[IMG:info.png]" title="[TEXT:help]" width="14" border="0" needresize="1">
-  </td>
-     <td align="right" class="CORETblCell">
-         <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">
-    [TEXT:Do connection]
-     </td>
-</tr>
-<tr ><td colspan="2" style="border-top:solid [COLOR_BLACK] 1px"></td></tr>
+    <div class="buttons">
 
-</table>
-</td></tr></table>
+      <a href="javascript:display_help()">[TEXT:help]</a>
+      <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">[TEXT:Do connection]</a>
+
+    </div>
+
+  </div>
+
+</div>
+
 </form>
 
 <script>
+aumilieu('authform');
 document.forms['loginform'].elements['auth_user'].focus(); 
+aumilieu('zonehelp');
+document.getElementById('zonehelp').style.visibility = 'hidden';
 </script>
