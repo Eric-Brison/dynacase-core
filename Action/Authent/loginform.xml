@@ -63,6 +63,10 @@ function display_help() {
 function close_help() {
   document.getElementById('zonehelp').style.visibility = 'hidden';
 }
+function centerZone() {
+aumilieu('authform');
+aumilieu('zonehelp');
+}
 -->
 
 </script>
@@ -126,8 +130,9 @@ Il est important de respecter la casse (utilisation des caract&egrave;res majusc
 </form>
 
 <script>
-aumilieu('authform');
+addEvent(window,'load',centerZone);
+addEvent(window,'resize',centerZone);
 document.forms['loginform'].elements['auth_user'].focus(); 
-aumilieu('zonehelp');
 document.getElementById('zonehelp').style.visibility = 'hidden';
+
 </script>
