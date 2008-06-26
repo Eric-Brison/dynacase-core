@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.10 2008/06/26 09:07:30 marc Exp $
+ * @version $Id: loginform.php,v 1.11 2008/06/26 13:28:50 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -43,6 +43,8 @@ function loginform(&$action) {
     $action->lay->set("act_redir",$act_redir);
     $action->lay->set("arg_redir",$arg_redir);
     $action->lay->set("title",_("welcome"));
+    $action->lay->set("auth_user",$auth_user);
+    $action->lay->set("passfocus", ($auth_user!=="" ? true : false ));
     $action->lay->set("error",$error);
 
       

@@ -49,7 +49,6 @@ function aumilieu(eid) {
    if ((winH>0) && (winW>0)) {
      divlogo.style.top = (winH/2 - (divlogo.offsetHeight/2)+ document.body.scrollTop)+'px';
      divlogo.style.left = (winW/2 - (divlogo.offsetWidth/2))+'px';
-     divlogo.style.width = '400px';
    }
  }
  return true;
@@ -72,20 +71,20 @@ aumilieu('zonehelp');
 </script>
 
 <div id="zonehelp" class="zhelp">
-  <div class="title">Aide &agrave; la connexionn</div>
+  <div class="title">Aide &agrave; la connexion </div>
   <div class="content">
-Cette fen&egrave;tre permet de vous identifier, c'est &agrave; dire indiquer aux applications qui vous &egrave;tes.
-<br>
-Ceci est n&eacute;cessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-m&egrave;me. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en poss&eacute;dez pas adressez vous &agrave; l'administrateur du site).
+Cette fen&ecirc;tre permet de vous identifier, c'est &agrave; dire indiquer aux applications qui vous &ecirc;tes.
 <br><br>
-Attention, ce mot de passe est le moyen garantissant votre identification : conservez le pr&eacute;cieusement et ne le diffusez pas !.
+Ceci est n&eacute;cessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-m&ecirc;me. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en poss&eacute;dez pas adressez vous &agrave; au gestionnaire du site).
+<br><br>
+Attention, ce mot de passe est le moyen garantissant votre identification : conservez le pr&eacute;cieusement et ne le diffusez pas !
 <br><br>
 Il est important de respecter la casse (utilisation des caract&egrave;res majuscule et minuscule) lors de la saisie des vos nom d'utilisateur et mot de passe!<br>
   </div>
   <div class="close"><a href="javascript:close_help()">fermer l'aide</div>
 </div>
 
-<form action="[CORE_BASEURL]app=AUTHENT&action=CHECKAUTH" method="post" name="loginform">
+<form action="[CORE_BASEURL]app=AUTHENT&action=CHECKAUTH" method="post" name="loginform" style="display:inline">
 <input type="hidden" name="appd" value="[app_redir]">
 <input type="hidden" name="actd" value="[act_redir]">
 <input type="hidden" name="argd" value="[arg_redir]">
@@ -105,7 +104,7 @@ Il est important de respecter la casse (utilisation des caract&egrave;res majusc
       <table cellspacing="0">
         <tr>
           <td class="label">[TEXT:yourusername]</td>
-          <td class="input"><input name="auth_user" type="text" value="" size="30" /></td>
+          <td class="input"><input name="auth_user" type="text" value="[auth_user]" size="30" /></td>
         </tr>
         <tr>
           <td class="label">[TEXT:yourpassword]</td>
@@ -132,7 +131,7 @@ Il est important de respecter la casse (utilisation des caract&egrave;res majusc
 <script>
 addEvent(window,'load',centerZone);
 addEvent(window,'resize',centerZone);
-document.forms['loginform'].elements['auth_user'].focus(); 
+document.forms['loginform'].elements['auth_[IFNOT passfocus]user[ENDIF passfocus][IF passfocus]pass[ENDIF passfocus]'].focus(); 
 document.getElementById('zonehelp').style.visibility = 'hidden';
 
 </script>

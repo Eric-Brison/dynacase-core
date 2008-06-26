@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.32 2008/06/24 16:05:51 jerome Exp $
+ * @version $Id: Class.Session.php,v 1.33 2008/06/26 13:28:50 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.32 2008/06/24 16:05:51 jerome Exp $
+// $Id: Class.Session.php,v 1.33 2008/06/26 13:28:50 marc Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.32 2008/06/24 16:05:51 jerome Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.33 2008/06/26 13:28:50 marc Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -176,13 +176,13 @@ Class Session extends DbObj{
     if( $_SERVER['HTTP_HOST'] != "" ) {
       session_name($this->name);
       session_id($this->id);
-      session_start();
+      @session_start();
       if (isset($_SESSION[$k])) {
 	$val = $_SESSION[$k];
-	session_write_close();
+	@session_write_close();
 	return $val;
       } else {
-	session_write_close();
+	@session_write_close();
 	return($d);
       }
     }

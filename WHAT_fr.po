@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-11 17:03+0200\n"
-"PO-Revision-Date: 2008-06-11 17:04+0200\n"
+"PO-Revision-Date: 2008-06-26 15:21+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -134,8 +134,9 @@ msgstr ""
 msgid "err_mod_param"
 msgstr "Impossible de modifier le param&egrave;tre"
 
+#, fuzzy
 msgid "auth_failure"
-msgstr "Echec de l'authentification : Ré-essayez"
+msgstr "échec de l'authentification"
 
 msgid "auth_expired"
 msgstr "Votre authentification a expiré"
@@ -679,7 +680,7 @@ msgid "print"
 msgstr "Impression de la page"
 
 msgid "help"
-msgstr "Aide"
+msgstr "aide"
 
 msgid "No user found"
 msgstr "pas d'utilisateur trouvé"
@@ -763,19 +764,19 @@ msgid "delconfirmstyle"
 msgstr "Confirmez-vous la suppression du style"
 
 msgid "warning_name"
-msgstr "La saisie de votre nom est obligatoire :"
+msgstr "la saisie de votre nom est obligatoire."
 
 msgid "warning_pass"
-msgstr "La saisie de votre mot de passe est obligatoire :"
+msgstr "la saisie de votre mot de passe est obligatoire."
 
 msgid "yourusername"
-msgstr "Votre nom d'utilisateur :"
+msgstr "votre nom d'utilisateur"
 
 msgid "yourpassword"
-msgstr "Votre mot de passe :"
+msgstr "votre mot de passe"
 
 msgid "Do connection"
-msgstr "Se connecter"
+msgstr "se connecter"
 
 msgid "You use an too old Internet explorer navigator"
 msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"

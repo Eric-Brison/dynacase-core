@@ -30,7 +30,8 @@ function checkauth(&$action) {
     sleep(1); // for robots
     error_log(__CLASS__."::".__FUNCTION__." ".'Location : '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM&error=1');
     // Redirect to authentication
-    redirect($action, 'AUTHENT', 'LOGINFORM&error=1');
+    global $_POST;
+    Redirect($action, 'AUTHENT', 'LOGINFORM&error=1&auth_user='.$_POST['auth_user']);
     exit(0);
   }
 
