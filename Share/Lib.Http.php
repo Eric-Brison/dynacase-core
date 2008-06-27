@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.33 2008/06/06 12:14:45 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.34 2008/06/27 12:28:50 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -166,6 +166,8 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
      }
    } 
    header("Content-type: ".$mime_type);
+   header("Content-Transfer-Encoding: binary");
+   header("Content-Length: ".filesize($filename)); 
    $fd = fopen($filename, "r");
    if ($fd) {
      while (! feof($fd)) {
