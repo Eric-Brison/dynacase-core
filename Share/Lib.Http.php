@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.34 2008/06/27 12:28:50 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.35 2008/06/27 16:14:30 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -213,6 +213,9 @@ function setHeaderCache() {
    header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
    header("Pragma: "); // HTTP 1.0
    header("Content-type: text/css");
+
+
+
   
 }
 ?>
