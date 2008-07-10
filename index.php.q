@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php.q,v 1.24 2008/07/10 15:25:01 eric Exp $
+ * @version $Id: index.php.q,v 1.25 2008/07/10 15:26:46 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -370,7 +370,7 @@ function sortqdelay($a,$b) {
 }
 
 usort($TSQLDELAY,"sortqdelay");
-if (true) {
+if (false) {
 printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[Init:%.3fs]</I> <I>[App:%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"document.getElementById('TSQLDELAY').style.display='';\"><I>[Q %.2fs §%d]</I></a></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
