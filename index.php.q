@@ -1,30 +1,17 @@
 <?php
-// ---------------------------------------------------------------
-// $Id: index.php.q,v 1.23 2007/02/01 16:58:28 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Attic/index.php.q,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2001
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
-
-
-//file_put_contents(sprintf("/var/tmp/cacheindex-%s-%s.%d", $_GET["app"], $_GET["action"],time()), sprintf("%s %s", $_GET["app"], $_GET["action"]));
-
+/**
+ * Main program to activate action in WHAT software
+ *
+ * All HTTP requests call index.php to execute action within application
+ *
+ * @author Anakeen 2000 
+ * @version $Id: index.php.q,v 1.24 2008/07/10 15:25:01 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage 
+ */
+ /**
+ */
 global $tic1;
 function dtic($text="") {
   static $ptic=0;
@@ -41,6 +28,68 @@ function dtic($text="") {
   $ptic=$tuc1;
   return $msg;
 }
+$deb=gettimeofday();
+$tic1 = $deb["sec"]+$deb["usec"]/1000000;
+include_once('WHAT/Lib.Common.php');
+
+$authtype = getAuthType();
+ 
+if( $authtype == 'basic' || $authtype == 'html' ) {
+  ini_set("session.use_cookies","0");
+  include_once('WHAT/Class.Authenticator.php');
+  $auth = new Authenticator(
+			    array_merge(
+					array(
+					      'type' => getAuthType(),
+					      'provider' => getAuthProvider(),
+					      ),
+					getAuthParam()
+				  )
+			    );
+
+} else if( $authtype == 'apache' ) {
+  // Apache has already handled the authentication
+  global $_SERVER;
+    if ($_SERVER['PHP_AUTH_USER']=="") {
+      header('HTTP/1.0 403 Forbidden');
+      echo _("User must be authenticate");
+      exit;
+    }
+} else {
+  print "Unknown authtype ".$_GET['authtype'];
+  exit;
+}
+
+if( $authtype != 'apache' ) {
+  $status = $auth->checkAuthentication();
+  if( $status == FALSE ) {
+    sleep(2); // wait for robots
+    $auth->askAuthentication();
+    exit(0);
+  }
+
+  $status = $auth->checkAuthorization(
+                                      array(
+                                            'username' => $auth->getauthUser(),
+                                            )
+                                      );
+  if( $status == FALSE ) {
+    $auth->logout("guest.php?sole=A&app=AUTHENT&action=UNAUTHORIZED");
+    exit(0);
+  }
+
+  $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
+  $_SERVER['PHP_AUTH_PW'] = "Unknown";
+}
+
+if( file_exists('maintenance.lock') ) {
+  if( $_SERVER['PHP_AUTH_USER'] != 'admin' ) {
+    $auth->logout();
+    include_once('WHAT/stop.php');
+    exit(0);
+  }
+}
+
 #
 # This is the main body of App manager
 # It is used to launch application and 
@@ -54,10 +103,6 @@ if(!isset($_SERVER['PHP_AUTH_USER'])  ) {
   exit;
 }
 
-$deb=gettimeofday();
-$tic1 = $deb["sec"]+$deb["usec"]/1000000;
-
-
 include_once('Class.Action.php');
 include_once('Class.Application.php');
 include_once('Class.Session.php');
@@ -67,15 +112,9 @@ include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
 
 global $SQLDELAY, $SQLDEBUG;
-       global $TSQLDELAY;	
+global $TSQLDELAY;	
 $SQLDEBUG=true;
-define("PORT_SSL", 443); // the default port for https
-
-
-
-
-   $deb=gettimeofday();
-  $tic2 = $deb["sec"]+$deb["usec"]/1000000;
+// ----------------------------------------
 
 $indexphp=basename($_SERVER["SCRIPT_NAME"]);
  
@@ -99,8 +138,8 @@ if (!isset($_GET["app"])) {
  }
 
 if (!isset($_GET["action"])) $_GET["action"]="";
-if (isset($_COOKIE['session'])) $sess_num= $_COOKIE['session'];
-else $sess_num=GetHttpVars("session");//$_GET["session"];
+if (isset($_COOKIE['freedom_param'])) $sess_num= $_COOKIE['freedom_param'];
+else $sess_num=GetHttpVars('freedom_param');//$_GET["session"];
 
 $session=new Session();
 if (!  $session->Set($sess_num))  {
@@ -112,18 +151,16 @@ if (!  $session->Set($sess_num))  {
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 
-   $deb=gettimeofday();
-  $tic3 = $deb["sec"]+$deb["usec"]/1000000;
 if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
   // reopen a new session
   $session->Set("");
   $core->SetSession($session);
 }
+
+ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 //$core->SetSession($session);
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
-
-ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
 // ----------------------------------------
 // Init PUBLISH URL from script name
 
@@ -139,25 +176,29 @@ if (ereg("(.*)/$indexphp", $_SERVER['SCRIPT_NAME'], $reg)) {
   exit;
 }
 
+$add_args = "";
+if( array_key_exists('authtype', $_GET) ) {
+  $add_args .= "&authtype=".$_GET['authtype'];
+}
 
+$urlindex=$core->getParam("CORE_URLINDEX");
+if ($urlindex) $core->SetVolatileParam("CORE_EXTERNURL",$urlindex);
+else $core->SetVolatileParam("CORE_EXTERNURL",$puburl."/");
+ 
 $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
 $core->SetVolatileParam("CORE_ABSURL", $puburl."/"); // absolute links
 $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
-
-
+$core->SetVolatileParam("CORE_ROOTURL", "?sole=R$add_args&");
+$core->SetVolatileParam("CORE_BASEURL", "?sole=A$add_args&");
+$core->SetVolatileParam("CORE_SBASEURL","?sole=A&freedom_param={$session->id}$add_args&");
+$core->SetVolatileParam("CORE_STANDURL","?sole=Y$add_args&");
+$core->SetVolatileParam("CORE_SSTANDURL","?sole=Y&freedom_param={$session->id}$add_args&");
+$core->SetVolatileParam("CORE_ASTANDURL","$puburl/$indexphp?sole=Y$add_args&"); // absolute links
 
 $core->SetVolatileParam("TRACETIME", "true");
-
-
-$core->SetVolatileParam("CORE_ROOTURL", "$indexphp?sole=R&");
-$core->SetVolatileParam("CORE_BASEURL", "$indexphp?sole=A&");
-$core->SetVolatileParam("CORE_SBASEURL","$indexphp?sole=A&session={$session->id}&");
-$core->SetVolatileParam("CORE_STANDURL","$indexphp?sole=Y&");
-$core->SetVolatileParam("CORE_SSTANDURL","$indexphp?sole=Y&session={$session->id}&");
-
 // ----------------------------------------
 // Init Application & Actions Objects
-if (($standalone == "") || ($standalone == "N")) {
+if (($standalone == "") || ($standalone == "N")) {  
   $action = new Action();
   $action->Set("MAIN",$core,$session);
 } else {
@@ -227,18 +268,19 @@ putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel 
 bindtextdomain ("what", "$pubdir/locale");
 bind_textdomain_codeset("what", 'ISO-8859-15');
 textdomain ("what");
-
-  
-  $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
 $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/tracetime.js");
 $deb=gettimeofday();
 $ticainit= $deb["sec"]+$deb["usec"]/1000000;
 $trace=$action->read("trace");
 $trace["url"]=$_SERVER["REQUEST_URI"];
 $trace["init"]=sprintf("%.03fs" ,$ticainit-$tic1);
+  
+
+
+
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
 {
-	$out=$action->execute ();
+  	$out=$action->execute ();
    $deb=gettimeofday();
    $tic4= $deb["sec"]+$deb["usec"]/1000000;
    $trace["app"]=sprintf("%.03fs" ,$tic4-$ticainit);
@@ -251,7 +293,6 @@ if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
    $out=str_replace("<head>","<head><script>$strace</script>",$out);
    echo ($out);
    $action->unregister("trace");   
-
 } 
 else 
   if ($standalone == "R")
@@ -263,15 +304,12 @@ else
       global $_GET;
       $getargs="";
       while (list($k, $v) =each($_GET)) {
-	if ( ($k != "session") &&
+	if ( ($k != "freedom_param") &&
 	     ($k != "app") &&
 	     ($k != "sole") &&
 	     ($k != "action") )
 	$getargs .= "&".$k."=".$v;
       }
-	
-      $deb=gettimeofday();
-      $tic4= $deb["sec"]+$deb["usec"]/1000000;
       redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}".urlencode($getargs),$action->GetParam("CORE_STANDURL"));
     }
   else
@@ -290,10 +328,7 @@ else
 	    // copy JS ref & code from action to header
 	    $head->jsref = $action->parent->GetJsRef();
 	    $head->jscode = $action->parent->GetJsCode();
-	    $head->set("TITLE", _($action->parent->short_name));
-	    $deb=gettimeofday();
-            $tic4= $deb["sec"]+$deb["usec"]/1000000;
-	    
+	    $head->set("TITLE", _($action->parent->short_name));	    
 	    echo($head->gen());
 	    // write HTML body
 	    echo ($body);
@@ -303,6 +338,7 @@ else
 	  }
 	else
 	  {
+	    // This document is completed 
 	    // This document is completed 
 	    $out=$action->execute();  
 	    $deb=gettimeofday();
@@ -321,24 +357,10 @@ else
 	  
       }
 
-
-
    $deb=gettimeofday(); 
   $tic5 = $deb["sec"]+$deb["usec"]/1000000;
-global $HTTP_SESSION_VARS;
 
 
-//while (list ($k, $v) = each ($HTTP_SESSION_VARS)) {
-//  print $k.":$v<BR>";
-//}
-  $nbcache = 0;
-if (isset($HTTP_SESSION_VARS["CacheObj"])) {
-  reset($HTTP_SESSION_VARS["CacheObj"]);
-  while (list ($k, $v) = each ($HTTP_SESSION_VARS["CacheObj"])) {
-  //print $k.":".count($v)."<BR>";
-    $nbcache += count($v);
-  }
-}
 function sortqdelay($a,$b) {
 	$xa=doubleval($a["t"]);
 	$xb=doubleval($b["t"]);
@@ -347,10 +369,9 @@ function sortqdelay($a,$b) {
 	return 0;
 }
 
-usort($TSQLDELAY,sortqdelay);
-
-if (false) {
-printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[Init:%.3fs]</I> <I>[App:%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"document.getElementById('TSQLDELAY').style.display='';\"><I>[Q %.2fs ง%d]</I></a></SUP>",
+usort($TSQLDELAY,"sortqdelay");
+if (true) {
+printf("//<SUP><B>%.3fs</B><I>[OUT:%.3fs]</I> <I>[Init:%.3fs]</I> <I>[App:%.3fs]</I> <I>[S%.3fs %d]</I> <I>%dKo</I><A href=\"#\" onclick=\"document.getElementById('TSQLDELAY').style.display='';\"><I>[Q %.2fs ยง%d]</I></a></SUP>",
        $tic5-$tic1,
        $tic5-$tic4,
        $ticainit-$tic1,
