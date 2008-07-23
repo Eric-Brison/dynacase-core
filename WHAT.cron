@@ -1,10 +1,10 @@
 #!/bin/bash
 # ---------------------------------------------------------
-# $Id: WHAT.cron,v 1.7 2007/10/30 14:44:53 eric Exp $
+# $Id: WHAT.cron,v 1.8 2008/07/23 06:59:24 eric Exp $
 #  
 # Distribued under GPL 2 licence terms
 # ---------------------------------------------------------
-if [ "$dbpsql" == "" ]; then
+if [ "$freedom_context" == "" ]; then
     #load environement variable for freedom
   . /etc/freedom.conf
    wchoose -b
@@ -22,4 +22,4 @@ find /tmp/ -name 'bgexec*' -exec /bin/rm {} \;
 find /tmp/ -name 'bgtar*' -exec /bin/rm {} \;
 find /var/tmp/ -name 'fdl*.lck' -exec /bin/rm {} \;
 find /var/tmp/ -name 'csv*csv' -exec /bin/rm {} \;
-echo "delete from sessions" | psql $dbpsql  > /dev/null
+echo "delete from sessions where name='freedom_param'" | PGSERVICE="$pgservice_core" psql  > /dev/null
