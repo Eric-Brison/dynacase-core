@@ -3,7 +3,7 @@
  * Application Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Application.php,v 1.63 2008/03/10 15:09:17 eric Exp $
+ * @version $Id: Class.Application.php,v 1.64 2008/08/01 09:03:01 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -671,7 +671,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	}
 	if ($update) {
 	  foreach ($app_desc as $k=>$v) {
-	    switch ($v) {
+	    switch ($k) {
 	    case 'displayable':
 	      break;
 	    default:
