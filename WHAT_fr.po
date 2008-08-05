@@ -671,10 +671,10 @@ msgid "francais"
 msgstr "français"
 
 msgid "UK english"
-msgstr "UK english"
+msgstr "anglais GB"
 
 msgid "US english"
-msgstr "US english"
+msgstr "anglais USA"
 
 msgid "application version"
 msgstr "version application"

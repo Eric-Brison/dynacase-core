@@ -689,7 +689,7 @@ msgid "modify user parameters"
 msgstr "Add parameter"
 
 msgid "francais"
-msgstr "français"
+msgstr "french"
 
 msgid "UK english"
 msgstr "UK english"
