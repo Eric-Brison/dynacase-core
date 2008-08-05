@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.39 2007/06/29 10:37:45 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.40 2008/08/05 08:17:38 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -42,13 +42,6 @@ $app_const = array (
 							"kind"=>"enum(small|normal|large|x-large)"),
 		    "CORE_PUBDIR"		=>"@prefix@",
 		    "CORE_DB"	        =>"user=@DBUSER@ dbname=@DBNAME@",
-
-		    "CORE_LANG"		        =>array("val"=>"@LANG@",
-							"descr"=>N_("language"),
-							"user"=>"Y",
-							"style"=>"N",
-							"kind"=>"enum(fr_FR|en_US)",
-							"global"=>"N"),
 
 		    "CORE_DBCONNECT"		        =>array("val"=>"unpersistent",
 								"descr"=>N_("connection type"),
@@ -234,5 +227,26 @@ $app_const = array (
 						      
 						     
 		    );
+
+
+@include_once('WHAT/Lib.Prefix.php');
+@include_once("CORE/lang.php");
+if (isset($lang)) {
+  $tl = array();
+  foreach ($lang as $k => $v) {
+    if (file_exists(DEFAULT_PUBDIR."/locale/".$v["locale"])) {
+      $tl[] = $k;
+      if (!isset($v["flag"]) || $v["flag"]=="") $lang[$k]["flag"] = $k.".png";
+    }
+  }
+  $ll = implode("|", $tl);
+  $app_const["CORE_LANG"] = array( "val"=>"fr_FR",
+				   "descr"=>N_("language"),
+				   "user"=>"Y",
+				   "style"=>"N",
+				   "kind"=>"enum(".$ll.")",
+				   "global"=>"N");
+ }
+
 
 ?>
