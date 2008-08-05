@@ -7,8 +7,8 @@ $lang = array(
 				"flag"   => "", // if don't set to '$code.png'
 				"locale" => "fr" ), 
 
-	      "en_EN" => array( "label"  => _("UK english"),
-				"locale" => "en" ),
+// 	      "en_EN" => array( "label"  => _("UK english"),
+// 				"locale" => "en" ),
 
 	      "en_US" => array( "label"  => _("US english"),
 				"locale" => "en" ),
