@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.55 2008/06/24 16:05:51 jerome Exp $
+ * @version $Id: index.php,v 1.56 2008/08/05 08:31:48 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -105,7 +105,7 @@ global $CORE_LOGLEVEL;
 
 
 global $_GET;
-$standalone = GetHttpVars("sole");
+$standalone = GetHttpVars("sole","Y");
 if (!isset($_GET["app"])) {
   $_GET["app"]="CORE";
   switch($_SERVER["FREEDOM_ACCESS"]) {
