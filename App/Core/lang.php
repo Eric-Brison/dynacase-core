@@ -15,4 +15,11 @@ $lang = array(
 
 
 	      );
+
+foreach ($lang as $k => $v) {
+  if (file_exists(DEFAULT_PUBDIR."/locale/".$v["locale"])) {
+    if (!isset($v["flag"]) || $v["flag"]=="") $lang[$k]["flag"] = $k.".png";
+  }
+}
+
 ?>
