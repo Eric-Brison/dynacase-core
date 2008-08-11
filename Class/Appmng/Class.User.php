@@ -3,7 +3,7 @@
  * Users Definition
  *
  * @author Anakeen 2000 
- * @version $Id: Class.User.php,v 1.64 2008/05/28 14:31:13 eric Exp $
+ * @version $Id: Class.User.php,v 1.65 2008/08/11 14:14:14 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -197,6 +197,9 @@ create sequence seq_id_users start 10";
 
 
   function PostDelete() {
+
+    include_once("WHAT/Class.Session.php");
+
     // delete reference in group table
     $group = new Group($this->dbaccess, $this->id);
     $ugroups=$group->groups;
@@ -212,6 +215,10 @@ create sequence seq_id_users start 10";
       }
     }
     $msg=$this->deleteWebCal();
+
+    global $action;
+    $action->session->CloseUsers($this->id);
+
     return $msg;
   }
 

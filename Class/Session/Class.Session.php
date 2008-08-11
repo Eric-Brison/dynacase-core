@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.34 2008/06/27 15:32:02 jerome Exp $
+ * @version $Id: Class.Session.php,v 1.35 2008/08/11 14:14:14 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.34 2008/06/27 15:32:02 jerome Exp $
+// $Id: Class.Session.php,v 1.35 2008/08/11 14:14:14 marc Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.34 2008/06/27 15:32:02 jerome Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.35 2008/08/11 14:14:14 marc Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -125,6 +125,17 @@ Class Session extends DbObj{
     $this->status = $this->SESSION_CT_CLOSE;
     return $this->status;
   }  
+
+  /** 
+   * Closes all user's sessions
+   */
+  function CloseUsers($uid=-1) {
+    if (!$uid>0) return;
+    $this->exec_query("delete from sessions where userid= '".pg_escape_string($uid)."'");
+    $this->status = $this->SESSION_CT_CLOSE;
+    return $this->status;
+  }  
+
 
   function Open($uid=ANONYMOUS_ID)  {
     $idsess  = $this->newId();
