@@ -3,7 +3,7 @@
  * Query to Database
  *
  * @author Anakeen 2000 
- * @version $Id: Class.QueryDb.php,v 1.15 2007/06/29 08:55:44 eric Exp $
+ * @version $Id: Class.QueryDb.php,v 1.16 2008/08/11 10:03:29 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -157,46 +157,47 @@ function QueryDb ($dbaccess,$class)
   *        TABLE : means a table of table fields
   *        ITEM  : means a ressource to step by step use table field rows
   */
-  function Query($start=0,$slice=0,$res_type="LIST",$p_query="")  {
+ function Query($start=0,$slice=0,$res_type="LIST",$p_query="")  {
       
-    $query=$this->initQuery($start,$slice,$p_query);
-    $this->res_type=$res_type;	
-    $err = $this->basic_elem->exec_query($query);
-    //	print "$query $res_type $p_query<BR>\n";
-    if ($err != "") return($err);      
+   $query=$this->initQuery($start,$slice,$p_query);
+   $this->res_type=$res_type;	
+   $err = $this->basic_elem->exec_query($query);
+   //	print "$query $res_type $p_query<BR>\n";
+   if ($err != "") return($err);      
 
-    $this->nb = $this->basic_elem->numrows();    
+   $this->nb = $this->basic_elem->numrows();    
       
-      if ($this->nb ==0) {
-	return FALSE;
-      }
-      if ($res_type == "ITEM") {
-	$this->cindex=0; // current index row
-	return $this->basic_elem->res;
-      }
-      if ($start >= $this->nb) {$start=0;}
-      if ($slice == 0) {$slice = $this->nb;}
+   if ($this->nb ==0) {
+     return FALSE;
+   }
+   if ($res_type == "ITEM") {
+     $this->cindex=0; // current index row
+     return $this->basic_elem->res;
+   }
+   if ($start >= $this->nb) {$start=0;}
+   if ($slice == 0) {$slice = $this->nb;}
 
-      if (($start+$slice) >= $this->nb) {
-        $end = $this->nb;
-      } else {
-        $end = $start + $slice;
-      }
-      for ($c=0; $c<$this->nb;$c++) {
-        
-          $result = $this->basic_elem->fetch_array($c);
-          if (($res_type == "LIST") || ($res_type == "LISTC")) {
-             $this->list[$c] = new $this->class($this->dbaccess,"",$result,$this->basic_elem->dbid);
-          } else {
-             while (list($k,$v)=each( $result)) {
-               $this->list[$c][$k]=$v;
-             }
-          }
-        
-      }
-
-      return($this->list);
-  }
+   if (($start+$slice) >= $this->nb) {
+     $end = $this->nb;
+   } else {
+     $end = $start + $slice;
+   }
+   if ($res_type == "TABLE") {
+     $this->list=pg_fetch_all($this->basic_elem->res);
+   } else {
+     for ($c=0; $c<$this->nb;$c++) {        
+       $result = $this->basic_elem->fetch_array($c);
+       if (($res_type == "LIST") || ($res_type == "LISTC")) {
+	 $this->list[$c] = new $this->class($this->dbaccess,"",$result,$this->basic_elem->dbid);
+       } else {
+	 while (list($k,$v)=each( $result)) {
+	   $this->list[$c][$k]=$v;
+	 }
+       }        
+     }
+   }
+   return($this->list);
+ }
       
  /**
   * Perform the query : return only the count fo rows returned 
