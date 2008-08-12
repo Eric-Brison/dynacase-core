@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.35 2008/06/27 16:14:30 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.36 2008/08/12 12:47:32 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -30,7 +30,7 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
     if ($otherurl == "")  $baseurl=$action->GetParam("CORE_BASEURL");
     else  $baseurl=$otherurl;  
     $location = $baseurl."app=".$appname."&action=".$actionname;
-    $location .= "&session=".$action->session->id;
+    //    $location .= "&session=".$action->session->id;
   }
 
   $action->log->debug("Redirect : $location");
@@ -207,12 +207,13 @@ function glue_url($parsed) {
 /**
  * set in cache one hour
  */
-function setHeaderCache() {
+function setHeaderCache($mime="text/css") {
    header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
 
    header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
    header("Pragma: "); // HTTP 1.0
-   header("Content-type: text/css");
+
+   header("Content-type: $mime");
 
 
 
