@@ -1,10 +1,10 @@
 # ============================================
-# $Id: Makefile,v 1.2 2008/06/10 15:01:43 jerome Exp $
+# $Id: Makefile,v 1.3 2008/08/12 13:51:18 jerome Exp $
 # ============================================
 
 
 
-SUBDIR= Session Appmng Database Debug Form Layout Mail Authenticator
+SUBDIR= Session Appmng Database Debug Form Layout Mail Authenticator Authent
 
 
 include $(utildir)/PubRule
