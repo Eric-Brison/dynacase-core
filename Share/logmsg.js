@@ -2,7 +2,7 @@ var isNetscape = navigator.appName=="Netscape";
 var isIE = navigator.appName=="Microsoft Internet Explorer";
 var isIE6 = /msie 6/i.test(navigator.userAgent);
 var isIE7 = /msie 7/i.test(navigator.userAgent);
-
+var isSafari = navigator.userAgent.indexOf('AppleWebKit/') > -1;
 function getMouseButton(event) {
   // 1 is the left, 2 the middle, 3 the right button
   var button;
