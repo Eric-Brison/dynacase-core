@@ -22,6 +22,16 @@ function callbackreqpasswd(&$action) {
     return "";
   }
 
+  // If this token has expired, remove all expired tokens
+  $now = time();
+  $expire = FrenchDateToUnixTs($utok->expire);
+  if( $now > $expire ) {
+    error_log(__CLASS__."::".__FUNCTION__." "."Token ".$utok->token." has expired (expire = ".$utok->expire.")");
+    $action->lay->set('CALLBACK_NOT_OK', True);
+    $utok->deleteExpired();
+    return "";
+  }
+  
   $freedomdb = $action->getParam('FREEDOM_DB');
   if( $freedomdb == "" ) {
     error_log(__CLASS__."::".__FUNCTION__." "."FREEDOM_DB is empty");

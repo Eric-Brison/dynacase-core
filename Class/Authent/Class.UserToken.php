@@ -4,7 +4,7 @@ include_once('Class.DbObj.php');
 
 Class UserToken extends DbObj
 {
-  var $Class = '$Id: Class.UserToken.php,v 1.3 2008/08/13 14:20:10 jerome Exp $';
+  var $Class = '$Id: Class.UserToken.php,v 1.4 2008/08/13 15:30:21 jerome Exp $';
 
   var $fields = array(
 		     'token',
@@ -78,6 +78,11 @@ Class UserToken extends DbObj
       error_log(__CLASS__."::".__FUNCTION__." "."token is not defined.");
     }
     return $this->token;
+  }
+
+  function deleteExpired() {
+    $err = $this->exec_query("DELETE FROM ".pg_escape_string($this->dbtable). " WHERE expire < now()");
+    return $err;
   }
 
   function modify() {
