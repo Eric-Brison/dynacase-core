@@ -12,9 +12,9 @@ Votre mot de passe a été ré-initialisé et celui-ci a été envoyé par mail.
 Le système n'a pas pu traiter votre demande.
 </p>
 <p>
-Le liens que vous avez utilisé a peut expiré et n'est plus valide. Dans ce cas, essayer de renouveller votre demande.</p>
+Le lien que vous avez utilisé a peut être expiré et n'est plus valide. Dans ce cas, veuillez renouveller votre demande.</p>
 <p>
-Si le prolbème persiste, veuillez prendre contact avec XYZ.
+Si le problème persiste, veuillez prendre contact avec root@localhost.localdomain.
 </p>
 </div>
 [ENDIF CALLBACK_NOT_OK]

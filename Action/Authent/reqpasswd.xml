@@ -9,7 +9,7 @@ ou
 </p>
 <p>
 <label for="form_email">E-mail</label>
-<input type="text" name="form_email" id="form_email"i />
+<input type="text" name="form_email" id="form_email" />
 </p>
 <input type="submit" name="submit" id="submit" value="Envoyer" />
 </form>
