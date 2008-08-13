@@ -1,5 +1,5 @@
 <div id="form_get">
-<form action="[CORE_BASEURL]app=AUTHENT&action=SUBMITREQPASSWD" id="form">
+<form action="[CORE_BASEURL]app=AUTHENT&action=SUBMITREQPASSWD" method="post" id="form" name="form">
 <p>
 <label for="form_login">Login</label>
 <input type="text" name="form_login" id="form_login" /></li>

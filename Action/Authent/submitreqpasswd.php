@@ -1,8 +1,10 @@
 <?php
 
 function submitreqpasswd(&$action) {
-  $submited_login = GetHttpVars('login');
-  $submited_email = GetHttpVars('email');
+  include_once('FDL/Lib.Dir.php');
+
+  $submitted_login = GetHttpVars('form_login');
+  $submitted_email = GetHttpVars('form_email');
 
   $action->lay->set('FORM_SEND_OK', False);
   $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', False);
@@ -10,11 +12,11 @@ function submitreqpasswd(&$action) {
 
   $userdoc = getUserDoc($action, $submitted_login, $submitted_email);
   if( $userdoc == NULL ) {
-    $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS' True);
+    $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', True);
     return;
   }
 
-  $ret = sendCallback($action, $userdoc, 'AUTHENT/callbackreqpasswd_mail.xml');
+  $ret = sendCallback($action, $userdoc, 'AUTHENT/Layout/submitreqpasswd_mail.xml');
   if( $ret != "" ) {
     $action->lay->set('FORM_SEND_ERROR_UNKNOWN', True);
     return;
@@ -25,6 +27,8 @@ function submitreqpasswd(&$action) {
 }
 
 function getUserDoc($action, $login="", $email="") {
+  $dbaccess = $action->getParam('FREEDOM_DB');
+
   $filter = array();
 
   if( $login != "" ) {
@@ -38,7 +42,7 @@ function getUserDoc($action, $login="", $email="") {
     error_log(__CLASS__."::".__FUNCTION__." "."Undefined email and login args.");
     return NULL;
   }
-  $res = getChildDoc($action->dbaccess,
+  $res = getChildDoc($dbaccess,
 		     0,
 		     '0', 'ALL',
 		     $filter,
@@ -67,13 +71,14 @@ function getUserDoc($action, $login="", $email="") {
 }
 
 function sendCallback($action, $userdoc, $layoutPath) {
-  include_once('AUTHENT/Class.UserToken.php');
+  include_once('WHAT/Class.UserToken.php');
+  include_once("FDL/sendmail.php");
 
-  $to = $userdoc['us_mail'];
-  $fname = $userdoc['us_fname'];
-  $lname = $userdoc['us_lname'];
+  $us_mail = $userdoc['us_mail'];
+  $us_fname = $userdoc['us_fname'];
+  $us_lname = $userdoc['us_lname'];
 
-  if( $to == "" ) {
+  if( $us_mail == "" ) {
     error_log(__CLASS__."::".__FUNCTION__." "."Empty us_mail for user ".$userdoc['id']);
     return "Empty us_mail for user ".$userdoc['id'];
   }
@@ -82,10 +87,18 @@ function sendCallback($action, $userdoc, $layoutPath) {
   $subject= "";
 
   $token = new UserToken();
-  $token->setUserId($userdoc['id']);
-  $token->genToken();
+  $token->userid = $userdoc['id'];
+  $token->token = $token->genToken();
+  $token->setExpiration();
+
+  $err = $token->add();
+  if( $err != "" ) {
+    error_log(__CLASS__."::".__FUNCTION__." "."Error token->add() : ".$err);
+    return $err;
+  }
   $err = $token->modify();
   if( $err != "" ) {
+    error_log(__CLASS__."::".__FUNCTION__." "."Error token->modify() : ".$err);
     return $err;
   }
 
@@ -105,22 +118,24 @@ function sendCallback($action, $userdoc, $layoutPath) {
 
   $content = $layout->gen();
 
-  $mimemail = new Mail_mime("\r\n");
+  $mimemail = new Mail_Mime("\r\n");
   $mimemail->setHTMLBody($content);
 
   $ret = sendmail(
-		  $to,
+		  $us_mail,
 		  $from,
 		  NULL,
 		  NULL,
 		  $subject,
-		  &$mimemail,
+		  $mimemail,
 		  NULL
 		  );
   if( $ret != "" ) {
     # $action->exitError("Error: sendmail() returned with $ret");
     return "Error: sendmail() returned with $ret";
   }
+
+  return "";
 }
 
 ?>

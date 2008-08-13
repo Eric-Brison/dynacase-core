@@ -5,10 +5,9 @@
 Bonjour [US_FNAME] [US_LNAME],
 </p>
 <p>
-Vous avez demandé la re-initialisation de votre mot de passe. Si ce n'est pas le cas, veuillez détruire ce message.
+Voici votre nouveau mot de passe :
 </p>
-<p>
-Pour poursuivre la re-initialisation de votre mot de passe, veuillez suivre le liens suivant :<br />
-<a href="[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]">[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a>
-</p>
+<pre>
+[PASSWORD]
+</pre>
 </html>

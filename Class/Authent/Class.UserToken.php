@@ -4,32 +4,32 @@ include_once('Class.DbObj.php');
 
 Class UserToken extends DbObj
 {
-  var $Class = '$Id: Class.UserToken.php,v 1.1 2008/08/11 15:40:01 jerome Exp $';
+  var $Class = '$Id: Class.UserToken.php,v 1.2 2008/08/13 13:55:15 jerome Exp $';
 
   var $fields = array(
-		     'userid',
 		     'token',
+		     'userid',
 		     'expire'
 		     );
 
   var $id_fields = array(
-			 'userid'
+			 'token'
 			 );
 
   var $dbtable = 'usertoken';
 
   var $sqlcreate = "
     CREATE TABLE usertoken (
-      userid INT NOT NULL PRIMARY KEY,
-      token VARCHAR(256),
-      expire TIMESTAMP
+      token VARCHAR(256) NOT NULL PRIMARY KEY,
+      userid INT NOT NULL,
+      expire TIMESTAMP NOT NULL
     );
     CREATE INDEX usertoken_idx ON usertoken(token);
   ";
 
   var $hAlg = 'sha1';
   var $rndSize = 4;
-  var $expiration = 60*60*24;
+  var $expiration = 86400; // 24 hours
 
   function setHAlg($hAlg) {
     $this->hAlg = $hAlg;

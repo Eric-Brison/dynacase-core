@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.47 2008/06/13 14:28:51 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.48 2008/08/13 13:55:15 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -513,6 +513,54 @@ function WhatInitialisation() {
   bindtextdomain ("what", DEFAULT_PUBDIR."/locale");
   bind_textdomain_codeset("what", 'ISO-8859-15');
   textdomain ("what");
+}
+
+/**
+ * Returns a random password of specified length composed
+ * with chars from the given charspace string or pattern
+ */
+
+function mkpasswd($length=8, $charspace="") {
+  if( $charspace == "" ) {
+    $charspace = "[:alnum:]";
+  }
+
+  // Repeat a pattern e.g. [:a:3] -> [:a:][:a:][:a:]
+  $charspace = preg_replace(
+			    "/(\[:[a-z]+:)(\d+)(\])/e",
+			    "str_repeat('\\1\\3',\\2)",
+			    $charspace
+			    );
+
+  // Expand [:patterns:]
+  $charspace = preg_replace(
+			    array(
+				  "/\[:alnum:\]/",
+				  "/\[:extrastrong:\]/",
+				  "/\[:hex:\]/",
+				  "/\[:lower:\]/",
+				  "/\[:upper:\]/",
+				  "/\[:digit:\]/",
+				  "/\[:extra:\]/",
+				  ),
+			    array(
+				  "[:lower:][:upper:][:digit:]",
+				  "[:extra:],;:=+*/(){}[]&@#!?\"'<>",
+				  "[:digit:]abcdef",
+				  "abcdefghijklmnopqrstuvwxyz",
+				  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+				  "0123456789",
+				  "-_.",
+				  ),
+			    $charspace
+			    );
+  
+  $passwd = "";
+  for($i = 0; $i<$length; $i++) {
+    $passwd .= substr($charspace, rand(0, strlen($charspace)-1), 1);
+  }
+  
+  return $passwd;
 }
 
 ?>
