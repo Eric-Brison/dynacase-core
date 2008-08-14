@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.41 2008/08/05 09:23:24 marc Exp $
+ * @version $Id: CORE_init.php.in,v 1.42 2008/08/14 06:48:52 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -41,7 +41,7 @@ $app_const = array (
 							"user"=>"Y",
 							"kind"=>"enum(small|normal|large|x-large)"),
 		    "CORE_PUBDIR"		=>"@prefix@",
-		    "CORE_DB"	        =>"user=@DBUSER@ dbname=@DBNAME@",
+		    "CORE_DB"	        =>"",
 
 		    "CORE_DBCONNECT"		        =>array("val"=>"unpersistent",
 								"descr"=>N_("connection type"),
