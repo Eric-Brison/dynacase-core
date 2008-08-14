@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: AUTHENT_init.php.in,v 1.4 2003/08/18 15:46:41 eric Exp $
+ * @version $Id: AUTHENT_init.php.in,v 1.5 2008/08/14 08:51:38 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -20,7 +20,26 @@ global $app_const;
 
 $app_const= array(
   "INIT" => "yes",
-  "VERSION"			=>"@VERSION@-@RELEASE@"
+  "VERSION"			=>"@VERSION@-@RELEASE@",
+
+  "AUTHENT_SHOW_REQPASSWD" => array(
+				    "val" => "yes",
+				    "descr" => N_("show request for password"),
+				    "kind" => "enum(yes|no)",
+				    "global" => "N"
+				    ),
+  "AUTHENT_SUBMITREQPASSWD_MAIL_SUBJECT" => array(
+					    "val" => "Demande de re-initialisatoin de votre mot de passe",
+					    "descr" => N_("subject for new password request"),
+					    "kind" => "text",
+					    "global" => "N"
+					    ),
+  "AUTHENT_CALLBACKREQPASSWD_MAIL_SUBJECT" => array(
+						  "val" => "Mot de passe ré-initialisé",
+						  "descr" => N_("subject for new password response"),
+						  "kind" => "text",
+						  "global" => "N"
+						  )
 );
 
 ?>

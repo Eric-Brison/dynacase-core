@@ -6,6 +6,7 @@ function callbackreqpasswd(&$action) {
 
   $action->lay->set('CALLBACK_OK', False);
   $action->lay->set('CALLBACK_NOT_OK', False);
+  $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
 
   $token = getHttpVars('token');
 
@@ -95,15 +96,13 @@ function sendResponse($action, $userdoc, $layoutPath, $password) {
     return "Empty us_mail for user ".$userdoc->getValue('id');
   }
 
-  $from = "";
-  $subject= "";
+  $from = $action->getParam('SMTP_FROM');
+  $subject= $action->getParam('AUTHENT_CALLBACKREQPASSWD_MAIL_SUBJECT');
 
   $layout = new Layout($layoutPath, $action);
   if( $layout == NULL ) {
     return "error creating new Layout from $layoutPath";
   }
-
-  $layout->set('MAIL_HEADERS', $mail_headers);
 
   $layout->set('US_MAIL', $us_mail);
   $layout->set('US_FNAME', $us_fname);

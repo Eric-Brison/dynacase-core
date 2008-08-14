@@ -16,7 +16,7 @@
 [IF FORM_SEND_ERROR_UNKNOWN]
 <div id="form_send_error_unknown">
 <p>Le serveur a rencontré une erreur dans le traitement de votre demande.</p>
-<p>Veuillez renouveller votre demande ultérieurement, et si le problème persiste, contactez root@localhost.localdomain</p>
+<p>Veuillez renouveller votre demande ultérieurement, et si le problème persiste, contactez <a href="mailto:[ON_ERROR_CONTACT]?subject=Problème%20demande%20mot%20de%20passe">[ON_ERROR_CONTACT]</a></p>
 <p><a href="[CORE_BASEURL]app=AUTHENT&action=REQPASSWD">Retour</a></p>
 </div>
 [ENDIF FORM_SEND_ERROR_UNKNOWN]

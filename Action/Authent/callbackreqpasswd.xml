@@ -14,7 +14,7 @@ Le système n'a pas pu traiter votre demande.
 <p>
 Le lien que vous avez utilisé a peut être expiré et n'est plus valide. Dans ce cas, veuillez renouveller votre demande.</p>
 <p>
-Si le problème persiste, veuillez prendre contact avec root@localhost.localdomain.
+Si le problème persiste, veuillez prendre contact avec <a href="mailto:[ON_ERROR_CONTACT]?subject=Problème%20réponse%20ré-initialisation%20mot%20de%20passe">[ON_ERROR_CONTACT]</a>
 </p>
 </div>
 [ENDIF CALLBACK_NOT_OK]

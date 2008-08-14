@@ -9,6 +9,7 @@ function submitreqpasswd(&$action) {
   $action->lay->set('FORM_SEND_OK', False);
   $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', False);
   $action->lay->set('FORM_SEND_ERROR_UNKNOWN', False);
+  $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
 
   $userdoc = getUserDoc($action, $submitted_login, $submitted_email);
   if( $userdoc == NULL ) {
@@ -83,8 +84,8 @@ function sendCallback($action, $userdoc, $layoutPath) {
     return "Empty us_mail for user ".$userdoc['id'];
   }
 
-  $from = "";
-  $subject= "";
+  $from = $action->getParam('SMTP_FROM');
+  $subject= $action->getParam('AUTHENT_SUBMITREQPASSWD_MAIL_SUBJECT');
 
   $token = new UserToken();
   $token->userid = $userdoc['id'];
@@ -108,8 +109,6 @@ function sendCallback($action, $userdoc, $layoutPath) {
   if( $layout == NULL ) {
     return "error creating new Layout from $layoutPath";
   }
-
-  $layout->set('MAIL_HEADERS', $mail_headers);
 
   $layout->set('US_MAIL', $us_mail);
   $layout->set('US_FNAME', $us_fname);

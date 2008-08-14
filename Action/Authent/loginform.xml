@@ -117,6 +117,9 @@ Il est important de respecter la casse (utilisation des caract&egrave;res majusc
 
     <div class="buttons">
 
+      [IF AUTHENT_SHOW_REQPASSWD]
+      <a href="[CORE_BASEURL]app=AUTHENT&action=REQPASSWD">[TEXT:authent reqpassword]</a>
+      [ENDIF AUTHENT_SHOW_REQPASSWD]
       <a href="javascript:display_help()">[TEXT:help]</a>
       <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">[TEXT:Do connection]</a>
 

@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.11 2008/06/26 13:28:50 marc Exp $
+ * @version $Id: loginform.php,v 1.12 2008/08/14 08:51:38 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -47,7 +47,12 @@ function loginform(&$action) {
     $action->lay->set("passfocus", ($auth_user!=="" ? true : false ));
     $action->lay->set("error",$error);
 
-      
+    if( $action->getParam('AUTHENT_SHOW_REQPASSWD') == 'yes' ) {
+      $action->lay->set('AUTHENT_SHOW_REQPASSWD', True);
+    } else {
+      $action->lay->set('AUTHENT_SHOW_REQPASSWD', False);
+    }
+ 
 }
       
 ?>
