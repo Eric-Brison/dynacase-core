@@ -29,6 +29,15 @@ $action_desc = array (
   ),
   array(
    "name"               =>"UNAUTHORIZED"
+  ),
+  array(
+   "name"               =>"REQPASSWD"
+  ),
+  array(
+   "name"               =>"SUBMITREQPASSWD"
+  ),
+  array(
+   "name"               =>"CALLBACKREQPASSWD"
   )
                       );
    
