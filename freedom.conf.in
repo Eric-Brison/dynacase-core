@@ -76,6 +76,6 @@ function wvirtual()
 
 alias wcheck=$wpub/wcheck
 alias wsh=$wpub/wsh.php
-alias wtext="$wpub/whattext; service httpd restart"
+alias wtext="$wpub/whattext; service httpd reload"
 
 
