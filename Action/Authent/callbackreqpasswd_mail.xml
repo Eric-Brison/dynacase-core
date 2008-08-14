@@ -1,11 +1,6 @@
 <html>
 <p>
-Bonjour [US_FNAME] [US_LNAME],
+[TEXT:callbackreqpasswd_mail_hello] [US_FNAME] [US_LNAME],
 </p>
-<p>
-Voici votre nouveau mot de passe :
-</p>
-<pre>
-[PASSWORD]
-</pre>
+[TEXT:callbackreqpasswd_mail_password]
 </html>
