@@ -27,6 +27,7 @@ Class htmlAuthenticator {
     }
 
     session_name($this->parms{'cookie'});
+    session_id($_COOKIE[$this->parms{'cookie'}]);
     session_start();
 
     if( array_key_exists('username', $_SESSION) ) {
@@ -88,6 +89,7 @@ Class htmlAuthenticator {
     }
 
     session_name($this->parms{'cookie'});
+    session_id($_COOKIE[$this->parms{'cookie'}]);
     session_start();
     if( ! array_key_exists('fromuri', $_SESSION) && $referer_uri != $_SERVER['REQUEST_URI'] ) {
       $_SESSION['fromuri'] = $_SERVER['REQUEST_URI'];
@@ -109,6 +111,7 @@ Class htmlAuthenticator {
     }
     
     session_name($this->parms{'cookie'});
+    session_id($_COOKIE[$this->parms{'cookie'}]);
     session_start();
     if( array_key_exists('username', $_SESSION) ) {
       $username = $_SESSION['username'];
@@ -125,6 +128,7 @@ Class htmlAuthenticator {
     }
 
     session_name($this->parms{'cookie'});
+    session_id($_COOKIE[$this->parms{'cookie'}]);
     session_start();
     session_unset();
     session_destroy();
@@ -139,6 +143,35 @@ Class htmlAuthenticator {
     return TRUE;
   }
 
+  public function setSessionVar($name, $value) {
+    if( is_callable(array($this->provider, 'setSessionVar')) ) {
+      return $this->provider->setSessionVar($name, $value);
+    }
+    
+    session_name($this->parms{'cookie'});
+    session_id($_COOKIE[$this->parms{'cookie'}]);
+    session_start();
+    $_SESSION[$name] = $value;
+    $value = $_SESSION[$name];
+    session_commit();
+    
+    return $value;
+  }
+  
+  public function getSessionVar($name) {
+    if( is_callable(array($this->provider, 'getSessionVar')) ) {
+      return $this->provider->getSessionVar($name);
+    }
+    
+    session_name($this->parms{'cookie'});
+    session_id($_COOKIE[$this->parms{'cookie'}]);
+    session_start();
+    $value = $_SESSION[$name];
+    session_commit();
+    
+    return $value;
+  }
+  
 }
 
 ?>

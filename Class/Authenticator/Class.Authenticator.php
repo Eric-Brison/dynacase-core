@@ -44,6 +44,20 @@ Class Authenticator {
     return $this->authenticator->logout($redir_uri);
   }
 
+  public function setSessionVar($name, $value) {
+    if( is_callable(array($this->authenticator, 'setSessionVar')) ) {
+      return $this->authenticator->setSessionVar($name, $value);
+    }
+    return Null;
+  }
+  
+  public function getSessionVar($name) {
+    if( is_callable(array($this->authenticator, 'getSessionVar')) ) {
+      return $this->authenticator->getSessionVar($name);
+    }
+    return Null;
+  }
+
 }
 
 ?>

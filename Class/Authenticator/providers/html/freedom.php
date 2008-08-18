@@ -165,6 +165,30 @@ Class htmlFreedomProvider {
     return TRUE;
   }
 
+  public function setSessionVar($name, $value) {
+    $session_auth = new Session($this->parms{'cookie'});
+    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
+    } else {
+      $session_auth->Set();
+    }
+    
+    $session_auth->register($name, $value);
+    
+    return $session_auth->read($name);
+  }
+  
+  public function getSessionVar($name) {
+    $session_auth = new Session($this->parms{'cookie'});
+    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
+    } else {
+      $session_auth->Set();
+    }
+    
+    return $session_auth->read($name);
+  }
+  
 }
 
 ?>
