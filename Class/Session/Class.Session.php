@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.35 2008/08/11 14:14:14 marc Exp $
+ * @version $Id: Class.Session.php,v 1.36 2008/08/18 15:05:28 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.35 2008/08/11 14:14:14 marc Exp $
+// $Id: Class.Session.php,v 1.36 2008/08/18 15:05:28 jerome Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.35 2008/08/11 14:14:14 marc Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.36 2008/08/18 15:05:28 jerome Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -170,7 +170,8 @@ Class Session extends DbObj{
     global $_SERVER; // use only cache with HTTP
     if ($_SERVER['HTTP_HOST'] != "") {
       //	session_register($k);
-      //	session_id($this->id);
+      session_name($this->name);
+      session_id($this->id);
       @session_start();
       $_SESSION[$k]=$v;
       @session_write_close();// avoid block
