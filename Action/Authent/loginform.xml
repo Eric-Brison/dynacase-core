@@ -117,13 +117,13 @@ Il est important de respecter la casse (utilisation des caract&egrave;res majusc
 
     <div class="buttons">
 
-      <!-- [IF AUTHENT_SHOW_LANG_SELECTION] -->
+      [IF AUTHENT_SHOW_LANG_SELECTION]
       <select name="CORE_LANG">
         [BLOCK LANG]
         <option value="[LANG_VALUE]" [IF LANG_IS_SELECTED]selected[ENDIF LANG_IS_SELECTED]>[LANG_LABEL]</option>
         [ENDBLOCK LANG]
       </select>
-      <!-- [IF AUTHENT_SHOW_LANG_SELECTION] -->
+      [IF AUTHENT_SHOW_LANG_SELECTION]
       [IF AUTHENT_SHOW_REQPASSWD]
       <a href="[CORE_BASEURL]app=AUTHENT&action=REQPASSWD">[TEXT:authent reqpassword]</a>
       [ENDIF AUTHENT_SHOW_REQPASSWD]
