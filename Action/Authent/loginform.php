@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.12 2008/08/14 08:51:38 jerome Exp $
+ * @version $Id: loginform.php,v 1.13 2008/08/18 15:05:36 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -52,7 +52,22 @@ function loginform(&$action) {
     } else {
       $action->lay->set('AUTHENT_SHOW_REQPASSWD', False);
     }
+
+    if( $action->getParam('AUTHENT_SHOW_LANG_SELECTION') == 'yes' ) {
+      $action->lay->set('AUTHENT_SHOW_LANG_SELECTION', True);
+    } else {
+      $action->lay->set('AUTHENT_SHOW_LANG_SELECTION', False);
+    }
  
+    include_once('CORE/lang.php');
+    $lang_block = array();
+    foreach( $lang as $k => $v ) {
+      $lang_block[$k]['LANG_VALUE'] = $k;
+      $lang_block[$k]['LANG_LABEL'] = $lang[$k]['label'];
+      $lang_block[$k]['LANG_IS_SELECTED'] = (getParam('CORE_LANG')==$k)?True:False;
+    }
+    $action->lay->setBlockData('LANG', $lang_block);
+
 }
       
 ?>

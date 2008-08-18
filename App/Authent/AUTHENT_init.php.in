@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: AUTHENT_init.php.in,v 1.5 2008/08/14 08:51:38 jerome Exp $
+ * @version $Id: AUTHENT_init.php.in,v 1.6 2008/08/18 15:05:36 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -39,7 +39,13 @@ $app_const= array(
 						  "descr" => N_("subject for new password response"),
 						  "kind" => "text",
 						  "global" => "N"
-						  )
+						    ),
+  "AUTHENT_SHOW_LANG_SELECTION" => array(
+					 "val" => "yes",
+					 "descr" => N_("show language selection"),
+					 "kind" => "enum(yes|no",
+					 "global" => "N"
+					 )
 );
 
 ?>
