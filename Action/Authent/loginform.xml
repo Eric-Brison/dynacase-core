@@ -72,16 +72,12 @@ aumilieu('zonehelp');
 
 <div id="zonehelp" class="zhelp">
   <div class="title">Aide &agrave; la connexion </div>
-  <div class="content">
-Cette fen&ecirc;tre permet de vous identifier, c'est &agrave; dire indiquer aux applications qui vous &ecirc;tes.
-<br><br>
-Ceci est n&eacute;cessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-m&ecirc;me. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en poss&eacute;dez pas adressez vous &agrave; au gestionnaire du site).
-<br><br>
-Attention, ce mot de passe est le moyen garantissant votre identification : conservez le pr&eacute;cieusement et ne le diffusez pas !
-<br><br>
-Il est important de respecter la casse (utilisation des caract&egrave;res majuscule et minuscule) lors de la saisie des vos nom d'utilisateur et mot de passe!<br>
+  <div class="content">Cette fen&ecirc;tre permet de vous identifier, c'est &agrave; dire indiquer aux applications qui vous &ecirc;tes.
+    <br/><br/>Cci est n&eacute;cessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-m&ecirc;me. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en poss&eacute;dez pas adressez vous &agrave; au gestionnaire du site).
+    <br/><br/>Attention, ce mot de passe est le moyen garantissant votre identification : conservez le pr&eacute;cieusement et ne le diffusez pas !
+    <br/><br/>Il est important de respecter la casse (utilisation des caract&egrave;res majuscule et minuscule) lors de la saisie des vos nom d'utilisateur et mot de passe!<br/>
   </div>
-  <div class="close"><a href="javascript:close_help()">fermer l'aide</div>
+  <div class="close"><a href="javascript:close_help()">fermer l'aide</a></div>
 </div>
 
 <form action="[CORE_BASEURL]app=AUTHENT&action=CHECKAUTH" method="post" name="loginform" style="display:inline">
