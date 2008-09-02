@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.SessionConf.php,v 1.3 2004/08/05 09:31:22 eric Exp $
+ * @version $Id: Class.SessionConf.php,v 1.4 2008/09/02 16:13:31 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,9 +28,12 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.SessionConf.php,v 1.3 2004/08/05 09:31:22 eric Exp $
+// $Id: Class.SessionConf.php,v 1.4 2008/09/02 16:13:31 marc Exp $
 //
 // $Log: Class.SessionConf.php,v $
+// Revision 1.4  2008/09/02 16:13:31  marc
+// set session alive until navigator to be closed (default)
+//
 // Revision 1.3  2004/08/05 09:31:22  eric
 // multibase
 //
@@ -57,7 +60,7 @@
 //
 //
 // ---------------------------------------------------------------------------
-$DROITS_CLASS_SESSIONCONF_PHP = '$Id: Class.SessionConf.php,v 1.3 2004/08/05 09:31:22 eric Exp $';
+$DROITS_CLASS_SESSIONCONF_PHP = '$Id: Class.SessionConf.php,v 1.4 2008/09/02 16:13:31 marc Exp $';
 
 include_once('Class.DbObj.php');
 
@@ -76,7 +79,7 @@ create table session_conf ( key	    varchar(50),
 create index session_conf_idx on session_conf(key);";
 
 var $sqlinit = "
-insert into session_conf values ( 'TTL_INTERVAL' , 28800 );
+insert into session_conf values ( 'TTL_INTERVAL' , 0 );
 insert into session_conf values ( 'GC_DATE' , 0 );
 insert into session_conf values ( 'GC_INTERVAL' , 3600 );
 insert into session_conf values ( 'MAGIC' , 'La belle au bois dormant' );";
