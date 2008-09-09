@@ -468,9 +468,8 @@ msgstr ""
 msgid "mot of the day"
 msgstr ""
 
-#, fuzzy
 msgid "icon size"
-msgstr "Icon"
+msgstr "icon size"
 
 msgid "produce link for"
 msgstr ""
@@ -478,15 +477,14 @@ msgstr ""
 msgid "squirrelmail install dir (relative)"
 msgstr ""
 
-#, fuzzy
 msgid "language"
-msgstr "Lastname"
+msgstr "lang"
 
 msgid "francais"
 msgstr "french"
 
 msgid "US english"
-msgstr "US english"
+msgstr "english"
 
 msgid "What User Management"
 msgstr ""

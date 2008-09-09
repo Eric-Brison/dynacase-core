@@ -469,7 +469,7 @@ msgid "francais"
 msgstr "français"
 
 msgid "US english"
-msgstr "anglais USA"
+msgstr "anglais"
 
 msgid "What User Management"
 msgstr "Gestion des utilisateurs"
