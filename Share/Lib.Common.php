@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.48 2008/08/13 13:55:15 jerome Exp $
+ * @version $Id: Lib.Common.php,v 1.49 2008/09/11 12:24:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -563,4 +563,15 @@ function mkpasswd($length=8, $charspace="") {
   return $passwd;
 }
 
+
+function setLanguage($lang) {
+  setlocale(LC_MESSAGES,$lang);  
+  setlocale(LC_MONETARY, $lang);
+  setlocale(LC_TIME, $lang);
+  //print $action->Getparam("CORE_LANG");
+  putenv ("LANG=".$lang); // needed for old Linux kernel < 2.4
+  bindtextdomain ("what", "$pubdir/locale");
+  bind_textdomain_codeset("what", 'ISO-8859-15');
+  textdomain ("what");
+}
 ?>
