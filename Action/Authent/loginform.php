@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.13 2008/08/18 15:05:36 jerome Exp $
+ * @version $Id: loginform.php,v 1.14 2008/09/11 12:24:01 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -26,6 +26,9 @@ function loginform(&$action) {
   $action->parent->AddCssRef("AUTHENT:loginform.css",true);
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
+  $ulang=GetHttpVars("lang");
+  if ($ulang)   setLanguage($ulang);
+  else $ulang=getParam('CORE_LANG');
 
     $error = GetHttpVars("error");
     if ($error) $error=_("auth_failure");
@@ -61,10 +64,12 @@ function loginform(&$action) {
  
     include_once('CORE/lang.php');
     $lang_block = array();
+  
+    
     foreach( $lang as $k => $v ) {
       $lang_block[$k]['LANG_VALUE'] = $k;
       $lang_block[$k]['LANG_LABEL'] = $lang[$k]['label'];
-      $lang_block[$k]['LANG_IS_SELECTED'] = (getParam('CORE_LANG')==$k)?True:False;
+      $lang_block[$k]['LANG_IS_SELECTED'] = ($ulang==$k);
     }
     $action->lay->setBlockData('LANG', $lang_block);
 

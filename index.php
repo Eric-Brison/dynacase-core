@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.58 2008/08/20 12:47:23 marc Exp $
+ * @version $Id: index.php,v 1.59 2008/09/11 12:24:01 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -62,7 +62,7 @@ if( $authtype != 'apache' ) {
   }
 
   $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
-  $_SERVER['PHP_AUTH_PW'] = "Unknown";
+  $_SERVER['PHP_AUTH_PW'] = '';//$auth->getAuthPw();//"Unknown";
 }
 
 if( file_exists('maintenance.lock') ) {
@@ -245,14 +245,7 @@ if ($action->Read("navigator","") == "") {
 }
 $core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
 // init for gettext
-setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
-setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
-setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
-//print $action->Getparam("CORE_LANG");
-putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
-bindtextdomain ("what", "$pubdir/locale");
-bind_textdomain_codeset("what", 'ISO-8859-15');
-textdomain ("what");
+setLanguage($action->Getparam("CORE_LANG"));
 
   
 $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));

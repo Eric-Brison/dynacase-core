@@ -114,7 +114,7 @@ aumilieu('zonehelp');
     <div class="buttons">
 
       [IF AUTHENT_SHOW_LANG_SELECTION]
-      <select name="CORE_LANG">
+      <select name="CORE_LANG" onchange="window.location.href='[CORE_BASEURL]app=AUTHENT&action=LOGINFORM&lang='+this.options[this.selectedIndex].value">
         [BLOCK LANG]
         <option value="[LANG_VALUE]" [IF LANG_IS_SELECTED]selected[ENDIF LANG_IS_SELECTED]>[LANG_LABEL]</option>
         [ENDBLOCK LANG]
