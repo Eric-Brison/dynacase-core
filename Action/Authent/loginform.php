@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.14 2008/09/11 12:24:01 eric Exp $
+ * @version $Id: loginform.php,v 1.15 2008/09/11 14:51:13 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -27,8 +27,10 @@ function loginform(&$action) {
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
   $ulang=GetHttpVars("lang");
-  if ($ulang)   setLanguage($ulang);
-  else $ulang=getParam('CORE_LANG');
+  if ($ulang)  {
+    setLanguage($ulang);
+    $action->setparamu("CORE_LANG",$ulang);
+  }  else $ulang=getParam('CORE_LANG');
 
     $error = GetHttpVars("error");
     if ($error) $error=_("auth_failure");
