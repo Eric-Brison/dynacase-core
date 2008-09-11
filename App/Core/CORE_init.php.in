@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.42 2008/08/14 06:48:52 marc Exp $
+ * @version $Id: CORE_init.php.in,v 1.43 2008/09/11 14:50:22 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -241,7 +241,7 @@ if (isset($lang)) {
 				   "user"=>"Y",
 				   "style"=>"N",
 				   "kind"=>"enum(".$ll.")",
-				   "global"=>"N");
+				   "global"=>"Y");
  }
 
 
