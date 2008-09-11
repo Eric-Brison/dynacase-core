@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.27 2007/10/26 15:29:50 eric Exp $
+ * @version $Id: Class.Param.php,v 1.28 2008/09/11 14:49:32 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -73,7 +73,10 @@ function Set($name,$val,$type=PARAM_GLB,$appid='') {
   $pdef = new paramdef($this->dbaccess,$name);
 
   if ($pdef->isAffected()) {
-    if ($pdef->isglob=='Y') $appid=$pdef->appid;
+    if ($pdef->isglob=='Y') {
+      $appid=$pdef->appid;
+      if ($action) $action->parent->session->close(); // need to refresh all application parameters
+    }
   }
   $this->appid = $appid;
 
