@@ -3,7 +3,7 @@
  * Common util functions
  *
  * @author Anakeen 2002
- * @version $Id: Lib.Common.php,v 1.49 2008/09/11 12:24:13 eric Exp $
+ * @version $Id: Lib.Common.php,v 1.50 2008/09/11 14:50:04 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -565,6 +565,8 @@ function mkpasswd($length=8, $charspace="") {
 
 
 function setLanguage($lang) {
+  global $pubdir;
+//  print "<h1>setLanguage:$lang</H1>";
   setlocale(LC_MESSAGES,$lang);  
   setlocale(LC_MONETARY, $lang);
   setlocale(LC_TIME, $lang);
