@@ -58,6 +58,7 @@ Class htmlFreedomProvider {
     
     if( $this->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}]) ) {
       $session->register('username', $_POST[$this->parms{'username'}]);
+      $session->register('password', $_POST[$this->parms{'password'}]);
       return TRUE;
     }
     return FALSE;

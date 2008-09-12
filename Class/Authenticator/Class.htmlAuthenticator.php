@@ -122,6 +122,23 @@ Class htmlAuthenticator {
     return null;
   }
   
+  public function getAuthPw() {
+    if( is_callable(array($this->provider, 'getAuthPw')) ) {
+      return $this->provider->getAuthPw();
+    }
+    
+    session_name($this->parms{'cookie'});
+    session_id($_COOKIE[$this->parms{'cookie'}]);
+    session_start();
+    if( array_key_exists('password', $_SESSION) ) {
+      $password = $_SESSION['password'];
+      session_commit();
+      return $password;
+    }
+    session_commit();
+    return null;
+  }
+  
   public function logout($redir_uri="") {
     if( is_callable(array($this->provider, 'logout')) ) {
       return $this->provider->logout($redir_uri);

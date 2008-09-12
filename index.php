@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.59 2008/09/11 12:24:01 eric Exp $
+ * @version $Id: index.php,v 1.60 2008/09/12 15:45:41 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -62,7 +62,7 @@ if( $authtype != 'apache' ) {
   }
 
   $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
-  $_SERVER['PHP_AUTH_PW'] = '';//$auth->getAuthPw();//"Unknown";
+  $_SERVER['PHP_AUTH_PW'] = $auth->getAuthPw();
 }
 
 if( file_exists('maintenance.lock') ) {

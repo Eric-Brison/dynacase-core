@@ -40,6 +40,10 @@ Class Authenticator {
     return $this->authenticator->getAuthUser();
   }
   
+  public function getAuthPw() {
+    return $this->authenticator->getAuthPw();
+  }
+  
   public function logout($redir_uri="") {
     return $this->authenticator->logout($redir_uri);
   }
