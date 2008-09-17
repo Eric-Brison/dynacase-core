@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.60 2008/09/12 15:45:41 jerome Exp $
+ * @version $Id: index.php,v 1.61 2008/09/17 11:41:16 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -221,11 +221,13 @@ if (($standalone == "") || ($standalone == "N")) {
 
 }
 
-$core_lang = $auth->getSessionVar('CORE_LANG');
-if( $core_lang != '' ) {
-  $action->setParamU('CORE_LANG', $core_lang);
-  $auth->setSessionVar('CORE_LANG', '');
-}
+if ($auth) {
+  $core_lang = $auth->getSessionVar('CORE_LANG');
+  if( $core_lang != '' ) {
+    $action->setParamU('CORE_LANG', $core_lang);
+    $auth->setSessionVar('CORE_LANG', '');
+  }
+ }
 
 $nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
