@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.14 2008/05/21 17:26:11 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.15 2008/09/30 14:59:34 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -63,13 +63,46 @@ class OOoLayout extends Layout {
     }
   }
 
+  function parseListInBlock($block,$aid,$vkey) {
+    $head='<?xml version="1.0" encoding="UTF-8"?>
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">';
+    $foot='</office:document-content>';
+    $domblock=new DOMDocument();
 
+    $domblock->loadXML($head.trim($block).$foot);
 
-  function ParseBlock(&$out) {
-    $out = preg_replace(
+    $lists=$domblock->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list");
+    foreach ($lists as $list) {
+	$items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
+	if ($items->length > 0) {
+	  $item=$items->item(0);
+
+	  if (preg_match("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
+	    $skey=$reg[0];
+	    //	    print "serack key : [$skey] [$aid] [$vkey]";
+	    if ($skey == $aid) {
+	    //  $vkey=$this->rkey[$key];
+	    $tvkey=explode('<text:tab/>',$vkey);
+
+	    foreach ($tvkey as $key) {
+	      $clone=$item->cloneNode(true);
+	      $item->parentNode->appendChild($clone);
+	      $this->replaceNodeText($clone,$reg[0],$key);
+	    }
+	    $item->parentNode->removeChild($item);
+	    }	    
+	  }	
+      }
+    }
+ 
+    return $domblock->saveXML($domblock->firstChild->firstChild);
+  }
+
+  function ParseBlock() {
+     $this->template = preg_replace(
        "/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/se", 
        "\$this->SetBlock('\\1','\\2')",
-       $out);
+       $this->template);
   }
 
   function TestIf($name,$block,$not=false) {    
@@ -98,7 +131,29 @@ class OOoLayout extends Layout {
        "\$this->TestIf('\\2','\\3','\\1')",
        $this->template);
   }
+  function SetBlock($name,$block) {
+    if ($this->strip=='Y') {
+      //      $block = StripSlashes($block);
+      $block = str_replace("\\\"","\"",$block);
+    }
+    $out = "";
+    if (isset ($this->data) && isset ($this->data["$name"]) && is_array($this->data["$name"])) {
+      foreach($this->data["$name"] as $k=>$v) {
+        $loc=$block;
 
+        foreach ($this->corresp["$name"] as $k2=>$v2) {
+	  if (strstr( $v[$v2], '<text:tab/>'))	$loc=$this->parseListInBlock($loc,$k2,$v[$v2]);
+	  elseif ((! is_object($v[$v2])) && (! is_array($v[$v2]))) $loc = str_replace( $k2, $v[$v2], $loc);
+           
+	}
+	$this->rif=&$v;
+	//	$this->ParseIf($loc);
+        $out .= $loc;
+      }
+    }
+    //    $this->ParseBlock($out);
+    return ($out);
+  } 
   function ParseZone(&$out) {
     $out = preg_replace(
        "/\[ZONE\s*([^:]*):([^\]]*)\]/e",
@@ -330,8 +385,9 @@ class OOoLayout extends Layout {
 	if ($items->length > 0) {
 	  $item=$items->item(0);
 	  if (preg_match("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
-	    
-	    $key=substr(trim($reg[0]),1,-1);
+	 
+	    $key=substr(trim($reg[0]),1,-1);  
+	    if (isset($this->rkey[$key])) {
 	    $vkey=$this->rkey[$key];
 	    $tvkey=explode('<text:tab/>',$vkey);
 	    foreach ($tvkey as $key) {
@@ -339,7 +395,8 @@ class OOoLayout extends Layout {
 	      $item->parentNode->appendChild($clone);
 	      $this->replaceNodeText($clone,$reg[0],$key);
 	    }
-	    $item->parentNode->removeChild($item);	    
+	    $item->parentNode->removeChild($item);
+	  }
 	  }	
       }
     }
@@ -394,32 +451,61 @@ class OOoLayout extends Layout {
   function setColumn($key,$t) {
     $this->set($key,implode('<text:tab/>',$t));
   }
-  function SetBlockData($nothing,$data) {
-    $t=array();
-    if (is_array($data)) {
-      foreach ($data as $k=>$v) {
-	foreach ($v as $ki=>$vi) {
-	  $t[$ki][$k]=$vi;
+  function SetBlockData($p_nom_block,$data) {
+    if ($p_nom_block != "") {
+      if ($data!=null && $this->encoding=="utf-8") {
+      if (is_array($data)) {
+	foreach ($data as $k => $v) {
+	  foreach ($v as $kk => $vk) {
+	    if (!isUTF8($vk)) { 
+	      $data[$k][$kk] = utf8_encode($vk); 
+	    }
+	  }
 	}
+      } else {
+	if (!isUTF8($data)) $data = utf8_encode($data);
       }
     }
-    // fill array
-    $max=0;
-    foreach ($t as $k=>$v) {
-      if (count($v) > $max) $max=count($v);
-    }
-    foreach ($t as $k=>$v) {
-      if (count($v) < $max) {
-	$fill=array_fill(0,$max,'');
-	foreach ($v as $idx=>$vi) {
-	  $fill[$idx]=$vi;
+      $this->data[$p_nom_block]=$data; 
+      if (is_array($data))  {
+	reset($data);
+	$elem = pos($data);
+	if ( isset($elem) && is_array($elem)) {
+	  reset($elem);
+	  while (list($k,$v)=each($elem)) {
+	    if (!isset($this->corresp["$p_nom_block"]["[$k]"])) {
+	      $this->SetBlockCorresp($p_nom_block,$k);
+	    }
+	  }
 	}
-	$t[$k]=$fill;
       }
-    }    
-    // affect completed columns
-    foreach ($t as $k=>$v) {
-      $this->setColumn($k,$v);
+    } else {
+      $t=array();
+      if (is_array($data)) {
+	foreach ($data as $k=>$v) {
+	  foreach ($v as $ki=>$vi) {
+	    $t[$ki][$k]=$vi;
+	  }
+	}
+      }
+      // fill array
+      $max=0;
+      foreach ($t as $k=>$v) {
+	if (count($v) > $max) $max=count($v);
+      }
+      foreach ($t as $k=>$v) {
+	if (count($v) < $max) {
+	  $fill=array_fill(0,$max,'');
+	  foreach ($v as $idx=>$vi) {
+	    $fill[$idx]=$vi;
+	  }
+	  $t[$k]=$fill;
+	}
+      }    
+      // affect completed columns
+      foreach ($t as $k=>$v) {
+	$this->setColumn($k,$v);
+      }
     }
   }
   function addHTMLStyle() {
@@ -459,7 +545,6 @@ class OOoLayout extends Layout {
       }
     }  
 
-    //    $this->ParseBlock($out);
     // $this->rif=&$this->rkey;
     // $this->ParseIf($out);
 
@@ -472,6 +557,8 @@ class OOoLayout extends Layout {
     $this->template=$this->dom->saveXML();
     // Parse i18n text
 
+   
+    $this->ParseBlock();
     $this->ParseIf();
     //$this->ParseKeyXml();
     //$this->template=$this->dom->saveXML();
