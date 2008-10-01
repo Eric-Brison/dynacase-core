@@ -4,7 +4,7 @@ include_once('Class.DbObj.php');
 
 Class UserToken extends DbObj
 {
-  var $Class = '$Id: Class.UserToken.php,v 1.4 2008/08/13 15:30:21 jerome Exp $';
+  var $Class = '$Id: Class.UserToken.php,v 1.5 2008/10/01 09:18:50 jerome Exp $';
 
   var $fields = array(
 		     'token',
@@ -55,7 +55,11 @@ Class UserToken extends DbObj
   }
 
   function genToken() {
-    $rnd = gmp_strval(gmp_random($this->rndSize));
+    $rnd = rand();
+    for($i = 0; $i < $this->rndSize; $i++) {
+      $rnd .= rand();
+    }
+
     switch( strtolower($this->hAlg) )
       {
       case 'sha1':
