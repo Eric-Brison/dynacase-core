@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @version $Id: loginform.php,v 1.16 2008/09/11 14:56:20 eric Exp $
+ * @version $Id: loginform.php,v 1.17 2008/10/10 07:16:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -74,7 +74,7 @@ function loginform(&$action) {
       $lang_block[$k]['LANG_IS_SELECTED'] = ($ulang==$k);
     }
     $action->lay->setBlockData('LANG', $lang_block);
-
+    $action->parent->short_name=sprintf(_("%s Authentification"),$action->getParam("CORE_CLIENT"));
 }
       
 ?>
