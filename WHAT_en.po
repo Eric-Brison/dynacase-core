@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 16:20+0200\n"
-"PO-Revision-Date: 2008-08-18 16:21+0200\n"
+"POT-Creation-Date: 2008-10-10 09:55+0200\n"
+"PO-Revision-Date: 2008-10-10 10:03+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -140,10 +140,14 @@ msgid ""
 msgstr ""
 
 msgid "auth_failure"
-msgstr "Authentification failed : try again"
+msgstr "Authentication failed : try again"
 
 msgid "welcome"
 msgstr "Welcome !"
+
+#, c-format
+msgid "%s Authentification"
+msgstr "%s Authentication"
 
 #, c-format
 msgid "file for %s not found."
@@ -201,7 +205,53 @@ msgstr "Your login has expired"
 msgid "the user identification is unknow"
 msgstr ""
 
+msgid "User must be authenticate"
+msgstr ""
+
+#, c-format
+msgid "Choose database in %s (%s)"
+msgstr ""
+
+#, c-format
+msgid "Database : [%s]"
+msgstr ""
+
+#, c-format
+msgid "API file %s not found"
+msgstr ""
+
+#, c-format
+msgid "Error : %s\n"
+msgstr ""
+
+#, c-format
+msgid "Caught Exception : %s\n"
+msgstr ""
+
+#, c-format
+msgid "Create other database for %s (%s)"
+msgstr ""
+
+msgid "I can't find hostname alias"
+msgstr ""
+
+msgid "Enter name for database ? "
+msgstr ""
+
+#, c-format
+msgid "Context  : [%s]"
+msgstr ""
+
+msgid "Continue (Y|N) ?"
+msgstr ""
+
 msgid "create databases ?"
+msgstr ""
+
+msgid "cannot access to  database $db\n"
+msgstr ""
+
+msgid "access granted to  database $db\n"
 msgstr ""
 
 #, c-format
@@ -224,12 +274,6 @@ msgstr ""
 
 #, c-format
 msgid "Attribute %s modified to %s"
-msgstr ""
-
-msgid "cannot access to  database $db\n"
-msgstr ""
-
-msgid "access granted to  database $db\n"
 msgstr ""
 
 #, fuzzy
@@ -346,15 +390,6 @@ msgstr "The subject of the mail for password responses"
 
 msgid "show language selection"
 msgstr "Show language selection in login panel"
-
-msgid "Core"
-msgstr ""
-
-msgid "Core Application Manager"
-msgstr ""
-
-msgid "concat stylecss+sizecss"
-msgstr ""
 
 #, fuzzy
 msgid "application version"
@@ -480,6 +515,15 @@ msgstr ""
 msgid "language"
 msgstr "lang"
 
+msgid "Core"
+msgstr ""
+
+msgid "Core Application Manager"
+msgstr ""
+
+msgid "concat stylecss+sizecss"
+msgstr ""
+
 msgid "francais"
 msgstr "french"
 
@@ -593,9 +637,6 @@ msgstr ""
 msgid "empty password : not changed"
 msgstr ""
 
-msgid "User must be authenticate"
-msgstr ""
-
 msgid "no referer url found"
 msgstr ""
 
@@ -608,6 +649,10 @@ msgstr ""
 
 msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 msgstr ""
+
+#, fuzzy
+msgid "descr"
+msgstr "Description"
 
 msgid "controlaccess"
 msgstr "Access Control"
@@ -758,6 +803,24 @@ msgstr "Add parameter"
 msgid "delconfirmstyle"
 msgstr "Sure to delete style"
 
+msgid "warning_name"
+msgstr "Your name is required"
+
+msgid "warning_pass"
+msgstr "Your password is required"
+
+msgid "yourusername"
+msgstr "Your name :"
+
+msgid "yourpassword"
+msgstr "Your password :"
+
+msgid "authent reqpassword"
+msgstr "Lost password?"
+
+msgid "Do connection"
+msgstr ""
+
 msgid "callbackreqpasswd_callback_ok"
 msgstr ""
 "<p>Your password has been re-initialized, and the new password has been sent "
@@ -783,24 +846,6 @@ msgstr ""
 "</pre>\n"
 "<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a></"
 "p>"
-
-msgid "warning_name"
-msgstr "Your name is required"
-
-msgid "warning_pass"
-msgstr "Your password is required"
-
-msgid "yourusername"
-msgstr "Your name :"
-
-msgid "yourpassword"
-msgstr "Your password :"
-
-msgid "authent reqpassword"
-msgstr "Lost password?"
-
-msgid "Do connection"
-msgstr ""
 
 msgid "reqpasswd_login"
 msgstr "Login"
@@ -846,6 +891,27 @@ msgstr ""
 "[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
 "[CALLBACK_TOKEN]</a></p>"
 
+msgid "You use an too old Internet explorer navigator"
+msgstr ""
+
+msgid "please upgrade to Internet explorer 6.0 or greater"
+msgstr ""
+
+msgid "Internet explorer site"
+msgstr ""
+
+msgid "You use an too old Netscape navigator"
+msgstr ""
+
+msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr ""
+
+msgid "mozilla site"
+msgstr ""
+
+msgid "nestcape site"
+msgstr ""
+
 msgid "Javascript must be enabled in your navigator"
 msgstr ""
 
@@ -867,15 +933,6 @@ msgid "You must upgrade to version 6 or more"
 msgstr ""
 
 msgid "Manuals"
-msgstr ""
-
-msgid "You use an too old Internet explorer navigator"
-msgstr ""
-
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-
-msgid "Internet explorer site"
 msgstr ""
 
 #, fuzzy
@@ -918,18 +975,6 @@ msgid "New version has been installed."
 msgstr ""
 
 msgid "You must clear navigator cache."
-msgstr ""
-
-msgid "You use an too old Netscape navigator"
-msgstr ""
-
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-
-msgid "mozilla site"
-msgstr ""
-
-msgid "nestcape site"
 msgstr ""
 
 msgid "Progress bar"
@@ -997,47 +1042,6 @@ msgstr "Can't modify parameter"
 
 msgid "delconfirmparam"
 msgstr "Sure to delete parameter"
-
-#, c-format
-msgid "Choose database in %s (%s)"
-msgstr ""
-
-#, c-format
-msgid "Database : [%s]"
-msgstr ""
-
-#, c-format
-msgid "API file %s not found"
-msgstr ""
-
-#, c-format
-msgid "Error : %s\n"
-msgstr ""
-
-#, c-format
-msgid "Caught Exception : %s\n"
-msgstr ""
-
-#, c-format
-msgid "Create other database for %s (%s)"
-msgstr ""
-
-msgid "I can't find hostname alias"
-msgstr ""
-
-msgid "Enter name for database ? "
-msgstr ""
-
-#, c-format
-msgid "Context  : [%s]"
-msgstr ""
-
-msgid "Continue (Y|N) ?"
-msgstr ""
-
-#, fuzzy
-msgid "descr"
-msgstr "Description"
 
 #~ msgid "UK english"
 #~ msgstr "UK english"

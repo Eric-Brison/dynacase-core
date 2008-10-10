@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 16:20+0200\n"
-"PO-Revision-Date: 2008-10-02 11:21+0200\n"
+"POT-Creation-Date: 2008-10-10 09:55+0200\n"
+"PO-Revision-Date: 2008-10-10 10:02+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -148,6 +148,10 @@ msgid "welcome"
 msgstr "Bienvenue !"
 
 #, c-format
+msgid "%s Authentification"
+msgstr "%s Authentification"
+
+#, c-format
 msgid "file for %s not found."
 msgstr "fichier pour %s non trouvé."
 
@@ -204,8 +208,54 @@ msgstr "expiration"
 msgid "the user identification is unknow"
 msgstr "l'identification de l'utilisateur est inconnue"
 
+msgid "User must be authenticate"
+msgstr "L'utilisateur doit être authentifié"
+
+#, c-format
+msgid "Choose database in %s (%s)"
+msgstr "Choix de la base de données dans %s (%s)"
+
+#, c-format
+msgid "Database : [%s]"
+msgstr "Base de données : [%s]"
+
+#, c-format
+msgid "API file %s not found"
+msgstr "fichier API %s non trouvé."
+
+#, c-format
+msgid "Error : %s\n"
+msgstr "Erreur : %s\n"
+
+#, c-format
+msgid "Caught Exception : %s\n"
+msgstr "Attrape exception : %s\n"
+
+#, c-format
+msgid "Create other database for %s (%s)"
+msgstr "Création d'autres bases pour %s (%s)"
+
+msgid "I can't find hostname alias"
+msgstr "Alias de hostname introuvable"
+
+msgid "Enter name for database ? "
+msgstr "Nom de la base de donnée ?"
+
+#, c-format
+msgid "Context  : [%s]"
+msgstr "Contexte : [%s]"
+
+msgid "Continue (Y|N) ?"
+msgstr "Continuer (Y (oui) |N (non)) ?"
+
 msgid "create databases ?"
 msgstr "Créer les bases de données ?"
+
+msgid "cannot access to  database $db\n"
+msgstr "accès à la base de données $db refusé\n"
+
+msgid "access granted to  database $db\n"
+msgstr "accès à la base de données $db autorisé\n"
 
 #, c-format
 msgid "%s style updated\n"
@@ -230,12 +280,6 @@ msgstr "Attribut %s non modifié : %s\n"
 #, c-format
 msgid "Attribute %s modified to %s"
 msgstr "Attribut %s modifié par %s"
-
-msgid "cannot access to  database $db\n"
-msgstr "accès à la base de données $db refusé\n"
-
-msgid "access granted to  database $db\n"
-msgstr "accès à la base de données $db autorisé\n"
 
 msgid "Access"
 msgstr "Accessibilités"
@@ -335,15 +379,6 @@ msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
 
 msgid "show language selection"
 msgstr "Affiche la sélection de la langue lors de la demande de mot de passe"
-
-msgid "Core"
-msgstr "Noyau"
-
-msgid "Core Application Manager"
-msgstr "Page d'accueil"
-
-msgid "concat stylecss+sizecss"
-msgstr "concaténation style + size css"
 
 msgid "application version"
 msgstr "version application"
@@ -465,6 +500,15 @@ msgstr "squirrelmail:  répertoire d'installation (relatif)"
 msgid "language"
 msgstr "langue"
 
+msgid "Core"
+msgstr "Noyau"
+
+msgid "Core Application Manager"
+msgstr "Page d'accueil"
+
+msgid "concat stylecss+sizecss"
+msgstr "concaténation style + size css"
+
 msgid "francais"
 msgstr "français"
 
@@ -578,9 +622,6 @@ msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
 msgid "empty password : not changed"
 msgstr "mot de passe vide : non changé"
 
-msgid "User must be authenticate"
-msgstr "L'utilisateur doit être authentifié"
-
 msgid "no referer url found"
 msgstr "pas d'URL reférence trouvée"
 
@@ -589,11 +630,15 @@ msgid "file not found : %s"
 msgstr "fichier %s non trouvé."
 
 msgid "cannot access to core database service [service='$pgservice_core']"
-msgstr "accès impossible à la base de données par défaut [service='$pgservice_core']"
+msgstr ""
+"accès impossible à la base de données par défaut [service='$pgservice_core']"
 
 msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 msgstr ""
 "terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
+
+msgid "descr"
+msgstr "Description"
 
 msgid "controlaccess"
 msgstr "Contrôle des accès"
@@ -730,6 +775,24 @@ msgstr "Liste des paramètres style"
 msgid "delconfirmstyle"
 msgstr "Confirmez-vous la suppression du style"
 
+msgid "warning_name"
+msgstr "la saisie de votre nom est obligatoire."
+
+msgid "warning_pass"
+msgstr "la saisie de votre mot de passe est obligatoire."
+
+msgid "yourusername"
+msgstr "votre nom d'utilisateur"
+
+msgid "yourpassword"
+msgstr "votre mot de passe"
+
+msgid "authent reqpassword"
+msgstr "Mot de passe oublié ?"
+
+msgid "Do connection"
+msgstr "se connecter"
+
 msgid "callbackreqpasswd_callback_ok"
 msgstr ""
 "<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a "
@@ -756,24 +819,6 @@ msgstr ""
 "<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
 "[CORE_EXTERNURL]</a>"
 
-msgid "warning_name"
-msgstr "la saisie de votre nom est obligatoire."
-
-msgid "warning_pass"
-msgstr "la saisie de votre mot de passe est obligatoire."
-
-msgid "yourusername"
-msgstr "votre nom d'utilisateur"
-
-msgid "yourpassword"
-msgstr "votre mot de passe"
-
-msgid "authent reqpassword"
-msgstr "Mot de passe oublié ?"
-
-msgid "Do connection"
-msgstr "se connecter"
-
 msgid "reqpasswd_login"
 msgstr "Nom de connexion"
 
@@ -789,7 +834,8 @@ msgstr "Envoyer"
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
 "<p>Votre demande a bien été prise en compte.</p>\n"
-"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour finaliser la ré-initialisation de votre mot de passe.</p>"
+"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
+"finaliser la ré-initialisation de votre mot de passe.</p>"
 
 msgid "submitreqpasswd_form_send_error_invalid_args"
 msgstr ""
@@ -810,8 +856,38 @@ msgstr "Bonjour"
 
 msgid "submitreqpasswd_mail_callbackurl"
 msgstr ""
-"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est pas le cas, veuillez détruire ce message.</p>\n"
-"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
+"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est "
+"pas le cas, veuillez détruire ce message.</p>\n"
+"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
+"suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL][CORE_BASEURL]"
+"app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">"
+"[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
+"[CALLBACK_TOKEN]</a></p>"
+
+msgid "You use an too old Internet explorer navigator"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "please upgrade to Internet explorer 6.0 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
+"supérieur) "
+
+msgid "Internet explorer site"
+msgstr "Site de Microsoft"
+
+msgid "You use an too old Netscape navigator"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
+"ou Mozilla 1.0.1 (ou supérieur)"
+
+msgid "mozilla site"
+msgstr "site de Mozilla"
+
+msgid "nestcape site"
+msgstr "Site de Netscape"
 
 msgid "Javascript must be enabled in your navigator"
 msgstr "Javascript doit être activé dans votre navigateur"
@@ -838,17 +914,6 @@ msgstr "Vous devez mettre à jour avec la version 6 au minimum"
 
 msgid "Manuals"
 msgstr "Manuels"
-
-msgid "You use an too old Internet explorer navigator"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
-"supérieur) "
-
-msgid "Internet explorer site"
-msgstr "Site de Microsoft"
 
 msgid "view log"
 msgstr "voir les messages"
@@ -889,20 +954,6 @@ msgstr "Une nouvelle version vient d'être installée."
 
 msgid "You must clear navigator cache."
 msgstr "Vous devez effacer le cache de votre navigateur."
-
-msgid "You use an too old Netscape navigator"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
-"ou Mozilla 1.0.1 (ou supérieur)"
-
-msgid "mozilla site"
-msgstr "site de Mozilla"
-
-msgid "nestcape site"
-msgstr "Site de Netscape"
 
 msgid "Progress bar"
 msgstr "Barre de progression"
@@ -963,46 +1014,6 @@ msgstr "paramètre non modifiable"
 
 msgid "delconfirmparam"
 msgstr "Confirmez-vous la suppression du param&egrave;tre "
-
-#, c-format
-msgid "Choose database in %s (%s)"
-msgstr "Choix de la base de données dans %s (%s)"
-
-#, c-format
-msgid "Database : [%s]"
-msgstr "Base de données : [%s]"
-
-#, c-format
-msgid "API file %s not found"
-msgstr "fichier API %s non trouvé."
-
-#, c-format
-msgid "Error : %s\n"
-msgstr "Erreur : %s\n"
-
-#, c-format
-msgid "Caught Exception : %s\n"
-msgstr "Attrape exception : %s\n"
-
-#, c-format
-msgid "Create other database for %s (%s)"
-msgstr "Création d'autres bases pour %s (%s)"
-
-msgid "I can't find hostname alias"
-msgstr "Alias de hostname introuvable"
-
-msgid "Enter name for database ? "
-msgstr "Nom de la base de donnée ?"
-
-#, c-format
-msgid "Context  : [%s]"
-msgstr "Contexte : [%s]"
-
-msgid "Continue (Y|N) ?"
-msgstr "Continuer (Y (oui) |N (non)) ?"
-
-msgid "descr"
-msgstr "Description"
 
 #~ msgid "UK english"
 #~ msgstr "anglais GB"
