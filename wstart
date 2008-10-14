@@ -4,6 +4,11 @@ if [ "$freedom_context" == "" ]; then
    wchoose -b
 fi
 
+if [ -z "$wpub" ]; then
+    echo "Warning: wpub is not set. Exiting now !"
+    exit 0
+fi
+
 if [ -f $wpub/maintenance.lock ]; then
     /bin/rm $wpub/maintenance.lock
 fi

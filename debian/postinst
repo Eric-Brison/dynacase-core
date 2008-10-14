@@ -29,7 +29,7 @@ case "$1" in
 	sed -i '/shttpd/d' /etc/sudoers
 	echo "www-data ALL=NOPASSWD:/usr/share/what/admin/shttpd" >> /etc/sudoers
 	/usr/share/what/wstop
-	chown  www-data /usr/share/what/.freedom
+	chown  www-data /usr/share/what/.freedom || /bin/true
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
