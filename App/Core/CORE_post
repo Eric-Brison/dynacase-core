@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$dbpsql" == "" ]; then
+if [ "$freedom_context" == "" ]; then
   . /etc/freedom.conf
    wchoose -b
 fi
