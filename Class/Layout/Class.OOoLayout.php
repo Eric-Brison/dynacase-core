@@ -3,7 +3,7 @@
  * Layout Class for OOo files
  *
  * @author Anakeen 2000 
- * @version $Id: Class.OOoLayout.php,v 1.15 2008/09/30 14:59:34 eric Exp $
+ * @version $Id: Class.OOoLayout.php,v 1.16 2008/10/31 17:01:18 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -55,21 +55,47 @@ class OOoLayout extends Layout {
 	  $this->odf2content($file);
 	  $this->file=$file;
 	  $this->dom=new DOMDocument();
+	  	 
 	  $this->dom->loadXML($this->template);
 	}
       } else {
-	$this->template="file $file not exists";
+	$this->template="file  [$caneva] not exists";
       }
     }
   }
+  function innerXML(&$node){
+    if(!$node) return false;
+    $document = $node->ownerDocument;
+    $nodeAsString = $document->saveXML($node);
+    preg_match('!\<.*?\>(.*)\</.*?\>!s',$nodeAsString,$match);
+    return $match[1];
+  }
 
-  function parseListInBlock($block,$aid,$vkey) {
+  function parseListInBlock($block,$aid,$vkey) {    
     $head='<?xml version="1.0" encoding="UTF-8"?>
 <office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">';
     $foot='</office:document-content>';
     $domblock=new DOMDocument();
+    
+    $block=trim($block);
+    if (substr($block,0,2)=='</') {
+      // fragment of block
+      $firsttag=strpos($block,'>');
+      $lasttag=strrpos($block,'<');
+      $frag1=substr($block,0,$firsttag+1);
+      $frag2=substr($block,$lasttag);
+      $block=substr($block,$firsttag+1,$lasttag-strlen($block));
+      // print("\nfrag1:$frag1  $lasttag rag2:$frag2\n");
+      //      print("\n====================\n");
+      //print("\nNB:[$block]\n");
+      
+    }
 
-    $domblock->loadXML($head.trim($block).$foot);
+    if (! $domblock->loadXML($head.$block.$foot)) {
+      print "\n=============\n";
+      print $head.trim($block).$foot;
+      return $block;
+    }
 
     $lists=$domblock->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list");
     foreach ($lists as $list) {
@@ -94,8 +120,8 @@ class OOoLayout extends Layout {
 	  }	
       }
     }
- 
-    return $domblock->saveXML($domblock->firstChild->firstChild);
+    return $frag1.$this->innerXML($domblock->firstChild).$frag2;
+    return $frag1.$domblock->saveXML($domblock->firstChild->firstChild).$frag2;
   }
 
   function ParseBlock() {
@@ -142,8 +168,10 @@ class OOoLayout extends Layout {
         $loc=$block;
 
         foreach ($this->corresp["$name"] as $k2=>$v2) {
-	  if (strstr( $v[$v2], '<text:tab/>'))	$loc=$this->parseListInBlock($loc,$k2,$v[$v2]);
-	  elseif ((! is_object($v[$v2])) && (! is_array($v[$v2]))) $loc = str_replace( $k2, $v[$v2], $loc);
+
+	  if (strstr( $v[$v2], '<text:tab/>')) {	    
+	    $loc=$this->parseListInBlock($loc,$k2,$v[$v2]);
+	  } elseif ((! is_object($v[$v2])) && (! is_array($v[$v2]))) $loc = str_replace( $k2, $v[$v2], $loc);
            
 	}
 	$this->rif=&$v;
