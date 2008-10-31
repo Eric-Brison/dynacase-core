@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php.q,v 1.26 2008/08/12 12:46:18 eric Exp $
+ * @version $Id: index.php.q,v 1.27 2008/10/31 17:02:19 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -79,12 +79,14 @@ if( $authtype != 'apache' ) {
   }
 
   $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
-  $_SERVER['PHP_AUTH_PW'] = "Unknown";
+  $_SERVER['PHP_AUTH_PW'] = $auth->getAuthPw();
 }
 
 if( file_exists('maintenance.lock') ) {
   if( $_SERVER['PHP_AUTH_USER'] != 'admin' ) {
-    $auth->logout();
+    if( $authtype != 'apache' ) {
+      $auth->logout();
+    }
     include_once('WHAT/stop.php');
     exit(0);
   }
@@ -242,6 +244,14 @@ if (($standalone == "") || ($standalone == "N")) {
 
 }
 
+if ($auth) {
+  $core_lang = $auth->getSessionVar('CORE_LANG');
+  if( $core_lang != '' ) {
+    $action->setParamU('CORE_LANG', $core_lang);
+    $auth->setSessionVar('CORE_LANG', '');
+  }
+ }
+
 $nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
@@ -260,14 +270,9 @@ if ($action->Read("navigator","") == "") {
 }
 $core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
 // init for gettext
-setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
-setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
-setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
-//print $action->Getparam("CORE_LANG");
-putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
-bindtextdomain ("what", "$pubdir/locale");
-bind_textdomain_codeset("what", 'ISO-8859-15');
-textdomain ("what");
+
+setLanguage($action->Getparam("CORE_LANG"));
+
 $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/tracetime.js");
 $deb=gettimeofday();
 $ticainit= $deb["sec"]+$deb["usec"]/1000000;
