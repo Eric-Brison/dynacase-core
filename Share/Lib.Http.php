@@ -3,7 +3,7 @@
  * Set of usefull HTTP functions
  *
  * @author Anakeen 2000
- * @version $Id: Lib.Http.php,v 1.36 2008/08/12 12:47:32 eric Exp $
+ * @version $Id: Lib.Http.php,v 1.37 2008/10/31 17:00:50 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -146,7 +146,10 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE,$mime_type="") {
 }
 
 function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=true) {
-
+  if (! file_exists($filename)) {
+     printf(_("file not found : %s"),$filename);
+     return;
+  }
   
   if (!$inline) header("Content-Disposition: attachment;filename=\"$name\"");  
   if ($cache) {
