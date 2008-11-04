@@ -178,6 +178,16 @@
             <xsl:apply-templates/>
             </text:p>
         </xsl:template>
+        <xsl:template match="xhtml:div2">
+            <text:section> 
+            <xsl:apply-templates/>
+            </text:section>
+        </xsl:template>
+        <xsl:template match="xhtml:div[xhtml:span]">
+             <text:p>
+            <xsl:apply-templates/>
+            </text:p>
+        </xsl:template>
         
         <xsl:template match="xhtml:h1">
             <text:h text:outline-level='1'>
