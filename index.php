@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.62 2008/10/15 08:41:42 jerome Exp $
+ * @version $Id: index.php,v 1.63 2008/11/07 09:46:32 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -228,8 +228,10 @@ if ($auth) {
   if( $core_lang != '' ) {
     $action->setParamU('CORE_LANG', $core_lang);
     $auth->setSessionVar('CORE_LANG', '');
-  }
- }
+  }    
+  $action->auth=&$auth;
+  $core->SetVolatileParam("CORE_BASICAUTH",'&authtype=basic');
+ } else  $core->SetVolatileParam("CORE_BASICAUTH",'');
 
 $nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
