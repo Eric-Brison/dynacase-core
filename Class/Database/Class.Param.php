@@ -3,7 +3,7 @@
  * Parameters values
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Param.php,v 1.28 2008/09/11 14:49:32 eric Exp $
+ * @version $Id: Class.Param.php,v 1.29 2008/11/13 16:43:11 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -75,7 +75,10 @@ function Set($name,$val,$type=PARAM_GLB,$appid='') {
   if ($pdef->isAffected()) {
     if ($pdef->isglob=='Y') {
       $appid=$pdef->appid;
-      if ($action) $action->parent->session->close(); // need to refresh all application parameters
+      if ($action) {
+	$action->parent->session->close(); // need to refresh all application parameters
+	$action->parent->session->set(); // reopen current session
+      }
     }
   }
   $this->appid = $appid;
