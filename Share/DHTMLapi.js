@@ -25,6 +25,7 @@ function initDHTMLAPI() {
 }
 // set event handler to initialize API
 //window.onload = initDHTMLAPI;
+addEvent(window,'load',initDHTMLAPI);
 
 // Seek nested NN4 layer from string name
 function seekLayer(doc, name) {
