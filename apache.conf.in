@@ -21,8 +21,14 @@ Alias /freedom @prefix@
       AuthName 'FREEDOM Connection'      
       AuthBasicProvider pam
       AuthnPAMService httpd
-
-
+      Require valid-user
+    </Files>
+    <Files ~ "indexq.php">
+      ErrorDocument 401 /what/expire/tryexpire.html
+      AuthType Basic
+      AuthName 'FREEDOM Connection'      
+      AuthBasicProvider pam
+      AuthnPAMService httpd
       Require valid-user
     </Files>
     <FilesMatch "\.conf|dbaccess.php|wstop|wcheck|wcontrol|wsh.php">

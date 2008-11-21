@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: indexq.php,v 1.1 2008/11/21 15:02:30 marc Exp $
+ * @version $Id: indexq.php,v 1.2 2008/11/21 15:03:39 marc Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -27,6 +27,13 @@ function dtic($text="") {
   $msg= sprintf("%s : %.03f -  %.03f ",$text,($tuc1-$ptic), ($tuc1-$ptic0));
   $ptic=$tuc1;
   return $msg;
+}
+
+function dtrace($text) {
+  global $trace;
+  global $TSQLDELAY;
+  $tsql=count($TSQLDELAY);
+  $trace[]=dtic($text). "#$tsql";
 }
 $deb=gettimeofday();
 $tic1 = $deb["sec"]+$deb["usec"]/1000000;
