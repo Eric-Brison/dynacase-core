@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: indexq.php,v 1.2 2008/11/21 15:03:39 marc Exp $
+ * @version $Id: indexq.php,v 1.3 2008/11/25 14:42:56 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -301,7 +301,7 @@ if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
    $trace["server all"]=sprintf("%.03fs" ,$tic4-$tic1);
    $trace["n"]="-------------";
    $strace='var TTRACE=new Object();'."\n";
-   foreach ($trace as $k=>$v) $strace.=sprintf(" TTRACE['%s']='%s';\n",$k,$v);
+   foreach ($trace as $k=>$v) $strace.=sprintf(" TTRACE['%s']='%s';\n",$k,str_replace("'"," ",$v));
    $out=str_replace("<head>","<head><script>$strace</script>",$out);
    echo ($out);
    $action->unregister("trace");   
