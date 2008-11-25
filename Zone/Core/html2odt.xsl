@@ -135,7 +135,8 @@
             <text:span text:style-name="Tbold"> 
                 <xsl:apply-templates/>
             </text:span>
-        </xsl:template>
+        </xsl:template> 
+	
 
         <xsl:template match="xhtml:strong">
             <text:span text:style-name="Tbold"> 
@@ -178,23 +179,26 @@
             <xsl:apply-templates/>
             </text:p>
         </xsl:template>
-        <xsl:template match="xhtml:div2">
-            <text:section> 
+        <xsl:template match="xhtml:div">
+            <text:p> 
             <xsl:apply-templates/>
-            </text:section>
+            </text:p>
         </xsl:template>
+        <xsl:template match="xhtml:p[xhtml:div]">
+            <text:span> 
+            <xsl:apply-templates/>
+            </text:span>
+        </xsl:template>        
         <xsl:template match="xhtml:div[xhtml:span]">
              <text:p>
             <xsl:apply-templates/>
             </text:p>
-        </xsl:template>
-        
+        </xsl:template>        
         <xsl:template match="xhtml:h1">
             <text:h text:outline-level='1'>
             <xsl:apply-templates/>
             </text:h>
         </xsl:template>                    
-
         <xsl:template match="xhtml:h2">
             <text:h text:outline-level='2'>
             <xsl:apply-templates/>
@@ -230,6 +234,7 @@
             <xsl:apply-templates/>
             </text:p></text:list-item>
         </xsl:template>
+
         <xsl:template match="xhtml:br">
             <text:line-break>
             <xsl:apply-templates/>
