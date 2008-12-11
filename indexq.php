@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: indexq.php,v 1.3 2008/11/25 14:42:56 eric Exp $
+ * @version $Id: indexq.php,v 1.4 2008/12/11 15:13:30 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -13,31 +13,11 @@
  /**
  */
 global $tic1;
-function dtic($text="") {
-  static $ptic=0;
-  static $ptic0=0;
 
-  $deb=gettimeofday();
-  $tuc1= $deb["sec"]+$deb["usec"]/1000000;
-  if ($ptic==0) {
-    $ptic=$tuc1;
-    $ptic0=$tuc1;
-  }
-
-  $msg= sprintf("%s : %.03f -  %.03f ",$text,($tuc1-$ptic), ($tuc1-$ptic0));
-  $ptic=$tuc1;
-  return $msg;
-}
-
-function dtrace($text) {
-  global $trace;
-  global $TSQLDELAY;
-  $tsql=count($TSQLDELAY);
-  $trace[]=dtic($text). "#$tsql";
-}
 $deb=gettimeofday();
 $tic1 = $deb["sec"]+$deb["usec"]/1000000;
 include_once('WHAT/Lib.Common.php');
+include_once('WHAT/wdebug.php');
 
 $authtype = getAuthType();
  
