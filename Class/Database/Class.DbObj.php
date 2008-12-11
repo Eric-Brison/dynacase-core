@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.56 2008/04/25 09:20:18 jerome Exp $
+ * @version $Id: Class.DbObj.php,v 1.57 2008/12/11 15:14:49 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,7 +14,7 @@
 
 // ---------------------------------------------------------------------------
 // Db Object
-// @version $Id: Class.DbObj.php,v 1.56 2008/04/25 09:20:18 jerome Exp $
+// @version $Id: Class.DbObj.php,v 1.57 2008/12/11 15:14:49 eric Exp $
 // ---------------------------------------------------------------------------
 // Anakeen 2000 - yannick.lebriquer@anakeen.com
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.56 2008/04/25 09:20:18 jerome Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.57 2008/12/11 15:14:49 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -636,7 +636,8 @@ function exec_query($sql,$lvl=0)
      if ($SQLDEBUG) {
        global $TSQLDELAY;
        $SQLDELAY+=microtime_diff(microtime(),$sqlt1);// to test delay of request
-       $TSQLDELAY[]=array("t"=>sprintf("%.04f",microtime_diff(microtime(),$sqlt1)),"s"=>str_replace("from","<br/>from",$sql));
+       $TSQLDELAY[]=array("t"=>sprintf("%.04f",microtime_diff(microtime(),$sqlt1)),"s"=>str_replace("from","<br/>from",$sql),
+			  "st"=>stacktrace(8));
      }
     return ($this->msg_err);
   }
