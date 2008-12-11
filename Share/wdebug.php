@@ -3,7 +3,7 @@
  * Set of usefull debug functions
  *
  * @author Anakeen 2008
- * @version $Id: wdebug.php,v 1.1 2008/12/11 15:13:07 eric Exp $
+ * @version $Id: wdebug.php,v 1.2 2008/12/11 15:16:21 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -34,7 +34,7 @@ function dtrace($text) {
 }
 
 function stacktrace($level=3) {
-  $stack=xdebug_get_function_stack();
+  $stack=@xdebug_get_function_stack();
   $t=array();
   foreach ($stack as $k=>$v) {
     $t[]= sprintf("[%s:%d]%s",
