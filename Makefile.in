@@ -79,8 +79,9 @@ $(rootprefix)/etc/freedom.conf:
 $(rootprefix)/etc/cron.daily:
 	mkdir -p $@
 
-$(rootprefix)/etc/cron.daily/WHAT.cron:WHAT.cron $(rootprefix)/etc/cron.daily
+$(rootprefix)/etc/cron.daily/freedomcore: WHAT.cron $(rootprefix)/etc/cron.daily
 	cp WHAT.cron $@
+	chmod 644 $@
 
 $(pubdir)/FDLGEN:
 	mkdir -p $@
@@ -91,7 +92,7 @@ $(pubdir)/context/default/FDLGEN:
 $(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
 	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/WHAT.cron $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
+publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
