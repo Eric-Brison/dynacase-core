@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: DEFAULT.css,v 1.14 2008/05/09 09:34:26 eric Exp $
+ * $Id: DEFAULT.css,v 1.15 2008/12/11 15:12:53 eric Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -8,7 +8,7 @@
 
 
 body, .core {
-  background-color: [CORE_BGCOLOR];
+/*  background-color: [CORE_BGCOLOR];*/
   background-image: [CORE_BGIMAGE];
   color: [CORE_TEXTFGCOLOR];
 }
@@ -120,6 +120,9 @@ input[type="text"] {
   /*-moz-border-radius:7px ;*/
 
   border:inset 1px [input-text-normal-color];
+ }
+input[type="checkbox"], input[type="radio"] { 
+  vertical-align:middle; 
  }
 input[disabled], textarea[disabled] {
   color:[input-text-disabled-color];
