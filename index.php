@@ -5,7 +5,7 @@
  * All HTTP requests call index.php to execute action within application
  *
  * @author Anakeen 2000 
- * @version $Id: index.php,v 1.63 2008/11/07 09:46:32 eric Exp $
+ * @version $Id: index.php,v 1.64 2008/12/16 15:51:53 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -18,7 +18,6 @@ include_once('WHAT/Lib.Common.php');
 $authtype = getAuthType();
  
 if( $authtype == 'basic' || $authtype == 'html' ) {
-  ini_set("session.use_cookies","0");
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
 			    array_merge(

@@ -3,7 +3,7 @@
  * Main program to activate action in WHAT software in guest mode
  *
  * @author Anakeen 2000 
- * @version $Id: guest.php,v 1.23 2008/06/24 16:05:51 jerome Exp $
+ * @version $Id: guest.php,v 1.24 2008/12/16 15:51:53 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage 
@@ -11,7 +11,7 @@
  /**
  */
 
-
+include_once('WHAT/Lib.Common.php');
 
 #
 # This is the main body of App manager
@@ -28,12 +28,6 @@ include_once('Lib.Http.php');
 include_once('Class.Log.php');
 include_once('Class.Domain.php');
 include_once('Class.DbObj.php');
-
-
-$authtype = getAuthType();
-if( $authtype == 'basic' || $authtype == 'html' ) {
-  ini_set("session.use_cookies","0");
- }
 
 
 $log=new Log("","guest.php");
