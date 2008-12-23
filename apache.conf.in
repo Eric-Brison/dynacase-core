@@ -5,6 +5,7 @@ Alias /freedom @prefix@
 <Directory "@prefix@">
     AddType application/x-httpd-php .php
     DirectoryIndex  index.php
+    AllowOverride Options
     <Files ~ "index.php">
       ErrorDocument 401 /what/expire/tryexpire.html
       <IfModule mod_authn_pam.c>
