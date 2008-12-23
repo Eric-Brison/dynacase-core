@@ -3,7 +3,7 @@
  * Default install directory
  *
  * @author Anakeen 2005
- * @version $Id: Lib.Prefix.php.in,v 1.7 2008/12/16 15:51:53 jerome Exp $
+ * @version $Id: Lib.Prefix.php.in,v 1.8 2008/12/23 08:01:42 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,7 +12,8 @@
  */
 global $pubdir;
 $pubdir="@prefix@";
-ini_set("include_path", ".:@prefix@:@prefix@/WHAT:@PEAR@");
+
+set_include_path(get_include_path() . PATH_SEPARATOR . "@prefix@:@prefix@/WHAT");
 
 ini_set("session.use_cookies", "0");
 ini_set("session.name", "session");
