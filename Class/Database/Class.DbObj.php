@@ -4,7 +4,7 @@
  * based on the description of a DB Table. 
  *
  * @author Anakeen 2000 
- * @version $Id: Class.DbObj.php,v 1.57 2008/12/11 15:14:49 eric Exp $
+ * @version $Id: Class.DbObj.php,v 1.58 2008/12/29 17:05:38 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -12,34 +12,11 @@
  /**
  */
 
-// ---------------------------------------------------------------------------
-// Db Object
-// @version $Id: Class.DbObj.php,v 1.57 2008/12/11 15:14:49 eric Exp $
-// ---------------------------------------------------------------------------
-// Anakeen 2000 - yannick.lebriquer@anakeen.com
-// ---------------------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------------------
-
-
-
 
 include_once('Class.Log.php');
 include_once('Lib.Common.php');
 
-$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.57 2008/12/11 15:14:49 eric Exp $';
+$CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.58 2008/12/29 17:05:38 eric Exp $';
 
 /**
  * This class is a generic DB Class that can be used to create objects
@@ -394,8 +371,7 @@ function Add($nopost=false)
  * @see PreUpdate()
  * @see PostUpdate()
  */
-function Modify($nopost=false,$sfields="",$nopre=false)
-  {
+function Modify($nopost=false,$sfields="",$nopre=false)  {
     $msg='';
     if ($this->dbid == -1) return FALSE;
     if (!$nopre) $msg=$this->PreUpdate();
@@ -405,10 +381,6 @@ function Modify($nopost=false,$sfields="",$nopre=false)
     
    
     $nb_keys=0;
-    foreach ($this->id_fields as $k=>$v) {
-      $notset[$v]="Y";
-      $nb_keys++;
-    }
 
     if (! is_array($sfields)) $fields=$this->fields;
     else {
@@ -416,15 +388,18 @@ function Modify($nopost=false,$sfields="",$nopre=false)
       foreach ($this->id_fields as $k=>$v) $fields[]=$v;
     }
     
+    $wstr="";
+    foreach ($this->id_fields as $k=>$v) {
+      $notset[$v]="Y";
+      $nb_keys++;
+      $val=pg_escape_string($this->$v);
+      $wstr=$wstr." ".$v."='".$val."' AND";
+    }
 
     $setstr="";
-    $wstr="";
     foreach ($fields as $k=>$v) {
       if (!isset($notset[$v])) {
         $setstr=$setstr." ".$v."=".$this->lw($this->$v).",";
-      } else {
-	$val=pg_escape_string($this->$v);
-        $wstr=$wstr." ".$v."='".$val."' AND";
       } 
     }
     $setstr=substr($setstr,0,strlen($setstr)-1);
