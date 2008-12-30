@@ -52,7 +52,7 @@ $action_desc = array (
   ) ,
   array(
    "name"               =>"ADMIN",
-   "short_name"         =>N_("current user parameters"),
+   "short_name"         =>N_("Parameters configuration"),
    "toc"                =>"N",
    "acl"                =>"USER",
    "function"           =>"param_culist",

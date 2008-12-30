@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WHAT 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-10 09:55+0200\n"
-"PO-Revision-Date: 2008-10-10 10:02+0200\n"
+"POT-Creation-Date: 2008-12-30 14:54+0100\n"
+"PO-Revision-Date: 2008-12-30 14:54+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: french-anakeen <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -15,209 +15,85 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 "\n"
 
-msgid "userlogin"
-msgstr "Login"
+#, c-format
+msgid "Application %s (%s) not available"
+msgstr "Application %s (%s) non disponible"
 
-msgid "username"
-msgstr "Nom"
-
-msgid "permissions"
-msgstr "Droits"
-
-msgid "none"
-msgstr "Aucun"
-
-msgid "user"
-msgstr "utilisateur"
-
-msgid "object"
-msgstr "objet"
+# ne pas modifier laisser à vide
+msgid "$code"
+msgstr ""
 
 #, c-format
-msgid "user %s %s has been modified\n"
-msgstr "l'utilisateur %s %s a été modifié\n"
+msgid "Object Permission : permission %s needed (%s) - # %d"
+msgstr "Permission objet :: permission %s requise (%s) - n° %d"
+
+msgid "modify object acl"
+msgstr "modification des droits"
+
+msgid "view object acl"
+msgstr "voir les droits"
 
 #, c-format
-msgid "user %s %s has been added\n"
-msgstr "l'utilisateur %s %s a été ajouté\n"
+msgid "function '%s' not available for application %s (%d)"
+msgstr "fonction %s non disponible pour l'application %s (%d)"
 
 #, c-format
-msgid "add acl %s for %s %s\n"
-msgstr "ajout privilège %s pour %s %s\n"
+msgid "Acl [%s] not available for App %s"
+msgstr "ACL %s non valable pour l'application %s"
 
-msgid "appname"
-msgstr "Application"
-
-msgid "appdesc"
-msgstr "Description"
+#, c-format
+msgid ""
+"Access denied\n"
+"Need ACL %s for action %s [%s]"
+msgstr ""
+"Accès refusé\n"
+"ACL %s nécessaire pour l'action %s [%s]"
 
 msgid "description"
 msgstr "Description"
 
-msgid "titlecreateaction"
-msgstr "Cr&eacute;ation d'action"
+msgid "login must not be empty"
+msgstr "le login ne doit pas être vide"
 
-msgid "butcreate"
-msgstr "Créer"
+msgid "no freedom DB access"
+msgstr "pas d'accès à la base de données FREEDOM"
 
-msgid "titlemodifyaction"
-msgstr "Modification de l'action"
+msgid "Parameter name does not include spaces"
+msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
 
-msgid "butmodify"
-msgstr "Modifier"
+msgid "DbObj::Adds error in multiple insertion"
+msgstr "DbObj::Adds erreur dans insertion multiple"
 
-msgid "err_add_action"
-msgstr "Impossible de creer l'action"
+msgid "prev"
+msgstr "précédent"
 
-msgid "err_mod_action"
-msgstr "Impossible de modifier l'action"
+msgid "next"
+msgstr "suivant"
 
-msgid "name"
-msgstr "Nom"
+msgid "first"
+msgstr "premier"
 
-msgid "edit"
-msgstr "Modifier"
-
-msgid "short_name"
-msgstr "Nom abr&eacute;g&eacute;"
-
-msgid "titlecreate"
-msgstr "Cr&eacute;ation d'application"
-
-msgid "titlemodify"
-msgstr "Modification de l'application"
-
-msgid "err_add_application"
-msgstr "Impossible de creer l'application"
-
-msgid "err_mod_application"
-msgstr "Impossible de modifier l'application"
-
-msgid "Application list"
-msgstr "Liste des applications"
-
-msgid "Remove parameter"
-msgstr "Suppression de paramètre"
+msgid "last"
+msgstr "dernier"
 
 #, c-format
-msgid "the '%s' parameter cannot be removed"
-msgstr "le parametre '%s' n'a pu être supprimé"
+msgid "Template [%s] not found"
+msgstr "Template [%s] non trouvé."
 
-msgid "only user parameters can be deleted with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
-
-msgid "only current user parameters can be deleted with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
-
-msgid "titleparamcreate"
-msgstr "Cr&eacute;ation d'un param&egrave;tre "
-
-msgid "titleparammodify"
-msgstr "Modification de param&egrave;tre"
-
-msgid "err_add_param"
-msgstr "Impossible de creer le param&egrave;tre"
-
-msgid "err_mod_parameter"
-msgstr "Impossible de modifier le param&egrave;tre"
-
-msgid "only user parameters can be modified with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
-
-msgid "only current user parameters can be modified with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
-
-msgid "err_mod_param"
-msgstr "Impossible de modifier le param&egrave;tre"
-
-msgid ""
-"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
-"pour acceder a cette ressource"
-msgstr ""
-"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
-"pour accéder à cette ressource"
-
-msgid "auth_failure"
-msgstr "échec de l'authentification"
-
-msgid "welcome"
-msgstr "Bienvenue !"
+msgid "no referer url found"
+msgstr "pas d'URL reférence trouvée"
 
 #, c-format
-msgid "%s Authentification"
-msgstr "%s Authentification"
+msgid "file not found : %s"
+msgstr "fichier %s non trouvé."
 
-#, c-format
-msgid "file for %s not found."
-msgstr "fichier pour %s non trouvé."
-
-msgid "titlecreateg"
-msgstr "Création d'un groupe"
-
-msgid "titlecreateu"
-msgstr "Création d'utilisateur"
-
-msgid "titlemodifyg"
-msgstr "Modification du groupe"
-
-msgid "titlemodifyu"
-msgstr "Modification de l'utilisateur"
-
-msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
-
-msgid "nomail"
-msgstr "Pas de compte mail"
-
-msgid "expire date format is not correct : will be set to default"
+msgid "terminal too small (must ne at least 80 columns by 24 lines)"
 msgstr ""
-"le format de la date d'expiration est incorrecte : la date par défaut sera "
-"prise en compte"
+"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
 
-msgid "err_add_user"
-msgstr "Impossible de creer l'utilisateur"
-
-msgid "titlegroup"
-msgstr "Liste des groupes"
-
-msgid "titleuser"
-msgstr "Liste des utilisateurs"
-
-msgid "groupdesc"
-msgstr "Description"
-
-msgid "domain"
-msgstr "Domaine"
-
-msgid "group"
-msgstr "Groupe"
-
-msgid "fullname"
-msgstr "Utilisateur"
-
-msgid "login"
-msgstr "Nom de connexion"
-
-msgid "expires"
-msgstr "expiration"
-
-msgid "the user identification is unknow"
-msgstr "l'identification de l'utilisateur est inconnue"
-
-msgid "User must be authenticate"
-msgstr "L'utilisateur doit être authentifié"
-
-#, c-format
-msgid "Choose database in %s (%s)"
-msgstr "Choix de la base de données dans %s (%s)"
-
-#, c-format
-msgid "Database : [%s]"
-msgstr "Base de données : [%s]"
+msgid "cannot access to core database service [service='$pgservice_core']"
+msgstr ""
+"accès impossible à la base de données par défaut [service='$pgservice_core']"
 
 #, c-format
 msgid "API file %s not found"
@@ -231,31 +107,407 @@ msgstr "Erreur : %s\n"
 msgid "Caught Exception : %s\n"
 msgstr "Attrape exception : %s\n"
 
-#, c-format
-msgid "Create other database for %s (%s)"
-msgstr "Création d'autres bases pour %s (%s)"
+msgid "unmodifiable parameter"
+msgstr "paramètre non modifiable"
 
-msgid "I can't find hostname alias"
-msgstr "Alias de hostname introuvable"
+msgid "name"
+msgstr "Nom"
 
-msgid "Enter name for database ? "
-msgstr "Nom de la base de donnée ?"
+msgid "val"
+msgstr "Valeur"
 
-#, c-format
-msgid "Context  : [%s]"
-msgstr "Contexte : [%s]"
+msgid "delconfirmparam"
+msgstr "Confirmez-vous la suppression du param&egrave;tre "
 
-msgid "Continue (Y|N) ?"
-msgstr "Continuer (Y (oui) |N (non)) ?"
+msgid "delete"
+msgstr "Détruire"
+
+msgid "reqpasswd_login"
+msgstr "Nom de connexion"
+
+msgid "reqpasswd_or"
+msgstr "ou"
+
+msgid "reqpasswd_email"
+msgstr "Adresse e-mail"
+
+msgid "reqpasswd_submit"
+msgstr "Envoyer"
+
+msgid "callbackreqpasswd_callback_ok"
+msgstr ""
+"<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a "
+"été envoyé par mail.</p>"
+
+msgid "callbackreqpasswd_callback_not_ok"
+msgstr ""
+"<p>Le système n'a pas pu traiter votre demande.</p>\n"
+"<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus valide. "
+"Dans ce cas, veuillez renouveller votre demande.</p>\n"
+"<p>Si le problème persiste, veuillez prendre contact avec <a href=\"mailto:"
+"[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%20de%20passe\">"
+"[ON_ERROR_CONTACT]</a></p>"
+
+msgid "warning_name"
+msgstr "la saisie de votre nom est obligatoire."
+
+msgid "warning_pass"
+msgstr "la saisie de votre mot de passe est obligatoire."
+
+msgid "yourusername"
+msgstr "votre nom d'utilisateur"
+
+msgid "yourpassword"
+msgstr "votre mot de passe"
+
+msgid "authent reqpassword"
+msgstr "Mot de passe oublié ?"
+
+msgid "help"
+msgstr "aide"
+
+msgid "Do connection"
+msgstr "se connecter"
+
+msgid "submitreqpasswd_form_send_ok"
+msgstr ""
+"<p>Votre demande a bien été prise en compte.</p>\n"
+"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
+"finaliser la ré-initialisation de votre mot de passe.</p>"
+
+msgid "submitreqpasswd_form_send_error_invalid_args"
+msgstr ""
+"<p>Le nom de connexion ou l'adresse e-mail indiqué n'est pas valide.</p>\n"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
+
+msgid "submitreqpasswd_form_send_error_unknown"
+msgstr ""
+"<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
+"p>\n"
+"<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
+"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
+
+msgid "callbackreqpasswd_mail_hello"
+msgstr "Bonjour"
+
+msgid "callbackreqpasswd_mail_password"
+msgstr ""
+"<p>Votre nouveau mot de passe est à présent:</p>\n"
+"<pre>\n"
+"[PASSWORD]\n"
+"</pre>\n"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
+
+msgid "submitreqpasswd_mail_hello"
+msgstr "Bonjour"
+
+msgid "submitreqpasswd_mail_callbackurl"
+msgstr ""
+"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est "
+"pas le cas, veuillez détruire ce message.</p>\n"
+"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
+"suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL][CORE_BASEURL]"
+"app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">"
+"[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
+"[CALLBACK_TOKEN]</a></p>"
+
+msgid "adduser"
+msgstr "Ajouter un utilisateur"
+
+msgid "print"
+msgstr "Impression de la page"
+
+msgid "search"
+msgstr "recherche"
+
+msgid "edit"
+msgstr "Modifier"
+
+msgid "delconfirm"
+msgstr "Confirmez-vous la suppression de l`utilisateur"
+
+msgid "domain"
+msgstr "Domaine"
+
+msgid "firstname"
+msgstr "Prénom"
+
+msgid "lastname"
+msgstr "Nom"
+
+msgid "login"
+msgstr "Nom de connexion"
+
+msgid "password"
+msgstr "Mot de passe"
+
+msgid "expire date"
+msgstr "date d'expiration"
+
+msgid "groups"
+msgstr "Groupes"
+
+msgid "butmodify"
+msgstr "Modifier"
+
+msgid "expire default delay (in day)"
+msgstr "délai d'expiration par défaut (en jours)"
+
+msgid " 0 means no delay"
+msgstr " 0 signifie pas de limite"
+
+msgid "if not set, will be the current date more delay"
+msgstr "si vide, ce sera la date courante plus le délai"
+
+msgid "user status"
+msgstr "état utilisateur"
+
+msgid "active user"
+msgstr "Utilisateur activé"
+
+msgid "desactived user"
+msgstr "Utilisateur désactivé"
+
+msgid "changegroup"
+msgstr "Changement de groupe"
+
+msgid "domaingroup"
+msgstr "Domaine"
+
+msgid "othergroup"
+msgstr "Autres"
+
+msgid "butclosew"
+msgstr "Fermer la fenêtre"
+
+msgid "clear"
+msgstr "Effacer"
+
+msgid "delconfirmstyle"
+msgstr "Confirmez-vous la suppression du style"
+
+msgid "short_name"
+msgstr "Nom abr&eacute;g&eacute;"
+
+msgid "long_name"
+msgstr "Nom complet"
+
+msgid "available"
+msgstr "Dispo"
+
+msgid "acl"
+msgstr "Acl"
+
+msgid "root"
+msgstr "Root"
+
+msgid "toc"
+msgstr "Toc"
+
+msgid "appname"
+msgstr "Application"
+
+msgid "access_free"
+msgstr "Acces libre"
+
+msgid "displayable"
+msgstr "Affichable"
+
+msgid "appssl"
+msgstr "Sécurisée"
+
+msgid "appmachine"
+msgstr "machine distante"
+
+msgid "update"
+msgstr "mise à jour"
+
+msgid "addparam"
+msgstr "Ajouter un param&egrave;tre"
+
+msgid "my parameters"
+msgstr "mes paramètres"
+
+msgid "view all"
+msgstr "tout voir"
+
+msgid "select a user"
+msgstr "Sélectionnez un utilisateur"
+
+msgid "user parameters list"
+msgstr "Liste des paramètres utilisateur"
+
+msgid "application parameters list"
+msgstr "Liste des paramètres applicatif"
+
+msgid "select a style"
+msgstr "Sélectionnez un style"
+
+msgid "style parameters list"
+msgstr "Liste des paramètres style"
+
+msgid "titleaction"
+msgstr "Liste des actions de l'application"
+
+msgid "machine"
+msgstr "machine"
+
+msgid "addstyle"
+msgstr "Ajouter un style"
+
+msgid "Progress bar"
+msgstr "Barre de progression"
+
+msgid "view log"
+msgstr "voir les messages"
+
+msgid "All manuals"
+msgstr "Tous les manuels"
+
+msgid "Javascript must be enabled in your navigator"
+msgstr "Javascript doit être activé dans votre navigateur"
+
+msgid ""
+"Your navigator does not accept cookies.\n"
+"Cookies must be enabled to use correctly this application"
+msgstr ""
+"Votre navigateur n'accepte pas les cookies.\n"
+"Vous devez autoriser les cookies pour utiliser correctement l'application."
+
+msgid "You use version an to old version of Netscape (Mozilla)"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
+msgstr ""
+"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
+
+msgid "You use version an to old version of Internet Explorer"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "You must upgrade to version 6 or more"
+msgstr "Vous devez mettre à jour avec la version 6 au minimum"
+
+msgid "Click here to login"
+msgstr "Cliquer ici pour se connecter"
+
+msgid "Choose Gate Urls"
+msgstr "Choix des URLs"
+
+msgid "New version has been installed."
+msgstr "Une nouvelle version vient d'être installée."
+
+msgid "You must clear navigator cache."
+msgstr "Vous devez effacer le cache de votre navigateur."
+
+msgid "You use an too old Netscape navigator"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
+"ou Mozilla 1.0.1 (ou supérieur)"
+
+msgid "mozilla site"
+msgstr "site de Mozilla"
+
+msgid "nestcape site"
+msgstr "Site de Netscape"
+
+msgid "Manuals"
+msgstr "Manuels"
+
+# ne pas mettre de '
+msgid "Homepage"
+msgstr "Accueil"
+
+msgid "Welcome Page"
+msgstr "Page d'accueil"
+
+msgid "gate page"
+msgstr "Page du portail"
+
+msgid "New GATE page"
+msgstr "Portail"
+
+msgid "Edit Url Gate"
+msgstr "édition des URLs pour le portail"
+
+msgid "Save geometry"
+msgstr "Sauver la disposition"
+
+msgid "You use an too old Internet explorer navigator"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "please upgrade to Internet explorer 6.0 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
+"supérieur) "
+
+msgid "Internet explorer site"
+msgstr "Site de Microsoft"
+
+msgid "Gate"
+msgstr "Portail"
+
+msgid "controlaccess"
+msgstr "Contrôle des accès"
+
+msgid " Access Control for"
+msgstr "Contrôle des accès pour"
+
+msgid "modify"
+msgstr "Modifier"
+
+msgid "viewuser"
+msgstr "Voir les utilisateurs"
+
+msgid "viewgroup"
+msgstr "Voir les groupes"
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid "download"
+msgstr "Télécharger le fichier d'acces"
+
+msgid "needfile"
+msgstr "Le nom du fichier doit être spécifié"
+
+msgid "upload"
+msgstr "Charger un fichier d'acces"
+
+msgid "accessfor"
+msgstr "Contrôle des accès pour"
+
+msgid "Max user reach. Use search filter"
+msgstr "Utiliser la recherche pour voir la suite"
+
+msgid "Search"
+msgstr "Recherche"
+
+msgid "filter on login and lastname"
+msgstr "filtre sur le login et le nom"
+
+msgid "choose document"
+msgstr "choisi un document"
+
+msgid "edit by object"
+msgstr "édition par objet"
+
+msgid "in database"
+msgstr "dans la base de données"
+
+msgid "No user found"
+msgstr "pas d'utilisateur trouvé"
+
+msgid "descr"
+msgstr "Description"
 
 msgid "create databases ?"
 msgstr "Créer les bases de données ?"
-
-msgid "cannot access to  database $db\n"
-msgstr "accès à la base de données $db refusé\n"
-
-msgid "access granted to  database $db\n"
-msgstr "accès à la base de données $db autorisé\n"
 
 #, c-format
 msgid "%s style updated\n"
@@ -281,44 +533,96 @@ msgstr "Attribut %s non modifié : %s\n"
 msgid "Attribute %s modified to %s"
 msgstr "Attribut %s modifié par %s"
 
-msgid "Access"
-msgstr "Accessibilités"
+msgid "cannot access to  database $db\n"
+msgstr "accès à la base de données $db refusé\n"
 
-msgid "What Access Management"
-msgstr "Gestion des accessibilités"
+msgid "access granted to  database $db\n"
+msgstr "accès à la base de données $db autorisé\n"
 
-msgid "Admin Access"
-msgstr "Accès administrateur"
+msgid "User must be authenticate"
+msgstr "L'utilisateur doit être authentifié"
 
-msgid "object control"
-msgstr "contrôle des objets"
+msgid "no login : passwd unchanged"
+msgstr "pas de login : mot de passe inchangé"
 
-msgid "User Access"
-msgstr "Accès des utilisateurs"
+msgid "unknown login : passwd unchanged"
+msgstr "login incoonu : mot de passe inchangé"
 
-msgid "Group Access"
-msgstr "Accès des groupes"
+msgid "password are not identicals : not changed"
+msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
 
-msgid "Application Access"
-msgstr "Accès des applications"
+msgid "empty password : not changed"
+msgstr "mot de passe vide : non changé"
 
-msgid "Modify any access"
-msgstr "Modifier n'importe quel objet"
+#, c-format
+msgid "Create other database for %s (%s)"
+msgstr "Création d'autres bases pour %s (%s)"
 
-msgid "Modify object access"
-msgstr "Modifier certains objets"
+msgid "I can't find hostname alias"
+msgstr "Alias de hostname introuvable"
 
-msgid "Import/Export"
-msgstr "Import/Export"
+msgid "Enter name for database ? "
+msgstr "Nom de la base de donnée ?"
 
-msgid "Edit any access"
-msgstr "Editer n'importe quel accès"
+#, c-format
+msgid "Context  : [%s]"
+msgstr "Contexte : [%s]"
 
-msgid "Edit object access by user"
-msgstr "Editer les accès sur les objets par utilisateur"
+#, c-format
+msgid "Database : [%s]"
+msgstr "Base de données : [%s]"
 
-msgid "Edit object access"
-msgstr "Editer les accès sur les objets"
+msgid "Continue (Y|N) ?"
+msgstr "Continuer (Y (oui) |N (non)) ?"
+
+#, c-format
+msgid "Choose database in %s (%s)"
+msgstr "Choix de la base de données dans %s (%s)"
+
+msgid "show request for password"
+msgstr "Affiche le lien pour la demande de mot de passe"
+
+msgid "subject for new password request"
+msgstr "Le sujet du mail pour les demandes de mot de passe"
+
+msgid "subject for new password response"
+msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
+
+msgid "show language selection"
+msgstr "Affiche la sélection de la langue lors de la demande de mot de passe"
+
+msgid "What User Management"
+msgstr "Gestion des utilisateurs"
+
+msgid "Access To All Users"
+msgstr "Accès à tous les utilisateurs"
+
+msgid "Access To All Users in my domain"
+msgstr "Acces aux utilisateurs de mon domaine"
+
+msgid "Access To My Own account"
+msgstr "Accès à mon propre compte"
+
+msgid "admin view"
+msgstr "vue administrateur"
+
+msgid "users list"
+msgstr "les utilisateurs"
+
+msgid "group list"
+msgstr "les groupes"
+
+msgid "user account edition"
+msgstr "éditer compte utilisateur"
+
+msgid "user own account edition"
+msgstr "éditer compte personnel"
+
+msgid "user account modification"
+msgstr "modifier compte utilisateur"
+
+msgid "user own account modification"
+msgstr "modifier compte personnel"
 
 msgid "Application manager"
 msgstr "Gestion des applications"
@@ -368,17 +672,23 @@ msgstr "suppression de paramètres utilisateur"
 msgid "modify user parameters"
 msgstr "modification des paramètres utilisateur"
 
-msgid "show request for password"
-msgstr "Affiche le lien pour la demande de mot de passe"
+msgid "Parameters configuration"
+msgstr "Paramètres de configuration"
 
-msgid "subject for new password request"
-msgstr "Le sujet du mail pour les demandes de mot de passe"
+msgid "Core"
+msgstr "Noyau"
 
-msgid "subject for new password response"
-msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
+msgid "Core Application Manager"
+msgstr "Page d'accueil"
 
-msgid "show language selection"
-msgstr "Affiche la sélection de la langue lors de la demande de mot de passe"
+msgid "concat stylecss+sizecss"
+msgstr "concaténation style + size css"
+
+msgid "francais"
+msgstr "français"
+
+msgid "US english"
+msgstr "anglais"
 
 msgid "application version"
 msgstr "version application"
@@ -500,520 +810,213 @@ msgstr "squirrelmail:  répertoire d'installation (relatif)"
 msgid "language"
 msgstr "langue"
 
-msgid "Core"
-msgstr "Noyau"
+msgid "Access"
+msgstr "Accessibilités"
 
-msgid "Core Application Manager"
-msgstr "Page d'accueil"
+msgid "What Access Management"
+msgstr "Gestion des accessibilités"
 
-msgid "concat stylecss+sizecss"
-msgstr "concaténation style + size css"
+msgid "Admin Access"
+msgstr "Accès administrateur"
 
-msgid "francais"
-msgstr "français"
+msgid "object control"
+msgstr "contrôle des objets"
 
-msgid "US english"
-msgstr "anglais"
+msgid "User Access"
+msgstr "Accès des utilisateurs"
 
-msgid "What User Management"
-msgstr "Gestion des utilisateurs"
+msgid "Group Access"
+msgstr "Accès des groupes"
 
-msgid "Access To All Users"
-msgstr "Accès à tous les utilisateurs"
+msgid "Application Access"
+msgstr "Accès des applications"
 
-msgid "Access To All Users in my domain"
-msgstr "Acces aux utilisateurs de mon domaine"
+msgid "Modify any access"
+msgstr "Modifier n'importe quel objet"
 
-msgid "Access To My Own account"
-msgstr "Accès à mon propre compte"
+msgid "Modify object access"
+msgstr "Modifier certains objets"
 
-msgid "admin view"
-msgstr "vue administrateur"
+msgid "Import/Export"
+msgstr "Import/Export"
 
-msgid "users list"
-msgstr "les utilisateurs"
+msgid "Edit any access"
+msgstr "Editer n'importe quel accès"
 
-msgid "group list"
-msgstr "les groupes"
+msgid "Edit object access by user"
+msgstr "Editer les accès sur les objets par utilisateur"
 
-msgid "user account edition"
-msgstr "éditer compte utilisateur"
+msgid "Edit object access"
+msgstr "Editer les accès sur les objets"
 
-msgid "user own account edition"
-msgstr "éditer compte personnel"
+msgid "auth_failure"
+msgstr "échec de l'authentification"
 
-msgid "user account modification"
-msgstr "modifier compte utilisateur"
-
-msgid "user own account modification"
-msgstr "modifier compte personnel"
+msgid "welcome"
+msgstr "Bienvenue !"
 
 #, c-format
-msgid "function '%s' not available for application %s (%d)"
-msgstr "fonction %s non disponible pour l'application %s (%d)"
+msgid "%s Authentification"
+msgstr "%s Authentification"
 
-#, c-format
-msgid "Acl [%s] not available for App %s"
-msgstr "ACL %s non valable pour l'application %s"
-
-#, c-format
 msgid ""
-"Access denied\n"
-"Need ACL %s for action %s [%s]"
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour acceder a cette ressource"
 msgstr ""
-"Accès refusé\n"
-"ACL %s nécessaire pour l'action %s [%s]"
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour accéder à cette ressource"
 
-# ne pas modifier laisser à vide
-msgid "$code"
-msgstr ""
+msgid "titlecreateg"
+msgstr "Création d'un groupe"
 
-#, c-format
-msgid "Application %s (%s) not available"
-msgstr "Application %s (%s) non disponible"
+msgid "titlecreateu"
+msgstr "Création d'utilisateur"
 
-msgid "modify object acl"
-msgstr "modification des droits"
+msgid "butcreate"
+msgstr "Créer"
 
-msgid "view object acl"
-msgstr "voir les droits"
+msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
+msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
-#, c-format
-msgid "Object Permission : permission %s needed (%s) - # %d"
-msgstr "Permission objet :: permission %s requise (%s) - n° %d"
+msgid "titlemodifyg"
+msgstr "Modification du groupe"
 
-msgid "login must not be empty"
-msgstr "le login ne doit pas être vide"
+msgid "titlemodifyu"
+msgstr "Modification de l'utilisateur"
 
-msgid "no freedom DB access"
-msgstr "pas d'accès à la base de données FREEDOM"
+msgid "nomail"
+msgstr "Pas de compte mail"
 
-msgid "DbObj::Adds error in multiple insertion"
-msgstr "DbObj::Adds erreur dans insertion multiple"
+msgid "titlegroup"
+msgstr "Liste des groupes"
 
-msgid "Parameter name does not include spaces"
-msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
+msgid "titleuser"
+msgstr "Liste des utilisateurs"
 
-#, c-format
-msgid "Template [%s] not found"
-msgstr "Template [%s] non trouvé."
-
-msgid "prev"
-msgstr "précédent"
-
-msgid "next"
-msgstr "suivant"
-
-msgid "first"
-msgstr "premier"
-
-msgid "last"
-msgstr "dernier"
-
-msgid "no login : passwd unchanged"
-msgstr "pas de login : mot de passe inchangé"
-
-msgid "unknown login : passwd unchanged"
-msgstr "login incoonu : mot de passe inchangé"
-
-msgid "password are not identicals : not changed"
-msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
-
-msgid "empty password : not changed"
-msgstr "mot de passe vide : non changé"
-
-msgid "no referer url found"
-msgstr "pas d'URL reférence trouvée"
-
-#, c-format
-msgid "file not found : %s"
-msgstr "fichier %s non trouvé."
-
-msgid "cannot access to core database service [service='$pgservice_core']"
-msgstr ""
-"accès impossible à la base de données par défaut [service='$pgservice_core']"
-
-msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
-
-msgid "descr"
+msgid "groupdesc"
 msgstr "Description"
 
-msgid "controlaccess"
-msgstr "Contrôle des accès"
+msgid "group"
+msgstr "Groupe"
 
-msgid "accessfor"
-msgstr "Contrôle des accès pour"
+msgid "fullname"
+msgstr "Utilisateur"
 
-msgid "modify"
-msgstr "Modifier"
+msgid "expires"
+msgstr "expiration"
 
-msgid "Close"
-msgstr "Fermer"
-
-msgid " Access Control for"
-msgstr "Contrôle des accès pour"
-
-msgid "viewuser"
-msgstr "Voir les utilisateurs"
-
-msgid "viewgroup"
-msgstr "Voir les groupes"
-
-msgid "download"
-msgstr "Télécharger le fichier d'acces"
-
-msgid "needfile"
-msgstr "Le nom du fichier doit être spécifié"
-
-msgid "upload"
-msgstr "Charger un fichier d'acces"
-
-msgid "Max user reach. Use search filter"
-msgstr "Utiliser la recherche pour voir la suite"
-
-msgid "Search"
-msgstr "Recherche"
-
-msgid "filter on login and lastname"
-msgstr "filtre sur le login et le nom"
-
-msgid "choose document"
-msgstr "choisi un document"
-
-msgid "edit by object"
-msgstr "édition par objet"
-
-msgid "in database"
-msgstr "dans la base de données"
-
-msgid "print"
-msgstr "Impression de la page"
-
-msgid "help"
-msgstr "aide"
-
-msgid "No user found"
-msgstr "pas d'utilisateur trouvé"
-
-msgid "long_name"
-msgstr "Nom complet"
-
-msgid "available"
-msgstr "Dispo"
-
-msgid "acl"
-msgstr "Acl"
-
-msgid "root"
-msgstr "Root"
-
-msgid "toc"
-msgstr "Toc"
-
-msgid "butclosew"
-msgstr "Fermer la fenêtre"
-
-msgid "titleaction"
-msgstr "Liste des actions de l'application"
-
-msgid "addparam"
-msgstr "Ajouter un param&egrave;tre"
-
-msgid "addstyle"
-msgstr "Ajouter un style"
-
-msgid "access_free"
-msgstr "Acces libre"
-
-msgid "appssl"
-msgstr "Sécurisée"
-
-msgid "displayable"
-msgstr "Affichable"
-
-msgid "machine"
-msgstr "machine"
-
-msgid "appmachine"
-msgstr "machine distante"
-
-msgid "update"
-msgstr "mise à jour"
-
-msgid "delconfirm"
-msgstr "Confirmez-vous la suppression de l`utilisateur"
-
-msgid "delete"
-msgstr "Détruire"
-
-msgid "application parameters list"
-msgstr "Liste des paramètres applicatif"
-
-msgid "view all"
-msgstr "tout voir"
-
-msgid "my parameters"
-msgstr "mes paramètres"
-
-msgid "val"
-msgstr "Valeur"
-
-msgid "select a user"
-msgstr "Sélectionnez un utilisateur"
-
-msgid "user parameters list"
-msgstr "Liste des paramètres utilisateur"
-
-msgid "select a style"
-msgstr "Sélectionnez un style"
-
-msgid "style parameters list"
-msgstr "Liste des paramètres style"
-
-msgid "delconfirmstyle"
-msgstr "Confirmez-vous la suppression du style"
-
-msgid "warning_name"
-msgstr "la saisie de votre nom est obligatoire."
-
-msgid "warning_pass"
-msgstr "la saisie de votre mot de passe est obligatoire."
-
-msgid "yourusername"
-msgstr "votre nom d'utilisateur"
-
-msgid "yourpassword"
-msgstr "votre mot de passe"
-
-msgid "authent reqpassword"
-msgstr "Mot de passe oublié ?"
-
-msgid "Do connection"
-msgstr "se connecter"
-
-msgid "callbackreqpasswd_callback_ok"
+msgid "expire date format is not correct : will be set to default"
 msgstr ""
-"<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a "
-"été envoyé par mail.</p>"
+"le format de la date d'expiration est incorrecte : la date par défaut sera "
+"prise en compte"
 
-msgid "callbackreqpasswd_callback_not_ok"
+msgid "err_add_user"
+msgstr "Impossible de creer l'utilisateur"
+
+msgid "the user identification is unknow"
+msgstr "l'identification de l'utilisateur est inconnue"
+
+msgid "titleparamcreate"
+msgstr "Cr&eacute;ation d'un param&egrave;tre "
+
+msgid "titleparammodify"
+msgstr "Modification de param&egrave;tre"
+
+msgid "err_add_param"
+msgstr "Impossible de creer le param&egrave;tre"
+
+msgid "err_mod_parameter"
+msgstr "Impossible de modifier le param&egrave;tre"
+
+msgid "only user parameters can be modified with its action"
 msgstr ""
-"<p>Le système n'a pas pu traiter votre demande.</p>\n"
-"<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus valide. "
-"Dans ce cas, veuillez renouveller votre demande.</p>\n"
-"<p>Si le problème persiste, veuillez prendre contact avec <a href=\"mailto:"
-"[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%20de%20passe\">"
-"[ON_ERROR_CONTACT]</a></p>"
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
 
-msgid "callbackreqpasswd_mail_hello"
-msgstr "Bonjour"
-
-msgid "callbackreqpasswd_mail_password"
+msgid "only current user parameters can be modified with its action"
 msgstr ""
-"<p>Votre nouveau mot de passe est à présent:</p>\n"
-"<pre>\n"
-"[PASSWORD]\n"
-"</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
-"[CORE_EXTERNURL]</a>"
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
 
-msgid "reqpasswd_login"
-msgstr "Nom de connexion"
+msgid "err_add_application"
+msgstr "Impossible de creer l'application"
 
-msgid "reqpasswd_or"
-msgstr "ou"
+msgid "err_mod_application"
+msgstr "Impossible de modifier l'application"
 
-msgid "reqpasswd_email"
-msgstr "Adresse e-mail"
+msgid "err_mod_param"
+msgstr "Impossible de modifier le param&egrave;tre"
 
-msgid "reqpasswd_submit"
-msgstr "Envoyer"
+msgid "err_add_action"
+msgstr "Impossible de creer l'action"
 
-msgid "submitreqpasswd_form_send_ok"
+msgid "err_mod_action"
+msgstr "Impossible de modifier l'action"
+
+msgid "titlecreate"
+msgstr "Cr&eacute;ation d'application"
+
+msgid "titlemodify"
+msgstr "Modification de l'application"
+
+msgid "Application list"
+msgstr "Liste des applications"
+
+msgid "titlecreateaction"
+msgstr "Cr&eacute;ation d'action"
+
+msgid "titlemodifyaction"
+msgstr "Modification de l'action"
+
+msgid "Remove parameter"
+msgstr "Suppression de paramètre"
+
+#, c-format
+msgid "the '%s' parameter cannot be removed"
+msgstr "le parametre '%s' n'a pu être supprimé"
+
+msgid "only user parameters can be deleted with its action"
 msgstr ""
-"<p>Votre demande a bien été prise en compte.</p>\n"
-"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
-"finaliser la ré-initialisation de votre mot de passe.</p>"
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
 
-msgid "submitreqpasswd_form_send_error_invalid_args"
+msgid "only current user parameters can be deleted with its action"
 msgstr ""
-"<p>Le nom de connexion ou l'adresse e-mail indiqué n'est pas valide.</p>\n"
-"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
 
-msgid "submitreqpasswd_form_send_error_unknown"
-msgstr ""
-"<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
-"p>\n"
-"<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
-"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
-"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
+#, c-format
+msgid "file for %s not found."
+msgstr "fichier pour %s non trouvé."
 
-msgid "submitreqpasswd_mail_hello"
-msgstr "Bonjour"
+msgid "user"
+msgstr "utilisateur"
 
-msgid "submitreqpasswd_mail_callbackurl"
-msgstr ""
-"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est "
-"pas le cas, veuillez détruire ce message.</p>\n"
-"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
-"suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL][CORE_BASEURL]"
-"app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">"
-"[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
-"[CALLBACK_TOKEN]</a></p>"
+msgid "object"
+msgstr "objet"
 
-msgid "You use an too old Internet explorer navigator"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+#, c-format
+msgid "user %s %s has been modified\n"
+msgstr "l'utilisateur %s %s a été modifié\n"
 
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
-"supérieur) "
+#, c-format
+msgid "user %s %s has been added\n"
+msgstr "l'utilisateur %s %s a été ajouté\n"
 
-msgid "Internet explorer site"
-msgstr "Site de Microsoft"
+#, c-format
+msgid "add acl %s for %s %s\n"
+msgstr "ajout privilège %s pour %s %s\n"
 
-msgid "You use an too old Netscape navigator"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+msgid "appdesc"
+msgstr "Description"
 
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
-"ou Mozilla 1.0.1 (ou supérieur)"
+msgid "permissions"
+msgstr "Droits"
 
-msgid "mozilla site"
-msgstr "site de Mozilla"
+msgid "none"
+msgstr "Aucun"
 
-msgid "nestcape site"
-msgstr "Site de Netscape"
+msgid "userlogin"
+msgstr "Login"
 
-msgid "Javascript must be enabled in your navigator"
-msgstr "Javascript doit être activé dans votre navigateur"
-
-msgid ""
-"Your navigator does not accept cookies.\n"
-"Cookies must be enabled to use correctly this application"
-msgstr ""
-"Votre navigateur n'accepte pas les cookies.\n"
-"Vous devez autoriser les cookies pour utiliser correctement l'application."
-
-msgid "You use version an to old version of Netscape (Mozilla)"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
-msgstr ""
-"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
-
-msgid "You use version an to old version of Internet Explorer"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "You must upgrade to version 6 or more"
-msgstr "Vous devez mettre à jour avec la version 6 au minimum"
-
-msgid "Manuals"
-msgstr "Manuels"
-
-msgid "view log"
-msgstr "voir les messages"
-
-msgid "All manuals"
-msgstr "Tous les manuels"
-
-msgid "Gate"
-msgstr "Portail"
-
-msgid "Edit Url Gate"
-msgstr "édition des URLs pour le portail"
-
-msgid "Save geometry"
-msgstr "Sauver la disposition"
-
-msgid "Click here to login"
-msgstr "Cliquer ici pour se connecter"
-
-msgid "Choose Gate Urls"
-msgstr "Choix des URLs"
-
-# ne pas mettre de '
-msgid "Homepage"
-msgstr "Accueil"
-
-msgid "Welcome Page"
-msgstr "Page d'accueil"
-
-msgid "gate page"
-msgstr "Page du portail"
-
-msgid "New GATE page"
-msgstr "Portail"
-
-msgid "New version has been installed."
-msgstr "Une nouvelle version vient d'être installée."
-
-msgid "You must clear navigator cache."
-msgstr "Vous devez effacer le cache de votre navigateur."
-
-msgid "Progress bar"
-msgstr "Barre de progression"
-
-msgid "firstname"
-msgstr "Prénom"
-
-msgid "lastname"
+msgid "username"
 msgstr "Nom"
-
-msgid "password"
-msgstr "Mot de passe"
-
-msgid "expire default delay (in day)"
-msgstr "délai d'expiration par défaut (en jours)"
-
-msgid " 0 means no delay"
-msgstr " 0 signifie pas de limite"
-
-msgid "expire date"
-msgstr "date d'expiration"
-
-msgid "if not set, will be the current date more delay"
-msgstr "si vide, ce sera la date courante plus le délai"
-
-msgid "user status"
-msgstr "état utilisateur"
-
-msgid "active user"
-msgstr "Utilisateur activé"
-
-msgid "desactived user"
-msgstr "Utilisateur désactivé"
-
-msgid "groups"
-msgstr "Groupes"
-
-msgid "changegroup"
-msgstr "Changement de groupe"
-
-msgid "domaingroup"
-msgstr "Domaine"
-
-msgid "othergroup"
-msgstr "Autres"
-
-msgid "search"
-msgstr "recherche"
-
-msgid "clear"
-msgstr "Effacer"
-
-msgid "adduser"
-msgstr "Ajouter un utilisateur"
-
-msgid "unmodifiable parameter"
-msgstr "paramètre non modifiable"
-
-msgid "delconfirmparam"
-msgstr "Confirmez-vous la suppression du param&egrave;tre "
 
 #~ msgid "UK english"
 #~ msgstr "anglais GB"
