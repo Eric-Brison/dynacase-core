@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.7 2007/03/07 08:53:29 eric Exp $
+ * @version $Id: wgcheck.php,v 1.8 2008/12/31 14:37:26 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -146,7 +146,7 @@ addEvent(window,"load",function al() {document.getElementById('dcmd').style.disp
 <body>
 <?php
 
-include("WHAT/Lib.Common.php");
+include("../WHAT/Lib.Common.php");
 include("WHAT/Lib.WCheck.php");
 
 

@@ -3,7 +3,7 @@
  * Verify several point for the integrity of the system
  *
  * @author Anakeen 2007
- * @version $Id: checklist.php,v 1.7 2008/05/06 08:43:33 jerome Exp $
+ * @version $Id: checklist.php,v 1.8 2008/12/31 14:37:26 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -35,7 +35,7 @@ define("OK","green");
 define("KO","red");
 define("BOF","orange");
 
-include("WHAT/Lib.Common.php");
+include("../WHAT/Lib.Common.php");
 
 function globalparam($conn) {
   $result = pg_query($conn, "SELECT * FROM paramv where  type='G'");
@@ -62,7 +62,7 @@ if ($handle = @opendir(DEFAULT_PUBDIR."/context")) {
      if ($file[0]!=".") {
        if (file_exists(DEFAULT_PUBDIR."/context/".$file."/dbaccess.php")) {
 	 $contexts[]=$file;
-	 if ($file==$wcontext) include("context/".$file."/dbaccess.php");
+	 if ($file==$wcontext) include(DEFAULT_PUBDIR."/context/".$file."/dbaccess.php");
        }
      }
    }
