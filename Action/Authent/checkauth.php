@@ -55,7 +55,7 @@ function checkauth(&$action) {
   include_once('CORE/lang.php');
   $core_lang = getHttpVars('CORE_LANG');
   if( $core_lang != "" && array_key_exists($core_lang, $lang) ) {
-    error_log(__CLASS__."::".__FUNCTION__." "."Registering vavirable CORE_LANG = '".$core_lang."' in session_auth");
+    error_log(__CLASS__."::".__FUNCTION__." "."Registering vaviable CORE_LANG = '".$core_lang."' in session_auth");
     $session_auth->register('CORE_LANG', $core_lang);
   }
 
