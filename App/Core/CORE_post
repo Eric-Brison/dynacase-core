@@ -76,17 +76,29 @@ if [ "$1" = "I" ] ; then
     echo "   endscript"                      >> /etc/logrotate.d/what
     echo "}"                                 >> /etc/logrotate.d/what
     
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Application
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Action
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Style
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=ParamDef
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Param
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=User
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Group
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Permission
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Acl
-    /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Session
-    $wpub/wsh.php  --api=appadmin
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Application
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Action
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Style
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=ParamDef
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Param
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=User
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Group
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Permission
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Acl
+#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Session
+
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Application
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Action
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Style
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=ParamDef
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Param
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=User
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Group
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Permission
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Acl
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Session
+
+    $wpub/wsh.php  --api=appadmin --appname=CORE
 fi
 
 

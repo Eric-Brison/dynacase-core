@@ -6,7 +6,7 @@
  * @param string $class the class name of the DbObj Class
  * @param string $dbname the SQL database name (anakeen, freedom)
  * @author Anakeen 2002
- * @version $Id: updateclass.php.in,v 1.7 2008/12/23 08:01:42 jerome Exp $
+ * @version $Id: updateclass.php.in,v 1.8 2008/12/31 14:39:35 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -14,50 +14,11 @@
 /**
  */
 
-include_once("Lib.Common.php");
+include_once('Class.Application.php');
 
-function GetArg($name, $def="") {
-
-  global $ARGS, $argv;
-
-  static $first=true;
-
-  if ($first) {
-
-    while (list($k, $v) = each($argv)) {
-      
-      if (ereg("--([^=]+)=\"(.+)\"", $v , $reg)) {
-	$ARGS[$reg[1]]=$reg[2];
-      } elseif (ereg("--([^=]+)=(.+)", $v , $reg)) {
-	$ARGS[$reg[1]]=$reg[2];
-      }  else if (ereg("--([^=]+)", $v , $reg)) {    
-	$ARGS[$reg[1]]=true;
-      } 
-    }
-    $first=false;
-  }
-  
-  
-  if (isset($ARGS[$name])) return ($ARGS[$name]); // 
-    return($def);
-}
-
-global $_SERVER;
-
-if ($_SERVER['HTTP_HOST'] != "")     {
-  print "<BR><H1>:~(</H1>";
-  exit;
-}
-
-$appclass = Getarg("appc","WHAT");
-$class = Getarg("class");
-$dbcoord = Getarg("dbcoord");
-
-if ($dbcoord != "") {
-  $db = $dbcoord;
- } else {
-  $db = getDbAccess();
- }
+$appclass = getHttpVars('appc', 'WHAT');
+$class = getHttpVars('class', '');
+$db = getHttpVars('dbcoord', getDbAccess());
 
 include_once("$pubdir/$appclass/Class.$class.php");
 
@@ -75,13 +36,13 @@ if (!$rq) {
   // table not exist : just create
   $o->Create();
   // $sqlcmds = explode(";",$o->sqlcreate);
-//   while (list($k,$sqlquery)=each($sqlcmds)) {
-//     if (chop($sqlquery) != "")
-//       $sql[]=$sqlquery;
+  //   while (list($k,$sqlquery)=each($sqlcmds)) {
+  //     if (chop($sqlquery) != "")
+  //       $sql[]=$sqlquery;
   // }
 } else {
   $row=0;
-
+  
   if (pg_result_error($rq) == "") {
     if (pg_num_rows($rq) > 0 ) {
       $row= pg_fetch_array($rq,0,PGSQL_ASSOC);
@@ -97,7 +58,7 @@ if (!$rq) {
     if (chop($sqlquery) != "")
       $sql[]=$sqlquery;
   }
-
+  
   if ($row) {
     $sql[]= "INSERT INTO ".$o->dbtable." (".implode(",", $fieds).") SELECT ".implode(",", $fieds). " FROM ".$o->dbtable."_old";
     
@@ -111,7 +72,7 @@ while (list($k,$v) = each ($sql)) {
     if (ereg("create sequence",$v, $reg)) {
       $pgmess = pg_errormessage($dbid);
       echo "[1;33;49m".$pgmess."[0m\n";
-
+      
     } else {
       $pgmess = pg_errormessage($dbid);
       echo "[1;31;49m".$pgmess."[0m\n";
@@ -123,4 +84,5 @@ while (list($k,$v) = each ($sql)) {
 }
 
 pg_close($dbid);
+
 ?>
