@@ -7,7 +7,7 @@
 #   as published by the Free Software Foundation; either version
 #   2 of the License, or (at your option) any later version.
 #
-AC_REVISION($Id: configure.in,v 1.27 2008/12/31 14:36:20 jerome Exp $)
+AC_REVISION($Id: configure.in,v 1.28 2009/01/06 15:15:13 jerome Exp $)
 dnl
 dnl Process this file with autoconf to produce a configure script.
 dnl
@@ -107,4 +107,5 @@ AC_OUTPUT(Makefile freedom-core.spec apache.conf freedom.conf \
           Share/Lib.Prefix.php  \
 	  httpd.pam debian/changelog  \
 	  dbaccess.php.sample \
-	  Admin/htaccess )
+	  Admin/htaccess \
+	  info.xml )

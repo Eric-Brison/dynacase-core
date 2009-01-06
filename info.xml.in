@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<module name="freedom-core" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
+  <description>The WHAT application toolkit gives common interface element to develop web applications</description>
+</module>
