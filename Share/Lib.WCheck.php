@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: Lib.WCheck.php,v 1.20 2008/06/09 10:32:47 eric Exp $
+ * @version $Id: Lib.WCheck.php,v 1.21 2009/01/07 15:35:07 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -279,8 +279,10 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   $tact[] = "$pubdir/wsh.php  --api=freedom_clean";
   $tact[] = "$pubdir/wstart";
   global $_SERVER;
-  if ($_SERVER['HTTP_HOST'] != "")  $tact[] = "sudo $pubdir/admin/shttpd";
-  else $tact[] = "service httpd restart";  
+  if( empty($_GET['httpdrestart']) || ($_GET['httpdrestart'] != 'no') ) {
+    if ($_SERVER['HTTP_HOST'] != "")  $tact[] = "sudo $pubdir/admin/shttpd";
+    else $tact[] = "service httpd restart";  
+  }
 }
 
 function cmpapp($a,$b) {
