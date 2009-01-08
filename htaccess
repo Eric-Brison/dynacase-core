@@ -9,9 +9,14 @@ ExpiresByType application/x-javascript  A31536000
 
 DirectoryIndex index.php
 
-<FilesMatch ".+">
+<FilesMatch "^.+$">
         Order Allow,Deny
         Deny from All
+</FilesMatch>
+
+<FilesMatch "^(what|freedom)$">
+        Order Deny,Allow
+        Allow from All
 </FilesMatch>
 
 <FilesMatch "^(index|indexq|guest).php$">
