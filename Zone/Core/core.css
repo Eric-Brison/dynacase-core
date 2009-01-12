@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
- * $Id: core.css,v 1.54 2007/10/25 16:23:33 eric Exp $
+ * $Id: core.css,v 1.55 2009/01/12 15:13:11 jerome Exp $
  * ---------------------------------------------------------------------------
  
  * ---------------------------------------------------------------------------
@@ -124,14 +124,14 @@ IMG.click:hover {
  */
 .TABBackgroundSelected {
   background-color: [CORE_FGCOLOR];
-[IFNOT ISIE]  background-image: url('STYLE/AQUA/Images/button1.png');[ENDIF ISIE]
+[IFNOT ISIE]  background-image: url('CORE/Images/tab.png');[ENDIF ISIE]
   
   color: [CORE_TEXTFGCOLOR];
   font-weight: bold;
 }
 .TABBackground {
   background: [CORE_BGCOLORALTERN];
-[IFNOT ISIE]  background-image: url('STYLE/AQUA/Images/button1.png');[ENDIF ISIE]
+[IFNOT ISIE]  background-image: url('CORE/Images/tab.png');[ENDIF ISIE]
   
 
   color: [CORE_TEXTBGCOLOR];
