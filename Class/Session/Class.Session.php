@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Session.php,v 1.37 2008/09/01 13:34:37 jerome Exp $
+ * @version $Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -28,7 +28,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 // ---------------------------------------------------------------------------
-// $Id: Class.Session.php,v 1.37 2008/09/01 13:34:37 jerome Exp $
+// $Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $
 //
 // ---------------------------------------------------------------------------
 // Syntaxe :
@@ -37,7 +37,7 @@
 //
 // ---------------------------------------------------------------------------
 
-$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.37 2008/09/01 13:34:37 jerome Exp $';
+$CLASS_SESSION_PHP = '$Id: Class.Session.php,v 1.38 2009/01/12 15:15:31 jerome Exp $';
 include_once('Class.QueryDb.php');
 include_once('Class.DbObj.php');
 include_once('Class.Log.php');
@@ -55,7 +55,8 @@ Class Session extends DbObj{
   
   var $sqlcreate = "create table sessions ( id         varchar(100),
                         userid   int,
-                        name text not null);
+                        name text not null,
+                        last_seen timestamp with time zone not null DEFAULT now() );
                   create index sessions_idx on sessions(id);";
     
   var $isCacheble= false;
@@ -73,9 +74,11 @@ Class Session extends DbObj{
     $query=new QueryDb($this->dbaccess,"Session");
     $query->addQuery("id = '".pg_escape_string($id)."'");
     $query->addQuery("name = '".pg_escape_string($this->session_name)."'");
+    $query->addQuery("last_seen > timestamp 'now' - interval '".pg_escape_string($this->getSessionMaxAge())."'");
     $list = $query->Query(0,0,"TABLE");
     if ($query->nb != 0) {
       $this->Affect($list[0]);
+      $this->touch();
       session_name($this->session_name);
       session_id($id);
       @session_start();
@@ -232,15 +235,106 @@ Class Session extends DbObj{
   }
   
   function SetTTL()  {
-    $ttli = new SessionConf($this->dbaccess, "TTL_INTERVAL");
-    $ttliv = $ttli->val;
+    $ttliv = $this->getSessionTTL(0);
     if( $ttliv > 0 ) {
       //$ttli->CloseConnect();
-      unset($ttli);
       return (time() + $ttliv);
     }
-    unset($ttli);
     return 0;
+  }
+  
+  function getSessionMaxAge($default="1 week") {
+    $err = $this->exec_query("SELECT val FROM paramv WHERE name = 'CORE_SESSIONMAXAGE'");
+    if( $err != "" ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned with error: ".$err);
+      return $default;
+    }
+    if( $this->numrows() <= 0 ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned an empty result set");
+      return $default;
+    }
+    $res = $this->fetch_array(0);
+    if( is_numeric($res['val']) ) {
+      return $res['val']." seconds";
+    }
+    return $res['val'];
+  }
+  
+  function getSessionTTL($default=0) {
+    $err = $this->exec_query("SELECT val FROM paramv WHERE name = 'CORE_SESSIONTTL'");
+    if( $err != "" ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned with error: ".$err);
+      return $default;
+    }
+    if( $this->numrows() <= 0 ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned an empty result set");
+      return $default;
+    }
+    $res = $this->fetch_array(0);
+    if( ! is_numeric($res['val']) ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."result value is not numeric");
+      return $default;
+    }
+    return $res['val'];
+  }
+
+  function getSessionGcProbability($default="0.01") {
+    $err = $this->exec_query("SELECT val FROM paramv WHERE name = 'CORE_SESSIONGCPROBABILITY'");
+    if( $err != "" ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned with error: ".$err);
+      return $default;
+    }
+    if( $this->numrows() <= 0 ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned an empty result set");
+      return $default;
+    }
+    $res = $this->fetch_array(0);
+    if( ! is_numeric($res['val']) ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."result value is not numeric");
+      return $default;
+    }
+    return $res['val'];
+  }
+  
+  function touch() {
+    $err = $this->exec_query("UPDATE sessions SET last_seen = now() WHERE id = '".pg_escape_string($this->id)."' AND name = '".pg_escape_string($this->name)."'");
+    return $err;
+  }
+  
+  function deleteExpiredSessions() {
+    $err = $this->exec_query("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '".pg_escape_string($this->getSessionMaxAge())."'");
+    return $err;
+  }
+  
+  function gcSessions() {
+    $gcP = $this->getSessionGcProbability();
+    if( $gcP <= 0 ) {
+      return "";
+    }
+    $p = rand()/getrandmax();
+    if( $p <= $gcP ) {
+      $err = $this->deleteExpiredSessions();
+      if( $err != "" ) {
+	error_log(__CLASS__."::".__FUNCTION__." "."Error cleaning up sessions : ".$err);
+	return $err;
+      }
+    }
+    return "";
+  }
+  
+  function setuid($uid) {
+    if( ! is_numeric($uid) ) {
+      $u = new User();
+      if( $u->SetLoginName($uid) ) {   
+	$uid = $u->id;
+      } else {
+	$err = "Could not resolve login name '".$uid."' to uid";
+	error_log(__CLASS__."::".__FUNCTION__." ".$err);
+	return $err;
+      }
+    }
+    $this->userid = $uid;
+    return $this->modify();
   }
   
 } // Class Session

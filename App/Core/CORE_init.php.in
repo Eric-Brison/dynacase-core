@@ -3,7 +3,7 @@
  * Application parameters 
  *
  * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.43 2008/09/11 14:50:22 eric Exp $
+ * @version $Id: CORE_init.php.in,v 1.44 2009/01/12 15:15:30 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -223,9 +223,20 @@ $app_const = array (
 						       "user"   => "N",
 						       "global" => "Y" ),
 
-		    
-						      
-						     
+		    // Session
+		    "CORE_SESSIONTTL" => array( "val"    => "0",
+						"descr"  => N_("core_sessionttl"),
+						"user"   => "N",
+						"global" => "Y"),
+		    "CORE_SESSIONMAXAGE" => array( "val"    => "1 week",
+						   "descr"  => N_("core_sessionmaxage");
+						   "user"   => "N",
+						   "global" => "Y",
+						   "kind"   => "enum(1 day|1 week|1 month)"),
+		    "CORE_SESSIONGCPROBABILITY" => array( "val"    => "0.01",
+							  "descr"  => N_("core_sessiongcprobability"),
+							  "user"   => "N",
+							  "global" => "Y")
 		    );
 
 
