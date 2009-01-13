@@ -3,7 +3,7 @@
  * Util function for update and initialize application
  *
  * @author Anakeen 2005
- * @version $Id: wgcheck.php,v 1.8 2008/12/31 14:37:26 jerome Exp $
+ * @version $Id: wgcheck.php,v 1.9 2009/01/13 19:07:56 jerome Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -98,7 +98,7 @@ function processReqChange() {
 	      elt=elts[0];
 
 	      o=document.getElementById('err'+number);
-	      if (o) o.innerHTML=elt.firstChild.nodeValue;
+	      if (o) o.innerHTML=(elt.firstChild!=null)?elt.firstChild.nodeValue:'';
 	      if (((code=="OK")||(code=="SKIP")) && cmdcontinue) {
 		if ((parseInt(number)+1) < maxcmd)	sendCmd(parseInt(number)+1);
 		else if (confirm('Finish\nGo to FREEDOM now ?')) {
