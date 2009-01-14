@@ -3,7 +3,7 @@
  * Layout Class
  *
  * @author Anakeen 2000 
- * @version $Id: Class.Layout.php,v 1.48 2008/05/14 07:48:16 eric Exp $
+ * @version $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage CORE
@@ -68,7 +68,7 @@
 // Copyright (c) 1999 Anakeen S.A.
 //               Yannick Le Briquer
 //
-//  $Id: Class.Layout.php,v 1.48 2008/05/14 07:48:16 eric Exp $
+//  $Id: Class.Layout.php,v 1.49 2009/01/14 14:48:14 eric Exp $
 
 $CLASS_LAYOUT_PHP="";
 include_once('Class.Log.php');  
@@ -341,7 +341,7 @@ class Layout {
 
     reset($list);
     while(list($k,$v) = each($list)) {
-      $js .= "<script language=\"JavaScript\" src=\"$v\"></script>\n";
+      $js .= "<script type=\"text/javascript\" language=\"JavaScript\" src=\"$v\"></script>\n";
     }
     return $js;
   }
