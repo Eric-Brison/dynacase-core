@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * htmlAuthenticator class
+ *
+ * This class provides methods for HTML form based authentication
+ *
+ * @author Anakeen 2009
+ * @version $Id: Class.htmlAuthenticator.php,v 1.8 2009/01/16 13:33:00 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 Class htmlAuthenticator {
   private $parms = array();
   private $provider = null;

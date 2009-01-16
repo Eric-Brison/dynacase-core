@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Callback page when requesting a password re-initialization
+ *
+ * @author Anakeen 2009
+ * @version $Id: callbackreqpasswd.php,v 1.5 2009/01/16 13:33:00 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+/**
+ */
+
 function callbackreqpasswd(&$action) {
   include_once('FDL/Lib.Dir.php');
   include_once('WHAT/Class.UserToken.php');

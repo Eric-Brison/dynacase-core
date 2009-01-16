@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * htmlFreedomProvider class
+ *
+ * This class provides methods for HTML form based authentication
+ * against the Freedom "core" database
+ *
+ * @author Anakeen 2009
+ * @version $Id: freedom.php,v 1.8 2009/01/16 13:33:01 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 Class htmlFreedomProvider {
   private $parms = array();
   

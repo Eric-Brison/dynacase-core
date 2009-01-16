@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * basicFreedomProvider class
+ *
+ * This class provides methods for HTTP Basic authentication against
+ * the Freedom "core" database
+ *
+ * @author Anakeen 2009
+ * @version $Id: freedom.php,v 1.4 2009/01/16 13:33:01 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 Class basicFreedomProvider {
   private $parms = array();
   

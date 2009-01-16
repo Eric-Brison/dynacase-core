@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Locale name and language name localization
+ *
+ * @author Anakeen 2009
+ * @version $Id: lang.php,v 1.5 2009/01/16 13:33:00 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 $lang = array(
 	      
 	      

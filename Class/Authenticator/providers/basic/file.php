@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * basicFileProvider class
+ *
+ * This class provides methods for HTTP Basic authentication against a
+ * Apache htpasswd text file
+ *
+ * @author Anakeen 2009
+ * @version $Id: file.php,v 1.2 2009/01/16 13:33:01 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 Class basicFileProvider {
   private $parms = array();
   private $passwd = array();

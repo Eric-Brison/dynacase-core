@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * basicAuthenticator class
+ *
+ * This class provides methods for HTTP Basic authentication
+ *
+ * @author Anakeen 2009
+ * @version $Id: Class.basicAuthenticator.php,v 1.3 2009/01/16 13:33:00 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 Class basicAuthenticator {
   private $parms = array();
   private $provider = null;

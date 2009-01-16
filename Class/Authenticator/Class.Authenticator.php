@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * Authenticator class
+ *
+ * Top-level class to authenticate and authorize users
+ *
+ * @author Anakeen 2009
+ * @version $Id: Class.Authenticator.php,v 1.6 2009/01/16 13:33:00 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 Class Authenticator {
   public $parms = array();
   private $authenticator = null;

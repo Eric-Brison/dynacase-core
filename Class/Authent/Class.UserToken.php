@@ -1,10 +1,25 @@
 <?php
 
+/**
+ * UserToken class
+ *
+ * This class provides methods to store and manage authentication
+ * tokens with expiration time
+ *
+ * @author Anakeen 2009
+ * @version $Id: Class.UserToken.php,v 1.6 2009/01/16 13:33:00 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 include_once('Class.DbObj.php');
 
 Class UserToken extends DbObj
 {
-  var $Class = '$Id: Class.UserToken.php,v 1.5 2008/10/01 09:18:50 jerome Exp $';
+  var $Class = '$Id: Class.UserToken.php,v 1.6 2009/01/16 13:33:00 jerome Exp $';
 
   var $fields = array(
 		     'token',

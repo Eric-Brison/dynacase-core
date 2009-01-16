@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * LibSystem class
+ *
+ * This class provides methods for querying system informations
+ *
+ * @author Anakeen 2009
+ * @version $Id: Lib.System.php,v 1.4 2009/01/16 13:33:01 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 class LibSystem {
 
   function getCommandPath($cmdname) {
