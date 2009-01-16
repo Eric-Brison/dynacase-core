@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * API script to manipulate user crontab
+ *
+ * @author Anakeen 2009
+ * @version $Id: crontab.php,v 1.2 2009/01/16 15:51:35 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 include_once("WHAT/Class.Crontab.php");
 include_once("FDL/Lib.Util.php");
 

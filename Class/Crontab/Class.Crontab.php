@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Crontab class
+ *
+ * This class allows you to manipulate a user crontab by registering
+ * and unregistering cron files
+ *
+ * @author Anakeen 2009
+ * @version $Id: Class.Crontab.php,v 1.2 2009/01/16 15:51:35 jerome Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ * @subpackage
+ */
+ /**
+ */
+
 Class Crontab {
   var $user = NULL;
   var $crontab = '';
