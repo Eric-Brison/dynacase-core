@@ -24,7 +24,7 @@ DirectoryIndex index.php
         Allow from All
 </FilesMatch>
 
-<FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css)$">
+<FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css|svg|pdf)$">
         Order Deny,Allow
         Allow from All
 </FilesMatch>
