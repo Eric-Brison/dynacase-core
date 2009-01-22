@@ -10,6 +10,12 @@
  */
 /**
  */
+
+global $SQLDELAY, $SQLDEBUG;
+global $TSQLDELAY;	
+$SQLDEBUG=true;
+
+
 function dtic($text="") {
   static $ptic=0;
   static $ptic0=0;
@@ -33,7 +39,7 @@ function dtrace($text) {
   $trace[]=dtic($text). "#$tsql";
 }
 
-function stacktrace($level=3) {
+function stacktrace($level=3,$uplevel=1) {
   $stack=@xdebug_get_function_stack();
   $t=array();
   foreach ($stack as $k=>$v) {
@@ -43,7 +49,23 @@ function stacktrace($level=3) {
 		  $v["function"]);    
   }
   $l=(-1 -$level);
-  $t= array_slice($t,$l,-1);
+  $t= array_slice($t,$l,-$uplevel);
   return implode("/<br>",$t);
+}
+function dmtrace($text="",$level=3) {
+  dtrace(stacktrace($level,2).':'.$text);
+}
+
+function printdtrace() {
+  
+  global $trace;
+  foreach ($trace as $k=>$v) {
+    //[test.php:26]AddFile/<br>[Class.Dir.php:276]updateFldRelations:updateFldRelations : 0.075 -  0.075 #17
+
+    if (ereg("(.*):([^-]+)-([^#]+)#(.*)$",$v,$reg)) {
+      printf("%30.30s : %.03f | %02.03f | %d\n",
+	     substr($reg[1],-30),$reg[2],$reg[3],$reg[4]);
+    }
+  }
 }
 ?>

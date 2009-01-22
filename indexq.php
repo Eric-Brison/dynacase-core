@@ -101,7 +101,6 @@ include_once('Class.DbObj.php');
 
 global $SQLDELAY, $SQLDEBUG;
 global $TSQLDELAY;	
-$SQLDEBUG=true;
 // ----------------------------------------
 
 $indexphp=basename($_SERVER["SCRIPT_NAME"]);
