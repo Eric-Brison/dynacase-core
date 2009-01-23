@@ -127,20 +127,7 @@ class Layout {
    $this->corresp["$p_nom_block"]["[$p_nom_modele]"]=($p_nom==NULL?$p_nom_modele:"$p_nom");
   }
 
-  function SetBlockData($p_nom_block,$data=NULL) {
-    if ($data!=null && $this->encoding=="utf-8") {
-      if (is_array($data)) {
-	foreach ($data as $k => $v) {
-	  foreach ($v as $kk => $vk) {
-	    if (!isUTF8($vk)) { 
-	      $data[$k][$kk] = utf8_encode($vk); 
-	    }
-	  }
-	}
-      } else {
-	if (!isUTF8($data)) $data = utf8_encode($data);
-      }
-    }
+  function SetBlockData($p_nom_block,$data=NULL) {   
     $this->data["$p_nom_block"]=$data;
     // affect the corresp block if not
     if (is_array($data))  {
@@ -299,7 +286,6 @@ class Layout {
            
 
   function set($tag,$val) {
-    if ($this->encoding=="utf-8" && !isUTF8($val)) $val = utf8_encode($val);
     $this->pkey[$tag]="[$tag]";
     $this->rkey[$tag]=$val;
   }
@@ -322,11 +308,9 @@ class Layout {
      $out = preg_replace("/\[SCRIPT:([^\]]*)\]/e",
                          "\$this->action->GetScriptUrl('\\1')",
                          $out);
-     if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'UTF-8');
      $out = preg_replace("/\[TEXT:([^\]]*)\]/e",
                          "\$this->Text('\\1')",
                          $out);
-     if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'ISO-8859-15'); // restore
   }
 
   function Text($s) {

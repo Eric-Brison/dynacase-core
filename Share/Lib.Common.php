@@ -511,7 +511,7 @@ function WhatInitialisation() {
   setlocale(LC_MONETARY, $lang);
   setlocale(LC_TIME, $lang);
   bindtextdomain ("what", DEFAULT_PUBDIR."/locale");
-  bind_textdomain_codeset("what", 'ISO-8859-15');
+  bind_textdomain_codeset("what", 'utf-8');
   textdomain ("what");
 }
 
@@ -573,7 +573,7 @@ function setLanguage($lang) {
   //print $action->Getparam("CORE_LANG");
   putenv ("LANG=".$lang); // needed for old Linux kernel < 2.4
   bindtextdomain ("what", "$pubdir/locale");
-  bind_textdomain_codeset("what", 'ISO-8859-15');
+  bind_textdomain_codeset("what", 'utf-8');
   textdomain ("what");
 }
 ?>

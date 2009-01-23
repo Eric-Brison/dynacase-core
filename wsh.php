@@ -122,7 +122,7 @@ if (isset($_GET["action"])) {
 setlocale(LC_MESSAGES,$core->Getparam("CORE_LANG"));  
 putenv ("LANG=".$core->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "$pubdir/locale");
-bind_textdomain_codeset("what", 'ISO-8859-15');
+bind_textdomain_codeset("what", 'utf-8');
 textdomain ("what");
   
 
