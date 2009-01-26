@@ -171,17 +171,8 @@ if ($action->Read("navigator","") == "") {
 }
 $core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
 // init for gettext
-setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
-setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
-setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
-//print $action->Getparam("CORE_LANG");
-putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
-bindtextdomain ("what", "$pubdir/locale");
-bind_textdomain_codeset("what", 'UTF-8');
-textdomain ("what");
-
+setLanguage($action->Getparam("CORE_LANG"));
   
-  $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
 
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
 {
