@@ -1,11 +1,22 @@
 #!/bin/bash
 . /etc/freedom.conf
 function whattext ()
-{
-    
+{    
+    ntf="$wpub/locale/.gettextnumber"
+    if [ ! -f $ntf ]; then
+	echo "0" > $ntf
+    fi
+    numberone=`cat $ntf`
+    numbertwo=`expr $numberone + 1`
     for lang in en fr ; do
 	pushd $wpub/locale/$lang/LC_MESSAGES >/dev/null
 	mv what.mo what.mo.old
+	
+        find . -type l -name "what[0-9]*.mo" -exec /bin/rm {} \;
+
+	if [ -h "what$numberone.mo" ]; then
+	    \rm "what$numberone.mo"
+	fi
         for mo in `ls *.mo` ; do
 	    msgunfmt --force-po $mo -o $mo.po
 	done
@@ -13,6 +24,10 @@ function whattext ()
 
 	msgfmt what.po  -o what.mo
 	rm -f *.po *.old
+	if [ ! -a "what$numbertwo.mo" ]; then
+	    \ln -s what.mo "what$numbertwo.mo" && echo $numbertwo > $ntf
+	    
+	fi
 	popd >/dev/null
     done
 
