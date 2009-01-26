@@ -177,7 +177,7 @@ setlocale(LC_TIME, $action->Getparam("CORE_LANG"));
 //print $action->Getparam("CORE_LANG");
 putenv ("LANG=".$action->Getparam("CORE_LANG")); // needed for old Linux kernel < 2.4
 bindtextdomain ("what", "$pubdir/locale");
-bind_textdomain_codeset("what", 'ISO-8859-15');
+bind_textdomain_codeset("what", 'UTF-8');
 textdomain ("what");
 
   
