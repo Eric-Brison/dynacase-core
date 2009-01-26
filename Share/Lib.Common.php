@@ -567,7 +567,9 @@ function mkpasswd($length=8, $charspace="") {
 function setLanguage($lang) {
   global $pubdir;
 //  print "<h1>setLanguage:$lang</H1>";
+  $lang.=".UTF-8";
   setlocale(LC_MESSAGES,$lang);  
+  setlocale(LC_CTYPE,$lang);  
   setlocale(LC_MONETARY, $lang);
   setlocale(LC_TIME, $lang);
   //print $action->Getparam("CORE_LANG");
@@ -575,5 +577,6 @@ function setLanguage($lang) {
   bindtextdomain ("what", "$pubdir/locale");
   bind_textdomain_codeset("what", 'utf-8');
   textdomain ("what");
+  mb_internal_encoding('UTF-8');
 }
 ?>
