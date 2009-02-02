@@ -28,7 +28,7 @@ Alias /freedom @prefix@
     </Files>
     <FilesMatch "\.conf|dbaccess.php|wstop|wcheck|wcontrol|wsh.php">
        Order Deny,Allow
-       Deny from All   
+       Deny from All
     </FilesMatch>
     <FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css)$">
        Order Deny,Allow
