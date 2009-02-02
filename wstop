@@ -1,6 +1,11 @@
 #!/bin/bash
+
 if [ "$freedom_context" == "" ]; then
   . /etc/freedom.conf
+  if [ ! -f "$wpub/context/default/dbaccess.php" ]; then
+    # not initialized yet
+    exit 0
+   fi
    wchoose -b
 fi
 
