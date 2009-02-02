@@ -24,9 +24,9 @@ function getFrameWidth(w) {
 
 function getFrameHeight(w) {
   if (! w) w=window;
-      var winH = w.document.documentElement.offsetHeight;
+      var winH = winH=w.innerHeight;
      
-      if (! winH)  winH=w.innerHeight;
+      if (! winH)  w.document.documentElement.offsetHeight;
       if (! winH) winH = w.document.body.offsetHeight;
       return (winH);
   }
