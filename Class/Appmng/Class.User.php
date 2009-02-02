@@ -395,7 +395,7 @@ create sequence seq_id_users start 10";
 	if ($this->famid != "") $fam=$this->famid;
 	elseif ($this->isgroup=="Y") $fam="IGROUP";
 	else $fam="IUSER";;
-	$filter = array("us_whatid = ".$this->id);
+	$filter = array("us_whatid = '".$this->id."'");
 	$tdoc = getChildDoc($dbaccess, 0,0,"ALL", $filter,1,"LIST",$fam);
 	if (count ($tdoc)==0)  {
 	  //Create a new doc IUSER                                        
