@@ -511,7 +511,7 @@ function WhatInitialisation() {
   setlocale(LC_MONETARY, $lang);
   setlocale(LC_TIME, $lang);
   bindtextdomain ("what", DEFAULT_PUBDIR."/locale");
-  bind_textdomain_codeset("what", 'ISO-8859-15');
+  bind_textdomain_codeset("what", 'utf-8');
   textdomain ("what");
 }
 
@@ -567,13 +567,19 @@ function mkpasswd($length=8, $charspace="") {
 function setLanguage($lang) {
   global $pubdir;
 //  print "<h1>setLanguage:$lang</H1>";
+  $lang.=".UTF-8";
   setlocale(LC_MESSAGES,$lang);  
+  setlocale(LC_CTYPE,$lang);  
   setlocale(LC_MONETARY, $lang);
   setlocale(LC_TIME, $lang);
   //print $action->Getparam("CORE_LANG");
+  $number=trim(file_get_contents("$pubdir/locale/.gettextnumber"));
+  $td="what$number";
+
   putenv ("LANG=".$lang); // needed for old Linux kernel < 2.4
-  bindtextdomain ("what", "$pubdir/locale");
-  bind_textdomain_codeset("what", 'ISO-8859-15');
-  textdomain ("what");
+  bindtextdomain ($td, "$pubdir/locale");
+  bind_textdomain_codeset($td, 'utf-8');
+  textdomain ($td);
+  mb_internal_encoding('UTF-8');
 }
 ?>

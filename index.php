@@ -256,13 +256,9 @@ setLanguage($action->Getparam("CORE_LANG"));
 $action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
 
 
-if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
-{
+if (($standalone == "Y") || ($standalone == "N") || ($standalone == "")) {
   echo ($action->execute ());
-} 
-else 
-  if ($standalone == "R")
-    {      
+} else if ($standalone == "R") {      
       $app = GetHttpVars("app","CORE");
       $act = GetHttpVars("action","");
 
@@ -277,13 +273,8 @@ else
 	$getargs .= "&".$k."=".$v;
       }
       redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}".urlencode($getargs),$action->GetParam("CORE_STANDURL"));
-    }
-  else
-    if ($standalone == "A")
-      {
-	
-	if ((isset ($appl)) && ( $appl->with_frame != "Y" ))
-	  {  
+    } else if ($standalone == "A") {	
+	if ((isset ($appl)) && ( $appl->with_frame != "Y" ))  {  
 	    // This document is not completed : does not contain header and footer
 
 	    // HTML body result
@@ -301,9 +292,7 @@ else
 	    // write HTML footer
 	    $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"),$action);
 	    echo($foot->gen());
-	  }
-	else
-	  {
+	  } else {
 	    // This document is completed 
 	    echo ($action->execute ());
 	  }
