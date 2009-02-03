@@ -150,7 +150,9 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
      printf(_("file not found : %s"),$filename);
      return;
   }
-  
+  //  $name=urlencode($name);
+  //  $name=htmlentities( $name , ENT_QUOTES , "UTF-8" );
+  if (seems_utf8($name)) $name=utf8_decode($name);
   if (!$inline) header("Content-Disposition: attachment;filename=\"$name\"");  
   if ($cache) {
    header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
