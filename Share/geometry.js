@@ -97,7 +97,7 @@ function autoVresize() {
     sh=document.body.scrollHeight;    
     ih=getFrameHeight()-4;
   }
-  alert(document.body.style.marginTop);
+
   availHeight=self.screen.availHeight-300;
  
   if (sh > availHeight) 
