@@ -20,7 +20,7 @@ Class openAuthenticator {
   
   public function __construct($parms) {
     $this->parms = $parms;
-    
+
     if( ! array_key_exists('provider', $this->parms) ) {
       throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: provider parm not specified at __construct");
     }

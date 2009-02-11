@@ -4,7 +4,7 @@
 
 
 
-SUBDIR= basic digest html
+SUBDIR= basic digest html open
 
 
 include $(utildir)/PubRule
