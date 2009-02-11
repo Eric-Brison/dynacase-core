@@ -1,6 +1,6 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Display actions paramters
  *
  * @author Anakeen 2000 
  * @version $Id: actionlist.php,v 1.5 2003/08/18 15:46:41 eric Exp $
@@ -11,55 +11,7 @@
  /**
  */
 
-// ---------------------------------------------------------------
-// $Id: actionlist.php,v 1.5 2003/08/18 15:46:41 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/actionlist.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2000
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
-// $Log: actionlist.php,v $
-// Revision 1.5  2003/08/18 15:46:41  eric
-// phpdoc
-//
-// Revision 1.4  2002/08/26 13:04:58  eric
-// application multi-machine
-//
-// Revision 1.3  2002/03/21 17:52:37  eric
-// prise en compte application répartie sur plusieurs machines
-//
-// Revision 1.2  2002/01/30 13:44:54  eric
-// i18n & remise en marche modif action
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.3  2001/09/10 16:46:49  eric
-// modif pour libwhat 4.8 : accessibilté objet
-//
-// Revision 1.2  2001/02/26 16:57:13  yannick
-// remove tablelayout bug
-//
-// Revision 1.1  2001/02/06 11:40:52  marianne
-// Prise en compte des styles, parametres et actions
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.TableLayout.php");
 include_once("Class.QueryDb.php");
 include_once("Class.QueryGen.php");
@@ -74,6 +26,7 @@ function actionlist(&$action) {
   $standurl=$action->GetParam("CORE_STANDURL");
 
   $action->lay->set("ACTION_CHG","ACTION_APPL_CHG");
+  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
 
   $err = $action->Read("err_add_parameter");
   if ($err != "") {
@@ -120,31 +73,6 @@ function actionlist(&$action) {
   $action->parent->AddJsRef("change_acl.js");
 
 
-  // Set the form element
-  $form = new SubForm("edit",350,330,$standurl."app=APPMNG&action=ACTION_MOD",
-                                     $standurl."app=APPMNG&action=ACTION_EDIT");
-  $form->SetParam("id","-1");
-  $form->SetParam("creation","");
-  $form->SetParam("acl","");
-  $form->SetParam("toc","");
-  $form->SetParam("available","");
-  $form->SetParam("root","");
-  $form->SetParam("name","");
-  $form->SetParam("short_name","");
-  $form->SetParam("long_name","");
-  $form->SetParam("script","");
-
-  $form->SetKey("id");
-
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
-  $action->parent->AddJsCode($form->GetMainJs());
-  $action->lay->set("MAINFORM",$form->GetMainForm());
-
-
-  
-
-
-
 
   // Set the table element
   
@@ -157,19 +85,10 @@ function actionlist(&$action) {
   
   $query->table->headsortfields = array ( "name" => "name");
   $query->table->headcontent = array ("name" => $action->text("name"));
-   $query->Query();
-  
-  // Affect the modif icons
+  $query->Query();
 
-  $jsscript=$form->GetLinkJsMainCall();
-  while(list($k,$v) = each($query->table->array)) {
-    $query->table->array[$k]["imgedit"] = "<img border=0 src=\"".$action->GetImageUrl("edit.gif")."\" alt=\"".$action->text("edit")."\">";
-    $query->table->array[$k]["short_name"] = $action->text($query->table->array[$k]["short_name"]);
 
-  }
-    
-
-  $query->table->fields= array("id","name","imgedit","short_name","script","layout","available","acl","root","toc","toc_order");
+  $query->table->fields= array("id","name","openaccess","short_name","script","layout","available","acl","root","toc","toc_order");
 
 
 

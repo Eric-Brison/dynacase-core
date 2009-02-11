@@ -12,7 +12,7 @@
 
 <body>
 
-<form name="edit" method="POST">
+<form name="edit" method="POST"  action="?app=APPMNG&action=ACTION_MOD">
 <input type="hidden" name="id" value="[id]">
 
 <table align="center"  border="0" cellspacing="1" cellpadding="1">
@@ -61,7 +61,7 @@
 
       [ENDBLOCK SELECTAVAILABLE]
 
-    </SELECT
+    </SELECT>
     </span></td>
 
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:acl] : </span></td>
@@ -80,7 +80,7 @@
 
       [ENDBLOCK SELECTROOT]
 
-    </SELECT
+    </SELECT>
     </span></td>
 
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:toc] : </span></td>
@@ -92,21 +92,32 @@
 
       [ENDBLOCK SELECTTOC]
 
-    </SELECT
+    </SELECT>
     </span></td>
   </tr>
+ <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:openaccess] : </span></td>
+    <td colspan="1" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+    <SELECT NAME="openaccess" SIZE=1>
+      [BLOCK SELECTOPENACCESS]
+        <option value="[openaccess]" [selected]>[openaccess]</option>
+      [ENDBLOCK SELECTOPENACCESS]
 
-  <tr>
-    <td colspan="4" align="left" class="CORETbCell">&nbsp;</td>
+    </SELECT>
+    </span></td>
+
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl"> </span></td>
+    <td colspan="1" valign="center" align="left" class="CORETblCell"></td>
   </tr>
+ 
 
   <tr>
 
     <td colspan="4" align="center" class="CORETblHeadCell">
       <font size="-1"><input class="CORETblHead" type="reset" onClick="self.close()" name="Annuler" value="[TEXT:butclosew]">
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input class="CORETblHead" type="submit" 
-        onClick="return Valid_Send()" name="Creer" value="[BUTTONTYPE]">
+      <input class="CORETblHead" type="submit" onclick="setopenertarget(this)"
+         name="Creer" value="[BUTTONTYPE]">
       </font>
     </td>
 

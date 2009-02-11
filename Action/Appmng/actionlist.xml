@@ -61,6 +61,7 @@
   <td class="CORETblCell" nowrap><span class="CORETblBold">[TEXT:short_name]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:available]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:acl]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:openaccess]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:root]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:toc]</span></td>
 </tr>
@@ -73,15 +74,16 @@
 [BLOCK TABLEBODY]
 <tr>
   <td width="20">
-       <a href="#" onclick="javascript:submit_withpar(330,350,'edit','[id]','[CORE_BASEURL]app=APPMNG&action=ACTION_EDIT&sole=Y&id=[id]')">
+       <a href="#" onclick="subwindow(330,350,'edit','[CORE_BASEURL]app=APPMNG&action=ACTION_EDIT&sole=Y&id=[id]')">
       <img border=0 src="[IMG:edit.gif]"  alt="Edit" title="[TEXT:edit]">
     </a></td>
-  <td class="[CLASS]"><span class="CORETbl">[name]</span></td>
-  <td nowrap class="[CLASS]"><span class="CORETbl">[short_name]&nbsp;</span></td>
-  <td class="[CLASS]"><span class="CORETbl">[available]</span></td>
-  <td class="[CLASS]"><span class="CORETbl">[acl]</span></td>
-  <td class="[CLASS]"><span class="CORETbl">[root]</span></td>
-  <td class="[CLASS]"><span class="CORETbl">[toc]</span></td>
+  <td ><span class="CORETbl">[name]</span></td>
+  <td nowrap ><span class="CORETbl">[short_name]&nbsp;</span></td>
+  <td ><span class="CORETbl">[available]</span></td>
+  <td align="center"><span class="CORETbl">[acl]</span></td>
+  <td align="center"><span class="CORETbl">[openaccess]</span></td>
+  <td ><span class="CORETbl">[root]</span></td>
+  <td ><span class="CORETbl">[toc]</span></td>
 </tr>
 [ENDBLOCK TABLEBODY]
 <!-- /TABLEBODY -->
@@ -114,7 +116,3 @@
 
 </table>
 
-
-[MAINFORM]
-
-[QUERY_FORM]
