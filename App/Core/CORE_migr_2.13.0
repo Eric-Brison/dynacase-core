@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$pgservice_core" == "" ]; then
+    # load environement variable for freedom
+    . /etc/freedom.conf
+    wchoose -b
+fi
+
+echo "alter table action add column openaccess char;" | PGSERVICE="$pgservice_core" psql

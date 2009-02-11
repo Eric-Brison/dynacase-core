@@ -104,7 +104,9 @@ Class UserToken extends DbObj
     return $err;
   }
 
-  function modify() {
+
+
+  function preUpdate() {
     if( $this->token == "" ) {
       return "Error: token not set";
     }
@@ -114,8 +116,6 @@ Class UserToken extends DbObj
     if( $this->expire == "" ) {
       return "Error: expire not set";
     }
-
-    parent::modify();
   }
 
 }
