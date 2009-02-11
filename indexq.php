@@ -21,7 +21,7 @@ include_once('WHAT/wdebug.php');
 
 $authtype = getAuthType();
  
-if( $authtype == 'basic' || $authtype == 'html' ) {
+if( $authtype == 'basic' || $authtype == 'html'|| $authtype == 'open'  ) {
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
 			    array_merge(

@@ -124,7 +124,7 @@ setLanguage($action->Getparam("CORE_LANG"));
 
 if (isset($_GET["api"])) {
   try {
-    if (!include "API/".$_GET["api"].".php") {
+    if (!@include "API/".$_GET["api"].".php") {
       echo sprintf(_("API file %s not found"),"API/".$_GET["api"].".php");
     } 
   }

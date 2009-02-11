@@ -17,7 +17,7 @@ include_once('WHAT/Lib.Common.php');
 
 $authtype = getAuthType();
  
-if( $authtype == 'basic' || $authtype == 'html' ) {
+if( $authtype == 'basic' || $authtype == 'html'|| $authtype == 'open' ) {
   include_once('WHAT/Class.Authenticator.php');
   $auth = new Authenticator(
 			    array_merge(
@@ -295,9 +295,6 @@ if (($standalone == "Y") || ($standalone == "N") || ($standalone == "")) {
 	  } else {
 	    // This document is completed 
 	    echo ($action->execute ());
-	  }
-	  
+	  }	  
       }
-
-
 ?>
