@@ -158,9 +158,9 @@ class Layout {
     if (isset ($this->data) && isset ($this->data["$name"]) && is_array($this->data["$name"])) {
       foreach($this->data["$name"] as $k=>$v) {
         $loc=$block;
+	if (! is_array($this->corresp["$name"])) return sprintf(_("SetBlock:error [%s]"),$name);
         foreach ($this->corresp["$name"] as $k2=>$v2) {
-	  if ((! is_object($v[$v2])) && (! is_array($v[$v2]))) $loc = str_replace( $k2, $v[$v2], $loc);
-           
+	  if ((! is_object($v[$v2])) && (! is_array($v[$v2]))) $loc = str_replace( $k2, $v[$v2], $loc);           
 	}
 	$this->rif=&$v;
 	$this->ParseIf($loc);

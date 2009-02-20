@@ -507,12 +507,7 @@ function WhatInitialisation() {
 
   // i18n
   $lang=$action->Getparam("CORE_LANG");
-  setlocale(LC_MESSAGES,$lang);  
-  setlocale(LC_MONETARY, $lang);
-  setlocale(LC_TIME, $lang);
-  bindtextdomain ("what", DEFAULT_PUBDIR."/locale");
-  bind_textdomain_codeset("what", 'utf-8');
-  textdomain ("what");
+  setLanguage($lang);
 }
 
 /**
