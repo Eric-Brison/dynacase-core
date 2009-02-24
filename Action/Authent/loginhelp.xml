@@ -1,11 +1,11 @@
-<div class="title">Aide à la connexionn</div>
+<div class="title">Aide Ã  la connexionn</div>
 <div class="content">
-Cette fenêtre permet de vous identifier, c'est à dire indiquer aux applications qui vous êtes.
+Cette fenÃªtre permet de vous identifier, c'est Ã  dire indiquer aux applications qui vous Ãªtes.
 <br>
-Ceci est nécessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-même. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en possédez pas adressez vous à l'administrateur du site).i
+Ceci est nÃ©cessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-mÃªme. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en possÃ©dez pas adressez vous Ã  l'administrateur du site).i
 <br><br>
-Attention, ce mot de passe est le moyen garantissant votre identification : conservez le précieusement et ne le diffusez pas !.
+Attention, ce mot de passe est le moyen garantissant votre identification : conservez le prÃ©cieusement et ne le diffusez pas !.
 <br><br>
-Il est important de respecter la casse (utilisation des caractères majuscule et minuscule) lors de la saisie des vos nom d'utilisateur et mot de passe!<br>
+Il est important de respecter la casse (utilisation des caractÃ¨res majuscule et minuscule) lors de la saisie des vos nom d'utilisateur et mot de passe!<br>
 </div>
-<div class="close"><a href="javascript:document.getElementById('zonehelp').style.visibility = 'hidden'">fermer la fenêtree</div>
+<div class="close"><a href="javascript:document.getElementById('zonehelp').style.visibility = 'hidden'">fermer la fenÃªtree</div>
