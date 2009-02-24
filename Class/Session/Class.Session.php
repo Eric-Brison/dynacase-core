@@ -71,6 +71,9 @@ Class Session extends DbObj{
 
   function Set($id="")  {
     global $_SERVER;
+
+    $this->gcSessions();
+
     $query=new QueryDb($this->dbaccess,"Session");
     $query->addQuery("id = '".pg_escape_string($id)."'");
     $query->addQuery("name = '".pg_escape_string($this->session_name)."'");
