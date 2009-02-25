@@ -184,7 +184,7 @@ Class Session extends DbObj{
   }       
   
   // --------------------------------
-  // Récupère une variable de session
+  // RÃ©cupÃ¨re une variable de session
   // $v est une chaine !
   // --------------------------------
   function Read($k = "", $d="") {
@@ -205,7 +205,7 @@ Class Session extends DbObj{
   }       
   
   // --------------------------------
-  // Détruit une variable de session
+  // DÃ©truit une variable de session
   // $v est une chaine !
   // --------------------------------
   function Unregister($k = "")   {

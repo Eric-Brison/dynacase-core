@@ -41,7 +41,7 @@
 // changement structure table paramv
 //
 // Revision 1.2  2002/05/23 16:14:40  eric
-// paramètres utilisateur
+// paramÃ¨tres utilisateur
 //
 // Revision 1.1  2002/01/08 12:41:33  eric
 // first

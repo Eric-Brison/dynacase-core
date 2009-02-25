@@ -44,7 +44,7 @@
 // Gestion des sessions
 //
 // Revision 1.1  2000/10/09 10:44:02  yannick
-// Déplacement des sessions
+// DÃ©placement des sessions
 //
 // Revision 1.1.1.1  2000/10/05 17:29:10  yannick
 // Importation

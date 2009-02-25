@@ -44,7 +44,7 @@
 // first
 //
 // Revision 1.3  2001/10/11 13:59:07  eric
-// mise à jour pour libwhat 0.4.8
+// mise Ã  jour pour libwhat 0.4.8
 //
 // Revision 1.2  2001/02/26 16:57:14  yannick
 // remove tablelayout bug

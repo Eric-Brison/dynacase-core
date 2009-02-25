@@ -61,7 +61,7 @@ var $liste_extract=array();
 // ---------------------------------------------------------------------------
 // NOM	       : DownLoad
 //
-// DESCRIPTION : Constructeur, connexion à la base.
+// DESCRIPTION : Constructeur, connexion Ã  la base.
 //		
 // PARAMETRES  : entree: aucun.
 //

@@ -44,7 +44,7 @@
 // first
 //
 // Revision 1.2  2001/02/07 11:31:11  yannick
-// Ménage sur debug
+// MÃ©nage sur debug
 //
 // Revision 1.1  2001/02/06 16:32:45  yannick
 // Add Action-Session set action

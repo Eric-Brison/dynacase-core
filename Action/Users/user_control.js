@@ -134,7 +134,7 @@ function Valid_Send()
     || document.edit.login.value == "all"
     || document.edit.login.value == "hostmaster"
     || document.edit.login.value == "admin")) {
-    alert('Ce nom de login n\'est pas autorisé !');
+    alert('Ce nom de login n\'est pas autorisÃ© !');
     return false;
   }
 
@@ -154,7 +154,7 @@ function Valid_Send()
       return false;
     }
     if (document.edit.passwd.value != document.edit.passwdchk.value) {
-      alert("Les mots de passe saisis sont différents !\nRecommencez.");
+      alert("Les mots de passe saisis sont diffÃ©rents !\nRecommencez.");
       document.edit.passwd.value = "";
       document.edit.passwdchk.value = "";
       return false;
@@ -185,7 +185,7 @@ function Valid_Send()
 function Valid_Passwd()
 {
   if (document.edit.passwd.value != document.edit.passwdchk.value) {
-      alert("Les mots de passe saisis sont différents !\nRecommencez.");
+      alert("Les mots de passe saisis sont diffÃ©rents !\nRecommencez.");
       document.edit.passwd.value = "";
       document.edit.passwdchk.value = "";
       return false;

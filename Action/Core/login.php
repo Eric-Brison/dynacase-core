@@ -29,7 +29,7 @@
 // modification bouton login et autre icone
 //
 // Revision 1.2  2000/10/26 15:32:17  yannick
-// Remise à niveau
+// Remise Ã  niveau
 //
 // Revision 1.1  2000/10/12 08:06:55  yannick
 // Ajout du traitement de l'ampoule

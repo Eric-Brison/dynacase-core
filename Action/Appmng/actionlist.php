@@ -41,7 +41,7 @@
 // application multi-machine
 //
 // Revision 1.3  2002/03/21 17:52:37  eric
-// prise en compte application répartie sur plusieurs machines
+// prise en compte application rÃ©partie sur plusieurs machines
 //
 // Revision 1.2  2002/01/30 13:44:54  eric
 // i18n & remise en marche modif action
@@ -50,7 +50,7 @@
 // first
 //
 // Revision 1.3  2001/09/10 16:46:49  eric
-// modif pour libwhat 4.8 : accessibilté objet
+// modif pour libwhat 4.8 : accessibiltÃ© objet
 //
 // Revision 1.2  2001/02/26 16:57:13  yannick
 // remove tablelayout bug

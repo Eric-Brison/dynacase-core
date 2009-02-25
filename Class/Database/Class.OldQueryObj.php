@@ -71,16 +71,16 @@ var $operators = array (
        "nlike"   => array( "lib"   => "Ne Contient Pas",
                            "oper"  => "not like",
                            "param" => "PERCENT"),
-       "="       => array( "lib"   => "Est égal à", 
+       "="       => array( "lib"   => "Est Ã©gal Ã ", 
                            "oper"  => "=",
                            "param" => "NORMAL"),
-       "!="      => array( "lib"   => "Est différent de", 
+       "!="      => array( "lib"   => "Est diffÃ©rent de", 
                            "oper"  => "!=",
                            "param" => "NORMAL"),
-       ">"       => array( "lib"   => "Est Supérieur à",
+       ">"       => array( "lib"   => "Est SupÃ©rieur Ã ",
                            "oper"  => ">",
                            "param" => "NORMAL"),
-       "<"       => array( "lib"   => "Est Inférieur à", 
+       "<"       => array( "lib"   => "Est InfÃ©rieur Ã ", 
                            "oper"  => "<",
                            "param" => "NORMAL"),
        "notn"    => array( "lib"   => "N'est pas Vide", 
@@ -201,7 +201,7 @@ var $distinct="distinct";
 ### echo $this->dbaccess;
 
       $chrono = microtime();
-      ###$this->log->debug("Requète : $query / $chrono");
+      ###$this->log->debug("RequÃ¨te : $query / $chrono");
       $this->LastQuery=$query;
 ### echo "<br>$query";
       $res = pg_exec($this->dbid,$query);
@@ -212,7 +212,7 @@ var $distinct="distinct";
       
       if ($this->nb ==0) return FALSE;
       $chrono = microtime();
-      $this->log->debug("Résultats : {$this->nb} / $chrono");
+      $this->log->debug("RÃ©sultats : {$this->nb} / $chrono");
 
       if ($start >= $this->nb) {$start=0;}
       if ($slice == 0) {$slice = $this->nb;}
@@ -222,7 +222,7 @@ var $distinct="distinct";
       } else {
         $end = $start + $slice;
       }
-      $this->log->debug("Extraction de ".$start." à ".$end);
+      $this->log->debug("Extraction de ".$start." Ã  ".$end);
       for ($c=0; $c<$this->nb;$c++) {
         if (($c >= $start) && ($c<$end)) {
           $result = pg_fetch_array($res,$c);
@@ -393,11 +393,11 @@ function GenPage($url,$nores,$complete="FALSE",$display_form="YES") {
 
        $o->cat('
             if ((tab_types[crit_idx]=="NUM") && (oper_sel=="nlike")) {
-              alert ("Un champ numérique ne peut-être recherché avec \'Ne Contient Pas\'!!");
+              alert ("Un champ numÃ©rique ne peut-Ãªtre recherchÃ© avec \'Ne Contient Pas\'!!");
               form_cour.p_operator.options[0].selected=true;
             }
             if ((tab_types[crit_idx]=="NUM") && (oper_sel=="like")) {
-              alert ("Un champ numérique ne peut-être recherché avec \'Contient\'!!");
+              alert ("Un champ numÃ©rique ne peut-Ãªtre recherchÃ© avec \'Contient\'!!");
               form_cour.p_operator.options[0].selected=true;
             }
             if ((crit_sel=="") && (champ.name=="p_criteria")) {
@@ -568,7 +568,7 @@ function GenPage($url,$nores,$complete="FALSE",$display_form="YES") {
             <font size="-1">Recherche</font></a>
             <a href="javascript:void(0)"
                onClick="resetFiltre(document.QueryObj);return false">     
-            <font size="-1">Réinitialiser</font></a>
+            <font size="-1">RÃ©initialiser</font></a>
         </td>');
        // Case sensitivity
        $o->cat('
