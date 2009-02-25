@@ -23,13 +23,13 @@
 // first
 //
 // Revision 1.4  2000/10/18 08:48:24  yannick
-// Traitement du JS et passage par référence
+// Traitement du JS et passage par rÃ©fÃ©rence
 //
 // Revision 1.3  2000/10/11 12:27:38  yannick
 // Gestion de l'authentification
 //
 // Revision 1.2  2000/10/06 13:59:16  yannick
-// Ajout des règles de codage
+// Ajout des rÃ¨gles de codage
 //
 // Revision 1.1.1.1  2000/10/05 17:29:10  yannick
 // Importation

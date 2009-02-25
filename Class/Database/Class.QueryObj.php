@@ -94,7 +94,7 @@
 //  Nouveau
 //
 //  Revision 1.4  2000/05/30 09:33:50  xavier
-//  mise à jour du 05 30
+//  mise Ã  jour du 05 30
 //
 //  Revision 1.1  2000/05/19 09:56:15  admin
 //  init
@@ -239,11 +239,11 @@ function GenPage($url,$nores,$complete="FALSE",$display_form="YES") {
 
        $o->cat('
             if ((tab_types[crit_idx]=="NUM") && (oper_sel=="nlike")) {
-              alert ("Un champ numérique ne peut-être recherché avec \'Ne Contient Pas\'!!");
+              alert ("Un champ numÃ©rique ne peut-Ãªtre recherchÃ© avec \'Ne Contient Pas\'!!");
               form_cour.p_operator.options[0].selected=true;
             }
             if ((tab_types[crit_idx]=="NUM") && (oper_sel=="like")) {
-              alert ("Un champ numérique ne peut-être recherché avec \'Contient\'!!");
+              alert ("Un champ numÃ©rique ne peut-Ãªtre recherchÃ© avec \'Contient\'!!");
               form_cour.p_operator.options[0].selected=true;
             }
             if ((crit_sel=="") && (champ.name=="p_criteria")) {
@@ -414,7 +414,7 @@ function GenPage($url,$nores,$complete="FALSE",$display_form="YES") {
             <font size="-1">Recherche</font></a>
             <a href="javascript:void(0)"
                onClick="resetFiltre(document.QueryObj);return false">     
-            <font size="-1">Réinitialiser</font></a>
+            <font size="-1">RÃ©initialiser</font></a>
         </td>');
        // Case sensitivity
        $o->cat('

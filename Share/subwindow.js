@@ -18,7 +18,7 @@ function subwindow(h, w, name, url) {
 		       name,
 		       'resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
      if (!me) {
-       if (confirm("Ouverture fenêtre impossible.\nVoulez vous affichez la page dans la fenêtre courante ?")) {
+       if (confirm("Ouverture fenÃªtre impossible.\nVoulez vous affichez la page dans la fenÃªtre courante ?")) {
 	 window.location.href=url;
        }
      } else {
@@ -53,7 +53,7 @@ function subwindowm(h, w, name, url) {
 		       'menubar=yes,resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
      
      if (!me) {
-       if (confirm("Ouverture fenêtre impossible.\nVoulez vous affichez la page dans la fenêtre courante ?")) {
+       if (confirm("Ouverture fenÃªtre impossible.\nVoulez vous affichez la page dans la fenÃªtre courante ?")) {
 	 window.location.href=url;
        }
      } else {

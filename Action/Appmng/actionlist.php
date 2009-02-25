@@ -11,7 +11,6 @@
  /**
  */
 
-
 include_once("Class.TableLayout.php");
 include_once("Class.QueryDb.php");
 include_once("Class.QueryGen.php");

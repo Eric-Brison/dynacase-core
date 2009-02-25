@@ -23,7 +23,7 @@ function docpdf(&$action) {
   
 if ($handle = opendir($pubdir)) {
 
-   /* Ceci est la façon correcte de traverser un dossier. */
+   /* Ceci est la faÃ§on correcte de traverser un dossier. */
    $tpdfdoc=array();
    while (false !== ($file = readdir($handle))) {
      if (($file != "") && ($file[0]!= ".")) {

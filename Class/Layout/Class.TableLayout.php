@@ -50,10 +50,10 @@
 // Gestion des header et tris
 //
 // Revision 1.10  2001/02/07 13:16:17  yannick
-// Retour à la page 0 sur tri
+// Retour Ã  la page 0 sur tri
 //
 // Revision 1.9  2001/02/07 11:30:44  yannick
-// Traitement résultat vide, 1 seule page
+// Traitement rÃ©sultat vide, 1 seule page
 //
 // Revision 1.8  2001/02/07 09:22:17  yannick
 // Nombre de pages arrondi
@@ -77,7 +77,7 @@
 // Gestion des utilisateurs
 //
 // Revision 1.1  2000/10/13 14:21:41  yannick
-// Création
+// CrÃ©ation
 //
 //
 //

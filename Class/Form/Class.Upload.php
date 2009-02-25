@@ -99,7 +99,7 @@ class uploader {
     if($this->file["file"] && $this->file["file"] != "none") {
       //test max size
       if($this->max_filesize && $this->file["size"] > $this->max_filesize) {
-        $this->errors[]="Taille maximale dépassée:. Le fichier ne doit pas excéder " . $this->max_filesize/1000 . "KB.";
+        $this->errors[]="Taille maximale dÃ©passÃ©e:. Le fichier ne doit pas excÃ©der " . $this->max_filesize/1000 . "KB.";
         return False;
       }
        if(ereg("image", $this->file["type"])) {
@@ -152,7 +152,7 @@ class uploader {
         if(ereg($accept_type, $this->file["type"])) { $this->accepted=True; }
         else { $this->errors[]="Seuls les fichiers de type " . 
                ereg_replace("\|", " or ", $accept_type) . 
-               " sont acceptés"; }
+               " sont acceptÃ©s"; }
       }
       else { $this->accepted=True; }
     }
@@ -202,7 +202,7 @@ class uploader {
         case 3: // do nothing if exists, highest protection
           if(file_exists($this->new_file)){
             $this->errors[]="Le fichier &quot".
-                             $this->new_file."&quot existe déjà";
+                             $this->new_file."&quot existe dÃ©jÃ ";
           }
           else {
             $aok=rename($this->file["file"], $this->new_file);

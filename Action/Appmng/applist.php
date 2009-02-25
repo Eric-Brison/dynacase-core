@@ -53,7 +53,7 @@
 // application multi-machine
 //
 // Revision 1.4  2002/03/21 17:52:37  eric
-// prise en compte application répartie sur plusieurs machines
+// prise en compte application rÃ©partie sur plusieurs machines
 //
 // Revision 1.3  2002/02/04 14:44:36  eric
 // https
@@ -65,10 +65,10 @@
 // first
 //
 // Revision 1.8  2001/10/11 13:59:07  eric
-// mise à jour pour libwhat 0.4.8
+// mise Ã  jour pour libwhat 0.4.8
 //
 // Revision 1.7  2001/09/10 16:46:49  eric
-// modif pour libwhat 4.8 : accessibilté objet
+// modif pour libwhat 4.8 : accessibiltÃ© objet
 //
 // Revision 1.6  2001/02/06 11:40:11  marianne
 // Prise en compte des styles, parametres et actions

@@ -74,7 +74,7 @@
 // Mise au point
 //
 // Revision 1.3  2000/10/11 19:44:41  marc
-// Mise au point (accès graphiques, Css pour TABINDEX...)
+// Mise au point (accÃ¨s graphiques, Css pour TABINDEX...)
 //
 // Revision 1.2  2000/10/10 19:09:11  marc
 // Mise au point
