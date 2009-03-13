@@ -569,6 +569,7 @@ class OOoLayout extends Layout {
     if (is_object($this->action)) {
       $list=$this->action->parent->GetAllParam();
       while (list($k,$v)=each($list)) {
+        $v=str_replace(array('<BR>','<br>','<br/>'),'<text:line-break/>',$v);
         $this->set($k,$v);
       }
     }  
