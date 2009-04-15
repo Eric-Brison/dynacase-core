@@ -107,7 +107,7 @@ global $CORE_LOGLEVEL;
 
 global $_GET;
 $standalone = GetHttpVars("sole","Y");
-if (!isset($_GET["app"])) {
+if (! getHttpVars("app")) {
   $_GET["app"]="CORE";
   switch($_SERVER["FREEDOM_ACCESS"]) {
   case "WEBDESK":
@@ -118,7 +118,7 @@ if (!isset($_GET["app"])) {
   }
  }
 
-if (!isset($_GET["action"])) $_GET["action"]="";
+
 if (isset($_COOKIE['freedom_param'])) $sess_num= $_COOKIE['freedom_param'];
 else $sess_num=GetHttpVars('freedom_param');//$_GET["session"];
 
@@ -176,6 +176,7 @@ $core->SetVolatileParam("CORE_STANDURL","?sole=Y$add_args&");
 $core->SetVolatileParam("CORE_SSTANDURL","?sole=Y&freedom_param={$session->id}$add_args&");
 $core->SetVolatileParam("CORE_ASTANDURL","$puburl/$indexphp?sole=Y$add_args&"); // absolute links
 
+
 // ----------------------------------------
 // Init Application & Actions Objects
 if (($standalone == "") || ($standalone == "N")) {  
@@ -183,7 +184,7 @@ if (($standalone == "") || ($standalone == "N")) {
   $action->Set("MAIN",$core,$session);
 } else {
   $appl = new Application();
-  $appl->Set($_GET["app"],$core,$session);
+  $appl->Set(getHttpVars("app"),$core,$session);
 
   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
       if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {
@@ -218,10 +219,9 @@ if (($standalone == "") || ($standalone == "N")) {
     // now we are in correct protocol (http or https)
 
   $action = new Action();
-  $action->Set($_GET["action"],$appl,$session);
+  $action->Set(getHttpVars("action"),$appl,$session);
 
 }
-
 if ($auth) {
   $core_lang = $auth->getSessionVar('CORE_LANG');
   if( $core_lang != '' ) {
