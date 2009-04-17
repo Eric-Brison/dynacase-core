@@ -136,7 +136,7 @@ function getSysMimeFile($f,$fn="") {
   if (preg_match('/PHP script/',$txt))  return 'text/x-php';
   
   // open office archive
-  if (preg_match('/zip$/',$sys)) {
+  if (preg_match('/zip$/',$sys)|| (preg_match('/octet-stream$/',$sys))) {
   
     if (preg_match('/OpenOffice/',$txt)) {
       if (preg_match('/\.sxw$/',$fn))    return 'application/vnd.sun.xml.writer';
