@@ -78,7 +78,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	  $g=new Group($dbf);
 	  $err = $g->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=$uid");	  
 	}
-	if (!$nopost) $this->PostDelete();
+	if (!$nopost) $this->PostDelete($uid);
       }
       return $err;			   
   }
@@ -100,9 +100,10 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
   }
 
 
-  function PostDelete() {       
+  function PostDelete($uid=0) {       
     if (usefreedomuser()) {
-      $u=new User("",$this->iduser);
+      if ($uid) $u=new User("",$uid);
+      else $u=new User("",$this->iduser);
       if ($u->isgroup=="Y") {
 	// recompute all doc profil
 	$this->FreedomCopyGroup();    
