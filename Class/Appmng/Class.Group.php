@@ -110,14 +110,16 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
       } else {
 	$dbf=getParam("FREEDOM_DB");
 	$g=new Group($dbf);
-	$g->iduser=$this->iduser;
+	$g->iduser=$u->id;
 	$g->idgroup=$this->idgroup;
 	$err=$g->Delete(true);
 	if ($err=="") {
 	  // if it is a user (not a group)
 	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 
 	  $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=".$g->iduser);
-	  $g->exec_query("delete from permission where computed = true and id_user = ".$g->iduser);
+
+          $p = new Permission($this->dbaccess);
+          $p->deletePermission($g->iduser, null, null, true);
 	}
       }
     }
@@ -141,7 +143,9 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	  // if it is a user (not a group)
 	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 
 	  $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=".$g->iduser);
-	  $g->exec_query("delete from permission where computed = true and id_user = ".$g->iduser);
+
+          $p = new Permission($this->dbaccess);
+          $p->deletePermission($g->iduser, null, null, true);
 	}
       }
     }

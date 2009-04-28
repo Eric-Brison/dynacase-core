@@ -392,6 +392,36 @@ action.acl = acl.name where ";
     return $this->actions;
 
   }
+
+  /**
+   * delete permissions
+   */
+  public function deletePermission($id_user=null, $id_application=null, $id_acl=null, $computed=null) {
+    $sqlCond = array();
+    if( $id_user != null ) {
+      $sqlCond[] = sprintf("( id_user = %d )", pg_escape_string($id_user));
+    }
+    if( $id_application != null ) {
+      $sqlCond[] = sprintf("( id_application = %d )", pg_escape_string($id_application));
+    }
+    if( $id_acl != null ) {
+      $sqlCond[] = sprintf("( abs(id_acl) = abs(%d) )", pg_escape_string($id_acl));
+    }
+    if( $computed != null ) {
+      if( $computed = true ) {
+        $sqlCond[] = "( computed = TRUE )";
+      } else {
+        $sqlCond[] = "( computed = FALSE OR computed IS NULL )";
+      }
+    }
+    
+    if( count($sqlCond) > 0 ) {
+      return $this->exec_query(sprintf("DELETE FROM permission WHERE ( %s )", join(" AND ", $sqlCond)));
+    }
+    
+    return false;
+  }
+
 }
 
 

@@ -72,8 +72,8 @@ function modify_app(&$action) {
   }
   
   // delete old permissions recursively from the leaves
-  $p->exec_query(sprintf("DELETE FROM permission WHERE id_user = '%s' AND id_application = '%s'", pg_escape_string($userId), pg_escape_string($appId)));
-  $p->exec_query(sprintf("DELETE FROM permission WHERE computed = TRUE AND id_application = '%s'", pg_escape_string($appId)));
+  $p->deletePermission($userId, $appId, null, null);
+  $p->deletePermission(null, $appId, null, true);
   
   if (is_array($aclp)) {
     // create new permissions
