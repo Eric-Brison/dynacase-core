@@ -247,6 +247,20 @@ create sequence seq_id_users start 10";
       else {return false;}
                                                                                       
     }
+  /**
+   * return display name of a user
+   * @param int $uid user identificator
+   * @return string firstname and lastname
+   */
+  static function getDisplayName($uid) {
+    $uid=intval($uid);
+    if ($uid > 0) {
+      $dbid=getDbId(getDbAccess());
+      $res = pg_exec($dbid, "select firstname || ' ' || lastname as dn from users where id=$uid");
+      $arr = pg_fetch_array ($res, 0);
+      return $arr["dn"];
+    }
+  }
 
   /**
    * update user from FREEDOM IUSER document
