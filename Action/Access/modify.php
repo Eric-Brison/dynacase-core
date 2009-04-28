@@ -71,7 +71,7 @@ function modify_app(&$action) {
 		     "id_application" => $appId));
   }
   
-  // delete old permissions recursively from the leaves
+  // delete old permissions
   $p->deletePermission($userId, $appId, null, null);
   $p->deletePermission(null, $appId, null, true);
   
