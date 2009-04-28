@@ -21,7 +21,7 @@ include_once('Class.Group.php');
 
 Class Permission extends DbObj
 {
-  var $fields = array ( "id_user","id_application","id_acl");
+  var $fields = array ( "id_user","id_application","id_acl", "computed");
 
   var $id_fields = array ( "id_user","id_application");
 
@@ -34,23 +34,26 @@ Class Permission extends DbObj
   var $sqlcreate = '
 create table permission (id_user int not null,
                          id_application int not null,
-                         id_acl int not null);
+                         id_acl int not null,
+                         computed boolean default false);
 create index permission_idx1 on permission(id_user);
 create index permission_idx2 on permission(id_application);
 create index permission_idx3 on permission(id_acl);
+create index permission_idx4 on permission(computed);
                  ';
 
   var $actions = array(); // actions array for a user (including group) in an application
 
-  function __construct($dbaccess='', $id='',$res='',$dbid=0)
+  function __construct($dbaccess='', $id='', $res='', $dbid=0, $computed=true)
     {
       parent::__construct($dbaccess, $id,$res,$dbid);
       if (! $this->isAffected()) {
       
 	if (is_array($id)) {
 	  $this->Affect(array("id_user" => $id[0],
-			      "id_application" => $id[1]));
-	  $this-> GetPrivileges();
+			      "id_application" => $id[1],
+			      "computed" => $id[2]));
+	  $this-> GetPrivileges(false, $computed);
 	}
       }
 
@@ -129,7 +132,8 @@ create index permission_idx3 on permission(id_acl);
   function Exists($userid,$applicationid,$aclid=0) {
     $query = new QueryDb($this->dbaccess,"Permission");
     $query->basic_elem->sup_where = array ("id_application='$applicationid'",
-					   "id_user='{$userid}'");
+					   "id_user='{$userid}'",
+					   "( computed = FALSE OR computed IS NULL )");
     if ($aclid != 0) {
       $naclid= - $aclid;
       $query->AddQuery("(id_acl={$aclid}) OR (id_acl= {$naclid}) ");
@@ -179,7 +183,7 @@ create index permission_idx3 on permission(id_acl);
    */
  public function GetUpPrivileges() {
    if ($this->upprivileges === false) {
-     $this->GetPrivileges(true);
+     $this->GetPrivileges(true, false);
    }
    return $this->upprivileges;
  }
@@ -188,7 +192,7 @@ create index permission_idx3 on permission(id_acl);
    */
  public function GetUnPrivileges() {
    if ($this->unprivileges === false) {
-     $this->GetPrivileges(true);
+     $this->GetPrivileges(true, false);
    }
    return $this->unprivileges;
  }
@@ -197,24 +201,81 @@ create index permission_idx3 on permission(id_acl);
    */
  public function GetGPrivileges() {
    if ($this->gprivileges === false) {
-     $this->GetPrivileges(true);
+     $this->GetPrivileges(true, false);
    }
    return $this->gprivileges;
  }
 
-  /**
-   * return ACL list for a user
-   */
- public function GetPrivileges($force=false) {
+ /**
+  * Get all ACL for a given application
+  */
+ public function getAllAclForApplication($appid) {
+   $query = new QueryDb($this->dbaccess, "acl");
+   $query->basic_elem->sup_where = array("id_application = '".$appid."'");
+   $res = $query->Query();
+   $aclList = array();
+   foreach( $res as $k => $v ) {
+     $aclList[] = $v->id;
+   }
+   return $aclList;
+ }
+
+ /**
+  * Returns the resulting ACL for a given (user, application), computing
+  * ACL value if they are empty.
+  */
+ public function GetComputedPrivileges($uid, $appid) {
+   $query = new QueryDb($this->dbaccess, "permission");
+   $query->basic_elem->sup_where = array("id_application = '".$appid."'",
+					 "id_user = '".$uid."'",
+					 "computed = TRUE");
+   $computedAcl = array();
+   $privileges = array();
+   $list = $query->Query();
+   if( $query->nb > 0 ) {
+     while( list($k, $v) = each($list) ) {
+       $computedAcl[abs($v->id_acl)] = $v->id_acl;
+     }
+   }
+   $allAclList = $this->getAllAclForApplication($appid);
+   foreach( $allAclList as $acl ) {
+     if( ! array_key_exists($acl, $computedAcl) ) {
+       $computedAcl[abs($acl)] = $this->computePerm($uid, $appid, -abs($acl));
+     }
+   }
+   return array_values($computedAcl);
+ }
+
+ /**
+  * Return the ACL value for a given (user, app, acl), computing it if it's not
+  * already computed, and storing the results.
+  */
+ public function computePerm($uid, $appid, $acl) {
+   $db = new DbObj($this->dbaccess);
+   $res = $db->exec_query(sprintf("SELECT computePerm(%d, %d, %d)", $uid, $appid, -abs($acl)));
+   $perm = $db->fetch_array(0);
+   return $perm['computeperm'];
+ }
+
+ /**
+  * return ACL list for a user
+  */
+ public function GetPrivileges($force=false, $computed=true) {
    global $session;
 
    if (! $force) {
      if ($session) {
-     $privileges=$session->read("PERM".$this->id_application."_".$this->id_user);
-     if ($privileges !== "") {
-       $this->privileges=$privileges;
-       return;
-     }
+       $privileges = "";
+       if( $computed ) {
+	 $privileges = $this->GetComputedPrivileges($this->id_user, $this->id_application);
+	 if( count($privileges) <= 0 ) {
+	   $privileges = "";
+	 }
+       }
+       if ($privileges !== "") {
+	 $this->privileges=$privileges;
+	 return;
+       }
      }
    }
     $this->privileges= array();
@@ -230,7 +291,12 @@ create index permission_idx3 on permission(id_acl);
 
       $gperm = new permission($this->dbaccess, 
 			      array($gid, 
-				    $this->id_application));
+				    $this->id_application,
+				    false),
+			      '',
+			      0,
+			      $computed
+			      );
 
       // add group 
 
@@ -245,7 +311,8 @@ create index permission_idx3 on permission(id_acl);
 
     $query = new QueryDb($this->dbaccess,"Permission");
     $query->basic_elem->sup_where = array ("id_application='{$this->id_application}'",
-					   "id_user='{$this->id_user}'");
+					   "id_user='{$this->id_user}'",
+					   (!$computed)?"( computed = FALSE OR computed IS NULL )":"");
     $list = $query->Query();
     if ($query->nb > 0) {
       while (list($k,$v) = each($list)) {
@@ -267,8 +334,6 @@ create index permission_idx3 on permission(id_acl);
       
       }
     }
-
-    if ($session) $session->register("PERM".$this->id_application."_".$this->id_user,$this->privileges);
 
     return($this->privileges);
   }
@@ -327,6 +392,36 @@ action.acl = acl.name where ";
     return $this->actions;
 
   }
+
+  /**
+   * delete permissions
+   */
+  public function deletePermission($id_user=null, $id_application=null, $id_acl=null, $computed=null) {
+    $sqlCond = array();
+    if( $id_user != null ) {
+      $sqlCond[] = sprintf("( id_user = %d )", pg_escape_string($id_user));
+    }
+    if( $id_application != null ) {
+      $sqlCond[] = sprintf("( id_application = %d )", pg_escape_string($id_application));
+    }
+    if( $id_acl != null ) {
+      $sqlCond[] = sprintf("( abs(id_acl) = abs(%d) )", pg_escape_string($id_acl));
+    }
+    if( $computed != null ) {
+      if( $computed = true ) {
+        $sqlCond[] = "( computed = TRUE )";
+      } else {
+        $sqlCond[] = "( computed = FALSE OR computed IS NULL )";
+      }
+    }
+    
+    if( count($sqlCond) > 0 ) {
+      return $this->exec_query(sprintf("DELETE FROM permission WHERE ( %s )", join(" AND ", $sqlCond)));
+    }
+    
+    return false;
+  }
+
 }
 
 

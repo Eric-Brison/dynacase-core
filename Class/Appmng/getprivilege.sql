@@ -152,3 +152,78 @@ begin
    return true;
 end;
 ' language 'plpgsql';
+
+--
+-- Compute and returns the resulting permission recursively for a given (user, app, acl)
+--
+CREATE OR REPLACE FUNCTION computePerm(integer, integer, integer) RETURNS integer AS $function_computePerm$
+DECLARE
+	uid ALIAS FOR $1;
+	appid ALIAS FOR $2;
+	curPerm ALIAS FOR $3;
+	curPermCopy integer;
+	perm integer;
+	g record;
+	p record;
+BEGIN
+	curPermCopy = curPerm;
+
+	perm := getComputedPerm(uid, appid, curPermCopy);
+	IF perm <> 0 THEN
+		RETURN perm;
+	END IF;
+
+	FOR g IN SELECT idgroup FROM groups WHERE iduser = uid LOOP
+		perm := computePerm(g.idgroup, appid, curPermCopy);
+		curPermCopy := perm;
+	END LOOP;
+
+	perm := 0;
+	FOR p IN SELECT id_acl FROM permission WHERE id_user = uid AND id_application = appid AND @id_acl = @curPermCopy LOOP
+		perm = p.id_acl;
+		EXIT;
+	END LOOP;
+	IF perm = 0 THEN
+		perm := curPermCopy;
+	END IF;
+
+	INSERT INTO permission VALUES (uid, appid, perm, TRUE);
+
+	RETURN perm;
+END;
+$function_computePerm$ LANGUAGE plpgsql;
+
+--
+-- Returns the first computed permission available for a given (user, app, acl).
+-- Returns 0 if no computed permissions are available.
+--
+CREATE OR REPLACE FUNCTION getComputedPerm(integer, integer, integer) RETURNS integer AS $function_getComputedPerm$
+DECLARE
+	uid ALIAS FOR $1;
+	app ALIAS FOR $2;
+	acl ALIAS FOR $3;
+	p record;
+BEGIN
+	FOR p IN SELECT id_acl FROM permission WHERE id_user = uid AND id_application = app AND @id_acl = @acl AND computed = TRUE LOOP
+		RETURN p.id_acl;
+	END LOOP;
+
+	RETURN 0;
+END;
+$function_getComputedPerm$ LANGUAGE plpgsql;
+
+--
+-- Returns the size of a 1-dimensional array of integer
+--
+CREATE OR REPLACE FUNCTION array_integer_dim1(integer[]) RETURNS integer AS $function_array_integer_dim1$
+DECLARE
+	arr ALIAS FOR $1;
+	dim integer;
+BEGIN
+	dim := substring(array_dims(arr) from '^\\[\\d+:(\\d+)\\]$')::int;
+	IF dim IS NULL THEN
+		RETURN 0;
+	END IF;
+	RETURN dim;
+END;
+$function_array_integer_dim1$ LANGUAGE plpgsql;
