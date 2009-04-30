@@ -157,41 +157,54 @@ end;
 -- Compute and returns the resulting permission recursively for a given (user, app, acl)
 --
 CREATE OR REPLACE FUNCTION computePerm(integer, integer, integer) RETURNS integer AS $function_computePerm$
+BEGIN
+	RETURN computePermRD($1, $2, abs($3), -abs($3));
+END;
+$function_computePerm$ LANGUAGE plpgsql;
+
+--
+-- Helper function for recursive permission computation
+--
+--   /!\ Should not be called directly
+--
+CREATE OR REPLACE FUNCTION computePermRD(integer, integer, integer, integer) RETURNS integer AS $function_computePermRD$
 DECLARE
 	uid ALIAS FOR $1;
 	appid ALIAS FOR $2;
-	curPerm ALIAS FOR $3;
-	curPermCopy integer;
+	aclid ALIAS FOR $3;
+	aclDefaultValue ALIAS FOR $4;
+	curPerm integer;
 	perm integer;
 	g record;
 	p record;
 BEGIN
-	curPermCopy = curPerm;
+	curPerm = aclDefaultValue;
 
-	perm := getComputedPerm(uid, appid, curPermCopy);
+	-- Check if a computed permission is available
+	perm := getComputedPerm(uid, appid, aclid);
 	IF perm <> 0 THEN
 		RETURN perm;
 	END IF;
 
-	FOR g IN SELECT idgroup FROM groups WHERE iduser = uid LOOP
-		perm := computePerm(g.idgroup, appid, curPermCopy);
-		curPermCopy := perm;
-	END LOOP;
-
-	perm := 0;
-	FOR p IN SELECT id_acl FROM permission WHERE id_user = uid AND id_application = appid AND @id_acl = @curPermCopy LOOP
-		perm = p.id_acl;
-		EXIT;
-	END LOOP;
-	IF perm = 0 THEN
-		perm := curPermCopy;
+	-- Check for a hard positioned UP/UN permission
+	perm := getNonComputedPerm(uid, appid, aclid);
+	IF perm <> 0 THEN
+		RETURN perm;
 	END IF;
 
-	INSERT INTO permission VALUES (uid, appid, perm, TRUE);
+	-- Compute permission recursively with parent groups
+	FOR g IN SELECT idgroup FROM groups WHERE iduser = uid LOOP
+		perm := computePermRD(g.idgroup, appid, aclid, aclDefaultValue);
+		IF curPerm < 0 THEN
+			curPerm = perm;
+		END IF;
+	END LOOP;
 
-	RETURN perm;
+	INSERT INTO permission VALUES (uid, appid, curPerm, TRUE);
+
+	RETURN curPerm;
 END;
-$function_computePerm$ LANGUAGE plpgsql;
+$function_computePermRD$ LANGUAGE plpgsql;
 
 --
 -- Returns the first computed permission available for a given (user, app, acl).
@@ -200,11 +213,11 @@ $function_computePerm$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION getComputedPerm(integer, integer, integer) RETURNS integer AS $function_getComputedPerm$
 DECLARE
 	uid ALIAS FOR $1;
-	app ALIAS FOR $2;
-	acl ALIAS FOR $3;
+	appid ALIAS FOR $2;
+	aclid ALIAS FOR $3;
 	p record;
 BEGIN
-	FOR p IN SELECT id_acl FROM permission WHERE id_user = uid AND id_application = app AND @id_acl = @acl AND computed = TRUE LOOP
+	FOR p IN SELECT id_acl FROM permission WHERE id_user = uid AND id_application = appid AND @id_acl = @aclid AND computed = TRUE LOOP
 		RETURN p.id_acl;
 	END LOOP;
 
@@ -213,17 +226,20 @@ END;
 $function_getComputedPerm$ LANGUAGE plpgsql;
 
 --
--- Returns the size of a 1-dimensional array of integer
+-- Returns the first uncomputed permission available for a given (user, app, acl).
+-- Returns 0 if no uncomputed permissions are available.
 --
-CREATE OR REPLACE FUNCTION array_integer_dim1(integer[]) RETURNS integer AS $function_array_integer_dim1$
+CREATE OR REPLACE FUNCTION getNonComputedPerm(integer, integer, integer) RETURNS integer AS $function_getNonComputedPerm$
 DECLARE
-	arr ALIAS FOR $1;
-	dim integer;
+	uid ALIAS FOR $1;
+	appid ALIAS FOR $2;
+	aclid ALIAS FOR $3;
+	p record;
 BEGIN
-	dim := substring(array_dims(arr) from '^\\[\\d+:(\\d+)\\]$')::int;
-	IF dim IS NULL THEN
-		RETURN 0;
-	END IF;
-	RETURN dim;
+	FOR p IN SELECT id_acl FROM permission WHERE id_user = uid AND id_application = appid AND @id_acl = @aclid AND (computed = FALSE OR computed IS NULL) LOOP
+		RETURN p.id_acl;
+	END LOOP;
+
+	RETURN 0;
 END;
-$function_array_integer_dim1$ LANGUAGE plpgsql;
+$function_getNonComputedPerm$ LANGUAGE plpgsql;

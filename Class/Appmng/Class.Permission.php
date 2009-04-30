@@ -240,7 +240,7 @@ create index permission_idx4 on permission(computed);
    $allAclList = $this->getAllAclForApplication($appid);
    foreach( $allAclList as $acl ) {
      if( ! array_key_exists($acl, $computedAcl) ) {
-       $computedAcl[abs($acl)] = $this->computePerm($uid, $appid, -abs($acl));
+       $computedAcl[abs($acl)] = $this->computePerm($uid, $appid, abs($acl));
      }
    }
    return array_values($computedAcl);
@@ -252,7 +252,7 @@ create index permission_idx4 on permission(computed);
   */
  public function computePerm($uid, $appid, $acl) {
    $db = new DbObj($this->dbaccess);
-   $res = $db->exec_query(sprintf("SELECT computePerm(%d, %d, %d)", $uid, $appid, -abs($acl)));
+   $res = $db->exec_query(sprintf("SELECT computePerm(%d, %d, %d)", $uid, $appid, abs($acl)));
    $perm = $db->fetch_array(0);
    return $perm['computeperm'];
  }
@@ -264,18 +264,16 @@ create index permission_idx4 on permission(computed);
    global $session;
 
    if (! $force) {
-     if ($session) {
-       $privileges = "";
-       if( $computed ) {
-	 $privileges = $this->GetComputedPrivileges($this->id_user, $this->id_application);
-	 if( count($privileges) <= 0 ) {
-	   $privileges = "";
-	 }
+     $privileges = "";
+     if( $computed ) {
+       $privileges = $this->GetComputedPrivileges($this->id_user, $this->id_application);
+       if( count($privileges) <= 0 ) {
+	 $privileges = "";
        }
-       if ($privileges !== "") {
-	 $this->privileges=$privileges;
-	 return;
-       }
+     }
+     if ($privileges !== "") {
+       $this->privileges=$privileges;
+       return;
      }
    }
     $this->privileges= array();
