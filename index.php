@@ -107,14 +107,11 @@ global $CORE_LOGLEVEL;
 
 global $_GET;
 $standalone = GetHttpVars("sole","Y");
-if (!isset($_GET["app"])) {
+if (! getHttpVars("app")) {
   $_GET["app"]="CORE";
-  switch($_SERVER["FREEDOM_ACCESS"]) {
-  case "WEBDESK":
-    $_GET["app"] = "WEBDESK";
-    $_GET["action"] = "";
-    $standalone = "Y";
-    break;
+  if ($_SERVER["FREEDOM_ACCESS"]) {
+    $_GET["app"] = $_SERVER["FREEDOM_ACCESS"];
+    $_GET["action"] = "";    
   }
  }
 
