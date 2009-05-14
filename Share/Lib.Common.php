@@ -22,10 +22,10 @@ function print_r2($z,$ret=false) {
   flush();
 }
 
-function AddLogMsg($msg) {
+function AddLogMsg($msg,$cut=80) {
   global $action;
   if (isset($action->parent))
-    $action->parent->AddLogMsg($msg);
+    $action->parent->AddLogMsg($msg,$cut);
 }
 
 function AddWarningMsg($msg) {
@@ -90,7 +90,13 @@ function microtime_diff($a,$b) {
         return ($b_int-$a_int)+($b_micro-$a_micro);
      }
 }
-
+function getDebugStack($slice=1) {
+  $t=array_slice(debug_backtrace(false),$slice);
+  foreach ($t as $k=>$s) {
+    unset($t[$k]["args"]); // no set arg 
+  }
+  return $t;
+}
 function getDbid($dbaccess) {
   global $CORE_DBID;
 
