@@ -344,7 +344,8 @@ class Layout {
       reset($list);
       $out .= "var logmsg=new Array();\n";
       while(list($k,$v) = each($list)) {
-        $out .= "logmsg[$k]='$v';\n";
+	if ($v[0]=='{') $out .= "logmsg[$k]=$v;\n";
+        else $out .= "logmsg[$k]='$v';\n";
       }
       $out .= "displayLogMsg(logmsg);\n";
       $this->action->parent->ClearLogMsg();
