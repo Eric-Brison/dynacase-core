@@ -16,7 +16,6 @@ TD {
 }
 TH {
   empty-cells: show;
-  border-style : inherit;
   font-weight: bold;
 }
 
