@@ -234,15 +234,18 @@ create sequence SEQ_ID_APPLICATION start 10;
       }
     }
 
-  function AddLogMsg($code) 
+  function AddLogMsg($code,$cut=80) 
     {
       if ($code =="") return;
       // Js Code are stored in the top level application
       if ($this->hasParent()) {
-	$this->parent->AddLogMsg($code);
+	$this->parent->AddLogMsg($code,$cut);
       } else {    
 	$logmsg=$this->session->read("logmsg", array());
-	$logmsg[]=strftime("%H:%M - ").str_replace("\n","\\n",addslashes(substr($code,0,80)));
+	if (is_array($code)) {
+	  $code["stack"]=getDebugStack(4);
+	  $logmsg[]=json_encode($code);
+	} else $logmsg[]=strftime("%H:%M - ").str_replace("\n","\\n",addslashes(substr($code,0,$cut)));
 	$this->session->register("logmsg",$logmsg);
 	$suser = sprintf("%s %s [%d] - ",$this->user->firstname, $this->user->lastname, $this->user->id);
 	$this->log->info($suser.$code);

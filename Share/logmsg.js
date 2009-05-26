@@ -126,7 +126,12 @@ function displayWarningMsg(logmsg) {
 function displayLogMsg(logmsg) {
 
   if (logmsg.length == 0) return;
-  
+
+  if ("console" in window) {
+	for (var i=0;i<logmsg.length;i++) {
+	    console.log(logmsg[i]);
+	}
+  }
   var log=false;
   if (top.foot) {
     log=top.foot.document.getElementById('slog');

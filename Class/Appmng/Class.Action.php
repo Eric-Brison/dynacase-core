@@ -188,9 +188,9 @@ create sequence SEQ_ID_ACTION;
   }
 
 
-  function AddLogMsg($msg) {
+  function AddLogMsg($msg,$cut=80) {
     if (isset ($this->parent)) {
-      return($this->parent->AddLogMsg($msg));
+      return($this->parent->AddLogMsg($msg,$cut));
     }
   }
 
@@ -398,13 +398,19 @@ create sequence SEQ_ID_ACTION;
    * display error to user and stop execution
    * @param string $texterr the error message
    */
-  function ExitError($texterr)
-  {
-    $this->Register("FT_ERROR",$texterr);
-    $this->Register("FT_ERROR_APP",$this->parent->name);
-    $this->Register("FT_ERROR_ACT",$this->name);
+  function ExitError($texterr)  {
     if ($_SERVER['HTTP_HOST'] != "") {
-      redirect($this,"CORE&sole=Y","ERROR");
+      //      redirect($this,"CORE&sole=Y","ERROR");
+      $this->lay=new Layout("CORE/Layout/error.xml",$this);
+      $this->lay->set("error",$texterr);
+      $this->lay->set("serror",str_replace("\n","\\n",addslashes($texterr)));
+      $this->lay->set("appname",$this->parent->name);
+      $this->lay->set("appact",$this->name);
+      if ($this->parent && $this->parent->parent) { // reset js ans ccs
+	$this->parent->parent->cssref=array();
+	$this->parent->parent->jsref=array();
+      }
+      print $this->lay->gen();
       exit;
     } else {    
       throw new Exception($texterr,THROW_EXITERROR);   

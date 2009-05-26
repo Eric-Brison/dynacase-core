@@ -64,25 +64,22 @@ function modify_app(&$action) {
   $acln=GetHttpVars("aclun"); // ACL - (less access)
   $returnact=GetHttpVars("returnact");
 
-
-  
-    // modif permission for a uncontrolled object
-    $p=new Permission($action->dbaccess,array($userId,$appId));
-    if (! $p-> IsAffected()) {
-      $p->Affect(array("id_user" => $userId,
-		       "id_application" => $appId));
-      
-    }
-  
-  
+  // modif permission for a uncontrolled object
+  $p=new Permission($action->dbaccess,array($userId,$appId));
+  if (! $p-> IsAffected()) {
+    $p->Affect(array("id_user" => $userId,
+		     "id_application" => $appId));
+  }
   
   // delete old permissions
-  $p-> Delete();
-
+  $p->deletePermission($userId, $appId, null, null);
+  $p->deletePermission(null, $appId, null, true);
+  
   if (is_array($aclp)) {
     // create new permissions
     while (list($k,$v) = each($aclp)) {
       $p->id_acl = $v;
+      $p->computed = false;
       $p->Add();
     }
   }
@@ -91,16 +88,9 @@ function modify_app(&$action) {
     // create new permissions
     while (list($k,$v) = each($acln)) {
       $p->id_acl = -$v;
+      $p->computed = false;
       $p->Add();
     }
-  }
-
-  
-  global $_SESSION;
-  $savesession=$_SESSION;
-  foreach ($savesession as $k=>$v) {
-    if (substr($k,0,4)=='PERM') unset($_SESSION[$k]);
-    elseif (substr($k,0,4)=='sess') unset($_SESSION[$k]);
   }
 
   $action->parent->session->closeAll(); 

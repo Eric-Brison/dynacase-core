@@ -232,11 +232,10 @@ if ($auth) {
 $nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
-  if ( $pos>0) {
+  if ( $pos !== false ) {
     $action->Register("navigator","EXPLORER");
-    $core->SetVolatileParam("ISIE", true);
     if (ereg("MSIE ([0-9.]+).*",$nav,$reg)) {
-      $action->Register("navversion",$reg[1]);      
+      $action->Register("navversion",$reg[1]);
     }
   } else {
     $action->Register("navigator","NETSCAPE");
@@ -245,7 +244,18 @@ if ($action->Read("navigator","") == "") {
     }
   }
 }
+
+if( preg_match('/MSIE ([0-9]+).*/', $nav, $match) ) {
+  switch( $match[1] ) {
+  case "6":
+    $ISIE6 = true;
+    break;
+  }
+}
+
 $core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
+$core->SetVolatileParam("ISIE6", ($ISIE6 === true));
+
 // init for gettext
 setLanguage($action->Getparam("CORE_LANG"));
 
