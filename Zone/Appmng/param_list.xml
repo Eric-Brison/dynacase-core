@@ -16,7 +16,7 @@
 <!--
 [JS:CODE]
 
-var cp = new ColorPicker();
+var colorPick2 = false;
 var op = new OptionPicker();
 
 function pickColor(color) {
@@ -69,8 +69,10 @@ function movediv(th,Aname,Atype,Appid,Kind,Value) {
   editedParam=th;
   
   // show color picker if needed
-  if (Kind == 'color') cp.show('dedit');
-  else if (Kind.substr(0,4) == 'enum') {
+  if (Kind == 'color') {
+    if (! colorPick2) colorPick2=new ColorPicker();
+    colorPick2.show('dedit');
+  } else if (Kind.substr(0,4) == 'enum') {
      op.show('dedit');
      op.setOptions(Kind.substr(5,Kind.length-6).split('|'));
   }

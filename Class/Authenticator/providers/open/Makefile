@@ -4,8 +4,9 @@
 
 
 
-SUBDIR= basic digest html open
+SUBDIR=
 
+appname = WHAT/providers/open
 
 include $(utildir)/PubRule
 

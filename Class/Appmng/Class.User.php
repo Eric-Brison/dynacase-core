@@ -642,5 +642,29 @@ create sequence seq_id_users start 10";
 			  "groups.iduser=users.id and ".
 			  "idgroup={$this->id} {$selgroup};"));
   }
+
+  /**
+   * Get user token for open access
+   */
+  function getUserToken() {
+    if (! $this->isAffected()) return false;
+    include_once('WHAT/Class.UserToken.php');
+    include_once('WHAT/Class.QueryDb.php');
+    $q=new QueryDb($this->dbaccess,"UserToken");
+    $q->addQuery("userid=".$this->id);
+    $tu=$q->Query(0,0,"TABLE");
+    if ($q->nb==0) {
+      // create one
+      $uk=new UserToken("");
+      $uk->userid=$this->id;
+      $uk->token=$uk->genToken();
+      $uk->expire=$uk->setExpiration(3600*24*365*20);
+      $err=$uk->add();
+      $token=$uk->token;
+    } else {
+      $token=$tu[0]["token"];
+    }
+    return $token;
+  }
 }
 ?>

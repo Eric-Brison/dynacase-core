@@ -20,7 +20,7 @@ define ("THROW_EXITERROR",1968);
 
 Class Action extends DbObj
 {
-  var $fields = array ( "id","id_application","name","short_name","long_name","script","function","layout","available","acl","grant_level","root","icon","toc","father","toc_order");
+  var $fields = array ( "id","id_application","name","short_name","long_name","script","function","layout","available","acl","grant_level","openaccess","root","icon","toc","father","toc_order");
 
 
   var $id_fields = array ( "id");
@@ -42,6 +42,7 @@ create table action (id int not null,
                    available varchar(3),
                    acl varchar(20),
                    grant_level int,
+                   openaccess  char,
                    root char,
                    icon varchar(100),
                    toc  char,
@@ -286,6 +287,8 @@ create sequence SEQ_ID_ACTION;
    *
    */
   function canExecute($actname,$appid="") {
+    
+
     if ($this->user->id==1) return;
     if ($appid=="") $appid=$this->parent->id;
     elseif (! is_numeric($appid)) $appid=$this->parent->GetIdFromName($appid);
@@ -325,6 +328,9 @@ create sequence SEQ_ID_ACTION;
     // If no parent set , it's a misconfiguration
     if (!isset($this->parent)) return;
 
+    if ($this->auth && $this->auth->parms["type"]=="open") {
+      if ($this->openaccess != 'Y') $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode"),$this->name));
+    }
     // check if this action is permitted
     if (!$this->HasPermission($this->acl)) { 
       $this->ExitError(sprintf(_("Access denied\nNeed ACL %s for action %s [%s]"),
@@ -409,6 +415,13 @@ create sequence SEQ_ID_ACTION;
     } else {    
       throw new Exception($texterr,THROW_EXITERROR);   
     }
+  }
+
+  function exitForbidden($texterr) {    
+    header("HTTP/1.0 401 Authorization Required ");
+    header("HTTP/1.0 301 Access Forbidden ");
+    print $texterr;
+    exit;
   }
   /**
    * unregister FT error 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Generated Header (not documented yet)
+ * Edit parameters for actions
  *
  * @author Anakeen 2000 
  * @version $Id: action_edit.php,v 1.4 2005/07/08 15:29:51 eric Exp $
@@ -11,46 +11,7 @@
  /**
  */
 
-// ---------------------------------------------------------------
-// $Id: action_edit.php,v 1.4 2005/07/08 15:29:51 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/action_edit.php,v $
-// ---------------------------------------------------------------
-//  O   Anakeen - 2000
-// O*O  Anakeen development team
-//  O   dev@anakeen.com
-// ---------------------------------------------------------------
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or (at
-//  your option) any later version.
-//
-// This program is distributed in the hope that it will be useful, but
-// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-// for more details.
-//
-// You should have received a copy of the GNU General Public License along
-// with this program; if not, write to the Free Software Foundation, Inc.,
-// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-// ---------------------------------------------------------------
-// $Log: action_edit.php,v $
-// Revision 1.4  2005/07/08 15:29:51  eric
-// suppress CORE_USERDB
-//
-// Revision 1.3  2004/03/22 15:21:40  eric
-// change HTTP variable name to put register_globals = Off
-//
-// Revision 1.2  2003/08/18 15:46:41  eric
-// phpdoc
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.1  2001/02/06 11:40:52  marianne
-// Prise en compte des styles, parametres et actions
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.SubForm.php");
 include_once("Class.Action.php");
 
@@ -134,8 +95,21 @@ function action_edit(&$action) {
   $tab[1]["toc"] = "N";
 
   $action->lay->SetBlockData("SELECTTOC", $tab);
+  
+  unset($tab);
+  $tab = array();
+  if ($ActionCour->openaccess=='Y') {
+    $tab[0]["selected"] = "selected";
+    $tab[1]["selected"] = "";
+  } else {
+    $tab[0]["selected"] = "";
+    $tab[1]["selected"] = "selected";
+  }
+  $tab[0]["openaccess"] = "Y";
+  $tab[1]["openaccess"] = "N";
 
-
+  $action->lay->SetBlockData("SELECTOPENACCESS", $tab);
+  /*
   $form = new SubForm("edit");
   $form->SetParam("name");
   $form->SetParam("short_name");
@@ -149,6 +123,8 @@ function action_edit(&$action) {
   $control=$action->GetLayoutFile("action_control.js");
   $lay = new Layout($control);
   $action->parent->AddJsCode($lay->gen());
+  */
 
+  $action->parent->AddJsRef("APPMNG/Layout/action_control.js");
 }
 ?>
