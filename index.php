@@ -180,7 +180,11 @@ if (($standalone == "") || ($standalone == "N")) {
   $action->Set("MAIN",$core,$session);
 } else {
   $appl = new Application();
-  $appl->Set($_GET["app"],$core,$session);
+  $err=$appl->Set($_GET["app"],$core,$session);
+  if ($err) {
+    print $err;
+    exit;
+  }
 
   if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
       if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {

@@ -120,11 +120,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	}
       }
 
-      if ($this->available == "N") {
-	// error
-	print sprintf(_("Application %s (%s) not available"),$this->name,_($this->short_name));
-	exit;
-      }
+      
 	
 
       if ($session != "") $this->SetSession($session);
@@ -140,6 +136,10 @@ create sequence SEQ_ID_APPLICATION start 10;
 	$this->InitStyle();
 	$this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:false,$this->style->name);
 	if ($this->session) $this->session->register("sessparam".$this->id,$this->param->buffer);
+      }
+      if ($this->available == "N") {
+	// error
+	return sprintf(_("Application %s (%s) not available"),$this->name,_($this->short_name));
       }
     }
 
@@ -730,12 +730,12 @@ create sequence SEQ_ID_APPLICATION start 10;
       if (file_exists(GetParam("CORE_PUBDIR",DEFAULT_PUBDIR)."/{$name}/{$name}_init.php")) {
 
         include("{$name}/{$name}_init.php");
-
-	// delete paramters that cannot be change after initialisation to be change now
-	if ($update)   $this->param->DelStatic($this->id);
-        global $app_const;
-        if (isset($app_const)) $this->InitAllParam($app_const,$update);
-         
+	if ( $this->param) {
+	  // delete paramters that cannot be change after initialisation to be change now
+	  if ($update)   $this->param->DelStatic($this->id);
+	  global $app_const;
+	  if (isset($app_const)) $this->InitAllParam($app_const,$update);
+	}
       }
      
       //----------------------------------
