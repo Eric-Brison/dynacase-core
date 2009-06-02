@@ -28,6 +28,7 @@ if ($method!="init" && $method!="reinit" && $method!="update" && $method!="delet
 }
 echo " $appname...$method\n";
 $app=new Application();
+
 $Null = "";
 $app->Set($appname,$Null);
 if ($method == "reinit") $app->InitApp($appname,false);

@@ -1,5 +1,8 @@
 #!/bin/bash
-. /etc/freedom.conf
+if [ "$wpub" == "" ]; then
+  . /etc/freedom.conf
+fi
+
 function whattext ()
 {    
     ntf="$wpub/locale/.gettextnumber"

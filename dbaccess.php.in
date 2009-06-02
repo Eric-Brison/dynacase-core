@@ -1,0 +1,28 @@
+<?
+// $Id: dbaccess.php.sample.in,v 1.6 2009/01/15 09:55:32 jerome Exp $
+$pgservice_core="@CORE_DB@";
+$pgservice_freedom="@FREEDOM_DB@";;
+$freedom_context="default";
+$dbpsql=$pgservice_core;
+
+$freedom_authtype = '@AUTHTYPE@';
+$freedom_authprovider = 'freedom';
+$freedom_authparam = array(
+			   'html' => array(
+					   'freedom' => array(
+							      'username' => 'auth_user',
+							      'password' => 'auth_pass',
+							      'cookie' => 'freedom_auth',
+							      'connection' => 'service='.$pgservice_core,
+							      'authurl' => 'guest.php?sole=A&app=AUTHENT&action=LOGINFORM',
+							      ),
+					   ),
+			   'basic' => array(
+					    'freedom' => array(
+							       'realm' => 'Freedom',
+							       'connection' => 'service='.$pgservice_core,
+							       ),
+					    ),
+			   );
+
+?>
