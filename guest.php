@@ -36,19 +36,15 @@ $CoreNull = "";
 global $CORE_LOGLEVEL;
 
 global $_GET;
-$standalone = GetHttpVars("sole");
-if (!isset($_GET["app"])) {
+$standalone = GetHttpVars("sole","Y");
+if (! getHttpVars("app")) {
   $_GET["app"]="CORE";
-  switch($_SERVER["FREEDOM_ACCESS"]) {
-  case "WEBDESK":
-    $_GET["app"] = "WEBDESK";
-    $_GET["action"] = "";
-    $standalone = "Y";
-    break;
+  if ($_SERVER["FREEDOM_ACCESS"]) {
+    $_GET["app"] = $_SERVER["FREEDOM_ACCESS"];
+    $_GET["action"] = "";    
   }
  }
 
-if (!isset($_GET["action"])) $_GET["action"]="";
 
 if (isset($_COOKIE['freedom_param'])) $sess_num= $_COOKIE['freedom_param'];
 else $sess_num=GetHttpVars('freedom_param');//$_GET["session"];
@@ -59,7 +55,7 @@ if ($session->userid != ANONYMOUS_ID) {
   setcookie ('freedom_param',$session->id,0,"/");
   unset($_SERVER['PHP_AUTH_USER']); // cause IE send systematicaly AUTH_USER & AUTH_PASSWD
   $session->Set("");
-  //setcookie ("session",$session->id,0,"/");
+  $core->SetSession($session);
 }
 if ($session->userid != ANONYMOUS_ID) { 
   // reverify
@@ -69,8 +65,9 @@ if ($session->userid != ANONYMOUS_ID) {
 $core = new Application();
 $core->Set("CORE",$CoreNull,$session);
 
-$CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
+
+$CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 // ----------------------------------------
 // Init PUBLISH URL from script name
@@ -114,7 +111,12 @@ if (($standalone == "") || ($standalone == "N")) {
   $action->Set("MAIN",$core,$session);
 } else {
   $appl = new Application();
-  $appl->Set($_GET["app"],$core);
+  $err=$appl->Set(getHttpVars("app"),$core,$session);
+  if ($err) {
+    print $err;
+    exit;
+  }
+
 
    if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect    
       if (substr($_SERVER['REQUEST_URI'],0,6) == "http:/") {
@@ -149,16 +151,15 @@ if (($standalone == "") || ($standalone == "N")) {
     // now we are in correct protocol (http or https)
 
   $action = new Action();
-  $action->Set($_GET["action"],$appl,$session);
+  $action->Set(getHttpVars("action"),$appl,$session);
 
 }
 
 $nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
-  if ( $pos>0) {
+  if ( $pos !== false ) {
     $action->Register("navigator","EXPLORER");
-    $core->SetVolatileParam("ISIE", true);
     if (ereg("MSIE ([0-9.]+).*",$nav,$reg)) {
       $action->Register("navversion",$reg[1]);      
     }
@@ -169,10 +170,23 @@ if ($action->Read("navigator","") == "") {
     }
   }
 }
+
+if( preg_match('/MSIE ([0-9]+).*/', $nav, $match) ) {
+  switch( $match[1] ) {
+  case "6":
+    $ISIE6 = true;
+    break;
+  }
+}
+
 $core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
+$core->SetVolatileParam("ISIE6", ($ISIE6 === true));
+
 // init for gettext
 setLanguage($action->Getparam("CORE_LANG"));
   
+$action->log->debug("gettext init for ".$action->parent->name.$action->Getparam("CORE_LANG"));
+
 
 if (($standalone == "Y") || ($standalone == "N") || ($standalone == ""))
 {
