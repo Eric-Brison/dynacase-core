@@ -1,51 +1,19 @@
 <?php
 
 /**
- * basicFreedomProvider class
+ * freedomProvider class
  *
- * This class provides methods for HTTP Basic authentication against
- * the Freedom "core" database
+ * This class provides methods for autentication based on freeedom
  *
- * @author Anakeen 2009
- * @version $Id: freedom.php,v 1.4 2009/01/16 13:33:01 jerome Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package WHAT
- * @subpackage
  */
  /**
  */
+include_once("WHAT/Class.Provider.php");
 
-Class basicFreedomProvider {
-  private $parms = array();
+Class freedomProvider extends Provider {
+
   
-  public function __construct($parms) {
-    $this->parms = $parms;
-    if( ! array_key_exists('realm', $parms) ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: realm parm is not defined at __construct");
-    }
-    if( ! array_key_exists('connection', $parms) ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."connection parm is not defined at __construct");
-    }
-  }
-  
-  public function checkAuthentication() {
-    if( array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true" )  {
-      setcookie('logout', '', time() - 3600);
-      return FALSE;
-    }
-
-    if( ! array_key_exists('PHP_AUTH_USER', $_SERVER) ) {
-      error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_USER]");
-      return FALSE;
-    }
-    if( ! array_key_exists('PHP_AUTH_PW', $_SERVER) ) {
-      error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_PW] for user ".$_SERVER['PHP_AUTH_USER']);
-      return FALSE;
-    }
-    return $this->validateCredential($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
-  }
-
-  public function validateCredential($username, $password) {
+  public function validateCredential($username, $password) {  
     $dbh = pg_connect($this->parms{'connection'});
     if( $dbh == FALSE ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: failed connection to database");
@@ -62,18 +30,22 @@ Class basicFreedomProvider {
       return FALSE;
     }
     $encrypted_password = pg_fetch_result($res, 0);
+    if ($encrypted_password=="") {
+      //       error_log(__CLASS__."::".__FUNCTION__." "."Error: User $username not found");
+      return FALSE;
+    }
     $ret = preg_match("/^(..)/", $encrypted_password, $salt);
     if( $ret == 0 ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: could not get salt from encrypted password for user $username");
       return FALSE;
     }
-    if( $encrypted_password == crypt($password, $salt[0]) ) {
+    if( $encrypted_password == crypt($password, $salt[0]) ) {      
       return TRUE;
     }
     return FALSE;
   }
 
-  public function checkAuthorization($opt) {
+  public function validateAuthorization($opt) {
     if( ! array_key_exists('username', $opt) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Missing username key in opt array");
       return FALSE;
@@ -101,12 +73,6 @@ Class basicFreedomProvider {
     return TRUE;
   }
 
-  public function logout($redir_uri) {
-    setcookie('logout', 'true', 0);
-    header('Location: '.$redir_uri);
-    return TRUE;
-  }
-  
 }
 
 ?>

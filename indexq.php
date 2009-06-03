@@ -23,15 +23,7 @@ $authtype = getAuthType();
  
 if( $authtype == 'basic' || $authtype == 'html'|| $authtype == 'open'  ) {
   include_once('WHAT/Class.Authenticator.php');
-  $auth = new Authenticator(
-			    array_merge(
-					array(
-					      'type' => getAuthType(),
-					      'provider' => getAuthProvider(),
-					      ),
-					getAuthParam()
-				  )
-			    );
+  $auth = new Authenticator(getAuthType(),getAuthProvider());
 
 } else if( $authtype == 'apache' ) {
   // Apache has already handled the authentication

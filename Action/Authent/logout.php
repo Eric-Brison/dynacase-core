@@ -25,28 +25,26 @@ function logout(&$action) {
   include_once('WHAT/Lib.Common.php');
 
   $authtype = getAuthType();
+  $authprovider = getAuthProvider();
   
-  if( $authtype == 'basic' || $authtype == 'html' ) {
-    include_once('WHAT/Class.Authenticator.php');
-    $auth = new Authenticator(
-			      array_merge(
-					  array(
-						'type' => getAuthType(),
-						'provider' => getAuthProvider(),
-						),
-					  getAuthParam()
-					  )
-			      );
-  } else if( $authtype == 'apache' ) {
-    // Apache has already handled the authentication
-  } else {
-    print "Unknown authtype ".$_GET['authtype'];
-    exit;
-  }
+  if( $authtype == 'apache' ) {
 
-  if( $authtype == 'html' ) {
+    // Apache has already handled the authentication
+
+  } else {
+
+    $authClass = strtolower($authtype)."Authenticator";
+    if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
+      print "Unknown authtype ".$_GET['authtype'];
+      exit;
+    }
+    $auth = new $authClass( $authtype, "__for_logout__" );
+  }
+  
+  if( $authtype == 'html' || $authtype == 'basic') {
     $redir_uri = $action->GetParam("CORE_BASEURL");
     $action->session->close();
+
     $auth->logout($redir_uri);
     exit(0);
   }
@@ -55,13 +53,6 @@ function logout(&$action) {
   $raction = GetHttpVars("raction");
   $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
   
-  if( $authtype == 'basic' ) {
-    $redir_uri = $action->GetParam("CORE_BASEURL");
-    $action->session->close();
-    $auth->logout($redir_uri);
-    exit(0);
-  }
-
   $action->session->close();
 
   if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {

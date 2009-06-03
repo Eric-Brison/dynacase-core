@@ -15,40 +15,37 @@
  */
 
 Class openAuthenticator {
-  private $parms = array();
-  private $provider = null;
-  
-  public function __construct($parms) {
-    $this->parms = $parms;
 
-    if( ! array_key_exists('provider', $this->parms) ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: provider parm not specified at __construct");
-    }
-    $ret = @include_once('WHAT/providers/'.$this->parms{'type'}.'/'.$this->parms{'provider'}.'.php');
-    if( $ret === FALSE ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: WHAT/providers/".$this->parms{'type'}."/".$this->parms{'provider'}.".php not found");
-    }
-    if( ! class_exists($this->parms{'type'}.$this->parms{'provider'}.'Provider') ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: ".$this->parms{'type'}.$this->parms{'provider'}."Provider class not found");
-    }
-    $providerclass = $this->parms{'type'}.$this->parms{'provider'}.'Provider';
-    $this->provider = new $providerclass($this->parms);
-  }
+  private $privatelogin=false;
   
-
   /**
    * no need to ask authentication
    */
   public function checkAuthentication() {    
-    return true;
+    include_once('WHAT/Lib.Http.php');
+    $privatekey=getHttpVars("privateid");
+    if (! $privatekey) return false;
+    return $this->getLoginFromPrivateKey($privatekey);
+  }
+
+  public function getLoginFromPrivateKey($privatekey) {
+    include_once('WHAT/Class.UserToken.php');
+    include_once('WHAT/Class.QueryDb.php');
+    include_once('WHAT/Class.User.php');
+    $q=new QueryDb("","UserToken");
+    $q->addQuery("token='".pg_escape_string($privatekey)."'");
+    $tu=$q->Query(0,1,"TABLE");
+    if ($q->nb > 0) {
+      $uid=$tu[0]["userid"];
+      $u=new User("",$uid);
+      $this->privatelogin=$u->login;
+    }
+    
+    return  $this->privatelogin;
   }
 
   public function checkAuthorization($opt) {
-    if( is_callable(array($this->provider, 'checkAuthorization')) ) {
-      return $this->provider->checkAuthorization($opt);
-    }
-
-    return false;
+    return TRUE;
   }
   
   /**
@@ -59,11 +56,7 @@ Class openAuthenticator {
   }
   
   public function getAuthUser() {
-    if( is_callable(array($this->provider, 'getAuthUser')) ) {
-      return $this->provider->getAuthUser();
-    }
-
-    return "";
+    return $this->privatelogin;
   }
   
   /**
@@ -82,6 +75,39 @@ Class openAuthenticator {
     return true;  
   }
 
+  /**
+   **
+   **
+   **/
+  public function setSessionVar($name, $value) {
+    include_once('WHAT/Class.Session.php');
+    $session_auth = new Session($this->parms{'cookie'});
+    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
+    } else {
+      $session_auth->Set();
+    }
+    
+    $session_auth->register($name, $value);
+    
+    return $session_auth->read($name);
+  }
+  
+  /**
+   **
+   **
+   **/
+  public function getSessionVar($name) {
+    include_once('WHAT/Class.Session.php');
+    $session_auth = new Session($this->parms{'cookie'});
+    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
+    } else {
+      $session_auth->Set();
+    }
+    
+    return $session_auth->read($name);
+  }
 }
 
 ?>

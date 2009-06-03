@@ -13,35 +13,33 @@
  */
  /**
  */
+include_once('WHAT/Class.Authenticator.php');
 
-Class basicAuthenticator {
-  private $parms = array();
-  private $provider = null;
-  
-  public function __construct($parms) {
-    $this->parms = $parms;
-    
-    if( ! array_key_exists('provider', $this->parms) ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: provider parm not specified at __construct");
-    }
-    $ret = @include_once('WHAT/providers/'.$this->parms{'type'}.'/'.$this->parms{'provider'}.'.php');
-    if( $ret === FALSE ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: WHAT/providers/".$this->parms{'type'}."/".$this->parms{'provider'}.".php not found");
-    }
-    if( ! class_exists($this->parms{'type'}.$this->parms{'provider'}.'Provider') ) {
-      throw new Exception(__CLASS__."::".__FUNCTION__." "."Error: ".$this->parms{'type'}.$this->parms{'provider'}."Provider class not found");
-    }
-    $providerclass = $this->parms{'type'}.$this->parms{'provider'}.'Provider';
-    $this->provider = new $providerclass($this->parms);
-  }
+Class basicAuthenticator extends Authenticator {
   
   public function checkAuthentication() {
-    if( is_callable(array($this->provider, 'checkAuthentication')) ) {
-      return $this->provider->checkAuthentication();
+    
+    if( array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true" )  {
+      setcookie('logout', '', time() - 3600);
+      return FALSE;
     }
-
-    error_log(__CLASS__."::".__FUNCTION__." "."Error: ".$this->parms{'type'}.$this->parms{'provider'}."Provider must implement checkAuthentication()");
-    return FALSE;
+    
+    if( ! array_key_exists('PHP_AUTH_USER', $_SERVER) ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_USER]");
+      return FALSE;
+    }
+    
+    if( ! array_key_exists('PHP_AUTH_PW', $_SERVER) ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_PW] for user ".$_SERVER['PHP_AUTH_USER']);
+      return FALSE;
+    }
+    
+    if(! is_callable(array($this->provider, 'validateCredential')) ) {
+      error_log(__CLASS__."::".__FUNCTION__." "."Error: ".$this->parms{'type'}.$this->parms{'provider'}."Provider must implement validateCredential()");
+      return FALSE;
+    }
+    
+    return $this->provider->validateCredential($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
   }
 
   public function checkAuthorization($opt) {
@@ -56,7 +54,6 @@ Class basicAuthenticator {
     if( is_callable(array($this->provider, 'askAuthentication')) ) {
       return $this->provider->askAuthentication();
     }
-
     header('HTTP/1.1 401 Authentication Required');
     header('WWW-Authenticate: Basic realm="'.$this->parms{'realm'}.'"');
     return TRUE;
@@ -79,12 +76,19 @@ Class basicAuthenticator {
   }
   
   public function logout($redir_uri) {
-    if( is_callable(array($this->provider, 'logout')) ) {
-      return $this->provider->logout($redir_uri);
-    }
-
-    return $this->askAuthentication();
+    setcookie('logout', 'true', 0);
+    header('Location: '.$redir_uri);
+    return TRUE;
   }
+ 
+  public function setSessionVar($name, $value) {
+    return TRUE;
+  }
+
+  public function getSessionVar($name) {
+    return '';
+  }
+
 
 }
 
