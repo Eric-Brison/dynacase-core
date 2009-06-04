@@ -51,24 +51,24 @@
 
   </pre-install>
   <post-install>
-     <process command="CORE/programs/core_initialize"><label lang="en">Initialize system database</label></process>
-     <process command="CORE/programs/record_application CORE"><label lang="en">Record core application in database</label></process>
-     <process command="CORE/programs/record_application AUTHENT"><label lang="en">Record authent application in database</label></process>
-     <process command="CORE/programs/record_application APPMNG"><label lang="en">Record appmng application in database</label></process>
-     <process command="CORE/programs/record_application ACCESS"><label lang="en">Record access application in database</label></process>
-     <process command="CORE/programs/update_catalogue"><label lang="en">Generate traduction catalog</label></process>
+     <process command="programs/core_initialize"><label lang="en">Initialize system database</label></process>
+     <process command="programs/record_application CORE"><label lang="en">Record core application in database</label></process>
+     <process command="programs/record_application AUTHENT"><label lang="en">Record authent application in database</label></process>
+     <process command="programs/record_application APPMNG"><label lang="en">Record appmng application in database</label></process>
+     <process command="programs/record_application ACCESS"><label lang="en">Record access application in database</label></process>
+     <process command="programs/update_catalogue"><label lang="en">Generate traduction catalog</label></process>
   </post-install>
   <pre-upgrade>
   </pre-upgrade>
   <post-upgrade>
-     <process command="CORE/programs/pre_migration CORE"><label lang="en">Migration first level</label></process>
-     <process command="CORE/programs/core_update"><label lang="en">Update core</label></process>
-     <process command="CORE/programs/record_application CORE"><label lang="en">Update core application in database</label></process>
-     <process command="CORE/programs/record_application AUTHENT"><label lang="en">Update authent application in database</label></process>
-     <process command="CORE/programs/record_application APPMNG"><label lang="en">Update appmng application in database</label></process>
-     <process command="CORE/programs/record_application ACCESS"><label lang="en">Update access application in database</label></process>
-     <process command="CORE/programs/post_migration CORE"><label lang="en">Migration second level</label></process>
-     <process command="CORE/programs/update_catalogue"><label lang="en">Generate traduction catalog</label></process>
+     <process command="programs/pre_migration CORE"><label lang="en">Migration first level</label></process>
+     <process command="programs/core_update"><label lang="en">Update core</label></process>
+     <process command="programs/record_application CORE"><label lang="en">Update core application in database</label></process>
+     <process command="programs/record_application AUTHENT"><label lang="en">Update authent application in database</label></process>
+     <process command="programs/record_application APPMNG"><label lang="en">Update appmng application in database</label></process>
+     <process command="programs/record_application ACCESS"><label lang="en">Update access application in database</label></process>
+     <process command="programs/post_migration CORE"><label lang="en">Migration second level</label></process>
+     <process command="programs/update_catalogue"><label lang="en">Generate traduction catalog</label></process>
   </post-upgrade>
   <pre-remove></pre-remove>
   <post-remove></post-remove>
