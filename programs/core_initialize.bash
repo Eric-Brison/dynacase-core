@@ -4,7 +4,7 @@ authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
 core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
 freedom_db=`"$WIFF_ROOT"/wiff --getValue=freedom_db`
 
-if [ ! $freedom_db]; then
+if [ -z "$freedom_db" ]; then
     freedom_db=$core_db
 fi
 apacheuser=`"$WIFF_ROOT"/wiff --getValue=apacheuser`
