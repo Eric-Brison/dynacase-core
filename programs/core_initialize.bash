@@ -1,13 +1,13 @@
 #!/bin/bash
 
-authtype=`wiff.php --getValue=authtype`
-core_db=`wiff.php --getValue=core_db`
-freedom_db=`wiff.php --getValue=freedom_db`
+authtype=`"$WIFF_ROOT"/wiff.php --getValue=authtype`
+core_db=`"$WIFF_ROOT"/wiff.php --getValue=core_db`
+freedom_db=`"$WIFF_ROOT"/wiff.php --getValue=freedom_db`
 
 if [ ! $freedom_db]; then
     freedom_db=$core_db
 fi
-apacheuser=`wiff.php --getValue=apacheuser`
+apacheuser=`"$WIFF_ROOT"/wiff.php --getValue=apacheuser`
 
 dbaccesstpl=$WIFF_CONTEXT_ROOT"/context/default/dbaccess.php.in"
 dbaccess=$WIFF_CONTEXT_ROOT"/context/default/dbaccess.php"
