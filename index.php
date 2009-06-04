@@ -13,7 +13,7 @@
  /**
  */
 
-include_once('WHAT/Lib.Common.php');
+include_once('WHAT/Lib.Main.php');
 
 $authtype = getAuthType();
 $authproviderlist = getAuthProvider();

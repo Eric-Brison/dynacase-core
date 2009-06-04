@@ -19,7 +19,7 @@ DirectoryIndex index.php
         Allow from All
 </FilesMatch>
 
-<FilesMatch "^(index|indexq|guest).php$">
+<FilesMatch "^(index|indexq|guest|data).php$">
         Order Deny,Allow
         Allow from All
 </FilesMatch>
