@@ -1,13 +1,13 @@
 #!/bin/bash
 
-authtype=`"$WIFF_ROOT"/wiff.php --getValue=authtype`
-core_db=`"$WIFF_ROOT"/wiff.php --getValue=core_db`
-freedom_db=`"$WIFF_ROOT"/wiff.php --getValue=freedom_db`
+authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
+core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
+freedom_db=`"$WIFF_ROOT"/wiff --getValue=freedom_db`
 
 if [ ! $freedom_db]; then
     freedom_db=$core_db
 fi
-apacheuser=`"$WIFF_ROOT"/wiff.php --getValue=apacheuser`
+apacheuser=`"$WIFF_ROOT"/wiff --getValue=apacheuser`
 
 dbaccesstpl="$WIFF_CONTEXT_ROOT"/context/default/dbaccess.php.in
 dbaccess="$WIFF_CONTEXT_ROOT"/context/default/dbaccess.php
@@ -33,7 +33,7 @@ sed  -e"s;@AUTHTYPE@;$authtype;" -e"s;@CORE_DB@;$core_db;" -e"s;@FREEDOM_DB@;$fr
 sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" -e"s;@HTTPUSER@;$apacheuser;" "$prefixtpl" > "$prefix"
 
 
-export wpub=$WIFF_CONTEXT_ROOT # same as `wiff.php --getValue=rootdirectory`
+export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
 . "$WIFF_CONTEXT_ROOT"/programs/core_environnement
 
 
