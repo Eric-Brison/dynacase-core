@@ -6,10 +6,10 @@
       <installer version="1" comp="ge"/>
   </requires>
   <parameters>
-    <param name="core_db" label="main database coordonnate"
-           default="service=freedom" type="text" needed="Y" />
-    <param name="freedom_db" label="document database coordonnate (optionnal: by default is the same as main database)"
-           default="service=freedom" type="text" needed="N" />
+    <param name="core_db" label="main database postgresql service name"
+           default="freedom" type="text" needed="Y" />
+    <param name="freedom_db" label="document database postgresql service name (optionnal: by default is the same as main database)"
+           default="freedom" type="text" needed="N" />
     <param name="authtype" label="authenticate default mode"
            default="HTML" type="enum" values="HTML|BASIC" needed="Y" />
     <param name="apacheuser" label="apache system user"
