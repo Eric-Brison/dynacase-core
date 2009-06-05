@@ -56,7 +56,7 @@
      <process command="programs/record_application AUTHENT"><label lang="en">Record authent application in database</label></process>
      <process command="programs/record_application APPMNG"><label lang="en">Record appmng application in database</label></process>
      <process command="programs/record_application ACCESS"><label lang="en">Record access application in database</label></process>
-     <process command="programs/update_catalogue"><label lang="en">Generate traduction catalog</label></process>
+     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
   </post-install>
   <pre-upgrade>
   </pre-upgrade>
@@ -68,7 +68,7 @@
      <process command="programs/record_application APPMNG"><label lang="en">Update appmng application in database</label></process>
      <process command="programs/record_application ACCESS"><label lang="en">Update access application in database</label></process>
      <process command="programs/post_migration CORE"><label lang="en">Migration second level</label></process>
-     <process command="programs/update_catalogue"><label lang="en">Generate traduction catalog</label></process>
+     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
   </post-upgrade>
   <pre-remove></pre-remove>
   <post-remove></post-remove>
