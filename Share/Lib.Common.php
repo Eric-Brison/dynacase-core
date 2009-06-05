@@ -574,7 +574,14 @@ function setLanguage($lang) {
   setlocale(LC_MONETARY, $lang);
   setlocale(LC_TIME, $lang);
   //print $action->Getparam("CORE_LANG");
-  $number=trim(file_get_contents("$pubdir/locale/.gettextnumber"));
+  $number = 0;
+  if( is_file("$pubdir/locale/.gettextnumber") ) {
+    $number = trim(@file_get_contents("$pubdir/locale/.gettextnumber"));
+    if( $number == "" ) {
+      $number = 0;
+    }
+  }
+  
   $td="what$number";
 
   putenv ("LANG=".$lang); // needed for old Linux kernel < 2.4
