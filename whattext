@@ -3,6 +3,8 @@ if [ "$wpub" == "" ]; then
   . /etc/freedom.conf
 fi
 
+shopt -s nullglob
+
 function whattext ()
 {    
     ntf="$wpub/locale/.gettextnumber"
