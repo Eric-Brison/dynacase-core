@@ -94,6 +94,14 @@ if [ "$1" = "U" ] ; then
         exit $RET
     fi
 
+    log "Setting CORE_PUBDIR in paramv..."
+    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = '$wpub' WHERE name 'CORE_PUBDIR'"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error setting CORE_PUBDIR"
+	exit $RET
+    fi
+
     #add permission functionnalities
     log "Executing $wpub/WHAT/getprivilege.sql in database service $pgservice_core..."
     PGSERVICE=$pgservice_core pgExecuteSqlFile $wpub/WHAT/getprivilege.sql
