@@ -11,7 +11,7 @@
     <param name="freedom_db" label="document database postgresql service name (optionnal: by default is the same as main database)"
            default="freedom" type="text" needed="N" />
     <param name="authtype" label="authenticate default mode"
-           default="HTML" type="enum" values="HTML|BASIC" needed="Y" />
+           default="html" type="enum" values="html|basic" needed="Y" />
     <param name="apacheuser" label="apache system user"
            default="www-data" type="text"  needed="Y" />
   </parameters>
