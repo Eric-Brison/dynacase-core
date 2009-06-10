@@ -33,7 +33,3 @@ fi
 export pgservice_core
 export pgservice_freedom
 export freedom_context
-
-if [ $# -ge 1 ]; then
-    exec "$@"
-fi
