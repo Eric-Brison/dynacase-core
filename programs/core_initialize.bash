@@ -40,7 +40,7 @@ sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" -e"s;@HTTPUSER@;$apacheuser;" "$prefixtp
 sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$htaccesstpl" > "$htaccess"
 
 export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
-. "$WIFF_CONTEXT_ROOT"/programs/core_environnement
+. "$WIFF_CONTEXT_ROOT"/programs/core_environment
 
 
 "$corepost" I 

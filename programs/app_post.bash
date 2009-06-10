@@ -10,6 +10,6 @@ fi
 cd "$WIFF_CONTEXT_ROOT"
 
 export wpub=$WIFF_CONTEXT_ROOT
-. "$WIFF_CONTEXT_ROOT"/programs/core_environnement
+. "$WIFF_CONTEXT_ROOT"/programs/core_environment
 
 exec "./${1}/${1}_post" "$2"

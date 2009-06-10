@@ -8,6 +8,6 @@ if [ ! -x $corepost ]; then
 fi
 
 export wpub=$WIFF_CONTEXT_ROOT # same as `wiff.php --getValue=rootdirectory`
-. `dirname $0`/core_environnement
-0
+. `dirname $0`/core_environment
+
 $corepost U
