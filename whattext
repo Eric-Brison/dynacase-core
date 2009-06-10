@@ -20,7 +20,7 @@ function whattext ()
     numbertwo=`expr $numberone + 1`
     for lang in en fr ; do
 	pushd $wpub/locale/$lang/LC_MESSAGES >/dev/null
-	mv freedom-catalog.mo freedom-catalog.mo.old
+	mv freedom-catalog.mo freedom-catalog.mo.old 1> /dev/null 2>&1
 	
         find . -type l -name "freedom-catalog[0-9]*.mo" -exec /bin/rm {} \;
 
