@@ -1,7 +1,12 @@
 #!/bin/bash
-if [ "$wpub" == "" ]; then
-  . /etc/freedom.conf
+
+DIRNAME=`dirname "$0"`
+REAL_DIRNAME=`cd "$DIRNAME" 1> /dev/null 2>&1 && pwd`
+if [ -z "$REAL_DIRNAME" ]; then
+    echo "Could not get real dir name from '$0'."
+    exit 1
 fi
+export wpub=$REAL_DIRNAME
 
 shopt -s nullglob
 

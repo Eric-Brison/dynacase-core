@@ -1,16 +1,22 @@
 #!/bin/bash
-if [ "$freedom_context" == "" ]; then
-  . /etc/freedom.conf
-   wchoose -b
-fi
 
-if [ -z "$wpub" ]; then
-    echo "Warning: wpub is not set. Exiting now !"
-    exit 0
+DIRNAME=`dirname "$0"`
+REAL_DIRNAME=`cd "$DIRNAME" 1> /dev/null 2>&1 && pwd`
+if [ -z "$REAL_DIRNAME" ]; then
+    echo "Could not get real dir name from '$0'."
+    exit 1
 fi
+export wpub=$REAL_DIRNAME
+
+core_environment="$wpub/programs/core_environment"
+if [ ! -x "$core_environment" ]; then
+    echo "'$core_environment' not found or not executable."
+    exit 1
+fi
+. "$core_environment"
 
 if [ -f $wpub/maintenance.lock ]; then
-    /bin/rm $wpub/maintenance.lock
+    rm $wpub/maintenance.lock
 fi
 
 # link images file to be used in several applications
