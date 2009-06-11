@@ -91,7 +91,9 @@ function microtime_diff($a,$b) {
      }
 }
 function getDebugStack($slice=1) {
-  $t=array_slice(debug_backtrace(false),$slice);
+  $td=@debug_backtrace(false);
+  if (! is_array($td)) return;
+  $t=array_slice($td,$slice);
   foreach ($t as $k=>$s) {
     unset($t[$k]["args"]); // no set arg 
   }
