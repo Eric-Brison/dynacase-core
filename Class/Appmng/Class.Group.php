@@ -110,7 +110,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
       } else {
 	$dbf=getParam("FREEDOM_DB");
 	$g=new Group($dbf);
-	$g->iduser=$u->id;
+	$g->iduser=$this->iduser;
 	$g->idgroup=$this->idgroup;
 	$err=$g->Delete(true);
 	if ($err=="") {
