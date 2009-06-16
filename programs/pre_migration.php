@@ -1,5 +1,4 @@
-#!/usr/bin/php
-
+#!/usr/bin/env php
 <?php
 
 $WIFF_CONTEXT_ROOT = getenv("WIFF_CONTEXT_ROOT");
