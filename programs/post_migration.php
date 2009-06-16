@@ -2,7 +2,15 @@
 
 <?php
 
-$prefix=getenv("WIFF_CONTEXT_ROOT")."/WHAT/Lib.Prefix.php";
+$WIFF_CONTEXT_ROOT = gentenv("WIFF_CONTEXT_ROOT");
+if( $WIFF_CONTEXT_ROOT === false ) {
+  print "WIFF_CONTEXT_ROOT environment variable not set!\n";
+  exit(1);
+}
+
+set_include_path(get_include_path().PATH_SEPARATOR.$WIFF_CONTEXT_ROOT);
+
+$prefix=$WIFF_CONTEXT_ROOT."/WHAT/Lib.Prefix.php";
 if (! include($prefix)) {
   print "cannot include file $prefix";
   exit(1);
