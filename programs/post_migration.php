@@ -2,7 +2,7 @@
 
 <?php
 
-$WIFF_CONTEXT_ROOT = gentenv("WIFF_CONTEXT_ROOT");
+$WIFF_CONTEXT_ROOT = getenv("WIFF_CONTEXT_ROOT");
 if( $WIFF_CONTEXT_ROOT === false ) {
   print "WIFF_CONTEXT_ROOT environment variable not set!\n";
   exit(1);
