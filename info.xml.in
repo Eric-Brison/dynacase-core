@@ -20,6 +20,8 @@
   </parameters>
 
   <pre-install>    
+    <check type="pgversion" service="@core_db" predicate="ge" version="8.1.0" />
+
     <check type="syscommand" command="rm" />
     <check type="syscommand" command="file" />
     <check type="syscommand" command="mkdir" />
