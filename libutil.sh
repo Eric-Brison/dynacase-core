@@ -49,6 +49,13 @@ function pgRoleExists {
     return -1
 }
 
+function pgTableExists {
+    dbName=$1
+    psql -At -c "\d \"$dbName\"" 2> /dev/null
+    RET=$?
+    return $RET
+fi
+
 function pgExecuteSqlFile {
     pgFile=$1
     if [ -z $pgFile ]; then
@@ -60,6 +67,39 @@ function pgExecuteSqlFile {
 	return $RET
     fi
     return 0
+}
+
+function pgVersion {
+    VERSION=`psql -At -c "SHOW SERVER_VERSION;" 2> /dev/null`
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	return $RET
+    fi
+    if [ -z "$VERSION" ]; then
+	return -1
+    fi
+    perl -e 'print join("", map { sprintf("%03d", $_) } split(/\./, $ARGV[0]))' "$VERSION" 2> /dev/null
+}
+
+function pgInitTsearch2 {
+    for TSEARCH2 in \
+	/usr/share/postgresql/8.1/contrib/tsearch2.sql \
+	/usr/share/postgresql/8.2/contrib/tsearch2.sql \
+	/usr/share/pgsql/contrib/tsearch2.sql \
+	; do
+	if [ -f "$TSEARCH2" ]; then
+	    echo "Initializing tsearch2 support with '$TSEARCH2'..."
+	    psql -f "$TSEARCH2" > /dev/null
+	    RET=$?
+	    if [ $RET -ne 0 ]; then
+		echo "Error occured while loading '$TSEARCH2' in database!"
+		exit $RET
+	    fi
+	    return 0
+	fi
+    done
+    echo "Could not find tsearch2.sql script !"
+    return -1
 }
 
 function restartHttpd {
