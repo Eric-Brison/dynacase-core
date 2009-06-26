@@ -54,7 +54,7 @@ function pgTableExists {
     psql -At -c "\d \"$dbName\"" 2> /dev/null
     RET=$?
     return $RET
-fi
+}
 
 function pgExecuteSqlFile {
     pgFile=$1
