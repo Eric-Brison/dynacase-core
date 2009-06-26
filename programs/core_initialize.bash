@@ -45,8 +45,16 @@ export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
 
 "$corepost" I 
 RET=$?
-if [ $RET -eq 0 ]; then
-     "$corepost" U
-     RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error: '$corepost I' returned with exit code '$RET'"
+    exit $RET
 fi
-exit $RET
+
+"$corepost" U
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error: '$corepost U' returned with exit code '$RET'"
+    exit $RET;
+fi
+
+exit 0
