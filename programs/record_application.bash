@@ -2,4 +2,31 @@
 
 export wpub=$WIFF_CONTEXT_ROOT # same as `wiff.php --getValue=rootdirectory`
 . "`dirname $0`"/core_environment
-"$wpub/wsh.php"  --api=appadmin --method=update --appname=$1
+
+if [ -z "$2" ]; then
+    "$wpub/wsh.php"  --api=appadmin --method=update --appname="$1"
+    RET=$?
+    exit $RET
+fi
+
+if [ "$2" = "I" ]; then
+    "$wpub/wsh.php" --api=appadmin --method=init --appname="$1"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	exit $RET
+    fi
+    
+    "$wpub/wsh.php" --api=appadmin --method=update --appname="$1"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	exit $RET
+    fi
+elif [ "$2" = "U" ]; then
+    "$wpub/wsh.php" --api=appadmin --method=update --appname="$1"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	exit $RET
+    fi
+fi
+
+exit 0
