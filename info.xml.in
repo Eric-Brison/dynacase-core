@@ -60,10 +60,11 @@
   
   <post-install>
     <process command="programs/core_initialize"><label lang="en">Initialize system database</label></process>
-    <process command="programs/record_application CORE"><label lang="en">Record core application in database</label></process>
-    <process command="programs/record_application AUTHENT"><label lang="en">Record authent application in database</label></process>
-    <process command="programs/record_application APPMNG"><label lang="en">Record appmng application in database</label></process>
-    <process command="programs/record_application ACCESS"><label lang="en">Record access application in database</label></process>
+    <process command="programs/record_application CORE I"><label lang="en">Record core application in database</label></process>
+    <process command="programs/record_application USERS I"><label lang="en">Record users application in database</label></process>
+    <process command="programs/record_application ACCESS I"><label lang="en">Record access application in database</label></process>
+    <process command="programs/record_application AUTHENT I"><label lang="en">Record authent application in database</label></process>
+    <process command="programs/record_application APPMNG I"><label lang="en">Record appmng application in database</label></process>
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
   </post-install>
   
@@ -73,10 +74,11 @@
   <post-upgrade>
     <process command="programs/core_update"><label lang="en">Update core</label></process>
     <process command="programs/pre_migration CORE"><label lang="en">Migration first level</label></process>
-    <process command="programs/record_application CORE"><label lang="en">Update core application in database</label></process>
-    <process command="programs/record_application AUTHENT"><label lang="en">Update authent application in database</label></process>
-    <process command="programs/record_application APPMNG"><label lang="en">Update appmng application in database</label></process>
-    <process command="programs/record_application ACCESS"><label lang="en">Update access application in database</label></process>
+    <process command="programs/record_application CORE U"><label lang="en">Update core application in database</label></process>
+    <process command="programs/record_application USERS U"><label lang="en">Record users application in database</label></process>
+    <process command="programs/record_application ACCESS U"><label lang="en">Update access application in database</label></process>
+    <process command="programs/record_application AUTHENT U"><label lang="en">Update authent application in database</label></process>
+    <process command="programs/record_application APPMNG U"><label lang="en">Update appmng application in database</label></process>
     <process command="programs/post_migration CORE"><label lang="en">Migration second level</label></process>
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
   </post-upgrade>
