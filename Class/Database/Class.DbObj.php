@@ -547,33 +547,32 @@ function exec_query($sql,$lvl=0)
     $this->init_dbid();
     $this->log->debug("exec_query : $sql");
     
-    $this->res=@pg_query($this->dbid,$sql);
-   
+    if( pg_send_query($this->dbid, $sql) === false ) {
+      $this->msg_err = "Error sending query";
+    }
+    $this->res = pg_get_result($this->dbid);
 
-    //error_log( sprintf("<P> %s [%d]( <B>%.03f</b></p>",$sql,$this->numrows(),microtime_diff(microtime(),$mb)));
-    $pgmess = pg_last_error($this->dbid);
-    //    if ($pgmess != "") print "[$sql]";
-    
-    $this->msg_err = chop(ereg_replace("ERROR:  ","",$pgmess));
-    
-    
-    $action_needed= "";
-    if ($lvl==0) { // to avoid recursivity
-      if ($this->msg_err != "") {
-		     if ((eregi("Relation ['\"]([a-zA-Z_]*)['\"] does not exist",$this->msg_err) ||
-			  eregi("Relation (.*) n'existe pas",$this->msg_err) ||
-			  eregi("class \"([a-zA-Z_]*)\" not found",$this->msg_err)) ) {
-		       $action_needed = "create";
-		     } else if ((eregi("No such attribute or function '([a-zA-Z_0-9]*)'",$this->msg_err)) ||
-				(eregi("Attribute ['\"]([a-zA-Z_0-9]*)['\"] not found",$this->msg_err))) {
-		       $action_needed = "update";
-		     } else if (eregi("relation ['\"](.*)['\"] already exists",$this->msg_err) ||
-				eregi("relation (.*) existe d",$this->msg_err)){
-		       $action_needed = "none";		       
-		     }
-		     //print "\n\t\t[".$this->msg_err."]:$action_needed\n";
-		     error_log("DbObj::exec_query [".$this->msg_err."]:$action_needed.[$sql]");
-		     
+    $this->msg_err = pg_result_error($this->res);
+    $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
+
+    $action_needed = "";
+    if( $lvl == 0 ) {
+      if( $this->err_code != "" ) {
+	// http://www.postgresql.org/docs/8.3/interactive/errcodes-appendix.html
+	switch($this->err_code) {
+	case "42P01":
+	  // UNDEFINED TABLE
+	  $action_needed = "create"; break;
+	case "42703":
+	  // UNDEFINED COLUMN
+	  $action_needed = "update"; break;
+	case "42P07":
+	  // DUPLICATE TABLE
+	  $action_needed = "none"; break;
+	default:
+	  break;
+	}
+	error_log("DbObj::exec_query [".$this->msg_err." (".$this->err_code.")]:$action_needed.[$sql]");
       }
     }
     
@@ -615,7 +614,8 @@ function exec_query($sql,$lvl=0)
 			  "st"=>stacktrace(8));
      }
     return ($this->msg_err);
-  }
+}
+    
 
 function numrows()
   {

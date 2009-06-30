@@ -13,6 +13,7 @@
 include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");
 include("WHAT/wenv.php");
+include("WHAT/Lib.System.php");
 
 global $_SERVER;
 
@@ -40,7 +41,9 @@ function choosedb() {
 //   }
 
   $post = getBaseDirList();
-  ncurses_winit(sprintf(_("Choose database in %s (%s)"),trim(`hostname -f`),trim(`hostname -i`)));
+  $hostname = LibSystem::getHostName();
+  $hostip = LibSystem::getHostIPAddress();
+  ncurses_winit(sprintf(_("Choose database in %s (%s)"),$hostname,$hostip));
   ncurses_getmaxyx($fullscreen, $lines, $columns); 
 
   $select=ncurses_select($post,"Select database");

@@ -1,5 +1,15 @@
 #!/bin/bash
-. /etc/freedom.conf
+
+DIRNAME=`dirname "$0"`
+REAL_DIRNAME=`cd "$DIRNAME" 1> /dev/null 2>&1 && pwd`
+if [ -z "$REAL_DIRNAME" ]; then
+    echo "Could not get real dir name from '$0'."
+    exit 1
+fi
+export wpub=$REAL_DIRNAME
+
+shopt -s nullglob
+
 function whattext ()
 {    
     ntf="$wpub/locale/.gettextnumber"
@@ -10,22 +20,22 @@ function whattext ()
     numbertwo=`expr $numberone + 1`
     for lang in en fr ; do
 	pushd $wpub/locale/$lang/LC_MESSAGES >/dev/null
-	mv what.mo what.mo.old
+	mv freedom-catalog.mo freedom-catalog.mo.old 1> /dev/null 2>&1
 	
-        find . -type l -name "what[0-9]*.mo" -exec /bin/rm {} \;
+        find . -type l -name "freedom-catalog[0-9]*.mo" -exec /bin/rm {} \;
 
-	if [ -h "what$numberone.mo" ]; then
-	    \rm "what$numberone.mo"
+	if [ -h "freedom-catalog$numberone.mo" ]; then
+	    \rm "freedom-catalog$numberone.mo"
 	fi
         for mo in `ls *.mo` ; do
 	    msgunfmt --force-po $mo -o $mo.po
 	done
-	msgcat  --use-first  *.po > what.po
+	msgcat  --use-first  *.po > freedom-catalog.po
 
-	msgfmt what.po  -o what.mo
+	msgfmt freedom-catalog.po  -o freedom-catalog.mo
 	rm -f *.po *.old
-	if [ ! -a "what$numbertwo.mo" ]; then
-	    \ln -s what.mo "what$numbertwo.mo" && echo $numbertwo > $ntf
+	if [ ! -a "freedom-catalog$numbertwo.mo" ]; then
+	    \ln -s freedom-catalog.mo "freedom-catalog$numbertwo.mo" && echo $numbertwo > $ntf
 	    
 	fi
 	popd >/dev/null

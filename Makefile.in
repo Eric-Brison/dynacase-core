@@ -20,7 +20,7 @@ GZIP_ENV = --best
 export targetdir
 export utildir
 
-SUBDIR= Admin Expire Class Action Zone Share App Api Images Style Doc debian
+SUBDIR= programs Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
 TOP_MODULES =  indexq.php wsh.php wvirtual.php wchoose.php guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess index.php
 
@@ -30,7 +30,7 @@ include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php indexq.php freedom.conf.in dbaccess.php.sample.in libutil.sh wcontrol wcontrol.xml htaccess
+	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php indexq.php freedom.conf.in dbaccess.php.sample.in dbaccess.php.in libutil.sh wcontrol wcontrol.xml htaccess
 
 
 
@@ -94,8 +94,10 @@ $(pubdir)/context/default/FDLGEN:
 	mkdir -p $@
 $(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
 	cp $< $@
+$(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
+	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample
+publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
