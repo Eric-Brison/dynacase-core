@@ -257,8 +257,11 @@ create sequence seq_id_users start 10";
     if ($uid > 0) {
       $dbid=getDbId(getDbAccess());
       $res = pg_exec($dbid, "select firstname || ' ' || lastname as dn from users where id=$uid");
-      $arr = pg_fetch_array ($res, 0);
-      return $arr["dn"];
+      if (pg_num_rows($res) > 0) {
+	$arr = pg_fetch_array ($res, 0);
+	return $arr["dn"];
+      }
+      return false;
     }
   }
 
