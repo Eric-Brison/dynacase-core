@@ -100,7 +100,10 @@ $(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
 $(pubdir)/session:
 	mkdir -p $@
 
-publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session
+$(pubdir)/session/.htaccess: htaccess.session $(pubdir)/session
+	cp $< $@
+
+publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
