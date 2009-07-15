@@ -39,6 +39,7 @@
     <check type="syscommand" command="ldapdelete" optional="yes" />
     <check type="syscommand" command="psql" />
     <check type="syscommand" command="pg_dump" />
+    <check type="syscommand" command="msgcat" />
     
     <!-- Check PHP functions/extensions -->
     
