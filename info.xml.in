@@ -57,6 +57,10 @@
     <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP"><help>You might need to run : pear install Crypt_CHAP</help></check>
     <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP"><help>You might need to run : pear install Net_SMTP</help></check>
     <check type="pearmodule" include="Mail/mime.php" class="Mail_mime"><help>You might need to run : pear install Mail_Mime</help></check>
+
+    <!-- Check Apache modules -->
+
+    <check type="apachemodule" module="mod_expires"><help>You might need to install and/or activate the Apache mod_expires module.</help></check>
     
   </pre-install>
   
