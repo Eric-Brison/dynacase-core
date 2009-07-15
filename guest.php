@@ -156,11 +156,10 @@ if (($standalone == "") || ($standalone == "N")) {
 $nav=$_SERVER['HTTP_USER_AGENT'];
 $pos=strpos($nav,"MSIE");
 if ($action->Read("navigator","") == "") {
-  if ( $pos>0) {
+  if ( $pos !== false ) {
     $action->Register("navigator","EXPLORER");
-    $core->SetVolatileParam("ISIE", true);
     if (ereg("MSIE ([0-9.]+).*",$nav,$reg)) {
-      $action->Register("navversion",$reg[1]);      
+      $action->Register("navversion",$reg[1]);
     }
   } else {
     $action->Register("navigator","NETSCAPE");
@@ -169,7 +168,33 @@ if ($action->Read("navigator","") == "") {
     }
   }
 }
+
+$ISIE6 = false;
+$ISAPPLEWEBKIT = false;
+$ISSAFARI = false;
+$ISCHROME = false;
+if( preg_match('/MSIE ([0-9]+).*/', $nav, $match) ) {
+  switch( $match[1] ) {
+  case "6":
+    $ISIE6 = true;
+    break;
+  }
+} elseif( preg_match('|\bAppleWebKit/(.*?)\b|', $nav, $match) ) {
+  $ISAPPLEWEBKIT = true;
+  if( preg_match('|\bSafari/(.*?)\b|', $nav, $match) ) {
+    $ISSAFARI = true;
+    if( preg_match('|\bChrome/(.*?)\b|', $nav, $match) ) {
+      $ISCHROME = true;
+    }
+  }
+}
+
 $core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
+$core->SetVolatileParam("ISIE6", ($ISIE6 === true));
+$core->SetVolatileParam("ISAPPLEWEBKIT", ($ISAPPLEWEBKIT === true));
+$core->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
+$core->SetVolatileParam("ISCHROME", ($ISCHROME === true));
+
 // init for gettext
 setlocale(LC_MESSAGES,$action->Getparam("CORE_LANG"));  
 setlocale(LC_MONETARY, $action->Getparam("CORE_LANG"));
