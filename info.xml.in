@@ -20,6 +20,9 @@
   </parameters>
 
   <pre-install>    
+    <check type="phpfunction" function="pg_connect"><help>You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>
+    </check>
+
     <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" />
 
     <check type="syscommand" command="rm" />
@@ -40,8 +43,6 @@
     <!-- Check PHP functions/extensions -->
     
     <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
-    <check type="phpfunction" function="pg_connect"><help>You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>
-    </check>
     <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
     <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
     <check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>
