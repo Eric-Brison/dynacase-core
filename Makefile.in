@@ -97,7 +97,10 @@ $(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/con
 $(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
 	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in
+$(pubdir)/session:
+	mkdir -p $@
+
+publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
