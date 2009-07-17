@@ -269,6 +269,7 @@ echo "%{httpuser} ALL=NOPASSWD:%{destdir}/admin/shttpd" >> /etc/sudoers
 %{destdir}/admin/.htaccess
 %{destdir}/admin/.htaccess.in
 %{destdir}/admin/.htpasswd
+%{destdir}/session
 %{destdir}/programs/*
 
 %{destdir}/apache.conf

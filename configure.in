@@ -108,4 +108,5 @@ AC_OUTPUT(Makefile freedom-core.spec apache.conf freedom.conf \
 	  httpd.pam debian/changelog  \
 	  dbaccess.php.sample \
 	  Admin/htaccess \
+	  htaccess \
 	  info.xml )
