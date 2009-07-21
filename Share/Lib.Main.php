@@ -173,17 +173,31 @@ function getMainAction($auth,&$action) {
       }
     }
 
+    $ISIE6 = false;
+    $ISAPPLEWEBKIT = false;
+    $ISSAFARI = false;
+    $ISCHROME = false;
     if( preg_match('/MSIE ([0-9]+).*/', $nav, $match) ) {
       switch( $match[1] ) {
       case "6":
 	$ISIE6 = true;
 	break;
       }
+    } elseif( preg_match('|\bAppleWebKit/(.*?)\b|', $nav, $match) ) {
+      $ISAPPLEWEBKIT = true;
+      if( preg_match('|\bSafari/(.*?)\b|', $nav, $match) ) {
+	$ISSAFARI = true;
+	if( preg_match('|\bChrome/(.*?)\b|', $nav, $match) ) {
+	  $ISCHROME = true;
+	}
+      }
     }
 
     $core->SetVolatileParam("ISIE",($action->read("navigator")=="EXPLORER"));
     $core->SetVolatileParam("ISIE6", ($ISIE6 === true));
-
+    $core->SetVolatileParam("ISAPPLEWEBKIT", ($ISAPPLEWEBKIT === true));
+    $core->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
+    $core->SetVolatileParam("ISCHROME", ($ISCHROME === true));
     // init for gettext
     setLanguage($action->Getparam("CORE_LANG"));
 
