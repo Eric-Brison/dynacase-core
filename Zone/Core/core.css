@@ -334,3 +334,20 @@ But keep in mind that these classes are a bit modified.
   z-index:-1;/*must have*/
 }
 [ENDIF ISIE6]
+
+[IF ISAPPLEWEBKIT]
+/**
+ * Apple Webkit automatically lighten, or darken, the color
+ * of disabled text input fields. So let him handle it
+ * from the inherited color, instead of messing our own
+ * finely chosen color.
+ *
+ * (Not perfect, as the inherited color might not be the
+ * same color as non disabled input fields...)
+ *
+ * Bug ref. <https://bugs.webkit.org/show_bug.cgi?id=13818>
+ */
+input[disabled], textarea[disabled] {
+  color: inherit !important;
+}
+[ENDIF ISAPPLEWEBKIT]
