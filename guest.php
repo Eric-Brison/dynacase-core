@@ -35,5 +35,6 @@ if ($action->user->id != ANONYMOUS_ID) {
   exit;
 }
 
+
 executeAction($action);
 ?>

@@ -253,6 +253,7 @@ echo "%{httpuser} ALL=NOPASSWD:%{destdir}/admin/shttpd" >> /etc/sudoers
 %dir %{destdir}/context/
 %dir %{destdir}/context/default
 %dir %{destdir}/context/default/FDLGEN
+%dir %{destdir}/programs
 %{destdir}/FDLGEN/default
 
 %{destdir}/ACCESS/*
@@ -266,7 +267,10 @@ echo "%{httpuser} ALL=NOPASSWD:%{destdir}/admin/shttpd" >> /etc/sudoers
 %{destdir}/expire/*
 %{destdir}/admin/*
 %{destdir}/admin/.htaccess
+%{destdir}/admin/.htaccess.in
 %{destdir}/admin/.htpasswd
+%{destdir}/session
+%{destdir}/programs/*
 
 %{destdir}/apache.conf
 %{destdir}/guest.php
@@ -289,6 +293,7 @@ echo "%{httpuser} ALL=NOPASSWD:%{destdir}/admin/shttpd" >> /etc/sudoers
 %{destdir}/wvirtual.php
 %{destdir}/libutil.sh
 %{destdir}/context/default/dbaccess.php.sample
+%{destdir}/context/default/dbaccess.php.in
 # %config(noreplace) %{destdir}/context/default/dbaccess.php
 
 %{destdir}/indexq.php

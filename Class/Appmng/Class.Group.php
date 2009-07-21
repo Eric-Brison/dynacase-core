@@ -112,7 +112,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	$g=new Group($dbf);
 	$g->iduser=$this->iduser;
 	$g->idgroup=$this->idgroup;
-	$err=$g->Delete(true);
+	$err = $g->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=".$u->id); 
 	if ($err=="") {
 	  // if it is a user (not a group)
 	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 

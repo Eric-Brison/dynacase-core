@@ -7,9 +7,11 @@
 
 include $(utildir)/PubRule
 
-publish: $(pubdir)/log.sh
+publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in
 
 $(pubdir)/log.sh: log.sh
 	cp $< $@
+$(pubdir)/WHAT/Lib.Prefix.php.in: Lib.Prefix.php.in
+	cp $< $@
 
-DISTFILES += log.sh
+DISTFILES += log.sh Lib.Prefix.php.in

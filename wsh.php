@@ -1,4 +1,4 @@
-#! /usr/bin/php -q
+#!/usr/bin/env php
 <?php
 /**
  * WHAT SHELL
@@ -17,6 +17,7 @@ include_once('Class.Action.php');
 include_once('Class.Application.php');
 include_once('Class.Session.php');
 include_once('Class.Log.php');
+include_once('Lib.System.php');
 
 
 wbar(1,-1,"initialisation");
@@ -73,8 +74,8 @@ if (! isset($_GET["userid"])) $core->user=new User("",1); //admin
 
 $CORE_LOGLEVEL=$core->GetParam("CORE_LOGLEVEL", "IWEF");
 
-
-$puburl = $core->GetParam("CORE_PUBURL","http://".trim(`hostname -f`)."/freedom");
+$hostname = LibSystem::getHostName();
+$puburl = $core->GetParam("CORE_PUBURL","http://".$hostname."/freedom");
 
 
 ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");

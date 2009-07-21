@@ -35,7 +35,7 @@ $app_const= array(
 					    "global" => "N"
 					    ),
   "AUTHENT_CALLBACKREQPASSWD_MAIL_SUBJECT" => array(
-						  "val" => "Mot de passe ré-initialisé",
+						  "val" => "Mot de passe rÃ©-initialisÃ©",
 						  "descr" => N_("subject for new password response"),
 						  "kind" => "text",
 						  "global" => "N"

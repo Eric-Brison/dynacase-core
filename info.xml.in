@@ -1,4 +1,95 @@
 <?xml version="1.0"?>
 <module name="freedom-core" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
-  <description>The WHAT application toolkit gives common interface element to develop web applications</description>
+
+  <description lang="en">Hosting Application Toolkit for freedom ECM</description>
+  <description lang="fr">Serveur d'application pour freedom ECM</description>
+
+  <requires>
+    <installer version="1" comp="ge"/>
+  </requires>
+
+  <parameters>
+    <param name="core_db" label="main database postgresql service name"
+	   default="freedom" type="text" needed="Y" />
+    <param name="freedom_db" label="document database postgresql service name (optionnal: by default is the same as main database)"
+	   default="freedom" type="text" needed="N" />
+    <param name="authtype" label="authenticate default mode"
+	   default="html" type="enum" values="html|basic" needed="Y" />
+    <param name="apacheuser" label="apache system user"
+	   default="www-data" type="text"  needed="Y" />
+  </parameters>
+
+  <pre-install>    
+    <check type="phpfunction" function="pg_connect"><help>You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>
+    </check>
+
+    <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" />
+
+    <check type="syscommand" command="rm" />
+    <check type="syscommand" command="file" />
+    <check type="syscommand" command="mkdir" />
+    <check type="syscommand" command="tar" />
+    <check type="syscommand" command="zip" />
+    <check type="syscommand" command="unzip" />
+    <check type="syscommand" command="dot" />
+    <check type="syscommand" command="convert" />
+    <check type="syscommand" command="html2ps" />
+    <check type="syscommand" command="ps2pdf" />
+    <check type="syscommand" command="php" />
+    <check type="syscommand" command="ldapdelete" optional="yes" />
+    <check type="syscommand" command="psql" />
+    <check type="syscommand" command="pg_dump" />
+    <check type="syscommand" command="msgcat" />
+    
+    <!-- Check PHP functions/extensions -->
+    
+    <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
+    <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
+    <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
+    <check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>
+    <check type="phpfunction" function="ldap_connect"><help>You might need to install a php-ldap package from your distribution in order to have LDAP support in PHP.</help></check>
+    <check type="phpfunction" function="ncurses_init" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>
+    <check type="phpfunction" function="pspell_new"><help>You might need to install a php-pspell package from your distribution in order to have spelling support in PHP.</help></check>
+    <check type="phpfunction" function="iconv"><help>You might need to install a php-iconv package from your distribution in order to have iconv support in PHP.</help></check>
+    
+    <!-- Check PEAR modules -->
+    
+    <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP"><help>You might need to run : pear install Crypt_CHAP</help></check>
+    <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP"><help>You might need to run : pear install Net_SMTP</help></check>
+    <check type="pearmodule" include="Mail/mime.php" class="Mail_mime"><help>You might need to run : pear install Mail_Mime</help></check>
+
+    <!-- Check Apache modules -->
+
+    <check type="apachemodule" module="mod_expires"><help>You might need to install and/or activate the Apache mod_expires module.</help></check>
+    
+  </pre-install>
+  
+  <post-install>
+    <process command="programs/core_initialize"><label lang="en">Initialize system database</label></process>
+    <process command="programs/record_application CORE I"><label lang="en">Record core application in database</label></process>
+    <process command="programs/record_application USERS I"><label lang="en">Record users application in database</label></process>
+    <process command="programs/record_application ACCESS I"><label lang="en">Record access application in database</label></process>
+    <process command="programs/record_application AUTHENT I"><label lang="en">Record authent application in database</label></process>
+    <process command="programs/record_application APPMNG I"><label lang="en">Record appmng application in database</label></process>
+    <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
+  </post-install>
+  
+  <pre-upgrade>
+  </pre-upgrade>
+  
+  <post-upgrade>
+    <process command="programs/core_update"><label lang="en">Update core</label></process>
+    <process command="programs/pre_migration CORE"><label lang="en">Migration first level</label></process>
+    <process command="programs/record_application CORE U"><label lang="en">Update core application in database</label></process>
+    <process command="programs/record_application USERS U"><label lang="en">Record users application in database</label></process>
+    <process command="programs/record_application ACCESS U"><label lang="en">Update access application in database</label></process>
+    <process command="programs/record_application AUTHENT U"><label lang="en">Update authent application in database</label></process>
+    <process command="programs/record_application APPMNG U"><label lang="en">Update appmng application in database</label></process>
+    <process command="programs/post_migration CORE"><label lang="en">Migration second level</label></process>
+    <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
+  </post-upgrade>
+
+  <pre-remove></pre-remove>
+  <post-remove></post-remove>
+  
 </module>

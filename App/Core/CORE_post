@@ -32,9 +32,13 @@ if [ "$1" = "I" ] ; then
     PGSERVICE=$pgservice_core pgLanguageExists "plpgsql"
     RET=$?
     if [ $RET -ne 0 ]; then
-	echo "Could not find language plpgsql on database service $pgservice_core !"
-	echo "Check that the plpgsql language is correctly enabled on your database service."
-	exit $RET
+	log "Trying to active plpgsql language on database service $pgservice_core..."
+	OUT=`PGSERVICE="$pgservice_core" psql -c 'CREATE LANGUAGE plpgsql;' 2> /dev/null`
+	RET=$?
+	if [ $RET -ne 0 ]; then
+	    echo "An error occured while creating language plpgsql : $RET"
+	    exit $RET
+	fi
     fi
 
     log "Executing $wpub/WHAT/getprivilege.sql in database service $pgservice_core..."
@@ -46,46 +50,21 @@ if [ "$1" = "I" ] ; then
     fi
 
     log "Checking if DateStyle is 'SQL, DMY'..."
-    DATESTYLE=`PGSERVICE="$pgservice_core" psql -At -c "SHOW DateStyle" 2> /dev/null`
+    DATESTYLE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_setting('datestyle');" 2> /dev/null`
     RET=$?
     if [ $RET -ne 0 ]; then
 	echo "An error occured while querying DateStyle : $RET"
 	exit $RET
     fi
     if [ "$DATESTYLE" != "SQL, DMY" ]; then
-	echo "Error: DateStyle is not 'SQL, DMY' on database service $pgservice_core !"
-	echo "Please fix it."
-	exit 1
+	log "Trying to set DateStyle to 'SQL, DMY'..."
+	DATESTYLE=`PGSERVICE="$pgservice_core" psql -c "SELECT set_config('datestyle', 'SQL, DMY', false);" 2> /dev/null `
+	RET=$?
+	if [ $RET -ne 0 ]; then
+	    echo "An error occured while setting DateStyle to 'SQL, DMY'."
+	    exit $RET
+	fi
     fi
-
-    log "Register DB $dbname for automatic dump..."
-    ll=0
-    if [ -f /etc/ankpsql-tools/base-list ] ; then
-	ll=`cat /etc/ankpsql-tools/base-list | grep "^$dbname$" | wc -l`
-    fi
-    if [ $ll -eq 0 ]; then 
-	echo "Register DB $dbname for automatic dump"
-	echo "$dbname" >> /etc/ankpsql-tools/base-list
-    fi
-    
-    # Add logrotate
-    echo "/var/log/what.log {"               >  /etc/logrotate.d/what
-    echo "   missingok"                      >> /etc/logrotate.d/what
-    echo "   postrotate"                     >> /etc/logrotate.d/what
-    echo "   /usr/bin/killall -HUP syslog-ng"  >> /etc/logrotate.d/what
-    echo "   endscript"                      >> /etc/logrotate.d/what
-    echo "}"                                 >> /etc/logrotate.d/what
-    
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Application
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Action
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Style
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=ParamDef
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Param
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=User
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Group
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Permission
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Acl
-#     /usr/bin/php -q $wpub/API/updateclass.php --dbcoord="service='$pgservice_core'" --class=Session
 
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Application
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Action
@@ -113,6 +92,14 @@ if [ "$1" = "U" ] ; then
     if [ $RET -ne 0 ]; then
 	echo "Error setting CORE_DB"
         exit $RET
+    fi
+
+    log "Setting CORE_PUBDIR in paramv..."
+    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = '$wpub' WHERE name = 'CORE_PUBDIR'"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error setting CORE_PUBDIR"
+	exit $RET
     fi
 
     #add permission functionnalities
