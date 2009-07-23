@@ -5,24 +5,47 @@ $pgservice_freedom="@FREEDOM_DB@";;
 $freedom_context="default";
 $dbpsql=$pgservice_core;
 
+/*
+ ** Authentication mode : apache / basic / html / open
+ ** --------------------------------------------------
+ */
 $freedom_authtype = '@AUTHTYPE@';
+
+$freedom_authtypeparams = array(
+        'html' => array (
+                'cookie' => 'freedom_auth',
+                'authurl' => '/freedom/guest.php?sole=A&app=AUTHENT&action=LOGINFORM',
+                'username' => 'auth_user',
+                'password' => 'auth_pass',
+                ),
+        'open' => array(),
+        'basic' => array(
+                'realm' => 'freedom',
+                ),
+        );
+
+/*
+ ** Providers : how username / password tuple is validated 
+ ** ------------------------------------------------------
+ */
 $freedom_authprovider = 'freedom';
-$freedom_authparam = array(
-			   'html' => array(
-					   'freedom' => array(
-							      'username' => 'auth_user',
-							      'password' => 'auth_pass',
-							      'cookie' => 'freedom_auth',
-							      'connection' => 'service='.$pgservice_core,
-							      'authurl' => 'guest.php?sole=A&app=AUTHENT&action=LOGINFORM',
-							      ),
-					   ),
-			   'basic' => array(
-					    'freedom' => array(
-							       'realm' => 'Freedom',
-							       'connection' => 'service='.$pgservice_core,
-							       ),
-					    ),
-			   );
+
+$freedom_providers = array(
+                'freedom' => array(
+                                      'connection' => 'service='.$pgservice_core,
+                          ),
+                'ldap' => array(
+                                'host'  => '192.168.200.2',
+                                'port'    => '389',
+                                'ssl'     => 'n',
+                                'options' => array ( LDAP_OPT_PROTOCOL_VERSION => 3 ),
+                                'dn'      => 'uid=%s,dc=users,o=Anakeen,c=fr',
+                                'dGroup'  => 'GDEFAULT', // Use to add IUser 
+                                ),
+                'file' => array(
+                                'authfile' => '@prefix@/.freedompwd',
+                                ),
+                'freedomNu' => array(),
+        );
 
 ?>
