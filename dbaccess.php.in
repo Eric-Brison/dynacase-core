@@ -14,7 +14,7 @@ $freedom_authtype = '@AUTHTYPE@';
 $freedom_authtypeparams = array(
         'html' => array (
                 'cookie' => 'freedom_auth',
-                'authurl' => '/freedom/guest.php?sole=A&app=AUTHENT&action=LOGINFORM',
+                'authurl' => 'guest.php?sole=A&app=AUTHENT&action=LOGINFORM',
                 'username' => 'auth_user',
                 'password' => 'auth_pass',
                 ),
