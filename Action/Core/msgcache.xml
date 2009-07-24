@@ -1,13 +1,13 @@
 <html>
 <head>
-<title>Info : Mise à jour du cache</title>
+<title>Info : Mise Ã  jour du cache</title>
 </head>
 <body>
 [IFNOT ISIE]<img style="float:right" src="[IMG:icon_firefox.png]">[ENDIF ISIE]
 [IF ISIE]<img style="float:right" src="[IMG:icon_ie.png]">[ENDIF ISIE]
 <h2>[TEXT:New version has been installed.]<br>[TEXT:You must clear navigator cache.]</H2>
 [IFNOT ISIE]
-Pour vider le cache aller dans le menu <i>&Eacute;dition</i>. Choisir <i>Préférences</i> puis cliquer sur <i>Vie privée</i> et enfin sur <i>Vider le cache</i>.<br>
+Pour vider le cache aller dans le menu <i>&Eacute;dition</i>. Choisir <i>PrÃ©fÃ©rences</i> puis cliquer sur <i>Vie privÃ©e</i> et enfin sur <i>Vider le cache</i>.<br>
 <img src="[IMG:cache_firefox.png]">
 [ENDIF ISIE]
 [IF ISIE]
