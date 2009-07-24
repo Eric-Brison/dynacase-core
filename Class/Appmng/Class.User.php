@@ -256,10 +256,11 @@ create sequence seq_id_users start 10";
     $uid=intval($uid);
     if ($uid > 0) {
       $dbid=getDbId(getDbAccess());
-      $res = pg_exec($dbid, "select firstname || ' ' || lastname as dn from users where id=$uid");
+      $res = pg_exec($dbid, "select firstname, lastname  from users where id=$uid");
       if (pg_num_rows($res) > 0) {
 	$arr = pg_fetch_array ($res, 0);
-	return $arr["dn"];
+	if ($arr["firstname"]) 	return $arr["firstname"].' '.$arr["lastname"];
+	else return $arr["lastname"];
       }
       return false;
     }
