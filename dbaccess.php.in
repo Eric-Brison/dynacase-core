@@ -35,11 +35,11 @@ $freedom_providers = array(
                                       'connection' => 'service='.$pgservice_core,
                           ),
                 'ldap' => array(
-                                'host'  => '192.168.200.2',
+                                'host'  => '127.0.0.1',
                                 'port'    => '389',
                                 'ssl'     => 'n',
                                 'options' => array ( LDAP_OPT_PROTOCOL_VERSION => 3 ),
-                                'dn'      => 'uid=%s,dc=users,o=Anakeen,c=fr',
+                                'dn'      => 'uid=%s,dc=users,dc=example,dc=net',
                                 'dGroup'  => 'GDEFAULT', // Use to add IUser 
                                 ),
                 'file' => array(
