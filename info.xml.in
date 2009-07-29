@@ -10,9 +10,7 @@
 
   <parameters>
     <param name="core_db" label="main database postgresql service name"
-	   default="freedom" type="text" needed="Y" />
-    <param name="freedom_db" label="document database postgresql service name (optionnal: by default is the same as main database)"
-	   default="freedom" type="text" needed="N" />
+	   default="@CONTEXT_NAME" type="text" needed="Y" />
     <param name="authtype" label="authenticate default mode"
 	   default="html" type="enum" values="html|basic" needed="Y" />
     <param name="apacheuser" label="apache system user"
