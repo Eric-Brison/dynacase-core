@@ -9,7 +9,7 @@
   </requires>
 
   <parameters>
-    <param name="core_db" label="main database postgresql service name"
+    <param name="core_db" label="database postgresql service name"
 	   default="@CONTEXT_NAME" type="text" needed="Y" />
     <param name="authtype" label="authenticate default mode"
 	   default="html" type="enum" values="html|basic" needed="Y" />
