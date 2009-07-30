@@ -71,7 +71,7 @@
     <process command="programs/record_application AUTHENT I"><label lang="en">Record authent application in database</label></process>
     <process command="programs/record_application APPMNG I"><label lang="en">Record appmng application in database</label></process>
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
-    <process command="programs/register_client_name"><label lang="en">Register client name</label></process>
+    <process command="programs/set_param CORE_CLIENT client_name" ><label lang="en">Register client name</label></process>
   </post-install>
   
   <pre-upgrade>
