@@ -64,9 +64,8 @@ function te_getSysMimeFile($f,$fn="") {
   } 
   if (preg_match('/PHP script/',$txt))  return 'text/x-php';
 
-  // open office archive
-  if (preg_match('/zip$/',$sys)) {
-  
+  // open office archive  
+  if (preg_match('/zip$/',$sys)|| (preg_match('/octet-stream$/',$sys))) {
     if (preg_match('/OpenOffice/',$txt)) {
       if (preg_match('/\.sxw$/',$fn))    return 'application/vnd.sun.xml.writer';
       if (preg_match('/\.sxc$/',$fn))    return 'application/vnd.sun.xml.calc';
