@@ -9,6 +9,7 @@
   </requires>
 
   <parameters>
+  	<param name="client_name" label="client name" type="text" />
     <param name="core_db" label="database postgresql service name"
 	   default="@CONTEXT_NAME" type="text" needed="Y" />
     <param name="authtype" label="authenticate default mode"
@@ -18,10 +19,8 @@
   </parameters>
 
   <pre-install>    
-    <check type="phpfunction" function="pg_connect"><help>You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>
-    </check>
 
-    <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" />
+    <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
 
     <check type="syscommand" command="rm" />
     <check type="syscommand" command="file" />
@@ -70,6 +69,7 @@
     <process command="programs/record_application AUTHENT I"><label lang="en">Record authent application in database</label></process>
     <process command="programs/record_application APPMNG I"><label lang="en">Record appmng application in database</label></process>
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
+    <process command="programs/set_param CORE_CLIENT client_name" ><label lang="en">Register client name</label></process>
   </post-install>
   
   <pre-upgrade>
