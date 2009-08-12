@@ -84,6 +84,7 @@ class Layout {
 
   private $strip='Y';
   public $encoding="";
+  public $noparse=false; // return template without parse
 //########################################################################
 //# Public methods
 //#  
@@ -414,6 +415,7 @@ class Layout {
                            $out);
   }
   function gen() {
+    if ($this->noparse) return  $this->template;
 
     // if used in an app , set the app params
     if (is_object($this->action)) {
