@@ -186,7 +186,12 @@ function getSysMimeFile($f,$fn="") {
 }
 function getTextMimeFile($f) {
   $txt = trim(`file -b "$f"`);
-
+  if ($txt=='data') {
+    if (preg_match('/\.ods$/',$f)) $txt='OpenDocument Spreadsheet';
+    else if (preg_match('/\.odt$/',$f)) $txt='OpenDocument Text';
+    else if (preg_match('/\.odp$/',$f)) $txt='OpenDocument Presentation';
+    else if (preg_match('/\.odg$/',$f)) $txt='OpenDocument Drawing';
+  }
   if (! $txt) return " ";
   return $txt;
 }
