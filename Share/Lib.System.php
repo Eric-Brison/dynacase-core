@@ -68,17 +68,50 @@ class LibSystem {
       }
       return pcntl_wexitstatus($status);
     }
-    if( $opt && array_key_exists('closestdin') && $opt['closestdin'] ) {
+    $envs = array();
+    if( $opt && array_key_exists('envs', $opt) && is_array($opt['envs']) ) {
+      $envs = $opt['envs'];
+    }
+    if( $opt && array_key_exists('closestdin', $opt) && $opt['closestdin'] === true) {
       fclose(STDIN);
     }
-    if( $opt && array_key_exists('closestdout') && $opt['closestdout'] ) {
+    if( $opt && array_key_exists('closestdout', $opt) && $opt['closestdout'] === true) {
       fclose(STDOUT);
     }
-    if( $opt && array_ley_exists('closestderr') && $opt['closestderr'] ) {
+    if( $opt && array_key_exists('closestderr', $opt) && $opt['closestderr'] === true) {
       fclose(STDERR);
     }
     $cmd = array_shift($args);
-    pcntl_exec($cmd, $args);
+    pcntl_exec($cmd, $args, $envs);
+  }
+
+  function getAbsolutePath($path) {
+    if( is_link($path) ) {
+      $path = readlink($path);
+    }
+    return realpath($path);
+  }
+
+  function tempnam($dir, $prefix) {
+    if( $dir === null || $dir === false ) {
+      $dir = null;
+      foreach( array('TMP', 'TMPDIR') as $env ) {
+	$dir = getenv($env);
+	if( $dir !== false && is_dir($dir) && is_writable($dir) ) {
+	  break;
+	}
+      }
+    }
+    if( $dir === null || $dir === false ) {
+      $dir = null;
+      foreach( array('/tmp', '/var/tmp') as $tmpdir ) {
+	if( is_dir($tmpdir) && is_writable($tmpdir) ) {
+	  $dir = $tmpdir;
+	  break;
+	}
+      }
+    }
+    return tempnam($dir, $prefix);
   }
 
 }

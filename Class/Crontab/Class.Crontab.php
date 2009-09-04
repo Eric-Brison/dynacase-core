@@ -59,7 +59,9 @@ Class Crontab {
   }
 
   private function save() {
-    $tmp = tempnam('/tmp', 'crontab');
+    include_once('WHAT/Lib.System.php');
+
+    $tmp = LibSystem::tempnam(null, 'crontab');
     if( $tmp === FALSE ) {
       error_log(__CLASS__."::".__FUNCTION__." Error creating temporary file");
       return FALSE;
@@ -88,13 +90,18 @@ Class Crontab {
   }
 
   public function registerFile($file) {
+    include_once('WHAT/Lib.Prefix.php');
+
     $crontab = file_get_contents($file);
     if( $crontab === FALSE ) {
       error_log(__CLASS__."::".__FUNCTION__." Error reading content from file '".$file."'");
       return FALSE;
     }
 
-    $crontab = "# BEGIN:FREEDOM_CRONTAB:$file\n".$crontab."\n# END:FREEDOM_CRONTAB:$file\n";
+    $crontab = "# BEGIN:FREEDOM_CRONTAB:".DEFAULT_PUBDIR.":".$file."\n".
+      "CONTEXT_ROOT=".DEFAULT_PUBDIR."\n".
+      $crontab."\n".
+      "# END:FREEDOM_CRONTAB:".DEFAULT_PUBDIR.":".$file."\n";
 
     $activeCrontab = $this->load();
     if( $activeCrontab === FALSE ) {
@@ -102,9 +109,9 @@ Class Crontab {
       return FALSE;
     }
 
-    if( preg_match('/^#\s+BEGIN:FREEDOM_CRONTAB:\Q'.$file.'\E.*?#\s+END:FREEDOM_CRONTAB:\Q'.$file.'\E$/ms', $activeCrontab) === 1 ) {
+    if( preg_match('/^#\s+BEGIN:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':'.preg_quote($file, '/').'.*?#\s+END:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':'.preg_quote($file, '/').'$/ms', $activeCrontab) === 1 ) {
       print "Removing existing crontab\n";
-      $tmpCrontab = preg_replace('/^#\s+BEGIN:FREEDOM_CRONTAB:\Q'.$file.'\E.*?#\s+END:FREEDOM_CRONTAB:\Q'.$file.'\E$/ms', '', $activeCrontab);
+      $tmpCrontab = preg_replace('/^#\s+BEGIN:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':'.preg_quote($file, '/').'.*?#\s+END:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':'.preg_quote($file, '/').'$/ms', '', $activeCrontab);
       if( $tmpCrontab === NULL ) {
 	error_log(__CLASS__."::".__FUNCTION__." Error removing existing registered crontab");
 	return FALSE;
@@ -112,7 +119,7 @@ Class Crontab {
       $activeCrontab = $tmpCrontab;
     }
 
-    $activeCrontab .= "\n".$crontab;
+    $activeCrontab .= $crontab;
     $this->crontab = $activeCrontab;
 
     $ret = $this->save();
@@ -125,15 +132,17 @@ Class Crontab {
   }
 
   public function unregisterFile($file) {
+    include_once('WHAT/Lib.Prefix.php');
+
     $activeCrontab = $this->load();
     if( $activeCrontab === FALSE ) {
       error_log(__CLASS__."::".__FUNCTION__." Error reading active crontab");
       return FALSE;
     }
 
-    $tmpCrontab = preg_replace('/^#\s+BEGIN:FREEDOM_CRONTAB:\Q'.$file.'\E.*?#\s+END:FREEDOM_CRONTAB:\Q'.$file.'\E$/ms', '', $activeCrontab);
+    $tmpCrontab = preg_replace('/^#\s+BEGIN:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':'.preg_quote($file, '/').'.*?#\s+END:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':'.preg_quote($file, '/').'$/ms', '', $activeCrontab);
     if( $tmpCrontab === NULL ) {
-      error_log(__CLASS__."::".__FUNCTION__." Error unregistering crontab '".$file."' from active crontab");
+      error_log(__CLASS__."::".__FUNCTION__." Error unregistering crontab '".DEFAULT_PUBDIR.":".$file."' from active crontab");
       return FALSE;
     }
 
@@ -168,6 +177,8 @@ Class Crontab {
   }
 
   public function getActiveCrontab() {
+    include_once('WHAT/Lib.Prefix.php');
+
     $activeCrontab = $this->load();
     if( $activeCrontab === FALSE ) {
       error_log(__CLASS__."::".__FUNCTION__." Error reading active crontab");
@@ -175,7 +186,7 @@ Class Crontab {
     }
     
     $ret = preg_match_all(
-			  '/^#\s+BEGIN:FREEDOM_CRONTAB:(.*?)\n(.*?)\n#\s+END:FREEDOM_CRONTAB:\1/ms',
+			  '/^#\s+BEGIN:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':(.*?)\n(.*?)\n#\s+END:FREEDOM_CRONTAB:'.preg_quote(DEFAULT_PUBDIR, '/').':\1/ms',
 			  $activeCrontab,
 			  $matches,
 			  PREG_SET_ORDER
