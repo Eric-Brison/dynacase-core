@@ -199,6 +199,17 @@ function Select($id)  {
     if ($msg!='') return $msg;
     return TRUE;
   }
+/**
+ * get all values in array
+ * @return array
+ */
+function getValues() {
+  $r=array();
+  foreach ($this->fields as $k=>$v) {
+    $r[$v]=$this->$v;
+  }
+  return $r;
+}
 
 /**
  * affect object specific column values from this item
