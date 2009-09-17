@@ -24,25 +24,57 @@ Class openAuthenticator extends Authenticator {
    */
   public function checkAuthentication() {    
     include_once('WHAT/Lib.Http.php');
+
     $privatekey=getHttpVars("privateid");
     if (! $privatekey) return false;
-    return $this->getLoginFromPrivateKey($privatekey);
+
+    $login = $this->getLoginFromPrivateKey($privatekey);
+    if( $login === false ) {
+      return false;
+    }
+
+    $err = $this->consumeToken($privatekey);
+    if( $err === false ) {
+      return false;
+    }
+
+    return $login;
   }
 
   public function getLoginFromPrivateKey($privatekey) {
     include_once('WHAT/Class.UserToken.php');
-    include_once('WHAT/Class.QueryDb.php');
     include_once('WHAT/Class.User.php');
-    $q=new QueryDb("","UserToken");
-    $q->addQuery("token='".pg_escape_string($privatekey)."'");
-    $tu=$q->Query(0,1,"TABLE");
-    if ($q->nb > 0) {
-      $uid=$tu[0]["userid"];
-      $u=new User("",$uid);
-      $this->privatelogin=$u->login;
+
+    $token = new UserToken('', $privatekey);
+    if( ! is_object($token) || ! $token->isAffected() ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Token '%s' not found.", $privatekey));
+      return false;
     }
-    
-    return  $this->privatelogin;
+
+    $uid = $token->userid;
+    $user = new User('', $uid);
+    if( ! is_object($user) || ! $user->isAffected() ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Could not get user with uid '%s' for token '%s'.", $uid, $privatekey));
+      return false;
+    }
+
+    return $user->login;
+  }
+
+  public function consumeToken($privatekey) {
+    include_once('WHAT/Class.UserToken.php');
+
+    $token = new UserToken('', $privatekey);
+    if( ! is_object($token) || ! $token->isAffected() ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Token '%s' not found.", $privatekey));
+      return false;
+    }
+
+    if( $token->expendable === 't' ) {
+      $token->delete();
+    }
+
+    return $privatekey;
   }
 
   public function checkAuthorization($opt) {

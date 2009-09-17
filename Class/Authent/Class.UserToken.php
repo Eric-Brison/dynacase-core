@@ -63,7 +63,7 @@ Class UserToken extends DbObj
       $expiration = $this->expiration;
     }
 
-    if( $preg_match('/^-?infinity$/', $expiration) ) {
+    if( preg_match('/^-?infinity$/', $expiration) ) {
       $this->expire = $expiration;
     } else {
       if( ! is_numeric($expiration) ) {
