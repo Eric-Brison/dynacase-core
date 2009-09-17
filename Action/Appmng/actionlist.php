@@ -79,7 +79,7 @@ function actionlist(&$action) {
   $query = new QueryGen("","Action",$action);
   
   $query->AddQuery("id_application=$appl_id");
-  $query->slice=20;
+  $query->slice=pow(2,31);
   $query->order_by = "name";
   
   $query->table->headsortfields = array ( "name" => "name");
