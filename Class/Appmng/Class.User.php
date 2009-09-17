@@ -664,7 +664,10 @@ create sequence seq_id_users start 10";
   /**
    * Get user token for open access
    */
-  function getUserToken() {
+  function getUserToken($expire=false) {
+    if( $expire === false ) {
+      $expire = 3600*24*365*20;
+    }
     if (! $this->isAffected()) return false;
     include_once('WHAT/Class.UserToken.php');
     include_once('WHAT/Class.QueryDb.php');
@@ -674,9 +677,11 @@ create sequence seq_id_users start 10";
     if ($q->nb==0) {
       // create one
       $uk=new UserToken("");
+      $uk->deleteExpired();
       $uk->userid=$this->id;
       $uk->token=$uk->genToken();
-      $uk->expire=$uk->setExpiration(3600*24*365*20);
+      $uk->expire=$uk->setExpiration($expire);
+      $uk->expendable=false;
       $err=$uk->add();
       $token=$uk->token;
     } else {
@@ -684,5 +689,29 @@ create sequence seq_id_users start 10";
     }
     return $token;
   }
+
+  /**
+   * Get expendable user token for open access
+   * (token is consumed/deleted when used)
+   */
+  function getExpendableUserToken($expire=false) {
+    if( $expire === false ) {
+      $expire = 60*60*24;
+    }
+    if (! $this->isAffected()) return false;
+    include_once('WHAT/Class.UserToken.php');
+    include_once('WHAT/Class.QueryDb.php');
+    // create one
+    $uk=new UserToken("");
+    $uk->deleteExpired();
+    $uk->userid=$this->id;
+    $uk->token=$uk->genToken();
+    $uk->expire=$uk->setExpiration($expire);
+    $uk->expendable=true;
+    $err=$uk->add();
+    $token=$uk->token;
+    return $token;
+  }
+
 }
 ?>

@@ -24,7 +24,8 @@ Class UserToken extends DbObj
   var $fields = array(
 		     'token',
 		     'userid',
-		     'expire'
+		     'expire',
+		     'expendable'
 		     );
 
   var $id_fields = array(
@@ -37,7 +38,8 @@ Class UserToken extends DbObj
     CREATE TABLE usertoken (
       token VARCHAR(256) NOT NULL PRIMARY KEY,
       userid INT NOT NULL,
-      expire TIMESTAMP NOT NULL
+      expire TIMESTAMP NOT NULL,
+      expendable BOOLEAN DEFAULT FALSE NOT NULL
     );
     CREATE INDEX usertoken_idx ON usertoken(token);
   ";
@@ -61,11 +63,18 @@ Class UserToken extends DbObj
       $expiration = $this->expiration;
     }
 
-    $today = new DateTime();
-    $expireDate = clone $today;
-    $expireDate->modify("+".$expiration." seconds");
+    if( $preg_match('/^-?infinity$/', $expiration) ) {
+      $this->expire = $expiration;
+    } else {
+      if( ! is_numeric($expiration) ) {
+	return false;
+      }
+      $today = new DateTime();
+      $expireDate = clone $today;
+      $expireDate->modify("+".$expiration." seconds");
+      $this->expire = $expireDate->format(DATE_RFC3339);
+    }
 
-    $this->expire = $expireDate->format(DATE_RFC3339);
     return $this->expire;
   }
 

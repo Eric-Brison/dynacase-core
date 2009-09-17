@@ -13,8 +13,9 @@
  */
  /**
  */
+include_once('WHAT/Class.Authenticator.php');
 
-Class openAuthenticator {
+Class openAuthenticator extends Authenticator {
 
   private $privatelogin=false;
   
