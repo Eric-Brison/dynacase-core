@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$pgservice_core" == "" ]; then
+    # load environement variable for freedom
+    . /etc/freedom.conf
+    wchoose -b
+fi
+
+echo "ALTER TABLE usertoken ADD COLUMN expendable boolean NOT NULL DEFAULT FALSE;" | PGSERVICE="$pgservice_core" psql
