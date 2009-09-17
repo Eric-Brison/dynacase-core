@@ -5,4 +5,4 @@ if [ "$pgservice_core" == "" ]; then
     wchoose -b
 fi
 
-echo "ALTER TABLE usertoken ADD COLUMN expendable boolean NOT NULL DEFAULT FALSE;" | PGSERVICE="$pgservice_core" psql
+echo "ALTER TABLE usertoken ADD COLUMN expendable boolean DEFAULT FALSE;" | PGSERVICE="$pgservice_core" psql

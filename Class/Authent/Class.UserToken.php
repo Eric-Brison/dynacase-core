@@ -39,7 +39,7 @@ Class UserToken extends DbObj
       token VARCHAR(256) NOT NULL PRIMARY KEY,
       userid INT NOT NULL,
       expire TIMESTAMP NOT NULL,
-      expendable BOOLEAN DEFAULT FALSE NOT NULL
+      expendable BOOLEAN DEFAULT FALSE
     );
     CREATE INDEX usertoken_idx ON usertoken(token);
   ";
