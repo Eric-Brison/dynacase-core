@@ -28,8 +28,8 @@ Class openAuthenticator extends Authenticator {
     $privatekey=getHttpVars("privateid");
     if (! $privatekey) return false;
 
-    $login = $this->getLoginFromPrivateKey($privatekey);
-    if( $login === false ) {
+    $this->privatelogin = $this->getLoginFromPrivateKey($privatekey);
+    if( $this->privatelogin === false ) {
       return false;
     }
 
@@ -38,7 +38,7 @@ Class openAuthenticator extends Authenticator {
       return false;
     }
 
-    return $login;
+    return $this->privatelogin;
   }
 
   public function getLoginFromPrivateKey($privatekey) {
