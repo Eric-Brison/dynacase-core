@@ -45,14 +45,14 @@ if (! $app) {
 
 require('lib/Lib.Cli.php');
 
-$HTTPUSER = wiff_default_getValue(array('apacheuser'));
-$PGSERVICE_CORE = wiff_default_getValue(array('core_db'));
+$HTTPUSER = wiff_getParamValue('apacheuser');
+$PGSERVICE_CORE = wiff_getParamValue('core_db');
 $FREEDOM_CONTEXT = 'default';
 
 putenv(sprintf("wpub=%s", $WIFF_CONTEXT_ROOT));
 putenv(sprintf("httpuser=%s", $HTTPUSER));
 putenv(sprintf("pgservice_core=%s", $PGSERVICE_CORE));
-putenv(sprintf("pgservice_freedom=%s", $PGSERVICE_FREEDOM));
+putenv(sprintf("pgservice_freedom=%s", $PGSERVICE_CORE));
 putenv(sprintf("freedom_context=%s", $FREEDOM_CONTEXT));
 
 $err=getCheckActions($pubdir,array($appname=>$app),$actions);
