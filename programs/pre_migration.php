@@ -1,13 +1,19 @@
 #!/usr/bin/env php
 <?php
 
+$WIFF_ROOT = getenv("WIFF_ROOT");
+if( $WIFF_ROOT === false ) {
+  print "WIFF_ROOT environment variable is not set!\n";
+  exit(1);
+}
+
 $WIFF_CONTEXT_ROOT = getenv("WIFF_CONTEXT_ROOT");
 if( $WIFF_CONTEXT_ROOT === false ) {
   print "WIFF_CONTEXT_ROOT environment variable not set!\n";
   exit(1);
 }
 
-set_include_path(get_include_path().PATH_SEPARATOR.$WIFF_CONTEXT_ROOT);
+set_include_path(get_include_path().PATH_SEPARATOR.$WIFF_CONTEXT_ROOT.PATH_SEPARATOR."$WIFF_ROOT/include");
 
 $prefix=$WIFF_CONTEXT_ROOT."/WHAT/Lib.Prefix.php";
 if (! include($prefix)) {
@@ -37,6 +43,18 @@ if (! $app) {
   
 }
 
+require('lib/Lib.Cli.php');
+
+$HTTPUSER = wiff_default_getValue(array('apacheuser')),
+$PGSERVICE_CORE = wiff_default_getValue(array('core_db'));
+$FREEDOM_CONTEXT = 'default';
+
+putenv(sprintf("wpub=%s", $WIFF_CONTEXT_ROOT));
+putenv(sprintf("httpuser=%s", $HTTPUSER));
+putenv(sprintf("pgservice_core=%s", $PGSERVICE_CORE));
+putenv(sprintf("pgservice_freedom=%s", $PGSERVICE_FREEDOM));
+putenv(sprintf("freedom_context=%s", $FREEDOM_CONTEXT));
+
 $err=getCheckActions($pubdir,array($appname=>$app),$actions);
 $premigr=array_filter($actions, create_function('$x',"return strstr(\$x,'/'.$appname.'_pmigr')!==false;"));
 foreach ($premigr as $cmd) {
@@ -44,7 +62,7 @@ foreach ($premigr as $cmd) {
   print implode("\n",$out);
   if ($ret!=0) {
     exit($ret);
-  }  
+  }
 }
 
 ?>
