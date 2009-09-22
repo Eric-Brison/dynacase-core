@@ -46,7 +46,7 @@ var $id_fields = array ( "name");
 var $sqlcreate = '
 create table style ( 	name 	    varchar(20) not null,
      		primary key (name),
-			description varchar(60) );
+			description text );
 create sequence SEQ_ID_STYLE start 10000;
 ';
 
