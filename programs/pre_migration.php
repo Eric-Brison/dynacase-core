@@ -45,7 +45,7 @@ if (! $app) {
 
 require('lib/Lib.Cli.php');
 
-$HTTPUSER = wiff_default_getValue(array('apacheuser')),
+$HTTPUSER = wiff_default_getValue(array('apacheuser'));
 $PGSERVICE_CORE = wiff_default_getValue(array('core_db'));
 $FREEDOM_CONTEXT = 'default';
 
