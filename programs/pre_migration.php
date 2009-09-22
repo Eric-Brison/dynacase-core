@@ -56,13 +56,16 @@ putenv(sprintf("pgservice_freedom=%s", $PGSERVICE_CORE));
 putenv(sprintf("freedom_context=%s", $FREEDOM_CONTEXT));
 
 $err=getCheckActions($pubdir,array($appname=>$app),$actions);
-$premigr=array_filter($actions, create_function('$x',"return strstr(\$x,'/'.$appname.'_pmigr')!==false;"));
+$premigr=array_filter($actions, create_function('$x',"return strstr(\$x,'/'.$appname.'_migr')!==false;"));
 foreach ($premigr as $cmd) {
+  error_log(sprintf("Executing [%s]...", $cmd));
   exec ( $cmd , $out ,$ret );
   print implode("\n",$out);
   if ($ret!=0) {
+    error_log(sprintf("Failed!"));
     exit($ret);
   }
+  error_log(sprintf("Done."));
 }
 
 ?>
