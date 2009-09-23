@@ -46,7 +46,6 @@ $freedom_providers = array(
                                 'authfile' => '@prefix@/.freedompwd',
                                 ),
                 'freedomNu' => array(
-				     'options' => array ( LDAP_OPT_PROTOCOL_VERSION => 3 ),
 				     ),
         );
 
