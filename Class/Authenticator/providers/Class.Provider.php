@@ -19,10 +19,14 @@ abstract class Provider {
 
 
   public function canICreateUser() {
-    $creatuserlist=explode(",", strtolower(trim(getenv("allowAutoFreedomUserCreation"))));
-    if (in_array(strtolower($this->pname),$creatuserlist) && is_callable(array($this, 'initializeUser'))) return TRUE;
+    if( array_key_exists('allowAutoFreedomUserCreation', $this->parms)
+	&& strtolower($this->parms{'allowAutoFreedomUserCreation'}) == 'yes'
+	&& is_callable(array($this, 'initializeUser')) ) {
+      return TRUE;
+    }
     return FALSE;
   }
+
 }
 
 ?>
