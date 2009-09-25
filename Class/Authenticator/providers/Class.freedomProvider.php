@@ -4,7 +4,10 @@
  * freedomProvider class
  *
  * This class provides methods for autentication based on freeedom
- *
+ * @author Anakeen 2009
+ * @version $Id:  $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
  */
  /**
  */

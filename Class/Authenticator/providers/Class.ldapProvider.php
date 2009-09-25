@@ -3,6 +3,10 @@
 /**
  * ldap authentication provider
  *
+ * @author Anakeen 2009
+ * @version $Id:  $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
  */
  /**
   */

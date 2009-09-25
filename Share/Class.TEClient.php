@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: Class.TEClient.php,v 1.12 2007/08/14 09:39:33 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package TE
+ * @package WHAT
  */
 /**
  */

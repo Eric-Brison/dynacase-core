@@ -1,6 +1,13 @@
 #!/usr/bin/env php
 <?php
-
+/**
+ * detect post migration script
+ *
+ * @author Anakeen 2009
+ * @version $Id:  $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package WHAT
+ */
 $WIFF_ROOT = getenv("WIFF_ROOT");
 if( $WIFF_ROOT === false ) {
   print "WIFF_ROOT environment variable is not set!\n";

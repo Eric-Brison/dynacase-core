@@ -1,12 +1,12 @@
 <?php
 
 /**
- * basicAuthenticator class
+ * openAuthenticator class
  *
- * This class provides methods for HTTP Basic authentication
+ * This class provides methods for private key based authentification
  *
  * @author Anakeen 2009
- * @version $Id: Class.basicAuthenticator.php,v 1.3 2009/01/16 13:33:00 jerome Exp $
+ * @version $Id:  $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package WHAT
  * @subpackage
