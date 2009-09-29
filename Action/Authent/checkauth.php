@@ -41,22 +41,7 @@ function checkauth(&$action) {
   $pass = $auth->getAuthPw();
   $wu = new User();   
   $existu = false;
-  if (!$wu->SetLoginName($login)) {
-   $creatuserlist=explode(",", trim(getenv("allowAutoFreedomUserCreation")));
-    if (in_array($authprovider,$creatuserlist) && is_callable(array($auth->provider, 'initializeUser'))) {
-      
-      $err = $auth->provider->initializeUser($wu, $login, $pass);
-      if ($err!="") {
-	error_log(basename(__FILE__).":".__LINE__." User $login initialization error [$err]");
-	global $_POST;
-	Redirect($action, 'AUTHENT', 'LOGINFORM&error=1&auth_user='.urlencode($_POST['auth_user']));
-	exit(0);
-      } else {
-	error_log(basename(__FILE__).":".__LINE__." User $login initialization done.");
-	$existu = true;
-      }
-    }
-  } else {
+  if( $wu->SetLoginName($login) ) {
     $existu = true;
   }
    
