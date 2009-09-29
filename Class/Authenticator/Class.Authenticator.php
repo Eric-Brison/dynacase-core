@@ -49,9 +49,36 @@ abstract class Authenticator {
     } else {
       $this->parms = array_merge($tx, $ta);
     }
-}
-  
+  }
 
+  public function freedomUserExists($username) {
+    @include_once('FDL/Class.Doc.php');
+    @include_once('WHAT/Class.User.php');
+
+    $u = new User();
+    if( $u->SetLoginName($username) ) {   
+      $du = new_Doc($dbaccess, $u->fid);
+      if( $du->isAlive() ) {
+	return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  public function tryInitializeUser($username) {
+    if( ! $this->provider->canICreateUser() ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Authentication failed for user '%s' because auto-creation is disabled!", $username));
+      return FALSE;
+    }
+    $err = $this->provider->initializeUser($username);
+    if( $err != "" ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Error creating freedom user '%s' err=[%s]", $username, $err));
+      return FALSE;
+    }
+    error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Initialized freedom user '%s'!", $username));
+    return TRUE;
+  }
+  
   abstract function checkAuthentication();
   abstract function checkAuthorization($opt);
   abstract function askAuthentication();

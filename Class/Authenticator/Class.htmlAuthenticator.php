@@ -37,18 +37,24 @@ Class htmlAuthenticator extends Authenticator {
     if( ! array_key_exists($this->parms{'password'}, $_POST) ) return FALSE;
 
     if( is_callable(array($this->provider, 'validateCredential')) ) {
-      if( $this->provider->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}]) ) {
-	$session->register('username', $_POST[$this->parms{'username'}]);
-	$session->register('password', $_POST[$this->parms{'password'}]);
-	$session->setuid($_POST[$this->parms{'username'}]);
-	return TRUE;
-      } 
-    } else {
-      error_log(__CLASS__."::".__FUNCTION__." "."Error: ".get_class($this->provider)." must implement function validateCredential()");
-    }
-    
-    return FALSE;
+      if( ! $this->provider->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}]) ) {
+	return FALSE;
+      }
 
+      if( ! $this->freedomUserExists($_POST[$this->parms{'username'}]) ) {
+	if( ! $this->tryInitializeUser($_POST[$this->parms{'username'}]) ) {
+	  return FALSE;
+	}
+      }
+
+      $session->register('username', $_POST[$this->parms{'username'}]);
+      $session->register('password', $_POST[$this->parms{'password'}]);
+      $session->setuid($_POST[$this->parms{'username'}]);
+      return TRUE;
+    }
+
+    error_log(__CLASS__."::".__FUNCTION__." "."Error: ".get_class($this->provider)." must implement function validateCredential()");
+    return FALSE;
   }
 
   /**

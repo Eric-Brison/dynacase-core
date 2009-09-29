@@ -39,7 +39,17 @@ Class basicAuthenticator extends Authenticator {
       return FALSE;
     }
     
-    return $this->provider->validateCredential($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+    if( ! $this->provider->validateCredential($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) ) {
+      return FALSE;
+    }
+
+    if( ! $this->freedomUserExists($_SERVER['PHP_AUTH_USER']) ) {
+      if( ! $this->tryInitializeUser($_SERVER['PHP_AUTH_USER']) ) {
+	return FALSE;
+      }
+    }
+
+    return TRUE;
   }
 
   public function checkAuthorization($opt) {
