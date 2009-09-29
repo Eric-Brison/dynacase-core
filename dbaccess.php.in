@@ -34,19 +34,9 @@ $freedom_providers = array(
                 'freedom' => array(
                                       'connection' => 'service='.$pgservice_core,
                           ),
-                'ldap' => array(
-                                'host'  => '127.0.0.1',
-                                'port'    => '389',
-                                'ssl'     => 'n',
-                                'options' => array ( LDAP_OPT_PROTOCOL_VERSION => 3 ),
-                                'dn'      => 'uid=%s,dc=users,dc=example,dc=net',
-                                'dGroup'  => 'GDEFAULT', // Use to add IUser 
-                                ),
                 'file' => array(
                                 'authfile' => '@prefix@/.freedompwd',
                                 ),
-                'freedomNu' => array(
-				     ),
         );
 
 ?>
