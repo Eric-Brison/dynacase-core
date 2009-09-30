@@ -49,13 +49,13 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
 
-	log "Getting current database..."
-	DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
-	RET=$?
-	if [ $RET -ne 0 ]; then
+    log "Getting current database..."
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    RET=$?
+    if [ $RET -ne 0 ]; then
 	echo "An error occured while querying current database name : $RET"
 	exit $RET
-	fi
+    fi
 
     log "Checking if DateStyle is 'SQL, DMY'..."
     DATESTYLE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_setting('datestyle');" 2> /dev/null`
@@ -66,7 +66,7 @@ if [ "$1" = "I" ] ; then
     fi
     if [ "$DATESTYLE" != "SQL, DMY" ]; then
 	log "Trying to set DateStyle to 'SQL, DMY'..."	
-	PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE "$DATABASE" SET DateStyle='SQL, DMY';" 2> /dev/null
+	PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$DATABASE\" SET DateStyle='SQL, DMY';" 2> /dev/null
 	RET=$?
 	if [ $RET -ne 0 ]; then
 	    echo "An error occured while setting DateStyle to 'SQL, DMY'"
