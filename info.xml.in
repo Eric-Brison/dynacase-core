@@ -49,6 +49,7 @@
     <check type="phpfunction" function="pspell_new"><help>You might need to install a php-pspell package from your distribution in order to have spelling support in PHP.</help></check>
     <check type="phpfunction" function="iconv"><help>You might need to install a php-iconv package from your distribution in order to have iconv support in PHP.</help></check>
     <check type="phpfunction" function="mb_get_info"><help>You might need to install a php-mbstring package from your distribution in order to have mbstring support in PHP.</help></check>
+    <check type="phpfunction" function="mcrypt_module_open"><help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support in PHP.</help></check>
     
     <!-- Check PEAR modules -->
     
