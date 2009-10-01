@@ -22,7 +22,7 @@ export utildir
 
 SUBDIR= programs Admin Expire Class Action Zone Share App Api Images Style Doc debian
 
-TOP_MODULES =  indexq.php wsh.php wvirtual.php wchoose.php guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess index.php
+TOP_MODULES =  indexq.php wsh.php wvirtual.php  guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess index.php
 
 pages_not_xml = info.xml
 
@@ -30,7 +30,7 @@ include $(utildir)/PubRule
 
 DISTFILES += $(SUBDIR)  \
              ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php indexq.php freedom.conf.in dbaccess.php.sample.in dbaccess.php.in libutil.sh wcontrol wcontrol.xml htaccess
+	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php indexq.php dbaccess.php.sample.in dbaccess.php.in libutil.sh wcontrol wcontrol.xml htaccess
 
 
 
@@ -76,8 +76,6 @@ $(rootprefix)/etc/pam.d/httpd.freedom.sample: $(rootprefix)/etc/pam.d
 	cp httpd.pam $@
 $(rootprefix)/etc/pam.d/httpdwa.freedom.sample: $(rootprefix)/etc/pam.d
 	cp httpdwa.pam $@
-$(rootprefix)/etc/freedom.conf: 
-	cp freedom.conf $@
 
 $(rootprefix)/etc/cron.daily:
 	mkdir -p $@
@@ -103,7 +101,7 @@ $(pubdir)/session:
 $(pubdir)/session/.htaccess: htaccess.session $(pubdir)/session
 	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore $(rootprefix)/etc/freedom.conf $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess
+publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore  $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \

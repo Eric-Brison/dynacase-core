@@ -66,7 +66,7 @@ Class Session extends DbObj{
 
   function __construct($session_name = 'freedom_param') {
     parent::__construct();
-    $this->session_name = $session_name;
+    if ($session_name != '')   $this->session_name = $session_name;
   }
 
   function Set($id="")  {

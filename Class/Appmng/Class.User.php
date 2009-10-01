@@ -663,25 +663,40 @@ create sequence seq_id_users start 10";
 
   /**
    * Get user token for open access
+   * @param int $expire set expiration delay in seconds (false if nether expire)
+   * @param bool $oneshot set to true to use one token is consumed/deleted when used
    */
-  function getUserToken($expire=false) {
+  function getUserToken($expire=false, $oneshot=false, $context=array()) {
     if( $expire === false ) {
       $expire = 3600*24*365*20;
     }
+    if ($context && (count($context) > 0)) {
+      $scontext=serialize($context);
+    } else $scontext='';
+
     if (! $this->isAffected()) return false;
     include_once('WHAT/Class.UserToken.php');
     include_once('WHAT/Class.QueryDb.php');
-    $q=new QueryDb($this->dbaccess,"UserToken");
-    $q->addQuery("userid=".$this->id);
-    $tu=$q->Query(0,0,"TABLE");
-    if ($q->nb==0) {
+    $create=false;
+    if (! $oneshot) {
+      $q=new QueryDb($this->dbaccess,"UserToken");
+      $q->addQuery("userid=".$this->id);
+      if ($scontext) $q->addQuery("context='".pg_escape_string($scontext)."'");
+      $tu=$q->Query(0,0,"TABLE");
+      $create=($q->nb==0);
+    } else {
+      $create=true;
+    }
+
+    if ($create) {
       // create one
       $uk=new UserToken("");
       $uk->deleteExpired();
       $uk->userid=$this->id;
       $uk->token=$uk->genToken();
       $uk->expire=$uk->setExpiration($expire);
-      $uk->expendable=false;
+      $uk->expendable=$oneshot;
+      $uk->context=$scontext;
       $err=$uk->add();
       $token=$uk->token;
     } else {
@@ -690,28 +705,7 @@ create sequence seq_id_users start 10";
     return $token;
   }
 
-  /**
-   * Get expendable user token for open access
-   * (token is consumed/deleted when used)
-   */
-  function getExpendableUserToken($expire=false) {
-    if( $expire === false ) {
-      $expire = 60*60*24;
-    }
-    if (! $this->isAffected()) return false;
-    include_once('WHAT/Class.UserToken.php');
-    include_once('WHAT/Class.QueryDb.php');
-    // create one
-    $uk=new UserToken("");
-    $uk->deleteExpired();
-    $uk->userid=$this->id;
-    $uk->token=$uk->genToken();
-    $uk->expire=$uk->setExpiration($expire);
-    $uk->expendable=true;
-    $err=$uk->add();
-    $token=$uk->token;
-    return $token;
-  }
+ 
 
 }
 ?>
