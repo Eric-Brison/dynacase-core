@@ -329,7 +329,24 @@ create sequence SEQ_ID_ACTION;
     if (!isset($this->parent)) return;
 
     if ($this->auth && $this->auth->parms["type"]=="open") {
-      if ($this->openaccess != 'Y') $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode"),$this->name));
+      if ($this->openaccess != 'Y') {
+	$allow=false;
+	if ($this->auth->token && $this->auth->token["context"]) {
+	  print $this->auth->token->context;
+	  //$this->exitForbidden('may be open');
+	  $context=unserialize($this->auth->token["context"]);
+	  if (is_array($context) && (count($context) > 0)) {
+	    $allow=true;
+	    foreach ($context as $k=>$v) {
+	      if (getHttpVars($k)!=$v) {
+		$allow=false;
+	      }
+	    }
+	    if (! $allow) $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode and token context not match"),$this->name));
+	  }
+	} 
+	if (! $allow) $this->exitForbidden(sprintf(_("action %s is not declared to be access in open mode"),$this->name));
+      }
     }
     // check if this action is permitted
     if (!$this->HasPermission($this->acl)) { 
@@ -342,7 +359,7 @@ create sequence SEQ_ID_ACTION;
       $this->log->info("{$this->parent->name}:{$this->name} [".substr($QUERY_STRING,48)."]");
 
     }
-     // Memo last application to return case of error
+    // Memo last application to return case of error
     $err = $this->Read("FT_ERROR","");
     if ($err == "") {
       if ($this->parent->name != "CORE") {

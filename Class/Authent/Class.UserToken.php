@@ -25,7 +25,8 @@ Class UserToken extends DbObj
 		     'token',
 		     'userid',
 		     'expire',
-		     'expendable'
+		     'expendable',
+		     'context'
 		     );
 
   var $id_fields = array(
@@ -39,7 +40,8 @@ Class UserToken extends DbObj
       token VARCHAR(256) NOT NULL PRIMARY KEY,
       userid INT NOT NULL,
       expire TIMESTAMP NOT NULL,
-      expendable BOOLEAN DEFAULT FALSE
+      expendable BOOLEAN DEFAULT FALSE,
+      context text
     );
     CREATE INDEX usertoken_idx ON usertoken(token);
   ";

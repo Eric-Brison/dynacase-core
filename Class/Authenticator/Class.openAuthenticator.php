@@ -70,6 +70,7 @@ Class openAuthenticator extends Authenticator {
       return false;
     }
 
+    $this->token=$token->getValues();
     if( $token->expendable === 't' ) {
       $token->delete();
     }

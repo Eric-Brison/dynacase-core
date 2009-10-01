@@ -97,7 +97,7 @@ if test "x$PEAR" = "x" ; then
   AC_MSG_RESULT($PEAR)
 fi
 
-AC_OUTPUT(Makefile freedom-core.spec apache.conf freedom.conf \
+AC_OUTPUT(Makefile freedom-core.spec apache.conf \
           App/Core/CORE_init.php \
           App/Users/USERS_init.php \
           App/Access/ACCESS_init.php \
