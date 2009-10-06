@@ -258,9 +258,11 @@ create sequence SEQ_ID_APPLICATION start 10;
       if ($this->hasParent()) {
 	$this->parent->AddWarningMsg($code);
       } else {    
-	$logmsg=$this->session->read("warningmsg", array());
-	$logmsg[]=str_replace("\n","\\n",addslashes($code));
-	$this->session->register("warningmsg",$logmsg);
+	if ($_SERVER['HTTP_HOST'] != "") {
+	  $logmsg=$this->session->read("warningmsg", array());
+	  $logmsg[]=str_replace("\n","\\n",addslashes($code));
+	  $this->session->register("warningmsg",$logmsg);
+	} else print "$code\n";
    
       }
     }
