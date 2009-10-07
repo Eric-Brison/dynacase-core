@@ -22,11 +22,8 @@ DirectoryIndex index.php
         Allow from All
 </FilesMatch>
 
-<<<<<<< HEAD:core/htaccess.in
-<FilesMatch "^(index|indexq|guest|data).php$">
-=======
-<FilesMatch "^(index|indexq|guest|nu).php$">
->>>>>>> 2.12:core/htaccess
+
+<FilesMatch "^(index|indexq|guest|data|nu).php$">
         Order Deny,Allow
         Allow from All
 </FilesMatch>
