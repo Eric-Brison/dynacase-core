@@ -37,7 +37,7 @@ function checkauth(&$action) {
   }
 
 
-  $login = $auth->getAuthUser();;
+  $login = $auth->getAuthUser();
   $pass = $auth->getAuthPw();
   $wu = new User();   
   $existu = false;
@@ -52,12 +52,8 @@ function checkauth(&$action) {
     exit(0);
   }
   
-  $session_auth = new Session($auth->parms{'cookie'});
-  if( array_key_exists($auth->parms{'cookie'}, $_COOKIE) ) {
-    $session_auth->Set($_COOKIE[$auth->parms{'cookie'}]);
-  } else {
-    $session_auth->Set();
-  }
+  $session_auth = $auth->getAuthSession();
+  
   
   if( $session_auth->read('username') == "" ) {
     error_log(__CLASS__."::".__FUNCTION__." "."Error: 'username' should exists in session ".$auth->parms{'cookie'});
@@ -65,8 +61,8 @@ function checkauth(&$action) {
   }
 
   $fromuri = $session_auth->read('fromuri');
-  if( $fromuri == "" ) {
-    $fromuri = "index.php";
+  if (($fromuri == "" )|| (preg_match('/app=AUTHENT/',$fromuri))) {
+    $fromuri = ".";
   }
 
   include_once('CORE/lang.php');

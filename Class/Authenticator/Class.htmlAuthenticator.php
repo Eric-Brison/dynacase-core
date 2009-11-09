@@ -17,19 +17,14 @@ include_once('WHAT/Class.Authenticator.php');
 
 Class htmlAuthenticator extends Authenticator {
 
+  public $auth_session=null;
+
   /**
    **
    **
    **/
   public function checkAuthentication() {
-    include_once('WHAT/Class.Session.php');
-
-    $session = new Session($this->parms{'cookie'});
-    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-      $session->Set($_COOKIE[$this->parms{'cookie'}]);
-    } else {
-      $session->Set();
-    }
+    $session = $this->getAuthSession();
     
     if( $session->read('username') != "" ) return TRUE;
         
@@ -46,7 +41,6 @@ Class htmlAuthenticator extends Authenticator {
 	  return FALSE;
 	}
       }
-
       $session->register('username', $_POST[$this->parms{'username'}]);
       $session->register('password', $_POST[$this->parms{'password'}]);
       $session->setuid($_POST[$this->parms{'username'}]);
@@ -55,6 +49,24 @@ Class htmlAuthenticator extends Authenticator {
 
     error_log(__CLASS__."::".__FUNCTION__." "."Error: ".get_class($this->provider)." must implement function validateCredential()");
     return FALSE;
+  }
+
+
+  /**
+   * retrieve authentification session
+   * @return Session the session object
+   */
+  public function getAuthSession() {
+    if (! $this->auth_session) {
+      include_once('WHAT/Class.Session.php');
+      $this->auth_session = new Session($this->parms{'cookie'});
+      if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
+	$this->auth_session->Set($_COOKIE[$this->parms{'cookie'}]);
+      } else {
+	$this->auth_session->Set();
+      }
+    }
+    return $this->auth_session;
   }
 
   /**
@@ -73,7 +85,6 @@ Class htmlAuthenticator extends Authenticator {
    **
    **/
   public function askAuthentication() {
-    include_once('WHAT/Class.Session.php');
 
     $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
     
@@ -87,12 +98,8 @@ Class htmlAuthenticator extends Authenticator {
     if( $parsed_referer['fragment'] != "" ) {
       $referer_uri .= "#".$parsed_referer['fragment'];
     }
-    $session = new Session($this->parms{'cookie'});
-    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-      $session->Set($_COOKIE[$this->parms{'cookie'}]);
-    } else {
-      $session->Set();
-    }
+    $session = $this->getAuthSession();
+
     
 //     error_log("referer_uri = ".$referer_uri." / REQUEST_URI = ".$_SERVER['REQUEST_URI']);
     if( $referer_uri == "" ) {
@@ -117,13 +124,7 @@ Class htmlAuthenticator extends Authenticator {
    **
    **/
   public function getAuthUser() {
-    include_once('WHAT/Class.Session.php');
-    $session_auth = new Session($this->parms{'cookie'});
-    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
-    } else {
-      $session_auth->Set();
-    }
+    $session_auth=$this->getAuthSession();    
     return $session_auth->read('username');
   }
   
@@ -131,14 +132,8 @@ Class htmlAuthenticator extends Authenticator {
    **
    **
    **/
-  public function getAuthPw() {
-    include_once('WHAT/Class.Session.php');
-    $session_auth = new Session($this->parms{'cookie'});
-    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
-    } else {
-      $session_auth->Set();
-    }
+  public function getAuthPw() {    
+    $session_auth=$this->getAuthSession();
     return $session_auth->read('password');
   }
   
@@ -147,10 +142,8 @@ Class htmlAuthenticator extends Authenticator {
    **
    **/
   public function logout($redir_uri) {
-    include_once('WHAT/Class.Session.php');
-    $session_auth = new Session($this->parms{'cookie'});
+    $session_auth=$this->getAuthSession();
     if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
 //       error_log("Closing auth session for cookie : ".$this->parms{'cookie'});
       $session_auth->close();
     }
@@ -168,15 +161,8 @@ Class htmlAuthenticator extends Authenticator {
    **
    **
    **/
-  public function setSessionVar($name, $value) {
-    include_once('WHAT/Class.Session.php');
-    $session_auth = new Session($this->parms{'cookie'});
-    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
-    } else {
-      $session_auth->Set();
-    }
-    
+  public function setSessionVar($name, $value) { 
+    $session_auth=$this->getAuthSession();
     $session_auth->register($name, $value);
     
     return $session_auth->read($name);
@@ -187,14 +173,7 @@ Class htmlAuthenticator extends Authenticator {
    **
    **/
   public function getSessionVar($name) {
-    include_once('WHAT/Class.Session.php');
-    $session_auth = new Session($this->parms{'cookie'});
-    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-      $session_auth->Set($_COOKIE[$this->parms{'cookie'}]);
-    } else {
-      $session_auth->Set();
-    }
-    
+    $session_auth=$this->getAuthSession();    
     return $session_auth->read($name);
   }
 
