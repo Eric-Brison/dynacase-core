@@ -83,6 +83,17 @@ create index permission_idx4 on permission(computed);
       return "";
   
     }
+  function postInsert( )    {
+    if (! $this->computed) {
+      $this->exec_query(sprintf("delete from permission where id_user=%d and id_application=%d and abs(id_acl)=%d and computed",
+				$this->id_user,
+				$this->id_application,
+				$this->id_acl));      
+    }
+  
+      return "";
+  
+    }
   // Gives the list of Permission for a user on an application
   function ListUserPermissions($user,$app)
     {
