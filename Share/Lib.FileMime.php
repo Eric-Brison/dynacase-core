@@ -124,7 +124,7 @@ function getIconMimeFile($sysmime) {
  */
 function getSysMimeFile($f,$fn="") {
   if (! file_exists($f)) return false;
-  $sys = trim(`file -bi "$f"`);
+  $sys = trim(`file --mime -b "$f"`);
   $txt=getTextMimeFile($f);
 
   // correct errors of file function
@@ -182,7 +182,7 @@ function getSysMimeFile($f,$fn="") {
     if (preg_match('/\.ppt$/',$fn))    return 'application/vnd.ms-powerpoint';
   }
 
-  return strtok($sys," \n\t");
+  return strtok($sys," ;\n\t");
 }
 function getTextMimeFile($f) {
   $txt = trim(`file -b "$f"`);
