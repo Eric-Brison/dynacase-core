@@ -23,7 +23,7 @@ DirectoryIndex index.php
 </FilesMatch>
 
 
-<FilesMatch "^(index|indexq|guest|data|nu).php$">
+<FilesMatch "^(index|indexq|guest|data|nu|notifier).php$">
         Order Deny,Allow
         Allow from All
 </FilesMatch>

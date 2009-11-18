@@ -133,47 +133,12 @@ function getFreedomContext() {
   return $freedomctx;
 }
 
-function getServiceCore($freedomctx="") {
-  global $PGSERVICE_CORE;
+function getServiceCore() {
+  static $pg_service=null;
   global $pubdir;
 
-  if ($freedomctx == "") {
-    $freedomctx = getFreedomContext();
-  }
-
-  if ($PGSERVICE_CORE != "") return $PGSERVICE_CORE;
-
-  $pgservice_core = "";
-
-  $freedomctx = getFreedomContext();
-  if ($freedomctx != "") {
-    $filename="$pubdir/context/$freedomctx/dbaccess.php";
-    if (file_exists($filename)) {
-      include($filename);
-    }
-  }
-
-  if ($pgservice_core == "") {
-    error_log("Undefined pgservice_core in context=[$freedomctx]");
-    exit(1);
-  }
-
-  $PGSERVICE_CORE=$pgservice_core;
-  return $PGSERVICE_CORE;  
-}
-
-function getServiceFreedom($freedomctx="") {
-  global $PGSERVICE_FREEDOM;
-  global $pubdir;
-
-  if ($freedomctx == "") {
-    $freedomctx = getFreedomContext();
-  }
-
-  if ($PGSERVICE_FREEDOM != "") return $PGSERVICE_FREEDOM;
-
-  $pgservice_freedom = "";
-
+  if ($pg_service) return $pg_service;
+  
   $freedomctx = getFreedomContext();
   if ($freedomctx != "") {
     $filename = "$pubdir/context/$freedomctx/dbaccess.php";
@@ -181,13 +146,39 @@ function getServiceFreedom($freedomctx="") {
       include($filename);
     }
   }
+  if ($pgservice_core == "") {
+    include("dbaccess.php");
+  }
+  if ($pgservice_core == "") {
+    error_log("Undefined pgservice_core in dbaccess.php");
+    exit(1);
+  }
+  $pg_service = $pgservice_core;
+  return $pg_service;  
+}
 
+function getServiceFreedom() {  
+  static $pg_service=null;
+  global $pubdir;
+
+  if ($pg_service) return $pg_service;
+  
+  $freedomctx = getFreedomContext();
+  if ($freedomctx != "") {
+    $filename = "$pubdir/context/$freedomctx/dbaccess.php";
+    if (file_exists($filename)) {
+      include($filename);
+    }
+  }
   if ($pgservice_freedom == "") {
     include("dbaccess.php");
   }
-
-  $PGSERVICE_FREEDOM = $pgservice_freedom;
-  return $PGSERVICE_FREEDOM;
+  if ($pgservice_freedom == "") {
+    error_log("Undefined pgservice_freedom in dbaccess.php");
+    exit(1);
+  }
+  $pg_service = $pgservice_freedom;
+  return $pg_service;
 }
 
 function getDbName($dbaccess) {
