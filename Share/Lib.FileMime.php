@@ -126,7 +126,7 @@ function getSysMimeFile($f,$fn="") {
   if (! file_exists($f)) return false;
   $sys = trim(`file --mime -b "$f"`);
   $txt=getTextMimeFile($f);
-
+  $sys=strtok($sys," ;\n\t"); // only first part
   // correct errors of file function
   if (preg_match('/Makefile/',$fn)) return 'text/x-makefile';
   if (preg_match('/ASCII C\+\+/',$txt)) {

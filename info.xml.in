@@ -135,5 +135,12 @@
 
   <pre-remove></pre-remove>
   <post-remove></post-remove>
-  
+
+  <changelog>
+<version number="2.14.1" date="2009-11-19">
+  <change title="mime file detection" >
+	correct mime type for new version of file linux function (5.03)
+  </change>  
+</version>
+</changelog>
 </module>
