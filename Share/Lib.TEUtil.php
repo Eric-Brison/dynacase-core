@@ -63,7 +63,8 @@ function te_getSysMimeFile($f,$fn="") {
      return 'text/x-c++';
   } 
   if (preg_match('/PHP script/',$txt))  return 'text/x-php';
-
+  
+  $sys= strtok($sys," ;\n\t");
   // open office archive  
   if (preg_match('/zip$/',$sys)|| (preg_match('/octet-stream$/',$sys))) {
     if (preg_match('/OpenOffice/',$txt)) {
@@ -110,7 +111,7 @@ function te_getSysMimeFile($f,$fn="") {
     if (preg_match('/\.ppt$/',$fn))    return 'application/vnd.ms-powerpoint';
   }
 
-  $sys= strtok($sys," \n\t");
+  
   if ($sys=="") "application/unknown";
   return $sys;
 }
