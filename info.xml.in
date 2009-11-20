@@ -32,6 +32,7 @@
     <check type="syscommand" command="unzip" />
     <check type="syscommand" command="dot" />
     <check type="syscommand" command="convert" />
+    <check type="syscommand" command="recode" />
     <check type="syscommand" command="html2ps" />
     <check type="syscommand" command="ps2pdf" />
     <check type="syscommand" command="php" />
@@ -137,7 +138,10 @@
   <post-remove></post-remove>
 
   <changelog>
-<version number="2.14.1" date="2009-11-19">
+<version number="2.14.1-10" date="2009-11-20">
+  <change title="add recode program requirement"/>
+</version>
+<version number="2.14.1-9" date="2009-11-19">
   <change title="mime file detection" >
 	correct mime type for new version of file linux function (5.03)
   </change>  
