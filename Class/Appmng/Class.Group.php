@@ -139,7 +139,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	$g->iduser=$this->iduser;
 	$g->idgroup=$this->idgroup;
 	$err=$g->Add(true);
-	if ($err=="") {
+	if ($err=="" || $err=="OK") {
 	  // if it is a user (not a group)
 	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 
 	  $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=".$g->iduser);
