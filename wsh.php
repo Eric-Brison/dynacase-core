@@ -122,12 +122,13 @@ setLanguage($action->Getparam("CORE_LANG"));
 
   
 
-
 if (isset($_GET["api"])) {
+  $apifile=trim($_GET["api"]);
+  if (! file_exists(sprintf("%s/API/%s.php",$pubdir,$apifile))) {
+    echo sprintf(_("API file %s not found\n"),"API/".$apifile.".php");    
+  } else {
   try {
-    if (!@include "API/".$_GET["api"].".php") {
-      echo sprintf(_("API file %s not found"),"API/".$_GET["api"].".php");
-    } 
+    include("API/".$apifile.".php");
   }
   catch (Exception $e) {
     switch ($e->getCode()) {
@@ -137,6 +138,7 @@ if (isset($_GET["api"])) {
     default:
       echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
     }
+  }
   }
 } else {
   if (! isset($_GET["wshfldid"])) {

@@ -138,6 +138,9 @@
   <post-remove></post-remove>
 
   <changelog>
+<version number="2.14.1-11" date="2009-12-01">
+  <change title="wsh : change detection of api file to see PHP errors in console"/>
+</version>
 <version number="2.14.1-10" date="2009-11-20">
   <change title="add recode program requirement"/>
 </version>
