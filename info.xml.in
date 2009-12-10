@@ -139,6 +139,10 @@
 
   <changelog>
 
+<version number="2.14.1-12" date="2009-12-10">
+  <change title="Added .htaccess in img-cache subdir" url="http://dev.freedom-ecm.org/issues/87" />
+</version>
+
 <version number="2.14.1-11" date="2009-12-01">
   <change title="wsh : change detection of api file to see PHP errors in console"/>
 
