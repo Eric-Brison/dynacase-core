@@ -101,8 +101,7 @@ function getDebugStack($slice=1) {
 }
 function getDbid($dbaccess) {
   global $CORE_DBID;
-
-  if (!isset($CORE_DBID) || !isset($CORE_DBID[$dbaccess])) {
+  if (!isset($CORE_DBID) || !($CORE_DBID[$dbaccess])) {
     $CORE_DBID[$dbaccess] = pg_connect($dbaccess);
   }
   return $CORE_DBID[$dbaccess];
@@ -531,6 +530,16 @@ function WhatInitialisation() {
   setLanguage($lang);
 }
 
+function setSystemLogin($login) {
+  global $action;
+  include_once('Class.User.php');
+  include_once('Class.Session.php');
+
+  if ($login!="") {
+    $action->user=new User(); //create user 
+    $action->user->setLoginName($login);
+  }
+}
 /**
  * Returns a random password of specified length composed
  * with chars from the given charspace string or pattern
