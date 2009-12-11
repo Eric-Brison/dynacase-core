@@ -138,6 +138,19 @@
   <post-remove></post-remove>
 
   <changelog>
+
+<version number="2.14.1-12" date="2009-12-10">
+  <change title="Added .htaccess in img-cache subdir" url="http://dev.freedom-ecm.org/issues/87" />
+</version>
+
+<version number="2.14.1-11" date="2009-12-01">
+  <change title="wsh : change detection of api file to see PHP errors in console"/>
+
+  <change title="Computed permissions are not correctly updated when adding a user to a group" url="http://dev.freedom-ecm.org/issues/563">
+	Delete computed permissions when adding a user to a group and preInsert returns "OK" instead of "" (closes #563)
+      </change>
+</version>
+
 <version number="2.14.1-10" date="2009-11-20">
   <change title="add recode program requirement"/>
 </version>

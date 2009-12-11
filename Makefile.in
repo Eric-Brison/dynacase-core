@@ -97,11 +97,15 @@ $(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
 
 $(pubdir)/session:
 	mkdir -p $@
-
 $(pubdir)/session/.htaccess: htaccess.session $(pubdir)/session
 	cp $< $@
 
-publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore  $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess
+$(pubdir)/img-cache:
+	mkdir -p $@
+$(pubdir)/img-cache/.htaccess: htaccess.img-cache $(pubdir)/img-cache
+	cp $< $@
+
+publish: $(rootprefix)/etc/pam.d/httpd.freedom.sample $(rootprefix)/etc/pam.d/httpdwa.freedom.sample $(rootprefix)/etc/cron.daily/freedomcore  $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
