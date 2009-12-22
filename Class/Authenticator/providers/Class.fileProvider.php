@@ -22,7 +22,7 @@ Class fileProvider extends Provider {
     }
     $passwd = array();
     while($line = fgets($fh)) {
-      $el = split(':', $line);
+      $el = explode(':', $line);
       if( count($el) != 2 ) {
 	continue;
       }
