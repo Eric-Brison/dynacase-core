@@ -1,4 +1,4 @@
-<?
+<?php
 // $Id: dbaccess.php.sample.in,v 1.6 2009/01/15 09:55:32 jerome Exp $
 $pgservice_core="@CORE_DB@";
 $pgservice_freedom="@FREEDOM_DB@";;

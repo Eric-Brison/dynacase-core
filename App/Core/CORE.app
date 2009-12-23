@@ -1,4 +1,4 @@
-<?
+<?php
 // ---------------------------------------------------------------
 // $Id: CORE.app,v 1.16 2006/07/27 16:04:19 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/App/Core/CORE.app,v $

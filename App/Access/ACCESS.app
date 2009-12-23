@@ -1,4 +1,4 @@
-<?
+<?php
 
 global $app_desc,$action_desc,$app_acl;
 

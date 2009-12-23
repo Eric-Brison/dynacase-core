@@ -1,4 +1,4 @@
-<?
+<?php
 
 global $app_desc,$app_acl,$action_desc;
 $app_desc = array (

@@ -1,4 +1,4 @@
-<?
+<?php
 
 $app_desc = array (
 "name"		=>"USERS",		//Name
