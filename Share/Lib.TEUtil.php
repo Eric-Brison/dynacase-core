@@ -35,9 +35,9 @@ function te_microtime_diff($a,$b) {
 function getArgv($argv) {
     $_ARG = array();
     foreach ($argv as $arg) {
-      if (ereg('--([^=]+)=(.*)',$arg,$reg)) {
+      if (preg_match('/--([^=]+)=(.*)/',$arg,$reg)) {
 	    $_ARG[$reg[1]] = $reg[2];
-      } elseif(ereg('-([a-zA-Z0-9])',$arg,$reg)) {
+      } elseif(preg_match('/-([a-zA-Z0-9])/',$arg,$reg)) {
             $_ARG[$reg[1]] = 'true';
         }
    
@@ -129,16 +129,16 @@ function te_getTextMimeFile($f) {
  * @return string like --username admin --dbname anakeen
  */
 function php2DbCreateSql($dbcoord) {
-    if (eregi('dbname=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
+    if (preg_match('/dbname=[ ]*([a-z_0-9\'"][^ ]*)/i',$dbcoord,$reg)) {  
       $dbname=$reg[1];
     }
-    if (eregi('host=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
+    if (preg_match('/host=[ ]*([a-z_0-9\'"][^ ]*)/i',$dbcoord,$reg)) {  
       $dbhost=$reg[1];
     }
-    if (eregi('port=[ ]*([0-9\'"]*)',$dbcoord,$reg)) {  
+    if (preg_match('/port=[ ]*([0-9\'"]*)/i',$dbcoord,$reg)) {  
       $dbport=$reg[1];
     }
-    if (eregi('user=[ ]*([a-z_0-9\'"][^ ]*)',$dbcoord,$reg)) {  
+    if (preg_match('/user=[ ]*([a-z_0-9\'"][^ ]*)/i',$dbcoord,$reg)) {  
       $dbuser=$reg[1];
     }
     $dbpsql="";

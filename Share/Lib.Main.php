@@ -67,7 +67,8 @@ function getMainAction($auth,&$action) {
   // ----------------------------------------
   // Init PUBLISH URL from script name
 
-  if (ereg("(.*)/$indexphp", $_SERVER['SCRIPT_NAME'], $reg)) {
+  $pattern = preg_quote($indexphp);
+  if (preg_match("|(.*)/$pattern|", $_SERVER['SCRIPT_NAME'], $reg)) {
 
     // determine publish url (detect ssl require)
  
@@ -162,12 +163,12 @@ function getMainAction($auth,&$action) {
     if ($action->Read("navigator","") == "") {
       if ( $pos !== false ) {
 	$action->Register("navigator","EXPLORER");
-	if (ereg("MSIE ([0-9.]+).*",$nav,$reg)) {
+	if (preg_match("/MSIE ([0-9.]+).*/",$nav,$reg)) {
 	  $action->Register("navversion",$reg[1]);
 	}
       } else {
 	$action->Register("navigator","NETSCAPE");
-	if (ereg("([a-zA-Z]+)/([0-9.]+).*",$nav,$reg)) {
+	if (preg_match("|([a-zA-Z]+)/([0-9.]+).*|",$nav,$reg)) {
 	  $action->Register("navversion",$reg[2]);      
 	}
       }

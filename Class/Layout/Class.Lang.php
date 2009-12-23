@@ -143,7 +143,7 @@ create index lang_idx1 on lang(idapp, lang, code);
     if ($args == NULL) {
       $this->fmttxt = $uf;
     } else {
-      $nfmt = ereg_replace("%([0-9]+)%", "{\$args[\\1]}", $uf);
+      $nfmt = preg_replace("/%([0-9]+)%/", "{\$args[\\1]}", $uf);
       eval("\$out = \"$nfmt\";");
       $this->fmttxt = $out;
     }
@@ -155,7 +155,7 @@ create index lang_idx1 on lang(idapp, lang, code);
     if ($args == NULL) {
       $this->fmttxt = $uf;
     } else {
-      $nfmt = ereg_replace("%([0-9]+)%", "{\$args[\\1]}", $uf);
+      $nfmt = preg_replace("/%([0-9]+)%/", "{\$args[\\1]}", $uf);
       eval("\$out = \"$nfmt\";");
       $this->fmttxt = $out;
     }

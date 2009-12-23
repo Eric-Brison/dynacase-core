@@ -36,7 +36,7 @@ function progressbar2(&$action) {
 
    if ($rf) {
      foreach ($rf as $line) {
-     if (ereg("([0-9\-]+)/([0-9\-]+)/(.*)",$line,$reg)) {
+     if (preg_match("|([0-9\-]+)/([0-9\-]+)/(.*)|",$line,$reg)) {
        $texts[]=addslashes(trim($reg[3]));
        if (intval($reg[2]) >= 0) $total=intval($reg[2]);
        if (intval($reg[1]) >= 0) $reste=intval($reg[1]);	 

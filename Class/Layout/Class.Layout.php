@@ -246,7 +246,7 @@ class Layout {
       $acturl["query"]=str_replace("--",":",$acturl["query"]); //For buggy function parse_url in PHP 4.3.1
       $zargs = explode("&", $acturl ["query"] );
       while (list($k, $v) = each($zargs)) {
-	if (ereg("([^=]*)=(.*)",$v, $regs)) {
+	if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
 	  // memo zone args for next action execute
 	   $ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
 	}

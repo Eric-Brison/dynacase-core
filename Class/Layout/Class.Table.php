@@ -99,7 +99,7 @@ class Table
                            // Object Attributes
   // Fields attributes
   var $fields;             // array of the field names to show
-  var $filter = "[A-Za-z0-9][A-Za-z0-9_]*";   // Regexp: Field names to show
+  var $filter = "/[A-Za-z0-9][A-Za-z0-9_]*/";   // Regexp: Field names to show
   var $sortable_fields;    // array of the fields you can sort using the 
                            // sort_link
   var $ordered_by;         // the current ordering field
@@ -459,7 +459,7 @@ class Table
     list($key, $val) = each($this->array);
     reset($val);
     while (list($k,$v) = each($val)) {
-      if (ereg($this->filter,$k))
+      if (preg_match($this->filter,$k))
 	$this->fields[]= $k;
     }
   }

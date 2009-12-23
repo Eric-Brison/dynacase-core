@@ -187,7 +187,7 @@ function edit_main(&$action, $userId, $appId, $coid) {
     $p=new ObjectPermission("",array($action->parent->user->id,
 						    $coid, 
 						    $appId));
-    if (ereg ("dbname=(.*)",$p->dbaccess, $reg)) {
+    if (preg_match("/dbname=(.*)/",$p->dbaccess, $reg)) {
       $action->lay->Set("dboperm", $reg[1]); 
     }
 

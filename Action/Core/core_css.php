@@ -39,7 +39,7 @@ function core_css(&$action) {
   
   $layout=getHttpVars("layout");
 
-  if (ereg("([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}", $layout, $reg)) {
+  if (preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg)) {
     $lfile= getLayoutFile($reg[1],strtolower($reg[2]));
     if ($lfile) $action->lay = new Layout(getLayoutFile($reg[1],strtolower($reg[2])), $action);
   }

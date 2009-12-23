@@ -24,7 +24,7 @@ function footer(&$action) {
 
   $action->lay->set("plugzone","");
   if ($plugzone != "") {
-    if ( ereg("([A-Z]+):([^:]+)", $plugzone, $reg)) {
+    if ( preg_match("/([A-Z]+):([^:]+)/", $plugzone, $reg)) {
       $appplug=$reg[1];
       $actplug=$reg[2];
       if ($idappplug=$action->parent->Exists($appplug)) {

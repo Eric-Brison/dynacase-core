@@ -186,7 +186,7 @@ function getDbName($dbaccess) {
 }
 
 function getServiceName($dbaccess) {
-  if (ereg("service='?([a-zA-Z0-9_.-]+)", $dbaccess, $reg)) {
+  if (preg_match("/service='?([a-zA-Z0-9_.-]+)/", $dbaccess, $reg)) {
     return $reg[1];
   }
 }

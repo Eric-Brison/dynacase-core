@@ -27,19 +27,20 @@ if ($handle = opendir($pubdir)) {
    $tpdfdoc=array();
    while (false !== ($file = readdir($handle))) {
      if (($file != "") && ($file[0]!= ".")) {
+       // HERE HERE HERE
        $info=`strings $pubdir/$file | grep -A 10 "/Title"`;
 
        $title=$file;
        $subject="";
        $cdate="";
-	if (ereg("<< /Title <([^>]*)>",$info,$reg)) {
+	if (preg_match("|<< /Title <([^>]*)>|",$info,$reg)) {
 	  $title=String2utf8($reg[1]);
 	}
-	if (ereg("/Subject <([^>]*)>",$info,$reg)) {
+	if (preg_match("|/Subject <([^>]*)>|",$info,$reg)) {
 	  $subject=String2utf8($reg[1]);
 	}
 
-	if (ereg("/CreationDate \(([^\)]*)\)",$info,$reg)) {
+	if (preg_match("|/CreationDate \(([^\)]*)\)|",$info,$reg)) {
 	 
 	  // like D:20040824122100
 	 

@@ -73,7 +73,7 @@ create sequence seq_id_users start 10";
     if ($query->nb > 0) {
       $this->Affect($list[0]);
     } else {
-      if (ereg("(.*)@(.*)",$loginDomain, $reg)) {
+      if (preg_match("/(.*)@(.*)/",$loginDomain, $reg)) {
 	  
 	$queryd = new QueryDb($this->dbaccess,"Domain");
 	$queryd->AddQuery("name='".$reg[2]."'");

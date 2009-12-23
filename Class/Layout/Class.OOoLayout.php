@@ -281,7 +281,7 @@ class OOoLayout extends Layout {
       $acturl["query"]=str_replace("--",":",$acturl["query"]); //For buggy function parse_url in PHP 4.3.1
       $zargs = explode("&", $acturl ["query"] );
       while (list($k, $v) = each($zargs)) {
-	if (ereg("([^=]*)=(.*)",$v, $regs)) {
+	if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
 	  // memo zone args for next action execute
 	   $ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
 	}
@@ -378,7 +378,7 @@ class OOoLayout extends Layout {
 	    $width=$draw->getAttribute('svg:width');
 	    $size=getimagesize($file);
 	    $unit="";
-	    if (ereg("[0-9\.]+(.*)$",$width,$reg)) $unit=$reg[1];	    
+	    if (preg_match("/[0-9\.]+(.*)$/",$width,$reg)) $unit=$reg[1];	    
 	    $height=sprintf("%.03f%s",(doubleval($width)/$size[0])*$size[1],$unit);
 	    $draw->setAttribute('svg:height',$height);
 	  }

@@ -46,7 +46,7 @@ function user_mod(&$action) {
   $expdate= GetHttpVars("expdate");
   $exptime=0;
   if ($expdate != "") {
-    if (ereg("([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])", $expdate, $reg)) {
+    if (preg_match("|([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9]) ([0-2][0-9]):([0-5][0-9]):([0-5][0-9])|", $expdate, $reg)) {
    
       $exptime=mktime($reg[4],$reg[5],$reg[6],$reg[2],$reg[1],$reg[3]);
       

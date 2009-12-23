@@ -62,7 +62,7 @@ function GetFileVersion($topdir) {
 	$fini = fopen($inifile,"r");
 	while (! feof($fini)) {
 	  $line = fgets($fini,256);
-	  if (ereg("VERSION.*=>[ \t]*\"[ \t]*([0-9\.\-]+)", $line, $reg)) {
+	  if (preg_match("/VERSION.*=>[ \t]*\"[ \t]*([0-9\.\-]+)/", $line, $reg)) {
 	    if (isset($reg[1])) $tver[$file]=$reg[1];
 	  }
 	}
@@ -207,10 +207,11 @@ function getCheckActions($pubdir,$tapp,&$tact) {
   uasort($tapp,"cmpapp");
   foreach ($tapp as $k=>$v) {
     $migr=array();
+    $pattern = preg_quote($k);
     // search Migration file
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
-	if (ereg("{$k}_migr_([0-9\.]+)$", $file, $reg)) {
+	if (preg_match("/{$pattern}_migr_([0-9\.]+)$/", $file, $reg)) {
 	  if (($tvdb[$k] != "") && (version2float($tvdb[$k]) < version2float($reg[1])))
 	    $migr[]="$pubdir/$k/$file";
 	}
@@ -257,7 +258,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     $migr=array();
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
-	if (ereg("{$k}_pmigr_([0-9\.]+)$", $file, $reg)) {
+	if (preg_match("{$pattern}_pmigr_([0-9\.]+)$", $file, $reg)) {
 
 	  if (($tvdb[$k] != "") && (version2float($tvdb[$k]) < version2float($reg[1])))
 	    $migr[]="$pubdir/$k/$file";

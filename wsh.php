@@ -44,9 +44,9 @@ if (count($argv) == 1) {
 
 while (list($k, $v) = each($argv)) {
   
-  if (ereg("--([^=]+)=(.+)", $v , $reg)) {
+  if (preg_match("/--([^=]+)=(.+)/", $v , $reg)) {
     $_GET[$reg[1]]=$reg[2];
-  }  else if (ereg("--(.+)", $v , $reg)) {
+  }  else if (preg_match("/--(.+)/", $v , $reg)) {
     if ($reg[1] == "listapi") {
       print "application list :\n";
       echo "\t- ";

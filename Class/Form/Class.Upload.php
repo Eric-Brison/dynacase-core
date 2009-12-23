@@ -102,7 +102,7 @@ class uploader {
         $this->errors[]="Taille maximale dépassée:. Le fichier ne doit pas excéder " . $this->max_filesize/1000 . "KB.";
         return False;
       }
-       if(ereg("image", $this->file["type"])) {
+       if(preg_match("/image/", $this->file["type"])) {
 
          $image=getimagesize($this->file["file"]);
          $this->file["width"]=$image[0];
@@ -133,7 +133,7 @@ class uploader {
              break;
          }
       }
-       else if(!ereg("(\.)([a-z0-9]{3,5})$",$this->file["name"])&&!$extension) {
+       else if(!preg_match("/(\.)([a-z0-9]{3,5})$/",$this->file["name"])&&!$extension) {
         // add new mime types here
         switch($this->file["type"]) {
           case "text/plain":
@@ -149,9 +149,10 @@ class uploader {
     
       // check to see if the file is of type specified
       if($accept_type) {
-        if(ereg($accept_type, $this->file["type"])) { $this->accepted=True; }
+	$pattern = preg_quote($accept_type);
+        if(preg_match("/$pattern/", $this->file["type"])) { $this->accepted=True; }
         else { $this->errors[]="Seuls les fichiers de type " . 
-               ereg_replace("\|", " or ", $accept_type) . 
+               preg_replace("/\|/", " or ", $accept_type) . 
                " sont acceptés"; }
       }
       else { $this->accepted=True; }
@@ -167,12 +168,12 @@ class uploader {
       if(!file_exists($path )) { mkdir( $path, 0775); }
       // very strict naming of file.. only lowercase letters, 
       // numbers and underscores
-      $new_name=ereg_replace("[^a-z0-9._]", "", 
-		ereg_replace(" ", "_", 
-		ereg_replace("%20", "_", strtolower($this->file["name"]))));
+      $new_name=preg_replace("/[^a-z0-9._]/", "", 
+		preg_replace("/ /", "_", 
+		preg_replace("/%20/", "_", strtolower($this->file["name"]))));
 
       // check for extension and remove
-      if(ereg("(\.)([a-z0-9]{3,5})$", $new_name)) {
+      if(preg_match("/(\.)([a-z0-9]{3,5})$/", $new_name)) {
         $pos=strrpos($new_name, ".");
         if(!isset($this->file["extension"])) { 
 	  $this->file["extension"]=substr($new_name,$pos,strlen($new_name));

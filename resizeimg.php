@@ -93,7 +93,7 @@ if (!$img) {
  }
 
 $dir=dirname($_SERVER["SCRIPT_NAME"]);
-if (ereg("vaultid=([0-9]+)",$img,$vids)) {
+if (preg_match("/vaultid=([0-9]+)/",$img,$vids)) {
   // vault file
   $vid=$vids[1];
   $basedest=getVaultCacheImage($vid,$size);

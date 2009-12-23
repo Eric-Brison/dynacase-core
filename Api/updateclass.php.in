@@ -69,7 +69,7 @@ while (list($k,$v) = each ($sql)) {
   print "Sql:$v\n";
   $rq=@pg_exec ($dbid, $v);
   if (! $rq) {
-    if (ereg("create sequence",$v, $reg)) {
+    if (preg_match("/create sequence/",$v, $reg)) {
       $pgmess = pg_errormessage($dbid);
       echo "[1;33;49m".$pgmess."[0m\n";
       

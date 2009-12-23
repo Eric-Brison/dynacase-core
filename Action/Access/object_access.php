@@ -68,7 +68,7 @@ function object_access(&$action) {
   $action->lay->Set("appid",$appId);
 
   // reaffect operm session variable
-  if (ereg ("(.*)dbname=(.*)",$dboperm, $reg)) {
+  if (preg_match("/(.*)dbname=(.*)/",$dboperm, $reg)) {
     if ($dbopname != "") {
 
       $action->Register("dboperm", $reg[1]."dbname=".$dbopname);
@@ -87,7 +87,7 @@ function object_access(&$action) {
   // contruct object id list
 
   $octrl = new ControlObject();
-  if (ereg ("dbname=(.*)",$octrl->dbaccess, $reg)) {
+  if (preg_match("/dbname=(.*)/",$octrl->dbaccess, $reg)) {
     $action->lay->Set("dboperm", $octrl->dbaccess); 
     $action->lay->Set("dbopname", $reg[1]); 
   } 

@@ -62,7 +62,7 @@ function printdtrace() {
   foreach ($trace as $k=>$v) {
     //[test.php:26]AddFile/<br>[Class.Dir.php:276]updateFldRelations:updateFldRelations : 0.075 -  0.075 #17
 
-    if (ereg("(.*):([^-]+)-([^#]+)#(.*)$",$v,$reg)) {
+    if (preg_match("/(.*):([^-]+)-([^#]+)#(.*)$/",$v,$reg)) {
       printf("%30.30s : %.03f | %02.03f | %d\n",
 	     substr($reg[1],-30),$reg[2],$reg[3],$reg[4]);
     }
