@@ -139,6 +139,10 @@
 
   <changelog>
 
+<version number="2.15.0-1" date="2009-12-28">
+  <change title="Removed PHP 5.3 deprecated functions" />
+</version>
+
 <version number="2.14.1-12" date="2009-12-10">
   <change title="Added .htaccess in img-cache subdir" url="http://dev.freedom-ecm.org/issues/87" />
 </version>
