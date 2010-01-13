@@ -258,7 +258,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     $migr=array();
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
-	if (preg_match("{$pattern}_pmigr_([0-9\.]+)$", $file, $reg)) {
+	if (preg_match("/{$pattern}_pmigr_([0-9\.]+)$/", $file, $reg)) {
 
 	  if (($tvdb[$k] != "") && (version2float($tvdb[$k]) < version2float($reg[1])))
 	    $migr[]="$pubdir/$k/$file";
