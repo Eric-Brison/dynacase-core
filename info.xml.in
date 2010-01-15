@@ -139,6 +139,9 @@
 
   <changelog>
 
+<version number="2.14.2-0" date="2010-01-15">
+  <change title="Correct detection for [IF] layout key to accept null values like false value" />
+</version>
 <version number="2.14.1-12" date="2009-12-10">
   <change title="Added .htaccess in img-cache subdir" url="http://dev.freedom-ecm.org/issues/87" />
 </version>

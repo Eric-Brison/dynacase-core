@@ -181,8 +181,8 @@ class Layout {
 
   function TestIf($name,$block,$not=false) {    
     $out = "";     
-    if (isset($this->rif[$name]) || isset($this->rkey[$name]) ) {
-      $n = (isset($this->rif[$name]))?$this->rif[$name]:$this->rkey[$name];
+    if (array_key_exists($name,$this->rif)|| isset($this->rkey[$name]) ) {
+      $n = (array_key_exists($name,$this->rif))?$this->rif[$name]:$this->rkey[$name];
       if ($n xor $not)  {
 	if ($this->strip=='Y') {
 	  $block = str_replace("\\\"","\"",$block);
