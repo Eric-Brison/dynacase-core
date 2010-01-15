@@ -139,12 +139,17 @@
 
   <changelog>
 
+
 <version number="2.15.0-2" date="2010-01-13">
   <change title="Corrected a missing regex delimiter in preg_match()" />
 </version>
 
 <version number="2.15.0-1" date="2009-12-28">
   <change title="Removed PHP 5.3 deprecated functions" />
+</version>
+
+<version number="2.14.2-0" date="2010-01-15">
+  <change title="Correct detection for [IF] layout key to accept null values like false value" />
 </version>
 
 <version number="2.14.1-12" date="2009-12-10">
