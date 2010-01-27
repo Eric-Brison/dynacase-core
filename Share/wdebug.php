@@ -40,7 +40,8 @@ function dtrace($text) {
 }
 
 function stacktrace($level=3,$uplevel=1) {
-  $stack=@xdebug_get_function_stack();
+    if (! function_exists('xdebug_get_function_stack')) return '';
+  $stack=xdebug_get_function_stack();
   $t=array();
   foreach ($stack as $k=>$v) {
     $t[]= sprintf("[%s:%d]%s",
