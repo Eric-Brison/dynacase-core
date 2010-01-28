@@ -11,6 +11,8 @@
 /**
  */
 include_once("WHAT/Lib.Prefix.php");
+include_once("WHAT/Lib.Http.php");
+include_once("WHAT/Lib.Common.php");
 
 function rezizelocalimage($img,$size,$basedest) {
   $source=$img;
@@ -35,7 +37,6 @@ function copylocalimage($img,$size,$basedest) {
   return false;
 }
 function getVaultPauth($vid) {
-  include_once("WHAT/Lib.Common.php");
   
   $dbaccess=getDbAccess();
   $rcore = pg_connect($dbaccess);
@@ -93,13 +94,14 @@ if (!$img) {
  }
 
 $dir=dirname($_SERVER["SCRIPT_NAME"]);
+$ldir=DEFAULT_PUBDIR;
 if (preg_match("/vaultid=([0-9]+)/",$img,$vids)) {
   // vault file
   $vid=$vids[1];
   $basedest=getVaultCacheImage($vid,$size);
   $dest=DEFAULT_PUBDIR.$basedest;  
   if (file_exists($dest)) {
-    $location=$dir."/".$basedest;
+    $location=$ldir."/".$basedest;
   } else {
     $localimage=getVaultPauth(intval($vid));
     if ($localimage) {
@@ -111,7 +113,7 @@ if (preg_match("/vaultid=([0-9]+)/",$img,$vids)) {
       } else {	
 	$newimg=copylocalimage($localimage,$size,$basedest);
       }
-      if ($newimg) $location="$dir/$newimg";
+      if ($newimg) $location="$ldir/$newimg";
     } 
   }
  } else {
@@ -125,16 +127,21 @@ if (preg_match("/vaultid=([0-9]+)/",$img,$vids)) {
     $basedest="/img-cache/$size-".basename($localimage).".png";
     $dest=DEFAULT_PUBDIR.$basedest;
 
-    if (file_exists($dest)) $location= "$dir/$basedest";
+    if (file_exists($dest)) $location= "$ldir/$basedest";
     else {
+        print_r2("resize");
       $newimg=rezizelocalimage(DEFAULT_PUBDIR."/$localimage",$size,$basedest);
-      if ($newimg) $location="$dir/$newimg";
+      if ($newimg) $location="$ldir/$newimg";
     }
   }
  }
 //print("<hr>Location: $location");
 if ($location) $location="/".ltrim($location,"/");
 else $location=$img;
-Header("Location: $location");
+
+
+
+Http_DownloadFile($location,basename($location),"image/png");
+//Header("Location: $location");
 
 ?>
