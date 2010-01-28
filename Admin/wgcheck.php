@@ -4,7 +4,7 @@
  *
  * @author Anakeen 2005
  * @version $Id: wgcheck.php,v 1.9 2009/01/13 19:07:56 jerome Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */

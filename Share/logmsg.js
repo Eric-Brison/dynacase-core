@@ -1,3 +1,9 @@
+
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
 var isNetscape = navigator.appName=="Netscape";
 var isIE = navigator.appName=="Microsoft Internet Explorer";
 var isIE6 = /msie 6/i.test(navigator.userAgent);

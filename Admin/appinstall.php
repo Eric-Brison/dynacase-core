@@ -4,7 +4,7 @@
  *
  * @author Anakeen 2008
  * @version $Id: appinstall.php,v 1.2 2008/05/12 08:22:21 marc Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */

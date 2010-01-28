@@ -4,7 +4,7 @@
  *
  * @author Anakeen 2000
  * @version $Id: Lib.FileDir.php,v 1.3 2004/07/29 09:28:34 yannick Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */

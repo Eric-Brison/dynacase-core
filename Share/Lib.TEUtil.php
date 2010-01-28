@@ -4,7 +4,7 @@
  *
  * @author Anakeen 200T
  * @version $Id: Lib.TEUtil.php,v 1.10 2008/02/11 12:19:46 eric Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  */
 /**

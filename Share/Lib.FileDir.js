@@ -1,3 +1,9 @@
+
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
 // --------------------------------------------------
 // $Id: Lib.FileDir.js,v 1.1 2002/01/08 12:41:34 eric Exp $
 // --------------------------------------------------

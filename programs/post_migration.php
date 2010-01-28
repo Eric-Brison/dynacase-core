@@ -5,7 +5,7 @@
  *
  * @author Anakeen 2009
  * @version $Id:  $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  */
 $WIFF_ROOT = getenv("WIFF_ROOT");

@@ -4,7 +4,7 @@
  *
  * @author Anakeen 2000 
  * @version $Id: guest.php,v 1.24 2008/12/16 15:51:53 jerome Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage 
  */

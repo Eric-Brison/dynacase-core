@@ -1,4 +1,10 @@
 
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
+
 
 function subwindow(h, w, name, url) {
    var screen_width, screen_height;

@@ -1,4 +1,10 @@
 
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
+
 var Xpos = 0;
 var Ypos = 0;
 function GetXY(event) {

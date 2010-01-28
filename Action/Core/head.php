@@ -4,7 +4,7 @@
  *
  * @author Anakeen 2000 
  * @version $Id: head.php,v 1.24 2007/06/29 08:55:44 eric Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */

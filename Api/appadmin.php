@@ -7,7 +7,7 @@
  * @param string $method may be "init","reinit","update","delete"
  * @author Anakeen 2003
  * @version $Id: appadmin.php,v 1.8 2008/05/21 07:27:02 marc Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage WSH
  */

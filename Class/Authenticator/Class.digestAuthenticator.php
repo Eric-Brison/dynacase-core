@@ -9,7 +9,7 @@
  *
  * @author Anakeen 2009
  * @version $Id: Class.digestAuthenticator.php,v 1.2 2009/01/16 13:33:00 jerome Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage
  */

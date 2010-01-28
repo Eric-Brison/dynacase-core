@@ -4,7 +4,7 @@
  *
  * @author Anakeen 1999
  * @version $Id: logout.php,v 1.12 2008/06/24 16:05:51 jerome Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  * @deprecated since HTTP Authentification

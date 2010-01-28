@@ -4,7 +4,7 @@
  *
  * @author Anakeen 1999
  * @version $Id: logo.php,v 1.7 2004/03/22 15:21:40 eric Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */

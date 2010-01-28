@@ -4,7 +4,7 @@
  *
  * @author Anakeen 2005
  * @version $Id: wgdbcreate.php,v 1.5 2005/11/24 09:11:18 eric Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */

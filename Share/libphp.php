@@ -4,7 +4,7 @@
  *
  * @author Anakeen 1999
  * @version $Id: libphp.php,v 1.2 2003/08/18 15:46:42 eric Exp $
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  * @deprecated 
