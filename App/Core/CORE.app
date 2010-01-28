@@ -49,6 +49,10 @@ $action_desc = array (
    "root"               =>"Y"
   ),
   array(
+   "name"               =>"INVALID",
+   "desc"               =>N_("Message to indicate invalid configuration")
+  ),
+  array(
    "name"               =>"GATE_EDIT"
   ),
   array(

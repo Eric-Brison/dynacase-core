@@ -32,14 +32,17 @@ function getMainAction($auth,&$action) {
 
   global $_GET;
   $standalone = GetHttpVars("sole","Y");
+  $defaultapp=false;
   if (! getHttpVars("app")) {
+      $defaultapp=true;
     $_GET["app"]="CORE";
     if ($_SERVER["FREEDOM_ACCESS"]) {
       $_GET["app"] = $_SERVER["FREEDOM_ACCESS"];
       $_GET["action"] = "";    
+    } else {
+        $_GET["action"] = "INVALID"; 
     }
   }
-
 
   if (isset($_COOKIE['freedom_param'])) $sess_num= $_COOKIE['freedom_param'];
   else $sess_num=GetHttpVars('freedom_param');//$_GET["session"];
@@ -59,7 +62,9 @@ function getMainAction($auth,&$action) {
     $session->Set("");
     $core->SetSession($session);
   }
-
+  if ($defaultapp && $core->GetParam("CORE_START_APP")) {
+    $_GET["app"] =$core->GetParam("CORE_START_APP");
+  }
   ini_set("memory_limit",$core->GetParam("MEMORY_LIMIT","32")."M");
   //$core->SetSession($session);
 

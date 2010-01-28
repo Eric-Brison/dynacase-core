@@ -227,6 +227,10 @@ $app_const = array (
 						       "descr"  => N_("squirrelmail install dir (relative)"),
 						       "user"   => "N",
 						       "global" => "Y" ),
+		    "CORE_START_APP" => array( "val"    => "",
+						       "descr"  => N_("default start application"),
+						       "user"   => "N",
+						       "global" => "Y" ),
 
 		    // Session
 		    "CORE_SESSIONTTL" => array( "val"    => "0",
