@@ -8,8 +8,6 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  */
-/**
- */
 
 ini_set("max_execution_time", "3600");
 include_once("WHAT/Lib.Prefix.php");
