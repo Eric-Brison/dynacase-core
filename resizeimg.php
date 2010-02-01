@@ -129,7 +129,6 @@ if (preg_match("/vaultid=([0-9]+)/",$img,$vids)) {
 
     if (file_exists($dest)) $location= "$ldir/$basedest";
     else {
-        print_r2("resize");
       $newimg=rezizelocalimage(DEFAULT_PUBDIR."/$localimage",$size,$basedest);
       if ($newimg) $location="$ldir/$newimg";
     }
