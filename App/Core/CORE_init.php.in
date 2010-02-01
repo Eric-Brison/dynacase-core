@@ -227,7 +227,7 @@ $app_const = array (
 						       "descr"  => N_("squirrelmail install dir (relative)"),
 						       "user"   => "N",
 						       "global" => "Y" ),
-		    "CORE_START_APP" => array( "val"    => "",
+		    "CORE_START_APP" => array( "val"    => "ECM",
 						       "descr"  => N_("default start application"),
 						       "user"   => "N",
 						       "global" => "Y" ),
