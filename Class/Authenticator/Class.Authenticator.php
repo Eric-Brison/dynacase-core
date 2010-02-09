@@ -54,9 +54,10 @@ abstract class Authenticator {
   public function freedomUserExists($username) {
     @include_once('FDL/Class.Doc.php');
     @include_once('WHAT/Class.User.php');
-
+    
     $u = new User();
-    if( $u->SetLoginName($username) ) {   
+    if( $u->SetLoginName($username) ) {
+      $dbaccess=GetParam("FREEDOM_DB");    	 
       $du = new_Doc($dbaccess, $u->fid);
       if( $du->isAlive() ) {
 	return TRUE;
