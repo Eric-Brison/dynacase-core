@@ -139,6 +139,9 @@
 
   <changelog>
 
+<version number="2.14.2-1" date="2010-02-11">
+  <change title="View sql queries in debug mode in firebug console" />
+</version>
 <version number="2.14.2-0" date="2010-01-15">
   <change title="Correct detection for [IF] layout key to accept null values like false value" />
 </version>
