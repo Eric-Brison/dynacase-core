@@ -331,45 +331,47 @@ class Layout {
     return $js;
   }
 
-  function GenJsCode($showlog) {
-    $list = $this->action->parent->GetJsCode();
-    reset($list);
-    $out = "";
-    while(list($k,$v) = each($list)) {
-      $out .= $v."\n";
-    }
-
-    if ($showlog) {
-      // Add log messages
-      $list = $this->action->parent->GetLogMsg();
-      reset($list);
-      $out .= "var logmsg=new Array();\n";
-      while(list($k,$v) = each($list)) {
-	if ($v[0]=='{') $out .= "logmsg[$k]=$v;\n";
-        else $out .= "logmsg[$k]='$v';\n";
+  function GenJsCode($showlog, $onlylog=false) {
+      $out = "";
+      if (! $onlylog) {
+          $list = $this->action->parent->GetJsCode();
+          foreach($list as $k=>$v) {
+              $out .= $v."\n";
+          }
       }
-      $out .= "displayLogMsg(logmsg);\n";
-      $this->action->parent->ClearLogMsg();
-  
-      // Add warning messages
-      $list = $this->action->parent->GetWarningMsg();   
-      if (count($list) > 0) $out .= "displayWarningMsg('".implode("\\n---------\\n",$list)."');\n";
-      $this->action->parent->ClearWarningMsg();
-    }
+      if ($showlog) {
+          // Add log messages
+          $list = $this->action->parent->GetLogMsg();
+          reset($list);
+          $out .= "var logmsg=new Array();\n";
+          while(list($k,$v) = each($list)) {
+              if (($v[0]=='{') ) $out .= "logmsg[$k]=$v;\n";
+              else $out .= "logmsg[$k]='$v';\n";
+          }
+          
+          $out .= "if ('displayLogMsg' in window) displayLogMsg(logmsg);\n";
+          $this->action->parent->ClearLogMsg();
 
-    // Add action notification messages
-    $this->action->getActionDone($actcode,$actarg);
-    if (count($actcode) > 0) {
-    $out .= "var actcode=new Array();\n";
-    $out .= "var actarg=new Array();\n";
-    foreach ($actcode as $k=>$v) {
-      $out .= "actcode[$k]='$v';\n";    
-      $out .= "actarg[$k]='".$actarg[$k]."';\n";      
-    }
-    $out .= "sendActionNotification(actcode,actarg);\n"; 
-    $this->action->clearActionDone();
-    }
-    return($out);
+          // Add warning messages
+          $list = $this->action->parent->GetWarningMsg();
+          if (count($list) > 0) $out .= "displayWarningMsg('".implode("\\n---------\\n",$list)."');\n";
+          $this->action->parent->ClearWarningMsg();
+      }
+      if (! $onlylog) {
+          // Add action notification messages
+          $this->action->getActionDone($actcode,$actarg);
+          if (count($actcode) > 0) {
+              $out .= "var actcode=new Array();\n";
+              $out .= "var actarg=new Array();\n";
+              foreach ($actcode as $k=>$v) {
+                  $out .= "actcode[$k]='$v';\n";
+                  $out .= "actarg[$k]='".$actarg[$k]."';\n";
+              }
+              $out .= "sendActionNotification(actcode,actarg);\n";
+              $this->action->clearActionDone();
+          }
+      }
+      return($out);
   }
 
   function ParseJs(&$out) {

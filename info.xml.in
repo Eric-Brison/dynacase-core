@@ -140,12 +140,18 @@
   <changelog>
 
 
+
 <version number="2.15.0-2" date="2010-01-13">
   <change title="Corrected a missing regex delimiter in preg_match()" />
 </version>
 
 <version number="2.15.0-1" date="2009-12-28">
   <change title="Removed PHP 5.3 deprecated functions" />
+</version>
+
+
+<version number="2.14.2-1" date="2010-02-11">
+  <change title="View sql queries in debug mode in firebug console" />
 </version>
 
 <version number="2.14.2-0" date="2010-01-15">

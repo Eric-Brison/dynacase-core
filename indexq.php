@@ -102,6 +102,15 @@ $trace["init"]=sprintf("%.03fs" ,$ticainit-$tic1);
 $out='';
 $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/tracetime.js");
 executeAction($action,$out);
+function sortqdelay($a,$b) {
+        $xa=doubleval($a["t"]);
+        $xb=doubleval($b["t"]);
+        if ($xa > $xb) return -1;
+        else if ($xa < $xb) return 1;
+        return 0;
+}
+usort($TSQLDELAY,"sortqdelay");
+addLogMsg($TSQLDELAY);
 $deb=gettimeofday();
    $tic4= $deb["sec"]+$deb["usec"]/1000000;
    $trace["app"]=sprintf("%.03fs" ,$tic4-$ticainit);
@@ -110,8 +119,13 @@ $deb=gettimeofday();
    $trace["server all"]=sprintf("%.03fs" ,$tic4-$tic1);
    $trace["n"]="-------------";
    $strace='var TTRACE=new Object();'."\n";
+   
+   
    foreach ($trace as $k=>$v) $strace.=sprintf(" TTRACE['%s']='%s';\n",$k,str_replace("'"," ",$v));
-   $out=str_replace("<head>","<head><script>$strace</script>",$out);
+   
+   $logcode=$action->lay->GenJsCode(true,true);
+   $out=str_replace("<head>","<head><script>;$strace</script>",$out);
+   $out=str_replace("</head>","<script>$logcode</script></head>",$out);
 echo ($out);
    $action->unregister("trace");
 ?>
