@@ -35,7 +35,7 @@ Class Application extends DbObj
   public $fields = array ( "id",  "name","short_name",  "description",  "access_free",  "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine","iorder");
 
   public $id_fields = array ( "id");
-
+  public $rootdir='';
   public $fulltextfields = array ("name","short_name","description");
   public $sqlcreate = '
 create table application ( 	id 	int not null,
@@ -137,6 +137,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	$this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:false,$this->style->name);
 	if ($this->session) $this->session->register("sessparam".$this->id,$this->param->buffer);
       }
+      $this->rootdir = $this->Getparam("CORE_PUBDIR");
       if ($this->available == "N") {
 	// error
 	return sprintf(_("Application %s (%s) not available"),$this->name,_($this->short_name));
@@ -206,8 +207,7 @@ create sequence SEQ_ID_APPLICATION start 10;
   function AddJsRef($ref,$needparse=false) 
     {
       // Js Ref are stored in the top level application
-      $root = $this->Getparam("CORE_PUBDIR");
-      if (file_exists($root."/".$this->name."/Layout/".$ref)) {
+      if (file_exists($this->rootdir."/".$this->name."/Layout/".$ref)) {
 	$ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
       }
       if ($this->hasParent()) {
@@ -307,12 +307,11 @@ create sequence SEQ_ID_APPLICATION start 10;
 	$this->parent->AddCssRef($ref,$needparse);
       } else {
       // Css Ref are stored in the top level application
-      $root = $this->Getparam("CORE_PUBDIR");
 	  
       if (! $needparse) {
 	$fccs=false;
-	if (file_exists($root."/".$ref)) $fccs=true;
-	elseif (file_exists($root."/".$this->name."/Layout/".$ref)) {
+	if (file_exists($this->rootdir."/".$ref)) $fccs=true;
+	elseif (file_exists($this->rootdir."/".$this->name."/Layout/".$ref)) {
 	  $ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
 	  $fccs=true;
 	}
@@ -450,35 +449,33 @@ create sequence SEQ_ID_APPLICATION start 10;
   }
 
   function GetImageFile($img) {
-    $root = $this->Getparam("CORE_PUBDIR");
   
-    return $root."/".$this->GetImageUrl($img);
+    return $this->rootdir."/".$this->GetImageUrl($img);
   }
 
   var $noimage = "CORE/Images/noimage.png";
-  function GetImageUrl($img) {
-    if ($img != "") {
-    // try style first 
-      $url = $this->style->GetImageUrl($img,"");
-      if ($url != "") return $url;
+  function GetImageUrl($img,$detectstyle=true) {
+      if ($img != "") {
+          // try style first
+          if ($detectstyle) {
+              $url = $this->style->GetImageUrl($img,"");
+              if ($url != "") return $url;
+          }
+          // try application
+          if (file_exists($this->rootdir."/".$this->name."/Images/".$img)) {
+              return ($this->name."/Images/".$img);
+          } else { // perhaps generic application
+              if (($this->childof != "") && (file_exists($this->rootdir."/".$this->childof."/Images/".$img))) {
+                  return ($this->childof."/Images/".$img);
+              } else  if (file_exists($this->rootdir."/Images/".$img)) {
+                  return ("Images/".$img);
+              }
+          }
 
-      // try application 
-      $root = $this->Getparam("CORE_PUBDIR");
-
-      if (file_exists($root."/".$this->name."/Images/".$img)) {
-	return ($this->name."/Images/".$img);
-      } else { // perhaps generic application
-	if (($this->childof != "") && (file_exists($root."/".$this->childof."/Images/".$img))) {
-	  return ($this->childof."/Images/".$img);
-	} else  if (file_exists($root."/Images/".$img)) {
-	  return ("Images/".$img);
-	} 
+          // try in parent
+          if ($this->parent != "") return($this->parent->getImageUrl($img));
       }
-  
-      // try in parent 
-      if ($this->parent != "") return($this->parent->getImageUrl($img));
-    }
-    return $this->noimage;
+      return $this->noimage;
   }
 
 
@@ -513,14 +510,14 @@ create sequence SEQ_ID_APPLICATION start 10;
 
 
     $cdir = 'img-cache/';
-    $rcdir = $this->Getparam("CORE_PUBDIR").'/'.$cdir;
+    $rcdir = $this->rootdir.'/'.$cdir;
     if (!is_dir($rcdir)) mkdir($rcdir);
 
     $uimg = $cdir.$this->name.'-'.$fcol[0].'.'.$fcol[1].'.'. $fcol[2].'_'.$ncol[0].'.'.$ncol[1].'.'.$ncol[2].'.'.$img;
-    $cimg = $this->Getparam("CORE_PUBDIR").'/'.$uimg;
+    $cimg = $this->rootdir.'/'.$uimg;
     if (file_exists($cimg)) return $uimg;
     
-    $this->ImageFilterColor($this->Getparam("CORE_PUBDIR").'/'.$url, $fcol, $ncol, $cimg);
+    $this->ImageFilterColor($this->rootdir.'/'.$url, $fcol, $ncol, $cimg);
     return $uimg;
 
   }
@@ -534,7 +531,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     $ver=doubleval($this->session->Read("navversion"));
 
   
-    $laydir = $this->Getparam("CORE_PUBDIR")."/".$this->name."/Layout/";
+    $laydir = $this->rootdir."/".$this->name."/Layout/";
     $file = $laydir.$layname; // default file
  
   
@@ -542,7 +539,7 @@ create sequence SEQ_ID_APPLICATION start 10;
       return($file);
     } else { 
       // perhaps generic application
-      $file = $this->Getparam("CORE_PUBDIR")."/".$this->childof."/Layout/$layname";
+      $file = $this->rootdir."/".$this->childof."/Layout/$layname";
       if (file_exists($file))  return ($file);    
     }
     if ($this->parent != "") return($this->parent->GetLayoutFile($layname));

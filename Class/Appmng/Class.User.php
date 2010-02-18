@@ -253,14 +253,18 @@ create sequence seq_id_users start 10";
    * @return string firstname and lastname
    */
   static function getDisplayName($uid) {
+      static $tdn=array();
+      
     $uid=intval($uid);
     if ($uid > 0) {
+      if (isset($tdn[$uid])) return $tdn[$uid];
       $dbid=getDbId(getDbAccess());
       $res = pg_exec($dbid, "select firstname, lastname  from users where id=$uid");
       if (pg_num_rows($res) > 0) {
 	$arr = pg_fetch_array ($res, 0);
-	if ($arr["firstname"]) 	return $arr["firstname"].' '.$arr["lastname"];
-	else return $arr["lastname"];
+	if ($arr["firstname"]) 	 $tdn[$uid]=$arr["firstname"].' '.$arr["lastname"];
+	else $tdn[$uid]=$arr["lastname"];
+	return $tdn[$uid];
       }
       return false;
     }
