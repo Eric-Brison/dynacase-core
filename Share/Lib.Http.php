@@ -17,7 +17,7 @@
 
 function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=false)
 {
-  global $_SERVER; // use only  with HTTP
+  global $_SERVER,$_GET; // use only  with HTTP
   if ($_SERVER['HTTP_HOST'] == "") {
     print "\n--Redirect $appname $actionname--\n";
     return;
@@ -58,6 +58,8 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
     $trace["__server all"]=sprintf("%.03fs" ,$tic4-$tic1);
     $action->register("trace",$trace);    
   }
+  
+  if ($_GET["viewext"]=="yes") $location=str_replace("FDL_CARD","VIEWEXTDOC",$location);
   Header("Location: $location");
   exit;
 }
