@@ -67,9 +67,10 @@ create sequence SEQ_ID_ACTION;
 
   var $grant_level=0;
 
-  function Set($name,&$parent)
-  {
-  
+  function Set($name,&$parent)  {
+   $this->script="";
+    $this->layout="";
+    $this->function="";
     $query=new QueryDb($this->dbaccess,"Action","TABLE");
     if ($name!="") {
       $name=pg_escape_string($name);
@@ -370,9 +371,7 @@ create sequence SEQ_ID_ACTION;
     $pubdir = $this->parent->GetParam("CORE_PUBDIR");
     $nav=$this->Read("navigator");
     if ($this->layout != "") {
-    
       $layout=$this->GetLayoutFile( $this->layout);
-    
     } else {
       $layout = "";
     } 

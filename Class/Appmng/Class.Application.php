@@ -82,7 +82,7 @@ create sequence SEQ_ID_APPLICATION start 10;
   public $cssref=array();
   public $csscode=array();
 
-  function Set($name,&$parent, $session="")    {  
+  function Set($name,&$parent, $session="")    {
       $this->log->debug("Entering : Set application to $name");
 
       $query=new QueryDb($this->dbaccess,"Application");
@@ -92,36 +92,36 @@ create sequence SEQ_ID_APPLICATION start 10;
       $query->string = "'".pg_escape_string($name)."'";
       $list = $query->Query(0,0,"TABLE");
       if ($query->nb != 0) {
-	$this->affect($list[0]);
-	$this->log->debug("Set application to $name");
-	if (!isset ($parent)) {
-	  $this->log->debug("Parent not set");
-	}
+          $this->affect($list[0]);
+          $this->log->debug("Set application to $name");
+          if (!isset ($parent)) {
+              $this->log->debug("Parent not set");
+          }
       } else {
-	// Init the database with the app file if it exists
-	$this->InitApp($name);
-	if ($parent != "") {
-	  $this->parent=&$parent;
-	  if ($this->name=="") {
-	    print "fatal rrror in application name  $name";
-	    exit;
-	  } else Redirect($this,$this->name,"");
-	} else {
-	  global $_SERVER;
-	  if ($_SERVER['HTTP_HOST'] != "") Header("Location: ".$_SERVER['HTTP_REFERER']);
-	}
+          // Init the database with the app file if it exists
+          $this->InitApp($name);
+          if ($parent != "") {
+              $this->parent=&$parent;
+              if ($this->name=="") {
+                  print "fatal rrror in application name  $name";
+                  exit;
+              } else Redirect($this,$this->name,"");
+          } else {
+              global $_SERVER;
+              if ($_SERVER['HTTP_HOST'] != "") Header("Location: ".$_SERVER['HTTP_REFERER']);
+          }
       }
 
       if ($this !== $parent)  $this->parent=&$parent;
       if (is_object($this->parent) && isset($this->parent->session)) {
-	$this->session=$this->parent->session;
-	if (isset($this->parent->user) && is_object($this->parent->user)) {
-	  $this->user=$this->parent->user;	  
-	}
+          $this->session=$this->parent->session;
+          if (isset($this->parent->user) && is_object($this->parent->user)) {
+              $this->user=$this->parent->user;
+          }
       }
 
-      
-	
+
+
 
       if ($session != "") $this->SetSession($session);
 
@@ -129,20 +129,20 @@ create sequence SEQ_ID_APPLICATION start 10;
       $this->param=new Param($this->dbaccess);
       if ($this->session) $sessparam=$this->session->read("sessparam".$this->id,false);
       if ($sessparam) {
-	$this->param->appid=$this->id;
-	$this->param->buffer=$sessparam;
-	$this->InitStyle(false);
+          $this->param->appid=$this->id;
+          $this->param->buffer=$sessparam;
+          $this->InitStyle(false);
       } else {
-	$this->InitStyle();
-	$this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:false,$this->style->name);
-	if ($this->session) $this->session->register("sessparam".$this->id,$this->param->buffer);
+          $this->InitStyle();
+          $this->param->SetKey($this->id,isset($this->user->id)?$this->user->id:false,$this->style->name);
+          if ($this->session) $this->session->register("sessparam".$this->id,$this->param->buffer);
       }
-      $this->rootdir = $this->Getparam("CORE_PUBDIR");
+      if (! $this->rootdir) $this->rootdir = $this->Getparam("CORE_PUBDIR");
       if ($this->available == "N") {
-	// error
-	return sprintf(_("Application %s (%s) not available"),$this->name,_($this->short_name));
+          // error
+          return sprintf(_("Application %s (%s) not available"),$this->name,_($this->short_name));
       }
-    }
+  }
 
   function Complete() {
   }
@@ -534,7 +534,6 @@ create sequence SEQ_ID_APPLICATION start 10;
     $laydir = $this->rootdir."/".$this->name."/Layout/";
     $file = $laydir.$layname; // default file
  
-  
     if (file_exists($file)) {
       return($file);
     } else { 

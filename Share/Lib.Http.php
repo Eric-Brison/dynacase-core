@@ -58,8 +58,13 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
     $trace["__server all"]=sprintf("%.03fs" ,$tic4-$tic1);
     $action->register("trace",$trace);    
   }
-  
-  if (($_GET["viewext"]=="yes") || ($_POST["viewext"]=="yes")) $location=str_replace("FDL_CARD","VIEWEXTDOC",$location);
+  if (($_GET["viewext"]=="yes") || ($_POST["viewext"]=="yes")) {
+      $location=str_replace("FDL_CARD","VIEWEXTDOC",$location);    
+      if (preg_match("/action=GENERIC_EDIT/",$location)) {         
+          $location=str_replace("GENERIC_EDIT","EDITEXTDOC",$location);
+          $location=str_replace("app=GENERIC","app=FDL",$location);
+      }
+  }
   Header("Location: $location");
   exit;
 }
