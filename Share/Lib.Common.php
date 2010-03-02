@@ -48,7 +48,7 @@ function getMailAddr($userid, $full=false) {
   return false;
 }
 
-function GetParam($name, $def="") {
+function getParam($name, $def="") {
   global $action;
   if ($action)  return $action->getParam($name,$def);
   
@@ -59,6 +59,17 @@ function GetParam($name, $def="") {
   $act = new Action();
   $act->Set("",$core);
   return  $act->getParam($name, $def);
+}
+/**
+ * 
+ * @param string $name the variable 
+ * @param string $def default value if variable is not defined
+ * @return unknown_type
+ */
+function getSessionValue($name, $def="") {
+  global $action;
+  if ($action)  return $action->read($name,$def);
+  return  null;
 }
 
 function getLayoutFile($app, $layfile) {
