@@ -59,7 +59,7 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
     $action->register("trace",$trace);    
   }
   
-  if ($_GET["viewext"]=="yes") $location=str_replace("FDL_CARD","VIEWEXTDOC",$location);
+  if (($_GET["viewext"]=="yes") || ($_POST["viewext"]=="yes")) $location=str_replace("FDL_CARD","VIEWEXTDOC",$location);
   Header("Location: $location");
   exit;
 }
