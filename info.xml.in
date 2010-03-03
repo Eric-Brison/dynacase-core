@@ -46,6 +46,7 @@
     <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
     <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
     <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
+    <check type="phpbug45996"><help>Your PHP installation seems to have a known bug (ref #45996: http://bugs.php.net/bug.php?id=45996). Please use an updated PHP version that corrects this bug.</help></check>
     <check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>
     <check type="phpfunction" function="ldap_connect"><help>You might need to install a php-ldap package from your distribution in order to have LDAP support in PHP.</help></check>
     <check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>
@@ -139,7 +140,9 @@
 
   <changelog>
 
-
+    <version number="2.15.1-10" date="2010-03-03">
+      <change title="Added check to PHP bug #45996" />
+    </version>
 
 <version number="2.15.0-2" date="2010-01-13">
   <change title="Corrected a missing regex delimiter in preg_match()" />
