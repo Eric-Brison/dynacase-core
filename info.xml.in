@@ -139,6 +139,9 @@
   <post-remove></post-remove>
 
   <changelog>
+    <version number="2.15.1-11" date="2010-03-12">
+      <change title="Fixed erroneous salt used in crypted password" url="http://dev.freedom-ecm.org/issues/639" />
+    </version>
 
     <version number="2.15.1-10" date="2010-03-03">
       <change title="Added check to PHP bug #45996" />
