@@ -27,6 +27,17 @@ function checkauth(&$action) {
   }
 
   if( $status == FALSE ) {
+    $providerErrno = $auth->getProviderErrno();
+    if( $providerErrno != 0 ) {
+      switch( $providerErrno ) {
+      case Provider::ERRNO_BUG_639:
+       // User must change his password
+       $action->session->close();
+       global $_POST;
+       Redirect($action, 'AUTHENT', 'ERRNO_BUG_639');
+       exit(0);
+      }
+    }
     $action->session->close();
     sleep(1); // for robots
 //     error_log(__CLASS__."::".__FUNCTION__." ".'Location : '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM&error=1');

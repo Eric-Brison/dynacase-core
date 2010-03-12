@@ -26,6 +26,7 @@ Class ldapProvider extends Provider {
     $err = ldap_get_option($r, LDAP_OPT_PROTOCOL_VERSION, $ret);
     if (!$err) {
       error_log("[$ret] Can't establish LDAP connection : $uri");
+      $this->errno = 0;
       return FALSE;
     }
     $opts = $this->parms{'options'};
@@ -35,16 +36,21 @@ Class ldapProvider extends Provider {
 
     $dn = sprintf($dnbase, $username);
     $b = @ldap_bind($r, $dn, $password);
-    if ($b) return TRUE;
+    if ($b) {
+      $this->errno = 0;
+      return TRUE;
+    }
     else {
       $err = ldap_error($r);
       error_log("user=[$dn] pass=[*********] result=>".($b?"OK":"NOK")." ($err)");
     }
+    $this->errno = 0;
     return FALSE;    
   }
   
   
   public function validateAuthorization($opt) {
+    $this->errno = 0;
     return TRUE; 
   }
   
@@ -68,7 +74,10 @@ Class ldapProvider extends Provider {
     $whatuser->famid="IUSER";
     $err=$whatuser->Add();
     error_log("What user $username added (id=".$whatuser->id.")");
-    if ($err != "") return sprintf(_("cannot create user %s: %s"),$username,$err);
+    if ($err != "") {
+      $this->errno = 0;
+      return sprintf(_("cannot create user %s: %s"),$username,$err);
+    }
 
       
     include_once("FDL/Class.DocFam.php");
@@ -91,7 +100,8 @@ Class ldapProvider extends Provider {
       sprintf(_("cannot create user %s: %s"),$username,$err." (freedom)");
     }
     $core->session->close();
-	
+    
+    $this->errno = 0;
     return $err;
   }
 }

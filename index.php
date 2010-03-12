@@ -51,6 +51,14 @@ if ($authtype == 'apache') {
   }
 
   if( $status == FALSE ) {
+    $providerErrno = $auth->getProviderErrno();
+    if( $providerErrno != 0 ) {
+      switch( $providerErrno ) {
+      case Provider::ERRNO_BUG_639:
+	// User must change his password
+	$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
+      }
+    }
     sleep(2); // wait for robots
     $auth->askAuthentication();
     exit(0);

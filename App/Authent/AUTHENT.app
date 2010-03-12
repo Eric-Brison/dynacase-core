@@ -38,6 +38,9 @@ $action_desc = array (
   ),
   array(
    "name"               =>"CALLBACKREQPASSWD"
+  ),
+  array(
+   "name"              =>"ERRNO_BUG_639"
   )
                       );
    

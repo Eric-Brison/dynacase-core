@@ -79,7 +79,14 @@ abstract class Authenticator {
     error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Initialized freedom user '%s'!", $username));
     return TRUE;
   }
-  
+
+  public function getProviderErrno() {
+    if( $this->provider ) {
+      return $this->provider->errno;
+    }
+    return 0;
+  }
+
   abstract function checkAuthentication();
   abstract function checkAuthorization($opt);
   abstract function askAuthentication();

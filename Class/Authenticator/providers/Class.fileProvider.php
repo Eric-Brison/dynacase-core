@@ -18,6 +18,7 @@ Class fileProvider extends Provider {
     $fh = fopen($pwdfile, 'r');
     if( $fh == FALSE ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: opening file ".$pwdfile);
+      $this->errno = 0;
       return FALSE;
     }
     $passwd = array();
@@ -29,6 +30,7 @@ Class fileProvider extends Provider {
       $passwd{$el[0]} = trim($el[1]);
     }
     fclose($fh);
+    $this->errno = 0;
     return $passwd;
   }
 
@@ -39,25 +41,38 @@ Class fileProvider extends Provider {
     
     if( ! array_key_exists('authfile', $this->parms) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: authfile parm is not defined at __construct");
+      $this->errno = 0;
       return FALSE;
     }
     
     if ($pwdFile===false) $pwdFile = $this->readPwdFile($this->parms{'authfile'} );
     if ($pwdFile===false) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: reading authfile ".$this->parms{'authfile'});
+      $this->errno = 0;
       return false;
     }
     
-    if( ! array_key_exists($username, $pwdFile) ) return FALSE;
+    if( ! array_key_exists($username, $pwdFile) ) {
+      $this->errno = 0;
+      return FALSE;
+    }
     $ret = preg_match("/^(..)/", $pwdFile[$username], $salt);
-    if( $ret == 0 ) return FALSE;
+    if( $ret == 0 ) {
+      $this->errno = 0;
+      return FALSE;
+    }
     
-    if( $pwdFile[$username] == crypt($password, $salt[0]) ) return true;
+    if( $pwdFile[$username] == crypt($password, $salt[0]) ) {
+      $this->errno = 0;
+      return true;
+    }
     
+    $this->errno = 0;
     return false;
   }
 
   public function validateAuthorization($opt) {
+    $this->errno = 0;
     return TRUE; 
   }
 

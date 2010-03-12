@@ -123,7 +123,7 @@ function sendResponse($action, $userdoc, $layoutPath, $password) {
 
   $content = $layout->gen();
 
-  $mimemail = new Mail_Mime("\r\n");
+  $mimemail = new Fdl_Mail_Mime("\r\n");
   $mimemail->setHTMLBody($content);
 
   $ret = sendmail(
