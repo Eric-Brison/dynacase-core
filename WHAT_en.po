@@ -850,7 +850,7 @@ msgstr ""
 "<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a></"
 "p>"
 
-msgid "errno_bug_639_mmessage"
+msgid "errno_bug_639_message"
 msgstr ""
 "<p>You must re-initialize your password.</p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Re-initialize my password</a></p>"

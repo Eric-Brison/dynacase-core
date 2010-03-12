@@ -825,7 +825,7 @@ msgstr ""
 "<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
 "[CORE_EXTERNURL]</a>"
 
-msgid "errno_bug_639_mmessage"
+msgid "errno_bug_639_message"
 msgstr ""
 "<p>Vous devez ré-initialiser votre mot de passe.</p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Ré-initialiser mon mot de passe</a></p>"
