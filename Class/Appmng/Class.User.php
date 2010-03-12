@@ -443,8 +443,10 @@ create sequence seq_id_users start 10";
   // --------------------------------------------------------------------
   function computepass($pass, &$passk)
     {
+      $salt_space = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./";
       srand((double)microtime()*1000000);
-      $salt = chr(rand(59,122)).chr(rand(59,122));
+      $salt =  $salt_space[rand(0,strlen($salt_space)-1)];
+      $salt .= $salt_space[rand(0,strlen($salt_space)-1)];
       $passk = crypt($pass, $salt);
     }
 
