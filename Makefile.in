@@ -25,6 +25,7 @@ SUBDIR= programs Admin Expire Class Action Zone Share App Api Images Style Doc d
 TOP_MODULES =  indexq.php wsh.php wvirtual.php  guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess index.php
 
 pages_not_xml = info.xml
+pages_not_php=fam2po.php po2js.php
 
 include $(utildir)/PubRule
 
