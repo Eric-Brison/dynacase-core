@@ -164,7 +164,12 @@ create sequence SEQ_ID_ACTION;
       return($this->parent->GetParam($name, $def));
     }
   }
-  
+  /**
+   * set a new value for a user parameter
+   * @param string $name parameter key
+   * @param string $val new value for the parameter
+   * @return string error message if not succeeed else empty string 
+   */
  function setParamU($name, $val) {
     if (isset ($this->parent)) {
       return($this->parent->setParamU($name, $val));
@@ -519,6 +524,17 @@ create sequence SEQ_ID_ACTION;
     }
   }
 
+  /**
+   * retrieve the value of an argument fot the action
+   * in web mode the value comes from http variable and in shell mode comes from args variable
+   * @param string $k the argument name
+   * @param any $def default value if no argument is not set
+   */
+  function getArgument($k, $def='') {
+      $v=getHttpVars($k,null);
+      if ($v===null) return $def;
+      else return $v;
+  }
 
   function Text($code, $args=NULL) {  
     if ($code == "") return "";  
