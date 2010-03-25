@@ -41,7 +41,7 @@ function logout(&$action) {
     $auth = new $authClass( $authtype, "__for_logout__" );
   }
   
-  if( $authtype == 'html' || $authtype == 'basic') {
+  if( $authtype == 'cas' || $authtype == 'html' || $authtype == 'basic') {
     $redir_uri = $action->GetParam("CORE_BASEURL");
     $action->session->close();
 

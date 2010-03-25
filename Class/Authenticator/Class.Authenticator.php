@@ -68,7 +68,7 @@ abstract class Authenticator {
 
   public function tryInitializeUser($username) {
     if( ! $this->provider->canICreateUser() ) {
-      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Authentication failed for user '%s' because auto-creation is disabled!", $username));
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Authentication failed for user '%s' because auto-creation is disabled for provider '%s'!", $username, $this->provider->pname));
       return FALSE;
     }
     $err = $this->provider->initializeUser($username);
