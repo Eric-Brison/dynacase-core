@@ -35,13 +35,14 @@ function getMainAction($auth,&$action) {
   $defaultapp=false;
   if (! getHttpVars("app")) {
       $defaultapp=true;
-    $_GET["app"]="CORE";
-    if ($_SERVER["FREEDOM_ACCESS"]) {
-      $_GET["app"] = $_SERVER["FREEDOM_ACCESS"];
-      $_GET["action"] = "";    
-    } else {
-        $_GET["action"] = "INVALID"; 
-    }
+      $_GET["app"]="CORE";
+      if ($_SERVER["FREEDOM_ACCESS"]) {
+          $_GET["app"] = $_SERVER["FREEDOM_ACCESS"];
+          $_GET["action"] = "";
+      } else {
+          $defaultapp=false;
+          $_GET["action"] = "INVALID";
+      }
   }
 
   if (isset($_COOKIE['freedom_param'])) $sess_num= $_COOKIE['freedom_param'];
