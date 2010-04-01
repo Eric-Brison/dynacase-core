@@ -105,7 +105,7 @@ function sendCallback($action, $userdoc, $layoutPath) {
   $token->userid = $userdoc['id'];
   $token->token = $token->genToken();
   $token->setExpiration();
-
+  $token->expendable=1;
   $err = $token->add();
   if( $err != "" ) {
     error_log(__CLASS__."::".__FUNCTION__." "."Error token->add() : ".$err);
