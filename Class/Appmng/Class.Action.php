@@ -530,7 +530,7 @@ create sequence SEQ_ID_ACTION;
    * @param string $k the argument name
    * @param any $def default value if no argument is not set
    */
-  function getArgument($k, $def='') {
+  static function getArgument($k, $def='') {
       $v=getHttpVars($k,null);
       if ($v===null) return $def;
       else return $v;
