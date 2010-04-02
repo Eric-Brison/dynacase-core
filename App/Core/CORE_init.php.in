@@ -151,7 +151,7 @@ $app_const = array (
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
-		    "CORE_LOGOCLIENT"		=>array("val"=>"FDL/Images/logo16.ico",
+		    "CORE_LOGOCLIENT"		=>array("val"=>"CORE/Images/logo-mini.png",
 							"descr"=>N_("client logo"),
 							"user"=>"N",
 							"style"=>"N",
