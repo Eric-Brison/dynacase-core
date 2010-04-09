@@ -49,12 +49,15 @@ function getVaultPauth($vid) {
             if ($dbfree) {
                 $rfree = pg_connect($dbfree);
                 if ($rfree) {
-                    $result = pg_query("select id_dir,name from vaultdiskstorage where id_file=$vid");
+                    $result = pg_query("select id_dir,name,public_access from vaultdiskstorage where id_file=$vid");
                     if ($result) {
                         $row = pg_fetch_row($result);
                         if ($row) {
                             $iddir=$row[0];
                             $name=$row[1];
+			    $free=$row[2];
+
+			    if (! $free) return false;
 
                             if (preg_match('/\.([^\.]*)$/',$name,$reg)) {
                                 $ext=$reg[1];

@@ -100,13 +100,17 @@ $(pubdir)/session:
 	mkdir -p $@
 $(pubdir)/session/.htaccess: htaccess.session $(pubdir)/session
 	cp $< $@
+$(pubdir)/.img-resize:
+	mkdir -p $@
+$(pubdir)/.img-resize/.htaccess: htaccess.session $(pubdir)/.img-resize
+	cp $< $@
 
 $(pubdir)/img-cache:
 	mkdir -p $@
 $(pubdir)/img-cache/.htaccess: htaccess.img-cache $(pubdir)/img-cache
 	cp $< $@
 
-publish:   $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess
+publish:   $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess
 
 clean:
 	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
