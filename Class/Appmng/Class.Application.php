@@ -82,7 +82,7 @@ create sequence SEQ_ID_APPLICATION start 10;
   public $cssref=array();
   public $csscode=array();
 
-  function Set($name,&$parent, $session="")    {
+  function Set($name,&$parent, $session="",$autoinit=true)    {
       $this->log->debug("Entering : Set application to $name");
 
       $query=new QueryDb($this->dbaccess,"Application");
@@ -98,6 +98,7 @@ create sequence SEQ_ID_APPLICATION start 10;
               $this->log->debug("Parent not set");
           }
       } else {
+          if ($autoinit) {
           // Init the database with the app file if it exists
           $this->InitApp($name);
           if ($parent != "") {
@@ -109,6 +110,7 @@ create sequence SEQ_ID_APPLICATION start 10;
           } else {
               global $_SERVER;
               if ($_SERVER['HTTP_HOST'] != "") Header("Location: ".$_SERVER['HTTP_REFERER']);
+          }
           }
       }
 
