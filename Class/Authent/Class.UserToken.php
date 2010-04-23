@@ -71,10 +71,8 @@ Class UserToken extends DbObj
       if( ! is_numeric($expiration) ) {
 	return false;
       }
-      $today = new DateTime();
-      $expireDate = clone $today;
-      $expireDate->modify("+".$expiration." seconds");
-      $this->expire = $expireDate->format(DATE_RFC3339);
+     
+      $this->expire=strftime("%Y-%m-%d %H:%M:%S",time()+$expiration);
     }
 
     return $this->expire;
