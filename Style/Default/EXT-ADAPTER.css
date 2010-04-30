@@ -1,0 +1,112 @@
+.document {
+	font-family: tahoma,arial,helvetica,sans-serif;
+	padding: 10px;
+}
+
+.document legend, .document a {
+	color: #15428B;
+	font-weight: bold;
+}
+
+.document legend {
+	font-size: 11px;	
+}
+
+.document a:HOVER {
+	background-color: white;
+	text-decoration: none;
+}
+
+.document fieldset {
+	background-color: white !important;
+	border: 1px solid #B5B8C8;
+	-moz-border-radius: 0px;
+	margin-bottom: 10px;
+}
+
+.document .FREEDOMLabel {
+	text-align: left;
+}
+
+.document .FREEDOMLabelNeeded {
+	text-align: left;
+}
+
+.document input, .document select, .document textarea, .document file {
+	background-color: #FFFFFF;
+	background: url(../../../lib/ext/resources/images/default/form/text-bg.gif);
+	background-repeat: repeat-x;
+	border: 1px solid #B5B8C8;
+	font-size: 11px;
+}
+
+.document input[type=button] {
+	background-image: url(../../../lib/ext/resources/images/default/form/trigger-tpl.gif);
+	border-top: 0px;
+	border-right: 0px;
+	width: 17px;
+	margin-right: 0px !important;
+	cursor: pointer;
+	height: 22px;
+}
+
+.document input[type=button]:HOVER {
+	background-position: -17px 0px;	
+}
+
+.document input[type=text], .document input[type=password], .document select, .document textarea {
+	padding: 3px;
+}
+
+.document td, .document tr, .document th {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.document th {
+	background: url(../../../lib/ext/resources/images/default/panel/top-bottom.gif) repeat-x;
+	height: 24px;
+	border: 1px solid #99BBE8 !important;
+	border-top: 0px !important;
+	padding-left: 3px !important;
+}
+
+.document td {
+	border: 0px !important;	
+}
+
+.document .tarray {
+	border: 0;
+}
+
+.document .line {
+	margin-bottom: 10px;
+	height: 2px;
+	border-bottom: 1px solid #99BBE8;
+	border-top: 1px solid #99BBE8;
+	background-color: #DFE8F6;
+	position: relative;
+	top: -1px;
+}
+
+.document .tabsh span {
+	color: #15428B;
+	font-weight: bold;
+	font-size: 11px;
+	-moz-border-radius: 0px;
+	border-left: 1px solid #99BBE8;
+	border-right: 1px solid #99BBE8;
+	border-top: 0;
+	border-bottom: 0;
+	margin-left: 5px;
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background: url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif) repeat-x scroll 0 -201px;
+}
+
+.document .tabsh .tabsel {
+	background: url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif) repeat-x scroll 0 -151px;
+	position: relative;
+	z-index: 1;
+}
