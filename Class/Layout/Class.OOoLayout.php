@@ -237,7 +237,6 @@ class OOoLayout extends Layout {
  function content2odf($odsfile) {
   if (file_exists($odsfile)) return "file $odsfile must not be present";
   
-  
   $contentxml=$this->cibledir."/content.xml";
     $this->template=preg_replace("/<text:span ([^>]*)>\s*<text:section>/s","<text:section>",$this->template);
    $this->template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->template);
@@ -248,12 +247,12 @@ class OOoLayout extends Layout {
 
 
 
-  $this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section[^>]*>/s","<text:section>",$this->template);
+  $this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->template);
   $this->template=preg_replace("/<text:p ([^>]*)><text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
   $this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template); 
   $this->template=str_replace("&lt;text:line-break/&gt;","<text:line-break/>",$this->template);
 
-
+//  header('Content-type: text/xml; charset=utf-8');print($this->template);exit;
   file_put_contents($contentxml,$this->template);
   
   $contentxml=$this->cibledir."/styles.xml";
@@ -597,6 +596,7 @@ class OOoLayout extends Layout {
 
     $outfile=uniqid("/var/tmp/odf").'.odt';
     $this->content2odf($outfile);
+    
     } else {
       $outfile=$this->template;
     }
