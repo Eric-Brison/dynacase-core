@@ -130,7 +130,7 @@ function autoHresize1() {
     //sw=document.body.scrollWidth;
     iw=document.documentElement.offsetWidth;
   } else {
-    sw=document.documentElement.scrollWidth-4;
+    sw=document.body.scrollWidth-4;
     iw=getFrameWidth()-4;
   }
   if (document.body.scrollWidth > self.screen.availWidth) 
