@@ -139,6 +139,9 @@
   <post-remove></post-remove>
 
   <changelog>
+    <version number="3.0.4" date="2010-05-07">
+      <change title="gpc_magic_quote in htaccess" url="http://dev.freedom-ecm.org/issues/733" />
+    </version>
     <version number="2.15.2-1" date="2010-03-25">
       <change title="Added support for CAS authentication type in AUTHENT:LOGOUT" />
     </version>
