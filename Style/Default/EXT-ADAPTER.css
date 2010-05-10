@@ -116,15 +116,15 @@
 }
 
 .document .tarray .trash-button, .document .tarray .trash-button:HOVER {
-	background : transparent url(../../../lib/ui/icon/delete.png) no-repeat scroll 2px 2px;
+	background : transparent url(../../../lib/ui/icon/bin.png) no-repeat scroll 2px 2px;
 }
 
 .document .tarray .select-button, .document .tarray .select-button:HOVER {
-	background : transparent url(../../../lib/ui/icon/bullet_go.png) no-repeat scroll 2px 2px;
+	background : transparent url(../../../lib/ui/icon/application_get.png) no-repeat scroll 2px 2px;
 }
 
 .document .tarray .unselect-button, .document .tarray .unselect-button:HOVER {
-	background : url(../../../lib/ui/icon/cross.png) no-repeat;
+	background : url(../../../lib/ui/icon/application_put.png) no-repeat;
 }
 
 .document .tarray .duplicate-button, .document .tarray .duplicate-button:HOVER {
