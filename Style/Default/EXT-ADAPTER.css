@@ -110,3 +110,27 @@
 	position: relative;
 	z-index: 1;
 }
+
+.document .tarray .add-button, .document .tarray .add-button:HOVER  {
+	background : url(../../../lib/ui/icon/add.png) no-repeat;
+}
+
+.document .tarray .trash-button, .document .tarray .trash-button:HOVER {
+	background : transparent url(../../../lib/ui/icon/delete.png) no-repeat scroll 2px 2px;
+}
+
+.document .tarray .select-button, .document .tarray .select-button:HOVER {
+	background : transparent url(../../../lib/ui/icon/bullet_go.png) no-repeat scroll 2px 2px;
+}
+
+.document .tarray .unselect-button, .document .tarray .unselect-button:HOVER {
+	background : url(../../../lib/ui/icon/cross.png) no-repeat;
+}
+
+.document .tarray .duplicate-button, .document .tarray .duplicate-button:HOVER {
+	background : url(../../../lib/ui/icon/application_double.png)  no-repeat;
+}
+
+.document tr.selecta td {
+	background-color: #DFE8F6 !important;
+}
