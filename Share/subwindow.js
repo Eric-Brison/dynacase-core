@@ -7,6 +7,12 @@
 
 
 function subwindow(h, w, name, url) {
+	
+	if(window.parent.Ext){
+		console.log('ExtJS is available',window.parent.Ext);
+		window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name);
+	} else {
+		
    var screen_width, screen_height;
    var win_top, win_left;
    var HelpWin;
@@ -34,9 +40,11 @@ function subwindow(h, w, name, url) {
      me.location.href=url;
    }
   if (me) me.focus();
-
     
   return me;
+  
+	}
+  
 }
 
 // with menu
