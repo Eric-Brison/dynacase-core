@@ -179,17 +179,16 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
    } 
    header("Content-type: ".$mime_type);
    header("Content-Transfer-Encoding: binary");
-   header("Content-Length: ".filesize($filename)); 
-   $fd = fopen($filename, "r");
-   if ($fd) {
-     while (! feof($fd)) {
-       $contents = fread($fd, 4096);
-       echo $contents;
-     }
-     fclose($fd);
+   header("Content-Length: ".filesize($filename));
+   ob_clean();
+   flush();
+   if (file_exists($filename)) {
+       readfile($filename);
+       exit;
    } else {
-     printf(_("file not found : %s"),$filename);
+       printf(_("file not found : %s"),$filename);
    }
+
    
 }
 
