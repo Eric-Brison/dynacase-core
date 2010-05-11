@@ -2,9 +2,11 @@ var __OURL__ = false;
 
 function _autoclose(event) {
 	var wopener=window.opener;
-	if (! wopener) wopener=window._opener;
 	
-	if ((!wopener) || (wopener.closed))	self.close();
+	if ((!wopener) || (wopener.closed))	{
+		self.close();
+		return;
+	}
 
 	// if (console) console.log('test autoclose',wopener);
 	var a;
@@ -21,8 +23,8 @@ function _autoclose(event) {
 	}
 }
 
-if (wopener) {
-	if (win.opener)	__OURL__ = window.opener.location.href;
-	else if (win._opener)	__OURL__ = window._opener.location.href;
+
+	if (window.opener)	__OURL__ = window.opener.location.href;
+	else if (window._opener)	__OURL__ = window._opener.location.href;
 	setInterval('_autoclose()', 2000);
-}
+
