@@ -12,8 +12,9 @@ function subwindow(h, w, name, url) {
 
 	if (! me) {
 		if(window.parent.Ext){
-			window.parent.Ext.fdl.Interface.prototype.publish('openurl','about:blank',name);
-			me  = window.open(url,name);
+			window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name,{opener:window});
+//			window.parent.Ext.fdl.Interface.prototype.publish('openurl','about:blank',name);
+//			me  = window.open(url,name);
 			
 			return me;
 		} else {
