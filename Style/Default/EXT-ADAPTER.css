@@ -22,6 +22,7 @@
 	border: 1px solid #B5B8C8;
 	-moz-border-radius: 0px;
 	margin-bottom: 10px;
+	padding: 10px 5px 5px 5px;
 }
 
 .document .FREEDOMLabel {
@@ -84,6 +85,10 @@
 
 .document td {
 	border: 0px !important;	
+}
+
+.document td, .document th {
+	font-size: 11px;	
 }
 
 .document .tarray {
