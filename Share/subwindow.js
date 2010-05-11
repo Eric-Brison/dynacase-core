@@ -9,8 +9,15 @@
 function subwindow(h, w, name, url) {
 	
 	if(window.parent.Ext){
-		console.log('ExtJS is available',window.parent.Ext);
 		window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name);
+		var me = windowExist(name, true);
+		if (me && (!me.opener)) {
+			me.opener=window;
+			if (! me.opener) me._opener=window;
+			console.log('add opener ME',me._opener);
+		}
+		console.log('subwindow ME',me);
+		return me;
 	} else {
 		
    var screen_width, screen_height;
@@ -22,7 +29,7 @@ function subwindow(h, w, name, url) {
    if (window.innerHeight) screen_height = window.innerHeight;
    win_top  = screen_height - h - 20;
    win_left = screen_width  - w  - 20;
-   me = windowExist(name, true);
+   var me = windowExist(name, true);
   
    if (! me) {
      me  = window.open(
@@ -39,8 +46,10 @@ function subwindow(h, w, name, url) {
    } else {
      me.location.href=url;
    }
-  if (me) me.focus();
-    
+  if (me) {
+	  me.focus();
+  }
+  
   return me;
   
 	}
