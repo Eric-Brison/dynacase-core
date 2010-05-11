@@ -50,6 +50,17 @@
 	height: 22px;
 }
 
+.document input.normal {
+        background:transparent none repeat-x scroll 0 -1096px;
+        background-image:url(../../../lib/ext/resources/images/default/button/btn.gif);
+        width: auto;
+        margin-right: 0px !important;
+        cursor: pointer;
+        height: 22px;
+}
+.document input.normal:hover {
+        background-position: 0px -2168px !important; 
+}
 .document input[type=button]:HOVER {
 	background-position: -17px 0px;	
 }
