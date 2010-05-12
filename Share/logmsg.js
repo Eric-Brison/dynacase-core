@@ -127,7 +127,11 @@ function windowExist(Name, NoOpen) {
 var warnmsg='';
 function displayWarningMsg(logmsg) {
   warnmsg=logmsg;
+  if(window.parent.Ext){
+		window.parent.Ext.Msg.alert('freedom',warnmsg);
+	} else {
   setTimeout('alert(warnmsg)',1000);
+	}
 }
 function displayLogMsg(logmsg) {
 
