@@ -25,6 +25,6 @@ function _autoclose(event) {
 
 
 	if (window.opener)	__OURL__ = window.opener.location.href;
-	else if (window._opener)	__OURL__ = window._opener.location.href;
+	//else if (window._opener)	__OURL__ = window._opener.location.href;
 	setInterval('_autoclose()', 2000);
 
