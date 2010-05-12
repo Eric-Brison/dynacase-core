@@ -19,8 +19,12 @@ function whattext ()
     numberone=`cat $ntf`
     numbertwo=`expr $numberone + 1`
     today=`date "+%F %T"`
-    for lang in en fr ; do
-	pushd $wpub/locale/$lang/LC_MESSAGES >/dev/null
+    for lang_dir in "$wpub"/locale/*; do
+	if [ ! -d "$lang_dir/LC_MESSAGES" ]; then
+	    continue
+	fi
+
+	pushd "$lang_dir/LC_MESSAGES" >/dev/null
 	mv freedom-catalog.mo freedom-catalog.mo.old 1> /dev/null 2>&1
 	
         find . -type l -name "freedom-catalog[0-9]*.mo" -exec /bin/rm {} \;
@@ -41,8 +45,8 @@ function whattext ()
 	fi
 	popd >/dev/null
 
-	if [ -d $wpub/locale/$lang/js ]; then
-	  pushd $wpub/locale/$lang/js > /dev/null
+	if [ -d "$lang_dir/js" ]; then
+	  pushd "$lang_dir/js" > /dev/null
 	  echo '{"fdl:creationDate":"'$today'"}'> null-mo.js
 	  cat  *mo.js | sed -e 's/"}{"/","/g'  > catalog.js
 	  \rm null-mo.js
