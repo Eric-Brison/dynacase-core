@@ -12,11 +12,8 @@ function subwindow(h, w, name, url) {
 
 	if (! me) {
 		if(window.parent.Ext){
-			window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name,{opener:window});
-//			window.parent.Ext.fdl.Interface.prototype.publish('openurl','about:blank',name);
-//			me  = window.open(url,name);
-			
-			return me;
+			window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name,{height: h, width: w, opener:window});			
+			//return me;
 		} else {
 
 			var screen_width, screen_height;
@@ -28,8 +25,6 @@ function subwindow(h, w, name, url) {
 			if (window.innerHeight) screen_height = window.innerHeight;
 			win_top  = screen_height - h - 20;
 			win_left = screen_width  - w  - 20;
-
-
 
 			me  = window.open(
 					url,
@@ -70,18 +65,23 @@ function subwindowm(h, w, name, url) {
    win_left = screen_width  - w  - 20;
    me = windowExist(name, true);
    if (! me) {
-     me  = window.open(
-		       url,
-		       name,
-		       'menubar=yes,resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
-     
-     if (!me) {
-       if (confirm("Ouverture fenêtre impossible.\nVoulez vous affichez la page dans la fenêtre courante ?")) {
-	 window.location.href=url;
-       }
-     } else {
-       getConnexeWindows(me);
-     }
+	   if(window.parent.Ext){
+			window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,name,{height: h, width: w, opener:window});			
+			//return me;
+		} else {
+		     me  = window.open(
+				       url,
+				       name,
+				       'menubar=yes,resizable=yes,scrollbars=yes,width='+w+',height='+h+',top='+win_top+',left='+win_left);
+		     
+		     if (!me) {
+		       if (confirm("Ouverture fenêtre impossible.\nVoulez vous affichez la page dans la fenêtre courante ?")) {
+			 window.location.href=url;
+		       }
+		     } else {
+		       getConnexeWindows(me);
+		     }
+		}
    } else {
      me.location.href=url;
    }
