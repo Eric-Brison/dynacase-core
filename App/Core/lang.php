@@ -60,7 +60,7 @@ function load_lang(&$lang, $lang_dir) {
 }
 
 function load_lang_php(&$lang, $file) {
-  $ret = @include_once($file);
+  $ret = include_once($file);
   return $ret;
 }
 
