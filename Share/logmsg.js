@@ -128,8 +128,8 @@ var warnmsg='';
 function displayWarningMsg(logmsg) {
   warnmsg=logmsg;
   if(window.parent.Ext){
-	  	warnmsg = warnmsg.replace("\n",'<br/>');
-	  	warnmsg = warnmsg.replace("\r",'<br/>');
+	  	warnmsg = warnmsg.replace(new RegExp("\n","ig"),'<br/>');
+	  	warnmsg = warnmsg.replace(new RegExp("\n","ig"),'<br/>');
 		window.parent.Ext.Msg.alert('freedom',warnmsg);
 	} else {
   setTimeout('alert(warnmsg)',1000);
