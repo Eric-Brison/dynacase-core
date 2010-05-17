@@ -41,6 +41,12 @@
 	font-size: 11px;
 }
 
+ .document select {
+        background-color: #FFFFFF;
+        background-repeat: repeat-x;
+        border: 1px solid #B5B8C8;
+        font-size: 11px;
+}
 .document input[type=button] {
 	background-image: url(../../../lib/ext/resources/images/default/form/trigger-tpl.gif);
 	border-top: 0px;
