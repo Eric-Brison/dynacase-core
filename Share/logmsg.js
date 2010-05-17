@@ -128,6 +128,7 @@ var warnmsg='';
 function displayWarningMsg(logmsg) {
   warnmsg=logmsg;
   if(window.parent.Ext){
+	  	warnmsg = warnmsg.replace('\n','<br/>');
 		window.parent.Ext.Msg.alert('freedom',warnmsg);
 	} else {
   setTimeout('alert(warnmsg)',1000);

@@ -89,7 +89,7 @@ function getKeyPress(event)
 
 
 function autoVresize() {
-  if (window != top) return;
+  if (window != top && !window.parent.Ext) return;
 
   var dw=0;
   var dh=0;
@@ -110,15 +110,20 @@ function autoVresize() {
     dh=availHeight-ih;  
   else 
     dh=sh-ih;
-
- 
+  
   //    alert('V['+sh+']['+ih+']['+dh+',SH['+document.body.scrollHeight);
-  if (dh > 0) window.resizeBy(dw,dh);
+  if (dh > 0) {
+	  console.log('AUTOVRESIZE', dh, window);
+	  window.resizeBy(dw,dh);
+	  if(window.extResize){
+		  window.extResize(dw,dh);
+	  };
+  }
 
 }
 
 function autoHresize1() {
-  if (window != top) return;
+  if (window != top && !window.parent.Ext) return;
   var dw=0;
   var dh=0;
   var sw;
@@ -138,15 +143,19 @@ function autoHresize1() {
   else {    
     dw=sw-iw;
   }
-
+  
   //alert('H1['+document.body.clientWidth+']['+document.documentElement.offsetWidth+']['+document.body.offsetWidth+']['+document.documentElement.scrollWidth);
   //alert('H['+sw+']['+iw+']['+dw);
   if (dw > 0) {
     if (isIE) dw+=22; // add scrollbar
+    console.log('AUTOHRESIZE', dw, window);
     window.resizeBy(dw,dh);
+    if(window.extResize){
+		  window.extResize(dw,dh);
+	  };
   }
 }
-function autoHresize() {  
+function autoHresize() {
   autoHresize1();
   autoHresize1(); // need twice when very empty ?!
 }
