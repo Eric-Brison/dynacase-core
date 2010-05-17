@@ -113,7 +113,6 @@ function autoVresize() {
   
   //    alert('V['+sh+']['+ih+']['+dh+',SH['+document.body.scrollHeight);
   if (dh > 0) {
-	  console.log('AUTOVRESIZE', dh, window);
 	  window.resizeBy(dw,dh);
 	  if(window.extResize){
 		  window.extResize(dw,dh);
@@ -148,7 +147,6 @@ function autoHresize1() {
   //alert('H['+sw+']['+iw+']['+dw);
   if (dw > 0) {
     if (isIE) dw+=22; // add scrollbar
-    console.log('AUTOHRESIZE', dw, window);
     window.resizeBy(dw,dh);
     if(window.extResize){
 		  window.extResize(dw,dh);
