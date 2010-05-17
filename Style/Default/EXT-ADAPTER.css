@@ -51,6 +51,15 @@
 	height: 22px;
 }
 
+.document input.constraint {
+        background-image: url(../../../Images/tabvig.png);
+        border-top: 0px;
+        border-right: 0px;
+        width: 17px;
+        margin-right: 0px !important;
+        cursor: pointer;
+        height: 22px;
+}
 .document input.normal {
         background:transparent none repeat-x scroll 0 -1096px;
         background-image:url(../../../lib/ext/resources/images/default/button/btn.gif);
