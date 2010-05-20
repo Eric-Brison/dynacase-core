@@ -1,0 +1,25 @@
+
+
+<table width="100%">
+<tr>
+
+<td  width="20%"><span class="FREEDOMLabel">
+<select size=5 name="[name]" id="[listidoc]">
+
+[BLOCK OPTION]
+    <option  id="[id]" value="[xml]">[titre]</option>
+[ENDBLOCK OPTION]
+  
+</select>
+</span></td>
+<td  width="80%">
+<iframe name=[idframe] id=[idframe] style='display:none' marginwidth=0 marginheight=0  width='100%' heigth=200 src="[IMG:1x1.gif]"></iframe>
+<input type="button" value="add" title="ajout" onclick="adda('[name_attr]','[listidoc]');return false;"></input>
+<input type="button" value="+" title="editer" onclick="edit_list_idoc([famid],'[listidoc]');return false;"></input>
+<input type="button" value="suppr" title="supprimer" onclick="rema('[listidoc]');return false;"></input>
+<input type="button" value="view" title="view" onclick="view([famid],'[listidoc]');return false;"></input>
+<input type="button" value="view in frame" title=" frame" onclick="viewlistidoc_in_frame([famid],'[listidoc]','[idframe]');return false;"></input>
+<input type="button" value="close frame" title="close frame" onclick="close_frame('[idframe]')"></input>
+</td>
+</tr>
+</table>

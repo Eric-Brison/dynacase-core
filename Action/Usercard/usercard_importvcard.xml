@@ -1,0 +1,30 @@
+[ZONE CORE:HTMLHEAD]
+<style>
+TR.updated TD{
+   background-color:#efef53;
+}
+TR.ignored TD{
+   background-color:#ef5653;
+}
+TR.added TD{
+   background-color:#adf4b2;
+}
+
+</style>
+<H2>[TEXT:VCARD Import Result]</H2>
+
+<table width="100%" >
+
+<thead><tr><th>[TEXT:id]</th>
+<th>[TEXT:doctitle]</th></thead>
+<tbody  >
+[BLOCK ADDED]
+<tr class="added"><td>[id]</td><td>[title]</td></tr>
+[ENDBLOCK ADDED]
+[BLOCK DELETED]
+<tr class="ignored"><td>[id]</td><td>[title]</td></tr>
+[ENDBLOCK DELETED]
+</tbody></table>
+
+[ZONE CORE:HTMLFOOT]
+

@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
+// ---------------------------------------------------------------
+// $Id: FGSEARCH_init.php.in,v 1.4 2007/12/11 14:23:29 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/freedom/App/Fgsearch/FGSEARCH_init.php.in,v $
+// ---------------------------------------------------------------
+
+global $app_const;
+
+
+$app_const= 
+array(
+      "VERSION"	   =>"@VERSION@-@RELEASE@",
+      );
+
+
+?>

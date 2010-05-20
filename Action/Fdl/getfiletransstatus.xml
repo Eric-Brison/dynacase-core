@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status   code="[CODE]"  warning="[warning]"  >
+<tid id="[tid]" status="[status]">
+<message>[message]</message>
+<statusmsg>[statusmsg]</statusmsg>
+</tid>
+</status>

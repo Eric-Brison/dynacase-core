@@ -1,0 +1,104 @@
+#!/bin/bash
+if [ "$freedom_context" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+. $wpub/log.sh
+. $wpub/libutil.sh
+
+if [ -z $pgservice_core -o -z $pgservice_freedom ]; then
+    echo "Env variables pgservice_core or pgservice_freedom is empty !"
+    echo "Check your freedom context for missing or misconfigured environment variables."
+    exit 1
+fi
+
+#------------------------------
+#post installation
+#------------------------------
+if [ "$1" = "I" ] ; then
+
+    log "Checking if the database service $pgservice_freedom is running and available..."
+    PGSERVICE="$pgservice_freedom" pgIsRunning
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Could not connect to database service $pgservice_freedom) !"
+	echo "Check that your database is running and acessible with the service from pgservice.conf."
+	exit $RET
+    fi
+    
+    OUT=`PGSERVICE="$pgservice_freedom" psql -c 'CREATE SCHEMA family;' 2> /dev/null`
+	RET=$?
+	if [ $RET -ne 0 ]; then
+	    echo "An error occured while creating schema family : $RET"
+	    exit $RET
+	fi
+    PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error executing sql file \"$wpub/WHAT/getprivilege.sql\""
+	exit $RET
+    fi
+    
+    PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/FDL/fdl.sql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error executing sql file \"$wpub/FDL/fdl.sql\""
+	exit $RET
+    fi
+
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=Doc
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocRead
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocPerm
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=VGroup
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocRel
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --class=Group
+    #copy postgres group table
+    $wpub/wsh.php --api=freedom_groups
+
+    #if [ ! -f "$wpub/VAULT/${freedom_context}.vault" ]; then
+    #    #cp $wpub/FDL/FREEDOM.vault $wpub/VAULT/FREEDOM.vault
+    #	sed -e"s/fs1/$freedom_context/g" "$wpub/FDL/FREEDOM.vault" > "$wpub/VAULT/${freedom_context}.vault"
+    #fi
+    #$wpub/wsh.php --api=vault_init
+    
+    # $wpub/wsh.php --app=FDL --action=FREEDOM_INIT  
+    # psql $dbfreename anakeen -f $wpub/API/freedom_clean.sql
+fi
+
+#------------------------------
+#post update
+#------------------------------
+if [ "$1" = "U" ] ; then
+
+    log "Setting FREEDOM_DB in paramv..."
+    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = 'service=''$pgservice_freedom''' WHERE name = 'FREEDOM_DB'"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error setting FREEDOM_DB"
+        exit $RET
+    fi
+
+    $wpub/wsh.php --api=freedom_import --file=$wpub/FDL/fdl.ods
+    $wpub/wsh.php --api=freedom_import --file=$wpub/FDL/freeaction.ods
+
+    PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error executing sql file \"$wpub/WHAT/getprivilege.sql\""
+	exit $RET
+    fi
+    
+    PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/FDL/fdl.sql"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error executing sql file \"$wpub/FDL/fdl.sql\""
+	exit $RET
+    fi
+
+    $wpub/wsh.php --api=fdl_adoc
+    $wpub/wsh.php --api=fdl_trigger | PGSERVICE="$pgservice_freedom" psql
+    $wpub/wsh.php --api=fdl_trigger --trigger=Y | PGSERVICE="$pgservice_freedom" psql
+
+fi

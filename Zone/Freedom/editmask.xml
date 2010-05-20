@@ -1,0 +1,70 @@
+
+<table width="100%" cellspacing="0"><tbody>
+<tr><td colspan=3>
+<table class="tableborder"  width="100%" cellspacing="0" cellpadding="0" >
+<tr>
+ <td class="FREEDOMTblTitle" style="width:50%">
+   <span class="FREEDOMTextTitle">[V_BA_TITLE]</span>
+  </td> 
+  <td class="FREEDOMTblTitle" align="right"><span class="FREEDOMTextName">[TEXT:for]</span>
+   <select name="_MSK_FAMID" onChange="document.getElementById('retedit').value='Y';document.getElementById('fedit').submit();">   
+           <option VALUE="0">[TEXT:no document family]</option>      
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>
+    <input type="hidden" name="retedit" id="retedit" value="N">
+   </td>
+</tr>
+</table>
+
+<!-- Frame Table -->
+
+
+<table  class="tablesimple"   cellspacing="0" cellpadding="0" >
+<thead>
+<tr>
+  <td class="CORETblHeadBold">[TEXT:fieldset]</td>
+  <td class="CORETblHeadBold">[TEXT:attrname]</td>
+  <td class="CORETblHeadBold">[TEXT:new visibility]</td>
+  <td class="CORETblHeadBold">[TEXT:new needed]</td>
+  <td class="CORETblHeadBold">[TEXT:default visibility]</td>
+</tr>
+</thead>
+<tbody>
+
+
+[BLOCK NEWELEM]
+<tr >
+   <td  >[framelabel]</td>
+  
+   
+   <td style="font-weight:[fieldweight]">
+   <input type="hidden" name="_MSK_ATTRIDS[[neweltid]]" value="[attrid]" >[attrname]</td>
+  
+   <td  >
+      <select name="_MSK_VISIBILITIES[[neweltid]]"  >        
+         [BLOCK [SELECTVIS]]
+           <option VALUE="[visid]" [selected]>[vislabel]</option>
+         [ENDBLOCK [SELECTVIS]]
+    </select>
+   </td>
+   <td>
+      <select name="_MSK_NEEDEEDS[[neweltid]]"  >        
+         [BLOCK [SELECTNEED]]
+           <option VALUE="[needid]" [selectedneed]>[needlabel]</option>
+         [ENDBLOCK [SELECTNEED]]
+    </select></td>
+   <td style="font-weight:[wneed]">[visibility]</td>
+  
+   
+  
+</tr>
+[ENDBLOCK NEWELEM]
+
+
+</tbody>
+</table>
+</td></tr>
+</tbody>
+</table>

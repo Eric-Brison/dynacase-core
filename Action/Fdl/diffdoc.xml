@@ -1,0 +1,77 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:document differences]]
+<style>
+TR.eq {
+  display:none;
+}
+TR.ne  {
+  background-color:[COLOR_B8];
+}
+TR.hi {
+  display:none;
+}
+
+</style>
+<script>
+var vieweq=false;
+var viewhi=false;
+function displaytr(event) {
+  var t=getElementsByNameTag(document,'eq','tr');
+  var i=0;
+  var d;
+  if (t.length > 0) {
+    vieweq=(!vieweq);
+   
+    if (vieweq) {
+      for ( i=0; i< t.length; i++) {      
+	if (t[i].className=='eq') t[i].className='';
+      }
+    } else {
+      for ( i=0; i< t.length; i++) {      
+	if (t[i].className=='') t[i].className='eq';
+      }
+    }    
+  }
+  stopPropagation(event);
+  return false;
+}
+function displayhi(event,o) {
+  var t=getElementsByNameTag(document,'eq','tr');
+  var i=0;
+  if (t.length > 0) {   
+      for ( i=0; i< t.length; i++) {      
+	if (t[i].className=='hi') t[i].className='eq';
+      }
+  }    
+  t=getElementsByNameTag(document,'ne','tr');
+  if (t.length > 0) {   
+      for ( i=0; i< t.length; i++) {      
+	if (t[i].className=='hi') t[i].className='ne';
+      }
+  }
+  o.style.display='none';
+  
+  stopPropagation(event);
+  return false;
+}
+</script>
+<h3 style="text-align:center">[title]</h3>
+<table width="100%">
+<thead>
+<tr><th><a title="[TEXT:view equality attributes]" onmousedown="displaytr(event);return false">[TEXT:attributes]</a><a title="[TEXT:view hidden attributes]"><img width="22px" align="absmiddle" src="[IMG:cible.gif]"  onmousedown="displayhi(event,this);return false"></img></a></th>
+<th><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[target]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id1]')">[document1]</a> [version1]/[revision1] - [date1] </th>
+<th><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[target]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id2]')">[document2]</a> [version2]/[revision2] - [date2]</th></tr>
+</thead>
+<tbody>
+[BLOCK ATTRS]<tr name="[cdiff]" class="[vdiff]"><td >[attname]</td>
+[IF EQ]
+<td align="center" colspan="2">[v1]</td>
+[ENDIF EQ]
+[IFNOT EQ]
+<td>[v1]</td><td>[v2]</td>
+[ENDIF EQ]</tr>
+[ENDBLOCK ATTRS]
+</tbody>
+</table>
+
+
+[ZONE FDL:HTMLFOOT]

@@ -1,0 +1,64 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Timers management]]
+<style type="text/css">
+a.selected { 
+   background-color:[COLOR_B8];
+             }
+</style> 
+<script type="text/javascript">
+function resizeiframe() {
+  var eiurl=document.getElementById("detailresult");
+  if (eiurl)  {
+    var xy=getAnchorPosition("detailresult");
+    var hiurl=getFrameHeight();
+    var nh=hiurl - xy.y - 10; // offset for scrollbar
+
+    eiurl.style.height=nh+'px';
+  }
+}
+function asend(atype) {
+  document.ftimer.type.value=atype;
+  if (aalert())   document.ftimer.submit()
+}
+function aalert() {
+  var atype=document.ftimer.type.value;
+  var afilter=document.ftimer.filter.value;
+  if (atype=='detach') {
+    if (afilter) return confirm("[TEXT:Confirm unattach activated timers matched ]"+afilter);
+    else return confirm("[TEXT:Confirm unattach all activated timers]");
+  }
+  return true;
+}
+function aselect(o) {
+  var la=document.ftimer.getElementsByTagName('a');
+  for (var i=0;i<la.length;i++) la[i].className='';
+  if (o) o.className='selected';
+}
+addEvent(window,'load',resizeiframe);
+addEvent(window,'resize',resizeiframe);
+</script>
+
+<table width="98%" class="transparent"><tr style="vertical-align:top">
+<td style="width:200px;">
+<form name="ftimer"style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      target="timerresult"
+      onsubmit="return aalert()"
+      action="[CORE_STANDURL]&app=FREEDOM&action=TIMERS_ADMIN_RESULT">
+<input type="hidden" name="type">
+<a class="selected" onclick="asend('next')">[TEXT:Next Timers]</a><br/>
+<a onclick="aselect(this);asend('previous');">[TEXT:Timers history]</a><br/>
+<a onclick="aselect(this);asend('skip');">[TEXT:Skipped Timers]</a><br/>
+<hr>
+<a onclick="aselect(this);asend('purge');">[TEXT:Purge history]</a> <input title="[TEXT:Until done date]" type="text" name="purgeday" value="7" size="2"> [TEXT:days]<br/>
+<a onclick="aselect(this);asend('detach')">[TEXT:Unattach Timers]</a><br/>
+[TEXT:Document filter]:<br/>
+<input type="text" name="filter">
+<input type="submit" style="display:none">
+</form>
+
+
+</td>
+<td ><iframe  name="timerresult" style="display2:none;  height:100%; width:100%;border:none;padding:0px;margin:0px" src="[CORE_STANDURL]&app=FREEDOM&action=TIMERS_ADMIN_RESULT&type=next"></iframe>
+</tr></table>
+<iframe id="detailresult" name="detailresult" style="height:100px;  width:100%; border-style:solid none none none;padding:0px;margin:0px" src="about:blank"></iframe>
+[ZONE FDL:HTMLFOOT]

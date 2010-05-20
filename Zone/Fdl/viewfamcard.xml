@@ -1,0 +1,115 @@
+<style>
+li.warning { 
+       color:red;
+  cursor:help;
+              }
+</style>
+
+
+<table width="100%" cellspacing="0">
+<tr class="FREEDOMBack1">
+   <td colspan="3" align="center">
+       <B>[TEXT:Familly Document]</B>
+  </td>
+</tr>
+</table>
+<fieldset><legend>[TEXT:Characteristic]</legend>
+<table  width="100%" cellspacing="0">
+<tbody>
+
+<tr class="FREEDOMBack1">
+   <td width="50%" class="FREEDOMlabel">[TEXT:forum on new documents] : </td><td  >[forum]</A></td></tr>
+
+<tr class="FREEDOMBack1" style="display:[cvdisplay]">
+   <td width="50%" class="FREEDOMlabel">[TEXT:Control view for new document] : </td><td  ><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[ccvid]">[cvtitle]</A></td></tr>
+<tr class="FREEDOMBack1" style="display:[cflddisplay]">
+   <td  width="50%" class="FREEDOMlabel">[TEXT:Default search] : </td><td  ><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[cfldid]">[cfldtitle]</A></td></tr>
+<tr class="FREEDOMBack1" style="display:[dflddisplay]">
+   <td  width="50%" class="FREEDOMlabel" >[TEXT:Root folder] : </td><td  ><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[dfldid]">[dfldtitle]</A></td></tr>
+<tr class="FREEDOMBack1" >
+   <td  width="50%" class="FREEDOMlabel" >[TEXT:Workflow] : </td><td>[IF wid]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[wid]">[wtitle]</A>[ENDIF wid][IFNOT wid][TEXT:No workflow][ENDIF wid]</td></tr>
+
+<tr class="FREEDOMBack1" >
+   <td  width="50%" class="FREEDOMlabel" >[TEXT:Maximum number of revision] : </td><td>[maxrevision]</td></tr>
+</tbody>
+</table>
+
+
+
+</fieldset>
+
+<fieldset><legend>[TEXT:Security]</legend>
+<ul><li>[TEXT:Family]<ul>
+[IF profid][IF modifyacl]<li><a target="p[profid]" href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[profid]">[TEXT:Modify acls for familly]</a></li>[ENDIF modifyacl]
+[IFNOT modifyacl]<li>[TEXT: No privilege to change acl for familly access]</li>
+[ENDIF modifyacl]
+[ENDIF profid]
+[IFNOT profid]<li class="warning" title="[TEXT:No acl for family]">
+  <a  target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&docid=[id]&profid=[id]">[TEXT:Initialize acls]</a> <a style="display:none" target="_self" href="[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&id=[id]">[TEXT: Choose an existing family profil]</a> 
+  </li>[ENDIF profid]
+</ul></li>
+
+<li>[TEXT:Document]<ul>
+
+[IF cprofid][IF cmodifyacl]<li><a target="p[cprofid]" href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[cprofid]">[TEXT:Modify acls for documents]</a></li>[ENDIF cmodifyacl]
+[IFNOT cmodifyacl]<li>[TEXT: No privilege to change acl for document access]</li>
+[ENDIF cmodifyacl]
+
+[ENDIF cprofid]
+[IFNOT cprofid][IFNOT wid]<li title="[TEXT:No acl for new documents of this family]" class="warning" >[IF modifyacl] 
+<a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=CREATEPROF&redirid=[id]&targetid=[id]&attrid=cprofid&famid=[id]">[TEXT:Initialize acls]</a>
+<a style="display:none" target="_self" href="[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&create=1&id=[id]">[TEXT: Choose an existing document profil]</a>[ENDIF modifyacl]</li>[ENDIF wid][ENDIF cprofid]
+
+
+
+[IF wid]
+
+<li>[TEXT:States]<ul>
+[BLOCK pstate]
+
+[IF smodifyacl]
+[IF sactif]
+<li>[states] : <a target="p[stateid]" href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[pstateid]">[TEXT:Modify acls]</a>, 
+  <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&redirid=[id]&docid=[pstateid]&profid=0">[TEXT:Desactivate acls]</a></li>[ENDIF sactif]
+[IFNOT sactif]
+<li class="warning" title="[TEXT:Acls not activated]">[states] : <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&redirid=[id]&docid=[pstateid]&profid=[pstateid]">[TEXT:Activate acls]</a></li>[ENDIF sactif]
+
+[ENDIF smodifyacl]
+[IFNOT smodifyacl]
+<li>[states] : [TEXT:No privilege to change acls]</li>
+[ENDIF smodifyacl]
+[ENDBLOCK pstate]
+
+[BLOCK nopstate]
+[IF wedit]
+<li class="warning" title="[TEXT:Acls not initialize]">[states] : <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=CREATEPROF&redirid=[id]&targetid=[wid]&attrid=[pstateattrid]&famid=[id]">[TEXT:Initialize acls]</a></li>
+[ENDIF wedit]
+[IFNOT wedit]
+<li class="warning" title="[TEXT:Acls not initialize]">[states] : [TEXT:No privilege to change acls]</li>
+[ENDIF wedit]
+[ENDBLOCK nopstate]
+
+
+</ul>
+
+<li>[TEXT:Transitions]<ul>
+[IF wcontrol]
+[IF wactif]
+<li><a target="p[wid]" href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[wid]">[TEXT: Modify acls for transitions]</a>, <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&redirid=[id]&docid=[wid]&profid=0">[TEXT:Desactivate acls]</a></li>
+[ENDIF wactif]
+[IFNOT wactif]
+<li class="warning" title="[TEXT:Acls not activated]"><a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&redirid=[id]&docid=[wid]&profid=[wid]">[TEXT:Activate acls]</a></li>
+[ENDIF wactif]
+[ENDIF wcontrol]
+[IFNOT wcontrol]
+<li>[TEXT:No privilege to change acls]</li>
+[ENDIF wcontrol]
+</ul></ul></li>
+[ENDIF wid]
+
+</li>
+</ul>
+
+
+</fieldset>
+

@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+echo "UPDATE dochisto set level=2 where code in ('CREATE','MODIFY','MODATTR');" | psql $dbfree
+# delete old fullsearch
+echo "DELETE FROM docfam where id=32;" | psql $dbfree
+echo "DROP TABLE doc32;" | psql $dbfree
+echo "DELETE FROM docattr where docid=32;" | psql $dbfree

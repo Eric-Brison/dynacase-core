@@ -1,0 +1,290 @@
+<html>
+<head>
+
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" />
+<title>FREEDOM - [TEXT:PortFolio] [title]</title>
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+    [JS:REF]
+<script language="JavaScript">
+  <!--
+var isNetscape = navigator.appName=="Netscape";
+
+var Xpos = 0;
+var Ypos = 0;
+
+// just save mouse position for animate() to use
+function MoveHandler(e)
+{
+    Xpos = e.pageX;
+    Ypos = e.pageY;	
+    return true;
+}
+
+// just save mouse position for animate() to use
+function MoveHandlerIE() {
+    Xpos = window.event.x + document.body.scrollLeft;
+    Ypos = window.event.y + document.body.scrollTop;	  
+}
+
+
+var drag=0;
+
+
+document.onmousemove = moveicon;
+
+function moveicon(e) {
+  
+  window.status=Xpos+"x"+Ypos;
+  if (drag ) {
+   if (isNetscape) {
+     MoveHandler(e);
+   } else {
+     MoveHandlerIE();
+   }
+    micon.style.visibility = 'visible';
+    micon.style.top = Ypos+2; 
+    micon.style.left = Xpos+2; 
+    //    micon.style.zIndex = 4; 
+  }
+}
+var micon;
+var cdocid=0;
+var fromdirid=0;
+var move=true; // if true move reference doc in guidecard else copy reference
+
+
+
+function initDrag() {
+  var wref;
+  
+  if (! drag) {
+    wref=windowExist('ffoliolist');//window.open('','ffoliolist','');
+    if (wref && (wref.drag == 1)) {
+      cdocid = wref.document.docid;
+      fromdirid = wref.document.dirid;
+      move=true;
+      drag=1;
+    } else { 
+      move=false;
+      wref=windowExist('flist');//window.open('','flist','');
+
+    
+      if (wref) cdocid = wref.document.docid;
+      if (wref && (wref.drag == 1)) {
+	drag=1;
+      
+      } else {
+	wref=windowExist('ffolder');
+	if (wref && (wref.drag == 1)) {
+	  drag=1;
+	} 
+	
+      
+      }
+    }
+    if (drag == 1) {
+      
+      wref.drag=0;
+      imicon = wref.document.getElementById('micon');
+      micon.src=imicon.src;
+
+      imicon.style.visibility="hidden";
+    
+    }  
+  }
+}
+
+function endDrag() {  
+    drag=0;
+    micon.style.visibility="hidden";
+}
+function initmicon() {
+
+  micon = document.getElementById('micon');
+
+}
+
+function focusone() {
+  
+  var w=wref=windowExist('ffoliolist');
+
+  w.docTarget='folio0';
+}
+function focustwo() {
+  
+  var w=wref=windowExist('ffoliolist');
+
+  w.docTarget='folio1';
+}
+
+function setone() {
+  var w=wref=windowExist('ffoliolist');
+  var target= w.docTarget;
+
+  w=top.document.getElementById('ffolios'); 
+
+  if (target == 'folio1') {
+    w.rows='';
+    w.cols='0pt,*';
+    if (isNetscape) {// for mozilla send handler to recalculate geometry
+      window.resizeBy(0,-1);
+      window.resizeBy(0,1);
+    }
+  } else {
+    w.rows='';
+    w.cols='*,0pt';
+    if (isNetscape) {// for mozilla send handler to recalculate geometry
+    top.resizeBy(0,-1);
+    top.resizeBy(0,1);
+    }
+  }
+  
+}
+function settwo() {
+  var w=top.document.getElementById('ffolios'); 
+
+  w.rows='';
+  w.cols='50%,50%';
+  if (isNetscape) { // for mozilla send handler to recalculate geometry
+    top.resizeBy(0,-1);
+    top.resizeBy(0,1);
+  }
+}
+
+function setthree() {
+  var w=top.document.getElementById('ffolios'); 
+  if (w) {
+    w.cols=''; 
+    w.rows='50%,50%';
+  }
+  if (isNetscape) { // for mozilla send handler to recalculate geometry  
+    top.resizeBy(10,10);    
+    top.resizeBy(0,10);
+   
+  }
+}
+
+function adjustHeight() {
+  
+
+  var w=top.document.getElementById('ffolio');
+  var f=top.document.getElementById('ffoliotab'); 
+  var nh=40;
+  if (document.body.scrollHeight > document.body.clientHeight) {
+
+   
+     nh=document.body.scrollHeight;
+   
+  } else {
+    //try reduce
+    var xy=getAnchorPosition('lastbutton');
+    nh=xy.y+30;
+  }
+
+
+  if (nh >= 200) {
+    nh=200;
+  } 
+  w.rows=nh+',*';
+}
+
+var styleongletsel='ongletvs';
+var styleonglet='ongletvg';
+if (! isNetscape) {
+  styleongletsel='ongletvsie';
+  styleonglet='ongletvgie';
+}
+
+function selecttab(th) {
+  var ltd;
+  var i;
+  
+  ltd = document.getElementsByTagName('div');
+  for (i=0; i < ltd.length; i++) {
+     ltd[i].className=styleonglet;
+  }
+  th.className=styleongletsel;
+  //  if (th.nextSibling.nodeName=='DIV') th.nextSibling.className=styleongletsel;
+  // else  if (th.nextSibling.nextSibling.nodeName=='DIV') th.nextSibling.nextSibling.className=styleongletsel;
+}
+
+function copyOrMove(tabid) {
+  if (move) {
+    
+    parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=MOVEDIRFILE&return=folio&mode=latest&todirid='+tabid+'&fromdirid='+fromdirid+'&docid='+cdocid;
+
+  } else {
+    parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=ADDDIRFILE&return=folio&mode=latest&dirid='+tabid+'&docid='+cdocid;
+  }
+  endDrag();
+}
+
+function viewguide(docid) {
+  
+   var w=wref=windowExist('ffoliolist');
+   var wtarget=windowExist(w.docTarget);
+
+   wtarget.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id='+docid;
+}
+
+function shiftKeyPushed(event) {
+ if (window.event) {   
+   return window.event.shiftKey;
+ } else  {
+   return event.shiftKey;
+ }
+}
+
+    [JS:CODE]
+  -->
+   </script>
+[CSS:REF]
+<!-- if you want black backgound, remove this style block -->
+<style type="text/css">
+
+
+[CSS:CODE]
+
+.searchtab {
+  font-style:italic;
+}   
+.foldertab {
+}   
+</style>
+
+
+
+
+</head>
+
+<body onload="initmicon();adjustHeight();" 
+      onresize="adjustHeight();"
+      onmouseover="initDrag();"
+      onmouseup="endDrag(); " > 
+
+<table >
+<tr name="tdtab" ></tr>
+</table>
+
+
+
+  <div height="30px" class="[tabonglets]" style="float:left;cursor:pointer" title="[TEXT:View folder content]"
+       onmousedown="if (!shiftKeyPushed(event)) if (drag == 1) {copyOrMove([dirid]);} else {parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[dirid]&folioid=[dirid]';endDrag();} return false"
+      
+     onclick="if (shiftKeyPushed(event)) viewguide('[docid]'); else selecttab(this);"><img  needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[docid]');if (drag != 1) stopPropagation(event)"  height="20px" src="[icon]">[title]
+  <img src="[IMG:corner.gif]"  border="0"></div>
+[BLOCK TAG]
+  <div  height="30px"  class="[tag_cellbgclass]" style="float:left;cursor:pointer;background-color:[icolor]" valign="middle" 
+     onmousedown="if (!shiftKeyPushed(event)) if (('[doctype]'=='D') && (drag == 1)) {copyOrMove([tabid]);} else {parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[tabid]&folioid=[dirid]';endDrag();} return false" 
+     onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this);"><img  needresize="1" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]"><span class="[TAG_LABELCLASS]">[tabtitle]</span><img src="[IMG:corner.gif]" align="top"  border="0"></div>
+[ENDBLOCK TAG]
+
+<button style="float:left;" onclick="setone()">o</button>
+<button style="float:left;" onclick="settwo()">|</button>
+<button id="lastbutton" style="float:left;" onclick="setthree()">-</button>
+<img id="micon" width="20" height="20"  style="position:absolute;visibility:hidden">
+
+</body>
+</html>

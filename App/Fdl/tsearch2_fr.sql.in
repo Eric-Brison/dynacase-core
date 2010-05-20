@@ -1,0 +1,45 @@
+
+INSERT INTO pg_ts_cfg (ts_name, prs_name, locale) VALUES ('french', 'default', 'fr_FR.UTF-8');
+
+INSERT INTO pg_ts_dict (dict_name, dict_init, dict_initoption, dict_lexize, dict_comment) VALUES ('fr_ispell', 'spell_init(internal)', 'DictFile="@prefix@/locale/fr/tsearch2/french.dict", AffFile="@prefix@/locale/fr/tsearch2/french.aff", StopFile="@prefix@/locale/fr/tsearch2/french.stop"', 'spell_lexize(internal,internal,integer)', 'ISpell french');
+
+
+--
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'lword', '{fr_ispell,en_stem,simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'nlword', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'word', '{fr_ispell,simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'email', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'url', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'host', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'sfloat', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'version', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'part_hword', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'nlpart_hword', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'lpart_hword', '{fr_ispell}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'hword', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'lhword', '{fr_ispell}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'nlhword', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'uri', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'file', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'float', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'int', '{simple}');
+INSERT INTO pg_ts_cfgmap (ts_name, tok_alias, dict_name) VALUES ('french', 'uint', '{simple}');
+
+
+
+-- compatibility pg8.3
+create or replace function ts_rank(tsvector, tsquery) 
+returns float4 as $$
+declare 
+begin
+   return rank($1,$2);
+end;
+$$ language 'plpgsql' ;
+
+create or replace function ts_headline(text, text, tsquery)
+returns text as $$
+declare 
+begin
+   return headline($1,$2,$3);
+end;
+$$ language 'plpgsql' ;

@@ -1,0 +1,12 @@
+update  docfam set cprofid =  docfamtemp.cprofid from docfamtemp where docfamtemp.id=docfam.id;
+update  docfam set dfldid =  docfamtemp.dfldid from docfamtemp where docfamtemp.id=docfam.id;
+update  docfam set usefor =  'P' where id in (3,4,6);
+delete from  docfam where  id = 122;
+update doc set usefor='P' where doctype='P';
+update doc set classname='' where doctype != 'C'; 
+update docfam set classname='Doc'||fromid where id > 6 and fromid > 0 and classname like 'Doc%';
+update docattr set id=lower(id);
+update docattr set frameid=lower(frameid);
+update fld set query = str_replace(query,'not useforprof','usefor != ''P''') where qtype='M';
+update fld set query = str_replace(query,'useforprof','usefor = ''P''') where qtype='M';
+VACUUM FULL ANALYZE;

@@ -1,0 +1,4 @@
+<textarea style="display:none" name="[name]" id="[aid]"  >[value]</textarea>
+<input type="hidden"   name="mdocid_work[name]" id="mdocid_work[aid]" value="" >
+<br/><select tabindex="-1" onchange="disableClearDocIdInputs('[aid]',this)" size="[size]" style="width:100%;border:none" multiple="yes" id="mdocid_isel_[aid]">[BLOCK options]<option value="[ldocid]">[ltitle]</option>[ENDBLOCK options]</select>
+

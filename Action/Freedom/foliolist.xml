@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT: folder containt]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+    document.dirid='[dirid]';
+  [IF refreshtab]
+    if (parent.ffoliotab) parent.ffoliotab.location.reload();
+  [ENDIF refreshtab]
+-->
+</script>   
+ </head>
+
+<body class="freedom" 
+      onLoad="initmicon()" 
+      onclick="closeAllMenu();"      
+      onContextMenu="openMenu(event,'popupfolio',1);return false" 
+      style="cursor:crosshair" >
+
+
+
+<img id="micon" width="20" height="20"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
+<p align="center">[dirtitle]<br/><i>[nbdoc] [docs]</i></p>
+
+[ZONE FREEDOM:POPUPFOLIO]
+[ZONE FREEDOM:POPUP?folio=Y]
+
+<!-- TABLEBODY -->
+                             [BLOCK TABLEBODY]
+<div class="icon" id="d[divid]" >
+<IMG class="unselect" id="i[divid]" title="[title]" needresize="1"
+     onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid]);" 
+     onContextMenu="closeAllMenu();openMenu(event,'popuplist',[divid]);return false" 
+     onDblClick="if ([isfld]) openFld([id]); else sendFirstFile([id]);return false"
+     align="absbottom"  src="[iconsrc]"><br>
+  [abrvtitle]
+</div>
+
+
+
+                           [ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+
+
+
+
+
+<!--  FOOT HTML -->
+
+</body>
+</html>

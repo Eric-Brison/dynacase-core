@@ -1,0 +1,48 @@
+
+
+<form  target="fvfolder" class="fborder" name="search" method="POST" 
+       onsubmit="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'fvfolder','')"
+       action="[CORE_STANDURL]&app=[APPNAME]&action=SEARCH&viewone=Y" 
+       style="display:inline">
+
+<table class="transparent"  cellspacing="0"  width="100%" >
+<tbody>
+<tr >
+ 
+  <td id="tdp" align="right"  >
+     <select id="pfamid"  name="famid" >  
+         [BLOCK SELECTPREFCLASS]
+           <option VALUE="[idcdoc]" >[classname]</option>   
+         [ENDBLOCK SELECTPREFCLASS]
+           <option VALUE="0" >[TEXT:any familly]</option> 
+    </select> 
+
+<input type="button" value="+" title="[TEXT:more families]"
+      onclick="document.getElementById('tdp').style.display='none';document.getElementById('tdo').style.display='';document.getElementById('pfamid').name='pfamid';document.getElementById('ofamid').name='famid';">
+</td>
+  <td id="tdo"  align="right" style="display:none"  >
+<input type="button" value="-" title="[TEXT:restrict to preferred families]" 
+       onclick="document.getElementById('tdo').style.display='none';document.getElementById('tdp').style.display='';document.getElementById('ofamid').name='ofamid';document.getElementById('pfamid').name='famid';">
+     <select id="ofamid"  name="ofamid" >  
+           <option VALUE="0" >[TEXT:any familly]</option> 
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" >[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select> 
+   <input  type="button" value="o" 
+       title="[TEXT:choose preferred families]" 
+       onclick="subwindow(100,300,'onepref','[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_EDITPREFFAM')"> 
+   </td>
+  <td  align="left">
+    <input type="hidden" name="latest" value="true" >
+    <input type="hidden" name="fromdir" value="false" >
+    <input type="hidden" name="sensitive" value="false" >
+    <input type="text" id="keyword" name="keyword" ></input></td>
+</tr> 
+</tbody>
+</table>
+</form>
+<script>
+function focuskey() {document.getElementById('keyword').focus();}
+addEvent(window,"load",focuskey);
+</script>

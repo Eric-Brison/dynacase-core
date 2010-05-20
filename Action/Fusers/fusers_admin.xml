@@ -1,0 +1,13 @@
+[ZONE FDL:HTMLHEAD]
+
+<body class="Freedom">
+
+
+<button title="[TEXT:Refresh users characteristics from system]" onclick="if (confirm('[TEXT:Refresh users may take long time. Sure ?]')) subwindow(50,300,'_blank','[CORE_STANDURL]&app=FUSERS&action=FUSERS_IUSER')" >[TEXT:Refresh users]</button>
+
+<button title="[TEXT:Refresh LDAP]" onclick="if (confirm('[TEXT:Refresh LDAP may take long time. Sure ?]')) subwindow(50,300,'_blank','[CORE_STANDURL]&app=FUSERS&action=FUSERS_LDAPINIT')" >[TEXT:Refresh LDAP]</button>
+
+
+<button title="[TEXT:Refresh Groups members and mail]" onclick="if (confirm('[TEXT:Refersh groups may take long time. Sure ?]')) subwindow(50,300,'_blank','[CORE_STANDURL]&app=FUSERS&action=FUSERS_IUSER')" >[TEXT:Refresh groups]</button>
+</body>
+</html>

@@ -1,3 +1,0 @@
-#%PAM-1.0
-auth    required        /lib/security/pam_what.so host=localhost dbname=anakeen dbuser=anakeen
-account   required     /lib/security/pam_what.so host=localhost dbname=anakeen dbuser=anakeen only=activate

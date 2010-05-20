@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+echo "UPDATE docread set svalues = (select svalues from doc where doc.id = docread.id) where svalues is null;" | psql $dbfree
+$wpub/wsh.php --api=DocRelInit

@@ -1,0 +1,21 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=Doc
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=DocAttr
+
+
+echo "update doc set classname='PDoc' where useforprof and classname='DocFile';" | psql $dbfree
+echo "update doc set classname='PDir' where useforprof and classname='Dir';" | psql $dbfree
+echo "update doc set classname='PDocsearch' where useforprof and classname='Docsearch';" | psql $dbfree
+echo "update doc set doctype='P' where useforprof and doctype != 'C';" | psql $dbfree
+
+echo "delete from application where (objectclass='Y') and name in ('docfile','docuser','docincident','docsearch','dir','docpropo') ;" | psql $dbpsql
+echo "delete from application where (objectclass='Y') and name in ('docfile','docuser','docincident','docsearch','dir','docpropo') ;" | psql $dbfree
+echo "delete from operm where id_class not in (select id from application);" | psql $dbfree
+echo "delete from octrl where id_class not in (select id from application);" | psql $dbfree
+

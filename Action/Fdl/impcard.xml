@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+
+   <title>[TITLE]</title>
+[IFNOT nocss]
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>[ENDIF nocss]
+[JS:REF]  
+<script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   addEvent(window,"load",autoWresize);
+
+   </script>
+ </head>
+
+<body class="freedom" >
+
+<div width="100%" class="tablesimple">
+[ZONE FDL:VIEWCARD]
+</div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[foldername] [TEXT: folder containt]</title>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+[IF RSS]<link rel="alternate" type="application/rss+xml" title="[foldername]" href="[rsslink]"/>[ENDIF RSS]
+
+[CSS:REF]
+
+
+<style type="text/css">
+[CSS:CODE]
+
+
+TH {
+  font-weight: normal;  
+  font-style: italic;
+  text-align:left;
+  border-bottom: 1px solid;
+}
+
+
+</style>
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+    document.dirid='[dirid]';
+function alterbody(id) {
+  [IF VALTERN]
+alterrow('tbody'+id,'[CORE_BGCOLORALTERN]','[CORE_TEXTFGCOLOR]');
+[ENDIF VALTERN]
+[IFNOT VALTERN]
+opalterrow('tbody'+id);
+[ENDIF VALTERN]
+}
+-->
+</script>   
+ </head>
+
+
+<body class="freedom" topmargin=1 leftmargin=1
+      onLoad="initmicon();" 
+      onClick="closeMenu('popuplist');" >
+
+
+
+<img id="micon"  width="[SIZE_IMG-X-SMALL]" height="[SIZE_IMG-X-SMALL]"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
+
+
+[ZONE FREEDOM:FOLDER_BARMENU?nbdoc=[nbdoc]&dirid=[dirid]]
+[ZONE FREEDOM:POPUP]
+
+
+
+                    [BLOCK TABLEBODY]
+<table class="tableborder" cellspacing="0" style="margin-top:5pt" width="100%" >
+<thead>
+<tr><th><IMG class="iconimg20"   align="absmiddle" needresize="1" src="[iconfamsrc]"><B>[ftitle]</B></th>
+[BLOCK [blockattr]]
+<th>[aname]</th>
+[ENDBLOCK [blockattr]]</tr></thead>
+<tbody id="tbody[fid]">
+[BLOCK [blockvalue]]
+<tr  id="d[divid]"
+     class="unselect" 
+     onMouseUp="if (! document.noselect) {select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid],'[wtarget]');};document.noselect=false;"      
+     onContextMenu="select(this,[id],[divid]);openMenu(event,'popuplist',[divid]);return false" 
+     onDblClick="if ([isfld]) openFld([id]); else sendFirstFile([id]);return false"
+     onmouseover="oselect([id])"  onmouseout="ounselect()"
+     title="[highlight]">   
+ <td class="tlist">
+<IMG style="display:none" id="i[divid]"  src="[iconsrc]">[title] <i>[state]</i></td>       
+<td class="tlist">[values]</td>        
+</tr>
+[ENDBLOCK [blockvalue]]
+</tbody>
+<script>alterbody('[fid]');</script>
+</table>
+                    [ENDBLOCK TABLEBODY]
+
+
+
+<!--  FOOT HTML -->
+
+</body>
+</html>

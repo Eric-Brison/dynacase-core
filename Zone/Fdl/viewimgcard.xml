@@ -1,0 +1,45 @@
+
+
+<script language="JavaScript">
+
+  function getFrameWidth() {
+      winW = window.innerWidth;
+      if (! winW)	   
+            winW = document.body.clientWidth;
+
+      return (winW);
+  }
+
+
+function resizeImg(th) {
+      winW=getFrameWidth();
+
+
+
+  if ((th.width+53) > winW) th.width=winW - 53;
+}
+</script>
+<table    width="100%" cellspacing="0">
+<tbody>
+
+<!-- TABLEBODY -->
+<tr class="FREEDOMBack2" ><td  colspan="3" height="1px"></td></tr>
+[BLOCK TABLEIMG]
+
+
+
+
+<tr class="FREEDOMBack1">
+   <td colspan="3" style="background:[CORE_BGCOLOR]" align="center"><a href="[imgsrc]" target=[IF ISIE]"_blank"[ENDIF ISIE][IFNOT ISIE]"_self"[ENDIF ISIE]> 
+       <img onLoad="resizeImg(this)"
+            style="border:ridge 4px" src="[imgsrc]"  title="[IMG_DESCRIPTION]" type="[type]"></A>
+  </td>
+</tr>
+
+
+[ENDBLOCK TABLEIMG]
+
+
+[ZONE FDL:VIEWFRAME?frameid=IMG_FR_CHAR]
+</tbody>
+</table>

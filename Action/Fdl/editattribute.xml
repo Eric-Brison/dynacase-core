@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status count="[count]" delay="[delay]" code="[CODE]" warning="[warning]" focus="i[docid][attrid]" >
+[BLOCK ACTIONS]<action code="[acode]" arg="[aarg]"></action>[ENDBLOCK ACTIONS]
+  <branch><![CDATA[
+[IF longtext]<textarea onchange="INPUTCHANGED=this" docid="[docid]" attrid="[attrid]"  onkeyup="textautovsize(event,this)"  id="i[docid][attrid]" style="overflow:hidden;vertical-align:text-top;width:100;height:100">[thetext]</textarea>[ENDIF longtext]
+[IFNOT longtext]<input onchange="INPUTCHANGED=this" docid="[docid]" attrid="[attrid]"   id="i[docid][attrid]"  type="text" value="[thetext]" style="vertical-align:text-top;width:inherit">[ENDIF longtext]
+<div style="background-image:url('Images/op50.png');background-color:inherit;text-align:right;[IFNOT longtext]position:absolute;[ENDIF longtext][IF longtext]position:relative;top:-5px;[ENDIF longtext]width:inherit">
+<button class="binline" onclick="[modjsft](event,'[docid]','[attrid]',document.getElementById('i[docid][attrid]').value)">[TEXT:Save]</button>
+<button class="binline" onclick="cancelattr(event,'[docid]','[attrid]')">[TEXT:Cancel]</button></div>
+]]></branch>
+</status>

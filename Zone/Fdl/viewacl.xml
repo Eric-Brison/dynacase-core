@@ -1,0 +1,56 @@
+[JS:REF]
+<form  name="edit" method="POST" action="[CORE_STANDURL]app=FDL&action=MODACL">
+
+
+
+<TABLE width="100%" cellspacing="0" cellpadding="0">
+<THEAD>
+<TR align="center">
+    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">G</span></TD>
+    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
+    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">UP</span></TD>
+    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
+    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">UN</span></TD>
+    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
+    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">R</span></TD>
+    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
+    <TD class="CORETblHeadCell" align="right">&nbsp;
+    
+     
+     
+
+    </TD>
+  
+<TR>
+</THEAD>
+<TBODY>
+                                [BLOCK SELECTACL]
+<TR>
+  <TD align="center" ><input   type="checkbox"  name="aclg[[iacl]]" value="[aclid]" [selectedg] onClick="inhib(this)" disabled></input>
+  </TD>
+  <TD align="center">+</TD>
+  <TD align="center">
+     <input align="top" type="checkbox"  name="aclup[[iacl]]" value="[aclid]" [selectedup] onClick="plusacl([iacl])">
+  </TD>
+  <TD align="center">-</TD>
+  <TD align="center">
+    <input align="top" type="checkbox" name="aclun[[iacl]]" value="[aclid]" [selectedun] onClick="moinsacl([iacl])">
+  </TD>
+  <TD align="center">=</TD>
+  <TD align="center">
+      <input align="top" type="checkbox" name="acls[[iacl]]" value="[aclid]" [selected] onClick="globacl([iacl])">
+  </TD>
+  <TD class="CORETblCell"><span class="CORETbl">[aclname]</span></TD>
+  <TD class="CORETblCell" align="right"><span class="CORETbl">[acldesc]</span></TD>
+</TR>
+                                [ENDBLOCK SELECTACL]
+</TBODY>
+</TABLE>
+<input type="hidden" name="userid" value="[userid]">
+<input type="hidden" name="docid" value="[docid]">
+<p style="text-align:left">
+<input class="CORETblHead" type="submit" 
+         name="Modify" value="[TEXT:Validate]"  >
+<input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
+</p>
+</form>

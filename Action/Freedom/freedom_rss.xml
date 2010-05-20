@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet href="[rsscss]" type="text/css"?>
+<rss version="2.0">
+<channel>
+
+  <title>[rssname]</title>
+  <link>[rsslink]</link>
+  <description>[rssname] ([TEXT: folder containt]) -Freedom RSS-</description>
+  <copyright>[copy]</copyright>
+  <language>[lang]</language>
+  <pubDate>[datepub]</pubDate>
+  <lastBuildDate>[lastbuild]</lastBuildDate>
+  <category>[category]</category>
+  <generator>[generator]</generator>
+  <ttl>[ttl]</ttl>
+  <image>
+    <url>[server]/[icon]</url>
+    <title>[rssname] (Freedom RSS)</title>
+    <link>[rsslink]</link>
+  </image>
+
+
+[BLOCK Items]<item>
+  <title>[title]</title>
+  <link>[link]</link>
+  <description>
+[IF report]
+&lt;table style="width:100%"&gt;
+[BLOCK lines[id]]&lt;tr&gt;
+&lt;td style="align:right;"&gt;&amp;rarr;&lt;/td&gt;
+&lt;td style="align:right;width:40%"&gt;[attr]&lt;/td&gt;
+&lt;td&gt; : &lt;/td&gt;
+&lt;td style="width:60%"&gt;[val]&lt;/td&gt;
+&lt;/tr&gt;[ENDBLOCK lines[id]]&lt;/table&gt;[ENDIF report][IFNOT report][IF html]&lt;div style="border:1px solid [COLOR_C7]; padding:0px 5px 5px 5px" &gt;[ENDIF html][descr][IF html]&lt;/div&gt;[ENDIF html][ENDIF report]
+  </description>
+  <pubDate>[revdate]</pubDate>
+  <guid isPermaLink="false">[id]</guid>
+  <category>[category]</category>
+  <author>[author]</author>
+  <source url="[rsslink]">[rssname]</source>
+</item>[ENDBLOCK Items]
+
+</channel>
+</rss>

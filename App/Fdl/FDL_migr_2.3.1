@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+echo "alter table doc add column prelid int;" | psql $dbfree
+#echo "alter table doc add column fldrels int[];" | psql $dbfree
+psql $dbfree -f $wpub/FDL/fdl.sql
+#/usr/bin/php -q $wpub/API/updateclass.php --dbcoord="$dbfree" --appc=FDL --class=QueryDir
+echo "create index fld_iqd on fld(qtype,dirid);" | psql $dbfree
+echo "create index fld_iqc on fld(qtype,childid);" | psql $dbfree
+echo "create unique index fld_u on fld(qtype,dirid,childid);" | psql $dbfree
+
+#echo "CREATE TRIGGER tflddocrel after insert or update or delete on fld FOR EACH ROW execute procedure reldocfld();" | psql $dbfree

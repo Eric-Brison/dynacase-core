@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+echo "delete from docattr where docid=120 and id='us_privcard'" | psql $dbfree
+echo "delete from paramv where name='USER_CONFIDENTIAL'" | psql anakeen anakeen
+echo "delete from paramdef where name='USER_CONFIDENTIAL'" | psql anakeen anakeen
+

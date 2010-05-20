@@ -1,0 +1,54 @@
+<html>
+<head>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+[CSS:REF]
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS&layout=USERCARD:faddbook.css">
+[JS:REF]
+
+<script type="text/javascript">
+[JS:CODE]
+
+function showHideResumeCard(elt) {
+  var idr = 'res'+elt;
+  var idl = 'l'+elt;
+  var celt = document.getElementById(idr);
+  if (!celt) return false;
+  if (celt.style.display!='') {
+    document.getElementById(idr).style.display = '';
+    document.getElementById(idl).className = 'fabcontactsel';
+  } else {
+    document.getElementById(idr).style.display = 'none';
+    document.getElementById(idl).className = 'fabcontact';
+  }
+}
+</script>
+
+</head>
+<body class="fabbody">
+
+<form style="display:none" id="delpref" name="delpref" method="POST" target="_self" action="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_DELPREFERED">
+<input type="hidden" name="cid" id="cid" value="0">
+</form>
+
+<table class="fabtable" width="100%" cellspacing="0"><tr>
+<td><div class="fabzone"><img onclick="location.reload()" title="[TEXT:click to reload favorites]" style="cursor:pointer;border:none" align="absmiddle" height="16"  src="[IMG:faddbook_ico_favorite.png]">&nbsp;[TEXT:my favorites]</div></td>
+<td align="right"><div class="fabzone"><img style="cursor:pointer;border:none" title="[TEXT:delete all favorites]" onclick="if (confirm('[TEXT:confirm delete all favorite]')) { getElementById('cid').value=-2;getElementById('delpref').submit(); };"  align="absmiddle" height="16"  src="[IMG:faddbook_ico_deletefavorite.png]">
+<a href="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_SPEEDSEARCH" target="_search"><img   title="[TEXT:quick search]" style="cursor:pointer;border:none" align="absmiddle" height="16" style="border:0" src="[IMG:faddbook_search.gif]"></a>
+</td>
+</tr></table>
+
+
+
+[BLOCK Contacts]
+<div class="fabcontact" id="l[id]">
+<table class="fabtable" width="100%" cellspacing="0">
+<td width="12px" align="center" onclick="if (confirm('[jstitle] : [TEXT:confirm delete]')) { document.getElementById('cid').value=[id]; document.getElementById('delpref').submit(); }" title="[TEXT:delete from prefered]"><img height="6" style="cursor:pointer; border:0" src="[IMG:faddbook_delpref.gif]"></td>
+<td width="20px" align="center"><img height="16" style="border:0" src="[icon]"></td>
+<td align="left" onclick="showHideResumeCard([id]);">[title]</td>
+</tr></table></div>
+<div colspan="2" id="res[id]" style="margin:0px 5px 0px 5px; display:none" onclick="subwindow(300, 550, 'detail', '[CORE_STANDURL]&app=FDL&action=FDL_CARD&props=N&abstract=N&id=[id]&zone=[fabzone]'); " width="95%">[resume]</div>
+[ENDBLOCK Contacts]
+
+<iframe name="faddbook_pref_hidden" id="faddbook_pref_hidden" style="display:none"></iframe>
+</body>
+</html>

@@ -1,0 +1,24 @@
+[ZONE CORE:HTMLHEAD?title=[TEXT:Detail Permissions]:[title]]
+
+<table style="margin-bottom:2px" cellspacing="0" cellpadding="0" width="100%" border="1">
+
+<TR align="center" >
+   
+    <TD class="CORETblHeadCell"  align="left">
+           <select name="suserid" onChange="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]&userid='+this.options[this.selectedIndex].value">
+        [BLOCK USER]
+	<option value="[suserid]" [selecteduser]>[descuser]</option>
+        [ENDBLOCK USER]
+	</select>
+     
+
+    </TD>
+
+    <TD class="CORETblHeadCell" align="right"><B class="CORETblHead">[title]</B></td>
+  
+<TR>
+</TABLE>
+
+[ZONE FDL:VIEWACL?docid=[docid]&userid=[userid]]
+
+[ZONE CORE:HTMLFOOT]

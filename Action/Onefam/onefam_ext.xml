@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>
+             [CORE_CLIENT] : [APPNAME]
+        </title>
+        
+        <!-- Handle console without Firebug -->
+        <script>
+            if (!("console" in window)) {window.console = {'log': function(s) {}}}
+        </script>
+        <link rel="shortcut icon" href="[CORE_LOGOCLIENT]"/>
+        <!-- Ext Library -->
+        <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
+        <link rel="stylesheet" type="text/css" id="theme"/>
+                                       
+        <!-- Freedom Widget Library -->
+		<link rel="stylesheet" type="text/css" href="lib/ui/freedom-extui.css"/>
+               
+        <style>
+        
+        </style>
+        
+    </head>
+    <body>
+        
+        <div id="loading" style="position:absolute;z-index:100000;height:100%;width:100%;background-color:white;top:0;left:0;">
+            <div style="position:absolute;left:40%;top:45%;font-weight:bold;font-size:large;">
+                <img src="ECM/Images/large-loading.gif" style="margin-right:8px;width:32px;height:32px;" align="absmiddle"/>
+                [TEXT:Loading]  [APPNAME]
+            </div>
+        </div>
+		
+		<!-- Include javascript after the loading indicator -->
+		<!-- Ext Library -->
+        [IF DEBUG]
+	    <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js"></script>
+		<script type="text/javascript" src="lib/ext/ext-all-debug.js"></script>
+        
+        <!-- Freedom Data Library -->
+        <script type="text/javascript" src="lib/data/fdl-data-debug.js?v=[WVERSION]"></script>
+        
+        <!-- Freedom Widget Library -->
+        <script type="text/javascript" src="lib/ui/freedom-extui-debug.js?v=[WVERSION]"></script>
+        [ENDIF DEBUG]
+	    [IFNOT DEBUG]
+        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="lib/ext/ext-all.js"></script>
+        
+        <!-- Freedom Data Library -->
+        <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]"></script>
+        
+        <!-- Freedom Widget Library -->
+        <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]"></script>
+	    [ENDIF DEBUG]
+        
+        <!-- ONEFAM Client Application -->
+        <script type="text/javascript" src="ONEFAM/Layout/onefam_ext.js?v=[WVERSION]"> </script>
+
+		<script type="text/javascript">
+		
+			Ext.onReady(function(){
+			
+				ONEFAM.familyTree = [FAMILYTREE];
+                ONEFAM.applicationName = '[APPNAME]';	
+                ONEFAM.canEditMasterFamilies=[caneditmasterfamilies];	
+                ONEFAM.canEditUserFamilies=[canedituserfamilies];   		
+				ONEFAM.start();
+                
+            });
+			
+		</script>
+        
+		<!-- Frame used for harmonious downloading -->
+        <iframe name='download_frame' style='display:none;'>
+        </iframe>		
+		
+    </body>
+</html>

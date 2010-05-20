@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+#/usr/bin/php -q $wpub/API/updateclass.php --dbname=$dbfree --appc=FDL --class=DocAttr
+
+echo "alter table doc add column adate timestamp;" | psql $dbfree
+echo "alter table doc add column cdate timestamp;" | psql $dbfree
+echo "alter table doc add column ldapdn text;" | psql $dbfree
+echo "alter table doc add column version text;" | psql $dbfree
+

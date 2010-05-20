@@ -1,0 +1,117 @@
+
+<script>
+function displaytr(event,o,n) {
+  var t=getElementsByNameTag(document,n,'tr');
+  var i=0;
+  var d;
+  
+  if (t.length > 0) {
+    if (t[0].style.display=='none') {
+      d='';
+      o.src='[IMG:minus.gif]';
+    } else {
+      d='none';
+      o.src='[IMG:plus.gif]';
+    }
+    for ( i=0; i< t.length; i++) {
+      t[i].style.display=d;
+    }
+  } else {
+    o.style.visibility='hidden';
+  }
+  stopPropagation(event);
+  return false;
+}
+function senddiff() {
+  var ic=document.getElementsByName("diff");
+  var i1=0,i2=0;
+  for (var i=0; i< ic.length; i++) {
+    ic[i].disabled=false;
+    if (ic[i].checked) {
+      if (i1==0) i1=ic[i].value;
+      else {
+	if (i2==0) i2=ic[i].value;
+      }
+    }
+  }
+  if ((i1>0) && (i2>0)) {
+    for (i=0; i< ic.length; i++) {
+      if ((ic[i].value!= i1) && (ic[i].value!= i2))    ic[i].disabled=true;    
+    }
+    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'diff','[CORE_STANDURL]&app=FDL&action=DIFFDOC&id1='+i1+'&id2='+i2)
+  }
+}
+</script>
+
+<style>
+body {
+  margin:0px;
+  padding:0px;
+}
+TD.author {
+  width:100px;white-space:nowrap;
+}
+TD.date,  {
+  width:10px;white-space:nowrap;
+}
+TD.date span, TD.author span {
+  white-space:nowrap;
+}
+.histo1 {
+  color:[COLOR_A0]; /* notice */
+}
+.histo2 {
+   /* info */
+}
+.histo4 {
+   /* message */
+}
+.histo8 {
+  color:orange;/* warning */
+}
+.histo16 {
+  color:red;/* error */
+}
+
+</style>
+
+
+
+<table class="tablesimple" cellspacing="0" cellpadding="0"  width="100%" >
+<thead>
+<tr><td class="CORETblHeadBold" align="center" colspan="6">[IFNOT notice]<a title="[TEXT:View notice messages]" onclick="this.href=window.location.href+'&notice=Y'" href="#"><img needresize=1 style="width:[SIZE_IMG-X-SMALL];border:none" align="right" class="button" src="[IMG:notice.png]" ></a>[ENDIF notice][title]</td><tr>
+<tr><td width="40px" class="CORETblHeadBold">[TEXT:version]</td>
+    <td width="20px" class="CORETblHeadBold">[IF VIEWREV][TEXT:rev][ENDIF VIEWREV]</td>
+    <td class="CORETblHeadBold">[IF STATE][TEXT:state][ENDIF STATE]</td>
+    <td class="CORETblHeadBold" style="text-align:left;">[TEXT:author]</td>
+    <td class="CORETblHeadBold" style="text-align:left;">[TEXT:date]</td>
+    <td class="CORETblHeadBold" style="text-align:left;width:30px">[IF viewdiff][TEXT:diff][ENDIF viewdiff]</td>
+</tr>
+</thead>
+<tbody>
+<!-- TABLEBODY -->
+[BLOCK TABLEBODY]
+<tr class="selhead" id="d[id]" 
+    [IFNOT cversion]name="[vername]" [IF nodetail]style="display:none" [ENDIF nodetail][ENDIF cversion] 
+    onMousedown="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[target]','[CORE_STANDURL]&app=[VIEWAPP]&action=[VIEWACT]&id=[id]')" >
+<td width="100px" style="border-left:10px;border-style: none none none solid;border-color:[color];overflow:hidden;white-space:nowrap">[IF cversion][IF nodetail]<img src="[IMG:plus.gif]" onmousedown="displaytr(event,this,'[vername]');return false">[ENDIF nodetail]<b style="white-space:nowrap">[version]</b>[ENDIF cversion]&nbsp;</td>
+<td>[IF VIEWREV][revision][ENDIF VIEWREV]</td>
+<td>[IF STATE]<b>[state]</b>[ENDIF STATE]&nbsp;</td>
+     <td class="author" title="[TEXT:revised by]"><I style="margin-right:5px;white-space:nowrap;">[owner]</I></td>
+     <td class="date"><span>[date]</span></td>
+     <td>[IF viewdiff]<input type="checkbox" onclick="senddiff()" onmousedown="stopPropagation(event);return false" name="diff" value="[id]">[ENDIF viewdiff]</td>
+</tr>
+
+     [BLOCK [COMMENT]]
+<tr  class="dash histo[clevel]" name="[vername]" [IF nodetail]style="display:none" [ENDIF nodetail]><td colspan="3"  >  
+       <P style="border-left:10px;border-style: none none none solid;border-color:[color]" > [ccomment]</P>
+</td><td><I>[cauthor]</I></td><td colspan="2">[cdate]</td> </tr>
+       [ENDBLOCK [COMMENT]]
+[ENDBLOCK TABLEBODY]
+</tbody>
+</table>
+<!-- /TABLEBODY -->
+
+
+
+

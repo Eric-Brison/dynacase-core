@@ -1,0 +1,53 @@
+<style>
+div.hblock {
+  color:[COLOR_A2];
+  font-size:90%; 
+}
+div.htitle { color:[COLOR_A0]; font-size:110%; font-weight:bold; margin:5px; border-bottom:1px solid [COLOR_A0]}
+div.hcontent { margin:5px 5px 5px 10px; } 
+div.hblock b { font-weight:bold;  font-size:110%; color:[COLOR_B0]; }
+</style>
+
+<div class="hblock">
+
+<div class="htitle">Zone de saisie du texte recherch&eacute;</div>
+<div class="hcontent">
+Dans cette zone vous devez entrer le texte recherch&eacute;. En tapant, [Entr&eacute;e] la recherche est lanc&eacute;e.<br>
+En standard, les mots saisies sont recherch&eacute;s tels que.<br>
+<br>Un dictionnaire corrige et adapte &eacute;ventuellement la saisie : par exemple la recherche d'afuttage retourne les documents contenant affutage. Si vous souhaitez d&eacute;sactiver ce fonctionnement, saisissez votre mot entre quillements. 
+<br><br>
+Si plusieurs mots sont donn&eacute;s, les r&eacute;sultats retourn&eacute;s contiennent les 2 mots (mot 1 ET mot 2 ... ET  mot n sont cherch&eacute;s).
+<br>
+<br>
+Des caract&egrave;res sp&eacute;ciaux peuvent &ecirc;tre utilis&eacute;s pour affiner les recherches. 
+Pour cela vous devez pr&eacute;c&eacute;der le mot de <b>~</b>.<br>
+Dans le mot vous pouvez utiliser des expressions suivantes :
+<ul>
+<li> <b>.</b> : remplace n'importe quel caract&egrave;re (exemple : ~mam.. retourne maman et mamie)
+<li> <b>*</b> : r&eacute;p&egrave;te 0 ou n fois le caract&egrave;re pr&eacute;c&eacute;dent (exemple ~pap.* retourne papa, papie, pape, papiste, ...)
+<li> <b>[</b>texte1<b>|</b>texte2<b>]</b> : exprime l'alternative entre 2 textes (exemple: "~bonjour [maman|papa]" retourne les documents contenant "bonjour maman" ou "bonjour papa"). Le ET est exprim&eacute; grace &agrave; <b>.*</b> (exemple: "bonjour maman.*papa", retourne les documents contenants "bonjour maman, bonjour papa", "bonjour maman et papa", mais aussi "bonjour maman, aurevoir papa")
+</ul>
+Le m&eacute;canisme utilis&eacute; est nomm&eacute; <b>expressions rationnelles (ou r&eacute;guli&egrave;res)</b>, vous trouverez <a target="_blank" href="http://fr.wikipedia.org/wiki/Expressions_rationnelles">ici plus d'information</a>.
+</div>
+
+<div class="htitle">S&eacute;lection de la famille</div>
+<div class="hcontent">
+La premi&egrave;re m&eacute;thode est de limiter la recherche &agrave; une seule famille en utilisant le s&eacute;lecteur de famille situ&eacute; sous la zone de saisie du texte.
+<br>
+Sinon, vous pouvez utiliser la zone de saisie pour d&eacute;finir sur quelle famille vous lancez la recherche.
+<br><br>
+Pour cela, votre texte recherch&eacute; doit &ecirc;tre pr&eacute;c&eacute;d&eacute; d'informations concernant les familles suivi du caract&egrave;re de s&eacute;paration <b>:</b> : "famille:mon texte".
+<br>La zone avant le caract&egrave;re <b>:</b> est utilis&eacute; pour affiner les familles sur lesquelles porte la recherche.
+<br>
+<br>
+Son utilisation basique est la suivante : [personne:martin], lancera la recherche de martin dans toutes les familles dont le titre contient 'personne' : personne, personnel, etc... 
+<br>
+<br>
+Si en faisant pr&eacute;c&eacute;der la famille du caract&egrave;re <b>~</b>, vous demandez que la famille soit exclue de la recherche. Par exemple [~personne:martin], lancera la recherche de martin dans toutes les familles sauf celles dont le titre contient 'personne' : personne, personnel, etc...
+<br><br>
+Pour indiquer plusieurs famille, s&eacute;parez les noms par une virgule <b>,</b>.  Par exemple [utilisateur,personne:martin], lancera la recherche de martin dans toutes les familles dont le titre contient 'personne' ou 'utilisateur' : utilisateur, utilisateurs, personne, personnel, etc...
+<br><br>
+Les priorit&eacute;s lors des manipulations des recherches sont : les exclusions sont trait&eacute;s avec des ET, les inclusions avec des OU.
+</div>
+
+</div>

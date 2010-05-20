@@ -1,0 +1,37 @@
+<html>
+  <head>
+
+   <title>FREEDOM - [APP_TITLE]</title>
+
+
+<link rel="icon" href="FDL/Images/logo16.ico" >
+<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+<script language="JavaScript" src="WHAT/Layout/geometry.js"></script>
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body onLoad="setTimeout('CenterDiv(\'logo2\');CenterDiv(\'logo\')',1)" onResize="CenterDiv('logo2');CenterDiv('logo')">
+
+<div id="logo" style="display:none;position:absolute;top:0px;left:0px;z-index:4">
+      <img src="[appicon]" title="[apptitle]" alt="[apptitle]">
+</div>
+<div id="logo2" style="display:none;position:absolute;top:0px;left:0px;filter:alpha(opacity=50);-moz-opacity:.5;z-index:2">
+      <img  src="[IMG:logofreedom.gif]" title="[apptitle]" alt="[apptitle]">
+</div>
+</body>
+</html>

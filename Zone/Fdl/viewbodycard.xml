@@ -1,0 +1,30 @@
+[BLOCK TABLEBODY]
+<fieldset id="F[frameid]" style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB][IFNOT NOTAB]display:none;[ENDIF NOTAB][ENDIF TAB]" [IF TAB]name="[tag]"[ENDIF TAB]  class="mfield" >[IF frametext]<legend class="frame"  onmousedown="viewornot('T[frameid]')">[frametext]</legend>[ENDIF frametext]
+[IF viewtpl]<div width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF viewtpl]
+[IFNOT viewtpl]<table width="100%" cellspacing="0" id="T[frameid]" >
+<tr class="FREEDOMBack1">
+  <td colspan="2"  height="1px"></td>
+  <td  width="0%" rowspan="[rowspan]" align="center" >[BLOCK [IMAGES]]<A href="[imgsrc]" target="[itarget]"><IMG border="0" title="[imgalt]" alt="[imgalt]" align="absbottom" width="[imgwidth]" SRC="[imgthumbsrc]"></A><br>[ENDBLOCK [IMAGES]]</td>
+</tr>
+[BLOCK [TABLEVALUE]]
+<tr  class="[classback]">
+  [IF nonelabel]<td valign="top" colspan="2" class="FREEDOMText" >[value]</td>[ENDIF nonelabel]
+  [IF normallabel]
+  <td valign="top"  class="FREEDOMLabel"  width="[wvalue]"><span style="display:[ndisplay]">[name]&nbsp;:&nbsp;</span></td>
+  <td valign="top" class="FREEDOMText" >[value]</td>[ENDIF normallabel]
+  [IF uplabel]<td valign="top" colspan="2" class="FREEDOMText" ><P style="margin:0px" ><u>[name]</u>&nbsp;:&nbsp;</P><div style="margin-left:20px">[value]</div></td>[ENDIF uplabel]
+</tr>
+[ENDBLOCK [TABLEVALUE]]
+</table>[ENDIF viewtpl]
+</fieldset>
+[ENDBLOCK TABLEBODY]
+[IFNOT NOTAB]
+[IF ONETAB]
+<div id="ttabs" class="tabsh" >
+[BLOCK TABS]
+<span  name="spantabs" id="TAB[tabid]" onmousedown="showFieldset(event,this,'TAG[tabid]')">[tabtitle]</span>
+[ENDBLOCK TABS]</div>
+<div class="line" id="toptab"></div>
+  <script>moveFieldset();[IFNOT firsttab] showFirstFieldset()[ENDIF firsttab][IF firsttab]showThisFieldset(null,'TAB[firsttab]')[ENDIF firsttab]</script>
+[ENDIF ONETAB]
+[ENDIF NOTAB]

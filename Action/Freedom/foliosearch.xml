@@ -1,0 +1,14 @@
+<html>
+<head>
+
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" />
+<title>[TEXT:PortFolio search] </title>
+
+</head>
+
+
+<frameset name="ffoliosearch" id="ffoliosearch" frameborder="3" framespacing="0" border="0" rows="100px,*" >
+  <frame name="ffoliosearchedit" id="ffoliosearchedit" src="[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&classid=5&zone=FREEDOM:EDITSPEEDSEARCH:U&rtarget=ffoliosearchresult&dirid=[docid]" marginheight="1" marginwidth="2"  scrolling="needed">  
+  <frame name="ffoliosearchresult" id="ffoliosearchresult" src="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_LOGO" marginheight="1" marginwidth="2"  scrolling="needed">
+          </frameset>
+</html>

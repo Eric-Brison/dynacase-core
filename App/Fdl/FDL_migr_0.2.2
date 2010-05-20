@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi 
+# ajout sequence doc temporaire
+
+
+echo "update docattr set type='text' where type='enum' and (phpfile is not null or phpfile != '');" | psql $dbfree
+echo "update docfam set usefor='W' where classname like 'W%';" | psql $dbfree
+echo "update doc set usefor='W' where doctype='W';" | psql $dbfree
+echo "delete from docattr where id ~ '[A-Z]+';" | psql $dbfree
+echo "drop function deletevalues();" | psql $dbfree
+echo "update docattr set phpfunc='constructor|Constructeur,client|Client,furnisher|Fournisseur' where id='si_catg';
+update doc124 set si_catg=str_replace(si_catg,'1','constructor');
+update doc124 set si_catg=str_replace(si_catg,'2','client');
+update doc124 set si_catg=str_replace(si_catg,'3','furnisher');" | psql $dbfree
+
+echo "update docattr set phpfunc='client|Client,furnisher|Fournisseur' where id='us_catg';
+update doc120 set us_catg=str_replace(us_catg,'1','client');
+update doc120 set us_catg=str_replace(us_catg,'2','furnisher');" | psql $dbfree
+
+
+# add sequences
+$wpub/wsh.php --api=fdl_adoc
+$wpub/wsh.php --api=fdl_trigger | psql $dbfree

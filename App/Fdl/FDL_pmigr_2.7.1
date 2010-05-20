@@ -1,0 +1,11 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+$wpub/wsh.php --api=fdl_trigger | psql $dbfree
+
+echo "update doc set id=id where svalues=''" | psql $dbfree

@@ -1,0 +1,91 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:edition: ] [TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+
+
+<!-- Title Table -->
+<form  class="fborder" 
+       name="importtar" 
+       method="POST" 
+       ENCTYPE="multipart/form-data" 
+       target="anaimport"
+       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_IMPORT_TAR" >
+     
+   <H1>[TEXT:Import Archive]</H1>
+
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="analyze" value="Y"> 
+<fieldset>
+<legend>[TEXT:Archive import]</legend> 
+ 
+ <P>[TEXT:Supported format]:<ul>
+ <li><A target="archinfo" href="http://www.gnu.org/software/tar/manual/html_chapter/tar_toc.html">[TEXT:compressed tar]</A> (.tgz .tar.gz .tar.bz2)
+ <li><A target="archinfo" href="http://www.info-zip.org/pub/infozip/">[TEXT:Zip File]</A> (.zip)
+</ul></P>
+ <label for="file">[TEXT:import file:] (<I>[maxsize]</I>)</label>
+ <input type="file"  name="tar" > 
+ <input type="submit" value="[TEXT:Upload archive]" > 
+
+</fieldset>
+
+
+</form>
+<form  class="fborder" 
+       name="viewtar" 
+       method="POST" 
+       ENCTYPE="multipart/form-data" 
+       target="anaimport"
+       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_VIEW_TAR" >
+     
+ 
+
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="analyze" value="E"> 
+<fieldset>
+<legend>[TEXT:View Archives]</legend> 
+ 
+
+ 
+ <input type="submit" value="[TEXT:Go to Archives]" > 
+
+</fieldset>
+
+
+</form>
+
+
+
+<!--  FOOT HTML -->
+
+</body>
+</html>

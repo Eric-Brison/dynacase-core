@@ -1,0 +1,34 @@
+<html>
+<head>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS&layout=USERCARD:faddbook.css">
+<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+[JS:REF]
+<script type="text/javascript">
+[JS:CODE]
+</script>
+
+</head>
+<body class="fabbody">
+
+<form id="maincols" name="maincols" method="POST" target="_self" action="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAINCOLS">
+<input type="hidden" id="resetcols" name="resetcols" value="0"><input type="hidden" id="dfam" name="dfam" value="[dfam]">
+
+<div class="fabzone">[TEXT:choose colums] ([dfamname])</div>
+
+<table width="100%" cellspacing="0">
+
+[BLOCK Columns]<tr><td><input title="[TEXT:select to view colum] [label]" type="checkbox" name="faddb_cols_[id]" [l_view]>[label]</td></tr>[ENDBLOCK Columns]
+
+<tr class="fabzone">
+<td colspan="2" align="right"><img title="[TEXT:save modifications]" style="border:0; cursor:pointer;" height="16" src="[IMG:faddbook_accept.gif]" onclick="document.getElementById('maincols').submit()"><img title="[TEXT:reset to default]" style="border:0; cursor:pointer;" height="16" src="[IMG:faddbook_reset.gif]" onclick="document.getElementById('resetcols').value=1; document.getElementById('maincols').submit()"></td>
+</tr>
+
+</table>
+
+
+</form>
+<iframe name="faddbook_maincols_hidden" id="faddbook_maincols_hidden" style="display:none" src="[IMG:1x1.gif]"></iframe>
+</body>
+</html>
+      

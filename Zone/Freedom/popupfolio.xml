@@ -1,0 +1,26 @@
+<script language="JavaScript">
+  <!--
+var docTarget='fdoc';
+  -->
+</script>
+<!-- ------------ POPUP DIVISION --------------------- -->
+<div  id="popupfolio" class="popup">
+
+
+
+
+
+<a href="#" id="newdoc"     
+    onClick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_EDIT&classid=7&dirid=[dirid]',docTarget);closeAllMenu(); return false;"  >[TEXT:new document]</a>
+
+
+<a href="#" id="newgc"     
+    onClick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid=[IDFAM_GUIDECARD]&dirid=[dirid]',docTarget);closeAllMenu(); return false;"  >[TEXT:new guide-card]</a>
+<a href="#" id="newsgc"     
+    onClick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid=[IDFAM_SGUIDECARD]&dirid=[dirid]',docTarget);closeAllMenu(); return false;"  >[TEXT:new search guide-card]</a>
+
+  <a id="searchinsert"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FOLIOSEARCH&id=[dirid]',docTarget);closeAllMenu()" >[TEXT:Search to insert]</a>
+  <a id="insertbasket"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_INSERTFLD&folio=Y&dirid=[FREEDOM_IDBASKET]&id=[dirid]&clean=Y','_self');closeAllMenu()" >[TEXT:Basket to here]</a>
+
+</div>
+<!-- ------------------ end POPUP DIVISION ------------------ -->

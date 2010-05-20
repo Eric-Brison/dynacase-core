@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+echo "create table docname ( name text not null,  primary key (name),   id int, fromid int);" | psql $dbfree
+
+echo "UPDATE doc set name = null where name = '';" | psql $dbfree
+echo "insert INTO docname (name, id, fromid) select name,id, fromid from doc where name is not null and locked != -1;" | psql $dbfree

@@ -1,5 +1,0 @@
-NameVirtualHost @IP@
-<VirtualHost @IP@>
-ServerName @VIRTUALNAME@
-SetEnv dbanakeen @DBNAME@
-</VirtualHost>

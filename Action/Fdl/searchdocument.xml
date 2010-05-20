@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status count="[count]" delay="[delay]" code="[CODE]" warning="[warning]" >
+[BLOCK ACTIONS]
+<action name="[actname]" docid="[actdocid]"></action>
+[ENDBLOCK ACTIONS]
+  <branch><![CDATA[
+[BLOCK DOCS]
+<div class="uresult" onclick="fdl_addDoc(event,this,'[initid]','[stitle]','[icon]')"><img align="right" src="[IMG:minileft.gif]"><img  src="[icon]">[title]</div>
+[ENDBLOCK DOCS]
+[IFNOT count][TEXT:No result][ENDIF count]
+[IF onecount][firstinsert][ENDIF onecount]
+]]></branch>
+</status>

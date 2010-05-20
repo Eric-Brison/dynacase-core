@@ -1,0 +1,53 @@
+<!-- ------------------ BAR MENU ------------------ -->
+<div id="barmenu" style="width:100%;position:fixed;left:0;top:0;cursor:default;z-index:6;" >
+<table  class="barmenu"    cellspacing="0"  >
+<thead>
+<tr>
+
+<td class="CORETblHead" onClick="closeAllMenu();" width="50%" ><div class="headtitle" style="max-height:30px;overflow:hidden">[title] - [nbdoc]</div></td>
+<td  class="MenuInactive"  width="25%" 
+     onClick="openBarMenu(event,this,'viewmenu');stopPropagation(event);return false" 
+     onMouseOver="ActiveMenu(this)"
+     onMouseOut="DeactiveMenu(this)">
+[TEXT:View]
+</td>
+<td  class="MenuInactive"  width="25%" 
+     onClick="openBarMenu(event,this,'toolmenu');stopPropagation(event);return false" 
+     onMouseOver="ActiveMenu(this)"
+     onMouseOut="DeactiveMenu(this)">
+[TEXT:Tools]
+</td>
+</tr>
+</thead>
+
+</table >
+</div>
+
+<br>
+<!-- ------------------ end POPUP DIVISION ------------------ -->
+
+
+
+<!-- ------------ MENU VIEW  --------------------- -->
+<div  id="viewmenu" class="popup">
+  
+<a  id="vlist" href="#" onClick="location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_LIST&memo=Y&target=[wtarget]&dirid=[dirid][pds]';closeAllMenu()">[TEXT:list]</a>
+<a  id="vdetail" href="#" onClick="location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_LISTDETAIL&memo=Y&target=[wtarget]&dirid=[dirid][pds]';closeAllMenu()">[TEXT:detail]</a>
+<a  id="vicon" href="#" onClick="location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ICONS&memo=Y&target=[wtarget]&dirid=[dirid][pds]';closeAllMenu()">[TEXT:icon]</a>
+<a  id="vcol" href="#" onClick="location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_COLUMN&memo=Y&target=[wtarget]&dirid=[dirid][pds]';closeAllMenu()">[TEXT:column]</a>
+</div>
+
+<!-- ------------ MENU TOOL --------------------- -->
+<div  id="toolmenu" class="popup">
+     <a  id="props" href="#" onClick="activate(this,'[CORE_STANDURL]app=FDL&action=FDL_CARD&latest=Y&id=[dirid]','fdoc');closeAllMenu();">[TEXT:Properties]</a>
+  <a id="tobasket"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[dirid]&id=[FREEDOM_IDBASKET][pds]','basket');closeAllMenu()" >[TEXT:All To basket]</a>
+  <a id="openfolio"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=OPENFOLIO&id=[dirid]','folio[dirid]');closeAllMenu()" >[TEXT:Open in folio]</a>
+     
+  <a id="insertbasket"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[FREEDOM_IDBASKET]&id=[dirid]&clean=Y[pds]','_self');closeAllMenu()" >[TEXT:Basket to here]</a>
+     <a  id="insert" href="#" onClick="activate(this,'[CORE_STANDURL]app=FDL&action=EDITINSERTDOCUMENT&id=[dirid]','fdoc');closeAllMenu();">[TEXT:Insert documents]</a>
+  <a id="applybatch"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_APPLYBATCH&id=[dirid][pds]','fdoc');closeAllMenu()" >[TEXT:Create a batch]</a>
+     
+     <a  id="export" href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=EDITEXPORT&id=[dirid]','fdoc');closeAllMenu();">[TEXT:Export Folder]</a>
+     <a  id="clear" href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_CLEARFLD&id=[dirid]','_self');closeAllMenu();">[TEXT:Clear Folder]</a>
+</div>
+

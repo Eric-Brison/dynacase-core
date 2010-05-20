@@ -1,0 +1,165 @@
+[ZONE FDL:HTMLHEAD?title=[searchtitle]]
+
+<style>
+SELECT.little { font-size:90%; }
+div.logo { margin-top:-20px;  float:left; width:20%; z-index:100; text-align:center; }
+img.logomini { width:70px; padding-left:0px; }
+div.zsearch { margin-top:20px;}
+div.searchp { float:left; padding:0px 5px 0px 5px; text-align:right; }
+div.searchc { float:left; padding:0px 5px 0px 5px; text-align:left; }
+div.searchm { float:left; padding:0px 15px 0px 15px; text-align:left; }
+
+.bresume { 
+  background-color:[COLOR_B8]; 
+  border-color:[COLOR_B4]; 
+  border-style:solid;
+  border-width:1px 0px 1px 0px;width:50%; 
+  padding:0px 5px 0px 5px;
+}
+.left { text-align:left; }
+.right { text-align:right; }
+
+td.result  {
+  padding : 5px 5px 10px 5px;
+  border-width : 1px; 
+  border-color : [COLOR_A8]; 
+  border-style : none;
+  vertical-align:top; 
+  font-size:90%; 
+  background-color:transparent;
+  color:[COLOR_A3]; }
+tr.result  {
+  background-color:transparent;
+}
+td.result .title { color:[COLOR_B0]; font-size:110%; font-weight:bold; }
+td.result b { color:[COLOR_A0]; }
+td.result:hover {background-color :[COLOR_B8]}
+tr.result:hover td.result {background-color :[COLOR_B8]}
+a.result:active, a.result:link, a.result:visited {text-decoration:none}
+a.result img {border:none}
+
+#aide {
+  position:absolute;
+  display:inline;
+  border: 1px solid [COLOR_B4];
+  background-color: [COLOR_WHITE];
+  padding:10px;
+  left : 50px;
+  right : 50px;
+  -moz-border-radius: 10px;
+}
+#aide #closeaide {  right:10px; margin : 5px 0px 10px 0px; }
+</style>
+<script>
+function buttonNumber(event) {
+  
+  if (window.event) return button=window.event.button;
+  else return button= event.button +1;
+}
+function hideresult(event) {
+  if (buttonNumber(event)==3) return;
+  var ifr=document.getElementById('searchresult');
+  var dr=document.getElementById('dresult');
+  var ipr=document.getElementById('iprev');
+    ifr.src="[IMG:1x1.gif]";
+  ifr.style.display='';
+  dr.style.display='none';  
+  ipr.style.visibility='visible';
+  
+  }
+function showresult() {
+  var ifr=document.getElementById('searchresult');
+  var dr=document.getElementById('dresult');
+  var ipr=document.getElementById('iprev');
+  ifr.style.display='none';
+  dr.style.display='';  
+  ipr.style.visibility='hidden';
+  }
+
+function resizeiframe(event) {
+  if (document.getElementById("dresult")) {
+    var fh=getFrameHeight();
+    var xy=getAnchorPosition("dresult");
+    var nh=fh-xy.y-5;
+
+    if (nh> 100) document.getElementById("searchresult").style.height=nh+'px';
+    //   alert(xy.y+' - '+fh+' - '+nh);
+  }
+}
+addEvent(window,"load",resizeiframe);
+addEvent(window,"resize",resizeiframe);
+</script>
+
+[ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
+<form  id="fedit"  
+       class="fborder" style="display:inline"
+       name="searchdoc"       
+       target="_self"
+       method="GET"        >
+<input type="hidden" name="start" value="0">
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="app" value="FGSEARCH">
+<input type="hidden" name="sole" value="Y">
+<input type="hidden" name="action" value="FULLSEARCH">
+
+[IF viewform]
+<div style="text-align:right">
+<a style="font-size:80%; "  onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
+</div>
+
+<div id="searchzone" class="zsearch">
+
+<div class="logo"><img class="logomini" align="middle" needresize="1"  src="[IMG:fgsearch.png]"></div>
+<div class="searchp">
+<div><input name="keyword" type="text" size="30" value="[key]"></div>
+<div><select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
+        [BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>   
+        [ENDBLOCK SELECTCLASS]
+      </select></div>
+</div>
+
+<div class="searchc">
+  <input type="submit" value="[TEXT:ToSearch]">
+</div>
+<div class="searchm">
+<a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
+<br><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a>
+</div>
+
+</div>
+
+<div style="clear:both"></div>
+[ENDIF viewform]
+
+<table  cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
+<tr>
+<td class="bresume left"><img title="[TEXT:Return to results]" style="height:[SIZE_IMG-XX-SMALL];visibility:hidden;cursor:pointer" id="iprev" onclick="showresult()" src="[IMG:prev.png]" needresiez="1">[CORE_CLIENT]</td>
+<td class="bresume right">[resulttext]
+<div style="right:5px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
+[BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5 0 5" width="12px"></div>[ENDBLOCK filterfam]
+</div></td>
+</tr>
+</table> 
+<div id="aide" style="display:none">
+<div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
+[ZONE FGSEARCH:HELP]
+</div>
+[IF INITSEARCH]
+<div style="text-align:center;vertical-align:middle"><img src="[IMG:logofreedom2.png]"></div>
+[ENDIF INITSEARCH]
+<div id="dresult">
+[BLOCK DOCS]<a target="searchresult" onmouseup="hideresult(event)" class="result" onclick="searchresult.location.href=this.href"  href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]"><table cellspacing=0>
+<tr class="result"  >
+<td class="result"><img align="left" needresize="1" src="[iconsrc]" width="36px"></td>
+<td class="result"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
+</tr></table></a>
+[ENDBLOCK DOCS]
+<div style="text-align:center;border-top-color:[COLOR_B4];border-top-style:solid;border-top-width:1px">
+[IF notfirst]
+ <a onclick="document.searchdoc.start.value=[pstart];document.searchdoc.submit()">  <img style="border:none" align="absbottom"  src="[IMG:freeleft.png]"> [TEXT:Previous]</a>[ENDIF notfirst] 
+[BLOCK PAGES]<a  onclick="document.searchdoc.start.value=[xstart];document.searchdoc.submit()">[xpage] </a>[ENDBLOCK PAGES] <b>[cpage]</b>
+ <a onclick="document.searchdoc.start.value=[nstart];document.searchdoc.submit()"> [IF notthenend][TEXT:Next] <img style="border:none" align="absbottom"  src="[IMG:freeright.png]"></a>[ENDIF notthenend]</div>
+</div>
+</form>
+<iframe id="searchresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="searchresult"></iframe>
+[ZONE FDL:HTMLFOOT]

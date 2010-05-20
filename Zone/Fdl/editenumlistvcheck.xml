@@ -1,0 +1,9 @@
+<span id="sp_[id]"><table cellspacing=0 [IF isopen]style="float:left"[ENDIF isopen]>[BLOCK OPTIONS]
+<tr class="[checked]"><td><input [disabled] id="[optid]" onclick="changeCheckClasses(this[IF other],'free_[id]',true,'[name][]'[ENDIF other])" type="checkbox" [IFNOT other]name="[name][]"[ENDIF other] value="[kvalue]" [checked]>&nbsp;</td><td onclick="checkinput('[optid]',false[IF other],'free_[id]',true,'[name][]'[ENDIF other])"><label>[fvalue]</label></td><td><span id="lfree_[optid]"></span></td></tr>[ENDBLOCK OPTIONS]
+</table>
+<span style="display:none"><input  type="checkbox" name="[name][]" value=" " ></span>[IF isfree]<input id="free_[id]"  type="hidden" name="[name][]" value="[freevalue]" >[ENDIF isfree]
+[IF isopen]
+&nbsp;<input style="display:none" title="[TEXT:Set new entry]" onkeypress="if (trackCR(event)) {addEnum(document.getElementById('bbkeysp_[id]'),document.getElementById('sp_[id]'),'[docid]','[idi]',this) ;return false}" type="text" id="keysp_[id]">
+<input id="bbkeysp_[id]" type="button" onclick="addEnum(this,document.getElementById('sp_[id]'),'[docid]','[idi]',document.getElementById('keysp_[id]'));return false" title="[TEXT:Add new entry]" value="+">[ENDIF isopen][IF isfreeselected]<script>createOtherEnumInput(false,document.getElementById('free_[id]'),true);</script>[ENDIF isfreeselected]
+
+</span>

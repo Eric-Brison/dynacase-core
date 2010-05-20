@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+
+   <title>[doctitle]</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="icon" href="FDL/Images/logo16.ico" >
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script type="text/javascript" language="JavaScript">
+  <!--
+    [JS:CODE]   
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body >

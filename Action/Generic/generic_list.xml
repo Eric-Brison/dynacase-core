@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT: folder containt]</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+<style type="text/css">
+[CSS:CODE]
+
+
+</style>
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+    document.dirid='[dirid]';
+
+if (document.all) {
+  window.onscroll = floatMenu; /* position fixed not IE supported yet */
+  window.onload = floatMenu; /* position fixed not IE supported yet */
+}
+function floatMenu () {
+  document.getElementById('barmenu').style.position = 'absolute';
+   document.getElementById('barmenu').style.top = getScrollYOffset();
+    return true;
+}
+document.needreload=true;
+var prevselid;
+
+// view select document
+function vselect(th) { 
+  if (prevselid)  document.getElementById(prevselid).className="unselect";
+  th.className="select";
+  prevselid = th.id;
+}
+function vedit(e,id) {
+  if (!e) e=window.event;
+
+  if (e.ctrlKey) {
+    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'fedit'+id,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&latest=Y&id='+id);  
+  } else {
+    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'finfo[famid]','[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&&latest=Y&id='+id);  
+  }
+}
+var catgid=parseInt('[catg]');
+
+function KeySendSimpleSearch(e) {
+     var keyCode;
+
+     if (window.event) keyCode=window.event.keyCode;
+     else keyCode = e.which;
+
+     if (keyCode==13) {
+       SendSimpleSearch(e)
+     }
+}
+function SendSimpleSearch(event) {    
+  var isreport=false;
+  var isparam=false;
+      
+  var did=document.getElementById('csid');
+  var fldid=0;
+  var key=document.getElementById('searchkey').value;
+  var mode=document.getElementById('searchmode').value;
+  var dmainid=document.getElementById('cellmain');
+  var pds='[pds]';
+  
+  if (did) {
+    fldid=did.options[did.selectedIndex].value;
+    isreport=(did.options[did.selectedIndex].getAttribute('isreport')=='1');   
+    isparam=(did.options[did.selectedIndex].getAttribute('isparam')=='1');    
+  }
+  if (isreport) {
+    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'finfo[famid]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&dochead=Y&latest=Y&id='+fldid);  
+  } else {
+    if (isparam) {
+      if (fldid != parseInt('[catg]')) {
+      
+	key=false;
+	document.getElementById('searchkey').value='';
+      } else {
+	if (key=='') pds='';
+      }
+    }
+
+    if (dmainid) {
+      dmainid.innerHTML='<img  src="Images/loading.gif" style="background-color:#FFFFFF;border:groove black 2px;padding:4px;-moz-border-radius:4px">';
+      dmainid.style.textAlign='center';
+    }
+    if ((fldid>0) && (!key)) document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&clearkey=Y&famid=[famid]&catg='+fldid+'&dirid='+fldid+pds);
+  else if (key)  document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_SEARCH&famid=[famid]&dirid=[dirid]&catg='+fldid+pds+'&keyword='+key+'&mode='+mode);
+  else document.location.replace('[CORE_STANDURL]app=[APPNAME]&action=GENERIC_TAB&tab=0&famid=[famid]&catg=-1&clearkey=Y');  
+  } 
+  return true;  
+  
+}
+
+function changeMode(o) {
+  var mode=document.getElementById('searchmode').value;
+  if (mode=='FULL') {
+    document.getElementById('searchmode').value='REGEXP';
+    o.value='~';
+    o.title="[TEXT:Search containing characters]";
+  } else {
+    document.getElementById('searchmode').value='FULL';
+    o.title="[TEXT:Search Words]";
+    o.value='*';
+  }
+}
+function focusInput(event,did) {
+  if (did) {
+    var isreport=(did.options[did.selectedIndex].getAttribute('isreport')=='1');   
+    if (isreport) {
+      SendSimpleSearch(event);
+      var i=0;
+      did.selectedIndex=0;
+      for (i=0;i<did.options.length;i++) {
+	if (did.options[i].defaultSelected) did.selectedIndex=i;
+      }
+    }
+  }
+  var i=document.getElementById('searchkey');
+  if (i) i.focus();
+}
+addEvent(window,"load",focusInput);
+
+-->
+</script>   
+ </head>
+
+<body class="freedom"  >
+
+
+[ZONE [APPNAME]:GENERIC_BARMENU?catg=[catg]]
+<br>[ZONE FDL:POPUPDOCMENU?mzone=GENERIC:POPUPLISTDETAIL%26famid=[famid]]
+<br>
+<div onmouseup="closeAllMenu();">
+
+<input id="searchmode" name="mode" type="hidden" value="REGEXP">
+<input id="searchbutton" class="searchbutton" title="[TEXT:Search containing characters]" type="button" value="~" onclick="changeMode(this)">
+[IF FULLMODE]<script>changeMode(document.getElementById('searchbutton'))</script>[ENDIF FULLMODE]
+<input   onMouseUp="return true" onKeyPress="KeySendSimpleSearch(event)" type="text"  value="[tkey]" id="searchkey">
+[IF ONESEARCH]
+<select id="csid" onchange="focusInput(event,this)" >
+   <option value="0">-</option>
+[BLOCK SYSSEARCH]<option isreport="[isreport]" isparam="[isparam]" style="background-color:[gui_color]" [selected] value="[id]">[title]</option>[ENDBLOCK SYSSEARCH][IF MSEARCH]<option style="border-top:solid 1px [COLOR_BLACK];height:2px;font-size:1px" disabled value=""></option>[ENDIF MSEARCH]
+[BLOCK USERSEARCH]<option isreport="[isreport]" isparam="[isparam]" style="background-color:[gui_color]" [selected] value="[id]">[title]</option>[ENDBLOCK USERSEARCH]
+</select>
+[ENDIF ONESEARCH]
+<input title="[TEXT:Send search]" onclick="SendSimpleSearch(event);return false" type="button" value="[TEXT:Go]">
+
+
+<table class="transparent" cellspacing="0" width="100%"><tr>
+<td align="left" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[prev]&dirid=[dirid]&catg=[catg]&famid=[famid][pds]">[previcon]</a></td>
+<td align="center"><i><b>[fldtitle]</b></i></td>
+<td align="right" width="30px"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&famid=[famid][pds]">[nexticon]</a></td>
+</tr></table>
+
+<table class="transparent"  width="100%">
+<tr>
+<td  width="1px" valign="top" cellspacing="0" cellpadding="0">
+<table   cellpadding="1px" cellspacing="1px" >
+[BLOCK ONGLET]
+<tr><td class="[ongclass]" align="center" onmouseover="if (className != 'onglets') className='ongleth';" 
+                       onmouseout="if (className != 'onglets') className='onglet';" 
+                       onclick="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_TAB&catg=[catg]&tab=[ongdir]&famid=[famid][pds]'">[onglabel]</td></tr>
+[ENDBLOCK ONGLET]
+</table>
+</td>
+<td id="cellmain" valign="top">
+
+
+                    [BLOCK TABLEBODY]
+
+<!-- TABLEBODY -->
+<div  id="d[id]"
+      style="width:[ACARD_WIDTH];float:left;cursor:crosshair;"
+        onmouseover="if (this.className.charAt(0) == 'u') this.className='unselecth'"
+        onmouseout="if (this.className.charAt(0) == 'u') this.className='unselect'" 
+        onclick="if (document.noselect) document.noselect=false; else {vselect(this);subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[famtarget]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]');}" 
+oncontextmenu="viewdocmenu(event,'[id]',false,false,this);return false" 
+     class="unselect" >   
+     <img   align="right" width="30" id="ic[id]" [IFNOT canedit]class="aiconnoh"[ENDIF canedit][IF canedit]class="aicon" title="[TEXT:toedit]" onclick="document.noselect=true;vselect(this.parentNode);vedit(event,'[id]');"[ENDIF canedit]  needresize="1" src="[iconsrc]"><img  align="right" title="[emblemt]" src="[emblem]" width="[emblemw]">
+     [IF postitid]<img  align="right" needresize="1" src="[IMG:stickynotes.png]" width="20px">[ENDIF postitid][IF forumid]<img  align="right" needresize="1" src="[IMG:forum.png]" width="20px">[ENDIF forumid]
+<A class="title"  style="float:left;" id="t[id]">[title]</A> <I class="statetext" style="float:right;border-color:[statecolor]">[state]</I><br style="clear:both"/>
+[ABSTRACTVALUES]
+</div>
+
+
+                    [ENDBLOCK TABLEBODY]
+<BR>
+<!-- /TABLEBODY -->
+</td>
+</tr>
+</table>
+<table class="transparent" cellspacing="0" width="100%"><tr>
+<td align="left"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[prev]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[previcon]</a></td>
+<td align="right"><a href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LIST&tab=[tab]&page=[next]&dirid=[dirid]&catg=[catg]&onglet=[onglet]&famid=[famid][pds]">[nexticon]</a></td>
+</tr></table>
+</div>
+<!--  FOOT HTML -->
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+sed -ie 's/^#\(include.*nis.schema\)$/\1/' /etc/openldap/slapd.conf

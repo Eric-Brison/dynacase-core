@@ -1,0 +1,14 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Accord]]
+
+
+<div style="margin:10px">
+
+[BLOCK WASK]
+<p><i>[ask]</i>  [label]</p>
+[ENDBLOCK WASK]
+</div>
+
+<a href="?app=FDL&action=EDITWASK&docid=[docid]">[TEXT:Change my ask]</a> | 
+<a onclick="if (window.parent) window.parent.hidebox('VIEWWASK');">[TEXT:Close]</a>
+[ZONE FDL:HTMLFOOT]
+

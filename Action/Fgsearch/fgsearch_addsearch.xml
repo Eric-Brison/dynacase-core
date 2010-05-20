@@ -1,0 +1,17 @@
+<script>
+function addFreedomEngine() {
+        if ( typeof window.external == "object" ) {
+            try {
+		  window.external.AddSearchProvider("[CORE_ABSURL]img-cache/[HOST]-freedom-os.xml");
+            } catch (e) {
+                window.external.AddFavorite("[CORE_ABSURL][CORE_STANDURL]&app=FGSEARCH&action=FULLSEARCH", "[CORE_CLIENT]");
+            }
+        } else if ( (typeof window.sidebar == "object") && (typeof window.sidebar.addSearchEngine == "function") ) {
+                window.sidebar.addSearchEngine(
+                        '[CORE_ABSURL]img-cache/[HOST]-freedom.src',
+                        '[CORE_ABSURL]img-cache/[HOST]-freedom.gif', "[CORE_CLIENT]", '' );
+        } else {
+                window.sidebar.addPanel("[CORE_CLIENT]", "[CORE_ABSURL][CORE_STANDURL]&app=FGSEARCH&action=FULLSEARCH", "");
+        }
+}
+</script>

@@ -1,0 +1,46 @@
+[ZONE CORE:HTMLHEAD?title=[TEXT:Batch Choose]]
+
+<style type="text/css">
+DIV.batch {
+  border:2px outset black;
+  float:left;
+  text-align:center;
+  width:120px;
+  height:200px;
+  overhide : hidden;
+  margin: 3px;
+}
+
+DIV.batch BUTTON {
+  background:[CORE_BGCOLORALTERN];
+  cursor:pointer;
+}
+DIV.batch BUTTON:hover {
+  border:2px inset black;
+  background:[CORE_FGCOLOR];
+  color:[CORE_TEXTBGCOLOR];
+  cursor:pointer;
+}
+DIV.batch:hover {
+  border:2px inset black;
+  background:[CORE_BGCOLORALTERN];
+}
+.label {
+  background-color:[CORE_BGCOLORALTERN];
+  background-image:url('Images/brushed.png');
+  width:100%;  
+}
+   </style>
+
+
+[BLOCK BATCHFAMS]
+<div class="batch" ><div style="height:170px">
+<img width="48px" height="48px" src="[iconsrc]"><br>
+<div class="label"><b>[title]</b></div>
+<i>[actions]</i><br></div>
+<button onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'_blank','[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_ADDBATCH&linkdir=N&dirid=[dirid]&bid=[id]')" title="[TEXT:Copy the containt of folder in batch document]" style="width:40%">[TEXT:A_Copy]</button>
+<button onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'_blank','[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_ADDBATCH&linkdir=Y&dirid=[dirid]&bid=[id]')" title="[TEXT:Copy the reference of folder in batch document]" style="width:40%">[TEXT:A_Link]</button>
+</div>
+[ENDBLOCK BATCHFAMS]
+
+[ZONE CORE:HTMLFOOT]

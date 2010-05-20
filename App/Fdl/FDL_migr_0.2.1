@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+ 
+# ajout sequence doc temporaire
+
+echo "create sequence seq_id_tdoc start 1000000000;" | psql $dbfree
+echo "ALTER TABLE docfam ADD COLUMN cfldid int;" | psql $dbfree
+echo "delete from paramv where name='DEFAULT_FLD';" | psql $dbpsql
+echo "delete from paramdef where name='DEFAULT_FLD';" | psql $dbpsql
+echo "delete from docattr where id ~ '[A-Z]+';" | psql $dbfree
+echo "update docattr set phpfile='' where phpfunc like 'gettitle%';" | psql $dbfree
+echo "update docattr set phpfunc='' where phpfunc like 'gettitle%';" | psql $dbfree

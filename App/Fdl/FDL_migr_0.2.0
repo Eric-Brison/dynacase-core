@@ -1,0 +1,54 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=DocAttr
+
+
+    
+
+psql $dbfree -f $wpub/FDL/FDL_migr_0.2.0.sql
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=Doc
+
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=DocFam
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=QueryDir
+
+
+psql $dbfree -f $wpub/FDL/fdl.sql
+
+# creation des class PHP
+
+echo "insert into docfam (id, owner, title, revision, initid, fromid, doctype, locked, icon, lmodify, profid, usefor, revdate, comment, classname, state, wid)  select id, owner, title, revision, initid, fromid, doctype, locked, icon, lmodify, profid, usefor, revdate, comment, classname, state, wid from only doc where  doctype='C';delete from only doc where  doctype='C';" | psql $dbfree
+$wpub/wsh.php --api=fdl_adoc 
+
+$wpub/wsh.php --api=migr_sql2.0 --table=yes | psql $dbfree
+
+psql $dbfree -f $wpub/FDL/FDL_migr_0.2.0-1.sql
+
+
+
+
+# creation des class PHP (2ème passe)
+$wpub/wsh.php --api=fdl_adoc 
+# creation des fonctions de trigger
+#$wpub/wsh.php --api=fdl_trigger  | psql $dbfree
+# activation des triggers
+#$wpub/wsh.php --api=fdl_trigger --trigger=yes | psql $dbfree
+
+#migration des permissions
+echo "update doc set profid=0  where id=profid and profid not in (select id_obj from operm);" | psql $dbfree
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=DocPerm
+$wpub/wsh.php --api=migr_sql2.0 --perm=yes 
+echo "update doc set profid=-profid where profid > 0 and profid not in (select docid from docperm);" | psql $dbfree
+
+
+echo "VACUUM FULL ANALYZE;" | psql $dbfree
+
+psql $dbpsql -f $wpub/FDL/FDL_migr_0.2.0-2.sql
+
+# refresh queries
+$wpub/wsh.php  --api=freedom_refresh --famid=5

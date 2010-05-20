@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+[ZONE FDL:HTMLHEAD]
+<script>addEvent(window,'load',correctlevel);</script>
+<img align="right"src="[icon]"><H3>[TITLE]</H3>
+<form  name="addcatg"  method="POST" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_MODKIND" >
+
+<input type="hidden" name="aid" value="[aid]">
+<input type="hidden" name="fid" value="[fid]">
+
+<table align="center" class="tableborder">
+<tr><th>[TEXT:level]</th><th>[TEXT:reference]</th><th>[TEXT:labeltext]</th></tr>
+<tr>
+<td><select size=20  name="alevel[]" id="ialevel" onkeyup="setiinput(event,this.selectedIndex)" onclick="setiinput(event,this.selectedIndex)">
+[BLOCK ALEVEL]    
+    <option value="[alevel]">[alevel]</option>
+[ENDBLOCK ALEVEL]
+</select>
+</td><td>
+<select size=20  name="aref[]" id="iaref" onkeyup="setiinput(event,this.selectedIndex)" onclick="setiinput(event,this.selectedIndex)">
+[BLOCK AREF]    
+    <option value="[eref]">[eref]</option>
+[ENDBLOCK AREF]
+</select>
+</td><td>
+<select size=20   name="alabel[]" id="ialabel"  onkeyup="setiinput(event,this.selectedIndex)" onclick="setiinput(event,this.selectedIndex)">
+[BLOCK ALABEL]    
+    <option value="[elabel]">[velabel]</option>
+[ENDBLOCK ALABEL]
+</select>
+</td></tr>
+
+<tr><td>
+<input type="image" src="[IMG:up22.gif]"   title="[TEXT:upk]" onclick="upa();return false;"></input>
+<input type="image" src="[IMG:down22.gif]" title="[TEXT:downk]" onclick="downa();return false;"></input></td>
+<td><input type="text" size=10 id="iref" value=""></input></td>
+<td><input type="text" size=20 id="ilabel" value=""></input></td></tr>
+
+<tr>
+<td>
+<input type="image" src="[IMG:prev22.gif]" title="[TEXT:previous level]" onclick="lefta();return false;"></input>
+<input type="image" src="[IMG:next22.gif]" title="[TEXT:next level]" onclick="righta();return false;"></input></td>
+<td><input type="image" src="[IMG:add22.gif]" title="[TEXT:add]" onclick="adda();return false;"></input>
+<input type="image" src="[IMG:trash22.gif]"  title="[TEXT:delete]" onclick="rema();return false;"></input>
+<input type="image" src="[IMG:update22.gif]"  title="[TEXT:modify]" onclick="moda();return false;"></input></td><td>
+<input align="right" type="image"  src="[IMG:ok22.gif]" title="[TEXT:Validate]" onkeydown="selectall();" onmousedown="selectall();" onclick="selectall()"></input></td>
+</tr></table>
+
+</form>
+</body>
+</html>
+

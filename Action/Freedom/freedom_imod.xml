@@ -1,0 +1,52 @@
+<html>
+<script language="JavaScript">
+
+function txml(attrid){
+  var parametre = document.getElementById('parametre');
+
+  var frame_edit=(window.top.opener);
+
+
+  var form_frame_edit = frame_edit.document.getElementById(attrid);
+  form_frame_edit.value=parametre.xml.value;
+
+
+
+
+
+  if ('[close]' != 'no') {
+
+    frame_edit.popdoc(null, '');
+    parametre.target="POPDOC_ifrm";
+
+    parametre.submit();
+
+
+    var itxt=frame_edit.document.getElementById("iti"+attrid);
+    if (itxt)  itxt.innerHTML="[title]";
+    window.top.close();
+  } else {
+    window.top.viewwait(false);
+  }
+  
+}
+
+
+
+</script>
+
+
+<body onLoad="txml('[attrid]')">
+<form id="parametre"
+      name="parametre"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"
+>
+<input type="hidden" id="xml" name="xml" value="[xml2]">
+<input type="hidden" name="famid" value="[famid]">
+
+</form>
+
+</body>
+   
+</html>

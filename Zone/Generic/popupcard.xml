@@ -1,0 +1,43 @@
+<!-- ------------ POPUP DIVISION --------------------- -->
+<div  id="popupcard" class="popup">
+
+
+
+
+<a href="#" id="editdoc"     
+    onclick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_EDIT&id=[id]','finfo');closeMenu('popupcard')"  >[TEXT:Edit]</a>
+
+
+
+
+<a href="#" id="editstate"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_EDITSTATE&id=[id]','');closeMenu('popupcard')" >[TEXT:Change state]</a>
+
+<a href="#" id="unlockdoc"
+    onclick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=UNLOCKFILE&id=[id]','finfo');closeMenu('popupcard')" >[TEXT:Unlock]</a>
+
+
+
+<a href="#" id="chgcatg"
+    onclick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_EDITCHANGECATG&id=[id]','finfo');closeMenu('popupcard')" >[TEXT:Change category]</a>
+
+<a href="#" id="properties"     
+    onclick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_CARD&id=[id]','finfo');closeMenu('popupcard');">[TEXT:View properties]</a>
+
+<a href="#" id="duplicate"     
+    onclick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_DUPLICATE&id=[id]&dirid='+parent.flist.catgid,'finfo');closeMenu('popupcard');">[TEXT:Duplicate]</a>
+
+<a href="#" id="headers"     
+    onclick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_CARD&head=yes&id=[id]','finfo');closeMenu('popupcard');">[TEXT:View headers]</a>
+
+<a href="#" id="delete"     
+    onclick="ok =confirm('[TEXT:delconfirm] [deltitle]'); if (ok) activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_DEL&id=[id]','finfo');closeMenu('popupcard'); if (ok) parent.flist.location.reload();">[TEXT:Delete]</a>
+
+<a href="#" id="cancel"  
+    onclick="closeMenu('popupcard')"  >[TEXT:Cancel]</a>
+[ZONE FDL:POPUPFAM]
+</div>
+<!-- ------------------ end POPUP DIVISION ------------------ -->
+
+
+

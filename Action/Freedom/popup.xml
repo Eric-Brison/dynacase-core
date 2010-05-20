@@ -1,0 +1,33 @@
+<script language="JavaScript">
+  <!--
+var docTarget='fdoc';
+  -->
+</script>
+<!-- ------------ POPUP DIVISION --------------------- -->
+<div  id="popuplist" class="popup">
+
+<a href="#" id="vprop"
+    onClick="activate(this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id='+docid,docTarget);closeAllMenu(); return false;">[TEXT:view properties] </a>
+
+<a href="#" id="editdoc"     
+    onClick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&id='+docid,docTarget);closeAllMenu(); return false;"  >[TEXT:edit document]</a>
+
+<a href="#" id="duplicate" 
+    onClick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_DUPLICATE[ofolio]&id='+docid+'&dirid='+document.dirid,'_self');closeAllMenu(); return false;"  >[TEXT:duplicate document]</a>
+
+<a href="#" id="copy" 
+    onClick="activedrag(event);closeAllMenu(); return false;" >[TEXT:link document]</a>
+
+<a href="#" id="addbasket" 
+    onClick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=ADDDIRFILE&dirid=[FREEDOM_IDBASKET]&docid='+docid,'basket');closeAllMenu(); return false;" >[TEXT:Add to basket]</a>
+
+<a href="#" id="ifld"
+    onClick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_IFLD&id='+docid,docTarget);closeAllMenu(); return false;" >[TEXT:access path list]</a>
+
+<a href="#" id="delete"
+    onClick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=DELDIRFILE[ofolio]&docid='+docid+'&dirid='+document.dirid,'_self');closeAllMenu(); return false;" >[TEXT:delete link]</a>
+
+<a href="#" id="cancel"  
+    onClick="closeAllMenu(); return false;"  >[TEXT:cancel]</a>
+</div>
+<!-- ------------------ end POPUP DIVISION ------------------ -->

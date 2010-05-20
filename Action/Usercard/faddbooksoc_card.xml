@@ -1,0 +1,108 @@
+
+
+<script type="text/javascript">
+
+var lOnglet = [ 'contact', 'address' [IF HasOthers],'other'[ENDIF HasOthers] ];
+
+addEvent(window,"load",viewFirstTab);
+</script>
+
+
+<div class="fabcard">
+
+<table class="fabtable" cellspacing="0" border="0">
+
+<tr>
+<td width="80px" align="center">
+<img [IF HasLogo]onmouseover="this.className='zoom';"  onmouseout="this.className='';"[ENDIF HasLogo] src="[logo]" width="[wlogo]px">
+</td>
+<td>
+<div class="fabctitlep">[IF S_SI_SOCIETY]<span class="fabctitle">[V_SI_SOCIETY]</span>&nbsp;[ENDIF S_SI_SOCIETY]</div>
+[IF S_SI_TOWN]<div class="fabctitlep"><span class="fabcsoc">[V_SI_TOWN]</span></div>[ENDIF S_SI_TOWN]
+</td>
+</tr>
+
+<tr><td></td><td><div height="30px">&nbsp;</div></td></tr>
+<tr valign="top">
+
+<td class="fabogcontent" align="center">
+<div id="ocontact" class="fabogsel" onmouseout="if (this.className!='fabogsel') this.className='fabog'" onmouseover="if (this.className!='fabogsel') this.className='fabogover';" onclick="showInfo('contact')">[TEXT:contact]</div>
+<div id="oaddress" class="fabog" onmouseout="if (this.className!='fabogsel') this.className='fabog'" onmouseover="if (this.className!='fabogsel') this.className='fabogover';" onclick="showInfo('address')">[TEXT:address]</div>
+[IF HasOthers]
+<div id="oother" class="fabog" onmouseout="if (this.className!='fabogsel') this.className='fabog'" onmouseover="if (this.className!='fabogsel') this.className='fabogover';" onclick="showInfo('other')">[TEXT:other]</div>[ENDIF HasOthers]
+</td>
+
+<td>
+
+<div class="fabogdetail" id="contact"><table class="fabtable" width="100%">
+
+[IF S_SI_MAIL]<tr>
+<td align="right"><span class="fabccom">[L_SI_MAIL]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_SI_MAIL]</span></td>
+</tr>[ENDIF S_SI_MAIL]
+
+<tr><td colspan="3">&nbsp;</td><tr>
+
+[IF S_SI_PHONE]<tr>
+<td align="right"><span class="fabccom">[L_SI_PHONE]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_SI_PHONE]</span></td>
+</tr>[ENDIF S_SI_PHONE]
+[IF S_SI_MOBILE]<tr>
+<td align="right"><span class="fabccom">[L_SI_MOBILE]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_SI_MOBILE]</span></td>
+</tr>[ENDIF S_SI_MOBILE]
+[IF S_SI_FAX]<tr>
+<td align="right"><span class="fabccom">[L_SI_FAX]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_SI_FAX]</span></td>
+</tr>[ENDIF S_SI_FAX]
+
+<tr><td colspan="3">&nbsp;</td><tr>
+
+[IF S_SI_WEB]<tr>
+<td align="right"><span class="fabccom">[L_SI_WEB]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_SI_WEB]</span></td>
+</tr>[ENDIF S_SI_WEB]
+
+<tr><td colspan="3">&nbsp;</td><tr>
+
+</table></div>
+
+<div style="display:none" class="fabogdetail" id="address"><table class="fabtable" width="100%">
+
+[IF S_SI_ADDR]<tr><td></td>
+<td colspan="2"><span class="fabcrub">[V_SI_ADDR]</span></td></tr>[ENDIF S_SI_ADDR]
+<tr><td></td>
+<td colspan="2"><span class="fabcrub">[IF S_SI_POSTCODE][V_SI_POSTCODE] [ENDIF S_SI_POSTCODE][V_SI_TOWN][IF S_SI_CEDEX]</span> <span class="fabcrub">[V_SI_CEDEX]</span>[ENDIF S_SI_CEDEX]</td></tr>
+[IF S_SI_COUNTRY]<tr><td></td><td colspan="2"><span class="fabcrub">[V_SI_COUNTRY]</span></td></tr>[ENDIF S_SI_COUNTRY]
+
+
+<tr><td></td><td colspan="2" align="left"><div class="fabcaddress">[TEXT:other sites]</div><div>&nbsp;</div></td></tr>
+<tr><td></td>
+<tr><td></td><td colspan="2"><span class="fabcrub">[V_SI_SITES]</span></td></tr>
+
+</table>
+</div>
+
+<div style="display:none"  class="fabogdetail" id="other">
+<div id="ttabs" class="tabh">
+[BLOCK TABS]
+<span  onclick="showAttributes(event,this,[aids])">[tabtitle]</span>
+[ENDBLOCK TABS]</div>
+<table class="tab" width="100%" id="tothers">
+[BLOCK OTHERS]
+<tr class="tro" id="TR[aid]">[IFNOT isarray]<td width="30%" align="right" ><span class="fabccom">[lothers]&nbsp;:</span></td>[ENDIF isarray]<td [IF isarray]colspan="2"[ENDIF isarray]><span class="fabcrub">[vothers]</span></td></tr>
+[ENDBLOCK OTHERS]
+</table>
+</div>
+</div>
+
+</td></tr>
+</table>
+
+
+</div>

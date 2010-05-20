@@ -1,0 +1,148 @@
+[ZONE FDL:HTMLHEAD?title=[searchtitle]]
+
+
+<style>
+SELECT.little { font-size:90%; }
+DIV.search {
+  width:50%;
+  position:absolute;
+  top:30px;right:30px;
+  border:[COLOR_B8] 2px outset;
+  background-color:[COLOR_WHITE];
+  padding:10px;
+  -moz-border-radius:15px;
+}
+</style>
+<div class="search" id="dsearch">
+<table border=0 width="100%">
+<thead>
+<tr id="newcond" style="display:none">
+<td class="und" align="left">
+  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]">
+</td>
+
+<td class="und" >
+  <select  name="_se_attrids[]"  onchange="filterfuncz(this)">
+  [BLOCK ATTR]<option atype="[attrtype]" value="[attrid]">[attrname]</option>
+  [ENDBLOCK ATTR]
+  </select></td>
+<td class="und">
+  <select  name="_se_funcs[]" >
+    [BLOCK FUNC]<option  ctype="[functype]" style="display:[funcdisplay]" value="[funcid]">[funcname]</option>
+    [ENDBLOCK FUNC]
+  </select></td>
+<td class="und"  >
+   <input id="thekey" type="text"  size="20"  name="_se_keys[]" >
+   </td>
+</tr>
+<tr id="newstate" style="display:none">
+<td class="und" align="left">
+  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]">
+</td>
+<td class="und" >
+  <select  name="_se_attrids[]" >
+     <option selected value="state">[TEXT:State]</option>
+  </select></td>
+<td class="und">
+  <select  name="_se_funcs[]" >
+    [BLOCK FUNCSTATE]<option  value="[funcid]">[funcname]</option>
+    [ENDBLOCK FUNCSTATE]
+  </select></td>
+<td class="und"  >
+  <select  name="_se_keys[]" >
+  [BLOCK STATE]<option  value="[stateid]">[statename]</option>
+  [ENDBLOCK STATE]
+  </select></td>
+</tr>
+
+[BLOCK ENUMS]
+<tr  style="display:none"><td colspan="4">
+  <select id="selenum[attrid]"  >
+    [BLOCK [SELENUM]]<option  value="[enumkey]">[enumlabel]</option>
+    [ENDBLOCK [SELENUM]]
+  </select>
+</td></tr>
+[ENDBLOCK ENUMS]
+</thead>
+</table>
+
+<table align="right"><tr><td align="right"><a  title="[TEXT:Undisplay the search query]" onclick="maskfilter()" id="amask" >[TEXT:Mask]</a><a  style="display:none" onclick="unmaskfilter()" id="aunmask" title="[TEXT:View the search query]">[TEXT:Unmask]</a></td>
+</tr></table>
+<br>
+
+<form  id="fedit"  
+       class="fborder" style="display:inline"
+       name="searchdoc"       
+       target="searchresult"
+       method="POST" ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=FGSEARCH&action=FULLDSEARCH" >
+
+<table id="famselection" width="100%" ><tr>
+<td  align="right"><img align="middle" needresize="1" height="[SIZE_IMG-MEDIUM]" style="padding-left:30px" src="[IMG:logofreedom.png]"></td>
+<td><select onchange="document.location.href='[CORE_STANDURL]&app=FGSEARCH&action=FULLEDITDSEARCH&famid='+this.options[this.selectedIndex].value" class="little"   name="famid" >  
+         [BLOCK SELECTFAM]
+           <option [famselect] VALUE="[idcdoc]" >[classname]</option>   
+         [ENDBLOCK SELECTFAM]
+    </select><img needresize="1" src="[famicon]" height="[SIZE_IMG-MEDIUM]"></td>
+<td align="left"><a href="[CORE_STANDURL]app=FGSEARCH&action=FULLSEARCH&famid=[famid]">[TEXT:Simple search]</a>
+</td>
+</tr></table>
+<table id="conditions" border=0 width="100%">
+<thead>
+<tr><td align="center" colspan="4">[V_SE_OL]</td></tr>
+<tr class="FREEDOMBack2">
+<td>&nbsp;</td>
+<td>[L_SE_ATTRIDS]</td>
+<td>[L_SE_FUNCS]</td>
+<td>[L_SE_KEYS]</td>
+</tr></thead>
+<tbody id="condlist">
+[BLOCK CONDITIONS]<tr id="ART[ak]">
+<td class="und">
+  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]"></td>  
+<td class="und" >
+  <select  name="_se_attrids[]"  onchange="filterfuncz(this)" >
+  [BLOCK [ATTRCOND]]<option [attr_selected] atype="[attr_type]" value="[attr_id]">[attr_name]</option>
+  [ENDBLOCK [ATTRCOND]]
+  </select></td>
+<td class="und">
+  <select  name="_se_funcs[]" >  
+  [BLOCK [FUNCCOND]]
+     <option [func_selected] ctype="[func_type]"  style="display:[func_display]" value="[func_id]">[func_name]</option>
+  [ENDBLOCK [FUNCCOND]]
+  </select></td>
+<td class="und"  >
+  [IFNOT ISENUM]
+   <input  type="text"  size="20" name="_se_keys[]" value="[key]">
+   
+  [ENDIF ISENUM]
+  [IF ISENUM]
+  <select  name="_se_keys[]" >
+  [BLOCK [SSTATE]]<option  value="[sstateid]" [sstate_selected]>[sstatename]</option>
+  [ENDBLOCK [SSTATE]]
+  </select>  
+  [ENDIF ISENUM]</td>
+
+</tr>
+[ENDBLOCK CONDITIONS]
+</tbody>
+<tfoot>
+<tr>
+
+<td class="und" colspan="5">   
+   <input   value="[TEXT:Add filter]"   type="button" onclick="addfilter('newcond','condlist')">
+   <input  style="display:[dstate]" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist')">
+   <input type="submit" value="[TEXT:ToSearch]">
+ </td>
+</tr>
+
+
+</tfoot>
+</table>
+
+</form>
+</div>
+
+<iframe src="[IMG:1x1.gif]" style="width:100%;height:98%;border:none;padding:0px;margin:0px" name="searchresult"></iframe>
+
+[ZONE FDL:HTMLFOOT]

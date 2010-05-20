@@ -1,0 +1,31 @@
+
+<table  width="100%" cellspacing="0">
+<tbody>
+[ZONE FDL:VIEWFRAME?frameid=MSK_FR_REST]
+
+
+<tr >
+  <td  colspan="2" >
+ <fieldset style="cursor:crosshair;"><legend>Masques</legend>
+<table width="100%" >
+<tr class="FREEDOMBack1" >  
+  <th>[TEXT:atype]</th>  
+  <th>[TEXT:fieldset]</th>     
+   <th>[TEXT:attrname]</th>  
+   <th>[TEXT:new visibility]</th>
+   <th>[TEXT:default visibility]</th>
+</tr>
+[BLOCK MASK]
+<tr class="FREEDOMBack1" style="background-color:[bgcolor]">  
+  <td>[type]</td>     
+  <td>[framelabel]</td>     
+   <td>[attrname]</td>  
+   <td style="font-weight:[waneed]">[mvisibility]</td>
+   <td style="font-weight:[wneed]">[visibility]</td>
+</tr>
+[ENDBLOCK MASK]
+</table>
+</td></tr>
+</tbody>
+
+</table>

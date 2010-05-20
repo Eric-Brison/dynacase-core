@@ -1,0 +1,29 @@
+
+
+
+<form id="fedit"
+      name="modifydoc"
+      target="[starget]"
+      method="POST" ENCTYPE="multipart/form-data"
+      onsubmit="[BLOCK TRANSFERT]transfertValue('[idi]','[idp]');[ENDBLOCK TRANSFERT]"
+      action="[CORE_STANDURL]&app=[sapp]&action=[saction]">
+<fieldset><legend><img src="[icon]" needresize="1" width="[SIZE_IMG-X-SMALL]">[TEXT:Parameters for] [V_BA_TITLE]</legend>
+<input type="hidden" name="[sid]" value="[id]">
+[BLOCK PINPUTS]
+<input type="hidden" name="[idp]" id="[idp]" value="[value]">[ENDBLOCK PINPUTS]
+<table border=0 width="100%">
+  <tbody>[BLOCK PARAM]
+   <tr ><td width="30%" class="FREEDOMlabel">[label] : </td><td>[inputs]</td></tr>[ENDBLOCK PARAM]
+  </tbody>
+</table>
+<input class="noprint" type="submit" value="[stext]">
+</fieldset>
+</form>
+<script>
+if (window.parent.fvfolder) {
+  if (!document.modifydoc.target) document.modifydoc.target='fvfolder';
+ } 
+if (!document.modifydoc.target) document.modifydoc.target='_self';
+notalone=false;
+</script>
+

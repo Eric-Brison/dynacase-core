@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+echo "alter table docread add column svalues text;" | psql $dbfree
+echo "alter table doc add column svalues text default '';" | psql $dbfree
+
+

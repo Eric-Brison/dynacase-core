@@ -1,0 +1,11 @@
+<span id="sp_[id]"><table cellspacing=0 [IF isopen]style="float:left"[ENDIF isopen]>
+[BLOCK OPTIONS]
+<tr class="[checked]"><td><input id="[optid]" [disabled]  onclick="changeCheckClasses(this,'[id]')" type="radio" name="[id][name]" value="[kvalue]" [checked]>&nbsp;</td><td onclick="checkinput('[optid]',true,'[id]')"><label id="l[optid]">[fvalue]</label></td></tr>[ENDBLOCK OPTIONS]
+
+</table>
+<input type="hidden" id="[id]" name="[name]" value="[value]">
+[IF isopen]
+&nbsp;<input style="display:none" title="[TEXT:Set new entry]" onkeypress="if (trackCR(event)) {addEnum(document.getElementById('bbkeysp_[id]'),document.getElementById('sp_[id]'),'[docid]','[idi]',this) ;return false}" type="text" id="keysp_[id]">
+<input id="bbkeysp_[id]" type="button" onclick="addEnum(this,document.getElementById('sp_[id]'),'[docid]','[idi]',document.getElementById('keysp_[id]'));return false" title="[TEXT:Add new entry]" value="+">[ENDIF isopen]
+[IF isfreeselected]<script>createOtherEnumInput(false,document.getElementById('[id]'),true);</script>[ENDIF isfreeselected]
+</span>

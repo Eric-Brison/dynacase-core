@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>[TEXT:Address book searches]</title>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+[CSS:REF]
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS&layout=USERCARD:faddbook.css">
+[JS:REF]
+<script type="text/javascript">
+[JS:CODE]
+var isfirst=[first];
+var sChange=false;
+function sendform(evt) {
+  evt = (evt) ? evt : ((event) ? event : null );
+  var cc = (evt.keyCode) ? evt.keyCode : evt.charCode;
+  if (cc == 13) {
+    document.getElementById('suser').submit();
+    sChange=false;
+    return false;
+  }
+  isfirst = false;
+  sChange=true;
+  return true;
+}
+</script>
+</head>
+<body class="fabbody">
+<form id="suser" name="suser" method="POST" target="_self" action="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_SPEEDSEARCH">
+<input type="hidden" id="first" value="[first]"><input type="hidden" name="dfam" value="[dfam]"><input type="hidden" name="vsuser" id="vsuser" value="[vsuser]"><input type="hidden" name="ssoc" id="ssoc" value="[ssoc]">
+<div class="fabzone" width="100%">
+<img align="absmiddle" class="[IF USEL]fabbutsel[ENDIF USEL][IFNOT USEL]fabbutunsel[ENDIF USEL]" height="16" onclick="var vu=getElementById('vsuser'); if (vu.value==1) { vu.value=0; this.className='fabbutunsel'; } else { vu.value=1; this.className='fabbutsel'};" src="[icon1]"><img align="absmiddle" class="[IF SOCSEL]fabbutsel[ENDIF SOCSEL][IFNOT SOCSEL]fabbutunsel[ENDIF SOCSEL]" height="16" onclick="var vs=getElementById('ssoc'); if(vs.value==1) { vs.value=0; this.className='fabbutunsel'; } else { vs.value=1; this.className='fabbutsel'};" src="[icon2]">
+&nbsp;[IF bCount]([Count])[ENDIF bCount]&nbsp;<input size="15" onmouseover="this.style.background='yellow'" onmouseout="this.style.background='';" onclick="if (isfirst) this.value=''" type="text" name="vtext" id="vtext" value="[vtext]"><img height="16" style="position:relative; left:-20px; top:2px;" src="[IMG:faddbook_search.gif]"><input style="display:none;border:0px" checked type="checkbox" name="sallf" title="[TEXT:search in all contact fields]"></div>
+
+[IF Result][BLOCK Contacts]
+<span border="1" onclick="subwindow(300, 550, '[TEXT:view_detail][id]', '[CORE_STANDURL]&app=FDL&action=FDL_CARD&props=N&abstract=N&id=[id]&zone=[fabzone]');">[resume]</span>[ENDBLOCK Contacts][ENDIF Result]
+
+<iframe name="faddbook_pref_hidden" id="faddbook_pref_hidden" style="display:none" src="[IMG:1x1.gif]"></iframe>
+</body>
+</html>

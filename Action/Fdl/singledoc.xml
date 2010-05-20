@@ -1,0 +1,26 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:Properties:] [TITLE]</title>
+<BASE HREF="[baseurl]">
+<STYLE TYPE="text/css">
+[ZONE CORE:SYSTEMCSS]
+[ZONE CORE:GENCSS]
+
+
+		@page { size: 21cm 29.7cm }
+
+	</STYLE>
+
+ </head>
+
+<body>
+<h1>
+  <IMG align="left" class="famicon" border="0"  align="absbottom" needresize="1" width="[SIZE_IMG-MEDIUM]" SRC="[iconsrc]">[TITLE]</h1>
+
+[ZONE FDL:VIEWCARD?target=te&dochead=N&zone=[zone]]
+
+</body>
+</html>

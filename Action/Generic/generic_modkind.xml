@@ -1,0 +1,9 @@
+[ZONE FDL:HTMLHEAD]
+<h2>[desc]</h2>
+
+<ul>
+[BLOCK vkind]
+<li style="margin:0px 0px 0px [level]px"><span >[ktitle]</span></li>
+[ENDBLOCK vkind]
+</ul>
+[ZONE FDL:HTMLFOOT]

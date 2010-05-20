@@ -1,0 +1,13 @@
+
+<!-- HEAD HTML -->
+
+
+<html>
+
+
+<frameset onLoad="window.opener.start=1;" id="frameset" cols="100%,0%" >
+<frame name="un">
+<frame id="deux" name="deux">
+</frameset>
+
+</html>

@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
+// ---------------------------------------------------------------
+// $Id: USERCARD_init.php.in,v 1.17 2005/10/06 13:18:42 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/freedom/App/Usercard/USERCARD_init.php.in,v $
+// ---------------------------------------------------------------
+
+global $app_const;
+
+
+$app_const= array(
+  "INIT" => "yes",
+  "VERSION"			=>"@VERSION@-@RELEASE@",
+  
+  "LDAP_SERVEUR" => array("val"=>"localhost",
+			  "descr"=>N_("LDAP server name"),
+			  "global"=>"Y"),
+  "LDAP_PORT" => array("val"=>"389",
+		       "descr"=>N_("LDAP server port"),
+		       "global"=>"Y"),
+  "LDAP_ROOT" => array("val"=>"o=Anakeen,c=fr",
+		       "descr"=>N_("LDAP server root"),
+		       "global"=>"Y"),
+  "LDAP_ROOTDN" => array("val"=>"cn=Manager,o=Anakeen,c=fr",
+		       "descr"=>N_("LDAP admin identificatot"),
+		       "global"=>"Y"),
+  "LDAP_ROOTPW" => array("val"=>"secret",
+		       "descr"=>N_("LDAP admin passord"),
+		       "global"=>"Y"),
+  "LDAP_ENABLED" => array("val"=>"no",
+			  "descr"=>N_("LDAP activated"),
+			  "kind" => "enum(yes|no)",
+			  "global"=>"Y"),
+  "USERCARD_FIRSTFAM" => array("val"=>"USER",
+			       "descr"=>N_("first family used")),
+  "USERCARD_SECONDFAM" => array("val"=>"SOCIETY",
+				"descr"=>N_("second family used")),
+  // User parameters
+  "FADDBOOK_MAINLINE" => array("kind"=>"static", 
+			       "val"=>"25", 
+			       "descr"=>N_("main view line displayed"), 
+			       "user"=>"Y"),
+  "FADDBOOK_PREFERED" => array("kind"=>"static", "val"=>"", 
+			       "descr"=>N_("prefered contacts"), 
+			       "user"=>"Y"),
+  "FADDBOOK_MAINCOLS" => array("kind"=>"static", "val"=>"", "descr"=>N_("main view columns"), "user"=>"Y")
+
+);
+
+
+?>

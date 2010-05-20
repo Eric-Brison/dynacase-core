@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+#for optimisation
+$wpub/wsh.php --api=migr_2.5.1 | psql $dbfree > /dev/null
+

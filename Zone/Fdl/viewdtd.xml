@@ -1,0 +1,20 @@
+
+<!ELEMENT [ID_FAM] ([BLOCK ELEMENT][name][ENDBLOCK ELEMENT])>
+<!ATTLIST [ID_FAM] title CDATA  #REQUIRED>
+<!ATTLIST [ID_FAM] nom_fam CDATA  #FIXED "[nom_fam]">
+<!ATTLIST [ID_FAM] type CDATA  #FIXED "[doctype]" >
+<!ATTLIST [ID_FAM] idfam CDATA  #FIXED "[idfam]" >
+[BLOCK FIELDSET]
+
+<!ELEMENT [name] ([BLOCK [ATTRIBUT_NAME]][name_attribut][ENDBLOCK [ATTRIBUT_NAME]])>
+<!ATTLIST [name] titre CDATA #REQUIRED>
+
+[BLOCK [ATTRIBUT_SETTING]]
+<!ELEMENT [name_attribut] (#PCDATA)>
+<!ATTLIST [name_attribut] labelText CDATA  #FIXED "[labelText]">
+<!ATTLIST [name_attribut] type CDATA  #FIXED "[type]">
+<!ATTLIST [name_attribut] visibility CDATA  #FIXED "[visibility]">
+
+[ENDBLOCK [ATTRIBUT_SETTING]]
+
+[ENDBLOCK FIELDSET]

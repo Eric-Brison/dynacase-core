@@ -1,0 +1,83 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:Archives] </title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+.dir {
+  font-weight: bold;
+  list-style: square;
+  color:red;
+}
+.file {
+  font-weight: medium;
+  list-style: circle;
+}
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+<form  class="fborder" 
+       name="viewextract" 
+       method="POST" 
+       ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_VIEW_TAR" >
+
+      
+
+   <H1>[TEXT:Import Archive]</H1>
+
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="analyze" value="E"> 
+<fieldset>
+<legend>[TEXT:Choose Archive]</legend> 
+   [TEXT:for]
+   <select name="filename" onchange="submit();">  
+         [BLOCK SELECTFILE]
+           <option VALUE="[filename]" [selected]>[filename]</option>   
+         [ENDBLOCK SELECTFILE]
+    </select>
+    
+    <img src="[IMG:delete.gif]" title="[TEXT:delete archive]" style="cursor:pointer" onclick="document.viewextract.action='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_DEL_TAR';document.viewextract.submit();">
+<div style="overflow:scroll;height:200px;" >
+<DIR>
+[BLOCK DIR]
+<li class="[type]" style="margin-left:[level]px">[name]</li>
+[ENDBLOCK DIR]
+</DIR>
+</div>
+</fieldset>
+</form>
+
+
+
+[BLOCK ANALYZE]
+<iframe width="100%" height="100%" name="i_bgtaranalyze" src="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_ANA_TAR&filename=[selfile]&dirid=[dirid]"></iframe>
+[ENDBLOCK ANALYZE]
+
+</body>
+</html>

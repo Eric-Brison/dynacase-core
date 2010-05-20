@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status count="[count]" delay="[delay]" code="[CODE]" warning="[warning]" >
+  <branch><![CDATA[
+
+
+
+<div   id="popupdoc" class="popup" >
+
+
+
+
+[BLOCK ADDLINK]
+[IF URL]
+<a href="#" id="[idlink]" title="[title]" [IF color]style="background-color:[color]"[ENDIF color] visibility="[visibility]" submenu="[smid]"
+    onmouseup="if (([confirm] && confirm('[tconfirm]')) || (! [confirm])) sendMenuUrl(this,'[url]','[target]',[barmenu],'[mwidth]','[mheight]');closeDocMenu();">
+[IF [ICONS]]<img align="absbottom" style="margin:0px;padding:0px;border:none" src="[icon]">[ENDIF [ICONS]][descr]</a>[ENDIF URL]
+[IF JSFT]
+<a href="#" id="[idlink]"  [IF color]style="background-color:[color]"[ENDIF color] visibility="[visibility]" submenu="[smid]" title="[title]"
+    onmouseup="if (([confirm] && confirm('[tconfirm]')) || (! [confirm])) {[jsfunction];}closeDocMenu();">
+[IF  [ICONS]]<img align="absbottom" style="margin:0px;padding:0px;border:none"  src="[icon]">[ENDIF [ICONS]][descr]</a>[ENDIF JSFT]
+[IF separator]    
+<a class="separator"></a>[ENDIF separator]
+[IF issubmenu]
+<a  href="#" id="[idlink]"       visibility="2"
+    onmouseover="openSubDocMenu(event,this,'popup[idlink]');">[IF [ICONS]]<img align="absbottom" style="margin:0px;padding:0px;border:none" src="[icon]">[ENDIF [ICONS]][descr] &gt;</a>
+[ENDIF issubmenu]
+[ENDBLOCK ADDLINK]
+
+
+[IF SEP]
+<a class="separator"></a>
+[ENDIF SEP]
+
+</div>
+
+[BLOCK SUBDIVMENU]
+<div  id="popup[idlink]" name="popupcard" style="left:0px;top:0px" class="popup"></div>   
+[ENDBLOCK SUBDIVMENU]
+
+
+]]></branch>
+</status>

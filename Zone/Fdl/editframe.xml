@@ -1,0 +1,28 @@
+[BLOCK FRAME]
+
+<tr >
+  <td  colspan="2" ><fieldset class="mfield"><legend style="cursor:pointer" onclick="viewornot('T[frameid]')">[flabel]</legend>
+<table width="100%" id="T[frameid]">
+[BLOCK FVALUES]
+<tr class="FREEDOMBack1">
+            [IFNOT TESTARRAY]
+  <td width="30%" valign="top" class="[labelclass]">[alabel]&nbsp;:&nbsp;</td>
+  <td  >[avalue]</td>
+            [ENDIF TESTARRAY]
+            [IF TESTARRAY]
+  <td colspan="3">[IF viewlabel]<span class="[labelclass]">[alabel]&nbsp;:&nbsp;</span><br>[ENDIF viewlabel][avalue]</td>
+            [ENDIF TESTARRAY]
+</tr>
+[ENDBLOCK FVALUES]
+</table>
+
+</fieldset>
+</td></tr>
+
+<tr style="display:none"><td>
+[BLOCK FHIDDENS]
+[avalue]
+[ENDBLOCK FHIDDENS]
+</td></tr>
+
+[ENDBLOCK FRAME]

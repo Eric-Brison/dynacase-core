@@ -1,0 +1,102 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:users list]]
+
+<script>
+function selecttab(t,id) {
+  var o;
+  var ltr;
+   o=document.getElementById('DGroups');
+   if (o) o.style.display='none';
+   o=document.getElementById('DUsers');
+   if (o) o.style.display='none';
+   o=document.getElementById(id);
+   if (o) { o.style.display='';
+     
+     ltr=o.parentNode.getElementsByTagName('span');
+     for (var i=0;i<ltr.length ;i++)       ltr[i].className='';
+     
+     t.className='tabsel';
+   }
+}
+function resizeIurl() {
+var eiurl=document.getElementById("fiuser");
+var xy=getAnchorPosition("fiuser");
+var hiurl=getFrameHeight();
+var nh=hiurl - xy.y - 20; // offset for scrollbar
+
+eiurl.height=nh;
+}
+window.onresize=resizeIurl;
+function viewdoc(id) {
+  subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id='+id);
+}
+function viewfld(id) {
+  subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAIN&dfam=IUSER&target=finfo2&etarget=finfo2&usedefaultview=Y&dirid='+id);
+}
+function focuskey() {
+  var o=document.getElementById("kid");
+  if (o) {
+    o.focus();
+    o.select();
+  }
+  [IF expand]expandTree('gtree');[ENDIF expand]
+resizeIurl();
+    
+}
+addEvent(window,"load",focuskey);
+
+</script>
+<style>
+TABLE.tableborder TBODY TR:hover {
+  background-color:[CORE_BGCOLORHIGH]!important;
+}
+TABLE.tableborder TBODY TR TD{
+  cursor:pointer;
+}
+</style>
+
+<div  class="tabh">
+<span  class="tabsel" onclick="showDiv(this,'DUsers');"><img width="14"  src="[IMG:ipersonne.gif]">[TEXT:Users]</span>
+<span  onclick="showDiv(this,'DGroups');"><img width="14"  src="[IMG:igroup.gif]">[TEXT:Groups]</span>
+[IF isMaster]<span  onclick="showDiv(this,'DAdmin');"><img width="14"  src="[IMG:freeaction.gif]">[TEXT:Admin]</span>[ENDIF isMaster]
+</div>
+
+<div style="width:100%;height:1px;overflow:hidden;clear:both;border-top:[CORE_FGCOLOR] solid 1px"></div>
+
+
+
+<div class="do" id="DUsers">
+<iframe id="fiuser" style="border:none" scrolling="needed" width="95%" height="95%" src="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAIN&dfam=IUSER&usedefaultview=Y&etarget=finfo[APPNAME]&cols=us_login&viewone=Y&target=finfo[APPNAME]&createsubfam=Y"></iframe>
+</div>
+<div class="do" id="DGroups" style="display:none">
+<button onclick="subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid=IGROUP')">[TEXT:Create new group]</button>
+<UL id="gtree" class="mktree">[BLOCK LI]<LI name="LI[id]" >
+<img class="click" title="[TEXT:view detail] ([login]@[domain])"  src="[icon]" width="12px" onclick="viewdoc('[fid]')"><a onclick="viewfld('[fid]')"><span  title="[login]@[domain]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span></A>
+[SUBUL]</LI>[ENDBLOCK LI]</UL>
+<script>addEvent(window,"load",convertTrees)</script>
+</div>
+
+[IF isMaster]
+<div class="do" id="DAdmin" style="display:none">
+
+<button title="[TEXT:Refresh users characteristics from system]" onclick="if (confirm('[TEXT:Refersh users may take long time. Sure ?]')) subwindow(50,300,'_blank','[CORE_STANDURL]&app=FUSERS&action=FUSERS_IUSER')" >[TEXT:Refresh users]</button><br/>
+
+<button title="[TEXT:Refresh LDAP]" onclick="if (confirm('[TEXT:Refresh LDAP may take long time. Sure ?]')) subwindow(50,300,'_blank','[CORE_STANDURL]&app=FUSERS&action=FUSERS_LDAPINIT')" >[TEXT:Refresh LDAP]</button><br/>
+<button title="[TEXT:Refresh Group members and mail]" onclick="if (confirm('[TEXT:Refresh groups may take long time. Sure ?]')) subwindow(50,300,'_blank','[CORE_STANDURL]&app=FUSERS&action=FUSERS_IGROUP')" >[textgroup]</button><br/>
+<button title="[TEXT:CSV Import Users]" onclick="subwindow(50,300,'finfo[APPNAME]','[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid=IUSER')" >[TEXT:Import Users]</button><br/>
+<button title="[TEXT:CSV Import Groups]" onclick="subwindow(50,300,'finfo[APPNAME]','[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid=IGROUP')" >[TEXT:Import Groups]</button>
+
+
+<fieldset><legend>[TEXT:Modify categories]</legend>
+<table width="97%">
+<tr><th>[TEXT:Family]</th><th>[TEXT:Attribute]</th><th>&nbsp;</th></tr>
+[BLOCK CATG]
+<tr><td>[ftitle]</td>
+<td>[label]</td><td><button title="[TEXT:Add or modify item's category]" onclick="subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]app=GENERIC&action=GENERIC_EDITCATG&fid=[famid]&aid=[kindid]')">[TEXT:Modify]</button></td></tr>
+[ENDBLOCK CATG]
+</table>
+</fieldset>
+
+</div>
+
+[ENDIF isMaster]
+[ZONE FDL:HTMLFOOT]

@@ -1,0 +1,29 @@
+<table style="width:100%"><tr><td  title="[TEXT:View family]" style="width:100px;text-align:center">
+[IF FROMID]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[FROMID]">[ENDIF FROMID]<img  style="border:none;width:40px" src="[ficonsrc]"><br>[classtitle][IF FROMID]</a>[ENDIF FROMID]</td><td><h1><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[ID]">[TITLE]</a></h1></td></tr></table>
+<hr>
+<center>
+<table>
+
+<tr><td class="FREEDOMLabel">[TEXT:reference]&nbsp;:&nbsp;</td><td  ><span title="[TEXT:initial reference]" class="FREEDOMText"><b>[reference]</b></span>[IF hasrevision]<span title="[TEXT:reference for this revision]"> ([id])</span>[ENDIF hasrevision] [IF setname]<a onclick="this.style.display='none';document.getElementById('newinput').style.display='';"> [TEXT:set logical name]</a><span style="display:none" id="newinput"><input type="text" id="newname"><input  type="button" onclick="document.location.href='[CORE_STANDURL]&app=FREEDOM&action=SETLOGICALNAME&id=[ID]&name='+document.getElementById('newname').value" value="[TEXT:Apply name]">[ENDIF setname]</span></td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:state]&nbsp;:&nbsp;</td>      <td>[IF WID]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[WID]">[ENDIF WID][IF freestate]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[freestate]">[ENDIF freestate][state][IF WID]</a>[ENDIF WID]</td></tr>
+
+<tr class="FREEDOMBack2"><td  colspan="2" height="1px"></td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:author]&nbsp;:&nbsp;</td>     <td><A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[userid]">[username]</a></td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:allocated to]&nbsp;:&nbsp;</td>  <td>[IF allocateid]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[allocateid]">[ENDIF allocateid][allocate][IF allocateid]</a>[ENDIF allocateid]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:locked by]&nbsp;:&nbsp;</td>  <td>[IF lockedid]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[lockedid]">[ENDIF lockedid][locked][IF lockedid]</a>[ENDIF lockedid]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:revision]&nbsp;:&nbsp;</td>   <td>[REVISION] <i><b>[version]</b></i></td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:forum state]&nbsp;:&nbsp;</td>     <td>[IF hforum]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[forumid]">[ENDIF hforum][forum][IF hforum]</a>[ENDIF hforum]</td></tr>
+
+<tr class="FREEDOMBack2"><td  colspan="2" height="1px"></td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:creation date]&nbsp;:&nbsp;</td><td>[CDATE]</td></tr>
+<tr><td class="FREEDOMLabel">[moddatelabel]&nbsp;:&nbsp;</td><td title="[revdate]">[moddate]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:access date]&nbsp;:&nbsp;</td><td>[ADATE]</td></tr>
+
+<tr class="FREEDOMBack2"><td  colspan="2" height="1px"></td></tr>
+<tr><td class="FREEDOMLabel">[TEXT: profile access]&nbsp;:&nbsp;</td><td>[IF profid]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[profid]">[ENDIF profid][profile][IF profid]</a>[ENDIF profid]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:control view]&nbsp;:&nbsp;</td>   <td>[IF CVID]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[CVID]">[ENDIF CVID][cview][IF CVID]</a>[ENDIF CVID]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:primary folder]&nbsp;:&nbsp;</td>   <td>[IF PRELID]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[PRELID]">[ENDIF PRELID][prel][IF PRELID]</a>[ENDIF PRELID]</td></tr>
+
+</table>
+[IF Timers][ZONE FDL:VIEWTIMERS?id=[ID]&szone=Y][ENDIF Timers]
+</center>

@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>[TEXT:Freedom]</title>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+</head>
+
+
+
+  <frameset  frameborder="yes" border=3  framespacing="3" cols="40%,*" 
+            scrolling="no" frameborder="no" >
+
+     <frameset frameborder="yes"   rows="40%,*" >
+  
+     <frame name="ffolder"  src="[CORE_STANDURL]&app=[APPNAME]&action=FOLDERS&dirid=[dirid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+       <frame name="fvfolder" src="[IMG:1x1.gif]" 
+              scrolling="needed" bordercolor="[CORE_FGCOLOR]"  >
+    </frameset>
+       <frame name="fdoc" src="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_LOGO"          
+             scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+    
+  </frameset>
+</html>

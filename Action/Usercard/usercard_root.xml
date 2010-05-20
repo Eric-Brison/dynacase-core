@@ -1,0 +1,19 @@
+<html>
+<head>                                                                                                                                                             
+<title>FREEDOM - [TEXT:Generic Management]</title>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" > 
+</head>
+
+                                                                                                                                                            
+<frameset   frameborder="no" border=0 framespacing="0" rows="*"   >                                                      
+ <frameset name="fgtop" id="fgtop" frameborder="1" framespacing="3" border="3" cols="200" rows="*"> 
+
+ <frameset name="fuser" id="fgtop" frameborder="1" framespacing="3" border="3" rows="*,*"  >
+   <frame name="fsearch" src="[CORE_STANDURL]&app=[APPNAME]&action=USERCARD_SEARCH" scrolling="auto" bordercolor="[CORE_FGCOLOR]"  >
+   <frame name="flist" src="[CORE_STANDURL]&app=[APPNAME]&action=USERCARD_TAB&tab=0&viewfld=no&refresh=no" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+ </frameset>
+ <frame name="fviewidoc" src="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LOGO" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+ </frameset>                                                                                                                                                           
+
+</frameset>
+</html>

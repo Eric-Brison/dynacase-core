@@ -1,0 +1,31 @@
+<html><head>
+
+   <title>[TEXT:Full search]</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="icon" href="FDL/Images/logo16.ico" >
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+<link title="[CORE_CLIENT]" type="application/opensearchdescription+xml" rel="search" href="img-cache/[HOST]-freedom-os.xml">
+
+[CSS:REF]
+</head>
+[ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
+<body>
+
+<a style="position:absolute;right:3px;top:3px;"  onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
+<div style="text-align:center;vertical-align:middle">
+<img    src="[IMG:logofreedom2.png]"><br><br>
+<form  id="fedit"  
+       class="fborder" style="display:inline"
+       name="searchdoc"       
+       target="_self"
+       method="POST" ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=FGSEARCH&action=FULLSEARCH" >
+[CORE_CLIENT]<br>
+<input name="keyword" type="text" size="30" value=""><br/>
+<input type="submit" value="[TEXT:ToSearch]"></div>
+</form>
+
+
+[ZONE FDL:HTMLFOOT]

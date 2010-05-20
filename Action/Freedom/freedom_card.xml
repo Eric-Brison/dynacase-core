@@ -1,0 +1,47 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:Properties:] [TITLE]</title>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" />
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="freedom" 
+      onload="autoVresize()";
+      onClick="closeMenu('popupcard');" >
+
+
+[ZONE FDL:POPUPCARD]
+
+<div width="100%" class="tableborder" 
+     style="cursor:crosshair;"
+     onContextMenu="openMenu(event,'popupcard',1);return false" 
+     onMouseDown="if (shiftKeyPushed(event)) openMenu(event,'popupcard',1)"      >
+
+[ZONE FDL:VIEWCARD]
+</div>
+
+
+
+</body>
+</html>

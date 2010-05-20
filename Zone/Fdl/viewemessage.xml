@@ -1,0 +1,47 @@
+<script>
+function resizeHIurl(iurl) {
+  var eiurl=document.getElementById(iurl);
+  if (eiurl) {
+    var xy=getAnchorPosition(iurl);
+    var hiurl=getFrameHeight();
+    //var wiurl=getFrameWidth();
+    var nh=hiurl - xy.y - 30; // offset for scrollbar
+    // alert(xy.y+'--'+hiurl+'--'+nh);
+    
+    eiurl.height=nh;
+    //eiurl.width=wiurl-50;
+  }
+ }
+
+addEvent(window,"load",function z() {resizeHIurl('ifile');});
+addEvent(window,"resize",function z2() {resizeHIurl('ifile');});
+
+</script>
+<style>
+TABLE.transparent TD {
+  border:none!important;
+  padding-left:2px;
+}
+</style>
+
+<div style="background-color:[COLOR_A9];border:1px outset">
+<table class="transparent" cellspacing="0" cellpadding="0"  width="100%" ><tr><td style="vertical-align:top" >
+<table class="transparent"  cellspacing="0" cellpadding="0">
+<tr <td style="text-align:right">[L_EMSG_FROM]&nbsp;:&nbsp;</td><td> [V_EMSG_FROM]</td></tr>
+<tr><td style="text-align:right">[L_EMSG_DATE]&nbsp;:&nbsp;</td><td> [V_EMSG_DATE]</td></tr>
+<tr><td style="text-align:right">[L_EMSG_SUBJECT]&nbsp;:&nbsp;</td><td><b> [V_EMSG_SUBJECT]</b></td></tr>
+[IF TO]<tr><td style="text-align:right">[TEXT:MB_To]&nbsp;:&nbsp;</td><td> [TO]</td></tr>[ENDIF TO]
+[IF CC]<tr><td style="text-align:right">[TEXT:MB_Cc]&nbsp;:&nbsp;</td><td> [CC]</td></tr>[ENDIF CC]
+</table>
+</td><td style="vertical-align:top">
+[V_EMSG_ATTACH]
+</td><td style="text-align:right;vertical-align:top">
+[IF hasphoto]<img align="right"src="[photo]" style="width:64px">[ENDIF hasphoto]
+</td><tr></table></div>
+
+[IF hashtml]
+
+<iframe width="100%" style="border:none;padding:0px" id="ifile" src="[CORE_STANDURL]app=FDL&action=FDL_GETVALUE&attrid=emsg_htmlbody&latest=N&id=[id]"></iframe>
+[ENDIF hashtml]
+[IFNOT hashtml][V_EMSG_TEXTBODY]
+[ENDIF hashtml]

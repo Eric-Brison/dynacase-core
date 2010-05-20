@@ -1,0 +1,131 @@
+<html>
+<head>
+[JS:REF]
+<script>
+	
+    [JS:CODE] 
+var constraint=[constraintinfo];
+
+
+function setConstraint(info) {
+    if (!info) return;
+    var first=true;
+    undisplayConstraint();
+    for (var i in info) {
+	if (! info[i].index) {
+	    // mono value
+	    var inp=window.parent.document.getElementById(i);
+            if (first) {
+		focusConstraint(inp);
+		first=false;
+            }
+            viewContraint(inp,info[i]);
+	    
+	} else {
+            var linp=window.parent.getInputsByName('_'+i,window.parent.document.getElementById('T'+info[i].pid));
+            for (var k=0;k<linp.length;k++) { // >
+                if (info[i].index[k]) {
+                    
+                    var inp=linp[k];
+                    if (first) {
+			first=false;
+			focusConstraint(inp);
+                    }
+                    viewContraint(inp,info[i].index[k]);
+		}
+            }
+	}
+    }
+}
+function focusConstraint(inp) {
+    if (inp) {
+	var p=inp.parentNode;
+	while (p && ((p.tagName != 'FIELDSET') || (! p.getAttribute('name'))) ) p=p.parentNode;
+	if (p) {
+	    var name=p.getAttribute('name');
+	    if (name) {		
+		var tab=window.parent.document.getElementById('TAB'+name.substr(3));
+		tab.onmousedown.apply(tab,[]);
+		tab.className='invalid';
+		
+	    }	
+	}
+	inp.focus();
+    } 
+}
+function viewContraint(inp, info) {
+    if (inp) {
+        inp.className='invalid';
+        var ntr=window.parent.document.createElement("div");
+        ntr.className='constraint';                 
+        var xy= window.parent.getAnchorPosition(inp.id);
+        ntr.style.top=xy.y;
+        ntr.style.left=xy.x;
+        var sp=window.parent.document.createElement("span");
+        sp.innerHTML=info.err;
+        ntr.appendChild(sp);
+        addEvent(sp,"click", function () { ntr.style.display='none';inp.focus();});
+        inp.parentNode.insertBefore(ntr,inp);
+        
+        if (info.sug) {
+            var s=window.parent.document.createElement("select");
+            s.options[s.options.length]=new Option('[TEXT:Suggestion]','');
+            addEvent(s,"change", function () { inp.value=this.options[this.selectedIndex].value;});
+            for (var i in info.sug) {
+                s.options[s.options.length]=new Option(info.sug[i],info.sug[i]);   
+            }
+            ntr.appendChild(s);
+        }
+    }
+}
+function undisplayConstraint() {
+    var ldiv=window.parent.document.getElementsByTagName('div');
+    var retnode = [];
+    for (var i=0;i<ldiv.length;i++) { //>
+	if (ldiv[i].className=='constraint') {
+	    ldiv[i].parentNode.removeChild(ldiv[i]);
+	    i--;
+	}
+    }
+    var itag=new Array('input','textarea','select');
+
+    for (t in itag) {
+	var ti= window.parent.document.getElementsByTagName(itag[t]);
+	
+	for (var i=0; i< ti.length; i++) {
+	    if (ti[i].className=='invalid') ti[i].className='';
+	}
+    }
+}
+if (window.parent) {
+    if (parseInt('[id]')>0) {
+	if (window.parent.document) {
+	    
+	    var c=0;
+	    for (var i in constraint) c++;
+	    
+	    if (window.parent.document.modifydoc)  window.parent.document.modifydoc.id.value=[id];
+	    var s=window.parent.document.getElementById('iSubmit');
+	    if (c > 0) {
+		if (s) s.value='[TEXT:Save]';
+		s=window.parent.document.getElementById('aSubmit');
+		if (s) s.innerHTML='[TEXT:Save]';
+		var s=window.parent.document.getElementById('iCancel');
+		if (s) s.style.display='';
+		var s=window.parent.document.getElementById('iSaveForce');
+		if (s) s.style.display='';
+		window.parent.document.isSubmitted=false;
+		window.parent.setbodyopacity(1);
+		
+		setConstraint(constraint);
+	    } else {
+		
+		[IFNOT quicksave]window.parent.location.href='[url]';[ENDIF quicksave]
+	    }
+	}
+    }
+    window.parent.viewwait(false);
+}
+</script>
+</head>
+</html>

@@ -1,0 +1,24 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+if [ -f /usr/share/pgsql/contrib/tsearch2.sql ]; then
+    psql $dbfree -f /usr/share/pgsql/contrib/tsearch2.sql
+fi
+if [ -f /usr/share/postgresql/contrib/tsearch2.sql ]; then
+    psql $dbfree -f /usr/share/postgresql/contrib/tsearch2.sql
+fi
+psql $dbfree -f $wpub/FDL/tsearch2_fr.sql
+psql $dbfree -f $wpub/FDL/fdl.sql
+
+/usr/bin/php -q $wpub/API/updateclass.php --dbcoord="$dbfree" --appc=FDL --class=DocRead
+/usr/bin/php -q $wpub/API/updateclass.php --dbcoord="$dbfree" --appc=FDL --class=QueryDir
+
+
+
+echo "alter table doc add column fulltext tsvector;" | psql $dbfree
+echo "ALTER TABLE doc alter column values set  default '';" | psql $dbfree
+echo "ALTER TABLE doc alter column attrids set  default '';" | psql $dbfree

@@ -1,0 +1,12 @@
+<html>
+<head>
+<title>[TEXT:Processes to exec]</title>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+</head>
+  <frameset  frameborder="yes" border=3  framespacing="3" rows="30%,*" 
+            scrolling="no" frameborder="no" >
+     <frame name="flprocess"  src="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_SEARCHPROCESS&id=[docid]&target=fvprocess" scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+       <frame name="fvprocess" src="[url]" scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+  </frameset>
+    
+</html>

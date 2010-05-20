@@ -1,0 +1,31 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:Properties:] [TITLE]</title>
+<BASE HREF="[baseurl]">
+
+
+
+
+   <style type="text/css">
+[ZONE CORE:SYSTEMCSS]
+[ZONE CORE:GENCSS]
+[ZONE FDL:GENCSS]
+[CSS:CODE]
+   </style>
+
+ </head>
+
+<body class="freedom"   >
+
+[BLOCK COMMENT]
+<P>[comment]</P>
+<HR>
+[ENDBLOCK COMMENT]
+<div width="100%" class="tablesimple">
+[ZONE FDL:VIEWCARD?target=mail&zone=[zone]]
+</div>
+</body>
+</html>

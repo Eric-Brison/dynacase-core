@@ -1,0 +1,17 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+ 
+
+
+# add default attribute
+/usr/bin/php -q $wpub/API/updateclass.php --dbname=freedom --appc=FDL --class=DocFam
+
+
+
+echo "update paramv set appid=(select id from application where name ='FDL') where name in ('SOCIETY_COORD','SOCIETY_LOGO','SOCIETY_NAME','SOCIETY_TOWN','SOCIETY_PHONE');" | psql $dbpsql
+echo "update paramdef set appid=(select id from application where name ='FDL') where name in ('SOCIETY_COORD','SOCIETY_LOGO','SOCIETY_NAME','SOCIETY_TOWN','SOCIETY_PHONE');" | psql $dbpsql
+echo "alter table doc add column postitid int;" | psql $dbfree

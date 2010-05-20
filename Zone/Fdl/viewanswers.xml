@@ -1,0 +1,39 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Accord]]
+
+<style>
+tr.oddanswer { 
+   background-color:[COLOR_A9];
+             }
+tr.evenanswer { 
+   /*background-color:[COLOR_B8];*/
+             }
+tr.oddanswer td,tr.evenanswer td, table.tableborder td { 
+   border-style:solid none none none;
+   border-width:1px;
+   border-color:[COLOR_A5];
+                                   padding-right:10px;
+             }
+</style>
+
+<a href="?app=FDL&action=FDL_CARD&id=[docid]" title="[TEXT:Return to reference document]" target="doc_[docid]">[TEXT:View document reference]</a>
+<br/>
+[BLOCK WASK]
+<fieldset><legend><a href="?app=FDL&action=FDL_CARD&id=[waskid]">[ask]</a> <i>[count]</i></legend>
+<table  class="tableborder"  style="min-width:300px" cellspacing="0">
+<thead>
+<tr><th>[TEXT:Users]</th><th>[TEXT:Answers]</th></tr></thead>
+<tbody>
+[BLOCK ANSWERS[waskid]]
+<tr class="[class]"><td align="right">[uname]</td><td> [label] </td></tr> [ENDBLOCK ANSWERS[waskid]]
+</tbody></table>
+<p>[nacount]</p>
+
+<table class="tableborder" style="min-width:300px" ><thead><tr><th>[TEXT:Login]</th><th>[TEXT:Firstname]</th><th>[TEXT:Lastname]</th></tr></thead><tbody>
+[BLOCK NOTANS[waskid]]
+<tr><td>[login]</td><td>[fn]</td><td><b>[ln]</b></td></tr>[ENDBLOCK NOTANS[waskid]]
+</tbody></table>
+</fieldset>
+
+[ENDBLOCK WASK]
+[ZONE FDL:HTMLFOOT]
+

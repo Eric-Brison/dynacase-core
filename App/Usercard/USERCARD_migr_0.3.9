@@ -1,0 +1,34 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+echo "ALTER TABLE doc129 drop grp_users;" | psql $dbfree
+echo "ALTER TABLE doc129 drop grp_parent;" | psql $dbfree
+echo "ALTER TABLE doc129 drop grp_rusers;" | psql $dbfree
+echo "ALTER TABLE doc129 drop grp_groups;" | psql $dbfree
+echo "ALTER TABLE doc127 rename grp_login to us_login;" | psql $dbfree
+echo "ALTER TABLE doc127 rename grp_whatid to us_whatid;" | psql $dbfree
+
+pg_dump -a -D -t doc127 -U anakeen freedom > /tmp/group.db
+pg_dump -a -D -t doc129 -U anakeen freedom >> /tmp/group.db
+echo "drop table doc127;drop table doc129;" | psql $dbfree
+echo "delete from docattr where docid in (127,129);" | psql $dbfree
+echo "delete from docfam where id in (127,129);" | psql $dbfree
+$wpub/wsh.php --app=USERCARD --action=USERCARD_INIT 
+$wpub/FDL/FDL_post U
+
+psql $dbfree -f $wpub/USERCARD/init.sql
+#psql $dbfree -f $wpub/API/freedom_clean.sql
+
+echo "delete from docfrom;insert INTO docfrom (id, fromid) select id, fromid from doc;update docfrom set fromid=-1 where id in (select id from docfam);"  | psql $dbfree
+
+echo "UPDATE docfam set profid=511 where profid=0;"  | psql $dbfree
+
+psql $dbfree -f /tmp/group.db
+
+echo "update doc129 set doctype='D' ;" | psql $dbfree
+echo "update doc128 set cvid=508,dprofid=509,profid=id;update doc127 set cvid=501,profid=505;"  | psql $dbfree

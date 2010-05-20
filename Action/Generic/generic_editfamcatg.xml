@@ -1,0 +1,16 @@
+<html>
+<head>
+
+<title>FREEDOM - [GTITLE]</title>
+<link rel="shortcut icon" href="FDL/Images/logo16.ico" >
+
+</head>
+
+ <frameset  frameborder="1" framespacing="3" border="3"  rows="100px,*"   >
+
+  <frame name="flistattr" src="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_CHOOSEENUMATTR&famid=[famid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+  <frame name="feditattr" src="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LOGO&famid=[famid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+
+
+</frameset>
+</html>
