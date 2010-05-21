@@ -2,7 +2,6 @@
 # $Id: Makefile,v 1.1 2002/01/08 15:14:34 eric Exp $
 # ============================================
 
-
+appname = WHAT
 
 include $(utildir)/PubRule
-

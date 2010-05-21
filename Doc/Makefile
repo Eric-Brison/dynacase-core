@@ -5,8 +5,4 @@
 export targetdir
 export utildir
 
-#SUBDIR= Users Freedom Site Product Contract Incident Usercard 
-
 include $(utildir)/PubRule
-
-DISTFILES+=$(SUBDIR)

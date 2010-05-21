@@ -7,8 +7,4 @@ appname = $(applib)
 
 export appname
 
-
 include $(utildir)/PubRule
-
-
-

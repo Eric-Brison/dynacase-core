@@ -7,12 +7,9 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 
 export appname
 
-
 include $(utildir)/PubRule
-
-
-DISTFILES +=  logo16.ico
 
 $(pubdir)/$(appname)/logo16.ico : logo16.ico
 	cp $< $(pubdir)/$(appname)/Images
+
 publish: $(pubdir)/$(appname)/logo16.ico 
