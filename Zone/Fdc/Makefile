@@ -7,4 +7,6 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 
 export appname
 
+SUBDIR = f-accordeon
+
 include $(utildir)/PubRule

@@ -5,8 +5,6 @@
 export targetdir
 export utildir
 
-SUBDIR= Core Users Authent Appmng Access Freedom Fdl Usercard  Generic Fusers
+SUBDIR = Access Appmng Authent Core Data Dav Fdc Fdl Freedom Fusers Generic Usercard Users
 
 include $(utildir)/PubRule
-
-DISTFILES = $(SUBDIR) Makefile
