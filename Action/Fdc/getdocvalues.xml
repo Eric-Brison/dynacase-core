@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status count="[count]" delay="[delay]" code="[CODE]" warning="[warning]" >
+[BLOCK VALUES]
+<value attrid='[attrid]'>[value]</value>
+  [ENDBLOCK VALUES]
+</status>

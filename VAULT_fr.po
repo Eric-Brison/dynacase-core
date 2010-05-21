@@ -1,0 +1,276 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: WHAT 1.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-04-29 15:15+0200\n"
+"PO-Revision-Date: 2006-12-22 09:19+0100\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: french-anakeen <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"\n"
+
+msgid "can't access file"
+msgstr "Accès au fichier impossible"
+
+msgid "Failed to copy $infile to $f"
+msgstr "Echec de la copie de $infile vers $f"
+
+msgid "vault file is not initialized"
+msgstr ""
+
+msgid "file does not exist in vault"
+msgstr "Fichier inexistant dans le Coffre"
+
+#, c-format
+msgid "%s directory not found"
+msgstr "répertoire %s non trouvé"
+
+#, c-format
+msgid "%s directory not writable"
+msgstr "répertoire %s non accessible en écriture"
+
+msgid "File System already exists"
+msgstr "Système de fichier déjà existant"
+
+msgid "no empty vault file system found"
+msgstr "Pas de système de fichier libre"
+
+msgid "no vault directory found"
+msgstr "Pas de système de fichier trouvé"
+
+msgid "no vault file system found"
+msgstr "Pas de système de fichier trouvé"
+
+msgid "no empty vault dir found"
+msgstr "Pas de système de fichier libre"
+
+msgid "Directory already exists"
+msgstr "Répertoire déjà existant"
+
+msgid "Vault"
+msgstr "Coffre"
+
+msgid "Vault Management"
+msgstr "Gestion du Coffre"
+
+msgid "Vault manager"
+msgstr "Administrateur du Coffre"
+
+msgid "Vault user"
+msgstr "Utilisateur du Coffre"
+
+msgid "analyze vaults occupation"
+msgstr "Analyse des taux d'occupation des coffres"
+
+#, fuzzy
+msgid "show vaults occupation"
+msgstr "Analyse des taux d'occupation des coffres"
+
+msgid "create new vault"
+msgstr "Créer un nouveau coffre"
+
+msgid "delete orphan"
+msgstr "Supprimer les orphelins"
+
+msgid "increase size vault"
+msgstr "Augmenter la taille du coffre"
+
+msgid "view image for free size"
+msgstr "voir l'image pour l'espace libre"
+
+msgid "move root directory vault"
+msgstr "déplacer le répertoire du coffre"
+
+#, c-format
+msgid "new directory %s"
+msgstr "nouveau répertoire %s"
+
+#, c-format
+msgid "Orphan Cleaned in %s directory"
+msgstr "Orphelins supprimés dans le répertoire %s"
+
+#, c-format
+msgid "Error : Cleaning %s  status %d"
+msgstr "Erreur : Nettoyage %s état %d"
+
+#, c-format
+msgid "the new size must be upper than %s"
+msgstr "La nouvelle taille doit être supérieure à %s"
+
+#, c-format
+msgid "adding %s"
+msgstr "ajout de %s"
+
+#, c-format
+msgid "Cannot adding : [%s]"
+msgstr "Ajout impossible : [%s]"
+
+#, c-format
+msgid "%d bytes"
+msgstr "%d octets"
+
+#, c-format
+msgid "%d Kb"
+msgstr "%d Ko"
+
+#, c-format
+msgid "%d Mb"
+msgstr "%d Mo"
+
+#, c-format
+msgid "%d Gb"
+msgstr "%d Go"
+
+msgid "no vault initialised."
+msgstr "Aucun coffre d'initialisé"
+
+#, c-format
+msgid "%d stored files"
+msgstr "%d fichiers stockés"
+
+#, fuzzy, c-format
+msgid "%.02f Kb"
+msgstr "%d Ko"
+
+#, fuzzy, c-format
+msgid "%.02f Mb"
+msgstr "%d Mo"
+
+#, fuzzy, c-format
+msgid "%.02f Gb"
+msgstr "%d Go"
+
+#, c-format
+msgid "%d Tb"
+msgstr "%d To"
+
+#, c-format
+msgid "%s directory not empty"
+msgstr "répertoire %s non vide"
+
+#, c-format
+msgid "create vault %s"
+msgstr "Création du nouveau coffre %s"
+
+#, c-format
+msgid "vault already created %s: aborted\n"
+msgstr "coffre déjà créé %s : abandon\n"
+
+msgid "Capacity"
+msgstr "Capacité"
+
+msgid "Used"
+msgstr "Utilisé"
+
+msgid "Trash"
+msgstr "Poubelle"
+
+msgid "Orphean"
+msgstr "Orphelins"
+
+msgid "Free"
+msgstr "Libre"
+
+msgid "New Vault FS"
+msgstr "Nouveau coffre"
+
+msgid "Directory"
+msgstr "Répertoire"
+
+msgid "Size"
+msgstr "Taille"
+
+msgid "thousands bytes"
+msgstr "milliers d'octets"
+
+msgid "Kb"
+msgstr "Ko"
+
+msgid "million bytes"
+msgstr "million d'octets"
+
+msgid "Mb"
+msgstr "Mo"
+
+msgid "thousands of Megabytes"
+msgstr "milliers de mégaoctets"
+
+msgid "Gb"
+msgstr "Go"
+
+msgid "million of Megabytes"
+msgstr "million de mégaoctets"
+
+msgid "Tb"
+msgstr "To"
+
+msgid "Generate new vault"
+msgstr "Créer un nouveau coffre"
+
+msgid "Increase vault size"
+msgstr "Augmenter la taille du coffre"
+
+msgid "Clear orphan"
+msgstr "Supprimer les orphelins"
+
+msgid "Move directory"
+msgstr "Déplacer le répertoire"
+
+msgid "New size"
+msgstr "Nouvelle taille"
+
+msgid "Increase FS"
+msgstr "Augmenter le FS"
+
+msgid "New directory"
+msgstr "Nouveau répertoire"
+
+msgid "Move FS"
+msgstr "Déplacer FS"
+
+#, fuzzy, c-format
+msgid "create directory %s\n"
+msgstr "nouveau répertoire %s"
+
+#, c-format
+msgid "cannot change owner of %s: aborted\n"
+msgstr ""
+
+#, c-format
+msgid ""
+"cannot create directory %s\n"
+"Parent directory must be create before"
+msgstr ""
+
+#, c-format
+msgid "cannot create %s: %s\n"
+msgstr ""
+
+#, c-format
+msgid "vault %s created.\n"
+msgstr ""
+
+#, c-format
+msgid "ERROR %s\n"
+msgstr ""
+
+#~ msgid "Generate FS"
+#~ msgstr "Générer FS"
+
+#~ msgid "Clear Trash"
+#~ msgstr "Vider la poubelle"
+
+#~ msgid "View used detail"
+#~ msgstr "Voir le détail"
+
+#~ msgid "Detail"
+#~ msgstr "Détail"
+
+#~ msgid "Real Used"
+#~ msgstr "Réellement utilisé"

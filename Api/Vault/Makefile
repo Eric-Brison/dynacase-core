@@ -1,14 +1,6 @@
 # ============================================
-# $Id: Makefile,v 1.1 2004/10/18 08:46:13 marc Exp $
+# $Id: Makefile,v 1.1 2007/02/19 16:25:40 marc Exp $
 # ============================================
-
-# get the new appname (basename in uppercase)
-appname = $(applib)
-
+appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 export appname
-
-
 include $(utildir)/PubRule
-
-
-

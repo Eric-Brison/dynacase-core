@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$dbpsql" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+/usr/bin/php -q $wpub/API/updateclass.php --dbcoord="$dbfree" --appc=VAULT --class=VaultDiskFsStorage
+echo "UPDATE vaultdiskfsstorage set free_size=max_size - (SELECT sum(size) from vaultdiskstorage where vaultdiskstorage.id_fs = vaultdiskfsstorage.id_fs);" | psql $dbfree

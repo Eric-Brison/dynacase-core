@@ -1,0 +1,22 @@
+BrowserMatch "Microsoft-WebDAV-MiniRedir/5.1.2600" redirect-carefully
+
+DirectoryIndex index.php
+
+<FilesMatch "^.+$">
+  Order Allow,Deny
+  Allow from All
+</FilesMatch>
+
+<Limit GET OPTIONS PROPFIND>
+  Order Allow,Deny
+  Allow from All
+</Limit>
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !freedav/index\.php
+RewriteCond %{REQUEST_URI} ^(.*)/freedav/freedav/(vid-.*)$
+RewriteRule ^(.*)$ %1/freedav/index.php?type=freedav&filename=%2 [PT,L]
+
+RewriteCond %{REQUEST_URI} !/index\.php$
+RewriteRule ^(.*)$ /index.php?type=freedav&filename=$1 [PT,L]

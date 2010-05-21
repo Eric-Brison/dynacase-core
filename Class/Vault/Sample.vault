@@ -1,0 +1,44 @@
+<?php
+// Vault Sample definition
+
+$chrono = TRUE;
+
+// Vault username and group 
+$u_owner = "marc";
+$g_owner = "webdev";
+
+// Vault file & directory mode
+$f_mode = 0600;
+$d_mode = 0700;
+
+// Cache specification
+$cache_def = array (
+	"CACHE1" => array (
+                max_size => "200000000",
+                subdir_cnt_bydir => 16,
+                subdir_deep => 1,
+                max_entries_by_dir => 1500,
+                r_path => "/tmp/freedom/cache"
+             )
+        );
+
+// Vault physical storage specification
+$vault_type = "fs"; // Only 'fs' is allowed, in future release use of "url", "nfs".....
+$fs = array ( 
+         "FS1" =>  array (
+                max_size => "200000000",
+                subdir_cnt_bydir => 2,
+                subdir_deep => 1,
+                max_entries_by_dir => 100,
+                r_path => "/tmp/freedom/fs1"
+             ),
+         "FS2" =>  array (
+                max_size => "200000000",
+                subdir_cnt_bydir => 2,
+                subdir_deep => 1,
+                max_entries_by_dir => 11,
+                r_path => "/tmp/freedom/fs2"
+             )
+         );
+	
+?>

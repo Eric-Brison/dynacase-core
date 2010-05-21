@@ -1,0 +1,260 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: WHAT 1.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-04-29 15:15+0200\n"
+"PO-Revision-Date: 2001-03-14 00:54-0500\n"
+"Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
+"Language-Team: english-anakeen <distrib@anakeen.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+"\n"
+
+msgid "can't access file"
+msgstr ""
+
+msgid "Failed to copy $infile to $f"
+msgstr ""
+
+msgid "vault file is not initialized"
+msgstr ""
+
+msgid "file does not exist in vault"
+msgstr ""
+
+#, c-format
+msgid "%s directory not found"
+msgstr ""
+
+#, c-format
+msgid "%s directory not writable"
+msgstr ""
+
+msgid "File System already exists"
+msgstr ""
+
+msgid "no empty vault file system found"
+msgstr ""
+
+msgid "no vault directory found"
+msgstr ""
+
+msgid "no vault file system found"
+msgstr ""
+
+msgid "no empty vault dir found"
+msgstr ""
+
+msgid "Directory already exists"
+msgstr ""
+
+msgid "Vault"
+msgstr ""
+
+msgid "Vault Management"
+msgstr ""
+
+msgid "Vault manager"
+msgstr ""
+
+msgid "Vault user"
+msgstr ""
+
+msgid "analyze vaults occupation"
+msgstr ""
+
+msgid "show vaults occupation"
+msgstr ""
+
+msgid "create new vault"
+msgstr ""
+
+msgid "delete orphan"
+msgstr ""
+
+msgid "increase size vault"
+msgstr ""
+
+msgid "view image for free size"
+msgstr ""
+
+msgid "move root directory vault"
+msgstr ""
+
+#, c-format
+msgid "new directory %s"
+msgstr ""
+
+#, c-format
+msgid "Orphan Cleaned in %s directory"
+msgstr ""
+
+#, c-format
+msgid "Error : Cleaning %s  status %d"
+msgstr ""
+
+#, c-format
+msgid "the new size must be upper than %s"
+msgstr ""
+
+#, c-format
+msgid "adding %s"
+msgstr ""
+
+#, c-format
+msgid "Cannot adding : [%s]"
+msgstr ""
+
+#, c-format
+msgid "%d bytes"
+msgstr ""
+
+#, c-format
+msgid "%d Kb"
+msgstr ""
+
+#, c-format
+msgid "%d Mb"
+msgstr ""
+
+#, c-format
+msgid "%d Gb"
+msgstr ""
+
+msgid "no vault initialised."
+msgstr ""
+
+#, c-format
+msgid "%d stored files"
+msgstr ""
+
+#, c-format
+msgid "%.02f Kb"
+msgstr ""
+
+#, c-format
+msgid "%.02f Mb"
+msgstr ""
+
+#, c-format
+msgid "%.02f Gb"
+msgstr ""
+
+#, c-format
+msgid "%d Tb"
+msgstr ""
+
+#, c-format
+msgid "%s directory not empty"
+msgstr ""
+
+#, c-format
+msgid "create vault %s"
+msgstr ""
+
+#, c-format
+msgid "vault already created %s: aborted\n"
+msgstr ""
+
+msgid "Capacity"
+msgstr ""
+
+msgid "Used"
+msgstr ""
+
+msgid "Trash"
+msgstr ""
+
+msgid "Orphean"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "New Vault FS"
+msgstr ""
+
+msgid "Directory"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "thousands bytes"
+msgstr ""
+
+msgid "Kb"
+msgstr ""
+
+msgid "million bytes"
+msgstr ""
+
+msgid "Mb"
+msgstr ""
+
+msgid "thousands of Megabytes"
+msgstr ""
+
+msgid "Gb"
+msgstr ""
+
+msgid "million of Megabytes"
+msgstr ""
+
+msgid "Tb"
+msgstr ""
+
+msgid "Generate new vault"
+msgstr ""
+
+msgid "Increase vault size"
+msgstr ""
+
+msgid "Clear orphan"
+msgstr ""
+
+msgid "Move directory"
+msgstr ""
+
+msgid "New size"
+msgstr ""
+
+msgid "Increase FS"
+msgstr ""
+
+msgid "New directory"
+msgstr ""
+
+msgid "Move FS"
+msgstr ""
+
+#, c-format
+msgid "create directory %s\n"
+msgstr ""
+
+#, c-format
+msgid "cannot change owner of %s: aborted\n"
+msgstr ""
+
+#, c-format
+msgid ""
+"cannot create directory %s\n"
+"Parent directory must be create before"
+msgstr ""
+
+#, c-format
+msgid "cannot create %s: %s\n"
+msgstr ""
+
+#, c-format
+msgid "vault %s created.\n"
+msgstr ""
+
+#, c-format
+msgid "ERROR %s\n"
+msgstr ""

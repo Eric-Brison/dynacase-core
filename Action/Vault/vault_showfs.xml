@@ -1,0 +1,29 @@
+[ZONE CORE:HTMLHEAD]
+
+[BLOCK FS]
+<table>
+<thead>
+   <tr><td style="text-align:left;;background-color:[COLOR_A9];" colspan="2"><b><span style="font-size:150%;margin-right:10px">[pcrealused]</span></b> - [path]</td></tr>
+</thead>
+<tbody>
+   <tr>
+   <td style="vertical-align:top;" ><img  style="width:120px" src="[CORE_STANDURL]&app=VAULT&action=VAULT_DISKIMAGE&idfs=[fsid]"><img style="[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE]opacity:0.5;position:absolute;margin-left:-80;width:50px" src="[IMG:harddrive100.png]"></td>
+
+         <td>
+                    <table align="left">
+			    <tr><td><li style="list-style-type:square;#000"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Capacity]</li></td><td><b>[total]</b>  [count]</span></td></tr>
+                    <tr><td><li style="list-style-type:square;color:#900000"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Used]</span></li></td><td><b>[used]</b> - [pcoccuped]</td></tr>
+
+                                 <tr><td><li style="list-style-type:square;color:#b54f12"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Trash]</span></td><td><b>[trash_size]</b> - [pctrash]</td></tr>
+                                         [IF orphan]<tr><td><li style="list-style-type:square;color:#b59412"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Orphean]</span></td><td><b>[orphean_size]</b> - [pcorphean]</span></td></tr>[ENDIF orphan]
+                                              <tr><td><li style="list-style-type:square;color:#009000"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Free]</span></td><td><b>[free]</b> - [pcfree]</td></tr>
+ </table>
+
+         </td>
+   </tr>
+</tbody>
+</table>
+<br>
+
+[ENDBLOCK FS]
+[ZONE CORE:HTMLFOOT]
