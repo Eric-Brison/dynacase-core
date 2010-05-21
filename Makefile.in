@@ -4,36 +4,26 @@
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
 utildir=@PUBRULE@
-appname = @APPNAME@
 pubdir = @prefix@
 srcdir = @srcdir@
-rootprefix=$(RPM_BUILD_ROOT)
+libdir = $(pubdir)/lib
+applib = @PACKAGELIB@
 
+export pubdir utildir applib targetdir utildir libdir
 
-export pubdir utildir appname pidir
-
-TAR = gtar
+TAR = tar
 GZIP_ENV = --best
 
+SUBDIR= Action Admin Api App Class CONTRIB Css Doc examples Expire Images JavaScript programs Share Style Test Zone
 
-
-export targetdir
-export utildir
-
-SUBDIR= programs Admin Expire Class Action Zone Share App Api Images Style Doc debian
-
-TOP_MODULES =  indexq.php wsh.php wvirtual.php  guest.php apache.conf  whattext wcheck wstop wstart wdbcreate winitrc apachev.conf.in apachevi.conf.in httpd.pam.in httpdwa.pam.in resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess index.php
+TOP_MODULES =  indexq.php index.php whattext wsh.php wvirtual.php guest.php wcheck wstop wstart wdbcreate winitrc resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess
 
 pages_not_xml = info.xml
-pages_not_php=fam2po.php po2js.php
+pages_not_php = fam2po.php po2js.php
 
 include $(utildir)/PubRule
 
-DISTFILES += $(SUBDIR)  \
-             ChangeLog  VERSION RELEASE WHAT.cron \
-	     whattext wcheck wstop wstart wdbcreate winitrc httpd.pam.in httpdwa.pam.in guest.php index.php indexq.php dbaccess.php.sample.in dbaccess.php.in libutil.sh wcontrol wcontrol.xml htaccess
-
-
+#FIXME: DISTFILES
 
 $(pubdir)/indexq.php: indexq.php
 	cp $< $@
@@ -51,14 +41,6 @@ $(pubdir)/wstop: wstop
 	cp $< $@
 $(pubdir)/wstart: wstart
 	cp $< $@
-$(pubdir)/httpd.pam.in: httpd.pam.in
-	cp $< $@
-$(pubdir)/httpdwa.pam.in: httpdwa.pam.in
-	cp $< $@
-$(pubdir)/apachev.conf.in: apachev.conf.in
-	cp $< $@
-$(pubdir)/apachevi.conf.in: apachevi.conf.in
-	cp $< $@
 $(pubdir)/libutil.sh: libutil.sh
 	cp $< $@
 $(pubdir)/wcontrol: wcontrol
@@ -67,23 +49,8 @@ $(pubdir)/wcontrol.xml: wcontrol.xml
 	cp $< $@
 $(pubdir)/.htaccess: htaccess
 	cp $< $@
-
-
-$(pubdir)/admin:
-	mkdir -p $@
-$(rootprefix)/etc/pam.d:
-	mkdir -p $@
-$(rootprefix)/etc/pam.d/httpd.freedom.sample: $(rootprefix)/etc/pam.d
-	cp httpd.pam $@
-$(rootprefix)/etc/pam.d/httpdwa.freedom.sample: $(rootprefix)/etc/pam.d
-	cp httpdwa.pam $@
-
-$(rootprefix)/etc/cron.daily:
-	mkdir -p $@
-
-$(rootprefix)/etc/cron.daily/freedomcore: WHAT.cron $(rootprefix)/etc/cron.daily
-	cp WHAT.cron $@
-	chmod 644 $@
+$(pubdir)/apropos.html: apropos.html
+	cp $< $@
 
 $(pubdir)/FDLGEN:
 	mkdir -p $@
@@ -100,6 +67,7 @@ $(pubdir)/session:
 	mkdir -p $@
 $(pubdir)/session/.htaccess: htaccess.session $(pubdir)/session
 	cp $< $@
+
 $(pubdir)/.img-resize:
 	mkdir -p $@
 $(pubdir)/.img-resize/.htaccess: htaccess.session $(pubdir)/.img-resize
@@ -109,14 +77,40 @@ $(pubdir)/img-cache:
 	mkdir -p $@
 $(pubdir)/img-cache/.htaccess: htaccess.img-cache $(pubdir)/img-cache
 	cp $< $@
+	
+$(pubdir)/$(applib) :
+	mkdir -p $@
 
-publish:   $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess
+$(pubdir)/$(applib)/FREEDOM.vault : FREEDOM.vault
+	cp $< $(pubdir)/$(applib)/$<
+
+$(pubdir)/$(applib)/Layout:
+	mkdir -p $@
+$(pubdir)/$(applib)/Layout/editoptcard.xml: $(pubdir)/$(applib)/Layout
+	ln -sf editbodycard.xml $@
+$(pubdir)/$(applib)/Layout/viewoptcard.xml: $(pubdir)/$(applib)/Layout
+	ln -sf viewbodycard.xml $@
+
+$(pubdir)/EXTERNALS:
+	mkdir -p $@
+
+$(pubdir)/EXTERNALS/fdlsearches.php: $(pubdir)/EXTERNALS
+	ln -sf ../FDL/fdlsearches.php $@
+
+$(pubdir)/FREEDOM:
+	mkdir -p $@
+$(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
+	cp $< $@
+
+publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess $(pubdir)/$(applib) $(pubdir)/img-cache $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron $(pubdir)/apropos.html
 
 clean:
-	rm -f *.*~ config.* Makefile configure $(PACKAGE).spec \
-	      $(PACKAGE)-Fedora.spec $(PACKAGE)-$(VERSION).tar.gz \
-	      dbaccess.php.sample apache.conf App/Core/CORE_init.php \
-	      App/Users/USERS_init.php App/Access/ACCESS_init.php \
-	      App/Authent/AUTHENT_init.php App/Appmng/APPMNG_init.php \
-	      httpd.pam \
+	rm -f *.*~ config.* Makefile configure \
+	      $(PACKAGE)-$(VERSION).tar.gz \
+	      dbaccess.php.sample apache.conf \
+	      App/Core/CORE_init.php \
+	      App/Users/USERS_init.php \
+	      App/Access/ACCESS_init.php \
+	      App/Authent/AUTHENT_init.php \
+	      App/Appmng/APPMNG_init.php \
 	      Api/updateclass.php

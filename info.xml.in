@@ -1,8 +1,21 @@
 <?xml version="1.0"?>
-<module name="freedom-core" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
+<module
+	name="freedom-toolbox"
+	version="@VERSION@"
+	release="@RELEASE@"
+	basecomponent="yes">
 
-  <description lang="en">Hosting Application Toolkit for freedom ECM</description>
-  <description lang="fr">Serveur d'application pour freedom ECM</description>
+  <description lang="en">Hosting Application Toolkit freedom toolbox</description>
+  <description lang="fr">Serveur d'application freedom toolbox</description>
+
+  <replaces>
+  	<module name="freedom-core" />
+  	<module name="freedom-data" />
+  	<module name="freedom-dav" />
+  	<module name="freedom-common" />
+  	<module name="freedom-vault" />
+  	<module name="freedom" />
+  </replaces>
 
   <requires>
     <installer version="1" comp="ge"/>
@@ -10,12 +23,10 @@
 
   <parameters>
   	<param name="client_name" label="client name" type="text" />
-    <param name="core_db" label="database postgresql service name"
-	   default="@CONTEXT_NAME" type="text" needed="Y" />
-    <param name="authtype" label="authenticate default mode"
-	   default="html" type="enum" values="html|basic" needed="Y" />
-    <param name="apacheuser" label="apache system user"
-	   default="www-data" type="text"  needed="Y" />
+    <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y" />
+    <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic" needed="Y" />
+    <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y" />
+	<param name="webdav_db" label="webdav database postgresql service name" type="text" default="webdav" needed="Y" />
   </parameters>
 
   <pre-install>    
@@ -43,10 +54,10 @@
     
     <!-- Check PHP functions/extensions -->
     
+    <check type="phpbug45996"><help>Your PHP installation seems to have a known bug (ref #45996: http://bugs.php.net/bug.php?id=45996). Please use an updated PHP version that corrects this bug.</help></check>
     <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
     <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
     <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
-    <check type="phpbug45996"><help>Your PHP installation seems to have a known bug (ref #45996: http://bugs.php.net/bug.php?id=45996). Please use an updated PHP version that corrects this bug.</help></check>
     <check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>
     <check type="phpfunction" function="ldap_connect"><help>You might need to install a php-ldap package from your distribution in order to have LDAP support in PHP.</help></check>
     <check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>
@@ -54,6 +65,11 @@
     <check type="phpfunction" function="iconv"><help>You might need to install a php-iconv package from your distribution in order to have iconv support in PHP.</help></check>
     <check type="phpfunction" function="mb_get_info"><help>You might need to install a php-mbstring package from your distribution in order to have mbstring support in PHP.</help></check>
     <check type="phpfunction" function="mcrypt_module_open"><help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support in PHP.</help></check>
+    <check type="phpfunction" function="gd_info"><help>You might need to install a php-gd package from your distribution in order to have GD image support in PHP.</help></check>
+    <check type="phpfunction" function="cal_info"><help>You might need to install a php-calendar package from your distribution in order to have calendar and date manipulation support in PHP.</help></check>
+    <check type="phpfunction" function="json_encode"><help>You might need to install a php-json package in order to have JSON support in PHP.</help></check>
+    
+    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package form your distribution in order to have XSLT support in PHP.</help></check>
     
     <!-- Check PEAR modules -->
     
@@ -64,6 +80,7 @@
     <!-- Check Apache modules -->
 
     <check type="apachemodule" module="mod_expires"><help>You might need to install and/or activate the Apache mod_expires module.</help></check>
+    <check type="apachemodule" module="mod_rewrite"><help>You might need to install and/or load the mod_rewrite Apache module.</help></check>
     
   </pre-install>
   
@@ -76,11 +93,46 @@
     <process command="programs/record_application APPMNG I"><label lang="en">Record appmng application in database</label></process>
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
     <process command="programs/set_param CORE_CLIENT client_name" ><label lang="en">Register client name</label></process>
+    
+    <process command="programs/app_post FDL I" />
+    <process command="programs/record_application FDL I" />
+    <process command="programs/app_post FDL U" />
+
+    <process command="programs/app_post USERCARD I" />
+    <process command="programs/record_application USERCARD I" />
+    <process command="programs/app_post USERCARD U" />
+
+    <process command="programs/record_application GENERIC I" />
+    <process command="programs/record_application ONEFAM I" />
+    <process command="programs/record_application FUSERS I" />
+
+    <process command="programs/app_post FREEDOM I" />
+    <process command="programs/record_application FREEDOM I" />
+    <process command="programs/app_post FREEDOM U" />
+
+    <process command="programs/record_application FGSEARCH I" />
+    
+    <process command="programs/record_application DATA" />
+    
+    <process command="programs/record_application VAULT" />
+    <process command="wsh.php --api=vault_init" />
+    
+    <process command="programs/app_post DAV I" />
+    <process command="programs/record_application DAV I" />
+    <process command="programs/app_post DAV U" />
+    
+    <process command="programs/record_application FDC I" />
+
+    <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron" />
+
+    <process command="programs/update_catalog" />
   </post-install>
   
-  <pre-upgrade>
-  
-  	<check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
+  <pre-upgrade>  
+
+    <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
+    
+    <check type="pgempty" service="@core_db" optional="yes"><label lang="en">Check database empty</label></check>
 
     <check type="syscommand" command="rm" />
     <check type="syscommand" command="file" />
@@ -90,6 +142,7 @@
     <check type="syscommand" command="unzip" />
     <check type="syscommand" command="dot" />
     <check type="syscommand" command="convert" />
+    <check type="syscommand" command="recode" />
     <check type="syscommand" command="html2ps" />
     <check type="syscommand" command="ps2pdf" />
     <check type="syscommand" command="php" />
@@ -100,6 +153,7 @@
     
     <!-- Check PHP functions/extensions -->
     
+    <check type="phpbug45996"><help>Your PHP installation seems to have a known bug (ref #45996: http://bugs.php.net/bug.php?id=45996). Please use an updated PHP version that corrects this bug.</help></check>
     <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
     <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
     <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
@@ -110,6 +164,11 @@
     <check type="phpfunction" function="iconv"><help>You might need to install a php-iconv package from your distribution in order to have iconv support in PHP.</help></check>
     <check type="phpfunction" function="mb_get_info"><help>You might need to install a php-mbstring package from your distribution in order to have mbstring support in PHP.</help></check>
     <check type="phpfunction" function="mcrypt_module_open"><help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support in PHP.</help></check>
+    <check type="phpfunction" function="gd_info"><help>You might need to install a php-gd package from your distribution in order to have GD image support in PHP.</help></check>
+    <check type="phpfunction" function="cal_info"><help>You might need to install a php-calendar package from your distribution in order to have calendar and date manipulation support in PHP.</help></check>
+    <check type="phpfunction" function="json_encode"><help>You might need to install a php-json package in order to have JSON support in PHP.</help></check>
+    
+    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package form your distribution in order to have XSLT support in PHP.</help></check>
     
     <!-- Check PEAR modules -->
     
@@ -120,7 +179,8 @@
     <!-- Check Apache modules -->
 
     <check type="apachemodule" module="mod_expires"><help>You might need to install and/or activate the Apache mod_expires module.</help></check>
-  
+    <check type="apachemodule" module="mod_rewrite"><help>You might need to install and/or load the mod_rewrite Apache module.</help></check>
+    
   </pre-upgrade>
   
   <post-upgrade>
@@ -133,6 +193,54 @@
     <process command="programs/record_application APPMNG U"><label lang="en">Update appmng application in database</label></process>
     <process command="programs/post_migration CORE"><label lang="en">Migration second level</label></process>
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
+    
+    <process command="programs/pre_migration FDL" />
+    <process command="programs/record_application FDL U" />
+    <process command="programs/app_post FDL U" />
+    <process command="programs/post_migration FDL" />
+
+    <process command="programs/record_application USERCARD U" />
+    <process command="programs/app_post USERCARD U" />
+
+    <process command="programs/pre_migration GENERIC" />
+    <process command="programs/record_application GENERIC U" />
+    <process command="programs/post_migration GENERIC" />
+
+    <process command="programs/pre_migration ONEFAM" />
+    <process command="programs/record_application ONEFAM U" />
+    <process command="programs/post_migration ONEFAM" />
+
+    <process command="programs/pre_migration FUSERS" />
+    <process command="programs/record_application FUSERS U" />
+    <process command="programs/post_migration FUSERS" />
+
+    <process command="programs/pre_migration FREEDOM" />
+    <process command="programs/record_application FREEDOM U" />
+    <process command="programs/app_post FREEDOM U" />
+    <process command="programs/post_migration FREEDOM" />
+
+    <process command="programs/pre_migration FGSEARCH" />
+    <process command="programs/record_application FGSEARCH U" />
+    <process command="programs/post_migration FGSEARCH" />
+    
+    <process command="programs/pre_migration DATA" />
+    <process command="programs/record_application DATA" />
+    <process command="programs/post_migration DATA" />
+    
+    <process command="programs/pre_migration VAULT" />
+    <process command="programs/record_application VAULT" />
+    <process command="programs/post_migration VAULT" />
+    
+    <process command="programs/pre_migration DAV" />
+    <process command="programs/app_post DAV U" /><!-- FIXME: Required?-->
+    <process command="programs/record_application DAV" />
+    <process command="programs/post_migration DAV" />
+    
+    <process command="programs/record_application FDC" />
+
+    <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron" />
+
+    <process command="programs/update_catalog" />
   </post-upgrade>
 
   <pre-remove></pre-remove>
@@ -141,54 +249,199 @@
   <changelog>
     <version number="3.0.4" date="2010-05-07">
       <change title="gpc_magic_quote in htaccess" url="http://dev.freedom-ecm.org/issues/733" />
+      <change title="Evolution about attribute zone" url="http://dev.freedom-ecm.org/versions/show/16">
+      	 Correction to add more easily other language.
+      	 Continue onefam application extjs version
+      	 Better integration of document look with new extjs interfaces
+      </change>
     </version>
+    
+    <version number="3.0.2" date="2010-04-19">
+      <change title="View default document link in ext mode" url="http://dev.freedom-ecm.org/issues/671" />
+      <change title="Update families with export file" url="http://dev.freedom-ecm.org/issues/669" />
+      <change title="View families in folders" url="http://dev.freedom-ecm.org/issues/668" />
+      <change title="Correct usage on 'nr' option in transition's workflow" url="http://dev.freedom-ecm.org/issues/667" />
+    </version>
+    
+    <version number="3.0.1" date="2010-04-09">
+      <change title="SearchDoc::addFilter() support argument to string filter">Arguments are automatically escaped to avoid sql injection $s->addFilter("title ~ '%s'",$arg)</change>
+      <change title="Use thumbnail when display image in array" url="http://dev.freedom-ecm.org/issues/612" />
+	</version>
+	
+	<version number="2.15.6" date="2010-03-05">
+      <change title="Implement docrev option" url="http://dev.freedom-ecm.org/issues/638" />
+	</version>
+	
+	<version number="2.15.5" date="2010-03-05">
+      <change title="Allow passing arbitrary serialized objects to getResPhpFunc()" url="http://dev.freedom-ecm.org/issues/638" />
+    </version>
+    
     <version number="2.15.2-1" date="2010-03-25">
       <change title="Added support for CAS authentication type in AUTHENT:LOGOUT" />
     </version>
+    
     <version number="2.15.1-11" date="2010-03-12">
       <change title="Fixed erroneous salt used in crypted password" url="http://dev.freedom-ecm.org/issues/639" />
     </version>
-
+    
     <version number="2.15.1-10" date="2010-03-03">
       <change title="Added check to PHP bug #45996" />
     </version>
-
-<version number="2.15.0-2" date="2010-01-13">
-  <change title="Corrected a missing regex delimiter in preg_match()" />
-</version>
-
-<version number="2.15.0-1" date="2009-12-28">
-  <change title="Removed PHP 5.3 deprecated functions" />
-</version>
-
-
-<version number="2.14.2-1" date="2010-02-11">
-  <change title="View sql queries in debug mode in firebug console" />
-</version>
-
-<version number="2.14.2-0" date="2010-01-15">
-  <change title="Correct detection for [IF] layout key to accept null values like false value" />
-</version>
-
-<version number="2.14.1-12" date="2009-12-10">
-  <change title="Added .htaccess in img-cache subdir" url="http://dev.freedom-ecm.org/issues/87" />
-</version>
-
-<version number="2.14.1-11" date="2009-12-01">
-  <change title="wsh : change detection of api file to see PHP errors in console"/>
-
-  <change title="Computed permissions are not correctly updated when adding a user to a group" url="http://dev.freedom-ecm.org/issues/563">
-	Delete computed permissions when adding a user to a group and preInsert returns "OK" instead of "" (closes #563)
+    
+    <version number="2.15.0-13" date="2010-03-02">
+      <change title="Refresh groups mail address when a networkuser mail addr has changed" url="http://dev.freedom-ecm.org/issues/629" />
+    </version>
+    
+    <version number="2.15.0-12" date="2009-12-28">
+      <change title="Removed PHP 5.3 deprecated functions" />
+    </version>
+    
+	<version number="2.15.0-2" date="2010-01-13">
+  	  <change title="Corrected a missing regex delimiter in preg_match()" />
+	</version>
+	
+	<version number="2.15.0-1" date="2009-12-28">
+	  <change title="Removed PHP 5.3 deprecated functions" />
+	</version>
+	
+	<version number="2.14.7-6" date="2010-04-01" >
+      <change title="Correct computing of dynamic dates in timers">In same case timers in workflow cannot be dettach automatically</change>
+    </version>
+    
+    <version number="2.14.7-5" date="2010-03-11" url="http://dev.freedom-ecm.org/issues/648">
+      <change title="Correct elink encode in arrays"/>
+    </version>
+    
+    <version number="2.14.7-4" date="2010-03-24" >
+      <change title="Correct mask visibility for table in U visibility"/>
+    </version>
+    
+    <version number="2.14.7-3" date="2010-03-11" url="http://dev.freedom-ecm.org/issues/635">
+      <change title="Add recursiveSearch() option possibility tu use folderRecursiveLevel attribute in SearchDoc">
+      Necessary if programmer needs to get recursively some documents from a specific folder
       </change>
-</version>
+    </version>
+    
+    <version number="2.14.7-2" date="2010-03-03">
+      <change title="Add possibility tu use folderRecursiveLevel attribute in SearchDoc">
+      Necessary if programmer needs to get recursively some documents from a specific folder
+      </change>
+    </version>
+    
+    <version number="2.14.7-0" date="2010-02-10">
+      <change title="Report optimisation in some queries used in onefam application" />
+    </version>
+    
+	<version number="2.14.6-0" date="2010-02-04">
+      <change title="Correct view confidential document in general search" url="http://dev.freedom-ecm.org/issues/622" />
+    </version>
+    
+    <version number="2.14.5-2" date="2010-01-15">
+      <change title="Corrected conflict detection on files when using the preventfilechange option and Internet Explorer" url="http://dev.freedom-ecm.org/issues/600" />
+    </version>
 
-<version number="2.14.1-10" date="2009-11-20">
-  <change title="add recode program requirement"/>
-</version>
-<version number="2.14.1-9" date="2009-11-19">
-  <change title="mime file detection" >
-	correct mime type for new version of file linux function (5.03)
-  </change>  
-</version>
+    <version number="2.14.5-0" date="2010-01-13">
+      <change title="add logical views in database to select documents more easily"/>
+      <change title="add wsh script fdl_deletefamily to destroy family"/>
+      <change title="add possibility to use : character in family name"/>
+    </version>
+    
+    <version number="2.14.4-0" date="2010-01-12">
+      <change title="add getLatestDocIds() function to get latest id for severals documents">	
+      </change>
+    </version>
+    
+    <version number="2.14.3-19" date="2009-12-09">
+      <change title="Can ignore part of code in Method files" url="http://dev.freedom-ecm.org/issues/581">
+	This possibility is necessary to have Method files PHP parsable with PHP editors
+      </change>
+    </version>
+    
+    <version number="2.14.3-18" date="2009-12-09">
+      <change title="Fixed errors in Class.DocRel when using pg_copy_from()" url="http://dev.freedom-ecm.org/issues/576">
+	Replace tab chars by spaces in titles to prevent conflict with the
+	separator used by the pg_copy_from() when loading the data.
+      </change>
+    </version>
+    
+    <version number="2.14.3-17" date="2009-12-07">
+      <change title="Corrected a character encoding issue that would break accentued characters in USERCARD app on some platforms" url="http://dev.freedom-ecm.org/issues/570">
+	Changed strtolower/ucwords functions to their unicode-aware mb_* equivalent
+      </change>
+      <change title="parse error in methods can be corrected by updating family with importation process" />
+    </version>
+    
+    <version number="2.14.3-16" date="2009-12-03">
+      <change title="correct constraint detection when use array arguments" />
+      <change title="add link to profil document in profil access interface" />
+    </version>
+    
+    <version number="2.14.3-15" date="2009-12-01">
+      <change title="add wsh script fdl_testmemory to test memory usage and time spent when retrieve documents" />
+      <change title="Fixed error getting mail addresses for groups in MailTemplate" url="http://dev.freedom-ecm.org/issues/571" />
+    </version>
+    
+    <version number="2.14.3-14" date="2009-11-26">
+      <change title="correct Doc::renameFile when use rn option in file attribute in array" url="http://dev.freedom-ecm.org/issues/568" />
+    </version>
+    
+    <version number="2.14.3-13" date="2009-11-24">
+      <change title="can use single quote in enum open" url="http://dev.freedom-ecm.org/issues/555" />
+      <change title="correct wrong detection of multialive when edit document which has reach its revision limits" url="http://dev.freedom-ecm.org/issues/560" />		
+    </version>
+    
+    <version number="2.14.3-12" date="2009-11-23">
+      <change title="Change detection of file for preventfilechange option"  url="http://dev.freedom-ecm.org/issues/372" />		
+    </version>
+    
+    <version number="2.14.3-11" date="2009-11-21">
+      <change title="Correct multiple docid edition in array"  url="http://dev.freedom-ecm.org/issues/557" />
+      <change title="Correct saving of relations in docrel when title contains tabulation"  />
+    </version>
+    
+    <version number="2.14.3-10" date="2009-11-19">
+      <change title="Fixed syntax error in freedom_realclean.sql" url="http://dev.freedom-ecm.org/issues/554" />
+    </version>
+    
+    <version number="2.14.3-9" date="2009-11-18">
+      <change title="Correct view null date">
+		correct doc::getHtmlValue() doc::getOooValue() for null date with specific format
+      </change>
+      <change title="preventfilechange attribute option" url="http://dev.freedom-ecm.org/issues/372">
+		correct use of preventfilechange option in array
+      </change>
+      <change title="Correct usage of FDL:EDITARRAY zone" url="http://dev.freedom-ecm.org/issues/552">
+		data values can be lost when use this zone with row parameters
+      </change>
+    </version>
+    
+	<version number="2.14.2-1" date="2010-02-11">
+	  <change title="View sql queries in debug mode in firebug console" />
+	</version>
+	
+	<version number="2.14.2-0" date="2010-01-15">
+	  <change title="Correct detection for [IF] layout key to accept null values like false value" />
+	</version>
+	
+	<version number="2.14.1-12" date="2009-12-10">
+	  <change title="Added .htaccess in img-cache subdir" url="http://dev.freedom-ecm.org/issues/87" />
+	</version>
+	
+	<version number="2.14.1-11" date="2009-12-01">
+	  <change title="wsh : change detection of api file to see PHP errors in console"/>
+	  <change title="Computed permissions are not correctly updated when adding a user to a group" url="http://dev.freedom-ecm.org/issues/563">
+		Delete computed permissions when adding a user to a group and preInsert returns "OK" instead of "" (closes #563)
+      </change>
+	</version>
+
+	<version number="2.14.1-10" date="2009-11-20">
+	  <change title="add recode program requirement"/>
+	</version>
+	
+	<version number="2.14.1-9" date="2009-11-19">
+	  <change title="mime file detection" >
+		correct mime type for new version of file linux function (5.03)
+	  </change>  
+	</version>
 </changelog>
 </module>

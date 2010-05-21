@@ -4,9 +4,9 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 
 export appname
 
-include $(utildir)/PubRule
+SUBDIR = Windows
 
-DISTFILES = Makefile  $(appname).app $(appname)_init.php.in
+include $(utildir)/PubRule
 
 $(pubdir)/$(appname)/DAV_conf.apache: DAV_conf.apache $(pubdir)/$(appname)
 	cp $< $@

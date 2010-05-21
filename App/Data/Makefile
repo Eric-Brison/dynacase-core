@@ -12,6 +12,4 @@ $(pubdir)/$(appname):
 $(pubdir)/$(appname)/.htaccess: htaccess
 	cp $< $@
 
-DISTFILES = Makefile  $(appname).app $(appname)_init.php.in
-
 publish: $(pubdir)/$(appname)/.htaccess

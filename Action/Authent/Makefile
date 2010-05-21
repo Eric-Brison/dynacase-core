@@ -7,11 +7,7 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 
 export appname
 
-
 include $(utildir)/PubRule
-
-
-
 
 $(pubdir)/authent.php: authent.php
 	cd $(pubdir);ln -sf  ./$(appname)/$< .

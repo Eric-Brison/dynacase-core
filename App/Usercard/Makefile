@@ -8,12 +8,7 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 rootprefix=$(RPM_BUILD_ROOT)
 export appname
 
-
 include $(utildir)/PubRule
-
-
-DISTFILES += Makefile  $(appname).app $(appname)_init.php.in usercard.ods init.sql userinit.ods personnldap.ods slapd_anakeen.conf
-
 
 $(pubdir)/$(appname)/usercard.ods : usercard.ods 
 	cp $< $@

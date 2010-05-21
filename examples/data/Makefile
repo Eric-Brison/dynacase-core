@@ -10,8 +10,10 @@ $(libdir)/examples:
 
 $(libdir)/examples/%.js: %.js $(libdir)/examples
 	cp $< $@
+
 $(libdir)/examples/%.css: %.css $(libdir)/examples
 	cp $< $@
+
 $(libdir)/examples/%.html: %.html $(libdir)/examples
 	cp $< $@
 
