@@ -139,6 +139,7 @@ AC_OUTPUT(Makefile \
           App/Dav/DAV_init.php \
           App/Dav/DAV_conf.apache \
           App/Fdl/FDL_init.php \
+          App/Fdc/FDC_init.php \
           App/Fdl/tsearch2_fr.sql \
           App/Fgsearch/FGSEARCH_init.php \
           App/Freedom/FREEDOM_init.php  \
@@ -147,6 +148,7 @@ AC_OUTPUT(Makefile \
           App/Onefam/ONEFAM_init.php \
           App/Usercard/USERCARD_init.php \
           App/Users/USERS_init.php \
+          App/Vault/VAULT_init.php \
           Api/SetDocVaultIndex.php \
           Api/updateclass.php \
           FREEDOM.vault \

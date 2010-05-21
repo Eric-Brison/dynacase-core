@@ -4,11 +4,11 @@
 
 include $(utildir)/PubRule
 
-appname=$(applib)
+appname = WHAT
+
+export appname
 
 SUBDIR= htmlarea fckeditor jscalendar mcal jsXMLParser tsearch2 mozillaplugin
-
-DISTFILES += $(SUBDIR) Makefile php2V2 log.sh Lib.Prefix.php.in
 
 publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/htmlarea $(pubdir)/jscalendar $(pubdir)/php2V2
 
