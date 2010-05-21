@@ -1,6 +1,15 @@
 # ============================================
-# $Id: Makefile,v 1.1 2007/02/19 16:25:40 marc Exp $
+# $Id: Makefile,v 1.1 2002/01/08 12:41:34 eric Exp $
 # ============================================
+
+# get the new appname (basename in uppercase)
 appname = $(shell basename `pwd` | tr [a-z] [A-Z])
+
 export appname
+
+
 include $(utildir)/PubRule
+
+
+DISTFILES = Makefile  $(appname).app $(appname)_init.php.in
+
