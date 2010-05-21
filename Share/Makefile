@@ -2,11 +2,11 @@
 # $Id: Makefile,v 1.2 2003/03/06 18:03:54 eric Exp $
 # ============================================
 
-include $(utildir)/PubRule
-
 appname = WHAT
 
 export appname
+
+include $(utildir)/PubRule
 
 SUBDIR= htmlarea fckeditor jscalendar mcal jsXMLParser tsearch2 mozillaplugin
 
