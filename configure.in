@@ -101,7 +101,7 @@ AC_ARG_WITH(dbuser,
 AC_SUBST(DBPORT)
 DBPORT=5432
 AC_ARG_WITH(dbport,
-[  --with-dbport=port number  the database port (default 5432)], DBPORT=$withval
+[  --with-dbport=port number  the database port (default 5432)], DBPORT=$withval)
 
 AC_SUBST(HTTPUSER)
 HTTPUSER=http
