@@ -8,7 +8,7 @@ pubdir = @prefix@
 srcdir = @srcdir@
 libdir = $(pubdir)/lib
 applib = @PACKAGELIB@
-
+appname = @APPNAME@
 export pubdir utildir applib targetdir utildir libdir
 
 TAR = tar

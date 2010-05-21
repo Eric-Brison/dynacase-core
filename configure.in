@@ -23,6 +23,8 @@ AC_SUBST(PACKAGELIB)
 PACKAGELIB=FDL
 AC_SUBST(TODAY)
 TODAY=`date`
+AC_SUBST(APPNAME)
+APPNAME=TOOLBOX
 
 LICENSE="http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License"
 AC_SUBST(LICENSE)

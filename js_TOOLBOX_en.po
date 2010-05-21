@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-03 11:28+0100\n"
+"POT-Creation-Date: 2010-05-21 16:11+0200\n"
 "PO-Revision-Date: 2010-02-08 15:49+0100\n"
 "Last-Translator: anakeen\n"
 "Language-Team: english\n"
@@ -22,6 +22,19 @@ msgstr "password not defined"
 
 msgid "data:document id must not be an object"
 msgstr "document id must not be an object"
+
+#, fuzzy
+msgid "data:document id not set"
+msgstr "document id must not be an object"
+
+msgid "data:action name not set"
+msgstr ""
+
+msgid "setValue: document is fixed"
+msgstr ""
+
+msgid "save : document is fixed"
+msgstr ""
 
 #, fuzzy
 msgid "data::no tag specified"

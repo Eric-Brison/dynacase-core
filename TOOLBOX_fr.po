@@ -6,267 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-03 11:28+0100\n"
+"POT-Creation-Date: 2010-05-21 16:11+0200\n"
 "PO-Revision-Date: 2010-05-21 12:52+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
-msgid "User must be authenticate"
-msgstr "L'utilisateur doit être authentifié"
-
-msgid "not authenticated"
-msgstr "non authentifié"
-
-msgid "document not initialized"
-msgstr "document non initialisé"
+msgid "private key is not valid"
+msgstr "La clef privé n'est pas valide"
 
 #, c-format
-msgid "search %s"
-msgstr "recherche %s"
-
-#, c-format
-msgid "document %d inserted"
-msgstr "document %d inséré"
-
-msgid "document not set"
-msgstr "document non renseigné"
-
-#, c-format
-msgid "document %d deleted"
-msgstr "document %d supprimé"
-
-#, c-format
-msgid "document %d unlinked"
+msgid "cannot create user %s: %s"
 msgstr ""
-
-#, c-format
-msgid "target folder [%s] is not a folder"
-msgstr ""
-
-#, c-format
-msgid "target folder [%s] is not set"
-msgstr ""
-
-#, c-format
-msgid "document %d moved"
-msgstr ""
-
-msgid "application not initialized"
-msgstr "application non initialisée"
-
-#, c-format
-msgid "parameter %s not exists"
-msgstr "paramètre %s n'existe pas"
-
-#, c-format
-msgid "not authorized : parameter %s is not a user parameter"
-msgstr ""
-
-#, c-format
-msgid "document %s not exist"
-msgstr ""
-
-#, c-format
-msgid "cannot create document for family [%s]"
-msgstr ""
-
-msgid "label"
-msgstr "désignation"
-
-msgid "description"
-msgstr "Description"
-
-#, c-format
-msgid "change %s"
-msgstr "modification %s"
-
-msgid "revision of document"
-msgstr "révision du document"
-
-#, c-format
-msgid "document %s is not a folder"
-msgstr "le document %s n'est pas un dossier"
-
-#, c-format
-msgid "change version to %s"
-msgstr "Nouvelle version %s"
-
-msgid "reset version"
-msgstr "identifiant de version effacé"
-
-msgid "actions"
-msgstr "actions"
-
-#, c-format
-msgid "%d days"
-msgstr "%d jours"
-
-#, c-format
-msgid "%d day"
-msgstr "%d jour"
-
-#, c-format
-msgid "%d hours"
-msgstr "%d heures"
-
-#, c-format
-msgid "%d hour"
-msgstr "%d heure"
-
-#, c-format
-msgid "%d minutes"
-msgstr "%d minutes"
-
-#, c-format
-msgid "%d minute"
-msgstr "%d minute"
-
-msgid "attribute identificator is null"
-msgstr ""
-
-#, c-format
-msgid ""
-"attribute [%s] identificator syntax is unavalaible. Must have only "
-"alphanumeric characters and must not includes spaces"
-msgstr ""
-
-#, c-format
-msgid "attribute [%s] visibility must be one of H,R,W,S,O,I,U"
-msgstr ""
-
-#, c-format
-msgid "attribute [%s] already exists : cannot add it"
-msgstr ""
-
-#, c-format
-msgid "parent attribute [%s] not exists : cannot add it"
-msgstr ""
-
-#, c-format
-msgid "attribute [%s] not exists : cannot modify it"
-msgstr ""
-
-#, c-format
-msgid "attribute [%s] not exists : cannot delete it"
-msgstr ""
-
-#, c-format
-msgid ""
-"syntax error for order %s. May be an integer or a relative upto or downto "
-"identificator"
-msgstr ""
-
-#, c-format
-msgid "workflow file %s is not writable"
-msgstr ""
-
-msgid "modifyTransition: missing parameter"
-msgstr ""
-
-msgid "addState: missing parameter"
-msgstr ""
-
-msgid "alterTransitiontype: missing parameter"
-msgstr ""
-
-msgid "user not initialized"
-msgstr ""
-
-msgid "Data api"
-msgstr ""
-
-msgid "document ressource"
-msgstr ""
-
-msgid "user ressource"
-msgstr ""
-
-msgid "application ressource"
-msgstr ""
-
-msgid "group document request"
-msgstr ""
-
-#, c-format
-msgid "method %s not defined"
-msgstr ""
-
-msgid "request empty reference"
-msgstr ""
-
-msgid "getSelection: no configuration set"
-msgstr ""
-
-msgid "empty reference"
-msgstr ""
-
-#, c-format
-msgid "attribute unknow %s"
-msgstr ""
-
-msgid "nothing to add"
-msgstr ""
-
-msgid "nothing to unlink"
-msgstr ""
-
-msgid "nothing to insert"
-msgstr ""
-
-msgid "no identificator set"
-msgstr ""
-
-msgid "dynlabel"
-msgstr ""
-
-msgid "no identificator"
-msgstr ""
-
-#, c-format
-msgid "method %s not possible"
-msgstr ""
-
-msgid "authentication failed"
-msgstr ""
-
-#, c-format
-msgid "user %s not found"
-msgstr ""
-
-msgid "Dav"
-msgstr "Dav"
-
-msgid "WebDav FREEDOM system file"
-msgstr "Système de fichiers WebDAV FREEDOM"
-
-msgid "Access for exchange documents"
-msgstr "Accès aux échanges de documents"
-
-msgid "create a new session id"
-msgstr "créer un nouvel id de session"
-
-#, c-format
-msgid "Move file from %s to %s"
-msgstr "Déplacer le fichier depuis %s vers %s"
-
-#, c-format
-msgid "Rename file as %s"
-msgstr "Renommer le fichier en %s"
-
-msgid "address of the webdav server for freedav"
-msgstr "adresse du serveur webdav pour freedav"
-
-msgid "address of the webdav server for authenticate server"
-msgstr "adresse du serveur webdav pour le serveur authentifié"
-
-msgid "database access for webdav"
-msgstr "coordonnées d'accès à la base de données webdav"
-
-msgid "folder identificator for root"
-msgstr "Identifiant du dossier racine pour l'accès authentifié"
 
 #, c-format
 msgid "%s attribute"
@@ -490,6 +243,10 @@ msgstr "ne peut envoyer le courriel %s"
 msgid "(title)"
 msgstr "(titre)"
 
+#, c-format
+msgid "php file %s needed for request not found"
+msgstr "le fichier PHP %s nécessaire à la requête n'a pas pu être trouvé"
+
 msgid "wprocess_private"
 msgstr "privé"
 
@@ -507,6 +264,18 @@ msgstr "nécessite une réponse"
 
 msgid "answer"
 msgstr "Répondre"
+
+msgid "doctitle"
+msgstr "titre"
+
+msgid "revdate"
+msgstr "date de modification"
+
+msgid "revision"
+msgstr "révision"
+
+msgid "state"
+msgstr "état"
 
 msgid "prop_id"
 msgstr "identificateur"
@@ -1005,6 +774,36 @@ msgstr "détachement de %d minuteurs associés à %s "
 msgid "unattach all timers [%s]"
 msgstr "détachement de tous les minuteurs [%s]"
 
+msgid "read only"
+msgstr "lecture seule"
+
+msgid "read write"
+msgstr "lecture écriture"
+
+msgid "write only"
+msgstr "écriture seule"
+
+msgid "hidden"
+msgstr "caché"
+
+msgid "read disabled"
+msgstr "statique"
+
+msgid "static array"
+msgstr "tableau statique"
+
+msgid "invisible"
+msgstr "invisible"
+
+msgid "Y"
+msgstr "O"
+
+msgid "N"
+msgstr "N"
+
+msgid "Action"
+msgstr "Action"
+
 msgid "view document"
 msgstr "voir le document"
 
@@ -1262,6 +1061,10 @@ msgstr "Document %s enlevé"
 msgid "Document unlinked of %s folder"
 msgstr "Document enlevé du dossier %s"
 
+#, c-format
+msgid "document %s is not a folder"
+msgstr "le document %s n'est pas un dossier"
+
 msgid "Error : need edit privilege to execute"
 msgstr "Erreur ; privilege edit requis pour l'exécution"
 
@@ -1313,6 +1116,95 @@ msgstr "pas de permission pour admin"
 
 msgid "not pertinent"
 msgstr "Pas pertinent"
+
+msgid "include"
+msgstr "contient"
+
+msgid "equal"
+msgstr "égal"
+
+msgid "not equal"
+msgstr "pas égal"
+
+msgid "is empty"
+msgstr "est vide"
+
+msgid "is not empty"
+msgstr "n'est pas vide"
+
+msgid "one value equal"
+msgstr "une des valeurs égale"
+
+msgid "not include"
+msgstr "ne contient pas"
+
+msgid "begin by"
+msgstr "commence par"
+
+msgid "&gt; or equal"
+msgstr "&gt; ou égal"
+
+msgid "&lt; or equal"
+msgstr "&lt; ou égal"
+
+msgid "one word equal"
+msgstr "un des mots égal"
+
+msgid "content file word"
+msgstr "le contenu du fichier contient les mots"
+
+msgid "content file expression"
+msgstr "le contenu du fichier contient l'expression"
+
+#, c-format
+msgid "parenthesis number mismatch : %d left, %d right"
+msgstr "erreur de parenthésage : %d gauche, %d droite"
+
+#, c-format
+msgid "no compatible type with operator %s"
+msgstr "type incompatible avec l'opérateur %s"
+
+#, c-format
+msgid "attribute %s : cannot detect title attribute"
+msgstr "attriby %s : le titre lié à l'attribut ne peut être détecté"
+
+#, c-format
+msgid "attribute %s : %s type is not allowed with %s operator"
+msgstr "attribut : %s : le type %s n'est pas autorisé avec l'opérateur %s"
+
+#, c-format
+msgid "attribute %s not found [%s]"
+msgstr "l'attribut %s n'a pas été trouvé [%s]"
+
+msgid "cdate"
+msgstr "Date de création"
+
+msgid "owner"
+msgstr "identifiant propriétaire"
+
+msgid "allocated"
+msgstr "affecté"
+
+msgid "any values"
+msgstr "une des valeurs"
+
+msgid "label"
+msgstr "désignation"
+
+msgid "send search"
+msgstr "Lancer la recherche"
+
+msgid "any families"
+msgstr "toutes familles"
+
+msgid "id owner"
+msgstr "identifiant propriétaire"
+
+msgid "id locked"
+msgstr "identifiant verrou"
+
+msgid "id allocated"
+msgstr "identifiant utilisateur affecté"
 
 msgid "uncomplete request"
 msgstr "requête incomplète"
@@ -1512,6 +1404,10 @@ msgid "apply method %s"
 msgstr "appel de la méthode %s"
 
 #, c-format
+msgid "Error in portfolio : folder %s not exists"
+msgstr "Erreur dans la chemise : dossier %s n'existe pas"
+
+#, c-format
 msgid "the external pluggin file %s cannot be read"
 msgstr "le fichier externe %s ne peut être lu"
 
@@ -1527,8 +1423,229 @@ msgstr "erreur de syntaxe pour l'attribut énuméré [%s]"
 msgid "unknow attribute %s (family %s)"
 msgstr "attribut inconnu %s (famille  %s)"
 
-msgid "mnogosearch php extension not loaded"
-msgstr "extension php mnogosearch non chargée"
+#, c-format
+msgid "Application %s (%s) not available"
+msgstr "Application %s (%s) non disponible"
+
+# ne pas modifier laisser à vide
+msgid "$code"
+msgstr ""
+
+#, c-format
+msgid "Object Permission : permission %s needed (%s) - # %d"
+msgstr "Permission objet :: permission %s requise (%s) - n° %d"
+
+msgid "modify object acl"
+msgstr "modification des droits"
+
+msgid "view object acl"
+msgstr "voir les droits"
+
+#, c-format
+msgid "function '%s' not available for application %s (%d)"
+msgstr "fonction %s non disponible pour l'application %s (%d)"
+
+#, c-format
+msgid "Acl [%s] not available for App %s"
+msgstr "ACL %s non valable pour l'application %s"
+
+#, c-format
+msgid ""
+"action %s is not declared to be access in open mode and token context not "
+"match"
+msgstr ""
+
+#, c-format
+msgid "action %s is not declared to be access in open mode"
+msgstr "L'action %s n'est pas déclarée comme étant accessible en mode ouvert"
+
+#, c-format
+msgid ""
+"Access denied\n"
+"Need ACL %s for action %s [%s]"
+msgstr ""
+"Accès refusé\n"
+"ACL %s nécessaire pour l'action %s [%s]"
+
+msgid "description"
+msgstr "Description"
+
+msgid "login must not be empty"
+msgstr "le login ne doit pas être vide"
+
+msgid "no freedom DB access"
+msgstr "pas d'accès à la base de données FREEDOM"
+
+msgid "User must be authenticate"
+msgstr "L'utilisateur doit être authentifié"
+
+msgid "not authenticated"
+msgstr "non authentifié"
+
+msgid "document not initialized"
+msgstr "document non initialisé"
+
+#, c-format
+msgid "search %s"
+msgstr "recherche %s"
+
+#, c-format
+msgid "data:family %s not alive"
+msgstr ""
+
+#, c-format
+msgid "data:document %s is not a family"
+msgstr ""
+
+#, c-format
+msgid "document %d inserted"
+msgstr "document %d inséré"
+
+msgid "document not set"
+msgstr "document non renseigné"
+
+#, c-format
+msgid "document %d deleted"
+msgstr "document %d supprimé"
+
+#, c-format
+msgid "document %d unlinked"
+msgstr ""
+
+#, c-format
+msgid "target folder [%s] is not a folder"
+msgstr ""
+
+#, c-format
+msgid "target folder [%s] is not set"
+msgstr ""
+
+#, c-format
+msgid "document %d moved"
+msgstr ""
+
+msgid "application not initialized"
+msgstr "application non initialisée"
+
+#, c-format
+msgid "parameter %s not exists"
+msgstr "paramètre %s n'existe pas"
+
+#, c-format
+msgid "not authorized : parameter %s is not a user parameter"
+msgstr ""
+
+#, fuzzy
+msgid "short_name"
+msgstr ""
+"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
+"nom court\n"
+"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
+"Nom abr&eacute;g&eacute;"
+
+#, c-format
+msgid "document %s not exist"
+msgstr ""
+
+#, c-format
+msgid "no privilege view for %d"
+msgstr ""
+
+#, c-format
+msgid "cannot create document for family [%s]"
+msgstr ""
+
+#, c-format
+msgid "change %s"
+msgstr "modification %s"
+
+msgid "revision of document"
+msgstr "révision du document"
+
+#, c-format
+msgid "change version to %s"
+msgstr "Nouvelle version %s"
+
+msgid "reset version"
+msgstr "identifiant de version effacé"
+
+msgid "actions"
+msgstr "actions"
+
+#, c-format
+msgid "%d days"
+msgstr "%d jours"
+
+#, c-format
+msgid "%d day"
+msgstr "%d jour"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d heures"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d heure"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d minutes"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d minute"
+
+msgid "attribute identificator is null"
+msgstr ""
+
+#, c-format
+msgid ""
+"attribute [%s] identificator syntax is unavalaible. Must have only "
+"alphanumeric characters and must not includes spaces"
+msgstr ""
+
+#, c-format
+msgid "attribute [%s] visibility must be one of H,R,W,S,O,I,U"
+msgstr ""
+
+#, c-format
+msgid "attribute [%s] already exists : cannot add it"
+msgstr ""
+
+#, c-format
+msgid "parent attribute [%s] not exists : cannot add it"
+msgstr ""
+
+#, c-format
+msgid "attribute [%s] not exists : cannot modify it"
+msgstr ""
+
+#, c-format
+msgid "attribute [%s] not exists : cannot delete it"
+msgstr ""
+
+#, c-format
+msgid ""
+"syntax error for order %s. May be an integer or a relative upto or downto "
+"identificator"
+msgstr ""
+
+#, c-format
+msgid "workflow file %s is not writable"
+msgstr ""
+
+msgid "modifyTransition: missing parameter"
+msgstr ""
+
+msgid "addState: missing parameter"
+msgstr ""
+
+msgid "alterTransitiontype: missing parameter"
+msgstr ""
+
+msgid "user not initialized"
+msgstr ""
 
 #, c-format
 msgid "group #%d does not exist"
@@ -1594,141 +1711,87 @@ msgid ""
 "This kind of document can not be duplicated"
 msgstr "ce type de document ne peut être dupliqué"
 
-#, c-format
-msgid "php file %s needed for request not found"
-msgstr "le fichier PHP %s nécessaire à la requête n'a pas pu être trouvé"
+msgid "Parameter name does not include spaces"
+msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
 
-msgid "doctitle"
-msgstr "titre"
+msgid "DbObj::Adds error in multiple insertion"
+msgstr "DbObj::Adds erreur dans insertion multiple"
 
-msgid "revdate"
-msgstr "date de modification"
+msgid "Failed to copy $infile to $f"
+msgstr "Echec de la copie de $infile vers $f"
 
-msgid "revision"
-msgstr "révision"
+msgid "vault file is not initialized"
+msgstr ""
 
-msgid "state"
-msgstr "état"
+msgid "file does not exist in vault"
+msgstr "Fichier inexistant dans le Coffre"
 
-msgid "read only"
-msgstr "lecture seule"
-
-msgid "read write"
-msgstr "lecture écriture"
-
-msgid "write only"
-msgstr "écriture seule"
-
-msgid "hidden"
-msgstr "caché"
-
-msgid "read disabled"
-msgstr "statique"
-
-msgid "static array"
-msgstr "tableau statique"
-
-msgid "invisible"
-msgstr "invisible"
-
-msgid "Y"
-msgstr "O"
-
-msgid "N"
-msgstr "N"
-
-msgid "Action"
-msgstr "Action"
-
-msgid "include"
-msgstr "contient"
-
-msgid "equal"
-msgstr "égal"
-
-msgid "not equal"
-msgstr "pas égal"
-
-msgid "is empty"
-msgstr "est vide"
-
-msgid "is not empty"
-msgstr "n'est pas vide"
-
-msgid "one value equal"
-msgstr "une des valeurs égale"
-
-msgid "not include"
-msgstr "ne contient pas"
-
-msgid "begin by"
-msgstr "commence par"
-
-msgid "&gt; or equal"
-msgstr "&gt; ou égal"
-
-msgid "&lt; or equal"
-msgstr "&lt; ou égal"
-
-msgid "one word equal"
-msgstr "un des mots égal"
-
-msgid "content file word"
-msgstr "le contenu du fichier contient les mots"
-
-msgid "content file expression"
-msgstr "le contenu du fichier contient l'expression"
+msgid "can't access file"
+msgstr "Accès au fichier impossible"
 
 #, c-format
-msgid "parenthesis number mismatch : %d left, %d right"
-msgstr "erreur de parenthésage : %d gauche, %d droite"
+msgid ""
+"Some characters are not authorized for file name %s. They are replaced by -"
+msgstr ""
 
 #, c-format
-msgid "no compatible type with operator %s"
-msgstr "type incompatible avec l'opérateur %s"
+msgid "%s directory not found"
+msgstr "répertoire %s non trouvé"
 
 #, c-format
-msgid "attribute %s : cannot detect title attribute"
-msgstr "attriby %s : le titre lié à l'attribut ne peut être détecté"
+msgid "%s directory not writable"
+msgstr "répertoire %s non accessible en écriture"
+
+msgid "File System already exists"
+msgstr "Système de fichier déjà existant"
+
+msgid "no empty vault file system found"
+msgstr "Pas de système de fichier libre"
+
+msgid "no vault directory found"
+msgstr "Pas de système de fichier trouvé"
+
+msgid "no vault file system found"
+msgstr "Pas de système de fichier trouvé"
+
+msgid "no empty vault dir found"
+msgstr "Pas de système de fichier libre"
+
+msgid "Directory already exists"
+msgstr "Répertoire déjà existant"
+
+#, fuzzy
+msgid "prev"
+msgstr ""
+"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
+"suivant\n"
+"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
+"précédent"
+
+msgid "next"
+msgstr "suivant"
+
+msgid "first"
+msgstr "premier"
+
+msgid "last"
+msgstr "dernier"
 
 #, c-format
-msgid "attribute %s : %s type is not allowed with %s operator"
-msgstr "attribut : %s : le type %s n'est pas autorisé avec l'opérateur %s"
+msgid "Template [%s] not found"
+msgstr "Template [%s] non trouvé."
 
 #, c-format
-msgid "attribute %s not found [%s]"
-msgstr "l'attribut %s n'a pas été trouvé [%s]"
-
-msgid "cdate"
-msgstr "Date de création"
-
-msgid "owner"
-msgstr "identifiant propriétaire"
-
-msgid "allocated"
-msgstr "affecté"
-
-msgid "any values"
-msgstr "une des valeurs"
-
-msgid "send search"
-msgstr "Lancer la recherche"
-
-msgid "any families"
-msgstr "toutes familles"
-
-msgid "id owner"
-msgstr "identifiant propriétaire"
-
-msgid "id locked"
-msgstr "identifiant verrou"
-
-msgid "id allocated"
-msgstr "identifiant utilisateur affecté"
+msgid "SetBlock:error [%s]"
+msgstr ""
 
 #, c-format
-msgid "Error in portfolio : folder %s not exists"
-msgstr "Erreur dans la chemise : dossier %s n'existe pas"
+msgid "Move file from %s to %s"
+msgstr "Déplacer le fichier depuis %s vers %s"
+
+#, c-format
+msgid "Rename file as %s"
+msgstr "Renommer le fichier en %s"
 
 #, c-format
 msgid "cannot object update %s"
@@ -1745,6 +1808,48 @@ msgstr "%s non présent dans %s"
 #, c-format
 msgid "error ::moveDocument %s %s"
 msgstr "erreur ::moveDocument %s %s"
+
+msgid "socket creation error"
+msgstr ""
+
+msgid "Error sending file"
+msgstr ""
+
+msgid "empty file"
+msgstr ""
+
+msgid "no referer url found"
+msgstr "pas d'URL reférence trouvée"
+
+#, c-format
+msgid "file not found : %s"
+msgstr "fichier %s non trouvé."
+
+#, c-format
+msgid ""
+"filename %s does not contain freedom_authtypeparams variable. May be old "
+"syntax for configuration file"
+msgstr ""
+
+msgid "terminal too small (must ne at least 80 columns by 24 lines)"
+msgstr ""
+"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
+
+msgid "cannot access to core database service [service='$pgservice_core']"
+msgstr ""
+"accès impossible à la base de données par défaut [service='$pgservice_core']"
+
+#, c-format
+msgid "API file %s not found\n"
+msgstr ""
+
+#, c-format
+msgid "Error : %s\n"
+msgstr "Erreur : %s\n"
+
+#, c-format
+msgid "Caught Exception : %s\n"
+msgstr "Attrape exception : %s\n"
 
 msgid "manual date"
 msgstr "Date manuelle"
@@ -2418,6 +2523,18 @@ msgstr ""
 "Il y a trop de membres dans le groupe pour afficher la liste ici. Utiliser "
 "le menu \"Ouvrir\" à partir du menu contextuel."
 
+msgid "unmodifiable parameter"
+msgstr "paramètre non modifiable"
+
+msgid "name"
+msgstr "Nom"
+
+msgid "val"
+msgstr "Valeur"
+
+msgid "delconfirmparam"
+msgstr "Confirmez-vous la suppression du param&egrave;tre "
+
 msgid "not defined"
 msgstr "non défini"
 
@@ -2625,6 +2742,101 @@ msgstr "Plus d'options"
 msgid "from current folder"
 msgstr "à partir du dossier courant"
 
+msgid "reqpasswd_login"
+msgstr "Nom de connexion"
+
+msgid "reqpasswd_or"
+msgstr "ou"
+
+msgid "reqpasswd_email"
+msgstr "Adresse e-mail"
+
+msgid "reqpasswd_submit"
+msgstr "Envoyer"
+
+msgid "callbackreqpasswd_callback_ok"
+msgstr ""
+"<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a "
+"été envoyé par mail.</p>"
+
+msgid "callbackreqpasswd_callback_not_ok"
+msgstr ""
+"<p>Le système n'a pas pu traiter votre demande.</p>\n"
+"<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus valide. "
+"Dans ce cas, veuillez renouveller votre demande.</p>\n"
+"<p>Si le problème persiste, veuillez prendre contact avec <a href=\"mailto:"
+"[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%20de%20passe\">"
+"[ON_ERROR_CONTACT]</a></p>"
+
+msgid "warning_name"
+msgstr "la saisie de votre nom est obligatoire."
+
+msgid "warning_pass"
+msgstr "la saisie de votre mot de passe est obligatoire."
+
+msgid "yourusername"
+msgstr "votre nom d'utilisateur"
+
+msgid "yourpassword"
+msgstr "votre mot de passe"
+
+msgid "authent reqpassword"
+msgstr "Mot de passe oublié ?"
+
+msgid "Do connection"
+msgstr "se connecter"
+
+msgid "submitreqpasswd_form_send_ok"
+msgstr ""
+"<p>Votre demande a bien été prise en compte.</p>\n"
+"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
+"finaliser la ré-initialisation de votre mot de passe.</p>"
+
+msgid "submitreqpasswd_form_send_error_invalid_args"
+msgstr ""
+"<p>Le nom de connexion ou l'adresse e-mail indiqué n'est pas valide.</p>\n"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
+
+msgid "submitreqpasswd_form_send_error_unknown"
+msgstr ""
+"<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
+"p>\n"
+"<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
+"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
+
+msgid "errno_bug_639_message"
+msgstr ""
+"<p>Vous devez ré-initialiser votre mot de passe.</p>\n"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Ré-initialiser mon "
+"mot de passe</a></p>"
+
+msgid "callbackreqpasswd_mail_hello"
+msgstr "Bonjour"
+
+msgid "callbackreqpasswd_mail_password"
+msgstr ""
+"<p>Votre nouveau mot de passe est à présent:</p>\n"
+"<pre>\n"
+"[PASSWORD]\n"
+"</pre>\n"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
+
+msgid "submitreqpasswd_mail_hello"
+msgstr "Bonjour"
+
+msgid "submitreqpasswd_mail_callbackurl"
+msgstr ""
+"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est "
+"pas le cas, veuillez détruire ce message.</p>\n"
+"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
+"suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
+"[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">"
+"[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
+"app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
+
 msgid "Full search"
 msgstr "Recheche plein texte"
 
@@ -2675,6 +2887,72 @@ msgstr "Recherche simple"
 
 msgid "Add filter"
 msgstr "Ajouter une condition"
+
+msgid "adduser"
+msgstr "Ajouter un utilisateur"
+
+msgid "print"
+msgstr "Impression de la page"
+
+msgid "search"
+msgstr "recherche"
+
+msgid "domain"
+msgstr "Domaine"
+
+msgid "firstname"
+msgstr "Prénom"
+
+msgid "lastname"
+msgstr "Nom"
+
+msgid "login"
+msgstr "Nom de connexion"
+
+msgid "password"
+msgstr "Mot de passe"
+
+msgid "expire date"
+msgstr "date d'expiration"
+
+msgid "groups"
+msgstr "Groupes"
+
+msgid "butmodify"
+msgstr "Modifier"
+
+msgid "expire default delay (in day)"
+msgstr "délai d'expiration par défaut (en jours)"
+
+msgid " 0 means no delay"
+msgstr " 0 signifie pas de limite"
+
+msgid "if not set, will be the current date more delay"
+msgstr "si vide, ce sera la date courante plus le délai"
+
+msgid "user status"
+msgstr "état utilisateur"
+
+msgid "active user"
+msgstr "Utilisateur activé"
+
+msgid "desactived user"
+msgstr "Utilisateur désactivé"
+
+msgid "changegroup"
+msgstr "Changement de groupe"
+
+msgid "domaingroup"
+msgstr "Domaine"
+
+msgid "othergroup"
+msgstr "Autres"
+
+msgid "butclosew"
+msgstr "Fermer la fenêtre"
+
+msgid "clear"
+msgstr "Effacer"
 
 msgid "Change my ask"
 msgstr "Changer mon opinion"
@@ -3013,6 +3291,187 @@ msgstr " Ouverte en premier"
 msgid "No family first"
 msgstr "Pas de famille ouverte par défaut"
 
+msgid "delconfirmstyle"
+msgstr "Confirmez-vous la suppression du style"
+
+msgid "long_name"
+msgstr "Nom complet"
+
+msgid "available"
+msgstr "Dispo"
+
+msgid "acl"
+msgstr "Acl"
+
+#, fuzzy
+msgid "root"
+msgstr ""
+"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
+"racine\n"
+"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
+"Root"
+
+msgid "toc"
+msgstr "Toc"
+
+msgid "openaccess"
+msgstr "Accès ouvert"
+
+msgid "appname"
+msgstr "Application"
+
+msgid "access_free"
+msgstr "Acces libre"
+
+msgid "displayable"
+msgstr "Affichable"
+
+msgid "appssl"
+msgstr "Sécurisée"
+
+msgid "appmachine"
+msgstr "machine distante"
+
+#, fuzzy
+msgid "update"
+msgstr ""
+"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
+"mis à jour\n"
+"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
+"mise à jour"
+
+msgid "addparam"
+msgstr "Ajouter un param&egrave;tre"
+
+msgid "my parameters"
+msgstr "mes paramètres"
+
+msgid "view all"
+msgstr "tout voir"
+
+msgid "select a user"
+msgstr "Sélectionnez un utilisateur"
+
+msgid "user parameters list"
+msgstr "Liste des paramètres utilisateur"
+
+msgid "application parameters list"
+msgstr "Liste des paramètres applicatif"
+
+msgid "select a style"
+msgstr "Sélectionnez un style"
+
+msgid "style parameters list"
+msgstr "Liste des paramètres style"
+
+msgid "titleaction"
+msgstr "Liste des actions de l'application"
+
+msgid "machine"
+msgstr "machine"
+
+msgid "addstyle"
+msgstr "Ajouter un style"
+
+msgid "Progress bar"
+msgstr "Barre de progression"
+
+msgid "view log"
+msgstr "voir les messages"
+
+msgid "All manuals"
+msgstr "Tous les manuels"
+
+msgid "Javascript must be enabled in your navigator"
+msgstr "Javascript doit être activé dans votre navigateur"
+
+msgid ""
+"Your navigator does not accept cookies.\n"
+"Cookies must be enabled to use correctly this application"
+msgstr ""
+"Votre navigateur n'accepte pas les cookies.\n"
+"Vous devez autoriser les cookies pour utiliser correctement l'application."
+
+msgid "You use version an to old version of Netscape (Mozilla)"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
+msgstr ""
+"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
+
+msgid "You use version an to old version of Internet Explorer"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "You must upgrade to version 6 or more"
+msgstr "Vous devez mettre à jour avec la version 6 au minimum"
+
+msgid "Click here to login"
+msgstr "Cliquer ici pour se connecter"
+
+msgid "Choose Gate Urls"
+msgstr "Choix des URLs"
+
+msgid "New version has been installed."
+msgstr "Une nouvelle version vient d'être installée."
+
+msgid "You must clear navigator cache."
+msgstr "Vous devez effacer le cache de votre navigateur."
+
+msgid ""
+"The apache configuration seems incorrect. I cannot read .htaccess file. May "
+"be parameter allowOverride is not set to All"
+msgstr ""
+
+msgid "You use an too old Netscape navigator"
+msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
+
+msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
+"ou Mozilla 1.0.1 (ou supérieur)"
+
+msgid "mozilla site"
+msgstr "site de Mozilla"
+
+msgid "nestcape site"
+msgstr "Site de Netscape"
+
+msgid "Manuals"
+msgstr "Manuels"
+
+# ne pas mettre de '
+msgid "Homepage"
+msgstr "Accueil"
+
+msgid "Welcome Page"
+msgstr "Page d'accueil"
+
+msgid "gate page"
+msgstr "Page du portail"
+
+msgid "New GATE page"
+msgstr "Portail"
+
+msgid "Edit Url Gate"
+msgstr "édition des URLs pour le portail"
+
+msgid "Save geometry"
+msgstr "Sauver la disposition"
+
+msgid "You use an too old Internet explorer navigator"
+msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
+
+msgid "please upgrade to Internet explorer 6.0 or greater"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
+"supérieur) "
+
+msgid "Internet explorer site"
+msgstr "Site de Microsoft"
+
+msgid "Gate"
+msgstr "Portail"
+
 msgid "click here to create a new"
 msgstr "Création...."
 
@@ -3172,6 +3631,51 @@ msgstr "Web"
 
 msgid "categorie"
 msgstr "Catégorie"
+
+msgid "controlaccess"
+msgstr "Contrôle des accès"
+
+msgid " Access Control for"
+msgstr "Contrôle des accès pour"
+
+msgid "viewuser"
+msgstr "Voir les utilisateurs"
+
+msgid "viewgroup"
+msgstr "Voir les groupes"
+
+msgid "download"
+msgstr "Télécharger le fichier d'acces"
+
+msgid "needfile"
+msgstr "Le nom du fichier doit être spécifié"
+
+msgid "upload"
+msgstr "Charger un fichier d'acces"
+
+msgid "accessfor"
+msgstr "Contrôle des accès pour"
+
+msgid "Max user reach. Use search filter"
+msgstr "Utiliser la recherche pour voir la suite"
+
+msgid "Search"
+msgstr "Recherche"
+
+msgid "filter on login and lastname"
+msgstr "filtre sur le login et le nom"
+
+msgid "choose document"
+msgstr "choisi un document"
+
+msgid "edit by object"
+msgstr "édition par objet"
+
+msgid "in database"
+msgstr "dans la base de données"
+
+msgid "No user found"
+msgstr "pas d'utilisateur trouvé"
 
 msgid "View historique"
 msgstr "Voir l'historique"
@@ -3384,6 +3888,78 @@ msgstr "Nouvelle catégorie"
 
 msgid "add new category"
 msgstr "ajout nouvelle catégorie"
+
+msgid "New Vault FS"
+msgstr "Nouveau coffre"
+
+msgid "Directory"
+msgstr "Répertoire"
+
+msgid "Size"
+msgstr "Taille"
+
+msgid "thousands bytes"
+msgstr "milliers d'octets"
+
+msgid "Kb"
+msgstr "Ko"
+
+msgid "million bytes"
+msgstr "million d'octets"
+
+msgid "Mb"
+msgstr "Mo"
+
+msgid "thousands of Megabytes"
+msgstr "milliers de mégaoctets"
+
+msgid "Gb"
+msgstr "Go"
+
+msgid "million of Megabytes"
+msgstr "million de mégaoctets"
+
+msgid "Tb"
+msgstr "To"
+
+msgid "Generate new vault"
+msgstr "Créer un nouveau coffre"
+
+msgid "Increase vault size"
+msgstr "Augmenter la taille du coffre"
+
+msgid "Clear orphan"
+msgstr "Supprimer les orphelins"
+
+msgid "Move directory"
+msgstr "Déplacer le répertoire"
+
+msgid "New size"
+msgstr "Nouvelle taille"
+
+msgid "Increase FS"
+msgstr "Augmenter le FS"
+
+msgid "New directory"
+msgstr "Nouveau répertoire"
+
+msgid "Move FS"
+msgstr "Déplacer FS"
+
+msgid "Capacity"
+msgstr "Capacité"
+
+msgid "Used"
+msgstr "Utilisé"
+
+msgid "Trash"
+msgstr "Poubelle"
+
+msgid "Orphean"
+msgstr "Orphelins"
+
+msgid "Free"
+msgstr "Libre"
 
 msgid "PortFolio"
 msgstr "Chemise"
@@ -3640,9 +4216,6 @@ msgstr "Mise à jour du serveur LDAP"
 msgid "Bookmarks"
 msgstr "Signets"
 
-msgid "Search"
-msgstr "Recherche"
-
 msgid "System document"
 msgstr "Documents système"
 
@@ -3777,9 +4350,6 @@ msgstr "ID"
 
 msgid "order"
 msgstr "ordre"
-
-msgid "name"
-msgstr "Nom"
 
 msgid "type"
 msgstr "type"
@@ -4209,6 +4779,9 @@ msgstr "non verrouillé"
 msgid "current_state"
 msgstr "courant"
 
+msgid "descr"
+msgstr "Description"
+
 msgid "no sort"
 msgstr "non trié"
 
@@ -4222,6 +4795,9 @@ msgstr "%d documents"
 #, c-format
 msgid "%d document"
 msgstr "%d document"
+
+msgid "create databases ?"
+msgstr "Créer les bases de données ?"
 
 msgid "e1"
 msgstr "e1"
@@ -4300,8 +4876,119 @@ msgid "family %s not found"
 msgstr "famille %s non trouvée"
 
 #, c-format
+msgid "%s style updated\n"
+msgstr "%s style mis à jour\n"
+
+#, c-format
 msgid "execution by %s done %s"
 msgstr "execution faite par %s a donné %s"
+
+#, c-format
+msgid "Attribute %s not found\n"
+msgstr "Attribut %s non trouvé.\n"
+
+#, c-format
+msgid ""
+"Attribute %s found is not alone\n"
+"Must precise request with appname arguments\n"
+msgstr ""
+"L'attribut %s trouvé n'est pas seul\n"
+"Préciser la requête en utilisant les arguments userid et appid\n"
+
+#, c-format
+msgid "Attribute %s not modified : %s\n"
+msgstr "Attribut %s non modifié : %s\n"
+
+#, c-format
+msgid "Attribute %s modified to %s"
+msgstr "Attribut %s modifié par %s"
+
+msgid "cannot access to  database $db\n"
+msgstr "accès à la base de données $db refusé\n"
+
+msgid "access granted to  database $db\n"
+msgstr "accès à la base de données $db autorisé\n"
+
+#, c-format
+msgid "create directory %s\n"
+msgstr "créer le dossier %s\n"
+
+#, c-format
+msgid "cannot change owner of %s: aborted\n"
+msgstr "ne peut changer le propriétaire de %s: abandon\n"
+
+#, c-format
+msgid ""
+"cannot create directory %s\n"
+"Parent directory must be create before"
+msgstr ""
+"ne peut créer le répertoire %s\n"
+"Le répertoire père doit être créé au préalable"
+
+#, c-format
+msgid "cannot create %s: %s\n"
+msgstr "ne peut créer %s : %s\n"
+
+#, c-format
+msgid "vault %s created.\n"
+msgstr "coffre %s créé.\n"
+
+#, fuzzy, c-format
+msgid "vault already created %s: aborted\n"
+msgstr ""
+"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
+"coffre déjà crée %s: abandon\n"
+"#-#-#-#-#  VAULT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
+"coffre déjà créé %s : abandon\n"
+
+#, c-format
+msgid "ERROR %s\n"
+msgstr "ERREUR %s\n"
+
+msgid "no login : passwd unchanged"
+msgstr "pas de login : mot de passe inchangé"
+
+msgid "unknown login : passwd unchanged"
+msgstr "login incoonu : mot de passe inchangé"
+
+msgid "password are not identicals : not changed"
+msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
+
+msgid "empty password : not changed"
+msgstr "mot de passe vide : non changé"
+
+#, c-format
+msgid "Create other database for %s (%s)"
+msgstr "Création d'autres bases pour %s (%s)"
+
+msgid "I can't find hostname alias"
+msgstr "Alias de hostname introuvable"
+
+msgid "Enter name for database ? "
+msgstr "Nom de la base de donnée ?"
+
+#, c-format
+msgid "Context  : [%s]"
+msgstr "Contexte : [%s]"
+
+#, c-format
+msgid "Database : [%s]"
+msgstr "Base de données : [%s]"
+
+msgid "Continue (Y|N) ?"
+msgstr "Continuer (Y (oui) |N (non)) ?"
+
+msgid "show request for password"
+msgstr "Affiche le lien pour la demande de mot de passe"
+
+msgid "subject for new password request"
+msgstr "Le sujet du mail pour les demandes de mot de passe"
+
+msgid "subject for new password response"
+msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
+
+msgid "show language selection"
+msgstr "Affiche la sélection de la langue lors de la demande de mot de passe"
 
 msgid "fgsearch"
 msgstr "Recherche générale"
@@ -4314,6 +5001,41 @@ msgstr "Recherche générale freedom"
 
 msgid "freedom detailled global search"
 msgstr "recherche détaillée générale"
+
+msgid "What User Management"
+msgstr "Gestion des utilisateurs"
+
+msgid "Access To All Users"
+msgstr "Accès à tous les utilisateurs"
+
+msgid "Access To All Users in my domain"
+msgstr "Acces aux utilisateurs de mon domaine"
+
+#, fuzzy
+msgid "Access To My Own account"
+msgstr ""
+"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
+"Accès à mon compte\n"
+"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
+"Accès à mon propre compte"
+
+msgid "admin view"
+msgstr "vue administrateur"
+
+msgid "group list"
+msgstr "les groupes"
+
+msgid "user account edition"
+msgstr "éditer compte utilisateur"
+
+msgid "user own account edition"
+msgstr "éditer compte personnel"
+
+msgid "user account modification"
+msgstr "modifier compte utilisateur"
+
+msgid "user own account modification"
+msgstr "modifier compte personnel"
 
 msgid "Referenced from"
 msgstr "Référencé depuis"
@@ -4633,14 +5355,6 @@ msgstr "la famille doit être précisée"
 msgid "cycle family must be defined"
 msgstr "la famille cycle doit être renseignée"
 
-#, fuzzy
-msgid "short_name"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"nom court\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Nom abr&eacute;g&eacute;"
-
 msgid "need to select workflow"
 msgstr "le cycle doit être sélectionné"
 
@@ -4766,6 +5480,220 @@ msgstr "Accès à la lecture"
 msgid "Access choose masters families"
 msgstr "Accès au choix des familles visibles administratives"
 
+msgid "Application manager"
+msgstr "Gestion des applications"
+
+msgid "What Application Management"
+msgstr "Gestion des applications"
+
+msgid "SuperUser permission"
+msgstr "Accès administration"
+
+msgid "user preference"
+msgstr "préférences utilisateur"
+
+msgid "styles parameters"
+msgstr "paramètres de style"
+
+msgid "application parameters"
+msgstr "paramètres applicatif"
+
+msgid "user parameters"
+msgstr "paramètres utilisateur"
+
+msgid "current user parameters"
+msgstr "mes paramètres"
+
+msgid "Parameters configuration"
+msgstr "Paramètres de configuration"
+
+msgid "current user mail configuration"
+msgstr "ma messagerie"
+
+msgid "current user account"
+msgstr "mon compte"
+
+msgid "applications"
+msgstr "les applications"
+
+msgid "delete parameters"
+msgstr "suppression de paramètres"
+
+msgid "modify parameters"
+msgstr "modification des paramètres"
+
+msgid "delete user parameters"
+msgstr "suppression de paramètres utilisateur"
+
+msgid "modify user parameters"
+msgstr "modification des paramètres utilisateur"
+
+msgid "Core"
+msgstr "Noyau"
+
+msgid "Core Application Manager"
+msgstr "Page d'accueil"
+
+msgid "Message to indicate invalid configuration"
+msgstr ""
+
+msgid "concat stylecss+sizecss"
+msgstr "concaténation style + size css"
+
+msgid "application version"
+msgstr "version application"
+
+msgid "Freedom frontpage description"
+msgstr "Description de la page d'accueil"
+
+msgid "version identificator"
+msgstr "identificateur de version"
+
+msgid "use freedom user management"
+msgstr "utiliser le gestion d'utilisateur FREEDOM"
+
+msgid "default style"
+msgstr "style par défaut"
+
+msgid "font size"
+msgstr "taille de la police"
+
+msgid "connection type"
+msgstr "type de connexion"
+
+msgid "background color or image"
+msgstr "image ou couleur de fond"
+
+msgid "background color or image in security mode"
+msgstr "image ou couleur de fond en mode sécurité"
+
+msgid "background image for bar"
+msgstr "image de fond pour les barres"
+
+msgid "background image for menu"
+msgstr "image de fond pour les menus"
+
+msgid "background color for table cells"
+msgstr "couleur de fond de cellules"
+
+msgid "second background color"
+msgstr "couleur secondaire pour le fond"
+
+msgid "highlight background color"
+msgstr "couleur de fond pour la mise en évidence"
+
+msgid "inverse video background color"
+msgstr "couleur de fond en inverse vidéo"
+
+msgid "text color"
+msgstr "couleur du texte"
+
+msgid "inverse video color text"
+msgstr "couleur du texte en inverse vidéo"
+
+msgid "input color bg"
+msgstr "couleur des champs de saisie"
+
+msgid "anchor color"
+msgstr "couleur des liens"
+
+msgid "error color"
+msgstr "couleur messages d'erreur"
+
+msgid "top url to find help documentation"
+msgstr "url pour la documentation en ligne"
+
+msgid "frame size"
+msgstr "taille de la fenêtre"
+
+msgid "frame border size"
+msgstr "taille de la bordure de la fenêtre"
+
+msgid "client name"
+msgstr "nom du client"
+
+msgid "client logo"
+msgstr "logo du client"
+
+msgid "anakeen"
+msgstr "anakeen"
+
+msgid "url to reach http server index"
+msgstr "URL pour atteindre l'index du serveur web freedom"
+
+msgid "url to reach http server index in open mode"
+msgstr ""
+
+msgid "memory max for PHP in Mo"
+msgstr "mémoire maximum pour PHP en Mo"
+
+msgid "gate urls"
+msgstr "urls du portail"
+
+msgid "gate geometry"
+msgstr "disposition du portail"
+
+msgid "society style"
+msgstr "style société"
+
+msgid "plug inserted in footer"
+msgstr "reférence au plug du footer"
+
+msgid "default delay before expiration of password in day"
+msgstr "délai d'expiration du mot de passe par défaut (en jours)"
+
+msgid "name displayed in the right of the foot"
+msgstr "nom affiché dans le bas de la fenêtre (à droite)"
+
+msgid "realm name for http authenticate"
+msgstr "nom du royaume pour authentification HTTP"
+
+msgid "mot of the day"
+msgstr "Mot Of The Day"
+
+msgid "icon size"
+msgstr "taille des icones"
+
+msgid "produce link for"
+msgstr "produit le lien pour"
+
+msgid "squirrelmail install dir (relative)"
+msgstr "squirrelmail:  répertoire d'installation (relatif)"
+
+msgid "default start application"
+msgstr ""
+
+msgid "core_sessionttl"
+msgstr "Durée des sessions (en secondes)"
+
+msgid "core_sessionmaxage"
+msgstr ""
+"Temps maximal au bout duquel une session non utilisée est éligible à la "
+"suppression"
+
+msgid "core_sessiongcprobability"
+msgstr ""
+"Probabilité de déclenchement du nettoyage des sessions non utilisée "
+"(exprimée en pourcentage par un nombre de 0 à 1)"
+
+msgid "language"
+msgstr "langue"
+
+msgid "Data api"
+msgstr ""
+
+msgid "document ressource"
+msgstr ""
+
+msgid "user ressource"
+msgstr ""
+
+msgid "application ressource"
+msgstr ""
+
+msgid "group document request"
+msgstr ""
+
 msgid "User Card"
 msgstr "Carnet d'adresses"
 
@@ -4858,6 +5786,66 @@ msgstr "l'adresse email sera calculée à partir du domaine"
 
 msgid "no mail"
 msgstr "pas d'email"
+
+msgid "Common functions"
+msgstr ""
+
+msgid "Common function for FREEDOM client API"
+msgstr ""
+
+msgid "get value for an attribute of document"
+msgstr ""
+
+msgid "get all values of document"
+msgstr ""
+
+msgid "get a value for a set of document"
+msgstr ""
+
+msgid "get all properties of document"
+msgstr ""
+
+msgid "set user parameter"
+msgstr ""
+
+msgid "Access"
+msgstr "Accessibilités"
+
+msgid "What Access Management"
+msgstr "Gestion des accessibilités"
+
+msgid "Admin Access"
+msgstr "Accès administrateur"
+
+msgid "object control"
+msgstr "contrôle des objets"
+
+msgid "User Access"
+msgstr "Accès des utilisateurs"
+
+msgid "Group Access"
+msgstr "Accès des groupes"
+
+msgid "Application Access"
+msgstr "Accès des applications"
+
+msgid "Modify any access"
+msgstr "Modifier n'importe quel objet"
+
+msgid "Modify object access"
+msgstr "Modifier certains objets"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "Edit any access"
+msgstr "Editer n'importe quel accès"
+
+msgid "Edit object access by user"
+msgstr "Editer les accès sur les objets par utilisateur"
+
+msgid "Edit object access"
+msgstr "Editer les accès sur les objets"
 
 msgid "Generic"
 msgstr "Générique"
@@ -4989,6 +5977,40 @@ msgstr "dernier texte tapé pour la recherche"
 msgid "search mode"
 msgstr "mode de recherche"
 
+msgid "Vault"
+msgstr "Coffre"
+
+msgid "Vault Management"
+msgstr "Gestion du Coffre"
+
+msgid "Vault manager"
+msgstr "Administrateur du Coffre"
+
+msgid "Vault user"
+msgstr "Utilisateur du Coffre"
+
+msgid "analyze vaults occupation"
+msgstr "Analyse des taux d'occupation des coffres"
+
+#, fuzzy
+msgid "show vaults occupation"
+msgstr "Analyse des taux d'occupation des coffres"
+
+msgid "create new vault"
+msgstr "Créer un nouveau coffre"
+
+msgid "delete orphan"
+msgstr "Supprimer les orphelins"
+
+msgid "increase size vault"
+msgstr "Augmenter la taille du coffre"
+
+msgid "view image for free size"
+msgstr "voir l'image pour l'espace libre"
+
+msgid "move root directory vault"
+msgstr "déplacer le répertoire du coffre"
+
 msgid "root folder id"
 msgstr "Identificateur du dossier racine"
 
@@ -5019,14 +6041,6 @@ msgstr "Accès à la gestion des familles"
 
 msgid "Access Batch Management"
 msgstr "Accès à la gestion par des lots"
-
-#, fuzzy
-msgid "Access To My Own account"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"Accès à mon compte\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Accès à mon propre compte"
 
 msgid "Access To Read Only"
 msgstr "Accès en lecture seule"
@@ -5304,6 +6318,47 @@ msgstr "Autoriser/interdire les forums sur les documents"
 msgid "set logical name identificator"
 msgstr "Affecter un identifiant logique"
 
+msgid "address of the webdav server for freedav"
+msgstr "adresse du serveur webdav pour freedav"
+
+msgid "address of the webdav server for authenticate server"
+msgstr "adresse du serveur webdav pour le serveur authentifié"
+
+msgid "database access for webdav"
+msgstr "coordonnées d'accès à la base de données webdav"
+
+msgid "folder identificator for root"
+msgstr "Identifiant du dossier racine pour l'accès authentifié"
+
+msgid "Dav"
+msgstr "Dav"
+
+msgid "WebDav FREEDOM system file"
+msgstr "Système de fichiers WebDAV FREEDOM"
+
+msgid "Access for exchange documents"
+msgstr "Accès aux échanges de documents"
+
+msgid "create a new session id"
+msgstr "créer un nouvel id de session"
+
+msgid "auth_failure"
+msgstr "échec de l'authentification"
+
+msgid "welcome"
+msgstr "Bienvenue !"
+
+#, c-format
+msgid "%s Authentification"
+msgstr "%s Authentification"
+
+msgid ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour acceder a cette ressource"
+msgstr ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour accéder à cette ressource"
+
 msgid "detailled search"
 msgstr "recherche détaillée"
 
@@ -5322,6 +6377,53 @@ msgstr "Document trop volumineux (%dKo): pas de mise en évidence"
 #, c-format
 msgid "Family %s not exist"
 msgstr "La famille (%s) n'existe pas"
+
+msgid "titlecreateg"
+msgstr "Création d'un groupe"
+
+msgid "titlecreateu"
+msgstr "Création d'utilisateur"
+
+msgid "butcreate"
+msgstr "Créer"
+
+msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
+msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
+
+msgid "titlemodifyg"
+msgstr "Modification du groupe"
+
+msgid "titlemodifyu"
+msgstr "Modification de l'utilisateur"
+
+msgid "titlegroup"
+msgstr "Liste des groupes"
+
+msgid "titleuser"
+msgstr "Liste des utilisateurs"
+
+msgid "groupdesc"
+msgstr "Description"
+
+msgid "group"
+msgstr "Groupe"
+
+msgid "fullname"
+msgstr "Utilisateur"
+
+msgid "expires"
+msgstr "expiration"
+
+msgid "expire date format is not correct : will be set to default"
+msgstr ""
+"le format de la date d'expiration est incorrecte : la date par défaut sera "
+"prise en compte"
+
+msgid "err_add_user"
+msgstr "Impossible de creer l'utilisateur"
+
+msgid "the user identification is unknow"
+msgstr "l'identification de l'utilisateur est inconnue"
 
 #, c-format
 msgid "Create %s"
@@ -5952,9 +7054,6 @@ msgstr "dossier par défaut"
 msgid "folder"
 msgstr "dossier"
 
-msgid "search"
-msgstr "recherche"
-
 #, c-format
 msgid "Personal profile for %s %s"
 msgstr "Profil personnel de %s %s"
@@ -6095,22 +7194,167 @@ msgstr "Autres familles"
 msgid "Edit %s"
 msgstr "Éditer %s"
 
+msgid "titleparamcreate"
+msgstr "Cr&eacute;ation d'un param&egrave;tre "
+
+msgid "titleparammodify"
+msgstr "Modification de param&egrave;tre"
+
+msgid "err_add_param"
+msgstr "Impossible de creer le param&egrave;tre"
+
+msgid "err_mod_parameter"
+msgstr "Impossible de modifier le param&egrave;tre"
+
+msgid "only user parameters can be modified with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+
+msgid "only current user parameters can be modified with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+
+msgid "err_add_application"
+msgstr "Impossible de creer l'application"
+
+msgid "err_mod_application"
+msgstr "Impossible de modifier l'application"
+
+msgid "err_mod_param"
+msgstr "Impossible de modifier le param&egrave;tre"
+
+msgid "err_add_action"
+msgstr "Impossible de creer l'action"
+
+msgid "err_mod_action"
+msgstr "Impossible de modifier l'action"
+
+msgid "titlecreate"
+msgstr "Cr&eacute;ation d'application"
+
+msgid "titlemodify"
+msgstr "Modification de l'application"
+
+msgid "Application list"
+msgstr "Liste des applications"
+
+msgid "titlecreateaction"
+msgstr "Cr&eacute;ation d'action"
+
+msgid "titlemodifyaction"
+msgstr "Modification de l'action"
+
+msgid "Remove parameter"
+msgstr "Suppression de paramètre"
+
+#, c-format
+msgid "the '%s' parameter cannot be removed"
+msgstr "le parametre '%s' n'a pu être supprimé"
+
+msgid "only user parameters can be deleted with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
+
+msgid "only current user parameters can be deleted with its action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
+
+#, c-format
+msgid "application %s not defined"
+msgstr ""
+
+#, c-format
+msgid "method %s not defined"
+msgstr ""
+
+msgid "application name not set"
+msgstr ""
+
+msgid "request empty reference"
+msgstr ""
+
+msgid "getSelection: no configuration set"
+msgstr ""
+
+msgid "empty reference"
+msgstr ""
+
+msgid "data:getsubfamilies no family parameter"
+msgstr ""
+
+#, c-format
+msgid "attribute unknow %s"
+msgstr ""
+
+msgid "nothing to add"
+msgstr ""
+
+msgid "nothing to unlink"
+msgstr ""
+
+msgid "nothing to insert"
+msgstr ""
+
+msgid "no identificator set"
+msgstr ""
+
+msgid "dynlabel"
+msgstr ""
+
+msgid "no identificator"
+msgstr ""
+
+#, c-format
+msgid "method %s not possible"
+msgstr ""
+
+msgid "authentication failed"
+msgstr ""
+
+#, c-format
+msgid "user %s not found"
+msgstr ""
+
 msgid "no vcard file specified"
 msgstr "pas de fichier vcard spécifié"
 
-msgid "precise search"
-msgstr "Précisez la recherche"
-
-msgid "next"
-msgstr "suivant"
-
 #, fuzzy
-msgid "prev"
+msgid "user"
 msgstr ""
 "#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"suivant\n"
+"personne\n"
 "#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"précédent"
+"utilisateur"
+
+msgid "object"
+msgstr "objet"
+
+#, c-format
+msgid "user %s %s has been modified\n"
+msgstr "l'utilisateur %s %s a été modifié\n"
+
+#, c-format
+msgid "user %s %s has been added\n"
+msgstr "l'utilisateur %s %s a été ajouté\n"
+
+#, c-format
+msgid "add acl %s for %s %s\n"
+msgstr "ajout privilège %s pour %s %s\n"
+
+msgid "appdesc"
+msgstr "Description"
+
+msgid "permissions"
+msgstr "Droits"
+
+msgid "none"
+msgstr "Aucun"
+
+msgid "userlogin"
+msgstr "Login"
+
+msgid "precise search"
+msgstr "Précisez la recherche"
 
 #, c-format
 msgid "modify enumerate attributes for family : %s"
@@ -6227,6 +7471,77 @@ msgstr "%s a été créé"
 #, c-format
 msgid "Modification for attribute %s for family %s"
 msgstr "Modification de l'attribut %s de la famille %s"
+
+#, c-format
+msgid "the new size must be upper than %s"
+msgstr "La nouvelle taille doit être supérieure à %s"
+
+#, c-format
+msgid "adding %s"
+msgstr "ajout de %s"
+
+#, c-format
+msgid "Cannot adding : [%s]"
+msgstr "Ajout impossible : [%s]"
+
+#, c-format
+msgid "%d bytes"
+msgstr "%d octets"
+
+#, c-format
+msgid "%d Kb"
+msgstr "%d Ko"
+
+#, c-format
+msgid "%d Mb"
+msgstr "%d Mo"
+
+#, c-format
+msgid "%d Gb"
+msgstr "%d Go"
+
+#, c-format
+msgid "Orphan Cleaned in %s directory"
+msgstr "Orphelins supprimés dans le répertoire %s"
+
+#, c-format
+msgid "Error : Cleaning %s  status %d"
+msgstr "Erreur : Nettoyage %s état %d"
+
+#, c-format
+msgid "%s directory not empty"
+msgstr "répertoire %s non vide"
+
+#, c-format
+msgid "create vault %s"
+msgstr "Création du nouveau coffre %s"
+
+msgid "no vault initialised."
+msgstr "Aucun coffre d'initialisé"
+
+#, c-format
+msgid "%d stored files"
+msgstr "%d fichiers stockés"
+
+#, fuzzy, c-format
+msgid "%.02f Kb"
+msgstr "%d Ko"
+
+#, fuzzy, c-format
+msgid "%.02f Mb"
+msgstr "%d Mo"
+
+#, fuzzy, c-format
+msgid "%.02f Gb"
+msgstr "%d Go"
+
+#, c-format
+msgid "%d Tb"
+msgstr "%d To"
+
+#, c-format
+msgid "new directory %s"
+msgstr "nouveau répertoire %s"
 
 msgid ""
 "the document is not referenced: cannot apply profile access modification"
@@ -6373,6 +7688,9 @@ msgstr "Le document <%s> n'est pas un dossier"
 #, c-format
 msgid "Use your home folder instead <%s>"
 msgstr "Utilisation du dossier personnel <%s> à la place"
+
+msgid "mnogosearch php extension not loaded"
+msgstr "extension php mnogosearch non chargée"
 
 msgid "search for "
 msgstr "recherche de "
@@ -6556,1253 +7874,11 @@ msgstr "les préférences d'exportation ont été sauvegardées"
 msgid "new document family"
 msgstr "nelle famille de document"
 
-#, fuzzy, c-format
-msgid "vault already created %s: aborted\n"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"coffre déjà crée %s: abandon\n"
-"#-#-#-#-#  VAULT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"coffre déjà créé %s : abandon\n"
-
-#, fuzzy
-msgid "user"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"personne\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"utilisateur"
-
-msgid "delconfirmparam"
-msgstr "Confirmez-vous la suppression du param&egrave;tre "
-
-#, fuzzy
-msgid "update"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"mis à jour\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"mise à jour"
-
-msgid "Access To All Users"
-msgstr "Accès à tous les utilisateurs"
-
-#, fuzzy
-msgid "root"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"racine\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Root"
-
-msgid "can't access file"
-msgstr "Accès au fichier impossible"
-
-msgid "Failed to copy $infile to $f"
-msgstr "Echec de la copie de $infile vers $f"
-
-msgid "vault file is not initialized"
-msgstr ""
-
-msgid "file does not exist in vault"
-msgstr "Fichier inexistant dans le Coffre"
-
-#, c-format
-msgid "%s directory not found"
-msgstr "répertoire %s non trouvé"
-
-#, c-format
-msgid "%s directory not writable"
-msgstr "répertoire %s non accessible en écriture"
-
-msgid "File System already exists"
-msgstr "Système de fichier déjà existant"
-
-msgid "no empty vault file system found"
-msgstr "Pas de système de fichier libre"
-
-msgid "no vault directory found"
-msgstr "Pas de système de fichier trouvé"
-
-msgid "no vault file system found"
-msgstr "Pas de système de fichier trouvé"
-
-msgid "no empty vault dir found"
-msgstr "Pas de système de fichier libre"
-
-msgid "Directory already exists"
-msgstr "Répertoire déjà existant"
-
-msgid "Vault"
-msgstr "Coffre"
-
-msgid "Vault Management"
-msgstr "Gestion du Coffre"
-
-msgid "Vault manager"
-msgstr "Administrateur du Coffre"
-
-msgid "Vault user"
-msgstr "Utilisateur du Coffre"
-
-msgid "analyze vaults occupation"
-msgstr "Analyse des taux d'occupation des coffres"
-
-#, fuzzy
-msgid "show vaults occupation"
-msgstr "Analyse des taux d'occupation des coffres"
-
-msgid "create new vault"
-msgstr "Créer un nouveau coffre"
-
-msgid "delete orphan"
-msgstr "Supprimer les orphelins"
-
-msgid "increase size vault"
-msgstr "Augmenter la taille du coffre"
-
-msgid "view image for free size"
-msgstr "voir l'image pour l'espace libre"
-
-msgid "move root directory vault"
-msgstr "déplacer le répertoire du coffre"
-
-#, c-format
-msgid "new directory %s"
-msgstr "nouveau répertoire %s"
-
-#, c-format
-msgid "Orphan Cleaned in %s directory"
-msgstr "Orphelins supprimés dans le répertoire %s"
-
-#, c-format
-msgid "Error : Cleaning %s  status %d"
-msgstr "Erreur : Nettoyage %s état %d"
-
-#, c-format
-msgid "the new size must be upper than %s"
-msgstr "La nouvelle taille doit être supérieure à %s"
-
-#, c-format
-msgid "adding %s"
-msgstr "ajout de %s"
-
-#, c-format
-msgid "Cannot adding : [%s]"
-msgstr "Ajout impossible : [%s]"
-
-#, c-format
-msgid "%d bytes"
-msgstr "%d octets"
-
-#, c-format
-msgid "%d Kb"
-msgstr "%d Ko"
-
-#, c-format
-msgid "%d Mb"
-msgstr "%d Mo"
-
-#, c-format
-msgid "%d Gb"
-msgstr "%d Go"
-
-msgid "no vault initialised."
-msgstr "Aucun coffre d'initialisé"
-
-#, c-format
-msgid "%d stored files"
-msgstr "%d fichiers stockés"
-
-#, fuzzy, c-format
-msgid "%.02f Kb"
-msgstr "%d Ko"
-
-#, fuzzy, c-format
-msgid "%.02f Mb"
-msgstr "%d Mo"
-
-#, fuzzy, c-format
-msgid "%.02f Gb"
-msgstr "%d Go"
-
-#, c-format
-msgid "%d Tb"
-msgstr "%d To"
-
-#, c-format
-msgid "%s directory not empty"
-msgstr "répertoire %s non vide"
-
-#, c-format
-msgid "create vault %s"
-msgstr "Création du nouveau coffre %s"
-
-msgid "Capacity"
-msgstr "Capacité"
-
-msgid "Used"
-msgstr "Utilisé"
-
-msgid "Trash"
-msgstr "Poubelle"
-
-msgid "Orphean"
-msgstr "Orphelins"
-
-msgid "Free"
-msgstr "Libre"
-
-msgid "New Vault FS"
-msgstr "Nouveau coffre"
-
-msgid "Directory"
-msgstr "Répertoire"
-
-msgid "Size"
-msgstr "Taille"
-
-msgid "thousands bytes"
-msgstr "milliers d'octets"
-
-msgid "Kb"
-msgstr "Ko"
-
-msgid "million bytes"
-msgstr "million d'octets"
-
-msgid "Mb"
-msgstr "Mo"
-
-msgid "thousands of Megabytes"
-msgstr "milliers de mégaoctets"
-
-msgid "Gb"
-msgstr "Go"
-
-msgid "million of Megabytes"
-msgstr "million de mégaoctets"
-
-msgid "Tb"
-msgstr "To"
-
-msgid "Generate new vault"
-msgstr "Créer un nouveau coffre"
-
-msgid "Increase vault size"
-msgstr "Augmenter la taille du coffre"
-
-msgid "Clear orphan"
-msgstr "Supprimer les orphelins"
-
-msgid "Move directory"
-msgstr "Déplacer le répertoire"
-
-msgid "New size"
-msgstr "Nouvelle taille"
-
-msgid "Increase FS"
-msgstr "Augmenter le FS"
-
-msgid "New directory"
-msgstr "Nouveau répertoire"
-
-msgid "Move FS"
-msgstr "Déplacer FS"
-
-msgid "userlogin"
-msgstr "Login"
-
-msgid "permissions"
-msgstr "Droits"
-
-msgid "none"
-msgstr "Aucun"
-
-msgid "object"
-msgstr "objet"
-
-#, c-format
-msgid "user %s %s has been modified\n"
-msgstr "l'utilisateur %s %s a été modifié\n"
-
-#, c-format
-msgid "user %s %s has been added\n"
-msgstr "l'utilisateur %s %s a été ajouté\n"
-
-#, c-format
-msgid "add acl %s for %s %s\n"
-msgstr "ajout privilège %s pour %s %s\n"
-
-msgid "appname"
-msgstr "Application"
-
-msgid "appdesc"
-msgstr "Description"
-
-msgid "titlecreateaction"
-msgstr "Cr&eacute;ation d'action"
-
-msgid "butcreate"
-msgstr "Créer"
-
-msgid "titlemodifyaction"
-msgstr "Modification de l'action"
-
-msgid "butmodify"
-msgstr "Modifier"
-
-msgid "err_add_action"
-msgstr "Impossible de creer l'action"
-
-msgid "err_mod_action"
-msgstr "Impossible de modifier l'action"
-
-msgid "titlecreate"
-msgstr "Cr&eacute;ation d'application"
-
-msgid "titlemodify"
-msgstr "Modification de l'application"
-
-msgid "err_add_application"
-msgstr "Impossible de creer l'application"
-
-msgid "err_mod_application"
-msgstr "Impossible de modifier l'application"
-
-msgid "Application list"
-msgstr "Liste des applications"
-
-msgid "Remove parameter"
-msgstr "Suppression de paramètre"
-
-#, c-format
-msgid "the '%s' parameter cannot be removed"
-msgstr "le parametre '%s' n'a pu être supprimé"
-
-msgid "only user parameters can be deleted with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
-
-msgid "only current user parameters can be deleted with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
-
-msgid "titleparamcreate"
-msgstr "Cr&eacute;ation d'un param&egrave;tre "
-
-msgid "titleparammodify"
-msgstr "Modification de param&egrave;tre"
-
-msgid "err_add_param"
-msgstr "Impossible de creer le param&egrave;tre"
-
-msgid "err_mod_parameter"
-msgstr "Impossible de modifier le param&egrave;tre"
-
-msgid "only user parameters can be modified with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
-
-msgid "only current user parameters can be modified with its action"
-msgstr ""
-"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
-
-msgid "err_mod_param"
-msgstr "Impossible de modifier le param&egrave;tre"
-
-msgid ""
-"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
-"pour acceder a cette ressource"
-msgstr ""
-"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
-"pour accéder à cette ressource"
-
-msgid "auth_failure"
-msgstr "échec de l'authentification"
-
-msgid "welcome"
-msgstr "Bienvenue !"
-
-#, c-format
-msgid "%s Authentification"
-msgstr "%s Authentification"
-
-msgid "titlecreateg"
-msgstr "Création d'un groupe"
-
-msgid "titlecreateu"
-msgstr "Création d'utilisateur"
-
-msgid "titlemodifyg"
-msgstr "Modification du groupe"
-
-msgid "titlemodifyu"
-msgstr "Modification de l'utilisateur"
-
-msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
-
-msgid "expire date format is not correct : will be set to default"
-msgstr ""
-"le format de la date d'expiration est incorrecte : la date par défaut sera "
-"prise en compte"
-
-msgid "err_add_user"
-msgstr "Impossible de creer l'utilisateur"
-
-msgid "titlegroup"
-msgstr "Liste des groupes"
-
-msgid "titleuser"
-msgstr "Liste des utilisateurs"
-
-msgid "groupdesc"
-msgstr "Description"
-
-msgid "domain"
-msgstr "Domaine"
-
-msgid "group"
-msgstr "Groupe"
-
-msgid "fullname"
-msgstr "Utilisateur"
-
-msgid "login"
-msgstr "Nom de connexion"
-
-msgid "expires"
-msgstr "expiration"
-
-msgid "the user identification is unknow"
-msgstr "l'identification de l'utilisateur est inconnue"
-
-msgid "create databases ?"
-msgstr "Créer les bases de données ?"
-
-#, c-format
-msgid "%s style updated\n"
-msgstr "%s style mis à jour\n"
-
-#, c-format
-msgid "Attribute %s not found\n"
-msgstr "Attribut %s non trouvé.\n"
-
-#, c-format
-msgid ""
-"Attribute %s found is not alone\n"
-"Must precise request with appname arguments\n"
-msgstr ""
-"L'attribut %s trouvé n'est pas seul\n"
-"Préciser la requête en utilisant les arguments userid et appid\n"
-
-#, c-format
-msgid "Attribute %s not modified : %s\n"
-msgstr "Attribut %s non modifié : %s\n"
-
-#, c-format
-msgid "Attribute %s modified to %s"
-msgstr "Attribut %s modifié par %s"
-
-msgid "cannot access to  database $db\n"
-msgstr "accès à la base de données $db refusé\n"
-
-msgid "access granted to  database $db\n"
-msgstr "accès à la base de données $db autorisé\n"
-
-msgid "Access"
-msgstr "Accessibilités"
-
-msgid "What Access Management"
-msgstr "Gestion des accessibilités"
-
-msgid "Admin Access"
-msgstr "Accès administrateur"
-
-msgid "object control"
-msgstr "contrôle des objets"
-
-msgid "User Access"
-msgstr "Accès des utilisateurs"
-
-msgid "Group Access"
-msgstr "Accès des groupes"
-
-msgid "Application Access"
-msgstr "Accès des applications"
-
-msgid "Modify any access"
-msgstr "Modifier n'importe quel objet"
-
-msgid "Modify object access"
-msgstr "Modifier certains objets"
-
-msgid "Import/Export"
-msgstr "Import/Export"
-
-msgid "Edit any access"
-msgstr "Editer n'importe quel accès"
-
-msgid "Edit object access by user"
-msgstr "Editer les accès sur les objets par utilisateur"
-
-msgid "Edit object access"
-msgstr "Editer les accès sur les objets"
-
-msgid "Application manager"
-msgstr "Gestion des applications"
-
-msgid "What Application Management"
-msgstr "Gestion des applications"
-
-msgid "SuperUser permission"
-msgstr "Accès administration"
-
-msgid "user preference"
-msgstr "préférences utilisateur"
-
-msgid "styles parameters"
-msgstr "paramètres de style"
-
-msgid "application parameters"
-msgstr "paramètres applicatif"
-
-msgid "user parameters"
-msgstr "paramètres utilisateur"
-
-msgid "current user parameters"
-msgstr "mes paramètres"
-
-msgid "Parameters configuration"
-msgstr "Paramètres de configuration"
-
-msgid "current user mail configuration"
-msgstr "ma messagerie"
-
-msgid "current user account"
-msgstr "mon compte"
-
-msgid "applications"
-msgstr "les applications"
-
-msgid "delete parameters"
-msgstr "suppression de paramètres"
-
-msgid "modify parameters"
-msgstr "modification des paramètres"
-
-msgid "delete user parameters"
-msgstr "suppression de paramètres utilisateur"
-
-msgid "modify user parameters"
-msgstr "modification des paramètres utilisateur"
-
-msgid "show request for password"
-msgstr "Affiche le lien pour la demande de mot de passe"
-
-msgid "subject for new password request"
-msgstr "Le sujet du mail pour les demandes de mot de passe"
-
-msgid "subject for new password response"
-msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
-
-msgid "show language selection"
-msgstr "Affiche la sélection de la langue lors de la demande de mot de passe"
-
-msgid "Core"
-msgstr "Noyau"
-
-msgid "Core Application Manager"
-msgstr "Page d'accueil"
-
-msgid "Message to indicate invalid configuration"
-msgstr ""
-
-msgid "concat stylecss+sizecss"
-msgstr "concaténation style + size css"
-
-msgid "application version"
-msgstr "version application"
-
-msgid "Freedom frontpage description"
-msgstr "Description de la page d'accueil"
-
-msgid "version identificator"
-msgstr "identificateur de version"
-
-msgid "use freedom user management"
-msgstr "utiliser le gestion d'utilisateur FREEDOM"
-
-msgid "default style"
-msgstr "style par défaut"
-
-msgid "font size"
-msgstr "taille de la police"
-
-msgid "connection type"
-msgstr "type de connexion"
-
-msgid "background color or image"
-msgstr "image ou couleur de fond"
-
-msgid "background color or image in security mode"
-msgstr "image ou couleur de fond en mode sécurité"
-
-msgid "background image for bar"
-msgstr "image de fond pour les barres"
-
-msgid "background image for menu"
-msgstr "image de fond pour les menus"
-
-msgid "background color for table cells"
-msgstr "couleur de fond de cellules"
-
-msgid "second background color"
-msgstr "couleur secondaire pour le fond"
-
-msgid "highlight background color"
-msgstr "couleur de fond pour la mise en évidence"
-
-msgid "inverse video background color"
-msgstr "couleur de fond en inverse vidéo"
-
-msgid "text color"
-msgstr "couleur du texte"
-
-msgid "inverse video color text"
-msgstr "couleur du texte en inverse vidéo"
-
-msgid "input color bg"
-msgstr "couleur des champs de saisie"
-
-msgid "anchor color"
-msgstr "couleur des liens"
-
-msgid "error color"
-msgstr "couleur messages d'erreur"
-
-msgid "top url to find help documentation"
-msgstr "url pour la documentation en ligne"
-
-msgid "frame size"
-msgstr "taille de la fenêtre"
-
-msgid "frame border size"
-msgstr "taille de la bordure de la fenêtre"
-
-msgid "client name"
-msgstr "nom du client"
-
-msgid "client logo"
-msgstr "logo du client"
-
-msgid "anakeen"
-msgstr "anakeen"
-
-msgid "url to reach http server index"
-msgstr "URL pour atteindre l'index du serveur web freedom"
-
-msgid "url to reach http server index in open mode"
-msgstr ""
-
-msgid "memory max for PHP in Mo"
-msgstr "mémoire maximum pour PHP en Mo"
-
-msgid "gate urls"
-msgstr "urls du portail"
-
-msgid "gate geometry"
-msgstr "disposition du portail"
-
-msgid "society style"
-msgstr "style société"
-
-msgid "plug inserted in footer"
-msgstr "reférence au plug du footer"
-
-msgid "default delay before expiration of password in day"
-msgstr "délai d'expiration du mot de passe par défaut (en jours)"
-
-msgid "name displayed in the right of the foot"
-msgstr "nom affiché dans le bas de la fenêtre (à droite)"
-
-msgid "realm name for http authenticate"
-msgstr "nom du royaume pour authentification HTTP"
-
-msgid "mot of the day"
-msgstr "Mot Of The Day"
-
-msgid "icon size"
-msgstr "taille des icones"
-
-msgid "produce link for"
-msgstr "produit le lien pour"
-
-msgid "squirrelmail install dir (relative)"
-msgstr "squirrelmail:  répertoire d'installation (relatif)"
-
-msgid "default start application"
-msgstr ""
-
-msgid "core_sessionttl"
-msgstr "Durée des sessions (en secondes)"
-
-msgid "core_sessionmaxage"
-msgstr ""
-"Temps maximal au bout duquel une session non utilisée est éligible à la "
-"suppression"
-
-msgid "core_sessiongcprobability"
-msgstr ""
-"Probabilité de déclenchement du nettoyage des sessions non utilisée "
-"(exprimée en pourcentage par un nombre de 0 à 1)"
-
-msgid "language"
-msgstr "langue"
-
-msgid "francais"
-msgstr "français"
-
-msgid "US english"
-msgstr "anglais"
-
-msgid "What User Management"
-msgstr "Gestion des utilisateurs"
-
-msgid "Access To All Users in my domain"
-msgstr "Acces aux utilisateurs de mon domaine"
-
-msgid "admin view"
-msgstr "vue administrateur"
-
-msgid "group list"
-msgstr "les groupes"
-
-msgid "user account edition"
-msgstr "éditer compte utilisateur"
-
-msgid "user own account edition"
-msgstr "éditer compte personnel"
-
-msgid "user account modification"
-msgstr "modifier compte utilisateur"
-
-msgid "user own account modification"
-msgstr "modifier compte personnel"
-
-#, c-format
-msgid "function '%s' not available for application %s (%d)"
-msgstr "fonction %s non disponible pour l'application %s (%d)"
-
-#, c-format
-msgid "Acl [%s] not available for App %s"
-msgstr "ACL %s non valable pour l'application %s"
-
-#, c-format
-msgid ""
-"action %s is not declared to be access in open mode and token context not "
-"match"
-msgstr ""
-
-#, c-format
-msgid "action %s is not declared to be access in open mode"
-msgstr "L'action %s n'est pas déclarée comme étant accessible en mode ouvert"
-
-#, c-format
-msgid ""
-"Access denied\n"
-"Need ACL %s for action %s [%s]"
-msgstr ""
-"Accès refusé\n"
-"ACL %s nécessaire pour l'action %s [%s]"
-
-# ne pas modifier laisser à vide
-msgid "$code"
-msgstr ""
-
-#, c-format
-msgid "Application %s (%s) not available"
-msgstr "Application %s (%s) non disponible"
-
-msgid "modify object acl"
-msgstr "modification des droits"
-
-msgid "view object acl"
-msgstr "voir les droits"
-
-#, c-format
-msgid "Object Permission : permission %s needed (%s) - # %d"
-msgstr "Permission objet :: permission %s requise (%s) - n° %d"
-
-msgid "login must not be empty"
-msgstr "le login ne doit pas être vide"
-
-msgid "no freedom DB access"
-msgstr "pas d'accès à la base de données FREEDOM"
-
-msgid "private key is not valid"
-msgstr "La clef privé n'est pas valide"
-
-#, c-format
-msgid "cannot create user %s: %s"
-msgstr ""
-
-msgid "DbObj::Adds error in multiple insertion"
-msgstr "DbObj::Adds erreur dans insertion multiple"
-
-msgid "Parameter name does not include spaces"
-msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
-
-#, c-format
-msgid "Template [%s] not found"
-msgstr "Template [%s] non trouvé."
-
-#, c-format
-msgid "SetBlock:error [%s]"
-msgstr ""
-
-msgid "first"
-msgstr "premier"
-
-msgid "last"
-msgstr "dernier"
-
-msgid "no login : passwd unchanged"
-msgstr "pas de login : mot de passe inchangé"
-
-msgid "unknown login : passwd unchanged"
-msgstr "login incoonu : mot de passe inchangé"
-
-msgid "password are not identicals : not changed"
-msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
-
-msgid "empty password : not changed"
-msgstr "mot de passe vide : non changé"
-
-msgid "socket creation error"
-msgstr ""
-
-msgid "Error sending file"
-msgstr ""
-
-msgid "empty file"
-msgstr ""
-
-#, c-format
-msgid ""
-"filename %s does not contain freedom_authtypeparams variable. May be old "
-"syntax for configuration file"
-msgstr ""
-
-msgid "no referer url found"
-msgstr "pas d'URL reférence trouvée"
-
-#, c-format
-msgid "file not found : %s"
-msgstr "fichier %s non trouvé."
-
-msgid "cannot access to core database service [service='$pgservice_core']"
-msgstr ""
-"accès impossible à la base de données par défaut [service='$pgservice_core']"
-
-msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr ""
-"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
-
-msgid "controlaccess"
-msgstr "Contrôle des accès"
-
-msgid "accessfor"
-msgstr "Contrôle des accès pour"
-
-msgid " Access Control for"
-msgstr "Contrôle des accès pour"
-
-msgid "viewuser"
-msgstr "Voir les utilisateurs"
-
-msgid "viewgroup"
-msgstr "Voir les groupes"
-
-msgid "download"
-msgstr "Télécharger le fichier d'acces"
-
-msgid "needfile"
-msgstr "Le nom du fichier doit être spécifié"
-
-msgid "upload"
-msgstr "Charger un fichier d'acces"
-
-msgid "Max user reach. Use search filter"
-msgstr "Utiliser la recherche pour voir la suite"
-
-msgid "filter on login and lastname"
-msgstr "filtre sur le login et le nom"
-
-msgid "choose document"
-msgstr "choisi un document"
-
-msgid "edit by object"
-msgstr "édition par objet"
-
-msgid "in database"
-msgstr "dans la base de données"
-
-msgid "print"
-msgstr "Impression de la page"
-
-msgid "No user found"
-msgstr "pas d'utilisateur trouvé"
-
-msgid "long_name"
-msgstr "Nom complet"
-
-msgid "available"
-msgstr "Dispo"
-
-msgid "acl"
-msgstr "Acl"
-
-msgid "toc"
-msgstr "Toc"
-
-msgid "openaccess"
-msgstr "Accès ouvert"
-
-msgid "butclosew"
-msgstr "Fermer la fenêtre"
-
-msgid "titleaction"
-msgstr "Liste des actions de l'application"
-
-msgid "addparam"
-msgstr "Ajouter un param&egrave;tre"
-
-msgid "addstyle"
-msgstr "Ajouter un style"
-
-msgid "access_free"
-msgstr "Acces libre"
-
-msgid "appssl"
-msgstr "Sécurisée"
-
-msgid "displayable"
-msgstr "Affichable"
-
-msgid "machine"
-msgstr "machine"
-
-msgid "appmachine"
-msgstr "machine distante"
-
-msgid "application parameters list"
-msgstr "Liste des paramètres applicatif"
-
-msgid "view all"
-msgstr "tout voir"
-
-msgid "my parameters"
-msgstr "mes paramètres"
-
-msgid "val"
-msgstr "Valeur"
-
-msgid "select a user"
-msgstr "Sélectionnez un utilisateur"
-
-msgid "user parameters list"
-msgstr "Liste des paramètres utilisateur"
-
-msgid "select a style"
-msgstr "Sélectionnez un style"
-
-msgid "style parameters list"
-msgstr "Liste des paramètres style"
-
-msgid "delconfirmstyle"
-msgstr "Confirmez-vous la suppression du style"
-
-msgid "callbackreqpasswd_callback_ok"
-msgstr ""
-"<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a "
-"été envoyé par mail.</p>"
-
-msgid "callbackreqpasswd_callback_not_ok"
-msgstr ""
-"<p>Le système n'a pas pu traiter votre demande.</p>\n"
-"<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus valide. "
-"Dans ce cas, veuillez renouveller votre demande.</p>\n"
-"<p>Si le problème persiste, veuillez prendre contact avec <a href=\"mailto:"
-"[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%20de%20passe\">"
-"[ON_ERROR_CONTACT]</a></p>"
-
-msgid "callbackreqpasswd_mail_hello"
-msgstr "Bonjour"
-
-msgid "callbackreqpasswd_mail_password"
-msgstr ""
-"<p>Votre nouveau mot de passe est à présent:</p>\n"
-"<pre>\n"
-"[PASSWORD]\n"
-"</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
-"[CORE_EXTERNURL]</a>"
-
-msgid "errno_bug_639_message"
-msgstr ""
-"<p>Vous devez ré-initialiser votre mot de passe.</p>\n"
-"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Ré-initialiser mon "
-"mot de passe</a></p>"
-
-msgid "warning_name"
-msgstr "la saisie de votre nom est obligatoire."
-
-msgid "warning_pass"
-msgstr "la saisie de votre mot de passe est obligatoire."
-
-msgid "yourusername"
-msgstr "votre nom d'utilisateur"
-
-msgid "yourpassword"
-msgstr "votre mot de passe"
-
-msgid "authent reqpassword"
-msgstr "Mot de passe oublié ?"
-
-msgid "Do connection"
-msgstr "se connecter"
-
-msgid "reqpasswd_login"
-msgstr "Nom de connexion"
-
-msgid "reqpasswd_or"
-msgstr "ou"
-
-msgid "reqpasswd_email"
-msgstr "Adresse e-mail"
-
-msgid "reqpasswd_submit"
-msgstr "Envoyer"
-
-msgid "submitreqpasswd_form_send_ok"
-msgstr ""
-"<p>Votre demande a bien été prise en compte.</p>\n"
-"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
-"finaliser la ré-initialisation de votre mot de passe.</p>"
-
-msgid "submitreqpasswd_form_send_error_invalid_args"
-msgstr ""
-"<p>Le nom de connexion ou l'adresse e-mail indiqué n'est pas valide.</p>\n"
-"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
-
-msgid "submitreqpasswd_form_send_error_unknown"
-msgstr ""
-"<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
-"p>\n"
-"<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
-"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
-"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
-
-msgid "submitreqpasswd_mail_hello"
-msgstr "Bonjour"
-
-msgid "submitreqpasswd_mail_callbackurl"
-msgstr ""
-"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est "
-"pas le cas, veuillez détruire ce message.</p>\n"
-"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
-"suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
-"[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">"
-"[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
-"app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
-
-msgid "Javascript must be enabled in your navigator"
-msgstr "Javascript doit être activé dans votre navigateur"
-
-msgid ""
-"Your navigator does not accept cookies.\n"
-"Cookies must be enabled to use correctly this application"
-msgstr ""
-"Votre navigateur n'accepte pas les cookies.\n"
-"Vous devez autoriser les cookies pour utiliser correctement l'application."
-
-msgid "You use version an to old version of Netscape (Mozilla)"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
-msgstr ""
-"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
-
-msgid "You use version an to old version of Internet Explorer"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "You must upgrade to version 6 or more"
-msgstr "Vous devez mettre à jour avec la version 6 au minimum"
-
-msgid "Manuals"
-msgstr "Manuels"
-
-msgid "You use an too old Internet explorer navigator"
-msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
-
-msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
-"supérieur) "
-
-msgid "Internet explorer site"
-msgstr "Site de Microsoft"
-
-msgid "view log"
-msgstr "voir les messages"
-
-msgid "All manuals"
-msgstr "Tous les manuels"
-
-msgid "Gate"
-msgstr "Portail"
-
-msgid "Edit Url Gate"
-msgstr "édition des URLs pour le portail"
-
-msgid "Save geometry"
-msgstr "Sauver la disposition"
-
-msgid "Click here to login"
-msgstr "Cliquer ici pour se connecter"
-
-msgid "Choose Gate Urls"
-msgstr "Choix des URLs"
-
-# ne pas mettre de '
-msgid "Homepage"
-msgstr "Accueil"
-
-msgid "Welcome Page"
-msgstr "Page d'accueil"
-
-msgid "gate page"
-msgstr "Page du portail"
-
-msgid "New GATE page"
-msgstr "Portail"
-
-msgid ""
-"The apache configuration seems incorrect. I cannot read .htaccess file. May "
-"be parameter allowOverride is not set to All"
-msgstr ""
-
-msgid "New version has been installed."
-msgstr "Une nouvelle version vient d'être installée."
-
-msgid "You must clear navigator cache."
-msgstr "Vous devez effacer le cache de votre navigateur."
-
-msgid "You use an too old Netscape navigator"
-msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
-
-msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr ""
-"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
-"ou Mozilla 1.0.1 (ou supérieur)"
-
-msgid "mozilla site"
-msgstr "site de Mozilla"
-
-msgid "nestcape site"
-msgstr "Site de Netscape"
-
-msgid "Progress bar"
-msgstr "Barre de progression"
-
-msgid "firstname"
-msgstr "Prénom"
-
-msgid "lastname"
-msgstr "Nom"
-
-msgid "password"
-msgstr "Mot de passe"
-
-msgid "expire default delay (in day)"
-msgstr "délai d'expiration par défaut (en jours)"
-
-msgid " 0 means no delay"
-msgstr " 0 signifie pas de limite"
-
-msgid "expire date"
-msgstr "date d'expiration"
-
-msgid "if not set, will be the current date more delay"
-msgstr "si vide, ce sera la date courante plus le délai"
-
-msgid "user status"
-msgstr "état utilisateur"
-
-msgid "active user"
-msgstr "Utilisateur activé"
-
-msgid "desactived user"
-msgstr "Utilisateur désactivé"
-
-msgid "groups"
-msgstr "Groupes"
-
-msgid "changegroup"
-msgstr "Changement de groupe"
-
-msgid "domaingroup"
-msgstr "Domaine"
-
-msgid "othergroup"
-msgstr "Autres"
-
-msgid "clear"
-msgstr "Effacer"
-
-msgid "adduser"
-msgstr "Ajouter un utilisateur"
-
-msgid "unmodifiable parameter"
-msgstr "paramètre non modifiable"
-
-#, c-format
-msgid "API file %s not found\n"
-msgstr ""
-
-#, c-format
-msgid "Error : %s\n"
-msgstr "Erreur : %s\n"
-
-#, c-format
-msgid "Caught Exception : %s\n"
-msgstr "Attrape exception : %s\n"
-
-#, c-format
-msgid "Create other database for %s (%s)"
-msgstr "Création d'autres bases pour %s (%s)"
-
-msgid "I can't find hostname alias"
-msgstr "Alias de hostname introuvable"
-
-msgid "Enter name for database ? "
-msgstr "Nom de la base de donnée ?"
-
-#, c-format
-msgid "Context  : [%s]"
-msgstr "Contexte : [%s]"
-
-#, c-format
-msgid "Database : [%s]"
-msgstr "Base de données : [%s]"
-
-msgid "Continue (Y|N) ?"
-msgstr "Continuer (Y (oui) |N (non)) ?"
-
-msgid "descr"
-msgstr "Description"
+#~ msgid "francais"
+#~ msgstr "français"
+
+#~ msgid "US english"
+#~ msgstr "anglais"
 
 #~ msgid "attribute %s not found"
 #~ msgstr "attribut %s non trouvé"
@@ -8052,28 +8128,6 @@ msgstr "Description"
 
 #~ msgid "Export Folder and profil"
 #~ msgstr "Exportation du dossier et des profils"
-
-#~ msgid "create directory %s\n"
-#~ msgstr "créer le dossier %s\n"
-
-#~ msgid "cannot change owner of %s: aborted\n"
-#~ msgstr "ne peut changer le propriétaire de %s: abandon\n"
-
-#~ msgid ""
-#~ "cannot create directory %s\n"
-#~ "Parent directory must be create before"
-#~ msgstr ""
-#~ "ne peut créer le répertoire %s\n"
-#~ "Le répertoire père doit être créé au préalable"
-
-#~ msgid "cannot create %s: %s\n"
-#~ msgstr "ne peut créer %s : %s\n"
-
-#~ msgid "vault %s created.\n"
-#~ msgstr "coffre %s créé.\n"
-
-#~ msgid "ERROR %s\n"
-#~ msgstr "ERREUR %s\n"
 
 #~ msgid "metasend max for split mail"
 #~ msgstr "metasend max pour le découpage de mail"
