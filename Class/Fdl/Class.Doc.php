@@ -2288,11 +2288,13 @@ create unique index i_docir on doc(initid, revision);";
 		  }
 		  break;
 		case 'double':
+                    if ($avalue=='-') $avalue=0;
 		  $tvalues[$kvalue]=str_replace(",",".",$avalue);
 		  $tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
 		  if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
 		  break;
 		case 'money':
+                    if ($avalue=='-') $avalue=0;
 		  $tvalues[$kvalue]=str_replace(",",".",$avalue);
 		  $tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
 		  if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
@@ -2300,6 +2302,7 @@ create unique index i_docir on doc(initid, revision);";
 		  break;
 		case 'integer':
 		case 'int':
+		    if ($avalue=='-') $avalue=0;
 		  if (($avalue != "\t") && (! is_numeric($avalue))) return sprintf(_("value [%s] is not a number"),$avalue);
 		  if (intval($avalue) != floatval($avalue)) return sprintf(_("[%s] must be a integer"),$avalue);
 		  

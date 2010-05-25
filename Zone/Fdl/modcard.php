@@ -39,6 +39,8 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
   $usefor = GetHttpVars("usefor"); // use for default values for a document
   $vid = GetHttpVars("vid"); // special controlled view
   $noredirect=(GetHttpVars("noredirect")); // true  if return need edition
+  
+  $quicksave=(GetHttpVars("quicksave")=="1"); // true  if return need edition
 
   $force = (GetHttpVars("fstate","no")=="yes"); // force change
 
@@ -150,7 +152,7 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
     }
     $doc->lmodify='Y'; // locally modified
     $ndocid = $doc->id;
-    if (! $noredirect) { // else quick save
+    if (! $quicksave) { // else quick save
       $doc->refresh();
       if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
       $err=$doc->PostModify(); 
