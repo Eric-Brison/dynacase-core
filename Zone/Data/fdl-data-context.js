@@ -51,7 +51,7 @@ Fdl.Context.prototype = {
 		/** translation catalog is autoloaded, set to false if you don't wan't autoload @type {Boolean}*/
 		autoLoadCatalog:true, 
 		/** default locale 'fr' (french) or 'en' (english) @type {String}*/
-		locale:'fr', 
+		locale:null, 
 		getPropertiesInformation: function() {
 	if (! this.propertiesInformation) {
 			// not initialised yet i retreive the folder family
@@ -75,6 +75,13 @@ Fdl.Context.prototype.toString = function() {
  */
 Fdl.Context.prototype.loadCatalog = function(locale) { 
 	if (! locale) locale=this.locale;
+	if (!locale) {
+		var u=this.getUser();
+		if (u.locale) {
+			this.locale=u.locale.substr(0,u.locale.indexOf('_'));
+			locale=this.locale;
+		} else locale='fr';
+	}
 	var url='locale/'+locale+'/js/catalog.js';
 	console.log("load catalog"+url);
 	var c=this.retrieveData('', '', true, url);
