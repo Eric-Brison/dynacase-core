@@ -57,10 +57,12 @@ function viewContraint(inp, info) {
     if (inp) {
         inp.className='invalid';
         var ntr=window.parent.document.createElement("div");
-        ntr.className='constraint';                 
-        var xy= window.parent.getAnchorPosition(inp.id);
-        ntr.style.top=xy.y;
-        ntr.style.left=xy.x;
+        ntr.className='constraint';     
+        if (inp.id) {            
+          var xy= window.parent.getAnchorPosition(inp.id);
+          ntr.style.top=xy.y;
+          ntr.style.left=xy.x;
+        }
         var sp=window.parent.document.createElement("span");
         sp.innerHTML=info.err;
         ntr.appendChild(sp);
