@@ -24,6 +24,7 @@ Class _ARCHIVING extends Doc {
         function arc_close() {
             $err=$this->setValue("arc_status","C");
             if (! $err) $err=$this->modify();
+<<<<<<< HEAD
             
             if (! $err) {
                
@@ -31,6 +32,8 @@ Class _ARCHIVING extends Doc {
                 print_r2($ids);
             }
             
+=======
+>>>>>>> add family ARCHIVING (refs #297)
             return $err;
         }
         function arc_reopen() {
