@@ -603,7 +603,7 @@ public function isValidLink($title, $docid){
    */
   static public function isFloat($x, $min=null, $max=null) {
      $err="";
-     if ($x === "") return "";
+     if ($x === "" || $x== '-') return "";
      if (!is_numeric($x)) $err=sprintf(_("[%s] must be a number"),$x);
      if (($min !== null) && ($x < $min)) $err=sprintf(_("[%s] must be greater than %s"),$x,$min);
      if (($max !== null) && ($x > $max)) $err=sprintf(_("[%s] must be lower than %s"),$x,$max);
