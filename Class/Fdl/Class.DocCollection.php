@@ -122,7 +122,7 @@ include_once("FDL/Class.Doc.php");
 	 */
 	function object2SqlFilter($of,&$famid,&$fsql) {
 		if ($of->family) {
-			if (preg_match("/(\w*)\s?(strict)?/",trim($of->family),$reg)) {
+			if (preg_match("/([\w:]*)\s?(strict)?/",trim($of->family),$reg)) {
 				if (! is_numeric($reg[1])) $reg[1]=getFamIdFromName($this->dbaccess,$reg[1]);
 				if ($reg[2]=="strict") $famid='-'.$reg[1];
 				else $famid=$reg[1];
