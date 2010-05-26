@@ -54,7 +54,7 @@ function folder_barmenu(&$action) {
   popupActive("viewmenu",1,'vdetail');
 
   // clear only for basket :: too dangerous
-  if ($dir->fromid == getFamIdFromName($dbaccess,"BASKET")) {
+  if (($dir->fromid == getFamIdFromName($dbaccess,"BASKET")) || ($dir->fromid == getFamIdFromName($dbaccess,"ARCHIVING"))) {
     popupInvisible("toolmenu",1,'tobasket');
     popupInvisible("toolmenu",1,'insertbasket');
     popupActive("toolmenu",1,'clear');

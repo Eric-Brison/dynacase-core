@@ -24,6 +24,13 @@ Class _ARCHIVING extends Doc {
         function arc_close() {
             $err=$this->setValue("arc_status","C");
             if (! $err) $err=$this->modify();
+            
+            if (! $err) {
+               
+                $err=simpleQuery($this->dbaccess,sprintf("select childid from fld where dirid=%d and qtype='S'",$this->initid),$ids,true,false);
+                print_r2($ids);
+            }
+            
             return $err;
         }
         function arc_reopen() {
