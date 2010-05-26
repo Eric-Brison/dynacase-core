@@ -25,6 +25,9 @@ Class _ARCHIVING extends Doc {
             $err=$this->setValue("arc_status","C");
             if (! $err) $err=$this->modify();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> archive is a folder (refs #287)
             
             if (! $err) {
                
@@ -32,8 +35,11 @@ Class _ARCHIVING extends Doc {
                 print_r2($ids);
             }
             
+<<<<<<< HEAD
 =======
 >>>>>>> add family ARCHIVING (refs #297)
+=======
+>>>>>>> archive is a folder (refs #287)
             return $err;
         }
         function arc_reopen() {
