@@ -49,7 +49,11 @@ function fdl_card(&$action) {
   if (! is_numeric($docid)) $docid=getIdFromName($dbaccess,$docid);
   if (intval($docid) == 0) $action->exitError(sprintf(_("unknow logical reference '%s'"),GetHttpVars("id")));
   $doc = new_Doc($dbaccess, $docid);
-  if (! $doc->isAffected()) $action->exitError(sprintf(_("cannot see unknow reference %s"),$docid));
+  if (! $doc->isAffected()) {
+      $err=simpleQuery($dbaccess,sprintf("select id from dochisto where id=%d limit 1",$docid),$hashisto,true,true);
+      if ($hashisto)  $action->exitError(sprintf(_("Document %s has been destroyed.\n<a href='?app=FDL&action=VIEWDESTROYDOC&id='>See latest information about it."),$docid));
+      else $action->exitError(sprintf(_("cannot see unknow reference %s"),$docid));
+  }
 
 
   if ($state != "") {

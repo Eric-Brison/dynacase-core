@@ -558,7 +558,6 @@ function countDocs(&$tres) {
 function getFamIdFromName($dbaccess, $name) {
   include_once("FDL/Class.DocFam.php");
   global $tFamIdName;
-
   if (! isset($tFamIdName)) {
     $tFamIdName=array();
     $q = new QueryDb($dbaccess, "DocFam");
