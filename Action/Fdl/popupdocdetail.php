@@ -13,6 +13,7 @@
 
 
 include_once("FDL/popupdoc.php");
+include_once("FDL/Class.SearchDoc.php");
 function popupdocdetail(&$action) {
   $docid = GetHttpVars("id");
   if ($docid == "") $action->exitError(_("No identificator"));
@@ -311,9 +312,48 @@ function getpopupdocdetail(&$action,$docid) {
 
 
   addFamilyPopup($tlink,$doc);
+  addArchivePopup($tlink,$doc);
 
   return $tlink;
          
+}
+/**
+ * Add control view menu
+ */
+function addArchivePopup(&$tlink,&$doc,$target="_self") {
+    if ($doc->fromname=="ARCHIVING") return; // no archive archive
+    $s=new SearchDoc($doc->dbaccess,"ARCHIVING");
+    $s->setObjectReturn();
+    $s->addFilter("arc_status = 'O'");
+    $s->search();
+     
+    if ($s->count() > 0) {
+        while ($archive=$s->nextDoc()) {
+
+            $tlink["arch".$archive->id]=array( "descr"=>sprintf(_("Insert in %s"),$archive->getTitle()),
+                                   "url"=>"?app=FREEDOM&action=ADDDIRFILE&docid=".$doc->initid."&dirid=".$archive->initid,
+                                   "confirm"=>"false",
+                                   "control"=>"false",
+                                   "tconfirm"=>"",
+                                   "target"=>"",
+                                   "visibility"=>POPUP_ACTIVE,
+                                   "submenu"=>_("Archive menu"),
+                                   "barmenu"=>"false");
+             
+            // app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[dirid]&id=[FREEDOM_IDBASKET]
+            if (($doc->defDoctype=="S") || ($doc->defDoctype=="D")) {
+                $tlink["farch".$archive->id]=array( "descr"=>sprintf(_("Insert the content in %s"),$archive->getTitle()),
+                                   "url"=>"?app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=".$doc->initid."&id=".$archive->initid,
+                                   "confirm"=>"true",
+                                   "control"=>"false",
+                                   "tconfirm"=>sprintf("Sure insert the content of %s n archive ?",$doc->getTitle()),
+                                   "target"=>"",
+                                   "visibility"=>POPUP_ACTIVE,
+                                   "submenu"=>_("Archive menu"),
+                                   "barmenu"=>"false");
+            }
+        }
+    }
 }
 /**
  * Add control view menu

@@ -3261,6 +3261,7 @@ create unique index i_docir on doc(initid, revision);";
     if (! $this->initid) return "";
     include_once("FDL/Class.DocUTag.php");
     $q=new QueryDb($this->dbaccess,"docUTag");
+    $q->addQuery("uid=".intval($this->userid));
     if ($tag) $q->addQuery("tag = '".pg_escape_string($tag)."'");
     if ($allrevision) $q->addQuery("initid = ".$this->initid);
     else $q->addQuery("id = ".$this->id);
