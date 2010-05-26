@@ -24,6 +24,10 @@ Class _ARCHIVING extends Doc {
         function arc_close() {
             $err=$this->setValue("arc_status","C");
             if (! $err) $err=$this->modify();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 26fee367ffbf8a4063e2eb1a86062b425e96ee19
             
             if (! $err) {
                
@@ -31,6 +35,11 @@ Class _ARCHIVING extends Doc {
                 print_r2($ids);
             }
             
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 377e30d05c9edf5402d5edb7cadd7ef9e27aec34
+>>>>>>> 26fee367ffbf8a4063e2eb1a86062b425e96ee19
             return $err;
         }
         function arc_reopen() {
