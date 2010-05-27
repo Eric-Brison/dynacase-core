@@ -64,6 +64,7 @@ Class Doc extends DocCtrl {
 			   "doctype",
 			   "locked",
 			   "allocated",
+			   "archiveid",
 			   "icon",
 			   "lmodify",
 			   "profid",
@@ -117,7 +118,7 @@ Class Doc extends DocCtrl {
 			       "atags"=>array("type"=>"text","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_atags"), # N_("prop_atags")
 			       "prelid"=>array("type"=>"docid","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_prelid"), # N_("prop_prelid")
 			       "confidential"=>array("type"=>"integer","displayable"=>false,"sortable"=>true,"filterable"=>true,"label"=>"prop_confidential"), # N_("prop_confidential")
-  				   "svalues"=>array("type"=>"fulltext","displayable"=>false,"sortable"=>false,"filterable"=>true,"label"=>"prop_svalues"), # N_("prop_svalues")
+  			       "svalues"=>array("type"=>"fulltext","displayable"=>false,"sortable"=>false,"filterable"=>true,"label"=>"prop_svalues"), # N_("prop_svalues")
 			       "ldapdn"=>array("type"=>"text","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_ldapdn")); # N_("prop_ldapdn");
   /**
    * identificator of the document
@@ -292,6 +293,12 @@ Class Doc extends DocCtrl {
    * @public int
    */
   public $allocated;
+  /**
+   * Archive document id
+   * 
+   * @public int
+   */
+  public $archiveid;
 
   /**
    * identification of special views
@@ -344,6 +351,7 @@ create table doc ( id int not null,
                    fromid int,
                    doctype char DEFAULT 'F',
                    locked int DEFAULT 0,
+                   archiveid int DEFAULT 0,
                    allocated int DEFAULT 0,
                    icon varchar(256),
                    lmodify char DEFAULT 'N',
@@ -1036,11 +1044,12 @@ create unique index i_docir on doc(initid, revision);";
     
     if ($really) {
       if ($this->id != "") {
-	// delete all revision also
-	$rev=$this->GetRevisions();
-    foreach($rev as $k=>$v) {
-	  $v->ReallyDelete($nopost);
-	}
+          // delete all revision also
+          $this->addLog('delete',array("really"=>$really));
+          $rev=$this->GetRevisions();
+          foreach($rev as $k=>$v) {
+              $v->ReallyDelete($nopost);
+          }
       }
     } else {
       // Control if the doc can be deleted
@@ -3654,7 +3663,59 @@ create unique index i_docir on doc(initid, revision);";
       }
     }
   }
+  
+  /**
+   * Put document in an archive
+   * @param _ARCHIVING $archive the archive document
+   */
+  final public function archive(&$archive) {
+      $err="";
+      if ($this->archiveid==0) {
+          if ($this->doctype=="C") $err=sprintf("families cannot be archieved");
+          elseif (! $this->withoutControl) $err=$this->control("edit");
+          if ($err=="") {
+              $this->locked = 0;
+              $this->archiveid = $archive->id;
+              $this->dprofid=($this->dprofid>0)?(- $this->dprofid):(- abs($this->profid));
+              $archprof=$archive->getValue("arc_profil");
+              $this->profid=$archprof;
+              $err=$this->modify(true,array("locked","archiveid", "dprofid", "profid"),true);
+              if (! $err) {
+                  $this->addComment(sprintf("Archiving into %s",$archive->getTitle()),HISTO_MESSAGE,"archive");
+                  $this->addLog('archive',$archive->id,sprintf("Archiving into %s",$archive->getTitle()));
+                  $err=$this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",$this->fromid, $archive->id,$archprof,$this->initid));
+              }
+          }
+      } else $err=sprintf("document is already archived");
 
+      return $err;
+  }
+  /**
+   * Delete document in an archive
+   * @param _ARCHIVING $archive the archive document
+   */
+  final public function unArchive(&$archive) {
+      $err="";
+      
+      if ($this->archiveid==$archive->id) {
+          if (! $this->withoutControl) $err=$this->control("edit");
+          if ($err=="") {
+              $this->locked = 0;
+              $this->archiveid = ""; // set to null
+              $restoreprofil=abs($this->dprofid);
+              $this->dprofid = 0;
+              $err=$this->setProfil($restoreprofil);
+              if (! $err) $err=$this->modify(true,array("locked","archiveid","dprofid","profid"),true);
+              if (! $err) {
+                  $this->addComment(sprintf("Unarchiving from %s",$archive->getTitle()),HISTO_MESSAGE,"unarchive");
+                  $this->addLog('unarchive',$archive->id,sprintf("Unarchiving from %s",$archive->getTitle()));
+                  $err=$this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",$this->fromid,$this->initid));
+              }
+          }
+      } else $err=sprintf("document not archived");
+
+      return $err;
+  }
   /** 
    * lock document
    * 
@@ -6709,6 +6770,7 @@ static function _cmpanswers($a,$b) {
     else if ($this->allocated == $this->userid) return $action->getImageUrl("clef3.gif");
     else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("clef1.gif");
     else if ($this->locked != 0) return $action->getImageUrl("clef2.gif");
+    else if ($this->archiveid != 0) return $action->getImageUrl("archive.png");
     else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png");
     else return $action->getImageUrl("1x1.gif");
   }
