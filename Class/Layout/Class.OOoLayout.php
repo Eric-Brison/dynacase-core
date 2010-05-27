@@ -396,8 +396,8 @@ class OOoLayout extends Layout {
     $objNodeListNested = &$objNode->childNodes;
     foreach ( $objNodeListNested as $objNodeNested ){
       if ($objNodeNested->nodeType == XML_TEXT_NODE) {
-	if ($objNode->nodeValue!="") {
-	  $objNode->nodeValue=str_replace($strOldContent,$strNewContent,$objNode->nodeValue);
+	if ($objNodeNested->nodeValue!="") {
+	  $objNodeNested->nodeValue=str_replace($strOldContent,$strNewContent,$objNodeNested->nodeValue);
 	}
       }
       if ($objNodeNested->nodeType == XML_ELEMENT_NODE) $this->replaceNodeText($objNodeNested,$strOldContent,$strNewContent);
