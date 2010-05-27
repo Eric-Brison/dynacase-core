@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-21 16:11+0200\n"
-"PO-Revision-Date: 2010-05-21 12:52+0200\n"
+"POT-Creation-Date: 2010-05-27 12:22+0200\n"
+"PO-Revision-Date: 2010-05-27 12:28+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -239,6 +239,23 @@ msgstr "ne peut envoyer le courriel %s avec le modèle %s :%s"
 #, c-format
 msgid "cannot send mail %s"
 msgstr "ne peut envoyer le courriel %s"
+
+msgid "Close archive"
+msgstr "Clôture de l'archive"
+
+msgid "Reopen archive"
+msgstr "Réouverture de l'archive"
+
+#, c-format
+msgid "destroyed by archive purge from %s"
+msgstr "Détruit par la purge de l'archive %s"
+
+msgid "Purge archive"
+msgstr "Purge de l'archive"
+
+#, c-format
+msgid "Profil for document's archive %s"
+msgstr "Profil pour l'archive %s"
 
 msgid "(title)"
 msgstr "(titre)"
@@ -1442,8 +1459,8 @@ msgid "view object acl"
 msgstr "voir les droits"
 
 #, c-format
-msgid "function '%s' not available for application %s (%d)"
-msgstr "fonction %s non disponible pour l'application %s (%d)"
+msgid "Action '%s' not declared for application %s (%d)"
+msgstr "Action '%s' non déclarée pour l'application %s (%d)"
 
 #, c-format
 msgid "Acl [%s] not available for App %s"
@@ -1491,11 +1508,11 @@ msgstr "recherche %s"
 
 #, c-format
 msgid "data:family %s not alive"
-msgstr ""
+msgstr "Famille %s non vivante"
 
 #, c-format
 msgid "data:document %s is not a family"
-msgstr ""
+msgstr "Document %s n'est pas une famille"
 
 #, c-format
 msgid "document %d inserted"
@@ -1510,7 +1527,7 @@ msgstr "document %d supprimé"
 
 #, c-format
 msgid "document %d unlinked"
-msgstr ""
+msgstr "Document %d non lié"
 
 #, c-format
 msgid "target folder [%s] is not a folder"
@@ -1522,7 +1539,7 @@ msgstr ""
 
 #, c-format
 msgid "document %d moved"
-msgstr ""
+msgstr "Document %d déplacé"
 
 msgid "application not initialized"
 msgstr "application non initialisée"
@@ -1533,7 +1550,7 @@ msgstr "paramètre %s n'existe pas"
 
 #, c-format
 msgid "not authorized : parameter %s is not a user parameter"
-msgstr ""
+msgstr "non autorisé: le paramètre %s n'est pas un paramètre utilisateur"
 
 #, fuzzy
 msgid "short_name"
@@ -1545,15 +1562,15 @@ msgstr ""
 
 #, c-format
 msgid "document %s not exist"
-msgstr ""
+msgstr "document %s n'existe pas"
 
 #, c-format
 msgid "no privilege view for %d"
-msgstr ""
+msgstr "pas de privilège \"voir\" pour %d"
 
 #, c-format
 msgid "cannot create document for family [%s]"
-msgstr ""
+msgstr "création de document impossible pour la famille [%s]"
 
 #, c-format
 msgid "change %s"
@@ -1597,7 +1614,7 @@ msgid "%d minute"
 msgstr "%d minute"
 
 msgid "attribute identificator is null"
-msgstr ""
+msgstr "l'identifiant de l'attribut est nul"
 
 #, c-format
 msgid ""
@@ -1733,6 +1750,8 @@ msgstr "Accès au fichier impossible"
 msgid ""
 "Some characters are not authorized for file name %s. They are replaced by -"
 msgstr ""
+"Certain caractères spéciaux ne sont pas autorisé pour un nom de fichier %s. "
+"Ils ont été remplacé par -"
 
 #, c-format
 msgid "%s directory not found"
@@ -1783,7 +1802,7 @@ msgstr "Template [%s] non trouvé."
 
 #, c-format
 msgid "SetBlock:error [%s]"
-msgstr ""
+msgstr "SetBlock : erreur [%s]"
 
 #, c-format
 msgid "Move file from %s to %s"
@@ -1816,7 +1835,7 @@ msgid "Error sending file"
 msgstr ""
 
 msgid "empty file"
-msgstr ""
+msgstr "fichier vide"
 
 msgid "no referer url found"
 msgstr "pas d'URL reférence trouvée"
@@ -1841,7 +1860,7 @@ msgstr ""
 
 #, c-format
 msgid "API file %s not found\n"
-msgstr ""
+msgstr "fichier API %s non trouvé\n"
 
 #, c-format
 msgid "Error : %s\n"
@@ -2962,6 +2981,33 @@ msgstr "éditer"
 
 msgid "Ok"
 msgstr "Ok"
+
+msgid "Last log"
+msgstr "Derniers logs"
+
+msgid "Log:Date"
+msgstr "Date"
+
+msgid "Log:User"
+msgstr "Utilisateur"
+
+msgid "Log:Comment"
+msgstr "Message"
+
+msgid "Log:Code"
+msgstr "Code"
+
+msgid "Last History"
+msgstr "Derniers historiques"
+
+msgid "Histo:Date"
+msgstr "Date"
+
+msgid "Histo:User"
+msgstr "Utilisateur"
+
+msgid "Histo:Comment"
+msgstr "Message"
 
 msgid "Constraint test"
 msgstr "test des contraintes"
@@ -4748,6 +4794,9 @@ msgstr "dossier inconnu, ne peut être consulté"
 msgid "fixed"
 msgstr "figé"
 
+msgid "archived"
+msgstr "Archivé"
+
 msgid "read-only"
 msgstr "lecture seule"
 
@@ -4795,6 +4844,10 @@ msgstr "%d documents"
 #, c-format
 msgid "%d document"
 msgstr "%d document"
+
+#, c-format
+msgid "Insert all into %s archive"
+msgstr "Tout insérer dans l'archive %s"
 
 msgid "create databases ?"
 msgstr "Créer les bases de données ?"
@@ -5197,6 +5250,9 @@ msgstr "envoyer un document"
 
 msgid "difference between 2 documents"
 msgstr "différence entre 2 documents"
+
+msgid "view last historic items for a destroyed document"
+msgstr "voir les dernières traces d'un document détruit"
 
 msgid "edit mail"
 msgstr "éditer un mail"
@@ -5622,7 +5678,7 @@ msgid "url to reach http server index"
 msgstr "URL pour atteindre l'index du serveur web freedom"
 
 msgid "url to reach http server index in open mode"
-msgstr ""
+msgstr "URL pour atteindre le serveur on authentification open"
 
 msgid "memory max for PHP in Mo"
 msgstr "mémoire maximum pour PHP en Mo"
@@ -5661,7 +5717,7 @@ msgid "squirrelmail install dir (relative)"
 msgstr "squirrelmail:  répertoire d'installation (relatif)"
 
 msgid "default start application"
-msgstr ""
+msgstr "Application lancée au démarrage"
 
 msgid "core_sessionttl"
 msgstr "Durée des sessions (en secondes)"
@@ -5806,6 +5862,12 @@ msgid "get all properties of document"
 msgstr ""
 
 msgid "set user parameter"
+msgstr ""
+
+msgid "use what gate"
+msgstr ""
+
+msgid "preferential doc gate id"
 msgstr ""
 
 msgid "Access"
@@ -6848,6 +6910,13 @@ msgid "Create !"
 msgstr "Créer !"
 
 #, c-format
+msgid "Document %s has been destroyed."
+msgstr ""
+
+msgid "See latest information about it."
+msgstr ""
+
+#, c-format
 msgid "Document %s in %s state not found"
 msgstr "Document %s dans l'état %s non trouvé"
 
@@ -6957,6 +7026,17 @@ msgstr "Relations du document"
 
 msgid "Access path list"
 msgstr "Liste des chemins d'accès"
+
+#, c-format
+msgid "Insert in %s"
+msgstr "Insérer dans %s"
+
+msgid "Archive menu"
+msgstr "Archive"
+
+#, c-format
+msgid "Insert the content in %s"
+msgstr "Insérer le contenu dans %s"
 
 msgid "specialedit"
 msgstr "Éditions spéciales"
@@ -7117,6 +7197,14 @@ msgstr "%s a été verrouillé"
 #, c-format
 msgid "%s inserted"
 msgstr "%s inséré"
+
+#, c-format
+msgid "document %s [%d] is not destroyed"
+msgstr ""
+
+#, c-format
+msgid "Last traces of %s document : %s"
+msgstr "Dernières traces du document %s : %s"
 
 msgid "cannot compare two document which comes from two different family"
 msgstr ""
@@ -7873,6 +7961,9 @@ msgstr "les préférences d'exportation ont été sauvegardées"
 
 msgid "new document family"
 msgstr "nelle famille de document"
+
+#~ msgid "function '%s' not available for application %s (%d)"
+#~ msgstr "fonction %s non disponible pour l'application %s (%d)"
 
 #~ msgid "francais"
 #~ msgstr "français"

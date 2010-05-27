@@ -543,7 +543,7 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
                 } else $doc=new Fdl_Document($id,$config);
                 $out=$doc->getDocument($onlyValues,$completeprop,$getInfoProp,$getUserTags);
                 if ($withContent) {
-
+                    if ($doc->isCollection()) {
                     $configContent=getHttpVars("contentConfig");
                     if ($configContent) $configContent=json_decode($configContent);
                      
@@ -558,6 +558,10 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
                     $start=$configContent->start;
                     $slice=($configContent->slice)?$configContent->slice:100;
                     $out["storedContent"]=$doc->getContent($onlyValues,$completeprop,$filter,$start,$slice,$orderby,$vhc,$key,$keymode,$keyproperty);
+                    }
+                else {
+                    $out["storedContent"]=null;
+                }
                 }
 
             }

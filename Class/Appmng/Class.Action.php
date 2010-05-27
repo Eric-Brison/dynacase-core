@@ -83,7 +83,7 @@ create sequence SEQ_ID_ACTION;
       $this->Affect($query->list[0]);
       $this->log->debug("Set Action to {$this->name}");
     } else {    
-      $err = sprintf(_("function '%s' not available for application %s (%d)"), $name, $parent->name, $parent->id);
+      $err = sprintf(_("Action '%s' not declared for application %s (%d)"), $name, $parent->name, $parent->id);
       print $err;
       exit;
     }

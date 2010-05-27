@@ -242,6 +242,13 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
 	$tdoc[$k]["canedit"] =false;
 	$tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
 
+      } else if ($doc->archiveid != 0) {
+        $tdoc[$k]["emblem"] = $action->GetImageUrl("archive.png");
+        $tdoc[$k]["emblemt"] = _("archived");
+        $tdoc[$k]["emblemw"] ="12";
+        $tdoc[$k]["canedit"] =false;
+        $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
+
       } else if ($doc->control("edit") != "")  {
 	$tdoc[$k]["emblem"] = $action->GetImageUrl("nowrite.png");
 	$tdoc[$k]["emblemt"] = _("read-only");

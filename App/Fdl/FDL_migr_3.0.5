@@ -6,4 +6,5 @@ if [ "$freedom_context" == "" ]; then
 fi
 
 PGSERVICE="$pgservice_freedom" psql -c 'alter table doc add column archiveid int;'
+PGSERVICE="$pgservice_freedom" psql -c 'alter table docread add column archiveid int;'
 

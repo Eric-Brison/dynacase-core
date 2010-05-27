@@ -43,11 +43,14 @@
   <a id="tobasket"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[dirid]&id=[FREEDOM_IDBASKET][pds]','basket');closeAllMenu()" >[TEXT:All To basket]</a>
   <a id="openfolio"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=OPENFOLIO&id=[dirid]','folio[dirid]');closeAllMenu()" >[TEXT:Open in folio]</a>
      
-  <a id="insertbasket"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[FREEDOM_IDBASKET]&id=[dirid]&clean=Y[pds]','_self');closeAllMenu()" >[TEXT:Basket to here]</a>
-     <a  id="insert" href="#" onClick="activate(this,'[CORE_STANDURL]app=FDL&action=EDITINSERTDOCUMENT&id=[dirid]','fdoc');closeAllMenu();">[TEXT:Insert documents]</a>
+  <a id="insertbasket"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[FREEDOM_IDBASKET]&id=[dirid]&clean=Y[pds]','_self');closeAllMenu()" >[TEXT:Basket to here]</a>   
+  <a  id="insert" href="#" onClick="activate(this,'[CORE_STANDURL]app=FDL&action=EDITINSERTDOCUMENT&id=[dirid]','fdoc');closeAllMenu();">[TEXT:Insert documents]</a>
   <a id="applybatch"  href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_APPLYBATCH&id=[dirid][pds]','fdoc');closeAllMenu()" >[TEXT:Create a batch]</a>
      
      <a  id="export" href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=EDITEXPORT&id=[dirid]','fdoc');closeAllMenu();">[TEXT:Export Folder]</a>
      <a  id="clear" href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_CLEARFLD&id=[dirid]','_self');closeAllMenu();">[TEXT:Clear Folder]</a>
+     [BLOCK ARCH]     
+     <a  id="arch[archid]" href="#" onClick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[dirid]&id=[archid]','arch');closeAllMenu();">[archtitle]</a>
+     [ENDBLOCK ARCH]
 </div>
 

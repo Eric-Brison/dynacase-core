@@ -144,6 +144,8 @@ function getSqlSearchDoc($dbaccess,
     //-------------------------------------------
     // search in all Db
     //-------------------------------------------
+      if (strpos(implode(",",$sqlfilters),"archiveid")===false)  $sqlfilters[-4] = "archiveid is null";
+      
     if ($trash=="only") {
       $sqlfilters[-3] = "doctype = 'Z'";    
     } elseif ($trash=="also") ;
@@ -166,7 +168,13 @@ function getSqlSearchDoc($dbaccess,
     if (! is_array($dirid))    $fld = new_Doc($dbaccess, $dirid);
 
     if ((is_array($dirid)) || ( $fld->defDoctype != 'S'))  {
-
+      $specFilters=$fld->getSpecificFilters();
+      if (is_array($specFilters) && (count($specFilters) > 0)) {
+          $sqlfilters=array_merge($sqlfilters,$specFilters);
+          $hasFilters=true;
+      } else $hasFilters=false;
+      if (strpos(implode(",",$sqlfilters),"archiveid")===false)  $sqlfilters[-4] = "archiveid is null";
+        
 
       //if ($fld->getValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
     
@@ -184,36 +192,40 @@ function getSqlSearchDoc($dbaccess,
 	$sqlfld="dirid=$dirid and qtype='S'";
 	if ($fromid==2) $sqlfld.= " and doctype='D'";
 	if ($fromid==5) $sqlfld.= " and doctype='S'";
-
-	$q = new QueryDb($dbaccess,"QueryDir");
-	$q->AddQuery($sqlfld);
-	$tfld=$q->Query(0,0,"TABLE");
-	if ($q->nb > 0) {
-	  foreach ($tfld as $onefld) {
-	    $tfldid[]=$onefld["childid"];
-	  }
-	  if (count($tfldid) > 1000) {
-	    $qsql= "select $selectfields ".
+	if ($hasFilters) {
+	     $sqlcond = " (".implode(") and (", $sqlfilters).")";
+             $qsql= "select $selectfields from $only $table where $sqlcond "; 
+	} else {
+	    $q = new QueryDb($dbaccess,"QueryDir");
+	    $q->AddQuery($sqlfld);
+	    $tfld=$q->Query(0,0,"TABLE");
+	    if ($q->nb > 0) {
+	        foreach ($tfld as $onefld) {
+	            $tfldid[]=$onefld["childid"];
+	        }
+	        if (count($tfldid) > 1000) {
+	            $qsql= "select $selectfields ".
 	      "from $table where initid in (select childid from fld where $sqlfld)  ".
 	      "and  $sqlcond ";
-	  } else {
-	  $sfldids=implode(",",$tfldid);
-	  if ($table=="docread") {  
-	    /*$qsql= "select $selectfields ".
-	      "from $table where initid in (select childid from fld where $sqlfld)  ".
-	      "and  $sqlcond ";	*/
-	    $qsql= "select $selectfields ".
+	        } else {
+	            $sfldids=implode(",",$tfldid);
+	            if ($table=="docread") {
+	                /*$qsql= "select $selectfields ".
+	                 "from $table where initid in (select childid from fld where $sqlfld)  ".
+	                 "and  $sqlcond ";	*/
+	                $qsql= "select $selectfields ".
 	      "from $table where initid in ($sfldids)  ".
 	      "and  $sqlcond ";	
-	  } else {
-	    /*$qsql= "select $selectfields ".
-	     "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  ".
-	     "where  $sqlcond ";*/	    
-	    $qsql= "select $selectfields ".
+	            } else {
+	                /*$qsql= "select $selectfields ".
+	                 "from (select childid from fld where $sqlfld) as fld2 inner join $table on (initid=childid)  ".
+	                 "where  $sqlcond ";*/
+	                $qsql= "select $selectfields ".
 	      "from $only $table where initid in ($sfldids)  ".
 	      "and  $sqlcond ";	
-	  }
-	  }
+	            }
+	        }
+	    }
 	}
 	//$qsql= "select $selectfields "."from $table where $dirid = any(fldrels) and  "."  $sqlcond ";
       }      
@@ -378,10 +390,12 @@ function getChildDoc($dbaccess,
     if ($fld->fromid == getFamIdFromName($dbaccess,"SSEARCH")) 
       return $fld->getDocList($start, $slice, $qtype,$userid);
     
-    if ( $fld->defDoctype != 'S') {
+    if ($fld->defDoctype != 'S' ) {
       // try optimize containt of folder
-      $td=getFldDoc($dbaccess,$dirid,$sqlfilters);
-      if (is_array($td)) return $td;
+      if (!$fld->hasSpecificFilters() ) {
+          $td=getFldDoc($dbaccess,$dirid,$sqlfilters);
+          if (is_array($td)) return $td;
+      }
     } else {
       if ($fld->getValue("se_famid")) $fromid=$fld->getValue("se_famid");
     }
@@ -509,21 +523,25 @@ function getFldDoc($dbaccess,$dirid,$sqlfilters=array(),$limit=100,$reallylimit=
   $q->AddQuery("qtype='S'");
 
   if ($limit > 0) {
-    $tfld=$q->Query(0,$limit+1,"TABLE");
-    // use always this mode because is more quickly
-    if (($reallylimit) && ($q->nb > $limit)) return false;
+      $tfld=$q->Query(0,$limit+1,"TABLE");
+      // use always this mode because is more quickly
+      if (($reallylimit) && ($q->nb > $limit)) return false;
   } else {
-    $tfld=$q->Query(0,$limit+1,"TABLE");    
+      $tfld=$q->Query(0,$limit+1,"TABLE");
   }
   $t=array();
   if ($q->nb > 0) {
-    foreach ($tfld as $k=>$v) {   
-      $t[$v["childid"]]=getLatestTDoc($dbaccess,$v["childid"],$sqlfilters,($v["doctype"]=="C")?-1:$v["fromid"]);
-      if ($t[$v["childid"]] == false) unset($t[$v["childid"]]);
-      if (($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
-	unset($t[$v["childid"]]);
+      foreach ($tfld as $k=>$v) {                     
+          $t[$v["childid"]]=getLatestTDoc($dbaccess,$v["childid"],$sqlfilters,($v["doctype"]=="C")?-1:$v["fromid"]);
+
+          if ($t[$v["childid"]] == false) unset($t[$v["childid"]]);
+          elseif ($t[$v["childid"]]["archiveid"]) unset($t[$v["childid"]]);
+          else {
+              if (($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
+                  unset($t[$v["childid"]]);
+              }
+          }  
       }
-    }
   }
   uasort($t,"sortbytitle");
   //  print "<HR><br><div style=\"border:red 1px inset;background-color:orange;color:black\">"; print " - getFldDoc $dirid [nbdoc:".count($tfld)."]<B>".microtime_diff(microtime(),$mc)."</B></div>";

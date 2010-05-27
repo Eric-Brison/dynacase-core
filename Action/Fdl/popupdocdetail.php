@@ -322,6 +322,7 @@ function getpopupdocdetail(&$action,$docid) {
  */
 function addArchivePopup(&$tlink,&$doc,$target="_self") {
     if ($doc->fromname=="ARCHIVING") return; // no archive archive
+    if ($doc->archiveid > 0) return;
     $s=new SearchDoc($doc->dbaccess,"ARCHIVING");
     $s->setObjectReturn();
     $s->addFilter("arc_status = 'O'");
@@ -329,7 +330,7 @@ function addArchivePopup(&$tlink,&$doc,$target="_self") {
      
     if ($s->count() > 0) {
         while ($archive=$s->nextDoc()) {
-
+           
             $tlink["arch".$archive->id]=array( "descr"=>sprintf(_("Insert in %s"),$archive->getTitle()),
                                    "url"=>"?app=FREEDOM&action=ADDDIRFILE&docid=".$doc->initid."&dirid=".$archive->initid,
                                    "confirm"=>"false",

@@ -245,6 +245,20 @@ include_once("FDL/Class.Doc.php");
 		}
 		return $err;
 	}
+        /**
+         * return specfic filters instead of normal content
+         * @return array of sql filters
+         */
+        public function getSpecificFilters() {
+            return array();
+        }
+        /**
+         * test if document has specific filters
+         * @return boolean true if has filter
+         */
+        public function hasSpecificFilters() {
+            return (count($this->getSpecificFilters())>0);
+        }
 }
 
 ?>
