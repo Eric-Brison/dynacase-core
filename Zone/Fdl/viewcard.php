@@ -160,6 +160,7 @@ function viewcard(&$action) {
 
   if ($doc->confidential >0) $action->lay->Set("locked", _("confidential"));
   else if ($doc->locked == -1) $action->lay->Set("locked", _("fixed"));
+  else if ($doc->archiveid) $action->lay->Set("locked", _("archived"));
   else if ($doc->control("edit") != "") $action->lay->Set("locked", _("read only"));
   else if ($doc->locked == 0) {
     $action->lay->Set("locked", _("not locked"));

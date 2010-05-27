@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-21 16:11+0200\n"
+"POT-Creation-Date: 2010-05-27 12:22+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -241,6 +241,23 @@ msgstr ""
 
 #, c-format
 msgid "cannot send mail %s"
+msgstr ""
+
+msgid "Close archive"
+msgstr ""
+
+msgid "Reopen archive"
+msgstr ""
+
+#, c-format
+msgid "destroyed by archive purge from %s"
+msgstr ""
+
+msgid "Purge archive"
+msgstr ""
+
+#, c-format
+msgid "Profil for document's archive %s"
 msgstr ""
 
 msgid "(title)"
@@ -1472,7 +1489,7 @@ msgid "view object acl"
 msgstr ""
 
 #, c-format
-msgid "function '%s' not available for application %s (%d)"
+msgid "Action '%s' not declared for application %s (%d)"
 msgstr ""
 
 #, c-format
@@ -3154,6 +3171,33 @@ msgid "edition: "
 msgstr "Edit"
 
 msgid "Ok"
+msgstr ""
+
+msgid "Last log"
+msgstr ""
+
+msgid "Log:Date"
+msgstr ""
+
+msgid "Log:User"
+msgstr ""
+
+msgid "Log:Comment"
+msgstr ""
+
+msgid "Log:Code"
+msgstr ""
+
+msgid "Last History"
+msgstr ""
+
+msgid "Histo:Date"
+msgstr ""
+
+msgid "Histo:User"
+msgstr ""
+
+msgid "Histo:Comment"
 msgstr ""
 
 #, fuzzy
@@ -5160,6 +5204,9 @@ msgstr ""
 msgid "fixed"
 msgstr ""
 
+msgid "archived"
+msgstr ""
+
 msgid "read-only"
 msgstr ""
 
@@ -5210,6 +5257,10 @@ msgstr "Import"
 #, fuzzy, c-format
 msgid "%d document"
 msgstr "Import"
+
+#, c-format
+msgid "Insert all into %s archive"
+msgstr ""
 
 msgid "create databases ?"
 msgstr ""
@@ -5617,6 +5668,9 @@ msgstr ""
 #, fuzzy
 msgid "difference between 2 documents"
 msgstr "Delete"
+
+msgid "view last historic items for a destroyed document"
+msgstr ""
 
 #, fuzzy
 msgid "edit mail"
@@ -6298,6 +6352,12 @@ msgid "get all properties of document"
 msgstr ""
 
 msgid "set user parameter"
+msgstr ""
+
+msgid "use what gate"
+msgstr ""
+
+msgid "preferential doc gate id"
 msgstr ""
 
 #, fuzzy
@@ -7378,6 +7438,13 @@ msgstr ""
 msgid "Create !"
 msgstr ""
 
+#, c-format
+msgid "Document %s has been destroyed."
+msgstr ""
+
+msgid "See latest information about it."
+msgstr ""
+
 #, fuzzy, c-format
 msgid "Document %s in %s state not found"
 msgstr "Import"
@@ -7494,6 +7561,17 @@ msgstr "Organisation"
 #, fuzzy
 msgid "Access path list"
 msgstr "Delete"
+
+#, c-format
+msgid "Insert in %s"
+msgstr ""
+
+msgid "Archive menu"
+msgstr ""
+
+#, c-format
+msgid "Insert the content in %s"
+msgstr ""
 
 #, fuzzy
 msgid "specialedit"
@@ -7654,6 +7732,14 @@ msgstr ""
 
 #, c-format
 msgid "%s inserted"
+msgstr ""
+
+#, c-format
+msgid "document %s [%d] is not destroyed"
+msgstr ""
+
+#, c-format
+msgid "Last traces of %s document : %s"
 msgstr ""
 
 msgid "cannot compare two document which comes from two different family"

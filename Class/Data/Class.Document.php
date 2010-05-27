@@ -336,7 +336,14 @@ Class Fdl_Document  {
 
         }
         return $attrs;
-    }/**
+    }
+    public function isCollection() {
+        if ($this->doc) {
+            return ($this->doc->defDoctype=='D' || $this->doc->defDoctype=='S');
+        }
+        return null;
+    }
+    /**
     * return all attribute definition
     * @return
     */

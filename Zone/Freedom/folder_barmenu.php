@@ -42,12 +42,31 @@ function folder_barmenu(&$action) {
   else $action->lay->set("nbdoc",sprintf(_("%d document"),$nbdoc));
 
   $action->lay->set("dirid",$dirid);
-
+  $tarch=array();
+  $toolmenu=array('tobasket','insertbasket','clear','props','openfolio','applybatch','export','insert');
+ if ($dir->fromname!="ARCHIVING") { // no archive archive
+      include_once("FDL/Class.SearchDoc.php");
+      $s=new SearchDoc($dir->dbaccess,"ARCHIVING");
+      $s->setObjectReturn();
+      $s->addFilter("arc_status = 'O'");
+      $s->search(); 
+        if ($s->count() > 0) {
+          while ($archive=$s->nextDoc()) {
+              $toolmenu[]="arch".$archive->id;
+              $tarch[]=array("archid"=>$archive->id,
+                                "archtitle"=>sprintf(_("Insert all into %s archive"),$archive->getTitle()));
+        
+              
+           }
+      }
+      $action->lay->setBlockdata("ARCH",$tarch);
+  }
+  
   popupInit("viewmenu",	array('vlist','vicon','vcol','vdetail'));
-  popupInit("toolmenu", array('tobasket','insertbasket','clear','props','openfolio','applybatch','export','insert'));
-
-
-
+  popupInit("toolmenu", $toolmenu);
+  foreach ($tarch as $arch) {
+    popupActive("toolmenu",1,"arch".$arch["archid"]);
+  }
   popupActive("viewmenu",1,'vlist');
   popupActive("viewmenu",1,'vicon');
   popupActive("viewmenu",1,'vcol');
@@ -79,6 +98,7 @@ function folder_barmenu(&$action) {
     popupActive("toolmenu",1,'export');
   }
 
+ 
 
   popupGen(1);
 

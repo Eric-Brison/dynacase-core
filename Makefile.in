@@ -14,7 +14,7 @@ export pubdir utildir applib targetdir utildir libdir
 TAR = tar
 GZIP_ENV = --best
 
-SUBDIR = Action Admin Api App Class CONTRIB Doc Expire Images programs Share Style Zone
+SUBDIR = Class Zone Action Api App Admin CONTRIB Doc Expire Images programs Share Style 
 
 TOP_MODULES = indexq.php index.php whattext wsh.php wvirtual.php guest.php wcheck wstop wstart wdbcreate winitrc resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess
 

@@ -184,6 +184,11 @@ $action_desc = array (
    "acl"		=>"NORMAL"
   ) ,
   array( 
+   "name"               =>"VIEWDESTROYDOC",
+   "short_name"         =>N_("view last historic items for a destroyed document"),
+   "acl"                =>"NORMAL"
+  ) ,
+  array( 
    "name"		=>"EDITMAIL",
    "short_name"		=>N_("edit mail"),
    "acl"		=>"NORMAL"

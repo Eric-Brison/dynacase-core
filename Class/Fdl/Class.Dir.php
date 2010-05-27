@@ -126,7 +126,6 @@ Class Dir extends PDir
 
 	}
 
-
 	/**
 	 * virtual method use before insert document in folder
 	 * @param int $docid document identificator to insert

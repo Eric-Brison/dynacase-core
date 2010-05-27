@@ -192,7 +192,7 @@ Class DocCtrl extends DocLDAP {
   function computeDProfil($dprofid=0,$fromdocidvalues=0) {
     if ($this->id == 0) return;
     if ($dprofid == 0) $dprofid=$this->dprofid;
-    if ($dprofid == 0) return;
+    if ($dprofid <= 0) return;
     
     $pdoc=new_Doc($this->dbaccess, $dprofid);
     $pfamid=  $pdoc->getValue("DPDOC_FAMID");
