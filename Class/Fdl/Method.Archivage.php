@@ -27,17 +27,7 @@ Class _ARCHIVING extends Dir {
          * @return string error message empty message if no error
          */
         function arc_close() {
-<<<<<<< HEAD
-            $err=$this->setValue("arc_status","C");
-            if (! $err) $err=$this->modify();
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> archive is a folder (refs #287)
-            
-=======
             $err="";
->>>>>>> Archive documents (refs #287)
             if (! $err) {
                include_once("FDL/Class.SearchDoc.php");
                
@@ -54,18 +44,10 @@ Class _ARCHIVING extends Dir {
                 }
             }
             
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> add family ARCHIVING (refs #297)
-=======
->>>>>>> archive is a folder (refs #287)
-=======
             $err=$this->setValue("arc_status","C");
             $err=$this->setValue("arc_clotdate",$this->getDate());
             if (! $err) $err=$this->modify();
             $this->addComment(sprintf(_("Close archive")));
->>>>>>> Archive documents (refs #287)
             return $err;
         }
         
