@@ -330,7 +330,7 @@ function addArchivePopup(&$tlink,&$doc,$target="_self") {
      
     if ($s->count() > 0) {
         while ($archive=$s->nextDoc()) {
-           
+           if ($archive->control("modify")=="") {
             $tlink["arch".$archive->id]=array( "descr"=>sprintf(_("Insert in %s"),$archive->getTitle()),
                                    "url"=>"?app=FREEDOM&action=ADDDIRFILE&docid=".$doc->initid."&dirid=".$archive->initid,
                                    "confirm"=>"false",
@@ -353,6 +353,7 @@ function addArchivePopup(&$tlink,&$doc,$target="_self") {
                                    "submenu"=>_("Archive menu"),
                                    "barmenu"=>"false");
             }
+           }
         }
     }
 }
@@ -525,7 +526,7 @@ function addFamilyPopup(&$tlink,&$doc) {
     $tlink[$k]["control"]=$control;
     $tlink[$k]["mwidth"]=$v->getOption("mwidth");
     $tlink[$k]["mheight"]=$v->getOption("mheight");
-    $tlink[$k]["tconfirm"]=sprintf(_("Sure %s ?"),addslashes($v->getLabel()));
+    $tlink[$k]["tconfirm"]=$v->getOption("tconfirm",sprintf(_("Sure %s ?"),addslashes($v->getLabel())));
     if ($v->visibility=="H") $tlink[$k]["visibility"]=POPUP_INVISIBLE;
     else $tlink[$k]["visibility"]=($control)?POPUP_CTRLACTIVE:POPUP_ACTIVE;
     $tlink[$k]["submenu"]=$v->getOption("submenu");

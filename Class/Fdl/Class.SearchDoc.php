@@ -184,13 +184,22 @@ Class SearchDoc {
    * 
    */
   public function search() {
-    if ($this->only) {
-      if (is_numeric($this->fromid)) $this->fromid=-(abs($this->fromid));
-      else {
-	$this->fromid=getFamIdFromName($this->dbaccess,$this->fromid);
-	$this->fromid=-(abs($this->fromid));
+      if ($this->fromid) {
+          if (! is_numeric($this->fromid))  $fromid=getFamIdFromName($this->dbaccess,$this->fromid);
+          else {
+              // test if it is a family
+              $err=simpleQuery($this->dbaccess,sprintf("select doctype from docfam where id=%d",$this->fromid),$doctype,true,true);
+              if ($doctype!='C') $fromid=0;
+              else $fromid=$this->fromid;
+          }
+          if ($fromid == 0) {
+              $this->debuginfo["error"]=sprintf("%s is not a family",$this->fromid);
+              if ($this->mode=="ITEM") return null;
+              else return array();
+          }
+          if ($this->only) $this->fromid=-(abs($fromid));
+          else $this->fromid=$fromid;
       }
-    }
     if ($this->recursiveSearch && $this->dirid) {
         $tmps=createTmpDoc($this->dbaccess,"SEARCH");
         $tmps->setValue("se_idfld",$this->dirid);
@@ -221,7 +230,19 @@ Class SearchDoc {
 
     return $this->result;
   }
-  
+  /**
+   * 
+   */
+  public function searchError() {
+      return ($this->debuginfo["error"]);
+  }
+  /**
+   * 
+   */
+  public function getError() {
+      if ($this->debuginfo) return $this->debuginfo["error"];
+      return "";
+  }
 
   /**
    * do the search in debug mode, you can after the search get infrrmation with getDebugIndo()

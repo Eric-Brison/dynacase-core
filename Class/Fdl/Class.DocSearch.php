@@ -159,6 +159,10 @@ Class DocSearch extends PDocSearch {
     } if ($latest == "lastfixed") {
       $filters[] = "locked = -1";
     } 
+    
+    if ($this->getValue("se_archive") > 0) {
+        $filters[] = sprintf("archiveid = %d",$this->getValue("se_archive"));
+    }
     if ($keyword[0]=='~') {
       $full=false; // force REGEXP
       $keyword=substr($keyword,1);      
@@ -352,6 +356,10 @@ Class DocSearch extends PDocSearch {
     $rtarget=getHttpVars("rtarget");
     $this->lay->set("rtarget",$rtarget);
     $this->lay->set("restrict",false);
+    $this->lay->set("archive",false);
+    
+    $farch=new_doc($this->dbaccess,"ARCHIVING");
+    if ($farch) $this->lay->set("archive",($farch->control("view")==""));
     $this->lay->set("thekey",$this->getValue("se_key"));
     $dirid = GetHttpVars("dirid"); // to set restriction family
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/edittable.js");

@@ -55,6 +55,9 @@ function generic_list(&$action) {
 
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $dir = new_Doc($dbaccess,$dirid);
+  $catg = new_Doc($dbaccess,$catgid);
+  $action->lay->set("folderid","0");
+  if ($catg->doctype == 'D') $action->lay->set("folderid",$catg->id);
   $action->lay->Set("pds","");
   if ($catgid) {
     $catg = new_Doc($dbaccess,$catgid);
