@@ -6,7 +6,7 @@
 
   <replaces>
   	<module name="freedom-core" />
-  	<module name="freedom-data" />
+  	<module name="freedom-api" />
   	<module name="freedom-dav" />
   	<module name="freedom-common" />
   	<module name="freedom-vault" />
@@ -128,8 +128,6 @@
 
     <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
     
-    <check type="pgempty" service="@core_db" optional="yes"><label lang="en">Check database empty</label></check>
-
     <check type="syscommand" command="rm" />
     <check type="syscommand" command="file" />
     <check type="syscommand" command="mkdir" />
