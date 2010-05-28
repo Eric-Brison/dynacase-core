@@ -330,7 +330,7 @@ function addArchivePopup(&$tlink,&$doc,$target="_self") {
      
     if ($s->count() > 0) {
         while ($archive=$s->nextDoc()) {
-           
+           if ($archive->control("modify")=="") {
             $tlink["arch".$archive->id]=array( "descr"=>sprintf(_("Insert in %s"),$archive->getTitle()),
                                    "url"=>"?app=FREEDOM&action=ADDDIRFILE&docid=".$doc->initid."&dirid=".$archive->initid,
                                    "confirm"=>"false",
@@ -353,6 +353,7 @@ function addArchivePopup(&$tlink,&$doc,$target="_self") {
                                    "submenu"=>_("Archive menu"),
                                    "barmenu"=>"false");
             }
+           }
         }
     }
 }

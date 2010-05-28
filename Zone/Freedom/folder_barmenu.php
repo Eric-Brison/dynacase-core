@@ -50,14 +50,15 @@ function folder_barmenu(&$action) {
       $s->setObjectReturn();
       $s->addFilter("arc_status = 'O'");
       $s->search(); 
-        if ($s->count() > 0) {
+      if ($s->count() > 0) {
           while ($archive=$s->nextDoc()) {
-              $toolmenu[]="arch".$archive->id;
-              $tarch[]=array("archid"=>$archive->id,
+              if ($archive->control("modify")=="") {
+                  $toolmenu[]="arch".$archive->id;
+                  $tarch[]=array("archid"=>$archive->id,
                                 "archtitle"=>sprintf(_("Insert all into %s archive"),$archive->getTitle()));
-        
-              
-           }
+
+              }
+          }
       }
       $action->lay->setBlockdata("ARCH",$tarch);
   }
