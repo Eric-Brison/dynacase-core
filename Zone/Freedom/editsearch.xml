@@ -19,22 +19,26 @@ function simplesearch(){
 </script>
 
 
-<table cellspacing="0"><tr><td>
-[L_SE_KEY]&nbsp;: </td><td colspan="2"><input onkeydown="if (trackCR(event)) {simplesearch();return false;}"      type="text" name="_se_key" value="[thekey]" id="se_key"  >
-</td></tr>
-<tr class="FREEDOMBack1"><td> [TEXT:familly]&nbsp;: </td><td><select name="_se_famid" onchange="document.getElementById('se_fam').value=this.options[this.selectedIndex].text">  
+
+
+<table width="100%" cellspacing="0">
+<tbody>
+<tr><td style="vertical-align:top">
+	<table>
+<tr><td>[L_SE_KEY]&nbsp;:</td><td> <input onkeydown="if (trackCR(event)) {simplesearch();return false;}" type="text" name="_se_key" value="[thekey]" id="se_key"  ></td></tr>
+
+<tr>
+ <td>[TEXT:familly]&nbsp;: </td><td><select name="_se_famid" onchange="document.getElementById('se_fam').value=this.options[this.selectedIndex].text">  
            <option VALUE="0" >[TEXT:any familly]</option> 
          [BLOCK SELECTCLASS]
            <option VALUE="[idcdoc]" [selected] >[classname]</option>   
          [ENDBLOCK SELECTCLASS]
-    </select> <input type="hidden" id="se_fam" name="_se_fam" value="[selfam]"></td><td><a onclick="document.getElementById('moreoptions').style.visibility='visible';this.style.display='none'">[TEXT:More options]</a></td></tr>
+    </select> </td></tr>
+    <tr><td><input type="hidden" id="se_fam" name="_se_fam" value="[selfam]"></td><td>
+    	<a onclick="document.getElementById('moreoptions').style.visibility='visible';this.style.display='none'">[TEXT:More options]</a>
+    </td></tr>
 </table>
-
-<table width="100%" cellspacing="0">
-<tbody>
-<tr><td>
-
- 
+ <br/>
  <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="simplesearch();return false"> </td>
  
 
@@ -77,6 +81,13 @@ function simplesearch(){
        [L_SE_TRASH]&nbsp;: </td>
   <td onmouseout="verifytrash()">[V_SE_TRASH]</td>
 </tr>
+[IF archive]
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" align="right">
+       [L_SE_ARCHIVE]&nbsp;: </td>
+  <td onmouseout="verifytrash()">[V_SE_ARCHIVE]</td>
+</tr>[ENDIF archive]
+
  
 </tbody>
 </table>
