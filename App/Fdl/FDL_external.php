@@ -244,7 +244,10 @@ function lfamilly($dbaccess, $famid, $name="", $dirid=0, $filter=array(),$idid="
   //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
   global $action;
   
-  if (! is_array($filter)) $filter=array();
+  if (! is_array($filter)) {
+      if (trim($filter) != "") $filter=array($filter);
+      else $filter=array();
+  }
   $only=false;
   if ($famid[0]=='-') {
     $only=true;
