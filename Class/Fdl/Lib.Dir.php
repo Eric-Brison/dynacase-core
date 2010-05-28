@@ -485,6 +485,9 @@ function getChildDoc($dbaccess,
 	  $debug["delay"]=sprintf("%.03fs",microtime_diff(microtime(),$mb));
 	  addLogMsg($query->basic_elem->msg_err,200);
 	  addLogMsg($debug);
+	} elseif ($query->basic_elem->msg_err!="") {
+          $debug["query"]=$query->LastQuery;
+          $debug["error"]=$query->basic_elem->msg_err;
 	}
 
       } else {

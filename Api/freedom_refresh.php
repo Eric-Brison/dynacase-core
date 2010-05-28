@@ -43,17 +43,32 @@ if ($dbaccess == "") {
   exit;
 }
 
+if ($famId) {
+    $f=new_doc($dbaccess,$famId);
+    if (! $f->isAlive()) {
+        $action->exitError(sprintf( "family %s not exists",$famId));   
+    }
+   if ($f->doctype != 'C') {
+        $action->exitError(sprintf( "document %s not a family",$famId));   
+    }
+}
+
 $s=new SearchDoc($dbaccess,$famId);
 $s->setObjectReturn();
 if ($docid > 0) $s->addFilter("id = $docid");
 if ($fldid > 0) $s->dirid=$fldid;
 if ($allrev) $s->latest=false;
+$s->addFilter("pas bon");
 $s->search();
 
+if ($s->searchError()) {
+     $action->exitError(sprintf("search error : %s",$s->getError()));
+}
 $targ = array();
 if ($arg != "") $targ[]=$arg;
 $card=$s->count();
 printf("\n%d documents to refresh\n", $card);
+;
 while ($doc=$s->nextDoc()) {
   $usemethod= ($method && (method_exists ($doc,$method)));
     if ($usemethod) {
