@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [ "$dbpsql" == "" ]; then
-    #load environement variable for freedom
-  . /etc/freedom.conf
-   wchoose -b
-fi
-
-/usr/bin/php -q $wpub/API/updateclass.php --dbcoord="$dbfree" --appc=VAULT --class=VaultDiskStorage
