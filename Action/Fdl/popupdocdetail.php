@@ -525,7 +525,7 @@ function addFamilyPopup(&$tlink,&$doc) {
     $tlink[$k]["control"]=$control;
     $tlink[$k]["mwidth"]=$v->getOption("mwidth");
     $tlink[$k]["mheight"]=$v->getOption("mheight");
-    $tlink[$k]["tconfirm"]=sprintf(_("Sure %s ?"),addslashes($v->getLabel()));
+    $tlink[$k]["tconfirm"]=$v->getOption("tconfirm",sprintf(_("Sure %s ?"),addslashes($v->getLabel())));
     if ($v->visibility=="H") $tlink[$k]["visibility"]=POPUP_INVISIBLE;
     else $tlink[$k]["visibility"]=($control)?POPUP_CTRLACTIVE:POPUP_ACTIVE;
     $tlink[$k]["submenu"]=$v->getOption("submenu");
