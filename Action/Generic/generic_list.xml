@@ -71,7 +71,7 @@ function SendSimpleSearch(event) {
   var isparam=false;
       
   var did=document.getElementById('csid');
-  var fldid=0;
+  var fldid=[folderid];
   var key=document.getElementById('searchkey').value;
   var mode=document.getElementById('searchmode').value;
   var dmainid=document.getElementById('cellmain');

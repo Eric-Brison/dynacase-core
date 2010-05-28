@@ -86,9 +86,7 @@ function generic_search(&$action) {
     } else { // case of search in folder
       if ($doc->id != getDefFld($action))
 	$sdirid = $dirid;
-
     }
-
     $sdoc = createTmpDoc($dbaccess,5); //new DocSearch($dbaccess);
     $sdoc->title = sprintf(_("search %s"),$keyword);
     if ($sdirid > 0) {
