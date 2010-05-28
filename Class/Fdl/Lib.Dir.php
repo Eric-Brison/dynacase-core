@@ -166,13 +166,15 @@ function getSqlSearchDoc($dbaccess,
 
     
     if (! is_array($dirid))    $fld = new_Doc($dbaccess, $dirid);
-
     if ((is_array($dirid)) || ( $fld->defDoctype != 'S'))  {
-      $specFilters=$fld->getSpecificFilters();
-      if (is_array($specFilters) && (count($specFilters) > 0)) {
-          $sqlfilters=array_merge($sqlfilters,$specFilters);
-          $hasFilters=true;
-      } else $hasFilters=false;
+        $hasFilters=false;
+        if ($fld && method_exists($fld,"getSpecificFilters")) {
+            $specFilters=$fld->getSpecificFilters();
+            if (is_array($specFilters) && (count($specFilters) > 0)) {
+                $sqlfilters=array_merge($sqlfilters,$specFilters);
+                $hasFilters=true;
+            }
+        }
       if (strpos(implode(",",$sqlfilters),"archiveid")===false)  $sqlfilters[-4] = "archiveid is null";
         
 
