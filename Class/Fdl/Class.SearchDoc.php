@@ -187,10 +187,12 @@ Class SearchDoc {
       if ($this->fromid) {
           if (! is_numeric($this->fromid))  $fromid=getFamIdFromName($this->dbaccess,$this->fromid);
           else {
-              // test if it is a family
-              $err=simpleQuery($this->dbaccess,sprintf("select doctype from docfam where id=%d",$this->fromid),$doctype,true,true);
-              if ($doctype!='C') $fromid=0;
-              else $fromid=$this->fromid;
+              if ($this->fromid != -1) {
+                  // test if it is a family
+                  $err=simpleQuery($this->dbaccess,sprintf("select doctype from docfam where id=%d",$this->fromid),$doctype,true,true);
+                  if ($doctype!='C') $fromid=0;
+                  else $fromid=$this->fromid;
+              } else $fromid=$this->fromid;
           }
           if ($fromid == 0) {
               $this->debuginfo["error"]=sprintf("%s is not a family",$this->fromid);
