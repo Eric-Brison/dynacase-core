@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-27 12:22+0200\n"
+"POT-Creation-Date: 2010-05-31 13:01+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -254,6 +254,9 @@ msgid "destroyed by archive purge from %s"
 msgstr ""
 
 msgid "Purge archive"
+msgstr ""
+
+msgid "archieve status must be open to modify content"
 msgstr ""
 
 #, c-format
@@ -608,6 +611,14 @@ msgstr ""
 
 #, c-format
 msgid "copy from document #%d -%s-"
+msgstr ""
+
+#, c-format
+msgid "Archiving into %s"
+msgstr ""
+
+#, c-format
+msgid "Unarchiving from %s"
 msgstr ""
 
 #, fuzzy

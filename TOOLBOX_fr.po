@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-27 12:22+0200\n"
-"PO-Revision-Date: 2010-05-27 12:28+0200\n"
+"POT-Creation-Date: 2010-05-31 13:01+0200\n"
+"PO-Revision-Date: 2010-05-31 13:04+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -252,6 +252,9 @@ msgstr "Détruit par la purge de l'archive %s"
 
 msgid "Purge archive"
 msgstr "Purge de l'archive"
+
+msgid "archieve status must be open to modify content"
+msgstr ""
 
 #, c-format
 msgid "Profil for document's archive %s"
@@ -604,6 +607,14 @@ msgstr "Le cycle de vie associé %s [%d] est corrompu"
 #, c-format
 msgid "copy from document #%d -%s-"
 msgstr "copie à partir du document n°%d -%s-"
+
+#, c-format
+msgid "Archiving into %s"
+msgstr "Archivé dans %s"
+
+#, c-format
+msgid "Unarchiving from %s"
+msgstr "Désarchivé depuis %s"
 
 msgid "Affectation aborded"
 msgstr "Affectation annulée"

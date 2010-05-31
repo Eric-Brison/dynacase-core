@@ -3681,8 +3681,8 @@ create unique index i_docir on doc(initid, revision);";
               $this->profid=$archprof;
               $err=$this->modify(true,array("locked","archiveid", "dprofid", "profid"),true);
               if (! $err) {
-                  $this->addComment(sprintf("Archiving into %s",$archive->getTitle()),HISTO_MESSAGE,"archive");
-                  $this->addLog('archive',$archive->id,sprintf("Archiving into %s",$archive->getTitle()));
+                  $this->addComment(sprintf(_("Archiving into %s"),$archive->getTitle()),HISTO_MESSAGE,"archive");
+                  $this->addLog('archive',$archive->id,sprintf(_("Archiving into %s"),$archive->getTitle()));
                   $err=$this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",$this->fromid, $archive->id,$archprof,$this->initid));
               }
           }
@@ -3707,8 +3707,8 @@ create unique index i_docir on doc(initid, revision);";
               $err=$this->setProfil($restoreprofil);
               if (! $err) $err=$this->modify(true,array("locked","archiveid","dprofid","profid"),true);
               if (! $err) {
-                  $this->addComment(sprintf("Unarchiving from %s",$archive->getTitle()),HISTO_MESSAGE,"unarchive");
-                  $this->addLog('unarchive',$archive->id,sprintf("Unarchiving from %s",$archive->getTitle()));
+                  $this->addComment(sprintf(_("Unarchiving from %s"),$archive->getTitle()),HISTO_MESSAGE,"unarchive");
+                  $this->addLog('unarchive',$archive->id,sprintf(_("Unarchiving from %s"),$archive->getTitle()));
                   $err=$this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",$this->fromid,$this->initid));
               }
           }
