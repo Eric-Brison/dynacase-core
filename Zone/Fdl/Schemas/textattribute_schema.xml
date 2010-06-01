@@ -1,0 +1,11 @@
+<xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="1">
+	[annotation]
+         <xs:simpleType>
+         	
+                        <xs:restriction base="xs:token">
+                        	[IF minOccurs]<xs:minLength value="1"/>[ENDIF minOccurs]
+                                [IF maxlength]<xs:maxLength value="[maxlength]"></xs:maxLength>[ENDIF maxlength]
+                                [IF pattern]<xs:pattern value="[pattern]"></xs:pattern>[ENDIF pattern]
+                        </xs:restriction>
+         </xs:simpleType>
+</xs:element>

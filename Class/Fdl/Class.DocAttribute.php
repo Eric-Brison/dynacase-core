@@ -103,6 +103,21 @@ Class BasicAttribute {
   function isMultiple() {
   	return ($this->inArray() || ($this->getOption('multiple')=='yes'));
   }
+  
+  function getXmlSchema() {
+      return "<!-- no Schema ".$this->id."-->";
+  }
+function common_getXmlSchema(&$play) {
+   
+      $lay=new Layout(getLayoutFile("FDL","infoattribute_schema.xml"));
+      $lay->set("aname",$this->id);
+      $lay->set("label",$this->labelText);
+      $lay->set("type",$this->type);
+      $lay->set("isTitle",$this->isInTitle);
+      
+      $play->set("aname",$this->id);
+      $play->set("annotation", $lay->gen());
+  }
 }
 
 Class NormalAttribute extends BasicAttribute {
@@ -147,8 +162,51 @@ Class NormalAttribute extends BasicAttribute {
 
 
   }
-
   
+  function getXmlSchema($la) {
+      switch ($this->type) {
+          case 'text':
+              return $this->text_getXmlSchema($la);
+              
+          case 'date':
+              return $this->date_getXmlSchema($la);
+          case 'array':
+              return $this->array_getXmlSchema($la);
+          default:
+              return sprintf("<!-- no Schema %s (type %s)-->",$this->id,$this->type);;
+      }
+  }
+
+ 
+ function text_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","textattribute_schema.xml"));
+      $this->common_getXmlSchema($lay);
+      
+      $lay->set("minOccurs",$this->needed?"1":"0");
+      $lay->set("maxlength",false);
+      $lay->set("pattern",false);
+      return $lay->gen();
+  }
+  function date_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","dateattribute_schema.xml"));  
+      $lay->set("minOccurs",$this->needed?"1":"0");   
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function array_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","arrayattribute_schema.xml"));       
+      $this->common_getXmlSchema($lay);
+            $lay->set("minOccurs","0");
+      $lay->set("maxOccurs","unbounded");
+      $tax=array();
+      foreach ($la as $k=>$v) {        
+        if ($v->fieldSet && $v->fieldSet->id==$this->id) {
+            $tax[]=array("axs"=>$v->getXmlSchema($la));
+        }
+      }      
+      $lay->setBlockData("ATTR",$tax);
+      return $lay->gen();
+  }
   function getEnum() {   
     global $__tenum; // for speed optimization
     global $__tlenum;
@@ -309,6 +367,25 @@ Class FieldSetAttribute extends BasicAttribute {
     $this->fieldSet=&$fieldSet;
     $this->options=$options;
     $this->docname=$docname;
+  }
+  
+  function getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","fieldattribute_schema.xml"));
+      $lay->set("aname",$this->id);
+      $this->common_getXmlSchema($lay);
+      
+      $lay->set("minOccurs","0");
+      $lay->set("maxOccurs","1");
+      $lay->set("notop",($this->fieldSet->id != '' && $this->fieldSet->id != 'FIELD_HIDDENS'));
+      $tax=array();
+      foreach ($la as $k=>$v) {        
+        if ($v->fieldSet && $v->fieldSet->id==$this->id) {
+            $tax[]=array("axs"=>$v->getXmlSchema($la));
+        }
+      }
+      
+      $lay->setBlockData("ATTR",$tax);
+      return $lay->gen();
   }
 }
 

@@ -1,0 +1,8 @@
+        <xs:annotation>
+         <xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema-att">
+         	<fdl:label>[label]</fdl:label>         	
+                <fdl:type>[type]</fdl:type>
+                [IF isTitle]<fdl:title>true</fdl:title>[ENDIF isTitle]
+            </xs:appinfo>
+        </xs:annotation>
+        

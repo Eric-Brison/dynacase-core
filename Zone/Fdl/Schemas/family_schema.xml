@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fdl="http://www.freedom-ecm.org/schema-att" fdl:schemaLocation="fdloptions.xsd">
+        <xs:include schemaLocation="fdl.xsd"></xs:include>
+        
+        <xs:element name="[famname]">
+                <xs:complexType>
+                        <xs:all >
+                        	[BLOCK LEVEL1]
+                                <xs:element minOccurs="0" maxOccurs="1" ref="[level1name]"></xs:element>[ENDBLOCK LEVEL1]
+                        </xs:all>
+                </xs:complexType>
+        </xs:element>
+        
+        [BLOCK ATTR][tax]
+        [ENDBLOCK ATTR]
+        
+   
+</xs:schema>
