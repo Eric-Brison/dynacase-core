@@ -91,7 +91,7 @@ function AttrToPhp($dbaccess, $tdoc) {
 	  $table1[$doctitle]->visibility="H";
 	  $table1[$doctitle]->phpfile="";
 	  $table1[$doctitle]->phpfunc="::getTitle(".$v->id.",' )";
-	  $table1[$doctitle]->options="";
+	  $table1[$doctitle]->options="autotitle=yes";
 	  $table1[$doctitle]->title="N";
 	  $table1[$doctitle]->abstract="N";
 	  $table1[$doctitle]->needed="N";

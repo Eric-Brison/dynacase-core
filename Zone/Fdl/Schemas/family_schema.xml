@@ -9,10 +9,7 @@
                                 <xs:element minOccurs="0" maxOccurs="1" ref="[level1name]"></xs:element>[ENDBLOCK LEVEL1]
                         </xs:all>
                 </xs:complexType>
-        </xs:element>
-        
+        </xs:element>        
         [BLOCK ATTR][tax]
-        [ENDBLOCK ATTR]
-        
-   
+        [ENDBLOCK ATTR]  
 </xs:schema>

@@ -92,8 +92,12 @@ Class BasicAttribute {
   function setNeeded($need) {
     $this->needed=$need;
   }
-  
-
+  /**
+   * test if attribute is not a auto created attribute
+   */
+   function isReal() {
+    
+   }
 
   /**
    * to see if an attribute is n item of an array
@@ -126,6 +130,7 @@ function common_getXmlSchema(&$play) {
       $lay->set("isTitle",$this->isInTitle);
       $lay->set("phpfile",$this->phpfile);
       $lay->set("phpfunc",$this->phpfunc);
+      $lay->set("computed",((! $this->phpfile) && (substr($this->phpfunc,0,2)=="::")));
       $lay->set("link",str_replace('&','&amp;',$this->link));
       $lay->set("elink",str_replace('&','&amp;',$this->elink));
       $lay->set("default",false); // TODO : need detect default value
@@ -138,7 +143,7 @@ function common_getXmlSchema(&$play) {
       $lay->setBlockData("options",$t);
       
       $play->set("minOccurs",$this->needed?"1":"0");
-      $play->set("maxOccurs",($this->visibility=="H"||$this->visibility=="R")?"0":(($this->getOption('multiple')=='yes')?"unbounded":"1"));
+      $play->set("maxOccurs",(($this->getOption('multiple')=='yes')?"unbounded":"1"));
       $play->set("aname",$this->id);
       $play->set("appinfos", $lay->gen());
   }
@@ -191,14 +196,27 @@ Class NormalAttribute extends BasicAttribute {
       
       switch ($this->type) {
           case 'text':
-              return $this->text_getXmlSchema($la);
-              
+              return $this->text_getXmlSchema($la); 
+          case 'longtext':
+          case 'htmltext':
+              return $this->longtext_getXmlSchema($la);       
+          case 'int':
+          case 'integer':
+              return $this->int_getXmlSchema($la);     
+          case 'float':
+          case 'money':
+              return $this->float_getXmlSchema($la);                 
+          case 'image':
+          case 'file':
+              return $this->file_getXmlSchema($la);
           case 'enum':
               return $this->enum_getXmlSchema($la);
           case 'docid':
               return $this->docid_getXmlSchema($la);
           case 'date':
               return $this->date_getXmlSchema($la);
+          case 'time':
+              return $this->time_getXmlSchema($la);
           case 'array':
               return $this->array_getXmlSchema($la);
           default:
@@ -235,7 +253,32 @@ function enum_getXmlSchema(&$la) {
   }
   function date_getXmlSchema(&$la) {
       $lay=new Layout(getLayoutFile("FDL","dateattribute_schema.xml"));  
-      $lay->set("minOccurs",$this->needed?"1":"0");   
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+
+  function int_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","intattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function longtext_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","longtextattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function float_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","floatattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function time_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","timeattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function file_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","fileattribute_schema.xml"));  
       $this->common_getXmlSchema($lay);
             return $lay->gen();
   }

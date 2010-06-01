@@ -441,7 +441,11 @@ function preDocDelete() {
       $level1=array();
       $la=$this->getAttributes();
       $tax=array();
-      foreach ($la as $k=>$v) {        
+            
+      foreach ($la as $k=>$v) {
+          if  ((!$v) || ($v->getOption("autotitle")=="yes")) unset($la[$k]);
+      }
+      foreach ($la as $k=>$v) {
         if (($v->id != "FIELD_HIDDENS") && ($v->type=='frame' || $v->type=="tab") &&((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {
             $level1[]=array("level1name"=>$k);
             $tax[]=array("tax"=>$v->getXmlSchema($la));
