@@ -56,7 +56,16 @@ Class BasicAttribute {
     $v=$this->_topt[$x];
     return ($v?$v:$def);  
   }
-
+/**
+   * return all value of options
+   * @return array
+   */
+  function getOptions() {
+    if (!isset($this->_topt)) {
+        $this->getOption('a');
+    }
+    return $this->_topt;
+  }
   /**
    * temporary change option
    * @return void
@@ -113,10 +122,25 @@ function common_getXmlSchema(&$play) {
       $lay->set("aname",$this->id);
       $lay->set("label",$this->labelText);
       $lay->set("type",$this->type);
+      $lay->set("visibility",$this->visibility);
       $lay->set("isTitle",$this->isInTitle);
+      $lay->set("phpfile",$this->phpfile);
+      $lay->set("phpfunc",$this->phpfunc);
+      $lay->set("link",str_replace('&','&amp;',$this->link));
+      $lay->set("elink",str_replace('&','&amp;',$this->elink));
+      $lay->set("default",false); // TODO : need detect default value
+      $lay->set("constraint",$this->phpconstraint);
+      $tops=$this->getOptions();
+      $t=array();
+      foreach ($tops as $k=>$v) {
+          if ($k) $t[]=array("key"=>$k,"val"=>$v);
+      }
+      $lay->setBlockData("options",$t);
       
+      $play->set("minOccurs",$this->needed?"1":"0");
+      $play->set("maxOccurs",($this->visibility=="H"||$this->visibility=="R")?"0":(($this->getOption('multiple')=='yes')?"unbounded":"1"));
       $play->set("aname",$this->id);
-      $play->set("annotation", $lay->gen());
+      $play->set("appinfos", $lay->gen());
   }
 }
 
@@ -164,10 +188,15 @@ Class NormalAttribute extends BasicAttribute {
   }
   
   function getXmlSchema($la) {
+      
       switch ($this->type) {
           case 'text':
               return $this->text_getXmlSchema($la);
               
+          case 'enum':
+              return $this->enum_getXmlSchema($la);
+          case 'docid':
+              return $this->docid_getXmlSchema($la);
           case 'date':
               return $this->date_getXmlSchema($la);
           case 'array':
@@ -182,9 +211,26 @@ Class NormalAttribute extends BasicAttribute {
       $lay=new Layout(getLayoutFile("FDL","textattribute_schema.xml"));
       $this->common_getXmlSchema($lay);
       
-      $lay->set("minOccurs",$this->needed?"1":"0");
       $lay->set("maxlength",false);
       $lay->set("pattern",false);
+      return $lay->gen();
+  }
+function enum_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","enumattribute_schema.xml"));
+      $this->common_getXmlSchema($lay);
+     $la=$this->getEnum();
+     $te=array();
+      foreach ($la as $k=>$v) {        
+            $te[]=array("key"=>$k,"val"=>$v);        
+      }
+      $lay->setBlockData("enums",$te);
+      return $lay->gen();
+  }
+  function docid_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","docidattribute_schema.xml"));
+      $this->common_getXmlSchema($lay);
+      
+      $lay->set("famid",$this->format);
       return $lay->gen();
   }
   function date_getXmlSchema(&$la) {

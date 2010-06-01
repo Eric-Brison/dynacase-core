@@ -1,5 +1,7 @@
 <xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="1">
-        [annotation]
+        <xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
+                [appinfos]
+        </xs:appinfo></xs:annotation>
          <xs:simpleType>        	
                         <xs:restriction base="xs:date">       
                         </xs:restriction>
