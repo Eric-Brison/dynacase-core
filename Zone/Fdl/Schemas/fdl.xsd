@@ -13,11 +13,13 @@
               
         </xs:complexType>
 	
+      
 	
-        <xs:complexType name="fdl-file">
+        <xs:complexType name="fdl-file">      
                 <xs:simpleContent>
-                        <xs:extension base="xs:token">
-                                <xs:attribute name="href" type="xs:token" />
+                        <xs:extension base="xs:base64Binary">
+                                <xs:attribute name="href" type="xs:anyURI" />
+                                <xs:attribute name="title" type="xs:token" />
                                 <xs:attribute name="vid" type="xs:integer" />
                                 <xs:attribute name="mime" type="xs:token" />
                                 <xs:attribute name="type" type="xs:token" />

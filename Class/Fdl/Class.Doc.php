@@ -6363,7 +6363,7 @@ static function _cmpanswers($a,$b) {
         if (($v->id != "FIELD_HIDDENS") && 
             ($v->type=='frame' || $v->type=="tab") && 
             ((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {
-            $level1[]=array("level"=>$v->getXmlValue($this));
+            $level1[]=array("level"=>$v->getXmlValue($this,$option));
         } else {
            // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
         }

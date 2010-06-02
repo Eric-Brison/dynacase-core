@@ -128,7 +128,7 @@ Class BasicAttribute {
    * export values as xml fragment
    * @param $v
    */
-  function getXmlValue(Doc &$doc) {
+  function getXmlValue(Doc &$doc, $opt) {
       return sprintf("<!-- no value %s (%s)-->",$this->id,$this-type);
     }
   function common_getXmlSchema(&$play) {
@@ -254,8 +254,8 @@ Class NormalAttribute extends BasicAttribute {
    * @param $doc
    * @param $index
    */
-  function getXmlValue(Doc &$doc,$index=-1) {   
-      if ($index > -1) $v=$doc->getTvalue($this->id ,'',$index);
+  function getXmlValue(Doc &$doc,$opt=false) {   
+      if ($opt->index > -1) $v=$doc->getTvalue($this->id ,'',$opt->index);
       else $v=$doc->getValue($this->id);
       //if (! $v) return sprintf("<!-- no value %s -->",$this->id); 
    
@@ -275,7 +275,8 @@ Class NormalAttribute extends BasicAttribute {
                   $xmlvalues=array();
                   foreach ($col as $aid=>$aval) {
                       $oa=$doc->getAttribute($aid);
-                      $xmlvalues[]=$oa->getXmlValue($doc,$k);
+                      $opt->index=$k;
+                      $xmlvalues[]=$oa->getXmlValue($doc,$opt);
                   }
                   $axml[] = sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
               }
@@ -288,7 +289,7 @@ Class NormalAttribute extends BasicAttribute {
                   $name=$reg[3];
                   $base=getParam("CORE_EXTERNURL");
                   $href=$base.str_replace('&','&amp;',$doc->getFileLink($this->id));
-                  return sprintf('<%s vid="%d" mime="%s" href="%s">%s</%s>',$this->id,$vid,$mime,$href,$name,$this->id);
+                  return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$name,$this->id);
               } else {
                 return sprintf("<%s>%s</%s>",$this->id,$v,$this->id);
               }
@@ -579,12 +580,12 @@ Class FieldSetAttribute extends BasicAttribute {
    * export values as xml fragment
    * @param $v
    */
-  function getXmlValue(Doc &$doc) {
+  function getXmlValue(Doc &$doc, $opt) {
       $la=$doc->getAttributes();
       $xmlvalues=array();
       foreach ($la as $k=>$v) {
           if ($v->fieldSet && $v->fieldSet->id==$this->id) {
-              $xmlvalues[]=$v->getXmlValue($doc);
+              $xmlvalues[]=$v->getXmlValue($doc,$opt);
           }
       }
       return sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
