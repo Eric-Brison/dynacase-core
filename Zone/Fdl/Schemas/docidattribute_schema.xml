@@ -1,7 +1,6 @@
-<xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]" type="fdl-relation">
+<xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]" type="fdl-relation" nillable="[isnillable]">
 	<xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
-	  	[appinfos]
-               
+	  	[appinfos]               
                 <fdl:familyRelation>[famid]</fdl:familyRelation>
          </xs:appinfo> </xs:annotation>
        

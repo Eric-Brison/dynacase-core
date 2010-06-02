@@ -27,7 +27,7 @@ function impcard(&$action) {
   $valopt=GetHttpVars("opt"); // value of  options
   $vid = GetHttpVars("vid"); // special controlled view
   $state = GetHttpVars("state"); // search doc in this state
-  $inline=getHttpVars("inline"=="Y"); // view file inline
+  $inline=(strtolower(substr(getHttpVars("inline"),0,1))=="y"); // view file inline
   $latest = GetHttpVars("latest");
 
   $szone=false;
@@ -82,7 +82,7 @@ function impcard(&$action) {
     $ulink=false;
     $target="ooo";
     $file=$doc->viewdoc($zonebodycard,$target,$ulink);
-    Http_DownloadFile($file,$doc->title.".odt",'application/vnd.oasis.opendocument.text',$inline,false);
+    Http_DownloadFile($file,$doc->title.".odt",'application/vnd.oasis.opendocument.text',false,false);
     @unlink($file);
     exit;
   }
@@ -103,8 +103,7 @@ function impcard(&$action) {
     $of = fopen($export_file,"w+");
     fwrite($of, $action->lay->gen());
     fclose($of);
-  
-    http_DownloadFile($export_file, chop($doc->title).".$ext", "$mime",false,false);
+    http_DownloadFile($export_file, chop($doc->title).".$ext", "$mime",$inline,false);
   
     unlink($export_file);
     exit;

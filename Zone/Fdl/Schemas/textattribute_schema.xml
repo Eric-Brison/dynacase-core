@@ -1,10 +1,9 @@
-<xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]">
+<xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]" nillable="[isnillable]">
 	 <xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
                 [appinfos]
         </xs:appinfo></xs:annotation>
-         <xs:simpleType>
-         	
-                        <xs:restriction base="xs:token">
+         <xs:simpleType>      	
+                        <xs:restriction base="fdl-text">
                         	[IF minOccurs]<xs:minLength value="1"/>[ENDIF minOccurs]
                                 [IF maxlength]<xs:maxLength value="[maxlength]"></xs:maxLength>[ENDIF maxlength]
                                 [IF pattern]<xs:pattern value="[pattern]"></xs:pattern>[ENDIF pattern]

@@ -1,4 +1,4 @@
-<xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]">
+<xs:element name="[aname]" minOccurs="[minOccurs]" maxOccurs="[maxOccurs]" nillable="[isnillable]">
     <xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
                 [appinfos]
      </xs:appinfo></xs:annotation>

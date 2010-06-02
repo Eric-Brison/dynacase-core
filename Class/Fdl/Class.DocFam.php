@@ -443,7 +443,7 @@ function preDocDelete() {
       $tax=array();
             
       foreach ($la as $k=>$v) {
-          if  ((!$v) || ($v->getOption("autotitle")=="yes")) unset($la[$k]);
+          if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
       }
       foreach ($la as $k=>$v) {
         if (($v->id != "FIELD_HIDDENS") && ($v->type=='frame' || $v->type=="tab") &&((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {

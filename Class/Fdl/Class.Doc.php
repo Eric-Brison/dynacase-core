@@ -6345,6 +6345,31 @@ static function _cmpanswers($a,$b) {
       }
     }
   }
+  
+  public function exportXml($withschema) {
+      
+      //$lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
+      $lay=&$this->lay;
+      $lay->set("famname",strtolower($this->fromname));
+      $la=$this->GetFieldAttributes();
+      $level1=array();
+            
+      foreach ($la as $k=>$v) {
+          if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
+      }
+      foreach ($la as $k=>$v) {
+        if (($v->id != "FIELD_HIDDENS") && 
+            ($v->type=='frame' || $v->type=="tab") && 
+            ((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {
+            $level1[]=array("level"=>$v->getXmlValue($this));
+        } else {
+           // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
+        }
+      }
+      $lay->setBlockData("top",$level1);
+     //return ($lay->gen());
+  }
+  
  // =====================================================================================
   // ================= Methods use for XML ======================
   final public function toxml($withdtd=false,$id_doc="")  {
@@ -6820,7 +6845,7 @@ static function _cmpanswers($a,$b) {
     } else {
       if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
       if ($id > 0) {    
-	$t = getTDoc($this->dbaccess,$id);
+	$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype"));
 	if ($t)  {
 	  if ($t["doctype"]=='C') return getFamTitle($t);
 	  return $t["title"];
