@@ -141,6 +141,11 @@ Class BasicAttribute {
       $lay->set("isTitle",$this->isInTitle);
       $lay->set("phpfile",$this->phpfile);
       $lay->set("phpfunc",$this->phpfunc);
+  
+      if (($this->ype=="enum") &&  (! $this->phpfile) || ($this->phpfile == "-")) {
+          $lay->set("phpfile",false);
+          $lay->set("phpfunc",false);
+      }
       $lay->set("computed",((! $this->phpfile) && (substr($this->phpfunc,0,2)=="::")));
       $lay->set("link",str_replace('&','&amp;',$this->link));
       $lay->set("elink",str_replace('&','&amp;',$this->elink));
@@ -319,6 +324,7 @@ Class NormalAttribute extends BasicAttribute {
 function enum_getXmlSchema(&$la) {
       $lay=new Layout(getLayoutFile("FDL","enumattribute_schema.xml"));
       $this->common_getXmlSchema($lay);
+      
      $la=$this->getEnum();
      $te=array();
       foreach ($la as $k=>$v) {        

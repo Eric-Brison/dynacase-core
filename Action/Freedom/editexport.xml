@@ -44,6 +44,7 @@ option.pref {
   <option value="I">[TEXT:Importation data]</option>
   <option value="R">[TEXT:Raw data only]</option>
   <option value="F">[TEXT:Formated data]</option>
+  <option value="X">[TEXT:XML data]</option>
 </select></tr>
 
 <tr><td colspan="3" align="right"><input type="submit" value="[TEXT:Export]"></td></tr>

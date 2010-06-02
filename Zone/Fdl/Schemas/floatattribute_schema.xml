@@ -3,7 +3,7 @@
                 [appinfos]
         </xs:appinfo></xs:annotation>
          <xs:simpleType>        	
-                        <xs:restriction base="fdl-float">       
+                        <xs:restriction base="xs:decimal">       
                         </xs:restriction>
          </xs:simpleType>
 </xs:element>

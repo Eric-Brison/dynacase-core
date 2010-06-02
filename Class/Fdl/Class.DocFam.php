@@ -438,6 +438,7 @@ function preDocDelete() {
   function getXmlSchema() {
       $lay=new Layout(getLayoutFile("FDL","family_schema.xml"));
       $lay->set("famname",strtolower($this->name));
+      $lay->set("famtitle",strtolower($this->getTitle()));
       $level1=array();
       $la=$this->getAttributes();
       $tax=array();

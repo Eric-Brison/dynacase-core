@@ -46,6 +46,9 @@
         <xs:simpleType name="fdl-time">
                 <xs:restriction base="xs:time"/>
         </xs:simpleType>
+        <xs:simpleType name="fdl-timestamp">
+                <xs:restriction base="xs:dateTime"/>
+        </xs:simpleType>
 	<xs:simpleType name="fdl-text">
 		<xs:restriction base="xs:token"/>
 	</xs:simpleType>

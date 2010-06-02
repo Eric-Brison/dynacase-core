@@ -3,6 +3,9 @@
         <xs:include schemaLocation="fdl.xsd"></xs:include>
         
         <xs:element name="[famname]">
+        	 <xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
+                      <fdl:label>[famtitle]</fdl:label>     
+                </xs:appinfo></xs:annotation>
                 <xs:complexType>
                         <xs:all >
                         	[BLOCK LEVEL1]

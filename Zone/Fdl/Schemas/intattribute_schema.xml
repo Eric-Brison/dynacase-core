@@ -3,7 +3,7 @@
                 [appinfos]
         </xs:appinfo></xs:annotation>
          <xs:simpleType>        	
-                        <xs:restriction base="fdl-int">       
+                        <xs:restriction base="xs:integer">       
                         </xs:restriction>
          </xs:simpleType>
 </xs:element>

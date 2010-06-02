@@ -141,6 +141,12 @@ $action_desc = array (
    "short_name"		=>N_("export folder"),
    "acl"		=>"EXPORT"
   ) ,
+  
+  array( 
+   "name"               =>"EXPORTXMLFLD",
+   "short_name"         =>N_("export folder in xml format"),
+   "acl"                =>"EXPORT"
+  ) ,
   array( 
    "name"		=>"EXPORTFILE",
    "short_name"		=>N_("export file to consulting"),

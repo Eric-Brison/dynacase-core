@@ -3,7 +3,7 @@
                 [appinfos]
         </xs:appinfo></xs:annotation>
          <xs:simpleType>        	
-                        <xs:restriction base="fdl-longtext">       
+                        <xs:restriction base="xs:string">       
                         </xs:restriction>
          </xs:simpleType>
 </xs:element>

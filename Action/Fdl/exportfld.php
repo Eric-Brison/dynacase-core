@@ -30,7 +30,7 @@ include_once("FDL/import_file.php");
  * @global eformat Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
  * @global selection Http var :  JSON document selection object
  */
-function exportfld(&$action, $aflid="0", $famid="") {
+function exportfld(Action &$action, $aflid="0", $famid="") {
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $fldid = GetHttpVars("id",$aflid);
   $wprof = (GetHttpVars("wprof","N")=="Y"); // with profil
@@ -41,6 +41,12 @@ function exportfld(&$action, $aflid="0", $famid="") {
   $eformat = GetHttpVars("eformat","I"); // export format 
   $selection = GetHttpVars("selection"); // export selection  object (JSON)
 
+  if ($eformat == "X") {
+      // XML redirect
+      include_once("FDL/exportxmlfld.php");
+      return exportxmlfld($action,$aflid,$famid);
+      
+  }
 
   if ((! $fldid) && $selection) {
       $selection=json_decode($selection);

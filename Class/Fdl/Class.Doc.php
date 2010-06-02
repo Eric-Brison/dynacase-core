@@ -6346,10 +6346,10 @@ static function _cmpanswers($a,$b) {
     }
   }
   
-  public function exportXml($withschema) {
+  public function exportXml($withfile=false) {
       
-      //$lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
-      $lay=&$this->lay;
+      $lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
+      //$lay=&$this->lay;
       $lay->set("famname",strtolower($this->fromname));
       $la=$this->GetFieldAttributes();
       $level1=array();
@@ -6357,6 +6357,8 @@ static function _cmpanswers($a,$b) {
       foreach ($la as $k=>$v) {
           if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
       }
+      $option->withfile=$withfile;
+      
       foreach ($la as $k=>$v) {
         if (($v->id != "FIELD_HIDDENS") && 
             ($v->type=='frame' || $v->type=="tab") && 
@@ -6367,7 +6369,7 @@ static function _cmpanswers($a,$b) {
         }
       }
       $lay->setBlockData("top",$level1);
-     //return ($lay->gen());
+     return ($lay->gen());
   }
   
  // =====================================================================================
