@@ -239,6 +239,10 @@
 
   <pre-remove></pre-remove>
   <post-remove></post-remove>
+  
+  <reconfigure>  
+  	<process command="programs/toolbox_reconfigure" />
+  </reconfigure>
 
   <changelog>
     <version number="3.0.4" date="2010-05-07">
