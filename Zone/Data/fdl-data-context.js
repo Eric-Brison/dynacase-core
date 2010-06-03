@@ -28,7 +28,7 @@ if (!("console" in window)) {window.console = {'log': function(s) {}};}
 Fdl.Context = function(config) {
 	if (! config) config={};
 	if (config) {
-		if (! config.url) this.url = window.location.protocol+'//'+window.location.hostname+window.location.pathname;
+		if (! config.url) this.url = window.location.protocol+'//'+window.location.host+window.location.pathname;
 		else this.url = config.url;
 		if (this.url.substr(-4, 4) == '.php')
 			this.url += '?';
