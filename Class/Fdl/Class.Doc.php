@@ -6357,7 +6357,7 @@ static function _cmpanswers($a,$b) {
       foreach ($la as $k=>$v) {
           if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
       }
-      $option->withfile=$withfile;
+      $option->withFile=$withfile;
       
       foreach ($la as $k=>$v) {
         if (($v->id != "FIELD_HIDDENS") && 

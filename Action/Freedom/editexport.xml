@@ -1,11 +1,41 @@
 [ZONE FDL:HTMLHEAD]
 <script>
 include_js('WHAT/Layout/subwindow.js')
+function testexport(s) {
+    var mode=s.options[s.selectedIndex].value;
+    var f=s.form;
+    if (mode == 'X' || mode == 'Y') {
+      f.action.value='EXPORTXMLFLD';
+      for (var i in f.code.options) {
+          if (f.code.options[i].value=='utf8') f.code.options[i].selected=true;
+          else  f.code.options[i].selected=false;
+      }
+      f.code.disabled=true;
+      f.wprof.disabled=true;
+      f.wident.disabled=true;
+      f.wcolumn.disabled=true;
+      f.wprof.className='disable';
+      f.wident.className='disable';
+      f.wcolumn.className='disable';
+    } else {
+      f.action.value='EXPORTFLD';
+      f.code.disabled=false;
+      f.wprof.disabled=false;
+      f.wident.disabled=false;
+      f.wcolumn.disabled=false;
+      f.wprof.className='';
+      f.wident.className='';
+      f.wcolumn.className='';
+    }
+}
 </script>
 <style>
 option.pref { 
               background-color:[COLOR_B3];
               }
+select.disable {
+   visibility:hidden;
+}
 </style>
 <h2 style="text-align:center">[TEXT:Export Documents from] </h2>
 <h3 style="text-align:center">[title]</h3>
@@ -13,39 +43,46 @@ option.pref {
 <form 
       name="dexport"style="display:inline"
       method="POST" ENCTYPE="multipart/form-data"
-      action="[CORE_STANDURL]&app=FDL&action=EXPORTFLD&id=[dirid]"       >
-
+      action="[CORE_STANDURL]&app=FDL&id=[dirid]"       >
+<input type="hidden" name="action" value="EXPORTFLD"></input>
 <table align="center">
 <tr><td></td><td></td><td rowspan="7"><img align="left" src="[IMG:ardown.png]"></td></tr>
 <tr><td align="right" style="cursor:help" title="[TEXT:Prefer choose Latin if you are under microsoft else use UTF-8]">
 [TEXT:Encoding] :</td><td><select name="code">
   <option value="utf8">UTF-8</option>
   <option value="iso8859-15">Latin 1</option>
-</select></tr>
-<tr><td align="right" style="cursor:help" title="[TEXT:Select Profil if it is to globaly reuse file to reinitialize profil]">[TEXT:Profile] :</td><td><select name="wprof">
+</select></td></tr>
+<tr><td align="right" style="cursor:help" title="[TEXT:Select Profil if it is to globaly reuse file to reinitialize profil]">[TEXT:Profile] :</td>
+<td><select name="wprof">
   <option value="N">[TEXT:Without profil]</option>
   <option value="Y">[TEXT:With profil]</option>
-</select></tr>
-<tr><td align="right" style="cursor:help" title="[TEXT:Export archive file with data file - fdl.csv- and attached files]">[TEXT:Files] :</td><td><select name="wfile">
+</select></td></tr>
+<tr><td align="right" style="cursor:help" title="[TEXT:Export archive file with data file - fdl.csv- and attached files]">[TEXT:Files] :</td>
+<td><select name="wfile">
   <option value="N">[TEXT:Without files]</option>
   <option value="Y">[TEXT:With files]</option>
-</select></tr>
-<tr><td align="right" style="cursor:help" title="[TEXT:Select identificator to set the second column -specid- this file can only reimport in the same database]">[TEXT:Identificators] :</td><td><select name="wident">
+</select></td></tr>
+<tr><td align="right" style="cursor:help" title="[TEXT:Select identificator to set the second column -specid- this file can only reimport in the same database]">[TEXT:Identificators] :</td>
+<td><select name="wident">
   <option value="N">[TEXT:Without identificators]</option>
   <option value="Y">[TEXT:With identificators]</option>
-</select></tr><tr><td align="right" style="cursor:help" title="[TEXT:Choose a family to import only set of attributes]">[TEXT:Choose columns] :</td><td><select onchange="if (this.options[this.selectedIndex].value > 0) subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'exportcols','[CORE_STANDURL]app=[APPNAME]&action=EDITEXPORTCHOOSECOLS&id='+this.options[this.selectedIndex].value)" name="wcolumn">
+</select></td></tr>
+<tr><td align="right" style="cursor:help" title="[TEXT:Choose a family to import only set of attributes]">[TEXT:Choose columns] :</td>
+  <td><select onchange="if (this.options[this.selectedIndex].value > 0) subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'exportcols','[CORE_STANDURL]app=[APPNAME]&action=EDITEXPORTCHOOSECOLS&id='+this.options[this.selectedIndex].value)" name="wcolumn">
   <option value="">[TEXT:Apply my preferences]</option>
   <option value="-">[TEXT:Don't care preferences]</option>
 [BLOCK coptions]
   <option [IF pref]class="pref"[ENDIF pref] value="[idcdoc]">[classname] </option>[ENDBLOCK coptions]
 
-</select></tr>
-<tr><td align="right" style="cursor:help" title="[TEXT:Raw data set database value. Formated data : data are exported like can see it in navigator.]">[TEXT:Format export] :</td><td><select name="eformat">
+</select></td></tr>
+<tr><td align="right" style="cursor:help" title="[TEXT:Raw data set database value. Formated data : data are exported like can see it in navigator.]">[TEXT:Format export] :</td>
+  <td><select name="eformat" onchange="testexport(this)">
   <option value="I">[TEXT:Importation data]</option>
   <option value="R">[TEXT:Raw data only]</option>
   <option value="F">[TEXT:Formated data]</option>
-  <option value="X">[TEXT:XML data]</option>
-</select></tr>
+  <option value="X">[TEXT:XML data (one file per document)]</option>
+  <option value="Y" >[TEXT:XML data (only one xml file)]</option>
+</select></td></tr>
 
 <tr><td colspan="3" align="right"><input type="submit" value="[TEXT:Export]"></td></tr>
 </table>

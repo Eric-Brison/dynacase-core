@@ -289,7 +289,18 @@ Class NormalAttribute extends BasicAttribute {
                   $name=$reg[3];
                   $base=getParam("CORE_EXTERNURL");
                   $href=$base.str_replace('&','&amp;',$doc->getFileLink($this->id));
-                  return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$name,$this->id);
+                  if ($opt->withFile) {
+                      $path=$doc->vault_filename_fromvalue($v,true);
+                      if (is_file($path)) {
+                          return sprintf('<%s vid="%d" mime="%s" title="%s">%s</%s>',
+                                    $this->id,$vid,$mime,$name,base64_encode(file_get_contents($path)),$this->id);
+                      } else {
+                         return sprintf('<!-- file not found --><%s vid="%d" mime="%s" title="%s"/>',
+                                    $this->id,$vid,$mime,$name,$this->id); 
+                      }
+                  } else {
+                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$name);
+                  }
               } else {
                 return sprintf("<%s>%s</%s>",$this->id,$v,$this->id);
               }
@@ -309,7 +320,7 @@ Class NormalAttribute extends BasicAttribute {
                              $this->id,$v,_("unreferenced document"),$this->id);
               }
           default:               
-                return sprintf("<%s>%s</%s>",$this->id,$v,$this->id);
+                return sprintf("<%s>%s</%s>",$this->id,str_replace('&','&amp;',$v),$this->id);
              
       }
       
