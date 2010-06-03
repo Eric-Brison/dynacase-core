@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-31 13:01+0200\n"
+"POT-Creation-Date: 2010-06-03 11:10+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1464,6 +1464,9 @@ msgstr ""
 
 #, c-format
 msgid "Error in portfolio : folder %s not exists"
+msgstr ""
+
+msgid "unreferenced document"
 msgstr ""
 
 #, c-format
@@ -4424,6 +4427,12 @@ msgstr ""
 msgid "Formated data"
 msgstr ""
 
+msgid "XML data (one file per document)"
+msgstr ""
+
+msgid "XML data (only one xml file)"
+msgstr ""
+
 #, fuzzy
 msgid "Export"
 msgstr "Export selected cards"
@@ -5654,6 +5663,9 @@ msgstr "Create"
 #, fuzzy
 msgid "export folder"
 msgstr "Delete"
+
+msgid "export folder in xml format"
+msgstr ""
 
 msgid "export file to consulting"
 msgstr ""
@@ -7029,6 +7041,15 @@ msgstr "Can't create user"
 msgid "the user identification is unknow"
 msgstr ""
 
+msgid "no export folder specified"
+msgstr ""
+
+msgid "Zip Archive cannot be created"
+msgstr ""
+
+msgid "Xml file cannot be created"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "Create %s"
 msgstr "Create"
@@ -7520,15 +7541,9 @@ msgstr ""
 msgid "no cycle defined"
 msgstr ""
 
-msgid "no export folder specified"
-msgstr ""
-
 #, fuzzy, c-format
 msgid "cannot copy %s"
 msgstr "Category"
-
-msgid "Zip Archive cannot be created"
-msgstr ""
 
 #, fuzzy, c-format
 msgid "Sure delete %s ?"

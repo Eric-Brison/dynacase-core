@@ -81,6 +81,22 @@ function FrenchDateToUnixTs($fdate,$utc=false) {
 
 
 /**
+ * convert French date DD/MM/YYYY to iso 
+ * date must be > 01/01/1970 and < 2038
+ * @param string $fdate DD/MM/YYYY HH:MM
+ * @return string  YYYY-MM-DD HH:MM
+ */
+function FrenchDateToIso($fdate) {
+  if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/", $fdate,$r)) {
+
+    if ($r[4] == "") $dt=sprintf("%04d-%02d-%02d",$r[3],$r[2],$r[1]);
+    else $dt=sprintf("%04d-%02d-%02dT%02d:%02d:%02d",$r[3],$r[2],$r[1],$r[4],$r[5],$r[6]);
+  } else {
+    $dt = "";
+  }
+  return $dt;
+}
+/**
  * convert iso date to unix timestamp
  * date must be > 1970-01-01 and < 2038
  * @param string $isodate YYYY-MM-DD HH:MM
@@ -105,6 +121,18 @@ function iso8601DateToUnixTs($isodate,$utc=false) {
 function stringDateToUnixTs($isodate,$utc=false) {
   $dt=FrenchDateToUnixTs($isodate,$utc);
   if ($dt<0) $dt=iso8601DateToUnixTs($isodate,$utc);
+  return $dt;
+}
+
+/**
+ * convert string date to iso
+ * 
+ * @param string $isodate YYYY-MM-DD HH:MM
+ * @return string YYYY-MM-DD HH:MM
+ */
+function stringDateToIso($isodate) {
+  $dt=FrenchDateToIso($isodate);
+  if (! $dt) return  $isodate;
   return $dt;
 }
 /**

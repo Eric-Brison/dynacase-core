@@ -1,0 +1,11 @@
+<xs:element name="[aname]" [IF notop]minOccurs="0" maxOccurs="1"[ENDIF notop]>
+	<xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
+                [appinfos]
+        </xs:appinfo></xs:annotation>
+                <xs:complexType>
+                        <xs:sequence>[BLOCK ATTR]
+                        [axs]
+                        [ENDBLOCK ATTR]
+                        </xs:sequence>
+                </xs:complexType>
+</xs:element>

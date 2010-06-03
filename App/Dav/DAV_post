@@ -12,26 +12,30 @@ fi
 #post installation
 #------------------------------
 if [ "$1" = "I" ] ; then
-    PARAM_WEBDAV_DB=`"$WIFF_ROOT"/wiff --getValue=webdav_db 2> /dev/null`
-    if [ -n "$PARAM_WEBDAV_DB" ]; then
-	PGSERVICE="$PARAM_WEBDAV_DB" psql -f "$wpub/DAV/dav-pg.sql"
-    fi
+    PGSERVICE="$pgservice_core" psql -f "$wpub/DAV/dav-pg.sql"
+    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val='service=''$pgservice_core''' WHERE name='WEBDAV_DB'"
+          
 fi
 
 #------------------------------
 #post update
 #------------------------------
 if [ "$1" = "U" ] ; then
-    PARAM_WEBDAV_DB=`"$WIFF_ROOT"/wiff --getValue=webdav_db 2> /dev/null`
-    if [ -n "$PARAM_WEBDAV_DB" ]; then
+    
 	log "Setting WEBDAV_DB in paramv..."
-	PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val='service=''$PARAM_WEBDAV_DB''' WHERE name='WEBDAV_DB'"
+        PGSERVICE="$pgservice_core" psql -c "select * from dav.locks" > /dev/null
+        RET=$?
+        if [ $RET -ne 0 ]; then
+            PGSERVICE="$pgservice_core" psql -f "$wpub/DAV/dav-pg.sql"
+            
+        fi
+	PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val='service=''$pgservice_core''' WHERE name='WEBDAV_DB'"
 	RET=$?
 	if [ $RET -ne 0 ]; then
 	    echo "Error setting WEBDAV_DB"
 	    exit $RET
 	fi
-    fi
+    
 fi
 
 #------------------------------

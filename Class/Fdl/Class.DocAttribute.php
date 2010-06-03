@@ -56,7 +56,16 @@ Class BasicAttribute {
     $v=$this->_topt[$x];
     return ($v?$v:$def);  
   }
-
+/**
+   * return all value of options
+   * @return array
+   */
+  function getOptions() {
+    if (!isset($this->_topt)) {
+        $this->getOption('a');
+    }
+    return $this->_topt;
+  }
   /**
    * temporary change option
    * @return void
@@ -83,8 +92,12 @@ Class BasicAttribute {
   function setNeeded($need) {
     $this->needed=$need;
   }
-  
-
+  /**
+   * test if attribute is not a auto created attribute
+   */
+   function isReal() {
+    
+   }
 
   /**
    * to see if an attribute is n item of an array
@@ -102,6 +115,54 @@ Class BasicAttribute {
     */
   function isMultiple() {
   	return ($this->inArray() || ($this->getOption('multiple')=='yes'));
+  }
+   /**
+   * export values as xml fragment
+   * @param $v
+   */
+  function getXmlSchema() {
+      return sprintf("<!-- no Schema %s (%s)-->",$this->id,$this-type);
+    }
+
+   /**
+   * export values as xml fragment
+   * @param $v
+   */
+  function getXmlValue(Doc &$doc, $opt) {
+      return sprintf("<!-- no value %s (%s)-->",$this->id,$this-type);
+    }
+  function common_getXmlSchema(&$play) {
+   
+      $lay=new Layout(getLayoutFile("FDL","infoattribute_schema.xml"));
+      $lay->set("aname",$this->id);
+      $lay->set("label",$this->labelText);
+      $lay->set("type",$this->type);
+      $lay->set("visibility",$this->visibility);
+      $lay->set("isTitle",$this->isInTitle);
+      $lay->set("phpfile",$this->phpfile);
+      $lay->set("phpfunc",$this->phpfunc);
+  
+      if (($this->ype=="enum") &&  (! $this->phpfile) || ($this->phpfile == "-")) {
+          $lay->set("phpfile",false);
+          $lay->set("phpfunc",false);
+      }
+      $lay->set("computed",((! $this->phpfile) && (substr($this->phpfunc,0,2)=="::")));
+      $lay->set("link",str_replace('&','&amp;',$this->link));
+      $lay->set("elink",str_replace('&','&amp;',$this->elink));
+      $lay->set("default",false); // TODO : need detect default value
+      $lay->set("constraint",$this->phpconstraint);
+      $tops=$this->getOptions();
+      $t=array();
+      foreach ($tops as $k=>$v) {
+          if ($k) $t[]=array("key"=>$k,"val"=>$v);
+      }
+      $lay->setBlockData("options",$t);
+      
+      $play->set("minOccurs",$this->needed?"1":"0");
+      $play->set("isnillable",$this->needed?"false":"true");
+      $play->set("maxOccurs",(($this->getOption('multiple')=='yes')?"unbounded":"1"));
+      $play->set("aname",$this->id);
+      $play->set("appinfos", $lay->gen());
   }
 }
 
@@ -147,8 +208,205 @@ Class NormalAttribute extends BasicAttribute {
 
 
   }
-
   
+  function getXmlSchema($la) {
+      
+      switch ($this->type) {
+          case 'text':
+              return $this->text_getXmlSchema($la); 
+          case 'longtext':
+          case 'htmltext':
+              return $this->longtext_getXmlSchema($la);       
+          case 'int':
+          case 'integer':
+              return $this->int_getXmlSchema($la);     
+          case 'float':
+          case 'money':
+              return $this->float_getXmlSchema($la);                 
+          case 'image':
+          case 'file':
+              return $this->file_getXmlSchema($la);
+          case 'enum':
+              return $this->enum_getXmlSchema($la);
+          case 'docid':
+              return $this->docid_getXmlSchema($la);
+          case 'date':
+              return $this->date_getXmlSchema($la);
+          case 'timestamp':
+              return $this->timestamp_getXmlSchema($la);
+          case 'time':
+              return $this->time_getXmlSchema($la);
+          case 'array':
+              return $this->array_getXmlSchema($la);
+          case 'color':
+              return $this->color_getXmlSchema($la);    
+          default:
+              return sprintf("<!-- no Schema %s (type %s)-->",$this->id,$this->type);;
+      }
+  }
+
+  /**
+   * export values as xml fragment
+   * @param $v
+   */
+  /**
+   * 
+   * @param $doc
+   * @param $index
+   */
+  function getXmlValue(Doc &$doc,$opt=false) {   
+      if ($opt->index > -1) $v=$doc->getTvalue($this->id ,'',$opt->index);
+      else $v=$doc->getValue($this->id);
+      //if (! $v) return sprintf("<!-- no value %s -->",$this->id); 
+   
+      if ($this->getOption("autotitle")=="yes") return sprintf("<!--autotitle %s %s -->",$this->id, $v);
+      if ((! $v) && ($this->type != 'array')) return sprintf('<%s xsi:nil="true"/>',$this->id); 
+      switch ($this->type) {
+          case 'timestamp':
+          case 'date':
+              $v=stringDateToIso($v);
+              return sprintf("<%s>%s</%s>",$this->id,$v,$this->id);
+          case 'array':
+              $la=$doc->getAttributes();
+              $xmlvalues=array();
+              $av=$doc->getAvalues($this->id);
+              $axml=array();
+              foreach ($av as $k=>$col) {
+                  $xmlvalues=array();
+                  foreach ($col as $aid=>$aval) {
+                      $oa=$doc->getAttribute($aid);
+                      $opt->index=$k;
+                      $xmlvalues[]=$oa->getXmlValue($doc,$opt);
+                  }
+                  $axml[] = sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
+              }
+              return implode("\n",$axml);
+          case 'image':
+          case 'file':
+              if (preg_match(PREGEXPFILE, $v, $reg)) {
+                  $vid=$reg[2];
+                  $mime=$reg[1];
+                  $name=$reg[3];
+                  $base=getParam("CORE_EXTERNURL");
+                  $href=$base.str_replace('&','&amp;',$doc->getFileLink($this->id));
+                  if ($opt->withFile) {
+                      $path=$doc->vault_filename_fromvalue($v,true);
+                      if (is_file($path)) {
+                          return sprintf('<%s vid="%d" mime="%s" title="%s">%s</%s>',
+                                    $this->id,$vid,$mime,$name,base64_encode(file_get_contents($path)),$this->id);
+                      } else {
+                         return sprintf('<!-- file not found --><%s vid="%d" mime="%s" title="%s"/>',
+                                    $this->id,$vid,$mime,$name,$this->id); 
+                      }
+                  } else {
+                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$name);
+                  }
+              } else {
+                return sprintf("<%s>%s</%s>",$this->id,$v,$this->id);
+              }
+             
+          case 'docid':
+              $info=getTDoc($doc->dbaccess,$v,array(),array("title","name","id"));
+              if ($info) {
+                  if ($info["name"]) {
+                  return sprintf('<%s id="%s" name="%s">%s</%s>',
+                             $this->id,$info["id"],$info["name"],$info["title"],$this->id);
+                  } else {
+                       return sprintf('<%s id="%s">%s</%s>',
+                             $this->id,$info["id"],$info["title"],$this->id);
+                  }
+              } else {
+                  return sprintf('<%s id="%s">%s</%s>',
+                             $this->id,$v,_("unreferenced document"),$this->id);
+              }
+          default:               
+                return sprintf("<%s>%s</%s>",$this->id,str_replace('&','&amp;',$v),$this->id);
+             
+      }
+      
+  }
+ function text_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","textattribute_schema.xml"));
+      $this->common_getXmlSchema($lay);
+      
+      $lay->set("maxlength",false);
+      $lay->set("pattern",false);
+      return $lay->gen();
+  }
+function enum_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","enumattribute_schema.xml"));
+      $this->common_getXmlSchema($lay);
+      
+     $la=$this->getEnum();
+     $te=array();
+      foreach ($la as $k=>$v) {        
+            $te[]=array("key"=>$k,"val"=>$v);        
+      }
+      $lay->setBlockData("enums",$te);
+      return $lay->gen();
+  }
+  function docid_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","docidattribute_schema.xml"));
+      $this->common_getXmlSchema($lay);
+      
+      $lay->set("famid",$this->format);
+      return $lay->gen();
+  }
+  function date_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","dateattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function timestamp_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","timestampattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function color_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","colorattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+
+  function int_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","intattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function longtext_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","longtextattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function float_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","floatattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function time_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","timeattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function file_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","fileattribute_schema.xml"));  
+      $this->common_getXmlSchema($lay);
+            return $lay->gen();
+  }
+  function array_getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","arrayattribute_schema.xml"));       
+      $this->common_getXmlSchema($lay);
+            $lay->set("minOccurs","0");
+      $lay->set("maxOccurs","unbounded");
+      $tax=array();
+      foreach ($la as $k=>$v) {        
+        if ($v->fieldSet && $v->fieldSet->id==$this->id) {
+            $tax[]=array("axs"=>$v->getXmlSchema($la));
+        }
+      }      
+      $lay->setBlockData("ATTR",$tax);
+      return $lay->gen();
+  }
   function getEnum() {   
     global $__tenum; // for speed optimization
     global $__tlenum;
@@ -309,6 +567,39 @@ Class FieldSetAttribute extends BasicAttribute {
     $this->fieldSet=&$fieldSet;
     $this->options=$options;
     $this->docname=$docname;
+  }
+  
+  function getXmlSchema(&$la) {
+      $lay=new Layout(getLayoutFile("FDL","fieldattribute_schema.xml"));
+      $lay->set("aname",$this->id);
+      $this->common_getXmlSchema($lay);
+      
+      $lay->set("minOccurs","0");
+      $lay->set("maxOccurs","1");
+      $lay->set("notop",($this->fieldSet->id != '' && $this->fieldSet->id != 'FIELD_HIDDENS'));
+      $tax=array();
+      foreach ($la as $k=>$v) {        
+        if ($v->fieldSet && $v->fieldSet->id==$this->id) {
+            $tax[]=array("axs"=>$v->getXmlSchema($la));
+        }
+      }
+      
+      $lay->setBlockData("ATTR",$tax);
+      return $lay->gen();
+  }
+ /**
+   * export values as xml fragment
+   * @param $v
+   */
+  function getXmlValue(Doc &$doc, $opt) {
+      $la=$doc->getAttributes();
+      $xmlvalues=array();
+      foreach ($la as $k=>$v) {
+          if ($v->fieldSet && $v->fieldSet->id==$this->id) {
+              $xmlvalues[]=$v->getXmlValue($doc,$opt);
+          }
+      }
+      return sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
   }
 }
 

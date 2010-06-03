@@ -152,7 +152,7 @@ function Http_Download($src,$ext,$name,$add_ext=TRUE,$mime_type="") {
    echo $src;
 }
 
-function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=true) {
+function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=true,$deleteafter=false) {
   if (! file_exists($filename)) {
      printf(_("file not found : %s"),$filename);
      return;
@@ -184,6 +184,7 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
    flush();
    if (file_exists($filename)) {
        readfile($filename);
+       if ($deleteafter) unlink($filename);
        exit;
    } else {
        printf(_("file not found : %s"),$filename);

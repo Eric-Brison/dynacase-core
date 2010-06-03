@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-31 13:01+0200\n"
-"PO-Revision-Date: 2010-05-31 13:04+0200\n"
+"POT-Creation-Date: 2010-06-03 11:10+0200\n"
+"PO-Revision-Date: 2010-06-03 11:16+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -254,7 +254,7 @@ msgid "Purge archive"
 msgstr "Purge de l'archive"
 
 msgid "archieve status must be open to modify content"
-msgstr ""
+msgstr "Le statut de l'archive doit être ouvert pour y insérer des documents"
 
 #, c-format
 msgid "Profil for document's archive %s"
@@ -1434,6 +1434,9 @@ msgstr "appel de la méthode %s"
 #, c-format
 msgid "Error in portfolio : folder %s not exists"
 msgstr "Erreur dans la chemise : dossier %s n'existe pas"
+
+msgid "unreferenced document"
+msgstr "document non référencé"
 
 #, c-format
 msgid "the external pluggin file %s cannot be read"
@@ -4117,6 +4120,12 @@ msgstr "Données brutes seulement"
 msgid "Formated data"
 msgstr "Données formatées"
 
+msgid "XML data (one file per document)"
+msgstr "Données XML (un fichier par document)"
+
+msgid "XML data (only one xml file)"
+msgstr "Données XML (un seul fichier XML)"
+
 msgid "Export"
 msgstr "Exporter"
 
@@ -5237,6 +5246,9 @@ msgstr "Barre de menu d'édition"
 
 msgid "export folder"
 msgstr "exportation de dossier"
+
+msgid "export folder in xml format"
+msgstr "exportation d'un dossier en XML"
 
 msgid "export file to consulting"
 msgstr "exportation d'un fichier pour consultation"
@@ -6498,6 +6510,15 @@ msgstr "Impossible de creer l'utilisateur"
 msgid "the user identification is unknow"
 msgstr "l'identification de l'utilisateur est inconnue"
 
+msgid "no export folder specified"
+msgstr "pas de dossier d'export défini"
+
+msgid "Zip Archive cannot be created"
+msgstr "L'archive Zip n'a pas pu être créée"
+
+msgid "Xml file cannot be created"
+msgstr "Le fichier XML n'a pas pu être créé"
+
 #, c-format
 msgid "Create %s"
 msgstr "Créer %s"
@@ -6991,15 +7012,9 @@ msgstr "doc %d indexé"
 msgid "no cycle defined"
 msgstr "pas de cycle défini"
 
-msgid "no export folder specified"
-msgstr "pas de dossier d'export défini"
-
 #, c-format
 msgid "cannot copy %s"
 msgstr "écriture impossible : %s"
-
-msgid "Zip Archive cannot be created"
-msgstr "L'archive Zip n'a pas pu être créée"
 
 #, c-format
 msgid "Sure delete %s ?"

@@ -434,6 +434,32 @@ function preDocDelete() {
     }
     return  $this->_configuration;
   }
+  
+  function getXmlSchema() {
+      $lay=new Layout(getLayoutFile("FDL","family_schema.xml"));
+      $lay->set("famname",strtolower($this->name));
+      $lay->set("famtitle",strtolower($this->getTitle()));
+      $level1=array();
+      $la=$this->getAttributes();
+      $tax=array();
+            
+      foreach ($la as $k=>$v) {
+          if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
+      }
+      foreach ($la as $k=>$v) {
+        if (($v->id != "FIELD_HIDDENS") && ($v->type=='frame' || $v->type=="tab") &&((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {
+            $level1[]=array("level1name"=>$k);
+            $tax[]=array("tax"=>$v->getXmlSchema($la));
+        } else {
+           // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
+        }
+      };
+      
+      
+      $lay->setBlockData("ATTR",$tax);
+      $lay->setBlockData("LEVEL1",$level1);
+     return ($lay->gen());
+  }
 }
 
 ?>
