@@ -215,7 +215,7 @@ function AttrToPhp($dbaccess, $tdoc) {
 	if (!$v->phpconstraint) {
 	    if (($atype=="integer")||($atype=="int")) {
 	        $v->phpconstraint=sprintf("::isInteger(%s)",$v->id);
-	    } elseif  (($atype=="money")||($atype=="float")) {
+	    } elseif  (($atype=="money")||($atype=="double")) {
 	        $v->phpconstraint=sprintf("::isFloat(%s)",$v->id);
 	    }
 	}
@@ -246,6 +246,7 @@ function AttrToPhp($dbaccess, $tdoc) {
 	} else {
 	  switch($atype) {
 	  case double:
+          case float:
 	  case money:
 	    $attrids[$v->id] = ($v->id)." float8";  
 	    break;
@@ -446,6 +447,7 @@ function PgUpdateFamilly($dbaccess, $docid, $docname="") {
 	    $rtype=strtok($attr->type,"(");
 	    switch($rtype) {
 	    case double:
+            case float:
 	    case money:
 	      $sqltype = " float8";  
 	      break;

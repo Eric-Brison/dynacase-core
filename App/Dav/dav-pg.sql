@@ -7,8 +7,9 @@
 --
 -- Table structure for table 'locks'
 --
+create schema dav;
 
-CREATE TABLE locks (
+CREATE TABLE dav.locks (
   token varchar(255) NOT NULL default '',
   path text NOT NULL default '',
   expires int NOT NULL default '0',
@@ -18,16 +19,16 @@ CREATE TABLE locks (
   exclusivelock int NOT NULL default 0,
   PRIMARY KEY  (token)
 );
-create index lockspath on locks (path);
-create index lockspath2 on  locks(path,token);
-create index lockexp on  locks(expires);
+create index lockspath on dav.locks (path);
+create index lockspath2 on  dav.locks(path,token);
+create index lockexp on  dav.locks(expires);
 
 
 --
 -- Table structure for table 'properties'
 --
 
-CREATE TABLE properties (
+CREATE TABLE dav.properties (
   path text NOT NULL default '',
   name varchar(120) NOT NULL default '',
   ns varchar(120) NOT NULL default 'DAV:',
@@ -35,14 +36,14 @@ CREATE TABLE properties (
   PRIMARY KEY  (path,name,ns)
 );
 
-create index properties_path on  properties(path);
+create index properties_path on  dav.properties(path);
 
 
 --
 -- Table structure for table 'session'
 --
 
-CREATE TABLE sessions (
+CREATE TABLE dav.sessions (
   session varchar(200) NOT NULL ,
   owner varchar(200) NOT NULL ,
   vid int NOT NULL ,

@@ -22,7 +22,6 @@
     <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y" />
     <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic" needed="Y" />
     <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y" />
-	<param name="webdav_db" label="webdav database postgresql service name" type="text" default="webdav" needed="Y" />
   </parameters>
 
   <pre-install>    

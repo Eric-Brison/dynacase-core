@@ -214,7 +214,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
             
     } else {
       if (!seems_utf8($fspath)) $fspath=utf8_encode($fspath);
-      $query = "SELECT  value FROM properties WHERE name='fid' and path = '".pg_escape_string($fspath)."'";
+      $query = "SELECT  value FROM dav.properties WHERE name='fid' and path = '".pg_escape_string($fspath)."'";
       
        
       $res = pg_query($this->db_res,$query);
@@ -261,7 +261,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       $info["props"][] = $this->mkprop("getlastmodified", $doc->revdate);
       //error_log("FOLDER:".$path.":".$doc->title);
       // get additional properties from database
-      $query = "SELECT ns, name, value FROM properties WHERE path = '$path'";
+      $query = "SELECT ns, name, value FROM dav.properties WHERE path = '$path'";
       $res = pg_query($this->db_res,$query);
       while ($row = pg_fetch_assoc($res)) {
 	$info["props"][] = $this->mkprop($row["ns"], $row["name"], $row["value"]);
@@ -269,11 +269,11 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       pg_free_result($res);
       $tinfo[]=$info;  
       if (($firstlevel) || ($doc->title!=""))  {
-      //$query = "REPLACE INTO properties SET path = '".pg_escape_string($this->_unslashify($info["path"]))."', name = 'fid', ns= '$prop[ns]', value = '".$doc->initid."'";
-      $query = "delete from properties where path=  '".pg_escape_string($this->_unslashify($info["path"]))."' and name= 'fid'";
+      //$query = "REPLACE INTO dav.properties SET path = '".pg_escape_string($this->_unslashify($info["path"]))."', name = 'fid', ns= '$prop[ns]', value = '".$doc->initid."'";
+      $query = "delete from dav.properties where path=  '".pg_escape_string($this->_unslashify($info["path"]))."' and name= 'fid'";
     
       pg_query($this->db_res,$query);
-      $query = "INSERT INTO properties (path,name,ns,value) values (  '".pg_escape_string($this->_unslashify($info["path"]))."', 'fid',  '$prop[ns]', '".$doc->initid."')";
+      $query = "INSERT INTO dav.properties (path,name,ns,value) values (  '".pg_escape_string($this->_unslashify($info["path"]))."', 'fid',  '$prop[ns]', '".$doc->initid."')";
       
       pg_query($this->db_res,$query);
       }
@@ -307,7 +307,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	    $info["props"][] = $this->mkprop("getcontenttype", $this->_mimetype($filename));
 	    $info["props"][] = $this->mkprop("getcontentlength",intval($afile["size"] ));
 	    // get additional properties from database
-	    $query = "SELECT ns, name, value FROM properties WHERE path = '".pg_escape_string($this->_unslashify($info["path"]))."'";
+	    $query = "SELECT ns, name, value FROM dav.properties WHERE path = '".pg_escape_string($this->_unslashify($info["path"]))."'";
 	    $res = pg_query($this->db_res,$query);
 	    while ($row = pg_fetch_assoc($res)) {
 	      $info["props"][] = $this->mkprop($row["ns"], $row["name"], $row["value"]);
@@ -317,9 +317,9 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	    // error_log("PROP:".$query);
 	    $tinfo[]=$info;
 	    //$query = "REPLACE INTO properties SET path = '".pg_escape_string($this->_unslashify($info["path"]))."', name = 'fid', ns= '$prop[ns]', value = '".$doc->id."'";
-	    $query = "delete from properties where path=  '".pg_escape_string($this->_unslashify($info["path"]))."' and name= 'fid'";
+	    $query = "delete from dav.properties where path=  '".pg_escape_string($this->_unslashify($info["path"]))."' and name= 'fid'";
 	    pg_query($this->db_res,$query);
-	    $query = "INSERT INTO properties (path,name,ns,value) values (  '".pg_escape_string($this->_unslashify($info["path"]))."', 'fid',  '$prop[ns]', '".$doc->initid."')";
+	    $query = "INSERT INTO dav.properties (path,name,ns,value) values (  '".pg_escape_string($this->_unslashify($info["path"]))."', 'fid',  '$prop[ns]', '".$doc->initid."')";
 	    pg_query($this->db_res,$query);
 	    //  error_log($query);
 	    //error_log("FILE:".$afile["name"]."-".$afile["size"]."-".$path);
@@ -786,7 +786,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	return "403 Forbidden:$err";    		
       }
       if ($err=="") {
-	$query = "DELETE FROM properties WHERE path LIKE '".$this->_slashify($options["path"])."%'";     
+	$query = "DELETE FROM dav.properties WHERE path LIKE '".$this->_slashify($options["path"])."%'";     
 	pg_query($this->db_res,$query);
       }
 
@@ -803,7 +803,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       if ($err!="") {
 	return "403 Forbidden:$err";    		
       }
-      $query = "DELETE FROM properties WHERE name='fid' and value=".$doc->initid;
+      $query = "DELETE FROM dav.properties WHERE name='fid' and value=".$doc->initid;
       error_log ( $query );
       pg_query($this->db_res,$query);
     }
@@ -858,7 +858,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	  // delete file
 	  $err=$dest->delete();
 	  if ($err=="") {
-	    $query = "DELETE FROM properties WHERE name='fid' and value=".$dest->initid;
+	    $query = "DELETE FROM dav.properties WHERE name='fid' and value=".$dest->initid;
 	    error_log($query);
 	    pg_query($this->db_res,$query);
 	    // move
@@ -874,7 +874,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 		  $src->addComment(sprintf(_("Move file from %s to %s"),
 					   ($psrc->title),
 					   ($ppdest->title)));
-		  $query = "DELETE FROM properties WHERE path = '$psource'";
+		  $query = "DELETE FROM dav.properties WHERE path = '$psource'";
 		}
 	      }
 	    }
@@ -889,7 +889,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	    $this->docpropinfo($src,$pdest,true);
 	    if ($err=="") {
 
-	      $query = "DELETE FROM properties WHERE path = '$psource'";
+	      $query = "DELETE FROM dav.properties WHERE path = '$psource'";
 	      error_log($query);
 	      pg_query($this->db_res,$query);
 
@@ -914,7 +914,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 		$src->addComment(sprintf(_("Move file from %s to %s"),
 					 ($psrc->title),
 					 ($ppdest->title)));
-		$query = "DELETE FROM properties WHERE path = '$psource'";
+		$query = "DELETE FROM dav.properties WHERE path = '$psource'";
 		pg_query($this->db_res,$query);
 	      }
 	    }
@@ -950,7 +950,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	    $this->docpropinfo($src,$pdest,true);
 	    if ($err=="") {
 
-	      $query = "DELETE FROM properties WHERE path = '$psource'";
+	      $query = "DELETE FROM dav.properties WHERE path = '$psource'";
 	      error_log($query);
 	      pg_query($this->db_res,$query);
 
@@ -960,7 +960,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	}
       }
       if  ($src->doctype=='D') {
-	$query = "UPDATE properties 
+	$query = "UPDATE dav.properties 
                         SET path = REPLACE(path, '".$psource."', '".$pdest."') 
                         WHERE path LIKE '".$psource."%'";
 	pg_query($this->db_res,$query);
@@ -1023,7 +1023,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 
 	if ($err=="") {
 		
-	  $query = "DELETE FROM properties WHERE name='fid' and value=".$dest->initid;
+	  $query = "DELETE FROM dav.properties WHERE name='fid' and value=".$dest->initid;
 	  error_log($query);
 	  pg_query($this->db_res,$query);
 	}
@@ -1110,14 +1110,14 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       } else {
 	if (isset($prop["val"])) {
 	  //$query = "REPLACE INTO properties SET path = '$options[path]', name = '$prop[name]', ns= '$prop[ns]', value = '$prop[val]'";
-	  $query = "delete from properties where path=  '$prop[name]' and name= '$prop[name]' and ns='$prop[ns]'";
+	  $query = "delete from dav.properties where path=  '$prop[name]' and name= '$prop[name]' and ns='$prop[ns]'";
 	  pg_query($this->db_res,$query);
-	  $query = "INSERT INTO properties (path,name,ns,value) values ('$options[path]', '$prop[name]',  '$prop[ns]', '$prop[val]')";
+	  $query = "INSERT INTO dav.properties (path,name,ns,value) values ('$options[path]', '$prop[name]',  '$prop[ns]', '$prop[val]')";
 	  //	  pg_query($this->db_res,$query);
 	  //	  $query = "REPLACE INTO properties SET path = '$options[path]', name = '$prop[name]', ns= '$prop[ns]', value = '$prop[val]'";
 	  
 	} else {
-	  $query = "DELETE FROM properties WHERE path = '$options[path]' AND name = '$prop[name]' AND ns = '$prop[ns]'";
+	  $query = "DELETE FROM dav.properties WHERE path = '$options[path]' AND name = '$prop[name]' AND ns = '$prop[ns]'";
 	}       
 	pg_query($this->db_res,$query);
       }
@@ -1137,7 +1137,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
     error_log ( "===========>LOCK :".$options["path"] );
     include_once("FDL/Class.Doc.php");
     if (isset($options["update"])) { // Lock Update
-      $query = "UPDATE locks SET expires = ".(time()+300). " where token='".$options["update"]."'";
+      $query = "UPDATE dav.locks SET expires = ".(time()+300). " where token='".$options["update"]."'";
       $res=pg_query($this->db_res,$query);
                 
       if (pg_affected_rows($res)) {
@@ -1163,7 +1163,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       if ($err=="") {
 	$options["timeout"] = time()+300; // 5min. hardcoded
 
-	$query = "INSERT INTO locks (token,path,owner,expires,exclusivelock) values (
+	$query = "INSERT INTO dav.locks (token,path,owner,expires,exclusivelock) values (
                          '$options[locktoken]'
                           ,'$options[path]'
                           ,'$options[owner]'
@@ -1200,7 +1200,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
     if ($doc->isAffected()) {
       $err=$doc->unlock(true);
       if ($err=="") {
-	$query = "DELETE FROM locks WHERE path = '$options[path]' AND token = '$options[token]'";
+	$query = "DELETE FROM dav.locks WHERE path = '$options[path]' AND token = '$options[token]'";
 	$res=pg_query($this->db_res,$query);
 	if (pg_affected_rows($res)) return "204 No Content";
       }
@@ -1222,7 +1222,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
     $result = false;
     if (!seems_utf8($path)) $path=utf8_encode($path);
     $query = "SELECT owner, token, expires, exclusivelock
-                  FROM locks
+                  FROM dav.locks
                  WHERE path = '$path'
                ";
     
@@ -1286,7 +1286,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
    */
   function addsession($sessid,$vid,$docid,$owner,$expire=0)  {
 
-    $query = "INSERT INTO sessions (session,vid,fid,owner,expires) values (
+    $query = "INSERT INTO dav.sessions (session,vid,fid,owner,expires) values (
                          '$sessid'   , $vid  , $docid , '$owner'   , '$expire')";
     $res=pg_query($this->db_res,$query);
 
@@ -1308,7 +1308,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
    */
   function getLogin($docid,$vid,$sessid)  {
 
-    $query = "select owner from  sessions where 
+    $query = "select owner from  dav.sessions where 
                          session   = '$sessid' and
                          vid = $vid and
                          fid = $docid";
@@ -1335,7 +1335,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
    */
   function getSession($docid,$vid,$owner)  {
 
-    $query = "select session from  sessions where 
+    $query = "select session from  dav.sessions where 
                          owner   = '$owner' and
                          vid = $vid and
                          fid = $docid";
@@ -1359,7 +1359,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 
   function cleanDeleted($fid) {
     $fid=intval($fid);
-    $query = "delete from properties where value=$fid and name= 'fid'";
+    $query = "delete from dav.properties where value=$fid and name= 'fid'";
     
     pg_query($this->db_res,$query);
   }
