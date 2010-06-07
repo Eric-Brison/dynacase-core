@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<[famname] xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="[famname].xsd"> 
+<[famname] xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="[famname].xsd" 
+           id="[id]" name="[name]" title="[title]" revision="[revision]" modification-date="[mdate]" version="[version]" state="[state]"> 
 [BLOCK top][level]
 [ENDBLOCK top]
 </[famname]>

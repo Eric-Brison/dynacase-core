@@ -314,7 +314,7 @@ Class Fdl_Document  {
             $listattr = $this->doc->getAttributes();
 
             foreach($listattr as $k=>$oa) {
-                if ($oa && ($oa->id != 'FIELD_HIDDENS')&& (($this->doc->doctype=='C')||($oa->usefor != "Q"))) {
+                if ($oa && ($oa->id != 'FIELD_HIDDENS')&& (($this->doc->doctype=='C')&&($oa->usefor != "Q"))) {
                     foreach ($oa as $aid=>$v) {
                         if ($aid=="options") {
                             $oa->getOption('');
