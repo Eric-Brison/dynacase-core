@@ -6,6 +6,10 @@ freedom_db=`"$WIFF_ROOT"/wiff --getValue=freedom_db`
 vault_root=`"$WIFF_ROOT"/wiff --getValue=vault_root`
 client_name=`"$WIFF_ROOT"/wiff --getValue=client_name`
 
+remove_profiles=`"$WIFF_ROOT"/wiff --getValue=remove_profiles`
+user_login=`"$WIFF_ROOT"/wiff --getValue=user_login`
+user_password=`"$WIFF_ROOT"/wiff --getValue=user_password`
+
 if [ -z "$freedom_db" ]; then
     freedom_db=$core_db
 fi
