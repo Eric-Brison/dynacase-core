@@ -17,10 +17,8 @@
 	var C = null; // the context
 	var totalTime={all:0,js:0,server:0,network:0};
 	function connect(login, password) {
-		C = new Fdl.Context( {
-			url : window.location.protocol + '//' + window.location.hostname
-					+ '/freedom'
-		});
+		
+		C=new Fdl.Context({url:window.location.protocol+'//'+window.location.hostname+window.location.pathname.substr(0,window.location.pathname.indexOf('/lib/'))});
 		// C.connect({url:window.location.protocol+'//'+window.location.hostname+'/freedom'});
 		if (!C.isConnected()) {
 			alert('error connect:' + C.getLastErrorMessage());
@@ -79,9 +77,12 @@
 			var d = C.getSearchDocument();
 			console.log(d);
 			var ld=d.search(criteria[i]);
+			if (!ld) alert(C.getLastErrorMessage());
+			else {
 			console.log(ld);
 			console.log(ld.count,ld.content.length);
 			displayDocumentTime(ld.debuginfo,(new Date().getTime() - now)/1000 ,ld.evalDebugTime,'resultsearch');
+			}
 		}
 	}
 
@@ -115,10 +116,6 @@
 			slice : 25
 		},{
 			famid : 'DIR',
-			withHighlight : false,
-			slice : 25
-		},{
-			family : 'MINUTEMEETING',
 			withHighlight : false,
 			slice : 25
 		},{family:'DIR strict', slice:25,

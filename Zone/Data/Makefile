@@ -28,3 +28,4 @@ $(libdir)/data/fdl-data.js: $(libdir)/data/fdl-data-debug.js
 	fi
 
 publish: $(libdir)/data $(pages_js) $(pages_css) $(libdir)/data/fdl-data-debug.js $(libdir)/data/fdl-data.js
+	make -C examples publish
