@@ -185,11 +185,15 @@ Class SearchDoc {
    */
   public function search() {
       if ($this->fromid) {
-          if (! is_numeric($this->fromid))  $fromid=getFamIdFromName($this->dbaccess,$this->fromid);
-          else {
+          if (! is_numeric($this->fromid))  {
+              $fromid=getFamIdFromName($this->dbaccess,$this->fromid);     
+          } else {
               if ($this->fromid != -1) {
                   // test if it is a family
-                  $err=simpleQuery($this->dbaccess,sprintf("select doctype from docfam where id=%d",$this->fromid),$doctype,true,true);
+                  if ($this->fromid < -1) {
+                      $this->only=true;
+                  }
+                  $err=simpleQuery($this->dbaccess,sprintf("select doctype from docfam where id=%d",abs($this->fromid)),$doctype,true,true);
                   if ($doctype!='C') $fromid=0;
                   else $fromid=$this->fromid;
               } else $fromid=$this->fromid;
@@ -200,7 +204,7 @@ Class SearchDoc {
               else return array();
           }
           if ($this->only) $this->fromid=-(abs($fromid));
-          else $this->fromid=$fromid;
+          else $this->fromid=$fromid;          
       }
     if ($this->recursiveSearch && $this->dirid) {
         $tmps=createTmpDoc($this->dbaccess,"SEARCH");

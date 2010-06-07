@@ -137,6 +137,11 @@ Class Fdl_Collection extends Fdl_Document {
 
             $famid=0;
         }
+        if (preg_match("/([\w:]*)\s?(strict)?/",trim($famid),$reg)) {
+                                if (! is_numeric($reg[1])) $reg[1]=getFamIdFromName($this->dbaccess,$reg[1]);
+                                if ($reg[2]=="strict") $famid='-'.$reg[1];
+                                else $famid=$reg[1];
+                        }
         $s=new SearchDoc($this->dbaccess,$famid);
         if ($key) {
             if ($mode=="word") {
@@ -186,34 +191,36 @@ Class Fdl_Collection extends Fdl_Document {
             $info=$s->getDebugInfo();
             $out->error=$info["error"];
             $out->info=$info;
-            	
-            $ws=createTmpDoc($this->dbaccess,"DSEARCH");
-            $ws->setValue("ba_title",sprintf(_("search %s"),$key));
-            $ws->add();
-            $ws->addStaticQuery($s->getOriginalQuery());
-            $tmpdoc=new Fdl_Document($ws->id);
-            $out->document=$tmpdoc->getDocument(true,false);
-            $idx=0;
-            if (! $keyword) $keyword=str_replace(" ","|",$key);
-            while ($doc=$s->nextDoc()) {
-                $tmpdoc->affect($doc);
-                $content[$idx]=$tmpdoc->getDocument($onlyvalues,$completeprop);
-                if ($whl) $content[$idx]['highlight']=getHighlight($doc,$keyword);
-                $idx++;
-            }
 
-            $out->totalCount=$s->count();
-            if (($out->totalCount == $slice) || ($start > 0)) {
-                $s->slice='ALL';
-                $s->start=0;
-                $s->setDebugMode();
-                $s->reset();
-                $out->totalCount=$s->onlyCount();
-                $info=$s->getDebugInfo();
+            if (! $out->error) {                 
+                $ws=createTmpDoc($this->dbaccess,"DSEARCH");
+                $ws->setValue("ba_title",sprintf(_("search %s"),$key));
+                $ws->add();
+                $ws->addStaticQuery($s->getOriginalQuery());
+                $tmpdoc=new Fdl_Document($ws->id);
+                $out->document=$tmpdoc->getDocument(true,false);
+                $idx=0;
+                if (! $keyword) $keyword=str_replace(" ","|",$key);
+                while ($doc=$s->nextDoc()) {
+                    $tmpdoc->affect($doc);
+                    $content[$idx]=$tmpdoc->getDocument($onlyvalues,$completeprop);
+                    if ($whl) $content[$idx]['highlight']=getHighlight($doc,$keyword);
+                    $idx++;
+                }
 
-                $out->delay.=' count:'.$info["delay"];
+                $out->totalCount=$s->count();
+                if (($out->totalCount == $slice) || ($start > 0)) {
+                    $s->slice='ALL';
+                    $s->start=0;
+                    $s->setDebugMode();
+                    $s->reset();
+                    $out->totalCount=$s->onlyCount();
+                    $info=$s->getDebugInfo();
+
+                    $out->delay.=' count:'.$info["delay"];
+                }
+                $out->content=$content;
             }
-            $out->content=$content;
         } else {
             $out->error=$err;
         }
