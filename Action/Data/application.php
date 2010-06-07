@@ -32,18 +32,20 @@ function application(&$action) {
         case 'getparameter':
             $appName=getHttpVars("name");
             $err=initTheApplication($action,$appName,$ou);
-            $out=$ou->getParameter($id);
+            if ($ou)  $out=$ou->getParameter($id);
             break;
         case 'setparameter':
             $appName=getHttpVars("name");
             $nv=getHttpVars("value");
             $err=initTheApplication($action,$appName,$ou);
-            $out=$ou->setParameter($id,$nv);
+             if ($ou) $out=$ou->setParameter($id,$nv);
             break;
         case 'getexecutableactions':
             $appName=getHttpVars("name");
             $err=initTheApplication($action,$appName,$ou);
-            $out["actions"]=$ou->getexecutableactions($actionName);
+            if ($out) {
+              $out["actions"]=$ou->getexecutableactions($actionName);
+            }
             break;
         case 'get':
             $appName=getHttpVars("name");

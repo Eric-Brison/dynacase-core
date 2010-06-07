@@ -74,8 +74,8 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
 
   $foutdir = uniqid("/var/tmp/exportxml");
   if (! mkdir($foutdir)) $action->exitError(sprintf("cannot create directory %s",$foutdir));
-  $fname=sprintf("%s/FDL/Layout/fdl.xsd",DEFAULT_PUBDIR);
-  copy($fname,"$foutdir/fdl.xsd");
+  //$fname=sprintf("%s/FDL/Layout/fdl.xsd",DEFAULT_PUBDIR);
+  //copy($fname,"$foutdir/fdl.xsd");
   $xsd=array();
   while ($doc=$s->nextDoc()) {
       //print $doc->exportXml();
@@ -95,7 +95,7 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
 
   if ($eformat=="X") {
       $zipfile = uniqid("/var/tmp/xml").".zip";
-      system("cd $foutdir && zip -r $zipfile * > /dev/null",$ret);
+      system("cd $foutdir && zip  -r $zipfile * > /dev/null",$ret);
       if (is_file($zipfile)) {
           system("rm -fr $foutdir");
           Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip",false,false,true);

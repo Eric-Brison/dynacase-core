@@ -64,6 +64,7 @@ function editimport() {
          [ENDBLOCK SELECTCLASS]
     </select>
 <input type="button" value="[TEXT:specific import]" onclick="editimport()" >
+	<input type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Xml schema]" onclick='subwindow(200,400,"_xsd","[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value)' >
 <BR>
 
     <textarea cols=80>[format]

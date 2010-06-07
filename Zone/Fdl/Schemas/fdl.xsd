@@ -1,5 +1,4 @@
-<!--<?xml version="1.0"?>-->
-<!--<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">-->
+
 	<xs:complexType name="fdl-relation">
                 <xs:simpleContent>
                         <xs:extension base="xs:token">
@@ -56,4 +55,3 @@
         <xs:simpleType name="fdl-float">
                 <xs:restriction base="xs:decimal"/>
         </xs:simpleType>
-<!--</xs:schema>-->

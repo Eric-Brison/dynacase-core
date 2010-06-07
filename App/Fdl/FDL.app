@@ -76,6 +76,11 @@ $action_desc = array (
    "acl"		=>"NORMAL",
   ) ,
   array( 
+   "name"               =>"FDL_FAMILYSCHEMA",
+   "short_name"         =>N_("get family import schema"),
+   "acl"                =>"NORMAL",
+  ) ,
+  array( 
    "name"		=>"EDITICON",
    "short_name"		=>N_("change icon of document"),
    "acl"		=>"NORMAL",
