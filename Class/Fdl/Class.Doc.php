@@ -6351,6 +6351,13 @@ static function _cmpanswers($a,$b) {
       $lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
       //$lay=&$this->lay;
       $lay->set("famname",strtolower($this->fromname));
+      $lay->set("id",$this->id);
+      $lay->set("name",$this->name);
+      $lay->set("revision",$this->revision);
+      $lay->set("version",$this->getVersion());
+      $lay->set("state",$this->getState());
+      $lay->set("title",str_replace("&","&amp;",$this->getTitle()));
+      $lay->set("mdate",strftime("%FT%X",$this->revdate));
       $la=$this->GetFieldAttributes();
       $level1=array();
             
