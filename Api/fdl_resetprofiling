@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * Add child to an Animal
+ *
+ * @author Anakeen 2008
+ * @version $Id: zoo_addchild.php,v 1.4 2010/04/30 13:44:07 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package freedom-zoo
+ * 
+ *
+ * @global docid Http var : document identificator
+ * @global n Http var : number of new childs
+ /**
+ */
+
+
+include_once("FDL/Class.Doc.php");
+
+$usage="usage  --login=<user login> --password=<user password>";
+
+$dbaccess=$action->GetParam("FREEDOM_DB");
+if ($dbaccess == "") {
+  print "Freedom Database not found : param FREEDOM_DB";
+  exit;
+}
+
+$user = $action->getArgument("login"); // special docid
+$password = $action->getArgument("password"); // number of childs
+
+if (empty($user))   $action->exitError("login needed :\n $usage");  
+if (empty($password))   $action->exitError("password needed :\n $usage");   
+
+$du=createDoc($dbaccess,"IUSER");
+if ($du) {
+	$du->setValue("us_login", $user);
+	$du->setValue("us_lname", $user);
+	$du->setValue("us_fname","");
+	$du->setValue("us_passwd1",$password);
+	$du->setValue("us_passwd2",$password);
+	$du->setValue("us_iddomain","0");
+	$err=$du->Add();
+	if ($err == "") {
+		$err=$du->postModify();
+		if ($err == "") {
+			$err=$du->modify();
+			if ($err == "") {
+				printf(_("new user n° %d"),$du->getValue("us_whatid")); // affichage de l'identifiant système
+
+				$g=new_Doc($dbaccess,"GDEFAULT");
+				if($g)  {
+					$err=$g->addFile($du->initid);
+					if ($err == "") {
+						print "\najout de l'utilisateur au groupe GDEFAULT";
+					}
+				}
+			}
+		}
+	}
+	print "\nerreur:$err\n";
+}
+
+
+$pdoc=createDoc($dbaccess,"PDOC");
+if ($pdoc) {
+	$pdoc->setValue("ba_title","profil de ".$user);
+	$pdoc->setValue("prf_desc","profil de ".$user );
+	$pdoc->name=strtoupper($user."PROFIL"); // on donne un nom logique pour le retrouver après
+	$err=$pdoc->Add();
+	if ($err == "") {
+		// ajout d'ACLs
+		$pdoc->setControl(); // active le profil et donne à l'utilisateur courant à tous les droits
+		$pdoc->AddControl("GDEFAULT",'view'); // donne le provilège 'voir' à tous les membres du groupe ''GDEFAULT''
+		printf(_("new profil n° %d"),$pdoc->id); // affichage de l'identifiant système
+		// GDEFAULT est le nom logique du groupe 'utilisateurs' créé à l'installation
+		// la méthode Add:control accepte les nom logiques ou les identifiants systèmes de utilisateurs et groupes
+	}
+	print "\nerreur:$err\n";
+}
+
+
+?>
