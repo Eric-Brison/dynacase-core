@@ -14,7 +14,7 @@
   </replaces>
 
   <requires>
-    <installer version="1" comp="ge"/>
+    <installer version="0.8.0" comp="ge"/>
   </requires>
 
   <parameters>
