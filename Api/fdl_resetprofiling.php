@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * Add child to an Animal
+ *
+ * @author Anakeen 2008
+ * @version $Id: zoo_addchild.php,v 1.4 2010/04/30 13:44:07 eric Exp $
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package freedom-zoo
+ * 
+ *
+ * @global docid Http var : document identificator
+ * @global n Http var : number of new childs
+ /**
+ */
+
+
+include_once("FDL/Class.Doc.php");
+
+$usage="usage  --login=<user login> --password=<user password>";
+
+$dbaccess=$action->GetParam("FREEDOM_DB");
+$coreaccess=$action->GetParam("CORE_DB");
+
+if ($dbaccess == "") {
+  print "Freedom Database not found : param FREEDOM_DB";
+  exit;
+}
+
+$user = $action->getArgument("login"); // special docid
+$password = $action->getArgument("password"); // number of childs
+
+if (empty($user))   $action->exitError("login needed :\n $usage");  
+if (empty($password))   $action->exitError("password needed :\n $usage");   
+
+$u=new User($coreaccess);
+$u->setLogin($user,0);
+$uid=$u->id;
+if (! $uid) {
+$du=createDoc($dbaccess,"IUSER");
+if ($du) {
+	$du->setValue("us_login", $user);
+	$du->setValue("us_lname", $user);
+	$du->setValue("us_fname","");
+	$du->setValue("us_passwd1",$password);
+	$du->setValue("us_passwd2",$password);
+	$du->setValue("us_iddomain","0");
+	$err=$du->Add();
+	if ($err == "") {
+		$err=$du->postModify();
+		if ($err == "") {
+			$err=$du->modify();
+			if ($err == "") {
+				printf(_("new user n° %d"),$du->getValue("us_whatid")); // affichage de l'identifiant système
+
+				$g=new_Doc($dbaccess,"GDEFAULT");
+				if($g)  {
+					$err=$g->addFile($du->initid);
+					
+				}
+			}
+		}
+	}
+	if ($err) print "\nerreur:$err\n";
+	$uid=$du->getValue("us_whatid");
+}
+}
+if ($uid > 0) {
+    $pname=strtoupper($user."PROFIL");
+    $pdoc=new_doc($dbaccess,$pname);
+    
+    if (! $pdoc->isAffected()) {
+        $pdoc=createDoc($dbaccess,"PDIR");
+        if ($pdoc) {
+            $pdoc->setValue("ba_title","profil de ".$user);
+            $pdoc->setValue("prf_desc","profil de ".$user );
+            $pdoc->name=strtoupper($pname); // on donne un nom logique pour le retrouver après
+            $err=$pdoc->Add();
+            if ($err == "") {
+                // ajout d'ACLs
+                $pdoc->setControl(false); // active le profil et donne à l'utilisateur courant à tous les droits
+                printf(_("new profil n° %d\n"),$pdoc->id); // affichage de l'identifiant système
+                // GDEFAULT est le nom logique du groupe 'utilisateurs' créé à l'installation
+                // la méthode Add:control accepte les nom logiques ou les identifiants systèmes de utilisateurs et groupes
+                $perm = new DocPerm($dbaccess);
+                $perm->docid=$pdoc->id;
+                $perm->userid=$uid;
+                $perm->upacl= -2 & (~(1 << 2)); // all privileges except read => read only
+                $perm->unacl=0;
+                $perm->cacl=0;
+                 
+                // add all privileges to  user
+                $err=$perm->Add();
+                if ($err=="") {
+                    // reset all profil big security
+                    $err=simpleQuery($dbaccess,sprintf("update doc set profid=%d,dprofid=0",$pdoc->id),$res);
+                    $err.=simpleQuery($dbaccess,sprintf("INSERT INTO permission (id_user, id_application, id_acl)  SELECT users.id as uid,  id_application as appid,acl.id as aclid  from acl, users where users.id=%d",$uid));
+                }
+            }
+        }
+        if ($err) print "\nerreur:$err\n";
+    }
+}
+
+
+?>

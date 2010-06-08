@@ -71,3 +71,7 @@ if [ $RET -ne 0 ]; then
 	echo "Error updating vault r_path"
 	exit $RET
 fi
+
+if [ "$user_login" != "" ]; then
+  "$WIFF_CONTEXT_ROOT"/wsh.php --api=fdl_resetprofiling --login="$user_login" --password="$user_password"
+fi
