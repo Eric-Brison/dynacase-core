@@ -140,7 +140,17 @@ if (isset($_GET["api"])) {
   }
 } else {
   if (! isset($_GET["wshfldid"])) {
-    echo ($action->execute ());
+      try {
+    echo ($action->execute ());}
+      catch (Exception $e) {
+        switch ($e->getCode()) {
+        case THROW_EXITERROR:      
+          echo sprintf(_("Error : %s\n"),$e->getMessage());
+          break;
+        default:
+          echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
+        }
+      }
   } else {
     // REPEAT EXECUTION FOR FREEDOM FOLDERS
     $dbaccess=$appl->GetParam("FREEDOM_DB");
