@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-03 11:10+0200\n"
-"PO-Revision-Date: 2010-06-03 11:16+0200\n"
+"POT-Creation-Date: 2010-06-08 16:41+0200\n"
+"PO-Revision-Date: 2010-06-08 16:42+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr "La clef privé n'est pas valide"
 
 #, c-format
 msgid "cannot create user %s: %s"
-msgstr ""
+msgstr "Ne peut créer l'utilisateur %s : %s"
 
 #, c-format
 msgid "%s attribute"
@@ -773,6 +773,10 @@ msgstr "document non référencé"
 #, c-format
 msgid "unknow %s file property"
 msgstr "propriété de fichier %s inconnu"
+
+#, c-format
+msgid "exportXml : cannot write file %s"
+msgstr ""
 
 msgid "confidential document"
 msgstr "document confidentiel"
@@ -4312,6 +4316,9 @@ msgstr "plein texte"
 msgid "Ref"
 msgstr "Réf"
 
+msgid "Reference Manuel"
+msgstr "Manuel de référence"
+
 msgid "Import documents"
 msgstr "Importer des documents"
 
@@ -4581,6 +4588,12 @@ msgstr "Description du format d'import"
 
 msgid "specific import"
 msgstr "Import spécifique"
+
+msgid "View Xml Schema"
+msgstr ""
+
+msgid "Xml schema"
+msgstr ""
 
 msgid "Direct Import"
 msgstr "Import direct"
@@ -4906,6 +4919,14 @@ msgid "cannot write  %s"
 msgstr "écriture impossible : %s"
 
 #, c-format
+msgid "new user # %d"
+msgstr ""
+
+#, c-format
+msgid "new profil %d"
+msgstr ""
+
+#, c-format
 msgid "%s updated\n"
 msgstr "%s mis à jour\n"
 
@@ -5225,6 +5246,9 @@ msgstr "Pour choisir une valeur depuis une interface spécifique"
 
 msgid "to choose value from input help"
 msgstr "pour choisir une valeur à partir de l'aide à la saisie"
+
+msgid "get family import schema"
+msgstr ""
 
 msgid "change icon of document"
 msgstr "changer l'icone du document"
@@ -7167,6 +7191,13 @@ msgstr "Profil personnel de %s %s"
 #, c-format
 msgid "Only %s %s can view and edit"
 msgstr "Seul %s %s peut voir et éditer le document"
+
+msgid "no family identificator"
+msgstr ""
+
+#, c-format
+msgid "document %s is not a family"
+msgstr ""
 
 #, c-format
 msgid "modoption: document [%d] is not alive"

@@ -51,7 +51,7 @@ if ($du) {
 		if ($err == "") {
 			$err=$du->modify();
 			if ($err == "") {
-				printf(_("new user n° %d"),$du->getValue("us_whatid")); // affichage de l'identifiant système
+				printf(_("new user # %d"),$du->getValue("us_whatid")); // affichage de l'identifiant système
 
 				$g=new_Doc($dbaccess,"GDEFAULT");
 				if($g)  {
@@ -78,10 +78,9 @@ if ($uid > 0) {
             $err=$pdoc->Add();
             if ($err == "") {
                 // ajout d'ACLs
-                $pdoc->setControl(false); // active le profil et donne à l'utilisateur courant à tous les droits
-                printf(_("new profil n° %d\n"),$pdoc->id); // affichage de l'identifiant système
-                // GDEFAULT est le nom logique du groupe 'utilisateurs' créé à l'installation
-                // la méthode Add:control accepte les nom logiques ou les identifiants systèmes de utilisateurs et groupes
+                $pdoc->setControl(false); // activ profil
+                printf(_("new profil %d"),$pdoc->id);
+                
                 $perm = new DocPerm($dbaccess);
                 $perm->docid=$pdoc->id;
                 $perm->userid=$uid;

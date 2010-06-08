@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-03 11:10+0200\n"
+"POT-Creation-Date: 2010-06-08 16:41+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -792,6 +792,10 @@ msgstr ""
 
 #, c-format
 msgid "unknow %s file property"
+msgstr ""
+
+#, c-format
+msgid "exportXml : cannot write file %s"
 msgstr ""
 
 #, fuzzy
@@ -4659,6 +4663,9 @@ msgstr "Start search"
 msgid "Ref"
 msgstr ""
 
+msgid "Reference Manuel"
+msgstr ""
+
 #, fuzzy
 msgid "Import documents"
 msgstr "Import"
@@ -4982,6 +4989,12 @@ msgstr ""
 #, fuzzy
 msgid "specific import"
 msgstr "Import"
+
+msgid "View Xml Schema"
+msgstr ""
+
+msgid "Xml schema"
+msgstr ""
 
 #, fuzzy
 msgid "Direct Import"
@@ -5318,6 +5331,14 @@ msgstr ""
 msgid "cannot write  %s"
 msgstr ""
 
+#, c-format
+msgid "new user # %d"
+msgstr ""
+
+#, c-format
+msgid "new profil %d"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "%s updated\n"
 msgstr "Update LDAP server"
@@ -5636,6 +5657,9 @@ msgid "to choose value from special interface"
 msgstr ""
 
 msgid "to choose value from input help"
+msgstr ""
+
+msgid "get family import schema"
 msgstr ""
 
 #, fuzzy
@@ -7700,6 +7724,13 @@ msgstr "Category"
 
 #, c-format
 msgid "Only %s %s can view and edit"
+msgstr ""
+
+msgid "no family identificator"
+msgstr ""
+
+#, c-format
+msgid "document %s is not a family"
 msgstr ""
 
 #, c-format

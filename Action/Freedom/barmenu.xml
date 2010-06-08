@@ -91,7 +91,7 @@ function SendSearchId(e,id) {
 
 <!-- ------------ MENU HELP --------------------- -->
 <div  id="helpmenu" class="popup">
-  <a id="help" target="fhidden" href="[CORE_STANDURL]app=CORE&action=HELPVIEW&filename=toolbox.pdf" onClick="closeAllMenu()"><img  border="0" height="10" src="[IMG:help.gif]">[TEXT:help]</a>
+  <a id="help" target="fhidden" href="[CORE_STANDURL]app=CORE&action=HELPVIEW&filename=toolbox.pdf" onClick="closeAllMenu()"><img  border="0" height="10" src="[IMG:help.gif]">[TEXT:Reference Manuel]</a>
      <a  id="import" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDITIMPORT&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Import documents]</a>
      <a  id="importtar" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDITIMPORTTAR&classid=7&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Import Tar]</a>
      <a  id="planexec" href="#" onClick="subwindow([FDL_HD2SIZE],[FDL_VD2SIZE],'fplanexec','[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_PLANEXEC');closeAllMenu();">[TEXT:exec plan]</a>
