@@ -33,9 +33,7 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $fldid = GetHttpVars("id",$aflid);
   $wprof = (GetHttpVars("wprof","N")=="Y"); // with profil
-  $wfile = (GetHttpVars("wfile","N")=="Y"); // with files
-  $wident = (GetHttpVars("wident","Y")=="Y"); // with numeric identificator
-  $wutf8 = (GetHttpVars("code","utf8")=="utf8"); // with numeric identificator
+  $wfile = (substr(strtolower(GetHttpVars("wfile","N")),0,1)=="y"); // with files
   $nopref = (GetHttpVars("wcolumn")=="-"); // no preference read
   $eformat = GetHttpVars("eformat","X"); // export format 
   $selection = GetHttpVars("selection"); // export selection  object (JSON)
@@ -46,12 +44,11 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
       include_once("DATA/Class.DocumentSelection.php");
       $os=new Fdl_DocumentSelection($selection);
       $ids=$os->getIdentificators();     
-       $s=new SearchDoc($dbaccess);
+      $s=new SearchDoc($dbaccess);
       
       $s->addFilter(getSqlCond($ids,"id",true));
       $s->setObjectReturn();
-      $exportname="selection";
-       
+      $exportname="selection";       
   } else {
       if (! $fldid) $action->exitError(_("no export folder specified"));
 
@@ -61,7 +58,7 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
       //$tdoc = getChildDoc($dbaccess, $fldid,"0","ALL",array(),$action->user->id,"TABLE",$famid);
       
       $s=new SearchDoc($dbaccess,$famid);      
-        $s->setObjectReturn();
+      $s->setObjectReturn();
       
       $s->dirid=$fldid;
       
@@ -82,7 +79,9 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
       if ($doc->doctype != 'C') {
           $ftitle= str_replace(array('/','\\','?','*',':'),'-',$doc->getTitle());
           $fname=sprintf("%s/%s{%d}.xml",$foutdir,$ftitle,$doc->id);
-          file_put_contents($fname,$doc->exportXml($wfile));
+          $err=$doc->exportXml($xml,$wfile,$fname);
+         // file_put_contents($fname,$doc->exportXml($wfile));
+          if ($err) $action->exitError($err);
           if (! isset($xsd[$doc->fromid])) {
               $fam=new_doc($dbaccess,$doc->fromid);
               $fname=sprintf("%s/%s.xsd",$foutdir,strtolower($fam->name));
@@ -95,12 +94,10 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
 
   if ($eformat=="X") {
       $zipfile = uniqid("/var/tmp/xml").".zip";
-      system("cd $foutdir && zip  -r $zipfile * > /dev/null",$ret);
+      system("cd $foutdir && zip -r $zipfile * > /dev/null",$ret);
       if (is_file($zipfile)) {
           system("rm -fr $foutdir");
           Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip",false,false,true);
-
-
       } else {
           $action->exitError(_("Zip Archive cannot be created"));
       }
@@ -112,12 +109,10 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
                       strftime("%FT%T"),User::getDisplayName($action->user->id),$exportname,$xmlfile);
       $cmde[]="cat *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> $xmlfile";
       $cmde[]="echo '</documents>' >> $xmlfile";
-     system(implode(" && ",$cmde),$ret);
+      system(implode(" && ",$cmde),$ret);
       if (is_file($xmlfile)) {
           system("rm -fr $foutdir");
           Http_DownloadFile($xmlfile, "$exportname.xml", "text/xml",false,false,true);
-
-
       } else {
           $action->exitError(_("Xml file cannot be created"));
       }

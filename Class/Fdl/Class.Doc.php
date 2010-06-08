@@ -6345,8 +6345,14 @@ static function _cmpanswers($a,$b) {
       }
     }
   }
-  
-  public function exportXml($withfile=false) {
+  /**
+   * 
+   * @param string &$xml content xml (empty if $outfile is not empty
+   * @param boolean $withfile include files in base64 encoded
+   * @param string $outfile if not empty means content is put into this file
+   * @return string error message (empty if no error)
+   */
+  public function exportXml(&$xml,$withfile=false,$outfile="") {
       
       $lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
       //$lay=&$this->lay;
@@ -6365,6 +6371,7 @@ static function _cmpanswers($a,$b) {
           if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
       }
       $option->withFile=$withfile;
+      $option->outFile=$outfile;
       
       foreach ($la as $k=>$v) {
         if (($v->id != "FIELD_HIDDENS") && 
@@ -6376,7 +6383,49 @@ static function _cmpanswers($a,$b) {
         }
       }
       $lay->setBlockData("top",$level1);
-     return ($lay->gen());
+      if ($outfile) {
+          if ($withfile) {
+              $xmlcontent=$lay->gen();
+              $fo=fopen($outfile,"w");
+              $pos = strpos($xmlcontent, "[FILE64");
+              $bpos=0;
+              while ($pos !== false) {
+                  if (fwrite($fo,substr($xmlcontent,$bpos,$pos))) {
+                      $bpos=strpos($xmlcontent, "]",$pos)+1;
+
+                      $filepath=substr($xmlcontent,$pos+8,($bpos-$pos -9));
+                      // fwrite($fo,"BB64 [$pos - $bpos ]$filepath EE");
+
+                      /* If you want to encode a large file, you should encode it in chunks that
+                       are a multiple of 57 bytes.  This ensures that the base64 lines line up
+                       and that you do not end up with padding in the middle. 57 bytes of data
+                       fills one complete base64 line (76 == 57*4/3):*/
+                      $ff=fopen($filepath,"r");
+                      $size=6*1024*57;
+                      while ($buf=fread($ff, $size)) {
+                          fwrite($fo,base64_encode($buf));
+                      }
+                      $pos = strpos($xmlcontent, "[FILE64", $bpos);
+
+                      $tok = strtok("[FILE64");
+                  } else {
+                      $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
+                      $pos=false;
+                  }
+              }
+              if ($err=="") fwrite($fo,substr($xmlcontent,$bpos));
+              fclose($fo);
+          } else {
+              if (file_put_contents($outfile,$lay->gen())===false) {
+                  $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
+              }
+          }
+      }
+      else {
+          $xml=$lay->gen();
+          return $err;
+      }
+      return $err;
   }
   
  // =====================================================================================

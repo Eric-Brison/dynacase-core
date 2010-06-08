@@ -291,9 +291,15 @@ Class NormalAttribute extends BasicAttribute {
                   $href=$base.str_replace('&','&amp;',$doc->getFileLink($this->id));
                   if ($opt->withFile) {
                       $path=$doc->vault_filename_fromvalue($v,true);
+                      
                       if (is_file($path)) {
-                          return sprintf('<%s vid="%d" mime="%s" title="%s">%s</%s>',
+                          if ($opt->outFile) {
+                              return sprintf('<%s vid="%d" mime="%s" title="%s">[FILE64:%s]</%s>',
+                                    $this->id,$vid,$mime,$name,$path,$this->id);
+                          } else {
+                              return sprintf('<%s vid="%d" mime="%s" title="%s">%s</%s>',
                                     $this->id,$vid,$mime,$name,base64_encode(file_get_contents($path)),$this->id);
+                          }
                       } else {
                          return sprintf('<!-- file not found --><%s vid="%d" mime="%s" title="%s"/>',
                                     $this->id,$vid,$mime,$name,$this->id); 

@@ -137,11 +137,10 @@ Class Fdl_Collection extends Fdl_Document {
 
             $famid=0;
         }
-        if (preg_match("/([\w:]*)\s?(strict)?/",trim($famid),$reg)) {
-                                if (! is_numeric($reg[1])) $reg[1]=getFamIdFromName($this->dbaccess,$reg[1]);
-                                if ($reg[2]=="strict") $famid='-'.$reg[1];
-                                else $famid=$reg[1];
-                        }
+        if (preg_match("/([\w:]*)\s?strict/",trim($famid),$reg)) {
+            if (! is_numeric($reg[1])) $reg[1]=getFamIdFromName($this->dbaccess,$reg[1]);
+            $famid='-'.$reg[1];
+        }
         $s=new SearchDoc($this->dbaccess,$famid);
         if ($key) {
             if ($mode=="word") {

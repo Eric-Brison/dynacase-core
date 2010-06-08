@@ -118,60 +118,73 @@ if (isset($_GET["action"])) {
 // init for gettext  
 setLanguage($action->Getparam("CORE_LANG"));
 
-  
+
 
 if (isset($_GET["api"])) {
-  $apifile=trim($_GET["api"]);
-  if (! file_exists(sprintf("%s/API/%s.php",$pubdir,$apifile))) {
-    echo sprintf(_("API file %s not found\n"),"API/".$apifile.".php");    
-  } else {
-  try {
-    include("API/".$apifile.".php");
-  }
-  catch (Exception $e) {
-    switch ($e->getCode()) {
-    case THROW_EXITERROR:      
-      echo sprintf(_("Error : %s\n"),$e->getMessage());
-      break;
-    default:
-      echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
+    $apifile=trim($_GET["api"]);
+    if (! file_exists(sprintf("%s/API/%s.php",$pubdir,$apifile))) {
+        echo sprintf(_("API file %s not found\n"),"API/".$apifile.".php");
+    } else {
+        try {
+            include("API/".$apifile.".php");
+        }
+        catch (Exception $e) {
+            switch ($e->getCode()) {
+                case THROW_EXITERROR:
+                    echo sprintf(_("Error : %s\n"),$e->getMessage());
+                    exit(1);
+                    break;
+                default:
+                    echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
+                    exit(1);
+            }
+        }
     }
-  }
-  }
 } else {
-  if (! isset($_GET["wshfldid"])) {
-    echo ($action->execute ());
-  } else {
-    // REPEAT EXECUTION FOR FREEDOM FOLDERS
-    $dbaccess=$appl->GetParam("FREEDOM_DB");
-    if ($dbaccess == "") {
-      print "Freedom Database not found : param FREEDOM_DB";
-      exit;
-    }
-    include_once("FDL/Class.Doc.php");
-    $http_iddoc="id"; // default correspondance
-    if (isset($_GET["wshfldhttpdocid"])) $http_iddoc=$_GET["wshfldhttpdocid"];
-    $fld=new_Doc($dbaccess,$_GET["wshfldid"]);
-    $ld=$fld->getContent();
-    foreach ($ld as $k=>$v) {
-      $_GET[$http_iddoc]=$v["id"];
-      try {
-	echo ($action->execute ());
-      }
-      catch (Exception $e) {
-	switch ($e->getCode()) {
-	case THROW_EXITERROR:      
-	  echo sprintf(_("Error : %s\n"),$e->getMessage());
-	  break;
-	default:
-	  echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
-	}
-      }
-      echo "<hr>";
+    if (! isset($_GET["wshfldid"])) {
+        try {
+            echo ($action->execute ());}
+            catch (Exception $e) {
+                switch ($e->getCode()) {
+                    case THROW_EXITERROR:
+                        echo sprintf(_("Error : %s\n"),$e->getMessage());
+                        exit(1);
+                        break;
+                    default:
+                        echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
+                        exit(1);
+                }
+            }
+    } else {
+        // REPEAT EXECUTION FOR FREEDOM FOLDERS
+        $dbaccess=$appl->GetParam("FREEDOM_DB");
+        if ($dbaccess == "") {
+            print "Freedom Database not found : param FREEDOM_DB";
+            exit;
+        }
+        include_once("FDL/Class.Doc.php");
+        $http_iddoc="id"; // default correspondance
+        if (isset($_GET["wshfldhttpdocid"])) $http_iddoc=$_GET["wshfldhttpdocid"];
+        $fld=new_Doc($dbaccess,$_GET["wshfldid"]);
+        $ld=$fld->getContent();
+        foreach ($ld as $k=>$v) {
+            $_GET[$http_iddoc]=$v["id"];
+            try {
+                echo ($action->execute ());
+            }
+            catch (Exception $e) {
+                switch ($e->getCode()) {
+                    case THROW_EXITERROR:
+                        echo sprintf(_("Error : %s\n"),$e->getMessage());
+                        break;
+                    default:
+                        echo sprintf(_("Caught Exception : %s\n"),$e->getMessage());
+                }
+            }
+            echo "<hr>";
 
+        }
     }
-
-  }
 }
 
 wbar(-1,-1,"completed");
