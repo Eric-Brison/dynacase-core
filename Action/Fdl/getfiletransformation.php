@@ -124,7 +124,7 @@ function downloadTid($tid,$title) {
      
     $filename= uniqid("/var/tmp/tid-".$tid);
     $err=getTEFile($tid,$filename,$info);
-    $mime=getSysMimeFile($filename);
+    $mime=getSysMimeFile($filename, basename($filename));
     $ext=getExtension($mime);
     if ($ext=="") $ext=$infoout->teng_lname; 
     if ($err=="") {

@@ -20,5 +20,9 @@ $(pubdir)/admin/.htaccess.in: htaccess.in
 	cp $< $@
 $(pubdir)/admin/.htpasswd: htpasswd
 	cp $< $@
+$(pubdir)/admin/mime.conf: mime.conf $(pubdir)/admin
+	cp $< $@
+$(pubdir)/admin/mime-user.conf.sample: mime-user.conf.sample $(pubdir)/admin
+	cp $< $@
 
-publish:   $(pubdir)/admin/winit.php $(pubdir)/admin/shttpd $(pubdir)/admin/.htaccess $(pubdir)/admin/.htaccess.in $(pubdir)/admin/.htpasswd
+publish:   $(pubdir)/admin/winit.php $(pubdir)/admin/shttpd $(pubdir)/admin/.htaccess $(pubdir)/admin/.htaccess.in $(pubdir)/admin/.htpasswd $(pubdir)/admin/mime.conf $(pubdir)/admin/mime-user.conf.sample
