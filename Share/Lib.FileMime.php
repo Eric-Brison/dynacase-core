@@ -124,6 +124,12 @@ function getIconMimeFile($sysmime) {
  */
 function getSysMimeFile($f,$fn="") {
   if (! file_exists($f)) return false;
+
+  $ret = getMimeFile($fn, 'sys');
+  if( $ret !== false ) {
+    return $ret;
+  }
+
   $sys = trim(`file --mime -b "$f"`);
   $txt=getTextMimeFile($f);
   $sys=strtok($sys," ;\n\t"); // only first part
@@ -184,7 +190,12 @@ function getSysMimeFile($f,$fn="") {
 
   return strtok($sys," ;\n\t");
 }
-function getTextMimeFile($f) {
+function getTextMimeFile($f, $fn='') {
+  $ret = getMimeFile($fn, 'text');
+  if( $ret !== false ) {
+    return $ret;
+  }
+
   $txt = trim(`file -b "$f"`);
   if ($txt=='data') {
     if (preg_match('/\.ods$/',$f)) $txt='OpenDocument Spreadsheet';
@@ -216,4 +227,80 @@ function getFileExtension($filename) {
   if ($filename && strrpos($filename,'.')>0) $ext=substr($filename,strrpos($filename,'.')+1);
   return $ext;
 }
+
+/**
+ * get MIME type/text from mime.conf and mime-user.conf files
+ */
+function getMimeFile($filename, $type='sys') {
+  $conf_user = loadUserMimeConf();
+  $conf_global = loadMimeConf();
+
+  $conf = array_merge($conf_user, $conf_global);
+
+  foreach( $conf as $rule ) {
+    $ext = $rule['ext'];
+    if( preg_match("/\.\Q$ext\E$/i", $filename) ) {
+      return $rule[$type];
+    }
+  }
+
+  return false;
+}
+
+/**
+ * load mime-user.conf XML file into PHP array
+ */
+function loadUserMimeConf() {
+  include_once('WHAT/Lib.Prefix.php');
+
+  $rules = array();
+
+  $conf_file = sprintf("%s%sadmin%smime-user.conf", DEFAULT_PUBDIR, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+  if( ! file_exists($conf_file) || ! is_readable($conf_file) ) {
+    return $rules;
+  }
+
+  $xml = simplexml_load_file($conf_file);
+  if( $xml === false ) {
+    error_log(__FUNCTION__." ".sprintf("Could not load user MIME config '%s'.", $conf_file));
+    return $rules;
+  }
+
+  foreach( $xml->mime as $mimeNode ) {
+    $rule = array();
+    foreach( array('ext', 'sys', 'text') as $attrName ) {
+      $rule[$attrName] = (string)$mimeNode[$attrName];
+    }
+    array_push($rules, $rule);
+  }
+
+  return $rules;
+}
+
+/**
+ * load mime.conf XML file into PHP array
+ */
+function loadMimeConf() {
+  include_once('WHAT/Lib.Prefix.php');
+
+  $rules = array();
+
+  $conf_file = sprintf("%s%sadmin%smime.conf", DEFAULT_PUBDIR, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+  $xml = simplexml_load_file($conf_file);
+  if( $xml === false ) {
+    error_log(__FUNCTION__." ".sprintf("Could not load MIME config '%s'.", $conf_file));
+    return $rules;
+  }
+
+  foreach( $xml->mime as $mimeNode ) {
+    $rule = array();
+    foreach( array('ext', 'sys', 'text') as $attrName ) {
+      $rule[$attrName] = (string)$mimeNode[$attrName];
+    }
+    array_push($rules, $rule);
+  }
+
+  return $rules;
+}
+
 ?>
