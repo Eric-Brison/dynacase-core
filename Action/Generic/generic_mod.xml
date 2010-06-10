@@ -24,7 +24,6 @@ function setConstraint(info) {
 	} else {
             var linp=window.parent.getInputsByName('_'+info[i].id,window.parent.document.getElementById('T'+info[i].pid));
             for (var k=0;k<linp.length;k++) { // >
-            	console.log('test',k, info[i]);
                 if (info[i].index==k) {
                     var inp=linp[k];
                     if (first) {
@@ -50,7 +49,11 @@ function focusConstraint(inp) {
 		
 	    }	
 	}
-	inp.focus();
+	try {
+	  inp.focus();
+	  } catch (exception) {
+          
+         }
     } 
 }
 function viewContraint(inp, info) {
