@@ -12,26 +12,26 @@ function setConstraint(info) {
     var first=true;
     undisplayConstraint();
     for (var i in info) {
-	if (! info[i].index) {
+	if (info[i].index == null) {
 	    // mono value
-	    var inp=window.parent.document.getElementById(i);
+	    var inp=window.parent.document.getElementById(info[i].id);
             if (first) {
 		focusConstraint(inp);
-		first=false;
+		//first=false;
             }
             viewContraint(inp,info[i]);
 	    
 	} else {
-            var linp=window.parent.getInputsByName('_'+i,window.parent.document.getElementById('T'+info[i].pid));
+            var linp=window.parent.getInputsByName('_'+info[i].id,window.parent.document.getElementById('T'+info[i].pid));
             for (var k=0;k<linp.length;k++) { // >
-                if (info[i].index[k]) {
-                    
+            	console.log('test',k, info[i]);
+                if (info[i].index==k) {
                     var inp=linp[k];
                     if (first) {
-			first=false;
+			//first=false;
 			focusConstraint(inp);
                     }
-                    viewContraint(inp,info[i].index[k]);
+                    viewContraint(inp,info[i]);
 		}
             }
 	}
@@ -55,6 +55,14 @@ function focusConstraint(inp) {
 }
 function viewContraint(inp, info) {
     if (inp) {
+        if ((inp.style.display=='none') || (inp.type=='hidden')) {
+                var oinp=inp.nextSibling;
+                while (oinp && oinp.tagName!='INPUT' && oinp.type!='hidden' && oinp.style.display!='none') oinp=oinp.nextSibling;
+                if (oinp && oinp.tagName=='INPUT') inp=oinp;
+                else {
+                   inp=inp.parentNode;
+                }   
+        }
         inp.className='invalid';
         var ntr=window.parent.document.createElement("div");
         ntr.className='constraint';     
@@ -69,7 +77,7 @@ function viewContraint(inp, info) {
         addEvent(sp,"click", function () { ntr.style.display='none';inp.focus();});
         inp.parentNode.insertBefore(ntr,inp);
         
-        if (info.sug) {
+        if (info.sug && (info.sug.length > 0)) {
             var s=window.parent.document.createElement("select");
             s.options[s.options.length]=new Option('[TEXT:Suggestion]','');
             addEvent(s,"change", function () { inp.value=this.options[this.selectedIndex].value;});
