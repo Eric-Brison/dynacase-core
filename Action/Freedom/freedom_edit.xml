@@ -73,7 +73,7 @@ addEvent(window,"load",resetbodyopacity);
        class="fborder" style="display:inline"
        name="modifydoc" 
        onsubmit="if (document.isSubmitted) return false;if (!canmodify()) return false;document.isSubmitted=true;enableall();if (parent) if (parent.flist) this.catgid.value=parent.flist.catgid;this.iSubmit.disabled=true;setTimeout('self.close()',3000);return true"
-       target="[rtarget]"
+       target="fsave[classid]"
        method="POST" ENCTYPE="multipart/form-data" 
        action="[CORE_STANDURL]&app=GENERIC&action=GENERIC_MOD" >
 <INPUT TYPE="hidden" name="classid" value="[classid]">
@@ -82,7 +82,8 @@ addEvent(window,"load",resetbodyopacity);
 <input type="hidden" name="vid" value="[vid]">
 <input type="hidden" name="ezone" value="[ezone]">
 <input type="hidden" name="rzone" value="[rzone]">
-<input type="hidden" name="noredirect" value="0">
+<input type="hidden" name="quicksave" value="0">
+<input type="hidden" name="noredirect" value="1">
 <input type="hidden" name="catgid" >
 <input type="hidden" name="noconstraint" value="N">
 [ENDIF NOFORM]
@@ -123,6 +124,7 @@ addEvent(window,"load",resetbodyopacity);
 </form>
 <!--  FOOT HTML -->
 <iframe name="fhsave" style="display:none" src="[IMG:1x1.gif]" ></iframe>
+<iframe name="fsave[classid]" style="display:none" src="[IMG:1x1.gif]"></iframe>
 </body>
 </html>
 [ENDIF NOFORM]

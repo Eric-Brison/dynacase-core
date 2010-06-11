@@ -58,7 +58,6 @@ $s->setObjectReturn();
 if ($docid > 0) $s->addFilter("id = $docid");
 if ($fldid > 0) $s->dirid=$fldid;
 if ($allrev) $s->latest=false;
-$s->addFilter("pas bon");
 $s->search();
 
 if ($s->searchError()) {
