@@ -659,7 +659,7 @@ function canmodify(withoutalert) {
 	}
     }
     if (err != '') {
-      if (! withoutalert) alert('[TEXT:these needed attributes are empty]\n'+err);
+      if (! withoutalert) displayWarningMsg('[TEXT:these needed attributes are empty]\n'+err);
 	    return false;
     }
     return true;

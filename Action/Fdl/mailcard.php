@@ -263,7 +263,7 @@ function sendCard(&$action,
 	$outfile= uniqid("/var/tmp/conv").".$engine";
 	$err=convertFile($binfile,$engine,$outfile,$info);
 	if ($err=="") {
-	  $mime=getSysMimeFile($outfile);
+	  $mime=getSysMimeFile($outfile, basename($outfile));
 	  $ext=getExtension($mime);
 	  $binfile=$outfile;
 	}

@@ -158,7 +158,7 @@ Class VaultFile {
       $oldname=$this->storage->name;
       $msg = $this->storage->Show($id_file, $infos);
       $this->storage->name=$newname;
-      $this->storage->mime_t = getTextMimeFile($infile);
+      $this->storage->mime_t = getTextMimeFile($infile, $this->storage->name);
       $this->storage->mime_s = getSysMimeFile($infile, $this->storage->name);
       $msg = $this->storage->Modify();
       if ($msg =="") {

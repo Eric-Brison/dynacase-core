@@ -10,7 +10,7 @@
 /**
  */
 
-include_once("WHAT/Lib.TEUtil.php");
+include_once("WHAT/Lib.FileMime.php");
 
 Class TransformationEngine {
   /**
@@ -75,7 +75,7 @@ Class TransformationEngine {
 	//      echo "[$out].\n";
 	if ($out=="Continue") {
 	  $basename=str_replace('"','_',basename($filename));
-	  $mime=te_getSysMimeFile($filename);
+	  $mime=getSysMimeFile($filename, $basename);
 
 	  $in = "<TE name=\"$te_name\" fkey=\"$fkey\" fname=\"$basename\" size=\"$size\" mime=\"$mime\" callback=\"$callback\"/>\n";
 #echo "Envoi du header $in ...";    
