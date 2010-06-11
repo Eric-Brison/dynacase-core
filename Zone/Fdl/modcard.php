@@ -102,11 +102,7 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 
   if ((! $noredirect) && ($err != "")) $action->Addwarningmsg($err);
   
-  
-
-  // verify attribute constraint
-
-  
+  // verify attribute constraint  
   if (((GetHttpVars("noconstraint")!="Y") || ($action->user->id!=1)) &&
       (($err=$doc->verifyAllConstraints(false,$info))!="")) {
     // redirect to edit action
@@ -141,84 +137,88 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
         echo ( $action->execute());
         exit;
     }
-  } else {
-    if ($docid==0) {
-      // now can create new doc
-      $err = $doc->Add();
-      if ($err != "")  $action->ExitError($err);
-      $doc->disableEditControl(); // in case of dynamic profil from computed attributes
-      $doc->initid = $doc->id;// it is initial doc	    
+  } 
+  if ($err=="") {
+      if ($docid==0) {
+          // now can create new doc
+          $err = $doc->Add();
+          if ($err != "") {
+              if ($noredirect) {
+                  //$action->addWarningMsg($err);
+                  return $err;
+              } else {
+                  $action->ExitError($err);
+              }
+          }
+          $doc->disableEditControl(); // in case of dynamic profil from computed attributes
+          $doc->initid = $doc->id;// it is initial doc
+          $ndocid = $doc->id;
+      }
+
+      $doc->lmodify='Y'; // locally modified
       $ndocid = $doc->id;
-    }
-    $doc->lmodify='Y'; // locally modified
-    $ndocid = $doc->id;
-    if (! $quicksave) { // else quick save
-      $doc->refresh();
-      if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
-      $err=$doc->PostModify(); 
-      // add trace to know when and who modify the document
-      if ( $docid == 0 ) {
-	//$doc->Addcomment(_("creation"));
+      if (! $quicksave) { // else quick save
+          $doc->refresh();
+          if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
+          $err=$doc->PostModify();
+          // add trace to know when and who modify the document
+          if ( $docid == 0 ) {
+              //$doc->Addcomment(_("creation"));
+          } else {
+              $olds=$doc->getOldValues();
+              if (is_array($olds)) {
+                  $keys = array();
+                  foreach ($olds as $ka=>$va) {
+                      $oa=$doc->getAttribute($ka);
+                      $keys[]=$oa->getLabel();
+                  }
+                  $skeys=implode(", ",$keys);
+                  $doc->Addcomment(sprintf(_("change %s"),$skeys),HISTO_INFO,"MODIFY");
+              } else {
+                  $doc->Addcomment(_("change"),HISTO_INFO,"MODIFY");
+              }
+          }
+          if ($err=="") {$err.=$doc-> Modify();  }
+
+          // if ( $docid == 0 ) $err=$doc-> PostCreated();
+          $doc->unlock(true); // disabled autolock
+          if (($err == "") && ($doc->doctype != 'T')){
+
+              // change state if needed
+              $newstate=GetHttpVars("newstate","");
+              $comment=GetHttpVars("comment","");
+
+              $err="";
+
+
+              if (($newstate != "") && ($newstate != "-")) {
+
+                  if ($doc->wid > 0) {
+                      if ($newstate != "-") {
+                          $wdoc = new_Doc($dbaccess,$doc->wid);
+
+                          $wdoc->Set($doc);
+                          setPostVars($wdoc,$info); // set for ask values
+                          $err=$wdoc->ChangeState($newstate,$comment,$force);
+                      }
+                  }
+
+              } else {
+                  // test if auto revision
+                  $fdoc = $doc->getFamDoc();
+
+                  if ($fdoc->schar == "R") {
+                      $doc->AddRevision(sprintf("%s : %s",_("auto revision"),$comment));
+                  } else {
+                      if ($comment != "") $doc->AddComment($comment);
+                  }
+              }
+              $ndocid = $doc->id;
+          }
       } else {
-	$olds=$doc->getOldValues();
-	if (is_array($olds)) {
-	  $keys = array();
-	  foreach ($olds as $ka=>$va) {
-	    $oa=$doc->getAttribute($ka);
-	    $keys[]=$oa->getLabel();
-	  }
-	  $skeys=implode(", ",$keys);
-	  $doc->Addcomment(sprintf(_("change %s"),$skeys),HISTO_INFO,"MODIFY");
-	} else {
-	  $doc->Addcomment(_("change"),HISTO_INFO,"MODIFY");
-	}
+          // just quick save
+          if ($err=="") {$err.=$doc-> Modify();  }
       }
-      if ($err=="") {$err.=$doc-> Modify();  }
-
-      // if ( $docid == 0 ) $err=$doc-> PostCreated(); 
-      $doc->unlock(true); // disabled autolock
-  
-     
-
-      if (($err == "") && ($doc->doctype != 'T')){
-    
-	// change state if needed
-      
-	$newstate=GetHttpVars("newstate","");
-
-	$comment=GetHttpVars("comment","");
-    
-	$err="";
-
-
-	if (($newstate != "") && ($newstate != "-")) {
-
-	  if ($doc->wid > 0) {
-	    if ($newstate != "-") {
-	      $wdoc = new_Doc($dbaccess,$doc->wid);
-	
-	      $wdoc->Set($doc);
-	      setPostVars($wdoc,$info); // set for ask values
-	      $err=$wdoc->ChangeState($newstate,$comment,$force);
-	    }
-	  }
-
-	} else {
-	  // test if auto revision
-	  $fdoc = $doc->getFamDoc();
-
-	  if ($fdoc->schar == "R") {
-	    $doc->AddRevision(sprintf("%s : %s",_("auto revision"),$comment));
-	  } else {
-	    if ($comment != "") $doc->AddComment($comment);
-	  }
-	}
-	$ndocid = $doc->id;
-      }
-    } else {
-      // just quick save
-      if ($err=="") {$err.=$doc-> Modify();  }
-    }
   }
 
 

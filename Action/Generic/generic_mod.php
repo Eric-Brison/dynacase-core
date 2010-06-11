@@ -90,24 +90,27 @@ function generic_mod(&$action) {
     } 
   }
   
-  
-  if ($ndocid==0) {
-    redirect($action,GetHttpVars("redirect_app","GENERIC"),
-	     GetHttpVars("redirect_act","GENERIC_LOGO"),
-	     $action->GetParam("CORE_STANDURL"));
-  }
+
 
 
   if ($noredirect) {
     $action->lay->set("id",$ndocid);
     $action->lay->set("constraintinfo",json_encode($info));
     $action->lay->set("quicksave",$quicksave);
+    $action->lay->set("error",json_encode($err));
     if ($retedit) $action->lay->set("url",sprintf("?app=%s&action=%s",getHttpVars("redirect_app","GENERIC"),getHttpVars("redirect_act","GENERIC_EDIT")));
     else {
         if ($viewext) $action->lay->set("url",sprintf("?app=%s&action=%s",getHttpVars("redirect_app","FDL"),getHttpVars("redirect_act","VIEWEXTDOC$zone&refreshfld=Y&id=$ndocid")));
         else $action->lay->set("url",sprintf("?app=%s&action=%s",getHttpVars("redirect_app","FDL"),getHttpVars("redirect_act","FDL_CARD$zone&refreshfld=Y&id=$ndocid")));
     }
     return;
+  }
+  
+  
+  if ($ndocid==0) {
+    redirect($action,GetHttpVars("redirect_app","GENERIC"),
+             GetHttpVars("redirect_act","GENERIC_LOGO"),
+             $action->GetParam("CORE_STANDURL"));
   }
   if ($retedit) {
     redirect($action,GetHttpVars("redirect_app","GENERIC"),
