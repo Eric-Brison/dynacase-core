@@ -2988,8 +2988,8 @@ create unique index i_docir on doc(initid, revision);";
                                         "err"=>$res["err"],
 	                                "index"=>$i,
                                         "pid"=>$v->fieldSet->id);
-	        
 	        if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+                $err=$res["err"];
 	    }
 	  }
 	} else {
@@ -3000,6 +3000,7 @@ create unique index i_docir on doc(initid, revision);";
                                         "sug"=>$res["sug"],
                                         "err"=>$res["err"]);
 	       if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+                $err=$res["err"];
 	  }
 	}
       }
