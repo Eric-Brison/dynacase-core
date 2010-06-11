@@ -598,8 +598,32 @@ function mkpasswd($length=8, $charspace="") {
   
   return $passwd;
 }
+/**
+ * 
+ * @param string $core_lang
+ */
+function getLocaleConfig($core_lang='') {
 
+	if(empty($core_lang)) {
+		$core_lang = getParam("CORE_LANG", "fr_FR");
+	}
+	$lng = substr($core_lang, 0, 2);
+	if(preg_match('#^[a-z0-9_\.-]+$#i', $core_lang) && file_exists("locale/".$lng."/lang.php")) {
+		include("locale/".$lng."/lang.php");
+	}
+	else {
+		include("locale/fr/lang.php");
+	}
+	if(!isset($lang) || !isset($lang[$core_lang]) || !is_array($lang[$core_lang])) {
+		return false;
+	}
+	return $lang[$core_lang];
+}
 
+/**
+ * 
+ * @param string $lang
+ */
 function setLanguage($lang) {
   global $pubdir;
 //  print "<h1>setLanguage:$lang</H1>";

@@ -2207,189 +2207,200 @@ create unique index i_docir on doc(initid, revision);";
    * @return string error message, if no error empty string
    */
   final public function SetValue($attrid, $value,$index=-1) {
-    // control edit before set values
-	  
-    if (! $this->withoutControl) {
-      if ($this->id > 0) { // no control yet if no effective doc
-	$err = $this-> Control("edit");
-	if ($err != "") return ($err); 
-      }
-    }      
-    $attrid = strtolower($attrid);
-    $oattr=$this->GetAttribute($attrid);
-    if ($index > -1) { // modify one value in a row
-      $tval=$this->getTValue($attrid);
-      $tval[$index]=$value;
-      $value=$tval;
-    }
-    if (is_array($value)) {      
-      if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
-      else {
-	if (count($value)==0) $value = DELVALUE;
-	elseif ((count($value) == 1) && (first($value)=="") && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell
-	else {
-	  if ($oattr->repeat && (count($value)==1) && substr(key($value),0,1)=="s") {
-	    $ov=$this->getTValue($attrid);
-	    $rank=intval(substr(key($value),1)); 
-	    if (count($ov) < ($rank-1)) { // fill array if not set
-	      $start=count($ov);
-	      for ($i=$start;$i<$rank;$i++) $ov[$i]="";
-	    }
-	    foreach ($value as $k=>$v) $ov[substr($k,1,1)]=$v;
-	    $value=$this->_array2val($ov);
-	  } else {
-	    $value = $this->_array2val($value);
-	  }
-	}
-      }
-    }
-    if (($value !== "") && ($value !== null))  {
-      // change only if different
-      if ($oattr === false) return sprintf(_("attribute %s unknow in family %s [%d]"),$attrid, $this->title, $this->id);
-      if ($oattr->mvisibility=="I") return sprintf(_("no permission to modify this attribute %s"),$attrid);
-      if ($value === DELVALUE) {
-	if ( $oattr->type != "password") $value=" ";
-	else return;
-      }
-      if ($value === " ") {
-	$value=""; // erase value
-	if  ($this->$attrid != "") {
-	  $this->hasChanged=true;
-	  //print "change by delete $attrid  <BR>";
-	  $this->_oldvalue[$attrid]=$this->$attrid;
-	  $this->$attrid="";
-	  if ($oattr->type=="file") {
-	    // need clear computed column
-	    $this->clearFullAttr($oattr->id);
-	  }
-	}
-      } else {
+  	// control edit before set values
+  	 
+  	if (! $this->withoutControl) {
+  		if ($this->id > 0) { // no control yet if no effective doc
+  			$err = $this-> Control("edit");
+  			if ($err != "") return ($err);
+  		}
+  	}
+  	$attrid = strtolower($attrid);
+  	$oattr=$this->GetAttribute($attrid);
+  	if ($index > -1) { // modify one value in a row
+  		$tval=$this->getTValue($attrid);
+  		$tval[$index]=$value;
+  		$value=$tval;
+  	}
+  	if (is_array($value)) {
+  		if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
+  		else {
+  			if (count($value)==0) $value = DELVALUE;
+  			elseif ((count($value) == 1) && (first($value)=="") && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell
+  			else {
+  				if ($oattr->repeat && (count($value)==1) && substr(key($value),0,1)=="s") {
+  					$ov=$this->getTValue($attrid);
+  					$rank=intval(substr(key($value),1));
+  					if (count($ov) < ($rank-1)) { // fill array if not set
+  						$start=count($ov);
+  						for ($i=$start;$i<$rank;$i++) $ov[$i]="";
+  					}
+  					foreach ($value as $k=>$v) $ov[substr($k,1,1)]=$v;
+  					$value=$this->_array2val($ov);
+  				} else {
+  					$value = $this->_array2val($value);
+  				}
+  			}
+  		}
+  	}
+  	if (($value !== "") && ($value !== null))  {
+  		// change only if different
+  		if ($oattr === false) return sprintf(_("attribute %s unknow in family %s [%d]"),$attrid, $this->title, $this->id);
+  		if ($oattr->mvisibility=="I") return sprintf(_("no permission to modify this attribute %s"),$attrid);
+  		if ($value === DELVALUE) {
+  			if ( $oattr->type != "password") $value=" ";
+  			else return;
+  		}
+  		if ($value === " ") {
+  			$value=""; // erase value
+  			if  ($this->$attrid != "") {
+  				$this->hasChanged=true;
+  				//print "change by delete $attrid  <BR>";
+  				$this->_oldvalue[$attrid]=$this->$attrid;
+  				$this->$attrid="";
+  				if ($oattr->type=="file") {
+  					// need clear computed column
+  					$this->clearFullAttr($oattr->id);
+  				}
+  			}
+  		} else {
 
-	$value=trim($value," \x0B\r");// suppress white spaces end & begin
-	if (!isset($this->$attrid)) $this->$attrid="";
+  			$value=trim($value," \x0B\r");// suppress white spaces end & begin
+  			if (!isset($this->$attrid)) $this->$attrid="";
 
-	if  (($this->$attrid != $value) && ($this->$attrid != str_replace("\n ","\n",$value)))	  {
-	  $this->hasChanged=true;
-	  // print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";		  
-	  if ($oattr->repeat) {
-	    $tvalues = $this->_val2array($value);
-	  } else {
-	    $tvalues[]=$value;
-	  }
+  			if  (($this->$attrid != $value) && ($this->$attrid != str_replace("\n ","\n",$value)))	  {
+  				$this->hasChanged=true;
+  				// print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
+  				if ($oattr->repeat) {
+  					$tvalues = $this->_val2array($value);
+  				} else {
+  					$tvalues[]=$value;
+  				}
 
-	  foreach($tvalues as $kvalue=>$avalue) {
-	    if ($avalue != "") {
-	      if ($oattr) {
-		switch($oattr->type) {
-		case 'docid':
-		  if  ((! strstr($avalue,"<BR>")) && (! strstr($avalue,"\n"))&& (!is_numeric($avalue))) {		  
-		    $tvalues[$kvalue]=getIdFromName($this->dbaccess,$avalue);
-		  }
-		  break;
-		case 'enum':
-		  if ($oattr->getOption("etype")=="open") {
-		    // added new
-		    $tenum=$oattr->getEnum();
-		    $keys=array_keys($tenum);
-		    if (! in_array($avalue,$keys)) {
-		      $oattr->addEnum($this->dbaccess,$avalue,$avalue);
-		    }
-		  }
-		  break;
-		case 'double':
-                    if ($avalue=='-') $avalue=0;
-		  $tvalues[$kvalue]=str_replace(",",".",$avalue);
-		  $tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
-		  if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
-		  break;
-		case 'money':
-                    if ($avalue=='-') $avalue=0;
-		  $tvalues[$kvalue]=str_replace(",",".",$avalue);
-		  $tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
-		  if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
-		  $tvalues[$kvalue]=round(doubleval($tvalues[$kvalue]),2);
-		  break;
-		case 'integer':
-		case 'int':
-		    if ($avalue=='-') $avalue=0;
-		  if (($avalue != "\t") && (! is_numeric($avalue))) return sprintf(_("value [%s] is not a number"),$avalue);
-		  if (intval($avalue) != floatval($avalue)) return sprintf(_("[%s] must be a integer"),$avalue);
-		  
-		  $tvalues[$kvalue]=intval($avalue);
-		  break;
-		case 'time':
-		  $tt=explode(":",$avalue);
-		  if (count($tt)==2) {
-		    list($hh,$mm) = $tt;
-		    $tvalues[$kvalue]=sprintf("%02d:%02d",intval($hh)%24,intval($mm)%60);
-		  } else if (count($tt)==3) {
-		    list($hh,$mm,$ss) = $tt;
-		    $tvalues[$kvalue]=sprintf("%02d:%02d:%02d",intval($hh)%24,intval($mm)%60,intval($ss)%60);		  
-		  }
-		  break;
-		case 'date':
-		  if (trim($avalue)=="") {
-		    if (! $oattr->repeat) $tvalues[$kvalue]="";
-		  } else {
-		    list($dd,$mm,$yy) = explode("/",$avalue);
-		    if (($mm == 0) || ($dd == 0)) list($yy,$mm,$dd) = explode("-",$avalue); // iso8601
-		    $yy = intval($yy);
-		    $mm = intval($mm); 
-		    $dd = intval($dd); 
-	      
-		    if (($mm == 0) || ($dd == 0)) AddWarningMsg(sprintf(_("the date '%s' for %s attribute is not correct. It has been corrected automatically"),$avalue,$oattr->getLabel()));
-		    if ($mm == 0) $mm=1; // 1st january
-		    if ($dd == 0) $dd=1; // 1st day
-		    //	$tvalues[$kvalue]=sprintf("%04d-%02d-%02d", ($yy<30)?2000+$yy:(($yy<100)?1900+$yy:$yy),$mm,$dd);
-		    $tvalues[$kvalue]=sprintf("%02d/%02d/%04d",$dd,$mm, ($yy<30)?2000+$yy:(($yy<100)?1900+$yy:$yy));
-		  }
-		  break;
-		case 'file':
-		  // clear fulltext realtive column
-		  if ((!$oattr->repeat) || ($avalue != $this->getTValue($attrid,"",$kvalue))) {
-		    // only if changed
-		    $this->clearFullAttr($oattr->id,($oattr->repeat)?$kvalue:-1);
-		  }
-		  break;
-		case 'htmltext':
-		  $avalue=str_replace('&quot;','--quoteric--',$avalue);
+  				foreach($tvalues as $kvalue=>$avalue) {
+  					if ($avalue != "") {
+  						if ($oattr) {
+  							switch($oattr->type) {
+  								case 'docid':
+  									if  ((! strstr($avalue,"<BR>")) && (! strstr($avalue,"\n"))&& (!is_numeric($avalue))) {
+  										$tvalues[$kvalue]=getIdFromName($this->dbaccess,$avalue);
+  									}
+  									break;
+  								case 'enum':
+  									if ($oattr->getOption("etype")=="open") {
+  										// added new
+  										$tenum=$oattr->getEnum();
+  										$keys=array_keys($tenum);
+  										if (! in_array($avalue,$keys)) {
+  											$oattr->addEnum($this->dbaccess,$avalue,$avalue);
+  										}
+  									}
+  									break;
+  								case 'double':
+  									if ($avalue=='-') $avalue=0;
+  									$tvalues[$kvalue]=str_replace(",",".",$avalue);
+  									$tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
+  									if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
+  									break;
+  								case 'money':
+  									if ($avalue=='-') $avalue=0;
+  									$tvalues[$kvalue]=str_replace(",",".",$avalue);
+  									$tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
+  									if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
+  									$tvalues[$kvalue]=round(doubleval($tvalues[$kvalue]),2);
+  									break;
+  								case 'integer':
+  								case 'int':
+  									if ($avalue=='-') $avalue=0;
+  									if (($avalue != "\t") && (! is_numeric($avalue))) return sprintf(_("value [%s] is not a number"),$avalue);
+  									if (intval($avalue) != floatval($avalue)) return sprintf(_("[%s] must be a integer"),$avalue);
 
-		  $tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
-		  $tvalues[$kvalue]=str_replace(array('<noscript','</noscript>','<script','</script>'),array('<pre', '</pre>','<pre', '</pre>'),html_entity_decode($tvalues[$kvalue],ENT_NOQUOTES,'UTF-8'));		  
-		  $tvalues[$kvalue]=str_replace("[","&#x5B;",$tvalues[$kvalue]); // need to stop auto instance
-		  $tvalues[$kvalue]=str_replace('--quoteric--','&amp;quot;',$tvalues[$kvalue]); // reinject original quote entity
-		  $tvalues[$kvalue]=preg_replace("/<\/?meta[^>]*>/s","",$tvalues[$kvalue]);
-		  if ($oattr->getOption("htmlclean")=="yes") {
-		    $tvalues[$kvalue]=preg_replace("/<\/?span[^>]*>/s","",$tvalues[$kvalue]);
-		    $tvalues[$kvalue]=preg_replace("/<\/?font[^>]*>/s","",$tvalues[$kvalue]);
-		    $tvalues[$kvalue]=preg_replace("/<style[^>]*>.*?<\/style>/s","",$tvalues[$kvalue]);
-		    $tvalues[$kvalue]=preg_replace("/<([^>]*) style=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
-		    $tvalues[$kvalue]=preg_replace("/<([^>]*) class=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
-		  }
-		  break;
-		case 'thesaurus':
-		  // reset cache of doccount
-		  include_once("FDL/Class.DocCount.php");		  
-		  $d=new docCount($this->dbaccess);
-		  $d->famid=$this->fromid;
-		  $d->aid=$attrid;
-		  $d->deleteAll();
-		  break;
-		}
-	      }
-	    }
-	  }
-	  //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
-	  $this->_oldvalue[$attrid]=$this->$attrid;
-	  $this->$attrid=implode("\n",$tvalues); 
+  									$tvalues[$kvalue]=intval($avalue);
+  									break;
+  								case 'time':
+  									$tt=explode(":",$avalue);
+  									if (count($tt)==2) {
+  										list($hh,$mm) = $tt;
+  										$tvalues[$kvalue]=sprintf("%02d:%02d",intval($hh)%24,intval($mm)%60);
+  									} else if (count($tt)==3) {
+  										list($hh,$mm,$ss) = $tt;
+  										$tvalues[$kvalue]=sprintf("%02d:%02d:%02d",intval($hh)%24,intval($mm)%60,intval($ss)%60);
+  									}
+  									break;
+  								case 'date':
+  									if (trim($avalue)=="") {
+  										if (! $oattr->repeat) $tvalues[$kvalue]="";
+  									} else {
+  										 
+  										$localeconfig = getLocaleConfig();
+  										if($localeconfig !== false) {
+  											$tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateFormat']);
+  										}
+  										else {
+  											return sprintf(_("value [%s] is not a valid date"),$avalue);
+  										}
+  									}
+  									break;
+  								case 'timestamp':
+  									if (trim($avalue)=="") {
+  										if (! $oattr->repeat) $tvalues[$kvalue]="";
+  									} else {
+  										 
+  										$localeconfig = getLocaleConfig();
+  										if($localeconfig !== false) {
+  											$tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
+  										}
+  										else {
+  											return sprintf(_("value [%s] is not a valid timestamp"),$avalue);
+  										}
+  									}
+  									break;
+  								case 'file':
+  									// clear fulltext realtive column
+  									if ((!$oattr->repeat) || ($avalue != $this->getTValue($attrid,"",$kvalue))) {
+  										// only if changed
+  										$this->clearFullAttr($oattr->id,($oattr->repeat)?$kvalue:-1);
+  									}
+  									break;
+  								case 'htmltext':
+  									$avalue=str_replace('&quot;','--quoteric--',$avalue);
 
-	}
-	
-      }      
-    }
+  									$tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
+  									$tvalues[$kvalue]=str_replace(array('<noscript','</noscript>','<script','</script>'),array('<pre', '</pre>','<pre', '</pre>'),html_entity_decode($tvalues[$kvalue],ENT_NOQUOTES,'UTF-8'));
+  									$tvalues[$kvalue]=str_replace("[","&#x5B;",$tvalues[$kvalue]); // need to stop auto instance
+  									$tvalues[$kvalue]=str_replace('--quoteric--','&amp;quot;',$tvalues[$kvalue]); // reinject original quote entity
+  									$tvalues[$kvalue]=preg_replace("/<\/?meta[^>]*>/s","",$tvalues[$kvalue]);
+  									if ($oattr->getOption("htmlclean")=="yes") {
+  										$tvalues[$kvalue]=preg_replace("/<\/?span[^>]*>/s","",$tvalues[$kvalue]);
+  										$tvalues[$kvalue]=preg_replace("/<\/?font[^>]*>/s","",$tvalues[$kvalue]);
+  										$tvalues[$kvalue]=preg_replace("/<style[^>]*>.*?<\/style>/s","",$tvalues[$kvalue]);
+  										$tvalues[$kvalue]=preg_replace("/<([^>]*) style=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
+  										$tvalues[$kvalue]=preg_replace("/<([^>]*) class=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
+  									}
+  									break;
+  								case 'thesaurus':
+  									// reset cache of doccount
+  									include_once("FDL/Class.DocCount.php");
+  									$d=new docCount($this->dbaccess);
+  									$d->famid=$this->fromid;
+  									$d->aid=$attrid;
+  									$d->deleteAll();
+  									break;
+  							}
+  						}
+  					}
+  				}
+  				//print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
+  				$this->_oldvalue[$attrid]=$this->$attrid;
+  				$this->$attrid=implode("\n",$tvalues);
+
+  			}
+
+  		}
+  	}
   }
-  
- /**
+
+  /**
   * clear $attrid_txt and $attrid_vec
   *
   * @param string $idAttr identificator of file attribute 
@@ -2983,12 +2994,13 @@ create unique index i_docir on doc(initid, revision);";
 	  for ($i=0;$i<count($tv);$i++) {
 	    $res= $this->verifyConstraint($v->id,$i);	    
 	    if ($res["err"]!="") {
-	        $info[$v->id]=array("id"=>$v->id,
-                              "pid"=>$v->fieldSet->id);
-	        $info[$v->id]["index"][$i]=array(
-	                                "sug"=>$res["sug"],
-	                                "err"=>$res["err"]);
+	        $info[$v->id.$i]=array("id"=>$v->id,
+	                               "sug"=>$res["sug"],
+                                        "err"=>$res["err"],
+	                                "index"=>$i,
+                                        "pid"=>$v->fieldSet->id);
 	        if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+                $err=$res["err"];
 	    }
 	  }
 	} else {
@@ -2999,6 +3011,7 @@ create unique index i_docir on doc(initid, revision);";
                                         "sug"=>$res["sug"],
                                         "err"=>$res["err"]);
 	       if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+                $err=$res["err"];
 	  }
 	}
       }
@@ -4266,535 +4279,535 @@ create unique index i_docir on doc(initid, revision);";
   }
 
   final public function getHtmlValue($oattr, $value, $target="_self",$htmllink=true, $index=-1,$entities=true) {
-    global $action;
-    
-    $aformat=$oattr->format;
-    $atype=$oattr->type;
+  	global $action;
 
-    if (($oattr->repeat)&&($index <= 0)){
-      $tvalues = explode("\n",$value);
-    } else {
-      $tvalues[$index]=$value;
-    }
-    $idocfamid=$oattr->format;
+  	$aformat=$oattr->format;
+  	$atype=$oattr->type;
 
-    $attrid=$oattr->id;
-    foreach($tvalues as $kvalue=>$avalue) {
-      $htmlval="";
-    
-      switch ($atype) {
-	case "idoc":
-	  $aformat=""; 	   
-	  $value=$avalue;
-	  if($value!=""){
-	    // printf("la ");
-	    $temp=base64_decode($value);
-	    $entete="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
-	    $xml=$entete;
-	    $xml.=$temp; 
-	    $title=recup_argument_from_xml($xml,"title");//in freedom_util.php
-	  }
-	  $attrid=$attrid.$index;
-	  $htmlval="<form style=\"display:inline\"><INPUT id=\"_" .$attrid."\" TYPE=\"hidden\"  name=\"_".$attrid."\" value=\"".$value." \">";
-	  $htmlval.="<a onclick=\"subwindow(400,400,'_$attrid','');viewidoc('_$attrid','$idocfamid')\" ";
-	  $htmlval.="oncontextmenu=\"viewidoc_in_popdoc(event,'$attrid','_$attrid','$idocfamid');return false\">$title</a>";
-	  $htmlval.="</form>";	     	     
-	  break;
-	   
-     
-	case "image": 
-	  if ($target=="mail") {
-	    $htmlval="cid:".$oattr->id;
-	    if ($index >= 0) $htmlval.="+$index";
-	  }   if ($target=="te") {
-	    $htmlval="file://".$this->vault_filename($oattr->id,true,$kvalue);
-	  }  else {
-	    $vid="";
-	    if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-	      $vid=$reg[2];
+  	if (($oattr->repeat)&&($index <= 0)){
+  		$tvalues = explode("\n",$value);
+  	} else {
+  		$tvalues[$index]=$value;
+  	}
+  	$idocfamid=$oattr->format;
 
-		if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
-		else $idx=$index; 
-		$inline=$oattr->getOption("inline");
-		if ($inline=="yes") $opt="&inline=yes";
-		else $opt="";
-		$htmlval=$action->GetParam("CORE_BASEURL").
+  	$attrid=$oattr->id;
+  	foreach($tvalues as $kvalue=>$avalue) {
+  		$htmlval="";
+
+  		switch ($atype) {
+  			case "idoc":
+  				$aformat="";
+  				$value=$avalue;
+  				if($value!=""){
+  					// printf("la ");
+  					$temp=base64_decode($value);
+  					$entete="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
+  					$xml=$entete;
+  					$xml.=$temp;
+  					$title=recup_argument_from_xml($xml,"title");//in freedom_util.php
+  				}
+  				$attrid=$attrid.$index;
+  				$htmlval="<form style=\"display:inline\"><INPUT id=\"_" .$attrid."\" TYPE=\"hidden\"  name=\"_".$attrid."\" value=\"".$value." \">";
+  				$htmlval.="<a onclick=\"subwindow(400,400,'_$attrid','');viewidoc('_$attrid','$idocfamid')\" ";
+  				$htmlval.="oncontextmenu=\"viewidoc_in_popdoc(event,'$attrid','_$attrid','$idocfamid');return false\">$title</a>";
+  				$htmlval.="</form>";
+  				break;
+
+  				 
+  			case "image":
+  				if ($target=="mail") {
+  					$htmlval="cid:".$oattr->id;
+  					if ($index >= 0) $htmlval.="+$index";
+  				}   if ($target=="te") {
+  					$htmlval="file://".$this->vault_filename($oattr->id,true,$kvalue);
+  				}  else {
+  					$vid="";
+  					if (preg_match(PREGEXPFILE, $avalue, $reg)) {
+  						$vid=$reg[2];
+
+  						if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
+  						else $idx=$index;
+  						$inline=$oattr->getOption("inline");
+  						if ($inline=="yes") $opt="&inline=yes";
+  						else $opt="";
+  						$htmlval=$action->GetParam("CORE_BASEURL").
 		  "app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"; // upload name
-	      
-	    } else {
-	      $htmlval=$action->GetImageUrl($avalue);
-	    }
-	  }
-	  break;
-	case "file": 
-	  $vid="";
+  						 
+  					} else {
+  						$htmlval=$action->GetImageUrl($avalue);
+  					}
+  				}
+  				break;
+  			case "file":
+  				$vid="";
 
-	  if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-	    // reg[1] is mime type
-	    $vid=$reg[2];
-	    $mime=$reg[1];
-	    include_once("FDL/Lib.Dir.php");
-	    $vf = newFreeVaultFile($this->dbaccess);
-	    if ($vf->Show ($reg[2], $info) == "") $fname = $info->name;
-	    else $fname=_("vault file error");
-	  } else $fname=_("no filename");
-	
-	
-	  if ($target=="mail") {
-	    $htmlval="<a target=\"_blank\" href=\"";
-	    $htmlval.="cid:".$oattr->id;	    
-	    if ($index >= 0) $htmlval.="+$index";
-	    $htmlval.=  "\">".$fname."</a>";
-	  } else {
-	    if ($info) {
-	      if ($htmllink) {
-		$umime = trim(`file -ib $info->path`);
-		$size=round($info->size/1024)._("AbbrKbyte");
-		$utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
-	    
-		if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
-		else $idx=$index;
+  				if (preg_match(PREGEXPFILE, $avalue, $reg)) {
+  					// reg[1] is mime type
+  					$vid=$reg[2];
+  					$mime=$reg[1];
+  					include_once("FDL/Lib.Dir.php");
+  					$vf = newFreeVaultFile($this->dbaccess);
+  					if ($vf->Show ($reg[2], $info) == "") $fname = $info->name;
+  					else $fname=_("vault file error");
+  				} else $fname=_("no filename");
 
-		$mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
-		$opt="";
-		$inline=$oattr->getOption("inline");
-		if ($inline=="yes") $opt="&inline=yes";
-		$htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-		  $action->GetParam("CORE_BASEURL").
+
+  				if ($target=="mail") {
+  					$htmlval="<a target=\"_blank\" href=\"";
+  					$htmlval.="cid:".$oattr->id;
+  					if ($index >= 0) $htmlval.="+$index";
+  					$htmlval.=  "\">".$fname."</a>";
+  				} else {
+  					if ($info) {
+  						if ($htmllink) {
+  							$umime = trim(`file -ib $info->path`);
+  							$size=round($info->size/1024)._("AbbrKbyte");
+  							$utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
+  							 
+  							if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
+  							else $idx=$index;
+
+  							$mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
+  							$opt="";
+  							$inline=$oattr->getOption("inline");
+  							if ($inline=="yes") $opt="&inline=yes";
+  							$htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
+  							$action->GetParam("CORE_BASEURL").
 		  "app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid"."&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"
-		  ."\">";
-		if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
-		$htmlval.=$fname."</a>";
-	      } else {
-		$htmlval=$info->name;
-	      }
-	    }
-	    /*
-	    
-	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$mime\" href=\"".
-	    "http://".$_SERVER["HTTP_HOST"].
-	    "/davfreedom/doc".$this->id."/$fname".
-	    "\">"."[DAV:$vid]($mime)".
-	    "</A>";
+  							."\">";
+  							if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
+  							$htmlval.=$fname."</a>";
+  						} else {
+  							$htmlval=$info->name;
+  						}
+  					}
+  					/*
+  					  
+  					$htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$mime\" href=\"".
+  					"http://".$_SERVER["HTTP_HOST"].
+  					"/davfreedom/doc".$this->id."/$fname".
+  					"\">"."[DAV:$vid]($mime)".
+  					"</A>";
 
-	    
-	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$umime\" href=\"".
-	    "http://".$_SERVER["HTTP_HOST"].
-	    "/davfreedom/doc".$this->id."/$fname".
-	    "\">"."[DAV:$vid]($umime)".
-	    "</A>";
-	    */
-	  }
-	
-	  break;
-	case "longtext":  
-	case "xml":  
-	  if ($entities) $bvalue=nl2br(htmlentities(stripslashes(str_replace("<BR>","\n",$avalue)),ENT_COMPAT,"UTF-8"));
-	  else $bvalue=stripslashes(str_replace("<BR>","\n",$avalue));
-	  $shtmllink=$htmllink?"true":"false";
-	  $bvalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
+  					 
+  					$htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$umime\" href=\"".
+  					"http://".$_SERVER["HTTP_HOST"].
+  					"/davfreedom/doc".$this->id."/$fname".
+  					"\">"."[DAV:$vid]($umime)".
+  					"</A>";
+  					*/
+  				}
+
+  				break;
+  			case "longtext":
+  			case "xml":
+  				if ($entities) $bvalue=nl2br(htmlentities(stripslashes(str_replace("<BR>","\n",$avalue)),ENT_COMPAT,"UTF-8"));
+  				else $bvalue=stripslashes(str_replace("<BR>","\n",$avalue));
+  				$shtmllink=$htmllink?"true":"false";
+  				$bvalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
 				 "\$this->getDocAnchor('\\1',\"$target\",$shtmllink)",
-				 $bvalue);	  
-	  $htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$bvalue);
-	  break;
-	case "password": 
-	  $htmlval=preg_replace("/./", "*", htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8"));
-	
-	  break;
-	case "enum": 
-	  $enumlabel = $oattr->getEnumlabel();
-	  $colors=$oattr->getOption("boolcolor");
-	  if ($colors!="") {
-	    if (isset($enumlabel[$avalue])) {
-	      reset($enumlabel);
-	      $tcolor=explode(",",$colors);
-	      if (current($enumlabel) == $enumlabel[$avalue]) {
-		$color=$tcolor[0];
-		$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
-	      } else {
-		$color=$tcolor[1];
-		$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
-	      }
-	    } else $htmlval=$avalue;	    
-	  } else {
-	    if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
-	    else $htmlval=$avalue;
+  				$bvalue);
+  				$htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$bvalue);
+  				break;
+  			case "password":
+  				$htmlval=preg_replace("/./", "*", htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8"));
 
-	  }
-	
-	  break;    
-	case "array": 
-	  $viewzone=$oattr->getOption("rowviewzone");	  
-	  $sort=$oattr->getOption("sorttable");
-	  if ($sort=="yes") {
-	    global $action;	    
-	    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/sorttable.js");
-	  }
+  				break;
+  			case "enum":
+  				$enumlabel = $oattr->getEnumlabel();
+  				$colors=$oattr->getOption("boolcolor");
+  				if ($colors!="") {
+  					if (isset($enumlabel[$avalue])) {
+  						reset($enumlabel);
+  						$tcolor=explode(",",$colors);
+  						if (current($enumlabel) == $enumlabel[$avalue]) {
+  							$color=$tcolor[0];
+  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
+  						} else {
+  							$color=$tcolor[1];
+  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
+  						}
+  					} else $htmlval=$avalue;
+  				} else {
+  					if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
+  					else $htmlval=$avalue;
 
-	  $lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
-	  $lay->set("issort",($sort=="yes"));
-	  if (! method_exists($this->attributes,"getArrayElements")) {	    
-	    break;
-	  }
-	  $height=$oattr->getOption("height",false);	  
-	  $lay->set("tableheight",$height);
-	  $lay->set("caption",$oattr->getLabel());
-	  $lay->set("aid",$oattr->id);
+  				}
 
-	  if (($viewzone != "") &&  preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/",$viewzone,$reg)) {
-	    // detect special row zone
-	    
+  				break;
+  			case "array":
+  				$viewzone=$oattr->getOption("rowviewzone");
+  				$sort=$oattr->getOption("sorttable");
+  				if ($sort=="yes") {
+  					global $action;
+  					$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/sorttable.js");
+  				}
 
-	    $dxml=new DomDocument();
-	    $rowlayfile=getLayoutFile($reg[1],strtolower($reg[2]).".xml");
-	    if (! @$dxml->load(DEFAULT_PUBDIR."/$rowlayfile")) {	      
-	      AddwarningMsg(sprintf(_("cannot open %s layout file"),DEFAULT_PUBDIR."/$rowlayfile"));
-	      break;
-	    }
-	    $theads=$dxml->getElementsByTagName('table-head');
-	    if ($theads->length > 0) {
-	      $thead=$theads->item(0);
-	      $theadcells=$thead->getElementsByTagName('cell');
-	      $talabel=array();
-	      for ($i = 0; $i < $theadcells->length; $i++) {   
-		$th= xt_innerXML($theadcells->item($i));
-		$thstyle=$theadcells->item($i)->getAttribute("style");
-		if ($thstyle!="") $thstyle="style=\"$thstyle\"";
-		$talabel[] = array("alabel"=>$th,
+  				$lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
+  				$lay->set("issort",($sort=="yes"));
+  				if (! method_exists($this->attributes,"getArrayElements")) {
+  					break;
+  				}
+  				$height=$oattr->getOption("height",false);
+  				$lay->set("tableheight",$height);
+  				$lay->set("caption",$oattr->getLabel());
+  				$lay->set("aid",$oattr->id);
+
+  				if (($viewzone != "") &&  preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/",$viewzone,$reg)) {
+  					// detect special row zone
+  					 
+
+  					$dxml=new DomDocument();
+  					$rowlayfile=getLayoutFile($reg[1],strtolower($reg[2]).".xml");
+  					if (! @$dxml->load(DEFAULT_PUBDIR."/$rowlayfile")) {
+  						AddwarningMsg(sprintf(_("cannot open %s layout file"),DEFAULT_PUBDIR."/$rowlayfile"));
+  						break;
+  					}
+  					$theads=$dxml->getElementsByTagName('table-head');
+  					if ($theads->length > 0) {
+  						$thead=$theads->item(0);
+  						$theadcells=$thead->getElementsByTagName('cell');
+  						$talabel=array();
+  						for ($i = 0; $i < $theadcells->length; $i++) {
+  							$th= xt_innerXML($theadcells->item($i));
+  							$thstyle=$theadcells->item($i)->getAttribute("style");
+  							if ($thstyle!="") $thstyle="style=\"$thstyle\"";
+  							$talabel[] = array("alabel"=>$th,
 				   "astyle"=>$thstyle,
 				   "cwidth"=>"auto");
-	      }
-	      $lay->setBlockData("TATTR",$talabel);
-	    }
+  						}
+  						$lay->setBlockData("TATTR",$talabel);
+  					}
 
-	    $tbodies=$dxml->getElementsByTagName('table-body');
-	    if ($tbodies->length > 0) {
-	      $tbody=$tbodies->item(0);
-	      $tbodycells=$tbody->getElementsByTagName('cell');
-	      for ($i = 0; $i < $tbodycells->length; $i++) {   
-		$tr[]= xt_innerXML($tbodycells->item($i));
-		$tcellstyle[]=$tbodycells->item($i)->getAttribute("style");
-	      }
-	    }
-	    $ta = $this->attributes->getArrayElements($oattr->id);
-	    $nbitem=0;
-	    foreach($ta as $k=>$v) {	      	
-	      $tval[$k]=$this->getTValue($k);
-	      $nbitem= max($nbitem,count($tval[$k]));
-	      if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;	 
-	      $lay->set("L_".strtoupper($v->id),ucfirst($v->getLabel()));  
-	    }
-	    // view values
-	     $tvattr = array();
-	     for ($k=0;$k<$nbitem;$k++) {
-		$tvattr[]=array("bevalue" => "bevalue_$k");
-		reset($ta);
-		$tivalue=array();
+  					$tbodies=$dxml->getElementsByTagName('table-body');
+  					if ($tbodies->length > 0) {
+  						$tbody=$tbodies->item(0);
+  						$tbodycells=$tbody->getElementsByTagName('cell');
+  						for ($i = 0; $i < $tbodycells->length; $i++) {
+  							$tr[]= xt_innerXML($tbodycells->item($i));
+  							$tcellstyle[]=$tbodycells->item($i)->getAttribute("style");
+  						}
+  					}
+  					$ta = $this->attributes->getArrayElements($oattr->id);
+  					$nbitem=0;
+  					foreach($ta as $k=>$v) {
+  						$tval[$k]=$this->getTValue($k);
+  						$nbitem= max($nbitem,count($tval[$k]));
+  						if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
+  						$lay->set("L_".strtoupper($v->id),ucfirst($v->getLabel()));
+  					}
+  					// view values
+  					$tvattr = array();
+  					for ($k=0;$k<$nbitem;$k++) {
+  						$tvattr[]=array("bevalue" => "bevalue_$k");
+  						reset($ta);
+  						$tivalue=array();
 
-		foreach($tr as $kd=>$vd) {	  
+  						foreach($tr as $kd=>$vd) {
 
-		  $hval = preg_replace("/\[([^\]]*)\]/e",
+  							$hval = preg_replace("/\[([^\]]*)\]/e",
 				       "\$this->rowattrReplace('\\1',$k)",
-				       $vd);
-		  $tdstyle=$tcellstyle[$kd];
-		  $tivalue[]=array("evalue"=>$hval,
+  							$vd);
+  							$tdstyle=$tcellstyle[$kd];
+  							$tivalue[]=array("evalue"=>$hval,
 				   "color"=>"inherit",
 				   "tdstyle"=>$tdstyle,
 				   "bgcolor"=>"inherit",
 				   "align"=>"inherit" );
-		}
-		$lay->setBlockData("bevalue_$k",$tivalue);
-	      }
-	      $lay->setBlockData("EATTR",$tvattr);
-	      if ($nbitem > 10) $lay->set("caption",$oattr->getLabel()." ($nbitem)");
-	      
-	    $htmlval =$lay->gen(); 
-	  } else {	    	    	   	  
-	    $ta = $this->attributes->getArrayElements($oattr->id);
-	    $talabel=array();
-	    $tvattr = array();
+  						}
+  						$lay->setBlockData("bevalue_$k",$tivalue);
+  					}
+  					$lay->setBlockData("EATTR",$tvattr);
+  					if ($nbitem > 10) $lay->set("caption",$oattr->getLabel()." ($nbitem)");
+  					 
+  					$htmlval =$lay->gen();
+  				} else {
+  					$ta = $this->attributes->getArrayElements($oattr->id);
+  					$talabel=array();
+  					$tvattr = array();
 
-	    $emptyarray=true;
-	    $nbitem=0;
-       foreach($ta as $k=>$v) {
-	      if (($v->mvisibility=="H")||($v->mvisibility=="I")||($v->mvisibility=="O")) continue;
-	      $talabel[] = array("alabel"=>ucfirst($v->getLabel()),
-				 "astyle"=>$v->getOption("cellheadstyle"),
-				 "cwidth"=>$v->getOption("cwidth","auto"));	
-	      $tval[$k]=$this->getTValue($k);
-	      $nbitem= max($nbitem,count($tval[$k]));
-	      if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
-	   
-	    }
-	    $lay->setBlockData("TATTR",$talabel);
-	    if (! $emptyarray) {	    
-	      if ($oattr->getOption("vlabel")=="") $caption=$oattr->getLabel();
-	      else $caption="";
-	      if ($nbitem > 10) $caption.=" ($nbitem)";
-	      $lay->set("caption",$caption);
-	      $tvattr = array();
-	      for ($k=0;$k<$nbitem;$k++) {
-		$tvattr[]=array("bevalue" => "bevalue_$k");
-		$tivalue=array();
-        foreach($ta as $ka=>$va) {      
-		  if (($va->mvisibility=="H")||($va->mvisibility=="I")||($va->mvisibility=="O")) continue;
-		  $hval = $this->getHtmlValue($va,$tval[$ka][$k],$target,$htmllink,$k);
-		  if ($va->type=="image" ) {
-		    $iwidth=$va->getOption("iwidth","80px");
-		    if ($tval[$ka][$k]=="") $hval="";
-		    else if ($va->link=="")  {
-		        if (strstr($hval,'?')) $optwidth="&width=".intval($iwidth);
-		        else $optwidth='';
-		        $hval="<a  href=\"$hval\"><img border='0' width=\"$iwidth\" src=\"".$hval.$optwidth."\"></a>";
-		    }  else {
-		      $hval=preg_replace("/>(.+)</",">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<" ,$hval);
-		    }
-		  }
-		  $tivalue[]=array("evalue"=>$hval,
-				   "tdstyle"=>$va->getOption("cellbodystyle"),
-				   "color"=>$va->getOption("color","inherit"),
-				   "bgcolor"=>$va->getOption("bgcolor","inherit"),
-				   "align"=>$va->getOption("align","inherit") );
-		}
-		$lay->setBlockData("bevalue_$k",$tivalue);
-	      }
-	      $lay->setBlockData("EATTR",$tvattr);
-	  
-	      $htmlval =$lay->gen(); 
-	    } else {
-	      $htmlval = "";
-	    }
-	  }
-	  break;
- 
-	case "doc": 
+  					$emptyarray=true;
+  					$nbitem=0;
+			       foreach($ta as $k=>$v) {
+			       	if (($v->mvisibility=="H")||($v->mvisibility=="I")||($v->mvisibility=="O")) continue;
+			       	$talabel[] = array("alabel"=>ucfirst($v->getLabel()),
+							 "astyle"=>$v->getOption("cellheadstyle"),
+							 "cwidth"=>$v->getOption("cwidth","auto"));	
+			       	$tval[$k]=$this->getTValue($k);
+			       	$nbitem= max($nbitem,count($tval[$k]));
+			       	if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
+			
+			       }
+			       $lay->setBlockData("TATTR",$talabel);
+			       if (! $emptyarray) {
+			       	if ($oattr->getOption("vlabel")=="") $caption=$oattr->getLabel();
+			       	else $caption="";
+			       	if ($nbitem > 10) $caption.=" ($nbitem)";
+			       	$lay->set("caption",$caption);
+			       	$tvattr = array();
+			       	for ($k=0;$k<$nbitem;$k++) {
+			       		$tvattr[]=array("bevalue" => "bevalue_$k");
+			       		$tivalue=array();
+			       		foreach($ta as $ka=>$va) {
+			       			if (($va->mvisibility=="H")||($va->mvisibility=="I")||($va->mvisibility=="O")) continue;
+			       			$hval = $this->getHtmlValue($va,$tval[$ka][$k],$target,$htmllink,$k);
+			       			if ($va->type=="image" ) {
+			       				$iwidth=$va->getOption("iwidth","80px");
+			       				if ($tval[$ka][$k]=="") $hval="";
+			       				else if ($va->link=="")  {
+			       					if (strstr($hval,'?')) $optwidth="&width=".intval($iwidth);
+			       					else $optwidth='';
+			       					$hval="<a  href=\"$hval\"><img border='0' width=\"$iwidth\" src=\"".$hval.$optwidth."\"></a>";
+			       				}  else {
+			       					$hval=preg_replace("/>(.+)</",">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<" ,$hval);
+			       				}
+			       			}
+			       			$tivalue[]=array("evalue"=>$hval,
+							   "tdstyle"=>$va->getOption("cellbodystyle"),
+							   "color"=>$va->getOption("color","inherit"),
+							   "bgcolor"=>$va->getOption("bgcolor","inherit"),
+							   "align"=>$va->getOption("align","inherit") );
+			       		}
+			       		$lay->setBlockData("bevalue_$k",$tivalue);
+			       	}
+			       	$lay->setBlockData("EATTR",$tvattr);
+			       	 
+			       	$htmlval =$lay->gen();
+			       } else {
+			       	$htmlval = "";
+			       }
+  				}
+  				break;
 
-	  $htmlval = "";
-	  if ($avalue != "") {
-	    if ($kvalue>-1)   $idocid=$this->getTValue($aformat,"",$kvalue);
-	    else $idocid=$this->getValue($aformat);
-	    
-	    if ($idocid>0) {
-	      //$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
-	      //$lay->set("id",$idocid);
-	      $idoc = new_Doc($this->dbaccess,$idocid);
-	      $htmlval =$idoc->viewDoc("FDL:VIEWTHUMBCARD:T","finfo");
+  			case "doc":
 
-	      //$htmlval =$lay->gen(); 
-	    }
-	  }
-	  break;
- 
-	case "docid":
-	  if ($oattr->format != "") {
-	    
-	    $aformat="";
-	    $multiple=($oattr->getOption("multiple")=="yes");
-	    $dtarget=$target;
-	    if ($target != "mail") {
-	      $ltarget=$oattr->getOption("ltarget");
-	      if ($ltarget != "") $dtarget=$ltarget;
-	    }
-	    if ($multiple) {
-	      $avalue=str_replace("\n","<BR>",$avalue);
-	      $tval=explode("<BR>",$avalue);
-	      $thval=array();
-	      foreach ($tval as $kv=>$vv) {
-		if (trim($vv) =="")  $thval[] = $vv;
-		else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
-	      }
-	      $htmlval=implode("<br/>",$thval);
-	    } else {
-	      if ($avalue=="") $htmlval = $avalue;
-	      elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
-	      else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"));
-	    }
-	  } else 
-	    $htmlval=$avalue;
+  				$htmlval = "";
+  				if ($avalue != "") {
+  					if ($kvalue>-1)   $idocid=$this->getTValue($aformat,"",$kvalue);
+  					else $idocid=$this->getValue($aformat);
+  					 
+  					if ($idocid>0) {
+  						//$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
+  						//$lay->set("id",$idocid);
+  						$idoc = new_Doc($this->dbaccess,$idocid);
+  						$htmlval =$idoc->viewDoc("FDL:VIEWTHUMBCARD:T","finfo");
 
-	  break;
-	case "thesaurus":	 
-	    $aformat="";
-	    $multiple=($oattr->getOption("multiple")=="yes");
-	    if ($multiple) {
-	      $avalue=str_replace("\n","<BR>",$avalue);
-	      $tval=explode("<BR>",$avalue);
-	      $thval=array();
-	      foreach ($tval as $kv=>$vv) {
-		if (trim($vv) =="")  $thval[] = $vv;
-		else {	
-		  $thc=new_doc($this->dbaccess,trim($vv));
-		  if ($thc->isAlive()) $thval[]=$this->getDocAnchor(trim($vv),$target,$htmllink,$thc->getLangTitle());
-		  else $thval[]="th error $vv";
-		}
-	      }
-	      $htmlval=implode("<br/>",$thval);
-	    } else {
-	      if ($avalue=="") $htmlval = $avalue;
-	      else {
-		 $thc=new_doc($this->dbaccess,$avalue);
-		if ($thc->isAlive()) $htmlval = $this->getDocAnchor(trim($avalue),$target,$htmllink,$thc->getLangTitle());
-		else $htmlval="th error $avalue";
-	      }
-	    }
+  						//$htmlval =$lay->gen();
+  					}
+  				}
+  				break;
 
-	  break;
-	case "option": 
-	  $lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
-	  $htmlval = "";
-	 
-	  if ($kvalue>-1) $di=$this->getTValue($oattr->format,"",$kvalue);
-	  else $di=$this->getValue($oattr->format);
-	  if ($di > 0) {	    
-	    $lay->set("said",$di);
-	    $lay->set("uuvalue",urlencode($avalue));
+  			case "docid":
+  				if ($oattr->format != "") {
+  					 
+  					$aformat="";
+  					$multiple=($oattr->getOption("multiple")=="yes");
+  					$dtarget=$target;
+  					if ($target != "mail") {
+  						$ltarget=$oattr->getOption("ltarget");
+  						if ($ltarget != "") $dtarget=$ltarget;
+  					}
+  					if ($multiple) {
+  						$avalue=str_replace("\n","<BR>",$avalue);
+  						$tval=explode("<BR>",$avalue);
+  						$thval=array();
+  						foreach ($tval as $kv=>$vv) {
+  							if (trim($vv) =="")  $thval[] = $vv;
+  							else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
+  						}
+  						$htmlval=implode("<br/>",$thval);
+  					} else {
+  						if ($avalue=="") $htmlval = $avalue;
+  						elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
+  						else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"));
+  					}
+  				} else
+  				$htmlval=$avalue;
 
-	    $htmlval =$lay->gen(); 
-	  }
-	  break;
-	case money:    
+  				break;
+  			case "thesaurus":
+  				$aformat="";
+  				$multiple=($oattr->getOption("multiple")=="yes");
+  				if ($multiple) {
+  					$avalue=str_replace("\n","<BR>",$avalue);
+  					$tval=explode("<BR>",$avalue);
+  					$thval=array();
+  					foreach ($tval as $kv=>$vv) {
+  						if (trim($vv) =="")  $thval[] = $vv;
+  						else {
+  							$thc=new_doc($this->dbaccess,trim($vv));
+  							if ($thc->isAlive()) $thval[]=$this->getDocAnchor(trim($vv),$target,$htmllink,$thc->getLangTitle());
+  							else $thval[]="th error $vv";
+  						}
+  					}
+  					$htmlval=implode("<br/>",$thval);
+  				} else {
+  					if ($avalue=="") $htmlval = $avalue;
+  					else {
+  						$thc=new_doc($this->dbaccess,$avalue);
+  						if ($thc->isAlive()) $htmlval = $this->getDocAnchor(trim($avalue),$target,$htmllink,$thc->getLangTitle());
+  						else $htmlval="th error $avalue";
+  					}
+  				}
+
+  				break;
+  			case "option":
+  				$lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
+  				$htmlval = "";
+
+  				if ($kvalue>-1) $di=$this->getTValue($oattr->format,"",$kvalue);
+  				else $di=$this->getValue($oattr->format);
+  				if ($di > 0) {
+  					$lay->set("said",$di);
+  					$lay->set("uuvalue",urlencode($avalue));
+
+  					$htmlval =$lay->gen();
+  				}
+  				break;
+  			case 'money':
 
 
-	  $htmlval=money_format('%!.2n', doubleval($avalue));
-	  $htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
-	  break;
-	
-	case htmltext:  
-	  $shtmllink=$htmllink?"true":"false";
-	  $avalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
+  				$htmlval=money_format('%!.2n', doubleval($avalue));
+  				$htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
+  				break;
+
+  			case 'htmltext':
+  				$shtmllink=$htmllink?"true":"false";
+  				$avalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
 				 "\$this->getDocAnchor('\\1',\"$target\",$shtmllink)",
-				 $avalue);	
-	  $htmlval="<DIV>$avalue</DIV>";	
-	  break;
-	case date:  
-	  if (($aformat!="") && (trim($avalue) != "")) {
-	    if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-	     else $htmlval=$avalue;
-	  } else {
-	    $htmlval=$avalue; 
-	  }
-	    $aformat="";	
-	  break;
-	case time:  
-	  if (($aformat!="") && (trim($avalue) != "")) {
-	    if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
-	    else $htmlval=$avalue;
-	  } else {
-	    $htmlval=substr($avalue,0,5); // do not display second
-	  }	
-	  $aformat="";
-	  break;
-	case timestamp:   
-	  if (($aformat!="") && (trim($avalue) != "")) {
-	    if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-	    else $htmlval=$avalue;	    
-	  } else {
-	    $htmlval=substr($avalue,0,16); // do not display second
-	  }
-	  $aformat="";
-	  break;
-	case ifile:  
-	  $lay = new Layout("FDL/Layout/viewifile.xml", $action);
-	  $lay->set("aid",$oattr->id);
-	  $lay->set("id",$this->id);
-	  $lay->set("iheight",$oattr->getOption("height","200px"));
-	  $htmlval =$lay->gen(); 
-	
-	  break;
-	  
-	case color:  	  
-	  $htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);	
-	  break;
+  				$avalue);
+  				$htmlval="<DIV>$avalue</DIV>";
+  				break;
+  			case 'date':
+  				if (($aformat!="") && (trim($avalue) != "")) {
+  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+  					else $htmlval=$avalue;
+  				} else {
+  					$htmlval=FrenchDateToLocaleDate($avalue);
+  				}
+  				$aformat="";
+  				break;
+  			case 'time':
+  				if (($aformat!="") && (trim($avalue) != "")) {
+  					if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
+  					else $htmlval=$avalue;
+  				} else {
+  					$htmlval=substr($avalue,0,5); // do not display second
+  				}
+  				$aformat="";
+  				break;
+  			case 'timestamp':
+  				if (($aformat!="") && (trim($avalue) != "")) {
+  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+  					else $htmlval=$avalue;
+  				} else {
+  					$htmlval=FrenchDateToLocaleDate($avalue);
+  				}
+  				$aformat="";
+  				break;
+  			case 'ifile':
+  				$lay = new Layout("FDL/Layout/viewifile.xml", $action);
+  				$lay->set("aid",$oattr->id);
+  				$lay->set("id",$this->id);
+  				$lay->set("iheight",$oattr->getOption("height","200px"));
+  				$htmlval =$lay->gen();
 
-	default : 
-	  if ($entities) $avalue=htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8");
-	  else $avalue=stripslashes($avalue);
-	  $htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$avalue);
-	  
-	  break;
-	
-	}
-    
-      if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
-	//printf($htmlval);
-	$htmlval=sprintf($aformat,$htmlval);
-      } 
-      // add link if needed
-      if ($htmllink && ($oattr->link != "") ) {
-	$ititle="";
-	$hlink=$oattr->link;
-	if ($hlink[0] == "[") {
-	  if (preg_match('/\[(.*)\](.*)/', $hlink, $reg)) {   
-	    $hlink=$reg[2];
-	    $ititle=str_replace("\"","'",$reg[1]);
-	  }
-	}
-	if ($ulink = $this->urlWhatEncode( $hlink, $kvalue)) {
-	    if ($target=="ext") {
-	        if (preg_match("/FDL_CARD.*id=([0-9]+)/",$ulink,$reg)) {
-	            $abegin=$this->getDocAnchor($reg[1],$target,true,$htmlval);
-	            $htmlval='';
-	            $aend="";
-	        } else if (true || preg_match("/^http:/",$ulink,$reg)) {
-	            $ec=getSessionValue("ext:targetUrl");
-	            
-	            if ($ec)  {
-	                $ec=str_replace("%V%",$ulink,$ec);
-                    $ec=str_replace("%L%",$oattr->getLabel(),$ec);
-	                $ecu=str_replace("'","\\'",$this->urlWhatEncode($ec));
-	                $abegin="<a  onclick='parent.$ecu'>";
-	            } else {
-	                $ltarget=$oattr->getOption("ltarget");
-	                 $abegin="<a target=\"$ltarget\"  href=\"$ulink\">";
-	            }
-	            
-	            $aend="</a>";
-	        }
-	    } else if ($target == "mail") {
-	        $scheme="";
-	        if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
-	            $scheme=$reg[1];
-	        }
-	        $abegin="<a target=\"$target\"  href=\"";
-	        if ($scheme == "") $abegin.= $action->GetParam("CORE_URLINDEX",($action->GetParam("CORE_ABSURL")."/")).$ulink;
-	        else $abegin.= $ulink;
-	        $abegin.="\">";
-        $aend="</a>";
-	    } else {
-	        $ltarget=$oattr->getOption("ltarget");
-	        if ($ltarget != "") $target=$ltarget;
-	        $ltitle=$oattr->getOption("ltitle");
-	        if ($ltitle != "") $ititle=str_replace("\"","'",$ltitle);
-	        $abegin="<a target=\"$target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
-	        $abegin.= $ulink."\" ";;
-	        if ($htmllink > 1){
-	            $scheme="";
-	            if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
-	                $scheme=$reg[1];
-	            }
-	            if (($scheme == "") || ($scheme == "http")) {
-	                if ($scheme == "") $ulink.="&ulink=1";
-	                $abegin.=" oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
-	            }
-	        }
-	        $abegin.=">";
-        $aend="</a>";
-	    }
+  				break;
+  				 
+  			case 'color':
+  				$htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);
+  				break;
+
+  			default :
+  				if ($entities) $avalue=htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8");
+  				else $avalue=stripslashes($avalue);
+  				$htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$avalue);
+  				 
+  				break;
+
+  		}
+
+  		if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
+  			//printf($htmlval);
+  			$htmlval=sprintf($aformat,$htmlval);
+  		}
+  		// add link if needed
+  		if ($htmllink && ($oattr->link != "") ) {
+  			$ititle="";
+  			$hlink=$oattr->link;
+  			if ($hlink[0] == "[") {
+  				if (preg_match('/\[(.*)\](.*)/', $hlink, $reg)) {
+  					$hlink=$reg[2];
+  					$ititle=str_replace("\"","'",$reg[1]);
+  				}
+  			}
+  			if ($ulink = $this->urlWhatEncode( $hlink, $kvalue)) {
+  				if ($target=="ext") {
+  					if (preg_match("/FDL_CARD.*id=([0-9]+)/",$ulink,$reg)) {
+  						$abegin=$this->getDocAnchor($reg[1],$target,true,$htmlval);
+  						$htmlval='';
+  						$aend="";
+  					} else if (true || preg_match("/^http:/",$ulink,$reg)) {
+  						$ec=getSessionValue("ext:targetUrl");
+  						 
+  						if ($ec)  {
+  							$ec=str_replace("%V%",$ulink,$ec);
+  							$ec=str_replace("%L%",$oattr->getLabel(),$ec);
+  							$ecu=str_replace("'","\\'",$this->urlWhatEncode($ec));
+  							$abegin="<a  onclick='parent.$ecu'>";
+  						} else {
+  							$ltarget=$oattr->getOption("ltarget");
+  							$abegin="<a target=\"$ltarget\"  href=\"$ulink\">";
+  						}
+  						 
+  						$aend="</a>";
+  					}
+  				} else if ($target == "mail") {
+  					$scheme="";
+  					if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
+  						$scheme=$reg[1];
+  					}
+  					$abegin="<a target=\"$target\"  href=\"";
+  					if ($scheme == "") $abegin.= $action->GetParam("CORE_URLINDEX",($action->GetParam("CORE_ABSURL")."/")).$ulink;
+  					else $abegin.= $ulink;
+  					$abegin.="\">";
+  					$aend="</a>";
+  				} else {
+  					$ltarget=$oattr->getOption("ltarget");
+  					if ($ltarget != "") $target=$ltarget;
+  					$ltitle=$oattr->getOption("ltitle");
+  					if ($ltitle != "") $ititle=str_replace("\"","'",$ltitle);
+  					$abegin="<a target=\"$target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
+  					$abegin.= $ulink."\" ";;
+  					if ($htmllink > 1){
+  						$scheme="";
+  						if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
+  							$scheme=$reg[1];
+  						}
+  						if (($scheme == "") || ($scheme == "http")) {
+  							if ($scheme == "") $ulink.="&ulink=1";
+  							$abegin.=" oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
+  						}
+  					}
+  					$abegin.=">";
+  					$aend="</a>";
+  				}
 
 
-	} else {
-	    $abegin="";
-	    $aend="";
-	}
-      } else {
-          $abegin="";
-          $aend="";
-      }
+  			} else {
+  				$abegin="";
+  				$aend="";
+  			}
+  		} else {
+  			$abegin="";
+  			$aend="";
+  		}
 
-      $thtmlval[$kvalue]=$abegin.$htmlval.$aend;
-    }
-    
-    return implode("<BR>",$thtmlval);
+  		$thtmlval[$kvalue]=$abegin.$htmlval.$aend;
+  	}
+
+  	return implode("<BR>",$thtmlval);
   }
 
   /**
@@ -4818,260 +4831,259 @@ create unique index i_docir on doc(initid, revision);";
   }
 
   final public function GetOOoValue($oattr, $value, $target="_self",$htmllink=false, $index=-1) { 
-    global $action;
-    
-    $aformat=$oattr->format;
-    $atype=$oattr->type;
+  	global $action;
 
-    if (($oattr->repeat)&&($index <= 0)){
-      $tvalues = explode("\n",$value);
-    } else {
-      $tvalues[$index]=$value;
-    }
-    $idocfamid=$oattr->format;
-    
-    $attrid=$oattr->id;
-    foreach($tvalues as $kvalue=>$avalue) {
-      $htmlval="";
-      switch ($atype)	{
-      case "idoc":
-	// nothing
-	break;	        
-      case "image": 	 
-	$htmlval=$this->vault_filename($oattr->id,true,$kvalue);	    	 
-	break;
-      case "file": 	 
-	// file name
-	$htmlval=$this->vault_filename($oattr->id,false,$kvalue);	 	
-	break;
-      case "longtext":  
-      case "xml":  
-	$htmlval=str_replace("&","&amp;",$avalue);
-	$htmlval=str_replace(array("<",">"),array("&lt;","&gt;"),$htmlval);
-	$htmlval=str_replace("\n","<text:line-break/>",$htmlval);
-	$htmlval=str_replace("&lt;BR&gt;","<text:line-break/>",$htmlval);
-	$htmlval=str_replace("\r","",$htmlval);	
-	break;
-      case "password": 
-	
-	break;
-      case "enum": 
-	$enumlabel = $oattr->getEnumlabel();
-	$colors=$oattr->getOption("boolcolor");
-	if ($colors!="") {
-	  if (isset($enumlabel[$avalue])) {
-	    reset($enumlabel);
-	    $tcolor=explode(",",$colors);
-	    if (current($enumlabel) == $enumlabel[$avalue]) {
-	      $color=$tcolor[0];
-	      $htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
-	    } else {
-	      $color=$tcolor[1];
-	      $htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
-	    }
-	  } else $htmlval=$avalue;	    
-	} else {
-	  if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
-	  else $htmlval=$avalue;
-	}
-	
-	break;    
-	case "thesaurus":	 
-	    $aformat="";
-	    $multiple=($oattr->getOption("multiple")=="yes");
-	    if ($multiple) {
-	      $avalue=str_replace("\n","<BR>",$avalue);
-	      $tval=explode("<BR>",$avalue);
-	      $thval=array();
-	      foreach ($tval as $kv=>$vv) {
-		if (trim($vv) =="")  $thval[] = $vv;
-		else {	
-		  $thc=new_doc($this->dbaccess,trim($vv));
-		  if ($thc->isAlive()) $thval[]=$thc->getLangTitle();
-		  else $thval[]="th error $vv";
-		}
-	      }
-	      $htmlval=implode("<text:tab/>",$thval);
-	    } else {
-	      if ($avalue=="") $htmlval = $avalue;
-	      else {
-		 $thc=new_doc($this->dbaccess,$avalue);
-		if ($thc->isAlive()) $htmlval = $thc->getLangTitle();
-		else $htmlval="th error $avalue";
-	      }
-	    }
+  	$aformat=$oattr->format;
+  	$atype=$oattr->type;
 
-	  break;
-      case "array": 	
-	break;
-      case "doc": 	 
-	break;
-	case "docid":
-	  if ($oattr->format != "") {
-	    
-	    $aformat="";
-	    $multiple=($oattr->getOption("multiple")=="yes");
-	    $dtarget=$target;
-	    if ($target != "mail") {
-	      $ltarget=$oattr->getOption("ltarget");
-	      if ($ltarget != "") $dtarget=$ltarget;
-	    }
-	    if ($multiple) {
-	      $avalue=str_replace("\n","<BR>",$avalue);
-	      $tval=explode("<BR>",$avalue);
-	      $thval=array();
-	      foreach ($tval as $kv=>$vv) {
-		if (trim($vv) =="")  $thval[] = $vv;
-		else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,false);
-	      }
-	      $htmlval=implode("<text:tab/>",$thval);
-	    } else {
-	      if ($avalue=="") $htmlval = $avalue;
-	      elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
-	      else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,false);
-	    }
-	  } else 
-	    $htmlval=$avalue;
+  	if (($oattr->repeat)&&($index <= 0)){
+  		$tvalues = explode("\n",$value);
+  	} else {
+  		$tvalues[$index]=$value;
+  	}
+  	$idocfamid=$oattr->format;
 
-	  break;
+  	$attrid=$oattr->id;
+  	foreach($tvalues as $kvalue=>$avalue) {
+  		$htmlval="";
+  		switch ($atype)	{
+  			case "idoc":
+  				// nothing
+  				break;
+  			case "image":
+  				$htmlval=$this->vault_filename($oattr->id,true,$kvalue);
+  				break;
+  			case "file":
+  				// file name
+  				$htmlval=$this->vault_filename($oattr->id,false,$kvalue);
+  				break;
+  			case "longtext":
+  			case "xml":
+  				$htmlval=str_replace("&","&amp;",$avalue);
+  				$htmlval=str_replace(array("<",">"),array("&lt;","&gt;"),$htmlval);
+  				$htmlval=str_replace("\n","<text:line-break/>",$htmlval);
+  				$htmlval=str_replace("&lt;BR&gt;","<text:line-break/>",$htmlval);
+  				$htmlval=str_replace("\r","",$htmlval);
+  				break;
+  			case "password":
 
-      case "option": 	  
-	break;
-      case "money":    
-	$htmlval=money_format('%!.2n', doubleval($avalue));
-	//$htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
-	break;
-	
-      case "htmltext":  
-	$html_body=trim($avalue);
-	$html_body=str_replace(array('&quot;','&lt;','&gt;'),array('--quoteric--','--lteric--','--gteric--'),$html_body); // prevent pb for quot in quot
-	
-	if ($html_body[0] != '<') {
-	  // think it is raw text
-	  $html_body=str_replace("\n<br/>","\n",$html_body);
-	  $html_body=str_replace('<br/>',"\n",$html_body);
-	  if (! strpos($html_body,'<br')) $html_body=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$html_body);
-	  $html_body='<p>'.nl2br($html_body).'</p>';
-	}
-	$html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
-	$html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse", 
+  				break;
+  			case "enum":
+  				$enumlabel = $oattr->getEnumlabel();
+  				$colors=$oattr->getOption("boolcolor");
+  				if ($colors!="") {
+  					if (isset($enumlabel[$avalue])) {
+  						reset($enumlabel);
+  						$tcolor=explode(",",$colors);
+  						if (current($enumlabel) == $enumlabel[$avalue]) {
+  							$color=$tcolor[0];
+  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
+  						} else {
+  							$color=$tcolor[1];
+  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
+  						}
+  					} else $htmlval=$avalue;
+  				} else {
+  					if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
+  					else $htmlval=$avalue;
+  				}
+
+  				break;
+  			case "thesaurus":
+  				$aformat="";
+  				$multiple=($oattr->getOption("multiple")=="yes");
+  				if ($multiple) {
+  					$avalue=str_replace("\n","<BR>",$avalue);
+  					$tval=explode("<BR>",$avalue);
+  					$thval=array();
+  					foreach ($tval as $kv=>$vv) {
+  						if (trim($vv) =="")  $thval[] = $vv;
+  						else {
+  							$thc=new_doc($this->dbaccess,trim($vv));
+  							if ($thc->isAlive()) $thval[]=$thc->getLangTitle();
+  							else $thval[]="th error $vv";
+  						}
+  					}
+  					$htmlval=implode("<text:tab/>",$thval);
+  				} else {
+  					if ($avalue=="") $htmlval = $avalue;
+  					else {
+  						$thc=new_doc($this->dbaccess,$avalue);
+  						if ($thc->isAlive()) $htmlval = $thc->getLangTitle();
+  						else $htmlval="th error $avalue";
+  					}
+  				}
+
+  				break;
+  			case "array":
+  				break;
+  			case "doc":
+  				break;
+  			case "docid":
+  				if ($oattr->format != "") {
+  					 
+  					$aformat="";
+  					$multiple=($oattr->getOption("multiple")=="yes");
+  					$dtarget=$target;
+  					if ($target != "mail") {
+  						$ltarget=$oattr->getOption("ltarget");
+  						if ($ltarget != "") $dtarget=$ltarget;
+  					}
+  					if ($multiple) {
+  						$avalue=str_replace("\n","<BR>",$avalue);
+  						$tval=explode("<BR>",$avalue);
+  						$thval=array();
+  						foreach ($tval as $kv=>$vv) {
+  							if (trim($vv) =="")  $thval[] = $vv;
+  							else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,false);
+  						}
+  						$htmlval=implode("<text:tab/>",$thval);
+  					} else {
+  						if ($avalue=="") $htmlval = $avalue;
+  						elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
+  						else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,false);
+  					}
+  				} else
+  				$htmlval=$avalue;
+
+  				break;
+
+  			case "option":
+  				break;
+  			case "money":
+  				$htmlval=money_format('%!.2n', doubleval($avalue));
+  				//$htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
+  				break;
+
+  			case "htmltext":
+  				$html_body=trim($avalue);
+  				$html_body=str_replace(array('&quot;','&lt;','&gt;'),array('--quoteric--','--lteric--','--gteric--'),$html_body); // prevent pb for quot in quot
+
+  				if ($html_body[0] != '<') {
+  					// think it is raw text
+  					$html_body=str_replace("\n<br/>","\n",$html_body);
+  					$html_body=str_replace('<br/>',"\n",$html_body);
+  					if (! strpos($html_body,'<br')) $html_body=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$html_body);
+  					$html_body='<p>'.nl2br($html_body).'</p>';
+  				}
+  				$html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
+  				$html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse",
 				  "\$this->getHtmlTdContent('\\1','\\2')",
-				  $html_body); // accept only text in td tag
-	$html_body=cleanhtml($html_body);
-	$html_body=preg_replace("/(<\/?)([^\s>]+)([^>]*)(>)/e",
+  				$html_body); // accept only text in td tag
+  				$html_body=cleanhtml($html_body);
+  				$html_body=preg_replace("/(<\/?)([^\s>]+)([^>]*)(>)/e",
 				"toxhtmltag('\\1','\\2','\\3','\\4')",
-				$html_body ); // begin tag transform to pseudo xhtml
+  				$html_body ); // begin tag transform to pseudo xhtml
 
-	$html_body=str_replace(array('\"','&quot;'),'"',$html_body);
-	$html_body=str_replace('&','&amp;',html_entity_decode($html_body,ENT_NOQUOTES,'UTF-8'));
+  				$html_body=str_replace(array('\"','&quot;'),'"',$html_body);
+  				$html_body=str_replace('&','&amp;',html_entity_decode($html_body,ENT_NOQUOTES,'UTF-8'));
 
-	$html_body=str_replace(array('--quoteric--','--lteric--','--gteric--'),array('&quot;','&lt;','&gt;'),$html_body); // prevent pb for quot in quot
+  				$html_body=str_replace(array('--quoteric--','--lteric--','--gteric--'),array('&quot;','&lt;','&gt;'),$html_body); // prevent pb for quot in quot
 
-	
-	$xmldata='<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">'.$html_body."</xhtml:body>";
 
-	$xslt = new xsltProcessor;
-	$xslt->importStyleSheet(DomDocument::load(DEFAULT_PUBDIR."/CORE/Layout/html2odt.xsl"));
-	//	set_error_handler('HandleXmlError');
-	try {
-	  $dom = @DomDocument::loadXML($xmldata);
-	} catch (Exception $e) {
-	  addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s"),$this->title));
-	  /*
-	  print "Exception catched:\n";
-	  print "Code: ".$e->getCode()."\n";
-	  print "Message: ".$e->getMessage()."\n";
-	  print  "Line: ".$e->getLine();
-	  // error in XML
-	  print "\n<br>ERRORXSLT:".$this->id.$this->title."\n";
-	  print "\n=========RAWDATA=================\n";
-	  	  print  $avalue;
-	  print "\n=========XMLDATA=================\n";	  
-	  print_r2($xmldata);
-	  exit;*/
-	}
-	//restore_error_handler();
-	if ($dom) {
-	  $xmlout= $xslt->transformToXML($dom);
-	  $dxml=new DomDocument();
-	  $dxml->loadXML($xmlout);
-	  //office:text
-	  $ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","text");
-	  $ot1=$ot->item(0);	  
-	  $officetext= $ot1->ownerDocument->saveXML($ot1);	
-	  $htmlval=str_replace(array('<office:text>', '</office:text>','<office:text/>'),"",$officetext);
-	  // work around : tables are not in paragraph
-	  $htmlval=preg_replace("/(<text:p>[\s]*<table:table )/ ",
+  				$xmldata='<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">'.$html_body."</xhtml:body>";
+
+  				$xslt = new xsltProcessor;
+  				$xslt->importStyleSheet(DomDocument::load(DEFAULT_PUBDIR."/CORE/Layout/html2odt.xsl"));
+  				//	set_error_handler('HandleXmlError');
+  				try {
+  					$dom = @DomDocument::loadXML($xmldata);
+  				} catch (Exception $e) {
+  					addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s"),$this->title));
+  					/*
+  					 print "Exception catched:\n";
+  					 print "Code: ".$e->getCode()."\n";
+  					 print "Message: ".$e->getMessage()."\n";
+  					 print  "Line: ".$e->getLine();
+  					 // error in XML
+  					 print "\n<br>ERRORXSLT:".$this->id.$this->title."\n";
+  					 print "\n=========RAWDATA=================\n";
+  					 print  $avalue;
+  					 print "\n=========XMLDATA=================\n";
+  					 print_r2($xmldata);
+  					 exit;*/
+  				}
+  				//restore_error_handler();
+  				if ($dom) {
+  					$xmlout= $xslt->transformToXML($dom);
+  					$dxml=new DomDocument();
+  					$dxml->loadXML($xmlout);
+  					//office:text
+  					$ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","text");
+  					$ot1=$ot->item(0);
+  					$officetext= $ot1->ownerDocument->saveXML($ot1);
+  					$htmlval=str_replace(array('<office:text>', '</office:text>','<office:text/>'),"",$officetext);
+  					// work around : tables are not in paragraph
+  					$htmlval=preg_replace("/(<text:p>[\s]*<table:table )/ ",
 				"<table:table ",$htmlval);
-	  $htmlval=preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ",
+  					$htmlval=preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ",
 				"</table:table> ",$htmlval);	
-	  $htmlval="<text:section>".$htmlval."<text:p/></text:section>";
-	} else {
-	  
-	  addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"),$this->title));
-	 
-	}
-	//$htmlval=preg_replace("/<\/?(\w+[^:]?|\w+\s.*?)>//g", "",$htmlval  );
-	break;
-      case date:  
-	if ($aformat!="") {
-	  if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-	  else $htmlval=$avalue;
-	  $aformat="";
-	} else {
-	  $htmlval=$avalue; 
-	}	
-	break;
-      case time:  
-	if ($aformat!="") {
-	  if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
-	  else $htmlval=$avalue;
-	  $aformat="";
-	} else {
-	  $htmlval=substr($avalue,0,5); // do not display second
-	}
-	
-	break;
-      case timestamp:   
-	if ($aformat!="") {
-	   if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-	   else $htmlval=$avalue;
-	  $aformat="";
-	} else {
-	  $htmlval=substr($avalue,0,16); // do not display second
-	}
-	
-	break;
-      case ifile:  
-	$lay = new Layout("FDL/Layout/viewifile.xml", $action);
-	$lay->set("aid",$oattr->id);
-	$lay->set("id",$this->id);
-	$lay->set("iheight",$oattr->getOption("height","200px"));
-	$htmlval =$lay->gen(); 
-	
-	break;
-	  
-      case color:  	  
-	$htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);	
-	break;
+  					$htmlval="<text:section>".$htmlval."<text:p/></text:section>";
+  				} else {
+  					 
+  					addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"),$this->title));
 
-      default : 
-	$htmlval=stripslashes($avalue);	  
-	$htmlval=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$htmlval);
+  				}
+  				//$htmlval=preg_replace("/<\/?(\w+[^:]?|\w+\s.*?)>//g", "",$htmlval  );
+  				break;
+  			case 'date':
+  				if (($aformat!="") && (trim($avalue) != "")) {
+  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+  					else $htmlval=$avalue;
+  				} else {
+  					$htmlval=FrenchDateToLocaleDate($avalue);
+  				}
+  				$aformat="";
+  				break;
+  			case 'time':
+  				if ($aformat!="") {
+  					if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
+  					else $htmlval=$avalue;
+  					$aformat="";
+  				} else {
+  					$htmlval=substr($avalue,0,5); // do not display second
+  				}
 
-	break;
-      }
-    
-      if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
-	//printf($htmlval);
-	$htmlval=sprintf($aformat,$htmlval);
-      } 
-    
-    
-      $thtmlval[$kvalue]=$htmlval;
-    }
+  				break;
+  			case 'timestamp':
+  				if (($aformat!="") && (trim($avalue) != "")) {
+  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+  					else $htmlval=$avalue;
+  				} else {
+  					$htmlval=FrenchDateToLocaleDate($avalue);
+  				}
+  				$aformat="";
+  				break;
+  			case 'ifile':
+  				$lay = new Layout("FDL/Layout/viewifile.xml", $action);
+  				$lay->set("aid",$oattr->id);
+  				$lay->set("id",$this->id);
+  				$lay->set("iheight",$oattr->getOption("height","200px"));
+  				$htmlval =$lay->gen();
 
-    return implode("<text:tab/>",$thtmlval);
+  				break;
+  				 
+  			case 'color':
+  				$htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);
+  				break;
+
+  			default :
+  				$htmlval=stripslashes($avalue);
+  				$htmlval=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$htmlval);
+
+  				break;
+  		}
+
+  		if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
+  			//printf($htmlval);
+  			$htmlval=sprintf($aformat,$htmlval);
+  		}
+
+
+  		$thtmlval[$kvalue]=$htmlval;
+  	}
+
+  	return implode("<text:tab/>",$thtmlval);
   }
 
   /**

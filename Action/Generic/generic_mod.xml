@@ -5,6 +5,7 @@
 	
     [JS:CODE] 
 var constraint=[constraintinfo];
+var error=[error];
 
 
 function setConstraint(info) {
@@ -12,26 +13,25 @@ function setConstraint(info) {
     var first=true;
     undisplayConstraint();
     for (var i in info) {
-	if (! info[i].index) {
+	if (info[i].index == null) {
 	    // mono value
-	    var inp=window.parent.document.getElementById(i);
+	    var inp=window.parent.document.getElementById(info[i].id);
             if (first) {
 		focusConstraint(inp);
-		first=false;
+		//first=false;
             }
             viewContraint(inp,info[i]);
 	    
 	} else {
-            var linp=window.parent.getInputsByName('_'+i,window.parent.document.getElementById('T'+info[i].pid));
+            var linp=window.parent.getInputsByName('_'+info[i].id,window.parent.document.getElementById('T'+info[i].pid));
             for (var k=0;k<linp.length;k++) { // >
-                if (info[i].index[k]) {
-                    
+                if (info[i].index==k) {
                     var inp=linp[k];
                     if (first) {
-			first=false;
+			//first=false;
 			focusConstraint(inp);
                     }
-                    viewContraint(inp,info[i].index[k]);
+                    viewContraint(inp,info[i]);
 		}
             }
 	}
@@ -50,11 +50,23 @@ function focusConstraint(inp) {
 		
 	    }	
 	}
-	inp.focus();
+	try {
+	  inp.focus();
+	  } catch (exception) {
+          
+         }
     } 
 }
 function viewContraint(inp, info) {
     if (inp) {
+        if ((inp.style.display=='none') || (inp.type=='hidden')) {
+                var oinp=inp.nextSibling;
+                while (oinp && oinp.tagName!='INPUT' && oinp.type!='hidden' && oinp.style.display!='none') oinp=oinp.nextSibling;
+                if (oinp && oinp.tagName=='INPUT') inp=oinp;
+                else {
+                   inp=inp.parentNode;
+                }   
+        }
         inp.className='invalid';
         var ntr=window.parent.document.createElement("div");
         ntr.className='constraint';     
@@ -69,7 +81,7 @@ function viewContraint(inp, info) {
         addEvent(sp,"click", function () { ntr.style.display='none';inp.focus();});
         inp.parentNode.insertBefore(ntr,inp);
         
-        if (info.sug) {
+        if (info.sug && (info.sug.length > 0)) {
             var s=window.parent.document.createElement("select");
             s.options[s.options.length]=new Option('[TEXT:Suggestion]','');
             addEvent(s,"change", function () { inp.value=this.options[this.selectedIndex].value;});
@@ -100,15 +112,14 @@ function undisplayConstraint() {
     }
 }
 if (window.parent) {
-    if (parseInt('[id]')>0) {
 	if (window.parent.document) {
 	    
 	    var c=0;
 	    for (var i in constraint) c++;
 	    
-	    if (window.parent.document.modifydoc)  window.parent.document.modifydoc.id.value=[id];
+	    if ((parseInt('[id]')>0) && (window.parent.document.modifydoc))  window.parent.document.modifydoc.id.value=parseInt('[id]');
 	    var s=window.parent.document.getElementById('iSubmit');
-	    if (c > 0) {
+	    if (error) {
 		if (s) s.value='[TEXT:Save]';
 		s=window.parent.document.getElementById('aSubmit');
 		if (s) s.innerHTML='[TEXT:Save]';
@@ -121,13 +132,15 @@ if (window.parent) {
 		if (s) s.style.display='';
 		window.parent.document.isSubmitted=false;
 		window.parent.setbodyopacity(1);
-		
-		setConstraint(constraint);
+		if (c > 0) {
+		  setConstraint(constraint);
+		} else {
+		  window.parent.displayWarningMsg(error);
+		}
 	    } else {
-		
 		[IFNOT quicksave]window.parent.location.href='[url]';[ENDIF quicksave]
 	    }
-	}
+	
     }
     window.parent.viewwait(false);
 }

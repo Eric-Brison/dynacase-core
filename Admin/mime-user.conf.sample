@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mimes>
+  <mime ext="foo" sys="application/foo" text="Foo file" />
+  <mime ext="bar" sys="application/bar" text="Bar file" />
+</mimes>

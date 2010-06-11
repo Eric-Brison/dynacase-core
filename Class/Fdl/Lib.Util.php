@@ -79,6 +79,46 @@ function FrenchDateToUnixTs($fdate,$utc=false) {
   return $dt;
 }
 
+/**
+ * 
+ * @param string $fdate
+ * @return string
+ */
+function FrenchDateToLocaleDate($fdate, $format='') {
+	if(empty($format)) {
+		$localeconfig = getLocaleConfig();
+		if($localeconfig !== false) {
+			if(strlen($fdate) >= 16) {
+				$format = $localeconfig['dateTimeFormat'];
+			}
+			else {
+				$format = $localeconfig['dateFormat'];
+			}
+		}
+		else {
+			return $fdate;
+		}
+	}
+	$ldate = $format;
+	$d = substr($fdate, 0, 2);
+	$m = substr($fdate, 3, 2);
+	$y = substr($fdate, 6, 4);
+	if(strlen($fdate) >= 16) {
+		$h = substr($fdate, 11, 2);
+		$i = substr($fdate, 14, 2);
+		if(strlen($fdate) == 19) {
+			$s = substr($fdate, 17, 2);
+		}
+	}
+	$ldate = str_replace('%d', $d, $ldate);
+	$ldate = str_replace('%m', $m, $ldate);
+	$ldate = str_replace('%Y', $y, $ldate);
+	if(isset($h)) { $ldate = str_replace('%H', $h, $ldate); }
+	if(isset($i)) { $ldate = str_replace('%M', $i, $ldate); }
+	if(isset($s)) { $ldate = str_replace('%S', $s, $ldate); }
+	return $ldate;
+}
+
 
 /**
  * convert French date DD/MM/YYYY to iso 
@@ -130,10 +170,37 @@ function stringDateToUnixTs($isodate,$utc=false) {
  * @param string $isodate YYYY-MM-DD HH:MM
  * @return string YYYY-MM-DD HH:MM
  */
-function stringDateToIso($isodate) {
-  $dt=FrenchDateToIso($isodate);
-  if (! $dt) return  $isodate;
-  return $dt;
+function stringDateToIso($date,$format="") {
+	if(!empty($format)) {
+		$format = str_replace('%Y', '%YYY', $format);
+		if(strlen($date) < strlen($format)) { return $date; }
+		// date
+		$d = strpos($format, '%d');
+		$m = strpos($format, '%m');
+		$y = strpos($format, '%YYY');
+		if($d !== false && $m !== false && $y !== false) {
+			$dt = substr($date, $y, 4).'-'.substr($date, $m, 2).'-'.substr($date, $d, 2);
+		}
+		else {
+			return $date;
+		}
+		// time
+		$h = strpos($format, '%H');
+		$m = strpos($format, '%M');
+		$s = strpos($format, '%S');
+		if($h !== false && $m !== false) {
+			$dt .= ' '.substr($date, $h, 2).':'.substr($date, $m, 2);
+			if($s !== false) {
+				$dt .= ':'.substr($date, $s, 2);
+			}
+		}
+		return $dt;
+	}
+	else {
+		$dt=FrenchDateToIso($date);
+		if (! $dt) return  $date;
+		return $dt;
+	}
 }
 /**
  * convert iso8601 date to Julian day
