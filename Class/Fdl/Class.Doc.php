@@ -2983,11 +2983,12 @@ create unique index i_docir on doc(initid, revision);";
 	  for ($i=0;$i<count($tv);$i++) {
 	    $res= $this->verifyConstraint($v->id,$i);	    
 	    if ($res["err"]!="") {
-	        $info[$v->id]=array("id"=>$v->id,
-                              "pid"=>$v->fieldSet->id);
-	        $info[$v->id]["index"][$i]=array(
-	                                "sug"=>$res["sug"],
-	                                "err"=>$res["err"]);
+	        $info[$v->id.$i]=array("id"=>$v->id,
+	                               "sug"=>$res["sug"],
+                                        "err"=>$res["err"],
+	                                "index"=>$i,
+                                        "pid"=>$v->fieldSet->id);
+	        
 	        if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
 	    }
 	  }
