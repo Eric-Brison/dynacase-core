@@ -417,7 +417,7 @@ function getChildDoc($dbaccess,
       if ($qsql != false) {
 	if ($fromid!=-1) { // not families
 	  if ($fromid!=0) {
-	    $fdoc=createDoc($dbaccess,abs($fromid),false);	    
+	    $fdoc=createDoc($dbaccess,abs($fromid),false,false);	    
 	    if (preg_match("/from\s+docread/",$qsql)) $fdoc=new DocRead($dbaccess);
 	  } else $fdoc=new DocRead($dbaccess);
 	  $sqlfields=implode(", ",array_merge($fdoc->fields,$fdoc->sup_fields));

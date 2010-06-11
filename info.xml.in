@@ -245,6 +245,11 @@
   </reconfigure>
 
   <changelog>
+     <version number="3.0.5-2" date="2010-06-10">
+      <change title="Correct wsh freedom_refresh" >
+      </change>
+    </version>
+
     <version number="3.0.5" date="2010-06-07">
       <change title="Archive and XML" url="http://dev.freedom-ecm.org/versions/show/18">
          Document's archive management.
