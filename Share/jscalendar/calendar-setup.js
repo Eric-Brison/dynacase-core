@@ -182,19 +182,23 @@ Calendar.setup = function (params) {
 
 
 // Initialise calendar more simply
-function Calendar_Init(inf,ibu,sht) {
-  if (! document.getElementById(ibu).onclick) {
-    if (sht) format="%d/%m/%Y %H:%M";
-    else format="%d/%m/%Y";
-  Calendar.setup({
-    inputField     :    inf,      // id of the input field
-      ifFormat       :    format,       // format of the input field
-      showsTime      :    sht,            // will display a time selector
-      button         :    ibu,   // trigger for the calendar (button ID)
-      singleClick    :    true,           // double-click mode
-      step           :    1                // show all years in drop-down boxes (instead of every other year as default)
-	  
-      });
-  }
+function Calendar_Init(inf,ibu,sht,dateformat) {
+	if (! document.getElementById(ibu).onclick) {
+		if(dateformat) {
+			format = dateformat;
+		} else {
+			if (sht) format="%d/%m/%Y %H:%M";
+			else format="%d/%m/%Y";
+		}
+		Calendar.setup({
+			inputField     :    inf,      // id of the input field
+			ifFormat       :    format,       // format of the input field
+			showsTime      :    sht,            // will display a time selector
+			button         :    ibu,   // trigger for the calendar (button ID)
+			singleClick    :    true,           // double-click mode
+			step           :    1                // show all years in drop-down boxes (instead of every other year as default)
+
+		});
+	}
 }
   

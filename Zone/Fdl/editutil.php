@@ -1160,14 +1160,24 @@ function getLayMultiDoc(&$lay,&$doc, &$oattr,$value, $aname,$index) {
  * @param int $index current row number if it is in array ("" if it is not in array)
  */
 function getLayDate(&$lay,&$doc, &$oattr,$value, $aname,$index) {
-  if ($index!=="") $idocid=$oattr->format.'_'.$index;
-  else  $idocid=$oattr->format;
-  $lay->set("name",$aname);
-  
-  if ($index!=="") $lay->set("id",$oattr->id.'_'.$index);
-  else $lay->set("id",$oattr->id);
-  $lay->set("idocid",strtolower($idocid));
-  $lay->set("value",$value);
+	if ($index!=="") $idocid=$oattr->format.'_'.$index;
+	else  $idocid=$oattr->format;
+	$lay->set("name",$aname);
+	
+	$localeconfig = getLocaleConfig();
+	if($localeconfig != false) {
+		$lay->set("dateformat",$localeconfig['dateFormat']);
+		$lay->set("datetimeformat",$localeconfig['dateTimeFormat']);
+	}
+	else {
+		$lay->set("dateformat",'');
+		$lay->set("datetimeformat",'');
+	}
+
+	if ($index!=="") $lay->set("id",$oattr->id.'_'.$index);
+	else $lay->set("id",$oattr->id);
+	$lay->set("idocid",strtolower($idocid));
+	$lay->set("value",$value);
 
 }
 
@@ -1381,34 +1391,42 @@ function getLayIdoc(&$doc, &$oattr,$attridk,$attrin,$value,$zone="") {
  * add different js files needed in edition mode
  */
 function editmode(&$action) {
-  
-  /*$action->parent->AddJsRef("htmlarea/htmlarea.js");
-  $action->parent->AddJsRef("htmlarea/htmlarea-lang-en.js");
-  $action->parent->AddJsRef("htmlarea/dialog.js");*/
 
-  
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/fckeditor/fckeditor.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/PopupWindow.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/ColorPicker2.js");
-  if ($action->Read("navigator")=="EXPLORER") $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/iehover.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
-  //  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/idoc.js");
-  //  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/datepicker.js");
-  $action->parent->AddJsRef("jscalendar/Layout/calendar.js");
-  $action->parent->AddJsRef("jscalendar/Layout/calendar-fr.js");
-  $action->parent->AddJsRef("jscalendar/Layout/calendar-setup.js");
-  $action->parent->AddCssRef("jscalendar/Layout/calendar-win2k-2.css");  
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/common.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=EDITJS");     
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/viewicard.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=EDITIJS");
-  $action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=ENUMCHOICEJS");  
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/iframe.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=VIEWDOCJS");
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/autocompletion.js");
-  $action->parent->AddCssRef("FDL:autocompletion.css", true);       
+	/*$action->parent->AddJsRef("htmlarea/htmlarea.js");
+	 $action->parent->AddJsRef("htmlarea/htmlarea-lang-en.js");
+	 $action->parent->AddJsRef("htmlarea/dialog.js");*/
+
+
+	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/fckeditor/fckeditor.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/PopupWindow.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/ColorPicker2.js");
+	if ($action->Read("navigator")=="EXPLORER") $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/iehover.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
+	//  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/idoc.js");
+	//  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/datepicker.js");
+	$action->parent->AddJsRef("jscalendar/Layout/calendar.js");
+
+	$lang = substr($action->GetParam("CORE_LANG"), 0, 2);
+	if(preg_match('#^[a-z0-9_\.-]+$#i', $lang) && file_exists("jscalendar/Layout/calendar-".$lang.".js")) {
+		$action->parent->AddJsRef("jscalendar/Layout/calendar-".$lang.".js");
+	}
+	else {
+		$action->parent->AddJsRef("jscalendar/Layout/calendar-fr.js");
+	}
+
+	$action->parent->AddJsRef("jscalendar/Layout/calendar-setup.js");
+	$action->parent->AddCssRef("jscalendar/Layout/calendar-win2k-2.css");
+	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/common.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=EDITJS");
+	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/viewicard.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=EDITIJS");
+	$action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=ENUMCHOICEJS");
+	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/iframe.js");
+	$action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=VIEWDOCJS");
+	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/autocompletion.js");
+	$action->parent->AddCssRef("FDL:autocompletion.css", true);
 }
 ?>
