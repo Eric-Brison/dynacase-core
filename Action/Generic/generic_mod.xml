@@ -115,6 +115,9 @@ if (window.parent) {
 		var s=window.parent.document.getElementById('iCancel');
 		if (s) s.style.display='';
 		var s=window.parent.document.getElementById('iSaveForce');
+		if(window.parent && window.parent.displaySaveForce){
+			window.parent.displaySaveForce();
+		}
 		if (s) s.style.display='';
 		window.parent.document.isSubmitted=false;
 		window.parent.setbodyopacity(1);
