@@ -15,6 +15,10 @@ function completechoice(index,tattrid,tattrv,winfo) {
 	  ec_setIValue(winfo,winfo.document.getElementById(tattrid[i]),rvalue);
 	  winfo.document.getElementById(tattrid[i]).style.backgroundColor='[COLOR_C8]';
 	  sendEvent(winfo.document.getElementById(tattrid[i]),"change");
+	  // This condition is for IE which does not send event in this case
+	  if(winfo.document.getElementById(tattrid[i]).onchange){
+	      eval(winfo.document.getElementById(tattrid[i]).onchange);
+	  }
 	} else {
 	  rvalue = tattrv[index][i].replace(/\\n/g,'\n');
 	  if (! ec_setIValuePlus(winfo,tattrid[i],rvalue)) {
@@ -31,6 +35,10 @@ function completechoice(index,tattrid,tattrv,winfo) {
 	  winfo.document.getElementById(tattrid[i]).value = rvalue;	 
 	  winfo.document.getElementById(tattrid[i]).style.backgroundColor='[COLOR_C8]';
 	  sendEvent(winfo.document.getElementById(tattrid[i]),"change");
+	  // This condition is for IE which does not send event in this case
+	  if(winfo.document.getElementById(tattrid[i]).onchange){
+          eval(winfo.document.getElementById(tattrid[i]).onchange);
+      }
 	}
       }			      
       }
