@@ -16,7 +16,7 @@ function completechoice(index,tattrid,tattrv,winfo) {
 	  winfo.document.getElementById(tattrid[i]).style.backgroundColor='[COLOR_C8]';
 	  sendEvent(winfo.document.getElementById(tattrid[i]),"change");
 	  // This condition is for IE which does not send event in this case
-	  if(winfo.document.getElementById(tattrid[i]).onchange){
+	  if(isIE && winfo.document.getElementById(tattrid[i]).onchange){
 	      eval(winfo.document.getElementById(tattrid[i]).onchange);
 	  }
 	} else {
@@ -36,7 +36,7 @@ function completechoice(index,tattrid,tattrv,winfo) {
 	  winfo.document.getElementById(tattrid[i]).style.backgroundColor='[COLOR_C8]';
 	  sendEvent(winfo.document.getElementById(tattrid[i]),"change");
 	  // This condition is for IE which does not send event in this case
-	  if(winfo.document.getElementById(tattrid[i]).onchange){
+	  if(isIE && winfo.document.getElementById(tattrid[i]).onchange){
           eval(winfo.document.getElementById(tattrid[i]).onchange);
       }
 	}
