@@ -552,7 +552,10 @@ create unique index i_docir on doc(initid, revision);";
 
       if ($this->wid > 0) {
 	$this->wdoc = new_Doc($this->dbaccess,$this->wid);
-	$this->wdoc->Set($this); // set first state
+	if ($this->wdoc->isAlive()) {
+	   if ($this->wdoc->doctype != 'W') $err=sprintf(_("creation : document %s is not a workflow"),$this->wid);
+	   else $this->wdoc->Set($this); // set first state
+	} else $err=sprintf(_("creation : workflow %s not exists"),$this->wid);
       }
       return $err;
     }   
