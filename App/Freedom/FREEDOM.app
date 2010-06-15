@@ -142,6 +142,12 @@ $action_desc = array (
    "short_name"		=>N_("add document import"),
    "acl"		=>"FREEDOM_MASTER"
   ) ,
+  
+  array( 
+   "name"               =>"FREEDOM_IMPORT_XML",
+   "short_name"         =>N_("add document import from XML"),
+   "acl"                =>"FREEDOM_MASTER"
+  ) ,
   array( 
    "name"		=>"FREEDOM_IMPORT_TAR",
    "short_name"		=>N_("import archive file"),
@@ -199,7 +205,7 @@ $action_desc = array (
    "acl"		=>"FREEDOM"
   ) ,
   array( 
-   "name"		=>"MOVEDIRFILE",
+   "name"		=>"MOVEDIRFILE", 
    "short_name"		=>N_("move file query into directory"),
    "acl"		=>"FREEDOM"
   ) ,
