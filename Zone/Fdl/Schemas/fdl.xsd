@@ -1,4 +1,4 @@
-
+ 
 	<xs:complexType name="fdl-relation">
                 <xs:simpleContent>
                         <xs:extension base="xs:token">
@@ -11,9 +11,9 @@
                 <xs:simpleContent>
                         <xs:extension base="xs:base64Binary">
                                 <xs:attribute name="href" type="xs:anyURI" />
-                                <xs:attribute name="title" type="xs:token" />
+                                <xs:attribute name="title" type="xs:token" use="required"/>
                                 <xs:attribute name="vid" type="xs:integer" />
-                                <xs:attribute name="mime" type="xs:token" />
+                                <xs:attribute name="mime" type="xs:token" use="required"/>
                                 <xs:attribute name="type" type="xs:token" />
                         </xs:extension>
                 </xs:simpleContent>
