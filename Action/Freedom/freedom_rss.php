@@ -20,6 +20,7 @@ function freedom_rss(&$action) {
   $dhtml = (GetHttpVars("dh", 1)==1?true:false);
   $action->lay->set("html", $dhtml);
   $lim = GetHttpVars("lim", 100);
+  $order = GetHttpVars("order");
 
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
@@ -71,8 +72,10 @@ function freedom_rss(&$action) {
     $famid = "";
     $report = ($doc->fromid==getIdFromName($dbaccess,"REPORT") ? true : false );
     $items = array();
-    $order = $doc->getValue("REP_IDSORT","title");
-    $order .= " ".$doc->getValue("REP_ORDERSORT");
+    if (! $order) {
+        $order = $doc->getValue("REP_IDSORT","revdate desc");
+        $order .= " ".$doc->getValue("REP_ORDERSORT");
+    }
     $ldoc = getChildDoc($dbaccess, 
 			$doc->id, 
 			0, 
