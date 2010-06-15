@@ -567,6 +567,7 @@ function getFamIdFromName($dbaccess, $name) {
     }
   }
   if (isset($tFamIdName[$name])) return $tFamIdName[$name];
+  if (isset($tFamIdName[strtoupper($name)])) return $tFamIdName[strtoupper($name)];
   return 0; 
   
 }
