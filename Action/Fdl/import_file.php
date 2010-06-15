@@ -658,6 +658,11 @@ function csvAddDoc($dbaccess, $data, $dirid=10,$analyze=false,$ldir='',$policy="
   $err="";
   if (is_numeric($data[1]))   $fromid = $data[1];
   else $fromid = getFamIdFromName($dbaccess,$data[1]);
+  if ($fromid == 0) {
+      $tcr["action"]="ignored"; 
+      $tcr["err"]=sprintf(_("Not a family [%s]"),$data[1]);
+      return $tcr;
+  }
   $docc = createDoc($dbaccess, $fromid);
   if (! $docc) return;
  

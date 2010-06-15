@@ -58,6 +58,48 @@ function freedom_import_xml(Action &$action, $filename="") {
 
 
 /**
+ * export global xml file
+ * @param Action $action main action
+ * @param string $filename xml filename to import
+ */
+function freedom_import_xmlzip(Action &$action, $filename="") {
+
+    $opt["analyze"]=(substr(strtolower(getHttpVars("analyze","Y")),0,1)=="y");
+    $opt["policy"]=getHttpVars("policy","update");
+    $dbaccess=$action->getParam("FREEDOM_DB");
+    global $_FILES;
+    if (intval(ini_get("max_execution_time")) < 300) ini_set("max_execution_time", 300);
+    if ($filename=="") {
+        if (isset($_FILES["file"])) {
+            $filename=$_FILES["file"]['name'];
+            $zipfiles=$_FILES["file"]['tmp_name'];
+            $ext=substr($filename,strrpos($filename,'.')+1);
+            rename($zipfiles,$zipfiles.".$ext");
+            $zipfile.=".$ext";
+        } else {
+            $filename=GetHttpVars("file");
+            $zipfiles=$filename;
+        }
+    } else {
+            $zipfiles=$filename;
+    }
+    $splitdir=uniqid("/var/tmp/xmlsplit");
+    @mkdir($splitdir);
+    if (! is_dir($splitdir)) $action->exitError(_("Cannot create directory %s for xml import"),$splitdir);
+    $err=splitZipXmlDocument($zipfiles,$splitdir);
+    if ($err) $action->exiterror($err);
+
+    //print "Split OK in $splitdir";
+    $err=extractFilesFromXmlDirectory($splitdir);
+    if ($err) $action->exiterror($err);
+    
+    $log= importXmlDirectory($dbaccess,$splitdir,$opt);
+    system(sprintf("/bin/rm -fr %s ",$splitdir));
+    //print "look : $splitdir\n";
+    return $log;
+}
+
+/**
  * read a directory to import all xml files
  * @param string $splitdir
  * @param array options analyze (boolean) , policy (string)
@@ -67,8 +109,11 @@ function importXmlDirectory($dbaccess,$splitdir,$opt) {
     if ($handle = opendir($splitdir)) {
         while (false !== ($file = readdir($handle))) {
             if ($file[0]!="." && is_file("$splitdir/$file")) {
+                $ext=substr($file,strrpos($file,'.')+1);
+                if ($ext=="xml") {
                 $err=importXmlDocument($dbaccess,"$splitdir/$file",$log,$opt);
-                $tlog[]=$log;               
+                $tlog[]=$log;     
+                }          
             }
         }
     }
@@ -257,6 +302,12 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
 }
 
 
+function splitZipXmlDocument($zipfiles,$splitdir) {
+    $err="";
+        $ll=exec(sprintf("cd %s && unzip %s",$splitdir,$zipfiles), $out, $retval);
+        if ($retval != 0) $err=sprintf(_("export Xml : cannot unzip %s : %s"),$zipfiles,$ll);
+        return $err;
+}
 function splitXmlDocument($xmlfiles,$splitdir) {
     $f=fopen($xmlfiles,"r");
     if (!$f) return sprintf(_("Xml import : Cannot open file %s"),$xmlfiles);

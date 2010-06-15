@@ -39,6 +39,9 @@ function freedom_import(&$action) {
     if ($ext=="xml") {
         include_once("FREEDOM/freedom_import_xml.php");
         $cr= freedom_import_xml($action,   $csvfile);
+    } if ($ext=="zip") {
+        include_once("FREEDOM/freedom_import_xml.php");
+        $cr= freedom_import_xmlzip($action,   $csvfile);
     } else {
         $cr=add_import_file($action,$csvfile);
     }

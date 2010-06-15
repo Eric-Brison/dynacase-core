@@ -78,7 +78,7 @@ function editimport() {
      </table>
 <hr width="50%">
  <label for="file">[TEXT:import file:] </label>
- <input type="file" name="file" onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" > 
+ <input type="file" name="file" title="[TEXT:csv, ods, xml, zip (xml) supported import files]" onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" > 
  <input type="submit" value="[TEXT:Analyze]" 
         onclick="document.modifydoc.target='anaimport';document.modifydoc.analyze.value='Y'"> 
 <br><label for="policy"> [TEXT:policy if same title]&nbsp;:</label>
