@@ -1908,7 +1908,7 @@ create unique index i_docir on doc(initid, revision);";
       }
     }
     if (chop($title1) != "")  $this->title = substr(chop(str_replace("\n"," ",$title1)),0,255);// restric to 256 char
-
+    $this->title=$this->getSpecTitle();
   }
  
   /**
