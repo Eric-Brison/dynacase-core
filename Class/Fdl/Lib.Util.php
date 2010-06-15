@@ -179,7 +179,15 @@ function stringDateToIso($date,$format="") {
 		$m = strpos($format, '%m');
 		$y = strpos($format, '%YYY');
 		if($d !== false && $m !== false && $y !== false) {
-			$dt = substr($date, $y, 4).'-'.substr($date, $m, 2).'-'.substr($date, $d, 2);
+			$tmp = substr($date, $y, 4);
+			if(!ctype_digit($tmp)) return $date;
+			$dt = $tmp.'-';
+			$tmp = substr($date, $m, 2);
+			if(!ctype_digit($tmp)) return $date;
+			$dt .= $tmp.'-';
+			$tmp = substr($date, $d, 2);
+			if(!ctype_digit($tmp)) return $date;
+			$dt .= $tmp;
 		}
 		else {
 			return $date;
