@@ -20,39 +20,44 @@ include_once("FDL/import_file.php");
 
 // -----------------------------------
 function freedom_import(&$action) {
-  // -----------------------------------
-  global $_FILES;
-  if (ini_get("max_execution_time") < 180) ini_set("max_execution_time",180); // 3 minutes
-  
-  if (isset($_FILES["file"])) {
-    $filename=$_FILES["file"]['name'];
-    $csvfile=$_FILES["file"]['tmp_name'];
-    $ext=substr($filename,strrpos($filename,'.')+1);
-    rename($csvfile,$csvfile.".$ext");
-    $csvfile.=".$ext";
-  } else {
-    $filename=GetHttpVars("file");
-    $csvfile=$filename;
-  }
-  
-  $cr=add_import_file($action,$csvfile); 
+    // -----------------------------------
+    global $_FILES;
+    if (ini_get("max_execution_time") < 180) ini_set("max_execution_time",180); // 3 minutes
 
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
-
-  foreach ($cr as $k=>$v) {
-    $cr[$k]["taction"]=_($v["action"]); // translate action
-    $cr[$k]["order"]=$k; // translate action
-    $cr[$k]["svalues"]="";
-    $cr[$k]["msg"]=nl2br($v["msg"]);
-    foreach ($v["values"] as $ka=>$va) {
-      $cr[$k]["svalues"].= "<LI>[$ka:$va]</LI>"; // 
+    if (isset($_FILES["file"])) {
+        $filename=$_FILES["file"]['name'];
+        $csvfile=$_FILES["file"]['tmp_name'];
+        $ext=substr($filename,strrpos($filename,'.')+1);
+        rename($csvfile,$csvfile.".$ext");
+        $csvfile.=".$ext";
+    } else {
+        $filename=GetHttpVars("file");
+        $csvfile=$filename;
     }
-  }
-  $nbdoc=count(array_filter($cr,"isdoc"));
-  $action->lay->SetBlockData("ADDEDDOC",$cr);
-  $action->lay->Set("nbdoc","$nbdoc");
+    $ext=substr($csvfile,strrpos($csvfile,'.')+1);
 
-  if (isset($_FILES["file"])) @unlink($csvfile); //tmp file
+    if ($ext=="xml") {
+        include_once("FREEDOM/freedom_import_xml.php");
+        $cr= freedom_import_xml($action,   $csvfile);
+    } else {
+        $cr=add_import_file($action,$csvfile);
+    }
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
+
+    foreach ($cr as $k=>$v) {
+        $cr[$k]["taction"]=_($v["action"]); // translate action
+        $cr[$k]["order"]=$k; // translate action
+        $cr[$k]["svalues"]="";
+        $cr[$k]["msg"]=nl2br($v["msg"]);
+        foreach ($v["values"] as $ka=>$va) {
+            $cr[$k]["svalues"].= "<LI>[$ka:$va]</LI>"; //
+        }
+    }
+    $nbdoc=count(array_filter($cr,"isdoc"));
+    $action->lay->SetBlockData("ADDEDDOC",$cr);
+    $action->lay->Set("nbdoc","$nbdoc");
+
+    if (isset($_FILES["file"])) @unlink($csvfile); //tmp file
 }
 
 function isdoc($var) {

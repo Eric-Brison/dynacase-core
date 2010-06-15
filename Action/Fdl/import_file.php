@@ -736,31 +736,41 @@ function csvAddDoc($dbaccess, $data, $dirid=10,$analyze=false,$ldir='',$policy="
 	  $tcr["filename"]=$dv;
 
 	  if (! $analyze) {
-	    if ($attr->inArray()) {
-	      $tabsfiles=$doc->_val2array($dv);
-	      $tvfids=array();
-	      foreach ($tabsfiles as $fi) {		
-		$absfile="$ldir/$fi";
-		$err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
-		if ($err != "") { 
-		  $tcr["err"].="$err: $fi\n";
-		} else {
-		  $tvfids[]=$vfid;
-		}
-	      }
-	      $doc->setValue($attr->id, $tvfids);
-		
-	    } else {
-	      // one file only
-	      $absfile="$ldir/$dv";
-	      $err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
-	      if ($err != "") { 
-		$tcr["err"]=$err;
+	      if ($attr->inArray()) {
+	          $tabsfiles=$doc->_val2array($dv);
+	          $tvfids=array();
+	          foreach ($tabsfiles as $fi) {
+	              if (preg_match(PREGEXPFILE, $dv, $reg)) {
+	                  $tvfids[]=$fi;
+	              } else {
+	                  $absfile="$ldir/$fi";
+	                  $err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
+	                  if ($err != "") {
+	                      $tcr["err"].="$err: $fi\n";
+	                  } else {
+	                      $tvfids[]=$vfid;
+	                  }
+	              }
+	          }
+	          $doc->setValue($attr->id, $tvfids);
 	      } else {
-		$doc->setValue($attr->id, $vfid);
+	          // one file only
+	          if (preg_match(PREGEXPFILE, $dv, $reg)) {
+	              $doc->setValue($attr->id, $dv);
+	              $tcr["values"][$attr->getLabel()]=$dv;
+	          } else {
+	              $absfile="$ldir/$dv";
+	              $err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
+	              if ($err != "") {
+	                  $tcr["err"]=$err;
+	              } else {
+	                  $doc->setValue($attr->id, $vfid);
+	              }
+	          }
 	      }
-	    }
-      
+	  } else {
+	      // just for analyze
+	      $tcr["values"][$attr->getLabel()]=$dv;
 	  }
 	} else {
 	  $doc->setValue($attr->id, $dv);

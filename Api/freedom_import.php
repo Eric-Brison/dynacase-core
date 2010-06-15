@@ -28,7 +28,7 @@ if (GetHttpVars("htmlmode") == "Y") {
   if ($to) {
     include_once("FDL/sendmail.php");
     
-    $themail = new Mail_mime();    
+    $themail = new Fdl_Mail_mime();    
     $themail->setHTMLBody($out,false);
     
     $from=getMailAddr($action->user->id);
