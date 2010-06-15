@@ -100,7 +100,10 @@ Class Fdl_Document  {
                         if (($v->type=="docid") && ($v->visibility!='H') && ($v->getOption("doctitle")!="auto")) {
                             $lvalues[$v->id."_title"]=$this->doc->getTitle($this->doc->getValue($v->id));
                             if ($v->inArray() || ($v->getOption("multiple")=="yes"))  $lvalues[$v->id."_title"]=$this->doc->_val2array($lvalues[$v->id."_title"]);
-                        }
+                        } elseif (($v->type=="thesaurus")) {
+                            $lvalues[$v->id."_title"]=$this->doc->getTitle($this->doc->getValue($v->id));
+                            if ($v->inArray() || ($v->getOption("multiple")=="yes"))  $lvalues[$v->id."_title"]=$this->doc->_val2array($lvalues[$v->id."_title"]);
+                        } 
                     }
                 }
             }
