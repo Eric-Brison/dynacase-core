@@ -779,7 +779,7 @@ function csvAddDoc($dbaccess, $data, $dirid=10,$analyze=false,$ldir='',$policy="
   }
 
   // update title in finish
-  $doc->refresh(); // compute read attribute
+  if (! $analyze) $doc->refresh(); // compute read attribute
   if ($err != "") {
     $tcr["action"]="ignored";    
     $tcr["err"]=$err;
@@ -946,7 +946,6 @@ function csvAddDoc($dbaccess, $data, $dirid=10,$analyze=false,$ldir='',$policy="
       $tcr["specmsg"]=$doc->Refresh(); // compute read attribute
       $err=$doc->PostModify(); // compute read attribute
       if ($err=="") $err=$doc->modify();
-
       if ($err=="-") $err=""; // not really an error add addfile must be tested after
       if ($err=="") {
 	$doc->AddComment(sprintf(_("updated by import")));
