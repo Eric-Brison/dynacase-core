@@ -326,10 +326,8 @@ Class NormalAttribute extends BasicAttribute {
                              $this->id,$v,_("unreferenced document"),$this->id);
               }
           default:               
-                return sprintf("<%s>%s</%s>",$this->id,str_replace('&','&amp;',$v),$this->id);
-             
-      }
-      
+                return sprintf("<%s>%s</%s>",$this->id,str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$v),$this->id);      
+      }  
   }
  function text_getXmlSchema(&$la) {
       $lay=new Layout(getLayoutFile("FDL","textattribute_schema.xml"));
