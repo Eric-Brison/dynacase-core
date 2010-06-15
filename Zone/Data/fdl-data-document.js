@@ -148,8 +148,9 @@ Fdl.Document.prototype = {
      * @param {String} id the attribute identificator
      * @return {Any} return value of document
      */
-    getValue: function(id) {
-	return this._data.values[id];
+    getValue: function(id, def) {
+    	var v=this._data.values[id];
+    	return ((v==null)?def:v);
     }, 
    
     /**
@@ -189,7 +190,8 @@ Fdl.Document.prototype = {
     getDisplayValue: function(id,config) {
     	var oa=this.getAttribute(id);
     	if (oa) {
-    		if (oa.toString() == 'Fdl.RelationAttribute') return this.getValue(id+'_title');
+    		if (oa.toString() == 'Fdl.RelationAttribute') return this.getValue(id+'_title',this._data.values[id]);
+    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return this.getValue(id+'_title',this._data.values[id]);
     		if (oa.toString() == 'Fdl.EnumAttribute') {
     			if (oa.inArray() || oa.isMultiple()) {
     				var tv=[];
