@@ -29,7 +29,9 @@ include_once("FDL/import_file.php");
  * @global eformat Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
  * @global selection Http var :  JSON document selection object
  */
-function exportxmlfld(&$action, $aflid="0", $famid="") {
+function exportxmlfld(&$action, $aflid="0", $famid="") {    
+  if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time",3600); // 60 minutes
+    
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $fldid = GetHttpVars("id",$aflid);
   $wprof = (GetHttpVars("wprof","N")=="Y"); // with profil

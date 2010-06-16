@@ -22,7 +22,7 @@ include_once("FDL/import_file.php");
 function freedom_import(&$action) {
     // -----------------------------------
     global $_FILES;
-    if (ini_get("max_execution_time") < 180) ini_set("max_execution_time",180); // 3 minutes
+    if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time",3600); // 60 minutes
 
     if (isset($_FILES["file"])) {
         $filename=$_FILES["file"]['name'];
