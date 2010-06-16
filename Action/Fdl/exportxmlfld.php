@@ -34,6 +34,8 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
   $fldid = GetHttpVars("id",$aflid);
   $wprof = (GetHttpVars("wprof","N")=="Y"); // with profil
   $wfile = (substr(strtolower(GetHttpVars("wfile","N")),0,1)=="y"); // with files
+  $wident = (substr(strtolower(GetHttpVars("wident","Y")),0,1)=="y"); // with numeric identificator
+  
   $nopref = (GetHttpVars("wcolumn")=="-"); // no preference read
   $eformat = GetHttpVars("eformat","X"); // export format 
   $selection = GetHttpVars("selection"); // export selection  object (JSON)
@@ -79,7 +81,7 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
       if ($doc->doctype != 'C') {
           $ftitle= str_replace(array('/','\\','?','*',':'),'-',$doc->getTitle());
           $fname=sprintf("%s/%s{%d}.xml",$foutdir,$ftitle,$doc->id);
-          $err=$doc->exportXml($xml,$wfile,$fname);
+          $err=$doc->exportXml($xml,$wfile,$fname,$wident);
          // file_put_contents($fname,$doc->exportXml($wfile));
           if ($err) $action->exitError($err);
           if (! isset($xsd[$doc->fromid])) {

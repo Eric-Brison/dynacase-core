@@ -315,11 +315,22 @@ Class NormalAttribute extends BasicAttribute {
               $info=getTDoc($doc->dbaccess,$v,array(),array("title","name","id"));
               if ($info) {
                   if ($info["name"]) {
-                  return sprintf('<%s id="%s" name="%s">%s</%s>',
-                             $this->id,$info["id"],$info["name"],$info["title"],$this->id);
+                      if ($opt->withIdentificator) {
+                          return sprintf('<%s id="%s" name="%s">%s</%s>',
+                          $this->id,$info["id"],$info["name"],$info["title"],$this->id);
+                      } else {
+                          return sprintf('<%s name="%s">%s</%s>',
+                          $this->id,$info["name"],$info["title"],$this->id);
+                      }
                   } else {
-                       return sprintf('<%s id="%s">%s</%s>',
-                             $this->id,$info["id"],$info["title"],$this->id);
+                      if ($opt->withIdentificator) {
+                      return sprintf('<%s id="%s">%s</%s>',
+                      $this->id,$info["id"],$info["title"],$this->id);
+                      } else {
+                          
+                      return sprintf('<%s>%s</%s>',
+                      $this->id,$info["title"],$this->id);
+                      }
                   }
               } else {
                   return sprintf('<%s id="%s">%s</%s>',

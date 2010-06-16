@@ -6367,12 +6367,12 @@ static function _cmpanswers($a,$b) {
    * @param string $outfile if not empty means content is put into this file
    * @return string error message (empty if no error)
    */
-  public function exportXml(&$xml,$withfile=false,$outfile="") {
+  public function exportXml(&$xml,$withfile=false,$outfile="",$wident=true) {
       
       $lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
       //$lay=&$this->lay;
       $lay->set("famname",strtolower($this->fromname));
-      $lay->set("id",$this->id);
+      $lay->set("id",($wident?$this->id:''));
       $lay->set("name",$this->name);
       $lay->set("revision",$this->revision);
       $lay->set("version",$this->getVersion());
@@ -6387,6 +6387,7 @@ static function _cmpanswers($a,$b) {
       }
       $option->withFile=$withfile;
       $option->outFile=$outfile;
+      $option->withIdentificator=$wident;
       
       foreach ($la as $k=>$v) {
         if (($v->id != "FIELD_HIDDENS") && 

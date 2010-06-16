@@ -12,10 +12,10 @@ function testexport(s) {
       }
       f.code.disabled=true;
       f.wprof.disabled=true;
-      f.wident.disabled=true;
+      //f.wident.disabled=true;
       f.wcolumn.disabled=true;
       f.wprof.className='disable';
-      f.wident.className='disable';
+      //f.wident.className='disable';
       f.wcolumn.className='disable';
     } else {
       f.action.value='EXPORTFLD';
