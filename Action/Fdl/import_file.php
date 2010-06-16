@@ -510,7 +510,7 @@ function add_import_file(&$action, $fimport) {
 	    $tacls=array_slice($data, 2); 
 	    foreach ($tacls as $acl) {
 	    
-	      if (preg_match("/([a-zA-Z_]+)=(.*)/",$acl, $reg)) {
+	      if (preg_match("/([^=]+)=(.*)/",$acl, $reg)) {
 		$tuid= explode(",",$reg[2]);
 		$perr="";
 		foreach ($tuid as $uid) {
