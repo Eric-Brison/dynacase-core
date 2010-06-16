@@ -2338,6 +2338,7 @@ create unique index i_docir on doc(initid, revision);";
   										$localeconfig = getLocaleConfig();
   										if($localeconfig !== false) {
   											$tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateFormat']);
+  											$tvalues[$kvalue]=preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
   										}
   										else {
   											return sprintf(_("value [%s] is not a valid date"),$avalue);
@@ -2352,6 +2353,7 @@ create unique index i_docir on doc(initid, revision);";
   										$localeconfig = getLocaleConfig();
   										if($localeconfig !== false) {
   											$tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
+  											$tvalues[$kvalue]=preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
   										}
   										else {
   											return sprintf(_("value [%s] is not a valid timestamp"),$avalue);
@@ -4686,6 +4688,8 @@ create unique index i_docir on doc(initid, revision);";
   				if (($aformat!="") && (trim($avalue) != "")) {
   					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
   					else $htmlval=$avalue;
+  				} elseif(trim($avalue) == "") {
+  					$htmlval="";
   				} else {
   					$htmlval=FrenchDateToLocaleDate($avalue);
   				}
@@ -4704,6 +4708,8 @@ create unique index i_docir on doc(initid, revision);";
   				if (($aformat!="") && (trim($avalue) != "")) {
   					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
   					else $htmlval=$avalue;
+  				} elseif(trim($avalue) == "") {
+  					$htmlval="";
   				} else {
   					$htmlval=FrenchDateToLocaleDate($avalue);
   				}
@@ -5033,6 +5039,8 @@ create unique index i_docir on doc(initid, revision);";
   				if (($aformat!="") && (trim($avalue) != "")) {
   					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
   					else $htmlval=$avalue;
+  				} elseif(trim($avalue) == "") {
+  					$htmlval="";
   				} else {
   					$htmlval=FrenchDateToLocaleDate($avalue);
   				}
@@ -5052,6 +5060,8 @@ create unique index i_docir on doc(initid, revision);";
   				if (($aformat!="") && (trim($avalue) != "")) {
   					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
   					else $htmlval=$avalue;
+  				} elseif(trim($avalue) == "") {
+  					$htmlval="";
   				} else {
   					$htmlval=FrenchDateToLocaleDate($avalue);
   				}

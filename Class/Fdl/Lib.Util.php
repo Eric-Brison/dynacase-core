@@ -85,6 +85,9 @@ function FrenchDateToUnixTs($fdate,$utc=false) {
  * @return string
  */
 function FrenchDateToLocaleDate($fdate, $format='') {
+	if(empty($fdate)) {
+		return "";
+	}
 	if(empty($format)) {
 		$localeconfig = getLocaleConfig();
 		if($localeconfig !== false) {
@@ -103,11 +106,17 @@ function FrenchDateToLocaleDate($fdate, $format='') {
 	$d = substr($fdate, 0, 2);
 	$m = substr($fdate, 3, 2);
 	$y = substr($fdate, 6, 4);
+	if(!ctype_digit($d)) return $fdate;
+	if(!ctype_digit($m)) return $fdate;
+	if(!ctype_digit($y)) return $fdate;
 	if(strlen($fdate) >= 16) {
 		$h = substr($fdate, 11, 2);
 		$i = substr($fdate, 14, 2);
+		if(!ctype_digit($h)) return $fdate;
+		if(!ctype_digit($i)) return $fdate;
 		if(strlen($fdate) == 19) {
 			$s = substr($fdate, 17, 2);
+			if(!ctype_digit($s)) return $fdate;
 		}
 	}
 	$ldate = str_replace('%d', $d, $ldate);
