@@ -245,13 +245,19 @@
   </reconfigure>
 
   <changelog>
-     <version number="3.0.5-2" date="2010-06-10">
-      <change title="Correct wsh freedom_refresh" >
+  	
+    <version number="3.0.6" date="2010-06-16">
+      <change title="Importation XML" url="http://dev.freedom-ecm.org/versions/show/23">
+         Locale for dates
+         Fix constraint errors
       </change>
     </version>
+    
 
     <version number="3.0.5" date="2010-06-07">
+      <change title="Correct wsh freedom_refresh" />
       <change title="Archive and XML" url="http://dev.freedom-ecm.org/versions/show/18">
+        
          Document's archive management.
          New vision of attribute constraint 
          Document XML export
