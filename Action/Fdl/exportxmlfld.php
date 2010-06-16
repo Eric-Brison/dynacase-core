@@ -110,7 +110,7 @@ function exportxmlfld(&$action, $aflid="0", $famid="") {
       $cmde=array();
       $cmde[]="cd $foutdir";
       $cmde[]=sprintf("echo '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' > %s",$xmlfile);
-      $cmde[]=sprintf("echo '<documents date=\"%s\" author=\"%s\" name=\"%s\">' > %s",
+      $cmde[]=sprintf("echo '<documents date=\"%s\" author=\"%s\" name=\"%s\">' >> %s",
                       strftime("%FT%T"),User::getDisplayName($action->user->id),$exportname,$xmlfile);
       $cmde[]="cat *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> $xmlfile";
       $cmde[]="echo '</documents>' >> $xmlfile";

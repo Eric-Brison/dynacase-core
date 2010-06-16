@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-08 16:41+0200\n"
+"POT-Creation-Date: 2010-06-16 13:48+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -409,6 +409,14 @@ msgstr "Edit"
 msgid "untitle %s %d"
 msgstr "Update Title Cards"
 
+#, c-format
+msgid "creation : document %s is not a workflow"
+msgstr ""
+
+#, c-format
+msgid "creation : workflow %s not exists"
+msgstr ""
+
 msgid "cannot update no initialized document"
 msgstr ""
 
@@ -516,9 +524,11 @@ msgid "[%s] must be a integer"
 msgstr ""
 
 #, c-format
-msgid ""
-"the date '%s' for %s attribute is not correct. It has been corrected "
-"automatically"
+msgid "value [%s] is not a valid date"
+msgstr ""
+
+#, c-format
+msgid "value [%s] is not a valid timestamp"
 msgstr ""
 
 msgid "error sending text conversion"
@@ -4431,7 +4441,7 @@ msgstr ""
 msgid "Formated data"
 msgstr ""
 
-msgid "XML data (one file per document)"
+msgid "XML data (Zip with one xml by document)"
 msgstr ""
 
 msgid "XML data (only one xml file)"
@@ -4994,6 +5004,9 @@ msgid "View Xml Schema"
 msgstr ""
 
 msgid "Xml schema"
+msgstr ""
+
+msgid "csv, ods, xml, zip (xml) supported import files"
 msgstr ""
 
 #, fuzzy
@@ -6712,6 +6725,9 @@ msgstr ""
 msgid "add document import"
 msgstr ""
 
+msgid "add document import from XML"
+msgstr ""
+
 #, fuzzy
 msgid "import archive file"
 msgstr "Import"
@@ -7345,6 +7361,10 @@ msgstr ""
 
 #, c-format
 msgid "LDAP Attribute added to %s %s"
+msgstr ""
+
+#, c-format
+msgid "Not a family [%s]"
 msgstr ""
 
 #, fuzzy
@@ -8512,6 +8532,34 @@ msgstr ""
 
 #, c-format
 msgid "folder %s as been added in your bookmark"
+msgstr ""
+
+#, c-format
+msgid "Cannot create directory %s for xml import"
+msgstr ""
+
+#, c-format
+msgid "import Xml extract : file %s not found"
+msgstr ""
+
+#, c-format
+msgid "Xml import file %s not found"
+msgstr ""
+
+#, c-format
+msgid "No identificator found for relation %s"
+msgstr ""
+
+#, c-format
+msgid "export Xml : cannot unzip %s : %s"
+msgstr ""
+
+#, c-format
+msgid "Xml import : Cannot open file %s"
+msgstr ""
+
+#, c-format
+msgid "Xml import : Cannot create file %s"
 msgstr ""
 
 msgid "change creation profile"

@@ -80,7 +80,7 @@ select.disable {
   <option value="I">[TEXT:Importation data]</option>
   <option value="R">[TEXT:Raw data only]</option>
   <option value="F">[TEXT:Formated data]</option>
-  <option value="X">[TEXT:XML data (one file per document)]</option>
+  <option value="X">[TEXT:XML data (Zip with one xml by document)]</option>
   <option value="Y" >[TEXT:XML data (only one xml file)]</option>
 </select></td></tr>
 

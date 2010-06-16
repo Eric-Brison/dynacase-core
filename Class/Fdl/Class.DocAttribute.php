@@ -260,7 +260,10 @@ Class NormalAttribute extends BasicAttribute {
       //if (! $v) return sprintf("<!-- no value %s -->",$this->id); 
    
       if ($this->getOption("autotitle")=="yes") return sprintf("<!--autotitle %s %s -->",$this->id, $v);
-      if ((! $v) && ($this->type != 'array')) return sprintf('<%s xsi:nil="true"/>',$this->id); 
+      if ((! $v) && ($this->type != 'array')) {
+          if (($this->type == 'file') || ($this->type == 'image')) return sprintf('<%s mime="" title="" xsi:nil="true"/>',$this->id); 
+          else return sprintf('<%s xsi:nil="true"/>',$this->id); 
+      }
       switch ($this->type) {
           case 'timestamp':
           case 'date':

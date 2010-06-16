@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-08 16:41+0200\n"
-"PO-Revision-Date: 2010-06-08 16:42+0200\n"
+"POT-Creation-Date: 2010-06-16 13:48+0200\n"
+"PO-Revision-Date: 2010-06-16 13:51+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -401,6 +401,14 @@ msgstr "création"
 msgid "untitle %s %d"
 msgstr "%s sans titre %d"
 
+#, c-format
+msgid "creation : document %s is not a workflow"
+msgstr ""
+
+#, c-format
+msgid "creation : workflow %s not exists"
+msgstr ""
+
 msgid "cannot update no initialized document"
 msgstr "mise à jour impossible : document non initialisé"
 
@@ -504,12 +512,12 @@ msgid "[%s] must be a integer"
 msgstr "[%s] doit être un nombre entier"
 
 #, c-format
-msgid ""
-"the date '%s' for %s attribute is not correct. It has been corrected "
-"automatically"
+msgid "value [%s] is not a valid date"
 msgstr ""
-"la date '%s' pour l'attribut %s est incorrect. Il a été corrigé "
-"automatiquement."
+
+#, c-format
+msgid "value [%s] is not a valid timestamp"
+msgstr ""
 
 msgid "error sending text conversion"
 msgstr "erreur lors de l'envoi de la conversion texte"
@@ -4124,8 +4132,8 @@ msgstr "Données brutes seulement"
 msgid "Formated data"
 msgstr "Données formatées"
 
-msgid "XML data (one file per document)"
-msgstr "Données XML (un fichier par document)"
+msgid "XML data (Zip with one xml by document)"
+msgstr "Données XML (Zip avec un fichier XML par document)"
 
 msgid "XML data (only one xml file)"
 msgstr "Données XML (un seul fichier XML)"
@@ -4590,10 +4598,13 @@ msgid "specific import"
 msgstr "Import spécifique"
 
 msgid "View Xml Schema"
-msgstr ""
+msgstr "Voir le Schéma XML"
 
 msgid "Xml schema"
-msgstr ""
+msgstr "Xml Schéma"
+
+msgid "csv, ods, xml, zip (xml) supported import files"
+msgstr "type de fichiers supportés : csv, ods, xml, zip (xml) "
 
 msgid "Direct Import"
 msgstr "Import direct"
@@ -5248,7 +5259,7 @@ msgid "to choose value from input help"
 msgstr "pour choisir une valeur à partir de l'aide à la saisie"
 
 msgid "get family import schema"
-msgstr ""
+msgstr "récupération du schéma d'une famille"
 
 msgid "change icon of document"
 msgstr "changer l'icone du document"
@@ -6202,6 +6213,9 @@ msgstr "import en tache de fond"
 msgid "add document import"
 msgstr "ajouter un document importé"
 
+msgid "add document import from XML"
+msgstr ""
+
 msgid "import archive file"
 msgstr "Importer un fichier archive"
 
@@ -6812,6 +6826,10 @@ msgstr "Attribut LDAP modifié %s %s"
 msgid "LDAP Attribute added to %s %s"
 msgstr "Attribut LDAP ajouté à %s %s"
 
+#, c-format
+msgid "Not a family [%s]"
+msgstr ""
+
 msgid "restore document"
 msgstr "restaurer le document"
 
@@ -6967,7 +6985,7 @@ msgstr "Créer !"
 
 #, c-format
 msgid "Document %s has been destroyed."
-msgstr ""
+msgstr "Document %s a été détruit"
 
 msgid "See latest information about it."
 msgstr ""
@@ -7112,13 +7130,9 @@ msgstr "Changement d'état vers %s"
 msgid "chgstates"
 msgstr "Changer d'état"
 
-#, fuzzy, c-format
+#, c-format
 msgid "file for %s not found."
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"fichier pour %s non trouvé\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"fichier pour %s non trouvé."
+msgstr "fichier pour %s non trouvé"
 
 #, c-format
 msgid "not a static folder %s"
@@ -7463,13 +7477,8 @@ msgstr ""
 msgid "no vcard file specified"
 msgstr "pas de fichier vcard spécifié"
 
-#, fuzzy
 msgid "user"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"personne\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"utilisateur"
+msgstr "utilisateur"
 
 msgid "object"
 msgstr "objet"
@@ -7981,6 +7990,34 @@ msgstr "Le dossier est invalide. Vos signets sont inchangés."
 msgid "folder %s as been added in your bookmark"
 msgstr "Le dossier %s a été ajouté dans vos signets"
 
+#, c-format
+msgid "Cannot create directory %s for xml import"
+msgstr ""
+
+#, c-format
+msgid "import Xml extract : file %s not found"
+msgstr ""
+
+#, c-format
+msgid "Xml import file %s not found"
+msgstr ""
+
+#, c-format
+msgid "No identificator found for relation %s"
+msgstr ""
+
+#, c-format
+msgid "export Xml : cannot unzip %s : %s"
+msgstr ""
+
+#, c-format
+msgid "Xml import : Cannot open file %s"
+msgstr ""
+
+#, c-format
+msgid "Xml import : Cannot create file %s"
+msgstr ""
+
 msgid "change creation profile"
 msgstr "changer de profil par défaut"
 
@@ -8018,6 +8055,16 @@ msgstr "les préférences d'exportation ont été sauvegardées"
 
 msgid "new document family"
 msgstr "nelle famille de document"
+
+#~ msgid ""
+#~ "the date '%s' for %s attribute is not correct. It has been corrected "
+#~ "automatically"
+#~ msgstr ""
+#~ "la date '%s' pour l'attribut %s est incorrect. Il a été corrigé "
+#~ "automatiquement."
+
+#~ msgid "XML data (one file per document)"
+#~ msgstr "Données XML (un fichier par document)"
 
 #~ msgid "function '%s' not available for application %s (%d)"
 #~ msgstr "fonction %s non disponible pour l'application %s (%d)"

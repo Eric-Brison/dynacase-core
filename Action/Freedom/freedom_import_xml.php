@@ -154,15 +154,15 @@ function extractFileFromXmlDocument($file) {
     while (!feof($f)) {
         $buffer = fgets($f, 4096);
         $mediaindex++;
-        if (preg_match("/<([a-z_0-9-]+)[^>]*mime=[^>]*(.)>(.*)/",$buffer,$reg)) {
+        if (preg_match("/<([a-z_0-9-]+)[^>]*mime=\"[^\"]+\"(.*)>(.*)/",$buffer,$reg)) {
             //print_r2($reg);
             if ($reg[2]!="/") { // not empty tag
                 $tag=$reg[1];
-                if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]*)\"/",$buffer,$regtitle)) {
+                if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/",$buffer,$regtitle)) {
                     $title=$regtitle[2];
-                } else if (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']*)'/",$buffer,$regtitle)) {
+                } else if (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']+)'/",$buffer,$regtitle)) {
                     $title=$regtitle[2];
-                }
+                } else $title="noname";
                 mkdir(sprintf("%s/%s/%d",$dir,$mediadir,$mediaindex));
                 $rfin=sprintf("%s/%d/%s",$mediadir,$mediaindex,$title);
                 $fin=sprintf("%s/%s",$dir,$rfin);
