@@ -572,6 +572,25 @@ function getFamIdFromName($dbaccess, $name) {
   
 }
 /**
+ * return the identificator of a document from a search with title
+ *
+ * @param string $dbaccess database specification
+ * @param string $name logical name
+ * @param string $famid must be set to increase speed search
+
+ * @return int 0 if not found, return negative first id found if multiple (name must be unique)
+ */
+function getIdFromTitle($dbaccess, $title, $famid="") {
+    if ($famid) {
+        $err=simpleQuery($dbaccess,sprintf("select id from docread where title='%s' and locked != -1",pg_escape_string($title)),$id,true,true);
+    } else {
+        $err=simpleQuery($dbaccess,sprintf("select id from docread where title='%s' and locked != -1",pg_escape_string($title)),$id,true,true);
+    }
+    print "getIdFromTitle:$err".sprintf("select id from docread where title='%s' and locked != -1",pg_escape_string($title));
+    return $id;
+}
+
+/**
  * return the identificator of a document from its logical name
  *
  * @param string $dbaccess database specification
@@ -598,7 +617,6 @@ function getIdFromName($dbaccess, $name, $famid="") {
   }    
   return $id;  
 }
-
 /**
  * return the logical name of a document from its initial identificator
  *

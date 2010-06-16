@@ -269,6 +269,12 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
                     if (! $id) {
                         $name=$item->getAttribute("name");
                         if ($name) $id=getIdFromName($dbaccess,$name);
+                        if (! $id) {
+                            // search from title
+                            $afamid=$v->format;
+                            $id=getIdFromTitle($dbaccess,$item->nodeValue,$afamid);
+                            print_r2("title".$item->nodeValue.":".$id);
+                        }
                     }
                     $val[]=$id;
                     break;
