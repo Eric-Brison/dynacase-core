@@ -60,11 +60,12 @@ function focusConstraint(inp) {
 function viewContraint(inp, info) {
     if (inp) {
         if ((inp.style.display=='none') || (inp.type=='hidden')) {
-                var oinp=inp.nextSibling;
-                while (oinp && oinp.tagName!='INPUT' && oinp.type!='hidden' && oinp.style && oinp.style.display!='none') oinp=oinp.nextSibling;
+                var oinp=inp.parentNode.firstChild;
+                while (oinp && (oinp.tagName!='INPUT' && oinp.tagName!='SELECT') && oinp.type!='hidden' && oinp.style && oinp.style.display!='none') oinp=oinp.nextSibling;
                 if (oinp && oinp.tagName=='INPUT') inp=oinp;
                 else {
-                   inp=inp.parentNode;
+                   if (oinp && oinp.tagName=='SELECT') inp=oinp;
+                   else inp=inp.parentNode;
                 }   
         }
         inp.className='invalid';
