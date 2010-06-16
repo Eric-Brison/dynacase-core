@@ -1168,6 +1168,7 @@ function getLayDate(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 	if($localeconfig != false) {
 		$lay->set("dateformat",$localeconfig['dateFormat']);
 		$lay->set("datetimeformat",$localeconfig['dateTimeFormat']);
+		$value = FrenchDateToLocaleDate($value);
 	}
 	else {
 		$lay->set("dateformat",'');
