@@ -61,7 +61,7 @@ function viewContraint(inp, info) {
     if (inp) {
         if ((inp.style.display=='none') || (inp.type=='hidden')) {
                 var oinp=inp.nextSibling;
-                while (oinp && oinp.tagName!='INPUT' && oinp.type!='hidden' && oinp.style.display!='none') oinp=oinp.nextSibling;
+                while (oinp && oinp.tagName!='INPUT' && oinp.type!='hidden' && oinp.style && oinp.style.display!='none') oinp=oinp.nextSibling;
                 if (oinp && oinp.tagName=='INPUT') inp=oinp;
                 else {
                    inp=inp.parentNode;
