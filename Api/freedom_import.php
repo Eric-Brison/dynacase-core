@@ -17,13 +17,12 @@ global $appl,$action;
 include_once("FDL/import_file.php");
 
 $to = GetHttpVars("to"); 
-if (GetHttpVars("htmlmode") == "Y") {
   // mode HTML
   $appl=new Application();
   $appl->Set("FREEDOM",	     $core);
 
   $action->Set("FREEDOM_IMPORT",$appl);
-
+  
   $out= ($action->execute());
   if ($to) {
     include_once("FDL/sendmail.php");
@@ -40,22 +39,11 @@ if (GetHttpVars("htmlmode") == "Y") {
     if ($err) error_log("freedom import sending mail: Error:$err");
     
   } else {
-    print $out;
+    if (GetHttpVars("htmlmode") == "Y") print $out;
   }
 
   
-} else {
-  // mode TEXT
-  $appl=new Application();
-  $appl->Set("FDL",	     $core);
-  $action->Set("",$appl);
-
-  $filename=GetHttpVars("file");
  
-  add_import_file($action, $filename );
-    
-  
-}
 
     
 

@@ -284,7 +284,8 @@ Class NormalAttribute extends BasicAttribute {
           case 'image':
           case 'file':
               if (preg_match(PREGEXPFILE, $v, $reg)) {
-                  $vid=$reg[2];
+                  if ($opt->withIdentificator) $vid=$reg[2];
+                  else $vid='';
                   $mime=$reg[1];
                   $name=$reg[3];
                   $base=getParam("CORE_EXTERNURL");

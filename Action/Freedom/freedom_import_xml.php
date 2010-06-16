@@ -21,7 +21,7 @@ include_once("FDL/import_tar.php");
  */
 function freedom_import_xml(Action &$action, $filename="") {
 
-    $opt["analyze"]=(substr(strtolower(getHttpVars("analyze","Y")),0,1)=="y");
+    $opt["analyze"]=(substr(strtolower(getHttpVars("analyze","N")),0,1)=="y");
     $opt["policy"]=getHttpVars("policy","update");
     $dbaccess=$action->getParam("FREEDOM_DB");
     global $_FILES;
@@ -142,6 +142,7 @@ function extractFilesFromXmlDirectory($splitdir) {
  * @return string error message empty if no errors
  */
 function extractFileFromXmlDocument($file) {
+    static $mediaindex=0;
     $err='';
     $dir=dirname($file);
     if (! file_exists($file)) return sprintf(_("import Xml extract : file %s not found"),$file);
@@ -149,10 +150,10 @@ function extractFileFromXmlDocument($file) {
     if (!is_dir("$dir/$mediadir")) mkdir ("$dir/$mediadir");
     $f=fopen($file,"r");
     $nf=fopen($file.".new","w");
-    $i=0;
+    
     while (!feof($f)) {
         $buffer = fgets($f, 4096);
-        $i++;
+        $mediaindex++;
         if (preg_match("/<([a-z_0-9-]+)[^>]*mime=[^>]*(.)>(.*)/",$buffer,$reg)) {
             //print_r2($reg);
             if ($reg[2]!="/") { // not empty tag
@@ -162,8 +163,8 @@ function extractFileFromXmlDocument($file) {
                 } else if (preg_match("/<([a-z_0-9-]+)[^>]*title='([^']*)'/",$buffer,$regtitle)) {
                     $title=$regtitle[2];
                 }
-                mkdir(sprintf("%s/%s/%d",$dir,$mediadir,$i));
-                $rfin=sprintf("%s/%d/%s",$mediadir,$i,$title);
+                mkdir(sprintf("%s/%s/%d",$dir,$mediadir,$mediaindex));
+                $rfin=sprintf("%s/%d/%s",$mediadir,$mediaindex,$title);
                 $fin=sprintf("%s/%s",$dir,$rfin);
                 $fi=fopen($fin,"w");
                 
@@ -271,9 +272,11 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
                         if ($name) $id=getIdFromName($dbaccess,$name);
                         if (! $id) {
                             // search from title
+                            if ($item->nodeValue) {
                             $afamid=$v->format;
                             $id=getIdFromTitle($dbaccess,$item->nodeValue,$afamid);
-                            print_r2("title".$item->nodeValue.":".$id);
+                            if (! $id) $msg.=sprintf(_("No identificator found for relation %s")."\n",$v->id);
+                            }
                         }
                     }
                     $val[]=$id;
@@ -292,7 +295,6 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
                       } else $val[]='';
                     }
                     break;
-                   // print_r2($val);
                 default:
                     $val[]=$item->nodeValue;
             }
@@ -304,6 +306,7 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
    
     $log= csvAddDoc($dbaccess, $tdoc, $importdirid,$analyze,$splitdir,$policy,
                     $tkey,$prevalues,$tord);
+   if ($msg) $log["err"].="\n".$msg;
             
 }
 
