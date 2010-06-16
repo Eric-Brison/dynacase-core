@@ -880,11 +880,11 @@ DIV.static {
 .constraint {  
   color: [CORE_ERRORCOLOR];
   border:solid 1px [CORE_ERRORCOLOR];
-  z-index:10;position:absolute;
-  margin:10px 10px 10px 30px;
+  [IFNOT ISIE6]z-index:10;position:absolute;
+  margin:10px 10px 10px 30px;[ENDIF ISIE6]
   background-color:[COLOR_A9];
   padding:3px;
-        cursor: pointer;
+  cursor: pointer;
 }
 input.invalid, textarea.invalid , select.invalid, input[type="text"].invalid, span.invalid {  
   border:solid 1px [CORE_ERRORCOLOR];
