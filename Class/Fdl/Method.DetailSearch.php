@@ -916,7 +916,8 @@ Class _DSEARCH extends DocSearch {
 		$this->lay->Set("id", $this->id);
 		$this->editattr();
 
-	}/**
+	}
+	/**
 	* @begin-method-ignore
 	* this part will be deleted when construct document class until end-method-ignore
 	*/

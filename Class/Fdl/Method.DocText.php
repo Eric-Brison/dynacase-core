@@ -18,7 +18,14 @@
 
 
 
-  
+  /**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _TEXT extends Doc {
+        /*
+         * @end-method-ignore
+         */
   
 var $defaultview= "FDL:VIEWTXTCARD";
 		     
@@ -29,6 +36,14 @@ function viewtxtcard($target="_self",$ulink=true,$abstract=false) {
 
   $this->viewattr($target,$ulink,$abstract);
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
 
+/*
+ * @end-method-ignore
+ */
 
 ?>

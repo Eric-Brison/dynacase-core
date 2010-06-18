@@ -14,6 +14,14 @@
 
 
 
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _POSTIT extends Doc {
+        /*
+         * @end-method-ignore
+         */
   
 var $defaultview= "FDL:VIEWPOSTIT:T";
 var $defaultedit= "FDL:EDITPOSTIT:T";
@@ -119,4 +127,13 @@ function preCreated() {
   $tcomment = $this->getValue("PIT_NCOM");
   if ($tcomment=="") return (_("no message : post-it creation aborted"));
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

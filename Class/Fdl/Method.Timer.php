@@ -10,6 +10,16 @@
  */
  /**
  */
+
+
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _TIMER extends Doc {
+        /*
+         * @end-method-ignore
+         */
 private $lineActions;
 
 /**
@@ -217,4 +227,13 @@ function executeLevel($level,$docid,&$msg=null,&$nextlevel=true) {
   $msg=implode(".\n",$tmsg);
   return $gerr;
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

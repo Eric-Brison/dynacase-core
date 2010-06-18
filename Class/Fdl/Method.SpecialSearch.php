@@ -13,6 +13,14 @@
 
 
 
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _SSEARCH extends DocSearch {
+        /*
+         * @end-method-ignore
+         */
 
 var $defaultedit= "FDL:EDITBODYCARD";
 var $defaultview= "FDL:VIEWBODYCARD"; 
@@ -103,4 +111,13 @@ function count() {
   if (is_array($t)) return count($t);
   return -1;
 }
+!/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

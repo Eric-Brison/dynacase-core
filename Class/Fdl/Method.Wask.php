@@ -11,6 +11,14 @@
  /**
  */
 
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _WASK extends Doc {
+        /*
+         * @end-method-ignore
+         */
 function postConstructor() {
   $this->dacls["answer"]=array("pos"=>31,
 			       "description"=>_("need answer"));
@@ -74,4 +82,13 @@ function Control($aclname) {
       $this->doc= &$doc;     
     }
   }
+  /**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

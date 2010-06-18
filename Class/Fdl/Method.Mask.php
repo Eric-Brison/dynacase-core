@@ -15,7 +15,14 @@
 // $Id: Method.Mask.php,v 1.23 2008/09/12 10:14:48 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Class/Freedom/Method.Mask.php,v $
 // ---------------------------------------------------------------
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _MASK extends Doc {
+        /*
+         * @end-method-ignore
+         */
 
 var $defaultedit= "FREEDOM:EDITMASK";
 var $defaultview= "FREEDOM:VIEWMASK";
@@ -304,4 +311,13 @@ function editmask() {
 
   $this->editattr();
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

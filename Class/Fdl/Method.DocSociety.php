@@ -11,7 +11,14 @@
  /**
  */
 
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _SOCIETY extends Doc {
+        /*
+         * @end-method-ignore
+         */
 
 function UpdateSite() {
 
@@ -40,5 +47,13 @@ function SpecRefresh() {
   $this->UpdateSite();
 
 
+}/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
 }
+
+/*
+ * @end-method-ignore
+ */
 ?>

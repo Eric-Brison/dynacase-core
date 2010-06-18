@@ -7,7 +7,6 @@
  * @version $Id: zoo_animallist.php,v 1.1 2008/02/26 13:34:14 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FREEDOM
- * @subpackage ZOO
  *
  * @global docid Http var : document identificator
  * @global newname Http var : new animal name

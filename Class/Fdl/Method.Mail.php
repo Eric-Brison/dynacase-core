@@ -11,10 +11,27 @@
  /**
  */
 
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _MAIL extends Doc {
+        /*
+         * @end-method-ignore
+         */
 var $defaultedit= "FDL:EDITMAILDOC";
 
 
 function editmaildoc() {
   $this->editattr();
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

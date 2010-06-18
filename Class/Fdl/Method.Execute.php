@@ -10,7 +10,14 @@
  */
  /**
  */
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _EXEC extends Doc {
+        /*
+         * @end-method-ignore
+         */
 private $execuserid;
   /**
    * execute the action describe in the object
@@ -132,4 +139,13 @@ function canExecuteAction() {
   $err=$this->control('edit');
   return ($err=="");
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

@@ -14,6 +14,14 @@
 
 
   
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _IMAGE extends Doc {
+        /*
+         * @end-method-ignore
+         */
   
 var $defaultview= "FDL:VIEWIMGCARD";
 	
@@ -77,8 +85,6 @@ function viewimgcard($target="_self",$ulink=true,$abstract=false) {
   }
 
   // Out
-
-
   $this->lay->SetBlockData("TABLEIMG",	 $tableimage);
 
 }
@@ -87,4 +93,13 @@ function viewimgcard($target="_self",$ulink=true,$abstract=false) {
 function PostModify() {
   $this->SetValue("IMG_TITLE",$this->vault_filename("IMG_FILE"));
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

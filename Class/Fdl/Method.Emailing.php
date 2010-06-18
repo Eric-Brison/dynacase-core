@@ -10,6 +10,15 @@
  */
  /**
  */
+ 
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _PUBLIMAIL extends Doc {
+        /*
+         * @end-method-ignore
+         */
 var $defaultedit= "FDL:FDL_PUBEDIT";
 var $defaultmview= "FDL:FDL_PUBMAIL:T";
 function fdl_pubsendmail($target="_self",$ulink=true,$abstract=false) {
@@ -190,6 +199,14 @@ function fdl_pubnavpreview($target="_self",$ulink=true,$abstract=false) {
   $this->lay->set("dirid",$this->id);
     
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
 
+/*
+ * @end-method-ignore
+ */
 
 ?>

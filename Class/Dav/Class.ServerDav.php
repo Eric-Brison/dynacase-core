@@ -1,4 +1,16 @@
 <?php
+/**
+ * Virtual base class for implementing WebDAV servers 
+ *
+ * WebDAV server base class, needs to be extended to do useful work
+ * 
+ * @package DAV
+ * @author  Hartmut Holzgraefe <hholzgra@php.net>
+ * @version @package_version@
+ */
+
+/**
+ */
 //
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
@@ -19,19 +31,12 @@
 //
 // $Id: Class.ServerDav.php,v 1.8 2006/11/22 10:33:59 eric Exp $
 //
+
 require_once "DAV/_parse_propfind.php";
 require_once "DAV/_parse_proppatch.php";
 require_once "DAV/_parse_lockinfo.php";
 
-/**
- * Virtual base class for implementing WebDAV servers 
- *
- * WebDAV server base class, needs to be extended to do useful work
- * 
- * @package HTTP_WebDAV_Server
- * @author  Hartmut Holzgraefe <hholzgra@php.net>
- * @version @package_version@
- */
+
 class HTTP_WebDAV_Server 
 {
     // {{{ Member Variables 

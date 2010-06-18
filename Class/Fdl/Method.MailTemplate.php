@@ -10,6 +10,16 @@
  */
  /**
  */
+
+
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _MAILTEMPLATE extends Doc {
+        /*
+         * @end-method-ignore
+         */
 public $ifiles=array();
 public $sendercopy=true;
 
@@ -218,4 +228,13 @@ function srcfile($src) {
   $this->ifiles[$cid]=$src;
   return "src=\"cid:$cid\"";        
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

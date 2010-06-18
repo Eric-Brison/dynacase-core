@@ -12,9 +12,14 @@
  */
 
 
-
-
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _FILE extends Doc {
+        /*
+         * @end-method-ignore
+         */
   
   
 //var $defaultview= "FDL:VIEWFILECARD";
@@ -96,5 +101,13 @@ function PostModify() {
   if ($this->getValue("FI_TITLEW")=="")  $this->SetValue("FI_TITLE",$filename);
       else $this->SetValue("FI_TITLE",$this->getValue("FI_TITLEW"));
 
+}/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
 }
+
+/*
+ * @end-method-ignore
+ */
 ?>

@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Retrieve and store file in Vault
+ *
+ * @author Anakeen 2010
+ * @version $Id:  $
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FREEDOM
+ */
+ /**
+ */
 include_once('WHAT/Lib.Common.php');
 include_once('FDL/freedom_util.php');
 include_once('FDL/Class.SearchDoc.php');

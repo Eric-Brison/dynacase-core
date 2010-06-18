@@ -12,6 +12,14 @@
  */
 
 
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _PORTFOLIO extends Doc {
+        /*
+         * @end-method-ignore
+         */
   /**
    * Call to create default tabs
    */
@@ -129,4 +137,13 @@ function getContent($controlview=true,$filter=array(),$famid="",$insertguide=fal
   return $tdoc;
     
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

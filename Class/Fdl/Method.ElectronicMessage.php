@@ -3,9 +3,17 @@
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FREEDOM
  */
 
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _SENTMESSAGE extends Doc {
+        /*
+         * @end-method-ignore
+         */
 var $defaultview="FDL:VIEWEMESSAGE";
 
 function viewemessage($target="_self",$ulink=true,$abstract=false) {
@@ -67,5 +75,13 @@ function control($aclname) {
   if (($this->id > 0) && ($this->doctype!='C') &&($aclname=="edit")&&($this->getParamValue("emsg_editcontrol")!="freeedit")) return _("electronic messages cannot be modified");
   else return parent::control($aclname);
 }
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
 
+/*
+ * @end-method-ignore
+ */
 ?>

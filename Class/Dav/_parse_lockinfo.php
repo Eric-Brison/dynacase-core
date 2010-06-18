@@ -1,4 +1,13 @@
 <?php
+/**
+ * helper class for parsing LOCK request bodies
+ * 
+ * @package DAV
+ * @author Hartmut Holzgraefe <hholzgra@php.net>
+ * @version @package-version@
+ */
+/**
+ */
 //
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
@@ -20,13 +29,7 @@
 // $Id: _parse_lockinfo.php,v 1.1 2006/11/22 10:33:59 eric Exp $
 //
 
-/**
- * helper class for parsing LOCK request bodies
- * 
- * @package HTTP_WebDAV_Server
- * @author Hartmut Holzgraefe <hholzgra@php.net>
- * @version @package-version@
- */
+
 class _parse_lockinfo 
 {
     /**

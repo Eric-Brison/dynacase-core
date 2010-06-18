@@ -6,7 +6,7 @@
  * @author Anakeen 2008
  * @version $Id: zoo_addchild.php,v 1.4 2010/04/30 13:44:07 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package freedom-zoo
+ * @package FREEDOM
  * 
  *
  * @global docid Http var : document identificator

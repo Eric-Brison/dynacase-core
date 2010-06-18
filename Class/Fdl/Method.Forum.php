@@ -10,7 +10,14 @@
  */
  /**
  */
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _FORUM extends Doc {
+        /*
+         * @end-method-ignore
+         */
 var $defaultview = "FDL:FORUM_VIEW:T";
 var $defaultedit = "FDL:FORUM_VIEW:S";
 var $specialmenu = "FDL:FDL_FORUMMENU";
@@ -189,6 +196,14 @@ function canAnswer() {
   return false; 
 }
 
+/**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
 
+/*
+ * @end-method-ignore
+ */
 
 ?>
