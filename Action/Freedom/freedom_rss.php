@@ -73,8 +73,11 @@ function freedom_rss(&$action) {
     $report = ($doc->fromid==getIdFromName($dbaccess,"REPORT") ? true : false );
     $items = array();
     if (! $order) {
-        $order = $doc->getValue("REP_IDSORT","revdate desc");
-        $order .= " ".$doc->getValue("REP_ORDERSORT");
+        if ($doc->getValue("REP_IDSORT")) {
+            $order=$doc->getValue("REP_IDSORT");
+            $order .= " ".$doc->getValue("REP_ORDERSORT");
+        } else $order ="revdate desc";
+        
     }
     $ldoc = getChildDoc($dbaccess, 
 			$doc->id, 
@@ -86,8 +89,8 @@ function freedom_rss(&$action) {
 			$famid, 
 			false,
 			$order );
+  
   }
- 
   if ($report) {
     $tmpdoc=createDoc($dbaccess, getIdFromName($dbaccess,"REPORT"), false);
     $fdoc=createDoc($dbaccess, $doc->getValue("SE_FAMID"), false);
