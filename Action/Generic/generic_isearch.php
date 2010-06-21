@@ -61,6 +61,10 @@ function generic_isearch(&$action) {
   } else {
     include_once("FREEDOM/freedom_view.php");  
     $action->parent->name="FREEDOM";
+    $freedomApp = new Application($action->dbaccess);
+    $freedomApp->Set('FREEDOM', $action->parent);
+    $viewMode = $freedomApp->getParam('FREEDOM_VIEW');
+    setHttpVar("view", $viewMode);
     setHttpVar("target","gisearch");
     freedom_view($action, false);
     //    redirect($action,"FREEDOM","FREEDOM_VIEW&viewone=$viewone&dirid=".$sdoc->id);
