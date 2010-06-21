@@ -263,7 +263,6 @@ function setPostVars(&$doc, &$info=array()) {
     }
     // ------------------------------
   // update POSGRES files values
-  
   foreach ($_FILES as $k=>$v)    {
       if ($k[0] == "_") // freedom attributes  begin with  _
 	{	  
@@ -271,7 +270,6 @@ function setPostVars(&$doc, &$info=array()) {
 
 	      
 	  $filename=insert_file($doc,$k);
-	
 	  if ($filename != "")  {
 	      if (substr($k,0,4) == "UPL_") $k=substr($k,4);
 	      $doc->SetValue($k, $filename);	    	  

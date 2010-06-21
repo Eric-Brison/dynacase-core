@@ -27,7 +27,7 @@ border-style:none none solid none;
        name="modifydoc" 
        target="_parent"
        onsubmit="if (document.isSubmitted) return false;if (!canmodify()) return false;document.isSubmitted=true;enableall();viewwait(true);return true"
-       method="POST"  
+       method="POST"  ENCTYPE="multipart/form-data" 
        action="[CORE_STANDURL]&app=FREEDOM&action=MODSTATE&id=[docid]" >
 <input type="hidden" name="newstate" value="[nextstate]">
 <input type="hidden" name="viewext" value="[viewext]">
