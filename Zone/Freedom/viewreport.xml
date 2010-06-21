@@ -69,7 +69,7 @@ TABLE.perso {
 [BLOCK PARAMS]
 [ZONE FDL:IMPCARD?zone=FREEDOM:PARAMDSEARCH:S&sapp=FDL&saction=FDL_CARD&sid=id&starget=_self]
 [ENDBLOCK PARAMS]
-
+[IF HASCOLS]
 <table class="[reportstyle] sortable" width="100%" cellspacing=0>
 <caption>[V_REP_CAPTION]</caption>
 <thead><tr>
@@ -83,4 +83,6 @@ TABLE.perso {
 </tbody><tfoot><tr>
 [BLOCK TFOOT]<th align="[rightfornumber]" >[footval]</th>[ENDBLOCK TFOOT]
 </tr></tfoot>
-</table>
+</table>[ENDIF HASCOLS]
+
+[IFNOT HASCOLS]<p>[TEXT:No columns has been defined]</p>[ENDIF HASCOLS]

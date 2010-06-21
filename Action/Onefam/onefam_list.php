@@ -55,10 +55,11 @@ function getTableFamilyList($idsfam) {
     foreach ($tidsfam as $k=>$cid) {
       $cdoc= new_Doc($dbaccess, $cid);
       if ($cdoc->dfldid > 0) {
-
+        if ($cdoc->control('view')=="") {
 	$selectclass[$k]["idcdoc"]=$cdoc->initid;
 	$selectclass[$k]["ftitle"]=$cdoc->title;
-	$selectclass[$k]["iconsrc"]=$cdoc->getIcon();      
+	$selectclass[$k]["iconsrc"]=$cdoc->getIcon();     
+        } 
       }
     }
   }

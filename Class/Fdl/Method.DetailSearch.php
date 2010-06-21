@@ -681,9 +681,17 @@ Class _DSEARCH extends DocSearch {
 			} else $selectclass[$k]["selected"]="";
 		}
 		if (! $selfam) {
+		    $famid=abs($this->getValue("se_famid"));
+		    if ($this->id && $famid) {
+                        $selectclass[]=array("idcdoc"=>$famid,
+                                             "classname"=>$this->getTitle($famid),
+                                             "selected"=>"selected");
+		        
+		    } else {
 			reset($tclassdoc);
 			$first = current($tclassdoc);
 			$famid = $first["id"];
+		    }
 		}
 		$this->lay->Set("dirid",$dirid);
 		$this->lay->Set("classid",$this->fromid);
@@ -703,7 +711,7 @@ Class _DSEARCH extends DocSearch {
 		   "allocated" => _("id allocated"),
 		   "svalues"=> _("any values"));
 
-		while (list($k,$v) = each($internals)) {
+                foreach($internals as $k=>$v) {
 			if ($k=="revdate") $type="date";
 			else if ($k=="owner") $type="docid";
 			else if ($k=="locked") $type="docid";

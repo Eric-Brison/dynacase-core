@@ -59,7 +59,7 @@ function editreport() {
   // display selected column
   $tcols = $this->getTValue("REP_IDCOLS");
 
-  while (list($k,$v) = each($tcols)) {
+  foreach($tcols as $k=>$v) {
     if (isset($tcolumn1[$v])) {
       $tcolumn2[$v]=$tcolumn1[$v];
       unset($tcolumn1[$v]);
@@ -97,8 +97,7 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
   }
 
   $tinternals = $this->_getInternals();
-  while (list($k,$v) = each($tinternals)) {
-   
+  foreach($tinternals as $k=>$v) {   
     $tcolumn1[$k]=array("colid"=>$k,
 			"collabel"=>$v,
 			"rightfornumber"=>"left");
@@ -106,11 +105,13 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
   
 
   $tcols = $this->getTValue("REP_IDCOLS");
-  while (list($k,$v) = each($tcols)) {
-    $tcolumn2[$v]=$tcolumn1[$v];
-    
+  foreach($tcols as $k=>&$v) {
+      if ($v) {
+          $tcolumn2[$v]=$tcolumn1[$v];
+      }
   }
   $this->lay->setBlockData("COLS",$tcolumn2);
+  $this->lay->set("HASCOLS",count($tcolumn2)>0);
   include_once("FDL/Lib.Dir.php");
    
 

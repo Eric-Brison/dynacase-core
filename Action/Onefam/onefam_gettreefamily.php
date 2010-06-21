@@ -41,7 +41,13 @@ function onefam_getDataTreeFamily(&$action) {
   $mids=explode(",",$action->getParam("ONEFAM_MIDS"));
 
   foreach ($mids as $fid) {
-    if ($fid && ($fs=getFamilySearches($dbaccess,$fid))) $tfs[]=$fs;
+    if ($fid) {
+        $cdoc= new_Doc($dbaccess, $fid);
+        if ($cdoc->isAlive() && $cdoc->control('view')=="") {
+        $fs=getFamilySearches($dbaccess,$fid);
+        if ($fs) $tfs[]=$fs;
+        }
+    }
   }
   $utfs=array();
 
@@ -73,9 +79,11 @@ function getFamilySearches($dbaccess,$fid) {
     $s->setDebugMode();
     $t=$s->search();
     while ($v=$s->nextDoc()) {
+        
       $to["userSearches"][$fid]=array("id"=>$v->id,
 				      "icon"=>$v->getIcon(),
 				      "title"=>$v->getTitle());
+        
     }
     $s=new SearchDoc($dbaccess,"SEARCH");
     $s->dirid=$fam->dfldid;
@@ -83,9 +91,11 @@ function getFamilySearches($dbaccess,$fid) {
     $s->setDebugMode();
     $t=$s->search();
     while ($v=$s->nextDoc()) {
+        
       $to["adminSearches"][$fid]=array("id"=>$v->id,
 				       "icon"=>$v->getIcon(),
 				       "title"=>$v->getTitle());
+        
     }
 
 

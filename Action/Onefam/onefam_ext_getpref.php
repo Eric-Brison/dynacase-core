@@ -30,8 +30,8 @@ function onefam_ext_getpref(&$action,$idsattr="ONEFAM_IDS") {
 
   $ids=explode(",",$action->getParam($idsattr));
 
-  //$umids=explode(",",$action->getParam("ONEFAM_IDS"));
- 
+  //$umids=explode(",",$action->getParam("ONEFAM_IDS"));        
+  
   $out=array("ids"=>$ids);  
   
   $action->lay->noparse=true; // no need to parse after - increase performances
