@@ -53,6 +53,7 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
   if (($usefor=="D")||($usefor=="Q")) {
     //  set values to family document
     specialmodcard($action,$usefor);
+    $ndocid=$classid;
     return "";
   }
   if ( $docid == 0 ) {
@@ -542,9 +543,7 @@ function specialmodcard(&$action,$usefor) {
     $cdoc->AddComment($s);
   }
   
-  redirect($action,GetHttpVars("redirect_app","FDL"),
-	   GetHttpVars("redirect_act","FDL_CARD&refreshfld=N&id=$classid"),
-	   $action->GetParam("CORE_STANDURL"));
+ 
 }
 
 

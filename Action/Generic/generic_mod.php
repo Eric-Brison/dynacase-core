@@ -92,11 +92,11 @@ function generic_mod(&$action) {
   
 
 
-
   if ($noredirect) {
     $action->lay->set("id",$ndocid);
     $action->lay->set("constraintinfo",json_encode($info));
     $action->lay->set("quicksave",$quicksave);
+    if ($err=="-") $err="";
     $action->lay->set("error",json_encode($err));
     if ($retedit) $action->lay->set("url",sprintf("?app=%s&action=%s",getHttpVars("redirect_app","GENERIC"),getHttpVars("redirect_act","GENERIC_EDIT")));
     else {
