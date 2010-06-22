@@ -595,22 +595,64 @@ create unique index i_docir on doc(initid, revision);";
    * @global array optimize for speed :: reference is not a pointer !!
    */
   function PostUpdate() {
-    global $gdocs;// optimize for speed :: reference is not a pointer !!
-    //unset($gdocs[$this->id]); // clear cache
-    if (isset($gdocs[$this->id]))  {
-      if ($this->nocache) unset($gdocs[$this->id]); // clear cache
-      else $gdocs[$this->id]=$this; // update caches      
-    }
+  	global $gdocs;// optimize for speed :: reference is not a pointer !!
+  	//unset($gdocs[$this->id]); // clear cache
+  	if (isset($gdocs[$this->id]))  {
+  		if ($this->nocache) unset($gdocs[$this->id]); // clear cache
+  		else $gdocs[$this->id]=$this; // update caches
+  	}
 
-    if ($this->hasChanged) {
-      $this->computeDProfil();
-      $this->UpdateVaultIndex();
-      $this->updateRelations();
-      if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
-      $this->addLog("changed",array_keys($this->getOldValues()));
-    }
-    $this->sendTextToEngine();
-    $this->hasChanged=false;
+  	if ($this->hasChanged) {
+  		$this->computeDProfil();
+  		$this->regenerateTemplates();
+  		$this->UpdateVaultIndex();
+  		$this->updateRelations();
+  		if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
+  		$this->addLog("changed",array_keys($this->getOldValues()));
+  	}
+  	$this->sendTextToEngine();
+  	$this->hasChanged=false;
+  }
+  
+  /**
+   * 
+   */
+  function regenerateTemplate($aid, $index=-1) {
+  	$layout = 'THIS:'.$aid;
+  	if($index>-1) {
+  		$layout.='['.$index.']';
+  	}
+  	$outfile = $this->viewDoc($layout.':B', 'ooo');
+  	if(file_exists($outfile)) {
+	  	$fh = fopen($outfile, 'rb');
+	  	if($fh) {
+		  	$this->saveFile($aid, $fh, '', $index);
+		  	fclose($fh);
+		  	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+		  	return true;
+	  	}
+  	}
+  	return false;
+  }
+  
+  /**
+   * 
+   */
+  final function regenerateTemplates() {
+  	$fa = $this->GetFileAttributes();
+  	foreach ($fa as $aid=>$oattr) {
+  		$opt = $oattr->getOption("template");
+  		if ($opt == "dynamic" || $opt == "form") {
+  			if ($oattr->inArray()) {
+  				$ta=$this->getTValue($aid);
+  				foreach($ta as $k=>$v) {
+  					$this->regenerateTemplate($aid,$k);
+  				}
+  			} else {
+  				$this->regenerateTemplate($aid);
+  			}
+  		}
+  	}
   }
 
   /**
@@ -647,7 +689,7 @@ create unique index i_docir on doc(initid, revision);";
     // cannot use currval if nextval is not use before
     $res = pg_exec($this->init_dbid(), "select nextval ('seq_doc".$fromid."')");   
     $arr = pg_fetch_array ($res, 0);
-    $cur = intval($arr[0]) ;        
+    $cur = intval($arr[0]) ;
     return $cur;
   }
 
@@ -2578,79 +2620,78 @@ create unique index i_docir on doc(initid, revision);";
    * @return string error message, if no error empty string
    */
   final public function saveFile($attrid, $stream,$ftitle="",$index=-1) {   
-    if (is_resource($stream) && get_resource_type($stream) == "stream") {
+  	if (is_resource($stream) && get_resource_type($stream) == "stream") {
 
 
-    $a=$this->getAttribute($attrid);     
+    $a=$this->getAttribute($attrid);
     if ($a->type == "file") {
-      $err="file conversion";
-      $vf = newFreeVaultFile($this->dbaccess);
-      if ($index > -1) $fvalue=$this->getTValue($attrid,$index);
-      else $fvalue=$this->getValue($attrid);
-      $basename="";
-      if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
-	$vaultid= $reg[2];
-	$mimetype=$reg[1];
-	$oftitle=$reg[3];
-	$err=$vf->Retrieve($vaultid, $info);
+    	$err="file conversion";
+    	$vf = newFreeVaultFile($this->dbaccess);
+    	if ($index > -1) $fvalue=$this->getTValue($attrid,'',$index);
+    	else $fvalue=$this->getValue($attrid);
+    	$basename="";
+    	if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
+    		$vaultid= $reg[2];
+    		$mimetype=$reg[1];
+    		$oftitle=$reg[3];
+    		$err=$vf->Retrieve($vaultid, $info);
 
-	if ($err == "") {
-	  $basename=$info->name;
-	}
-      }
-      if ($ftitle) {
-	$ext=getFileExtension($ftitle);
-      } 
-      if ($ext=="") $ext="nop";
-      
-      $filename=uniqid("/var/tmp/_fdl").".$ext";
-      $tmpstream=fopen($filename,"w");
-      while (!feof($stream)) {
-	if (false === fwrite($tmpstream, fread($stream, 4096))) {
-	  $err = "403 Forbidden"; 
-	  break;
-	}
-      }
-      fclose($tmpstream);
-      // verify if need to create new file in case of revision
-      $newfile=($basename=="");
+    		if ($err == "") {
+    			$basename=$info->name;
+    		}
+    	}
+    	if ($ftitle) {
+    		$ext=getFileExtension($ftitle);
+    	}
+    	if ($ext=="") $ext="nop";
 
-      if ($this->revision > 0) {
-	$trev=$this->GetRevisions("TABLE",2);
-	$revdoc=$trev[1];
-	$prevfile=getv($revdoc,strtolower($attrid));
-	if ($prevfile == $fvalue) $newfile=true;
-      }
+    	$filename=uniqid("/var/tmp/_fdl").".$ext";
+    	$tmpstream=fopen($filename,"w");
+    	while (!feof($stream)) {
+    		if (false === fwrite($tmpstream, fread($stream, 4096))) {
+    			$err = "403 Forbidden";
+    			break;
+    		}
+    	}
+    	fclose($tmpstream);
+    	// verify if need to create new file in case of revision
+    	$newfile=($basename=="");
 
-      if (! $newfile) {
-	$err=$vf->Save($filename, false , $vaultid);
-      } else {
-	$err=$vf->Store($filename, false , $vaultid);
-      }
-      if ($ftitle != "") {
-	$vf->Rename($vaultid,$ftitle);
-      } else {
-	if ($basename!="") { // keep same file name
-	  $vf->Rename($vaultid,$basename);
-	}
-      }
-      if ($err == "") {
-	if ($mimetype) $mime=$mimetype;
-	else $mime=trim(`file -ib $filename`);
-	if ($ftitle) $value="$mime|$vaultid|$ftitle";
-	else $value="$mime|$vaultid|$oftitle";
-	$err=$this->setValue($attrid,$value,$index);	
-	if ($err=="") {
-	  $index=0;
-	  $this->clearFullAttr($attrid); // because internal values not changed
-	}
-	//$err="file conversion $mime|$vid";
-      }
-      unlink($filename);
-      $this->AddComment(sprintf(_("modify file %s"),$ftitle));
-    } 	
+    	if ($this->revision > 0) {
+    		$trev=$this->GetRevisions("TABLE",2);
+    		$revdoc=$trev[1];
+    		$prevfile=getv($revdoc,strtolower($attrid));
+    		if ($prevfile == $fvalue) $newfile=true;
+    	}
+
+    	if (! $newfile) {
+    		$err=$vf->Save($filename, false , $vaultid);
+    	} else {
+    		$err=$vf->Store($filename, false , $vaultid);
+    	}
+    	if ($ftitle != "") {
+    		$vf->Rename($vaultid,$ftitle);
+    	} elseif ($basename!="") { // keep same file name
+    		$vf->Rename($vaultid,$basename);
+    	}
+    	if ($err == "") {
+    		if ($mimetype) $mime=$mimetype;
+    		else $mime=trim(`file -ib $filename`);
+    		if ($ftitle) $value="$mime|$vaultid|$ftitle";
+    		else $value="$mime|$vaultid|$oftitle";
+    		$err=$this->setValue($attrid,$value,$index);
+    		if ($err=="") {
+    			$index=0;
+    			$this->clearFullAttr($attrid); // because internal values not changed
+    		}
+    		//$err="file conversion $mime|$vid";
+    	}
+    	unlink($filename);
+    	$this->AddComment(sprintf(_("modify file %s"),$ftitle));
+    	$this->hasChanged = true;
     }
-    return $err;
+  	}
+  	return $err;
   }
 
   /**
@@ -4026,7 +4067,7 @@ create unique index i_docir on doc(initid, revision);";
 	
   }
   /**
-   * Recompute file name in concardance with rn option
+   * Recompute file name in concordance with rn option
    * 
    */
   function refreshRn() {
@@ -5396,75 +5437,75 @@ create unique index i_docir on doc(initid, revision);";
    * @param bool $changelayout if true the internal layout ($this->lay) will be replace by the new layout
    */
   final public function viewDoc($layout="FDL:VIEWBODYCARD",$target="_self",$ulink=true,$abstract=false,$changelayout=false) {
-    global $action;
+  	global $action;
 
-    if (preg_match("/(.*)\?(.*)/",$layout, $reg)) {
-      // in case of arguments in zone
-      global $ZONE_ARGS;
-      $layout=$reg[1];
-      $zargs = explode("&", $reg[2] );
-      foreach($zargs as $k=>$v) {
-	if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
-	  // memo zone args for next action execute
-	   $ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
-	}
-      }
-    }
- 
-    if (! preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg)) 
-      return sprintf(_("error in pzone format %s"),$layout);
-             
-    if (!$changelayout) {
-      $play=$this->lay;
-    }
-    $binary=($this->getZoneOption($layout)=="B");
+  	if (preg_match("/(.*)\?(.*)/",$layout, $reg)) {
+  		// in case of arguments in zone
+  		global $ZONE_ARGS;
+  		$layout=$reg[1];
+  		$zargs = explode("&", $reg[2] );
+  		foreach($zargs as $k=>$v) {
+  			if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
+  				// memo zone args for next action execute
+  				$ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
+  			}
+  		}
+  	}
 
-    $tplfile=$this->getZoneFile($layout);
-    $ext=getFileExtension($tplfile);
-    if (strtolower($ext)=="odt") {
-      include_once('Class.OOoLayout.php');
-      $target="ooo";
-      $ulink=false;
-      $this->lay = new OOoLayout($tplfile, $action);
-    } else {      
-      $this->lay = new Layout($tplfile, $action);
-    }
+  	if (! preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg))
+  	return sprintf(_("error in pzone format %s"),$layout);
+  	 
+  	if (!$changelayout) {
+  		$play=$this->lay;
+  	}
+  	$binary=($this->getZoneOption($layout)=="B");
 
-  
-    $this->lay->set("_readonly",($this->Control('edit')!=""));
-    $method = strtok(strtolower($reg[2]),'.');
-
-   
-    if (method_exists ( $this, $method)) {
-      $this->$method($target,$ulink,$abstract);
-    } else {
-      $this->viewdefaultcard($target,$ulink,$abstract);
-    }
+  	$tplfile=$this->getZoneFile($layout);
+  	$ext=getFileExtension($tplfile);
+  	if (strtolower($ext)=="odt") {
+  		include_once('Class.OOoLayout.php');
+  		$target="ooo";
+  		$ulink=false;
+  		$this->lay = new OOoLayout($tplfile, $action, $this);
+  	} else {
+  		$this->lay = new Layout($tplfile, $action);
+  	}
 
 
-    $laygen=$this->lay->gen();
-    
-    if (!$changelayout)       $this->lay=$play;
-    
-    if (! $ulink) {
-      // suppress href attributes
-      return preg_replace(array("/href=\"index\.php[^\"]*\"/i", "/onclick=\"[^\"]*\"/i","/ondblclick=\"[^\"]*\"/i"), 
-			  array("","","") ,$laygen );
-    }
-    if ($target=="mail") {
-      // suppress session id
-      return preg_replace("/\?session=[^&]*&/", "?" ,$laygen );
-    }
-    if ($binary && ($target != "ooo")) {
-      // set result into file
-      $tmpfile=uniqid("/var/tmp/fdllay").".html";
-      $nc=file_put_contents($tmpfile,$laygen);
-      $laygen=$tmpfile;
-      
-    }
+  	$this->lay->set("_readonly",($this->Control('edit')!=""));
+  	$method = strtok(strtolower($reg[2]),'.');
 
-  
-    return $laygen;
+  	 
+  	if (method_exists ( $this, $method)) {
+  		$this->$method($target,$ulink,$abstract);
+  	} else {
+  		$this->viewdefaultcard($target,$ulink,$abstract);
+  	}
+
+
+  	$laygen=$this->lay->gen();
+
+  	if (!$changelayout)       $this->lay=$play;
+
+  	if (! $ulink) {
+  		// suppress href attributes
+  		return preg_replace(array("/href=\"index\.php[^\"]*\"/i", "/onclick=\"[^\"]*\"/i","/ondblclick=\"[^\"]*\"/i"),
+  		array("","","") ,$laygen );
+  	}
+  	if ($target=="mail") {
+  		// suppress session id
+  		return preg_replace("/\?session=[^&]*&/", "?" ,$laygen );
+  	}
+  	if ($binary && ($target != "ooo")) {
+  		// set result into file
+  		$tmpfile=uniqid("/var/tmp/fdllay").".html";
+  		$nc=file_put_contents($tmpfile,$laygen);
+  		$laygen=$tmpfile;
+
+  	}
+
+
+  	return $laygen;
   }
   // --------------------------------------------------------------------
 
@@ -5958,44 +5999,46 @@ static function _cmpanswers($a,$b) {
 
   // -----------------------------------
   final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
-    $listattr = $this->GetNormalAttributes();
-    
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $value = chop($this->GetValue($v->id));
+  	$listattr = $this->GetNormalAttributes();
 
-      //------------------------------
-      // Set the table value elements
-      
-     	
-	$this->lay->Set("S_".strtoupper($v->id),($value!=""));
-	// don't see  non abstract if not
-	if ((($v->mvisibility == "H")&& (! $viewhidden)) || ($v->mvisibility == "I")|| (($abstract) && (! $v->isInAbstract ))) {
-	$this->lay->Set("V_".strtoupper($v->id),"");
-	$this->lay->Set("L_".strtoupper($v->id),"");
-      } else {	
-	if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-	else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
-	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-      }       
-    }
-  
-    $listattr = $this->GetFieldAttributes();
-    
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $this->lay->Set("L_".strtoupper($v->id),$v->getLabel());      
-    }
+  	// each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+  	foreach($listattr as $k=>$v) {
+  		$value = chop($this->GetValue($v->id));
+
+  		//------------------------------
+  		// Set the table value elements
+
+
+  		$this->lay->Set("S_".strtoupper($v->id),($value!=""));
+  		// don't see  non abstract if not
+  		if ((($v->mvisibility == "H")&& (! $viewhidden)) || ($v->mvisibility == "I")|| (($abstract) && (! $v->isInAbstract ))) {
+  			$this->lay->Set("V_".strtoupper($v->id),"");
+  			$this->lay->Set("L_".strtoupper($v->id),"");
+  		} else {
+  			if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
+  			else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
+  			$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
+  		}
+  	}
+
+  	$listattr = $this->GetFieldAttributes();
+
+  	// each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+  	foreach($listattr as $k=>$v) {
+  		$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
+  	}
 
   }
 
 
   // view doc properties
   final public function viewprop($target="_self",$ulink=true,$abstract=false) {
-    foreach($this->fields as $k=>$v) {
-      $this->lay->Set(strtoupper($v),($this->$v===null)?false:$this->$v);
-    }
-    $this->lay->Set("V_TITLE",$this->getDocAnchor($this->id,$target,$ulink,false,false));
+  	foreach($this->fields as $k=>$v) {
+  		if($target=='ooo') $this->lay->Set(strtoupper($v),($this->$v===null)?false:str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$this->$v));
+  		else $this->lay->Set(strtoupper($v),($this->$v===null)?false:$this->$v);
+  	}
+  	if($target=='ooo') $this->lay->Set("V_TITLE",$this->lay->get("TITLE"));
+  	else $this->lay->Set("V_TITLE",$this->getDocAnchor($this->id,$target,$ulink,false,false));
   }
 
   /**
@@ -6004,25 +6047,25 @@ static function _cmpanswers($a,$b) {
    * @return string error message if cannot be
    */
   function setLogicalIdentificator($name) {
-    if ($name) {    
-      if (! preg_match("/^[A-Z][0-9A-Z:_-]*$/i",$name)) {
-	return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"),$name));
-      } else {	
-	if ($this->isAffected() && ($this->name != "") && ($this->doctype!='Z')) {
-	  return (sprintf(_("Logical name %s already set for %s"),$name,$doc->title));
-	} else {
-	  // verify not use yet
-	  $d=getTDoc($this->dbaccess,$name);
-	  if ($d && $d["doctype"]!='Z') {
-	    return sprintf(_("Logical name %s already use in document %s"),$name,$d["title"]);
-	  } else {
-	    $this->name=$name;
-	    $err=$this->modify(true,array("name"),true);
-	    if ($err!="") return $err;	   	    
-	  }
-	}	
-      }
-    }
+  	if ($name) {
+  		if (! preg_match("/^[A-Z][0-9A-Z:_-]*$/i",$name)) {
+  			return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"),$name));
+  		} else {
+  			if ($this->isAffected() && ($this->name != "") && ($this->doctype!='Z')) {
+  				return (sprintf(_("Logical name %s already set for %s"),$name,$doc->title));
+  			} else {
+  				// verify not use yet
+  				$d=getTDoc($this->dbaccess,$name);
+  				if ($d && $d["doctype"]!='Z') {
+  					return sprintf(_("Logical name %s already use in document %s"),$name,$d["title"]);
+  				} else {
+  					$this->name=$name;
+  					$err=$this->modify(true,array("name"),true);
+  					if ($err!="") return $err;
+  				}
+  			}
+  		}
+  	}
   }
   /**
    * view only option values
