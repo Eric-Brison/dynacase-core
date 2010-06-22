@@ -92,7 +92,6 @@ function generic_mod(&$action) {
   
 
 
-
   if ($noredirect) {
     $action->lay->set("id",$ndocid);
     $action->lay->set("constraintinfo",json_encode($info));
