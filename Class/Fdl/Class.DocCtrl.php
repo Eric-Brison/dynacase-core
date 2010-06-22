@@ -109,7 +109,7 @@ Class DocCtrl extends DocLDAP {
     return ($this->profid != 0) ;
   }
 
-  function UnsetControl() {
+  function unsetControl() {
     if ($this->id == $this->profid) {
       // inhibated all doc references this profil
       if ($this->doctype == 'P') $this->exec_query("update doc set profid=-profid where profid=".$this->id." and locked != -1;");
@@ -122,7 +122,7 @@ Class DocCtrl extends DocLDAP {
    * Unset all Acl for document (for everybody)
    *
    */
-  function RemoveControl() {
+  function removeControl() {
     if ($this->id == $this->profid) {
       // inhibated all doc references this profil
       $this->exec_query("delete from docperm where docid=".$this->id);
@@ -135,7 +135,7 @@ Class DocCtrl extends DocLDAP {
    * activate access specific control 
    * @param bool $userctrl if true add all acls for current user
    */
-  function SetControl($userctrl=true) {
+  function setControl($userctrl=true) {
     if ($userctrl) {
       $perm = new DocPerm($this->dbaccess, array($this->id,$this->userid));
       $perm->docid=$this->id;
@@ -279,7 +279,7 @@ Class DocCtrl extends DocLDAP {
    * @param bool $negativecontrol set true if want add a negative control (explicit no permission)
    * @return string error message (empty if no errors)
    */
-  function ModifyControl($uid,$aclname,$deletecontrol=false,$negativecontrol=false) {
+  function modifyControl($uid,$aclname,$deletecontrol=false,$negativecontrol=false) {
 
     if (! isset($this->dacls[$aclname])) {
       return sprintf(_("unknow privilege %s"),$aclname);
@@ -336,7 +336,7 @@ Class DocCtrl extends DocLDAP {
    * @param bool $negativecontrol set true if want add a negative control (explicit no permission)
    * @return string error message (empty if no errors)
    */
-  function AddControl($uid,$aclname,$negativecontrol=false) {
+  function addControl($uid,$aclname,$negativecontrol=false) {
     return $this->ModifyControl($uid,$aclname,false,$negativecontrol);
   }
 
@@ -397,10 +397,10 @@ Class DocCtrl extends DocLDAP {
   function controlUserId ($docid,$uid,$aclname) {          
     $perm = new DocPerm($this->dbaccess, array($docid,$uid));
 
-    if ($perm->IsAffected()) $uperm = $perm->uperm;
+    if ($perm->isAffected()) $uperm = $perm->uperm;
     else $uperm = $perm->getUperm($docid,$uid);
                    
-    return $this->ControlUp($uperm,$aclname);
+    return $this->controlUp($uperm,$aclname);
   }
 
 
@@ -412,7 +412,7 @@ Class DocCtrl extends DocLDAP {
    * @param string $aclname name of the acl (edit, view,...)
    * @return string if empty access granted else error message
    */
-  function ControlUp($uperm, $aclname) {
+  function controlUp($uperm, $aclname) {
     if (isset($this->dacls[$aclname])) {
       return (($uperm & (1 << ($this->dacls[$aclname]["pos"] ))) != 0 )?"":sprintf(_("no privilege %s for %s |%d]"),$aclname,$this->title,$this->id);
     } else {

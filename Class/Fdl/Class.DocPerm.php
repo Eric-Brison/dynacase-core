@@ -55,7 +55,7 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
 
   function preInsert() {
     if ($this->userid==1) return _("not perm for admin");   
-    if (($this->upacl==0) && ($this->unacl==0)) return _("not pertinent");   
+    if (($this->upacl==0) && ($this->unacl==0)) return "";
     if ($this->unacl==="") $this->unacl="0";
     if ($this->cacl==="") $this->cacl="0";
   }

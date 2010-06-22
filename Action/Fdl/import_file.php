@@ -492,6 +492,7 @@ function add_import_file(&$action, $fimport) {
 	$pdoc = new_Doc($dbaccess, $pid);
 	if ($pdoc->isAlive()) {
 	  $tcr[$nline]["msg"]=sprintf(_("change profil %s"),$data[1]);	  
+          $tcr[$nline]["action"]="modprofil";    
 	  if ($analyze) continue;
 	  $fpid=$data[2];
 	  if (($fpid != "") && (!is_numeric($fpid))) $fpid = getIdFromName($dbaccess,$fpid);
@@ -505,16 +506,34 @@ function add_import_file(&$action, $fimport) {
 	      $pdoc->setProfil($pid);
 	      $pdoc->SetControl(false);
 	      $pdoc->disableEditControl(); // need because new profil is not enable yet
-	      $tcr[$nline]["err"]= $pdoc-> Modify();  
+	      $tcr[$nline]["err"]= $pdoc->modify();  
+	    }
+	    $optprof=strtoupper(trim($data[3]));
+	    if ($optprof=="RESET") {
+	        $pdoc->removeControl();
+	        $tcr[$nline]["msg"].="\n".sprintf(_("reset profil %s"),$pid);
 	    }
 	    $tacls=array_slice($data, 2); 
-	    foreach ($tacls as $acl) {
-	    
+	    foreach ($tacls as $acl) {	    
 	      if (preg_match("/([^=]+)=(.*)/",$acl, $reg)) {
 		$tuid= explode(",",$reg[2]);
+		$aclname=trim($reg[1]);
+		if (substr($aclname,0,1)=="-") {
+		    $negative=true;
+		    $aclname=substr($aclname,1);
+		}
+		else $negative=false;
 		$perr="";
-		foreach ($tuid as $uid) {
-		  $perr.=$pdoc->AddControl($uid,$reg[1]);
+		if ($optprof=="DELETE") {
+		    foreach ($tuid as $uid) {
+		        $perr.=$pdoc->delControl(trim($uid),$aclname, $negative);
+                        $tcr[$nline]["msg"].="\n".sprintf(_("delete %s for %s"),$aclname, $uid);
+		    }
+		} else { // the "ADD" by default
+		    foreach ($tuid as $uid) {
+		        $perr.=$pdoc->addControl(trim($uid),$aclname, $negative);
+                        $tcr[$nline]["msg"].="\n".sprintf(_("add %s for %s"),$aclname, $uid);
+		    }
 		}
 		$tcr[$nline]["err"]=$perr;
 	      }
@@ -522,7 +541,7 @@ function add_import_file(&$action, $fimport) {
 	  }
 	  
 	} else {
-	  $tcr[$nline]["err"]=sprintf(_("profil id unkonow %s"),$data[1]);
+	  $tcr[$nline]["err"]=sprintf(_("profil id unknow %s"),$data[1]);
 	}
       }
       
