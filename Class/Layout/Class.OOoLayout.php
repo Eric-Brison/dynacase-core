@@ -414,24 +414,28 @@ class OOoLayout extends Layout {
 		return $err;
 	}
 
+	/**
+	 * remove all xml:id attributes in children nodes
+	 * @param DomNode $objNode
+	 */
 	function removeXmlId( &$objNode){
-		$objNodeListNested = &$objNode->childNodes;
+		$objNodeListNested = $objNode->childNodes;
 		foreach ( $objNodeListNested as $objNodeNested ){
 			if ($objNodeNested->nodeType == XML_ELEMENT_NODE) {
-				$name=$objNodeNested->getAttribute("xml:id");
-				if (!empty($name)) {
-					$objNodeNested->removeAttribute("xml:id");
-				}
+				$objNodeNested->removeAttribute("xml:id");
 				$this->removeXmlId($objNodeNested);
 			}
 		}
 		 
 	}
 
+	/**
+	 * This function replaces a node's string content with strNewContent
+	 * @param DomNode $objNode
+	 * @param string $strOldContent
+	 * @param string $strNewContent
+	 */
 	function replaceNodeText( &$objNode, $strOldContent,$strNewContent){
-		/*
-		 This function replaces a node's string content with strNewContent
-		 */
 		$objNodeListNested = &$objNode->childNodes;
 		foreach ( $objNodeListNested as $objNodeNested ){
 			if ($objNodeNested->nodeType == XML_TEXT_NODE) {
@@ -460,6 +464,9 @@ class OOoLayout extends Layout {
 		 
 	}
 
+	/**
+	 * parse bullet lists
+	 */
 	function parseListItem() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list");
 		foreach ($lists as $list) {
@@ -493,10 +500,25 @@ class OOoLayout extends Layout {
 	}
 
 
+	/**
+	 * modify a text:input field value
+	 * 
+	 * @param DomNode $node
+	 * @param string $name
+	 * @param string $value
+	 */
 	function setInputField(&$node, $name, $value) {
 		$node->nodeValue = $value;
 		$node->setAttribute("text:description", '[PP'.$name.'PP]');
 	}
+	
+	/**
+	 * modify a text:drop-down list
+	 * 
+	 * @param DomNode$node
+	 * @param string $name
+	 * @param string $value
+	 */
 	function setDropDownField(&$node, $name, $value) {
 		$this->removeAllChilds($node);
 		$node->setAttribute("text:name", '[PP'.$name.'PP]');
@@ -507,6 +529,11 @@ class OOoLayout extends Layout {
 		$item->setAttribute("text:value", $value);
 		$node->appendChild(new DOMText($value));
 	}
+	/**
+	 * remove all child nodes
+	 * 
+	 * @param DomNode $objNode
+	 */
 	function removeAllChilds(&$objNode) {
 		$objNodeListNested = $objNode->childNodes;
 		$objNode->nodeValue = '';
@@ -516,7 +543,9 @@ class OOoLayout extends Layout {
 			}
 		}
 	}
-	
+	/**
+	 * parse tables
+	 */
 	function parseTableRow() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table");
 		foreach ($lists as $list) {
@@ -557,6 +586,9 @@ class OOoLayout extends Layout {
 		return $err;
 	}
 	
+	/**
+	 * parse text:input 
+	 */
 	function parseInput() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","text-input");
 		foreach ($lists as $list) {
@@ -567,7 +599,9 @@ class OOoLayout extends Layout {
 			}
 		}
 	}
-	
+	/**
+	 * parse text:drop-down
+	 */
 	function parseDropDown() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","drop-down");
 		foreach ($lists as $list) {
@@ -578,11 +612,15 @@ class OOoLayout extends Layout {
 			}
 		}
 	}
-	
+	/**
+	 * restore protected values
+	 */
 	function restoreProtectedValues() {
 		$this->template=preg_replace('/\[PP(V_[A-Z0-9_]+)PP\]/s', '[$1]', $this->template);
 	}
-	
+	/**
+	 * parse section and clone "tpl_xxx" sections into saved_sections
+	 */
 	function parseSection() {
 		$this->saved_sections=array();
 		// remove old generated sections
@@ -598,15 +636,17 @@ class OOoLayout extends Layout {
 		foreach ($lists as $list) {
 			$name=$list->getAttribute("text:name");
 			if(substr($name, 0, 4) == 'tpl_') {
+				$this->removeXmlId($list);
 				$this->saved_sections[$name] = $list->cloneNode(true);
 				$list->setAttribute("text:name", '_'.$name);
 				$list->setAttribute("text:protected", 'true');
 				$list->setAttribute("text:display", 'true');
-				//$this->removeXmlId($this->saved_sections[$name]);
 			}
 		}
 	}
-	
+	/**
+	 * restore cloned and saved sections at the end
+	 */
 	function restoreSection() {
 		
 		$inserts_to_do = array();
