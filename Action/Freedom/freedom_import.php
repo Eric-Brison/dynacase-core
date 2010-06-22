@@ -46,7 +46,6 @@ function freedom_import(&$action) {
         $cr=add_import_file($action,$csvfile);
     }
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
-
     foreach ($cr as $k=>$v) {
         $cr[$k]["taction"]=_($v["action"]); // translate action
         $cr[$k]["order"]=$k; // translate action
@@ -58,13 +57,16 @@ function freedom_import(&$action) {
     }
     $nbdoc=count(array_filter($cr,"isdoc"));
     $action->lay->SetBlockData("ADDEDDOC",$cr);
-    $action->lay->Set("nbdoc","$nbdoc");
-
+    $action->lay->Set("nbdoc",$nbdoc);
+    $action->lay->Set("nbprof",count(array_filter($cr,"isprof")));
     if (isset($_FILES["file"])) @unlink($csvfile); //tmp file
 }
 
 function isdoc($var) {
   return (($var["action"]=="added") ||  ($var["action"]=="updated"));
+}
+function isprof($var) {
+  return (($var["action"]=="modprofil") );
 }
 
 

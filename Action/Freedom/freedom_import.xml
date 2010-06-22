@@ -35,12 +35,12 @@ TR.added TD{
        var b=window.opener.document.getElementById('bgimport');
        if (b) {
 	 b.disabled=true;
-	 if ([nbdoc]>0) b.disabled=false;
+	 if ([nbdoc]+[nbprof]>0) b.disabled=false;
        }
        b=window.opener.document.getElementById('fgimport');
        if (b) {
 	 b.disabled=true;
-	 if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]>0)) b.disabled=false;
+	 if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]+[nbprof]>0)) b.disabled=false;
        }
    }
   //-->
