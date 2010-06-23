@@ -4,15 +4,16 @@
 [ZONE CORE:TABINDEX] 
 </td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
+<tr><td rowspan="2"> <img border="0" src="[IMG:lock.png]" alt="[TEXT:download]" > </td><td colspan="2" valign="top">
+    <a href="[CORE_STANDURL]app=ACCESS&action=DOWNLOAD" title="[TEXT:download]">
+       <img  border="0" align="center" src="resizeimg.php?img=[IMG:download.png]&size=40" alt="[TEXT:upload]">[TEXT:Download access acl]
+    </a></td></tr>
 <tr>
-  <td  valign="top">
-    <a href="[CORE_STANDURL]app=ACCESS&action=DOWNLOAD">
-      <img border="0" src="[IMG:lock.png]" alt="[TEXT:download]" title="[TEXT:download]"> <img border="0" align="center" src="resizeimg.php?img=[IMG:download.png]&size=40" alt="[TEXT:upload]">[TEXT:Download access acl]
-    </a>
-  </td>
+	
   <td valign="top">
-    <a href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_EDITIMPORT&descr=N&policy=N" target="acl_import">
-      <img border="0" align="center" src="[IMG:lock.png]?width=40" alt="[TEXT:upload]" title="[TEXT:upload]"> <img border="0" align="center" src="resizeimg.php?img=[IMG:upload.png]&size=40" alt="[TEXT:upload]" title="[TEXT:upload]">[TEXT:Upload access acl]
+    
+    <a href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_EDITIMPORT&descr=N&policy=N" target="acl_import" title="[TEXT:upload]">
+      <img  border="0" align="center" src="resizeimg.php?img=[IMG:upload.png]&size=40" alt="[TEXT:upload]" title="[TEXT:upload]">[TEXT:Upload access acl]
     </a>
 </td></tr>
 </table>
