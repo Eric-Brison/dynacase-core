@@ -49,7 +49,12 @@ function getDefUSort(&$action,$def="title") {
     
     while (list($k,$v) = each($tu)) {
       list($afamid,$aorder,$sqlorder) = explode(":",$v);
-      if ($afamid == $famid) return $aorder;
+      if( ! is_numeric($afamid) ) {
+	$afamid = getFamIdFromName($action->getParam('FREEDOM_DB'), $afamid);
+      }
+      if( $afamid == $famid ) {
+	return $aorder;
+      }
     }
   }
   return $def;
@@ -224,7 +229,12 @@ function getFamilyParameter(&$action,$famid,$key,$def="") {
     $tu = explode(",",$pu);
     while (list($k,$v) = each($tu)) {
       list($afamid,$aorder) = explode("|",$v);
-      if ($afamid == $famid) return $aorder;
+      if( ! is_numeric($afamid) ) {
+	$afamid = getFamIdFromName($action->getParam('FREEDOM_DB'), $afamid);
+      }
+      if( $afamid == $famid ) {
+	return $aorder;
+      }
     }
   }
   return $def;
