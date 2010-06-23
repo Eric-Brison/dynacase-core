@@ -15,6 +15,7 @@
 
 
 include_once('Class.Layout.php');
+include_once('Lib.FileMime.php');
 
 
 class OOoLayout extends Layout {
@@ -27,6 +28,8 @@ class OOoLayout extends Layout {
 	public $encoding="utf-8";
 	
 	private $saved_sections=array();
+	private $added_images = array();
+	private $removed_images = array();
 	//########################################################################
 	//# Public methods
 	//#
@@ -34,6 +37,7 @@ class OOoLayout extends Layout {
 	public $style_template = '';
 	public $meta_template = '';
 	public $template = '';
+	public $manifest = '';
 
 
 	/**
@@ -244,6 +248,11 @@ class OOoLayout extends Layout {
 			$this->template=file_get_contents($contentxml);
 			unlink($contentxml);
 		}
+		$contentxml=$this->cibledir."/META-INF/manifest.xml";
+		if (file_exists($contentxml)) {
+			$this->manifest=file_get_contents($contentxml);
+			unlink($contentxml);
+		}
 		$contentxml=$this->cibledir."/styles.xml";
 		if (file_exists($contentxml)) {
 			$this->style_template=file_get_contents($contentxml);
@@ -276,7 +285,10 @@ class OOoLayout extends Layout {
 
 		//  header('Content-type: text/xml; charset=utf-8');print($this->template);exit;
 		file_put_contents($contentxml,$this->template);
-
+		
+		$contentxml=$this->cibledir."/META-INF/manifest.xml";
+		file_put_contents($contentxml,$this->manifest);
+		
 		$contentxml=$this->cibledir."/styles.xml";
 		file_put_contents($contentxml,$this->style_template);
 
@@ -343,8 +355,11 @@ class OOoLayout extends Layout {
 		}
 
 	}
-	 
-
+	/**
+	 * set key/value pair
+	 * @param string $tag
+	 * @param string $val
+	 */
 	function set($tag,$val) {
 		if ( !isUTF8($val)) $val = utf8_encode($val);
 		if (! $this->isXml($val)) {
@@ -356,18 +371,26 @@ class OOoLayout extends Layout {
 
 		}
 	}
-
-
+	/**
+	 * 
+	 * @param string $val
+	 */
 	function isXML($val) {
 		return false;
 		return preg_match("/<text:/",$val);
 	}
 
+	/**
+	 * get value of $tag key
+	 * @param string $tag
+	 */
 	function get($tag) {
 		if (isset($this->rkey)) return $this->rkey[$tag];
 		return "";
 	}
-
+	/**
+	 * parse text
+	 */
 	function ParseText() {
 		if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'UTF-8');
 		$this->template = preg_replace("/\[TEXT:([^\]]*)\]/e",
@@ -375,43 +398,84 @@ class OOoLayout extends Layout {
 		$this->template);
 		if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'ISO-8859-15'); // restore
 	}
-
-	function parseDraw() {
-		$draws=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","frame");
-		//    $draws=$this->dom->getElementsByTagName("frame");
-		//    print count($draws);
-		foreach ($draws as $draw) {
-			$name=trim($draw->getAttribute('draw:name'));
-
-			if (substr($name,0,3)=='[V_') {
-				$imgs=$draw->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","image");
-
-				if ($imgs->length > 0) {
-					$img=$imgs->item(0);
-
-					$href=$img->getAttribute('xlink:href');
-					$name=substr(trim($name),1,-1);
-					$draw->setAttribute('draw:name',substr($name,2));
-					$file=$this->rkey[$name];
-					 
-					if (!copy($file, $this->cibledir.'/'.$href)) {
-						$err="copy fail";
-					}
-					 
-					if ($err=="") { // need to respect image proportion
-						$width=$draw->getAttribute('svg:width');
-						$size=getimagesize($file);
-						$unit="";
-						if (preg_match("/[0-9\.]+(.*)$/",$width,$reg)) $unit=$reg[1];
-						$height=sprintf("%.03f%s",(doubleval($width)/$size[0])*$size[1],$unit);
-						$draw->setAttribute('svg:height',$height);
-					}
+	/**
+	 * 
+	 */
+	function updateManifest() {
+		$manifest = new DomDocument();
+		$manifest->loadXML($this->manifest);
+		
+		$items = $manifest->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:manifest:1.0","file-entry");
+		foreach($items as $item) {
+			$type = $item->getAttribute("manifest:media-type");
+			if(substr($type, 0, 6) == "image/") {
+				$file = $item->getAttribute("manifest:full-path");
+				if(in_array($file, $this->removed_images)) {
+					$item->parentNode->removeChild($item);
 				}
 			}
-
 		}
-
+		
+		foreach($this->added_images as $image) {
+			$mime = getSysMimeFile($this->cibledir.'/'.$image);
+			$new = $manifest->createElement("manifest:file-entry");
+			$new->setAttribute("manifest:media-type", $mime);
+			$new->setAttribute("manifest:full-path", $image);
+			$manifest->firstChild->appendChild($new);
+		}
+		
+		$this->manifest=$manifest->saveXML();
+	}
+	/**
+	 * set image 
+	 * @param DomNode $node
+	 * @param string $name
+	 * @param string $value
+	 */
+	function setDraw(&$draw, $name, $file) {
+		if(strpos($file, '<text:tab') !== false) {
+			return 'muliple values : fail';
+		}
+		$imgs=$draw->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","image");
+		$err = "";
+		if ($imgs->length > 0) {
+			$img=$imgs->item(0);
+			if(file_exists($file)) {
+				$draw->setAttribute('draw:name',substr($name,2).' '.uniqid().mt_rand(1000,9999));
+				$href='Pictures/freedom'.uniqid().mt_rand(1000000,9999999).substr($img->getAttribute('xlink:href'), -9);
+				$img->setAttribute('xlink:href',$href);
+				$this->added_images[] = $href;
+						 
+				if (!copy($file, $this->cibledir.'/'.$href)) {
+					$err="copy fail";
+				}
+				 
+				if ($err=="") { // need to respect image proportion
+					$width=$draw->getAttribute('svg:width');
+					$size=getimagesize($file);
+					$unit="";
+					if (preg_match("/[0-9\.]+(.*)$/",$width,$reg)) $unit=$reg[1];
+					$height=sprintf("%.03f%s",(doubleval($width)/$size[0])*$size[1],$unit);
+					$draw->setAttribute('svg:height',$height);
+				}
+			}
+		}
 		return $err;
+	}
+	/**
+	 *  parse images
+	 */
+	function parseDraw() {
+		$draws=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","frame");
+		foreach ($draws as $draw) {
+			$name=trim($draw->getAttribute('draw:name'));
+			if(preg_match("/\[(V_[A-Z0-9_-]+)\]/", $name, $reg)) {
+				$key=$reg[1];
+				if(isset($this->rkey[$key])) {
+					$this->setDraw($draw, $key, $this->rkey[$key]);
+				}
+			}
+		}
 	}
 
 	/**
@@ -444,26 +508,28 @@ class OOoLayout extends Layout {
 				}
 			}
 			elseif ($objNodeNested->nodeType == XML_ELEMENT_NODE) {
-				if($objNodeNested->tagName == 'text:text-input') {
-					$name=$objNodeNested->getAttribute("text:description");
+				if($objNodeNested->nodeName == 'text:text-input') {
+					$name = $objNodeNested->getAttribute('text:description');
 					if($name == $strOldContent) {
-						$this->setInputField($objNodeNested, substr($strOldContent, 1, -1), $strNewContent);
+						$this->setInputField($objNodeNested, substr($name, 1, -1), $strNewContent);
 					}
-				}
-				elseif($objNodeNested->tagName == 'text:drop-down') {
-					$name=$objNodeNested->getAttribute("text:name");
+				} elseif($objNodeNested->nodeName == 'text:drop-down') {
+					$name = $objNodeNested->getAttribute('text:name');
 					if($name == $strOldContent) {
-						$this->setDropDownField($objNodeNested, substr($strOldContent, 1, -1), $strNewContent);
+						$this->setDropDownField($objNodeNested, substr($name, 1, -1), $strNewContent);
 					}
-				}
-				else {
+				} elseif($objNodeNested->nodeName == 'draw:frame') {
+					$name = $objNodeNested->getAttribute('draw:name');
+					if(substr($name, 0, strlen($strOldContent)) == $strOldContent) {
+						$this->setDraw($objNodeNested, substr($strOldContent, 1, -1), $strNewContent);
+					}
+				} else {
 					$this->replaceNodeText($objNodeNested,$strOldContent,$strNewContent);
 				}
 			}
 		}
 		 
 	}
-
 	/**
 	 * parse bullet lists
 	 */
@@ -473,7 +539,7 @@ class OOoLayout extends Layout {
 			$items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
 			if ($items->length > 0) {
 				$item=$items->item(0);
-				if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
+				if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($list) ,$reg)) {
 					$reg0=$reg[0];
 					$tvkey=array();
 					$maxk=0;
@@ -508,6 +574,9 @@ class OOoLayout extends Layout {
 	 * @param string $value
 	 */
 	function setInputField(&$node, $name, $value) {
+		if(strpos($file, '<text:tab') !== false) {
+			return 'muliple values : fail';
+		}
 		$node->nodeValue = $value;
 		$node->setAttribute("text:description", '[PP'.$name.'PP]');
 	}
@@ -520,6 +589,9 @@ class OOoLayout extends Layout {
 	 * @param string $value
 	 */
 	function setDropDownField(&$node, $name, $value) {
+		if(strpos($file, '<text:tab') !== false) {
+			return 'muliple values : fail';
+		}
 		$this->removeAllChilds($node);
 		$node->setAttribute("text:name", '[PP'.$name.'PP]');
 		$value = str_replace(array("&lt;","&gt;","&amp;"),array("<",">",'&'),$value);
@@ -553,13 +625,13 @@ class OOoLayout extends Layout {
 			if ($items->length > 0) {
 				$findv=false;
 				foreach ($items as $item) {
-					if (preg_match("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
-						$findv=true;;
+					if (preg_match("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($item) ,$reg)) {
+						$findv=true;
 						break;
 					}
 				}
 				if ($findv) {
-					if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
+					if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($list),$reg)) {
 						$reg0=$reg[0];
 						$tvkey=array();
 						$maxk=0;
@@ -587,15 +659,17 @@ class OOoLayout extends Layout {
 	}
 	
 	/**
-	 * parse text:input 
+	 * parse text:input
 	 */
 	function parseInput() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","text-input");
 		foreach ($lists as $list) {
 			$name=$list->getAttribute("text:description");
-			if(preg_match("/\[V_[A-Z0-9_-]+\]/", $name, $reg)) {
-				$key=substr(trim($reg[0]),1,-1);
-				$this->setInputField($list, $key, $this->rkey[$key]);
+			if(preg_match("/\[(V_[A-Z0-9_-]+)\]/", $name, $reg)) {
+				$key=$reg[1];
+				if(isset($this->rkey[$key])) {
+					$this->setInputField($list, $key, $this->rkey[$key]);
+				}
 			}
 		}
 	}
@@ -606,9 +680,11 @@ class OOoLayout extends Layout {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","drop-down");
 		foreach ($lists as $list) {
 			$name=$list->getAttribute("text:name");
-			if(preg_match("/\[V_[A-Z0-9_-]+\]/", $name, $reg)) {
-				$key=substr(trim($reg[0]),1,-1);
-				$this->setDropDownField($list, $key, $this->rkey[$key]);
+			if(preg_match("/\[(V_[A-Z0-9_-]+)\]/", $name, $reg)) {
+				$key=$reg[1];
+				if(isset($this->rkey[$key])) {
+					$this->setDropDownField($list, $key, $this->rkey[$key]);
+				}
 			}
 		}
 	}
@@ -750,6 +826,29 @@ class OOoLayout extends Layout {
 		}
 
 	}
+	/**
+	 * 
+	 */
+	function removeOrphanImages() {
+		$imgs=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","image");
+		$used_images = array();
+		foreach($imgs as $img) {
+			$href = basename($img->getAttribute('xlink:href'));
+			if(substr($href, 0, 7) == 'freedom') {
+				$used_images[] = $href;
+			}
+		}
+		$files = glob($this->cibledir.'/Pictures/freedom*');
+		if(is_array($files)) {
+			foreach($files as $file) {
+				if(!in_array(basename($file), $used_images)) {
+error_log("delete $file");
+					$this->removed_images[] = 'Pictures/'.basename($file);
+					@unlink($file);
+				}
+			}
+		}
+	}
 
 	function GenJsRef() {return "";  }
 	function GenJsCode($showlog) { return("");  }
@@ -757,6 +856,9 @@ class OOoLayout extends Layout {
 	function GenCssRef() { return "";  }
 	function GenCssCode() { return("");  }
 	function ParseCss(&$out) {  }
+	/**
+	 * generate OOo document
+	 */
 	function gen() {
 
 		// if used in an app , set the app params
@@ -776,9 +878,9 @@ class OOoLayout extends Layout {
 			
 			$this->parseSection();
 			
-			$this->parseDraw();
 			$this->parseListItem();
 			$this->parseTableRow();
+			$this->parseDraw();
 			
 			$this->parseInput();
 			$this->parseDropDown();
@@ -800,7 +902,10 @@ class OOoLayout extends Layout {
 			$this->dom=new DOMDocument();
 			$this->dom->loadXML($this->template);
 			$this->restoreSection();
+			$this->removeOrphanImages();
 			$this->template=$this->dom->saveXML();
+			
+			$this->updateManifest();
 			
 			$outfile=uniqid("/var/tmp/odf").'.odt';
 			$this->content2odf($outfile);
