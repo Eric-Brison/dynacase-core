@@ -1,5 +1,5 @@
 
-<table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
+<table cellspacing="0" cellpadding="0" border="0" >
 <tr><td colspan="2">
 [ZONE CORE:TABINDEX] 
 </td></tr>
@@ -7,12 +7,12 @@
 <tr>
   <td  valign="top">
     <a href="[CORE_STANDURL]app=ACCESS&action=DOWNLOAD">
-      <img border="0" src="[IMG:download.gif]" alt="[TEXT:download]" title="[TEXT:download]">
+      <img border="0" src="[IMG:lock.png]" alt="[TEXT:download]" title="[TEXT:download]"> <img border="0" align="center" src="resizeimg.php?img=[IMG:download.png]&size=40" alt="[TEXT:upload]">[TEXT:Download access acl]
     </a>
   </td>
   <td valign="top">
-    <a href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_EDITIMPORT" target="acl_import">
-      <img border="0" align="center" src="[IMG:upload.gif]" alt="[TEXT:upload]" title="[TEXT:upload]">
+    <a href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_EDITIMPORT&descr=N&policy=N" target="acl_import">
+      <img border="0" align="center" src="[IMG:lock.png]?width=40" alt="[TEXT:upload]" title="[TEXT:upload]"> <img border="0" align="center" src="resizeimg.php?img=[IMG:upload.png]&size=40" alt="[TEXT:upload]" title="[TEXT:upload]">[TEXT:Upload access acl]
     </a>
 </td></tr>
 </table>

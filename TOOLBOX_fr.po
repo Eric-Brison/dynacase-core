@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-16 13:48+0200\n"
-"PO-Revision-Date: 2010-06-16 13:51+0200\n"
+"POT-Creation-Date: 2010-06-23 16:43+0200\n"
+"PO-Revision-Date: 2010-06-23 16:46+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -1153,9 +1153,6 @@ msgstr "Le server LDAP n'a pas pu être contacté"
 
 msgid "not perm for admin"
 msgstr "pas de permission pour admin"
-
-msgid "not pertinent"
-msgstr "Pas pertinent"
 
 msgid "include"
 msgstr "contient"
@@ -2688,6 +2685,9 @@ msgstr "Nouvelle obligation"
 msgid "default visibility"
 msgstr "visibilité par défaut"
 
+msgid "No columns has been defined"
+msgstr ""
+
 msgid "atype"
 msgstr "atype"
 
@@ -3719,11 +3719,14 @@ msgstr "Voir les groupes"
 msgid "download"
 msgstr "Télécharger le fichier d'acces"
 
-msgid "needfile"
-msgstr "Le nom du fichier doit être spécifié"
-
 msgid "upload"
 msgstr "Charger un fichier d'acces"
+
+msgid "Download access acl"
+msgstr "Télécharger la configuration des droits applicatifs"
+
+msgid "Upload access acl"
+msgstr "Importer un fichier de configuration de droits applicatifs"
 
 msgid "accessfor"
 msgstr "Contrôle des accès pour"
@@ -4931,11 +4934,11 @@ msgstr "écriture impossible : %s"
 
 #, c-format
 msgid "new user # %d"
-msgstr ""
+msgstr "nouvel utilisateur # %d"
 
 #, c-format
 msgid "new profil %d"
-msgstr ""
+msgstr "nouveau profile %d"
 
 #, c-format
 msgid "%s updated\n"
@@ -6214,7 +6217,7 @@ msgid "add document import"
 msgstr "ajouter un document importé"
 
 msgid "add document import from XML"
-msgstr ""
+msgstr "ajout d'un document pour l'import XML"
 
 msgid "import archive file"
 msgstr "Importer un fichier archive"
@@ -6799,6 +6802,22 @@ msgid "change profil %s"
 msgstr "changer de profil %s"
 
 #, c-format
+msgid "reset profil %s"
+msgstr "réinitialisation du profil %s"
+
+#, c-format
+msgid "delete %s for %s"
+msgstr "suppression %s pour %s"
+
+#, c-format
+msgid "add %s for %s"
+msgstr "ajout %s pour %s"
+
+#, c-format
+msgid "profil id unknow %s"
+msgstr "profil inconnu %s"
+
+#, c-format
 msgid "%s application not exists"
 msgstr "l'application %s n'existe pas"
 
@@ -6811,8 +6830,12 @@ msgid "try add acl %s"
 msgstr "essai d'ajout de l'acl %s "
 
 #, c-format
+msgid "add negative acl %s"
+msgstr "ajout droit négatif %s"
+
+#, c-format
 msgid "add acl %s"
-msgstr "ajout acl %s "
+msgstr "ajout droit %s "
 
 #, c-format
 msgid "unknow acl %s"
@@ -8055,6 +8078,12 @@ msgstr "les préférences d'exportation ont été sauvegardées"
 
 msgid "new document family"
 msgstr "nelle famille de document"
+
+#~ msgid "not pertinent"
+#~ msgstr "Pas pertinent"
+
+#~ msgid "needfile"
+#~ msgstr "Le nom du fichier doit être spécifié"
 
 #~ msgid ""
 #~ "the date '%s' for %s attribute is not correct. It has been corrected "
