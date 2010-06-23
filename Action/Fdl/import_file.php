@@ -583,11 +583,20 @@ function add_import_file(&$action, $fimport) {
 		$tcr[$nline]["action"]="added";
 		continue;
 	      }
+	      if (substr($v,0,1)=='-') {
+	          $aclneg=true;
+	          $v=substr($v,1);
+	      } else $aclneg=false;
 	      if (isset($tacl[$v])) {
 		$p->id_acl=$tacl[$v];
+		if ($aclneg) $p->id_acl=-$p->id_acl;
+		$p->deletePermission($p->id_user,$p->id_application,$p->id_acl);
 		$err=$p->Add();
 		if ($err) $tcr[$nline]["err"].="\n$err";
-		else 	$tcr[$nline]["msg"].="\n".sprintf(_("add acl %s"),$v);
+		else  {
+		    if ($aclneg)  $tcr[$nline]["msg"].="\n".sprintf(_("add negative acl %s"),$v);
+		    else $tcr[$nline]["msg"].="\n".sprintf(_("add acl %s"),$v);
+		}
 	      } else {
 		$tcr[$nline]["err"].="\n".sprintf(_("unknow acl %s"),$v);
 	      }
