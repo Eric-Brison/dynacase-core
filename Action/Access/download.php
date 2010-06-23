@@ -60,14 +60,16 @@ function download(&$action) {
       $acl_name = sprintf("-%s", $acl_name);
     }
 
+    // Try to fetch the logical name of id_user
     $user_fid = getUserFIDFromWID($dbaccess_core, $el['id_user'], $cache);
     if( $user_fid === null ) {
       error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Unknown fid for user with wid '%s'", $el['id_user']));
       continue;
     }
     $user_name = getNameFromId($dbaccess_freedom, $user_fid);
+    // If there is no logical name, then keep the core id (id_user)
     if( $user_name == "" ) {
-      $user_name = $user_fid;
+      $user_name = $el['id_user'];
     }
 
     array_push($aclExport,
