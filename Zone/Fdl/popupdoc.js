@@ -184,11 +184,13 @@ function sendMenuUrl(th, url, wname,bar,w,h) {
   if ((th.className == 'menuItem') || (th.className == 'menuItemCtrl')) {
 
 
-    if ((wname == "")||(wname == "_self")) {
+    if ((wname == "")||(wname == "_self")||(wname == "_download")) {
       //      setTimeout('viewwait()',1000);    
+    	if (wname != "_download") {
 	globalcursor('wait');  
 	setTimeout('viewwait(true)',500); 
 	setbodyopacity(0.5);
+    	}
       window.location.href=url;
     } else {
       if (bar) subwindowm(h,w,wname,url);
