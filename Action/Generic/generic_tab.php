@@ -47,6 +47,9 @@ function generic_tab(&$action) {
   if ($dirid == -1) $dirid=$fdoc->dfldid;
   if ($dirid == 0) {
     $dirid=getDefU($action,"GENE_PREFSEARCH");
+    if( ! is_numeric($dirid) ) {
+      $dirid = getIdFromName($action->getParam('FREEDOM_DB'), $dirid);
+    }
   }
   if ($dirid == 0) {
     if ($fdoc->cfldid > 0) {
