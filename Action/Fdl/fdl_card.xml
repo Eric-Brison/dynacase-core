@@ -21,6 +21,7 @@
    <script language="JavaScript">
   <!--
     [JS:CODE]
+    var PDS='[pds]';
 [IF VALTERN]addEvent(window,"load",function al1() {alterfieldset('terrible','[CORE_BGCOLORALTERN]','[CORE_TEXTFGCOLOR]');});[ENDIF VALTERN]
   //-->
    </script>

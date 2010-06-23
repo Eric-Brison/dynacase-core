@@ -184,14 +184,15 @@ function getFamAttribute($dbaccess, $famid, $type="text", $param=false, $name=""
   $name=strtolower($name);
   // HERE HERE HERE
   $pattern_name = preg_quote($name);
-  $pattern_type = preg_quote($type);
+  $pattern_type = ($type);
   foreach($tinter as $k=>$v) {
-    if (($name == "") ||    (preg_match("/$pattern_name/i", $v->getLabel() , $reg)) || (preg_match("/$pattern_name/", $v->id , $reg)))
+    if (($name == "") ||    (preg_match("/$pattern_name/i", $v->getLabel() , $reg)) || (preg_match("/$pattern_name/", $v->id , $reg))) {
+        preg_match("/$pattern_type/", $v->type , $reg);
       if (($type == "") || ($v->type==$type) || ((strpos($type,'|')>0) && (preg_match("/$pattern_type/", $v->type , $reg)))) {
-	$r=$v->id. ' ('.$v->getLabel().')';
+	$r=$v->id. ' ('.$v->getLabel().')';	
 	$tr[] = array($r,$r);
       }
-    
+    }
   }
   return $tr;  
 }

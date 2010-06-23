@@ -537,6 +537,7 @@ function addFamilyPopup(&$tlink,&$doc) {
         elseif  ($tlink[$k]["visibility"]===true) $tlink[$k]["visibility"]=POPUP_ACTIVE;
         
     }
+   
     
   }
   // -------------------- Menu action ------------------

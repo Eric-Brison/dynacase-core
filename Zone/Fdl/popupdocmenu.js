@@ -65,7 +65,7 @@ function viewdocmenu(event,docid,onlyctrl,upobject,sourceobject) {
       return true;
     } 
   }
-  var menuurl=corestandurl+'app='+menuapp+'&action='+menuaction+menuopt+'&id='+docid;
+  var menuurl=corestandurl+'app='+menuapp+'&action='+menuaction+menuopt+'&id='+docid+PDS;
   viewsubmenu(event,menuurl,upobject,sourceobject);
   return false;
 }
@@ -86,7 +86,7 @@ function viewdocsubmenu(event,docid,submenu,upobject) {
     } 
   }
 
-  var menuurl=corestandurl+'app='+menuapp+'&action='+menuaction+menuopt+'&id='+docid;
+  var menuurl=corestandurl+'app='+menuapp+'&action='+menuaction+menuopt+'&id='+docid+PDS;
   viewsubmenu(event,menuurl,upobject);
 }
 

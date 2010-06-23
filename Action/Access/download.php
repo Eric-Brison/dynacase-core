@@ -23,134 +23,161 @@ include_once("Class.Acl.php");
 include_once("Class.Permission.php");
 include_once("Class.Domain.php");
 include_once("Lib.Http.php");
+include_once("FDL/freedom_util.php");
 
 // -----------------------------------
 function download(&$action) {
 // -----------------------------------
 
-  // select the first user if not set
-  // What user are we working on ? ask session.
-  $q = new QueryDb($action->dbaccess,"Application");
-  $q->AddQuery("(objectclass isnull) OR (objectclass != 'Y')");
-  $applist = $q->Query();
-
-  // specific query due to optimize
-  $query = new QueryDb($action->dbaccess,"User");
-  $userlist=$query->Query(0,0,"TABLE",
-			  "select  u1.login||'@'||d1.name as login , u1.password, u1.firstname, u1.lastname, u1.isgroup, u2.login||'@'||d2.name as group ".
-			  "from users u1, users u2, domain d1, domain d2, groups ".
-			  "where (u1.iddomain=d1.iddomain) and (iduser=u1.id) and (idgroup=u2.id) and (u2.iddomain = d2.iddomain) and (u1.id != 1)".
-			  "order by login");
+  $dbaccess_freedom = $action->getParam('FREEDOM_DB');
+  $dbaccess_core = $action->getParam('CORE_DB');
   
+  $cache = array(
+		 'app' => array(),
+		 'acl' => array(),
+		 'user' => array()
+		 );
 
-  $lay = new Layout($action->GetLayoutFile("filedown.xml"));
+  $q = new QueryDb($dbaccess_core, "permission");
+  $aclList = $q->query(0, 0, "TABLE",
+		       sprintf("SELECT id_user, id_application, id_acl FROM permission WHERE computed IS NULL OR computed = FALSE;")
+		       );
 
-  $tab=array();
-  $tab2=array();
-  $tabuser=array();
-
-
-  //------------------------------
-  // view user list
-  //------------------------------
-  $ku=0;
-  $oldlogin = "";
-  while (list($k2,$v2)=each($userlist)) {
-
-    if ($v2->id == 1) continue;
-    if ($oldlogin != $v2["login"]) {
-      if (($ku>0) &&($tabuser[$ku]["groups"]!="")) // delete last ';'
-	$tabuser[$ku]["groups"]=substr($tabuser[$ku]["groups"], 0, -1);
-      $ku++;
-      $tabuser[$ku]["login"]=$v2["login"];
-      $tabuser[$ku]["passwd"]=$v2["password"];
-      $tabuser[$ku]["firstname"]=$v2["firstname"];
-      $tabuser[$ku]["lastname"]=$v2["lastname"];
-      $tabuser[$ku]["isgroup"]=$v2["isgroup"];
-      $tabuser[$ku]["groups"]=$v2["group"].";";
-    } else {
-      $tabuser[$ku]["groups"].=$v2["group"].";";
+  $aclExport = array();
+  foreach( $aclList as $k => &$el ) {
+    $app_name = getApplicationNameFromId($dbaccess_core, $el['id_application'], $cache);
+    if( $app_name === null ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Unknown name for application with id '%s'", $el['id_application']));
+      continue;
     }
 
-    $oldlogin = $v2["login"];
-
-  }
-  // delete last ";"
-  if ($tabuser[$ku]["groups"]!="") // delete last ';'
-	$tabuser[$ku]["groups"]=substr($tabuser[$ku]["groups"], 0, -1);
-
-
-  //------------------------------
-  // view acls list
-  //------------------------------
-  $tabacl=array();
-  $query = new QueryDb($action->dbaccess,"User");
-  $applistp=$query->Query(0,0,"TABLE",
-			  "select  application.name as app, users.login||'@'||domain.name as login,  acl.name as acl ".
-			 "from application, acl, permission, users, domain ".
-			 "where (permission.id_user = users.id) and ".
-			 "(permission.id_acl = acl.id) and ".
-			 "(users.iddomain = domain.iddomain) and ".
-			 "(acl.id_application = application.id) and ". 
-			 "(permission.id_application=  application.id) and ".
-			 "(users.id != 1) and ".
-			 "((application.objectclass isnull)  OR (application.objectclass != 'Y') ) ".
-			 "order by app, login");
-
-  // same for negative acls : just add '-' sign
-  $applistn=$query->Query(0,0,"TABLE",
-			  "select  application.name as app, users.login||'@'||domain.name as login,  '-'||acl.name as acl ".
-			 "from application, acl, permission, users, domain ".
-			 "where (permission.id_user = users.id) and ".
-			 "(- permission.id_acl = acl.id) and ".
-			 "(users.iddomain = domain.iddomain) and ".
-			 "(acl.id_application = application.id) and ". 
-			 "(permission.id_application=  application.id) and ".
-			 "(users.id != 1) and ".
-			 "((application.objectclass isnull)  OR (application.objectclass != 'Y') ) ".
-			 "order by app, login");
-
-
-  if (is_array($applistn)) $applist = array_merge($applistp, $applistn);
-  else $applist = $applistp;
-  sort($applist);
-
-  $ka=0;
-  $oldlogin = "";
-  while (list($k2,$v2)=each($applist)) {
-
-    if ($v2->id == 1) continue;
-    if (($oldlogin != $v2["login"]) || 
-	($oldapp != $v2["app"])) {
-      if (($ka >0) && ($tabacl[$ka]["acl_name"]!="")) // delete last ';'
-	$tabacl[$ka]["acl_name"]=substr($tabacl[$ka]["acl_name"], 0, -1);
-      $ka++;
-      $tabacl[$ka]["login"]=$v2["login"];
-      $tabacl[$ka]["app_name"]=$v2["app"];
-      $tabacl[$ka]["acl_name"]=$v2["acl"].";";
-    } else {
-      $tabacl[$ka]["acl_name"].=$v2["acl"].";";
+    $acl_name = getAclNameFromId($dbaccess_core, $el['id_acl'], $cache);
+    if( $acl_name === null ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Uknown name for acl with id '%s'", $el['id_acl']));
+      continue;
+    }
+    if( $el['id_acl'] < 0 ) {
+      $acl_name = sprintf("-%s", $acl_name);
     }
 
-    $oldlogin = $v2["login"];
-    $oldapp = $v2["app"];
+    // Try to fetch the logical name of id_user
+    $user_fid = getUserFIDFromWID($dbaccess_core, $el['id_user'], $cache);
+    if( $user_fid === null ) {
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Unknown fid for user with wid '%s'", $el['id_user']));
+      continue;
+    }
+    $user_name = getNameFromId($dbaccess_freedom, $user_fid);
+    // If there is no logical name, then keep the core id (id_user)
+    if( $user_name == "" ) {
+      $user_name = $el['id_user'];
+    }
 
+    array_push($aclExport,
+	       array('fid' => $user_name,
+		     'app_name' => $app_name,
+		     'acl_name' => $acl_name
+		     )
+	       );
   }
-  // delete last ";"
-  if ($tabacl[$ka]["acl_name"]!="") // delete last ';'
-	$tabacl[$ka]["acl_name"]=substr($tabacl[$ka]["acl_name"], 0, -1);
 
+  $action->lay->setBlockData("ACCESS", $aclExport);
 
+  $tmpfile = tempnam(null, "access");
+  if( $tmpfile === false ) {
+    $err = sprintf("Could not create temporary file!");
+    error_log(__CLASS__."::".__FUNCTION__." ".$err);
+    return $err;
+  }
 
+  @unlink($tmpfile);
+  $fp = @fopen($tmpfile, 'x');
+  if( $fp === false ) {
+    $err = sprintf("Error opening temporary file '%s'", $tmpfile);
+    error_log(__CLASS__."::".__FUNCTION__." ".$err);
+    return $err;
+  }
 
-  $lay->SetBlockData("THEUSERS",$tabuser);
-  $lay->SetBlockData("APPLICATION",$tabacl);
+  $content = $action->lay->gen();
 
+  $ret = @fwrite($fp, $content);
+  if( $ret === false ) {
+    $err = sprintf("Error writing to temporary file '%s'", $tmpfile);
+    error_log(__CLASS__."::".__FUNCTION__." ".$err);
+    @fclose($fp);
+    @unlink($tmpfile);
+    return $err;
+  }
+  @fclose($fp);
 
-  $out = $lay->gen(); 
-
-  Http_Download($out,"acl","access");
-
-
+  return Http_DownloadFile($tmpfile, "access.csv", "text/csv",
+			   /*inline*/false, /*cache*/false, /*deleteafter*/true);
 }
+
+function getApplicationNameFromId($dbaccess, $id, &$cache = null) {
+  if( is_array($cache) && array_key_exists('app', $cache) ) {
+    if( array_key_exists($id, $cache['app']) ) {
+      return $cache['app'][$id];
+    }
+  }
+
+  $query = new QueryDb($dbaccess, "application");
+  $query->addQuery(sprintf("id = %s", pg_escape_string($id)));
+  $res = $query->query(0, 0, "TABLE");
+  if( ! is_array($res) ) {
+    return null;
+  }
+
+  $name = $res[0]['name'];
+  if( is_array($cache) && array_key_exists('app', $cache) ) {
+    $cache['app'][$id]  = $name;
+  }
+
+  return $name;
+}
+
+function getAclNameFromId($dbaccess, $id, &$cache = null) {
+  if( is_array($cache) && array_key_exists('acl', $cache) ) {
+    if( array_key_exists($id, $cache['acl']) ) {
+      return $cache['acl'][$id];
+    }
+  }
+
+  $query = new QueryDb($dbaccess, "acl");
+  $query->addQuery(sprintf("id = %s", pg_escape_string(abs($id))));
+  $res = $query->query(0, 0, "TABLE");
+  if( ! is_array($res) ) {
+    return null;
+  }
+
+  $name = $res[0]['name'];
+  if( is_array($cache) && array_key_exists('acl', $cache) ) {
+    $cache['acl'][$id]  = $name;
+  }
+
+  return $name;
+}
+
+function getUserFIDFromWID($dbaccess, $wid, &$cache) {
+  if( is_array($cache) && array_key_exists('user_fid', $cache) ) {
+    if( array_key_exists($id, $cache['user_fid']) ) {
+      return $cache['user_fid'][$id];
+    }
+  }
+
+
+  $query = new QueryDb($dbaccess, "user");
+  $query->addQuery(sprintf("id = %s", pg_escape_string($wid)));
+  $res = $query->query(0, 0, "TABLE");
+  if( ! is_array($res) ) {
+    return null;
+  }
+
+  $fid = $res[0]['fid'];
+  if( is_array($cache) && array_key_exists('user_fid', $cache) ) {
+    $cache['user_fid'][$wid]  = $fid;
+  }
+
+  return $fid;
+}
+
 ?>
