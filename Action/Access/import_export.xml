@@ -7,15 +7,13 @@
 <tr>
   <td  valign="top">
     <a href="[CORE_STANDURL]app=ACCESS&action=DOWNLOAD">
-       <img border="0" src="[IMG:download.gif]" alt="[TEXT:download]" title="[TEXT:download]">
+      <img border="0" src="[IMG:download.gif]" alt="[TEXT:download]" title="[TEXT:download]">
     </a>
   </td>
   <td valign="top">
-   <form ENCTYPE="multipart/form-data" name="ffile" method="POST" action="[CORE_STANDURL]app=ACCESS&action=UPLOAD">
-     <a href="#" onclick="if (document.ffile.upfile.value == '') alert('[TEXT:needfile]'); else document.ffile.submit();">
-       <img border="0" align="center" src="[IMG:upload.gif]" alt="[TEXT:upload]" title="[TEXT:upload]">
-     </a>
-     <input type="FILE" name="upfile">
-   </form>
+    <a href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_EDITIMPORT" target="acl_import">
+      <img border="0" align="center" src="[IMG:upload.gif]" alt="[TEXT:upload]" title="[TEXT:upload]">
+    </a>
 </td></tr>
 </table>
+<iframe name="acl_import" src="[IMG:1x1.gif]" style="width: 100%; height: 80%; padding: 0px; margin: 0px; border: none">

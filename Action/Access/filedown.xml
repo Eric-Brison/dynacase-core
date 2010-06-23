@@ -1,6 +1,0 @@
-[BLOCK THEUSERS]
-U|[login]|[passwd]|[firstname]|[lastname]|[isgroup]|[groups][ENDBLOCK THEUSERS]
-
-
-[BLOCK APPLICATION]
-A|[app_name]|[login]|[acl_name] [ENDBLOCK APPLICATION]
