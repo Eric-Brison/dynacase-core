@@ -483,7 +483,7 @@ Class _DSEARCH extends DocSearch {
 				$l=" (".implode(", ",$tl).")";
 			}
 		}
-		return $this->title.$l;
+		return $this->getValue("ba_title").$l;
 	}
 
 	function viewdsearch($target="_self",$ulink=true,$abstract=false) {

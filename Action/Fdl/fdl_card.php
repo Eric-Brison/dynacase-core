@@ -91,7 +91,8 @@ function fdl_card(&$action) {
   $action->lay->Set("id",$docid);
   if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon","FDL/Images/logo16.ico");
   else $action->lay->Set("shorticon",$doc->getIcon());
-
+  $action->lay->Set("pds",$doc->urlWhatEncodeSpec(""));
+  
   $action->lay->Set("forum", false);
   if (($doc->doctype=='F' || $doc->doctype=='D' ) &&  abs(intval($doc->forumid))>0){
     $action->lay->Set("forumid",abs($doc->forumid));
