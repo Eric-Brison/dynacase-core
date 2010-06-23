@@ -222,6 +222,7 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
 function viewreportcsv($target="_self",$ulink=true,$abstract=false) {
   include_once("FDL/Class.SearchDoc.php");
   $rfamid = $this->getValue("SE_FAMID",1);
+  $encoding=getHttpVars("encoding");
   
   $limit=$this->getValue("REP_LIMIT","ALL");
   $order=$this->getValue("REP_IDSORT","title");
@@ -267,6 +268,11 @@ function viewreportcsv($target="_self",$ulink=true,$abstract=false) {
       
     }
     $trow[]=array("row"=>implode($tcell,';'));        
+  }
+  if ($encoding) {
+      foreach ($trow as $k=>&$v) {
+          $v["row"]=mb_convert_encoding($v["row"],$encoding,"UTF-8");
+      }
   }
   $this->lay->setBlockData("rows",$trow);
 }
