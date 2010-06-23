@@ -28,6 +28,8 @@ function freedom_editimport(&$action) {
   // Get all the params   
   $classid = GetHttpVars("classid",0); // doc familly
   $dirid = GetHttpVars("dirid",10); // directory to place imported doc (default unclassed folder)
+  $descr = (GetHttpVars("descr","Y")=="Y"); // view info
+  $policy = (GetHttpVars("policy","Y")=="Y"); // view policy
 
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
@@ -72,6 +74,8 @@ function freedom_editimport(&$action) {
   $action->lay->SetBlockData("TFORMAT", $tformat);
   
   $action->lay->Set("cols",count($tformat));
+  $action->lay->Set("descr",$descr);
+  $action->lay->Set("policy",$policy);
 
   $action->lay->Set("dirid",$dirid);
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-16 13:48+0200\n"
+"POT-Creation-Date: 2010-06-23 16:43+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1184,9 +1184,6 @@ msgid "errldaporginit"
 msgstr "LDAP server cannot be contacted"
 
 msgid "not perm for admin"
-msgstr ""
-
-msgid "not pertinent"
 msgstr ""
 
 #, fuzzy
@@ -2840,6 +2837,9 @@ msgstr "Delete"
 msgid "default visibility"
 msgstr "Visibility"
 
+msgid "No columns has been defined"
+msgstr ""
+
 #, fuzzy
 msgid "atype"
 msgstr "Edit"
@@ -3981,11 +3981,14 @@ msgstr "Group List"
 msgid "download"
 msgstr "Download access file"
 
-msgid "needfile"
-msgstr "Need upload file"
-
 msgid "upload"
 msgstr "Upload Access File"
+
+msgid "Download access acl"
+msgstr ""
+
+msgid "Upload access acl"
+msgstr ""
 
 msgid "accessfor"
 msgstr "Control access for application"
@@ -7335,6 +7338,22 @@ msgstr "Category"
 msgid "change profil %s"
 msgstr "Category"
 
+#, c-format
+msgid "reset profil %s"
+msgstr ""
+
+#, c-format
+msgid "delete %s for %s"
+msgstr ""
+
+#, c-format
+msgid "add %s for %s"
+msgstr ""
+
+#, c-format
+msgid "profil id unknow %s"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "%s application not exists"
 msgstr "Category"
@@ -7346,6 +7365,10 @@ msgstr "Category"
 #, fuzzy, c-format
 msgid "try add acl %s"
 msgstr "Add new contact card"
+
+#, c-format
+msgid "add negative acl %s"
+msgstr ""
 
 #, fuzzy, c-format
 msgid "add acl %s"
@@ -8597,6 +8620,9 @@ msgstr ""
 
 msgid "new document family"
 msgstr ""
+
+#~ msgid "needfile"
+#~ msgstr "Need upload file"
 
 #~ msgid "francais"
 #~ msgstr "french"
