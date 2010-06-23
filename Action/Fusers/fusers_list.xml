@@ -22,7 +22,6 @@ var eiurl=document.getElementById("fiuser");
 var xy=getAnchorPosition("fiuser");
 var hiurl=getFrameHeight();
 var nh=hiurl - xy.y - 20; // offset for scrollbar
-alert(hiurl+'-'+xy.y+'-'+nh);
 eiurl.height=nh;
 }
 window.onresize=resizeIurl;
@@ -64,7 +63,7 @@ TABLE.tableborder TBODY TR TD{
 
 
 
-<div class="do" id="DUsers">
+<div class="do" style="height:100%" id="DUsers">
 <iframe id="fiuser" style="border:none" scrolling="needed" width="95%" height="95%" src="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAIN&dfam=IUSER&usedefaultview=Y&etarget=finfo[APPNAME]&cols=us_login&viewone=Y&target=finfo[APPNAME]&createsubfam=Y"></iframe>
 </div>
 <div class="do" id="DGroups" style="display:none">
