@@ -22,7 +22,7 @@ var eiurl=document.getElementById("fiuser");
 var xy=getAnchorPosition("fiuser");
 var hiurl=getFrameHeight();
 var nh=hiurl - xy.y - 20; // offset for scrollbar
-
+alert(hiurl+'-'+xy.y+'-'+nh);
 eiurl.height=nh;
 }
 window.onresize=resizeIurl;

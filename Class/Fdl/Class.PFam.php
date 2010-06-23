@@ -19,7 +19,7 @@ include_once("FDL/Class.Doc.php");
 Class PFam extends Doc {
   // --------------------------------------------------------------------
   //---------------------- OBJECT CONTROL PERMISSION --------------------
-  var $acls = array("edit","view","create","icreate");
+  var $acls = array("view","edit","create","icreate");
   
   
   var $defDoctype='P';
