@@ -246,6 +246,12 @@
 
   <changelog>
   	
+    <version number="3.0.7" date="2010-06-24">
+      <change title="New feature for openOffice template " url="http://dev.freedom-ecm.org/versions/show/26">
+         Add report export in latin encoding for microsoft windows users
+         Possibility to export applications acls
+      </change>
+    </version>
     <version number="3.0.6" date="2010-06-16">
       <change title="Importation XML" url="http://dev.freedom-ecm.org/versions/show/23">
          Locale for dates
@@ -284,180 +290,7 @@
       <change title="Use thumbnail when display image in array" url="http://dev.freedom-ecm.org/issues/612" />
 	</version>
 	
-	<version number="2.15.6" date="2010-03-05">
-      <change title="Implement docrev option" url="http://dev.freedom-ecm.org/issues/638" />
-	</version>
-	
-	<version number="2.15.5" date="2010-03-05">
-      <change title="Allow passing arbitrary serialized objects to getResPhpFunc()" url="http://dev.freedom-ecm.org/issues/638" />
-    </version>
-    
-    <version number="2.15.2-1" date="2010-03-25">
-      <change title="Added support for CAS authentication type in AUTHENT:LOGOUT" />
-    </version>
-    
-    <version number="2.15.1-11" date="2010-03-12">
-      <change title="Fixed erroneous salt used in crypted password" url="http://dev.freedom-ecm.org/issues/639" />
-    </version>
-    
-    <version number="2.15.1-10" date="2010-03-03">
-      <change title="Added check to PHP bug #45996" />
-    </version>
-    
-    <version number="2.15.0-13" date="2010-03-02">
-      <change title="Refresh groups mail address when a networkuser mail addr has changed" url="http://dev.freedom-ecm.org/issues/629" />
-    </version>
-    
-    <version number="2.15.0-12" date="2009-12-28">
-      <change title="Removed PHP 5.3 deprecated functions" />
-    </version>
-    
-	<version number="2.15.0-2" date="2010-01-13">
-  	  <change title="Corrected a missing regex delimiter in preg_match()" />
-	</version>
-	
-	<version number="2.15.0-1" date="2009-12-28">
-	  <change title="Removed PHP 5.3 deprecated functions" />
-	</version>
-	
-	<version number="2.14.7-6" date="2010-04-01" >
-      <change title="Correct computing of dynamic dates in timers">In same case timers in workflow cannot be dettach automatically</change>
-    </version>
-    
-    <version number="2.14.7-5" date="2010-03-11" url="http://dev.freedom-ecm.org/issues/648">
-      <change title="Correct elink encode in arrays"/>
-    </version>
-    
-    <version number="2.14.7-4" date="2010-03-24" >
-      <change title="Correct mask visibility for table in U visibility"/>
-    </version>
-    
-    <version number="2.14.7-3" date="2010-03-11" url="http://dev.freedom-ecm.org/issues/635">
-      <change title="Add recursiveSearch() option possibility tu use folderRecursiveLevel attribute in SearchDoc">
-      Necessary if programmer needs to get recursively some documents from a specific folder
-      </change>
-    </version>
-    
-    <version number="2.14.7-2" date="2010-03-03">
-      <change title="Add possibility tu use folderRecursiveLevel attribute in SearchDoc">
-      Necessary if programmer needs to get recursively some documents from a specific folder
-      </change>
-    </version>
-    
-    <version number="2.14.7-0" date="2010-02-10">
-      <change title="Report optimisation in some queries used in onefam application" />
-    </version>
-    
-	<version number="2.14.6-0" date="2010-02-04">
-      <change title="Correct view confidential document in general search" url="http://dev.freedom-ecm.org/issues/622" />
-    </version>
-    
-    <version number="2.14.5-2" date="2010-01-15">
-      <change title="Corrected conflict detection on files when using the preventfilechange option and Internet Explorer" url="http://dev.freedom-ecm.org/issues/600" />
-    </version>
 
-    <version number="2.14.5-0" date="2010-01-13">
-      <change title="add logical views in database to select documents more easily"/>
-      <change title="add wsh script fdl_deletefamily to destroy family"/>
-      <change title="add possibility to use : character in family name"/>
-    </version>
-    
-    <version number="2.14.4-0" date="2010-01-12">
-      <change title="add getLatestDocIds() function to get latest id for severals documents">	
-      </change>
-    </version>
-    
-    <version number="2.14.3-19" date="2009-12-09">
-      <change title="Can ignore part of code in Method files" url="http://dev.freedom-ecm.org/issues/581">
-	This possibility is necessary to have Method files PHP parsable with PHP editors
-      </change>
-    </version>
-    
-    <version number="2.14.3-18" date="2009-12-09">
-      <change title="Fixed errors in Class.DocRel when using pg_copy_from()" url="http://dev.freedom-ecm.org/issues/576">
-	Replace tab chars by spaces in titles to prevent conflict with the
-	separator used by the pg_copy_from() when loading the data.
-      </change>
-    </version>
-    
-    <version number="2.14.3-17" date="2009-12-07">
-      <change title="Corrected a character encoding issue that would break accentued characters in USERCARD app on some platforms" url="http://dev.freedom-ecm.org/issues/570">
-	Changed strtolower/ucwords functions to their unicode-aware mb_* equivalent
-      </change>
-      <change title="parse error in methods can be corrected by updating family with importation process" />
-    </version>
-    
-    <version number="2.14.3-16" date="2009-12-03">
-      <change title="correct constraint detection when use array arguments" />
-      <change title="add link to profil document in profil access interface" />
-    </version>
-    
-    <version number="2.14.3-15" date="2009-12-01">
-      <change title="add wsh script fdl_testmemory to test memory usage and time spent when retrieve documents" />
-      <change title="Fixed error getting mail addresses for groups in MailTemplate" url="http://dev.freedom-ecm.org/issues/571" />
-    </version>
-    
-    <version number="2.14.3-14" date="2009-11-26">
-      <change title="correct Doc::renameFile when use rn option in file attribute in array" url="http://dev.freedom-ecm.org/issues/568" />
-    </version>
-    
-    <version number="2.14.3-13" date="2009-11-24">
-      <change title="can use single quote in enum open" url="http://dev.freedom-ecm.org/issues/555" />
-      <change title="correct wrong detection of multialive when edit document which has reach its revision limits" url="http://dev.freedom-ecm.org/issues/560" />		
-    </version>
-    
-    <version number="2.14.3-12" date="2009-11-23">
-      <change title="Change detection of file for preventfilechange option"  url="http://dev.freedom-ecm.org/issues/372" />		
-    </version>
-    
-    <version number="2.14.3-11" date="2009-11-21">
-      <change title="Correct multiple docid edition in array"  url="http://dev.freedom-ecm.org/issues/557" />
-      <change title="Correct saving of relations in docrel when title contains tabulation"  />
-    </version>
-    
-    <version number="2.14.3-10" date="2009-11-19">
-      <change title="Fixed syntax error in freedom_realclean.sql" url="http://dev.freedom-ecm.org/issues/554" />
-    </version>
-    
-    <version number="2.14.3-9" date="2009-11-18">
-      <change title="Correct view null date">
-		correct doc::getHtmlValue() doc::getOooValue() for null date with specific format
-      </change>
-      <change title="preventfilechange attribute option" url="http://dev.freedom-ecm.org/issues/372">
-		correct use of preventfilechange option in array
-      </change>
-      <change title="Correct usage of FDL:EDITARRAY zone" url="http://dev.freedom-ecm.org/issues/552">
-		data values can be lost when use this zone with row parameters
-      </change>
-    </version>
-    
-	<version number="2.14.2-1" date="2010-02-11">
-	  <change title="View sql queries in debug mode in firebug console" />
-	</version>
-	
-	<version number="2.14.2-0" date="2010-01-15">
-	  <change title="Correct detection for [IF] layout key to accept null values like false value" />
-	</version>
-	
-	<version number="2.14.1-12" date="2009-12-10">
-	  <change title="Added .htaccess in img-cache subdir" url="http://dev.freedom-ecm.org/issues/87" />
-	</version>
-	
-	<version number="2.14.1-11" date="2009-12-01">
-	  <change title="wsh : change detection of api file to see PHP errors in console"/>
-	  <change title="Computed permissions are not correctly updated when adding a user to a group" url="http://dev.freedom-ecm.org/issues/563">
-		Delete computed permissions when adding a user to a group and preInsert returns "OK" instead of "" (closes #563)
-      </change>
-	</version>
 
-	<version number="2.14.1-10" date="2009-11-20">
-	  <change title="add recode program requirement"/>
-	</version>
-	
-	<version number="2.14.1-9" date="2009-11-19">
-	  <change title="mime file detection" >
-		correct mime type for new version of file linux function (5.03)
-	  </change>  
-	</version>
 </changelog>
 </module>
