@@ -405,6 +405,18 @@ class OOoLayout extends Layout {
 		$manifest = new DomDocument();
 		$manifest->loadXML($this->manifest);
 		
+		$manifest_root = null;
+		$items = $manifest->childNodes;
+		foreach($items as $item) {
+			if($item->nodeName == 'manifest:manifest') {
+				$manifest_root=$item;
+				break;
+			}
+		}
+		if($manifest_root === null) {
+			return false;
+		}
+		
 		$items = $manifest->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:manifest:1.0","file-entry");
 		foreach($items as $item) {
 			$type = $item->getAttribute("manifest:media-type");
@@ -421,7 +433,7 @@ class OOoLayout extends Layout {
 			$new = $manifest->createElement("manifest:file-entry");
 			$new->setAttribute("manifest:media-type", $mime);
 			$new->setAttribute("manifest:full-path", $image);
-			$manifest->firstChild->appendChild($new);
+			$manifest_root->appendChild($new);
 		}
 		
 		$this->manifest=$manifest->saveXML();
