@@ -61,14 +61,16 @@ function viewContraint(inp, info) {
     if (inp) {
         if ((inp.style.display=='none') || (inp.type=='hidden')) {
                 var oinp=inp.parentNode.firstChild;
-                while (oinp && (oinp.tagName!='INPUT' && oinp.tagName!='SELECT') && oinp.type!='hidden' && oinp.style && oinp.style.display!='none') oinp=oinp.nextSibling;
+                while (oinp && ((oinp.tagName!='INPUT' && oinp.tagName!='SELECT') || (oinp.type=='hidden' || ( oinp.style && oinp.style.display=='none')))) {
+                   oinp=oinp.nextSibling;
+                }
                 if (oinp && oinp.tagName=='INPUT') inp=oinp;
                 else {
                    if (oinp && oinp.tagName=='SELECT') inp=oinp;
                    else inp=inp.parentNode;
                 }   
         }
-        inp.className='invalid';
+        inp.className+=' invalid';
         var ntr=window.parent.document.createElement("div");
         ntr.className='constraint';     
         if (inp.id) {            
@@ -108,7 +110,7 @@ function undisplayConstraint() {
 	var ti= window.parent.document.getElementsByTagName(itag[t]);
 	
 	for (var i=0; i< ti.length; i++) {
-	    if (ti[i].className=='invalid') ti[i].className='';
+	    if (ti[i].className.indexOf('invalid')>0) ti[i].className=ti[i].className.replace('invalid','');
 	}
     }
 }
