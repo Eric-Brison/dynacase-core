@@ -246,6 +246,10 @@
 
   <changelog>
   	
+    <version number="3.0.7-3" date="2010-06-25">
+      <change title="Update reference manual " >
+      </change>
+    </version>
     <version number="3.0.7" date="2010-06-24">
       <change title="New feature for openOffice template " url="http://dev.freedom-ecm.org/versions/show/26">
          Add report export in latin encoding for microsoft windows users
