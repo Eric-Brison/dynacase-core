@@ -1139,30 +1139,39 @@ create unique index i_docir on doc(initid, revision);";
   }
 
 
+
   /** 
    * To restore a document which is in the trash
-   * @return void
+   * @return string error message (empty message if no errors);
    */
-  final public function revive() { 
-    if (($this->owner == $this->userid) || ($this->userid==1)) {
-      if (! $this->isAlive()) {
-	$this->doctype=$this->defDoctype;
-	$this->locked=0;
-	$this->modify(true,array("doctype","locked"),true);
-	$this->AddComment(_("revival document"));
-	
-	$this->addLog('revive');
-	$rev=$this->GetRevisions();
+  final public function revive() {
+      $err="";
+      if (($this->owner == $this->userid) || ($this->userid==1)) {
+          if (! $this->isAlive()) {
+              $err=simpleQuery($this->dbaccess,
+                             sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1",$this->fromid,$this->initid),$latestId,true, true);
+              if ($err=="") {
+                  if (! $latestId) $err=sprintf(_("document %s [%d] is strange"),$doc->title,$doc->id);
+                  else {
+                      $this->doctype=$this->defDoctype;
+                      $this->locked=0;
+                      $this->id=$latestId;
+                      $this->modify(true,array("doctype","locked"),true);
+                      $this->AddComment(_("revival document"));
 
-	foreach($rev as $k=>$v) {
-	  if ($v->doctype=='Z') {
-	    $v->doctype=$v->defDoctype;
-	    $v->modify(false,array("doctype"),false);
-	  }
-	}
-
-      } else return sprintf(_("document %s [%d] is not in the trash"),$doc->title,$doc->id);
-    } else return _("Only owner of document can restore it");
+                      $this->addLog('revive');
+                      $rev=$this->getRevisions();
+                      foreach($rev as $k=>$v) {
+                          if ($v->doctype=='Z') {
+                              $v->doctype=$v->defDoctype;
+                              $err.=$v->modify(true,array("doctype"),true);
+                          }
+                      }
+                  }
+              }
+          } else return sprintf(_("document %s [%d] is not in the trash"),$doc->title,$doc->id);
+      } else return _("Only owner of document can restore it");
+      return $err;
   }
 
   /** 
