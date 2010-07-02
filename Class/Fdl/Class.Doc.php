@@ -1166,6 +1166,13 @@ create unique index i_docir on doc(initid, revision);";
                               $err.=$v->modify(true,array("doctype"),true);
                           }
                       }
+                      if ($this->name) {
+                          // force reset logival name if not set
+                          $name=$this->name;
+                          $this->name='';
+                          $this->modify(true,array("name"),true);
+                          $this->setLogicalIdentificator($name);
+                      }
                   }
               }
           } else return sprintf(_("document %s [%d] is not in the trash"),$doc->title,$doc->id);
