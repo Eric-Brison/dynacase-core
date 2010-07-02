@@ -261,7 +261,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       $info["props"][] = $this->mkprop("getlastmodified", $doc->revdate);
       //error_log("FOLDER:".$path.":".$doc->title);
       // get additional properties from database
-      $query = "SELECT ns, name, value FROM dav.properties WHERE path = '$path'";
+      $query = "SELECT ns, name, value FROM dav.properties WHERE path = '".pg_escape_string($path)."'";
       $res = pg_query($this->db_res,$query);
       while ($row = pg_fetch_assoc($res)) {
 	$info["props"][] = $this->mkprop($row["ns"], $row["name"], $row["value"]);

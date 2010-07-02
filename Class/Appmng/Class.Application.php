@@ -857,7 +857,7 @@ create sequence SEQ_ID_APPLICATION start 10;
    */
   function GetIdFromName($name) {
       $query = new QueryDb($this->dbaccess,$this->dbtable);
-      $query -> AddQuery("name = '$name'");
+      $query -> AddQuery("name = '".pg_escape_string(trim($name))."'");
       $app = $query->Query(0,0,"TABLE");
       if (is_array($app)) return $app[0]["id"];
       return 0;

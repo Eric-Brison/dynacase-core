@@ -610,7 +610,7 @@ function getIdFromName($dbaccess, $name, $famid="") {
     $first=false;
   }
   //  $result = pg_query($dbid,"select id from docname where name='$name';");
-  $result = pg_execute($dbid, "getidfromname", array($name));
+  $result = pg_execute($dbid, "getidfromname", array(trim($name)));
   $n=pg_numrows ($result);
   if ($n > 0) {
     $arr = pg_fetch_array ($result,($n-1),PGSQL_ASSOC);

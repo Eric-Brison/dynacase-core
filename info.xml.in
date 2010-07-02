@@ -87,40 +87,38 @@
     <process command="programs/record_application ACCESS I"><label lang="en">Record access application in database</label></process>
     <process command="programs/record_application AUTHENT I"><label lang="en">Record authent application in database</label></process>
     <process command="programs/record_application APPMNG I"><label lang="en">Record appmng application in database</label></process>
+    
+    <process command="programs/record_application FDL I" />
+    <process command="programs/record_application USERCARD I" />
+    <process command="programs/record_application ONEFAM I" />
+    <process command="programs/record_application GENERIC I" />
+    <process command="programs/record_application FUSERS I" />
+    <process command="programs/record_application FREEDOM I" />
+    <process command="programs/record_application FGSEARCH I" />
+    <process command="programs/record_application DATA" />
+    <process command="programs/record_application VAULT" />
+    <process command="programs/record_application DAV I" />
+    <process command="programs/record_application FDC I" />
+    
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
     <process command="programs/set_param CORE_CLIENT client_name" ><label lang="en">Register client name</label></process>
     
     <process command="programs/app_post FDL I" />
-    <process command="programs/record_application FDL I" />
     <process command="programs/app_post FDL U" />
-
+    
     <process command="programs/app_post USERCARD I" />
-    <process command="programs/record_application USERCARD I" />
     <process command="programs/app_post USERCARD U" />
-
-    <process command="programs/record_application GENERIC I" />
-    <process command="programs/record_application ONEFAM I" />
-    <process command="programs/record_application FUSERS I" />
-
+    
     <process command="programs/app_post FREEDOM I" />
-    <process command="programs/record_application FREEDOM I" />
     <process command="programs/app_post FREEDOM U" />
-
-    <process command="programs/record_application FGSEARCH I" />
     
-    <process command="programs/record_application DATA" />
-    
-    <process command="programs/record_application VAULT" />
     <process command="wsh.php --api=vault_init" />
     
     <process command="programs/app_post DAV I" />
-    <process command="programs/record_application DAV I" />
     <process command="programs/app_post DAV U" />
     
-    <process command="programs/record_application FDC I" />
-
     <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron" />
-
+    
     <process command="programs/update_catalog" />
   </post-install>
   
