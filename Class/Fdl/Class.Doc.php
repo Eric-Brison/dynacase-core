@@ -994,7 +994,6 @@ create unique index i_docir on doc(initid, revision);";
     include_once("FDL/Lib.Dir.php");
     // --------------------------------------------------------------------
 
-
     $filter[]="doctype!='T'";
     if ($this->initid>0)$filter[]="initid !='".$this->initid."'";  // not itself
     $filter[]="$key1='".addslashes($this->getValue($key1))."'";
