@@ -265,6 +265,8 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
         $val=array();                
         foreach($n as $item) {   
             switch ($v->type) {
+                case 'array':
+                    break;
                 case 'docid':
                     $id=$item->getAttribute("id");
                     if (! $id) {

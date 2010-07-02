@@ -41,7 +41,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
     $flat = (substr(strtolower($action->getArgument("flat")),0,1)=="y"); // flat xml
     $eformat = strtoupper($action->getArgument("eformat","X")); // export format
     $selection = $action->getArgument("selection"); // export selection  object (JSON)
-    $log = $action->getArgument("log"); // export selection  object (JSON)
+    $log = $action->getArgument("log"); // log file
     $configxml = $action->getArgument("config");
     $flog=false;
     if ($log) {
@@ -49,6 +49,10 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
         if (! $flog) {
             exportExit($action,sprintf(_("cannot write log in %s"),$log));
         }
+        fputs($flog,sprintf("EXPORT BEGIN OK : %s\n",Doc::getTimeDate(0,true)));
+        fputs($flog,sprintf("EXPORT OPTION FLAT : %s\n",($flat)?"yes":"no"));
+        fputs($flog,sprintf("EXPORT OPTION WFILE : %s\n",($wfile)?"yes":"no"));
+        fputs($flog,sprintf("EXPORT OPTION CONFIG : %s\n",($configxml)?"yes":"no"));
     }
 
     // constitution options for filter attributes
@@ -118,9 +122,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
     $xsd=array();
     $count=0;
      if ($flog) {
-        fputs($flog,"==========\n");
-        fputs($flog,sprintf("BEGIN DATE : %s\n",Doc::getTimeDate(0,true)));
-        fputs($flog,"==========\n");
+        fputs($flog,sprintf("EXPORT OPTION ID : %s <%s>\n",$fldid, $fld->getTitle()));
      }
     
     while ($doc=$s->nextDoc()) {
@@ -133,7 +135,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
              
             if ($err) exportExit($action,$err);
             $count++;
-            if ($flog) fputs($flog,sprintf(_("%4d) Document <%s> [%d] exported")."\n", $count, $doc->getTitle(), $doc->id));
+            if ($flog) fputs($flog,sprintf("EXPORT DOC OK : <%s> [%d]\n",  $doc->getTitle(), $doc->id));
             if (! isset($xsd[$doc->fromid])) {
                 $fam=new_doc($dbaccess,$doc->fromid);
                 $fname=sprintf("%s/%s.xsd",$foutdir,strtolower($fam->name));
@@ -144,11 +146,8 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
     }
 
     if ($flog) {
-        fputs($flog,"==========\n");
-        fputs($flog,sprintf(_("%d documents exported")."\n",$count));
-        fputs($flog,"==========\n");
-        fputs($flog,sprintf("END DATE : %s\n",Doc::getTimeDate(0,true)));
-        fputs($flog,"==========\n");
+        fputs($flog,sprintf("EXPORT COUNT OK : %d\n",$count));
+        fputs($flog,sprintf("EXPORT END OK : %s\n",Doc::getTimeDate(0,true)));
         fclose($flog);
     }
      
@@ -183,7 +182,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
 function exportExit(Action &$action,$err) {
     $log=$action->getArgument("log");
     if ($log) {
-        if (file_put_contents($log, _("ERROR :").$err) === false) {
+        if (file_put_contents($log, "EXPORT "._("ERROR :").$err) === false) {
             $err=sprintf(_("Cannot write to log %s"),$log)."\n".$err;
         }
     }
