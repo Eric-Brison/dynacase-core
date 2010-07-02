@@ -18,10 +18,16 @@ include_once("FDL/import_file.php");
 
 
 
-// -----------------------------------
-function freedom_import(&$action) {
+/**
+ * Import documents
+ * @param Action &$action current action
+ * @global file Http var : documents to export 
+ * @global log Http var : log file output
+ */
+function freedom_import(Action &$action) {
     // -----------------------------------
     global $_FILES;
+    $log = $action->getArgument("log"); // log file
     if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time",3600); // 60 minutes
 
     if (isset($_FILES["file"])) {
@@ -35,7 +41,7 @@ function freedom_import(&$action) {
         $csvfile=$filename;
     }
     $ext=substr($csvfile,strrpos($csvfile,'.')+1);
-
+        $begtime=Doc::getTimeDate(0,true);
     if ($ext=="xml") {
         include_once("FREEDOM/freedom_import_xml.php");
         $cr= freedom_import_xml($action,   $csvfile);
@@ -45,6 +51,7 @@ function freedom_import(&$action) {
     } else {
         $cr=add_import_file($action,$csvfile);
     }
+    
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
     foreach ($cr as $k=>$v) {
         $cr[$k]["taction"]=_($v["action"]); // translate action
@@ -52,10 +59,37 @@ function freedom_import(&$action) {
         $cr[$k]["svalues"]="";
         $cr[$k]["msg"]=nl2br($v["msg"]);
         foreach ($v["values"] as $ka=>$va) {
-            $cr[$k]["svalues"].= "<LI>[$ka:$va]</LI>"; //
+            $cr[$k]["svalues"].= "<LI".(($va=="/no change/")?' class="no"':'').">[$ka:$va]</LI>"; //
         }
     }
     $nbdoc=count(array_filter($cr,"isdoc"));
+    if ($log) {
+        $flog=fopen($log, "w");
+        if (! $flog) {
+            $action->addWarningMasg(sprintf(_("cannot write log in %s"),$log));
+        } else {
+            fputs($flog,sprintf("IMPORT BEGIN OK : %s\n",$begtime));
+            $countok=0;
+            $counterr=0;
+            foreach ($cr as $k=>$v) {
+                $chg="";
+                foreach ($v["values"] as $ka=>$va) {
+                    if ($va!="/no change/")  $chg.= "{".$ka.":".str_replace("\n","-",$va).'}';
+                }
+                fputs($flog,sprintf("IMPORT DOC %s : [title:%s] [id:%d] [action:%s] [changes:%s] [message:%s] %s\n",
+                $v["err"]?"KO":"OK",
+                $v["title"],$v["id"],
+                $v["action"], $chg,str_replace("\n","-",$v["msg"]),
+                $v["err"]?('[error:'.str_replace("\n","-",$v["err"]).']'):""));
+                if ($v["err"]) $counterr++;
+                else $countok++;
+            }
+            fputs($flog,sprintf("IMPORT COUNT OK : %d\n",$countok));
+            fputs($flog,sprintf("IMPORT COUNT KO : %d\n",$counterr));
+            fputs($flog,sprintf("IMPORT END OK : %s\n",Doc::getTimeDate(0,true)));
+            fclose($flog);
+        }
+    }
     $action->lay->SetBlockData("ADDEDDOC",$cr);
     $action->lay->Set("nbdoc",$nbdoc);
     $action->lay->Set("nbprof",count(array_filter($cr,"isprof")));

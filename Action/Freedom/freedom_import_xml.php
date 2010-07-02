@@ -251,6 +251,14 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
     $root=$dom->documentElement;
     $id=$root->getAttribute("id");
     $name=$root->getAttribute("name");
+    $key=$root->getAttribute("key");
+    if ($key) {
+        $tkey=explode(',',$key);
+        foreach ($tkey as &$v) {
+            $v=trim($v);            
+        }
+    }
+   
     $family=$root->tagName;
     $famid=getFamIdFromName($dbaccess,$family);
     if (! isset($families[$famid])) {
@@ -265,6 +273,8 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
         $val=array();                
         foreach($n as $item) {   
             switch ($v->type) {
+                case 'array':
+                    break;
                 case 'docid':
                     $id=$item->getAttribute("id");
                     if (! $id) {
@@ -303,7 +313,6 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
             $tord[]=$v->id;
         $tdoc[]=implode("\n",$val);
     }
-   
     $log= csvAddDoc($dbaccess, $tdoc, $importdirid,$analyze,$splitdir,$policy,
                     $tkey,$prevalues,$tord);
    if ($msg) $log["err"].="\n".$msg;

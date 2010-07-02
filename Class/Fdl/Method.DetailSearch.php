@@ -613,7 +613,7 @@ Class _DSEARCH extends DocSearch {
 		$onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
 		$dirid = GetHttpVars("dirid");
 		$this->lay->set("ACTION",$action->name);
-
+		$tclassdoc=array();
 		$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/edittable.js");
 		$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/editdsearch.js");
 

@@ -24,6 +24,12 @@ TR.ignored TD{
 TR.added TD{
    background-color:#adf4b2;
 }
+LI {
+	white-space:nowrap;
+	}
+LI.no {
+        color:[COLOR_A5]
+        }
    </style>
 
 [JS:REF]

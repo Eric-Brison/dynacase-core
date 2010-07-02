@@ -803,11 +803,13 @@ $tkey=array("title"),$prevalues=array(),$torder=array()) {
 						}
 					} else {
 						// just for analyze
-						$tcr["values"][$attr->getLabel()]=$dv;
+						if ($dv == $doc->getValue($attr->id)) $tcr["values"][$attr->getLabel()]=("/no change/");
+						else $tcr["values"][$attr->getLabel()]=dv;
 					}
 				} else {
 					$doc->setValue($attr->id, $dv);
-					$tcr["values"][$attr->getLabel()]=$dv;
+					if ($doc->getOldValue($attr->id)!==false) $tcr["values"][$attr->getLabel()]=$dv;
+					else  $tcr["values"][$attr->getLabel()]=("/no change/");
 				}
 			}
 		}

@@ -279,7 +279,7 @@ Class SearchDoc {
    * can, be use in 
    * ::search must be call before
    *
-   * @return int 
+   * @return Doc or null if this is the end
    */
   public function nextDoc() {
     if ($this->mode=="ITEM") {

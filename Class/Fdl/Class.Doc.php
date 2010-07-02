@@ -994,7 +994,6 @@ create unique index i_docir on doc(initid, revision);";
     include_once("FDL/Lib.Dir.php");
     // --------------------------------------------------------------------
 
-
     $filter[]="doctype!='T'";
     if ($this->initid>0)$filter[]="initid !='".$this->initid."'";  // not itself
     $filter[]="$key1='".addslashes($this->getValue($key1))."'";
@@ -6427,9 +6426,11 @@ static function _cmpanswers($a,$b) {
    * @param string &$xml content xml (empty if $outfile is not empty
    * @param boolean $withfile include files in base64 encoded
    * @param string $outfile if not empty means content is put into this file
+   * @param boolean $flat set to true if don't want structure
+   * @param array $exportAttribute to export only a part of attributes
    * @return string error message (empty if no error)
    */
-  public function exportXml(&$xml,$withfile=false,$outfile="",$wident=true) {
+  public function exportXml(&$xml,$withfile=false,$outfile="",$wident=true, $flat=false,$exportAttributes=array()) {
       
       $lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
       //$lay=&$this->lay;
@@ -6441,6 +6442,7 @@ static function _cmpanswers($a,$b) {
       $lay->set("state",$this->getState());
       $lay->set("title",str_replace("&","&amp;",$this->getTitle()));
       $lay->set("mdate",strftime("%FT%X",$this->revdate));
+      $lay->set("flat",$flat);
       $la=$this->GetFieldAttributes();
       $level1=array();
             
@@ -6450,8 +6452,10 @@ static function _cmpanswers($a,$b) {
       $option->withFile=$withfile;
       $option->outFile=$outfile;
       $option->withIdentificator=$wident;
+      $option->flat=$flat;
+      $option->exportAttributes=$exportAttributes;
       
-      foreach ($la as $k=>$v) {
+      foreach ($la as $k=>&$v) {
         if (($v->id != "FIELD_HIDDENS") && 
             ($v->type=='frame' || $v->type=="tab") && 
             ((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {
@@ -6472,7 +6476,6 @@ static function _cmpanswers($a,$b) {
                       $bpos=strpos($xmlcontent, "]",$pos)+1;
 
                       $filepath=substr($xmlcontent,$pos+8,($bpos-$pos -9));
-                      // fwrite($fo,"BB64 [$pos - $bpos ]$filepath EE");
 
                       /* If you want to encode a large file, you should encode it in chunks that
                        are a multiple of 57 bytes.  This ensures that the base64 lines line up

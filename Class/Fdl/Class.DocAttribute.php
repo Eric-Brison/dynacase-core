@@ -278,8 +278,10 @@ Class NormalAttribute extends BasicAttribute {
                   $xmlvalues=array();
                   foreach ($col as $aid=>$aval) {
                       $oa=$doc->getAttribute($aid);
-                      $opt->index=$k;
-                      $xmlvalues[]=$oa->getXmlValue($doc,$opt);
+                      if (empty($opt->exportAttributes[$doc->fromid]) || in_array($aid,$opt->exportAttributes[$doc->fromid])) {
+                          $opt->index=$k;
+                          $xmlvalues[]=$oa->getXmlValue($doc,$opt);
+                      }
                   }
                   $axml[] = sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
               }
@@ -614,11 +616,13 @@ Class FieldSetAttribute extends BasicAttribute {
       $la=$doc->getAttributes();
       $xmlvalues=array();
       foreach ($la as $k=>$v) {
-          if ($v->fieldSet && $v->fieldSet->id==$this->id) {
+          if ($v->fieldSet && $v->fieldSet->id==$this->id && 
+          (empty($opt->exportAttributes[$doc->fromid]) || in_array($v->id,$opt->exportAttributes[$doc->fromid] ))) {
               $xmlvalues[]=$v->getXmlValue($doc,$opt);
           }
       }
-      return sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
+      if ($opt->flat)  return implode("\n",$xmlvalues);
+      else return sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
   }
 }
 
