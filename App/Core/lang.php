@@ -47,7 +47,6 @@ function load_lang(&$lang, $lang_dir) {
     }
 
     if( is_file("$dir/lang.php") ) {
-      error_log(__FILE__." Loading '$dir/lang.php'");
       $ret = load_lang_php($lang, "$dir/lang.php");
       if( ! $ret ) {
 	error_log(sprintf(__FILE__." Error loading lang.php '%s/%s'", $dir, "lang.php"));
