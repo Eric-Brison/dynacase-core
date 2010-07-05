@@ -75,7 +75,7 @@ var w,h;
 
    <img id="logo" 
 	    onclick="document.authent.submit()"
-	    title="[TEXT:Click here to login]"
+	    title="[TEXT:Click here to logout]"
 	    alt="FREEDOM - Web Hosting Application Toolkit" src="[IMG:connect.gif]">
    <input type=hidden NAME="SeenBefore" VALUE="1">
    <input type=hidden NAME="logout" VALUE="Y">

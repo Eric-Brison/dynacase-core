@@ -117,7 +117,7 @@ DIV.TITLE {
             onmouseover="this.className='on';stopanim=false;window.setTimeout('MoveLogoC()',10);"
 	    onmouseout="this.className='off';stopanim=true"  
 	    onclick="document.authent .submit()"
-	    title="[TEXT:Click here to login]"
+	    title="[TEXT:Click here to logout]"
 	    alt="FREEDOM - Web Hosting Application Toolkit" src="[IMG:logo-1.png]">
 
        <img id="logoc" onload="CenterLogo();window.setTimeout('MoveLogoC()',10);" style="position:absolute; top:0px; left:0px"
