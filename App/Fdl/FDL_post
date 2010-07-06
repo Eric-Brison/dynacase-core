@@ -29,11 +29,23 @@ if [ "$1" = "I" ] ; then
     fi
     
     OUT=`PGSERVICE="$pgservice_freedom" psql -c 'CREATE SCHEMA family;' 2> /dev/null`
-	RET=$?
-	if [ $RET -ne 0 ]; then
-	    echo "An error occured while creating schema family : $RET"
-	    exit $RET
-	fi
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while creating schema family : $RET"
+	exit $RET
+    fi
+
+    log "Setting FREEDOM_DB in paramv..."
+    PGSERVICE="$pgservice_core" psql -c "UPDATE paramv SET val = 'service=''$pgservice_freedom''' WHERE name = 'FREEDOM_DB'"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+        echo "Error setting FREEDOM_DB"
+        exit $RET
+    fi
+
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=Doc
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocRead
+
     PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
     RET=$?
     if [ $RET -ne 0 ]; then
@@ -48,12 +60,11 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
 
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=Doc
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocRead
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocPerm
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=VGroup
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocRel
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --class=Group
+
     #copy postgres group table
     $wpub/wsh.php --api=freedom_groups
 
