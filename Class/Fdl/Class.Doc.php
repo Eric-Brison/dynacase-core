@@ -2269,7 +2269,8 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function SetValue($attrid, $value,$index=-1) {
   	// control edit before set values
-  	 
+  	
+
   	if (! $this->withoutControl) {
   		if ($this->id > 0) { // no control yet if no effective doc
   			$err = $this-> Control("edit");
@@ -2325,11 +2326,10 @@ create unique index i_docir on doc(initid, revision);";
   				}
   			}
   		} else {
-
   			$value=trim($value," \x0B\r");// suppress white spaces end & begin
   			if (!isset($this->$attrid)) $this->$attrid="";
 
-  			if  (($this->$attrid != $value) && ($this->$attrid != str_replace("\n ","\n",$value)))	  {
+  			if  (strcmp($this->$attrid, $value)!=0 && strcmp($this->$attrid, str_replace("\n ","\n",$value))!=0)	  {
   				$this->hasChanged=true;
   				// print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
   				if ($oattr->repeat) {
@@ -2460,6 +2460,7 @@ create unique index i_docir on doc(initid, revision);";
   			}
 
   		}
+  		
   	}
   }
 

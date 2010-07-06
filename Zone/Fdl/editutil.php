@@ -853,7 +853,8 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 	$max0=-1;
 
 	foreach($ta as $k=>$v) { // detect uncompleted rows
-		$c=count($doc->getTValue($k));
+		$t=$doc->getTValue($k);
+		$c=count($t);
 		if ($c > $max) {
 			if ($max0 < 0) $max0=$c;
 			$max=$c;
@@ -862,9 +863,9 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 
 	if ($max > $max0) {
 		foreach($ta as $k=>$v) { // fill uncompleted rows
-			$c=count($doc->getTValue($k));
+			$t=$doc->getTValue($k);
+			$c=count($t);
 			if ($c < $max) {
-				$t=$doc->getTValue($k);
 				$t=array_pad($t,$max,"");
 				$doc->setValue($k,$t);
 			}
