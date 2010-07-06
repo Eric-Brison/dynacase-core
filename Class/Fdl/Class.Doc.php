@@ -810,7 +810,7 @@ create unique index i_docir on doc(initid, revision);";
     } else {
 	if (abs($this->locked) != $this->userid) {
 	  
-	    $user = new User("", $this->locked);
+	    $user = new User("", abs($this->locked));
 	    $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
 	  
 	} else $err = $this-> Control( "edit");
@@ -833,7 +833,7 @@ create unique index i_docir on doc(initid, revision);";
     $err="";      
     if ($this->withoutControl) return ""; // no more test if disableEditControl activated
     if  (($this->locked != 0) && (abs($this->locked) != $this->userid)) {	  
-      $user = new User("", $this->locked);
+      $user = new User("", abs($this->locked));
       $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
 	  
     } else {
@@ -860,7 +860,7 @@ create unique index i_docir on doc(initid, revision);";
       // test if is not already locked
       else {
 	if ( abs($this->locked) != $this->userid) {
-	  $user = new User("", $this->locked);
+	  $user = new User("", abs($this->locked));
 	  $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."), 
 			 $this->title,$this->id,$user->firstname." ".$user->lastname);
 	}   else  {      
