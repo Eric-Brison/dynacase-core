@@ -2104,13 +2104,14 @@ create unique index i_docir on doc(initid, revision);";
   		else return "";
   	}
   	$t = $this->_val2array($v);
-  	if ($index == -1) {$oa=$this->getAttribute($idAttr);
-  	if ($oa && $oa->type=="xml") {
-  		foreach ($t as $k=>$v) {
-  			$t[$k]=str_replace('<BR>',"\n",$v);
+  	if ($index == -1) {
+  		$oa=$this->getAttribute($idAttr);
+  		if ($oa && $oa->type=="xml") {
+  			foreach ($t as $k=>$v) {
+  				$t[$k]=str_replace('<BR>',"\n",$v);
+  			}
   		}
-  	}
-  	return $t;
+  		return $t;
   	}
   	if (isset($t[$index])) {
   		$oa=$this->getAttribute($idAttr);
