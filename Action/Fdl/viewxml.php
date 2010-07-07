@@ -44,7 +44,7 @@ function viewxml(&$action) {
   
   
  
-  $export_file = uniqid("/tmp/xml");
+  $export_file = uniqid(getTmpDir()."/xml");
   $export_file.=".xml";
  $fp= fopen($export_file,"w");
 

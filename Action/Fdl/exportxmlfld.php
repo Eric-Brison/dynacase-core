@@ -115,7 +115,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
 
 
 
-    $foutdir = uniqid("/var/tmp/exportxml");
+    $foutdir = uniqid(getTmpDir()."/exportxml");
     if (! mkdir($foutdir)) exportExit($action,sprintf("cannot create directory %s",$foutdir));
     //$fname=sprintf("%s/FDL/Layout/fdl.xsd",DEFAULT_PUBDIR);
     //copy($fname,"$foutdir/fdl.xsd");
@@ -153,7 +153,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
      
 
     if ($eformat=="X") {
-        $zipfile = uniqid("/var/tmp/xml").".zip";
+        $zipfile = uniqid(getTmpDir()."/xml").".zip";
         system("cd $foutdir && zip -r $zipfile * > /dev/null",$ret);
         if (is_file($zipfile)) {
             system("rm -fr $foutdir");
@@ -162,7 +162,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
             exportExit($action,_("Zip Archive cannot be created"));
         }
     } elseif ($eformat=="Y") {
-        $xmlfile = uniqid("/var/tmp/xml").".xml";
+        $xmlfile = uniqid(getTmpDir()."/xml").".xml";
         $cmde=array();
         $cmde[]="cd $foutdir";
         $cmde[]=sprintf("echo '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' > %s",$xmlfile);

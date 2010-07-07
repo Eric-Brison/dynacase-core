@@ -83,7 +83,7 @@ function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false) {
 	$err=$tr->Add();
       } else {
 	$vf=initVaultAccess();
-	$filename= uniqid("/var/tmp/txt-".$vidout.'-');
+	$filename= uniqid(getTmpDir()."/txt-".$vidout.'-');
 	file_put_contents($filename,$err);
 	//$vf->rename($vidout,"toto.txt");
 	$vf->Retrieve($vidout, $info);

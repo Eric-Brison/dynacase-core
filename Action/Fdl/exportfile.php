@@ -134,7 +134,7 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype="",$width="",
 	exit;
       }
 
-      $cible=uniqid("/var/tmp/thumb").".png";
+      $cible=uniqid(getTmpDir()."/thumb").".png";
       if (! $width) $width=150;
       $quality=200;
       $resample=false;

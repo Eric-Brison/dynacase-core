@@ -19,7 +19,7 @@ include_once("FDL/Lib.Dir.php");
 
 function fusers_iuser(&$action) 
 {
-  $bar=uniqid("/tmp/wbar");
+  $bar=uniqid(getTmpDir()."/wbar");
   wbar(1,-1,"lancement",$bar);
  
   $cmd = getWshCmd();
@@ -34,7 +34,7 @@ function fusers_iuser(&$action)
 
 function fusers_igroup(&$action) 
 {
-  $bar=uniqid("/tmp/wbar");
+  $bar=uniqid(getTmpDir()."/wbar");
   wbar(1,-1,"lancement",$bar);
  
   $cmd = getWshCmd();
@@ -48,7 +48,7 @@ function fusers_igroup(&$action)
 }
 function fusers_ldapinit(&$action) 
 {
-  $bar=uniqid("/tmp/wbar");
+  $bar=uniqid(getTmpDir()."/wbar");
   wbar(1,-1,"lancement",$bar);
  
   $cmd = getWshCmd();

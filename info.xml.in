@@ -22,6 +22,7 @@
     <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y" />
     <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic" needed="Y" />
     <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y" />
+    <param name="core_tmpdir" label="temporary folder" default="/tmp" type="text" needed="Y" />
   </parameters>
 
   <pre-install>    
@@ -102,6 +103,7 @@
     
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
     <process command="programs/set_param CORE_CLIENT client_name" ><label lang="en">Register client name</label></process>
+    <process command="programs/set_param CORE_TMPDIR core_tmpdir" ><label lang="en">Register temporary folder</label></process>
     
     <process command="programs/app_post FDL I" />
     <process command="programs/app_post FDL U" />

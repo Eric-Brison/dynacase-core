@@ -238,7 +238,7 @@ class OOoLayout extends Layout {
 
 	function odf2content($odsfile) {
 		if (! file_exists($odsfile)) return "file $odsfile not found";
-		$this->cibledir=uniqid("/var/tmp/odf");
+		$this->cibledir=uniqid(getTmpDir()."/odf");
 
 		$cmd = sprintf("unzip  %s  -d %s >/dev/null", $odsfile, $this->cibledir );
 		system($cmd);
@@ -919,7 +919,7 @@ error_log("delete $file");
 			
 			$this->updateManifest();
 			
-			$outfile=uniqid("/var/tmp/odf").'.odt';
+			$outfile=uniqid(getTmpDir()."/odf").'.odt';
 			$this->content2odf($outfile);
 
 		} else {

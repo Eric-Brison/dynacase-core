@@ -16,7 +16,7 @@
 
 include_once("FDL/import_file.php");
 
-define("TARUPLOAD","/tmp/upload/");
+define("TARUPLOAD",getTmpDir()."/upload/");
 define("TAREXTRACT","/extract/");
 define("TARTARS","/tars/");
 

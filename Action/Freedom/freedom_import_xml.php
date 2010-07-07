@@ -40,7 +40,7 @@ function freedom_import_xml(Action &$action, $filename="") {
     } else {
             $xmlfiles=$filename;
     }
-    $splitdir=uniqid("/var/tmp/xmlsplit");
+    $splitdir=uniqid(getTmpDir()."/xmlsplit");
     @mkdir($splitdir);
     if (! is_dir($splitdir)) $action->exitError(_("Cannot create directory %s for xml import"),$splitdir);
     $err=splitXmlDocument($xmlfiles,$splitdir);
@@ -83,7 +83,7 @@ function freedom_import_xmlzip(Action &$action, $filename="") {
     } else {
             $zipfiles=$filename;
     }
-    $splitdir=uniqid("/var/tmp/xmlsplit");
+    $splitdir=uniqid(getTmpDir()."/xmlsplit");
     @mkdir($splitdir);
     if (! is_dir($splitdir)) $action->exitError(_("Cannot create directory %s for xml import"),$splitdir);
     $err=splitZipXmlDocument($zipfiles,$splitdir);
@@ -373,7 +373,7 @@ function splitXmlDocument($xmlfiles,$splitdir) {
 
 function base64_decodefile($filename) {
     $dir=dirname($filename);
-    $tmpdest=uniqid("/var/tmp/fdlbin");
+    $tmpdest=uniqid(getTmpDir()."/fdlbin");
     $chunkSize = 1024*30;
     $src = fopen($filename, 'rb');
     $dst = fopen($tmpdest, 'wb');

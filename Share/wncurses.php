@@ -215,10 +215,10 @@ function ncurses_execute(&$actions) {
       ncurses_mvaddstr($lines-2, 4, "Executing ".($k+1)."...".str_repeat(" ",40));
       ncurses_refresh($wact);
       if ($v[0]!='#') {
-	$err=system ("echo `date` \"".addslashes($v)."\" >>/tmp/whatchk.log");
-	$err=system ("(".$v.")"." >>/tmp/whatchk.log 2>&1",$ret);
+	$err=system ("echo `date` \"".addslashes($v)."\" >>".getTmpDir()."/whatchk.log");
+	$err=system ("(".$v.")"." >>".getTmpDir()."/whatchk.log 2>&1",$ret);
       } 
-      //    $err=system ("(".str_replace(array("(",")"),array("\(","\)"),$v).")"." >>/tmp/whatchk.log 2>&1");
+      //    $err=system ("(".str_replace(array("(",")"),array("\(","\)"),$v).")"." >>".getTmpDir()."/whatchk.log 2>&1");
 
 
       if ($ret != 0) { 

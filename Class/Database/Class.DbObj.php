@@ -657,7 +657,7 @@ function Update()
     
     // ------------------------------
       // first : save table to updated
-	$dumpfile = uniqid("/tmp/".$this->dbtable);
+	$dumpfile = uniqid(getTmpDir()."/".$this->dbtable);
     $err = $objupdate-> exec_query("COPY ".$this->dbtable.
 				   "  TO '".$dumpfile."'");
     $this->log->info("Dump table ".$this->dbtable." in ".$dumpfile);

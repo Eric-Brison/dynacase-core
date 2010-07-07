@@ -72,7 +72,7 @@ function getfiletransformation(&$action) {
 	  $target="ooo";
 	  $file=$doc->viewdoc($zone,$target,$ulink);	
       } else {	  
-	  $file= uniqid("/var/tmp/doc")."-".$doc->id.".html";
+	  $file= uniqid(getTmpDir()."/doc")."-".$doc->id.".html";
 	  if ($zo=="S") $view=$doc->viewdoc($zone,"te");
 	  else $view=completeHTMLDoc($doc,$zone);
 	  file_put_contents($file,preg_replace("/<script([^>]*)>.*?<\/script>/is","",$view));
@@ -122,7 +122,7 @@ function downloadTid($tid,$title) {
     global $action;
     include_once("FDL/insertfile.php");
      
-    $filename= uniqid("/var/tmp/tid-".$tid);
+    $filename= uniqid(getTmpDir()."/tid-".$tid);
     $err=getTEFile($tid,$filename,$info);
     $mime=getSysMimeFile($filename, basename($filename));
     $ext=getExtension($mime);

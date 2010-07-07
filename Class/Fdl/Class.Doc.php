@@ -1761,7 +1761,7 @@ create unique index i_docir on doc(initid, revision);";
 	    $value=sprintf(_("conversion %s in progress"),$engine);
 	    if ($isimage) {
 	      $filename=getParam("CORE_PUBDIR")."/Images/workinprogress.png";
-	    } else   $filename=uniqid("/var/tmp/conv").".txt";
+	    } else   $filename=uniqid(getTmpDir()."/conv").".txt";
 	    $nc=file_put_contents($filename,$value);
 	    $err=$vf->Store($filename, false , $vidout,"",$engine,$vidin);
 	    $info=vault_properties($vidin);
@@ -2572,7 +2572,7 @@ create unique index i_docir on doc(initid, revision);";
 	  $basename=$info->name;
 	}
       }
-      $filename=uniqid("/tmp/_html").".html";
+      $filename=uniqid(getTmpDir()."/_html").".html";
       $nc=file_put_contents($filename,$value);
       $err=$vf->Store($filename, false , $vid);
       if ($ftitle != "") {
@@ -2662,7 +2662,7 @@ create unique index i_docir on doc(initid, revision);";
     	}
     	if ($ext=="") $ext="nop";
 
-    	$filename=uniqid("/var/tmp/_fdl").".$ext";
+    	$filename=uniqid(getTmpDir()."/_fdl").".$ext";
     	$tmpstream=fopen($filename,"w");
     	while (!feof($stream)) {
     		if (false === fwrite($tmpstream, fread($stream, 4096))) {
@@ -5515,7 +5515,7 @@ create unique index i_docir on doc(initid, revision);";
   	}
   	if ($binary && ($target != "ooo")) {
   		// set result into file
-  		$tmpfile=uniqid("/var/tmp/fdllay").".html";
+  		$tmpfile=uniqid(getTmpDir()."/fdllay").".html";
   		$nc=file_put_contents($tmpfile,$laygen);
   		$laygen=$tmpfile;
 

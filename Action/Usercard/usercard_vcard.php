@@ -40,7 +40,7 @@ function usercard_vcard(&$action) {
   $doc->GetValues();
   
   $vcard= new UsercardVcard();
-  $export_file = uniqid("/tmp/export");
+  $export_file = uniqid(getTmpDir()."/export");
 
 
   $vcard->Open($export_file,"w");

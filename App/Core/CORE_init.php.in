@@ -42,6 +42,7 @@ $app_const = array (
 							"kind"=>"enum(small|normal|large|x-large)"),
 		    "CORE_PUBDIR"		=>"@prefix@",
 		    "CORE_DB"	        =>"",
+		    "CORE_TMPDIR"	    =>"/tmp",
 
 		    "CORE_DBCONNECT"		        =>array("val"=>"unpersistent",
 								"descr"=>N_("connection type"),

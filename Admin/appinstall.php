@@ -146,7 +146,7 @@ function trace($m, $err=false) {
 <div class="link"><a href="winit.php">admin page</a></div>
 </div>';
 
- $eroot = "/tmp/fi-root";
+ $eroot = getTmpDir()."/fi-root";
  $edir = $eroot."/edir-app/";
  $efile = $eroot."/fi.tar.gz";
  $s = $_POST["s"];

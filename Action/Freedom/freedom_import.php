@@ -93,7 +93,7 @@ function freedom_import(Action &$action) {
     $action->lay->SetBlockData("ADDEDDOC",$cr);
     $action->lay->Set("nbdoc",$nbdoc);
     $action->lay->Set("nbprof",count(array_filter($cr,"isprof")));
-    if (isset($_FILES["file"])) @unlink($csvfile); //tmp file
+    if (isset($_FILES["file"])) @unlink($csvfile); // tmp file
 }
 
 function isdoc($var) {
