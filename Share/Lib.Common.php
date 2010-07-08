@@ -49,6 +49,10 @@ function getMailAddr($userid, $full=false) {
 }
 
 function getTmpDir($def='/tmp') {
+	static $tmp;
+	if(isset($tmp) && !empty($tmp)) {
+		return $tmp;
+	}
 	$tmp = getParam('CORE_TMPDIR', $def);
 	if(empty($tmp)) {
 		return $def;
