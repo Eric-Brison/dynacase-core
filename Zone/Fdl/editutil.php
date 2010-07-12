@@ -872,15 +872,11 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 		}
 	}
 
-	if($doc->initid <= 0 && ($oattr->format == "empty" || $oattr->getOption("empty")=="yes")) {
-		$force_empty_table = true;
-	}
-	else {
-		$force_empty_table = false;
-	}
-
 	// get default values
 	$ddoc = createDoc($doc->dbaccess, $doc->fromid==0?$doc->id:$doc->fromid,false);
+	$ddoc->setDefaultValues($ddoc->getFamDoc()->getDefValues(), true, true);
+	
+	
 	$tad = $ddoc->attributes->getArrayElements($attrid);
 	$tval=array();
 	$nbcolattr=0; // number of column
@@ -906,20 +902,12 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 
 
 		if ($visible) $nbcolattr++;
-		if($force_empty_table) {
-			$tval[$k] = array();
-			$nbitem = 0;
-		}
-		else {
-			$tval[$k]=$doc->getTValue($k);
-			$nbitem=count($tval[$k]);
-		}
+		$tval[$k]=$doc->getTValue($k);
+		$nbitem=count($tval[$k]);
 
-		if ($nbitem==0 && !$force_empty_table) {
+		if ($nbitem==0) {
 			// add first range
-			if ((($oattr->format == "empty" || $oattr->getOption("empty")=="yes") && $max > 0) ||
-				($oattr->format != "empty" && $oattr->getOption("empty")!="yes")
-			) {
+			if ($oattr->format != "empty" && $oattr->getOption("empty")!="yes") {
 				$tval[$k]=array(0=>"");
 				$nbitem=1;
 			}

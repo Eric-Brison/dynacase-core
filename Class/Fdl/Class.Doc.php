@@ -5366,22 +5366,33 @@ create unique index i_docir on doc(initid, revision);";
    * [US_ROLE|director][US_SOCIETY|alwaysNet]...
    * @param string $defval the default values
    * @param bool  $method set to false if don't want interpreted values
+   * @param bool  $forcedefault force default values
    * @access private
    */
-  final public function setDefaultValues($tdefval,$method=true) {
-    if (is_array($tdefval)) {
-      if ($method) {
-	foreach ($tdefval as $aid=>$dval) {
-	  $this->setValue($aid, $this->GetValueMethod($dval));
-	}             
-      } else {
-	foreach ($tdefval as $aid=>$dval) {
-	  $this->$aid= $dval; // raw data
-	  
-	}             
-      }
-    }
-  }  
+  final public function setDefaultValues($tdefval,$method=true,$forcedefault=false) {
+  	if (is_array($tdefval)) {
+  		foreach ($tdefval as $aid=>$dval) {
+  			$oattr = $this->getAttribute($aid);
+  			
+  			$ok = false;
+  			if(empty($oattr)) $ok = true;
+  			elseif($forcedefault) $ok = true;
+  			elseif(!$oattr->inArray()) $ok = true;
+  			elseif($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty")!="yes") {
+  				$ok = true;
+  			}
+  			
+  			
+  			if ($ok) {
+  				if ($method) {
+  					$this->setValue($aid, $this->GetValueMethod($dval));
+  				} else {
+  					$this->$aid= $dval; // raw data
+  				}
+  			}
+  		}
+  	}
+  }
 
   /**
    * set default name reference 
