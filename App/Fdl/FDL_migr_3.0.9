@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# -- Remove old *.mo and *-mo.js localization files
+
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub!"
+    exit 1
+fi
+
+echo "Removing old L10n files from freedom-core..."
+for L in en fr; do
+    rm "$wpub/locale/$L/LC_MESSAGES/WHAT.mo"
+done
+echo "Done."
+
+echo "Removing old L10n files from freedom-api..."
+for L in en fr; do
+    rm "$wpub/locale/$L/js/DATA-mo.js"
+    rm "$wpub/locale/$L/LC_MESSAGES/DATA.mo"
+done
+echo "Done."
+
+echo "Removing old L10n files from freedom-dav..."
+for L in en fr; do
+    rm "$wpub/locale/$L/LC_MESSAGES/DAV.mo"
+done
+echo "Done."
+
+echo "Removing old L10n files from freedom-vault..."
+for L in en fr; do
+    rm "$wpub/locale/$L/LC_MESSAGES/VAULT.mo"
+done
+echo "Done."
+
+echo "Removing old L10n files from freedom..."
+for L in en fr; do
+    rm "$wpub/locale/$L/LC_MESSAGES/FREEDOM.mo"
+done
+echo "Done."
+
+"$wpub/whattext"
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error: whattext returned with exitcode $RET!"
+    exit $RET
+fi
+
+exit 0
