@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-23 16:43+0200\n"
+"POT-Creation-Date: 2010-07-12 11:13+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -443,6 +443,10 @@ msgid "the file %s (rev %d) must be locked before"
 msgstr ""
 
 #, c-format
+msgid "Document %s is in edition by %s."
+msgstr ""
+
+#, c-format
 msgid "you are not allowed to update the file %s (rev %d) is locked by %s."
 msgstr ""
 
@@ -472,6 +476,10 @@ msgstr ""
 #, fuzzy
 msgid "document deleted"
 msgstr "Delete"
+
+#, c-format
+msgid "document %s [%d] is strange"
+msgstr ""
 
 #, fuzzy
 msgid "revival document"
@@ -7084,13 +7092,52 @@ msgstr "Can't create user"
 msgid "the user identification is unknow"
 msgstr ""
 
+#, c-format
+msgid "cannot write log in %s"
+msgstr ""
+
+#, c-format
+msgid "config file %s not found"
+msgstr ""
+
+#, c-format
+msgid "parse error config file %s : %s"
+msgstr ""
+
+#, c-format
+msgid "Config file %s : family name not set"
+msgstr ""
+
+#, c-format
+msgid "Config file %s : family name [%s] not match a know family"
+msgstr ""
+
+#, c-format
+msgid "Config file %s : attribute name not set"
+msgstr ""
+
+#, c-format
+msgid "Config file %s : unknow attribute name %s"
+msgstr ""
+
 msgid "no export folder specified"
+msgstr ""
+
+#, c-format
+msgid "folder/search %s not found"
 msgstr ""
 
 msgid "Zip Archive cannot be created"
 msgstr ""
 
 msgid "Xml file cannot be created"
+msgstr ""
+
+msgid "ERROR :"
+msgstr ""
+
+#, c-format
+msgid "Cannot write to log %s"
 msgstr ""
 
 #, fuzzy, c-format
