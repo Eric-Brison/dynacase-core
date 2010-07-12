@@ -7,8 +7,9 @@
 
 
 function subwindow(h, w, name, url) {
-
-	var me = windowExist(name, true);
+	var me;
+	if (name=="_self") me=window;
+	else me = windowExist(name, true);
 
 	if (! me) {
 		if(window.parent.Ext){
