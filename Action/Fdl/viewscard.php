@@ -79,7 +79,7 @@ function viewscard(&$action) {
 
 
   if ($wedit) {
-    $export_file = uniqid("/tmp/export").".doc";
+    $export_file = uniqid(getTmpDir()."/export").".doc";
   
     $of = fopen($export_file,"w+");
     fwrite($of, $action->lay->gen());

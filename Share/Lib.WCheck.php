@@ -269,8 +269,8 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     $cmd=array_merge($cmd,$migr);
   }
   
-  $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > /var/tmp/".uniqid($pgservice_core);
-  $dump[] = "PGSERVICE=\"$pgservice_freedom\" pg_dump -D > /var/tmp/".uniqid($pgservice_freedom);
+  $dump[] = "PGSERVICE=\"$pgservice_core\" pg_dump > ".getTmpDir()."/".uniqid($pgservice_core);
+  $dump[] = "PGSERVICE=\"$pgservice_freedom\" pg_dump -D > ".getTmpDir()."/".uniqid($pgservice_freedom);
   //  $dump[] = "/etc/rc.d/init.d/httpd stop";
   $dump[] = "$pubdir/wstop";
   $dump[] = "$pubdir/whattext";

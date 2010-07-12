@@ -27,7 +27,7 @@ if ($err=="") {
   $err=getCheckApp($pubdir,$applications);
   if ($err) {
     exec ( "$pubdir/CORE/CORE_post I" , $out ,$err );
-    //$out = shell_exec("$pubdir/CORE/CORE_post I 2>/tmp/w");
+    //$out = shell_exec("$pubdir/CORE/CORE_post I 2>".getTmpDir()."/w");
     $out2=array();
     if ($err == 0) {
     

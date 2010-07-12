@@ -13,6 +13,7 @@
  */
  /**
  */
+include_once("Lib.Common.php");
 
 class LibSystem {
 
@@ -104,7 +105,7 @@ class LibSystem {
     }
     if( $dir === null || $dir === false ) {
       $dir = null;
-      foreach( array('/tmp', '/var/tmp') as $tmpdir ) {
+      foreach( array(getTmpDir(), '/tmp', '/var/tmp') as $tmpdir ) {
 	if( is_dir($tmpdir) && is_writable($tmpdir) ) {
 	  $dir = $tmpdir;
 	  break;

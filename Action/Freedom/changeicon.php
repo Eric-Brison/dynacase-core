@@ -55,7 +55,7 @@ function changeicon(&$action) {
       $ext=$reg[2];
 
       // move to add extension
-      $destfile=str_replace(" ","_","/tmp/".$fileinfo['name']);
+      $destfile=str_replace(" ","_",getTmpDir()."/".$fileinfo['name']);
       move_uploaded_file($fileinfo['tmp_name'], $destfile);
 
 

@@ -98,7 +98,7 @@ function impcard(&$action) {
   }
 
   if ($mime != "") {
-    $export_file = uniqid("/tmp/export").".$ext";
+    $export_file = uniqid(getTmpDir()."/export").".$ext";
   
     $of = fopen($export_file,"w+");
     fwrite($of, $action->lay->gen());

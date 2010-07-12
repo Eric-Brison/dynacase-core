@@ -1101,7 +1101,7 @@ function seemsODS($filename) {
  * @return strint the path to the csv file
  */
 function ods2csv($odsfile) {
-	$csvfile = uniqid("/var/tmp/csv")."csv";
+	$csvfile = uniqid(getTmpDir()."/csv")."csv";
 	$wsh = getWshCmd();
 	$cmd=sprintf("%s --api=ods2csv --odsfile=%s --csvfile=%s >/dev/null",
 	getWshCmd(),

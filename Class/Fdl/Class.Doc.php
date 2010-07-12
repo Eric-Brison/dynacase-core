@@ -810,8 +810,9 @@ create unique index i_docir on doc(initid, revision);";
     } else {
 	if (abs($this->locked) != $this->userid) {
 	  
-	    $user = new User("", $this->locked);
-	    $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
+	    $user = new User("", abs($this->locked));
+	    if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
+            else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
 	  
 	} else $err = $this-> Control( "edit");
     }
@@ -833,8 +834,9 @@ create unique index i_docir on doc(initid, revision);";
     $err="";      
     if ($this->withoutControl) return ""; // no more test if disableEditControl activated
     if  (($this->locked != 0) && (abs($this->locked) != $this->userid)) {	  
-      $user = new User("", $this->locked);
-      $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
+      $user = new User("", abs($this->locked));
+      if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
+      else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->getTitle(),$this->revision,$user->firstname." ".$user->lastname); 
 	  
     } else {
       $err = $this->Control("edit");
@@ -860,8 +862,9 @@ create unique index i_docir on doc(initid, revision);";
       // test if is not already locked
       else {
 	if ( abs($this->locked) != $this->userid) {
-	  $user = new User("", $this->locked);
-	  $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."), 
+	  $user = new User("", abs($this->locked));
+	  if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
+	  else $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."),
 			 $this->title,$this->id,$user->firstname." ".$user->lastname);
 	}   else  {      
 	  $err = $this-> Control( "edit");
@@ -1761,7 +1764,7 @@ create unique index i_docir on doc(initid, revision);";
 	    $value=sprintf(_("conversion %s in progress"),$engine);
 	    if ($isimage) {
 	      $filename=getParam("CORE_PUBDIR")."/Images/workinprogress.png";
-	    } else   $filename=uniqid("/var/tmp/conv").".txt";
+	    } else   $filename=uniqid(getTmpDir()."/conv").".txt";
 	    $nc=file_put_contents($filename,$value);
 	    $err=$vf->Store($filename, false , $vidout,"",$engine,$vidin);
 	    $info=vault_properties($vidin);
@@ -1964,7 +1967,7 @@ create unique index i_docir on doc(initid, revision);";
 	else $title1.= $this->GetValue($v->id)." ";
       }
     }
-    if (chop($title1) != "")  $this->title = substr(chop(str_replace("\n"," ",$title1)),0,255);// restric to 256 char
+    if (chop($title1) != "")  $this->title = mb_substr(chop(str_replace("\n"," ",$title1)),0,255);// restric to 256 char
     $this->title=$this->getSpecTitle();
   }
  
@@ -2104,13 +2107,14 @@ create unique index i_docir on doc(initid, revision);";
   		else return "";
   	}
   	$t = $this->_val2array($v);
-  	if ($index == -1) {$oa=$this->getAttribute($idAttr);
-  	if ($oa && $oa->type=="xml") {
-  		foreach ($t as $k=>$v) {
-  			$t[$k]=str_replace('<BR>',"\n",$v);
+  	if ($index == -1) {
+  		$oa=$this->getAttribute($idAttr);
+  		if ($oa && $oa->type=="xml") {
+  			foreach ($t as $k=>$v) {
+  				$t[$k]=str_replace('<BR>',"\n",$v);
+  			}
   		}
-  	}
-  	return $t;
+  		return $t;
   	}
   	if (isset($t[$index])) {
   		$oa=$this->getAttribute($idAttr);
@@ -2268,7 +2272,8 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function SetValue($attrid, $value,$index=-1) {
   	// control edit before set values
-  	 
+  	
+
   	if (! $this->withoutControl) {
   		if ($this->id > 0) { // no control yet if no effective doc
   			$err = $this-> Control("edit");
@@ -2324,11 +2329,10 @@ create unique index i_docir on doc(initid, revision);";
   				}
   			}
   		} else {
-
   			$value=trim($value," \x0B\r");// suppress white spaces end & begin
   			if (!isset($this->$attrid)) $this->$attrid="";
 
-  			if  (($this->$attrid != $value) && ($this->$attrid != str_replace("\n ","\n",$value)))	  {
+  			if  (strcmp($this->$attrid, $value)!=0 && strcmp($this->$attrid, str_replace("\n ","\n",$value))!=0)	  {
   				$this->hasChanged=true;
   				// print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
   				if ($oattr->repeat) {
@@ -2459,6 +2463,7 @@ create unique index i_docir on doc(initid, revision);";
   			}
 
   		}
+  		
   	}
   }
 
@@ -2570,7 +2575,7 @@ create unique index i_docir on doc(initid, revision);";
 	  $basename=$info->name;
 	}
       }
-      $filename=uniqid("/tmp/_html").".html";
+      $filename=uniqid(getTmpDir()."/_html").".html";
       $nc=file_put_contents($filename,$value);
       $err=$vf->Store($filename, false , $vid);
       if ($ftitle != "") {
@@ -2660,7 +2665,7 @@ create unique index i_docir on doc(initid, revision);";
     	}
     	if ($ext=="") $ext="nop";
 
-    	$filename=uniqid("/var/tmp/_fdl").".$ext";
+    	$filename=uniqid(getTmpDir()."/_fdl").".$ext";
     	$tmpstream=fopen($filename,"w");
     	while (!feof($stream)) {
     		if (false === fwrite($tmpstream, fread($stream, 4096))) {
@@ -5361,22 +5366,33 @@ create unique index i_docir on doc(initid, revision);";
    * [US_ROLE|director][US_SOCIETY|alwaysNet]...
    * @param string $defval the default values
    * @param bool  $method set to false if don't want interpreted values
+   * @param bool  $forcedefault force default values
    * @access private
    */
-  final public function setDefaultValues($tdefval,$method=true) {
-    if (is_array($tdefval)) {
-      if ($method) {
-	foreach ($tdefval as $aid=>$dval) {
-	  $this->setValue($aid, $this->GetValueMethod($dval));
-	}             
-      } else {
-	foreach ($tdefval as $aid=>$dval) {
-	  $this->$aid= $dval; // raw data
-	  
-	}             
-      }
-    }
-  }  
+  final public function setDefaultValues($tdefval,$method=true,$forcedefault=false) {
+  	if (is_array($tdefval)) {
+  		foreach ($tdefval as $aid=>$dval) {
+  			$oattr = $this->getAttribute($aid);
+  			
+  			$ok = false;
+  			if(empty($oattr)) $ok = true;
+  			elseif($forcedefault) $ok = true;
+  			elseif(!$oattr->inArray()) $ok = true;
+  			elseif($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty")!="yes") {
+  				$ok = true;
+  			}
+  			
+  			
+  			if ($ok) {
+  				if ($method) {
+  					$this->setValue($aid, $this->GetValueMethod($dval));
+  				} else {
+  					$this->$aid= $dval; // raw data
+  				}
+  			}
+  		}
+  	}
+  }
 
   /**
    * set default name reference 
@@ -5513,7 +5529,7 @@ create unique index i_docir on doc(initid, revision);";
   	}
   	if ($binary && ($target != "ooo")) {
   		// set result into file
-  		$tmpfile=uniqid("/var/tmp/fdllay").".html";
+  		$tmpfile=uniqid(getTmpDir()."/fdllay").".html";
   		$nc=file_put_contents($tmpfile,$laygen);
   		$laygen=$tmpfile;
 

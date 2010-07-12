@@ -51,7 +51,7 @@ if ($docid > 0) {
   $doc->setValue("exec_statusdate",$doc->getTimeDate());
   $doc->modify(true,array("exec_status","exec_statusdate"),true);
   $cmd=$doc->bgCommand($action->user->id==1);
-  $f=uniqid("/tmp/fexe");
+  $f=uniqid(getTmpDir()."/fexe");
   $fout="$f.out";
   $ferr="$f.err";
   $cmd.= ">$fout 2>$ferr";

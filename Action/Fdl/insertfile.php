@@ -36,7 +36,7 @@ function insertfile(&$action) {
 
   if (! $tid) $err=_("no task identificator found");
   else {
-    $filename= uniqid("/var/tmp/txt-".$vidout.'-');
+    $filename= uniqid(getTmpDir()."/txt-".$vidout.'-');
     $err=getTEFile($tid,$filename,$info);
     if ($err=="") {
      	
@@ -79,7 +79,7 @@ function insertfile(&$action) {
 	  $err=$vf->Retrieve($vidout, $vinfo);
 
 	  
-	  $filename= uniqid("/var/tmp/txt-".$vidout.'-');
+	  $filename= uniqid(getTmpDir()."/txt-".$vidout.'-');
 	  file_put_contents($filename,print_r($info,true));
 	  //$vf->rename($vidout,"toto.txt");
 	  $vf->Retrieve($vidout, $vinfo);

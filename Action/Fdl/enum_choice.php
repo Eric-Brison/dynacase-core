@@ -257,7 +257,7 @@ function getResPhpFunc(&$doc,&$oattr,&$rargids,&$tselect,&$tval,$whttpvars=true,
      while (list($k2, $v2) = each($v)) {
        // not for the title
        if ($k2>0) $res[$k][$k2]=addslashes(str_replace("\r","",str_replace("\n","\\n",$v2))); // because JS array 
-       else $res[$k][$k2]=substr($res[$k][$k2],0,$action->getParam("ENUM_TITLE_SIZE",40));
+       else $res[$k][$k2]=mb_substr($res[$k][$k2],0,$action->getParam("ENUM_TITLE_SIZE",40));
      }
    }
     $tselect = array();

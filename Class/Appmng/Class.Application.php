@@ -481,7 +481,10 @@ create sequence SEQ_ID_APPLICATION start 10;
   }
 
 
-  function ImageFilterColor($image, $fcol, $newcol, $out="/tmp/i.gif") {
+  function ImageFilterColor($image, $fcol, $newcol, $out=null) {
+  	if($out === null) {
+  		$out = getTmpDir()."/i.gif";
+  	}
     $im = imagecreatefromgif($image);
     $idx = imagecolorexact($im, $fcol[0], $fcol[1], $fcol[2]);
     imagecolorset($im, $idx, $newcol[0], $newcol[1], $newcol[2]);

@@ -123,7 +123,7 @@ function xmlcontent2csv($xmlcontent,&$fcsv) {
 
 function ods2content($odsfile,&$content) {
   if (! file_exists($odsfile)) return "file $odsfile not found";
-  $cibledir=uniqid("/var/tmp/ods");
+  $cibledir=uniqid(getTmpDir()."/ods");
   
   $cmd = sprintf("unzip -j %s content.xml -d %s >/dev/null", $odsfile, $cibledir );
   system($cmd);

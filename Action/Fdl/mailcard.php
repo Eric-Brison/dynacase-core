@@ -260,7 +260,7 @@ function sendCard(&$action,
       $engine=$doc->getZoneTransform($zonebodycard);
       if ($engine) {
 	include_once("FDL/Lib.Vault.php");
-	$outfile= uniqid("/var/tmp/conv").".$engine";
+	$outfile= uniqid(getTmpDir()."/conv").".$engine";
 	$err=convertFile($binfile,$engine,$outfile,$info);
 	if ($err=="") {
 	  $mime=getSysMimeFile($outfile, basename($outfile));
@@ -341,7 +341,7 @@ function sendCard(&$action,
 			    "srcfile('\\1')",
 			    $sgen1);
 
-      $pfout = uniqid("/var/tmp/".$doc->id);
+      $pfout = uniqid(getTmpDir()."/".$doc->id);
       $fout = fopen($pfout,"w");
    
       fwrite($fout,$sgen1);
@@ -369,7 +369,7 @@ function sendCard(&$action,
 			    "realfile('\\1')",
 			    $sgen);
 
-      $ppdf = uniqid("/var/tmp/".$doc->id).".pdf.html";
+      $ppdf = uniqid(getTmpDir()."/".$doc->id).".pdf.html";
       $fout = fopen($ppdf,"w");
       fwrite($fout,$sgen2);
       fclose($fout);
@@ -484,7 +484,7 @@ function sendCard(&$action,
 		  $fmime = $vf[2];
 		
 		  $fgen = $doc->viewDoc($fview, "mail");
-		  $fpname = "/var/tmp/".str_replace(array(" ","/","(",")"), "_", uniqid($doc->id).$fname);
+		  $fpname = getTmpDir()."/".str_replace(array(" ","/","(",")"), "_", uniqid($doc->id).$fname);
 		  if ($fp = fopen($fpname, 'w')) {
 		    fwrite($fp, $fgen);
 		    fclose($fp);
@@ -500,8 +500,8 @@ function sendCard(&$action,
     }
     if (preg_match("/pdf/",$format, $reg)) {
       // try PDF 
-      $fps= uniqid("/var/tmp/".$doc->id)."ps";
-      $fpdf= uniqid("/var/tmp/".$doc->id)."pdf";
+      $fps= uniqid(getTmpDir()."/".$doc->id)."ps";
+      $fpdf= uniqid(getTmpDir()."/".$doc->id)."pdf";
       $cmdpdf = sprintf("perl -pi -e 's/€/&euro;/g' %s && recode u8..l9 %s && /usr/bin/html2ps -U -i 0.5 -b %s/ %s > %s && ps2pdf %s %s",  escapeshellarg($ppdf), escapeshellarg($ppdf), escapeshellarg($pubdir), escapeshellarg($ppdf), escapeshellarg($fps), escapeshellarg($fps), escapeshellarg($fpdf));
       system (($cmdpdf), $status);
       if ($status == 0)  {     
@@ -539,7 +539,7 @@ function sendCard(&$action,
   
     $tmpfile=array_merge($tmpfile,$tfiles);
     foreach($tmpfile as $k=>$v) {
-      if (file_exists($v) && (substr($v,0,9)=="/var/tmp/"))	unlink($v);    
+      if (file_exists($v) && (substr($v,0,9)==getTmpDir()."/"))	unlink($v);    
 
     }
  
@@ -586,7 +586,7 @@ function copyvault($src) {
     $token = $action->user->getUserToken(3600,true,array("app"=>"FDL","action"=>"EXPORTFILE","docid"=>$reg[3]));
     $url.="authtype=open&privateid=$token&";
     $url.=$src;
-    $newfile=uniqid("/var/tmp/img");
+    $newfile=uniqid(getTmpDir()."/img");
     if (!copy($url, $newfile)) {
       return "";
     } 
@@ -623,7 +623,7 @@ function realfile($src) {
       
       if (file_exists($pubdir."/$va")) $f=$pubdir."/$va";
       elseif (file_exists($pubdir."/Images/$va")) $f=$pubdir."/Images/$va";
-      elseif ((substr($va,0,12)=='/var/tmp/img') && file_exists($va)) $f=$va;
+      elseif ((substr($va,0,12)==getTmpDir().'/img') && file_exists($va)) $f=$va;
     }
   }
   

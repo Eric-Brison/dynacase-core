@@ -42,7 +42,7 @@ function settxtfile(&$action) {
 	$tr->delete(); // no need now
 	$outfile=$info["outfile"];
 	$status=$info["status"];
-	$sem = fopen("/var/tmp/fdl$docid.lck", "a+");
+	$sem = fopen(getTmpDir()."/fdl$docid.lck", "a+");
 	
 	if (flock($sem, LOCK_EX)) {
 	  //fwrite($sem,'fdl'.posix_getpid().":lock\n");
@@ -51,7 +51,7 @@ function settxtfile(&$action) {
 	  if ($err=="") {
 
 	    if (($status=='D') && ($outfile != '')) {
-	      $filename= uniqid("/var/tmp/txt-".$doc->id.'-');
+	      $filename= uniqid(getTmpDir()."/txt-".$doc->id.'-');
 	      $err=$ot->getTransformation($tid,$filename);
 	      //$err=$ot->getAndLeaveTransformation($tid,$filename);	    
 	      if ($err=="") {

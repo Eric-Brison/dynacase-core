@@ -71,12 +71,12 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
 
 
   if ($wfile) {
-    $foutdir=uniqid("/var/tmp/exportfld");
+    $foutdir=uniqid(getTmpDir()."/exportfld");
     if (! mkdir($foutdir)) exit();
     
     $foutname = $foutdir."/fdl.csv";
   } else {
-    $foutname = uniqid("/var/tmp/exportfld").".csv";
+    $foutname = uniqid(getTmpDir()."/exportfld").".csv";
   }
   $fout = fopen($foutname,"w");
   // set encoding

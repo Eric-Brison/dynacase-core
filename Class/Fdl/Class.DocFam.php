@@ -384,7 +384,7 @@ function preDocDelete() {
   function saveVaultFile($vid,$stream) {
     if (is_resource($stream) && get_resource_type($stream) == "stream") {
       $ext="nop";
-      $filename=uniqid("/var/tmp/_fdl").".$ext";
+      $filename=uniqid(getTmpDir()."/_fdl").".$ext";
       $tmpstream=fopen($filename,"w");
       while (!feof($stream)) {
 	if (false === fwrite($tmpstream, fread($stream, 4096))) {
