@@ -222,7 +222,11 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 		}
 	}
 
-
+        if (! $err) {
+            foreach ($info as $k=>$v) {
+                if ($v["err"]!="") $err=$v["err"];
+            }
+        }
 	return $err;
 }
 
