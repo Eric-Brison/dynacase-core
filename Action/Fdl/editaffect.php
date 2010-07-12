@@ -38,7 +38,7 @@ function editaffect(&$action) {
   $action->lay->set("affecttitle",sprintf(_("Affectation for %s"),$doc->title));
   
   // search free states
-  $sqlfilters=array("(frst_famid=".$doc->fromid.") or (frst_famid is null) or (frst_famid='')");
+  $sqlfilters=array("(frst_famid='".$doc->fromid."') or (frst_famid is null) or (frst_famid='')");
   $tfree = getChildDoc($dbaccess,0,"0","ALL",$sqlfilters, $action->user->id, "TABLE","FREESTATE");
   $tstate=array();
   if ($doc->wid == 0) {
