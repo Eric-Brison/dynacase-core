@@ -108,8 +108,28 @@ function getAppOrder($topdir) {
 function vercmp($v1,$v2) {
   if ($v1==$v2) return 0;
  
-  if (version2float($v1) > version2float($v2)) return 1;
-  else return -1;
+  if( ! preg_match('/^(?P<version>[0-9.]+)-?(?P<release>.*?)$/', $v1, $m1) ) {
+    error_log(sprintf("Error: malformed version '%s'", $v1));
+    return 0;
+  }
+  if( ! preg_match('/^(?P<version>[0-9.]+)-?(?P<release>.*?)$/', $v2, $m2) ) {
+    error_log(sprintf("Error: malformed version '%s'", $v2));
+    return 0;
+  }
+
+  $s_v1 = join("", array_map( create_function('$a', 'return sprintf("%03d", $a);'), preg_split("/\./", $m1['version']) ) );
+  $s_v2 = join("", array_map( create_function('$a', 'return sprintf("%03d", $a);'), preg_split("/\./", $m2['version']) ) );
+
+  if( $m1['version'] != $m2['version'] ) {
+    return ( strcmp($m1['version'], $m2['version']) > 0 ) ? 1 : -1;
+  }
+
+  $cmp_rel = ( $m1['release'] - $m2['release'] );
+  if( $cmp_rel == 0 ) {
+    return $cmp_rel;
+  }
+
+  return ( $cmp_rel > 0 ) ? 1 : -1;
 }
 
 function checkPGConnection() {
@@ -128,7 +148,7 @@ function checkPGConnection() {
   return $err;
 }
 
-function getCheckApp($pubdir,&$tapp) {
+function getCheckApp($pubdir,&$tapp,$version_override=array()) {
   global $_SERVER;
 
   $dbaccess_core = getDbAccessCore();
@@ -146,6 +166,16 @@ function getCheckApp($pubdir,&$tapp) {
     $tvdb= GetDbVersion($dbid,$tmachine);
     $tvfile=GetFileVersion("$pubdir");
     pg_close($dbid);
+
+    /*
+     * Override versions of app for doing pmigr (post migr) 
+     * scripts from WIFF
+     */
+    foreach( $tvdb as $appname => &$version ) {
+      if( array_key_exists($appname, $version_override) ) {
+	$version = $version_override[$appname];
+      }
+    }
 
     $ta = array_unique(array_merge(array_keys($tvdb), array_keys($tvfile)));
     foreach ($ta as $k=>$v) {
@@ -172,22 +202,7 @@ function getCheckApp($pubdir,&$tapp) {
   return $err;
 }
 
-function version2float($ver) {
-  if (preg_match_all('/([0-9]+)/', $ver , $matches)) {
-    $matches=($matches[0]);
-    $sva='';
-    $c=count($matches);
-    if ($c < 4) {
-      for ($i=0;$i < (4-$c);$i++) {
-	$matches[]='0';
-      }
-    }
-    foreach ($matches as $k=>$v)    $sva.=sprintf("%02d",$v);
-    return floatval($sva);
-  }
-}
-
-function getCheckActions($pubdir,$tapp,&$tact) {
+function getCheckActions($pubdir,$tapp,&$tact,$version_override=array()) {
 
   $wsh=array(); // application update
   $cmd=array(); // pre/post install 
@@ -200,7 +215,17 @@ function getCheckActions($pubdir,$tapp,&$tact) {
 
   $tvdb= GetDbVersion($dbid,$tmachine);
   $tiorder=getAppOrder($pubdir);
-  
+
+  /*
+   * Override versions of app for doing pmigr (post migr) 
+   * scripts from WIFF
+   */
+  foreach( $tvdb as $appname => &$version ) {
+    if( array_key_exists($appname, $version_override) ) {
+      $version = $version_override[$appname];
+    }
+  }
+
   foreach ($tiorder as $k=>$v) {
     $tapp[$k]["iorder"]=$v;
   }
@@ -212,7 +237,7 @@ function getCheckActions($pubdir,$tapp,&$tact) {
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
 	if (preg_match("/{$pattern}_migr_([0-9\.]+)$/", $file, $reg)) {
-	  if (($tvdb[$k] != "") && (version2float($tvdb[$k]) < version2float($reg[1])))
+	  if (($tvdb[$k] != "") && ( vercmp($tvdb[$k], $reg[1]) < 0) )
 	    $migr[]="$pubdir/$k/$file";
 	}
       }
@@ -254,17 +279,18 @@ function getCheckActions($pubdir,$tapp,&$tact) {
       }
     }
     
+
     // search Post Migration file
     $migr=array();
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
 	if (preg_match("/{$pattern}_pmigr_([0-9\.]+)$/", $file, $reg)) {
 
-	  if (($tvdb[$k] != "") && (version2float($tvdb[$k]) < version2float($reg[1])))
+	  if (($tvdb[$k] != "") && ( vercmp($tvdb[$k], $reg[1]) < 0 ) )
 	    $migr[]="$pubdir/$k/$file";
 	}
       }
-    }   
+    }
     sort($migr);
     $cmd=array_merge($cmd,$migr);
   }
