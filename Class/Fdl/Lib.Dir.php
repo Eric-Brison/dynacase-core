@@ -413,12 +413,15 @@ function getChildDoc($dbaccess,
 
   $tretdocs=array();
   if ($tqsql) {
-    foreach ($tqsql as $qsql) {
-      if ($qsql != false) {
+    foreach ($tqsql as $k=>&$qsql) {
+      if ($qsql == false) unset($tqsql[$k]);
+    }
+    $isgroup=(count($tqsql) > 1);
+    foreach ($tqsql as &$qsql) {
 	if ($fromid!=-1) { // not families
 	  if ($fromid!=0) {
 	    $fdoc=createDoc($dbaccess,abs($fromid),false,false);	    
-	    if (preg_match("/from\s+docread/",$qsql)) $fdoc=new DocRead($dbaccess);
+	    if (preg_match("/from\s+docread/",$qsql) || $isgroup) $fdoc=new DocRead($dbaccess);
 	  } else $fdoc=new DocRead($dbaccess);
 	  $sqlfields=implode(", ",array_merge($fdoc->fields,$fdoc->sup_fields));
 	  if ($userid > 1) { // control view privilege
@@ -432,14 +435,17 @@ function getChildDoc($dbaccess,
 
 	  if ((!$distinct) && strstr($qsql,"distinct")) $distinct=true;
 	  if ($start == "") $start="0";
-	  if ($distinct) $qsql .= " ORDER BY initid, id desc  LIMIT $slice OFFSET $start;";
+	  if ($distinct) {
+	      $qsql .= " ORDER BY initid, id desc";
+	      if (! $isgroup) $qsql .= " LIMIT $slice OFFSET $start";
+	  }
 	  else  {
 	    if (($fromid == "") && $orderby=="") $orderby="title";
 	    elseif (substr($qsql,0,12)  == "select doc.*") $orderby="title";
-	    if ($orderby=="") $qsql .= "  LIMIT $slice OFFSET $start;";
+	    if ($orderby==""  && (! $isgroup) ) $qsql .= "  LIMIT $slice OFFSET $start;";
 	    else {
 	      if ($orderby[0]=='-') $orderby=substr($orderby,1)." desc";
-	      $qsql .= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
+	       if (! $isgroup) $qsql .= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
 	    }
 	  }   
 	} else {
@@ -463,41 +469,51 @@ function getChildDoc($dbaccess,
 	    }
 	  }
 	}
-   
-	$query = new QueryDb($dbaccess,"Doc$fromid");  
-	$mb=microtime();
-	$tableq=$query->Query(0,0,$qtype,$qsql);
- 
- 
-	if ($query->nb > 0) { 
-	  if ($qtype=="ITEM") {
-	      $tretdocs[]=$tableq;
-	  } else $tretdocs=array_merge($tretdocs,$tableq);
-	}
-	//		 print "<HR><br><div style=\"border:red 1px inset;background-color:lightyellow;color:black\">".$query->LastQuery; print " - $qtype<B> [".$query->nb.']'.sprintf("%.03fs",microtime_diff(microtime(),$mb))."</B><b style='color:red'>".$query->basic_elem->msg_err."</b></div>";
-	if ($query->basic_elem->msg_err!="") {
-	  addLogMsg($query->basic_elem->msg_err,200);
-	  addLogMsg(array("query"=>$query->LastQuery,"err"=>$query->basic_elem->msg_err));
-	  // print_r2(array_pop(debug_backtrace()));
-	}
-	if ($debug!==null) {
-	  $debug["count"]=$query->nb;
-	  $debug["query"]=$query->LastQuery;
-	  $debug["error"]=$query->basic_elem->msg_err;
-	  $debug["delay"]=sprintf("%.03fs",microtime_diff(microtime(),$mb));
-	  addLogMsg($query->basic_elem->msg_err,200);
-	  addLogMsg($debug);
-	} elseif ($query->basic_elem->msg_err!="") {
-          $debug["query"]=$query->LastQuery;
-          $debug["error"]=$query->basic_elem->msg_err;
-	}
-
-      } else {
-	// error in query          
       }
-    }
+     
+      if (count($tqsql) > 0) {
+          if (count($tqsql) == 1) {
+              $query = new QueryDb($dbaccess,"Doc$fromid");
+              $mb=microtime();
+              $tableq=$query->Query(0,0,$qtype,$tqsql[0]);
+          } else {            
+              $usql=implode($tqsql," union ");
+              if ($orderby) $usql .= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
+              else $usql .= " LIMIT $slice OFFSET $start;";
+             
+              $query = new QueryDb($dbaccess,"Doc");
+              $mb=microtime();
+              $tableq=$query->Query(0,0,$qtype,$usql);
+          }
+
+          if ($query->nb > 0) {
+              if ($qtype=="ITEM") {
+                  $tretdocs[]=$tableq;
+              } else $tretdocs=array_merge($tretdocs,$tableq);
+          }
+          //		 print "<HR><br><div style=\"border:red 1px inset;background-color:lightyellow;color:black\">".$query->LastQuery; print " - $qtype<B> [".$query->nb.']'.sprintf("%.03fs",microtime_diff(microtime(),$mb))."</B><b style='color:red'>".$query->basic_elem->msg_err."</b></div>";
+          if ($query->basic_elem->msg_err!="") {
+              addLogMsg($query->basic_elem->msg_err,200);
+              addLogMsg(array("query"=>$query->LastQuery,"err"=>$query->basic_elem->msg_err));
+              // print_r2(array_pop(debug_backtrace()));
+          }
+          if ($debug!==null) {
+              $debug["count"]=$query->nb;
+              $debug["query"]=$query->LastQuery;
+              $debug["error"]=$query->basic_elem->msg_err;
+              $debug["delay"]=sprintf("%.03fs",microtime_diff(microtime(),$mb));
+              addLogMsg($query->basic_elem->msg_err,200);
+              addLogMsg($debug);
+          } elseif ($query->basic_elem->msg_err!="") {
+              $debug["query"]=$query->LastQuery;
+              $debug["error"]=$query->basic_elem->msg_err;
+          }
+      }
 
   }
+    
+
+  
   
   reset($tretdocs);
   
