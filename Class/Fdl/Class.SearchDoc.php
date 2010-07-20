@@ -112,12 +112,13 @@ Class SearchDoc {
   }
   /**
    * count results without return data
-   * view permission are not tested in this case
+   * 
    * @return int 
    */
   public function onlyCount() {
       if (! $this->result) {
           $fld = new_Doc($this->dbaccess, $this->dirid);
+          $userid=$fld->userid;
           if ($fld->fromid != getFamIdFromName($this->dbaccess,"SSEARCH")) {
               $this->mode="ITEM";
               if ($this->debug) $debuginfo=array();
@@ -129,7 +130,7 @@ Class SearchDoc {
               foreach ($tqsql as $sql) {
                   if ($sql) {
                       $sql=preg_replace("/select (.*) from/","select count(id) from",$sql);
-
+                      if ($userid != 1) $sql.=" and (profid <= 0 or hasviewprivilege($userid, profid))";
                       $dbid=getDbid($this->dbaccess);
                       $mb=microtime(true);
                       $q=pg_query($dbid,$sql);
