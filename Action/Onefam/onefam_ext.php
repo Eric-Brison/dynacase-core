@@ -15,7 +15,7 @@
 include_once("FDL/Class.Doc.php");
 include_once("ONEFAM/onefam_gettreefamily.php");
 
-function onefam_ext(&$action) {
+function onefam_ext(Action &$action) {
         $action->lay->set('DEBUG', false);
   if(  isset($_REQUEST['debug']) && ($_REQUEST['debug'] == 'yes') ) {
      
