@@ -4274,7 +4274,7 @@ create unique index i_docir on doc(initid, revision);";
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
       $a="";
       if ($htmllink) {
-          if (! $title) $title=$this->getTitle($id);
+          if (! $title) $title=$this->getHTMLTitle($id);
           if ($title == "") {
               $a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
           } else {
@@ -4323,7 +4323,7 @@ create unique index i_docir on doc(initid, revision);";
           }
 
       } else {
-          if (! $title) $a=$this->getTitle($id);
+          if (! $title) $a=$this->getHTMLTitle($id);
           else $a=$title;
       }
       return $a;
@@ -7017,7 +7017,14 @@ static function _cmpanswers($a,$b) {
     }
     return $def; 
   }
-
+  /**
+   * Same as ::getTitle() 
+   * the < > characters as replace by entities
+   */
+  function getHTMLTitle($id="-1",$def="") {   
+    $t=$this->getTitle($id,$def);
+    return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
+  }
   /**
    * return the today date with european format DD/MM/YYYY
    * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
@@ -7050,7 +7057,6 @@ static function _cmpanswers($a,$b) {
     }
     return date("d/m/Y H:i",$nd);
   }
-
 
   /**
    * return the today date and time with european format DD/MM/YYYY HH:MM
