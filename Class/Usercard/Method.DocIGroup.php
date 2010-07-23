@@ -402,7 +402,6 @@ function refreshMembers() {
     
     $user=$this->getTvalue("grp_ruser");
     $toomany=(count($user) > 100) ;
-    AddWarningMsg(count($user));
     if ($norefresh) $this->setValue("grp_toomany",sprintf(_("Members detection are disactived for the group")));
     elseif ($toomany) $this->setValue("grp_toomany",sprintf(_("Too many members to display there here (%d). Use Open menu to display them."),count($user)));
     else $this->deleteValue("grp_toomany");

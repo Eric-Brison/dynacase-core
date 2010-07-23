@@ -98,7 +98,6 @@ function SetGroupMail($nomail=false) {
   $gmail=" ";
   $tmail=array();
 
-print_r2("SetGroupMail");
   if (!$nomail) $nomail=($this->getValue("grp_hasmail")=="no");
   //------------------------------------------------------
   // first compute mail from users members
@@ -159,7 +158,6 @@ print_r2("SetGroupMail");
   if ($nodetectmembers) {
       $this->DeleteValue("GRP_IDRUSER");
       $this->DeleteValue("GRP_RUSER");
-      print_r2("delete RUSERS");
   } else {
       if (count($tgmembers) >0) {
           $this->SetValue("GRP_IDRUSER", array_keys($tgmembers));

@@ -227,10 +227,4 @@ function Utf8_decode_POST() {
 }
 
 
-function getResEnum($doc,$oattr,$rargids,$tselect,$tval,$index) {
-
-  print_r2($index);
-  print_r2($tval);
-  print_r2($rargids);
-}
 ?>

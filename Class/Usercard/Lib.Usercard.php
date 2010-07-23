@@ -80,7 +80,6 @@ function refreshOneGroup($gid,$refresh) {
       wbartext(sprintf(_("refreshing %s"),$doc->title));
       if ($refresh) $doc->refreshMembers();
       $doc->SetGroupMail(($doc->GetValue("US_IDDOMAIN")>1));
-      print_r2($doc->getTVAlue("grp_ruser"));
       $doc->modify();
       $doc->specPostInsert();
       $doc->setValue("grp_isrefreshed","1");

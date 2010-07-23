@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-12 11:13+0200\n"
-"PO-Revision-Date: 2010-07-12 11:13+0200\n"
+"POT-Creation-Date: 2010-07-23 14:17+0200\n"
+"PO-Revision-Date: 2010-07-23 14:30+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -521,11 +521,11 @@ msgstr "[%s] doit être un nombre entier"
 
 #, c-format
 msgid "value [%s] is not a valid date"
-msgstr ""
+msgstr "la valeur [%s] n'est pas une date valide"
 
 #, c-format
 msgid "value [%s] is not a valid timestamp"
-msgstr ""
+msgstr "la veleur [%s] n'est pas une date avec heure valide"
 
 msgid "error sending text conversion"
 msgstr "erreur lors de l'envoi de la conversion texte"
@@ -792,7 +792,7 @@ msgstr "propriété de fichier %s inconnu"
 
 #, c-format
 msgid "exportXml : cannot write file %s"
-msgstr ""
+msgstr "exportXml : ne peut écrire le fichier %s"
 
 msgid "confidential document"
 msgstr "document confidentiel"
@@ -1562,11 +1562,11 @@ msgstr "Document %d non lié"
 
 #, c-format
 msgid "target folder [%s] is not a folder"
-msgstr ""
+msgstr "le dossier destination [%s] n'est pas un dossier"
 
 #, c-format
 msgid "target folder [%s] is not set"
-msgstr ""
+msgstr "le dossier destination [%s] n'est pas déclaré"
 
 #, c-format
 msgid "document %d moved"
@@ -1713,6 +1713,14 @@ msgstr "groupe %s"
 msgid "group %d does not exist"
 msgstr "le groupe n°%d n'existe pas"
 
+msgid "Members detection are disactived for the group"
+msgstr "La récupération des membres est désactivé pour ce groupe"
+
+#, c-format
+msgid ""
+"Too many members to display there here (%d). Use Open menu to display them."
+msgstr "Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu ouvrir pour les voir."
+
 #, c-format
 msgid "refreshing %s"
 msgstr "actualisation %s"
@@ -1759,6 +1767,9 @@ msgid ""
 "This kind of document can not be duplicated"
 msgstr "ce type de document ne peut être dupliqué"
 
+msgid "this system user cannot be deleted"
+msgstr "Cet utilisateur système n epeut être supprimé"
+
 msgid "Parameter name does not include spaces"
 msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
 
@@ -1769,7 +1780,7 @@ msgid "Failed to copy $infile to $f"
 msgstr "Echec de la copie de $infile vers $f"
 
 msgid "vault file is not initialized"
-msgstr ""
+msgstr "fichier du coffre non initialisé"
 
 msgid "file does not exist in vault"
 msgstr "Fichier inexistant dans le Coffre"
@@ -1863,7 +1874,7 @@ msgid "socket creation error"
 msgstr ""
 
 msgid "Error sending file"
-msgstr ""
+msgstr "Erreur lors de l'envoi du fichier"
 
 msgid "empty file"
 msgstr "fichier vide"
@@ -2694,7 +2705,7 @@ msgid "default visibility"
 msgstr "visibilité par défaut"
 
 msgid "No columns has been defined"
-msgstr ""
+msgstr "Aucunes colonnes ont été définies"
 
 msgid "atype"
 msgstr "atype"
@@ -3485,8 +3496,8 @@ msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
 msgid "You must upgrade to version 6 or more"
 msgstr "Vous devez mettre à jour avec la version 6 au minimum"
 
-msgid "Click here to login"
-msgstr "Cliquer ici pour se connecter"
+msgid "Click here to logout"
+msgstr "Cliquer ici pour se déconnecter"
 
 msgid "Choose Gate Urls"
 msgstr "Choix des URLs"
@@ -5805,16 +5816,16 @@ msgid "language"
 msgstr "langue"
 
 msgid "Data api"
-msgstr ""
+msgstr "Api données"
 
 msgid "document ressource"
-msgstr ""
+msgstr "ressource document"
 
 msgid "user ressource"
-msgstr ""
+msgstr "ressource utilisateur"
 
 msgid "application ressource"
-msgstr ""
+msgstr "ressource application"
 
 msgid "group document request"
 msgstr ""
@@ -5905,6 +5916,14 @@ msgstr "Préférés"
 
 msgid "main view columns"
 msgstr "Vue principale"
+
+#, c-format
+msgid "no valid document group : %s"
+msgstr ""
+
+#, c-format
+msgid "no valid group : %s"
+msgstr ""
 
 msgid "mail will be calculated from domain"
 msgstr "l'adresse email sera calculée à partir du domaine"
@@ -8125,6 +8144,9 @@ msgstr "les préférences d'exportation ont été sauvegardées"
 
 msgid "new document family"
 msgstr "nelle famille de document"
+
+#~ msgid "Click here to login"
+#~ msgstr "Cliquer ici pour se connecter"
 
 #~ msgid "not pertinent"
 #~ msgstr "Pas pertinent"
