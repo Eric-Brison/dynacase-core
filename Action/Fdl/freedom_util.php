@@ -47,6 +47,7 @@ function GetSqlCond($Table, $column, $integer=false)
 	$sql_cond .= implode(",",$Table);
 	$sql_cond .= ")";
       } else {// for text type 
+          foreach ($Table as &$v) $v=pg_escape_string($v);
 	$sql_cond = "$column in ('";      
 	$sql_cond .= implode("','",$Table);
 	$sql_cond .= "')";

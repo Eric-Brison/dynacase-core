@@ -325,6 +325,7 @@ Class SearchDoc {
 	$sql_cond .= implode(",",$values);
 	$sql_cond .= ")";
       } else {// for text type 
+          foreach ($values as &$v) $v=pg_escape_string($v);
 	$sql_cond = "$column in ('";      
 	$sql_cond .= implode("','",$values);
 	$sql_cond .= "')";
