@@ -223,8 +223,10 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 	}
 
         if (! $err) {
+            if ($info) {
             foreach ($info as $k=>$v) {
                 if ($v["err"]!="") $err=$v["err"];
+            }
             }
         }
 	return $err;
