@@ -155,6 +155,7 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
 	case "title" :
 	  if ($ulink) {
 	    $trid=$v["id"];
+	    $v[$kc]=$rdoc->getHTMLTitle();
 	    $trlink=getparam("CORE_STANDURL")."&app=FDL&action=FDL_CARD&id=$trid";
 	    $cval="<A target=\"rdoc".$v["id"]."\"  onmousedown=\"document.noselect=true;\" ";
 	    $cval.="onclick=\"subwindowm(200,600,'rdoc$trid','$trlink')\" oncontextmenu=\"popdoc(event,'$trlink');return false;\">";
@@ -213,7 +214,7 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
     
   }
   $this->lay->setBlockData("TFOOT",$tlfoots);
-  $this->lay->set("TITLE",$this->getTitle());
+  $this->lay->set("TITLE",$this->getHTMLTitle());
   //print_r($this->lay);
 }
 /**
@@ -255,7 +256,7 @@ function viewreportcsv($target="_self",$ulink=true,$abstract=false) {
 	  $cval = _($doc->getstate());
 	  break;
 	case "title" :
-	  $cval=$doc->getTitle();
+	  $cval=$doc->getHTMLTitle();
 	  break;	    
 	default:
 	  $cval = str_replace(array('<BR>','<br/>'),'\\n',$doc->getHtmlAttrValue($vc,'',false,-1,false));;

@@ -27,7 +27,7 @@ global $_SERVER;
 $dir=dirname($_SERVER["argv"][0]);
 $real=(getHttpVars("real")=="yes");
 
-$dbfreedom=getDbName($dbaccess);
+$dbfreedom=getServiceName($dbaccess);
 if ($real) system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_realclean.sql\""); 
 else system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_clean.sql\""); 
 
