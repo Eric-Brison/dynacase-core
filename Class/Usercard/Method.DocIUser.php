@@ -10,6 +10,15 @@
  */
  /**
  */
+
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _IUSER extends _USER {
+        /*
+         * @end-method-ignore
+         */
 var $cviews=array("FUSERS:FUSERS_IUSER");
 var $eviews=array("USERCARD:CHOOSEGROUP");
 var $defaultview="FDL:VIEWBODYCARD";
@@ -252,6 +261,7 @@ function PostModify() {
 }
 
 
+
 function PostDelete() {
   _USER::PostDelete();
 
@@ -473,5 +483,13 @@ function setPassword($password) {
 
   return "";
 }
+     /**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
 
+/*
+ * @end-method-ignore
+ */
 ?>

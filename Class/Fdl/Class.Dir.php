@@ -649,6 +649,7 @@ Class Dir extends PDir
 	 * update folder relations
 	 */
 	public function updateFldRelations() {
+	    return; //inhibit folder relation (too slow for great folder)
 		if ($this->doctype=='T') return;
 		include_once("FDL/Class.DocRel.php");
 		$nattr = $this->GetNormalAttributes();
