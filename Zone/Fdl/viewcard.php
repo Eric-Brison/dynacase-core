@@ -229,7 +229,7 @@ function viewcard(&$action) {
   } 
   $action->lay->Set("version", $doc->version);
 
-  $action->lay->Set("title", $doc->gettitle());
+  $action->lay->Set("title", $doc->getHTMLTitle());
   $action->lay->Set("id", $docid);
 
   

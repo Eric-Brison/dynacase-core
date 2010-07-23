@@ -253,11 +253,11 @@ function getResPhpFunc(&$doc,&$oattr,&$rargids,&$tselect,&$tval,$whttpvars=true,
 
   // addslahes for JS array
   reset($res);
-  while (list($k, $v) = each($res)) {
-     while (list($k2, $v2) = each($v)) {
+  foreach($res as $k=>$v) {
+     foreach($v as $k2=>$v2) {
        // not for the title
        if ($k2>0) $res[$k][$k2]=addslashes(str_replace("\r","",str_replace("\n","\\n",$v2))); // because JS array 
-       else $res[$k][$k2]=mb_substr($res[$k][$k2],0,$action->getParam("ENUM_TITLE_SIZE",40));
+       else $res[$k][$k2]=str_replace(array("<",">"),array("&lt;","&gt;"),mb_substr($res[$k][$k2],0,$action->getParam("ENUM_TITLE_SIZE",40)));
      }
    }
     $tselect = array();

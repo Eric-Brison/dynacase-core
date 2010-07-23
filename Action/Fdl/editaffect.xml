@@ -44,7 +44,7 @@ td {
 
 <tr><td>
     <input type="hidden" name="id" value="[id]">
-[TEXT:User to affect]&nbsp;:&nbsp;[ZONE FDL:INPUTATTRIBUTE?type=doclink&id=affectuser&label=[TEXT:User to affect]&famid=IUSER&esize=30]</td>
+[TEXT:User to affect]&nbsp;:&nbsp;[ZONE FDL:INPUTATTRIBUTE?type=docid("IUSER")&id=id_affectuser&label=[TEXT:User to affect]&esize=30]</td>
 [IF viewstate]
      <td>
      <span class="statetext" style="border-color:[colorstate]">[textstate]</span>

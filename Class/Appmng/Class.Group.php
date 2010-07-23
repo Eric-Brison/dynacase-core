@@ -115,8 +115,9 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	$err = $g->exec_query("delete from groups where idgroup=".$this->iduser." and iduser=".$u->id); 
 	if ($err=="") {
 	  // if it is a user (not a group)
-	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 
+	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser);
 	  $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=".$g->iduser);
+          $g->exec_query("delete from permission where computed");
 
           $p = new Permission($this->dbaccess);
           $p->deletePermission($g->iduser, null, null, true);
@@ -143,6 +144,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
 	  // if it is a user (not a group)
 	  $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=".$g->iduser); 
 	  $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=".$g->iduser);
+          $g->exec_query("delete from permission where computed");
 
           $p = new Permission($this->dbaccess);
           $p->deletePermission($g->iduser, null, null, true);

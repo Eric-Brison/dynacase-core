@@ -112,30 +112,34 @@ Class SearchDoc {
   }
   /**
    * count results without return data
-   * view permission are not tested in this case
+   * 
    * @return int 
    */
   public function onlyCount() {
       if (! $this->result) {
           $fld = new_Doc($this->dbaccess, $this->dirid);
+          $userid=$fld->userid;
           if ($fld->fromid != getFamIdFromName($this->dbaccess,"SSEARCH")) {
               $this->mode="ITEM";
               if ($this->debug) $debuginfo=array();
               else $debuginfo=null;
               $tqsql=getSqlSearchDoc($this->dbaccess,$this->dirid,$this->fromid,
-              $this->filters,$this->distinct,$this->latest,$this->trash);
+                                     $this->filters,$this->distinct,$this->latest,$this->trash);
               $this->debuginfo["query"]=$tqsql[0];
-              $sql=preg_replace("/select (.*) from/","select count(id) from",$tqsql[0]);
-              if ($sql) {
-                  $dbid=getDbid($this->dbaccess);
-                  $mb=microtime(true);
-                  $q=pg_query($dbid,$sql);
-                  $result = pg_fetch_array ($q,0,PGSQL_ASSOC);
-                  $this->debuginfo["delay"]=sprintf("%.03fs",microtime(true)-$mb);
-                  return ($result["count"]);
-              } else {
-                  return 0;
+              $count=0;
+              foreach ($tqsql as $sql) {
+                  if ($sql) {
+                      $sql=preg_replace("/select (.*) from/","select count(id) from",$sql);
+                      if ($userid != 1) $sql.=" and (profid <= 0 or hasviewprivilege($userid, profid))";
+                      $dbid=getDbid($this->dbaccess);
+                      $mb=microtime(true);
+                      $q=pg_query($dbid,$sql);
+                      $result = pg_fetch_array ($q,0,PGSQL_ASSOC);
+                      $count+=$result["count"];
+                      $this->debuginfo["delay"]=sprintf("%.03fs",microtime(true)-$mb);
+                  }
               }
+            return $count;
           }
       } else $this->count();
       return $this->count;

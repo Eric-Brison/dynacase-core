@@ -30,37 +30,36 @@ $wg=new group("",2); // working group
 
 
 function refreshGroups($groupIdList, $refresh=false, &$currentPath=array(), &$groupDepth=array()) {
-  global $wg;
+    global $wg;
 
-  // Iterate over given groups list
-  foreach( $groupIdList as $groupId ) {
+    // Iterate over given groups list
+    foreach( $groupIdList as $groupId ) {
 
-    // Detect loops in groups
-    if( array_search($groupId, $currentPath) ) {
-      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Loop detected in group with id '%s' (path=[%s])", $groupId, join('-', $currentPath)));
-      continue;
+        // Detect loops in groups
+        if( array_search($groupId, $currentPath) ) {
+            error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Loop detected in group with id '%s' (path=[%s])", $groupId, join('-', $currentPath)));
+            continue;
+        }
+
+        // Get direct parent groups list
+        $parentGroupIdList = $wg->getParentsGroupId($groupId);
+        // Compute depth of current group and recursively compute depth on parent groups
+        array_push($currentPath, $groupId);
+        $groupDepth[$groupId] = max($groupDepth[$groupId], count($currentPath));
+        refreshGroups($parentGroupIdList, $refresh, $currentPath, $groupDepth);
+        array_pop($currentPath);
     }
 
-    // Get direct parent groups list
-    $parentGroupIdList = $wg->getParentsGroupId($groupId);
-
-    // Compute depth of current group and recursively compute depth on parent groups
-    array_push($currentPath, $groupId);
-    $groupDepth[$groupId] = max($groupDepth[$groupId], count($currentPath));
-    refreshGroups($parentGroupIdList, $refresh, $currentPath, $groupDepth);
-    array_pop($currentPath);
-  }
-
-  // End of groups traversal
-  if( count($currentPath) <= 0 ) {
-    // We can now refresh the groups based on their ascending depth
-    uasort($groupDepth, create_function('$a,$b', 'return ($a-$b);'));
-    foreach( $groupDepth as $group => $depth ) {
-      refreshOneGroup($group, $refresh);
+    // End of groups traversal
+    if( count($currentPath) <= 0 ) {
+        // We can now refresh the groups based on their ascending depth
+        uasort($groupDepth, create_function('$a,$b', 'return ($a-$b);'));
+        foreach( $groupDepth as $group => $depth ) {
+            refreshOneGroup($group, $refresh);
+        }
     }
-  }
 
-  return $groupIdList;
+    return $groupIdList;
 }
 
 function array_unset(&$t,$vp) {

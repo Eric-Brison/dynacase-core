@@ -35,6 +35,7 @@ addEvent(window,"load",function al(event) {viewTab(event,'tabsystem');});
 <tr><td align="right"><span class="fablabel">[L_US_LOGIN]&nbsp;:&nbsp;</span></td><td>[V_US_LOGIN][V_US_WHATID]</td></tr>
 <tr><td align="right"><span class="fablabel">[IF hasdomain][L_US_DOMAIN][ENDIF hasdomain]</span>[IF hasdomain]&nbsp;:&nbsp;[ENDIF hasdomain]</td><td>[IF hasdomain][V_US_DOMAIN][ENDIF hasdomain][V_US_IDDOMAIN] </td></tr>
 <tr><td align="right"><span class="fablabel">[L_GRP_HASMAIL]</span>&nbsp;:&nbsp;</td><td> [V_GRP_HASMAIL]</td></tr>
+<tr><td align="right"><span class="fablabel">[L_GRP_HASMEMBERS]</span>&nbsp;:&nbsp;</td><td> [V_GRP_HASMEMBERS]</td></tr>
 <tr><td align="right"><span class="fablabel">[L_GRP_ROLE]&nbsp;:&nbsp;</span></td><td>[V_GRP_ROLE]</td></tr>
 <tr><td align="right"><span class="fablabel">[L_GRP_TYPE]&nbsp;:&nbsp;</span></td><td>[V_GRP_TYPE]</td></tr>
 </table>

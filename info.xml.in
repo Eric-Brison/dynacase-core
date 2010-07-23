@@ -246,6 +246,9 @@
 
   <changelog>
   	
+    <version number="3.0.8" date="2010-07-12">
+      <change title="new feature for XML import/export" url="http://dev.freedom-ecm.org/versions/show/31"/>        
+    </version>
     <version number="3.0.7-3" date="2010-06-25">
       <change title="Update reference manual " >
       </change>

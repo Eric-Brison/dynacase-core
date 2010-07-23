@@ -101,9 +101,9 @@ function inputattribute(&$action) {
   } else {
     
     $format="";
-    if (preg_match('/^(.*)\("([^"]*)")/',$type,$reg)) {
-      $type=$reg[1];
-      $format=$reg[2];
+    if (preg_match('/^(.*)\("([^"]*)"/',$type,$reg)) {
+      $type=trim($reg[1]);
+      $format=trim($reg[2]);
     }
 
   $index="";

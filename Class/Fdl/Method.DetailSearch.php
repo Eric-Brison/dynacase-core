@@ -164,12 +164,27 @@ Class _DSEARCH extends DocSearch {
 		if (($col=="revdate") && ($val!='') && (! is_numeric($val))) {
 			$val=stringdatetounixts($val);
 		}
-
+		$atype='';
+		$oa=$this->searchfam->getAttribute($col);
+		if ($oa) $atype=$oa->type;
+		else if ($this->infofields[$col]) $atype=$this->infofields[$col]["type"];
+		if ($atype=="date" || $atype=="timestamp") {
+		    $cfgdate=getLocaleConfig();
+		    if ($val) $val=stringDateToIso($val,$cfgdate['dateFormat']);
+                    if ($val2) $val2=stringDateToIso($val2,$cfgdate['dateFormat']);
+		}
+		if (($atype=="timestamp") && ($op=="=")) {
+		    $val=trim($val);
+		    if (strlen($val)==10) {
+		        $val2=$val." 23:59:59";
+		        $val.=" 00:00:00";
+		        $op="><";
+		        
+		    }
+		}
 		switch($op) {
 			case "is null":
-				$oa=$this->searchfam->getAttribute($col);
-				if ($oa) $atype=$oa->type;
-				else if ($this->infofields[$col]) $atype=$this->infofields[$col]["type"];
+				
 				switch ($atype) {
 					case "int":
 					case "uid":
@@ -208,9 +223,7 @@ Class _DSEARCH extends DocSearch {
 				}
 				break;
 			case "=~*":
-				$oa=$this->searchfam->getAttribute($col);
-				if ($oa) $atype=$oa->type;
-				else if ($this->infofields[$col]) $atype=$this->infofields[$col]["type"];
+				
 				switch ($atype) {
 				    case "uid":
 				        $err=simpleQuery(getDbAccessCore(),
@@ -243,7 +256,7 @@ Class _DSEARCH extends DocSearch {
 				                    if ($err=="") {
 				                        if (count($ids)==0) $cond="false";
 				                        elseif (count($ids)==1) {
-				                            $cond = " ".$col." = ".intval($ids[0])." ";
+				                            $cond = " ".$col." = '".intval($ids[0])."' ";
 				                        } else {
 				                            $cond = " ".$col." in ('".implode("','",$ids)."') ";
 				                        }
@@ -285,8 +298,7 @@ Class _DSEARCH extends DocSearch {
 				}
 				break;
 			default:
-				if ($oa) $atype=$oa->type;
-				else if ($this->infofields[$col]) $atype=$this->infofields[$col]["type"];
+				
 				switch ($atype) {
 					case "enum":
 						$enum = $oa->getEnum();

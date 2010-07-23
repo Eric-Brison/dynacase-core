@@ -101,7 +101,7 @@ function generic_edit(&$action) {
 			$doc->modify(true,array("adate"),true);
 		}
 
-		$action->lay->Set("title", $doc->gettitle());
+		$action->lay->Set("title", $doc->getHTMLtitle());
 	}
 
 	if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon","FDL/Images/logo16.ico");

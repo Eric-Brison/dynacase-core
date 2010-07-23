@@ -811,7 +811,8 @@ create unique index i_docir on doc(initid, revision);";
 	if (abs($this->locked) != $this->userid) {
 	  
 	    $user = new User("", abs($this->locked));
-	    $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
+	    if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
+            else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
 	  
 	} else $err = $this-> Control( "edit");
     }
@@ -834,7 +835,8 @@ create unique index i_docir on doc(initid, revision);";
     if ($this->withoutControl) return ""; // no more test if disableEditControl activated
     if  (($this->locked != 0) && (abs($this->locked) != $this->userid)) {	  
       $user = new User("", abs($this->locked));
-      $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
+      if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
+      else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->getTitle(),$this->revision,$user->firstname." ".$user->lastname); 
 	  
     } else {
       $err = $this->Control("edit");
@@ -861,7 +863,8 @@ create unique index i_docir on doc(initid, revision);";
       else {
 	if ( abs($this->locked) != $this->userid) {
 	  $user = new User("", abs($this->locked));
-	  $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."), 
+	  if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
+	  else $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."),
 			 $this->title,$this->id,$user->firstname." ".$user->lastname);
 	}   else  {      
 	  $err = $this-> Control( "edit");
@@ -4271,7 +4274,7 @@ create unique index i_docir on doc(initid, revision);";
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
       $a="";
       if ($htmllink) {
-          if (! $title) $title=$this->getTitle($id);
+          if (! $title) $title=$this->getHTMLTitle($id);
           if ($title == "") {
               $a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
           } else {
@@ -4320,7 +4323,7 @@ create unique index i_docir on doc(initid, revision);";
           }
 
       } else {
-          if (! $title) $a=$this->getTitle($id);
+          if (! $title) $a=$this->getHTMLTitle($id);
           else $a=$title;
       }
       return $a;
@@ -5363,22 +5366,33 @@ create unique index i_docir on doc(initid, revision);";
    * [US_ROLE|director][US_SOCIETY|alwaysNet]...
    * @param string $defval the default values
    * @param bool  $method set to false if don't want interpreted values
+   * @param bool  $forcedefault force default values
    * @access private
    */
-  final public function setDefaultValues($tdefval,$method=true) {
-    if (is_array($tdefval)) {
-      if ($method) {
-	foreach ($tdefval as $aid=>$dval) {
-	  $this->setValue($aid, $this->GetValueMethod($dval));
-	}             
-      } else {
-	foreach ($tdefval as $aid=>$dval) {
-	  $this->$aid= $dval; // raw data
-	  
-	}             
-      }
-    }
-  }  
+  final public function setDefaultValues($tdefval,$method=true,$forcedefault=false) {
+  	if (is_array($tdefval)) {
+  		foreach ($tdefval as $aid=>$dval) {
+  			$oattr = $this->getAttribute($aid);
+  			
+  			$ok = false;
+  			if(empty($oattr)) $ok = true;
+  			elseif($forcedefault) $ok = true;
+  			elseif(!$oattr->inArray()) $ok = true;
+  			elseif($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty")!="yes") {
+  				$ok = true;
+  			}
+  			
+  			
+  			if ($ok) {
+  				if ($method) {
+  					$this->setValue($aid, $this->GetValueMethod($dval));
+  				} else {
+  					$this->$aid= $dval; // raw data
+  				}
+  			}
+  		}
+  	}
+  }
 
   /**
    * set default name reference 
@@ -7003,7 +7017,14 @@ static function _cmpanswers($a,$b) {
     }
     return $def; 
   }
-
+  /**
+   * Same as ::getTitle() 
+   * the < > characters as replace by entities
+   */
+  function getHTMLTitle($id="-1",$def="") {   
+    $t=$this->getTitle($id,$def);
+    return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
+  }
   /**
    * return the today date with european format DD/MM/YYYY
    * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
@@ -7036,7 +7057,6 @@ static function _cmpanswers($a,$b) {
     }
     return date("d/m/Y H:i",$nd);
   }
-
 
   /**
    * return the today date and time with european format DD/MM/YYYY HH:MM
