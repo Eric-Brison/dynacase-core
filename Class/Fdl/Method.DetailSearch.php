@@ -167,8 +167,6 @@ Class _DSEARCH extends DocSearch {
 		$atype='';
 		$oa=$this->searchfam->getAttribute($col);
 		
-		error_log('VALUE BEFORE : '.$val);
-		
 		if ($oa) $atype=$oa->type;
 		else if ($this->infofields[$col]) $atype=$this->infofields[$col]["type"];
 		if ($atype=="date" || $atype=="timestamp") {
@@ -178,7 +176,6 @@ Class _DSEARCH extends DocSearch {
 				$hms = '';
 				if($pos != false){
 					$hms = substr($val,$pos + 1);
-					error_log('HMS to evaluate : '.$hms);
 				}
 			}
 			
@@ -187,9 +184,7 @@ Class _DSEARCH extends DocSearch {
             if ($val2) $val2=stringDateToIso($val2,$cfgdate['dateFormat']);
 		
 			if (($atype=="timestamp") && ($op=="=")) {
-				
-				error_log('VALUE AFTER : '.$val);
-				
+								
 			    $val=trim($val);
 			    if (strlen($val)==10) {
 			    	if($hms == ''){
