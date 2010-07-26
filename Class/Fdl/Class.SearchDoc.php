@@ -129,7 +129,8 @@ Class SearchDoc {
               $count=0;
               foreach ($tqsql as $sql) {
                   if ($sql) {
-                      $sql=preg_replace("/select (.*) from/","select count(id) from",$sql);
+                      $sql=preg_replace("/select\s+(.*)\s+from\s/","select count(id) from ",$sql);
+          
                       if ($userid != 1) $sql.=" and (profid <= 0 or hasviewprivilege($userid, profid))";
                       $dbid=getDbid($this->dbaccess);
                       $mb=microtime(true);

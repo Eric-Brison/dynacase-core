@@ -295,6 +295,20 @@ Class _DSEARCH extends DocSearch {
 				                    $err=sprintf(_("attribute %s : cannot detect title attribute"),$col);
 				                }
 				            }
+				        } elseif ($col == "fromid") {
+				            $err=simpleQuery($this->dbaccess,
+            				            sprintf("select id from docfam where title ~* '%s'",
+            				            pg_escape_string($val)),
+            				            $ids,
+            				            true);
+				            if ($err=="") {
+				                if (count($ids)==0) $cond="false";
+				                elseif (count($ids)==1) {
+				                    $cond = " ".$col." = ".intval($ids[0])." ";
+				                } else {
+				                    $cond = " ".$col." in (".implode(",",$ids).") ";
+				                }
+				            }
 				        }
 				        break;
 				    default:
