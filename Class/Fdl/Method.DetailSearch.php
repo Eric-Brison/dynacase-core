@@ -166,21 +166,51 @@ Class _DSEARCH extends DocSearch {
 		}
 		$atype='';
 		$oa=$this->searchfam->getAttribute($col);
+		
+		error_log('VALUE BEFORE : '.$val);
+		
 		if ($oa) $atype=$oa->type;
 		else if ($this->infofields[$col]) $atype=$this->infofields[$col]["type"];
 		if ($atype=="date" || $atype=="timestamp") {
+			
+			if (($atype=="timestamp")){
+				$pos = strpos($val,' ');
+				$hms = '';
+				if($pos != false){
+					$hms = substr($val,$pos + 1);
+					error_log('HMS to evaluate : '.$hms);
+				}
+			}
+			
 		    $cfgdate=getLocaleConfig();
 		    if ($val) $val=stringDateToIso($val,$cfgdate['dateFormat']);
-                    if ($val2) $val2=stringDateToIso($val2,$cfgdate['dateFormat']);
-		}
-		if (($atype=="timestamp") && ($op=="=")) {
-		    $val=trim($val);
-		    if (strlen($val)==10) {
-		        $val2=$val." 23:59:59";
-		        $val.=" 00:00:00";
-		        $op="><";
-		        
-		    }
+            if ($val2) $val2=stringDateToIso($val2,$cfgdate['dateFormat']);
+		
+			if (($atype=="timestamp") && ($op=="=")) {
+				
+				error_log('VALUE AFTER : '.$val);
+				
+			    $val=trim($val);
+			    if (strlen($val)==10) {
+			    	if($hms == ''){
+				        $val2=$val." 23:59:59";
+				        $val.=" 00:00:00";
+				        $op="><";
+			    	} else if (strlen($hms) == 2){
+			    		$val2=$val.' '.$hms.":59:59";
+			    		$val.=' '.$hms.":00:00";
+			    		$op="><";
+			    	} else if (strlen($hms) == 5){
+			    		$val2=$val.' '.$hms.":59";
+			    		$val.=' '.$hms.":00";
+			    		$op="><";
+			    	} else {
+			    		$val .= ' '.$hms ;
+			    	}
+			        
+			    }
+			}
+		
 		}
 		switch($op) {
 			case "is null":
