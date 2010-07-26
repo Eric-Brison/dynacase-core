@@ -101,6 +101,10 @@ function generic_mod(&$action) {
                 if ($rvid != "") $zone="&vid=$rvid";
 		if ($err=="-") $err="";
 		$action->lay->set("error",json_encode($err));
+		$warning=$action->parent->getWarningMsg();
+		if ($warning && count($warning) > 0) $warning=implode("\n",$warning);
+		else $warning='';
+                $action->lay->set("warning",json_encode($warning));
 		if ($retedit) $action->lay->set("url",sprintf("?app=%s&action=%s$zone",getHttpVars("redirect_app","GENERIC"),getHttpVars("redirect_act","GENERIC_EDIT")));
 		else {
 			if ($viewext) $action->lay->set("url",sprintf("?app=%s&action=%s$zone",getHttpVars("redirect_app","FDL"),getHttpVars("redirect_act","VIEWEXTDOC$zone&refreshfld=Y&id=$ndocid")));
