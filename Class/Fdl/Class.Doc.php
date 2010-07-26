@@ -4607,7 +4607,7 @@ create unique index i_docir on doc(initid, revision);";
 			       }
 			       $lay->setBlockData("TATTR",$talabel);
 			       if (! $emptyarray) {
-			       	if ($oattr->getOption("vlabel")=="") $caption=$oattr->getLabel();
+			       	if ($oattr->getOption("vlabel")=="up") $caption=$oattr->getLabel();
 			       	else $caption="";
 			       	if ($nbitem > 10) $caption.=" ($nbitem)";
 			       	$lay->set("caption",$caption);
@@ -5708,14 +5708,19 @@ create unique index i_docir on doc(initid, revision);";
 	// print name except image (printed otherthere)
 	if ($attr->type != "image") {	
 	  $tableframe[$v]["wvalue"]=(($attr->type == "array")&&($attr->getOption("vlabel")!="left"))?"1%":"30%"; // width
-	  if (($attr->type != "array")||($attr->getOption("vlabel")=="left"))  $tableframe[$v]["ndisplay"]="inline";
-	  else $tableframe[$v]["ndisplay"]="none";
+	  $tableframe[$v]["ndisplay"]="inline";
+	
 	  if ($attr->getOption("vlabel")=="none") {
 	    $tableframe[$v]["nonelabel"]=true;
 	    $tableframe[$v]["normallabel"]=false;	    
 	  } else if ($attr->getOption("vlabel")=="up") {
-	    $tableframe[$v]["normallabel"]=false;
-	    $tableframe[$v]["uplabel"]=true;
+	      if ($attr->type == "array") { // view like none label
+	          $tableframe[$v]["nonelabel"]=true;
+	          $tableframe[$v]["normallabel"]=false;
+	      } else {
+	          $tableframe[$v]["normallabel"]=false;
+	          $tableframe[$v]["uplabel"]=true;
+	      }
 	  }
 	  $tableframe[$v]["name"]=$this->GetLabel($attr->id);
 	  if ( ($attr->type == "htmltext") && (count($tableframe)==1)) {

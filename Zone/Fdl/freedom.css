@@ -310,6 +310,9 @@ TABLE.rows TBODY TR TD {
   border-style:solid;
 }
 
+TABLE.border  {  
+  border:1px solid [CORE_BGCOLORALTERN]; 
+}
 
 TABLE.tarray  TR TD {  
   border-width:0px 0px 1px 0px;	 
