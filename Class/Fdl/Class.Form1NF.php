@@ -550,7 +550,7 @@ class Form1NF {
 					$this->stdInfo(_("Filling enum table '%s'"), $table->name);
 					$this->logSqlWrite(sprintf("Filling table %s", strtolower($table->name)), true);
 					foreach($table->datas as $key => $value) {
-						$sql = 'INSERT INTO "'.$this->params['tmpschemaname'].'"."'.strtolower($table->name).'" ("id","title") VALUES (\''.pg_escape_string($key).'\',\''.pg_escape_string($value).'\')';
+						$sql = 'INSERT INTO "'.$this->params['tmpschemaname'].'"."'.$table->name.'" ("id","title") VALUES (\''.pg_escape_string($key).'\',\''.pg_escape_string($value).'\')';
 						$this->sqlExecute($sql);
 					}
 				}
@@ -580,6 +580,7 @@ class Form1NF {
 		if(!$this->configLoadAttributes()) return false;
 		if(!$this->configLoadExplodeContainers()) return false;
 		if(!$this->configLoadTables()) return false;
+		if(!$this->configLoadCheck()) return false;
 
 		return true;
 	}
@@ -597,6 +598,21 @@ class Form1NF {
 			}
 		}
 		return $arrayColumns;
+	}
+	/**
+	 * freedom checks and load
+	 * @return bool
+	 */
+	private function configLoadCheck() {
+		try {
+			foreach($this->config as $iFamily => $family) {
+
+			}
+		}
+		catch(Exception $e) {
+			return false;
+		}
+		return true;
 	}
 	/**
 	 * freedom checks and load
@@ -622,8 +638,6 @@ class Form1NF {
 							$tableName = $this->getUniqueTableName($column->name);
 							$newTable = new Form1NF_Table('enum', $tableName, $column->rename);
 							$newTable->datas = $column->attribute->getEnum();
-							$newTable->columns[] = new Form1NF_Column($newTable, 'id', '', 'text');
-							$newTable->columns[] = new Form1NF_Column($newTable, 'title', '', 'text');
 							$family->references[] = new Form1NF_Reference($tableName, $column->name, 'text');
 							$this->config[] = $newTable;
 							$delete[] = $iColumn;
@@ -655,14 +669,9 @@ class Form1NF {
 							$tableNameEnum = $this->getUniqueTableName($column->name);
 							$newTableEnum = new Form1NF_Table('enum_multiple', $tableNameEnum, $column->rename);
 							$newTableEnum->datas = $column->attribute->getEnum();
-							$newTableEnum->columns[] = new Form1NF_Column($newTableEnum, 'id', '', 'text');
-							$newTableEnum->columns[] = new Form1NF_Column($newTableEnum, 'title', '', 'text');
 
-							$ref1 = new Form1NF_Reference($tableNameEnum, 'idenum', 'text');
-							$ref2 = new Form1NF_Reference($family->name); // idfamille
-
-							$newTableLink->references[] = $ref1;
-							$newTableLink->references[] = $ref2;
+							$newTableLink->references[] = new Form1NF_Reference($tableNameEnum, 'idenum', 'text');
+							$newTableLink->references[] = new Form1NF_Reference($family->name); // idfamille
 
 							$family->linkedTables['enum_multiple_link'][] = array(
 								'table' => $newTableLink,
@@ -681,11 +690,8 @@ class Form1NF {
 
 							$newTableDocid = $this->getConfigTable($column->attribute->format, true);
 
-							$ref1 = new Form1NF_Reference($newTableDocid->name, 'iddoc');
-							$ref2 = new Form1NF_Reference($family->name); // idfamille
-
-							$newTableLink->references[] = $ref1;
-							$newTableLink->references[] = $ref2;
+							$newTableLink->references[] = new Form1NF_Reference($newTableDocid->name, 'iddoc');
+							$newTableLink->references[] = new Form1NF_Reference($family->name); // idfamille
 
 							$family->linkedTables['docid_multiple_link'][] =  array(
 								'table' => $newTableLink,
@@ -734,8 +740,6 @@ class Form1NF {
 										$tableEnumName = $this->getUniqueTableName($col->name);
 										$newTable = new Form1NF_Table('enum_inarray', $tableEnumName, $col->rename);
 										$newTable->datas = $col->attribute->getEnum();
-										$newTable->columns[] = new Form1NF_Column($newTable, 'id', '', 'text');
-										$newTable->columns[] = new Form1NF_Column($newTable, 'title', '', 'text');
 										$tableArray->references[] = new Form1NF_Reference($tableEnumName, $col->name, 'text');
 										$this->config[] = $newTable;
 										break;
@@ -752,11 +756,8 @@ class Form1NF {
 
 										$newTableDocid = $this->getConfigTable($col->attribute->format, true);
 
-										$ref1 = new Form1NF_Reference($newTableDocid->name); // idfamille
-										$ref2 = new Form1NF_Reference($tableArrayName, 'idarray');
-
-										$newTableLink->references[] = $ref1;
-										$newTableLink->references[] = $ref2;
+										$newTableLink->references[] = new Form1NF_Reference($newTableDocid->name); // idfamille
+										$newTableLink->references[] = new Form1NF_Reference($tableArrayName, 'idarray');
 
 										$linkedTable['linkedTables'][] = array(
 											'table' => $newTableLink,
@@ -933,21 +934,25 @@ class Form1NF {
 	 * @param bool $autocreate
 	 * @return mixed
 	 */
-	private function getConfigTable($name, $autocreate=false) {
+	private function getConfigTable($name, $autocreate=false, $rename='') {
+		$return = false;
 		if(empty($name)) {
 			$this->stdError(_("Name of table cannot be empty"));
 		}
 		foreach($this->config as $table) {
 			if(strtolower($table->name) == strtolower($name)) {
-				return $table;
+				$return = $table;
 			}
 		}
-		if($autocreate) {
+		if(empty($return) && $autocreate) {
 			$table = new Form1NF_Table('', $name);
 			$this->config[] = $table;
-			return $table;
+			$return = $table;
 		}
-		return false;
+		if(!empty($rename) && !empty($return) && empty($return->rename)) {
+			$return->rename = $rename;
+		}
+		return $return;
 	}
 	/**
 	 *
@@ -1366,7 +1371,16 @@ class Form1NF_Table {
 			return $this->parentFoundInFieldSet($fieldset->fieldSet, $name);
 		}
 	}
-
+	/**
+	 *
+	 * @return string
+	 */
+	public function getName() {
+		if(empty($this->rename)) {
+			return $this->Name;
+		}
+		return $this->rename;
+	}
 }
 /**
  *
@@ -1529,6 +1543,16 @@ class Form1NF_Column {
 		if($this->inArray()) $type .= '_inarray';
 
 		return $type;
+	}
+	/**
+	 *
+	 * @return string
+	 */
+	public function getName() {
+		if(empty($this->rename)) {
+			return $this->Name;
+		}
+		return $this->rename;
 	}
 }
 ?>

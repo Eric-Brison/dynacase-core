@@ -13,8 +13,8 @@ function usage() {
 	echo "Usage:\n";
 	echo "  " . __FILE__ . "\n";
 	echo "      --config=<config.xml>\n";
+	echo "      --outputname=<output_name>\n";
 	echo "      [--outputtype=<sql|pgservice>] (default sql)\n";
-	echo "      [--outputname=<output_name>]\n";
 	echo "      [--tmppgservice=<tmp_pgservice_name>] (default tmp_1nf)\n";
 	echo "      [--tmpschemaname=<tmp_schemaname>] (default 1nf)\n";
 	echo "      [--tmpemptydb=<yes|no>] (default yes)\n";
