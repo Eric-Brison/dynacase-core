@@ -1372,6 +1372,9 @@ class Form1NF_Table {
 
 		$columns = array();
 		foreach($this->famAttributes as $attribute) {
+			if($attribute->type == 'array') continue;
+			if($attribute->type == 'frame') continue;
+			if($attribute->type == 'tab') continue;
 			if(is_object($attribute->fieldSet) && $this->parentFoundInFieldSet($attribute->fieldSet, $name)) {
 				$columns[] = $attribute;
 			}
