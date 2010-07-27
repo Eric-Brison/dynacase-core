@@ -179,33 +179,33 @@ Class _DSEARCH extends DocSearch {
 				}
 			}
 			
-		    $cfgdate=getLocaleConfig();
-		    if ($val) $val=stringDateToIso($val,$cfgdate['dateFormat']);
-            if ($val2) $val2=stringDateToIso($val2,$cfgdate['dateFormat']);
-		
+			$cfgdate=getLocaleConfig();
+			if ($val) $val=stringDateToIso($val,$cfgdate['dateFormat']);
+			if ($val2) $val2=stringDateToIso($val2,$cfgdate['dateFormat']);
+
 			if (($atype=="timestamp") && ($op=="=")) {
-								
+
 			    $val=trim($val);
 			    if (strlen($val)==10) {
-			    	if($hms == ''){
-				        $val2=$val." 23:59:59";
-				        $val.=" 00:00:00";
-				        $op="><";
-			    	} else if (strlen($hms) == 2){
-			    		$val2=$val.' '.$hms.":59:59";
-			    		$val.=' '.$hms.":00:00";
-			    		$op="><";
-			    	} else if (strlen($hms) == 5){
-			    		$val2=$val.' '.$hms.":59";
-			    		$val.=' '.$hms.":00";
-			    		$op="><";
-			    	} else {
-			    		$val .= ' '.$hms ;
-			    	}
-			        
+			        if($hms == ''){
+			            $val2=$val." 23:59:59";
+			            $val.=" 00:00:00";
+			            $op="><";
+			        } elseif (strlen($hms) == 2){
+			            $val2=$val.' '.$hms.":59:59";
+			            $val.=' '.$hms.":00:00";
+			            $op="><";
+			        } elseif (strlen($hms) == 5){
+			            $val2=$val.' '.$hms.":59";
+			            $val.=' '.$hms.":00";
+			            $op="><";
+			        } else {
+			            $val .= ' '.$hms ;
+			        }
+			         
 			    }
 			}
-		
+
 		}
 		switch($op) {
 			case "is null":
@@ -248,7 +248,6 @@ Class _DSEARCH extends DocSearch {
 				}
 				break;
 			case "=~*":
-				
 				switch ($atype) {
 				    case "uid":
 				        $err=simpleQuery(getDbAccessCore(),
@@ -296,13 +295,26 @@ Class _DSEARCH extends DocSearch {
 				                    $err=sprintf(_("attribute %s : cannot detect title attribute"),$col);
 				                }
 				            }
+				        } elseif ($col == "fromid") {
+				            $err=simpleQuery($this->dbaccess,
+            				            sprintf("select id from docfam where title ~* '%s'",
+            				            pg_escape_string($val)),
+            				            $ids,
+            				            true);
+				            if ($err=="") {
+				                if (count($ids)==0) $cond="false";
+				                elseif (count($ids)==1) {
+				                    $cond = " ".$col." = ".intval($ids[0])." ";
+				                } else {
+				                    $cond = " ".$col." in (".implode(",",$ids).") ";
+				                }
+				            }
 				        }
 				        break;
 				    default:
 				        if ($atype) $err=sprintf(_("attribute %s : %s type is not allowed with %s operator"),$col, $atype,$op);
 				        else $err=sprintf(_("attribute %s not found [%s]"),$col, $atype);
 				}
-
 				break;
 			case "~@":
 				if (trim($val) != "") {

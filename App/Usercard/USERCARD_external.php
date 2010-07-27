@@ -217,7 +217,9 @@ function members($dbaccess, $groupid, $name="",$sort='lastname',$searchinmail=fa
             }
         }
         if ($sort) $sort=pg_escape_string($sort);
-        $sql=sprintf("SELECT users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and isgroup != 'Y' order by $sort limit %d",$cond,$condname,$sort, $limit);
+        else $sort='lastname';
+        $sql=sprintf("SELECT distinct on (%s, users.fid) users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and isgroup != 'Y' order by %s limit %d",
+                     $sort, $cond,$condname,$sort, $limit);
         $err=simpleQuery($doc->dbaccess,$sql,$result);
         if ($err!="") return $err;
         foreach ($result as $k=>$v) {
@@ -225,6 +227,8 @@ function members($dbaccess, $groupid, $name="",$sort='lastname',$searchinmail=fa
             $tr[] = array($v["firstname"]." ".$v["lastname"].$mail,$v["fid"],$v["lastname"]." ".$v["firstname"]);
         }       
     } else {
+        $oa=$doc->getAttribute("grp_ruser");
+        if (!$oa) return sprintf(_("document %s is not a group"),$doc->getTitle());
         $tmembers= $doc->getTvalue("GRP_RUSER");
         $tmembersid= $doc->getTvalue("GRP_IDRUSER");
 

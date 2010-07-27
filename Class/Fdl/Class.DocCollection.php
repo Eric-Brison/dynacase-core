@@ -128,6 +128,18 @@ include_once("FDL/Class.Doc.php");
 				else $famid=$reg[1];
 			}
 		}
+		if (! $famid) {
+		    $famid=$this->getValue("se_famid");
+		    if (! $famid) { // search in origin filter
+		        $filter=$this->getTValue("se_filter",'',0);
+		        if ($filter) {
+		            $xfilter = simplexml_load_string($filter);
+		            $famid=trim($xfilter->family);
+		            
+		        }
+		        
+		    }
+		} 
 		$sql=array();
 		if ($of->sql) $of->sql=trim($of->sql);
 		if ($of->sql) {

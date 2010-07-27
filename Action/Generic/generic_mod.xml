@@ -6,6 +6,7 @@
     [JS:CODE] 
 var constraint=[constraintinfo];
 var error=[error];
+var warning=[warning];
 
 
 function setConstraint(info) {
@@ -139,10 +140,17 @@ if (window.parent) {
 		  setConstraint(constraint);
 		} else {
 		  window.parent.displayWarningMsg(error);
+		  if (warning) window.parent.displayWarningMsg(warning);
+		  [IFNOT quicksave]window.setTimeout("window.parent.location.href='[url]'",4000);[ENDIF quicksave]
 		}
 	    } else {
-		[IFNOT quicksave]window.parent.location.href='[url]';[ENDIF quicksave]
-	    }
+        	    if (warning) {
+        	       //window.parent.displayWarningMsg(warning); // not need :set by global fonction
+        	       window.setTimeout("window.parent.location.href='[url]'",4000);
+        	    } else {
+        		[IFNOT quicksave]window.parent.location.href='[url]';[ENDIF quicksave]
+        		}
+        	    }
 	
     }
     window.parent.viewwait(false);

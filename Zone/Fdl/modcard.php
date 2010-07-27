@@ -161,7 +161,8 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 		if (! $quicksave) { // else quick save
 			$doc->refresh();
 			if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
-			$err=$doc->PostModify();
+			$msg=$doc->PostModify();
+			if ($msg) $action->addWarningMsg($msg);
 			// add trace to know when and who modify the document
 			if ( $docid == 0 ) {
 				//$doc->Addcomment(_("creation"));
