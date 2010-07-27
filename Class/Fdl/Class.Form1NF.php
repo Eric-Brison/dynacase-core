@@ -12,6 +12,18 @@
 
 include_once("FDL/Class.SearchDoc.php");
 
+/*
+ * foreach($this->doc->fields as $k=>$v) {
+                if (is_numeric($k)) $props[$v] = $this->doc->$v;
+            }
+ *
+ *
+ * $this->infofields
+ *
+ *
+ * select max(id) from docread where initid=%initid%
+ */
+
 /**
  * 
  */
@@ -135,6 +147,7 @@ class Form1NF {
 		}
 		$this->action->error(trim($msg));
 		$this->logSqlWrite($msg, true);
+		//debug_print_backtrace();
 		throw new Exception(trim($msg));
 	}
 	/**
@@ -392,6 +405,21 @@ class Form1NF {
 	}
 	/**
 	 *
+	 * @param int $docid 
+	 */
+	private function sqlGetValidDocId($docid) {
+		$sql = sprintf("SELECT id from docread where initid=(select initid from docread where id=%d) and locked != -1 limit 1;", $docid);
+		$res = @pg_query($this->tmp_conn, $sql);
+		if($res) {
+			$row = @pg_fetch_row($res);
+			if($row) {
+				return $row[0];
+			}
+		}
+		return 'NULL';
+	}
+	/**
+	 *
 	 * @return bool
 	 */
 	private function sqlFillTables() {
@@ -413,6 +441,8 @@ class Form1NF {
 					// search documents
 					$s = new SearchDoc($this->tmp_dbaccess, $table->name);
 					$s->setObjectReturn();
+					//$s->latest = false;
+					//$s->trash = 'also';
 					$s->search();
 
 					// get field names
@@ -442,7 +472,7 @@ class Form1NF {
 							switch($tablesByName[$fTable]->type) {
 								case 'family': // docid
 									$value = $doc->getValue($reference->attributeName);
-									$fieldValues[] = $this->getSqlInteger($value);
+									$fieldValues[] = $this->sqlGetValidDocId($value);
 									break;
 								case 'enum':
 								case 'enum_multiple':
@@ -482,7 +512,7 @@ class Form1NF {
 									case 'docid_multiple_link':
 										$values = $doc->getTValue($data['attribute']->id);
 										foreach($values as $value) {
-											$this->sqlExecute($sql2."(".$this->getSqlInteger($value).",".$doc->id.")");
+											$this->sqlExecute($sql2."(".$this->sqlGetValidDocId($value).",".$doc->id.")");
 										}
 										break;
 
@@ -511,8 +541,8 @@ class Form1NF {
 													$this->stdError(_("Table '%s' unknown !"), $reference->foreignTable);
 												}
 												$value = $row[$reference->attributeName];
-												if($tablesByName[$fTable]->type == 'family') {
-													$fieldValues[] = $this->getSqlInteger($value);
+												if($tablesByName[$fTable]->type == 'family') { // docid
+													$fieldValues[] = $this->sqlGetValidDocId($value);
 												}
 												elseif(in_array($tablesByName[$fTable]->type, array('enum', 'enum_multiple', 'enum_inarray'))) {
 													$tablesByName[$fTable]->checkEnumValue($value);
@@ -531,7 +561,7 @@ class Form1NF {
 												$sql3 = 'INSERT INTO "'.$this->params['tmpschemaname'].'"."'.strtolower($data2['table']->name).'" ("'.implode('","', $data2['table']->sqlFields).'") VALUES ';
 												$values = $doc->_val2array(str_replace('<BR>', "\n", $row[$data2['attribute']->id]));
 												foreach($values as $val) {
-													$this->sqlExecute($sql3."(".$this->getSqlInteger($val).",".$arrayId.")");
+													$this->sqlExecute($sql3."(".$this->sqlGetValidDocId($val).",".$arrayId.")");
 												}
 											}
 
@@ -560,15 +590,6 @@ class Form1NF {
 			return false;
 		}
 		return true;
-	}
-	/**
-	 *
-	 * @param string $value
-	 * @return string 
-	 */
-	private function getSqlInteger($value) {
-		$value = "$value" === "" ? 'NULL' : $value;
-		return $value;
 	}
 	/**
 	 * freedom checks and load
@@ -615,6 +636,34 @@ class Form1NF {
 		return true;
 	}
 	/**
+	 *
+	 * @param string $format
+	 * @param Form1NF_Table $family 
+	 */
+	private function configLoadDocid($format, $attributeName, $family) {
+		if(!empty($format)) return $format;
+		$found = '';
+		foreach($family->famAttributes as $attribute) {
+			$phpfunc = $attribute->phpfunc;
+			if(!empty($phpfunc)) {
+				if(preg_match('/lfamill?y\([a-z]+\s*,\s*([a-z0-9_]+).*\):'.$attributeName.'/si', $phpfunc, $m)) {
+					$found = $m[1];
+					break;
+				}
+			}
+		}
+		// break process if not found
+		if(empty($found)) {
+			$this->stdError(_("Attribute Error: impossible to found the family for docid attribute '%s'"), $attributeName);
+		}
+		// test if family exists
+		$fam = new_Doc($this->tmp_dbaccess, $found, true);
+		if (!is_object($fam) || !$fam->isAlive()) {
+			$this->stdError(_("Attribute Error: family '%s' is not valid or alive for docid '%s'."), $found, $attributeName);
+		}
+		return $found;
+	}
+	/**
 	 * freedom checks and load
 	 * @return bool
 	 */
@@ -646,7 +695,7 @@ class Form1NF {
 						case 'docid': // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 							if($column->attribute->id == $column->name) {
 								// real docid
-								$table = $this->getConfigTable($column->attribute->format, true);
+								$table = $this->getConfigTable($this->configLoadDocid($column->attribute->format, $column->attribute->id, $family), true);
 								$family->references[] = new Form1NF_Reference($table->name, $column->name);
 							}
 							else {
@@ -688,7 +737,7 @@ class Form1NF {
 							$tableNameLink = $this->getUniqueTableName($family->name.'_'.$column->name);
 							$newTableLink = new Form1NF_Table('docid_multiple_link', $tableNameLink, empty($column->rename) ? '' : $column->rename.'_link');
 
-							$newTableDocid = $this->getConfigTable($column->attribute->format, true);
+							$newTableDocid = $this->getConfigTable($this->configLoadDocid($column->attribute->format, $column->attribute->id, $family), true);
 
 							$newTableLink->references[] = new Form1NF_Reference($newTableDocid->name, 'iddoc');
 							$newTableLink->references[] = new Form1NF_Reference($family->name); // idfamille
@@ -745,7 +794,7 @@ class Form1NF {
 										break;
 
 									case 'docid_inarray':
-										$tableDocid = $this->getConfigTable($col->attribute->format, true);
+										$tableDocid = $this->getConfigTable($this->configLoadDocid($col->attribute->format, $col->attribute->id, $family), true);
 										$tableArray->references[] = new Form1NF_Reference($tableDocid->name, $col->name);
 										$tableDocid->type = 'family';
 										break;
@@ -754,7 +803,7 @@ class Form1NF {
 										$tableNameLink = $this->getUniqueTableName($tableArrayName.'_'.$col->name);
 										$newTableLink = new Form1NF_Table('docid_multiple_inarray_link', $tableNameLink, empty($col->rename) ? '' : $col->rename.'_link');
 
-										$newTableDocid = $this->getConfigTable($col->attribute->format, true);
+										$newTableDocid = $this->getConfigTable($this->configLoadDocid($col->attribute->format, $col->attribute->id, $family), true);
 
 										$newTableLink->references[] = new Form1NF_Reference($newTableDocid->name); // idfamille
 										$newTableLink->references[] = new Form1NF_Reference($tableArrayName, 'idarray');
@@ -1327,10 +1376,12 @@ class Form1NF_Table {
 				$columns[] = $attribute;
 			}
 		}
+		/*
 		if(empty($columns)) {
 			$this->error = _("Incoherent structure !");
 			return false;
 		}
+		*/
 
 		// check duplicate columns
 		foreach($columns as $column1) {
