@@ -49,6 +49,6 @@ $freedom_providers = array(
  ** Include local/override config
  ** -----------------------------
  */
-@include_once('local-dbaccess.php');
+@include('local-dbaccess.php');
 
 ?>
