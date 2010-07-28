@@ -540,6 +540,13 @@ class Form1NF {
 												if(!array_key_exists($fTable, $tablesByName)) {
 													$this->stdError(_("Table '%s' unknown !"), $reference->foreignTable);
 												}
+												if($tablesByName[$fTable]->type == 'family' &&
+												   strtolower($reference->attributeName) == strtolower($reference->foreignTable)) {
+													// link to family
+													$fieldValues[] = $doc->id;
+													continue;
+												}
+												// other attributes
 												$value = $row[$reference->attributeName];
 												if($tablesByName[$fTable]->type == 'family') { // docid
 													$fieldValues[] = $this->sqlGetValidDocId($value);
