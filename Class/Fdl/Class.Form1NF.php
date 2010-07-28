@@ -767,6 +767,7 @@ class Form1NF {
 							$tableArray = $this->getConfigTable($tableArrayName, true);
 							$tableArray->type = 'array';
 							$tableArray->arrayName = $column->attribute->fieldSet->id;
+							$tableArray->references[] = new Form1NF_Reference($family->name); // link to father table
 
 							$linkedTable = array(
 								'table' => $tableArray,
