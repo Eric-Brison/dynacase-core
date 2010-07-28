@@ -4605,11 +4605,20 @@ create unique index i_docir on doc(initid, revision);";
 			       	if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
 			
 			       }
-			       $lay->setBlockData("TATTR",$talabel);
 			       if (! $emptyarray) {
-			       	if ($oattr->getOption("vlabel")=="up") $caption=$oattr->getLabel();
-			       	else $caption="";
-			       	if ($nbitem > 10) $caption.=" ($nbitem)";
+			       	if ($oattr->getOption("vlabel")=="up") {
+			       	    $caption=$oattr->getLabel();
+			       	    if ($nbitem > 10) $caption.=" ($nbitem)";
+			       	} else {
+			       	    $caption="";
+                                    if ($nbitem > 10) {
+                                        if (count($talabel) > 0) {
+                                            $talabel[0]["alabel"].= " ($nbitem)";
+                                        }
+                                    }
+			       	}
+			       	
+                               $lay->setBlockData("TATTR",$talabel);
 			       	$lay->set("caption",$caption);
 			       	$tvattr = array();
 			       	for ($k=0;$k<$nbitem;$k++) {
@@ -5707,7 +5716,7 @@ create unique index i_docir on doc(initid, revision);";
 	
 	// print name except image (printed otherthere)
 	if ($attr->type != "image") {	
-	  $tableframe[$v]["wvalue"]=(($attr->type == "array")&&($attr->getOption("vlabel")!="left"))?"1%":"30%"; // width
+	  $tableframe[$v]["wvalue"]=(($attr->type == "array")&&($attr->getOption("vlabel")=="up" || $attr->getOption("vlabel")=="none"))?"1%":"30%"; // width
 	  $tableframe[$v]["ndisplay"]="inline";
 	
 	  if ($attr->getOption("vlabel")=="none") {
