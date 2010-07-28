@@ -1174,7 +1174,7 @@ class Form1NF {
 			}
 
 			$ret = LibSystem::ssystem(
-				array($psql_cmd, '-f', $dumpFile),
+				array($psql_cmd, '-q', '-f', $dumpFile),
 				array(
 					'closestdin' => true,
 					'closestdout' => true,
@@ -1544,16 +1544,14 @@ class Form1NF_Column {
 		if($pgType === null) {
 			$pgType = $this->getPgType();
 		}
+		if("$value" === "") return 'NULL';
 		switch($pgType) {
 			case 'double precision':
 			case 'integer':
-				if("$value" === "") $value = 'NULL';
-				break;
-			default:
-				$value = "'".pg_escape_string($value)."'";
+				return $value;
 				break;
 		}
-		return $value;
+		return "'".pg_escape_string($value)."'";
 	}
 	/**
 	 *
