@@ -2199,19 +2199,19 @@ create unique index i_docir on doc(initid, revision);";
       $ta = $this->attributes->getArrayElements($a->id);
      
       $max=-1;
-      $max0=-1;
-
+      $maxdiff=false;
       foreach($ta as $k=>$v) { // detect uncompleted rows
 	$c=count($this->getTValue($k));	
-	 if ($c > $max) {
-	   if ($max0 < 0) $max0=$c;
-	   $max=$c;
-	 }
+	   if ($max < 0) $max=$c;
+	   else {
+	       if ($c != $max) $maxdiff=true;
+	       if ($max < $c) $max=$c;
+	   }
       }
-
-      if ($max > $max0) {	
+      if ($maxdiff) {
+          addWarningMSg("fill to $max");
 	foreach($ta as $k=>$v) { // fill uncompleted rows
-	  $c=count($this->getTValue($k));	
+	  $c=count($this->getTValue($k));
 	  if ($c < $max) {
 	    $t=$this->getTValue($k);
 	    $t=array_pad($t,$max,"");	  
@@ -2219,6 +2219,7 @@ create unique index i_docir on doc(initid, revision);";
 	  }
 	}
       }
+     
       return $err;
     }
     return sprintf(_("%s is not an array attribute"),$idAttr);        
@@ -2232,27 +2233,31 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $index  $index row (first is 0) -1 at the end; x means before x row
    * @return string error message, if no error empty string
    */
-  final public function addArrayRow($idAttr, $tv, $index=-1)  { 
-    $a=$this->getAttribute($idAttr);
-    if ($a->type=="array") {
-      $ta=$this->attributes->getArrayElements($a->id);
-      $ti=array();
-      $err="";
-      // add in each columns
-      foreach($ta as $k=>$v) {
-        $tnv=$this->getTValue($k);
-	$val=$tv[strtolower($k)];
-	if ($index >=0) {
-	  $tnv[$index - 0.5]=$val;
-	  ksort($tnv);	
-	  $tvu=array();
-	  foreach ($tnv as $vv) $tvu[]=$vv; // key reorder
-	  $tnv=$tvu;
-	} else	$tnv[]=$val;
-	$err.=$this->setValue($k,$tnv);
+  final public function addArrayRow($idAttr, $tv, $index=-1)  {
+      $a=$this->getAttribute($idAttr);
+      if ($a->type=="array") {
+          $err=$this->completeArrayRow($idAttr);
+          if ($err=="") {
+              $ta=$this->attributes->getArrayElements($a->id);
+              $ti=array();
+              $err="";
+              // add in each columns
+              foreach($ta as $k=>$v) {
+                  $tnv=$this->getTValue($k);
+                  $val=$tv[strtolower($k)];
+                  if ($index >=0) {
+                      $tnv[$index - 0.5]=$val;
+                      ksort($tnv);
+                      $tvu=array();
+                      foreach ($tnv as $vv) $tvu[]=$vv; // key reorder
+                      $tnv=$tvu;
+                  } else	$tnv[]=$val;
+                  $err.=$this->setValue($k,$tnv);
+              }
+              if ($err="") $err=$this->completeArrayRow($idAttr);
+          }
+          return $err;
       }
-      return $err;
-    }
     return sprintf(_("%s is not an array attribute"),$idAttr);        
   }
 
@@ -2291,7 +2296,7 @@ create unique index i_docir on doc(initid, revision);";
   		if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
   		else {
   			if (count($value)==0) $value = DELVALUE;
-  			elseif ((count($value) == 1) && (first($value)=="") && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell
+  			elseif ((count($value) == 1) && (first($value)=="") && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
   			else {
   				if ($oattr->repeat && (count($value)==1) && substr(key($value),0,1)=="s") {
   					$ov=$this->getTValue($attrid);
@@ -2342,7 +2347,7 @@ create unique index i_docir on doc(initid, revision);";
   				}
 
   				foreach($tvalues as $kvalue=>$avalue) {
-  					if ($avalue != "") {
+  					if (($avalue != "") && ($avalue != "\t")) {
   						if ($oattr) {
   							switch($oattr->type) {
   								case 'docid':
@@ -4605,11 +4610,20 @@ create unique index i_docir on doc(initid, revision);";
 			       	if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
 			
 			       }
-			       $lay->setBlockData("TATTR",$talabel);
 			       if (! $emptyarray) {
-			       	if ($oattr->getOption("vlabel")=="up") $caption=$oattr->getLabel();
-			       	else $caption="";
-			       	if ($nbitem > 10) $caption.=" ($nbitem)";
+			       	if ($oattr->getOption("vlabel")=="up") {
+			       	    $caption=$oattr->getLabel();
+			       	    if ($nbitem > 10) $caption.=" ($nbitem)";
+			       	} else {
+			       	    $caption="";
+                                    if ($nbitem > 10) {
+                                        if (count($talabel) > 0) {
+                                            $talabel[0]["alabel"].= " ($nbitem)";
+                                        }
+                                    }
+			       	}
+			       	
+                               $lay->setBlockData("TATTR",$talabel);
 			       	$lay->set("caption",$caption);
 			       	$tvattr = array();
 			       	for ($k=0;$k<$nbitem;$k++) {
@@ -5707,7 +5721,7 @@ create unique index i_docir on doc(initid, revision);";
 	
 	// print name except image (printed otherthere)
 	if ($attr->type != "image") {	
-	  $tableframe[$v]["wvalue"]=(($attr->type == "array")&&($attr->getOption("vlabel")!="left"))?"1%":"30%"; // width
+	  $tableframe[$v]["wvalue"]=(($attr->type == "array")&&($attr->getOption("vlabel")=="up" || $attr->getOption("vlabel")=="none"))?"1%":"30%"; // width
 	  $tableframe[$v]["ndisplay"]="inline";
 	
 	  if ($attr->getOption("vlabel")=="none") {

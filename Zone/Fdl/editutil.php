@@ -940,7 +940,7 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 	$lay->setBlockData("TATTR",$talabel);
 	$lay->setBlockData("IATTR",$tilabel);
 	$lay->set("attrid",$attrid);
-	if ($oattr->getOption("vlabel")=="") $lay->set("caption",$oattr->getLabel());
+	if (($oattr->getOption("vlabel")=="") || ($oattr->getOption("vlabel")=="up")) $lay->set("caption",$oattr->getLabel());
 	else $lay->set("caption","");
 	$lay->set("footspan",count($ta)*2);
 
