@@ -239,6 +239,12 @@ Fdl.Document.prototype = {
 	    	v = v.replace(/\&/g,'&amp;');
 	    	v = v.replace(/\</g,'&lt;');
 	    	v = v.replace(/\>/g,'&gt;');
+    	} else if (v && (typeof v == 'object')) {
+    		for (var i=0;i<v.length;i++) {
+    			v[i]=v[i].replace(/\&/g,'&amp;');
+    	    	v[i]= v[i].replace(/\</g,'&lt;');
+    	    	v[i]= v[i].replace(/\>/g,'&gt;');
+    		}
     	}
     	return v;
     },
