@@ -48,6 +48,41 @@ class Form1NF {
 	public $sqlLogFileHandle = null;
 	/**
 	 *
+	 * @var int
+	 */
+	private $sqlLogFileCounter = 0;
+	/**
+	 *
+	 * @var int
+	 */
+	private $sqlLogFileBufferSize = 300;
+	/**
+	 *
+	 * @var string
+	 */
+	private $sqlLogFileBuffer = '';
+	/**
+	 *
+	 * @var array
+	 */
+	private $sqlSequences = array();
+	/**
+	 *
+	 * @var int
+	 */
+	private $sqlInsertCounter = 0;
+	/**
+	 *
+	 * @var array
+	 */
+	private $sqlInsertBuffer = array();
+	/**
+	 *
+	 * @var int
+	 */
+	private $sqlInsertBufferSize = 300;
+	/**
+	 *
 	 * @var array
 	 */
 	public $dropSchemas = array('public', 'dav', 'family');
@@ -123,6 +158,17 @@ class Form1NF {
 	}
 	/**
 	 *
+	 * @param mixed $value
+	 * @return string;
+	 */
+	private function getPgEscapeCopy($value, $nullAllowed=true) {
+		if($nullAllowed && "$value" === "") return "\\N";
+		$value = pg_escape_string($value);
+		$value = str_replace(array("\r", "\n", "\t"), array("\\r", "\\n", "\\t"), $value);
+		return $value;
+	}
+	/**
+	 *
 	 */
 	private function stdInfo() {
 		$args = func_get_args();
@@ -147,28 +193,44 @@ class Form1NF {
 		}
 		$this->action->error(trim($msg));
 		$this->logSqlWrite($msg, true);
+		$this->logSqlFlush();
 		//debug_print_backtrace();
 		throw new Exception(trim($msg));
 	}
 	/**
 	 *
 	 */
-	private function logSqlWrite($line, $comment=false) {
-		if($comment) {
-			$line = "\n--\n-- ".str_replace("\n", "\n-- ", str_replace("\r", "", $line))."\n--\n";
-		}
-		else {
-			$line .= ';';
-		}
-		$line = str_replace('"'.$this->params['tmpschemaname'].'".', '', $line);
+	private function logSqlFlush() {
 		if($this->sqlLogFileHandle !== null) {
-			@fwrite($this->sqlLogFileHandle, $line."\n");
+			@fwrite($this->sqlLogFileHandle, $this->sqlLogFileBuffer);
+			$this->sqlLogFileBuffer = '';
+			$this->sqlLogFileCounter = 0;
+		}
+	}
+	/**
+	 *
+	 */
+	private function logSqlWrite($line, $comment=false) {
+		if($this->sqlLogFileHandle !== null) {
+			if($comment) {
+				$line = "\n--\n-- ".str_replace("\n", "\n-- ", str_replace("\r", "", $line))."\n--\n";
+			}
+			else {
+				$line .= ';';
+			}
+			$line = str_replace('"'.$this->params['tmpschemaname'].'".', '', $line)."\n";
+			$this->sqlLogFileBuffer .= $line;
+			$this->sqlLogFileCounter++;
+			if($this->sqlLogFileCounter >= $this->sqlLogFileBufferSize) {
+				$this->logSqlFlush();
+			}
 		}
 	}
 	/**
 	 *
 	 */
 	private function logSqlClose() {
+		$this->logSqlFlush();
 		if($this->sqlLogFileHandle !== null) {
 			@fwrite($this->sqlLogFileHandle, "\n\n\n");
 			@fclose($this->sqlLogFileHandle);
@@ -286,6 +348,47 @@ class Form1NF {
 		return true;
 	}
 	/**
+	 *
+	 * @param mixed $requests
+	 * @return bool
+	 */
+	private function sqlInsertFlush() {
+		foreach($this->sqlInsertBuffer as $tableName => $rows) {
+			$sql = 'COPY "'.$this->params['tmpschemaname'].'"."'.$tableName.'" FROM STDIN;';
+			$res = @pg_query($this->tmp_conn, $sql);
+			if(!$res) $this->checkErrorPostgresql($sql);
+			foreach($rows as $row) {
+				$res = @pg_put_line($this->tmp_conn, $row."\n");
+				if(!$res) $this->checkErrorPostgresql("ROW $row");
+			}
+			$res = @pg_put_line($this->tmp_conn, "\\.\n");
+			if(!$res) $this->checkErrorPostgresql();
+			$res = @pg_end_copy($this->tmp_conn);
+			if(!$res) $this->checkErrorPostgresql();
+		}
+		$this->sqlInsertBuffer = array();
+		$this->sqlInsertCounter = 0;
+	}
+	/**
+	 *
+	 * @param mixed $requests
+	 * @return bool
+	 */
+	private function sqlInsert($table, $fields, $values, $escapedValues) {
+		$this->logSqlWrite('INSERT INTO "'.$this->params['tmpschemaname'].'"."'.$table.'" ("'.implode('","', $fields).'") VALUES ('.implode(',', $escapedValues).');');
+
+		if(!isset($this->sqlInsertBuffer[$table])){
+			$this->sqlInsertBuffer[$table] = array();
+		}
+		$this->sqlInsertBuffer[$table][] = implode("\t", $values);
+		$this->sqlInsertCounter++;
+
+		if($this->sqlInsertCounter >= $this->sqlInsertBufferSize) {
+			$this->sqlInsertFlush();
+		}
+		return true;
+	}
+	/**
 	 * 
 	 * @return bool
 	 */
@@ -309,7 +412,6 @@ class Form1NF {
 			$this->stdInfo(_("Create Tables ..."));
 			foreach($this->config as $table) {
 
-				$createSequence = false;
 				$insertDefaults = true;
 				$fields = array();
 				switch($table->type) {
@@ -333,7 +435,6 @@ class Form1NF {
 					case 'array':
 						$fields[] = sprintf('  "%s" %s PRIMARY KEY', 'id', 'integer');
 						$table->sqlFields[] = 'id';
-						$createSequence = true;
 						break;
 				}
 				if($insertDefaults) {
@@ -357,10 +458,6 @@ class Form1NF {
 				$sql = sprintf('CREATE TABLE "%s"."%s" (', $this->params['tmpschemaname'], strtolower($table->name))."\n";
 				$sql .= implode(",\n", $fields)."\n)";
 				$this->sqlExecute($sql);
-
-				if($createSequence) {
-					$this->sqlExecute(sprintf('CREATE SEQUENCE "%s"."seq_%s"', $this->params['tmpschemaname'], strtolower($table->name)), false);
-				}
 			}
 		}
 		catch(Exception $e) {
@@ -403,9 +500,14 @@ class Form1NF {
 	 * @return int
 	 */
 	private function sqlNextSequenceId($tableName) {
-		$res = pg_exec($this->tmp_conn, 'select nextval (\'"'.$this->params['tmpschemaname'].'"."seq_'.strtolower($tableName).'"\')');
-		$arr = pg_fetch_array ($res, 0);
-		return intval($arr[0]);
+		if(isset($this->sqlSequences[$tableName])) {
+			$this->sqlSequences[$tableName]++;
+			return $this->sqlSequences[$tableName];
+		}
+		else {
+			$this->sqlSequences[$tableName] = 1;
+			return 1;
+		}
 	}
 	/**
 	 *
@@ -449,9 +551,6 @@ class Form1NF {
 					//$s->trash = 'also';
 					$s->search();
 
-					// get field names
-					$sql = 'INSERT INTO "'.$this->params['tmpschemaname'].'"."'.strtolower($table->name).'" ("'.implode('","', $table->sqlFields).'") VALUES ';
-
 					// get field values
 					while($doc = $s->nextDoc()) {
 
@@ -460,16 +559,22 @@ class Form1NF {
 							$doc->id,
 							$this->getPgEscape($doc->getTitle()),
 						);
+						$fieldCopyValues = array(
+							$doc->id,
+							$this->getPgEscapeCopy($doc->getTitle()),
+						);
 
 						// fields
 						foreach($table->columns as $column) {
 							$fieldValues[] = $column->getPgEscape($doc->getValue($column->name));
+							$fieldCopyValues[] = $column->getPgEscapeCopy($doc->getValue($column->name));
 						}
 
 						// properties
 						foreach($table->properties as $property) {
 							$propertyName = $property->name;
 							$fieldValues[] = $property->getPgEscape($doc->$propertyName);
+							$fieldCopyValues[] = $property->getPgEscapeCopy($doc->$propertyName);
 						}
 
 						// foreign keys
@@ -482,7 +587,9 @@ class Form1NF {
 							switch($tablesByName[$fTable]->type) {
 								case 'family': // docid
 									$value = $doc->getValue($reference->attributeName);
-									$fieldValues[] = $this->sqlGetValidDocId($value);
+									$id = $this->sqlGetValidDocId($value);
+									$fieldValues[] = $id;
+									$fieldCopyValues[] = $id == 'NULL' ? "\\N" : $id;
 									break;
 								case 'enum':
 								case 'enum_multiple':
@@ -490,14 +597,16 @@ class Form1NF {
 									$value = $doc->getValue($reference->attributeName);
 									$tablesByName[$fTable]->checkEnumValue($value);
 									$fieldValues[] = $this->getPgEscape($value);
+									$fieldCopyValues[] = $this->getPgEscapeCopy($value);
 									break;
 								default:
 									$fieldValues[] = "''";
+									$fieldCopyValues[] = "";
 									break;
 							}
 						}
 
-						$this->sqlExecute($sql."(".implode(',', $fieldValues).")");
+						$this->sqlInsert(strtolower($table->name), $table->sqlFields, $fieldCopyValues, $fieldValues);
 
 						// manage linked tables :
 						//  \_ enum_multiple_link
@@ -506,7 +615,6 @@ class Form1NF {
 						//      \_ docid_multiple_inarray_link
 						foreach($table->linkedTables as $type => $linkedTables) {
 							foreach($linkedTables as $data) {
-								$sql2 = 'INSERT INTO "'.$this->params['tmpschemaname'].'"."'.strtolower($data['table']->name).'" ("'.implode('","', $data['table']->sqlFields).'") VALUES ';
 								switch($type) {
 
 									case 'enum_multiple_link':
@@ -515,14 +623,25 @@ class Form1NF {
 											if(isset($data['enumtable'])) {
 												$data['enumtable']->checkEnumValue($value);
 											}
-											$this->sqlExecute($sql2."(".$this->getPgEscape($value).",".$doc->id.")");
+											$this->sqlInsert(
+													strtolower($data['table']->name),
+													$data['table']->sqlFields,
+													array($this->getPgEscapeCopy($value), $doc->id),
+													array($this->getPgEscapeCopy($value), $doc->id)
+											);
 										}
 										break;
 
 									case 'docid_multiple_link':
 										$values = $doc->getTValue($data['column']->name);
 										foreach($values as $value) {
-											$this->sqlExecute($sql2."(".$this->sqlGetValidDocId($value).",".$doc->id.")");
+											$id = $this->sqlGetValidDocId($value);
+											$this->sqlInsert(
+													strtolower($data['table']->name),
+													$data['table']->sqlFields,
+													array($id == 'NULL' ? "\\N" : $id, $doc->id),
+													array($id, $doc->id)
+											);
 										}
 										break;
 
@@ -538,10 +657,13 @@ class Form1NF {
 											// init with auto increment id
 											$fieldValues = array();
 											$fieldValues[] = $arrayId;
+											$fieldCopyValues = array();
+											$fieldCopyValues[] = $arrayId;
 
 											// get values
 											foreach($data['table']->columns as $col) {
 												$fieldValues[] = $col->getPgEscape($row[$col->name]);
+												$fieldCopyValues[] = $col->getPgEscapeCopy($row[$col->name]);
 											}
 
 											// foreign keys value
@@ -554,31 +676,46 @@ class Form1NF {
 												   strtolower($reference->attributeName) == strtolower($reference->foreignTable)) {
 													// link to family
 													$fieldValues[] = $doc->id;
+													$fieldCopyValues[] = $doc->id;
 													continue;
 												}
 												// other attributes
 												$value = $row[$reference->attributeName];
 												if($tablesByName[$fTable]->type == 'family') { // docid
-													$fieldValues[] = $this->sqlGetValidDocId($value);
+													$id = $this->sqlGetValidDocId($value);
+													$fieldValues[] = $id;
+													$fieldCopyValues[] = $id == 'NULL' ? "\\N" : $id;
 												}
 												elseif(in_array($tablesByName[$fTable]->type, array('enum', 'enum_multiple', 'enum_inarray'))) {
 													$tablesByName[$fTable]->checkEnumValue($value);
 													$fieldValues[] = $this->getPgEscape($value);
+													$fieldCopyValues[] = $this->getPgEscapeCopy($value);
 												}
 												else {
 													$fieldValues[] = $this->getPgEscape($value);
+													$fieldCopyValues[] = $this->getPgEscapeCopy($value);
 												}
 											}
 
 											// insert
-											$this->sqlExecute($sql2."(".implode(',', $fieldValues).")");
+											$this->sqlInsert(
+													strtolower($data['table']->name),
+													$data['table']->sqlFields,
+													$fieldCopyValues,
+													$fieldValues
+											);
 
 											// docid multiple in array
 											foreach($data['linkedTables'] as $data2) {
-												$sql3 = 'INSERT INTO "'.$this->params['tmpschemaname'].'"."'.strtolower($data2['table']->name).'" ("'.implode('","', $data2['table']->sqlFields).'") VALUES ';
 												$values = $doc->_val2array(str_replace('<BR>', "\n", $row[$data2['column']->name]));
 												foreach($values as $val) {
-													$this->sqlExecute($sql3."(".$this->sqlGetValidDocId($val).",".$arrayId.")");
+													$id = $this->sqlGetValidDocId($val);
+													$this->sqlInsert(
+															strtolower($data2['table']->name),
+															$data2['table']->sqlFields,
+															array($id == 'NULL' ? "\\N" : $id, $arrayId),
+															array($id, $arrayId)
+													);
 												}
 											}
 
@@ -597,8 +734,12 @@ class Form1NF {
 					$this->stdInfo(_("Filling enum table '%s'"), $table->name);
 					$this->logSqlWrite(sprintf("Filling table %s", strtolower($table->name)), true);
 					foreach($table->enumDatas as $key => $value) {
-						$sql = 'INSERT INTO "'.$this->params['tmpschemaname'].'"."'.$table->name.'" ("id","title") VALUES ('.$this->getPgEscape($key, false).','.$this->getPgEscape($value).')';
-						$this->sqlExecute($sql);
+						$this->sqlInsert(
+								$table->name,
+								array('id', 'title'),
+								array($this->getPgEscapeCopy($key, false), $this->getPgEscapeCopy($value)),
+								array($this->getPgEscape($key, false), $this->getPgEscape($value))
+						);
 					}
 				}
 			}
@@ -1660,6 +1801,17 @@ class Form1NF_Column {
 		if($pgType == 'integer' || $pgType == 'double precision') return $value;
 		if($this->isProperty && $this->name == 'revdate') $value = date('Y-m-d', $value);
 		return "'".pg_escape_string($value)."'";
+	}
+	/**
+	 *
+	 * @param mixed $value
+	 * @return string;
+	 */
+	public function getPgEscapeCopy($value, $pgType=null) {
+		if("$value" === "") return "\\N";
+		$value = pg_escape_string($value);
+		$value = str_replace(array("\r", "\n", "\t"), array("\\r", "\\n", "\\t"), $value);
+		return $value;
 	}
 	/**
 	 *
