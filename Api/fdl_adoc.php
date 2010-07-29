@@ -51,6 +51,7 @@ $query = new QueryDb($dbaccess,"DocFam");
 $query ->AddQuery("doctype='C'");
 $query->order_by="id";
 
+ini_set("memory_limit", -1);
   
 if ($docid > 0) {
   $query->AddQuery("id=$docid");
@@ -62,26 +63,11 @@ if ($docid > 0) {
   pushfam(0, $tid, $table1); 
   
 }      
-// estimation of memory cost for update family
-$worflowCost=1500; // 1500 Mo
-$docCost=500; // 500 Mo
 if ($query->nb > 0)	{
   $pubdir = $appl->GetParam("CORE_PUBDIR");
   if ($query->nb > 1) { 
-      // adjust memory
-      $estimationMemory=32; // Mo
-      foreach ($tid as $k=>$v)   {           
-      if ($v["usefor"] == "W") $estimationMemory+=$worflowCost;
-       else $estimationMemory+=$docCost;
-      }
-      $defaultMemory=trim(ini_get("memory_limit"));
-      if (substr($defaultMemory,-1) == "K") $defaultMemory=intval($defaultMemory)/1024;
-      elseif (substr($defaultMemory,-1) == "G") $defaultMemory=intval($defaultMemory)*1024;
-      else $defaultMemory=intval($defaultMemory);
-      if ($estimationMemory > $defaultMemory) ini_set("memory_limit",intval($estimationMemory/1024)."M");
     $tii=array(1,2,3,4,5,6,20,21);
     foreach ($tii as $ii) {     
-          $m1=memory_get_usage(true);
       updateDoc($dbaccess,$tid[$ii]);
       unset($tid[$ii]);
     }
