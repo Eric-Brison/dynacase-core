@@ -190,8 +190,8 @@ Fdl.Document.prototype = {
     getDisplayValue: function(id,config) {
     	var oa=this.getAttribute(id);
     	if (oa) {
-    		if (oa.toString() == 'Fdl.RelationAttribute') return this.getValue(id+'_title',this._data.values[id]);
-    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return this.getValue(id+'_title',this._data.values[id]);
+    		if (oa.toString() == 'Fdl.RelationAttribute') return this.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
+    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return this.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
     		if (oa.toString() == 'Fdl.EnumAttribute') {
     			if (oa.inArray() || oa.isMultiple()) {
     				var tv=[];
@@ -231,9 +231,18 @@ Fdl.Document.prototype = {
     			}
     		}
     	}
-	     return this._data.values[id];
+    	return this.encodeHtmlTags(this._data.values[id]);
     }, 
 
+    encodeHtmlTags: function(v) {
+    	if (v && (typeof v == 'string')) {
+	    	v = v.replace(/\&/g,'&amp;');
+	    	v = v.replace(/\</g,'&lt;');
+	    	v = v.replace(/\>/g,'&gt;');
+    	}
+    	return v;
+    },
+    
     /**
      * set value to an attribute
      * the document is not updated in database server until it will saved
