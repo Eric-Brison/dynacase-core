@@ -7042,6 +7042,7 @@ static function _cmpanswers($a,$b) {
    */
   function getHTMLTitle($id="-1",$def="") {   
     $t=$this->getTitle($id,$def);
+    $t=str_replace("&","&amp;",$t);
     return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
   }
   /**
