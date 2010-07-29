@@ -13,8 +13,7 @@ function usage() {
 	echo "Usage:\n";
 	echo "  " . __FILE__ . "\n";
 	echo "      --config=<config.xml>\n";
-	echo "      --outputname=<output_name>\n";
-	echo "      [--outputtype=<sql|pgservice>] (default sql)\n";
+	echo "      --outputsql=<file_name> | --outputpgservice=<pgservice>]\n";
 	echo "      [--tmppgservice=<tmp_pgservice_name>] (default tmp_1nf)\n";
 	echo "      [--tmpschemaname=<tmp_schemaname>] (default 1nf)\n";
 	echo "      [--tmpemptydb=<yes|no>] (default yes)\n";
@@ -27,8 +26,8 @@ function usage() {
  */
 $parms = array(
 	'config' => '',
-	'outputtype' => 'sql',
-	'outputname' => '',
+	'outputsql' => '',
+	'outputpgservice' => '',
 	'tmppgservice' => 'tmp_1nf',
 	'tmpschemaname' => 'tmp_1nf',
 	'tmpemptydb' => 'yes',
@@ -50,12 +49,8 @@ if (!is_file($parms['config'])) {
 	$action->error(sprintf(_("Error: config file '%s' is not a file.", $parms['config'])));
 	usage();
 }
-if(!in_array($parms['outputtype'], array('sql', 'pgservice'))) {
-	$action->error(sprintf(_("Error: Output type '%s' is not valid.", $parms['outputtype'])));
-	usage();
-}
-if (empty($parms['outputname'])) {
-	$action->error(sprintf(_("Error: missing or empty --outputname")));
+if (empty($parms['outputsql']) && empty($parms['outputpgservice'])) {
+	$action->error(sprintf(_("Error: at least one of those parameters is mandatory --outputsql --outputpgservice")));
 	usage();
 }
 if (empty($parms['tmppgservice'])) {

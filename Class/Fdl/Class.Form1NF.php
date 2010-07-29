@@ -34,8 +34,8 @@ class Form1NF {
 	 */
 	private $params = array(
 		'config' => '',              // XML config file name
-		'outputtype' => 'sql',       // sql or pgservice
-		'outputname' => '',          // sql file or output pgservice name
+		'outputsql' => '',           // output file name
+		'outputpgservice' => '',     // output pgservice name
 		'tmppgservice' => 'tmp_1nf', // temporary pg service
 		'tmpschemaname' => '1nf',    // temporary schema name
 		'tmpemptydb' => 'yes',       // whether the process empty the database before process
@@ -45,22 +45,42 @@ class Form1NF {
 	 *
 	 * @var string
 	 */
-	public $sqlLogFileHandle = null;
+	private $sqlStandardLogHandle = null;
 	/**
 	 *
 	 * @var int
 	 */
-	private $sqlLogFileCounter = 0;
+	private $sqlStandardLogCounter = 0;
 	/**
 	 *
 	 * @var int
 	 */
-	private $sqlLogFileBufferSize = 300;
+	private $sqlStandardLogBufferSize = 300;
 	/**
 	 *
 	 * @var string
 	 */
-	private $sqlLogFileBuffer = '';
+	private $sqlStandardLogBuffer = '';
+	/**
+	 *
+	 * @var string
+	 */
+	private $sqlPostgresLogHandle = null;
+	/**
+	 *
+	 * @var int
+	 */
+	private $sqlPostgresLogCounter = 0;
+	/**
+	 *
+	 * @var int
+	 */
+	private $sqlPostgresLogBufferSize = 300;
+	/**
+	 *
+	 * @var string
+	 */
+	private $sqlPostgresLogBuffer = '';
 	/**
 	 *
 	 * @var array
@@ -192,26 +212,113 @@ class Form1NF {
 			$msg = $args[0];
 		}
 		$this->action->error(trim($msg));
-		$this->logSqlWrite($msg, true);
-		$this->logSqlFlush();
+		$this->sqlLogWrite($msg, true);
+		$this->sqlLogFlush();
 		//debug_print_backtrace();
 		throw new Exception(trim($msg));
 	}
 	/**
 	 *
 	 */
-	private function logSqlFlush() {
-		if($this->sqlLogFileHandle !== null) {
-			@fwrite($this->sqlLogFileHandle, $this->sqlLogFileBuffer);
-			$this->sqlLogFileBuffer = '';
-			$this->sqlLogFileCounter = 0;
+	private function sqlStandardLogFlush() {
+		if($this->sqlStandardLogHandle !== null) {
+			@fwrite($this->sqlStandardLogHandle, $this->sqlStandardLogBuffer);
+			$this->sqlStandardLogBuffer = '';
+			$this->sqlStandardLogCounter = 0;
 		}
 	}
 	/**
 	 *
 	 */
-	private function logSqlWrite($line, $comment=false) {
-		if($this->sqlLogFileHandle !== null) {
+	private function sqlStandardLogWrite($line, $comment=false) {
+		if($this->sqlStandardLogHandle !== null) {
+			if($comment) {
+				$line = "\n--\n-- ".str_replace("\n", "\n-- ", str_replace("\r", "", $line))."\n--\n";
+			}
+			elseif(substr($line, -1) != ';') {
+				$line .= ';';
+			}
+			$line = str_replace('"'.$this->params['tmpschemaname'].'".', '', $line)."\n";
+			$this->sqlStandardLogBuffer .= $line;
+			$this->sqlStandardLogCounter++;
+			if($this->sqlStandardLogCounter >= $this->sqlStandardLogBufferSize) {
+				$this->sqlStandardLogFlush();
+			}
+		}
+	}
+	/**
+	 *
+	 */
+	private function sqlStandardLogClose() {
+		if($this->sqlStandardLogHandle !== null) {
+			$this->sqlStandardLogFlush();
+			@fwrite($this->sqlStandardLogHandle, "\n\n\n");
+			@fclose($this->sqlStandardLogHandle);
+		}
+		return true;
+	}
+	/**
+	 *
+	 */
+	private function sqlStandardLogOpen() {
+		try {
+			if(!empty($this->params['outputsql'])) {
+				$this->sqlStandardLogHandle = @fopen($this->params['outputsql'], 'w');
+				if(!$this->sqlStandardLogHandle) {
+					$this->stdError(_("Error could not open output log file '%s' for writing."), $this->params['outputsql']);
+				}
+			}
+		}
+		catch(Exception $e) {
+			return false;
+		}
+		return true;
+	}
+	/**
+	 *
+	 */
+	private function sqlPostgresLogFlush() {
+		if($this->sqlPostgresLogHandle !== null) {
+			@fwrite($this->sqlPostgresLogHandle, $this->sqlPostgresLogBuffer);
+			$this->sqlPostgresLogBuffer = '';
+			$this->sqlPostgresLogCounter = 0;
+		}
+	}
+	/**
+	 *
+	 */
+	private function sqlLogFlush() {
+		$this->sqlPostgresLogFlush();
+		$this->sqlStandardLogFlush();
+	}
+	/**
+	 *
+	 */
+	private function sqlLogOpen() {
+		if(!$this->sqlPostgresLogOpen()) return false;
+		if(!$this->sqlStandardLogOpen()) return false;
+		return true;
+	}
+	/**
+	 *
+	 */
+	private function sqlLogClose() {
+		if(!$this->sqlPostgresLogClose()) return false;
+		if(!$this->sqlStandardLogClose()) return false;
+		return true;
+	}
+	/**
+	 *
+	 */
+	private function sqlLogWrite($line, $comment=false) {
+		$this->sqlPostgresLogWrite($line, $comment);
+		$this->sqlStandardLogWrite($line, $comment);
+	}
+	/**
+	 *
+	 */
+	private function sqlPostgresLogWrite($line, $comment=false) {
+		if($this->sqlPostgresLogHandle !== null) {
 			if($comment) {
 				$line = "\n--\n-- ".str_replace("\n", "\n-- ", str_replace("\r", "", $line))."\n--\n";
 			}
@@ -219,39 +326,39 @@ class Form1NF {
 				$line .= ';';
 			}
 			$line = str_replace('"'.$this->params['tmpschemaname'].'".', '', $line)."\n";
-			$this->sqlLogFileBuffer .= $line;
-			$this->sqlLogFileCounter++;
-			if($this->sqlLogFileCounter >= $this->sqlLogFileBufferSize) {
-				$this->logSqlFlush();
+			$this->sqlPostgresLogBuffer .= $line;
+			$this->sqlPostgresLogCounter++;
+			if($this->sqlPostgresLogCounter >= $this->sqlPostgresLogBufferSize) {
+				$this->sqlPostgresLogFlush();
 			}
 		}
 	}
 	/**
 	 *
 	 */
-	private function logSqlClose() {
-		$this->logSqlFlush();
-		if($this->sqlLogFileHandle !== null) {
-			@fwrite($this->sqlLogFileHandle, "\n\n\n");
-			@fclose($this->sqlLogFileHandle);
+	private function sqlPostgresLogClose() {
+		if($this->sqlPostgresLogHandle !== null) {
+			$this->sqlPostgresLogFlush();
+			@fwrite($this->sqlPostgresLogHandle, "\n\n\n");
+			@fclose($this->sqlPostgresLogHandle);
 		}
 		return true;
 	}
 	/**
 	 *
 	 */
-	private function logSqlOpen() {
+	private function sqlPostgresLogOpen() {
 		try {
 			if(empty($this->params['sqllog'])) {
-				$tmp_dump = tempnam(null, 'sqllog.tmp_1nf');
+				$tmp_dump = tempnam(null, 'sqlPostgres.tmp.1nf.');
 				if ($tmp_dump === false) {
 					$this->stdError(_("Error creating temp file for sql log output."));
 				}
 				$this->params['sqllog'] = $tmp_dump;
 			}
 			
-			$this->sqlLogFileHandle = @fopen($this->params['sqllog'], 'w');
-			if(!$this->sqlLogFileHandle) {
+			$this->sqlPostgresLogHandle = @fopen($this->params['sqllog'], 'w');
+			if(!$this->sqlPostgresLogHandle) {
 				$this->stdError(_("Error could not open sql log file '%s' for writing."), $this->params['sqllog']);
 			}
 		}
@@ -291,7 +398,7 @@ class Form1NF {
 			}
 
 			// open log file
-			if (!$this->logSqlOpen()) return false;
+			if (!$this->sqlLogOpen()) return false;
 
 			// load config
 			if (!$this->configLoad()) return false;
@@ -309,16 +416,11 @@ class Form1NF {
 			if (!$this->sqlMakeReferences()) return false;
 
 			// close log file
-			if (!$this->logSqlClose()) return false;
+			if (!$this->sqlLogClose()) return false;
 
 			// output management
-			if ($this->params['outputtype'] == 'sql') {
-				if(!@copy($this->params['sqllog'], $this->params['outputname'])) {
-					$this->stdError(_("Error copying output file '%s'"), $this->params['outputname']);
-				}
-			}
-			else {
-				if (!$this->databaseLoad($this->params['sqllog'], $this->params['outputname'])) return false;
+			if (!empty($this->params['outputpgservice'])) {
+				if (!$this->databaseLoad($this->params['sqllog'], $this->params['outputpgservice'])) return false;
 			}
 		}
 		catch(Exception $e) {
@@ -341,7 +443,7 @@ class Form1NF {
 			if (preg_match("/^\s*--/", $sql)) {
 				continue;
 			}
-			if($log) $this->logSqlWrite($sql);
+			if($log) $this->sqlLogWrite($sql);
 			$res = @pg_query($this->tmp_conn, $sql);
 			if(!$res) $this->checkErrorPostgresql($sql);
 		}
@@ -355,12 +457,15 @@ class Form1NF {
 	private function sqlInsertFlush() {
 		foreach($this->sqlInsertBuffer as $tableName => $rows) {
 			$sql = 'COPY "'.$this->params['tmpschemaname'].'"."'.$tableName.'" FROM STDIN;';
+			$this->sqlPostgresLogWrite($sql);
 			$res = @pg_query($this->tmp_conn, $sql);
 			if(!$res) $this->checkErrorPostgresql($sql);
 			foreach($rows as $row) {
+				$this->sqlPostgresLogWrite($row);
 				$res = @pg_put_line($this->tmp_conn, $row."\n");
 				if(!$res) $this->checkErrorPostgresql("ROW $row");
 			}
+			$this->sqlPostgresLogWrite("\\.\n");
 			$res = @pg_put_line($this->tmp_conn, "\\.\n");
 			if(!$res) $this->checkErrorPostgresql();
 			$res = @pg_end_copy($this->tmp_conn);
@@ -375,7 +480,7 @@ class Form1NF {
 	 * @return bool
 	 */
 	private function sqlInsert($table, $fields, $values, $escapedValues) {
-		$this->logSqlWrite('INSERT INTO "'.$this->params['tmpschemaname'].'"."'.$table.'" ("'.implode('","', $fields).'") VALUES ('.implode(',', $escapedValues).');');
+		$this->sqlStandardLogWrite('INSERT INTO "'.$this->params['tmpschemaname'].'"."'.$table.'" ("'.implode('","', $fields).'") VALUES ('.implode(',', $escapedValues).');');
 
 		if(!isset($this->sqlInsertBuffer[$table])){
 			$this->sqlInsertBuffer[$table] = array();
@@ -453,7 +558,7 @@ class Form1NF {
 				}
 
 				$this->stdInfo(_("Create Table '%s'"), strtolower($table->name));
-				$this->logSqlWrite(sprintf("Create table %s", strtolower($table->name)), true);
+				$this->sqlLogWrite(sprintf("Create table %s", strtolower($table->name)), true);
 
 				$sql = sprintf('CREATE TABLE "%s"."%s" (', $this->params['tmpschemaname'], strtolower($table->name))."\n";
 				$sql .= implode(",\n", $fields)."\n)";
@@ -472,7 +577,7 @@ class Form1NF {
 	private function sqlMakeReferences() {
 		try {
 			$this->stdInfo(_("Make references ..."));
-			$this->logSqlWrite("Building References", true);
+			$this->sqlLogWrite("Building References", true);
 
 			foreach($this->config as $table) {
 				foreach($table->references as $reference) {
@@ -542,7 +647,7 @@ class Form1NF {
 			foreach($this->config as $table) {
 				if($table->type == 'family') {
 					$this->stdInfo(_("Filling family table '%s' and relatives"), strtolower($table->name));
-					$this->logSqlWrite(sprintf("Filling table %s and relatives", strtolower($table->name)), true);
+					$this->sqlLogWrite(sprintf("Filling table %s and relatives", strtolower($table->name)), true);
 
 					// search documents
 					$s = new SearchDoc($this->tmp_dbaccess, $table->name);
@@ -732,7 +837,7 @@ class Form1NF {
 			foreach($this->config as $table) {
 				if ($table->type == 'enum' || $table->type == 'enum_multiple' || $table->type == 'enum_inarray') {
 					$this->stdInfo(_("Filling enum table '%s'"), $table->name);
-					$this->logSqlWrite(sprintf("Filling table %s", strtolower($table->name)), true);
+					$this->sqlLogWrite(sprintf("Filling table %s", strtolower($table->name)), true);
 					foreach($table->enumDatas as $key => $value) {
 						$this->sqlInsert(
 								$table->name,
@@ -760,15 +865,6 @@ class Form1NF {
 		if(!$this->configLoadExplodeContainers()) return false;
 		if(!$this->configLoadTables()) return false;
 		if(!$this->configLoadCheck()) return false;
-
-		/*
-foreach($this->config as $fam) {
-	$fam->famAttributes = '';
-}
-print_r($this->config);
-exit;
-		 * 
-		 */
 
 		return true;
 	}
@@ -1353,7 +1449,7 @@ exit;
 		try {
 			$this->stdInfo(_("Dump pgservice '%s' ..."), $pgservice);
 
-			$tmp_dump = tempnam(null, 'pg_dump.tmp_1nf');
+			$tmp_dump = tempnam(null, 'pg_dump.tmp.1nf.');
 			if ($tmp_dump === false) {
 				$this->stdError(_("Error creating temp file for pg_dump output."));
 			}
@@ -1592,6 +1688,7 @@ class Form1NF_Table {
 		if("$value" === "") return false;
 		if(!array_key_exists($value, $this->enumDatas)) {
 			$this->enumDatas[$value] = $value;
+error_log("ADD ENUM VALUE $value IN FIELD ".$this->name);
 		}
 	}
 	/**
