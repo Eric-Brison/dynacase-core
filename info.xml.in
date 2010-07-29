@@ -193,6 +193,7 @@
     <process command="programs/app_post FDL U" />
     <process command="programs/post_migration FDL" />
 
+    <process command="programs/pre_migration USERCARD" />
     <process command="programs/record_application USERCARD U" />
     <process command="programs/app_post USERCARD U" />
 
