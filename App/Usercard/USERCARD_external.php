@@ -204,6 +204,7 @@ function members($dbaccess, $groupid, $name="",$sort='lastname',$searchinmail=fa
         $g=new Group();
         $lg=$g->getChildsGroupId($u->id);
         $cond=getSqlCond($lg,"idgroup",true);
+        if (! $cond) $cond="true";
         $condname="";
         if ($name) {
             $tname=explode(' ',$name);
