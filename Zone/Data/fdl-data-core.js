@@ -538,6 +538,25 @@ Fdl.cloneObject= function(srcInstance) {
 	/*On retourne la nouvelle instance*/
 	return newInstance;
 };
+
+/**
+ * transform &,< and > characters into their html equivalents
+ * @return {string} the formatted string
+ */
+Fdl.encodeHtmlTags= function(v) {
+    if (v && (typeof v == 'string')) {
+        v = v.replace(/\&/g,'&amp;');
+        v = v.replace(/\</g,'&lt;');
+        v = v.replace(/\>/g,'&gt;');
+    } else if (v && (typeof v == 'object')) {
+        for (var i=0;i<v.length;i++) {
+            v[i]=v[i].replace(/\&/g,'&amp;');
+            v[i]= v[i].replace(/\</g,'&lt;');
+            v[i]= v[i].replace(/\>/g,'&gt;');
+        }
+    }
+    return v;
+};
 	
 // ---------------------
 // Not prototype
