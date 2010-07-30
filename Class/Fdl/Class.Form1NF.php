@@ -1930,6 +1930,7 @@ class Form1NF_Column {
 	 */
 	public function getPgEscapeCopy($value, $pgType=null) {
 		if("$value" === "") return "\\N";
+		if($this->isProperty && $this->name == 'revdate') $value = date('Y-m-d', $value);
 		$value = pg_escape_string($value);
 		$value = str_replace(array("\r", "\n", "\t"), array("\\r", "\\n", "\\t"), $value);
 		return $value;
