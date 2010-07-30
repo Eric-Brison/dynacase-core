@@ -396,6 +396,9 @@ class Form1NF {
 
 				// load dump into tmp
 				if(!$this->databaseLoad($dumpFile, $this->params['tmppgservice'])) return false;
+
+				// delete dump file
+				@unlink($dumpFile);
 			}
 
 			// open log file
