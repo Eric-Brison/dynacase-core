@@ -2209,7 +2209,6 @@ create unique index i_docir on doc(initid, revision);";
 	   }
       }
       if ($maxdiff) {
-          addWarningMSg("fill to $max");
 	foreach($ta as $k=>$v) { // fill uncompleted rows
 	  $c=count($this->getTValue($k));
 	  if ($c < $max) {
