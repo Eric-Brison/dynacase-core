@@ -190,8 +190,8 @@ Fdl.Document.prototype = {
     getDisplayValue: function(id,config) {
     	var oa=this.getAttribute(id);
     	if (oa) {
-    		if (oa.toString() == 'Fdl.RelationAttribute') return this.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
-    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return this.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
+    		if (oa.toString() == 'Fdl.RelationAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
+    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
     		if (oa.toString() == 'Fdl.EnumAttribute') {
     			if (oa.inArray() || oa.isMultiple()) {
     				var tv=[];
@@ -219,7 +219,7 @@ Fdl.Document.prototype = {
     						config.index=i;
     						tv.push(oa.getUrl(vs,this.id,config));
     						}
-    					} else tv.push(this.encodeHtmlTags(oa.getFileName(vs[i])));
+    					} else tv.push(Fdl.encodeHtmlTags(oa.getFileName(vs[i])));
     				}
     				}
     				return tv;
@@ -227,26 +227,11 @@ Fdl.Document.prototype = {
     			if (config && config.url) {
     				if (config.dav) return oa.getDavUrl(this._data.values[id],this.id);
     				else return oa.getUrl(this._data.values[id],this.id,config);
-    			} else return this.encodeHtmlTags(oa.getFileName(this._data.values[id]));
+    			} else return Fdl.encodeHtmlTags(oa.getFileName(this._data.values[id]));
     			}
     		}
     	}
-    	return this.encodeHtmlTags(this._data.values[id]);
-    }, 
-
-    encodeHtmlTags: function(v) {
-    	if (v && (typeof v == 'string')) {
-	    	v = v.replace(/\&/g,'&amp;');
-	    	v = v.replace(/\</g,'&lt;');
-	    	v = v.replace(/\>/g,'&gt;');
-    	} else if (v && (typeof v == 'object')) {
-    		for (var i=0;i<v.length;i++) {
-    			v[i]=v[i].replace(/\&/g,'&amp;');
-    	    	v[i]= v[i].replace(/\</g,'&lt;');
-    	    	v[i]= v[i].replace(/\>/g,'&gt;');
-    		}
-    	}
-    	return v;
+    	return Fdl.encodeHtmlTags(this._data.values[id]);
     },
     
     /**
