@@ -105,7 +105,7 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 
 	// verify attribute constraint
 	if (((GetHttpVars("noconstraint")!="Y") || ($action->user->id!=1)) &&
-	(($err=$doc->verifyAllConstraints(false,$info))!="")) {
+	(($err.=$doc->verifyAllConstraints(false,$info))!="")) {
 		// redirect to edit action
 
 		//get action where to redirect

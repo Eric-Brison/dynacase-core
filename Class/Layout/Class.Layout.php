@@ -346,7 +346,7 @@ class Layout {
           $out .= "var logmsg=new Array();\n";
           while(list($k,$v) = each($list)) {
               if (($v[0]=='{') ) $out .= "logmsg[$k]=$v;\n";
-              else $out .= "logmsg[$k]='$v';\n";
+              else $out .= "logmsg[$k]=".json_encode($v).";\n";
           }
           
           $out .= "if ('displayLogMsg' in window) displayLogMsg(logmsg);\n";

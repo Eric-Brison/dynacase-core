@@ -2296,7 +2296,7 @@ create unique index i_docir on doc(initid, revision);";
   		if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
   		else {
   			if (count($value)==0) $value = DELVALUE;
-  			elseif ((count($value) == 1) && (first($value)=="") && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
+  			elseif ((count($value) == 1) && (first($value)==="" || first($value)===null) && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
   			else {
   				if ($oattr->repeat && (count($value)==1) && substr(key($value),0,1)=="s") {
   					$ov=$this->getTValue($attrid);
@@ -7042,6 +7042,7 @@ static function _cmpanswers($a,$b) {
    */
   function getHTMLTitle($id="-1",$def="") {   
     $t=$this->getTitle($id,$def);
+    $t=str_replace("&","&amp;",$t);
     return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
   }
   /**

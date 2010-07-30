@@ -203,7 +203,9 @@ function members($dbaccess, $groupid, $name="",$sort='lastname',$searchinmail=fa
         if (! $u->isAffected()) return sprintf(_("no valid group : %s"),$gid);
         $g=new Group();
         $lg=$g->getChildsGroupId($u->id);
+        $lg[]=$u->id;
         $cond=getSqlCond($lg,"idgroup",true);
+        if (! $cond) $cond="true";
         $condname="";
         if ($name) {
             $tname=explode(' ',$name);
