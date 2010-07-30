@@ -220,6 +220,37 @@ class Form1NF {
 	/**
 	 *
 	 */
+	private function sqlLogFlush() {
+		$this->sqlPostgresLogFlush();
+		$this->sqlStandardLogFlush();
+		return true;
+	}
+	/**
+	 *
+	 */
+	private function sqlLogOpen() {
+		if(!$this->sqlPostgresLogOpen()) return false;
+		if(!$this->sqlStandardLogOpen()) return false;
+		return true;
+	}
+	/**
+	 *
+	 */
+	private function sqlLogClose() {
+		if(!$this->sqlPostgresLogClose()) return false;
+		if(!$this->sqlStandardLogClose()) return false;
+		return true;
+	}
+	/**
+	 *
+	 */
+	private function sqlLogWrite($line, $comment=false) {
+		$this->sqlPostgresLogWrite($line, $comment);
+		$this->sqlStandardLogWrite($line, $comment);
+	}
+	/**
+	 *
+	 */
 	private function sqlStandardLogFlush() {
 		if($this->sqlStandardLogHandle !== null) {
 			@fwrite($this->sqlStandardLogHandle, $this->sqlStandardLogBuffer);
@@ -230,12 +261,12 @@ class Form1NF {
 	/**
 	 *
 	 */
-	private function sqlStandardLogWrite($line, $comment=false) {
+	private function sqlStandardLogWrite($line, $comment=false, $comma=true) {
 		if($this->sqlStandardLogHandle !== null) {
 			if($comment) {
 				$line = "\n--\n-- ".str_replace("\n", "\n-- ", str_replace("\r", "", $line))."\n--\n";
 			}
-			elseif(substr($line, -1) != ';') {
+			elseif($comma && substr($line, -1) != ';') {
 				$line .= ';';
 			}
 			$line = str_replace('"'.$this->params['tmpschemaname'].'".', '', $line)."\n";
@@ -287,42 +318,12 @@ class Form1NF {
 	/**
 	 *
 	 */
-	private function sqlLogFlush() {
-		$this->sqlPostgresLogFlush();
-		$this->sqlStandardLogFlush();
-	}
-	/**
-	 *
-	 */
-	private function sqlLogOpen() {
-		if(!$this->sqlPostgresLogOpen()) return false;
-		if(!$this->sqlStandardLogOpen()) return false;
-		return true;
-	}
-	/**
-	 *
-	 */
-	private function sqlLogClose() {
-		if(!$this->sqlPostgresLogClose()) return false;
-		if(!$this->sqlStandardLogClose()) return false;
-		return true;
-	}
-	/**
-	 *
-	 */
-	private function sqlLogWrite($line, $comment=false) {
-		$this->sqlPostgresLogWrite($line, $comment);
-		$this->sqlStandardLogWrite($line, $comment);
-	}
-	/**
-	 *
-	 */
-	private function sqlPostgresLogWrite($line, $comment=false) {
+	private function sqlPostgresLogWrite($line, $comment=false, $comma=true) {
 		if($this->sqlPostgresLogHandle !== null) {
 			if($comment) {
 				$line = "\n--\n-- ".str_replace("\n", "\n-- ", str_replace("\r", "", $line))."\n--\n";
 			}
-			else {
+			elseif($comma && substr($line, -1) != ';') {
 				$line .= ';';
 			}
 			$line = str_replace('"'.$this->params['tmpschemaname'].'".', '', $line)."\n";
@@ -395,6 +396,9 @@ class Form1NF {
 
 				// load dump into tmp
 				if(!$this->databaseLoad($dumpFile, $this->params['tmppgservice'])) return false;
+
+				// delete dump file
+				@unlink($dumpFile);
 			}
 
 			// open log file
@@ -457,15 +461,15 @@ class Form1NF {
 	private function sqlInsertFlush() {
 		foreach($this->sqlInsertBuffer as $tableName => $rows) {
 			$sql = 'COPY "'.$this->params['tmpschemaname'].'"."'.$tableName.'" FROM STDIN;';
-			$this->sqlPostgresLogWrite($sql);
+			$this->sqlPostgresLogWrite($sql, false, false);
 			$res = @pg_query($this->tmp_conn, $sql);
 			if(!$res) $this->checkErrorPostgresql($sql);
 			foreach($rows as $row) {
-				$this->sqlPostgresLogWrite($row);
+				$this->sqlPostgresLogWrite($row, false, false);
 				$res = @pg_put_line($this->tmp_conn, $row."\n");
 				if(!$res) $this->checkErrorPostgresql("ROW $row");
 			}
-			$this->sqlPostgresLogWrite("\\.\n");
+			$this->sqlPostgresLogWrite("\\.\n", false, false);
 			$res = @pg_put_line($this->tmp_conn, "\\.\n");
 			if(!$res) $this->checkErrorPostgresql();
 			$res = @pg_end_copy($this->tmp_conn);
@@ -576,6 +580,7 @@ class Form1NF {
 	 */
 	private function sqlMakeReferences() {
 		try {
+
 			$this->stdInfo(_("Make references ..."));
 			$this->sqlLogWrite("Building References", true);
 
@@ -837,7 +842,7 @@ class Form1NF {
 			foreach($this->config as $table) {
 				if ($table->type == 'enum' || $table->type == 'enum_multiple' || $table->type == 'enum_inarray') {
 					$this->stdInfo(_("Filling enum table '%s'"), $table->name);
-					$this->sqlLogWrite(sprintf("Filling table %s", strtolower($table->name)), true);
+					$this->sqlLogWrite(sprintf("Filling enum table %s", strtolower($table->name)), true);
 					foreach($table->enumDatas as $key => $value) {
 						$this->sqlInsert(
 								$table->name,
@@ -848,6 +853,9 @@ class Form1NF {
 					}
 				}
 			}
+
+			// should flush insert datas before leaving !!
+			$this->sqlInsertFlush();
 		}
 		catch(Exception $e) {
 			return false;
@@ -1050,6 +1058,7 @@ class Form1NF {
 
 							$this->config[] = $newTableEnum;
 							$this->config[] = $newTableLink;
+
 							$delete[] = $iColumn;
 							break;
 
@@ -1068,6 +1077,7 @@ class Form1NF {
 							);
 
 							$this->config[] = $newTableLink;
+							$newTableDocid->type = 'family';
 							$delete[] = $iColumn;
 							break;
 
@@ -1131,6 +1141,7 @@ class Form1NF {
 											'column' => $col,
 										);
 
+										$newTableDocid->type = 'family';
 										$this->config[] = $newTableLink;
 										break;
 
@@ -1688,7 +1699,6 @@ class Form1NF_Table {
 		if("$value" === "") return false;
 		if(!array_key_exists($value, $this->enumDatas)) {
 			$this->enumDatas[$value] = $value;
-error_log("ADD ENUM VALUE $value IN FIELD ".$this->name);
 		}
 	}
 	/**
@@ -1841,7 +1851,7 @@ class Form1NF_Column {
 
 		if($this->type == 'thesaurus') {
 			$this->type = 'docid';
-			$this->docidFamily = 'DESCRIPTEUR';
+			$this->docidFamily = 'THCONCEPT';
 		}
 
 		$this->isEnum = ($this->type == 'enum') ;
@@ -1926,7 +1936,7 @@ class Form1NF_Column {
 				
 			case 'integer':
 			case 'docid':
-			case 'docid':
+			case 'thesaurus':
 			case 'uid':
 			case 'int': return 'integer';
 
