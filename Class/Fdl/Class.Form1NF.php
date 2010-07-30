@@ -68,6 +68,11 @@ class Form1NF {
 	private $sqlPostgresLogHandle = null;
 	/**
 	 *
+	 * @var string
+	 */
+	private $sqlPostgresFileName = '';
+	/**
+	 *
 	 * @var int
 	 */
 	private $sqlPostgresLogCounter = 0;
@@ -350,17 +355,21 @@ class Form1NF {
 	 */
 	private function sqlPostgresLogOpen() {
 		try {
-			if(empty($this->params['sqllog'])) {
-				$tmp_dump = tempnam(null, 'sqlPostgres.tmp.1nf.');
-				if ($tmp_dump === false) {
-					$this->stdError(_("Error creating temp file for sql log output."));
+			if(!empty($this->params['outputpgservice']) || !empty($this->params['sqllog'])) {
+				if(empty($this->params['sqllog'])) {
+					$this->sqlPostgresFileName = tempnam(null, 'sqlPostgres.tmp.1nf.');
+					if ($this->sqlPostgresFileName === false) {
+						$this->stdError(_("Error creating temp file for sql log output."));
+					}
 				}
-				$this->params['sqllog'] = $tmp_dump;
-			}
-			
-			$this->sqlPostgresLogHandle = @fopen($this->params['sqllog'], 'w');
-			if(!$this->sqlPostgresLogHandle) {
-				$this->stdError(_("Error could not open sql log file '%s' for writing."), $this->params['sqllog']);
+				else {
+					$this->sqlPostgresFileName = $this->params['sqllog'];
+				}
+
+				$this->sqlPostgresLogHandle = @fopen($this->sqlPostgresFileName, 'w');
+				if(!$this->sqlPostgresLogHandle) {
+					$this->stdError(_("Error could not open sql log file '%s' for writing."), $this->sqlPostgresFileName);
+				}
 			}
 		}
 		catch(Exception $e) {
@@ -424,7 +433,12 @@ class Form1NF {
 
 			// output management
 			if (!empty($this->params['outputpgservice'])) {
-				if (!$this->databaseLoad($this->params['sqllog'], $this->params['outputpgservice'])) return false;
+				if (!$this->databaseLoad($this->sqlPostgresFileName, $this->params['outputpgservice'])) return false;
+			}
+
+			// temporary file
+			if(!empty($this->sqlPostgresFileName) && empty($this->params['sqllog'])) {
+				@unlink($this->sqlPostgresFileName);
 			}
 		}
 		catch(Exception $e) {
@@ -1906,7 +1920,7 @@ class Form1NF_Column {
 		}
 		if("$value" === "") return 'NULL';
 		if($pgType == 'integer' || $pgType == 'double precision') return $value;
-		if($this->isProperty && $this->name == 'revdate') $value = date('Y-m-d', $value);
+		if($this->isProperty && $this->name == 'revdate') $value = date('Y-m-d H:i:s', $value);
 		return "'".pg_escape_string($value)."'";
 	}
 	/**
@@ -1916,6 +1930,7 @@ class Form1NF_Column {
 	 */
 	public function getPgEscapeCopy($value, $pgType=null) {
 		if("$value" === "") return "\\N";
+		if($this->isProperty && $this->name == 'revdate') $value = date('Y-m-d H:i:s', $value);
 		$value = pg_escape_string($value);
 		$value = str_replace(array("\r", "\n", "\t"), array("\\r", "\\n", "\\t"), $value);
 		return $value;
