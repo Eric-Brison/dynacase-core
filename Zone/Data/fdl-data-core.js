@@ -550,9 +550,11 @@ Fdl.encodeHtmlTags= function(v) {
         v = v.replace(/\>/g,'&gt;');
     } else if (v && (typeof v == 'object')) {
         for (var i=0;i<v.length;i++) {
+        	 if (v[i] && (typeof v[i] == 'string')) {
             v[i]=v[i].replace(/\&/g,'&amp;');
             v[i]= v[i].replace(/\</g,'&lt;');
             v[i]= v[i].replace(/\>/g,'&gt;');
+        	 }
         }
     }
     return v;

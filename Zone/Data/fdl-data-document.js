@@ -219,7 +219,7 @@ Fdl.Document.prototype = {
     						config.index=i;
     						tv.push(oa.getUrl(vs,this.id,config));
     						}
-    					} else tv.push(this.encodeHtmlTags(oa.getFileName(vs[i])));
+    					} else tv.push(Fdl.encodeHtmlTags(oa.getFileName(vs[i])));
     				}
     				}
     				return tv;
@@ -227,7 +227,7 @@ Fdl.Document.prototype = {
     			if (config && config.url) {
     				if (config.dav) return oa.getDavUrl(this._data.values[id],this.id);
     				else return oa.getUrl(this._data.values[id],this.id,config);
-    			} else return this.encodeHtmlTags(oa.getFileName(this._data.values[id]));
+    			} else return Fdl.encodeHtmlTags(oa.getFileName(this._data.values[id]));
     			}
     		}
     	}
