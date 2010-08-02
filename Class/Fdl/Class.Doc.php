@@ -7049,12 +7049,12 @@ static function _cmpanswers($a,$b) {
    * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
    * @return string DD/MM/YYYY
    */
-  public static function getDate($daydelta=0,$dayhour="",$daymin="") {
+  public static function getDate($daydelta=0,$dayhour="",$daymin="",$getlocale=false) {
     $delta = abs(intval($daydelta));
     if ($daydelta > 0) {
       $nd =strtotime ("+$delta day");
     } else if ($daydelta < 0) {
-       $nd =strtotime ("-$delta day");
+      $nd =strtotime ("-$delta day");
     } else {
       $nd =time();
     }
@@ -7074,7 +7074,12 @@ static function _cmpanswers($a,$b) {
 	$nd = strtotime ("-$delta min",$nd);
       }
     }
-    return date("d/m/Y H:i",$nd);
+	if($getlocale) {
+		return FrenchDateToLocaleDate(date("d/m/Y H:i",$nd));
+	}
+	else {
+		return date("Y-m-d H:i",$nd);
+	}
   }
 
   /**
