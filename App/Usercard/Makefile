@@ -27,7 +27,7 @@ $(pubdir)/EXTERNALS :
 	mkdir -p $@
 
 $(pubdir)/EXTERNALS/usercard.php: $(pubdir)/EXTERNALS
-	cp $(appname)_external.php $(pubdir)/EXTERNALS/usercard.php
+	ln -sf ../USERCARD/$(appname)_external.php $(pubdir)/EXTERNALS/usercard.php  
 
 publish: $(pubdir)/$(appname)/usercard.ods $(pubdir)/EXTERNALS/usercard.php $(pubdir)/$(appname)/userinit.ods $(pubdir)/$(appname)/personnldap.ods 
 #$(rootprefix)/etc/openldap/slapd_anakeen.conf

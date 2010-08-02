@@ -57,7 +57,7 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
 
   $action->lay->set("RSS", ($dir->getValue("gui_isrss")=="yes"?true:false));
   $action->lay->set("rsslink", $dir->getRssLink());
-  $action->lay->set("foldername", $dir->getTitle());
+  $action->lay->set("foldername", $dir->getHtmlTitle());
 
   // control open
   if ($dir->defDoctype=='S') {    
@@ -67,7 +67,7 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
   if (($err=$dir->Control($aclctrl)) != "") $action->exitError($err);
 
   
-  $action->lay->Set("dirtitle",stripslashes($dir->getTitle()));
+  $action->lay->Set("dirtitle",stripslashes($dir->getHtmlTitle()));
   $action->lay->Set("dirid",$dirid);
 
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
@@ -188,7 +188,7 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
       // search title for freedom item
 
       if ($doc->doctype=='C') $title=DocFam::getLangTitle($zdoc);
-      else  $title=$doc->getTitle();
+      else  $title=$doc->getHtmlTitle();
       $tdoc[$k]["title"] = $title;
 
       if ($doc->doctype =="C") 	$tdoc[$k]["title"] = "<B>". $title ."</B>";

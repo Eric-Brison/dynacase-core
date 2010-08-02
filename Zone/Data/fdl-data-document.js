@@ -190,8 +190,8 @@ Fdl.Document.prototype = {
     getDisplayValue: function(id,config) {
     	var oa=this.getAttribute(id);
     	if (oa) {
-    		if (oa.toString() == 'Fdl.RelationAttribute') return this.getValue(id+'_title',this._data.values[id]);
-    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return this.getValue(id+'_title',this._data.values[id]);
+    		if (oa.toString() == 'Fdl.RelationAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
+    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
     		if (oa.toString() == 'Fdl.EnumAttribute') {
     			if (oa.inArray() || oa.isMultiple()) {
     				var tv=[];
@@ -219,7 +219,7 @@ Fdl.Document.prototype = {
     						config.index=i;
     						tv.push(oa.getUrl(vs,this.id,config));
     						}
-    					} else tv.push(oa.getFileName(vs[i]));
+    					} else tv.push(Fdl.encodeHtmlTags(oa.getFileName(vs[i])));
     				}
     				}
     				return tv;
@@ -227,13 +227,13 @@ Fdl.Document.prototype = {
     			if (config && config.url) {
     				if (config.dav) return oa.getDavUrl(this._data.values[id],this.id);
     				else return oa.getUrl(this._data.values[id],this.id,config);
-    			} else return oa.getFileName(this._data.values[id]);
+    			} else return Fdl.encodeHtmlTags(oa.getFileName(this._data.values[id]));
     			}
     		}
     	}
-	     return this._data.values[id];
-    }, 
-
+    	return Fdl.encodeHtmlTags(this._data.values[id]);
+    },
+    
     /**
      * set value to an attribute
      * the document is not updated in database server until it will saved

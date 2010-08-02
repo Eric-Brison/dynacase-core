@@ -37,7 +37,13 @@ if ($argc != 2) {
 }
 $appname=$argv[1];
 
-$err=getCheckApp($pubdir,&$tapp);
+$version_override = array();
+$MODULE_VERSION_FROM = getenv('MODULE_VERSION_FROM');
+if( $MODULE_VERSION_FROM !== false ) {
+  $version_override[$appname] = $MODULE_VERSION_FROM;
+}
+
+$err=getCheckApp($pubdir, &$tapp, $version_override);
 if ($err) {
   print $err;
   exit(1);
@@ -62,7 +68,7 @@ putenv(sprintf("pgservice_core=%s", $PGSERVICE_CORE));
 putenv(sprintf("pgservice_freedom=%s", $PGSERVICE_CORE));
 putenv(sprintf("freedom_context=%s", $FREEDOM_CONTEXT));
 
-$err=getCheckActions($pubdir,array($appname=>$app),$actions);
+$err=getCheckActions($pubdir, array($appname=>$app), $actions, $version_override);
 $postmigr=array_filter($actions, create_function('$x',"return strstr(\$x,'/'.$appname.'_pmigr')!==false;"));
 foreach ($postmigr as $cmd) {
   error_log(sprintf("Executing [%s]...", $cmd));

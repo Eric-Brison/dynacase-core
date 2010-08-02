@@ -397,14 +397,12 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 		else
 			url += 'data.php';
 		// url+='?';
-		xreq.open("POST", url, (!sync));
-		var pvars = true;
-		if (!pvars) {
-			xreq.setRequestHeader("Content-type",
-					"application/x-www-form-urlencoded");
-			// xreq.setRequestHeader("Content-Length", "0");
-		} else {
-
+		var method = "POST";
+		if( (!urldata) && (!parameters) && otherroot ) {
+			method = "GET";
+		}
+		xreq.open(method, url, (!sync));
+		if (method) {
 			var params = '';
 			var ispost = false;
 			xreq.setRequestHeader("Content-Type",

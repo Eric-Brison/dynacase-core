@@ -193,6 +193,7 @@
     <process command="programs/app_post FDL U" />
     <process command="programs/post_migration FDL" />
 
+    <process command="programs/pre_migration USERCARD" />
     <process command="programs/record_application USERCARD U" />
     <process command="programs/app_post USERCARD U" />
 
@@ -246,6 +247,9 @@
 
   <changelog>
   	
+    <version number="3.0.9" date="2010-07-30">
+      <change title="first normal form export" url="http://dev.freedom-ecm.org/versions/show/33"/>        
+    </version>
     <version number="3.0.8" date="2010-07-12">
       <change title="new feature for XML import/export" url="http://dev.freedom-ecm.org/versions/show/31"/>        
     </version>

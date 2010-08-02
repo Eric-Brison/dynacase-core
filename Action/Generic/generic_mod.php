@@ -96,12 +96,19 @@ function generic_mod(&$action) {
 		$action->lay->set("id",$ndocid);
 		$action->lay->set("constraintinfo",json_encode($info));
 		$action->lay->set("quicksave",$quicksave);
+                if ($rzone != "") $zone="&zone=$rzone";
+                else $zone="";
+                if ($rvid != "") $zone="&vid=$rvid";
 		if ($err=="-") $err="";
 		$action->lay->set("error",json_encode($err));
-		if ($retedit) $action->lay->set("url",sprintf("?app=%s&action=%s",getHttpVars("redirect_app","GENERIC"),getHttpVars("redirect_act","GENERIC_EDIT")));
+		$warning=$action->parent->getWarningMsg();
+		if ($warning && count($warning) > 0) $warning=implode("\n",$warning);
+		else $warning='';
+                $action->lay->set("warning",json_encode($warning));
+		if ($retedit) $action->lay->set("url",sprintf("?app=%s&action=%s$zone",getHttpVars("redirect_app","GENERIC"),getHttpVars("redirect_act","GENERIC_EDIT&id=$ndocid")));
 		else {
-			if ($viewext) $action->lay->set("url",sprintf("?app=%s&action=%s",getHttpVars("redirect_app","FDL"),getHttpVars("redirect_act","VIEWEXTDOC$zone&refreshfld=Y&id=$ndocid")));
-			else $action->lay->set("url",sprintf("?app=%s&action=%s",getHttpVars("redirect_app","FDL"),getHttpVars("redirect_act","FDL_CARD$zone&refreshfld=Y&id=$ndocid")));
+			if ($viewext) $action->lay->set("url",sprintf("?app=%s&action=%s$zone",getHttpVars("redirect_app","FDL"),getHttpVars("redirect_act","VIEWEXTDOC$zone&refreshfld=Y&id=$ndocid")));
+			else $action->lay->set("url",sprintf("?app=%s&action=%s$zone",getHttpVars("redirect_app","FDL"),getHttpVars("redirect_act","FDL_CARD$zone&refreshfld=Y&id=$ndocid")));
 		}
 		return;
 	}

@@ -80,11 +80,12 @@ function getFamilySearches($dbaccess,$fid) {
     $t=$s->search();
     while ($v=$s->nextDoc()) {
         
-      $to["userSearches"][$fid]=array("id"=>$v->id,
+      $to["userSearches"][]=array("id"=>$v->id,
 				      "icon"=>$v->getIcon(),
 				      "title"=>$v->getTitle());
         
     }
+   
     $s=new SearchDoc($dbaccess,"SEARCH");
     $s->dirid=$fam->dfldid;
     $s->setObjectReturn();

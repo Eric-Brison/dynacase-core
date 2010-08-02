@@ -2199,19 +2199,18 @@ create unique index i_docir on doc(initid, revision);";
       $ta = $this->attributes->getArrayElements($a->id);
      
       $max=-1;
-      $max0=-1;
-
+      $maxdiff=false;
       foreach($ta as $k=>$v) { // detect uncompleted rows
 	$c=count($this->getTValue($k));	
-	 if ($c > $max) {
-	   if ($max0 < 0) $max0=$c;
-	   $max=$c;
-	 }
+	   if ($max < 0) $max=$c;
+	   else {
+	       if ($c != $max) $maxdiff=true;
+	       if ($max < $c) $max=$c;
+	   }
       }
-
-      if ($max > $max0) {	
+      if ($maxdiff) {
 	foreach($ta as $k=>$v) { // fill uncompleted rows
-	  $c=count($this->getTValue($k));	
+	  $c=count($this->getTValue($k));
 	  if ($c < $max) {
 	    $t=$this->getTValue($k);
 	    $t=array_pad($t,$max,"");	  
@@ -2219,6 +2218,7 @@ create unique index i_docir on doc(initid, revision);";
 	  }
 	}
       }
+     
       return $err;
     }
     return sprintf(_("%s is not an array attribute"),$idAttr);        
@@ -2232,27 +2232,31 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $index  $index row (first is 0) -1 at the end; x means before x row
    * @return string error message, if no error empty string
    */
-  final public function addArrayRow($idAttr, $tv, $index=-1)  { 
-    $a=$this->getAttribute($idAttr);
-    if ($a->type=="array") {
-      $ta=$this->attributes->getArrayElements($a->id);
-      $ti=array();
-      $err="";
-      // add in each columns
-      foreach($ta as $k=>$v) {
-        $tnv=$this->getTValue($k);
-	$val=$tv[strtolower($k)];
-	if ($index >=0) {
-	  $tnv[$index - 0.5]=$val;
-	  ksort($tnv);	
-	  $tvu=array();
-	  foreach ($tnv as $vv) $tvu[]=$vv; // key reorder
-	  $tnv=$tvu;
-	} else	$tnv[]=$val;
-	$err.=$this->setValue($k,$tnv);
+  final public function addArrayRow($idAttr, $tv, $index=-1)  {
+      $a=$this->getAttribute($idAttr);
+      if ($a->type=="array") {
+          $err=$this->completeArrayRow($idAttr);
+          if ($err=="") {
+              $ta=$this->attributes->getArrayElements($a->id);
+              $ti=array();
+              $err="";
+              // add in each columns
+              foreach($ta as $k=>$v) {
+                  $tnv=$this->getTValue($k);
+                  $val=$tv[strtolower($k)];
+                  if ($index >=0) {
+                      $tnv[$index - 0.5]=$val;
+                      ksort($tnv);
+                      $tvu=array();
+                      foreach ($tnv as $vv) $tvu[]=$vv; // key reorder
+                      $tnv=$tvu;
+                  } else	$tnv[]=$val;
+                  $err.=$this->setValue($k,$tnv);
+              }
+              if ($err="") $err=$this->completeArrayRow($idAttr);
+          }
+          return $err;
       }
-      return $err;
-    }
     return sprintf(_("%s is not an array attribute"),$idAttr);        
   }
 
@@ -2291,7 +2295,7 @@ create unique index i_docir on doc(initid, revision);";
   		if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
   		else {
   			if (count($value)==0) $value = DELVALUE;
-  			elseif ((count($value) == 1) && (first($value)=="") && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell
+  			elseif ((count($value) == 1) && (first($value)==="" || first($value)===null) && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
   			else {
   				if ($oattr->repeat && (count($value)==1) && substr(key($value),0,1)=="s") {
   					$ov=$this->getTValue($attrid);
@@ -2342,7 +2346,7 @@ create unique index i_docir on doc(initid, revision);";
   				}
 
   				foreach($tvalues as $kvalue=>$avalue) {
-  					if ($avalue != "") {
+  					if (($avalue != "") && ($avalue != "\t")) {
   						if ($oattr) {
   							switch($oattr->type) {
   								case 'docid':
@@ -4274,7 +4278,7 @@ create unique index i_docir on doc(initid, revision);";
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
       $a="";
       if ($htmllink) {
-          if (! $title) $title=$this->getTitle($id);
+          if (! $title) $title=$this->getHTMLTitle($id);
           if ($title == "") {
               $a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
           } else {
@@ -4323,7 +4327,7 @@ create unique index i_docir on doc(initid, revision);";
           }
 
       } else {
-          if (! $title) $a=$this->getTitle($id);
+          if (! $title) $a=$this->getHTMLTitle($id);
           else $a=$title;
       }
       return $a;
@@ -4605,11 +4609,20 @@ create unique index i_docir on doc(initid, revision);";
 			       	if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
 			
 			       }
-			       $lay->setBlockData("TATTR",$talabel);
 			       if (! $emptyarray) {
-			       	if ($oattr->getOption("vlabel")=="") $caption=$oattr->getLabel();
-			       	else $caption="";
-			       	if ($nbitem > 10) $caption.=" ($nbitem)";
+			       	if ($oattr->getOption("vlabel")=="up") {
+			       	    $caption=$oattr->getLabel();
+			       	    if ($nbitem > 10) $caption.=" ($nbitem)";
+			       	} else {
+			       	    $caption="";
+                                    if ($nbitem > 10) {
+                                        if (count($talabel) > 0) {
+                                            $talabel[0]["alabel"].= " ($nbitem)";
+                                        }
+                                    }
+			       	}
+			       	
+                               $lay->setBlockData("TATTR",$talabel);
 			       	$lay->set("caption",$caption);
 			       	$tvattr = array();
 			       	for ($k=0;$k<$nbitem;$k++) {
@@ -5707,15 +5720,20 @@ create unique index i_docir on doc(initid, revision);";
 	
 	// print name except image (printed otherthere)
 	if ($attr->type != "image") {	
-	  $tableframe[$v]["wvalue"]=(($attr->type == "array")&&($attr->getOption("vlabel")!="left"))?"1%":"30%"; // width
-	  if (($attr->type != "array")||($attr->getOption("vlabel")=="left"))  $tableframe[$v]["ndisplay"]="inline";
-	  else $tableframe[$v]["ndisplay"]="none";
+	  $tableframe[$v]["wvalue"]=(($attr->type == "array")&&($attr->getOption("vlabel")=="up" || $attr->getOption("vlabel")=="none"))?"1%":"30%"; // width
+	  $tableframe[$v]["ndisplay"]="inline";
+	
 	  if ($attr->getOption("vlabel")=="none") {
 	    $tableframe[$v]["nonelabel"]=true;
 	    $tableframe[$v]["normallabel"]=false;	    
 	  } else if ($attr->getOption("vlabel")=="up") {
-	    $tableframe[$v]["normallabel"]=false;
-	    $tableframe[$v]["uplabel"]=true;
+	      if ($attr->type == "array") { // view like none label
+	          $tableframe[$v]["nonelabel"]=true;
+	          $tableframe[$v]["normallabel"]=false;
+	      } else {
+	          $tableframe[$v]["normallabel"]=false;
+	          $tableframe[$v]["uplabel"]=true;
+	      }
 	  }
 	  $tableframe[$v]["name"]=$this->GetLabel($attr->id);
 	  if ( ($attr->type == "htmltext") && (count($tableframe)==1)) {
@@ -7017,7 +7035,15 @@ static function _cmpanswers($a,$b) {
     }
     return $def; 
   }
-
+  /**
+   * Same as ::getTitle() 
+   * the < > characters as replace by entities
+   */
+  function getHTMLTitle($id="-1",$def="") {   
+    $t=$this->getTitle($id,$def);
+    $t=str_replace("&","&amp;",$t);
+    return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
+  }
   /**
    * return the today date with european format DD/MM/YYYY
    * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
@@ -7050,7 +7076,6 @@ static function _cmpanswers($a,$b) {
     }
     return date("d/m/Y H:i",$nd);
   }
-
 
   /**
    * return the today date and time with european format DD/MM/YYYY HH:MM

@@ -48,7 +48,7 @@ function whattext ()
 	if [ -d "$lang_dir/js" ]; then
 	  pushd "$lang_dir/js" > /dev/null
 	  echo '{"fdl:creationDate":"'$today'"}'> null-mo.js
-	  cat  *mo.js | sed -e 's/"}{"/","/g'  > catalog.js
+	  php "$wpub/programs/json_concat" *mo.js > catalog.js
 	  \rm null-mo.js
 	  popd >/dev/null
 	fi

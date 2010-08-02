@@ -13,6 +13,14 @@
 
 
   
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _USER extends Doc {
+        /*
+         * @end-method-ignore
+         */
   
 var $defaultabstract= "USERCARD:VIEWABSTRACTCARD";     
 var $cviews=array("USERCARD:VIEWABSTRACTCARD");
@@ -198,5 +206,13 @@ function SetPrivacity() {
   if ($err != "") AddLogMsg($this->title.":".$err);
 }
 
+     /**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
 
+/*
+ * @end-method-ignore
+ */
 ?>

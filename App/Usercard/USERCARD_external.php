@@ -182,24 +182,67 @@ function enumscatg() {
   }
   return "";
 }
+/**
+ * search all members (and in sub groups) from a group
+ * @param string $dbaccess database access
+ * @param int $groupid group document identificator
+ * @param string $name the key filter
+ * @param string $sort the sort column default is lastname (available : firstname, mail)
+ * @param boolean $searchinmail if true search also in mail address
+ * @param int $limit max responses returned (default 50)
+ */
+function members($dbaccess, $groupid, $name="",$sort='lastname',$searchinmail=false, $limit=50) {
+    $tr = array();
 
-function members($dbaccess, $groupid, $name="") {
-  $tr = array();
+    $doc = new_Doc($dbaccess, $groupid);
+    if (! $doc->isAlive())  return sprintf(_("no valid document group : %s"),$groupid);
+    $name=trim($name);
+    $gid=$doc->getValue("us_whatid");
+    if ($gid) {
+        $u=new User("", $gid);
+        if (! $u->isAffected()) return sprintf(_("no valid group : %s"),$gid);
+        $g=new Group();
+        $lg=$g->getChildsGroupId($u->id);
+        $lg[]=$u->id;
+        $cond=getSqlCond($lg,"idgroup",true);
+        if (! $cond) $cond="true";
+        $condname="";
+        if ($name) {
+            $tname=explode(' ',$name);
+            $name=pg_escape_string($name);
+            $condmail='';
+            if ($searchinmail) $condmail=sprintf("or (mail ~* '%s')", $name);
+            if (count($tname)>1) {
+                $condname=sprintf("and (coalesce(firstname,'') || ' ' || coalesce(lastname,'') ~* '%s' $condmail)", $name);
+            } else {
+                $condname=sprintf("and (firstname ~* '%s' or lastname ~* '%s' $condmail)", $name,$name);
+            }
+        }
+        if ($sort) $sort=pg_escape_string($sort);
+        else $sort='lastname';
+        $sql=sprintf("SELECT distinct on (%s, users.fid) users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and isgroup != 'Y' order by %s limit %d",
+                     $sort, $cond,$condname,$sort, $limit);
+        $err=simpleQuery($doc->dbaccess,$sql,$result);
+        if ($err!="") return $err;
+        foreach ($result as $k=>$v) {
+            $mail=$v["mail"]?(' ('.$v["mail"].')'):'';
+            $tr[] = array($v["firstname"]." ".$v["lastname"].$mail,$v["fid"],$v["lastname"]." ".$v["firstname"]);
+        }       
+    } else {
+        $oa=$doc->getAttribute("grp_ruser");
+        if (!$oa) return sprintf(_("document %s is not a group"),$doc->getTitle());
+        $tmembers= $doc->getTvalue("GRP_RUSER");
+        $tmembersid= $doc->getTvalue("GRP_IDRUSER");
 
-  $doc = new_Doc($dbaccess, $groupid);
-  if ($doc->isAlive()) {
-    $tmembers= $doc->getTvalue("GRP_RUSER");
-    $tmembersid= $doc->getTvalue("GRP_IDRUSER");
-
-    $pattern_name = preg_quote($name);
-    foreach($tmembersid as $k => $v) {
-      if (($name == "") || (preg_match("/$pattern_name/i",$tmembers[$k])))
-	$tr[] = array($tmembers[$k] ,
-		      $v,$tmembers[$k]);
+        $pattern_name = preg_quote($name);
+        foreach($tmembersid as $k => $v) {
+            if (($name == "") || (preg_match("/$pattern_name/i",$tmembers[$k])))
+            $tr[] = array($tmembers[$k] ,
+            $v,$tmembers[$k]);
+        }
     }
-  }
 
-  return $tr;
+    return $tr;
 }
 
 //get domain of IUSER

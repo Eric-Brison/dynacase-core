@@ -109,6 +109,9 @@
 .document .tarray {
 	border: 0;
 }
+.document .border {
+        border: 1px solid #99BBE8;
+}
 
 .document .line {
 	margin-bottom: 10px;
@@ -164,4 +167,8 @@
 
 .document tr.selecta td {
 	background-color: #DFE8F6 !important;
+}
+
+.calendar {
+	z-index: 1;
 }

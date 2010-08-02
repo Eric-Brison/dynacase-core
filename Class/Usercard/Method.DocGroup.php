@@ -9,7 +9,14 @@
  * @subpackage USERCARD
  */
 
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _GROUP extends Dir {
+        /*
+         * @end-method-ignore
+         */
 /**
  * reconstruct mail group & recompute parent group
  *
@@ -91,7 +98,6 @@ function SetGroupMail($nomail=false) {
   $gmail=" ";
   $tmail=array();
 
-
   if (!$nomail) $nomail=($this->getValue("grp_hasmail")=="no");
   //------------------------------------------------------
   // first compute mail from users members
@@ -99,7 +105,6 @@ function SetGroupMail($nomail=false) {
   $tuser = $this->getTValue("GRP_USER");
   if (count($tiduser) > 0) {
     if (!$nomail)  {
-
       foreach($tiduser as $k=>$v) {
 
 	$udoc = getTDoc($this->dbaccess,$v);
@@ -113,10 +118,10 @@ function SetGroupMail($nomail=false) {
 	  if ($tuser[$k]!="") $err .= sprintf("%s does not exist",$tuser[$k]);
 	}
       }
-
       $gmail=implode(", ",array_unique($tmail));
     }
   }
+   $nodetectmembers=($this->getValue("grp_hasmembers")=="no");
 
   // add mail groups
   //------------------------------------------------------
@@ -125,9 +130,7 @@ function SetGroupMail($nomail=false) {
   $tgmember=$tuser; // affiliated members
   $tiduser = $this->getTValue("GRP_IDGROUP");
   if (count($tiduser) > 0) {
-   
     while (list($k,$v) = each($tiduser)) {
-
       $udoc = new_Doc($this->dbaccess,$v);
       if ($udoc && $udoc->isAlive()) {
 	if (!$nomail) {
@@ -137,8 +140,10 @@ function SetGroupMail($nomail=false) {
 	    $tmail=array_merge($tmail,$tmail1);
 	  }
 	}
-	$tgmemberid=array_merge($tgmemberid,$udoc->getTValue("GRP_IDRUSER"));
-	$tgmember=array_merge($tgmember,$udoc->getTValue("GRP_RUSER"));
+	if (! $nodetectmembers) {
+	    $tgmemberid=array_merge($tgmemberid,$udoc->getTValue("GRP_IDRUSER"));
+	    $tgmember=array_merge($tgmember,$udoc->getTValue("GRP_RUSER"));
+	}
       }
     }
 
@@ -150,16 +155,21 @@ function SetGroupMail($nomail=false) {
     $tgmembers[$v]=$tgmember[$k];
   }
  
-
-  if (count($tgmembers) >0) {
-    $this->SetValue("GRP_IDRUSER", array_keys($tgmembers));
-    $this->SetValue("GRP_RUSER",$tgmembers);
+  if ($nodetectmembers) {
+      $this->DeleteValue("GRP_IDRUSER");
+      $this->DeleteValue("GRP_RUSER");
   } else {
-    $this->DeleteValue("GRP_IDRUSER");
-    $this->DeleteValue("GRP_RUSER");
+      if (count($tgmembers) >0) {
+          $this->SetValue("GRP_IDRUSER", array_keys($tgmembers));
+          $this->SetValue("GRP_RUSER",$tgmembers);
+      } else {
+          $this->DeleteValue("GRP_IDRUSER");
+          $this->DeleteValue("GRP_RUSER");
+      }
   }
 
   if (!$nomail) $this->SetValue("GRP_MAIL", $gmail);
+  else if ($this->getValue("grp_hasmail")=="no") $this->deleteValue("GRP_MAIL");
 
   return $err;
 }
@@ -244,5 +254,15 @@ function refreshMembers() {
   }
   $err=$this->modify();
 }
+
+        /**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 
 ?>

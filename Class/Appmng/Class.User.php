@@ -630,19 +630,22 @@ create sequence seq_id_users start 10";
   /**
    * for group :: get All direct user & groups ids 
    * @param int $id group identificator
+   * @param bool $onlygroup set to true if you want only child groups
    */
-  function GetUsersGroupList($gid) {
+  function GetUsersGroupList($gid, $onlygroup=false) {
     $query = new QueryDb($this->dbaccess, "User");
+    $optgroup='';
+    if ($onlygroup) $optgroup=" and users.isgroup='Y' ";
+    
     $list = $query->Query(0,0,"TABLE",
 			  "select users.* from users, groups where ".
 			  "groups.iduser=users.id and ".
-			  "idgroup=$gid ;");
+			  "idgroup=$gid $optgroup;");
 
 
     $uid=array();
-
     if ($query->nb >0) {
-      while (list($k,$v) = each($list)) {
+      foreach($list as $k=>$v) {
 	$uid[$v["id"]] = $v;	
       }
     

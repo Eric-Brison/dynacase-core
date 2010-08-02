@@ -160,8 +160,6 @@ class OOoLayout extends Layout {
 					$block = str_replace("\\\"","\"",$block);
 				}
 				$out=$block;
-				//$this->ParseBlock($out);
-				//	$this->ParseIf($out);
 			}
 		} else {
 			if ($this->strip=='Y') $block = str_replace("\\\"","\"",$block);
@@ -169,13 +167,20 @@ class OOoLayout extends Layout {
 			if ($not) $out="[IFNOT $name]".$block."[ENDIF $name]";
 			else $out="[IF $name]".$block."[ENDIF $name]";
 		}
+        
 		return ($out);
 	}
 	function ParseIf() {
-		$this->template = preg_replace(
+	    $templateori='';
+	       $level=0;
+	    while ($templateori != $this->template && ($level < 10))  {
+	    $templateori=$this->template;
+	    $this->template = preg_replace(
        "/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", 
        "\$this->TestIf('\\2','\\3','\\1')",
-		$this->template);
+	    $this->template);
+	    $level++; // to prevent infinite loop
+	    }	    
 	}
 	function SetBlock($name,$block) {
 		if ($this->strip=='Y') {

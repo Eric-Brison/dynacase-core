@@ -51,6 +51,7 @@ $query = new QueryDb($dbaccess,"DocFam");
 $query ->AddQuery("doctype='C'");
 $query->order_by="id";
 
+ini_set("memory_limit", -1);
   
 if ($docid > 0) {
   $query->AddQuery("id=$docid");
@@ -62,7 +63,6 @@ if ($docid > 0) {
   pushfam(0, $tid, $table1); 
   
 }      
-
 if ($query->nb > 0)	{
   $pubdir = $appl->GetParam("CORE_PUBDIR");
   if ($query->nb > 1) { 
@@ -72,7 +72,6 @@ if ($query->nb > 0)	{
       unset($tid[$ii]);
     }
   }
-
     // workflow at the end
     foreach ($tid as $k=>$v)   {	     
       if ($v["usefor"] == "W") { 
@@ -89,7 +88,6 @@ if ($query->nb > 0)	{
     }    
   }
 }      
-    
   function updateDoc($dbaccess,$v) {
     $phpfile=createDocFile($dbaccess,$v);
     print "$phpfile [".$v["title"]."(".$v["name"].")]\n";

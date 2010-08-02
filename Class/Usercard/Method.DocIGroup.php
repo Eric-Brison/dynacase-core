@@ -11,10 +11,17 @@
  /**
  */
 
-
+/**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _IGROUP extends _GROUP {
+        /*
+         * @end-method-ignore
+         */
 var $cviews=array("FUSERS:FUSERS_IGROUP");
 var $eviews=array("USERCARD:CHOOSEGROUP");
-var $defaultview="FUSERS:FUSERS_IGROUP:V";
+//var $defaultview="FUSERS:FUSERS_IGROUP:V";
 var $defaultedit="FUSERS:FUSERS_EIGROUP:T";
 var $exportLdap = array(
 		      // posixGroup
@@ -83,16 +90,19 @@ function getLDAPMember() {
  */
 function RefreshGroup() {
   if ($this->norefreshggroup) return;
+  include_once("FDL/Lib.Usercard.php");
   //  $err=_GROUP::RefreshGroup(); 
   $err.=$this->RefreshDocUser();
-  $err.=$this->refreshMembers();
+  //$err.=$this->refreshMembers();
+ // refreshGroups(array($this->getValue("us_whatid")));
   $err.=$this->insertGroups();
-  $err.=$this->SetGroupMail(($this->GetValue("US_IDDOMAIN")>1));
+  //$err.=$this->SetGroupMail(($this->GetValue("US_IDDOMAIN")>1));
   $err.=$this->Modify();
-  //  AddWarningMsg(sprintf("RefreshGroup %d %s",$this->id, $this->title));
+    //AddWarningMsg(sprintf("RefreshGroup %d %s",$this->id, $this->title));
   if ($err == "") {
-     $this->setValue("grp_isrefreshed","1");
-     $this->modify(true,array("grp_isrefreshed"),true);
+  refreshGroups(array($this->getValue("us_whatid")),true);
+     /*$this->setValue("grp_isrefreshed","1");
+     $this->modify(true,array("grp_isrefreshed"),true);*/
    }
   return $err;
 }
@@ -110,7 +120,7 @@ function refreshParentGroup() {
     }
   }
 }
-function PostModify() {
+function postModify() {
   $uid=$this->GetValue("US_WHATID");
   $gname=$this->GetValue("GRP_NAME");
   $login=$this->GetValue("US_LOGIN");
@@ -148,7 +158,6 @@ function PostModify() {
       }      
     }    
   } 
-
 
   if ($err=="") $err="-"; // don't do modify after because it is must be set by USER::setGroups
   return $err;
@@ -337,7 +346,7 @@ function RefreshDocUser() {
 	$this->SetValue("GRP_PGROUP"," ");
 	$this->SetValue("GRP_IDPGROUP"," ");
       }
-      $err=$this->modify();
+      $err=$this->modify(true,array("us_whatid","grp_name","us_login","us_iddomain","us_domain","us_meid","grp_pgroup","grp_idgroup"));
   
     } else     {
       $err= sprintf(_("group %d does not exist"),$wid);
@@ -350,12 +359,16 @@ function RefreshDocUser() {
  * refresh members of the group from USER database
  */
 function refreshMembers() { 
-
-  $wid=$this->getValue("us_whatid");
+    $norefresh=($this->getValue("grp_hasmembers")=="no");
+    if ($norefrash) {
+        $this->DeleteValue("GRP_USER");
+        $this->DeleteValue("GRP_IDUSER");
+    }
+    $wid=$this->getValue("us_whatid");
   if ($wid > 0) { 
     $u = $this->getWUser(true);
 
-    $tu=$u->GetUsersGroupList($wid);
+    $tu=$u->GetUsersGroupList($wid,$norefresh);
     if (count($tu) > 0) {
 
       foreach ($tu as $uid=>$tvu) {
@@ -386,10 +399,31 @@ function refreshMembers() {
       $this->DeleteValue("GRP_GROUP");
       $this->DeleteValue("GRP_IDGROUP");
     }
+    
+    $user=$this->getTvalue("grp_ruser");
+    $toomany=(count($user) > 100) ;
+    if ($norefresh) $this->setValue("grp_toomany",sprintf(_("Members detection are disactived for the group")));
+    elseif ($toomany) $this->setValue("grp_toomany",sprintf(_("Too many members to display there here (%d). Use Open menu to display them."),count($user)));
+    else $this->deleteValue("grp_toomany");
     $err=$this->modify();
   }
+
 }
 
+function preConsultation() {
+    $user=$this->getTvalue("grp_ruser");
+    $toomany=(count($user) > 100) ;
+ if ($toomany) {
+      $oa=$this->getAttribute("grp_users");
+      $oa->setVisibility('H');
+      $oa=$this->getAttribute("grp_rusers");
+      $oa->setVisibility('H');
+      $oa=$this->getAttribute("grp_user");
+      $oa->setVisibility('H');
+      $oa=$this->getAttribute("grp_ruser");
+      $oa->setVisibility('H');
+  }
+}
 
 function fusers_igroup($target="finfo",$ulink=true,$abstract="Y") {
   global $action;
@@ -397,16 +431,7 @@ function fusers_igroup($target="finfo",$ulink=true,$abstract="Y") {
   $user=$this->getTvalue("grp_ruser");
   $toomany=(count($user) > 100) ;
 
-  if ($toomany) {
-  $oa=$this->getAttribute("grp_users");
-  $oa->mvisibility='H';
-  $oa=$this->getAttribute("grp_rusers");
-  $oa->mvisibility='H';
-  $oa=$this->getAttribute("grp_user");
-  $oa->mvisibility='H';
-  $oa=$this->getAttribute("grp_ruser");
-  $oa->mvisibility='H';
-  }
+ 
   //setHttpVar("specialmenu","menuab");
 
   $this->viewdefaultcard($target,$ulink,$abstract);
@@ -468,7 +493,7 @@ function fusers_eigroup() {
 
   
   // list of attributes displayed directly in layout
-  $ta=array("us_login","us_whatid","grp_mail","us_iddomain","us_domain","grp_name","grp_role","grp_type","grp_hasmail");
+  $ta=array("us_login","us_whatid","grp_mail","us_iddomain","us_domain","grp_name","grp_role","grp_type","grp_hasmail","grp_hasmembers");
 
   $q=new QueryDb("","Domain");
   $q->AddQuery("iddomain>9");
@@ -524,4 +549,14 @@ function fusers_eigroup() {
   $this->lay->set("HasOTHERS",(count($to)>0));
   $this->lay->set("ICON",$this->getIcon());
 }
+
+        /**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

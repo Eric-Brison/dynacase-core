@@ -105,7 +105,7 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 
 	// verify attribute constraint
 	if (((GetHttpVars("noconstraint")!="Y") || ($action->user->id!=1)) &&
-	(($err=$doc->verifyAllConstraints(false,$info))!="")) {
+	(($err.=$doc->verifyAllConstraints(false,$info))!="")) {
 		// redirect to edit action
 
 		//get action where to redirect
@@ -161,7 +161,8 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 		if (! $quicksave) { // else quick save
 			$doc->refresh();
 			if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
-			$err=$doc->PostModify();
+			$msg=$doc->PostModify();
+			if ($msg) $action->addWarningMsg($msg);
 			// add trace to know when and who modify the document
 			if ( $docid == 0 ) {
 				//$doc->Addcomment(_("creation"));
@@ -223,8 +224,10 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 	}
 
         if (! $err) {
+            if ($info) {
             foreach ($info as $k=>$v) {
                 if ($v["err"]!="") $err=$v["err"];
+            }
             }
         }
 	return $err;

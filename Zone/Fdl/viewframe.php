@@ -92,7 +92,7 @@ function viewframe(&$action) {
 	      $tval[$k]["normallabel"]=true;
 	      $tval[$k]["uplabel"]=false;
 	      $tval[$k]["wvalue"]=($v->type=="array")?"1%":"30%";  // width
-	      $tval[$k]["ndisplay"]=($v->type=="array")?"none":"inline";  // display alabel ?
+	      $tval[$k]["ndisplay"]="inline";  // display alabel ?
 	      if ($v->getOption("vlabel")=="none") {
 		$tval[$k]["nonelabel"]=true;
 		$tval[$k]["normallabel"]=false;	    

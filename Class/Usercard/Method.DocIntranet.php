@@ -13,6 +13,14 @@
 
 
 /**
+ * @begin-method-ignore
+ * this part will be deleted when construct document class until end-method-ignore
+ */
+Class _IGROUPUSER extends Doc {
+        /*
+         * @end-method-ignore
+         */
+/**
  * verify if the login syntax is correct and if the login not already exist
  * @param string $login login to test
  * @return array 2 items $err & $sug for view result of the constraint
@@ -64,7 +72,15 @@ function preCreated() {
     if (count ($tdoc) > 0)  return _("what id already set in freedom\nThis kind of document can not be duplicated");
   }
 }
-
+/**
+ * avoid deletion of system document
+ */
+function preDocDelete() {
+    $err="";
+    $uid=$this->getValue("us_whatid");
+    if (($uid >0) && ($uid <10)) $err=_("this system user cannot be deleted");
+    return $err;
+}
 /**
  * interface to affect group for an user
  *
@@ -272,4 +288,13 @@ function getWuser($nocache=false) {
 function Complete() {
   if (isset($this->wuser)) unset($this->wuser);
 }
+    /**
+        * @begin-method-ignore
+        * this part will be deleted when construct document class until end-method-ignore
+        */
+}
+
+/*
+ * @end-method-ignore
+ */
 ?>

@@ -1,5 +1,5 @@
 <table style="width:100%"><tr><td  title="[TEXT:View family]" style="width:100px;text-align:center">
-[IF FROMID]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[FROMID]">[ENDIF FROMID]<img  style="border:none;width:40px" src="[ficonsrc]"><br>[classtitle][IF FROMID]</a>[ENDIF FROMID]</td><td><h1><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[ID]">[TITLE]</a></h1></td></tr></table>
+[IF FROMID]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[FROMID]">[ENDIF FROMID]<img  style="border:none;width:40px" src="[ficonsrc]"><br>[classtitle][IF FROMID]</a>[ENDIF FROMID]</td><td><h1><a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[ID]">[V_TITLE]</a></h1></td></tr></table>
 <hr>
 <center>
 <table>

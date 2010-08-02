@@ -99,7 +99,7 @@ function editextdoc(&$action) {
     $action->lay->set("ezone",$ezone);
     $action->lay->set("id",$doc->id);
     $action->lay->set("classid",$classid);
-    $action->lay->set("STITLE",str_replace('"',"'",$doc->getTitle()));
+    $action->lay->set("STITLE",addJsSlashes($doc->getHTMLTitle()));
 
     $style = $action->parent->getParam("STYLE");  
     $action->parent->AddCssRef("STYLE/$style/Layout/EXT-ADAPTER.css");

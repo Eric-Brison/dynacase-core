@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-12 11:13+0200\n"
+"POT-Creation-Date: 2010-07-23 14:17+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1749,6 +1749,14 @@ msgstr ""
 msgid "group %d does not exist"
 msgstr ""
 
+msgid "Members detection are disactived for the group"
+msgstr ""
+
+#, c-format
+msgid ""
+"Too many members to display there here (%d). Use Open menu to display them."
+msgstr ""
+
 #, fuzzy, c-format
 msgid "refreshing %s"
 msgstr "Delete"
@@ -1792,6 +1800,9 @@ msgstr ""
 msgid ""
 "what id already set in freedom\n"
 "This kind of document can not be duplicated"
+msgstr ""
+
+msgid "this system user cannot be deleted"
 msgstr ""
 
 msgid "Parameter name does not include spaces"
@@ -3728,7 +3739,7 @@ msgstr ""
 msgid "You must upgrade to version 6 or more"
 msgstr ""
 
-msgid "Click here to login"
+msgid "Click here to logout"
 msgstr ""
 
 msgid "Choose Gate Urls"
@@ -6396,6 +6407,14 @@ msgstr "Start search"
 #, fuzzy
 msgid "main view columns"
 msgstr "Start search"
+
+#, c-format
+msgid "no valid document group : %s"
+msgstr ""
+
+#, c-format
+msgid "no valid group : %s"
+msgstr ""
 
 msgid "mail will be calculated from domain"
 msgstr ""

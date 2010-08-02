@@ -135,7 +135,7 @@ function wlog($sta, $str, $args=NULL) {
 	$pri = LOG_NOTICE;
       }
       if ($_SERVER['HTTP_HOST'] == "") {
-	error_log(sprintf("%s LOG::$appf %s\n",date("d/m/Y H:i:s",time()),$str));
+	error_log(sprintf("%s LOG::$appf %s",date("d/m/Y H:i:s",time()),$str));
       } 
       openlog("{$appf}", 0, LOG_LOCAL6);
       syslog($pri, "[{$addr}] ".$str);

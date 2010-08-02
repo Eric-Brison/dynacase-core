@@ -13,6 +13,11 @@
 
 include_once('WHAT/Lib.Main.php');
 
+$authtype = getAuthType();
+if( $authtype != 'basic' ) {
+  unset($_SERVER['PHP_AUTH_USER']);
+}
+
 #
 # This is the main body of App manager
 # It is used to launch application and 

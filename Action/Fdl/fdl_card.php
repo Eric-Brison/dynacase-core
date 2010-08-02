@@ -87,7 +87,7 @@ function fdl_card(&$action) {
 
   $action->lay->set("RSS", ($doc->getValue("gui_isrss")));
   $action->lay->set("rsslink", $doc->getRssLink());
-  $action->lay->Set("TITLE",$doc->title);
+  $action->lay->Set("TITLE",$doc->getHtmlTitle());
   $action->lay->Set("id",$docid);
   if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon","FDL/Images/logo16.ico");
   else $action->lay->Set("shorticon",$doc->getIcon());
