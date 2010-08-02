@@ -255,7 +255,7 @@ Class WDoc extends Doc {
       $oattr = new DocAttr($this->dbaccess, array($cid,$aidmaskid));
       $oattr->docid=$cid;
       $oattr->visibility="H";
-      $oattr->type="text";
+      $oattr->type='docid("MASK")';
       $oattr->id=$aidmaskid;
       $oattr->labeltext=sprintf(_("id %s mask"),_($state));
       $oattr->link="";

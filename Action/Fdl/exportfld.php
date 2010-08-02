@@ -82,11 +82,8 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
   // set encoding
   if (!$wutf8) fputs_utf8($fout,"",true);
  
-  while (list($k,$doc)= each ($tdoc)) {        
-    $docids[]=$doc->id;
-  }
-
-  if (isset($docids)) {
+  
+  if (count($tdoc) > 0) {
 
     
     $send="\n"; // string to be writed in last
@@ -95,8 +92,9 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
 
     // compose the csv file
     reset($tdoc);
-
+    
     $ef=array(); //   files to export
+    $tmoredoc=array();
     foreach ($tdoc as $k=>$zdoc) {
       if (! is_array($zdoc)) continue;
       if ($zdoc["doctype"]=="C")   {
@@ -109,7 +107,7 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
 	if ($wprof) {
 	  if ($doc->profid != $doc->id) {
 	    $fp=getTDoc($dbaccess,$doc->profid);
-	    $tdoc[$fp["id"]]=$fp;
+	    $tmoredoc[$fp["id"]]=$fp;
 	    if ($fp["name"]!="") $fpname=$fp["name"];
 	    else $fpname=$fp["id"];
 	  } else {
@@ -119,7 +117,7 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
 	    $cp=getTDoc($dbaccess,$doc->cprofid);
 	    if ($cp["name"]!="") $cpname=$cp["name"];
 	    else $cpname=$cp["id"];
-	    $tdoc[$cpname]=$cp;
+	    $tmoredoc[$cp["id"]]=$cp;
 	  }
 	  if ($doc->ccvid > 0) {
 	    $cv=getTDoc($dbaccess,$doc->ccvid);
@@ -130,49 +128,51 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
 	    foreach ($tmskid as $kmsk=>$imsk) {
 	      if ($imsk != "") {
 		$msk=getTDoc($dbaccess,$imsk);
-		if ($msk) $tdoc[$msk["id"]]=$msk;
+		if ($msk) $tmoredoc[$msk["id"]]=$msk;
 	      }
 	    }
 	    
-	    $tdoc[$cv["id"]]=$cv;
+	    $tmoredoc[$cv["id"]]=$cv;
 	  }
+	  
 	  if ($doc->wid > 0) {
-	    $wdoc=new_doc($dbaccess,$doc->wid);
-	    if ($wdoc->name!="") $wname=$wdoc->name;
-	    else $wname=$wdoc->id;
-	    $tattr=$wdoc->getAttributes();
-	    foreach ($tattr as $ka=>$oa) {
-	      if ($oa->type=="docid") {
-		$tdid=$wdoc->getTValue($ka);
-		foreach ($tdid as $did) {
-		if ($did != "") {
-		  $m=getTDoc($dbaccess,$did);
-		  if ($m) { 
-		    $tdoc[]=$m;
-		    if ($m["cv_mskid"]!='') {
-		      $tmskid=$doc->_val2array($m["cv_mskid"]);
-		      foreach ($tmskid as $kmsk=>$imsk) {
-			if ($imsk != "") {
-			  $msk=getTDoc($dbaccess,$imsk);
-			  if ($msk) $tdoc[$msk["id"]]=$msk;
-			}
-		      }
-		    }
-		    if ($m["tm_tmail"]!='') {
-		      $tmskid=$doc->_val2array(str_replace('<BR>',"\n",$m["tm_tmail"]));
-		      foreach ($tmskid as $kmsk=>$imsk) {
-			if ($imsk != "") {
-			  $msk=getTDoc($dbaccess,$imsk);
-			  if ($msk) $tdoc[$msk["id"]]=$msk;
-			}
-		      }
-		    }
-		  }
-		}
-		}
+	      $wdoc=new_doc($dbaccess,$doc->wid);
+	      if ($wdoc->name!="") $wname=$wdoc->name;
+	      else $wname=$wdoc->id;
+	      $tattr=$wdoc->getAttributes();
+	      foreach ($tattr as $ka=>$oa) {
+	          if ($oa->type=="docid") {
+	              $tdid=$wdoc->getTValue($ka);
+	              foreach ($tdid as $did) {
+	                  if ($did != "") {
+	                      $m=getTDoc($dbaccess,$did);
+	                      if ($m) {
+	                          $tmoredoc[$m["id"]]=$m;
+	                          if ($m["cv_mskid"]!='') {
+	                              $tmskid=$doc->_val2array($m["cv_mskid"]);
+	                              foreach ($tmskid as $kmsk=>$imsk) {
+	                                  if ($imsk != "") {
+	                                      $msk=getTDoc($dbaccess,$imsk);
+	                                      if ($msk) $tmoredoc[$msk["id"]]=$msk;
+	                                  }
+	                              }
+	                          }
+	                          if ($m["tm_tmail"]!='') {
+	                              $tmskid=$doc->_val2array(str_replace('<BR>',"\n",$m["tm_tmail"]));
+	                              foreach ($tmskid as $kmsk=>$imsk) {
+	                                  if ($imsk != "") {
+	                                      $msk=getTDoc($dbaccess,$imsk);
+	                                      if ($msk) $tmoredoc[$msk["id"]]=$msk;
+	                                  }
+	                              }
+	                          }
+	                      }
+	                  }
+	              }
+	          }
 	      }
-	    }
-	    $tdoc[$doc->wid]=getTDoc($dbaccess,$doc->wid);
+	      $tmoredoc[$doc->wid]=getTDoc($dbaccess,$doc->wid);
+	      	      
 	  }
 	  if ($cvname || $wname || $cpname || $fpname) {
 	    $send.="BEGIN;;;;;".$doc->name."\n";
@@ -185,8 +185,8 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
 	}
       }
     }
-
-
+    
+    $tdoc=array_merge($tdoc,$tmoredoc);
     $cachedoc=array();
     foreach ($tdoc as $k=>$zdoc) {
       if ($cachedoc[$zdoc["fromid"]]) $doc=$cachedoc[$zdoc["fromid"]];
