@@ -107,7 +107,9 @@ function getAppOrder($topdir) {
  */
 function vercmp($v1,$v2) {
   if ($v1==$v2) return 0;
- 
+  if (version2float($v1) > version2float($v2)) return 1;
+  else return -1;
+  /* TODO need correction
   if( ! preg_match('/^(?P<version>[0-9.]+)-?(?P<release>.*?)$/', $v1, $m1) ) {
     error_log(sprintf("Error: malformed version '%s'", $v1));
     return 0;
@@ -130,6 +132,22 @@ function vercmp($v1,$v2) {
   }
 
   return ( $cmp_rel > 0 ) ? 1 : -1;
+  */
+}
+
+function version2float($ver) {
+    if (preg_match_all('/([0-9]+)/', $ver , $matches)) {
+        $matches=($matches[0]);
+        $sva='';
+        $c=count($matches);
+        if ($c < 4) {
+            for ($i=0;$i < (4-$c);$i++) {
+                $matches[]='0';
+            }
+        }
+        foreach ($matches as $k=>$v) $sva.=sprintf("%02d",$v);
+        return floatval($sva);
+    }
 }
 
 function checkPGConnection() {
