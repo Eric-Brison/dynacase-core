@@ -4693,12 +4693,18 @@ create unique index i_docir on doc(initid, revision);";
   						$thval=array();
   						foreach ($tval as $kv=>$vv) {
   							if (trim($vv) =="")  $thval[] = $vv;
-  							else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
+  							elseif ($oattr->link != "") {
+  							    $link=preg_replace("/%".$oattr->id."%/i",$vv,$oattr->link);
+  							    $link=$this->urlWhatEncode( $oattr->link, $kvalue);
+  							    if ($link) $thval[]='<a target="'.$dtarget.'" href="'.$link.'">'.$this->getHTMLTitle($vv).'</a>';
+  							    else $thval[]=$this->getHTMLTitle($vv);
+  							} else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
   						}
+  						if ($oattr->link) $htmllink=false;
   						$htmlval=implode("<br/>",$thval);
   					} else {
   						if ($avalue=="") $htmlval = $avalue;
-  						elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
+  						elseif ($oattr->link != "") $htmlval=$this->getHTMLTitle($avalue);
   						else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"));
   					}
   				} else
