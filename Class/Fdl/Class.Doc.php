@@ -7053,38 +7053,47 @@ static function _cmpanswers($a,$b) {
   /**
    * return the today date with european format DD/MM/YYYY
    * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
-   * @return string DD/MM/YYYY
+   * @param int $dayhour hours of day
+   * @param int $daymin minutes of day
+   * @param bool $getlocale whether to return locale date or not
+   * @return string DD/MM/YYYY or locale date
    */
   public static function getDate($daydelta=0,$dayhour="",$daymin="",$getlocale=false) {
-    $delta = abs(intval($daydelta));
-    if ($daydelta > 0) {
-      $nd =strtotime ("+$delta day");
-    } else if ($daydelta < 0) {
-      $nd =strtotime ("-$delta day");
-    } else {
-      $nd =time();
-    }
+	$delta = abs(intval($daydelta));
+	if ($daydelta > 0) {
+		$nd = strtotime("+$delta day");
+	} else if ($daydelta < 0) {
+		$nd = strtotime("-$delta day");
+	} else {
+		$nd = time();
+	}
 
-    if ($dayhour==="")  return date("d/m/Y",$nd);
-    else {
-      $delta=abs(intval($dayhour));
-      if ($dayhour > 0) {
-	$nd =strtotime ("+$delta hour",$nd);
-      } else if ($dayhour < 0) {
-	$nd = strtotime ("-$delta hour",$nd);
-      }
-      $delta=abs(intval($daymin));
-      if ($daymin > 0) {
-	$nd =strtotime ("+$delta min",$nd);
-      } else if ($daymin < 0) {
-	$nd = strtotime ("-$delta min",$nd);
-      }
-    }
-	if($getlocale) {
-		return FrenchDateToLocaleDate(date("d/m/Y H:i",$nd));
+	if ($dayhour !== "") {
+		$delta = abs(intval($dayhour));
+		if ($dayhour > 0) {
+			$nd = strtotime("+$delta hour", $nd);
+		} else if ($dayhour < 0) {
+			$nd = strtotime("-$delta hour", $nd);
+		}
+		$delta = abs(intval($daymin));
+		if ($daymin > 0) {
+			$nd = strtotime("+$delta min", $nd);
+		} else if ($daymin < 0) {
+			$nd = strtotime("-$delta min", $nd);
+		}
+
+		if ($getlocale) {
+			return FrenchDateToLocaleDate(date("d/m/Y H:i", $nd));
+		} else {
+			return date("Y-m-d H:i", $nd);
+		}
 	}
 	else {
-		return date("Y-m-d H:i",$nd);
+		if ($getlocale) {
+			return FrenchDateToLocaleDate(date("d/m/Y", $nd));
+		} else {
+			return date("Y-m-d", $nd);
+		}
 	}
   }
 
