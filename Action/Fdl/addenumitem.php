@@ -24,28 +24,28 @@ include_once("FDL/editutil.php");
  */
 function addenumitem(&$action) {
   $docid = GetHttpVars("docid");
-  $attrid = GetHttpVars("aid");
-  $key = GetHttpVars("key");
+	$attrid = GetHttpVars("aid");
+	$key = GetHttpVars("key");
 
 
-  $key=trim(str_replace('"','',$key));
-  $dbaccess = $action->GetParam("FREEDOM_DB");
-  
-  $action->lay->template="addenumitem $docid $attrid <b>$key</b>";
-  $doc=new_doc($dbaccess,$docid);
-  if ($doc->isAlive()) {
-    $action->lay->template="addenumitem/2 $docid $attrid <b>$key</b>";
-    $oa=$doc->getAttribute($attrid);
-    if ($oa) {
-      $oa->addEnum($dbaccess,$key,$key);
-      if ($oa->repeat) {
-	$v=$doc->getValue($oa->id);
-	if ($v != "") $v.="\n$key";
-	else $v=$key;
-      } else $v=$key;
-      $i=getHtmlInput($doc,$oa,$v);
-      $action->lay->template=$i;
-    }
-  }
+	$key = trim(str_replace('"', '', $key));
+	$dbaccess = $action->GetParam("FREEDOM_DB");
+
+	$action->lay->template = "addenumitem $docid $attrid <b>$key</b>";
+	$doc = new_doc($dbaccess, $docid);
+	if ($doc->isAlive()) {
+		$action->lay->template = "addenumitem/2 $docid $attrid <b>$key</b>";
+		$oa = $doc->getAttribute($attrid);
+		if ($oa) {
+			$oa->addEnum($dbaccess, str_replace('.', '\.', $key), $key);
+			if ($oa->repeat) {
+				$v = $doc->getValue($oa->id);
+				if ($v != "") $v.="\n$key";
+				else $v=$key;
+			} else $v=$key;
+			$i = getHtmlInput($doc, $oa, $v);
+			$action->lay->template = $i;
+		}
+	}
 }
 ?>
