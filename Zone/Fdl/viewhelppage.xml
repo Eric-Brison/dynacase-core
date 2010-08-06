@@ -1,0 +1,125 @@
+
+<style type="text/css">
+
+
+#helppage-main {
+	border: 1px solid #6C6B63;
+	height: 500px;
+	overflow: hidden;
+}
+#helppage-main .FREEDOMTextBigTitle {
+	padding: 2px 5px;
+	display: block;
+	border-bottom: 1px solid #6C6B63;
+	background: #F0F0F0;
+}
+#helppage-main a.current {
+	color: darkblue;
+}
+#helppage-main a.active {
+	color: darkgreen;
+}
+#helppage-main a.inactive {
+	color: gray;
+}
+#helppage-aides,
+#helppage-content,
+#helppage-rubriques {
+	margin: 0;
+	padding: 5px;
+	overflow: hidden;
+	overflow-y : auto;
+	overflow-x : hidden;
+}
+#helppage-left {
+	float: left;
+	width: 250px;
+	height: 100%;
+	overflow: hidden;
+	border-right: 1px solid #6C6B63;
+}
+#helppage-left a {
+	display: block;
+	outline: 0;
+}
+#helppage-aides-title {
+	border-top: 1px solid #6C6B63;
+}
+#helppage-right {
+	margin-left: 250px;
+}
+
+
+</style>
+
+<div id="helppage-main">
+	<div id="helppage-left">
+		<div id="helppage-rubriques-title" class="FREEDOMTextBigTitle">Rubriques</div>
+		<div id="helppage-rubriques">
+[BLOCK LEFTRUB]
+<a href="#[RUBKEY]" onclick="help_goto('[RUBKEY]')">[RUBNAME]</a>
+[ENDBLOCK LEFTRUB]
+		</div>
+		<div id="helppage-aides-title" class="FREEDOMTextBigTitle">Aides</div>
+		<div id="helppage-aides">
+				aides ...
+		</div>
+	</div>
+	<div id="helppage-right">
+		<div id="helppage-content-title" class="FREEDOMTextBigTitle">Contenu de l'aide</div>
+		<div id="helppage-content">
+[BLOCK CONTENTRUB]
+			<div class="help-rubrique" style="display:[RUBDISPLAY]">
+[BLOCK [RUBLANGS]]
+<a href="[LANGKEY]" class="[LANGCLASS]">[LANGNAME]</a>
+[ENDBLOCK [RUBLANGS]]
+<br />
+				<strong>[RUBNAME]</strong> ([RUBLANG])<br />
+				<p>[RUBTEXT]</p>
+			</div>
+[ENDBLOCK CONTENTRUB]
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function resize_helppage() {
+		var h = getFrameHeight() - 70;
+
+		var div_main = document.getElementById('helppage-main');
+		var div_left = document.getElementById('helppage-left');
+		var div_right = document.getElementById('helppage-right');
+		var div_rubriques_title = document.getElementById('helppage-rubriques-title');
+		var div_rubriques = document.getElementById('helppage-rubriques');
+		var div_aides_title = document.getElementById('helppage-aides-title');
+		var div_aides = document.getElementById('helppage-aides');
+		var div_content_title = document.getElementById('helppage-content-title');
+		var div_content = document.getElementById('helppage-content');
+
+		var title_h = getObjectHeight('helppage-content-title');
+		if(getObjectHeight('helppage-aides-title') > title_h) { title_h = getObjectHeight('helppage-aides-title'); }
+		if(getObjectHeight('helppage-rubriques-title') > title_h) { title_h = getObjectHeight('helppage-rubriques-title'); }
+		//title_h -= 6; // border width and padding (cf. css);
+
+		//div_rubriques_title.style.height = title_h+'px';
+		//div_aides_title.style.height = title_h+'px';
+		//div_content_title.style.height = title_h+'px';
+
+		div_main.style.height = h+'px';
+		div_left.style.height = h+'px';
+		div_right.style.height = h+'px';
+
+		div_content.style.height = (h-getObjectHeight('helppage-content-title') - 10)+'px';
+
+		if(2*getObjectHeight('helppage-rubriques') + 2*title_h > h) {
+			div_rubriques.style.height = (Math.floor(h/2) - title_h - 10)+'px';
+		}
+		div_aides.style.height = (h - 2*title_h - getObjectHeight('helppage-rubriques') - 10)+'px';
+	}
+	function help_goto(rubkey) {
+		alert(rubkey);
+		return false;
+	}
+	addEvent(window, 'load', resize_helppage);
+	addEvent(window, 'resize', resize_helppage);
+</script>

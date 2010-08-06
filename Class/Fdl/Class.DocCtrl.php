@@ -634,7 +634,7 @@ public function isValidLink($title, $docid){
   static public function isString($x, $p) {
      $err="";
      if ($x === "") return "";
-     if (!preg_match("/$p/",$x)) $err=sprintf(_("[%s] must match /%s/"),$x,$p);
+     if (!preg_match("/^$p$/",$x)) $err=sprintf(_("[%s] must match /%s/"),$x,$p);
      return array("err"=>$err);
   }
 /** 
