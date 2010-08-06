@@ -311,7 +311,7 @@ Class NormalAttribute extends BasicAttribute {
                                     $this->id,$vid,$mime,$name,$this->id); 
                       }
                   } else {
-                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$name);
+                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$this->encodeXml($name));
                   }
               } else {
                 return sprintf("<%s>%s</%s>",$this->id,$v,$this->id);
@@ -323,19 +323,19 @@ Class NormalAttribute extends BasicAttribute {
                   if ($info["name"]) {
                       if ($opt->withIdentificator) {
                           return sprintf('<%s id="%s" name="%s">%s</%s>',
-                          $this->id,$info["id"],$info["name"],$info["title"],$this->id);
+                          $this->id,$info["id"],$info["name"],$this->encodeXml($info["title"]),$this->id);
                       } else {
                           return sprintf('<%s name="%s">%s</%s>',
-                          $this->id,$info["name"],$info["title"],$this->id);
+                          $this->id,$info["name"],$this->encodeXml($info["title"]),$this->id);
                       }
                   } else {
                       if ($opt->withIdentificator) {
                       return sprintf('<%s id="%s">%s</%s>',
-                      $this->id,$info["id"],$info["title"],$this->id);
+                      $this->id,$info["id"],$this->encodeXml($info["title"]),$this->id);
                       } else {
                           
                       return sprintf('<%s>%s</%s>',
-                      $this->id,$info["title"],$this->id);
+                      $this->id,$this->encodeXml($info["title"]),$this->id);
                       }
                   }
               } else {
@@ -343,8 +343,13 @@ Class NormalAttribute extends BasicAttribute {
                              $this->id,$v,_("unreferenced document"),$this->id);
               }
           default:               
-                return sprintf("<%s>%s</%s>",$this->id,str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$v),$this->id);      
+                return sprintf("<%s>%s</%s>",$this->id,$this->encodeXml($v),$this->id);      
       }  
+  }
+  
+  
+  static function encodeXml($s) {
+      return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$s);
   }
  function text_getXmlSchema(&$la) {
       $lay=new Layout(getLayoutFile("FDL","textattribute_schema.xml"));
