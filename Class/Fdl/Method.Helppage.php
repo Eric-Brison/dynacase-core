@@ -43,31 +43,30 @@ Class _HELPPAGE extends Doc {
 		}
 		ksort($rubriques);
 
-		// construct rubriques on the left
-		$leftrub = array();
-		foreach($rubriques as $key=>$rubrique) {
-			foreach($rubrique as $lang => $rub) {
-				$leftrub[] = array(
-					'RUBKEY' => $rub['help_rub_key'],
-					'RUBNAME' => $rub['help_rub_name'],
-				);
-				break;
-			}
-		}
-
-		$this->lay->setBlockData('LEFTRUB', $leftrub);
 		
 		// contsruct rubriques on the right
+		$leftrub = array();
 		$contentrub = array();
 		$i = 0;
 		foreach($rubriques as $key=>$rubrique) {
 			// get first lang
 			$first_lang = $this->getFirstRubLang($rubrique, $user_lang);
-
-			foreach($all_lang_keys as $lang_key) {
+			$ifirst = -1;
+			$ilast = -1;
+			foreach($all_lang_keys as $ilang => $lang_key) {
 				// construct rubrique
 				if(array_key_exists($lang_key, $rubrique)) {
 					$rub = $rubrique[$lang_key];
+					if($lang_key == $first_lang) {
+						$leftrub[] = array(
+							'RUBKEY' => $rub['help_rub_key'],
+							'RUBNAME' => $rub['help_rub_name'],
+							'RUBLANG' => $rub['help_rub_lang'],
+						);
+					}
+					if($ifirst < 0) {
+						$ifirst = $i;
+					}
 					$contentrub[] = array(
 						'RUBKEY' => $rub['help_rub_key'],
 						'RUBNAME' => $rub['help_rub_name'],
@@ -75,15 +74,35 @@ Class _HELPPAGE extends Doc {
 						'RUBTEXT' => $rub['help_rub_text'],
 						'RUBDISPLAY' => $lang_key == $first_lang ? 'block':'none',
 						'RUBLANGS' => 'rublangs'.$i,
+						'RUBHEADER' => '0',
+						'RUBFOOTER' => '0',
 					);
+					$ilast = $i;
 					$this->lay->setBlockData('rublangs'.$i, $this->getRubriqueLangs($all_lang_keys, $all_lang_texts, $lang_key, $rubrique));
 					$i++;
 				}
 			}
+			if($ifirst >= 0 && $ilast >= 0) {
+				$contentrub[$ifirst]['RUBHEADER'] = '1';
+				$contentrub[$ilast]['RUBFOOTER'] = '1';
+			}
 		}
+
+		$this->lay->setBlockData('LEFTRUB', $leftrub);
 
 		$this->lay->setBlockData('CONTENTRUB', $contentrub);
 
+		// construct aides
+		$aides = array();
+		$s = new SearchDoc($this->dbaccess, 'HELPPAGE');
+		$s->setObjectReturn();
+		$s->search();
+		while($doc = $s->nextDoc()) {
+			$aides[] = array(
+				'AIDE' => $doc->getDocAnchor($doc->id, '_self', true, false, false),
+			);
+		}
+		$this->lay->setBlockData('LEFTAIDES', $aides);
 
 	}
 	/**
@@ -111,6 +130,7 @@ Class _HELPPAGE extends Doc {
 				'LANGKEY' => $lang_key,
 				'LANGNAME' => $all_lang_texts[$i],
 				'LANGCLASS' => $langclass,
+				'LANGISO' => strtolower(substr($lang_key, -2)),
 			);
 		}
 		return $langs;
