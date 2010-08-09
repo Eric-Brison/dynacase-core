@@ -7,6 +7,8 @@ appname = $(shell basename `pwd` | tr [a-z] [A-Z])
 
 export appname
 
+SUBDIR = flags
+
 include $(utildir)/PubRule
 
 $(pubdir)/$(appname)/logo16.ico : logo16.ico
