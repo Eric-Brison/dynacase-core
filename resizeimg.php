@@ -129,7 +129,7 @@ if (preg_match("/vaultid=([0-9]+)/",$img,$vids)) {
     } else {
         $localimage=$img;
     }
-    $basedest="/img-cache/$size-".basename($localimage).".png";
+    $basedest="/img-cache/$size-".basename(str_replace("/", "_", $localimage)).".png";
     $dest=DEFAULT_PUBDIR.$basedest;
 
     if (file_exists($dest)) $location= "$ldir/$basedest";
