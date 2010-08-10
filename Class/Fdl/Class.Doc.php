@@ -4221,7 +4221,7 @@ create unique index i_docir on doc(initid, revision);";
   public function urlWhatEncodeSpec($l) {return $l;}
 
   public static function _val2array($v) {
-    if ($v=="") return array();
+    if ($v==="" || $v===null) return array();
     return explode("\n", str_replace("\r","",$v));
   }
   
