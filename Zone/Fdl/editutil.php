@@ -1259,8 +1259,12 @@ function getLayOptions(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 	if (($eformat == "auto") && ($multiple == "yes")) $lay->set("isopen",false); // set by typing
 	if ($noselect && ($etype=="free") ) {
 		if ((trim($value) != "")&&($value != "\t")) {
+		     if ($eformat != "auto") {
+                        $topt['...']["fvalue"] = "";
+                        $topt['...']["kvalue"] = "";
 			$topt['...']["selected"] = "selected";
 			$topt['...']["checked"] = "checked";
+		     }
 			$lay->set("isfreeselected",true);
 			$lay->set("lvalue",$lay->get("lvalue").' '._("(Other)"));
 			if (! $eformat) {
