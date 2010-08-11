@@ -32,19 +32,20 @@ Class _HELPPAGE extends Doc {
 	 *
 	 * @return string
 	 */
-	public function  getSpecTitle() {
+	public function getSpecTitle() {
 		$titles = $this->getHelpByLang();
 		$user_lang = $this->getUserLang();
 		if(count($titles) == 0) {
 			return $this->title;
 		}
 		if(array_key_exists($user_lang, $titles)) {
-			return $titles[$user_lang]['help_name'];
+		    if ($titles[$user_lang]['help_name']) return $titles[$user_lang]['help_name'];
 		}
 		else {
 			$item = array_shift($titles);
-			return $item['help_name'];
+			if ($item['help_name']) return $item['help_name'];
 		}
+		return $this->title;
 	}
 	/**
 	 *
@@ -52,6 +53,11 @@ Class _HELPPAGE extends Doc {
 	public function  preEdition() {
 		$oa = $this->getAttribute('help_sec_text');
 		$oa->type = 'longtext';
+		if (! $this->id) {
+		    
+                $oa = $this->getAttribute('help_family');
+                $oa->setVisibility('S');
+		}
 	}
 	/**
 	 *
@@ -243,7 +249,19 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 			);
 		}
 		$this->lay->setBlockData('ALLLANGS', $all_langs);
-
+                $descriptions=$this->getAvalues("help_t_help");
+                $first=true;
+                foreach ($descriptions as &$v) {
+                    $v["firstdesc"]=$first;
+                    if ($v["help_description"]) $first=false;
+                }
+                $this->lay->setBlockData('DESCR', $descriptions);
+                $first=true;
+                foreach ($descriptions as &$v) {
+                    $v["firsttitle"]=$first;
+                    if ($v["help_name"]) $first=false;
+                }
+                $this->lay->setBlockData('TITLES', $descriptions);
 		// construct aides
 		$aides = array();
 		$s = new SearchDoc($this->dbaccess, 'HELPPAGE');

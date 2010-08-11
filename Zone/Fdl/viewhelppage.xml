@@ -131,7 +131,11 @@
 </style>
 
 <div id="helppage-main">
-	<div id="helppage-title"><div><a onclick="self.print()">[TEXT:Print]</a></div>[IF HELPEDITABLE]<div><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'helpedit','[HELPEDITURI]')">[TEXT:Edit]</a>&nbsp|&nbsp</div>[ENDIF HELPEDITABLE]<span class="FREEDOMTextBigTitle">[HELPTITLE]</span></div>
+	<div id="helppage-title"><div><a onclick="self.print()">[TEXT:Print]</a></div>[IF HELPEDITABLE]<div><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'helpedit','[HELPEDITURI]')">[TEXT:Edit]</a>&nbsp|&nbsp</div>[ENDIF HELPEDITABLE]
+	<span id="helppage-titles">
+                        [BLOCK TITLES]
+                        <span class="FREEDOMTextBigTitle" id="helppage-title-[help_lang]" [IFNOT firstdesc]style="display:none"[ENDIF firstdesc]>[help_description]</span>[ENDBLOCK TITLES]</span>
+	</div>
 	<div id="helppage-left">
 		<div id="helppage-sections-title">[TEXT:Sections]</div>
 		<div id="helppage-sections">
@@ -151,7 +155,9 @@
 				<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return help_change_alllang('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 [ENDBLOCK ALLLANGS]
 			</div>
-			[TEXT:Help content]
+			<span id="helppage-description">
+			[BLOCK DESCR]
+			<span id="helppage-desc-[help_lang]" [IFNOT firstdesc]style="display:none"[ENDIF firstdesc]>[help_description]</span>[ENDBLOCK DESCR]</span>
 		</div>
 		<div id="helppage-content">
 [BLOCK CONTENTSECTIONS]
@@ -215,6 +221,30 @@
 [BLOCK JSSECTIONS]
 		help_change_alllang_check(lang, 'sec-[SECKEY]-[SECLANG]');
 [ENDBLOCK JSSECTIONS]
+                var desc=document.getElementById('helppage-description');
+                if (desc) {
+                  var sp=desc.getElementsByTagName('span');
+                  for (var i=0;i<sp.length;i++ ) {
+                     sp[i].style.display='none';
+                  }
+                  var descsel=document.getElementById('helppage-desc-'+lang);
+                  if (descsel) descsel.style.display='';
+                  else if (sp.length > 0) {
+                    sp[0].style.display='';
+                  }
+                }
+                var desc=document.getElementById('helppage-titles');
+                if (desc) {
+                  var sp=desc.getElementsByTagName('span');
+                  for (var i=0;i<sp.length;i++ ) {
+                     sp[i].style.display='none';
+                  }
+                  var descsel=document.getElementById('helppage-title-'+lang);
+                  if (descsel) descsel.style.display='';
+                  else if (sp.length > 0) {
+                    sp[0].style.display='';
+                  }
+                }
 		return false;
 	}
 	function help_change_alllang_check(lang,secid) {
