@@ -157,6 +157,7 @@ foreach(explode("\n", print_r($lang_key, true)) as $tmp) {error_log($tmp);}
 foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_values), true)) as $tmp) {error_log($tmp);}
 
 		$this->lay->SetBlockData('HELPLANGS', $this->getLangsFromItem($langs, $lang_key, $help_values));
+		$this->lay->set('JSONLANGS', json_encode($langs));
 
 	}
 	/**
