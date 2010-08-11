@@ -28,6 +28,27 @@ Class _HELPPAGE extends Doc {
 	public $defaultview = 'FDL:VIEWHELPPAGE:T';
 	//public $defaultedit = 'FDL:EDITHELPPAGE';
 
+	/**
+	 *
+	 * @return string
+	 */
+	public function  getSpecTitle() {
+		$titles = $this->getHelpByLang();
+		$user_lang = $this->getUserLang();
+		if(count($titles) == 0) {
+			return $this->title;
+		}
+		if(array_key_exists($user_lang, $titles)) {
+			return $titles[$user_lang]['help_name'];
+		}
+		else {
+			$item = array_shift($titles);
+			return $item['help_name'];
+		}
+	}
+	/**
+	 *
+	 */
 	public function  preEdition() {
 		$oa = $this->getAttribute('help_rub_text');
 		$oa->type = 'longtext';
