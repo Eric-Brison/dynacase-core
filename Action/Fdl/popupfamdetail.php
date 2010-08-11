@@ -230,7 +230,16 @@ function getpopupfamdetail(&$action,$docid) {
 				   "target"=>"exportpref",
 				   "visibility"=>POPUP_CTRLACTIVE,
 				   "submenu"=>"",
-				   "barmenu"=>"false")
+				   "barmenu"=>"false"),
+               "edithelp"=>array( "descr"=>_("create help"),
+                                    "url"=>"$surl&app=GENERIC&action=GENERIC_EDIT&classid=HELPPAGE&help_family=$docid",
+                                   "confirm"=>"false",
+                                   "control"=>"false",
+                                   "tconfirm"=>"",
+                                   "target"=>"edithelp",
+                                   "visibility"=>POPUP_ACTIVE,
+                                   "submenu"=>"",
+                                   "barmenu"=>"false")
 
 	       );
 
@@ -313,6 +322,17 @@ function changeFamMenuVisibility(&$action,&$tlink,&$doc) {
     $tlink["forumdisabled"]["visibility"]=POPUP_CTRLACTIVE;
     $tlink["forumenabled"]["visibility"]=POPUP_INVISIBLE;
   }
+  $s=new SearchDoc($doc->dbaccess,"HELPPAGE");
+  $s->addFilter("help_family='%d'",$doc->id);
+  $help=$s->search();
+  if ($s->count() > 0) {
+      $tlink["edithelp"]["descr"]=_("modify family help");
+      $helpid=$help[0]["id"];
+      $tlink["edithelp"]["url"]="?app=GENERIC&action=GENERIC_EDIT&id=$helpid";
+               
+            }
+  
+  
 }
 
 ?>
