@@ -417,6 +417,23 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index) {
 	}
 
 /**
+ * clear all rows of table
+ * @param config
+ * @return Boolean true if succeed
+ */
+function clearTableRow(attributename) {
+	var t = document.getElementById('tbody'+attributename);
+	if(t) {
+		while(t.hasChildNodes()==true){
+			var child = t.childNodes.item(0);
+			if(child.id && child.id.substr(0, 6) == 'lasttr') {
+				break;
+			}
+			t.removeChild(child);
+		} 
+	}
+}
+/**
  * add a row in form array attribute
  * @param config
  * @return Boolean true if succeed
