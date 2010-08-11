@@ -37,13 +37,14 @@ function addenumitem(&$action) {
 		$action->lay->template = "addenumitem/2 $docid $attrid <b>$key</b>";
 		$oa = $doc->getAttribute($attrid);
 		if ($oa) {
-			$oa->addEnum($dbaccess, str_replace('.', '\.', $key), $key);
+			$err=$oa->addEnum($dbaccess, str_replace('.', '\.', $key), $key);
 			if ($oa->repeat) {
 				$v = $doc->getValue($oa->id);
 				if ($v != "") $v.="\n$key";
 				else $v=$key;
 			} else $v=$key;
 			$i = getHtmlInput($doc, $oa, $v);
+			$action->lay->noparse=true;
 			$action->lay->template = $i;
 		}
 	}

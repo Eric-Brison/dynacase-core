@@ -497,7 +497,7 @@ function showThisFieldset(event,tabid) {
 function showFieldset(event,o,n) {
 
   var ttr=document.getElementsByTagName('fieldset');
-  var btag=document.getElementsByName(o.getAttribute('name'));
+  var btag=getElementsByNameTag(document,o.getAttribute('name'),'span');
   var ln,i;
   for ( i=0;i<btag.length;i++) {
     btag[i].className='';

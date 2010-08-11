@@ -542,10 +542,7 @@ function enum_getXmlSchema(&$la) {
 			
 			$key = str_replace(array('|'), array('_'), $key);
 			$label = str_replace(array('|'), array('_'), $label);
-			$tkey = array_keys($tenum);
-			if (!in_array($key, $tkey)) {
-
-
+			if (! array_key_exists($key,$tenum)) {
 				$tenum[$key] = $label;
 				global $__tenum; // modify cache
 				global $__tlenum;
