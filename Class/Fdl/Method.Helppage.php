@@ -25,35 +25,155 @@ Class _HELPPAGE extends Doc {
 	 * @end-method-ignore
 	 */
 
-	public function viewhelppage($target="_self",$ulink=true,$abstract=false) {
-		global $action;
+	public $defaultview = 'FDL:VIEWHELPPAGE:T';
+	//public $defaultedit = 'FDL:EDITHELPPAGE';
 
-		$all_lang_keys = $this->_val2array($this->getParamValue('help_p_lang_key'));
-		$all_lang_texts = $this->_val2array($this->getParamValue('help_p_lang_name'));
+	public function  preEdition() {
+		$oa = $this->getAttribute('help_rub_text');
+		$oa->type = 'longtext';
+	}
+	/**
+	 *
+	 * @return array
+	 */
+	public function getRubriquesByLang() {
+		$rows = $this->getAValues('help_t_rubriques');
 
-		$user_lang = $action->getParam('CORE_LANG');
-
-		$rubriques_values = $this->getAValues('help_t_rubriques');
-
-		// construct rubriques
 		$rubriques = array();
-		foreach($rubriques_values as $rubriques_value) {
-			$key = str_pad($rubriques_value['help_rub_ordre'], 5, '0', STR_PAD_LEFT).$rubriques_value['help_rub_key'];
-			$rubriques[$key][$rubriques_value['help_rub_lang']] = $rubriques_value;
+		foreach($rows as $row) {
+			$key = str_pad($row['help_rub_ordre'], 8, '0', STR_PAD_LEFT).$row['help_rub_key'];
+			$rubriques[$key][$row['help_rub_lang']] = $row;
 		}
 		ksort($rubriques);
 
+		return $rubriques;
+	}
+	/**
+	 *
+	 * @return array
+	 */
+	public function getFamilyLangs() {
+		$all_lang_keys = $this->_val2array($this->getParamValue('help_p_lang_key'));
+		$all_lang_texts = $this->_val2array($this->getParamValue('help_p_lang_name'));
+		$all_langs = array();
+		foreach($all_lang_keys as $i => $key) {
+			$all_langs[$key] = $all_lang_texts[$i];
+		}
+		return $all_langs;
+	}
+	/**
+	 *
+	 * @global  $action
+	 * @return string
+	 */
+	public function getUserLang() {
+		global $action;
+		$user_lang = $action->getParam('CORE_LANG');
+		return $user_lang;
+	}
+	/**
+	 *
+	 * @return array
+	 */
+	public function getHelpByLang() {
+		$rows = $this->getAValues('help_t_aide');
+
+		$helps = array();
+		foreach($rows as $row) {
+			$helps[$row['help_lang']] = $row;
+		}
+
+		return $helps;
+	}
+	/**
+	 * 
+	 */
+	public function edithelppage() {
+
+		$langs = $this->getFamilyLangs();
+		$user_lang = $this->getUserLang();
+		$rubriques = $this->getRubriquesByLang();
+		
+		$this->editattr();
+
+		$help_values = $this->getHelpByLang();
+foreach(explode("\n", print_r($help_values, true)) as $tmp) {error_log($tmp);}
+foreach(explode("\n", print_r($langs, true)) as $tmp) {error_log($tmp);}
+foreach(explode("\n", print_r($user_lang, true)) as $tmp) {error_log($tmp);}
+
+		// set help values
+		$helpname = '';
+		$helplangiso = '';
+		$lang_key = '';
+		// search user lang
+		foreach($help_values as $lang => $help) {
+			if($lang == $user_lang) {
+				$lang_key = $lang;
+				$helpname = $help['help_name'];
+				$helpdescription = $help['help_description'];
+				break;
+			}
+		}
+		if(empty($lang_key)) {
+			// search first lang
+			foreach($help_values as $lang => $help) {
+				$lang_key = $lang;
+				$helpname = $help['help_name'];
+				$helpdescription = $help['help_description'];
+			}
+		}
+		$this->lay->set('HELPID', $this->id);
+		$this->lay->set('HELPNAME', $helpname);
+		$this->lay->set('HELPDESCRIPTION', $helpdescription);
+
+foreach(explode("\n", print_r($lang_key, true)) as $tmp) {error_log($tmp);}
+foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_values), true)) as $tmp) {error_log($tmp);}
+
+		$this->lay->SetBlockData('HELPLANGS', $this->getLangsFromItem($langs, $lang_key, $help_values));
+
+	}
+	/**
+	 *
+	 * @global <type> $action
+	 * @param <type> $target
+	 * @param <type> $ulink
+	 * @param <type> $abstract
+	 */
+	public function viewhelppage($target="_self",$ulink=true,$abstract=false) {
+		global $action;
+
+		include_once("FDL/Class.SearchDoc.php");
+
+		$this->lay->set('HELPTITLE', $this->getTitle());
+
+		if($this->CanEdit() == '') {
+			$this->lay->set('HELPEDITABLE', '1');
+			if($action->getArgument('target') == 'ext') {
+				$this->lay->set('HELPEDITURI', '?app=FDL&action=EDITEXTDOC&id='.$this->id);
+			}
+			else {
+				$this->lay->set('HELPEDITURI', '?app=GENERIC&action=GENERIC_EDIT&id='.$this->id);
+			}
+		}
+		else {
+			$this->lay->set('HELPEDITABLE', '0');
+			$this->lay->set('HELPEDITURI', '');
+		}
+
+		$langs = $this->getFamilyLangs();
+		$user_lang = $this->getUserLang();
+		$rubriques = $this->getRubriquesByLang();
 		
 		// contsruct rubriques on the right
 		$leftrub = array();
 		$contentrub = array();
 		$i = 0;
-		foreach($rubriques as $key=>$rubrique) {
+		foreach($rubriques as $rubrique) {
 			// get first lang
 			$first_lang = $this->getFirstRubLang($rubrique, $user_lang);
 			$ifirst = -1;
 			$ilast = -1;
-			foreach($all_lang_keys as $ilang => $lang_key) {
+			foreach($langs as $lang_key => $lang_name) {
 				// construct rubrique
 				if(array_key_exists($lang_key, $rubrique)) {
 					$rub = $rubrique[$lang_key];
@@ -78,7 +198,7 @@ Class _HELPPAGE extends Doc {
 						'RUBFOOTER' => '0',
 					);
 					$ilast = $i;
-					$this->lay->setBlockData('rublangs'.$i, $this->getRubriqueLangs($all_lang_keys, $all_lang_texts, $lang_key, $rubrique));
+					$this->lay->setBlockData('rublangs'.$i, $this->getLangsFromItem($langs, $lang_key, $rubrique));
 					$i++;
 				}
 			}
@@ -91,11 +211,23 @@ Class _HELPPAGE extends Doc {
 		$this->lay->setBlockData('LEFTRUB', $leftrub);
 
 		$this->lay->setBlockData('CONTENTRUB', $contentrub);
+		$this->lay->setBlockData('JSRUBRIQUES', $contentrub);
+
+		$all_langs = array();
+		foreach($langs as $lang_key => $lang_name) {
+			$all_langs[] = array(
+				'LANGKEY' => $lang_key,
+				'LANGNAME' => $lang_name,
+				'LANGISO' => strtolower(substr($lang_key, -2)),
+			);
+		}
+		$this->lay->setBlockData('ALLLANGS', $all_langs);
 
 		// construct aides
 		$aides = array();
 		$s = new SearchDoc($this->dbaccess, 'HELPPAGE');
 		$s->setObjectReturn();
+		$s->orderby = 'title';
 		$s->search();
 		while($doc = $s->nextDoc()) {
 			$aides[] = array(
@@ -110,17 +242,17 @@ Class _HELPPAGE extends Doc {
 	 * @param Array $all_lang_keys
 	 * @param Array $all_lang_texts
 	 * @param string $current_lang
-	 * @param string $rubrique
+	 * @param string $item
 	 * @return array
 	 */
-	public function getRubriqueLangs($all_lang_keys, $all_lang_texts, $current_lang, $rubrique) {
+	public function getLangsFromItem($all_langs, $current_lang, $item) {
 
 		$langs = array();
-		foreach($all_lang_keys as $i => $lang_key) {
+		foreach($all_langs as $lang_key => $lang_name) {
 			if($lang_key == $current_lang) {
 				$langclass = 'current';
 			}
-			elseif(array_key_exists($lang_key, $rubrique)) {
+			elseif(array_key_exists($lang_key, $item)) {
 				$langclass = 'active';
 			}
 			else {
@@ -128,7 +260,7 @@ Class _HELPPAGE extends Doc {
 			}
 			$langs[] = array(
 				'LANGKEY' => $lang_key,
-				'LANGNAME' => $all_lang_texts[$i],
+				'LANGNAME' => $lang_name,
 				'LANGCLASS' => $langclass,
 				'LANGISO' => strtolower(substr($lang_key, -2)),
 			);

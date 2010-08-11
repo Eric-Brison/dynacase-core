@@ -457,7 +457,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 
   var $noimage = "CORE/Images/noimage.png";
   function GetImageUrl($img,$detectstyle=true,$size=null) {
-
+	  
 	  if ($img != "") {
           // try style first
           if ($detectstyle) {
