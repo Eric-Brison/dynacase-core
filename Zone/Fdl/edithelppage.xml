@@ -32,13 +32,12 @@
 }
 </style>
 
-<div style="display:none">
+<div style="display:block">
 [ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]
 [ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]
 </div>
 
 <fieldset><legend>[TEXT:Online help]</legend>
-	[V_HELP_FAMILYID]
 	<table style="width:100%" cellspacing="0" class="edittable">
 		<tr>
 			<td class="FREEDOMLabelNeeded" width="30%"><span >[TEXT:Help reference]&nbsp:&nbsp;</span></td>
@@ -49,7 +48,7 @@
 			<td>
 				<div id="help-langs">
 				[BLOCK HELPLANGS]
-					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang(this,'[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+					<a href="#[LANGKEY]" id="help-langs-[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang(this,'[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 				[ENDBLOCK HELPLANGS]
 				</div>
 				<span id="help-name">[HELPNAME]</span>
@@ -61,7 +60,7 @@
 		</tr>
 		<tr>
 			<td class="FREEDOMLabel" width="30%"></td>
-			<td><input class="normal" type="button" title="[TEXT:Edit help]" value="[TEXT:Edit help]" onclick="return help_open_subwindow(event,'help_t_aide');"></td>
+			<td><input class="normal" type="button" title="[TEXT:Edit help]" value="[TEXT:Edit help]" onclick="return help_open_subwindow(event,'help_t_help');"></td>
 		</tr>
 
 	</table>
@@ -76,6 +75,82 @@
 </fieldset>
 
 <script type="text/javascript">
+var LANGS = [JSONLANGS];
+function help_get_current_lang() {
+	for(var lang in LANGS) {
+		var a = document.getElementById('help-langs-'+lang);
+		if(a.className == 'current') {
+			return lang;
+		}
+	}
+	return false;
+}
+function help_reload_help_langs() {
+	// init
+	var help_langs = getFormValue('help_lang');
+	var help_names = getFormValue('help_name');
+	var help_descriptions = getFormValue('help_description');
+	var current_lang = '';
+	var new_current = '';
+	// no lang at all
+	if(!help_langs) {
+		for(var lang in LANGS) {
+			var a = document.getElementById('help-langs-'+lang);
+			a.className = 'inactive';
+		}
+		document.getElementById('help-name').innerHTML = '';
+		document.getElementById('help-description').innerHTML = '';
+		return true;
+	}
+	// search current lang
+	for(var lang in LANGS) {
+		var a = document.getElementById('help-langs-'+lang);
+		if(a.className == 'current') {
+			current_lang = lang;
+			break;
+		}
+	}
+	// redefine class for flag links
+	for(var lang in LANGS) {
+		var a = document.getElementById('help-langs-'+lang);
+		var found = -1;
+		for(var i=0; i< help_langs.length; i++) {
+			if(help_langs[i] == lang) {
+				found = i;
+				break;
+			}
+		}
+		if(found >= 0) {
+			if(lang == current_lang) {
+				a.className = 'current';
+				new_current = lang;
+				help_change_lang(a, lang);
+			}
+			else {
+				a.className = 'active';
+			}
+		}
+		else {
+			a.className = 'inactive';
+		}
+	}
+	// if no current lang, set current the first active
+	if(new_current == '') {
+		for(var lang in LANGS) {
+			var a = document.getElementById('help-langs-'+lang);
+			if(a.className == 'active') {
+				a.className == 'current';
+				new_current = lang;
+				help_change_lang(a, lang);
+			}
+		}
+	}
+	// if always no current lang, empty fields
+	if(new_current == '') {
+		document.getElementById('help-name').innerHTML = '';
+		document.getElementById('help-description').innerHTML = '';
+	}
+}
 function help_change_lang(obj,langkey) {
 	if(obj.className == 'inactive') {
 		return false;

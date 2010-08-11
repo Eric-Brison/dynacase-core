@@ -53,6 +53,7 @@ fieldset legend img {
 				<td>
 					<input class="normal" type="button" title="[TEXT:Apply]" value="[TEXT:Apply]" onclick="return help_edit_apply();" />
 					<input class="normal" type="button" title="[TEXT:Cancel]" value="[TEXT:Cancel]" onclick="return help_edit_cancel();" />
+					<input class="normal" type="button" title="[TEXT:Delete this translation]" value="[TEXT:Delete this translation]" onclick="return help_edit_delete('[LANGKEY]');" />
 				</td>
 			</tr>
 		</table>
@@ -69,18 +70,26 @@ function help_edit_apply() {
 	for (var k in LANGS) {
 		var name = document.getElementById('help_name_'+lang_to_index(k)).value;
 		var description = document.getElementById('help_description_'+lang_to_index(k)).value;
-		alert(k+"\n----\n["+name+"]\n----\n["+description+"]");
 		if(name || description) {
 			Ih.docAddTableRow({
-				'help_lang': k,
-				'help_name': name,
-				'help_description': description
+				help_lang: k,
+				help_name: name,
+				help_description: description
 			});
 		}
 	}
+	Ih.callOpener('help_reload_help_langs','');
+	window.close();
 }
 function help_edit_cancel() {
 	window.close();
+}
+function help_edit_delete(lang) {
+	for (var k in LANGS) {
+		if(lang == k) {
+			help_edit_setvalues('', '', k);
+		}
+	}
 }
 function lang_to_index(lang) {
 	var i = 0;
@@ -104,15 +113,38 @@ function help_edit_load() {
 	var help_names = Ih.docGetFormValue('help_name');
 	var help_descriptions = Ih.docGetFormValue('help_description');
 	if(help_langs) {
-		for(var i=0; i < help_langs.length; i++) {
-			var input_name = document.getElementById('help_name_'+lang_to_index(help_langs[i]));
-			var input_description = document.getElementById('help_description_'+lang_to_index(help_langs[i]));
-			if(input_name && input_description) {
-				input_name.value = help_names[i];
-				input_description.value = help_descriptions[i];
+		for (var k in LANGS) {
+			var found = 0;
+			for(var i=0; i < help_langs.length; i++) {
+				if(k == help_langs[i]) {
+					help_edit_setvalues(help_names[i], help_descriptions[i], k);
+					found = 1;
+				}
+			}
+			if(found == 0) {
+				help_edit_setvalues('', '', k);
 			}
 		}
 	}
+	else {
+		for (var k in LANGS) {
+			help_edit_setvalues('', '', k);
+		}
+	}
+	var current_lang = Ih.callOpener('help_get_current_lang','');
+	if(current_lang) {
+		view_lang(current_lang);
+	}
+}
+function help_edit_setvalues(name, description, lang) {
+	var i = lang_to_index(lang);
+	var input_name = document.getElementById('help_name_'+i);
+	var input_description = document.getElementById('help_description_'+i);
+	if(input_name && input_description) {
+		input_name.value = name;
+		input_description.value = description;
+	}
+
 }
 addEvent(window,"load",help_edit_load);
 </script>
