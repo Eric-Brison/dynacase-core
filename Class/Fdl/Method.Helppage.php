@@ -50,24 +50,24 @@ Class _HELPPAGE extends Doc {
 	 *
 	 */
 	public function  preEdition() {
-		$oa = $this->getAttribute('help_rub_text');
+		$oa = $this->getAttribute('help_sec_text');
 		$oa->type = 'longtext';
 	}
 	/**
 	 *
 	 * @return array
 	 */
-	public function getRubriquesByLang() {
-		$rows = $this->getAValues('help_t_rubriques');
+	public function getSectionsByLang() {
+		$rows = $this->getAValues('help_t_sections');
 
-		$rubriques = array();
+		$sections = array();
 		foreach($rows as $row) {
-			$key = str_pad($row['help_rub_ordre'], 8, '0', STR_PAD_LEFT).$row['help_rub_key'];
-			$rubriques[$key][$row['help_rub_lang']] = $row;
+			$key = str_pad($row['help_sec_order'], 8, '0', STR_PAD_LEFT).$row['help_sec_key'];
+			$sections[$key][$row['help_sec_lang']] = $row;
 		}
-		ksort($rubriques);
+		ksort($sections);
 
-		return $rubriques;
+		return $sections;
 	}
 	/**
 	 *
@@ -97,7 +97,7 @@ Class _HELPPAGE extends Doc {
 	 * @return array
 	 */
 	public function getHelpByLang() {
-		$rows = $this->getAValues('help_t_aide');
+		$rows = $this->getAValues('help_t_help');
 
 		$helps = array();
 		foreach($rows as $row) {
@@ -113,7 +113,7 @@ Class _HELPPAGE extends Doc {
 
 		$langs = $this->getFamilyLangs();
 		$user_lang = $this->getUserLang();
-		$rubriques = $this->getRubriquesByLang();
+		$sections = $this->getSectionsByLang();
 		
 		$this->editattr();
 
@@ -183,56 +183,56 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 
 		$langs = $this->getFamilyLangs();
 		$user_lang = $this->getUserLang();
-		$rubriques = $this->getRubriquesByLang();
+		$sections = $this->getSectionsByLang();
 		
-		// contsruct rubriques on the right
-		$leftrub = array();
-		$contentrub = array();
+		// contsruct sections on the right
+		$leftsection = array();
+		$contentsection = array();
 		$i = 0;
-		foreach($rubriques as $rubrique) {
+		foreach($sections as $section) {
 			// get first lang
-			$first_lang = $this->getFirstRubLang($rubrique, $user_lang);
+			$first_lang = $this->getFirstSectionLang($section, $user_lang);
 			$ifirst = -1;
 			$ilast = -1;
 			foreach($langs as $lang_key => $lang_name) {
-				// construct rubrique
-				if(array_key_exists($lang_key, $rubrique)) {
-					$rub = $rubrique[$lang_key];
+				// construct section
+				if(array_key_exists($lang_key, $section)) {
+					$sec = $section[$lang_key];
 					if($lang_key == $first_lang) {
-						$leftrub[] = array(
-							'RUBKEY' => $rub['help_rub_key'],
-							'RUBNAME' => $rub['help_rub_name'],
-							'RUBLANG' => $rub['help_rub_lang'],
+						$leftsection[] = array(
+							'SECKEY' => $sec['help_sec_key'],
+							'SECNAME' => $sec['help_sec_name'],
+							'SECLANG' => $sec['help_sec_lang'],
 						);
 					}
 					if($ifirst < 0) {
 						$ifirst = $i;
 					}
-					$contentrub[] = array(
-						'RUBKEY' => $rub['help_rub_key'],
-						'RUBNAME' => $rub['help_rub_name'],
-						'RUBLANG' => $rub['help_rub_lang'],
-						'RUBTEXT' => $rub['help_rub_text'],
-						'RUBDISPLAY' => $lang_key == $first_lang ? 'block':'none',
-						'RUBLANGS' => 'rublangs'.$i,
-						'RUBHEADER' => '0',
-						'RUBFOOTER' => '0',
+					$contentsection[] = array(
+						'SECKEY' => $sec['help_sec_key'],
+						'SECNAME' => $sec['help_sec_name'],
+						'SECLANG' => $sec['help_sec_lang'],
+						'SECTEXT' => $sec['help_sec_text'],
+						'SECDISPLAY' => $lang_key == $first_lang ? 'block':'none',
+						'SECLANGS' => 'seclangs'.$i,
+						'SECHEADER' => '0',
+						'SECFOOTER' => '0',
 					);
 					$ilast = $i;
-					$this->lay->setBlockData('rublangs'.$i, $this->getLangsFromItem($langs, $lang_key, $rubrique));
+					$this->lay->setBlockData('seclangs'.$i, $this->getLangsFromItem($langs, $lang_key, $section));
 					$i++;
 				}
 			}
 			if($ifirst >= 0 && $ilast >= 0) {
-				$contentrub[$ifirst]['RUBHEADER'] = '1';
-				$contentrub[$ilast]['RUBFOOTER'] = '1';
+				$contentsection[$ifirst]['SECHEADER'] = '1';
+				$contentsection[$ilast]['SECFOOTER'] = '1';
 			}
 		}
 
-		$this->lay->setBlockData('LEFTRUB', $leftrub);
+		$this->lay->setBlockData('LEFTSECTIONS', $leftsection);
 
-		$this->lay->setBlockData('CONTENTRUB', $contentrub);
-		$this->lay->setBlockData('JSRUBRIQUES', $contentrub);
+		$this->lay->setBlockData('CONTENTSECTIONS', $contentsection);
+		$this->lay->setBlockData('JSSECTIONS', $contentsection);
 
 		$all_langs = array();
 		foreach($langs as $lang_key => $lang_name) {
@@ -255,7 +255,7 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 				'AIDE' => $doc->getDocAnchor($doc->id, '_self', true, false, false),
 			);
 		}
-		$this->lay->setBlockData('LEFTAIDES', $aides);
+		$this->lay->setBlockData('LEFTHELPS', $aides);
 
 	}
 	/**
@@ -290,19 +290,19 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 	}
 	/**
 	 *
-	 * @param string $rubrique
+	 * @param string $section
 	 * @param string $user_lang
 	 * @return string
 	 */
-	public function getFirstRubLang($rubrique, $user_lang) {
+	public function getFirstSectionLang($section, $user_lang) {
 		// return lang if found
-		foreach($rubrique as $lang => $rub) {
+		foreach($section as $lang => $sec) {
 			if($lang == $user_lang) {
 				return $lang;
 			}
 		}
 		// return first lang
-		foreach($rubrique as $lang => $rub) {
+		foreach($section as $lang => $sec) {
 			return $lang;
 		}
 	}

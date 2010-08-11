@@ -21,7 +21,7 @@
 	border: 0;
 }
 #helppage-content-title,
-#helppage-rubriques-title,
+#helppage-sections-title,
 #helppage-aides-title {
 	padding: 2px 5px;
 	display: block;
@@ -37,47 +37,47 @@
 	border: 0;
 	background: 0;
 }
-#helppage-main .help-rubrique-langs img {
+#helppage-main .help-section-langs img {
 	border: 1px solid [CORE_BGCOLOR];
 	padding: 0 3px;
 }
-#helppage-main .help-rubrique-langs a.current img {
+#helppage-main .help-section-langs a.current img {
 	background: [COLOR_B9];
 	border-color: [COLOR_B5];
 }
-#helppage-main .help-rubrique-langs a.active img {
+#helppage-main .help-section-langs a.active img {
 	background: [CORE_BGCOLOR];
 	border-color: [COLOR_A7];
 }
-#helppage-main .help-rubrique-langs a.active:hover img {
+#helppage-main .help-section-langs a.active:hover img {
 	background: [COLOR_A9];
 	border-color: [COLOR_A5];
 }
-#helppage-main .help-rubrique-langs a.inactive {
+#helppage-main .help-section-langs a.inactive {
 	opacity: 0.25;
 	-moz-opacity: 0.25;
 	-webkit-opacity: 0.25;
 }
-#helppage-main .help-rubrique-langs a:hover {
+#helppage-main .help-section-langs a:hover {
 	background:none;
 }
-#helppage-main .help-rubrique {
+#helppage-main .help-section {
 	margin: 0 0 2em 0;
 }
-#helppage-main .help-rubrique-title {
+#helppage-main .help-section-title {
 	color: [COLOR_B0];
 	font-weight: bold;
 	font-size: 16px;
 }
-#helppage-main .help-rubrique-langs {
+#helppage-main .help-section-langs {
 	float: right;
 }
-#helppage-main .help-rubrique-text {
+#helppage-main .help-section-text {
 	margin-left: 24px;
 }
 #helppage-aides,
 #helppage-content,
-#helppage-rubriques {
+#helppage-sections {
 	margin: 0;
 	padding: 5px;
 	overflow: hidden;
@@ -122,10 +122,10 @@
 #helppage-title div {
 	display: none;
 }
-#helppage-main .help-rubrique-langs a {
+#helppage-main .help-section-langs a {
 	display: none;
 }
-#helppage-main .help-rubrique-langs a.current {
+#helppage-main .help-section-langs a.current {
 	display: inline;
 }
 </style>
@@ -133,15 +133,15 @@
 <div id="helppage-main">
 	<div id="helppage-title"><div><a onclick="self.print()">[TEXT:Print]</a></div>[IF HELPEDITABLE]<div><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'helpedit','[HELPEDITURI]')">[TEXT:Edit]</a>&nbsp|&nbsp</div>[ENDIF HELPEDITABLE]<span class="FREEDOMTextBigTitle">[HELPTITLE]</span></div>
 	<div id="helppage-left">
-		<div id="helppage-rubriques-title">[TEXT:Rubriques]</div>
-		<div id="helppage-rubriques">
-[BLOCK LEFTRUB]
-<a href="#[RUBKEY]" onclick="return help_goto('rub-[RUBKEY]')">[RUBNAME]</a>
-[ENDBLOCK LEFTRUB]
+		<div id="helppage-sections-title">[TEXT:Sections]</div>
+		<div id="helppage-sections">
+[BLOCK LEFTSECTIONS]
+<a href="#[SECKEY]" onclick="return help_goto('sec-[SECKEY]')">[SECNAME]</a>
+[ENDBLOCK LEFTSECTIONS]
 		</div>
 		<div id="helppage-aides-title">[TEXT:Helps]</div>
 		<div id="helppage-aides">
-[BLOCK LEFTAIDES][AIDE][ENDBLOCK LEFTAIDES]
+[BLOCK LEFTHELPS][AIDE][ENDBLOCK LEFTHELPS]
 		</div>
 	</div>
 	<div id="helppage-right">
@@ -154,19 +154,19 @@
 			[TEXT:Help content]
 		</div>
 		<div id="helppage-content">
-[BLOCK CONTENTRUB]
-	[IF RUBHEADER]<div class="help-rubrique" id="rub-[RUBKEY]">[ENDIF RUBHEADER]
-			<div class="help-rubrique-item" style="display:[RUBDISPLAY]" id="rub-[RUBKEY]-[RUBLANG]">
-				<div class="help-rubrique-langs">
-[BLOCK [RUBLANGS]]
-					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang('rub-[RUBKEY]-[RUBLANG]','rub-[RUBKEY]-[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
-[ENDBLOCK [RUBLANGS]]
+[BLOCK CONTENTSECTIONS]
+	[IF SECHEADER]<div class="help-section" id="sec-[SECKEY]">[ENDIF SECHEADER]
+			<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
+				<div class="help-section-langs">
+[BLOCK [SECLANGS]]
+					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+[ENDBLOCK [SECLANGS]]
 				</div>
-				<div class="help-rubrique-title">[RUBNAME]</div>
-				<div class="help-rubrique-text">[RUBTEXT]</div>
+				<div class="help-section-title">[SECNAME]</div>
+				<div class="help-section-text">[SECTEXT]</div>
 			</div>
-	[IF RUBFOOTER]</div>[ENDIF RUBFOOTER]
-[ENDBLOCK CONTENTRUB]
+	[IF SECFOOTER]</div>[ENDIF SECFOOTER]
+[ENDBLOCK CONTENTSECTIONS]
 		</div>
 	</div>
 </div>
@@ -177,8 +177,8 @@
 		var div_title = document.getElementById('helppage-title');
 		var div_left = document.getElementById('helppage-left');
 		var div_right = document.getElementById('helppage-right');
-		var div_rubriques_title = document.getElementById('helppage-rubriques-title');
-		var div_rubriques = document.getElementById('helppage-rubriques');
+		var div_sections_title = document.getElementById('helppage-sections-title');
+		var div_sections = document.getElementById('helppage-sections');
 		var div_aides_title = document.getElementById('helppage-aides-title');
 		var div_aides = document.getElementById('helppage-aides');
 		var div_content_title = document.getElementById('helppage-content-title');
@@ -189,7 +189,7 @@
 		var h_subtitle = getObjectHeight('helppage-content-title');
 
 		if(getObjectHeight('helppage-aides-title') > h_subtitle) { h_subtitle = getObjectHeight('helppage-aides-title'); }
-		if(getObjectHeight('helppage-rubriques-title') > h_subtitle) { h_subtitle = getObjectHeight('helppage-rubriques-title'); }
+		if(getObjectHeight('helppage-sections-title') > h_subtitle) { h_subtitle = getObjectHeight('helppage-sections-title'); }
 
 		div_main.style.height = h+'px';
 		div_left.style.height = (h-h_title)+'px';
@@ -197,10 +197,10 @@
 
 		div_content.style.height = (h-h_title-h_subtitle - 10)+'px';
 
-		if(2*getObjectHeight('helppage-rubriques') + 2*h_subtitle + h_title > h) {
-			div_rubriques.style.height = (Math.floor((h - h_title - 2*h_subtitle)/2) - 10)+'px';
+		if(2*getObjectHeight('helppage-sections') + 2*h_subtitle + h_title > h) {
+			div_sections.style.height = (Math.floor((h - h_title - 2*h_subtitle)/2) - 10)+'px';
 		}
-		div_aides.style.height = (h - 2*h_subtitle - h_title - getObjectHeight('helppage-rubriques') - 10)+'px';
+		div_aides.style.height = (h - 2*h_subtitle - h_title - getObjectHeight('helppage-sections') - 10)+'px';
 	}
 	function help_change_lang(src, dst) {
 		var o_src = document.getElementById(src);
@@ -212,16 +212,16 @@
 		return false;
 	}
 	function help_change_alllang(lang) {
-[BLOCK JSRUBRIQUES]
-		help_change_alllang_check(lang, 'rub-[RUBKEY]-[RUBLANG]');
-[ENDBLOCK JSRUBRIQUES]
+[BLOCK JSSECTIONS]
+		help_change_alllang_check(lang, 'sec-[SECKEY]-[SECLANG]');
+[ENDBLOCK JSSECTIONS]
 		return false;
 	}
-	function help_change_alllang_check(lang,rubid) {
-		var o1 = document.getElementById(rubid);
-		var o2 = document.getElementById(rubid.substr(0, rubid.length-5)+lang);
+	function help_change_alllang_check(lang,secid) {
+		var o1 = document.getElementById(secid);
+		var o2 = document.getElementById(secid.substr(0, secid.length-5)+lang);
 		if(o1 && o2) {
-			if(rubid.substr(rubid.length-5, 5) == lang) {
+			if(secid.substr(secid.length-5, 5) == lang) {
 				o1.style.display='block';
 			}
 			else if(o2.className != 'inactive') {
@@ -229,11 +229,11 @@
 			}
 		}
 	}
-	function help_goto(rub) {
-		var o_rub = document.getElementById(rub);
-		if(o_rub) {
+	function help_goto(sec) {
+		var o_sec = document.getElementById(sec);
+		if(o_sec) {
 			var content = document.getElementById('helppage-content');
-			content.scrollTop = o_rub.offsetTop - content.offsetTop;
+			content.scrollTop = o_sec.offsetTop - content.offsetTop;
 		}
 		return false;
 	}
@@ -241,7 +241,7 @@
 		var loc = document.location+'';
 		var m = [];
 		if(m = loc.match(/\#(.*)$/)) {
-			help_goto('rub-'+m[1]);
+			help_goto('sec-'+m[1]);
 		}
 	}
 	addEvent(window, 'load', resize_helppage);

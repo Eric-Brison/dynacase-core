@@ -24,7 +24,7 @@ function helppageenumlang() {
 }
 
 
-function helppage_editrubrique(Action &$action,$dbaccess,$docid) {
+function helppage_editsection(Action &$action,$dbaccess,$docid) {
 	$action->lay->set();
 
 	//GetHttpVars($name);
@@ -71,9 +71,9 @@ function helppage_edithelp(Action &$action,$dbaccess,$docid) {
 	if(!empty($helplangs) && !$displayed) {
 		$helplangs[0]['LANGDISPLAY'] = 'block';
 	}
-	$action->lay->SetBlockData('HELPLANGS', $helplangs);
-	$action->lay->SetBlockData('MENULANGS1', $helplangs);
-	$action->lay->SetBlockData('MENULANGS2', $helplangs);
+	$action->lay->SetBlockData('HELPLANGS1', $helplangs);
+	$action->lay->SetBlockData('HELPLANGS2', $helplangs);
+	$action->lay->set('JSONLANGS', json_encode($langs));
 	
 foreach(explode("\n", print_r($helplangs, true)) as $tmp) {error_log($tmp);}
 

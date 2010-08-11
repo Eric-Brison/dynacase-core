@@ -6174,7 +6174,7 @@ create unique index i_docir on doc(initid, revision);";
             $helpattr=array();
             if ($s->count() > 0) {
                $helpid=$help[0]["id"];
-               $helpattr=$this->_val2array($help[0]["help_rub_key"]);
+               $helpattr=$this->_val2array($help[0]["help_sec_key"]);
             }
             // ------------------------------------------------------
             // Perform SQL search for doc attributes

@@ -21,7 +21,7 @@
 	background: [CORE_BGCOLOR];
 	border-color: [COLOR_A7];
 }
-#help-langs .help-rubrique-langs a.active:hover img {
+#help-langs .help-section-langs a.active:hover img {
 	background: [COLOR_A9];
 	border-color: [COLOR_A5];
 }
@@ -33,8 +33,8 @@
 </style>
 
 <div style="display:none">
-[ZONE FDL:EDITARRAY?arrayid=HELP_T_AIDE]
-[ZONE FDL:EDITARRAY?arrayid=HELP_T_RUBRIQUES]
+[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]
+[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]
 </div>
 
 <fieldset><legend>[TEXT:Online help]</legend>
@@ -70,7 +70,7 @@
 	
 </fieldset>
 
-<fieldset><legend>[TEXT:Rubriques]</legend>
+<fieldset><legend>[TEXT:Sections]</legend>
 
 
 </fieldset>
