@@ -240,9 +240,12 @@
                      sp[i].style.display='none';
                   }
                   var descsel=document.getElementById('helppage-title-'+lang);
-                  if (descsel) descsel.style.display='';
-                  else if (sp.length > 0) {
+                  if (descsel) {
+                     descsel.style.display='';
+                     document.title=descsel.innerHTML;
+                  } else if (sp.length > 0) {
                     sp[0].style.display='';
+                    document.title=sp[0].innerHTML;
                   }
                 }
 		return false;
