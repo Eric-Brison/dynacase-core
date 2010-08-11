@@ -4292,7 +4292,7 @@ create unique index i_docir on doc(initid, revision);";
                    $ec=getHttpVars("ext:targetRelation");
                    if ($ec)  {                      
                      $ec=str_replace("%V%",$id,$ec);
-                     $ecu=str_replace("'","\\'",$this->urlWhatEncode($ec));
+                     $ecu=str_replace("'",'"',$this->urlWhatEncode($ec));
                      $a="<a  onclick='parent.$ecu'>$title</a>";
                    } else {
 
