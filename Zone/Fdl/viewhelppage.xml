@@ -103,18 +103,30 @@
 }
 </style>
 <style type="text/css" media="print">
+#helppage-main {
+	height: 100%;
+}
 #helppage-left {
 	display:none;
 }
 #helppage-right {
 	margin-left: 0px;
-	height: auto;
+	height: 100%;
 }
 #helppage-content-title {
 	display:none;
 }
 #helppage-content {
-	height: auto;
+	height: 100%;
+}
+#helppage-title div {
+	display: none;
+}
+#helppage-main .help-rubrique-langs a {
+	display: none;
+}
+#helppage-main .help-rubrique-langs a.current {
+	display: inline;
 }
 </style>
 
