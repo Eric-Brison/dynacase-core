@@ -56,7 +56,7 @@ function specialhelp(Action &$action) {
          if (function_exists(strtolower($zone))) {
              include_once("FDL/enum_choice.php");
              $oa->phpfunc=substr($phpfunc,strpos($phpfunc,':')+1);
-             $res=getResPhpFunc($doc,$oa,&$rargids,&$tselect,&$tval,true,$index,$zone);
+             $res=getResPhpFunc($doc,$oa,$rargids,$tselect,$tval,true,$index,$zone);
              $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
              $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/autoclose.js");
              $action->parent->AddJsRef(getLayoutFile("FDL","specialhelp.js"));
