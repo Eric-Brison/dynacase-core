@@ -322,6 +322,7 @@ function changeFamMenuVisibility(&$action,&$tlink,&$doc) {
     $tlink["forumdisabled"]["visibility"]=POPUP_CTRLACTIVE;
     $tlink["forumenabled"]["visibility"]=POPUP_INVISIBLE;
   }
+  include_once("FDL/Class.SearchDoc.php");
   $s=new SearchDoc($doc->dbaccess,"HELPPAGE");
   $s->addFilter("help_family='%d'",$doc->id);
   $help=$s->search();
