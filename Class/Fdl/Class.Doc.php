@@ -4221,7 +4221,7 @@ create unique index i_docir on doc(initid, revision);";
   public function urlWhatEncodeSpec($l) {return $l;}
 
   public static function _val2array($v) {
-    if ($v=="") return array();
+    if ($v==="" || $v===null) return array();
     return explode("\n", str_replace("\r","",$v));
   }
   
@@ -4292,7 +4292,7 @@ create unique index i_docir on doc(initid, revision);";
                    $ec=getHttpVars("ext:targetRelation");
                    if ($ec)  {                      
                      $ec=str_replace("%V%",$id,$ec);
-                     $ecu=str_replace("'","\\'",$this->urlWhatEncode($ec));
+                     $ecu=str_replace("'",'"',$this->urlWhatEncode($ec));
                      $a="<a  onclick='parent.$ecu'>$title</a>";
                    } else {
 
@@ -5628,8 +5628,11 @@ create unique index i_docir on doc(initid, revision);";
         } else {
             $goodvalue=((($value != "") || ( $attr->type=="array") || $attr->getOption("showempty") ) &&
             ($attr->mvisibility != "H") && ($attr->mvisibility != "I") && ($attr->mvisibility != "O") && (! $attr->inArray()));
+            if (( $attr->type=="array") && (!$attr->getOption("showempty"))) {
+                if (count($this->getAValues($attr->id))==0) $goodvalue=false;
+            }
+          
             if ($goodvalue) {
-
                 $viewtpl=$attr->getOption("viewtemplate");
                 if ($viewtpl ) {
                     if ($viewtpl=="none") {
@@ -5641,7 +5644,7 @@ create unique index i_docir on doc(initid, revision);";
                         $htmlvalue=sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",$this->id, $this->fromid,$target,$viewtpl);
                     }
                 } else {
-                    if (($value == "")&&($attr->type!="array")) $htmlvalue=$attr->getOption("showempty");
+                    if ((($value == "")&&($attr->type!="array")) || (($attr->type=="array")&& (count($this->getAValues($attr->id))==0))) $htmlvalue=$attr->getOption("showempty");
                     else $htmlvalue=$this->GetHtmlValue($attr,$value,$target,$ulink);
                 }
             } else $htmlvalue="";
@@ -5696,8 +5699,7 @@ create unique index i_docir on doc(initid, revision);";
       //------------------------------
       // Set the table value elements
     
-      if ($goodvalue)   {
-	  	 
+      if ($goodvalue)   {               
 	switch ($attr->type)
 	  {	      
 	  case "image": 		  

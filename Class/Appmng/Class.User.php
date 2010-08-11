@@ -293,7 +293,7 @@ create sequence seq_id_users start 10";
 
     if ($iddomain == 0) {
       if ($extmail != "") {
-	$this->mail=$extmail;  
+	$this->mail=trim($extmail);  
       } 
       $this->iddomain = "0";
     } else {

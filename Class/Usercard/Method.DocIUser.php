@@ -186,7 +186,7 @@ function PostModify() {
   else $passdelay=intval($daydelay)*3600*24;
   $status=$this->GetValue("US_STATUS");
   $login=$this->GetValue("US_LOGIN");
-  $extmail=$this->GetValue("US_EXTMAIL");
+  $extmail=$this->GetValue("US_EXTMAIL",$this->getValue("us_homemail"," "));
 
   if ($login != "-") {
     // compute expire for epoch
@@ -249,8 +249,8 @@ function PostModify() {
     // tranfert extern mail if no login specified yet
     if ($this->getValue("us_login")=="-") {
       $this->setValue("US_IDDOMAIN","0");
-      $email=$this->getValue("us_extmail");
-      if (($email != "")&&($email[0]!="<")) $this->setValue("us_mail",$this->getValue("us_extmail"));
+      $email=$this->getValue("us_extmail",$this->getValue("us_homemail"));
+      if (($email != "")&&($email[0]!="<")) $this->setValue("us_mail",$email);
       else $this->deleteValue("us_mail");
     }
   }

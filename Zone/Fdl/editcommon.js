@@ -430,7 +430,7 @@ function addTableRow(config) {
 		var tnewid=false;
 		for (i in config) {
 			if (! texbody) {
-				var o=document.getElementById(i+'___1x_');
+				var o=document.getElementById(i.toLowerCase()+'___1x_');
 				if (o) {
 					var p=o.parentNode;
 					while (p && p.tagName != 'TR') p=p.parentNode;
