@@ -59,7 +59,8 @@ function specialhelp(Action &$action) {
              $res=getResPhpFunc($doc,$oa,$rargids,$tselect,$tval,true,$index,$zone);
              $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
              $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/autoclose.js");
-             $action->parent->AddJsRef(getLayoutFile("FDL","specialhelp.js"));
+             $action->parent->AddJsRef("FDL:specialhelp.js",true);
+             
              $action->parent->AddJsCode("Ih.resultArguments=".json_encode($funres)).";";
              
          } else {
