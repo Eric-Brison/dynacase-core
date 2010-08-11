@@ -44,6 +44,14 @@ Ih.docAddTableRow= function(config) {
  * @param config
  * @return Boolean null if call not succeed else the return of opener function
  */
+Ih.docClearTableRow= function(attributename) {
+	return this.callOpener('clearTableRow',attributename);
+};
+/**
+ * add new row in opener document form
+ * @param config
+ * @return Boolean null if call not succeed else the return of opener function
+ */
 Ih.getReturnAttribute= function(index) {
 	if (this.resultArguments) {
 		return this.resultArguments[index];
