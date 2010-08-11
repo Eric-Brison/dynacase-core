@@ -1,0 +1,111 @@
+<style type="text/css">
+
+#help-lang-name {
+	vertical-align: middle;
+}
+#help-langs a {
+	outline: 0;
+}
+#help-langs {
+	float: right;
+}
+#help-langs img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-langs a.current img {
+	background: [COLOR_B9];
+	border-color: [COLOR_B5];
+}
+#help-langs a.active img {
+	background: [CORE_BGCOLOR];
+	border-color: [COLOR_A7];
+}
+#help-langs .help-rubrique-langs a.active:hover img {
+	background: [COLOR_A9];
+	border-color: [COLOR_A5];
+}
+#help-langs a.inactive {
+	opacity: 0.25;
+	-moz-opacity: 0.25;
+	-webkit-opacity: 0.25;
+}
+</style>
+
+<div style="display:none">
+[ZONE FDL:EDITARRAY?arrayid=HELP_T_AIDE]
+[ZONE FDL:EDITARRAY?arrayid=HELP_T_RUBRIQUES]
+</div>
+
+<fieldset><legend>[TEXT:Online help]</legend>
+	[V_HELP_FAMILYID]
+	<table style="width:100%" cellspacing="0" class="edittable">
+		<tr>
+			<td class="FREEDOMLabelNeeded" width="30%"><span >[TEXT:Help reference]&nbsp:&nbsp;</span></td>
+			<td>[V_HELP_REFERENCE]</td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" width="30%"><span >[TEXT:Help name]&nbsp:&nbsp;</span></td>
+			<td>
+				<div id="help-langs">
+				[BLOCK HELPLANGS]
+					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang(this,'[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+				[ENDBLOCK HELPLANGS]
+				</div>
+				<span id="help-name">[HELPNAME]</span>
+			</td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" width="30%"><span >[TEXT:Help description]&nbsp:&nbsp;</span></td>
+			<td id="help-description">[HELPDESCRIPTION]</td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" width="30%"></td>
+			<td><input class="normal" type="button" title="[TEXT:Edit help]" value="[TEXT:Edit help]" onclick="return help_open_subwindow(event,'help_t_aide');"></td>
+		</tr>
+
+	</table>
+	
+	
+	
+</fieldset>
+
+<fieldset><legend>[TEXT:Rubriques]</legend>
+
+
+</fieldset>
+
+<script type="text/javascript">
+function help_change_lang(obj,langkey) {
+	if(obj.className == 'inactive') {
+		return false;
+	}
+	var help_langs = getFormValue('help_lang');
+	var help_names = getFormValue('help_name');
+	var help_descriptions = getFormValue('help_description');
+	for(var i=0;i < help_langs.length; i++) {
+		if(help_langs[i] == langkey) {
+			document.getElementById('help-name').innerHTML = help_names[i];
+			document.getElementById('help-description').innerHTML = help_descriptions[i].replace(/\n/g, "<br />");
+			var flags = document.getElementById('help-langs').childNodes;
+			for(var j=0; j < flags.length; j++) {
+				if(flags[j].className == 'current') {
+					flags[j].className = 'active';
+				}
+			}
+		}
+	}
+	obj.className = 'current';
+	return false;
+}
+function help_open_subwindow(event,attrname) {
+	var o = document.getElementById('tispecial'+attrname);
+	if(o) {
+		o.onclick.apply(null,[event]);
+	}
+	else {
+		alert('Ooops, something that\'s shouldn\'t occur just happens !');
+	}
+	return false;
+}
+</script>

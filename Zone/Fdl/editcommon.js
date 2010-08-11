@@ -552,16 +552,21 @@ function getFormValue(attrid) {
 		if (inp && inp.name == '_'+attrid) {
 			return getIValue(inp);
 		} else {
-			 var linp = document.getElementsByTagName('input');
-			 var r=[];
-			 for (var j=0;j<linp.length;j++) {
-					if (_matchName(linp[j].name,'_'+attrid)) {
-						if (linp[j].name.substr(-6,5) != '__1x_') {
-							r.push(getIValue(linp[j]));
+			var tags = ['input', 'select', 'textarea'];
+			for(var i=0; i<tags.length; i++) {
+				 var linp = document.getElementsByTagName(tags[i]);
+				 var r=[];
+				 for (var j=0;j<linp.length;j++) {
+						if (_matchName(linp[j].name,'_'+attrid)) {
+							if (linp[j].name.substr(-6,5) != '__1x_') {
+								r.push(getIValue(linp[j]));
+							}
 						}
-					}
-			 }
-			 return r;
+				 }
+				 if(r.length > 0) {
+					return r;
+				 }
+			}
 		}
 		
 	

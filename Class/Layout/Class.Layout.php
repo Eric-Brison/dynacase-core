@@ -437,8 +437,8 @@ class Layout {
     $this->ParseIf($out);
 
     // Parse IMG: and LAY: tags
-    $this->ParseRef($out);
     $this->ParseKey($out);
+    $this->ParseRef($out);
     $this->ParseZone($out);
     $this->ParseJs($out);
     $this->ParseCss($out);

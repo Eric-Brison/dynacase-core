@@ -20,7 +20,7 @@
 <td colspan="[footspan]">
 	[IFNOT readonly]
 	[IF useadd]<input class="button add-button" type="button" id="tiadd[attrid]" title="[TEXT:add]" onclick="addtr('tnew[attrid]','tbody[attrid]');return false;">[ENDIF useadd]
-      [IF addfunc]<input class="normal [attrid]" type="button" id="tiadd[attrid]" title="[addtitle]" value="[addsymbol]" onclick="[addfunc];return false;">[ENDIF addfunc]
+      [IF addfunc]<input class="normal [attrid]" type="button" id="tispecial[attrid]" title="[addtitle]" value="[addsymbol]" onclick="[addfunc];return false;">[ENDIF addfunc]
 
 </td></tr> [ENDIF readonly] 
   </tbody>
