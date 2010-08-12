@@ -6335,6 +6335,7 @@ create unique index i_docir on doc(initid, revision);";
             $this->lay->SetBlockData("TABLEBODY",$frames);
             $this->lay->SetBlockData("TABS",$ttabs);
             $this->lay->Set("ONETAB",count($ttabs)>0);
+            $this->lay->Set("fromid",$this->fromid);
             if (count($ttabs)>0)   {
                 $this->lay->Set("firsttab",false);
                 foreach ($ttabs as $k=>$v) {
