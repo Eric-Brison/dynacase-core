@@ -25,6 +25,8 @@ function popupdoc(&$action,$tlink,$tsubmenu=array()) {
   $onlysub= GetHttpVars("submenu"); // view only sub menu
   $action->lay = new Layout(getLayoutFile("FDL","popupdoc.xml"),$action);
 
+  if ($onlysub && (! seems_utf8($onlysub)) ) $onlysub=utf8_encode($onlysub);
+  
   $mb=microtime();
 
     $action->lay->set("CODE","OK");
