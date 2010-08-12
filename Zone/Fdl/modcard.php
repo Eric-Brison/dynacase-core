@@ -257,12 +257,15 @@ function setPostVars(&$doc, &$info=array()) {
 
 			if ($value=="") $doc->SetValue($attrid, DELVALUE);
 			else  {
-				$seterr=$doc->SetValue($attrid, $value);
+				$seterr=$doc->SetValue($attrid, $value,-1,$kerr);
 				if ($seterr) {
 					$oa=$doc->getAttribute($attrid);
 					if ($oa) {
 						$info[$oa->id]=array("id"=>$oa->id,
                                "err"=>$seterr);
+						if ($oa->inArray()) {
+						    $info[$oa->id]["index"]=$kerr;
+						}
 						$ola=$oa->getLabel();
 						$err.=sprintf("%s : %s\n",$ola,$seterr);
 					}

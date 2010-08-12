@@ -2272,9 +2272,10 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $idAttr identificator of attribute 
    * @param string $value new value for the attribute
    * @param int $index only for array values affect value in a specific row
+   * @param int &$kvalue in case of error the index of error (for arrays)
    * @return string error message, if no error empty string
    */
-  final public function SetValue($attrid, $value,$index=-1) {
+  final public function SetValue($attrid, $value,$index=-1,&$kvalue=null) {
   	// control edit before set values
   	
 

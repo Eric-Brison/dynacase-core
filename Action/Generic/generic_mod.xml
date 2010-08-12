@@ -59,6 +59,7 @@ function focusConstraint(inp) {
     } 
 }
 function viewContraint(inp, info) {
+    if ((! inp) && info.err) window.parent.displayWarningMsg(info.err);
     if (inp) {
         if ((inp.style.display=='none') || (inp.type=='hidden')) {
                 var oinp=inp.parentNode.firstChild;
