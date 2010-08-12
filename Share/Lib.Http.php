@@ -27,8 +27,10 @@ function Redirect(&$action,$appname,$actionname,$otherurl="",$httpparamredirect=
   if ($appname=="") {
     $location = ".";
   } else {
-    if ($otherurl == "")  $baseurl=$action->GetParam("CORE_BASEURL");
-    else  $baseurl=$otherurl;  
+    if ($otherurl == "") {
+       if (in_array($appname, array("CORE","APPMNG","ACCESS","AUTHENT"))) $baseurl=$action->GetParam("CORE_BASEURL");
+       else $baseurl='?';
+    } else  $baseurl=$otherurl;  
     $location = $baseurl."app=".$appname."&action=".$actionname;
     //    $location .= "&session=".$action->session->id;
   }
