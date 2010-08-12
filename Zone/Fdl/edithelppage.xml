@@ -30,6 +30,44 @@
 	-moz-opacity: 0.25;
 	-webkit-opacity: 0.25;
 }
+#help-sections .help-section-langs img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-sections .help-section-langs a.current img {
+	background: [COLOR_B9];
+	border-color: [COLOR_B5];
+}
+#help-sections .help-section-langs a.active img {
+	background: [CORE_BGCOLOR];
+	border-color: [COLOR_A7];
+}
+#help-sections .help-section-langs a.active:hover img {
+	background: [COLOR_A9];
+	border-color: [COLOR_A5];
+}
+#help-sections .help-section-langs a.inactive {
+	opacity: 0.25;
+	-moz-opacity: 0.25;
+	-webkit-opacity: 0.25;
+}
+#help-sections .help-section-langs a:hover {
+	background:none;
+}
+#help-sections .help-section {
+	margin: 0 0 2em 0;
+}
+.help-section-title {
+	color: [COLOR_B0];
+	font-weight: bold;
+	font-size: 16px;
+}
+#help-sections .help-section-langs {
+	float: right;
+}
+.help-section-text {
+	margin-left: 24px;
+}
 </style>
 
 <div style="display:block">
@@ -38,44 +76,55 @@
 </div>
 
 <fieldset><legend>[TEXT:Online help]</legend>
-	<table style="width:100%" cellspacing="0" class="edittable">
-		<tr>
-			<td class="FREEDOMLabelNeeded" width="30%"><span >[TEXT:Help reference]&nbsp:&nbsp;</span></td>
-			<td>[V_HELP_REFERENCE]</td>
-		</tr>
-		<tr>
-			<td class="FREEDOMLabel" width="30%"><span >[TEXT:Help name]&nbsp:&nbsp;</span></td>
-			<td>
-				<div id="help-langs">
-				[BLOCK HELPLANGS]
-					<a href="#[LANGKEY]" id="help-langs-[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang(this,'[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
-				[ENDBLOCK HELPLANGS]
-				</div>
-				<span id="help-name">[HELPNAME]</span>
-			</td>
-		</tr>
-		<tr>
-			<td class="FREEDOMLabel" width="30%"><span >[TEXT:Help description]&nbsp:&nbsp;</span></td>
-			<td id="help-description">[HELPDESCRIPTION]</td>
-		</tr>
-		<tr>
-			<td class="FREEDOMLabel" width="30%"></td>
-			<td><input class="normal" type="button" title="[TEXT:Edit help]" value="[TEXT:Edit help]" onclick="return help_open_subwindow(event,'help_t_help');"></td>
-		</tr>
+	<div id="help-langs">
+	[BLOCK HELPLANGS]
+		<a href="#[LANGKEY]" id="help-langs-[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang(this,'[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+	[ENDBLOCK HELPLANGS]
+		<br />
+		<a onclick="return help_open_subwindow(event,'help_t_help');">[TEXT:Edit translations]</a>
+	</div>
 
-	</table>
+	<div class="help-section-item">
+		<div class="help-section-title">[TEXT:Help name]</div>
+		<div class="help-section-text" id="help-name">[HELPNAME]</div>
+	</div>
 	
-	
+	<div class="help-section-item">
+		<div class="help-section-title">[TEXT:Help description]</div>
+		<div class="help-section-text" id="help-description">[HELPDESCRIPTION]</div>
+	</div>
 	
 </fieldset>
 
-<fieldset><legend>[TEXT:Sections]</legend>
+<fieldset id="help-sections"><legend>[TEXT:Sections]</legend>
 
+<input type="hidden" name="edit_section_key" value="" id="edit_section_key" />
+
+[BLOCK CONTENTSECTIONS]
+	<div class="help-section" id="sec-[SECKEY]">
+		<div class="help-section-langs">
+			[BLOCK [SECTIONLANGS]]
+			<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,'[SECKEY]','[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+			[ENDBLOCK [SECTIONLANGS]]
+			<br />
+			<a onclick="return help_open_subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>
+		</div>
+
+		[BLOCK [SECTIONITEMS]]
+		<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
+			<div class="help-section-title">[SECNAME]</div>
+			<div class="help-section-text">[SECTEXT]</div>
+		</div>
+		[ENDBLOCK [SECTIONITEMS]]
+
+	</div>
+[ENDBLOCK CONTENTSECTIONS]
 
 </fieldset>
 
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
+
 function help_get_current_lang() {
 	for(var lang in LANGS) {
 		var a = document.getElementById('help-langs-'+lang);
@@ -85,6 +134,28 @@ function help_get_current_lang() {
 	}
 	return false;
 }
+
+function help_change_lang_section(obj, seckey, langkey) {
+	if(obj.className == 'inactive') {
+		return false;
+	}
+	var i=0;
+	for(var lang in LANGS) {
+		if(obj.parentNode.childNodes[i].className != 'inactive') {
+			obj.parentNode.childNodes[i].className = 'active';
+		}
+		if(lang == langkey) {
+			document.getElementById('sec-'+seckey+'-'+lang).style.display='block';
+		}
+		else {
+			document.getElementById('sec-'+seckey+'-'+lang).style.display='none';
+		}
+		i++;
+	}
+	obj.className = 'current';
+	return false;
+}
+
 function help_reload_help_langs() {
 	// init
 	var help_langs = getFormValue('help_lang');
@@ -151,6 +222,7 @@ function help_reload_help_langs() {
 		document.getElementById('help-description').innerHTML = '';
 	}
 }
+
 function help_change_lang(obj,langkey) {
 	if(obj.className == 'inactive') {
 		return false;
@@ -173,8 +245,12 @@ function help_change_lang(obj,langkey) {
 	obj.className = 'current';
 	return false;
 }
-function help_open_subwindow(event,attrname) {
+
+function help_open_subwindow(event,attrname,seckey) {
 	var o = document.getElementById('tispecial'+attrname);
+	if(seckey) {
+		document.getElementById('edit_section_key').value = seckey;
+	}
 	if(o) {
 		o.onclick.apply(null,[event]);
 	}

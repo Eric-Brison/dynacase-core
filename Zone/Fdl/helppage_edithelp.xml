@@ -29,6 +29,12 @@ fieldset legend img {
 
 <div id="help-menu">
 	<strong>[DOCTITLE]</strong>
+
+	&nbsp; &nbsp; &nbsp; &nbsp;
+	<a onclick="return help_edit_apply();">[TEXT:Apply]</a>&nbsp;|&nbsp;
+	<a onclick="return help_edit_cancel();">[TEXT:Cancel]</a>
+	
+
 	<div>
 [BLOCK HELPLANGS2]
 	<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return view_lang('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
@@ -50,11 +56,7 @@ fieldset legend img {
 			</tr>
 			<tr>
 				<td class="FREEDOMLabel" width="20%"></td>
-				<td>
-					<input class="normal" type="button" title="[TEXT:Apply]" value="[TEXT:Apply]" onclick="return help_edit_apply();" />
-					<input class="normal" type="button" title="[TEXT:Cancel]" value="[TEXT:Cancel]" onclick="return help_edit_cancel();" />
-					<input class="normal" type="button" title="[TEXT:Delete this translation]" value="[TEXT:Delete this translation]" onclick="return help_edit_delete('[LANGKEY]');" />
-				</td>
+				<td id="help-description"><a onclick="return help_edit_delete('[LANGKEY]');">[TEXT:Clear this translation]</a></td>
 			</tr>
 		</table>
 	</fieldset>

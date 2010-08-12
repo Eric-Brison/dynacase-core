@@ -25,9 +25,23 @@ function helppageenumlang() {
 
 
 function helppage_editsection(Action &$action,$dbaccess,$docid) {
-	$action->lay->set();
 
-	//GetHttpVars($name);
+	include_once('FDL/editutil.php');
+	editmode($action);
+
+	$doc = new_Doc($dbaccess, $docid);
+	$action->lay->set('DOCID', $docid);
+	$action->lay->set('DOCTITLE', $doc->getTitle());
+
+	$helps = $doc->getHelpByLang();
+	$langs = $doc->getFamilyLangs();
+
+	$action->lay->set('JSONLANGS', json_encode($langs));
+
+	$section_key = GetHttpVars('edit_section_key', '');
+	$action->lay->set('SECTIONKEY', $section_key);
+
+
 }
 
 function helppage_edithelp(Action &$action,$dbaccess,$docid) {
@@ -41,6 +55,8 @@ function helppage_edithelp(Action &$action,$dbaccess,$docid) {
 
 	$helps = $doc->getHelpByLang();
 	$langs = $doc->getFamilyLangs();
+
+	$action->lay->set('JSONLANGS', json_encode($langs));
 
 	$helplangs = array();
 	$index = 0;
@@ -73,13 +89,6 @@ function helppage_edithelp(Action &$action,$dbaccess,$docid) {
 	}
 	$action->lay->SetBlockData('HELPLANGS1', $helplangs);
 	$action->lay->SetBlockData('HELPLANGS2', $helplangs);
-	$action->lay->set('JSONLANGS', json_encode($langs));
-	
-foreach(explode("\n", print_r($helplangs, true)) as $tmp) {error_log($tmp);}
 
-	$action->lay->set('DOCID', $docid);
-	//$action->lay->set();
-	
-	//GetHttpVars($name);
 }
 ?>

@@ -35,30 +35,34 @@ Class _HELPPAGE extends Doc {
 	public function getSpecTitle() {
 		$titles = $this->getHelpByLang();
 		$user_lang = $this->getUserLang();
-		if(count($titles) == 0) {
+		if (count($titles) == 0) {
 			return $this->title;
 		}
-		if(array_key_exists($user_lang, $titles)) {
-		    if ($titles[$user_lang]['help_name']) return $titles[$user_lang]['help_name'];
+		if (array_key_exists($user_lang, $titles)) {
+			if ($titles[$user_lang]['help_name'])
+				return $titles[$user_lang]['help_name'];
 		}
 		else {
 			$item = array_shift($titles);
-			if ($item['help_name']) return $item['help_name'];
+			if ($item['help_name'])
+				return $item['help_name'];
 		}
 		return $this->title;
 	}
+
 	/**
 	 *
 	 */
-	public function  preEdition() {
+	public function preEdition() {
 		$oa = $this->getAttribute('help_sec_text');
 		$oa->type = 'longtext';
-		if (! $this->id) {
-		    
-                $oa = $this->getAttribute('help_family');
-                $oa->setVisibility('S');
+		if (!$this->id) {
+
+			$oa = $this->getAttribute('help_family');
+			$oa->setVisibility('S');
 		}
 	}
+
 	/**
 	 *
 	 * @return array
@@ -67,7 +71,7 @@ Class _HELPPAGE extends Doc {
 		$rows = $this->getAValues('help_t_sections');
 
 		$sections = array();
-		foreach($rows as $row) {
+		foreach ($rows as $row) {
 			$key = str_pad($row['help_sec_order'], 8, '0', STR_PAD_LEFT).$row['help_sec_key'];
 			$sections[$key][$row['help_sec_lang']] = $row;
 		}
@@ -75,6 +79,7 @@ Class _HELPPAGE extends Doc {
 
 		return $sections;
 	}
+
 	/**
 	 *
 	 * @return array
@@ -83,11 +88,12 @@ Class _HELPPAGE extends Doc {
 		$all_lang_keys = $this->_val2array($this->getParamValue('help_p_lang_key'));
 		$all_lang_texts = $this->_val2array($this->getParamValue('help_p_lang_name'));
 		$all_langs = array();
-		foreach($all_lang_keys as $i => $key) {
+		foreach ($all_lang_keys as $i => $key) {
 			$all_langs[$key] = $all_lang_texts[$i];
 		}
 		return $all_langs;
 	}
+
 	/**
 	 *
 	 * @global  $action
@@ -98,6 +104,7 @@ Class _HELPPAGE extends Doc {
 		$user_lang = $action->getParam('CORE_LANG');
 		return $user_lang;
 	}
+
 	/**
 	 *
 	 * @return array
@@ -106,12 +113,13 @@ Class _HELPPAGE extends Doc {
 		$rows = $this->getAValues('help_t_help');
 
 		$helps = array();
-		foreach($rows as $row) {
+		foreach ($rows as $row) {
 			$helps[$row['help_lang']] = $row;
 		}
 
 		return $helps;
 	}
+
 	/**
 	 * 
 	 */
@@ -120,30 +128,29 @@ Class _HELPPAGE extends Doc {
 		$langs = $this->getFamilyLangs();
 		$user_lang = $this->getUserLang();
 		$sections = $this->getSectionsByLang();
-		
+
 		$this->editattr();
 
 		$help_values = $this->getHelpByLang();
-foreach(explode("\n", print_r($help_values, true)) as $tmp) {error_log($tmp);}
-foreach(explode("\n", print_r($langs, true)) as $tmp) {error_log($tmp);}
-foreach(explode("\n", print_r($user_lang, true)) as $tmp) {error_log($tmp);}
-
+//foreach(explode("\n", print_r($help_values, true)) as $tmp) {error_log($tmp);}
+//foreach(explode("\n", print_r($langs, true)) as $tmp) {error_log($tmp);}
+//foreach(explode("\n", print_r($user_lang, true)) as $tmp) {error_log($tmp);}
 		// set help values
 		$helpname = '';
 		$helplangiso = '';
 		$lang_key = '';
 		// search user lang
-		foreach($help_values as $lang => $help) {
-			if($lang == $user_lang) {
+		foreach ($help_values as $lang => $help) {
+			if ($lang == $user_lang) {
 				$lang_key = $lang;
 				$helpname = $help['help_name'];
 				$helpdescription = $help['help_description'];
 				break;
 			}
 		}
-		if(empty($lang_key)) {
+		if (empty($lang_key)) {
 			// search first lang
-			foreach($help_values as $lang => $help) {
+			foreach ($help_values as $lang => $help) {
 				$lang_key = $lang;
 				$helpname = $help['help_name'];
 				$helpdescription = $help['help_description'];
@@ -153,13 +160,53 @@ foreach(explode("\n", print_r($user_lang, true)) as $tmp) {error_log($tmp);}
 		$this->lay->set('HELPNAME', $helpname);
 		$this->lay->set('HELPDESCRIPTION', $helpdescription);
 
-foreach(explode("\n", print_r($lang_key, true)) as $tmp) {error_log($tmp);}
-foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_values), true)) as $tmp) {error_log($tmp);}
+//foreach(explode("\n", print_r($lang_key, true)) as $tmp) {error_log($tmp);}
+//foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_values), true)) as $tmp) {error_log($tmp);}
 
 		$this->lay->SetBlockData('HELPLANGS', $this->getLangsFromItem($langs, $lang_key, $help_values));
 		$this->lay->set('JSONLANGS', json_encode($langs));
 
+		// construct sections
+		$n = count($langs) - 1;
+		$contentsection = array();
+		foreach ($sections as $section) {
+			$sec_key = $this->getSectionKey($section);
+			$first_lang = $this->getFirstSectionLang($section, $user_lang);
+			$secitems = array();
+			$i = 0;
+			foreach ($langs as $lang_key => $lang_name) {
+				if (array_key_exists($lang_key, $section)) {
+					$sec = $section[$lang_key];
+				}
+				else {
+					$sec = array(
+						'help_sec_key' => $sec_key,
+						'help_sec_name' => '',
+						'help_sec_lang' => $lang_key,
+						'help_sec_text' => '',
+					);
+				}
+				$secitems[] = array(
+					'SECNAME' => $sec['help_sec_name'],
+					'SECLANG' => $sec['help_sec_lang'],
+					'SECTEXT' => $sec['help_sec_text'],
+					'SECDISPLAY' => $lang_key == $first_lang ? 'block' : 'none',
+				);
+				$i++;
+			}
+			$contentsection[] = array(
+				'SECKEY' => $sec_key,
+				'SECTIONLANGS' => 'seclangs'.$sec_key,
+				'SECTIONITEMS' => 'secitems'.$sec_key,
+			);
+			$this->lay->setBlockData('seclangs'.$sec_key, $this->getLangsFromItem($langs, $first_lang, $section));
+			$this->lay->setBlockData('secitems'.$sec_key, $secitems);
+		}
+		$this->lay->setBlockData('CONTENTSECTIONS', $contentsection);
+
+//foreach(explode("\n", print_r($contentsection, true)) as $tmp) {error_log($tmp);}
 	}
+
 	/**
 	 *
 	 * @global <type> $action
@@ -167,16 +214,16 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 	 * @param <type> $ulink
 	 * @param <type> $abstract
 	 */
-	public function viewhelppage($target="_self",$ulink=true,$abstract=false) {
+	public function viewhelppage($target="_self", $ulink=true, $abstract=false) {
 		global $action;
 
 		include_once("FDL/Class.SearchDoc.php");
 
 		$this->lay->set('HELPTITLE', $this->getTitle());
 
-		if($this->CanEdit() == '') {
+		if ($this->CanEdit() == '') {
 			$this->lay->set('HELPEDITABLE', '1');
-			if($action->getArgument('target') == 'ext') {
+			if ($action->getArgument('target') == 'ext') {
 				$this->lay->set('HELPEDITURI', '?app=FDL&action=EDITEXTDOC&id='.$this->id);
 			}
 			else {
@@ -191,28 +238,28 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 		$langs = $this->getFamilyLangs();
 		$user_lang = $this->getUserLang();
 		$sections = $this->getSectionsByLang();
-		
-		// contsruct sections on the right
+
+		// construct sections on the right
 		$leftsection = array();
 		$contentsection = array();
 		$i = 0;
-		foreach($sections as $section) {
+		foreach ($sections as $section) {
 			// get first lang
 			$first_lang = $this->getFirstSectionLang($section, $user_lang);
 			$ifirst = -1;
 			$ilast = -1;
-			foreach($langs as $lang_key => $lang_name) {
+			foreach ($langs as $lang_key => $lang_name) {
 				// construct section
-				if(array_key_exists($lang_key, $section)) {
+				if (array_key_exists($lang_key, $section)) {
 					$sec = $section[$lang_key];
-					if($lang_key == $first_lang) {
+					if ($lang_key == $first_lang) {
 						$leftsection[] = array(
 							'SECKEY' => $sec['help_sec_key'],
 							'SECNAME' => $sec['help_sec_name'],
 							'SECLANG' => $sec['help_sec_lang'],
 						);
 					}
-					if($ifirst < 0) {
+					if ($ifirst < 0) {
 						$ifirst = $i;
 					}
 					$contentsection[] = array(
@@ -220,7 +267,7 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 						'SECNAME' => $sec['help_sec_name'],
 						'SECLANG' => $sec['help_sec_lang'],
 						'SECTEXT' => $sec['help_sec_text'],
-						'SECDISPLAY' => $lang_key == $first_lang ? 'block':'none',
+						'SECDISPLAY' => $lang_key == $first_lang ? 'block' : 'none',
 						'SECLANGS' => 'seclangs'.$i,
 						'SECHEADER' => '0',
 						'SECFOOTER' => '0',
@@ -230,7 +277,7 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 					$i++;
 				}
 			}
-			if($ifirst >= 0 && $ilast >= 0) {
+			if ($ifirst >= 0 && $ilast >= 0) {
 				$contentsection[$ifirst]['SECHEADER'] = '1';
 				$contentsection[$ilast]['SECFOOTER'] = '1';
 			}
@@ -242,7 +289,7 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 		$this->lay->setBlockData('JSSECTIONS', $contentsection);
 
 		$all_langs = array();
-		foreach($langs as $lang_key => $lang_name) {
+		foreach ($langs as $lang_key => $lang_name) {
 			$all_langs[] = array(
 				'LANGKEY' => $lang_key,
 				'LANGNAME' => $lang_name,
@@ -250,33 +297,37 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 			);
 		}
 		$this->lay->setBlockData('ALLLANGS', $all_langs);
-                $descriptions=$this->getAvalues("help_t_help");
-                $first=true;
-                foreach ($descriptions as &$v) {
-                    $v["firstdesc"]=$first;
-                    if ($v["help_description"]) $first=false;
-                }
-                $this->lay->setBlockData('DESCR', $descriptions);
-                $first=true;
-                foreach ($descriptions as &$v) {
-                    $v["firsttitle"]=$first;
-                    if ($v["help_name"]) $first=false;
-                }
-                $this->lay->setBlockData('TITLES', $descriptions);
+		$descriptions = $this->getAvalues("help_t_help");
+		$first = true;
+		foreach ($descriptions as &$v) {
+			$v["firstdesc"] = $first;
+			if ($v["help_description"]) {
+				$first = false;
+			}
+		}
+		$this->lay->setBlockData('DESCR', $descriptions);
+		$first = true;
+		foreach ($descriptions as &$v) {
+			$v["firsttitle"] = $first;
+			if ($v["help_name"]) {
+				$first = false;
+			}
+		}
+		$this->lay->setBlockData('TITLES', $descriptions);
 		// construct aides
 		$aides = array();
 		$s = new SearchDoc($this->dbaccess, 'HELPPAGE');
 		$s->setObjectReturn();
 		$s->orderby = 'title';
 		$s->search();
-		while($doc = $s->nextDoc()) {
+		while ($doc = $s->nextDoc()) {
 			$aides[] = array(
 				'AIDE' => $doc->getDocAnchor($doc->id, '_self', true, false, false),
 			);
 		}
 		$this->lay->setBlockData('LEFTHELPS', $aides);
-
 	}
+
 	/**
 	 *
 	 * @param Array $all_lang_keys
@@ -288,11 +339,11 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 	public function getLangsFromItem($all_langs, $current_lang, $item) {
 
 		$langs = array();
-		foreach($all_langs as $lang_key => $lang_name) {
-			if($lang_key == $current_lang) {
+		foreach ($all_langs as $lang_key => $lang_name) {
+			if ($lang_key == $current_lang) {
 				$langclass = 'current';
 			}
-			elseif(array_key_exists($lang_key, $item)) {
+			elseif (array_key_exists($lang_key, $item)) {
 				$langclass = 'active';
 			}
 			else {
@@ -307,6 +358,7 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 		}
 		return $langs;
 	}
+
 	/**
 	 *
 	 * @param string $section
@@ -315,15 +367,27 @@ foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_v
 	 */
 	public function getFirstSectionLang($section, $user_lang) {
 		// return lang if found
-		foreach($section as $lang => $sec) {
-			if($lang == $user_lang) {
+		foreach ($section as $lang => $sec) {
+			if ($lang == $user_lang) {
 				return $lang;
 			}
 		}
 		// return first lang
-		foreach($section as $lang => $sec) {
+		foreach ($section as $lang => $sec) {
 			return $lang;
 		}
+	}
+
+	/**
+	 *
+	 * @param string $section
+	 * @return string
+	 */
+	public function getSectionKey($section) {
+		foreach ($section as $lang => $sec) {
+			return $sec['help_sec_key'];
+		}
+		return false;
 	}
 
 	/**

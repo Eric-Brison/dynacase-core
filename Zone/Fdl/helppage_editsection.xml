@@ -1,0 +1,41 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Edit help]]
+<script type="text/javascript" src="lib/data/fdl-data.js"></script>
+<style type="text/css">
+#help-menu {
+	overflow: hidden;
+	padding: 5px 10px;
+}
+#help-menu strong {
+	font-size: 16px;
+}
+#help-menu div {
+	float: right;
+}
+#help-menu img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-menu a {
+	outline: 0;
+}
+fieldset legend img {
+	vertical-align: middle;
+	padding-right: 4px;
+}
+#help-menu a:hover {
+	background: [CORE_BGCOLOR];
+}
+</style>
+<div id="help-menu">
+	<strong>[DOCTITLE]</strong>
+
+	&nbsp; &nbsp; &nbsp; &nbsp;
+	<a onclick="return help_edit_apply();">[TEXT:Apply]</a>&nbsp;|&nbsp;
+	<a onclick="return help_edit_cancel();">[TEXT:Cancel]</a>
+
+</div>
+
+
+[SECTIONKEY]
+
+[ZONE FDL:HTMLFOOT]
