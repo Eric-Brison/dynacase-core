@@ -149,5 +149,6 @@ function help_edit_setvalues(name, description, lang) {
 
 }
 addEvent(window,"load",help_edit_load);
+addEvent(window,"load",autoVresize);
 </script>
 [ZONE FDL:HTMLFOOT]

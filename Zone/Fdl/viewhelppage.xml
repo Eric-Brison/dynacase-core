@@ -140,7 +140,7 @@
 		<div id="helppage-sections-title">[TEXT:Sections]</div>
 		<div id="helppage-sections">
 [BLOCK LEFTSECTIONS]
-<a href="#[SECKEY]" onclick="return help_goto('sec-[SECKEY]')">[SECNAME]</a>
+<a href="#[SECKEY]" id="helppage-sec-[SECKEY]" onclick="return help_goto('sec-[SECKEY]')">[SECNAME]</a>
 [ENDBLOCK LEFTSECTIONS]
 		</div>
 		<div id="helppage-aides-title">[TEXT:Helps]</div>
@@ -165,7 +165,7 @@
 			<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
 				<div class="help-section-langs">
 [BLOCK [SECLANGS]]
-					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]','helppage-sec-[SECKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 [ENDBLOCK [SECLANGS]]
 				</div>
 				<div class="help-section-title">[SECNAME]</div>
@@ -208,12 +208,23 @@
 		}
 		div_aides.style.height = (h - 2*h_subtitle - h_title - getObjectHeight('helppage-sections') - 10)+'px';
 	}
-	function help_change_lang(src, dst) {
+	function help_change_lang(src, dst, sectitle) {
 		var o_src = document.getElementById(src);
 		var o_dst = document.getElementById(dst);
 		if(o_src && o_dst) {
 			o_src.style.display='none';
 			o_dst.style.display='block';
+			var ldiv=o_dst.getElementsByTagName('div');
+			for (var i=0;i<ldiv.length;i++) {
+			   if (ldiv[i].className=='help-section-title') {
+			     if (ldiv[i].innerHTML) {
+			        var sec=document.getElementById(sectitle);
+			        if (sec) {
+			           sec.innerHTML=ldiv[i].innerHTML;
+			        }
+			     }
+			   }
+			}
 		}
 		return false;
 	}
@@ -240,9 +251,12 @@
 				sp[i].style.display='none';
 			}
 			var descsel=document.getElementById('helppage-title-'+lang);
-			if (descsel) descsel.style.display='';
-			else if (sp.length > 0) {
+			if (descsel) {
+			  descsel.style.display='';
+                                document.title=descsel.innerHTML;
+			} else if (sp.length > 0) {
 				sp[0].style.display='';
+				document.title=sp[0].innerHTML;
 			}
 		}
 		resize_helppage();
@@ -254,10 +268,22 @@
 		if(o1 && o2) {
 			if(secid.substr(secid.length-5, 5) == lang) {
 				o1.style.display='block';
-			}
-			else if(o2.className != 'inactive') {
+				var ldiv=o1.getElementsByTagName('div');
+                        for (var i=0;i<ldiv.length;i++) {
+                           if (ldiv[i].className=='help-section-title') {
+                             if (ldiv[i].innerHTML) {
+                                var secname=secid.substr(4,secid.length-10);
+                                var sec=document.getElementById('helppage-sec-'+secname);
+                                if (sec) {
+                                   sec.innerHTML=ldiv[i].innerHTML;
+                                }
+                             }
+                           }
+                         }
+			} else if(o2.className != 'inactive') {
 				o1.style.display='none';
 			}
+			
 		}
 	}
 	function help_goto(sec) {
