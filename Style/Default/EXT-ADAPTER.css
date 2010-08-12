@@ -25,36 +25,36 @@
  * autocompletion.css
  */
 
-.AutoCompleteDivListeStyle {
+.document .AutoCompleteDivListeStyle {
   font-size: 13px; font-family: arial,sans-serif; 
   white-space:nowrap;
   cursor:default;
-  border: inset 1px #99BBE8;
+  border: inset 1px #B5B8C8;
   background-color: #FFFFFF;
   padding:0px;
   z-index:1;
   overflow: auto;
 }
 
-.AutoCompleteDiv {
+.document .AutoCompleteDiv {
   display: block; 
   padding-left: 3px; 
   padding-right: 3px; 
 }
 
-.AutoCompleteDivAct {
+.document .AutoCompleteDivAct {
   display: block; 
-  background-color: #99BBE8; 
+  background-color: #D5E2F0; 
   padding-left: 3px; 
   padding-right: 3px;
-  color: #99BBE8 ! important; 
+  color: #222222; 
 }
 
-div.AutoCompleteDivAct span{
-  background-color: #99BBE8;    
+.document div.AutoCompleteDivAct span{
+  background-color: #D5E2F0;    
 }
 
-.AutoMessage {
+.document .AutoMessage {
   background-color: #FFFFFF; 
   color: #99BBE8;  
 }
