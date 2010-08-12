@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-23 14:17+0200\n"
-"PO-Revision-Date: 2010-07-23 14:30+0200\n"
+"POT-Creation-Date: 2010-08-12 09:10+0200\n"
+"PO-Revision-Date: 2010-08-12 09:14+0200\n"
 "Last-Translator: Dev Team <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -259,6 +259,183 @@ msgstr "Le statut de l'archive doit être ouvert pour y insérer des documents"
 #, c-format
 msgid "Profil for document's archive %s"
 msgstr "Profil pour l'archive %s"
+
+msgid "Error: empty FREEDOM_DB"
+msgstr "Erreur: FREEDOM_DB vide"
+
+#, c-format
+msgid "Error could not open output log file '%s' for writing."
+msgstr ""
+
+msgid "Error creating temp file for sql log output."
+msgstr ""
+
+#, c-format
+msgid "Error could not open sql log file '%s' for writing."
+msgstr ""
+
+msgid "Export 1NF done"
+msgstr ""
+
+#, c-format
+msgid "Create Schema '%s' ..."
+msgstr ""
+
+msgid "Create Tables ..."
+msgstr ""
+
+#, c-format
+msgid "Create Table '%s'"
+msgstr ""
+
+msgid "Make references ..."
+msgstr ""
+
+msgid "Fill Tables ..."
+msgstr ""
+
+#, c-format
+msgid "Filling family table '%s' and relatives"
+msgstr ""
+
+#, c-format
+msgid "Table '%s' unknown !"
+msgstr ""
+
+#, c-format
+msgid "Filling enum table '%s'"
+msgstr ""
+
+#, c-format
+msgid "Remove duplicate attribute '%s' in family '%s'"
+msgstr ""
+
+#, c-format
+msgid "Remove duplicate reference '%s' in family '%s'"
+msgstr ""
+
+#, c-format
+msgid "Remove duplicate property '%s' in family '%s'"
+msgstr ""
+
+#, c-format
+msgid "Skip already added property '%s' in family '%s'"
+msgstr ""
+
+#, c-format
+msgid ""
+"Attribute Error: impossible to found the family for docid attribute '%s'"
+msgstr ""
+
+#, c-format
+msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
+msgstr ""
+
+#, c-format
+msgid "Error: No column found in array '%s'"
+msgstr ""
+
+#, c-format
+msgid "Incoherent column type '%s' in array '%s'."
+msgstr ""
+
+#, c-format
+msgid "Column type '%s' is not managed for export."
+msgstr ""
+
+#, c-format
+msgid "Could not get family id for '%s'."
+msgstr ""
+
+#, c-format
+msgid "Family '%s' is not valid or alive."
+msgstr ""
+
+#, c-format
+msgid "Property '%s' is not valid (family '%s')."
+msgstr ""
+
+#, c-format
+msgid "Could not find attribute '%s' in family '%s'."
+msgstr ""
+
+#, c-format
+msgid "Attribute '%s' should reference a docid attribute in family '%s'."
+msgstr ""
+
+#, c-format
+msgid "Attribute format should not be empty on attribute '%s' in family '%s'."
+msgstr ""
+
+#, c-format
+msgid "Attribute '%s' could not be found in family '%s'."
+msgstr ""
+
+msgid "Name of table cannot be empty"
+msgstr ""
+
+msgid "XML Error: no <database/> root node."
+msgstr ""
+
+msgid "XML Error: only one <database/> root node allowed."
+msgstr ""
+
+msgid "XML Error: no 'family' attribute on <table/> node."
+msgstr ""
+
+msgid "XML Error: no property or attribute on <column/> node."
+msgstr ""
+
+msgid "XML Error: no table defined."
+msgstr ""
+
+msgid "XML config parsed OK !"
+msgstr ""
+
+#, c-format
+msgid "Dump pgservice '%s' ..."
+msgstr ""
+
+msgid "Error creating temp file for pg_dump output."
+msgstr ""
+
+msgid "Could not find pg_dump command in PATH."
+msgstr ""
+
+#, c-format
+msgid "Dump to '%s' returned with exitcode %s"
+msgstr ""
+
+#, c-format
+msgid "Load dump file into '%s' ..."
+msgstr ""
+
+msgid "Could not find psql command in PATH."
+msgstr ""
+
+#, c-format
+msgid "Loading of dump '%s' returned with exitcode %s"
+msgstr ""
+
+#, c-format
+msgid "PG Error: Connection to freedom pg service '%s' failed !"
+msgstr ""
+
+#, c-format
+msgid "Connection to freedom pg service '%s' OK !"
+msgstr ""
+
+#, c-format
+msgid "PG Error: Connection to temporary pg service '%s' failed !"
+msgstr ""
+
+#, c-format
+msgid "Connection to temporary pg service '%s' OK !"
+msgstr ""
+
+#, c-format
+msgid "Emptying temporary database '%s' ..."
+msgstr ""
 
 msgid "(title)"
 msgstr "(titre)"
@@ -1719,7 +1896,9 @@ msgstr "La récupération des membres est désactivé pour ce groupe"
 #, c-format
 msgid ""
 "Too many members to display there here (%d). Use Open menu to display them."
-msgstr "Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu ouvrir pour les voir."
+msgstr ""
+"Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu "
+"ouvrir pour les voir."
 
 #, c-format
 msgid "refreshing %s"
@@ -1933,6 +2112,24 @@ msgstr "Les modifications du forum ne sont pas sauvegardées."
 msgid "save forum edition"
 msgstr "sauver les modifications"
 
+msgid "Edit help"
+msgstr "Modification de l'aide"
+
+msgid "Help name"
+msgstr "Nom de l'aide"
+
+msgid "Help description"
+msgstr "Description de l'aide"
+
+msgid "Apply"
+msgstr "Appliquer"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Delete this translation"
+msgstr "Supprimer cette traduction"
+
 msgid "open in new window"
 msgstr "Ouvrir dans une nouvelle fenêtre"
 
@@ -1962,9 +2159,6 @@ msgstr "Sauver"
 
 msgid "Cancel changes and quit edit mode"
 msgstr "Annuler les changements et quitter le mode édition"
-
-msgid "Cancel"
-msgstr "Annuler"
 
 msgid "Cancel changes and close window"
 msgstr "Annuler les changements et fermer la fenêtre"
@@ -2109,6 +2303,15 @@ msgstr "Document confidentiel"
 msgid "Restricted Access"
 msgstr "Accès restreint"
 
+msgid "Online help"
+msgstr "Aide en ligne"
+
+msgid "Help reference"
+msgstr "Référence de l'aide"
+
+msgid "Sections"
+msgstr "Rubriques"
+
 msgid ""
 "Master document has been closed.\n"
 "Close window ?"
@@ -2188,13 +2391,8 @@ msgstr "S'abonner au lien RSS"
 msgid "wordedit"
 msgstr "édition par traitement de texte"
 
-#, fuzzy
 msgid "help"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"Aide\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"aide"
+msgstr "aide"
 
 msgid "family manual"
 msgstr "Manuel de description de famille"
@@ -2454,6 +2652,9 @@ msgstr "date de fin"
 
 msgid "today"
 msgstr "aujourd'hui"
+
+msgid "Helps"
+msgstr "Aides"
 
 msgid "View family"
 msgstr "Voir la famille"
@@ -3150,9 +3351,6 @@ msgstr "Action à faire"
 
 msgid "Reason for change state"
 msgstr "Raison du changement d'état"
-
-msgid "Apply"
-msgstr "Appliquer"
 
 msgid "Workflow - parameters"
 msgstr "Paramètres d'affichage"
@@ -3982,6 +4180,9 @@ msgstr "Nouvelle catégorie"
 
 msgid "add new category"
 msgstr "ajout nouvelle catégorie"
+
+msgid "Change enum"
+msgstr ""
 
 msgid "New Vault FS"
 msgstr "Nouveau coffre"
@@ -5006,6 +5207,28 @@ msgstr "famille %s non trouvée"
 msgid "%s style updated\n"
 msgstr "%s style mis à jour\n"
 
+msgid "Error: missing or empty --config"
+msgstr ""
+
+#, c-format
+msgid "Error: config file '%s' is not a file."
+msgstr ""
+
+msgid ""
+"Error: at least one of those parameters is mandatory --outputsql --"
+"outputpgservice"
+msgstr ""
+
+msgid "Error: missing or empty --tmppgservice"
+msgstr ""
+
+msgid "Error: missing or empty --tmpschemaname"
+msgstr ""
+
+#, c-format
+msgid "Error: parameter tmpemptydb '%s' is not allowed."
+msgstr ""
+
 #, c-format
 msgid "execution by %s done %s"
 msgstr "execution faite par %s a donné %s"
@@ -5339,6 +5562,9 @@ msgstr "éditer un mail"
 
 msgid "help manual for family"
 msgstr "manuel de description de famille"
+
+msgid "help inline"
+msgstr "aide en ligne"
 
 msgid "confirm mail sended before change state"
 msgstr "confirmation envoi email avant changement d'état"
@@ -5923,6 +6149,10 @@ msgstr ""
 
 #, c-format
 msgid "no valid group : %s"
+msgstr ""
+
+#, c-format
+msgid "document %s is not a group"
 msgstr ""
 
 msgid "mail will be calculated from domain"
@@ -6644,6 +6874,12 @@ msgstr "Changer la recherche par défaut"
 
 msgid "export preferences"
 msgstr "Préférences pour l'exportation"
+
+msgid "create help"
+msgstr "Créer une aide"
+
+msgid "modify family help"
+msgstr "Modifier l'aide"
 
 msgid "click to change option"
 msgstr "Cliquez pour changer les options"
