@@ -350,7 +350,8 @@ Class SearchDoc {
    * @return void
    */
   public function setSlice($s) {
-    $this->slice=parseInt($s);
+    if ($s == "ALL") $this->slice=$s;
+    else $this->slice=intval($s);
   }
   /**
    * the return of ::search will be array of document's object

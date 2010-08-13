@@ -456,28 +456,42 @@ create sequence SEQ_ID_APPLICATION start 10;
   }
 
   var $noimage = "CORE/Images/noimage.png";
-  function GetImageUrl($img,$detectstyle=true) {
-      if ($img != "") {
+  function GetImageUrl($img,$detectstyle=true,$size=null) {
+	  
+	  if ($img != "") {
           // try style first
           if ($detectstyle) {
               $url = $this->style->GetImageUrl($img,"");
-              if ($url != "") return $url;
+              if ($url != "") {
+				  if($size !== null) return 'resizeimg.php?img='.$url.'&size='.$size;
+				  return $url;
+			  }
           }
           // try application
           if (file_exists($this->rootdir."/".$this->name."/Images/".$img)) {
-              return ($this->name."/Images/".$img);
+			  $url = $this->name."/Images/".$img;
+				  if($size !== null) return 'resizeimg.php?img='.$url.'&size='.$size;
+              return $url;
           } else { // perhaps generic application
               if (($this->childof != "") && (file_exists($this->rootdir."/".$this->childof."/Images/".$img))) {
-                  return ($this->childof."/Images/".$img);
+                  $url = $this->childof."/Images/".$img;
+				  if($size !== null) return 'resizeimg.php?img='.$url.'&size='.$size;
+				  return $url;
               } else  if (file_exists($this->rootdir."/Images/".$img)) {
-                  return ("Images/".$img);
+                  $url = "Images/".$img;
+				  if($size !== null) return 'resizeimg.php?img='.$url.'&size='.$size;
+				  return $url;
               }
           }
 
           // try in parent
-          if ($this->parent != "") return($this->parent->getImageUrl($img));
+          if ($this->parent != "") {
+			  $url = $this->parent->getImageUrl($img);
+			  if($size !== null) return 'resizeimg.php?img='.$url.'&size='.$size;
+			  return $url;
+		  }
       }
-      return $this->noimage;
+	  return $this->noimage;
   }
 
 

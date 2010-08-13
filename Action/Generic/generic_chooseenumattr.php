@@ -32,7 +32,7 @@ function generic_chooseenumattr(&$action) {
 
   $fdoc=new_doc($dbaccess,$famid);
   
-  $lattr = $fdoc->getNormalAttributes();
+  $lattr = $fdoc->getAttributes();
   foreach ($lattr as $k=>$a) {
      if ((($a->type == "enum") || ($a->type == "enumlist")) &&
 	 (($a->phpfile == "") || ($a->phpfile == "-"))&&

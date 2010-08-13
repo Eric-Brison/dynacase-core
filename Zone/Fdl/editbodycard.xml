@@ -8,7 +8,7 @@
 <table style="width:100%" cellspacing="0" class="edittable">
 <tr class="[classback]">
             [IF SINGLEROW]
-  <td class="[labelclass]"  width="30%"><span [IF elabel]style="cursor:help" title="[elabel]"  [ENDIF elabel]>[name]&nbsp;:&nbsp;</span></td>
+  <td class="[labelclass]"  width="30%"><span [IF elabel]style="cursor:help" title="[elabel]"  [ENDIF elabel]>[IFNOT ehelp][name][ENDIF ehelp][IF ehelp]<a style="cursor:help" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'help[fromid]','?app=FDL&action=DOCHELP&id=[helpid]&anchor=[attrid]')">[name]</a>[ENDIF ehelp]&nbsp;:&nbsp;</span></td>
   <td >[inputtype]</td>
             [ENDIF SINGLEROW]
             [IFNOT SINGLEROW]

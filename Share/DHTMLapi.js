@@ -48,13 +48,9 @@ function seekLayer(doc, name) {
 function getRawObject(obj) {
     var theObj;
     if (typeof obj == "string") {
-        if (isW3C) {
+       
             theObj = document.getElementById(obj);
-        } else if (isIE4) {
-            theObj = document.all(obj);
-        } else if (isNN4) {
-            theObj = seekLayer(document, obj);
-        }
+      
     } else {
         // pass through object reference
         theObj = obj;
@@ -141,6 +137,8 @@ function hide(obj) {
 // Retrieve the x coordinate of a positionable object
 function getObjectLeft(obj)  {
     var elem = getRawObject(obj);
+
+    if (! elem) return 0;
     var result = 0;
     if (document.defaultView) {
         var style = document.defaultView;
@@ -159,6 +157,7 @@ function getObjectLeft(obj)  {
 // Retrieve the y coordinate of a positionable object
 function getObjectTop(obj)  {
     var elem = getRawObject(obj);
+    if (! elem) return 0;
     var result = 0;
     if (document.defaultView) {
         var style = document.defaultView;
@@ -177,6 +176,8 @@ function getObjectTop(obj)  {
 // Retrieve the rendered width of an element
 function getObjectWidth(obj)  {
     var elem = getRawObject(obj);
+
+    if (! elem) return 0;
     var result = 0;
     if (elem.offsetWidth) {
         result = elem.offsetWidth;
@@ -191,6 +192,8 @@ function getObjectWidth(obj)  {
 // Retrieve the rendered height of an element
 function getObjectHeight(obj)  {
     var elem = getRawObject(obj);
+
+    if (! elem) return 0;
     var result = 0;
     if (elem.offsetHeight) {
         result = elem.offsetHeight;

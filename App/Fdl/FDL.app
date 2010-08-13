@@ -210,6 +210,11 @@ $action_desc = array (
    "acl"		=>"NORMAL"
   )  ,
   array( 
+   "name"               =>"DOCHELP",
+   "short_name"         =>N_("help inline"),
+   "acl"                =>"NORMAL"
+  )  ,
+  array( 
    "name"		=>"CONFIRMMAIL",
    "short_name"		=>N_("confirm mail sended before change state"),
    "acl"		=>"NORMAL"

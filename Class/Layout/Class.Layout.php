@@ -298,7 +298,11 @@ class Layout {
 
   function ParseRef(&$out) {
 
-     $out = preg_replace("/\[IMG:([^\]]*)\]/e",
+     $out = preg_replace("/\[IMG:([^\|\]]+)\|([0-9]+)\]/e",
+                         "\$this->action->GetImageUrl('\\1',true,'\\2')",
+                         $out);
+
+     $out = preg_replace("/\[IMG:([^\]\|]+)\]/e",
                          "\$this->action->GetImageUrl('\\1')",
                          $out);
 
@@ -433,8 +437,8 @@ class Layout {
     $this->ParseIf($out);
 
     // Parse IMG: and LAY: tags
-    $this->ParseRef($out);
     $this->ParseKey($out);
+    $this->ParseRef($out);
     $this->ParseZone($out);
     $this->ParseJs($out);
     $this->ParseCss($out);

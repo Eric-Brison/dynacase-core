@@ -345,7 +345,7 @@ function add_import_file(&$action, $fimport) {
 			case "DEFAULT":
 				$defv=str_replace(array('\n',ALTSEPCHAR),array("\n",SEPCHAR),$data[2]);
 				$doc->setDefValue($data[1],$defv);
-				$doc->setParam($data[1],$defv);
+				if (! $doc->getParamValue($data[1])) $doc->setParam($data[1],$defv);
 
 				$tcr[$nline]["msg"]=sprintf(_("add default value %s %s"),$data[1],$data[2]);
 				break;

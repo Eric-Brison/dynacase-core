@@ -311,7 +311,7 @@ Class NormalAttribute extends BasicAttribute {
                                     $this->id,$vid,$mime,$name,$this->id); 
                       }
                   } else {
-                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$name);
+                        return sprintf('<%s vid="%d" mime="%s" href="%s" title="%s"/>',$this->id,$vid,$mime,$href,$this->encodeXml($name));
                   }
               } else {
                 return sprintf("<%s>%s</%s>",$this->id,$v,$this->id);
@@ -323,19 +323,19 @@ Class NormalAttribute extends BasicAttribute {
                   if ($info["name"]) {
                       if ($opt->withIdentificator) {
                           return sprintf('<%s id="%s" name="%s">%s</%s>',
-                          $this->id,$info["id"],$info["name"],$info["title"],$this->id);
+                          $this->id,$info["id"],$info["name"],$this->encodeXml($info["title"]),$this->id);
                       } else {
                           return sprintf('<%s name="%s">%s</%s>',
-                          $this->id,$info["name"],$info["title"],$this->id);
+                          $this->id,$info["name"],$this->encodeXml($info["title"]),$this->id);
                       }
                   } else {
                       if ($opt->withIdentificator) {
                       return sprintf('<%s id="%s">%s</%s>',
-                      $this->id,$info["id"],$info["title"],$this->id);
+                      $this->id,$info["id"],$this->encodeXml($info["title"]),$this->id);
                       } else {
                           
                       return sprintf('<%s>%s</%s>',
-                      $this->id,$info["title"],$this->id);
+                      $this->id,$this->encodeXml($info["title"]),$this->id);
                       }
                   }
               } else {
@@ -343,8 +343,13 @@ Class NormalAttribute extends BasicAttribute {
                              $this->id,$v,_("unreferenced document"),$this->id);
               }
           default:               
-                return sprintf("<%s>%s</%s>",$this->id,str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$v),$this->id);      
+                return sprintf("<%s>%s</%s>",$this->id,$this->encodeXml($v),$this->id);      
       }  
+  }
+  
+  
+  static function encodeXml($s) {
+      return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$s);
   }
  function text_getXmlSchema(&$la) {
       $lay=new Layout(getLayoutFile("FDL","textattribute_schema.xml"));
@@ -429,67 +434,68 @@ function enum_getXmlSchema(&$la) {
       return $lay->gen();
   }
   function getEnum() {   
-    global $__tenum; // for speed optimization
-    global $__tlenum;
+		global $__tenum; // for speed optimization
+		global $__tlenum;
 
-    if (isset($__tenum[$this->id])) return $__tenum[$this->id]; // not twice
- 
-    if (($this->type == "enum") || ($this->type == "enumlist")) {
-      // set the enum array
-      $this->enum=array();
-      $this->enumlabel=array();
-      $br=$this->docname.'#'.$this->id.'#';// id i18n prefix
-      if (($this->phpfile != "") && ($this->phpfile != "-")) {
-	// for dynamic  specification of kind attributes
-	if (! include_once("EXTERNALS/$this->phpfile")) {
-	  global $action;
-	  $action->exitError(sprintf(_("the external pluggin file %s cannot be read"), $this->phpfile));
-	}
-	if (preg_match("/(.*)\((.*)\)/", $this->phpfunc, $reg)) {	 
-	  $args=explode(",",$reg[2]); 
-	  if (preg_match("/linkenum\((.*),(.*)\)/",$this->phpfunc,$dreg))  $br=$dreg[1].'#'.strtolower($dreg[2]).'#';
-	  if (function_exists($reg[1])) {
-	  $this->phpfunc = call_user_func_array($reg[1],$args);	 
-	  } else {
-	      AddWarningMsg(sprintf(_("function [%s] not exists"),$this->phpfunc));
-	      $this->phpfunc="";
-	  }
-	} else {
-	  AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute"),$this->phpfunc));
-	}
-      }
+		if (isset($__tenum[$this->id])) return $__tenum[$this->id]; // not twice
 
-      $sphpfunc = str_replace("\\.", "-dot-",$this->phpfunc); // to replace dot & comma separators
-      $sphpfunc  = str_replace("\\,", "-comma-",$sphpfunc);
-      if ($sphpfunc!="") {
-	$tenum = explode(",",$sphpfunc);
-	foreach($tenum as $k=>$v) {
-	  list($n,$text) = explode("|",$v);
-	  list($n1,$n2) = explode(".",$n);
-	  $r=$br.str_replace(array('-dot-','-comma-'),array('.',','),$n);
-	  
-	  $i=_($r);
-	  if ($i != $r) $text=$i;
-	  else {
-	    $text=str_replace( "-dot-",".",$text);
-	    $text=str_replace( "-comma-",",",$text);
-	  }
-	  $n=str_replace( "-dot-",".",$n);
-	  $n=str_replace( "-comma-",",",$n);
-	  $n1=str_replace( "-dot-",".",$n1);
-	  $n1=str_replace( "-comma-",",",$n1);
+		if (($this->type == "enum") || ($this->type == "enumlist")) {
+		// set the enum array
+		$this->enum = array();
+		$this->enumlabel = array();
+		$br = $this->docname.'#'.$this->id.'#'; // id i18n prefix
+		if (($this->phpfile != "") && ($this->phpfile != "-")) {
+			// for dynamic  specification of kind attributes
+			if (!include_once("EXTERNALS/$this->phpfile")) {
+				global $action;
+				$action->exitError(sprintf(_("the external pluggin file %s cannot be read"), $this->phpfile));
+			}
+			if (preg_match("/(.*)\((.*)\)/", $this->phpfunc, $reg)) {
+				$args = explode(",", $reg[2]);
+				if (preg_match("/linkenum\((.*),(.*)\)/", $this->phpfunc, $dreg)) {
+					$br = $dreg[1].'#'.strtolower($dreg[2]).'#';
+				}
+				if (function_exists($reg[1])) {
+					$this->phpfunc = call_user_func_array($reg[1], $args);
+				}
+				else {
+					AddWarningMsg(sprintf(_("function [%s] not exists"), $this->phpfunc));
+					$this->phpfunc = "";
+				}
+			}
+			else {
+				AddWarningMsg(sprintf(_("invalid syntax for [%s] for enum attribute"), $this->phpfunc));
+			}
+		}
 
-	  if ($n != " ") $n=trim($n);
-	  if ($n2 != "") $this->enum[$n]=$this->enum[$n1]."/".$text;
-	  else $this->enum[$n]=$text;
-	  if ($n2 != "") $this->enumlabel[substr($n,strrpos($n,'.')+1)]=$this->enum[$n];
-	  else $this->enumlabel[$n]=$this->enum[$n];
+		$sphpfunc = str_replace("\\.", "-dot-", $this->phpfunc); // to replace dot & comma separators
+		$sphpfunc = str_replace("\\,", "-comma-", $sphpfunc);
+		if ($sphpfunc != "") {
+			$tenum = explode(",", $sphpfunc);
+			foreach ($tenum as $k => $v) {
+				list($n, $text) = explode("|", $v);
+				list($n1, $n2) = explode(".", $n);
+				$r = $br.str_replace(array('-dot-', '-comma-'), array('\.', ','), $n);
+
+				$i = _($r);
+				if ($i != $r) $text = $i;
+				else {
+					$text = str_replace(array('-dot-', '-comma-'), array('.', ','), $text);
+				}
+				$n = str_replace(array('-dot-', '-comma-'), array('\.', ','), $n);
+				$n1 = str_replace(array('-dot-', '-comma-'), array('\.', ','), $n1);
+
+				if ($n != " ") $n = trim($n);
+				if ($n2 != "") $this->enum[$n] = $this->enum[$n1]."/".$text;
+				else $this->enum[$n] = $text;
+				if ($n2 != "") $this->enumlabel[substr($n, strrpos($n, '.') + 1)] = $this->enum[$n];
+				else $this->enumlabel[$n] = $this->enum[$n];
+			}
+		}
 	}
-      } 
-    }
-    $__tenum[$this->id]=$this->enum;
-    $__tlenum[$this->id]=$this->enumlabel;
-    return $this->enum;
+	$__tenum[$this->id] = $this->enum;
+	$__tlenum[$this->id] = $this->enumlabel;
+	return $this->enum;
   }
 
   function getEnumLabel($enumid="") {  
@@ -519,61 +525,60 @@ function enum_getXmlSchema(&$la) {
     }    
   }
 
-  /**
-   * add new item in enum list items
-   *
-   * @param int $famid family identificator
-   * @param string $key database key
-   * @param string $label human label
-   * @return string error message (empty means ok)
-   */
-  function addEnum($dbaccess,$key,$label) {
-    if ($key =="") return "";
+	/**
+	 * add new item in enum list items
+	 *
+	 * @param int $famid family identificator
+	 * @param string $key database key
+	 * @param string $label human label
+	 * @return string error message (empty means ok)
+	 */
+	function addEnum($dbaccess, $key, $label) {
+		if ($key == "") return "";
 
-    $a=new DocAttr($dbaccess, array($this->docid,$this->id));
-    if ($a->isAffected()) {
-      $tenum=$this->getEnum();
-      $key=str_replace(array('|'),array('_'),$key);
-      $label=str_replace(array('|'),array('_'),$label);
-      $tkey=array_keys($tenum);
-      if (! in_array($key,$tkey)) {
+		$a = new DocAttr($dbaccess, array($this->docid, $this->id));
+		if ($a->isAffected()) {
+			$tenum = $this->getEnum();
+			
+			$key = str_replace(array('|'), array('_'), $key);
+			$label = str_replace(array('|'), array('_'), $label);
+			if (! array_key_exists($key,$tenum)) {
+				$tenum[$key] = $label;
+				global $__tenum; // modify cache
+				global $__tlenum;
+				$__tenum[$this->id][$key] = $label;
+				$__tlenum[$this->id][$key] = $label;
+				// convert array to string
+				$tsenum = array();
+				foreach ($tenum as $k => $v) {
+					$v = str_replace(array(',', '|'), array('\,', '_'), $v);
+					$k = str_replace(array(',', '|'), array('\,', '_'), $k);
+					$tsenum[] = "$k|$v";
+				}
+				$senum = implode($tsenum, ',');
+				$a->phpfunc = $senum;
+				$err = $a->modify();
+				if ($err == "") {
+					include_once("FDL/Lib.Attr.php");
+					refreshPhpPgDoc($dbaccess, $this->docid);
+				}
+			}
+		}
+		else {
+			$err = sprintf(_("unknow attribute %s (family %s)"), $this->id, $this->docid);
+		}
 
+		return $err;
+	}
 
-      $tenum[$key]=$label;
-      global $__tenum; // modify cache 
-      global $__tlenum;
-      $__tenum[$this->id][$key]=$label;
-      $__tlenum[$this->id][$key]=$label;
-      // convert array to string
-      $tsenum=array();
-      foreach ($tenum as $k=>$v) {
-	$v=str_replace(array(',','|'),array('\,','_'),$v);
-	$k=str_replace(array(',','|'),array('\,','_'),$k);
-	$tsenum[]="$k|$v";
-      }
-      $senum=implode($tsenum,',');
-      $a->phpfunc=$senum;
-      $err=$a->modify();
-      if ($err=="") {
-	include_once("FDL/Lib.Attr.php");
-	refreshPhpPgDoc($dbaccess,$this->docid);
-      }
-      }
-    } else {
-      $err=sprintf(_("unknow attribute %s (family %s)"),$this->id,$this->docid);
-    }
-  
-    return $err;
-  }
+	function existEnum($key) {
+		if ($key == "") return false;
+		$this->getEnum();
+		if (isset($this->enum[$key])) return true;
+		return false;
+	}
 
-  function existEnum($key) {
-     if ($key =="") return false;
-     $this->getEnum();
-     if (isset($this->enum[$key])) return true;
-     return false;
-  }
 }
-
 
 Class FieldSetAttribute extends BasicAttribute {
 

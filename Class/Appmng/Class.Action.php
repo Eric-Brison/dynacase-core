@@ -175,9 +175,9 @@ create sequence SEQ_ID_ACTION;
       return($this->parent->setParamU($name, $val));
     }
   }
-  function GetImageUrl($name) {
+  function GetImageUrl($name,$detectstyle=true,$size=null) {
     if (isset ($this->parent)) {
-      return($this->parent->GetImageUrl($name));
+      return($this->parent->GetImageUrl($name, $detectstyle, $size));
     }
   }
 

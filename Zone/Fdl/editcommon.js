@@ -417,6 +417,23 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index) {
 	}
 
 /**
+ * clear all rows of table
+ * @param config
+ * @return Boolean true if succeed
+ */
+function clearTableRow(attributename) {
+	var t = document.getElementById('tbody'+attributename);
+	if(t) {
+		while(t.hasChildNodes()==true){
+			var child = t.childNodes.item(0);
+			if(child.id && child.id.substr(0, 6) == 'lasttr') {
+				break;
+			}
+			t.removeChild(child);
+		}
+	}
+}
+/**
  * add a row in form array attribute
  * @param config
  * @return Boolean true if succeed
@@ -430,7 +447,7 @@ function addTableRow(config) {
 		var tnewid=false;
 		for (i in config) {
 			if (! texbody) {
-				var o=document.getElementById(i+'___1x_');
+				var o=document.getElementById(i.toLowerCase()+'___1x_');
 				if (o) {
 					var p=o.parentNode;
 					while (p && p.tagName != 'TR') p=p.parentNode;
@@ -552,16 +569,21 @@ function getFormValue(attrid) {
 		if (inp && inp.name == '_'+attrid) {
 			return getIValue(inp);
 		} else {
-			 var linp = document.getElementsByTagName('input');
-			 var r=[];
-			 for (var j=0;j<linp.length;j++) {
-					if (_matchName(linp[j].name,'_'+attrid)) {
-						if (linp[j].name.substr(-6,5) != '__1x_') {
-							r.push(getIValue(linp[j]));
+			var tags = ['input', 'select', 'textarea'];
+			for(var i=0; i<tags.length; i++) {
+				 var linp = document.getElementsByTagName(tags[i]);
+				 var r=[];
+				 for (var j=0;j<linp.length;j++) {
+						if (_matchName(linp[j].name,'_'+attrid)) {
+							if (linp[j].name.substr(-6,5) != '__1x_') {
+								r.push(getIValue(linp[j]));
+							}
 						}
-					}
-			 }
-			 return r;
+				 }
+				 if(r.length > 0) {
+					return r;
+				 }
+			}
 		}
 		
 	
@@ -978,7 +1000,7 @@ function clearInputs(tinput, idx,attrid) {
   disableReadAttribute();
 
   if (err != '')  alert('[TEXT:NOT Clear]'+err);
-  if (attrid && document.getElementById(attrid)) document.getElementById(attrid).focus();
+  if (attrid && document.getElementById(attrid)) try {document.getElementById(attrid).focus();} catch (exception) {} ;
 
 }
 function addEnum(th,cible,docid,attrid,key) {

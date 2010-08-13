@@ -91,9 +91,6 @@ if [ "$1" = "U" ] ; then
         exit $RET
     fi
 
-    $wpub/wsh.php --api=freedom_import --file=$wpub/FDL/fdl.ods
-    $wpub/wsh.php --api=freedom_import --file=$wpub/FDL/freeaction.ods
-
     PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
     RET=$?
     if [ $RET -ne 0 ]; then

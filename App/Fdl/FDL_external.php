@@ -16,7 +16,6 @@ include_once("FDL/Lib.Dir.php");
 
 
 
-
 function vault_filename($th, $fileid) {
 
 
@@ -177,55 +176,59 @@ function getGlobalsParameters($name) {
  * attribut list to be use in mail template
  */
 function getFamAttribute($dbaccess, $famid, $type="text", $param=false, $name="") {  
-  $doc = createDoc($dbaccess, $famid,false);  
-  $tr = array();
-  if ($param) $tinter=$doc->getParamAttributes();
-  else  $tinter = $doc->GetNormalAttributes();  
-  $name=strtolower($name);
-  // HERE HERE HERE
-  $pattern_name = preg_quote($name);
-  $pattern_type = ($type);
-  foreach($tinter as $k=>$v) {
-    if (($name == "") ||    (preg_match("/$pattern_name/i", $v->getLabel() , $reg)) || (preg_match("/$pattern_name/", $v->id , $reg))) {
-        preg_match("/$pattern_type/", $v->type , $reg);
-      if (($type == "") || ($v->type==$type) || ((strpos($type,'|')>0) && (preg_match("/$pattern_type/", $v->type , $reg)))) {
-	$r=$v->id. ' ('.$v->getLabel().')';	
-	$tr[] = array($r,$r);
-      }
-    }
-  }
-  return $tr;  
+	$doc = createDoc($dbaccess, $famid, false);
+	$tr = array();
+	if ($param) {
+		$tinter = $doc->getParamAttributes();
+	}
+	else {
+		$tinter = $doc->GetNormalAttributes();
+	}
+	$name = strtolower($name);
+	// HERE HERE HERE
+	$pattern_name = preg_quote($name);
+	$pattern_type = ($type);
+	foreach ($tinter as $k => $v) {
+		if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel(), $reg)) || (preg_match("/$pattern_name/", $v->id, $reg))) {
+			preg_match("/$pattern_type/", $v->type, $reg);
+			if (($type == "") || ($v->type == $type) || ((strpos($type, '|') > 0) && (preg_match("/$pattern_type/", $v->type, $reg)))) {
+				$r = $v->id.' ('.$v->getLabel().')';
+				$tr[] = array($r, $r);
+			}
+		}
+	}
+	return $tr;
 }
 
 // liste des familles
-function lfamilies($dbaccess, $name='',$subfam="") {
-  //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
-  global $action;
-  
-  if ($subfam=="") {
-    $tinter = GetClassesDoc($dbaccess, $action->user->id,0,"TABLE");
-  } else {
-    if (! is_numeric($subfam)) $subfam=getFamIdFromName($dbaccess,$subfam);
-    $cdoc = new_Doc($dbaccess,$subfam);
-    $tinter = $cdoc->GetChildFam();
-    $tinter[]=get_object_vars($cdoc);
-  }
-  
-  $tr = array();
+function lfamilies($dbaccess, $name='', $subfam="") {
+	//'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
+	global $action;
 
-  $name=strtolower($name);
-  // HERE HERE HERE
-  $pattern_name = preg_quote($name);
-  while(list($k,$v) = each($tinter)) {
-    $ftitle=DocFam::getLangTitle($v);
-    if (($name == "") || (preg_match("/$pattern_name/i", $ftitle , $reg))) {
+	if ($subfam == "") {
+		$tinter = GetClassesDoc($dbaccess, $action->user->id, 0, "TABLE");
+	}
+	else {
+		if (!is_numeric($subfam)) {
+			$subfam = getFamIdFromName($dbaccess, $subfam);
+		}
+		$cdoc = new_Doc($dbaccess, $subfam);
+		$tinter = $cdoc->GetChildFam();
+		$tinter[] = get_object_vars($cdoc);
+	}
 
-      $tr[] = array($ftitle ,
-		    $v["id"],$ftitle);
-    
-    }
-  }
-  return $tr;  
+	$tr = array();
+
+	$name = strtolower($name);
+	// HERE HERE HERE
+	$pattern_name = preg_quote($name);
+	while (list($k, $v) = each($tinter)) {
+		$ftitle = DocFam::getLangTitle($v);
+		if (($name == "") || (preg_match("/$pattern_name/i", $ftitle, $reg))) {
+			$tr[] = array($ftitle, $v["id"], $ftitle);
+		}
+	}
+	return $tr;
 }
 
 
@@ -560,36 +563,38 @@ function getDocAttr($dbaccess, $famid, $name="") {
 }
 
 // liste des attributs triable d'une famille
-function getSortAttr($dbaccess, $famid, $name="",$sort=true) {
-  //'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
-  
-  $doc = createDoc($dbaccess, $famid,false);
-  // internal attributes
-  $ti = array("title" => _("doctitle"),
-	      "revdate" => _("revdate"),
-	      "revision" => _("revision"),
-	      "owner" => _("owner"),
-	      "state" => _("state"));
-  
-  $tr = array();
-  $pattern_name = preg_quote($name);
-  while(list($k,$v) = each($ti)) {
-    if (($name == "") ||    (preg_match("/$pattern_name/i", $v , $reg)))
-      $tr[] = array($v , $k,$v);
-    
-  }
+function getSortAttr($dbaccess, $famid, $name="", $sort=true) {
+	//'lsociety(D,US_SOCIETY):US_IDSOCIETY,US_SOCIETY,
 
-  if ($sort)  $tinter = $doc->GetSortAttributes();
-  else $tinter = $doc->GetNormalAttributes();
-  
+	$doc = createDoc($dbaccess, $famid, false);
+	// internal attributes
+	$ti = array("title" => _("doctitle"),
+		"revdate" => _("revdate"),
+		"revision" => _("revision"),
+		"owner" => _("owner"),
+		"state" => _("state"));
 
-  while(list($k,$v) = each($tinter)) {
-    if (($name == "") ||    (preg_match("/$pattern_name/i", $v->getLabel() , $reg)))
-      $tr[] = array($v->getLabel() ,
-		    $v->id,$v->getLabel());
-    
-  }
-  return $tr;  
+	$tr = array();
+	$pattern_name = preg_quote($name);
+	while (list($k, $v) = each($ti)) {
+		if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) {
+			$tr[] = array($v, $k, $v);
+		}
+	}
+
+	if ($sort){
+		$tinter = $doc->GetSortAttributes();
+	}
+	else {
+		$tinter = $doc->GetNormalAttributes();
+	}
+
+	while (list($k, $v) = each($tinter)) {
+		if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel(), $reg))) {
+			$tr[] = array($v->getLabel(), $v->id, $v->getLabel());
+		}
+	}
+	return $tr;
 }
 
 

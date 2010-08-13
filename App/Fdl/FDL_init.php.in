@@ -40,7 +40,7 @@ $app_const= array(
 		       "descr"=>N_("max items return when open a folder"),
 		       "user"=>"N",
 		       "global"=>"Y"),
-  "FDL_MAX_FGEXPORTDOC"    =>array("val"=>"20",
+  "FDL_MAX_FGEXPORTDOC"    =>array("val"=>"100",
 				  "descr"=>N_("maximum document can be imported directly"),
 				  "user"=>"N",
 				  "global"=>"Y"),

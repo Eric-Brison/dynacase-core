@@ -1,0 +1,155 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Edit help]]
+<script type="text/javascript" src="lib/data/fdl-data.js"></script>
+<style type="text/css">
+#help-menu {
+	overflow: hidden;
+	padding: 5px 10px;
+}
+#help-menu strong {
+	font-size: 16px;
+}
+#help-menu div {
+	float: right;
+}
+#help-menu img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-menu a {
+	outline: 0;
+}
+fieldset legend img {
+	vertical-align: middle;
+	padding-right: 4px;
+}
+#help-menu a:hover {
+	background: [CORE_BGCOLOR];
+}
+</style>
+
+<div id="help-menu">
+	<strong>[DOCTITLE]</strong>
+
+	&nbsp; &nbsp; &nbsp; &nbsp;
+	<a onclick="return help_edit_apply();">[TEXT:Apply]</a>&nbsp;|&nbsp;
+	<a onclick="return help_edit_cancel();">[TEXT:Cancel]</a>
+	
+
+	<div>
+[BLOCK HELPLANGS2]
+	<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return view_lang('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+[ENDBLOCK HELPLANGS2]
+	</div>
+</div>
+
+[BLOCK HELPLANGS1]
+<div id="help-[LANGKEY]" style="display:[LANGDISPLAY]">
+	<fieldset><legend><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /> [LANGNAME]</legend>
+		<table style="width:100%" cellspacing="0" class="edittable">
+			<tr>
+				<td class="FREEDOMLabel" width="20%"><span >[TEXT:Help name]&nbsp:&nbsp;</span></td>
+				<td>[INPUTLANGNAME]</td>
+			</tr>
+			<tr>
+				<td class="FREEDOMLabel" width="20%"><span >[TEXT:Help description]&nbsp:&nbsp;</span></td>
+				<td id="help-description">[INPUTLANGDESCRIPTION]</td>
+			</tr>
+			<tr>
+				<td class="FREEDOMLabel" width="20%"></td>
+				<td id="help-description"><a onclick="return help_edit_delete('[LANGKEY]');">[TEXT:Clear this translation]</a></td>
+			</tr>
+		</table>
+	</fieldset>
+</div>
+[ENDBLOCK HELPLANGS1]
+
+
+
+<script type="text/javascript">
+var LANGS = [JSONLANGS];
+
+function help_edit_apply() {
+	Ih.docClearTableRow('help_t_help');
+	for (var k in LANGS) {
+		var name = document.getElementById('help_name_'+lang_to_index(k)).value;
+		var description = document.getElementById('help_description_'+lang_to_index(k)).value;
+		if(name || description) {
+			Ih.docAddTableRow({
+				help_lang: k,
+				help_name: name,
+				help_description: description
+			});
+		}
+	}
+	Ih.callOpener('help_reload_help_langs','');
+	window.close();
+}
+function help_edit_cancel() {
+	window.close();
+}
+function help_edit_delete(lang) {
+	for (var k in LANGS) {
+		if(lang == k) {
+			help_edit_setvalues('', '', k);
+		}
+	}
+}
+function lang_to_index(lang) {
+	var i = 0;
+	for (var k in LANGS) {
+		if(lang == k) { return i; }
+		i++;
+	}
+}
+function view_lang(lang) {
+	for (var k in LANGS) {
+		if(lang == k) {
+			document.getElementById('help-'+k).style.display = 'block';
+		}
+		else {
+			document.getElementById('help-'+k).style.display = 'none';
+		}
+	}
+}
+function help_edit_load() {
+	var help_langs = Ih.docGetFormValue('help_lang');
+	var help_names = Ih.docGetFormValue('help_name');
+	var help_descriptions = Ih.docGetFormValue('help_description');
+	if(help_langs) {
+		for (var k in LANGS) {
+			var found = 0;
+			for(var i=0; i < help_langs.length; i++) {
+				if(k == help_langs[i]) {
+					help_edit_setvalues(help_names[i], help_descriptions[i], k);
+					found = 1;
+				}
+			}
+			if(found == 0) {
+				help_edit_setvalues('', '', k);
+			}
+		}
+	}
+	else {
+		for (var k in LANGS) {
+			help_edit_setvalues('', '', k);
+		}
+	}
+	var current_lang = Ih.callOpener('help_get_current_lang','');
+	if(current_lang) {
+		view_lang(current_lang);
+	}
+}
+function help_edit_setvalues(name, description, lang) {
+	var i = lang_to_index(lang);
+	var input_name = document.getElementById('help_name_'+i);
+	var input_description = document.getElementById('help_description_'+i);
+	if(input_name && input_description) {
+		input_name.value = name;
+		input_description.value = description;
+	}
+
+}
+addEvent(window,"load",help_edit_load);
+addEvent(window,"load",autoVresize);
+</script>
+[ZONE FDL:HTMLFOOT]

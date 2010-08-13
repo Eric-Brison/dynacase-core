@@ -180,6 +180,12 @@ function stringDateToUnixTs($isodate,$utc=false) {
  * @return string YYYY-MM-DD HH:MM
  */
 function stringDateToIso($date,$format="") {
+	if(empty($format)) {
+		$localeconfig = getLocaleConfig();
+		if($localeconfig !== false) {
+			$format = $localeconfig['dateTimeFormat'];
+		}
+	}
 	if(!empty($format)) {
 		$format = str_replace('%Y', '%YYY', $format);
 		if(strlen($date) < strlen($format)) { return $date; }

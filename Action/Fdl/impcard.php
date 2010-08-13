@@ -65,8 +65,7 @@ function impcard(&$action) {
       SetHttpVar("id",$docid);
     }
   }
-
-  $action->lay->set("TITLE",$doc->title);  
+  $action->lay->set("TITLE",$doc->getTitle());  
   if (($zonebodycard=="") && ($vid != "")) {
     $cvdoc= new_Doc($dbaccess, $doc->cvid);
     $tview = $cvdoc->getView($vid);

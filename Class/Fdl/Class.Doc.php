@@ -312,11 +312,11 @@ Class Doc extends DocCtrl {
 
 
   public static $sqlindex=array("doc_initid"=>array("unique"=>false,
-					     "on"=>"initid"),
+						    "on"=>"initid"),
 				"doc_title"=>array("unique"=>false,
 						   "on"=>"title"),
 				"doc_name"=>array("unique"=>true,
-						   "on"=>"name,revision,doctype"),
+						  "on"=>"name,revision,doctype"),
 				"doc_full"=>array("unique"=>false,
 						  "using"=>"@FDL_FULLIDX",
 						  "on"=>"fulltext"),
@@ -459,45 +459,45 @@ create unique index i_docir on doc(initid, revision);";
    * @return void
    */
   final public function PostInsert()  {
-      // controlled will be set explicitly
-      //$this->SetControl();
-      if (($this->revision == 0) && ($this->doctype != "T")) {
-	// increment family sequence
-	$this->nextSequence();
-	$this->Addcomment(_("document creation"),HISTO_INFO,"CREATE");
-	if ($this->wdoc) {
-	  $this->wdoc->workflowSendMailTemplate($this->state,_("creation"));
-	  $this->wdoc->workflowAttachTimer($this->state);
-	  $this->wdoc->changeAllocateUser($doc->state);
-	}
-	$this->addLog("create",array("id"=>$this->id,"title"=>$this->title,"fromid"=>$this->fromid,
-				     "fromname"=>$this->fromname));
+    // controlled will be set explicitly
+    //$this->SetControl();
+    if (($this->revision == 0) && ($this->doctype != "T")) {
+      // increment family sequence
+      $this->nextSequence();
+      $this->Addcomment(_("document creation"),HISTO_INFO,"CREATE");
+      if ($this->wdoc) {
+	$this->wdoc->workflowSendMailTemplate($this->state,_("creation"));
+	$this->wdoc->workflowAttachTimer($this->state);
+	$this->wdoc->changeAllocateUser($doc->state);
       }
-      $this->Select($this->id);
-      // set creation date
-      $this->cdate=$this->getTimeDate(0,true);
-      $this->adate=$this->cdate;
-      $date = gettimeofday();
-      $this->revdate = $date['sec'];
-      $this->modify(true,array("cdate","adate","revdate"),true); // to force also execute sql trigger
-      if ($this->doctype != "T") {
-	$err=$this->PostCreated(); 
-	if ($err!="") AddWarningMsg($err);
-	$this->sendTextToEngine();
-	if ($this->dprofid >0) {
-	  $this->setProfil($this->dprofid);// recompute profil if needed
-	  $this->modify(true,array("profid"),true); 
-	}
-	$this->UpdateVaultIndex();
-	$this->updateRelations();
+      $this->addLog("create",array("id"=>$this->id,"title"=>$this->title,"fromid"=>$this->fromid,
+				   "fromname"=>$this->fromname));
+    }
+    $this->Select($this->id);
+    // set creation date
+    $this->cdate=$this->getTimeDate(0,true);
+    $this->adate=$this->cdate;
+    $date = gettimeofday();
+    $this->revdate = $date['sec'];
+    $this->modify(true,array("cdate","adate","revdate"),true); // to force also execute sql trigger
+    if ($this->doctype != "T") {
+      $err=$this->PostCreated(); 
+      if ($err!="") AddWarningMsg($err);
+      $this->sendTextToEngine();
+      if ($this->dprofid >0) {
+	$this->setProfil($this->dprofid);// recompute profil if needed
+	$this->modify(true,array("profid"),true); 
       }
-      $this->hasChanged=false;
+      $this->UpdateVaultIndex();
+      $this->updateRelations();
+    }
+    $this->hasChanged=false;
      
       
 
-      global $gdocs; // set to cache
-      if (count($gdocs) < MAXGDOCS) $gdocs[$this->id]=&$this;
-    }  
+    global $gdocs; // set to cache
+    if (count($gdocs) < MAXGDOCS) $gdocs[$this->id]=&$this;
+  }  
 
   function setChanged() {
     $this->hasChanged=true;
@@ -516,143 +516,143 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function PreInsert() {
 
-      $err=$this->PreCreated(); 
-      if ($err != "") return $err;
+    $err=$this->PreCreated(); 
+    if ($err != "") return $err;
       
-      // compute new id
-      if ($this->id == "") {
-	if ($this->doctype=='T') $res = pg_exec($this->init_dbid(), "select nextval ('seq_id_tdoc')");
-	else $res = pg_exec($this->init_dbid(), "select nextval ('seq_id_doc')");
-	$arr = pg_fetch_array ($res, 0);
-	$this->id = $arr[0];
+    // compute new id
+    if ($this->id == "") {
+      if ($this->doctype=='T') $res = pg_exec($this->init_dbid(), "select nextval ('seq_id_tdoc')");
+      else $res = pg_exec($this->init_dbid(), "select nextval ('seq_id_doc')");
+      $arr = pg_fetch_array ($res, 0);
+      $this->id = $arr[0];
 
-      }
-      
-
-      // set default values
-
-      if ($this->initid == "") $this->initid=$this->id;
-      $this->RefreshTitle();
-      if (chop($this->title) == "") {
-	$fdoc=$this->getFamDoc();
-	$this->title =sprintf(_("untitle %s %d"),$fdoc->title,$this->initid);
-      }
-      if ($this->doctype == "")  $this->doctype = $this->defDoctype;
-      if ($this->revision == "") $this->revision = "0";
-
-      if ($this->profid == "") $this->profid = "0";
-      if ($this->usefor == "") $this->usefor = "N";
-
-      if ($this->lmodify == "") $this->lmodify = "N";
-      if ($this->locked == "") $this->locked = "0";
-      if ($this->owner == "") $this->owner = $this->userid;
-
-      //      if ($this->state == "") $this->state=$this->firstState;
-      $this->version=$this->getVersion();
-
-      if ($this->wid > 0) {
-	$this->wdoc = new_Doc($this->dbaccess,$this->wid);
-	if ($this->wdoc->isAlive()) {
-	   if ($this->wdoc->doctype != 'W') $err=sprintf(_("creation : document %s is not a workflow"),$this->wid);
-	   else $this->wdoc->Set($this); // set first state
-	} else $err=sprintf(_("creation : workflow %s not exists"),$this->wid);
-      }
-      return $err;
-    }   
-
-
-    /** 
-     * Verify control edit
-     * 
-     * if {@link disableEditControl()} is call before control permission is desactivated
-     * if attribute values are changed the modification date is updated
-     * @return string error message, if no error empty string
-     */
-  function PreUpdate() {
-      if ($this->id == "") return _("cannot update no initialized document");
-      if (! $this->withoutControl) {
-	$err = $this->Control("edit");
-	if ($err != "") return ($err); 
-      }
-      if ($this->locked == -1) $this->lmodify='N';
-      if ($this->isFixed()) return _("cannot update fixed document");
-      if ($this->constraintbroken) return (sprintf(_("constraint broken %s"),$this->constraintbroken));
-      $this->RefreshTitle();
-      if ($this->hasChanged) {
-	if (chop($this->title) == "") $this->title =_("untitle document");
-	// set modification date
-	$date = gettimeofday();
-	$this->revdate = $date['sec'];
-	$this->version=$this->getVersion();
-	$this->lmodify='Y';
-	//	$this->postModify(); // in modcard function
-      }
-      
     }
+      
+
+    // set default values
+
+    if ($this->initid == "") $this->initid=$this->id;
+    $this->RefreshTitle();
+    if (chop($this->title) == "") {
+      $fdoc=$this->getFamDoc();
+      $this->title =sprintf(_("untitle %s %d"),$fdoc->title,$this->initid);
+    }
+    if ($this->doctype == "")  $this->doctype = $this->defDoctype;
+    if ($this->revision == "") $this->revision = "0";
+
+    if ($this->profid == "") $this->profid = "0";
+    if ($this->usefor == "") $this->usefor = "N";
+
+    if ($this->lmodify == "") $this->lmodify = "N";
+    if ($this->locked == "") $this->locked = "0";
+    if ($this->owner == "") $this->owner = $this->userid;
+
+    //      if ($this->state == "") $this->state=$this->firstState;
+    $this->version=$this->getVersion();
+
+    if ($this->wid > 0) {
+      $this->wdoc = new_Doc($this->dbaccess,$this->wid);
+      if ($this->wdoc->isAlive()) {
+	if ($this->wdoc->doctype != 'W') $err=sprintf(_("creation : document %s is not a workflow"),$this->wid);
+	else $this->wdoc->Set($this); // set first state
+      } else $err=sprintf(_("creation : workflow %s not exists"),$this->wid);
+    }
+    return $err;
+  }   
+
+
+  /** 
+   * Verify control edit
+   * 
+   * if {@link disableEditControl()} is call before control permission is desactivated
+   * if attribute values are changed the modification date is updated
+   * @return string error message, if no error empty string
+   */
+  function PreUpdate() {
+    if ($this->id == "") return _("cannot update no initialized document");
+    if (! $this->withoutControl) {
+      $err = $this->Control("edit");
+      if ($err != "") return ($err); 
+    }
+    if ($this->locked == -1) $this->lmodify='N';
+    if ($this->isFixed()) return _("cannot update fixed document");
+    if ($this->constraintbroken) return (sprintf(_("constraint broken %s"),$this->constraintbroken));
+    $this->RefreshTitle();
+    if ($this->hasChanged) {
+      if (chop($this->title) == "") $this->title =_("untitle document");
+      // set modification date
+      $date = gettimeofday();
+      $this->revdate = $date['sec'];
+      $this->version=$this->getVersion();
+      $this->lmodify='Y';
+      //	$this->postModify(); // in modcard function
+    }
+      
+  }
 
   /**
    * optimize for speed : memorize object for future use
    * @global array optimize for speed :: reference is not a pointer !!
    */
   function PostUpdate() {
-  	global $gdocs;// optimize for speed :: reference is not a pointer !!
-  	//unset($gdocs[$this->id]); // clear cache
-  	if (isset($gdocs[$this->id]))  {
-  		if ($this->nocache) unset($gdocs[$this->id]); // clear cache
-  		else $gdocs[$this->id]=$this; // update caches
-  	}
+    global $gdocs;// optimize for speed :: reference is not a pointer !!
+    //unset($gdocs[$this->id]); // clear cache
+    if (isset($gdocs[$this->id]))  {
+      if ($this->nocache) unset($gdocs[$this->id]); // clear cache
+      else $gdocs[$this->id]=$this; // update caches
+    }
 
-  	if ($this->hasChanged) {
-  		$this->computeDProfil();
-  		$this->regenerateTemplates();
-  		$this->UpdateVaultIndex();
-  		$this->updateRelations();
-  		if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
-  		$this->addLog("changed",array_keys($this->getOldValues()));
-  	}
-  	$this->sendTextToEngine();
-  	$this->hasChanged=false;
+    if ($this->hasChanged) {
+      $this->computeDProfil();
+      $this->regenerateTemplates();
+      $this->UpdateVaultIndex();
+      $this->updateRelations();
+      if ($this->getATag("DYNTIMER")) $this->resetDynamicTimers();
+      $this->addLog("changed",array_keys($this->getOldValues()));
+    }
+    $this->sendTextToEngine();
+    $this->hasChanged=false;
   }
   
   /**
    * 
    */
   function regenerateTemplate($aid, $index=-1) {
-  	$layout = 'THIS:'.$aid;
-  	if($index>-1) {
-  		$layout.='['.$index.']';
-  	}
-  	$outfile = $this->viewDoc($layout.':B', 'ooo');
-  	if(file_exists($outfile)) {
-	  	$fh = fopen($outfile, 'rb');
-	  	if($fh) {
-		  	$this->saveFile($aid, $fh, '', $index);
-		  	fclose($fh);
-		  	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
-		  	return true;
-	  	}
-  	}
-  	return false;
+    $layout = 'THIS:'.$aid;
+    if($index>-1) {
+      $layout.='['.$index.']';
+    }
+    $outfile = $this->viewDoc($layout.':B', 'ooo');
+    if(file_exists($outfile)) {
+      $fh = fopen($outfile, 'rb');
+      if($fh) {
+	$this->saveFile($aid, $fh, '', $index);
+	fclose($fh);
+	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+	return true;
+      }
+    }
+    return false;
   }
   
   /**
    * 
    */
   final function regenerateTemplates() {
-  	$fa = $this->GetFileAttributes();
-  	foreach ($fa as $aid=>$oattr) {
-  		$opt = $oattr->getOption("template");
-  		if ($opt == "dynamic" || $opt == "form") {
-  			if ($oattr->inArray()) {
-  				$ta=$this->getTValue($aid);
-  				foreach($ta as $k=>$v) {
-  					$this->regenerateTemplate($aid,$k);
-  				}
-  			} else {
-  				$this->regenerateTemplate($aid);
-  			}
-  		}
-  	}
+    $fa = $this->GetFileAttributes();
+    foreach ($fa as $aid=>$oattr) {
+      $opt = $oattr->getOption("template");
+      if ($opt == "dynamic" || $opt == "form") {
+	if ($oattr->inArray()) {
+	  $ta=$this->getTValue($aid);
+	  foreach($ta as $k=>$v) {
+	    $this->regenerateTemplate($aid,$k);
+	  }
+	} else {
+	  $this->regenerateTemplate($aid);
+	}
+      }
+    }
   }
 
   /**
@@ -767,7 +767,7 @@ create unique index i_docir on doc(initid, revision);";
     if ($err != "") return $err;
 
     foreach($prevalues as $k=>$v) {
-       $cdoc->setValue($k,$v);
+      $cdoc->setValue($k,$v);
     }
     $err=$cdoc->Add();
     if ($err != "") return $err;
@@ -806,15 +806,15 @@ create unique index i_docir on doc(initid, revision);";
     $err="";
   
     if ($this->locked == 0) {     
-	$err = sprintf(_("the file %s (rev %d) must be locked before"), $this->title,$this->revision);      
+      $err = sprintf(_("the file %s (rev %d) must be locked before"), $this->title,$this->revision);      
     } else {
-	if (abs($this->locked) != $this->userid) {
+      if (abs($this->locked) != $this->userid) {
 	  
-	    $user = new User("", abs($this->locked));
-	    if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
-            else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
+	$user = new User("", abs($this->locked));
+	if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
+	else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
 	  
-	} else $err = $this-> Control( "edit");
+      } else $err = $this-> Control( "edit");
     }
     
     return($err);
@@ -865,7 +865,7 @@ create unique index i_docir on doc(initid, revision);";
 	  $user = new User("", abs($this->locked));
 	  if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
 	  else $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."),
-			 $this->title,$this->id,$user->firstname." ".$user->lastname);
+			      $this->title,$this->id,$user->firstname." ".$user->lastname);
 	}   else  {      
 	  $err = $this-> Control( "edit");
 	}
@@ -902,11 +902,11 @@ create unique index i_docir on doc(initid, revision);";
     }
     if ($err != "") $err=$this->CanUpdateDoc();
     else {      
-	$err = $this->Control("edit");
-	if ($err != "") {
-	  if ($this->profid > 0) {
-	    $err = $this->Control("unlock");
-	  }  
+      $err = $this->Control("edit");
+      if ($err != "") {
+	if ($this->profid > 0) {
+	  $err = $this->Control("unlock");
+	}  
       }
     }
     return($err);
@@ -968,7 +968,7 @@ create unique index i_docir on doc(initid, revision);";
   }
 
 
- /**
+  /**
    * return family parameter
    * 
    * @param string $idp parameter identificator
@@ -1047,13 +1047,13 @@ create unique index i_docir on doc(initid, revision);";
    * @see Doc::Delete()
    */
   function PreDocDelete()    
-    {      
-      if ($this->doctype == 'Z') return _("already deleted");
-      if ($this->isLocked(true)) return _("locked");
-      $err = $this->Control("delete");
+  {      
+    if ($this->doctype == 'Z') return _("already deleted");
+    if ($this->isLocked(true)) return _("locked");
+    $err = $this->Control("delete");
                         
-      return $err;      
-    }
+    return $err;      
+  }
 
   /** 
    * Really delete document from database
@@ -1091,12 +1091,12 @@ create unique index i_docir on doc(initid, revision);";
     
     if ($really) {
       if ($this->id != "") {
-          // delete all revision also
-          $this->addLog('delete',array("really"=>$really));
-          $rev=$this->GetRevisions();
-          foreach($rev as $k=>$v) {
-              $v->ReallyDelete($nopost);
-          }
+	// delete all revision also
+	$this->addLog('delete',array("really"=>$really));
+	$rev=$this->GetRevisions();
+	foreach($rev as $k=>$v) {
+	  $v->ReallyDelete($nopost);
+	}
       }
     } else {
       // Control if the doc can be deleted
@@ -1147,40 +1147,40 @@ create unique index i_docir on doc(initid, revision);";
    * @return string error message (empty message if no errors);
    */
   final public function revive() {
-      $err="";
-      if (($this->owner == $this->userid) || ($this->userid==1)) {
-          if (! $this->isAlive()) {
-              $err=simpleQuery($this->dbaccess,
-                             sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1",$this->fromid,$this->initid),$latestId,true, true);
-              if ($err=="") {
-                  if (! $latestId) $err=sprintf(_("document %s [%d] is strange"),$doc->title,$doc->id);
-                  else {
-                      $this->doctype=$this->defDoctype;
-                      $this->locked=0;
-                      $this->id=$latestId;
-                      $this->modify(true,array("doctype","locked"),true);
-                      $this->AddComment(_("revival document"));
+    $err="";
+    if (($this->owner == $this->userid) || ($this->userid==1)) {
+      if (! $this->isAlive()) {
+	$err=simpleQuery($this->dbaccess,
+			 sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1",$this->fromid,$this->initid),$latestId,true, true);
+	if ($err=="") {
+	  if (! $latestId) $err=sprintf(_("document %s [%d] is strange"),$doc->title,$doc->id);
+	  else {
+	    $this->doctype=$this->defDoctype;
+	    $this->locked=0;
+	    $this->id=$latestId;
+	    $this->modify(true,array("doctype","locked"),true);
+	    $this->AddComment(_("revival document"));
 
-                      $this->addLog('revive');
-                      $rev=$this->getRevisions();
-                      foreach($rev as $k=>$v) {
-                          if ($v->doctype=='Z') {
-                              $v->doctype=$v->defDoctype;
-                              $err.=$v->modify(true,array("doctype"),true);
-                          }
-                      }
-                      if ($this->name) {
-                          // force reset logival name if not set
-                          $name=$this->name;
-                          $this->name='';
-                          $this->modify(true,array("name"),true);
-                          $this->setLogicalIdentificator($name);
-                      }
-                  }
-              }
-          } else return sprintf(_("document %s [%d] is not in the trash"),$doc->title,$doc->id);
-      } else return _("Only owner of document can restore it");
-      return $err;
+	    $this->addLog('revive');
+	    $rev=$this->getRevisions();
+	    foreach($rev as $k=>$v) {
+	      if ($v->doctype=='Z') {
+		$v->doctype=$v->defDoctype;
+		$err.=$v->modify(true,array("doctype"),true);
+	      }
+	    }
+	    if ($this->name) {
+	      // force reset logival name if not set
+	      $name=$this->name;
+	      $this->name='';
+	      $this->modify(true,array("name"),true);
+	      $this->setLogicalIdentificator($name);
+	    }
+	  }
+	}
+      } else return sprintf(_("document %s [%d] is not in the trash"),$doc->title,$doc->id);
+    } else return _("Only owner of document can restore it");
+    return $err;
   }
 
   /** 
@@ -1352,8 +1352,8 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function getLabel($idAttr)  {
     if (isset($this->attributes->attr[$idAttr])) return $this->attributes->attr[$idAttr]->getLabel();
-      return _("unknow attribute");
-    }
+    return _("unknow attribute");
+  }
   
   /** 
    * return the property object like id, initid, revision, ...
@@ -1368,31 +1368,31 @@ create unique index i_docir on doc(initid, revision);";
   }
   
 
-	/**
-	 * return the attribute object for a id
-	 * the attribute can be defined in fathers
-	 * @param string $idAttr attribute identificator
-	 * @param DocAttribute &$oa object reference use this if want to modify attribute
-	 * @return DocAttribute
-	 */
-	final public function &getAttribute($idAttr,&$oa=null)   {
-		if (!$this->_maskApplied) $this->ApplyMask();
-		$idAttr = strtolower($idAttr);
-		$oa=$this->attributes->attr[$idAttr];
-		if (isset($this->attributes->attr[$idAttr])) return $oa;
+  /**
+   * return the attribute object for a id
+   * the attribute can be defined in fathers
+   * @param string $idAttr attribute identificator
+   * @param DocAttribute &$oa object reference use this if want to modify attribute
+   * @return DocAttribute
+   */
+  final public function &getAttribute($idAttr,&$oa=null)   {
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $idAttr = strtolower($idAttr);
+    $oa=$this->attributes->attr[$idAttr];
+    if (isset($this->attributes->attr[$idAttr])) return $oa;
 		 
-		return false;
-	}
+    return false;
+  }
   /**
    * return all the attributes object 
    * the attribute can be defined in fathers
    * @return array DocAttribute
    */
   final public function GetAttributes()     {     
-      if (!$this->_maskApplied) $this->ApplyMask();
-      reset($this->attributes->attr);
-      return $this->attributes->attr;
-    }
+    if (!$this->_maskApplied) $this->ApplyMask();
+    reset($this->attributes->attr);
+    return $this->attributes->attr;
+  }
 
 
   /**
@@ -1507,12 +1507,12 @@ create unique index i_docir on doc(initid, revision);";
    * @return array DocAttribute
    */
   final public function GetNormalAttributes($onlyopt=false)
-    {      
-      if (!$this->_maskApplied) $this->ApplyMask();
-      if ((isset($this->attributes)) && (method_exists($this->attributes,"GetNormalAttributes")))
-	return $this->attributes->GetNormalAttributes($onlyopt);      
-      else return array();
-    } 
+  {      
+    if (!$this->_maskApplied) $this->ApplyMask();
+    if ((isset($this->attributes)) && (method_exists($this->attributes,"GetNormalAttributes")))
+      return $this->attributes->GetNormalAttributes($onlyopt);      
+    else return array();
+  } 
 
 
   /**
@@ -1521,14 +1521,14 @@ create unique index i_docir on doc(initid, revision);";
    * @return array FieldSetAttribute
    */
   final public function GetFieldAttributes() {      
-      if (!$this->_maskApplied) $this->ApplyMask();
-      $tsa=array();
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $tsa=array();
            
-      foreach($this->attributes->attr as $k=>$v) {
-	if (get_class($v) == "FieldSetAttribute")  $tsa[$v->id]=$v;
-      }
-      return $tsa;      
+    foreach($this->attributes->attr as $k=>$v) {
+      if (get_class($v) == "FieldSetAttribute")  $tsa[$v->id]=$v;
     }
+    return $tsa;      
+  }
 
 
 
@@ -1538,31 +1538,31 @@ create unique index i_docir on doc(initid, revision);";
    * @return array ActionAttribute
    */
   final public function GetActionAttributes() {      
-      if (!$this->_maskApplied) $this->ApplyMask();
-      $tsa=array();
-      $at= $this->attributes->GetActionAttributes(); 
-      foreach($at as $k=>$v) {
-	if ($v->mvisibility != 'H') $tsa[$v->id]=$v;	  	
-      }
-      return $tsa;     
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $tsa=array();
+    $at= $this->attributes->GetActionAttributes(); 
+    foreach($at as $k=>$v) {
+      if ($v->mvisibility != 'H') $tsa[$v->id]=$v;	  	
     }
+    return $tsa;     
+  }
   /**
    * return all the attributes object for abstract
    * the attribute can be defined in fathers
    * @return array DocAttribute
    */
   final public function GetAbstractAttributes()
-    {      
-      if (!$this->_maskApplied) $this->ApplyMask();
-      $tsa=array();
+  {      
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $tsa=array();
 
-      if (isset($this->attributes->attr)) {
-	foreach($this->attributes->attr as $k=>$v) {
-	  if ((get_class($v) == "NormalAttribute")&&($v->usefor!='Q')&&($v->isInAbstract)) $tsa[$v->id]=$v;
-	}
+    if (isset($this->attributes->attr)) {
+      foreach($this->attributes->attr as $k=>$v) {
+	if ((get_class($v) == "NormalAttribute")&&($v->usefor!='Q')&&($v->isInAbstract)) $tsa[$v->id]=$v;
       }
-      return $tsa;      
     }
+    return $tsa;      
+  }
 
   
 
@@ -1613,22 +1613,22 @@ create unique index i_docir on doc(initid, revision);";
    * @return array DocAttribute
    */
   final public function GetInputAttributes($onlyopt=false)
-    { 
-      if (!$this->_maskApplied) $this->ApplyMask();
-      $tsa=array();
+  { 
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $tsa=array();
 
 
-      foreach($this->attributes->attr as $k=>$v) {
-	if ((get_class($v) == "NormalAttribute") && (!$v->inArray()) && 
-	    ($v->mvisibility != "I" )) {  // I means not editable
-	  if ((($this->usefor=="Q") && ($v->usefor=="Q")) ||
-	      (($this->usefor!="Q") && 
-	       ((($v->usefor!="Q")&&(!$onlyopt)) || (($v->usefor=="O")&&($onlyopt))  )))
-	    $tsa[$v->id]=$v;    //special parameters
-	}
+    foreach($this->attributes->attr as $k=>$v) {
+      if ((get_class($v) == "NormalAttribute") && (!$v->inArray()) && 
+	  ($v->mvisibility != "I" )) {  // I means not editable
+	if ((($this->usefor=="Q") && ($v->usefor=="Q")) ||
+	    (($this->usefor!="Q") && 
+	     ((($v->usefor!="Q")&&(!$onlyopt)) || (($v->usefor=="O")&&($onlyopt))  )))
+	  $tsa[$v->id]=$v;    //special parameters
       }
-      return $tsa;
     }
+    return $tsa;
+  }
   /** 
    * return all the parameters definition for its family
    * the attribute can be defined in fathers
@@ -1636,11 +1636,11 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function getParamAttributes()    { 
      
-      if (!$this->_maskApplied) $this->ApplyMask();
-      if ((isset($this->attributes)) && (method_exists($this->attributes,"getParamAttributes")))
-	return $this->attributes->getParamAttributes();      
-      else return array();
-    }
+    if (!$this->_maskApplied) $this->ApplyMask();
+    if ((isset($this->attributes)) && (method_exists($this->attributes,"getParamAttributes")))
+      return $this->attributes->getParamAttributes();      
+    else return array();
+  }
 
 
   /**
@@ -1650,17 +1650,17 @@ create unique index i_docir on doc(initid, revision);";
    * @return array DocAttribute
    */
   final public function GetFileAttributes($onlyfile=false)
-    {      
-      if (!$this->_maskApplied) $this->ApplyMask();
-      $tsa=array();
+  {      
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $tsa=array();
       
-      foreach($this->attributes->attr as $k=>$v) {
-	if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q') &&
-	    ((($v->type == "image") && (! $onlyfile) ) || 
-	     ($v->type == "file"))) $tsa[$v->id]=$v;
-      }
-      return $tsa;      
+    foreach($this->attributes->attr as $k=>$v) {
+      if ((get_class($v) == "NormalAttribute") && ($v->usefor != 'Q') &&
+	  ((($v->type == "image") && (! $onlyfile) ) || 
+	   ($v->type == "file"))) $tsa[$v->id]=$v;
     }
+    return $tsa;      
+  }
 
 
   /**
@@ -1719,27 +1719,27 @@ create unique index i_docir on doc(initid, revision);";
       $at=$oa->id.'_txt';
       $this->$at='';
       foreach ($tf as $vf) {
-	 if (preg_match(PREGEXPFILE, $vf, $reg)) {  
+	if (preg_match(PREGEXPFILE, $vf, $reg)) {  
 	   
-	   $vid=$reg[2];
-	   $info=vault_properties($vid,'utf8');
-	   if ($vid > 0) {
-	     $err=vault_generate('utf8',$vid,$newid);
+	  $vid=$reg[2];
+	  $info=vault_properties($vid,'utf8');
+	  if ($vid > 0) {
+	    $err=vault_generate('utf8',$vid,$newid);
 	     
-	     if ($err=="") {
-	       $fcontent=vault_get_content($newid);
-	       $this->$at.=$fcontent;
-	       $ak[$at]=$at;
-	     }	     
-	   }
-	 }
+	    if ($err=="") {
+	      $fcontent=vault_get_content($newid);
+	      $this->$at.=$fcontent;
+	      $ak[$at]=$at;
+	    }	     
+	  }
+	}
       }
 
       if (count($ak)>0)  $err.=$this->modify(false,$ak);
     }  
     return $err;
   }
-   /**
+  /**
    * send a request to TE to convert fiele
    * update $attrid_txt table column
    * @param string $va value of file attribute like mime|vid
@@ -1816,35 +1816,35 @@ create unique index i_docir on doc(initid, revision);";
    * @return array DocAttribute
    */
   function GetMenuAttributes($viewhidden=false)
-    {      
-      if (!$this->_maskApplied) $this->ApplyMask();
-      $tsa=array();
+  {      
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $tsa=array();
       
-      reset($this->attributes->attr);
-      foreach($this->attributes->attr as $k=>$v) {
-	if (((get_class($v) == "MenuAttribute"))&&(($v->mvisibility != 'H')||$viewhidden)) $tsa[$v->id]=$v;
+    reset($this->attributes->attr);
+    foreach($this->attributes->attr as $k=>$v) {
+      if (((get_class($v) == "MenuAttribute"))&&(($v->mvisibility != 'H')||$viewhidden)) $tsa[$v->id]=$v;
 	  
 	
-      }
-      return $tsa;
     }
+    return $tsa;
+  }
 
   /**
    * return all the necessary attributes 
    * @return array DocAttribute
    */
   final public function GetNeededAttributes()
-    {         
-      if (!$this->_maskApplied) $this->ApplyMask();   
-      $tsa=array();
+  {         
+    if (!$this->_maskApplied) $this->ApplyMask();   
+    $tsa=array();
       
 
-      foreach($this->attributes->attr as $k=>$v) {
-	  if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor!='Q')) $tsa[$v->id]=$v;
-      }
-      
-      return $tsa;
+    foreach($this->attributes->attr as $k=>$v) {
+      if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor!='Q')) $tsa[$v->id]=$v;
     }
+      
+    return $tsa;
+  }
 
   final public function isCompleteNeeded() {
     $tsa=$this->GetNeededAttributes();
@@ -1855,9 +1855,9 @@ create unique index i_docir on doc(initid, revision);";
     return $err;
   }
 
-   final public function equal($a,$b) {
-     return  ($this->$a == $b);
-   }
+  final public function equal($a,$b) {
+    return  ($this->$a == $b);
+  }
  
   /**
    * return list of attribut which can be exported
@@ -1882,7 +1882,7 @@ create unique index i_docir on doc(initid, revision);";
 
 	foreach($this->attributes->attr as $k=>$v) {	  
 	  if (in_array($v->id,$tpref))  {
-	      $tsa[$v->id]=$v;
+	    $tsa[$v->id]=$v;
 	  }
 	}             
       } else {
@@ -1903,36 +1903,36 @@ create unique index i_docir on doc(initid, revision);";
    * @return array DocAttribute
    */
   final public function GetImportAttributes()
-    {      
+  {      
 
-      if (!$this->_maskApplied) $this->ApplyMask();
-      $tsa=array();
-      $tattr = $this->attributes->attr;
+    if (!$this->_maskApplied) $this->ApplyMask();
+    $tsa=array();
+    $tattr = $this->attributes->attr;
 
-      foreach($tattr as $k=>$v) {
+    foreach($tattr as $k=>$v) {
 
-	if ((get_class($v) == "NormalAttribute") && 
-	    (($v->mvisibility == "W") || ($v->mvisibility == "O") || ($v->type == "docid")) &&
-	    ($v->type != "array")  ) {
+      if ((get_class($v) == "NormalAttribute") && 
+	  (($v->mvisibility == "W") || ($v->mvisibility == "O") || ($v->type == "docid")) &&
+	  ($v->type != "array")  ) {
 	  
-	  if (preg_match("/\(([^\)]+)\):(.+)/", $v->phpfunc, $reg)) {
+	if (preg_match("/\(([^\)]+)\):(.+)/", $v->phpfunc, $reg)) {
 	  
-	    $aout = explode(",",$reg[2]);
-        foreach($aout as $ka=>$va) {
-	      $ra = $this->GetAttribute($va);
-	      if ($ra) $tsa[strtolower($va)]=$ra;
-	    }
+	  $aout = explode(",",$reg[2]);
+	  foreach($aout as $ka=>$va) {
+	    $ra = $this->GetAttribute($va);
+	    if ($ra) $tsa[strtolower($va)]=$ra;
+	  }
 	
       
-	  }
-	  $tsa[$v->id]=$v;
 	}
+	$tsa[$v->id]=$v;
       }
-
-
-      uasort($tsa,"tordered"); 
-      return $tsa;      
     }
+
+
+    uasort($tsa,"tordered"); 
+    return $tsa;      
+  }
 
 
   /**
@@ -2062,11 +2062,11 @@ create unique index i_docir on doc(initid, revision);";
     $this->lvalues=array();
     //    if (isset($this->id) && ($this->id>0)) {
 
-      $nattr = $this->GetNormalAttributes();
-      foreach($nattr as $k=>$v) {
-	$this->lvalues[$v->id] = $this->GetValue($v->id);
-      }
-      // }
+    $nattr = $this->GetNormalAttributes();
+    foreach($nattr as $k=>$v) {
+      $this->lvalues[$v->id] = $this->GetValue($v->id);
+    }
+    // }
     $this->lvalues=array_merge($this->lvalues,$this->mvalues); // add more values possibilities
     reset($this->lvalues);
     return $this->lvalues;
@@ -2098,30 +2098,30 @@ create unique index i_docir on doc(initid, revision);";
    * @return array the list of attribute values 
    */
   final public function getTValue($idAttr, $def="",$index=-1)  {
-  	$v=$this->getValue("$idAttr",$def);
-  	if ($v == "") {
-  		if ($index == -1) return array();
-  		else return $def;
-  	} else if ($v == "\t") {
-  		if ($index == -1) return array("");
-  		else return "";
-  	}
-  	$t = $this->_val2array($v);
-  	if ($index == -1) {
-  		$oa=$this->getAttribute($idAttr);
-  		if ($oa && $oa->type=="xml") {
-  			foreach ($t as $k=>$v) {
-  				$t[$k]=str_replace('<BR>',"\n",$v);
-  			}
-  		}
-  		return $t;
-  	}
-  	if (isset($t[$index])) {
-  		$oa=$this->getAttribute($idAttr);
-  		if ($oa && $oa->type=="xml") $t[$index]=str_replace('<BR>',"\n",$t[$index]);
-  		return $t[$index];
-  	}
-  	else return $def;
+    $v=$this->getValue("$idAttr",$def);
+    if ($v == "") {
+      if ($index == -1) return array();
+      else return $def;
+    } else if ($v == "\t") {
+      if ($index == -1) return array("");
+      else return "";
+    }
+    $t = $this->_val2array($v);
+    if ($index == -1) {
+      $oa=$this->getAttribute($idAttr);
+      if ($oa && $oa->type=="xml") {
+	foreach ($t as $k=>$v) {
+	  $t[$k]=str_replace('<BR>',"\n",$v);
+	}
+      }
+      return $t;
+    }
+    if (isset($t[$index])) {
+      $oa=$this->getAttribute($idAttr);
+      if ($oa && $oa->type=="xml") $t[$index]=str_replace('<BR>',"\n",$t[$index]);
+      return $t[$index];
+    }
+    else return $def;
   }
 
   /**
@@ -2157,7 +2157,7 @@ create unique index i_docir on doc(initid, revision);";
   }
 
 
-   /**
+  /**
    * delete a row in an array attribute
    *
    * the attribute must an array type
@@ -2202,11 +2202,11 @@ create unique index i_docir on doc(initid, revision);";
       $maxdiff=false;
       foreach($ta as $k=>$v) { // detect uncompleted rows
 	$c=count($this->getTValue($k));	
-	   if ($max < 0) $max=$c;
-	   else {
-	       if ($c != $max) $maxdiff=true;
-	       if ($max < $c) $max=$c;
-	   }
+	if ($max < 0) $max=$c;
+	else {
+	  if ($c != $max) $maxdiff=true;
+	  if ($max < $c) $max=$c;
+	}
       }
       if ($maxdiff) {
 	foreach($ta as $k=>$v) { // fill uncompleted rows
@@ -2233,30 +2233,30 @@ create unique index i_docir on doc(initid, revision);";
    * @return string error message, if no error empty string
    */
   final public function addArrayRow($idAttr, $tv, $index=-1)  {
-      $a=$this->getAttribute($idAttr);
-      if ($a->type=="array") {
-          $err=$this->completeArrayRow($idAttr);
-          if ($err=="") {
-              $ta=$this->attributes->getArrayElements($a->id);
-              $ti=array();
-              $err="";
-              // add in each columns
-              foreach($ta as $k=>$v) {
-                  $tnv=$this->getTValue($k);
-                  $val=$tv[strtolower($k)];
-                  if ($index >=0) {
-                      $tnv[$index - 0.5]=$val;
-                      ksort($tnv);
-                      $tvu=array();
-                      foreach ($tnv as $vv) $tvu[]=$vv; // key reorder
-                      $tnv=$tvu;
-                  } else	$tnv[]=$val;
-                  $err.=$this->setValue($k,$tnv);
-              }
-              if ($err="") $err=$this->completeArrayRow($idAttr);
-          }
-          return $err;
+    $a=$this->getAttribute($idAttr);
+    if ($a->type=="array") {
+      $err=$this->completeArrayRow($idAttr);
+      if ($err=="") {
+	$ta=$this->attributes->getArrayElements($a->id);
+	$ti=array();
+	$err="";
+	// add in each columns
+	foreach($ta as $k=>$v) {
+	  $tnv=$this->getTValue($k);
+	  $val=$tv[strtolower($k)];
+	  if ($index >=0) {
+	    $tnv[$index - 0.5]=$val;
+	    ksort($tnv);
+	    $tvu=array();
+	    foreach ($tnv as $vv) $tvu[]=$vv; // key reorder
+	    $tnv=$tvu;
+	  } else	$tnv[]=$val;
+	  $err.=$this->setValue($k,$tnv);
+	}
+	if ($err="") $err=$this->completeArrayRow($idAttr);
       }
+      return $err;
+    }
     return sprintf(_("%s is not an array attribute"),$idAttr);        
   }
 
@@ -2272,211 +2272,212 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $idAttr identificator of attribute 
    * @param string $value new value for the attribute
    * @param int $index only for array values affect value in a specific row
+   * @param int &$kvalue in case of error the index of error (for arrays)
    * @return string error message, if no error empty string
    */
-  final public function SetValue($attrid, $value,$index=-1) {
-  	// control edit before set values
+  final public function SetValue($attrid, $value,$index=-1,&$kvalue=null) {
+    // control edit before set values
   	
 
-  	if (! $this->withoutControl) {
-  		if ($this->id > 0) { // no control yet if no effective doc
-  			$err = $this-> Control("edit");
-  			if ($err != "") return ($err);
-  		}
-  	}
-  	$attrid = strtolower($attrid);
-  	$oattr=$this->GetAttribute($attrid);
-  	if ($index > -1) { // modify one value in a row
-  		$tval=$this->getTValue($attrid);
-  		$tval[$index]=$value;
-  		$value=$tval;
-  	}
-  	if (is_array($value)) {
-  		if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
-  		else {
-  			if (count($value)==0) $value = DELVALUE;
-  			elseif ((count($value) == 1) && (first($value)==="" || first($value)===null) && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
-  			else {
-  				if ($oattr->repeat && (count($value)==1) && substr(key($value),0,1)=="s") {
-  					$ov=$this->getTValue($attrid);
-  					$rank=intval(substr(key($value),1));
-  					if (count($ov) < ($rank-1)) { // fill array if not set
-  						$start=count($ov);
-  						for ($i=$start;$i<$rank;$i++) $ov[$i]="";
-  					}
-  					foreach ($value as $k=>$v) $ov[substr($k,1,1)]=$v;
-  					$value=$this->_array2val($ov);
-  				} else {
-  					$value = $this->_array2val($value);
-  				}
-  			}
-  		}
-  	}
-  	if (($value !== "") && ($value !== null))  {
-  		// change only if different
-  		if ($oattr === false) return sprintf(_("attribute %s unknow in family %s [%d]"),$attrid, $this->title, $this->id);
-  		if ($oattr->mvisibility=="I") return sprintf(_("no permission to modify this attribute %s"),$attrid);
-  		if ($value === DELVALUE) {
-  			if ( $oattr->type != "password") $value=" ";
-  			else return;
-  		}
-  		if ($value === " ") {
-  			$value=""; // erase value
-  			if  ($this->$attrid != "") {
-  				$this->hasChanged=true;
-  				//print "change by delete $attrid  <BR>";
-  				$this->_oldvalue[$attrid]=$this->$attrid;
-  				$this->$attrid="";
-  				if ($oattr->type=="file") {
-  					// need clear computed column
-  					$this->clearFullAttr($oattr->id);
-  				}
-  			}
-  		} else {
-  			$value=trim($value," \x0B\r");// suppress white spaces end & begin
-  			if (!isset($this->$attrid)) $this->$attrid="";
+    if (! $this->withoutControl) {
+      if ($this->id > 0) { // no control yet if no effective doc
+	$err = $this-> Control("edit");
+	if ($err != "") return ($err);
+      }
+    }
+    $attrid = strtolower($attrid);
+    $oattr=$this->GetAttribute($attrid);
+    if ($index > -1) { // modify one value in a row
+      $tval=$this->getTValue($attrid);
+      $tval[$index]=$value;
+      $value=$tval;
+    }
+    if (is_array($value)) {
+      if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
+      else {
+	if (count($value)==0) $value = DELVALUE;
+	elseif ((count($value) == 1) && (first($value)==="" || first($value)===null) && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
+	else {
+	  if ($oattr->repeat && (count($value)==1) && substr(key($value),0,1)=="s") {
+	    $ov=$this->getTValue($attrid);
+	    $rank=intval(substr(key($value),1));
+	    if (count($ov) < ($rank-1)) { // fill array if not set
+	      $start=count($ov);
+	      for ($i=$start;$i<$rank;$i++) $ov[$i]="";
+	    }
+	    foreach ($value as $k=>$v) $ov[substr($k,1,1)]=$v;
+	    $value=$this->_array2val($ov);
+	  } else {
+	    $value = $this->_array2val($value);
+	  }
+	}
+      }
+    }
+    if (($value !== "") && ($value !== null))  {
+      // change only if different
+      if ($oattr === false) return sprintf(_("attribute %s unknow in family %s [%d]"),$attrid, $this->title, $this->id);
+      if ($oattr->mvisibility=="I") return sprintf(_("no permission to modify this attribute %s"),$attrid);
+      if ($value === DELVALUE) {
+	if ( $oattr->type != "password") $value=" ";
+	else return;
+      }
+      if ($value === " ") {
+	$value=""; // erase value
+	if  ($this->$attrid != "") {
+	  $this->hasChanged=true;
+	  //print "change by delete $attrid  <BR>";
+	  $this->_oldvalue[$attrid]=$this->$attrid;
+	  $this->$attrid="";
+	  if ($oattr->type=="file") {
+	    // need clear computed column
+	    $this->clearFullAttr($oattr->id);
+	  }
+	}
+      } else {
+	$value=trim($value," \x0B\r");// suppress white spaces end & begin
+	if (!isset($this->$attrid)) $this->$attrid="";
 
-  			if  (strcmp($this->$attrid, $value)!=0 && strcmp($this->$attrid, str_replace("\n ","\n",$value))!=0)	  {
-  				$this->hasChanged=true;
-  				// print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
-  				if ($oattr->repeat) {
-  					$tvalues = $this->_val2array($value);
-  				} else {
-  					$tvalues[]=$value;
-  				}
+	if  (strcmp($this->$attrid, $value)!=0 && strcmp($this->$attrid, str_replace("\n ","\n",$value))!=0)	  {
+	  $this->hasChanged=true;
+	  // print "change2 $attrid  to <PRE>[{$this->$attrid}] [$value]</PRE><BR>";
+	  if ($oattr->repeat) {
+	    $tvalues = $this->_val2array($value);
+	  } else {
+	    $tvalues[]=$value;
+	  }
 
-  				foreach($tvalues as $kvalue=>$avalue) {
-  					if (($avalue != "") && ($avalue != "\t")) {
-  						if ($oattr) {
-  							switch($oattr->type) {
-  								case 'docid':
-  									if  ((! strstr($avalue,"<BR>")) && (! strstr($avalue,"\n"))&& (!is_numeric($avalue))) {
-  										$tvalues[$kvalue]=getIdFromName($this->dbaccess,$avalue);
-  									}
-  									break;
-  								case 'enum':
-  									if ($oattr->getOption("etype")=="open") {
-  										// added new
-  										$tenum=$oattr->getEnum();
-  										$keys=array_keys($tenum);
-  										if (! in_array($avalue,$keys)) {
-  											$oattr->addEnum($this->dbaccess,$avalue,$avalue);
-  										}
-  									}
-  									break;
-  								case 'double':
-  									if ($avalue=='-') $avalue=0;
-  									$tvalues[$kvalue]=str_replace(",",".",$avalue);
-  									$tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
-  									if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
-  									break;
-  								case 'money':
-  									if ($avalue=='-') $avalue=0;
-  									$tvalues[$kvalue]=str_replace(",",".",$avalue);
-  									$tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
-  									if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
-  									$tvalues[$kvalue]=round(doubleval($tvalues[$kvalue]),2);
-  									break;
-  								case 'integer':
-  								case 'int':
-  									if ($avalue=='-') $avalue=0;
-  									if (($avalue != "\t") && (! is_numeric($avalue))) return sprintf(_("value [%s] is not a number"),$avalue);
-  									if (intval($avalue) != floatval($avalue)) return sprintf(_("[%s] must be a integer"),$avalue);
+	  foreach($tvalues as $kvalue=>$avalue) {
+	    if (($avalue != "") && ($avalue != "\t")) {
+	      if ($oattr) {
+		switch($oattr->type) {
+		case 'docid':
+		  if  ((! strstr($avalue,"<BR>")) && (! strstr($avalue,"\n"))&& (!is_numeric($avalue))) {
+		    $tvalues[$kvalue]=getIdFromName($this->dbaccess,$avalue);
+		  }
+		  break;
+		case 'enum':
+		  if ($oattr->getOption("etype")=="open") {
+		    // added new
+		    $tenum=$oattr->getEnum();
+		    $keys=array_keys($tenum);
+		    if (! in_array($avalue,$keys)) {
+		      $oattr->addEnum($this->dbaccess,$avalue,$avalue);
+		    }
+		  }
+		  break;
+		case 'double':
+		  if ($avalue=='-') $avalue=0;
+		  $tvalues[$kvalue]=str_replace(",",".",$avalue);
+		  $tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
+		  if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
+		  break;
+		case 'money':
+		  if ($avalue=='-') $avalue=0;
+		  $tvalues[$kvalue]=str_replace(",",".",$avalue);
+		  $tvalues[$kvalue]=str_replace(" ","",$tvalues[$kvalue]);
+		  if (($avalue != "\t") && (! is_numeric($tvalues[$kvalue]))) return sprintf(_("value [%s] is not a number"),$tvalues[$kvalue]);
+		  $tvalues[$kvalue]=round(doubleval($tvalues[$kvalue]),2);
+		  break;
+		case 'integer':
+		case 'int':
+		  if ($avalue=='-') $avalue=0;
+		  if (($avalue != "\t") && (! is_numeric($avalue))) return sprintf(_("value [%s] is not a number"),$avalue);
+		  if (intval($avalue) != floatval($avalue)) return sprintf(_("[%s] must be a integer"),$avalue);
 
-  									$tvalues[$kvalue]=intval($avalue);
-  									break;
-  								case 'time':
-  									$tt=explode(":",$avalue);
-  									if (count($tt)==2) {
-  										list($hh,$mm) = $tt;
-  										$tvalues[$kvalue]=sprintf("%02d:%02d",intval($hh)%24,intval($mm)%60);
-  									} else if (count($tt)==3) {
-  										list($hh,$mm,$ss) = $tt;
-  										$tvalues[$kvalue]=sprintf("%02d:%02d:%02d",intval($hh)%24,intval($mm)%60,intval($ss)%60);
-  									}
-  									break;
-  								case 'date':
-  									if (trim($avalue)=="") {
-  										if (! $oattr->repeat) $tvalues[$kvalue]="";
-  									} else {
+		  $tvalues[$kvalue]=intval($avalue);
+		  break;
+		case 'time':
+		  $tt=explode(":",$avalue);
+		  if (count($tt)==2) {
+		    list($hh,$mm) = $tt;
+		    $tvalues[$kvalue]=sprintf("%02d:%02d",intval($hh)%24,intval($mm)%60);
+		  } else if (count($tt)==3) {
+		    list($hh,$mm,$ss) = $tt;
+		    $tvalues[$kvalue]=sprintf("%02d:%02d:%02d",intval($hh)%24,intval($mm)%60,intval($ss)%60);
+		  }
+		  break;
+		case 'date':
+		  if (trim($avalue)=="") {
+		    if (! $oattr->repeat) $tvalues[$kvalue]="";
+		  } else {
   										 
-  										$localeconfig = getLocaleConfig();
-  										if($localeconfig !== false) {
-  											$tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateFormat']);
-  											$tvalues[$kvalue]=preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
-  										}
-  										else {
-  											return sprintf(_("value [%s] is not a valid date"),$avalue);
-  										}
-  									}
-  									break;
-  								case 'timestamp':
-  									if (trim($avalue)=="") {
-  										if (! $oattr->repeat) $tvalues[$kvalue]="";
-  									} else {
+		    $localeconfig = getLocaleConfig();
+		    if($localeconfig !== false) {
+		      $tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateFormat']);
+		      $tvalues[$kvalue]=preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
+		    }
+		    else {
+		      return sprintf(_("value [%s] is not a valid date"),$avalue);
+		    }
+		  }
+		  break;
+		case 'timestamp':
+		  if (trim($avalue)=="") {
+		    if (! $oattr->repeat) $tvalues[$kvalue]="";
+		  } else {
   										 
-  										$localeconfig = getLocaleConfig();
-  										if($localeconfig !== false) {
-  											$tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
-  											$tvalues[$kvalue]=preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
-  										}
-  										else {
-  											return sprintf(_("value [%s] is not a valid timestamp"),$avalue);
-  										}
-  									}
-  									break;
-  								case 'file':
-  									// clear fulltext realtive column
-  									if ((!$oattr->repeat) || ($avalue != $this->getTValue($attrid,"",$kvalue))) {
-  										// only if changed
-  										$this->clearFullAttr($oattr->id,($oattr->repeat)?$kvalue:-1);
-  									}
-  									break;
-  								case 'htmltext':
-  									$avalue=str_replace('&quot;','--quoteric--',$avalue);
+		    $localeconfig = getLocaleConfig();
+		    if($localeconfig !== false) {
+		      $tvalues[$kvalue]=stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
+		      $tvalues[$kvalue]=preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
+		    }
+		    else {
+		      return sprintf(_("value [%s] is not a valid timestamp"),$avalue);
+		    }
+		  }
+		  break;
+		case 'file':
+		  // clear fulltext realtive column
+		  if ((!$oattr->repeat) || ($avalue != $this->getTValue($attrid,"",$kvalue))) {
+		    // only if changed
+		    $this->clearFullAttr($oattr->id,($oattr->repeat)?$kvalue:-1);
+		  }
+		  break;
+		case 'htmltext':
+		  $avalue=str_replace('&quot;','--quoteric--',$avalue);
 
-  									$tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
-  									$tvalues[$kvalue]=str_replace(array('<noscript','</noscript>','<script','</script>'),array('<pre', '</pre>','<pre', '</pre>'),html_entity_decode($tvalues[$kvalue],ENT_NOQUOTES,'UTF-8'));
-  									$tvalues[$kvalue]=str_replace("[","&#x5B;",$tvalues[$kvalue]); // need to stop auto instance
-  									$tvalues[$kvalue]=str_replace('--quoteric--','&amp;quot;',$tvalues[$kvalue]); // reinject original quote entity
-  									$tvalues[$kvalue]=preg_replace("/<\/?meta[^>]*>/s","",$tvalues[$kvalue]);
-  									if ($oattr->getOption("htmlclean")=="yes") {
-  										$tvalues[$kvalue]=preg_replace("/<\/?span[^>]*>/s","",$tvalues[$kvalue]);
-  										$tvalues[$kvalue]=preg_replace("/<\/?font[^>]*>/s","",$tvalues[$kvalue]);
-  										$tvalues[$kvalue]=preg_replace("/<style[^>]*>.*?<\/style>/s","",$tvalues[$kvalue]);
-  										$tvalues[$kvalue]=preg_replace("/<([^>]*) style=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
-  										$tvalues[$kvalue]=preg_replace("/<([^>]*) class=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
-  									}
-  									break;
-  								case 'thesaurus':
-  									// reset cache of doccount
-  									include_once("FDL/Class.DocCount.php");
-  									$d=new docCount($this->dbaccess);
-  									$d->famid=$this->fromid;
-  									$d->aid=$attrid;
-  									$d->deleteAll();
-  									break;
-  							}
-  						}
-  					}
-  				}
-  				//print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
-  				$this->_oldvalue[$attrid]=$this->$attrid;
-  				$this->$attrid=implode("\n",$tvalues);
+		  $tvalues[$kvalue] = preg_replace("/<!--.*?-->/ms", "", $tvalues[$kvalue]); //delete comments
+		  $tvalues[$kvalue]=str_replace(array('<noscript','</noscript>','<script','</script>'),array('<pre', '</pre>','<pre', '</pre>'),html_entity_decode($tvalues[$kvalue],ENT_NOQUOTES,'UTF-8'));
+		  $tvalues[$kvalue]=str_replace("[","&#x5B;",$tvalues[$kvalue]); // need to stop auto instance
+		  $tvalues[$kvalue]=str_replace('--quoteric--','&amp;quot;',$tvalues[$kvalue]); // reinject original quote entity
+		  $tvalues[$kvalue]=preg_replace("/<\/?meta[^>]*>/s","",$tvalues[$kvalue]);
+		  if ($oattr->getOption("htmlclean")=="yes") {
+		    $tvalues[$kvalue]=preg_replace("/<\/?span[^>]*>/s","",$tvalues[$kvalue]);
+		    $tvalues[$kvalue]=preg_replace("/<\/?font[^>]*>/s","",$tvalues[$kvalue]);
+		    $tvalues[$kvalue]=preg_replace("/<style[^>]*>.*?<\/style>/s","",$tvalues[$kvalue]);
+		    $tvalues[$kvalue]=preg_replace("/<([^>]*) style=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
+		    $tvalues[$kvalue]=preg_replace("/<([^>]*) class=\"[^\"]*\"/s","<\\1",$tvalues[$kvalue]);
+		  }
+		  break;
+		case 'thesaurus':
+		  // reset cache of doccount
+		  include_once("FDL/Class.DocCount.php");
+		  $d=new docCount($this->dbaccess);
+		  $d->famid=$this->fromid;
+		  $d->aid=$attrid;
+		  $d->deleteAll();
+		  break;
+		}
+	      }
+	    }
+	  }
+	  //print "<br/>change $attrid to :".$this->$attrid."->".implode("\n",$tvalues);
+	  $this->_oldvalue[$attrid]=$this->$attrid;
+	  $this->$attrid=implode("\n",$tvalues);
 
-  			}
+	}
 
-  		}
+      }
   		
-  	}
+    }
   }
 
   /**
-  * clear $attrid_txt and $attrid_vec
-  *
-  * @param string $idAttr identificator of file attribute 
-  * @return string error message, if no error empty string
-  */
+   * clear $attrid_txt and $attrid_vec
+   *
+   * @param string $idAttr identificator of file attribute 
+   * @return string error message, if no error empty string
+   */
   final private function clearFullAttr($attrid,$index=-1) {
     $attrid=strtolower($attrid);
     $oa=$this->getAttribute($attrid);
@@ -2498,15 +2499,15 @@ create unique index i_docir on doc(initid, revision);";
 	$this->fulltext='';
 	$this->fields['fulltext']='fulltext'; // to enable trigger
 	$this->textsend[$attrid.$index]=array("attrid"=>$attrid,
-					       "index"=>$index);
+					      "index"=>$index);
       }
     }
   }
- /**
-  * send text transformation 
-  * after ::clearFullAttr is called
-  * 
-  */
+  /**
+   * send text transformation 
+   * after ::clearFullAttr is called
+   * 
+   */
   final private function sendTextToEngine() {
     if (is_array($this->textsend)) { 
       include_once("FDL/Lib.Vault.php");
@@ -2523,11 +2524,11 @@ create unique index i_docir on doc(initid, revision);";
       $this->textsend=array();//reinit
     }
   }
- /**
-  * force recompute all file text transformation 
-  * @param string $aid file attribute identificator. If false all files attributes will be reseted
-  * @return string error message, if no error empty string
-  */
+  /**
+   * force recompute all file text transformation 
+   * @param string $aid file attribute identificator. If false all files attributes will be reseted
+   * @return string error message, if no error empty string
+   */
   final public function recomputeTextFiles($aid=false) {
     if (! $aid) $afiles=$this->GetFileAttributes(true);
     else $afiles[$aid]=$this->getAttribute($aid);
@@ -2553,7 +2554,7 @@ create unique index i_docir on doc(initid, revision);";
     $err=$this->sendTextToEngine();
     return $err;
   }
-   /**
+  /**
    * affect text value in $attrid file attribute
    *
    * create a new file in Vault to replace old file
@@ -2604,7 +2605,7 @@ create unique index i_docir on doc(initid, revision);";
     } 	
     return $err;
   } 
-   /**
+  /**
    * get text value from $attrid file attribute
    *
    * get content of a file (must be an ascii file)
@@ -2644,78 +2645,78 @@ create unique index i_docir on doc(initid, revision);";
    * @return string error message, if no error empty string
    */
   final public function saveFile($attrid, $stream,$ftitle="",$index=-1) {   
-  	if (is_resource($stream) && get_resource_type($stream) == "stream") {
+    if (is_resource($stream) && get_resource_type($stream) == "stream") {
 
 
-    $a=$this->getAttribute($attrid);
-    if ($a->type == "file") {
+      $a=$this->getAttribute($attrid);
+      if ($a->type == "file") {
     	$err="file conversion";
     	$vf = newFreeVaultFile($this->dbaccess);
     	if ($index > -1) $fvalue=$this->getTValue($attrid,'',$index);
     	else $fvalue=$this->getValue($attrid);
     	$basename="";
     	if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
-    		$vaultid= $reg[2];
-    		$mimetype=$reg[1];
-    		$oftitle=$reg[3];
-    		$err=$vf->Retrieve($vaultid, $info);
+	  $vaultid= $reg[2];
+	  $mimetype=$reg[1];
+	  $oftitle=$reg[3];
+	  $err=$vf->Retrieve($vaultid, $info);
 
-    		if ($err == "") {
-    			$basename=$info->name;
-    		}
+	  if ($err == "") {
+	    $basename=$info->name;
+	  }
     	}
     	if ($ftitle) {
-    		$ext=getFileExtension($ftitle);
+	  $ext=getFileExtension($ftitle);
     	}
     	if ($ext=="") $ext="nop";
 
     	$filename=uniqid(getTmpDir()."/_fdl").".$ext";
     	$tmpstream=fopen($filename,"w");
     	while (!feof($stream)) {
-    		if (false === fwrite($tmpstream, fread($stream, 4096))) {
-    			$err = "403 Forbidden";
-    			break;
-    		}
+	  if (false === fwrite($tmpstream, fread($stream, 4096))) {
+	    $err = "403 Forbidden";
+	    break;
+	  }
     	}
     	fclose($tmpstream);
     	// verify if need to create new file in case of revision
     	$newfile=($basename=="");
 
     	if ($this->revision > 0) {
-    		$trev=$this->GetRevisions("TABLE",2);
-    		$revdoc=$trev[1];
-    		$prevfile=getv($revdoc,strtolower($attrid));
-    		if ($prevfile == $fvalue) $newfile=true;
+	  $trev=$this->GetRevisions("TABLE",2);
+	  $revdoc=$trev[1];
+	  $prevfile=getv($revdoc,strtolower($attrid));
+	  if ($prevfile == $fvalue) $newfile=true;
     	}
 
     	if (! $newfile) {
-    		$err=$vf->Save($filename, false , $vaultid);
+	  $err=$vf->Save($filename, false , $vaultid);
     	} else {
-    		$err=$vf->Store($filename, false , $vaultid);
+	  $err=$vf->Store($filename, false , $vaultid);
     	}
     	if ($ftitle != "") {
-    		$vf->Rename($vaultid,$ftitle);
+	  $vf->Rename($vaultid,$ftitle);
     	} elseif ($basename!="") { // keep same file name
-    		$vf->Rename($vaultid,$basename);
+	  $vf->Rename($vaultid,$basename);
     	}
     	if ($err == "") {
-    		if ($mimetype) $mime=$mimetype;
-    		else $mime=trim(`file -ib $filename`);
-    		if ($ftitle) $value="$mime|$vaultid|$ftitle";
-    		else $value="$mime|$vaultid|$oftitle";
-    		$err=$this->setValue($attrid,$value,$index);
-    		if ($err=="") {
-    			$index=0;
-    			$this->clearFullAttr($attrid); // because internal values not changed
-    		}
-    		//$err="file conversion $mime|$vid";
+	  if ($mimetype) $mime=$mimetype;
+	  else $mime=trim(`file -ib $filename`);
+	  if ($ftitle) $value="$mime|$vaultid|$ftitle";
+	  else $value="$mime|$vaultid|$oftitle";
+	  $err=$this->setValue($attrid,$value,$index);
+	  if ($err=="") {
+	    $index=0;
+	    $this->clearFullAttr($attrid); // because internal values not changed
+	  }
+	  //$err="file conversion $mime|$vid";
     	}
     	unlink($filename);
     	$this->AddComment(sprintf(_("modify file %s"),$ftitle));
     	$this->hasChanged = true;
+      }
     }
-  	}
-  	return $err;
+    return $err;
   }
 
   /**
@@ -2860,16 +2861,16 @@ create unique index i_docir on doc(initid, revision);";
     $err="";
     $fa=$this->GetFileAttributes();    
     foreach ($fa as $aid=>$oa) {            
-	if ($oa->inArray()) {
-	  $t=$this->getTvalue($oa->id);
-	  $tcopy=array();
-	  foreach ($t as $k=>$v) {
-	    $tcopy[$k]=$this->copyFile($oa->id,"",$k);	    	    
-	  }
-	  $this->setValue($oa->id,$tcopy);
-	} else {
-	  $this->setValue($oa->id,$this->copyFile($oa->id));
-	}      
+      if ($oa->inArray()) {
+	$t=$this->getTvalue($oa->id);
+	$tcopy=array();
+	foreach ($t as $k=>$v) {
+	  $tcopy[$k]=$this->copyFile($oa->id,"",$k);	    	    
+	}
+	$this->setValue($oa->id,$tcopy);
+      } else {
+	$this->setValue($oa->id,$this->copyFile($oa->id));
+      }      
     }
     return $err;
   }
@@ -2936,9 +2937,9 @@ create unique index i_docir on doc(initid, revision);";
       foreach($tvalues as $k=>$v) {
 	$attrid = $tattrids[$k];	
 	if (($attrid != "") &&  ($this->$attrid == "")) {
-	    $this->$attrid=$v;
-	    $this->mvalues[$attrid]=$v; // to be use in getValues()
-	  }
+	  $this->$attrid=$v;
+	  $this->mvalues[$attrid]=$v; // to be use in getValues()
+	}
       }      
     }      
   }
@@ -3030,16 +3031,16 @@ create unique index i_docir on doc(initid, revision);";
     if (strlen(trim($oattr->phpconstraint)) > 1) {
       $ko=array("err"=>sprintf(_("method %s not found"),$oattr->phpconstraint),
 		"sug"=>array());
-       $res = $this->applyMethod($oattr->phpconstraint,$ko,$index);
+      $res = $this->applyMethod($oattr->phpconstraint,$ko,$index);
 
-       if ($res !== true) {
-         if (! is_array($res)) {
-             if ($res === false) $res=array("err"=>_("constraint error"));
-             elseif (is_string($res)) $res=array("err"=>$res);
-         }
-	 if (is_array($res) && $res["err"]!="")	$this->constraintbroken="[$attrid] ".$res["err"];
-	 return $res;
-       }
+      if ($res !== true) {
+	if (! is_array($res)) {
+	  if ($res === false) $res=array("err"=>_("constraint error"));
+	  elseif (is_string($res)) $res=array("err"=>$res);
+	}
+	if (is_array($res) && $res["err"]!="")	$this->constraintbroken="[$attrid] ".$res["err"];
+	return $res;
+      }
     }
 
     return $ok;
@@ -3064,24 +3065,24 @@ create unique index i_docir on doc(initid, revision);";
 	  for ($i=0;$i<count($tv);$i++) {
 	    $res= $this->verifyConstraint($v->id,$i);	    
 	    if ($res["err"]!="") {
-	        $info[$v->id.$i]=array("id"=>$v->id,
-	                               "sug"=>$res["sug"],
-                                        "err"=>$res["err"],
-	                                "index"=>$i,
-                                        "pid"=>$v->fieldSet->id);
-	        if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
-                $err=$res["err"];
+	      $info[$v->id.$i]=array("id"=>$v->id,
+				     "sug"=>$res["sug"],
+				     "err"=>$res["err"],
+				     "index"=>$i,
+				     "pid"=>$v->fieldSet->id);
+	      if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+	      $err=$res["err"];
 	    }
 	  }
 	} else {
 	  $res= $this->verifyConstraint($v->id);
 	  if ($res["err"]!="") {
-                $info[$v->id]=array("id"=>$v->id,
-                                        "pid"=>$v->fieldSet->id, 
-                                        "sug"=>$res["sug"],
-                                        "err"=>$res["err"]);
-	       if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
-                $err=$res["err"];
+	    $info[$v->id]=array("id"=>$v->id,
+				"pid"=>$v->fieldSet->id, 
+				"sug"=>$res["sug"],
+				"err"=>$res["err"]);
+	    if ($stoptofirst) return sprintf("[%s] %s", $v->getLabel(), $res["err"]);
+	    $err=$res["err"];
 	  }
 	}
       }
@@ -3092,11 +3093,11 @@ create unique index i_docir on doc(initid, revision);";
    * @return Attribute 
    */
   final public function GetFirstFileAttributes()
-    {
-      $t =  $this->GetFileAttributes();
-      if (count($t) > 0) return current($t);
-      return false;      
-    }
+  {
+    $t =  $this->GetFileAttributes();
+    if (count($t) > 0) return current($t);
+    return false;      
+  }
 
 
   /**
@@ -3309,9 +3310,9 @@ create unique index i_docir on doc(initid, revision);";
     
     $docid= ($allrevision)?$this->initid:$this->id;
     if ($allrevision) {
-        $err=$this->exec_query(sprintf("delete from docutag where initid=%d and tag='%s'",$this->initid,pg_escape_string($tag)));
+      $err=$this->exec_query(sprintf("delete from docutag where initid=%d and tag='%s'",$this->initid,pg_escape_string($tag)));
     } else {
-        $err=$this->exec_query(sprintf("delete from docutag where id=%d and tag='%s'",$this->id,pg_escape_string($tag)));
+      $err=$this->exec_query(sprintf("delete from docutag where id=%d and tag='%s'",$this->id,pg_escape_string($tag)));
     }
     return $err;
   }
@@ -3461,8 +3462,8 @@ create unique index i_docir on doc(initid, revision);";
       return $err;
     } 
     if (! $this->withoutControl) {
-	$err = $this->Control("edit");
-	if ($err != "") return ($err); 
+      $err = $this->Control("edit");
+      if ($err != "") return ($err); 
     }
     $fdoc = $this->getFamDoc();
    
@@ -3500,7 +3501,7 @@ create unique index i_docir on doc(initid, revision);";
     $fa=$this->GetFileAttributes(true); // copy cached values
     $ca=array();
     foreach ($fa as $k=>$v) {
-	$ca[]=$v->id."_txt";      
+      $ca[]=$v->id."_txt";      
     }
     $this->AffectColumn($ca);
     foreach ($ca as $a) {
@@ -3642,8 +3643,8 @@ create unique index i_docir on doc(initid, revision);";
    */
   public function getStateColor($def="") {
     if ($this->wid > 0) {      
-	$wdoc = new_Doc($this->dbaccess,$this->wid);
-	if ($wdoc->isAffected()) return $wdoc->getColor($this->state,$def);
+      $wdoc = new_Doc($this->dbaccess,$this->wid);
+      if ($wdoc->isAffected()) return $wdoc->getColor($this->state,$def);
     } else {
       if (is_numeric($this->state) && ($this->state>0) ) {
 	$state=$this->getDocValue($this->state,"frst_color",$def);
@@ -3661,8 +3662,8 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function getStateActivity($def="") {
     if ($this->wid > 0) {      
-	$wdoc = new_Doc($this->dbaccess,$this->wid);
-	if ($wdoc->isAffected()) return $wdoc->getActivity($this->state,$def);
+      $wdoc = new_Doc($this->dbaccess,$this->wid);
+      if ($wdoc->isAffected()) return $wdoc->getActivity($this->state,$def);
     } else {
       if (is_numeric($this->state) && ($this->state>0) ) {
 	$stateact=$this->getDocValue($this->state,"frst_desc",$def);
@@ -3752,52 +3753,52 @@ create unique index i_docir on doc(initid, revision);";
    * @param _ARCHIVING $archive the archive document
    */
   final public function archive(&$archive) {
-      $err="";
-      if ($this->archiveid==0) {
-          if ($this->doctype=="C") $err=sprintf("families cannot be archieved");
-          elseif (! $this->withoutControl) $err=$this->control("edit");
-          if ($err=="") {
-              $this->locked = 0;
-              $this->archiveid = $archive->id;
-              $this->dprofid=($this->dprofid>0)?(- $this->dprofid):(- abs($this->profid));
-              $archprof=$archive->getValue("arc_profil");
-              $this->profid=$archprof;
-              $err=$this->modify(true,array("locked","archiveid", "dprofid", "profid"),true);
-              if (! $err) {
-                  $this->addComment(sprintf(_("Archiving into %s"),$archive->getTitle()),HISTO_MESSAGE,"archive");
-                  $this->addLog('archive',$archive->id,sprintf(_("Archiving into %s"),$archive->getTitle()));
-                  $err=$this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",$this->fromid, $archive->id,$archprof,$this->initid));
-              }
-          }
-      } else $err=sprintf("document is already archived");
+    $err="";
+    if ($this->archiveid==0) {
+      if ($this->doctype=="C") $err=sprintf("families cannot be archieved");
+      elseif (! $this->withoutControl) $err=$this->control("edit");
+      if ($err=="") {
+	$this->locked = 0;
+	$this->archiveid = $archive->id;
+	$this->dprofid=($this->dprofid>0)?(- $this->dprofid):(- abs($this->profid));
+	$archprof=$archive->getValue("arc_profil");
+	$this->profid=$archprof;
+	$err=$this->modify(true,array("locked","archiveid", "dprofid", "profid"),true);
+	if (! $err) {
+	  $this->addComment(sprintf(_("Archiving into %s"),$archive->getTitle()),HISTO_MESSAGE,"archive");
+	  $this->addLog('archive',$archive->id,sprintf(_("Archiving into %s"),$archive->getTitle()));
+	  $err=$this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",$this->fromid, $archive->id,$archprof,$this->initid));
+	}
+      }
+    } else $err=sprintf("document is already archived");
 
-      return $err;
+    return $err;
   }
   /**
    * Delete document in an archive
    * @param _ARCHIVING $archive the archive document
    */
   final public function unArchive(&$archive) {
-      $err="";
+    $err="";
       
-      if ($this->archiveid==$archive->id) {
-          if (! $this->withoutControl) $err=$this->control("edit");
-          if ($err=="") {
-              $this->locked = 0;
-              $this->archiveid = ""; // set to null
-              $restoreprofil=abs($this->dprofid);
-              $this->dprofid = 0;
-              $err=$this->setProfil($restoreprofil);
-              if (! $err) $err=$this->modify(true,array("locked","archiveid","dprofid","profid"),true);
-              if (! $err) {
-                  $this->addComment(sprintf(_("Unarchiving from %s"),$archive->getTitle()),HISTO_MESSAGE,"unarchive");
-                  $this->addLog('unarchive',$archive->id,sprintf(_("Unarchiving from %s"),$archive->getTitle()));
-                  $err=$this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",$this->fromid,$this->initid));
-              }
-          }
-      } else $err=sprintf("document not archived");
+    if ($this->archiveid==$archive->id) {
+      if (! $this->withoutControl) $err=$this->control("edit");
+      if ($err=="") {
+	$this->locked = 0;
+	$this->archiveid = ""; // set to null
+	$restoreprofil=abs($this->dprofid);
+	$this->dprofid = 0;
+	$err=$this->setProfil($restoreprofil);
+	if (! $err) $err=$this->modify(true,array("locked","archiveid","dprofid","profid"),true);
+	if (! $err) {
+	  $this->addComment(sprintf(_("Unarchiving from %s"),$archive->getTitle()),HISTO_MESSAGE,"unarchive");
+	  $this->addLog('unarchive',$archive->id,sprintf(_("Unarchiving from %s"),$archive->getTitle()));
+	  $err=$this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",$this->fromid,$this->initid));
+	}
+      }
+    } else $err=sprintf("document not archived");
 
-      return $err;
+    return $err;
   }
   /** 
    * lock document
@@ -3874,7 +3875,7 @@ create unique index i_docir on doc(initid, revision);";
     
     return "";
   }
- /** 
+  /** 
    * allocate document
    * 
    * affect a document to a user
@@ -4192,14 +4193,14 @@ create unique index i_docir on doc(initid, revision);";
 
 	  
 	$sattrid="";
-	  while ($link[$i] != '}' ) {
-	    $sattrid.= $link[$i];
-	    $i++;
-	  }
-	  //	  print "attr=$sattrid";
+	while ($link[$i] != '}' ) {
+	  $sattrid.= $link[$i];
+	  $i++;
+	}
+	//	  print "attr=$sattrid";
 	  
-	  $ovalue = $action->GetParam($sattrid);
-	  $urllink.=$ovalue;
+	$ovalue = $action->GetParam($sattrid);
+	$urllink.=$ovalue;
 	  
 	  
 	
@@ -4221,7 +4222,7 @@ create unique index i_docir on doc(initid, revision);";
   public function urlWhatEncodeSpec($l) {return $l;}
 
   public static function _val2array($v) {
-    if ($v=="") return array();
+    if ($v==="" || $v===null) return array();
     return explode("\n", str_replace("\r","",$v));
   }
   
@@ -4276,61 +4277,60 @@ create unique index i_docir on doc(initid, revision);";
    * @return string the html anchor
    */
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
-      $a="";
-      if ($htmllink) {
-          if (! $title) $title=$this->getHTMLTitle($id);
-          if ($title == "") {
-              $a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
-          } else {
-              $ul=getParam("CORE_STANDURL");
-              if ($target=="mail") {
-                  $ul=GetParam("CORE_EXTERNURL")."?";
-              }
-              if ($target=="ext") {
-                  
-                   //$ec=getSessionValue("ext:targetRelation");
-                   $ec=getHttpVars("ext:targetRelation");
-                   if ($ec)  {                      
-                     $ec=str_replace("%V%",$id,$ec);
-                     $ecu=str_replace("'","\\'",$this->urlWhatEncode($ec));
-                     $a="<a  onclick='parent.$ecu'>$title</a>";
-                   } else {
-
-                       $ul.="&app=FDL&action=VIEWEXTDOC&id=$id";
-
-                       if ($docrev=="latest" || $docrev=="" || !$docrev)
-                       $ul.="&latest=Y";
-                       elseif ($docrev != "fixed") {
-                           // validate that docrev looks like state(xxx)
-                           if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
-                               $ul.="&state=".$matches[1];
-                           }
-                       }
-                       $a="<a href=\"$ul\">$title</a>";
-                   }
-                   
-              } else {
-                  $ul.="&app=FDL&action=FDL_CARD&id=$id";
-                  if ($docrev=="latest" || $docrev=="" || !$docrev)
-                    $ul.="&latest=Y";
-                  elseif ($docrev != "fixed") {
-                    // validate that docrev looks like state(xxx)
-                    if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
-	              $ul.="&state=".$matches[1];
-      	            }
-                  }
-                  if ($js) $ajs="oncontextmenu=\"popdoc(event,'$ul');return false;\"" ;
-                  else $ajs="";
-
-                  $a="<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
-              }
-          }
-
+    $a="";
+    if ($htmllink) {
+      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'));
+      if ($title == "") {
+	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
-          if (! $title) $a=$this->getHTMLTitle($id);
-          else $a=$title;
+	$ul=getParam("CORE_STANDURL");
+	if ($target=="mail") {
+	  $ul=GetParam("CORE_EXTERNURL")."?";
+	}
+	if ($target=="ext") {
+                  
+	  //$ec=getSessionValue("ext:targetRelation");
+	  $ec=getHttpVars("ext:targetRelation");
+	  if ($ec)  {
+	    if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
+	    $ec=str_replace("%V%",$id,$ec);
+	    $ecu=str_replace("'",'"',$this->urlWhatEncode($ec));
+	    $a="<a  onclick='parent.$ecu'>$title</a>";
+	  } else {
+	    if ($docrev=="latest" || $docrev=="" || !$docrev)
+	      $ul.="&latest=Y";
+	    elseif ($docrev != "fixed") {
+	      // validate that docrev looks like state(xxx)
+	      if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
+		$ul.="&state=".$matches[1];
+	      }
+	    }
+            $ul.="&app=FDL&action=VIEWEXTDOC&id=$id";
+	    $a="<a href=\"$ul\">$title</a>";
+	  }
+                   
+	} else {
+	  if ($docrev=="latest" || $docrev=="" || !$docrev)
+	    $ul.="&latest=Y";
+	  elseif ($docrev != "fixed") {
+	    // validate that docrev looks like state(xxx)
+	    if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
+	      $ul.="&state=".$matches[1];
+	    }
+	  }
+          $ul.="&app=FDL&action=FDL_CARD&id=$id";
+	  if ($js) $ajs="oncontextmenu=\"popdoc(event,'$ul');return false;\"" ;
+	  else $ajs="";
+
+	  $a="<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
+	}
       }
-      return $a;
+
+    } else {
+      if (! $title) $a=$this->getHTMLTitle($id);
+      else $a=$title;
+    }
+    return $a;
   }
   final private function rowattrReplace($s,$index) {
     if (substr($s,0,2)=="L_") return "[$s]";    
@@ -4349,548 +4349,554 @@ create unique index i_docir on doc(initid, revision);";
   }
 
   final public function getHtmlValue($oattr, $value, $target="_self",$htmllink=true, $index=-1,$entities=true) {
-  	global $action;
+    global $action;
 
-  	$aformat=$oattr->format;
-  	$atype=$oattr->type;
+    $aformat=$oattr->format;
+    $atype=$oattr->type;
 
-  	if (($oattr->repeat)&&($index <= 0)){
-  		$tvalues = explode("\n",$value);
-  	} else {
-  		$tvalues[$index]=$value;
-  	}
-  	$idocfamid=$oattr->format;
+    if (($oattr->repeat)&&($index <= 0)){
+      $tvalues = explode("\n",$value);
+    } else {
+      $tvalues[$index]=$value;
+    }
+    $idocfamid=$oattr->format;
 
-  	$attrid=$oattr->id;
-  	foreach($tvalues as $kvalue=>$avalue) {
-  		$htmlval="";
+    $attrid=$oattr->id;
+    foreach($tvalues as $kvalue=>$avalue) {
+      $htmlval="";
 
-  		switch ($atype) {
-  			case "idoc":
-  				$aformat="";
-  				$value=$avalue;
-  				if($value!=""){
-  					// printf("la ");
-  					$temp=base64_decode($value);
-  					$entete="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
-  					$xml=$entete;
-  					$xml.=$temp;
-  					$title=recup_argument_from_xml($xml,"title");//in freedom_util.php
-  				}
-  				$attrid=$attrid.$index;
-  				$htmlval="<form style=\"display:inline\"><INPUT id=\"_" .$attrid."\" TYPE=\"hidden\"  name=\"_".$attrid."\" value=\"".$value." \">";
-  				$htmlval.="<a onclick=\"subwindow(400,400,'_$attrid','');viewidoc('_$attrid','$idocfamid')\" ";
-  				$htmlval.="oncontextmenu=\"viewidoc_in_popdoc(event,'$attrid','_$attrid','$idocfamid');return false\">$title</a>";
-  				$htmlval.="</form>";
-  				break;
+      switch ($atype) {
+      case "idoc":
+	$aformat="";
+	$value=$avalue;
+	if($value!=""){
+	  // printf("la ");
+	  $temp=base64_decode($value);
+	  $entete="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
+	  $xml=$entete;
+	  $xml.=$temp;
+	  $title=recup_argument_from_xml($xml,"title");//in freedom_util.php
+	}
+	$attrid=$attrid.$index;
+	$htmlval="<form style=\"display:inline\"><INPUT id=\"_" .$attrid."\" TYPE=\"hidden\"  name=\"_".$attrid."\" value=\"".$value." \">";
+	$htmlval.="<a onclick=\"subwindow(400,400,'_$attrid','');viewidoc('_$attrid','$idocfamid')\" ";
+	$htmlval.="oncontextmenu=\"viewidoc_in_popdoc(event,'$attrid','_$attrid','$idocfamid');return false\">$title</a>";
+	$htmlval.="</form>";
+	break;
 
   				 
-  			case "image":
-  				if ($target=="mail") {
-  					$htmlval="cid:".$oattr->id;
-  					if ($index >= 0) $htmlval.="+$index";
-  				}   if ($target=="te") {
-  					$htmlval="file://".$this->vault_filename($oattr->id,true,$kvalue);
-  				}  else {
-  					$vid="";
-  					if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-  						$vid=$reg[2];
+      case "image":
+	if ($target=="mail") {
+	  $htmlval="cid:".$oattr->id;
+	  if ($index >= 0) $htmlval.="+$index";
+	}   if ($target=="te") {
+	  $htmlval="file://".$this->vault_filename($oattr->id,true,$kvalue);
+	}  else {
+	  $vid="";
+	  if (preg_match(PREGEXPFILE, $avalue, $reg)) {
+	    $vid=$reg[2];
 
-  						if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
-  						else $idx=$index;
-  						$inline=$oattr->getOption("inline");
-  						if ($inline=="yes") $opt="&inline=yes";
-  						else $opt="";
-  						$htmlval=$action->GetParam("CORE_BASEURL").
-		  "app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"; // upload name
+	    if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
+	    else $idx=$index;
+	    $inline=$oattr->getOption("inline");
+	    if ($inline=="yes") $opt="&inline=yes";
+	    else $opt="";
+	    $htmlval=$action->GetParam("CORE_BASEURL").
+	      "app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"; // upload name
   						 
-  					} else {
-  						$htmlval=$action->GetImageUrl($avalue);
-  					}
-  				}
-  				break;
-  			case "file":
-  				$vid="";
+	  } else {
+	    $htmlval=$action->GetImageUrl($avalue);
+	  }
+	}
+	break;
+      case "file":
+	$vid="";
 
-  				if (preg_match(PREGEXPFILE, $avalue, $reg)) {
-  					// reg[1] is mime type
-  					$vid=$reg[2];
-  					$mime=$reg[1];
-  					include_once("FDL/Lib.Dir.php");
-  					$vf = newFreeVaultFile($this->dbaccess);
-  					if ($vf->Show ($reg[2], $info) == "") $fname = $info->name;
-  					else $fname=_("vault file error");
-  				} else $fname=_("no filename");
+	if (preg_match(PREGEXPFILE, $avalue, $reg)) {
+	  // reg[1] is mime type
+	  $vid=$reg[2];
+	  $mime=$reg[1];
+	  include_once("FDL/Lib.Dir.php");
+	  $vf = newFreeVaultFile($this->dbaccess);
+	  if ($vf->Show ($reg[2], $info) == "") $fname = $info->name;
+	  else $fname=_("vault file error");
+	} else $fname=_("no filename");
 
 
-  				if ($target=="mail") {
-  					$htmlval="<a target=\"_blank\" href=\"";
-  					$htmlval.="cid:".$oattr->id;
-  					if ($index >= 0) $htmlval.="+$index";
-  					$htmlval.=  "\">".$fname."</a>";
-  				} else {
-  					if ($info) {
-  						if ($htmllink) {
-  							$umime = trim(`file -ib $info->path`);
-  							$size=round($info->size/1024)._("AbbrKbyte");
-  							$utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
+	if ($target=="mail") {
+	  $htmlval="<a target=\"_blank\" href=\"";
+	  $htmlval.="cid:".$oattr->id;
+	  if ($index >= 0) $htmlval.="+$index";
+	  $htmlval.=  "\">".$fname."</a>";
+	} else {
+	  if ($info) {
+	    if ($htmllink) {
+	      $umime = trim(`file -ib $info->path`);
+	      $size=round($info->size/1024)._("AbbrKbyte");
+	      $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
   							 
-  							if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
-  							else $idx=$index;
+	      if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
+	      else $idx=$index;
 
-  							$mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
-  							$opt="";
-  							$inline=$oattr->getOption("inline");
-  							if ($inline=="yes") $opt="&inline=yes";
-  							$htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-  							$action->GetParam("CORE_BASEURL").
-		  "app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid"."&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"
-  							."\">";
-  							if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
-  							$htmlval.=$fname."</a>";
-  						} else {
-  							$htmlval=$info->name;
-  						}
-  					}
-  					/*
+	      $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
+	      $opt="";
+	      $inline=$oattr->getOption("inline");
+	      if ($inline=="yes") $opt="&inline=yes";
+	      $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
+		$action->GetParam("CORE_BASEURL").
+		"app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid"."&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"
+		."\">";
+	      if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
+	      $htmlval.=$fname."</a>";
+	    } else {
+	      $htmlval=$info->name;
+	    }
+	  }
+	  /*
   					  
-  					$htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$mime\" href=\"".
-  					"http://".$_SERVER["HTTP_HOST"].
-  					"/davfreedom/doc".$this->id."/$fname".
-  					"\">"."[DAV:$vid]($mime)".
-  					"</A>";
+	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$mime\" href=\"".
+	    "http://".$_SERVER["HTTP_HOST"].
+	    "/davfreedom/doc".$this->id."/$fname".
+	    "\">"."[DAV:$vid]($mime)".
+	    "</A>";
 
   					 
-  					$htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$umime\" href=\"".
-  					"http://".$_SERVER["HTTP_HOST"].
-  					"/davfreedom/doc".$this->id."/$fname".
-  					"\">"."[DAV:$vid]($umime)".
-  					"</A>";
-  					*/
-  				}
+	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$umime\" href=\"".
+	    "http://".$_SERVER["HTTP_HOST"].
+	    "/davfreedom/doc".$this->id."/$fname".
+	    "\">"."[DAV:$vid]($umime)".
+	    "</A>";
+	  */
+	}
 
-  				break;
-  			case "longtext":
-  			case "xml":
-  				if ($entities) $bvalue=nl2br(htmlentities(stripslashes(str_replace("<BR>","\n",$avalue)),ENT_COMPAT,"UTF-8"));
-  				else $bvalue=stripslashes(str_replace("<BR>","\n",$avalue));
-  				$shtmllink=$htmllink?"true":"false";
-  				$bvalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
-				 "\$this->getDocAnchor('\\1',\"$target\",$shtmllink)",
-  				$bvalue);
-  				$htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$bvalue);
-  				break;
-  			case "password":
-  				$htmlval=preg_replace("/./", "*", htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8"));
+	break;
+      case "longtext":
+      case "xml":
+	if ($entities) $bvalue=nl2br(htmlentities(stripslashes(str_replace("<BR>","\n",$avalue)),ENT_COMPAT,"UTF-8"));
+	else $bvalue=stripslashes(str_replace("<BR>","\n",$avalue));
+	$shtmllink=$htmllink?"true":"false";
+	$bvalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e",
+			       "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)",
+			       $bvalue);
+	$htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$bvalue);
+	break;
+      case "password":
+	$htmlval=preg_replace("/./", "*", htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8"));
 
-  				break;
-  			case "enum":
-  				$enumlabel = $oattr->getEnumlabel();
-  				$colors=$oattr->getOption("boolcolor");
-  				if ($colors!="") {
-  					if (isset($enumlabel[$avalue])) {
-  						reset($enumlabel);
-  						$tcolor=explode(",",$colors);
-  						if (current($enumlabel) == $enumlabel[$avalue]) {
-  							$color=$tcolor[0];
-  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
-  						} else {
-  							$color=$tcolor[1];
-  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
-  						}
-  					} else $htmlval=$avalue;
-  				} else {
-  					if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
-  					else $htmlval=$avalue;
+	break;
+      case "enum":
+	$enumlabel = $oattr->getEnumlabel();
+	$colors=$oattr->getOption("boolcolor");
+	if ($colors!="") {
+	  if (isset($enumlabel[$avalue])) {
+	    reset($enumlabel);
+	    $tcolor=explode(",",$colors);
+	    if (current($enumlabel) == $enumlabel[$avalue]) {
+	      $color=$tcolor[0];
+	      $htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
+	    } else {
+	      $color=$tcolor[1];
+	      $htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
+	    }
+	  } else $htmlval=$avalue;
+	} else {
+	  if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
+	  else $htmlval=$avalue;
 
-  				}
+	}
 
-  				break;
-  			case "array":
-  				$viewzone=$oattr->getOption("rowviewzone");
-  				$sort=$oattr->getOption("sorttable");
-  				if ($sort=="yes") {
-  					global $action;
-  					$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/sorttable.js");
-  				}
+	break;
+      case "array":
+	$viewzone=$oattr->getOption("rowviewzone");
+	$sort=$oattr->getOption("sorttable");
+	if ($sort=="yes") {
+	  global $action;
+	  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/sorttable.js");
+	}
 
-  				$lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
-  				$lay->set("issort",($sort=="yes"));
-  				if (! method_exists($this->attributes,"getArrayElements")) {
-  					break;
-  				}
-  				$height=$oattr->getOption("height",false);
-  				$lay->set("tableheight",$height);
-  				$lay->set("caption",$oattr->getLabel());
-  				$lay->set("aid",$oattr->id);
+	$lay = new Layout("FDL/Layout/viewdocarray.xml", $action);
+	$lay->set("issort",($sort=="yes"));
+	if (! method_exists($this->attributes,"getArrayElements")) {
+	  break;
+	}
+	$height=$oattr->getOption("height",false);
+	$lay->set("tableheight",$height);
+	$lay->set("caption",$oattr->getLabel());
+	$lay->set("aid",$oattr->id);
 
-  				if (($viewzone != "") &&  preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/",$viewzone,$reg)) {
-  					// detect special row zone
+	if (($viewzone != "") &&  preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/",$viewzone,$reg)) {
+	  // detect special row zone
   					 
 
-  					$dxml=new DomDocument();
-  					$rowlayfile=getLayoutFile($reg[1],strtolower($reg[2]).".xml");
-  					if (! @$dxml->load(DEFAULT_PUBDIR."/$rowlayfile")) {
-  						AddwarningMsg(sprintf(_("cannot open %s layout file"),DEFAULT_PUBDIR."/$rowlayfile"));
-  						break;
-  					}
-  					$theads=$dxml->getElementsByTagName('table-head');
-  					if ($theads->length > 0) {
-  						$thead=$theads->item(0);
-  						$theadcells=$thead->getElementsByTagName('cell');
-  						$talabel=array();
-  						for ($i = 0; $i < $theadcells->length; $i++) {
-  							$th= xt_innerXML($theadcells->item($i));
-  							$thstyle=$theadcells->item($i)->getAttribute("style");
-  							if ($thstyle!="") $thstyle="style=\"$thstyle\"";
-  							$talabel[] = array("alabel"=>$th,
-				   "astyle"=>$thstyle,
-				   "cwidth"=>"auto");
-  						}
-  						$lay->setBlockData("TATTR",$talabel);
-  					}
+	  $dxml=new DomDocument();
+	  $rowlayfile=getLayoutFile($reg[1],strtolower($reg[2]).".xml");
+	  if (! @$dxml->load(DEFAULT_PUBDIR."/$rowlayfile")) {
+	    AddwarningMsg(sprintf(_("cannot open %s layout file"),DEFAULT_PUBDIR."/$rowlayfile"));
+	    break;
+	  }
+	  $theads=$dxml->getElementsByTagName('table-head');
+	  if ($theads->length > 0) {
+	    $thead=$theads->item(0);
+	    $theadcells=$thead->getElementsByTagName('cell');
+	    $talabel=array();
+	    for ($i = 0; $i < $theadcells->length; $i++) {
+	      $th= xt_innerXML($theadcells->item($i));
+	      $thstyle=$theadcells->item($i)->getAttribute("style");
+	      if ($thstyle!="") $thstyle="style=\"$thstyle\"";
+	      $talabel[] = array("alabel"=>$th,
+				 "astyle"=>$thstyle,
+				 "cwidth"=>"auto");
+	    }
+	    $lay->setBlockData("TATTR",$talabel);
+	  }
 
-  					$tbodies=$dxml->getElementsByTagName('table-body');
-  					if ($tbodies->length > 0) {
-  						$tbody=$tbodies->item(0);
-  						$tbodycells=$tbody->getElementsByTagName('cell');
-  						for ($i = 0; $i < $tbodycells->length; $i++) {
-  							$tr[]= xt_innerXML($tbodycells->item($i));
-  							$tcellstyle[]=$tbodycells->item($i)->getAttribute("style");
-  						}
-  					}
-  					$ta = $this->attributes->getArrayElements($oattr->id);
-  					$nbitem=0;
-  					foreach($ta as $k=>$v) {
-  						$tval[$k]=$this->getTValue($k);
-  						$nbitem= max($nbitem,count($tval[$k]));
-  						if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
-  						$lay->set("L_".strtoupper($v->id),ucfirst($v->getLabel()));
-  					}
-  					// view values
-  					$tvattr = array();
-  					for ($k=0;$k<$nbitem;$k++) {
-  						$tvattr[]=array("bevalue" => "bevalue_$k");
-  						reset($ta);
-  						$tivalue=array();
+	  $tbodies=$dxml->getElementsByTagName('table-body');
+	  if ($tbodies->length > 0) {
+	    $tbody=$tbodies->item(0);
+	    $tbodycells=$tbody->getElementsByTagName('cell');
+	    for ($i = 0; $i < $tbodycells->length; $i++) {
+	      $tr[]= xt_innerXML($tbodycells->item($i));
+	      $tcellstyle[]=$tbodycells->item($i)->getAttribute("style");
+	    }
+	  }
+	  $ta = $this->attributes->getArrayElements($oattr->id);
+	  $nbitem=0;
+	  foreach($ta as $k=>$v) {
+	    $tval[$k]=$this->getTValue($k);
+	    $nbitem= max($nbitem,count($tval[$k]));
+	    if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
+	    $lay->set("L_".strtoupper($v->id),ucfirst($v->getLabel()));
+	  }
+	  // view values
+	  $tvattr = array();
+	  for ($k=0;$k<$nbitem;$k++) {
+	    $tvattr[]=array("bevalue" => "bevalue_$k");
+	    reset($ta);
+	    $tivalue=array();
 
-  						foreach($tr as $kd=>$vd) {
+	    foreach($tr as $kd=>$vd) {
 
-  							$hval = preg_replace("/\[([^\]]*)\]/e",
-				       "\$this->rowattrReplace('\\1',$k)",
-  							$vd);
-  							$tdstyle=$tcellstyle[$kd];
-  							$tivalue[]=array("evalue"=>$hval,
-				   "color"=>"inherit",
-				   "tdstyle"=>$tdstyle,
-				   "bgcolor"=>"inherit",
-				   "align"=>"inherit" );
-  						}
-  						$lay->setBlockData("bevalue_$k",$tivalue);
-  					}
-  					$lay->setBlockData("EATTR",$tvattr);
-  					if ($nbitem > 10) $lay->set("caption",$oattr->getLabel()." ($nbitem)");
+	      $hval = preg_replace("/\[([^\]]*)\]/e",
+				   "\$this->rowattrReplace('\\1',$k)",
+				   $vd);
+	      $tdstyle=$tcellstyle[$kd];
+	      $tivalue[]=array("evalue"=>$hval,
+			       "color"=>"inherit",
+			       "tdstyle"=>$tdstyle,
+			       "bgcolor"=>"inherit",
+			       "align"=>"inherit" );
+	    }
+	    $lay->setBlockData("bevalue_$k",$tivalue);
+	  }
+	  $lay->setBlockData("EATTR",$tvattr);
+	  if ($nbitem > 10) $lay->set("caption",$oattr->getLabel()." ($nbitem)");
   					 
-  					$htmlval =$lay->gen();
-  				} else {
-  					$ta = $this->attributes->getArrayElements($oattr->id);
-  					$talabel=array();
-  					$tvattr = array();
+	  $htmlval =$lay->gen();
+	} else {
+	  $ta = $this->attributes->getArrayElements($oattr->id);
+	  $talabel=array();
+	  $tvattr = array();
 
-  					$emptyarray=true;
-  					$nbitem=0;
-			       foreach($ta as $k=>$v) {
-			       	if (($v->mvisibility=="H")||($v->mvisibility=="I")||($v->mvisibility=="O")) continue;
-			       	$talabel[] = array("alabel"=>ucfirst($v->getLabel()),
-							 "astyle"=>$v->getOption("cellheadstyle"),
-							 "cwidth"=>$v->getOption("cwidth","auto"));	
-			       	$tval[$k]=$this->getTValue($k);
-			       	$nbitem= max($nbitem,count($tval[$k]));
-			       	if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
+	  $emptyarray=true;
+	  $nbitem=0;
+	  foreach($ta as $k=>$v) {
+	    if (($v->mvisibility=="H")||($v->mvisibility=="I")||($v->mvisibility=="O")) continue;
+	    $talabel[] = array("alabel"=>ucfirst($v->getLabel()),
+			       "astyle"=>$v->getOption("cellheadstyle"),
+			       "cwidth"=>$v->getOption("cwidth","auto"));	
+	    $tval[$k]=$this->getTValue($k);
+	    $nbitem= max($nbitem,count($tval[$k]));
+	    if ($emptyarray && ($this->getValue($k)!="")) $emptyarray=false;
 			
-			       }
-			       if (! $emptyarray) {
-			       	if ($oattr->getOption("vlabel")=="up") {
-			       	    $caption=$oattr->getLabel();
-			       	    if ($nbitem > 10) $caption.=" ($nbitem)";
-			       	} else {
-			       	    $caption="";
-                                    if ($nbitem > 10) {
-                                        if (count($talabel) > 0) {
-                                            $talabel[0]["alabel"].= " ($nbitem)";
-                                        }
-                                    }
-			       	}
+	  }
+	  if (! $emptyarray) {
+	    if ($oattr->getOption("vlabel")=="up") {
+	      $caption=$oattr->getLabel();
+	      if ($nbitem > 10) $caption.=" ($nbitem)";
+	    } else {
+	      $caption="";
+	      if ($nbitem > 10) {
+		if (count($talabel) > 0) {
+		  $talabel[0]["alabel"].= " ($nbitem)";
+		}
+	      }
+	    }
 			       	
-                               $lay->setBlockData("TATTR",$talabel);
-			       	$lay->set("caption",$caption);
-			       	$tvattr = array();
-			       	for ($k=0;$k<$nbitem;$k++) {
-			       		$tvattr[]=array("bevalue" => "bevalue_$k");
-			       		$tivalue=array();
-			       		foreach($ta as $ka=>$va) {
-			       			if (($va->mvisibility=="H")||($va->mvisibility=="I")||($va->mvisibility=="O")) continue;
-			       			$hval = $this->getHtmlValue($va,$tval[$ka][$k],$target,$htmllink,$k);
-			       			if ($va->type=="image" ) {
-			       				$iwidth=$va->getOption("iwidth","80px");
-			       				if ($tval[$ka][$k]=="") $hval="";
-			       				else if ($va->link=="")  {
-			       					if (strstr($hval,'?')) $optwidth="&width=".intval($iwidth);
-			       					else $optwidth='';
-			       					$hval="<a  href=\"$hval\"><img border='0' width=\"$iwidth\" src=\"".$hval.$optwidth."\"></a>";
-			       				}  else {
-			       					$hval=preg_replace("/>(.+)</",">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<" ,$hval);
-			       				}
-			       			}
-			       			$tivalue[]=array("evalue"=>$hval,
-							   "tdstyle"=>$va->getOption("cellbodystyle"),
-							   "color"=>$va->getOption("color","inherit"),
-							   "bgcolor"=>$va->getOption("bgcolor","inherit"),
-							   "align"=>$va->getOption("align","inherit") );
-			       		}
-			       		$lay->setBlockData("bevalue_$k",$tivalue);
-			       	}
-			       	$lay->setBlockData("EATTR",$tvattr);
+	    $lay->setBlockData("TATTR",$talabel);
+	    $lay->set("caption",$caption);
+	    $tvattr = array();
+	    for ($k=0;$k<$nbitem;$k++) {
+	      $tvattr[]=array("bevalue" => "bevalue_$k");
+	      $tivalue=array();
+	      foreach($ta as $ka=>$va) {
+		if (($va->mvisibility=="H")||($va->mvisibility=="I")||($va->mvisibility=="O")) continue;
+		$hval = $this->getHtmlValue($va,$tval[$ka][$k],$target,$htmllink,$k);
+		if ($va->type=="image" ) {
+		  $iwidth=$va->getOption("iwidth","80px");
+		  if ($tval[$ka][$k]=="") $hval="";
+		  else if ($va->link=="")  {
+		    if (strstr($hval,'?')) $optwidth="&width=".intval($iwidth);
+		    else $optwidth='';
+		    $hval="<a  href=\"$hval\"><img border='0' width=\"$iwidth\" src=\"".$hval.$optwidth."\"></a>";
+		  }  else {
+		    $hval=preg_replace("/>(.+)</",">&nbsp;<img class=\"button\" width=\"$iwidth\" src=\"\\1\">&nbsp;<" ,$hval);
+		  }
+		}
+		$tivalue[]=array("evalue"=>$hval,
+				 "tdstyle"=>$va->getOption("cellbodystyle"),
+				 "color"=>$va->getOption("color","inherit"),
+				 "bgcolor"=>$va->getOption("bgcolor","inherit"),
+				 "align"=>$va->getOption("align","inherit") );
+	      }
+	      $lay->setBlockData("bevalue_$k",$tivalue);
+	    }
+	    $lay->setBlockData("EATTR",$tvattr);
 			       	 
-			       	$htmlval =$lay->gen();
-			       } else {
-			       	$htmlval = "";
-			       }
-  				}
-  				break;
+	    $htmlval =$lay->gen();
+	  } else {
+	    $htmlval = "";
+	  }
+	}
+	break;
 
-  			case "doc":
+      case "doc":
 
-  				$htmlval = "";
-  				if ($avalue != "") {
-  					if ($kvalue>-1)   $idocid=$this->getTValue($aformat,"",$kvalue);
-  					else $idocid=$this->getValue($aformat);
+	$htmlval = "";
+	if ($avalue != "") {
+	  if ($kvalue>-1)   $idocid=$this->getTValue($aformat,"",$kvalue);
+	  else $idocid=$this->getValue($aformat);
   					 
-  					if ($idocid>0) {
-  						//$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
-  						//$lay->set("id",$idocid);
-  						$idoc = new_Doc($this->dbaccess,$idocid);
-  						$htmlval =$idoc->viewDoc("FDL:VIEWTHUMBCARD:T","finfo");
+	  if ($idocid>0) {
+	    //$lay = new Layout("FDL/Layout/viewadoc.xml", $action);
+	    //$lay->set("id",$idocid);
+	    $idoc = new_Doc($this->dbaccess,$idocid);
+	    $htmlval =$idoc->viewDoc("FDL:VIEWTHUMBCARD:T","finfo");
 
-  						//$htmlval =$lay->gen();
-  					}
-  				}
-  				break;
+	    //$htmlval =$lay->gen();
+	  }
+	}
+	break;
 
-  			case "docid":
-  				if ($oattr->format != "") {
+      case "docid":
+	if ($oattr->format != "") {
   					 
-  					$aformat="";
-  					$multiple=($oattr->getOption("multiple")=="yes");
-  					$dtarget=$target;
-  					if ($target != "mail") {
-  						$ltarget=$oattr->getOption("ltarget");
-  						if ($ltarget != "") $dtarget=$ltarget;
-  					}
-  					if ($multiple) {
-  						$avalue=str_replace("\n","<BR>",$avalue);
-  						$tval=explode("<BR>",$avalue);
-  						$thval=array();
-  						foreach ($tval as $kv=>$vv) {
-  							if (trim($vv) =="")  $thval[] = $vv;
-  							else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
-  						}
-  						$htmlval=implode("<br/>",$thval);
-  					} else {
-  						if ($avalue=="") $htmlval = $avalue;
-  						elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
-  						else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"));
-  					}
-  				} else
-  				$htmlval=$avalue;
+	  $aformat="";
+	  $multiple=($oattr->getOption("multiple")=="yes");
+	  $dtarget=$target;
+	  if ($target != "mail") {
+	    $ltarget=$oattr->getOption("ltarget");
+	    if ($ltarget != "") $dtarget=$ltarget;
+	  }
+	  if ($multiple) {
+	    $avalue=str_replace("\n","<BR>",$avalue);
+	    $tval=explode("<BR>",$avalue);
+	    $thval=array();
+	    foreach ($tval as $kv=>$vv) {
+	      if (trim($vv) =="")  $thval[] = $vv;
+	      elseif ($oattr->link != "") {
+		$link=preg_replace("/%".$oattr->id."%/i",$vv,$oattr->link);
+		$link=$this->urlWhatEncode( $oattr->link, $kvalue);
+		if ($link) $thval[]='<a target="'.$dtarget.'" href="'.$link.'">'.$this->getHTMLTitle($vv).'</a>';
+		else $thval[]=$this->getHTMLTitle($vv);
+	      } else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
+	    }
+	    if ($oattr->link) $htmllink=false;
+	    $htmlval=implode("<br/>",$thval);
+	  } else {
+	    if ($avalue=="") $htmlval = $avalue;
+	    elseif ($oattr->link != "") $htmlval=$this->getHTMLTitle($avalue);
+	    else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"));
+	  }
+	} else
+	  $htmlval=$avalue;
 
-  				break;
-  			case "thesaurus":
-  				$aformat="";
-  				$multiple=($oattr->getOption("multiple")=="yes");
-  				if ($multiple) {
-  					$avalue=str_replace("\n","<BR>",$avalue);
-  					$tval=explode("<BR>",$avalue);
-  					$thval=array();
-  					foreach ($tval as $kv=>$vv) {
-  						if (trim($vv) =="")  $thval[] = $vv;
-  						else {
-  							$thc=new_doc($this->dbaccess,trim($vv));
-  							if ($thc->isAlive()) $thval[]=$this->getDocAnchor(trim($vv),$target,$htmllink,$thc->getLangTitle());
-  							else $thval[]="th error $vv";
-  						}
-  					}
-  					$htmlval=implode("<br/>",$thval);
-  				} else {
-  					if ($avalue=="") $htmlval = $avalue;
-  					else {
-  						$thc=new_doc($this->dbaccess,$avalue);
-  						if ($thc->isAlive()) $htmlval = $this->getDocAnchor(trim($avalue),$target,$htmllink,$thc->getLangTitle());
-  						else $htmlval="th error $avalue";
-  					}
-  				}
+	break;
+      case "thesaurus":
+	$aformat="";
+	$multiple=($oattr->getOption("multiple")=="yes");
+	if ($multiple) {
+	  $avalue=str_replace("\n","<BR>",$avalue);
+	  $tval=explode("<BR>",$avalue);
+	  $thval=array();
+	  foreach ($tval as $kv=>$vv) {
+	    if (trim($vv) =="")  $thval[] = $vv;
+	    else {
+	      $thc=new_doc($this->dbaccess,trim($vv));
+	      if ($thc->isAlive()) $thval[]=$this->getDocAnchor(trim($vv),$target,$htmllink,$thc->getLangTitle());
+	      else $thval[]="th error $vv";
+	    }
+	  }
+	  $htmlval=implode("<br/>",$thval);
+	} else {
+	  if ($avalue=="") $htmlval = $avalue;
+	  else {
+	    $thc=new_doc($this->dbaccess,$avalue);
+	    if ($thc->isAlive()) $htmlval = $this->getDocAnchor(trim($avalue),$target,$htmllink,$thc->getLangTitle());
+	    else $htmlval="th error $avalue";
+	  }
+	}
 
-  				break;
-  			case "option":
-  				$lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
-  				$htmlval = "";
+	break;
+      case "option":
+	$lay = new Layout("FDL/Layout/viewdocoption.xml", $action);
+	$htmlval = "";
 
-  				if ($kvalue>-1) $di=$this->getTValue($oattr->format,"",$kvalue);
-  				else $di=$this->getValue($oattr->format);
-  				if ($di > 0) {
-  					$lay->set("said",$di);
-  					$lay->set("uuvalue",urlencode($avalue));
+	if ($kvalue>-1) $di=$this->getTValue($oattr->format,"",$kvalue);
+	else $di=$this->getValue($oattr->format);
+	if ($di > 0) {
+	  $lay->set("said",$di);
+	  $lay->set("uuvalue",urlencode($avalue));
 
-  					$htmlval =$lay->gen();
-  				}
-  				break;
-  			case 'money':
+	  $htmlval =$lay->gen();
+	}
+	break;
+      case 'money':
 
 
-  				$htmlval=money_format('%!.2n', doubleval($avalue));
-  				$htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
-  				break;
+	$htmlval=money_format('%!.2n', doubleval($avalue));
+	$htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
+	break;
 
-  			case 'htmltext':
-  				$shtmllink=$htmllink?"true":"false";
-  				$avalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
-				 "\$this->getDocAnchor('\\1',\"$target\",$shtmllink)",
-  				$avalue);
-  				$htmlval="<DIV>$avalue</DIV>";
-  				break;
-  			case 'date':
-  				if (($aformat!="") && (trim($avalue) != "")) {
-  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-  					else $htmlval=$avalue;
-  				} elseif(trim($avalue) == "") {
-  					$htmlval="";
-  				} else {
-  					$htmlval=FrenchDateToLocaleDate($avalue);
-  				}
-  				$aformat="";
-  				break;
-  			case 'time':
-  				if (($aformat!="") && (trim($avalue) != "")) {
-  					if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
-  					else $htmlval=$avalue;
-  				} else {
-  					$htmlval=substr($avalue,0,5); // do not display second
-  				}
-  				$aformat="";
-  				break;
-  			case 'timestamp':
-  				if (($aformat!="") && (trim($avalue) != "")) {
-  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-  					else $htmlval=$avalue;
-  				} elseif(trim($avalue) == "") {
-  					$htmlval="";
-  				} else {
-  					$htmlval=FrenchDateToLocaleDate($avalue);
-  				}
-  				$aformat="";
-  				break;
-  			case 'ifile':
-  				$lay = new Layout("FDL/Layout/viewifile.xml", $action);
-  				$lay->set("aid",$oattr->id);
-  				$lay->set("id",$this->id);
-  				$lay->set("iheight",$oattr->getOption("height","200px"));
-  				$htmlval =$lay->gen();
+      case 'htmltext':
+	$shtmllink=$htmllink?"true":"false";
+	$avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e",
+			       "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)",
+			       $avalue);
+	$htmlval="<DIV>$avalue</DIV>";
+	break;
+      case 'date':
+	if (($aformat!="") && (trim($avalue) != "")) {
+	  if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+	  else $htmlval=$avalue;
+	} elseif(trim($avalue) == "") {
+	  $htmlval="";
+	} else {
+	  $htmlval=FrenchDateToLocaleDate($avalue);
+	}
+	$aformat="";
+	break;
+      case 'time':
+	if (($aformat!="") && (trim($avalue) != "")) {
+	  if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
+	  else $htmlval=$avalue;
+	} else {
+	  $htmlval=substr($avalue,0,5); // do not display second
+	}
+	$aformat="";
+	break;
+      case 'timestamp':
+	if (($aformat!="") && (trim($avalue) != "")) {
+	  if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+	  else $htmlval=$avalue;
+	} elseif(trim($avalue) == "") {
+	  $htmlval="";
+	} else {
+	  $htmlval=FrenchDateToLocaleDate($avalue);
+	}
+	$aformat="";
+	break;
+      case 'ifile':
+	$lay = new Layout("FDL/Layout/viewifile.xml", $action);
+	$lay->set("aid",$oattr->id);
+	$lay->set("id",$this->id);
+	$lay->set("iheight",$oattr->getOption("height","200px"));
+	$htmlval =$lay->gen();
 
-  				break;
+	break;
   				 
-  			case 'color':
-  				$htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);
-  				break;
+      case 'color':
+	$htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);
+	break;
 
-  			default :
-  				if ($entities) $avalue=htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8");
-  				else $avalue=stripslashes($avalue);
-  				$htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$avalue);
+      default :
+	if ($entities) $avalue=htmlentities(stripslashes($avalue),ENT_COMPAT,"UTF-8");
+	else $avalue=stripslashes($avalue);
+	$htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$avalue);
   				 
-  				break;
+	break;
 
-  		}
+      }
 
-  		if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
-  			//printf($htmlval);
-  			$htmlval=sprintf($aformat,$htmlval);
-  		}
-  		// add link if needed
-  		if ($htmllink && ($oattr->link != "") ) {
-  			$ititle="";
-  			$hlink=$oattr->link;
-  			if ($hlink[0] == "[") {
-  				if (preg_match('/\[(.*)\](.*)/', $hlink, $reg)) {
-  					$hlink=$reg[2];
-  					$ititle=str_replace("\"","'",$reg[1]);
-  				}
-  			}
-  			if ($ulink = $this->urlWhatEncode( $hlink, $kvalue)) {
-  				if ($target=="ext") {
-  					if (preg_match("/FDL_CARD.*id=([0-9]+)/",$ulink,$reg)) {
-  						$abegin=$this->getDocAnchor($reg[1],$target,true,$htmlval);
-  						$htmlval='';
-  						$aend="";
-  					} else if (true || preg_match("/^http:/",$ulink,$reg)) {
-  						$ec=getSessionValue("ext:targetUrl");
+      if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
+	//printf($htmlval);
+	$htmlval=sprintf($aformat,$htmlval);
+      }
+      // add link if needed
+      if ($htmllink && ($oattr->link != "") ) {
+	$ititle="";
+	$hlink=$oattr->link;
+	if ($hlink[0] == "[") {
+	  if (preg_match('/\[(.*)\](.*)/', $hlink, $reg)) {
+	    $hlink=$reg[2];
+	    $ititle=str_replace("\"","'",$reg[1]);
+	  }
+	}
+	if ($ulink = $this->urlWhatEncode( $hlink, $kvalue)) {
+	  if ($target=="ext") {
+	    if (preg_match("/FDL_CARD.*id=([0-9]+)/",$ulink,$reg)) {
+	      $abegin=$this->getDocAnchor($reg[1],$target,true,$htmlval);
+	      $htmlval='';
+	      $aend="";
+	    } else if (true || preg_match("/^http:/",$ulink,$reg)) {
+	      $ec=getSessionValue("ext:targetUrl");
   						 
-  						if ($ec)  {
-  							$ec=str_replace("%V%",$ulink,$ec);
-  							$ec=str_replace("%L%",$oattr->getLabel(),$ec);
-  							$ecu=str_replace("'","\\'",$this->urlWhatEncode($ec));
-  							$abegin="<a  onclick='parent.$ecu'>";
-  						} else {
-  							$ltarget=$oattr->getOption("ltarget");
-  							$abegin="<a target=\"$ltarget\"  href=\"$ulink\">";
-  						}
+	      if ($ec)  {
+		$ec=str_replace("%V%",$ulink,$ec);
+		$ec=str_replace("%L%",$oattr->getLabel(),$ec);
+		$ecu=str_replace("'","\\'",$this->urlWhatEncode($ec));
+		$abegin="<a  onclick='parent.$ecu'>";
+	      } else {
+		$ltarget=$oattr->getOption("ltarget");
+		$abegin="<a target=\"$ltarget\"  href=\"$ulink\">";
+	      }
   						 
-  						$aend="</a>";
-  					}
-  				} else if ($target == "mail") {
-  					$scheme="";
-  					if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
-  						$scheme=$reg[1];
-  					}
-  					$abegin="<a target=\"$target\"  href=\"";
-  					if ($scheme == "") $abegin.= $action->GetParam("CORE_URLINDEX",($action->GetParam("CORE_ABSURL")."/")).$ulink;
-  					else $abegin.= $ulink;
-  					$abegin.="\">";
-  					$aend="</a>";
-  				} else {
-  					$ltarget=$oattr->getOption("ltarget");
-  					if ($ltarget != "") $target=$ltarget;
-  					$ltitle=$oattr->getOption("ltitle");
-  					if ($ltitle != "") $ititle=str_replace("\"","'",$ltitle);
-  					$abegin="<a target=\"$target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
-  					$abegin.= $ulink."\" ";;
-  					if ($htmllink > 1){
-  						$scheme="";
-  						if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
-  							$scheme=$reg[1];
-  						}
-  						if (($scheme == "") || ($scheme == "http")) {
-  							if ($scheme == "") $ulink.="&ulink=1";
-  							$abegin.=" oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
-  						}
-  					}
-  					$abegin.=">";
-  					$aend="</a>";
-  				}
+	      $aend="</a>";
+	    }
+	  } else if ($target == "mail") {
+	    $scheme="";
+	    if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
+	      $scheme=$reg[1];
+	    }
+	    $abegin="<a target=\"$target\"  href=\"";
+	    if ($scheme == "") $abegin.= $action->GetParam("CORE_URLINDEX",($action->GetParam("CORE_ABSURL")."/")).$ulink;
+	    else $abegin.= $ulink;
+	    $abegin.="\">";
+	    $aend="</a>";
+	  } else {
+	    $ltarget=$oattr->getOption("ltarget");
+	    if ($ltarget != "") $target=$ltarget;
+	    $ltitle=$oattr->getOption("ltitle");
+	    if ($ltitle != "") $ititle=str_replace("\"","'",$ltitle);
+	    $abegin="<a target=\"$target\" title=\"$ititle\" onmousedown=\"document.noselect=true;\" href=\"";
+	    $abegin.= $ulink."\" ";;
+	    if ($htmllink > 1){
+	      $scheme="";
+	      if (preg_match("/^([[:alpha:]]*):(.*)/",$ulink,$reg)) {
+		$scheme=$reg[1];
+	      }
+	      if (($scheme == "") || ($scheme == "http")) {
+		if ($scheme == "") $ulink.="&ulink=1";
+		$abegin.=" oncontextmenu=\"popdoc(event,'$ulink');return false;\" ";
+	      }
+	    }
+	    $abegin.=">";
+	    $aend="</a>";
+	  }
 
 
-  			} else {
-  				$abegin="";
-  				$aend="";
-  			}
-  		} else {
-  			$abegin="";
-  			$aend="";
-  		}
+	} else {
+	  $abegin="";
+	  $aend="";
+	}
+      } else {
+	$abegin="";
+	$aend="";
+      }
 
-  		$thtmlval[$kvalue]=$abegin.$htmlval.$aend;
-  	}
+      $thtmlval[$kvalue]=$abegin.$htmlval.$aend;
+    }
 
-  	return implode("<BR>",$thtmlval);
+    return implode("<BR>",$thtmlval);
   }
 
   /**
@@ -4914,263 +4920,263 @@ create unique index i_docir on doc(initid, revision);";
   }
 
   final public function GetOOoValue($oattr, $value, $target="_self",$htmllink=false, $index=-1) { 
-  	global $action;
+    global $action;
 
-  	$aformat=$oattr->format;
-  	$atype=$oattr->type;
+    $aformat=$oattr->format;
+    $atype=$oattr->type;
 
-  	if (($oattr->repeat)&&($index <= 0)){
-  		$tvalues = explode("\n",$value);
-  	} else {
-  		$tvalues[$index]=$value;
-  	}
-  	$idocfamid=$oattr->format;
+    if (($oattr->repeat)&&($index <= 0)){
+      $tvalues = explode("\n",$value);
+    } else {
+      $tvalues[$index]=$value;
+    }
+    $idocfamid=$oattr->format;
 
-  	$attrid=$oattr->id;
-  	foreach($tvalues as $kvalue=>$avalue) {
-  		$htmlval="";
-  		switch ($atype)	{
-  			case "idoc":
-  				// nothing
-  				break;
-  			case "image":
-  				$htmlval=$this->vault_filename($oattr->id,true,$kvalue);
-  				break;
-  			case "file":
-  				// file name
-  				$htmlval=$this->vault_filename($oattr->id,false,$kvalue);
-  				break;
-  			case "longtext":
-  			case "xml":
-  				$htmlval=str_replace("&","&amp;",$avalue);
-  				$htmlval=str_replace(array("<",">"),array("&lt;","&gt;"),$htmlval);
-  				$htmlval=str_replace("\n","<text:line-break/>",$htmlval);
-  				$htmlval=str_replace("&lt;BR&gt;","<text:line-break/>",$htmlval);
-  				$htmlval=str_replace("\r","",$htmlval);
-  				break;
-  			case "password":
+    $attrid=$oattr->id;
+    foreach($tvalues as $kvalue=>$avalue) {
+      $htmlval="";
+      switch ($atype)	{
+      case "idoc":
+	// nothing
+	break;
+      case "image":
+	$htmlval=$this->vault_filename($oattr->id,true,$kvalue);
+	break;
+      case "file":
+	// file name
+	$htmlval=$this->vault_filename($oattr->id,false,$kvalue);
+	break;
+      case "longtext":
+      case "xml":
+	$htmlval=str_replace("&","&amp;",$avalue);
+	$htmlval=str_replace(array("<",">"),array("&lt;","&gt;"),$htmlval);
+	$htmlval=str_replace("\n","<text:line-break/>",$htmlval);
+	$htmlval=str_replace("&lt;BR&gt;","<text:line-break/>",$htmlval);
+	$htmlval=str_replace("\r","",$htmlval);
+	break;
+      case "password":
 
-  				break;
-  			case "enum":
-  				$enumlabel = $oattr->getEnumlabel();
-  				$colors=$oattr->getOption("boolcolor");
-  				if ($colors!="") {
-  					if (isset($enumlabel[$avalue])) {
-  						reset($enumlabel);
-  						$tcolor=explode(",",$colors);
-  						if (current($enumlabel) == $enumlabel[$avalue]) {
-  							$color=$tcolor[0];
-  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
-  						} else {
-  							$color=$tcolor[1];
-  							$htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
-  						}
-  					} else $htmlval=$avalue;
-  				} else {
-  					if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
-  					else $htmlval=$avalue;
-  				}
+	break;
+      case "enum":
+	$enumlabel = $oattr->getEnumlabel();
+	$colors=$oattr->getOption("boolcolor");
+	if ($colors!="") {
+	  if (isset($enumlabel[$avalue])) {
+	    reset($enumlabel);
+	    $tcolor=explode(",",$colors);
+	    if (current($enumlabel) == $enumlabel[$avalue]) {
+	      $color=$tcolor[0];
+	      $htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;-&nbsp;</pre>',$color);
+	    } else {
+	      $color=$tcolor[1];
+	      $htmlval=sprintf('<pre style="background-color:%s;display:inline">&nbsp;&bull;&nbsp;</pre>',$color);
+	    }
+	  } else $htmlval=$avalue;
+	} else {
+	  if (isset($enumlabel[$avalue]))  $htmlval=$enumlabel[$avalue];
+	  else $htmlval=$avalue;
+	}
 
-  				break;
-  			case "thesaurus":
-  				$aformat="";
-  				$multiple=($oattr->getOption("multiple")=="yes");
-  				if ($multiple) {
-  					$avalue=str_replace("\n","<BR>",$avalue);
-  					$tval=explode("<BR>",$avalue);
-  					$thval=array();
-  					foreach ($tval as $kv=>$vv) {
-  						if (trim($vv) =="")  $thval[] = $vv;
-  						else {
-  							$thc=new_doc($this->dbaccess,trim($vv));
-  							if ($thc->isAlive()) $thval[]=$thc->getLangTitle();
-  							else $thval[]="th error $vv";
-  						}
-  					}
-  					$htmlval=implode("<text:tab/>",$thval);
-  				} else {
-  					if ($avalue=="") $htmlval = $avalue;
-  					else {
-  						$thc=new_doc($this->dbaccess,$avalue);
-  						if ($thc->isAlive()) $htmlval = $thc->getLangTitle();
-  						else $htmlval="th error $avalue";
-  					}
-  				}
+	break;
+      case "thesaurus":
+	$aformat="";
+	$multiple=($oattr->getOption("multiple")=="yes");
+	if ($multiple) {
+	  $avalue=str_replace("\n","<BR>",$avalue);
+	  $tval=explode("<BR>",$avalue);
+	  $thval=array();
+	  foreach ($tval as $kv=>$vv) {
+	    if (trim($vv) =="")  $thval[] = $vv;
+	    else {
+	      $thc=new_doc($this->dbaccess,trim($vv));
+	      if ($thc->isAlive()) $thval[]=$thc->getLangTitle();
+	      else $thval[]="th error $vv";
+	    }
+	  }
+	  $htmlval=implode("<text:tab/>",$thval);
+	} else {
+	  if ($avalue=="") $htmlval = $avalue;
+	  else {
+	    $thc=new_doc($this->dbaccess,$avalue);
+	    if ($thc->isAlive()) $htmlval = $thc->getLangTitle();
+	    else $htmlval="th error $avalue";
+	  }
+	}
 
-  				break;
-  			case "array":
-  				break;
-  			case "doc":
-  				break;
-  			case "docid":
-  				if ($oattr->format != "") {
+	break;
+      case "array":
+	break;
+      case "doc":
+	break;
+      case "docid":
+	if ($oattr->format != "") {
   					 
-  					$aformat="";
-  					$multiple=($oattr->getOption("multiple")=="yes");
-  					$dtarget=$target;
-  					if ($target != "mail") {
-  						$ltarget=$oattr->getOption("ltarget");
-  						if ($ltarget != "") $dtarget=$ltarget;
-  					}
-  					if ($multiple) {
-  						$avalue=str_replace("\n","<BR>",$avalue);
-  						$tval=explode("<BR>",$avalue);
-  						$thval=array();
-  						foreach ($tval as $kv=>$vv) {
-  							if (trim($vv) =="")  $thval[] = $vv;
-  							else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,false);
-  						}
-  						$htmlval=implode("<text:tab/>",$thval);
-  					} else {
-  						if ($avalue=="") $htmlval = $avalue;
-  						elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
-  						else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,false);
-  					}
-  				} else
-  				$htmlval=$avalue;
+	  $aformat="";
+	  $multiple=($oattr->getOption("multiple")=="yes");
+	  $dtarget=$target;
+	  if ($target != "mail") {
+	    $ltarget=$oattr->getOption("ltarget");
+	    if ($ltarget != "") $dtarget=$ltarget;
+	  }
+	  if ($multiple) {
+	    $avalue=str_replace("\n","<BR>",$avalue);
+	    $tval=explode("<BR>",$avalue);
+	    $thval=array();
+	    foreach ($tval as $kv=>$vv) {
+	      if (trim($vv) =="")  $thval[] = $vv;
+	      else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,false);
+	    }
+	    $htmlval=implode("<text:tab/>",$thval);
+	  } else {
+	    if ($avalue=="") $htmlval = $avalue;
+	    elseif ($oattr->link != "") $htmlval=$this->getTitle($avalue);
+	    else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,false);
+	  }
+	} else
+	  $htmlval=$avalue;
 
-  				break;
+	break;
 
-  			case "option":
-  				break;
-  			case "money":
-  				$htmlval=money_format('%!.2n', doubleval($avalue));
-  				//$htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
-  				break;
+      case "option":
+	break;
+      case "money":
+	$htmlval=money_format('%!.2n', doubleval($avalue));
+	//$htmlval=str_replace(" ","&nbsp;",$htmlval); // need to replace space by non breaking spaces
+	break;
 
-  			case "htmltext":
-  				$html_body=trim($avalue);
-  				$html_body=str_replace(array('&quot;','&lt;','&gt;'),array('--quoteric--','--lteric--','--gteric--'),$html_body); // prevent pb for quot in quot
+      case "htmltext":
+	$html_body=trim($avalue);
+	$html_body=str_replace(array('&quot;','&lt;','&gt;'),array('--quoteric--','--lteric--','--gteric--'),$html_body); // prevent pb for quot in quot
 
-  				if ($html_body[0] != '<') {
-  					// think it is raw text
-  					$html_body=str_replace("\n<br/>","\n",$html_body);
-  					$html_body=str_replace('<br/>',"\n",$html_body);
-  					if (! strpos($html_body,'<br')) $html_body=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$html_body);
-  					$html_body='<p>'.nl2br($html_body).'</p>';
-  				}
-  				$html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
-  				$html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse",
+	if ($html_body[0] != '<') {
+	  // think it is raw text
+	  $html_body=str_replace("\n<br/>","\n",$html_body);
+	  $html_body=str_replace('<br/>',"\n",$html_body);
+	  if (! strpos($html_body,'<br')) $html_body=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$html_body);
+	  $html_body='<p>'.nl2br($html_body).'</p>';
+	}
+	$html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
+	$html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse",
 				  "\$this->getHtmlTdContent('\\1','\\2')",
-  				$html_body); // accept only text in td tag
-  				$html_body=cleanhtml($html_body);
-  				$html_body=preg_replace("/(<\/?)([^\s>]+)([^>]*)(>)/e",
+				  $html_body); // accept only text in td tag
+	$html_body=cleanhtml($html_body);
+	$html_body=preg_replace("/(<\/?)([^\s>]+)([^>]*)(>)/e",
 				"toxhtmltag('\\1','\\2','\\3','\\4')",
   				$html_body ); // begin tag transform to pseudo xhtml
 
-  				$html_body=str_replace(array('\"','&quot;'),'"',$html_body);
-  				$html_body=str_replace('&','&amp;',html_entity_decode($html_body,ENT_NOQUOTES,'UTF-8'));
+	$html_body=str_replace(array('\"','&quot;'),'"',$html_body);
+	$html_body=str_replace('&','&amp;',html_entity_decode($html_body,ENT_NOQUOTES,'UTF-8'));
 
-  				$html_body=str_replace(array('--quoteric--','--lteric--','--gteric--'),array('&quot;','&lt;','&gt;'),$html_body); // prevent pb for quot in quot
+	$html_body=str_replace(array('--quoteric--','--lteric--','--gteric--'),array('&quot;','&lt;','&gt;'),$html_body); // prevent pb for quot in quot
 
 
-  				$xmldata='<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">'.$html_body."</xhtml:body>";
+	$xmldata='<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">'.$html_body."</xhtml:body>";
 
-  				$xslt = new xsltProcessor;
-  				$xslt->importStyleSheet(DomDocument::load(DEFAULT_PUBDIR."/CORE/Layout/html2odt.xsl"));
-  				//	set_error_handler('HandleXmlError');
-  				try {
-  					$dom = @DomDocument::loadXML($xmldata);
-  				} catch (Exception $e) {
-  					addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s"),$this->title));
-  					/*
-  					 print "Exception catched:\n";
-  					 print "Code: ".$e->getCode()."\n";
-  					 print "Message: ".$e->getMessage()."\n";
-  					 print  "Line: ".$e->getLine();
-  					 // error in XML
-  					 print "\n<br>ERRORXSLT:".$this->id.$this->title."\n";
-  					 print "\n=========RAWDATA=================\n";
-  					 print  $avalue;
-  					 print "\n=========XMLDATA=================\n";
-  					 print_r2($xmldata);
-  					 exit;*/
-  				}
-  				//restore_error_handler();
-  				if ($dom) {
-  					$xmlout= $xslt->transformToXML($dom);
-  					$dxml=new DomDocument();
-  					$dxml->loadXML($xmlout);
-  					//office:text
-  					$ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","text");
-  					$ot1=$ot->item(0);
-  					$officetext= $ot1->ownerDocument->saveXML($ot1);
-  					$htmlval=str_replace(array('<office:text>', '</office:text>','<office:text/>'),"",$officetext);
-  					// work around : tables are not in paragraph
-  					$htmlval=preg_replace("/(<text:p>[\s]*<table:table )/ ",
+	$xslt = new xsltProcessor;
+	$xslt->importStyleSheet(DomDocument::load(DEFAULT_PUBDIR."/CORE/Layout/html2odt.xsl"));
+	//	set_error_handler('HandleXmlError');
+	try {
+	  $dom = @DomDocument::loadXML($xmldata);
+	} catch (Exception $e) {
+	  addWarningMsg(sprintf(_("possible incorrect conversion HTML to ODT %s"),$this->title));
+	  /*
+	    print "Exception catched:\n";
+	    print "Code: ".$e->getCode()."\n";
+	    print "Message: ".$e->getMessage()."\n";
+	    print  "Line: ".$e->getLine();
+	    // error in XML
+	    print "\n<br>ERRORXSLT:".$this->id.$this->title."\n";
+	    print "\n=========RAWDATA=================\n";
+	    print  $avalue;
+	    print "\n=========XMLDATA=================\n";
+	    print_r2($xmldata);
+	    exit;*/
+	}
+	//restore_error_handler();
+	if ($dom) {
+	  $xmlout= $xslt->transformToXML($dom);
+	  $dxml=new DomDocument();
+	  $dxml->loadXML($xmlout);
+	  //office:text
+	  $ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","text");
+	  $ot1=$ot->item(0);
+	  $officetext= $ot1->ownerDocument->saveXML($ot1);
+	  $htmlval=str_replace(array('<office:text>', '</office:text>','<office:text/>'),"",$officetext);
+	  // work around : tables are not in paragraph
+	  $htmlval=preg_replace("/(<text:p>[\s]*<table:table )/ ",
 				"<table:table ",$htmlval);
-  					$htmlval=preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ",
+	  $htmlval=preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ",
 				"</table:table> ",$htmlval);	
-  					$htmlval="<text:section>".$htmlval."<text:p/></text:section>";
-  				} else {
+	  $htmlval="<text:section>".$htmlval."<text:p/></text:section>";
+	} else {
   					 
-  					addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"),$this->title));
+	  addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"),$this->title));
 
-  				}
-  				//$htmlval=preg_replace("/<\/?(\w+[^:]?|\w+\s.*?)>//g", "",$htmlval  );
-  				break;
-  			case 'date':
-  				if (($aformat!="") && (trim($avalue) != "")) {
-  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-  					else $htmlval=$avalue;
-  				} elseif(trim($avalue) == "") {
-  					$htmlval="";
-  				} else {
-  					$htmlval=FrenchDateToLocaleDate($avalue);
-  				}
-  				$aformat="";
-  				break;
-  			case 'time':
-  				if ($aformat!="") {
-  					if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
-  					else $htmlval=$avalue;
-  					$aformat="";
-  				} else {
-  					$htmlval=substr($avalue,0,5); // do not display second
-  				}
+	}
+	//$htmlval=preg_replace("/<\/?(\w+[^:]?|\w+\s.*?)>//g", "",$htmlval  );
+	break;
+      case 'date':
+	if (($aformat!="") && (trim($avalue) != "")) {
+	  if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+	  else $htmlval=$avalue;
+	} elseif(trim($avalue) == "") {
+	  $htmlval="";
+	} else {
+	  $htmlval=FrenchDateToLocaleDate($avalue);
+	}
+	$aformat="";
+	break;
+      case 'time':
+	if ($aformat!="") {
+	  if ($avalue) $htmlval=strftime($aformat,strtotime($avalue));
+	  else $htmlval=$avalue;
+	  $aformat="";
+	} else {
+	  $htmlval=substr($avalue,0,5); // do not display second
+	}
 
-  				break;
-  			case 'timestamp':
-  				if (($aformat!="") && (trim($avalue) != "")) {
-  					if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
-  					else $htmlval=$avalue;
-  				} elseif(trim($avalue) == "") {
-  					$htmlval="";
-  				} else {
-  					$htmlval=FrenchDateToLocaleDate($avalue);
-  				}
-  				$aformat="";
-  				break;
-  			case 'ifile':
-  				$lay = new Layout("FDL/Layout/viewifile.xml", $action);
-  				$lay->set("aid",$oattr->id);
-  				$lay->set("id",$this->id);
-  				$lay->set("iheight",$oattr->getOption("height","200px"));
-  				$htmlval =$lay->gen();
+	break;
+      case 'timestamp':
+	if (($aformat!="") && (trim($avalue) != "")) {
+	  if ($avalue) $htmlval=strftime($aformat,FrenchDateToUnixTs($avalue));
+	  else $htmlval=$avalue;
+	} elseif(trim($avalue) == "") {
+	  $htmlval="";
+	} else {
+	  $htmlval=FrenchDateToLocaleDate($avalue);
+	}
+	$aformat="";
+	break;
+      case 'ifile':
+	$lay = new Layout("FDL/Layout/viewifile.xml", $action);
+	$lay->set("aid",$oattr->id);
+	$lay->set("id",$this->id);
+	$lay->set("iheight",$oattr->getOption("height","200px"));
+	$htmlval =$lay->gen();
 
-  				break;
+	break;
   				 
-  			case 'color':
-  				$htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);
-  				break;
+      case 'color':
+	$htmlval=sprintf("<span style=\"background-color:%s\">%s</span>",$avalue,$avalue);
+	break;
 
-  			default :
-  				$htmlval=stripslashes($avalue);
-  				$htmlval=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$htmlval);
+      default :
+	$htmlval=stripslashes($avalue);
+	$htmlval=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$htmlval);
 
-  				break;
-  		}
+	break;
+      }
 
-  		if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
-  			//printf($htmlval);
-  			$htmlval=sprintf($aformat,$htmlval);
-  		}
+      if (($aformat != "") && ($atype != "doc") && ($atype != "array")&& ($atype != "option") ){
+	//printf($htmlval);
+	$htmlval=sprintf($aformat,$htmlval);
+      }
 
 
-  		$thtmlval[$kvalue]=$htmlval;
-  	}
+      $thtmlval[$kvalue]=$htmlval;
+    }
 
-  	return implode("<text:tab/>",$thtmlval);
+    return implode("<text:tab/>",$thtmlval);
   }
 
   /**
@@ -5179,7 +5185,7 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $aclname identificator of the privilege to test
    * @return string empty means access granted else it is an error message (access unavailable)
    */
- public function Control($aclname) {
+  public function Control($aclname) {
     // -------------------------------------------------------------------- 
     if (($this->IsAffected()) ) {	
       
@@ -5275,21 +5281,21 @@ create unique index i_docir on doc(initid, revision);";
     } else {
 
 
-    if (is_array($this->attributes->fromids)) {
-      foreach($this->attributes->fromids as $k=>$v) {
+      if (is_array($this->attributes->fromids)) {
+	foreach($this->attributes->fromids as $k=>$v) {
 
-	$sql .="create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
+	  $sql .="create trigger UV{$cid}_$v BEFORE INSERT OR UPDATE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE upval$v();";
      
+	}
       }
-    }
-    // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
-    if ($cid!="fam") {
-      $sql .="create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
-      $sql .="create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
+      // the reset trigger must begin with 'A' letter to be proceed first (pgsql 7.3.2)
+      if ($cid!="fam") {
+	$sql .="create trigger AUVR{$cid} BEFORE UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE resetvalues();";
+	$sql .="create trigger VFULL{$cid} BEFORE INSERT OR UPDATE  ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fullvectorize$cid();";
       
-    }
-    $sql .="create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE setread();";
-    $sql .="create trigger FIXDOC{$cid} AFTER INSERT ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";
+      }
+      $sql .="create trigger zread{$cid} AFTER INSERT OR UPDATE OR DELETE ON doc$cid FOR EACH ROW EXECUTE PROCEDURE setread();";
+      $sql .="create trigger FIXDOC{$cid} AFTER INSERT ON doc$cid FOR EACH ROW EXECUTE PROCEDURE fixeddoc();";
     }
     return $sql;
   }
@@ -5383,28 +5389,28 @@ create unique index i_docir on doc(initid, revision);";
    * @access private
    */
   final public function setDefaultValues($tdefval,$method=true,$forcedefault=false) {
-  	if (is_array($tdefval)) {
-  		foreach ($tdefval as $aid=>$dval) {
-  			$oattr = $this->getAttribute($aid);
+    if (is_array($tdefval)) {
+      foreach ($tdefval as $aid=>$dval) {
+	$oattr = $this->getAttribute($aid);
   			
-  			$ok = false;
-  			if(empty($oattr)) $ok = true;
-  			elseif($forcedefault) $ok = true;
-  			elseif(!$oattr->inArray()) $ok = true;
-  			elseif($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty")!="yes") {
-  				$ok = true;
-  			}
+	$ok = false;
+	if(empty($oattr)) $ok = true;
+	elseif($forcedefault) $ok = true;
+	elseif(!$oattr->inArray()) $ok = true;
+	elseif($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty")!="yes") {
+	  $ok = true;
+	}
   			
   			
-  			if ($ok) {
-  				if ($method) {
-  					$this->setValue($aid, $this->GetValueMethod($dval));
-  				} else {
-  					$this->$aid= $dval; // raw data
-  				}
-  			}
-  		}
-  	}
+	if ($ok) {
+	  if ($method) {
+	    $this->setValue($aid, $this->GetValueMethod($dval));
+	  } else {
+	    $this->$aid= $dval; // raw data
+	  }
+	}
+      }
+    }
   }
 
   /**
@@ -5423,7 +5429,7 @@ create unique index i_docir on doc(initid, revision);";
     return $err;
   }
 
-   /**
+  /**
    * set all attribute in W visibility 
    * 
    * 
@@ -5433,9 +5439,9 @@ create unique index i_docir on doc(initid, revision);";
    
     $listattr = $this->GetAttributes();
     foreach($listattr as $i=>$attr) {
-	if (($attr->mvisibility == "H") || ($attr->mvisibility == "I") || ($attr->mvisibility == "R") || ($attr->mvisibility == "S")) {
-	  $this->attributes->attr[$i]->mvisibility="W";
-	}
+      if (($attr->mvisibility == "H") || ($attr->mvisibility == "I") || ($attr->mvisibility == "R") || ($attr->mvisibility == "S")) {
+	$this->attributes->attr[$i]->mvisibility="W";
+      }
     }
     
   }
@@ -5481,75 +5487,75 @@ create unique index i_docir on doc(initid, revision);";
    * @param bool $changelayout if true the internal layout ($this->lay) will be replace by the new layout
    */
   final public function viewDoc($layout="FDL:VIEWBODYCARD",$target="_self",$ulink=true,$abstract=false,$changelayout=false) {
-  	global $action;
+    global $action;
 
-  	if (preg_match("/(.*)\?(.*)/",$layout, $reg)) {
-  		// in case of arguments in zone
-  		global $ZONE_ARGS;
-  		$layout=$reg[1];
-  		$zargs = explode("&", $reg[2] );
-  		foreach($zargs as $k=>$v) {
-  			if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
-  				// memo zone args for next action execute
-  				$ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
-  			}
-  		}
-  	}
+    if (preg_match("/(.*)\?(.*)/",$layout, $reg)) {
+      // in case of arguments in zone
+      global $ZONE_ARGS;
+      $layout=$reg[1];
+      $zargs = explode("&", $reg[2] );
+      foreach($zargs as $k=>$v) {
+	if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
+	  // memo zone args for next action execute
+	  $ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
+	}
+      }
+    }
 
-  	if (! preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg))
-  	return sprintf(_("error in pzone format %s"),$layout);
+    if (! preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg))
+      return sprintf(_("error in pzone format %s"),$layout);
   	 
-  	if (!$changelayout) {
-  		$play=$this->lay;
-  	}
-  	$binary=($this->getZoneOption($layout)=="B");
+    if (!$changelayout) {
+      $play=$this->lay;
+    }
+    $binary=($this->getZoneOption($layout)=="B");
 
-  	$tplfile=$this->getZoneFile($layout);
-  	$ext=getFileExtension($tplfile);
-  	if (strtolower($ext)=="odt") {
-  		include_once('Class.OOoLayout.php');
-  		$target="ooo";
-  		$ulink=false;
-  		$this->lay = new OOoLayout($tplfile, $action, $this);
-  	} else {
-  		$this->lay = new Layout($tplfile, $action);
-  	}
+    $tplfile=$this->getZoneFile($layout);
+    $ext=getFileExtension($tplfile);
+    if (strtolower($ext)=="odt") {
+      include_once('Class.OOoLayout.php');
+      $target="ooo";
+      $ulink=false;
+      $this->lay = new OOoLayout($tplfile, $action, $this);
+    } else {
+      $this->lay = new Layout($tplfile, $action);
+    }
 
 
-  	$this->lay->set("_readonly",($this->Control('edit')!=""));
-  	$method = strtok(strtolower($reg[2]),'.');
+    $this->lay->set("_readonly",($this->Control('edit')!=""));
+    $method = strtok(strtolower($reg[2]),'.');
 
   	 
-  	if (method_exists ( $this, $method)) {
-  		$this->$method($target,$ulink,$abstract);
-  	} else {
-  		$this->viewdefaultcard($target,$ulink,$abstract);
-  	}
+    if (method_exists ( $this, $method)) {
+      $this->$method($target,$ulink,$abstract);
+    } else {
+      $this->viewdefaultcard($target,$ulink,$abstract);
+    }
 
 
-  	$laygen=$this->lay->gen();
+    $laygen=$this->lay->gen();
 
-  	if (!$changelayout)       $this->lay=$play;
+    if (!$changelayout)       $this->lay=$play;
 
-  	if (! $ulink) {
-  		// suppress href attributes
-  		return preg_replace(array("/href=\"index\.php[^\"]*\"/i", "/onclick=\"[^\"]*\"/i","/ondblclick=\"[^\"]*\"/i"),
-  		array("","","") ,$laygen );
-  	}
-  	if ($target=="mail") {
-  		// suppress session id
-  		return preg_replace("/\?session=[^&]*&/", "?" ,$laygen );
-  	}
-  	if ($binary && ($target != "ooo")) {
-  		// set result into file
-  		$tmpfile=uniqid(getTmpDir()."/fdllay").".html";
-  		$nc=file_put_contents($tmpfile,$laygen);
-  		$laygen=$tmpfile;
+    if (! $ulink) {
+      // suppress href attributes
+      return preg_replace(array("/href=\"index\.php[^\"]*\"/i", "/onclick=\"[^\"]*\"/i","/ondblclick=\"[^\"]*\"/i"),
+			  array("","","") ,$laygen );
+    }
+    if ($target=="mail") {
+      // suppress session id
+      return preg_replace("/\?session=[^&]*&/", "?" ,$laygen );
+    }
+    if ($binary && ($target != "ooo")) {
+      // set result into file
+      $tmpfile=uniqid(getTmpDir()."/fdllay").".html";
+      $nc=file_put_contents($tmpfile,$laygen);
+      $laygen=$tmpfile;
 
-  	}
+    }
 
 
-  	return $laygen;
+    return $laygen;
   }
   // --------------------------------------------------------------------
 
@@ -5602,96 +5608,98 @@ create unique index i_docir on doc(initid, revision);";
 
     $iattr=0;
     foreach($listattr as $i=>$attr) {
-        $iattr++;
+      $iattr++;
 
-        //------------------------------
-        // Compute value element
-        $value = chop($this->GetValue($i));
+      //------------------------------
+      // Compute value element
+      $value = chop($this->GetValue($i));
 
-        $frametpl=$attr->fieldSet->getOption("viewtemplate");
-        if ($attr->fieldSet && $frametpl) {
-            $goodvalue=false;
-            if ( $currentFrameId != $attr->fieldSet->id) {
-                    if ( ($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
-                        $changeframe=true;
-                        $currentFrameId = $attr->fieldSet->id;
-                        $currentFrame = $attr->fieldSet;
-                        $v++;
-                    }
-                }
-        } else {
-            $goodvalue=((($value != "") || ( $attr->type=="array") || $attr->getOption("showempty") ) &&
-            ($attr->mvisibility != "H") && ($attr->mvisibility != "I") && ($attr->mvisibility != "O") && (! $attr->inArray()));
-            if ($goodvalue) {
-
-                $viewtpl=$attr->getOption("viewtemplate");
-                if ($viewtpl ) {
-                    if ($viewtpl=="none") {
-                        $htmlvalue='';
-                    } else {
-                        if ($this->getZoneOption($viewtpl) == 'S') {
-                            $attr->setOption("vlabel","none");
-                        }
-                        $htmlvalue=sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",$this->id, $this->fromid,$target,$viewtpl);
-                    }
-                } else {
-                    if (($value == "")&&($attr->type!="array")) $htmlvalue=$attr->getOption("showempty");
-                    else $htmlvalue=$this->GetHtmlValue($attr,$value,$target,$ulink);
-                }
-            } else $htmlvalue="";
-            if ($htmlvalue !== "") {// to define when change frame
-                if ( $currentFrameId != $attr->fieldSet->id) {
-                    if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe=true;
-                }
-            }
-        }
+      $frametpl=$attr->fieldSet->getOption("viewtemplate");
+      if ($attr->fieldSet && $frametpl) {
+	$goodvalue=false;
+	if ( $currentFrameId != $attr->fieldSet->id) {
+	  if ( ($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
+	    $changeframe=true;
+	    $currentFrameId = $attr->fieldSet->id;
+	    $currentFrame = $attr->fieldSet;
+	    $v++;
+	  }
+	}
+      } else {
+	$goodvalue=((($value != "") || ( $attr->type=="array") || $attr->getOption("showempty") ) &&
+		    ($attr->mvisibility != "H") && ($attr->mvisibility != "I") && ($attr->mvisibility != "O") && (! $attr->inArray()));
+	if (( $attr->type=="array") && (!$attr->getOption("showempty"))) {
+	  if (count($this->getAValues($attr->id))==0) $goodvalue=false;
+	}
+          
+	if ($goodvalue) {
+	  $viewtpl=$attr->getOption("viewtemplate");
+	  if ($viewtpl ) {
+	    if ($viewtpl=="none") {
+	      $htmlvalue='';
+	    } else {
+	      if ($this->getZoneOption($viewtpl) == 'S') {
+		$attr->setOption("vlabel","none");
+	      }
+	      $htmlvalue=sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",$this->id, $this->fromid,$target,$viewtpl);
+	    }
+	  } else {
+	    if ((($value == "")&&($attr->type!="array")) || (($attr->type=="array")&& (count($this->getAValues($attr->id))==0))) $htmlvalue=$attr->getOption("showempty");
+	    else $htmlvalue=$this->GetHtmlValue($attr,$value,$target,$ulink);
+	  }
+	} else $htmlvalue="";
+	if ($htmlvalue !== "") {// to define when change frame
+	  if ( $currentFrameId != $attr->fieldSet->id) {
+	    if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe=true;
+	  }
+	}
+      }
       //------------------------------
       // change frame if needed
         
-	if ($changeframe)	{// to generate  fieldset
-	    $changeframe=false;
-	    if (($v+$nbimg) > 0) {// one value detected
-	        $oaf=$this->getAttribute($currentFrameId);
-	            $frames[$k]["frametext"]=($oaf && $oaf->getOption("vlabel")!="none")?ucfirst($this->GetLabel($currentFrameId)):"";
-	            $frames[$k]["frameid"]=$currentFrameId;
-	            $frames[$k]["bgcolor"]=$oaf?$oaf->getOption("bgcolor",false):false;
+      if ($changeframe)	{// to generate  fieldset
+	$changeframe=false;
+	if (($v+$nbimg) > 0) {// one value detected
+	  $oaf=$this->getAttribute($currentFrameId);
+	  $frames[$k]["frametext"]=($oaf && $oaf->getOption("vlabel")!="none")?ucfirst($this->GetLabel($currentFrameId)):"";
+	  $frames[$k]["frameid"]=$currentFrameId;
+	  $frames[$k]["bgcolor"]=$oaf?$oaf->getOption("bgcolor",false):false;
 	        
-	        $frames[$k]["tag"]="";
-	        $frames[$k]["TAB"]=false;
-	        if (($currentFrame->fieldSet->id!="")&&($currentFrame->fieldSet->id!="FIELD_HIDDENS")) {
-	            $frames[$k]["tag"]="TAG".$currentFrame->fieldSet->id;
-	            $frames[$k]["TAB"]=true;
-	            $ttabs[$currentFrame->fieldSet->id]=array("tabid"=>$currentFrame->fieldSet->id,
-							    "tabtitle"=>ucfirst($currentFrame->fieldSet->getLabel()));
-	        }
-                $frames[$k]["viewtpl"]=($frametpl!=""); 
-                $frames[$k]["zonetpl"]=($frametpl!="")?sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",$this->id, $this->fromid,$target,$frametpl):'';
+	  $frames[$k]["tag"]="";
+	  $frames[$k]["TAB"]=false;
+	  if (($currentFrame->fieldSet->id!="")&&($currentFrame->fieldSet->id!="FIELD_HIDDENS")) {
+	    $frames[$k]["tag"]="TAG".$currentFrame->fieldSet->id;
+	    $frames[$k]["TAB"]=true;
+	    $ttabs[$currentFrame->fieldSet->id]=array("tabid"=>$currentFrame->fieldSet->id,
+						      "tabtitle"=>ucfirst($currentFrame->fieldSet->getLabel()));
+	  }
+	  $frames[$k]["viewtpl"]=($frametpl!=""); 
+	  $frames[$k]["zonetpl"]=($frametpl!="")?sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",$this->id, $this->fromid,$target,$frametpl):'';
                 
                 
-	        $frames[$k]["rowspan"]=$v+1; // for images cell
-	        $frames[$k]["TABLEVALUE"]="TABLEVALUE_$k";
+	  $frames[$k]["rowspan"]=$v+1; // for images cell
+	  $frames[$k]["TABLEVALUE"]="TABLEVALUE_$k";
 
-	        $this->lay->SetBlockData($frames[$k]["TABLEVALUE"],
-	        $tableframe);
-	        $frames[$k]["IMAGES"]="IMAGES_$k";
-	        $this->lay->SetBlockData($frames[$k]["IMAGES"],
-	        $tableimage);
-	        unset($tableframe);
-	        unset($tableimage);
-	        $tableframe=array();
-	        $tableimage=array();
-	        $k++;
-	    }
-	    $v=0;
-	    $nbimg=0;
+	  $this->lay->SetBlockData($frames[$k]["TABLEVALUE"],
+				   $tableframe);
+	  $frames[$k]["IMAGES"]="IMAGES_$k";
+	  $this->lay->SetBlockData($frames[$k]["IMAGES"],
+				   $tableimage);
+	  unset($tableframe);
+	  unset($tableimage);
+	  $tableframe=array();
+	  $tableimage=array();
+	  $k++;
 	}
+	$v=0;
+	$nbimg=0;
+      }
 
 
       //------------------------------
       // Set the table value elements
     
-      if ($goodvalue)   {
-	  	 
+      if ($goodvalue)   {               
 	switch ($attr->type)
 	  {	      
 	  case "image": 		  
@@ -5727,13 +5735,13 @@ create unique index i_docir on doc(initid, revision);";
 	    $tableframe[$v]["nonelabel"]=true;
 	    $tableframe[$v]["normallabel"]=false;	    
 	  } else if ($attr->getOption("vlabel")=="up") {
-	      if ($attr->type == "array") { // view like none label
-	          $tableframe[$v]["nonelabel"]=true;
-	          $tableframe[$v]["normallabel"]=false;
-	      } else {
-	          $tableframe[$v]["normallabel"]=false;
-	          $tableframe[$v]["uplabel"]=true;
-	      }
+	    if ($attr->type == "array") { // view like none label
+	      $tableframe[$v]["nonelabel"]=true;
+	      $tableframe[$v]["normallabel"]=false;
+	    } else {
+	      $tableframe[$v]["normallabel"]=false;
+	      $tableframe[$v]["uplabel"]=true;
+	    }
 	  }
 	  $tableframe[$v]["name"]=$this->GetLabel($attr->id);
 	  if ( ($attr->type == "htmltext") && (count($tableframe)==1)) {
@@ -5815,81 +5823,81 @@ create unique index i_docir on doc(initid, revision);";
   /**
    *  layout for view answers
    */
-function viewanswers($target="finfo",$ulink=true,$abstract=true) {    
-  if (!$this->isAlive()) $err=(sprintf(_("unknow document reference '%s'"),GetHttpVars("docid")));
-  if ($err=="") $err=$this->control("wask");
-  if ($err) {
-    $this->lay->template=$err;
-    return;
-  }
+  function viewanswers($target="finfo",$ulink=true,$abstract=true) {    
+    if (!$this->isAlive()) $err=(sprintf(_("unknow document reference '%s'"),GetHttpVars("docid")));
+    if ($err=="") $err=$this->control("wask");
+    if ($err) {
+      $this->lay->template=$err;
+      return;
+    }
 
-  $answers=$this->getWasks(false);
+    $answers=$this->getWasks(false);
   
-  foreach ($answers as $ka=>$ans) {
-    $utags=$this->searchUTags("ASK_".$ans["waskid"],false);
-    $wask=new_doc($this->dbaccess,$ans["waskid"]);
-    $wask->set($this);
+    foreach ($answers as $ka=>$ans) {
+      $utags=$this->searchUTags("ASK_".$ans["waskid"],false);
+      $wask=new_doc($this->dbaccess,$ans["waskid"]);
+      $wask->set($this);
     
-    $taguid=array();
+      $taguid=array();
 
-    $t=array();
-    foreach ($utags as $k=>$v) {
-      $taguid[]=$v["uid"];
-      $t[$k]=$v;
-      $t[$k]["label"]=$wask->getAskLabel($v["comment"]);
-      $t[$k]["ask"]=$wask->getvalue("was_ask");
-    }
-
-    uasort($t,array (get_class($this), "_cmpanswers"));
-    $prevc='';$odd=0;
-    foreach ($t as $k=>$v) {
-      if ($v["comment"]!=$prevc) {
-	$prevc=$v["comment"];
-	$odd++;
+      $t=array();
+      foreach ($utags as $k=>$v) {
+	$taguid[]=$v["uid"];
+	$t[$k]=$v;
+	$t[$k]["label"]=$wask->getAskLabel($v["comment"]);
+	$t[$k]["ask"]=$wask->getvalue("was_ask");
       }
-      $t[$k]["class"]=(($odd%2)==0)?"evenanswer":"oddanswer";
-    }
 
-    // find user not answered    
-    $ru=$wask->getUsersForAcl('answer'); // all users must answered
-    $una=array_diff(array_keys($ru),$taguid);
+      uasort($t,array (get_class($this), "_cmpanswers"));
+      $prevc='';$odd=0;
+      foreach ($t as $k=>$v) {
+	if ($v["comment"]!=$prevc) {
+	  $prevc=$v["comment"];
+	  $odd++;
+	}
+	$t[$k]["class"]=(($odd%2)==0)?"evenanswer":"oddanswer";
+      }
+
+      // find user not answered    
+      $ru=$wask->getUsersForAcl('answer'); // all users must answered
+      $una=array_diff(array_keys($ru),$taguid);
 
 
-    $tna=array();
+      $tna=array();
 
-    $tuna=array();
-    foreach ($una as $k=>$v) {
-      $tuna[$v]=$ru[$v]["login"];      
-    }
+      $tuna=array();
+      foreach ($una as $k=>$v) {
+	$tuna[$v]=$ru[$v]["login"];      
+      }
 
-    asort($tuna,SORT_STRING);
-    foreach ($tuna as $k=>$v) {
-      $tna[]=array("login"=>$ru[$k]["login"],
-		   "fn"=>$ru[$k]["firstname"],
-		   "ln"=>$ru[$k]["lastname"]);
-    }
+      asort($tuna,SORT_STRING);
+      foreach ($tuna as $k=>$v) {
+	$tna[]=array("login"=>$ru[$k]["login"],
+		     "fn"=>$ru[$k]["firstname"],
+		     "ln"=>$ru[$k]["lastname"]);
+      }
 
-    $this->lay->setBlockData("ANSWERS".$wask->id,$t);
-    $this->lay->setBlockData("NOTANS".$wask->id,$tna);
-    if ($title!="") $title.=', ';
-    $title.=$wask->getTitle();
+      $this->lay->setBlockData("ANSWERS".$wask->id,$t);
+      $this->lay->setBlockData("NOTANS".$wask->id,$tna);
+      if ($title!="") $title.=', ';
+      $title.=$wask->getTitle();
    
-    $this->lay->set("asktitle",$title);
-    $tw[]=array("waskid"=>$wask->id,
-		"nacount"=>sprintf(_("number of waiting answers %d"),count($una)),
-		"count"=>(count($t)>1)?sprintf(_("%d answers"),count($t)):sprintf(_("%d answer"),count($t)),
-		"ask"=>$wask->getValue("was_ask"));
+      $this->lay->set("asktitle",$title);
+      $tw[]=array("waskid"=>$wask->id,
+		  "nacount"=>sprintf(_("number of waiting answers %d"),count($una)),
+		  "count"=>(count($t)>1)?sprintf(_("%d answers"),count($t)):sprintf(_("%d answer"),count($t)),
+		  "ask"=>$wask->getValue("was_ask"));
+    }
+    $this->lay->setBlockData("WASK",$tw);
+    $this->lay->set("docid",$this->id);
   }
-  $this->lay->setBlockData("WASK",$tw);
-  $this->lay->set("docid",$this->id);
-}
   
-/**
- * to sort answer by response
- */
-static function _cmpanswers($a,$b) {  
-  return strcasecmp($a["comment"].$a["uname"],$b["comment"].$b["uname"]);
-}   
+  /**
+   * to sort answer by response
+   */
+  static function _cmpanswers($a,$b) {  
+    return strcasecmp($a["comment"].$a["uname"],$b["comment"].$b["uname"]);
+  }   
 
   /**
    * write layout for properties view
@@ -5906,9 +5914,9 @@ static function _cmpanswers($a,$b) {
     if ($this->locked== -1) {
       $this->lay->Set("lockedid",false);
     } else {
-    $user = new User("", abs($this->locked));
-    // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
-    $this->lay->Set("lockedid", $user->fid);
+      $user = new User("", abs($this->locked));
+      // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
+      $this->lay->Set("lockedid", $user->fid);
     }
     $state=$this->getState();
     if ($state != "") {
@@ -6048,46 +6056,46 @@ static function _cmpanswers($a,$b) {
 
   // -----------------------------------
   final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
-  	$listattr = $this->GetNormalAttributes();
+    $listattr = $this->GetNormalAttributes();
 
-  	// each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-  	foreach($listattr as $k=>$v) {
-  		$value = chop($this->GetValue($v->id));
+    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+    foreach($listattr as $k=>$v) {
+      $value = chop($this->GetValue($v->id));
 
-  		//------------------------------
-  		// Set the table value elements
+      //------------------------------
+      // Set the table value elements
 
 
-  		$this->lay->Set("S_".strtoupper($v->id),($value!=""));
-  		// don't see  non abstract if not
-  		if ((($v->mvisibility == "H")&& (! $viewhidden)) || ($v->mvisibility == "I")|| (($abstract) && (! $v->isInAbstract ))) {
-  			$this->lay->Set("V_".strtoupper($v->id),"");
-  			$this->lay->Set("L_".strtoupper($v->id),"");
-  		} else {
-  			if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-  			else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
-  			$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-  		}
-  	}
+      $this->lay->Set("S_".strtoupper($v->id),($value!=""));
+      // don't see  non abstract if not
+      if ((($v->mvisibility == "H")&& (! $viewhidden)) || ($v->mvisibility == "I")|| (($abstract) && (! $v->isInAbstract ))) {
+	$this->lay->Set("V_".strtoupper($v->id),"");
+	$this->lay->Set("L_".strtoupper($v->id),"");
+      } else {
+	if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
+	else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
+	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
+      }
+    }
 
-  	$listattr = $this->GetFieldAttributes();
+    $listattr = $this->GetFieldAttributes();
 
-  	// each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-  	foreach($listattr as $k=>$v) {
-  		$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-  	}
+    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+    foreach($listattr as $k=>$v) {
+      $this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
+    }
 
   }
 
 
   // view doc properties
   final public function viewprop($target="_self",$ulink=true,$abstract=false) {
-  	foreach($this->fields as $k=>$v) {
-  		if($target=='ooo') $this->lay->Set(strtoupper($v),($this->$v===null)?false:str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$this->$v));
-  		else $this->lay->Set(strtoupper($v),($this->$v===null)?false:$this->$v);
-  	}
-  	if($target=='ooo') $this->lay->Set("V_TITLE",$this->lay->get("TITLE"));
-  	else $this->lay->Set("V_TITLE",$this->getDocAnchor($this->id,$target,$ulink,false,false));
+    foreach($this->fields as $k=>$v) {
+      if($target=='ooo') $this->lay->Set(strtoupper($v),($this->$v===null)?false:str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$this->$v));
+      else $this->lay->Set(strtoupper($v),($this->$v===null)?false:$this->$v);
+    }
+    if($target=='ooo') $this->lay->Set("V_TITLE",$this->lay->get("TITLE"));
+    else $this->lay->Set("V_TITLE",$this->getDocAnchor($this->id,$target,$ulink,false,false));
   }
 
   /**
@@ -6096,25 +6104,25 @@ static function _cmpanswers($a,$b) {
    * @return string error message if cannot be
    */
   function setLogicalIdentificator($name) {
-  	if ($name) {
-  		if (! preg_match("/^[A-Z][0-9A-Z:_-]*$/i",$name)) {
-  			return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"),$name));
-  		} else {
-  			if ($this->isAffected() && ($this->name != "") && ($this->doctype!='Z')) {
-  				return (sprintf(_("Logical name %s already set for %s"),$name,$doc->title));
-  			} else {
-  				// verify not use yet
-  				$d=getTDoc($this->dbaccess,$name);
-  				if ($d && $d["doctype"]!='Z') {
-  					return sprintf(_("Logical name %s already use in document %s"),$name,$d["title"]);
-  				} else {
-  					$this->name=$name;
-  					$err=$this->modify(true,array("name"),true);
-  					if ($err!="") return $err;
-  				}
-  			}
-  		}
-  	}
+    if ($name) {
+      if (! preg_match("/^[A-Z][0-9A-Z:_-]*$/i",$name)) {
+	return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"),$name));
+      } else {
+	if ($this->isAffected() && ($this->name != "") && ($this->doctype!='Z')) {
+	  return (sprintf(_("Logical name %s already set for %s"),$name,$doc->title));
+	} else {
+	  // verify not use yet
+	  $d=getTDoc($this->dbaccess,$name);
+	  if ($d && $d["doctype"]!='Z') {
+	    return sprintf(_("Logical name %s already use in document %s"),$name,$d["title"]);
+	  } else {
+	    $this->name=$name;
+	    $err=$this->modify(true,array("name"),true);
+	    if ($err!="") return $err;
+	  }
+	}
+      }
+    }
   }
   /**
    * view only option values
@@ -6156,9 +6164,18 @@ static function _cmpanswers($a,$b) {
     } 
     $this->lay->Set("id", $docid);
     $this->lay->Set("classid", $this->fromid);
-  
-  
-  
+
+
+    // search inline help
+    $s=new SearchDoc($this->dbaccess,"HELPPAGE");
+    $s->addFilter("help_family='%d'",$this->fromid);
+    $help=$s->search();
+    $helpid=false;
+    $helpattr=array();
+    if ($s->count() > 0) {
+      $helpid=$help[0]["id"];
+      $helpattr=$this->_val2array($help[0]["help_sec_key"]);
+    }
     // ------------------------------------------------------
     // Perform SQL search for doc attributes
     // ------------------------------------------------------	        
@@ -6189,16 +6206,16 @@ static function _cmpanswers($a,$b) {
       if ($docid > 0) $value = $this->GetValue($attr->id);
       else {
 	$value = $this->GetValue($attr->id);
-//	$value = $this->GetValueMethod($this->GetValue($listattr[$i]->id));
+	//	$value = $this->GetValueMethod($this->GetValue($listattr[$i]->id));
       }
       $frametpl=$attr->fieldSet->getOption("edittemplate");
       
       if ( $currentFrameId != $attr->fieldSet->id) {
-          if ($frametpl) {
-              $changeframe=true;
-              $currentFrameId=$attr->fieldSet->id;
-              $v++;
-          } elseif ($currentFrameId != "") $changeframe=true;
+	if ($frametpl) {
+	  $changeframe=true;
+	  $currentFrameId=$attr->fieldSet->id;
+	  $v++;
+	} elseif ($currentFrameId != "") $changeframe=true;
       }
       if ( $changeframe){  // to generate final frametext
 	$changeframe=false;
@@ -6228,65 +6245,67 @@ static function _cmpanswers($a,$b) {
 	$v=0;
       }
       if (! $frametpl) {
-          //------------------------------
-          // Set the table value elements
+	//------------------------------
+	// Set the table value elements
            
-          $currentFrameId = $listattr[$i]->fieldSet->id;
-          $currentFrame = $listattr[$i]->fieldSet;
-          if ( ($listattr[$i]->mvisibility == "H") || ($listattr[$i]->mvisibility == "R") ) {
-              // special case for hidden values
-              $thidden[$ih]["hname"]= "_".$listattr[$i]->id;
-              $thidden[$ih]["hid"]= $listattr[$i]->id;
-              if (($value == "")&&($this->id==0)) $thidden[$ih]["hvalue"] = GetHttpVars($listattr[$i]->id);
-              else $thidden[$ih]["hvalue"]=chop(htmlentities($value,ENT_COMPAT,"UTF-8"));
+	$currentFrameId = $listattr[$i]->fieldSet->id;
+	$currentFrame = $listattr[$i]->fieldSet;
+	if ( ($listattr[$i]->mvisibility == "H") || ($listattr[$i]->mvisibility == "R") ) {
+	  // special case for hidden values
+	  $thidden[$ih]["hname"]= "_".$listattr[$i]->id;
+	  $thidden[$ih]["hid"]= $listattr[$i]->id;
+	  if (($value == "")&&($this->id==0)) $thidden[$ih]["hvalue"] = GetHttpVars($listattr[$i]->id);
+	  else $thidden[$ih]["hvalue"]=chop(htmlentities($value,ENT_COMPAT,"UTF-8"));
                
                
-              $thidden[$ih]["inputtype"]=getHtmlInput($this,
-              $listattr[$i],
-              $value,"","",true);
-              $ih++;
+	  $thidden[$ih]["inputtype"]=getHtmlInput($this,
+						  $listattr[$i],
+						  $value,"","",true);
+	  $ih++;
 
-          } else {
-              $tableframe[$v]["value"]=chop(htmlentities($value,ENT_COMPAT,"UTF-8"));
-              $label = $listattr[$i]->getLabel();
-              $tableframe[$v]["attrid"]=$listattr[$i]->id;
-              $tableframe[$v]["name"]=ucfirst($label);
+	} else {
+	  $tableframe[$v]["value"]=chop(htmlentities($value,ENT_COMPAT,"UTF-8"));
+	  $label = $listattr[$i]->getLabel();
+	  $tableframe[$v]["attrid"]=$listattr[$i]->id;
+	  $tableframe[$v]["name"]=ucfirst($label);
 
-              if ($listattr[$i]->needed ) $tableframe[$v]["labelclass"]="FREEDOMLabelNeeded";
-              else $tableframe[$v]["labelclass"]="FREEDOMLabel";
-              $elabel=$listattr[$i]->getoption("elabel");
-              $elabel=str_replace("'","&rsquo;",$elabel);
-              $tableframe[$v]["elabel"]=ucfirst(str_replace('"',"&rquot;",$elabel));
+	  if ($listattr[$i]->needed ) $tableframe[$v]["labelclass"]="FREEDOMLabelNeeded";
+	  else $tableframe[$v]["labelclass"]="FREEDOMLabel";
+	  $elabel=$listattr[$i]->getoption("elabel");
+	  $elabel=str_replace("'","&rsquo;",$elabel);
+	  $tableframe[$v]["elabel"]=ucfirst(str_replace('"',"&rquot;",$elabel));
+	  $tableframe[$v]["helpid"]=$helpid;
+	  $tableframe[$v]["ehelp"]=($helpid!=false) && (in_array($listattr[$i]->id,$helpattr));
 
-              $tableframe[$v]["name"]=ucfirst($label);
-              $tableframe[$v]["classback"]=($attr->usefor=="O")?"FREEDOMOpt":"FREEDOMBack1";
-              //$tableframe[$v]["name"]=$action->text($label);
+	  $tableframe[$v]["name"]=ucfirst($label);
+	  $tableframe[$v]["classback"]=($attr->usefor=="O")?"FREEDOMOpt":"FREEDOMBack1";
+	  //$tableframe[$v]["name"]=$action->text($label);
 
-              $tableframe[$v]["SINGLEROW"]=true;
+	  $tableframe[$v]["SINGLEROW"]=true;
 
 
-              $vlabel=$listattr[$i]->getOption("vlabel");
-              if ((($listattr[$i]->type=="array")&&($vlabel!='left'))||(($listattr[$i]->type=="htmltext")&&($vlabel!='left'))||($vlabel=='up')||($vlabel=='none')) $tableframe[$v]["SINGLEROW"]=false;
+	  $vlabel=$listattr[$i]->getOption("vlabel");
+	  if ((($listattr[$i]->type=="array")&&($vlabel!='left'))||(($listattr[$i]->type=="htmltext")&&($vlabel!='left'))||($vlabel=='up')||($vlabel=='none')) $tableframe[$v]["SINGLEROW"]=false;
 
-              $tableframe[$v]["viewlabel"]=(($listattr[$i]->type != "array")&&($vlabel!='none'));
-              $edittpl=$listattr[$i]->getOption("edittemplate");
-              if ($edittpl) {
-                  if ($edittpl=="none") {
-                      unset ($tableframe[$v]);
-                  } else {
-                      if ($this->getZoneOption($edittpl) == 'S') {
-                          $tableframe[$v]["SINGLEROW"]=false;
-                          $tableframe[$v]["viewlabel"]=false;
-                      }
-                      $tableframe[$v]["inputtype"]=sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",$this->id, $this->fromid,$edittpl);
-                  }
-              } else {
-                  $tableframe[$v]["inputtype"]=getHtmlInput($this,
-                  $listattr[$i],
-                  $value);
-              }
-              $v++;
-          }
+	  $tableframe[$v]["viewlabel"]=(($listattr[$i]->type != "array")&&($vlabel!='none'));
+	  $edittpl=$listattr[$i]->getOption("edittemplate");
+	  if ($edittpl) {
+	    if ($edittpl=="none") {
+	      unset ($tableframe[$v]);
+	    } else {
+	      if ($this->getZoneOption($edittpl) == 'S') {
+		$tableframe[$v]["SINGLEROW"]=false;
+		$tableframe[$v]["viewlabel"]=false;
+	      }
+	      $tableframe[$v]["inputtype"]=sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",$this->id, $this->fromid,$edittpl);
+	    }
+	  } else {
+	    $tableframe[$v]["inputtype"]=getHtmlInput($this,
+						      $listattr[$i],
+						      $value);
+	  }
+	  $v++;
+	}
       }
     }
   
@@ -6297,8 +6316,8 @@ static function _cmpanswers($a,$b) {
       $frames[$k]["TABLEVALUE"]="TABLEVALUE_$k";
       $frames[$k]["tag"]="";
       $frames[$k]["TAB"]=false;      
-          $frames[$k]["edittpl"]=($frametpl!="");
-          $frames[$k]["zonetpl"]=($frametpl!="")?sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",$this->id, $this->fromid,$frametpl):'';
+      $frames[$k]["edittpl"]=($frametpl!="");
+      $frames[$k]["zonetpl"]=($frametpl!="")?sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]",$this->id, $this->fromid,$frametpl):'';
           
       $oaf=$this->getAttribute($currentFrameId);	      
       $frames[$k]["bgcolor"]=$oaf?$oaf->getOption("bgcolor",false):false;
@@ -6306,7 +6325,7 @@ static function _cmpanswers($a,$b) {
 	$frames[$k]["tag"]="TAG".$currentFrame->fieldSet->id;
 	$frames[$k]["TAB"]=true;
 	$ttabs[$currentFrame->fieldSet->id]=array("tabid"=>$currentFrame->fieldSet->id,
-						      "tabtitle"=>ucfirst($currentFrame->fieldSet->getLabel()));
+						  "tabtitle"=>ucfirst($currentFrame->fieldSet->getLabel()));
       }
       $this->lay->SetBlockData($frames[$k]["TABLEVALUE"],
 			       $tableframe);
@@ -6316,6 +6335,7 @@ static function _cmpanswers($a,$b) {
     $this->lay->SetBlockData("TABLEBODY",$frames);    
     $this->lay->SetBlockData("TABS",$ttabs);
     $this->lay->Set("ONETAB",count($ttabs)>0);
+    $this->lay->Set("fromid",$this->fromid);
     if (count($ttabs)>0)   {
       $this->lay->Set("firsttab",false);
       foreach ($ttabs as $k=>$v) {
@@ -6449,7 +6469,7 @@ static function _cmpanswers($a,$b) {
    * @return string value of property or array of all properties if no key
    */
   final public function getFileInfo($filesvalue, $key="") {    
-  	if (! is_string(  $filesvalue)) return false;  
+    if (! is_string(  $filesvalue)) return false;  
     if (preg_match(PREGEXPFILE, $filesvalue, $reg)) {
       include_once("FDL/Lib.Vault.php");
       $vid=$reg[2];
@@ -6473,84 +6493,84 @@ static function _cmpanswers($a,$b) {
    */
   public function exportXml(&$xml,$withfile=false,$outfile="",$wident=true, $flat=false,$exportAttributes=array()) {
       
-      $lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
-      //$lay=&$this->lay;
-      $lay->set("famname",strtolower($this->fromname));
-      $lay->set("id",($wident?$this->id:''));
-      $lay->set("name",$this->name);
-      $lay->set("revision",$this->revision);
-      $lay->set("version",$this->getVersion());
-      $lay->set("state",$this->getState());
-      $lay->set("title",str_replace("&","&amp;",$this->getTitle()));
-      $lay->set("mdate",strftime("%FT%X",$this->revdate));
-      $lay->set("flat",$flat);
-      $la=$this->GetFieldAttributes();
-      $level1=array();
+    $lay=new Layout(getLayoutFile("FDL","exportxml.xml"));
+    //$lay=&$this->lay;
+    $lay->set("famname",strtolower($this->fromname));
+    $lay->set("id",($wident?$this->id:''));
+    $lay->set("name",$this->name);
+    $lay->set("revision",$this->revision);
+    $lay->set("version",$this->getVersion());
+    $lay->set("state",$this->getState());
+    $lay->set("title",str_replace(array("&",'<','>'),array("&amp;",'&lt;','&gt;'),$this->getTitle()));
+    $lay->set("mdate",strftime("%FT%X",$this->revdate));
+    $lay->set("flat",$flat);
+    $la=$this->GetFieldAttributes();
+    $level1=array();
             
-      foreach ($la as $k=>$v) {
-          if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
-      }
-      $option->withFile=$withfile;
-      $option->outFile=$outfile;
-      $option->withIdentificator=$wident;
-      $option->flat=$flat;
-      $option->exportAttributes=$exportAttributes;
+    foreach ($la as $k=>$v) {
+      if  ((!$v) || ($v->getOption("autotitle")=="yes") || ($v->usefor == 'Q')) unset($la[$k]);
+    }
+    $option->withFile=$withfile;
+    $option->outFile=$outfile;
+    $option->withIdentificator=$wident;
+    $option->flat=$flat;
+    $option->exportAttributes=$exportAttributes;
       
-      foreach ($la as $k=>&$v) {
-        if (($v->id != "FIELD_HIDDENS") && 
-            ($v->type=='frame' || $v->type=="tab") && 
-            ((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {
-            $level1[]=array("level"=>$v->getXmlValue($this,$option));
-        } else {
-           // if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
-        }
+    foreach ($la as $k=>&$v) {
+      if (($v->id != "FIELD_HIDDENS") && 
+	  ($v->type=='frame' || $v->type=="tab") && 
+	  ((!$v->fieldSet) || $v->fieldSet->id=="FIELD_HIDDENS")) {
+	$level1[]=array("level"=>$v->getXmlValue($this,$option));
+      } else {
+	// if ($v)  $tax[]=array("tax"=>$v->getXmlSchema());
       }
-      $lay->setBlockData("top",$level1);
-      if ($outfile) {
-          if ($withfile) {
-              $xmlcontent=$lay->gen();
-              $fo=fopen($outfile,"w");
-              $pos = strpos($xmlcontent, "[FILE64");
-              $bpos=0;
-              while ($pos !== false) {
-                  if (fwrite($fo,substr($xmlcontent,$bpos,$pos))) {
-                      $bpos=strpos($xmlcontent, "]",$pos)+1;
+    }
+    $lay->setBlockData("top",$level1);
+    if ($outfile) {
+      if ($withfile) {
+	$xmlcontent=$lay->gen();
+	$fo=fopen($outfile,"w");
+	$pos = strpos($xmlcontent, "[FILE64");
+	$bpos=0;
+	while ($pos !== false) {
+	  if (fwrite($fo,substr($xmlcontent,$bpos,$pos))) {
+	    $bpos=strpos($xmlcontent, "]",$pos)+1;
 
-                      $filepath=substr($xmlcontent,$pos+8,($bpos-$pos -9));
+	    $filepath=substr($xmlcontent,$pos+8,($bpos-$pos -9));
 
-                      /* If you want to encode a large file, you should encode it in chunks that
-                       are a multiple of 57 bytes.  This ensures that the base64 lines line up
-                       and that you do not end up with padding in the middle. 57 bytes of data
-                       fills one complete base64 line (76 == 57*4/3):*/
-                      $ff=fopen($filepath,"r");
-                      $size=6*1024*57;
-                      while ($buf=fread($ff, $size)) {
-                          fwrite($fo,base64_encode($buf));
-                      }
-                      $pos = strpos($xmlcontent, "[FILE64", $bpos);
+	    /* If you want to encode a large file, you should encode it in chunks that
+	       are a multiple of 57 bytes.  This ensures that the base64 lines line up
+	       and that you do not end up with padding in the middle. 57 bytes of data
+	       fills one complete base64 line (76 == 57*4/3):*/
+	    $ff=fopen($filepath,"r");
+	    $size=6*1024*57;
+	    while ($buf=fread($ff, $size)) {
+	      fwrite($fo,base64_encode($buf));
+	    }
+	    $pos = strpos($xmlcontent, "[FILE64", $bpos);
 
-                      $tok = strtok("[FILE64");
-                  } else {
-                      $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
-                      $pos=false;
-                  }
-              }
-              if ($err=="") fwrite($fo,substr($xmlcontent,$bpos));
-              fclose($fo);
-          } else {
-              if (file_put_contents($outfile,$lay->gen())===false) {
-                  $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
-              }
-          }
+	    $tok = strtok("[FILE64");
+	  } else {
+	    $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
+	    $pos=false;
+	  }
+	}
+	if ($err=="") fwrite($fo,substr($xmlcontent,$bpos));
+	fclose($fo);
+      } else {
+	if (file_put_contents($outfile,$lay->gen())===false) {
+	  $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
+	}
       }
-      else {
-          $xml=$lay->gen();
-          return $err;
-      }
+    }
+    else {
+      $xml=$lay->gen();
       return $err;
+    }
+    return $err;
   }
   
- // =====================================================================================
+  // =====================================================================================
   // ================= Methods use for XML ======================
   final public function toxml($withdtd=false,$id_doc="")  {
 
@@ -7047,34 +7067,48 @@ static function _cmpanswers($a,$b) {
   /**
    * return the today date with european format DD/MM/YYYY
    * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
-   * @return string DD/MM/YYYY
+   * @param int $dayhour hours of day
+   * @param int $daymin minutes of day
+   * @param bool $getlocale whether to return locale date or not
+   * @return string DD/MM/YYYY or locale date
    */
-  public static function getDate($daydelta=0,$dayhour="",$daymin="") {
+  public static function getDate($daydelta=0,$dayhour="",$daymin="",$getlocale=false) {
     $delta = abs(intval($daydelta));
     if ($daydelta > 0) {
-      $nd =strtotime ("+$delta day");
+      $nd = strtotime("+$delta day");
     } else if ($daydelta < 0) {
-       $nd =strtotime ("-$delta day");
+      $nd = strtotime("-$delta day");
     } else {
-      $nd =time();
+      $nd = time();
     }
 
-    if ($dayhour==="")  return date("d/m/Y",$nd);
-    else {
-      $delta=abs(intval($dayhour));
+    if ($dayhour !== "") {
+      $delta = abs(intval($dayhour));
       if ($dayhour > 0) {
-	$nd =strtotime ("+$delta hour",$nd);
+	$nd = strtotime("+$delta hour", $nd);
       } else if ($dayhour < 0) {
-	$nd = strtotime ("-$delta hour",$nd);
+	$nd = strtotime("-$delta hour", $nd);
       }
-      $delta=abs(intval($daymin));
+      $delta = abs(intval($daymin));
       if ($daymin > 0) {
-	$nd =strtotime ("+$delta min",$nd);
+	$nd = strtotime("+$delta min", $nd);
       } else if ($daymin < 0) {
-	$nd = strtotime ("-$delta min",$nd);
+	$nd = strtotime("-$delta min", $nd);
+      }
+
+      if ($getlocale) {
+	return FrenchDateToLocaleDate(date("d/m/Y H:i", $nd));
+      } else {
+	return date("Y-m-d H:i", $nd);
       }
     }
-    return date("d/m/Y H:i",$nd);
+    else {
+      if ($getlocale) {
+	return FrenchDateToLocaleDate(date("d/m/Y", $nd));
+      } else {
+	return date("Y-m-d", $nd);
+      }
+    }
   }
 
   /**
@@ -7242,21 +7276,21 @@ static function _cmpanswers($a,$b) {
     }
     
     foreach ($tvid as $k=>$vid) {
-	  $dvi->docid = $this->id;
-	  $dvi->vaultid = $vid;
-	  $dvi->Add();	
+      $dvi->docid = $this->id;
+      $dvi->vaultid = $vid;
+      $dvi->Add();	
     }
   }
 
   // ===================
   // Timer Part
 
-   /**
-    * attach timer to a document
-    * @param _TIMER &$timer the timer document
-    * @param Doc &$origin the document which comes from the attachement
-    * @return string error - empty if no error -
-    */
+  /**
+   * attach timer to a document
+   * @param _TIMER &$timer the timer document
+   * @param Doc &$origin the document which comes from the attachement
+   * @return string error - empty if no error -
+   */
   final public function attachTimer(&$timer,&$origin=null,$execdate=null) {
     $dyn=false;
     if ($execdate==null) {
@@ -7276,11 +7310,11 @@ static function _cmpanswers($a,$b) {
     return $err;
   }    
   /**
-    * unattach timer to a document
-    * @param _TIMER &$timer the timer document
-    * @param Doc &$origin if set unattach all timer which comes from this origin
-    * @return string error - empty if no error -
-    */
+   * unattach timer to a document
+   * @param _TIMER &$timer the timer document
+   * @param Doc &$origin if set unattach all timer which comes from this origin
+   * @return string error - empty if no error -
+   */
   final public function unattachTimer(&$timer) {
     if (method_exists($timer,'unattachDocument')) {
       $err=$timer->unattachDocument($this);
@@ -7310,11 +7344,11 @@ static function _cmpanswers($a,$b) {
   }
 
   /**
-    * unattach timer to a document
-    * @param _TIMER &$timer the timer document
-    * @param Doc &$origin if set unattach all timer which comes from this origin
-    * @return string error - empty if no error -
-    */
+   * unattach timer to a document
+   * @param _TIMER &$timer the timer document
+   * @param Doc &$origin if set unattach all timer which comes from this origin
+   * @return string error - empty if no error -
+   */
   final public function unattachAllTimers(&$origin=null) {
     $timer=createTmpDoc($this->dbaccess,"TIMER");
     $err=$timer->unattachAllDocument($this,$origin,$c);
@@ -7326,9 +7360,9 @@ static function _cmpanswers($a,$b) {
     return $err;
   }  
   /**
-    * return all activated document timer
-    * @return array of doctimer values
-    */
+   * return all activated document timer
+   * @return array of doctimer values
+   */
   final public function getAttachedTimers() {      
     include_once("Class.QueryDb.php");    
     include_once("Class.DocTimer.php");
