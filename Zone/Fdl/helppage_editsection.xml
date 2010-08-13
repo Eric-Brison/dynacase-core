@@ -54,6 +54,10 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 
 <table style="width:100%" cellspacing="0" class="edittable">
 	<tr>
+		<td class="FREEDOMLabel" width="20%"><span >[TEXT:Section key]&nbsp:&nbsp;</span></td>
+		<td>[SECTIONKEY]</td>
+	</tr>
+	<tr>
 		<td class="FREEDOMLabel" width="20%"><span >[TEXT:Section name]&nbsp:&nbsp;</span></td>
 		<td><input type="text" name="sec_name" id="sec-name" value="" /></td>
 	</tr>
@@ -179,7 +183,7 @@ function loadFCKeditor_helppage() {
 
 	self.setTimeout( trackFCKLoaded_helppage, 500 );
 	
-	return;
+	return true;
 }
 
 

@@ -278,7 +278,7 @@ Class _HELPPAGE extends Doc {
 						'SECKEY' => $sec['help_sec_key'],
 						'SECNAME' => $sec['help_sec_name'],
 						'SECLANG' => $sec['help_sec_lang'],
-						'SECTEXT' => $sec['help_sec_text'],
+						'SECTEXT' => $this->getHtmlValue($this->getAttribute('help_sec_text'), $sec['help_sec_text']),
 						'SECDISPLAY' => $lang_key == $first_lang ? 'block' : 'none',
 						'SECLANGS' => 'seclangs'.$i,
 						'SECHEADER' => '0',
@@ -309,6 +309,7 @@ Class _HELPPAGE extends Doc {
 			);
 		}
 		$this->lay->setBlockData('ALLLANGS', $all_langs);
+		
 		$descriptions = $this->getAvalues("help_t_help");
 		$first = true;
 		foreach ($descriptions as &$v) {
@@ -318,6 +319,7 @@ Class _HELPPAGE extends Doc {
 			}
 		}
 		$this->lay->setBlockData('DESCR', $descriptions);
+		
 		$first = true;
 		foreach ($descriptions as &$v) {
 			$v["firsttitle"] = $first;
@@ -326,6 +328,7 @@ Class _HELPPAGE extends Doc {
 			}
 		}
 		$this->lay->setBlockData('TITLES', $descriptions);
+		
 		// construct aides
 		$aides = array();
 		$s = new SearchDoc($this->dbaccess, 'HELPPAGE');

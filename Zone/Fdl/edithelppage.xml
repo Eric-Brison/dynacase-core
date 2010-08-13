@@ -125,7 +125,7 @@
 	<a onclick="return help_open_subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>&nbsp;
 	&nbsp;&nbsp;
 </div>[BLOCK [SECTIONITEMS]]<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
-	<div class="help-section-title" id="sec-name-[SECKEY]-[SECLANG]" onclick="toggle_section('[SECKEY]')">[SECNAME]</div>
+	<div class="help-section-title" id="sec-name-[SECKEY]-[SECLANG]" onclick="toggle_section('[SECKEY]')" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</div>
 	<div class="help-section-text" id="sec-text-[SECKEY]-[SECLANG]">[SECTEXT]</div>
 </div>[ENDBLOCK [SECTIONITEMS]]</div>[ENDBLOCK CONTENTSECTIONS]
 
@@ -145,7 +145,7 @@ var section_template = '\n\
 	<a onclick="return help_open_subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
 	&nbsp;&nbsp;\n\
 </div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\
-	<div class="help-section-title" id="sec-name-{SECKEY}-[LANGKEY]" onclick="toggle_section(\'{SECKEY}\')">[TEXT:New section] : {SECKEY}</div>\n\
+	<div class="help-section-title" id="sec-name-{SECKEY}-[LANGKEY]" onclick="toggle_section(\'{SECKEY}\')" title="[TEXT:Section key] : [SECKEY]">[TEXT:New section] : {SECKEY}</div>\n\
 	<div class="help-section-text" id="sec-text-{SECKEY}-[LANGKEY]"></div>\n\
 </div>[ENDBLOCK TEMPLATELANGS2]';
 
