@@ -140,7 +140,7 @@ function help_add_section(seckey) {
 		help_sec_key: seckey,
 		help_sec_lang: '',
 		help_sec_name: "[TEXT:New section] : "+seckey,
-		help_sec_text: '',
+		help_sec_text: ''
 	};
 
 	// get max order

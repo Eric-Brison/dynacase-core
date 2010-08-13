@@ -89,7 +89,7 @@ function viewContraint(inp, info) {
         sp.innerHTML=info.err;
         info.displayed=true;
         ntr.appendChild(sp);
-        addEvent(sp,"click", function () { ntr.style.display='none';inp.focus();});
+        addEvent(sp,"click", function () { ntr.style.display='none';try {inp.focus();} catch (exception) {}});
         inp.parentNode.insertBefore(ntr,inp);
         
         if (info.sug && (info.sug.length > 0)) {

@@ -1000,7 +1000,7 @@ function clearInputs(tinput, idx,attrid) {
   disableReadAttribute();
 
   if (err != '')  alert('[TEXT:NOT Clear]'+err);
-  if (attrid && document.getElementById(attrid)) document.getElementById(attrid).focus();
+  if (attrid && document.getElementById(attrid)) try {document.getElementById(attrid).focus();} catch (exception) {} ;
 
 }
 function addEnum(th,cible,docid,attrid,key) {

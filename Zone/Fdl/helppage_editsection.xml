@@ -158,6 +158,7 @@ function trackFCKLoaded_helppage() {
 	}
 
 	help_edit_load();
+	autoVresize();
 	
 }
 
