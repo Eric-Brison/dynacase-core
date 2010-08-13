@@ -37,6 +37,12 @@ function setConstraint(info) {
             }
 	}
     }
+    for (var i in info) {
+      if (! info[i].displayed) {
+         window.parent.displayWarningMsg(info[i].err);
+       }
+    }
+
 }
 function focusConstraint(inp) {
     if (inp) {
@@ -81,6 +87,7 @@ function viewContraint(inp, info) {
         }
         var sp=window.parent.document.createElement("span");
         sp.innerHTML=info.err;
+        info.displayed=true;
         ntr.appendChild(sp);
         addEvent(sp,"click", function () { ntr.style.display='none';inp.focus();});
         inp.parentNode.insertBefore(ntr,inp);

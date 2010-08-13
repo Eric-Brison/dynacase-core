@@ -126,13 +126,13 @@ function windowExist(Name, NoOpen) {
 }
 var warnmsg='';
 function displayWarningMsg(logmsg) {
-  warnmsg=logmsg;
+  var msg=logmsg;
   if(window.parent.Ext){
-	  	warnmsg = warnmsg.replace(new RegExp("\n","ig"),'<br/>');
-	  	warnmsg = warnmsg.replace(new RegExp("\n","ig"),'<br/>');
-		window.parent.Ext.Msg.alert('freedom',warnmsg);
+	  	msg = msg.replace(new RegExp("\n","ig"),'<br/>');
+	  	msg = msg.replace(new RegExp("\n","ig"),'<br/>');
+		window.parent.Ext.Msg.alert('freedom',msg);
 	} else {
-  setTimeout('alert(warnmsg)',1000);
+  setTimeout(function () {alert(msg);},1000);
 	}
 }
 function displayLogMsg(logmsg) {
