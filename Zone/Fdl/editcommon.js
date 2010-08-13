@@ -430,7 +430,7 @@ function clearTableRow(attributename) {
 				break;
 			}
 			t.removeChild(child);
-		} 
+		}
 	}
 }
 /**

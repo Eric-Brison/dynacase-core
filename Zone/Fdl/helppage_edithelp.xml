@@ -67,6 +67,7 @@ fieldset legend img {
 
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
+
 function help_edit_apply() {
 	Ih.docClearTableRow('help_t_help');
 	for (var k in LANGS) {

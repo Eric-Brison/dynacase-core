@@ -26,7 +26,7 @@ Class _HELPPAGE extends Doc {
 	 */
 
 	public $defaultview = 'FDL:VIEWHELPPAGE:T';
-	//public $defaultedit = 'FDL:EDITHELPPAGE';
+	public $defaultedit = 'FDL:EDITHELPPAGE';
 
 	/**
 	 *
@@ -132,9 +132,7 @@ Class _HELPPAGE extends Doc {
 		$this->editattr();
 
 		$help_values = $this->getHelpByLang();
-//foreach(explode("\n", print_r($help_values, true)) as $tmp) {error_log($tmp);}
-//foreach(explode("\n", print_r($langs, true)) as $tmp) {error_log($tmp);}
-//foreach(explode("\n", print_r($user_lang, true)) as $tmp) {error_log($tmp);}
+		
 		// set help values
 		$helpname = '';
 		$helplangiso = '';
@@ -160,8 +158,7 @@ Class _HELPPAGE extends Doc {
 		$this->lay->set('HELPNAME', $helpname);
 		$this->lay->set('HELPDESCRIPTION', $helpdescription);
 
-//foreach(explode("\n", print_r($lang_key, true)) as $tmp) {error_log($tmp);}
-//foreach(explode("\n", print_r($this->getLangsFromItem($langs, $lang_key, $help_values), true)) as $tmp) {error_log($tmp);}
+
 
 		$this->lay->SetBlockData('HELPLANGS', $this->getLangsFromItem($langs, $lang_key, $help_values));
 		$this->lay->set('JSONLANGS', json_encode($langs));
@@ -204,7 +201,22 @@ Class _HELPPAGE extends Doc {
 		}
 		$this->lay->setBlockData('CONTENTSECTIONS', $contentsection);
 
-//foreach(explode("\n", print_r($contentsection, true)) as $tmp) {error_log($tmp);}
+		
+		$langitems = array();
+		$first = true;
+		foreach($langs as $lang_key => $lang_name) {
+			$langitems[] = array(
+				'LANGKEY' => $lang_key,
+				'LANGISO' => strtolower(substr($lang_key, -2)),
+				'LANGNAME' => $lang_name,
+				'LANGCLASS' => $first ? 'current' : 'inactive',
+				'LANGDISPLAY' => $first ? 'block' : 'none',
+			);
+			$first = false;
+		}
+		$this->lay->setBlockData('TEMPLATELANGS1', $langitems);
+		$this->lay->setBlockData('TEMPLATELANGS2', $langitems);
+
 	}
 
 	/**

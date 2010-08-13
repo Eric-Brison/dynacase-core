@@ -298,7 +298,7 @@ class Layout {
 
   function ParseRef(&$out) {
 
-     $out = preg_replace("/\[IMG:([^\|]+)\|([0-9]+)\]/e",
+     $out = preg_replace("/\[IMG:([^\|\]]+)\|([0-9]+)\]/e",
                          "\$this->action->GetImageUrl('\\1',true,'\\2')",
                          $out);
 
