@@ -337,7 +337,7 @@ Class _HELPPAGE extends Doc {
 		$s->search();
 		while ($doc = $s->nextDoc()) {
 			$aides[] = array(
-				'AIDE' => $doc->getDocAnchor($doc->id, '_self', true, false, false),
+				'AIDE' => $doc->getDocAnchor($doc->id, $target, true, false, false),
 			);
 		}
 		$this->lay->setBlockData('LEFTHELPS', $aides);
