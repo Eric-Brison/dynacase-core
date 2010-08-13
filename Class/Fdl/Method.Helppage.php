@@ -236,7 +236,7 @@ Class _HELPPAGE extends Doc {
 		if ($this->CanEdit() == '') {
 			$this->lay->set('HELPEDITABLE', '1');
 			if ($action->getArgument('target') == 'ext') {
-				$this->lay->set('HELPEDITURI', '?app=FDL&action=EDITEXTDOC&id='.$this->id);
+				$this->lay->set('HELPEDITURI', '?app=FDL&action=EDITEXTDOC&viewext=yes&id='.$this->id);
 			}
 			else {
 				$this->lay->set('HELPEDITURI', '?app=GENERIC&action=GENERIC_EDIT&id='.$this->id);
