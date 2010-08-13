@@ -133,28 +133,13 @@
 
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
-var section_template = '\n\
-<div class="help-section-langs" id="sec-langs-{SECKEY}">\n\
-	[BLOCK TEMPLATELANGS1]\n\
-	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,\'{SECKEY}\',\'[LANGKEY]\')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>\n\
-	[ENDBLOCK TEMPLATELANGS1]\n\
-</div><div class="help-section-langs">\n\
-	<!---\n\
-	<a onclick="help_up(\'{SECKEY}\')">[TEXT:Up] &uarr;</a>&nbsp;\n\
-	<a onclick="help_down(\'{SECKEY}\')">[TEXT:Down] &darr;</a>&nbsp;--->\n\
-	<a onclick="return help_open_subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
-	&nbsp;&nbsp;\n\
-</div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\
-	<div class="help-section-title" id="sec-name-{SECKEY}-[LANGKEY]" onclick="toggle_section(\'{SECKEY}\')" title="[TEXT:Section key] : [SECKEY]">[TEXT:New section] : {SECKEY}</div>\n\
-	<div class="help-section-text" id="sec-text-{SECKEY}-[LANGKEY]"></div>\n\
-</div>[ENDBLOCK TEMPLATELANGS2]';
 
 function help_add_section(seckey) {
 	var item = {
 		help_sec_order: 0,
 		help_sec_key: seckey,
 		help_sec_lang: '',
-		help_sec_name: '[TEXT:New section] : '+seckey,
+		help_sec_name: "[TEXT:New section] : "+seckey,
 		help_sec_text: '',
 	};
 
@@ -199,17 +184,17 @@ function help_add_section(seckey) {
 }
 
 function help_add_section_prompt(err) {
-	var msg = '[TEXT:Please enter the new section key]';
+	var msg = "[TEXT:Please enter the new section key]";
 	if(err) {
 		msg += "\n"+err;
 	}
 	var seckey = window.prompt(msg);
 	if(seckey) {
 		if(!seckey.match(/^[a-z0-9_-]+$/i)) {
-			help_add_section_prompt('[TEXT:Only these characters are allowed : a..z, A..Z, 0..9, _, -]');
+			help_add_section_prompt("[TEXT:Only these characters are allowed : a..z, A..Z, 0..9, _, -]");
 		}
 		else if(help_section_exists(seckey)) {
-			help_add_section_prompt('[TEXT:Sorry but this section key already exists !]');
+			help_add_section_prompt("[TEXT:Sorry but this section key already exists !]");
 		}
 		else {
 			help_add_section(seckey);
@@ -565,4 +550,21 @@ function help_open_subwindow(event,attrname,seckey) {
 	}
 	return false;
 }
+
+
+var section_template = '\n\
+<div class="help-section-langs" id="sec-langs-{SECKEY}">\n\
+	[BLOCK TEMPLATELANGS1]\n\
+	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,\'{SECKEY}\',\'[LANGKEY]\')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>\n\
+	[ENDBLOCK TEMPLATELANGS1]\n\
+</div><div class="help-section-langs">\n\
+	<!---\n\
+	<a onclick="help_up(\'{SECKEY}\')">[TEXT:Up] &uarr;</a>&nbsp;\n\
+	<a onclick="help_down(\'{SECKEY}\')">[TEXT:Down] &darr;</a>&nbsp;--->\n\
+	<a onclick="return help_open_subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
+	&nbsp;&nbsp;\n\
+</div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\
+	<div class="help-section-title" id="sec-name-{SECKEY}-[LANGKEY]" onclick="toggle_section(\'{SECKEY}\')" title="[TEXT:Section key] : [SECKEY]">[TEXT:New section] : {SECKEY}</div>\n\
+	<div class="help-section-text" id="sec-text-{SECKEY}-[LANGKEY]"></div>\n\
+</div>[ENDBLOCK TEMPLATELANGS2]';
 </script>
