@@ -82,10 +82,8 @@
 }
 </style>
 
-<div style="display:none">
-[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]
-[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]
-</div>
+<div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]</div>
+<div style="display:block">[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]</div>
 
 <fieldset><legend>[TEXT:Online help]</legend>
 	<div id="help-langs">
@@ -119,9 +117,8 @@
 	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,'[SECKEY]','[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 	[ENDBLOCK [SECTIONLANGS]]
 </div><div class="help-section-langs">
-	<!---
-	<a onclick="help_up('[SECKEY]')">[TEXT:Up] &uarr;</a>&nbsp;
-	<a onclick="help_down('[SECKEY]')">[TEXT:Down] &darr;</a>&nbsp;--->
+	<a onclick="return help_up('[SECKEY]')">[TEXT:Up] &uarr;</a>&nbsp;
+	<a onclick="return help_down('[SECKEY]')">[TEXT:Down] &darr;</a>&nbsp;
 	<a onclick="return help_open_subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>&nbsp;
 	&nbsp;&nbsp;
 </div>[BLOCK [SECTIONITEMS]]<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
@@ -134,23 +131,179 @@
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
 
+function help_down(seckey) {
+	var minmax = help_get_minmax_order();
+	if(!minmax) {
+		return false;
+	}
+	var secorder = help_seckey_to_order(seckey);
+	if(secorder < 0) {
+		return false;
+	}
+	if(secorder == minmax.max) {
+		return false;
+	}
+	// change values in array HTML
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i)) {
+				var order = parseInt(input.value);
+				if(order == secorder) {
+					input.value = order + 1;
+				}
+				else if (order == secorder + 1) {
+					input.value = order - 1;
+				}
+			}
+		}
+	}
+	// move DOM
+	var div_parent = document.getElementById('help-sections');
+	var div = document.getElementById('sec-'+seckey);
+	var div2 = document.getElementById('sec-'+help_order_to_seckey(secorder+2));
+	if(div2) {
+		var tmp = div_parent.removeChild(div);
+		div_parent.insertBefore(tmp, div2);
+	}
+	else {
+		var tmp = div_parent.removeChild(div);
+		div_parent.appendChild(tmp);
+	}
+	return false;
+}
+
+function help_up(seckey) {
+	var minmax = help_get_minmax_order();
+	if(!minmax) {
+		return false;
+	}
+	var secorder = help_seckey_to_order(seckey);
+	if(secorder < 0) {
+		return false;
+	}
+	if(secorder == minmax.min) {
+		return false;
+	}
+	// change values in array HTML
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i)) {
+				var order = parseInt(input.value);
+				if(order == secorder) {
+					input.value = order - 1;
+				}
+				else if (order == secorder - 1) {
+					input.value = order + 1;
+				}
+			}
+		}
+	}
+	// move DOM
+	var div_parent = document.getElementById('help-sections');
+	var div = document.getElementById('sec-'+seckey);
+	var div2 = document.getElementById('sec-'+help_order_to_seckey(secorder));
+	if(div2) {
+		var tmp = div_parent.removeChild(div);
+		div_parent.insertBefore(tmp, div2);
+	}
+	else {
+		var tmp = div_parent.removeChild(div);
+		div_parent.appendChild(tmp);
+	}
+	return false;
+}
+
+function help_order_to_seckey(order) {
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+
+	// load sections
+	for(var i=0; i< sec_keys.length; i++) {
+		if(order == sec_orders[i]) {
+			return sec_keys[i];
+		}
+	}
+	return false;
+}
+
+function help_seckey_to_order(seckey) {
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+
+	// load sections
+	for(var i=0; i< sec_keys.length; i++) {
+		if(seckey == sec_keys[i]) {
+			return parseInt(sec_orders[i]);
+		}
+	}
+	return -1;
+}
+
+function help_increment_orders() {
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i)) {
+				input.value = parseInt(input.value) + 1;
+			}
+		}
+	}
+}
+
+function help_get_minmax_order() {
+	var min = 999999;
+	var max = -1;
+	var sec_orders = getFormValue('help_sec_order');
+	for(var i=0; i< sec_orders.length; i++) {
+		if(sec_orders[i] > max) {
+			max = parseInt(sec_orders[i]);
+		}
+		if(sec_orders[i] < min) {
+			min = parseInt(sec_orders[i]);
+		}
+	}
+	if(min == 999999) {
+		return false;
+	}
+	if(max == -1) {
+		return false;
+	}
+	return {
+		'min': min,
+		'max': max
+	};
+}
+
 function help_add_section(seckey) {
 	var item = {
-		help_sec_order: 0,
+		help_sec_order: 1,
 		help_sec_key: seckey,
 		help_sec_lang: '',
 		help_sec_name: "[TEXT:New section] : "+seckey,
 		help_sec_text: ''
 	};
 
-	// get max order
-	var sec_orders = getFormValue('help_sec_order');
-	for(var i=0; i< sec_orders.length; i++) {
-		if(sec_orders[i] > item.help_sec_order) {
-			item.help_sec_order = sec_orders[i];
-		}
-	}
-	item.help_sec_order++;
+	help_increment_orders();
 
 	// get lang
 	for(var lang in LANGS) {
@@ -308,34 +461,6 @@ function help_section_exists(seckey) {
 	}
 }
 
-/*
-function help_up() {
-	var old_orders = help_get_ordered_sections();
-	var new_orders = [;
-	var current_order = 0;
-
-}
-
-function help_get_ordered_sections() {
-	var sec_orders = getFormValue('help_sec_order');
-	var sec_keys = getFormValue('help_sec_key');
-
-	// load sections
-	res = [];
-	for(var i=0; i< sec_keys.length; i++) {
-		res.push({
-			'key': sec_keys[i],
-			'order': sec_orders[i]
-		});
-	}
-
-	// sort
-	var sorted = [];
-	
-
-	return res;
-}
-*/
 
 function help_get_section_order(seckey) {
 
@@ -559,9 +684,8 @@ var section_template = '\n\
 	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,\'{SECKEY}\',\'[LANGKEY]\')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>\n\
 	[ENDBLOCK TEMPLATELANGS1]\n\
 </div><div class="help-section-langs">\n\
-	<!---\n\
-	<a onclick="help_up(\'{SECKEY}\')">[TEXT:Up] &uarr;</a>&nbsp;\n\
-	<a onclick="help_down(\'{SECKEY}\')">[TEXT:Down] &darr;</a>&nbsp;--->\n\
+	<a onclick="return help_up(\'{SECKEY}\')">[TEXT:Up] &uarr;</a>&nbsp;\n\
+	<a onclick="return help_down(\'{SECKEY}\')">[TEXT:Down] &darr;</a>&nbsp;\n\
 	<a onclick="return help_open_subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
 	&nbsp;&nbsp;\n\
 </div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\
