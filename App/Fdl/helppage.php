@@ -41,6 +41,18 @@ function helppage_editsection(Action &$action,$dbaccess,$docid) {
 	$section_key = GetHttpVars('edit_section_key', '');
 	$action->lay->set('SECTIONKEY', $section_key);
 
+	$langitems = array();
+	foreach($langs as $lang_key => $lang_name) {
+		$langitems[] = array(
+			'LANGKEY' => $lang_key,
+			'LANGISO' => strtolower(substr($lang_key, -2)),
+			'LANGNAME' => $lang_name,
+		);
+	}
+
+	$action->lay->SetBlockData('LEGENDCSSLANGS', $langitems);
+	$action->lay->SetBlockData('LEGENDLANGS', $langitems);
+	$action->lay->SetBlockData('MENULANGS', $langitems);
 
 }
 

@@ -12,6 +12,13 @@ FCKConfig.ToolbarSets["Simple"] = [
 				   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['OrderedList','UnorderedList','-','Outdent','Indent'],
 				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','About']
 ] ;
+FCKConfig.ToolbarSets["SimpleNoQS"] = [
+				   ['FontFormat','FontSize'],
+				   ['Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','SpecialChar','Link','Unlink'],
+				   '/',
+				   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['OrderedList','UnorderedList','-','Outdent','Indent'],
+				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','About']
+] ;
 FCKConfig.ToolbarSets["Table"] = [
 				   ['QuickSave'],
 				   ['Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','SpecialChar','Link','Unlink'],				   

@@ -30,6 +30,13 @@
 	-moz-opacity: 0.25;
 	-webkit-opacity: 0.25;
 }
+.help-section-item {
+	padding-bottom: 8px;
+}
+.help-section {
+	overflow: hidden;
+	clear: both;
+}
 #help-sections .help-section-langs img {
 	border: 1px solid [CORE_BGCOLOR];
 	padding: 0 3px;
@@ -54,13 +61,18 @@
 #help-sections .help-section-langs a:hover {
 	background:none;
 }
-#help-sections .help-section {
-	margin: 0 0 2em 0;
-}
 .help-section-title {
 	color: [COLOR_B0];
 	font-weight: bold;
 	font-size: 16px;
+}
+#help-sections .help-section-title {
+	background: url([IMG:minus.png]) no-repeat left center;
+	padding-left: 20px;
+	cursor: pointer;
+}
+#help-sections .section-closed {
+	background-image: url([IMG:plus.png]);
 }
 #help-sections .help-section-langs {
 	float: right;
@@ -70,7 +82,7 @@
 }
 </style>
 
-<div style="display:block">
+<div style="display:none">
 [ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]
 [ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]
 </div>
@@ -88,7 +100,7 @@
 		<div class="help-section-title">[TEXT:Help name]</div>
 		<div class="help-section-text" id="help-name">[HELPNAME]</div>
 	</div>
-	
+
 	<div class="help-section-item">
 		<div class="help-section-title">[TEXT:Help description]</div>
 		<div class="help-section-text" id="help-description">[HELPDESCRIPTION]</div>
@@ -96,34 +108,326 @@
 	
 </fieldset>
 
-<fieldset id="help-sections"><legend>[TEXT:Sections]</legend>
+<fieldset id="help-sections"><legend>[TEXT:Sections] (<a onclick="help_add_section_prompt()">[TEXT:Add section]</a>)</legend>
 
 <input type="hidden" name="edit_section_key" value="" id="edit_section_key" />
 
-[BLOCK CONTENTSECTIONS]
-	<div class="help-section" id="sec-[SECKEY]">
-		<div class="help-section-langs">
-			[BLOCK [SECTIONLANGS]]
-			<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,'[SECKEY]','[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
-			[ENDBLOCK [SECTIONLANGS]]
-			<br />
-			<a onclick="return help_open_subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>
-		</div>
-
-		[BLOCK [SECTIONITEMS]]
-		<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
-			<div class="help-section-title">[SECNAME]</div>
-			<div class="help-section-text">[SECTEXT]</div>
-		</div>
-		[ENDBLOCK [SECTIONITEMS]]
-
-	</div>
-[ENDBLOCK CONTENTSECTIONS]
+[BLOCK CONTENTSECTIONS]<div class="help-section" id="sec-[SECKEY]"><div class="help-section-langs" id="sec-langs-[SECKEY]">
+	[BLOCK [SECTIONLANGS]]
+	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,'[SECKEY]','[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+	[ENDBLOCK [SECTIONLANGS]]
+</div><div class="help-section-langs">
+	<!---
+	<a onclick="help_up('[SECKEY]')">[TEXT:Up] &uarr;</a>&nbsp;
+	<a onclick="help_down('[SECKEY]')">[TEXT:Down] &darr;</a>&nbsp;--->
+	<a onclick="return help_open_subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>&nbsp;
+	&nbsp;&nbsp;
+</div>[BLOCK [SECTIONITEMS]]<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
+	<div class="help-section-title" id="sec-name-[SECKEY]-[SECLANG]" onclick="toggle_section('[SECKEY]')">[SECNAME]</div>
+	<div class="help-section-text" id="sec-text-[SECKEY]-[SECLANG]">[SECTEXT]</div>
+</div>[ENDBLOCK [SECTIONITEMS]]</div>[ENDBLOCK CONTENTSECTIONS]
 
 </fieldset>
 
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
+var section_template = '\n\
+<div class="help-section-langs" id="sec-langs-{SECKEY}">\n\
+	[BLOCK TEMPLATELANGS1]\n\
+	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,\'{SECKEY}\',\'[LANGKEY]\')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>\n\
+	[ENDBLOCK TEMPLATELANGS1]\n\
+</div><div class="help-section-langs">\n\
+	<!---\n\
+	<a onclick="help_up(\'{SECKEY}\')">[TEXT:Up] &uarr;</a>&nbsp;\n\
+	<a onclick="help_down(\'{SECKEY}\')">[TEXT:Down] &darr;</a>&nbsp;--->\n\
+	<a onclick="return help_open_subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
+	&nbsp;&nbsp;\n\
+</div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\
+	<div class="help-section-title" id="sec-name-{SECKEY}-[LANGKEY]" onclick="toggle_section(\'{SECKEY}\')">[TEXT:New section] : {SECKEY}</div>\n\
+	<div class="help-section-text" id="sec-text-{SECKEY}-[LANGKEY]"></div>\n\
+</div>[ENDBLOCK TEMPLATELANGS2]';
+
+function help_add_section(seckey) {
+	var item = {
+		help_sec_order: 0,
+		help_sec_key: seckey,
+		help_sec_lang: '',
+		help_sec_name: '[TEXT:New section] : '+seckey,
+		help_sec_text: '',
+	};
+
+	// get max order
+	var sec_orders = getFormValue('help_sec_order');
+	for(var i=0; i< sec_orders.length; i++) {
+		if(sec_orders[i] > item.help_sec_order) {
+			item.help_sec_order = sec_orders[i];
+		}
+	}
+	item.help_sec_order++;
+
+	// get lang
+	for(var lang in LANGS) {
+		item.help_sec_lang = lang;
+		break;
+	}
+
+	addTableRow(item);
+
+	// add element in DOM
+	var div = document.createElement('div');
+	div.id = 'sec-'+seckey;
+	div.className = 'help-section';
+	div.innerHTML = section_template.replace(/\{SECKEY\}/gi, seckey);
+
+	var father = document.getElementById('help-sections');
+	// try to find first correct chil
+	var found = false;
+	for(var i = 0; i < father.childNodes.length; i++) {
+		if(father.childNodes[i].className && father.childNodes[i].className == 'help-section') {
+			found = father.childNodes[i];
+			break;
+		}
+	}
+	if(found) {
+		father.insertBefore(div, found);
+	}
+	else {
+		father.appendChild(div);
+	}
+}
+
+function help_add_section_prompt(err) {
+	var msg = '[TEXT:Please enter the new section key]';
+	if(err) {
+		msg += "\n"+err;
+	}
+	var seckey = window.prompt(msg);
+	if(seckey) {
+		if(!seckey.match(/^[a-z0-9_-]+$/i)) {
+			help_add_section_prompt('[TEXT:Only these characters are allowed : a..z, A..Z, 0..9, _, -]');
+		}
+		else if(help_section_exists(seckey)) {
+			help_add_section_prompt('[TEXT:Sorry but this section key already exists !]');
+		}
+		else {
+			help_add_section(seckey);
+		}
+	}
+}
+
+function toggle_section(id) {
+	for(var lang in LANGS) {
+		var oname = document.getElementById('sec-name-'+id+'-'+lang);
+		var otext = document.getElementById('sec-text-'+id+'-'+lang);
+		if(otext.style.display == 'none') {
+			otext.style.display = 'block';
+			oname.className = 'help-section-title';
+		}
+		else {
+			otext.style.display = 'none';
+			oname.className = 'help-section-title section-closed';
+		}
+	}
+}
+
+function help_save_section(config) {
+
+	// delete rows for this section
+	var t = document.getElementById('tbodyhelp_t_sections');
+	var i = 0;
+	while(t.hasChildNodes()==true){
+		var child = t.childNodes.item(i);
+		if(child.id && child.id.substr(0, 6) == 'lasttr') {
+			break;
+		}
+		if(child.getElementsByTagName) {
+			var found = false;
+			var inputs = child.getElementsByTagName('input');
+			for(var k=0; k < inputs.length; k++) {
+				if(inputs[k].name.substr(0, 13) == '_help_sec_key' && inputs[k].value == config.seckey) {
+					found = true;
+				}
+			}
+			if(found) {
+				t.removeChild(child);
+			}
+			else {
+				i++;
+			}
+		}
+		else {
+			i++;
+		}
+	}
+	// add rows
+	var current_found = false;
+	var firstlang = false;
+	for(var lang in config.langs) {
+		if(lang.match(/^[a-z]{2}_[a-z]{2}$/i)) {
+			if(config.langs[lang].name != '' || config.langs[lang].text != '') {
+				firstlang = lang;
+				addTableRow({
+					help_sec_order: config.secorder,
+					help_sec_key: config.seckey,
+					help_sec_lang: lang,
+					help_sec_name: config.langs[lang].name,
+					help_sec_text: config.langs[lang].text
+				});
+				if(config.curlang == lang) {
+					config.langs[lang].classname = 'current';
+				}
+				else {
+					config.langs[lang].classname = 'active';
+					current_found = true;
+				}
+			}
+			else {
+				config.langs[lang].classname = 'inactive';
+			}
+			document.getElementById('sec-name-'+config.seckey+'-'+lang).innerHTML = config.langs[lang].name;
+			document.getElementById('sec-text-'+config.seckey+'-'+lang).innerHTML = config.langs[lang].text.replace(/\n/, '<br />');
+		}
+	}
+	if(!current_found) {
+		if(firstlang) {
+			config.langs[firstlang].classname = 'current';
+		}
+		else {
+			var sec = document.getElementById('sec-'+config.seckey);
+			sec.parentNode.removeChild(sec);
+			return false;
+		}
+	}
+	// update text
+	var items = document.getElementById('sec-langs-'+config.seckey).getElementsByTagName('a');
+	var item_current;
+	var i = 0;
+	for(var lang in LANGS) {
+		items[i].className = config.langs[lang].classname;
+		if(config.langs[lang].classname == 'current') {
+			help_change_lang_section(items[i],config.seckey,lang);
+		}
+		i++;
+	}
+}
+
+function help_section_exists(seckey) {
+	var obj = document.getElementById('sec-'+seckey);
+	if(obj) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+/*
+function help_up() {
+	var old_orders = help_get_ordered_sections();
+	var new_orders = [;
+	var current_order = 0;
+
+}
+
+function help_get_ordered_sections() {
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+
+	// load sections
+	res = [];
+	for(var i=0; i< sec_keys.length; i++) {
+		res.push({
+			'key': sec_keys[i],
+			'order': sec_orders[i]
+		});
+	}
+
+	// sort
+	var sorted = [];
+	
+
+	return res;
+}
+*/
+
+function help_get_section_order(seckey) {
+
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+
+	if(!sec_keys || sec_keys.length == 0) {
+		return 0;
+	}
+
+	for(var i=0; i< sec_keys.length; i++) {
+		if(sec_keys[i] == seckey) {
+			return sec_orders[i];
+		}
+	}
+	return 0;
+}
+
+function help_get_section(seckey) {
+
+	var sec_names = getFormValue('help_sec_name');
+	var sec_langs = getFormValue('help_sec_lang');
+	var sec_keys = getFormValue('help_sec_key');
+	var sec_texts = getFormValue('help_sec_text');
+
+	// init
+	var res = [];
+	for(var lang in LANGS) {
+		res[lang] = { 'name': '', 'text': '' };
+	}
+
+	if(!sec_keys || sec_keys.length == 0) {
+		return res;
+	}
+
+	// load
+	for(var i=0; i< sec_keys.length; i++) {
+		if(sec_keys[i] == seckey) {
+			res[sec_langs[i]].name = sec_names[i];
+			res[sec_langs[i]].text = sec_texts[i];
+		}
+	}
+	return res;
+}
+
+function help_get_section_links(seckey) {
+	var res = [];
+	var div = document.getElementById('sec-langs-'+seckey);
+	var items = div.getElementsByTagName('a');
+	for(var i=0; i<items.length; i++) {
+		if(items[i].className) {
+			res.push(items[i]);
+		}
+	}
+	return res;
+}
+
+function help_get_section_current_lang(seckey) {
+	var items = help_get_section_links(seckey);
+	var found = -1;
+
+	for(var i=0; i < items.length; i++) {
+		if(items[i].className == 'current') {
+			found = i;
+			break;
+		}
+	}
+	var i = 0;
+	for(var lang in LANGS) {
+		if(i == found) {
+			return lang;
+		}
+		i++;
+	}
+	for(var lang in LANGS) {
+		return lang;
+	}
+	return false;
+}
 
 function help_get_current_lang() {
 	for(var lang in LANGS) {
