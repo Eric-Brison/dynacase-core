@@ -4279,7 +4279,7 @@ create unique index i_docir on doc(initid, revision);";
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
     $a="";
     if ($htmllink) {
-      if (! $title) $title=$this->getHTMLTitle($id);
+      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'));
       if ($title == "") {
 	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
@@ -4291,14 +4291,12 @@ create unique index i_docir on doc(initid, revision);";
                   
 	  //$ec=getSessionValue("ext:targetRelation");
 	  $ec=getHttpVars("ext:targetRelation");
-	  if ($ec)  {                      
+	  if ($ec)  {
+	    if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
 	    $ec=str_replace("%V%",$id,$ec);
 	    $ecu=str_replace("'",'"',$this->urlWhatEncode($ec));
 	    $a="<a  onclick='parent.$ecu'>$title</a>";
 	  } else {
-
-	    $ul.="&app=FDL&action=VIEWEXTDOC&id=$id";
-
 	    if ($docrev=="latest" || $docrev=="" || !$docrev)
 	      $ul.="&latest=Y";
 	    elseif ($docrev != "fixed") {
@@ -4307,11 +4305,11 @@ create unique index i_docir on doc(initid, revision);";
 		$ul.="&state=".$matches[1];
 	      }
 	    }
+            $ul.="&app=FDL&action=VIEWEXTDOC&id=$id";
 	    $a="<a href=\"$ul\">$title</a>";
 	  }
                    
 	} else {
-	  $ul.="&app=FDL&action=FDL_CARD&id=$id";
 	  if ($docrev=="latest" || $docrev=="" || !$docrev)
 	    $ul.="&latest=Y";
 	  elseif ($docrev != "fixed") {
@@ -4320,6 +4318,7 @@ create unique index i_docir on doc(initid, revision);";
 	      $ul.="&state=".$matches[1];
 	    }
 	  }
+          $ul.="&app=FDL&action=FDL_CARD&id=$id";
 	  if ($js) $ajs="oncontextmenu=\"popdoc(event,'$ul');return false;\"" ;
 	  else $ajs="";
 
@@ -4476,8 +4475,8 @@ create unique index i_docir on doc(initid, revision);";
 	if ($entities) $bvalue=nl2br(htmlentities(stripslashes(str_replace("<BR>","\n",$avalue)),ENT_COMPAT,"UTF-8"));
 	else $bvalue=stripslashes(str_replace("<BR>","\n",$avalue));
 	$shtmllink=$htmllink?"true":"false";
-	$bvalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
-			       "\$this->getDocAnchor('\\1',\"$target\",$shtmllink)",
+	$bvalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e",
+			       "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)",
 			       $bvalue);
 	$htmlval=str_replace(array("[","$"),array("&#091;","&#036;"),$bvalue);
 	break;
@@ -4760,8 +4759,8 @@ create unique index i_docir on doc(initid, revision);";
 
       case 'htmltext':
 	$shtmllink=$htmllink?"true":"false";
-	$avalue = preg_replace("/\[ADOC ([^\]]*)\]/e",
-			       "\$this->getDocAnchor('\\1',\"$target\",$shtmllink)",
+	$avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e",
+			       "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)",
 			       $avalue);
 	$htmlval="<DIV>$avalue</DIV>";
 	break;
