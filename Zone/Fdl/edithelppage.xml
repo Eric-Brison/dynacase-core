@@ -431,9 +431,10 @@ function help_change_lang_section(obj, seckey, langkey) {
 		return false;
 	}
 	var i=0;
+	var childs = obj.parentNode.getElementsByTagName('a');
 	for(var lang in LANGS) {
-		if(obj.parentNode.childNodes[i].className != 'inactive') {
-			obj.parentNode.childNodes[i].className = 'active';
+		if(childs[i].className != 'inactive') {
+			childs[i].className = 'active';
 		}
 		if(lang == langkey) {
 			document.getElementById('sec-'+seckey+'-'+lang).style.display='block';
