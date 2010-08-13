@@ -56,11 +56,29 @@ Class _HELPPAGE extends Doc {
 	public function preEdition() {
 		$oa = $this->getAttribute('help_sec_text');
 		$oa->type = 'longtext';
+		$err='';
 		if (!$this->id) {
 
 			$oa = $this->getAttribute('help_family');
 			$oa->setVisibility('S');
 		}
+		if ($this->id==0) {
+		    $doc=createDoc($this->dbaccess, $this->fromid);
+		    if ($doc) {
+		        $err=$doc->add();
+		        if ($err=="") {
+		            $this->Affect(getTdoc($this->dbaccess,$doc->id));
+		       
+		            $this->setValue("help_family",getHttpVars("help_family"));
+		            if ($this->getValue("help_family")) $this->title=sprintf(_("help for %s"),$this->getTitle($this->getValue("help_family")));
+		             
+		            $this->modify();
+		            global $action;
+		            redirect($action,getHttpVars("app"),getHttpVars("action").'&id='.$this->id);
+		        }
+		    }
+		}
+		return $err;
 	}
 
 	/**
@@ -124,7 +142,7 @@ Class _HELPPAGE extends Doc {
 	 * 
 	 */
 	public function edithelppage() {
-
+	    $this->editattr();
 		$langs = $this->getFamilyLangs();
 		$user_lang = $this->getUserLang();
 		$sections = $this->getSectionsByLang();
