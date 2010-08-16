@@ -83,7 +83,7 @@
 </style>
 
 <div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]</div>
-<div style="display:block">[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]</div>
+<div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]</div>
 
 <fieldset><legend>[TEXT:Online help]</legend>
 	<div id="help-langs">
