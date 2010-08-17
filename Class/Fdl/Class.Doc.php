@@ -7099,14 +7099,14 @@ create unique index i_docir on doc(initid, revision);";
       if ($getlocale) {
 	return FrenchDateToLocaleDate(date("d/m/Y H:i", $nd));
       } else {
-	return date("Y-m-d H:i", $nd);
+	return date("d/m/Y H:i", $nd);
       }
     }
     else {
       if ($getlocale) {
 	return FrenchDateToLocaleDate(date("d/m/Y", $nd));
       } else {
-	return date("Y-m-d", $nd);
+	return date("d/m/Y", $nd);
       }
     }
   }

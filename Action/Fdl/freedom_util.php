@@ -171,12 +171,6 @@ function new_Doc($dbaccess, $id='',$latest=false) {
     
 
     
-  } else if ($res != '') {
-    $fromid=$res["fromid"];
-    $doctype=$res["doctype"];
-    if ($doctype=="C") $classname= "DocFam"; 
-    else if ($fromid > 0) {$classname= "Doc".$res["fromid"];$gen=getGen($dbaccess);}
-    else  $classname=$res["classname"];
   }
 	    
   if ($classname != "") {
