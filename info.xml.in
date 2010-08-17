@@ -257,6 +257,9 @@
 
   <changelog>
   	
+    <version number="3.0.10-2" date="2010-08-17">
+      <change title="Reverted default Doc->getDate() format to French (d/m/Y H:i) when getlocale is not specified (refs #938)" />
+    </version>
     <version number="3.0.10" date="2010-08-13">
       <change title="inline help document" url="http://dev.freedom-ecm.org/versions/show/35"/>        
     </version>
