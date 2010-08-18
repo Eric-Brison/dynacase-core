@@ -101,8 +101,15 @@ function editextdoc(&$action) {
     $action->lay->set("classid",$classid);
     $action->lay->set("STITLE",addJsSlashes($doc->getHTMLTitle()));
 
-    $style = $action->parent->getParam("STYLE");  
-    $action->parent->AddCssRef("STYLE/$style/Layout/EXT-ADAPTER.css");
+    $style = $action->parent->getParam("STYLE");
+
+	$action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-SYSTEM.css");
+	if(file_exists($action->parent->rootdir."/STYLE/$style/Layout/EXT-ADAPTER-USER.css")) {
+		$action->parent->AddCssRef("STYLE/$style/Layout/EXT-ADAPTER-USER.css");
+	}
+	else {
+		$action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-USER.css");
+	}
     
 }
 
