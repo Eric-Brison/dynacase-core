@@ -730,6 +730,9 @@ if (GetHttpVars("viewconstraint")=="Y") { // set in modcard
 	}
 }
 }
+elseif($oattr->type == "htmltext") {
+	if (!$notd) $input.="</td><td class=\"nowrap\">";
+}
 
 return $input;
 }
