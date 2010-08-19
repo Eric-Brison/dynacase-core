@@ -75,9 +75,6 @@ function specialhelp(Action &$action) {
       $action->exitError(sprintf(_("declaration syntax does not match special help input '%s'"),$phpfunc));
   }
 
-  error_log($_SERVER['REQUEST_URI']);
-  error_log('http param = '.GetHttpVars('extjs', ''));
-
   if(GetHttpVars('extjs', '') != '') {
 	  $action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-SYSTEM.css");
 	  if (file_exists($action->parent->rootdir."/STYLE/$style/Layout/EXT-ADAPTER-USER.css")) {
