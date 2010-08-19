@@ -34,6 +34,7 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 }
 [ENDBLOCK LEGENDCSSLANGS]
 </style>
+<div class="document">
 <div id="help-menu">
 	<strong>[DOCTITLE]</strong>
 
@@ -72,7 +73,7 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 </table>
 
 </fieldset>
-
+</div>
 
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
