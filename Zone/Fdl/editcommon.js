@@ -396,6 +396,9 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     oldact = f.action;
     oldtar = f.target;
     f.action = '[CORE_STANDURL]&app=FDL&action=SPECIALHELP&docid='+docid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex;
+	if(window.parent.Ext) {
+		f.action += '&extjs=yes';
+	}
 
     var xy= getAnchorWindowPosition(inp.id);
 
