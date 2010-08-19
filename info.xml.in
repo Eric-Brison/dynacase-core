@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<module	name="freedom-toolbox" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
+<module	name="freedom-toolbox" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
 
   <description lang="en">Hosting Application Toolkit freedom toolbox</description>
   <description lang="fr">Serveur d'application freedom toolbox</description>
