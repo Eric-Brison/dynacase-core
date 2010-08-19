@@ -358,63 +358,63 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
 
   enuminprogress=false;
 }
-function sendSpecialChoice(event,inpid,docid ,attrid,index) {
-	  var inp  = inp=document.getElementById(inpid);
-	  var attrid;
-	 
-	  var domindex=''; // needed to set values in arrays
-	  // search the input button in previous element
-	 
-	  var inid;
 
-	  if (enuminprogress) return;
-	  enuminprogress=true;  
+function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
+    h = (h) ? h : 30;
+    w = (w) ? w : 290;
+    var inp  = inp=document.getElementById(inpid);
+    var attrid;
 
+    var domindex=''; // needed to set values in arrays
+    //search the input button in previous element
+ 
+    var inid;
 
-	  if ((! inp)||(inp==null)) {
-		  inp=document.getElementById('T'+attrid);
-		  if (!inp) {
-	    alert('[TEXT:enumerate input not found]'+':'+attrid);
-	    return;
-		  } else {
-			  var inps=inp.getElementsByTagName('input');
-			  if (inps.length >0) f=inps[0].form;
-			  domindex=0;
-		  }
-	  } else {
-
-	  if (inp.name.substr(inp.name.length-1,1) == ']') {
-	    // it is an attribute in array
-	    domindex = inp.id.substring(attrid.length);    
-	  }
+    if (enuminprogress) return;
+    enuminprogress=true;  
 
 
-	  f =inp.form;
-	  }
-	  // modify to initial action
-	  oldact = f.action;
-	  oldtar = f.target;
-	  f.action = '[CORE_STANDURL]&app=FDL&action=SPECIALHELP&docid='+docid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex;
+    if ((! inp)||(inp==null)) {
+        inp=document.getElementById('T'+attrid);
+        if (!inp) {
+            alert('[TEXT:enumerate input not found]'+':'+attrid);
+            return;
+        } else {
+            var inps=inp.getElementsByTagName('input');
+            if (inps.length >0) f=inps[0].form;
+            domindex=0;
+        }
+    } else {
+        if (inp.name.substr(inp.name.length-1,1) == ']') {
+            // it is an attribute in array
+            domindex = inp.id.substring(attrid.length);    
+        }
 
-	  var xy= getAnchorWindowPosition(inp.id);
+        f =inp.form;
+    }
+    // modify to initial action
+    oldact = f.action;
+    oldtar = f.target;
+    f.action = '[CORE_STANDURL]&app=FDL&action=SPECIALHELP&docid='+docid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex;
 
-	  var wname='helpi'+inp.id;
-	 // subwindow(30,290, wname, 'about:blank');
-	  subwindow(30,290, wname, '?app=CORE&action=BLANK');
-	  
-	  f.target=wname;
+    var xy= getAnchorWindowPosition(inp.id);
 
+    var wname='helpi'+inp.id;
+    // subwindow(30,290, wname, 'about:blank');
+    subwindow(h,w, wname, '?app=CORE&action=BLANK');
+  
+    f.target=wname;
 
-	  enableall();
-	  f.submit();
-	  restoreall();
-	  disableReadAttribute();
-	  // reset to initial action
-	  f.action=oldact;
-	  f.target=oldtar;
+    enableall();
+    f.submit();
+    restoreall();
+    disableReadAttribute();
+    // reset to initial action
+    f.action=oldact;
+    f.target=oldtar;
 
-	  enuminprogress=false;
-	}
+    enuminprogress=false;
+}
 
 /**
  * clear all rows of table

@@ -619,8 +619,10 @@ if (($oattr->type != "array") && ($oattr->type != "htmltext")) {
 			 " onclick=\"sendEnumChoice(event,".$docid.
 			 ",this,'$attridk','$ctype','$iopt')\">";*/
 			if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i',$phpfunc)) {
+				$mheight = $oattr->getOption('mheight', 30);
+				$mwidth = $oattr->getOption('mwidth', 290);
 				$input.="<input id=\"ic_${linkprefix}$attridk\" type=\"button\" value=\"Z\"". " title=\"".$ititle."\"".
-" onclick=\"sendSpecialChoice(event,'${linkprefix}${attridk}',".$docid.",'$attrid','$index')\">";
+" onclick=\"sendSpecialChoice(event,'${linkprefix}${attridk}',".$docid.",'$attrid','$index','$mheight','$mwidth')\">";
 } else {
 	$ib="<input id=\"ic_${linkprefix}$attridk\" type=\"button\" value=\"&#133;\"".
 " title=\"".$ititle."\"".
@@ -729,6 +731,9 @@ if (GetHttpVars("viewconstraint")=="Y") { // set in modcard
 " onclick=\"vconstraint(this,".$doc->fromid.",'$attrid');\">";
 	}
 }
+}
+elseif($oattr->type == "htmltext") {
+	if (!$notd) $input.="</td><td class=\"nowrap\">";
 }
 
 return $input;
@@ -971,9 +976,11 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 	$lay->set("addfunc",false);
 	if (($oattr->phpfunc != "") && ($oattr->phpfile != "")) {
 		if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i',$oattr->phpfunc)) {
+			$mheight = $oattr->getOption('mheight', 30);
+			$mwidth = $oattr->getOption('mwidth', 290);
 			$lay->set("addtitle",$oattr->getOption("ltitle",_("Modify table")));
 			$lay->set("addsymbol",$oattr->getOption("lsymbol"));
-			$lay->set("addfunc","sendSpecialChoice(event,'{$oattr->id}',".($doc->id?$doc->id:$doc->fromid).",'".$oattr->id."','".$row."')");
+			$lay->set("addfunc","sendSpecialChoice(event,'{$oattr->id}',".($doc->id?$doc->id:$doc->fromid).",'".$oattr->id."','".$row."','".$mheight."','".$mwidth."')");
 		}
 	}
 
@@ -1077,9 +1084,13 @@ function getZoneLayArray(&$lay,&$doc,&$oattr,$zone) {
 		$lay->set("addfunc",false);
 		if (($oattr->phpfunc != "") && ($oattr->phpfile != "")) {
 			if (preg_match('/[A-Z_\-0-9]+:[A-Z_\-0-9]+\(/i',$oattr->phpfunc)) {
+				$row = '';
+				$mheight = $oattr->getOption('mheight', 30);
+				$mwidth = $oattr->getOption('mwidth', 290);
+				$docid = $doc->id?$doc->id:$doc->fromid;
 				$lay->set("addtitle",$oattr->getOption("ltitle",_("Modify table")));
 				$lay->set("addsymbol",$oattr->getOption("lsymbol"));
-				$lay->set("addfunc","sendSpecialChoice(event,'{$oattr->id}',".($doc->id?$doc->id:$doc->fromid).",'".$oattr->id."','".$row."')");
+				$lay->set("addfunc","sendSpecialChoice(event,'{$oattr->id}',$docid,'{$oattr->id}','$row','$mheight','$mwidth')");
 			}
 		}
 		$lay->setBlockData("IATTR",$tilabel);

@@ -6147,6 +6147,7 @@ create unique index i_docir on doc(initid, revision);";
    */
   function editbodycard($target="_self",$ulink=true,$abstract=false,$onlyopt=false) {
     include_once("FDL/editutil.php");
+    include_once("FDL/Class.SearchDoc.php");
  
     $docid = $this->id;        // document to edit	        
     // ------------------------------------------------------
