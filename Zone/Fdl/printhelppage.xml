@@ -196,5 +196,5 @@ a {
 	function help_print() {
 		self.print();
 	}
-	addEvent(window, 'load', help_print);
+	//addEvent(window, 'load', help_print);
 </script>
