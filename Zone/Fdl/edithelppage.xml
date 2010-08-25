@@ -80,6 +80,12 @@
 .help-section-text {
 	margin-left: 24px;
 }
+.help-first .help_up {
+	display: none;
+}
+.help-last .help_down {
+	display: none;
+}
 </style>
 
 <div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]</div>
@@ -117,14 +123,15 @@
 	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,'[SECKEY]','[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 	[ENDBLOCK [SECTIONLANGS]]
 </div><div class="help-section-langs">
-	<a onclick="return help_up('[SECKEY]')">[TEXT:Up] &uarr;</a>&nbsp;
-	<a onclick="return help_down('[SECKEY]')">[TEXT:Down] &darr;</a>&nbsp;
+	<a onclick="return help_up('[SECKEY]')" class="help_up">[TEXT:Up] &uarr;</a>&nbsp;
+	<a onclick="return help_down('[SECKEY]')" class="help_down">[TEXT:Down] &darr;</a>&nbsp;
 	<a onclick="return help_open_subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>&nbsp;
 	&nbsp;&nbsp;
 </div>[BLOCK [SECTIONITEMS]]<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
 	<div class="help-section-title" id="sec-name-[SECKEY]-[SECLANG]" onclick="toggle_section('[SECKEY]')" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</div>
 	<div class="help-section-text" id="sec-text-[SECKEY]-[SECLANG]">[SECTEXT]</div>
 </div>[ENDBLOCK [SECTIONITEMS]]</div>[ENDBLOCK CONTENTSECTIONS]
+
 
 </fieldset>
 
@@ -176,6 +183,7 @@ function help_down(seckey) {
 		var tmp = div_parent.removeChild(div);
 		div_parent.appendChild(tmp);
 	}
+	help_check_first_last();
 	return false;
 }
 
@@ -224,6 +232,7 @@ function help_up(seckey) {
 		var tmp = div_parent.removeChild(div);
 		div_parent.appendChild(tmp);
 	}
+	help_check_first_last();
 	return false;
 }
 
@@ -238,6 +247,33 @@ function help_order_to_seckey(order) {
 		}
 	}
 	return false;
+}
+
+function help_check_first_last() {
+
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+	var first,last;
+	var last_order = -1;
+
+	// load sections
+	for(var i=0; i< sec_keys.length; i++) {
+		document.getElementById('sec-'+sec_keys[i]).className = 'help-section';
+		if(sec_orders[i] == 1) {
+			first = sec_keys[i];
+		}
+		if(sec_orders[i] > last_order) {
+			last_order = sec_orders[i];
+			last = sec_keys[i];
+		}
+	}
+	
+	if(first) {
+		document.getElementById('sec-'+first).className += ' help-first';
+	}
+	if(last) {
+		document.getElementById('sec-'+last).className += ' help-last';
+	}
 }
 
 function help_seckey_to_order(seckey) {
@@ -294,6 +330,23 @@ function help_get_minmax_order() {
 	};
 }
 
+function help_reorder(secorder) {
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i) && input.value > secorder) {
+				input.value = parseInt(input.value) - 1;
+			}
+		}
+	}
+}
+
 function help_add_section(seckey) {
 	var item = {
 		help_sec_order: 1,
@@ -323,7 +376,8 @@ function help_add_section(seckey) {
 	// try to find first correct chil
 	var found = false;
 	for(var i = 0; i < father.childNodes.length; i++) {
-		if(father.childNodes[i].className && father.childNodes[i].className == 'help-section') {
+		var cls = father.childNodes[i].className;
+		if(cls && (cls.match(/help-section /) || cls == 'help-section')) {
 			found = father.childNodes[i];
 			break;
 		}
@@ -334,6 +388,7 @@ function help_add_section(seckey) {
 	else {
 		father.appendChild(div);
 	}
+	help_check_first_last();
 }
 
 function help_add_section_prompt(err) {
@@ -435,6 +490,10 @@ function help_save_section(config) {
 		else {
 			var sec = document.getElementById('sec-'+config.seckey);
 			sec.parentNode.removeChild(sec);
+			try {
+				help_reorder(config.secorder);
+				help_check_first_last();
+			} catch(e) {}
 			return false;
 		}
 	}
@@ -677,6 +736,7 @@ function help_open_subwindow(event,attrname,seckey) {
 	return false;
 }
 
+addEvent(window, 'load', help_check_first_last);
 
 var section_template = '\n\
 <div class="help-section-langs" id="sec-langs-{SECKEY}">\n\
@@ -684,8 +744,8 @@ var section_template = '\n\
 	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,\'{SECKEY}\',\'[LANGKEY]\')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>\n\
 	[ENDBLOCK TEMPLATELANGS1]\n\
 </div><div class="help-section-langs">\n\
-	<a onclick="return help_up(\'{SECKEY}\')">[TEXT:Up] &uarr;</a>&nbsp;\n\
-	<a onclick="return help_down(\'{SECKEY}\')">[TEXT:Down] &darr;</a>&nbsp;\n\
+	<a onclick="return help_up(\'{SECKEY}\')" class="help_up">[TEXT:Up] &uarr;</a>&nbsp;\n\
+	<a onclick="return help_down(\'{SECKEY}\')" class="help_down">[TEXT:Down] &darr;</a>&nbsp;\n\
 	<a onclick="return help_open_subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
 	&nbsp;&nbsp;\n\
 </div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\

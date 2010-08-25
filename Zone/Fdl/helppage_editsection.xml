@@ -111,8 +111,14 @@ function help_edit_delete_section() {
 		DATAS[lang].name = '';
 		DATAS[lang].text = '';
 	}
-	help_edit_set_datas(CURLANG);
-	help_edit_apply();
+	var sent_datas = {
+		'seckey': SECKEY,
+		'secorder': SECORDER,
+		'curlang': CURLANG,
+		'langs': DATAS
+	};
+	Ih.callOpener('help_save_section',sent_datas);
+	window.close();
 }
 
 function help_edit_delete() {
