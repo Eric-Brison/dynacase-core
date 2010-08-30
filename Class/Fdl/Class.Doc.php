@@ -2922,6 +2922,16 @@ create unique index i_docir on doc(initid, revision);";
 
 
   final public function DeleteValue($attrid) {
+	$oattr=$this->GetAttribute($attrid);
+	if($oattr->type == 'docid') {
+		$doctitle = $oattr->getOption('doctitle');
+		if($doctitle == 'auto') {
+			$doctitle = $attrid.'_title';
+		}
+		if(!empty($doctitle)) {
+			$this->SetValue($doctitle, " ");
+		}
+	}
     return $this->SetValue($attrid," ");
   }
 
