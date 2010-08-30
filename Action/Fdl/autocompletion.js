@@ -682,7 +682,12 @@ function getSuggestion(uneDiv){
 	if(!uneDiv) {
 		return null;
 	}
-	return trimCR(uneDiv.getElementsByTagName('span')[0].firstChild.data)
+	try {
+		return trimCR(uneDiv.getElementsByTagName('span')[0].firstChild.data);
+	}
+	catch(e) {
+		return '';
+	}
 }
 
 //supprime les caractères retour chariot et line feed d'une chaine de caractères
