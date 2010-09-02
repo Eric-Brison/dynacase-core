@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-02 14:39+0200\n"
-"PO-Revision-Date: 2010-09-02 15:02+0100\n"
+"POT-Creation-Date: 2010-09-02 15:50+0200\n"
+"PO-Revision-Date: 2010-09-02 15:49+0100\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -122,7 +122,9 @@ msgid "the user identification is unknow"
 msgstr "l'identification de l'utilisateur est inconnue"
 
 msgid "expire date format is not correct : will be set to default"
-msgstr "le format de la date d'expiration est incorrecte : la date par défaut sera prise en compte"
+msgstr ""
+"le format de la date d'expiration est incorrecte : la date par défaut sera "
+"prise en compte"
 
 msgid "err_add_user"
 msgstr "Impossible de creer l'utilisateur"
@@ -152,8 +154,12 @@ msgstr "Bienvenue !"
 msgid "%s Authentification"
 msgstr "%s Authentification"
 
-msgid "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource"
-msgstr "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour accéder à cette ressource"
+msgid ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour acceder a cette ressource"
+msgstr ""
+"Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
+"pour accéder à cette ressource"
 
 #, c-format
 msgid "Attribute %s not found\n"
@@ -324,7 +330,8 @@ msgstr "L'archive %s n'a pas pue être supprimée"
 msgid "archive file %s has been deleted"
 msgstr "L'archive %s a été supprimée"
 
-msgid "the document is not referenced: cannot apply profile access modification"
+msgid ""
+"the document is not referenced: cannot apply profile access modification"
 msgstr ""
 "le document n'est pas référencé : la modification du profil d'accès\n"
 "ne peut pas être appliquée"
@@ -475,7 +482,8 @@ msgstr "document"
 
 #, c-format
 msgid "name must containt only alphanumeric characters: invalid  [%s]"
-msgstr "le nom ne doit contenir que des caractères alpha-numérique: invalide [%s]"
+msgstr ""
+"le nom ne doit contenir que des caractères alpha-numérique: invalide [%s]"
 
 #, c-format
 msgid "cannot see unknow reference %s"
@@ -501,9 +509,12 @@ msgid "result of archive import  %s"
 msgstr "Résultat de l'import d'archive %s"
 
 #, c-format
-msgid "Import %s is in progress. When update will be finished an email to &lt;%s&gt; will be sended with result rapport"
+msgid ""
+"Import %s is in progress. When update will be finished an email to &lt;%"
+"s&gt; will be sended with result rapport"
 msgstr ""
-"L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera envoyé à \n"
+"L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
+"envoyé à \n"
 "&lt;%s&gt; avec le rapport d'importation"
 
 #, c-format
@@ -609,7 +620,9 @@ msgstr ""
 "La limite %d a été atteinte"
 
 msgid "the document is not referenced: cannot apply defaut folder"
-msgstr "le document n'est pas référencé : la modification dossier par défaut abandonné"
+msgstr ""
+"le document n'est pas référencé : la modification dossier par défaut "
+"abandonné"
 
 #, c-format
 msgid "Family %s not exist"
@@ -666,10 +679,12 @@ msgid "err_mod_parameter"
 msgstr "Impossible de modifier le param&egrave;tre"
 
 msgid "only user parameters can be modified with its action"
-msgstr "seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
 
 msgid "only current user parameters can be modified with its action"
-msgstr "seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
 
 msgid "titlecreateaction"
 msgstr "Cr&eacute;ation d'action"
@@ -691,10 +706,12 @@ msgid "the '%s' parameter cannot be removed"
 msgstr "le parametre '%s' n'a pu être supprimé"
 
 msgid "only user parameters can be deleted with its action"
-msgstr "seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
 
 msgid "only current user parameters can be deleted with its action"
-msgstr "seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
+msgstr ""
+"seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
 
 msgid "err_add_action"
 msgstr "Impossible de creer l'action"
@@ -794,7 +811,9 @@ msgstr "Recherche des documents liés"
 
 #, c-format
 msgid "%s document it is not a folder and cannot support recursive deletion"
-msgstr "le document %s n'est pas un dossier et ne supporte pas le suppression en cascade"
+msgstr ""
+"le document %s n'est pas un dossier et ne supporte pas le suppression en "
+"cascade"
 
 msgid "cookies seem to be blocked"
 msgstr "les cookies semblent être bloqués par le navigateur"
@@ -875,7 +894,8 @@ msgstr "Création abandonnée : famille inconnue : %s"
 
 #, c-format
 msgid "no privilege to create interactivaly this kind (%s) of document"
-msgstr "vous n'avez pas la permission de créer manuellement ce type (%s) de document "
+msgstr ""
+"vous n'avez pas la permission de créer manuellement ce type (%s) de document "
 
 #, c-format
 msgid "creation %s"
@@ -1093,7 +1113,8 @@ msgstr "pas de choix possible pour %s"
 
 #, c-format
 msgid "the pluggins function description '%s' is not conform for %s attribut"
-msgstr "La description de la fonction externe '%s' est incorrect pour l'attribut %s"
+msgstr ""
+"La description de la fonction externe '%s' est incorrect pour l'attribut %s"
 
 #, c-format
 msgid "the external pluggin file %s cannot be read"
@@ -1777,7 +1798,8 @@ msgstr "modification du forum impossible : %s"
 
 #, c-format
 msgid "visibility %s does not allow modify attribute %s for document %s"
-msgstr "la visibilité %s ne permet pas de modifier l'attribut %s du document %s"
+msgstr ""
+"la visibilité %s ne permet pas de modifier l'attribut %s du document %s"
 
 #, c-format
 msgid "modify [%s] attribute"
@@ -1841,7 +1863,8 @@ msgid "%s has been locked"
 msgstr "%s a été verrouillé"
 
 msgid "cannot compare two document which comes from two different family"
-msgstr "la comparaison de 2 documents de famille différente ne peut être effectuée"
+msgstr ""
+"la comparaison de 2 documents de famille différente ne peut être effectuée"
 
 #, c-format
 msgid "comparison between<br>%s (rev %d) and %s (rev %d)"
@@ -2294,7 +2317,8 @@ msgid "Refresh users characteristics from system"
 msgstr "Rafraichir les caractéristiques des utilisateurs depuis le système"
 
 msgid "Refersh users may take long time. Sure ?"
-msgstr "Rafraichir les utilisateurs peut prendre beaucoup de temps.  Êtes vous sûr ?"
+msgstr ""
+"Rafraichir les utilisateurs peut prendre beaucoup de temps.  Êtes vous sûr ?"
 
 msgid "Refresh users"
 msgstr "Actualiser les utilisateurs"
@@ -2309,7 +2333,8 @@ msgid "Refresh Group members and mail"
 msgstr "Actualiser les membres du groupe ainsi que son email"
 
 msgid "Refresh groups may take long time. Sure ?"
-msgstr "Rafraichir les groupes peut prendre beaucoup de temps.  Êtes vous sûr ?"
+msgstr ""
+"Rafraichir les groupes peut prendre beaucoup de temps.  Êtes vous sûr ?"
 
 msgid "CSV Import Users"
 msgstr "Importation utilisateurs par CSV"
@@ -2342,13 +2367,15 @@ msgid "Users Management"
 msgstr "Gestion des utilisateurs"
 
 msgid "Refresh users may take long time. Sure ?"
-msgstr "Rafraichir les utilisateurs peut prendre beaucoup de temps.  Êtes vous sûr ?"
+msgstr ""
+"Rafraichir les utilisateurs peut prendre beaucoup de temps.  Êtes vous sûr ?"
 
 msgid "Refresh Groups members and mail"
 msgstr "Raffraichissement des membres et du mail"
 
 msgid "Refersh groups may take long time. Sure ?"
-msgstr "Rafraichir les groupes peut prendre beaucoup de temps.  Êtes vous sûr ?"
+msgstr ""
+"Rafraichir les groupes peut prendre beaucoup de temps.  Êtes vous sûr ?"
 
 msgid "Refresh groups"
 msgstr "Actualiser les groupes"
@@ -2453,20 +2480,27 @@ msgstr ""
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
-"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a>"
+"<p>Vous pouvez vous connecter sur <a href=\"[CORE_EXTERNURL]\">"
+"[CORE_EXTERNURL]</a>"
 
 msgid "submitreqpasswd_mail_hello"
 msgstr "Bonjour"
 
 msgid "submitreqpasswd_mail_callbackurl"
 msgstr ""
-"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est pas le cas, veuillez détruire ce message.</p>\n"
-"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
+"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est "
+"pas le cas, veuillez détruire ce message.</p>\n"
+"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
+"suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
+"[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">"
+"[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
+"app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
 msgstr ""
 "<p>Votre demande a bien été prise en compte.</p>\n"
-"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour finaliser la ré-initialisation de votre mot de passe.</p>"
+"<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
+"finaliser la ré-initialisation de votre mot de passe.</p>"
 
 msgid "submitreqpasswd_form_send_error_invalid_args"
 msgstr ""
@@ -2475,23 +2509,32 @@ msgstr ""
 
 msgid "submitreqpasswd_form_send_error_unknown"
 msgstr ""
-"<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</p>\n"
-"<p>Veuillez renouveller votre demande ultérieurement, et si le problème persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
+"p>\n"
+"<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
+"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
 
 msgid "errno_bug_639_message"
 msgstr ""
 "<p>Vous devez ré-initialiser votre mot de passe.</p>\n"
-"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Ré-initialiser mon mot de passe</a></p>"
+"<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Ré-initialiser mon "
+"mot de passe</a></p>"
 
 msgid "callbackreqpasswd_callback_ok"
-msgstr "<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a été envoyé par mail.</p>"
+msgstr ""
+"<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a "
+"été envoyé par mail.</p>"
 
 msgid "callbackreqpasswd_callback_not_ok"
 msgstr ""
 "<p>Le système n'a pas pu traiter votre demande.</p>\n"
-"<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus valide. Dans ce cas, veuillez renouveller votre demande.</p>\n"
-"<p>Si le problème persiste, veuillez prendre contact avec <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+"<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus valide. "
+"Dans ce cas, veuillez renouveller votre demande.</p>\n"
+"<p>Si le problème persiste, veuillez prendre contact avec <a href=\"mailto:"
+"[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%20de%20passe\">"
+"[ON_ERROR_CONTACT]</a></p>"
 
 msgid "reqpasswd_login"
 msgstr "Nom de connexion"
@@ -2812,7 +2855,8 @@ msgid "policy if same title"
 msgstr "politique si même titre"
 
 msgid "Update document if has permission else ignored"
-msgstr "Mets à jour le document si permission accordée sinon modification ignorée"
+msgstr ""
+"Mets à jour le document si permission accordée sinon modification ignorée"
 
 msgid "Add new document (similar document)"
 msgstr "Ajout nouveau document (document similaire)"
@@ -2872,13 +2916,17 @@ msgid "Export Documents from"
 msgstr " Exporter les documents depuis"
 
 msgid "Prefer choose Latin if you are under microsoft else use UTF-8"
-msgstr "Préférez Latin si vous êtes dans un environnement Microsoft. Sinon utilisez UTF-8"
+msgstr ""
+"Préférez Latin si vous êtes dans un environnement Microsoft. Sinon utilisez "
+"UTF-8"
 
 msgid "Encoding"
 msgstr "Encodage"
 
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
-msgstr "Sélectionnez avec profil pour une réutilisation dans une autre base ou pour une sauvegarde"
+msgstr ""
+"Sélectionnez avec profil pour une réutilisation dans une autre base ou pour "
+"une sauvegarde"
 
 msgid "Profile"
 msgstr "Profil"
@@ -2890,7 +2938,9 @@ msgid "With profil"
 msgstr "Avec les profils"
 
 msgid "Export archive file with data file - fdl.csv- and attached files"
-msgstr "Export d'une archive avec le fichier de description -fdl.csv- et les fichiers attachés"
+msgstr ""
+"Export d'une archive avec le fichier de description -fdl.csv- et les "
+"fichiers attachés"
 
 msgid "Files"
 msgstr "Fichiers"
@@ -2901,8 +2951,12 @@ msgstr "Sans les fichiers"
 msgid "With files"
 msgstr "Avec les fichiers"
 
-msgid "Select identificator to set the second column -specid- this file can only reimport in the same database"
-msgstr "Sélectionnez identificateur pour remplir la deuxième colonne -specid-. Le fichier exporté ne pourra être réutilisé que dans la même base de données"
+msgid ""
+"Select identificator to set the second column -specid- this file can only "
+"reimport in the same database"
+msgstr ""
+"Sélectionnez identificateur pour remplir la deuxième colonne -specid-. Le "
+"fichier exporté ne pourra être réutilisé que dans la même base de données"
 
 msgid "Identificators"
 msgstr "Identificateurs"
@@ -2914,7 +2968,8 @@ msgid "With identificators"
 msgstr "Avec les identificateurs"
 
 msgid "Choose a family to import only set of attributes"
-msgstr "Choisissez une famille pour importer un sous-ensemble d'attributs choisis"
+msgstr ""
+"Choisissez une famille pour importer un sous-ensemble d'attributs choisis"
 
 msgid "Choose columns"
 msgstr "Choisirs les colonnes"
@@ -2925,8 +2980,12 @@ msgstr "Appliquer mes préférences"
 msgid "Don't care preferences"
 msgstr "Ne pas tenir compte des préférences"
 
-msgid "Raw data set database value. Formated data : data are exported like can see it in navigator."
-msgstr "Données brutes de la base de données. Données formatées : données telles que les voit l'utilisateur depuis son navigateur"
+msgid ""
+"Raw data set database value. Formated data : data are exported like can see "
+"it in navigator."
+msgstr ""
+"Données brutes de la base de données. Données formatées : données telles que "
+"les voit l'utilisateur depuis son navigateur"
 
 msgid "Format export"
 msgstr "Format"
@@ -3398,16 +3457,21 @@ msgstr "Spécification fichier CSV"
 msgid "The separator field is the semicolon(;)"
 msgstr "Le séparateur de colonne est le point-virgule ';'"
 
-msgid "The first four fields must not be change, they identified the card structure"
-msgstr "Les quatre premiers champs ne doivent pas être modifiés, ils identifient la structure de la carte"
+msgid ""
+"The first four fields must not be change, they identified the card structure"
+msgstr ""
+"Les quatre premiers champs ne doivent pas être modifiés, ils identifient la "
+"structure de la carte"
 
 msgid "Only one line by document is authorized"
 msgstr "Une seule ligne par document est autorisée"
 
-msgid "If an attribut is a multiline string, use the \\ n characters to specify the new line"
+msgid ""
+"If an attribut is a multiline string, use the \\ n characters to specify the "
+"new line"
 msgstr ""
-"Si un attribut est multi-ligne, utilisez les caractères \\n"
-" pour indiquer le saut de ligne"
+"Si un attribut est multi-ligne, utilisez les caractères \\n pour indiquer le "
+"saut de ligne"
 
 msgid "if you want to change order of column"
 msgstr "pour changer l'ordre des colonnes"
@@ -3449,7 +3513,8 @@ msgid "no key2"
 msgstr "pas de clef"
 
 msgid "values use for new document (not for update)"
-msgstr "valeurs utilisées pour les nouveaux documents (pas pour la mise à jour)"
+msgstr ""
+"valeurs utilisées pour les nouveaux documents (pas pour la mise à jour)"
 
 msgid "default import values"
 msgstr "Valeurs par défaut pour l'import"
@@ -3548,7 +3613,9 @@ msgid "You use an too old Internet explorer navigator"
 msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
 
 msgid "please upgrade to Internet explorer 6.0 or greater"
-msgstr "Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou supérieur) "
+msgstr ""
+"Mettez votre navigateur à jour avec une version Internet Explorer 6.0 (ou "
+"supérieur) "
 
 msgid "Internet explorer site"
 msgstr "Site de Microsoft"
@@ -3567,7 +3634,8 @@ msgid "You use version an to old version of Netscape (Mozilla)"
 msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
 
 msgid "You must upgrade to version Netscape 7 or Mozilla 1.7 (Firefox)"
-msgstr "Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
+msgstr ""
+"Vous devez mettre à jour avec la version Netscape 7 ou Mozilla 1.7 (Firefox)"
 
 msgid "You use version an to old version of Internet Explorer"
 msgstr "Vous utilisez un navigateur de type Internet Explorer trop ancien"
@@ -3581,8 +3649,13 @@ msgstr "Manuels"
 msgid "Gate"
 msgstr "Portail"
 
-msgid "The apache configuration seems incorrect. I cannot read .htaccess file. May be parameter allowOverride is not set to All"
-msgstr "Le fichier de configuration Apache a l'air incorrect. Je ne peux pas lire le fichier .htaccess. Peut-être que le paramètre allowOverride n'est pas mis à All"
+msgid ""
+"The apache configuration seems incorrect. I cannot read .htaccess file. May "
+"be parameter allowOverride is not set to All"
+msgstr ""
+"Le fichier de configuration Apache a l'air incorrect. Je ne peux pas lire le "
+"fichier .htaccess. Peut-être que le paramètre allowOverride n'est pas mis à "
+"All"
 
 msgid "Progress bar"
 msgstr "Barre de progression"
@@ -3591,7 +3664,9 @@ msgid "You use an too old Netscape navigator"
 msgstr "Vous utilisez un navigateur de type Netscape trop ancien"
 
 msgid "please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater"
-msgstr "Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) ou Mozilla 1.0.1 (ou supérieur)"
+msgstr ""
+"Mettez votre navigateur à jour avec une version Netscape 7.0 (ou supérieur) "
+"ou Mozilla 1.0.1 (ou supérieur)"
 
 msgid "mozilla site"
 msgstr "site de Mozilla"
@@ -3757,7 +3832,8 @@ msgid "Cannot do this action. Parent window is closed"
 msgstr "Ne peut faire cette action. La fenêtre parent est fermée"
 
 msgid "Cannot do this action. The function of parent window is not found"
-msgstr "Ne peut faire cette action. La fonction de la fenêtre parent est introuvable"
+msgstr ""
+"Ne peut faire cette action. La fonction de la fenêtre parent est introuvable"
 
 msgid "mail edition"
 msgstr "édition de mail"
@@ -4206,8 +4282,12 @@ msgstr "Autres"
 msgid "number of members"
 msgstr "Nombre de membres"
 
-msgid "Too many members to display there here. Use Open context menu to display them."
-msgstr "Il y a trop de membres dans le groupe pour afficher la liste ici. Utiliser le menu \"Ouvrir\" à partir du menu contextuel."
+msgid ""
+"Too many members to display there here. Use Open context menu to display "
+"them."
+msgstr ""
+"Il y a trop de membres dans le groupe pour afficher la liste ici. Utiliser "
+"le menu \"Ouvrir\" à partir du menu contextuel."
 
 msgid "Password"
 msgstr "Mot de passe"
@@ -4590,14 +4670,20 @@ msgstr "Sauver les changements ?"
 msgid "Data cannot be saved"
 msgstr "Les données ne peuvent être sauvées"
 
-msgid "The submitted file does not comes from the latest version of the document and might have been modified by other users. If you continue, theses changes will be lost.- Select 'Ok' to continue and replace the file with your version.- Select 'Cancel' to go back to the document without changing the file (you'll be able to download the latest version of the file and integrate your changes in it)"
+msgid ""
+"The submitted file does not comes from the latest version of the document "
+"and might have been modified by other users. If you continue, theses changes "
+"will be lost.- Select 'Ok' to continue and replace the file with your "
+"version.- Select 'Cancel' to go back to the document without changing the "
+"file (you'll be able to download the latest version of the file and "
+"integrate your changes in it)"
 msgstr ""
-"Le fichier que vous soumettez ne provient pas de la dernière version du document\\n"
-"et peut avoir été modifié par d'autres utilisateurs.\\n"
-"Si vous continuez, ces changements seront perdus.\\n"
-"\\n"
-"- Cliquez sur 'Ok' pour continuer et écraser le fichier avec votre version.\\n"
-"- Cliquez sur 'Annuler' pour revenir sur le document sans changements (vous pourrez alors télécharger la dernière version du fichier et y intégrer vos changements)."
+"Le fichier que vous soumettez ne provient pas de la dernière version du "
+"document\\net peut avoir été modifié par d'autres utilisateurs.\\nSi vous "
+"continuez, ces changements seront perdus.\\n\\n- Cliquez sur 'Ok' pour "
+"continuer et écraser le fichier avec votre version.\\n- Cliquez sur "
+"'Annuler' pour revenir sur le document sans changements (vous pourrez alors "
+"télécharger la dernière version du fichier et y intégrer vos changements)."
 
 msgid "It is not the latest document"
 msgstr "La fichier ne provient pas de la dernière version"
@@ -4663,7 +4749,8 @@ msgid "Modify acls for documents"
 msgstr "Modifier les droits des documents"
 
 msgid " No privilege to change acl for document access"
-msgstr "Pas de privilège pour modifier les droits des documents de cette famille"
+msgstr ""
+"Pas de privilège pour modifier les droits des documents de cette famille"
 
 msgid "No acl for new documents of this family"
 msgstr "Pas de droits définis pour les nouveaux documents de cette famille"
@@ -4713,8 +4800,17 @@ msgstr "Aide en ligne"
 msgid "Edit translations"
 msgstr "Modifier les traductions"
 
+msgid "Attribut"
+msgstr ""
+
 msgid "Choose an attribute"
 msgstr "Choisir un attribut"
+
+msgid "or"
+msgstr "ou"
+
+msgid "Section free key"
+msgstr "Clé libre"
 
 msgid "Add section popup"
 msgstr "Ajouter"
@@ -4926,14 +5022,18 @@ msgid "empty file"
 msgstr "fichier vide"
 
 msgid "terminal too small (must ne at least 80 columns by 24 lines)"
-msgstr "terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
+msgstr ""
+"terminal trop petit (vous devez avoir au moins 80 colonnes et 24 lignes)"
 
 #, c-format
-msgid "filename %s does not contain freedom_authtypeparams variable. May be old syntax for configuration file"
+msgid ""
+"filename %s does not contain freedom_authtypeparams variable. May be old "
+"syntax for configuration file"
 msgstr ""
 
 msgid "cannot access to core database service [service='$pgservice_core']"
-msgstr "accès impossible à la base de données par défaut [service='$pgservice_core']"
+msgstr ""
+"accès impossible à la base de données par défaut [service='$pgservice_core']"
 
 msgid "create databases ?"
 msgstr "Créer les bases de données ?"
@@ -5439,7 +5539,8 @@ msgid "root folder id"
 msgstr "Identificateur du dossier racine"
 
 msgid "Limit of text size (in Ko) for highlight text"
-msgstr "Limite de la taille du texte pour la mise en valeur des mot-clefs (en Ko)"
+msgstr ""
+"Limite de la taille du texte pour la mise en valeur des mot-clefs (en Ko)"
 
 msgid "id of the basket folder"
 msgstr "identifiant du porte-documents"
@@ -5610,10 +5711,14 @@ msgid "width of the abstract card"
 msgstr "largeur de la carte résumé (en px ou en %)"
 
 msgid "width of the frame for abstract card"
-msgstr "largeur de la fenêtre pour l'affichage des listes de documents (découpage vertical)"
+msgstr ""
+"largeur de la fenêtre pour l'affichage des listes de documents (découpage "
+"vertical)"
 
 msgid "height of the frame for abstract card"
-msgstr "hauteur de la fenêtre pour l'affichage des listes de documents (découpage horizontal)"
+msgstr ""
+"hauteur de la fenêtre pour l'affichage des listes de documents (découpage "
+"horizontal)"
 
 msgid "differents view mode by family"
 msgstr "mode de vues par familles"
@@ -5802,10 +5907,14 @@ msgid "core_sessionttl"
 msgstr "Durée des sessions (en secondes)"
 
 msgid "core_sessionmaxage"
-msgstr "Temps maximal au bout duquel une session non utilisée est éligible à la suppression"
+msgstr ""
+"Temps maximal au bout duquel une session non utilisée est éligible à la "
+"suppression"
 
 msgid "core_sessiongcprobability"
-msgstr "Probabilité de déclenchement du nettoyage des sessions non utilisée (exprimée en pourcentage par un nombre de 0 à 1)"
+msgstr ""
+"Probabilité de déclenchement du nettoyage des sessions non utilisée "
+"(exprimée en pourcentage par un nombre de 0 à 1)"
 
 msgid "language"
 msgstr "langue"
@@ -6186,7 +6295,9 @@ msgid "fulltext index mode"
 msgstr "mode d'indexation fulltext"
 
 msgid "hour number where timer can be execute until date is reached"
-msgstr "nombre d'heures : durée pendant lequel un minuteur peut être activé lorsque son heure à sonné"
+msgstr ""
+"nombre d'heures : durée pendant lequel un minuteur peut être activé lorsque "
+"son heure à sonné"
 
 msgid "fgsearch"
 msgstr "Recherche générale"
@@ -6434,8 +6545,12 @@ msgstr "Erreur: --config manquant ou absent"
 msgid "Error: config file '%s' is not a file."
 msgstr "Erreur: le fichier de config '%s' n'est pas un fichier"
 
-msgid "Error: at least one of those parameters is mandatory --outputsql --outputpgservice"
-msgstr "Erreur: au moins un de ces paramètres est obligatoire : --outputsql, --outputpgservice"
+msgid ""
+"Error: at least one of those parameters is mandatory --outputsql --"
+"outputpgservice"
+msgstr ""
+"Erreur: au moins un de ces paramètres est obligatoire : --outputsql, --"
+"outputpgservice"
 
 msgid "Error: missing or empty --tmppgservice"
 msgstr "Erreur: --tmppgservice manquant ou absent"
@@ -6537,7 +6652,9 @@ msgid "attribute identificator is null"
 msgstr "l'identifiant de l'attribut est nul"
 
 #, c-format
-msgid "attribute [%s] identificator syntax is unavalaible. Must have only alphanumeric characters and must not includes spaces"
+msgid ""
+"attribute [%s] identificator syntax is unavalaible. Must have only "
+"alphanumeric characters and must not includes spaces"
 msgstr ""
 
 #, c-format
@@ -6561,7 +6678,9 @@ msgid "attribute [%s] not exists : cannot delete it"
 msgstr ""
 
 #, c-format
-msgid "syntax error for order %s. May be an integer or a relative upto or downto identificator"
+msgid ""
+"syntax error for order %s. May be an integer or a relative upto or downto "
+"identificator"
 msgstr ""
 
 #, c-format
@@ -6662,7 +6781,9 @@ msgid "Acl [%s] not available for App %s"
 msgstr "ACL %s non valable pour l'application %s"
 
 #, c-format
-msgid "action %s is not declared to be access in open mode and token context not match"
+msgid ""
+"action %s is not declared to be access in open mode and token context not "
+"match"
 msgstr ""
 
 #, c-format
@@ -7105,15 +7226,21 @@ msgstr "lee documents de la famille %s ne peuvent être révisés"
 
 #, c-format
 msgid "cannot set free state in workflow controlled document %s"
-msgstr "l'affectation d'un état libre est impossible dans un document controlé par un cycle de vie : %s"
+msgstr ""
+"l'affectation d'un état libre est impossible dans un document controlé par "
+"un cycle de vie : %s"
 
 #, c-format
 msgid "cannot set free state for document %s: workflow not allowed"
-msgstr "l'affectation d'un état libre est impossible pour le document %s : cycle de vie non autorisé"
+msgstr ""
+"l'affectation d'un état libre est impossible pour le document %s : cycle de "
+"vie non autorisé"
 
 #, c-format
 msgid "cannot set free state for document %s: document cannot be revised"
-msgstr "l'affectation d'un état libre est impossible pour le  document %s : non révisable"
+msgstr ""
+"l'affectation d'un état libre est impossible pour le  document %s : non "
+"révisable"
 
 #, c-format
 msgid "remove state : %s"
@@ -7294,14 +7421,17 @@ msgid "attach timer %s [%d]"
 msgstr "Attachement minuteur %s [%d]"
 
 msgid "attachTimer : the timer parameter is not a document of TIMER family"
-msgstr "attachTimer : le paramètre minuteur n'est pas un document de la famille TIMER"
+msgstr ""
+"attachTimer : le paramètre minuteur n'est pas un document de la famille TIMER"
 
 #, c-format
 msgid "unattach timer %s [%d]"
 msgstr "Détachement minuteur %s [%d]"
 
 msgid "unattachTimer : the timer parameter is not a document of TIMER family"
-msgstr "unattachTimer : le paramètre minuteur n'est pas un document de la famille TIMER"
+msgstr ""
+"unattachTimer : le paramètre minuteur n'est pas un document de la famille "
+"TIMER"
 
 #, c-format
 msgid "unattach %d timers associated to %s"
@@ -7588,8 +7718,11 @@ msgid "%s unattach timer"
 msgstr "Minuteur à détacher %s"
 
 #, c-format
-msgid "ChangeState :: the new state '%s' is not known or is not allowed from %s"
-msgstr "Changement d'état: le nouvel état '%s' n'est pas connu ou n'est pas autorisé depuis %s"
+msgid ""
+"ChangeState :: the new state '%s' is not known or is not allowed from %s"
+msgstr ""
+"Changement d'état: le nouvel état '%s' n'est pas connu ou n'est pas autorisé "
+"depuis %s"
 
 #, c-format
 msgid "ChangeState :: the initial state '%s' is not known"
@@ -7617,7 +7750,8 @@ msgstr "%s changement d'état vers %s"
 
 #, c-format
 msgid ""
-"The change state to %s has been realized. But the following warning is appeared.\n"
+"The change state to %s has been realized. But the following warning is "
+"appeared.\n"
 "%s"
 msgstr ""
 "Le changement d'état vers %s a réussi avec l'avertissement suivant.\n"
@@ -7656,8 +7790,11 @@ msgid "Cannot add in %s folder, doc id (%d) unknown"
 msgstr "Ne peut ajouter dans le dossier %s, identificateur %d inconnu"
 
 #, c-format
-msgid "Cannot add %s in %s folder, restriction set to add this kind of document"
-msgstr "Ne peut ajouter %s dans le dossier %s, restrictions activées pour l'ajout de ce type de document"
+msgid ""
+"Cannot add %s in %s folder, restriction set to add this kind of document"
+msgstr ""
+"Ne peut ajouter %s dans le dossier %s, restrictions activées pour l'ajout de "
+"ce type de document"
 
 #, c-format
 msgid "Add %s in %s folder"
@@ -7673,7 +7810,8 @@ msgstr "Document inséré dans le dossier %s"
 
 #, c-format
 msgid "Change profil to default document profil : %d"
-msgstr "Changement du profil avec le profil par défaut du document famille : %d"
+msgstr ""
+"Changement du profil avec le profil par défaut du document famille : %d"
 
 #, c-format
 msgid "Change profil to default subfolder profil : %d"
@@ -7690,10 +7828,13 @@ msgstr ""
 "mettre à jour la vue."
 
 #, c-format
-msgid "cannot delete link for doc %d in folder %d : the document comes from a user query. Delete initial query if you want delete this document"
+msgid ""
+"cannot delete link for doc %d in folder %d : the document comes from a user "
+"query. Delete initial query if you want delete this document"
 msgstr ""
 "le lien pour le document %d dans le dossier %d ne peut pas être détruit : \n"
-"le document provient d'une recherche utilisateur. Supprimer la requête initiale si vous voulez delier le document"
+"le document provient d'une recherche utilisateur. Supprimer la requête "
+"initiale si vous voulez delier le document"
 
 #, c-format
 msgid "Delete %d in %s folder"
@@ -7906,7 +8047,8 @@ msgstr "Erreur: FREEDOM_DB vide"
 
 #, c-format
 msgid "Error could not open output log file '%s' for writing."
-msgstr "Erreur: impossible d'ouvrir le fichier de log sql de sortie '%s' en écriture."
+msgstr ""
+"Erreur: impossible d'ouvrir le fichier de log sql de sortie '%s' en écriture."
 
 msgid "Error creating temp file for sql log output."
 msgstr "Erreur pendant la création du fichier temporaire de log sql."
@@ -7964,12 +8106,17 @@ msgid "Skip already added property '%s' in family '%s'"
 msgstr "Evitement de la propriété '%s' déjà ajoutée dans la famille '%s'"
 
 #, c-format
-msgid "Attribute Error: impossible to found the family for docid attribute '%s'"
-msgstr "Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%s'"
+msgid ""
+"Attribute Error: impossible to found the family for docid attribute '%s'"
+msgstr ""
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
+"s'"
 
 #, c-format
 msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
-msgstr "Erreur d'attribut: la famille '%s' n'est pas valide ou en vie pour le docid '%s'."
+msgstr ""
+"Erreur d'attribut: la famille '%s' n'est pas valide ou en vie pour le docid "
+"'%s'."
 
 #, c-format
 msgid "Error: No column found in array '%s'"
@@ -8005,7 +8152,9 @@ msgstr "L'attribut '%s' doit référencer un attribut docid de la famille '%s'."
 
 #, c-format
 msgid "Attribute format should not be empty on attribute '%s' in family '%s'."
-msgstr "La propriété format de l'attribut '%s' de la famille '%s' ne peut pas être vide."
+msgstr ""
+"La propriété format de l'attribut '%s' de la famille '%s' ne peut pas être "
+"vide."
 
 #, c-format
 msgid "Attribute '%s' could not be found in family '%s'."
@@ -8135,9 +8284,6 @@ msgstr "pas de personnes valides trouvées"
 msgid "and"
 msgstr "et"
 
-msgid "or"
-msgstr "ou"
-
 #, c-format
 msgid "query [%s] not valid for select document"
 msgstr "la requête [%s] n'est pas valide pour une sélection de documents"
@@ -8170,8 +8316,11 @@ msgid "can't access file"
 msgstr "Accès au fichier impossible"
 
 #, c-format
-msgid "Some characters are not authorized for file name %s. They are replaced by -"
-msgstr "Certain caractères spéciaux ne sont pas autorisé pour un nom de fichier %s. Ils ont été remplacé par -"
+msgid ""
+"Some characters are not authorized for file name %s. They are replaced by -"
+msgstr ""
+"Certain caractères spéciaux ne sont pas autorisé pour un nom de fichier %s. "
+"Ils ont été remplacé par -"
 
 msgid "no empty vault dir found"
 msgstr "Pas de système de fichier libre"
@@ -8211,7 +8360,9 @@ msgid "passwords must not be empty"
 msgstr "Le mot de passe ne doît pas être vide"
 
 msgid "Expiration delay must not be 0 to keep expiration date"
-msgstr "Le délai d'expiration doit être supérieur à zéro pour avoir une date d'expiration"
+msgstr ""
+"Le délai d'expiration doit être supérieur à zéro pour avoir une date "
+"d'expiration"
 
 msgid "the login must not be empty"
 msgstr "Le login ne doit pas être vide"
@@ -8255,8 +8406,11 @@ msgid "Members detection are disactived for the group"
 msgstr "La récupération des membres est désactivé pour ce groupe"
 
 #, c-format
-msgid "Too many members to display there here (%d). Use Open menu to display them."
-msgstr "Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu ouvrir pour les voir."
+msgid ""
+"Too many members to display there here (%d). Use Open menu to display them."
+msgstr ""
+"Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu "
+"ouvrir pour les voir."
 
 #, c-format
 msgid "Create other database for %s (%s)"
@@ -8293,154 +8447,222 @@ msgstr "Attrape exception : %s\n"
 
 #~ msgid "Delete this translation"
 #~ msgstr "Supprimer cette traduction"
+
 #~ msgid "Help reference"
 #~ msgstr "Référence de l'aide"
+
 #~ msgid "Click here to login"
 #~ msgstr "Cliquer ici pour se connecter"
+
 #~ msgid "not pertinent"
 #~ msgstr "Pas pertinent"
+
 #~ msgid "needfile"
 #~ msgstr "Le nom du fichier doit être spécifié"
+
 #~ msgid ""
 #~ "the date '%s' for %s attribute is not correct. It has been corrected "
 #~ "automatically"
 #~ msgstr ""
 #~ "la date '%s' pour l'attribut %s est incorrect. Il a été corrigé "
 #~ "automatiquement."
+
 #~ msgid "XML data (one file per document)"
 #~ msgstr "Données XML (un fichier par document)"
+
 #~ msgid "function '%s' not available for application %s (%d)"
 #~ msgstr "fonction %s non disponible pour l'application %s (%d)"
+
 #~ msgid "francais"
 #~ msgstr "français"
+
 #~ msgid "US english"
 #~ msgstr "anglais"
+
 #~ msgid "attribute %s not found"
 #~ msgstr "attribut %s non trouvé"
+
 #~ msgid "Comment for change state to %s"
 #~ msgstr "Raison du changement d'état vers %s"
+
 #~ msgid "{left} not equal {right}"
 #~ msgstr "{left} différent de {right}"
+
 #~ msgid "{left} greater or aqual to {right}"
 #~ msgstr "{left} est supérieur ou égal à {right}"
+
 #~ msgid "{left} lesser or aqual to {right}"
 #~ msgstr "{left} est inférieur ou égal à {right}"
+
 #~ msgid "{left} include  no value of {right}"
 #~ msgstr "{left"
+
 #~ msgid "{left} is between %min% and %max%"
 #~ msgstr "%left est compris entre %min% et %max%"
+
 #~ msgid "The file is not the latest version. Abord modification file"
 #~ msgstr ""
 #~ "Le fichier n'est pas la dernière version du serveur.\\nVoulez-vous "
 #~ "abandonner la modification ?"
+
 #~ msgid "file %s has been replaced by new file %s"
 #~ msgstr "le fichier %s a été remplacé par le nouveau fichier %s"
+
 #~ msgid "Transition"
 #~ msgstr "Transition"
+
 #~ msgid "No acl for familly"
 #~ msgstr "Pas de droits définis pour la famille"
+
 #~ msgid " No privilege to change acl for state"
 #~ msgstr "Pas de privilège pour modifier les droits pour l'état"
+
 #~ msgid " No acl defined in state"
 #~ msgstr "Pas de droits définis pour l'état"
+
 #~ msgid " Change acl for familly access"
 #~ msgstr "Changer les droits d'accès à la famille"
+
 #~ msgid " Create a specific profil"
 #~ msgstr "Créer un profil dédié"
+
 #~ msgid " Change acl for documents"
 #~ msgstr "Changer les droits d'accès aux documents de cette famille"
+
 #~ msgid " Change acl when document is in state"
 #~ msgstr "Changer les droits lorsque le document est dans l'état"
+
 #~ msgid "Profil not activated"
 #~ msgstr "Profil non activé"
+
 #~ msgid " Activate profil for state"
 #~ msgstr "Activer le profil pour l'état"
+
 #~ msgid " Change acl for transitions"
 #~ msgstr "Modifier les droits sur les transitions"
+
 #~ msgid "Profile for new document"
 #~ msgstr "Profil pour les nouveaux documents"
+
 #~ msgid ""
 #~ "Affectation aborded\n"
 #~ "%s for user %s %s"
 #~ msgstr ""
 #~ "Affectation annulée :\n"
 #~ "%s pour l'utilisateur %s %s"
+
 #~ msgid "nobody"
 #~ msgstr "personne"
+
 #~ msgid "Answer"
 #~ msgstr "Répondre"
+
 #~ msgid "View ask"
 #~ msgstr "Voir les accords"
+
 #~ msgid "Past Timers"
 #~ msgstr "Précédents minuteurs"
+
 #~ msgid "Purge Timers"
 #~ msgstr "Nettoyage des minuteurs"
+
 #~ msgid "%s action"
 #~ msgstr "action %s"
+
 #~ msgid "Timer"
 #~ msgstr "Minuteur"
+
 #~ msgid "Current (%s)"
 #~ msgstr "Courant (%s)"
+
 #~ msgid "delay"
 #~ msgstr "durée"
+
 #~ msgid "no delay specified in timer %S [%d]"
 #~ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
+
 #~ msgid "not yet"
 #~ msgstr "pas encore"
+
 #~ msgid "possible incorrect conversion HTML to ODT"
 #~ msgstr "possible erreur de conversion HTML vers ODT"
+
 #~ msgid "Edit attribute kinds"
 #~ msgstr "Éditer les catégories"
+
 #~ msgid "the method %s does not exist for this document"
 #~ msgstr "La méthode '%s' n'existe pas pour ce document"
+
 #~ msgid "First folder"
 #~ msgstr "Dossier primaire"
+
 #~ msgid "Change first folder"
 #~ msgstr "Changer le dossier primaire"
+
 #~ msgid "change first folder"
 #~ msgstr "changer le dossier primaire"
+
 #~ msgid "change default search"
 #~ msgstr "Changer la recherche par défaut"
+
 #~ msgid "All columns for all families"
 #~ msgstr "Toutes les attributs pour toutes les familles"
+
 #~ msgid "Nothing"
 #~ msgstr "Rien"
+
 #~ msgid "view abstract card"
 #~ msgstr "Carte résumé"
+
 #~ msgid "the document %s has been sended"
 #~ msgstr "Le document %s a été envoyé"
+
 #~ msgid "Others..."
 #~ msgstr "Autres..."
+
 #~ msgid "constraint return [%s] for %s attribute"
 #~ msgstr "la contrainte retourne [%s] pour l'attribut %s"
+
 #~ msgid "Only CSV"
 #~ msgstr "Seul fichier CSV"
+
 #~ msgid "Return to default view"
 #~ msgstr "Retour à la vue par défaut"
+
 #~ msgid "no file referenced"
 #~ msgstr "pas de fichier référencé"
+
 #~ msgid "Details"
 #~ msgstr "Détails"
+
 #~ msgid "fgsearch display init page"
 #~ msgstr "accueil recherche générale"
+
 #~ msgid "conversion of %s.in progress.%s"
 #~ msgstr "conversion de %s.en cours.%s"
+
 #~ msgid "update of %s.in progress.%s"
 #~ msgstr "mise à jour de %s en cours. %s"
+
 #~ msgid "Other family"
 #~ msgstr "Autres familles"
+
 #~ msgid "detailled full text search document"
 #~ msgstr "recherche plein texte détaillé"
+
 #~ msgid "detailled full text interface"
 #~ msgstr "interface de recherche plein texte détaillé"
+
 #~ msgid "full text search document criteria"
 #~ msgstr "critères de recherche plein texte"
 
 #, fuzzy
 #~ msgid " %s"
 #~ msgstr "vers %s"
+
 #~ msgid "enabled/disabled full text search"
 #~ msgstr "Activer/désactiver la recherche plein texte"
+
 #~ msgid "Clear folder"
 #~ msgstr "Vider le dossier"
 
@@ -8451,107 +8673,151 @@ msgstr "Attrape exception : %s\n"
 #, fuzzy
 #~ msgid "Delete document %s"
 #~ msgstr "supprimer le document"
+
 #~ msgid "up"
 #~ msgstr "monter"
+
 #~ msgid "down"
 #~ msgstr "descendre"
+
 #~ msgid "related search of %s"
 #~ msgstr "recherche relative de %s"
+
 #~ msgid "created profile"
 #~ msgstr "Profil crée"
+
 #~ msgid "created control view"
 #~ msgstr "contrôle de vue de création"
+
 #~ msgid "first folder"
 #~ msgstr "Dossier primaire"
+
 #~ msgid "root folder"
 #~ msgstr "Dossier racine"
+
 #~ msgid "new directory"
 #~ msgstr "Nouveau dossier"
+
 #~ msgid "new profile"
 #~ msgstr "Profil"
+
 #~ msgid "Search linked documents 2"
 #~ msgstr "Recherche des documents liés"
+
 #~ msgid "Save and close"
 #~ msgstr "Sauver et fermer"
+
 #~ msgid "Tounchanged"
 #~ msgstr "Sauver"
+
 #~ msgid "no change state"
 #~ msgstr "Pas de changement d'état"
+
 #~ msgid "change current folder"
 #~ msgstr "changer le dossier courant"
+
 #~ msgid "All document"
 #~ msgstr "tous les documents"
+
 #~ msgid "current folder"
 #~ msgstr "dossier courant"
+
 #~ msgid "My document basket"
 #~ msgstr "Mon porte-document"
+
 #~ msgid "Export Folder and profil"
 #~ msgstr "Exportation du dossier et des profils"
+
 #~ msgid "metasend max for split mail"
 #~ msgstr "metasend max pour le découpage de mail"
+
 #~ msgid "delete by action %s from %s"
 #~ msgstr "supprimé avec l'action %s depuis %s"
+
 #~ msgid "no file specified : update aborted"
 #~ msgstr "pas de fichier fournit, attaque possible : mise à jour abandonnée"
+
 #~ msgid "view historic"
 #~ msgstr "Voir l'historique"
+
 #~ msgid "current"
 #~ msgstr "courant"
+
 #~ msgid "Unllocated of %s %s: %s"
 #~ msgstr "Suppression de l'allocation de %s %s ! %s"
+
 #~ msgid "Unaffected"
 #~ msgstr "Suppression de l'affectation"
+
 #~ msgid "document %s has been affected to %s"
 #~ msgstr "Le document %s a été affecté à %s"
+
 #~ msgid "Affected to %s"
 #~ msgstr "Affectation à %s"
+
 #~ msgid "affectation for %s document"
 #~ msgstr "affectation pour le document %s"
+
 #~ msgid "document received for"
 #~ msgstr "document reçu par"
+
 #~ msgid "choose inputs"
 #~ msgstr "choisir une valeur"
+
 #~ msgid "delete by %s by action %s on %s from %s"
 #~ msgstr "supprimé par %s avec l'action %s sur %s par %s"
+
 #~ msgid "no need to refresh group"
 #~ msgstr "tous les groupes sont actualisés"
 
 #, fuzzy
 #~ msgid "lignes par page"
 #~ msgstr "lignes par pages"
+
 #~ msgid "search usercard"
 #~ msgstr "recherche de personne"
+
 #~ msgid "iuser"
 #~ msgstr "utilisateur"
 
 #, fuzzy
 #~ msgid "voir ses contacts"
 #~ msgstr "voir les contraintes"
+
 #~ msgid "all condition"
 #~ msgstr "toutes conditions"
+
 #~ msgid "Init"
 #~ msgstr "Init"
+
 #~ msgid "Add"
 #~ msgstr "Ajout"
 
 #, fuzzy
 #~ msgid "Pages Jaunes"
 #~ msgstr "Valeurs des paramètres"
+
 #~ msgid "Edit kind"
 #~ msgstr " éditer une catégorie"
+
 #~ msgid " date"
 #~ msgstr " date"
+
 #~ msgid "cannot lock file %s (rev %d) : fixed. Get the latest version"
 #~ msgstr ""
 #~ "verrouillage impossible. Le fichier %s (rév. %d) est figé. Utilisez la "
 #~ "dernière version"
+
 #~ msgid "cannot lock file %s (rev %d): already locked by %s."
 #~ msgstr ""
 #~ "Verrouillage impossible. Le fichier %s [%d] est déjà verrouillé par %s."
+
 #~ msgid "no privilege %s"
 #~ msgstr "privilège inconnu : %s"
+
 #~ msgid "the pluggins function description '%s' is not conform"
 #~ msgstr "La description de la fonction externe '%s' est incorrecte"
+
 #~ msgid "administrative tools"
 #~ msgstr "outils d'administration"
 
@@ -8566,61 +8832,89 @@ msgstr "Attrape exception : %s\n"
 #, fuzzy
 #~ msgid "create new style with this parameters"
 #~ msgstr "Paramètres pour le changement d'état"
+
 #~ msgid "cedex"
 #~ msgstr "cédex"
+
 #~ msgid "my prefered contacts"
 #~ msgstr "Mes contacts préférés"
+
 #~ msgid "bilan cannot be perform : %s society not found"
 #~ msgstr "Le bilan ne peut être produit : la société %s n'a pas été trouvée"
+
 #~ msgid "dayfirstletter"
 #~ msgstr "j"
+
 #~ msgid "hourfirstletter"
 #~ msgstr "h"
+
 #~ msgid "minfirstletter"
 #~ msgstr "min"
+
 #~ msgid "undated"
 #~ msgstr "non daté"
+
 #~ msgid "untitle"
 #~ msgstr "sans titre"
+
 #~ msgid "undefined gravity"
 #~ msgstr "indéfinie"
+
 #~ msgid "more..."
 #~ msgstr "plus..."
+
 #~ msgid "Access Management Database"
 #~ msgstr "Accès administration de la base"
+
 #~ msgid "reference must be a number not '%s'"
 #~ msgstr "la référence '%s' doit être un nombre"
+
 #~ msgid "icreation"
 #~ msgstr "création interactive"
+
 #~ msgid "Freedoms"
 #~ msgstr "Freedoms"
+
 #~ msgid "Freedoms Management"
 #~ msgstr "Administration Freedom"
+
 #~ msgid "%d documents found"
 #~ msgstr "%d documents trouvés"
+
 #~ msgid "%d document found"
 #~ msgstr "%d document trouvé"
+
 #~ msgid "insert up"
 #~ msgstr "ajout dessus"
+
 #~ msgid "mnoGoSearch: indexer database access specification"
 #~ msgstr ""
 #~ "mnoGoSearch: spécification d'accès à la base de l'indexation plein texte"
+
 #~ msgid "mnoGoSearch: indexer database access mode"
 #~ msgstr "mnoGoSearch: mode d'accès à la base de l'indexation plein texte"
+
 #~ msgid "mnoGoSearch: limit search on path that contain"
 #~ msgstr "mnoGoSearch: limitation des recherches sur le chemin d'accès"
+
 #~ msgid "mnoGoSearch: max result count by page"
 #~ msgstr "mnoGoSearch: nombre de résultats retournés par page"
+
 #~ msgid "mnoGoSearch: index database using phrase"
 #~ msgstr "mnoGoSearch: utilisation des phrases pour l'indexation"
+
 #~ msgid "mnoGoSearch: charset"
 #~ msgstr "mnoGoSearch: jeu de caractère"
+
 #~ msgid "mnoGoSearch: db table contains stop words"
 #~ msgstr "mnoGoSearch: nom de la table contenant les 'stopwords'"
+
 #~ msgid "comment"
 #~ msgstr " commentaire"
+
 #~ msgid "some needed attributes are empty"
 #~ msgstr "certains attributs obligatoires sont vides"
+
 #~ msgid "date picker"
 #~ msgstr "choix de date"
 
@@ -8631,231 +8925,342 @@ msgstr "Attrape exception : %s\n"
 #~ "fichiers verrouillés par \n"
 #~ "#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
 #~ "fichiers verrouillés par"
+
 #~ msgid "Add %d in %s folder"
 #~ msgstr "Ajout %d dans dossier %s"
+
 #~ msgid "cannot delete link : link not found for doc %d in folder %d"
 #~ msgstr "échec de la suppression de la référence (document %d, dossier %d)"
+
 #~ msgid "unreferenced site"
 #~ msgstr "sites non référencés"
+
 #~ msgid "new incident"
 #~ msgstr "Nouvel incident"
+
 #~ msgid "all constructors"
 #~ msgstr "tous les constructeurs"
+
 #~ msgid "clotured"
 #~ msgstr "cloturé"
+
 #~ msgid "Tprogressing"
 #~ msgstr "vers en cours"
+
 #~ msgid "Tclotured"
 #~ msgstr "vers cloturé"
+
 #~ msgid "recorded"
 #~ msgstr "enregistré"
+
 #~ msgid "analyzed"
 #~ msgstr "analysé"
+
 #~ msgid "traited"
 #~ msgstr "traité"
+
 #~ msgid "rejected"
 #~ msgstr "rejeté"
+
 #~ msgid "closed"
 #~ msgstr "clôt"
+
 #~ msgid "draft"
 #~ msgstr "brouillon"
+
 #~ msgid "Trecorded"
 #~ msgstr "vers enregistré"
+
 #~ msgid "Tqualified"
 #~ msgstr "vers qualifié"
+
 #~ msgid "Tanalyzed"
 #~ msgstr "vers analysé"
+
 #~ msgid "Ttraited"
 #~ msgstr "vers traité"
+
 #~ msgid "Trejected"
 #~ msgstr "vers rejeté"
+
 #~ msgid "Tclosed"
 #~ msgstr "vers clôt"
+
 #~ msgid "Tsuspended"
 #~ msgstr "vers suspendu"
+
 #~ msgid "[%s] incident registration"
 #~ msgstr "[%s] enregistrement de l'incident"
+
 #~ msgid "Incident : ask for level 2 %s"
 #~ msgstr "Incident : Demande d'analyse niveau 2 %s"
+
 #~ msgid "Incident : ask for perform %s"
 #~ msgstr "Incident : Demande de traitement %s"
+
 #~ msgid "[%s] incident traited"
 #~ msgstr "[%s] incident traité"
+
 #~ msgid "the %s attribute must be set."
 #~ msgstr "L'attribut %s doit être renseigné."
+
 #~ msgid "send official mail to %s (cc: %s - bcc:%s)"
 #~ msgstr "mail officiel envoyé à %s (cc: %s - bcc:%s)"
+
 #~ msgid "virtual"
 #~ msgstr "virtuel"
+
 #~ msgid "consumed"
 #~ msgstr "consommé"
+
 #~ msgid "plocked"
 #~ msgstr "immobilisé"
+
 #~ msgid "asav"
 #~ msgstr "affecté SAV"
+
 #~ msgid "aclient"
 #~ msgstr "affecté client"
+
 #~ msgid "stocked"
 #~ msgstr "stocké"
+
 #~ msgid "Tvirtual"
 #~ msgstr "vers virtuel"
+
 #~ msgid "Tconsumed"
 #~ msgstr "vers consommé"
+
 #~ msgid "Tlocked"
 #~ msgstr "vers immobilisé"
+
 #~ msgid "Tasav"
 #~ msgstr "vers affecté SAV"
+
 #~ msgid "Taclient"
 #~ msgstr "vers affecté client"
+
 #~ msgid "Treturned"
 #~ msgstr "vers retourné"
+
 #~ msgid "Tstocked"
 #~ msgstr "vers stocké"
+
 #~ msgid "Tout"
 #~ msgstr "vers sorti"
+
 #~ msgid "Products"
 #~ msgstr "Produits"
+
 #~ msgid "Product Management"
 #~ msgstr "Gestion des produits"
+
 #~ msgid "product balance"
 #~ msgstr "bilan des produits"
+
 #~ msgid "balance query"
 #~ msgstr "Requête de bilan"
+
 #~ msgid "balance result"
 #~ msgstr "résultat du bilan"
+
 #~ msgid "New"
 #~ msgstr "Nouveau"
+
 #~ msgid "Bilan"
 #~ msgstr "Bilan"
+
 #~ msgid "client bilan"
 #~ msgstr "bilan client"
+
 #~ msgid "global bilan"
 #~ msgstr "bilan général"
+
 #~ msgid "state bilan"
 #~ msgstr "Bilan par état"
+
 #~ msgid "Incident Report"
 #~ msgstr "Rapport d'incident"
+
 #~ msgid "Bilan Query"
 #~ msgstr "Requête de bilan"
+
 #~ msgid "incident state"
 #~ msgstr "état incident"
+
 #~ msgid "new bilan"
 #~ msgstr "nouveau bilan"
+
 #~ msgid "incident historical"
 #~ msgstr "Suivi des incidents"
+
 #~ msgid "SUPPORT Service"
 #~ msgstr "Service SUPPORT"
+
 #~ msgid "edited the"
 #~ msgstr "Édition du"
+
 #~ msgid "Title"
 #~ msgstr "Titre"
+
 #~ msgid "Recorded Date"
 #~ msgstr "Date d'enregistrement"
+
 #~ msgid "Gravity"
 #~ msgstr "Gravité"
+
 #~ msgid "Problem"
 #~ msgstr "Problème"
+
 #~ msgid "the from date is in the future"
 #~ msgstr "la date de début est dans le futur"
+
 #~ msgid "the end date is in the future"
 #~ msgstr "la date de fin est dans le futur"
+
 #~ msgid "the from date is before the end date"
 #~ msgstr "La date de fin (%s) est antérieure à la date de début (%s)"
+
 #~ msgid "Global Balance"
 #~ msgstr "Bilan général"
+
 #~ msgid "global balance"
 #~ msgstr "bilan général"
+
 #~ msgid "Description"
 #~ msgstr "Description"
+
 #~ msgid "First Revision"
 #~ msgstr "Première révision"
+
 #~ msgid "Latest Revision"
 #~ msgstr "Dernière révision"
+
 #~ msgid "Bilan:"
 #~ msgstr "Bilan"
+
 #~ msgid "General Synthesis"
 #~ msgstr "Synthèse générale"
+
 #~ msgid "gravity"
 #~ msgstr "gravité"
+
 #~ msgid "Total"
 #~ msgstr "Total"
+
 #~ msgid "End Date"
 #~ msgstr "Date de fin"
+
 #~ msgid "Delay"
 #~ msgstr "Délai"
+
 #~ msgid "bilan"
 #~ msgstr "bilan"
+
 #~ msgid "Product Report"
 #~ msgstr "Rapport produits"
+
 #~ msgid "Balance Result"
 #~ msgstr "Résultat du bilan"
+
 #~ msgid "product historical"
 #~ msgstr "Suivi des produits"
+
 #~ msgid "Sales Out"
 #~ msgstr "Ventes"
+
 #~ msgid "designation"
 #~ msgstr "désignation"
+
 #~ msgid "double title %s <B>ignored</B> "
 #~ msgstr "titre en double %s <B>ignoré</B> "
+
 #~ msgid "families"
 #~ msgstr "familles"
+
 #~ msgid "manage visible families"
 #~ msgstr "gestion des familles visibles"
+
 #~ msgid "personn added"
 #~ msgstr "Personnes ajoutées"
+
 #~ msgid "personn deleted"
 #~ msgstr "Personnes supprimées"
+
 #~ msgid "and add  in %s folder "
 #~ msgstr "et ajout dans dossier %s"
+
 #~ msgid "already exist : not added"
 #~ msgstr "déjà existant : pas ajouté"
+
 #~ msgid "Access Incident Master Management"
 #~ msgstr "Accès à l'administration des incidents"
+
 #~ msgid "Access To Incident Management"
 #~ msgstr "Accès à la gestion des incidents"
+
 #~ msgid "incident list application"
 #~ msgstr "liste des applications incident"
+
 #~ msgid "document history"
 #~ msgstr "historique du document"
+
 #~ msgid "unlock incident file"
 #~ msgstr "Déverrouiller un document incident"
+
 #~ msgid "view an incident"
 #~ msgstr "voir un incident"
+
 #~ msgid "search an incident"
 #~ msgstr "rechercher un incident"
+
 #~ msgid "balance"
 #~ msgstr "bilan"
+
 #~ msgid "global balance query"
 #~ msgstr "Requête de bilan général"
+
 #~ msgid "global balance result"
 #~ msgstr "résultat du bilan général"
+
 #~ msgid "relance"
 #~ msgstr "relance"
+
 #~ msgid "bcc mail to control each opened incident"
 #~ msgstr "mail caché pour controler chaque nouvel incident"
+
 #~ msgid "address for replying for the client"
 #~ msgstr "adresse de réponse pour le client"
+
 #~ msgid "send mail for qualifier and analyzer"
 #~ msgstr "activer l'envoi de mail vers les qualifieurs et analyseurs"
+
 #~ msgid "Sites"
 #~ msgstr "Sites"
+
 #~ msgid "Site Management"
 #~ msgstr "Gestion des sites"
+
 #~ msgid "Contract Management"
 #~ msgstr "Gestion des contrats"
+
 #~ msgid " rev"
 #~ msgstr " rév."
+
 #~ msgid "ChangeState :: the method '%s' has the following error %s"
 #~ msgstr ""
 #~ "Changement d'état : la méthode '%s' a retourné l'erreur suivante : %s"
+
 #~ msgid ""
 #~ "ChangeState :: the state has been realized but the post method '%s' has "
 #~ "the following error %s"
 #~ msgstr ""
 #~ "Changement d'état : le changement d'état a été réalisé.\n"
 #~ "Par contre la fonction %s a retourné l'erreur suivante : %s."
+
 #~ msgid "Freedom : incident %s : transition to %s"
 #~ msgstr "Incident %s : transition vers %s"
+
 #~ msgid "send internal mail to %s (bcc:%s)"
 #~ msgstr "mail interne envoyé à %s (bcc: %s)"
 
@@ -8866,358 +9271,519 @@ msgstr "Attrape exception : %s\n"
 #, fuzzy
 #~ msgid "View headers2"
 #~ msgstr "Voir entête"
+
 #~ msgid "All kind"
 #~ msgstr "tout type"
+
 #~ msgid "copy from document #%d"
 #~ msgstr "copie à partir du document n°%d"
+
 #~ msgid "see contents"
 #~ msgstr "voir le contenu"
+
 #~ msgid "change by %s"
 #~ msgstr "modifié par %s"
+
 #~ msgid "%s all categories "
 #~ msgstr "%s toutes catégories"
+
 #~ msgid "%s %s category "
 #~ msgstr "%s catégorie %s"
+
 #~ msgid "kind of search is not defined"
 #~ msgstr "type de recherche non défini"
+
 #~ msgid "usercard category to find clients"
 #~ msgstr "identificateur catégorie pour la recherche de personne cliente"
+
 #~ msgid "usercard category id to find technical"
 #~ msgstr "identificateur catégorie pour la recherche de techniciens"
+
 #~ msgid "SOCIETY category id to find constructors"
 #~ msgstr "identificateur catégorie pour la recherche de sociétés clientes"
+
 #~ msgid "Category"
 #~ msgstr "Catégorie"
+
 #~ msgid "Catg"
 #~ msgstr "Catg"
+
 #~ msgid "unlock generic"
 #~ msgstr "déverrouiller générique"
+
 #~ msgid "new doc"
 #~ msgstr "Document"
+
 #~ msgid "new folder"
 #~ msgstr "Dossier"
+
 #~ msgid "society familly id"
 #~ msgstr "id famille société"
+
 #~ msgid "product familly id"
 #~ msgstr "id famille produit"
+
 #~ msgid "incident familly id"
 #~ msgstr "id famille incident"
+
 #~ msgid "search incident contains %s in all state"
 #~ msgstr "recherche des incidents contenant %s (tout état)"
+
 #~ msgid "search  incident contains %s in %s"
 #~ msgstr "recherche des incidents contenant %s dans %s"
+
 #~ msgid "view folder"
 #~ msgstr "voir dossier"
+
 #~ msgid "unclosed incident"
 #~ msgstr "incidents non clôts"
+
 #~ msgid "traited incident"
 #~ msgstr "incidents traités"
+
 #~ msgid "suspended incident"
 #~ msgstr "incidents suspendus"
+
 #~ msgid "Newfam"
 #~ msgstr "Nouvelle"
+
 #~ msgid " view properties"
 #~ msgstr " Voir les propriétés"
+
 #~ msgid "Access Onefam Master Management"
 #~ msgstr "Accès à l'administration par famille"
+
 #~ msgid "Tsimple"
 #~ msgstr "Autres transitions"
+
 #~ msgid "Tfinal"
 #~ msgstr "Transition close"
+
 #~ msgid "this document cannot be locked : it is not a revisable document"
 #~ msgstr "ce document n'est pas verrouillable, il ne peut pas être révisé"
+
 #~ msgid "view incident"
 #~ msgstr "voir un incident"
+
 #~ msgid "unreferenced"
 #~ msgstr "non référencé"
+
 #~ msgid " case sensitive"
 #~ msgstr " casse sensible"
+
 #~ msgid "search usercard contains %s in all categories"
 #~ msgstr "recherche des cartes contenant %s toutes catégories"
+
 #~ msgid "search usercard contains %s in %s category"
 #~ msgstr "recherche des cartes contenant %s dans la catégorie %s"
+
 #~ msgid "%s : all categories "
 #~ msgstr "%s : toutes catégories"
+
 #~ msgid "%s : %s category "
 #~ msgstr "%s : catégorie %s"
+
 #~ msgid "New personn"
 #~ msgstr "Nouvelle personne"
+
 #~ msgid "Vcard"
 #~ msgstr "Vcard"
+
 #~ msgid "charset"
 #~ msgstr "jeux de caractères"
+
 #~ msgid "private access of the user card %s. You're not the owner"
 #~ msgstr "Accès privé de la carte %s. Vous n'en n'êtes pas propriétaire"
+
 #~ msgid " change profile"
 #~ msgstr " Changer de profil"
+
 #~ msgid " change creation profile"
 #~ msgstr " changer de profil par défaut"
+
 #~ msgid "receipt call %s"
 #~ msgstr "appel reçu %s"
+
 #~ msgid ""
 #~ "The incident call '%s' has been recorded on %s.\n"
 #~ "Its reference is %s"
 #~ msgstr ""
 #~ "L'incident intitulé %s a bien été enregistré le %s.\n"
 #~ "Sa référence est %s"
+
 #~ msgid "export"
 #~ msgstr ""
 #~ "Exporter les cartes \n"
 #~ "selon les critères courants"
+
 #~ msgid " properties"
 #~ msgstr " Propriétés"
+
 #~ msgid "The file to be imported must be in VCard format."
 #~ msgstr "Le fichier à importer doit être au format Vcard"
+
 #~ msgid " paste this revision"
 #~ msgstr " référencer cette révision"
+
 #~ msgid " paste latest revision"
 #~ msgstr " référencer la dernière révision"
+
 #~ msgid " change category"
 #~ msgstr " changer de catégorie"
+
 #~ msgid "cannot add folder : '%s'. It will be ancestor of itself"
 #~ msgstr "ajout du dossier %s impossible, il est son propre ancêtre"
+
 #~ msgid "updateldapko"
 #~ msgstr "échec de mise à jour du serveur LDAP"
 
 #, fuzzy
 #~ msgid "move"
 #~ msgstr "Mobile"
+
 #~ msgid "view directory"
 #~ msgstr "voir le dossier"
+
 #~ msgid "open directory"
 #~ msgstr "ouvrir le dossier"
+
 #~ msgid "readwriteowner"
 #~ msgstr "privée"
+
 #~ msgid "noappli"
 #~ msgstr "Aucune application"
+
 #~ msgid "basic documentation family"
 #~ msgstr "Famille de base"
+
 #~ msgid "profile documentation access familly"
 #~ msgstr "famille des profils d'accès documents"
+
 #~ msgid "profile directory access familly"
 #~ msgstr "famille des profils d'accès dossiers"
+
 #~ msgid "profile search familly"
 #~ msgstr "famille des profils d'accès recherche"
+
 #~ msgid "Cannot Add : need FREEDOM privilege"
 #~ msgstr "L'ajout nécessite le privilège FREEDOM"
 
 #, fuzzy
 #~ msgid "Freedoms exportation"
 #~ msgstr "Exportation de cartes"
+
 #~ msgid "photo"
 #~ msgstr "Photographie"
+
 #~ msgid "department"
 #~ msgstr "Département"
+
 #~ msgid "organisation"
 #~ msgstr "Société"
+
 #~ msgid "postalcode"
 #~ msgstr "Code Postal"
+
 #~ msgid "url"
 #~ msgstr "Page Web (URL)"
+
 #~ msgid "home"
 #~ msgstr "Domicile"
+
 #~ msgid "business"
 #~ msgstr "Professionnel"
+
 #~ msgid "newcatg"
 #~ msgstr "Autre"
+
 #~ msgid "onlyowner"
 #~ msgstr "perso"
 
 #, fuzzy
 #~ msgid "modify own cardgroup_default"
 #~ msgstr "modifier mes propres cartes"
+
 #~ msgid "modify any card"
 #~ msgstr "modifier n'importe quelles cartes"
+
 #~ msgid "modify public card"
 #~ msgstr "modifier les cartes publiques"
+
 #~ msgid "Cannot Modify : need CONTACT privilege"
 #~ msgstr "La modification de carte nécessite le privilège CONTACT"
+
 #~ msgid "Cannot Modify : Not Owner"
 #~ msgstr "La modification n'est autorisé que par son propriétaire"
+
 #~ msgid "Cannot Delete : Not Owner"
 #~ msgstr "La suppression n'est autorisé que par son propriétaire"
 
 #, fuzzy
 #~ msgid "Contacts frame"
 #~ msgstr "Contacts"
+
 #~ msgid "Contacts list"
 #~ msgstr "Listes des contacts"
+
 #~ msgid "Generate FS"
 #~ msgstr "Générer FS"
+
 #~ msgid "Clear Trash"
 #~ msgstr "Vider la poubelle"
+
 #~ msgid "View used detail"
 #~ msgstr "Voir le détail"
+
 #~ msgid "Detail"
 #~ msgstr "Détail"
+
 #~ msgid "Real Used"
 #~ msgstr "Réellement utilisé"
+
 #~ msgid "API file %s not found"
 #~ msgstr "fichier API %s non trouvé."
+
 #~ msgid "Choose database in %s (%s)"
 #~ msgstr "Choix de la base de données dans %s (%s)"
+
 #~ msgid "UK english"
 #~ msgstr "anglais GB"
+
 #~ msgid "auth_expired"
 #~ msgstr "Votre authentification a expiré"
+
 #~ msgid "auth_welcome"
 #~ msgstr "Merci de vous authentifier"
+
 #~ msgid "nodomain"
 #~ msgstr "pas de domaine"
+
 #~ msgid "title"
 #~ msgstr "Titre"
+
 #~ msgid "Virtual host : [%s]"
 #~ msgstr "Hôte virtual : [%s]"
+
 #~ msgid "Database     : [%s]"
 #~ msgstr "Base de données : [%s]"
+
 #~ msgid "cannot access to template database [$dbtemp]"
 #~ msgstr "accès impossible à la base de données par template [$dbtemp]"
+
 #~ msgid "use object cache"
 #~ msgstr "utiliser le cache objets"
+
 #~ msgid "number of cached object by class"
 #~ msgstr "nombre d'objet caché par classes"
+
 #~ msgid "Command failed"
 #~ msgstr "échec de la commande"
+
 #~ msgid "Name of anakeen database ?"
 #~ msgstr "Nom de la base anakeen ?"
+
 #~ msgid "button color"
 #~ msgstr "couleur du bouton"
+
 #~ msgid "default font"
 #~ msgstr "police par défaut"
+
 #~ msgid "menu font"
 #~ msgstr "police des menus"
+
 #~ msgid "Access denied"
 #~ msgstr "Accès refusé"
+
 #~ msgid "contacts speed search"
 #~ msgstr "Recherche rapide de contacts"
+
 #~ msgid "my favorites contacts"
 #~ msgstr "Mes contacts préférés"
+
 #~ msgid "agenda portal"
 #~ msgstr "Portail de l'agenda"
+
 #~ msgid "return to the portal"
 #~ msgstr "Retourner au portail"
+
 #~ msgid "todo box"
 #~ msgstr "Taches"
+
 #~ msgid "agenda box"
 #~ msgstr "Agenda"
+
 #~ msgid "pending rendez-vous"
 #~ msgstr "Rendez-vous en attente"
+
 #~ msgid "no rendez-vous pending"
 #~ msgstr "Pas de rendez-vous"
+
 #~ msgid "next rendez-vous"
 #~ msgstr "Rendez-vous à venir"
+
 #~ msgid "no rendez-vous"
 #~ msgstr "Pas de rendez-vous"
+
 #~ msgid "rss box"
 #~ msgstr "Fil d'informations"
+
 #~ msgid "select rss to display"
 #~ msgstr "Sélectionner le fil d'information à afficher"
+
 #~ msgid "mail box"
 #~ msgstr "Boîtes aux lettres"
+
 #~ msgid "open/close mailbox"
 #~ msgstr "Afficher/Cacher les messages reçus"
+
 #~ msgid "retrieve mailbox informations"
 #~ msgstr "récupérer les informations"
+
 #~ msgid "not available"
 #~ msgstr "pas d'information disponible"
+
 #~ msgid "waiting server respons"
 #~ msgstr "en atttente de la réponse de serveur"
+
 #~ msgid "click to change departement"
 #~ msgstr "cliquer ici pour changer de département"
+
 #~ msgid "search box"
 #~ msgstr "Recherches"
+
 #~ msgid "new box"
 #~ msgstr "Nouvelles"
+
 #~ msgid "no mail account"
 #~ msgstr "pas de compte de messagerie"
+
 #~ msgid "no message on server"
 #~ msgstr "pas de message"
+
 #~ msgid "account name"
 #~ msgstr "Nom du compte"
+
 #~ msgid "account login"
 #~ msgstr "Utilisateur / Login"
+
 #~ msgid "account server"
 #~ msgstr "Serveur"
+
 #~ msgid "account mode"
 #~ msgstr "Protocole"
+
 #~ msgid "rss syndication management"
 #~ msgstr "Gestion des fils d'information"
+
 #~ msgid "select to remove rss"
 #~ msgstr "Sélectionner pour supprimer le fil..."
+
 #~ msgid "add new rss here"
 #~ msgstr "Ajouter un nouveau fil d'information"
+
 #~ msgid "rss title"
 #~ msgstr "Titre"
+
 #~ msgid "add new rss description here"
 #~ msgstr "description..."
+
 #~ msgid "rss url"
 #~ msgstr "Url"
+
 #~ msgid "add new rss url here"
 #~ msgstr "url..."
+
 #~ msgid "close"
 #~ msgstr "Fermer"
+
 #~ msgid "mot edition"
 #~ msgstr "édition du MOTD"
 
 #, fuzzy
 #~ msgid "view my portal configuration"
 #~ msgstr "ma messagerie"
+
 #~ msgid "Object Access"
 #~ msgstr "Accès des objets"
+
 #~ msgid ""
 #~ "New version has been installed.\n"
 #~ "You must clear navigator cache."
 #~ msgstr ""
 #~ "Une nouvelle version vient d'être installé.\n"
 #~ "Vous devez effacer le cache de votre navigateur."
+
 #~ msgid "no documentation available for %s application"
 #~ msgstr "pas de documentation  disponible pour l'application %s"
+
 #~ msgid "index %s not found."
 #~ msgstr "index %s non trouvé."
+
 #~ msgid "Hosted by"
 #~ msgstr "Hébergé par"
+
 #~ msgid "powered by"
 #~ msgstr "produit par"
+
 #~ msgid "functionerr"
 #~ msgstr "Détection d'une erreur"
+
 #~ msgid "Return to"
 #~ msgstr "Retour à"
+
 #~ msgid "clear object cache"
 #~ msgstr "Effacer le cache objets"
+
 #~ msgid "delparam"
 #~ msgstr "Supprimer"
+
 #~ msgid "titlestylecreate"
 #~ msgstr "Cr&eacute;ation de style "
+
 #~ msgid "titlestylemodify"
 #~ msgstr "Modification du style "
+
 #~ msgid "err_add_style"
 #~ msgstr "Impossible de creer le style"
+
 #~ msgid "err_mod_style"
 #~ msgstr "Impossible de modifier le style"
+
 #~ msgid "nc"
 #~ msgstr "nc"
+
 #~ msgid "styles"
 #~ msgstr "les styles"
+
 #~ msgid "titlestyle"
 #~ msgstr "Liste des param&egrave;tres du style"
+
 #~ msgid "titleparam"
 #~ msgstr "Liste des param&egrave;tres de l'application"
+
 #~ msgid "permission"
 #~ msgstr "Droit"
+
 #~ msgid "anyoid"
 #~ msgstr "objet commun"
+
 #~ msgid "script"
 #~ msgstr "Script"
+
 #~ msgid "layout"
 #~ msgstr "Layout"
+
 #~ msgid "addapplication"
 #~ msgstr "Ajouter une application"
+
 #~ msgid "modapplication"
 #~ msgstr "Modifier"
+
 #~ msgid "moduser"
 #~ msgstr "Supprimer"
+
 #~ msgid "chggroup"
 #~ msgstr "Changer de groupe"
+
 #~ msgid "Invalid Session"
 #~ msgstr "Session invalide"
-

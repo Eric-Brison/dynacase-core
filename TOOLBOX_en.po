@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-02 14:39+0200\n"
+"POT-Creation-Date: 2010-09-02 15:50+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -5173,7 +5173,16 @@ msgstr ""
 msgid "Edit translations"
 msgstr ""
 
+msgid "Attribut"
+msgstr ""
+
 msgid "Choose an attribute"
+msgstr ""
+
+msgid "or"
+msgstr ""
+
+msgid "Section free key"
 msgstr ""
 
 msgid "Add section popup"
@@ -8812,9 +8821,6 @@ msgstr ""
 #, fuzzy
 msgid "and"
 msgstr "Add new contact card"
-
-msgid "or"
-msgstr ""
 
 #, c-format
 msgid "query [%s] not valid for select document"

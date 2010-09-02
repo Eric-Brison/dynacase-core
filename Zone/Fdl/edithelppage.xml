@@ -116,20 +116,25 @@
 
 <div id="help-section-add-div" style="display:none">
 	<table style="width:100%" cellspacing="0" class="edittable">
-		<tr>
-			<td class="FREEDOMLabel" style="width:140px"><span>[TEXT:Section key]&nbsp:&nbsp;</span></td>
-			<td><input type="text" name="section_name" value="" /></td>
-		</tr>
 		[IF HELPATTRIBUTESLIST]
 		<tr>
-			<td class="FREEDOMLabel" style="width:140px"></td>
-			<td><select onchange="help_popup_select(this.value)">
+			<td class="FREEDOMLabel" style="width:120px"><span>[TEXT:Attribut]&nbsp:&nbsp;</span></td>
+			<td><input type="radio" name="help_popup_type" value="1" />
+				<select name="help_popup_select" onchange="help_popup_select_change(this.value)">
 				<option value="">- [TEXT:Choose an attribute] -</option>
 				[BLOCK HELPATTRIBUTES]<option value="[HELPATTRVALUE]">[HELPATTRNAME]</option>[ENDBLOCK HELPATTRIBUTES]
 			</select></td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"></td>
+			<td>[TEXT:or]</td>
 		</tr>[ENDIF HELPATTRIBUTESLIST]
 		<tr>
-			<td class="FREEDOMLabel" style="width:140px"></td>
+			<td class="FREEDOMLabel" style="width:120px"><span>[TEXT:Section free key]&nbsp:&nbsp;</span></td>
+			<td><input type="radio" name="help_popup_type" value="2" /> <input type="text" name="help_popup_key" value="" onchange="help_popup_input_change(this.value)" /></td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"></td>
 			<td><a onclick="help_popup_add()">[TEXT:Add section popup]</a> | <a onclick="help_popup_close()">[TEXT:Cancel]</a></td>
 		</tr>
 	</table>
@@ -172,62 +177,98 @@ function help_popup_close() {
 	}
 }
 
-function help_popup_add() {
+function help_popup_get_objects() {
+	var datas = {
+		check1: null,
+		check2: null,
+		select: null,
+		input: null,
+	};
 	var div = document.getElementById('HELPPOPUP_c');
 	if(div) {
 		var inputs = div.getElementsByTagName('input');
-		var seckey = '';
 		for(var i in inputs) {
-			if(inputs[i].name == 'section_name') {
-				seckey = inputs[i].value
-				break;
+			if(inputs[i].name == 'help_popup_key') {
+				datas.input = inputs[i];
 			}
-		}
-		if(!seckey) {
-			displayWarningMsg("[TEXT:It cannot be empty]");
-		}
-		else if(!seckey.match(/^[a-z0-9_-]+$/i)) {
-			displayWarningMsg("[TEXT:Only these characters are allowed : a..z, A..Z, 0..9, _, -]");
-		}
-		else if(help_section_exists(seckey)) {
-			displayWarningMsg("[TEXT:Sorry but this section key already exists !]");
-		}
-		else {
-			help_add_section(seckey);
-			help_popup_close();
-		}
-	}
-}
-
-function help_popup_select(value) {
-	if(value!='') {
-		document.getElementById('section_name').value = value;
-		var div = document.getElementById('HELPPOPUP_c');
-		if(div) {
-			var inputs = div.getElementsByTagName('input');
-			for(var i in inputs) {
-				if(inputs[i].name == 'section_name') {
-					inputs[i].value = value;
-					break;
+			else if(inputs[i].name == 'help_popup_type') {
+				if(datas.check1) {
+					datas.check2 = inputs[i];
+				}
+				else {
+					datas.check1 = inputs[i];
 				}
 			}
 		}
+		var selects = div.getElementsByTagName('select');
+		for(var i in selects) {
+			if(selects[i].name == 'help_popup_select') {
+				datas.select = selects[i];
+			}
+		}
+	}
+	return datas;
+}
+
+function help_popup_add() {
+	var datas = help_popup_get_objects();
+	var seckey = '';
+	if(datas.check1 && datas.check1.checked) {
+		if(datas.check2) {
+			seckey = datas.select.value;
+		}
+		else {
+			seckey = datas.input.value;
+		}
+	}
+	else if(datas.check2 && datas.check2.checked) {
+		seckey = datas.input.value;
+	}
+	if(!seckey) {
+		displayWarningMsg("[TEXT:It cannot be empty]");
+	}
+	else if(!seckey.match(/^[a-z0-9_-]+$/i)) {
+		displayWarningMsg("[TEXT:Only these characters are allowed : a..z, A..Z, 0..9, _, -]");
+	}
+	else if(help_section_exists(seckey)) {
+		displayWarningMsg("[TEXT:Sorry but this section key already exists !]");
+	}
+	else {
+		help_add_section(seckey);
+		help_popup_close();
+	}
+}
+
+function help_popup_input_change(value) {
+	var datas = help_popup_get_objects();
+	if(datas.check2) {
+		datas.check2.checked = true;
+	}
+}
+
+function help_popup_select_change(value) {
+	var datas = help_popup_get_objects();
+	if(datas.check1) {
+		datas.check1.checked = true;
 	}
 }
 
 function help_popup(event) {
 	if (event) event.cancelBubble=true;
-
 	GetXY(event);
 	var x=Xpos;
 	var y=Ypos;
-	var w=350;
-	var h=120;
-	
+	var w=380;
+	var h=130;
 	var html = document.getElementById('help-section-add-div').innerHTML;
-
 	new popUp(x, y, w, h, 'HELPPOPUP', html, '[CORE_BGCOLOR]', '[CORE_TEXTFGCOLOR]', '16pt serif', '[TEXT:Add section]', '[COLOR_B5]', '[CORE_TEXTFGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', 'black', true, true, true, true, false, false,true);
-
+	var datas = help_popup_get_objects();
+	if(datas.check1) {
+		datas.check1.checked = true;
+		if(!datas.check2) {
+			datas.check1.style.display = 'none';
+		}
+	}
 }
 
 function help_down(seckey) {
