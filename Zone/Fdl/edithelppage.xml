@@ -124,13 +124,13 @@
 		<tr>
 			<td class="FREEDOMLabel" style="width:140px"></td>
 			<td><select onchange="help_popup_select(this.value)">
-				<option value="">[TEXT:Choose a value]</option>
+				<option value="">- [TEXT:Choose an attribute] -</option>
 				[BLOCK HELPATTRIBUTES]<option value="[HELPATTRVALUE]">[HELPATTRNAME]</option>[ENDBLOCK HELPATTRIBUTES]
 			</select></td>
 		</tr>[ENDIF HELPATTRIBUTESLIST]
 		<tr>
 			<td class="FREEDOMLabel" style="width:140px"></td>
-			<td><a onclick="help_popup_add()">[TEXT:Add]</a> | <a onclick="help_popup_close()">[TEXT:Cancel]</a></td>
+			<td><a onclick="help_popup_add()">[TEXT:Add section popup]</a> | <a onclick="help_popup_close()">[TEXT:Cancel]</a></td>
 		</tr>
 	</table>
 </div>
