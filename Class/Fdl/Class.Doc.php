@@ -2293,7 +2293,12 @@ create unique index i_docir on doc(initid, revision);";
       $value=$tval;
     }
     if (is_array($value)) {
-      if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
+      if ($oattr->type=='htmltext') {
+		  $value= $this->_array2val($value,' ');
+		  if($value === '') {
+			  $value = DELVALUE;
+		  }
+	  }
       else {
 	if (count($value)==0) $value = DELVALUE;
 	elseif ((count($value) == 1) && (first($value)==="" || first($value)===null) && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
@@ -2922,6 +2927,16 @@ create unique index i_docir on doc(initid, revision);";
 
 
   final public function DeleteValue($attrid) {
+	$oattr=$this->GetAttribute($attrid);
+	if($oattr->type == 'docid') {
+		$doctitle = $oattr->getOption('doctitle');
+		if($doctitle == 'auto') {
+			$doctitle = $attrid.'_title';
+		}
+		if(!empty($doctitle)) {
+			$this->SetValue($doctitle, " ");
+		}
+	}
     return $this->SetValue($attrid," ");
   }
 
@@ -4227,7 +4242,7 @@ create unique index i_docir on doc(initid, revision);";
   }
   
   public static function _array2val($v,$br='<BR>') {    
-    $v=str_replace("\n",$br,$v);	  
+    $v=str_replace("\n",$br,$v);
     if (count($v) == 0) return "";
     return implode("\n", $v);
   }
