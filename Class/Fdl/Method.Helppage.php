@@ -177,6 +177,25 @@ Class _HELPPAGE extends Doc {
 		$this->lay->set('HELPNAME', $helpname);
 		$this->lay->set('HELPDESCRIPTION', $helpdescription);
 
+		// help add section
+		$famid = $this->getValue('help_family');
+		if(empty($famid)) {
+			$this->lay->set('HELPATTRIBUTESLIST', false);
+		}
+		else {
+			$this->lay->set('HELPATTRIBUTESLIST', true);
+			$docfam = createDoc($this->dbaccess, $famid, false);
+			$docattributes = $docfam->GetSortAttributes();
+			$attributes = array();
+			foreach($docattributes as $attribute) {
+			 error_log("$attribute->id  ,  ".$attribute->getLabel());
+				$attributes[] = array(
+					'HELPATTRVALUE' => $attribute->id,
+					'HELPATTRNAME' => $attribute->getLabel(),
+				);
+			}
+			$this->lay->SetBlockData('HELPATTRIBUTES', $attributes);
+		}
 
 
 		$this->lay->SetBlockData('HELPLANGS', $this->getLangsFromItem($langs, $lang_key, $help_values));
