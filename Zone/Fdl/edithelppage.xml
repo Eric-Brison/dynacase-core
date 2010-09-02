@@ -80,12 +80,16 @@
 .help-section-text {
 	margin-left: 24px;
 }
+.help-first .help_up {
+	display: none;
+}
+.help-last .help_down {
+	display: none;
+}
 </style>
 
-<div style="display:none">
-[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]
-[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]
-</div>
+<div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]</div>
+<div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]</div>
 
 <fieldset><legend>[TEXT:Online help]</legend>
 	<div id="help-langs">
@@ -110,8 +114,35 @@
 	
 </fieldset>
 
-<fieldset id="help-sections"><legend>[TEXT:Sections] (<a onclick="help_add_section_prompt()">[TEXT:Add section]</a>)</legend>
+<div id="help-section-add-div" style="display:none">
+	<table style="width:100%" cellspacing="0" class="edittable">
+		[IF HELPATTRIBUTESLIST]
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"><span>[TEXT:Attribut]&nbsp:&nbsp;</span></td>
+			<td><input type="radio" name="help_popup_type" value="1" />
+				<select name="help_popup_select" onchange="help_popup_select_change(this.value)">
+				<option value="">- [TEXT:Choose an attribute] -</option>
+				[BLOCK HELPATTRIBUTES]<option value="[HELPATTRVALUE]">[HELPATTRNAME]</option>[ENDBLOCK HELPATTRIBUTES]
+			</select></td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"></td>
+			<td>[TEXT:or]</td>
+		</tr>[ENDIF HELPATTRIBUTESLIST]
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"><span>[TEXT:Section free key]&nbsp:&nbsp;</span></td>
+			<td><input type="radio" name="help_popup_type" value="2" /> <input type="text" name="help_popup_key" value="" onchange="help_popup_input_change(this.value)" /></td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"></td>
+			<td><a onclick="help_popup_add()">[TEXT:Add section popup]</a> | <a onclick="help_popup_close()">[TEXT:Cancel]</a></td>
+		</tr>
+	</table>
+</div>
 
+<fieldset id="help-sections"><legend>[TEXT:Sections] (<a onclick="help_popup(event)">[TEXT:Add section]</a>)</legend>
+
+<input type="hidden" name="section_name" value="" id="section_name" />
 <input type="hidden" name="edit_section_key" value="" id="edit_section_key" />
 
 [BLOCK CONTENTSECTIONS]<div class="help-section" id="sec-[SECKEY]"><div class="help-section-langs" id="sec-langs-[SECKEY]">
@@ -119,9 +150,8 @@
 	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,'[SECKEY]','[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 	[ENDBLOCK [SECTIONLANGS]]
 </div><div class="help-section-langs">
-	<!---
-	<a onclick="help_up('[SECKEY]')">[TEXT:Up] &uarr;</a>&nbsp;
-	<a onclick="help_down('[SECKEY]')">[TEXT:Down] &darr;</a>&nbsp;--->
+	<a onclick="return help_up('[SECKEY]')" class="help_up">[TEXT:Up] &uarr;</a>&nbsp;
+	<a onclick="return help_down('[SECKEY]')" class="help_down">[TEXT:Down] &darr;</a>&nbsp;
 	<a onclick="return help_open_subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>&nbsp;
 	&nbsp;&nbsp;
 </div>[BLOCK [SECTIONITEMS]]<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
@@ -129,28 +159,337 @@
 	<div class="help-section-text" id="sec-text-[SECKEY]-[SECLANG]">[SECTEXT]</div>
 </div>[ENDBLOCK [SECTIONITEMS]]</div>[ENDBLOCK CONTENTSECTIONS]
 
+
 </fieldset>
 
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
 
+function help_popup_close() {
+	var div_s = document.getElementById('HELPPOPUP_s');
+	var div_b = document.getElementById('HELPPOPUP_b');
+	var body = document.body;
+	if(div_s && body) {
+		body.removeChild(div_s);
+	}
+	if(div_b && body) {
+		body.removeChild(div_b);
+	}
+}
+
+function help_popup_get_objects() {
+	var datas = {
+		check1: null,
+		check2: null,
+		select: null,
+		input: null,
+	};
+	var div = document.getElementById('HELPPOPUP_c');
+	if(div) {
+		var inputs = div.getElementsByTagName('input');
+		for(var i in inputs) {
+			if(inputs[i].name == 'help_popup_key') {
+				datas.input = inputs[i];
+			}
+			else if(inputs[i].name == 'help_popup_type') {
+				if(datas.check1) {
+					datas.check2 = inputs[i];
+				}
+				else {
+					datas.check1 = inputs[i];
+				}
+			}
+		}
+		var selects = div.getElementsByTagName('select');
+		for(var i in selects) {
+			if(selects[i].name == 'help_popup_select') {
+				datas.select = selects[i];
+			}
+		}
+	}
+	return datas;
+}
+
+function help_popup_add() {
+	var datas = help_popup_get_objects();
+	var seckey = '';
+	if(datas.check1 && datas.check1.checked) {
+		if(datas.check2) {
+			seckey = datas.select.value;
+		}
+		else {
+			seckey = datas.input.value;
+		}
+	}
+	else if(datas.check2 && datas.check2.checked) {
+		seckey = datas.input.value;
+	}
+	if(!seckey) {
+		displayWarningMsg("[TEXT:It cannot be empty]");
+	}
+	else if(!seckey.match(/^[a-z0-9_-]+$/i)) {
+		displayWarningMsg("[TEXT:Only these characters are allowed : a..z, A..Z, 0..9, _, -]");
+	}
+	else if(help_section_exists(seckey)) {
+		displayWarningMsg("[TEXT:Sorry but this section key already exists !]");
+	}
+	else {
+		help_add_section(seckey);
+		help_popup_close();
+	}
+}
+
+function help_popup_input_change(value) {
+	var datas = help_popup_get_objects();
+	if(datas.check2) {
+		datas.check2.checked = true;
+	}
+}
+
+function help_popup_select_change(value) {
+	var datas = help_popup_get_objects();
+	if(datas.check1) {
+		datas.check1.checked = true;
+	}
+}
+
+function help_popup(event) {
+	if (event) event.cancelBubble=true;
+	GetXY(event);
+	var x=Xpos;
+	var y=Ypos;
+	var w=380;
+	var h=130;
+	var html = document.getElementById('help-section-add-div').innerHTML;
+	new popUp(x, y, w, h, 'HELPPOPUP', html, '[CORE_BGCOLOR]', '[CORE_TEXTFGCOLOR]', '16pt serif', '[TEXT:Add section]', '[COLOR_B5]', '[CORE_TEXTFGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', 'black', true, true, true, true, false, false,true);
+	var datas = help_popup_get_objects();
+	if(datas.check1) {
+		datas.check1.checked = true;
+		if(!datas.check2) {
+			datas.check1.style.display = 'none';
+		}
+	}
+}
+
+function help_down(seckey) {
+	var minmax = help_get_minmax_order();
+	if(!minmax) {
+		return false;
+	}
+	var secorder = help_seckey_to_order(seckey);
+	if(secorder < 0) {
+		return false;
+	}
+	if(secorder == minmax.max) {
+		return false;
+	}
+	// change values in array HTML
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i)) {
+				var order = parseInt(input.value);
+				if(order == secorder) {
+					input.value = order + 1;
+				}
+				else if (order == secorder + 1) {
+					input.value = order - 1;
+				}
+			}
+		}
+	}
+	// move DOM
+	var div_parent = document.getElementById('help-sections');
+	var div = document.getElementById('sec-'+seckey);
+	var div2 = document.getElementById('sec-'+help_order_to_seckey(secorder+2));
+	if(div2) {
+		var tmp = div_parent.removeChild(div);
+		div_parent.insertBefore(tmp, div2);
+	}
+	else {
+		var tmp = div_parent.removeChild(div);
+		div_parent.appendChild(tmp);
+	}
+	help_check_first_last();
+	return false;
+}
+
+function help_up(seckey) {
+	var minmax = help_get_minmax_order();
+	if(!minmax) {
+		return false;
+	}
+	var secorder = help_seckey_to_order(seckey);
+	if(secorder < 0) {
+		return false;
+	}
+	if(secorder == minmax.min) {
+		return false;
+	}
+	// change values in array HTML
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i)) {
+				var order = parseInt(input.value);
+				if(order == secorder) {
+					input.value = order - 1;
+				}
+				else if (order == secorder - 1) {
+					input.value = order + 1;
+				}
+			}
+		}
+	}
+	// move DOM
+	var div_parent = document.getElementById('help-sections');
+	var div = document.getElementById('sec-'+seckey);
+	var div2 = document.getElementById('sec-'+help_order_to_seckey(secorder));
+	if(div2) {
+		var tmp = div_parent.removeChild(div);
+		div_parent.insertBefore(tmp, div2);
+	}
+	else {
+		var tmp = div_parent.removeChild(div);
+		div_parent.appendChild(tmp);
+	}
+	help_check_first_last();
+	return false;
+}
+
+function help_order_to_seckey(order) {
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+
+	// load sections
+	for(var i=0; i< sec_keys.length; i++) {
+		if(order == sec_orders[i]) {
+			return sec_keys[i];
+		}
+	}
+	return false;
+}
+
+function help_check_first_last() {
+
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+	var first,last;
+	var last_order = -1;
+
+	// load sections
+	for(var i=0; i< sec_keys.length; i++) {
+		document.getElementById('sec-'+sec_keys[i]).className = 'help-section';
+		if(sec_orders[i] == 1) {
+			first = sec_keys[i];
+		}
+		if(sec_orders[i] > last_order) {
+			last_order = sec_orders[i];
+			last = sec_keys[i];
+		}
+	}
+	
+	if(first) {
+		document.getElementById('sec-'+first).className += ' help-first';
+	}
+	if(last) {
+		document.getElementById('sec-'+last).className += ' help-last';
+	}
+}
+
+function help_seckey_to_order(seckey) {
+	var sec_orders = getFormValue('help_sec_order');
+	var sec_keys = getFormValue('help_sec_key');
+
+	// load sections
+	for(var i=0; i< sec_keys.length; i++) {
+		if(seckey == sec_keys[i]) {
+			return parseInt(sec_orders[i]);
+		}
+	}
+	return -1;
+}
+
+function help_increment_orders() {
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i)) {
+				input.value = parseInt(input.value) + 1;
+			}
+		}
+	}
+}
+
+function help_get_minmax_order() {
+	var min = 999999;
+	var max = -1;
+	var sec_orders = getFormValue('help_sec_order');
+	for(var i=0; i< sec_orders.length; i++) {
+		if(sec_orders[i] > max) {
+			max = parseInt(sec_orders[i]);
+		}
+		if(sec_orders[i] < min) {
+			min = parseInt(sec_orders[i]);
+		}
+	}
+	if(min == 999999) {
+		return false;
+	}
+	if(max == -1) {
+		return false;
+	}
+	return {
+		'min': min,
+		'max': max
+	};
+}
+
+function help_reorder(secorder) {
+	var trs = document.getElementById('tbodyhelp_t_sections').getElementsByTagName('tr');
+	for(var i=0; i < trs.length; i++) {
+		var tr = trs[i];
+		if(tr.id && tr.id.match(/^lasttr/i)) {
+			break;
+		}
+		var inputs = tr.getElementsByTagName('input');
+		for(var k=0; k < inputs.length; k++) {
+			var input = inputs[k];
+			if(input.name && input.name.match(/^_help_sec_order/i) && input.value > secorder) {
+				input.value = parseInt(input.value) - 1;
+			}
+		}
+	}
+}
+
 function help_add_section(seckey) {
 	var item = {
-		help_sec_order: 0,
+		help_sec_order: 1,
 		help_sec_key: seckey,
 		help_sec_lang: '',
 		help_sec_name: "[TEXT:New section] : "+seckey,
 		help_sec_text: ''
 	};
 
-	// get max order
-	var sec_orders = getFormValue('help_sec_order');
-	for(var i=0; i< sec_orders.length; i++) {
-		if(sec_orders[i] > item.help_sec_order) {
-			item.help_sec_order = sec_orders[i];
-		}
-	}
-	item.help_sec_order++;
+	help_increment_orders();
 
 	// get lang
 	for(var lang in LANGS) {
@@ -170,7 +509,8 @@ function help_add_section(seckey) {
 	// try to find first correct chil
 	var found = false;
 	for(var i = 0; i < father.childNodes.length; i++) {
-		if(father.childNodes[i].className && father.childNodes[i].className == 'help-section') {
+		var cls = father.childNodes[i].className;
+		if(cls && (cls.match(/help-section /) || cls == 'help-section')) {
 			found = father.childNodes[i];
 			break;
 		}
@@ -181,6 +521,7 @@ function help_add_section(seckey) {
 	else {
 		father.appendChild(div);
 	}
+	help_check_first_last();
 }
 
 function help_add_section_prompt(err) {
@@ -282,6 +623,10 @@ function help_save_section(config) {
 		else {
 			var sec = document.getElementById('sec-'+config.seckey);
 			sec.parentNode.removeChild(sec);
+			try {
+				help_reorder(config.secorder);
+				help_check_first_last();
+			} catch(e) {}
 			return false;
 		}
 	}
@@ -308,34 +653,6 @@ function help_section_exists(seckey) {
 	}
 }
 
-/*
-function help_up() {
-	var old_orders = help_get_ordered_sections();
-	var new_orders = [;
-	var current_order = 0;
-
-}
-
-function help_get_ordered_sections() {
-	var sec_orders = getFormValue('help_sec_order');
-	var sec_keys = getFormValue('help_sec_key');
-
-	// load sections
-	res = [];
-	for(var i=0; i< sec_keys.length; i++) {
-		res.push({
-			'key': sec_keys[i],
-			'order': sec_orders[i]
-		});
-	}
-
-	// sort
-	var sorted = [];
-	
-
-	return res;
-}
-*/
 
 function help_get_section_order(seckey) {
 
@@ -552,6 +869,7 @@ function help_open_subwindow(event,attrname,seckey) {
 	return false;
 }
 
+addEvent(window, 'load', help_check_first_last);
 
 var section_template = '\n\
 <div class="help-section-langs" id="sec-langs-{SECKEY}">\n\
@@ -559,9 +877,8 @@ var section_template = '\n\
 	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang_section(this,\'{SECKEY}\',\'[LANGKEY]\')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>\n\
 	[ENDBLOCK TEMPLATELANGS1]\n\
 </div><div class="help-section-langs">\n\
-	<!---\n\
-	<a onclick="help_up(\'{SECKEY}\')">[TEXT:Up] &uarr;</a>&nbsp;\n\
-	<a onclick="help_down(\'{SECKEY}\')">[TEXT:Down] &darr;</a>&nbsp;--->\n\
+	<a onclick="return help_up(\'{SECKEY}\')" class="help_up">[TEXT:Up] &uarr;</a>&nbsp;\n\
+	<a onclick="return help_down(\'{SECKEY}\')" class="help_down">[TEXT:Down] &darr;</a>&nbsp;\n\
 	<a onclick="return help_open_subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
 	&nbsp;&nbsp;\n\
 </div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\
