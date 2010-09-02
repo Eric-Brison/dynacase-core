@@ -188,7 +188,6 @@ Class _HELPPAGE extends Doc {
 			$docattributes = $docfam->GetSortAttributes();
 			$attributes = array();
 			foreach($docattributes as $attribute) {
-			 error_log("$attribute->id  ,  ".$attribute->getLabel());
 				$attributes[] = array(
 					'HELPATTRVALUE' => $attribute->id,
 					'HELPATTRNAME' => $attribute->getLabel(),
