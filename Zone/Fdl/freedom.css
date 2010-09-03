@@ -366,6 +366,7 @@ TABLE.tablehead {
 }
 
 .ongleth {
+	position: relative;
    font-size: [SIZE_X-SMALL];
   background-image:url('[IMG:tabh.png]');
   color:[COLOR_WHITE];
@@ -374,58 +375,77 @@ TABLE.tablehead {
 }
 
 .onglets {
-   font-size: [SIZE_X-SMALL];
-  cursor: pointer;
-  background-image:url('[IMG:tabh.png]');
-  color:[COLOR_BLACK];
-  border-style: none;
+	font-size: [SIZE_X-SMALL];
+	cursor: pointer;
+	background-image:url('[IMG:tabh.png]');
+	color:[COLOR_BLACK];
+	border-style: none;
 }
 
 .ongletv {
-   font-size: [SIZE_SMALL];
-  background-image:url('[IMG:tabv.png]');
-  color:[CORE_TEXTFGCOLOR];
-  cursor: pointer;
-  border-style: none;
+	vertical-align: middle;
+	font-size: [SIZE_SMALL];
+	cursor: pointer;
+	border-style: none;
+	background-image:url('[IMG:tabv.png]');
+	color:[CORE_TEXTFGCOLOR];
 }
+
+.ongletvg,
+.ongletvgie,
+.ongletvs,
+.ongletvsie {
+	line-height: 29px;
+	height: 29px;
+	position: relative;
+	padding: 0 8px 0 8px;
+	font-size: [SIZE_SMALL];
+	cursor: pointer;
+	border-style: none;
+	background-color:[CORE_BGCOLORALTERN];
+	float: left;
+	margin: 1px 1px 0 1px;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+}
+
+.ongletvs,
+.ongletvsie {
+	border-left: 1px solid #888;
+	border-right: 1px solid #888;
+	border-top: 1px solid #888;
+}
+
+.ongletvg img,
+.ongletvgie img,
+.ongletvs img,
+.ongletvsie img {
+	vertical-align: middle;
+	padding-right: 4px;
+}
+
 .ongletvg {
-  font-size: [SIZE_SMALL];
-  background-image:url('[IMG:tabvg.png]');
-  background-color:[CORE_BGCOLORALTERN];;
-  color:[CORE_TEXTFGCOLOR];
-  cursor: pointer;
-  border-style: none;
+	background-image:url('[IMG:tabvg.png]');
+	color:[CORE_TEXTFGCOLOR];
 }
 .ongletvgie {
-  font-size: [SIZE_SMALL];
-  background-color:[CORE_BGCOLORALTERN];;
-  color:[CORE_TEXTFGCOLOR]; 
+	color:[CORE_TEXTFGCOLOR];
 [IF ISIE]
   filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale');
 [ENDIF ISIE]
-  cursor: pointer;
-  border-style: none;
 }
 .ongletvs {
-  font-size: [SIZE_SMALL];
-  cursor: pointer;
-  background-color:[CORE_BGCOLORALTERN];;
-  background-image:url('[IMG:tabvig.png]');
+	background-image:url('[IMG:tabvig.png]');
 /*  color:[CORE_TEXTBGCOLOR];*/
-  font-weight: bold;
-  border-style: none;
 }
 .ongletvsie {
-  font-size: [SIZE_SMALL];
-  cursor: pointer;
-  background-color:[CORE_BGCOLORALTERN];;
 [IF ISIE]
   filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvig.png]',sizingMethod='scale');
 [ENDIF ISIE]
 /*  color:[CORE_TEXTBGCOLOR];*/
-  font-weight: bold;
-  border-style: none;
 }
+
 UL {
   margin-top:0px;
 }

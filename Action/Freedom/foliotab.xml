@@ -270,15 +270,13 @@ function shiftKeyPushed(event) {
 
 
 
-  <div height="30px" class="[tabonglets]" style="float:left;cursor:pointer" title="[TEXT:View folder content]"
+  <div class="[tabonglets]" title="[TEXT:View folder content]"
        onmousedown="if (!shiftKeyPushed(event)) if (drag == 1) {copyOrMove([dirid]);} else {parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[dirid]&folioid=[dirid]';endDrag();} return false"
-      
-     onclick="if (shiftKeyPushed(event)) viewguide('[docid]'); else selecttab(this);"><img  needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[docid]');if (drag != 1) stopPropagation(event)"  height="20px" src="[icon]">[title]
-  <img src="[IMG:corner.gif]"  border="0"></div>
+	   onclick="if (shiftKeyPushed(event)) viewguide('[docid]'); else selecttab(this);"><img  needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[docid]');if (drag != 1) stopPropagation(event)"  height="20px" src="[icon]">[title]</div>
 [BLOCK TAG]
-  <div  height="30px"  class="[tag_cellbgclass]" style="float:left;cursor:pointer;background-color:[icolor]" valign="middle" 
+  <div class="[tag_cellbgclass]" style="background-color:[icolor]" 
      onmousedown="if (!shiftKeyPushed(event)) if (('[doctype]'=='D') && (drag == 1)) {copyOrMove([tabid]);} else {parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[tabid]&folioid=[dirid]';endDrag();} return false" 
-     onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this);"><img  needresize="1" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]"><span class="[TAG_LABELCLASS]">[tabtitle]</span><img src="[IMG:corner.gif]" align="top"  border="0"></div>
+     onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this);"><img  needresize="1" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]"><span class="[TAG_LABELCLASS]">[tabtitle]</span></div>
 [ENDBLOCK TAG]
 
 <button style="float:left;" onclick="setone()">o</button>

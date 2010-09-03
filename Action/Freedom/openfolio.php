@@ -15,6 +15,7 @@
 
 
 include_once("FDL/Class.Doc.php");
+include_once('FREEDOM/Lib.portfolio.php');
 
 
 
@@ -33,7 +34,10 @@ function openfolio(&$action) {
   $action->lay->Set("dirid", $folio->initid);
   $action->lay->Set("docid", $docid);
   $action->lay->Set("title", $folio->title);
-  
+
+  $dir = new_Doc($dbaccess,$folio->initid);
+  $pfctx = portfolio_get_context($dir);
+  $action->lay->set("LISTFRAMEWIDTH", $pfctx['listtype'] == 'icon' ? '180' : '240');
 
 
 }

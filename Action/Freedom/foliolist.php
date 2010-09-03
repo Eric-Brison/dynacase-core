@@ -14,6 +14,7 @@
 
 
 include_once('FREEDOM/freedom_view.php');
+include_once('FREEDOM/Lib.portfolio.php');
 
 
 /**
@@ -68,6 +69,9 @@ function foliolist(&$action) {
       
     }
   }
+
+  $pfctx = portfolio_get_context($dir);
+  $action->lay->set("LISTICON", $pfctx['listtype'] == 'icon');
   
   setHttpVar("sqlorder","title");
   $action->parent->SetVolatileParam("FREEDOM_VIEW", "icon");
@@ -80,4 +84,5 @@ function foliolist(&$action) {
   $action->lay->set("refreshtab",$refreshtab);
 
 }
+
 ?>

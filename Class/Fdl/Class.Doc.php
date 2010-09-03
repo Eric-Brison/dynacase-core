@@ -3252,10 +3252,10 @@ create unique index i_docir on doc(initid, revision);";
    * if it is already set no set twice
    * @param int $uid the system user identificator
    * @param string $tag the key tag 
-   * @param string $comment a comment or a value for the tag
+   * @param string $datas a comment or a value for the tag
    * @param bool $allrevision set to false if attach a tag to a specific version
    */
-  final public function addUTag($uid,$tag,$comment="",$allrevision=true) { 
+  final public function addUTag($uid,$tag,$datas="",$allrevision=true) {
     if (! $this->initid) return "";
     if ($tag == "") return _("no user tag specified");
     $this->delUTag($uid,$tag,$allrevision);
@@ -3275,7 +3275,7 @@ create unique index i_docir on doc(initid, revision);";
     $h->fromuid=$action->user->id;
       
     $h->tag=$tag;
-    $h->comment=$comment;
+    $h->comment=$datas;
 
     $err=$h->Add();
     return $err;
