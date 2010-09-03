@@ -358,20 +358,20 @@ TABLE.tablehead {
 	left:0;
 }
 .onglet {
-   font-size: [SIZE_X-SMALL];
-  background-image:url('[IMG:tab.png]');
-  color:black;
-  cursor: pointer;
-  border-style: none;
+	font-size: [SIZE_X-SMALL];
+	background-image:url('[IMG:tab.png]');
+	color:black;
+	cursor: pointer;
+	border-style: none;
 }
 
 .ongleth {
 	position: relative;
-   font-size: [SIZE_X-SMALL];
-  background-image:url('[IMG:tabh.png]');
-  color:[COLOR_WHITE];
-  cursor: pointer;
-  border-style: none;
+	font-size: [SIZE_X-SMALL];
+	background-image:url('[IMG:tabh.png]');
+	color:[COLOR_WHITE];
+	cursor: pointer;
+	border-style: none;
 }
 
 .onglets {
@@ -391,6 +391,18 @@ TABLE.tablehead {
 	color:[CORE_TEXTFGCOLOR];
 }
 
+.tabcontainer {
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+	border-bottom: 1px solid #888;
+	line-height: 32px;
+	height: 32px;
+	width: 100%;
+}
+
 .ongletvg,
 .ongletvgie,
 .ongletvs,
@@ -404,7 +416,7 @@ TABLE.tablehead {
 	border-style: none;
 	background-color:[CORE_BGCOLORALTERN];
 	float: left;
-	margin: 1px 1px 0 1px;
+	margin: 2px 2px 0 2px;
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
 	border-top: 1px solid #ccc;
@@ -415,6 +427,7 @@ TABLE.tablehead {
 	border-left: 1px solid #888;
 	border-right: 1px solid #888;
 	border-top: 1px solid #888;
+	border-bottom: 1px solid #fff;
 }
 
 .ongletvg img,
