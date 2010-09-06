@@ -28,7 +28,7 @@ function portfolio_get_context($doc) {
 		$pfctx['listtype'] = $_REQUEST['foliolisttype'];
 		portfolio_set_context($doc, $pfctx);
 	}
-	foreach(explode("\n", print_r($pfctx, true)) as $tmp){error_log($tmp);}
+	//foreach(explode("\n", print_r($pfctx, true)) as $tmp){error_log($tmp);}
 	return $pfctx;
 }
 

@@ -17,6 +17,10 @@
 	overflow: hidden;
 	overflow: elipsis;
 }
+
+body.freedom {
+	height: auto;
+}
    </style>
 
 
@@ -50,7 +54,7 @@
 
 [IF LISTICON]
 <!-- TABLEBODY -->
-                             [BLOCK TABLEBODY]
+[BLOCK TABLEBODY]
 <div class="icon" id="d[divid]" >
 <IMG class="unselect" id="i[divid]" title="[title]" needresize="1"
      onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid]);" 
@@ -59,15 +63,14 @@
      align="absbottom"  src="[iconsrc]"><br>
   [abrvtitle]
 </div>
-                           [ENDBLOCK TABLEBODY]
+[ENDBLOCK TABLEBODY]
 <!-- /TABLEBODY -->
 [ENDIF LISTICON]
 
 [IFNOT LISTICON]
 <!-- TABLEBODY -->
 <table class="tablesimple tableportfolio" id="terrible" cellspacing="0" width="100%" >
-                             [BLOCK TABLEBODY]
-<tr  id="d[divid]"
+[BLOCK TABLEBODY]<tr  id="d[divid]"
      class="unselect"
      onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid]);"
      onContextMenu="closeAllMenu();openMenu(event,'popuplist',[divid]);return false"
@@ -78,15 +81,10 @@
 <IMG class="iconimg20" id="i[divid]" needresize="1"
      align="absmiddle"  src="[iconsrc]">
 </td>
-<td class="tlist" >[title]</td></tr>
-                           [ENDBLOCK TABLEBODY]
-</table>
+<td class="tlist" >[title]</td></tr>[ENDBLOCK TABLEBODY]</table>
+
 <!-- /TABLEBODY -->
 [ENDIF LISTICON]
-
-
-
 <!--  FOOT HTML -->
-
 </body>
 </html>
