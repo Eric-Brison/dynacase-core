@@ -313,11 +313,15 @@ class Layout {
      $out = preg_replace("/\[SCRIPT:([^\]]*)\]/e",
                          "\$this->action->GetScriptUrl('\\1')",
                          $out);
+     
+  }
+
+  function ParseText(&$out) {
+
      $out = preg_replace("/\[TEXT:([^\]]*)\]/e",
                          "\$this->Text('\\1')",
                          $out);
   }
-
   function Text($s) {
     if ($s=="") return $s;
     return _($s);
@@ -437,6 +441,7 @@ class Layout {
     $this->ParseIf($out);
 
     // Parse IMG: and LAY: tags
+    $this->ParseText($out);
     $this->ParseKey($out);
     $this->ParseRef($out);
     $this->ParseZone($out);
