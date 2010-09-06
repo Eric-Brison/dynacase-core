@@ -159,7 +159,6 @@ function setview(val) {
 	imgs3[0].style.display = 'none';
 	imgs3[1].style.display = 'none';
 	imgs3[2].style.display = 'none';
-	console.log(val);
 	switch(val) {
 		case 0:
 			imgs1[1].style.display = 'block';
@@ -187,6 +186,7 @@ function setview(val) {
 			imgs3[2].style.display = 'block';
 			break;
 	}
+	xhr_send('viewstate='+val);
 	if(val != 0) {
 		var b = (currentview+1)%2;
 		var w=windowExist('fsel'+b);
@@ -198,7 +198,6 @@ function setview(val) {
 
 function changemode(mode2) {
 	var mode1 = 1+Math.floor((currentview+1)/2);
-	console.log(mode1+" -> "+mode2);
 	if(mode2 == 1) {
 		if(mode1 != mode2) {
 			setone();
@@ -226,7 +225,7 @@ function changemode(mode2) {
 		if(mode1 != mode2) {
 			setthree();
 			if(mode1 == 1) {
-				setview(1);
+				setview(3);
 			}
 			else {
 				setview(currentview + 2);
@@ -245,7 +244,7 @@ function settwo() {
 	var w=top.document.getElementById('ffolios');
 
 	w.rows='';
-	w.cols='50%,50%';
+	w.cols='50%,*';
 	if (isNetscape) { // for mozilla send handler to recalculate geometry
 		top.resizeBy(0,-1);
 		top.resizeBy(0,1);
@@ -257,7 +256,7 @@ function setthree() {
 	var w=top.document.getElementById('ffolios');
 	if (w) {
 		w.cols='';
-		w.rows='50%,50%';
+		w.rows='50%,*';
 	}
 	if (isNetscape) { // for mozilla send handler to recalculate geometry
 		top.resizeBy(10,10);
@@ -304,15 +303,21 @@ if (! isNetscape) {
 	styleonglet='ongletvgie';
 }
 
-function selecttab(th) {
+function selecttab(th,tabid) {
 	var ltd;
 	var i;
+
+	xhr_send('tabselected='+tabid);
 
 	ltd = document.getElementsByTagName('div');
 	for (i=0; i < ltd.length; i++) {
 		ltd[i].className=styleonglet;
+		if(!th && ltd[i].id == 'tab-'+tabid) {
+			th = ltd[i];
+		}
 	}
 	th.className=styleongletsel;
+	
 	//  if (th.nextSibling.nodeName=='DIV') th.nextSibling.className=styleongletsel;
 	// else  if (th.nextSibling.nextSibling.nodeName=='DIV') th.nextSibling.nextSibling.className=styleongletsel;
 }
@@ -331,8 +336,11 @@ function viewguide(docid) {
   
 	var w=wref=windowExist('ffoliolist');
 	var wtarget=windowExist(w.docTarget);
+	var uri = '[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id='+docid;
 
-	wtarget.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id='+docid;
+	wtarget.location.href=uri;
+
+	xhr_send('tabselected='+docid);
 }
 
 function shiftKeyPushed(event) {
@@ -342,6 +350,37 @@ function shiftKeyPushed(event) {
 		return event.shiftKey;
 	}
 }
+
+function change_foliolist(tabid, dirid) {
+	var uri = '[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid='+tabid+'&folioid='+dirid;
+	parent.ffoliolist.location.href = uri;
+	//xhr_send('framelist='+encodeURIComponent(uri));
+}
+
+function xhr_send(datas) {
+	var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+	}
+    else if (window.ActiveXObject) {
+        var names = [
+            "Msxml2.XMLHTTP.6.0",
+            "Msxml2.XMLHTTP.3.0",
+            "Msxml2.XMLHTTP",
+            "Microsoft.XMLHTTP"
+        ];
+        for(var i in names) {
+            try{ xhr = new ActiveXObject(names[i]); break; }
+            catch(e){}
+        }
+    }
+	if(xhr) {
+		xhr.open("POST", "?app=FREEDOM&action=FOLIOPARAMS&id=[docid]&"+datas, true);
+		xhr.send();
+	}
+    return null; // non supporté
+}
+
 
     [JS:CODE]
   -->
@@ -358,15 +397,12 @@ function shiftKeyPushed(event) {
 }   
 .foldertab {
 }
-
 button,
 button:hover {
 	margin: 2px;
 	cursor: pointer;
-}
-
-button img {
-	margin: 2px;
+	padding: 4px;
+	float: left;
 }
 </style>
 
@@ -380,25 +416,25 @@ button img {
       onmouseover="initDrag();"
       onmouseup="endDrag(); " > 
 
-<table >
+<table style="display:none" >
 <tr name="tdtab" ></tr>
 </table>
 
 
 <span id="tabline" class="tabcontainer"></span>
 
-  <div class="[tabonglets]" title="[TEXT:View folder content]"
-       onmousedown="if (!shiftKeyPushed(event)) if (drag == 1) {copyOrMove([dirid]);} else {parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[dirid]&folioid=[dirid]';endDrag();} return false"
-	   onclick="if (shiftKeyPushed(event)) viewguide('[docid]'); else selecttab(this);"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[docid]');if (drag != 1) stopPropagation(event)"  height="20px" src="[icon]">[title]</div>
+  <div id="tab-[docid]" class="[tabonglets]" title="[TEXT:View folder content]"
+       onmousedown="if (!shiftKeyPushed(event)) if (drag == 1) {copyOrMove([dirid]);} else { change_foliolist('[dirid]','[dirid]');endDrag();} return false"
+	   onclick="if (shiftKeyPushed(event)) viewguide('[docid]'); else selecttab(this,'[docid]');"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[docid]');if (drag != 1) stopPropagation(event)"  height="20px" src="[icon]">[title]</div>
 [BLOCK TAG]
-  <div class="[tag_cellbgclass]" style="background-color:[icolor]" 
-     onmousedown="if (!shiftKeyPushed(event)) if (('[doctype]'=='D') && (drag == 1)) {copyOrMove([tabid]);} else {parent.ffoliolist.location.href='[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[tabid]&folioid=[dirid]';endDrag();} return false" 
-     onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this);"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]"><span class="[TAG_LABELCLASS]">[tabtitle]</span></div>
+  <div id="tab-[tabid]" class="[tag_cellbgclass]" style="background-color:[icolor]"
+     onmousedown="if (!shiftKeyPushed(event)) if (('[doctype]'=='D') && (drag == 1)) {copyOrMove([tabid]);} else { change_foliolist('[tabid]','[dirid]');endDrag();} return false"
+     onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this,'[tabid]');"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]"><span class="[TAG_LABELCLASS]">[tabtitle]</span></div>
 [ENDBLOCK TAG]
 
-<button style="float:left;" onclick="changemode(1)" id="btnmode1"><img src="[IMG:tabmode10.png]" style="display:block" /><img src="[IMG:tabmode11.png]" style="display:none" /></button>
-<button style="float:left;" onclick="changemode(2)" id="btnmode2"><img src="[IMG:tabmode20.png]" style="display:none" /><img src="[IMG:tabmode21.png]" style="display:none" /><img src="[IMG:tabmode22.png]" style="display:block" /></button>
-<button style="float:left;" onclick="changemode(3)" id="lastbutton"><img src="[IMG:tabmode30.png]" style="display:block" /><img src="[IMG:tabmode31.png]" style="display:none" /><img src="[IMG:tabmode32.png]" style="display:none" /></button>
+<button onclick="changemode(1)" id="btnmode1"><img src="[IMG:tabmode10.png]" style="display:block" /><img src="[IMG:tabmode11.png]" style="display:none" /></button>
+<button onclick="changemode(2)" id="btnmode2"><img src="[IMG:tabmode20.png]" style="display:none" /><img src="[IMG:tabmode21.png]" style="display:none" /><img src="[IMG:tabmode22.png]" style="display:block" /></button>
+<button onclick="changemode(3)" id="lastbutton"><img src="[IMG:tabmode30.png]" style="display:block" /><img src="[IMG:tabmode31.png]" style="display:none" /><img src="[IMG:tabmode32.png]" style="display:none" /></button>
 
 <img id="micon" width="20" height="20" style="position:absolute;visibility:hidden">
 

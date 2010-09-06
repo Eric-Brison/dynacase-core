@@ -250,9 +250,14 @@ $action_desc = array (
    "short_name"		=>N_("folio icon list"),
    "acl"		=>"FREEDOM_READ"
   ) ,
-  array( 
+  array(
    "name"		=>"FOLIOSEL",
    "short_name"		=>N_("folio select doc"),
+   "acl"		=>"FREEDOM_READ"
+  ) ,
+  array( 
+   "name"		=>"FOLIOPARAMS",
+   "short_name"		=>N_("folio params ajax request"),
    "acl"		=>"FREEDOM_READ"
   ) ,
   array( 

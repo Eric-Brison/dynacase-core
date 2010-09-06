@@ -33,6 +33,8 @@ body.freedom {
   [IF refreshtab]
     if (parent.ffoliotab) parent.ffoliotab.location.reload();
   [ENDIF refreshtab]
+
+  
 -->
 </script>   
  </head>
@@ -47,7 +49,7 @@ body.freedom {
 
 <img id="micon" width="20" height="20"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
 <p align="center">[dirtitle]<br/><i>[nbdoc] [docs]</i><br />
-<a onclick="document.location = document.location+'&foliolisttype=list'">[TEXT:List view]</a> | <a onclick="document.location = document.location+'&foliolisttype=icon'">[TEXT:Icons view]</a></p>
+<a onclick="window.location.href = window.location.href+'&foliolisttype=list'">[TEXT:List view]</a> | <a onclick="document.location = document.location+'&foliolisttype=icon'">[TEXT:Icons view]</a></p>
 
 [ZONE FREEDOM:POPUPFOLIO]
 [ZONE FREEDOM:POPUP?folio=Y]

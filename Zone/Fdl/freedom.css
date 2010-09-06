@@ -410,13 +410,13 @@ TABLE.tablehead {
 	line-height: 29px;
 	height: 29px;
 	position: relative;
-	padding: 0 8px 0 8px;
+	padding: 0 8px 0 36px;
 	font-size: [SIZE_SMALL];
 	cursor: pointer;
 	border-style: none;
 	background-color:[CORE_BGCOLORALTERN];
 	float: left;
-	margin: 2px 2px 0 2px;
+	margin: 2px 3px 0 3px;
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
 	border-top: 1px solid #ccc;
@@ -436,6 +436,16 @@ TABLE.tablehead {
 .ongletvsie img {
 	vertical-align: middle;
 	padding-right: 4px;
+	background:url('[IMG:tabbar.png]') no-repeat right -150px;
+	position: absolute;
+	top: 0px;
+	left: 0;
+	padding: 4px 6px 5px 6px;
+}
+
+.ongletvs img,
+.ongletvsie img {
+	background-position:right -100px;
 }
 
 .ongletvg {

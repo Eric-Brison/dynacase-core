@@ -4,25 +4,124 @@
 <link rel="shortcut icon" href="FDL/Images/logo16.ico" />
 <title>[TEXT:PortFolio] [title]</title>
 
+<script type="text/javascript">
+
+var nb_frames_loaded = 0;
+var saved_list_width = [FRAMELISTWIDTH];
+
+function frameLoaded() {
+	nb_frames_loaded++;
+	if(nb_frames_loaded == 6) {
+		try {
+			var w = window.frames['ffoliotab'];
+			if('[VIEWSTATE]' == 0) {
+				w.setone();
+			}
+			else if('[VIEWSTATE]' >= 3) {
+				w.setthree();
+			}
+			w.setview([VIEWSTATE]);
+			if('[TABSELECTED]') {
+				w.selecttab(null,'[TABSELECTED]');
+			}
+			if('[FRAME1]') {
+				window.frames['folio0'].location.href = '[FRAME1]';
+			}
+			if('[FRAME2]') {
+				window.frames['folio1'].location.href = '[FRAME2]';
+			}
+			if('[FRAMELIST]') {
+				window.frames['ffoliolist'].location.href = '[FRAMELIST]';
+			}
+		}
+		catch(e) {
+			if(console) {
+				console.log(e.message);
+			}
+		}
+	}
+}
+
+function frame1Loaded() {
+	frameLoaded();
+	if(nb_frames_loaded > 6) {
+		xhr_send('frame1='+encodeURIComponent(window.frames['folio0'].location.href));
+	}
+}
+function frame2Loaded() {
+	frameLoaded();
+	if(nb_frames_loaded > 6) {
+		xhr_send('frame2='+encodeURIComponent(window.frames['folio1'].location.href));
+	}
+}
+function frameListLoaded() {
+	frameLoaded();
+	if(nb_frames_loaded > 6) {
+		xhr_send('framelist='+encodeURIComponent(window.frames['ffoliolist'].location.href));
+	}
+	else {
+	console.log('ok init resize');
+		window.setInterval(function() {
+			var current_list_width = saved_list_width;
+			if(window.frames['ffoliolist'].innerWidth) {
+				current_list_width = window.frames['ffoliolist'].innerWidth;
+			} else if(window.frames['ffoliolist'].body && window.frames['ffoliolist'].body.offsetWidth){
+				current_list_width = window.frames['ffoliolist'].body.offsetWidth;
+			}
+			if(current_list_width != saved_list_width) {
+				saved_list_width = current_list_width;
+				xhr_send('framelistwidth='+saved_list_width);
+			}
+		}, 800);
+	}
+}
+
+function xhr_send(datas) {
+	var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+	}
+    else if (window.ActiveXObject) {
+        var names = [
+            "Msxml2.XMLHTTP.6.0",
+            "Msxml2.XMLHTTP.3.0",
+            "Msxml2.XMLHTTP",
+            "Microsoft.XMLHTTP"
+        ];
+        for(var i in names) {
+            try{ xhr = new ActiveXObject(names[i]); break; }
+            catch(e){}
+        }
+    }
+	if(xhr) {
+		xhr.open("POST", "?app=FREEDOM&action=FOLIOPARAMS&id=[docid]&"+datas, true);
+		xhr.send();
+	}
+    return null; // non supporté
+}
+
+</script>
+
 </head>
 
-<frameset name="ffolio" id="ffolio" frameborder="0" framespacing="0" border="0" rows="35px,*" >
+<frameset name="ffolio" id="ffolio" border="0" rows="35px,*" >
 
-	<frame name="ffoliotab" id="ffoliotab" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOTAB&id=[docid]" marginheight="1" marginwidth="2" style="border-style:none" scrolling="no">
+	<frame name="ffoliotab" id="ffoliotab" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOTAB&id=[docid]" scrolling="no" onload="frameLoaded()">
 
-	<frameset  name="ffoliocontent" frameborder="yes" border=3  framespacing="3" cols="[LISTFRAMEWIDTH]pt,*" scrolling="no" frameborder="no" >
-		<frame id="ffoliolist" name="ffoliolist"  src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[dirid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+	<frameset name="ffoliocontent" border="2" cols="[FRAMELISTWIDTH]px,*" scrolling="no">
 
-		<frameset id="ffolios" name="ffolios" frameborder="yes" border="1" framespacing="3" cols="50%,50%"   >
+		<frame id="ffoliolist" name="ffoliolist" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[dirid]" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameListLoaded()">
 
-			<frameset  frameborder="no" border="0" framespacing="0" rows="0,*"   >
-				<frame  name="fsel0"  src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=0&selected=N"  scrolling="no"  bordercolor="[CORE_FGCOLOR]" frameborder="no" marginheight="0">
-				<frame  name="folio0" src="[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[dirid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]" frameborder="no">
+		<frameset id="ffolios" name="ffolios" cols="50%,*" border="2">
+
+			<frameset rows="0,*" border="0">
+				<frame name="fsel0" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=0&selected=N" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
+				<frame name="folio0" src="[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[dirid]" scrolling="needed" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frame1Loaded()">
 			</frameset>
 
-			<frameset  frameborder="no" border="0" framespacing="0" rows="0,*"   >
-				<frame name="fsel1"  src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=1&selected=Y"  scrolling="no"  bordercolor="[CORE_FGCOLOR]" frameborder="no" marginheight="0">
-				<frame  name="folio1" src="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_LOGO" scrolling="needed" bordercolor="[CORE_FGCOLOR]"frameborder="no" >
+			<frameset rows="0,*" border="0">
+				<frame name="fsel1" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=1&selected=Y" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
+				<frame name="folio1" src="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_LOGO" scrolling="needed" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frame2Loaded()">
 			</frameset>
 
 		</frameset>
