@@ -259,7 +259,7 @@ function adjustHeight() {
 	var f=top.document.getElementById('ffoliotab');
 	var nh=35;
 	if (document.body.scrollHeight > document.body.clientHeight) {
-		nh=document.body.scrollHeight;
+		nh=document.body.scrollHeight+3;
 	} else {
 		//try reduce
 		var xy=getAnchorPosition('lastbutton');
@@ -392,6 +392,7 @@ button:hover {
 	padding: 3px;
 	z-index: 9;
 	zoom: 1;
+	float: left;
 }
 
 button span {

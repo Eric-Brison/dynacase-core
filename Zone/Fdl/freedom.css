@@ -416,7 +416,7 @@ TABLE.tablehead {
 	border-style: none;
 	background-color:[CORE_BGCOLORALTERN];
 	float: left;
-	margin: 2px 3px 0 3px;
+	margin: 2px 3px 1px 3px;
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
 	border-top: 1px solid #ccc;
@@ -424,6 +424,7 @@ TABLE.tablehead {
 
 .ongletvs,
 .ongletvsie {
+	margin: 2px 3px 0 3px;
 	border-left: 1px solid #888;
 	border-right: 1px solid #888;
 	border-top: 1px solid #888;

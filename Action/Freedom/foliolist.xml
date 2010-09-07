@@ -91,7 +91,9 @@ function xhr_send(datas) {
 
 <img id="micon" width="20" height="20"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
 <p align="center">[dirtitle]<br/><i>[nbdoc] [docs]</i><br />
-<a onclick="window.location.href = window.location.href+'&foliolisttype=list'">[TEXT:List view]</a> | <a onclick="window.location.href = window.location.href+'&foliolisttype=icon'">[TEXT:Icons view]</a></p>
+[IF LISTICON]<a onclick="window.location.href = window.location.href+'&foliolisttype=list'">[TEXT:List view]</a>[ENDIF LISTICON]
+[IFNOT LISTICON]<a onclick="window.location.href = window.location.href+'&foliolisttype=icon'">[TEXT:Icons view]</a>[ENDIF LISTICON]
+</p>
 
 [ZONE FREEDOM:POPUPFOLIO]
 [ZONE FREEDOM:POPUP?folio=Y]
