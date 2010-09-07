@@ -145,45 +145,34 @@ function setone() {
 var currentview = 2;
 function setview(val) {
 	currentview = val;
-	var btn1 = document.getElementById('btnmode1');
-	var btn2 = document.getElementById('btnmode2');
-	var btn3 = document.getElementById('lastbutton');
-	var imgs1 = btn1.getElementsByTagName('img');
-	var imgs2 = btn2.getElementsByTagName('img');
-	var imgs3 = btn3.getElementsByTagName('img');
-	imgs1[0].style.display = 'none';
-	imgs1[1].style.display = 'none';
-	imgs2[0].style.display = 'none';
-	imgs2[1].style.display = 'none';
-	imgs2[2].style.display = 'none';
-	imgs3[0].style.display = 'none';
-	imgs3[1].style.display = 'none';
-	imgs3[2].style.display = 'none';
+	var span1 = document.getElementById('spanmode1');
+	var span2 = document.getElementById('spanmode2');
+	var span3 = document.getElementById('spanmode3');
 	switch(val) {
 		case 0:
-			imgs1[1].style.display = 'block';
-			imgs2[0].style.display = 'block';
-			imgs3[0].style.display = 'block';
+			span1.className = 'tabmode11';
+			span2.className = 'tabmode20';
+			span3.className = 'tabmode30';
 			break;
 		case 1:
-			imgs1[0].style.display = 'block';
-			imgs2[1].style.display = 'block';
-			imgs3[0].style.display = 'block';
+			span1.className = 'tabmode10';
+			span2.className = 'tabmode21';
+			span3.className = 'tabmode30';
 			break;
 		case 2:
-			imgs1[0].style.display = 'block';
-			imgs2[2].style.display = 'block';
-			imgs3[0].style.display = 'block';
+			span1.className = 'tabmode10';
+			span2.className = 'tabmode22';
+			span3.className = 'tabmode30';
 			break;
 		case 3:
-			imgs1[0].style.display = 'block';
-			imgs2[0].style.display = 'block';
-			imgs3[1].style.display = 'block';
+			span1.className = 'tabmode10';
+			span2.className = 'tabmode20';
+			span3.className = 'tabmode31';
 			break;
 		case 4:
-			imgs1[0].style.display = 'block';
-			imgs2[0].style.display = 'block';
-			imgs3[2].style.display = 'block';
+			span1.className = 'tabmode10';
+			span2.className = 'tabmode20';
+			span3.className = 'tabmode32';
 			break;
 	}
 	xhr_send('viewstate='+val);
@@ -401,8 +390,29 @@ button:hover {
 	margin: 2px;
 	cursor: pointer;
 	padding: 3px;
-	float: left;
+	z-index: 9;
+	zoom: 1;
 }
+
+button span {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.tabmode10 { background-image: url([IMG:tabmode10.png]); }
+.tabmode11 { background-image: url([IMG:tabmode11.png]); }
+
+.tabmode20 { background-image: url([IMG:tabmode20.png]); }
+.tabmode21 { background-image: url([IMG:tabmode21.png]); }
+.tabmode22 { background-image: url([IMG:tabmode22.png]); }
+
+.tabmode30 { background-image: url([IMG:tabmode30.png]); }
+.tabmode31 { background-image: url([IMG:tabmode31.png]); }
+.tabmode32 { background-image: url([IMG:tabmode32.png]); }
+
 </style>
 
 
@@ -431,9 +441,9 @@ button:hover {
      onclick="if (shiftKeyPushed(event)) viewguide('[tabid]'); else selecttab(this,'[tabid]');"><img needresize="1" title="[TEXT:View folder properties]" onmousedown="viewguide('[tabid]');if (drag != 1) stopPropagation(event)" height="20px" src="[icontab]"><span class="[TAG_LABELCLASS]">[tabtitle]</span></div>
 [ENDBLOCK TAG]
 
-<button onclick="changemode(1)" id="btnmode1"><img src="[IMG:tabmode10.png]" style="display:block" /><img src="[IMG:tabmode11.png]" style="display:none" /></button>
-<button onclick="changemode(2)" id="btnmode2"><img src="[IMG:tabmode20.png]" style="display:none" /><img src="[IMG:tabmode21.png]" style="display:none" /><img src="[IMG:tabmode22.png]" style="display:block" /></button>
-<button onclick="changemode(3)" id="lastbutton"><img src="[IMG:tabmode30.png]" style="display:block" /><img src="[IMG:tabmode31.png]" style="display:none" /><img src="[IMG:tabmode32.png]" style="display:none" /></button>
+<button onclick="changemode(1)" id="btnmode1"><span id="spanmode1" class="tabmode10"></span></button>
+<button onclick="changemode(2)" id="btnmode2"><span id="spanmode2" class="tabmode22"></span></button>
+<button onclick="changemode(3)" id="lastbutton"><span id="spanmode3" class="tabmode30"></span></button>
 
 <img id="micon" width="20" height="20" style="position:absolute;visibility:hidden">
 

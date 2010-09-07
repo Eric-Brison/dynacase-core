@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-02 15:50+0200\n"
+"POT-Creation-Date: 2010-09-07 17:13+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2318,6 +2318,14 @@ msgid "others..."
 msgstr ""
 
 #, c-format
+msgid "attribute %s not found"
+msgstr ""
+
+#, c-format
+msgid "attribute %s not an array"
+msgstr ""
+
+#, c-format
 msgid "period from %s to %s"
 msgstr ""
 
@@ -3405,6 +3413,12 @@ msgstr "Delete"
 #, fuzzy
 msgid "no workflow"
 msgstr "Delete"
+
+msgid "List view"
+msgstr ""
+
+msgid "Icons view"
+msgstr ""
 
 #, fuzzy
 msgid "Result Import TAR Documents"
@@ -5789,6 +5803,9 @@ msgid "folio icon list"
 msgstr ""
 
 msgid "folio select doc"
+msgstr ""
+
+msgid "folio params ajax request"
 msgstr ""
 
 #, fuzzy
