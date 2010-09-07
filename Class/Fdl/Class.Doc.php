@@ -938,7 +938,7 @@ create unique index i_docir on doc(initid, revision);";
   /** 
    * return the family document where the document comes from
    * 
-   * @return Doc
+   * @return DocFam
    */
   final public function getFamDoc() {
     if (! isset($this->famdoc)||($this->famdoc->id != $this->fromid)) $this->famdoc= new_Doc($this->dbaccess, $this->fromid);
@@ -977,9 +977,9 @@ create unique index i_docir on doc(initid, revision);";
    */
   public function getParamValue($idp, $def="") {
     if ($this->doctype=='C') return $this->getParamValue($idp,$def);
-    if (! $this->initid) return false;
+    if (! $this->fromid) return false;
     $fdoc=$this->getFamDoc();
-
+    if (! $fdoc->isAlive()) return false;
     return $fdoc->getParamValue($idp,$def);
     
   }
