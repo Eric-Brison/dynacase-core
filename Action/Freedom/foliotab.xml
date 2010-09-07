@@ -123,7 +123,7 @@ function setone() {
 	var w=wref=windowExist('ffoliolist');
 	var target= w.docTarget;
 
-	w=top.document.getElementById('ffolios');
+	w=window.parent.document.getElementById('ffolios');
 
 	if (target == 'folio1') {
 		w.rows='';
@@ -230,7 +230,7 @@ function changemode(mode2) {
 }
 
 function settwo() {
-	var w=top.document.getElementById('ffolios');
+	var w=window.parent.document.getElementById('ffolios');
 
 	w.rows='';
 	w.cols='50%,*';
@@ -242,7 +242,7 @@ function settwo() {
 
 function setthree() {
 
-	var w=top.document.getElementById('ffolios');
+	var w=window.parent.document.getElementById('ffolios');
 	if (w) {
 		w.cols='';
 		w.rows='50%,*';
@@ -255,8 +255,8 @@ function setthree() {
 
 function adjustHeight() {
 
-	var w=top.document.getElementById('ffolio');
-	var f=top.document.getElementById('ffoliotab');
+	var w=window.parent.document.getElementById('ffolio');
+	var f=window.parent.document.getElementById('ffoliotab');
 	var nh=35;
 	if (document.body.scrollHeight > document.body.clientHeight) {
 		nh=document.body.scrollHeight+3;
