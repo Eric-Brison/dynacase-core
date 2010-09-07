@@ -938,7 +938,7 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 		}
 	}
 	$pindex='';
-	if (($row >= 0) && ($oattr->mvisibility=="W" || $oattr->mvisibility=="O")) {
+	if (($row >= 0) && ($oattr->mvisibility=="W" || $oattr->mvisibility=="O" || $oattr->mvisibility=="U")) {
 		$oattr->mvisibility="U";
 		$pindex='s';
 	}
