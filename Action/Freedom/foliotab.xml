@@ -333,13 +333,13 @@ function copyOrMove(tabid) {
 }
 
 function viewguide(docid) {
-  
+
 	var w=wref=windowExist('ffoliolist');
 	var wtarget=windowExist(w.docTarget);
 	var uri = '[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id='+docid;
 
 	wtarget.location.href=uri;
-
+	
 	xhr_send('tabselected='+docid);
 }
 
@@ -354,7 +354,6 @@ function shiftKeyPushed(event) {
 function change_foliolist(tabid, dirid) {
 	var uri = '[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid='+tabid+'&folioid='+dirid;
 	parent.ffoliolist.location.href = uri;
-	//xhr_send('framelist='+encodeURIComponent(uri));
 }
 
 function xhr_send(datas) {
@@ -401,7 +400,7 @@ button,
 button:hover {
 	margin: 2px;
 	cursor: pointer;
-	padding: 4px;
+	padding: 3px;
 	float: left;
 }
 </style>

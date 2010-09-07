@@ -34,6 +34,47 @@ body.freedom {
     if (parent.ffoliotab) parent.ffoliotab.location.reload();
   [ENDIF refreshtab]
 
+
+var ajax_width_callback = null;
+var saved_list_width = [FRAMELISTWIDTH];
+
+function frameListResized() {
+	if(ajax_width_callback) {
+		window.clearTimeout(ajax_width_callback);
+	}
+	ajax_width_callback = window.setTimeout(function() {
+		ajax_width_callback = null;
+		var current_list_width = getFrameWidth();
+		if(current_list_width && current_list_width != saved_list_width) {
+			saved_list_width = current_list_width;
+			xhr_send('framelistwidth='+saved_list_width);
+		}
+	}, 1000);
+}
+
+function xhr_send(datas) {
+	var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+	}
+    else if (window.ActiveXObject) {
+        var names = [
+            "Msxml2.XMLHTTP.6.0",
+            "Msxml2.XMLHTTP.3.0",
+            "Msxml2.XMLHTTP",
+            "Microsoft.XMLHTTP"
+        ];
+        for(var i in names) {
+            try{ xhr = new ActiveXObject(names[i]); break; }
+            catch(e){}
+        }
+    }
+	if(xhr) {
+		xhr.open("POST", "?app=FREEDOM&action=FOLIOPARAMS&id=[docid]&"+datas, true);
+		xhr.send();
+	}
+    return null; // non supporté
+}
   
 -->
 </script>   
@@ -42,14 +83,15 @@ body.freedom {
 <body class="freedom" 
       onLoad="initmicon()" 
       onclick="closeAllMenu();"      
-      onContextMenu="openMenu(event,'popupfolio',1);return false" 
+      onContextMenu="openMenu(event,'popupfolio',1);return false"
+	  onresize="frameListResized()"
       style="cursor:crosshair" >
 
 
 
 <img id="micon" width="20" height="20"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
 <p align="center">[dirtitle]<br/><i>[nbdoc] [docs]</i><br />
-<a onclick="window.location.href = window.location.href+'&foliolisttype=list'">[TEXT:List view]</a> | <a onclick="document.location = document.location+'&foliolisttype=icon'">[TEXT:Icons view]</a></p>
+<a onclick="window.location.href = window.location.href+'&foliolisttype=list'">[TEXT:List view]</a> | <a onclick="window.location.href = window.location.href+'&foliolisttype=icon'">[TEXT:Icons view]</a></p>
 
 [ZONE FREEDOM:POPUPFOLIO]
 [ZONE FREEDOM:POPUP?folio=Y]

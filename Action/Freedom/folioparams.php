@@ -40,9 +40,18 @@ function folioparams(&$action) {
 			$pfctx['viewstate'] = $var;
 		}
 
-		foreach(array('tabselected', 'frame1', 'frame2', 'framelist', 'framelistwidth') as $param) {
+		$var = GetHttpVars("framelist", '');
+		if(!empty($var) && preg_match('/^([0-9]+),([0-9]+)$/i', $var, $matches)) {
+			$pfctx['framelist'] = array(
+				'dirid' => $matches[1],
+				'folioid' => $matches[2],
+			);
+		}
+
+		foreach(array('tabselected', 'frame1', 'frame2', 'framelistwidth') as $param) {
 			$var = GetHttpVars($param, '');
-			if(!empty($var)) {
+			if(!empty($var) && is_numeric($var)) {
+				//error_log("SET $param => $var");
 				if($pfctx['viewstate'] == 0 && in_array($param, array('frame1', 'frame2'))) {
 					$pfctx['frame1'] = $var;
 					$pfctx['frame2'] = $var;
@@ -53,7 +62,7 @@ function folioparams(&$action) {
 			}
 		}
 
-		foreach(explode("\n", print_r($pfctx, true)) as $tmp ) {error_log($tmp);}
+		//foreach(explode("\n", print_r($pfctx, true)) as $tmp ) {error_log($tmp);}
 
 		portfolio_set_context($dir, $pfctx);
 	}

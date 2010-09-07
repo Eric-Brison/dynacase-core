@@ -434,13 +434,11 @@ TABLE.tablehead {
 .ongletvgie img,
 .ongletvs img,
 .ongletvsie img {
-	vertical-align: middle;
-	padding-right: 4px;
-	background:url('[IMG:tabbar.png]') no-repeat right -150px;
 	position: absolute;
 	top: 0px;
-	left: 0;
+	left: 0px;
 	padding: 4px 6px 5px 6px;
+	background:url('[IMG:tabbar.png]') no-repeat right -150px;
 }
 
 .ongletvs img,
