@@ -291,6 +291,7 @@ create sequence seq_id_users start 10";
     if (($iddomain > 1) && ($this->iddomain != $iddomain)&& ($this->iddomain < 2)) $needmail=true;
     else $needmail=false;
 
+    if ($iddomain == 1) $iddomain=0; // no use local domain now
     if ($iddomain == 0) {
       if ($extmail != "") {
 	$this->mail=trim($extmail);  
@@ -498,7 +499,7 @@ create sequence seq_id_users start 10";
     $group = new group($this->dbaccess);
 
     // Create admin user
-    $this->iddomain=1;
+    $this->iddomain=0;
     $this->id=1;
     $this->lastname="Master";
     $freedomctx=getFreedomContext();
@@ -522,7 +523,7 @@ create sequence seq_id_users start 10";
   
   
     // Create anonymous user
-    $this->iddomain=1;
+    $this->iddomain=0;
     $this->id=ANONYMOUS_ID;
     $this->lastname="anonymous";
     $this->firstname="guest";

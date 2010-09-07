@@ -148,7 +148,9 @@ if (window.parent) {
 		} else {
 		  window.parent.displayWarningMsg(error);
 		  if (warning) window.parent.displayWarningMsg(warning);
-		  [IFNOT quicksave]window.setTimeout("window.parent.location.href='[url]'",4000);[ENDIF quicksave]
+		  if (! error) {
+		    [IFNOT quicksave]window.setTimeout("window.parent.location.href='[url]'",4000);[ENDIF quicksave]
+		  }
 		}
 	    } else {
         	    if (warning) {

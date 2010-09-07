@@ -294,20 +294,24 @@ function exportProfil($fout,$dbaccess,$docid) {
   if ($acls) {
     foreach ($acls as $va) {
       $up=$va["upacl"];
+      $un=$va["unacl"];
       $uid=$va["userid"];
 
       foreach ($doc->acls as $acl) {
-	if ($doc->ControlUp($up,$acl) == "") {
-	  if ($uid >= STARTIDVGROUP) {
-	    $vg=new Vgroup($dbaccess,$uid);
-	    $qvg=new QueryDb($dbaccess,"VGroup");
-	    $qvg->AddQuery("num=$uid");
-	    $tvu=$qvg->Query(0,1,"TABLE");
-	    $uid=$tvu[0]["id"];
-	  }
+          $bup=($doc->ControlUp($up,$acl) == "");
+          $bun=($doc->ControlUp($un,$acl) == "");
+          if ($bup || $bun) {
+              if ($uid >= STARTIDVGROUP) {
+                  $vg=new Vgroup($dbaccess,$uid);
+                  $qvg=new QueryDb($dbaccess,"VGroup");
+                  $qvg->AddQuery("num=$uid");
+                  $tvu=$qvg->Query(0,1,"TABLE");
+                  $uid=$tvu[0]["id"];
+              }
 
-	  $tpu[]=$uid;
-	  $tpa[]=$acl;
+              $tpu[]=$uid;
+              if ($bup) $tpa[]=$acl;
+              else $tpa[]="-".$acl;
 	}
       }
     }
