@@ -1939,7 +1939,7 @@ create unique index i_docir on doc(initid, revision);";
    * return all the attributes which can be sorted
    * @return array DocAttribute
    */
-  final public function GetSortAttributes()  {      
+  public function GetSortAttributes()  {      
     $tsa = array();
     $nattr = $this->GetNormalAttributes();
     reset($nattr);
@@ -1947,7 +1947,8 @@ create unique index i_docir on doc(initid, revision);";
     foreach($nattr as $k=>$a) {
       if ($a->repeat || ($a->visibility == "H")||  ($a->visibility == "I") || ($a->visibility == "O") || ($a->type == "longtext") || ($a->type == "xml") || 
 	  ($a->type == "docid") ||  ($a->type == "htmltext") ||
-	  ($a->type == "image") || ($a->type == "file" ) || ($a->fieldSet->visibility == "H" )) continue;
+	  ($a->type == "image") || ($a->type == "file" ) || ($a->fieldSet->visibility == "H") ||
+	  ($a->getOption('sortable') == 'no' )) continue;
       $tsa[$a->id]=$a;
     }
     return $tsa;      
