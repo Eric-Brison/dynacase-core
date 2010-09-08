@@ -111,6 +111,7 @@ function sendmail($to,$from,$cc,$bcc,$subject,&$mimemail,$multipart=null) {
  */
 class Fdl_Mail_mime extends Mail_mime {
   // USE TO ADD CID in attachment
+
   /**
      * Adds a file to the list of attachments.
      *
@@ -150,7 +151,39 @@ class Fdl_Mail_mime extends Mail_mime {
                                 'name'     => $filename,
 				'charset'  => $charset,
                                 'c_type'   => $c_type,
+                                'encoding' => $encoding
+                               );
+        return true;
+    }
+
+    function addAttachmentInline($file, $c_type = 'application/octet-stream',
+				 $name = '', $isfilename = true,
+				 $encoding = 'base64',$cid='',$charset="UTF-8")
+    {
+        $filedata = ($isfilename === true) ? $this->_file2str($file)
+                                           : $file;
+        if ($isfilename === true) {
+            // Force the name the user supplied, otherwise use $file
+            $filename = (!empty($name)) ? $name : basename($file);
+        } else {
+            $filename = $name;
+        }
+        if (empty($filename)) {
+            return PEAR::raiseError(
+              'The supplied filename for the attachment can\'t be empty'
+            );
+        }
+        if (PEAR::isError($filedata)) {
+            return $filedata;
+        }
+
+        $this->_parts[] = array(
+                                'body'     => $filedata,
+                                'name'     => $filename,
+				'charset'  => $charset,
+                                'c_type'   => $c_type,
                                 'encoding' => $encoding,
+				'disposition' => 'inline',
                                 'cid' => $cid
                                );
         return true;
@@ -169,10 +202,19 @@ class Fdl_Mail_mime extends Mail_mime {
     {
         $params['content_type'] = $value['c_type'];
         $params['encoding']     = $value['encoding'];
-        $params['disposition']  = 'attachment';
         $params['dfilename']    = $value['name'];
         $params['charset']    = $value['charset'];
-        $params['cid']          = $value['cid'];
+
+	if( isset($value['disposition']) ) {
+	  $params['disposition'] = $value['disposition'];
+	} else {
+	  $params['disposition'] = 'attachment';
+	}
+
+	if( isset($value['cid']) ) {
+	  $params['cid'] = $value['cid'];
+	}
+
         $obj->addSubpart($value['body'], $params);
 
     }
