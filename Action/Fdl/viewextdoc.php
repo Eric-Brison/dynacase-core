@@ -89,15 +89,21 @@ function viewextdoc(&$action) {
                                             "class"=>"Fdl.InterfaceAction.Historic"),
                             "label"=>_("Historic"),
                             "visibility"=>$im[$doc->fromtitle]["items"]["histo"]["visibility"]);
+    $fnote=new_doc($doc->dbaccess,"SIMPLENOTE");
+    if ($fnote->control("icreate")=="") {
     $im[$mainmenu]["items"]["addpostit"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
                                             "class"=>"Fdl.InterfaceAction.SimpleNote"),
                             "label"=>_("Add a note"),
                             "visibility"=>$im[$doc->fromtitle]["items"]["addpostit"]["visibility"]);
+    }
     if ($doc->control("send")=="") {
         $im[$mainmenu]["items"]["sendmail"]=array("url"=>"?app=FDL&action=EDITMAIL&viewext=yes&mid=".$doc->id,
                             "label"=>_("Send document"),
                             "visibility"=>POPUP_ACTIVE);
     }
+    $im[$mainmenu]["items"]["viewprint"]=array("javascript"=>"window.open('?app=FDL&action=IMPCARD&view=print&id=".$doc->id."','_blank')",
+                            "label"=>_("View print version"),
+                            "visibility"=>POPUP_ACTIVE);
     $im[$mainmenu]["items"]["reload"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
                                             "class"=>"Fdl.InterfaceAction.Reload"),
                             "label"=>_("Reload document"),
