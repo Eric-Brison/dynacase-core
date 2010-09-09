@@ -692,9 +692,12 @@ function changeMenuVisibility(&$action,&$tlink,&$doc) {
 
 
   if (($doc->postitid > 0)||($doc->locked == -1)) $tlink["addpostit"]["visibility"]=POPUP_INVISIBLE;
-  else if ($doc->fromid==27) $tlink["addpostit"]["visibility"]=POPUP_CTRLACTIVE; // for post it family
-  else $tlink["addpostit"]["visibility"]=POPUP_ACTIVE;
-
+  else if ($doc->fromid==27) $tlink["addpostit"]["visibility"]=POPUP_INVISIBLE; // for post it family
+  else {
+      $fnote=new_doc($doc->dbaccess,27);
+      if ($fnote->control("icreate")!="") $tlink["addpostit"]["visibility"]=POPUP_INVISIBLE;
+      else $tlink["addpostit"]["visibility"]=POPUP_ACTIVE;
+  }
   if (! $action->parent->Haspermission("FREEDOM","FREEDOM")) {
 
     // FREEDOM not available
