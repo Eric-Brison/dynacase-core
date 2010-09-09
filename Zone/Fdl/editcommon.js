@@ -701,6 +701,19 @@ taout[[jska]]=[jstaout];
 function getInputValue(id,index) {
   if (!index) index=0;
   var o=document.getElementById(id);
+
+  if(o && o.type == 'checkbox' && !o.name ) {
+	// case bool
+	var oo=document.getElementById(id+'_0');
+	if (oo && oo.checked) {
+		return oo.value;
+	}
+	oo=document.getElementById(id+'_1');
+	if (oo && oo.checked) {
+		return oo.value;
+	}
+  }
+
   if (o) {
     return o.value;
   } else {
@@ -713,7 +726,7 @@ function getInputValue(id,index) {
     //else le = getInputsByName('_'+id);
     if ((le.length - 1) >= index) {
       return le[index].value;
-    }    
+    }
   }
   return '';
 }
@@ -1601,6 +1614,7 @@ function changeCheckBoolClasses(th,name) {
     } else {
       alert('[TEXT:changeCheckBoolClasses Error]');
     }
+	  disableReadAttribute();
 
   }
 }
