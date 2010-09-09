@@ -13,6 +13,37 @@
 
    <style type="text/css">
 [CSS:CODE]
+[IF viewprint]
+@media screen {
+  .noprint {
+    display:none;
+  }
+  #error  {
+    display:none ! important;
+  }
+  *, A, A:link, A:visited, p {
+    color:black;
+  }
+  .tableborder {
+    border:none;
+  }
+  TD, TH {
+  }
+  .onlyprint { 
+    display:block;
+  }
+
+  DIV.tabsh {
+    display:none;
+  }
+  FIELDSET.mfield {
+    display:block!important;
+  }
+  TBODY.overflow {
+    overflow:visible;
+  }
+}
+[ENDIF viewprint]
    </style>[ENDIF nocss]
 [JS:REF]  
 <script language="JavaScript">

@@ -98,6 +98,9 @@ function viewextdoc(&$action) {
                             "label"=>_("Send document"),
                             "visibility"=>POPUP_ACTIVE);
     }
+    $im[$mainmenu]["items"]["viewprint"]=array("javascript"=>"window.open('?app=FDL&action=IMPCARD&view=print&id=".$doc->id."','_blank')",
+                            "label"=>_("View print version"),
+                            "visibility"=>POPUP_ACTIVE);
     $im[$mainmenu]["items"]["reload"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
                                             "class"=>"Fdl.InterfaceAction.Reload"),
                             "label"=>_("Reload document"),
