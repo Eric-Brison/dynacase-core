@@ -285,6 +285,7 @@ Class NormalAttribute extends BasicAttribute {
                   }
                   $axml[] = sprintf("<%s>%s</%s>",$this->id,implode("\n",$xmlvalues),$this->id);
               }
+              $opt->index=-1; // restore initial index
               return implode("\n",$axml);
           case 'image':
           case 'file':
