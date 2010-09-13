@@ -439,13 +439,13 @@ function sendCard(&$action,
 
 	    if ($vid != "") {
 	      if ($vf->Retrieve ($vid, $info) == "") {  
-		$themail->addAttachment($info->path,$info->mime_s?$info->mime_s:$mime,$info->name,true,'base64','icon');
+		$themail->addAttachmentInline($info->path, $info->mime_s?$info->mime_s:$mime, $info->name, true, 'base64', 'icon');
 	      
 	      }
 	    } else {
 	      $icon=$doc->getIcon();
 	      if (file_exists($pubdir."/$icon")) {
-		$themail->addAttachment($pubdir."/$icon","image/".fileextension($icon),"icon",true,'base64','icon');
+		$themail->addAttachmentInline($pubdir."/$icon", "image/".fileextension($icon), "icon", true, 'base64', 'icon');
 	      }
 	    }
 	  }
@@ -460,14 +460,14 @@ function sendCard(&$action,
       foreach($ifiles as $v) {
 
 	if (file_exists($pubdir."/$v")) {
-	  $themail->addAttachment($pubdir."/$v","image/".fileextension($v),$v,true,'base64',$v);
+	  $themail->addAttachmentInline($pubdir."/$v", "image/".fileextension($v), $v, true, 'base64', $v);
 	}
       }
 
 
       foreach($tfiles as $k=>$v) {
 	if (file_exists($v)) {
-	  $themail->addAttachment($v,trim(`file -ib "$v"`),"$k",true,'base64',$k);
+	  $themail->addAttachmentInline($v,trim(`file -ib "$v"`),"$k",true,'base64',$k);
 	}
       
       }
