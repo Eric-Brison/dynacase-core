@@ -4,34 +4,116 @@
 <link rel="shortcut icon" href="FDL/Images/logo16.ico" />
 <title>[TEXT:PortFolio] [title]</title>
 
+<script type="text/javascript">
+
+var nb_frames_loaded = 0;
+
+function frameLoaded() {
+	nb_frames_loaded++;
+	if(nb_frames_loaded == 6) {
+		try {
+			var w = window.frames['ffoliotab'];
+			if('[VIEWSTATE]' == 0) {
+				w.setone();
+			}
+			else if('[VIEWSTATE]' >= 3) {
+				w.setthree();
+			}
+			w.setview([VIEWSTATE]);
+			if('[TABSELECTED]') {
+				w.selecttab(null,'[TABSELECTED]');
+			}
+		}
+		catch(e) {
+			if(console) {
+				console.log(e.message);
+			}
+		}
+	}
+}
+
+function frame1Loaded() {
+	frameLoaded();
+	if(nb_frames_loaded > 6) {
+		var m = window.frames['folio0'].location.href.match(/id=([0-9]+)/i);
+		if(m && m.length > 0) {
+			xhr_send('frame1='+m[1]);
+		}
+	}
+}
+function frame2Loaded() {
+	frameLoaded();
+	if(nb_frames_loaded > 6) {
+		var m = window.frames['folio1'].location.href.match(/id=([0-9]+)/i);
+		if(m && m.length > 0) {
+			xhr_send('frame2='+m[1]);
+		}
+	}
+}
+function frameListLoaded() {
+	frameLoaded();
+	if(nb_frames_loaded > 6) {
+		var m;
+		m = window.frames['ffoliolist'].location.href.match(/dirid=([0-9]+)/i);
+		var dirid = (m && m.length > 0) ? m[1] : 0;
+		m = window.frames['ffoliolist'].location.href.match(/folioid=([0-9]+)/i);
+		var folioid = (m && m.length > 0) ? m[1] : 0;
+		xhr_send('framelist='+dirid+','+folioid);
+	}
+}
+
+function xhr_send(datas) {
+	var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+	}
+    else if (window.ActiveXObject) {
+        var names = [
+            "Msxml2.XMLHTTP.6.0",
+            "Msxml2.XMLHTTP.3.0",
+            "Msxml2.XMLHTTP",
+            "Microsoft.XMLHTTP"
+        ];
+        for(var i in names) {
+            try{ xhr = new ActiveXObject(names[i]); break; }
+            catch(e){}
+        }
+    }
+	if(xhr) {
+		xhr.open("POST", "?app=FREEDOM&action=FOLIOPARAMS&id=[docid]&"+datas, true);
+		xhr.send();
+	}
+    return null; // non supporté
+}
+
+</script>
+
 </head>
 
+<frameset name="ffolio" id="ffolio" border="0" rows="35px,*" >
 
-<frameset name="ffolio" id="ffolio" frameborder="0" framespacing="0" border="0" rows="40pt,*" >
+	<frame name="ffoliotab" id="ffoliotab" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOTAB&id=[docid]" scrolling="no" onload="frameLoaded()">
 
-  <frame name="ffoliotab" id="ffoliotab" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOTAB&id=[docid]" marginheight="1" marginwidth="2" style="border-style:none" scrolling="no">
-  <frameset  name="ffoliocontent" frameborder="yes" border=3  framespacing="3" cols="180pt,*" 
-            scrolling="no" frameborder="no" >
-     <frame id="ffoliolist" name="ffoliolist"  src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOLIST&dirid=[dirid]" scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+	<frameset name="ffoliocontent" border="2" cols="[FRAMELISTWIDTH]px,*" scrolling="no">
 
+		<frame id="ffoliolist" name="ffoliolist" src="[CORE_STANDURL][FRAMELIST]" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameListLoaded()">
 
-       <frameset id="ffolios" name="ffolios" frameborder="yes" border=1 framespacing="3" cols="50%,50%"   >
+		<frameset id="ffolios" name="ffolios" cols="50%,*" border="2">
 
+			<frameset rows="0,*" border="0">
+				<frame name="fsel0" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=0&selected=N" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
+				<frame name="folio0" src="[CORE_STANDURL][FRAME1]" scrolling="needed" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frame1Loaded()">
+			</frameset>
 
-          <frameset  frameborder="no" border=0 framespacing="0" rows="7pt,*"   >
-             <frame  name="fsel0"  src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=0&selected=N"  scrolling="no"  bordercolor="[CORE_FGCOLOR]" frameborder="no" marginheight="0">
-             <frame  name="folio0" src="[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[dirid]"          
-                  scrolling="needed" bordercolor="[CORE_FGCOLOR]" frameborder="no">
-          </frameset>
+			<frameset rows="0,*" border="0">
+				<frame name="fsel1" src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=1&selected=Y" scrolling="no" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frameLoaded()">
+				<frame name="folio1" src="[CORE_STANDURL][FRAME2]" scrolling="needed" frameborder="1" bordercolor="[CORE_FGCOLOR]" onload="frame2Loaded()">
+			</frameset>
 
-          <frameset  frameborder="no" border=0 framespacing="0" rows="7pt,*"   >
-             <frame name="fsel1"  src="[CORE_STANDURL]&app=FREEDOM&action=FOLIOSEL&selid=1&selected=Y"  scrolling="no"  bordercolor="[CORE_FGCOLOR]" frameborder="no" marginheight="0">
-             <frame  name="folio1" src="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_LOGO"          
-                  scrolling="needed" bordercolor="[CORE_FGCOLOR]"frameborder="no" >
-          </frameset>
+		</frameset>
 
-       </frameset>
-    
-  </frameset>
+	</frameset>
+
+</frameset>
 
 </html>

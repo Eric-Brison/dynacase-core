@@ -127,7 +127,7 @@ Class WDoc extends Doc {
 
   private function getAllocatedUser($newstate) {
     $auserref=trim($this->getValue($this->_Aid("_AFFECTREF",$newstate)));
-    $type=trim($this->getValue($this->_Aid("_AFFECTYPE",$newstate)));
+    $type=trim($this->getValue($this->_Aid("_AFFECTTYPE",$newstate)));
     if (! $auserref) return false;
     $wuid=false;
     $aid=strtok($auserref," ");

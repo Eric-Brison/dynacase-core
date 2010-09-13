@@ -938,7 +938,7 @@ create unique index i_docir on doc(initid, revision);";
   /** 
    * return the family document where the document comes from
    * 
-   * @return Doc
+   * @return DocFam
    */
   final public function getFamDoc() {
     if (! isset($this->famdoc)||($this->famdoc->id != $this->fromid)) $this->famdoc= new_Doc($this->dbaccess, $this->fromid);
@@ -977,9 +977,9 @@ create unique index i_docir on doc(initid, revision);";
    */
   public function getParamValue($idp, $def="") {
     if ($this->doctype=='C') return $this->getParamValue($idp,$def);
-    if (! $this->initid) return false;
+    if (! $this->fromid) return false;
     $fdoc=$this->getFamDoc();
-
+    if (! $fdoc->isAlive()) return false;
     return $fdoc->getParamValue($idp,$def);
     
   }
@@ -1939,7 +1939,7 @@ create unique index i_docir on doc(initid, revision);";
    * return all the attributes which can be sorted
    * @return array DocAttribute
    */
-  final public function GetSortAttributes()  {      
+  public function GetSortAttributes()  {      
     $tsa = array();
     $nattr = $this->GetNormalAttributes();
     reset($nattr);
@@ -1947,7 +1947,8 @@ create unique index i_docir on doc(initid, revision);";
     foreach($nattr as $k=>$a) {
       if ($a->repeat || ($a->visibility == "H")||  ($a->visibility == "I") || ($a->visibility == "O") || ($a->type == "longtext") || ($a->type == "xml") || 
 	  ($a->type == "docid") ||  ($a->type == "htmltext") ||
-	  ($a->type == "image") || ($a->type == "file" ) || ($a->fieldSet->visibility == "H" )) continue;
+	  ($a->type == "image") || ($a->type == "file" ) || ($a->fieldSet->visibility == "H") ||
+	  ($a->getOption('sortable') == 'no' )) continue;
       $tsa[$a->id]=$a;
     }
     return $tsa;      
@@ -3252,10 +3253,10 @@ create unique index i_docir on doc(initid, revision);";
    * if it is already set no set twice
    * @param int $uid the system user identificator
    * @param string $tag the key tag 
-   * @param string $comment a comment or a value for the tag
+   * @param string $datas a comment or a value for the tag
    * @param bool $allrevision set to false if attach a tag to a specific version
    */
-  final public function addUTag($uid,$tag,$comment="",$allrevision=true) { 
+  final public function addUTag($uid,$tag,$datas="",$allrevision=true) {
     if (! $this->initid) return "";
     if ($tag == "") return _("no user tag specified");
     $this->delUTag($uid,$tag,$allrevision);
@@ -3275,7 +3276,7 @@ create unique index i_docir on doc(initid, revision);";
     $h->fromuid=$action->user->id;
       
     $h->tag=$tag;
-    $h->comment=$comment;
+    $h->comment=$datas;
 
     $err=$h->Add();
     return $err;

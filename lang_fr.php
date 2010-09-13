@@ -14,4 +14,12 @@ $lang["fr_FR"] = array(
 );
 
 
+/*
+ ** Include local/override config
+ ** -----------------------------
+ */
+$local_lang = dirname(__FILE__).DIRECTORY_SEPARATOR.'local-lang.php';
+if( file_exists($local_lang) ) {
+  include($local_lang);
+}
 ?>

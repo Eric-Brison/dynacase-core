@@ -9,43 +9,42 @@
   <!--
 
 var isSelected=false;
+
 function selectDoc(id) {
-  var w=windowExist('ffoliolist');
+	var w=windowExist('ffoliolist');
 
-  if (w)  w.docTarget='folio'+id;
+	if (w)  w.docTarget='folio'+id;
 
-  var otherid=(parseInt(id)+1)%2;
-  w=windowExist('fsel'+otherid);
-  isSelected=true;
- 
-   
-  document.body.style.backgroundColor='[CORE_BGCOLORHIGH]';
-  document.body.style.borderColor='[CORE_BGCOLORHIGH]';
-  document.body.style.borderStyle='outset';
+	var otherid=(parseInt(id)+1)%2;
+	w=windowExist('fsel'+otherid);
+	isSelected=true;
 
-  
-  if (w) {
-    if (w.document.body) {
-    w.document.body.style.backgroundColor='[CORE_BGCOLORALTERN]';
-    w.document.body.style.borderColor='[CORE_BGCOLORALTERN]';
-    w.document.body.style.borderStyle='inset';
-    w.isSelected=false;
-    }
-  }
+
+	document.body.style.backgroundColor='[CORE_BGCOLORHIGH]';
+	document.body.style.borderColor='[CORE_BGCOLORHIGH]';
+	document.body.style.borderStyle='outset';
+
+
+	if (w) {
+		if (w.document.body) {
+			w.document.body.style.backgroundColor='[CORE_BGCOLORALTERN]';
+			w.document.body.style.borderColor='[CORE_BGCOLORALTERN]';
+			w.document.body.style.borderStyle='inset';
+			w.isSelected=false;
+		}
+	}
 
 }
    
 
 function updateSelect(id) {
-
-   var w=wref=windowExist('ffoliolist');
-  if (isSelected) {
-    if (w)  w.docTarget='folio'+id;
-    
-  } else {
-    var otherid=(parseInt(id)+1)%2;
-    if (w)  w.docTarget='folio'+otherid;
-  }
+	var w=wref=windowExist('ffoliolist');
+	if (isSelected) {
+		if (w)  w.docTarget='folio'+id;
+	} else {
+		var otherid=(parseInt(id)+1)%2;
+		if (w)  w.docTarget='folio'+otherid;
+	}
 }
   -->
    </script>

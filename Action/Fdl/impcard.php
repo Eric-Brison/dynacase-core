@@ -29,11 +29,12 @@ function impcard(&$action) {
   $state = GetHttpVars("state"); // search doc in this state
   $inline=(strtolower(substr(getHttpVars("inline"),0,1))=="y"); // view file inline
   $latest = GetHttpVars("latest");
+  $view = GetHttpVars("view"); // if print view css print
 
   $szone=false;
 
   $dbaccess = $action->GetParam("FREEDOM_DB");
-
+  $action->lay->set("viewprint",($view=="print"));
   if ($valopt != "") {
     include_once("FDL/editoption.php");
     $doc=getdocoption($action);
