@@ -200,7 +200,9 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 							$wdoc = new_Doc($dbaccess,$doc->wid);
 
 							$wdoc->Set($doc);
+							$wdoc->disableEditControl(); // only to pass ask parameters
 							setPostVars($wdoc,$info); // set for ask values
+							$wdoc->enableEditControl();
 							$err=$wdoc->ChangeState($newstate,$comment,$force);
 						}
 					}
