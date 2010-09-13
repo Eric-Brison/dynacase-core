@@ -98,7 +98,9 @@ Class BasicAttribute {
    function isReal() {
     
    }
-
+   static function encodeXml($s) {
+      return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$s);
+  }
   /**
    * to see if an attribute is n item of an array
    * @return boolean
@@ -135,7 +137,7 @@ Class BasicAttribute {
    
       $lay=new Layout(getLayoutFile("FDL","infoattribute_schema.xml"));
       $lay->set("aname",$this->id);
-      $lay->set("label",$this->labelText);
+      $lay->set("label",$this->encodeXml($this->labelText));
       $lay->set("type",$this->type);
       $lay->set("visibility",$this->visibility);
       $lay->set("isTitle",$this->isInTitle);
@@ -147,14 +149,14 @@ Class BasicAttribute {
           $lay->set("phpfunc",false);
       }
       $lay->set("computed",((! $this->phpfile) && (substr($this->phpfunc,0,2)=="::")));
-      $lay->set("link",str_replace('&','&amp;',$this->link));
-      $lay->set("elink",str_replace('&','&amp;',$this->elink));
+      $lay->set("link",$this->encodeXml($this->link));
+      $lay->set("elink",$this->encodeXml($this->elink));
       $lay->set("default",false); // TODO : need detect default value
       $lay->set("constraint",$this->phpconstraint);
       $tops=$this->getOptions();
       $t=array();
       foreach ($tops as $k=>$v) {
-          if ($k) $t[]=array("key"=>$k,"val"=>$v);
+          if ($k) $t[]=array("key"=>$k,"val"=>$this->encodeXml($v));
       }
       $lay->setBlockData("options",$t);
       
@@ -349,9 +351,7 @@ Class NormalAttribute extends BasicAttribute {
   }
   
   
-  static function encodeXml($s) {
-      return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$s);
-  }
+  
  function text_getXmlSchema(&$la) {
       $lay=new Layout(getLayoutFile("FDL","textattribute_schema.xml"));
       $this->common_getXmlSchema($lay);
@@ -367,7 +367,7 @@ function enum_getXmlSchema(&$la) {
      $la=$this->getEnum();
      $te=array();
       foreach ($la as $k=>$v) {        
-            $te[]=array("key"=>$k,"val"=>$v);        
+            $te[]=array("key"=>$k,"val"=>$this->encodeXml($v));        
       }
       $lay->setBlockData("enums",$te);
       return $lay->gen();
