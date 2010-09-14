@@ -235,7 +235,7 @@ function getAuthType($freedomctx="") {
 		$freedom_authtype = "apache";
 	}
 
-	return $freedom_authtype;
+	return trim($freedom_authtype);
 }
 
 function getAuthProvider($freedomctx="") {
@@ -255,7 +255,13 @@ function getAuthProvider($freedomctx="") {
 		$freedom_authprovider = "apache";
 	}
 
-	return $freedom_authprovider;
+	return trim($freedom_authprovider);
+}
+
+function getAuthProviderList($freedomctx="") {
+  global $pubdir;
+
+  return preg_split("/\s*,\s*/", getAuthProvider($freedomctx));
 }
 
 function getAuthTypeParams($freedomctx="") {

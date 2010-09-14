@@ -17,7 +17,11 @@ include_once('Class.Session.php');
 include_once('Class.Log.php');
 include_once('Lib.System.php');
 
-
+function print_usage() {
+    print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n".
+    "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n".
+    "\twsh.php --listapi                     : view api list\n";
+}
 wbar(1,-1,"initialisation");
 $log=new Log("","index.php");
 
@@ -34,13 +38,12 @@ if (isset($_SERVER['HTTP_HOST']))     {
   exit(1);
 }
 if (count($argv) == 1) {
-  print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n".
-    "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n".
-    "\twsh.php --listapi                     : view api list\n";
+    print_usage();
+                   
   exit(1);
 }
 
-while (list($k, $v) = each($argv)) {
+foreach($argv as $k=>$v) {
   
   if (preg_match("/--([^=]+)=(.+)/", $v , $reg)) {
     $_GET[$reg[1]]=$reg[2];
@@ -56,7 +59,10 @@ while (list($k, $v) = each($argv)) {
   }
 }
 
-
+if (($_GET["api"]=="") && ($_GET["app"]=="" || $_GET["action"]=="")) {
+    print_usage();
+    exit(1);
+}
 
 $core = new Application();
 if ($core->dbid < 0){

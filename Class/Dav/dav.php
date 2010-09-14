@@ -99,9 +99,8 @@ function webdav_auth() {
   global $_SERVER;
 
   $authtype = 'basic';
-  $authproviderlist = getAuthProvider();
 
-  $authProviderList = explode(",", $authproviderlist);
+  $authProviderList = getAuthProviderList();
   foreach ($authProviderList as $ka=>$authprovider) {
     $authClass = strtolower($authtype)."Authenticator";
     if( ! @include_once('WHAT/Class.'.$authClass.'.php') ) {
