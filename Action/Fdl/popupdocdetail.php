@@ -641,7 +641,12 @@ function changeMenuVisibility(&$action,&$tlink,&$doc) {
   }
 
   if ($doc->locked == -1) { // fixed document
-    if ($doc->doctype != 'Z') $tlink["latest"]["visibility"]=POPUP_ACTIVE; 
+    if ($doc->doctype != 'Z'){
+		$tmpdoc = new_Doc($doc->dbaccess, $doc->initid, true);
+		if($tmpdoc->Control("view") == "") {
+			$tlink["latest"]["visibility"]=POPUP_ACTIVE;
+		}
+	}
     else $tlink["restore"]["visibility"]=POPUP_ACTIVE; 
     $tlink["editdoc"]["visibility"]=POPUP_INVISIBLE;
     $tlink["delete"]["visibility"]=POPUP_INVISIBLE;
