@@ -24,7 +24,6 @@
   <!--
     [JS:CODE]
 addEvent(window,"load",editOnLoad);
-setTimeout("autoVresize()",500);
 addEvent(window,"load",focusFirst);
 addEvent(window,"load",resetbodyopacity);
 var documentMenu=[documentMenu];
