@@ -56,12 +56,17 @@ function scrutemdocs() {
   
 }
 
+var addmdocsSemaphore = false; // avoid several launchs of addmdocs
 function addmdocs(n) {    
   var n,iid,tiid;
   var inpid,inptext,inpsel,inptitle;
   var itext,isel,ititle;
   var ti;
   var nid,ntitle,nval;
+  if(addmdocsSemaphore) {
+	  return;
+  }
+  addmdocsSemaphore = true;
       
   tiid=[];
   if (n.substr(n.length-1,1) == ']') {
@@ -103,6 +108,7 @@ function addmdocs(n) {
       }
     }
   }
+  addmdocsSemaphore = false;
     
 }
 function addmdocsattrid(attrid,nid,ntitle) { 
