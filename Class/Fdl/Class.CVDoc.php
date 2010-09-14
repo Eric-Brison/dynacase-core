@@ -30,7 +30,7 @@ Class CVDoc extends Doc {
    */
   var $acls = array("view","edit","delete");
 
-	
+  var $nbId = 0;
 
   var $usefor='W';
   var $defDoctype='P';
@@ -70,6 +70,38 @@ Class CVDoc extends Doc {
       $this->acls[]=$cvk;
       $ka++;
     }
+  }
+
+  function isIdValid($value) {
+	  $err = "";
+	  $sug = array();
+	  $this->nbId++;
+
+	  $dc = new DocCtrl($this->dbaccess);
+	  $originals = $dc->dacls;
+
+	  if($this->nbId > 20) {
+		   $err=_("Maximum 20 views by control");
+	  }
+	  elseif(!preg_match('!^[0-9a-z_-]+$!i', $value)) {
+		   $err=_("You must use only a-z, 0-9, _, - caracters");
+	  }
+	  elseif(array_key_exists($value, $originals)) {
+		   $err=_("Impossible to name a view like a control acl");
+	  }
+	  else {
+		  $id_list = $this->getTValue('CV_IDVIEW');
+		  $id_count = 0;
+		  foreach($id_list as $id) {
+			  if($id == $value) {
+				  $id_count++;
+			  }
+		  }
+		  if($id_count>1) {
+			  $err=_("Impossible to have several identical names");
+		  }
+	  }
+	  return array("err"=>$err, "sug"=>$sug);
   }
 
 
