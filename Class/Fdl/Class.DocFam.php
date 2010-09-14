@@ -90,7 +90,19 @@ function preDocDelete() {
      if (! $this->schar) $this->schar=$cdoc->schar;
     }
   }
-
+        /**
+         * update attributes of workflow if needed
+         */
+  function postImport() {
+      if ($this->usefor=='W') {
+          $w=createDoc($this->dbaccess,$this->id);
+          if ($w) {
+              if (method_exists($w,"createProfileAttribute")) {
+                  $w->createProfileAttribute();
+              }
+          }
+      }
+  }
   // -----------------------------------
   function viewfamcard($target="_self",$ulink=true,$abstract=false) {
     // -----------------------------------
