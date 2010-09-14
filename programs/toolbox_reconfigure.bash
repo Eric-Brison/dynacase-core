@@ -5,7 +5,8 @@ core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
 freedom_db=`"$WIFF_ROOT"/wiff --getValue=freedom_db`
 vault_root=`"$WIFF_ROOT"/wiff --getValue=vault_root`
 client_name=`"$WIFF_ROOT"/wiff --getValue=client_name`
-
+vault_save=`"$WIFF_ROOT"/wiff --getValue=vault_save`
+ 
 remove_profiles=`"$WIFF_ROOT"/wiff --getValue=remove_profiles`
 user_login=`"$WIFF_ROOT"/wiff --getValue=user_login`
 user_password=`"$WIFF_ROOT"/wiff --getValue=user_password`
@@ -65,12 +66,24 @@ if [ $RET -ne 0 ]; then
 fi
 
 log "Updating vault r_path..."
-PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskfsstorage SET r_path = '$vault_root' || '/' || id_fs; "
-RET=$?
-if [ $RET -ne 0 ]; then
+if [ "$vault_save" == "no" ]; then
+    PGSERVICE="$freedom_db" psql -c "DELETE FROM vaultdiskfsstorage;DELETE FROM vaultdiskdirstorage;DELETE FROM vaultdiskstorage; "
+    RET=$?
+    if [ $RET -ne 0 ]; then
 	echo "Error updating vault r_path"
 	exit $RET
+    fi
+else
+    logger "update vault data"
+    PGSERVICE="$freedom_db" psql -c "UPDATE vaultdiskfsstorage SET r_path = '$vault_root' || '/' || id_fs; "
+
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "Error updating vault r_path"
+        exit $RET
+    fi
 fi
+
 
 if [ "$user_login" != "" ]; then
   "$WIFF_CONTEXT_ROOT"/wsh.php --api=fdl_resetprofiling --login="$user_login" --password="$user_password"
