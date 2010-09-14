@@ -58,11 +58,6 @@ $action_desc = array (
    "acl"		=>"USERCARD_READ"
   ) ,
   array( 
-   "name"		=>"USERCARD_INIT",
-   "short_name"		=>N_("initialisation"),
-   "acl"		=>"USERCARD_READ"
-  )  ,
-  array( 
    "name"		=>"USERCARD_EDITIMPORTVCARD",
    "short_name"		=>N_("edit import vcard"),
    "acl"		=>"USERCARD_READ"
