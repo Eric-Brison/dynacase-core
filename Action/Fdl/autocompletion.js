@@ -45,6 +45,8 @@ function sendAutoChoice(event,docid,  choiceButton,attrid, iopt,expnameid,idx ) 
 		callSuggestions(inp.value);
 	}
 }
+
+var onKeyDownHandlerDefined = false;
 function activeAutoInit(event,docid,  inp,iopt,expnameid,idx ) {
 	var CORE_STANDURL='?sole=Y'; 
 	var index='';
@@ -52,14 +54,20 @@ function activeAutoInit(event,docid,  inp,iopt,expnameid,idx ) {
 	var iskey=inp.id;
 	var attrid;
 
-	addEvent(document,"keydown",onKeyDownHandler);
+	if(!onKeyDownHandlerDefined) {
+		addEvent(document,"keydown",onKeyDownHandler);
+		onKeyDownHandlerDefined = true;
+	}
 	_inputField=inp;
 	_buttonField=document.getElementById('ic_'+inp.id);
 	_documentForm=inp.form;
 	_inputField.autocomplete="off";
-	_inputField.onkeyup=onKeyUpHandler;
-	//  _inputField.onblur=onBlurHandler;
-	addEvent(_inputField,"blur",onBlurHandler);
+	if(!_inputField.blurHandlerDefined) {
+		_inputField.onkeyup=onKeyUpHandler;
+		//  _inputField.onblur=onBlurHandler;
+		addEvent(_inputField,"blur",onBlurHandler);
+		_inputField.blurHandlerDefined = true;
+	}
 	_currentInputFieldValue=_inputField.value;
 	_oldInputFieldValue=_currentInputFieldValue;
 	_resultCache=new Object(); // reinit cache
