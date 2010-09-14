@@ -25,7 +25,6 @@ function logout(&$action) {
   include_once('WHAT/Lib.Common.php');
 
   $authtype = getAuthType();
-  $authprovider = getAuthProvider();
   
   if( $authtype == 'apache' ) {
 
