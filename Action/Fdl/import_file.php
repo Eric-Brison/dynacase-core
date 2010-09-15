@@ -163,7 +163,7 @@ function add_import_file(&$action, $fimport) {
 					}
 				}
 				if ((! $analyze) && ($famicon!="")) $doc->changeIcon($famicon);
-
+				$tcr[$nline]["msg"].=$doc->postImport();
 				$doc->AddComment(_("Update by importation"));
 
 				$nbdoc++;
