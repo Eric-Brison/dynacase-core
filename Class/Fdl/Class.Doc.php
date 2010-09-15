@@ -3725,7 +3725,7 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     $err = $copy->PreCopy($this);
-    if ($err != "") return false;
+    if ($err != "") return $err;
 
     $err = $copy->Add();
     if ($err != "") return $err;
