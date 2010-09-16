@@ -137,9 +137,13 @@ function help_load(seclang) {
 	CURLANG = seclang;
 }
 
-function help_edit_load() {
+function help_edit_init() {
 	DATAS = Ih.callOpener('help_get_section',SECKEY);
 	SECORDER = Ih.callOpener('help_get_section_order',SECKEY);
+}
+
+function help_edit_load() {
+	help_edit_init();
 	help_load(Ih.callOpener('help_get_section_current_lang',SECKEY));
 }
 
@@ -159,10 +163,13 @@ function help_edit_set_datas(lang) {
 
 function trackFCKLoaded_helppage() {
 
-	if (typeof( window['FCKeditorAPI']) == "undefined" ) {
-		self.setTimeout( trackFCKLoaded_helppage, 500 );
-		return;
+	try {
+		if (typeof( window['FCKeditorAPI']) == "undefined" ) {
+			self.setTimeout( trackFCKLoaded_helppage, 500 );
+			return;
+		}
 	}
+	catch(e) {}
 
 	help_edit_load();
 	autoVresize();
@@ -170,6 +177,7 @@ function trackFCKLoaded_helppage() {
 }
 
 function loadFCKeditor_helppage() {
+	help_edit_init();
 	try {
 		var oFCKeditor = new FCKeditor( 'sec-text' ) ;
 		oFCKeditor.BasePath = 'fckeditor/';
@@ -192,7 +200,7 @@ function loadFCKeditor_helppage() {
 
 		self.setTimeout( trackFCKLoaded_helppage, 500 );
 	}
-	catch(Exception e) {
+	catch(e) {
 		help_edit_load();
 		autoVresize();
 	}

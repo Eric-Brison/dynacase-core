@@ -389,6 +389,9 @@ function help_check_first_last() {
 	var first,last;
 	var last_order = -1;
 
+	if(!sec_keys) { sec_keys = []; }
+	if(!sec_orders) { sec_orders = []; }
+
 	// load sections
 	for(var i=0; i< sec_keys.length; i++) {
 		document.getElementById('sec-'+sec_keys[i]).className = 'help-section';
