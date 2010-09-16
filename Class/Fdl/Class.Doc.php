@@ -468,7 +468,7 @@ create unique index i_docir on doc(initid, revision);";
       if ($this->wdoc) {
 	$this->wdoc->workflowSendMailTemplate($this->state,_("creation"));
 	$this->wdoc->workflowAttachTimer($this->state);
-	$this->wdoc->changeAllocateUser($doc->state);
+	$this->wdoc->changeAllocateUser($this->state);
       }
       $this->addLog("create",array("id"=>$this->id,"title"=>$this->title,"fromid"=>$this->fromid,
 				   "fromname"=>$this->fromname));
@@ -1153,7 +1153,7 @@ create unique index i_docir on doc(initid, revision);";
 	$err=simpleQuery($this->dbaccess,
 			 sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1",$this->fromid,$this->initid),$latestId,true, true);
 	if ($err=="") {
-	  if (! $latestId) $err=sprintf(_("document %s [%d] is strange"),$doc->title,$doc->id);
+	  if (! $latestId) $err=sprintf(_("document %s [%d] is strange"),$this->title,$this->id);
 	  else {
 	    $this->doctype=$this->defDoctype;
 	    $this->locked=0;
@@ -1178,7 +1178,7 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	  }
 	}
-      } else return sprintf(_("document %s [%d] is not in the trash"),$doc->title,$doc->id);
+      } else return sprintf(_("document %s [%d] is not in the trash"),$this->title,$this->id);
     } else return _("Only owner of document can restore it");
     return $err;
   }
@@ -6125,7 +6125,7 @@ create unique index i_docir on doc(initid, revision);";
 	return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"),$name));
       } else {
 	if ($this->isAffected() && ($this->name != "") && ($this->doctype!='Z')) {
-	  return (sprintf(_("Logical name %s already set for %s"),$name,$doc->title));
+	  return (sprintf(_("Logical name %s already set for %s"),$name,$this->title));
 	} else {
 	  // verify not use yet
 	  $d=getTDoc($this->dbaccess,$name);
