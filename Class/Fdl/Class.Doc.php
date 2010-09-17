@@ -3326,9 +3326,9 @@ create unique index i_docir on doc(initid, revision);";
     
     $docid= ($allrevision)?$this->initid:$this->id;
     if ($allrevision) {
-      $err=$this->exec_query(sprintf("delete from docutag where initid=%d and tag='%s'",$this->initid,pg_escape_string($tag)));
+      $err=$this->exec_query(sprintf("delete from docutag where initid=%d and tag='%s' and uid=%d",$this->initid,pg_escape_string($tag),$uid));
     } else {
-      $err=$this->exec_query(sprintf("delete from docutag where id=%d and tag='%s'",$this->id,pg_escape_string($tag)));
+      $err=$this->exec_query(sprintf("delete from docutag where id=%d and tag='%s' and uid=%d",$this->id,pg_escape_string($tag),$uid));
     }
     return $err;
   }
@@ -3344,7 +3344,7 @@ create unique index i_docir on doc(initid, revision);";
     include_once("FDL/Class.DocUTag.php");
     $q=new QueryDb($this->dbaccess,"docUTag");
     $q->Query(0,0,"TABLE",
-	      "delete from docutag where initid=".$this->initid);
+	      sprintf("delete from docutag where initid=%d and uid=%d",$this->initid,$this->userid));
     
 
     return $err;
