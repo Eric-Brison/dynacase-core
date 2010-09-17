@@ -43,8 +43,6 @@ function user(&$action) {
       $u=new User();
       if ($u->setLoginname($login)) {
 	include_once('WHAT/Class.htmlAuthenticator.php');
-	$authproviderlist = getAuthProvider();
-	$freedomprovider=$authproviderlist["freedom"];
 	// hard code freedom for the moment
 	$auth = new htmlAuthenticator(getAuthType(),'freedom') ;
 	$_POST[$auth->parms{'username'}]=$login;

@@ -415,7 +415,7 @@ function lenumvalues($enum, $val="" ) {
   foreach($tenum as $k=>$v) {    
     list($key,$label)=explode("|",$v);
     $slabel=str_replace(array('&comma;','&point;'),array(',','.'),$label);
-    if (($val == "") || (preg_match("/$val/i", $slabel , $reg)))   $tr[]=array("$slabel",$slabel,$key);
+    if (($val == "") || (preg_match("!".preg_quote($val)."!i", $slabel , $reg)))   $tr[]=array("$slabel",$slabel,$key);
   }
   
   return $tr;

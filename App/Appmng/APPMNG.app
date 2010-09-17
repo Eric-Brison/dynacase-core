@@ -67,12 +67,6 @@ $action_desc = array (
    "acl"                =>"USER"
   ) ,
   array(
-   "name"               =>"PARAM_CUMAIL",
-   "short_name"         =>N_("current user mail configuration"),
-   "toc"                =>"Y",
-   "acl"                =>"USER"
-  ) ,
-  array(
    "name"               =>"PARAM_CUACCOUNT",
    "short_name"         =>N_("current user account"),
    "toc"                =>"Y",

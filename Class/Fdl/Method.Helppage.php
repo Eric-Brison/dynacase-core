@@ -56,27 +56,28 @@ Class _HELPPAGE extends Doc {
 	public function preEdition() {
 		$oa = $this->getAttribute('help_sec_text');
 		$oa->type = 'longtext';
-		$err='';
+		$err = '';
 		if (!$this->id) {
 
 			$oa = $this->getAttribute('help_family');
 			$oa->setVisibility('S');
 		}
-		if ($this->id==0) {
-		    $doc=createDoc($this->dbaccess, $this->fromid);
-		    if ($doc) {
-		        $err=$doc->add();
-		        if ($err=="") {
-		            $this->Affect(getTdoc($this->dbaccess,$doc->id));
-		       
-		            $this->setValue("help_family",getHttpVars("help_family"));
-		            if ($this->getValue("help_family")) $this->title=sprintf(_("help for %s"),$this->getTitle($this->getValue("help_family")));
-		             
-		            $this->modify();
-		            global $action;
-		            redirect($action,getHttpVars("app"),getHttpVars("action").'&id='.$this->id);
-		        }
-		    }
+		if ($this->id == 0) {
+			$doc = createDoc($this->dbaccess, $this->fromid);
+			if ($doc) {
+				$err = $doc->add();
+				if ($err == "") {
+					$this->Affect(getTdoc($this->dbaccess, $doc->id));
+
+					$this->setValue("help_family", getHttpVars("help_family"));
+					if ($this->getValue("help_family"))
+						$this->title = sprintf(_("help for %s"), $this->getTitle($this->getValue("help_family")));
+
+					$this->modify();
+					global $action;
+					redirect($action, getHttpVars("app"), getHttpVars("action").'&id='.$this->id);
+				}
+			}
 		}
 		return $err;
 	}
@@ -142,7 +143,7 @@ Class _HELPPAGE extends Doc {
 	 * 
 	 */
 	public function edithelppage() {
-	    $this->editattr();
+		$this->editattr();
 		$langs = $this->getFamilyLangs();
 		$user_lang = $this->getUserLang();
 		$sections = $this->getSectionsByLang();
@@ -150,7 +151,7 @@ Class _HELPPAGE extends Doc {
 		$this->editattr();
 
 		$help_values = $this->getHelpByLang();
-		
+
 		// set help values
 		$helpname = '';
 		$helplangiso = '';
@@ -176,6 +177,24 @@ Class _HELPPAGE extends Doc {
 		$this->lay->set('HELPNAME', $helpname);
 		$this->lay->set('HELPDESCRIPTION', $helpdescription);
 
+		// help add section
+		$famid = $this->getValue('help_family');
+		if(empty($famid)) {
+			$this->lay->set('HELPATTRIBUTESLIST', false);
+		}
+		else {
+			$this->lay->set('HELPATTRIBUTESLIST', true);
+			$docfam = createDoc($this->dbaccess, $famid, false);
+			$docattributes = $docfam->GetSortAttributes();
+			$attributes = array();
+			foreach($docattributes as $attribute) {
+				$attributes[] = array(
+					'HELPATTRVALUE' => $attribute->id,
+					'HELPATTRNAME' => $attribute->getLabel(),
+				);
+			}
+			$this->lay->SetBlockData('HELPATTRIBUTES', $attributes);
+		}
 
 
 		$this->lay->SetBlockData('HELPLANGS', $this->getLangsFromItem($langs, $lang_key, $help_values));
@@ -219,10 +238,10 @@ Class _HELPPAGE extends Doc {
 		}
 		$this->lay->setBlockData('CONTENTSECTIONS', $contentsection);
 
-		
+
 		$langitems = array();
 		$first = true;
-		foreach($langs as $lang_key => $lang_name) {
+		foreach ($langs as $lang_key => $lang_name) {
 			$langitems[] = array(
 				'LANGKEY' => $lang_key,
 				'LANGISO' => strtolower(substr($lang_key, -2)),
@@ -234,7 +253,17 @@ Class _HELPPAGE extends Doc {
 		}
 		$this->lay->setBlockData('TEMPLATELANGS1', $langitems);
 		$this->lay->setBlockData('TEMPLATELANGS2', $langitems);
+	}
 
+	/**
+	 *
+	 * @global <type> $action
+	 * @param <type> $target
+	 * @param <type> $ulink
+	 * @param <type> $abstract
+	 */
+	public function printhelppage($target="_self", $ulink=true, $abstract=false) {
+		$this->viewhelppage($target, $ulink, $abstract);
 	}
 
 	/**
@@ -250,6 +279,7 @@ Class _HELPPAGE extends Doc {
 		include_once("FDL/Class.SearchDoc.php");
 
 		$this->lay->set('HELPTITLE', $this->getTitle());
+		$this->lay->set('DOCID', $this->id);
 
 		if ($this->CanEdit() == '') {
 			$this->lay->set('HELPEDITABLE', '1');
@@ -327,7 +357,7 @@ Class _HELPPAGE extends Doc {
 			);
 		}
 		$this->lay->setBlockData('ALLLANGS', $all_langs);
-		
+
 		$descriptions = $this->getAvalues("help_t_help");
 		$first = true;
 		foreach ($descriptions as &$v) {
@@ -337,7 +367,7 @@ Class _HELPPAGE extends Doc {
 			}
 		}
 		$this->lay->setBlockData('DESCR', $descriptions);
-		
+
 		$first = true;
 		foreach ($descriptions as &$v) {
 			$v["firsttitle"] = $first;
@@ -346,7 +376,7 @@ Class _HELPPAGE extends Doc {
 			}
 		}
 		$this->lay->setBlockData('TITLES', $descriptions);
-		
+
 		// construct aides
 		$aides = array();
 		$s = new SearchDoc($this->dbaccess, 'HELPPAGE');

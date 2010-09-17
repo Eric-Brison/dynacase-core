@@ -468,7 +468,7 @@ create unique index i_docir on doc(initid, revision);";
       if ($this->wdoc) {
 	$this->wdoc->workflowSendMailTemplate($this->state,_("creation"));
 	$this->wdoc->workflowAttachTimer($this->state);
-	$this->wdoc->changeAllocateUser($doc->state);
+	$this->wdoc->changeAllocateUser($this->state);
       }
       $this->addLog("create",array("id"=>$this->id,"title"=>$this->title,"fromid"=>$this->fromid,
 				   "fromname"=>$this->fromname));
@@ -938,7 +938,7 @@ create unique index i_docir on doc(initid, revision);";
   /** 
    * return the family document where the document comes from
    * 
-   * @return Doc
+   * @return DocFam
    */
   final public function getFamDoc() {
     if (! isset($this->famdoc)||($this->famdoc->id != $this->fromid)) $this->famdoc= new_Doc($this->dbaccess, $this->fromid);
@@ -977,9 +977,9 @@ create unique index i_docir on doc(initid, revision);";
    */
   public function getParamValue($idp, $def="") {
     if ($this->doctype=='C') return $this->getParamValue($idp,$def);
-    if (! $this->initid) return false;
+    if (! $this->fromid) return false;
     $fdoc=$this->getFamDoc();
-
+    if (! $fdoc->isAlive()) return false;
     return $fdoc->getParamValue($idp,$def);
     
   }
@@ -1153,7 +1153,7 @@ create unique index i_docir on doc(initid, revision);";
 	$err=simpleQuery($this->dbaccess,
 			 sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1",$this->fromid,$this->initid),$latestId,true, true);
 	if ($err=="") {
-	  if (! $latestId) $err=sprintf(_("document %s [%d] is strange"),$doc->title,$doc->id);
+	  if (! $latestId) $err=sprintf(_("document %s [%d] is strange"),$this->title,$this->id);
 	  else {
 	    $this->doctype=$this->defDoctype;
 	    $this->locked=0;
@@ -1178,7 +1178,7 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	  }
 	}
-      } else return sprintf(_("document %s [%d] is not in the trash"),$doc->title,$doc->id);
+      } else return sprintf(_("document %s [%d] is not in the trash"),$this->title,$this->id);
     } else return _("Only owner of document can restore it");
     return $err;
   }
@@ -1939,7 +1939,7 @@ create unique index i_docir on doc(initid, revision);";
    * return all the attributes which can be sorted
    * @return array DocAttribute
    */
-  final public function GetSortAttributes()  {      
+  public function GetSortAttributes()  {      
     $tsa = array();
     $nattr = $this->GetNormalAttributes();
     reset($nattr);
@@ -1947,7 +1947,8 @@ create unique index i_docir on doc(initid, revision);";
     foreach($nattr as $k=>$a) {
       if ($a->repeat || ($a->visibility == "H")||  ($a->visibility == "I") || ($a->visibility == "O") || ($a->type == "longtext") || ($a->type == "xml") || 
 	  ($a->type == "docid") ||  ($a->type == "htmltext") ||
-	  ($a->type == "image") || ($a->type == "file" ) || ($a->fieldSet->visibility == "H" )) continue;
+	  ($a->type == "image") || ($a->type == "file" ) || ($a->fieldSet->visibility == "H") ||
+	  ($a->getOption('sortable') == 'no' )) continue;
       $tsa[$a->id]=$a;
     }
     return $tsa;      
@@ -2293,7 +2294,12 @@ create unique index i_docir on doc(initid, revision);";
       $value=$tval;
     }
     if (is_array($value)) {
-      if ($oattr->type=='htmltext') $value= $this->_array2val($value,' ');
+      if ($oattr->type=='htmltext') {
+		  $value= $this->_array2val($value,' ');
+		  if($value === '') {
+			  $value = DELVALUE;
+		  }
+	  }
       else {
 	if (count($value)==0) $value = DELVALUE;
 	elseif ((count($value) == 1) && (first($value)==="" || first($value)===null) && (substr(key($value),0,1)!="s")) $value= "\t"; // special tab for array of one empty cell 			  
@@ -2922,6 +2928,16 @@ create unique index i_docir on doc(initid, revision);";
 
 
   final public function DeleteValue($attrid) {
+	$oattr=$this->GetAttribute($attrid);
+	if($oattr->type == 'docid') {
+		$doctitle = $oattr->getOption('doctitle');
+		if($doctitle == 'auto') {
+			$doctitle = $attrid.'_title';
+		}
+		if(!empty($doctitle)) {
+			$this->SetValue($doctitle, " ");
+		}
+	}
     return $this->SetValue($attrid," ");
   }
 
@@ -3237,10 +3253,10 @@ create unique index i_docir on doc(initid, revision);";
    * if it is already set no set twice
    * @param int $uid the system user identificator
    * @param string $tag the key tag 
-   * @param string $comment a comment or a value for the tag
+   * @param string $datas a comment or a value for the tag
    * @param bool $allrevision set to false if attach a tag to a specific version
    */
-  final public function addUTag($uid,$tag,$comment="",$allrevision=true) { 
+  final public function addUTag($uid,$tag,$datas="",$allrevision=true) {
     if (! $this->initid) return "";
     if ($tag == "") return _("no user tag specified");
     $this->delUTag($uid,$tag,$allrevision);
@@ -3260,7 +3276,7 @@ create unique index i_docir on doc(initid, revision);";
     $h->fromuid=$action->user->id;
       
     $h->tag=$tag;
-    $h->comment=$comment;
+    $h->comment=$datas;
 
     $err=$h->Add();
     return $err;
@@ -3310,9 +3326,9 @@ create unique index i_docir on doc(initid, revision);";
     
     $docid= ($allrevision)?$this->initid:$this->id;
     if ($allrevision) {
-      $err=$this->exec_query(sprintf("delete from docutag where initid=%d and tag='%s'",$this->initid,pg_escape_string($tag)));
+      $err=$this->exec_query(sprintf("delete from docutag where initid=%d and tag='%s' and uid=%d",$this->initid,pg_escape_string($tag),$uid));
     } else {
-      $err=$this->exec_query(sprintf("delete from docutag where id=%d and tag='%s'",$this->id,pg_escape_string($tag)));
+      $err=$this->exec_query(sprintf("delete from docutag where id=%d and tag='%s' and uid=%d",$this->id,pg_escape_string($tag),$uid));
     }
     return $err;
   }
@@ -3328,7 +3344,7 @@ create unique index i_docir on doc(initid, revision);";
     include_once("FDL/Class.DocUTag.php");
     $q=new QueryDb($this->dbaccess,"docUTag");
     $q->Query(0,0,"TABLE",
-	      "delete from docutag where initid=".$this->initid);
+	      sprintf("delete from docutag where initid=%d and uid=%d",$this->initid,$this->userid));
     
 
     return $err;
@@ -3709,7 +3725,7 @@ create unique index i_docir on doc(initid, revision);";
     }
 
     $err = $copy->PreCopy($this);
-    if ($err != "") return false;
+    if ($err != "") return $err;
 
     $err = $copy->Add();
     if ($err != "") return $err;
@@ -4227,7 +4243,7 @@ create unique index i_docir on doc(initid, revision);";
   }
   
   public static function _array2val($v,$br='<BR>') {    
-    $v=str_replace("\n",$br,$v);	  
+    $v=str_replace("\n",$br,$v);
     if (count($v) == 0) return "";
     return implode("\n", $v);
   }
@@ -6109,7 +6125,7 @@ create unique index i_docir on doc(initid, revision);";
 	return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"),$name));
       } else {
 	if ($this->isAffected() && ($this->name != "") && ($this->doctype!='Z')) {
-	  return (sprintf(_("Logical name %s already set for %s"),$name,$doc->title));
+	  return (sprintf(_("Logical name %s already set for %s"),$name,$this->title));
 	} else {
 	  // verify not use yet
 	  $d=getTDoc($this->dbaccess,$name);

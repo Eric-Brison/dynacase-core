@@ -56,12 +56,17 @@ function scrutemdocs() {
   
 }
 
+var addmdocsSemaphore = false; // avoid several launchs of addmdocs
 function addmdocs(n) {    
   var n,iid,tiid;
   var inpid,inptext,inpsel,inptitle;
   var itext,isel,ititle;
   var ti;
   var nid,ntitle,nval;
+  if(addmdocsSemaphore) {
+	  return;
+  }
+  addmdocsSemaphore = true;
       
   tiid=[];
   if (n.substr(n.length-1,1) == ']') {
@@ -103,6 +108,7 @@ function addmdocs(n) {
       }
     }
   }
+  addmdocsSemaphore = false;
     
 }
 function addmdocsattrid(attrid,nid,ntitle) { 
@@ -369,10 +375,34 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     //search the input button in previous element
  
     var inid;
+<<<<<<< HEAD:Zone/Fdl/editcommon.js
+
+    if (enuminprogress) return;
+    enuminprogress=true;  
+=======
+>>>>>>> issue/dev_3.0:Zone/Fdl/editcommon.js
 
     if (enuminprogress) return;
     enuminprogress=true;  
 
+<<<<<<< HEAD:Zone/Fdl/editcommon.js
+    if ((! inp)||(inp==null)) {
+        inp=document.getElementById('T'+attrid);
+        if (!inp) {
+            alert('[TEXT:enumerate input not found]'+':'+attrid);
+            return;
+        } else {
+            var inps=inp.getElementsByTagName('input');
+            if (inps.length >0) f=inps[0].form;
+            domindex=0;
+        }
+    } else {
+        if (inp.name.substr(inp.name.length-1,1) == ']') {
+            // it is an attribute in array
+            domindex = inp.id.substring(attrid.length);    
+        }
+
+=======
 
     if ((! inp)||(inp==null)) {
         inp=document.getElementById('T'+attrid);
@@ -390,12 +420,19 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
             domindex = inp.id.substring(attrid.length);    
         }
 
+>>>>>>> issue/dev_3.0:Zone/Fdl/editcommon.js
         f =inp.form;
     }
     // modify to initial action
     oldact = f.action;
     oldtar = f.target;
     f.action = '[CORE_STANDURL]&app=FDL&action=SPECIALHELP&docid='+docid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex;
+<<<<<<< HEAD:Zone/Fdl/editcommon.js
+=======
+	if(window.parent.Ext) {
+		f.action += '&extjs=yes';
+	}
+>>>>>>> issue/dev_3.0:Zone/Fdl/editcommon.js
 
     var xy= getAnchorWindowPosition(inp.id);
 
@@ -698,6 +735,19 @@ taout[[jska]]=[jstaout];
 function getInputValue(id,index) {
   if (!index) index=0;
   var o=document.getElementById(id);
+
+  if(o && o.type == 'checkbox' && !o.name ) {
+	// case bool
+	var oo=document.getElementById(id+'_0');
+	if (oo && oo.checked) {
+		return oo.value;
+	}
+	oo=document.getElementById(id+'_1');
+	if (oo && oo.checked) {
+		return oo.value;
+	}
+  }
+
   if (o) {
     return o.value;
   } else {
@@ -710,7 +760,7 @@ function getInputValue(id,index) {
     //else le = getInputsByName('_'+id);
     if ((le.length - 1) >= index) {
       return le[index].value;
-    }    
+    }
   }
   return '';
 }
@@ -1598,6 +1648,7 @@ function changeCheckBoolClasses(th,name) {
     } else {
       alert('[TEXT:changeCheckBoolClasses Error]');
     }
+	  disableReadAttribute();
 
   }
 }

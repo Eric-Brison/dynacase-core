@@ -14,6 +14,7 @@
 
 
 include_once('FREEDOM/freedom_view.php');
+include_once('FREEDOM/Lib.portfolio.php');
 
 
 /**
@@ -68,6 +69,20 @@ function foliolist(&$action) {
       
     }
   }
+
+  $pfctx = portfolio_get_context($dir);
+  $action->lay->set("LISTICON", $pfctx['listtype'] == 'icon');
+
+  if($folioid) {
+	$dir = new_Doc($dbaccess, $folioid);
+  }
+
+	$action->lay->set("docid",$dir->initid);
+	$pfctx = portfolio_get_context($dir);
+	$action->lay->set("FRAMELISTWIDTH", '180');
+	if(isset($pfctx['framelistwidth'])) {
+		$action->lay->set("FRAMELISTWIDTH", $pfctx['framelistwidth']);
+	}
   
   setHttpVar("sqlorder","title");
   $action->parent->SetVolatileParam("FREEDOM_VIEW", "icon");
@@ -80,4 +95,5 @@ function foliolist(&$action) {
   $action->lay->set("refreshtab",$refreshtab);
 
 }
+
 ?>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<module	name="freedom-toolbox" version="@VERSION@" release="@RELEASE@" basecomponent="yes">
+<module	name="freedom-toolbox" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
 
   <description lang="en">Hosting Application Toolkit freedom toolbox</description>
   <description lang="fr">Serveur d'application freedom toolbox</description>
@@ -257,8 +257,11 @@
 
   <changelog>
   	
-    <version number="3.0.10" date="2010-08-18">
-      <change title="inline help document" url="http://dev.freedom-ecm.org/versions/show/35"/>
+    <version number="3.0.11" date="2010-09-15">
+      <change title="Many fixes" url="http://dev.freedom-ecm.org/versions/show/37"/>        
+    </version>
+    <version number="3.0.10" date="2010-08-13">
+      <change title="inline help document" url="http://dev.freedom-ecm.org/versions/show/35"/>        
     </version>
     <version number="3.0.9" date="2010-07-30">
       <change title="first normal form export" url="http://dev.freedom-ecm.org/versions/show/33"/>        

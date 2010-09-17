@@ -131,7 +131,7 @@
 </style>
 
 <div id="helppage-main">
-	<div id="helppage-title"><div><a onclick="self.print()">[TEXT:Print]</a></div>[IF HELPEDITABLE]<div><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'_self','[HELPEDITURI]')">[TEXT:Edit]</a>&nbsp|&nbsp</div>[ENDIF HELPEDITABLE]
+	<div id="helppage-title"><div><a href="?app=FDL&action=FDL_CARD&id=[DOCID]&zone=FDL:PRINTHELPPAGE" target="_blank">[TEXT:Print]</a></div>[IF HELPEDITABLE]<div><a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'_self','[HELPEDITURI]')">[TEXT:Edit]</a>&nbsp|&nbsp</div>[ENDIF HELPEDITABLE]
 	<span id="helppage-titles">
 		[BLOCK TITLES]
 		<span class="FREEDOMTextBigTitle" id="helppage-title-[help_lang]" [IFNOT firstdesc]style="display:none"[ENDIF firstdesc]>[help_name]</span>[ENDBLOCK TITLES]</span>

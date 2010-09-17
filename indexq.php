@@ -23,7 +23,6 @@ global $SQLDELAY, $SQLDEBUG;
 global $TSQLDELAY;	
 
 $authtype = getAuthType();
-$authproviderlist = getAuthProvider();
 
 if ($authtype == 'apache') {
   
@@ -37,7 +36,7 @@ if ($authtype == 'apache') {
   
  } else {
 
-  $authProviderList = explode(",", $authproviderlist);
+  $authProviderList = getAuthProviderList();
   foreach ($authProviderList as $ka=>$authprovider) {
     $authClass = strtolower($authtype)."Authenticator";
     if (! @include_once('WHAT/Class.'.$authClass.'.php')) {

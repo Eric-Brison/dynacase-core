@@ -16,7 +16,7 @@ function checkauth(&$action) {
   include_once('WHAT/Class.User.php');
 
   $authtype = getAuthType();
-  $authProviderList = explode(",", getAuthProvider());
+  $authProviderList = getAuthProviderList();
   foreach ($authProviderList as $ka=>$authprovider) {
    $auth = new htmlAuthenticator( 'html', $authprovider );
     $status = $auth->checkAuthentication();

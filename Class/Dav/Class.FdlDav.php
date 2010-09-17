@@ -226,7 +226,24 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
     }
     //    error_log("FSPATH :".$fspath. "=>".$fid);
     return $fid;
-  } 
+  }
+
+  function getFilesProperties($doc) {
+	  $fileAttributes = $doc->GetFileAttributes();
+	  $tinfo = array();
+	  foreach($fileAttributes as $fileAttribute) {
+		  if($fileAttribute->getOption('hideindav') == 'yes') {
+			  continue;
+		  }
+		  $result = $doc->vault_properties($fileAttribute);
+		  if(count($result)>0 && is_array($result[0])) {
+			foreach($result as $tmp){
+				$tinfo[] = $tmp;
+			}
+		  }
+	  }
+	  return $tinfo;
+  }
 
   function docpropinfo(&$doc,$path,$firstlevel)  {
     //    error_log("docpropinfo $doc->initid $doc->id $path #$firstlevel");
@@ -281,7 +298,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       // simple document : search attached files     
   
       // $info["props"][] = $this->mkprop("getcontenttype", $this->_mimetype($fspath));
-      $afiles=$doc->GetFilesProperties();
+      $afiles=$this->GetFilesProperties($doc);
       //error_log("READFILES examine :".count($afiles).'-'.$doc->title.'-'.$doc->id);
       $bpath=$this->mybasename($path);
       $dpath=$this->_slashify(dirname($path));
@@ -299,7 +316,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	  if ($firstlevel) $info["path"]  = $dpath.$aname;
 	  else $info["path"]  = $path.$aname;
 	  $filename=$afile["path"];
-		
+	  
 	  if (file_exists($filename)) {
 	    $info["props"][] = $this->mkprop("displayname", $aname);
 	    $info["props"][] = $this->mkprop("creationdate",   filectime($filename)) ;
@@ -375,7 +392,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       // simple document : search attached files     
       $doc=new_doc($this->db_freedom,$docid,true);
       // $info["props"][] = $this->mkprop("getcontenttype", $this->_mimetype($fspath));
-      $afiles=$doc->GetFilesProperties();
+      $afiles=$this->GetFilesProperties($doc);
       //error_log("VIDPROP examine :".count($afiles).'-'.$doc->title.'-'.$doc->id);
       $bpath=$this->mybasename($path);
       $dpath=$this->_slashify(dirname($path));
@@ -546,7 +563,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       $this->cleanDeleted($fldid);
       return false;
     }
-    $afiles=$doc->GetFilesProperties();
+    $afiles=$this->GetFilesProperties($doc);
 
     $bpath=$options["path"];
     if (!seems_utf8($bpath)) $bpath=utf8_encode($bpath);
@@ -645,6 +662,9 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	  $afiles=$doc->GetFileAttributes();  
 	  //error_log("PUT SEARCH FILES:".count($afiles));
 	  foreach ($afiles as $afile) {
+		  if($afile->getOption('hideindav') == 'yes') {
+			  continue;
+		  }
 	    $fnames=array();
 	    if ($afile->inArray()) {
 	      $tval=$doc->getTValue($afile->id);
@@ -928,7 +948,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 		    
 	    } else {
 
-	      $afiles=$src->GetFilesProperties();  		  
+	      $afiles=$this->GetFilesProperties($src);
 	      foreach ($afiles as $afile) {
 		$path=$afile["name"];
 		error_log("RENAME SEARCH:".$bsource.'->'.$path);
@@ -1040,7 +1060,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 
 	    
 	error_log("COPY :".$copy->id);
-	$afiles=$copy->GetFilesProperties();  
+	$afiles=$this->GetFilesProperties($copy);
 	error_log("# FILE :".count($afiles));
 	$ff=$copy->GetFirstFileAttributes();
 	    

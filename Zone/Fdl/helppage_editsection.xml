@@ -34,6 +34,7 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 }
 [ENDBLOCK LEGENDCSSLANGS]
 </style>
+<div class="document">
 <div id="help-menu">
 	<strong>[DOCTITLE]</strong>
 
@@ -72,7 +73,7 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 </table>
 
 </fieldset>
-
+</div>
 
 <script type="text/javascript">
 var LANGS = [JSONLANGS];
@@ -110,8 +111,14 @@ function help_edit_delete_section() {
 		DATAS[lang].name = '';
 		DATAS[lang].text = '';
 	}
-	help_edit_set_datas(CURLANG);
-	help_edit_apply();
+	var sent_datas = {
+		'seckey': SECKEY,
+		'secorder': SECORDER,
+		'curlang': CURLANG,
+		'langs': DATAS
+	};
+	Ih.callOpener('help_save_section',sent_datas);
+	window.close();
 }
 
 function help_edit_delete() {
@@ -130,9 +137,13 @@ function help_load(seclang) {
 	CURLANG = seclang;
 }
 
-function help_edit_load() {
+function help_edit_init() {
 	DATAS = Ih.callOpener('help_get_section',SECKEY);
 	SECORDER = Ih.callOpener('help_get_section_order',SECKEY);
+}
+
+function help_edit_load() {
+	help_edit_init();
 	help_load(Ih.callOpener('help_get_section_current_lang',SECKEY));
 }
 
@@ -152,10 +163,13 @@ function help_edit_set_datas(lang) {
 
 function trackFCKLoaded_helppage() {
 
-	if (typeof( window['FCKeditorAPI']) == "undefined" ) {
-		self.setTimeout( trackFCKLoaded_helppage, 500 );
-		return;
+	try {
+		if (typeof( window['FCKeditorAPI']) == "undefined" ) {
+			self.setTimeout( trackFCKLoaded_helppage, 500 );
+			return;
+		}
 	}
+	catch(e) {}
 
 	help_edit_load();
 	autoVresize();
@@ -163,27 +177,33 @@ function trackFCKLoaded_helppage() {
 }
 
 function loadFCKeditor_helppage() {
-	var oFCKeditor = new FCKeditor( 'sec-text' ) ;
-	oFCKeditor.BasePath = 'fckeditor/';
-	oFCKeditor.Config['FullPage'] = false ;
-	oFCKeditor.Config['SkinPath'] =  window.location.pathname.replace(/\/[^\/]*[^\/]$/, '/')+'fckeditor/editor/skins/silver/';
-	oFCKeditor.Config['ToolbarStartExpanded'] =  true;
+	help_edit_init();
+	try {
+		var oFCKeditor = new FCKeditor( 'sec-text' ) ;
+		oFCKeditor.BasePath = 'fckeditor/';
+		oFCKeditor.Config['FullPage'] = false ;
+		oFCKeditor.Config['SkinPath'] =  window.location.pathname.replace(/\/[^\/]*[^\/]$/, '/')+'fckeditor/editor/skins/silver/';
+		oFCKeditor.Config['ToolbarStartExpanded'] =  true;
 
-	oFCKeditor.Config['ImageBrowserURL'] = '../../../?sole=Y&app=FDL&action=FCKIMAGE' ;
-	oFCKeditor.Config['ImageUploadURL'] = '../../../?sole=Y&app=FDL&action=FCKUPLOAD' ;
-	oFCKeditor.Config['ImageBrowserWindowWidth'] = '550px';
-	oFCKeditor.Config['ImageBrowserWindowHeight'] = '400px';
-	oFCKeditor.Config['LinkBrowser'] = false ;
+		oFCKeditor.Config['ImageBrowserURL'] = '../../../?sole=Y&app=FDL&action=FCKIMAGE' ;
+		oFCKeditor.Config['ImageUploadURL'] = '../../../?sole=Y&app=FDL&action=FCKUPLOAD' ;
+		oFCKeditor.Config['ImageBrowserWindowWidth'] = '550px';
+		oFCKeditor.Config['ImageBrowserWindowHeight'] = '400px';
+		oFCKeditor.Config['LinkBrowser'] = false ;
 
-	//oFCKeditor.Config['FontNames'] =  'serif;sans-serif;cursive;fantasy;monospace' ;
-	oFCKeditor.ToolbarSet = 'SimpleNoQS';
-	oFCKeditor.Config["CustomConfigurationsPath"] = "../../FDL/Layout/fdl_fckeditor.js"  ;
-	oFCKeditor.Height='300';
+		//oFCKeditor.Config['FontNames'] =  'serif;sans-serif;cursive;fantasy;monospace' ;
+		oFCKeditor.ToolbarSet = 'SimpleNoQS';
+		oFCKeditor.Config["CustomConfigurationsPath"] = "../../FDL/Layout/fdl_fckeditor.js"  ;
+		oFCKeditor.Height='300';
 
-	oFCKeditor.ReplaceTextarea() ;
+		oFCKeditor.ReplaceTextarea() ;
 
-	self.setTimeout( trackFCKLoaded_helppage, 500 );
-	
+		self.setTimeout( trackFCKLoaded_helppage, 500 );
+	}
+	catch(e) {
+		help_edit_load();
+		autoVresize();
+	}
 	return true;
 }
 

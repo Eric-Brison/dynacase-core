@@ -16,7 +16,8 @@
 
 
 include_once("FDL/Lib.Dir.php");
-include_once("FDL/freedom_util.php");  
+include_once("FDL/freedom_util.php");
+include_once('FREEDOM/Lib.portfolio.php');
 
 
 

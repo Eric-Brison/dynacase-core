@@ -118,6 +118,21 @@ function add_import_file(&$action, $fimport) {
 				}
 
 				break;
+			case "RESET":
+			    if ($data[1]=="attributes") {
+			        $tcr[$nline]["msg"].=sprintf(_("reinit all attributes"));
+			        if ($analyze) continue;
+			        $oattr=new DocAttr($dbaccess);
+			        $oattr->docid=intval($doc->id);
+			        if ($oattr->docid > 0) {
+			            $err=$oattr->exec_query("delete from docattr where docid=".$oattr->docid);
+			        }
+			    } else {
+			        $err="reset argument must be 'attributes'";
+			    }
+			    
+                            $tcr[$nline]["err"].=$err;
+			    break;
 				// -----------------------------------
 			case "END":
 				// add messages
@@ -148,7 +163,7 @@ function add_import_file(&$action, $fimport) {
 					}
 				}
 				if ((! $analyze) && ($famicon!="")) $doc->changeIcon($famicon);
-
+				$tcr[$nline]["msg"].=$doc->postImport();
 				$doc->AddComment(_("Update by importation"));
 
 				$nbdoc++;
@@ -345,9 +360,13 @@ function add_import_file(&$action, $fimport) {
 			case "DEFAULT":
 				$defv=str_replace(array('\n',ALTSEPCHAR),array("\n",SEPCHAR),$data[2]);
 				$doc->setDefValue($data[1],$defv);
-				if (! $doc->getParamValue($data[1])) $doc->setParam($data[1],$defv);
+				$force=(str_replace(" ","",trim(strtolower($data[3])))=="force=yes");
+				if ($force || (! $doc->getParamValue($data[1]))) {
+				    $doc->setParam($data[1],$defv);
+				    $tcr[$nline]["msg"]="reset default parameter";
+				}
 
-				$tcr[$nline]["msg"]=sprintf(_("add default value %s %s"),$data[1],$data[2]);
+				$tcr[$nline]["msg"].=sprintf(_("add default value %s %s"),$data[1],$data[2]);
 				break;
 			case "IATTR":
 				// import attribute definition from another family

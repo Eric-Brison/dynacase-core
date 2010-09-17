@@ -97,6 +97,9 @@ function autocompletion(&$action) {
     if ($enum != "") {
       //if (seems_utf8($skey)) $skey=utf8_decode($skey);
       $canitem=(! $oattr->existEnum(trim($skey)));
+	  if(trim($skey) == '' && strpos($oattr->phpfunc, "linkenum") !== false) {
+		  $oattr->getEnum();
+	  }
       $eval=$oattr->phpfunc;
     
       $oattr->phpfile="fdl.php";
@@ -138,7 +141,7 @@ function autocompletion(&$action) {
       }
     }
     $oattr->phpfunc=preg_replace('/([\s|,|:])CT\[([^]]+)\]/e', "'\\1'.$linkprefix.strtolower('\\2')",$oattr->phpfunc);
-    
+
     $res=getResPhpFunc($doc,$oattr,$rargids,$tselect,$tval,true,$index);
     if (! is_array($res)) {
       if ($res=="") $res=sprintf(_("error in calling function %s\n%s"),$oattr->phpfunc,$res);

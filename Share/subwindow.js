@@ -86,7 +86,7 @@ function subwindowm(h, w, name, url) {
    } else {
      me.location.href=url;
    }
-  me.focus();
+   if (me) me.focus();
 
     
   return me;

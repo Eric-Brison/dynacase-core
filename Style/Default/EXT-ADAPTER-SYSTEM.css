@@ -4,7 +4,6 @@
 }
 
 .document legend,.document a {
-	color: #15428B;
 	font-weight: bold;
 }
 
@@ -13,12 +12,7 @@
 }
 
 .document a:HOVER {
-	background-color: white;
 	text-decoration: none;
-}
-
-.document .normal {
-	background-color: #FFFFFF !important;
 }
 
 /**
@@ -29,8 +23,8 @@
   font-size: 13px; font-family: arial,sans-serif; 
   white-space:nowrap;
   cursor:default;
-  border: inset 1px #B5B8C8;
-  background-color: #FFFFFF;
+  border-style: inset ;
+  border-width: 1px ;
   padding:0px;
   z-index:1;
   overflow: auto;
@@ -44,32 +38,18 @@
 
 .document .AutoCompleteDivAct {
   display: block; 
-  background-color: #D5E2F0; 
   padding-left: 3px; 
   padding-right: 3px;
-  color: #222222; 
-}
-
-.document div.AutoCompleteDivAct span{
-  background-color: #D5E2F0;    
-}
-
-.document .AutoMessage {
-  background-color: #FFFFFF; 
-  color: #99BBE8;  
 }
 
 /**
  * End of Autocomplete.css
  */
 
-.tablesimple {
-	background-color: #FFFFFF; 
-}
 
 .document fieldset {
-	background-color: white !important;
-	border: 1px solid #B5B8C8;
+	border-style: solid;
+	border-width: 1px ;
 	-moz-border-radius: 0px;
 	margin-bottom: 10px;
 	padding: 10px 5px 5px 5px;
@@ -84,24 +64,19 @@
 }
 
 .document input,.document select,.document textarea,.document file {
-	background-color: #FFFFFF;
-	background:
-		url(../../../lib/ext/resources/images/default/form/text-bg.gif);
-	background-repeat: repeat-x;
-	border: 1px solid #B5B8C8;
+	border-width: 1px;
+	border-style: solid;
 	font-size: 11px;
 }
 
 .document select {
-	background-color: #FFFFFF;
 	background-repeat: repeat-x;
-	border: 1px solid #B5B8C8;
+	border-width: 1px ;
+	border-style: solid ;
 	font-size: 11px;
 }
 
 .document input[type=button] {
-	background-image:
-		url(../../../lib/ext/resources/images/default/form/trigger-tpl.gif);
 	border-top: 0px;
 	border-right: 0px;
 	width: 17px;
@@ -111,7 +86,6 @@
 }
 
 .document input.constraint {
-	background-image: url(../../../Images/tabvig.png);
 	border-top: 0px;
 	border-right: 0px;
 	width: 17px;
@@ -122,8 +96,6 @@
 
 .document input.normal {
 	background: transparent none repeat-x scroll 0 -1096px;
-	background-image:
-		url(../../../lib/ext/resources/images/default/button/btn.gif);
 	width: auto;
 	margin-right: 0px !important;
 	cursor: pointer;
@@ -138,8 +110,7 @@
 	background-position: -17px 0px;
 }
 
-.document input[type=text],.document input[type=password],.document select,.document textarea
-	{
+.document input[type=text],.document input[type=password],.document select,.document textarea {
 	padding: 3px;
 }
 
@@ -149,11 +120,10 @@
 }
 
 .document th {
-	background:
-		url(../../../lib/ext/resources/images/default/panel/top-bottom.gif)
-		repeat-x;
+	background-repeat: repeat-x;
 	height: 24px;
-	border: 1px solid #99BBE8 !important;
+	border-width: 1px !important;
+	border-style: solid !important;
 	border-top: 0px !important;
 	padding-left: 3px !important;
 }
@@ -171,72 +141,70 @@
 }
 
 .document .border {
-	border: 1px solid #99BBE8;
+	border-width: 1px;
+	border-style: solid;
 }
 
 .document .line {
 	margin-bottom: 10px;
 	height: 2px;
-	border-bottom: 1px solid #99BBE8;
-	border-top: 1px solid #99BBE8;
-	background-color: #DFE8F6;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-top-width: 1px ;
+	border-top-style: solid;
 	position: relative;
 	top: -1px;
 }
 
 .document .tabsh span {
-	color: #15428B;
 	font-weight: bold;
 	font-size: 11px;
 	-moz-border-radius: 0px;
-	border-left: 1px solid #99BBE8;
-	border-right: 1px solid #99BBE8;
+	border-left-width: 1px ;
+	border-left-style: solid;
+	border-right-width: 1px ;
+	border-right-style: solid ;
 	border-top: 0;
 	border-bottom: 0;
 	margin-left: 5px;
 	padding: 5px;
 	padding-left: 10px;
 	padding-right: 10px;
-	background:
-		url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif)
-		repeat-x scroll 0 -201px;
+	background-position:0 -201px;
+	background-repeat:repeat-x;
+	background-attachment:scroll;
 }
 
 .document .tabsh .tabsel {
-	background:
-		url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif)
-		repeat-x scroll 0 -151px;
+	background-repeat: repeat-x;
+	background-position: 0 -151px;
+	background-attachment: scroll;
 	position: relative;
 	z-index: 1;
 }
 
 .document .tarray .add-button,.document .tarray .add-button:HOVER {
-	background: url(../../../lib/ui/icon/add.png) no-repeat;
+	background-repeat: no-repeat;
 }
 
 .document .tarray .trash-button,.document .tarray .trash-button:HOVER {
-	background: transparent url(../../../lib/ui/icon/bin.png) no-repeat
-		scroll 2px 2px;
+	background-attachment: scroll;
+	background-position: 2px 2px;
+	background-repeat: no-repeat;
 }
 
-.document .tarray .select-button,.document .tarray .select-button:HOVER
-	{
-	background: transparent url(../../../lib/ui/icon/application_get.png)
-		no-repeat scroll 2px 2px;
+.document .tarray .select-button,.document .tarray .select-button:HOVER {
+	background-attachment: scroll;
+	background-position: 2px 2px;
+	background-repeat: no-repeat;
 }
 
-.document .tarray .unselect-button,.document .tarray .unselect-button:HOVER
-	{
-	background: url(../../../lib/ui/icon/application_put.png) no-repeat;
+.document .tarray .unselect-button,.document .tarray .unselect-button:HOVER {
+	background-repeat: no-repeat;
 }
 
-.document .tarray .duplicate-button,.document .tarray .duplicate-button:HOVER
-	{
-	background: url(../../../lib/ui/icon/application_double.png) no-repeat;
-}
-
-.document tr.selecta td {
-	background-color: #DFE8F6 !important;
+.document .tarray .duplicate-button,.document .tarray .duplicate-button:HOVER {
+	background-repeat: no-repeat;
 }
 
 .calendar {

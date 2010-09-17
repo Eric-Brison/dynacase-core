@@ -6,6 +6,9 @@ function SelectFile(src) {
         window.opener.SetUrl( window.location.pathname+src ) ;
         window.close() ;
 }
+try {
+window.focus();
+} catch (e) {};
 </script>
 <style>
 DIV.images {

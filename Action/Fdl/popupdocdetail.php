@@ -641,7 +641,12 @@ function changeMenuVisibility(&$action,&$tlink,&$doc) {
   }
 
   if ($doc->locked == -1) { // fixed document
-    if ($doc->doctype != 'Z') $tlink["latest"]["visibility"]=POPUP_ACTIVE; 
+    if ($doc->doctype != 'Z'){
+		$tmpdoc = new_Doc($doc->dbaccess, $doc->initid, true);
+		if($tmpdoc->Control("view") == "") {
+			$tlink["latest"]["visibility"]=POPUP_ACTIVE;
+		}
+	}
     else $tlink["restore"]["visibility"]=POPUP_ACTIVE; 
     $tlink["editdoc"]["visibility"]=POPUP_INVISIBLE;
     $tlink["delete"]["visibility"]=POPUP_INVISIBLE;
@@ -692,9 +697,12 @@ function changeMenuVisibility(&$action,&$tlink,&$doc) {
 
 
   if (($doc->postitid > 0)||($doc->locked == -1)) $tlink["addpostit"]["visibility"]=POPUP_INVISIBLE;
-  else if ($doc->fromid==27) $tlink["addpostit"]["visibility"]=POPUP_CTRLACTIVE; // for post it family
-  else $tlink["addpostit"]["visibility"]=POPUP_ACTIVE;
-
+  else if ($doc->fromid==27) $tlink["addpostit"]["visibility"]=POPUP_INVISIBLE; // for post it family
+  else {
+      $fnote=new_doc($doc->dbaccess,27);
+      if ($fnote->control("icreate")!="") $tlink["addpostit"]["visibility"]=POPUP_INVISIBLE;
+      else $tlink["addpostit"]["visibility"]=POPUP_ACTIVE;
+  }
   if (! $action->parent->Haspermission("FREEDOM","FREEDOM")) {
 
     // FREEDOM not available

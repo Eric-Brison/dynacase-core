@@ -25,8 +25,12 @@ fieldset legend img {
 #help-menu a:hover {
 	background: [CORE_BGCOLOR];
 }
+#help-description textarea {
+	width: 95%;
+}
 </style>
 
+<div class="document">
 <div id="help-menu">
 	<strong>[DOCTITLE]</strong>
 
@@ -62,6 +66,7 @@ fieldset legend img {
 	</fieldset>
 </div>
 [ENDBLOCK HELPLANGS1]
+</div>
 
 
 

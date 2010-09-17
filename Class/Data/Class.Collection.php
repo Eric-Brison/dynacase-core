@@ -225,6 +225,7 @@ Class Fdl_Collection extends Fdl_Document {
         }
         $out->slice=$slice;
         $out->start=$start;
+        $out->date=date('Y-m-d H:i:s');
         return $out;
     }
     /**
