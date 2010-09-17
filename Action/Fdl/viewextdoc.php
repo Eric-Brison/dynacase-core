@@ -88,13 +88,15 @@ function viewextdoc(&$action) {
     $im[$mainmenu]["items"]["histo"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
                                             "class"=>"Fdl.InterfaceAction.Historic"),
                             "label"=>_("Historic"),
-                            "visibility"=>$im[$doc->fromtitle]["items"]["histo"]["visibility"]);
+                            "visibility"=>$im[$mainmenu]["items"]["histo"]["visibility"]);
     $fnote=new_doc($doc->dbaccess,"SIMPLENOTE");
     if ($fnote->control("icreate")=="") {
     $im[$mainmenu]["items"]["addpostit"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
                                             "class"=>"Fdl.InterfaceAction.SimpleNote"),
                             "label"=>_("Add a note"),
-                            "visibility"=>$im[$doc->fromtitle]["items"]["addpostit"]["visibility"]);
+                            "visibility"=>$im[$mainmenu]["items"]["addpostit"]["visibility"]);
+    } else {
+        $im[$mainmenu]["items"]["addpostit"]["visibility"]=POPUP_INVISIBLE;
     }
     if ($doc->control("send")=="") {
         $im[$mainmenu]["items"]["sendmail"]=array("url"=>"?app=FDL&action=EDITMAIL&viewext=yes&mid=".$doc->id,
