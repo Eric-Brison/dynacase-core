@@ -599,7 +599,20 @@ function getFormValue(attrid) {
 	return null;
 }
 function _concat(a,b) {
-	return [].slice.call(a, 0,a.length).concat([].slice.call(b, 0,b.length));
+	try {
+		return [].slice.call(a, 0,a.length).concat([].slice.call(b, 0,b.length));
+	}
+	catch(e) {
+		var t = [];
+		var i;
+		for(i=0; i < a.length; i++) {
+			t.push(a[i]);
+		}
+		for(i=0; i < b.length; i++) {
+			t.push(b[i]);
+		}
+		return t;
+	}
 }
 
 function _inarray(e, t) {

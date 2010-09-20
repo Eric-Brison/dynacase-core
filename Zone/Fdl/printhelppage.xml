@@ -1,3 +1,6 @@
+<script type="text/javascript" language="JavaScript" src="./sizzle/sizzle.js"></script>
+<script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
+
 <style type="text/css">
 a {
 	outline: 0;
@@ -91,7 +94,7 @@ a {
 		<div id="helppage-content-title">
 			<div>
 [BLOCK ALLLANGS]
-				<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return help_change_alllang('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+				<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return helppage.view.changeall('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 [ENDBLOCK ALLLANGS]
 			</div>
 			<span id="helppage-description">
@@ -104,7 +107,7 @@ a {
 			<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
 				<div class="help-section-langs">
 [BLOCK [SECLANGS]]
-					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]','helppage-sec-[SECKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return helppage.view.change('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]','helppage-sec-[SECKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 [ENDBLOCK [SECLANGS]]
 				</div>
 				<div class="help-section-title" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</div>
@@ -115,86 +118,5 @@ a {
 		</div>
 
 <script type="text/javascript">
-	function help_change_lang(src, dst, sectitle) {
-		var o_src = document.getElementById(src);
-		var o_dst = document.getElementById(dst);
-		if(o_src && o_dst) {
-			o_src.style.display='none';
-			o_dst.style.display='block';
-			var ldiv=o_dst.getElementsByTagName('div');
-			for (var i=0;i<ldiv.length;i++) {
-			   if (ldiv[i].className=='help-section-title') {
-			     if (ldiv[i].innerHTML) {
-			        var sec=document.getElementById(sectitle);
-			        if (sec) {
-			           sec.innerHTML=ldiv[i].innerHTML;
-			        }
-			     }
-			   }
-			}
-		}
-		return false;
-	}
-	function help_change_alllang(lang) {
-[BLOCK JSSECTIONS]
-		help_change_alllang_check(lang, 'sec-[SECKEY]-[SECLANG]');
-[ENDBLOCK JSSECTIONS]
-		var desc=document.getElementById('helppage-description');
-		if (desc) {
-			var sp=desc.getElementsByTagName('span');
-			for (var i=0;i<sp.length;i++ ) {
-				sp[i].style.display='none';
-			}
-			var descsel=document.getElementById('helppage-desc-'+lang);
-			if (descsel) descsel.style.display='';
-			else if (sp.length > 0) {
-				sp[0].style.display='';
-			}
-		}
-		var desc=document.getElementById('helppage-titles');
-		if (desc) {
-			var sp=desc.getElementsByTagName('span');
-			for (var i=0;i<sp.length;i++ ) {
-				sp[i].style.display='none';
-			}
-			var descsel=document.getElementById('helppage-title-'+lang);
-			if (descsel) {
-			  descsel.style.display='';
-                                document.title=descsel.innerHTML;
-			} else if (sp.length > 0) {
-				sp[0].style.display='';
-				document.title=sp[0].innerHTML;
-			}
-		}
-		resize_helppage();
-		return false;
-	}
-	function help_change_alllang_check(lang,secid) {
-		var o1 = document.getElementById(secid);
-		var o2 = document.getElementById(secid.substr(0, secid.length-5)+lang);
-		if(o1 && o2) {
-			if(secid.substr(secid.length-5, 5) == lang) {
-				o1.style.display='block';
-				var ldiv=o1.getElementsByTagName('div');
-                        for (var i=0;i<ldiv.length;i++) {
-                           if (ldiv[i].className=='help-section-title') {
-                             if (ldiv[i].innerHTML) {
-                                var secname=secid.substr(4,secid.length-10);
-                                var sec=document.getElementById('helppage-sec-'+secname);
-                                if (sec) {
-                                   sec.innerHTML=ldiv[i].innerHTML;
-                                }
-                             }
-                           }
-                         }
-			} else if(o2.className != 'inactive') {
-				o1.style.display='none';
-			}
-			
-		}
-	}
-	function help_print() {
-		self.print();
-	}
-	//addEvent(window, 'load', help_print);
+	//addEvent(window, 'load', helppage.print);
 </script>

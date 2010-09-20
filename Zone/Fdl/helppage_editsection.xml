@@ -1,5 +1,7 @@
 [ZONE FDL:HTMLHEAD?title=[TEXT:Edit help]]
 <script type="text/javascript" src="lib/data/fdl-data.js"></script>
+<script type="text/javascript" language="JavaScript" src="./sizzle/sizzle.js"></script>
+<script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
 <style type="text/css">
 #help-menu {
 	overflow: hidden;
@@ -39,13 +41,13 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 	<strong>[DOCTITLE]</strong>
 
 	&nbsp; &nbsp; &nbsp; &nbsp;
-	<a onclick="return help_edit_apply();">[TEXT:Apply]</a>&nbsp;|&nbsp;
-	<a onclick="return help_edit_cancel();">[TEXT:Cancel]</a>&nbsp;|&nbsp;
-	<a onclick="return help_edit_delete_section();">[TEXT:Delete this section]</a>
+	<a onclick="return helppage.editsection.apply();">[TEXT:Apply]</a>&nbsp;|&nbsp;
+	<a onclick="return helppage.editsection.cancel();">[TEXT:Cancel]</a>&nbsp;|&nbsp;
+	<a onclick="return helppage.editsection.clearall();">[TEXT:Delete this section]</a>
 
 	<div>
 [BLOCK MENULANGS]
-	<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return help_load('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+	<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return helppage.editsection.view('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 [ENDBLOCK MENULANGS]
 	</div>
 </div>
@@ -68,7 +70,7 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 	</tr>
 	<tr>
 		<td class="FREEDOMLabel" width="20%"></td>
-		<td><a onclick="return help_edit_delete();">[TEXT:Clear this translation]</a></td>
+		<td><a onclick="return helppage.editsection.clear();">[TEXT:Clear this translation]</a></td>
 	</tr>
 </table>
 
@@ -76,93 +78,10 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 </div>
 
 <script type="text/javascript">
-var LANGS = [JSONLANGS];
-var SECKEY = '[SECTIONKEY]';
-var DATAS;
-var CURLANG = false;
-var SECORDER = 0;
-
-function help_edit_apply() {
-	help_edit_get_datas(CURLANG);
-	var sent_datas = {
-		'seckey': SECKEY,
-		'secorder': SECORDER,
-		'curlang': CURLANG,
-		'langs': DATAS
-	};
-	Ih.callOpener('help_save_section',sent_datas);
-	window.close();
-}
-
-function help_edit_cancel() {
-	window.close();
-}
-
-function lang_to_index(lang) {
-	var i = 0;
-	for (var k in LANGS) {
-		if(lang == k) { return i; }
-		i++;
-	}
-}
-
-function help_edit_delete_section() {
-	for(var lang in LANGS) {
-		DATAS[lang].name = '';
-		DATAS[lang].text = '';
-	}
-	var sent_datas = {
-		'seckey': SECKEY,
-		'secorder': SECORDER,
-		'curlang': CURLANG,
-		'langs': DATAS
-	};
-	Ih.callOpener('help_save_section',sent_datas);
-	window.close();
-}
-
-function help_edit_delete() {
-	DATAS[CURLANG].name = '';
-	DATAS[CURLANG].text = '';
-	help_edit_set_datas(CURLANG);
-}
-
-function help_load(seclang) {
-	if(CURLANG) {
-		// save before changing
-		help_edit_get_datas(CURLANG);
-	}
-	help_edit_set_datas(seclang);
-	document.getElementById('help-legend').className = seclang;
-	CURLANG = seclang;
-}
-
-function help_edit_init() {
-	DATAS = Ih.callOpener('help_get_section',SECKEY);
-	SECORDER = Ih.callOpener('help_get_section_order',SECKEY);
-}
-
-function help_edit_load() {
-	help_edit_init();
-	help_load(Ih.callOpener('help_get_section_current_lang',SECKEY));
-}
-
-function help_edit_get_datas(lang) {
-	DATAS[lang].name = document.getElementById('sec-name').value;
-	DATAS[lang].text = FCKeditorAPI.GetInstance('sec-text').GetHTML();
-}
-
-function help_edit_set_datas(lang) {
-	document.getElementById('sec-name').value = DATAS[lang].name;
-	document.getElementById('sec-text').value = DATAS[lang].text;
-	FCKeditorAPI.GetInstance('sec-text').SetHTML(DATAS[lang].text);
-}
-
-
-/******************************* FCKEDITOR *********************************/
+helppage.langs = [JSONLANGS];
+helppage.editsection.seckey = '[SECTIONKEY]';
 
 function trackFCKLoaded_helppage() {
-
 	try {
 		if (typeof( window['FCKeditorAPI']) == "undefined" ) {
 			self.setTimeout( trackFCKLoaded_helppage, 500 );
@@ -170,14 +89,12 @@ function trackFCKLoaded_helppage() {
 		}
 	}
 	catch(e) {}
-
-	help_edit_load();
+	helppage.editsection.load();
 	autoVresize();
-	
 }
 
 function loadFCKeditor_helppage() {
-	help_edit_init();
+	helppage.editsection.init();
 	try {
 		var oFCKeditor = new FCKeditor( 'sec-text' ) ;
 		oFCKeditor.BasePath = 'fckeditor/';
@@ -201,7 +118,7 @@ function loadFCKeditor_helppage() {
 		self.setTimeout( trackFCKLoaded_helppage, 500 );
 	}
 	catch(e) {
-		help_edit_load();
+		helppage.editsection.load();
 		autoVresize();
 	}
 	return true;

@@ -1,3 +1,6 @@
+<script type="text/javascript" language="JavaScript" src="./sizzle/sizzle.js"></script>
+<script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
+
 <style type="text/css">
 #helppage-main {
 	border: 1px solid [COLOR_A4];
@@ -140,7 +143,7 @@
 		<div id="helppage-sections-title">[TEXT:Sections]</div>
 		<div id="helppage-sections">
 [BLOCK LEFTSECTIONS]
-<a href="#[SECKEY]" id="helppage-sec-[SECKEY]" onclick="return help_goto('sec-[SECKEY]')" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</a>
+<a href="#[SECKEY]" id="helppage-sec-[SECKEY]" onclick="return helppage.view.goto('sec-[SECKEY]')" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</a>
 [ENDBLOCK LEFTSECTIONS]
 		</div>
 		<div id="helppage-aides-title">[TEXT:Helps]</div>
@@ -152,7 +155,7 @@
 		<div id="helppage-content-title">
 			<div>
 [BLOCK ALLLANGS]
-				<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return help_change_alllang('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+				<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return helppage.view.changeall('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 [ENDBLOCK ALLLANGS]
 			</div>
 			<span id="helppage-description">
@@ -165,7 +168,7 @@
 			<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
 				<div class="help-section-langs">
 [BLOCK [SECLANGS]]
-					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return help_change_lang('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]','helppage-sec-[SECKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return helppage.view.change('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]','helppage-sec-[SECKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
 [ENDBLOCK [SECLANGS]]
 				</div>
 				<div class="help-section-title" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</div>
@@ -178,130 +181,7 @@
 </div>
 
 <script type="text/javascript">
-	function resize_helppage() {
-		var div_main = document.getElementById('helppage-main');
-		var div_title = document.getElementById('helppage-title');
-		var div_left = document.getElementById('helppage-left');
-		var div_right = document.getElementById('helppage-right');
-		var div_sections_title = document.getElementById('helppage-sections-title');
-		var div_sections = document.getElementById('helppage-sections');
-		var div_aides_title = document.getElementById('helppage-aides-title');
-		var div_aides = document.getElementById('helppage-aides');
-		var div_content_title = document.getElementById('helppage-content-title');
-		var div_content = document.getElementById('helppage-content');
-
-		var h = getFrameHeight() - div_main.offsetTop - 12;
-		var h_title = getObjectHeight('helppage-title');
-		var h_subtitle = getObjectHeight('helppage-content-title');
-
-		if(getObjectHeight('helppage-aides-title') > h_subtitle) { h_subtitle = getObjectHeight('helppage-aides-title'); }
-		if(getObjectHeight('helppage-sections-title') > h_subtitle) { h_subtitle = getObjectHeight('helppage-sections-title'); }
-
-		div_main.style.height = h+'px';
-		div_left.style.height = (h-h_title)+'px';
-		div_right.style.height = (h-h_title)+'px';
-
-		div_content.style.height = (h-h_title-h_subtitle - 10)+'px';
-
-		if(2*getObjectHeight('helppage-sections') + 2*h_subtitle + h_title > h) {
-			div_sections.style.height = (Math.floor((h - h_title - 2*h_subtitle)/2) - 10)+'px';
-		}
-		div_aides.style.height = (h - 2*h_subtitle - h_title - getObjectHeight('helppage-sections') - 10)+'px';
-	}
-	function help_change_lang(src, dst, sectitle) {
-		var o_src = document.getElementById(src);
-		var o_dst = document.getElementById(dst);
-		if(o_src && o_dst) {
-			o_src.style.display='none';
-			o_dst.style.display='block';
-			var ldiv=o_dst.getElementsByTagName('div');
-			for (var i=0;i<ldiv.length;i++) {
-			   if (ldiv[i].className=='help-section-title') {
-			     if (ldiv[i].innerHTML) {
-			        var sec=document.getElementById(sectitle);
-			        if (sec) {
-			           sec.innerHTML=ldiv[i].innerHTML;
-			        }
-			     }
-			   }
-			}
-		}
-		return false;
-	}
-	function help_change_alllang(lang) {
-[BLOCK JSSECTIONS]
-		help_change_alllang_check(lang, 'sec-[SECKEY]-[SECLANG]');
-[ENDBLOCK JSSECTIONS]
-		var desc=document.getElementById('helppage-description');
-		if (desc) {
-			var sp=desc.getElementsByTagName('span');
-			for (var i=0;i<sp.length;i++ ) {
-				sp[i].style.display='none';
-			}
-			var descsel=document.getElementById('helppage-desc-'+lang);
-			if (descsel) descsel.style.display='';
-			else if (sp.length > 0) {
-				sp[0].style.display='';
-			}
-		}
-		var desc=document.getElementById('helppage-titles');
-		if (desc) {
-			var sp=desc.getElementsByTagName('span');
-			for (var i=0;i<sp.length;i++ ) {
-				sp[i].style.display='none';
-			}
-			var descsel=document.getElementById('helppage-title-'+lang);
-			if (descsel) {
-			  descsel.style.display='';
-                                document.title=descsel.innerHTML;
-			} else if (sp.length > 0) {
-				sp[0].style.display='';
-				document.title=sp[0].innerHTML;
-			}
-		}
-		resize_helppage();
-		return false;
-	}
-	function help_change_alllang_check(lang,secid) {
-		var o1 = document.getElementById(secid);
-		var o2 = document.getElementById(secid.substr(0, secid.length-5)+lang);
-		if(o1 && o2) {
-			if(secid.substr(secid.length-5, 5) == lang) {
-				o1.style.display='block';
-				var ldiv=o1.getElementsByTagName('div');
-                        for (var i=0;i<ldiv.length;i++) {
-                           if (ldiv[i].className=='help-section-title') {
-                             if (ldiv[i].innerHTML) {
-                                var secname=secid.substr(4,secid.length-10);
-                                var sec=document.getElementById('helppage-sec-'+secname);
-                                if (sec) {
-                                   sec.innerHTML=ldiv[i].innerHTML;
-                                }
-                             }
-                           }
-                         }
-			} else if(o2.className != 'inactive') {
-				o1.style.display='none';
-			}
-			
-		}
-	}
-	function help_goto(sec) {
-		var o_sec = document.getElementById(sec);
-		if(o_sec) {
-			var content = document.getElementById('helppage-content');
-			content.scrollTop = o_sec.offsetTop - content.offsetTop;
-		}
-		return false;
-	}
-	function help_checkdirectaccess() {
-		var loc = document.location+'';
-		var m = [];
-		if(m = loc.match(/\#(.*)$/)) {
-			help_goto('sec-'+m[1]);
-		}
-	}
-	addEvent(window, 'load', resize_helppage);
-	addEvent(window, 'load', help_checkdirectaccess);
-	addEvent(window, 'resize', resize_helppage);
+	addEvent(window, 'load', helppage.view.resize);
+	addEvent(window, 'load', helppage.view.checkdirectaccess);
+	addEvent(window, 'resize', helppage.view.resize);
 </script>
