@@ -2224,42 +2224,46 @@ create unique index i_docir on doc(initid, revision);";
     }
     return sprintf(_("%s is not an array attribute"),$idAttr);        
   }
-  /**
-   * add new row in an array attribute
-   *
-   * the attribute must an array type
-   * @param string $idAttr identificator of array attribute 
-   * @param array $tv values of each column. Array index must be the attribute identificator
-   * @param string $index  $index row (first is 0) -1 at the end; x means before x row
-   * @return string error message, if no error empty string
-   */
-  final public function addArrayRow($idAttr, $tv, $index=-1)  {
-    $a=$this->getAttribute($idAttr);
-    if ($a->type=="array") {
-      $err=$this->completeArrayRow($idAttr);
-      if ($err=="") {
-	$ta=$this->attributes->getArrayElements($a->id);
-	$ti=array();
-	$err="";
-	// add in each columns
-	foreach($ta as $k=>$v) {
-	  $tnv=$this->getTValue($k);
-	  $val=$tv[strtolower($k)];
-	  if ($index >=0) {
-	    $tnv[$index - 0.5]=$val;
-	    ksort($tnv);
-	    $tvu=array();
-	    foreach ($tnv as $vv) $tvu[]=$vv; // key reorder
-	    $tnv=$tvu;
-	  } else	$tnv[]=$val;
-	  $err.=$this->setValue($k,$tnv);
+	/**
+	* add new row in an array attribute
+	*
+	* the attribute must be an array type
+	* @param string $idAttr identificator of array attribute
+	* @param array $tv values of each column. Array index must be the attribute identificator
+	* @param string $index  $index row (first is 0) -1 at the end; x means before x row
+	* @return string error message, if no error empty string
+	*/
+	final public function addArrayRow($idAttr, $tv, $index=-1) {
+		$a = $this->getAttribute($idAttr);
+		if ($a->type == "array") {
+			$err = $this->completeArrayRow($idAttr);
+			if ($err == "") {
+				$ta = $this->attributes->getArrayElements($a->id);
+				$ti = array();
+				$err = "";
+				// add in each columns
+				foreach ($ta as $k => $v) {
+					$tnv = $this->getTValue($k);
+					$val = $tv[strtolower($k)];
+					if ($index == 0) {
+						array_unshift($tnv, $val);
+					} elseif($index > 0 && $index < count($tnv)) {
+						$t1 = array_slice($tnv, 0, $index);
+						$t2 = array_slice($tnv, $index);
+						$tnv = array_merge($t1, array($val), $t2);
+					} else {
+						$tnv[] = $val;
+					}
+					$err.=$this->setValue($k, $tnv);
+				}
+				if ($err = "") {
+					$err = $this->completeArrayRow($idAttr);
+				}
+			}
+			return $err;
+		}
+		return sprintf(_("%s is not an array attribute"), $idAttr);
 	}
-	if ($err="") $err=$this->completeArrayRow($idAttr);
-      }
-      return $err;
-    }
-    return sprintf(_("%s is not an array attribute"),$idAttr);        
-  }
 
 
 
