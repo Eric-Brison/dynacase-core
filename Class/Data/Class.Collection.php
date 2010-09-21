@@ -37,6 +37,8 @@ Class Fdl_Collection extends Fdl_Document {
         if ($orderby) $s->orderby=$orderby;
         $s->slice=$slice;
         $s->start=$start;
+        $s->addFilter("confidential is null or hasdocprivilege(%d,profid,1024)",Doc::getSystemUserId());
+        
         $out=false;
         $content=array();
         if ($s->dirid > 0) {
@@ -103,6 +105,7 @@ Class Fdl_Collection extends Fdl_Document {
         $out->content=$content;
         $out->slice=$slice;
         $out->start=$start;
+        $out->date=date('Y-m-d H:i:s');
 
         return $out;
     }
@@ -186,6 +189,7 @@ Class Fdl_Collection extends Fdl_Document {
             if ($orderby) $s->orderby=$orderby;
             $s->setDebugMode();
             $s->setObjectReturn();
+            $s->addFilter("confidential is null or hasdocprivilege(%d,profid,1024)",Doc::getSystemUserId());
             $s->search();
             $info=$s->getDebugInfo();
             $out->error=$info["error"];

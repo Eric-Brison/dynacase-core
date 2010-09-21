@@ -28,6 +28,7 @@ Class Fdl_Document  {
             if (! $this->error) {
                 $this->error=$this->doc->control('view');
                 if ($this->error) $this->error=sprintf(_("no privilege view for %d"),$id);
+                elseif ($this->doc->isConfidential()) $this->error=sprintf(_("confidential document"));
             }
             if ($this->error) unset($this->doc);
             else {
