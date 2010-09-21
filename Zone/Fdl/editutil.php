@@ -99,7 +99,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 "app=FDL&action=EXPORTFILE&vid=$vid&docid=$docid&attrid=$attrid&index=$index\" title=\"{$info->name}\">";
 					// put image
 
-					$fname.="<IMG  id=\"img_$attridk\" style=\"vertical-align:bottom;border:none\" width=\"30\" SRC=\"";
+					$fname.="<IMG  id=\"img_$attridk\" style=\"vertical-align:bottom;border:none;width:30px\" SRC=\"";
 					$fname .= GetParam("CORE_BASEURL").
 "app=FDL&action=EXPORTFILE&width=30&vid=$vid&docid=".$docid."&attrid=".$attrid."&index=$index";
 					$fname .= "\">";
@@ -114,7 +114,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 				else $fname=_("error in filename");
 			} else {
 				if ($value) {
-					$fname.="<img id=\"img_$attridk\" style=\"vertical-align:bottom\" width=\"30\" SRC=\"";
+					$fname.="<img id=\"img_$attridk\" style=\"vertical-align:bottom;width:30px\" SRC=\"";
 					$fname .= $action->getImageUrl($value);
 					$fname .= "\">";
 				} else {

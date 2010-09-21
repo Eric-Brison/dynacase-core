@@ -524,7 +524,13 @@ function addTableRow(config) {
 							}
 							if (config[i].url) {
 								var t=document.getElementById('img_'+linp[j].id);
-								if (t) t.src=config[i].url;
+								if (t){
+									t.src=config[i].url;
+									if(t.style.filter && t.style.width == '0px' && t.style.height == '0px') {
+										t.style.width = '30px';
+										t.style.height = '30px';
+									}
+								}
 							}
 						}
 					} else {
