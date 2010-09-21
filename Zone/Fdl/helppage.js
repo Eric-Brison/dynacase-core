@@ -75,7 +75,6 @@ helppage.editsection.init = function() {
 };
 
 helppage.editsection.load = function() {
-	helppage.editsection.init();
 	helppage.editsection.view(Ih.callOpener('helpcallGetCurrentSectionLang',helppage.editsection.seckey));
 };
 
@@ -199,6 +198,10 @@ helppage.edithelp.setValues = function(name, description, lang) {
 /*****************************************************************************
  * EDIT
  */
+
+helppage.edit.load =  function() {
+	helppage.edit.section.checkFirstLast();
+};
 
 helppage.edit.change = function(obj, langkey) {
 	if(obj.className == 'inactive') {
@@ -425,7 +428,7 @@ helppage.edit.calls.saveSection = function(config) {
 	var firstlang = false;
 	for(var lang in config.langs) {
 		if(lang.match(/^[a-z]{2}_[a-z]{2}$/i)) {
-			if(config.langs[lang].name != '' || config.langs[lang].text != '') {
+			if(config.langs[lang].name || config.langs[lang].text) {
 				firstlang = lang;
 				addTableRow({
 					help_sec_order: config.secorder,
@@ -436,10 +439,10 @@ helppage.edit.calls.saveSection = function(config) {
 				});
 				if(config.curlang == lang) {
 					config.langs[lang].classname = 'current';
+					current_found = true;
 				}
 				else {
 					config.langs[lang].classname = 'active';
-					current_found = true;
 				}
 			}
 			else {

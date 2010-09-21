@@ -81,20 +81,20 @@ fieldset legend.[LANGKEY] span.[LANGKEY] {
 helppage.langs = [JSONLANGS];
 helppage.editsection.seckey = '[SECTIONKEY]';
 
-function trackFCKLoaded_helppage() {
+function helpEditsectionLoaded() {
 	try {
 		if (typeof( window['FCKeditorAPI']) == "undefined" ) {
-			self.setTimeout( trackFCKLoaded_helppage, 500 );
+			self.setTimeout( helpEditsectionLoaded, 500 );
 			return;
 		}
 	}
 	catch(e) {}
 	helppage.editsection.load();
-	autoVresize();
 }
 
-function loadFCKeditor_helppage() {
+function helpEditsectionLoad() {
 	helppage.editsection.init();
+
 	try {
 		var oFCKeditor = new FCKeditor( 'sec-text' ) ;
 		oFCKeditor.BasePath = 'fckeditor/';
@@ -115,18 +115,15 @@ function loadFCKeditor_helppage() {
 
 		oFCKeditor.ReplaceTextarea() ;
 
-		self.setTimeout( trackFCKLoaded_helppage, 500 );
+		self.setTimeout( helpEditsectionLoaded, 500 );
 	}
-	catch(e) {
-		helppage.editsection.load();
-		autoVresize();
-	}
+	catch(e) { }
+	autoVresize();
 	return true;
 }
 
 
-addEvent(window,"load",loadFCKeditor_helppage);
-addEvent(window,"load",autoVresize);
+addEvent(window,"load",helpEditsectionLoad);
 </script>
 
 [ZONE FDL:HTMLFOOT]

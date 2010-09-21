@@ -244,6 +244,6 @@ function helpcallReloadLangs() {
  * events
  */
 
-addEvent(window, 'load', helppage.edit.section.checkFirstLast);
+addEvent(window, 'load', helppage.edit.load);
 
 </script>
