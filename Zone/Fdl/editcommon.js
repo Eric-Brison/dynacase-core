@@ -961,7 +961,9 @@ function disableReadAttribute() {
 	    	if (linname) kj=linname.substring(linname.indexOf('[')+1,linname.indexOf(']'));
 	    	if (!kj) kj=j;
 	      vin = getInputValue(tain[c][k],kj);
-	      if ((vin == '') || (vin == ' ')) ndis = false;
+	      if ((vin == '') || (vin == ' ')) {
+			  if (lin[j].getAttribute('readonly') != '1') ndis = false;
+		  }
 	    
 	    }
 	    //	  alert(tain[c].toString()+'['+j+']'+ndis);
