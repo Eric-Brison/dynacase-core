@@ -5,6 +5,6 @@
 export targetdir
 export utildir
 
-SUBDIR = Access Appmng Authent Core Data Dav Fdc Fdl Freedom Fusers Generic Usercard Users
+SUBDIR = Access Appmng Authent Core Data Dav Fdc Fdl Freedom Fusers Generic Ui Usercard Users
 
 include $(utildir)/PubRule

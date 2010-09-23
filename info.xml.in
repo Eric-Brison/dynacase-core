@@ -5,6 +5,7 @@
   <description lang="fr">Serveur d'application freedom toolbox</description>
 
   <replaces>
+    <module name="freedom-extui" />
   	<module name="freedom-core" />
   	<module name="freedom-api" />
   	<module name="freedom-dav" />
@@ -15,6 +16,7 @@
 
   <requires>
     <installer version="0.8.0" comp="ge"/>
+    <module name="freedom-extjs" />
   </requires>
 
   <parameters>
@@ -96,8 +98,9 @@
     <process command="programs/record_application FUSERS I" />
     <process command="programs/record_application FREEDOM I" />
     <process command="programs/record_application FGSEARCH I" />
-    <process command="programs/record_application DATA" />
-    <process command="programs/record_application VAULT" />
+    <process command="programs/record_application DATA  I" />
+    <process command="programs/record_application EXTUI I" />
+    <process command="programs/record_application VAULT I" />
     <process command="programs/record_application DAV I" />
     <process command="programs/record_application FDC I" />
     
@@ -229,19 +232,23 @@
     <process command="programs/post_migration FGSEARCH" />
     
     <process command="programs/pre_migration DATA" />
-    <process command="programs/record_application DATA" />
+    <process command="programs/record_application DATA U" />
     <process command="programs/post_migration DATA" />
     
+    <process command="programs/pre_migration EXTUI" />
+    <process command="programs/record_application EXTUI U" />
+    <process command="programs/post_migration EXTUI" />
+    
     <process command="programs/pre_migration VAULT" />
-    <process command="programs/record_application VAULT" />
+    <process command="programs/record_application VAULT U" />
     <process command="programs/post_migration VAULT" />
     
     <process command="programs/pre_migration DAV" />
     <process command="programs/app_post DAV U" /><!-- FIXME: Required?-->
-    <process command="programs/record_application DAV" />
+    <process command="programs/record_application DAV U" />
     <process command="programs/post_migration DAV" />
     
-    <process command="programs/record_application FDC" />
+    <process command="programs/record_application FDC U" />
 
     <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron" />
 

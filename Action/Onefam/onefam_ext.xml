@@ -2,7 +2,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>
-             [CORE_CLIENT] : [APPNAME]
+             [CORE_CLIENT] : [APPLABEL]
         </title>
         
         <!-- Handle console without Firebug -->
@@ -27,7 +27,7 @@
         <div id="loading" style="position:absolute;z-index:100000;height:100%;width:100%;background-color:white;top:0;left:0;">
             <div style="position:absolute;left:40%;top:45%;font-weight:bold;font-size:large;">
                 <img src="ECM/Images/large-loading.gif" style="margin-right:8px;width:32px;height:32px;" align="absmiddle"/>
-                [TEXT:Loading]  [APPNAME]
+                [TEXT:Starting of]  [APPLABEL]
             </div>
         </div>
 		
@@ -62,7 +62,9 @@
 			Ext.onReady(function(){
 			
 				ONEFAM.familyTree = [FAMILYTREE];
-                ONEFAM.applicationName = '[APPNAME]';	
+				ONEFAM.displayConfig = eval('('+'[EXT_DISPLAYCONFIG]'+')');
+                ONEFAM.applicationName = "[APPNAME]";	
+                ONEFAM.applicationLabel = "[APPLABEL]";   
                 ONEFAM.canEditMasterFamilies=[caneditmasterfamilies];	
                 ONEFAM.canEditUserFamilies=[canedituserfamilies];   		
 				ONEFAM.start();
