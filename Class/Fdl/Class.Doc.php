@@ -6119,31 +6119,37 @@ create unique index i_docir on doc(initid, revision);";
   }
 
   /**
-   * affect a logical name that can be use as unique reference of a document independant of database
-   * @param string
-   * @return string error message if cannot be
-   */
-  function setLogicalIdentificator($name) {
-    if ($name) {
-      if (! preg_match("/^[A-Z][0-9A-Z:_-]*$/i",$name)) {
-	return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"),$name));
-      } else {
-	if ($this->isAffected() && ($this->name != "") && ($this->doctype!='Z')) {
-	  return (sprintf(_("Logical name %s already set for %s"),$name,$this->title));
-	} else {
-	  // verify not use yet
-	  $d=getTDoc($this->dbaccess,$name);
-	  if ($d && $d["doctype"]!='Z') {
-	    return sprintf(_("Logical name %s already use in document %s"),$name,$d["title"]);
-	  } else {
-	    $this->name=$name;
-	    $err=$this->modify(true,array("name"),true);
-	    if ($err!="") return $err;
-	  }
+	 * affect a logical name that can be use as unique reference of a document independant of database
+	 * @param string
+	 * @return string error message if cannot be
+	 */
+	function setLogicalIdentificator($name) {
+		if ($name) {
+			if (!preg_match("/^[A-Z][0-9A-Z:_-]*$/i", $name)) {
+				return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"), $name));
+			}
+			elseif (!$this->isAffected()) {
+				return (sprintf(_("Cannot set logical name %s because object is not affected"), $name));
+			}
+			elseif ($this->isAffected() && ($this->name != "") && ($this->doctype != 'Z')) {
+				return (sprintf(_("Logical name %s already set for %s"), $name, $this->title));
+			}
+			else {
+				// verify not use yet
+				$d = getTDoc($this->dbaccess, $name);
+				if ($d && $d["doctype"] != 'Z') {
+					return sprintf(_("Logical name %s already use in document %s"), $name, $d["title"]);
+				}
+				else {
+					$this->name = $name;
+					$err = $this->modify(true, array("name"), true);
+					if ($err != "") {
+						return $err;
+					}
+				}
+			}
+		}
 	}
-      }
-    }
-  }
   /**
    * view only option values
    * @param int $dirid   directory to place doc if new doc
