@@ -14,7 +14,7 @@ global $app_const;
 
 $app_const= array(
 		  "INIT" => "yes",
-		  "VERSION" => "3.0.12-0.201009211531"
+		  "VERSION" => "3.0.12-0.201009231348"
 		  );
 
 ?>

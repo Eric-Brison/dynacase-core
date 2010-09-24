@@ -599,7 +599,7 @@ msgid "version identificator"
 msgstr "identificateur de version"
 
 msgid "use freedom user management"
-msgstr "utiliser le gestion d'utilisateur FREEDOM"
+msgstr "utiliser le gestion d'utilisateur dyncase"
 
 msgid "default style"
 msgstr "style par défaut"
@@ -668,7 +668,7 @@ msgid "anakeen"
 msgstr "anakeen"
 
 msgid "url to reach http server index"
-msgstr "URL pour atteindre l'index du serveur web freedom"
+msgstr "URL pour atteindre l'index du serveur web dynacase"
 
 msgid "url to reach http server index in open mode"
 msgstr "URL pour atteindre le serveur on authentification open"
@@ -1092,7 +1092,7 @@ msgid "Referenced from"
 msgstr "Référencé depuis"
 
 msgid "freedom database"
-msgstr "base de donnée Freedom"
+msgstr "base de donnée dynacase"
 
 msgid "string limit for popup enum"
 msgstr "taille maximum de chaines de caractère pour les choix"
@@ -1220,10 +1220,10 @@ msgid "query %s has failed"
 msgstr "requête %s a échouée"
 
 msgid "Freedoms lib"
-msgstr "bibliothèque freedom"
+msgstr "bibliothèque dynacase"
 
 msgid "Freedoms library"
-msgstr "bibliothèque freedom"
+msgstr "bibliothèque dynacase"
 
 msgid "Access Action Library"
 msgstr "Bibliothèque pour les droits"
@@ -1262,7 +1262,7 @@ msgid "edit document in extjs"
 msgstr "Editer le document en extjs"
 
 msgid "Freedom initialisation"
-msgstr "Initialisation Freedom"
+msgstr "Initialisation dynacase"
 
 msgid "Document context menu"
 msgstr "Menu contextuel du document"
@@ -1472,10 +1472,10 @@ msgid "Access To Main Interface"
 msgstr "Accès en l'interface principale"
 
 msgid "Freedoms frame"
-msgstr "fenêtres freedom"
+msgstr "fenêtres dynacase"
 
 msgid "Freedoms list"
-msgstr "liste freedom"
+msgstr "liste dynacase"
 
 msgid "Timers management"
 msgstr "Gestion des minuteurs"
@@ -1496,7 +1496,7 @@ msgid "add batch document"
 msgstr "Ajout d'un document lot"
 
 msgid "Freedoms list by column"
-msgstr "liste freedom par colonne"
+msgstr "liste dynacase par colonne"
 
 msgid "query document import"
 msgstr "demande d'import de document"
@@ -1574,7 +1574,7 @@ msgid "Freedoms detail list"
 msgstr "liste détaillé"
 
 msgid "Freedoms RSS syndication"
-msgstr "RSS Freedom"
+msgstr "RSS Dynacase"
 
 msgid "folio icon list"
 msgstr "liste icones pour chemise"
@@ -1592,7 +1592,7 @@ msgid "bar menu"
 msgstr "barre de menu"
 
 msgid "Freedoms card"
-msgstr "fiche Freedom"
+msgstr "fiche Dynacase"
 
 msgid "duplicate document"
 msgstr " dupliquer le document"
@@ -1712,10 +1712,10 @@ msgid "Freedom update title fields"
 msgstr "mise à jour des champs titre"
 
 msgid "Freedom accessibilities"
-msgstr "Droits Freedom"
+msgstr "Droits Dynacase"
 
 msgid "Freedom group accessibilities"
-msgstr "Droits des groupes Freedom"
+msgstr "Droits des groupes Dynacase"
 
 msgid "Freedom modify accessibilities"
 msgstr "Modification des Droits"
@@ -1814,10 +1814,10 @@ msgid "fgsearch"
 msgstr "Recherche générale"
 
 msgid "freedom global search"
-msgstr "Recherche générale freedom"
+msgstr "Recherche générale dynacase"
 
 msgid "freedom  global search"
-msgstr "Recherche générale freedom"
+msgstr "Recherche générale dynacase"
 
 msgid "freedom detailled global search"
 msgstr "recherche détaillée générale"
@@ -1862,7 +1862,7 @@ msgid "Dav"
 msgstr "Dav"
 
 msgid "WebDav FREEDOM system file"
-msgstr "Système de fichiers WebDAV FREEDOM"
+msgstr "Système de fichiers WebDAV DYNACASE"
 
 msgid "Access for exchange documents"
 msgstr "Accès aux échanges de documents"
@@ -1925,7 +1925,7 @@ msgid "Import CSV"
 msgstr "Importation CSV"
 
 msgid "Freedom"
-msgstr "Freedom"
+msgstr "Dynacase"
 
 msgid "confidentiality"
 msgstr "confidentialité"
@@ -2924,7 +2924,7 @@ msgid "delete from prefered"
 msgstr "supprimer des contacts préférés"
 
 msgid "freedom address book"
-msgstr "Carnet d'Adresses Freedom"
+msgstr "Carnet d'Adresses Dynacase"
 
 msgid "click here to create a new"
 msgstr "Création...."
@@ -4614,7 +4614,7 @@ msgid "ToSearch"
 msgstr "Rechercher"
 
 msgid "Add search engine to your browser"
-msgstr "Ajout du moteur de recherche FREEDOM dans votre navigateur"
+msgstr "Ajout du moteur de recherche DYNACASE dans votre navigateur"
 
 msgid "Add search engine"
 msgstr "Ajouter le moteur de recherche"
@@ -6655,7 +6655,7 @@ msgid "login must not be empty"
 msgstr "le login ne doit pas être vide"
 
 msgid "no freedom DB access"
-msgstr "pas d'accès à la base de données FREEDOM"
+msgstr "pas d'accès à la base de données DYNACASE"
 
 #, c-format
 msgid "Action '%s' not declared for application %s (%d)"
@@ -7164,11 +7164,11 @@ msgstr "Chargement du dump '%s' en échec avec le code retour %s"
 
 #, c-format
 msgid "PG Error: Connection to freedom pg service '%s' failed !"
-msgstr "Erreur PG : connexion au pg service freedom '%s' en échec !"
+msgstr "Erreur PG : connexion au pg service dynacase '%s' en échec !"
 
 #, c-format
 msgid "Connection to freedom pg service '%s' OK !"
-msgstr "Connexion au pg service de freedom '%s' OK !"
+msgstr "Connexion au pg service de dynacase '%s' OK !"
 
 #, c-format
 msgid "PG Error: Connection to temporary pg service '%s' failed !"
@@ -8441,7 +8441,7 @@ msgid "Error: parameter tmpemptydb '%s' is not allowed."
 msgstr "Erreur: le paramètre tmpemptydb '%s' n'est pas autorisé"
 
 msgid "freedom cron try execute"
-msgstr "Cron Freedom essai d'execution"
+msgstr "Cron Dynacase essai d'execution"
 
 #, c-format
 msgid "result of import  %s"

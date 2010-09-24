@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
-<module	name="freedom-toolbox" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
+<module	name="dynacase-platform" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
 
-  <description lang="en">Hosting Application Toolkit freedom toolbox</description>
-  <description lang="fr">Serveur d'application freedom toolbox</description>
+  <description lang="en">Hosting Application Toolkit dynacase platform</description>
+  <description lang="fr">Serveur d'application dynacase platform</description>
 
   <replaces>
-    <module name="freedom-extui" />
+        <module name="freedom-extui" />
+        <module name="freedom-toolbox" />
   	<module name="freedom-core" />
   	<module name="freedom-api" />
   	<module name="freedom-dav" />
@@ -16,7 +17,7 @@
 
   <requires>
     <installer version="0.8.0" comp="ge"/>
-    <module name="freedom-extjs" />
+    <module name="dynacase-extjs" />
   </requires>
 
   <parameters>
