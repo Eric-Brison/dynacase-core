@@ -22,7 +22,8 @@ border-width:1px;
 border-style:none none solid none;
  }
 </style>
-<form  class="fborder" 
+
+<form  class="fborder document" 
        id="fedit" 
        name="modifydoc" 
        target="_parent"

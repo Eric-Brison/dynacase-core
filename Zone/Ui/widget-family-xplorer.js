@@ -424,7 +424,7 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                     familyId: displayed.family,
                     allowSubfamily: true,
                     closable: true,
-                    title: me.context._("eui::Create search : ") + familyDocument.getTitle()
+                    title: me.context._("eui::Create search :") + familyDocument.getTitle()
                 });
                 
                 return requester ;
