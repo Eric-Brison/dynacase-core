@@ -248,7 +248,6 @@ Class DocCtrl extends DocLDAP {
 	    }	    
 	  }
 	}
-
 	foreach ($tuid as $ku=>$uid) {
 	  // add right in case of multiple use of the same user : possible in dynamic profile
 	  $vupacl[$uid]=(intval($vupacl[$uid]) | intval($v["upacl"]));
@@ -266,8 +265,13 @@ Class DocCtrl extends DocLDAP {
 	    else $err=$perm->Add();
 	}
 	}
+      }
+      if ($perm) {
+          // reinit computed
+          $err=$perm->resetComputed();
       }      
     }
+    return $err;
   }
 
   /**
@@ -374,7 +378,6 @@ Class DocCtrl extends DocLDAP {
     if ($this->profid==$docid) {
       if (! isset($this->uperm)) {
 	$perm = new DocPerm($this->dbaccess, array($docid,$this->userid));
-
 	if ($perm -> IsAffected()) $this->uperm = $perm->uperm;
 	else $this->uperm = $perm->getUperm($docid,$this->userid);	  
       }

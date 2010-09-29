@@ -144,6 +144,7 @@ AC_OUTPUT(Makefile \
           App/Fdl/tsearch2_fr.sql \
           App/Fgsearch/FGSEARCH_init.php \
           App/Freedom/FREEDOM_init.php  \
+          App/Extui/EXTUI_init.php  \
           App/Fusers/FUSERS_init.php \
           App/Generic/GENERIC_init.php \
           App/Onefam/ONEFAM_init.php \

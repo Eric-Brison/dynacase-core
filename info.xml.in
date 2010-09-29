@@ -18,6 +18,7 @@
   <requires>
     <installer version="0.8.0" comp="ge"/>
     <module name="dynacase-extjs" />
+    <module name="dynacase-sizzle" />
   </requires>
 
   <parameters>
