@@ -64,6 +64,18 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
     return $this->preInsert();
   }
 
+  /**
+   * reinitialize computed acl
+   * @param integer $docid docid acl to reset
+   */
+  function resetComputed($docid="") {
+      $err="";
+      if (! $docid) $docid=$this->docid;
+      if ($docid > 0) {
+          $err=$this->exec_query(sprintf("update docperm set cacl=0 where docid=%d and cacl != 0;",$docid));          
+      }
+      return $err;
+  }
   function getUperm($docid, $userid) {
     $q = new QueryDb($this->dbaccess, "docperm");
     $t = $q->Query(0,1,"TABLE","select getuperm($userid,$docid) as uperm");

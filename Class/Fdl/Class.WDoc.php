@@ -971,7 +971,6 @@ Class WDoc extends Doc {
 	$this->pdoc = &$pdoc;
       }
 
-
       $err=$this->pdoc->DocControl($aclname);
 
     }
