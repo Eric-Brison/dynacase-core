@@ -38,6 +38,13 @@ function viewtpl(Action &$action) {
     if( $reg === false ) {
       return sprintf(_("error in pzone format %s"),$zone);
     }
+
+    if( array_key_exists('argv', $reg) ) {
+      foreach( $reg['argv'] as $k => $v ) {
+	setHttpVar($k, $v);
+      }
+    }
+
     $appname=$reg['app'];
     $doc=new_doc($dbaccess,$docid);
     if ($doc->isAlive()) {
