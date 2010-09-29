@@ -125,6 +125,13 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
   // display body
   $limit=$this->getValue("REP_LIMIT","ALL");
   $order=$this->getValue("REP_IDSORT","title");
+  $oa=$rdoc->getAttribute($order);
+  if ($oa) {
+      if (($oa->type=="docid") && ($oa->getOption("doctitle")!="")) {
+          $order=$oa->getOption("doctitle");
+          if ($order=='auto') $order=$oa->id.'_title';
+      }
+  }
   $order.= " ".$this->getValue("REP_ORDERSORT");
   $tdoc = getChildDoc($this->dbaccess, $this->initid,0,$limit,array(),$this->userid,"TABLE",$rfamid,false,$order);
   $trodd=false;

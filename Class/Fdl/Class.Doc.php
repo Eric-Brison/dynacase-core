@@ -1945,11 +1945,14 @@ create unique index i_docir on doc(initid, revision);";
     reset($nattr);
 
     foreach($nattr as $k=>$a) {
+        if ($a->getOption('sortable') != 'yes') {
       if ($a->repeat || ($a->visibility == "H")||  ($a->visibility == "I") || ($a->visibility == "O") || ($a->type == "longtext") || ($a->type == "xml") || 
-	  ($a->type == "docid") ||  ($a->type == "htmltext") ||
+	  (($a->type == "docid") && ($a->getOption("doctitle")==""))||  ($a->type == "htmltext") ||
 	  ($a->type == "image") || ($a->type == "file" ) || ($a->fieldSet->visibility == "H") ||
 	  ($a->getOption('sortable') == 'no' )) continue;
+        }
       $tsa[$a->id]=$a;
+        
     }
     return $tsa;      
   } 
