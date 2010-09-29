@@ -271,6 +271,7 @@ Class DocCtrl extends DocLDAP {
           $err=$perm->resetComputed();
       }      
     }
+    return $err;
   }
 
   /**
