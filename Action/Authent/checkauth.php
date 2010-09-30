@@ -85,6 +85,10 @@ function checkauth(&$action) {
 
 //   error_log(__CLASS__."::".__FUNCTION__." ".'Redirect Location: '.$fromuri);
 
+  // clean $fromuri
+  $fromuri = preg_replace('!//+!', '/', $fromuri);
+  $fromuri = preg_replace('!&&+!', '&', $fromuri);
+
   // Redirect to initial page
   header('Location: '.$fromuri);
   exit(0);
