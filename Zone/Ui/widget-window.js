@@ -253,6 +253,12 @@ Ext.fdl.Window = Ext.extend(Ext.Window, {
             });
         }
         
+        if(!this.document){
+            Ext.Msg.alert(this.context._("eui::missing right"),this.context._("eui::You have no right to access this document"));
+            this.close();
+            return;
+        }
+        
         this.updateDocument(this.document);
         
     },
@@ -283,9 +289,9 @@ Ext.fdl.Window = Ext.extend(Ext.Window, {
         
             var title2 = '<span style="float:left;">' + this.document.getProperty('fromtitle') + " " +
             Fdl.encodeHtmlTags(this.document.getTitle()) +
-            '</span><span style="float:right">' +
-            (this.document.getProperty('version') ? 'Version ' + this.document.getProperty('version') + ' ' : '') +
-            (this.document.hasWorkflow() ? (this.document.isFixed() ? '<span style="padding-left:10px;margin-right:3px;background-color:' + this.document.getColorState() + '">&nbsp;</span>' + this.document.getLocalisedState() : (this.document.getActivityState() ? this.document.getActivityState() : '<i>' + this.document.getLocalisedState() + '</i>')) : '') +
+//            '</span><span style="float:right">' +
+//            (this.document.getProperty('version') ? 'Version ' + this.document.getProperty('version') + ' ' : '') +
+//            (this.document.hasWorkflow() ? (this.document.isFixed() ? '<span style="padding-left:10px;margin-right:3px;background-color:' + this.document.getColorState() + '">&nbsp;</span>' + this.document.getLocalisedState() : (this.document.getActivityState() ? this.document.getActivityState() : '<i>' + this.document.getLocalisedState() + '</i>')) : '') +
             '</span>';
             this.setTitle(title2);
                         

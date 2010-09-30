@@ -256,9 +256,9 @@ function popUp(x,y,w,h,cid,text,bgcolor,textcolor,fontstyleset,title,titlecolor,
       titlebar.style.overflow="hidden";
       titlebar.style.cursor="move";
       titlebar.style.backgroundImage="url('Images/tabvig.png')";
-      var bsavegeo=(noDecoration)?'<img style="display:none" src="Images/byellow.png" id="'+cid+'_max">':'<img style="cursor:default" src="Images/byellow.png" id="'+cid+'_max">';
-      var tmp=(isresize)?'<img title="Minimise/Maximise" style="cursor:default" src="Images/bgreen.png"  id="'+cid+'_min">'+bsavegeo:'';
-      titlebar.innerHTML='<span title="Close" id="'+cid+'_ti" style="position:absolute; left:3px; top:1px; font:bold 9pt sans-serif; color:'+titletextcolor+'; height:18px; overflow:hidden; clip-height:16px;">'+title+'</span><div id="'+cid+'_btt" style="position:absolute; width:48px; left:'+(tw-48)+'px; top:2px; text-align:right">'+tmp+'<img style="cursor:default" src="Images/bred.png" title="Close" id="'+cid+'_cls"></div>';
+      var bsavegeo=(noDecoration)?'<div id="'+cid+'_max" class="btn_max" style="display:none;background-image:url(Images/byellow.png);height:10px;width:10px;float:right;"></div>':'<div id="'+cid+'_max" class="btn_max" style="cursor:pointer;background-image:url(Images/byellow.png);height:10px;width:10px;float:right;"></div>'; // <img style="cursor:default" src="Images/byellow.png" id="'+cid+'_max">
+      var tmp=(isresize)?bsavegeo+'<div id="'+cid+'_min" class="btn_min" style="cursor:pointer;background-image:url(Images/bgreen.png);height:10px;width:10px;float:right;"></div>':'';//'<img title="Minimise/Maximise" style="cursor:default" src="Images/bgreen.png"  id="'+cid+'_min">'+bsavegeo:'';
+      titlebar.innerHTML='<span title="Close" id="'+cid+'_ti" style="position:absolute; left:3px; top:1px; font:bold 9pt sans-serif; color:'+titletextcolor+'; height:18px; overflow:hidden; clip-height:16px;">'+title+'</span><div id="'+cid+'_btt" style="position:absolute; width:48px; left:'+(tw-48)+'px; top:2px; text-align:right">'+'<div id="'+cid+'_cls" class="btn_cls" style="cursor:pointer;background-image:url(Images/bred.png);height:10px;width:10px;float:right;"></div>'+tmp+'</div>';//'<img style="cursor:default" src="Images/bred.png" title="Close" id="'+cid+'_cls"></div>';
       tw=(ie5)?w-7:w-13;
       var content=new subBox(2,ht+4,tw,h-15-ht,bgcolor,cid+'_c');
       content.style.borderColor=bordercolor;

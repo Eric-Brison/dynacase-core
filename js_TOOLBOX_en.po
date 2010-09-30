@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-22 11:06+0200\n"
+"POT-Creation-Date: 2010-09-30 10:11+0200\n"
 "PO-Revision-Date: 2010-02-08 15:49+0100\n"
 "Last-Translator: anakeen\n"
 "Language-Team: english\n"
@@ -19,6 +19,12 @@ msgstr "Content"
 
 msgid "eui::Informations"
 msgstr "Information"
+
+msgid "eui::missing right"
+msgstr "Missing Right"
+
+msgid "eui::You have no right to access this document"
+msgstr "You have no right to access this document"
 
 msgid "eui::Creation :"
 msgstr "Creation :"
@@ -77,8 +83,8 @@ msgstr "Edit Search"
 msgid "eui::Enter search name"
 msgstr "Enter search name"
 
-msgid "eui::Create search : "
-msgstr "Create Search"
+msgid "eui::Create search :"
+msgstr "Create Search :"
 
 msgid "eui::Families"
 msgstr "Families"

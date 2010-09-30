@@ -79,6 +79,7 @@
 .document input[type=button] {
 	border-top: 0px;
 	border-right: 0px;
+	border-left: 0px;
 	width: 17px;
 	margin-right: 0px !important;
 	cursor: pointer;
@@ -209,4 +210,22 @@
 
 .calendar {
 	z-index: 1;
+}
+
+/* #fedit {
+	font-family: tahoma, arial, helvetica, sans-serif;
+	padding: 10px;
+	font-size: 11px;
+}
+
+#fedit a {
+	font-weight: bold;
+}
+
+#fedit a.state, #fedit a.boldstate {
+	border:0 !important;
+} */
+
+#fedit a:HOVER {
+	text-decoration: none;
 }

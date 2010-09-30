@@ -5,38 +5,6 @@
  */
 
 
-/**
- * Creates a menu that supports tooltip specs for it's items. Just add "tooltip: {text: 'txt', title: 'ssss'}" to
- * the menu item config, "title" value is optional.
- * @class Ext.ux.TooltipMenu
- * @extends Ext.menu.Menu
- */
- // See http://www.extjs.com/forum/showthread.php?t=77312
-Ext.ux.TooltipMenu = Ext.extend(Ext.menu.Menu, {
-	afterRender: function() {
-		Ext.ux.TooltipMenu.superclass.afterRender.apply(this, arguments);
-		
-		var menu = this;
-		this.tip = new Ext.ToolTip({
-			target: this.getEl().getAttribute('id'),
-			renderTo: document.body,
-			delegate: '.x-menu-item',
-			title: 'dummy title',
-			listeners: {
-				beforeshow: function updateTip(tip) {
-					var mi = menu.findById(tip.triggerElement.id);
-					if(!mi || !mi.initialConfig.tooltip || !mi.initialConfig.tooltip.text) {
-						return false;
-					}
-					var title = typeof(mi.initialConfig.tooltip.title) == 'undefined' ? '' : mi.initialConfig.tooltip.title;
-					tip.header.dom.firstChild.innerHTML = title;
-					tip.body.dom.innerHTML = mi.initialConfig.tooltip.text;
-				}
-			}
-		});
-	}
-});
-
 // Utility function to add an event listener
 function addEvent(o,e,f){
 	if (o.addEventListener){ o.addEventListener(e,f,true); return true; }
@@ -292,7 +260,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
 				
 		if(document && document.id){
 			this.setDocument(document);
-			console.log('DOCUMENT',documentId,me.document.getTitle());
+			//console.log('DOCUMENT',documentId,me.document.getTitle());
 			//me.publish('modifydocument',me.document);
 		}
 		
@@ -306,7 +274,8 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
 				mediaObject: mediaObject,
 				context: this.context,
 				menu: menu
-			});			
+			});
+			//console.log('MENU ITEM',menuItem);
 			menu.add(menuItem);
 		}
 		
@@ -648,16 +617,27 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
         
         
         var statestatus = null;
+        var statestatustext = '';
+        
+        if(this.document.getProperty('version')){
+        	console.log('VERSION',this.document.getProperty('version'));
+        	statestatustext = 'version ' + this.document.getProperty('version');
+        }
+        
         if (this.document.hasWorkflow()){
             if(this.document.isFixed()) {
-                statestatus = new Ext.Toolbar.TextItem('<i>' + '<span style="padding-left:10px;margin-right:3px;background-color:' + this.document.getColorState() + '">&nbsp;</span>' + this.document.getLocalisedState() + '</i>');
+                statestatustext += '<i>' + '<span style="padding-left:10px;margin-right:3px;background-color:' + this.document.getColorState() + '">&nbsp;</span>' + this.document.getLocalisedState() + '</i>';
             } else {
                 if (this.document.getActivityState()) {
-                    statestatus = new Ext.Toolbar.TextItem('<i>' + this.document.getActivityState() + '</i>');
+                    statestatustext += '<i>' + this.document.getActivityState() + '</i>';
                 } else {
-                    statestatus = new Ext.Toolbar.TextItem('<i>' + this.document.getLocalisedState() + '</i>');
+                    statestatustext += '<i>' + this.document.getLocalisedState() + '</i>';
                 }
             }
+        }
+        
+        if(statestatustext){
+        	statestatus = new Ext.Toolbar.TextItem(statestatustext);
         }
 
                 

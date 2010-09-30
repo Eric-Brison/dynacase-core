@@ -232,8 +232,9 @@ Ext.fdl.MenuManager = {
 		
 		// See http://www.extjs.com/forum/showthread.php?t=77312
 		if(menuObject.description){
+//		    console.log('DESCRIPTION TOOLTIP',menuObject.description);
 			if(Ext.QuickTips){ // fix when qtip is not already initialized
-				                  Ext.QuickTips.init();
+			    Ext.QuickTips.init();
 			}
 
 			menuItem.tooltip = {

@@ -275,6 +275,11 @@ Ext.fdl.MultiDocumentPanel = Ext.extend(Ext.TabPanel, {
 				});
 			}
 			
+			if(!document){
+				Ext.Msg.alert(me.context._("eui::missing right"),me.context._("eui::You have no right to access this document"));	
+				return;
+			}
+			
 			console.log('Document',document);
 			
 			if(document.isCollection() && !(mode=='create')){

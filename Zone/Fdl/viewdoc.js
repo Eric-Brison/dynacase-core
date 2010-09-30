@@ -13,6 +13,13 @@ include_js('FDL/Layout/iframe.js')
 
 
 function popdoc(event,url) {
+    
+//    if(window.parent.Ext){
+//        //alert('ExtJS is detected');
+//        console.log(event,url);
+//        window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,"???",{opener:window});         
+//        //return me;
+//    } else {
 
   if (event) event.cancelBubble=true;     
   if (ctrlPushed(event)) {
@@ -22,9 +29,8 @@ function popdoc(event,url) {
     var dpopdoc = document.getElementById('POPDOC_s');
     var fpopdoc;
     var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-    if (! dpopdoc) {      
+    if (! dpopdoc) {
       new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', url, 'white', '#00385c', '16pt serif', '[TEXT:mini view]', '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, true, false);
-    
     } else {      
       if ((getObjectTop(dpopdoc) < scrolly) || 
 	  (getObjectTop(dpopdoc) > (getInsideWindowHeight() + scrolly))	){
@@ -36,6 +42,8 @@ function popdoc(event,url) {
 
     }
   }
+  
+//    }
 }
 
 
