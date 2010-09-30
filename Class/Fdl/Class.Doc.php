@@ -5353,54 +5353,73 @@ create unique index i_docir on doc(initid, revision);";
    * @return string
    */
   public function getZoneFile($zone="") {
-    if ($zone=="") $zone=$this->defaultview;
-    $index=-1;
-    if (preg_match("/([A-Z_-]+):([^:]+):{0,1}([A-Z]{0,1})/", $zone, $reg)) {
-      // HERE HERE HERE
-      // if (ereg("([^\[]*)\[([0-9])+\]", $reg[2], $rega)) {
-      if (preg_match("/([^\[]*)\[([0-9]+)\]/", $reg[2], $rega)) {
-	$aid=$rega[1]; // zone can be THIS:MA_ATTR[2]:B  to reference row 3 in an array of files
-	$index=$rega[2];
-      } else $aid=$reg[2];
-      $oa=$this->getAttribute($aid);
-      if ($oa) {
-	if ($oa->usefor != 'Q') $template=$this->getValue($oa->id);
-	else $template=$this->getParamValue($aid);
-	if ($index >=0) {
-	  $tt=$this->_val2array($template);
-	  $template=$tt[$index];
+    $index = -1;
+    if( $zone == "" ) {
+      $zone = $this->defaultview;
+    }
+
+    $reg = $this->parseZone($zone);
+    if( is_array($reg) ) {
+      $aid = $reg['layout'];
+      if( $reg['index'] != '' ) {
+	$index = $reg['index'];
+      }
+      $oa = $this->getAttribute($aid);
+      if( $oa ) {
+	if( $oa->usefor != 'Q' ) {
+	  $template = $this->getValue($oa->id);
+	} else {
+	  $template = $this->getParamValue($aid);
+	}
+	if( $index >= 0 ) {
+	  $tt = $this->_val2array($template);
+	  $template = $tt[$index];
 	}
 
-	if ($template=="") return sprintf(_("no file found for zone [%s]"),$zone);
+	if( $template == "" ) {
+	  return sprintf(_("no file found for zone [%s]"), $zone);
+	}
 
-	return $this->vault_filename_fromvalue($template,true);;
+	return $this->vault_filename_fromvalue($template, true);
       }
-      if (strstr($aid,'.')) {
-	return getLayoutFile($reg[1],strtolower($aid));
-      } else {	
-	return getLayoutFile($reg[1],strtolower($aid)).".xml";
-      }	
-    }  
+      if( strstr($aid, '.') ) {
+	return getLayoutFile($reg['app'], strtolower($aid));
+      } else {
+	return getLayoutFile($reg['app'], strtolower($aid)).".xml";
+      }
+    }
   }
   /** 
    * return the character in third part of zone
    * @return char
    */
   public function getZoneOption($zone="") {
-    if ($zone=="") $zone=$this->defaultview;
-    if (preg_match("/([A-Z_-]+):([^:]+):{0,1}([A-Z]{0,1})/", $zone, $reg)) {
-      return $reg[3];
+    if ($zone=="") {
+      $zone=$this->defaultview;
     }
+
+    $zoneElements = $this->parseZone($zone);
+    if( $zoneElements === false ) {
+      return '';
+    }
+
+    return $zoneElements['modifier'];
   }  
   /** 
    * return the characters in fourth part of zone
    * @return string
    */
   public function getZoneTransform($zone="") {
-    if ($zone=="") $zone=$this->defaultview;
-    if (preg_match("/([A-Z_-]+):([^:]+):([A-Z]{0,1}):([^:]+)/", $zone, $reg)) {
-      return $reg[4];
-    }    
+    if ($zone=="") {
+      $zone=$this->defaultview;
+    }
+
+    $zoneElements = $this->parseZone($zone);
+    if( $zoneElements === false ) {
+      return '';
+    }
+
+    return $zoneElements['transform'];
   }
   /**
    * set default values define in family document
@@ -5512,21 +5531,21 @@ create unique index i_docir on doc(initid, revision);";
   final public function viewDoc($layout="FDL:VIEWBODYCARD",$target="_self",$ulink=true,$abstract=false,$changelayout=false) {
     global $action;
 
-    if (preg_match("/(.*)\?(.*)/",$layout, $reg)) {
+    $reg = $this->parseZone($layout);
+    if( $reg === false ) {
+      return sprintf(_("error in pzone format %s"), $layout);
+    }
+
+    if( array_key_exists('args', $reg) ) {
       // in case of arguments in zone
       global $ZONE_ARGS;
-      $layout=$reg[1];
-      $zargs = explode("&", $reg[2] );
-      foreach($zargs as $k=>$v) {
-	if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
-	  // memo zone args for next action execute
-	  $ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
+      $layout = $reg['fulllayout'];
+      if( array_key_exists('argv', $reg) ) {
+	foreach( $p['argv'] as $k => $v ) {
+	  $ZONE_ARGS[$k] = $v;
 	}
       }
     }
-
-    if (! preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg))
-      return sprintf(_("error in pzone format %s"),$layout);
   	 
     if (!$changelayout) {
       $play=$this->lay;
@@ -5546,7 +5565,7 @@ create unique index i_docir on doc(initid, revision);";
 
 
     $this->lay->set("_readonly",($this->Control('edit')!=""));
-    $method = strtok(strtolower($reg[2]),'.');
+    $method = strtok(strtolower($reg['layout']),'.');
 
   	 
     if (method_exists ( $this, $method)) {
@@ -7404,6 +7423,80 @@ create unique index i_docir on doc(initid, revision);";
     if (is_array($l))  return $l;    
     return array();
   }
+
+  /**
+   * Parse a zone string "FOO:BAR[-1]:B:PDF?k1=v1,k2=v2" into an array:
+   *
+   * array(
+   *     'fulllayout' => 'FOO:BAR[-1]:B:PDF',
+   *     'args' => 'k1=v1,k2=v2',
+   *     'argv' => array(
+   *         'k1' => 'v1',
+   *         'k2' => 'v2
+   *      ),
+   *     'app' => 'FOO',
+   *     'layout' => 'BAR',
+   *     'index' => '-1',
+   *     'modifier' => 'B',
+   *     'transform' => 'PDF'
+   *  )
+   *
+   * @param zone string "APP:LAYOUT:etc." $zone
+   * @return false on error or an array containing the components
+   */
+  static public function parseZone($zone="") {
+    $p = array();
+
+    // Separate layout (left) from args (right)
+    $split = preg_split('/\?/', $zone, 2);
+    $left = $split[0];
+    $right = $split[1];
+    
+    // Check that the layout part has al least 2 elements
+    $el = preg_split('/:/', $left);
+    if( count($el) < 2 ) {
+      return false;
+    }
+    $p['fulllayout'] = $left;
+
+    // Parse args into argv (k => v)
+    if( $right != "" ) {
+      $p['args'] = $right;
+      $argList = preg_split('/&/', $p['args']);
+      foreach( $argList as $arg ) {
+	$split = preg_split('/=/', $arg, 2);
+	$left = urldecode($split[0]);
+	$right = urldecode($split[1]);
+	$p['argv'][$left] = $right;
+      }
+    }
+    
+    // Parse layout
+    $parts = array(0 => 'app', 1 => 'layout', 2 => 'modifier', 3 => 'transform');
+    $match = array();
+    $i = 0;
+    while( $i < count($el) ) {
+      if( ! array_key_exists($i, $parts) ) {
+	error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Unexpected part '%s' in zone '%s'.", $el[$i], $zone));
+	return false;
+      }
+
+      // Extract index from 'layout' part if present
+      if( $i == 1 && preg_match("/^(?P<name>.*?)\[(?P<index>-?\d)\]$/", $el[$i], $match) ) {
+	$p[$parts[$i]] = $match['name'];
+	$p['index'] = $match['index'];
+	$i++;
+	continue;
+      }
+
+      // Store part
+      $p[$parts[$i]] = $el[$i];
+      $i++;
+    }
+    
+    return $p;
+  }
+
 }
 
 ?>

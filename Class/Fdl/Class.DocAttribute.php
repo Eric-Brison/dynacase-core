@@ -46,7 +46,7 @@ Class BasicAttribute {
       $topt=explode("|",$this->options);
       $this->_topt=array();
       foreach ($topt as $k=>$v) {
-	list($vn,$vv)=explode("=",$v);
+	list($vn,$vv)=explode("=", $v, 2);
 	$this->_topt[$vn]=$vv;
       }
     }
