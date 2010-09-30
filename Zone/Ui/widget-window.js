@@ -253,6 +253,12 @@ Ext.fdl.Window = Ext.extend(Ext.Window, {
             });
         }
         
+        if(!this.document){
+            Ext.Msg.alert(this.context._("eui::missing right"),this.context._("eui::You have no right to access this document"));
+            this.close();
+            return;
+        }
+        
         this.updateDocument(this.document);
         
     },

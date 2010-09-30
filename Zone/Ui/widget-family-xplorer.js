@@ -5,7 +5,7 @@
  */
 
 /**
- * @class Ext.fdl.FamilyNavigator
+ * @class Ext.fdl.FamilyXplorer
  * @namespace Ext.fdl.Collection
  * @author Clement Laballe
  * <p>This class represent an instance of family navigator which is a replacement for the classic onefam application.</p>

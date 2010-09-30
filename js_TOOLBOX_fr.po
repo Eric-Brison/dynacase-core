@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-29 11:37+0200\n"
+"POT-Creation-Date: 2010-09-30 10:11+0200\n"
 "PO-Revision-Date: 2010-02-08 15:48+0100\n"
 "Last-Translator: anakeen <devel@anakeen.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,12 @@ msgstr "Contenu"
 
 msgid "eui::Informations"
 msgstr "Informations"
+
+msgid "eui::missing right"
+msgstr "Droit manquant"
+
+msgid "eui::You have no right to access this document"
+msgstr "Vous n'avez pas les droits requis pour consulter ce document"
 
 msgid "eui::Creation :"
 msgstr "Création :"
