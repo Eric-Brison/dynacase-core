@@ -123,9 +123,10 @@ Class Fdl_Collection extends Fdl_Document {
      * @param boolean $onlyvalues set to true is want return attribute definition also
      * @param string $searchproperty property use where key is applied
      * @param boolean $whl with highlight return also text including keyword. the keyword is between HTML B tag.
+     * @param boolean $verifyhaschild
      * @return array of raw document
      */
-    public function simpleSearch($key,$mode="word",$famid=0,$filter="",$start=0,$slice=100,$orderby="",$onlyvalues=true,$searchproperty="svalues",$whl=false) {
+    public function simpleSearch($key,$mode="word",$famid=0,$filter="",$start=0,$slice=100,$orderby="",$onlyvalues=true,$searchproperty="svalues",$whl=false,$verifyhaschild=false) {
         include_once("FDL/Class.SearchDoc.php");
         static $sw=null;
 
@@ -206,6 +207,10 @@ Class Fdl_Collection extends Fdl_Document {
                 if (! $keyword) $keyword=str_replace(" ","|",$key);
                 while ($doc=$s->nextDoc()) {
                     $tmpdoc->affect($doc);
+                	if ($verifyhaschild) {
+                        $tmpdoc->setVolatileProperty("haschildfolder",hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid'),($doc->doctype=='S')));
+
+                    }
                     $content[$idx]=$tmpdoc->getDocument($onlyvalues,$completeprop);
                     if ($whl) $content[$idx]['highlight']=getHighlight($doc,$keyword);
                     $idx++;

@@ -128,10 +128,11 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
                 $orderby=getHttpVars("orderBy");
                 $whl=(getHttpVars("withHighlight","false")=="true");
                 $filter=getHttpVars("filter");
+                $verifyhaschild=getHttpVars("verifyhaschild");
                 if ($filter) $filter=json_decode($filter);
                 if ($filter=="undefined") $filter="";
                 $searchproperty=getHttpVars("searchProperty","svalues");
-                $out=$doc->simpleSearch($key,$mode,$famid,$filter,$start,$slice,$orderby,$onlyValues,$searchproperty,$whl);
+                $out=$doc->simpleSearch($key,$mode,$famid,$filter,$start,$slice,$orderby,$onlyValues,$searchproperty,$whl,$verifyhaschild);
             } else $out->error=$doc->error;
             break;
         case 'retrieveproposal':

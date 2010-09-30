@@ -275,7 +275,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
 				context: this.context,
 				menu: menu
 			});
-			//console.log('MENU ITEM',menuItem);
+			console.log('MENU ITEM',menuItem);
 			menu.add(menuItem);
 		}
 		

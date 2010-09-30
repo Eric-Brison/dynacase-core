@@ -1527,6 +1527,12 @@ Ext.fdl.CollectionContainer = Ext.extend(Ext.Panel,{
         this.collection ? this.context = this.collection.context : null;
         this.search ? this.context = this.search.context : null;
         
+        this.onWidgetCollectionChange(collectionPanelClass);
+        
+    },
+    
+    onWidgetCollectionChange: function(collectionPanelClass){
+        // Empty function, automatically called when collection widget is called
     },
     
     /**

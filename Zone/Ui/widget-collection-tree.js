@@ -333,7 +333,7 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
             collectionId: collection.id,
             _fdldoc: collection,
             text: collection.getTitle(),
-            expandable: (me.collection != collection && collection.isCollection()), // && collection.getProperty('haschildfolder')), // undefined is to be removed once data is able to return haschildfolder for documents
+            expandable: (me.collection != collection && collection.isCollection() && collection.getProperty('haschildfolder')), // undefined is to be removed once data is able to return haschildfolder for documents
             expanded: false,
             icon: collection.getIcon({
                 width: 16
@@ -468,9 +468,10 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
             
             var search = this.attributes._fdldoc;
                        
-            var sf = search.search({key:(search.key ? search.key : ''),slice:"ALL"}).getDocuments();
+            var sf = search.search({key:(search.key ? search.key : ''),slice:"ALL",verifyhaschild:true}).getDocuments();
             for (var i = 0; i < sf.length; i++) {
                 var doc = sf[i];
+                console.log('DOCU',doc);
                 this.appendChild(me.getTreeNode(doc));
             }
             
