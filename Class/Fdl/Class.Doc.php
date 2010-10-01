@@ -763,7 +763,7 @@ create unique index i_docir on doc(initid, revision);";
     $cdoc->comment=$this->comment;
     $values = $this->getValues();
 
-    $this->exec_query("begin;");
+    $this->exec_query("begin;"); // begin transaction in case of fail add
     $err=$this->delete(true,false,true); // delete before add to avoid double id (it is not authorized)
     if ($err != "") return $err;
 
@@ -782,7 +782,6 @@ create unique index i_docir on doc(initid, revision);";
 
     $err=$cdoc->Modify();
     if ($err=="") {     
-        
       if ($this->revision > 0) {
 	$this->exec_query(sprintf("update fld set childid=%d where childid=%d",$cdoc->id,$this->initid));
       }
