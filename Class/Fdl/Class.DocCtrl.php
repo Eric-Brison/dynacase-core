@@ -166,6 +166,9 @@ Class DocCtrl extends DocLDAP {
   function setProfil($profid, $fromdocidvalues=0) {
 
     if (! is_numeric($profid)) $profid=getIdFromName($this->dbaccess,$profid);
+    if(empty($profid)) {
+        $profid = 0;
+    }
     $this->profid = $profid;
     if (($profid > 0) && ($profid != $this->id)) {
       // make sure that the profil is activated

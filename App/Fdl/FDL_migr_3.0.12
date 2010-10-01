@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -z "$pgservice_freedom" ]; then
+    echo "Undefined or empty pgservice_freedom!"
+    exit 1
+fi
+
+PGSERVICE="$pgservice_freedom" psql --set ON_ERROR_STOP=on <<EOF 2>&1
+UPDATE docfam SET profid = 0 where profid is null;
+EOF
+
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error: SQL error in `basename $0`"
+    exit $RET
+fi
+
+exit 0
