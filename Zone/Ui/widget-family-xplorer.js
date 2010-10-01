@@ -88,6 +88,7 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                 var collectionPanel =  new (eval("("+collectionPanelString+")"))({
                     search: config.search,
                     collection: config.collection,
+                    rememberUserColumns: true,
                     header: false,
                     displaySearchFilter: function(id){
                         var panel = ftp.getEditSearchPanel(id);
@@ -277,6 +278,7 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                 },node,reload);
                 
             },
+            
             displaySearch: function(filter, node){
                                 
                 this.displayed = {
@@ -318,8 +320,13 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                         text: me.context._("eui::Evaluate"),
                         handler: function(){
                         
+                        	requester.document = document ;
+                        	                        	
                             requester.save();
-                            console.log('REQUESTER-PREVIEW-DOCUMENT',requester.document);
+                            
+                            document.setValue('se_famid',familyDocument.id);
+                            document.save();
+                            //console.log('REQUESTER-PREVIEW-DOCUMENT',requester.document);
                             ftp.displayDocument(requester.document.id,null,null,true);
                             
                         }
@@ -385,17 +392,20 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                                 
                 var requester = new Ext.fdl.Requester({
                     tbar: [{
-                        text: 'Evaluer',
+                        text: me.context._("eui::Evaluate"),
                         handler: function(){
-                        
-                            requester.document.setValue('se_famid',displayed.family);
+                                                    
                             requester.save();
-                            console.log('REQUESTER-PREVIEW-DOCUMENT',requester.document);
+                            
+                            requester.document.setValue('se_famid',displayed.family);
+                            requester.document.save();
+                            
+                            //console.log('REQUESTER-PREVIEW-DOCUMENT',requester.document);
                             ftp.displayDocument(requester.document.id, null, null, true);
                             
                         }
                     },{
-                        text: 'Sauvegarder',
+                        text: me.context._("eui::Save"),
                         handler: function(){
                         
                             Ext.Msg.prompt('freedom',me.context._("eui::Enter search name"),function(btn,text){
@@ -408,7 +418,7 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                                         temporary: false,
                                         title: text
                                     });
-                                    console.log('CLONED DOCUMENT',doc,displayed.family);
+                                    //console.log('CLONED DOCUMENT',doc,displayed.family);
                                     doc.setValue('se_famid',displayed.family);
                                     doc.save();
                                     ftp.displayDocument(doc.id, null, null, true);
