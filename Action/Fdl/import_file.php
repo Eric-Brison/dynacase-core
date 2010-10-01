@@ -792,9 +792,11 @@ $tkey=array("title"),$prevalues=array(),$torder=array()) {
 							$tabsfiles=$doc->_val2array($dv);
 							$tvfids=array();
 							foreach ($tabsfiles as $fi) {
-								if (preg_match(PREGEXPFILE, $dv, $reg)) {
+								if (preg_match(PREGEXPFILE, $fi, $reg)) {
 									$tvfids[]=$fi;
-								} else {
+								} elseif (preg_match('/^http:/', $fi, $reg)) {
+                                                                        $tvfids[]='';
+                                                                } elseif ($fi) {
 									$absfile="$ldir/$fi";
 									$err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
 									if ($err != "") {
@@ -802,23 +804,27 @@ $tkey=array("title"),$prevalues=array(),$torder=array()) {
 									} else {
 										$tvfids[]=$vfid;
 									}
-								}
+                                                                } else {
+                                                                    $tvfids[]='';
+                                                                }
 							}
 							$doc->setValue($attr->id, $tvfids);
 						} else {
 							// one file only
-							if (preg_match(PREGEXPFILE, $dv, $reg)) {
-								$doc->setValue($attr->id, $dv);
-								$tcr["values"][$attr->getLabel()]=$dv;
-							} else {
-								$absfile="$ldir/$dv";
-								$err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
-								if ($err != "") {
-									$tcr["err"]=$err;
-								} else {
-									$doc->setValue($attr->id, $vfid);
-								}
-							}
+						    if (preg_match(PREGEXPFILE, $dv, $reg)) {
+						        $doc->setValue($attr->id, $dv);
+						        $tcr["values"][$attr->getLabel()]=$dv;
+						    } elseif (preg_match('/^http:/', $fi, $reg)) {
+						        // nothing
+						    } elseif ($fi) {
+						        $absfile="$ldir/$dv";
+						        $err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
+						        if ($err != "") {
+						            $tcr["err"]=$err;
+						        } else {
+						            $doc->setValue($attr->id, $vfid);
+						        }
+						    } 
 						}
 					} else {
 						// just for analyze

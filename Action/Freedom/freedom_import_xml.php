@@ -150,13 +150,11 @@ function extractFileFromXmlDocument($file) {
     if (!is_dir("$dir/$mediadir")) mkdir ("$dir/$mediadir");
     $f=fopen($file,"r");
     $nf=fopen($file.".new","w");
-    
     while (!feof($f)) {
         $buffer = fgets($f, 4096);
         $mediaindex++;
         if (preg_match("/<([a-z_0-9-]+)[^>]*mime=\"[^\"]+\"(.*)>(.*)/",$buffer,$reg)) {
-            //print_r2($reg);
-            if ($reg[2]!="/") { // not empty tag
+            if (substr($reg[2],-1)!="/") { // not empty tag
                 $tag=$reg[1];
                 if (preg_match("/<([a-z_0-9-]+)[^>]*title=\"([^\"]+)\"/",$buffer,$regtitle)) {
                     $title=$regtitle[2];
@@ -363,6 +361,7 @@ function splitXmlDocument($xmlfiles,$splitdir) {
                 fputs($xo,$buffer);
             }
             fclose($xo);
+            
         }
         if (strpos($buffer,"<documents")!==false) {
             $findfirst=true;
