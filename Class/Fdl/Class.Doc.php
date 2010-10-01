@@ -4473,7 +4473,6 @@ create unique index i_docir on doc(initid, revision);";
 	} else {
 	  if ($info) {
 	    if ($htmllink) {
-	      $umime = trim(`file -ib $info->path`);
 	      $size=round($info->size/1024)._("AbbrKbyte");
 	      $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
   							 
