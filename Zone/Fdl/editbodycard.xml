@@ -30,8 +30,8 @@
 [IF ONETAB]
 <div id="ttabs" class="tabsh" >
 [BLOCK TABS]
-<span  name="spantabs" id="TAB[tabid]" onmousedown="showFieldset(event,this,'TAG[tabid]')">[tabtitle]</span>
+<span  name="spantabs" id="TAB[tabid]" onmousedown="showFieldset(event,this,'TAG[tabid]','[docid]')">[tabtitle]</span>
 [ENDBLOCK TABS]</div>
 <div class="line" id="toptab"></div>
-  <script>moveFieldset();[IFNOT firsttab] showFirstFieldset()[ENDIF firsttab][IF firsttab]showThisFieldset(null,'TAB[firsttab]')[ENDIF firsttab]</script>
+  <script>moveFieldset();[IFNOT firsttab] showFirstFieldset()[ENDIF firsttab][IF firsttab]showThisFieldset(null,'TAB[firsttab]','[docid]')[ENDIF firsttab]</script>
 [ENDIF ONETAB]

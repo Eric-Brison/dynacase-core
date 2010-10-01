@@ -46,7 +46,7 @@ Class BasicAttribute {
       $topt=explode("|",$this->options);
       $this->_topt=array();
       foreach ($topt as $k=>$v) {
-	list($vn,$vv)=explode("=", $v, 2);
+	list($vn,$vv)=explode("=",$v, 2);
 	$this->_topt[$vn]=$vv;
       }
     }
@@ -117,6 +117,15 @@ Class BasicAttribute {
     */
   function isMultiple() {
   	return ($this->inArray() || ($this->getOption('multiple')=='yes'));
+  }
+   /**
+    * get tab ancestor
+    * @return FieldSetAttribute
+    */
+  function getTab() {
+        if ($this->type=='tab') return $this;
+        if ($this->fieldSet && ($this->fieldSet->id != 'FIELD_HIDDENS')) return $this->fieldSet->getTab();
+        return false;
   }
    /**
    * export values as xml fragment

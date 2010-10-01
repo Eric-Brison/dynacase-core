@@ -3308,13 +3308,22 @@ create unique index i_docir on doc(initid, revision);";
    * 
    * @param string $tag the tag to verify
    * @param bool $allrevision set to false to get a tag to a specific version
+   * @return DocUTag
    */
   final public function getUTag($tag,$allrevision=true) {
     if (! $this->initid) return "";
+    
+    
+    
     include_once("FDL/Class.DocUTag.php");
-    $docid= ($allrevision)?$this->initid:$this->id;
-    $utag=new DocUTag($this->dbaccess,array($docid,$this->userid,$tag));
-    if ($utag->isAffected()) return $utag;
+    $q=new QueryDb($this->dbaccess,"docUTag");
+    $q->addQuery("uid=".intval($this->userid));
+    if ($tag) $q->addQuery("tag = '".pg_escape_string($tag)."'");
+    if ($allrevision) $q->addQuery("initid = ".$this->initid);
+    else $q->addQuery("id = ".$this->id);
+    $q->order_by="id desc";
+    $r=$q->Query(0,1);
+    if ($q->nb==1) return $r[0];
     return false;
   }
   
@@ -5649,7 +5658,16 @@ create unique index i_docir on doc(initid, revision);";
     $ttabs=array();
 
     $iattr=0;
+    $firsttab=false;
+    $onlytab=strtolower(getHttpVars("onlytab"));
+    $tabonfly=false; // I want tab on fly
+    $showonlytab=($onlytab?$onlytab:false);
+    if ($onlytab) {
+        $this->addUTag($this->userid,"lasttab",$onlytab);
+    }
     foreach($listattr as $i=>$attr) {
+        if ($onlytab && ($attr->fieldSet->id != $onlytab && $attr->fieldSet->fieldSet->id != $onlytab)) continue;
+        
       $iattr++;
 
       //------------------------------
@@ -5674,27 +5692,48 @@ create unique index i_docir on doc(initid, revision);";
 	  if (count($this->getAValues($attr->id))==0) $goodvalue=false;
 	}
           
+	
 	if ($goodvalue) {
-	  $viewtpl=$attr->getOption("viewtemplate");
-	  if ($viewtpl ) {
-	    if ($viewtpl=="none") {
-	      $htmlvalue='';
-	    } else {
-	      if ($this->getZoneOption($viewtpl) == 'S') {
-		$attr->setOption("vlabel","none");
-	      }
-	      $htmlvalue=sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",$this->id, $this->fromid,$target,$viewtpl);
+	    // detect first tab 
+	    
+            $toptab=$attr->getTab();
+            if ($toptab) $tabonfly=($toptab->getOption("viewonfly")=="yes");
+	    if ($tabonfly && (! $showonlytab)) {
+	         $ut=$this->getUtag("lasttab");
+                 if ($ut) $showonlytab=$ut->comment; 
+	        elseif ($attr->fieldSet->id && $attr->fieldSet->fieldSet) {
+	            $showonlytab=$attr->fieldSet->fieldSet->id;
+	        }
 	    }
-	  } else {
-	    if ((($value == "")&&($attr->type!="array")) || (($attr->type=="array")&& (count($this->getAValues($attr->id))==0))) $htmlvalue=$attr->getOption("showempty");
-	    else $htmlvalue=$this->GetHtmlValue($attr,$value,$target,$ulink);
-	  }
+	    $attrInNextTab=($tabonfly && $toptab && ($toptab->id != $showonlytab));
+	    if (! $attrInNextTab) {
+	        $viewtpl=$attr->getOption("viewtemplate");
+	        if ($viewtpl ) {
+	            if ($viewtpl=="none") {
+	                $htmlvalue='';
+	            } else {
+	                if ($this->getZoneOption($viewtpl) == 'S') {
+	                    $attr->setOption("vlabel","none");
+	                }
+	                $htmlvalue=sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]",$this->id, $this->fromid,$target,$viewtpl);
+	            }
+	        } else {
+	            if ((($value == "")&&($attr->type!="array")) || (($attr->type=="array")&& (count($this->getAValues($attr->id))==0))) $htmlvalue=$attr->getOption("showempty");
+	            else $htmlvalue=$this->GetHtmlValue($attr,$value,$target,$ulink);
+	        }
+	    } else {
+	        $htmlvalue=false; // display defer	    
+        }
+          
+	    
 	} else $htmlvalue="";
+
 	if ($htmlvalue !== "") {// to define when change frame
-	  if ( $currentFrameId != $attr->fieldSet->id) {
-	    if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe=true;
-	  }
+	    if ( $currentFrameId != $attr->fieldSet->id) {
+	        if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe=true;
+	    }
 	}
+	
       }
       //------------------------------
       // change frame if needed
@@ -5727,6 +5766,12 @@ create unique index i_docir on doc(initid, revision);";
 	  $frames[$k]["IMAGES"]="IMAGES_$k";
 	  $this->lay->SetBlockData($frames[$k]["IMAGES"],
 				   $tableimage);
+            $frames[$k]["notloaded"]=false;
+	if ($oaf->type=="frame" &&(count($tableframe)+count($tableimage))==0) {
+	    $frames[$k]["viewtpl"]=true;
+	    $frames[$k]["zonetpl"]=_("Loading...");
+            $frames[$k]["notloaded"]=true;
+	} 
 	  unset($tableframe);
 	  unset($tableimage);
 	  $tableframe=array();
@@ -5736,7 +5781,17 @@ create unique index i_docir on doc(initid, revision);";
 	$v=0;
 	$nbimg=0;
       }
-
+      if ($htmlvalue===false) {
+          $goodvalue=false;
+          if ( $currentFrameId != $attr->fieldSet->id) {
+              if ( ($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
+                  $changeframe=true;
+                  $currentFrameId = $attr->fieldSet->id;
+                  $currentFrame = $attr->fieldSet;
+                  $v++;
+              }
+          }
+      }
 
       //------------------------------
       // Set the table value elements
@@ -5832,22 +5887,33 @@ create unique index i_docir on doc(initid, revision);";
 	$frames[$k]["IMAGES"]="IMAGES_$k";
 	$this->lay->SetBlockData($frames[$k]["IMAGES"],
 				 $tableimage);
+            $frames[$k]["notloaded"]=false;
+	if ($oaf->type=="frame" &&(count($tableframe)+count($tableimage))==0) {
+            $frames[$k]["viewtpl"]=true;
+            $frames[$k]["zonetpl"]=_("Loading...");
+            $frames[$k]["notloaded"]=true;
+        } 
       }
     // Out
     $this->lay->SetBlockData("TABLEBODY",$frames);
     $this->lay->SetBlockData("TABS",$ttabs);
     $this->lay->Set("ONETAB",count($ttabs)>0);
-    $this->lay->Set("NOTAB",($target=="mail"));
+    $this->lay->Set("NOTAB",($target=="mail")||$onlytab);
+    $this->lay->Set("docid",$this->id);
 
     if (count($ttabs)>0)   {
-      $this->lay->Set("firsttab",false);
-      foreach ($ttabs as $k=>$v) {
-	$oa=$this->getAttribute($k);
-	if ($oa->getOption("firstopen")=="yes")  $this->lay->Set("firsttab",$k);
-      }
-      
-    }
-  
+            $this->lay->Set("firsttab",false); 
+            $ut=$this->getUtag("lasttab");
+            if ($ut)  $firstopen=$ut->comment; // last memo tab
+            else $firstopen=false;
+            foreach ($ttabs as $k=>$v) {
+                $oa=$this->getAttribute($k);
+                if ($oa->getOption("firstopen")=="yes")  $this->lay->set("firsttab",$k);
+                if ($firstopen == $oa->id) $this->lay->Set("firsttab",$k);
+            }
+            
+        } 
+    
   }
   
   /**
@@ -6385,12 +6451,19 @@ create unique index i_docir on doc(initid, revision);";
     $this->lay->SetBlockData("TABS",$ttabs);
     $this->lay->Set("ONETAB",count($ttabs)>0);
     $this->lay->Set("fromid",$this->fromid);
+    $this->lay->Set("docid",$this->id);
     if (count($ttabs)>0)   {
-      $this->lay->Set("firsttab",false);
-      foreach ($ttabs as $k=>$v) {
-	$oa=$this->getAttribute($k);
-	if ($oa->getOption("firstopen")=="yes")  $this->lay->Set("firsttab",$k);
-      }
+        $this->lay->Set("firsttab",false);
+        $ut=$this->getUtag("lasttab");
+        if ($ut)  $firstopen=$ut->comment; // last memo tab
+        else $firstopen=false;
+        
+        foreach ($ttabs as $k=>$v) {
+            $oa=$this->getAttribute($k);
+            if ($oa->getOption("firstopen")=="yes")  $this->lay->Set("firsttab",$k);
+            if ($firstopen == $oa->id) $this->lay->Set("firsttab",$k);
+        }
+         
     }
     
   

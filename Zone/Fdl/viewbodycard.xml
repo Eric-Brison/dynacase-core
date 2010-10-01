@@ -1,6 +1,6 @@
 [BLOCK TABLEBODY]
-<fieldset id="F[frameid]" style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB][IFNOT NOTAB]display:none;[ENDIF NOTAB][ENDIF TAB]" [IF TAB]name="[tag]"[ENDIF TAB]  class="mfield" >[IF frametext]<legend class="frame"  onmousedown="viewornot('T[frameid]')">[frametext]</legend>[ENDIF frametext]
-[IF viewtpl]<div width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF viewtpl]
+<fieldset [IF notloaded]loaded="no" [ENDIF notloaded]id="F[frameid]" style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB][IFNOT NOTAB]display:none;[ENDIF NOTAB][ENDIF TAB]" [IF TAB]name="[tag]"[ENDIF TAB]  class="mfield" >[IF frametext]<legend class="frame"  onmousedown="viewornot('T[frameid]')">[frametext]</legend>[ENDIF frametext]
+[IF viewtpl]<div  width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF viewtpl]
 [IFNOT viewtpl]<table width="100%" cellspacing="0" id="T[frameid]" >
 <tr class="FREEDOMBack1">
   <td colspan="2"  height="1px"></td>
@@ -22,9 +22,9 @@
 [IF ONETAB]
 <div id="ttabs" class="tabsh" >
 [BLOCK TABS]
-<span  name="spantabs" id="TAB[tabid]" onmousedown="showFieldset(event,this,'TAG[tabid]')">[tabtitle]</span>
+<span  name="spantabs" id="TAB[tabid]" onmousedown="showFieldset(event,this,'TAG[tabid]','[docid]')">[tabtitle]</span>
 [ENDBLOCK TABS]</div>
 <div class="line" id="toptab"></div>
-  <script>moveFieldset();[IFNOT firsttab] showFirstFieldset()[ENDIF firsttab][IF firsttab]showThisFieldset(null,'TAB[firsttab]')[ENDIF firsttab]</script>
+  <script>moveFieldset();[IFNOT firsttab] showFirstFieldset()[ENDIF firsttab][IF firsttab]showThisFieldset(null,'TAB[firsttab]','[docid]')[ENDIF firsttab]</script>
 [ENDIF ONETAB]
 [ENDIF NOTAB]
