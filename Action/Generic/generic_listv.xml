@@ -38,7 +38,7 @@ function floatMenu () {
 }
 document.needreload=true;
 var prevselid;
-
+var PDS='';
 // view select document
 function vselect(th) { 
   if (prevselid)  document.getElementById(prevselid).className="unselect";
