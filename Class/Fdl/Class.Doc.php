@@ -763,28 +763,39 @@ create unique index i_docir on doc(initid, revision);";
     $cdoc->comment=$this->comment;
     $values = $this->getValues();
 
+    $this->exec_query("begin;");
     $err=$this->delete(true,false,true); // delete before add to avoid double id (it is not authorized)
     if ($err != "") return $err;
 
     foreach($prevalues as $k=>$v) {
       $cdoc->setValue($k,$v);
     }
-    $err=$cdoc->Add();
-    if ($err != "") return $err;
+    $err=$cdoc->Add(true,true);
+    if ($err != "") {
+       $this->exec_query("rollback;");
+        return $err;
+    }
 
     foreach($values as $k=>$v) {
       $cdoc->setValue($k,$v);
     }
 
     $err=$cdoc->Modify();
-    if ($err=="") {
+    if ($err=="") {     
+        
       if ($this->revision > 0) {
 	$this->exec_query(sprintf("update fld set childid=%d where childid=%d",$cdoc->id,$this->initid));
       }
     }
-
+    $this->exec_query(sprintf("update fld set fromid=%d where childid=%d",$cdoc->fromid,$this->initid));
+    
     $cdoc->AddComment(sprintf(_("convertion from %s to %s family"),$f1from,$f2from));
-			      
+		
+    $this->exec_query("commit;");
+    global $gdocs; //reset cache if needed
+    if (isset($gdocs[$this->id])) {
+        $gdocs[$this->id]=&$cdoc;
+    }
     
     return $cdoc;
     
