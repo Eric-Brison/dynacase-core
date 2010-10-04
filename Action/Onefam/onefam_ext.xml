@@ -9,7 +9,9 @@
         <script>
             if (!("console" in window)) {window.console = {'log': function(s) {}}}
         </script>
-        <link rel="shortcut icon" href="[CORE_LOGOCLIENT]"/>
+        
+        <link rel="icon" href="FDL/Images/logo16.ico" >
+        <link rel="shortcut icon" href="FDL/Images/logo16.ico" >
         <!-- Ext Library -->
         <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
         <link rel="stylesheet" type="text/css" id="theme"/>
