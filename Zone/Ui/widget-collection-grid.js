@@ -1563,7 +1563,6 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                             //                            record.get('_fdldoc').getProperty('ownername') +
                             //                            "</a>";
                             //                        }
-                            
                             if (this.dataIndex == 'owner') {
                                 return Fdl.encodeHtmlTags(record.get('_fdldoc').getProperty('ownername'));
                             }
