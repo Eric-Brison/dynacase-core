@@ -50,11 +50,12 @@ function viewtpl(Action &$action) {
     if ($doc->isAlive()) {
       $action->lay=new Layout($doc->getZoneFile($zone),$action);
       $doc->lay=&$action->lay;
-      // $doc->viewdefaultcard($target,$ulink,$abstract,false);
-      // $doc->viewdefaultcard($target);
+     
       $method = strtok(strtolower($reg['layout']),'.');
       if (method_exists($doc, $method)) {
 	$doc->$method();
+      } else {
+          $doc->viewdefaultcard($target);
       }
     }
 }
