@@ -23,12 +23,11 @@ $htmlmode = GetHttpVars("htmlmode");
 
 $from=getMailAddr($action->user->id);
 if ($from == "")  $from = getParam('SMTP_FROM');
-if ($from == "")  $from = $action->user->login;
+if ($from == "")  $from = $from = $action->user->login.'@'.php_uname('n');
 
-$themail = new Mail_mime();
+$themail = new Fdl_Mail_mime();
 if ($file && $file!='stdin') {
   $mime=trim(`file -ib $file`);
-  print "mime=$mime";
   if (preg_match("|text/html|",$mime)) {
     $themail->setHTMLBody($file,true);
   } else if (preg_match("|text|",$mime)) {

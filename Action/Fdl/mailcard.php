@@ -229,7 +229,7 @@ function sendCard(&$action,
   if ($from == "") {
     $from=getMailAddr($action->user->id);
     if ($from == "")  $from = getParam('SMTP_FROM');
-    if ($from == "")  $from = $action->user->login.'@'.$_SERVER["HTTP_HOST"];    
+    if ($from == "")  $from = $action->user->login.'@'.php_uname('n');    
   }
 
   if ($subject == "") $subject = $ftitle;
