@@ -6,8 +6,8 @@
 <noscript>
 <H1>[TEXT:Javascript must be enabled in your navigator]</H1>
 </noscript>
-<LINK REL="icon" HREF="CORE/Images/logo16.ico" >
-<LINK REL="SHORTCUT ICON" HREF="CORE/Images/logo16.ico" >
+<LINK REL="icon" HREF="[DYNACASE_FAVICO]" >
+<LINK REL="SHORTCUT ICON" HREF="[DYNACASE_FAVICO]" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 
 

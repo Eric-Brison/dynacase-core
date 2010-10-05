@@ -5,7 +5,7 @@
   <head>
 
    <title>[TEXT:Properties:] [TITLE]</title>
-<link rel="shortcut icon" href="FDL/Images/logo16.ico" />
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
    <style>
 [ZONE CORE:GENCSS]
 [ZONE FDL:GENCSS]

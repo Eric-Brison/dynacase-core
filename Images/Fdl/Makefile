@@ -11,7 +11,7 @@ SUBDIR = flags
 
 include $(utildir)/PubRule
 
-$(pubdir)/$(appname)/logo16.ico : logo16.ico
+$(pubdir)/$(appname)/dynacase.ico : dynacase.ico
 	cp $< $(pubdir)/$(appname)/Images
 
-publish: $(pubdir)/$(appname)/logo16.ico 
+publish: $(pubdir)/$(appname)/dynacase.ico
