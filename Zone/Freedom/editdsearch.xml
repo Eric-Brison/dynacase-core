@@ -62,7 +62,7 @@
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">
-  <select  name="_se_funcs[]" >
+  <select  name="_se_funcs[]"  onchange="filterfunc2(this)">
     [BLOCK FUNC]<option  ctype="[functype]" style="display:[funcdisplay]" value="[funcid]">[funcname]</option>
     [ENDBLOCK FUNC]
   </select></td>
@@ -156,7 +156,7 @@
   [ENDBLOCK [ATTRCOND]]
   </select></td>
 <td class="und">
-  <select  name="_se_funcs[]" >  
+  <select  name="_se_funcs[]"  onchange="filterfunc2(this)">
   [BLOCK [FUNCCOND]]
      <option [func_selected] ctype="[func_type]"  style="display:[func_display]" value="[func_id]">[func_name]</option>
   [ENDBLOCK [FUNCCOND]]
@@ -216,10 +216,10 @@
 </td>
 </tr>
 
-<tr class="FREEDOMBack1">
+<tr class="FREEDOMBack1"> 
   <td  align="left" colspan="2" >
  
- <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="sendsearch('[CORE_STANDURL]&app=FREEDOM&action=SEARCH');return false"> </td>
+ <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="sendsearch('[CORE_STANDURL]&app=FREEDOM&action=SEARCH');return false" /> </td>
   <td  align="right"></td>
 </tr>
 
