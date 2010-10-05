@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-04 12:06+0200\n"
-"PO-Revision-Date: 2010-10-04 12:06+0200\n"
+"POT-Creation-Date: 2010-10-05 12:02+0200\n"
+"PO-Revision-Date: 2010-10-05 12:03+0200\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -206,8 +206,14 @@ msgstr "entre"
 msgid "{left} is between {min} and {max}"
 msgstr "{left] est compris entre {min} et {max}"
 
-msgid "{left} one word equal {right}"
-msgstr "Un des mots de {left} est égal à {right}"
+msgid "{left} one value equal {right}"
+msgstr "{left} une des valeurs est égal à {right}"
+
+msgid "unknow operator"
+msgstr "opérateur inconnu"
+
+msgid "label"
+msgstr "désignation"
 
 #, c-format
 msgid "operator [%s] not allowed"
@@ -893,7 +899,7 @@ msgid "error in pzone format %s"
 msgstr "erreur dans la format pzone %s"
 
 msgid "Loading..."
-msgstr ""
+msgstr "Chargement..."
 
 #, c-format
 msgid "unknow document reference '%s'"
@@ -964,7 +970,7 @@ msgstr ""
 
 #, c-format
 msgid "Cannot set logical name %s because object is not affected"
-msgstr ""
+msgstr "Le nom logique %s ne peut être affecté qu'après création du document"
 
 #, c-format
 msgid "Logical name %s already set for %s"
@@ -1431,9 +1437,6 @@ msgstr "affecté"
 
 msgid "any values"
 msgstr "une des valeurs"
-
-msgid "label"
-msgstr "désignation"
 
 msgid "send search"
 msgstr "Lancer la recherche"
@@ -5265,7 +5268,7 @@ msgstr "attribut %s non trouvé"
 
 #, c-format
 msgid "attribute %s not an array"
-msgstr ""
+msgstr "attribut %s n'est pas un tableau"
 
 msgid "No identificator"
 msgstr "Pas d'identificateurs"
@@ -8605,6 +8608,12 @@ msgstr "les préférences d'exportation ont été sauvegardées"
 
 msgid "new document family"
 msgstr "nelle famille de document"
+
+#~ msgid "unknow operator : $operator"
+#~ msgstr "opérateur inconnu : "
+
+#~ msgid "{left} one word equal {right}"
+#~ msgstr "Un des mots de {left} est égal à {right}"
 
 #~ msgid "Freedom frontpage description"
 #~ msgstr "Description de la page d'accueil"

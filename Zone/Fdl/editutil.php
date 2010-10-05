@@ -643,8 +643,9 @@ if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 		$input=str_replace("<br/>",$ib,$input);
 	} else $input.="<br/>".$ib;
 } elseif (preg_match("/(.*)\((.*)\)\:(.*)/", $phpfunc, $reg)) {
-	if ($alone) {
+	if ($alone && $oattr->type!="docid") {
 		$arg = array($oattr->id);
+		print_r2($reg);
 	} else {
 		$argids = explode(",",$reg[3]);  // output args
 		$arg = array();
@@ -692,7 +693,7 @@ if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 } else {
 	if (!$notd) $input.="</td><td class=\"nowrap\">";
 }
-if ($oattr->elink != "") {
+if ($oattr->elink != "" && (!$alone)) {
 
 	if (substr($oattr->elink,0,3)=="JS:") {
 		// javascript action
