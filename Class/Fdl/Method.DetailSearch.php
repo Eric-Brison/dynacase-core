@@ -876,6 +876,7 @@ Class _DSEARCH extends DocSearch {
 
 		if ((count($taid) > 1) || ($taid[0] != "")) {
 			foreach($taid as $k=>$va) {
+				$docid_aid = 0;
 				$v=$tkey[$k];
 				$oa=$fdoc->getAttribute($taid[$k]);
 				$tcond[$k]= array("OLCOND"   => "olcond$k",
@@ -966,6 +967,9 @@ Class _DSEARCH extends DocSearch {
 						if (! in_array($type,$vi["type"])) $display='none';
 						$ctype=implode(",",$vi["type"]);
 					}
+					if($tf[$k]==$ki && $type == 'docid' && $display == '' && ($ki == '=' || $ki == '!=')) {
+						$docid_aid = $taid[$k];
+					}
 					$tfunc[]=array("func_id"=> $ki,
 		       "func_selected" => ($tf[$k]==$ki)?"selected":"",
 		       "func_display"=>$display,
@@ -981,6 +985,21 @@ Class _DSEARCH extends DocSearch {
 		      "ol_name" => _($vi));
 				}
 				$this->lay->SetBlockData("olcond$k", $tols);
+
+				if(is_numeric($v) && isset($docid_aid) && !empty($docid_aid)) {
+					$tcond[$k]["ISENUM"] = false;
+					$tcond[$k]["ISDOCID"] = true;
+					$tcond[$k]["DOCID_AID"] = $docid_aid;
+					$tcond[$k]["DOCID_TITLE"] = $this->getTitle($v);
+					$tcond[$k]["FAMID"] = abs($famid);
+				}
+				else {
+					$tcond[$k]["ISDOCID"] = false;
+					$tcond[$k]["DOCID_AID"] = 0;
+					$tcond[$k]["DOCID_TITLE"] = '';
+					$tcond[$k]["FAMID"] = abs($famid);
+				}
+
 
 			}
 		}

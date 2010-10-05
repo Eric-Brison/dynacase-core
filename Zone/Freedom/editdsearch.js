@@ -182,13 +182,9 @@ function filterfunc(th) {
 				pnode.appendChild(sec);
 			}
 			else {
-				var loc = window.location.href;
-				var famid, m;
-				if(m = loc.match(/&sfamid=([^&]+)/)) {
-					famid = m[1];
-				}
-				else if(m = loc.match(/&classid=([^&]+)/)) {
-					famid = m[1];
+				var famid;
+				if(document.getElementById('famid')) {
+					famid = document.getElementById('famid').value;
 				}
 				if(famid) {
 					var html = '<input type="hidden"  name="_se_keys[]" id="'+aid+'" value="">';
