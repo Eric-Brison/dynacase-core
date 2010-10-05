@@ -759,8 +759,13 @@ create unique index i_docir on doc(initid, revision);";
     $cdoc->id = $this->id;
     $cdoc->initid=$this->id;
     $cdoc->revision=0;
+    $cdoc->cdate=$this->cdate;
+    $cdoc->revdate=$this->revdate;
+    $cdoc->adate=$this->adate;
     $cdoc->locked=$this->locked;
-    $cdoc->comment=$this->comment;
+    $cdoc->profid=$this->profid;
+    $cdoc->dprofid=$this->dprofid;
+    
     $values = $this->getValues();
 
     $this->exec_query("begin;"); // begin transaction in case of fail add
