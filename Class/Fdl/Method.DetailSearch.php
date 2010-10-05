@@ -514,6 +514,7 @@ Class _DSEARCH extends DocSearch {
 	 */
 	function getSpecTitle() {
 		$tkey = $this->getTValue("SE_KEYS");
+                $taid = $this->getTValue("SE_ATTRIDS");
 		$l="";
 		if ((count($tkey) > 1) || ($tkey[0] != "")) {
 			$tl=array();
@@ -522,7 +523,17 @@ Class _DSEARCH extends DocSearch {
 				if ($v[0]=='?') {
 					$vh=getHttpVars(substr($v,1),"-");
 					if (($vh != "-") && ($vh != "")) {
-						$tl[]= getHttpVars(substr($v,1));
+					    
+					    if (is_numeric($vh)) {
+					        $fam=$this->getSearchFamilyDocument();
+					        if ($fam) {
+					            $oa=$fam->getAttribute($taid[$k]);
+					            if ($oa && $oa->type=="docid") {
+					                $vh=$this->getTitle($vh);
+					            }
+					        }
+					    }
+					    $tl[]= $vh;
 					}
 				}
 
@@ -582,7 +593,16 @@ Class _DSEARCH extends DocSearch {
 	function isStaticSql() {
 		return ($this->getValue("se_static") != "");
 	}
-
+	/**
+	 * return family use for search
+	 * @return Doc
+	 */
+	private function getSearchFamilyDocument() {
+	    static $fam=null;
+	    if (! $fam) $fam=createDoc($this->dbaccess,$this->getValue("SE_FAMID",1),false);
+	    return $fam;
+	}
+	
 	function paramdsearch($target="_self",$ulink=true,$abstract=false) {
 		// Compute value to be inserted in a  layout
 		$this->viewattr();
@@ -622,7 +642,7 @@ Class _DSEARCH extends DocSearch {
 			global $action;
 			editmode($action);
 
-			$doc= createDoc($this->dbaccess,$this->getValue("SE_FAMID",1),false);
+			$doc= $this->getSearchFamilyDocument();
 			$inputset=array();
 			$ki=0; // index numeric
 			foreach ($tparm as $k=>$v) {
