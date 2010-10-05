@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 10:11+0200\n"
+"POT-Creation-Date: 2010-10-05 12:02+0200\n"
 "PO-Revision-Date: 2010-02-08 15:49+0100\n"
 "Last-Translator: anakeen\n"
 "Language-Team: english\n"
@@ -14,11 +14,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "data::login not defined"
+msgstr "login not defined"
+
+msgid "data::password not defined"
+msgstr "password not defined"
+
+msgid "data:document id must not be an object"
+msgstr "document id must not be an object"
+
+#, fuzzy
+msgid "data:document id not set"
+msgstr "document id must not be an object"
+
+msgid "data:action name not set"
+msgstr ""
+
+msgid "setValue: document is fixed"
+msgstr ""
+
+msgid "save : document is fixed"
+msgstr ""
+
+#, fuzzy
+msgid "data::no tag specified"
+msgstr "login not defined"
+
 msgid "eui::Content"
 msgstr "Content"
 
 msgid "eui::Informations"
 msgstr "Information"
+
+msgid "eui::lock_as_name"
+msgstr "lock"
 
 msgid "eui::missing right"
 msgstr "Missing Right"
@@ -29,35 +58,8 @@ msgstr "You have no right to access this document"
 msgid "eui::Creation :"
 msgstr "Creation :"
 
-msgid "eui::documents"
-msgstr "documents"
-
-msgid "eui::delete"
-msgstr "Delete"
-
-msgid "eui::totrash"
-msgstr "To Trash"
-
-msgid "eui:cannot delete"
-msgstr "cannot delete"
-
-msgid "eui::lock_as_name"
-msgstr "lock"
-
 msgid "eui::ToEdit"
 msgstr "Edit"
-
-msgid "eui::infolder"
-msgstr "in"
-
-msgid "eui::Duplicate"
-msgstr "Duplicate"
-
-msgid "eui::Link"
-msgstr "Link"
-
-msgid "eui::Move"
-msgstr "Move"
 
 msgid "eui::Search"
 msgstr "Search"
@@ -104,29 +106,26 @@ msgstr "Horizontal"
 msgid "eui::Vertical"
 msgstr "Vertical"
 
-msgid "setValue: document is fixed"
-msgstr ""
+msgid "eui::documents"
+msgstr "documents"
 
-msgid "save : document is fixed"
-msgstr ""
+msgid "eui::delete"
+msgstr "Delete"
 
-#, fuzzy
-msgid "data::no tag specified"
-msgstr "login not defined"
+msgid "eui::totrash"
+msgstr "To Trash"
 
-msgid "data::login not defined"
-msgstr "login not defined"
+msgid "eui:cannot delete"
+msgstr "cannot delete"
 
-msgid "data::password not defined"
-msgstr "password not defined"
+msgid "eui::infolder"
+msgstr "in"
 
-msgid "data:document id must not be an object"
-msgstr "document id must not be an object"
+msgid "eui::Duplicate"
+msgstr "Duplicate"
 
-#, fuzzy
-msgid "data:document id not set"
-msgstr "document id must not be an object"
+msgid "eui::Link"
+msgstr "Link"
 
-msgid "data:action name not set"
-msgstr ""
-
+msgid "eui::Move"
+msgstr "Move"

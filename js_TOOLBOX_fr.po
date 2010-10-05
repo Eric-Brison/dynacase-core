@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-30 10:11+0200\n"
+"POT-Creation-Date: 2010-10-05 12:02+0200\n"
 "PO-Revision-Date: 2010-02-08 15:48+0100\n"
 "Last-Translator: anakeen <devel@anakeen.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,11 +14,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "data::login not defined"
+msgstr "login non défini"
+
+msgid "data::password not defined"
+msgstr "mot de passe non défini"
+
+msgid "data:document id must not be an object"
+msgstr "l'identificateur du document ne doit pâs être un objet"
+
+#, fuzzy
+msgid "data:document id not set"
+msgstr "l'identificateur du document ne doit pâs être un objet"
+
+msgid "data:action name not set"
+msgstr ""
+
+msgid "setValue: document is fixed"
+msgstr ""
+
+msgid "save : document is fixed"
+msgstr ""
+
+msgid "data::no tag specified"
+msgstr "pas de tag donné"
+
 msgid "eui::Content"
 msgstr "Contenu"
 
 msgid "eui::Informations"
 msgstr "Informations"
+
+msgid "eui::lock_as_name"
+msgstr "verrou"
 
 msgid "eui::missing right"
 msgstr "Droit manquant"
@@ -29,35 +57,8 @@ msgstr "Vous n'avez pas les droits requis pour consulter ce document"
 msgid "eui::Creation :"
 msgstr "Création :"
 
-msgid "eui::documents"
-msgstr "documents"
-
-msgid "eui::delete"
-msgstr "Supprimer"
-
-msgid "eui::totrash"
-msgstr "Dans la Corbeille"
-
-msgid "eui:cannot delete"
-msgstr "Suppression impossible"
-
-msgid "eui::lock_as_name"
-msgstr "verrou"
-
 msgid "eui::ToEdit"
 msgstr "Éditer"
-
-msgid "eui::infolder"
-msgstr "Dans"
-
-msgid "eui::Duplicate"
-msgstr "Dupliquer"
-
-msgid "eui::Link"
-msgstr "Lier"
-
-msgid "eui::Move"
-msgstr "Déplacer"
 
 msgid "eui::Search"
 msgstr "Recherche"
@@ -104,28 +105,26 @@ msgstr "Horizontal"
 msgid "eui::Vertical"
 msgstr "Vertical"
 
-msgid "setValue: document is fixed"
-msgstr ""
+msgid "eui::documents"
+msgstr "documents"
 
-msgid "save : document is fixed"
-msgstr ""
+msgid "eui::delete"
+msgstr "Supprimer"
 
-msgid "data::no tag specified"
-msgstr "pas de tag donné"
+msgid "eui::totrash"
+msgstr "Dans la Corbeille"
 
-msgid "data::login not defined"
-msgstr "login non défini"
+msgid "eui:cannot delete"
+msgstr "Suppression impossible"
 
-msgid "data::password not defined"
-msgstr "mot de passe non défini"
+msgid "eui::infolder"
+msgstr "Dans"
 
-msgid "data:document id must not be an object"
-msgstr "l'identificateur du document ne doit pâs être un objet"
+msgid "eui::Duplicate"
+msgstr "Dupliquer"
 
-#, fuzzy
-msgid "data:document id not set"
-msgstr "l'identificateur du document ne doit pâs être un objet"
+msgid "eui::Link"
+msgstr "Lier"
 
-msgid "data:action name not set"
-msgstr ""
-
+msgid "eui::Move"
+msgstr "Déplacer"

@@ -1045,22 +1045,49 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
     	
     	if(this.rememberUserColumns){
     		
+    		//console.log('COLUMN TAG COLLECTION');
+    		
 	    	// Only applicable when representing a document (not a volatile search)
 	    	if(this.collection){
 	    		
+	    		//console.log('COLLECTION TATA');
+	    		
 	    		var tags = this.collection.getUserTags();
-	    		if(tags){
+	    		if(tags.length != 0){
+	    			
+	    			//console.log('TAGS',tags);
+	    			
 			        if(!tags.columns){
 			        	var columns = {};
 			        } else {
 			        	var columns = eval("("+tags.columns+")");
 			        }
+			        return columns ;
+	    		} else {
+	    			if(this.collection && this.collection.getValue("se_famid")){
+	    				
+	    				//console.log('COLLECTION TOTO',this.collection,this.collection.getValue("se_famid"));
+	    				
+	    				this.familyDocument = this.context.getDocument({
+		    				id: this.collection.getValue("se_famid"),
+		    				useCache: true
+		    			});
+	    				
+		    			var tags = this.familyDocument.getUserTags();
+			    		if(tags){
+					        if(!tags.columns){
+					        	var columns = {};
+					        } else {
+					        	var columns = eval("("+tags.columns+")");
+					        }
+			    		}
+			    		return columns ;
+		    			
+	    			}
 	    		}
 		        
-		        return columns ;
-	    		
 	    	} else if (this.search) {
-	    		
+	    			    		
 	    		if(this.search.family){
 	    			
 	    			this.familyDocument = this.context.getDocument({
@@ -1079,7 +1106,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 	    			
 	    		}
 	    		
-	    		console.log('SEARCH USER TAG', this.search);
+	    		//console.log('SEARCH USER TAG', this.search);
 	    		
 	    		return columns ;
 	    		
@@ -1536,7 +1563,6 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                             //                            record.get('_fdldoc').getProperty('ownername') +
                             //                            "</a>";
                             //                        }
-                            
                             if (this.dataIndex == 'owner') {
                                 return Fdl.encodeHtmlTags(record.get('_fdldoc').getProperty('ownername'));
                             }

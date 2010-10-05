@@ -9,13 +9,11 @@
         <script>
             if (!("console" in window)) {window.console = {'log': function(s) {}}}
         </script>
-        <link rel="shortcut icon" href="[CORE_LOGOCLIENT]"/>
+        
+        <link rel="icon" href="FDL/Images/logo16.ico" >
+        <link rel="shortcut icon" href="FDL/Images/logo16.ico" >
         <!-- Ext Library -->
-        <link rel="stylesheet" type="text/css" href="lib/ext/resources/css/ext-all.css"/>
-        <link rel="stylesheet" type="text/css" id="theme"/>
-                                       
-        <!-- Freedom Widget Library -->
-		<link rel="stylesheet" type="text/css" href="lib/ui/freedom-extui.css"/>
+        [ZONE FDL:ADDEXTSTYLE]     
                
         <style>
         
@@ -31,28 +29,10 @@
             </div>
         </div>
 		
+		
 		<!-- Include javascript after the loading indicator -->
 		<!-- Ext Library -->
-        [IF DEBUG]
-	    <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js"></script>
-		<script type="text/javascript" src="lib/ext/ext-all-debug.js"></script>
-        
-        <!-- Freedom Data Library -->
-        <script type="text/javascript" src="lib/data/fdl-data-debug.js?v=[WVERSION]"></script>
-        
-        <!-- Freedom Widget Library -->
-        <script type="text/javascript" src="lib/ui/freedom-extui-debug.js?v=[WVERSION]"></script>
-        [ENDIF DEBUG]
-	    [IFNOT DEBUG]
-        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js"></script>
-        <script type="text/javascript" src="lib/ext/ext-all.js"></script>
-        
-        <!-- Freedom Data Library -->
-        <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]"></script>
-        
-        <!-- Freedom Widget Library -->
-        <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]"></script>
-	    [ENDIF DEBUG]
+		[ZONE FDL:ADDEXTSCRIPT?debug=[DEBUG]]
         
         <!-- ONEFAM Client Application -->
         <script type="text/javascript" src="ONEFAM/Layout/onefam_ext.js?v=[WVERSION]"> </script>

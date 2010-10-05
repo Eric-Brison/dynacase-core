@@ -100,10 +100,23 @@ include_once("FDL/Class.Doc.php");
 			       "type"=>array("int","integer","double","date","time","timestamp","money")),   
 		 "~y" => array("label"=>"one word equal",
 			       "operand"=>array("left","right"),
-			       "dynlabel"=>"{left} one word equal {right}", # _("{left} one word equal {right}")
+			       "dynlabel"=>"{left} one value equal {right}", # _("{left} one value equal {right}")
 			       "type"=>array("array"))
 );    
 
+  function getOperatorLabel($operator,$attributeType) {
+      $op=$this->top[$operator];
+      if (! $op) return _("unknow operator")." : $operator"; // TODO set exception
+      if ($attributeType) {
+          if (is_array($op["slabel"])) {
+              foreach($op["slabel"] as $type=>$label) {
+                  if ($type == $attributeType) return _($label);
+              }
+          }
+      }
+      if ($op["label"]) return _($op["label"]);
+      return $operator; // no label found
+  }
   /**
    * return document includes in search folder
    * @param bool $controlview if false all document are returned else only visible for current user  document are return

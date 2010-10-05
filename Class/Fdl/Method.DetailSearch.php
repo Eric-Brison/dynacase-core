@@ -422,14 +422,14 @@ Class _DSEARCH extends DocSearch {
 					// it's a parameter
 					$rv = getHttpVars(substr($v,1),"-");
 					if ($rv == "-") return (false);
-					$tkey[$k]=$rv;
+					if ($rv==="" || $rv===" ") unset($taid[$k]);
+                                        else $tkey[$k]=$rv;                                       
 				}
 				if ($taid[$k] == "revdate") {
 					list($dd,$mm,$yyyy) = explode("/",$tkey[$k]);
 					if ($yyyy > 0) $tkey[$k]=mktime (0,0,0,$mm,$dd,$yyyy);
 				}
 			}
-
 			foreach ($taid as $k=>$v) {
 				$cond1=$this->getSqlCond($taid[$k],trim($tf[$k]),$tkey[$k]);
 				if ($cond == "") {
@@ -446,7 +446,6 @@ Class _DSEARCH extends DocSearch {
 
 			}
 		}
-
 		if (trim($cond)=="") $cond="true";
 		return $cond;
 	}
@@ -515,6 +514,7 @@ Class _DSEARCH extends DocSearch {
 	 */
 	function getSpecTitle() {
 		$tkey = $this->getTValue("SE_KEYS");
+                $taid = $this->getTValue("SE_ATTRIDS");
 		$l="";
 		if ((count($tkey) > 1) || ($tkey[0] != "")) {
 			$tl=array();
@@ -523,7 +523,17 @@ Class _DSEARCH extends DocSearch {
 				if ($v[0]=='?') {
 					$vh=getHttpVars(substr($v,1),"-");
 					if (($vh != "-") && ($vh != "")) {
-						$tl[]= getHttpVars(substr($v,1));
+					    
+					    if (is_numeric($vh)) {
+					        $fam=$this->getSearchFamilyDocument();
+					        if ($fam) {
+					            $oa=$fam->getAttribute($taid[$k]);
+					            if ($oa && $oa->type=="docid") {
+					                $vh=$this->getTitle($vh);
+					            }
+					        }
+					    }
+					    $tl[]= $vh;
 					}
 				}
 
@@ -564,8 +574,7 @@ Class _DSEARCH extends DocSearch {
 				$label=$zpi[$taid[$k]]->getLabel();
 				if ($label=="") $label=$taid[$k];
 				$tcond[]["condition"]=sprintf("%s %s %s",
-				$label,
-				_($this->top[$tf[$k]]["label"]),
+				$label,$this->getOperatorLabel($tf[$k],$zpi[$taid[$k]]->type),
 				($tkey[$k]!="")?_($tkey[$k]):$tkey[$k]);
 				if ($tkey[$k][0]=='?') {
 					$tparm[substr($tkey[$k],1)]=$taid[$k];
@@ -584,7 +593,16 @@ Class _DSEARCH extends DocSearch {
 	function isStaticSql() {
 		return ($this->getValue("se_static") != "");
 	}
-
+	/**
+	 * return family use for search
+	 * @return Doc
+	 */
+	private function getSearchFamilyDocument() {
+	    static $fam=null;
+	    if (! $fam) $fam=createDoc($this->dbaccess,$this->getValue("SE_FAMID",1),false);
+	    return $fam;
+	}
+	
 	function paramdsearch($target="_self",$ulink=true,$abstract=false) {
 		// Compute value to be inserted in a  layout
 		$this->viewattr();
@@ -612,6 +630,7 @@ Class _DSEARCH extends DocSearch {
 			foreach ($taid as $k=>$v) {
 				if ($tkey[$k][0]=='?') {
 					$tparm[substr($tkey[$k],1)]=$taid[$k];
+                                        $toperator[substr($tkey[$k],1)]=$tf[$k];
 				}
 			}
 			$this->lay->SetBlockData("COND", $tcond);
@@ -623,14 +642,29 @@ Class _DSEARCH extends DocSearch {
 			global $action;
 			editmode($action);
 
-			$doc= createDoc($this->dbaccess,$this->getValue("SE_FAMID",1),false);
+			$doc= $this->getSearchFamilyDocument();
+			$inputset=array();
+			$ki=0; // index numeric
 			foreach ($tparm as $k=>$v) {
-					
+				if (isset($inputset[$v])) {
+				    // need clone when use several times the same attribute
+				    $vz=$v."Z".$ki;
+				    $zpi[$vz]=$zpi[$v];
+				    $zpi[$vz]->id=$vz;
+				    $v=$vz;
+				}
+				if ($zpi[$v]->fieldSet->type=='array') $zpi[$v]->fieldSet->type='frame'; // no use array configuration for help input
+				$ki++;
+				$inputset[$v]=true;
+				
 				$ttransfert[]=array("idi"=>$v,
 			 "idp"=>$k,
 			 "value"=>getHttpVars($k));
 				$tinputs[$k]["label"]=$zpi[$v]->getLabel();
-				if ($zpi[$v]->visibility=='R') $zpi[$v]->mvisibility='W';
+                                $tinputs[$k]["operator"]=$this->getOperatorLabel($toperator[$k],$zpi[$v]->type);
+                                if (($toperator[$k]=="=~*" || $toperator[$k]=="~*") && $zpi[$v]->type=="docid") $zpi[$v]->type="text"; // present like a search when operator is text search
+                                
+                                if ($zpi[$v]->visibility=='R') $zpi[$v]->mvisibility='W';
 				if ($zpi[$v]->visibility=='S') $zpi[$v]->mvisibility='W';
 				if (isset($zpi[$v]->id)) {
 					$zpi[$v]->isAlone=true;

@@ -494,26 +494,48 @@ function showThisFieldset(event,tabid) {
   }
 }
 // display element fieldset with this name
-function showFieldset(event,o,n) {
+function showFieldset(event,o,n,docid,force) {
 
   var ttr=document.getElementsByTagName('fieldset');
   var btag=getElementsByNameTag(document,o.getAttribute('name'),'span');
   var ln,i;
+  var prevtabname=o.id.substr(3);
   for ( i=0;i<btag.length;i++) {
+	  if (btag[i].className=='tabsel') prevtabname=btag[i].id.substr(3);
     btag[i].className='';
   }
   o.className='tabsel';
+  var loaded=true;
+  if (force) loaded=false;
   for ( i=0;i<ttr.length;i++) {
     ln=ttr[i].getAttribute('name');
     if (ln) {
       if (ln == n) {
-	ttr[i].style.display='';
+    	  if (! force) loaded=(ttr[i].getAttribute('loaded') != "no");
+    	  if (loaded) {
+	        ttr[i].style.display='';
+    	  } else {
+    		  ttr[i].parentNode.removeChild(ttr[i]);
+    		  i--;
+    	  }
       } else {
-	ttr[i].style.display='none';	
+	    ttr[i].style.display='none';
       }
-    }
+    } 
+  } 
+  if (docid) {
+	  var needreload=true;
+	  var tabname=o.id.substr(3);
+	  if (! loaded) {
+		  cible=document.createElement('div');
+		  document.body.appendChild(cible);
+		  requestUrlSend(cible,'?app=FDL&action=IMPCARD&zone=FDL:VIEWBODYCARD:S&id='+docid+'&onlytab='+tabname);
+	  } else {
+		  if (prevtabname && (prevtabname != tabname)) {
+		  requestUrlSend(null,'?app=DATA&action=DOCUMENT&method=addusertag&tag=lasttab&id='+docid+'&comment='+tabname);
+		  }
+	  }
   }
-  
 }
 
 

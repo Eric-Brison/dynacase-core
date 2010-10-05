@@ -341,15 +341,16 @@ function PostSelect($id)
 /** 
  * Add the object to the database
  * @param bool $nopost PostInsert method not apply if true
+ * @param bool $nopost PreInsert method not apply if true
  * @return string error message, if no error empty string
  * @see PreInsert()
  * @see PostInsert()
  */
-function Add($nopost=false)
+function Add($nopost=false,$nopre=false)
   {
     if ($this->dbid == -1) return FALSE;
     
-    $msg=$this->PreInsert();
+    if (! $nopre) $msg=$this->PreInsert();
     if ($msg!='') return $msg;
     
     $sfields = implode(",",$this->fields);
