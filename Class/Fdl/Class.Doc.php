@@ -1771,8 +1771,9 @@ create unique index i_docir on doc(initid, revision);";
 	$vidin=$reg[2];
 	$info=vault_properties($vidin,$engine);
 
-      
-	if ((! $info->teng_vid) || ($info->teng_state==2)) {
+	// in case of server not reach : try again
+      if ($info->teng_state == TransformationEngine::error_connect) $info->teng_state=TransformationEngine::status_inprogress;
+	if ((! $info->teng_vid) || ($info->teng_state==TransformationEngine::status_inprogress)) {
 	  $vf = newFreeVaultFile($this->dbaccess);
 	  if (! $info->teng_vid) {
 	    // create temporary file
@@ -4480,21 +4481,22 @@ create unique index i_docir on doc(initid, revision);";
 	} else {
 	  if ($info) {
 	    if ($info->teng_state < 0 || $info->teng_state > 1) {
-	        $htmlval="coucou";
+	        $htmlval="";
+	        include_once("WHAT/Class.TEClient.php");
 	        switch (intval($info->teng_state)) {
-	            case -1: // convert fail
+	            case TransformationEngine::error_convert: // convert fail
                         $textval=_("file conversion failed");
 	                break;
-	            case -2: // no compatible engine
+	            case TransformationEngine::error_noengine: // no compatible engine
                         $textval=_("file conversion not supported");
 	                break;
-                    case -3: // no compatible engine
+                    case TransformationEngine::error_connect: // no compatible engine
                         $textval=_("cannot contact server");
                         break;
-	            case 3: // waiting
+	            case TransformationEngine::status_waiting: // waiting
                         $textval=_("waiting conversion file");
                         break;
-                    case 2: // in progress
+                    case TransformationEngine::status_inprogress: // in progress
                         $textval=_("generating file");
                         break;
                     default:
@@ -4503,7 +4505,8 @@ create unique index i_docir on doc(initid, revision);";
 	        if ($htmllink) {
 	            //$errconvert=trim(file_get_contents($info->path));
 	            //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
-	            $waiting="<img class=\"mime\" src=\"Images/loading.gif\">";
+	            if ($info->teng_state > 1) $waiting="<img class=\"mime\" src=\"Images/loading.gif\">";
+	            else $waiting="<img class=\"mime\" needresize=1 src=\"Images/delimage.png\">";;
 	            $htmlval=sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
 	                             $this->getFileLink($oattr->id,$index),
 	                             $info->id_file,str_replace("'","&rsquo;",_("file status")),$waiting,$textval);
