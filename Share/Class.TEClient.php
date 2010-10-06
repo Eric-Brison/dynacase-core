@@ -13,11 +13,14 @@
 include_once("WHAT/Lib.FileMime.php");
 
 Class TransformationEngine {
-    const error_connect=-3;
-    const error_noengine=-2;
+    const error_connect=-2;
+    const error_noengine=-3;
     const error_sendfile=-4;
     const error_emptyfile=-5;
     const error_convert=-1;
+    const status_inprogress=2;
+    const status_waiting=3;
+    const status_done=1;
   /**
    * host name of the transformation engine server
    * @private string

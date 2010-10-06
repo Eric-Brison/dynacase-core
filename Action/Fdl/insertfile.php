@@ -90,7 +90,7 @@ function insertfile(&$action) {
 	  $err=$vf->Save($filename, false , $vidout);
 	  $basename=_("conversion error").".txt";
 	  $vf->Rename($vidout,$basename);
-	  $vf->storage->teng_state=-1;
+	  $vf->storage->teng_state=TransformationEngine::error_convert;
 	  $vf->storage->modify();
 	  if ($docid) {
 	      $doc=new_doc($dbaccess, $docid);

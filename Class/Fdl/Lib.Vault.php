@@ -14,6 +14,7 @@
 include_once("VAULT/Class.VaultFile.php");
 include_once("VAULT/Class.VaultEngine.php");
 include_once("VAULT/Class.VaultDiskStorage.php");
+include_once("WHAT/Class.TEClient.php");
 
 function initVaultAccess() {
   static $FREEDOM_VAULT=false;;
@@ -61,13 +62,12 @@ function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false,$docid='
   if (($vidin>0)&&($vidout>0))  {
     $tea=getParam("TE_ACTIVATE");
     if ($tea!="yes") return;
-    if (@include_once("WHAT/Class.TEClient.php")) {
       global $action;
       include_once("FDL/Class.TaskRequest.php");
       $of=new VaultDiskStorage($dbaccess,$vidin);
       $filename=$of->getPath();
       $ofout=new VaultDiskStorage($dbaccess,$vidout);
-      $ofout->teng_state=3; // in progress
+      $ofout->teng_state=TransformationEngine::status_waiting; // in progress
       $ofout->modify();
       
       $urlindex=getOpenTeUrl();
@@ -93,12 +93,10 @@ function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false,$docid='
 	@unlink($filename);
 	$vf->rename($vidout,_("impossible conversion").".txt");
 	if ($info["status"]) $vf->storage->teng_state=$info["status"];
-	else $vf->storage->teng_state=-2;
+	else $vf->storage->teng_state=TransformationEngine::status_inprogress;
 	$vf->storage->modify();;
       }
-    } else {
-      AddWarningMsg(_("TE engine activate but TE-CLIENT not found"));
-    }
+    
   }
   return $err;
   
