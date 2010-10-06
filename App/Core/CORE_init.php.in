@@ -152,7 +152,7 @@ $app_const = array (
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
-		    "DYNACASE_FAVICO"		=>array("val"=>"FDL/Images/dynacase.ico",
+		    "DYNACASE_FAVICO"		=>array("val"=>"CORE/Images/dynacase.ico",
 							"descr"=>N_("Dynacase pages favico"),
 							"user"=>"N",
 							"style"=>"N",

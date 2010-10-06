@@ -10,8 +10,3 @@ export appname
 SUBDIR = flags
 
 include $(utildir)/PubRule
-
-$(pubdir)/$(appname)/dynacase.ico : dynacase.ico
-	cp $< $(pubdir)/$(appname)/Images
-
-publish: $(pubdir)/$(appname)/dynacase.ico
