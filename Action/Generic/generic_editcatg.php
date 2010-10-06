@@ -44,8 +44,12 @@ function generic_editcatg(&$action) {
   $tlabel=array();
   $tlevel=array();
 
+
+
   $enum = $a->getEnum();
+  
   while (list($k, $v) = each($enum)) {
+	$k = str_replace("\\.", "-dot-", $k);
     $tk= explode(".",$k);
     $tv= explode("/",$v);
     $sp ="";
@@ -53,7 +57,7 @@ function generic_editcatg(&$action) {
     for ($i=1;$i<count($tk);$i++) $loff .= ".....";
     
     $tlevel[]= array("alevel"=>count($tk));
-    $tref[]= array("eref"=>array_pop($tk));
+    $tref[]= array("eref"=>str_replace("-dot-", ".", array_pop($tk)));
     $vlabel = array_pop($tv);
     $tlabel[]= array("elabel"=>$vlabel,
 		     "velabel"=>$loff.$vlabel);
