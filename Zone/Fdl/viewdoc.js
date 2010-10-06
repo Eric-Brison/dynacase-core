@@ -12,7 +12,7 @@ include_js('WHAT/Layout/geometry.js')
 include_js('FDL/Layout/iframe.js')
 
 
-function popdoc(event,url) {
+function popdoc(event,url,title) {
     
 //    if(window.parent.Ext){
 //        //alert('ExtJS is detected');
@@ -30,7 +30,8 @@ function popdoc(event,url) {
     var fpopdoc;
     var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
     if (! dpopdoc) {
-      new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', url, 'white', '#00385c', '16pt serif', '[TEXT:mini view]', '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, true, false);
+    	if (! title) title='[TEXT:mini view]';
+      new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', url, 'white', '#00385c', '16pt serif', title, '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, true, false);
     } else {      
       if ((getObjectTop(dpopdoc) < scrolly) || 
 	  (getObjectTop(dpopdoc) > (getInsideWindowHeight() + scrolly))	){
@@ -45,7 +46,23 @@ function popdoc(event,url) {
   
 //    }
 }
+function poptext(text,title) {   
 
+	var dpopdoc = document.getElementById('POPDOC_s');
+	var fpopdoc;
+	var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+	if (! dpopdoc) {
+		new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', text, 'white', '#00385c', '16pt serif', title, '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, false, false);
+	} else {      
+		if ((getObjectTop(dpopdoc) < scrolly) || 
+				(getObjectTop(dpopdoc) > (getInsideWindowHeight() + scrolly))	){
+			// popup is not visible in scrolled window => move to visible part
+			movePopup('POPDOC' ,[mgeox], [mgeoy]+scrolly);
+		} 
+		changecontent( 'POPDOC' , url );
+		showbox( 'POPDOC')
+	}
+}
 
 // create popup for insert div after
 function newPopdiv(event,divtitle,x,y,w,h) {
