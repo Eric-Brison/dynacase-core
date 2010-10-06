@@ -51,11 +51,13 @@ function getOpenTeUrl($context=array()) {
  * Generate a conversion of a file
  * The result is store in vault itself
  * @param string $engine the convert engine identificator (from VaultEngine Class)
- * @param int $idfile vault file identificator (original file)
- * @param int &$gen_idfile vault identificator of new stored file
+ * @param int $vidin vault file identificator (original file)
+ * @param int $vidout vault identificator of new stored file
+ * @param boolean $isimage true is it is a image (jpng, png, ...)
+ * @param int $docid original document where the file is inserted
  * @return string error message (empty if OK)
  */
-function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false) {
+function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false,$docid='') {
   if (($vidin>0)&&($vidout>0))  {
     $tea=getParam("TE_ACTIVATE");
     if ($tea!="yes") return;
@@ -69,7 +71,7 @@ function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false) {
       $ofout->modify();
       
       $urlindex=getOpenTeUrl();
-      $callback=$urlindex."&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage";
+      $callback=$urlindex."&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage&docid=$docid";
       $ot=new TransformationEngine(getParam("TE_HOST"),getParam("TE_PORT"));
       $err=$ot->sendTransformation($engine,$vid,$filename,$callback,$info);
       if ($err=="") {
@@ -86,11 +88,12 @@ function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false) {
 	$filename= uniqid(getTmpDir()."/txt-".$vidout.'-');
 	file_put_contents($filename,$err);
 	//$vf->rename($vidout,"toto.txt");
-	$vf->Retrieve($vidout, $info);
-	$err=$vf->Save($filename, false , $vidout);
+	$vf->Retrieve($vidout, $infofile);
+	$err.=$vf->Save($filename, false , $vidout);
 	@unlink($filename);
 	$vf->rename($vidout,_("impossible conversion").".txt");
-	$vf->storage->teng_state=-2;
+	if ($info["status"]) $vf->storage->teng_state=$info["status"];
+	else $vf->storage->teng_state=-2;
 	$vf->storage->modify();;
       }
     } else {

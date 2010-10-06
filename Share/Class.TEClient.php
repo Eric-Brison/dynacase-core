@@ -13,6 +13,11 @@
 include_once("WHAT/Lib.FileMime.php");
 
 Class TransformationEngine {
+    const error_connect=-3;
+    const error_noengine=-2;
+    const error_sendfile=-4;
+    const error_emptyfile=-5;
+    const error_convert=-1;
   /**
    * host name of the transformation engine server
    * @private string
@@ -57,11 +62,12 @@ Class TransformationEngine {
       /* Cree une socket TCP/IP. */
       //  echo "Essai de connexion à '$address' sur le port '$service_port'...\n";
       //    $result = socket_connect($socket, $address, $service_port);
-
-      $fp = @stream_socket_client("tcp://$address:$service_port", $errno, $errstr, 30);
+      $timeout=floatval(getParam("TE_TIMEOUT",3));
+      $fp = @stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $timeout);
 
       if (!$fp) {
 	$err=_("socket creation error")." : $errstr ($errno)\n";
+	$info=array("status"=>self::error_connect);
       } 
 
     
@@ -133,9 +139,12 @@ Class TransformationEngine {
 	  } else {
 	    $taskerr='-';
 	    if (preg_match("/<comment>(.*)<\/comment>/i",$out,$match)) {
+              $info=array("status"=>self::error_noengine);
 	      $err=$match[1];
 	    } else {
-	      $err=_("Error sending file");
+	      $err=_("Error sending file");    
+	      $info=array("status"=>self::error_sendfile);
+	      
 	    }
 	  }
 	}
@@ -144,6 +153,7 @@ Class TransformationEngine {
       }
     } else {
       $err=_("empty file");
+      $info=array("status"=>self::error_emptyfile);
     }
     return $err;
   }
