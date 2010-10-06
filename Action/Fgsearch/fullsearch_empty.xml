@@ -2,8 +2,8 @@
 
    <title>[TEXT:Full search]</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="icon" href="FDL/Images/logo16.ico" >
-<link rel="shortcut icon" href="FDL/Images/logo16.ico" >
+<link rel="icon" href="[DYNACASE_FAVICO]" >
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
 <link title="[CORE_CLIENT]" type="application/opensearchdescription+xml" rel="search" href="img-cache/[HOST]-freedom-os.xml">

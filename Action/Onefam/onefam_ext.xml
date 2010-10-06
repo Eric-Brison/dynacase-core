@@ -10,8 +10,8 @@
             if (!("console" in window)) {window.console = {'log': function(s) {}}}
         </script>
         
-        <link rel="icon" href="FDL/Images/logo16.ico" >
-        <link rel="shortcut icon" href="FDL/Images/logo16.ico" >
+        <link rel="icon" href="[DYNACASE_FAVICO]" >
+        <link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
         <!-- Ext Library -->
         [ZONE FDL:ADDEXTSTYLE]     
                
