@@ -228,7 +228,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
     return $fid;
   }
 
-  function getFilesProperties($doc) {
+  function getFilesProperties(&$doc) {
 	  $fileAttributes = $doc->GetFileAttributes();
 	  $tinfo = array();
 	  foreach($fileAttributes as $fileAttribute) {
@@ -238,7 +238,10 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 		  $result = $doc->vault_properties($fileAttribute);
 		  if(count($result)>0 && is_array($result[0])) {
 			foreach($result as $tmp){
+			    $state=intval($tmp["teng_state"]);
+			    if ($state == 0  || $state==1) { // only valid files
 				$tinfo[] = $tmp;
+			    }
 			}
 		  }
 	  }
