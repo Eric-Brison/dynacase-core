@@ -36,21 +36,25 @@ function generic_modkind(&$action) {
   $ref="";$ple = 1;
   if (is_array($tref)) {
     while (list($k, $v) = each($tref)) {
-      $le= intval($tlevel[$k]);
-      if ($le == 1) $ref=''; 
-      else if ($ple < $le) {
-	// add level ref index
-	$ref = $ref  . $tref[$k-1].'.';
-      } else  if ($ple > $le) {
-	// suppress one or more level ref index
-	for ($l=0;$l<$ple-$le;$l++)  $ref=substr($ref,0,strrpos($ref,'.')-1);
-      }
-      $ple = $le;
-   
-
-      $tsenum[$k] = stripslashes($ref.$v."|".$tlabel[$k]);
+		$le = intval($tlevel[$k]);
+		if ($le == 1){
+			$ref = '';
+		}
+		else if ($ple < $le) {
+			// add level ref index
+			$ref = $ref . str_replace(".", "-dot-", $tref[$k - 1]) . '.';
+		}
+		else if ($ple > $le) {
+			// suppress one or more level ref index
+			for ($l = 0; $l < $ple - $le; $l++) {
+				$ref = substr($ref, 0, strrpos($ref, '.') - 1);
+			}
+		}
+		$ple = $le;
+		$tsenum[$k] = stripslashes($ref . str_replace(".", "-dot-", $v) . "|" . $tlabel[$k]);
     }
   }
+
   $attr = new DocAttr($dbaccess, array($famid,$aid));
   if ($attr->isAffected()) {
   
@@ -59,7 +63,7 @@ function generic_modkind(&$action) {
     } else {	  
       $funcformat="";
     }
-    $attr->phpfunc = implode(",",str_replace(',','\,',($tsenum)));
+    $attr->phpfunc = str_replace("-dot-", "\\.", implode(",",str_replace(',','\,',($tsenum))));
     if ($funcformat != "") $attr->phpfunc="[$funcformat]".$attr->phpfunc;
     $attr->modify();
 

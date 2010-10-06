@@ -89,7 +89,7 @@ function fdl_card(&$action) {
   $action->lay->set("rsslink", $doc->getRssLink());
   $action->lay->Set("TITLE",$doc->getHtmlTitle());
   $action->lay->Set("id",$docid);
-  if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon",getParam("DYNACASE_FAVICO");
+  if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon",getParam("DYNACASE_FAVICO"));
   else $action->lay->Set("shorticon",$doc->getIcon());
   $action->lay->Set("pds",$doc->urlWhatEncodeSpec(""));
   

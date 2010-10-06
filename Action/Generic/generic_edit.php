@@ -104,7 +104,7 @@ function generic_edit(&$action) {
 		$action->lay->Set("title", $doc->getHTMLtitle());
 	}
 
-	if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon",getParam("DYNACASE_FAVICO");
+	if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon",getParam("DYNACASE_FAVICO"));
 	else $action->lay->Set("shorticon",$doc->getIcon());
 	$action->lay->Set("STITLE",addJsSlashes($action->lay->get("title"))); // for include in JS
 	if ($zonebodycard == "") {
