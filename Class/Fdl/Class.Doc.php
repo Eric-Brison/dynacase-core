@@ -1804,10 +1804,9 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	  }
 
-	  $err=vault_generate($this->dbaccess,$engine,$vidin,$vidout,$isimage);
+	  $err=vault_generate($this->dbaccess,$engine,$vidin,$vidout,$isimage,$this->initid);
 	  if ($err!="") {
-	  
-	  
+	       $this->addComment(sprintf(_("convert file %s as %s failed : %s"),$info->name,$engine, $err), HISTO_ERROR);
 	  }
 	} else {
 	  if ($isimage) {
@@ -3169,6 +3168,9 @@ create unique index i_docir on doc(initid, revision);";
     $h->code=$code;
 
     $err=$h->Add();
+    if ($level == HISTO_ERROR) {
+        error_log(sprintf("document %s [%d] : %s",$this->title, $this->id, $comment));
+    }
     return $err;
   }  
 
@@ -4458,7 +4460,7 @@ create unique index i_docir on doc(initid, revision);";
 	break;
       case "file":
 	$vid="";
-
+        $info=false;
 	if (preg_match(PREGEXPFILE, $avalue, $reg)) {
 	  // reg[1] is mime type
 	  $vid=$reg[2];
@@ -4466,8 +4468,8 @@ create unique index i_docir on doc(initid, revision);";
 	  include_once("FDL/Lib.Dir.php");
 	  $vf = newFreeVaultFile($this->dbaccess);
 	  if ($vf->Show ($reg[2], $info) == "") $fname = $info->name;
-	  else $fname=_("vault file error");
-	} else $fname=_("no filename");
+	  else $htmlval=_("vault file error");
+	} else $htmlval=_("no filename");
 
 
 	if ($target=="mail") {
@@ -4477,7 +4479,38 @@ create unique index i_docir on doc(initid, revision);";
 	  $htmlval.=  "\">".$fname."</a>";
 	} else {
 	  if ($info) {
-	    if ($htmllink) {
+	    if ($info->teng_state < 0 || $info->teng_state > 1) {
+	        $htmlval="coucou";
+	        switch (intval($info->teng_state)) {
+	            case -1: // convert fail
+                        $textval=_("file conversion failed");
+	                break;
+	            case -2: // no compatible engine
+                        $textval=_("file conversion not supported");
+	                break;
+                    case -3: // no compatible engine
+                        $textval=_("cannot contact server");
+                        break;
+	            case 3: // waiting
+                        $textval=_("waiting conversion file");
+                        break;
+                    case 2: // in progress
+                        $textval=_("generating file");
+                        break;
+                    default:
+                        $textval=sprintf(_("unknown file state %s"),$info->teng_state);
+	        }
+	        if ($htmllink) {
+	            //$errconvert=trim(file_get_contents($info->path));
+	            //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
+	            $waiting="<img class=\"mime\" src=\"Images/loading.gif\">";
+	            $htmlval=sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
+	                             $this->getFileLink($oattr->id,$index),
+	                             $info->id_file,str_replace("'","&rsquo;",_("file status")),$waiting,$textval);
+	        } else {
+	            $htmlval=$textval;
+	        }
+	    } elseif ($htmllink) {
 	      $size=round($info->size/1024)._("AbbrKbyte");
 	      $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
   							 
@@ -4489,30 +4522,14 @@ create unique index i_docir on doc(initid, revision);";
 	      $inline=$oattr->getOption("inline");
 	      if ($inline=="yes") $opt="&inline=yes";
 	      $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-		$action->GetParam("CORE_BASEURL").
-		"app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid"."&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"
-		."\">";
+		$this->getFileLink($oattr->id,$idx)."\">";
 	      if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
 	      $htmlval.=$fname."</a>";
 	    } else {
 	      $htmlval=$info->name;
 	    }
 	  }
-	  /*
-  					  
-	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$mime\" href=\"".
-	    "http://".$_SERVER["HTTP_HOST"].
-	    "/davfreedom/doc".$this->id."/$fname".
-	    "\">"."[DAV:$vid]($mime)".
-	    "</A>";
-
-  					 
-	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$umime\" href=\"".
-	    "http://".$_SERVER["HTTP_HOST"].
-	    "/davfreedom/doc".$this->id."/$fname".
-	    "\">"."[DAV:$vid]($umime)".
-	    "</A>";
-	  */
+	
 	}
 
 	break;
