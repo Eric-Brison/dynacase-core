@@ -14,12 +14,11 @@
 
 
 include_once("FDL/Class.Doc.php");
-function fdl_method(&$action) 
-{
-  
+function fdl_method(&$action) {
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $docid = GetHttpVars("id",0);
   $method = GetHttpVars("method");
+  $zone = GetHttpVars("zone");
   $noredirect = (strtolower(substr(GetHttpVars("redirect"),0,1))=="n");
 
 
@@ -40,7 +39,15 @@ function fdl_method(&$action)
   if ($err != "") $action->AddWarningMsg($err);
   $action->AddLogMsg(sprintf(_("method %s executed for %s "),$method,$doc->title));    
     
-  if (! $noredirect)   redirect($action,"FDL","FDL_CARD&id=".$doc->id,$action->GetParam("CORE_STANDURL"));
+  if (! $noredirect)  {
+      if ($zone) $opt="&zone=$zone";
+      if ($location=$_SERVER["HTTP_REFERER"]) {
+          Header("Location: $location");
+          exit;
+      } else {
+        redirect($action,"FDL",sprintf("FDL_CARD%s&id=%d",$opt,$doc->id));
+      }
+  }
   else $action->lay->template=sprintf(_("method %s applied to document %s #%d"),$method,$doc->title,$doc->id);
 }
 
