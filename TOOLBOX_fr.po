@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-05 12:02+0200\n"
-"PO-Revision-Date: 2010-10-05 12:03+0200\n"
+"POT-Creation-Date: 2010-10-07 12:20+0200\n"
+"PO-Revision-Date: 2010-10-07 12:22+0200\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "Ne peut créer l'utilisateur %s : %s"
 
 #, c-format
 msgid "%s is not a family"
-msgstr ""
+msgstr "%s n'est pas une famille"
 
 #, c-format
 msgid "%s attribute"
@@ -690,6 +690,10 @@ msgid "update of %s in progress"
 msgstr "mise à jour de %s en cours"
 
 #, c-format
+msgid "convert file %s as %s failed : %s"
+msgstr "la conversion du fichier %s en %s a échoué : %s"
+
+#, c-format
 msgid "%s needed\n"
 msgstr "%s doit être rempli\n"
 
@@ -863,6 +867,31 @@ msgstr "erreur fichier Vault"
 
 msgid "no filename"
 msgstr "pas de fichier"
+
+msgid "file conversion failed"
+msgstr "échec de la conversion de fichier"
+
+msgid "file conversion not supported"
+msgstr "la conversion de ce type fichier n'est pas supporté"
+
+msgid "cannot contact server"
+msgstr "ne peut contacter le serveur"
+
+msgid "waiting conversion file"
+msgstr "en attente de conversion"
+
+msgid "generating file"
+msgstr "génération du fichier en cours"
+
+#, c-format
+msgid "unknown file state %s"
+msgstr "status de la conversion inconnu %s"
+
+msgid "file status"
+msgstr "status du fichier"
+
+msgid "retry file conversion"
+msgstr "retenter la conversion du fichier"
 
 msgid "AbbrKbyte"
 msgstr "Ko"
@@ -5671,6 +5700,9 @@ msgstr "Activation de l'indexation plein texte avec TE"
 msgid "Transformation Engine callback url"
 msgstr "URL pour les callback du serveur de transformation"
 
+msgid "Transformation Engine timeout connection (in seconds)"
+msgstr ""
+
 msgid "fulltext index mode"
 msgstr "mode d'indexation fulltext"
 
@@ -6182,6 +6214,9 @@ msgstr "taille de la bordure de la fenêtre"
 
 msgid "client name"
 msgstr "nom du client"
+
+msgid "Dynacase pages favico"
+msgstr ""
 
 msgid "client logo"
 msgstr "logo du client"
@@ -7855,8 +7890,19 @@ msgstr ""
 msgid "function '%s' declared in %s is not found"
 msgstr "fonction '%s' déclaré dans le %s est introuvable"
 
+#, c-format
+msgid "Conversion as %s has failed "
+msgstr ""
+
+msgid "See below information about conversion"
+msgstr ""
+
 msgid "conversion error"
 msgstr "erreur de conversion"
+
+#, c-format
+msgid "convert file %s as %s failed"
+msgstr ""
 
 #, c-format
 msgid "vid %d stored"

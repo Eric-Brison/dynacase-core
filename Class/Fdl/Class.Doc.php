@@ -1754,6 +1754,29 @@ create unique index i_docir on doc(initid, revision);";
     }  
     return $err;
   }
+  
+  
+  /**
+   * reset Conversion of file
+   * update $attrid_txt table column
+   * @param string $attrid file attribute identificator
+   * @return string error message 
+   */
+  public function resetConvertVaultFile($attrid,$index) {  
+        $err='';
+        $val=$this->getTValue($attrid, false, $index);
+        if (count($val) == 1) {
+            $val=$val[0];
+            $info=$this->getFileInfo($val);
+            if ($info) {
+                  $ofout=new VaultDiskStorage($this->dbaccess,$info["id_file"]);
+                  if ($ofout->isAffected()) {
+                    $err=$ofout->delete();
+                  }
+            }            
+        }
+        return $err;
+  }
   /**
    * send a request to TE to convert fiele
    * update $attrid_txt table column
@@ -1771,8 +1794,9 @@ create unique index i_docir on doc(initid, revision);";
 	$vidin=$reg[2];
 	$info=vault_properties($vidin,$engine);
 
-      
-	if ((! $info->teng_vid) || ($info->teng_state==2)) {
+	// in case of server not reach : try again
+      if ($info->teng_state == TransformationEngine::error_connect) $info->teng_state=TransformationEngine::status_inprogress;
+	if ((! $info->teng_vid) || ($info->teng_state==TransformationEngine::status_inprogress)) {
 	  $vf = newFreeVaultFile($this->dbaccess);
 	  if (! $info->teng_vid) {
 	    // create temporary file
@@ -1804,10 +1828,9 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	  }
 
-	  $err=vault_generate($this->dbaccess,$engine,$vidin,$vidout,$isimage);
+	  $err=vault_generate($this->dbaccess,$engine,$vidin,$vidout,$isimage,$this->initid);
 	  if ($err!="") {
-	  
-	  
+	       $this->addComment(sprintf(_("convert file %s as %s failed : %s"),$info->name,$engine, $err), HISTO_ERROR);
 	  }
 	} else {
 	  if ($isimage) {
@@ -3169,6 +3192,9 @@ create unique index i_docir on doc(initid, revision);";
     $h->code=$code;
 
     $err=$h->Add();
+    if ($level == HISTO_ERROR) {
+        error_log(sprintf("document %s [%d] : %s",$this->title, $this->id, $comment));
+    }
     return $err;
   }  
 
@@ -4458,7 +4484,7 @@ create unique index i_docir on doc(initid, revision);";
 	break;
       case "file":
 	$vid="";
-
+        $info=false;
 	if (preg_match(PREGEXPFILE, $avalue, $reg)) {
 	  // reg[1] is mime type
 	  $vid=$reg[2];
@@ -4466,8 +4492,8 @@ create unique index i_docir on doc(initid, revision);";
 	  include_once("FDL/Lib.Dir.php");
 	  $vf = newFreeVaultFile($this->dbaccess);
 	  if ($vf->Show ($reg[2], $info) == "") $fname = $info->name;
-	  else $fname=_("vault file error");
-	} else $fname=_("no filename");
+	  else $htmlval=_("vault file error");
+	} else $htmlval=_("no filename");
 
 
 	if ($target=="mail") {
@@ -4477,7 +4503,44 @@ create unique index i_docir on doc(initid, revision);";
 	  $htmlval.=  "\">".$fname."</a>";
 	} else {
 	  if ($info) {
-	    if ($htmllink) {
+	    if ($info->teng_state < 0 || $info->teng_state > 1) {
+	        $htmlval="";
+	        include_once("WHAT/Class.TEClient.php");
+	        switch (intval($info->teng_state)) {
+	            case TransformationEngine::error_convert: // convert fail
+                        $textval=_("file conversion failed");
+	                break;
+	            case TransformationEngine::error_noengine: // no compatible engine
+                        $textval=_("file conversion not supported");
+	                break;
+                    case TransformationEngine::error_connect: // no compatible engine
+                        $textval=_("cannot contact server");
+                        break;
+	            case TransformationEngine::status_waiting: // waiting
+                        $textval=_("waiting conversion file");
+                        break;
+                    case TransformationEngine::status_inprogress: // in progress
+                        $textval=_("generating file");
+                        break;
+                    default:
+                        $textval=sprintf(_("unknown file state %s"),$info->teng_state);
+	        }
+	        if ($htmllink) {
+	            //$errconvert=trim(file_get_contents($info->path));
+	            //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
+	            if ($info->teng_state > 1) $waiting="<img class=\"mime\" src=\"Images/loading.gif\">";
+	            else $waiting="<img class=\"mime\" needresize=1 src=\"Images/delimage.png\">";;
+	            $htmlval=sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
+	                             $this->getFileLink($oattr->id,$index),
+	                             $info->id_file,str_replace("'","&rsquo;",_("file status")),$waiting,$textval);
+	              if ($info->teng_state < 0)  {
+	                  $htmlval.=sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
+	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"/lib/ui/icon/arrow_refresh.png");
+	              }              
+	        } else {
+	            $htmlval=$textval;
+	        }
+	    } elseif ($htmllink) {
 	      $size=round($info->size/1024)._("AbbrKbyte");
 	      $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
   							 
@@ -4489,30 +4552,14 @@ create unique index i_docir on doc(initid, revision);";
 	      $inline=$oattr->getOption("inline");
 	      if ($inline=="yes") $opt="&inline=yes";
 	      $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-		$action->GetParam("CORE_BASEURL").
-		"app=FDL"."&action=EXPORTFILE$opt&cache=no&vid=$vid"."&docid=".$this->id."&attrid=".$oattr->id."&index=$idx"
-		."\">";
+		$this->getFileLink($oattr->id,$idx)."\">";
 	      if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
 	      $htmlval.=$fname."</a>";
 	    } else {
 	      $htmlval=$info->name;
 	    }
 	  }
-	  /*
-  					  
-	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$mime\" href=\"".
-	    "http://".$_SERVER["HTTP_HOST"].
-	    "/davfreedom/doc".$this->id."/$fname".
-	    "\">"."[DAV:$vid]($mime)".
-	    "</A>";
-
-  					 
-	    $htmlval.=" <A onmousedown=\"document.noselect=true;\" target=\"_blank\" type=\"$umime\" href=\"".
-	    "http://".$_SERVER["HTTP_HOST"].
-	    "/davfreedom/doc".$this->id."/$fname".
-	    "\">"."[DAV:$vid]($umime)".
-	    "</A>";
-	  */
+	
 	}
 
 	break;
@@ -6610,6 +6657,7 @@ create unique index i_docir on doc(initid, revision);";
       include_once("FDL/Lib.Vault.php");
       $vid=$reg[2];
       $info=vault_properties($vid);
+      if (! $info) return false;
       if ($key != "") {
 	if (isset($info->$key)) return $info->$key;
 	else return sprintf(_("unknow %s file property"),$key);
