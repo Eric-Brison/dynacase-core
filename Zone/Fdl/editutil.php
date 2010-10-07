@@ -1233,6 +1233,9 @@ function getLayOptions(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 
 	$lay->set("lvalue",$value);
 	$enuml = $oattr->getenumlabel();
+	$TMP = $oattr->getenum();
+foreach(explode("\n", print_r($enuml, true)) as $tmp) { error_log($tmp); }
+foreach(explode("\n", print_r($TMP, true)) as $tmp) { error_log($tmp); }
 	$enumk=array_keys($enuml);
 	if (($etype=="free") && ($eformat!="auto")){
 		$enuml['...']=_("Other...");

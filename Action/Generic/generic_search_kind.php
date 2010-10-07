@@ -70,6 +70,7 @@ function generic_search_kind(&$action) {
 
   }
 
+  $kid = str_replace('\.', '-dot-', $kid);
   if (strrpos($kid,'.') !== false)   $kid = substr($kid,strrpos($kid,'.')+1); // last reference
 
   // clear key
@@ -88,9 +89,10 @@ function generic_search_kind(&$action) {
   $a = $fdoc->getAttribute($aid);
   $enum = $a->getEnum();
   $tkids=array();;
-  while (list($k, $v) = each($enum)) {
+  foreach($enum as $k => $v) {
+	$k = str_replace('\.', '-dot-', $k);
     if (in_array($kid,explode(".",$k))) {
-      $tkids[] = pg_escape_string(substr($k,strrpos(".".$k,'.')));
+      $tkids[] = pg_escape_string(str_replace('-dot-', '.', substr($k,strrpos(".".$k,'.'))));
     }
   }
   if ($a->type == "enum") {
