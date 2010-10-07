@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-05 12:02+0200\n"
+"POT-Creation-Date: 2010-10-07 12:20+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -695,6 +695,10 @@ msgid "update of %s in progress"
 msgstr ""
 
 #, c-format
+msgid "convert file %s as %s failed : %s"
+msgstr ""
+
+#, c-format
 msgid "%s needed\n"
 msgstr ""
 
@@ -867,6 +871,31 @@ msgstr ""
 #, fuzzy
 msgid "no filename"
 msgstr "Firstname"
+
+msgid "file conversion failed"
+msgstr ""
+
+msgid "file conversion not supported"
+msgstr ""
+
+msgid "cannot contact server"
+msgstr ""
+
+msgid "waiting conversion file"
+msgstr ""
+
+msgid "generating file"
+msgstr ""
+
+#, c-format
+msgid "unknown file state %s"
+msgstr ""
+
+msgid "file status"
+msgstr ""
+
+msgid "retry file conversion"
+msgstr ""
 
 msgid "AbbrKbyte"
 msgstr ""
@@ -6077,6 +6106,9 @@ msgstr ""
 msgid "Transformation Engine callback url"
 msgstr ""
 
+msgid "Transformation Engine timeout connection (in seconds)"
+msgstr ""
+
 msgid "fulltext index mode"
 msgstr ""
 
@@ -6654,6 +6686,9 @@ msgstr ""
 #, fuzzy
 msgid "client name"
 msgstr "Lastname"
+
+msgid "Dynacase pages favico"
+msgstr ""
 
 #, fuzzy
 msgid "client logo"
@@ -8385,9 +8420,20 @@ msgstr ""
 msgid "function '%s' declared in %s is not found"
 msgstr ""
 
+#, c-format
+msgid "Conversion as %s has failed "
+msgstr ""
+
+msgid "See below information about conversion"
+msgstr ""
+
 #, fuzzy
 msgid "conversion error"
 msgstr "Organisation"
+
+#, c-format
+msgid "convert file %s as %s failed"
+msgstr ""
 
 #, c-format
 msgid "vid %d stored"

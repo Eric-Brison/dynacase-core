@@ -4,12 +4,12 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
-include_js('WHAT/Layout/AnchorPosition.js')
-include_js('FDL/Layout/common.js')
-include_js('WHAT/Layout/DHTMLapi.js')
-include_js('WHAT/Layout/AnchorPosition.js')
-include_js('WHAT/Layout/geometry.js')
-include_js('FDL/Layout/iframe.js')
+include_js('WHAT/Layout/AnchorPosition.js');
+include_js('FDL/Layout/common.js');;
+include_js('WHAT/Layout/DHTMLapi.js');
+include_js('WHAT/Layout/AnchorPosition.js');
+include_js('WHAT/Layout/geometry.js');
+include_js('FDL/Layout/iframe.js');
 
 
 function popdoc(event,url,title) {
@@ -60,7 +60,7 @@ function poptext(text,title) {
 			movePopup('POPDOC' ,[mgeox], [mgeoy]+scrolly);
 		} 
 		changecontent( 'POPDOC' , url );
-		showbox( 'POPDOC')
+		showbox( 'POPDOC');
 	}
 }
 
