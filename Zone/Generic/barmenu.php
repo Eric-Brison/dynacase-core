@@ -78,36 +78,39 @@ function barmenu(&$action) {
 
   include_once("FDL/popup_util.php");
   //--------------------- kind menu -----------------------
-  $lattr = $fdoc->getNormalAttributes();
-  
-  $tkind=array();
-  while (list($k,$a) = each($lattr)) {    
-    if ((($a->type == "enum") || ($a->type == "enumlist")) &&
-	(($a->phpfile != "-")&&($a->getOption("bmenu")!="no"))) {
-      
-      $tkind[]=array("kindname"=>$a->getLabel(),
-		     "kindid"=>$a->id,
-		     "vkind"=>"kind".$a->id);
-      $tvkind=array();
-      $tmkind=array();
-      $enum=$a->getenum();
-      while (list($kk,$ki) = each($enum)) {
-	$tvkind[]=array("ktitle" => strstr($ki, '/')?strstr($ki, '/'):$ki,
-			"level" =>  substr_count($kk, '.')*20,
-			"kid"=>$kk,
-			"urlkid" => urlencode($kk));
-	$tmkind[]=$a->id.$kk;
-      }
-      $action->lay->SetBlockData("kind".$a->id, $tvkind);
+	$lattr = $fdoc->getNormalAttributes();
 
-      
-      popupInit($a->id."menu", $tmkind);
-      while (list($km,$vid) = each($tmkind)) {
-	popupActive($a->id."menu",1,$vid); 
-      }
-    }
+	$tkind = array();
+	while (list($k, $a) = each($lattr)) {
+		if ((($a->type == "enum") || ($a->type == "enumlist")) &&
+				(($a->phpfile != "-") && ($a->getOption("bmenu") != "no"))) {
 
-  }
+			$tkind[] = array(
+				"kindname" => $a->getLabel(),
+				"kindid" => $a->id,
+				"vkind" => "kind" . $a->id
+			);
+			$tvkind = array();
+			$tmkind = array();
+			$enum = $a->getenum();
+			foreach($enum as $kk => $ki) {
+				$tvkind[] = array(
+					"ktitle" => strpos($ki, '/') !== false ? substr($ki, strrpos($ki, '/')) : $ki,
+					"level" => (substr_count($kk, '.') - substr_count($kk, '\.')) * 20,
+					"kid" => str_replace('\.', '.', $kk),
+					"urlkid" => urlencode($kk)
+				);
+				$tmkind[] = $a->id . $kk;
+			}
+			$action->lay->SetBlockData("kind" . $a->id, $tvkind);
+
+
+			popupInit($a->id . "menu", $tmkind);
+			while (list($km, $vid) = each($tmkind)) {
+				popupActive($a->id . "menu", 1, $vid);
+			}
+		}
+	}
 
   
   $action->lay->SetBlockData("KIND", $tkind);
