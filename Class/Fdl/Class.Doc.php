@@ -1754,6 +1754,29 @@ create unique index i_docir on doc(initid, revision);";
     }  
     return $err;
   }
+  
+  
+  /**
+   * reset Conversion of file
+   * update $attrid_txt table column
+   * @param string $attrid file attribute identificator
+   * @return string error message 
+   */
+  public function resetConvertVaultFile($attrid,$index) {  
+        $err='';
+        $val=$this->getTValue($attrid, false, $index);
+        if (count($val) == 1) {
+            $val=$val[0];
+            $info=$this->getFileInfo($val);
+            if ($info) {
+                  $ofout=new VaultDiskStorage($this->dbaccess,$info["id_file"]);
+                  if ($ofout->isAffected()) {
+                    $err=$ofout->delete();
+                  }
+            }            
+        }
+        return $err;
+  }
   /**
    * send a request to TE to convert fiele
    * update $attrid_txt table column
@@ -4510,6 +4533,10 @@ create unique index i_docir on doc(initid, revision);";
 	            $htmlval=sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
 	                             $this->getFileLink($oattr->id,$index),
 	                             $info->id_file,str_replace("'","&rsquo;",_("file status")),$waiting,$textval);
+	              if ($info->teng_state < 0)  {
+	                  $htmlval.=sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
+	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"/lib/ui/icon/arrow_refresh.png");
+	              }              
 	        } else {
 	            $htmlval=$textval;
 	        }
@@ -6630,6 +6657,7 @@ create unique index i_docir on doc(initid, revision);";
       include_once("FDL/Lib.Vault.php");
       $vid=$reg[2];
       $info=vault_properties($vid);
+      if (! $info) return false;
       if ($key != "") {
 	if (isset($info->$key)) return $info->$key;
 	else return sprintf(_("unknow %s file property"),$key);
