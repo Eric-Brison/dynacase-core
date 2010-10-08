@@ -765,6 +765,7 @@ create unique index i_docir on doc(initid, revision);";
     $cdoc->locked=$this->locked;
     $cdoc->profid=$this->profid;
     $cdoc->dprofid=$this->dprofid;
+    $cdoc->prelid=$this->prelid;
     
     $values = $this->getValues();
 
