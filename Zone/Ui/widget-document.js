@@ -621,7 +621,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
         
         if(this.document.getProperty('version')){
         	console.log('VERSION',this.document.getProperty('version'));
-        	statestatustext = 'version ' + this.document.getProperty('version');
+        	statestatustext = 'version ' + this.document.getProperty('version')+' ';
         }
         
         if (this.document.hasWorkflow()){
