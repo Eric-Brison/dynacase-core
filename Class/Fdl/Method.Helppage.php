@@ -185,7 +185,7 @@ Class _HELPPAGE extends Doc {
 		else {
 			$this->lay->set('HELPATTRIBUTESLIST', true);
 			$docfam = createDoc($this->dbaccess, $famid, false);
-			$docattributes = $docfam->GetSortAttributes();
+			$docattributes = $docfam->GetNormalAttributes();
 			$attributes = array();
 			foreach($docattributes as $attribute) {
 				$attributes[] = array(

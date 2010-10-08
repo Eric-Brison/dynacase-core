@@ -128,6 +128,20 @@ $action_desc = array (
    "script"		=>"onefam_ext_getpref.php",
    "function"		=>"onefam_ext_getmasterpref",
    "acl"		=>"ONEFAM_MASTER"
+  ) ,
+  array( 
+   "name"		=>"ONEFAM_EXT_GETDISPLAYCONFIG",
+   "short_name"		=>N_("get ext display configuration"),
+   "script"		=>"onefam_ext_displayconfig.php",
+   "function"		=>"onefam_ext_getdisplayconfig",
+   "acl"		=>"ONEFAM"
+  ) ,
+  array( 
+   "name"		=>"ONEFAM_EXT_SETDISPLAYCONFIG",
+   "short_name"		=>N_("set ext display configuration"),
+   "script"		=>"onefam_ext_displayconfig.php",
+   "function"		=>"onefam_ext_setdisplayconfig",
+   "acl"		=>"ONEFAM"
   ) 
 );
 

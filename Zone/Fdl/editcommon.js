@@ -524,7 +524,13 @@ function addTableRow(config) {
 							}
 							if (config[i].url) {
 								var t=document.getElementById('img_'+linp[j].id);
-								if (t) t.src=config[i].url;
+								if (t){
+									t.src=config[i].url;
+									if(t.style.filter && t.style.width == '0px' && t.style.height == '0px') {
+										t.style.width = '30px';
+										t.style.height = '30px';
+									}
+								}
 							}
 						}
 					} else {
@@ -599,7 +605,20 @@ function getFormValue(attrid) {
 	return null;
 }
 function _concat(a,b) {
-	return [].slice.call(a, 0,a.length).concat([].slice.call(b, 0,b.length));
+	try {
+		return [].slice.call(a, 0,a.length).concat([].slice.call(b, 0,b.length));
+	}
+	catch(e) {
+		var t = [];
+		var i;
+		for(i=0; i < a.length; i++) {
+			t.push(a[i]);
+		}
+		for(i=0; i < b.length; i++) {
+			t.push(b[i]);
+		}
+		return t;
+	}
 }
 
 function _inarray(e, t) {
@@ -942,7 +961,9 @@ function disableReadAttribute() {
 	    	if (linname) kj=linname.substring(linname.indexOf('[')+1,linname.indexOf(']'));
 	    	if (!kj) kj=j;
 	      vin = getInputValue(tain[c][k],kj);
-	      if ((vin == '') || (vin == ' ')) ndis = false;
+	      if ((vin == '') || (vin == ' ')) {
+			  if (lin[j].getAttribute('readonly') != '1') ndis = false;
+		  }
 	    
 	    }
 	    //	  alert(tain[c].toString()+'['+j+']'+ndis);

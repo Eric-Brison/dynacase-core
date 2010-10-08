@@ -11,9 +11,10 @@ SUBDIR= mime
 
 include $(utildir)/PubRule
 
-$(pubdir)/$(appname)/logo16.ico : logo16.ico
+$(pubdir)/$(appname)/dynacase.ico : dynacase.ico
 	cp $< $(pubdir)/$(appname)/Images
+
 $(pubdir)/$(appname)/logo32.ico : logo32.ico
 	cp $< $(pubdir)/$(appname)/Images
 
-publish: $(pubdir)/$(appname)/logo16.ico $(pubdir)/$(appname)/logo32.ico
+publish: $(pubdir)/$(appname)/logo32.ico $(pubdir)/$(appname)/dynacase.ico

@@ -204,8 +204,10 @@ Class SearchDoc {
               } else $fromid=$this->fromid;
           }
           if ($fromid == 0) {
-              $this->debuginfo["error"]=sprintf("%s is not a family",$this->fromid);
-              if ($this->mode=="ITEM") return null;
+			  $error = sprintf(_("%s is not a family"),$this->fromid);
+              $this->debuginfo["error"]=$error;
+			  error_log("ERROR SearchDoc: ".$error);
+			  if ($this->mode=="ITEM") return null;
               else return array();
           }
           if ($this->only) $this->fromid=-(abs($fromid));

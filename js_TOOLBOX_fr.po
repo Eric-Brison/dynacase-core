@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-09 08:18+0200\n"
+"POT-Creation-Date: 2010-10-07 12:20+0200\n"
 "PO-Revision-Date: 2010-02-08 15:48+0100\n"
 "Last-Translator: anakeen <devel@anakeen.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,3 +38,93 @@ msgstr ""
 
 msgid "data::no tag specified"
 msgstr "pas de tag donné"
+
+msgid "eui::Content"
+msgstr "Contenu"
+
+msgid "eui::Informations"
+msgstr "Informations"
+
+msgid "eui::lock_as_name"
+msgstr "verrou"
+
+msgid "eui::missing right"
+msgstr "Droit manquant"
+
+msgid "eui::You have no right to access this document"
+msgstr "Vous n'avez pas les droits requis pour consulter ce document"
+
+msgid "eui::Creation :"
+msgstr "Création :"
+
+msgid "eui::ToEdit"
+msgstr "Éditer"
+
+msgid "eui::Search"
+msgstr "Recherche"
+
+msgid "eui::Create Search"
+msgstr "Créer Recherche"
+
+msgid "eui::Search by word"
+msgstr "Recherche par mot"
+
+msgid "eui::Search by exp"
+msgstr "Recherche par expression"
+
+msgid "eui::Evaluate"
+msgstr "Évaluer"
+
+msgid "eui::Save"
+msgstr "Sauver"
+
+msgid "eui::Edit search : "
+msgstr "Éditer la Recherche"
+
+msgid "eui::Enter search name"
+msgstr "Entrez le nom de la Recherche"
+
+msgid "eui::Create search :"
+msgstr "Créer Recherche :"
+
+msgid "eui::Families"
+msgstr "Familles"
+
+msgid "eui::Administrator"
+msgstr "Administrateur"
+
+msgid "eui::User"
+msgstr "Utilisateur"
+
+msgid "eui::Display"
+msgstr "Disposition"
+
+msgid "eui::Horizontal"
+msgstr "Horizontal"
+
+msgid "eui::Vertical"
+msgstr "Vertical"
+
+msgid "eui::documents"
+msgstr "documents"
+
+msgid "eui::delete"
+msgstr "Supprimer"
+
+msgid "eui::totrash"
+msgstr "Dans la Corbeille"
+
+msgid "eui:cannot delete"
+msgstr "Suppression impossible"
+
+msgid "eui::infolder"
+msgstr "Dans"
+
+msgid "eui::Duplicate"
+msgstr "Dupliquer"
+
+msgid "eui::Link"
+msgstr "Lier"
+
+msgid "eui::Move"
+msgstr "Déplacer"

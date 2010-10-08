@@ -4,15 +4,22 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
-include_js('WHAT/Layout/AnchorPosition.js')
-include_js('FDL/Layout/common.js')
-include_js('WHAT/Layout/DHTMLapi.js')
-include_js('WHAT/Layout/AnchorPosition.js')
-include_js('WHAT/Layout/geometry.js')
-include_js('FDL/Layout/iframe.js')
+include_js('WHAT/Layout/AnchorPosition.js');
+include_js('FDL/Layout/common.js');;
+include_js('WHAT/Layout/DHTMLapi.js');
+include_js('WHAT/Layout/AnchorPosition.js');
+include_js('WHAT/Layout/geometry.js');
+include_js('FDL/Layout/iframe.js');
 
 
-function popdoc(event,url) {
+function popdoc(event,url,title) {
+    
+//    if(window.parent.Ext){
+//        //alert('ExtJS is detected');
+//        console.log(event,url);
+//        window.parent.Ext.fdl.Interface.prototype.publish('openurl',url,"???",{opener:window});         
+//        //return me;
+//    } else {
 
   if (event) event.cancelBubble=true;     
   if (ctrlPushed(event)) {
@@ -22,9 +29,9 @@ function popdoc(event,url) {
     var dpopdoc = document.getElementById('POPDOC_s');
     var fpopdoc;
     var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
-    if (! dpopdoc) {      
-      new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', url, 'white', '#00385c', '16pt serif', '[TEXT:mini view]', '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, true, false);
-    
+    if (! dpopdoc) {
+    	if (! title) title='[TEXT:mini view]';
+      new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', url, 'white', '#00385c', '16pt serif', title, '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, true, false);
     } else {      
       if ((getObjectTop(dpopdoc) < scrolly) || 
 	  (getObjectTop(dpopdoc) > (getInsideWindowHeight() + scrolly))	){
@@ -36,8 +43,26 @@ function popdoc(event,url) {
 
     }
   }
+  
+//    }
 }
+function poptext(text,title) {   
 
+	var dpopdoc = document.getElementById('POPDOC_s');
+	var fpopdoc;
+	var scrolly=window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+	if (! dpopdoc) {
+		new popUp([mgeox], [mgeoy] + scrolly, [mgeow], [mgeoh], 'POPDOC', text, 'white', '#00385c', '16pt serif', title, '[COLOR_B5]', '[CORE_TEXTBGCOLOR]', '[COLOR_B7]', '[CORE_BGCOLORALTERN]', '[CORE_BGCOLORALTERN]', true, true, true, true, false, false);
+	} else {      
+		if ((getObjectTop(dpopdoc) < scrolly) || 
+				(getObjectTop(dpopdoc) > (getInsideWindowHeight() + scrolly))	){
+			// popup is not visible in scrolled window => move to visible part
+			movePopup('POPDOC' ,[mgeox], [mgeoy]+scrolly);
+		} 
+		changecontent( 'POPDOC' , url );
+		showbox( 'POPDOC');
+	}
+}
 
 // create popup for insert div after
 function newPopdiv(event,divtitle,x,y,w,h) {

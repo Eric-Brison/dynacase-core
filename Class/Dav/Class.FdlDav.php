@@ -228,7 +228,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
     return $fid;
   }
 
-  function getFilesProperties($doc) {
+  function getFilesProperties(&$doc) {
 	  $fileAttributes = $doc->GetFileAttributes();
 	  $tinfo = array();
 	  foreach($fileAttributes as $fileAttribute) {
@@ -238,7 +238,10 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 		  $result = $doc->vault_properties($fileAttribute);
 		  if(count($result)>0 && is_array($result[0])) {
 			foreach($result as $tmp){
+			    $state=intval($tmp["teng_state"]);
+			    if ($state == 0  || $state==1) { // only valid files
 				$tinfo[] = $tmp;
+			    }
 			}
 		  }
 	  }
@@ -823,7 +826,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
       if ($err!="") {
 	return "403 Forbidden:$err";    		
       }
-      $query = "DELETE FROM dav.properties WHERE name='fid' and value=".$doc->initid;
+      $query = sprintf("DELETE FROM dav.properties WHERE name='fid' and value='%s'", pg_escape_string($doc->initid));
       error_log ( $query );
       pg_query($this->db_res,$query);
     }
@@ -878,7 +881,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	  // delete file
 	  $err=$dest->delete();
 	  if ($err=="") {
-	    $query = "DELETE FROM dav.properties WHERE name='fid' and value=".$dest->initid;
+	    $query = sprintf("DELETE FROM dav.properties WHERE name='fid' and value='%s'", pg_escape_string($dest->initid));
 	    error_log($query);
 	    pg_query($this->db_res,$query);
 	    // move
@@ -1043,7 +1046,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 
 	if ($err=="") {
 		
-	  $query = "DELETE FROM dav.properties WHERE name='fid' and value=".$dest->initid;
+	  $query = sprintf("DELETE FROM dav.properties WHERE name='fid' and value='%s'", pg_escape_string($dest->initid));
 	  error_log($query);
 	  pg_query($this->db_res,$query);
 	}
@@ -1380,6 +1383,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
   function cleanDeleted($fid) {
     $fid=intval($fid);
     $query = "delete from dav.properties where value=$fid and name= 'fid'";
+    $query = sprintf("delete from dav.properties where value='%s' and name= 'fid'", pg_escape_string($fid));
     
     pg_query($this->db_res,$query);
   }

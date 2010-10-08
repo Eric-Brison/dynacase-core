@@ -10,8 +10,3 @@ export appname
 SUBDIR = flags
 
 include $(utildir)/PubRule
-
-$(pubdir)/$(appname)/logo16.ico : logo16.ico
-	cp $< $(pubdir)/$(appname)/Images
-
-publish: $(pubdir)/$(appname)/logo16.ico 

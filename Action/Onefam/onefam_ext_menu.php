@@ -42,7 +42,7 @@ function onefam_ext_menu(&$action) {
     if ($fam->isAlive()) {
         $main["family"]=array("type"=>"menu",
                "label"=>$fam->getTitle(),
-               "icon"=>$fam->getIcon(),
+               //"icon"=>$fam->getIcon(),
                 "items"=>array());
          
         $main["family"]["items"]["create"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
@@ -69,7 +69,7 @@ function onefam_ext_menu(&$action) {
 
         if ($fldid && $fld->isAlive() && ($fld->doctype !='T')) {
             $main["family"]["items"]["edit"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
-                                            "class"=>"Fdl.InterfaceAction.EditDocument"),
+                                            "class"=>"Fdl.InterfaceAction.EditSearchFilter"),
                             "label"=>sprintf(_("Edit %s"),$fld->getTitle()),
                             "icon"=>$fld->getIcon());
         }

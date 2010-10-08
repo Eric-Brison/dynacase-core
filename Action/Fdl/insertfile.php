@@ -32,6 +32,7 @@ function insertfile(&$action) {
   $name = GetHttpVars("name");
   $engine = GetHttpVars("engine");
   $isimage = (GetHttpVars("isimage")!="");
+  $docid = GetHttpVars("docid");
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
   if (! $tid) $err=_("no task identificator found");
@@ -76,19 +77,27 @@ function insertfile(&$action) {
 
 	} else {
 	  $vf = newFreeVaultFile($dbaccess);
-	  $err=$vf->Retrieve($vidout, $vinfo);
+          $err=$vf->Retrieve($vidin, $infoin);
+	  $err=$vf->Retrieve($vidout, $infoout);
 
 	  
 	  $filename= uniqid(getTmpDir()."/txt-".$vidout.'-');
-	  file_put_contents($filename,print_r($info,true));
+	  $error=sprintf(_("Conversion as %s has failed "),$infoout->teng_lname);
+	  $error.="\n== "._("See below information about conversion")."==\n".print_r($info,true);
+	  file_put_contents($filename,$error);
 	  //$vf->rename($vidout,"toto.txt");
-	  $vf->Retrieve($vidout, $vinfo);
+	  $vf->Retrieve($vidout, $infoout);
 	  $err=$vf->Save($filename, false , $vidout);
 	  $basename=_("conversion error").".txt";
 	  $vf->Rename($vidout,$basename);
-	  $vf->storage->teng_state=-1;
-	  $vf->storage->modify();;
-	  
+	  $vf->storage->teng_state=TransformationEngine::error_convert;
+	  $vf->storage->modify();
+	  if ($docid) {
+	      $doc=new_doc($dbaccess, $docid);
+	      if ($doc->isAlive()) {
+	          $doc->addComment(sprintf(_("convert file %s as %s failed"),$infoin->name,$infoout->teng_lname), HISTO_ERROR);
+	      }
+	  }
 	}
 	
       

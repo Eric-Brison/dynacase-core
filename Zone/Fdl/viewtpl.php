@@ -34,19 +34,29 @@ function viewtpl(Action &$action) {
     if (! $docid) $action->addWarningMsg(sprintf(_("template %s no document found"),$zone));
     $dbaccess=$action->getParam("FREEDOM_DB");
 
-    if (preg_match("/([^:]+):([^:]+)/",$zone, $reg)) {
-        $appname=$reg[1];
-        $doc=new_doc($dbaccess,$docid);
-        if ($doc->isAlive()) {
-            $action->lay=new Layout($doc->getZoneFile($zone),$action);
-            $doc->lay=&$action->lay;
-           // $doc->viewdefaultcard($target,$ulink,$abstract,false);
-            $doc->viewdefaultcard($target);
-            $method = strtok(strtolower($zone),'.');
-            if (method_exists ( $doc, $method)) {
-                $doc->$method();
-            }
-        }
+    $reg = Doc::parseZone($zone);
+    if( $reg === false ) {
+      return sprintf(_("error in pzone format %s"),$zone);
+    }
+
+    if( array_key_exists('argv', $reg) ) {
+      foreach( $reg['argv'] as $k => $v ) {
+	setHttpVar($k, $v);
+      }
+    }
+
+    $appname=$reg['app'];
+    $doc=new_doc($dbaccess,$docid);
+    if ($doc->isAlive()) {
+      $action->lay=new Layout($doc->getZoneFile($zone),$action);
+      $doc->lay=&$action->lay;
+     
+      $method = strtok(strtolower($reg['layout']),'.');
+      if (method_exists($doc, $method)) {
+	$doc->$method();
+      } else {
+          $doc->viewdefaultcard($target);
+      }
     }
 }
 ?>

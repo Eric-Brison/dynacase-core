@@ -17,7 +17,7 @@ function trackEnter(evt)
     intKeyCode = window.event.keyCode;
 
   if (intKeyCode == 13) { // enter key
-    login(document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');
+    login(document.loginform,"[TEXT:warning_name]",'[TEXT:warning_pass]');
     return false;
   } else
     return true;

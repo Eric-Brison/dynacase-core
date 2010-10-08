@@ -274,18 +274,24 @@ class OOoLayout extends Layout {
 		if (file_exists($odsfile)) return "file $odsfile must not be present";
 
 		$contentxml=$this->cibledir."/content.xml";
+
+		$this->template=preg_replace("!</?text:bookmark-(start|end)([^>]*)>!s","",$this->template);
+
+		$this->template=preg_replace("!<text:section>(\s*<text:p/>)+!s","<text:section>",$this->template);
+		$this->template=preg_replace("!(<text:p/>\s*)+</text:section>!s","</text:section>",$this->template);
+
 		$this->template=preg_replace("/<text:span ([^>]*)>\s*<text:section>/s","<text:section>",$this->template);
 		$this->template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->template);
 
+		$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->template);
+		$this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template);
+
+		$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
+		$this->template=preg_replace("/<\/text:section>\s*<text:([^\/]*)\/>\s*<\/text:p>/s","</text:section><text:\\1/>",$this->template);
 
 		$this->template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->template);
 		$this->template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->template);
 
-
-
-		$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->template);
-		$this->template=preg_replace("/<text:p ([^>]*)><text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
-		$this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template);
 		$this->template=str_replace("&lt;text:line-break/&gt;","<text:line-break/>",$this->template);
 
 		//  header('Content-type: text/xml; charset=utf-8');print($this->template);exit;
@@ -521,6 +527,10 @@ class OOoLayout extends Layout {
 		foreach ( $objNodeListNested as $objNodeNested ){
 			if ($objNodeNested->nodeType == XML_TEXT_NODE) {
 				if ($objNodeNested->nodeValue!="") {
+					if(strpos($strNewContent, '<text:section>') !== false) {
+						$strNewContent = str_replace('<', '--Lower.Than--', $strNewContent);
+						$strNewContent = str_replace('>', '--Greater.Than--', $strNewContent);
+					}
 					$objNodeNested->nodeValue=str_replace($strOldContent,$strNewContent,$objNodeNested->nodeValue);
 				}
 			}
@@ -709,7 +719,9 @@ class OOoLayout extends Layout {
 	 * restore protected values
 	 */
 	function restoreProtectedValues() {
-		$this->template=preg_replace('/\[PP(V_[A-Z0-9_]+)PP\]/s', '[$1]', $this->template);
+		$this->template = preg_replace('/\[PP(V_[A-Z0-9_]+)PP\]/s', '[$1]', $this->template);
+		$this->template = str_replace('--Lower.Than--', '<', $this->template);
+		$this->template = str_replace('--Greater.Than--', '>', $this->template);
 	}
 	/**
 	 * parse section and clone "tpl_xxx" sections into saved_sections

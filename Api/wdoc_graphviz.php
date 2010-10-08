@@ -77,7 +77,7 @@ foreach ($doc->cycle as $k=>$v) {
 	$act=$doc->getActivity($v["e1"]);	
 	if ($act && ($tact[$v["e1"]]=="")) {
 			$tact[$v["e1"]]='act'.$k;
-	$line[]='"'.str_replace(" ","\\n",'act'.$k).'" [ label="'.$act.'.", fixedsize=false,shape=box,color="'.$doc->getColor($v["e1"]).'" ];';
+	$line[]='"'.str_replace(" ","\\n",'act'.$k).'" [ label="'.$act.'", fixedsize=false,shape=box,color="'.$doc->getColor($v["e1"]).'" ];';
 
       $line[]=sprintf('"%s" -> "%s" [labelfontcolor="#555555",decorate=false, color=darkblue, labelfontname=sans, label="%s"];',
 		    str_replace(" ","\\n",$e1),
@@ -102,7 +102,7 @@ foreach ($doc->cycle as $k=>$v) {
       //      if ($tmain) $tmain.=",";
       //      $tmain.="taillabel=$m1";
 
-      $line[]='"'.str_replace(" ","\\n",$m1.$k).'" [ label="'.$m1.'.", fixedsize=false,shape=diamond,color="'."yellow".'" ];';
+      $line[]='"'.str_replace(" ","\\n",$m1.$k).'" [ label="'.$m1.'", fixedsize=false,shape=diamond,color="'."yellow".'" ];';
 
       $line[]=sprintf('"%s" -> "%s" [labelfontcolor="#555555",decorate=false, color=darkblue,  labelfontname=sans, label="%s"];',
 		    str_replace(" ","\\n",$e1),
@@ -187,7 +187,7 @@ foreach ($doc->cycle as $k=>$v) {
 	if ($type=="activity") {
 		if ($act && ($tact[$v["e1"]]=="")) {
 			$tact[$v["e1"]]='act'.$k;
-	$line[]='"'.str_replace(" ","\\n",'act'.$k).'" [ label="'.$act.'.", fixedsize=false,shape=box,color="'.$doc->getColor($v["e1"]).'" ];';
+	$line[]='"'.str_replace(" ","\\n",'act'.$k).'" [ label="'.$act.'", fixedsize=false,shape=box,color="'.$doc->getColor($v["e1"]).'" ];';
 
       $line[]=sprintf('"%s" -> "%s" [labelfontcolor="#555555",decorate=false, color=darkblue, labelfontname=sans, label="%s"];',
 		    str_replace(" ","\\n",$e1),

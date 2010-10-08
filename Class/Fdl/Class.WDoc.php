@@ -59,7 +59,6 @@ Class WDoc extends Doc {
     // don't use Doc constructor because it could call this constructor => infinitive loop
     DocCtrl::__construct($dbaccess, $id, $res, $dbid);
 
-    $this->postConstructor();
   }
 
   function Set(&$doc) {
@@ -971,10 +970,7 @@ Class WDoc extends Doc {
 
 	$this->pdoc = &$pdoc;
       }
-
-
       $err=$this->pdoc->DocControl($aclname);
-
     }
     return $err;
   }

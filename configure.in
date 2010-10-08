@@ -18,7 +18,7 @@ VERSION=`cat VERSION`
 AC_SUBST(RELEASE)
 RELEASE=`cat RELEASE`
 AC_SUBST(PACKAGE)
-PACKAGE=freedom-toolbox
+PACKAGE=dynacase-platform
 AC_SUBST(PACKAGELIB)
 PACKAGELIB=FDL
 AC_SUBST(TODAY)
@@ -71,9 +71,9 @@ AC_ARG_WITH(pgservicecore,
 [  --with-pgservice_core=postgresql service for core database (default "anakeen") ], PGSERVICE_CORE=$withval)
 
 AC_SUBST(PGSERVICE_FREEDOM)
-PGSERVICE_FREEDOM=freedom
+PGSERVICE_FREEDOM=dynacase
 AC_ARG_WITH(pgservicefreedom,
-[  --with-pgservice_freedom=postgresql service for freedom database (default "freedom") ], PGSERVICE_FREEDOM=$withval)
+[  --with-pgservice_freedom=postgresql service for freedom database (default "dynacase") ], PGSERVICE_FREEDOM=$withval)
 
 AC_SUBST(FREEDOM_CONTEXT)
 FREEDOM_CONTEXT=default
@@ -91,14 +91,14 @@ AC_ARG_WITH(dbhost,
 [  --with-dbhost=host the PostgreSql Host (default localhost)  ], DBHOST=$withval)
 
 AC_SUBST(DBNAME)
-DBNAME=freedom
+DBNAME=dynacase
 AC_ARG_WITH(dbname,
-[  --with-dbname=name  the database name (default anakeen)], DBNAME=$withval)
+[  --with-dbname=name  the database name (default dynacase)], DBNAME=$withval)
 
 AC_SUBST(DBUSER)
-DBUSER=anakeen
+DBUSER=dynacase
 AC_ARG_WITH(dbuser,
-[  --with-dbuser=username  the database user (default anakeen)], DBUSER=$withval)
+[  --with-dbuser=username  the database user (default dynacase)], DBUSER=$withval)
 
 AC_SUBST(DBPORT)
 DBPORT=5432
@@ -136,6 +136,7 @@ AC_OUTPUT(Makefile \
           App/Authent/AUTHENT_init.php \
           App/Core/CORE_init.php \
           App/Data/DATA_init.php \
+          App/Extui/EXTUI_init.php \
           App/Dav/DAV_init.php \
           App/Dav/DAV_conf.apache \
           App/Fdl/FDL_init.php \

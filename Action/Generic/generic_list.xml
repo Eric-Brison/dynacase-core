@@ -7,7 +7,7 @@
    <title>[TEXT: folder containt]</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="shortcut icon" href="FDL/Images/logo16.ico">
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
 
@@ -56,6 +56,7 @@ function vedit(e,id) {
 }
 var catgid=parseInt('[catg]');
 
+var PDS='';
 function KeySendSimpleSearch(e) {
      var keyCode;
 

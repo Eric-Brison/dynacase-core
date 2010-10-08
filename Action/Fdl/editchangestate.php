@@ -98,6 +98,16 @@ $tinputs=array();
     $action->lay->set("thetitle",sprintf(_("Change state to %s"),_($nextstate)));
     $action->lay->set("nextstate",$nextstate);
 
+  	$style = $action->parent->getParam("STYLE");
+
+	$action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-SYSTEM.css");
+	if(file_exists($action->parent->rootdir."/STYLE/$style/Layout/EXT-ADAPTER-USER.css")) {
+		$action->parent->AddCssRef("STYLE/$style/Layout/EXT-ADAPTER-USER.css");
+	}
+	else {
+		$action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-USER.css");
+	}
+    
   }
 }
 ?>

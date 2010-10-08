@@ -51,41 +51,43 @@ function XMLprocessverificationfiles() {
 	    if ((state=='3')||(state=='2')) needverify=true;	    
 	  }
 	  if (needverify) {
-	    setTimeout(function() { verifycomputedfiles(docid) }, 5000);
+	    setTimeout(function() { verifycomputedfiles(docid); }, 5000);
 	  } else {	    
-	    var title1,vid,isimg,icon1;
-	    var ta,hr,j,r,timg,ii;
-	    for ( i=0;i<values.length;i++) {
-	      state=values[i].getAttribute('status');
-	      vid=values[i].getAttribute('id');
-	      if ((state=='1') || (parseInt(state) < 0)) {
-		r=new RegExp("vid="+vid,"g")
-		title1=getTagContent(values[i],'title');
-		icon1=getTagContent(values[i],'icon');
-		ta=document.getElementsByTagName("a");
+		  var title1,vid,isimg,icon1;
+		  var ta,hr,j,r,timg,ii,i,vid,avid;
+		  for ( i=0;i<values.length;i++) {
+			  state=values[i].getAttribute('status');
+			  vid=values[i].getAttribute('id');
+			  if ((state=='1') || (parseInt(state) < 0)) {
+				  r=new RegExp("vid="+vid,"g");
+				  title1=getTagContent(values[i],'title');
+				  icon1=getTagContent(values[i],'icon');
+				  ta=document.getElementsByTagName("a");
 
-		for (j=0;j<ta.length;j++) {
-		  hr=ta[j].getAttribute('href');
-		  if (hr) {
-		    isimg=false;
-		    if (r.test(hr))  {
-		      timg=ta[j].getElementsByTagName("img");		      
-		      for (ii=0;ii<timg.length;ii++) {
-			if (r.test(timg[ii].src)) {
-			  isimg=true;
-			  timg[ii].src=timg[ii].src+'&r=1';
-			}
-		      }
-		      if (!isimg) {
-			if (icon1) 	ta[j].innerHTML='<img class="mime" src="'+icon1+'"> '+title1
-			else ta[j].innerHTML=title1;
-		      }
-		    }
+				  for (j=0;j<ta.length;j++) {
+					  hr=ta[j].getAttribute('href');
+					  avid=ta[j].getAttribute('vid');
+					  if (avid==vid) {
+						  isimg=false;
+						  timg=ta[j].getElementsByTagName("img");		      
+						  for (ii=0;ii<timg.length;ii++) {
+							  if (r.test(timg[ii].src)) {
+								  isimg=true;
+								  timg[ii].src=timg[ii].src+'&r=1';
+							  }
+						  }
+						  if (!isimg) {
+							  if (icon1) 	ta[j].innerHTML='<img class="mime" src="'+icon1+'"> '+title1;
+							  else ta[j].innerHTML=title1;
+							  ta[j].setAttribute('href',ta[j].getAttribute('_href_'));
+							  ta[j].removeAttribute('onclick');
+						  }
+
+					  }
+				  }
+			  }  
 		  }
-		}
-	      }  
-	    }
-	    //	    alert('ok');
+		  //	    alert('ok');
 	  }	    
 	}
       }

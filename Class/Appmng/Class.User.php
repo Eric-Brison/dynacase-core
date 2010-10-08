@@ -313,7 +313,7 @@ create sequence seq_id_users start 10";
 	  }
 	}
 	$this->iddomain=$iddomain;  
-	$this->mail=$this->getMail(true);
+	$this->mail=$this->getMail();
 
       }
     }
@@ -349,7 +349,7 @@ create sequence seq_id_users start 10";
 	  $uacc->login       = $this->login;
 	  $err=$uacc->Add(true);
 	  if ($err == "") {
-	    $this->mail=$this->getMail(true);
+	    $this->mail=$this->getMail();
 
 	    $err=$this->Modify(true);
 	  } 
@@ -374,7 +374,7 @@ create sequence seq_id_users start 10";
       $this->iddomain=1;
     }
     
-    $this->mail=$this->getMail(true);
+    $this->mail=$this->getMail();
     $this->fid=$fid;
     if (! $this->isAffected()) {    
       $this->isgroup="Y";
@@ -470,29 +470,8 @@ create sequence seq_id_users start 10";
    * @param bool $reinit recompute adress from mail account
    * @return string mail address empty if no mail
    */
-  function getMail($reinit=false) {
-
-    if (($this->mail != "") && (! $reinit)) return $this->mail;
-
-    if ($this->iddomain == 1) return "";
-    if ($this->iddomain == 0) return $this->mail;
-
-    include_once("Class.MailAccount.php");
-    $from="";
-    $ma = new MailAccount("",$this->id);
-    if ($ma->isAffected()) {
-      $dom = new Domain("",$this->iddomain);
-      $from = $ma->login."@".$dom->name;
-    } else {
-
-      if ($this->isAffected() && ($this->isgroup=="Y") && ($this->iddomain > 1)) {
-	$dom = new Domain("",$this->iddomain);
-	$from = $this->login."@".$dom->name;
-	
-      }
-    }
-    return $from;
-    
+  function getMail() {
+        return $this->mail;
   }
   function PostInit() {
 

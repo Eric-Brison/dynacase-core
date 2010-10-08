@@ -99,7 +99,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 "app=FDL&action=EXPORTFILE&vid=$vid&docid=$docid&attrid=$attrid&index=$index\" title=\"{$info->name}\">";
 					// put image
 
-					$fname.="<IMG  id=\"img_$attridk\" style=\"vertical-align:bottom;border:none\" width=\"30\" SRC=\"";
+					$fname.="<IMG  id=\"img_$attridk\" style=\"vertical-align:bottom;border:none;width:30px\" SRC=\"";
 					$fname .= GetParam("CORE_BASEURL").
 "app=FDL&action=EXPORTFILE&width=30&vid=$vid&docid=".$docid."&attrid=".$attrid."&index=$index";
 					$fname .= "\">";
@@ -114,7 +114,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 				else $fname=_("error in filename");
 			} else {
 				if ($value) {
-					$fname.="<img id=\"img_$attridk\" style=\"vertical-align:bottom\" width=\"30\" SRC=\"";
+					$fname.="<img id=\"img_$attridk\" style=\"vertical-align:bottom;width:30px\" SRC=\"";
 					$fname .= $action->getImageUrl($value);
 					$fname .= "\">";
 				} else {
@@ -643,8 +643,9 @@ if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 		$input=str_replace("<br/>",$ib,$input);
 	} else $input.="<br/>".$ib;
 } elseif (preg_match("/(.*)\((.*)\)\:(.*)/", $phpfunc, $reg)) {
-	if ($alone) {
+	if ($alone && $oattr->type!="docid") {
 		$arg = array($oattr->id);
+		print_r2($reg);
 	} else {
 		$argids = explode(",",$reg[3]);  // output args
 		$arg = array();
@@ -692,7 +693,7 @@ if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 } else {
 	if (!$notd) $input.="</td><td class=\"nowrap\">";
 }
-if ($oattr->elink != "") {
+if ($oattr->elink != "" && (!$alone)) {
 
 	if (substr($oattr->elink,0,3)=="JS:") {
 		// javascript action
@@ -1232,6 +1233,7 @@ function getLayOptions(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 
 	$lay->set("lvalue",$value);
 	$enuml = $oattr->getenumlabel();
+	
 	$enumk=array_keys($enuml);
 	if (($etype=="free") && ($eformat!="auto")){
 		$enuml['...']=_("Other...");

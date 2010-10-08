@@ -4,7 +4,7 @@
 <title>FREEDOM - [TEXT:Progress bar]</title>
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 [CSS:REF]
-<LINK REL="icon" HREF="CORE/Images/logo16.ico" >
+<LINK REL="icon" HREF="[DYNACASE_FAVICO]" >
 
 
 </head>

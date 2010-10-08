@@ -10,7 +10,7 @@
   <td   >
    <img needresize="1" align="top" style="width:[SIZE_IMG-SMALL]" src="[icon]">
       <label for="sensitive"> [TEXT:familly]&nbsp;:</label>
-     <select name="_se_famid" onchange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=[ACTION]&classid=[classid]&dirid=[dirid]&onlysubfam=[onlysubfam]&sfamid='+this.options[this.selectedIndex].value">  
+     <select name="_se_famid" id="famid" onchange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=[ACTION]&classid=[classid]&dirid=[dirid]&onlysubfam=[onlysubfam]&sfamid='+this.options[this.selectedIndex].value">
          [BLOCK SELECTCLASS]<option VALUE="[idcdoc]" [selected]>[classname]</option>   
          [ENDBLOCK SELECTCLASS]
     </select>  
@@ -62,7 +62,7 @@
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">
-  <select  name="_se_funcs[]" >
+  <select  name="_se_funcs[]"  onchange="filterfunc2(this)">
     [BLOCK FUNC]<option  ctype="[functype]" style="display:[funcdisplay]" value="[funcid]">[funcname]</option>
     [ENDBLOCK FUNC]
   </select></td>
@@ -156,15 +156,20 @@
   [ENDBLOCK [ATTRCOND]]
   </select></td>
 <td class="und">
-  <select  name="_se_funcs[]" >  
+  <select  name="_se_funcs[]"  onchange="filterfunc2(this)">
   [BLOCK [FUNCCOND]]
      <option [func_selected] ctype="[func_type]"  style="display:[func_display]" value="[func_id]">[func_name]</option>
   [ENDBLOCK [FUNCCOND]]
   </select></td>
 <td class="und"  >
   [IFNOT ISENUM]
-   <input  type="text"  size="20" name="_se_keys[]" value="[key]">
-   
+	  [IFNOT ISDOCID]
+	   <input  type="text"  size="20" name="_se_keys[]" value="[key]">
+	  [ENDIF ISDOCID]
+	  [IF ISDOCID]
+		<input type="hidden"  name="_se_keys[]" id="[DOCID_AID]" value="[key]">
+		<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,[FAMID],this,'','[DOCID_AID]','')"   onchange="addmdocs('_[DOCID_AID]')" type="text" name="_ilink_[DOCID_AID]" id="ilink_[DOCID_AID]" value="[DOCID_TITLE]">
+	  [ENDIF ISDOCID]
   [ENDIF ISENUM]
   [IF ISENUM]
   <select  name="_se_keys[]" >
@@ -216,10 +221,10 @@
 </td>
 </tr>
 
-<tr class="FREEDOMBack1">
+<tr class="FREEDOMBack1"> 
   <td  align="left" colspan="2" >
  
- <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="sendsearch('[CORE_STANDURL]&app=FREEDOM&action=SEARCH');return false"> </td>
+ <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="sendsearch('[CORE_STANDURL]&app=FREEDOM&action=SEARCH');return false" /> </td>
   <td  align="right"></td>
 </tr>
 

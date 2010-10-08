@@ -46,7 +46,7 @@ Class BasicAttribute {
       $topt=explode("|",$this->options);
       $this->_topt=array();
       foreach ($topt as $k=>$v) {
-	list($vn,$vv)=explode("=",$v);
+	list($vn,$vv)=explode("=",$v, 2);
 	$this->_topt[$vn]=$vv;
       }
     }
@@ -117,6 +117,15 @@ Class BasicAttribute {
     */
   function isMultiple() {
   	return ($this->inArray() || ($this->getOption('multiple')=='yes'));
+  }
+   /**
+    * get tab ancestor
+    * @return FieldSetAttribute
+    */
+  function getTab() {
+        if ($this->type=='tab') return $this;
+        if ($this->fieldSet && ($this->fieldSet->id != 'FIELD_HIDDENS')) return $this->fieldSet->getTab();
+        return false;
   }
    /**
    * export values as xml fragment
@@ -474,23 +483,41 @@ function enum_getXmlSchema(&$la) {
 		if ($sphpfunc != "") {
 			$tenum = explode(",", $sphpfunc);
 			foreach ($tenum as $k => $v) {
-				list($n, $text) = explode("|", $v);
-				list($n1, $n2) = explode(".", $n);
-				$r = $br.str_replace(array('-dot-', '-comma-'), array('\.', ','), $n);
-
-				$i = _($r);
-				if ($i != $r) $text = $i;
-				else {
-					$text = str_replace(array('-dot-', '-comma-'), array('.', ','), $text);
+				list($enumKey, $enumValue) = explode("|", $v);
+				$treeKeys = explode(".", $enumKey);
+				
+				$translatedEnumValue = _($br.$enumValue);
+				if ($translatedEnumValue != $br.$enumValue) {
+					$enumValue = $translatedEnumValue;
 				}
-				$n = str_replace(array('-dot-', '-comma-'), array('\.', ','), $n);
-				$n1 = str_replace(array('-dot-', '-comma-'), array('\.', ','), $n1);
 
-				if ($n != " ") $n = trim($n);
-				if ($n2 != "") $this->enum[$n] = $this->enum[$n1]."/".$text;
-				else $this->enum[$n] = $text;
-				if ($n2 != "") $this->enumlabel[substr($n, strrpos($n, '.') + 1)] = $this->enum[$n];
-				else $this->enumlabel[$n] = $this->enum[$n];
+				$n = count($treeKeys);
+				if($n <= 1) {
+					$enumValue = str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumValue);
+					$this->enum[str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumKey)] = $enumValue;
+					$this->enumlabel[str_replace(array('-dot-', '-comma-'), array('.', ','), $enumKey)] = $enumValue;
+				}
+				else {
+					$enumlabelKey = '';
+					$tmpKey = '';
+					$previousKey = '';
+					foreach($treeKeys as $i => $treeKey) {
+						$enumlabelKey = $treeKey;
+
+						if($i < $n -1) {
+							if($i > 0) {
+								$tmpKey .= '.';
+							}
+							$tmpKey .= $treeKey;
+						}
+
+					}
+					$tmpKey = str_replace(array('-dot-', '-comma-'), array('\.', ','), $tmpKey);
+					$enumlabelValue = $this->enum[$tmpKey].'/'.$enumValue;
+					$enumlabelValue = str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumlabelValue);
+					$this->enum[str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumKey)] = $enumlabelValue;
+					$this->enumlabel[str_replace(array('-dot-', '-comma-'), array('.', ','), $enumlabelKey)] = $enumlabelValue;
+				}
 			}
 		}
 	}
@@ -499,32 +526,38 @@ function enum_getXmlSchema(&$la) {
 	return $this->enum;
   }
 
-  function getEnumLabel($enumid="") {  
-    global $__tlenum;
+  function getEnumLabel($enumid="") {
+		global $__tlenum;
 
-    $this->getEnum();
+		$this->getEnum();
 
-    $implode=false;
-    if (isset($__tlenum[$this->id])) { // is set
-      if ($enumid=="") return $__tlenum[$this->id]; 
-      if (strstr($enumid,"\n")) {
-	$enumid=explode("\n",$enumid);
-	$implode=true;
-      }
-      if (is_array($enumid)) {
-	$tv=array();
-	foreach ($enumid as $v) {
-	  if (isset($__tlenum[$this->id][$v])) $tv[]= $__tlenum[$this->id][$v];
-	  else $tv[]=$enumid;
+		$implode = false;
+		if (isset($__tlenum[$this->id])) { // is set
+			if ($enumid == "")
+				return $__tlenum[$this->id];
+			if (strstr($enumid, "\n")) {
+				$enumid = explode("\n", $enumid);
+				$implode = true;
+			}
+			if (is_array($enumid)) {
+				$tv = array();
+				foreach ($enumid as $v) {
+					if (isset($__tlenum[$this->id][$v]))
+						$tv[] = $__tlenum[$this->id][$v];
+					else
+						$tv[] = $enumid;
+				}
+				if ($implode)
+					return implode("\n", $tv);
+				return $tv;
+			} else {
+				if (isset($__tlenum[$this->id][$enumid]))
+					return $__tlenum[$this->id][$enumid];
+				else
+					return $enumid;
+			}
+		}
 	}
-	if ($implode) return implode("\n",$tv);
-	return $tv;
-      } else {
-	if (isset($__tlenum[$this->id][$enumid])) return $__tlenum[$this->id][$enumid];
-	else return $enumid;
-      }
-    }    
-  }
 
 	/**
 	 * add new item in enum list items

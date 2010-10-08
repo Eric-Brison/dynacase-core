@@ -5,7 +5,7 @@
   <head>
 
    <title>[foldername] [TEXT: folder containt]</title>
-<link rel="shortcut icon" href="FDL/Images/logo16.ico" >
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
 [IF RSS]<link rel="alternate" type="application/rss+xml" title="[foldername]" href="[rsslink]"/>[ENDIF RSS]

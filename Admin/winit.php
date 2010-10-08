@@ -15,7 +15,7 @@
 <noscript>
 <H1>Javascript must be enabled in your navigator</H1>
 </noscript>
-<LINK REL="icon" HREF="../FDL/Images/logo16.ico" >
+<LINK REL="icon" HREF="../[DYNACASE_FAVICO]" >
 <LINK REL="stylesheet" type="text/css" HREF="Layout/wg.css" >
 <script language="JavaScript" src="../WHAT/Layout/logmsg.js"></script>
 <script language="JavaScript">

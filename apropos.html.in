@@ -3,10 +3,10 @@
 <tbody>
 <tr class="x-grid3-row">
   <td><img src="resizeimg.php?img=Images/logofreedom.png&size=70"> </td>
-  <td><h1>Freedom 3.0</h1>
-  <p>Freedom est un logiciel de gestion de contenu et de processus ou ECM. 
+  <td><h1>Dynacase-platform 3.0</h1>
+  <p>Dynacase-platform est un logiciel de gestion de dossiers (case management). 
     Il est destiné à la construction d'application pour la gestion d'information en mode collaboratif.</p>
-    <p>Pour plus d'information, visitez le site  <a href="http://www.freedom-ecm.org" target="_blank">freedom-ecm.org</a></p>
+    <p>Pour plus d'information, visitez le site  <a href="http://www.dynacase.org" target="_blank">dynacase.org</a></p>
 
     <p>Anakeen est l'éditeur du logiciel et le publie sous licence <i>@LICENSE@</i>.
      </p></td>
@@ -17,7 +17,7 @@
   </table>
 
 <br/>
-   <p> Freedom intègre des composants Open Source :</p>
+   <p> Dynacase-platform intègre des composants Open Source :</p>
    
    
 <table class="x-grid3" rules="all" border="1"> 
@@ -32,12 +32,12 @@
 <br/>
 <p>Modules supplémentaires :</p>
 <ul>
-<li><a href="http://www.freedom-ecm.org/modules/freedom-fileconnector/" target="_blank">freedom-fileconnector</a></li>
-<li><a href="http://www.freedom-ecm.org/modules/freedom-book/" target="_blank">freedom-book</a></li>
-<li><a href="http://www.freedom-ecm.org/modules/freedom-mailconnector/" target="_blank">freedom-mailconnector</a></li>
-<li><a href="http://www.freedom-ecm.org/modules/freedom-dav/" target="_blank">freedom-dav</a></li>
-<li><a href="http://www.freedom-ecm.org/modules/freedom-offline/" target="_blank">freedom-offline</a></li>
-<li><a href="http://www.freedom-ecm.org/modules/freedom-networkuser/" target="_blank">freedom-networkuser</a></li>
+<li><a href="http://www.dynacase.org/modules/dynacase-fileconnector/" target="_blank">dynacase.fileconnector</a></li>
+<li><a href="http://www.dynacase.org/modules/dynacase-book/" target="_blank">dynacase.book</a></li>
+<li><a href="http://www.dynacase.org/modules/dynacase-mailconnector/" target="_blank">dynacase.mailconnector</a></li>
+<li><a href="http://www.dynacase.org/modules/dynacase-dav/" target="_blank">dynacase.dav</a></li>
+<li><a href="http://www.dynacase.org/modules/dynacase-offline/" target="_blank">dynacase.offline</a></li>
+<li><a href="http://www.dynacase.org/modules/dynacase-networkuser/" target="_blank">dynacase.networkuser</a></li>
 </ul>
 <hr/>
-<pre style="font-size:70%">freedom @VERSION@-@RELEASE@ (@TODAY@)</pre>
+<pre style="font-size:70%">dynacase-platform @VERSION@-@RELEASE@ (@TODAY@)</pre>
