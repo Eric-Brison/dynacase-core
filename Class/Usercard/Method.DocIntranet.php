@@ -76,9 +76,11 @@ function preCreated() {
  * avoid deletion of system document
  */
 function preDocDelete() {
-    $err="";
+    $err=parent::preDocDelete();
+    if ($err=="") {
     $uid=$this->getValue("us_whatid");
     if (($uid >0) && ($uid <10)) $err=_("this system user cannot be deleted");
+    }
     return $err;
 }
 /**
