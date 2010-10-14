@@ -105,9 +105,9 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
   
 
   $tcols = $this->getTValue("REP_IDCOLS");
-  foreach($tcols as $k=>&$v) {
-      if ($v) {
-          $tcolumn2[$v]=$tcolumn1[$v];
+  foreach($tcols as $k=>&$vcol) {
+      if ($vcol) {
+          $tcolumn2[$vcol]=$tcolumn1[$vcol];
       }
   }
   $this->lay->setBlockData("COLS",$tcolumn2);
@@ -195,7 +195,8 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
   // footer
 
   $tfoots = $this->getTValue("REP_FOOTS");
-  while (list($k,$v) = each($tfoots)) {
+ 
+  foreach($tfoots as $k=>$v) {
     switch ($v) {
     case "CARD":
       $val = count($trow);
@@ -204,9 +205,8 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
     case "SUM":
       reset($trow);
       $val=0;
-       while (list($kr,$vr) = each($trow)) {
+       foreach($trow as $kr=>$vr) {
 	 $ctr = $this->lay->getBlockData($vr["CELLS"]);
-	 
 	 $val += $ctr[$tcols[$k]]["rawval"];
        }
        if ($v == "MOY") $val = $val/count($trow);
@@ -222,7 +222,6 @@ function viewreport($target="_self",$ulink=true,$abstract=false) {
   }
   $this->lay->setBlockData("TFOOT",$tlfoots);
   $this->lay->set("TITLE",$this->getHTMLTitle());
-  //print_r($this->lay);
 }
 /**
  * view to export as csv
