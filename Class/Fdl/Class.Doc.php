@@ -5737,7 +5737,7 @@ create unique index i_docir on doc(initid, revision);";
       $value = chop($this->GetValue($i));
 
       $frametpl=$attr->fieldSet->getOption("viewtemplate");
-      if ($attr->fieldSet && $frametpl) {
+      if ($attr->fieldSet && ($frametpl && $attr->fieldSet->type != "array")) {
 	$goodvalue=false;
 	if ( $currentFrameId != $attr->fieldSet->id) {
 	  if ( ($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
@@ -6384,6 +6384,10 @@ create unique index i_docir on doc(initid, revision);";
       else {
 	$value = $this->GetValue($attr->id);
 	//	$value = $this->GetValueMethod($this->GetValue($listattr[$i]->id));
+      }
+      if (!$attr->fieldSet) {
+          addWarningMsg(sprintf(_("unknow fieldset fot attribute %s %s"),$attr->id, $attr->getLabel()));
+          continue;
       }
       $frametpl=$attr->fieldSet->getOption("edittemplate");
       
