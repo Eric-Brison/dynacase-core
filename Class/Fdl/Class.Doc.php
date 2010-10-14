@@ -5737,7 +5737,8 @@ create unique index i_docir on doc(initid, revision);";
       $value = chop($this->GetValue($i));
 
       $frametpl=$attr->fieldSet->getOption("viewtemplate");
-      if ($attr->fieldSet && $frametpl) {
+      
+      if ($attr->fieldSet && ($frametpl && $attr->fieldSet->type != "array")) {
 	$goodvalue=false;
 	if ( $currentFrameId != $attr->fieldSet->id) {
 	  if ( ($attr->fieldSet->mvisibility != "H") && ($attr->fieldSet->mvisibility != "I")) {
