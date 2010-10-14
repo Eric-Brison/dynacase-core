@@ -170,7 +170,12 @@ Class _DSEARCH extends DocSearch {
 		if ($oa) $atype=$oa->type;
 		else if ($this->infofields[$col]) $atype=$this->infofields[$col]["type"];
 		if ($atype=="date" || $atype=="timestamp") {
-			
+			 if ($col=='revdate') {
+		        if ($op=="=") {
+                            $val2=$val+85399; // tonight 
+		            $op="><";
+		        }
+		    } else {
 			if (($atype=="timestamp")){
 				$pos = strpos($val,' ');
 				$hms = '';
@@ -204,6 +209,7 @@ Class _DSEARCH extends DocSearch {
 			        }
 			         
 			    }
+			}
 			}
 
 		}
