@@ -470,8 +470,11 @@ function add_import_file(&$action, $fimport) {
 					$oattr->link = $data[10];
 					$oattr->phpfile = $data[11];
 					if (isset($data[13])) $oattr->elink = $data[13];
+					else $oattr->elink = '';
 					if (isset($data[14])) $oattr->phpconstraint = $data[14];
+					else $oattr->phpconstraint = '';
 					if (isset($data[15])) $oattr->options = $data[15];
+					else  $oattr->options = '';
 					if (((($data[11]!="")&&($data[11]!="-")) || (($data[6] != "enum")  && ($data[6] != "enumlist"))) ||
 					($oattr->phpfunc == "") || (strpos($oattr->options,"system=yes")!==false)) $oattr->phpfunc = $data[12]; // don(t modify  enum possibilities
 					if ($oattr->isAffected()) $err =$oattr->Modify();
