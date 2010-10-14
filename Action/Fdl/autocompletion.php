@@ -105,8 +105,8 @@ function autocompletion(&$action) {
       $oattr->phpfile="fdl.php";
       $eval=str_replace(array('\,','\.'),array('&comma;','&point;'),$eval);
       $oattr->phpfunc=sprintf("lenumvalues('%s,'%s):li_%s,%s",
-			      str_replace(array(',','(',')'),array('---','-','-'),$eval),
-			      str_replace(array(')','(',','),array('\)','\(','&comma;'),$skey),
+			      str_replace(array(',','(',')'),array('---','&lpar;','&rpar;'),$eval),
+			      str_replace(array(')','(',','),array('&rpar;','&lpar;','&comma;'),$skey),
 			      $oattr->id,$oattr->id);
     } elseif ($oattr->type=="docid") {
       $aname=$oattr->id;

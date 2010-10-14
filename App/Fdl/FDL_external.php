@@ -406,11 +406,12 @@ function lenumvalues($enum, $val="" ) {
   // $enum like 'a|A,b|B'
   $val=trim($val);
   $val=str_replace(array('&comma;','&point;'),array(',','.'),$val);
+  $val=str_replace(array('&lpar;','&rpar;',),array('(',')'),$val);
+  $enum=str_replace(array('&lpar;','&rpar;',),array('(',')'),$enum);
   $tenum=explode("---",$enum);
 
 
   $tr=array();
-  $val=str_replace(array(')','(',),array('\)','\('),$val);
 
   foreach($tenum as $k=>$v) {    
     list($key,$label)=explode("|",$v);
