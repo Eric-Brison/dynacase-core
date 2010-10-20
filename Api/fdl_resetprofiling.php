@@ -1,16 +1,17 @@
 <?php
 
 /**
- * Add child to an Animal
+ * reset profiling use when restore context from archive
+ * all document has the same profil
  *
- * @author Anakeen 2008
- * @version $Id: zoo_addchild.php,v 1.4 2010/04/30 13:44:07 eric Exp $
+ * @author Anakeen 2010
+ * @version $Id:  $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package FREEDOM
  * 
  *
- * @global docid Http var : document identificator
- * @global n Http var : number of new childs
+ * @global login Http var : login
+ * @global password Http var : password
  /**
  */
 
