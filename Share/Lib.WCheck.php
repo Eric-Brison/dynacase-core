@@ -106,33 +106,7 @@ function getAppOrder($topdir) {
  * @return int 0 if equal -1 if ($v1<$v2) 1 if ($v2>$1)
  */
 function vercmp($v1,$v2) {
-  if ($v1==$v2) return 0;
-  if (version2float($v1) > version2float($v2)) return 1;
-  else return -1;
-  /* TODO need correction
-  if( ! preg_match('/^(?P<version>[0-9.]+)-?(?P<release>.*?)$/', $v1, $m1) ) {
-    error_log(sprintf("Error: malformed version '%s'", $v1));
-    return 0;
-  }
-  if( ! preg_match('/^(?P<version>[0-9.]+)-?(?P<release>.*?)$/', $v2, $m2) ) {
-    error_log(sprintf("Error: malformed version '%s'", $v2));
-    return 0;
-  }
-
-  $s_v1 = join("", array_map( create_function('$a', 'return sprintf("%03d", $a);'), preg_split("/\./", $m1['version']) ) );
-  $s_v2 = join("", array_map( create_function('$a', 'return sprintf("%03d", $a);'), preg_split("/\./", $m2['version']) ) );
-
-  if( $m1['version'] != $m2['version'] ) {
-    return ( strcmp($m1['version'], $m2['version']) > 0 ) ? 1 : -1;
-  }
-
-  $cmp_rel = ( $m1['release'] - $m2['release'] );
-  if( $cmp_rel == 0 ) {
-    return $cmp_rel;
-  }
-
-  return ( $cmp_rel > 0 ) ? 1 : -1;
-  */
+    return version_compare($v1,$v2);
 }
 
 function version2float($ver) {
