@@ -42,6 +42,15 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 
 
   /**
+   * Maximum number of documents listed in a folder
+   *
+   * Default is 'ALL' (no limit)
+   *
+   * @var int
+   */
+  private $folder_max_item = 'ALL';
+
+  /**
    * PgSQL database for property/locking information storage
    *
    * @access private
@@ -147,7 +156,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
         
 
   function readfolder($fspath,$onlyfld=false) {
-    include_once("FDL/Lib.Dir.php");
+    include_once('FDL/Class.SearchDoc.php');
 
     $files=array();
     $fldid=$this->path2id($fspath,$vid);
@@ -172,23 +181,15 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 	  else $dpath=$fspath;
 	  $files=$this->docpropinfo($fld,$dpath,true);	  
 	  if (! $onlyfld) {
-	    /*
-	     $ldoc = getChildDoc($this->db_freedom, $fld->initid,0,"ALL", array(),$action->user->id,"ITEM");
-	     error_log("READFOLDER:".countDocs($ldoc));
-	     while ($doc=getNextDoc($this->db_freedom,$ldoc)) {
-	     //		  $files[]=$this->docpropinfo($doc);
-	     error_log("READFOLDER examine :".$doc->title);
-	     $files=array_merge($files,$this->docpropinfo($doc,$fspath));
-	     }*/
-	    if ($fld->doctype=='D') {
-	      $tdoc=getFldDoc($this->db_freedom, $fld->initid,array(),200,false);
-	    } else {
-	      $tdoc = getChildDoc($this->db_freedom, $fld->initid,0,200, array(),$action->user->id,"TABLE");
-	    }
-	    // error_log("READFOLDER examine :".count($tdoc));
-	    foreach ($tdoc as $k=>$v) {
-	      $doc=getDocObject($this->db_freedom,$v);
-	      $files=array_merge($files,$this->docpropinfo($doc,$fspath,false));
+	    $s = new SearchDoc($this->db_freedom);
+	    $s->dirid = $fld->initid;
+	    $s->slice = $this->getFolderMaxItem();
+	    $s->setObjectReturn();
+	    $s->search();
+	    if( $s->count() > 0 ) {
+	      while( $doc = $s->nextDoc() ) {
+		$files = array_merge($files, $this->docpropinfo($doc, $fspath, false));
+	      }
 	    }
 	  } 
 	}
@@ -1428,6 +1429,34 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
     $query = sprintf("delete from dav.properties where value='%s' and name= 'fid'", pg_escape_string($fid));
     
     pg_query($this->db_res,$query);
+  }
+
+  /**
+   * Set the maximum number of documents returned when listing
+   * content of a folder
+   *
+   * @param int $limit limit value (value < 0 for no limit)
+   *
+   * @return int the current limit
+   */
+  function setFolderMaxItem($limit) {
+    if( ! is_numeric($limit) || $limit < 0 ) {
+      $limit = 'ALL';
+    }
+    $this->folder_max_item = $limit;
+    return $this->folder_max_item;
+  }
+
+  /**
+   * Get the currently applied maximum number
+   *
+   * @return int the current limit
+   */
+  function getFolderMaxItem() {
+    if( ! is_numeric($this->folder_max_item) || $this->folder_max_item < 0 ) {
+      return 'ALL';
+    }
+    return $this->folder_max_item;
   }
 
 }
