@@ -26,6 +26,7 @@ if( $type == 'webdav' ) {
 error_log("======[ ".$_SERVER['REQUEST_METHOD']." ]=[ ".$_SERVER['PATH_INFO']." ]=======");
 whatInit();
 $s=new HTTP_WebDAV_Server_Freedom($action->getParam("WEBDAV_DB"));
+$s->setFolderMaxItem($action->getParam('WEBDAV_FOLDERMAXITEM'));
 $path=$_SERVER['PATH_INFO'];
 if ($type=="freedav") {
   if (preg_match("|/vid-([0-9]+)-([0-9]+)-([^/]+)|",$path,$reg)) {

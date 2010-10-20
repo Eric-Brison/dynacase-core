@@ -26,7 +26,10 @@ $app_const= array(
 			       "global"=>"Y"),
   "WEBDAV_ROOTID"    =>array("val"=>"9",
 			     "descr"=>N_("folder identificator for root"),
-			     "global"=>"Y")
+			     "global"=>"Y"),
+  "WEBDAV_FOLDERMAXITEM" => array("val"=>"200",
+				  "descr"=>N_("max items return when open a folder"),
+				  "global"=>"Y")
 );
 
 ?>

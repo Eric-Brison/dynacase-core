@@ -42,7 +42,8 @@ function getsessionid(&$action) {
 
 function dav_sessionid($docid,$vid) {  
   global $action;
-  $s=new HTTP_WebDAV_Server_Freedom(getParam("WEBDAV_DB"));      
+  $s=new HTTP_WebDAV_Server_Freedom(getParam("WEBDAV_DB"));
+  $s->setFolderMaxItem(getParam('WEBDAV_FOLDERMAXITEM'));
   $sid=$s->getSession($docid,$vid,$action->user->login);
   if (!$sid) {
     $sid=md5(uniqid($vid));
