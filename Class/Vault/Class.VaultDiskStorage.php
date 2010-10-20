@@ -60,7 +60,8 @@ Class VaultDiskStorage extends DbObj {
                                      teng_comment        text DEFAULT ''
 
                                );
-           create sequence seq_id_vaultdiskstorage start 10;";
+           create sequence seq_id_vaultdiskstorage start 10;
+           CREATE INDEX vault_teng on vaultdiskstorage (teng_state);";
   
   var $storage = 1;
 

@@ -1706,15 +1706,10 @@ create unique index i_docir on doc(initid, revision);";
   final public function hasWaitingFiles() {      
     $dvi = new DocVaultIndex($this->dbaccess);
     $tvid=$dvi->getVaultIds($this->id);
-    $tinfo=array();
-    if (count($tvid) > 0) {
-      $vf = newFreeVaultFile($this->dbaccess);
-      foreach ($tvid as $vid) {
-	$err=$vf->Retrieve($vid, $info);
-	if ($info->teng_state==3) return true;
-      }
-    }
-    return false;
+    if (count($tvid) ==0) return false;
+    $sql=sprintf("select id_file from vaultdiskstorage where teng_state=%d and %s limit 1",TransformationEngine::status_waiting,getSqlCond($tvid,"id_file",true));
+    simpleQuery($this->dbaccess,$sql,$waiting,true,true);
+    return ($waiting!=false);
   } 
 
   /**
