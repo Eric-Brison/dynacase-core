@@ -65,7 +65,7 @@ function destroyFamily($dbaccess,$idfam,$force=false) {
 		if (! $force) $tsql[]="commit;";
 		foreach ($tsql as $sql) {
 			print "$sql\n";
-			$res=@pg_query($sql);
+			$res=@pg_query($dbid,$sql);
 			if (! $res) {
 				print pg_last_error()."\n";
 				if (! $force) break;
