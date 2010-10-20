@@ -350,7 +350,7 @@ if (TG_OP = ''INSERT'') then
      else
        cfromid=NEW.fromid;
        if (NEW.revision > 0) then
-         EXECUTE ''update doc'' || cfromid || '' set lmodify=''''N'''' where initid= '' || NEW.initid;
+         EXECUTE ''update doc'' || cfromid || '' set lmodify=''''N'''' where initid= '' || NEW.initid || ''and lmodify != ''''N'''''';
          EXECUTE ''update doc'' || cfromid || '' set lmodify=''''L'''' where  id=(select distinct on (initid) id from only doc'' || cfromid || '' where initid = '' || NEW.initid || '' and locked = -1 order by initid, revision desc)'';
        end if;
      end if;
