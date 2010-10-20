@@ -87,10 +87,12 @@ function editcard(&$action) {
     case "D":
       $doc->usefor='D';
       $doc->setDefaultValues($fdoc->getDefValues(),false); 
+      $doc->state='';
       break;
     case "Q":
       $doc->usefor='Q';
       $doc->setDefaultValues($fdoc->getParams(),false); 
+      $doc->state='';
       break;
     }
   
@@ -160,7 +162,7 @@ function editcard(&$action) {
 }
 
 function setNeededAttributes(&$action,&$doc) {  
-  $attrn = $doc->GetNeededAttributes();
+  $attrn = $doc->GetNeededAttributes($doc->usefor=='Q');
   
   if (count($attrn) == 0) {
     $sattrNid = "[]";
@@ -177,7 +179,7 @@ function setNeededAttributes(&$action,&$doc) {
 
   //compute constraint for enable/disable input
   $tjsa=array();
-  if ($usefor != "D") {
+  if ($doc->usefor != "D") {
     /*
     if (GetHttpVars("viewconstraint")!="Y") $doc->Refresh();
     else {
@@ -204,13 +206,13 @@ function setNeededAttributes(&$action,&$doc) {
   
 }
 function setRefreshAttributes(&$action,&$doc) {  
- 
-  if ($usefor != "D") {
-    if (GetHttpVars("viewconstraint")!="Y") $doc->Refresh();
-    else {
-      $err=$doc->SpecRefresh(); // to use addParamRefresh
-      $err.=$doc->SpecRefreshGen(true);      
-    }       
+  if ($doc->usefor != "D" ) {
+      if ($doc->usefor == "Q") {
+          // parameters
+          $doc->SpecRefreshGen(true);
+      } else {
+          $doc->Refresh();
+      }
   }  
 }
 function moreone($v) {
