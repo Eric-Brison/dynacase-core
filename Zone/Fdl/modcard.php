@@ -369,6 +369,7 @@ function insert_file(&$doc, $attrid,$strict=false) {
 			$rt[$k]=" "; // delete reference file
 			continue;
 		}
+		$userfile['name']=stripslashes($userfile['name']); // cause gpc_magicquote
 		if (($userfile['tmp_name'] == "none") || ($userfile['tmp_name'] == "") || ($userfile['size'] == 0))  {
 			// if no file specified, keep current file
 

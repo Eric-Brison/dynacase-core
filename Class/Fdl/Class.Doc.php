@@ -2484,7 +2484,11 @@ create unique index i_docir on doc(initid, revision);";
 		    // only if changed
 		    $this->clearFullAttr($oattr->id,($oattr->repeat)?$kvalue:-1);
 		  }
+		  $tvalues[$kvalue]=str_replace('\\','',$tvalues[$kvalue]); // correct possible save error in old versions
 		  break;
+                case 'image':
+                  $tvalues[$kvalue]=str_replace('\\','',$tvalues[$kvalue]);
+                  break;
 		case 'htmltext':
 		  $avalue=str_replace('&quot;','--quoteric--',$avalue);
 
@@ -2509,6 +2513,9 @@ create unique index i_docir on doc(initid, revision);";
 		  $d->aid=$attrid;
 		  $d->deleteAll();
 		  break;
+		case 'text':
+		    $tvalues[$kvalue]=str_replace("\r"," ",$tvalues[$kvalue]);
+		    break;
 		}
 	      }
 	    }
