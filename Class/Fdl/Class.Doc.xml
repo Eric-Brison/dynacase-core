@@ -94,7 +94,7 @@ Class Doc[docid] extends [DocParent] {
       [ENDBLOCK [biattr]]
 
 	$this->AddParamRefresh("[niargs]","[rarg]");
-      if ($onlyspec) return "";
+      if (!$onlyspec) {
       if ($arraycount > 0) {
 	$tv=array();
 	$tvi=$this->getTValue("[rarg]");
@@ -112,6 +112,7 @@ Class Doc[docid] extends [DocParent] {
       } else {
 	$v = call_user_func_array(array($this, "[method]"), $iargs);
 	$this->setValue("[rarg]",$v); 
+      }
       }
     } 
   } else {
