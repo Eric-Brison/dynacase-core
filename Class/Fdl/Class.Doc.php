@@ -1865,19 +1865,23 @@ create unique index i_docir on doc(initid, revision);";
 
   /**
    * return all the necessary attributes 
+   * @param bool $parameters set to true if want parameters instead of attributes
    * @return array DocAttribute
    */
-  final public function GetNeededAttributes()
-  {         
-    if (!$this->_maskApplied) $this->ApplyMask();   
-    $tsa=array();
-      
+  final public function GetNeededAttributes($parameters=false) {
+      $tsa=array();
 
-    foreach($this->attributes->attr as $k=>$v) {
-      if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor!='Q')) $tsa[$v->id]=$v;
-    }
-      
-    return $tsa;
+      if ($parameters) {
+          foreach($this->attributes->attr as $k=>$v) {
+              if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor=='Q')) $tsa[$v->id]=$v;
+          }
+      } else {
+          if (!$this->_maskApplied) $this->ApplyMask();
+          foreach($this->attributes->attr as $k=>$v) {
+              if ((get_class($v) == "NormalAttribute") && ($v->needed) && ($v->usefor!='Q')) $tsa[$v->id]=$v;
+          }
+      }
+      return $tsa;
   }
 
   final public function isCompleteNeeded() {
