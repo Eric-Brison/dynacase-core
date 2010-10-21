@@ -84,6 +84,7 @@ create table doclog ( id int not null,
                    arg text,
                    comment text  );
 create index i_doclog on doclog(id);
+create index in_doclog on doclog(initid);
 create index date_doclog on doclog(date);
 ";
 
