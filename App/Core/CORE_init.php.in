@@ -222,6 +222,10 @@ $app_const = array (
 							"style"=>"N",
 							"kind"=>"enum(small|normal)",
 							"global"=>"Y"),
+                    "CORE_LOGDURATION"              =>array("val"=>"30",
+                                                        "descr"=>N_("duration for log conservation (in days)"),
+                                                        "style"=>"N",
+                                                     "global"=>"Y"),
 
 		    // Mail link production, see setMailAnchor in Lib.Common.php
 		    "CORE_MAIL_LINK"         => array( "val"    => "optimal",

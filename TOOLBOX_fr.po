@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-07 12:20+0200\n"
-"PO-Revision-Date: 2010-10-07 12:22+0200\n"
+"POT-Creation-Date: 2010-10-21 09:40+0200\n"
+"PO-Revision-Date: 2010-10-21 09:42+0200\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -337,8 +338,8 @@ msgstr "Evitement de la propriété '%s' déjà ajoutée dans la famille '%s'"
 msgid ""
 "Attribute Error: impossible to found the family for docid attribute '%s'"
 msgstr ""
-"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid '%"
-"s'"
+"Erreur d'attribut: impossible de trouver la famille pour l'attribut docid "
+"'%s'"
 
 #, c-format
 msgid "Attribute Error: family '%s' is not valid or alive for docid '%s'."
@@ -1015,6 +1016,10 @@ msgstr "nouvelle %s"
 
 msgid "document not referenced"
 msgstr "document non référencé"
+
+#, c-format
+msgid "unknow fieldset fot attribute %s %s"
+msgstr ""
 
 #, c-format
 msgid "unknow %s file property"
@@ -3181,8 +3186,8 @@ msgstr ""
 "<p>Le serveur a rencontré une erreur dans le traitement de votre demande.</"
 "p>\n"
 "<p>Veuillez renouveller votre demande ultérieurement, et si le problème "
-"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème%"
-"20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
+"persiste, contactez <a href=\"mailto:[ON_ERROR_CONTACT]?subject=Problème"
+"%20demande%20mot%20de%20passe\">[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Retour</a></p>"
 
 msgid "errno_bug_639_message"
@@ -6260,6 +6265,9 @@ msgstr "Mot Of The Day"
 msgid "icon size"
 msgstr "taille des icones"
 
+msgid "duration for log conservation (in days)"
+msgstr "durée de conservation des logs (en jours)"
+
 msgid "produce link for"
 msgstr "produit le lien pour"
 
@@ -6298,7 +6306,7 @@ msgid "application ressource"
 msgstr "ressource application"
 
 msgid "group document request"
-msgstr ""
+msgstr "requête groupée de documents"
 
 msgid "User Card"
 msgstr "Carnet d'adresses"
@@ -6386,15 +6394,15 @@ msgstr "Vue principale"
 
 #, c-format
 msgid "no valid document group : %s"
-msgstr ""
+msgstr "groupe de document invalide : %s"
 
 #, c-format
 msgid "no valid group : %s"
-msgstr ""
+msgstr "groupe invalide : %s"
 
 #, c-format
 msgid "document %s is not a group"
-msgstr ""
+msgstr "le document %s n'est pas un groupe"
 
 msgid "mail will be calculated from domain"
 msgstr "l'adresse email sera calculée à partir du domaine"
@@ -6403,7 +6411,7 @@ msgid "no mail"
 msgstr "pas d'email"
 
 msgid "Common functions"
-msgstr ""
+msgstr "Fonctions communes"
 
 msgid "Common function for FREEDOM client API"
 msgstr ""
@@ -8352,8 +8360,8 @@ msgstr "Résultat de l'import d'archive %s"
 
 #, c-format
 msgid ""
-"Import %s is in progress. When update will be finished an email to &lt;%"
-"s&gt; will be sended with result rapport"
+"Import %s is in progress. When update will be finished an email to &lt;"
+"%s&gt; will be sended with result rapport"
 msgstr ""
 "L'import %s est en cours. Lorsque la mise à jour sera finie, un email sera "
 "envoyé à \n"

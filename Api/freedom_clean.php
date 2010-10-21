@@ -14,14 +14,18 @@
 // remove all tempory doc and orphelines values
 include_once("FDL/Class.Doc.php");
 
-$appl = new Application();
-$appl->Set("FDL",	   $core);
 
-$dbaccess=$appl->GetParam("FREEDOM_DB");
+$dbaccess=$action->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
   print "Freedom Database not found : param FREEDOM_DB";
   exit;
 }
+
+$duration=intval($action->GetParam("CORE_LOGDURATION",60)); // default 60 days
+$logdelete=sprintf("DELETE FROM doclog where date < '%s'",Doc::getDate(-($duration)));
+print "$logdelete\n";
+
+simpleQuery($dbaccess, $logdelete);
 
 global $_SERVER;
 $dir=dirname($_SERVER["argv"][0]);
