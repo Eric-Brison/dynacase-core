@@ -490,7 +490,7 @@ Ext.fdl.FamilyPanel = Ext.extend(Ext.Panel, {
         var tools = [{
             id: 'plus',
             handler: function(event, toolEl, panel, config){
-                efd.addCriteria();
+                efd.addCriteria(null);
             }
         }, {
             id: 'gear',
@@ -510,7 +510,7 @@ Ext.fdl.FamilyPanel = Ext.extend(Ext.Panel, {
         }
         
         Ext.apply(this, {
-            title: (icon ? ('<img src=' + icon + ' style="float:left;margin-right:3px; />') : '') + title,        
+            title: (icon ? ('<img src=' + icon + ' style="float:left;margin-right:3px;" />') : '') + title,        
             tools: tools
         });
         
@@ -1120,6 +1120,7 @@ Ext.fdl.Requester = Ext.extend(Ext.Panel, {
                     familyPanel.addCriteria(null, true);
                 }
             }));
+            this.labelWidth = 200;
             //---
         } else {
             
