@@ -47,6 +47,16 @@ function generic_list(&$action) {
 
   $column=generic_viewmode($action,$famid); // choose the good view mode
 
+  
+  //change famid if it is a simplesearch
+  $sfamid=$famid;
+  if ($dirid) {
+      $dir=new_doc($dbaccess,$dirid);
+      if ($dir->isAlive()) {
+          $sfamid=$dir->getValue("se_famid");
+      }
+  }
+  
   if ($onglet) {
     $wonglet=($onglet!='N');
   } else {
@@ -87,13 +97,13 @@ function generic_list(&$action) {
   $action->lay->Set("previcon",""); 
 
   if ($sqlorder=="") {
-    $sqlorder = getDefUSort($action,"title");  
+    $sqlorder = getDefUSort($action,"title",$sfamid);  
     setHttpVar("sqlorder",$sqlorder );
   }
 
   if ($famid > 0) {
     if ($sqlorder != "") {
-      $ndoc = createDoc($dbaccess, $famid,false);
+      $ndoc = createDoc($dbaccess, $sfamid,false);
       if ($sqlorder[0]=="-") $sqlorder=substr($sqlorder,1);
       if (! in_array($sqlorder,$ndoc->fields))  setHttpVar("sqlorder","" );
     }

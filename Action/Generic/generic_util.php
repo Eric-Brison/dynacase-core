@@ -41,8 +41,8 @@ function getDefFld(&$action) {
   return 0;
 }
 // return attribute sort default
-function getDefUSort(&$action,$def="title") {
-  $famid=getDefFam($action);
+function getDefUSort(&$action,$def="title",$famid="") {
+  if (!$famid) $famid=getDefFam($action);
   $pu = $action->GetParam("GENERIC_USORT");
   if ($pu) {
     $tu = explode("|",$pu);

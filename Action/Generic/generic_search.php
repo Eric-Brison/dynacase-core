@@ -40,7 +40,14 @@ function generic_search(&$action) {
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
   $famid = getDefFam($action);
-
+ //change famid if it is a simplesearch
+  $sfamid=$famid;
+  if ($catgid) {
+      $dir=new_doc($dbaccess,$catgid);
+      if ($dir->isAlive()) {
+          $sfamid=$dir->getValue("se_famid",$famid);
+      }
+  }
   $action->setParamU("GENE_LATESTTXTSEARCH",setUkey($action,$famid,$keyword));
 
   setSearchMode($action,$famid,$mode);
@@ -93,6 +100,7 @@ function generic_search(&$action) {
       if ($doc->id == getDefFld($action)) $sdoc->title = sprintf(_("search  contains %s in all state"),$keyword );
       else $sdoc->title = sprintf(_("search contains %s in %s"),$keyword,$doc->getTitle() );
     }
+    $sdoc->setValue("se_famid",$sfamid);
     $sdoc->Add();
   
     
@@ -115,9 +123,8 @@ function generic_search(&$action) {
 
     $query=getSqlSearchDoc($dbaccess, 
 			   $sdirid,  
-			   ($only)?-($famid):$famid, 
+			   ($only)?-($sfamid):$sfamid, 
 			   $sqlfilter,false,true,"",false);
-
     $sdoc->AddQuery($query);
 
     redirect($action,GetHttpVars("app"),"GENERIC_LIST$pds&mode=$mode&famid=$famid&dirid=".$sdoc->id."&catg=$catgid");

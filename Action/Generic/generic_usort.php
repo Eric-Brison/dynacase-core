@@ -23,16 +23,22 @@ function generic_usort(&$action) {
   // get all parameters
   $aorder=GetHttpVars("aorder"); // id for controlled object
   $catg=GetHttpVars("catg"); // id for controlled object
-
+  $sfamid='';
+  if ($catg) {
+      $dir=new_doc($dbaccess,$catg);
+      if ($dir->isAlive()) {
+          $sfamid=$dir->getValue("se_famid");
+      }
+  }
   if ($aorder == "-") {
     // invert order
-    $uorder = getDefUSort($action);
+    $uorder = getDefUSort($action,$sfamid);
     if ($uorder[0] == "-") $aorder=substr($uorder,1);
     else $aorder="-".$uorder;
   }
 
  
-   $action->parent->param->Set("GENERIC_USORT",setUsort($action,$aorder),PARAM_USER.$action->user->id,$action->parent->id);
+   $action->parent->param->Set("GENERIC_USORT",setUsort($action,$aorder,$sfamid),PARAM_USER.$action->user->id,$action->parent->id);
 
 
   $famid = getDefFam($action);
@@ -45,9 +51,9 @@ function generic_usort(&$action) {
 }
 
 
-function setUsort(&$action, $aorder) {
+function setUsort(&$action, $aorder,$famid="") {
   
-  $famid=getDefFam(&$action);
+  if (!$famid) $famid=getDefFam(&$action);
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
 

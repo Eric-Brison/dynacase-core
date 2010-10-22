@@ -47,6 +47,21 @@ function barmenu(&$action) {
   if ($catg>1)   $fld=new_Doc($dbaccess, $catg);
   else  $fld=new_Doc($dbaccess, $dirid);
 
+  //change famid if it is a simplesearch
+  $sfamid=$famid;
+  $sfdoc=$fdoc; // search family
+  if ($fld->isAlive()) {
+      $sfamid=$fld->getValue("se_famid");
+      if ($sfamid && $sfamid != $fdoc->id) {
+          $sfdoc=new_Doc($dbaccess, $sfamid);
+          if (!$sfdoc->isAlive()) {
+              $sfdoc=$fdoc; // restore if dead
+          }
+      }
+  }
+  
+  
+  
   $action->lay->set("pds",$fld->urlWhatEncodeSpec("")); // parameters for searches
 
   if (($fdoc->control("create") == "")&&($fdoc->control("icreate") == "")) {
@@ -78,7 +93,7 @@ function barmenu(&$action) {
 
   include_once("FDL/popup_util.php");
   //--------------------- kind menu -----------------------
-	$lattr = $fdoc->getNormalAttributes();
+	$lattr = $sfdoc->getNormalAttributes();
 
 	$tkind = array();
 	while (list($k, $a) = each($lattr)) {
@@ -210,7 +225,7 @@ function barmenu(&$action) {
 				 "satitle"=>_("createdate")),
 		 "revdate"=>array("said"=>"revdate",
 				  "satitle"=>_("revdate")));
-  if ($fdoc->wid > 0) {
+  if ($sfdoc->wid > 0) {
     $tsort["state"]= array("said"=>"state",
 			   "satitle"=>_("state"));
   }
@@ -218,8 +233,8 @@ function barmenu(&$action) {
   while (list($k,$v) = each($tsort)) {
     $tmsort[$v["said"]]="sortdoc".$v["said"];
   }
-  $lattr=$fdoc->GetSortAttributes();
-  while (list($k,$a) = each($lattr)) {
+  $lattr=$sfdoc->GetSortAttributes();
+  foreach($lattr as $k=>$a) {
     
     $tsort[$a->id] = array("said"=>$a->id,
 			   "satitle"=>$a->getLabel());
