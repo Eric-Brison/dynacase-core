@@ -5640,7 +5640,8 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay = new Layout($tplfile, $action);
     }
 
-
+        $this->lay->setZone($reg);
+       
     $this->lay->set("_readonly",($this->Control('edit')!=""));
     $method = strtok(strtolower($reg['layout']),'.');
 
@@ -7604,7 +7605,7 @@ create unique index i_docir on doc(initid, revision);";
       return false;
     }
     $p['fulllayout'] = $left;
-
+    $p['index']=-1;
     // Parse args into argv (k => v)
     if( $right != "" ) {
       $p['args'] = $right;

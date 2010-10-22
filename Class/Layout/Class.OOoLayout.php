@@ -72,6 +72,7 @@ class OOoLayout extends Layout {
 			}
 		}
 	}
+
 	function innerXML(&$node){
 		if(!$node) return false;
 		$document = $node->ownerDocument;

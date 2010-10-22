@@ -85,6 +85,11 @@ class Layout {
   private $strip='Y';
   public $encoding="";
   public $noparse=false; // return template without parse
+  
+  /**
+         * @var array different par of original zone
+         */
+  private $zone;
 //########################################################################
 //# Public methods
 //#  
@@ -123,7 +128,22 @@ class Layout {
     }
   }
 
+  /**
+   * return original zone
+   * @param string $key
+   */
+  function getZone($key='') {
+      if ($key) {
+          if (isset($this->zone[$key])) return $this->zone[$key];
+          return null;
+      } else  {
+          return $this->zone;
+      }
+  }
 
+  function setZone($zone) {
+      $this->zone=$zone;
+  }
  function SetBlockCorresp($p_nom_block,$p_nom_modele,$p_nom=NULL) {
    $this->corresp["$p_nom_block"]["[$p_nom_modele]"]=($p_nom==NULL?$p_nom_modele:"$p_nom");
   }

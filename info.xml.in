@@ -266,6 +266,12 @@
 
   <changelog>
   	
+    <version number="3.0.13" date="2010-10-27">
+      <change title="Fix files with quote " url="http://dev.dynacase.org/versions/show/71"/>        
+    </version>
+    <version number="3.0.12" date="2010-09-15">
+      <change title="Rename to dynacase" url="http://dev.dynacase.org/versions/show/40"/>        
+    </version>
     <version number="3.0.11" date="2010-09-15">
       <change title="Many fixes" url="http://dev.freedom-ecm.org/versions/show/37"/>        
     </version>
