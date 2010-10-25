@@ -26,8 +26,8 @@ public $sendercopy=true;
 function preEdition() {
   global $action;
 
-  if ($this->getValue("tmail_family")) {
-    $action->parent->AddJsRef("?app=FDL&action=FCKDOCATTR&famid=".$this->getValue("tmail_family"));
+  if ($mailfamily=$this->getValue("tmail_family", getHttpVars("TMAIL_FAMILY"))) {
+    $action->parent->AddJsRef("?app=FDL&action=FCKDOCATTR&famid=".$mailfamily);
   }
 
   }

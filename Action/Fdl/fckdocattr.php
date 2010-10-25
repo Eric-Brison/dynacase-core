@@ -19,7 +19,6 @@ function fckdocattr(&$action) {
   
   $docid = GetHttpVars("famid"); 
   $dbaccess = $action->GetParam("FREEDOM_DB");
-
   $doc =  new_Doc($dbaccess,$docid);
   if ($doc->isAlive()) {
     $listattr = $doc->GetNormalAttributes();  
