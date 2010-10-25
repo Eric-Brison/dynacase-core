@@ -32,6 +32,12 @@ function defattr(&$action)
   $action->lay->Set("dirid",$dirid);
 
   $doc= new_Doc($dbaccess,$docid);
+  if (! $doc->isAlive()) {
+      $action->exitError(sprintf(_("document %s not found"),$docid));
+  } elseif ($doc->doctype != 'C') {
+      $action->exitError(sprintf(_("document %s is not a family"),$doc->getTitle()));
+  }
+  $docid=$doc->id;
   // build values type array
   $odocattr= new DocAttr($dbaccess);
 
@@ -93,27 +99,31 @@ function defattr(&$action)
     $selectframe= array();
     $selectframe[0]["framevalue"]="-";
     $selectframe[0]["frameid"]="";
+    $selectframe[0]["frameclass"]="";
     $selectframe[0]["selected"]="";
     $selecttab=$selectframe;
 
     foreach ($tattr as $k=>$attr) {
-      if ($attr->docid > 0) {
+      if ($attr->docid > 0 && $attr->usefor != 'Q') {
 	$selectframe[$k]["framevalue"]=$attr->getLabel();
 	$selectframe[$k]["frameid"]=$attr->id;
+        $selectframe[$k]["frameclass"]=strtok($attr->type,'(');
 	$selectframe[$k]["selected"]="";
 	if ($attr->type=="tab") $selecttab[$k]=$selectframe[$k];
       }
     }
     foreach ($tattr as $k=>$attr) {
-      if ($attr->docid > 0) {
+      if ($attr->docid > 0 && $attr->usefor != 'Q') {
 	$newelem[$k]["attrid"]=$attr->id;
 	$newelem[$k]["attrname"]=$attr->getLabel();
 	$newelem[$k]["neweltid"]=$k;
 	$newelem[$k]["visibility"]=$attr->visibility;
 	$newelem[$k]["options"]=$attr->options;
 	$newelem[$k]["typevalue"]=$attr->type;
+        $newelem[$k]["classvalue"]=$attr->type;
 	$newelem[$k]["disabledid"]="disabled";
 	$newelem[$k]["order"]="0";
+        $newelem[$k]["displayorder"]=-2;
 	$newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
 
 
@@ -147,73 +157,7 @@ function defattr(&$action)
       $ka++;
     }
 
-    //    ------------------------------------------
-    //  -------------------- MENU ----------------------
-    $tattr = $doc->GetMenuAttributes(true);   
-
-    foreach ($tattr as $k=>$attr) {
-      if ($attr->docid > 0) {
-	$newelem[$k]["attrid"]=$attr->id;
-	$newelem[$k]["attrname"]=$attr->getLabel();
-	$newelem[$k]["neweltid"]=$k;
-	$newelem[$k]["visibility"]=$attr->visibility;
-	$newelem[$k]["typevalue"]=$attr->type;
-	$newelem[$k]["order"]=$attr->ordered;
-	$newelem[$k]["disabledid"]="disabled";
-	$newelem[$k]["options"]=$attr->options;
-	$newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
-	if ($attr->docid == $docid) {
-	  $newelem[$k]["disabled"]="";
-	} else {
-	  $newelem[$k]["disabled"]="disabled";
-	}
-
-      $newelem[$k]["link"]=$attr->link;
-      $newelem[$k]["phpfunc"]=$attr->precond;;
-	// unused be necessary for layout
-      $newelem[$k]["phpfile"]="";
-      $newelem[$k]["phpconstraint"]="";
-      $newelem[$k]["elink"]="";
-      $newelem[$k]["abscheck"]="";
-      $newelem[$k]["titcheck"]="";
-      }	  
-      $ka++;
-
-    }
-
-    //    ------------------------------------------
-    //  -------------------- Action ----------------------
-    $tattr = $doc->GetActionAttributes();   
-
-    foreach ($tattr as $k=>$attr) {
-      if ($attr->docid > 0) {
-	$newelem[$k]["attrid"]=$attr->id;
-	$newelem[$k]["attrname"]=$attr->getLabel();
-	$newelem[$k]["neweltid"]=$k;
-	$newelem[$k]["visibility"]=$attr->visibility;
-	$newelem[$k]["typevalue"]=$attr->type;
-	$newelem[$k]["order"]=$attr->ordered;
-	$newelem[$k]["disabledid"]="disabled";
-	$newelem[$k]["options"]=$attr->options;
-	$newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
-	if ($attr->docid == $docid) {
-	  $newelem[$k]["disabled"]="";
-	} else {
-	  $newelem[$k]["disabled"]="disabled";
-	}
-
-      $newelem[$k]["link"]=$attr->link;
-      $newelem[$k]["phpfile"]=$attr->wapplication;
-      $newelem[$k]["phpfunc"]=$attr->waction;
-	// unused be necessary for layout
-      $newelem[$k]["phpconstraint"]="";
-      $newelem[$k]["elink"]="";
-      $newelem[$k]["abscheck"]="";
-      $newelem[$k]["titcheck"]="";
-      }	  
-      $ka++;
-
-    }
+  
 
     //    ------------------------------------------
     //  -------------------- NORMAL ----------------------
@@ -230,6 +174,7 @@ function defattr(&$action)
       $newelem[$k]["attrid"]=$attr->id;
       $newelem[$k]["attrname"]=$attr->getLabel();
       $newelem[$k]["order"]=$attr->ordered;
+      $newelem[$k]["displayorder"]=$attr->ordered;
       $newelem[$k]["visibility"]=$attr->visibility;
       $newelem[$k]["link"]=$attr->link;
       $newelem[$k]["phpfile"]=$attr->phpfile;
@@ -259,6 +204,7 @@ function defattr(&$action)
       }
 
       $newelem[$k]["typevalue"]=$attr->type;
+      $newelem[$k]["classvalue"]=strtok($attr->type,'(');
       //if (($attr->repeat) && (!$attr->inArray())) $newelem[$k]["typevalue"].="list"; // add list if repetable attribute without array
       if ($attr->format != "") $newelem[$k]["typevalue"].="(\"".$attr->format."\")";
       if ($attr->eformat != "") $newelem[$k]["phpfunc"]="[".$attr->eformat."]".$newelem[$k]["phpfunc"];
@@ -270,11 +216,22 @@ function defattr(&$action)
       foreach($selectframe as $kopt=>$opt)  {
 	if ($opt["frameid"] == $attr->fieldSet->id){
 	  $selectframe[$kopt]["selected"]="selected"; 
-	}else{
+	  if ($newelem[$kopt]["displayorder"] < 0) {
+	      $newelem[$kopt]["displayorder"]=$attr->ordered -1;
+	      if ($attr->fieldSet->fieldSet && $attr->fieldSet->fieldSet->id) {
+	          if ($newelem[$attr->fieldSet->fieldSet->id]["displayorder"] < 0) {
+	              $newelem[$attr->fieldSet->fieldSet->id]["displayorder"]=$newelem[$kopt]["displayorder"] -1 ;
+	          }
+	      }
+	  }
+	} else{
 	  $selectframe[$kopt]["selected"]=""; 
 	}		  
       }
 
+      
+      
+      
       $newelem[$k]["SELECTOPTION"]="SELECTOPTION_$k";
       $action->lay->SetBlockData($newelem[$k]["SELECTOPTION"],
 				 $selectoption);
@@ -297,7 +254,81 @@ function defattr(&$action)
 
   $action->lay->SetBlockData("SELECTCLASS", $selectclass);
 
+        uasort($newelem,'sortnewelem');
+        
+        
+        
+  //    ------------------------------------------
+    //  -------------------- MENU ----------------------
+    $tattr = $doc->GetMenuAttributes(true);   
 
+    foreach ($tattr as $k=>$attr) {
+      if ($attr->docid > 0) {
+        $newelem[$k]["attrid"]=$attr->id;
+        $newelem[$k]["attrname"]=$attr->getLabel();
+        $newelem[$k]["neweltid"]=$k;
+        $newelem[$k]["visibility"]=$attr->visibility;
+        $newelem[$k]["typevalue"]=$attr->type;
+        $newelem[$k]["classvalue"]=$attr->type;
+        $newelem[$k]["order"]=$attr->ordered;
+        $newelem[$k]["displayorder"]=$attr->ordered;
+        $newelem[$k]["disabledid"]="disabled";
+        $newelem[$k]["options"]=$attr->options;
+        $newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
+        if ($attr->docid == $docid) {
+          $newelem[$k]["disabled"]="";
+        } else {
+          $newelem[$k]["disabled"]="disabled";
+        }
+
+      $newelem[$k]["link"]=$attr->link;
+      $newelem[$k]["phpfunc"]=$attr->precond;;
+        // unused be necessary for layout
+      $newelem[$k]["phpfile"]="";
+      $newelem[$k]["phpconstraint"]="";
+      $newelem[$k]["elink"]="";
+      $newelem[$k]["abscheck"]="";
+      $newelem[$k]["titcheck"]="";
+      }   
+      $ka++;
+
+    }
+
+    //    ------------------------------------------
+    //  -------------------- Action ----------------------
+    $tattr = $doc->GetActionAttributes();   
+
+    foreach ($tattr as $k=>$attr) {
+      if ($attr->docid > 0) {
+        $newelem[$k]["attrid"]=$attr->id;
+        $newelem[$k]["attrname"]=$attr->getLabel();
+        $newelem[$k]["neweltid"]=$k;
+        $newelem[$k]["visibility"]=$attr->visibility;
+        $newelem[$k]["typevalue"]=$attr->type;
+        $newelem[$k]["classvalue"]=$attr->type;
+        $newelem[$k]["order"]=$attr->ordered;
+        $newelem[$k]["displayorder"]=$attr->ordered;
+        $newelem[$k]["disabledid"]="disabled";
+        $newelem[$k]["options"]=$attr->options;
+        $newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
+        if ($attr->docid == $docid) {
+          $newelem[$k]["disabled"]="";
+        } else {
+          $newelem[$k]["disabled"]="disabled";
+        }
+
+      $newelem[$k]["link"]=$attr->link;
+      $newelem[$k]["phpfile"]=$attr->wapplication;
+      $newelem[$k]["phpfunc"]=$attr->waction;
+        // unused be necessary for layout
+      $newelem[$k]["phpconstraint"]="";
+      $newelem[$k]["elink"]="";
+      $newelem[$k]["abscheck"]="";
+      $newelem[$k]["titcheck"]="";
+      }   
+      $ka++;
+
+    }
   // add 3 new attributes to be defined
 
   
@@ -306,6 +337,7 @@ function defattr(&$action)
     $newelem[$k]["attrname"]="";
     $newelem[$k]["disabledid"]="";
     $newelem[$k]["typevalue"]="";
+        $newelem[$k]["classvalue"]="";
     $newelem[$k]["visibility"]="W";
     $newelem[$k]["link"]="";
     $newelem[$k]["elink"]="";
@@ -313,6 +345,7 @@ function defattr(&$action)
     $newelem[$k]["phpfunc"]="";
     $newelem[$k]["phpconstraint"]="";
     $newelem[$k]["order"]="";
+    $newelem[$k]["displayorder"]="";
     $newelem[$k]["attrid"]="";
     $newelem[$k]["SELECTOPTION"]="SELECTOPTION_$k";
     $action->lay->SetBlockData($newelem[$k]["SELECTOPTION"],
@@ -323,11 +356,24 @@ function defattr(&$action)
 			       $selectframe);
     $newelem[$k]["disabled"]="";
   }
-
-
-
+  unset($newelem["FIELD_HIDDENS"]);
   $action->lay->SetBlockData("NEWELEM",$newelem);
 
 }
-
+/** 
+ * use to usort attributes
+ * @param BasicAttribute $a
+ * @param BasicAttribute $b
+ */
+function sortnewelem($a, $b) {  
+  if (isset($a["displayorder"]) && isset($b["displayorder"])) {
+        if ($a["displayorder"] == $b["displayorder"]) return 0;
+        if ($a["displayorder"] > $b["displayorder"]) return 1;
+        return -1;
+  }
+  if (isset($a["displayorder"]) ) return 1;
+  if (isset($b["displayorder"]) ) return -1;
+  return 0;
+}
+ 
 ?>

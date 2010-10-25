@@ -15,6 +15,35 @@
 
    <style type="text/css">
 [CSS:CODE]
+table.defattr input{
+  background-color:transparent;
+}
+table.defattr tr.frame, table.defattr option.frame {
+   background-color:#6eb9d5; // sky blue
+ }
+table.defattr tr.tab, table.defattr option.tab {
+   background-color:#cba4de; // violet
+ }
+table.defattr tr.menu, table.defattr tr.action {
+   background-color:#a4dec6; // green
+ }
+table.defattr tr.array, table.defattr option {
+   background-color:#f3cc81; // orange
+ }
+table.defattr tr {
+   background-color:[COLOR_A9]; // light blue
+ }
+table.defattr select {
+   background-color:transparent; 
+ }
+ 
+table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.menu .iselect, table.defattr tr.action .iselect, table.defattr tr.tab .iselect {
+   visibility:hidden;
+ }
+ table.defattr tr:hover {
+   
+   background-color:[COLOR_C7]; 
+ }
    </style>
 
 [JS:REF]
@@ -29,7 +58,7 @@
 
  </head>
 
-<body class="freedom" onload="autoWresize()">
+<body class="freedom">
 
                          
 
@@ -62,7 +91,7 @@
 <!-- Frame Table -->
 
 
-<table  class="tablesimple"   cellspacing="0" cellpadding="0" >
+<table  class="defattr"   cellspacing="0" cellpadding="0" >
 <thead>
 <tr>
   <td class="CORETblHeadBold">[TEXT:ID]</td>
@@ -86,14 +115,14 @@
 
 
 [BLOCK NEWELEM]
-<tr>
+<tr class="[classvalue]" >
    <td >
    <input type="hidden" name="attrid[[neweltid]]" value="[attrid]" >
       <input type="text" name="nattrid[[neweltid]]" value="[attrid]"  [disabledid]>
    </td>
    <td  >
 
-      <input type="text" name="order[[neweltid]]" value="[order]" size="3" [disabled]>
+      <input class="iorder" type="text" name="order[[neweltid]]" value="[order]" size="3" [disabled]>
    </td>
    <td  >
       <input type="text" name="name[[neweltid]]" value="[attrname]" [disabled]>
@@ -102,9 +131,9 @@
       <input type="text" name="type[[neweltid]]" value='[typevalue]' [disabled]>      
    </td>
    <td  >
-      <select name="frameid[[neweltid]]"  [disabled]>        
+      <select class="iselect" name="frameid[[neweltid]]"  [disabled]>        
          [BLOCK [SELECTFRAME]]
-           <option VALUE="[frameid]" [selected]>[framevalue]</option>
+           <option class="[frameclass]" VALUE="[frameid]" [selected]>[framevalue]</option>
          [ENDBLOCK [SELECTFRAME]]
     </select>
    </td>
@@ -141,18 +170,14 @@
   
 </tr>
 [ENDBLOCK NEWELEM]
-<tr>
-  <td colspan="11" >
- <input type="submit" value="[TEXT:Validate]"
-        onclick="setTimeout('self.close()',2000)"> 
-  </td>
-</tr>
+
 
 </tbody>
 
 </table>
-
-
+<br/>
+<input type="submit" value="[TEXT:Validate]"
+        onclick="setTimeout('self.close()',2000)"> 
 </form>
 <!--  FOOT HTML -->
 
