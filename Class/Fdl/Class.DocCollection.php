@@ -49,7 +49,7 @@ include_once("FDL/Class.Doc.php");
 			      "dynlabel"=>"{left} equal {right}", # _("{left} equal {right}")
 			      "slabel"=>array("docid"=>"identificator equal","uid"=>"system identifiant equal"), #_("identificator equal") _("system identifiant equal")
 			      "sdynlabel"=>array("docid"=>"{left} identificator equal {right}","uid"=>"{left} system identificator equal {right}"), #_("{left} identificator equal {right}") _("{left} system identificator equal {right}")
-			      "type"=>array("text","longtext","htmltext","enum","date","time","timestamp","money","color","docid","uid")),  
+			      "type"=>array("text","integer","int","double","enum","date","time","timestamp","money","color","docid","uid")),  
 		 "~^" => array("label"=>"begin by",
 			       "operand"=>array("left","right"),
 			       "dynlabel"=>"{left} begin by {right}", # _("{left} begin by {right}")
@@ -59,7 +59,7 @@ include_once("FDL/Class.Doc.php");
 			       "dynlabel"=>"{left} is not equal {right}", # _("{left} is not equal {right}")
 			     "sdynlabel"=>array("docid"=>"{left} identificator not equal {right}","uid"=>"{left} system identificator not equal {right}"), #_("{left} identificator not equal {right}") _("{left} system identificator not equal {right}")
 			        "slabel"=>array("docid"=>"identificator not equal","uid"=>"system identificator not equal"), #_("identificator not equal") _("system identificator not equal")
-			       "type"=>array("text","longtext","htmltext","enum","date","time","timestamp","money","color","docid","uid")),       
+			       "type"=>array("text","integer","int","double","enum","date","time","timestamp","money","color","docid","uid")),       
 		 "!~*" => array("label"=>"not include",
 				"operand"=>array("left","right"),
 				"dynlabel"=>"{left} not include {right}", # _("{left} not include {right}")
