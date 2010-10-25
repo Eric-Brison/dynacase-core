@@ -193,7 +193,7 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
 
       if ($doc->doctype =="C") 	$tdoc[$k]["title"] = "<B>". $title ."</B>";
 
-      if (strlen($title) > 20) $tdoc[$k]["abrvtitle"] = substr($title,0,12)." ... ".substr($title,-5);
+      if (strlen($title) > 20) $tdoc[$k]["abrvtitle"] = mb_substr($title,0,12)." ... ".mb_substr($title,-5);
       else $tdoc[$k]["abrvtitle"] =  $title;
 
       if (isset($doc->_highlight) && $doc->_highlight!="")  {
