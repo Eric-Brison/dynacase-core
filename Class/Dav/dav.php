@@ -99,35 +99,45 @@ function webdav_auth() {
 
   global $_SERVER;
 
-  $authtype = 'basic';
+  $authtype = getAuthType();
+  if( $authtype == 'apache' ) {
+    if( $_SERVER['PHP_AUTH_USER'] == '' ) {
+      header('HTTP/1.0 403 Forbidden');
+      echo _("User must be authenticate");
+      exit;
+    }
+  } else {
+    $authtype = 'basic';
 
-  $authProviderList = getAuthProviderList();
-  foreach ($authProviderList as $ka=>$authprovider) {
-    $authClass = strtolower($authtype)."Authenticator";
-    if( ! @include_once('WHAT/Class.'.$authClass.'.php') ) {
-      error_log(__FILE__.":".__LINE__."> Unknown authtype ".$authtype);
-    } else {  
-      $auth = new $authClass( $authtype, $authprovider);
-      $status = $auth->checkAuthentication();
-      if ($status) {
-        $statusA = $auth->checkAuthorization( array( 'username' => $auth->getauthUser() ) );
-        if( $statusA == FALSE ) {
-          $auth->logout("guest.php?sole=A&app=AUTHENT&action=UNAUTHORIZED");
-          exit(0);
-        }
-        break;
+    $authProviderList = getAuthProviderList();
+    foreach ($authProviderList as $ka=>$authprovider) {
+      $authClass = strtolower($authtype)."Authenticator";
+      if( ! @include_once('WHAT/Class.'.$authClass.'.php') ) {
+	error_log(__FILE__.":".__LINE__."> Unknown authtype ".$authtype);
+      } else {  
+	$auth = new $authClass( $authtype, $authprovider);
+	$status = $auth->checkAuthentication();
+	if ($status) {
+	  $statusA = $auth->checkAuthorization( array( 'username' => $auth->getauthUser() ) );
+	  if( $statusA == FALSE ) {
+	    $auth->logout("guest.php?sole=A&app=AUTHENT&action=UNAUTHORIZED");
+	    exit(0);
+	  }
+	  break;
+	}
       }
     }
+
+    if( $status == FALSE ) {
+      sleep(2); // wait for robots
+      $auth->askAuthentication();
+      exit(0);
+    }
+
+    $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
+    $_SERVER['PHP_AUTH_PW'] = $auth->getAuthPw();
   }
 
-  if( $status == FALSE ) {
-    sleep(2); // wait for robots
-    $auth->askAuthentication();
-    exit(0);
-  }
-
-  $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
-  $_SERVER['PHP_AUTH_PW'] = $auth->getAuthPw();
 }
 
 ?>
