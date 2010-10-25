@@ -153,6 +153,7 @@ if (window.parent) {
 		  }
 		}
 	    } else {
+	            undisplayConstraint();
         	    if (warning) {
         	       //window.parent.displayWarningMsg(warning); // not need :set by global fonction
         	       window.setTimeout("window.parent.location.href='[url]'",4000);
