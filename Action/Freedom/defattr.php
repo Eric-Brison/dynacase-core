@@ -120,10 +120,12 @@ function defattr(&$action)
 	$newelem[$k]["visibility"]=$attr->visibility;
 	$newelem[$k]["options"]=$attr->options;
 	$newelem[$k]["typevalue"]=$attr->type;
-        $newelem[$k]["classvalue"]=$attr->type;
+        $newelem[$k]["classvalue"]=strtok($attr->type,'(').' F'.strtok($attr->fieldSet->type,'(');
 	$newelem[$k]["disabledid"]="disabled";
 	$newelem[$k]["order"]="0";
         $newelem[$k]["displayorder"]=-2;
+        $newelem[$k]["profond"]=getAttributeProfunder($attr)*10;
+        $newelem[$k]["profundator"]=getPuceAttributeProfunder($attr);
 	$newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
 
 
@@ -175,6 +177,8 @@ function defattr(&$action)
       $newelem[$k]["attrname"]=$attr->getLabel();
       $newelem[$k]["order"]=$attr->ordered;
       $newelem[$k]["displayorder"]=$attr->ordered;
+        $newelem[$k]["profond"]=getAttributeProfunder($attr)*10;
+        $newelem[$k]["profundator"]=getPuceAttributeProfunder($attr);
       $newelem[$k]["visibility"]=$attr->visibility;
       $newelem[$k]["link"]=$attr->link;
       $newelem[$k]["phpfile"]=$attr->phpfile;
@@ -204,7 +208,7 @@ function defattr(&$action)
       }
 
       $newelem[$k]["typevalue"]=$attr->type;
-      $newelem[$k]["classvalue"]=strtok($attr->type,'(');
+      $newelem[$k]["classvalue"]=strtok($attr->type,'(').' F'.strtok($attr->fieldSet->type,'(');
       //if (($attr->repeat) && (!$attr->inArray())) $newelem[$k]["typevalue"].="list"; // add list if repetable attribute without array
       if ($attr->format != "") $newelem[$k]["typevalue"].="(\"".$attr->format."\")";
       if ($attr->eformat != "") $newelem[$k]["phpfunc"]="[".$attr->eformat."]".$newelem[$k]["phpfunc"];
@@ -376,4 +380,35 @@ function sortnewelem($a, $b) {
   return 0;
 }
  
+function getAttributeProfunder(&$oa) {
+    if (!$oa) return 0;
+    if (!$oa->fieldSet) return 0;
+    if ($oa->fieldSet->id=='FIELD_HIDDENS') return 0;
+    return 1+ getAttributeProfunder($oa->fieldSet);
+}
+function getPuceAttributeProfunder(&$oa) {
+    $p=getAttributeProfunder($oa);
+    switch ($p) {
+        case  0:
+            return '';
+        case 1:
+            if ($oa->fieldSet->type=='frame') {
+                return '<span class="frame">---</span>';
+            } elseif ($oa->fieldSet->type=='tab') {
+                return '<span class="tab">---</span>';
+            } else {
+                return '<span class="unknow">---</span>';
+            }
+        case 2:    
+            if ($oa->fieldSet->type=='array') {
+                return '<span class="frame">---</span><span class="array">---</span>';
+            } elseif ($oa->fieldSet->type=='frame') {
+                return '<span class="tab">---</span><span class="frame">---</span>';
+            } else {
+                return '<span class="unknow">---</span>';
+            }
+        case 3:    
+            return '<span class="tab">---</span><span class="frame">---</span><span class="array">---</span>';
+    }
+}
 ?>

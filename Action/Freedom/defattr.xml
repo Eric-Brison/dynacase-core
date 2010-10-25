@@ -44,6 +44,27 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
    
    background-color:[COLOR_C7]; 
  }
+ table.defattr tr.Farray .iname {   
+   border-color:#f3cc81; // orange
+ }
+ table.defattr tr.Fframe .iname {   
+   border-color:#6eb9d5; // 
+ }
+ table.defattr tr.Ftab .iname {   
+   border-color:#cba4de; // violet
+ }
+ span.tab {
+   color:#cba4de; 
+   background-color:#cba4de; 
+ }
+ span.frame {
+   color:#6eb9d5; 
+   background-color:#6eb9d5; 
+ }
+ span.array {
+   color:#f3cc81; 
+   background-color:#f3cc81; 
+ }
    </style>
 
 [JS:REF]
@@ -116,9 +137,10 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
 
 [BLOCK NEWELEM]
 <tr class="[classvalue]" >
-   <td >
+   <td style="white-space : nowrap">
    <input type="hidden" name="attrid[[neweltid]]" value="[attrid]" >
-      <input type="text" name="nattrid[[neweltid]]" value="[attrid]"  [disabledid]>
+   	[profundator]
+      <input type="text" class="iname" name="nattrid[[neweltid]]" value="[attrid]"  [disabledid]>
    </td>
    <td  >
 
