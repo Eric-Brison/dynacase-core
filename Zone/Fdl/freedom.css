@@ -453,18 +453,18 @@ TABLE.tablehead {
 }
 .ongletvgie {
 	color:[CORE_TEXTFGCOLOR];
-[IF ISIE]
+[IF ISIE6]
   filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale');
-[ENDIF ISIE]
+[ENDIF ISIE6]
 }
 .ongletvs {
 	background-image:url('[IMG:tabvig.png]');
 /*  color:[CORE_TEXTBGCOLOR];*/
 }
 .ongletvsie {
-[IF ISIE]
+[IF ISIE6]
   filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvig.png]',sizingMethod='scale');
-[ENDIF ISIE]
+[ENDIF ISIE6]
 /*  color:[CORE_TEXTBGCOLOR];*/
 }
 
@@ -524,9 +524,9 @@ TBODY.unselect:hover TR {
 TR.selhead {
   cursor: pointer;
   background-color:[CORE_BGCOLORALTERN];
-[IFNOT ISIE]background-image:url('[IMG:tabvig.png]');[ENDIF ISIE]
-[IF ISIE] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale'); float:right;width:100%;
-  text-transform:capitalize;[ENDIF ISIE]
+[IFNOT ISIE6]background-image:url('[IMG:tabvig.png]');[ENDIF ISIE6]
+[IF ISIE6] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale'); float:right;width:100%;
+  text-transform:capitalize;[ENDIF ISIE6]
 }
 TR.selhead:hover {
   background-color:[CORE_BGCOLORHIGH];
@@ -752,8 +752,8 @@ DIV.tabh SPAN  {
   border-width : 1px;
   border-style :outset;
   border-color : [COLOR_B7];
-[IFNOT ISIE]  background-image:url('[IMG:tabvig.png]'); [ENDIF ISIE]
-[IF ISIE] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale');[ENDIF ISIE]
+[IFNOT ISIE6]  background-image:url('[IMG:tabvig.png]'); [ENDIF ISIE6]
+[IF ISIE6] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale');[ENDIF ISIE6]
   background-color : [COLOR_B7];
   padding:2px;
   cursor:pointer;
@@ -854,9 +854,9 @@ DIV.tabsh SPAN  {
   border-width : 1px;
   border-style :outset;
   border-color : [COLOR_B5];
-[IFNOT ISIE]  background-image:url('[IMG:tabvig.png]');
-  -moz-border-radius: 8px 8px 0px 0px;	 [ENDIF ISIE]
-[IF ISIE] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale');[ENDIF ISIE]
+  background-image:url('[IMG:tabvig.png]');
+  -moz-border-radius: 8px 8px 0px 0px;
+[IF ISIE6] background-image:none;[ENDIF ISIE6]
   background-color : [COLOR_B7];
   padding:2px;
   cursor:pointer;
