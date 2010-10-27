@@ -111,7 +111,7 @@ function fusers_getChildsGroup($id,$groups) {
   static $dbaccess;
   static $doc;
   if (!$dbaccess) $dbaccess=getParam("FREEDOM_DB");
-  if (!$doc) $doc=createDoc($dbaccess,1);
+  if (!$doc) $doc=createTmpDoc($dbaccess,1);
   $tlay=array();
   foreach ($groups as $k=>$v) {
     if ($v["idgroup"]==$id) {
