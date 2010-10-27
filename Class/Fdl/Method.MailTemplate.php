@@ -125,6 +125,7 @@ function sendDocument(&$doc,$keys=array()) {
     }
 
     $subject=$this->generateMailInstance($doc,$this->getValue("tmail_subject"));
+    $subject=str_replace(array("\n","\r","<BR>"), array(" "," ",", "), html_entity_decode($subject,ENT_COMPAT,"UTF-8"));
     $pfout=$this->generateMailInstance($doc,$this->getValue("tmail_body"));
     
     if ($this->sendercopy && getParam("FDL_BCC") == "yes") { 
