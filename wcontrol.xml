@@ -41,7 +41,7 @@
   <check type="phpfunction" function="ncurses_init" optional="yes">
     <help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help>
   </check>
-  <check type="phpfunction" function="pspell_new">
+  <check type="phpfunction" function="pspell_new" optional="yes">
     <help>You might need to install a php-pspell package from your distribution in order to have spelling support in PHP.</help>
   </check>
 

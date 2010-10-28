@@ -227,10 +227,10 @@ Class DocSearch extends PDocSearch {
     $sqlorder="";
     $sqlfilters=array("true");
     if ($keyword=="") return;
-    $pspell_link = pspell_new("fr","","","utf-8",PSPELL_FAST);
-    $tstatickeys=explode('"',$keyword);
-    $tkeybrut=array();
-    $tsearchkeys=array();
+    $pspell_link = false;
+    if( function_exists('pspell_new') ) {
+      $pspell_link = pspell_new("fr","","","utf-8",PSPELL_FAST);
+    }
     $tkeys=array();
     $sqlfilters=array();
     if (count($tstatickeys) > 2) {
@@ -255,12 +255,14 @@ Class DocSearch extends PDocSearch {
       $key=trim($key);
       if ($key) { 
 	$tsearchkeys[$k]=$key;
-	if ((!is_numeric($key)) && (strstr($key, '|')===false) && (strstr($key, '&')===false) && (ord($key[0])>47) && (!pspell_check($pspell_link, $key))) {
-	  $suggestions = pspell_suggest($pspell_link, $key);
-	  $sug=$suggestions[0];
-	  //foreach ($suggestions as $k=>$suggestion) {  echo "$k : $suggestion\n";  }
-	  if ($sug && (unaccent($sug) != $key) &&  (!strstr($sug,' '))) $tsearchkeys[$k]="$key|$sug";
-	} 
+	if( $pspell_link !== false ) {
+	  if ((!is_numeric($key)) && (strstr($key, '|')===false) && (strstr($key, '&')===false) && (ord($key[0])>47) && (!pspell_check($pspell_link, $key))) {
+	    $suggestions = pspell_suggest($pspell_link, $key);
+	    $sug=$suggestions[0];
+	    //foreach ($suggestions as $k=>$suggestion) {  echo "$k : $suggestion\n";  }
+	    if ($sug && (unaccent($sug) != $key) &&  (!strstr($sug,' '))) $tsearchkeys[$k]="$key|$sug";
+	  } 
+	}
 	if (strstr($key, '"')!==false) {
 	  // add more filter for search complete and exact expression
 	  if (strstr($key, '|')===false) {
