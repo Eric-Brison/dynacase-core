@@ -587,7 +587,8 @@ Fdl.Document.prototype.savefromform = function(config) {
 	var f=config.form;
 	var oriaction=f.action;
 	var oritarget=f.target;
-	var t=document.getElementById(f.target);
+	var t=null;
+	if (oritarget) t=document.getElementById(f.target);
 
 	if (t && t.contentDocument.body.firstChild) {
 	    t.contentDocument.body.innerHTML='';	  
