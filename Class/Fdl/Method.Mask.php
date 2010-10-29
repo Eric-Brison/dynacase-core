@@ -149,27 +149,27 @@ function viewmask($target="_self",$ulink=true,$abstract=false) {
 
   foreach($tmpdoc->attributes->attr as $k=>$attr) {
     if (!$attr->visibility) continue;
+    if ($attr->usefor=='Q') continue;
     $tmask[$k]["attrname"]=$attr->getLabel();
     $tmask[$k]["type"]=$attr->type;
     $tmask[$k]["visibility"]=$labelvis[$attr->visibility];
     $tmask[$k]["wneed"]=($origattr[$k]->needed)?"bold":"normal";
-    $tmask[$k]["bgcolor"]=getParam("COLOR_A9");
+    $tmask[$k]["bgcolor"]="inherits";
     $tmask[$k]["mvisibility"] = $labelvis[$attr->mvisibility];
+    $tmask[$k]["classtype"] = strtok($attr->type,'(');
     
     
-    if ($tmask[$k]["visibility"] != $tmask[$k]["mvisibility"]) {
-      if ($tmask[$k]["mvisibility"] == $labelvis[$origattr[$k]->mvisibility] ) $tmask[$k]["bgcolor"]=getParam("COLOR_A7");      
-      else $tmask[$k]["bgcolor"]=getParam("COLOR_B7"); 
-    }
     if (in_array($k, $tkey_visibilities)) {      
-      $tmask[$k]["bgcolor"]=getParam("COLOR_B5");      
-    } 
+      $tmask[$k]["classtype"].=" directmodified";
+    } elseif ($tmask[$k]["visibility"] != $tmask[$k]["mvisibility"]) {
+      if ($tmask[$k]["mvisibility"] != $labelvis[$origattr[$k]->mvisibility] ) $tmask[$k]["classtype"].=" inheritmodified";
+    }
     
     if (isset($tneedeeds[$attr->id])) {
       if (($tneedeeds[$attr->id]=="Y") || (($tneedeeds[$attr->id]=="-") && ($attr->needed)))  $tmask[$k]["waneed"] = "bold";
       else $tmask[$k]["waneed"] = "normal";
       if ($tneedeeds[$attr->id] != "-") $tmask[$k]["bgcolor"]=getParam("CORE_BGCOLORALTERN");
-    } else $tmask[$k]["waneed"] = "normal";
+    } else $tmask[$k]["waneed"] = $tmask[$k]["wneed"];
 
  
  
@@ -177,20 +177,36 @@ function viewmask($target="_self",$ulink=true,$abstract=false) {
       $tmask[$k]["bgcolor"]=getParam("COLOR_B5");      
     }
 
-    if ($attr->fieldSet && $attr->fieldSet->id ) $tmask[$k]["framelabel"]=$attr->fieldSet->getLabel();
+    if ($attr->fieldSet && $attr->fieldSet->id && $attr->fieldSet->id!="FIELD_HIDDENS") $tmask[$k]["framelabel"]=$attr->fieldSet->getLabel();
     else $tmask[$k]["framelabel"]="";
     if ($attr->waction!="") $tmask[$k]["framelabel"]=_("Action");
 
-  }
-
+  
+     $tmask[$k]["displayorder"]=($attr->ordered)?$attr->ordered:-2;
+     if ($attr->type=="menu" || $attr->type=="action") $tmask[$k]["displayorder"]+=1000000; // at then end
+ 
+    if (($attr->ordered > 0) && $attr->fieldSet->id && $attr->fieldSet->ordered < -1) {
+        $attr->fieldSet->ordered=$attr->ordered -1;
+        $tmask[$attr->fieldSet->id]["displayorder"]=$attr->ordered -1;
+        if ($attr->fieldSet->fieldSet && $attr->fieldSet->fieldSet->id) {
+            if ($attr->fieldSet->fieldSet->ordered < -1) {
+                $attr->fieldSet->fieldSet->ordered=$attr->fieldSet->ordered-1;
+                $tmask[$attr->fieldSet->fieldSet->id]["displayorder"]=$attr->fieldSet->ordered-1;
+            }
+        }
+    }
+  }          
+  unset($tmask["FIELD_HIDDENS"]);  
+  uasort($tmask,array(get_class($this),'sortnewelem'));
   $this->lay->SetBlockData("MASK",$tmask);  
 }
 
 
 
 function editmask() {
- 
-  $docid = $this->getValue("MSK_FAMID",1);
+   global $action;
+    
+  $docid = $this->getValue("MSK_FAMID");
 
 
   $this->lay->Set("docid",$docid);
@@ -201,67 +217,58 @@ function editmask() {
   $tvisibilities=$this->getVisibilities();
   $tneedeeds=$this->getNeedeeds();
   
-  $selectclass=array();
-  $tclassdoc = GetClassesDoc($this->dbaccess, $this->userid,0,"TABLE");
-  while (list($k,$cdoc)= each ($tclassdoc)) {
-    $selectclass[$k]["idcdoc"]=$cdoc["id"];
-    $selectclass[$k]["classname"]=$cdoc["title"];
-    $selectclass[$k]["selected"]="";
+  if ($docid == 0) {
+      // only choose family in creation
+      $selectclass=array();
+      $tclassdoc = GetClassesDoc($this->dbaccess, $this->userid,0,"TABLE");
+      foreach ($tclassdoc as $k=>$cdoc) {
+          $selectclass[$k]["idcdoc"]=$cdoc["id"];
+          $selectclass[$k]["classname"]=$cdoc["title"];
+          $selectclass[$k]["selected"]="";
+      }
+
+      $this->lay->SetBlockData("SELECTCLASS", $selectclass);
   }
-
-
-  $selectframe= array();
-
-  $nbattr=0; // if new document 
-
   // display current values
   $newelem=array();
+  $this->lay->set("creation",($docid==0));
+  $this->lay->set("family",$doc->getTitle());
 
-   
-
-  // selected the current class document
-  while (list($k,$cdoc)= each ($selectclass)) {
-
-    if ($docid == $selectclass[$k]["idcdoc"]) {
-
-      $selectclass[$k]["selected"]="selected";
-    }
-    
-  }
-
-  $this->lay->SetBlockData("SELECTCLASS", $selectclass);
-
-
+  if ($docid > 0 ) {
   $ka = 0; // index attribute
 
-  
-  $labelvis=$this->getLabelVis();      
+
+  $labelvis=$this->getLabelVis();
   while(list($k,$v) = each($labelvis))  {
-    $selectvis[] = array("visid" =>$k ,
+      $selectvis[] = array("visid" =>$k ,
 			 "vislabel" => $v);
   }
-  $labelneed=$this->getLabelNeed();      
+  $labelneed=$this->getLabelNeed();
   while(list($k,$v) = each($labelneed))  {
-    $selectneed[] = array("needid" =>$k ,
+      $selectneed[] = array("needid" =>$k ,
 			  "needlabel" => $v);
   }
 		     
 
   //    ------------------------------------------
   //  -------------------- NORMAL ----------------------
-  $tattr = $doc->GetNormalAttributes();
-  $tattr += $doc->GetFieldAttributes();
-  $tattr += $doc->GetActionAttributes();
+  $tattr = $doc->getAttributes();
   uasort($tattr,"tordered"); 
   foreach($tattr as $k=>$attr) {
     if ($attr->usefor=="Q") continue; // not parameters
     if ($attr->docid ==0) continue; // not parameters
     $newelem[$k]["attrid"]=$attr->id;
     $newelem[$k]["attrname"]=$attr->getLabel();
+    $newelem[$k]["type"]=strtok($attr->type,'(');
     $newelem[$k]["visibility"]=$labelvis[$attr->visibility];
 
     $newelem[$k]["wneed"]=($attr->needed)?"bold":"normal";
     $newelem[$k]["neweltid"]=$k;
+    $newelem[$k]["attrinfo"]=$attr->id;
+    if ($attr->fieldSet->id && $attr->fieldSet->id!='FIELD_HIDDENS') {
+        $newelem[$k]["attrinfo"].= '/'.$attr->fieldSet->id;
+       if ($attr->fieldSet->fieldSet->id && $attr->fieldSet->fieldSet->id!='FIELD_HIDDENS')  $newelem[$k]["attrinfo"].= '/'.$attr->fieldSet->fieldSet->id;
+    }
     
     if (($attr->type=="array") || (strtolower(get_class($attr)) == "fieldsetattribute"))$newelem[$k]["fieldweight"]="bold";
     else $newelem[$k]["fieldweight"]="";
@@ -294,8 +301,18 @@ function editmask() {
       }		  
 
     }
-
-
+    $newelem[$k]["displayorder"]=($attr->ordered)?$attr->ordered:-2;
+    if ($attr->type=="menu" || $attr->type=="action") $newelem[$k]["displayorder"]+=1000000; // at then end
+    if (($attr->ordered > 0) && $attr->fieldSet->id && $attr->fieldSet->ordered < -1) {
+        $attr->fieldSet->ordered=$attr->ordered -1;
+        $newelem[$attr->fieldSet->id]["displayorder"]=$attr->ordered -1;
+        if ($attr->fieldSet->fieldSet && $attr->fieldSet->fieldSet->id) {
+            if ($attr->fieldSet->fieldSet->ordered < -1) {
+                $attr->fieldSet->fieldSet->ordered=$attr->fieldSet->ordered-1;
+                $newelem[$attr->fieldSet->fieldSet->id]["displayorder"]=$attr->fieldSet->ordered-1;
+            }
+        }
+    }
     $newelem[$k]["SELECTVIS"]="SELECTVIS_$k";
     $this->lay->SetBlockData($newelem[$k]["SELECTVIS"],
 			     $selectvis);
@@ -305,12 +322,28 @@ function editmask() {
 	      
     $ka++;
   }
-          
-
+          unset($newelem["FIELD_HIDDENS"]);
+  uasort($newelem,array(get_class($this),'sortnewelem'));
   $this->lay->SetBlockData("NEWELEM",$newelem);
-
+  }
   $this->editattr();
 }
+/** 
+ * use to usort attributes
+ * @param BasicAttribute $a
+ * @param BasicAttribute $b
+ */
+static function sortnewelem($a, $b) {  
+  if (isset($a["displayorder"]) && isset($b["displayorder"])) {
+        if ($a["displayorder"] == $b["displayorder"]) return 0;
+        if ($a["displayorder"] > $b["displayorder"]) return 1;
+        return -1;
+  }
+  if (isset($a["displayorder"]) ) return 1;
+  if (isset($b["displayorder"]) ) return -1;
+  return 0;
+}
+
 /**
         * @begin-method-ignore
         * this part will be deleted when construct document class until end-method-ignore
