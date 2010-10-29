@@ -18,7 +18,6 @@ include_once("FDL/Class.DocVaultIndex.php");
 include_once("FDL/Class.DocAttr.php");
 include_once("FDL/Class.DocHisto.php");
 include_once('FDL/Class.ADoc.php');
-include_once("FDL/Lib.Util.php");
 
 
 // define constant for search attributes in concordance with the file "init.freedom"

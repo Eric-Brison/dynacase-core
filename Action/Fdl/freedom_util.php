@@ -12,7 +12,7 @@
  */
 
 include_once("FDL/fdl_xml.php");
-
+include_once("FDL/Lib.Util.php");
 //
 
 // ------------------------------------------------------
