@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-29 10:41+0200\n"
+"POT-Creation-Date: 2010-10-29 16:43+0200\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -3145,13 +3145,18 @@ msgstr "Organisation"
 msgid "case sensitive"
 msgstr ""
 
+msgid "Mask title"
+msgstr ""
+
+msgid "Choose mask family"
+msgstr ""
+
+msgid "Choose family"
+msgstr ""
+
 #, fuzzy
 msgid "for"
 msgstr "Delete"
-
-#, fuzzy
-msgid "no document family"
-msgstr "Start search"
 
 #, fuzzy
 msgid "fieldset"
@@ -5148,6 +5153,10 @@ msgstr "Edit"
 #, fuzzy
 msgid "inherit from"
 msgstr "Import"
+
+#, fuzzy
+msgid "no document family"
+msgstr "Start search"
 
 #, fuzzy
 msgid "family title"
