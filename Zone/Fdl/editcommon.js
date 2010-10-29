@@ -693,13 +693,22 @@ function canmodify(withoutalert) {
 	  v=getIValue(e);
 	  if (v === false) {
 	    ta = document.getElementsByName('_'+attrNid[i]+'[]');
-	    if (ta.length == 0)	err += ' - '+attrNtitle[i]+'\n';
+	    if (ta.length == 0)	{
+	    	err += ' - '+attrNtitle[i]+'\n';
+	    	focusNeeded(e);
+	    }
 	    for (var j=0; j< ta.length; j++) {
 	      v=getIValue(ta[j]);
-	      if ((v === '')||(v === ' ')) err +=  ' - '+attrNtitle[i]+'/'+(j+1)+'\n';
+	      if ((v === '')||(v === ' ')) {
+	    	  err +=  ' - '+attrNtitle[i]+'/'+(j+1)+'\n';
+		      focusNeeded(ta[j]);
+	      }
 	    }
 	  } else {
-	    if ((v === '')||(v === ' ')) err +=  ' - '+attrNtitle[i]+'\n';
+	    if ((v === '')||(v === ' ')) {
+	    	err +=  ' - '+attrNtitle[i]+'\n';
+	    	focusNeeded(e);
+	    }
 	  }
         } else {
 	  // search in multiple values
@@ -714,7 +723,30 @@ function canmodify(withoutalert) {
     }
     return true;
 }
-
+function focusNeeded(inp) {
+    if (inp) {
+	var p=inp.parentNode;
+	while (p && ((p.tagName != 'FIELDSET') || (! p.getAttribute('name'))) ) p=p.parentNode;
+	if (p) {
+	    var name=p.getAttribute('name');
+	    if (name) {		
+		  var tab=window.document.getElementById('TAB'+name.substr(3));
+		  tab.onmousedown.apply(tab,[]);
+	    }	
+	}
+	try {
+		if (! inp.disabled) {
+			if ((inp.type == 'hidden') && inp.id) {
+				inp=document.getElementById('IF_'+inp.id);
+				if (inp) inp.focus();
+			} else {
+			  inp.focus();
+			}
+		}
+	  } catch (exception) {
+         }
+    } 
+}
 // to define which attributes must be disabled
 var tain= new Array();
 var taout= new Array();
@@ -2565,12 +2597,12 @@ function textautovsize(event,o) {
   var i=1;
   var hb=o.clientHeight;
   var hs=o.scrollHeight;
+  if (o.offsetTop) hs+=o.offsetTop;
 
   if (hs > hb) {
     o.parentNode.style.height=hs+'px';
     o.style.height=hs+'px';
   }
-  
 }
 
 // Supprime les espaces inutiles en début et fin de la chaîne passée en paramètre.
