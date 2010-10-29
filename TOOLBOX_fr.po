@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-21 09:40+0200\n"
-"PO-Revision-Date: 2010-10-21 09:42+0200\n"
+"POT-Creation-Date: 2010-10-29 10:41+0200\n"
+"PO-Revision-Date: 2010-10-29 10:42+0200\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -928,6 +928,10 @@ msgstr "pas de fichier trouvé pour la zone [%s]"
 msgid "error in pzone format %s"
 msgstr "erreur dans la format pzone %s"
 
+#, c-format
+msgid "unknow set for attribute %s %s"
+msgstr "Attribut structurant inconnu %s %s"
+
 msgid "Loading..."
 msgstr "Chargement..."
 
@@ -1016,10 +1020,6 @@ msgstr "nouvelle %s"
 
 msgid "document not referenced"
 msgstr "document non référencé"
-
-#, c-format
-msgid "unknow fieldset fot attribute %s %s"
-msgstr ""
 
 #, c-format
 msgid "unknow %s file property"
@@ -8659,6 +8659,10 @@ msgstr "Les préférences d'exportation ont été effacées"
 
 msgid "export preferences are saved"
 msgstr "les préférences d'exportation ont été sauvegardées"
+
+#, c-format
+msgid "document %s not found"
+msgstr ""
 
 msgid "new document family"
 msgstr "nelle famille de document"

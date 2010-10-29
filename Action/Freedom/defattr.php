@@ -60,11 +60,7 @@ function defattr(&$action)
 
 
   $selectframe= array();
-  $selectoption= array();
-  while (list($k,$type)= each ($odocattr->deftype)) {
-    $selectoption[$k]["typevalue"]=$type;
-    $selectoption[$k]["selected"]="";
-  }
+ 
 
   $nbattr=0; // if new document 
 
@@ -216,10 +212,13 @@ function defattr(&$action)
 
 
 
-
+      $selectedSet=false;
+   
+      
       foreach($selectframe as $kopt=>$opt)  {
-	if ($opt["frameid"] == $attr->fieldSet->id){
+        if ($opt["frameid"] == $attr->fieldSet->id){
 	  $selectframe[$kopt]["selected"]="selected"; 
+	  $selectedSet=true;
 	  if ($newelem[$kopt]["displayorder"] < 0) {
 	      $newelem[$kopt]["displayorder"]=$attr->ordered -1;
 	      if ($attr->fieldSet->fieldSet && $attr->fieldSet->fieldSet->id) {
@@ -232,14 +231,18 @@ function defattr(&$action)
 	  $selectframe[$kopt]["selected"]=""; 
 	}		  
       }
-
-      
-      
-      
-      $newelem[$k]["SELECTOPTION"]="SELECTOPTION_$k";
-      $action->lay->SetBlockData($newelem[$k]["SELECTOPTION"],
-				 $selectoption);
-
+        
+   if (! $attr->fieldSet) {
+           simpleQuery($dbaccess,
+                   sprintf("select frameid from docattr where id='%s'",$attr->id),$kset,true,true);
+            
+            $selectframe[$kset]=$selectframe[0];
+            $selectframe[$kset]["selected"]="selected"; 
+            $selectframe[$kset]["framevalue"]="INVALID $kset";
+            $selectframe[$kset]["frameid"]="$kset";
+            $selectframe[$kset]["frameclass"]="invalid";
+            $newelem[$k]["classvalue"]="invalid";
+        } 
       $newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
       $action->lay->SetBlockData($newelem[$k]["SELECTFRAME"],
 				 $selectframe);
@@ -253,7 +256,6 @@ function defattr(&$action)
 
   // reset default values
   while(list($kopt,$opt) = each($selectframe))  $selectframe[$kopt]["selected"]=""; 
-  while(list($kopt,$opt) = each($selectoption))  $selectoption[$kopt]["selected"]=""; 
     
 
   $action->lay->SetBlockData("SELECTCLASS", $selectclass);
@@ -351,9 +353,6 @@ function defattr(&$action)
     $newelem[$k]["order"]="";
     $newelem[$k]["displayorder"]="";
     $newelem[$k]["attrid"]="";
-    $newelem[$k]["SELECTOPTION"]="SELECTOPTION_$k";
-    $action->lay->SetBlockData($newelem[$k]["SELECTOPTION"],
-			       $selectoption);
 
     $newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
     $action->lay->SetBlockData($newelem[$k]["SELECTFRAME"],

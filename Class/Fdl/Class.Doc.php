@@ -5742,7 +5742,10 @@ create unique index i_docir on doc(initid, revision);";
       //------------------------------
       // Compute value element
       $value = chop($this->GetValue($i));
-
+      if (!$attr->fieldSet) {
+          addWarningMsg(sprintf(_("unknow set for attribute %s %s"),$attr->id, $attr->getLabel()));
+          continue;
+      }
       $frametpl=$attr->fieldSet->getOption("viewtemplate");
       if ($attr->fieldSet && ($frametpl && $attr->fieldSet->type != "array")) {
 	$goodvalue=false;
@@ -6393,7 +6396,7 @@ create unique index i_docir on doc(initid, revision);";
 	//	$value = $this->GetValueMethod($this->GetValue($listattr[$i]->id));
       }
       if (!$attr->fieldSet) {
-          addWarningMsg(sprintf(_("unknow fieldset fot attribute %s %s"),$attr->id, $attr->getLabel()));
+          addWarningMsg(sprintf(_("unknow set for attribute %s %s"),$attr->id, $attr->getLabel()));
           continue;
       }
       $frametpl=$attr->fieldSet->getOption("edittemplate");
