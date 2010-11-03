@@ -485,7 +485,9 @@ function enum_getXmlSchema(&$la) {
 			foreach ($tenum as $k => $v) {
 				list($enumKey, $enumValue) = explode("|", $v);
 				$treeKeys = explode(".", $enumKey);
-				
+				$enumKey=trim($enumKey);
+				if (strlen($enumKey)==0) $enumKey=" ";
+				$enumValue=trim($enumValue);
 				$translatedEnumValue = _($br.$enumValue);
 				if ($translatedEnumValue != $br.$enumValue) {
 					$enumValue = $translatedEnumValue;
