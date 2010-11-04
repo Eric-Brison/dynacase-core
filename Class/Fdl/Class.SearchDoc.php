@@ -113,7 +113,7 @@ Class SearchDoc {
   /**
    * count results without return data
    * 
-   * @return int 
+   * @return int the number of results
    */
   public function onlyCount() {
       if (! $this->result) {
@@ -134,12 +134,18 @@ Class SearchDoc {
                       if ($userid != 1) $sql.=" and (profid <= 0 or hasviewprivilege($userid, profid))";
                       $dbid=getDbid($this->dbaccess);
                       $mb=microtime(true);
-                      $q=pg_query($dbid,$sql);
-                      $result = pg_fetch_array ($q,0,PGSQL_ASSOC);
-                      $count+=$result["count"];
-                      $this->debuginfo["delay"]=sprintf("%.03fs",microtime(true)-$mb);
+                      $q=@pg_query($dbid,$sql);
+                      if (!$q) { 
+                          $this->debuginfo["query"]=$sql;
+                          $this->debuginfo["error"]=pg_last_error($dbid);
+                      } else {
+                          $result = pg_fetch_array ($q,0,PGSQL_ASSOC);
+                          $count+=$result["count"];
+                          $this->debuginfo["delay"]=sprintf("%.03fs",microtime(true)-$mb);
+                      }
                   }
               }
+              $this->count=$count;
             return $count;
           }
       } else $this->count();
