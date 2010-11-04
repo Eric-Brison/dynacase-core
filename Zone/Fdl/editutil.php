@@ -486,9 +486,11 @@ case "timestamp":
 	$lay = new Layout("FDL/Layout/edittimestamp.xml", $action);
 	getLayDate($lay,$doc,$oattr,$value,$attrin,$index);
 
+	$lay->set("readonly",false);
 	$lay->set("disabled","");
 	if (($visibility == "R")||($visibility == "S")) {
 		$lay->set("disabled",$idisabled);
+                $lay->set("readonly",true);
 	} else  if ($doc->usefor != 'D') 	$lay->set("disabled","disabled");
 
 
