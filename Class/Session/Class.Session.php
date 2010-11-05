@@ -100,7 +100,7 @@ Class Session extends DbObj{
     
     // set cookie session
     if ($_SERVER['HTTP_HOST'] != "") {
-      setcookie ($this->name,$this->id,$this->SetTTL(),"/");
+      setcookie ($this->name,$this->id,$this->SetTTL());
     }
     return true;
   }
@@ -116,7 +116,7 @@ Class Session extends DbObj{
       @session_unset();
       @session_destroy();
       @session_write_close();
-      setcookie ($this->name,"",0,"/");
+      setcookie ($this->name,"",0);
       $this->Delete();
     }
     $this->status = $this->SESSION_CT_CLOSE;
