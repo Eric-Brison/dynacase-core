@@ -814,9 +814,9 @@ $tkey=array("title"),$prevalues=array(),$torder=array()) {
 						    if (preg_match(PREGEXPFILE, $dv, $reg)) {
 						        $doc->setValue($attr->id, $dv);
 						        $tcr["values"][$attr->getLabel()]=$dv;
-						    } elseif (preg_match('/^http:/', $fi, $reg)) {
+						    } elseif (preg_match('/^http:/', $dv, $reg)) {
 						        // nothing
-						    } elseif ($fi) {
+						    } elseif ($dv) {
 						        $absfile="$ldir/$dv";
 						        $err=AddVaultFile($dbaccess,$absfile,$analyze,$vfid);
 						        if ($err != "") {
