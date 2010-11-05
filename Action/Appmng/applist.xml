@@ -83,12 +83,11 @@ function confirmdel(id, name) {
 <tr>
   <td  class="CORETblCell"><a href="[CORE_BASEURL]app=APPMNG&action=APP_UPDATEALL"><img border=0 src="[IMG:reload.gif]"  alt="UpdateAll" title="UpdateAll"></a></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:appname]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:Version]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:description]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:available]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:access_free]</span></td>
   <td class="CORETblCell"><span class="CORETblBold">[TEXT:displayable]</span></td>
-  <td class="CORETblCell"><span class="CORETblBold">[TEXT:appssl]</span></td>
-  <td class="CORETblCell"><span class="CORETblBold">[TEXT:appmachine]</span></td>
 </tr>
 
 <!-- /TABLEHEAD -->
@@ -109,13 +108,12 @@ function confirmdel(id, name) {
       <img border=0 src="[IMG:delete.gif]"  alt="Uninstall" title="[TEXT:delete]">
     </a>
   </td>
-  <td ><span class="CORETbl"><img border="0" width="20" src="[appicon]"> [name]</span>&nbsp;<span style="font-size:70%">[version]</span></td>
-  <td ><span class="CORETbl">[description]</span></td>
+  <td ><span class="CORETbl"><img border="0" width="20" src="[appicon]"> [name]</span>&nbsp;</td>
+   <td ><span class="CORETbl" style="font-size:70%">[version]</span></td>
+   <td ><span class="CORETbl">[description]</span></td>
   <td ><span class="CORETbl">[available]</span></td>
   <td ><span class="CORETbl">[access_free]</span></td>
   <td ><span class="CORETbl">[displayable]</span></td>
-  <td ><span class="CORETbl">[ssl]</span></td>
-  <td ><span class="CORETbl">[machine]</span></td>
 </tr>
 [ENDBLOCK TABLEBODY]
 <!-- /TABLEBODY -->

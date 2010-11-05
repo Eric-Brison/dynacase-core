@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-29 16:43+0200\n"
+"POT-Creation-Date: 2010-11-05 10:28+0100\n"
 "PO-Revision-Date: 2010-05-21 12:57+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -4066,13 +4066,6 @@ msgid "displayable"
 msgstr "Displayable"
 
 #, fuzzy
-msgid "appssl"
-msgstr "Description"
-
-msgid "appmachine"
-msgstr ""
-
-#, fuzzy
 msgid "update"
 msgstr ""
 "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
@@ -4089,6 +4082,9 @@ msgstr "Can't modify parameter"
 #, fuzzy
 msgid "view all"
 msgstr "Lastname"
+
+msgid "param Changed"
+msgstr ""
 
 #, fuzzy
 msgid "select a user"
@@ -4112,10 +4108,6 @@ msgstr "Add parameter"
 
 msgid "titleaction"
 msgstr "Application actions List"
-
-#, fuzzy
-msgid "machine"
-msgstr "Domain"
 
 msgid "addstyle"
 msgstr "New style"
@@ -9207,3 +9199,11 @@ msgstr ""
 
 msgid "new document family"
 msgstr ""
+
+#, fuzzy
+#~ msgid "appssl"
+#~ msgstr "Description"
+
+#, fuzzy
+#~ msgid "machine"
+#~ msgstr "Domain"

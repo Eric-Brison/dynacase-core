@@ -144,6 +144,7 @@ $action_desc = array (
    "short_name"         =>N_("modify user parameters"),
    "name"               =>"PARAM_UMOD",
    "function"           =>"param_umod",
+   "layout"           =>"param_mod.xml",
    "script"		=>"param_mod.php"
   ), 
   array(

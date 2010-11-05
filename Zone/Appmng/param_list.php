@@ -101,7 +101,7 @@ function param_list(&$action) {
 	  else if ($v["type"][0] == PARAM_USER) $tincparam[$k]["classtype"]="uparam";
 	  else if ($v["type"][0] == PARAM_STYLE) $tincparam[$k]["classtype"]="sparam";
 	  else $tincparam[$k]["classtype"]="gparam";
-	$tincparam[$k]["sval"]=str_replace(array("'","\""),array("\'","&quot;"),$v["val"]);
+	$tincparam[$k]["sval"]=str_replace(array('"'),array("&quot;"),$v["val"]);
 	
 	$tincparam[$k]["colorstatic"]=($v["kind"]=="static")?"#666666":"";
 

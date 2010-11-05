@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-29 16:43+0200\n"
-"PO-Revision-Date: 2010-10-29 16:44+0200\n"
+"POT-Creation-Date: 2010-11-05 10:28+0100\n"
+"PO-Revision-Date: 2010-11-05 10:28+0100\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -3833,12 +3833,6 @@ msgstr "Acces libre"
 msgid "displayable"
 msgstr "Affichable"
 
-msgid "appssl"
-msgstr "Sécurisée"
-
-msgid "appmachine"
-msgstr "machine distante"
-
 #, fuzzy
 msgid "update"
 msgstr ""
@@ -3855,6 +3849,9 @@ msgstr "mes paramètres"
 
 msgid "view all"
 msgstr "tout voir"
+
+msgid "param Changed"
+msgstr "Modifié"
 
 msgid "select a user"
 msgstr "Sélectionnez un utilisateur"
@@ -3873,9 +3870,6 @@ msgstr "Liste des paramètres style"
 
 msgid "titleaction"
 msgstr "Liste des actions de l'application"
-
-msgid "machine"
-msgstr "machine"
 
 msgid "addstyle"
 msgstr "Ajouter un style"
@@ -5700,7 +5694,7 @@ msgid "SMTP default from if not"
 msgstr "Adresse de retour par défaut pour le SMTP"
 
 msgid "Transformation Engine server host name"
-msgstr "Addresse du serveur de transformation"
+msgstr "Adresse du serveur de transformation"
 
 msgid "Transformation Engine server port number"
 msgstr "Numéro de port du serveur de transformation"
@@ -8675,6 +8669,15 @@ msgstr ""
 
 msgid "new document family"
 msgstr "nelle famille de document"
+
+#~ msgid "appssl"
+#~ msgstr "Sécurisée"
+
+#~ msgid "appmachine"
+#~ msgstr "machine distante"
+
+#~ msgid "machine"
+#~ msgstr "machine"
 
 #~ msgid "unknow operator : $operator"
 #~ msgstr "opérateur inconnu : "

@@ -3,7 +3,7 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000 
- * @version $Id: applist.php,v 1.10 2008/04/15 16:36:42 eric Exp $
+ * @version $Id:  $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage APPMNG
@@ -11,68 +11,6 @@
  /**
  */
 
-// ---------------------------------------------------------------
-// $Id: applist.php,v 1.10 2008/04/15 16:36:42 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.php,v $
-// ---------------------------------------------------------------
-// $Log: applist.php,v $
-// Revision 1.10  2008/04/15 16:36:42  eric
-// i18n
-//
-// Revision 1.9  2005/06/04 06:35:05  marc
-// Add application icons in application & param management
-//
-// Revision 1.8  2004/10/26 06:30:44  marc
-// Add version in application list
-//
-// Revision 1.7  2004/10/26 06:29:51  marc
-// Add version in application list
-//
-// Revision 1.6  2003/08/18 15:46:41  eric
-// phpdoc
-//
-// Revision 1.5  2002/08/26 13:04:58  eric
-// application multi-machine
-//
-// Revision 1.4  2002/03/21 17:52:37  eric
-// prise en compte application répartie sur plusieurs machines
-//
-// Revision 1.3  2002/02/04 14:44:36  eric
-// https
-//
-// Revision 1.2  2002/01/30 13:44:01  eric
-// i18n
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.8  2001/10/11 13:59:07  eric
-// mise à jour pour libwhat 0.4.8
-//
-// Revision 1.7  2001/09/10 16:46:49  eric
-// modif pour libwhat 4.8 : accessibilté objet
-//
-// Revision 1.6  2001/02/06 11:40:11  marianne
-// Prise en compte des styles, parametres et actions
-//
-// Revision 1.5  2001/01/29 15:50:59  marianne
-// prise en compte de la gestion des parametres
-//
-// Revision 1.4  2001/01/18 11:58:48  marianne
-// Ajout modification appli et affichage access_free et displayable
-//
-// Revision 1.3  2000/10/19 16:46:45  marc
-// Evo TableLayout
-//
-// Revision 1.2  2000/10/19 10:55:44  marc
-// Suppresion lien HTML dans PHP !!!!!
-//
-// Revision 1.1.1.1  2000/10/16 08:52:39  yannick
-// Importation initiale
-//
-//
-//
-// ---------------------------------------------------------------
 include_once("Class.TableLayout.php");
 include_once("Class.QueryGen.php");
 include_once("Class.SubForm.php");
@@ -128,14 +66,14 @@ function applist(&$action) {
   
 
   $query = new QueryGen("","Application",$action);
-  $query-> AddQuery("(objectclass != 'Y' ) OR ( objectclass isnull)");
+  $query->addQuery("(objectclass != 'Y' ) OR ( objectclass isnull)");
   $query->slice=100;
-  
-   $query->Query();
+  $query->order_by='name';
+  $query->Query();
   
   // Affect the modif icons
 
-  while(list($k,$v) = each($query->table->array)) {
+  foreach($query->table->array as $k=>$v) {
     
       $id = $query->table->array[$k]["id"];
       $p = new Param($action->dbaccess, array("VERSION", PARAM_APP, $id));
@@ -150,7 +88,7 @@ function applist(&$action) {
   }
     
 
-  $query->table->fields= array("id", "update","edit","delete","name", "appicon", "version", "description","available","access_free","displayable","ssl","machine");
+  $query->table->fields= array("id", "update","edit","delete","name", "appicon", "version", "description","available","access_free","displayable");
 
 
   

@@ -17,46 +17,51 @@ include_once("Class.Param.php");
 
 // -----------------------------------
 function param_mod(&$action) {
-  // -----------------------------------
-    // Get all the params      
+    // -----------------------------------
+    // Get all the params
 
-      $appid=GetHttpVars("appid");
-  $name =GetHttpVars("aname");
-  $atype=GetHttpVars("atype",PARAM_APP);
-  $val  =GetHttpVars("val");
-  
-  $ParamCour = new Param($action->dbaccess,array($name,$atype,$appid));
-  if (! $ParamCour->isAffected()) {
-    $ParamCour->appid=$appid;
-    $ParamCour->type=$atype;
-    $ParamCour->name=$name;
-    $ParamCour->val=$val;
-    $res=$ParamCour->Add();
-    if ($res != "") { 
-      $action->addLogMsg( $action->text("err_add_param")." : $res");
+    $appid=GetHttpVars("appid");
+    $name =GetHttpVars("aname");
+    $atype=GetHttpVars("atype",PARAM_APP);
+    $val  =GetHttpVars("val");
+    $direct  =($action->getArgument("direct")=="yes");
+$err='';
+    $ParamCour = new Param($action->dbaccess,array($name,$atype,$appid));
+    if (! $ParamCour->isAffected()) {
+        $ParamCour->appid=$appid;
+        $ParamCour->type=$atype;
+        $ParamCour->name=$name;
+        $ParamCour->val=$val;
+        $err=$ParamCour->Add();
+        if ($err != "") {
+            $action->addLogMsg( $action->text("err_add_param")." : $err");
+        }
+    } else {
+        $ParamCour->val=$val;
+        $err=$ParamCour->Modify();
+        if ($err != "") {
+            $action->addLogMsg( $action->text("err_mod_parameter")." : $err");
+        }
     }
-  } else {
-    $ParamCour->val=$val;
-    $res=$ParamCour->Modify();
-    if ($res != "") { 
-      $action->addLogMsg( $action->text("err_mod_parameter")." : $res");
+
+    // reopen a new session to update parameters cache
+    //unset($_SESSION["CacheObj"]);
+    $prevact=$action->Read("PARAM_ACT","PARAM_CULIST");
+
+
+
+    if ($atype[0] == PARAM_USER) {
+        $action->parent->session->close();
+    } else {
+        $action->parent->session->closeAll();
     }
-  }
-  
-  // reopen a new session to update parameters cache
-  //unset($_SESSION["CacheObj"]);
-  $prevact=$action->Read("PARAM_ACT","PARAM_CULIST");
 
+    if (! $direct) redirect($action,"APPMNG",$prevact);
+    else {
+        $action->lay->set("error",json_encode($err));
+        $action->lay->set("value",json_encode($ParamCour->val));
+    }
 
-  
-  if ($atype[0] == PARAM_USER) {
-    $action->parent->session->close();
-  } else {
-    $action->parent->session->closeAll();
-  }
-
-  redirect($action,"APPMNG",$prevact);
-  
 }
 
 // -----------------------------------

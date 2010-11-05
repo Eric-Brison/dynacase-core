@@ -1,13 +1,13 @@
 <!-- 
-  $Id: param_list.xml,v 1.7 2005/06/16 12:23:07 eric Exp $
-  $Source: /home/cvsroot/anakeen/freedom/core/Zone/Appmng/param_list.xml,v $
+  $Id:  $
 -->
 <div id="dedit" style="display:none">
-<form name="fedit" id="fedit" method="POST"  action="[CORE_BASEURL]app=APPMNG&action=[ACTIONMOD]">
+<form name="fedit" target="saveparam" id="fedit" method="POST"  action="[CORE_BASEURL]app=APPMNG&action=[ACTIONMOD]">
 <input type="hidden" name="appid" >
 <input type="hidden" name="atype" >
 <input type="hidden" name="aname" >
-<input type="text" size="35" name="val" id="val" value="">     
+<input type="hidden" name="direct" value="yes" >
+<input type="text" size="35" name="val" id="val" value="" onblur="if (this.value != this.getAttribute('originvalue')) { submiting=true;this.form.submit();}">     
 </form>
 </div>
 
@@ -15,10 +15,9 @@
 <script language="JavaScript">
 <!--
 [JS:CODE]
-
+var submiting=false;
 var colorPick2 = false;
 var op = new OptionPicker();
-
 function pickColor(color) {
 	document.fedit.val.value = color;
 	document.fedit.val.style.backgroundColor=color;
@@ -33,7 +32,7 @@ function pickOption(value) {
 
 var editedParam='';
 function movediv(th,Aname,Atype,Appid,Kind,Value) {
-
+  if (submiting) return; // wait return of submit
   if (Kind == 'static') {
     alert('[TEXT:unmodifiable parameter]');
     return;
@@ -55,6 +54,7 @@ function movediv(th,Aname,Atype,Appid,Kind,Value) {
       val.value=Value;
       val.focus();
       val.select();
+      val.setAttribute('originvalue',Value);
   }
   
   // redisplay precedent cell 
@@ -72,9 +72,12 @@ function movediv(th,Aname,Atype,Appid,Kind,Value) {
   if (Kind == 'color') {
     if (! colorPick2) colorPick2=new ColorPicker();
     colorPick2.show('dedit');
-  } else if (Kind.substr(0,4) == 'enum') {
+  } else {
+    if (colorPick2)  colorPick2.hidePopup();
+    if (Kind.substr(0,4) == 'enum') {
      op.show('dedit');
      op.setOptions(Kind.substr(5,Kind.length-6).split('|'));
+     }
   }
   
 }
@@ -113,6 +116,9 @@ TD.highlight {
 TD.static {  
   cursor:not-allowed;
 }
+SPAN.changed {
+  background-color: [COLOR_B5];
+}
 </style>
 <table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
 
@@ -144,8 +150,8 @@ TD.static {
   <td  width="55%"  id="v[name]" 
        class="[classtype]";
        onmouseover="if ('[kind]'!='static') this.className='highlight'; else this.className='static'"
-       onmouseout="this.className='[classtype]'"
-       onclick="movediv(this,'[name]','[type]','[appid]','[kind]','[sval]')"><span style="color:[colorstatic]">[val]</span></td>
+       onmouseout="this.className='[classtype]'" avalue="[sval]"
+       onclick="movediv(this,'[name]','[type]','[appid]','[kind]',this.getAttribute('avalue'))"><span style="color:[colorstatic]">[val]</span></td>
 </tr>
 [ENDBLOCK [PARAM]]
 </td></tr></table>
@@ -157,4 +163,4 @@ TD.static {
 
 
 </table>
-
+<iframe name="saveparam" style="display:none"></iframe>
