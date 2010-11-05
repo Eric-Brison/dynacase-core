@@ -183,7 +183,7 @@ function GetApps()
    $tlist = $query->Query(0,0,"TABLE","select  paramv.*, paramdef.descr, paramdef.kind  from paramv, paramdef where paramv.name = paramdef.name and  (". 
 			 " (type = '".PARAM_GLB."') ".
 			 " OR (type='".PARAM_APP."'))".
-			 " order by paramv.appid,  type desc");
+			 " order by paramv.appid, paramv.name, type desc");
 
 
 

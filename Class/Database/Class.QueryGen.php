@@ -189,11 +189,13 @@ function GenMainForm($name,$height,$width,$mainurl,$suburl="") {
    reset ($this->table->array);
    if (($this->order_by != "") && ($this->desc != "")) {
      $desc=$this->desc;
+     if (is_array($this->table->headsortfields)) {
      reset($this->table->headsortfields);
      while(list($k,$v)=each($this->table->headsortfields)) {
        if ($this->order_by == $v) {
          $this->table->headcontent[$k] .= $this->$desc;
        }
+     }
      }
    }
  }
