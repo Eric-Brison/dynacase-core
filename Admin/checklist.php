@@ -234,25 +234,60 @@ if ($dbr_anakeen) {
   // Test User LDAP (NetworkUser Module)
   $ldaphost=$GP["NU_LDAP_HOST"];
   if ($ldaphost) {
-    $ldapbase=$GP["NU_LDAP_BASE"];
-    $ldappw=$GP["NU_LDAP_PASSWORD"];
-    $ldapbinddn=$GP["NU_LDAP_BINDDN"];
-    $msg="";
-    $ldapstatus=KO;
-    $ds=ldap_connect($ldaphost);  // must be a valid LDAP server!
-    if ($ds) {
-      $lb=ldap_bind($ds,$ldapbinddn,$ldappw);  
-      if (!$lb) $msg=sprintf("%s : %s",ldap_error($ds),$ldaphost);
-      else {
-	$ldapstatus=OK;
-	$msg=$ldaphost;
-      }
-    } else {
-      $msg=sprintf("enable to connect to %s",$ldaphost);
-    }
-    $tout["connection USER LDAP"]=array("status"=>$ldapstatus,
-					"msg"=>$msg);
+   	$ldapBindDn = $GP['NU_LDAP_BINDDN'];
+  	$ldapPassword = $GP['NU_LDAP_PASSWORD'];
+
+  	$baseList = array();
+  	array_push($baseList, array('dn' => $GP['NU_LDAP_USER_BASE_DN'], 'filter' => $GP['NU_LDAP_USER_FILTER']));
+  	array_push($baseList, array('dn' => $GP['NU_LDAP_GROUP_BASE_DN'], 'filter' => $GP['NU_LDAP_GROUP_FILTER']));
+  	
+  	foreach( $baseList as $base ) {
+  		$testName = sprintf("connection to '%s'", $base['dn']);
+  		$tout[$testName] = array();
+
+  		$conn = ldap_connect($ldaphost);
+  		if( $conn === false ) {
+  			$tout[$testName]['status'] = KO;
+  			$tout[$testName]['msg'] = sprintf("Could not connect to LDAP server '%s': %s", $ldaphost, $php_errormsg);
+  			continue;
+  		}
+
+  		$bind = ldap_bind($conn, $ldapBindDn, $ldapPassword);
+  		if( $bind === false ) {
+  			$tout[$testName]['status'] = KO;
+  			$tout[$testName]['msg'] = sprintf("Could not bind with bind DN '%s': %s", $ldapBindDn, ldap_error($conn));
+  			ldap_close($conn);
+  			continue;
+  		}
+  		
+		$res = ldap_search($conn, $base['dn'], sprintf("(&(objectClass=*)%s)", $base['filter']));
+  		if( $res === false ) {
+  			$tout[$testName]['status'] = KO;
+  			$tout[$testName]['msg'] = sprintf("LDAP search on base '%s' with filter '%s' failed: %s", $base['dn'], $base['filter'], ldap_error($conn));
+  			ldap_close($conn);
+  			continue;
+  		}
+  		
+  		$count = ldap_count_entries($conn, $res);
+  		if( $count === false ) {
+  			$tout[$testName]['status'] = KO;
+  			$tout[$testName]['msg'] = sprintf("Error counting result entries: %s", ldap_error($conn));
+  			ldap_close($conn);
+  			continue;
+  		}
+  		if( $count <= 0 ) {
+  			$tout[$testName]['status'] = BOF;
+  			$tout[$testName]['msg'] = sprintf("Search returned 0 entries...");
+  			ldap_close($conn);
+  			continue;
+  		}
+  		
+  		$tout[$testName]['status'] = OK;
+  		$tout[$testName]['msg'] = sprintf("Search returned %s entries.", $count);
+  		ldap_close($conn);
+  	}
   }
+  
 }
 
 print "<table border=1>";
