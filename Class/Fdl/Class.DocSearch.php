@@ -229,10 +229,7 @@ Class DocSearch extends PDocSearch {
     if ($keyword=="") return;
     $pspell_link = false;
     if( function_exists('pspell_new') ) {
-      $lang = getParam('CORE_LANG', '');
-      if( $lang != '' ) {
-      	$pspell_link = pspell_new($lang,"","","utf-8",PSPELL_FAST);
-      }
+      $pspell_link = pspell_new("fr","","","utf-8",PSPELL_FAST);
     }
     $tkeys=array();
     $sqlfilters=array();
