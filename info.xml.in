@@ -266,6 +266,9 @@
 
   <changelog>
   	
+    <version number="3.0.14" date="2010-11-10">
+      <change title="Specific methods can be use in search criteria" url="http://dev.dynacase.org/versions/show/72"/>        
+    </version>
     <version number="3.0.13" date="2010-10-27">
       <change title="Fix files with quote " url="http://dev.dynacase.org/versions/show/71"/>        
     </version>
