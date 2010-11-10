@@ -13,6 +13,8 @@ ExpiresByType application/x-javascript  A31536000
 
 DirectoryIndex index.php
 
+Options -Indexes
+
 <FilesMatch "^.+$">
         Order Allow,Deny
         Deny from All
