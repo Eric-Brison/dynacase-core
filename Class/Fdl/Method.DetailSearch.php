@@ -420,7 +420,9 @@ Class _DSEARCH extends DocSearch {
 			foreach($tkey as $k=>$v) {
 				if (strtolower(substr($v,0,5))=="::get") { // only get method allowed
 					// it's method call
-					$rv = $this->ApplyMethod($v);
+					$workdoc=$this->getSearchFamilyDocument();
+					if ($workdoc) $rv = $workdoc->ApplyMethod($v);
+					else $rv = $this->ApplyMethod($v);
 					$tkey[$k]=$rv;
 				}
 				if (substr($v,0,1)=="?") {
@@ -604,7 +606,7 @@ Class _DSEARCH extends DocSearch {
 	 */
 	private function getSearchFamilyDocument() {
 	    static $fam=null;
-	    if (! $fam) $fam=createDoc($this->dbaccess,$this->getValue("SE_FAMID",1),false);
+	    if (! $fam) $fam=createTmpDoc($this->dbaccess,$this->getValue("SE_FAMID",1));
 	    return $fam;
 	}
 	
