@@ -5,13 +5,13 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 addEvent(window,'load', function () {
-var wf=new widgetFile({documentId:[docid],attributeId:'[attrid]',index:[index],mimeIcon:'[mimeicon]',
-                       fileLink:'[filelink]', fileTitle:'[filetitle]', pages:[pages]});
+var wf=new widgetFile({documentId:[docid],attributeId:'[attrid]',index:[index],mimeIcon:'[mimeicon]',vid:[vid],
+                       fileLink:'[filelink]', fileTitle:'[filetitle]', pages:[pages], waiting:[waiting]});
 wf.show({target:document.getElementById('file[docid]-[attrid][index]'),
          type:'[viewtype]',
          showPager:true,
-         width:getObjectWidth(document.getElementById('file[docid]-[attrid][index]'))-25,
-         height:'350px',
+         width:'100%',
+         height:'[height]',
          page:0});
 });
 </script>

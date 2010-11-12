@@ -179,6 +179,9 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
        header("Content-Disposition: form-data;filename=\"$name\"");
      }
    } 
+   if ($inline=="true" && substr($mime_type,0,4) == "text" 
+         && substr($mime_type,0,9) != "text/html" 
+         && substr($mime_type,0,8) != "text/xml") $mime_type=preg_replace("_text/([^;]*)_", "text/plain", $mime_type);
    header("Content-type: ".$mime_type);
    header("Content-Transfer-Encoding: binary");
    header("Content-Length: ".filesize($filename));

@@ -137,8 +137,25 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype="",$width="",
               $filecache=sprintf("%s/.img-resize/vid-%s-%s.png",DEFAULT_PUBDIR,$info->id_file,$pngpage);
               if (file_exists($filecache)) {
                   //  print_r2($filecache);
+                  $resample=false;
+                    if($resample) {
+                      $filename=$filecache;
+                      list($owidth, $oheight) = getimagesize($filename);
+                      $newwidth = $width;
+                      $newheight = $oheight * ($width/$owidth);
+                      // chargement
+                      $thumb = imagecreatetruecolor($newwidth, $newheight);
+                      $source = imagecreatefrompng($filename);
+                      // Redimensionnement
+                      imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $owidth, $oheight);
+                      // Affichage
+                      header('Content-type: image/png');
+                      imagepng($thumb);
+                      exit;
+                  } else {
                   Http_DownloadFile($filecache,$info->name.".png","image/png",$inline,$cache);
                   exit;
+                  }
               }
 
               $cible=uniqid(getTmpDir()."/thumb").".png";

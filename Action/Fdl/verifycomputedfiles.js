@@ -45,10 +45,13 @@ function XMLprocessverificationfiles() {
 	  }
 	  var values=xmlres.getElementsByTagName("file");
 	  var needverify=false;
-	  var state;
+	  var state,vid;
+	  if (! XHT_FILES.files) XHT_FILES.files=[];
 	  for (var i=0;i<values.length;i++) {
 	    state=values[i].getAttribute('status');
-	    if ((state=='3')||(state=='2')) needverify=true;	    
+	    vid=values[i].getAttribute('id');
+	    if ((state=='3')||(state=='2')) needverify=true;
+	    XHT_FILES.files[vid]=state;
 	  }
 	  if (needverify) {
 	    setTimeout(function() { verifycomputedfiles(docid); }, 5000);

@@ -4547,23 +4547,58 @@ create unique index i_docir on doc(initid, revision);";
 	            $htmlval=$textval;
 	        }
 	    } elseif ($htmllink) {
-                    $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
-                    if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
-                    else $idx=$index;
+	        $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
+	        if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
+	        else $idx=$index;
+	        $standardview=true;
+	        $infopdf=false;
 	        if ($oattr->getOption("viewfiletype")=="image") {
 	            global $action;
-	             $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
-	             $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
-	             $lay->set("docid",$this->id);
-	             $lay->set("attrid", $oattr->id);
-                     $lay->set("index", $idx);
-                     $lay->set("viewtype", "png");
-                     $lay->set("mimeicon", $mimeicon);
-                     $lay->set("filetitle", $fname);
-                     $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
-                     $lay->set("pages", 0); // todo
-	             $htmlval =$lay->gen();
-	        } else {	             
+	            $waiting=false;
+	            if (substr($info->mime_s,0,5) == "image") {
+	                $imageview=true;
+	                $viewfiletype='png';
+	                $pages=1;
+	            } elseif (substr($info->mime_s,0,4) == "text") {
+	                $imageview=true;
+	                $viewfiletype='embed';
+	                $pages=1;
+	            } else {
+	                $err=$vf->Show($vid, $infopdf,'pdf');
+	                if ($err=="") {
+	                    if ($infopdf->teng_state == TransformationEngine::status_done ||
+	                        $infopdf->teng_state == TransformationEngine::status_waiting||
+                                $infopdf->teng_state == TransformationEngine::status_inprogress) {
+	                        $imageview=true;
+	                        $viewfiletype='png';
+	                        $pages=getPdfNumberOfPages($infopdf->path);
+	                        if ($infopdf->teng_state == TransformationEngine::status_waiting ||
+	                            $infopdf->teng_state == TransformationEngine::status_inprogress) $waiting=true;
+	                    }
+	                }
+	            }
+
+
+	            if ($imageview) {
+	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
+	                $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
+	                $lay->set("docid",$this->id);
+                        $lay->set("waiting",($waiting?'true':'false'));
+	                $lay->set("attrid", $oattr->id);
+	                $lay->set("index", $idx);
+	                $lay->set("viewtype", $viewfiletype);
+	                $lay->set("mimeicon", $mimeicon);
+                        $lay->set("vid", ($infopdf?$infopdf->id_file:$vid));
+	                $lay->set("filetitle", $fname);
+	                $lay->set("height", $oattr->getOption('viewfileheight','300px'));
+                        $lay->set("height", '');
+	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
+	                $lay->set("pages", $pages); // todo
+	                $htmlval =$lay->gen();
+	                $standardview=false;
+	            }
+	        }
+	        if ($standardview) {
 	            $size=round($info->size/1024)._("AbbrKbyte");
 	            $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
 	            $opt="";
@@ -4577,7 +4612,7 @@ create unique index i_docir on doc(initid, revision);";
 	    } else {
 	        $htmlval=$info->name;
 	    }
-	     
+
 	  }
 	
 	}
