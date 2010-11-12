@@ -4547,23 +4547,37 @@ create unique index i_docir on doc(initid, revision);";
 	            $htmlval=$textval;
 	        }
 	    } elseif ($htmllink) {
-	      $size=round($info->size/1024)._("AbbrKbyte");
-	      $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
-  							 
-	      if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
-	      else $idx=$index;
-
-	      $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
-	      $opt="";
-	      $inline=$oattr->getOption("inline");
-	      if ($inline=="yes") $opt="&inline=yes";
-	      $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-		$this->getFileLink($oattr->id,$idx)."\">";
-	      if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
-	      $htmlval.=$fname."</a>";
+                    $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
+                    if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
+                    else $idx=$index;
+	        if ($oattr->getOption("viewfiletype")=="image") {
+	            global $action;
+	             $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
+	             $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
+	             $lay->set("docid",$this->id);
+	             $lay->set("attrid", $oattr->id);
+                     $lay->set("index", $idx);
+                     $lay->set("viewtype", "png");
+                     $lay->set("mimeicon", $mimeicon);
+                     $lay->set("filetitle", $fname);
+                     $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
+                     $lay->set("pages", 0); // todo
+	             $htmlval =$lay->gen();
+	        } else {	             
+	            $size=round($info->size/1024)._("AbbrKbyte");
+	            $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
+	            $opt="";
+	            $inline=$oattr->getOption("inline");
+	            if ($inline=="yes") $opt="&inline=yes";
+	            $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
+	            $this->getFileLink($oattr->id,$idx)."\">";
+	            if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
+	            $htmlval.=$fname."</a>";
+	        }
 	    } else {
-	      $htmlval=$info->name;
+	        $htmlval=$info->name;
 	    }
+	     
 	  }
 	
 	}

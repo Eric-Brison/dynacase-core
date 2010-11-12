@@ -121,75 +121,82 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype="",$width="",
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $vf = newFreeVaultFile($dbaccess);
   if ($type=="pdf") {
-    $teng_name='pdf';
-    $err=$vf->Show($vaultid, $info,$teng_name);
-    if ($err != "") $err=sprintf(_("PDF conversion not found"))."\n$err";
-  } elseif ($type=="png") {
-    $teng_name='pdf';
-    $err=$vf->Show($vaultid, $info,$teng_name);
-    if ($err == "") {
-      $filecache=sprintf("%s/img-cache/vid-%s-%s.png",DEFAULT_PUBDIR,$info->id_file,$pngpage);
-      if (file_exists($filecache)) {
-	//  print_r2($filecache);
-	Http_DownloadFile($filecache,$info->name.".png","image/png",$inline,$cache);
-	exit;
+      $teng_name='pdf';
+      $err=$vf->Show($vaultid, $info,$teng_name);
+      if ($err != "") $err=sprintf(_("PDF conversion not found"))."\n$err";
+  } else {
+       $err=$vf->Show($vaultid, $info);
+          //print_r2(substr($info->mime_s,0,5));
+          //print_r2("width=".$width);
+          if (substr($info->mime_s,0,5) == "image") $type="original";
+      
+      if ($type=="png") {
+          $teng_name='pdf';
+          $err=$vf->Show($vaultid, $info,$teng_name);
+          if ($err == "") {
+              $filecache=sprintf("%s/.img-resize/vid-%s-%s.png",DEFAULT_PUBDIR,$info->id_file,$pngpage);
+              if (file_exists($filecache)) {
+                  //  print_r2($filecache);
+                  Http_DownloadFile($filecache,$info->name.".png","image/png",$inline,$cache);
+                  exit;
+              }
+
+              $cible=uniqid(getTmpDir()."/thumb").".png";
+              if (! $width) $width=150;
+              $quality=200;
+              $resample=false;
+              // option 1
+              //$cmd=sprintf("gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=- -dFirstPage=%d -dLastPage=%d %s | convert -  -thumbnail %s %s",   min(intval($width/8.06),$quality),$pngpage+1,$pngpage+1,$info->path,$width,$cible);
+              // option 2
+              $cmd=sprintf("convert -thumbnail %s  -density %d %s[%d] %s",$width,$quality,$info->path,$pngpage,$cible);
+              // option 3
+              //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path);
+              // option 4
+              //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path); $resample=true;
+
+              // option 5
+              //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s", intval($width/8.06),$cible,$pngpage+1,$pngpage+1,$info->path);
+
+              exec($cmd, $out, $ret);
+
+              if ($ret == 1) $err=implode("\n",$out);
+              if (file_exists($cible)) {
+
+                  if($resample) {
+                      $filename=$cible;
+                      list($owidth, $oheight) = getimagesize($filename);
+                      $newwidth = $width;
+                      $newheight = $oheight * ($width/$owidth);
+                      // chargement
+                      $thumb = imagecreatetruecolor($newwidth, $newheight);
+                      $source = imagecreatefrompng($filename);
+                      // Redimensionnement
+                      imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $owidth, $oheight);
+                      // Affichage
+                      header('Content-type: image/png');
+                      imagepng($thumb);
+                      exit;
+                  } else {
+                      Http_DownloadFile($cible,$info->name.".png","image/png",$inline,$cache);
+                  }
+                  unlink($cible);
+                  exit;
+              } else $err = sprintf(_("cannot get image transformation for %s"),$info->name)."\n$err";
+          } else {
+              $vf = newFreeVaultFile($dbaccess);
+              $vf->Show($vaultid, $info);
+              if ($info) $err=sprintf(_("conversion png not found for %s"),$info->name)."\n$err";
+          }
+      } else {
+          $err=$vf->Show($vaultid, $info);
+          //print_r2(substr($info->mime_s,0,5));
+          //print_r2("width=".$width);
+          if ((substr($info->mime_s,0,5) == "image") && ($width > 0)) {
+              //print_r2($info);
+              $dest=rezizelocalimage($info->path,$width,$width."-".$info->id_file.".png");
+              if ($dest) Http_DownloadFile($dest, $info->name.".png", "image/png",$inline);
+          }
       }
-
-      $cible=uniqid(getTmpDir()."/thumb").".png";
-      if (! $width) $width=150;
-      $quality=200;
-      $resample=false;
-      // option 1
-      //$cmd=sprintf("gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=- -dFirstPage=%d -dLastPage=%d %s | convert -  -thumbnail %s %s",   min(intval($width/8.06),$quality),$pngpage+1,$pngpage+1,$info->path,$width,$cible);
-      // option 2
-        $cmd=sprintf("convert -thumbnail %s  -density %d %s[%d] %s",$width,$quality,$info->path,$pngpage,$cible);
-      // option 3
-      //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path); 
-      // option 4
-      //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path); $resample=true;
-
-      // option 5
-      //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s", intval($width/8.06),$cible,$pngpage+1,$pngpage+1,$info->path);
-
-      exec($cmd, $out, $ret);
-
-      if ($ret == 1) $err=implode("\n",$out);
-      if (file_exists($cible)) {
-	
-	if($resample) {
-	  $filename=$cible;
-	  list($owidth, $oheight) = getimagesize($filename);
-	  $newwidth = $width;
-	  $newheight = $oheight * ($width/$owidth);	
-	  // chargement
-	  $thumb = imagecreatetruecolor($newwidth, $newheight);
-	  $source = imagecreatefrompng($filename);	
-	  // Redimensionnement
-	  imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $owidth, $oheight);
-	  // Affichage
-	  header('Content-type: image/png');
-	  imagepng($thumb);
-	  exit;
-	} else {
-	  Http_DownloadFile($cible,$info->name.".png","image/png",$inline,$cache);
-	}
-	unlink($cible);
-	exit;
-      } else $err = sprintf(_("cannot get image transformation for %s"),$info->name)."\n$err";
-    } else {
-      $vf = newFreeVaultFile($dbaccess);
-      $vf->Show($vaultid, $info);
-      if ($info) $err=sprintf(_("conversion png not found for %s"),$info->name)."\n$err";
-    }
-  } else {    
-    $err=$vf->Show($vaultid, $info);
-    //print_r2(substr($info->mime_s,0,5));
-    //print_r2("width=".$width);
-    if ((substr($info->mime_s,0,5) == "image") && ($width > 0)) {
-        //print_r2($info);
-        $dest=rezizelocalimage($info->path,$width,$width."-".$info->id_file.".png");
-        if ($dest) Http_DownloadFile($dest, $info->name.".png", "image/png");
-    }
   }
 
   if ($err != "") {    

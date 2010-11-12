@@ -99,9 +99,6 @@ function insertfile(&$action) {
 	      }
 	  }
 	}
-	
-      
-
     }
   }
 
@@ -142,10 +139,10 @@ function createPdf2Png($file,$vid) {
     $density=200;
     $width=1200;
     $nbpages=trim(`grep -c "/Type[[:space:]]*/Page\>" $file`);
-    $cmd[]=sprintf("/bin/rm -f %s/vid-%d*.png;",DEFAULT_PUBDIR."/img-cache",$vid);
+    $cmd[]=sprintf("/bin/rm -f %s/vid-%d*.png;",DEFAULT_PUBDIR."/.img-resize",$vid);
     
     for ($i=0;$i<$nbpages;$i++) {
-      $cible=DEFAULT_PUBDIR."/img-cache/vid-${vid}-${i}.png";
+      $cible=DEFAULT_PUBDIR."/.img-resize/vid-${vid}-${i}.png";
             print $cible;
       $cmd[]=sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s",
 		   $width,$density,$file,$i,$cible);

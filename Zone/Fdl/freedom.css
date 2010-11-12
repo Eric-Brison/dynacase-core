@@ -835,7 +835,11 @@ DIV.tabh SPAN:hover {
        font-size: [SIZE_SMALL];
       
    }
-
+DIV.fileimage {
+	overflow-y:scroll;
+	overflow-x:auto;
+	border : inset 1px;
+	}
 DIV.fldh {	
   cursor:pointer;
   overflow:hidden;
