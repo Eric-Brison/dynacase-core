@@ -16,13 +16,15 @@
 
 function submitreqpasswd(&$action) {
   include_once('FDL/Lib.Dir.php');
-
+  include_once('FDL/freedom_util.php');
+  
   $submitted_login = GetHttpVars('form_login');
   $submitted_email = GetHttpVars('form_email');
 
   $action->lay->set('FORM_SEND_OK', False);
   $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', False);
   $action->lay->set('FORM_SEND_ERROR_UNKNOWN', False);
+  $action->lay->set('FORM_SEND_ERROR_EXTERNAL_AUTH', False);
   $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
 
   $userdoc = getUserDoc($action, $submitted_login, $submitted_email);
@@ -30,7 +32,14 @@ function submitreqpasswd(&$action) {
     $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', True);
     return;
   }
-
+  
+  $providerList = getAuthProviderList();
+  $ldapUserFamId = getIdFromName($action->dbaccess, 'LDAPUSER');
+  if( ! in_array('freedom', $providerList) || ($ldapUserFamId !== false && $userdoc['fromid'] == $ldapUserFamId) ) {
+  	$action->lay->set('FORM_SEND_ERROR_EXTERNAL_AUTH', True);
+  	return;
+  }
+  
   $ret = sendCallback($action, $userdoc, 'AUTHENT/Layout/submitreqpasswd_mail.xml');
   if( $ret != "" ) {
     $action->lay->set('FORM_SEND_ERROR_UNKNOWN', True);
