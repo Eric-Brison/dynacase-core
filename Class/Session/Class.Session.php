@@ -72,6 +72,10 @@ Class Session extends DbObj{
   function Set($id="")  {
     global $_SERVER;
 
+    if( ! $this->sessionDirExistsAndIsWritable() ) {
+      return false;
+    }
+
     $this->gcSessions();
 
     $query=new QueryDb($this->dbaccess,"Session");
@@ -423,6 +427,25 @@ Class Session extends DbObj{
     $this->userid = $uid;
     return $this->modify();
   }
-  
+
+  function sessionDirExistsAndIsWritable() {
+    include_once('WHAT/Lib.Prefix.php');
+
+    global $pubdir;
+
+    $sessionDir = sprintf("%s/session", $pubdir);
+    if( ! is_dir($sessionDir) ) {
+      trigger_error(sprintf("Session directory '%s' does not exists.", $sessionDir));
+      return false;
+    }
+
+    if( ! is_writable($sessionDir) ) {
+      trigger_error(sprintf("Session directory '%s' is not writable.", $sessionDir));
+      return false;
+    }
+
+    return true;
+  }
+
 } // Class Session
 ?>
