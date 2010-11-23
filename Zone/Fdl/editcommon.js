@@ -633,23 +633,37 @@ function _matchName(s1,s2){
 }
 
 function enableall() {
+	var f=document.getElementById('fedit');
+	for (var i=0; i< f.length; i++) {	
+		f.elements[i].oridisabled=f.elements[i].disabled;
+		f.elements[i].disabled=false;
+	}
 
-  with (document.getElementById('fedit')) {
-       for (i=0; i< length; i++) {	
-           elements[i].oridisabled=elements[i].disabled;
-           elements[i].disabled=false;
-       }
-  }
 }
 function restoreall() {
+	var f=document.getElementById('fedit');
+	for (var i=0; i< f.length; i++) {	
+		f.elements[i].disabled=f.elements[i].oridisabled;
+	}
 
-  with (document.getElementById('fedit')) {
-       for (i=0; i< length; i++) {	
-           elements[i].disabled=elements[i].oridisabled;
-       }
+}
+function displayTime(oi) {
+  var ioi=oi.id;
+  if (ioi) {
+	  var oh=document.getElementById('hh'+ioi);
+	  var om=document.getElementById('mm'+ioi);
+	  if (oh && om) {
+		  var lp=oi.value.indexOf(':');
+		  if (lp > 0) {
+		    oh.value=oi.value.substr(0,lp);
+		    om.value=oi.value.substr(lp+1);
+		  } else {
+			    oh.value=oi.value;
+			    om.value='';
+		  }
+	  }
   }
 }
-
 // tranfert value from s to d
 function transfertValue(s,d) {
   var sob=document.getElementById(s);

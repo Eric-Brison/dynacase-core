@@ -66,6 +66,7 @@ function focusConstraint(inp) {
 }
 function viewContraint(inp, info) {
     if (inp) {
+        var realinp=inp;
         if ((inp.style.display=='none') || (inp.type=='hidden')) {
                 var oinp=inp.parentNode.firstChild;
                 while (oinp && ((oinp.tagName!='INPUT' && oinp.tagName!='SELECT') || (oinp.type=='hidden' || ( oinp.style && oinp.style.display=='none')))) {
@@ -95,7 +96,7 @@ function viewContraint(inp, info) {
         if (info.sug && (info.sug.length > 0)) {
             var s=window.parent.document.createElement("select");
             s.options[s.options.length]=new Option('[TEXT:Suggestion]','');
-            addEvent(s,"change", function () { inp.value=this.options[this.selectedIndex].value;});
+            addEvent(s,"change", function () { realinp.value=s.options[s.selectedIndex].value;realinp.onchange.apply(realinp,[]);});
             for (var i in info.sug) {
                 s.options[s.options.length]=new Option(info.sug[i],info.sug[i]);   
             }
