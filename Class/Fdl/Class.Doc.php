@@ -2399,6 +2399,8 @@ create unique index i_docir on doc(initid, revision);";
 	  foreach($tvalues as $kvalue=>$avalue) {
 	    if (($avalue != "") && ($avalue != "\t")) {
 	      if ($oattr) {
+	          $avalue=trim($avalue);
+	          $tvalues[$kvalue]=$avalue;
 		switch($oattr->type) {
 		case 'docid':
 		  if  ((! strstr($avalue,"<BR>")) && (! strstr($avalue,"\n"))&& (!is_numeric($avalue))) {
