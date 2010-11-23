@@ -255,7 +255,14 @@ $app_const = array (
 		    "CORE_SESSIONGCPROBABILITY" => array( "val"    => "0.01",
 							  "descr"  => N_("core_sessiongcprobability"),
 							  "user"   => "N",
-							  "global" => "Y")
+							  "global" => "Y"),
+
+            // Layout->execute recursion limit
+            "CORE_LAYOUT_EXECUTE_RECURSION_LIMIT" => array( "val"    => "30",
+                                                            "descr"  => N_("core_layout_execute_recursion_limit"),
+                                                            "user"   => "N",
+                                                            "global" => "Y"),
+
 		    );
 
 

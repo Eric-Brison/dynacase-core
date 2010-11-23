@@ -251,7 +251,13 @@ class Layout {
   }
 
   function execute($appname,$actionargn) {
-
+    $limit = getParam('CORE_LAYOUT_EXECUTE_RECURSION_LIMIT', 0);
+    if( is_numeric($limit) && $limit > 0 ) {
+      $loop = $this->getRecursionCount(__CLASS__, __FUNCTION__);
+      if( $loop['count'] >= $limit ) {
+         $this->printRecursionCountError(__CLASS__, __FUNCTION__, $loop['count']);
+      }
+    }
 
     if ($this->action=="") return ("Layout not used in a core environment");
 
@@ -470,5 +476,62 @@ class Layout {
 
     return($out);
   }
+
+  /**
+   * Count number of execute() calls on the stack to detect infinite recursive loops
+   * @param string class name to track
+   * @param string function/method name to track
+   * @return array array('count' => $callCount, 'delta' => $callDelta, 'depth' => $stackDepth)
+   */
+  function getRecursionCount($class, $function) {
+      $count = 0;
+      $curDepth = 0;
+      $prevDepth = 0;
+      $delta = 0;
+
+      $bt = debug_backtrace(false);
+      $btCount = count($bt);
+      for( $i = $btCount - 2; $i >= 0; $i-- ) {
+          $curDepth++;
+          if( $class == $bt[$i]['class'] && $function == $bt[$i]['function'] ) {
+              $delta = $curDepth - $prevDepth;
+              $prevDepth = $curDepth;
+              $count++;
+          }
+      }
+
+      return array('count' => $count,
+                 'delta' => $delta,
+                 'depth' => $curDepth
+      );
+  }
+
+  /**
+   * Print a recursion count error message and stop execution
+   * @param string class name to display
+   * @param string function/method name to display
+   * @param integer the call count that triggered the error
+   */
+  function printRecursionCountError($class, $function, $count) {
+      include_once('WHAT/Lib.Prefix.php');
+
+      $http_code = 500;
+      $http_reason = "Recursion Count Error";
+      header(sprintf("HTTP/1.1 %s %s", $http_code, $http_reason));
+
+      print "<html><head>\n";
+      print "<title>".htmlspecialchars($http_reason)."</title>\n";
+      print "</head></body>\n";
+
+      print "<h1>".sprintf("%s %s", htmlspecialchars($http_code), htmlspecialchars($http_reason))."</h1>\n";
+
+      $message = sprintf("Infinite recursive loop in %s::%s() (call count = '%s')", $class, $function, $count);
+      print "<h2>".htmlspecialchars($message)."</h2>\n";
+      error_log(sprintf("%s::%s Error: %s", $class, $function, $message));
+
+      print "</body></html>\n";
+      exit;
+  }
+
 }
 ?>
