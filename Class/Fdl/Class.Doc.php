@@ -5506,7 +5506,6 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $defval the default values
    * @param bool  $method set to false if don't want interpreted values
    * @param bool  $forcedefault force default values
-   * @access private
    */
   final public function setDefaultValues($tdefval,$method=true,$forcedefault=false) {
     if (is_array($tdefval)) {
@@ -5514,20 +5513,21 @@ create unique index i_docir on doc(initid, revision);";
 	$oattr = $this->getAttribute($aid);
   			
 	$ok = false;
-	if(empty($oattr)) $ok = true;
+	if(empty($oattr)) $ok = false;
+        elseif(! method_exists($oattr,"inArray")) $ok = false;
 	elseif($forcedefault) $ok = true;
 	elseif(!$oattr->inArray()) $ok = true;
 	elseif($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty")!="yes") {
 	  $ok = true;
 	}
-  			
-  			
 	if ($ok) {
 	  if ($method) {
 	    $this->setValue($aid, $this->GetValueMethod($dval));
 	  } else {
 	    $this->$aid= $dval; // raw data
 	  }
+	} else {
+	    // TODO raise exception
 	}
       }
     }
