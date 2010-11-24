@@ -73,8 +73,10 @@ function isSimpleFilter($sqlfilters) {
     $tok=ltrim($v,"(");
     $tok=ltrim($tok," ");
     $tok = strtok($tok," !=~@");  
+    if (!(strpos($tok,'.') > 0)) { // join is not in main table
     //if ($tok == "fulltext") return true;
-    if (($tok !== false) && ($tok !== "true") && ($tok !== "false") && (!in_array(ltrim($tok,"("),$props))) return false;
+        if (($tok !== false) && ($tok !== "true") && ($tok !== "false") && (!in_array(ltrim($tok,"("),$props))) return false;
+    }
   }
   return true;
     
@@ -92,6 +94,7 @@ function isSimpleFilter($sqlfilters) {
  * @param bool $latest set false if search in all revised doc
  * @param string $trash (no|only|also) search in trash or not
  * @param bool $simplesearch set false if search is about specific attributes
+ * @param string $join defined a join table like "id = dochisto(id)"
 */
 function getSqlSearchDoc($dbaccess, 
 			 $dirid, 
@@ -101,7 +104,8 @@ function getSqlSearchDoc($dbaccess,
 			 $latest=true,// only latest document
 			 $trash="",
 			 $simplesearch=false,
-			 $folderRecursiveLevel=2) {
+			 $folderRecursiveLevel=2,
+			 $join='') {
   if (($fromid!="") && (! is_numeric($fromid))) $fromid=getFamIdFromName($dbaccess,$fromid);
   $table="doc";$only="";
   if ($trash=="only") $distinct=true;
@@ -123,18 +127,30 @@ function getSqlSearchDoc($dbaccess,
       if (isSimpleFilter($sqlfilters)) 	$table="docread";
     }
   }
-
-  
-
+  $maintable=$table; // can use join only on search
+  if ($join) {
+      if (preg_match("/([a-z0-9_\-:]+)\s*=\s*([a-z0-9_\-:]+)\(([^\)]*)\)/",$join,$reg)) {
+          $joinid=getFamIdFromName($dbaccess,$reg[2]);
+          $jointable=($joinid)?"doc".$joinid:$reg[2];
+           
+          $sqlfilters[]=sprintf("%s.%s = %s.%s", $table,$reg[1],$jointable,$reg[3]);// "id = dochisto(id)";
+          $maintable=$table;
+          $table.=", ".$jointable;
+      } else {
+          addWarningMsg(sprintf(_("search join syntax error : %s"),$join));
+          return false;
+      }
+  }
+  $maintabledot=($maintable && $dirid==0)?$maintable.'.':'';
+			 
   if ($distinct) {
-    $selectfields =  "distinct on (initid) $table.*";
+    $selectfields =  "distinct on ($maintable.initid) $maintable.*";
   } else {
-    $selectfields =  "$table.*"; 
-    $sqlfilters[-2] = "doctype != 'T'";
+    $selectfields =  "$maintable.*";
+    $sqlfilters[-2] = $maintabledot."doctype != 'T'";
     ksort($sqlfilters);
 
   }
-
   $sqlcond="true";
   ksort($sqlfilters);
   if (count($sqlfilters)>0)    $sqlcond = " (".implode(") and (", $sqlfilters).")";
@@ -144,14 +160,14 @@ function getSqlSearchDoc($dbaccess,
     //-------------------------------------------
     // search in all Db
     //-------------------------------------------
-      if (strpos(implode(",",$sqlfilters),"archiveid")===false)  $sqlfilters[-4] = "archiveid is null";
+      if (strpos(implode(",",$sqlfilters),"archiveid")===false)  $sqlfilters[-4] = $maintabledot."archiveid is null";
       
     if ($trash=="only") {
-      $sqlfilters[-3] = "doctype = 'Z'";    
+      $sqlfilters[-3] = $maintabledot."doctype = 'Z'";    
     } elseif ($trash=="also") ;
-    else if (!$fromid) $sqlfilters[-3] = "doctype != 'Z'";
+    else if (!$fromid) $sqlfilters[-3] = $maintabledot."doctype != 'Z'";
 
-    if (($latest) && (($trash=="no")||(!$trash))) $sqlfilters[-1] = "locked != -1";
+    if (($latest) && (($trash=="no")||(!$trash))) $sqlfilters[-1] = $maintabledot."locked != -1";
     ksort($sqlfilters);
     if (count($sqlfilters)>0)    $sqlcond = " (".implode(") and (", $sqlfilters).")";
     $qsql= "select $selectfields ".
@@ -175,7 +191,7 @@ function getSqlSearchDoc($dbaccess,
                 $hasFilters=true;
             }
         }
-      if (strpos(implode(",",$sqlfilters),"archiveid")===false)  $sqlfilters[-4] = "archiveid is null";
+      if (strpos(implode(",",$sqlfilters),"archiveid")===false)  $sqlfilters[-4] = $maintabledot."archiveid is null";
         
 
       //if ($fld->getValue("se_trash")!="yes") $sqlfilters[-3] = "doctype != 'Z'";
@@ -372,7 +388,8 @@ function getChildDoc($dbaccess,
 		     $dirid, 
 		     $start="0", $slice="ALL", $sqlfilters=array(), 
 		     $userid=1, 
-		     $qtype="LIST", $fromid="",$distinct=false, $orderby="title",$latest=true,$trash="",&$debug=null,$folderRecursiveLevel=2) {
+		     $qtype="LIST", $fromid="",$distinct=false, $orderby="title",$latest=true,
+		     $trash="",&$debug=null,$folderRecursiveLevel=2,$join='') {
   
   global $action;
 
@@ -409,7 +426,7 @@ function getChildDoc($dbaccess,
  
   //   xdebug_var_dump(xdebug_get_function_stack());
  
-  $tqsql=getSqlSearchDoc($dbaccess,$dirid,$fromid,$sqlfilters,$distinct,$latest,$trash,false,$folderRecursiveLevel);
+  $tqsql=getSqlSearchDoc($dbaccess,$dirid,$fromid,$sqlfilters,$distinct,$latest,$trash,false,$folderRecursiveLevel,$join);
 
   $tretdocs=array();
   if ($tqsql) {
@@ -423,20 +440,37 @@ function getChildDoc($dbaccess,
 	    $fdoc=createDoc($dbaccess,abs($fromid),false,false);	    
 	    if (preg_match("/from\s+docread/",$qsql) || $isgroup) $fdoc=new DocRead($dbaccess);
 	  } else $fdoc=new DocRead($dbaccess);
-	  $sqlfields=implode(", ",array_merge($fdoc->fields,$fdoc->sup_fields));
+	  $tsqlfields=array_merge($fdoc->fields,$fdoc->sup_fields);
+	  $maintable='';
+	  if ($join) {
+	      if (preg_match("/from\s+([a-z0-9]*)/",$qsql,$reg)) {
+	          $maintable=$reg[1];
+	          $if=0;
+	          if ($maintable) {
+	          foreach ($tsqlfields as $kf=>$vf) {
+	              if ($if++ > 0) $tsqlfields[$kf]=$maintable.'.'.$vf;
+	          }
+	          }
+	      }
+	  }
+	  $maintabledot=($maintable)?$maintable.'.':'';
+          $sqlfields=implode(", ",$tsqlfields);
 	  if ($userid > 1) { // control view privilege
-	    $qsql .= " and (profid <= 0 or hasviewprivilege($userid, profid))";
+	    $qsql .= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
 	    // and get permission
-	    $qsql = str_replace("* from ","$sqlfields ,getuperm($userid,profid) as uperm from ",$qsql);
+	    $qsql = str_replace("* from ","$sqlfields ,getuperm($userid,${maintabledot}profid) as uperm from ",$qsql);
 	  } else {
 	  
 	    $qsql = str_replace("* from ","$sqlfields  from ",$qsql);
 	  }
-
 	  if ((!$distinct) && strstr($qsql,"distinct")) $distinct=true;
 	  if ($start == "") $start="0";
 	  if ($distinct) {
+	      if ($join) {
+              $qsql .= " ORDER BY $maintable.initid, $maintable.id desc";
+	      } else {
 	      $qsql .= " ORDER BY initid, id desc";
+	      }
 	      if (! $isgroup) $qsql .= " LIMIT $slice OFFSET $start";
 	  }
 	  else  {
@@ -502,11 +536,14 @@ function getChildDoc($dbaccess,
               $debug["query"]=$query->LastQuery;
               $debug["error"]=$query->basic_elem->msg_err;
               $debug["delay"]=sprintf("%.03fs",microtime_diff(microtime(),$mb));
-              addLogMsg($query->basic_elem->msg_err,200);
-              addLogMsg($debug);
+              if ($debug["log"]) {
+                  addLogMsg($query->basic_elem->msg_err,200);
+                  addLogMsg($debug);
+              }
           } elseif ($query->basic_elem->msg_err!="") {
               $debug["query"]=$query->LastQuery;
               $debug["error"]=$query->basic_elem->msg_err;
+              addLogMsg($debug);
           }
       }
 
