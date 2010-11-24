@@ -10,7 +10,7 @@
  */
  /**
  */
-function mytagdoc($start,$slice,$tag,$userid=0) {
+function mytagdoc_($start,$slice,$tag,$userid=0) {
   include_once("FDL/Class.DocUTag.php");
   include_once("FDL/Lib.Dir.php");
   $dbaccess=getParam("FREEDOM_DB");
@@ -39,6 +39,21 @@ function mytagdoc($start,$slice,$tag,$userid=0) {
 
 }
 
+/**
+ * return document i have deleted
+ */
+function mytagdoc($start="0", $slice="ALL",$tag,$userid=0) {
+  include_once("FDL/Class.SearchDoc.php");
+  $dbaccess=getParam("FREEDOM_DB");
+  $s=new searchDoc($dbaccess);
+  $s->join("id = docutag(id)");
+  $s->slice=$slice;
+  $s->start=$start;
+  $s->addFilter("docutag.uid = %d",$userid);
+  $s->addFilter("docutag.tag = '%s'",$tag);
+ 
+  return $s->search();
+}
 
 /**
  * function use for specialised search
@@ -123,5 +138,20 @@ function relateddoc($start="0", $slice="ALL",$userid=0,$docid=0,$famid=0) {
     }
   }
   return $ltdoc;
+}
+/**
+ * return document i have deleted
+ */
+function mydeleteddoc($start="0", $slice="ALL",$userid=0) {
+  include_once("FDL/Class.SearchDoc.php");
+  $dbaccess=getParam("FREEDOM_DB");
+  $s=new searchDoc($dbaccess);
+  $s->trash='only';
+  $s->join("id = dochisto(id)");
+  $s->addFilter("dochisto.uid = %d",$userid);
+  $s->addFilter("dochisto.code = 'DELETE'");
+  $s->distinct=true;
+ 
+  return $s->search();
 }
 ?>
