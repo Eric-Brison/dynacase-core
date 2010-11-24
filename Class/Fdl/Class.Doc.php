@@ -1127,19 +1127,19 @@ create unique index i_docir on doc(initid, revision);";
 							 $this->fromid,pg_escape_string($this->name))); // need to not have twice document with same name
 	$this->doctype='Z'; // Zombie Doc
 	$this->locked= -1; 
+        $this->lmodify= 'D'; // indicate last delete revision 
 	$date = gettimeofday();
 	$this->revdate = $date['sec']; // Delete date
-	$this->owner=$this->userid; // to the trash of the current user
 
 	global $action;
 	global $_SERVER;
 	$this->AddComment(sprintf(_("delete by action %s/%s from %s"),
 				  $action->parent->name,$action->name,
 				  $_SERVER["REMOTE_ADDR"]),HISTO_NOTICE);
-	$this->AddComment(_("document deleted"));
+	$this->addComment(_("document deleted"),HISTO_MESSAGE,"DELETE");
 	$this->addLog('delete',array("really"=>$really));
 
-	$this->modify(true,array("doctype","revdate","locked","owner"),true);
+	$this->modify(true,array("doctype","revdate","locked","owner","lmodify"),true);
 	if (!$nopost) $msg=$this->PostDelete();
 
 	// delete all revision also
@@ -1173,8 +1173,9 @@ create unique index i_docir on doc(initid, revision);";
 	    $this->doctype=$this->defDoctype;
 	    $this->locked=0;
 	    $this->id=$latestId;
-	    $this->modify(true,array("doctype","locked"),true);
-	    $this->AddComment(_("revival document"));
+	    $this->lmodify= 'Y'; // indicate last restoration
+	    $this->modify(true,array("doctype","locked","lmodify"),true);
+	    $this->AddComment(_("revival document"),HISTO_MESSAGE,"REVIVE");
 
 	    $this->addLog('revive');
 	    $rev=$this->getRevisions();
@@ -2399,6 +2400,8 @@ create unique index i_docir on doc(initid, revision);";
 	  foreach($tvalues as $kvalue=>$avalue) {
 	    if (($avalue != "") && ($avalue != "\t")) {
 	      if ($oattr) {
+	          $avalue=trim($avalue);
+	          $tvalues[$kvalue]=$avalue;
 		switch($oattr->type) {
 		case 'docid':
 		  if  ((! strstr($avalue,"<BR>")) && (! strstr($avalue,"\n"))&& (!is_numeric($avalue))) {
@@ -3104,7 +3107,7 @@ create unique index i_docir on doc(initid, revision);";
 	if (! is_array($res)) {
 	  if ($res === false) $res=array("err"=>_("constraint error"));
 	  elseif (is_string($res)) $res=array("err"=>$res);
-	}
+	} elseif ($res["sug"] && (! is_array($res["sug"]))) $res["sug"]=array($res["sug"]);
 	if (is_array($res) && $res["err"]!="")	$this->constraintbroken="[$attrid] ".$res["err"];
 	return $res;
       }
@@ -3844,7 +3847,7 @@ create unique index i_docir on doc(initid, revision);";
 	$this->profid=$archprof;
 	$err=$this->modify(true,array("locked","archiveid", "dprofid", "profid"),true);
 	if (! $err) {
-	  $this->addComment(sprintf(_("Archiving into %s"),$archive->getTitle()),HISTO_MESSAGE,"archive");
+	  $this->addComment(sprintf(_("Archiving into %s"),$archive->getTitle()),HISTO_MESSAGE,"ARCHIVE");
 	  $this->addLog('archive',$archive->id,sprintf(_("Archiving into %s"),$archive->getTitle()));
 	  $err=$this->exec_query(sprintf("update doc%d set archiveid=%d, dprofid=-abs(profid), profid=%d where initid=%d and locked = -1",$this->fromid, $archive->id,$archprof,$this->initid));
 	}
@@ -3870,7 +3873,7 @@ create unique index i_docir on doc(initid, revision);";
 	$err=$this->setProfil($restoreprofil);
 	if (! $err) $err=$this->modify(true,array("locked","archiveid","dprofid","profid"),true);
 	if (! $err) {
-	  $this->addComment(sprintf(_("Unarchiving from %s"),$archive->getTitle()),HISTO_MESSAGE,"unarchive");
+	  $this->addComment(sprintf(_("Unarchiving from %s"),$archive->getTitle()),HISTO_MESSAGE,"UNARCHIVE");
 	  $this->addLog('unarchive',$archive->id,sprintf(_("Unarchiving from %s"),$archive->getTitle()));
 	  $err=$this->exec_query(sprintf("update doc%d set archiveid=null, profid=abs(dprofid), dprofid=null where initid=%d and locked = -1",$this->fromid,$this->initid));
 	}
@@ -5553,7 +5556,6 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $defval the default values
    * @param bool  $method set to false if don't want interpreted values
    * @param bool  $forcedefault force default values
-   * @access private
    */
   final public function setDefaultValues($tdefval,$method=true,$forcedefault=false) {
     if (is_array($tdefval)) {
@@ -5561,20 +5563,21 @@ create unique index i_docir on doc(initid, revision);";
 	$oattr = $this->getAttribute($aid);
   			
 	$ok = false;
-	if(empty($oattr)) $ok = true;
+	if(empty($oattr)) $ok = false;
+        elseif(! method_exists($oattr,"inArray")) $ok = false;
 	elseif($forcedefault) $ok = true;
 	elseif(!$oattr->inArray()) $ok = true;
 	elseif($oattr->fieldSet->format != "empty" && $oattr->fieldSet->getOption("empty")!="yes") {
 	  $ok = true;
 	}
-  			
-  			
 	if ($ok) {
 	  if ($method) {
 	    $this->setValue($aid, $this->GetValueMethod($dval));
 	  } else {
 	    $this->$aid= $dval; // raw data
 	  }
+	} else {
+	    // TODO raise exception
 	}
       }
     }

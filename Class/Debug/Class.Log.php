@@ -102,6 +102,8 @@ function wlog($sta, $str, $args=NULL) {
   global $_SERVER; 
   global  $CORE_LOGLEVEL;
 
+  if (! $str) return;
+  if (is_array($str)) $str=implode(", ",$str);
   if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta))) {
     $addr=$_SERVER["REMOTE_ADDR"];
     $appf = "[{$sta}] What";

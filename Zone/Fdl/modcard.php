@@ -513,11 +513,11 @@ function specialmodcard(&$action,$usefor) {
 				$value = stripslashes(implode("\n",str_replace("\n","<BR>",$v)));
 			}
 			else $value = stripslashes($v);
-			if ($value != "") {
-				if ($usefor=="D") $cdoc->setDefValue($attrid,$value);
-				else if ($usefor=="Q") $cdoc->setParam($attrid,$value);
-				$tmod[$attrid]=$value;
-			}
+			$value=trim($value);
+			if ($usefor=="D") $cdoc->setDefValue($attrid,$value);
+			else if ($usefor=="Q") $cdoc->setParam($attrid,$value);
+			$tmod[$attrid]=$value;
+			
 		}
 	}
 

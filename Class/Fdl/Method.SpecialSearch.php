@@ -43,12 +43,12 @@ function getDocList($start=0, $slice="ALL", $qtype="TABLE",$userid="") {
   $phpfile=$this->getValue("se_phpfile");
   $phpfunc=$this->getValue("se_phpfunc");
   $phparg=$this->getValue("se_phparg");
-  if (! @include_once("EXTERNALS/$phpfile")) {
+  if (! include_once("EXTERNALS/$phpfile")) {
     global $action;
     $action->AddWarningMsg(sprintf(_("php file %s needed for request not found"),"EXTERNALS/$phpfunc"));
     return false;
   }
-  
+  if (! $userid) $userid=$this->getSystemUserId();
   $arg=array($start,$slice,$userid);
   if ($phparg!="") {
     $moreargs=explode(",",$phparg);

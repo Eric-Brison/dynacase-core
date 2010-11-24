@@ -508,7 +508,7 @@ case "time":
 	$input.="<input $isDisabled size=2 maxlength=2 onchange=\"chtime('$attridk')\" type=\"text\"  value=\"".$mm."\"id=\"mm".$attridk."\">";
 
 
-	$input.="<input  type=\"hidden\"  name=\"".$attrin."\" id=\"".$attridk."\" value=\"".$value."\">";
+	$input.="<input  type=\"hidden\" onchange=\"displayTime(this)\" name=\"".$attrin."\" id=\"".$attridk."\" value=\"".$value."\">";
 
 	break;
 

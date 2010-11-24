@@ -87,6 +87,7 @@ Class SearchDoc {
    */
   private $debug=false;
   private $debuginfo="";
+  private $join="";
 
   /**
    * result type [ITEM|TABLE]
@@ -124,14 +125,24 @@ Class SearchDoc {
               if ($this->debug) $debuginfo=array();
               else $debuginfo=null;
               $tqsql=getSqlSearchDoc($this->dbaccess,$this->dirid,$this->fromid,
-                                     $this->filters,$this->distinct,$this->latest,$this->trash);
+                                     $this->filters,$this->distinct,$this->latest,$this->trash,
+                                     false,$this->folderRecursiveLevel,$this->join);
               $this->debuginfo["query"]=$tqsql[0];
               $count=0;
+              if (! is_array($tqsql)) {
+                  $this->debuginfo["err"]=_("cannot produce sql request");
+                  return 0;
+              }
               foreach ($tqsql as $sql) {
                   if ($sql) {
-                      $sql=preg_replace("/select\s+(.*)\s+from\s/","select count(id) from ",$sql);
+                      if (preg_match("/from\s+([a-z0-9_\-]*)/",$sql,$reg))  $maintable=$reg[1];
+                      else $maintable='';
+                      $maintabledot=($maintable)?$maintable.'.':'';
+                      
+                      $mainid=($maintable)?"$maintable.id":"id";
+                      $sql=preg_replace("/select\s+(.*)\s+from\s/","select count($mainid) from ",$sql);
           
-                      if ($userid != 1) $sql.=" and (profid <= 0 or hasviewprivilege($userid, profid))";
+                      if ($userid != 1) $sql.=" and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
                       $dbid=getDbid($this->dbaccess);
                       $mb=microtime(true);
                       $q=@pg_query($dbid,$sql);
@@ -147,6 +158,9 @@ Class SearchDoc {
               }
               $this->count=$count;
             return $count;
+          } else {
+              $this->count=count($fld->getContent());
+              
           }
       } else $this->count();
       return $this->count;
@@ -157,11 +171,14 @@ Class SearchDoc {
    * @return string 
    */
   public function getOriginalQuery() {
-   
       $tqsql=getSqlSearchDoc($this->dbaccess,$this->dirid,$this->fromid,
-			     $this->filters,$this->distinct,$this->latest,$this->trash);
+			     $this->filters,$this->distinct,$this->latest,$this->trash,false,
+			     $this->folderRecursiveLevel,$this->join);
 
       return $tqsql[0];
+  }
+  public function join($jointure) {
+     $this->join=$jointure;
   }
   /**
    * count results
@@ -236,13 +253,14 @@ Class SearchDoc {
       $fld = new_Doc($this->dbaccess, $this->dirid);
       if ($fld->fromid == getFamIdFromName($this->dbaccess,"SSEARCH")) $this->searchmode="TABLE";      
     }
-    if ($this->debug) $debuginfo=array();
-    else $debuginfo=null;
+    $debuginfo=array();
+    
     $this->result = getChildDoc($this->dbaccess, 
 				$this->dirid,
 				$this->start,
 				$this->slice, $this->filters,$this->userid,$this->searchmode,
-				$this->fromid,$this->distinct,$this->orderby, $this->latest, $this->trash,$debuginfo,$this->folderRecursiveLevel);
+				$this->fromid,$this->distinct,$this->orderby, $this->latest, $this->trash,
+				$debuginfo,$this->folderRecursiveLevel,$this->join);
     if ($this->searchmode=="TABLE") $this->count=count($this->result); // memo cause array is unset by shift
     $this->debuginfo=$debuginfo;
     if (($this->searchmode=="TABLE") && ($this->mode=="ITEM")) $this->mode="TABLEITEM";
@@ -266,6 +284,7 @@ Class SearchDoc {
   /**
    * do the search in debug mode, you can after the search get infrrmation with getDebugIndo()
    * @param boolean $debug set to true search in debug mode
+   * @deprecated
    * @return void
    */
   public function setDebugMode($debug=true) {
@@ -282,10 +301,19 @@ Class SearchDoc {
   }
   /**
    * return debug info if debug mode enabled
+   * @deprecated
    *
    * @return array of info
    */
   public function getDebugInfo() {
+    return $this->debuginfo;
+  }
+  /**
+   * return information about query after search is call
+   *
+   * @return array of info
+   */
+  public function getSearchInfo() {
     return $this->debuginfo;
   }
   /**
@@ -321,6 +349,11 @@ Class SearchDoc {
                 $fs[]=pg_escape_string($args[$i]);
             }
             $filter=call_user_func_array("sprintf", $fs);
+        }
+        if (preg_match("/^([a-z0-9_\-]+)\./",$filter,$reg)) {
+            // when use join filter like "zoo_espece.es_classe='Boo'"
+            $famid=getFamIdFromName($this->dbaccess, $reg[1]);
+            if ($famid >0) $filter=preg_replace("/^([a-z0-9_\-]+)\./","doc".$famid.'.',$filter);
         }
         $this->filters[]=$filter;
     }

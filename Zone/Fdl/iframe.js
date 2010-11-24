@@ -48,6 +48,10 @@ if(ns6)d.style.overflow="block";
 
 function movePopup(ids,x,y){
 if(w3c){
+	
+	//if (isNaN(x) || isNaN(y)) return;
+	if (isNaN(x)) console.log('x',x);
+	//if (isNaN(y)) y=0;
 var idb=document.getElementById(ids+'_b');
 var ids=document.getElementById(ids+'_s');
 idb.style.left=x+'px';
@@ -134,8 +138,9 @@ function ns6bugfix(){
 }
 
 function trackmouse(evt){
-mx=(ie5)?event.clientX+d.body.scrollLeft:evt.pageX;
-my=(ie5)?event.clientY+d.body.scrollTop:evt.pageY;
+	GetXY(evt);
+mx=Xpos;
+my=Ypos;
 if(!ns6)movepopup();
 if((currIDb!=null)||(currRS!=null))return false;
 }
@@ -152,8 +157,9 @@ currRS=null;
 }
 
 function startRS(evt){
-var ex=(ie5)?event.clientX+d.body.scrollLeft:evt.pageX;
-var ey=(ie5)?event.clientY+d.body.scrollTop:evt.pageY;
+	GetXY(evt);
+var ex=Xpos;
+var ey=Ypos;
 rsxoff=parseInt(this.style.left)-ex;
 rsyoff=parseInt(this.style.top)-ey;
 currRS=this;
@@ -180,8 +186,9 @@ ns6bugfix();
 }
 
 function grab_id(evt){
-var ex=(ie5)?event.clientX+d.body.scrollLeft:evt.pageX;
-var ey=(ie5)?event.clientY+d.body.scrollTop:evt.pageY;
+	GetXY(evt);
+	var ex=Xpos;
+var ey=Ypos;
 xoff=parseInt(d.getElementById(this.cid+"_b").style.left)-ex;
 yoff=parseInt(d.getElementById(this.cid+"_b").style.top)-ey;
 currIDb=d.getElementById(this.cid+"_b");

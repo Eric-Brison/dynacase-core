@@ -250,6 +250,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	} else $logmsg[]=strftime("%H:%M - ").str_replace("\n","\\n",addslashes(substr($code,0,$cut)));
 	$this->session->register("logmsg",$logmsg);
 	$suser = sprintf("%s %s [%d] - ",$this->user->firstname, $this->user->lastname, $this->user->id);
+	if (is_array($code)) $code=print_r($code,true);
 	$this->log->info($suser.$code);
       }
     }
