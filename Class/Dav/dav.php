@@ -14,6 +14,12 @@ include_once("DAV/Class.FdlDav.php");
 $_SERVER['PATH_INFO'] = "/".$_GET['filename'];
 $type = isset($_GET['type'])?$_GET['type']:'freedav';
 
+if( $type != 'webdav' && $type != 'freedav' ) {
+    error_log(sprintf("Error: Invalid DAV type '%s'", $type));
+    header('HTTP/1.1 500 Invalid DAV type');
+    exit;
+}
+
 $_SERVER['SCRIPT_NAME'] = preg_replace('/index\.php$/', '', $_SERVER['SCRIPT_NAME']);
 
 global $action;
@@ -59,6 +65,7 @@ $dt=sprintf("%.02f",microtime_diff($d1,$d2));
 
 $s->http_auth_realm = "FREEDOM Connection";
 $s->db_freedom=$action->getParam("FREEDOM_DB");
+$s->type = $type;
 $s->racine=$action->getParam("WEBDAV_ROOTID",9);
 $s->ServeRequest();
 $d2=microtime();

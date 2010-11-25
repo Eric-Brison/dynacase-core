@@ -31,6 +31,14 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
   
 
   public $db_freedom="user=anakeen dbname=freedom"; 
+
+  /**
+   * Type : 'webdav' or 'freedav'
+   *
+   * Default type is 'webdav'
+   */
+  public $type = 'webdav';
+
   /**
    * Root directory id for WebDAV access
    *
@@ -803,6 +811,12 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
    */
   function DELETE($options)   {
     error_log ( "===========>DELETE :".$options["path"] );
+
+    if( $this->type == 'freedav' ) {
+        $err = sprintf("unsupported DELETE method with freedav access.");
+        error_log(sprintf("===========> %s", $err));
+        return "403 Forbidden: $err";
+    }
 
     include_once("FDL/Class.Doc.php");
     $fldid=$this->path2id($options["path"]);
