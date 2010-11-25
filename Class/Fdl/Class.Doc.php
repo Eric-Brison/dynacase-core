@@ -4594,7 +4594,7 @@ create unique index i_docir on doc(initid, revision);";
                         $lay->set("vid", ($infopdf?$infopdf->id_file:$vid));
 	                $lay->set("filetitle", $fname);
 	                $lay->set("height", $oattr->getOption('viewfileheight','300px'));
-                        $lay->set("height", '');
+                        
 	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
 	                $lay->set("pages", $pages); // todo
 	                $htmlval =$lay->gen();
