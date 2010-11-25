@@ -913,8 +913,8 @@ error_log("delete $file");
 			
 			$this->parseSection();
 			
-			$this->parseListItem();
 			$this->parseTableRow();
+                        $this->parseListItem();
 			$this->parseDraw();
 			
 			$this->parseInput();
