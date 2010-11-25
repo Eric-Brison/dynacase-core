@@ -766,9 +766,11 @@ class OOoLayout extends Layout {
 			}
 		}
 		foreach($inserts_to_do as $insert_to_do) {
-			$node = $insert_to_do[1]->parentNode->insertBefore($insert_to_do[0], $insert_to_do[1]);
-			$node->setAttribute("text:protected", 'true');
-			$node->setAttribute("text:display", 'none');
+                        // insert after
+		    $node = $insert_to_do[1]->parentNode->insertBefore($insert_to_do[0], $insert_to_do[1]->nextSibling);
+                        
+		    $node->setAttribute("text:protected", 'true');
+		    $node->setAttribute("text:display", 'none');
 		}
 	}
 
