@@ -371,6 +371,7 @@ function sendCard(&$action,
 
       $ppdf = uniqid(getTmpDir()."/".$doc->id).".pdf.html";
       $fout = fopen($ppdf,"w");
+      $sgen2 = preg_replace('/\xE2\x82\xAC/', '&euro;', $sgen2);
       fwrite($fout,$sgen2);
       fclose($fout);
     }
@@ -502,7 +503,11 @@ function sendCard(&$action,
       // try PDF 
       $fps= uniqid(getTmpDir()."/".$doc->id)."ps";
       $fpdf= uniqid(getTmpDir()."/".$doc->id)."pdf";
-      $cmdpdf = sprintf("perl -pi -e 's/€/&euro;/g' %s && recode u8..l9 %s && /usr/bin/html2ps -U -i 0.5 -b %s/ %s > %s && ps2pdf %s %s",  escapeshellarg($ppdf), escapeshellarg($ppdf), escapeshellarg($pubdir), escapeshellarg($ppdf), escapeshellarg($fps), escapeshellarg($fps), escapeshellarg($fpdf));
+      $cmdpdf = sprintf("recode u8..l9 %s && html2ps -U -i 0.5 -b %s/ %s > %s && ps2pdf %s %s",
+                        escapeshellarg($ppdf), // recode
+                        escapeshellarg($pubdir), escapeshellarg($ppdf), escapeshellarg($fps), // html2ps
+                        escapeshellarg($fps), escapeshellarg($fpdf) // ps2pdf
+                        );
       system (($cmdpdf), $status);
       if ($status == 0)  {     
 	$themail->addAttachment($fpdf,'application/pdf',$doc->title.".pdf");
@@ -529,12 +534,12 @@ function sendCard(&$action,
 
   
     // suppress temporaries files
-    if (isset($ftxt))  unlink($ftxt);
-    if (isset($fpdf))  unlink($fpdf);
-    if (isset($fps))   unlink($fps);
-    if (isset($pfout)) unlink($pfout);
-    if (isset($ppdf)) unlink($ppdf);
-    if (isset($binfile)) unlink($binfile);
+    if (isset($ftxt) && is_file($ftxt))       unlink($ftxt);
+    if (isset($fpdf) && is_file($fpdf))       unlink($fpdf);
+    if (isset($fps) && is_file($fps))         unlink($fps);
+    if (isset($pfout) && is_file($pfout))     unlink($pfout);
+    if (isset($ppdf) && is_file($ppdf))       unlink($ppdf);
+    if (isset($binfile) && is_file($binfile)) unlink($binfile);
     
   
     $tmpfile=array_merge($tmpfile,$tfiles);
