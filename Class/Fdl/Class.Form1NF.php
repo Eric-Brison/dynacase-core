@@ -354,10 +354,12 @@ class Form1NF {
 	 *
 	 */
 	private function sqlPostgresLogOpen() {
+		include_once('WHAT/Lib.Common.php');
+
 		try {
 			if(!empty($this->params['outputpgservice']) || !empty($this->params['sqllog'])) {
 				if(empty($this->params['sqllog'])) {
-					$this->sqlPostgresFileName = tempnam(null, 'sqlPostgres.tmp.1nf.');
+					$this->sqlPostgresFileName = tempnam(getTmpDir(), 'sqlPostgres.tmp.1nf.');
 					if ($this->sqlPostgresFileName === false) {
 						$this->stdError(_("Error creating temp file for sql log output."));
 					}
@@ -1471,10 +1473,12 @@ class Form1NF {
 	 * @return false on error
 	 */
 	private function databaseDump($pgservice) {
+		include_once('WHAT/Lib.Common.php');
+
 		try {
 			$this->stdInfo(_("Dump pgservice '%s' ..."), $pgservice);
 
-			$tmp_dump = tempnam(null, 'pg_dump.tmp.1nf.');
+			$tmp_dump = tempnam(getTmpDir(), 'pg_dump.tmp.1nf.');
 			if ($tmp_dump === false) {
 				$this->stdError(_("Error creating temp file for pg_dump output."));
 			}
