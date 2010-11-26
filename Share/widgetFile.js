@@ -31,6 +31,8 @@ widgetFile.prototype = {
 		interval:null,
 		resizeEnabled:false,
 		scrollBarWidth:0,
+		staticHeight:0,
+		fullScreenActivated:false,
 	toString : function() {
 		return 'widgetFile';
  	},
@@ -39,7 +41,9 @@ widgetFile.prototype = {
  		for (var name in config) {
  			this[name]=config[name];
  		}
- 		
+ 		if (config && config.height) {
+ 			if (config.height != '100%') this.staticHeight=parseInt(config.height);
+ 		}
  		//?app=FDL&action=EXPORTFILE&inline=yes&cache=no&vid=1366&docid=3602&attrid=sfi_file&index=-1&width=200&type=png&page=1
  		var hpagerbegin='';
 			var hpagerend='';
@@ -55,13 +59,17 @@ widgetFile.prototype = {
 					hpagerbegin+='/'+this.pages;
 					hpagerbegin+='</div>';
 				}
+				hpagerbegin+=' <a class="fullheight" title="Plain Heigth">&nbsp;&nbsp;</a>';
+				hpagerbegin+=' <a class="fullwidth" title="Plain Width">&nbsp;&nbsp;</a>';
+				hpagerbegin+=' <a class="fullscreen" title="fullscreen">&nbsp;&nbsp;</a>';
 				hpagerbegin+='</td></tr></thead><tbody><tr><td>';
 				hpagerend='</td></tr></tbody></table>';
 			}
 			if (this.error) {
-				var herr='<div';
-				if (this.height) herr+=' style="height:'+this.height+';"';
-				herr+='><p>'+this.error+'</p>';
+				var herr='<div style="';
+				if (this.height) herr+=' height:'+this.height+';';
+				herr+='text-align:center;';
+				herr+='"><p>'+this.error+'</p>';
  				herr+='<img src="Images/loading.gif">';
 				herr+='</div>';
  	 			if (this.target) {
@@ -111,6 +119,8 @@ widgetFile.prototype = {
 				var divstyle='';
 				if (this.height) divstyle+=' height:'+this.height+';';
 				if (this.width) divstyle+=' width:'+this.width+';';
+				if (this.staticHeight) divstyle+=' overflow-y:scroll;';
+				divstyle+='text-align:center;';
 				himg+=divstyle+'"><img class="imgfile" src="'+url+'"';
 				//if (this.height) himg+=' style="height:'+this.height+'"';
 				if (this.absoluteWidth) himg+=' style="width:'+this.absoluteWidth+'px"';
@@ -130,6 +140,21 @@ widgetFile.prototype = {
 							tds[0].wf=this;
 							tds[0].value=this.page+1;
 							addEvent(tds[0],"keyup",function (event) {this.wf.showPage(event, this);});
+						}
+						tds=this.target.getElementsByTagName('a');
+						for (var i=0;i<tds.length;i++) {
+							if (tds[i].className=='fullheight') {
+								tds[i].wf=this;
+								addEvent(tds[i],"click",function (event) {this.wf.fullHeight(event, this);});
+							}
+							if (tds[i].className=='fullwidth') {
+								tds[i].wf=this;
+								addEvent(tds[i],"click",function (event) {this.wf.fullWidth(event, this);});
+							}
+							if (tds[i].className=='fullscreen') {
+								tds[i].wf=this;
+								addEvent(tds[i],"click",function (event) {this.wf.fullScreen(event, this);});
+							}
 						}
 						/*
 						tds=this.target.getElementsByTagName('img');
@@ -173,6 +198,186 @@ widgetFile.prototype = {
  		  this.show();
  		}
  	},
+ 	
+ 	/**
+ 	 * view height page in screen 
+ 	 */
+ 	fullHeight : function (event) {
+ 		if (this.staticHeight && (! this.fullScreenActivated)) {
+				this.fitResize(event);
+				return;
+			}
+ 		var imgs=this.target.getElementsByTagName('img');
+ 		var imgfile=null;
+ 		if (imgs.length > 1) {
+ 			for (var i=0;i<imgs.length;i++) {
+ 				if (imgs[i].className=='imgfile') imgfile=imgs[i];
+ 			}
+ 		}
+ 		if (imgfile ) {
+ 			
+ 			var wi=getObjectWidth(imgfile);
+ 			var hi=getObjectHeight(imgfile);
+ 			var yt=AnchorPosition_getPageOffsetTop(this.target);
+ 			var yi=AnchorPosition_getPageOffsetTop(imgfile);
+ 			var sh=document.body.scrollHeight;
+ 			var dh=getFrameHeight();//this.getInnerHeight(document.body);
+ 			var hhead=yi-yt+10;
+ 			if (hi > dh) {
+ 				// the image est greater than document page => decrease image
+ 				var minus=wi-dh;
+ 				imgfile.style.width='';
+ 				imgfile.style.border='red 1px solid';
+ 				imgfile.style.height=(dh - hhead)+'px';
+ 				wi=getObjectWidth(imgfile);
+ 				this.width=wi;
+ 			} else if ((! this.fullScreenActivated) &&(sh < dh)) {
+ 				// the image est lesser than document page=> increase image
+ 				var minus=sh-dh;
+ 				imgfile.style.width='';
+ 				imgfile.style.border='red 1px solid';
+ 				imgfile.style.height=(hi - minus)+'px';
+ 				wi=getObjectWidth(imgfile);
+ 				this.width=wi;
+ 			}
+
+ 			}
+ 	},
+
+ 	fullScreen: function (event) {
+ 		if (this.fullScreenActivated) {
+ 			return this.unFullScreen();
+ 		}
+ 		var imgs=this.target.getElementsByTagName('img');
+ 		var imgfile=null;
+ 		if (imgs.length > 1) {
+ 			for (var i=0;i<imgs.length;i++) {
+ 				if (imgs[i].className=='imgfile') imgfile=imgs[i];
+ 			}
+ 		}
+ 		if (imgfile ) {
+
+ 			var wi=getObjectWidth(imgfile);
+ 			var hi=getObjectHeight(imgfile);
+ 			var yt=AnchorPosition_getPageOffsetTop(this.target);
+ 			var yi=AnchorPosition_getPageOffsetTop(imgfile);
+ 			var sh=document.body.scrollHeight;
+ 			var dh=getFrameHeight();//this.getInnerHeight(document.body);
+ 			var hhead=yi-yt+10;
+
+ 			document.body.style.overflow='hidden';
+ 			//document.body.style.width='0px';
+ 			//document.body.style.height='0px';
+ 			window.scrollTo(0, 0);
+ 			this.target.style.height=dh+'px';
+ 			imgfile.parentNode.style.height='';
+ 			imgfile.style.width='';
+ 			imgfile.style.height=(dh - hhead)+'px';
+
+ 			wi=getObjectWidth(imgfile);
+ 			//this.target.style.width=(wi+10)+'px';
+ 			this.target.className='fullscreen';
+			if (this.staticHeight) imgfile.parentNode.style.overflowY='auto';
+ 			this.height=(dh - hhead);
+ 			this.width=wi;
+
+ 			this.fullScreenActivated=true;
+
+ 		}
+ 	},	
+ 	unFullScreen: function (event) {
+
+ 		this.fullScreenActivated=false;
+ 		var imgs=this.target.getElementsByTagName('img');
+ 		var imgfile=null;
+ 		if (imgs.length > 1) {
+ 			for (var i=0;i<imgs.length;i++) {
+ 				if (imgs[i].className=='imgfile') imgfile=imgs[i];
+ 			}
+ 		}
+ 		if (imgfile ) {
+
+ 			var wi=getObjectWidth(imgfile);
+ 			var hi=getObjectHeight(imgfile);
+ 			var yt=AnchorPosition_getPageOffsetTop(this.target);
+ 			var yi=AnchorPosition_getPageOffsetTop(imgfile);
+ 			var sh=document.body.scrollHeight;
+ 			var dh=getFrameHeight();//this.getInnerHeight(document.body);
+ 			var hhead=yi-yt+10;
+
+ 			document.body.style.overflow='';
+ 	 		this.target.className='';
+ 	 		if (this.staticHeight) {
+
+ 				imgfile.parentNode.style.overflowY='scroll';
+ 	 			this.target.style.height='';
+ 	 	 		imgfile.parentNode.style.height=this.staticHeight+'px';;
+ 	 	 		imgfile.style.width='';
+ 	 	 		imgfile.style.height=(this.staticHeight - hhead)+'px';
+ 	 	 		this.height=this.staticHeight+'px';
+ 	 		}
+
+				wi=getObjectWidth(imgfile);
+	 	 		
+	 	 		this.width=wi;
+
+	 	 		this.fullScreenActivated=false;
+
+ 			}
+ 	},
+ 	fullWidth : function (event) {
+ 		var imgs=this.target.getElementsByTagName('img');
+ 		var imgfile=null;
+ 		if (imgs.length > 1) {
+ 			for (var i=0;i<imgs.length;i++) {
+ 				if (imgs[i].className=='imgfile') imgfile=imgs[i];
+ 			}
+ 		}
+ 		if (imgfile ) {
+
+ 	 		if (this.fullScreenActivated) {
+
+ 	 			var wi=this.getInnerWidth(imgfile.parentNode);
+ 	 			this.width=wi;
+ 	 			this.show();
+ 	 		} else {
+ 			var dw=getObjectWidth(imgfile.parentNode);
+				imgfile.style.height='';
+				imgfile.style.width=(dw-4)+'px';
+ 				wi=getObjectWidth(imgfile);
+ 				this.width=wi;
+ 	 		}
+ 			}
+ 	},
+/**
+ * view height page in screen 
+ */
+ 	fitResize : function (event) {
+ 		var imgs=this.target.getElementsByTagName('img');
+ 		var imgfile=null;
+ 		if (imgs.length > 1) {
+ 			for (var i=0;i<imgs.length;i++) {
+ 				if (imgs[i].className=='imgfile') imgfile=imgs[i];
+ 			}
+ 		}
+ 		if (imgfile ) {
+ 			var hi=getObjectHeight(imgfile);
+ 			
+ 			var dh=getObjectHeight(imgfile.parentNode);
+ 			if (hi > dh) {
+
+ 	 			imgfile.style.width='';
+ 	 			
+ 	 			imgfile.style.height=(dh-8)+'px';
+ 	 			wi=getObjectWidth(imgfile);
+ 	 			this.width=wi;
+ 			} 
+ 			
+ 		}
+ 	},
+ 	/**
+ 	 * view height page in screen 
+ 	 */
  	resize : function (event) {
  		if (this.type=='png' && this.width=='100%' && this.target) {
  			var imgs=this.target.getElementsByTagName('img');
@@ -217,6 +422,21 @@ widgetFile.prototype = {
  			if (o.clientWidth) iw=o.clientWidth;
  			else if (o.offsetWidth) iw=o.offsetWidth;
  			else if (o.clip && o.clip.width) iw=o.clip.width;
+ 			if (iw > 0) {
+ 				if (iw > 100) {
+ 					iw-=50;
+ 				}
+ 			}
+ 			return iw;
+ 		}
+ 		return 0;
+ 	},
+ 	getInnerHeight : function (o) {
+ 		if (o) {
+ 			var iw=0;
+ 			if (o.clientHeight) iw=o.clientHeight;
+ 			else if (o.offsetHeight) iw=o.offsetHeight;
+ 			else if (o.clip && o.clip.Height) iw=o.clip.Height;
  			if (iw > 0) {
  				if (iw > 100) {
  					iw-=50;

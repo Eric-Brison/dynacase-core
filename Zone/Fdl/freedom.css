@@ -835,11 +835,7 @@ DIV.tabh SPAN:hover {
        font-size: [SIZE_SMALL];
       
    }
-DIV.fileimage {
-	overflow-y:scroll;
-	overflow-x:auto;
-	border : inset 1px;
-	}
+
 DIV.fldh {	
   cursor:pointer;
   overflow:hidden;
@@ -942,4 +938,33 @@ div.tabsh span.invalid {
   border:solid 1px [CORE_ERRORCOLOR];
   background-color:[CORE_ERRORCOLOR];
 }
-
+div.fullscreen {
+  width:100%;
+  position:absolute;
+  left:0px;
+  top:0px;
+  background-color:[COLOR_WHITE];
+}
+div.fileimage {
+        /*overflow-y:scroll;*/
+        overflow-x:auto;
+        border : inset 1px;
+        }
+div.fullscreen div.fileimage {
+        overflow-y:auto;
+	}
+a.fullscreen {
+  background:url('[IMG:window_fullscreen.png]') no-repeat;
+  padding-left:20px;
+  float:right;
+}
+a.fullwidth {
+  background:url('[IMG:fullwidth.png]') no-repeat;
+  padding-left:20px;
+  float:right;
+}
+a.fullheight {
+  background:url('[IMG:fullheight.png]') no-repeat;
+  padding-left:20px;
+  float:right;
+}

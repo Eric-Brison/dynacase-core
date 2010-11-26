@@ -28,7 +28,7 @@
  </head>
 
 <body class="document" 
-      onload="autoVresize();" >
+      onload2="autoVresize();" >
 
 
 <form id="fviewidoc"
