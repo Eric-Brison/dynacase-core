@@ -43,8 +43,12 @@ if [ "$1" = "I" ] ; then
         exit $RET
     fi
 
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=Doc
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocRead
+    for CLASS in \
+        Doc \
+        DocRead \
+    ; do
+        $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
+    done
 
     PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
     RET=$?
@@ -60,9 +64,25 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
 
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocPerm
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=VGroup
-    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL --class=DocRel
+    for CLASS in \
+        DocAttr \
+        DocAttrLDAP \
+        DocCount \
+        DocFam \
+        DocHisto \
+        DocLog \
+        DocPerm \
+        DocRel \
+        DocTimer \
+        DocUTag \
+        DocVaultIndex \
+        QueryDir \
+        TaskRequest \
+        VGroup \
+    ; do
+        $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
+    done
+
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --class=Group
 
     #copy postgres group table
