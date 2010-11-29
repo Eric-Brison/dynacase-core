@@ -231,6 +231,8 @@ class Fdl_Mail_mime extends Mail_mime {
  * record message sent from freedom
  */
 function createSentMessage($to,$from,$cc,$bcc,$subject,&$mimemail,&$doc=null) {
+  include_once('WHAT/Lib.Common.php');
+  
   $msg=createDoc(getDbAccessFreedom(),"SENTMESSAGE",true);
   if ($msg) {
     $msg->setValue("emsg_from",$from);
@@ -258,7 +260,7 @@ function createSentMessage($to,$from,$cc,$bcc,$subject,&$mimemail,&$doc=null) {
     $msg->setValue("emsg_htmlbody",$mimemail->_htmlbody);
     $linkedbody=$mimemail->_htmlbody;
     foreach ($mimemail->_parts as $k=>$v) {
-      $tmpfile=tempnam(sys_get_temp_dir(), 'fdl_attach');
+      $tmpfile=tempnam(getTmpDir(), 'fdl_attach');
       file_put_contents($tmpfile, $v["body"]);
       $msg->storeFile("emsg_attach",$tmpfile,$v["name"],$k);
       @unlink($tmpfile);

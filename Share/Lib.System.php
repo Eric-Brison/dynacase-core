@@ -95,23 +95,8 @@ class LibSystem {
 
   function tempnam($dir, $prefix) {
     if( $dir === null || $dir === false ) {
-      $dir = null;
-      foreach( array('TMP', 'TMPDIR') as $env ) {
-	$dir = getenv($env);
-	if( $dir !== false && is_dir($dir) && is_writable($dir) ) {
-	  break;
+      $dir = getTmpDir();
 	}
-      }
-    }
-    if( $dir === null || $dir === false ) {
-      $dir = null;
-      foreach( array(getTmpDir(), '/tmp', '/var/tmp') as $tmpdir ) {
-	if( is_dir($tmpdir) && is_writable($tmpdir) ) {
-	  $dir = $tmpdir;
-	  break;
-	}
-      }
-    }
     return tempnam($dir, $prefix);
   }
 

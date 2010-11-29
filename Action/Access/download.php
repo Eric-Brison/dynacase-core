@@ -82,7 +82,7 @@ function download(&$action) {
 
   $action->lay->setBlockData("ACCESS", $aclExport);
 
-  $tmpfile = tempnam(null, "access");
+  $tmpfile = tempnam(getTmpDir(), "access");
   if( $tmpfile === false ) {
     $err = sprintf("Could not create temporary file!");
     error_log(__CLASS__."::".__FUNCTION__." ".$err);

@@ -161,7 +161,7 @@ function Select($id)  {
 	if ($count >0) {
 	  $wherestr=$wherestr." AND ";
 	}
-	$wherestr=$wherestr."( ".$this->dbtable.".".$v."='".pg_escape_string($id[$k])."' )";
+	$wherestr=$wherestr."( ".$this->dbtable.".".$v."=E'".pg_escape_string($id[$k])."' )";
 	$count=$count+1;
 	
 	//$this->$v = $id[$k];
@@ -170,7 +170,7 @@ function Select($id)  {
       if (isset($this->id_fields[0])) {
 	$k = $this->id_fields[0];
 	//$this->$k = $id;
-	$wherestr= "where ".$this->dbtable.".".$this->id_fields[0]."='".pg_escape_string($id)."'" ;
+	$wherestr= "where ".$this->dbtable.".".$this->id_fields[0]."=E'".pg_escape_string($id)."'" ;
       } else {
 	$wherestr="";
       }
@@ -228,7 +228,7 @@ function getValues() {
     $fromstr=$this->dbtable; 
     
     foreach($this->id_fields as $id) {
-      $w[]="($id = '".pg_escape_string($this->$id)."') ";
+      $w[]="($id = E'".pg_escape_string($this->$id)."') ";
     }
     $sqlwhere=implode("and",$w);
     $sqlselect=implode(",",$fields);
@@ -405,7 +405,7 @@ function Modify($nopost=false,$sfields="",$nopre=false)  {
       $notset[$v]="Y";
       $nb_keys++;
       $val=pg_escape_string($this->$v);
-      $wstr=$wstr." ".$v."='".$val."' AND";
+      $wstr=$wstr." ".$v."=E'".$val."' AND";
     }
 
     $setstr="";
@@ -445,7 +445,7 @@ function Delete($nopost=false)
       if ($count >0) {
         $wherestr=$wherestr." AND ";
       }
-      $wherestr=$wherestr."( ".$v."='".AddSlashes($this->$v)."' )";
+      $wherestr=$wherestr."( ".$v."=E'".pg_escape_string($this->$v)."' )";
       $count++;
     }
     
@@ -497,7 +497,7 @@ function Adds(&$tcopy, $nopost=false)
   }
 function lw($prop)
   {
-    $result = (($prop=='')&&($prop!==0))?"null":"'".pg_escape_string($prop)."'";
+    $result = (($prop=='')&&($prop!==0))?"null":"E'".pg_escape_string($prop)."'";
     return $result;
   }
 function CloseConnect()
@@ -725,7 +725,7 @@ function Update()
 	$values = "(";
       reset($inter_fields);
       while (list($k,$v)=each($inter_fields)) {
-	$values.= "'".addslashes($row[$v])."',";
+	$values.= "E'".pg_escape_string($row[$v])."',";
       }
       $values=substr($values,0,strlen($values)-1); // remove last comma
 	$values .= ")";
