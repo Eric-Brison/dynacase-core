@@ -137,7 +137,7 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype="",$width="",
               $filecache=sprintf("%s/.img-resize/vid-%s-%s.png",DEFAULT_PUBDIR,$info->id_file,$pngpage);
               if (file_exists($filecache)) {
                   //  print_r2($filecache);
-                  $resample=false;
+                  $resample=true;
                     if($resample) {
                       $filename=$filecache;
                       list($owidth, $oheight) = getimagesize($filename);
