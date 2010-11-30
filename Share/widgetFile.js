@@ -223,11 +223,12 @@ widgetFile.prototype = {
  			var sh=document.body.scrollHeight;
  			var dh=getFrameHeight();//this.getInnerHeight(document.body);
  			var hhead=yi-yt+10;
+ 			var oriwidth=getObjectWidth(imgfile);
  			if (hi > dh) {
  				// the image est greater than document page => decrease image
  				var minus=wi-dh;
  				imgfile.style.width='';
- 				imgfile.style.border='red 1px solid';
+ 				imgfile.style.border='none';
  				imgfile.style.height=(dh - hhead)+'px';
  				wi=getObjectWidth(imgfile);
  				this.width=wi;
@@ -235,11 +236,19 @@ widgetFile.prototype = {
  				// the image est lesser than document page=> increase image
  				var minus=sh-dh;
  				imgfile.style.width='';
- 				imgfile.style.border='red 1px solid';
+ 				imgfile.style.border='none';
  				imgfile.style.height=(hi - minus)+'px';
  				wi=getObjectWidth(imgfile);
+ 				var dw=getFrameWidth();
+ 				var maxwidth=dw-50;
+ 				if (wi > maxwidth) {
+ 					wi=maxwidth;
+ 					imgfile.style.width=wi+'px';
+ 	 				imgfile.style.height='';
+ 				}
  				this.width=wi;
  			}
+ 			if (oriwidth < wi) this.show();
 
  			}
  	},
@@ -264,8 +273,9 @@ widgetFile.prototype = {
  			var sh=document.body.scrollHeight;
  			var dh=getFrameHeight();//this.getInnerHeight(document.body);
  			var hhead=yi-yt+10;
+ 			var oriwidth=getObjectWidth(imgfile);
 
- 			document.body.style.overflow='hidden';
+ 			//document.body.style.overflow='hidden';
  			//document.body.style.width='0px';
  			//document.body.style.height='0px';
  			window.scrollTo(0, 0);
@@ -279,10 +289,16 @@ widgetFile.prototype = {
  			this.target.className='fullscreen';
 			if (this.staticHeight) imgfile.parentNode.style.overflowY='auto';
  			this.height=(dh - hhead);
+ 			var dw=getFrameWidth();
+ 			var maxwidth=dw-50;
+ 			if (wi > maxwidth) {
+ 					wi=maxwidth;
+ 					imgfile.style.width=wi+'px';
+ 	 				imgfile.style.height='';
+ 				}
  			this.width=wi;
-
  			this.fullScreenActivated=true;
-
+ 			if (oriwidth < wi) this.show();
  		}
  	},	
  	unFullScreen: function (event) {
@@ -304,26 +320,25 @@ widgetFile.prototype = {
  			var sh=document.body.scrollHeight;
  			var dh=getFrameHeight();//this.getInnerHeight(document.body);
  			var hhead=yi-yt+10;
+ 			var oriwidth=getObjectWidth(imgfile);
 
  			document.body.style.overflow='';
- 	 		this.target.className='';
- 	 		if (this.staticHeight) {
+ 			this.target.className='';
+ 			if (this.staticHeight) {
 
  				imgfile.parentNode.style.overflowY='scroll';
- 	 			this.target.style.height='';
- 	 	 		imgfile.parentNode.style.height=this.staticHeight+'px';;
- 	 	 		imgfile.style.width='';
- 	 	 		imgfile.style.height=(this.staticHeight - hhead)+'px';
- 	 	 		this.height=this.staticHeight+'px';
- 	 		}
-
-				wi=getObjectWidth(imgfile);
-	 	 		
-	 	 		this.width=wi;
-
-	 	 		this.fullScreenActivated=false;
-
+ 				this.target.style.height='';
+ 				imgfile.parentNode.style.height=this.staticHeight+'px';;
+ 				imgfile.style.width='';
+ 				imgfile.style.height=(this.staticHeight - hhead)+'px';
+ 				this.height=this.staticHeight+'px';
  			}
+
+ 			wi=getObjectWidth(imgfile);	 	 		
+ 			this.width=wi;
+ 			this.fullScreenActivated=false;
+
+ 		}
  	},
  	fullWidth : function (event) {
  		var imgs=this.target.getElementsByTagName('img');
@@ -334,20 +349,29 @@ widgetFile.prototype = {
  			}
  		}
  		if (imgfile ) {
+ 			var oriwidth=getObjectWidth(imgfile);
+ 			if (this.fullScreenActivated) {
 
- 	 		if (this.fullScreenActivated) {
-
- 	 			var wi=this.getInnerWidth(imgfile.parentNode);
- 	 			this.width=wi;
- 	 			this.show();
- 	 		} else {
- 			var dw=getObjectWidth(imgfile.parentNode);
-				imgfile.style.height='';
-				imgfile.style.width=(dw-4)+'px';
+ 				var wi=this.getInnerWidth(imgfile.parentNode);
+ 				this.width=wi;
+ 				//this.show();
+ 			} else {
+ 				var dw=getObjectWidth(imgfile.parentNode);
+ 				imgfile.style.height='';
+ 				imgfile.style.width=(dw-4)+'px';
  				wi=getObjectWidth(imgfile);
  				this.width=wi;
- 	 		}
  			}
+ 			var dw=getFrameWidth();
+ 			var maxwidth=dw-50;
+ 			if (wi > maxwidth) {
+ 				wi=maxwidth;
+ 				imgfile.style.width=wi+'px';
+ 				imgfile.style.height='';
+ 			}
+ 			if (oriwidth < wi) this.show();
+
+ 		}
  	},
 /**
  * view height page in screen 
