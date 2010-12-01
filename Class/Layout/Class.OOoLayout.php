@@ -287,8 +287,8 @@ class OOoLayout extends Layout {
 		$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->template);
 		$this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template);
 
-		$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
-		$this->template=preg_replace("/<\/text:section>\s*<text:([^\/]*)\/>\s*<\/text:p>/s","</text:section><text:\\1/>",$this->template);
+		//$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
+		//$this->template=preg_replace("/<\/text:section>\s*<text:([^\/]*)\/>\s*<\/text:p>/s","</text:section><text:\\1/>",$this->template);
 
 		$this->template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->template);
 		$this->template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->template);
@@ -740,14 +740,51 @@ class OOoLayout extends Layout {
 		// clone sections and generate them again
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","section");
 		foreach ($lists as $list) {
-			$name=$list->getAttribute("text:name");
-			if(substr($name, 0, 4) == 'tpl_') {
-				$this->removeXmlId($list);
-				$this->saved_sections[$name] = $list->cloneNode(true);
-				$list->setAttribute("text:name", '_'.$name);
-				$list->setAttribute("text:protected", 'true');
-				$list->setAttribute("text:display", 'true');
-			}
+		    $name=$list->getAttribute("text:name");
+		    if(substr($name, 0, 4) == 'tpl_') {
+		        $this->removeXmlId($list);
+		        // restore original style name of first head
+		        $heads=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","h");
+		         if ($heads->length > 0) {
+                            $firsthead=$heads->item(0);
+                            $firsthead->setAttribute("text:style-name", trim($firsthead->getAttribute('text:style-name'),'_'));
+		         }
+		        $originSection = $this->saved_sections[$name] = $list->cloneNode(true);
+		        $list->setAttribute("text:name", '_'.$name);
+		        $list->setAttribute("text:protected", 'true');
+		        $list->setAttribute("text:display", 'true');
+                        
+		        // // special treatment to have correct chapter numeration search first header
+                        $heads=$originSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","h");
+                        if ($heads->length > 0) {
+                            $firsthead=$heads->item(0);
+                            $styleName=$firsthead->getAttribute("text:style-name");
+                            if ($styleName) {
+                                $styleName=trim($styleName,'_');
+                                $styles=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:style:1.0","style");
+
+                                addLogMsg(array("style"=>$styleName,"length"=>$styles->length));
+                                $tStyleName=array();
+                                foreach ($styles as $style) {
+
+                                    $aStyleName=$style->getAttribute("style:name");
+                                    $tStyleName[]=$aStyleName;
+                                    if ($aStyleName == $styleName) {
+                                        $copyName='_'.$styleName.'_';
+                                        if (! (in_array($copyName, $tStyleName))) {
+                                            $cloneStyle=$style->cloneNode(true);
+                                            $cloneStyle->setAttribute("style:name", $copyName);
+                                            $cloneStyle->setAttribute("style:list-style-name",""); // unset numeration chapter
+                                            
+                                            $style->parentNode->insertBefore($cloneStyle,$style);
+                                        }
+                                        $firsthead->setAttribute("text:style-name",$copyName);
+                                        break;
+                                    }
+                                }
+                            }
+		        }
+		    }
 		}
 	}
 	/**
@@ -766,6 +803,7 @@ class OOoLayout extends Layout {
 			}
 		}
 		foreach($inserts_to_do as $insert_to_do) {
+                    //$node = $insert_to_do[1]->parentNode->insertBefore($insert_to_do[0], $insert_to_do[1]);
                         // insert after
                         if ($insert_to_do[1]->nextSibling) {
 		    $node = $insert_to_do[1]->parentNode->insertBefore($insert_to_do[0], $insert_to_do[1]->nextSibling);
