@@ -33,6 +33,7 @@ widgetFile.prototype = {
 		scrollBarWidth:0,
 		staticHeight:0,
 		fullScreenActivated:false,
+		fullType:'width',
 	toString : function() {
 		return 'widgetFile';
  	},
@@ -94,11 +95,12 @@ widgetFile.prototype = {
 					if (this.target) {
 						
 							
-							this.target.innerHTML='<p>Loading</p>';
+							//this.target.innerHTML='<p>Loading</p>';
 							this.absoluteWidth=this.getInnerWidth(this.target);
 							if (! this.resizeEnabled) {
 								var wftr=this;
-								addEvent(window,"resize",function() {wftr.resize();});
+								this.resizeEnabled=true; // one shot 
+								addEvent(window,"resize",function() {wftr.onWindowResize();});
 							}
 							this.absoluteWidth-=this.scrollBarWidth;
 						
@@ -115,6 +117,17 @@ widgetFile.prototype = {
 				if (this.page) url+='&page='+parseInt(this.page);
 				if (this.index) url+='&index='+parseInt(this.index);
 
+				var imgfile=this.getImgFile();
+				if (imgfile) {
+					var tdi=this.target.getElementsByTagName('input');
+					if (tdi.length > 0) {						
+						tdi[0].value=this.page+1;
+					}
+					// already set : just update url
+					
+					imgfile.src=url;
+					return;
+				}
 				var himg='<div class="fileimage" style="';
 				var divstyle='';
 				if (this.height) divstyle+=' height:'+this.height+';';
@@ -161,10 +174,10 @@ widgetFile.prototype = {
 						if (tds.length > 0) {
 							tds[0].wf=this;
 							tds[0].value=this.page+1;
-							addEvent(tds[0],"load",function (event) {this.wf.resize();});
+							addEvent(tds[0],"load",function (event) {console.log(this.wf);});
 						}*/
 					}
-					this.resize();
+					this.fixWidth();
 
 				}
  		} else if (this.type='embed') {
@@ -248,6 +261,8 @@ widgetFile.prototype = {
  				}
  				this.width=wi;
  			}
+
+ 			this.fullType='height';
  			if (oriwidth < wi) this.show();
 
  			}
@@ -255,7 +270,8 @@ widgetFile.prototype = {
 
  	fullScreen: function (event) {
  		if (this.fullScreenActivated) {
- 			return this.unFullScreen();
+ 			this.unFullScreen();
+ 			return;
  		}
  		var imgs=this.target.getElementsByTagName('img');
  		var imgfile=null;
@@ -358,7 +374,8 @@ widgetFile.prototype = {
  			} else {
  				var dw=getObjectWidth(imgfile.parentNode);
  				imgfile.style.height='';
- 				imgfile.style.width=(dw-4)+'px';
+ 				var scrollbarWidth=20;
+ 				imgfile.style.width=(dw-4-scrollbarWidth)+'px';
  				wi=getObjectWidth(imgfile);
  				this.width=wi;
  			}
@@ -369,6 +386,7 @@ widgetFile.prototype = {
  				imgfile.style.width=wi+'px';
  				imgfile.style.height='';
  			}
+ 			this.fullType='width';
  			if (oriwidth < wi) this.show();
 
  		}
@@ -399,45 +417,53 @@ widgetFile.prototype = {
  			
  		}
  	},
+ 	getImgFile : function() {
+ 		var imgfile=null;
+ 		var imgs=this.target.getElementsByTagName('img');
+ 		if (imgs.length > 1) {
+ 			for (var i=0;i<imgs.length;i++) {
+ 				if (imgs[i].className=='imgfile') imgfile=imgs[i];
+ 			}
+ 		}
+ 		return imgfile;
+ 	},
  	/**
  	 * view height page in screen 
  	 */
- 	resize : function (event) {
+ 	fixWidth : function (event) {
  		if (this.type=='png' && this.width=='100%' && this.target) {
- 			var imgs=this.target.getElementsByTagName('img');
- 			var imgfile=null;
- 			if (imgs.length > 1) {
- 				for (var i=0;i<imgs.length;i++) {
- 					if (imgs[i].className=='imgfile') imgfile=imgs[i];
- 				}
- 			}
+
+ 			var imgfile=this.getImgFile();
  			if (imgfile ) {
  				imgfile.style.width='10px';
  				//imgfile.style.border='solid red 10px';
  				//this.target.innerHTML='<p>Resizing</p>';
  				this.absoluteWidth=this.getInnerWidth(this.target);
  				imgfile.style.width=this.absoluteWidth+'px';
- 				/*
- 				this.absoluteWidth-=this.scrollBarWidth;
- 				//if (this.absoluteWidth > 30 ) this.absoluteWidth-=25; // scrollbar
- 				//this.target.innerHTML=saveimg;
+ 			}	
+ 		}
+ 	},
+ 	/**
+ 	 * view height page in screen 
+ 	 */
+ 	onWindowResize : function (event) {
+ 			var imgfile=this.getImgFile();
+ 			if (imgfile ) {
+ 				imgfile.style.width='10px';
+ 				//imgfile.style.border='solid red 10px';
+ 				//this.target.innerHTML='<p>Resizing</p>';
+ 				this.absoluteWidth=this.getInnerWidth(this.target);
  				imgfile.style.width=this.absoluteWidth+'px';
- 				console.log("new width",this.absoluteWidth,imgfile);
- 				if (document.documentElement) {
- 					var inw=document.documentElement.offsetWidth;
- 					var ouw=document.documentElement.scrollWidth;
- 					console.log("resize width",inw,ouw);
- 					if (ouw > inw) {
- 						this.scrollBarWidth=(ouw-inw);
- 						this.absoluteWidth-=(ouw-inw);
- 		 				imgfile.style.width=this.absoluteWidth+'px';
- 	 					console.log("rescale width",inw,ouw);
- 					} else {
- 						this.scrollBarWidth=0;
- 					}
+
+ 				this.fullType='width';
+ 				if (this.fullType == 'width') {
+ 					this.fullWidth(event);
+ 				} else {
+ 					this.fullHeigth(event);
  				}
- 				*/
- 			}
+ 				return;
+ 				
+ 			
  		}
  	},
  	getInnerWidth : function (o) {
