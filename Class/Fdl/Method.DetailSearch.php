@@ -819,7 +819,7 @@ Class _DSEARCH extends DocSearch {
 		$zpi=$fdoc->GetNormalAttributes();
 		foreach($zpi as $k=>$v) {
 			if ($v->type == "array") continue;
-			if ($v->inArray() && ($v->type!='file')) $type="array";
+			if ($v->isMultiple() && ($v->type!='file')) $type="array";
 			else $type=$v->type;
 			$tattr[]=array("attrid"=> $v->id,
 		   "attrtype"=>$type,

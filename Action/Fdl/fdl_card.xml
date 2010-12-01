@@ -27,7 +27,7 @@
    </script>
  </head>
 
-<body class="document" 
+<body class="document documentView" 
       onload="autoVresize();" >
 
 

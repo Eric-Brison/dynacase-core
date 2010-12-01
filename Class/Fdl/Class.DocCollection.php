@@ -28,11 +28,11 @@ include_once("FDL/Class.Doc.php");
 						"image"=>"{left} filename or type include {right}",
 						"array"=>"one value of {left} include {right}"), #_("one value of {left} include {right}")
 			     "type"=>array("text","longtext","htmltext","ifile","array","file","image","fulltext")),		   
-		 "=~*"=>array("label"=>"last or first name include",
+		 "=~*"=>array("label"=>"title include",
 			     "operand"=>array("left","right"),
-			     "dynlabel"=>"{left} last or first name include {right}", # _("{left} last or first name include {right}")
-			     "slabel"=>array("docid"=>"title include"), #_("title include") _("last or first name include")
-			     "sdynlabel"=>array("docid"=>"{left} title include {right}"), #_("{left} title include {right}")
+			     "dynlabel"=>"{left} title include {right}", # _("{left} last or first name include {right}")
+			     "slabel"=>array("uid"=>"last or first name include"), #_("title include") _("last or first name include")
+			     "sdynlabel"=>array("uid"=>"{left} last or first name include {right}"), #_("{left} title include {right}")
 			     "type"=>array("uid","docid")),
 		 "@@"=>array("label"=>"content file word",
 			     "operand"=>array("left","right"),
