@@ -807,7 +807,15 @@ Ext.fdl.Collection = {
                     
                 }
             } else {
-                monofam = false;
+                if(this.search){
+                    family = this.search.getValue('se_famid');
+                    monofam = true;
+                } else if(this.collection){
+                    family = this.collection.getValue('se_famid');
+                    monofam = true;
+                } else {
+                    monofam = false;
+                }
             }
                         
             //if (filters && filters.length == 1 && filters[0].family) {
