@@ -23,6 +23,10 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
      */
     enableFreedomDragDrop: true,
     
+    contentConfig: {},
+    
+    propagatedContentConfig: {},
+    
     constructor: function(config){
     	
     	Ext.apply(this, config);
@@ -331,6 +335,8 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
 
         var node = new Ext.tree.TreeNode({
             collectionId: collection.id,
+            contentConfig: me.contentConfig,
+            propagatedContentConfig: me.propagatedContentConfig,
             _fdldoc: collection,
             text: collection.getTitle(),
             expandable: (me.collection != collection && collection.isCollection() && collection.getProperty('haschildfolder')), // undefined is to be removed once data is able to return haschildfolder for documents
@@ -366,26 +372,31 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
                 this.removeChild(this.firstChild);
             }
             
-            if (me.onlyCollection) {
-                var contentConfig = {
-                    verifyhaschild: true,
-                    filter: "doctype = 'D' or doctype = 'S'"
-                };
-            }
-            else {
-                var contentConfig = {
-                    verifyhaschild: true
-                };
+            var defContentConfig = {
+                verifyhaschild: true,
+                slice: 'ALL'
+            };
+            
+            if (this.getOwnerTree().onlyCollection) {
+                defContentConfig.filter = "doctype = 'D' or doctype = 'S'";
             }
             
-            contentConfig.slice = "ALL";
+            if (! this.contentConfig){
+                if(this.getDepth()==0){
+                    this.contentConfig = this.getOwnerTree().contentConfig||{};
+                } else {
+                    this.contentConfig = this.getOwnerTree().propagatedContentConfig||{};
+                }
+            }
+            
+            Ext.applyIf(this.contentConfig,defContentConfig);
             
             //if (!n.hasChildNodes()) {
-            var c = me.context.getDocument({
+            var c = this.getOwnerTree().context.getDocument({
                 id: this.attributes.collectionId,
                 //useCache: true,
                 contentStore: true,
-                contentConfig: contentConfig
+                contentConfig: this.contentConfig
             });
             if (c.isAlive()) {
             
@@ -398,7 +409,7 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
                 
                 for (var i = 0; i < sf.length; i++) {
                     var doc = sf[i];
-                    this.appendChild(me.getTreeNode(doc));
+                    this.appendChild(this.getOwnerTree().getTreeNode(doc));
                 }
             }
             else {
@@ -412,7 +423,7 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
         
         node.mask = function(){
             if (this.getUI() && this.getUI().getIconEl()) {
-                this.getUI().getIconEl().src = me.context.url + 'lib/ext/resources/images/default/tree/loading.gif';
+                this.getUI().getIconEl().src = this.getOwnerTree().context.url + 'lib/ext/resources/images/default/tree/loading.gif';
             }
         };
         
@@ -467,12 +478,28 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
             }
             
             var search = this.attributes._fdldoc;
+            
+            var defContentConfig = {
+                verifyhaschild: true,
+                slice: 'ALL',
+                key:(search.key ? search.key : '')
+            };
+            
+            if (! this.contentConfig){
+                if(this.getDepth()==0){
+                    this.contentConfig = this.getOwnerTree().contentConfig||{};
+                } else {
+                    this.contentConfig = this.getOwnerTree().propagatedContentConfig||{};
+                }
+            }
+            
+            Ext.applyIf(this.contentConfig,defContentConfig);
                        
-            var sf = search.search({key:(search.key ? search.key : ''),slice:"ALL",verifyhaschild:true}).getDocuments();
+            var sf = search.search(contentConfig).getDocuments();
             for (var i = 0; i < sf.length; i++) {
                 var doc = sf[i];
                 console.log('DOCU',doc);
-                this.appendChild(me.getTreeNode(doc));
+                this.appendChild(this.getOwnerTree().getTreeNode(doc));
             }
             
             if(expand){
@@ -508,7 +535,7 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
      * @param {Object} target
      */
     display: function(target){   
-        console.log('Ext.fdl.TreeCollection.display() is deprecated.');
+        console.log('Ext.fdl.TreeCollection.display() is deprecated.');//FIXME: it would be better to warn instaed of log
         return this;        
     }
     

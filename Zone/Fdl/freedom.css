@@ -17,7 +17,6 @@ margin:0;padding:0;
   font-size: [SIZE_X-LARGE];
   font-variant: small-caps;
 }
-.famicon { margin-right : 5px; }
 .emblem { margin-right : 2px;
   height:22px }
 
@@ -26,6 +25,16 @@ margin:0;padding:0;
   color: [CORE_TEXTFGCOLOR];
   text-transform:capitalize;
 }
+
+span.familyTitle {
+  font-size:70%;
+  font-style: italic;
+}
+img.documentIcon {
+	width:[SIZE_IMG-MEDIUM];
+	}
+
+body.documentView img.documentIcon{ margin-right : 5px; }
 
 .FREEDOMTextTitle:first-letter {
   text-transform:capitalize;

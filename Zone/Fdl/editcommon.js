@@ -2611,9 +2611,9 @@ function textautovsize(event,o) {
   var i=1;
   var hb=o.clientHeight;
   var hs=o.scrollHeight;
-  if (o.offsetTop) hs+=o.offsetTop;
 
   if (hs > hb) {
+	  hs+=3;
     o.parentNode.style.height=hs+'px';
     o.style.height=hs+'px';
   }

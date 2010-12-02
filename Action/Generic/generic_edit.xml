@@ -35,7 +35,7 @@ addEvent(window,"load",resetbodyopacity);
 
  </head>
 
-<body class="document" id="terrible" style="[IFNOT ISIE]opacity:0.5;[ENDIF ISIE][IF ISIE]filter: alpha(opacity = 50);[ENDIF ISIE]"
+<body class="document documentEdit" id="terrible" style="[IFNOT ISIE]opacity:0.5;[ENDIF ISIE][IF ISIE]filter: alpha(opacity = 50);[ENDIF ISIE]"
       onbeforeunload="if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled))return '[STITLE]:[TEXT:Changes will be loosed if you continue]'";
       onUnLoad="if ((! document.isCancelled)&& (!document.isSubmitted)) autoUnlock('[id]');closechoose();"
      >
@@ -84,13 +84,13 @@ addEvent(window,"load",resetbodyopacity);
 <input type="hidden" name="noconstraint" value="N">
 [ENDIF NOFORM]
 [IF HEAD]
-<table id="fixtablehead" [IFNOT ISIE]class="tablehead"[ENDIF ISIE]   cellspacing="0" width="100%">
+<table id="fixtablehead" class="[IFNOT ISIE]tablehead [ENDIF ISIE]documentHead"   cellspacing="0" width="100%">
 <thead>
 <tr class="FREEDOMBack1">
  <td width="60%">
-  <IMG align="left" border="0"  title="[FTITLE]" alt="[FTITLE]" align="absbottom" needresize="1" width="[SIZE_IMG-MEDIUM]" SRC="[iconsrc]">
-  <IMG  style="float:left" border="0" title="[locked]" SRC="[emblem]">
-  <I style="font-size:70%">[FTITLE]</I><br><span  class="FREEDOMTextBigTitle">[title]</span>
+  <IMG class="documentIcon" align="left" border="0"  title="[FTITLE]" alt="[FTITLE]" align="absbottom" needresize="1"  SRC="[iconsrc]">
+  <IMG style="float:left" border="0" title="[locked]" SRC="[emblem]">
+  <span class="familyTitle">[FTITLE]</span><br><span  class="FREEDOMTextBigTitle documentTitle">[title]</span>
   [IF FOOT][ZONE FDL:EDITBARMENU][ENDIF FOOT]
      </td><td align="right">
       <img class="click" style="display:[dhelp]" align="absmiddle"  onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[fhelp]','[CORE_STANDURL]&app=FDL&action=FAMILY_HELP&id=[helpid]')"  alt="[TEXT:help]" title="[TEXT:family manual]"  src="[IMG:help.gif]">  
