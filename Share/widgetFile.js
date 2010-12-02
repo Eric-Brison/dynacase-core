@@ -120,11 +120,12 @@ widgetFile.prototype = {
 				var imgfile=this.getImgFile();
 				if (imgfile) {
 					var tdi=this.target.getElementsByTagName('input');
-					if (tdi.length > 0) {						
+					if (tdi.length > 0) {					
 						tdi[0].value=this.page+1;
 					}
 					// already set : just update url
-					
+					imgfile.style.width=this.width+'px';
+					imgfile.style.height=''; 
 					imgfile.src=url;
 					return;
 				}
@@ -148,6 +149,7 @@ widgetFile.prototype = {
 							addEvent(tds[0],"click",function (event) {this.wf.prevPage();});
 							addEvent(tds[1],"click",function (event) {this.wf.nextPage();});
 						}
+						//addEvent(this.target,"keyup",function (event) {console.log('key', event);});
 						tds=this.target.getElementsByTagName('input');
 						if (tds.length > 0) {
 							tds[0].wf=this;
@@ -203,13 +205,17 @@ widgetFile.prototype = {
  		}
  	},
  	showPage : function (event,io) {
- 		
  		if (io.value) {
+ 			if (isNaN(io.value)) {
+ 				io.value=this.page+1;
+ 				return false;
+ 			}
  		  this.page=io.value - 1;
  		  if (this.page < 0 ) this.page=0;
  		  if (this.page >= this.pages ) this.page=this.pages-1;
  		  this.show();
  		}
+ 		return true;
  	},
  	
  	/**
@@ -359,6 +365,7 @@ widgetFile.prototype = {
  	fullWidth : function (event) {
  		var imgs=this.target.getElementsByTagName('img');
  		var imgfile=null;
+ 		var wi=0;
  		if (imgs.length > 1) {
  			for (var i=0;i<imgs.length;i++) {
  				if (imgs[i].className=='imgfile') imgfile=imgs[i];
@@ -368,7 +375,7 @@ widgetFile.prototype = {
  			var oriwidth=getObjectWidth(imgfile);
  			if (this.fullScreenActivated) {
 
- 				var wi=this.getInnerWidth(imgfile.parentNode);
+ 				 wi=this.getInnerWidth(imgfile.parentNode);
  				this.width=wi;
  				//this.show();
  			} else {
