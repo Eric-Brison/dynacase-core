@@ -1607,7 +1607,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                     }
                 };
                 
-                if(!userColumnConfig || !userColumnConfig[attributes[j]] || order == undefined){
+                if(!userColumnConfig || !userColumnConfig[properties[j]] || order == undefined){
                     columns.push(columnConfig);
                 } else {
                     if(userColumnConfig[properties[j]]){
