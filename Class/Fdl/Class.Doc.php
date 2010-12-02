@@ -1784,7 +1784,8 @@ create unique index i_docir on doc(initid, revision);";
     include_once("FDL/Lib.Vault.php");   
     $engine=strtolower($engine);
     $value='';
-
+    if (is_array($va)) return "";
+    
     if (getParam("TE_ACTIVATE")=="yes") {
       if (preg_match(PREGEXPFILE, $va, $reg)) {  
 	$vidin=$reg[2];
