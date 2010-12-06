@@ -462,11 +462,15 @@ Fdl.Collection.prototype.addFilter = function(filter) {
 	}  
 	if (filter.criteria || filter.sql || filter.family) {
 		var fs=this.getValue("se_filter");
+		var fsType=this.getValue("se_typefilter");
 		var newfs=[];
+		var newfsType=[];
 		if (fs) newfs=newfs.concat(fs);
-
+		if (fsType) newfsType=newfsType.concat(fsType);
 		newfs.push(Fdl.json2xml({filter:filter.normalize()}));
+		newfsType.push('specified');
 		this.setValue("se_filter",newfs);
+		this.setValue("se_typefilter",newfsType);
 		//this.setValue("se_filter",[Fdl.json2xml(filter)]);
 	}
 	return true;
@@ -525,7 +529,7 @@ Fdl.Collection.prototype.getFilters = function(filter) {
 // @deprecated
 Fdl.getHomeFolder = function() {
   var u=Fdl.getUser();
-  if (u && u.id) {
+  if (u != null && u.id) {
     var idhome='FLDHOME_'+u.id;
     var h=new Fdl.Collection({id:idhome});
     if (h.isAlive()) return h;
@@ -536,7 +540,7 @@ Fdl.getHomeFolder = function() {
 Fdl.getDesktopFolder = function() {
   if (Fdl._desktopFolder) return Fdl._desktopFolder;
   var u=Fdl.getUser();
-  if (u && u.id) {
+  if (u != null && u.id) {
     var idhome='FLDDESKTOP_'+u.id;
     var h=new Fdl.Collection({id:idhome});
     if (h.isAlive()) {
@@ -550,7 +554,7 @@ Fdl.getDesktopFolder = function() {
 Fdl.getOfflineFolder = function() {
   if (Fdl._offlineFolder) return Fdl._offlineFolder;
   var u=Fdl.getUser();
-  if (u && u.id) {
+  if (u != null && u.id) {
     var idhome='FLDOFFLINE_'+u.id;
     var h=new Fdl.Collection({id:idhome});
     if (h.isAlive()) {
