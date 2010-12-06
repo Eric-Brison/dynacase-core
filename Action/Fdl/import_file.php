@@ -720,12 +720,18 @@ $tkey=array("title"),$prevalues=array(),$torder=array()) {
 	$docc->fromid = $fromid;
 	$tcr["familyid"]=$docc->fromid;
 	$tcr["familyname"]=$docc->getTitle($docc->fromid);
-	if  ($data[2] > 0) $docc->id= $data[2]; // static id
+	if  ($data[2] > 0) {
+	    $docc->id = $data[2]; // static id
+	    $docc->initid = $data[2];
+	}
 	elseif (trim($data[2]) != "") {
 		if (! is_numeric(trim($data[2]))) {
 			$docc->name=trim($data[2]); // logical name
 			$docid=getIdFromName($dbaccess,$docc->name,$fromid);
-			if ($docid > 0) $docc->id=$docid;
+			if ($docid > 0) {
+			    $docc->id = $docid;
+			    $docc->initid = $docid;
+			}
 		}
 	}
 	if ($docc->id > 0) {
