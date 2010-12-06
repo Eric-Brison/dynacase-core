@@ -38,12 +38,13 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
         // Setup TreeCollection.
         var me = this;
                 
+        var node=null;
         if (this.collection) {
-            var node = this.getTreeNode(this.collection);
+             node = this.getTreeNode(this.collection);
         }
         
         if (this.search) {
-            var node = this.getSearchTreeNode(this.search);
+             node = this.getSearchTreeNode(this.search);
         }
         
         Ext.applyIf(config,{
@@ -413,7 +414,7 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
                 }
             }
             else {
-                var t = 'ERROR:' + Fdl.getLastErrorMessage();
+                var t = 'ERROR:' + c.context.getLastErrorMessage();
             }
             //}
             
@@ -495,13 +496,15 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
             
             Ext.applyIf(this.contentConfig,defContentConfig);
                        
-            var sf = search.search(contentConfig).getDocuments();
-            for (var i = 0; i < sf.length; i++) {
-                var doc = sf[i];
-                console.log('DOCU',doc);
-                this.appendChild(this.getOwnerTree().getTreeNode(doc));
-            }
-            
+            if (search.filter) this.contentConfig.filter=null;
+            var dl=search.search(this.contentConfig);
+            if (dl) {
+            	var sf = dl.getDocuments();
+            	for (var i = 0; i < sf.length; i++) {
+            		var doc = sf[i];
+            		this.appendChild(this.getOwnerTree().getTreeNode(doc));
+            	}
+            } else Ext.Msg.alert('Error search criteria');
             if(expand){
             	this.expand();
             }
