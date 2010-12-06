@@ -79,7 +79,7 @@ msgstr "Évaluer"
 msgid "eui::Save"
 msgstr "Sauver"
 
-msgid "eui::Edit search : "
+msgid "eui::Edit search :"
 msgstr "Éditer la Recherche"
 
 msgid "eui::Enter search name"
