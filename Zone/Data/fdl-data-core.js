@@ -23,7 +23,7 @@ var Fdl = {
 };
 Fdl._print_r = function(obj, level, maxlevel) {
 	if (!obj)
-		return;
+		return '';
 
 	if (!level)
 		level = 0;
@@ -32,7 +32,7 @@ Fdl._print_r = function(obj, level, maxlevel) {
 	if (typeof obj != 'object')
 		return obj.toString();
 	if (level > maxlevel)
-		return;
+		return '';
 	var slev = '';
 	if (!level)
 		level = 0;

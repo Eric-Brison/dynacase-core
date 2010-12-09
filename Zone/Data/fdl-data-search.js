@@ -78,12 +78,14 @@ Fdl.SearchDocument.prototype.search = function(config) {
 	if (config && config.data) {
 		data=config.data;
 	} else {
-		if (config && config.filter) config.filter=JSON.stringify(config.filter);
-		else if (this.filter) {
+		if (config && config.filter) {
+			if (typeof(config.filter) == 'object') config.filter=JSON.stringify(config.filter);
+			
+		} else if (this.filter) {
 			if (! config) config={};
 			config.filter=JSON.stringify(this.filter);
 		}
-		var data=this.context.retrieveData({app:'DATA',action:'DOCUMENT',method:'search'},config);
+		 data=this.context.retrieveData({app:'DATA',action:'DOCUMENT',method:'search'},config);
 	}
 	if (data) {
 		this._info=data.info;

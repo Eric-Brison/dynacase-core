@@ -292,7 +292,6 @@ Fdl.EnumAttribute.prototype.getEnumItems= function() {
 Fdl.EnumAttribute.prototype.getEnumLabel= function(config) {
     if (config && config.key) {
 	if (this._data.enumerate) {
-	    var t=new Array();
 	    for (var i in this._data.enumerate) {
 		if (i == config.key) return this._data.enumerate[i];
 	    }	    
@@ -407,10 +406,10 @@ Fdl.RelationAttribute.prototype.retrieveProposal= function(config) {
 	if (! data.error) {
 	    return data.proposal;
 	} else {	
-	    Fdl.setErrorMessage(data.error);
+	    this._family.context.setErrorMessage(data.error);
 	}
     } else {      
-	Fdl.setErrorMessage('retrieveProposal: no data');
+	this._family.context.setErrorMessage('retrieveProposal: no data');
     }
     return null;
 };
@@ -489,7 +488,7 @@ Fdl.FileAttribute.prototype.getDavUrl= function(v,documentId) {
       var url=data.url;
       return url;
        } else {
-      Fdl.setErrorMessage(data.error);
+      this._family.context.setErrorMessage(data.error);
     }    
   }
   return null;
@@ -595,11 +594,12 @@ Fdl.ArrayAttribute.prototype.getArrayValues= function(config) {
 
     if (oas.length > 0 && oas[0].getValue().length > 0) {
 	// first find max rows
-	for (var i=0;i<oas[0].getValue().length;i++) {
+    	var i=0;
+	for ( i=0;i<oas[0].getValue().length;i++) {
 	    rv[i]=new Object();
 	}
 
-	for (var i=0; i< oas.length; i++) {
+	for ( i=0; i< oas.length; i++) {
 	    vc=oas[i].getValue();
 	    for (var ic=0;ic<vc.length;ic++) {	    
 		rv[ic][oas[i].id]=vc[ic];

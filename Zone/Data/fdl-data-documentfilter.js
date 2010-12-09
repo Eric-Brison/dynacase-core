@@ -316,43 +316,5 @@ Fdl.DocumentFilter.prototype = {
 };
 
 
-// ========== NOT PROTOTYPE (DEPRECATED)================
 
-// @deprecated
-Fdl.getHomeFolder = function() {
-  var u=Fdl.getUser();
-  if (u && u.id) {
-    var idhome='FLDHOME_'+u.id;
-    var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) return h;
-  }
-  return null;
-};
-// @deprecated
-Fdl.getDesktopFolder = function() {
-  if (Fdl._desktopFolder) return Fdl._desktopFolder;
-  var u=Fdl.getUser();
-  if (u && u.id) {
-    var idhome='FLDDESKTOP_'+u.id;
-    var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) {
-      Fdl._desktopFolder=h;
-      return h;
-    }
-  }
-  return null;
-};
-// @deprecated
-Fdl.getOfflineFolder = function() {
-  if (Fdl._offlineFolder) return Fdl._offlineFolder;
-  var u=Fdl.getUser();
-  if (u && u.id) {
-    var idhome='FLDOFFLINE_'+u.id;
-    var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) {
-      Fdl._offlineFolder=h;
-      return h;
-    }
-  }
-  return null;
-};
+

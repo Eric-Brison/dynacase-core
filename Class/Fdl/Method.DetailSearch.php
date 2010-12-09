@@ -56,7 +56,8 @@ Class _DSEARCH extends DocSearch {
 	 * @see DocSearch#getQuery()
 	 */
 	function getQuery() {
-		if (count($this->getTvalue("se_filter")) > 0) {
+                $filtersType=$this->getTValue("se_typefilter");
+		if ((count($this->getTvalue("se_filter")) > 0) && ($filtersType[0] != "generated")) {
 			$queries=array();
 			$filters=$this->getTValue("se_filter");
 			foreach ($filters as $filter) {
@@ -68,6 +69,84 @@ Class _DSEARCH extends DocSearch {
 			return parent::getQuery();
 		}
 	}
+	function postModify() {
+	    $err=parent::postModify();
+	    $err.=$this->updateFromXmlFilter();
+            $err.=$this->updateXmlFilter();
+	     if ((! $err) && ($this->isChanged())) $err=$this->modify();
+	    return $err;
+	}
+	/**
+	 * update somes attributes from Xml filter
+	 * @return string error message
+	 */
+	public function updateFromXmlFilter() {
+	    // update only if one filter
+	    $err='';
+	    if (count($this->getTvalue("se_filter")) == 1) {
+	        // try to update se_famid
+	        $filters=$this->getTValue("se_filter");
+	        $filtersType=$this->getTValue("se_typefilter");
+	        $filter=$filters[0];
+	        $filterType=$filtersType[0];
+	        if ($filterType != "generated") {
+	            $root = simplexml_load_string($filter);
+	            $std=$this->simpleXml2StdClass($root);
+	            if ($std->family) {
+	                if (! is_numeric($std->family)) {
+	                    if (preg_match("/([\w:]*)\s?(strict)?/",trim($std->family),$reg)) {
+	                        if (! is_numeric($reg[1])) $reg[1]=getFamIdFromName($this->dbaccess,$reg[1]);
+	                        if ($reg[2]=="strict") $famid='-'.$reg[1];
+	                        else $famid=$reg[1];
+	                    }
+	                } else {
+	                    $famid=($std->family);
+	                }
+	                if ($famid) {
+	                    $err=$this->setValue("se_famid",abs($famid));
+	                    $err.=$this->setValue("se_famonly",($famid>0)?"no":"yes");
+	                   
+	                }
+	            }
+	        }
+	    }
+	    return $err;
+	}
+	
+	/**
+         * update somes attributes from Xml filter
+         * @return string error message
+         */
+        public function updateXmlFilter() {
+            // update only if one filter
+            $err='';
+            if (count($this->getTvalue("se_filter")) < 2) {
+                // try to update se_famid
+                $filters=$this->getTValue("se_filter");
+                $typeFilters=$this->getTValue("se_typefilter");
+                if (count($this->getTvalue("se_filter")) == 1) {
+                    if ($typeFilters[0]!="generated") return ''; // don't update specified filter created by data API
+                }
+                if ($this->getValue("se_famid")) {
+                    $filterXml=sprintf("<filter><family>%s%s</family>",
+                    $this->getValue("se_famid"),
+                    ($this->getValue("se_famonly")=="yes"?" strict":""));
+                    // <criteria><lp></lp><rp></rp><ol></ol><left>an_espece_title</left><operator>~*</operator><right>baleine</right></criteria>
+                    $details=$this->getAValues("se_t_detail");
+                    foreach ($details as $k=>$v) {
+                        // need linearize Filter
+                        /*$filterXml.=sprintf("<criteria><lp></lp><rp></rp><ol></ol><left>an_espece_title</left><operator>~*</operator><right>baleine</right></criteria>",
+                        $v["se_leftp"]);
+                        */
+                    }
+
+                    $filterXml.="</filter>";
+                    $this->setValue("se_typefilter","generated"); // only one
+                    $this->setValue("se_filter",$filterXml);
+                }
+            }
+            return $err;
+        }
 	/**
 	 * return a query from on filter object
 	 * @param string $xml xml filter object
@@ -119,12 +198,17 @@ Class _DSEARCH extends DocSearch {
 	}
 	function preEdition() {
 		if (count($this->getTvalue("se_filter")) > 0) {
+		    $type=$this->getTvalue("se_typefilter");
+		    if ($type[0]!="generated") {
 			$this->defaultedit="FDL:EDITBODYCARD";
+                        $this->getAttribute('se_t_detail',$oa);
+                        $oa->setVisibility('R');
 			$this->getAttribute('se_t_filters',$oa);
 			$oa->setVisibility('W');
 				
 			$this->getAttribute('se_filter',$oa);
 			$oa->setVisibility('W');
+		    }
 		}
 	}
 	/**

@@ -350,7 +350,7 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                     familyId: familyDocument.id,
                     allowSubfamily: true,
                     closable: true,
-                    title: me.context._("eui::Edit search : ") + document.getTitle()
+                    title: me.context._("eui::Edit search :") +' ' + document.getTitle()
                 });
                 
                 return requester ;
