@@ -366,7 +366,7 @@ Class DocCtrl extends DocLDAP {
    * @param int cvid identificator for control view document
    */
   function setCvid($cvid) {
-
+    if (! is_numeric($cvid)) $cvid=getIdFromName($this->dbaccess,$cvid);
     $this->cvid = $cvid;
   }
 
