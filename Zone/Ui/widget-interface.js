@@ -131,15 +131,18 @@ Ext.fdl.Interface = Ext.extend(Ext.util.Observable, {
 		}
 				
 		// If the url is an url for a freedom document, we parse it and redirect to openDocument
-		if((new RegExp("action=FDL_CARD", "i").test(url) && new RegExp("app=FDL", "i").test(url))){		
+		if((new RegExp("action=(FDL_CARD|VIEWEXTDOC)", "i").test(url) && new RegExp("app=FDL", "i").test(url))){		
 			var result = url.match(new RegExp("id=([0-9]+)","i"));
 			this.onOpenDocument(null,result[1],'view',config);
 			return;
 		}
 		
-		if((new RegExp("action=GENERIC_EDIT", "i").test(url) && new RegExp("app=GENERIC", "i").test(url))){									
-			var result = url.match(new RegExp("id=([0-9]+)","i"));			
-			this.onOpenDocument(null,result[1],'edit',config);
+		if((new RegExp("action=(GENERIC_EDIT|EDITEXTDOC)", "i").test(url) && new RegExp("app=(GENERIC|FDL)", "i").test(url))){									
+			var result = url.match(new RegExp("id=([0-9]+)","i"));		
+			if (! result) {
+				result = url.match(new RegExp("(classid|famid)=([0-9A-Z_-]+)","i"));
+				if (result) this.onOpenDocument(null,result[2],'create',config);
+			} else this.onOpenDocument(null,result[1],'edit',config);
 			return;
 		}
 

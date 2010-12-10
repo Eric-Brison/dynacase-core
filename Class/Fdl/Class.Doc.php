@@ -4373,7 +4373,7 @@ create unique index i_docir on doc(initid, revision);";
 	if ($target=="ext") {
                   
 	  //$ec=getSessionValue("ext:targetRelation");
-	  $ec=getHttpVars("ext:targetRelation");
+	  $ec=getHttpVars("ext:targetRelation",'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view")');
 	  if ($ec)  {
 	    if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
 	    $ec=str_replace("%V%",$id,$ec);

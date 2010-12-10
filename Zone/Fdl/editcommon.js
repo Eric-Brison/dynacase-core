@@ -963,22 +963,24 @@ function disableReadAttribute() {
       }
 
       for (var i=0; i< taout[c].length; i++) {
-	if (document.getElementById(taout[c][i])) {
-	    if (document.getElementById(taout[c][i]).type != 'hidden') {
-		if (document.getElementById(taout[c][i]).getAttribute('readonly') != '1')  document.getElementById(taout[c][i]).disabled=ndis;
+    	  var iout=document.getElementById(taout[c][i]);
+	if (iout) {
+	    if (iout.type != 'hidden') {
+		if (iout.getAttribute('readonly') != '1')  iout.disabled=ndis;
 	      inc=document.getElementById('ic_'+taout[c][i]);
 	      inx=document.getElementById('ix_'+taout[c][i]);
 	      ind=document.getElementById('id_'+taout[c][i]);
 	      if (inc) inc.disabled=ndis;
 	      if (ind) ind.disabled=ndis;	 
+	      disabledIE(iout);
 	      if (ndis) {
-		// document.getElementById(taout[c][i]).style.backgroundColor='[CORE_BGCOLORALTERN]';
+		// iout.style.backgroundColor='[CORE_BGCOLORALTERN]';
 		//if (inc)  inc.style.backgroundColor='[CORE_BGCOLORALTERN]';	      	    
 	      } else {
 	    
 		if (inc) inc.style.backgroundColor='';
-		//if (document.getElementById(taout[c][i]).style.backgroundColor == '[CORE_BGCOLORALTERN]')
-		document.getElementById(taout[c][i]).style.backgroundColor == '';
+		//if (iout.style.backgroundColor == '[CORE_BGCOLORALTERN]')
+		//document.getElementById(taout[c][i]).style.backgroundColor == '';
 	      }
 	    } else {
 	      // search radio
@@ -1016,6 +1018,7 @@ function disableReadAttribute() {
 	    if (lin[j].type != 'hidden') {
 	      aid=lin[j].id;
 	      lin[j].disabled=ndis;
+	      disabledIE(lin[j]);
 	      inc=document.getElementById('ic_'+aid);
 	      ind=document.getElementById('ic_'+aid);
 	      if (inc) inc.disabled=ndis;
@@ -1048,6 +1051,20 @@ function disableReadAttribute() {
   } 
 }
 
+// add a class for IE when disabled input
+function disabledIE(i) {
+	if (isIE && i) {
+		if (i.disabled) {
+			if (i.className.indexOf('disabled') < 0) {
+				i.className+=" disabled";
+			}
+		} else {
+			if (i.className.indexOf('disabled') >= 0) {
+				i.className=i.className.replace(/disabled/g,"");
+			}
+		}
+	}
+}
 function editOnLoad() {
     createColorPicker();
     resizeInputFields();

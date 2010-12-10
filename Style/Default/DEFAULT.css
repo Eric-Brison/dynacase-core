@@ -53,7 +53,7 @@ A:hover {
  * INPUTS
  * ------------------------------------------
  */
-INPUT, SELECT, OPTION, TEXTAREA, FILE {
+input, SELECT, OPTION, TEXTAREA, FILE {
    color:[input-text-normal-color];
    background-color:[input-background-normal-color];
    margin:0pt;
@@ -126,7 +126,7 @@ input[type="text"] {
 input[type="checkbox"], input[type="radio"] { 
   vertical-align:middle; 
  }
-input[disabled], textarea[disabled] {
+input[disabled], input[disabled="disabled"],input.disabled, textarea[disabled] {
   color:[input-text-disabled-color];
   background-color:[input-background-disabled-color];
 }

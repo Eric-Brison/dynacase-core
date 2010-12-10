@@ -130,10 +130,12 @@ function sfFocus() {
 	var sfEls2 = document.getElementsByTagName("TEXTAREA");
 	var i;
 	for ( i=0; i<sfEls1.length; i++) {
+		if (sfEls1[i].disabled) sfEls1[i].className+=" disabled";
 		  addEvent(sfEls1[i],"focus",function(event) { event.srcElement.className+=" sffocus";	});
 		  addEvent(sfEls1[i],"blur",function() {  event.srcElement.className=event.srcElement.className.replace(new RegExp(" sffocus\\b"), "");	});		
 	}	
 	for ( i=0; i<sfEls2.length; i++) {
+		if (sfEls1[i].disabled) sfEls1[i].className+=" disabled";
 		  addEvent(sfEls2[i],"focus",function(event) { event.srcElement.className+=" sffocus";	});
 		  addEvent(sfEls2[i],"blur",function() {  event.srcElement.className=event.srcElement.className.replace(new RegExp(" sffocus\\b"), "");	});		
 	}	
@@ -145,7 +147,7 @@ function sfFocus() {
 
 
 
-if(/MSIE (5|6|7)/.test(navigator.userAgent)) {
+if(/MSIE (5|6|7|8)/.test(navigator.userAgent)) {
   addEvent(window,"load",parseStylesheets);
   addEvent(window,"load",sfFocus);
  }
