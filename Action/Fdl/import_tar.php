@@ -194,7 +194,7 @@ function analyze_csv($fdlcsv,$dbaccess,$dirid,&$famid,&$dfldid,$analyze) {
   $fcsv=fopen($fdlcsv,"r");
   if ($fcsv) {
     $ldir=dirname($fdlcsv);
-    while ($data = fgetcsv ($fcsv, 2000, ";")) {
+    while ($data = fgetcsv ($fcsv, 0, ";")) {
       $nline++;
       $level = substr_count( $ldir,"/");
       $index="c$level/$nline";
