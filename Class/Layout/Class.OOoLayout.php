@@ -678,7 +678,7 @@ class OOoLayout extends Layout {
 	                            foreach ($tvkey as $kk=>$key) {
 	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                            }
-	                            $this->replaceRowNode($clone,$i,1);
+	                            $this->replaceRowNode($clone,array($i));
 	                        }
 	                        $item->parentNode->removeChild($item);
 	                    }
@@ -702,21 +702,28 @@ class OOoLayout extends Layout {
 	    if (! isset($this->arrayKeys[$key])) return null;
 	    // TODO to complte
 	    $index=current($levelPath);
+	    if (count($levelPath) == 2) 
+	    {
+	        $ni=next($levelPath);
+	        return $this->arrayKeys[$key][$index][$ni];
+	    }
 	   // print "<p>search $key [$index] :".$this->arrayKeys[$key][$index]."</p>";
 	    return $this->arrayKeys[$key][$index];
 	    
 	    
 	}
-	protected function replaceRowNode($row, $index, $subIndex) {
+	protected function replaceRowNode($row, array $levelPath) {
 	    if (count($this->arrayKeys)==0) return;// nothing to do
 	    $keys=array();
+	    $subIndex=count($levelPath);
 	    foreach ($this->arrayKeys as $k=>$v) {
 	        if ($this->getArrayDepth($v) == $subIndex) $keys[]=$k;
 	        
 	    }
-	   // print_r2($this->arrayKeys);
-	   // print "<h1>FOUND</h1>";
-	   //print_r2($keys);
+	   
+	    /*print_r2($this->arrayKeys);
+	    print "<h1>FOUND</h1>";
+	   print_r2($keys);*/
 	    
 	    //if (count($keys) == 0 ) return; // nothing to do
 	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
@@ -729,7 +736,8 @@ class OOoLayout extends Layout {
 	            
 	                    $maxk=0;
 	                    foreach ($reg[1] as $k=>$v) {	        
-	                        $levelPath=array(  $index);
+	                        //$levelPath=array(  $index);
+	                        
 	                        $vkey=$this->getArrayKeyValue($v, $levelPath);
 	                        $tvkey[$v]=$vkey;
 	                        $maxk=max(count($tvkey[$v]),$maxk);
@@ -743,7 +751,7 @@ class OOoLayout extends Layout {
 	                        foreach ($tvkey as $kk=>$key) {
 	                            $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                        }
-	                        $this->replaceRowNode($clone,$i,1);
+	                        $this->replaceRowNode($clone,array_merge($levelPath, array($i)));
 	                    }
 	                    $item->parentNode->removeChild($item);
 	                }
