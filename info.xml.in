@@ -266,6 +266,9 @@
 
   <changelog>
   	
+    <version number="3.0.16" date="2010-12-17">
+      <change title="Somes new possibilities for Ooo Layout" url="http://dev.dynacase.org/versions/show/78"/>        
+    </version>
     <version number="3.0.15" date="2010-11-26">
       <change title="Join in searchDoc" url="http://dev.dynacase.org/versions/show/73"/>        
     </version>

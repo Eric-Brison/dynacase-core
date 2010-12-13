@@ -342,7 +342,7 @@ class Layout {
      
   }
 
-  function ParseText(&$out) {
+  protected function ParseText(&$out) {
 
      $out = preg_replace("/\[TEXT:([^\]]*)\]/e",
                          "\$this->Text('\\1')",

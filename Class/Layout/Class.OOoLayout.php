@@ -39,6 +39,7 @@ class OOoLayout extends Layout {
 	public $template = '';
 	public $manifest = '';
 
+	protected $arrayKeys=array();
 
 	/**
 	 * construct layout for view card containt
@@ -372,7 +373,7 @@ class OOoLayout extends Layout {
 	 * @param string $tag
 	 * @param string $val
 	 */
-	function set($tag,$val) {
+	public function set($tag,$val) {
 		if ( !isUTF8($val)) $val = utf8_encode($val);
 		if (! $this->isXml($val)) {
 			$this->pkey[$tag]="/\[$tag\]/";
@@ -396,14 +397,14 @@ class OOoLayout extends Layout {
 	 * get value of $tag key
 	 * @param string $tag
 	 */
-	function get($tag) {
+	public function get($tag) {
 		if (isset($this->rkey)) return $this->rkey[$tag];
 		return "";
 	}
 	/**
 	 * parse text
 	 */
-	function ParseText() {
+	protected function ParseText() {
 		if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'UTF-8');
 		$this->template = preg_replace("/\[TEXT:([^\]]*)\]/e",
                          "\$this->Text('\\1')",
@@ -413,7 +414,7 @@ class OOoLayout extends Layout {
 	/**
 	 * 
 	 */
-	function updateManifest() {
+	protected function updateManifest() {
 		$manifest = new DomDocument();
 		$manifest->loadXML($this->manifest);
 		
@@ -456,7 +457,7 @@ class OOoLayout extends Layout {
 	 * @param string $name
 	 * @param string $value
 	 */
-	function setDraw(&$draw, $name, $file) {
+	protected function setDraw(&$draw, $name, $file) {
 		if(strpos($file, '<text:tab') !== false) {
 			return 'muliple values : fail';
 		}
@@ -489,7 +490,7 @@ class OOoLayout extends Layout {
 	/**
 	 *  parse images
 	 */
-	function parseDraw() {
+	protected function parseDraw() {
 		$draws=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","frame");
 		foreach ($draws as $draw) {
 			$name=trim($draw->getAttribute('draw:name'));
@@ -506,7 +507,7 @@ class OOoLayout extends Layout {
 	 * remove all xml:id attributes in children nodes
 	 * @param DomNode $objNode
 	 */
-	function removeXmlId( &$objNode){
+	protected function removeXmlId( &$objNode){
 		$objNodeListNested = $objNode->childNodes;
 		foreach ( $objNodeListNested as $objNodeNested ){
 			if ($objNodeNested->nodeType == XML_ELEMENT_NODE) {
@@ -523,7 +524,8 @@ class OOoLayout extends Layout {
 	 * @param string $strOldContent
 	 * @param string $strNewContent
 	 */
-	function replaceNodeText( &$objNode, $strOldContent,$strNewContent){
+	protected function replaceNodeText( &$objNode, $strOldContent,$strNewContent){
+	    if ($strNewContent === null) return;
 		$objNodeListNested = &$objNode->childNodes;
 		foreach ( $objNodeListNested as $objNodeNested ){
 			if ($objNodeNested->nodeType == XML_TEXT_NODE) {
@@ -561,7 +563,7 @@ class OOoLayout extends Layout {
 	/**
 	 * parse bullet lists
 	 */
-	function parseListItem() {
+	protected function parseListItem() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list");
 		foreach ($lists as $list) {
 			$items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
@@ -601,7 +603,7 @@ class OOoLayout extends Layout {
 	 * @param string $name
 	 * @param string $value
 	 */
-	function setInputField(&$node, $name, $value) {
+	protected function setInputField(&$node, $name, $value) {
 		if(strpos($file, '<text:tab') !== false) {
 			return 'muliple values : fail';
 		}
@@ -616,7 +618,7 @@ class OOoLayout extends Layout {
 	 * @param string $name
 	 * @param string $value
 	 */
-	function setDropDownField(&$node, $name, $value) {
+	protected function setDropDownField(&$node, $name, $value) {
 		if(strpos($file, '<text:tab') !== false) {
 			return 'muliple values : fail';
 		}
@@ -634,7 +636,7 @@ class OOoLayout extends Layout {
 	 * 
 	 * @param DomNode $objNode
 	 */
-	function removeAllChilds(&$objNode) {
+	protected function removeAllChilds(&$objNode) {
 		$objNodeListNested = $objNode->childNodes;
 		$objNode->nodeValue = '';
 		if(!empty($objNodeListNested) && $objNodeListNested->length > 0) {
@@ -646,50 +648,114 @@ class OOoLayout extends Layout {
 	/**
 	 * parse tables
 	 */
-	function parseTableRow() {
-		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table");
-		foreach ($lists as $list) {
-			$items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
-			if ($items->length > 0) {
-				$findv=false;
-				foreach ($items as $item) {
-					if (preg_match("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($item) ,$reg)) {
-						$findv=true;
-						break;
-					}
-				}
-				if ($findv) {
-					if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($list),$reg)) {
-						$reg0=$reg[0];
-						$tvkey=array();
-						$maxk=0;
-						foreach ($reg0 as $k=>$v) {
-							$key=substr(trim($v),1,-1);
-							$vkey=$this->rkey[$key];
-							$tvkey[$key]=explode('<text:tab/>',$vkey);
-							$maxk=max(count($tvkey[$key]),$maxk);
-						}
-						if ($maxk > 1) {
-							for ($i=0;$i<$maxk;$i++) {
-								$clone=$item->cloneNode(true);
-								$item->parentNode->appendChild($clone);
-								foreach ($tvkey as $kk=>$key) {
-									$this->replaceNodeText($clone,"[$kk]",$key[$i]);
-								}
-							}
-							$item->parentNode->removeChild($item);
-						}
-					}
-				}
-			}
-		}
-		return $err;
+	protected function parseTableRow() {
+	    $lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table");
+	    foreach ($lists as $list) {
+	        $items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
+	        if ($items->length > 0) {
+	            $findv=false;
+	            foreach ($items as $item) {
+	                if (preg_match("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($item) ,$reg)) {
+	                    $findv=true;
+	                    break;
+	                }
+	            }
+	            if ($findv) {
+	                if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($list),$reg)) {
+	                    $reg0=$reg[0];
+	                    $tvkey=array();
+	                    $maxk=0; // search values which has the greatest number of values
+	                    foreach ($reg0 as $k=>$v) {
+	                        $key=substr(trim($v),1,-1);
+	                        $vkey=$this->rkey[$key];
+	                        $tvkey[$key]=explode('<text:tab/>',$vkey);
+	                        $maxk=max(count($tvkey[$key]),$maxk);
+	                    }
+	                    if ($maxk > 1) {
+	                        for ($i=0;$i<$maxk;$i++) {
+	                            $clone=$item->cloneNode(true);
+	                            $item->parentNode->appendChild($clone);
+	                            foreach ($tvkey as $kk=>$key) {
+	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
+	                            }
+	                            $this->replaceRowNode($clone,$i,1);
+	                        }
+	                        $item->parentNode->removeChild($item);
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return $err;
 	}
-	
+	private static function getArrayDepth($v) {
+	    $depth=-1;
+	    while (is_array($v)) {
+	        $depth++;
+	        $v=current($v);
+	    }
+	    return $depth;
+	    
+	}
+	protected function getArrayKeyValue($key, $levelPath) {
+	 //   print "<p>Try $key [$index] :".$this->arrayKeys[$key][$index]."</p>";
+	    if (! isset($this->arrayKeys[$key])) return null;
+	    // TODO to complte
+	    $index=current($levelPath);
+	   // print "<p>search $key [$index] :".$this->arrayKeys[$key][$index]."</p>";
+	    return $this->arrayKeys[$key][$index];
+	    
+	    
+	}
+	protected function replaceRowNode($row, $index, $subIndex) {
+	    if (count($this->arrayKeys)==0) return;// nothing to do
+	    $keys=array();
+	    foreach ($this->arrayKeys as $k=>$v) {
+	        if ($this->getArrayDepth($v) == $subIndex) $keys[]=$k;
+	        
+	    }
+	   // print_r2($this->arrayKeys);
+	   // print "<h1>FOUND</h1>";
+	   //print_r2($keys);
+	    
+	    //if (count($keys) == 0 ) return; // nothing to do
+	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
+	    if ($rowList->length > 0) {
+	        $skey=implode('|',$keys);
+	        foreach ($rowList as $item) {
+	            if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
+	               // print_r2($reg);
+	               // print_r2($this->innerXML($item));
+	            
+	                    $maxk=0;
+	                    foreach ($reg[1] as $k=>$v) {	        
+	                        $levelPath=array(  $index);
+	                        $vkey=$this->getArrayKeyValue($v, $levelPath);
+	                        $tvkey[$v]=$vkey;
+	                        $maxk=max(count($tvkey[$v]),$maxk);
+	                    }
+	                  //  print "<b>All keys</b>";
+	                   // print_r2($tvkey);
+	                if ($maxk > 1) {
+	                    for ($i=0;$i<$maxk;$i++) {
+	                        $clone=$item->cloneNode(true);
+	                        $item->parentNode->appendChild($clone);
+	                        foreach ($tvkey as $kk=>$key) {
+	                            $this->replaceNodeText($clone,"[$kk]",$key[$i]);
+	                        }
+	                        $this->replaceRowNode($clone,$i,1);
+	                    }
+	                    $item->parentNode->removeChild($item);
+	                }
+	                
+	            }
+	        }
+	    }
+	}
 	/**
 	 * parse text:input
 	 */
-	function parseInput() {
+	protected function parseInput() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","text-input");
 		foreach ($lists as $list) {
 			$name=$list->getAttribute("text:description");
@@ -704,7 +770,7 @@ class OOoLayout extends Layout {
 	/**
 	 * parse text:drop-down
 	 */
-	function parseDropDown() {
+	protected function parseDropDown() {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","drop-down");
 		foreach ($lists as $list) {
 			$name=$list->getAttribute("text:name");
@@ -719,7 +785,7 @@ class OOoLayout extends Layout {
 	/**
 	 * restore protected values
 	 */
-	function restoreProtectedValues() {
+	protected function restoreProtectedValues() {
 		$this->template = preg_replace('/\[PP(V_[A-Z0-9_]+)PP\]/s', '[$1]', $this->template);
 		$this->template = str_replace('--Lower.Than--', '<', $this->template);
 		$this->template = str_replace('--Greater.Than--', '>', $this->template);
@@ -727,7 +793,7 @@ class OOoLayout extends Layout {
 	/**
 	 * parse section and clone "tpl_xxx" sections into saved_sections
 	 */
-	function parseSection() {
+	protected function parseSection() {
 		$this->saved_sections=array();
 		// remove old generated sections
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","section");
@@ -790,7 +856,7 @@ class OOoLayout extends Layout {
 	/**
 	 * restore cloned and saved sections at the end
 	 */
-	function restoreSection() {
+	protected function restoreSection() {
 		
 		$inserts_to_do = array();
 	
@@ -819,10 +885,17 @@ class OOoLayout extends Layout {
 	 * Initialize of list
 	 * $key must begin with V_ and be uppercase
 	 */
-	function setColumn($key,$t) {
-		$this->set($key,implode('<text:tab/>',$t));
+	public function setColumn($key,array $t) {
+	  
+	    if (is_array(current($t))) $this->setArray($key,$t);
+	    else $this->set($key,implode('<text:tab/>',$t));
 	}
-	function SetBlockData($p_nom_block,$data) {
+	
+	protected function setArray($key,array $t) {
+	    if (!$key ) throw new Exception('Key must not be empty');
+	    $this->arrayKeys[$key]=$t;
+	}
+	public function SetBlockData($p_nom_block,$data) {
 		if ($p_nom_block != "") {
 			if ($data!=null && $this->encoding=="utf-8") {
 				if (is_array($data)) {
@@ -879,7 +952,7 @@ class OOoLayout extends Layout {
 			}
 		}
 	}
-	function addHTMLStyle() {
+	protected function addHTMLStyle() {
 		$xmldata='<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">'."</xhtml:html>";
 
 		$xslt = new xsltProcessor;
@@ -902,7 +975,7 @@ class OOoLayout extends Layout {
 	/**
 	 * 
 	 */
-	function removeOrphanImages() {
+	protected function removeOrphanImages() {
 		$imgs=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","image");
 		$used_images = array();
 		foreach($imgs as $img) {
@@ -932,7 +1005,7 @@ error_log("delete $file");
 	/**
 	 * generate OOo document
 	 */
-	function gen() {
+	public function gen() {
 
 		// if used in an app , set the app params
 		if (is_object($this->action)) {
