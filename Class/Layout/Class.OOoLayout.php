@@ -678,6 +678,7 @@ class OOoLayout extends Layout {
 	                            foreach ($tvkey as $kk=>$key) {
 	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                            }
+	                            $this->replaceRowIf($clone,array($i));
 	                            $this->replaceRowNode($clone,array($i));
 	                        }
 	                        $item->parentNode->removeChild($item);
@@ -712,6 +713,22 @@ class OOoLayout extends Layout {
 	    
 	    
 	}
+	
+	/**
+	 * 
+	 * Inspect conditions in cells
+	 * @param string_type $row
+	 * @param array $levelPath
+	 */
+	protected function replaceRowIf($row, array $levelPath) {
+		
+	}
+	/**
+	 * 
+	 * Inspect sub tables
+	 * @param string_type $row
+	 * @param array $levelPath
+	 */
 	protected function replaceRowNode($row, array $levelPath) {
 	    if (count($this->arrayKeys)==0) return;// nothing to do
 	    $keys=array();
@@ -752,6 +769,62 @@ class OOoLayout extends Layout {
 	                            $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                        }
 	                        $this->replaceRowNode($clone,array_merge($levelPath, array($i)));
+	                    }
+	                    $item->parentNode->removeChild($item);
+	                }
+	                
+	            }
+	        }
+	    }
+	    
+	    $this->replaceRowList($row,$levelPath);
+	}
+	/**
+	 * 
+	 * Inspect list in sub tables
+	 * @param string_type $row
+	 * @param array $levelPath
+	 */
+	protected function replaceRowList($row, array $levelPath) {
+	    if (count($this->arrayKeys)==0) return;// nothing to do
+	    $keys=array();
+	    $subIndex=count($levelPath);
+	    foreach ($this->arrayKeys as $k=>$v) {
+	        if ($this->getArrayDepth($v) == $subIndex) $keys[]=$k;
+	        
+	    }
+	   /*
+	    print_r2($this->arrayKeys);
+	    print "<h1>FOUND</h1>";
+	   print_r2($keys);
+	    */
+	    //if (count($keys) == 0 ) return; // nothing to do
+	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
+	    if ($rowList->length > 0) {
+	        $skey=implode('|',$keys);
+	        foreach ($rowList as $item) {
+	            if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
+	               // print_r2($reg);
+	               // print_r2($this->innerXML($item));
+	            
+	                    $maxk=0;
+	                    foreach ($reg[1] as $k=>$v) {	        
+	                        //$levelPath=array(  $index);
+	                        
+	                        $vkey=$this->getArrayKeyValue($v, $levelPath);
+	                        $tvkey[$v]=$vkey;
+	                        $maxk=max(count($tvkey[$v]),$maxk);
+	                    }
+	                  //  print "<b>All keys</b>";
+	                   // print_r2($tvkey);
+	                if ($maxk > 1) {
+	                    for ($i=0;$i<$maxk;$i++) {
+	                        $clone=$item->cloneNode(true);
+	                        $item->parentNode->appendChild($clone);
+	                        foreach ($tvkey as $kk=>$key) {
+	                            $this->replaceNodeText($clone,"[$kk]",$key[$i]);
+	                        }
+	                        //$this->replaceRowNode($clone,array_merge($levelPath, array($i)));
 	                    }
 	                    $item->parentNode->removeChild($item);
 	                }
