@@ -526,6 +526,12 @@ class OOoLayout extends Layout {
 	 */
 	protected function replaceNodeText( &$objNode, $strOldContent,$strNewContent){
 	    if ($strNewContent === null) return;
+	    if (is_array($strNewContent)) {
+	    	
+	    	print_r2($strNewContent); 
+	    	$a=1/0;
+	    	exit;
+	    }
 		$objNodeListNested = &$objNode->childNodes;
 		foreach ( $objNodeListNested as $objNodeNested ){
 			if ($objNodeNested->nodeType == XML_TEXT_NODE) {
@@ -698,17 +704,26 @@ class OOoLayout extends Layout {
 	    return $depth;
 	    
 	}
-	protected function getArrayKeyValue($key, $levelPath) {
-	 //   print "<p>Try $key [$index] :".$this->arrayKeys[$key][$index]."</p>";
+	/**
+	 * 
+	 * Retrieve one of values for a multi value key
+	 * @param string $key the key name (multiple values) 
+	 * @param array $levelPath path to access of a particular value
+	 */
+	protected function getArrayKeyValue($key,array $levelPath) {
 	    if (! isset($this->arrayKeys[$key])) return null;
-	    // TODO to complte
+	    
 	    $index=current($levelPath);
+	    $value=$this->arrayKeys[$key];
+	    foreach ($levelPath as $index) {
+	        $value=$value[$index];
+	    }
+	    return $value;
 	    if (count($levelPath) == 2) 
 	    {
 	        $ni=next($levelPath);
 	        return $this->arrayKeys[$key][$index][$ni];
 	    }
-	   // print "<p>search $key [$index] :".$this->arrayKeys[$key][$index]."</p>";
 	    return $this->arrayKeys[$key][$index];
 	    
 	    
@@ -729,63 +744,24 @@ class OOoLayout extends Layout {
 	 * @param string_type $row
 	 * @param array $levelPath
 	 */
-	protected function replaceRowNode($row, array $levelPath) {
-	    if (count($this->arrayKeys)==0) return;// nothing to do
-	    $keys=array();
-	    $subIndex=count($levelPath);
-	    foreach ($this->arrayKeys as $k=>$v) {
-	        if ($this->getArrayDepth($v) == $subIndex) $keys[]=$k;
-	        
-	    }
-	   
-	    /*print_r2($this->arrayKeys);
-	    print "<h1>FOUND</h1>";
-	   print_r2($keys);*/
-	    
-	    //if (count($keys) == 0 ) return; // nothing to do
-	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
-	    if ($rowList->length > 0) {
-	        $skey=implode('|',$keys);
-	        foreach ($rowList as $item) {
-	            if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
-	               // print_r2($reg);
-	               // print_r2($this->innerXML($item));
-	            
-	                    $maxk=0;
-	                    foreach ($reg[1] as $k=>$v) {	        
-	                        //$levelPath=array(  $index);
-	                        
-	                        $vkey=$this->getArrayKeyValue($v, $levelPath);
-	                        $tvkey[$v]=$vkey;
-	                        $maxk=max(count($tvkey[$v]),$maxk);
-	                    }
-	                  //  print "<b>All keys</b>";
-	                   // print_r2($tvkey);
-	                if ($maxk > 1) {
-	                    for ($i=0;$i<$maxk;$i++) {
-	                        $clone=$item->cloneNode(true);
-	                        $item->parentNode->appendChild($clone);
-	                        foreach ($tvkey as $kk=>$key) {
-	                            $this->replaceNodeText($clone,"[$kk]",$key[$i]);
-	                        }
-	                        $this->replaceRowNode($clone,array_merge($levelPath, array($i)));
-	                    }
-	                    $item->parentNode->removeChild($item);
-	                }
-	                
-	            }
-	        }
-	    }
-	    
-	    $this->replaceRowList($row,$levelPath);
+	protected function replaceRowNode(&$row, array $levelPath) {
+		//print_r2($this->arrayKeys);
+		// Inspect sub tables, rows
+		$this->replaceRowSomething($row, $levelPath, "table", "table-row", true);
+		// Inspect list in sub tables
+		$this->replaceRowSomething($row, $levelPath, "text", "list-item", false);
 	}
-	/**
+
+/**
 	 * 
 	 * Inspect list in sub tables
 	 * @param string_type $row
 	 * @param array $levelPath
+	 * @param string $ns namespace for filter items
+	 * @param string $tag tag for filter (like text or list-item
+	 * @param boolean $recursive recursive mode 
 	 */
-	protected function replaceRowList($row, array $levelPath) {
+	protected function replaceRowSomething($row, array $levelPath,$ns,$tag,$recursive) {
 	    if (count($this->arrayKeys)==0) return;// nothing to do
 	    $keys=array();
 	    $subIndex=count($levelPath);
@@ -799,7 +775,7 @@ class OOoLayout extends Layout {
 	   print_r2($keys);
 	    */
 	    //if (count($keys) == 0 ) return; // nothing to do
-	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
+	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:$ns:1.0",$tag);
 	    if ($rowList->length > 0) {
 	        $skey=implode('|',$keys);
 	        foreach ($rowList as $item) {
@@ -815,19 +791,20 @@ class OOoLayout extends Layout {
 	                        $tvkey[$v]=$vkey;
 	                        $maxk=max(count($tvkey[$v]),$maxk);
 	                    }
-	                  //  print "<b>All keys</b>";
-	                   // print_r2($tvkey);
-	                if ($maxk > 1) {
+	                    /*print "<b>All keys</b>";
+	                    print_r2($tvkey);*/
+	                if ($maxk > 0) {
 	                    for ($i=0;$i<$maxk;$i++) {
 	                        $clone=$item->cloneNode(true);
 	                        $item->parentNode->appendChild($clone);
 	                        foreach ($tvkey as $kk=>$key) {
 	                            $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                        }
-	                        //$this->replaceRowNode($clone,array_merge($levelPath, array($i)));
+	                        if ($recursive) $this->replaceRowSomething($clone,array_merge($levelPath, array($i)),$ns,$tag,$recursive);
 	                    }
-	                    $item->parentNode->removeChild($item);
 	                }
+	                    $item->parentNode->removeChild($item);
+	                
 	                
 	            }
 	        }
