@@ -193,7 +193,12 @@ Class _DSEARCH extends DocSearch {
 	
 	function preConsultation() {
 		if (count($this->getTvalue("se_filter")) > 0) {
-			$this->defaultview="FDL:VIEWBODYCARD";
+			if ($this->defaultview=="FREEDOM:VIEWDSEARCH") {
+				$type=$this->getTvalue("se_typefilter");
+				if ($type[0]!="generated") {
+					$this->defaultview="FDL:VIEWBODYCARD";
+				}
+			}
 		}
 	}
 	function preEdition() {
