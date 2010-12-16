@@ -152,6 +152,13 @@ class OOoLayout extends Layout {
 		$this->template);
 	}
 
+	/**
+	 * 
+	 * @param string $name name of the IF
+	 * @param string $block xml string which containt the condition
+	 * @param boolean $not negative condition
+	 * @param array $levelPath Path use to retrieve condition value in recursive repetable mode
+	 */
 	function TestIf($name,$block,$not=false,$levelPath=null) {
 		$out = "";
 		$cond=null;
@@ -164,11 +171,8 @@ class OOoLayout extends Layout {
 			if ($this->rif[$name] !== null) $cond=($this->rif[$name] == true);
 			elseif ($this->rkey[$name] !== null) $cond=($this->rkey[$name] == true);
 		}
-//print_r2(array("name"=>"IF $name : ", "path"=>$levelPath, "val"=>$val));
 		if ($cond !== null ) {
 			if ($cond xor $not)  {
-
-
 				$out=$block;
 			}
 		} else {
@@ -179,6 +183,10 @@ class OOoLayout extends Layout {
 		if ($this->strip=='Y') $out = str_replace("\\\"","\"",$out);
 		return ($out);
 	}
+	
+	/**
+	 * Top level parse condition
+	 */
 	function ParseIf() {
 	    $templateori='';
 	       $level=0;
@@ -191,6 +199,12 @@ class OOoLayout extends Layout {
 	    $level++; // to prevent infinite loop
 	    }	    
 	}
+	/**
+	 * not use for the moment
+	 * @deprecated
+	 * @param $name
+	 * @param $block
+	 */
 	function SetBlock($name,$block) {
 		if ($this->strip=='Y') {
 			//      $block = StripSlashes($block);
@@ -216,6 +230,11 @@ class OOoLayout extends Layout {
 		//    $this->ParseBlock($out);
 		return ($out);
 	}
+	/**
+	 * not use for the moment
+	 * @deprecated
+	 * @param $out
+	 */
 	function ParseZone(&$out) {
 		$out = preg_replace(
        "/\[ZONE\s*([^:]*):([^\]]*)\]/e",
@@ -223,14 +242,15 @@ class OOoLayout extends Layout {
 		$out);
 	}
 
+	/**
+	 * replace simple key in xml string
+	 */
 	function ParseKey() {
 		if (isset ($this->rkey)) {
 			$this->template=preg_replace($this->pkey,$this->rkey,$this->template);
-			//$this->style_template=preg_replace($this->pkey,$this->rkey,$this->style_template);
-			//$this->meta_template=preg_replace($this->pkey,$this->rkey,$this->meta_template);
 		}
 	}
-	function ParseKeyXML() {
+	private function ParseKeyXML() {
 		if (isset ($this->rkeyxml)) {
 			 
 			$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","p");
@@ -250,11 +270,15 @@ class OOoLayout extends Layout {
 		}
 	}
 
-	function odf2content($odsfile) {
-		if (! file_exists($odsfile)) return "file $odsfile not found";
+	/**
+	 * read odt file and insert xmls in object
+	 * @param string $odsfile path to the odt file
+	 */
+	function odf2content($odtfile) {
+		if (! file_exists($odtfile)) return "file $odtfile not found";
 		$this->cibledir=uniqid(getTmpDir()."/odf");
 
-		$cmd = sprintf("unzip  %s  -d %s >/dev/null", $odsfile, $this->cibledir );
+		$cmd = sprintf("unzip  %s  -d %s >/dev/null", $odtfile, $this->cibledir );
 		system($cmd);
 
 		$contentxml=$this->cibledir."/content.xml";
@@ -279,6 +303,12 @@ class OOoLayout extends Layout {
 		}
 
 	}
+	
+
+	/**
+	 * recompose odt file
+	 * @param string $odsfile output file path
+	 */
 	function content2odf($odsfile) {
 		if (file_exists($odsfile)) return "file $odsfile must not be present";
 
@@ -447,7 +477,6 @@ class OOoLayout extends Layout {
 				}
 			}
 		}
-		//print_r2($this->added_images);exit;
 		foreach($this->added_images as $image) {
 			$mime = getSysMimeFile($this->cibledir.'/'.$image);
 			$new = $manifest->createElement("manifest:file-entry");
@@ -464,7 +493,7 @@ class OOoLayout extends Layout {
 	 * @param string $name
 	 * @param string $value
 	 */
-	protected function setDraw(&$draw, $name, $file) {
+	protected function setDraw(DOMNode &$draw, $name, $file) {
 		if(strpos($file, '<text:tab') !== false) {
 			return 'muliple values : fail';
 		}
@@ -530,7 +559,7 @@ class OOoLayout extends Layout {
 	 * @param string $strOldContent
 	 * @param string $strNewContent
 	 */
-	protected function replaceNodeText( &$objNode, $strOldContent,$strNewContent){
+	protected function replaceNodeText(DOMNode &$objNode, $strOldContent,$strNewContent){
 	    if ($strNewContent === null) return;
 	    if (is_array($strNewContent)) {
 	    	throw new Exception("node replacement must be a string : array found");
@@ -611,7 +640,7 @@ class OOoLayout extends Layout {
 	 * @param string $name
 	 * @param string $value
 	 */
-	protected function setInputField(&$node, $name, $value) {
+	protected function setInputField(DOMNode &$node, $name, $value) {
 		if(strpos($file, '<text:tab') !== false) {
 			return 'muliple values : fail';
 		}
@@ -626,7 +655,7 @@ class OOoLayout extends Layout {
 	 * @param string $name
 	 * @param string $value
 	 */
-	protected function setDropDownField(&$node, $name, $value) {
+	protected function setDropDownField(DOMNode &$node, $name, $value) {
 		if(strpos($file, '<text:tab') !== false) {
 			return 'muliple values : fail';
 		}
@@ -644,7 +673,7 @@ class OOoLayout extends Layout {
 	 * 
 	 * @param DomNode $objNode
 	 */
-	protected function removeAllChilds(&$objNode) {
+	protected function removeAllChilds(DOMNode &$objNode) {
 		$objNodeListNested = $objNode->childNodes;
 		$objNode->nodeValue = '';
 		if(!empty($objNodeListNested) && $objNodeListNested->length > 0) {
@@ -732,40 +761,7 @@ class OOoLayout extends Layout {
 		return $value;
 		 
 	}
-	function fixTextSpan(&$xmlStr) {
-		$structure = preg_split(":(<[^>]*?>):", $xmlStr, NULL, PREG_SPLIT_DELIM_CAPTURE);
-		$stack = array();
-		$tmp = array();
-		$inSpan = false;
-		foreach( $structure as &$el ) {
-			if( preg_match("|^<text:span.*>$|", $el) ) {
-				$inSpan = true;
-				array_push($tmp, $el);
-				continue;
-			} elseif( $inSpan ) {
-				if( preg_match("|^</text:span>$|", $el) ) {
-					$inSpan = false;
-					array_push($tmp, $el);
-					foreach( $tmp as &$t ) {
-						array_push($stack, $t);
-					}
-					unset($t);
-					$tmp = array();
-				} elseif( preg_match("|^<|", $el) ) {
-					array_push($stack, $el);
-					$tmp = array();
-					$inSpan = false;
-				} else {
-					array_push($tmp, $el);
-				}
-			} else {
-				array_push($stack, $el);
-			}
-		}
-		unset($el);
-		// var_dump($stack);
-		return join('', $stack);
-	}
+	
 	
 	/**
 	 * 
@@ -777,9 +773,7 @@ class OOoLayout extends Layout {
 
 		$this->removeXmlId($row);
 		$inner=$row->ownerDocument->saveXML($row);
-		//print_r2($inner);
 
-		//	print "\n-----\n";
 		$head='<?xml version="1.0" encoding="UTF-8"?><office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">';
 		$foot='</office:document-content>';
 
@@ -791,19 +785,14 @@ class OOoLayout extends Layout {
 		// fix span cause when IF/ENDIF are not on the same depth
 		$replacement=preg_replace("/<text:span ([^>]*)>\s*<\/text:p>/s","</text:p>",$replacement);
 	  
-	  
-		//$this->fixTextSpan($replacement);
-		//print_r2($replacement);
+	
 		$dxml=new DomDocument();
 
 		$dxml->loadXML($head.$replacement.$foot);
 		$ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","document-content");
-		//print_r2($ot->length);
 		if ($ot->length > 0) {
-			//print_r2($dxml->saveXML($ot->item(0)->firstChild));
 			$newnode=$this->dom->importNode($ot->item(0)->firstChild, true);
 			// copy inside
-
 			// first delete inside
 			while ($row->firstChild) {
 				$row->removeChild($row->firstChild);
@@ -824,8 +813,7 @@ class OOoLayout extends Layout {
 	 * @param string_type $row
 	 * @param array $levelPath
 	 */
-	protected function replaceRowNode(&$row, array $levelPath) {
-		//print_r2($this->arrayKeys);
+	protected function replaceRowNode(DOMNode &$row, array $levelPath) {
 		// Inspect sub tables, rows
 		$this->replaceRowSomething($row, $levelPath, "table", "table-row", true);
 		// Inspect list in sub tables
@@ -849,31 +837,21 @@ class OOoLayout extends Layout {
 	        if ($this->getArrayDepth($v) == $subIndex) $keys[]=$k;
 	        
 	    }
-	   /*
-	    print_r2($this->arrayKeys);
-	    print "<h1>FOUND</h1>";
-	   print_r2($keys);
-	    */
-	    //if (count($keys) == 0 ) return; // nothing to do
+	   
 	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:$ns:1.0",$tag);
 	    if ($rowList->length > 0) {
 	        $skey=implode('|',$keys);
 	        foreach ($rowList as $item) {
 	            if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
-	               // print_r2($reg);
-	               // print_r2($this->innerXML($item));
-	            	        
+	              
 	            	
 	                    $maxk=0;
-	                    foreach ($reg[1] as $k=>$v) {	        
-	                        //$levelPath=array(  $index);
-	                        
+	                    foreach ($reg[1] as $k=>$v) {	        	                        
 	                        $vkey=$this->getArrayKeyValue($v, $levelPath);
 	                        $tvkey[$v]=$vkey;
 	                        $maxk=max(count($tvkey[$v]),$maxk);
 	                    }
-	                    /*print "<b>All keys</b>";
-	                    print_r2($tvkey);*/
+	                   
 	                if ($maxk > 0) {
 	                    for ($i=0;$i<$maxk;$i++) {
 	                        $clone=$item->cloneNode(true);
@@ -971,7 +949,7 @@ class OOoLayout extends Layout {
                                 $styleName=trim($styleName,'_');
                                 $styles=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:style:1.0","style");
 
-                                addLogMsg(array("style"=>$styleName,"length"=>$styles->length));
+                                //addLogMsg(array("style"=>$styleName,"length"=>$styles->length));
                                 $tStyleName=array();
                                 foreach ($styles as $style) {
 
@@ -1116,7 +1094,7 @@ class OOoLayout extends Layout {
 
 	}
 	/**
-	 * 
+	 * Delete not used images (need when reuse template where repeat section)
 	 */
 	protected function removeOrphanImages() {
 		$imgs=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","image");
@@ -1131,7 +1109,6 @@ class OOoLayout extends Layout {
 		if(is_array($files)) {
 			foreach($files as $file) {
 				if(!in_array(basename($file), $used_images)) {
-error_log("delete $file");
 					$this->removed_images[] = 'Pictures/'.basename($file);
 					@unlink($file);
 				}
@@ -1170,7 +1147,7 @@ error_log("delete $file");
 	}
 
 	/**
-	 * generate OOo document style part
+	 * generate OOo document meta part
 	 */
 	protected function genMeta() {
 		$this->dom=new DOMDocument();
