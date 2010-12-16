@@ -188,16 +188,49 @@ class OOoLayout extends Layout {
 	 * Top level parse condition
 	 */
 	function ParseIf() {
-	    $templateori='';
-	       $level=0;
-	    while ($templateori != $this->template && ($level < 10))  {
-	    $templateori=$this->template;
-	    $this->template = preg_replace(
+		$templateori='';
+		$level=0;
+
+		// to not parse user fields
+		$this->dom->loadXML($this->template);
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-decl");
+		foreach ($lists as $list) {
+			$list->setAttribute('office:string-value', str_replace('[','-CROCHET-',$list->getAttribute('office:string-value')));
+			$list->setAttribute('text:name', str_replace('[','-CROCHET-',$list->getAttribute('text:name')));
+		}
+
+		$this->template=$this->dom->saveXML();
+		while ($templateori != $this->template && ($level < 10))  {
+			$templateori=$this->template;
+			$this->template = preg_replace(
        "/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", 
        "\$this->TestIf('\\2','\\3','\\1')",
-	    $this->template);
-	    $level++; // to prevent infinite loop
-	    }	    
+			$this->template);
+			$level++; // to prevent infinite loop
+		}
+		// restore user fields    
+		$this->dom->loadXML($this->template);
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-decl");
+		foreach ($lists as $list) {
+			$list->setAttribute('office:string-value', str_replace('-CROCHET-','[',$list->getAttribute('office:string-value')));
+			$list->setAttribute('text:name', str_replace('-CROCHET-','[',$list->getAttribute('text:name')));
+		}
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
+
+		$domElemsToRemove = array();
+		
+		foreach ($lists as $list) {
+			if (! $list->getAttribute('office:string-value')) {
+			$domElemsToRemove[] = $list;
+				
+			}
+				
+		}
+		foreach( $domElemsToRemove as $domElement ){
+			$domElement->parentNode->removeChild($domElement);
+		}
+
+		$this->template=$this->dom->saveXML();
 	}
 	/**
 	 * not use for the moment
