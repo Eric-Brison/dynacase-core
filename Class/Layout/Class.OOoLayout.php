@@ -34,6 +34,7 @@ class OOoLayout extends Layout {
 	//# Public methods
 	//#
 	//#
+	public $content_template = '';
 	public $style_template = '';
 	public $meta_template = '';
 	public $template = '';
@@ -65,9 +66,6 @@ class OOoLayout extends Layout {
 				if (filesize($file) > 0) {
 					$this->odf2content($file);
 					$this->file=$file;
-					$this->dom=new DOMDocument();
-					 
-					$this->dom->loadXML($this->template);
 				}
 			} else {
 				$this->template="file  [$caneva] not exists";
@@ -228,8 +226,8 @@ class OOoLayout extends Layout {
 	function ParseKey() {
 		if (isset ($this->rkey)) {
 			$this->template=preg_replace($this->pkey,$this->rkey,$this->template);
-			$this->style_template=preg_replace($this->pkey,$this->rkey,$this->style_template);
-			$this->meta_template=preg_replace($this->pkey,$this->rkey,$this->meta_template);
+			//$this->style_template=preg_replace($this->pkey,$this->rkey,$this->style_template);
+			//$this->meta_template=preg_replace($this->pkey,$this->rkey,$this->meta_template);
 		}
 	}
 	function ParseKeyXML() {
@@ -261,7 +259,7 @@ class OOoLayout extends Layout {
 
 		$contentxml=$this->cibledir."/content.xml";
 		if (file_exists($contentxml)) {
-			$this->template=file_get_contents($contentxml);
+			$this->content_template=file_get_contents($contentxml);
 			unlink($contentxml);
 		}
 		$contentxml=$this->cibledir."/META-INF/manifest.xml";
@@ -286,27 +284,27 @@ class OOoLayout extends Layout {
 
 		$contentxml=$this->cibledir."/content.xml";
 
-		$this->template=preg_replace("!</?text:bookmark-(start|end)([^>]*)>!s","",$this->template);
+		$this->content_template=preg_replace("!</?text:bookmark-(start|end)([^>]*)>!s","",$this->content_template);
 
-		$this->template=preg_replace("!<text:section>(\s*<text:p/>)+!s","<text:section>",$this->template);
-		$this->template=preg_replace("!(<text:p/>\s*)+</text:section>!s","</text:section>",$this->template);
+		$this->content_template=preg_replace("!<text:section>(\s*<text:p/>)+!s","<text:section>",$this->content_template);
+		$this->content_template=preg_replace("!(<text:p/>\s*)+</text:section>!s","</text:section>",$this->content_template);
 
-		$this->template=preg_replace("/<text:span ([^>]*)>\s*<text:section>/s","<text:section>",$this->template);
-		$this->template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->template);
+		$this->content_template=preg_replace("/<text:span ([^>]*)>\s*<text:section>/s","<text:section>",$this->content_template);
+		$this->content_template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->content_template);
 
-		$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->template);
-		$this->template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->template);
+		$this->content_template=preg_replace("/<text:p ([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->content_template);
+		$this->content_template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->content_template);
 
-		//$this->template=preg_replace("/<text:p ([^>]*)>\s*<text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->template);
-		//$this->template=preg_replace("/<\/text:section>\s*<text:([^\/]*)\/>\s*<\/text:p>/s","</text:section><text:\\1/>",$this->template);
+		//$this->content_template=preg_replace("/<text:p ([^>]*)>\s*<text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->content_template);
+		//$this->content_template=preg_replace("/<\/text:section>\s*<text:([^\/]*)\/>\s*<\/text:p>/s","</text:section><text:\\1/>",$this->content_template);
 
-		$this->template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->template);
-		$this->template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->template);
+		$this->content_template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->content_template);
+		$this->content_template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->content_template);
 
-		$this->template=str_replace("&lt;text:line-break/&gt;","<text:line-break/>",$this->template);
+		$this->content_template=str_replace("&lt;text:line-break/&gt;","<text:line-break/>",$this->content_template);
 
-		//  header('Content-type: text/xml; charset=utf-8');print($this->template);exit;
-		file_put_contents($contentxml,$this->template);
+		//  header('Content-type: text/xml; charset=utf-8');print($this->content_template);exit;
+		file_put_contents($contentxml,$this->content_template);
 		
 		$contentxml=$this->cibledir."/META-INF/manifest.xml";
 		file_put_contents($contentxml,$this->manifest);
@@ -449,7 +447,7 @@ class OOoLayout extends Layout {
 				}
 			}
 		}
-		
+		//print_r2($this->added_images);exit;
 		foreach($this->added_images as $image) {
 			$mime = getSysMimeFile($this->cibledir.'/'.$image);
 			$new = $manifest->createElement("manifest:file-entry");
@@ -479,7 +477,6 @@ class OOoLayout extends Layout {
 				$href='Pictures/freedom'.uniqid().mt_rand(1000000,9999999).substr($img->getAttribute('xlink:href'), -9);
 				$img->setAttribute('xlink:href',$href);
 				$this->added_images[] = $href;
-						 
 				if (!copy($file, $this->cibledir.'/'.$href)) {
 					$err="copy fail";
 				}
@@ -1148,11 +1145,100 @@ error_log("delete $file");
 	function GenCssRef() { return "";  }
 	function GenCssCode() { return("");  }
 	function ParseCss(&$out) {  }
+	
+	
+	/**
+	 * generate OOo document style part
+	 */
+	protected function genStyle() {
+
+		$this->dom=new DOMDocument();
+
+		$this->dom->loadXML($this->style_template);
+		if ($this->dom) {
+			$this->template=$this->style_template;
+			
+			$this->parseDraw();
+			$this->template=$this->dom->saveXML();
+			
+			$this->ParseIf();
+			$this->ParseKey();
+			$this->ParseText();
+			
+			$this->style_template=$this->template;
+		}
+	}
+
+	/**
+	 * generate OOo document style part
+	 */
+	protected function genMeta() {
+		$this->dom=new DOMDocument();
+
+		$this->dom->loadXML($this->meta_template);
+		if ($this->dom) {
+			$this->template=$this->meta_template;
+			
+			$this->ParseIf();
+			$this->ParseKey();
+			$this->ParseText();
+			
+			$this->meta_template=$this->template;
+		}
+	}
+	/**
+	 * generate OOo document content
+	 */
+	protected function genContent() {
+
+		$this->dom=new DOMDocument();
+
+		$this->dom->loadXML($this->content_template);
+		if ($this->dom) {
+			$this->template=$this->content_template;
+			$this->parseSection();
+
+			$this->parseTableRow();
+			$this->parseListItem();
+			$this->parseDraw();
+
+			$this->parseInput();
+			$this->parseDropDown();
+
+			$this->addHTMLStyle();
+			$this->template=$this->dom->saveXML();
+			// Parse i18n text
+
+			$this->ParseBlock();
+			$this->ParseIf();
+			//$this->ParseKeyXml();
+			//$this->template=$this->dom->saveXML();
+			//      print $this->template;exit;
+			$this->ParseKey();
+			$this->ParseText();
+
+			$this->restoreProtectedValues();
+
+			$this->dom=new DOMDocument();
+			if ($this->dom->loadXML($this->template)) {
+				$this->restoreSection();
+				$this->removeOrphanImages();
+				$this->template=$this->dom->saveXML();
+					
+				$this->content_template=$this->template;
+			} else {
+				print $this->template;
+				throw new Exception("cannot product ooo template");
+			}
+		} else {
+			throw new Exception(sprintf("not openDocument file %s",$this->file));
+		}
+	}
+	
 	/**
 	 * generate OOo document
 	 */
 	public function gen() {
-
 		// if used in an app , set the app params
 		if (is_object($this->action)) {
 			$list=$this->action->parent->GetAllParam();
@@ -1166,49 +1252,15 @@ error_log("delete $file");
 		// $this->ParseIf($out);
 
 		// Parse IMG: and LAY: tags
-		if ($this->dom) {
-			
-			$this->parseSection();
-			
-			$this->parseTableRow();
-                        $this->parseListItem();
-			$this->parseDraw();
-			
-			$this->parseInput();
-			$this->parseDropDown();
-			
-			$this->addHTMLStyle();
-			$this->template=$this->dom->saveXML();
-			// Parse i18n text
-			
-			$this->ParseBlock();
-			$this->ParseIf();
-			//$this->ParseKeyXml();
-			//$this->template=$this->dom->saveXML();
-			//      print $this->template;exit;
-			$this->ParseKey();
-			$this->ParseText();
-			
-			$this->restoreProtectedValues();
-			
-			$this->dom=new DOMDocument();
-			if ($this->dom->loadXML($this->template)) {
-				$this->restoreSection();
-				$this->removeOrphanImages();
-				$this->template=$this->dom->saveXML();
-					
-				$this->updateManifest();
-					
-				$outfile=uniqid(getTmpDir()."/odf").'.odt';
-				$this->content2odf($outfile);
-			} else {
-				print $this->template;
-				throw new Exception("cannot product ooo template");
-			}
 
-		} else {
-			$outfile=$this->template;
-		}
+		$this->genContent();
+			
+		$this->genStyle();
+		$this->genMeta();
+		$this->updateManifest();
+		$outfile=uniqid(getTmpDir()."/odf").'.odt';
+		$this->content2odf($outfile);
+
 		return($outfile);
 	}
 }
