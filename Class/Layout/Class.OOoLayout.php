@@ -688,8 +688,9 @@ class OOoLayout extends Layout {
 	                            foreach ($tvkey as $kk=>$key) {
 	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                            }
-	                            $this->replaceRowNode($clone,array($i));	
-	                            $this->replaceRowIf($clone,array($i));
+	                            
+	                            $this->replaceRowIf($clone,array($i)); // main level
+	                            $this->replaceRowNode($clone,array($i)); // inspect sub levels
 	                            
 	                        }
 	                        $item->parentNode->removeChild($item);
