@@ -40,6 +40,7 @@ class OOoLayout extends Layout {
 	public $manifest = '';
 
 	protected $arrayKeys=array();
+	protected $arrayMainKeys=array();
 
 	/**
 	 * construct layout for view card containt
@@ -74,7 +75,7 @@ class OOoLayout extends Layout {
 		}
 	}
 
-	function innerXML(&$node){
+	function innerXML(DOMnode &$node){
 		if(!$node) return false;
 		$document = $node->ownerDocument;
 		$nodeAsString = $document->saveXML($node);
@@ -153,23 +154,31 @@ class OOoLayout extends Layout {
 		$this->template);
 	}
 
-	function TestIf($name,$block,$not=false) {
+	function TestIf($name,$block,$not=false,$levelPath=null) {
 		$out = "";
-		if (isset($this->rif[$name]) || isset($this->rkey[$name]) ) {
-			$n = (isset($this->rif[$name]))?$this->rif[$name]:$this->rkey[$name];
-			if ($n xor $not)  {
-				if ($this->strip=='Y') {
-					$block = str_replace("\\\"","\"",$block);
-				}
+		$cond=null;
+		if ($levelPath) {
+			$val=$this->getArrayKeyValue($name,$levelPath);
+			if (is_array($val)) $val=null; // it is not the good level
+				
+			if ($val !== null) $cond=($val == true);
+		} else {
+			if ($this->rif[$name] !== null) $cond=($this->rif[$name] == true);
+			elseif ($this->rkey[$name] !== null) $cond=($this->rkey[$name] == true);
+		}
+//print_r2(array("name"=>"IF $name : ", "path"=>$levelPath, "val"=>$val));
+		if ($cond !== null ) {
+			if ($cond xor $not)  {
+
+
 				$out=$block;
 			}
 		} else {
-			if ($this->strip=='Y') $block = str_replace("\\\"","\"",$block);
-
+			// return  condition
 			if ($not) $out="[IFNOT $name]".$block."[ENDIF $name]";
 			else $out="[IF $name]".$block."[ENDIF $name]";
 		}
-        
+		if ($this->strip=='Y') $out = str_replace("\\\"","\"",$out);
 		return ($out);
 	}
 	function ParseIf() {
@@ -527,10 +536,7 @@ class OOoLayout extends Layout {
 	protected function replaceNodeText( &$objNode, $strOldContent,$strNewContent){
 	    if ($strNewContent === null) return;
 	    if (is_array($strNewContent)) {
-	    	
-	    	print_r2($strNewContent); 
-	    	$a=1/0;
-	    	exit;
+	    	throw new Exception("node replacement must be a string : array found");
 	    }
 		$objNodeListNested = &$objNode->childNodes;
 		foreach ( $objNodeListNested as $objNodeNested ){
@@ -581,8 +587,7 @@ class OOoLayout extends Layout {
 					$maxk=0;
 					foreach ($reg0 as $k=>$v) {
 						$key=substr(trim($v),1,-1);
-						$vkey=$this->rkey[$key];
-						$tvkey[$key]=explode('<text:tab/>',$vkey);
+						$tvkey[$key]=$this->arrayMainKeys[$key];
 						$maxk=max(count($tvkey[$key]),$maxk);
 					}
 					if ($maxk > 1) {
@@ -673,8 +678,7 @@ class OOoLayout extends Layout {
 	                    $maxk=0; // search values which has the greatest number of values
 	                    foreach ($reg0 as $k=>$v) {
 	                        $key=substr(trim($v),1,-1);
-	                        $vkey=$this->rkey[$key];
-	                        $tvkey[$key]=explode('<text:tab/>',$vkey);
+	                        $tvkey[$key]=$this->arrayMainKeys[$key];
 	                        $maxk=max(count($tvkey[$key]),$maxk);
 	                    }
 	                    if ($maxk > 1) {
@@ -684,8 +688,9 @@ class OOoLayout extends Layout {
 	                            foreach ($tvkey as $kk=>$key) {
 	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                            }
+	                            $this->replaceRowNode($clone,array($i));	
 	                            $this->replaceRowIf($clone,array($i));
-	                            $this->replaceRowNode($clone,array($i));
+	                            
 	                        }
 	                        $item->parentNode->removeChild($item);
 	                    }
@@ -711,22 +716,57 @@ class OOoLayout extends Layout {
 	 * @param array $levelPath path to access of a particular value
 	 */
 	protected function getArrayKeyValue($key,array $levelPath) {
-	    if (! isset($this->arrayKeys[$key])) return null;
-	    
-	    $index=current($levelPath);
-	    $value=$this->arrayKeys[$key];
-	    foreach ($levelPath as $index) {
-	        $value=$value[$index];
-	    }
-	    return $value;
-	    if (count($levelPath) == 2) 
-	    {
-	        $ni=next($levelPath);
-	        return $this->arrayKeys[$key][$index][$ni];
-	    }
-	    return $this->arrayKeys[$key][$index];
-	    
-	    
+		$value=null;
+
+		if (count($levelPath)==1) {
+			if ( isset($this->arrayMainKeys[$key])) {
+				$index=current($levelPath);
+				return $this->arrayMainKeys[$key][$index];
+			}
+		}
+		if (! isset($this->arrayKeys[$key])) return null;
+
+		$value=$this->arrayKeys[$key];
+		foreach ($levelPath as $index) {
+			$value=$value[$index];
+		}
+
+		return $value;
+		 
+	}
+	function fixTextSpan(&$xmlStr) {
+		$structure = preg_split(":(<[^>]*?>):", $xmlStr, NULL, PREG_SPLIT_DELIM_CAPTURE);
+		$stack = array();
+		$tmp = array();
+		$inSpan = false;
+		foreach( $structure as &$el ) {
+			if( preg_match("|^<text:span.*>$|", $el) ) {
+				$inSpan = true;
+				array_push($tmp, $el);
+				continue;
+			} elseif( $inSpan ) {
+				if( preg_match("|^</text:span>$|", $el) ) {
+					$inSpan = false;
+					array_push($tmp, $el);
+					foreach( $tmp as &$t ) {
+						array_push($stack, $t);
+					}
+					unset($t);
+					$tmp = array();
+				} elseif( preg_match("|^<|", $el) ) {
+					array_push($stack, $el);
+					$tmp = array();
+					$inSpan = false;
+				} else {
+					array_push($tmp, $el);
+				}
+			} else {
+				array_push($stack, $el);
+			}
+		}
+		unset($el);
+		// var_dump($stack);
+		return join('', $stack);
 	}
 	
 	/**
@@ -735,8 +775,50 @@ class OOoLayout extends Layout {
 	 * @param string_type $row
 	 * @param array $levelPath
 	 */
-	protected function replaceRowIf($row, array $levelPath) {
-		
+	protected function replaceRowIf(DOMNode &$row, array $levelPath) {
+
+		$this->removeXmlId($row);
+		$inner=$row->ownerDocument->saveXML($row);
+		//print_r2($inner);
+
+		//	print "\n-----\n";
+		$head='<?xml version="1.0" encoding="UTF-8"?><office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" office:version="1.0">';
+		$foot='</office:document-content>';
+
+		$replacement = preg_replace(
+       "/(?m)\[IF(NOT)?\s*([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", 
+       "\$this->TestIf('\\2','\\3','\\1',\$levelPath)",
+		$inner);
+
+		// fix span cause when IF/ENDIF are not on the same depth
+		$replacement=preg_replace("/<text:span ([^>]*)>\s*<\/text:p>/s","</text:p>",$replacement);
+	  
+	  
+		//$this->fixTextSpan($replacement);
+		//print_r2($replacement);
+		$dxml=new DomDocument();
+
+		$dxml->loadXML($head.$replacement.$foot);
+		$ot=$dxml->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:office:1.0","document-content");
+		//print_r2($ot->length);
+		if ($ot->length > 0) {
+			//print_r2($dxml->saveXML($ot->item(0)->firstChild));
+			$newnode=$this->dom->importNode($ot->item(0)->firstChild, true);
+			// copy inside
+
+			// first delete inside
+			while ($row->firstChild) {
+				$row->removeChild($row->firstChild);
+			}
+
+			// move to
+			while ($newnode->firstChild) {
+				$row->appendChild($newnode->firstChild);
+			}
+
+
+		}
+
 	}
 	/**
 	 * 
@@ -755,13 +837,13 @@ class OOoLayout extends Layout {
 /**
 	 * 
 	 * Inspect list in sub tables
-	 * @param string_type $row
+	 * @param DOMNode $row
 	 * @param array $levelPath
-	 * @param string $ns namespace for filter items
-	 * @param string $tag tag for filter (like text or list-item
+	 * @param string $ns namespace for filter items (like text or table)
+	 * @param string $tag tag for filter (like table-row or list-item)
 	 * @param boolean $recursive recursive mode 
 	 */
-	protected function replaceRowSomething($row, array $levelPath,$ns,$tag,$recursive) {
+	protected function replaceRowSomething(DOMNode &$row, array $levelPath,$ns,$tag,$recursive) {
 	    if (count($this->arrayKeys)==0) return;// nothing to do
 	    $keys=array();
 	    $subIndex=count($levelPath);
@@ -782,7 +864,8 @@ class OOoLayout extends Layout {
 	            if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
 	               // print_r2($reg);
 	               // print_r2($this->innerXML($item));
-	            
+	            	        
+	            	
 	                    $maxk=0;
 	                    foreach ($reg[1] as $k=>$v) {	        
 	                        //$levelPath=array(  $index);
@@ -800,7 +883,9 @@ class OOoLayout extends Layout {
 	                        foreach ($tvkey as $kk=>$key) {
 	                            $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                        }
-	                        if ($recursive) $this->replaceRowSomething($clone,array_merge($levelPath, array($i)),$ns,$tag,$recursive);
+	                        $newPath=array_merge($levelPath, array($i));
+	                        $this->replaceRowIf($clone,$newPath);
+	                        if ($recursive) $this->replaceRowSomething($clone,$newPath,$ns,$tag,$recursive);
 	                    }
 	                }
 	                    $item->parentNode->removeChild($item);
@@ -808,6 +893,7 @@ class OOoLayout extends Layout {
 	                
 	            }
 	        }
+	        
 	    }
 	}
 	/**
@@ -944,9 +1030,10 @@ class OOoLayout extends Layout {
 	 * $key must begin with V_ and be uppercase
 	 */
 	public function setColumn($key,array $t) {
-	  
+	
 	    if (is_array(current($t))) $this->setArray($key,$t);
-	    else $this->set($key,implode('<text:tab/>',$t));
+	    else $this->arrayMainKeys[$key]=$t;
+	    //else $this->set($key,implode('<text:tab/>',$t));
 	}
 	
 	protected function setArray($key,array $t) {
@@ -1104,15 +1191,19 @@ error_log("delete $file");
 			$this->restoreProtectedValues();
 			
 			$this->dom=new DOMDocument();
-			$this->dom->loadXML($this->template);
-			$this->restoreSection();
-			$this->removeOrphanImages();
-			$this->template=$this->dom->saveXML();
-			
-			$this->updateManifest();
-			
-			$outfile=uniqid(getTmpDir()."/odf").'.odt';
-			$this->content2odf($outfile);
+			if ($this->dom->loadXML($this->template)) {
+				$this->restoreSection();
+				$this->removeOrphanImages();
+				$this->template=$this->dom->saveXML();
+					
+				$this->updateManifest();
+					
+				$outfile=uniqid(getTmpDir()."/odf").'.odt';
+				$this->content2odf($outfile);
+			} else {
+				print $this->template;
+				throw new Exception("cannot product ooo template");
+			}
 
 		} else {
 			$outfile=$this->template;
