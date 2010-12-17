@@ -722,7 +722,42 @@ class OOoLayout extends Layout {
 		return $err;
 	}
 
+	/**
+	 * parse section repeat
+	 */
+	protected function parseSection() {
 
+	$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","section");
+		foreach ($lists as $item) {
+			
+				$skey=implode('|',array_keys($this->arrayMainKeys));
+				if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
+					$reg0=$reg[0];
+					$tvkey=array();
+					$maxk=0;
+					foreach ($reg0 as $k=>$v) {
+						$key=substr(trim($v),1,-1);
+						$tvkey[$key]=$this->arrayMainKeys[$key];
+						$maxk=max(count($tvkey[$key]),$maxk);
+					}
+					if ($maxk > 0) {
+						for ($i=0;$i<$maxk;$i++) {
+							$clone=$item->cloneNode(true);
+							$item->parentNode->insertBefore($clone,$item);
+							foreach ($tvkey as $kk=>$key) {
+								$this->replaceNodeText($clone,"[$kk]",$key[$i]);
+							}
+							$this->replaceRowIf($clone,array($i)); // main level
+	                        $this->replaceRowNode($clone,array($i)); // inspect sub levels
+						}
+					}
+					$item->parentNode->removeChild($item);
+				}
+			
+		}
+	}
+
+	
 	/**
 	 * modify a text:input field value
 	 * 
@@ -919,6 +954,8 @@ class OOoLayout extends Layout {
 		$this->replaceRowSomething($row, $levelPath, "table", "table-row", true);
 		// Inspect list in sub tables
 		$this->replaceRowSomething($row, $levelPath, "text", "list-item", false);
+		// Inspect list in subsection
+		$this->replaceRowSomething($row, $levelPath, "text", "section", true);
 	}
 
 /**
@@ -942,6 +979,9 @@ class OOoLayout extends Layout {
 	    $rowList=$row->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:$ns:1.0",$tag);
 	    if ($rowList->length > 0) {
 	        $skey=implode('|',$keys);
+	       /* print "<h1>$tag</h1>";
+	        print_r2($levelPath);
+	        print_r2($keys);*/
 	        foreach ($rowList as $item) {
 	            if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
 	              
@@ -962,7 +1002,8 @@ class OOoLayout extends Layout {
 	                        }
 	                        $newPath=array_merge($levelPath, array($i));
 	                        $this->replaceRowIf($clone,$newPath);
-	                        if ($recursive) $this->replaceRowSomething($clone,$newPath,$ns,$tag,$recursive);
+	                        //if ($recursive) $this->replaceRowSomething($clone,$newPath,$ns,$tag,$recursive);
+	                        if ($recursive) $this->replaceRowNode($clone,$newPath);
 	                    }
 	                }
 	                    $item->parentNode->removeChild($item);
@@ -1014,7 +1055,7 @@ class OOoLayout extends Layout {
 	/**
 	 * parse section and clone "tpl_xxx" sections into saved_sections
 	 */
-	protected function parseSection() {
+	protected function parseTplSection() {
 		$this->saved_sections=array();
 		// remove old generated sections
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","section");
@@ -1275,11 +1316,13 @@ class OOoLayout extends Layout {
 		$this->dom->loadXML($this->content_template);
 		if ($this->dom) {
 			$this->template=$this->content_template;
-			$this->parseSection();
+			$this->parseTplSection();
 		//header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
 			
 			$this->hideUserFieldSet();
 			$this->parseTableRow();
+			
+			$this->parseSection();
 			$this->parseListItem();
 			$this->parseDraw();
 
