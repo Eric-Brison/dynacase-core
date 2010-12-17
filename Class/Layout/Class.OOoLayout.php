@@ -144,7 +144,20 @@ class OOoLayout extends Layout {
 		}
 		return false;
 	}
-
+	/**
+	 * get depth in dom tree
+	 * @param DOMNode $node
+	 */
+	private function getNodeDepth(DOMNode &$node) {
+		$mynode = $node;
+		$depth=0;
+		while(!empty($mynode->parentNode)) {
+			$depth++;
+			$mynode = $mynode->parentNode;
+			
+		}
+		return $depth;
+	}
 	function ParseBlock() {
 		$this->template = preg_replace(
        "/(?m)\[BLOCK\s*([^\]]*)\](.*?)\[ENDBLOCK\s*\\1\]/se", 
@@ -279,6 +292,7 @@ class OOoLayout extends Layout {
 	 * replace brackets
 	 */
 	protected function restoreUserFieldSet() {
+		// header('Content-type: text/xml; charset=utf-8');print $this->template;exit;
 		$this->dom->loadXML($this->template);
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-decl");
 		foreach ($lists as $list) {
@@ -722,13 +736,31 @@ class OOoLayout extends Layout {
 		return $err;
 	}
 
+	
+	private function _section_cmp($k1,$k2) {
+		if ($k2 > $k1) return 1;
+		else if ($k2 < $k1) return -1;
+		return 0;
+	}
 	/**
 	 * parse section repeat
 	 */
 	protected function parseSection() {
 
-	$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","section");
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","section");
+		$ks=0;
+		$section=array();
+		// need to inpect section with max depth before to avoid et repeat top level section
 		foreach ($lists as $item) {
+			$depth=$this->getNodeDepth($item);				
+			$section[($depth*200)+$ks]=$item;
+			$ks++;
+		}
+		//reorder by depth
+		uksort($section,array($this, "_section_cmp"));
+		
+	
+		foreach ($section as $item) {
 			
 				$skey=implode('|',array_keys($this->arrayMainKeys));
 				if (preg_match_all("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
@@ -1158,6 +1190,11 @@ class OOoLayout extends Layout {
 	    if (!$key ) throw new Exception('Key must not be empty');
 	    $this->arrayKeys[$key]=$t;
 	}
+	/**
+	 * @deprecated
+	 * @param unknown_type $p_nom_block
+	 * @param unknown_type $data
+	 */
 	public function SetBlockData($p_nom_block,$data) {
 		if ($p_nom_block != "") {
 			if ($data!=null && $this->encoding=="utf-8") {
@@ -1187,6 +1224,16 @@ class OOoLayout extends Layout {
 				}
 			}
 		} else {
+			$this->setRepetable($data);
+		}
+	}
+	
+	/*
+	 * set array to be use in repeat set like table, list-item or section
+	 * @param array $data the arry to set
+	 */
+	public function setRepetable(array $data) {
+	
 			$t=array();
 			if (is_array($data)) {
 				foreach ($data as $k=>$v) {
@@ -1213,8 +1260,9 @@ class OOoLayout extends Layout {
 			foreach ($t as $k=>$v) {
 				$this->setColumn($k,$v);
 			}
-		}
+		
 	}
+	
 	protected function addHTMLStyle() {
 		$xmldata='<xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">'."</xhtml:html>";
 
