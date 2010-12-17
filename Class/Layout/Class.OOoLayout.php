@@ -191,33 +191,7 @@ class OOoLayout extends Layout {
 		$templateori='';
 		$level=0;
 
-		// detect user field to force it into a span
-		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
-		foreach ($lists as $list) {						
-			if ($list->parentNode->tagName != 'text:span') {
-				$nt = $this->dom->createElement("text:span");
-				$list->parentNode->insertBefore($nt,$list);
-				$nt->appendChild($list);
-			}	
-		}
-		// header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
-
-		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
-		$userFields=array();
-		// set the key of fields to up
-		foreach ($lists as $list) {
-			$textContent=$list->nodeValue;				
-			if (substr($textContent,0,1)=='[') {
-				$userFields[]=$list;
-				$nt=$this->dom->createTextNode($textContent);
-				$list->parentNode->insertBefore($nt,$list);
-			}
-		}
-		foreach ($userFields as $list) {
-			$list->parentNode->removeChild($list);
-		}
-
-		$this->template=$this->dom->saveXML();
+	
 
 		//header('Content-type: text/xml; charset=utf-8');print $this->template;exit;
 		while ($templateori != $this->template && ($level < 10))  {
@@ -267,12 +241,38 @@ class OOoLayout extends Layout {
 	 * to not parse user fields set
 	 */
 	protected function hideUserFieldSet() {
-		$this->dom->loadXML($this->template);
+		//$this->dom->loadXML($this->template);
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-decl");
 		foreach ($lists as $list) {
 			$list->setAttribute('office:string-value', str_replace('[','-CROCHET-',$list->getAttribute('office:string-value')));
 			$list->setAttribute('text:name', str_replace('[','-CROCHET-',$list->getAttribute('text:name')));
 		}
+			// detect user field to force it into a span
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
+		foreach ($lists as $list) {						
+			if ($list->parentNode->tagName != 'text:span') {
+				$nt = $this->dom->createElement("text:span");
+				$list->parentNode->insertBefore($nt,$list);
+				$nt->appendChild($list);
+			}	
+		}
+		// header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
+
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
+		$userFields=array();
+		// set the key of fields to up
+		foreach ($lists as $list) {
+			$textContent=$list->nodeValue;				
+			if (substr($textContent,0,1)=='[') {
+				$userFields[]=$list;
+				$nt=$this->dom->createTextNode($textContent);
+				$list->parentNode->insertBefore($nt,$list);
+			}
+		}
+		foreach ($userFields as $list) {
+			$list->parentNode->removeChild($list);
+		}
+
 		$this->template=$this->dom->saveXML();
 	}
 	/**
@@ -592,7 +592,7 @@ class OOoLayout extends Layout {
 			$img=$imgs->item(0);
 			if(file_exists($file)) {
 				$draw->setAttribute('draw:name',substr($name,2).' '.uniqid().mt_rand(1000,9999));
-				$href='Pictures/freedom'.uniqid().mt_rand(1000000,9999999).substr($img->getAttribute('xlink:href'), -9);
+				$href='Pictures/dcp'.uniqid().mt_rand(1000000,9999999).substr($img->getAttribute('xlink:href'), -9);
 				$img->setAttribute('xlink:href',$href);
 				$this->added_images[] = $href;
 				if (!copy($file, $this->cibledir.'/'.$href)) {
@@ -1202,11 +1202,11 @@ class OOoLayout extends Layout {
 		$used_images = array();
 		foreach($imgs as $img) {
 			$href = basename($img->getAttribute('xlink:href'));
-			if(substr($href, 0, 7) == 'freedom') {
+			if(substr($href, 0, 7) == 'dcp') {
 				$used_images[] = $href;
 			}
 		}
-		$files = glob($this->cibledir.'/Pictures/freedom*');
+		$files = glob($this->cibledir.'/Pictures/dcp*');
 		if(is_array($files)) {
 			foreach($files as $file) {
 				if(!in_array(basename($file), $used_images)) {
@@ -1276,7 +1276,9 @@ class OOoLayout extends Layout {
 		if ($this->dom) {
 			$this->template=$this->content_template;
 			$this->parseSection();
-
+		//header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
+			
+			$this->hideUserFieldSet();
 			$this->parseTableRow();
 			$this->parseListItem();
 			$this->parseDraw();
@@ -1288,7 +1290,6 @@ class OOoLayout extends Layout {
 			$this->template=$this->dom->saveXML();
 			// Parse i18n text
 
-			$this->hideUserFieldSet();
 			$this->ParseBlock();
 			$this->ParseIf();
 			//$this->ParseKeyXml();
@@ -1303,7 +1304,8 @@ class OOoLayout extends Layout {
 			$this->dom=new DOMDocument();
 			if ($this->dom->loadXML($this->template)) {
 				$this->restoreSection();
-				$this->removeOrphanImages();
+				// not remove images because delete images defined in style.xml
+				//$this->removeOrphanImages();
 				$this->template=$this->dom->saveXML();
 					
 				$this->content_template=$this->template;
