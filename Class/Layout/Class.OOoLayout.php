@@ -191,8 +191,6 @@ class OOoLayout extends Layout {
 		$templateori='';
 		$level=0;
 
-		
-
 		// detect user field to force it into a span
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
 		foreach ($lists as $list) {						
@@ -209,21 +207,14 @@ class OOoLayout extends Layout {
 		// set the key of fields to up
 		foreach ($lists as $list) {
 			$textContent=$list->nodeValue;				
-			//if (substr($textContent,0,1)=='[') {
+			if (substr($textContent,0,1)=='[') {
 				$userFields[]=$list;
 				$nt=$this->dom->createTextNode($textContent);
 				$list->parentNode->insertBefore($nt,$list);
-			//}
+			}
 		}
 		foreach ($userFields as $list) {
-			//$list->parentNode->nodeValue=$list->nodeValue;
-			//$textContent=$list->nodeValue;
-			//$list->parentNode->removeChild($list);
-			//$nt=$this->dom->createTextNode($textContent);
-			//$list->parentNode->appendChild($nt);
 			$list->parentNode->removeChild($list);
-				
-			//$list->parentNode->nodeValue=$textContent;
 		}
 
 		$this->template=$this->dom->saveXML();
