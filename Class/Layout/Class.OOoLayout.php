@@ -191,15 +191,44 @@ class OOoLayout extends Layout {
 		$templateori='';
 		$level=0;
 
-		// to not parse user fields
-		$this->dom->loadXML($this->template);
-		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-decl");
+		
+
+		// detect user field to force it into a span
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
+		foreach ($lists as $list) {						
+			if ($list->parentNode->tagName != 'text:span') {
+				$nt = $this->dom->createElement("text:span");
+				$list->parentNode->insertBefore($nt,$list);
+				$nt->appendChild($list);
+			}	
+		}
+		// header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
+
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
+		$userFields=array();
+		// set the key of fields to up
 		foreach ($lists as $list) {
-			$list->setAttribute('office:string-value', str_replace('[','-CROCHET-',$list->getAttribute('office:string-value')));
-			$list->setAttribute('text:name', str_replace('[','-CROCHET-',$list->getAttribute('text:name')));
+			$textContent=$list->nodeValue;				
+			//if (substr($textContent,0,1)=='[') {
+				$userFields[]=$list;
+				$nt=$this->dom->createTextNode($textContent);
+				$list->parentNode->insertBefore($nt,$list);
+			//}
+		}
+		foreach ($userFields as $list) {
+			//$list->parentNode->nodeValue=$list->nodeValue;
+			//$textContent=$list->nodeValue;
+			//$list->parentNode->removeChild($list);
+			//$nt=$this->dom->createTextNode($textContent);
+			//$list->parentNode->appendChild($nt);
+			$list->parentNode->removeChild($list);
+				
+			//$list->parentNode->nodeValue=$textContent;
 		}
 
 		$this->template=$this->dom->saveXML();
+
+		//header('Content-type: text/xml; charset=utf-8');print $this->template;exit;
 		while ($templateori != $this->template && ($level < 10))  {
 			$templateori=$this->template;
 			$this->template = preg_replace(
@@ -208,28 +237,63 @@ class OOoLayout extends Layout {
 			$this->template);
 			$level++; // to prevent infinite loop
 		}
-		// restore user fields    
+		$this->fixSpanIf($this->template);
+		// header('Content-type: text/xml; charset=utf-8');print $this->template;exit;
+		// restore user fields
+		if (! $this->dom->loadXML($this->template)) {
+			print $this->template;
+			throw new Exception("Error in parse condition");
+		}
+		//header('Content-type: text/xml; charset=utf-8');print $this->dom->saveXML();exit;
+		
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
+
+		$domElemsToRemove = array();
+		$domElemsToClean = array();
+
+		foreach ($lists as $list) {
+			if (! $list->getAttribute('office:string-value')) {
+				if ($list->textContent==''){
+					$domElemsToRemove[] = $list;
+				} else {
+					//$list->setAttribute("text:name",'');
+					$domElemsToClean[] = $list;
+						
+				}
+			}
+		}
+		foreach( $domElemsToClean as $domElement ){
+			//$domElement->parentNode->nodeValue=$domElement->nodeValue;
+		}
+		foreach( $domElemsToRemove as $domElement ){
+			$domElement->parentNode->removeChild($domElement);
+		}
+
+		$this->template=$this->dom->saveXML();
+	}
+	
+	/**
+	 * to not parse user fields set
+	 */
+	protected function hideUserFieldSet() {
+		$this->dom->loadXML($this->template);
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-decl");
+		foreach ($lists as $list) {
+			$list->setAttribute('office:string-value', str_replace('[','-CROCHET-',$list->getAttribute('office:string-value')));
+			$list->setAttribute('text:name', str_replace('[','-CROCHET-',$list->getAttribute('text:name')));
+		}
+		$this->template=$this->dom->saveXML();
+	}
+	/**
+	 * replace brackets
+	 */
+	protected function restoreUserFieldSet() {
 		$this->dom->loadXML($this->template);
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-decl");
 		foreach ($lists as $list) {
 			$list->setAttribute('office:string-value', str_replace('-CROCHET-','[',$list->getAttribute('office:string-value')));
 			$list->setAttribute('text:name', str_replace('-CROCHET-','[',$list->getAttribute('text:name')));
 		}
-		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","user-field-get");
-
-		$domElemsToRemove = array();
-		
-		foreach ($lists as $list) {
-			if (! $list->getAttribute('office:string-value')) {
-			$domElemsToRemove[] = $list;
-				
-			}
-				
-		}
-		foreach( $domElemsToRemove as $domElement ){
-			$domElement->parentNode->removeChild($domElement);
-		}
-
 		$this->template=$this->dom->saveXML();
 	}
 	/**
@@ -352,10 +416,10 @@ class OOoLayout extends Layout {
 		$this->content_template=preg_replace("!<text:section>(\s*<text:p/>)+!s","<text:section>",$this->content_template);
 		$this->content_template=preg_replace("!(<text:p/>\s*)+</text:section>!s","</text:section>",$this->content_template);
 
-		$this->content_template=preg_replace("/<text:span ([^>]*)>\s*<text:section>/s","<text:section>",$this->content_template);
+		$this->content_template=preg_replace("/<text:span([^>]*)>\s*<text:section>/s","<text:section>",$this->content_template);
 		$this->content_template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->content_template);
 
-		$this->content_template=preg_replace("/<text:p ([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->content_template);
+		$this->content_template=preg_replace("/<text:p([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->content_template);
 		$this->content_template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->content_template);
 
 		//$this->content_template=preg_replace("/<text:p ([^>]*)>\s*<text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->content_template);
@@ -447,6 +511,7 @@ class OOoLayout extends Layout {
 		if ( !isUTF8($val)) $val = utf8_encode($val);
 		if (! $this->isXml($val)) {
 			$this->pkey[$tag]="/\[$tag\]/";
+			if (is_array($val)) $val=implode('<text:tab/>',$val);
 			$this->rkey[$tag]=$val;
 		} else {
 
@@ -640,7 +705,8 @@ class OOoLayout extends Layout {
 			$items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
 			if ($items->length > 0) {
 				$item=$items->item(0);
-				if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($list) ,$reg)) {
+				$skey=implode('|',array_keys($this->arrayMainKeys));
+				if (preg_match_all("/\[($skey)\]/",$this->innerXML($list) ,$reg)) {
 					$reg0=$reg[0];
 					$tvkey=array();
 					$maxk=0;
@@ -649,7 +715,7 @@ class OOoLayout extends Layout {
 						$tvkey[$key]=$this->arrayMainKeys[$key];
 						$maxk=max(count($tvkey[$key]),$maxk);
 					}
-					if ($maxk > 1) {
+					if ($maxk > 0) {
 						for ($i=0;$i<$maxk;$i++) {
 							$clone=$item->cloneNode(true);
 							$item->parentNode->appendChild($clone);
@@ -657,8 +723,8 @@ class OOoLayout extends Layout {
 								$this->replaceNodeText($clone,"[$kk]",$key[$i]);
 							}
 						}
-						$item->parentNode->removeChild($item);
 					}
+					$item->parentNode->removeChild($item);
 				}
 			}
 		}
@@ -723,15 +789,17 @@ class OOoLayout extends Layout {
 	    foreach ($lists as $list) {
 	        $items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
 	        if ($items->length > 0) {
-	            $findv=false;
+	            $findv=false;	        
+	            $skey=implode('|',array_keys($this->arrayMainKeys));
+	            
 	            foreach ($items as $item) {
-	                if (preg_match("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($item) ,$reg)) {
+	                if (preg_match("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
 	                    $findv=true;
 	                    break;
 	                }
 	            }
 	            if ($findv) {
-	                if (preg_match_all("/\[V_[A-Z0-9_-]+\]/",$this->innerXML($list),$reg)) {
+	                if (preg_match_all("/\[($skey)\]/",$this->innerXML($list),$reg)) {
 	                    $reg0=$reg[0];
 	                    $tvkey=array();
 	                    $maxk=0; // search values which has the greatest number of values
@@ -746,8 +814,7 @@ class OOoLayout extends Layout {
 	                            $item->parentNode->appendChild($clone);
 	                            foreach ($tvkey as $kk=>$key) {
 	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
-	                            }
-	                            
+	                            }	                            
 	                            $this->replaceRowIf($clone,array($i)); // main level
 	                            $this->replaceRowNode($clone,array($i)); // inspect sub levels
 	                            
@@ -760,14 +827,17 @@ class OOoLayout extends Layout {
 	    }
 	    return $err;
 	}
+	/**
+	 * return the number of array in arrays
+	 * @param array $v
+	 */
 	private static function getArrayDepth($v) {
 	    $depth=-1;
 	    while (is_array($v)) {
 	        $depth++;
 	        $v=current($v);
 	    }
-	    return $depth;
-	    
+	    return $depth;	    
 	}
 	/**
 	 * 
@@ -794,7 +864,15 @@ class OOoLayout extends Layout {
 		return $value;
 		 
 	}
-	
+	/**
+	 * fix span cause when IF/ENDIF are not on the same depth
+	 * @param $s
+	 */
+	private function fixSpanIf(&$s) {
+				$s=preg_replace("/<text:span ([^>]*)>\s*<\/text:p>/s","</text:p>",$s);
+				$s=preg_replace("/<text:p ([^>]*)>\s*<\/text:span>/s","<text:p \\1>",$s);
+		
+	}
 	
 	/**
 	 * 
@@ -815,8 +893,7 @@ class OOoLayout extends Layout {
        "\$this->TestIf('\\2','\\3','\\1',\$levelPath)",
 		$inner);
 
-		// fix span cause when IF/ENDIF are not on the same depth
-		$replacement=preg_replace("/<text:span ([^>]*)>\s*<\/text:p>/s","</text:p>",$replacement);
+		$this->fixSpanIf($replacement);
 	  
 	
 		$dxml=new DomDocument();
@@ -1171,10 +1248,11 @@ class OOoLayout extends Layout {
 			$this->parseDraw();
 			$this->template=$this->dom->saveXML();
 			
+			$this->hideUserFieldSet();
 			$this->ParseIf();
 			$this->ParseKey();
 			$this->ParseText();
-			
+			$this->restoreUserFieldSet();
 			$this->style_template=$this->template;
 		}
 	}
@@ -1219,6 +1297,7 @@ class OOoLayout extends Layout {
 			$this->template=$this->dom->saveXML();
 			// Parse i18n text
 
+			$this->hideUserFieldSet();
 			$this->ParseBlock();
 			$this->ParseIf();
 			//$this->ParseKeyXml();
@@ -1226,7 +1305,8 @@ class OOoLayout extends Layout {
 			//      print $this->template;exit;
 			$this->ParseKey();
 			$this->ParseText();
-
+			$this->restoreUserFieldSet();
+			
 			$this->restoreProtectedValues();
 
 			$this->dom=new DOMDocument();
