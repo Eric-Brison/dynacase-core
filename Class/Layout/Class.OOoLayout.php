@@ -170,7 +170,7 @@ class OOoLayout extends Layout {
 	 * @param string $name name of the IF
 	 * @param string $block xml string which containt the condition
 	 * @param boolean $not negative condition
-	 * @param array $levelPath Path use to retrieve condition value in recursive repetable mode
+	 * @param array $levelPath Path use to retrieve condition value in recursive repeatable mode
 	 */
 	function TestIf($name,$block,$not=false,$levelPath=null) {
 		$out = "";
@@ -1224,7 +1224,7 @@ class OOoLayout extends Layout {
 				}
 			}
 		} else {
-			$this->setRepetable($data);
+			$this->setrepeatable($data);
 		}
 	}
 	
@@ -1232,7 +1232,7 @@ class OOoLayout extends Layout {
 	 * set array to be use in repeat set like table, list-item or section
 	 * @param array $data the arry to set
 	 */
-	public function setRepetable(array $data) {
+	public function setrepeatable(array $data) {
 	
 			$t=array();
 			if (is_array($data)) {
