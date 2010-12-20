@@ -2519,7 +2519,7 @@ function sdrag(event) {
   idro=null;
   draggo=false;
   delEvent(document,"mousemove",dragtr);   
-  stopPropagation(event);
+  //stopPropagation(event);
 
   
 }
