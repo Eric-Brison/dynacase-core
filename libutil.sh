@@ -50,10 +50,36 @@ function pgRoleExists {
 }
 
 function pgTableExists {
-    dbName=$1
-    psql -At -c "\d \"$dbName\"" 2> /dev/null
+    tableName=$1
+    if [ -z $tableName ]; then
+	return 1
+    fi
+    TABLE=`psql -At -c "select tablename from pg_tables where tablename='$tableName'" 2> /dev/null`
     RET=$?
-    return $RET
+    if [ $RET -ne 0 ]; then
+	return $RET;
+    fi
+    if [ -n "$TABLE" ]; then
+	return 0
+    fi
+    return -1
+}
+
+function pgTableIndexExists {
+    tableName=$1
+    indexName=$2
+    if [ -z "$tableName" -o -z "$indexName" ]; then
+	return 1
+    fi
+    INDEX=`psql -At -c "SELECT indexname FROM pg_indexes WHERE tablename = '$tableName' AND indexname = '$indexName'" 2> /dev/null`
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	return $RET
+    fi
+    if [ -n "$INDEX" ]; then
+	return 0
+    fi
+    return -1
 }
 
 function pgExecuteSqlFile {
