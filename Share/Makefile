@@ -10,13 +10,16 @@ include $(utildir)/PubRule
 
 SUBDIR= htmlarea fckeditor jscalendar mcal jsXMLParser tsearch2 mozillaplugin
 
-publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/htmlarea $(pubdir)/jscalendar $(pubdir)/php2V2
+publish: $(pubdir)/log.sh $(pubdir)/WHAT/Lib.Prefix.php.in $(pubdir)/htmlarea $(pubdir)/jscalendar $(pubdir)/php2V2 $(pubdir)/FDL/geticon.php
 
 $(pubdir)/log.sh: log.sh
 	cp $< $@
 
 $(pubdir)/WHAT/Lib.Prefix.php.in: Lib.Prefix.php.in
 	cp $< $@
+
+$(pubdir)/FDL/geticon.php: geticon.php
+	ln -s ../WHAT/geticon.php $@
 
 $(pubdir)/htmlarea :
 	cp -r htmlarea $(pubdir)

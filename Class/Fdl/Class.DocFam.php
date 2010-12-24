@@ -356,7 +356,7 @@ function preDocDelete() {
     
     $tdefattr=array();
     foreach ($txval as $k=>$v) {
-        if ($k && $v) $tdefattr[]="$k|$v";
+        if ($k && ($v!=='')) $tdefattr[]="$k|$v";
     }
 
     $this->$X = "[".implode("][",$tdefattr)."]";

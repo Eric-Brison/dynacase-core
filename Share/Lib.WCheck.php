@@ -234,7 +234,7 @@ function getCheckActions($pubdir,$tapp,&$tact,$version_override=array()) {
 	}
       }
     }   
-    sort($migr);
+    usort($migr, "cmpmigr");
     $cmd=array_merge($cmd,$migr);
     // search PRE install
     if (($v["chk"] != "") && (is_file("$pubdir/$k/{$k}_post"))) {
@@ -283,7 +283,7 @@ function getCheckActions($pubdir,$tapp,&$tact,$version_override=array()) {
 	}
       }
     }
-    sort($migr);
+    usort($migr, "cmpmigr");
     $cmd=array_merge($cmd,$migr);
   }
   
@@ -313,6 +313,15 @@ function cmpapp($a,$b) {
   if (isset($a["iorder"])) return -1;
   if (isset($b["iorder"])) return 1;
   return 0;
+}
+
+function cmpmigr($migr_a, $migr_b) {
+  $v_a = "";
+  $v_b = "";
+  preg_match("/_p?migr_(?P<version>[0-9\.]+)$/", $migr_a, $v_a);
+  preg_match("/_p?migr_(?P<version>[0-9\.]+)$/", $migr_b, $v_b);
+
+  return version_compare($v_a['version'], $v_b['version']);
 }
 
 ?>
