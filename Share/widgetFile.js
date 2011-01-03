@@ -346,6 +346,7 @@ widgetFile.prototype = {
 
  			document.body.style.overflow='';
  			this.target.className='';
+ 			this.target.style.height='';
  			if (this.staticHeight) {
 
  				imgfile.parentNode.style.overflowY='scroll';

@@ -4431,7 +4431,7 @@ create unique index i_docir on doc(initid, revision);";
     return $v;
   }
 
-  final public function getHtmlValue($oattr, $value, $target="_self",$htmllink=true, $index=-1,$entities=true) {
+  final public function getHtmlValue($oattr, $value, $target="_self",$htmllink=true, $index=-1,$entities=true,$abstract=false) {
     global $action;
 
     $aformat=$oattr->format;
@@ -4539,13 +4539,13 @@ create unique index i_docir on doc(initid, revision);";
 	            //$errconvert=trim(file_get_contents($info->path));
 	            //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
 	            if ($info->teng_state > 1) $waiting="<img class=\"mime\" src=\"Images/loading.gif\">";
-	            else $waiting="<img class=\"mime\" needresize=1 src=\"Images/delimage.png\">";;
+	            else $waiting="<img class=\"mime\" needresize=1 src=\"lib/ui/icon/bullet_error.png\">";;
 	            $htmlval=sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
 	                             $this->getFileLink($oattr->id,$index),
 	                             $info->id_file,str_replace("'","&rsquo;",_("file status")),$waiting,$textval);
 	              if ($info->teng_state < 0)  {
 	                  $htmlval.=sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
-	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"/lib/ui/icon/arrow_refresh.png");
+	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"lib/ui/icon/arrow_refresh.png");
 	              }              
 	        } else {
 	            $htmlval=$textval;
@@ -4583,7 +4583,7 @@ create unique index i_docir on doc(initid, revision);";
 	            }
 
 
-	            if ($imageview) {
+	            if ($imageview && (!$abstract)) {
 	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
 	                $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
 	                $lay->set("docid",$this->id);
@@ -4594,8 +4594,7 @@ create unique index i_docir on doc(initid, revision);";
 	                $lay->set("mimeicon", $mimeicon);
                         $lay->set("vid", ($infopdf?$infopdf->id_file:$vid));
 	                $lay->set("filetitle", $fname);
-	                $lay->set("height", $oattr->getOption('viewfileheight','300px'));
-                        
+	                $lay->set("height", $oattr->getOption('viewfileheight','300px'));	                 
 	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
 	                $lay->set("pages", $pages); // todo
 	                $htmlval =$lay->gen();
@@ -5063,12 +5062,12 @@ create unique index i_docir on doc(initid, revision);";
   }
 
 
-  final public function GetHtmlAttrValue($attrid, $target="_self",$htmllink=2, $index=-1,$entities=true) {
+  final public function GetHtmlAttrValue($attrid, $target="_self",$htmllink=2, $index=-1,$entities=true,$abstract=false) {
     if ($index != -1) $v=$this->getTValue($attrid,"",$index);
     else $v=$this->getValue($attrid);
-    if ($v=="") return "";
+    if ($v=="") return $v;
     return $this->GetHtmlValue($this->getAttribute($attrid),
-			       $v,$target,$htmllink,$index,$entities);
+			       $v,$target,$htmllink,$index,$entities,$abstract);
   }
 
   final public function GetOOoValue($oattr, $value, $target="_self",$htmllink=false, $index=-1) { 
@@ -6263,9 +6262,10 @@ create unique index i_docir on doc(initid, revision);";
 	    break;
 	  default : 
 	    // print values
+	   
 	    $tableframe[]=array("name"=>$attr->getLabel(),
 				"aid"=>$attr->id,
-				"value"=>$this->GetHtmlValue($listattr[$i],$value,$target,$ulink));
+				"value"=>$this->GetHtmlValue($listattr[$i],$value,$target,$ulink=1,-1,true,true));
 	
 	    break;
 	  }
