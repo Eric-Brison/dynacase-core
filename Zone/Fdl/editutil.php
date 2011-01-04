@@ -647,7 +647,6 @@ if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 } elseif (preg_match("/(.*)\((.*)\)\:(.*)/", $phpfunc, $reg)) {
 	if ($alone && $oattr->type!="docid") {
 		$arg = array($oattr->id);
-		print_r2($reg);
 	} else {
 		$argids = explode(",",$reg[3]);  // output args
 		$arg = array();
