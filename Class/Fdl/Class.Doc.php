@@ -5429,44 +5429,44 @@ create unique index i_docir on doc(initid, revision);";
   
   /** 
    * return the basename of template file
-   * @return string
+   * @return string (return null if template not found)
    */
-  public function getZoneFile($zone="") {
-    $index = -1;
-    if( $zone == "" ) {
-      $zone = $this->defaultview;
-    }
+  public function getZoneFile($zone) {
+  	$index = -1;
+  	if( $zone == "" ) {
+  		return null;
+  	}
 
-    $reg = $this->parseZone($zone);
-    if( is_array($reg) ) {
-      $aid = $reg['layout'];
-      if( $reg['index'] != '' ) {
-	$index = $reg['index'];
-      }
-      $oa = $this->getAttribute($aid);
-      if( $oa ) {
-	if( $oa->usefor != 'Q' ) {
-	  $template = $this->getValue($oa->id);
-	} else {
-	  $template = $this->getParamValue($aid);
-	}
-	if( $index >= 0 ) {
-	  $tt = $this->_val2array($template);
-	  $template = $tt[$index];
-	}
+  	$reg = $this->parseZone($zone);
+  	if( is_array($reg) ) {
+  		$aid = $reg['layout'];
+  		if( $reg['index'] != '' ) {
+  			$index = $reg['index'];
+  		}
+  		$oa = $this->getAttribute($aid);
+  		if( $oa ) {
+  			if( $oa->usefor != 'Q' ) {
+  				$template = $this->getValue($oa->id);
+  			} else {
+  				$template = $this->getParamValue($aid);
+  			}
+  			if( $index >= 0 ) {
+  				$tt = $this->_val2array($template);
+  				$template = $tt[$index];
+  			}
 
-	if( $template == "" ) {
-	  return sprintf(_("no file found for zone [%s]"), $zone);
-	}
+  			if( $template == "" ) {
+  				return null;
+  			}
 
-	return $this->vault_filename_fromvalue($template, true);
-      }
-      if( strstr($aid, '.') ) {
-	return getLayoutFile($reg['app'], strtolower($aid));
-      } else {
-	return getLayoutFile($reg['app'], strtolower($aid)).".xml";
-      }
-    }
+  			return $this->vault_filename_fromvalue($template, true);
+  		}
+  		if( strstr($aid, '.') ) {
+  			return getLayoutFile($reg['app'], strtolower($aid));
+  		} else {
+  			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
+  		}
+  	}
   }
   /** 
    * return the character in third part of zone
@@ -5632,6 +5632,7 @@ create unique index i_docir on doc(initid, revision);";
     $binary=($this->getZoneOption($layout)=="B");
 
     $tplfile=$this->getZoneFile($layout);
+    
     $ext=getFileExtension($tplfile);
     if (strtolower($ext)=="odt") {
       include_once('Class.OOoLayout.php');
@@ -5642,6 +5643,7 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay = new Layout($tplfile, $action);
     }
 
+    if (! file_exists($this->lay->file)) return sprintf(_("template file %s not found"),$tplfile);
         $this->lay->setZone($reg);
        
     $this->lay->set("_readonly",($this->Control('edit')!=""));
@@ -6254,12 +6256,24 @@ create unique index i_docir on doc(initid, revision);";
 	$this->lay->Set("V_".strtoupper($v->id),"");
 	$this->lay->Set("L_".strtoupper($v->id),"");
       } else {
-	if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-	else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
+	if ($target=="ooo") {
+		$this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
+		if ($v->type=="array") {
+			$tva=$this->getAValues($v->id);
+			
+			$tmkeys=array();
+			foreach ($tva as $kindex=>$kvalues) {
+				foreach($kvalues as $kaid=>$va) {
+				$tmkeys[$kindex]["V_".strtoupper($kaid)]=$this->GetOOoValue($this->getAttribute($kaid),$va);
+				}
+			}
+			$this->lay->setRepeatable($tmkeys);
+			
+		}
+	} else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
 	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
       }
     }
-
     $listattr = $this->GetFieldAttributes();
 
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
