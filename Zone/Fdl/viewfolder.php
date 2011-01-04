@@ -378,7 +378,7 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
 	  foreach($lattr as $ka=>$attr)  {	
 	    //$tvalues[]=$doc->getValue($attr->id,"-");
 	    if ($attr->type=="image") $tvalues[]='<img src="'.$doc->getHtmlValue($attr,$doc->getValue($attr->id,"-"),$target).'&height=30"  height="30">';
-	    else  $tvalues[]=$doc->getHtmlValue($attr,$doc->getValue($attr->id,"-"),$target);
+	    else  $tvalues[]=($doc->getValue($attr->id)?$doc->getHtmlValue($attr,$doc->getValue($attr->id),$target):'-');
 	  }
 	}
 	$tdoc[$k]["values"]=implode('</td><td class="tlist">',$tvalues);
