@@ -617,21 +617,30 @@ create unique index i_docir on doc(initid, revision);";
    * 
    */
   function regenerateTemplate($aid, $index=-1) {
-    $layout = 'THIS:'.$aid;
-    if($index>-1) {
-      $layout.='['.$index.']';
-    }
-    $outfile = $this->viewDoc($layout.':B', 'ooo');
-    if(file_exists($outfile)) {
-      $fh = fopen($outfile, 'rb');
-      if($fh) {
-	$this->saveFile($aid, $fh, '', $index);
-	fclose($fh);
-	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
-	return true;
-      }
-    }
-    return false;
+  	$layout = 'THIS:'.$aid;
+  	if($index>-1) {
+  		$layout.='['.$index.']';
+  	}
+  	$orifile=$this->getZoneFile($layout);
+  	if ($orifile) {
+  		if (! file_exists($orifile)) {
+  			addWarningMsg(sprintf(_("Dynamic template %s not found "), $orifile));
+  		} else if (getFileExtension($orifile) != 'odt') {
+  			addWarningMsg(sprintf(_("Dynamic template %s not an odt file "), $orifile));
+  		} else {
+  			$outfile = $this->viewDoc($layout.':B', 'ooo');
+  			if(file_exists($outfile)) {
+  				$fh = fopen($outfile, 'rb');
+  				if($fh) {
+  					$this->saveFile($aid, $fh, '', $index);
+  					fclose($fh);
+  					$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+  					return true;
+  				}
+  			}
+  		}
+  	}
+  	return false;
   }
   
   /**
@@ -7610,7 +7619,7 @@ create unique index i_docir on doc(initid, revision);";
    * @param zone string "APP:LAYOUT:etc." $zone
    * @return false on error or an array containing the components
    */
-  static public function parseZone($zone="") {
+  static public function parseZone($zone) {
     $p = array();
 
     // Separate layout (left) from args (right)
