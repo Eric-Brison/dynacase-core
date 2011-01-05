@@ -49,7 +49,7 @@
   </td> 
   <td class="FREEDOMTblTitle" align="right"><span class="FREEDOMTextName">[TEXT:for]</span>
    
-    <b>[family]</b>
+    <b>[family]</b><span style="display:none">[V_MSK_FAMID]</span>
     <input type="hidden" name="retedit" id="retedit" value="N">
    </td>
 </tr>
