@@ -5813,7 +5813,7 @@ create unique index i_docir on doc(initid, revision);";
 	    
 	} else $htmlvalue="";
 
-	if ($htmlvalue !== "") {// to define when change frame
+	if (($htmlvalue === false) || ($goodvalue)) {// to define when change frame
 	    if ( $currentFrameId != $attr->fieldSet->id) {
 	        if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe=true;
 	    }
@@ -5901,7 +5901,7 @@ create unique index i_docir on doc(initid, revision);";
 		
 	  }
 	  
-	if (($attr->fieldSet->mvisibility!="H")&&($htmlvalue!=="")) {
+	if (($attr->fieldSet->mvisibility!="H")&&($htmlvalue!=="" || $goodvalue)) {
 	  $currentFrameId = $attr->fieldSet->id;
 	  $currentFrame = $attr->fieldSet;
 	}
