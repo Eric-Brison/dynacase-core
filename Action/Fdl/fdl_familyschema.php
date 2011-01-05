@@ -42,7 +42,7 @@ function fdl_familyschema(&$action) {
   if (! $doc->isAlive()) $action->exitError(_("no family identificator"));
   if ($doc->doctype != 'C') $action->exitError(sprintf(_("document %s is not a family"),$docid));
   
-  header("Content-Type: text/xml");
+  header('Content-Type: text/xml; charset="utf-8"');
   $action->lay->noparse=true;
   $action->lay->template=$doc->getXmlSchema();
    
