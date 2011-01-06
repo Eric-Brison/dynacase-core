@@ -866,7 +866,7 @@ class OOoLayout extends Layout {
 	                        $tvkey[$key]=$this->arrayMainKeys[$key];
 	                        $maxk=max(count($tvkey[$key]),$maxk);
 	                    }
-	                    if ($maxk > 1) {
+	                    if ($maxk > 0) {
 	                        for ($i=0;$i<$maxk;$i++) {
 	                            $clone=$item->cloneNode(true);
 	                            $item->parentNode->appendChild($clone);
