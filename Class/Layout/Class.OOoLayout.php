@@ -869,7 +869,7 @@ class OOoLayout extends Layout {
 	                    if ($maxk > 0) {
 	                        for ($i=0;$i<$maxk;$i++) {
 	                            $clone=$item->cloneNode(true);
-	                            $item->parentNode->appendChild($clone);
+	                            $item->parentNode->insertBefore($clone,$item);
 	                            foreach ($tvkey as $kk=>$key) {
 	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
 	                            }	                            
@@ -877,8 +877,9 @@ class OOoLayout extends Layout {
 	                            $this->replaceRowNode($clone,array($i)); // inspect sub levels
 	                            
 	                        }
-	                        $item->parentNode->removeChild($item);
 	                    }
+	                    
+                            $item->parentNode->removeChild($item);
 	                }
 	            }
 	        }
