@@ -6237,7 +6237,7 @@ create unique index i_docir on doc(initid, revision);";
 
 
   // -----------------------------------
-  final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
+ final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
     $listattr = $this->GetNormalAttributes();
 
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
@@ -6254,12 +6254,24 @@ create unique index i_docir on doc(initid, revision);";
 	$this->lay->Set("V_".strtoupper($v->id),"");
 	$this->lay->Set("L_".strtoupper($v->id),"");
       } else {
-	if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-	else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
+	if ($target=="ooo") {
+		$this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
+		if ($v->type=="array") {
+			$tva=$this->getAValues($v->id);
+			
+			$tmkeys=array();
+			foreach ($tva as $kindex=>$kvalues) {
+				foreach($kvalues as $kaid=>$va) {
+				$tmkeys[$kindex]["V_".strtoupper($kaid)]=$this->GetOOoValue($this->getAttribute($kaid),$va);
+				}
+			}
+			$this->lay->setRepeatable($tmkeys);
+			
+		}
+	} else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
 	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
       }
     }
-
     $listattr = $this->GetFieldAttributes();
 
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
@@ -6268,7 +6280,6 @@ create unique index i_docir on doc(initid, revision);";
     }
 
   }
-
 
   // view doc properties
   final public function viewprop($target="_self",$ulink=true,$abstract=false) {
