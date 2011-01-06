@@ -189,6 +189,17 @@ if ($dbr_anakeen) {
     $tout["double doc name"]=array("status"=>(count($pout)==0)?OK:KO,
 				   "msg"=>$msg);
 
+    // test multiple alive
+    $result = pg_query($rf, "select id, title from docread where id in (SELECT m AS id  FROM (SELECT min(id) AS m, initid, count(initid) AS c  FROM docread WHERE locked != -1 AND doctype != 'T' GROUP BY docread.initid) AS z where z.c > 1);");    
+    $pout=array();
+    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    	$pout[$row["id"]]=$row["title"];
+    }
+    if (count($pout) > 0) $msg=sprintf("%d multiple alive<pre>%s</pre>",count($pout),print_r($pout,true));
+    else $msg="";
+    $tout["multiple alive"]=array("status"=>(count($pout)==0)?OK:KO,
+				   "msg"=>$msg);
+
     // test inheritance
     $result = pg_query($rf, "select * from docfam");    
     $pout=array();
