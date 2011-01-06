@@ -509,8 +509,8 @@ class OOoLayout extends Layout {
 	}
 	/**
 	 * set key/value pair
-	 * @param string $tag
-	 * @param string $val
+	 * @param string $tag the key to replace
+	 * @param string $val the value for the key
 	 */
 	public function set($tag,$val) {
 		if ( !isUTF8($val)) $val = utf8_encode($val);
@@ -524,6 +524,22 @@ class OOoLayout extends Layout {
 
 		}
 	}
+	/**
+         * set key/value pair and XML entity encode
+         * @param string $tag the key to replace
+         * @param string $val the value for the key
+         */
+	public function eSet($tag,$val) {
+		$this->set($tag,$this->xmlEntities($val));
+	}
+	/**
+	 * replace entities & < >
+	 * @param string $s text to encode
+	 */
+	static public function xmlEntities($s) {
+		return str_replace(array("&",'<','>'),array("&amp;",'&lt;','&gt;'),$s);
+	}
+	
 	/**
 	 * 
 	 * @param string $val
@@ -1178,12 +1194,15 @@ class OOoLayout extends Layout {
 
 	/**
 	 * Initialize of list
-	 * $key must begin with V_ and be uppercase
+	 * @param string $key the key variable
+	 * @param array $t the values of the key
 	 */
 	public function setColumn($key,array $t) {
-	
-	    if (is_array(current($t))) $this->setArray($key,$t);
-	    else $this->arrayMainKeys[$key]=$t;
+	    $ti=array();
+	    $k=0;
+	    foreach ($t as $v) $ti[$k++]=$v; // delete associative keys
+	    if (is_array(current($t))) $this->setArray($key,$ti);
+	    else $this->arrayMainKeys[$key]=$ti;
 	    //else $this->set($key,implode('<text:tab/>',$t));
 	}
 	
