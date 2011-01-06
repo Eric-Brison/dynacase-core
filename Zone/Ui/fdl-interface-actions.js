@@ -79,7 +79,7 @@ Fdl.InterfaceAction.prototype = {
 	},
 	informationMessage: function(text){
 		Ext.Msg.show({
-		   title:'freedom ecm',
+		   title:'Information',
 		   msg: text,
 		   buttons: Ext.Msg.OK,
 		   icon: Ext.MessageBox.INFO
@@ -87,7 +87,7 @@ Fdl.InterfaceAction.prototype = {
     },    
     warningMessage: function(text){
     	Ext.Msg.show({
-    	   title:'freedom ecm',
+    	   title:'Warning',
     	   msg: text,
     	   buttons: Ext.Msg.OK,
     	   icon: Ext.MessageBox.WARNING
@@ -95,7 +95,7 @@ Fdl.InterfaceAction.prototype = {
     },    
     errorMessage: function(text){
     	Ext.Msg.show({
-     	   title:'freedom ecm',
+     	   title:'Error',
      	   msg: text,
      	   buttons: Ext.Msg.OK,
      	   icon: Ext.MessageBox.ERROR

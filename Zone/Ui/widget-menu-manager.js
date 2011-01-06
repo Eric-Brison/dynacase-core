@@ -208,7 +208,7 @@ Ext.fdl.MenuManager = {
 					if(button.menuObject.confirm){
 					
 						Ext.Msg.show({
-							title: 'freedom',
+							title: 'Information',
 							msg: button.menuObject.confirm.label,
 							buttons: {
 								ok: button.menuObject.confirm['continue'],

@@ -168,7 +168,7 @@ Ext.fdl.Collection = {
                 
             }
             if (!this.documentList) {
-                Ext.Msg.alert('freedom ecm', this.context.getLastErrorMessage());
+                Ext.Msg.alert('Error', this.context.getLastErrorMessage());
             }
             else {
                 this.content = this.documentList.getDocuments();
@@ -376,7 +376,7 @@ Ext.fdl.Collection = {
             case 'duplicate':
                 
                 if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-                    Ext.Msg.alert('freedom ecm','Duplicate for multiple selection must be implemented.');
+                    Ext.Msg.alert('Warning','Duplicate for multiple selection must be implemented.');
                     return true;
                 } else {
                     g.addRequest({

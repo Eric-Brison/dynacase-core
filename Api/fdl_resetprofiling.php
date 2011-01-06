@@ -24,7 +24,7 @@ $dbaccess=$action->GetParam("FREEDOM_DB");
 $coreaccess=$action->GetParam("CORE_DB");
 
 if ($dbaccess == "") {
-  print "Freedom Database not found : param FREEDOM_DB";
+  print "Database not found : param FREEDOM_DB";
   exit;
 }
 

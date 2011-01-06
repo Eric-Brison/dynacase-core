@@ -445,7 +445,7 @@ Fdl.InterfaceAction.Duplicate.prototype.process = function () {
 //		 return true;
 		 
 	} else if (document) {
-		Ext.Msg.prompt('freedom ecm', 'Titre du document répliqué : ', function(btn, text){
+		Ext.Msg.prompt('Information', 'Titre du document répliqué : ', function(btn, text){
 		    if (btn == 'ok'){
 		    	var cloneDoc= document.cloneDocument({
 					linkFolder: true,

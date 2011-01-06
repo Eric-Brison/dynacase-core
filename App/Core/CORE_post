@@ -10,7 +10,7 @@ fi
 
 if [ -z "$pgservice_core" ]; then
     echo "Env variable pgservice_core is empty !"
-    echo "Check your freedom context for missing or misconfigured environment variables."
+    echo "Check your context for missing or misconfigured environment variables."
     exit 1
 fi
 

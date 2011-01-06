@@ -10,7 +10,7 @@
  */
 ?>
 <html>
-<head><title>FREEDOM Initialisation</title>
+<head><title>Dynacase Platform Initialisation</title>
 
 <noscript>
 <H1>Javascript must be enabled in your navigator</H1>

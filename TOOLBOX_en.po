@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-05 17:09+0100\n"
-"PO-Revision-Date: 2010-11-23 10:38+0100\n"
+"PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "Language: \n"
@@ -436,7 +436,7 @@ msgid "family %s not found"
 msgstr ""
 
 msgid "freedom cron try execute"
-msgstr ""
+msgstr "Trying cron execution"
 
 #, c-format
 msgid "new user # %d"
@@ -699,10 +699,10 @@ msgid "query %s has failed"
 msgstr ""
 
 msgid "Freedoms lib"
-msgstr ""
+msgstr "Dynacase library"
 
 msgid "Freedoms library"
-msgstr ""
+msgstr "Dynacase library"
 
 msgid "Access Action Library"
 msgstr ""
@@ -742,9 +742,8 @@ msgstr ""
 msgid "edit document in extjs"
 msgstr ""
 
-#, fuzzy
 msgid "Freedom initialisation"
-msgstr "Organisation"
+msgstr "Dynacase initialization"
 
 #, fuzzy
 msgid "Document context menu"
@@ -983,9 +982,8 @@ msgstr ""
 msgid "Referenced from"
 msgstr "Delete"
 
-#, fuzzy
 msgid "freedom database"
-msgstr "Edit"
+msgstr "Dynacase database"
 
 msgid "string limit for popup enum"
 msgstr ""
@@ -1092,10 +1090,10 @@ msgid "Access To Main Interface"
 msgstr ""
 
 msgid "Freedoms frame"
-msgstr ""
+msgstr "Main frame"
 
 msgid "Freedoms list"
-msgstr ""
+msgstr "List"
 
 msgid "Timers management"
 msgstr ""
@@ -1120,7 +1118,7 @@ msgstr "Import"
 
 #, fuzzy
 msgid "Freedoms list by column"
-msgstr "Organisation"
+msgstr "List by columns"
 
 msgid "query document import"
 msgstr ""
@@ -1166,11 +1164,10 @@ msgid "delete imported tar"
 msgstr "Import"
 
 msgid "Freedoms view folder"
-msgstr ""
+msgstr "View as folder"
 
-#, fuzzy
 msgid "Freedoms preview document"
-msgstr "Organisation"
+msgstr "Document preview"
 
 msgid "popup menu"
 msgstr ""
@@ -1198,15 +1195,13 @@ msgid "expand folder tree"
 msgstr "Delete"
 
 msgid "Freedoms icon list"
-msgstr ""
+msgstr "Icon list"
 
-#, fuzzy
 msgid "Freedoms detail list"
-msgstr "Organisation"
+msgstr "Detailed list"
 
-#, fuzzy
 msgid "Freedoms RSS syndication"
-msgstr "Organisation"
+msgstr "Dynacase RSS"
 
 msgid "folio icon list"
 msgstr ""
@@ -1225,7 +1220,7 @@ msgid "bar menu"
 msgstr ""
 
 msgid "Freedoms card"
-msgstr ""
+msgstr "View as card"
 
 msgid "duplicate document"
 msgstr ""
@@ -1339,29 +1334,28 @@ msgid "widget display popup for a description card"
 msgstr ""
 
 msgid "Freedom modification"
-msgstr ""
+msgstr "Modify document"
 
-#, fuzzy
 msgid "Freedom imodification"
-msgstr "Organisation"
+msgstr "Modify virtual document"
 
 msgid "view idoc attribute card"
 msgstr ""
 
 msgid "Freedom deletion"
-msgstr ""
+msgstr "Deletion of documents"
 
 msgid "Freedom update title fields"
-msgstr ""
+msgstr "Update title field"
 
 msgid "Freedom accessibilities"
-msgstr ""
+msgstr "Dynacase rights management"
 
 msgid "Freedom group accessibilities"
-msgstr ""
+msgstr "Dynacase group rights"
 
 msgid "Freedom modify accessibilities"
-msgstr ""
+msgstr "Modify rights"
 
 #, fuzzy
 msgid "open portfolio"
@@ -1520,7 +1514,7 @@ msgid "Common functions"
 msgstr ""
 
 msgid "Common function for FREEDOM client API"
-msgstr ""
+msgstr "Common function for Dynacase Platform client API"
 
 msgid "get value for an attribute of document"
 msgstr ""
@@ -1812,7 +1806,7 @@ msgid "Dav"
 msgstr ""
 
 msgid "WebDav FREEDOM system file"
-msgstr ""
+msgstr "Dynacase WebDAV file system"
 
 msgid "Access for exchange documents"
 msgstr ""
@@ -1832,21 +1826,17 @@ msgstr ""
 msgid "folder identificator for root"
 msgstr ""
 
-#, fuzzy
 msgid "fgsearch"
-msgstr "Start search"
+msgstr "Global search"
 
-#, fuzzy
 msgid "freedom global search"
-msgstr "Start search"
+msgstr "Global search"
 
-#, fuzzy
 msgid "freedom  global search"
-msgstr "Start search"
+msgstr "Global search"
 
-#, fuzzy
 msgid "freedom detailled global search"
-msgstr "Email"
+msgstr "Detailed global search"
 
 msgid "show request for password"
 msgstr "Show password request link in login panel"
@@ -5054,7 +5044,7 @@ msgid "Import CSV"
 msgstr "Import"
 
 msgid "Freedom"
-msgstr ""
+msgstr "Dynacase"
 
 #, fuzzy
 msgid "not defined"
@@ -6886,7 +6876,7 @@ msgid "categorie"
 msgstr "Category"
 
 msgid "freedom address book"
-msgstr ""
+msgstr "Dynacase address book"
 
 #, fuzzy
 msgid "VCARD Import Result"
@@ -8642,11 +8632,11 @@ msgstr ""
 
 #, c-format
 msgid "PG Error: Connection to freedom pg service '%s' failed !"
-msgstr ""
+msgstr "PG Error: Connection to pg service '%s' failed!"
 
 #, c-format
 msgid "Connection to freedom pg service '%s' OK !"
-msgstr ""
+msgstr "Connection to pg service '%s' OK!"
 
 #, c-format
 msgid "PG Error: Connection to temporary pg service '%s' failed !"
@@ -9060,7 +9050,7 @@ msgid "login must not be empty"
 msgstr ""
 
 msgid "no freedom DB access"
-msgstr ""
+msgstr "No access to Dynacase database"
 
 #, c-format
 msgid "Application %s (%s) not available"
