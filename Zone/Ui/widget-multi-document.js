@@ -345,7 +345,7 @@ Ext.fdl.MultiDocumentPanel = Ext.extend(Ext.TabPanel, {
 	                                me.documentArray[panel.document.id] = null;
 	                            }
 	                        },
-	                        title: 'freedom',
+	                        title: 'Confirmation',
 	                        msg: closeConfirm
 	                    });
 	                    

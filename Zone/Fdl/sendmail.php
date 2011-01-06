@@ -82,7 +82,7 @@ function sendmail($to,$from,$cc,$bcc,$subject,&$mimemail,$multipart=null) {
   $xh['Subject']=$subject;
   $xh['Message-Id']='<'.strftime("%Y%M%d%H%M%S-",time()).rand(1,65535)."@$host>";
 
-  $xh['User-Agent']=sprintf("FREEDOM %s",getParam('VERSION'));
+  $xh['User-Agent']=sprintf("Dynacase Platform %s",getParam('VERSION'));
   $data="";
   $h=$mimemail->headers($xh);
   if ($multipart)  $h['Content-Type']=str_replace("mixed",$multipart,$h['Content-Type']);

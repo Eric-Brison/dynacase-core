@@ -33,7 +33,7 @@ if ($action->GetParam("LDAP_ENABLED","no") != "yes") {
 }
 $dbaccess=$appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-  $err = "Freedom Database not found : param FREEDOM_DB";
+  $err = "Database not found : param FREEDOM_DB";
   print $err;
   wbar(0,0,$err); 
   return true;

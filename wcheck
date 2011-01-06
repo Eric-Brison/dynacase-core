@@ -25,7 +25,7 @@ $dbaccess=getDbAccess();
 
 $err=getCheckApp($pubdir,$applications);
 
-ncurses_winit("FREEDOM Checking");
+ncurses_winit("Checking");
 ncurses_getmaxyx($fullscreen, $lines, $columns);
 ncurses_color_set(6);
 ncurses_mvaddstr(2,5,sprintf(_("Database: %s"), $dbaccess));

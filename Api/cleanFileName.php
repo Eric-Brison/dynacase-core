@@ -22,7 +22,7 @@ include_once('VAULT/Class.VaultFile.php');
 
 $dbaccess=GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-  print "Freedom Database not found : param FREEDOM_DB";
+  print "Database not found : param FREEDOM_DB";
   exit;
 }
 

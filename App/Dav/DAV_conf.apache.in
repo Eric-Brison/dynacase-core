@@ -10,7 +10,7 @@ NameVirtualHost *:80
      #        AcceptPathInfo On
      <Files ~ "zou679__e.php">
         AuthType Basic
-	AuthName 'Freedom Connection'
+	AuthName 'Dynacase Platform connection'
 	AuthBasicProvider pam
 	AuthnPAMService httpd
         Require valid-user

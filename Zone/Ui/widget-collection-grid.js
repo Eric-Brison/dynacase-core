@@ -1244,7 +1244,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                                 data.component.unmask();
                                 
                                 if (!ret) {
-                                    Ext.Msg.alert('freedom ecm', 'Problem during drag and drop');
+                                    Ext.Msg.alert('Warning', 'Problem during drag and drop');
                                 }
                                 
                             }).defer(5);
@@ -1338,7 +1338,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                                 var ret = me.notifyDocumentDrop(data.component, data.component.collection, me.collection, data.selection, dropDoc);
                                   
                                 if (!ret) {
-                                    Ext.Msg.alert('freedom ecm', 'Problem during drag and drop');
+                                    Ext.Msg.alert('Warning', 'Problem during drag and drop');
                                 }
                                 
                             }).defer(5);

@@ -165,7 +165,7 @@ if (isset($_GET["api"])) {
         // REPEAT EXECUTION FOR FREEDOM FOLDERS
         $dbaccess=$appl->GetParam("FREEDOM_DB");
         if ($dbaccess == "") {
-            print "Freedom Database not found : param FREEDOM_DB";
+            print "Database not found : param FREEDOM_DB";
             exit;
         }
         include_once("FDL/Class.Doc.php");

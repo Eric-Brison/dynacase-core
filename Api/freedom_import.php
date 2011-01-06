@@ -36,7 +36,7 @@ $to = GetHttpVars("to");
 
     $subject=sprintf(_("result of import  %s"), basename(GetHttpVars("file")));
     $err=sendmail($to,$from,$cc,$bcc,$subject,$themail);
-    if ($err) error_log("freedom import sending mail: Error:$err");
+    if ($err) error_log("import sending mail: Error:$err");
     
   } else {
     if (GetHttpVars("htmlmode") == "Y") print $out;

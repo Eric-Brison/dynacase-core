@@ -259,7 +259,7 @@ Ext.fdl.TreeCollection = Ext.extend(Ext.tree.TreePanel, {
                           //nodedata.node.unmask();
                           
                           if (!ret) {
-                              Ext.Msg.alert('freedom ecm', 'Problem during drag and drop');
+                              Ext.Msg.alert('Warning', 'Problem during drag and drop');
                           }
                       }).defer(5);
                                   

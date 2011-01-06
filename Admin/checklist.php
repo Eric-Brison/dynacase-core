@@ -27,7 +27,7 @@ a.context:hover {
   background-color:yellow;
 }
 </style>
-<title>FREEDOM Check List</title>
+<title>Check List</title>
 </head>
 <body>
 <?php
@@ -163,7 +163,7 @@ if ($dbr_anakeen) {
     if ($rf) $dbr_freedom=true;
   }
   
-  $tout["connection db freedom"]=array("status"=>$dbr_freedom?OK:KO,
+  $tout["connection db dynacase"]=array("status"=>$dbr_freedom?OK:KO,
 				       "msg"=>$fdb);
   
   if ($rf) {

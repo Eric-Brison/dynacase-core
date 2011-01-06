@@ -24,7 +24,7 @@ $force=getHttpVars("force")=="yes";
 
 $dbaccess=GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-  print "Freedom Database not found : param FREEDOM_DB";
+  print "Database not found : param FREEDOM_DB";
   exit;
 }
 $o=new DbObj($dbaccess);

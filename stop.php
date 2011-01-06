@@ -12,15 +12,13 @@
 ?>
 <HTML>
 <HEAD>
-<TITLE>FREEDOM Update</TITLE>
+<TITLE>Update</TITLE>
 </HEAD>
 
 <BODY  style="background-image:url('CORE/Images/bg.gif')">
 <div align="center">
 <div style="width:80%;border: groove 4px red">
 <IMG align="right"  src="CORE/Images/freeeye.png">
-<H1 align="left">FREEDOM Databases must be updated.</H1>
-
 <H2 align="left">Update is in progress.</H2>
 <H2 align="left">Wait few minutes, please.</H2></div></div>
 </BODY>
