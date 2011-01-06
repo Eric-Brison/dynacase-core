@@ -2,7 +2,16 @@
 <script language="javascript">
   addEvent(document.modifydoc,'submit',deletenew);
 </script>
+<style>
+select.cond option {
+  margin-left:10px;
+}
+select.cond option.set {
+  margin-left:0px;
+  font-weight: bold;
+}
 
+</style>
 
 <table width="100%" cellspacing="0">
 <tbody>
@@ -57,8 +66,8 @@
   </select>
 	</td>
 <td class="und" >
-  <select  name="_se_attrids[]"  onchange="filterfunc(this)">
-  [BLOCK ATTR]<option atype="[attrtype]" value="[attrid]">[attrname]</option>
+  <select class="cond"  name="_se_attrids[]"  onchange="filterfunc(this)">
+  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" [attrdisabled] value="[attrid]">[attrname]</option>
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">
@@ -151,8 +160,8 @@
   </select>
 	</td>
 <td class="und" >
-  <select  name="_se_attrids[]"  onchange="filterfunc(this)" >
-  [BLOCK [ATTRCOND]]<option [attr_selected] atype="[attr_type]" value="[attr_id]">[attr_name]</option>
+  <select class="cond" name="_se_attrids[]"  onchange="filterfunc(this)" >
+  [BLOCK [ATTRCOND]]<option [attrselected] atype="[attrtype]" [attrdisabled] class="[attrtype]" value="[attrid]">[attrname]</option>
   [ENDBLOCK [ATTRCOND]]
   </select></td>
 <td class="und">

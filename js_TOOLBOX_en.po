@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-05 10:28+0100\n"
+"POT-Creation-Date: 2011-01-05 17:09+0100\n"
 "PO-Revision-Date: 2010-02-08 15:49+0100\n"
 "Last-Translator: anakeen\n"
 "Language-Team: english\n"
@@ -14,19 +14,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "data::login not defined"
-msgstr "login not defined"
-
-msgid "data::password not defined"
-msgstr "password not defined"
-
-msgid "data:document id must not be an object"
-msgstr "document id must not be an object"
-
-#, fuzzy
-msgid "data:document id not set"
-msgstr "document id must not be an object"
 
 msgid "data:action name not set"
 msgstr ""
@@ -41,14 +28,24 @@ msgstr ""
 msgid "data::no tag specified"
 msgstr "login not defined"
 
+msgid "data::login not defined"
+msgstr "login not defined"
+
+msgid "data::password not defined"
+msgstr "password not defined"
+
+msgid "data:document id must not be an object"
+msgstr "document id must not be an object"
+
+#, fuzzy
+msgid "data:document id not set"
+msgstr "document id must not be an object"
+
 msgid "eui::Content"
 msgstr "Content"
 
 msgid "eui::Informations"
 msgstr "Information"
-
-msgid "eui::lock_as_name"
-msgstr "lock"
 
 msgid "eui::missing right"
 msgstr "Missing Right"
@@ -61,6 +58,33 @@ msgstr "Creation :"
 
 msgid "eui::ToEdit"
 msgstr "Edit"
+
+msgid "eui::lock_as_name"
+msgstr "lock"
+
+msgid "eui::infolder"
+msgstr "in"
+
+msgid "eui::Duplicate"
+msgstr "Duplicate"
+
+msgid "eui::Link"
+msgstr "Link"
+
+msgid "eui::Move"
+msgstr "Move"
+
+msgid "eui::documents"
+msgstr "documents"
+
+msgid "eui::delete"
+msgstr "Delete"
+
+msgid "eui::totrash"
+msgstr "To Trash"
+
+msgid "eui:cannot delete"
+msgstr "cannot delete"
 
 msgid "eui::Search"
 msgstr "Search"
@@ -80,7 +104,8 @@ msgstr "Evaluate"
 msgid "eui::Save"
 msgstr "Save"
 
-msgid "eui::Edit search : "
+#, fuzzy
+msgid "eui::Edit search :"
 msgstr "Edit Search"
 
 msgid "eui::Enter search name"
@@ -106,27 +131,3 @@ msgstr "Horizontal"
 
 msgid "eui::Vertical"
 msgstr "Vertical"
-
-msgid "eui::documents"
-msgstr "documents"
-
-msgid "eui::delete"
-msgstr "Delete"
-
-msgid "eui::totrash"
-msgstr "To Trash"
-
-msgid "eui:cannot delete"
-msgstr "cannot delete"
-
-msgid "eui::infolder"
-msgstr "in"
-
-msgid "eui::Duplicate"
-msgstr "Duplicate"
-
-msgid "eui::Link"
-msgstr "Link"
-
-msgid "eui::Move"
-msgstr "Move"
