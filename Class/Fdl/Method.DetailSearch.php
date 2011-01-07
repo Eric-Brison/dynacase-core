@@ -1032,6 +1032,7 @@ Class _DSEARCH extends DocSearch {
 					$tattr[]=array("attrid"=> "_prop",
                                                    "attrtype"=>"set",
                                                    "attrdisabled"=>"disabled",
+                                                   "attrselected"=>"",
                                                     "attrname" => _("DocProperties"));
 					foreach($internals as $ki=>$vi) {
 						if ($ki=="revdate") $type="date";
@@ -1160,6 +1161,7 @@ Class _DSEARCH extends DocSearch {
 				$tset[]=array("attrid"=> $fs->id,
                                                                "attrtype"=>"set",
                                                                "attrdisabled"=>"disabled",
+                                                               "attrselected"=>"",
                                                                "attrname" => $fs->getLabel());
 				$setAttribute[]=$fs->id;
 				$level++;

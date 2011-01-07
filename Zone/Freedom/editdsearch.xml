@@ -6,9 +6,11 @@
 select.cond option {
   margin-left:10px;
 }
-select.cond option.set {
+select.cond option.set, option[disabled] {
   margin-left:0px;
   font-weight: bold;
+  [IF ISIE]background-color:[COLOR_A0];[ENDIF ISIE]
+  [IF ISCHROME]background-color:[COLOR_A2];[ENDIF ISCHROME]
 }
 
 </style>

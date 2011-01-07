@@ -577,8 +577,9 @@ function getSortAttr($dbaccess, $famid, $name="", $sort=true) {
 
 	$tr = array();
 	$pattern_name = preg_quote($name);
-	while (list($k, $v) = each($ti)) {
+        foreach($ti as $k=>$v) {
 		if (($name == "") || (preg_match("/$pattern_name/i", $v, $reg))) {
+			
 			$tr[] = array($v, $k, $v);
 		}
 	}
@@ -590,14 +591,20 @@ function getSortAttr($dbaccess, $famid, $name="", $sort=true) {
 		$tinter = $doc->GetNormalAttributes();
 	}
 
-	while (list($k, $v) = each($tinter)) {
+        foreach($tinter as $k=>$v) {
 		if (($name == "") || (preg_match("/$pattern_name/i", $v->getLabel(), $reg))) {
-			$tr[] = array($v->getLabel(), $v->id, $v->getLabel());
+			$dv='<b><i>'._getParentLabel($v).'</i></b><br/><span>&nbsp;&nbsp;'.$v->getLabel().'</span>';
+			$tr[] = array($dv, $v->id, $v->getLabel());
 		}
 	}
 	return $tr;
 }
-
+function _getParentLabel($oa) {
+	if ($oa && $oa->fieldSet && $oa->fieldSet->id!='FIELD_HIDDENS') {
+		return _getParentLabel($oa->fieldSet).$oa->fieldSet->getLabel().'/';
+	}
+	return '';
+}
 
 function laction($dbaccess, $famid, $name,$type) {
   $filter=array();
