@@ -247,6 +247,17 @@ function viewreportcsv($target="_self",$ulink=true,$abstract=false) {
   $tcols = $this->getTValue("REP_IDCOLS");
 
   $trow=array();
+  // show head label attributes
+  $tinternals = $this->_getInternals();
+  
+  $tcell=array();
+  foreach($tcols as $kc=>$vc) {
+  	$oa=$rdoc->getAttribute($vc);
+  	 $cval=($oa)?$oa->getLabel():$tinternals[$vc];
+  	if (!$cval) $cval=$vc;
+  	$tcell[]=str_replace(array(";","\n","\r"),array(" - ","\\n",""),$cval);
+  }
+  $trow[]=array("row"=>implode($tcell,';'));
   while ($doc=$s->nextDoc()) {
     $tcell=array();
 
