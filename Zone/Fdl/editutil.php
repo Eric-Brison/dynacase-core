@@ -318,6 +318,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 		case "docid":
 			$famid=$oattr->format;
 			if ($famid) {
+				$needLatest=($oattr->getOption("docrev","latest")=="latest");
 				// edit document relation
 				$multi=$oattr->getOption("multiple");
 				$input="";
@@ -360,7 +361,7 @@ if ($docid==0) {
 }
 $autocomplete=" autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event,".$docid.",this,'$iopt','$attrid','$index')\" ";
 $oc.=$autocomplete;
-$textvalue=$doc->getTitle(trim($value));
+$textvalue=$doc->getTitle(trim($value),'',$needLatest);
 }
 
 $famid=$oattr->format;
@@ -1152,6 +1153,8 @@ function getLayAdoc(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 function getLayMultiDoc(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 	if ($index!=="") $idocid=$oattr->id.'_'.$index;
 	else $idocid=$oattr->id;
+	$needLatest=($oattr->getOption("docrev","latest")=="latest");
+	
 	$lay->set("name",$aname);
 	$lay->set("aid",$idocid);
 	$lay->set("value",$value);
@@ -1162,7 +1165,7 @@ function getLayMultiDoc(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 	if ($value!="") {
 		$tval=explode("<BR>",$value);
 		foreach ($tval as $k=>$v) {
-			$topt[]=array("ltitle"=>$doc->getTitle($v),
+			$topt[]=array("ltitle"=>$doc->getTitle($v,'',$needLatest),
 "ldocid"=>$v);
 		}
 		$lay->set("size",min(count($topt),6));

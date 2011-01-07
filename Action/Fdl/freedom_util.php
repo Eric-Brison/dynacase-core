@@ -769,6 +769,21 @@ function getLatestDocIds($dbaccess, $ids) {
 }
 
 /**
+ * return latest id of document from its initid
+ *
+ * @param string $dbaccess database specification
+ * @param array $ids array of document identificators
+ * @return array identificator relative to latest revision. if one or several documents document not exists the identificator not appear in result so the array count of result can be lesser than parameter
+ */
+function getLatestDocId($dbaccess, $initid) {
+	if (is_array($ids)) return null;
+	$err=simpleQuery($dbaccess,
+	sprintf("select id from docread where initid='%d' and locked != -1",$initid),$id,true,true);
+	if ($err=='') return $id;
+	return null;
+}
+
+/**
  * return doc array of specific revision of document initid
  *
  * @param string $dbaccess database specification
