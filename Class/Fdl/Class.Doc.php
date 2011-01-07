@@ -4369,8 +4369,10 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
     $a="";
+    $latest=($docrev=="latest" || $docrev=="");
     if ($htmllink) {
-      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'));
+    	
+      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'),'',$latest);
       if ($title == "") {
 	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
@@ -4418,7 +4420,7 @@ create unique index i_docir on doc(initid, revision);";
       }
 
     } else {
-      if (! $title) $a=$this->getHTMLTitle($id);
+      if (! $title) $a=$this->getHTMLTitle($id,'',$latest);
       else $a=$title;
     }
     return $a;
@@ -7247,44 +7249,65 @@ create unique index i_docir on doc(initid, revision);";
   //   USUAL METHODS USE FOR CALCULATED ATTRIBUTES OR FUNCTION SEARCHES
   //----------------------------------------------------------------------
   // ALL THESE METHODS NAME MUST BEGIN WITH 'GET'
-
+  
+  /**
+   * return title of document in latest revision
+   * @param string $id identificator of document
+   * @param string $def default value if document not found
+   */
+  final public function getLastTitle($id="-1",$def="") {
+        return $this->getTitle($id,$def,true);
+  }
   /**
    * return title of document
+   * @param string $id identificator of document
+   * @param string $def default value if document not found
+   * @param boolean $latest search title in latest revision
    * @see Doc::getSpecTitle()
    */
-  final public function getTitle($id="-1",$def="") {
-    if (is_array($id)) return $def;
-    if ($id=="") return $def;
-    if ($id=="-1") {
-      if ($this->isConfidential())  return _("confidential document");      
-      return $this->getSpecTitle();
-    }
-    if ((strpos($id,"\n")!==false)||(strpos($id,"<BR>")!==false)) {
-      $tid=explode("\n",str_replace("<BR>","\n",$id));
-      $ttitle=array();
-      foreach ($tid as $idone) {
-	$ttitle[]=$this->getTitle($idone);
-      }
-      return implode("\n",$ttitle);
-    } else {
-      if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
-      if ($id > 0) {    
-	$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype"));
-	if ($t)  {
-	  if ($t["doctype"]=='C') return getFamTitle($t);
-	  return $t["title"];
-	}
-	return " "; // delete title
-      }  
-    }
-    return $def; 
+  final public function getTitle($id="-1",$def="", $latest=false) {
+  	if (is_array($id)) return $def;
+  	if ($id=="") return $def;
+  	if ($id=="-1") {
+  		if ($this->locked != -1 || (!$latest)) {
+  			if ($this->isConfidential())  return _("confidential document");
+  			return $this->getSpecTitle();
+  		} else {
+  			// search latest
+  			$id=$this->latestId();
+  		}
+  	}
+  	if ((strpos($id,"\n")!==false)||(strpos($id,"<BR>")!==false)) {
+  		$tid=explode("\n",str_replace("<BR>","\n",$id));
+  		$ttitle=array();
+  		foreach ($tid as $idone) {
+  			$ttitle[]=$this->getTitle($idone,$def,$latest);
+  		}
+  		return implode("\n",$ttitle);
+  	} else {
+  		if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
+  		if ($id > 0) {
+  			$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked","initid"));
+  			if ($latest && ($t["locked"]==-1)) {
+  				$id=getLatestDocId($this->dbaccess, $t["initid"]);
+  				$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked"));
+  				
+  			}
+  			if ($t)  {
+  				if ($t["doctype"]=='C') return getFamTitle($t);
+  				return $t["title"];
+  			}
+  			return " "; // delete title
+  		}
+  	}
+  	return $def;
   }
   /**
    * Same as ::getTitle() 
    * the < > characters as replace by entities
    */
-  function getHTMLTitle($id="-1",$def="") {   
-    $t=$this->getTitle($id,$def);
+  function getHTMLTitle($id="-1",$def="",$latest=false) {   
+    $t=$this->getTitle($id,$def,$latest);
     $t=str_replace("&","&amp;",$t);
     return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
   }
