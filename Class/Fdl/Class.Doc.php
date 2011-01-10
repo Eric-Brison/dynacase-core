@@ -6759,7 +6759,7 @@ create unique index i_docir on doc(initid, revision);";
 	$pos = strpos($xmlcontent, "[FILE64");
 	$bpos=0;
 	while ($pos !== false) {
-	  if (fwrite($fo,substr($xmlcontent,$bpos,$pos))) {
+	  if (fwrite($fo,substr($xmlcontent,$bpos,$pos-$bpos))) {
 	    $bpos=strpos($xmlcontent, "]",$pos)+1;
 
 	    $filepath=substr($xmlcontent,$pos+8,($bpos-$pos -9));
@@ -6774,8 +6774,7 @@ create unique index i_docir on doc(initid, revision);";
 	      fwrite($fo,base64_encode($buf));
 	    }
 	    $pos = strpos($xmlcontent, "[FILE64", $bpos);
-
-	    $tok = strtok("[FILE64");
+	   
 	  } else {
 	    $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
 	    $pos=false;
