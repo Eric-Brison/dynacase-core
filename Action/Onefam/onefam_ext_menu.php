@@ -39,19 +39,23 @@ function onefam_ext_menu(&$action) {
 
     unset($menu["menu"]["createsearch"]);
     $fam=new_doc($dbaccess,$famid);
+    $main=array();
     if ($fam->isAlive()) {
-        $main["family"]=array("type"=>"menu",
+    	if ($fam->control("icreate")=="") {
+    		$main["family"]=array("type"=>"menu",
                "label"=>$fam->getTitle(),
-               //"icon"=>$fam->getIcon(),
+    		//"icon"=>$fam->getIcon(),
                 "items"=>array());
-         
-        $main["family"]["items"]["create"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
+    		 
+    		$main["family"]["items"]["create"]=array("script"=>array("file"=>"lib/ui/fdl-interface-action-common.js",
                                             "class"=>"Fdl.InterfaceAction.CreateDocument",
                                             "parameters"=>array("family"=>$fam->id)),
                             "label"=>sprintf(_("Create %s"),$fam->getTitle()),
                             "icon"=>$fam->getIcon());
+    	}
         $controlcreate=true;
         $tfam=$fam->GetChildFam($fam->id, $controlcreate);
+        
         if (count($tfam) > 0) {
             $main["family"]["items"]["subfam"]=array("type"=>"menu",
                "label"=>_("other families"),

@@ -822,23 +822,25 @@ Ext.fdl.Collection = {
             if (monofam == true && family){   
                 // Mono-family search
                 this.family = doc.context.getDocument({
-                    id: family,
-                    useCache: true,
-                    onlyValues: false
+                	id: family,
+                	useCache: true,
+                	onlyValues: false
                 });
-                
-                var a = this.family.getAttributes();
-                
-                for (var i in a) {
-                    if (i != 'undefined') { // Why do some families have an undefined attribute ??
-                        if (a[i].getVisibility() != 'I' && a[i].getVisibility() != 'H' && a[i].isLeaf()) {
-                            attributes.push(a[i].id);
-                        }
-                    }
-                    
+                if (this.family) {
+                	var a = this.family.getAttributes();
+
+                	for (var i in a) {
+                		if (i != 'undefined') { // Why do some families have an undefined attribute ??
+                			if (a[i].getVisibility() != 'I' && a[i].getVisibility() != 'H' && a[i].isLeaf()) {
+                				attributes.push(a[i].id);
+                			}
+                		}
+                	}
+                } else {
+                    Ext.Msg.alert('Error', this.context.getLastErrorMessage());
                 }
             }
-            
+
         }
         
         return attributes;
