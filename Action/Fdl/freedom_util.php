@@ -572,13 +572,15 @@ function getFamIdFromName($dbaccess, $name) {
  * @param string $dbaccess database specification
  * @param string $name logical name
  * @param string $famid must be set to increase speed search
+ * @param boolean $only set to true to not search in subfamilies
 
  * @return int 0 if not found, return negative first id found if multiple (name must be unique)
  */
-function getIdFromTitle($dbaccess, $title, $famid="") {
+function getIdFromTitle($dbaccess, $title, $famid="", $only=false) {
     if ($famid && (! is_numeric($famid))) $famid=getFamIdFromName($dbaccess,$famid);
     if ($famid > 0) {
-        $err=simpleQuery($dbaccess,sprintf("select id from only doc%d where title='%s' and locked != -1",$famid,pg_escape_string($title)),$id,true,true);
+    	$fromonly=($only)?"only":"";
+        $err=simpleQuery($dbaccess,sprintf("select id from $fromonly doc%d where title='%s' and locked != -1",$famid,pg_escape_string($title)),$id,true,true);
     } else {
         $err=simpleQuery($dbaccess,sprintf("select id from docread where title='%s' and locked != -1",pg_escape_string($title)),$id,true,true);
     }
