@@ -27,7 +27,7 @@ a.context:hover {
   background-color:yellow;
 }
 </style>
-<title>FREEDOM Check List</title>
+<title>Check List</title>
 </head>
 <body>
 <?php
@@ -163,7 +163,7 @@ if ($dbr_anakeen) {
     if ($rf) $dbr_freedom=true;
   }
   
-  $tout["connection db freedom"]=array("status"=>$dbr_freedom?OK:KO,
+  $tout["connection db dynacase"]=array("status"=>$dbr_freedom?OK:KO,
 				       "msg"=>$fdb);
   
   if ($rf) {
@@ -187,6 +187,17 @@ if ($dbr_anakeen) {
     if (count($pout) > 0) $msg=sprintf("%d double detected<pre>%s</pre>",count($pout),print_r($pout,true));
     else $msg="";
     $tout["double doc name"]=array("status"=>(count($pout)==0)?OK:KO,
+				   "msg"=>$msg);
+
+    // test multiple alive
+    $result = pg_query($rf, "select id, title from docread where id in (SELECT m AS id  FROM (SELECT min(id) AS m, initid, count(initid) AS c  FROM docread WHERE locked != -1 AND doctype != 'T' GROUP BY docread.initid) AS z where z.c > 1);");    
+    $pout=array();
+    while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
+    	$pout[$row["id"]]=$row["title"];
+    }
+    if (count($pout) > 0) $msg=sprintf("%d multiple alive<pre>%s</pre>",count($pout),print_r($pout,true));
+    else $msg="";
+    $tout["multiple alive"]=array("status"=>(count($pout)==0)?OK:KO,
 				   "msg"=>$msg);
 
     // test inheritance

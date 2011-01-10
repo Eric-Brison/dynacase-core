@@ -87,7 +87,7 @@ Class ldapProvider extends Provider {
       $du->setValue("us_whatid",$whatuser->id);
       $err = $du->modify();
       if ($err=="") {
-	error_log("Freedom user $username added (id=".$du->id.")");
+	error_log("User $username added (id=".$du->id.")");
 	if ( $this->parms{'dGroup'}!='') {
 	  $gu = new_Doc($dbaccess, $this->parms{'dGroup'});
 	  if ($gu->isAlive()) {
@@ -97,7 +97,7 @@ Class ldapProvider extends Provider {
 	}
       } 
     } else {
-      sprintf(_("cannot create user %s: %s"),$username,$err." (freedom)");
+      sprintf(_("cannot create user %s: %s"),$username,$err);
     }
     $core->session->close();
     

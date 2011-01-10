@@ -11,34 +11,7 @@
  /**
  */
 
-// ---------------------------------------------------------------
-// $Id: app_edit.php,v 1.6 2005/07/08 15:29:51 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/app_edit.php,v $
-// ---------------------------------------------------------------
-// $Log: app_edit.php,v $
-// Revision 1.6  2005/07/08 15:29:51  eric
-// suppress CORE_USERDB
-//
-// Revision 1.5  2004/03/22 15:21:40  eric
-// change HTTP variable name to put register_globals = Off
-//
-// Revision 1.4  2003/08/18 15:46:41  eric
-// phpdoc
-//
-// Revision 1.3  2002/08/26 13:04:58  eric
-// application multi-machine
-//
-// Revision 1.2  2002/02/04 14:44:36  eric
-// https
-//
-// Revision 1.1  2002/01/08 12:41:33  eric
-// first
-//
-// Revision 1.1  2001/01/18 11:57:19  marianne
-// Ajout modification appli
-//
-//
-// ---------------------------------------------------------------
+
 include_once("Class.SubForm.php");
 include_once("Class.Application.php");
 
@@ -70,7 +43,6 @@ function app_edit(&$action) {
     $AppCour = new Application($action->GetParam("CORE_DB"),$id);
     $action->lay->Set("id",$id);
     $action->lay->Set("name",$AppCour->name);
-    $action->lay->Set("machine",$AppCour->machine);
     $action->lay->Set("short_name",$AppCour->short_name);
     $action->lay->Set("description",$AppCour->description);
     $action->lay->Set("passwd","");
@@ -156,8 +128,6 @@ function app_edit(&$action) {
   $form->SetParam("available","","sel");
   $form->SetParam("displayable","","sel");
   $form->SetParam("access_free","","sel");
-  $form->SetParam("ssl","","sel");
-  $form->SetParam("machine");
   $form->SetParam("id");
   $action->parent->AddJsCode($form->GetSubJs());
   $control=$action->GetLayoutFile("app_control.js");

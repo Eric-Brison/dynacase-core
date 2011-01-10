@@ -482,7 +482,7 @@ create sequence seq_id_users start 10";
     $this->id=1;
     $this->lastname="Master";
     $freedomctx=getFreedomContext();
-    if ($freedomctx=="") $this->firstname="Freedom";
+    if ($freedomctx=="") $this->firstname="Dynacase Platform";
     else $this->firstname=ucfirst("$freedomctx");
     $this->password_new="anakeen";
     $this->login="admin";

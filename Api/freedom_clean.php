@@ -17,7 +17,7 @@ include_once("FDL/Class.Doc.php");
 
 $dbaccess=$action->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-  print "Freedom Database not found : param FREEDOM_DB";
+  print "Database not found : param FREEDOM_DB";
   exit;
 }
 

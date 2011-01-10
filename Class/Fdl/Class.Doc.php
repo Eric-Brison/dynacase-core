@@ -617,21 +617,30 @@ create unique index i_docir on doc(initid, revision);";
    * 
    */
   function regenerateTemplate($aid, $index=-1) {
-    $layout = 'THIS:'.$aid;
-    if($index>-1) {
-      $layout.='['.$index.']';
-    }
-    $outfile = $this->viewDoc($layout.':B', 'ooo');
-    if(file_exists($outfile)) {
-      $fh = fopen($outfile, 'rb');
-      if($fh) {
-	$this->saveFile($aid, $fh, '', $index);
-	fclose($fh);
-	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
-	return true;
-      }
-    }
-    return false;
+  	$layout = 'THIS:'.$aid;
+  	if($index>-1) {
+  		$layout.='['.$index.']';
+  	}
+  	$orifile=$this->getZoneFile($layout);
+  	if ($orifile) {
+  		if (! file_exists($orifile)) {
+  			addWarningMsg(sprintf(_("Dynamic template %s not found "), $orifile));
+  		} else if (getFileExtension($orifile) != 'odt') {
+  			addWarningMsg(sprintf(_("Dynamic template %s not an odt file "), $orifile));
+  		} else {
+  			$outfile = $this->viewDoc($layout.':B', 'ooo');
+  			if(file_exists($outfile)) {
+  				$fh = fopen($outfile, 'rb');
+  				if($fh) {
+  					$this->saveFile($aid, $fh, '', $index);
+  					fclose($fh);
+  					$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+  					return true;
+  				}
+  			}
+  		}
+  	}
+  	return false;
   }
   
   /**
@@ -4361,8 +4370,10 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
     $a="";
+    $latest=($docrev=="latest" || $docrev=="");
     if ($htmllink) {
-      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'));
+    	
+      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'),'',$latest);
       if ($title == "") {
 	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
@@ -4410,7 +4421,7 @@ create unique index i_docir on doc(initid, revision);";
       }
 
     } else {
-      if (! $title) $a=$this->getHTMLTitle($id);
+      if (! $title) $a=$this->getHTMLTitle($id,'',$latest);
       else $a=$title;
     }
     return $a;
@@ -5478,44 +5489,44 @@ create unique index i_docir on doc(initid, revision);";
   
   /** 
    * return the basename of template file
-   * @return string
+   * @return string (return null if template not found)
    */
-  public function getZoneFile($zone="") {
-    $index = -1;
-    if( $zone == "" ) {
-      $zone = $this->defaultview;
-    }
+  public function getZoneFile($zone) {
+  	$index = -1;
+  	if( $zone == "" ) {
+  		return null;
+  	}
 
-    $reg = $this->parseZone($zone);
-    if( is_array($reg) ) {
-      $aid = $reg['layout'];
-      if( $reg['index'] != '' ) {
-	$index = $reg['index'];
-      }
-      $oa = $this->getAttribute($aid);
-      if( $oa ) {
-	if( $oa->usefor != 'Q' ) {
-	  $template = $this->getValue($oa->id);
-	} else {
-	  $template = $this->getParamValue($aid);
-	}
-	if( $index >= 0 ) {
-	  $tt = $this->_val2array($template);
-	  $template = $tt[$index];
-	}
+  	$reg = $this->parseZone($zone);
+  	if( is_array($reg) ) {
+  		$aid = $reg['layout'];
+  		if( $reg['index'] != '' ) {
+  			$index = $reg['index'];
+  		}
+  		$oa = $this->getAttribute($aid);
+  		if( $oa ) {
+  			if( $oa->usefor != 'Q' ) {
+  				$template = $this->getValue($oa->id);
+  			} else {
+  				$template = $this->getParamValue($aid);
+  			}
+  			if( $index >= 0 ) {
+  				$tt = $this->_val2array($template);
+  				$template = $tt[$index];
+  			}
 
-	if( $template == "" ) {
-	  return sprintf(_("no file found for zone [%s]"), $zone);
-	}
+  			if( $template == "" ) {
+  				return null;
+  			}
 
-	return $this->vault_filename_fromvalue($template, true);
-      }
-      if( strstr($aid, '.') ) {
-	return getLayoutFile($reg['app'], strtolower($aid));
-      } else {
-	return getLayoutFile($reg['app'], strtolower($aid)).".xml";
-      }
-    }
+  			return $this->vault_filename_fromvalue($template, true);
+  		}
+  		if( strstr($aid, '.') ) {
+  			return getLayoutFile($reg['app'], strtolower($aid));
+  		} else {
+  			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
+  		}
+  	}
   }
   /** 
    * return the character in third part of zone
@@ -5681,6 +5692,7 @@ create unique index i_docir on doc(initid, revision);";
     $binary=($this->getZoneOption($layout)=="B");
 
     $tplfile=$this->getZoneFile($layout);
+    
     $ext=getFileExtension($tplfile);
     if (strtolower($ext)=="odt") {
       include_once('Class.OOoLayout.php');
@@ -5691,6 +5703,7 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay = new Layout($tplfile, $action);
     }
 
+    if (! file_exists($this->lay->file)) return sprintf(_("template file %s not found"),$tplfile);
         $this->lay->setZone($reg);
        
     $this->lay->set("_readonly",($this->Control('edit')!=""));
@@ -5851,7 +5864,7 @@ create unique index i_docir on doc(initid, revision);";
 	    
 	} else $htmlvalue="";
 
-	if ($htmlvalue !== "") {// to define when change frame
+	if (($htmlvalue === false) || ($goodvalue)) {// to define when change frame
 	    if ( $currentFrameId != $attr->fieldSet->id) {
 	        if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe=true;
 	    }
@@ -5939,7 +5952,7 @@ create unique index i_docir on doc(initid, revision);";
 		
 	  }
 	  
-	if (($attr->fieldSet->mvisibility!="H")&&($htmlvalue!=="")) {
+	if (($attr->fieldSet->mvisibility!="H")&&($htmlvalue!=="" || $goodvalue)) {
 	  $currentFrameId = $attr->fieldSet->id;
 	  $currentFrame = $attr->fieldSet;
 	}
@@ -6304,12 +6317,24 @@ create unique index i_docir on doc(initid, revision);";
 	$this->lay->Set("V_".strtoupper($v->id),"");
 	$this->lay->Set("L_".strtoupper($v->id),"");
       } else {
-	if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-	else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
+	if ($target=="ooo") {
+		$this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
+		if ($v->type=="array") {
+			$tva=$this->getAValues($v->id);
+			
+			$tmkeys=array();
+			foreach ($tva as $kindex=>$kvalues) {
+				foreach($kvalues as $kaid=>$va) {
+				$tmkeys[$kindex]["V_".strtoupper($kaid)]=$this->GetOOoValue($this->getAttribute($kaid),$va);
+				}
+			}
+			$this->lay->setRepeatable($tmkeys);
+			
+		}
+	} else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
 	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
       }
     }
-
     $listattr = $this->GetFieldAttributes();
 
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
@@ -6784,7 +6809,7 @@ create unique index i_docir on doc(initid, revision);";
 	$pos = strpos($xmlcontent, "[FILE64");
 	$bpos=0;
 	while ($pos !== false) {
-	  if (fwrite($fo,substr($xmlcontent,$bpos,$pos))) {
+	  if (fwrite($fo,substr($xmlcontent,$bpos,$pos-$bpos))) {
 	    $bpos=strpos($xmlcontent, "]",$pos)+1;
 
 	    $filepath=substr($xmlcontent,$pos+8,($bpos-$pos -9));
@@ -6799,8 +6824,7 @@ create unique index i_docir on doc(initid, revision);";
 	      fwrite($fo,base64_encode($buf));
 	    }
 	    $pos = strpos($xmlcontent, "[FILE64", $bpos);
-
-	    $tok = strtok("[FILE64");
+	   
 	  } else {
 	    $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
 	    $pos=false;
@@ -7274,44 +7298,65 @@ create unique index i_docir on doc(initid, revision);";
   //   USUAL METHODS USE FOR CALCULATED ATTRIBUTES OR FUNCTION SEARCHES
   //----------------------------------------------------------------------
   // ALL THESE METHODS NAME MUST BEGIN WITH 'GET'
-
+  
+  /**
+   * return title of document in latest revision
+   * @param string $id identificator of document
+   * @param string $def default value if document not found
+   */
+  final public function getLastTitle($id="-1",$def="") {
+        return $this->getTitle($id,$def,true);
+  }
   /**
    * return title of document
+   * @param string $id identificator of document
+   * @param string $def default value if document not found
+   * @param boolean $latest search title in latest revision
    * @see Doc::getSpecTitle()
    */
-  final public function getTitle($id="-1",$def="") {
-    if (is_array($id)) return $def;
-    if ($id=="") return $def;
-    if ($id=="-1") {
-      if ($this->isConfidential())  return _("confidential document");      
-      return $this->getSpecTitle();
-    }
-    if ((strpos($id,"\n")!==false)||(strpos($id,"<BR>")!==false)) {
-      $tid=explode("\n",str_replace("<BR>","\n",$id));
-      $ttitle=array();
-      foreach ($tid as $idone) {
-	$ttitle[]=$this->getTitle($idone);
-      }
-      return implode("\n",$ttitle);
-    } else {
-      if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
-      if ($id > 0) {    
-	$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype"));
-	if ($t)  {
-	  if ($t["doctype"]=='C') return getFamTitle($t);
-	  return $t["title"];
-	}
-	return " "; // delete title
-      }  
-    }
-    return $def; 
+  final public function getTitle($id="-1",$def="", $latest=false) {
+  	if (is_array($id)) return $def;
+  	if ($id=="") return $def;
+  	if ($id=="-1") {
+  		if ($this->locked != -1 || (!$latest)) {
+  			if ($this->isConfidential())  return _("confidential document");
+  			return $this->getSpecTitle();
+  		} else {
+  			// search latest
+  			$id=$this->latestId();
+  		}
+  	}
+  	if ((strpos($id,"\n")!==false)||(strpos($id,"<BR>")!==false)) {
+  		$tid=explode("\n",str_replace("<BR>","\n",$id));
+  		$ttitle=array();
+  		foreach ($tid as $idone) {
+  			$ttitle[]=$this->getTitle($idone,$def,$latest);
+  		}
+  		return implode("\n",$ttitle);
+  	} else {
+  		if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
+  		if ($id > 0) {
+  			$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked","initid"));
+  			if ($latest && ($t["locked"]==-1)) {
+  				$id=getLatestDocId($this->dbaccess, $t["initid"]);
+  				$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked"));
+  				
+  			}
+  			if ($t)  {
+  				if ($t["doctype"]=='C') return getFamTitle($t);
+  				return $t["title"];
+  			}
+  			return " "; // delete title
+  		}
+  	}
+  	return $def;
   }
   /**
    * Same as ::getTitle() 
    * the < > characters as replace by entities
    */
-  function getHTMLTitle($id="-1",$def="") {   
-    $t=$this->getTitle($id,$def);
+  function getHTMLTitle($id="-1",$def="",$latest=false) {   
+    $t=$this->getTitle($id,$def,$latest);
     $t=str_replace("&","&amp;",$t);
     return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
   }
@@ -7646,7 +7691,7 @@ create unique index i_docir on doc(initid, revision);";
    * @param zone string "APP:LAYOUT:etc." $zone
    * @return false on error or an array containing the components
    */
-  static public function parseZone($zone="") {
+  static public function parseZone($zone) {
     $p = array();
 
     // Separate layout (left) from args (right)

@@ -73,10 +73,10 @@ abstract class Authenticator {
     }
     $err = $this->provider->initializeUser($username);
     if( $err != "" ) {
-      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Error creating freedom user '%s' err=[%s]", $username, $err));
+      error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Error creating user '%s' err=[%s]", $username, $err));
       return FALSE;
     }
-    error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Initialized freedom user '%s'!", $username));
+    error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Initialized user '%s'!", $username));
     return TRUE;
   }
 

@@ -23,7 +23,7 @@ $appl = new Application();
 $appl->Set("FDL", $core);
 $dbaccess=$appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-  print "Freedom Database not found : param FREEDOM_DB";
+  print "Database not found : param FREEDOM_DB";
   exit;
 }
 
@@ -67,9 +67,9 @@ function usage() {
   echo "     --test               : In case of destructive command, no actions are done, only gives todo messages.\n";
   echo "     --cmd=[command]      : Run command, where command are :\n";
   echo "                             - check-all    : return the full listing of vault files\n";
-  echo "                             - check-noref  : return the unreferenced vault file (file not used by freedom documents)\n";
+  echo "                             - check-noref  : return the unreferenced vault file (file not used by documents)\n";
   echo "                             - check-nofile : return the vault file entries without file (...)\n";
-  echo "                             - clean-unref  : clear vault file not referenced by freedom documents.\n";
+  echo "                             - clean-unref  : clear vault file not referenced by documents.\n";
   echo "\n";
   return;
 }

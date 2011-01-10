@@ -5,7 +5,7 @@
 
   <title>[rssname]</title>
   <link>[rsslink]</link>
-  <description>[rssname] ([TEXT: folder containt]) -Freedom RSS-</description>
+  <description>[rssname] ([TEXT: folder containt]) -RSS-</description>
   <copyright>[copy]</copyright>
   <language>[lang]</language>
   <pubDate>[datepub]</pubDate>
@@ -15,7 +15,7 @@
   <ttl>[ttl]</ttl>
   <image>
     <url>[server]/[icon]</url>
-    <title>[rssname] (Freedom RSS)</title>
+    <title>[rssname] (RSS)</title>
     <link>[rsslink]</link>
   </image>
 

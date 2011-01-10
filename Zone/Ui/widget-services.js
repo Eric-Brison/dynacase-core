@@ -18,7 +18,7 @@ Ext.fdl.Service = function(config,context){
 	    	
 	    	var extview = eval(config.gadget.extview);
 	    	if(!extview){
-	    		Ext.Msg.alert('freedom','Error : Gadget View not available.');
+	    		Ext.Msg.alert('Error','Error : Gadget View not available.');
 	    	}
 	    
 	        var gview = eval('new ' + config.gadget.extview + '(config.gadget.userPref,context)');

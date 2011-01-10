@@ -330,12 +330,21 @@ Class NormalAttribute extends BasicAttribute {
               }
              
           case 'docid':
-              $info=getTDoc($doc->dbaccess,$v,array(),array("title","name","id"));
+              $info=getTDoc($doc->dbaccess,$v,array(),array("title","name","id","initid","locked"));
+              
               if ($info) {
+              	$docid=$info["id"];
+                $latestTitle=($this->getOption("docrev","latest")=="latest");
+              	if ($latestTitle) {
+              		$docid=$info["initid"];
+              		if ($info["locked"] == -1) {
+              			$info["title"]=$doc->getLastTitle($docid);
+              		}
+              	}
                   if ($info["name"]) {
                       if ($opt->withIdentificator) {
                           return sprintf('<%s id="%s" name="%s">%s</%s>',
-                          $this->id,$info["id"],$info["name"],$this->encodeXml($info["title"]),$this->id);
+                          $this->id,$docid,$info["name"],$this->encodeXml($info["title"]),$this->id);
                       } else {
                           return sprintf('<%s name="%s">%s</%s>',
                           $this->id,$info["name"],$this->encodeXml($info["title"]),$this->id);
@@ -343,7 +352,7 @@ Class NormalAttribute extends BasicAttribute {
                   } else {
                       if ($opt->withIdentificator) {
                       return sprintf('<%s id="%s">%s</%s>',
-                      $this->id,$info["id"],$this->encodeXml($info["title"]),$this->id);
+                      $this->id,$docid,$this->encodeXml($info["title"]),$this->id);
                       } else {
                           
                       return sprintf('<%s>%s</%s>',

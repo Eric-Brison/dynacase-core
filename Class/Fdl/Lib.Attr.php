@@ -90,7 +90,11 @@ function AttrToPhp($dbaccess, $tdoc) {
 	  $table1[$doctitle]->type="text";
 	  $table1[$doctitle]->visibility="H";
 	  $table1[$doctitle]->phpfile="";
-	  $table1[$doctitle]->phpfunc="::getTitle(".$v->id.",' )";
+	  if (! preg_match("/docrev=(fixed|state)/",$v->options) ) {
+	  $table1[$doctitle]->phpfunc="::getLastTitle(".$v->id.",' )";
+	  } else {
+	  	$table1[$doctitle]->phpfunc="::getTitle(".$v->id.",' )";
+	  }
 	  $table1[$doctitle]->options="autotitle=yes";
 	  $table1[$doctitle]->title="N";
 	  $table1[$doctitle]->abstract="N";

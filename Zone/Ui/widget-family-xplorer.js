@@ -408,7 +408,7 @@ Ext.fdl.FamilyXplorer = Ext.extend(Ext.Panel, {
                         text: me.context._("eui::Save"),
                         handler: function(){
                         
-                            Ext.Msg.prompt('freedom',me.context._("eui::Enter search name"),function(btn,text){
+                            Ext.Msg.prompt('Information',me.context._("eui::Enter search name"),function(btn,text){
                                
                                 if(btn == 'ok'){
                                     

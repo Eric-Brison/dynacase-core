@@ -57,7 +57,7 @@ function checkauth(&$action) {
   }
    
   if (!$existu) {
-    error_log(basename(__FILE__).":".__LINE__." User $login has no freedom account");
+    error_log(basename(__FILE__).":".__LINE__." User $login has no account");
     global $_POST;
     Redirect($action, 'AUTHENT', 'LOGINFORM&error=1&auth_user='.urlencode($_POST['auth_user']));
     exit(0);

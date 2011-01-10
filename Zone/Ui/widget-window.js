@@ -72,7 +72,7 @@ Ext.fdl.Window = Ext.extend(Ext.Window, {
 	            				window.close();
 	            			}
 	            		},
-	            		title: 'freedom',
+	            		title: 'Confirmation',
 	            		msg: closeConfirm
 	            	});
 	            	
