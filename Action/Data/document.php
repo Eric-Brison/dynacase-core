@@ -530,7 +530,7 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
         case '':
             if (! $id) $out->error=_("no identificator");
             else {
-                $onlyValues=getHttpVars("onlyValues","true")=="true";
+                $config->onlyValues=getHttpVars("onlyValues","true")=="true";
                 $config->latest=(getHttpVars("latest","true")=="true");
                 $winfo=(getHttpVars("needWorkflow","false")=="true");
                 $config->propertiesInformation=(getHttpVars("propertiesInformation","false")=="true");
@@ -542,7 +542,7 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
                     include_once("DATA/Class.Workflow.php");
                     $doc=new Fdl_Workflow($id,$config);
                 } else $doc=new Fdl_Document($id,$config);
-                $out=$doc->getDocument($onlyValues,$config->completeProperties,$config->propertiesInformation,$config->getUserTags);
+                $out=$doc->getDocument($config->onlyValues,$config->completeProperties,$config->propertiesInformation,$config->getUserTags);
                 if ($withContent) {
                     if ($doc->isCollection()) {
                     $configContent=getHttpVars("contentConfig");
