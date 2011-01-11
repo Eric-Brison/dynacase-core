@@ -452,6 +452,11 @@ function enum_getXmlSchema(&$la) {
       $lay->setBlockData("ATTR",$tax);
       return $lay->gen();
   }
+  /**
+   * return array of enumeration definition
+   * the array'skeys are the enum key and the values are the labels
+   * @return array
+   */
   function getEnum() {   
 		global $__tenum; // for speed optimization
 		global $__tlenum;
@@ -526,7 +531,7 @@ function enum_getXmlSchema(&$la) {
 					$tmpKey = str_replace(array('-dot-', '-comma-'), array('\.', ','), $tmpKey);
 					$enumlabelValue = $this->enum[$tmpKey].'/'.$enumValue;
 					$enumlabelValue = str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumlabelValue);
-					$this->enum[str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumKey)] = $enumlabelValue;
+					$this->enum[str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumKey)] = $enumValue;
 					$this->enumlabel[str_replace(array('-dot-', '-comma-'), array('.', ','), $enumlabelKey)] = $enumlabelValue;
 				}
 			}
@@ -536,7 +541,11 @@ function enum_getXmlSchema(&$la) {
 	$__tlenum[$this->id] = $this->enumlabel;
 	return $this->enum;
   }
-
+  /**
+   * return array of enumeration definition
+   * the array'skeys are the enum single key and the values are the complete labels
+   * @return array
+   */
   function getEnumLabel($enumid="") {
 		global $__tlenum;
 

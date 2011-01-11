@@ -96,7 +96,7 @@ function barmenu(&$action) {
 	$lattr = $sfdoc->getNormalAttributes();
 
 	$tkind = array();
-	while (list($k, $a) = each($lattr)) {
+    foreach($lattr as $k=>$a) {
 		if ((($a->type == "enum") || ($a->type == "enumlist")) &&
 				(($a->phpfile != "-") && ($a->getOption("bmenu") != "no"))) {
 
@@ -109,8 +109,10 @@ function barmenu(&$action) {
 			$tmkind = array();
 			$enum = $a->getenum();
 			foreach($enum as $kk => $ki) {
+				$klabel=$a->getenumLabel($ki);
+				$klabel=array_pop(explode('/',$klabel,substr_count($kk, '.')+0));
 				$tvkind[] = array(
-					"ktitle" => strpos($ki, '/') !== false ? substr($ki, strrpos($ki, '/')) : $ki,
+					"ktitle" => $klabel,
 					"level" => (substr_count($kk, '.') - substr_count($kk, '\.')) * 20,
 					"kid" => str_replace('\.', '.', $kk),
 					"urlkid" => urlencode($kk)
@@ -121,7 +123,7 @@ function barmenu(&$action) {
 
 
 			popupInit($a->id . "menu", $tmkind);
-			while (list($km, $vid) = each($tmkind)) {
+            foreach($tmkind as $km=>$vid) {
 				popupActive($a->id . "menu", 1, $vid);
 			}
 		}
