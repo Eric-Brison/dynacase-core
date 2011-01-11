@@ -4570,9 +4570,8 @@ create unique index i_docir on doc(initid, revision);";
 	      $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
 	      $opt="";
 	      $inline=$oattr->getOption("inline");
-	      if ($inline=="yes") $opt="&inline=yes";
 	      $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-		$this->getFileLink($oattr->id,$idx)."\">";
+		$this->getFileLink($oattr->id,$idx, false, ($inline=="yes"))."\">";
 	      if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
 	      $htmlval.=$fname."</a>";
 	    } else {
