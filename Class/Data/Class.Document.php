@@ -26,7 +26,8 @@ Class Fdl_Document  {
             $this->doc=new_doc($this->dbaccess, $id,$latest);
             if (! $this->doc->isAffected()) $this->error=sprintf(_("document %s not exist"),$id);
             if (! $this->error) {
-                $this->error=$this->doc->control('view');
+            	// no control families if structure is required
+            	if ($this->doc->doctype!='C' || ($config->onlyValues)) $this->error=$this->doc->control('view');
                 if ($this->error) $this->error=sprintf(_("no privilege view for %d"),$id);
                 elseif ($this->doc->isConfidential()) $this->error=sprintf(_("confidential document"));
             }

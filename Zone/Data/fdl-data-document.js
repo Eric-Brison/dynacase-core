@@ -338,12 +338,15 @@ Fdl.Document.prototype = {
      */
     getFamilyAttributes: function() {
     	if (! this._attributes) {
-    		// retrieve attributes from familt
+    		// retrieve attributes from family
     		var f=this.context.getDocument({id:(this.getProperty('doctype')=='C'?this.getProperty('id'):this.getProperty('fromid')),useCache:true,onlyValues:false,propertiesInformation:(this.context.propertiesInformation==null)});
     		if (f && f._attributes) this._attributes=f._attributes;
     		else if (f && (! f._attributes)) {
     			f=this.context.getDocument({id:(this.getProperty('doctype')=='C'?this.getProperty('id'):this.getProperty('fromid')),useCache:false,onlyValues:false,propertiesInformation:(this.context.propertiesInformation==null)});
     			if (f && f._attributes) this._attributes=f._attributes;
+    		} else {
+    			// family not found
+    			this._attributes=[];
     		}
     	}
 	  return this._attributes;
