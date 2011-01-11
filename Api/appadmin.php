@@ -30,8 +30,8 @@ echo " $appname...$method\n";
 $app=new Application();
 
 $Null = "";
-$app->Set($appname,$Null);
-if ($method == "reinit") $app->InitApp($appname,false);
+$app->Set($appname,$Null,null,true);
+if ($method == "reinit") $app->InitApp($appname,false,null, true);
 if ($method == "update") $app->InitApp($appname,true);
 if ($method == "delete") $app->DeleteApp();
 

@@ -82,7 +82,7 @@ create sequence SEQ_ID_APPLICATION start 10;
   public $cssref=array();
   public $csscode=array();
 
-  function Set($name,&$parent, $session="",$autoinit=true)    {
+  function Set($name,&$parent, $session="",$autoinit=false)    {
       $this->log->debug("Entering : Set application to $name");
 
       $query=new QueryDb($this->dbaccess,"Application");
@@ -92,26 +92,31 @@ create sequence SEQ_ID_APPLICATION start 10;
       $query->string = "'".pg_escape_string($name)."'";
       $list = $query->Query(0,0,"TABLE");
       if ($query->nb != 0) {
-          $this->affect($list[0]);
-          $this->log->debug("Set application to $name");
-          if (!isset ($parent)) {
-              $this->log->debug("Parent not set");
-          }
+      	$this->affect($list[0]);
+      	$this->log->debug("Set application to $name");
+      	if (!isset ($parent)) {
+      		$this->log->debug("Parent not set");
+      	}
       } else {
-          if ($autoinit) {
-          // Init the database with the app file if it exists
-          $this->InitApp($name);
-          if ($parent != "") {
-              $this->parent=&$parent;
-              if ($this->name=="") {
-                  print "fatal rrror in application name  $name";
-                  exit;
-              } else Redirect($this,$this->name,"");
-          } else {
-              global $_SERVER;
-              if ($_SERVER['HTTP_HOST'] != "") Header("Location: ".$_SERVER['HTTP_REFERER']);
-          }
-          }
+      	if ($autoinit) {
+      		// Init the database with the app file if it exists
+      		$this->InitApp($name);
+      		if ($parent != "") {
+      			$this->parent=&$parent;
+      			if ($this->name=="") {
+      				printf( "Application name %s not found", $name);
+      				exit;
+      			} else Redirect($this,$this->name,"");
+      		} else {
+      			global $_SERVER;
+      			if ($_SERVER['HTTP_HOST'] != "") Header("Location: ".$_SERVER['HTTP_REFERER']);
+      		}
+      	} else {
+      		header('HTTP/1.0 503 Application unavalaible');
+      		printf("Fail to find application %s.",$name);
+      		exit;
+      		//throw new Exception(sprintf("Fail to find application %s",$name));
+      	}
       }
 
       if ($this !== $parent)  $this->parent=&$parent;
@@ -250,6 +255,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	} else $logmsg[]=strftime("%H:%M - ").str_replace("\n","\\n",addslashes(substr($code,0,$cut)));
 	$this->session->register("logmsg",$logmsg);
 	$suser = sprintf("%s %s [%d] - ",$this->user->firstname, $this->user->lastname, $this->user->id);
+	if (is_array($code)) $code=print_r($code,true);
 	$this->log->info($suser.$code);
       }
     }
