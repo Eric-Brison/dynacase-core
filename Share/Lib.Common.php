@@ -126,6 +126,12 @@ function getDbid($dbaccess) {
 	global $CORE_DBID;
 	if (!isset($CORE_DBID) || !($CORE_DBID[$dbaccess])) {
 		$CORE_DBID[$dbaccess] = pg_connect($dbaccess);
+		if (! $CORE_DBID[$dbaccess]) {
+			// fatal error
+			error_log("Fail to DB connect to : $dbaccess");
+			header('HTTP/1.0 503 DB connection unavalaible');
+			exit;
+		}
 	}
 	return $CORE_DBID[$dbaccess];
 }
