@@ -504,7 +504,6 @@ function getChildDoc($dbaccess,
 	  }
 	}
       }
-     
       if (count($tqsql) > 0) {
           if (count($tqsql) == 1) {
               $query = new QueryDb($dbaccess,"Doc$fromid");
