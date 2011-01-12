@@ -4383,11 +4383,17 @@ create unique index i_docir on doc(initid, revision);";
 	if ($target=="ext") {
                   
 	  //$ec=getSessionValue("ext:targetRelation");
-	  $ec=getHttpVars("ext:targetRelation",'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view")');
+	  $jslatest=($latest)?'true':'false';
+	  $ec=getHttpVars("ext:targetRelation",'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view",{latest:'.$jslatest.'})');
 	  if ($ec)  {
 	    if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
+	    else if ($latest) {
+	    	$lid=getLatestDocId($this->dbaccess,$id);
+	    	if ($lid) $id=$lid;
+	    }
 	    $ec=str_replace("%V%",$id,$ec);
-	    $ecu=str_replace("'",'"',$this->urlWhatEncode($ec));
+	    $ecu=str_replace("'",'"',$ec);
+        
 	    $a="<a  onclick='parent.$ecu'>$title</a>";
 	  } else {
 	    if ($docrev=="latest" || $docrev=="" || !$docrev)
