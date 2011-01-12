@@ -28,8 +28,6 @@ function defattr(&$action)
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
 
 
-  $action->lay->Set("docid",$docid);
-  $action->lay->Set("dirid",$dirid);
 
   $doc= new_Doc($dbaccess,$docid);
   if (! $doc->isAlive()) {
@@ -38,6 +36,9 @@ function defattr(&$action)
       $action->exitError(sprintf(_("document %s is not a family"),$doc->getTitle()));
   }
   $docid=$doc->id;
+  
+  $action->lay->Set("docid",$docid);
+  $action->lay->Set("dirid",$dirid);
   // build values type array
   $odocattr= new DocAttr($dbaccess);
 
