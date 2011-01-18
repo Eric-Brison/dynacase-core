@@ -229,6 +229,11 @@
           </text:list>
         </xsl:template>
 
+        <xsl:template match="xhtml:li[xhtml:p]">
+            <text:list-item>>
+            <xsl:apply-templates/>
+            </text:list-item>
+        </xsl:template>
         <xsl:template match="xhtml:li">
             <text:list-item><text:p text:style-name="L1">
             <xsl:apply-templates/>
