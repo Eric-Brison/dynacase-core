@@ -1344,10 +1344,11 @@ create unique index i_docir on doc(initid, revision);";
     else {
       $query->order_by="id desc";
     }
-      
+    
     $rev= $query->Query(0,2,"TABLE");
-    if (count($rev)>1) addWarningMsg(sprintf("document %d : multiple alive revision",$this->initid));
-
+    if ($this->doctype!='Z') {
+    	if (count($rev)>1) addWarningMsg(sprintf("document %d : multiple alive revision",$this->initid));
+    }
     return $rev[0]["id"];
   }
 
@@ -1770,8 +1771,11 @@ create unique index i_docir on doc(initid, revision);";
   public function resetConvertVaultFile($attrid,$index) {  
         $err='';
         $val=$this->getTValue($attrid, false, $index);
-        if (count($val) == 1) {
-            $val=$val[0];
+        if (($index==-1) && (count($val) == 1)) {
+        	$val=$val[0];
+        }
+        
+        if ($val) {
             $info=$this->getFileInfo($val);
             if ($info) {
                   $ofout=new VaultDiskStorage($this->dbaccess,$info["id_file"]);
@@ -4561,7 +4565,7 @@ create unique index i_docir on doc(initid, revision);";
 	                             $info->id_file,str_replace("'","&rsquo;",_("file status")),$waiting,$textval);
 	              if ($info->teng_state < 0)  {
 	                  $htmlval.=sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
-	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"/lib/ui/icon/arrow_refresh.png");
+	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"lib/ui/icon/arrow_refresh.png");
 	              }              
 	        } else {
 	            $htmlval=$textval;
