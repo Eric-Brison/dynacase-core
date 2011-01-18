@@ -60,8 +60,10 @@ function canUpdateLdapCard() {
 
 }
 
-
-function GetOtherGroups() {
+/**
+ * @deprecated
+ */
+function getOtherGroups() {
   if ($this->id == 0) return array();
   
   include_once("FDL/freedom_util.php");  
@@ -77,6 +79,57 @@ function GetOtherGroups() {
   
   return $tgroup;
 }
+
+/**
+ * get all direct group document identificators of the isuser
+ * @return @array of group document id, the index of array is the system identificator
+ */
+public function getUserGroups() {
+	$err=simpleQuery($this->dbaccess, 
+	       sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;",$this->getValue("us_whatid")),
+	       $groupIds,false,false);
+	if (! $err) {
+		$gids=array();
+		foreach($groupIds as $gid) {
+			$gids[$gid["id"]]=$gid["fid"];
+		}
+		return $gids;
+	}
+	return null;
+}
+
+/**
+ * return all direct group and parent group document identificators of $gid
+ * @param string $gid systeme identificator group or users
+ */
+protected function getAscendantGroup($gid) {
+	$groupIds=array();
+	if ($gid > 0) {
+		$err=simpleQuery($this->dbaccess,
+		       sprintf("SELECT id, fid from users, groups where groups.iduser=%d and users.id = groups.idgroup;",$gid),
+		       $groupIds,false,false);
+		$gids=array(); // current level
+        $pgids=array(); // fathers
+		foreach ($groupIds as $gid) {
+			$gids[$gid["id"]]=$gid["fid"];
+		}
+		
+		foreach ($gids as $systemGid=>$docGid) {
+			$pgids+= $this->getAscendantGroup($systemGid);
+		}
+		$groupIds=$gids + $pgids;
+	}
+	return $groupIds;
+}
+/**
+ * get all direct group and parent group document identificators of the isuser
+ * @return @array of group document id the index of array is the system identificator
+ */
+public function getAllUserGroups() {
+	return $this->getAscendantGroup($this->getValue("us_whatid"));
+}
+
+
 /**
  * Refresh folder parent containt
  */
