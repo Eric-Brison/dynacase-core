@@ -859,48 +859,42 @@ class OOoLayout extends Layout {
 	 * parse tables
 	 */
 	protected function parseTableRow() {
-	    $lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table");
-	    foreach ($lists as $list) {
-	        $items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
-	        if ($items->length > 0) {
-	            $findv=false;	        
-	            $skey=implode('|',array_keys($this->arrayMainKeys));
-	            
-	            foreach ($items as $item) {
-	                if (preg_match("/\[($skey)\]/",$this->innerXML($item) ,$reg)) {
-	                    $findv=true;
-	                    break;
-	                }
-	            }
-	            if ($findv) {
-	                if (preg_match_all("/\[($skey)\]/",$this->innerXML($list),$reg)) {
-	                    $reg0=$reg[0];
-	                    $tvkey=array();
-	                    $maxk=0; // search values which has the greatest number of values
-	                    foreach ($reg0 as $k=>$v) {
-	                        $key=substr(trim($v),1,-1);
-	                        $tvkey[$key]=$this->arrayMainKeys[$key];
-	                        $maxk=max(count($tvkey[$key]),$maxk);
-	                    }
-	                    if ($maxk > 0) {
-	                        for ($i=0;$i<$maxk;$i++) {
-	                            $clone=$item->cloneNode(true);
-	                            $item->parentNode->insertBefore($clone,$item);
-	                            foreach ($tvkey as $kk=>$key) {
-	                                $this->replaceNodeText($clone,"[$kk]",$key[$i]);
-	                            }	                            
-	                            $this->replaceRowIf($clone,array($i)); // main level
-	                            $this->replaceRowNode($clone,array($i)); // inspect sub levels
-	                            
-	                        }
-	                    }
-	                    
-                            $item->parentNode->removeChild($item);
-	                }
-	            }
-	        }
-	    }
-	    return $err;
+		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
+		$validRow=array();
+		
+		$skey=implode('|',array_keys($this->arrayMainKeys));
+		foreach ($lists as $rowItem) {
+			if (preg_match("/\[($skey)\]/",$this->innerXML($rowItem) ,$reg)) {
+				$validRow[]=$rowItem;
+			}
+		}
+		foreach ($validRow as $rowItem) {
+			if (preg_match_all("/\[($skey)\]/",$this->innerXML($rowItem),$reg)) {
+				$reg0=$reg[0];
+				$tvkey=array();
+				$maxk=0; // search values which has the greatest number of values
+				foreach ($reg0 as $k=>$v) {
+					$key=substr(trim($v),1,-1);
+					$tvkey[$key]=$this->arrayMainKeys[$key];
+					$maxk=max(count($tvkey[$key]),$maxk);
+				}
+				if ($maxk > 0) {
+					for ($i=0;$i<$maxk;$i++) {
+						$clone=$rowItem->cloneNode(true);
+						$rowItem->parentNode->insertBefore($clone,$rowItem);
+						foreach ($tvkey as $kk=>$key) {
+							$this->replaceNodeText($clone,"[$kk]",$key[$i]);
+						}
+						$this->replaceRowIf($clone,array($i)); // main level
+						$this->replaceRowNode($clone,array($i)); // inspect sub levels
+						 
+					}
+				}
+				 
+				$rowItem->parentNode->removeChild($rowItem);
+			}
+		}
+		return $err;
 	}
 	/**
 	 * return the number of array in arrays
@@ -1454,7 +1448,7 @@ class OOoLayout extends Layout {
 		$this->updateManifest();
 		$outfile=uniqid(getTmpDir()."/odf").'.odt';
 		$this->content2odf($outfile);
-
+//print_r2($this->content_template);exit;
 		return($outfile);
 	}
 }

@@ -617,21 +617,30 @@ create unique index i_docir on doc(initid, revision);";
    * 
    */
   function regenerateTemplate($aid, $index=-1) {
-    $layout = 'THIS:'.$aid;
-    if($index>-1) {
-      $layout.='['.$index.']';
-    }
-    $outfile = $this->viewDoc($layout.':B', 'ooo');
-    if(file_exists($outfile)) {
-      $fh = fopen($outfile, 'rb');
-      if($fh) {
-	$this->saveFile($aid, $fh, '', $index);
-	fclose($fh);
-	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
-	return true;
-      }
-    }
-    return false;
+  	$layout = 'THIS:'.$aid;
+  	if($index>-1) {
+  		$layout.='['.$index.']';
+  	}
+  	$orifile=$this->getZoneFile($layout);
+  	if ($orifile) {
+  		if (! file_exists($orifile)) {
+  			addWarningMsg(sprintf(_("Dynamic template %s not found "), $orifile));
+  		} else if (getFileExtension($orifile) != 'odt') {
+  			addWarningMsg(sprintf(_("Dynamic template %s not an odt file "), $orifile));
+  		} else {
+  			$outfile = $this->viewDoc($layout.':B', 'ooo');
+  			if(file_exists($outfile)) {
+  				$fh = fopen($outfile, 'rb');
+  				if($fh) {
+  					$this->saveFile($aid, $fh, '', $index);
+  					fclose($fh);
+  					$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+  					return true;
+  				}
+  			}
+  		}
+  	}
+  	return false;
   }
   
   /**
@@ -5429,44 +5438,44 @@ create unique index i_docir on doc(initid, revision);";
   
   /** 
    * return the basename of template file
-   * @return string
+   * @return string (return null if template not found)
    */
-  public function getZoneFile($zone="") {
-    $index = -1;
-    if( $zone == "" ) {
-      $zone = $this->defaultview;
-    }
+  public function getZoneFile($zone) {
+  	$index = -1;
+  	if( $zone == "" ) {
+  		return null;
+  	}
 
-    $reg = $this->parseZone($zone);
-    if( is_array($reg) ) {
-      $aid = $reg['layout'];
-      if( $reg['index'] != '' ) {
-	$index = $reg['index'];
-      }
-      $oa = $this->getAttribute($aid);
-      if( $oa ) {
-	if( $oa->usefor != 'Q' ) {
-	  $template = $this->getValue($oa->id);
-	} else {
-	  $template = $this->getParamValue($aid);
-	}
-	if( $index >= 0 ) {
-	  $tt = $this->_val2array($template);
-	  $template = $tt[$index];
-	}
+  	$reg = $this->parseZone($zone);
+  	if( is_array($reg) ) {
+  		$aid = $reg['layout'];
+  		if( $reg['index'] != '' ) {
+  			$index = $reg['index'];
+  		}
+  		$oa = $this->getAttribute($aid);
+  		if( $oa ) {
+  			if( $oa->usefor != 'Q' ) {
+  				$template = $this->getValue($oa->id);
+  			} else {
+  				$template = $this->getParamValue($aid);
+  			}
+  			if( $index >= 0 ) {
+  				$tt = $this->_val2array($template);
+  				$template = $tt[$index];
+  			}
 
-	if( $template == "" ) {
-	  return sprintf(_("no file found for zone [%s]"), $zone);
-	}
+  			if( $template == "" ) {
+  				return null;
+  			}
 
-	return $this->vault_filename_fromvalue($template, true);
-      }
-      if( strstr($aid, '.') ) {
-	return getLayoutFile($reg['app'], strtolower($aid));
-      } else {
-	return getLayoutFile($reg['app'], strtolower($aid)).".xml";
-      }
-    }
+  			return $this->vault_filename_fromvalue($template, true);
+  		}
+  		if( strstr($aid, '.') ) {
+  			return getLayoutFile($reg['app'], strtolower($aid));
+  		} else {
+  			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
+  		}
+  	}
   }
   /** 
    * return the character in third part of zone
@@ -5632,6 +5641,7 @@ create unique index i_docir on doc(initid, revision);";
     $binary=($this->getZoneOption($layout)=="B");
 
     $tplfile=$this->getZoneFile($layout);
+    
     $ext=getFileExtension($tplfile);
     if (strtolower($ext)=="odt") {
       include_once('Class.OOoLayout.php');
@@ -5642,6 +5652,7 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay = new Layout($tplfile, $action);
     }
 
+    if (! file_exists($this->lay->file)) return sprintf(_("template file %s not found"),$tplfile);
         $this->lay->setZone($reg);
        
     $this->lay->set("_readonly",($this->Control('edit')!=""));
@@ -6237,7 +6248,7 @@ create unique index i_docir on doc(initid, revision);";
 
 
   // -----------------------------------
- final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
+  final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
     $listattr = $this->GetNormalAttributes();
 
     // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
@@ -6280,6 +6291,7 @@ create unique index i_docir on doc(initid, revision);";
     }
 
   }
+
 
   // view doc properties
   final public function viewprop($target="_self",$ulink=true,$abstract=false) {
@@ -7607,7 +7619,7 @@ create unique index i_docir on doc(initid, revision);";
    * @param zone string "APP:LAYOUT:etc." $zone
    * @return false on error or an array containing the components
    */
-  static public function parseZone($zone="") {
+  static public function parseZone($zone) {
     $p = array();
 
     // Separate layout (left) from args (right)
