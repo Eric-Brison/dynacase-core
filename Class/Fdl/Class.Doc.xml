@@ -105,7 +105,7 @@ Class Doc[docid] extends [DocParent] {
 	    else $tiargs[]=$va;
 	  }
 	  $vi = call_user_func_array(array($this, "[method]"), $tiargs);
-	  if ($vi !== "") $tv[] = call_user_func_array(array($this, "[method]"), $tiargs);
+	  if ($vi !== "") $tv[] = $vi;
 	  else $tv[]=$tvi[$c];
 	}
 	$this->setValue("[rarg]",$tv); 
