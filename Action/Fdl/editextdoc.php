@@ -99,8 +99,8 @@ function editextdoc(&$action) {
     $action->lay->set("ezone",$ezone);
     $action->lay->set("id",$doc->id);
     $action->lay->set("classid",$classid);
-    $action->lay->set("STITLE",addJsSlashes($doc->getHTMLTitle()));
-
+    if ($docid)    $action->lay->set("STITLE",addJsSlashes($doc->getHTMLTitle()));
+    else $action->lay->set("STITLE",addJsSlashes(sprintf(_("Creation %s"),$doc->getHTMLTitle($doc->fromid))));
     $style = $action->parent->getParam("STYLE");
 
 	$action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-SYSTEM.css");

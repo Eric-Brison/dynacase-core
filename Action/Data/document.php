@@ -530,19 +530,19 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
         case '':
             if (! $id) $out->error=_("no identificator");
             else {
-                $onlyValues=getHttpVars("onlyValues","true")=="true";
+                $config->onlyValues=getHttpVars("onlyValues","true")=="true";
                 $config->latest=(getHttpVars("latest","true")=="true");
                 $winfo=(getHttpVars("needWorkflow","false")=="true");
-                $getInfoProp=(getHttpVars("propertiesInformation","false")=="true");
-                $completeprop=getHttpVars("completeProperties","true")=="true";
+                $config->propertiesInformation=(getHttpVars("propertiesInformation","false")=="true");
+                $config->completeProperties=getHttpVars("completeProperties","true")=="true";
                 $withContent=getHttpVars("contentStore","false")=="true";
-                $getUserTags=getHttpVars("getUserTags","false")=="true";
+                $config->getUserTags=getHttpVars("getUserTags","false")=="true";
                 if ($withContent) $doc=new Fdl_Collection($id,$config);
                 elseif ($winfo) {
                     include_once("DATA/Class.Workflow.php");
                     $doc=new Fdl_Workflow($id,$config);
                 } else $doc=new Fdl_Document($id,$config);
-                $out=$doc->getDocument($onlyValues,$completeprop,$getInfoProp,$getUserTags);
+                $out=$doc->getDocument($config->onlyValues,$config->completeProperties,$config->propertiesInformation,$config->getUserTags);
                 if ($withContent) {
                     if ($doc->isCollection()) {
                     $configContent=getHttpVars("contentConfig");

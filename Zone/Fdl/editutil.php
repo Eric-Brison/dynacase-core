@@ -221,6 +221,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 				$input="<textarea    name=\"$attrin\">$value</textarea>";
 			} elseif ($visibility=="S") {
 				// no input : just text
+				if ($value=="") $value='<br/>';
 				$input="<div class=\"static\" name=\"$attrin\">$value</div>";
 
 			} else {

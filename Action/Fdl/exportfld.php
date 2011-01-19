@@ -233,7 +233,6 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
 }
 function fputs_utf8($r,$s,$iso=false) { 
   static $utf8=true;
-
   if ($iso===true) $utf8=false;
   
   if ($s) {
@@ -346,6 +345,7 @@ function exportonedoc(&$doc,&$ef,$fout,$wprof,$wfile,$wident,$wutf8,$nopref,$efo
     // to invert HTML entities
     $trans = get_html_translation_table (HTML_ENTITIES);
     $trans = array_flip($trans);
+    $trans=array_map("utf8_encode",$trans);
   }
   $efldid='-';
   $dbaccess=$doc->dbaccess;

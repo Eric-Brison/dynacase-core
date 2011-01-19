@@ -175,7 +175,7 @@ Class DocLDAP extends DbObj {
 
 
     $q->AddQuery(getSqlCond($fids,"famid"));
-    $q->order_by="famid,ldapclass";
+    $q->order_by="famid,index";
     $l=$q->Query(0,0,"TABLE");
     $this->ldapmap=array();
     if ($l && is_array($l)) {

@@ -29,7 +29,7 @@ addEvent(window,"load",resetbodyopacity);
 var documentMenu=[documentMenu];
 var beforeUnload=function(){
 	if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled)) {
-		return "[STITLE]:[TEXT:Changes will be loosed if you continue]";
+		return "[STITLE] : [TEXT:Changes will be loosed if you continue]";
 	}
 }
   //-->
@@ -40,7 +40,7 @@ var beforeUnload=function(){
  </head>
 
 <body class="document" id="terrible" style="[IFNOT ISIE]opacity:0.5;[ENDIF ISIE][IF ISIE]filter: alpha(opacity = 50);[ENDIF ISIE]"
-      onbeforeunload="if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled))return '[STITLE]:[TEXT:Changes will be loosed if you continue]'";
+      onbeforeunload="if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled))return '[STITLE] : [TEXT:Changes will be loosed if you continue]'";
       onUnLoad="if ((! document.isCancelled)&& (!document.isSubmitted)) autoUnlock('[id]');closechoose();"
      >
 <!-- for idoc -->

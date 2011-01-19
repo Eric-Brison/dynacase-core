@@ -27,7 +27,7 @@ ONEFAM.start = function(){
 		familyTreeDataConfig: {
 	        app: ONEFAM.applicationName,
 	        action: 'ONEFAM_GETTREEFAMILY',
-	        appid: ONEFAM.applicationName,
+	        appid: ONEFAM.applicationName
 	    },
 		canEditMasterFamilies: ONEFAM.canEditMasterFamilies,
 		canEditUserFamilies: ONEFAM.canEditUserFamilies,

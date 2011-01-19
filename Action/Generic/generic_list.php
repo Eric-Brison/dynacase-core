@@ -52,11 +52,10 @@ function generic_list(&$action) {
   $sfamid=$famid;
   if ($dirid) {
       $dir=new_doc($dbaccess,$dirid);
-      if ($dir->isAlive()) {
+      if ($dir->isAlive() && ($dir->doctype == 'S')) {
           $sfamid=$dir->getValue("se_famid");
       }
   }
-  
   if ($onglet) {
     $wonglet=($onglet!='N');
   } else {

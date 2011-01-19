@@ -1073,6 +1073,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 		    				useCache: true
 		    			});
 	    				
+	    				if (this.familyDocument) {
 		    			var tags = this.familyDocument.getUserTags();
 			    		if(tags){
 					        if(!tags.columns){
@@ -1081,6 +1082,9 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 					        	var columns = eval("("+tags.columns+")");
 					        }
 			    		}
+	    				} else {
+	                        Ext.Msg.alert('Error', this.context.getLastErrorMessage());
+	    				}
 			    		return columns ;
 		    			
 	    			}
@@ -1094,7 +1098,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 	    				id: this.search.family,
 	    				useCache: true
 	    			});
-	    			
+	    			if (this.familyDocument) {
 	    			var tags = this.familyDocument.getUserTags();
 		    		if(tags){
 				        if(!tags.columns){
@@ -1103,6 +1107,9 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 				        	var columns = eval("("+tags.columns+")");
 				        }
 		    		}
+	    			} else {
+	    				Ext.Msg.alert('Error', this.context.getLastErrorMessage());
+	    			}
 	    			
 	    		}
 	    		

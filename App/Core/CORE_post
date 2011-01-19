@@ -73,7 +73,7 @@ if [ "$1" = "I" ] ; then
 	    exit $RET
 	fi
     fi
-
+    $wpub/programs/core_appinitialize
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Application
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Action
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Style

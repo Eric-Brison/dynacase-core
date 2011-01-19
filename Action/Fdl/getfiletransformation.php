@@ -143,14 +143,13 @@ function sendRequestForFileTransformation($filename,$engine,&$info) {
 
     $tea=getParam("TE_ACTIVATE");
     if ($tea!="yes") return _("TE engine is not activate");
-    if (@include_once("WHAT/Class.TEClient.php")) {
+    if (include_once("WHAT/Class.TEClient.php")) {
       global $action;
       include_once("FDL/Class.TaskRequest.php");
      
       $callback="";
       $ot=new TransformationEngine(getParam("TE_HOST"),getParam("TE_PORT"));
       $err=$ot->sendTransformation($engine,$vid,$filename,$callback,$info);
-
       if ($err=="") {
 	$dbaccess = GetParam("FREEDOM_DB");
 	$tr=new TaskRequest($dbaccess);

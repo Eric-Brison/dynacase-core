@@ -177,6 +177,46 @@ Class WDoc extends Doc {
       return strtolower($this->attrPrefix.$fix.str_replace(":","_",$state));
   }
   /**
+   * get the profile id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateProfil($state) {
+  	return $this->getValue($this->_Aid("_id",$state));
+  }
+  /**
+   * get the mask id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateMask($state) {
+    return $this->getValue($this->_Aid("_mskid",$state));
+  }
+  /**
+   * get the view control id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateViewControl($state) {
+    return $this->getValue($this->_Aid("_cvid",$state));
+  }
+  /**
+   * get the timers ids according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateTimers($state) {
+    return $this->getValue($this->_Aid("_tmid",$state));
+  }
+  /**
+   * get the mail templates ids according to state
+   * @param string $state  
+   * @return array
+   */
+  public function getStateMailTemplate($state) {
+    return $this->getTValue($this->_Aid("_mtid",$state));
+  }
+  /**
    * create of parameters attributes of workflow
    */
   function createProfileAttribute() {

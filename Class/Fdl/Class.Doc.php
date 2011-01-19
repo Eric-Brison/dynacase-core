@@ -1344,10 +1344,11 @@ create unique index i_docir on doc(initid, revision);";
     else {
       $query->order_by="id desc";
     }
-      
+    
     $rev= $query->Query(0,2,"TABLE");
-    if (count($rev)>1) addWarningMsg(sprintf("document %d : multiple alive revision",$this->initid));
-
+    if ($this->doctype!='Z') {
+    	if (count($rev)>1) addWarningMsg(sprintf("document %d : multiple alive revision",$this->initid));
+    }
     return $rev[0]["id"];
   }
 
@@ -1501,7 +1502,7 @@ create unique index i_docir on doc(initid, revision);";
       if ($mdoc->isAlive()) {
 	$tvis = $mdoc->getCVisibilities();
 	  
-	while (list($k,$v)= each ($tvis)) {
+	foreach ($tvis as $k=>$v) {
 	  if (isset($this->attributes->attr[$k])) {
 	    if ($v != "-") $this->attributes->attr[$k]->mvisibility=$v;	      
 	  }
@@ -1515,7 +1516,7 @@ create unique index i_docir on doc(initid, revision);";
 
 	// modify needed attribute also
 	$tneed = $mdoc->getNeedeeds();
-	while (list($k,$v)= each ($tneed)) {
+	foreach ($tneed as $k=>$v) {
 	  if (isset($this->attributes->attr[$k])) {
 	    if ($v == "Y") $this->attributes->attr[$k]->needed=true;
 	    else if ($v == "N") $this->attributes->attr[$k]->needed=false;
@@ -1699,6 +1700,7 @@ create unique index i_docir on doc(initid, revision);";
     $tinfo=array();
     $vf = newFreeVaultFile($this->dbaccess);
     foreach ($tvid as $vid) {
+        $info=null;
       $err=$vf->Retrieve($vid, $info);
       $t=get_object_vars($info);
       $t["vid"]=$vid;
@@ -1721,44 +1723,7 @@ create unique index i_docir on doc(initid, revision);";
     return ($waiting!=false);
   } 
 
-  /**
-   * set encoded text of file 
-   * update $attrid_txt table column
-   * @param string $idAttr identificator of attribute
-   * @return string error message, if no error empty string
-   */
-  public function SetFileText($attrid) {      
-    include_once("FDL/Lib.Vault.php");
-    $oa=$this->getAttribute($attrid);
-    $err="";
-    if ($oa->type=="file") {
-      $tf=array();
-      if ($oa->inArray())   $tf=$this->GetTValue($oa->id);
-      else $tf[]=$this->GetValue($oa->id);
-      $ak=array();
-      $at=$oa->id.'_txt';
-      $this->$at='';
-      foreach ($tf as $vf) {
-	if (preg_match(PREGEXPFILE, $vf, $reg)) {  
-	   
-	  $vid=$reg[2];
-	  $info=vault_properties($vid,'utf8');
-	  if ($vid > 0) {
-	    $err=vault_generate('utf8',$vid,$newid);
-	     
-	    if ($err=="") {
-	      $fcontent=vault_get_content($newid);
-	      $this->$at.=$fcontent;
-	      $ak[$at]=$at;
-	    }	     
-	  }
-	}
-      }
 
-      if (count($ak)>0)  $err.=$this->modify(false,$ak);
-    }  
-    return $err;
-  }
   
   
   /**
@@ -1770,8 +1735,11 @@ create unique index i_docir on doc(initid, revision);";
   public function resetConvertVaultFile($attrid,$index) {  
         $err='';
         $val=$this->getTValue($attrid, false, $index);
-        if (count($val) == 1) {
-            $val=$val[0];
+        if (($index==-1) && (count($val) == 1)) {
+        	$val=$val[0];
+        }
+        
+        if ($val) {
             $info=$this->getFileInfo($val);
             if ($info) {
                   $ofout=new VaultDiskStorage($this->dbaccess,$info["id_file"]);
@@ -1811,6 +1779,7 @@ create unique index i_docir on doc(initid, revision);";
 	      $filename=getParam("CORE_PUBDIR")."/Images/workinprogress.png";
 	    } else   $filename=uniqid(getTmpDir()."/conv").".txt";
 	    $nc=file_put_contents($filename,$value);
+	    $vidout=0;
 	    $err=$vf->Store($filename, false , $vidout,"",$engine,$vidin);
 	    $info=vault_properties($vidin);
 	    if (! $isimage) {
@@ -4384,11 +4353,17 @@ create unique index i_docir on doc(initid, revision);";
 	if ($target=="ext") {
                   
 	  //$ec=getSessionValue("ext:targetRelation");
-	  $ec=getHttpVars("ext:targetRelation",'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view")');
+	  $jslatest=($latest)?'true':'false';
+	  $ec=getHttpVars("ext:targetRelation",'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view",{latest:'.$jslatest.'})');
 	  if ($ec)  {
 	    if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
+	    else if ($latest) {
+	    	$lid=getLatestDocId($this->dbaccess,$id);
+	    	if ($lid) $id=$lid;
+	    }
 	    $ec=str_replace("%V%",$id,$ec);
-	    $ecu=str_replace("'",'"',$this->urlWhatEncode($ec));
+	    $ecu=str_replace("'",'"',$ec);
+        
 	    $a="<a  onclick='parent.$ecu'>$title</a>";
 	  } else {
 	    if ($docrev=="latest" || $docrev=="" || !$docrev)
@@ -4562,6 +4537,7 @@ create unique index i_docir on doc(initid, revision);";
 	            $htmlval=$textval;
 	        }
 	    } elseif ($htmllink) {
+
 	        $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
 	        if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
 	        else $idx=$index;
@@ -4619,10 +4595,11 @@ create unique index i_docir on doc(initid, revision);";
 	            $inline=$oattr->getOption("inline");
 	            if ($inline=="yes") $opt="&inline=yes";
 	            $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-	            $this->getFileLink($oattr->id,$idx)."\">";
+	            $this->getFileLink($oattr->id,$idx, false, ($inline=="yes"))."\">";
 	            if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
 	            $htmlval.=$fname."</a>";
 	        }
+
 	    } else {
 	        $htmlval=$info->name;
 	    }
