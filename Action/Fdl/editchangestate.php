@@ -91,9 +91,8 @@ $tinputs=array();
 
     $action->lay->set("tostate",ucfirst($lnextstate));
     $action->lay->set("wcolor",	$wdoc->getColor($nextstate));
-		      
-    $action->lay->Set("Wattrntitle",	 "'".implode("','",str_replace("'","&rsquo;",$tneed))."'");
-    $action->lay->Set("Wattrnid",	 "'".implode("','",array_keys($tneed))."'");
+    $action->lay->Set("Wattrntitle",json_encode(array_values($tneed)));
+    $action->lay->Set("Wattrnid",	json_encode(array_keys($tneed)));
     $action->lay->set("docid",$doc->id);
     $action->lay->set("thetitle",sprintf(_("Change state to %s"),_($nextstate)));
     $action->lay->set("nextstate",$nextstate);
