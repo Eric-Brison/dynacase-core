@@ -4351,14 +4351,16 @@ create unique index i_docir on doc(initid, revision);";
     else $avalue=$this->getValue($attrid);
     if (preg_match(PREGEXPFILE, $avalue, $reg)) {
       $vid=$reg[2];
-      return sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d",
+      if ($inline) $reffile='#/'.$reg[3];
+      else $reffile='';
+      return sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d%s",
 		     "",
 		     $cache?"yes":"no",
 		     $inline?"yes":"no",
 		     $vid,
 		     $this->id,
 		     $attrid,
-		     $index);
+		     $index,$reffile);
     }
   }
   /**
