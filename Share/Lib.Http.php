@@ -172,15 +172,7 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
     header("Cache-Control: private");
   }
    header("Pragma: "); // HTTP 1.0
-   if ($inline) {
-     global $_SERVER;
-     $nav=$_SERVER['HTTP_USER_AGENT'];
-     $pos=strpos($nav,"MSIE");
-     if ($pos) {
-       // add special header for extension
-       header("Content-Disposition: form-data;filename=\"$name\"");
-     }
-   } 
+
    header("Content-type: ".$mime_type);
    header("Content-Transfer-Encoding: binary");
    header("Content-Length: ".filesize($filename));
