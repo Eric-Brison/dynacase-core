@@ -4351,16 +4351,26 @@ create unique index i_docir on doc(initid, revision);";
     else $avalue=$this->getValue($attrid);
     if (preg_match(PREGEXPFILE, $avalue, $reg)) {
       $vid=$reg[2];
-      if ($inline) $reffile='#/'.$reg[3];
-      else $reffile='';
-      return sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d%s",
+      if (true) {
+          // will be rewrited by apache rules
+           return sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s",
+		     $this->id, $vid,
+		     $attrid,
+		     $index,
+		     rawurlencode($reg[3]),
+		     $cache?"yes":"no",
+		     $inline?"yes":"no");
+      }
+      else {
+      return sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d",
 		     "",
 		     $cache?"yes":"no",
 		     $inline?"yes":"no",
 		     $vid,
 		     $this->id,
 		     $attrid,
-		     $index,$reffile);
+		     $index);
+      }
     }
   }
   /**

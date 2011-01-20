@@ -11,4 +11,12 @@ export appname
 include $(utildir)/PubRule
 
 
-DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_post
+DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_post file.htaccess
+
+$(pubdir)/file:
+	mkdir -p $@
+
+$(pubdir)/file/.htaccess: file.htaccess $(pubdir)/file
+	cp $< $@
+
+publish:  $(pubdir)/file/.htaccess
