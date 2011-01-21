@@ -234,6 +234,11 @@ function sendActionNotification(code,arg) {
       window.parent.receiptActionNotification(code,arg);
     }
   }
+  if (window.parent.parent && (window != window.parent.parent)) {
+	    if (window.parent.parent.receiptActionNotification) {
+	      window.parent.parent.receiptActionNotification(code,arg);
+	    }
+	  }
   
 }
 
