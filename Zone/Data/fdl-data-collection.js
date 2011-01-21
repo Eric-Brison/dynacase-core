@@ -115,7 +115,7 @@ Fdl.Collection.prototype.toString= function() {
 Fdl.Collection.prototype.getContent = function(config) {
 	if (! this.getProperty('initid')) {
 		this.context.setErrorMessage('getContent: no identificator set');
-		return false;
+		return null;
 	}
 	var data=null;
 	if (config && config.data) {
@@ -131,14 +131,14 @@ Fdl.Collection.prototype.getContent = function(config) {
 		} else {
 			this.context.setErrorMessage(data.error);
 		}
-	} else return false;
+	} else return null;
 };
 
 
 /**
  * return sub collections included in the collection return folder and searches
  * 
- * @return {Array} of Fdl.Document
+ * @return {Fdl.DocumentList} of Fdl.Document
  */
 Fdl.Collection.prototype.getStoredContent = function() {
 	if (this._data.storedContent) {
@@ -149,7 +149,7 @@ Fdl.Collection.prototype.getStoredContent = function() {
 /**
  * return sub collections included in the collection return folder and searches
  * 
- * @return {Array} of Fdl.Document
+ * @return {Fdl.DocumentList} of Fdl.Document
  */
 Fdl.Collection.prototype.getSubCollections = function() {
   return this.getContent({verifyhaschild:true,filter:"doctype = 'D' or doctype = 'S'"});
@@ -157,7 +157,7 @@ Fdl.Collection.prototype.getSubCollections = function() {
 /**
  * return sub folders included in collection not return seareches
  * 
- * @return {Array} of Fdl.Document
+ * @return {Fdl.DocumentList} of Fdl.Document
  */
 Fdl.Collection.prototype.getSubFolders = function() {
   return this.getContent({verifyhaschild:true,filter:"doctype = 'D'"});
@@ -245,7 +245,7 @@ Fdl.Collection.prototype.unlinkDocument = function(config) {
   	s.insertToList( {
   		document : C.getDocument( {
   			id : 47882,
-  			usecache : true
+  			useCache : true
   		})
   	});
   	var r = basket.insertDocuments( {
@@ -422,7 +422,7 @@ Fdl.Collection.prototype.hasRestriction = function(config) {
       var authfam=this.getAuthorizedFamilies(config);
       if (authfam) return authfam.restriction;
   }  
-  return null;
+  return false;
 };
 /**
  * verify if collection is a folder
@@ -494,7 +494,7 @@ Fdl.Collection.prototype.resetFilter = function() {
  */
 Fdl.Collection.prototype.getFilters = function(filter) {
 
-	if (! this.isSearch()) return false;
+	if (! this.isSearch()) return null;
 	var xmlfilters=this.getValue("se_filter");
 	if (xmlfilters && (xmlfilters.length > 0)) {
 		var filters=[];

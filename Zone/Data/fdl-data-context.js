@@ -40,7 +40,8 @@ Fdl.Context.prototype = {
 		url : '',
 		_isConnected : null,
 		_serverTime : null,
-		_documents : new Object(),
+		_documents : new Object(), // cache for latest revision document
+		_fixDocuments : new Object(),// cache for fix revision document
 		notifier : null,
 		lastErrorMessage : '',
 		lastErrorCode : '',
@@ -96,7 +97,7 @@ Fdl.Context.prototype.loadCatalog = function(locale) {
  * @return {array} of property identificators
  */
 Fdl.Context.prototype.getSortableProperties = function() { 
-	f=[];
+	var f=[];
 		var pi=this.getPropertiesInformation();
 		for (var i in pi) {
 			if (pi[i].sortable) f.push(i);
@@ -123,7 +124,7 @@ Fdl.Context.prototype.getPropertyInformation = function(id) {
   * @return {array} of property identificators
   */
 Fdl.Context.prototype.getDisplayableProperties = function() { 
-	f=[];
+	var f=[];
 	
 		var pi=this.getPropertiesInformation();
 		for (var i in pi) {
@@ -138,7 +139,7 @@ Fdl.Context.prototype.getDisplayableProperties = function() {
  * @return {array} of property identificators
  */
 Fdl.Context.prototype.getFilterableProperties = function() { 
-	f=[];
+	var f=[];
 	
 		var pi=this.getPropertiesInformation();
 		for (var i in pi) {
@@ -379,10 +380,10 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 	var xreq;
 
 	if (window.XMLHttpRequest) {
-		var xreq = new XMLHttpRequest();
+		 xreq = new XMLHttpRequest();
 	} else if (window.ActiveXObject) {
 		// branch for IE/Windows ActiveX version
-		var xreq = new ActiveXObject("Microsoft.XMLHTTP");
+		 xreq = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	var sync = true;
 
@@ -405,17 +406,18 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 		if (method) {
 			var params = '';
 			var ispost = false;
+			var name;
 			xreq.setRequestHeader("Content-Type",
 							"multipart/form-data; boundary=\""
 									+ ANAKEENBOUNDARY + "\"");
-			for ( var name in urldata) {
+			for (name in urldata) {
 				bsend += "\r\n--" + ANAKEENBOUNDARY + "\r\n";
 				bsend += "Content-Disposition: form-data; name=\"" + name
 						+ "\"\r\n\r\n";
 				bsend += urldata[name];
 			}
 			if (parameters) {
-				for ( var name in parameters) {
+				for (name in parameters) {
 					if (name != 'context') {
 						bsend += "\r\n--" + ANAKEENBOUNDARY + "\r\n";
 						bsend += "Content-Disposition: form-data; name=\"" + name
@@ -569,7 +571,7 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
  * 	id : 9
  * });
  * </pre><core>
- * @return {Object} One of these classes Fdl.Document, Fdl.Collection, Fdl.Workflow, Fdl.Family return null if document not exist or cannot be readed
+ * @return {Fdl.Document} One of these classes Fdl.Document, Fdl.Collection, Fdl.Workflow, Fdl.Family return null if document not exist or cannot be readed
  */
 Fdl.Context.prototype.getDocument = function(config) {
 	if (config)
@@ -579,6 +581,9 @@ Fdl.Context.prototype.getDocument = function(config) {
 			context : this
 		};
 	var docid = config.id;
+
+	var latest=true;
+	if (config && config.latest === false) latest=false;
 	
 	if (docid && (typeof docid == 'object') && (docid.length==1)) {
 		docid=docid[0];
@@ -619,8 +624,20 @@ Fdl.Context.prototype.getDocument = function(config) {
 		config.data = wdoc._data;
 		wdoc = new Fdl.Workflow(config);
 	}
-	if (config && (! config.noCache)) this._documents[docid] = wdoc;
-	return this._documents[docid];
+	if (config && (! config.noCache)) {
+		if (latest) {
+			this._documents[wdoc.getProperty('initid')] = wdoc;
+			if (wdoc.getProperty('id') != wdoc.getProperty('initid')) {
+				this._documents[wdoc.getProperty('id')] = wdoc; // alias cache
+			}
+			if ((docid!=wdoc.getProperty('id')) && (docid!=wdoc.getProperty('initid'))) {
+				this._documents[docid] = wdoc; // other alias cache
+			}
+		} else {	
+			this._fixDocuments[wdoc.getProperty('id')] = wdoc;
+		}
+	}
+	return wdoc;
 };
 
 /**
@@ -713,7 +730,7 @@ Fdl.Context.prototype.getHomeFolder = function(config) {
 	if (this._homeFolder)
 		return this._homeFolder;
 	var u = this.getUser();
-	if (u && u.id) {
+	if ((u != null) && u.id) {
 		var idhome = 'FLDHOME_' + u.id;
 		if (! config) config={};
 		config.id=idhome;
@@ -734,7 +751,7 @@ Fdl.Context.prototype.getDesktopFolder = function(config) {
 	if (this._desktopFolder)
 		return this._desktopFolder;
 	var u = this.getUser();
-	if (u && u.id) {
+	if ((u!=null) && u.id) {
 		var idhome = 'FLDDESKTOP_' + u.id;
 		if (! config) config={};
 		config.id=idhome;
@@ -755,7 +772,7 @@ Fdl.Context.prototype.getOfflineFolder = function(config) {
 	if (this._offlineFolder)
 		return this._offlineFolder;
 	var u = this.getUser();
-	if (u && u.id) {
+	if ((u!=null) && u.id) {
 		var idhome = 'FLDOFFLINE_' + u.id;
 		if (! config) config={};
 		config.id=idhome;
@@ -776,7 +793,7 @@ Fdl.Context.prototype.getBasketFolder = function(config) {
 	if (this._basketFolder)
 		return this._basketFolder;
 	var u = this.getUser();
-	if (u && u.id) {
+	if ((u!=null) && u.id) {
 		var idhome = 'FLDHOME_' + u.id;
 		if (! config) config={};
 		config.id=idhome;
@@ -813,7 +830,7 @@ Fdl.Context.prototype.getBasketFolder = function(config) {
  */
 Fdl.Context.prototype.createDocument = function(config) {
 	if (config && (config.family || config.familyId)) {
-		data = this.retrieveData( {
+		var data = this.retrieveData( {
 			app : 'DATA',
 			action : 'DOCUMENT',
 			method : 'create',
@@ -838,7 +855,7 @@ Fdl.Context.prototype.createDocument = function(config) {
 				this.setErrorMessage(data.error);
 			}
 		}
-		return false;
+		return null;
 	}
 };
 
