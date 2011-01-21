@@ -112,7 +112,6 @@ Class htmlAuthenticator extends Authenticator {
         
         if (array_key_exists('authurl', $this->parms)) {
             if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
-                phpinfo(INFO_VARIABLES);
                 $dirname = dirname($_SERVER["SCRIPT_NAME"]);
                 header('Location: ' . $dirname . '/' . $this->parms{'authurl'});
             } else {
