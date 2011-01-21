@@ -72,13 +72,13 @@ function generic_list(&$action) {
     $catg = new_Doc($dbaccess,$catgid);
     $action->lay->Set("pds",$catg->urlWhatEncodeSpec(""));
     
-    $action->lay->Set("fldtitle",$dir->getTitle());
+    $action->lay->Set("fldtitle",$dir->getHTMLTitle());
   } else {
     if ($dirid==0) {
       $action->lay->Set("fldtitle",_("precise search"));
       $action->lay->Set("pds","");
     } else {      
-      $action->lay->Set("fldtitle",$dir->getTitle());
+      $action->lay->Set("fldtitle",$dir->getHTMLTitle());
     }
   }
   $action->lay->Set("famtarget",$target);
@@ -163,7 +163,7 @@ function generic_list(&$action) {
   $action->lay->Set("onglet", $wonglet?"Y":"N");
 
   
-  $action->lay->set("tkey",getDefUKey($action));
+  $action->lay->set("tkey",str_replace('"','&quot;',getDefUKey($action)));
 }
 
 
