@@ -28,7 +28,7 @@ if ($authtype == 'apache') {
   }
   
  } else {
-
+//print_r2("coucuo");
   $authProviderList = getAuthProviderList();
   foreach ($authProviderList as $ka=>$authprovider) {
     $authClass = strtolower($authtype)."Authenticator";
@@ -48,7 +48,6 @@ if ($authtype == 'apache') {
       }
     }
   }
-
   if( $status == FALSE ) {
     $providerErrno = $auth->getProviderErrno();
     if( $providerErrno != 0 ) {
@@ -88,10 +87,12 @@ if( file_exists('maintenance.lock') ) {
 #
 #
 // First control
-if(!isset($_SERVER['PHP_AUTH_USER'])  ) {
-  Header("Location:guest.php");
-  exit;
- }
+if (!isset($_SERVER['PHP_AUTH_USER'])) {
+    $dirname = dirname($_SERVER["SCRIPT_NAME"]);
+    
+    Header("Location:".$dirname."/guest.php");
+    exit();
+}
 
 
 // ----------------------------------------

@@ -104,7 +104,9 @@ Class Session extends DbObj{
     
     // set cookie session
     if ($_SERVER['HTTP_HOST'] != "") {
+        if (!$_SERVER["REDIRECT_URL"] ) {
       setcookie ($this->name,$this->id,$this->SetTTL());
+        }
     }
     return true;
   }
@@ -269,7 +271,7 @@ Class Session extends DbObj{
   
   function getSessionMaxAgeSeconds($default="1 week") {
     $session_maxage = $this->getSessionMaxAge($default);
-    if( preg_match("/^(\d+)\s+(\w+)/i", $session_maxage, $m) ) {
+    if( preg_match('/^(\d+)\s+(\w+)/i', $session_maxage, $m) ) {
       $maxage = $m[1];
       $unit = strtolower($m[2]);
       switch( substr($unit, 0, 1) ) {

@@ -1,7 +1,7 @@
 [ZONE FDL:HTMLHEAD?title=[thetitle]]
 <script>
-attrNid=new Array([Wattrnid]);
-attrNtitle=new Array([Wattrntitle]);
+attrNid=[Wattrnid];
+attrNtitle=[Wattrntitle];
 addEvent(window,'load',disableReadAttribute);
 addEvent(window,'load',function () {setTimeout("hasScrollbar()",2000);});
 addEvent(window,'unload',function () {autoUnlock('[docid]');});

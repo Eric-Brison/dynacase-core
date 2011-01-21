@@ -21,7 +21,6 @@ include_once("VAULT/Class.VaultFile.php");
 define("RESIZEDIR",DEFAULT_PUBDIR."/.img-resize/");
 // --------------------------------------------------------------------
 function exportfile(&$action) {
-  
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $docid = GetHttpVars("docid", GetHttpVars("id",0)); // same docid id
   $attrid = GetHttpVars("attrid",0);
@@ -68,6 +67,7 @@ function exportfile(&$action) {
       $ovalue= $tvalue[$index];
     }
     $oa=$doc->getAttribute($attrid);
+    if (!$oa) $action->exitError(sprintf(_("attribute %s not found"),$attrid));
     if ($oa->getOption("preventfilechange")=="yes") {
       if (preg_match(PREGEXPFILE, $ovalue, $reg)) {
 	$vaultid= $reg[2];
@@ -120,6 +120,7 @@ function exportfirstfile(&$action) {
 function DownloadVault(&$action, $vaultid, $isControled, $mimetype="",$width="",$inline=false,$cache=true,$type="",$pngpage=0,$othername='') {
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $vf = newFreeVaultFile($dbaccess);
+  $info=null;
   if ($type=="pdf") {
       $teng_name='pdf';
       $err=$vf->Show($vaultid, $info,$teng_name);
