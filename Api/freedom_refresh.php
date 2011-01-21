@@ -55,6 +55,12 @@ if ($famId) {
 
 $s=new SearchDoc($dbaccess,$famId);
 $s->setObjectReturn();
+if ($docid) {
+    $d=new_doc($dbaccess, $docid);
+    if (! $d->isAlive()) {
+        $action->exitError(sprintf( "document %s not exists",$docid)); 
+    } else $docid=$d->id;
+}
 if ($docid > 0) $s->addFilter("id = $docid");
 if ($fldid > 0) $s->dirid=$fldid;
 if ($allrev) $s->latest=false;
