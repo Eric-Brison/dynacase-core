@@ -88,6 +88,18 @@ Class SearchDoc {
   private $debug=false;
   private $debuginfo="";
   private $join="";
+  /**
+   * 
+   * Iterator document
+   * @var Doc
+   */
+  private $iDoc=null;
+  /**
+   * 
+   * Iterator document
+   * @var Array of doc
+   */
+  private $cacheDocuments=array();
 
   /**
    * result type [ITEM|TABLE]
@@ -316,23 +328,56 @@ Class SearchDoc {
   public function getSearchInfo() {
     return $this->debuginfo;
   }
-  /**
-   * can, be use in 
-   * ::search must be call before
-   *
-   * @return Doc or null if this is the end
-   */
-  public function nextDoc() {
-    if ($this->mode=="ITEM") {
-      return getNextDoc($this->dbaccess,$this->result);
-    } elseif ($this->mode=="TABLEITEM") {
-      $t=array_shift($this->result);
-      if (! is_array($t)) return false;
-      return getDocObject($this->dbaccess,$t);
-    } else return array_shift($this->result);
-     
-  }  
+    /**
+     * can, be use in 
+     * ::search must be call before
+     *
+     * @return Doc or null if this is the end
+     */
+    public function nextDoc()
+    {
+        if ($this->mode == "ITEM") {
+            $n = current($this->result);
+            if ($n === false) return false;
+            $tdoc = pg_fetch_array($n, NULL, PGSQL_ASSOC);
+            if ($tdoc === false) {
+                $n = next($this->result);
+                if ($n === false) return false;
+                $tdoc = pg_fetch_array($n, NULL, PGSQL_ASSOC);
+                if ($tdoc === false) return false;
+            }
+            return $this->iDoc = $this->getNextDocument($tdoc);
+        } elseif ($this->mode == "TABLEITEM") {
+            $tdoc = array_shift($this->result);
+            if (!is_array($tdoc)) return false;
+            return $this->iDoc = $this->getNextDocument($tdoc);
+        } else
+            return array_shift($this->result);
+    
+    }
 
+    /**
+     * Return an object document from array of values
+     * 
+     * @param array $v the values of documents
+     * @return Doc the document object
+     */
+    protected function getNextDocument(Array $v)
+    {
+        $fromid=$v["fromid"];
+        if ($v["doctype"] == "C") {
+            if (!isset($this->cacheDocuments["family"])) $this->cacheDocuments["family"] = new DocFam($dbaccess);
+            $this->cacheDocuments["family"]->Affect($v, true);
+            $fromid = "family";
+        } else {
+            if (!isset($this->cacheDocuments[$fromid])) {
+                $this->cacheDocuments[$fromid] = createDoc($dbaccess, $fromid, false, false);
+            }
+        }
+        $this->cacheDocuments[$fromid]->Affect($v, true);
+        $this->cacheDocuments[$fromid]->nocache = true;
+        return $this->cacheDocuments[$fromid];
+    }
   /**
    * add a condition in filters
    * @param string $filter the filter string
