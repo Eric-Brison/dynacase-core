@@ -184,6 +184,15 @@ Class WDoc extends Doc {
   public function getStateProfil($state) {
   	return $this->getValue($this->_Aid("_id",$state));
   }
+
+  /**
+   * get the attribute id for profile id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateProfilAttribute($state) {
+  	return $this->_Aid("_id",$state);
+  }
   /**
    * get the mask id according to state
    * @param string $state  

@@ -168,7 +168,7 @@ function preDocDelete() {
 	      $tstates[$pid]["pstateid"]=$pid;
 	      $tstates[$pid]["states"][]=_($st);
 	    } else {	      
-	      $tnoprofilstates[_($st)]=array("pstateattrid"=>$tdoc->attrPrefix."_ID".$st,
+	      $tnoprofilstates[_($st)]=array("pstateattrid"=>$tdoc->getStateProfilAttribute($st),
 				       "states"=>_($st));
 	    }
 	  }
