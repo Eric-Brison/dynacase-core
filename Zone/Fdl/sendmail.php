@@ -203,6 +203,7 @@ class Fdl_Mail_mime extends Mail_mime {
         $params['content_type'] = $value['c_type'];
         $params['encoding']     = $value['encoding'];
         $params['dfilename']    = $value['name'];
+        $params['filename']     = $value['name'];
         $params['charset']    = $value['charset'];
 
 	if( isset($value['disposition']) ) {
@@ -213,6 +214,18 @@ class Fdl_Mail_mime extends Mail_mime {
 
 	if( isset($value['cid']) ) {
 	  $params['cid'] = $value['cid'];
+	}
+
+	if( isset($value['name_encoding']) ) {
+	  $params['name_encoding'] = $value['name_encoding'];
+	} else {
+	  $params['name_encoding'] = 'quoted-printable';
+	}
+
+	if( isset($value['filename_encoding']) ) {
+	  $params['filename_encoding'] = $value['filename_encoding'];
+	} else {
+	  $params['filename_encoding'] = 'quoted-printable';
 	}
 
         $obj->addSubpart($value['body'], $params);
