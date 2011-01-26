@@ -1788,9 +1788,10 @@ function  nodereplacestr(n,s1,s2) {
 	      if (attr.value.search(rs1) != -1) {				
 		avalue=attr.value.replace(regs1,s2);
 
-		if (isNetscape) attr.value=avalue;
-		else if ((attr.name == 'onclick') || (attr.name == 'onmousedown') || (attr.name == 'onmouseover')) kids[i][attr.name]=new Function(avalue); // special for IE5.5+
-		else attr.value=avalue;
+		if (isIE && ((attr.name == 'onclick') || (attr.name == 'onmousedown') || (attr.name == 'onmouseover')|| (attr.name == 'onfocus'))) {
+			kids[i][attr.name]=new Function(avalue); // special for IE5.5+
+		} else  attr.value=avalue;
+		
 	      }
 	    }
 	  }
