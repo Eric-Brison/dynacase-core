@@ -20,6 +20,7 @@ function onefam_root(Action &$action) {
         $action->lay = new Layout(getLayoutFile("ONEFAM","onefam_ext.xml"),$action);
         onefam_ext($action);
     } else {
+	    $action->lay->set("APP_TITLE", _($action->parent->description));
 
         $nbcol=intval($action->getParam("ONEFAM_LWIDTH",1));
 
