@@ -35,6 +35,7 @@ function revcomment(&$action)
   if ($err != "") $action->ExitError($err);
   
 
+  $action->lay->Set("APP_TITLE", _($action->parent->description));
   $action->lay->Set("title", $doc->title);
   $action->lay->Set("docid", $doc->id);
 

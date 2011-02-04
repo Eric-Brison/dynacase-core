@@ -21,6 +21,7 @@
 function onefam_logo(&$action) 
 {
   $action->lay->Set("appicon",$action->GetImageUrl($action->parent->icon));
+  $action->lay->Set("APP_TITLE", _($action->parent->description));
   $action->lay->Set("apptitle",$action->parent->description);
 
 

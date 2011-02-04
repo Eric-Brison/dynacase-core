@@ -18,7 +18,8 @@ include_once("FDL/Lib.Dir.php");
 
 
 function onefam_list(&$action) {
- 
+  $action->lay->set("APP_TITLE", _($action->parent->description));
+
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
  
