@@ -79,13 +79,13 @@ while ($doc=$s->nextDoc()) {
     if ($usemethod) {
       $ret = call_user_func_array(array($doc, $method), $targ);
     } else $ret='';	
-    print $card-$k.")".$doc->title." ".(($usemethod)?"(use $method($arg))":"").get_class($doc).":$ret\n";
+    print $card.")".$doc->title." ".(($usemethod)?"(use $method($arg))":"").get_class($doc).":$ret\n";
     //print $card-$k.")".$doc->title ." - ".$doc->fromid." - ".get_class($doc)." - " .round(memory_get_usage()/1024)."\n";
     
     $doc->refresh();
     $doc->refreshTitle();
     $doc->Modify();
-    $k++;
+    $card--;
 }
 
      
