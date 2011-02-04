@@ -147,12 +147,12 @@ Class SearchDoc {
               }
               foreach ($tqsql as $sql) {
                   if ($sql) {
-                      if (preg_match("/from\s+([a-z0-9_\-]*)/",$sql,$reg))  $maintable=$reg[1];
+                      if (preg_match('/from\s+([a-z0-9_\-]*)/',$sql,$reg))  $maintable=$reg[1];
                       else $maintable='';
                       $maintabledot=($maintable)?$maintable.'.':'';
                       
                       $mainid=($maintable)?"$maintable.id":"id";
-                      $sql=preg_replace("/select\s+(.*)\s+from\s/","select count($mainid) from ",$sql);
+                      $sql=preg_replace('/select\s+(.*)\s+from\s/',"select count($mainid) from ",$sql);
           
                       if ($userid != 1) $sql.=" and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
                       $dbid=getDbid($this->dbaccess);
@@ -212,10 +212,10 @@ Class SearchDoc {
   /* reset results to use another search
    *
    * @return void
-   * 
    */
   public function reset() {
     $this->result=false;
+    $this->debuginfo="";
   }
   /**
    * send search
@@ -224,6 +224,7 @@ Class SearchDoc {
    * 
    */
   public function search() {
+      if ($this->getError()) return array();
       if ($this->fromid) {
           if (! is_numeric($this->fromid))  {
               $fromid=getFamIdFromName($this->dbaccess,$this->fromid);     
@@ -286,7 +287,8 @@ Class SearchDoc {
       return ($this->debuginfo["error"]);
   }
   /**
-   * 
+   * Return error message
+   * @return string
    */
   public function getError() {
       if ($this->debuginfo) return $this->debuginfo["error"];
@@ -328,6 +330,59 @@ Class SearchDoc {
   public function getSearchInfo() {
     return $this->debuginfo;
   }
+    
+    /**
+     * set maximum number of document to return 
+     * @param int $slice the limit ('ALL' means no limit)
+     *
+     * @return Boolean
+     */
+    public function setSlice($slice)
+    {
+        if ((!is_numeric($slice)) || ($slice != 'ALL')) return false;
+        $this->slice = $slice;
+        return true;
+    }
+     /**
+     * use different order , default is title
+     * @param string $order the new order, empty means no order
+     *
+     * @return Boolean
+     */
+    public function setOrder($order)
+    {
+        $this->orderby = $order;
+        return true;
+    }
+    /**
+     * use folder or search document to apply restrict the search
+     * @param int $dirid identificator of the collection
+     * 
+     * @return Boolean true if set
+     */
+    public function useCollection($dirid)
+    {
+        $dir = new_doc($this->dbaccess, $dirid);
+        if ($dir->isAlive()) {
+            $this->dirid = $dir->initid;
+            return true;
+        }
+        $this->debuginfo["error"] = sprintf(_("collection %s not exists"), $dirid);
+        
+        return false;
+    }
+    /**
+     * set offset where start the result window 
+     * @param int $start the offset (0 is the begin)
+     * 
+     * @return Boolean true if set
+     */
+    public function setStart($start)
+    {
+        if (!(is_numeric($start))) return false;
+        $this->start = intval($start);
+        return true;
+    }
     /**
      * can, be use in 
      * ::search must be call before
@@ -366,12 +421,12 @@ Class SearchDoc {
     {
         $fromid=$v["fromid"];
         if ($v["doctype"] == "C") {
-            if (!isset($this->cacheDocuments["family"])) $this->cacheDocuments["family"] = new DocFam($dbaccess);
+            if (!isset($this->cacheDocuments["family"])) $this->cacheDocuments["family"] = new DocFam($this->dbaccess);
             $this->cacheDocuments["family"]->Affect($v, true);
             $fromid = "family";
         } else {
             if (!isset($this->cacheDocuments[$fromid])) {
-                $this->cacheDocuments[$fromid] = createDoc($dbaccess, $fromid, false, false);
+                $this->cacheDocuments[$fromid] = createDoc($this->dbaccess, $fromid, false, false);
             }
         }
         $this->cacheDocuments[$fromid]->Affect($v, true);
@@ -395,10 +450,10 @@ Class SearchDoc {
             }
             $filter=call_user_func_array("sprintf", $fs);
         }
-        if (preg_match("/^([a-z0-9_\-]+)\./",$filter,$reg)) {
+        if (preg_match('/^([a-z0-9_\-]+)\./',$filter,$reg)) {
             // when use join filter like "zoo_espece.es_classe='Boo'"
             $famid=getFamIdFromName($this->dbaccess, $reg[1]);
-            if ($famid >0) $filter=preg_replace("/^([a-z0-9_\-]+)\./","doc".$famid.'.',$filter);
+            if ($famid >0) $filter=preg_replace('/^([a-z0-9_\-]+)\./',"doc".$famid.'.',$filter);
         }
         $this->filters[]=$filter;
     }
@@ -430,15 +485,7 @@ Class SearchDoc {
   public function noViewControl() {
     $this->userid=1;
   }
-  /**
-   * add a slice
-   * @param string $s the slice number or "ALL" if unlimied
-   * @return void
-   */
-  public function setSlice($s) {
-    if ($s == "ALL") $this->slice=$s;
-    else $this->slice=intval($s);
-  }
+ 
   /**
    * the return of ::search will be array of document's object
    *
