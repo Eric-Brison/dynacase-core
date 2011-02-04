@@ -109,7 +109,9 @@ function barmenu(&$action) {
 			$tmkind = array();
 			$enum = $a->getenum();
 			foreach($enum as $kk => $ki) {
+			    if ($ki) {
 				$klabel=$a->getenumLabel($ki);
+				
 				$klabel=array_pop(explode('/',$klabel,substr_count($kk, '.')+0));
 				$tvkind[] = array(
 					"ktitle" => $klabel,
@@ -118,6 +120,7 @@ function barmenu(&$action) {
 					"urlkid" => urlencode($kk)
 				);
 				$tmkind[] = $a->id . $kk;
+			    }
 			}
 			$action->lay->SetBlockData("kind" . $a->id, $tvkind);
 
