@@ -164,3 +164,7 @@ function getHttpdUID {
 function getHttpdGroupname {
     id -n -g `getHttpdUsername`
 }
+
+function versionCompare {
+    php -r 'print(version_compare($argv[1],$argv[2]));' "$1" "$2"
+}
