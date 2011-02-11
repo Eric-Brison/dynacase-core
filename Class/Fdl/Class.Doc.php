@@ -5062,15 +5062,21 @@ create unique index i_docir on doc(initid, revision);";
   }
 
 
-  final public function GetHtmlAttrValue($attrid, $target="_self",$htmllink=2, $index=-1,$entities=true,$abstract=false) {
+  final public function getHtmlAttrValue($attrid, $target="_self",$htmllink=2, $index=-1,$entities=true,$abstract=false) {
     if ($index != -1) $v=$this->getTValue($attrid,"",$index);
     else $v=$this->getValue($attrid);
     if ($v=="") return $v;
     return $this->GetHtmlValue($this->getAttribute($attrid),
 			       $v,$target,$htmllink,$index,$entities,$abstract);
   }
-
-  final public function GetOOoValue($oattr, $value, $target="_self",$htmllink=false, $index=-1) { 
+ final public function getOooAttrValue($attrid, $target="_self",$htmllink=false, $index=-1) {
+    if ($index != -1) $v=$this->getTValue($attrid,"",$index);
+    else $v=$this->getValue($attrid);
+    if ($v=="") return $v;
+    return $this->getOooValue($this->getAttribute($attrid),
+			       $v,$target,$htmllink,$index);
+  }
+  final public function getOooValue($oattr, $value, $target="_self",$htmllink=false, $index=-1) { 
     global $action;
 
     $aformat=$oattr->format;
@@ -5088,14 +5094,14 @@ create unique index i_docir on doc(initid, revision);";
       $htmlval="";
       switch ($atype)	{
       case "idoc":
-	// nothing
+	// nothing        
 	break;
       case "image":
-	$htmlval=$this->vault_filename($oattr->id,true,$kvalue);
+	$htmlval=$this->vault_filename_fromvalue($avalue, true);
 	break;
       case "file":
 	// file name
-	$htmlval=$this->vault_filename($oattr->id,false,$kvalue);
+	$htmlval=$this->vault_filename_fromvalue($avalue, false);
 	break;
       case "longtext":
       case "xml":
