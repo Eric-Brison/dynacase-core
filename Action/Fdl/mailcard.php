@@ -468,7 +468,7 @@ function sendCard(&$action,
 
       foreach($tfiles as $k=>$v) {
 	if (file_exists($v)) {
-	  $themail->addAttachmentInline($v,trim(`file -ib "$v"`),"$k",true,'base64',$k);
+	  $themail->addAttachmentInline($v,trim(shell_exec(sprintf('file --mime -b %s', escapeshellarg($v)))), "$k",true,'base64',$k);
 	}
       
       }
@@ -583,6 +583,7 @@ function imgvaultfile($src) {
 function copyvault($src) {
   global $action;
 
+  include_once('FDL/Lib.Vault.php');
 
   if (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)docid=([^&]*)&/",$src,$reg)) {
     $url=$action->getParam("CORE_OPENURL",$action->getParam("CORE_EXTERNURL"));
@@ -597,6 +598,16 @@ function copyvault($src) {
     } 
   return $newfile;
   }
+  if( preg_match("|^FDL/geticon\.php\?vaultid=(?P<vid>\d+)|", $src, $reg) ) {
+    $info = vault_properties($reg['vid']);
+    $newfile = uniqid(getTmpDir()."/img");
+    if( ! copy($info->path, $newfile) ) {
+      return "";
+    }
+    return $newfile;
+  }
+
+  return "";
 }
 
 
