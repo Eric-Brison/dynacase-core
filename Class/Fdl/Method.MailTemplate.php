@@ -43,7 +43,9 @@ function sendDocument(&$doc,$keys=array()) {
   include_once("FDL/Lib.Vault.php");
   if ($doc->isAffected()) {
     $this->keys=$keys;
-    $themail = new Fdl_Mail_mime();
+
+    $multi_mix = new Fdl_Mail_mimePart('', array('content_type' => 'multipart/mixed'));
+    $multi_rel = $multi_mix->addSubpart('', array('content_type' => 'multipart/related'));
 
     $tdest=$this->getAValues("tmail_dest");
 
@@ -144,14 +146,36 @@ function sendDocument(&$doc,$keys=array()) {
 
     if (trim($to.$cc.$bcc)=="") return ""; //nobody to send data
 
-    $themail->setHTMLBody($pfout,false);   
+    $multi_rel->addSubpart($pfout,
+    	array(
+    		'content_type' => 'text/html',
+    		'charset' => 'UTF-8',
+    		'encoding' => 'quoted-printable'
+    	)
+    );
+
     // ---------------------------
       // add inserted image
 
 
     foreach($this->ifiles as $k=>$v) {
 	if (file_exists($pubdir."/$v")) {
-	  $themail->addAttachment($v,"image/".fileextension($v),$k,true,'base64',$k);
+
+	  $multi_rel->addSubpart('',
+	  	array(
+	  		'body_file' => $v,
+	  		'content_type' => sprintf("image/%s", fileextension($v)),
+	  		'charset' => 'UTF-8',
+	  		'filename' => $k,
+	  		'dfilename' => $k,
+	  		'encoding' => 'base64',
+	  		'name_encoding' => 'quoted-printable',
+	  		'filename_encoding' => 'quoted-printable',
+	  		'disposition' => 'inline',
+	  		'cid' => $k
+	  	)
+	  );
+
 	}
       }
 
@@ -164,15 +188,32 @@ function sendDocument(&$doc,$keys=array()) {
 	foreach ($tvf as $vf) {
 	  if ($vf) {
 	    $fileinfo=$this->getFileInfo($vf);
-	    if ($fileinfo["path"]) $themail->addAttachment($fileinfo["path"],$fileinfo["mime_s"],$fileinfo["name"],true,'base64');
+	    if ($fileinfo["path"]) {
+
+	  		$multi_mix->addSubpart('',
+	  			array(
+	  				'body_file' => $fileinfo['path'],
+	  				'content_type' => $fileinfo['mime_s'],
+	  				'charset' => 'UTF-8',
+	  				'filename' => $fileinfo['name'],
+	  				'dfilename' => $fileinfo['name'],
+	  				'encoding' => 'base64',
+	  				'name_encoding' => 'quoted-printable',
+	  				'filename_encoding' => 'quoted-printable',
+	  				'disposition' => 'attachment'
+	  			)
+	  		);
+
+	    }
 	  }
 	}
       }
     }
 
-    $err=sendmail($to,$from,$cc,$bcc,$subject,$themail,'related');
+    $err = sendmail($to,$from,$cc,$bcc,$subject,$multi_mix);
+    
     $savecopy=$this->getValue("tmail_savecopy")=="yes";
-    if (($err=="") && $savecopy) createSentMessage($to,$from,$cc,$bcc,$subject,$themail,$doc);
+    if (($err=="") && $savecopy) createSentMessage($to,$from,$cc,$bcc,$subject,$multi_mix,$doc);
     $recip="";
     if ($to) $recip.=sprintf(_("sendmailto %s"),$to);
     if ($cc) $recip.=' '.sprintf(_("sendmailcc %s"),$cc);
@@ -215,7 +256,25 @@ function srcfile($src) {
   $vext= array("gif","png","jpg","jpeg","bmp");
 
   if (substr($src,0,3) == "cid")   return "src=\"$src\"";
-  if (substr($src,0,4) == "http")  return "src=\"$src\"";
+  if( substr($src, 0, 4) == "http" ) {
+  	$chopped_src = '';
+  	// Detect HTTP URLs pointing to myself
+  	foreach( array('CORE_URLINDEX', 'CORE_PUBURL') as $url ) {
+  		$url = $this->getParam($url);
+  		if( strlen($url) <= 0 ) {
+  			continue;
+  		}
+  		if( strcmp(substr($src, 0, strlen($url)), $url) == 0 ) {
+  			// Chop the URL base part, and leave only the args/vars
+  			$chopped_src = substr($src, strlen($url));
+  			break;
+  		}
+  	}
+  	if( $chopped_src == '' ) {
+  		return sprintf('src="%s"', $src);
+  	}
+  	$src = $chopped_src;
+  }
   $cid=$src;
  
   if (preg_match("/.*app=FDL.*action=EXPORTFILE.*vid=([0-9]*)/",$src, $reg)) {

@@ -36,8 +36,10 @@ function sendmail($to,$from,$cc,$bcc,$subject,&$mimemail,$multipart=null) {
 
 
 
-  $mimemail->setFrom($from);
-  if ($cc!='') $mimemail->addCc($cc);
+  if( is_a($mimemail, 'Mail_Mime') ) {
+  	$mimemail->setFrom($from);
+  	if ($cc!='') $mimemail->addCc($cc);
+  }
 
 
   $xh['To']=$to;
@@ -75,24 +77,61 @@ function sendmail($to,$from,$cc,$bcc,$subject,&$mimemail,$multipart=null) {
    }
   setlocale(LC_TIME, 'C');
 
-  $body=$mimemail->get();
+  $data = '';
 
-  $xh['Date']=strftime("%a, %d %b %Y %H:%M:%S %z",time());
-  //  $xh['Content-type']= "multipart/related";
-  $xh['Subject']=$subject;
-  $xh['Message-Id']='<'.strftime("%Y%M%d%H%M%S-",time()).rand(1,65535)."@$host>";
+  if( is_a($mimemail, 'Fdl_Mail_mimePart') ) {
 
-  $xh['User-Agent']=sprintf("Dynacase Platform %s",getParam('VERSION'));
-  $data="";
-  $h=$mimemail->headers($xh);
-  if ($multipart)  $h['Content-Type']=str_replace("mixed",$multipart,$h['Content-Type']);
+  	$mm = new Mail_Mime();
+  	$mm->_build_params['head_charset'] = 'UTF-8';
 
-  foreach ($h as $k=>$v) {
-    $data.="$k: $v\r\n";
+  	$mm->setFrom($from);
+  	if( $cc != '' ) {
+  		$mm->addCc($cc);
+  	}
+
+  	$email = $mimemail->encode();
+	if( PEAR::isError($email) ) {
+		$err = sprintf("Error encoding Fdl_Mail_mimePart : %s", $email->message);
+		error_log(__CLASS__."::".__FUNCTION__." ".$err);
+		return $err;
+	}
+
+	$txtHeaders = $mm->txtHeaders(
+  		array_merge(
+  			$email['headers'],
+  			array(
+  				'To' => $to,
+  				'Subject' => $subject,
+  				'Date' => strftime("%a, %d %b %Y %H:%M:%S %z",time()),
+  				'Message-Id' => sprintf("<%s@%s>", strftime("%Y%M%d%H%M%S-",time()).rand(1,65535), $host),
+  				'User-Agent' => sprintf("Dynacase Platform %s", getParam('VERSION'))
+  			)
+  		)
+  	);
+
+   	$data = $txtHeaders . $mm->_build_params['eol'] . $email['body'];
+
+  } else {
+
+  	$body=$mimemail->get();
+
+  	$xh['Date']=strftime("%a, %d %b %Y %H:%M:%S %z",time());
+  	// $xh['Content-type']= "multipart/related";
+  	$xh['Subject']=$subject;
+  	$xh['Message-Id']='<'.strftime("%Y%M%d%H%M%S-",time()).rand(1,65535)."@$host>";
+
+  	$xh['User-Agent']=sprintf("Dynacase Platform %s",getParam('VERSION'));
+  	$data="";
+  	$h=$mimemail->headers($xh);
+  	if ($multipart)  $h['Content-Type']=str_replace("mixed",$multipart,$h['Content-Type']);
+
+  	foreach ($h as $k=>$v) {
+    	$data.="$k: $v\r\n";
+  	}
+
+  	$data.="\r\n".$body;
+
   }
-  
-  $data.="\r\n".$body;
-
   
   /* Set the body of the message. */
   if (PEAR::isError($smtp->data($data))) {
@@ -240,6 +279,41 @@ class Fdl_Mail_mime extends Mail_mime {
     
 }
 
+Class Fdl_Mail_mimePart	extends	Mail_mimePart {
+  var $_filename = '';
+
+  function Fdl_Mail_mimePart($body = '', $params = array()) {
+    // Keep track of the unaltered/unencoded filename for further use
+    if( isset($params['filename']) ) {
+      $this->_filename = $params['filename'];
+    } elseif( isset($params['dfilename']) ) {
+      $this->_filename = $params['dfilename'];
+    }
+
+    parent::Mail_mimePart($body, $params);
+  }
+
+  function &addSubpart($body, $params) {
+    if( ! property_exists('Mail_mimePart', '_body_file') && isset($params['body_file']) ) {
+      // Mail_mimePart < 1.6.0 has no support for passing a file with $param['body_file']
+      $body = file_get_contents($params['body_file']);
+      unset($params['body_file']);
+    }
+    $this->_subparts[] = new Fdl_Mail_mimePart($body, $params);
+    return $this->_subparts[count($this->_subparts) - 1];
+  }
+
+  function setBodyFile($file) {
+    if( ! property_Exists('Mail_mimePart', '_body_file') ) {
+        // Mail_mimePart < 1.6.0
+        $this->_body = file_get_contents($file);
+    } else {
+        $this->_body_file = $file;
+    }
+    return $this;
+  }
+}
+
 /**
  * record message sent from freedom
  */
@@ -269,6 +343,108 @@ function createSentMessage($to,$from,$cc,$bcc,$subject,&$mimemail,&$doc=null) {
 							 "emsg_recipient"=>$v));
     }
       
+    if( is_a($mimemail, 'Fdl_Mail_mimePart') ) {
+		// Flatten the MIME parts by expanding and removing the mutipart entities
+		$partList = array(&$mimemail);
+		$i = 0;
+		while( $i < count($partList) ) {
+			if( count($partList[$i]->_subparts) <= 0 ) {
+				$i++;
+				continue;
+			}
+			$multipart = $partList[$i];
+			array_splice($partList, $i, 1);
+			foreach( $multipart->_subparts as &$part ) {
+				array_push($partList, &$part);
+			}
+			unset($part);
+		}
+
+		// Search for a text/plain part and extract it
+		$textPart = null;
+		foreach( $partList as $i => &$part ) {
+			if( preg_match("|^text/plain|", $part->_headers['Content-Type']) ) {
+				$textPart = $part;
+				array_splice($partList, $i, 1);
+				break;
+			}
+		}
+		unset($part);
+
+		// Search for a text/html part and extract it
+		$htmlPart = null;
+		foreach( $partList as $i => &$part ) {
+			if( preg_match("|^text/html|", $part->_headers['Content-Type']) ) {
+				$htmlPart = $part;
+				array_splice($partList, $i, 1);
+				break;
+			}
+		}
+		unset($part);
+
+		// Store the text part
+		$textBody = '';
+		if( $textPart !== null ) {
+			if( $textPart->_body_file != '' ) {
+				$textBody = file_get_contents($textPart->_body_file);
+			} else {
+				$textBody = $textPart->_body;
+			}
+			$msg->setValue('emsg_textbody', $textBody);
+		}
+
+		// Store the HTML part
+		$htmlBody = '';
+		if( $htmlPart !== null ) {
+			if( $htmlPart->_body_file != '' ) {
+				$htmlBody = file_get_contents($htmlPart->_body_file);
+			} else {
+				$htmlBody = $htmlPart->_body;
+			}
+			$msg->setValue('emsg_htmlbody', $htmlBody);
+		}
+
+		// Store the remaining parts
+		foreach( $partList as $i => &$part ) {
+			$tmpfile = tempnam(getTmpDir(), 'fdl_attach');
+			if( $part->_body_file != '' ) {
+				copy($part->_body_file, $tmpfile);
+			} else {
+				file_put_contents($tmpfile, $part->_body);
+			}
+			$msg->storeFile('emsg_attach', $tmpfile, $part->_filename, $i);
+			@unlink($tmpfile);
+		}
+		unset($part);
+
+		$err = $msg->add();
+		if( $err != '' ) {
+			return $err;
+		}
+
+		if( $htmlPart !== null && $htmlBody != '' ) {
+			// Re-link the HTML part CIDs
+			foreach( $partList as $i => &$part ) {
+				$cid = preg_replace('/^<(.+)>$/', '\1', $part->_headers['Content-ID']);
+				if( $cid != '' ) {
+					$htmlBody = str_replace(sprintf("cid:%s", $cid), $msg->getfileLink('emsg_attach', $i), $htmlBody);
+				}
+			}
+			unset($part);
+
+			$msg->disableEditControl();
+			$msg->setValue('emsg_htmlbody', $htmlBody);
+			$err = $msg->modify(true);
+			$msg->enableEditControl();
+
+			if( $err != '' ) {
+				return $err;
+			}
+		}
+
+		return '';
+    }
+
     $msg->setValue("emsg_textbody",$mimemail->_txtbody);
     $msg->setValue("emsg_htmlbody",$mimemail->_htmlbody);
     $linkedbody=$mimemail->_htmlbody;
