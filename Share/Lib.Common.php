@@ -91,7 +91,7 @@ function getLayoutFile($app, $layfile) {
 		
 		$file = $root."/$app/Layout/$socStyle/$layfile";
 		if (file_exists($file))  return($file);
-		$layFile=strtolower($layfile);
+		$layfile=strtolower($layfile);
 		$file = $root."/$app/Layout/$socStyle/$layfile";
 		if (file_exists($file))  return($file);
 		
@@ -100,7 +100,7 @@ function getLayoutFile($app, $layfile) {
 	
 		$file = $root."/$app/Layout/$layfile";
 		if (file_exists($file))  return($file);
-		$layFile=strtolower($layfile);
+		$layfile=strtolower($layfile);
 		$file = $root."/$app/Layout/$layfile";
 		if (file_exists($file))  return($file);
 	
