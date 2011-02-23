@@ -113,7 +113,7 @@ class OOoLayout extends Layout {
 			if ($items->length > 0) {
 				$item=$items->item(0);
 
-				if (preg_match("/\[V_[A-Z0-9_-]+\]/",$item->textContent ,$reg)) {
+				if (preg_match('/\[V_[A-Z0-9_-]+\]/',$item->textContent ,$reg)) {
 				    $skey=$reg[0];
 				    //	    print "serack key : [$skey] [$aid] [$vkey]";
 				    if ($skey == $aid) {
@@ -418,20 +418,20 @@ class OOoLayout extends Layout {
 
 		$this->content_template=preg_replace("!</?text:bookmark-(start|end)([^>]*)>!s","",$this->content_template);
 
-		$this->content_template=preg_replace("!<text:section>(\s*<text:p/>)+!s","<text:section>",$this->content_template);
-		$this->content_template=preg_replace("!(<text:p/>\s*)+</text:section>!s","</text:section>",$this->content_template);
+		//$this->content_template=preg_replace("!<text:section>(\s*<text:p/>)+!s","<text:section>",$this->content_template);
+		//$this->content_template=preg_replace("!(<text:p/>\s*)+</text:section>!s","</text:section>",$this->content_template);
 
-		$this->content_template=preg_replace("/<text:span([^>]*)>\s*<text:section>/s","<text:section>",$this->content_template);
-		$this->content_template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->content_template);
+		//$this->content_template=preg_replace("/<text:span([^>]*)>\s*<text:section>/s","<text:section>",$this->content_template);
+		//$this->content_template=preg_replace("/<\/text:section>\s*<\/text:span>/s","</text:section>",$this->content_template);
 
-		$this->content_template=preg_replace("/<text:p([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->content_template);
-		$this->content_template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->content_template);
+		//$this->content_template=preg_replace("/<text:p([^>]*)>\s*<text:section([^>]*)>/s","<text:section\\2>",$this->content_template);
+		//$this->content_template=preg_replace("/<\/text:section>\s*<\/text:p>/s","</text:section>",$this->content_template);
 
 		//$this->content_template=preg_replace("/<text:p ([^>]*)>\s*<text:([^\/]*)\/>\s*<text:section[^>]*>/s","<text:section><text:\\2/>",$this->content_template);
 		//$this->content_template=preg_replace("/<\/text:section>\s*<text:([^\/]*)\/>\s*<\/text:p>/s","</text:section><text:\\1/>",$this->content_template);
 
-		$this->content_template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->content_template);
-		$this->content_template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->content_template);
+		//$this->content_template=preg_replace("/<table:table-cell ([^>]*)>\s*<text:section>/s","<table:table-cell \\1>",$this->content_template);
+		//$this->content_template=preg_replace("/<\/text:section>\s*<\/table:table-cell>/s","</table:table-cell>",$this->content_template);
 
 		$this->content_template=str_replace("&lt;text:line-break/&gt;","<text:line-break/>",$this->content_template);
 
@@ -468,7 +468,7 @@ class OOoLayout extends Layout {
 		if (isset($acturl ["query"])) {
 			$acturl["query"]=str_replace("--",":",$acturl["query"]); //For buggy function parse_url in PHP 4.3.1
 			$zargs = explode("&", $acturl ["query"] );
-			while (list($k, $v) = each($zargs)) {
+			foreach($zargs as $k=>$v) {
 				if (preg_match("/([^=]*)=(.*)/",$v, $regs)) {
 					// memo zone args for next action execute
 					$ZONE_ARGS[$regs[1]]=urldecode($regs[2]);
@@ -562,7 +562,7 @@ class OOoLayout extends Layout {
 	 */
 	protected function ParseText() {
 		if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'UTF-8');
-		$this->template = preg_replace("/\[TEXT:([^\]]*)\]/e",
+		$this->template = preg_replace('/\[TEXT:([^\]]*)\]/e',
                          "\$this->Text('\\1')",
 		$this->template);
 		if ($this->encoding=="utf-8") bind_textdomain_codeset("what", 'ISO-8859-15'); // restore
@@ -633,7 +633,7 @@ class OOoLayout extends Layout {
 					$width=$draw->getAttribute('svg:width');
 					$size=getimagesize($file);
 					$unit="";
-					if (preg_match("/[0-9\.]+(.*)$/",$width,$reg)) $unit=$reg[1];
+					if (preg_match('/[0-9\.]+(.*)$/',$width,$reg)) $unit=$reg[1];
 					$height=sprintf("%.03f%s",(doubleval($width)/$size[0])*$size[1],$unit);
 					$draw->setAttribute('svg:height',$height);
 				}
@@ -648,7 +648,7 @@ class OOoLayout extends Layout {
 		$draws=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:drawing:1.0","frame");
 		foreach ($draws as $draw) {
 			$name=trim($draw->getAttribute('draw:name'));
-			if(preg_match("/\[(V_[A-Z0-9_-]+)\]/", $name, $reg)) {
+			if(preg_match('/\[(V_[A-Z0-9_-]+)\]/', $name, $reg)) {
 				$key=$reg[1];
 				if(isset($this->rkey[$key])) {
 					$this->setDraw($draw, $key, $this->rkey[$key]);
@@ -687,7 +687,7 @@ class OOoLayout extends Layout {
 		foreach ( $objNodeListNested as $objNodeNested ){
 			if ($objNodeNested->nodeType == XML_TEXT_NODE) {
 				if ($objNodeNested->nodeValue!="") {
-					if(strpos($strNewContent, '<text:section>') !== false) {
+					if(strpos($strNewContent, '<text:p>') !== false) {
 						$strNewContent = str_replace('<', '--Lower.Than--', $strNewContent);
 						$strNewContent = str_replace('>', '--Greater.Than--', $strNewContent);
 					}
@@ -721,6 +721,7 @@ class OOoLayout extends Layout {
 	 * parse bullet lists
 	 */
 	protected function parseListItem() {
+	    $err='';
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list");
 		foreach ($lists as $list) {
 			$items=$list->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","list-item");
@@ -859,6 +860,7 @@ class OOoLayout extends Layout {
 	 * parse tables
 	 */
 	protected function parseTableRow() {
+	    $err='';
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:table:1.0","table-row");
 		$validRow=array();
 		
@@ -938,8 +940,8 @@ class OOoLayout extends Layout {
 	 * @param $s
 	 */
 	private function fixSpanIf(&$s) {
-				$s=preg_replace("/<text:span ([^>]*)>\s*<\/text:p>/s","</text:p>",$s);
-				$s=preg_replace("/<text:p ([^>]*)>\s*<\/text:span>/s","<text:p \\1>",$s);
+				$s=preg_replace('/<text:span ([^>]*)>\s*<\/text:p>/s',"</text:p>",$s);
+				$s=preg_replace('/<text:p ([^>]*)>\s*<\/text:span>/s',"<text:p \\1>",$s);
 		
 	}
 	
@@ -1065,7 +1067,7 @@ class OOoLayout extends Layout {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","text-input");
 		foreach ($lists as $list) {
 			$name=$list->getAttribute("text:description");
-			if(preg_match("/\[(V_[A-Z0-9_-]+)\]/", $name, $reg)) {
+			if(preg_match('/\[(V_[A-Z0-9_-]+)\]/', $name, $reg)) {
 				$key=$reg[1];
 				if(isset($this->rkey[$key])) {
 					$this->setInputField($list, $key, $this->rkey[$key]);
@@ -1080,7 +1082,7 @@ class OOoLayout extends Layout {
 		$lists=$this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0","drop-down");
 		foreach ($lists as $list) {
 			$name=$list->getAttribute("text:name");
-			if(preg_match("/\[(V_[A-Z0-9_-]+)\]/", $name, $reg)) {
+			if(preg_match('/\[(V_[A-Z0-9_-]+)\]/', $name, $reg)) {
 				$key=$reg[1];
 				if(isset($this->rkey[$key])) {
 					$this->setDropDownField($list, $key, $this->rkey[$key]);
@@ -1370,6 +1372,79 @@ class OOoLayout extends Layout {
 		}
 	}
 	/**
+	 * clean section done by htmltext values
+	 * delete unecessary span or p
+	 * delete section tag if needed (not in cell or text:section or text:body
+	 */
+    public function parseHtmlText()
+    {
+        $this->dom->loadXML($this->template);
+        $lists = $this->dom->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "section");
+        $htmlSections = array(); 
+        $htmlCleanSections = array();
+        
+        foreach ( $lists as $list ) {
+            $aid = $list->getAttribute("aid");
+            if ($aid) {
+                if ($list->parentNode->childNodes->length == 1) {
+                    $htmlSections[] = $list;
+                } else {
+                    // remove section
+                    $htmlCleanSections[] = $list;
+                }
+                $list->removeAttribute("aid");
+            }
+        }
+        
+        foreach ( $htmlSections as $htmlSection ) {
+            $pParentHtml = $htmlSection->parentNode->parentNode;
+            $parentHtml = $htmlSection->parentNode;
+            
+            if ($parentHtml->nextSibling) {
+                $pParentHtml->insertBefore($htmlSection, $parentHtml->nextSibling);
+            } else {
+                $pParentHtml->appendChild($htmlSection);
+            }
+            $pParentHtml->removeChild($parentHtml);
+            // double up
+            
+            $pParentHtml = $htmlSection->parentNode->parentNode;
+            $parentHtml = $htmlSection->parentNode;
+            
+            if (($parentHtml->nodeName=="text:p") && ($parentHtml->childNodes->length == 1)) {
+                
+                if ($parentHtml->nextSibling) {
+                    $pParentHtml->insertBefore($htmlSection, $parentHtml->nextSibling);
+                } else {
+                    $pParentHtml->appendChild($htmlSection);
+                }
+                $pParentHtml->removeChild($parentHtml);
+            } else {
+                $htmlCleanSections[]=$htmlSection;
+            }
+            if (in_array($htmlSection->parentNode->nodeName,array("text:list-item","draw:text-box","text:p"))) {
+                $htmlCleanSections[]=$htmlSection;
+            }
+            //print "Parent Node is ".$htmlSection->parentNode->nodeName."\n";
+        }
+    foreach ( $htmlCleanSections as $htmlSection ) {
+            if ($htmlSection->parentNode->nodeName == "text:p") {
+                $nbp=$htmlSection->getElementsByTagNameNS("urn:oasis:names:tc:opendocument:xmlns:text:1.0", "p")->length;
+                
+            }
+            while ( $htmlSection->childNodes->length > 0 ) {
+                if (($htmlSection->parentNode->nodeName == "text:p") && ($nbp > 1)) {
+                    if ($htmlSection->firstChild->nodeName == "text:p") {
+                        $htmlSection->firstChild->appendChild($this->dom->createElement("text:line-break"));
+                        $nbp--;
+                    }
+                }
+                $htmlSection->parentNode->insertBefore($htmlSection->firstChild,$htmlSection);
+            }
+        }
+        $this->template = $this->dom->saveXML();
+    }
+	/**
 	 * generate OOo document content
 	 */
 	protected function genContent() {
@@ -1407,6 +1482,7 @@ class OOoLayout extends Layout {
 			
 			$this->restoreProtectedValues();
 
+			$this->ParseHtmlText();
 			$this->dom=new DOMDocument();
 			if ($this->dom->loadXML($this->template)) {
 				$this->restoreSection();
