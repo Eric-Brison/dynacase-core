@@ -698,7 +698,26 @@ function srcfile($src) {
   global $ifiles;
   $vext= array("gif","png","jpg","jpeg","bmp");
   if (substr($src,0,3) == "cid")   return "src=\"$src\"";
-  if (substr($src,0,4) == "http")  return "src=\"$src\"";
+  if (substr($src,0,4) == "http")  {
+  	$chopped_src = '';
+  	// Detect HTTP URLs pointing to myself
+  	foreach( array('CORE_URLINDEX', 'CORE_PUBURL') as $url ) {
+  		$url = getParam($url);
+  		if( strlen($url) <= 0 ) {
+  			continue;
+  		}
+  		if( strcmp(substr($src, 0, strlen($url)), $url) == 0 ) {
+  			// Chop the URL base part, and leave only the args/vars
+  			$chopped_src = substr($src, strlen($url));
+  			break;
+  		}
+  	}
+  	if( $chopped_src == '' ) {
+  		return sprintf('src="%s"', $src);
+  	}
+  	$src = $chopped_src;
+  }
+  
   if (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/",$src,$reg)) {
     return imgvaultfile(str_replace('&amp;','&',$reg[2]));
   }
