@@ -495,7 +495,9 @@ create unique index i_docir on doc(initid, revision);";
       
 
     global $gdocs; // set to cache
-    if (count($gdocs) < MAXGDOCS) $gdocs[$this->id]=&$this;
+    if (count($gdocs) < MAXGDOCS && ($this->doctype != 'C')) {
+        $gdocs[$this->id]=&$this;
+    }
   }  
 
   function setChanged() {
@@ -2319,7 +2321,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     if (is_array($value)) {
       if ($oattr->type=='htmltext') {
-		  $value= $this->_array2val($value,' ');
+		  $value= $this->_array2val($value,"\r");
 		  if($value === '') {
 			  $value = DELVALUE;
 		  }
@@ -5212,6 +5214,9 @@ create unique index i_docir on doc(initid, revision);";
 	  if (! strpos($html_body,'<br')) $html_body=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$html_body);
 	  $html_body='<p>'.nl2br($html_body).'</p>';
 	}
+		  $html_body=str_replace(">\r\n",">",$html_body);
+		  $html_body=str_replace("\r","",$html_body);
+	
 	$html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
 	$html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse",
 				  "\$this->getHtmlTdContent('\\1','\\2')",
@@ -5264,7 +5269,11 @@ create unique index i_docir on doc(initid, revision);";
 				"<table:table ",$htmlval);
 	  $htmlval=preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ",
 				"</table:table> ",$htmlval);	
-	  $htmlval="<text:section>".$htmlval."<text:p/></text:section>";
+	  
+	  $pppos=mb_strrpos($htmlval, '</text:p>');
+	
+	  $htmlval=sprintf('<text:section text:style-name="Sect%s" text:name="Section%s" aid="%s">%s</text:section>',
+	   $attrid,$attrid,$attrid,$htmlval);
 	} else {
   					 
 	  addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"),$this->title));
@@ -5517,7 +5526,7 @@ create unique index i_docir on doc(initid, revision);";
   			return $this->vault_filename_fromvalue($template, true);
   		}
   		if( strstr($aid, '.') ) {
-  			return getLayoutFile($reg['app'], strtolower($aid));
+  			return getLayoutFile($reg['app'], ($aid));
   		} else {
   			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
   		}

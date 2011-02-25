@@ -304,6 +304,9 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
                       } else $val[]='';
                     }
                     break;
+                case 'htmltext':
+                    $val[]=str_replace("\n"," ",str_replace(">\n",">",$item->nodeValue));
+                    break;
                 default:
                     $val[]=$item->nodeValue;
             }
