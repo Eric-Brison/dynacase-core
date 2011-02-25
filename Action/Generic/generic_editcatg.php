@@ -58,8 +58,8 @@ function generic_editcatg(&$action) {
     $tlevel[]= array("alevel"=>count($tk));
     $tref[]= array("eref"=>str_replace("-dot-", ".", array_pop($tk)));
     $vlabel = $tv;
-    $tlabel[]= array("elabel"=>$vlabel,
-		     "velabel"=>$loff.$vlabel);
+    $tlabel[]= array("elabel"=>htmlspecialchars($vlabel),
+		     "velabel"=>htmlspecialchars($loff.$vlabel));
   }
   
   $action->lay->setBlockData("ALEVEL",$tlevel);
