@@ -288,6 +288,10 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
                             }
                         }
                     }
+                    if ($v->getOption("multiple") == "yes") {
+                        $id=str_replace(',','\n',$id);
+                        if  ($v->inArray()) $id=str_replace(array('\\n',"\n",),"<BR>",$id);
+                    }
                     $val[]=$id;
                     break;
                 case 'image':
