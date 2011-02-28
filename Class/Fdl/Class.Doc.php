@@ -6300,52 +6300,84 @@ create unique index i_docir on doc(initid, revision);";
 
 
   }
-
-
-
-  // -----------------------------------
-  final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
-    $listattr = $this->GetNormalAttributes();
-
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $value = chop($this->GetValue($v->id));
-
-      //------------------------------
-      // Set the table value elements
-
-
-      $this->lay->Set("S_".strtoupper($v->id),($value!=""));
-      // don't see  non abstract if not
-      if ((($v->mvisibility == "H")&& (! $viewhidden)) || ($v->mvisibility == "I")|| (($abstract) && (! $v->isInAbstract ))) {
-	$this->lay->Set("V_".strtoupper($v->id),"");
-	$this->lay->Set("L_".strtoupper($v->id),"");
-      } else {
-	if ($target=="ooo") {
-		$this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-		if ($v->type=="array") {
-			$tva=$this->getAValues($v->id);
-			
-			$tmkeys=array();
-			foreach ($tva as $kindex=>$kvalues) {
-				foreach($kvalues as $kaid=>$va) {
-				$tmkeys[$kindex]["V_".strtoupper($kaid)]=$this->GetOOoValue($this->getAttribute($kaid),$va);
-				}
-			}
-			$this->lay->setRepeatable($tmkeys);
-		}
-	} else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
-	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-      }
+    
+    // -----------------------------------
+    final public function viewattr($target = "_self", $ulink = true, $abstract = false, $viewhidden = false)
+    {
+        $listattr = $this->GetNormalAttributes();
+        
+        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+        foreach ( $listattr as $k => $v ) {
+            $value = chop($this->GetValue($v->id));
+            
+            //------------------------------
+            // Set the table value elements
+            
+            $this->lay->Set("S_" . strtoupper($v->id), ($value != ""));
+            // don't see  non abstract if not
+            if ((($v->mvisibility == "H") && (!$viewhidden)) || ($v->mvisibility == "I") || (($abstract) && (!$v->isInAbstract))) {
+                $this->lay->Set("V_" . strtoupper($v->id), "");
+                $this->lay->Set("L_" . strtoupper($v->id), "");
+            } else {
+                if ($target == "ooo") {
+                    if ($v->type == "array") {
+                        $tva = $this->getAValues($v->id);
+                        
+                        $tmkeys = array();
+                        foreach ( $tva as $kindex => $kvalues ) {
+                            foreach ( $kvalues as $kaid => $va ) {
+                                $oa = $this->getAttribute($kaid);
+                                if ($oa->getOption("multiple") == "yes") {
+                                    // second level
+                                    $oa->setOption("multiple","no"); //  needto have values like first level
+                                    $values = explode("<BR>", $va);
+                                    $ovalues = array();
+                                    foreach ( $values as $ka => $va ) {
+                                        $ovalues[] = $this->GetOOoValue($oa, $va);
+                                    }
+                                    //print_r(array($oa->id=>$ovalues));
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $ovalues;
+                                    $oa->setOption("multiple","yes"); //  needto have values like first level
+                                } else {
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $this->GetOOoValue($oa, $va);
+                                }
+                            }
+                        }
+                        //print_r($tmkeys);
+                        $this->lay->setRepeatable($tmkeys);
+                    } else {
+                        $ovalue=$this->GetOOoValue($v, $value);
+                        if ($v->isMultiple()) $ovalue=str_replace("<text:tab/>",', ', $ovalue);
+                        $this->lay->Set("V_" . strtoupper($v->id),$ovalue);
+                       // print_r(array("V_".strtoupper($v->id)=>$this->GetOOoValue($v, $value),"raw"=>$value));
+                        if ((!$v->inArray()) && ($v->getOption("multiple") == "yes")) {
+                            $values = $this->getTValue($v->id);
+                            $ovalues = array();
+                            $v->setOption("multiple","no"); 
+                            foreach ( $values as $ka => $va ) {
+                                $ovalues[] = $this->GetOOoValue($v, $va);
+                            }
+                            $v->setOption("multiple","yes"); 
+                            //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
+                            $this->lay->setColumn("V_" . strtoupper($v->id), $ovalues);
+                        } else {
+                            //$this->lay->Set("V_" . strtoupper($v->id), $this->GetOOoValue($v, $value));
+                            
+                        }
+                    }
+                } else
+                    $this->lay->Set("V_" . strtoupper($v->id), $this->GetHtmlValue($v, $value, $target, $ulink));
+                $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+            }
+        }
+        $listattr = $this->GetFieldAttributes();
+        
+        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+        foreach ( $listattr as $k => $v ) {
+            $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+        }
+    
     }
-    $listattr = $this->GetFieldAttributes();
-
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-    }
-
-  }
 
 
   // view doc properties
