@@ -360,8 +360,13 @@ Class NormalAttribute extends BasicAttribute {
                       }
                   }
               } else {
+                  if ((strpos($v,'<BR>')===false) && (strpos($v,"\n")===false)) {
                   return sprintf('<%s id="%s">%s</%s>',
                              $this->id,$v,_("unreferenced document"),$this->id);
+                  } else {
+                  return sprintf('<%s id="%s">%s</%s>',
+                             $this->id,str_replace(array("\n",'<BR>'),',',$v),_("multiple document"),$this->id);
+                  } 
               }
           default:               
                 return sprintf("<%s>%s</%s>",$this->id,$this->encodeXml($v),$this->id);      
