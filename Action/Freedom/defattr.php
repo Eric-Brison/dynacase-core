@@ -179,7 +179,7 @@ function defattr(&$action)
       $newelem[$k]["visibility"]=$attr->visibility;
       $newelem[$k]["link"]=$attr->link;
       $newelem[$k]["phpfile"]=$attr->phpfile;
-      $newelem[$k]["phpfunc"]=$attr->phpfunc;
+      $newelem[$k]["phpfunc"]=htmlspecialchars($attr->phpfunc);
       $newelem[$k]["options"]=$attr->options;
       $newelem[$k]["phpconstraint"]=$attr->phpconstraint;
       $newelem[$k]["elink"]=$attr->elink;

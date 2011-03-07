@@ -191,8 +191,8 @@ function getResPhpFunc(&$doc,&$oattr,&$rargids,&$tselect,&$tval,$whttpvars=true,
     else if ($v == "T") $arg[$k]= &$doc;
     else if (($v[0] == "'")|| ($v[0] == '"')) {
       $lc=substr($v,-1);
-      if (($lc == "'") || ($lc == '"')) $arg[$k]= substr($v,1,-1);
-      else $arg[$k]= substr($v,1);
+      if ($lc == $v[0]) $arg[$k]= mb_substr($v,1,-1);
+      else $arg[$k]= mb_substr($v,1);
     } else if ($doc->getProperty($v)!==false) $arg[$k]=$doc->getProperty($v);
     else {
       // can be values or family parameter
