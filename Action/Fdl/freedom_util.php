@@ -183,8 +183,10 @@ function new_Doc($dbaccess, $id='',$latest=false) {
     }
 
     if (($id > 0)  && (count($gdocs) < MAXGDOCS)) {
+        if (($doc->doctype != 'C') || (count($doc->attributes->attr) > 0)) {
        $doc->iscached=1;
        $gdocs[$id]=&$doc; 
+        }
        //print_r2("<b>use cache $id /".$doc->id."</b>");
     }
     return ($doc);

@@ -495,7 +495,9 @@ create unique index i_docir on doc(initid, revision);";
       
 
     global $gdocs; // set to cache
-    if (count($gdocs) < MAXGDOCS) $gdocs[$this->id]=&$this;
+    if (count($gdocs) < MAXGDOCS && ($this->doctype != 'C')) {
+        $gdocs[$this->id]=&$this;
+    }
   }  
 
   function setChanged() {
@@ -2319,7 +2321,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     if (is_array($value)) {
       if ($oattr->type=='htmltext') {
-		  $value= $this->_array2val($value,' ');
+		  $value= $this->_array2val($value,"\r");
 		  if($value === '') {
 			  $value = DELVALUE;
 		  }
@@ -5212,6 +5214,9 @@ create unique index i_docir on doc(initid, revision);";
 	  if (! strpos($html_body,'<br')) $html_body=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$html_body);
 	  $html_body='<p>'.nl2br($html_body).'</p>';
 	}
+		  $html_body=str_replace(">\r\n",">",$html_body);
+		  $html_body=str_replace("\r","",$html_body);
+	
 	$html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
 	$html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse",
 				  "\$this->getHtmlTdContent('\\1','\\2')",
@@ -5264,7 +5269,11 @@ create unique index i_docir on doc(initid, revision);";
 				"<table:table ",$htmlval);
 	  $htmlval=preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ",
 				"</table:table> ",$htmlval);	
-	  $htmlval="<text:section>".$htmlval."<text:p/></text:section>";
+	  
+	  $pppos=mb_strrpos($htmlval, '</text:p>');
+	
+	  $htmlval=sprintf('<text:section text:style-name="Sect%s" text:name="Section%s" aid="%s">%s</text:section>',
+	   $attrid,$attrid,$attrid,$htmlval);
 	} else {
   					 
 	  addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"),$this->title));
@@ -5517,7 +5526,7 @@ create unique index i_docir on doc(initid, revision);";
   			return $this->vault_filename_fromvalue($template, true);
   		}
   		if( strstr($aid, '.') ) {
-  			return getLayoutFile($reg['app'], strtolower($aid));
+  			return getLayoutFile($reg['app'], ($aid));
   		} else {
   			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
   		}
@@ -6291,52 +6300,84 @@ create unique index i_docir on doc(initid, revision);";
 
 
   }
-
-
-
-  // -----------------------------------
-  final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
-    $listattr = $this->GetNormalAttributes();
-
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $value = chop($this->GetValue($v->id));
-
-      //------------------------------
-      // Set the table value elements
-
-
-      $this->lay->Set("S_".strtoupper($v->id),($value!=""));
-      // don't see  non abstract if not
-      if ((($v->mvisibility == "H")&& (! $viewhidden)) || ($v->mvisibility == "I")|| (($abstract) && (! $v->isInAbstract ))) {
-	$this->lay->Set("V_".strtoupper($v->id),"");
-	$this->lay->Set("L_".strtoupper($v->id),"");
-      } else {
-	if ($target=="ooo") {
-		$this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-		if ($v->type=="array") {
-			$tva=$this->getAValues($v->id);
-			
-			$tmkeys=array();
-			foreach ($tva as $kindex=>$kvalues) {
-				foreach($kvalues as $kaid=>$va) {
-				$tmkeys[$kindex]["V_".strtoupper($kaid)]=$this->GetOOoValue($this->getAttribute($kaid),$va);
-				}
-			}
-			$this->lay->setRepeatable($tmkeys);
-		}
-	} else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
-	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-      }
+    
+    // -----------------------------------
+    final public function viewattr($target = "_self", $ulink = true, $abstract = false, $viewhidden = false)
+    {
+        $listattr = $this->GetNormalAttributes();
+        
+        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+        foreach ( $listattr as $k => $v ) {
+            $value = chop($this->GetValue($v->id));
+            
+            //------------------------------
+            // Set the table value elements
+            
+            $this->lay->Set("S_" . strtoupper($v->id), ($value != ""));
+            // don't see  non abstract if not
+            if ((($v->mvisibility == "H") && (!$viewhidden)) || ($v->mvisibility == "I") || (($abstract) && (!$v->isInAbstract))) {
+                $this->lay->Set("V_" . strtoupper($v->id), "");
+                $this->lay->Set("L_" . strtoupper($v->id), "");
+            } else {
+                if ($target == "ooo") {
+                    if ($v->type == "array") {
+                        $tva = $this->getAValues($v->id);
+                        
+                        $tmkeys = array();
+                        foreach ( $tva as $kindex => $kvalues ) {
+                            foreach ( $kvalues as $kaid => $va ) {
+                                $oa = $this->getAttribute($kaid);
+                                if ($oa->getOption("multiple") == "yes") {
+                                    // second level
+                                    $oa->setOption("multiple","no"); //  needto have values like first level
+                                    $values = explode("<BR>", $va);
+                                    $ovalues = array();
+                                    foreach ( $values as $ka => $va ) {
+                                        $ovalues[] = $this->GetOOoValue($oa, $va);
+                                    }
+                                    //print_r(array($oa->id=>$ovalues));
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $ovalues;
+                                    $oa->setOption("multiple","yes"); //  needto have values like first level
+                                } else {
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $this->GetOOoValue($oa, $va);
+                                }
+                            }
+                        }
+                        //print_r($tmkeys);
+                        $this->lay->setRepeatable($tmkeys);
+                    } else {
+                        $ovalue=$this->GetOOoValue($v, $value);
+                        if ($v->isMultiple()) $ovalue=str_replace("<text:tab/>",', ', $ovalue);
+                        $this->lay->Set("V_" . strtoupper($v->id),$ovalue);
+                       // print_r(array("V_".strtoupper($v->id)=>$this->GetOOoValue($v, $value),"raw"=>$value));
+                        if ((!$v->inArray()) && ($v->getOption("multiple") == "yes")) {
+                            $values = $this->getTValue($v->id);
+                            $ovalues = array();
+                            $v->setOption("multiple","no"); 
+                            foreach ( $values as $ka => $va ) {
+                                $ovalues[] = $this->GetOOoValue($v, $va);
+                            }
+                            $v->setOption("multiple","yes"); 
+                            //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
+                            $this->lay->setColumn("V_" . strtoupper($v->id), $ovalues);
+                        } else {
+                            //$this->lay->Set("V_" . strtoupper($v->id), $this->GetOOoValue($v, $value));
+                            
+                        }
+                    }
+                } else
+                    $this->lay->Set("V_" . strtoupper($v->id), $this->GetHtmlValue($v, $value, $target, $ulink));
+                $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+            }
+        }
+        $listattr = $this->GetFieldAttributes();
+        
+        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+        foreach ( $listattr as $k => $v ) {
+            $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+        }
+    
     }
-    $listattr = $this->GetFieldAttributes();
-
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-    }
-
-  }
 
 
   // view doc properties

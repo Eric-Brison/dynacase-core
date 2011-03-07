@@ -86,13 +86,24 @@ function getSessionValue($name, $def="") {
 
 function getLayoutFile($app, $layfile) {
 	$socStyle = Getparam("CORE_SOCSTYLE");
+	$root = Getparam("CORE_PUBDIR");
 	if ($socStyle != "") {
-		$root = Getparam("CORE_PUBDIR");
+		
 		$file = $root."/$app/Layout/$socStyle/$layfile";
-
 		if (file_exists($file))  return($file);
+		$layfile=strtolower($layfile);
+		$file = $root."/$app/Layout/$socStyle/$layfile";
+		if (file_exists($file))  return($file);
+		
 
 	}
+	
+		$file = $root."/$app/Layout/$layfile";
+		if (file_exists($file))  return($file);
+		$layfile=strtolower($layfile);
+		$file = $root."/$app/Layout/$layfile";
+		if (file_exists($file))  return($file);
+	
 	return $app."/Layout/".$layfile;
 }
 

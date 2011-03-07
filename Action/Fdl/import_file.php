@@ -153,15 +153,7 @@ function add_import_file(&$action, $fimport) {
 					$msg=refreshPhpPgDoc($dbaccess, $doc->id);
 					if (isset($tFamIdName))	$tFamIdName[$doc->name]=$doc->id; // refresh getFamIdFromName for multiple family import
 				}
-				if (isset($data[2])) {
-					if  ($data[2] > 0) { // dirid
-						$dir = new_Doc($dbaccess, $data[2]);
-						if ((method_exists($dir,"AddFile")) && $dir->isAlive())   $dir->AddFile($doc->id);
-					} else if ($data[2] ==  0) {
-						$dir = new_Doc($dbaccess, $dirid);
-						if ((method_exists($dir,"AddFile")) && ($dir->isAlive())) $dir->AddFile($doc->id);
-					}
-				}
+			
 				if ((! $analyze) && ($famicon!="")) $doc->changeIcon($famicon);
 				$tcr[$nline]["msg"].=$doc->postImport();
 				$doc->AddComment(_("Update by importation"));
@@ -690,7 +682,6 @@ function add_import_file(&$action, $fimport) {
  */
 function csvAddDoc($dbaccess, $data, $dirid=10,$analyze=false,$ldir='',$policy="add",
 $tkey=array("title"),$prevalues=array(),$torder=array()) {
-
 	// return structure
 	$tcr=array("err"=>"",
 		     "msg"=>"",
