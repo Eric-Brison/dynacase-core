@@ -1346,8 +1346,8 @@ create unique index i_docir on doc(initid, revision);";
     else {
       $query->order_by="id desc";
     }
-    
     $rev= $query->Query(0,2,"TABLE");
+    
     if ($this->doctype!='Z') {
     	if (count($rev)>1) addWarningMsg(sprintf("document %d : multiple alive revision",$this->initid));
     }
@@ -7359,6 +7359,7 @@ create unique index i_docir on doc(initid, revision);";
   		} else {
   			// search latest
   			$id=$this->latestId();
+  			$lastId=$id;
   		}
   	}
   	if ((strpos($id,"\n")!==false)||(strpos($id,"<BR>")!==false)) {
@@ -7373,9 +7374,10 @@ create unique index i_docir on doc(initid, revision);";
   		if ($id > 0) {
   			$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked","initid"));
   			if ($latest && ($t["locked"]==-1)) {
+  			    if ($lastId!=$id) {
   				$id=getLatestDocId($this->dbaccess, $t["initid"]);
   				$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked"));
-  				
+  			    }
   			}
   			if ($t)  {
   				if ($t["doctype"]=='C') return getFamTitle($t);
