@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-11 18:31+0100\n"
+"POT-Creation-Date: 2011-03-09 10:56+0100\n"
 "PO-Revision-Date: 2010-02-08 15:49+0100\n"
 "Last-Translator: anakeen\n"
 "Language-Team: english\n"
@@ -41,17 +41,17 @@ msgstr "document id must not be an object"
 msgid "data:document id not set"
 msgstr "document id must not be an object"
 
-msgid "eui::Content"
-msgstr "Content"
-
-msgid "eui::Informations"
-msgstr "Information"
-
 msgid "eui::missing right"
 msgstr "Missing Right"
 
 msgid "eui::You have no right to access this document"
 msgstr "You have no right to access this document"
+
+msgid "eui::Content"
+msgstr "Content"
+
+msgid "eui::Informations"
+msgstr "Information"
 
 msgid "eui::Creation :"
 msgstr "Creation :"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-11 18:31+0100\n"
+"POT-Creation-Date: 2011-03-09 10:56+0100\n"
 "PO-Revision-Date: 2010-02-08 15:48+0100\n"
 "Last-Translator: anakeen <devel@anakeen.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,17 +40,17 @@ msgstr "l'identificateur du document ne doit pâs être un objet"
 msgid "data:document id not set"
 msgstr "l'identificateur du document ne doit pâs être un objet"
 
-msgid "eui::Content"
-msgstr "Contenu"
-
-msgid "eui::Informations"
-msgstr "Informations"
-
 msgid "eui::missing right"
 msgstr "Droit manquant"
 
 msgid "eui::You have no right to access this document"
 msgstr "Vous n'avez pas les droits requis pour consulter ce document"
+
+msgid "eui::Content"
+msgstr "Contenu"
+
+msgid "eui::Informations"
+msgstr "Informations"
 
 msgid "eui::Creation :"
 msgstr "Création :"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-11 18:31+0100\n"
+"POT-Creation-Date: 2011-03-09 10:56+0100\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -3541,6 +3541,10 @@ msgid "default values"
 msgstr "Delete"
 
 msgid "document not referenced"
+msgstr ""
+
+#, c-format
+msgid "attribute %s"
 msgstr ""
 
 #, c-format
@@ -7546,6 +7550,10 @@ msgid "%s is not a family"
 msgstr ""
 
 #, c-format
+msgid "collection %s not exists"
+msgstr ""
+
+#, c-format
 msgid "%s has no email address"
 msgstr ""
 
@@ -7920,6 +7928,9 @@ msgid "Impossible to have several identical names"
 msgstr ""
 
 msgid "unreferenced document"
+msgstr ""
+
+msgid "multiple document"
 msgstr ""
 
 #, c-format
