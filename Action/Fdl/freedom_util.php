@@ -781,8 +781,11 @@ function getLatestDocIds($dbaccess, $ids) {
  */
 function getLatestDocId($dbaccess, $initid) {
 	if (is_array($ids)) return null;
-	$err=simpleQuery($dbaccess,
-	sprintf("select id from docread where initid='%d' and locked != -1",$initid),$id,true,true);
+	// first more quick if alive
+	$err=simpleQuery($dbaccess,sprintf("select id from docread where initid='%d' and locked != -1",$initid),$id,true,true);
+	if (($err=='') && ($id>0)) return $id;
+	// second for zombie document
+	$err=simpleQuery($dbaccess,sprintf("select id from docread where initid='%d' order by id desc limit 1",$initid),$id,true,true);
 	if ($err=='') return $id;
 	return null;
 }
