@@ -1476,7 +1476,12 @@ function editmode(&$action) {
 	}
 
 	$action->parent->AddJsRef("jscalendar/Layout/calendar-setup.js");
-	$action->parent->AddCssRef("jscalendar/Layout/calendar-win2k-2.css");
+	$jsCalendarCssFile = $action->getLayoutFile('calendar.css');
+        if('' == $jsCalendarCssFile){
+                $action->parent->AddCssRef("jscalendar/Layout/calendar-win2k-2.css");
+        } else {
+                $action->parent->AddCssRef("FDL:calendar.css",true);
+        }
 	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/common.js");
 	$action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=EDITJS");
 	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/viewicard.js");
