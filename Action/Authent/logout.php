@@ -69,7 +69,7 @@ function authenticate(&$action) {
   //Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
   //Header( "HTTP/1.0 401 Unauthorized");
   
-  header('WWW-Authenticate: Basic realm="'.$action->getParam("CORE_REALM","FREEDOM Connection").'"');
+  header('WWW-Authenticate: Basic realm="'.$action->getParam("CORE_REALM","Dynacase Platform connection").'"');
   header('HTTP/1.0 401 Unauthorized');
   // Header("Location:guest.php");
   echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");

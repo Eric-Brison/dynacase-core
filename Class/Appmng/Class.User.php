@@ -65,7 +65,7 @@ create sequence seq_id_users start 10";
    */ 
   function SetLoginName($loginDomain)  {
     include_once("Class.Domain.php");
-    $loginDomain=trim(strtolower($loginDomain));
+    $loginDomain=trim(mb_strtolower($loginDomain));
     $query = new QueryDb($this->dbaccess,"User");
     $query->AddQuery("login='".pg_escape_string($loginDomain)."'");
     $query->order_by='iddomain';
@@ -95,8 +95,8 @@ create sequence seq_id_users start 10";
 
   function SetLogin($login,$domain)
     {
-      $login=strtolower($login);
-      $domain=strtolower($domain);
+      $login=mb_strtolower($login);
+      $domain=mb_strtolower($domain);
       $query = new QueryDb($this->dbaccess,"User");
 
       $query->basic_elem->sup_where=array("login='".pg_escape_string($login)."'",
@@ -132,7 +132,7 @@ create sequence seq_id_users start 10";
 
  
 
-    $this->login = strtolower($this->login);
+    $this->login = mb_strtolower($this->login);
 
     if (isset($this->password_new) && ($this->password_new!="")) {
       $this->computepass($this->password_new, $this->password);
@@ -482,7 +482,7 @@ create sequence seq_id_users start 10";
     $this->id=1;
     $this->lastname="Master";
     $freedomctx=getFreedomContext();
-    if ($freedomctx=="") $this->firstname="Freedom";
+    if ($freedomctx=="") $this->firstname="Dynacase Platform";
     else $this->firstname=ucfirst("$freedomctx");
     $this->password_new="anakeen";
     $this->login="admin";

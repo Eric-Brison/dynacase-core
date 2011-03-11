@@ -109,11 +109,16 @@ Class htmlAuthenticator extends Authenticator {
 //       error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
       $session->register('fromuri', $_SERVER['REQUEST_URI']);
     }
-    
-    if( array_key_exists('authurl', $this->parms )) {
-      header('Location: '.$this->parms{'authurl'});
-      return TRUE;
-    }
+        
+        if (array_key_exists('authurl', $this->parms)) {
+            if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
+                $dirname = dirname($_SERVER["SCRIPT_NAME"]);
+                header('Location: ' . str_replace('//','/',$dirname . '/' . $this->parms{'authurl'}));
+            } else {
+                header('Location: ' . $this->parms{'authurl'});
+            }
+            return TRUE;
+        }
     
     error_log(__CLASS__."::".__FUNCTION__." "."Error: no authurl of askAuthentication() method defined for ".$this->parms{'type'}.$this->parms{'provider'}."Provider");
     return FALSE;

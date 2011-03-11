@@ -34,7 +34,7 @@ if (($docid == "") && ($famId == 0)) {
 
   $dbaccess=$appl->GetParam("FREEDOM_DB");
   if ($dbaccess == "") {
-    print "Freedom Database not found : param FREEDOM_DB";
+    print "Database not found : param FREEDOM_DB";
     exit;
   }
 

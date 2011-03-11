@@ -330,12 +330,21 @@ Class NormalAttribute extends BasicAttribute {
               }
              
           case 'docid':
-              $info=getTDoc($doc->dbaccess,$v,array(),array("title","name","id"));
+              $info=getTDoc($doc->dbaccess,$v,array(),array("title","name","id","initid","locked"));
+              
               if ($info) {
+              	$docid=$info["id"];
+                $latestTitle=($this->getOption("docrev","latest")=="latest");
+              	if ($latestTitle) {
+              		$docid=$info["initid"];
+              		if ($info["locked"] == -1) {
+              			$info["title"]=$doc->getLastTitle($docid);
+              		}
+              	}
                   if ($info["name"]) {
                       if ($opt->withIdentificator) {
                           return sprintf('<%s id="%s" name="%s">%s</%s>',
-                          $this->id,$info["id"],$info["name"],$this->encodeXml($info["title"]),$this->id);
+                          $this->id,$docid,$info["name"],$this->encodeXml($info["title"]),$this->id);
                       } else {
                           return sprintf('<%s name="%s">%s</%s>',
                           $this->id,$info["name"],$this->encodeXml($info["title"]),$this->id);
@@ -343,7 +352,7 @@ Class NormalAttribute extends BasicAttribute {
                   } else {
                       if ($opt->withIdentificator) {
                       return sprintf('<%s id="%s">%s</%s>',
-                      $this->id,$info["id"],$this->encodeXml($info["title"]),$this->id);
+                      $this->id,$docid,$this->encodeXml($info["title"]),$this->id);
                       } else {
                           
                       return sprintf('<%s>%s</%s>',
@@ -351,8 +360,13 @@ Class NormalAttribute extends BasicAttribute {
                       }
                   }
               } else {
+                  if ((strpos($v,'<BR>')===false) && (strpos($v,"\n")===false)) {
                   return sprintf('<%s id="%s">%s</%s>',
                              $this->id,$v,_("unreferenced document"),$this->id);
+                  } else {
+                  return sprintf('<%s id="%s">%s</%s>',
+                             $this->id,str_replace(array("\n",'<BR>'),',',$v),_("multiple document"),$this->id);
+                  } 
               }
           default:               
                 return sprintf("<%s>%s</%s>",$this->id,$this->encodeXml($v),$this->id);      
@@ -443,6 +457,11 @@ function enum_getXmlSchema(&$la) {
       $lay->setBlockData("ATTR",$tax);
       return $lay->gen();
   }
+  /**
+   * return array of enumeration definition
+   * the array'skeys are the enum key and the values are the labels
+   * @return array
+   */
   function getEnum() {   
 		global $__tenum; // for speed optimization
 		global $__tlenum;
@@ -517,7 +536,7 @@ function enum_getXmlSchema(&$la) {
 					$tmpKey = str_replace(array('-dot-', '-comma-'), array('\.', ','), $tmpKey);
 					$enumlabelValue = $this->enum[$tmpKey].'/'.$enumValue;
 					$enumlabelValue = str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumlabelValue);
-					$this->enum[str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumKey)] = $enumlabelValue;
+					$this->enum[str_replace(array('-dot-', '-comma-'), array('\.', ','), $enumKey)] = $enumValue;
 					$this->enumlabel[str_replace(array('-dot-', '-comma-'), array('.', ','), $enumlabelKey)] = $enumlabelValue;
 				}
 			}
@@ -527,7 +546,11 @@ function enum_getXmlSchema(&$la) {
 	$__tlenum[$this->id] = $this->enumlabel;
 	return $this->enum;
   }
-
+  /**
+   * return array of enumeration definition
+   * the array'skeys are the enum single key and the values are the complete labels
+   * @return array
+   */
   function getEnumLabel($enumid="") {
 		global $__tlenum;
 

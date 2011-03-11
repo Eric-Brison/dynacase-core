@@ -217,7 +217,8 @@ function sendCard(&$action,
   $pubdir = $action->getParam("CORE_PUBDIR");
   $szone=false;
 
-  $themail = new Fdl_Mail_mime();
+  $multi_mix = new Fdl_Mail_mimePart('', array('content_type' => 'multipart/mixed'));
+  $multi_rel = $multi_mix->addSubpart('', array('content_type' => 'multipart/related'));
   
   if ($sendercopy && $action->getParam("FDL_BCC") == "yes") {    
     $umail=getMailAddr($action->user->id);
@@ -275,7 +276,21 @@ function sendCard(&$action,
 	  $ext=getFileExtension($tplfile);
 	}
       }
-      $themail->addAttachment($binfile,$mime,$doc->title.".$ext");
+
+      $multi_mix->addSubpart('',
+      	array(
+      		'body_file' => $binfile,
+      		'content_type' => $mime,
+      		'charset' => 'UTF-8',
+      		'filename' => sprintf("%s.%s", $doc->title, $ext),
+      		'dfilename' => sprintf("%s.%s", $doc->title, $ext),
+      		'encoding' => 'base64',
+      		'name_encoding' => 'quoted-printable',
+      		'filename_encoding' => 'quoted-printable',
+      		'disposition' => 'attachment'
+      	)
+      );
+      
       $zonebodycard="FDL:EMPTY";
     }
   } 
@@ -288,7 +303,7 @@ function sendCard(&$action,
 	$turl=parse_url($action->GetParam("CORE_URLINDEX"));
 	$url=$turl["scheme"].'://'.$turl["host"];
 	if (isset($turl["port"])) $url.=':'.$turl["port"];
-	if (isset($turl["path"])) $url.=dirname($turl["path"])."/";
+	if (isset($turl["path"])) $url.=$turl["path"]."/";
 	$baseurl=$url ;	
 	$absurl=$action->GetParam("CORE_URLINDEX");	
       } else {
@@ -379,11 +394,28 @@ function sendCard(&$action,
 
     // ---------------------------
     // contruct mail_mime object
-
+    $htmlPart = null;
     if (preg_match("/html/",$format, $reg)) {
-      $themail->setHTMLBody($pfout,true);
+      $htmlPart = $multi_rel->addSubpart('',
+      	array(
+      		'body_file' => $pfout,
+      		'content_type' => 'text/html',
+      		'charset' => 'UTF-8',
+      		'encoding' => 'quoted-printable',
+      		'name_encoding' => 'quoted-printable',
+      		'filename_encoding' => 'quoted-printable'
+      	)
+      );
     } else if ($format == "pdf") {   
-      $themail->setTxtBody($comment,false);
+      $multi_rel->addSubpart($comment,
+      	array(
+      		'content_type' => 'text/plain',
+      		'charset' => 'UTF-8',
+      		'encoding' => 'quoted-printable',
+      		'name_encoding' => 'quoted-printable',
+      		'filename_encoding' => 'quoted-printable'
+      	)
+      );
     }
 
 
@@ -420,14 +452,36 @@ function sendCard(&$action,
 		
 		    $cidindex= $vaf;
 		    if (($mixed) && ($afiles[$aid]->type != "image"))  $cidindex=$info->name;
-		    $themail->addAttachment($info->path,$info->mime_s?$info->mime_s:$mime,$info->name,true,'base64',$cidindex);
-	  
+		    $multi_mix->addSubpart('',
+      			array(
+      				'body_file' => $info->path,
+      				'content_type' => $info->mime_s?$info->mime_s:$mime,
+      				'charset' => 'UTF-8',
+      				'filename' => $info->name,
+      				'dfilename' => $info->name,
+      				'encoding' => 'base64',
+      				'name_encoding' => 'quoted-printable',
+      				'filename_encoding' => 'quoted-printable',
+      				'disposition' => 'attachment',
+      				'cid' => $cidindex
+      			)
+		  	);
+
 		  }
 		}	    
 	      }
 	    }
 	  }
 	}
+      }
+
+      // Remove <a href="cid:xxx"> links in HTML source, and regenerate attached file
+      if( $htmlPart !== null && $sgen1 != '' && $pfout != '' ) {
+        $htmlBody = preg_replace('|<a\s+(?:\w+="[^"]+")*\s*href="cid:[^"]+"[^>]*>([^<]*)</a>|si', '\1', $sgen1);
+        $fout = fopen($pfout, "w");
+        fwrite($fout, $htmlBody);
+        fclose($fout);
+        $htmlPart->setBodyFile($pfout);
       }
 
       // ---------------------------
@@ -440,13 +494,40 @@ function sendCard(&$action,
 
 	    if ($vid != "") {
 	      if ($vf->Retrieve ($vid, $info) == "") {  
-		$themail->addAttachmentInline($info->path, $info->mime_s?$info->mime_s:$mime, $info->name, true, 'base64', 'icon');
-	      
+			$multi_rel->addSubpart('',
+				array(
+					'body_file' => $info->path,
+					'content_type' => $info->mime_s?$info->mime_s:$mime,
+					'charset' => 'UTF-8',
+					'filename' => $info->name,
+					'dfilename' => $info->name,
+					'encoding' => 'base64',
+					'name_encoding' => 'quoted-printable',
+					'filename_encoding' => 'quoted-printable',
+					'disposition' => 'inline',
+					'cid' => 'icon'
+				)
+			);
+
 	      }
 	    } else {
 	      $icon=$doc->getIcon();
 	      if (file_exists($pubdir."/$icon")) {
-		$themail->addAttachmentInline($pubdir."/$icon", "image/".fileextension($icon), "icon", true, 'base64', 'icon');
+	      	$multi_rel->addSubpart('',
+      			array(
+      				'body_file' => sprintf("%s/%s", $pubdir, $icon),
+      				'content_type' => sprintf("image/%s", fileextension($icon)),
+      				'charset' => 'UTF-8',
+      				'filename' => "icon",
+      				'dfilename' => "icon",
+      				'encoding' => 'base64',
+      				'name_encoding' => 'quoted-printable',
+      				'filename_encoding' => 'quoted-printable',
+      				'disposition' => 'inline',
+      				'cid' => 'icon'
+      			)
+		  	);
+
 	      }
 	    }
 	  }
@@ -458,17 +539,46 @@ function sendCard(&$action,
       // add inserted image
 
 
-      foreach($ifiles as $v) {
-
+      foreach($ifiles as $k => $v) {
 	if (file_exists($pubdir."/$v")) {
-	  $themail->addAttachmentInline($pubdir."/$v", "image/".fileextension($v), $v, true, 'base64', $v);
+
+		$multi_rel->addSubpart('',
+      		array(
+      			'body_file' => sprintf("%s/%s", $pubdir, $v),
+      			'content_type' => sprintf("image/%s", fileextension($v)),
+      			'charset' => 'UTF-8',
+      			'filename' => basename($v),
+      			'dfilename' => basename($v),
+      			'encoding' => 'base64',
+      			'name_encoding' => 'quoted-printable',
+      			'filename_encoding' => 'quoted-printable',
+      			'disposition' => 'inline',
+      			'cid' => $v
+      		)
+      	);
+
 	}
       }
 
 
       foreach($tfiles as $k=>$v) {
-	if (file_exists($v)) {
-	  $themail->addAttachmentInline($v,trim(`file -ib "$v"`),"$k",true,'base64',$k);
+      	if (file_exists($v)) {
+
+		$multi_rel->addSubpart('',
+      		array(
+      			'body_file' => $v,
+      			'content_type' => trim(`file --mime -b "$v"`),
+      			'charset' => 'UTF-8',
+      			'filename' => $k,
+      			'dfilename' => $k,
+      			'encoding' => 'base64',
+      			'name_encoding' => 'quoted-printable',
+      			'filename_encoding' => 'quoted-printable',
+      			'disposition' => 'inline',
+      			'cid' => $k
+      		)
+      	);
+
 	}
       
       }
@@ -477,7 +587,7 @@ function sendCard(&$action,
       if (count($addfiles)>0) 
 	{
 	  foreach ($addfiles as $kf => $vf) 
-	    {
+	  {
 	      if (count($vf)==3) 
 		{
 		  $fview = $vf[0];
@@ -492,7 +602,22 @@ function sendCard(&$action,
 		  }
 		  $fpst = stat($fpname);
 		  if (is_array($fpst) && $fpst["size"]>0) {
-		    $themail->addAttachment($fpname,$fmime,$fname,true,'base64',$fname);
+		  	
+		  	$multi_mix->addSubpart('',
+      			array(
+      				'body_file' => $fpname,
+      				'content_type' => $fmime,
+      				'charset' => 'UTF-8',
+	      			'filename' => $fname,
+      				'dfilename' => $fname,
+      				'encoding' => 'base64',
+      				'name_encoding' => 'quoted-printable',
+      				'filename_encoding' => 'quoted-printable',
+      				'disposition' => 'attachment',
+      				'cid' => '$fname'
+      			)
+      		);
+
 		  }
 		}
 	    }
@@ -510,15 +635,28 @@ function sendCard(&$action,
                         );
       system (($cmdpdf), $status);
       if ($status == 0)  {     
-	$themail->addAttachment($fpdf,'application/pdf',$doc->title.".pdf");
-      
+      	$multi_mix->addSubpart('',
+      		array(
+      			'body_file' => $fpdf,
+      			'content_type' => 'application/pdf',
+      			'charset' => 'UTF-8',
+      			'filename' => sprintf("%s.pdf", $doc->title),
+      			'dfilename' => sprintf("%s.pdf", $doc->title),
+      			'encoding' => 'base64',
+      			'name_encoding' => 'quoted-printable',
+      			'filename_encoding' => 'quoted-printable',
+      			'disposition' => 'attachment'
+      		)
+      	);
+
       } else {
 	$action->addlogmsg(sprintf(_("PDF conversion failed for %s"),$doc->title));
       }
     }  
-    $err=sendmail($to,$from,$cc,$bcc,$subject,$themail,'related');
+    
+    $err = sendmail($to, $from, $cc, $bcc, $subject, $multi_mix);
     if ($err=="")  {
-      if ($savecopy) createSentMessage($to,$from,$cc,$bcc,$subject,$themail,$doc);
+      if ($savecopy) createSentMessage($to,$from,$cc,$bcc,$subject,$multi_mix,$doc);
       if ($cc != "") $lsend=sprintf("%s and %s",$to,$cc);
       else $lsend=$to;
       $doc->addcomment(sprintf(_("sended to %s"), $lsend));
@@ -560,7 +698,26 @@ function srcfile($src) {
   global $ifiles;
   $vext= array("gif","png","jpg","jpeg","bmp");
   if (substr($src,0,3) == "cid")   return "src=\"$src\"";
-  if (substr($src,0,4) == "http")  return "src=\"$src\"";
+  if (substr($src,0,4) == "http")  {
+  	$chopped_src = '';
+  	// Detect HTTP URLs pointing to myself
+  	foreach( array('CORE_URLINDEX', 'CORE_PUBURL') as $url ) {
+  		$url = getParam($url);
+  		if( strlen($url) <= 0 ) {
+  			continue;
+  		}
+  		if( strcmp(substr($src, 0, strlen($url)), $url) == 0 ) {
+  			// Chop the URL base part, and leave only the args/vars
+  			$chopped_src = substr($src, strlen($url));
+  			break;
+  		}
+  	}
+  	if( $chopped_src == '' ) {
+  		return sprintf('src="%s"', $src);
+  	}
+  	$src = $chopped_src;
+  }
+  
   if (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)$/",$src,$reg)) {
     return imgvaultfile(str_replace('&amp;','&',$reg[2]));
   }
@@ -583,6 +740,7 @@ function imgvaultfile($src) {
 function copyvault($src) {
   global $action;
 
+  include_once('FDL/Lib.Vault.php');
 
   if (preg_match("/(.*)(app=FDL.*action=EXPORTFILE.*)docid=([^&]*)&/",$src,$reg)) {
     $url=$action->getParam("CORE_OPENURL",$action->getParam("CORE_EXTERNURL"));
@@ -597,6 +755,16 @@ function copyvault($src) {
     } 
   return $newfile;
   }
+  if( preg_match("|^FDL/geticon\.php\?vaultid=(?P<vid>\d+)|", $src, $reg) ) {
+    $info = vault_properties($reg['vid']);
+    $newfile = uniqid(getTmpDir()."/img");
+    if( ! copy($info->path, $newfile) ) {
+      return "";
+    }
+    return $newfile;
+  }
+
+  return "";
 }
 
 

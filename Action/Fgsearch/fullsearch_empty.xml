@@ -15,7 +15,7 @@
 
 <a style="position:absolute;right:3px;top:3px;"  onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
 <div style="text-align:center;vertical-align:middle">
-<img    src="[IMG:logofreedom2.png]"><br><br>
+<img    src="[IMG:logodynacase.png]"><br><br>
 <form  id="fedit"  
        class="fborder" style="display:inline"
        name="searchdoc"       

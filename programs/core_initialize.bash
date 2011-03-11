@@ -44,7 +44,6 @@ sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_p
 export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
 . "$WIFF_CONTEXT_ROOT"/programs/core_environment
 
-
 "$corepost" I 
 RET=$?
 if [ $RET -ne 0 ]; then

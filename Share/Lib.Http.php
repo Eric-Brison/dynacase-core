@@ -162,7 +162,9 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
   //  $name=urlencode($name);
   //  $name=htmlentities( $name , ENT_QUOTES , "UTF-8" );
   if (seems_utf8($name)) $name=utf8_decode($name);
-  if (!$inline) header("Content-Disposition: attachment;filename=\"$name\"");  
+  if (!$inline) header("Content-Disposition: attachment;filename=\"$name\"");
+  else header("Content-Disposition: inline;filename=\"$name\"");
+   
   if ($cache) {
    header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
    header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
@@ -170,15 +172,11 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
     header("Cache-Control: private");
   }
    header("Pragma: "); // HTTP 1.0
-   if ($inline) {
-     global $_SERVER;
-     $nav=$_SERVER['HTTP_USER_AGENT'];
-     $pos=strpos($nav,"MSIE");
-     if ($pos) {
-       // add special header for extension
-       header("Content-Disposition: form-data;filename=\"$name\"");
-     }
-   } 
+
+   if ($inline && substr($mime_type,0,4) == "text" 
+         && substr($mime_type,0,9) != "text/html" 
+         && substr($mime_type,0,8) != "text/xml") $mime_type=preg_replace("_text/([^;]*)_", "text/plain", $mime_type);
+
    header("Content-type: ".$mime_type);
    header("Content-Transfer-Encoding: binary");
    header("Content-Length: ".filesize($filename));

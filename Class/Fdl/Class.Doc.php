@@ -495,7 +495,9 @@ create unique index i_docir on doc(initid, revision);";
       
 
     global $gdocs; // set to cache
-    if (count($gdocs) < MAXGDOCS) $gdocs[$this->id]=&$this;
+    if (count($gdocs) < MAXGDOCS && ($this->doctype != 'C')) {
+        $gdocs[$this->id]=&$this;
+    }
   }  
 
   function setChanged() {
@@ -617,21 +619,30 @@ create unique index i_docir on doc(initid, revision);";
    * 
    */
   function regenerateTemplate($aid, $index=-1) {
-    $layout = 'THIS:'.$aid;
-    if($index>-1) {
-      $layout.='['.$index.']';
-    }
-    $outfile = $this->viewDoc($layout.':B', 'ooo');
-    if(file_exists($outfile)) {
-      $fh = fopen($outfile, 'rb');
-      if($fh) {
-	$this->saveFile($aid, $fh, '', $index);
-	fclose($fh);
-	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
-	return true;
-      }
-    }
-    return false;
+  	$layout = 'THIS:'.$aid;
+  	if($index>-1) {
+  		$layout.='['.$index.']';
+  	}
+  	$orifile=$this->getZoneFile($layout);
+  	if ($orifile) {
+  		if (! file_exists($orifile)) {
+  			addWarningMsg(sprintf(_("Dynamic template %s not found "), $orifile));
+  		} else if (getFileExtension($orifile) != 'odt') {
+  			addWarningMsg(sprintf(_("Dynamic template %s not an odt file "), $orifile));
+  		} else {
+  			$outfile = $this->viewDoc($layout.':B', 'ooo');
+  			if(file_exists($outfile)) {
+  				$fh = fopen($outfile, 'rb');
+  				if($fh) {
+  					$this->saveFile($aid, $fh, '', $index);
+  					fclose($fh);
+  					$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+  					return true;
+  				}
+  			}
+  		}
+  	}
+  	return false;
   }
   
   /**
@@ -1335,10 +1346,11 @@ create unique index i_docir on doc(initid, revision);";
     else {
       $query->order_by="id desc";
     }
-      
     $rev= $query->Query(0,2,"TABLE");
-    if (count($rev)>1) addWarningMsg(sprintf("document %d : multiple alive revision",$this->initid));
-
+    
+    if ($this->doctype!='Z') {
+    	if (count($rev)>1) addWarningMsg(sprintf("document %d : multiple alive revision",$this->initid));
+    }
     return $rev[0]["id"];
   }
 
@@ -1492,7 +1504,7 @@ create unique index i_docir on doc(initid, revision);";
       if ($mdoc->isAlive()) {
 	$tvis = $mdoc->getCVisibilities();
 	  
-	while (list($k,$v)= each ($tvis)) {
+	foreach ($tvis as $k=>$v) {
 	  if (isset($this->attributes->attr[$k])) {
 	    if ($v != "-") $this->attributes->attr[$k]->mvisibility=$v;	      
 	  }
@@ -1506,7 +1518,7 @@ create unique index i_docir on doc(initid, revision);";
 
 	// modify needed attribute also
 	$tneed = $mdoc->getNeedeeds();
-	while (list($k,$v)= each ($tneed)) {
+	foreach ($tneed as $k=>$v) {
 	  if (isset($this->attributes->attr[$k])) {
 	    if ($v == "Y") $this->attributes->attr[$k]->needed=true;
 	    else if ($v == "N") $this->attributes->attr[$k]->needed=false;
@@ -1690,6 +1702,7 @@ create unique index i_docir on doc(initid, revision);";
     $tinfo=array();
     $vf = newFreeVaultFile($this->dbaccess);
     foreach ($tvid as $vid) {
+        $info=null;
       $err=$vf->Retrieve($vid, $info);
       $t=get_object_vars($info);
       $t["vid"]=$vid;
@@ -1712,44 +1725,7 @@ create unique index i_docir on doc(initid, revision);";
     return ($waiting!=false);
   } 
 
-  /**
-   * set encoded text of file 
-   * update $attrid_txt table column
-   * @param string $idAttr identificator of attribute
-   * @return string error message, if no error empty string
-   */
-  public function SetFileText($attrid) {      
-    include_once("FDL/Lib.Vault.php");
-    $oa=$this->getAttribute($attrid);
-    $err="";
-    if ($oa->type=="file") {
-      $tf=array();
-      if ($oa->inArray())   $tf=$this->GetTValue($oa->id);
-      else $tf[]=$this->GetValue($oa->id);
-      $ak=array();
-      $at=$oa->id.'_txt';
-      $this->$at='';
-      foreach ($tf as $vf) {
-	if (preg_match(PREGEXPFILE, $vf, $reg)) {  
-	   
-	  $vid=$reg[2];
-	  $info=vault_properties($vid,'utf8');
-	  if ($vid > 0) {
-	    $err=vault_generate('utf8',$vid,$newid);
-	     
-	    if ($err=="") {
-	      $fcontent=vault_get_content($newid);
-	      $this->$at.=$fcontent;
-	      $ak[$at]=$at;
-	    }	     
-	  }
-	}
-      }
 
-      if (count($ak)>0)  $err.=$this->modify(false,$ak);
-    }  
-    return $err;
-  }
   
   
   /**
@@ -1761,8 +1737,11 @@ create unique index i_docir on doc(initid, revision);";
   public function resetConvertVaultFile($attrid,$index) {  
         $err='';
         $val=$this->getTValue($attrid, false, $index);
-        if (count($val) == 1) {
-            $val=$val[0];
+        if (($index==-1) && (count($val) == 1)) {
+        	$val=$val[0];
+        }
+        
+        if ($val) {
             $info=$this->getFileInfo($val);
             if ($info) {
                   $ofout=new VaultDiskStorage($this->dbaccess,$info["id_file"]);
@@ -1784,7 +1763,8 @@ create unique index i_docir on doc(initid, revision);";
     include_once("FDL/Lib.Vault.php");   
     $engine=strtolower($engine);
     $value='';
-
+    if (is_array($va)) return "";
+    
     if (getParam("TE_ACTIVATE")=="yes") {
       if (preg_match(PREGEXPFILE, $va, $reg)) {  
 	$vidin=$reg[2];
@@ -1801,6 +1781,7 @@ create unique index i_docir on doc(initid, revision);";
 	      $filename=getParam("CORE_PUBDIR")."/Images/workinprogress.png";
 	    } else   $filename=uniqid(getTmpDir()."/conv").".txt";
 	    $nc=file_put_contents($filename,$value);
+	    $vidout=0;
 	    $err=$vf->Store($filename, false , $vidout,"",$engine,$vidin);
 	    $info=vault_properties($vidin);
 	    if (! $isimage) {
@@ -2340,7 +2321,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     if (is_array($value)) {
       if ($oattr->type=='htmltext') {
-		  $value= $this->_array2val($value,' ');
+		  $value= $this->_array2val($value,"\r");
 		  if($value === '') {
 			  $value = DELVALUE;
 		  }
@@ -4338,6 +4319,17 @@ create unique index i_docir on doc(initid, revision);";
     else $avalue=$this->getValue($attrid);
     if (preg_match(PREGEXPFILE, $avalue, $reg)) {
       $vid=$reg[2];
+      if (true) {
+          // will be rewrited by apache rules
+           return sprintf("file/%s/%d/%s/%s/%s?cache=%s&inline=%s",
+		     $this->id, $vid,
+		     $attrid,
+		     $index,
+		     rawurlencode($reg[3]),
+		     $cache?"yes":"no",
+		     $inline?"yes":"no");
+      }
+      else {
       return sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d",
 		     "",
 		     $cache?"yes":"no",
@@ -4346,6 +4338,7 @@ create unique index i_docir on doc(initid, revision);";
 		     $this->id,
 		     $attrid,
 		     $index);
+      }
     }
   }
   /**
@@ -4360,8 +4353,10 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
     $a="";
+    $latest=($docrev=="latest" || $docrev=="");
     if ($htmllink) {
-      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'));
+    	
+      if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'),'',$latest);
       if ($title == "") {
 	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
@@ -4372,11 +4367,17 @@ create unique index i_docir on doc(initid, revision);";
 	if ($target=="ext") {
                   
 	  //$ec=getSessionValue("ext:targetRelation");
-	  $ec=getHttpVars("ext:targetRelation",'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view")');
+	  $jslatest=($latest)?'true':'false';
+	  $ec=getHttpVars("ext:targetRelation",'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view",{latest:'.$jslatest.'})');
 	  if ($ec)  {
 	    if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
+	    else if ($latest) {
+	    	$lid=getLatestDocId($this->dbaccess,$id);
+	    	if ($lid) $id=$lid;
+	    }
 	    $ec=str_replace("%V%",$id,$ec);
-	    $ecu=str_replace("'",'"',$this->urlWhatEncode($ec));
+	    $ecu=str_replace("'",'"',$ec);
+        
 	    $a="<a  onclick='parent.$ecu'>$title</a>";
 	  } else {
 	    if ($docrev=="latest" || $docrev=="" || !$docrev)
@@ -4409,7 +4410,7 @@ create unique index i_docir on doc(initid, revision);";
       }
 
     } else {
-      if (! $title) $a=$this->getHTMLTitle($id);
+      if (! $title) $a=$this->getHTMLTitle($id,'',$latest);
       else $a=$title;
     }
     return $a;
@@ -4430,7 +4431,7 @@ create unique index i_docir on doc(initid, revision);";
     return $v;
   }
 
-  final public function getHtmlValue($oattr, $value, $target="_self",$htmllink=true, $index=-1,$entities=true) {
+  final public function getHtmlValue($oattr, $value, $target="_self",$htmllink=true, $index=-1,$entities=true,$abstract=false) {
     global $action;
 
     $aformat=$oattr->format;
@@ -4538,35 +4539,85 @@ create unique index i_docir on doc(initid, revision);";
 	            //$errconvert=trim(file_get_contents($info->path));
 	            //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
 	            if ($info->teng_state > 1) $waiting="<img class=\"mime\" src=\"Images/loading.gif\">";
-	            else $waiting="<img class=\"mime\" needresize=1 src=\"Images/delimage.png\">";;
+	            else $waiting="<img class=\"mime\" needresize=1 src=\"lib/ui/icon/bullet_error.png\">";;
 	            $htmlval=sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>',
 	                             $this->getFileLink($oattr->id,$index),
 	                             $info->id_file,str_replace("'","&rsquo;",_("file status")),$waiting,$textval);
 	              if ($info->teng_state < 0)  {
 	                  $htmlval.=sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>',
-	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"/lib/ui/icon/arrow_refresh.png");
+	                                    $this->id,$oattr->id,$index,_("retry file conversion"),"lib/ui/icon/arrow_refresh.png");
 	              }              
 	        } else {
 	            $htmlval=$textval;
 	        }
 	    } elseif ($htmllink) {
-	      $size=round($info->size/1024)._("AbbrKbyte");
-	      $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
-  							 
-	      if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
-	      else $idx=$index;
 
-	      $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
-	      $opt="";
-	      $inline=$oattr->getOption("inline");
-	      if ($inline=="yes") $opt="&inline=yes";
-	      $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
-		$this->getFileLink($oattr->id,$idx)."\">";
-	      if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
-	      $htmlval.=$fname."</a>";
+	        $mimeicon=getIconMimeFile($info->mime_s==""?$mime:$info->mime_s);
+	        if (($oattr->repeat)&&($index <= 0))   $idx=$kvalue;
+	        else $idx=$index;
+	        $standardview=true;
+	        $infopdf=false;
+	        if ($oattr->getOption("viewfiletype")=="image") {
+	            global $action;
+	            $waiting=false;
+	            if (substr($info->mime_s,0,5) == "image") {
+	                $imageview=true;
+	                $viewfiletype='png';
+	                $pages=1;
+	            } elseif (substr($info->mime_s,0,4) == "text") {
+	                $imageview=true;
+	                $viewfiletype='embed';
+	                $pages=1;
+	            } else {
+	                $err=$vf->Show($vid, $infopdf,'pdf');
+	                if ($err=="") {
+	                    if ($infopdf->teng_state == TransformationEngine::status_done ||
+	                        $infopdf->teng_state == TransformationEngine::status_waiting||
+                                $infopdf->teng_state == TransformationEngine::status_inprogress) {
+	                        $imageview=true;
+	                        $viewfiletype='png';
+	                        $pages=getPdfNumberOfPages($infopdf->path);
+	                        if ($infopdf->teng_state == TransformationEngine::status_waiting ||
+	                            $infopdf->teng_state == TransformationEngine::status_inprogress) $waiting=true;
+	                    }
+	                }
+	            }
+
+
+	            if ($imageview && (!$abstract)) {
+	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
+	                $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
+	                $lay->set("docid",$this->id);
+                        $lay->set("waiting",($waiting?'true':'false'));
+	                $lay->set("attrid", $oattr->id);
+	                $lay->set("index", $idx);
+	                $lay->set("viewtype", $viewfiletype);
+	                $lay->set("mimeicon", $mimeicon);
+                        $lay->set("vid", ($infopdf?$infopdf->id_file:$vid));
+	                $lay->set("filetitle", $fname);
+	                $lay->set("height", $oattr->getOption('viewfileheight','300px'));	                 
+	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
+	                $lay->set("pages", $pages); // todo
+	                $htmlval =$lay->gen();
+	                $standardview=false;
+	            }
+	        }
+	        if ($standardview) {
+	            $size=round($info->size/1024)._("AbbrKbyte");
+	            $utarget= ($action->Read("navigator","")=="NETSCAPE")?"_self":"_blank";
+	            $opt="";
+	            $inline=$oattr->getOption("inline");
+	            if ($inline=="yes") $opt="&inline=yes";
+	            $htmlval="<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"".
+	            $this->getFileLink($oattr->id,$idx, false, ($inline=="yes"))."\">";
+	            if ($mimeicon) $htmlval.="<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
+	            $htmlval.=$fname."</a>";
+	        }
+
 	    } else {
-	      $htmlval=$info->name;
+	        $htmlval=$info->name;
 	    }
+
 	  }
 	
 	}
@@ -5013,15 +5064,21 @@ create unique index i_docir on doc(initid, revision);";
   }
 
 
-  final public function GetHtmlAttrValue($attrid, $target="_self",$htmllink=2, $index=-1,$entities=true) {
+  final public function getHtmlAttrValue($attrid, $target="_self",$htmllink=2, $index=-1,$entities=true,$abstract=false) {
     if ($index != -1) $v=$this->getTValue($attrid,"",$index);
     else $v=$this->getValue($attrid);
-    if ($v=="") return "";
+    if ($v=="") return $v;
     return $this->GetHtmlValue($this->getAttribute($attrid),
-			       $v,$target,$htmllink,$index,$entities);
+			       $v,$target,$htmllink,$index,$entities,$abstract);
   }
-
-  final public function GetOOoValue($oattr, $value, $target="_self",$htmllink=false, $index=-1) { 
+ final public function getOooAttrValue($attrid, $target="_self",$htmllink=false, $index=-1) {
+    if ($index != -1) $v=$this->getTValue($attrid,"",$index);
+    else $v=$this->getValue($attrid);
+    if ($v=="") return $v;
+    return $this->getOooValue($this->getAttribute($attrid),
+			       $v,$target,$htmllink,$index);
+  }
+  final public function getOooValue($oattr, $value, $target="_self",$htmllink=false, $index=-1) { 
     global $action;
 
     $aformat=$oattr->format;
@@ -5039,14 +5096,14 @@ create unique index i_docir on doc(initid, revision);";
       $htmlval="";
       switch ($atype)	{
       case "idoc":
-	// nothing
+	// nothing        
 	break;
       case "image":
-	$htmlval=$this->vault_filename($oattr->id,true,$kvalue);
+	$htmlval=$this->vault_filename_fromvalue($avalue, true);
 	break;
       case "file":
 	// file name
-	$htmlval=$this->vault_filename($oattr->id,false,$kvalue);
+	$htmlval=$this->vault_filename_fromvalue($avalue, false);
 	break;
       case "longtext":
       case "xml":
@@ -5157,6 +5214,9 @@ create unique index i_docir on doc(initid, revision);";
 	  if (! strpos($html_body,'<br')) $html_body=str_replace(array("<",">",'&'),array("&lt;","&gt;","&amp;"),$html_body);
 	  $html_body='<p>'.nl2br($html_body).'</p>';
 	}
+		  $html_body=str_replace(">\r\n",">",$html_body);
+		  $html_body=str_replace("\r","",$html_body);
+	
 	$html_body = preg_replace("/<!--.*?-->/ms", "", $html_body); //delete comments
 	$html_body = preg_replace("/<td(\s[^>]*?)?>(.*?)<\/td>/mse",
 				  "\$this->getHtmlTdContent('\\1','\\2')",
@@ -5209,7 +5269,11 @@ create unique index i_docir on doc(initid, revision);";
 				"<table:table ",$htmlval);
 	  $htmlval=preg_replace("/(<\/table:table>[\s]*<\/text:p>)/ ",
 				"</table:table> ",$htmlval);	
-	  $htmlval="<text:section>".$htmlval."<text:p/></text:section>";
+	  
+	  $pppos=mb_strrpos($htmlval, '</text:p>');
+	
+	  $htmlval=sprintf('<text:section text:style-name="Sect%s" text:name="Section%s" aid="%s">%s</text:section>',
+	   $attrid,$attrid,$attrid,$htmlval);
 	} else {
   					 
 	  addWarningMsg(sprintf(_("incorrect conversion HTML to ODT %s"),$this->title));
@@ -5429,44 +5493,44 @@ create unique index i_docir on doc(initid, revision);";
   
   /** 
    * return the basename of template file
-   * @return string
+   * @return string (return null if template not found)
    */
-  public function getZoneFile($zone="") {
-    $index = -1;
-    if( $zone == "" ) {
-      $zone = $this->defaultview;
-    }
+  public function getZoneFile($zone) {
+  	$index = -1;
+  	if( $zone == "" ) {
+  		return null;
+  	}
 
-    $reg = $this->parseZone($zone);
-    if( is_array($reg) ) {
-      $aid = $reg['layout'];
-      if( $reg['index'] != '' ) {
-	$index = $reg['index'];
-      }
-      $oa = $this->getAttribute($aid);
-      if( $oa ) {
-	if( $oa->usefor != 'Q' ) {
-	  $template = $this->getValue($oa->id);
-	} else {
-	  $template = $this->getParamValue($aid);
-	}
-	if( $index >= 0 ) {
-	  $tt = $this->_val2array($template);
-	  $template = $tt[$index];
-	}
+  	$reg = $this->parseZone($zone);
+  	if( is_array($reg) ) {
+  		$aid = $reg['layout'];
+  		if( $reg['index'] != '' ) {
+  			$index = $reg['index'];
+  		}
+  		$oa = $this->getAttribute($aid);
+  		if( $oa ) {
+  			if( $oa->usefor != 'Q' ) {
+  				$template = $this->getValue($oa->id);
+  			} else {
+  				$template = $this->getParamValue($aid);
+  			}
+  			if( $index >= 0 ) {
+  				$tt = $this->_val2array($template);
+  				$template = $tt[$index];
+  			}
 
-	if( $template == "" ) {
-	  return sprintf(_("no file found for zone [%s]"), $zone);
-	}
+  			if( $template == "" ) {
+  				return null;
+  			}
 
-	return $this->vault_filename_fromvalue($template, true);
-      }
-      if( strstr($aid, '.') ) {
-	return getLayoutFile($reg['app'], strtolower($aid));
-      } else {
-	return getLayoutFile($reg['app'], strtolower($aid)).".xml";
-      }
-    }
+  			return $this->vault_filename_fromvalue($template, true);
+  		}
+  		if( strstr($aid, '.') ) {
+  			return getLayoutFile($reg['app'], ($aid));
+  		} else {
+  			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
+  		}
+  	}
   }
   /** 
    * return the character in third part of zone
@@ -5632,6 +5696,7 @@ create unique index i_docir on doc(initid, revision);";
     $binary=($this->getZoneOption($layout)=="B");
 
     $tplfile=$this->getZoneFile($layout);
+    
     $ext=getFileExtension($tplfile);
     if (strtolower($ext)=="odt") {
       include_once('Class.OOoLayout.php');
@@ -5642,6 +5707,7 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay = new Layout($tplfile, $action);
     }
 
+    if (! file_exists($this->lay->file)) return sprintf(_("template file %s not found"),$tplfile);
         $this->lay->setZone($reg);
        
     $this->lay->set("_readonly",($this->Control('edit')!=""));
@@ -5802,7 +5868,7 @@ create unique index i_docir on doc(initid, revision);";
 	    
 	} else $htmlvalue="";
 
-	if ($htmlvalue !== "") {// to define when change frame
+	if (($htmlvalue === false) || ($goodvalue)) {// to define when change frame
 	    if ( $currentFrameId != $attr->fieldSet->id) {
 	        if (($currentFrameId != "") && ($attr->fieldSet->mvisibility != "H")) $changeframe=true;
 	    }
@@ -5890,7 +5956,7 @@ create unique index i_docir on doc(initid, revision);";
 		
 	  }
 	  
-	if (($attr->fieldSet->mvisibility!="H")&&($htmlvalue!=="")) {
+	if (($attr->fieldSet->mvisibility!="H")&&($htmlvalue!=="" || $goodvalue)) {
 	  $currentFrameId = $attr->fieldSet->id;
 	  $currentFrame = $attr->fieldSet;
 	}
@@ -6213,9 +6279,10 @@ create unique index i_docir on doc(initid, revision);";
 	    break;
 	  default : 
 	    // print values
+	   
 	    $tableframe[]=array("name"=>$attr->getLabel(),
 				"aid"=>$attr->id,
-				"value"=>$this->GetHtmlValue($listattr[$i],$value,$target,$ulink));
+				"value"=>$this->GetHtmlValue($listattr[$i],$value,$target,$ulink=1,-1,true,true));
 	
 	    break;
 	  }
@@ -6233,41 +6300,84 @@ create unique index i_docir on doc(initid, revision);";
 
 
   }
-
-
-
-  // -----------------------------------
-  final public function viewattr($target="_self",$ulink=true,$abstract=false,$viewhidden=false) {
-    $listattr = $this->GetNormalAttributes();
-
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $value = chop($this->GetValue($v->id));
-
-      //------------------------------
-      // Set the table value elements
-
-
-      $this->lay->Set("S_".strtoupper($v->id),($value!=""));
-      // don't see  non abstract if not
-      if ((($v->mvisibility == "H")&& (! $viewhidden)) || ($v->mvisibility == "I")|| (($abstract) && (! $v->isInAbstract ))) {
-	$this->lay->Set("V_".strtoupper($v->id),"");
-	$this->lay->Set("L_".strtoupper($v->id),"");
-      } else {
-	if ($target=="ooo") $this->lay->Set("V_".strtoupper($v->id),$this->GetOOoValue($v,$value));
-	else $this->lay->Set("V_".strtoupper($v->id),$this->GetHtmlValue($v,$value,$target,$ulink));
-	$this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-      }
+    
+    // -----------------------------------
+    final public function viewattr($target = "_self", $ulink = true, $abstract = false, $viewhidden = false)
+    {
+        $listattr = $this->GetNormalAttributes();
+        
+        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+        foreach ( $listattr as $k => $v ) {
+            $value = chop($this->GetValue($v->id));
+            
+            //------------------------------
+            // Set the table value elements
+            
+            $this->lay->Set("S_" . strtoupper($v->id), ($value != ""));
+            // don't see  non abstract if not
+            if ((($v->mvisibility == "H") && (!$viewhidden)) || ($v->mvisibility == "I") || (($abstract) && (!$v->isInAbstract))) {
+                $this->lay->Set("V_" . strtoupper($v->id), "");
+                $this->lay->Set("L_" . strtoupper($v->id), "");
+            } else {
+                if ($target == "ooo") {
+                    if ($v->type == "array") {
+                        $tva = $this->getAValues($v->id);
+                        
+                        $tmkeys = array();
+                        foreach ( $tva as $kindex => $kvalues ) {
+                            foreach ( $kvalues as $kaid => $va ) {
+                                $oa = $this->getAttribute($kaid);
+                                if ($oa->getOption("multiple") == "yes") {
+                                    // second level
+                                    $oa->setOption("multiple","no"); //  needto have values like first level
+                                    $values = explode("<BR>", $va);
+                                    $ovalues = array();
+                                    foreach ( $values as $ka => $va ) {
+                                        $ovalues[] = $this->GetOOoValue($oa, $va);
+                                    }
+                                    //print_r(array($oa->id=>$ovalues));
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $ovalues;
+                                    $oa->setOption("multiple","yes"); //  needto have values like first level
+                                } else {
+                                    $tmkeys[$kindex]["V_" . strtoupper($kaid)] = $this->GetOOoValue($oa, $va);
+                                }
+                            }
+                        }
+                        //print_r($tmkeys);
+                        $this->lay->setRepeatable($tmkeys);
+                    } else {
+                        $ovalue=$this->GetOOoValue($v, $value);
+                        if ($v->isMultiple()) $ovalue=str_replace("<text:tab/>",', ', $ovalue);
+                        $this->lay->Set("V_" . strtoupper($v->id),$ovalue);
+                       // print_r(array("V_".strtoupper($v->id)=>$this->GetOOoValue($v, $value),"raw"=>$value));
+                        if ((!$v->inArray()) && ($v->getOption("multiple") == "yes")) {
+                            $values = $this->getTValue($v->id);
+                            $ovalues = array();
+                            $v->setOption("multiple","no"); 
+                            foreach ( $values as $ka => $va ) {
+                                $ovalues[] = $this->GetOOoValue($v, $va);
+                            }
+                            $v->setOption("multiple","yes"); 
+                            //print_r(array("V_".strtoupper($v->id)=>$ovalues,"raw"=>$values));
+                            $this->lay->setColumn("V_" . strtoupper($v->id), $ovalues);
+                        } else {
+                            //$this->lay->Set("V_" . strtoupper($v->id), $this->GetOOoValue($v, $value));
+                            
+                        }
+                    }
+                } else
+                    $this->lay->Set("V_" . strtoupper($v->id), $this->GetHtmlValue($v, $value, $target, $ulink));
+                $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+            }
+        }
+        $listattr = $this->GetFieldAttributes();
+        
+        // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
+        foreach ( $listattr as $k => $v ) {
+            $this->lay->Set("L_" . strtoupper($v->id), $v->getLabel());
+        }
+    
     }
-
-    $listattr = $this->GetFieldAttributes();
-
-    // each value can be instanced with L_<ATTRID> for label text and V_<ATTRID> for value
-    foreach($listattr as $k=>$v) {
-      $this->lay->Set("L_".strtoupper($v->id),$v->getLabel());
-    }
-
-  }
 
 
   // view doc properties
@@ -6734,7 +6844,7 @@ create unique index i_docir on doc(initid, revision);";
 	$pos = strpos($xmlcontent, "[FILE64");
 	$bpos=0;
 	while ($pos !== false) {
-	  if (fwrite($fo,substr($xmlcontent,$bpos,$pos))) {
+	  if (fwrite($fo,substr($xmlcontent,$bpos,$pos-$bpos))) {
 	    $bpos=strpos($xmlcontent, "]",$pos)+1;
 
 	    $filepath=substr($xmlcontent,$pos+8,($bpos-$pos -9));
@@ -6749,8 +6859,7 @@ create unique index i_docir on doc(initid, revision);";
 	      fwrite($fo,base64_encode($buf));
 	    }
 	    $pos = strpos($xmlcontent, "[FILE64", $bpos);
-
-	    $tok = strtok("[FILE64");
+	   
 	  } else {
 	    $err=sprintf(_("exportXml : cannot write file %s"),$outfile);
 	    $pos=false;
@@ -7224,44 +7333,67 @@ create unique index i_docir on doc(initid, revision);";
   //   USUAL METHODS USE FOR CALCULATED ATTRIBUTES OR FUNCTION SEARCHES
   //----------------------------------------------------------------------
   // ALL THESE METHODS NAME MUST BEGIN WITH 'GET'
-
+  
+  /**
+   * return title of document in latest revision
+   * @param string $id identificator of document
+   * @param string $def default value if document not found
+   */
+  final public function getLastTitle($id="-1",$def="") {
+        return $this->getTitle($id,$def,true);
+  }
   /**
    * return title of document
+   * @param string $id identificator of document
+   * @param string $def default value if document not found
+   * @param boolean $latest search title in latest revision
    * @see Doc::getSpecTitle()
    */
-  final public function getTitle($id="-1",$def="") {
-    if (is_array($id)) return $def;
-    if ($id=="") return $def;
-    if ($id=="-1") {
-      if ($this->isConfidential())  return _("confidential document");      
-      return $this->getSpecTitle();
-    }
-    if ((strpos($id,"\n")!==false)||(strpos($id,"<BR>")!==false)) {
-      $tid=explode("\n",str_replace("<BR>","\n",$id));
-      $ttitle=array();
-      foreach ($tid as $idone) {
-	$ttitle[]=$this->getTitle($idone);
-      }
-      return implode("\n",$ttitle);
-    } else {
-      if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
-      if ($id > 0) {    
-	$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype"));
-	if ($t)  {
-	  if ($t["doctype"]=='C') return getFamTitle($t);
-	  return $t["title"];
-	}
-	return " "; // delete title
-      }  
-    }
-    return $def; 
+  final public function getTitle($id="-1",$def="", $latest=false) {
+  	if (is_array($id)) return $def;
+  	if ($id=="") return $def;
+  	if ($id=="-1") {
+  		if ($this->locked != -1 || (!$latest)) {
+  			if ($this->isConfidential())  return _("confidential document");
+  			return $this->getSpecTitle();
+  		} else {
+  			// search latest
+  			$id=$this->latestId();
+  			$lastId=$id;
+  		}
+  	}
+  	if ((strpos($id,"\n")!==false)||(strpos($id,"<BR>")!==false)) {
+  		$tid=explode("\n",str_replace("<BR>","\n",$id));
+  		$ttitle=array();
+  		foreach ($tid as $idone) {
+  			$ttitle[]=$this->getTitle($idone,$def,$latest);
+  		}
+  		return implode("\n",$ttitle);
+  	} else {
+  		if (! is_numeric($id)) $id=getIdFromName($this->dbaccess,$id);
+  		if ($id > 0) {
+  			$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked","initid"));
+  			if ($latest && ($t["locked"]==-1)) {
+  			    if ($lastId!=$id) {
+  				$id=getLatestDocId($this->dbaccess, $t["initid"]);
+  				$t = getTDoc($this->dbaccess,$id,array(),array("title","doctype","locked"));
+  			    }
+  			}
+  			if ($t)  {
+  				if ($t["doctype"]=='C') return getFamTitle($t);
+  				return $t["title"];
+  			}
+  			return " "; // delete title
+  		}
+  	}
+  	return $def;
   }
   /**
    * Same as ::getTitle() 
    * the < > characters as replace by entities
    */
-  function getHTMLTitle($id="-1",$def="") {   
-    $t=$this->getTitle($id,$def);
+  function getHTMLTitle($id="-1",$def="",$latest=false) {   
+    $t=$this->getTitle($id,$def,$latest);
     $t=str_replace("&","&amp;",$t);
     return str_replace(array("<",">"),array("&lt;","&gt;"),$t);
   }
@@ -7596,7 +7728,7 @@ create unique index i_docir on doc(initid, revision);";
    * @param zone string "APP:LAYOUT:etc." $zone
    * @return false on error or an array containing the components
    */
-  static public function parseZone($zone="") {
+  static public function parseZone($zone) {
     $p = array();
 
     // Separate layout (left) from args (right)

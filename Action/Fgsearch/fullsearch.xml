@@ -145,7 +145,7 @@ addEvent(window,"resize",resizeiframe);
 [ZONE FGSEARCH:HELP]
 </div>
 [IF INITSEARCH]
-<div style="text-align:center;vertical-align:middle"><img src="[IMG:logofreedom2.png]"></div>
+<div style="text-align:center;vertical-align:middle"><img src="[IMG:logodynacase.png]"></div>
 [ENDIF INITSEARCH]
 <div id="dresult">
 [BLOCK DOCS]<a target="searchresult" onmouseup="hideresult(event)" class="result" onclick="searchresult.location.href=this.href"  href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]"><table cellspacing=0>

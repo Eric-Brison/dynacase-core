@@ -302,5 +302,15 @@ function loadMimeConf() {
 
   return $rules;
 }
-
+/**
+ * get number of pages from pdf file
+ * @return int
+ */
+function getPdfNumberOfPages($file) {
+    $nbpages=0;
+  if (file_exists($file)) {
+    $nbpages=intval(trim(`grep -c "/Type[[:space:]]*/Page\>" $file`));
+  }
+  return $nbpages;
+}
 ?>

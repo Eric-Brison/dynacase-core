@@ -25,9 +25,9 @@ ONEFAM.start = function(){
 		border: false,
 		familyTree: ONEFAM.familyTree,
 		familyTreeDataConfig: {
-	        app: 'ONEFAM',
+	        app: ONEFAM.applicationName,
 	        action: 'ONEFAM_GETTREEFAMILY',
-	        appid: 'ONEFAM'
+	        appid: ONEFAM.applicationName
 	    },
 		canEditMasterFamilies: ONEFAM.canEditMasterFamilies,
 		canEditUserFamilies: ONEFAM.canEditUserFamilies,
@@ -60,7 +60,7 @@ ONEFAM.start = function(){
                         action: 'ONEFAM_EXT_MODMASTERPREF',
                         idsfam: JSON.stringify(selection.selectionItems)
                     })){
-                        Ext.Msg.alert('freedom','Error on family parameter save');
+                        Ext.Msg.alert('Error','Error on family parameter save');
                     } else {
                         ONEFAM.navigator.familyTreePanel.reload();
                     }
@@ -130,7 +130,7 @@ ONEFAM.start = function(){
                         action: 'ONEFAM_EXT_MODPREF',
                         idsfam: JSON.stringify(selection.selectionItems)
                     })){
-                        Ext.Msg.alert('freedom','Error on family parameter save');
+                        Ext.Msg.alert('Error','Error on family parameter save');
                     } else {
                         ONEFAM.navigator.familyTreePanel.reload();   
                     }

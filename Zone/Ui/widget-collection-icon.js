@@ -399,7 +399,7 @@ Ext.fdl.IconCollection = Ext.extend(Ext.Panel, {
 						data.component.unmask();
 
 						if (!ret) {
-							Ext.Msg.alert('freedom ecm',
+							Ext.Msg.alert('Warning',
 									'Problem during drag and drop');
 						}
 					}).defer(5);
@@ -485,7 +485,7 @@ Ext.fdl.IconCollection = Ext.extend(Ext.Panel, {
 							data.component.unmask();
 
 							if (!ret) {
-								Ext.Msg.alert('freedom ecm',
+								Ext.Msg.alert('Warning',
 										'Problem during drag and drop');
 							}
 						}).defer(5);

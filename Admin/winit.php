@@ -10,7 +10,7 @@
  */
 ?>
 <html>
-<head><title>FREEDOM Initialisation</title>
+<head><title>Dynacase Platform Initialisation</title>
 
 <noscript>
 <H1>Javascript must be enabled in your navigator</H1>
@@ -46,17 +46,12 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 <table width="100%" height="100%" >
 <tr><TD align="right" width="50%"><img style="border:none;" src="Images/freeeye.png"></td>
     <td align="left">  
-       <a class="abut"  href="checkinstall.php"><span class="bigbutton">Check installation</span></a><br>
-       <a class="abut"  href="wgcheck.php"><span class="bigbutton">Initialisation</span></a><br>
        <a class="abut"  href="checklist.php"><span class="bigbutton">Check List</span></a><br>
        <a class="abut"  href="phpinfo.php"><span class="bigbutton">PHP info</span></a><br>
-       <a class="abut"  href="/lib/examples/perfotest.html"><span class="bigbutton">Performance test</span></a><br>
+       <a class="abut"  href="../lib/examples/perfotest.html"><span class="bigbutton">Performance test</span></a><br>
 <?php if (file_exists("dbmng.php")) { ?>
        <a class="abut"  href="dbmng.php"><span class="bigbutton">Check DB backups</span></a>
 <?php } ?>
-<br><br>
-       <a class="abut"  href="appinstall.php"><span class="bigbutton">Install application sources</span></a>
-
 </td>
 </tr></table>
 

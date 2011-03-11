@@ -1320,7 +1320,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
 			   "token"   => 'opaquelocktoken:'.md5($doc->id),
 			   "expires" => time()+3600
 			   );
-	  error_log("FREEDOM LOCK ".$doc->title);
+	  error_log("LOCK ".$doc->title);
 	}
       }
     }

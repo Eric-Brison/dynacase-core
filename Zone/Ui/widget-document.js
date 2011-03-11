@@ -255,6 +255,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
 		
 		var document = this.context.getDocument({
 			id: documentId,
+			useCache:true,
 			latest: false
 		});
 				
@@ -332,7 +333,7 @@ Ext.fdl.Document = Ext.extend(Ext.Panel, {
     	}
     	
     	if(!this.config.targetRelation){
-    	 	this.config.targetRelation = 'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view")';
+    	 	//this.config.targetRelation = 'Ext.fdl.Document.prototype.publish("opendocument",null,%V%,"view")';
     	}
     	
     	console.log('CONFIG',this.config);

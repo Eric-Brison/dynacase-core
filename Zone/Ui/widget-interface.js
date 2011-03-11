@@ -85,7 +85,19 @@ Ext.fdl.Interface = Ext.extend(Ext.util.Observable, {
                 config: config,
                 listeners: {
                     show: function(win){
-                        win.updateDocumentId(id);
+                    	var latest=true;
+                    	if (config && config.latest === false) latest=false;
+                        var vdocument = this.context.getDocument({
+                            id: id,
+            				contentStore: true,
+            				latest: latest,
+            				getUserTags: true
+                        });
+                        if (vdocument.id) {
+                        	win.updateDocumentId(vdocument.id,config);
+                        } else {
+                            Ext.Msg.alert(this.context._("eui::missing right"),this.context._("eui::You have no right to access this document"));
+                        }
                     },
                     close: function(win){
                         win.publish('closedocument', win);
@@ -131,10 +143,17 @@ Ext.fdl.Interface = Ext.extend(Ext.util.Observable, {
 		}
 				
 		// If the url is an url for a freedom document, we parse it and redirect to openDocument
-		if((new RegExp("action=(FDL_CARD|VIEWEXTDOC)", "i").test(url) && new RegExp("app=FDL", "i").test(url))){		
-			var result = url.match(new RegExp("id=([0-9]+)","i"));
-			this.onOpenDocument(null,result[1],'view',config);
-			return;
+		if((new RegExp("action=(FDL_CARD|VIEWEXTDOC)", "i").test(url) && new RegExp("app=FDL", "i").test(url))){
+			if (! new RegExp("zone=.*:pdf", "").test(url) ) {
+				if (new RegExp("zone=.*\.odt", "").test(url) ) {
+					window.open(url,'download_frame');
+					return;
+				} else {
+					var result = url.match(new RegExp("id=([0-9]+)","i"));
+					this.onOpenDocument(null,result[1],'view',config);
+					return;
+				}
+			}
 		}
 		
 		if((new RegExp("action=(GENERIC_EDIT|EDITEXTDOC)", "i").test(url) && new RegExp("app=(GENERIC|FDL)", "i").test(url))){									

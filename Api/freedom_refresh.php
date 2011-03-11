@@ -39,7 +39,7 @@ $appl->Set("FDL",	   $core);
 
 $dbaccess=$appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-  print "Freedom Database not found : param FREEDOM_DB";
+  print "Database not found : param FREEDOM_DB";
   exit;
 }
 
@@ -55,6 +55,12 @@ if ($famId) {
 
 $s=new SearchDoc($dbaccess,$famId);
 $s->setObjectReturn();
+if ($docid) {
+    $d=new_doc($dbaccess, $docid);
+    if (! $d->isAlive()) {
+        $action->exitError(sprintf( "document %s not exists",$docid)); 
+    } else $docid=$d->id;
+}
 if ($docid > 0) $s->addFilter("id = $docid");
 if ($fldid > 0) $s->dirid=$fldid;
 if ($allrev) $s->latest=false;
@@ -73,13 +79,13 @@ while ($doc=$s->nextDoc()) {
     if ($usemethod) {
       $ret = call_user_func_array(array($doc, $method), $targ);
     } else $ret='';	
-    print $card-$k.")".$doc->title." ".(($usemethod)?"(use $method($arg))":"").get_class($doc).":$ret\n";
+    print $card.")".$doc->title." ".(($usemethod)?"(use $method($arg))":"").get_class($doc).":$ret\n";
     //print $card-$k.")".$doc->title ." - ".$doc->fromid." - ".get_class($doc)." - " .round(memory_get_usage()/1024)."\n";
     
     $doc->refresh();
     $doc->refreshTitle();
     $doc->Modify();
-    $k++;
+    $card--;
 }
 
      

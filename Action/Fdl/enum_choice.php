@@ -191,8 +191,8 @@ function getResPhpFunc(&$doc,&$oattr,&$rargids,&$tselect,&$tval,$whttpvars=true,
     else if ($v == "T") $arg[$k]= &$doc;
     else if (($v[0] == "'")|| ($v[0] == '"')) {
       $lc=substr($v,-1);
-      if (($lc == "'") || ($lc == '"')) $arg[$k]= substr($v,1,-1);
-      else $arg[$k]= substr($v,1);
+      if ($lc == $v[0]) $arg[$k]= mb_substr($v,1,-1);
+      else $arg[$k]= mb_substr($v,1);
     } else if ($doc->getProperty($v)!==false) $arg[$k]=$doc->getProperty($v);
     else {
       // can be values or family parameter
@@ -257,7 +257,7 @@ function getResPhpFunc(&$doc,&$oattr,&$rargids,&$tselect,&$tval,$whttpvars=true,
      foreach($v as $k2=>$v2) {
        // not for the title
        if ($k2>0) $res[$k][$k2]=addslashes(str_replace("\r","",str_replace("\n","\\n",$v2))); // because JS array 
-       else $res[$k][$k2]=str_replace(array("<",">"),array("&lt;","&gt;"),mb_substr($res[$k][$k2],0,$action->getParam("ENUM_TITLE_SIZE",40)));
+       else $res[$k][$k2]=str_replace(array("<script","/script>"),array("&lt;","&gt;"),$res[$k][$k2]);
      }
    }
     $tselect = array();

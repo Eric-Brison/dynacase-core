@@ -177,6 +177,55 @@ Class WDoc extends Doc {
       return strtolower($this->attrPrefix.$fix.str_replace(":","_",$state));
   }
   /**
+   * get the profile id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateProfil($state) {
+  	return $this->getValue($this->_Aid("_id",$state));
+  }
+
+  /**
+   * get the attribute id for profile id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateProfilAttribute($state) {
+  	return $this->_Aid("_id",$state);
+  }
+  /**
+   * get the mask id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateMask($state) {
+    return $this->getValue($this->_Aid("_mskid",$state));
+  }
+  /**
+   * get the view control id according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateViewControl($state) {
+    return $this->getValue($this->_Aid("_cvid",$state));
+  }
+  /**
+   * get the timers ids according to state
+   * @param string $state  
+   * @return string
+   */
+  public function getStateTimers($state) {
+    return $this->getValue($this->_Aid("_tmid",$state));
+  }
+  /**
+   * get the mail templates ids according to state
+   * @param string $state  
+   * @return array
+   */
+  public function getStateMailTemplate($state) {
+    return $this->getTValue($this->_Aid("_mtid",$state));
+  }
+  /**
    * create of parameters attributes of workflow
    */
   function createProfileAttribute() {
@@ -216,73 +265,41 @@ Class WDoc extends Doc {
       $aidprofilid=$this->_Aid("_ID",$state);//strtolower($this->attrPrefix."_ID".strtoupper($state));
       $oattr = new DocAttr($this->dbaccess, array($cid,$aidprofilid));
       $oattr->docid=$cid;
-      $oattr->visibility="H";
-      $oattr->type="docid";
+      $oattr->visibility="W";
+      $oattr->type='docid("PROFIL")';
       $oattr->id=$aidprofilid;
-      $oattr->labeltext=sprintf(_("id %s profile"),_($state));
+      $oattr->labeltext=sprintf(_("%s profile"),_($state));
       $oattr->link="";
       $oattr->frameid=$aidframe;
       $oattr->options="autocreated=yes";
-      $oattr->phpfunc="::getTitle($aidprofilid):$aid";
-      $oattr->ordered=$ordered++;
-      if ($oattr->isAffected()) $oattr->Modify();
-      else $oattr->Add();
 
-
-      // --------------------------
-      // profil user comprehensive
-      $oattr = new DocAttr($this->dbaccess, array($cid,$aid));
-      $oattr->docid=$cid;
-      $oattr->visibility="W";
-      $oattr->type="text";
-      $oattr->link="%S%app=FDL&action=FDL_CARD&id=%".$aidprofilid."%";
       $oattr->phpfile="fdl.php";
-      $oattr->id=$aid;
-      $oattr->frameid=$aidframe;
-      $oattr->options="autocreated=yes";
-      $oattr->phpfunc="lprofil(D,{$oattr->id},WF_FAMID):$aidprofilid,{$oattr->id}";
-      $oattr->labeltext=sprintf(_("%s profile"),_($state));
+      $oattr->phpfunc="lprofil(D,{$oattr->id},WF_FAMID):$aidprofilid,CT";
       $oattr->ordered=$ordered++;
       if ($oattr->isAffected()) $oattr->Modify();
       else $oattr->Add();
+
       
       // --------------------------
       // mask id
-      $aid=$this->_Aid("_MSK",$state);
-      $aidmaskid=$this->_Aid("_MSKID",$state);
+      $aid=$this->_Aid("_MSKID",$state);
       
-      $oattr = new DocAttr($this->dbaccess, array($cid,$aidmaskid));
-      $oattr->docid=$cid;
-      $oattr->visibility="H";
-      $oattr->type='docid("MASK")';
-      $oattr->id=$aidmaskid;
-      $oattr->labeltext=sprintf(_("id %s mask"),_($state));
-      $oattr->link="";
-      $oattr->options="autocreated=yes";
-      $oattr->frameid=$aidframe;
-      $oattr->phpfunc="::getTitle($aidmaskid):$aid";
-      $oattr->ordered=$ordered++;
-      if ($oattr->isAffected()) $oattr->Modify();
-      else $oattr->Add();
-
-
-      // --------------------------
-      // mask user comprehensive
       $oattr = new DocAttr($this->dbaccess, array($cid,$aid));
       $oattr->docid=$cid;
       $oattr->visibility="W";
-      $oattr->type="text";
-      $oattr->link="%S%app=FDL&action=FDL_CARD&id=%".$aidmaskid."%";
-      $oattr->phpfile="fdl.php";
+      $oattr->type='docid("MASK")';
       $oattr->id=$aid;
+      $oattr->labeltext=sprintf(_("%s mask"),_($state));
+      $oattr->link="";
+      $oattr->options="autocreated=yes";
       $oattr->frameid=$aidframe;
+      $oattr->phpfile="fdl.php";
+      $oattr->phpfunc="lmask(D,{$oattr->id},WF_FAMID):$aid,CT";      
       $oattr->elink="%S%app=GENERIC&action=GENERIC_EDIT&famid=MASK&MSK_FAMID=%WF_FAMID%&id=%$aid%";
       $oattr->ordered=$ordered++;
-      $oattr->options="autocreated=yes";
-      $oattr->phpfunc="lmask(D,{$oattr->id},WF_FAMID):$aidmaskid,{$oattr->id}";
-      $oattr->labeltext=sprintf(_("%s mask"),_($state));
       if ($oattr->isAffected()) $oattr->Modify();
       else $oattr->Add();
+
 
       // --------------------------
       // state color

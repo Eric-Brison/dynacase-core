@@ -56,8 +56,10 @@ function viewextdoc(&$action) {
     $im=array();
     foreach ($popup as $k=>$v) {
         if ($v["visibility"]!=POPUP_INVISIBLE) {
-            $imenu=array("url"=>str_replace(array("FDL_CARD",'app=GENERIC&action=GENERIC_EDIT',"&action="),
-            array("VIEWEXTDOC",'app=FDL&action=EDITEXTDOC','&viewext=yes&action='),$v["url"]),
+        	if (preg_match("/zone=.*:pdf/",$v["url"])) $url=$v["url"];
+        	else $url=str_replace(array("FDL_CARD",'app=GENERIC&action=GENERIC_EDIT',"&action="),
+                             array("VIEWEXTDOC",'app=FDL&action=EDITEXTDOC','&viewext=yes&action='),$v["url"]);
+            $imenu=array("url"=>$url,
               "javascript"=>str_replace(array("FDL_CARD",'app=GENERIC&action=GENERIC_EDIT',"&action="),
             array("VIEWEXTDOC",'app=FDL&action=EDITEXTDOC','&viewext=yes&action='),$v["jsfunction"]),
               "visibility"=>$v["visibility"],

@@ -2,7 +2,7 @@ php_value session.name "adminsession"
 php_value session.use_cookies 1
 
 AuthType Basic
-AuthName "FREEDOM Administration"
+AuthName "Dynacase Platform Administration"
 AuthUserFile @prefix@/admin/.htpasswd
 Require valid-user
 

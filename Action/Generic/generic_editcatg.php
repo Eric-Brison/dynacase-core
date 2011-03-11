@@ -47,20 +47,19 @@ function generic_editcatg(&$action) {
 
 
   $enum = $a->getEnum();
-  
-  while (list($k, $v) = each($enum)) {
+  foreach($enum as $k=>$v) {
 	$k = str_replace("\\.", "-dot-", $k);
     $tk= explode(".",$k);
-    $tv= explode("/",$v);
+    $tv= $v;
     $sp ="";
     $loff ="";
     for ($i=1;$i<count($tk);$i++) $loff .= ".....";
     
     $tlevel[]= array("alevel"=>count($tk));
     $tref[]= array("eref"=>str_replace("-dot-", ".", array_pop($tk)));
-    $vlabel = array_pop($tv);
-    $tlabel[]= array("elabel"=>$vlabel,
-		     "velabel"=>$loff.$vlabel);
+    $vlabel = $tv;
+    $tlabel[]= array("elabel"=>htmlspecialchars($vlabel),
+		     "velabel"=>htmlspecialchars($loff.$vlabel));
   }
   
   $action->lay->setBlockData("ALEVEL",$tlevel);

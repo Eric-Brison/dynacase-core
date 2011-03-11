@@ -130,7 +130,7 @@ function displayWarningMsg(logmsg) {
   if(window.parent.Ext){
 	  	msg = msg.replace(new RegExp("\n","ig"),'<br/>');
 	  	msg = msg.replace(new RegExp("\n","ig"),'<br/>');
-		window.parent.Ext.Msg.alert('freedom',msg);
+		window.parent.Ext.Msg.alert('Warning',msg);
 	} else {
   setTimeout(function () {alert(msg);},1000);
 	}
@@ -234,6 +234,11 @@ function sendActionNotification(code,arg) {
       window.parent.receiptActionNotification(code,arg);
     }
   }
+  if (window.parent.parent && (window != window.parent.parent)) {
+	    if (window.parent.parent.receiptActionNotification) {
+	      window.parent.parent.receiptActionNotification(code,arg);
+	    }
+	  }
   
 }
 

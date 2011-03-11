@@ -160,7 +160,7 @@ function preDocDelete() {
 	  $tstates=array();
 	  $tnoprofilstates=array();
 	  foreach ($states as $st) {
-	    $pid=$tdoc->getValue($tdoc->attrPrefix."_ID".$st);
+	    $pid=$tdoc->getStateProfil($st);
 	    if ($pid) {
 	      $pdoc=new_doc($this->dbaccess,$pid);
 	      $tstates[$pid]["smodifyacl"]=($pdoc->control("modifyacl")=="");
@@ -168,7 +168,7 @@ function preDocDelete() {
 	      $tstates[$pid]["pstateid"]=$pid;
 	      $tstates[$pid]["states"][]=_($st);
 	    } else {	      
-	      $tnoprofilstates[_($st)]=array("pstateattrid"=>$tdoc->attrPrefix."_ID".$st,
+	      $tnoprofilstates[_($st)]=array("pstateattrid"=>$tdoc->getStateProfilAttribute($st),
 				       "states"=>_($st));
 	    }
 	  }

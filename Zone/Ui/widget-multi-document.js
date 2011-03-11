@@ -1,4 +1,3 @@
-
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
@@ -260,114 +259,118 @@ Ext.fdl.MultiDocumentPanel = Ext.extend(Ext.TabPanel, {
 	addDocumentId: function(documentId, mode, config){
 		
 		console.log('Add document Id',documentId,mode,config);
-		
+
 		var me = this;
-		
+
 		if(!this.documentArray[documentId]){
-			
+
 			if(mode == 'create'){
 				var document = this.context.createDocument({
 					familyId: documentId
 				});
 			} else {
+				var latest=true;
+				if (config && config.latest === false) latest=false;
 				var document = this.context.getDocument({
-					id: documentId
+					id: documentId,
+					latest:latest
 				});
 			}
-			
+
 			if(!document){
 				Ext.Msg.alert(me.context._("eui::missing right"),me.context._("eui::You have no right to access this document"));	
 				return;
 			}
-			
+
 			console.log('Document',document);
-			
-			if(document.isCollection() && !(mode=='create')){
-		
-				var documentPanel = new Ext.fdl.DocumentMultiView({
-					document: document,
-					title: Fdl.encodeHtmlTags(document.getTitle()) || me.context._("eui::Creation :")+' ' + Fdl.encodeHtmlTags(me.context.getDocument({id:document._mvalues.family}).getTitle()),
-					config: config,
-					forceExt: me.forceExt,
-					forceClassic: me.forceClassic,
-					mode: mode || 'view',
-					closable: true,
-					listeners: {
+			documentId=document.id;
+			if(!this.documentArray[documentId]){
+				if(document.isCollection() && !(mode=='create')){
+
+					var documentPanel = new Ext.fdl.DocumentMultiView({
+						document: document,
+						title: Fdl.encodeHtmlTags(document.getTitle()) || me.context._("eui::Creation :")+' ' + Fdl.encodeHtmlTags(me.context.getDocument({id:document._mvalues.family}).getTitle()),
+						config: config,
+						forceExt: me.forceExt,
+						forceClassic: me.forceClassic,
+						mode: mode || 'view',
+						closable: true,
+						listeners: {
 						close: function(panel){
-							me.documentArray[panel.document.id] = null;
-						}
+						me.documentArray[panel.document.id] = null;
 					}
-				});
-			
-			} else {
-				
-				var documentPanel = new Ext.fdl.Document({
-					document: document,
-					title: Fdl.encodeHtmlTags(document.getTitle())|| me.context._("eui::Creation :")+' ' + Fdl.encodeHtmlTags(me.context.getDocument({id:document._mvalues.family}).getTitle()),
-					config: config,
-					forceExt: me.forceExt,
-                    forceClassic: me.forceClassic,
-					mode: mode || 'view',
-					closable: true,
-					listeners: {
+					}
+					});
+
+				} else {
+
+					var documentPanel = new Ext.fdl.Document({
+						document: document,
+						title: Fdl.encodeHtmlTags(document.getTitle())|| me.context._("eui::Creation :")+' ' + Fdl.encodeHtmlTags(me.context.getDocument({id:document._mvalues.family}).getTitle()),
+						config: config,
+						forceExt: me.forceExt,
+						forceClassic: me.forceClassic,
+						mode: mode || 'view',
+						closable: true,
+						listeners: {
 						close: function(panel){
-							me.documentArray[panel.document.id] = null;
-						}
+						me.documentArray[panel.document.id] = null;
 					}
-				
-				});
-				
-			}
-			
-			documentPanel.subscribe('modifydocument',function(fdldoc){
-				if(documentPanel.document && documentPanel.document.id == fdldoc.id){
-					documentPanel.document = fdldoc;
-					documentPanel.setTitle(Fdl.encodeHtmlTags(documentPanel.document.getTitle()) || me.context._("eui::Creation :")+' ' + Fdl.encodeHtmlTags(me.context.getDocument({id:documentPanel.document._mvalues.family}).getTitle()));
-					me.documentArray[fdldoc.id] = documentPanel ;
+					}
+
+					});
+
 				}
-			});
-			
-			documentPanel.on('beforeclose',function(panel){
-	            if(panel.closeConfirm){
-	                
-	                var closeConfirm = panel.closeConfirm();
-	                if(closeConfirm && !panel.closeConfirmed){
-	                    
-	                    Ext.Msg.show({
-	                        buttons:{
-	                            ok:'Oui',
-	                            cancel:'Non'
-	                        },
-	                        fn: function(id){
-	                            if(id=='ok'){
-	                                panel.closeConfirmed = true;
-	                                me.remove(panel,true);
-	                                me.documentArray[panel.document.id] = null;
-	                            }
-	                        },
-	                        title: 'freedom',
-	                        msg: closeConfirm
-	                    });
-	                    
-	                    return false;
-	                } else {
-	                    return true ;
-	                }
-	            }
-	        });
-				
-			this.add(documentPanel);
-			this.doLayout();
-			
-			this.changeTabIcon(documentPanel,document.getIcon({width: 15}));
-		
-			if(mode != 'create'){
-				this.documentArray[documentId] = documentPanel ;
-			} else {
-				this.setActiveTab(documentPanel);
-				return ;
+
+				documentPanel.subscribe('modifydocument',function(fdldoc){
+					if(documentPanel.document && documentPanel.document.id == fdldoc.id){
+						documentPanel.document = fdldoc;
+						documentPanel.setTitle(Fdl.encodeHtmlTags(documentPanel.document.getTitle()) || me.context._("eui::Creation :")+' ' + Fdl.encodeHtmlTags(me.context.getDocument({id:documentPanel.document._mvalues.family}).getTitle()));
+						me.documentArray[fdldoc.id] = documentPanel ;
+					}
+				});
+
+				documentPanel.on('beforeclose',function(panel){
+					if(panel.closeConfirm){
+
+						var closeConfirm = panel.closeConfirm();
+						if(closeConfirm && !panel.closeConfirmed){
+
+							Ext.Msg.show({
+								buttons:{
+								ok:'Oui',
+								cancel:'Non'
+							},
+							fn: function(id){
+								if(id=='ok'){
+									panel.closeConfirmed = true;
+									me.remove(panel,true);
+									me.documentArray[panel.document.id] = null;
+								}
+							},
+							title: 'Confirmation',
+							msg: closeConfirm
+							});
+
+							return false;
+						} else {
+							return true ;
+						}
+					}
+				});
+
+				this.add(documentPanel);
+				this.doLayout();
+
+				this.changeTabIcon(documentPanel,document.getIcon({width: 15}));
+
+				if(mode != 'create'){
+					this.documentArray[documentId] = documentPanel ;
+				} else {
+					this.setActiveTab(documentPanel);
+					return ;
+				}
 			}
-			
 		}
 		
 		this.setActiveTab(this.documentArray[documentId]);

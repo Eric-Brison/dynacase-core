@@ -41,8 +41,8 @@ function editextdoc(&$action) {
     $rvid = GetHttpVars("rvid"); // special zone when finish edition
     $rtarget = GetHttpVars("rtarget","_self"); // special zone when finish edition return target
 
-    $rlassid = GetHttpVars("classid"); // special zone when finish edition
-    if ($docid==0) setHttpVar("classid",$classid);
+    $classid = GetHttpVars("classid"); // special zone when finish edition
+
     $vid = GetHttpVars("vid"); // special controlled view
     $ec=getHttpVars("extconfig");
     if ($ec) {
@@ -52,11 +52,39 @@ function editextdoc(&$action) {
 
     $docid = GetHttpVars("id");
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    if ($docid) {
-        $doc = new_Doc($dbaccess, $docid);
-    } else {
-        $doc=createDoc($dbaccess,$rlassid);
-    }
+    
+	if (($docid === 0) || ($docid === "") || ($docid === "0") )  {
+		if ($classid == "") $action->exitError(sprintf(_("Creation aborded : no family specified")));
+		if (! is_numeric($classid))  $classid = getFamIdFromName($dbaccess,$classid);
+		if ($classid == "") $action->exitError(sprintf(_("Creation aborded : unknow family %s"), GetHttpVars("classid",getDefFam($action))));
+		if ($classid > 0) {
+			$cdoc= new_Doc($dbaccess,$classid);
+			if ($cdoc->control('create') != "") $action->exitError(sprintf(_("no privilege to create this kind (%s) of document"),$cdoc->gettitle()));
+			if ($cdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document"),$cdoc->gettitle()));
+		} 
+
+		$doc= createDoc($dbaccess,$classid);
+		if ($usefor=='D' || $usefor=='Q') $doc->state='';
+		if (! $doc) $action->exitError(sprintf(_("no privilege to create this kind (%d) of document"),$classid));
+	} else {
+		$doc= new_Doc($dbaccess,$docid,true); // always latest revision
+		$rev=getLatestRevisionNumber($dbaccess,$doc->initid, $doc->fromid);
+		if ($doc->revision != $rev) $action->ExitError(sprintf("document %d : multiple alive revision (%d <> %d)",$doc->initid, $doc->revision,$rev));
+		$docid=$doc->id;
+		setHttpVar("id",$doc->id);
+		$err = $doc->lock(true); // autolock
+		if ($err != "")   $action->ExitError($err);
+		if ($err=="") $action->AddActionDone("LOCKFILE",$doc->id);
+
+
+		$classid = $doc->fromid;
+		if (! $doc->isAlive()) $action->ExitError(_("document not referenced"));
+	
+
+	}
+    
+    
+  
     $im=array();
     if ($doc) {
 
@@ -99,8 +127,8 @@ function editextdoc(&$action) {
     $action->lay->set("ezone",$ezone);
     $action->lay->set("id",$doc->id);
     $action->lay->set("classid",$classid);
-    $action->lay->set("STITLE",addJsSlashes($doc->getHTMLTitle()));
-
+    if ($docid)    $action->lay->set("STITLE",addJsSlashes($doc->getHTMLTitle()));
+    else $action->lay->set("STITLE",addJsSlashes(sprintf(_("Creation %s"),$doc->getHTMLTitle($doc->fromid))));
     $style = $action->parent->getParam("STYLE");
 
 	$action->parent->AddCssRef("STYLE/DEFAULT/Layout/EXT-ADAPTER-SYSTEM.css");

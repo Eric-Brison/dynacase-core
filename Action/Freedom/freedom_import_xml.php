@@ -52,7 +52,7 @@ function freedom_import_xml(Action &$action, $filename="") {
     
     $log= importXmlDirectory($dbaccess,$splitdir,$opt);
     system(sprintf("/bin/rm -fr %s ",$splitdir));
-    //print "look : $splitdir\n";
+   // print "look : $splitdir\n";
     return $log;
 }
 
@@ -166,11 +166,12 @@ function extractFileFromXmlDocument($file) {
                 $fin=sprintf("%s/%s",$dir,$rfin);
                 $fi=fopen($fin,"w");
                 
-                if (preg_match("/(.*)>/",$buffer,$regend)) {
-                    fputs($nf,$regend[1].' href="'.$rfin.'">');
+                if (preg_match("/(.*)(<$tag [^>]*)>/",$buffer,$regend)) {
+                    fputs($nf,$regend[1].$regend[2].' href="'.$rfin.'">');
                 }
-                if (preg_match("/>(.*)<\/$tag>(.*)/",$buffer,$regend)) {
+                if (preg_match("/>([^<]*)<\/$tag>(.*)/",$buffer,$regend)) {
                     // end of file
+
                     fputs($fi,$regend[1]);
                     fputs($nf,"</$tag>");
                     fputs($nf,$regend[2]);
@@ -287,6 +288,10 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
                             }
                         }
                     }
+                    if ($v->getOption("multiple") == "yes") {
+                        $id=str_replace(',','\n',$id);
+                        if  ($v->inArray()) $id=str_replace(array('\\n',"\n",),"<BR>",$id);
+                    }
                     $val[]=$id;
                     break;
                 case 'image':
@@ -302,6 +307,9 @@ function importXmlDocument($dbaccess,$xmlfile,&$log,$opt) {
                          $val[]="$mime|$vid|$title";
                       } else $val[]='';
                     }
+                    break;
+                case 'htmltext':
+                    $val[]=str_replace("\n"," ",str_replace(">\n",">",$item->nodeValue));
                     break;
                 default:
                     $val[]=$item->nodeValue;

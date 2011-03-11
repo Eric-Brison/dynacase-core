@@ -4,7 +4,7 @@
 [IFNOT viewtpl]<table width="100%" cellspacing="0" id="T[frameid]" >
 <tr class="FREEDOMBack1">
   <td colspan="2"  height="1px"></td>
-  <td  width="0%" rowspan="[rowspan]" align="center" >[BLOCK [IMAGES]]<A href="[imgsrc]" target="[itarget]"><IMG border="0" title="[imgalt]" alt="[imgalt]" align="absbottom" width="[imgwidth]" SRC="[imgthumbsrc]"></A><br>[ENDBLOCK [IMAGES]]</td>
+  <td style="width:1px" rowspan="[rowspan]" align="center" >[BLOCK [IMAGES]]<A href="[imgsrc]" target="[itarget]"><IMG border="0" title="[imgalt]" alt="[imgalt]" align="absbottom" width="[imgwidth]" SRC="[imgthumbsrc]"></A><br>[ENDBLOCK [IMAGES]]</td>
 </tr>
 [BLOCK [TABLEVALUE]]
 <tr  class="[classback]">

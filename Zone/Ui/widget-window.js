@@ -17,8 +17,8 @@ Ext.fdl.Window = Ext.extend(Ext.Window, {
     
     border: false,
     //bodyBorder: false,
-    width: 800,
-    height: 600,
+    width: 700,
+    height: 400,
     //autoScroll: true,
     //autoHeight: true,
     resizable: true,
@@ -72,7 +72,7 @@ Ext.fdl.Window = Ext.extend(Ext.Window, {
 	            				window.close();
 	            			}
 	            		},
-	            		title: 'freedom',
+	            		title: 'Confirmation',
 	            		msg: closeConfirm
 	            	});
 	            	
@@ -231,23 +231,25 @@ Ext.fdl.Window = Ext.extend(Ext.Window, {
         
     },
     
-    updateDocumentId: function(id){
+    updateDocumentId: function(id,config){
     	
     	//console.log('UPDATE DOCUMENT ID', id);
     
         this.showMask();
         
         if (this.mode != 'create') {
+        	var latest=true;
+			if (config && config.latest === false) latest=false;
             this.document = this.context.getDocument({
                 id: id,
 				contentStore: true,
-				latest: false,
+				latest: latest,
+				useCache:true,
 				getUserTags: true
             });
             var doc = this.document;
             
-        }
-        else {
+        } else {
             this.document = this.context.createDocument({
                 familyId: id
             });

@@ -86,13 +86,24 @@ function getSessionValue($name, $def="") {
 
 function getLayoutFile($app, $layfile) {
 	$socStyle = Getparam("CORE_SOCSTYLE");
+	$root = Getparam("CORE_PUBDIR");
 	if ($socStyle != "") {
-		$root = Getparam("CORE_PUBDIR");
+		
 		$file = $root."/$app/Layout/$socStyle/$layfile";
-
 		if (file_exists($file))  return($file);
+		$layfile=strtolower($layfile);
+		$file = $root."/$app/Layout/$socStyle/$layfile";
+		if (file_exists($file))  return($file);
+		
 
 	}
+	
+		$file = $root."/$app/Layout/$layfile";
+		if (file_exists($file))  return($file);
+		$layfile=strtolower($layfile);
+		$file = $root."/$app/Layout/$layfile";
+		if (file_exists($file))  return($file);
+	
 	return $app."/Layout/".$layfile;
 }
 
@@ -126,6 +137,12 @@ function getDbid($dbaccess) {
 	global $CORE_DBID;
 	if (!isset($CORE_DBID) || !($CORE_DBID[$dbaccess])) {
 		$CORE_DBID[$dbaccess] = pg_connect($dbaccess);
+		if (! $CORE_DBID[$dbaccess]) {
+			// fatal error
+			error_log("Fail to DB connect to : $dbaccess");
+			header('HTTP/1.0 503 DB connection unavalaible');
+			exit;
+		}
 	}
 	return $CORE_DBID[$dbaccess];
 }

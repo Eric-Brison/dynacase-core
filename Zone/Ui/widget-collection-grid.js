@@ -1073,6 +1073,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 		    				useCache: true
 		    			});
 	    				
+	    				if (this.familyDocument) {
 		    			var tags = this.familyDocument.getUserTags();
 			    		if(tags){
 					        if(!tags.columns){
@@ -1081,6 +1082,9 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 					        	var columns = eval("("+tags.columns+")");
 					        }
 			    		}
+	    				} else {
+	                        Ext.Msg.alert('Error', this.context.getLastErrorMessage());
+	    				}
 			    		return columns ;
 		    			
 	    			}
@@ -1094,7 +1098,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 	    				id: this.search.family,
 	    				useCache: true
 	    			});
-	    			
+	    			if (this.familyDocument) {
 	    			var tags = this.familyDocument.getUserTags();
 		    		if(tags){
 				        if(!tags.columns){
@@ -1103,6 +1107,9 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
 				        	var columns = eval("("+tags.columns+")");
 				        }
 		    		}
+	    			} else {
+	    				Ext.Msg.alert('Error', this.context.getLastErrorMessage());
+	    			}
 	    			
 	    		}
 	    		
@@ -1244,7 +1251,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                                 data.component.unmask();
                                 
                                 if (!ret) {
-                                    Ext.Msg.alert('freedom ecm', 'Problem during drag and drop');
+                                    Ext.Msg.alert('Warning', 'Problem during drag and drop');
                                 }
                                 
                             }).defer(5);
@@ -1338,7 +1345,7 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                                 var ret = me.notifyDocumentDrop(data.component, data.component.collection, me.collection, data.selection, dropDoc);
                                   
                                 if (!ret) {
-                                    Ext.Msg.alert('freedom ecm', 'Problem during drag and drop');
+                                    Ext.Msg.alert('Warning', 'Problem during drag and drop');
                                 }
                                 
                             }).defer(5);

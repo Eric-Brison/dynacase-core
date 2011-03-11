@@ -145,7 +145,7 @@ function fdl_card(&$action) {
       } else {
       $action->lay->set("nocss",($zo=="U"));
       $taction=array();
-      if ($doc->doctype!='C') {
+      if ($doc->doctype!='C' && $doc->doctype!='Z') {
 	$listattr = $doc->GetActionAttributes();
 	$mwidth=$action->getParam("FDL_HD2SIZE",300);
 	$mheight=$action->getParam("FDL_VD2SIZE",400);

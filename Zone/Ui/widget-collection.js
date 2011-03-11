@@ -168,7 +168,7 @@ Ext.fdl.Collection = {
                 
             }
             if (!this.documentList) {
-                Ext.Msg.alert('freedom ecm', this.context.getLastErrorMessage());
+                Ext.Msg.alert('Error', this.context.getLastErrorMessage());
             }
             else {
                 this.content = this.documentList.getDocuments();
@@ -376,7 +376,7 @@ Ext.fdl.Collection = {
             case 'duplicate':
                 
                 if(dragSel.mainSelector == 'all' || dragSel.selectionItems.length != 1){
-                    Ext.Msg.alert('freedom ecm','Duplicate for multiple selection must be implemented.');
+                    Ext.Msg.alert('Warning','Duplicate for multiple selection must be implemented.');
                     return true;
                 } else {
                     g.addRequest({
@@ -822,23 +822,25 @@ Ext.fdl.Collection = {
             if (monofam == true && family){   
                 // Mono-family search
                 this.family = doc.context.getDocument({
-                    id: family,
-                    useCache: true,
-                    onlyValues: false
+                	id: family,
+                	useCache: true,
+                	onlyValues: false
                 });
-                
-                var a = this.family.getAttributes();
-                
-                for (var i in a) {
-                    if (i != 'undefined') { // Why do some families have an undefined attribute ??
-                        if (a[i].getVisibility() != 'I' && a[i].getVisibility() != 'H' && a[i].isLeaf()) {
-                            attributes.push(a[i].id);
-                        }
-                    }
-                    
+                if (this.family) {
+                	var a = this.family.getAttributes();
+
+                	for (var i in a) {
+                		if (i != 'undefined') { // Why do some families have an undefined attribute ??
+                			if (a[i].getVisibility() != 'I' && a[i].getVisibility() != 'H' && a[i].isLeaf()) {
+                				attributes.push(a[i].id);
+                			}
+                		}
+                	}
+                } else {
+                    Ext.Msg.alert('Error', this.context.getLastErrorMessage());
                 }
             }
-            
+
         }
         
         return attributes;

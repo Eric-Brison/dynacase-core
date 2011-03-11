@@ -2,21 +2,22 @@
     <legend style="cursor:pointer" onclick="viewornot('T[attrid]')">
         [caption]
     </legend>[ENDIF caption]
-    <table border=1 
-           cellspacing="0" 
+    <table border=1
+           cellspacing="0"
            id="T[attrid]" 
            class="tarray[IFNOT caption] border[ENDIF caption]"
            style="width:[tableWidth];[tableStyle]">
         <thead>
             <tr>
-                [IFNOT readonly]<td class="tools"/>[ENDIF readonly]
+                [IFNOT readonly]<th class="tools"/>[ENDIF readonly]
                 [BLOCK TATTR]<th colspan="[thspan]"
-                    style="[astyle]"
+                    style="[IF elabel]cursor:help;[ENDIF elabel][astyle]"
                     [IF elabel]title="[elabel]"[ENDIF elabel]
                     class="[ahclass][IF elabel] withElabel[ENDIF elabel]">
                     [alabel]
                 </th>[ENDBLOCK TATTR]
-                [IFNOT ISIE][IF tableheight]<th style="width:20px;visibility:hidden"/>[ENDIF tableheight][ENDIF ISIE]
+                [IFNOT ISIE][IF tableheight]
+<th style="width:20px;visibility:hidden"/>[ENDIF tableheight][ENDIF ISIE]
             </tr>
         </thead>
         <tbody id="tbody[attrid]" [IFNOT ISIE][IF tableheight]style="height:[tableheight];overflow:auto"[ENDIF tableheight][ENDIF ISIE]>

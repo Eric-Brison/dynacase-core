@@ -323,7 +323,7 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
 	  if ($with_abstract === 2 ){    
 	    $tdoc[$k]["ABSTRACTVALUES"]=getAbstractDetail($doc,$target);	  
 	  } else {
-	    $tdoc[$k]["ABSTRACTVALUES"]=$doc->viewDoc($doc->defaultabstract,$target);
+	    $tdoc[$k]["ABSTRACTVALUES"]=$doc->viewDoc($doc->defaultabstract,$target,true,$abstract);
 	    $tdoc[$k]["LOrR"]=($k%2==0)?"left":"right";  
 	  }
 	} else $tdoc[$k]["ABSTRACTVALUES"]="";
@@ -378,7 +378,8 @@ function viewfolder(&$action, $with_abstract=false, $with_popup=true,
 	  foreach($lattr as $ka=>$attr)  {	
 	    //$tvalues[]=$doc->getValue($attr->id,"-");
 	    if ($attr->type=="image") $tvalues[]='<img src="'.$doc->getHtmlValue($attr,$doc->getValue($attr->id,"-"),$target).'&height=30"  height="30">';
-	    else  $tvalues[]=$doc->getHtmlValue($attr,$doc->getValue($attr->id,"-"),$target);
+	    else  $tvalues[]=($doc->getValue($attr->id)?$doc->getHtmlValue($attr,$doc->getValue($attr->id),$target):'-');
+
 	  }
 	}
 	$tdoc[$k]["values"]=implode('</td><td class="tlist">',$tvalues);
@@ -449,7 +450,7 @@ function getAbstractDetail(&$doc,$target) {
   $lattr=$doc->GetAbstractAttributes();
   $emptytableabstract=array();
   foreach($lattr as $ka=>$attr)  {	
-    $val = $doc->GetHtmlAttrValue($ka,$target);
+    $val = $doc->GetHtmlAttrValue($ka,$target,2,-1,true,true);
 
     if ($val) $tout[] = $val;
   }

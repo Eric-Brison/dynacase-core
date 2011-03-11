@@ -44,7 +44,7 @@ Ext.fdl.MenuManager = {
 			var menuItem = '-' ;
 		} else if (menuObject.type == 'text'){
 			var menuItem = {
-				text: Ext.util.Format.capitalize(menuObject.label),
+				text: Ext.util.Format.capitalize(menuObject.label.substr(0,1))+menuObject.label.substr(1),
 				menuObject: menuObject,
 				disabled: true,
 				disabledClass: '',
@@ -56,7 +56,7 @@ Ext.fdl.MenuManager = {
 		} else if(menuObject.type == 'item' || menuObject.type == 'menu' || true){
 			
 			var menuItem = {
-				text: Ext.util.Format.capitalize(menuObject.label),
+				text: Ext.util.Format.capitalize(menuObject.label.substr(0,1))+menuObject.label.substr(1),
 				menuObject: menuObject,
 				disabled: (menuObject.visibility == 0 || menuObject.visibility == 4),
 				hidden: (menuObject.visibility == 2),
@@ -208,7 +208,7 @@ Ext.fdl.MenuManager = {
 					if(button.menuObject.confirm){
 					
 						Ext.Msg.show({
-							title: 'freedom',
+							title: 'Information',
 							msg: button.menuObject.confirm.label,
 							buttons: {
 								ok: button.menuObject.confirm['continue'],

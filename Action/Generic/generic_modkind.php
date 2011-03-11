@@ -75,7 +75,9 @@ function generic_modkind(&$action) {
   if ($a) { 
     $enum=$a->getenum();
     foreach ($enum as $kk=>$ki) {
-	$tvkind[]=array("ktitle" => strstr($ki, '/')?strstr($ki, '/'):$ki,
+    	$klabel=$a->getEnumLabel($ki);
+    	//array_pop(explode('/',$ki,substr_count($kk, '.')+1));
+    	$tvkind[]=array("ktitle" => $klabel,
 			"level" =>  substr_count($kk, '.')*20,
 			"kid" => $kk);
 	

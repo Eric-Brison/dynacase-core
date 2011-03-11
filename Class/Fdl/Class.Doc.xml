@@ -95,7 +95,7 @@ Class Doc[docid] extends [DocParent] {
 
 	$this->AddParamRefresh("[niargs]","[rarg]");
       if (!$onlyspec) {
-      if ($arraycount > 0) {
+      if ($ca->inArray()) {
 	$tv=array();
 	$tvi=$this->getTValue("[rarg]");
 	for ($c=0;$c<$arraycount;$c++) {
@@ -105,7 +105,7 @@ Class Doc[docid] extends [DocParent] {
 	    else $tiargs[]=$va;
 	  }
 	  $vi = call_user_func_array(array($this, "[method]"), $tiargs);
-	  if ($vi !== "") $tv[] = call_user_func_array(array($this, "[method]"), $tiargs);
+	  if ($vi !== "") $tv[] = $vi;
 	  else $tv[]=$tvi[$c];
 	}
 	$this->setValue("[rarg]",$tv); 
