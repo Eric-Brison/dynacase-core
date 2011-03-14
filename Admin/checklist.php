@@ -89,6 +89,12 @@ if ($dbr_anakeen) {
   $GP=globalparam($r);
   //  print_r2($GP);
   // TEST groups coherence
+
+  $appNameList = array();
+  $result = pg_query($r, "SELECT name FROM application;");
+  while( $row = pg_fetch_array($result, NULL, PGSQL_ASSOC) ) {
+  	$appNameList[] = $row['name'];
+  }
   
   $result = pg_query($r, "SELECT * from groups where iduser not in (select id from users);");    
   $pout=array();
@@ -243,8 +249,13 @@ if ($dbr_anakeen) {
   }
 
   // Test User LDAP (NetworkUser Module)
+  $nuAppExists = (array_search('NU', $appNameList)===false)?false:true;
   $ldaphost=$GP["NU_LDAP_HOST"];
-  if ($ldaphost) {
+  $ldapport=$GP["NU_LDAP_PORT"];
+  $ldapmode=$GP["NU_LDAP_MODE"];
+  if ($nuAppExists && $ldaphost) {
+  	include_once('../NU/Lib.NU.php');
+
    	$ldapBindDn = $GP['NU_LDAP_BINDDN'];
   	$ldapPassword = $GP['NU_LDAP_PASSWORD'];
 
@@ -256,17 +267,30 @@ if ($dbr_anakeen) {
   		$testName = sprintf("connection to '%s'", $base['dn']);
   		$tout[$testName] = array();
 
-  		$conn = ldap_connect($ldaphost);
+  		$uri = getLDAPUri($ldapmode, $ldaphost, $ldapport);
+  		$conn = ldap_connect($uri);
   		if( $conn === false ) {
   			$tout[$testName]['status'] = KO;
-  			$tout[$testName]['msg'] = sprintf("Could not connect to LDAP server '%s': %s", $ldaphost, $php_errormsg);
+  			$tout[$testName]['msg'] = sprintf("Could not connect to LDAP server '%s': %s", $uri, $php_errormsg);
   			continue;
+  		}
+
+  		ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+  		ldap_set_option($conn, LDAP_OPT_REFERRALS, 0);
+
+  		if( $ldapmode == 'tls' ) {
+  			$ret = ldap_start_tls($conn);
+  			if( $ret === false ) {
+  				$tout[$testName]['status'] = KO;
+  				$tout[$testName]['msg'] = sprintf("Could not negotiate TLS with server '%s': %s", $uri, ldap_error($conn));
+  				continue;
+  			}
   		}
 
   		$bind = ldap_bind($conn, $ldapBindDn, $ldapPassword);
   		if( $bind === false ) {
   			$tout[$testName]['status'] = KO;
-  			$tout[$testName]['msg'] = sprintf("Could not bind with bind DN '%s': %s", $ldapBindDn, ldap_error($conn));
+  			$tout[$testName]['msg'] = sprintf("Could not bind with bind DN '%s' on server '%s': %s", $ldapBindDn, $uri, ldap_error($conn));
   			ldap_close($conn);
   			continue;
   		}
