@@ -552,6 +552,9 @@ function add_import_file(&$action, $fimport) {
 									$tcr[$nline]["err"]=$perr;
 								}
 							}
+							    // need reset all documents
+							
+							$pdoc->recomputeProfiledDocument();
 						}
 							
 					} else {

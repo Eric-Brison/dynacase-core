@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-11 18:31+0100\n"
-"PO-Revision-Date: 2010-11-23 10:38+0100\n"
+"POT-Creation-Date: 2011-03-09 10:56+0100\n"
+"PO-Revision-Date: 2011-03-09 10:56+0100\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -3381,6 +3381,10 @@ msgstr "Valeurs par défaut"
 
 msgid "document not referenced"
 msgstr "document non référencé"
+
+#, c-format
+msgid "attribute %s"
+msgstr "attribut %s"
 
 #, c-format
 msgid "Add acl %s for %s"
@@ -7024,6 +7028,10 @@ msgid "%s is not a family"
 msgstr "%s n'est pas une famille"
 
 #, c-format
+msgid "collection %s not exists"
+msgstr ""
+
+#, c-format
 msgid "%s has no email address"
 msgstr "%s n'a âs d'edresse email"
 
@@ -7404,6 +7412,9 @@ msgstr "Impossible d'avoir plusieurs vues avec le même nom"
 
 msgid "unreferenced document"
 msgstr "document non référencé"
+
+msgid "multiple document"
+msgstr ""
 
 #, c-format
 msgid "function [%s] not exists"
