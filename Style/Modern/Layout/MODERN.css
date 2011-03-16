@@ -77,8 +77,11 @@ BUTTON, input[type="button"], input[type="submit"] {
 
 TABLE.edittable input[type="button"] {
   border-left-style:none;
-  margin-right:1px;
-  
+  /*margin-right:1px;*/
+  [IF ISCHROME]/*Chrome hack*/
+  min-width: 1.5em;
+  padding: 1px
+  /*EO Chrome hack*/[ENDIF ISCHROME]
 }
 BUTTON:hover { 		
   background-image: [input-background-image];
@@ -207,7 +210,7 @@ input[type="image"] {
 }
 
 .document legend {
-    font-size: [SIZE_MEDIUM];
+    /*font-size: [SIZE_MEDIUM];*/
 }
 
 .document a:HOVER {
@@ -266,14 +269,14 @@ input[type="image"] {
 .freedom input {
     border-width: 1px;
     border-style: solid;
-    font-size: [SIZE_MEDIUM];
+    /*font-size: [SIZE_MEDIUM];*/
 }
 
 .document select {
     background-repeat: repeat-x;
     border-width: 1px ;
     border-style: solid ;
-    font-size: [SIZE_MEDIUM];
+    /*font-size: [SIZE_MEDIUM];*/
 }
 /*
 .document input[type=button] {
@@ -336,7 +339,7 @@ input[type="image"] {
 }
 
 .document td,.document th {
-    font-size: [SIZE_MEDIUM];
+    /*font-size: [SIZE_MEDIUM];*/
 }
 
 .document .tarray {
@@ -361,7 +364,7 @@ input[type="image"] {
 
 .document .tabsh span {
     font-weight: bold;
-    font-size: [SIZE_MEDIUM];
+    /*font-size: [SIZE_MEDIUM];*/
     -moz-border-radius: 0px;
     border-left-width: 1px ;
     border-left-style: solid;
