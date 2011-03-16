@@ -5,7 +5,6 @@ if [ -z "$pgservice_freedom" ]; then
     exit 1
 fi
 
-$wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Style
 
 PGSERVICE="$pgservice_freedom" psql --set ON_ERROR_STOP=on <<EOF 2>&1
 ALTER TABLE style add COLUMN parsable char DEFAULT 'N';
