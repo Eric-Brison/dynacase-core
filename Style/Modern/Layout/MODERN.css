@@ -202,12 +202,12 @@ input[type="image"] {
     padding: 10px;
 }
 
-.document legend,.document a {
-    font-weight: bold;
+.document legend {
+    font-style: italic;
 }
 
 .document legend {
-    font-size: 11px;
+    font-size: [SIZE_MEDIUM];
 }
 
 .document a:HOVER {
@@ -219,7 +219,7 @@ input[type="image"] {
  */
 
 .document .AutoCompleteDivListeStyle {
-  font-size: 13px; font-family: arial,sans-serif; 
+  font-size: [SIZE_LARGE]; font-family: arial,sans-serif; 
   white-space:nowrap;
   cursor:default;
   border-style: inset ;
@@ -266,14 +266,14 @@ input[type="image"] {
 .freedom input {
     border-width: 1px;
     border-style: solid;
-    font-size: 11px;
+    font-size: [SIZE_MEDIUM];
 }
 
 .document select {
     background-repeat: repeat-x;
     border-width: 1px ;
     border-style: solid ;
-    font-size: 11px;
+    font-size: [SIZE_MEDIUM];
 }
 /*
 .document input[type=button] {
@@ -336,7 +336,7 @@ input[type="image"] {
 }
 
 .document td,.document th {
-    font-size: 11px;
+    font-size: [SIZE_MEDIUM];
 }
 
 .document .tarray {
@@ -361,7 +361,7 @@ input[type="image"] {
 
 .document .tabsh span {
     font-weight: bold;
-    font-size: 11px;
+    font-size: [SIZE_MEDIUM];
     -moz-border-radius: 0px;
     border-left-width: 1px ;
     border-left-style: solid;
@@ -422,7 +422,7 @@ input[type="image"] {
 
 
 .document legend,.document a {
-    color: #15428B;
+    color: [COLOR_ACOLOR];
 }
 
 .document a:HOVER {
@@ -548,4 +548,21 @@ input[type="image"] {
 
 .document tr.selecta td {
     background-color: #DFE8F6 !important;
+}
+
+
+/*
+ * ------------------------------------------
+ * customisations css
+ * ------------------------------------------
+ */
+
+td.MenuSelected {
+    color: [COLOR_BLACK];
+    border-style: inset !important;
+}
+
+td.MenuActive {
+    color: [COLOR_BLACK];
+    border-style: inset !important;
 }

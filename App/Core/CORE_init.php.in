@@ -33,7 +33,7 @@ $app_const = array (
 								"descr"=>N_("use dynacase user management"),
 								"kind"=>"enum(yes|no)",
 								"global"=>"Y"),
-		    "STYLE"	                =>array("val"=>"DEFAULT",
+		    "STYLE"	                =>array("val"=>"MODERN",
 							"descr"=>N_("default style"),
 							"user"=>"Y"),
 		    "FONTSIZE"	                =>array("val"=>"normal",
