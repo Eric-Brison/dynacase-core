@@ -129,9 +129,11 @@ input[type="text"] {
 input[type="checkbox"], input[type="radio"] { 
   vertical-align:middle; 
  }
-input[disabled], input[disabled="disabled"],input.disabled, textarea[disabled], select[disabled], select.disabled, select[disabled="disabled"] {
+input[disabled], input[disabled="disabled"],input.disabled,
+textarea[disabled],
+select[disabled], select.disabled, select[disabled="disabled"] {
   color:[input-text-disabled-color];
-  background-color:[input-background-disabled-color];
+  background-color:[input-background-disabled-color] !important;
 }
 TEXTAREA { 
   /*-moz-border-radius:7px ;*/
