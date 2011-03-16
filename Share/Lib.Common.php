@@ -107,7 +107,6 @@ function getLayoutFile($app, $layfile)
             return ($file);
         }
         
-        $layfile = strtolower($layfile);
         $file = $root . "/STYLE/$style/Layout/".strtolower($layfile);
         if (file_exists($file)){
             return ($file);
@@ -119,7 +118,6 @@ function getLayoutFile($app, $layfile)
         return ($file);
     }
     
-    $layfile = strtolower($layfile);
     $file = $root . "/$app/Layout/".strtolower($layfile);
     if (file_exists($file)){
         return ($file);
