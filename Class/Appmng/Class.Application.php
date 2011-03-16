@@ -434,7 +434,11 @@ create sequence SEQ_ID_APPLICATION start 10;
       $this->style->Set($this);
 
     }
-      $this->AddCssRef("$style:gen.css", true);
+      if("Y" == $this->style->parsable){
+          $this->AddCssRef("$style:gen.css", true);
+      } else {
+          $this->AddCssRef("STYLE/$style/Layout/gen.css");
+      }
       $size=$this->getParam("FONTSIZE","normal");
       $this->AddCssRef("WHAT/Layout/size-$size.css");
   }
