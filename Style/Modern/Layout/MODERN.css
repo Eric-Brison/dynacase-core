@@ -424,11 +424,11 @@ input[type="image"] {
 .document legend,.document a {
     color: [COLOR_ACOLOR];
 }
-
+/*
 .document a:HOVER {
     background-color: white;
 }
-
+*/
 .document .normal {
     background-color: #FFFFFF !important;
 }
@@ -565,4 +565,17 @@ td.MenuSelected {
 td.MenuActive {
     color: [COLOR_BLACK];
     border-style: inset !important;
+}
+.headtitle {
+    color: [CORE_TEXTFGCOLOR];
+    font-weight: bold;
+}
+
+A.headtitle:link,A.headtitle:visited {
+    color: [CORE_TEXTFGCOLOR];  
+}
+A.headtitle:hover {
+    color: [CORE_TEXTFGCOLOR];
+    background-color: [CORE_BGCOLOR];
+    [IFNOT ISIE6]  background-image: [CORE_BGIMG];[ENDIF ISIE6]
 }
