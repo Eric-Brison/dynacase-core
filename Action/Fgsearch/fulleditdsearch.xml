@@ -13,6 +13,11 @@ DIV.search {
   -moz-border-radius:15px;
 }
 </style>
+
+<script>
+addEvent(window,"load",resizeiframedetail);
+addEvent(window,"resize",resizeiframedetail);
+</script>
 <div class="search" id="dsearch">
 <table border=0 width="100%">
 <thead>
@@ -143,6 +148,6 @@ DIV.search {
 </form>
 </div>
 
-<iframe src="[IMG:1x1.gif]" style="width:100%;height:98%;border:none;padding:0px;margin:0px" name="searchresult"></iframe>
+<iframe src="[IMG:1x1.gif]" style="width:100%;border:none;padding:0px;margin:0px" name="searchresult" id="searchresult"></iframe>
 
 [ZONE FDL:HTMLFOOT]
