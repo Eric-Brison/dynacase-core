@@ -66,6 +66,7 @@ function sendmail($to,$from,$cc,$bcc,$subject,&$mimemail,$multipart=null) {
   
   /* Address the message to each of the recipients. */
   foreach ($rcpt as $v) {
+	$v = trim($v);
     if ($v) {
       if (preg_match("/<([^>]*)>/",$v,$reg)) {
 	$v=$reg[1];
