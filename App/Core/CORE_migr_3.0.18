@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -z "$wpub" ]; then
+    echo "Undefined or empty wpub!"
+    exit 1
+fi
+#$wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Application
+PGSERVICE="$pgservice_core" psql -c 'alter table application add column tag text;'

@@ -6,7 +6,7 @@ php_value magic_quotes_gpc "On"
 php_value session.save_path "@prefix@/session"
 php_value session.gc_maxlifetime 2147483647
 
-SetEnv FREEDOM_ACCESS WEBDESK
+SetEnv FREEDOM_ACCESS CORE
 
 ExpiresActive On
 ExpiresByType application/x-javascript  A31536000

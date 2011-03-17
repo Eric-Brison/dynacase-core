@@ -1,0 +1,34 @@
+html { background-color:#fff; }
+body { padding:0px; margin:20px 40px 0px 40px; color:#666; }
+img { border:0px; }
+a, a:link, a:visited { color:#007827; font-weight:bold; }
+a:hover { color:#FFA700; text-decoration:none; }
+
+
+#header { height:100px; vertical-align:top;  border:1px solid #aaa; font-size:200%; font-weigth:bold; background-color:#f4fbe3; margin-bottom:20px;}
+#header img { float:left; vertical-align:middle; padding:10px 20px 10px 20px;}
+#header div.content { padding:20px;}
+
+#left { width:40%; }
+#right { }
+
+#welcome { margin:0px 10px 50px; padding:10px; }
+
+#links { text-align:center; font-size:80%; color:#eee; }
+#links a {  margin-bottom:10px; margin-left:50px; display:block; width:140px; padding:5px; text-decoration:none; border-style:solid; border-width:1px; border-color:#aaa; }
+
+#content { }
+
+#footer {  }
+
+#apps { background-color : #f4fbe3;  border:1px solid #aaa; margin-top:10px; padding:10px; color:#444; }
+#apps a { padding:0 10px 0 10px; margin:left:10px; border-width:1px; border-style:none solid none none ; border-color:#444}
+#apps a { text-decoration:none; }
+#apps img { width:12px; }
+#apps li { list-style-type:none; float:left; }
+
+#apropos { padding:10px; background-color:#F4FBE3; color:#666; border:1px solid #a4a4a4; }
+#apropos .intro { font-style:italic; padding:5px 0px 15px 0px; text-decoration:underline; }
+#apropos span.licence { font-size:12px; }
+#apropos div.title { padding-bottom:5px; border-bottom:1px solid #a4a4a4; margin-bottom:5px; font-size:150%; font-weigth:bold; }
+#apropos div.fr, #apropos div.en { padding:5px; }
