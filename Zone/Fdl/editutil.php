@@ -64,7 +64,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 		$input="<input  type=\"hidden\" name=\"".$attrin."\" value=\"".chop(htmlentities(stripslashes($value),ENT_COMPAT,"UTF-8"))."\"";
 		$input .= " id=\"".$attridk."\" ";
 		$input .= " > ";
-		if (!$notd) $input .= "</td><td>";
+		if (!$notd) $input .= '</td><td class="hiddenAttribute">';
 		return $input;
 	}
 
@@ -640,7 +640,7 @@ if (($oattr->type != "array") && ($oattr->type != "htmltext")) {
 if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 	$ib="<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"".
 " title=\""._("clear selected inputs")."\" disabled ".
-" onclick=\"clearDocIdInputs('$attridk','mdocid_isel_$attridk',this)\">";  
+" onclick=\"clearDocIdInputs('$attridk','mdocid_isel_$attridk',this)\">";
 	//$input.="</td><td>";
 	if ($notd) {
 
@@ -672,21 +672,21 @@ if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 } else if ($oattr->type == "color") {
 	$input.="<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"".
 " title=\""._("clear inputs")."\"".
-" onclick=\"clearInputs(['$attrid'],'$index')\">";  
+" onclick=\"clearInputs(['$attrid'],'$index')\">";
 	$input.="</td><td class=\"nowrap\">";
 } else if ($oattr->type == "time") {
 	$input.="<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"".
 " title=\""._("clear inputs")."\"".
-" onclick=\"clearTime('$attridk')\">";   
+" onclick=\"clearTime('$attridk')\">";
 	if (!$notd) $input.="</td><td class=\"nowrap\">";
 } else if (($oattr->type == "file")||($oattr->type == "image")) {
 	$input.="<input id=\"ix_$attridk\" type=\"button\" style=\"vertical-align:baseline\" value=\"&times;\"".
-" title=\""._("clear file")."\"".	  
-" title1=\""._("clear file")."\"".  
-" value1=\"&times;\"".	  
-" title2=\""._("restore original file")."\"". 
+" title=\""._("clear file")."\"".
+" title1=\""._("clear file")."\"".
+" value1=\"&times;\"".
+" title2=\""._("restore original file")."\"".
 " value2=\"&minus;\"".
-" onclick=\"clearFile(this,'$attridk')\">";   
+" onclick=\"clearFile(this,'$attridk')\">";
 	if (!$notd) $input.="</td><td class=\"nowrap\">";
 } else {
 	if (!$notd) $input.="</td><td class=\"nowrap\">";
@@ -852,6 +852,8 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 
 	$height=$oattr->getOption("height",false);
 	$lay->set("tableheight",$height);
+	$tableStyle=$oattr->getOption("tstyle",'');
+	$lay->set("tableStyle", $tableStyle);
 	$lay->set("thspan","2");
 
 	$talabel=array();
@@ -889,6 +891,7 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 	$tad = $ddoc->attributes->getArrayElements($attrid);
 	$tval=array();
 	$nbcolattr=0; // number of column
+	$autoWidthAttr=false;//is there at least one attribute displayed with width auto?
 
 	foreach($ta as $k=>$v) {
 		if ($v->mvisibility=="R") {
@@ -896,24 +899,28 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 			$ta[$k]->mvisibility="H";
 		}
 		$visible = ($v->mvisibility!="H");
+		$width = $v->getOption("cwidth","auto");
 		$talabel[] = array(
 			"alabel"=>(!$visible)?"":$v->getLabel(),
 			"elabel"=>$v->getOption("elabel"),
-			"ahw"=>(!$visible)?"0px":$v->getOption("cwidth","auto"),
 			"astyle"=>$v->getOption("cellheadstyle"),
-			"ahvis"=>(!$visible)?"hidden":"visible");
+			"ahclass"=>(!$visible)?"hiddenAttribute":"visibleAttribute");
 		$tilabel[] = array(
 			"ilabel"=>getHtmlInput($doc,$v,$ddoc->getValue($tad[$k]->id),'__1x_'),
-			"ihw"=>(!$visible)?"0px":"auto",
+			"ihw"=>(!$visible)?"0px":$width,
 			"bgcolor"=>$v->getOption("bgcolor","inherit"),
 			"tdstyle"=>$v->getOption("cellbodystyle"),
-			"ihvis"=>(!$visible)?"hidden":"visible");
+			"ihclass"=>(!$visible)?"hiddenAttribute":"visibleAttribute");
 
 
 		if ($visible) $nbcolattr++;
 		$tval[$k]=$doc->getTValue($k);
 		$nbitem=count($tval[$k]);
-
+		
+		if( ($visible) && ($width=="auto") ){
+			$autoWidthAttr=true;
+		}
+		
 		if ($nbitem==0) {
 			// add first range
 			if ($oattr->format != "empty" && $oattr->getOption("empty")!="yes") {
@@ -921,13 +928,21 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 				$nbitem=1;
 			}
 		}
+		
+		//Dead code?
+		//("bvalue_" or "ivalue" could not be found in editarray.xml neither in this function.
+		// and $tivalue is redefined as empty array in code below.
+		/*
 		$tivalue=array();
 		for ($i=0;$i<$nbitem;$i++) {
 			$tivalue[]=array("ivalue"=>$tval[$k][$i]);
 		}
 		$lay->setBlockData("bvalue_$k",$tivalue);
+		*/
 	}
 
+	//No more required (works even in IE6 which is no more supported)
+	/*
 	if ($action->read("navigator") == "EXPLORER") {
 		// compute col width explicitly
 		if ($nbcolattr> 0) {
@@ -941,11 +956,23 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 			}
 		}
 	}
+	*/
 	$pindex='';
 	if (($row >= 0) && ($oattr->mvisibility=="W" || $oattr->mvisibility=="O" || $oattr->mvisibility=="U")) {
 		$oattr->mvisibility="U";
 		$pindex='s';
 	}
+	
+	//Compute table width with some compatibility rules
+	$tableWidth=$oattr->getOption("twidth",'100%');//compatibility
+	
+	//but if all columns are fixed, you probably want an 'auto' layout...
+	if( (!$autoWidthAttr) && ($tableWidth != 'auto') ){
+		//TODO: should write something in the log
+		$tableWidth='auto';
+	}
+	$lay->set("tableWidth", $tableWidth);
+	
 	$lay->setBlockData("TATTR",$talabel);
 	$lay->setBlockData("IATTR",$tilabel);
 	$lay->set("attrid",$attrid);
@@ -969,10 +996,10 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 
 			$tivalue[]=array(
 				"eivalue"=>getHtmlInput($doc,$va,$tval[$ka][$k],$pindex.$k),
-				"ehvis"=>(!$visible)?"hidden":"visible",
 				"bgcolor"=>$va->getOption("bgcolor","inherit"),
 				"tdstyle"=>$va->getOption("cellbodystyle"),
-				"vhw"=>(!$visible)?"0pt":$talabel[$ika]["ahw"]);
+				"vhw"=>(!$visible)?"0px":$va->getOption("cwidth","auto"),
+				"eiclass"=>(!$visible)?"hiddenAttribute":"visibleAttribute");
 			$ika++;
 		}
 		$lay->setBlockData("bevalue_$k",$tivalue);
@@ -1449,7 +1476,12 @@ function editmode(&$action) {
 	}
 
 	$action->parent->AddJsRef("jscalendar/Layout/calendar-setup.js");
-	$action->parent->AddCssRef("jscalendar/Layout/calendar-win2k-2.css");
+	$jsCalendarCssFile = $action->getLayoutFile('calendar.css');
+        if('' == $jsCalendarCssFile){
+                $action->parent->AddCssRef("jscalendar/Layout/calendar-win2k-2.css");
+        } else {
+                $action->parent->AddCssRef("FDL:calendar.css",true);
+        }
 	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/common.js");
 	$action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=EDITJS");
 	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/viewicard.js");

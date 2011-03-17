@@ -78,33 +78,52 @@ function getParam($name, $def="") {
  * @param string $def default value if variable is not defined
  * @return unknown_type
  */
-function getSessionValue($name, $def="") {
-	global $action;
-	if ($action)  return $action->read($name,$def);
-	return  null;
+function getSessionValue($name, $def = "")
+{
+    global $action;
+    if ($action)
+        return $action->read($name, $def);
+    return null;
 }
 
-function getLayoutFile($app, $layfile) {
-	$socStyle = Getparam("CORE_SOCSTYLE");
-	$root = Getparam("CORE_PUBDIR");
-	if ($socStyle != "") {
-		
-		$file = $root."/$app/Layout/$socStyle/$layfile";
-		if (file_exists($file))  return($file);
-		$layfile=strtolower($layfile);
-		$file = $root."/$app/Layout/$socStyle/$layfile";
-		if (file_exists($file))  return($file);
-		
-
-	}
-	
-		$file = $root."/$app/Layout/$layfile";
-		if (file_exists($file))  return($file);
-		$layfile=strtolower($layfile);
-		$file = $root."/$app/Layout/$layfile";
-		if (file_exists($file))  return($file);
-	
-	return $app."/Layout/".$layfile;
+function getLayoutFile($app, $layfile)
+{
+    $socStyle = Getparam("CORE_SOCSTYLE");
+    $style = Getparam("STYLE");
+    $root = Getparam("CORE_PUBDIR");
+    if ($socStyle != "") {
+        $file = $root . "/STYLE/$socStyle/Layout/$layfile";
+        if (file_exists($file)){
+            return ($file);
+        }
+        
+        $file = $root . "/STYLE/$socStyle/Layout/".strtolower($layfile);
+        if (file_exists($file)){
+            return ($file);
+        }
+    } elseif ($style != "") {
+        $file = $root . "/STYLE/$style/Layout/$layfile";
+        if (file_exists($file)){
+            return ($file);
+        }
+        
+        $file = $root . "/STYLE/$style/Layout/".strtolower($layfile);
+        if (file_exists($file)){
+            return ($file);
+        }
+    }
+    
+    $file = $root . "/$app/Layout/$layfile";
+    if (file_exists($file)){
+        return ($file);
+    }
+    
+    $file = $root . "/$app/Layout/".strtolower($layfile);
+    if (file_exists($file)){
+        return ($file);
+    }
+    
+    return $app . "/Layout/" . $layfile;
 }
 
 function microtime_diff($a,$b) {

@@ -2,11 +2,11 @@
 /**
  * View set of documents of same family
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: generic_list.php,v 1.43 2008/10/30 09:23:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FREEDOM
- * @subpackage 
+ * @subpackage
  */
  /**
  */
@@ -22,7 +22,7 @@ include_once("GENERIC/generic_util.php");
  * View list of document from folder (or searches)
  * @param Action &$action current action
  * @global dirid Http var : folder identificator to see
- * @global catg Http var : 
+ * @global catg Http var :
  * @global page Http var : page number
  * @global tabs Http var : tab number 1 for ABC, 2 for DEF, if onglet=Y..
  * @global onglet Http var : [Y|N] Y if want see alphabetics tabs
@@ -32,12 +32,12 @@ include_once("GENERIC/generic_util.php");
  */
 function generic_list(&$action) {
   // Set the globals elements
-  // Get all the params      
+  // Get all the params
   $dirid=GetHttpVars("dirid"); // directory to see
   $catgid=GetHttpVars("catg", $dirid); // category
   $startpage=GetHttpVars("page","0"); // page to see
   $tab=GetHttpVars("tab","0"); // tab to see 1 for ABC, 2 for DEF, ...
-  $onglet=GetHttpVars("onglet"); // if you want onglet
+  $onglet=GetHttpVars("onglet",'N'); // if you want onglet
   $famid=GetHttpVars("famid"); // family restriction
   $clearkey=(GetHttpVars("clearkey","N")=="Y"); // delete last user key search
   $sqlorder=GetHttpVars("sqlorder"); // family restriction
@@ -77,7 +77,7 @@ function generic_list(&$action) {
     if ($dirid==0) {
       $action->lay->Set("fldtitle",_("precise search"));
       $action->lay->Set("pds","");
-    } else {      
+    } else {
       $action->lay->Set("fldtitle",$dir->getHTMLTitle());
     }
   }
@@ -92,11 +92,11 @@ function generic_list(&$action) {
   //  $action->lay->Set("next",$start+$slice);
   //$action->lay->Set("prev",$start-$slice);
 
-  $action->lay->Set("nexticon",""); 
-  $action->lay->Set("previcon",""); 
+  $action->lay->Set("nexticon","");
+  $action->lay->Set("previcon","");
 
   if ($sqlorder=="") {
-    $sqlorder = getDefUSort($action,"title",$sfamid);  
+    $sqlorder = getDefUSort($action,"title",$sfamid);
     setHttpVar("sqlorder",$sqlorder );
   }
 
@@ -121,12 +121,12 @@ function generic_list(&$action) {
     $only=(getInherit($action,$famid)=="N");
     if (viewfolder($action, true, false,$column,$slice,array(),($only)?-(abs($famid)):abs($famid)) == $slice) {
       // can see next
-      $action->lay->Set("nexticon",$action->GetIcon("next.png",N_("next"),16)); 
+      $action->lay->Set("nexticon",$action->GetIcon("next.png",N_("next"),16));
     }
   }
   if ($startpage > 0) {
     // can see prev
-    $action->lay->Set("previcon",$action->GetIcon("prev.png",N_("prev"),16)); 
+    $action->lay->Set("previcon",$action->GetIcon("prev.png",N_("prev"),16));
   }
   
   if ($dirid && $wonglet) {
@@ -179,7 +179,7 @@ function generic_viewmode(&$action,$famid) {
     $tview[$fid]=$vmode;
   }
   switch ($prefview) {
-  case "column":  
+  case "column":
   case "abstract":
     $tview[$famid]=$prefview;
     // implode parameters to change user preferences
@@ -227,7 +227,7 @@ function getFamilySearches($action,$dbaccess,$famid) {
   if ($fdoc->dfldid > 0) {
     $homefld = new_Doc( $dbaccess, $fdoc->dfldid);
     $stree=array();
-    if ($homefld->id > 0)   $stree=getChildDoc($dbaccess,$homefld->id,"0","ALL",array(),$action->user->id,"TABLE",5);  
+    if ($homefld->id > 0)   $stree=getChildDoc($dbaccess,$homefld->id,"0","ALL",array(),$action->user->id,"TABLE",5);
 
     $streeSearch = array();
     foreach($stree as $k=>$v) {
@@ -242,10 +242,10 @@ function getFamilySearches($action,$dbaccess,$famid) {
 	  $streeSearch[$v["id"]]["isparam"]="1";
 	}
 	if ($v["fromid"]==25) {
-	  $streeSearch[$v["id"]]["title"]="(R)".$streeSearch[$v["id"]]["title"];	
+	  $streeSearch[$v["id"]]["title"]="(R)".$streeSearch[$v["id"]]["title"];
 	  $streeSearch[$v["id"]]["isreport"]="1";
 	}
-      } 
+      }
     }
   }
 
@@ -272,7 +272,7 @@ function getFamilySearches($action,$dbaccess,$famid) {
       $streeSearch[$v["id"]]["isparam"]="1";
     }
     if ($v["fromid"]==25) {
-      $streeSearch[$v["id"]]["title"]="(R)".$streeSearch[$v["id"]]["title"];	
+      $streeSearch[$v["id"]]["title"]="(R)".$streeSearch[$v["id"]]["title"];
       $streeSearch[$v["id"]]["isreport"]="1";
     }
   }

@@ -9,6 +9,6 @@ export appname
 export targetdir
 export utildir
 
-SUBDIR= Default Original 
+SUBDIR= Default Original Modern
 
 include $(utildir)/PubRule

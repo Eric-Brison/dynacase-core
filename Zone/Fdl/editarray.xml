@@ -1,34 +1,56 @@
-[IF caption]<fieldset ><legend style="cursor:pointer" onclick="viewornot('T[attrid]')">[caption]</legend>[ENDIF caption]
-<table width="100%" border=1 cellspacing="1" id="T[attrid]" class="tarray[IFNOT caption] border[ENDIF caption]">
-   <thead><tr>[IFNOT readonly]<th>&nbsp;</th>[ENDIF readonly]
-    [BLOCK TATTR]<th colspan="[thspan]" style="[IF elabel]cursor:help;[ENDIF elabel]visibility:[ahvis];[astyle]"  [IF elabel]title="[elabel]" [ENDIF elabel] width="[ahw]">[alabel]</th> [ENDBLOCK TATTR]
-   [IFNOT ISIE][IF tableheight]<th style="width:20px;visibility:hidden"></th>[ENDIF tableheight][ENDIF ISIE]</tr></thead>
- <tbody id="tbody[attrid]" [IFNOT ISIE][IF tableheight]style="height:[tableheight];overflow:auto"[ENDIF tableheight][ENDIF ISIE] >
-  
-     [BLOCK EATTR]<tr index="[index]" onmouseup="sdrag(event);" >[IFNOT readonly]<td style="white-space:nowrap;width:50px;" align="left">
-     	<input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()"><input class="button select-button" type="button" title="[TEXT:select]" onmousedown="selecttr(this,this.parentNode.parentNode);adrag(event,this);">
-     	</td>[ENDIF readonly]
-    [BLOCK [bevalue]]<td style="width:[vhw];background-color:[bgcolor];[tdstyle]">[eivalue]</td>[ENDBLOCK [bevalue]]
- </tr>[ENDBLOCK EATTR]
- [IFNOT readonly]
-<tr id="lasttr[attrid]">
-<td class="und" width="50px" align="right" >
-	[IF useadd]<input class="button unselect-button" type="button" name="unselect" style="visibility:hidden" title="[TEXT:unselect]" align="bottom" onclick="unseltr()">[ENDIF useadd]&nbsp;<input class="button duplicate-button" type="button" name="unselect" style="visibility:hidden" title="[TEXT:duplicate]" onclick="duptr();return false;">
-[ENDIF readonly]</td>
-<td colspan="[footspan]">
-	[IFNOT readonly]
-	[IF useadd]<input class="button add-button" type="button" id="tiadd[attrid]" title="[TEXT:add]" onclick="addtr('tnew[attrid]','tbody[attrid]');return false;">[ENDIF useadd]
-      [IF addfunc]<input class="normal [attrid]" type="button" id="tispecial[attrid]" title="[addtitle]" value="[addsymbol]" onclick="[addfunc];return false;">[ENDIF addfunc]
-
-</td></tr> [ENDIF readonly] 
-  </tbody>
-   <tfoot><tr style="display:none;" onmouseup="sdrag(event);" id="tnew[attrid]">
-   	<td width="50px" align="left">
-   	<input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()"><input class="button select-button" type="button" title="[TEXT:select]" onmousedown="selecttr(this,this.parentNode.parentNode);adrag(event,this);">
-	</td>
-    [BLOCK IATTR]<td  style="background-color:[bgcolor];width:[ihw];[tdstyle]">[ilabel]</td> [ENDBLOCK IATTR]
-   </tr>
-  </tfoot>
-</table>
-
+[IF caption]<fieldset >
+    <legend style="cursor:pointer" onclick="viewornot('T[attrid]')">
+        [caption]
+    </legend>[ENDIF caption]
+    <table border=1
+           cellspacing="0"
+           id="T[attrid]" 
+           class="tarray[IFNOT caption] border[ENDIF caption]"
+           style="width:[tableWidth];[tableStyle]">
+        <thead>
+            <tr>
+                [IFNOT readonly]<th class="tools"/>[ENDIF readonly]
+                [BLOCK TATTR]<th colspan="[thspan]"
+                    style="[IF elabel]cursor:help;[ENDIF elabel][astyle]"
+                    [IF elabel]title="[elabel]"[ENDIF elabel]
+                    class="[ahclass][IF elabel] withElabel[ENDIF elabel]">
+                    [alabel]
+                </th>[ENDBLOCK TATTR]
+                [IFNOT ISIE][IF tableheight]
+<th style="width:20px;visibility:hidden"/>[ENDIF tableheight][ENDIF ISIE]
+            </tr>
+        </thead>
+        <tbody id="tbody[attrid]" [IFNOT ISIE][IF tableheight]style="height:[tableheight];overflow:auto"[ENDIF tableheight][ENDIF ISIE]>
+            [BLOCK EATTR]<tr index="[index]" onmouseup="sdrag(event);">
+                [IFNOT readonly]<td class="tools" align="left">
+                    <input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()">
+                    <input class="button select-button" type="button" title="[TEXT:select]" onmousedown="selecttr(this,this.parentNode.parentNode);adrag(event,this);">
+                </td>[ENDIF readonly]
+                [BLOCK [bevalue]]<td class="[eiclass]" style="width:[vhw];background-color:[bgcolor];[tdstyle]">
+                    [eivalue]
+                </td>[ENDBLOCK [bevalue]]
+            </tr>[ENDBLOCK EATTR]
+            [IFNOT readonly]<tr id="lasttr[attrid]">
+                <td class="und tools" align="right">
+                    [IF useadd]<input class="button unselect-button" type="button" name="unselect" style="visibility:hidden" title="[TEXT:unselect]" align="bottom" onclick="unseltr()">[ENDIF useadd]
+                    <input class="button duplicate-button" type="button" name="unselect" style="visibility:hidden" title="[TEXT:duplicate]" onclick="duptr();return false;">
+                </td>
+                <td colspan="[footspan]">
+                    [IF useadd]<input class="button add-button" type="button" id="tiadd[attrid]" title="[TEXT:add]" onclick="addtr('tnew[attrid]','tbody[attrid]');return false;">[ENDIF useadd]
+                    [IF addfunc]<input class="normal [attrid]" type="button" id="tispecial[attrid]" title="[addtitle]" value="[addsymbol]" onclick="[addfunc];return false;">[ENDIF addfunc]
+                </td>
+            </tr>[ENDIF readonly] 
+        </tbody>
+        <tfoot>
+            <tr style="display:none;" onmouseup="sdrag(event);" id="tnew[attrid]">
+                <td class="tools" align="left">
+                    <input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()">
+                    <input class="button select-button" type="button" title="[TEXT:select]" onmousedown="selecttr(this,this.parentNode.parentNode);adrag(event,this);">
+                </td>
+                [BLOCK IATTR]<td class="[ihclass]" style="background-color:[bgcolor];width:[ihw];[tdstyle]">
+                    [ilabel]
+                </td>[ENDBLOCK IATTR]
+            </tr>
+        </tfoot>
+    </table>
 [IF caption]</fieldset>[ENDIF caption]
