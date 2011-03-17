@@ -88,6 +88,7 @@ $app_const= array(
 			 "descr"=>N_("SMTP login")),
   "SMTP_PASSWORD"   =>array("val"=>"",
 			"global"=>"Y",
+			"kind"=>"password",
 			"user"=>"N",
 			    "descr"=>N_("SMTP password")),
 
