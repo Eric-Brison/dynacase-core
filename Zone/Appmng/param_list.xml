@@ -47,15 +47,18 @@ function movediv(th,Aname,Atype,Appid,Kind,Value) {
   }
   document.getElementById('dedit').style.display='block';
   th.appendChild(document.getElementById('dedit'));
-  with (document.getElementById('fedit')) {
-      appid.value=Appid;
-      atype.value=Atype;
-      aname.value=Aname;
-      val.value=Value;
-      val.focus();
-      val.select();
-      val.setAttribute('originvalue',Value);
-  }
+  var formEdit=document.getElementById('fedit');
+  
+  formEdit.appid.value=Appid;
+  formEdit.atype.value=Atype;
+  formEdit.aname.value=Aname;
+  formEdit.val.value=Value;
+  if (Kind=='password') formEdit.val.type='password';
+  else formEdit.val.type='text';
+  formEdit.val.focus();
+  formEdit.val.select();
+  formEdit.val.setAttribute('originvalue',Value);
+  
   
   // redisplay precedent cell 
   if (editedParam != '') {
