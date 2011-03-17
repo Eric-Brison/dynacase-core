@@ -58,7 +58,6 @@ if ($authtype == 'apache') {
   }
   
   $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
-  $_SERVER['PHP_AUTH_PW'] = $auth->getAuthPw();  
  }
 
 if( file_exists('maintenance.lock') ) {

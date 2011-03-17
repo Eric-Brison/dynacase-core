@@ -42,7 +42,6 @@ Class htmlAuthenticator extends Authenticator {
 	}
       }
       $session->register('username', $_POST[$this->parms{'username'}]);
-      $session->register('password', $_POST[$this->parms{'password'}]);
       $session->setuid($_POST[$this->parms{'username'}]);
       return TRUE;
     }
@@ -138,8 +137,7 @@ Class htmlAuthenticator extends Authenticator {
    **
    **/
   public function getAuthPw() {    
-    $session_auth=$this->getAuthSession();
-    return $session_auth->read('password');
+    return null;
   }
   
   /**

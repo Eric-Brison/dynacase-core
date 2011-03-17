@@ -49,7 +49,6 @@ function checkauth(&$action) {
 
 
   $login = $auth->getAuthUser();
-  $pass = $auth->getAuthPw();
   $wu = new User();   
   $existu = false;
   if( $wu->SetLoginName($login) ) {
