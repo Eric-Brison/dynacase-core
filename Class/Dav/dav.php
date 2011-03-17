@@ -142,7 +142,6 @@ function webdav_auth() {
     }
 
     $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
-    $_SERVER['PHP_AUTH_PW'] = $auth->getAuthPw();
   }
 
 }
