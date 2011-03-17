@@ -31,6 +31,7 @@ $app_const= array(
 		       "global"=>"Y"),
   "LDAP_ROOTPW" => array("val"=>"secret",
 		       "descr"=>N_("LDAP admin passord"),
+		       "kind"=>"password",
 		       "global"=>"Y"),
   "LDAP_ENABLED" => array("val"=>"no",
 			  "descr"=>N_("LDAP activated"),

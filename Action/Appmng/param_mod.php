@@ -8,73 +8,83 @@
  * @package WHAT
  * @subpackage APPMNG
  */
- /**
+/**
  */
 
-
-include_once("Class.SubForm.php");
-include_once("Class.Param.php");
+include_once ("Class.SubForm.php");
+include_once ("Class.Param.php");
 
 // -----------------------------------
-function param_mod(&$action) {
+function param_mod(&$action)
+{
     // -----------------------------------
     // Get all the params
+    
 
-    $appid=GetHttpVars("appid");
-    $name =GetHttpVars("aname");
-    $atype=GetHttpVars("atype",PARAM_APP);
-    $val  =GetHttpVars("val");
-    $direct  =($action->getArgument("direct")=="yes");
-$err='';
-    $ParamCour = new Param($action->dbaccess,array($name,$atype,$appid));
-    if (! $ParamCour->isAffected()) {
-        $ParamCour->appid=$appid;
-        $ParamCour->type=$atype;
-        $ParamCour->name=$name;
-        $ParamCour->val=$val;
-        $err=$ParamCour->Add();
+    $appid = GetHttpVars("appid");
+    $name = GetHttpVars("aname");
+    $atype = GetHttpVars("atype", PARAM_APP);
+    $val = GetHttpVars("val");
+    $direct = ($action->getArgument("direct") == "yes");
+    $err = '';
+    $ParamCour = new Param($action->dbaccess, array(
+        $name,
+        $atype,
+        $appid
+    ));
+    if (!$ParamCour->isAffected()) {
+        $ParamCour->appid = $appid;
+        $ParamCour->type = $atype;
+        $ParamCour->name = $name;
+        $ParamCour->val = $val;
+        $err = $ParamCour->Add();
         if ($err != "") {
-            $action->addLogMsg( $action->text("err_add_param")." : $err");
+            $action->addLogMsg($action->text("err_add_param") . " : $err");
         }
     } else {
-        $ParamCour->val=$val;
-        $err=$ParamCour->Modify();
+        $ParamCour->val = $val;
+        $err = $ParamCour->Modify();
         if ($err != "") {
-            $action->addLogMsg( $action->text("err_mod_parameter")." : $err");
+            $action->addLogMsg($action->text("err_mod_parameter") . " : $err");
         }
     }
-
+    
     // reopen a new session to update parameters cache
     //unset($_SESSION["CacheObj"]);
-    $prevact=$action->Read("PARAM_ACT","PARAM_CULIST");
-
-
-
+    $prevact = $action->Read("PARAM_ACT", "PARAM_CULIST");
+    
     if ($atype[0] == PARAM_USER) {
         $action->parent->session->close();
     } else {
         $action->parent->session->closeAll();
     }
-
-    if (! $direct) redirect($action,"APPMNG",$prevact);
+    
+    if (!$direct) redirect($action, "APPMNG", $prevact);
     else {
-        $action->lay->set("error",json_encode($err));
-        $action->lay->set("value",json_encode($ParamCour->val));
+        $action->lay->set("error", json_encode($err)); 
+        $pdef = new paramdef($action->dbaccess,$name);
+        if ($pdef->kind == "password") {
+            if ($ParamCour->val=='')$action->lay->set("value",json_encode($ParamCour->val));
+            else $action->lay->set("value", json_encode("*****"));
+        } else {
+            $action->lay->set("value", json_encode($ParamCour->val));
+        }
     }
 
 }
 
 // -----------------------------------
-function param_umod(&$action) {
-// -----------------------------------
+function param_umod(&$action)
+{
+    // -----------------------------------
+    
 
- 
-  $atype=GetHttpVars("atype",PARAM_APP);
-  $appid=GetHttpVars("appid");
-  if ($atype[0] != PARAM_USER) $action->exitError(_("only user parameters can be modified with its action"));
-  if (substr($atype,1) != $action->user->id) $action->exitError(_("only current user parameters can be modified with its action"));
-
-  param_mod($action);
+    $atype = GetHttpVars("atype", PARAM_APP);
+    $appid = GetHttpVars("appid");
+    if ($atype[0] != PARAM_USER) $action->exitError(_("only user parameters can be modified with its action"));
+    if (substr($atype, 1) != $action->user->id) $action->exitError(_("only current user parameters can be modified with its action"));
+    
+    param_mod($action);
 }
 
 ?>
