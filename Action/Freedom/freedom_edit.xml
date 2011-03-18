@@ -41,7 +41,7 @@ addEvent(window,"load",resetbodyopacity);
 
  </head>
 
-<body class="freedom" id="terrible" style="opacity:0.5;filter: alpha(opacity = 50);"
+<body class="document documentEdit" id="terrible" style="[IF ISIE]filter:alpha(opacity = 50);[ENDIF ISIE][IFNOT ISIE]opacity:0.5;[ENDIF ISIE]"
       onbeforeunload="if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled))return '[STITLE]:[TEXT:Changes will be loosed if you continue]'";
       onUnLoad="if ((! document.isCancelled)&& (!document.isSubmitted)) autoUnlock('[id]');closechoose();"
      >

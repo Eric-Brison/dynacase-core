@@ -37,8 +37,8 @@
 }
 
 .htmlarea .toolbar .buttonDisabled img {
-  filter: alpha(opacity = 25);
-  -moz-opacity: 0.25;
+  [IF ISIE]filter: alpha(opacity = 25);[ENDIF ISIE]
+  [IFNOT ISIE]opacity: 0.25;[ENDIF ISIE]
 }
 
 .htmlarea .toolbar .separator {
