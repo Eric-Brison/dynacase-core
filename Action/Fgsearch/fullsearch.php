@@ -185,7 +185,7 @@ function fullsearch(&$action)
         
         $action->lay->set("notfirst", ($start != 0));
         $action->lay->set("theFollowingText", sprintf(_("View %d next results"), $slice));
-        
+        $c=0;
         foreach ( $tdocs as $k => $tdoc ) {
             if ($tdoc["confidential"]) {
                 if (($tdoc["profid"] > 0) && ($workdoc->controlId($tdoc["profid"], "confidential") != "")) {
@@ -193,14 +193,12 @@ function fullsearch(&$action)
                     continue;
                 }
             }
+            $c++;
+            $tdocs[$k]["number"]=$c+$start;
             $tdoc["values"] .= getFileTxt($dbid, $tdoc);
-            $tdocs[$k]["htext"] = nl2br(str_replace(array(
-                '[b]',
-                '[/b]'
-            ), array(
-                '<b>',
-                '</b>'
-            ), (str_replace("<", "&lt;", preg_replace("/<\/?(\w+[^:]?|\w+\s.*?)>/", "", str_replace(array(
+            $tdocs[$k]["htext"] = nl2br(str_replace(array('[b]', '[/b]', ),
+                                              array(  '<b>', '</b>'), (str_replace("<", "&lt;", preg_replace("/<\\/?(\\w+[^:]?|\\w+\\s.*?)>/", "", 
+                                              str_replace(array(
                 '<b>',
                 '</b>'
             ), array(
