@@ -162,6 +162,7 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
   //  $name=urlencode($name);
   //  $name=htmlentities( $name , ENT_QUOTES , "UTF-8" );
   if (seems_utf8($name)) $name=utf8_decode($name);
+  $name=str_replace('"','\\"',$name);
   if (!$inline) header("Content-Disposition: attachment;filename=\"$name\"");
   else header("Content-Disposition: inline;filename=\"$name\"");
    
