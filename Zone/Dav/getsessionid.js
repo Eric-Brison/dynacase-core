@@ -56,3 +56,8 @@ function getsessionid(docid,vid) {
   return false;  
 }
 
+function getPrivateDavHref(docid,vid,davHost,fileName) {
+	var sid=getsessionid(docid,vid);
+	return 'asdav://'+davHost+'/freedav/vid-'+sid+'/'+fileName;
+}
+

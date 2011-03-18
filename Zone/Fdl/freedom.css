@@ -110,7 +110,7 @@ SPAN.FREEDOMLabel:first-letter {
 }
 .move, TR.move,TR.move TD {
   cursor:move;
-  -moz-opacity:.5;	
+  [IFNOT ISIE]opacity:.5;[ENDIF ISIE]
 	
 }
 LEGEND {
@@ -361,6 +361,7 @@ TABLE.tablefoot {
 }
 TABLE.tablehead {
 	position:fixed;
+	z-index:10;
 	bottom:auto;
 	right:0;
 	top:0;

@@ -22,19 +22,19 @@ table.defattr tr.frame, table.defattr option.frame {
    background-color:#6eb9d5; // sky blue
  }
 table.defattr tr.tab, table.defattr option.tab {
-   background-color:#cba4de; // violet
+   background-color:#cba4de; /* violet */
  }
 table.defattr tr.menu, table.defattr tr.action {
-   background-color:#a4dec6; // green
+   background-color:#a4dec6; /* green */
  }
 table.defattr tr.array, table.defattr option {
-   background-color:#f3cc81; // orange
+   background-color:#f3cc81; /* orange */
  }
 table.defattr option.invalid {
    background-color:red;
  }
 table.defattr tr {
-   background-color:[COLOR_A9]; // light blue
+   background-color:[COLOR_A9];
  }
 table.defattr select {
    background-color:transparent; 
@@ -48,16 +48,16 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
    background-color:[COLOR_C7]; 
  }
  table.defattr tr.Farray .iname {   
-   border-color:#f3cc81; // orange
+   border-color:#f3cc81; /* orange */
  }
  table.defattr tr.Fframe .iname {   
-   border-color:#6eb9d5; // 
+   border-color:#6eb9d5; 
  }
  table.defattr tr.Ftab .iname {   
-   border-color:#cba4de; // violet
+   border-color:#cba4de; /* violet */
  }
  table.defattr tr.invalid  {   
-   background-color:red; // red
+   background-color:red; /* red */
  }
  span.tab {
    color:#cba4de; 

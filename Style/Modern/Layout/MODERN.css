@@ -135,16 +135,10 @@ select[disabled], select.disabled, select[disabled="disabled"] {
   color:[input-text-disabled-color];
   background-color:[input-background-disabled-color] !important;
 }
-TEXTAREA { 
-  /*-moz-border-radius:7px ;*/
+TEXTAREA {
   border:inset 1px [input-text-normal-color];
- }
+}
 
-
-/* input[type="submit"]:hover, input[type="reset"]:hover,input[type="button"]:hover {
- background-image:url('Images/bgaqua.png');   
-    -moz-opacity:.8;		
-} */
 input[type="image"] { 
   border-style : none;
   background-color:transparent;
@@ -427,13 +421,9 @@ input[type="image"] {
 
 
 .document legend,.document a {
-    color: [COLOR_ACOLOR];
+    color: [CORE_ACOLOR];
 }
-/*
-.document a:HOVER {
-    background-color: white;
-}
-*/
+
 .document .normal {
     background-color: #FFFFFF !important;
 }
@@ -484,9 +474,8 @@ input[type="image"] {
     border-color: #B5B8C8;
 }
 
-*/
 .document input.constraint {
-    background-image: url(STYLE/MODERN/Images/tabvig.png);
+    background-image: [input-background-image];
 }
 
 .document input.normal {
@@ -572,6 +561,6 @@ A.headtitle:link,A.headtitle:visited {
 }
 A.headtitle:hover {
     color: [CORE_TEXTFGCOLOR];
-    background-color: [CORE_BGCOLOR];
-    [IFNOT ISIE6]  background-image: [CORE_BGIMG];[ENDIF ISIE6]
+    background-color: [CORE_BGCOLOR];[IFNOT ISIE6]
+    background-image: [CORE_BGIMAGE];[ENDIF ISIE6]
 }

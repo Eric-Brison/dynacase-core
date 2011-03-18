@@ -1,20 +1,25 @@
+[IFNOT SUBSEARCH]
 [ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
 <style>
 SELECT.little { font-size:90%; }
 div.logo { margin-top:-20px;  float:left; width:20%; z-index:100; text-align:center; }
-img.logomini { width:70px; padding-left:0px; }
+img.logomini { width:50px; padding-left:0px; }
 div.zsearch { margin-top:20px;}
 div.searchp { float:left; padding:0px 5px 0px 5px; text-align:right; }
 div.searchc { float:left; padding:0px 5px 0px 5px; text-align:left; }
 div.searchm { float:left; padding:0px 15px 0px 15px; text-align:left; }
-
+#nextresultbutton { text-align:center;}
 .bresume { 
   background-color:[COLOR_B8]; 
   border-color:[COLOR_B4]; 
   border-style:solid;
   border-width:1px 0px 1px 0px;width:50%; 
   padding:0px 5px 0px 5px;
+}
+
+#dresult {
+  overflow-y:auto;
 }
 .left { text-align:left; }
 .right { text-align:right; }
@@ -58,7 +63,7 @@ function buttonNumber(event) {
 }
 function hideresult(event) {
   if (buttonNumber(event)==3) return;
-  var ifr=document.getElementById('searchresult');
+  var ifr=document.getElementById('detaildoc');
   var dr=document.getElementById('dresult');
   var ipr=document.getElementById('iprev');
     ifr.src="[IMG:1x1.gif]";
@@ -68,7 +73,7 @@ function hideresult(event) {
   
   }
 function showresult() {
-  var ifr=document.getElementById('searchresult');
+  var ifr=document.getElementById('detaildoc');
   var dr=document.getElementById('dresult');
   var ipr=document.getElementById('iprev');
   ifr.style.display='none';
@@ -82,12 +87,14 @@ function resizeiframe(event) {
     var xy=getAnchorPosition("dresult");
     var nh=fh-xy.y-5;
 
-    if (nh> 100) document.getElementById("searchresult").style.height=nh+'px';
+    if (nh> 100) document.getElementById("detaildoc").style.height=nh+'px';
+    if (nh> 100) document.getElementById("dresult").style.height=nh+'px';
     //   alert(xy.y+' - '+fh+' - '+nh);
   }
 }
 addEvent(window,"load",resizeiframe);
 addEvent(window,"resize",resizeiframe);
+
 </script>
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
@@ -95,8 +102,8 @@ addEvent(window,"resize",resizeiframe);
        class="fborder" style="display:inline"
        name="searchdoc"       
        target="_self"
-       method="GET"        >
-<input type="hidden" name="start" value="0">
+       method="POST"        >
+<input type="hidden" name="page" value="0">
 <input type="hidden" name="dirid" value="[dirid]">
 <input type="hidden" name="app" value="FGSEARCH">
 <input type="hidden" name="sole" value="Y">
@@ -109,7 +116,7 @@ addEvent(window,"resize",resizeiframe);
 
 <div id="searchzone" class="zsearch">
 
-<div class="logo"><img class="logomini" align="middle" needresize="1"  src="[IMG:fgsearch.png]"></div>
+<div class="logo"><img class="logomini" align="middle" needresize="1"  src="[CORE_LOGOCLIENT]"></div>
 <div class="searchp">
 <div><input name="keyword" type="text" size="30" value="[key]"></div>
 <div><select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
@@ -119,7 +126,7 @@ addEvent(window,"resize",resizeiframe);
 </div>
 
 <div class="searchc">
-  <input type="submit" value="[TEXT:ToSearch]">
+  <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]">
 </div>
 <div class="searchm">
 <a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
@@ -135,7 +142,7 @@ addEvent(window,"resize",resizeiframe);
 <tr>
 <td class="bresume left"><img title="[TEXT:Return to results]" style="height:[SIZE_IMG-XX-SMALL];visibility:hidden;cursor:pointer" id="iprev" onclick="showresult()" src="[IMG:prev.png]" needresiez="1">[CORE_CLIENT]</td>
 <td class="bresume right">[resulttext]
-<div style="right:5px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
+<div style="right:15px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
 [BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5 0 5" width="12px"></div>[ENDBLOCK filterfam]
 </div></td>
 </tr>
@@ -147,19 +154,45 @@ addEvent(window,"resize",resizeiframe);
 [IF INITSEARCH]
 <div style="text-align:center;vertical-align:middle"><img src="[IMG:logodynacase.png]"></div>
 [ENDIF INITSEARCH]
-<div id="dresult">
-[BLOCK DOCS]<a target="searchresult" onmouseup="hideresult(event)" class="result" onclick="searchresult.location.href=this.href"  href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]"><table cellspacing=0>
+[ENDIF SUBSEARCH]
+[IFNOT INITSEARCH]
+<div id="dresult" >
+<a name="page[page]">Page [page]</a>
+[BLOCK DOCS]<a target="detaildoc" onmouseup="hideresult(event)" class="result" onclick="detaildoc.location.href=this.href"  href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]"><table cellspacing=0>
 <tr class="result"  >
 <td class="result"><img align="left" needresize="1" src="[iconsrc]" width="36px"></td>
 <td class="result"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
 </tr></table></a>
 [ENDBLOCK DOCS]
-<div style="text-align:center;border-top-color:[COLOR_B4];border-top-style:solid;border-top-width:1px">
-[IF notfirst]
- <a onclick="document.searchdoc.start.value=[pstart];document.searchdoc.submit()">  <img style="border:none" align="absbottom"  src="[IMG:freeleft.png]"> [TEXT:Previous]</a>[ENDIF notfirst] 
-[BLOCK PAGES]<a  onclick="document.searchdoc.start.value=[xstart];document.searchdoc.submit()">[xpage] </a>[ENDBLOCK PAGES] <b>[cpage]</b>
- <a onclick="document.searchdoc.start.value=[nstart];document.searchdoc.submit()"> [IF notthenend][TEXT:Next] <img style="border:none" align="absbottom"  src="[IMG:freeright.png]"></a>[ENDIF notthenend]</div>
+[ENDIF INITSEARCH]
+
+[IFNOT SUBSEARCH]
+
+[IF notthenend]<div id="nextresultbutton"><br/><a onclick="sendNextSearch()">[theFollowingText]</a><br/></div>[ENDIF notthenend]
 </div>
 </form>
-<iframe id="searchresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="searchresult"></iframe>
+<iframe id="nextresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="nextresult"></iframe>
+
+<iframe id="detaildoc" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="detaildoc"></iframe>
+
 [ZONE FDL:HTMLFOOT]
+[ENDIF SUBSEARCH]
+[IF SUBSEARCH]
+<script>
+if (window.parent && window.parent != window) {
+var targetS=window.parent.document.getElementById('dresult');
+var targetB=window.parent.document.getElementById('nextresultbutton');
+var origin=document.getElementById('dresult');
+var target=  window.parent.document.createElement("div");
+target.style.borderTop="solid 1px [COLOR_B5]";
+target.innerHTML=origin.innerHTML;
+targetB.parentNode.insertBefore(target, targetB);
+window.parent.location.href=window.parent.location.hash='#page[page]';
+[IFNOT notthenend]
+var nextresultbutton=window.parent.document.getElementById('nextresultbutton');
+nextresultbutton.style.display="none";
+[ENDIF notthenend]
+}
+</script>
+[ENDIF SUBSEARCH]
+

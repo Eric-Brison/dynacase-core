@@ -339,7 +339,7 @@ Class SearchDoc {
      */
     public function setSlice($slice)
     {
-        if ((!is_numeric($slice)) || ($slice != 'ALL')) return false;
+        if ((!is_numeric($slice)) && ($slice != 'ALL')) return false;
         $this->slice = $slice;
         return true;
     }

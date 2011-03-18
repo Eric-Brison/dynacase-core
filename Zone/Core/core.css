@@ -233,7 +233,7 @@ IMG.click:hover {
 
 IMG.Fade {
 	[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE]
-	[IFNOT ISIE]-moz-opacity:.5;[ENDIF ISIE]
+	[IFNOT ISIE]opacity:.5;[ENDIF ISIE]
 }
 IMG.NotFade {
 } 

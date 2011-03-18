@@ -153,8 +153,9 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 					if ($DAV) {
 						global $action;
 						$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/DAV/Layout/getsessionid.js");
-
-						$oc="onclick=\"var sid=getsessionid('".$docid."','$vid');this.href='asdav://$DAV/freedav/vid-'+sid+'/$info->name'\"";
+                        $oc=sprintf(" onclick='this.href=getPrivateDavHref(\"%s\",\"%s\",\"%s\",this.getAttribute(\"filename\"))' filename=\"%s\"",
+                                    $docid, $vid, $DAV,str_replace('"','%22',$info->name));
+						//$oc="onclick=\"var sid=getsessionid('".$docid."','$vid');this.href='asdav://$DAV/freedav/vid-'+sid+'/'.$info->name."e";
 						$fname="<A title=\""._("open file with your editor")."\" href=\"#\" $oc><img style=\"border:none\" src=\"Images/davedit.png\">";
 					} else {
 						$fname = "<A target=\"_self\" title=\""._("download file")."\" href=\"".
