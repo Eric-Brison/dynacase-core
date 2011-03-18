@@ -83,7 +83,7 @@ addEvent(window,"resize",resizeiframedetail);
        action="[CORE_STANDURL]&app=FGSEARCH&action=FULLDSEARCH" >
 
 <table id="famselection" width="100%" ><tr>
-<td  align="right"><img align="middle" needresize="1" height="[SIZE_IMG-MEDIUM]" style="padding-left:30px" src="[IMG:logofreedom.png]"></td>
+<td  align="right"></td>
 <td><select onchange="document.location.href='[CORE_STANDURL]&app=FGSEARCH&action=FULLEDITDSEARCH&famid='+this.options[this.selectedIndex].value" class="little"   name="famid" >  
          [BLOCK SELECTFAM]
            <option [famselect] VALUE="[idcdoc]" >[classname]</option>   

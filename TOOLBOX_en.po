@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-09 10:56+0100\n"
+"POT-Creation-Date: 2011-03-18 09:10+0100\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2170,6 +2170,12 @@ msgstr ""
 msgid "core_layout_execute_recursion_limit"
 msgstr "Recursion limit for the Layout execute function"
 
+msgid "dynacase control URL"
+msgstr ""
+
+msgid "dynacase control PATH"
+msgstr ""
+
 msgid "language"
 msgstr "lang"
 
@@ -2806,6 +2812,20 @@ msgstr "Start search"
 msgid "%s inserted"
 msgstr ""
 
+msgid "Creation aborded : no family specified"
+msgstr ""
+
+#, fuzzy, c-format
+msgid "Creation aborded : unknow family %s"
+msgstr "Category"
+
+#, c-format
+msgid "no privilege to create this kind (%s) of document"
+msgstr ""
+
+msgid "document not referenced"
+msgstr ""
+
 #, fuzzy
 msgid "Cancel"
 msgstr "Create"
@@ -3396,10 +3416,6 @@ msgstr "Modify"
 msgid "unknown folder document %s"
 msgstr ""
 
-#, c-format
-msgid "no privilege to create this kind (%s) of document"
-msgstr ""
-
 #, fuzzy, c-format
 msgid "batch from %s folder"
 msgstr "Modify"
@@ -3539,9 +3555,6 @@ msgstr ""
 #, fuzzy
 msgid "default values"
 msgstr "Delete"
-
-msgid "document not referenced"
-msgstr ""
 
 #, c-format
 msgid "attribute %s"
@@ -3962,13 +3975,6 @@ msgstr ""
 msgid "Modification for attribute %s for family %s"
 msgstr ""
 
-msgid "Creation aborded : no family specified"
-msgstr ""
-
-#, fuzzy, c-format
-msgid "Creation aborded : unknow family %s"
-msgstr "Category"
-
 #, fuzzy, c-format
 msgid "creation %s"
 msgstr "Edit"
@@ -4044,7 +4050,15 @@ msgid "more families"
 msgstr "Start search"
 
 #, c-format
-msgid "Results <b>%d</b> - <b>%d</b> for <b>%s</b> %s"
+msgid "View %d next results"
+msgstr ""
+
+#, c-format
+msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
+msgstr ""
+
+#, c-format
+msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
 msgstr ""
 
 #, c-format
