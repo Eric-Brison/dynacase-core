@@ -7,67 +7,63 @@
 
 <body id="body" class="fr"> 
 
-<div id="header">
-<img src="[IMG:dc-platform-130x60.png]" />
-<div class="content">The open source case management platform to build business applications</div> 
-</div>
+  <div id="#content"> <!-- CONTENT -->
 
-<!-- CONTENT --><div id="#content"> 
-<table><tr>
-<!-- LEFT --><td id="left">
-
-  <div id="welcome">Hello [userRealName],<br/>
-  Congratulations, Dynacase Platform is ready to run.
-  </div>
-
-  <div id="links">
-    <a href="webstudio/" target="_blank" > 
-       <img src="[IMG:dc-webstudio-130x60.png]" />Manage application parameters with Dynacase Webstudio.
-    </a>
-     <a href="[DYNACASECONTROL_URL]" target="_blank" > 
-       <img src="[IMG:dc-control-130x60.png]" />Manage repository, context and archive with Dynacase Control.
-    </a>
-   <a href="http://www.dynacase.org" target="_blank" > 
-       <img src="[IMG:dc-platform-130x60.png]" />All the documentation is available on the Dynacase web site.
-    </a>
-  </div>
-
-
-<!-- END LEFT  --></td>
-<!-- RIGHT --><td id="right">
-
-    <div id="apropos">
-      <div class="intro">About Dynacase Platform</div>
-      <div class="title">Dynacase Platform <span class="licence">version [version]</span></div>
-      <div class="en">
-        <p>Copyright 2010 <a href="http://www.anakeen.com" target="_blank">Anakeen SAS</a> and <a href="http://www.dynacase.org/contributors" target="_blank">Contributors</a>.</p>
-        <p>All rights reserved under the chosen license.</p>
-        <br/>
-        <p>The enterprise edition is guaranteed and allows access to corrective patch on private repository.</p>
-        <p>The enterprise edition allows the customer to change the license in agreement with Anakeen SAS.</p>
-        <p>The community edition is not guaranteed and necessarily under <a  target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License V3 - AGPL V3</a>.</p>
-        <br/>
-        <p>Dynacase and Anakeen and associated logos are trademarks of Anakeen SAS.</p>
-        <br/>
-        <br/>
-        Dynacase is written in <a href="http://www.php.net" target="_blank">PHP</a>.<br/>
-        [IF HAVE_EXTERNALS]Dynacase Plateform uses the following open source components&nbsp;:
-        <ul>
-          [BLOCK EXTERNALS]<li><a href="[site]" target="_blank">[name]</a> <a href="[license]" target="_blank">(license)</a></li>
-          [ENDBLOCK EXTERNALS]
-       </ul>[ENDIF HAVE_EXTERNALS]
+    <div id="dynacase"><!-- block dynacase -->
+      
+      <div id="apropos">
+	<div class="intro">About</div>
+	<div class="en">
+	  <p>All rights reserved under the granted license by Anakeen.</p>
+          <p>The enterprise edition is guaranteed and allows access to corrective patch on private repository.</p>
+          <p>The enterprise edition allows the customer to change the license in agreement with Anakeen SAS.</p>
+          <p>The community edition is not guaranteed and necessarily under <a  target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License V3 - AGPL V3</a>.</p>
+          <p>Dynacase and Anakeen and associated logos are trademarks of Anakeen.</p>
+          <p>Dynacase is written in <a href="http://www.php.net" target="_blank">PHP</a>.<p/>
+          [IF HAVE_EXTERNALS]Dynacase Plateform uses the following open source components&nbsp;:
+          <ul>
+            [BLOCK EXTERNALS]<li><a href="[site]" target="_blank">[name]</a> <a href="[license]" target="_blank">(license)</a></li>
+            [ENDBLOCK EXTERNALS]
+	  </ul>[ENDIF HAVE_EXTERNALS]
+	</div>
       </div>
-    </div>
 
-<!-- END RIGHT --></td>
+    </div> <!-- block dynacase -->
 
-</tr></table><!-- CONTENT --></div>
+    <div id="hello"><!-- block hello -->
+      
+      <div id="header">
+	<div class="title"> Dynacase Platform</div>
+	<div class="content">The open source case management platform.</div> 
+	<div class="version">installed version <span>[version]</span></div>
+      </div>
+     
+      <div id="welcome">Hello [userRealName],<br/>congratulations, Dynacase Platform is ready to run.</div>
 
-<!-- FOOTER --><div id="#footer">
-  <div id="apps">
-  [IF appsdev]Applications are installed on this context, you can access them following those links : [BLOCK apps]<a href="[CORE_STANDURL]&app=[name]" target="[name]" title="[desc]"><img src="[icon]"/> [sname]</a>[ENDBLOCK apps][ENDIF appsdev]
-  [IFNOT appsdev]No application installed on this context[ENDIF appsdev]
-    </div>
+      <div class="description"></div>
+
+      <div id="links">
+	<div>
+	  <a href="[DYNACASECONTROL_URL]" target="_blank" > 
+	    <img src="[IMG:dc-control-130x60.png]" />
+	    <div class="label">Manage repository, context and archive with Dynacase Control.</div>
+	  </a>
+	</div>
+	<div>
+	  <a href="http://www.dynacase.org" target="_blank" > 
+	    <img src="[IMG:dc-platform-130x60.png]" />
+	    <div class="label">All the documentation is available on the Dynacase web site.</div>
+	  </a>
+	</div>
+      </div>
+
+      <div class="clear"> </div>
+
+<!-- block hello --></div>
+<!-- CONTENT --></div>
+
+<!-- FOOTER --><div id="footer">
+        <div class="copy">&copy; 2010-[thisyear] <a href="http://www.anakeen.com" target="_blank">Anakeen</a>.</div>
 <!-- END FOOTER --></div>
 
 

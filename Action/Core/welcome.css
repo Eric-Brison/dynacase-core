@@ -1,34 +1,79 @@
-html { background-color:#fff; }
-body { padding:0px; margin:20px 40px 0px 40px; color:#666; }
-img { border:0px; }
-a, a:link, a:visited { color:#007827; font-weight:bold; }
-a:hover { color:#FFA700; text-decoration:none; }
+html { background-color:#fff; padding:0; margin:0px 0px 0px 300px; }
+body { font-family:Trebuchet MS, Helvetica, sans; background-color:#fff; padding:0px; margin:0px; color:#666; }
+
+img { border:0; }
+a, a:link, a:visited { }
+a:hover { }
+p { margin:0; padding:0 }
+
+/* 
+ * left block
+ */
+#dynacase {
+    background-image : url([IMG:anakeen-bgs.png]);
+    background-position:5px 5px;
+    background-repeat:no-repeat;
+    background-attachment: fixed;
+    background-color:#555; 
+    height:100%; 
+    padding:0; 
+    margin:0; 
+    width:300px; 
+    margin:0 0 0 -300px; 
+    float:left; 
+    position:fixed; 
+}
+
+#apropos { padding:10px; color:#ccc; }
+#apropos .intro { text-align:right; font-size:80%; color:#fff; }
+#apropos div.fr, #apropos div.en { text-align:justify;padding:20px 15px 0 15px; }
+#apropos a, #apropos a:link, #apropos a:visited   { color:#bfe1cf; text-decoration:underline; }
+#apropos a:hover { color:#f4f375; text-decoration:none; background-color:#222; }
+#apropos p { margin-bottom:10px; }
 
 
-#header { height:100px; vertical-align:top;  border:1px solid #aaa; font-size:200%; font-weigth:bold; background-color:#f4fbe3; margin-bottom:20px;}
-#header img { float:left; vertical-align:middle; padding:10px 20px 10px 20px;}
-#header div.content { padding:20px;}
 
-#left { width:40%; }
-#right { }
 
-#welcome { margin:0px 10px 50px; padding:10px; }
+#hello { 
+    padding:80px 40px; 
+    background-image : url([IMG:dc-platform-130x60.png]);
+    background-position:top right;
+    background-repeat:no-repeat;
+    background-attachment: fixed;
+}
 
-#links { text-align:center; font-size:80%; color:#eee; }
-#links a {  margin-bottom:10px; margin-left:50px; display:block; width:140px; padding:5px; text-decoration:none; border-style:solid; border-width:1px; border-color:#aaa; }
+#header { color:#CCC;}
+#header .title { font-weight:bold; font-size:400%; }
+#header div.content { font-weight:bold; font-size:200%; }
+#welcome { margin:50px 0 60px 0px; font-size:200%;  }
+#header .version {  margin:10px 0 0 0; font-size:100%; color:#CCC; }
+#header .version span {  color:#888; }
 
-#content { }
 
-#footer {  }
 
-#apps { background-color : #f4fbe3;  border:1px solid #aaa; margin-top:10px; padding:10px; color:#444; }
-#apps a { padding:0 10px 0 10px; margin:left:10px; border-width:1px; border-style:none solid none none ; border-color:#444}
-#apps a { text-decoration:none; }
-#apps img { width:12px; }
-#apps li { list-style-type:none; float:left; }
 
-#apropos { padding:10px; background-color:#F4FBE3; color:#666; border:1px solid #a4a4a4; }
-#apropos .intro { font-style:italic; padding:5px 0px 15px 0px; text-decoration:underline; }
-#apropos span.licence { font-size:12px; }
-#apropos div.title { padding-bottom:5px; border-bottom:1px solid #a4a4a4; margin-bottom:5px; font-size:150%; font-weigth:bold; }
-#apropos div.fr, #apropos div.en { padding:5px; }
+#links { }
+#links > div { float:left; width:45%; margin:40px 10px 40px 0px; height:80px; }
+#links a {  
+    color:#aaa; 
+    vertical-align:top; 
+    display:block; 
+    height:100%; 
+    text-decoration:none; }
+#links div.label {  padding:10px; font-size:100%; }
+#links img {  float:left;border-right:1px solid #aaa; margin-right:10px;  }
+
+/*
+#hello .description { 
+    padding : 40px 0px 20px 100px;
+}
+*/
+#footer { 
+    margin : 10px;
+    border-top:1px solid #666;
+    text-align:right;
+}
+#footer a { color:#005d00; }
+
+
+.clear { clear:both; }
