@@ -10,10 +10,6 @@ p { margin:0; padding:0 }
  * left block
  */
 #dynacase {
-    background-image : url([IMG:anakeen-bgs.png]);
-    background-position:5px 5px;
-    background-repeat:no-repeat;
-    background-attachment: fixed;
     background-color:#555; 
     height:100%; 
     padding:0; 
@@ -36,10 +32,6 @@ p { margin:0; padding:0 }
 
 #hello { 
     padding:80px 40px; 
-    background-image : url([IMG:dc-platform-130x60.png]);
-    background-position:top right;
-    background-repeat:no-repeat;
-    background-attachment: fixed;
 }
 
 #header { color:#CCC;}
