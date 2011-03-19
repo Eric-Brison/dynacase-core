@@ -20,7 +20,7 @@
           <p>The community edition is not guaranteed and necessarily under <a  target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License V3 - AGPL V3</a>.</p>
           <p>Dynacase and Anakeen and associated logos are trademarks of Anakeen.</p>
           <p>Dynacase is written in <a href="http://www.php.net" target="_blank">PHP</a>.<p/>
-          [IF HAVE_EXTERNALS]Dynacase Plateform uses the following open source components&nbsp;:
+          [IF HAVE_EXTERNALS]Dynacase Platform uses the following open source components&nbsp;:
           <ul>
             [BLOCK EXTERNALS]<li><a href="[site]" target="_blank">[name]</a> <a href="[license]" target="_blank">(license)</a></li>
             [ENDBLOCK EXTERNALS]
