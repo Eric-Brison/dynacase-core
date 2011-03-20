@@ -1890,7 +1890,7 @@ msgid "user own account modification"
 msgstr "modifier compte personnel"
 
 msgid "Core"
-msgstr "Noyau"
+msgstr "Platform Core"
 
 msgid "Core Application Manager"
 msgstr "Page d'accueil"

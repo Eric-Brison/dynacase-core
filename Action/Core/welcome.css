@@ -1,5 +1,5 @@
-html { background-color:#fff; padding:0; margin:0px 0px 0px 300px; }
-body { font-family:Trebuchet MS, Helvetica, sans; background-color:#fff; padding:0px; margin:0px; color:#666; }
+html { background-color:[COLOR_WHITE]; padding:0; margin:0px 0px 0px 300px; }
+body { font-family:Trebuchet MS, Helvetica, sans; background-color:#fff; padding:0px; margin:0px; color:[COLOR_A1]; }
 
 img { border:0; }
 a, a:link, a:visited { }
@@ -10,7 +10,7 @@ p { margin:0; padding:0 }
  * left block
  */
 #dynacase {
-    background-color:#555; 
+    background-color:[COLOR_A0]; 
     height:100%; 
     padding:0; 
     margin:0; 
@@ -20,11 +20,11 @@ p { margin:0; padding:0 }
     position:fixed; 
 }
 
-#apropos { padding:10px; color:#ccc; }
-#apropos .intro { text-align:right; font-size:80%; color:#fff; }
+#apropos { padding:10px; color:[COLOR_C7]; }
+#apropos .intro { text-align:right; font-size:80%; font-weight:bold; color:[COLOR_WHITE]; }
 #apropos div.fr, #apropos div.en { text-align:justify;padding:20px 15px 0 15px; }
-#apropos a, #apropos a:link, #apropos a:visited   { color:#bfe1cf; text-decoration:underline; }
-#apropos a:hover { color:#f4f375; text-decoration:none; background-color:#222; }
+#apropos a, #apropos a:link, #apropos a:visited   { color:[COLOR_C3]; text-decoration:underline; }
+#apropos a:hover { text-decoration:none; background-color:[COLOR_A6]; }
 #apropos p { margin-bottom:10px; }
 
 
@@ -34,12 +34,12 @@ p { margin:0; padding:0 }
     padding:80px 40px; 
 }
 
-#header { color:#CCC;}
+#header { color:[COLOR_A7];}
 #header .title { font-weight:bold; font-size:400%; }
 #header div.content { font-weight:bold; font-size:200%; }
 #welcome { margin:50px 0 60px 0px; font-size:200%;  }
-#header .version {  margin:10px 0 0 0; font-size:100%; color:#CCC; }
-#header .version span {  color:#888; }
+#header .version {  margin:10px 0 0 0; font-size:100%; }
+#header .version span {  color:[COLOR_A0]; }
 
 
 
@@ -47,13 +47,13 @@ p { margin:0; padding:0 }
 #links { }
 #links > div { float:left; width:45%; margin:40px 10px 40px 0px; height:80px; }
 #links a {  
-    color:#aaa; 
+    color:[COLOR_A0]; 
     vertical-align:top; 
     display:block; 
     height:100%; 
     text-decoration:none; }
 #links div.label {  padding:10px; font-size:100%; }
-#links img {  float:left;border-right:1px solid #aaa; margin-right:10px;  }
+#links img {  float:left;border-right:1px solid [COLOR_A0]; margin-right:10px;  }
 
 /*
 #hello .description { 
@@ -62,10 +62,10 @@ p { margin:0; padding:0 }
 */
 #footer { 
     margin : 10px;
-    border-top:1px solid #666;
+    border-top:1px solid [COLOR_A1];
     text-align:right;
 }
-#footer a { color:#005d00; }
+#footer a { color:[COLOR_A1]; }
 
 
 .clear { clear:both; }
