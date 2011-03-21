@@ -1,4 +1,4 @@
-html { background-color:[COLOR_WHITE]; padding:0; margin:0px 0px 0px 300px; }
+html { background-color:[COLOR_WHITE]; padding:0; margin:0px 0px 0px 260px; }
 body { font-family:Trebuchet MS, Helvetica, sans; background-color:#fff; padding:0px; margin:0px; color:[COLOR_A1]; }
 
 img { border:0; }
@@ -14,8 +14,8 @@ p { margin:0; padding:0 }
     height:100%; 
     padding:0; 
     margin:0; 
-    width:300px; 
-    margin:0 0 0 -300px; 
+    width:260px; 
+    margin:0 0 0 -260px; 
     float:left; 
     position:fixed; 
 }
@@ -31,7 +31,7 @@ p { margin:0; padding:0 }
 
 
 #hello { 
-    padding:80px 40px; 
+    padding:60px 40px; 
 }
 
 #header { color:[COLOR_A7];}
@@ -45,15 +45,16 @@ p { margin:0; padding:0 }
 
 
 #links { }
-#links > div { float:left; width:45%; margin:40px 10px 40px 0px; height:80px; }
+#links > div { float:left; width:45%; margin:10px 5px 10px 0px; }
 #links a {  
+    width:200px; 
     color:[COLOR_A0]; 
-    vertical-align:top; 
     display:block; 
     height:100%; 
-    text-decoration:none; }
-#links div.label {  padding:10px; font-size:100%; }
-#links img {  float:left;border-right:1px solid [COLOR_A0]; margin-right:10px;  }
+    text-decoration:none; 
+}
+#links div.label { clear:both; padding:0px; font-size:100%; }
+#links img {  float:left; margin-right:10px;  }
 
 /*
 #hello .description { 
