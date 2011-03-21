@@ -157,10 +157,12 @@ function fullsearch(&$action)
         $s->setOrder($orderby . ', id desc');
         $s->setSlice($slice + 1);
         $s->setStart($start);
-        foreach ( $sqlfilters as $filter )
+        $s->excludeConfidential();
+        foreach ( $sqlfilters as $filter ) {
             $s->addFilter($filter);
+        }
         $tdocs = $s->search();
-        if ($s->getError()) print_r2($s->getSearchInfo());
+        if ($s->getError()) addLogMsg($s->getSearchInfo());
         
         if ($start == 0) {
             if ($s->count() < ($slice + 1)) $globalCount = $s->count();

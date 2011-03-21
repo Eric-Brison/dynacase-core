@@ -89,6 +89,11 @@ Class SearchDoc {
   private $debuginfo="";
   private $join="";
   /**
+   * sql filter not return confidential document if current user cannot see it
+   * @var string
+   */
+  private $excludeFilter="";
+  /**
    * 
    * Iterator document
    * @var Doc
@@ -137,7 +142,7 @@ Class SearchDoc {
               if ($this->debug) $debuginfo=array();
               else $debuginfo=null;
               $tqsql=getSqlSearchDoc($this->dbaccess,$this->dirid,$this->fromid,
-                                     $this->filters,$this->distinct,$this->latest,$this->trash,
+                                     $this->getFilters(),$this->distinct,$this->latest,$this->trash,
                                      false,$this->folderRecursiveLevel,$this->join);
               $this->debuginfo["query"]=$tqsql[0];
               $count=0;
@@ -184,7 +189,7 @@ Class SearchDoc {
    */
   public function getOriginalQuery() {
       $tqsql=getSqlSearchDoc($this->dbaccess,$this->dirid,$this->fromid,
-			     $this->filters,$this->distinct,$this->latest,$this->trash,false,
+			     $this->getFilters(),$this->distinct,$this->latest,$this->trash,false,
 			     $this->folderRecursiveLevel,$this->join);
 
       return $tqsql[0];
@@ -216,6 +221,17 @@ Class SearchDoc {
   public function reset() {
     $this->result=false;
     $this->debuginfo="";
+  }
+  /**
+   * Return sql filters used for request
+   * @return array of string
+   */
+  public function getFilters() {
+      if (! $this->excludeFilter) {
+          return $this->filters;
+      } else {
+          return array_merge(array($this->excludeFilter), $this->filters);
+      }
   }
   /**
    * send search
@@ -271,7 +287,7 @@ Class SearchDoc {
     $this->result = getChildDoc($this->dbaccess, 
 				$this->dirid,
 				$this->start,
-				$this->slice, $this->filters,$this->userid,$this->searchmode,
+				$this->slice, $this->getFilters(),$this->userid,$this->searchmode,
 				$this->fromid,$this->distinct,$this->orderby, $this->latest, $this->trash,
 				$debuginfo,$this->folderRecursiveLevel,$this->join);
     if ($this->searchmode=="TABLE") $this->count=count($this->result); // memo cause array is unset by shift
@@ -503,8 +519,18 @@ Class SearchDoc {
   public function setValueReturn() {
     $this->mode="TABLE";
   }
-
-
+  /**
+   * add a filter to not return confidential document if current user cannot see it
+   * @param boolean $exclude set to true to exclude confidential
+   * @return void
+   */
+  function excludeConfidential($exclude=true) {
+      if ($exclude) {
+          if ($this->userid != 1) $this->excludeFilter=sprintf("confidential is null or hasdocprivilege(%d, profid,%d)",$this->userid,1<<POS_CONF);
+      } else {
+          $this->excludeFilter='';
+      }
+  }
 }
 
 
