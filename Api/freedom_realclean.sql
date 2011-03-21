@@ -4,7 +4,9 @@ delete from doc where doctype='T';
 select setval('seq_id_tdoc', 1000000000);
 delete from dochisto where id>1000000000;
 delete from docattr where docid not in (select id from doc);
-delete from docperm where docid not in (select id from doc);
+
+delete from docperm where not exists (select 1 from docread where docid=id );
+
 --delete from docperm where userid not in (select iduser from groups) and userid not in (select num from vgroup) and userid not in (select idgroup from groups);
 cluster idx_perm on docperm;
 delete from fld where dirid not in (select initid from doc2 where locked != -1) and qtype='S';
