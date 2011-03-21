@@ -106,6 +106,7 @@ publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default
 
 clean:
 	rm -f *.*~ config.* Makefile configure \
+	      dynacase-platform-*-*.webinst \
 	      $(PACKAGE)-$(VERSION).tar.gz \
 	      dbaccess.php.sample apache.conf \
 	      App/Core/CORE_init.php \

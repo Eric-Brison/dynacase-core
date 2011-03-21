@@ -1,3 +1,37 @@
+td.bresume { border-bottom:1px solid red; }
+
+/* result zone */
+
+#dresult { border:0px solid red; padding : 10px; }
+div.result { border-style:solid;
+	     border-width:3px 0px 3px 3px;
+	     border-color: [COLOR_WHITE]; 
+	     border-bottom:3px solid [COLOR_WHITE];    
+	     margin:5px 0 5px 0; padding:0px; }
+div.result table { }
+tr.result  { vertical-align:bottom; }
+tr.result td.number { border:1px solid [COLOR_A8];
+		      background-color :[COLOR_B9]; vertical-align:top; width:1em;  font-size:120%; 
+		      padding:0 5px 0 5px; color:[COLOR_A5]; font-weight:bold; }
+tr.result td.result img { opacity:0.4; width:2em; padding:0 1em 0 1em; }
+td.result { color:[COLOR_A7]; }
+td.result span.title { margin-left:-2em; font-size:160%; font-weight:bold; color:[COLOR_A2]; }
+td.result i { padding:0 0 0 40px; font-variant:italic; }
+td.result b { color:[COLOR_A2]; font-weight:bold; }
+
+/* Over the result */
+div.result:hover { border-color:[COLOR_A5]; cursor:pointer; }
+div.result:hover td.result  { color:[COLOR_A3];  }
+div.result:hover td.number  { background-color :[COLOR_A5]; color:[COLOR_WHITE]; }
+
+div.result:hover td.result span.title { color :[COLOR_A0]; }
+div.result:hover td.result i { color :[COLOR_A0]; }
+div.result:hover td.result b { color :[COLOR_A0]; }
+div.result:hover td.result img { opacity:1 }
+
+
+
+/*
 SELECT.little { font-size:90%; }
 div.logo { margin-top:-20px;  float:left; width:20%; z-index:100; text-align:center; }
 img.logomini { width:50px; padding-left:0px; }
@@ -75,3 +109,4 @@ a.result img {border:none}
    vertical-align:top;
    padding-top:10px;
  }
+*/
