@@ -9,6 +9,7 @@ $app_desc = array (
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
 "available"	=>"N",			//deprecated application
 "iorder"	        =>10,
+"tag"	        =>"CORE"
 );
 
 $app_acl = array (

@@ -30,7 +30,8 @@ $app_desc = array (
 "displayable"	=>"Y",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
 "childof"	=>"",			//
-"iorder"	        =>110,                   // install order
+"iorder"	=>110,                  // install order
+"tag"           =>"CORE"
 );
 
 $action_desc = array (

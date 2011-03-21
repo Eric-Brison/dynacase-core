@@ -9,7 +9,8 @@ $app_desc = array (
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon"		=>"access.gif",		//Icon
 "displayable"	=>"Y",		//Should be displayed on an app list (Y,N)
-"iorder"         =>10         // install order
+"iorder"        =>10,         // install order
+"tag"           =>"CORE"
 );
 
 $app_acl = array (

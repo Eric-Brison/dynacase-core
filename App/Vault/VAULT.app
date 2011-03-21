@@ -17,7 +17,8 @@ $app_desc = array (
 "icon"		=>"vault.gif",	//Icon
 "displayable"	=>"Y",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
-"iorder"        =>140
+"iorder"        =>140,
+"tag"           =>"CORE"
 );
 
 $app_acl = array (

@@ -30,7 +30,8 @@ $app_desc = array (
 "displayable"	=>"Y",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
 "childof"	=>"USERCARD",			//
-"iorder"	        =>120,                   // install order
+"iorder"        =>120,                   // install order
+"tag"	        =>"CORE"
 );
 
 $app_acl = array (

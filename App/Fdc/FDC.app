@@ -30,7 +30,8 @@ $app_desc = array (
 		   "icon"	=>"freecommon.gif",	//Icon
 		   "displayable"=>"N",			//Should be displayed on an app list (Y,N)
 		   "with_frame"	=>"N",			//Use multiframe ? (Y,N)
-		   "childof"	=>""		        // instance of FREEDOM GENERIC application	
+		   "childof"	=>"",		        // instance of FREEDOM GENERIC application	
+                   "tag"        => "CORE"
 		   );
 
   

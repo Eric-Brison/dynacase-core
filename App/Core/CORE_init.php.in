@@ -237,7 +237,7 @@ $app_const = array (
 						       "descr"  => N_("squirrelmail install dir (relative)"),
 						       "user"   => "N",
 						       "global" => "Y" ),
-		    "CORE_START_APP" => array( "val"    => "ECM",
+		    "CORE_START_APP" => array( "val"    => "",
 						       "descr"  => N_("default start application"),
 						       "user"   => "N",
 						       "global" => "Y" ),
@@ -257,11 +257,22 @@ $app_const = array (
 							  "user"   => "N",
 							  "global" => "Y"),
 
+
             // Layout->execute recursion limit
             "CORE_LAYOUT_EXECUTE_RECURSION_LIMIT" => array( "val"    => "30",
                                                             "descr"  => N_("core_layout_execute_recursion_limit"),
                                                             "user"   => "N",
                                                             "global" => "Y"),
+
+
+                    "DYNACASECONTROL_URL" => array( "val"    => "",
+                                                       "descr"  => N_("dynacase control URL"),
+                                                       "user"   => "N",
+                                                       "global" => "Y"),
+                    "DYNACASECONTROL_PATH" => array( "val"    => "",
+                                                        "descr"  => N_("dynacase control PATH"),
+                                                        "user"   => "N",
+                                                        "global" => "Y")
 
 		    );
 

@@ -31,10 +31,15 @@ $app_desc= array (
 "icon"		=>"core.png",            //Icon
 "displayable"	=>"N",                    //Should be displayed on an app list
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
-"iorder"         =>0                     // install order first
+"iorder"        =>0,                    // install order first
+"tag"           =>"CORE"
 );
 
 $action_desc = array (
+  array(
+   "name"               =>"WELCOME",
+   "root"               =>"Y"
+  ),
   array(
    "name"               =>"LOGO",
    "layout"             =>"logo.xml",
@@ -46,7 +51,7 @@ $action_desc = array (
   ),
   array(
    "name"               =>"GATE",
-   "root"               =>"Y"
+   "root"               =>"N"
   ),
   array(
    "name"               =>"INVALID",

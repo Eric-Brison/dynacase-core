@@ -2012,7 +2012,7 @@ msgid "user own account modification"
 msgstr ""
 
 msgid "Core"
-msgstr ""
+msgstr "Platform Core"
 
 msgid "Core Application Manager"
 msgstr ""
