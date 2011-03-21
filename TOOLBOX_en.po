@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-18 09:10+0100\n"
+"POT-Creation-Date: 2011-03-21 10:49+0100\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -6962,11 +6962,10 @@ msgstr "Start search"
 msgid "search online help"
 msgstr "Start search"
 
-#, fuzzy
-msgid "Return to results"
-msgstr "Import"
-
 msgid "close search online help"
+msgstr ""
+
+msgid "Open in new window"
 msgstr ""
 
 msgid "warning_name"
@@ -9234,3 +9233,7 @@ msgstr ""
 #, c-format
 msgid "error ::moveDocument %s %s"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Return to results"
+#~ msgstr "Import"

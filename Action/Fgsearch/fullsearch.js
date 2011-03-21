@@ -25,8 +25,15 @@ function sendNewSearch() {
 		// form.submit();
 	}
 }
+
+function openDocInNewWindow() {
+	var ifr=document.getElementById('detaildoc');
+	if (ifr.src) {
+		window.open(ifr.src,'_blank');
+		hideUrlFromSearch();
+	}
+}
 function viewUrlFromSearch(event, url) {
-	console.log(buttonNumber(event));
 	var bn=buttonNumber(event);
 	if ((bn == 2 )||(bn == 4 ))  {
 		window.open(url,'_blank');
@@ -41,7 +48,7 @@ function viewUrlFromSearch(event, url) {
 		ifr.src=url;
 		idiv.style.display='';
 		// dr.style.display='none';
-		dr.style.opacity='0.5';
+		//dr.style.opacity='0.5';
 		fe.style.opacity='0.5';
 		fe.className='dark';
 		if (ds) ds.style.display='none';

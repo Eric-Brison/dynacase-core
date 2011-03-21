@@ -68,7 +68,7 @@ function resizeiframedetail(event) {
 	    var fh=getFrameHeight();
 	    var xy=getAnchorPosition("searchresult");
 	    var nh=fh-xy.y-5;
-
+if (isIE) nh-=5; // border
 	    if (nh> 100) document.getElementById("searchresult").style.height=nh+'px';
 	     //  alert('EDIT:'+xy.y+' - '+fh+' - '+nh);
 	  }

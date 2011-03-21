@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-18 09:10+0100\n"
-"PO-Revision-Date: 2011-03-18 09:11+0100\n"
+"POT-Creation-Date: 2011-03-21 10:49+0100\n"
+"PO-Revision-Date: 2011-03-21 10:50+0100\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -4707,10 +4707,10 @@ msgid "Clear Folder"
 msgstr "Vider le dossier"
 
 msgid "atype"
-msgstr "atype"
+msgstr "Type"
 
 msgid "fieldset"
-msgstr "cadre"
+msgstr "Cadre"
 
 msgid "attrname"
 msgstr "Nom"
@@ -6463,11 +6463,11 @@ msgstr "Recherche avancée"
 msgid "search online help"
 msgstr "Aide à la recherche"
 
-msgid "Return to results"
-msgstr "Retour aux résultats"
-
 msgid "close search online help"
 msgstr "Fermer l'aide à la recherche"
+
+msgid "Open in new window"
+msgstr "Ouvrir dans une nouvelle fenêtre"
 
 msgid "warning_name"
 msgstr "la saisie de votre nom est obligatoire."
@@ -8716,6 +8716,9 @@ msgstr "%s non présent dans %s"
 #, c-format
 msgid "error ::moveDocument %s %s"
 msgstr "erreur ::moveDocument %s %s"
+
+#~ msgid "Return to results"
+#~ msgstr "Retour aux résultats"
 
 #~ msgid "Results <b>%d</b> - <b>%d</b> for <b>%s</b> %s"
 #~ msgstr "Résultats <b>%d</b> - <b>%d</b> pour <b>%s</b> %s"

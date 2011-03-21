@@ -57,13 +57,13 @@ a.result img {border:none}
 
 #divdoc {
   position:absolute;
-  left:50px;
-  top:50px;
+  left:0px;
+  top:0px;
   width:90%;
   background-color:[COLOR_WHITE];
   border: [COLOR_A0] 2px solid;
   padding:0px;
-  margin:0px;
+  margin:50px;
 }
 #detaildoc {
   width:100%;
@@ -85,6 +85,11 @@ a.result img {border:none}
     width:95%;
     display:block;
     cursor:pointer;
+ }
+ div.result:hover_ {
+    z-index:10;
+    position:absolute;
+    beackground-color:[COLOR_WHITE];
  }
  td.number {
    width:30px;
@@ -161,6 +166,8 @@ addEvent(window,"resize",resizeiframe);
 <div style="text-align:center;vertical-align:middle"><img src="[IMG:logodynacase.png]"></div>
 [ENDIF INITSEARCH]
 [ENDIF SUBSEARCH]
+
+</form>
 [IFNOT INITSEARCH]
 <div id="dresult" >
 <a name="page[page]" style="visibility:hidden">Page [page]</a>
@@ -170,44 +177,43 @@ addEvent(window,"resize",resizeiframe);
 <td class="result"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
 </tr></table></div>
 [ENDBLOCK DOCS]
-[ENDIF INITSEARCH]
-
 [IFNOT SUBSEARCH]
-
-
 <table id="searchbottom" cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
 <tr>
 <td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
 <td class="bresume right"></td>
 </tr>
-</table> 
+</table> [ENDIF SUBSEARCH]
 </div>
-</form>
+
+
+[IFNOT SUBSEARCH]
 <iframe id="nextresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="nextresult"></iframe>
 <div id="divdoc" style="display:none;">
-<p id="closeBar" ><a onclick="hideUrlFromSearch()">[TEXT:Close]</a></p>
+<p id="closeBar" ><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a> | <a onclick="hideUrlFromSearch()">[TEXT:Close]</a></p>
 <iframe id="detaildoc" src="[IMG:1x1.gif]"  name="detaildoc"></iframe>
 </div>
-[ZONE FDL:HTMLFOOT]
+
 [ENDIF SUBSEARCH]
+[ENDIF INITSEARCH]
 [IF SUBSEARCH]
 <script>
 if (window.parent && window.parent != window) {
-var targetS=window.parent.document.getElementById('dresult');
-var targetB=window.parent.document.getElementById('searchbottom');
-var targetBB=window.parent.document.getElementById('nextresultbuttonbottom');
-var targetBT=window.parent.document.getElementById('nextresultbuttontop');
-var origin=document.getElementById('dresult');
-var target=  window.parent.document.createElement("div");
-target.style.borderTop="solid 1px [COLOR_B5]";
-target.innerHTML=origin.innerHTML;
-targetB.parentNode.insertBefore(target, targetB);
-window.parent.location.href=window.parent.location.hash='#page[page]';
-[IFNOT notthenend]
-targetBB.style.display="none";
-targetBT.style.display="none";
-[ENDIF notthenend]
+    var targetS=window.parent.document.getElementById('dresult');
+    var targetB=window.parent.document.getElementById('searchbottom');
+    var targetBB=window.parent.document.getElementById('nextresultbuttonbottom');
+    var targetBT=window.parent.document.getElementById('nextresultbuttontop');
+    var origin=document.getElementById('dresult');
+    var target=  window.parent.document.createElement("div");
+    target.style.borderTop="solid 1px [COLOR_B5]";
+    target.innerHTML=origin.innerHTML;
+    targetB.parentNode.insertBefore(target, targetB);
+    window.parent.location.hash='#page[page]';
+    [IFNOT notthenend]
+    targetBB.style.display="none";
+    targetBT.style.display="none";
+    [ENDIF notthenend]
 }
 </script>
 [ENDIF SUBSEARCH]
-
+[ZONE FDL:HTMLFOOT]
