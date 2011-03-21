@@ -43,6 +43,7 @@ function fullsearch(&$action)
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FGSEARCH/Layout/fullsearch.js");
+    $action->parent->AddCssRef("FGSEARCH:fullsearch.css",true);
     
     $action->lay->set("viewform", true);
     $action->lay->set("page", $page + 1);

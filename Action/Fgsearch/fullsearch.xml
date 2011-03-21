@@ -2,47 +2,12 @@
 [ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
 <style>
-SELECT.little { font-size:90%; }
-div.logo { margin-top:-20px;  float:left; width:20%; z-index:100; text-align:center; }
-img.logomini { width:50px; padding-left:0px; }
-div.zsearch { margin-top:20px;}
-div.searchp { float:left; padding:0px 5px 0px 5px; text-align:right; }
-div.searchc { float:left; padding:0px 5px 0px 5px; text-align:left; }
-div.searchm { float:left; padding:0px 15px 0px 15px; text-align:left; }
-#nextresultbutton { text-align:center;}
-.bresume { 
-  background-color:[COLOR_B8]; 
-  border-color:[COLOR_B4]; 
-  border-style:solid;
-  border-width:1px 0px 1px 0px;width:50%; 
-  padding:0px 5px 0px 5px;
+#divdoc {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:90%;
 }
-
-#dresult {
-  overflow-y:auto;
-}
-.left { text-align:left; }
-.right { text-align:right; }
-
-td.result  {
-  padding : 5px 5px 10px 5px;
-  border-width : 1px; 
-  border-color : [COLOR_A8]; 
-  border-style : none;
-  vertical-align:top; 
-  font-size:90%; 
-  background-color:transparent;
-  color:[COLOR_A3]; }
-tr.result  {
-  background-color:transparent;
-}
-td.result .title { color:[COLOR_B0]; font-size:110%; font-weight:bold; }
-td.result b { color:[COLOR_A0]; }
-div.result:hover {background-color :[COLOR_B8]}
-tr.result:hover td.result {background-color :[COLOR_B8]}
-a.result:active, a.result:link, a.result:visited {text-decoration:none}
-a.result img {border:none}
-
 #aide {
   position:absolute;
   display:inline;
@@ -54,49 +19,6 @@ a.result img {border:none}
   -moz-border-radius: 10px;
 }
 #aide #closeaide {  right:10px; margin : 5px 0px 10px 0px; }
-
-#divdoc {
-  position:absolute;
-  left:0px;
-  top:0px;
-  width:90%;
-  background-color:[COLOR_WHITE];
-  border: [COLOR_A0] 2px solid;
-  padding:0px;
-  margin:50px;
-}
-#detaildoc {
-  width:100%;
-  background-color:[COLOR_WHITE];
-  border: none;
-  padding:0px;
-  margin:0px;
-}
-#closeBar {
- text-align:right;
- background-color:[COLOR_A7];
- margin:0px;
- }
- form.dark {
-   background-color:[COLOR_A7];
- }
- 
- div.result {
-    width:95%;
-    display:block;
-    cursor:pointer;
- }
- div.result:hover_ {
-    z-index:10;
-    position:absolute;
-    beackground-color:[COLOR_WHITE];
- }
- td.number {
-   width:30px;
-   text-align:center;
-   vertical-align:top;
-   padding-top:10px;
- }
 </style>
 <script>
 
