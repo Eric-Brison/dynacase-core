@@ -6,28 +6,33 @@
   position:absolute;
   left:0px;
   top:0px;
-  width:90%;
+  margin:0px;
 }
 #aide {
   position:absolute;
   display:inline;
   border: 1px solid [COLOR_B4];
   background-color: [COLOR_WHITE];
-  padding:10px;
+  padding-top:10px;
   left : 50px;
   right : 50px;
   -moz-border-radius: 10px;
 }
 #aide #closeaide {  right:10px; margin : 5px 0px 10px 0px; }
+
+#dresult {
+  overflow-y:auto;
+  width:100%;
+}
+span.result {
+  width:350px;
+  overflow:hidden;
+}
+
 </style>
 <script>
-
-
-
-
 addEvent(window,"load",resizeiframe);
 addEvent(window,"resize",resizeiframe);
-
 </script>
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
@@ -93,10 +98,10 @@ addEvent(window,"resize",resizeiframe);
 [IFNOT INITSEARCH]
 <div id="dresult" >
 <a name="page[page]" style="visibility:hidden">Page [page]</a>
-[BLOCK DOCS]<div title="[title]" class="result" onmousedown="viewUrlFromSearch(event,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')"><table cellspacing=0>
+[BLOCK DOCS]<div title="[title]" class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')"><table cellspacing=0>
 <tr class="result"><td class="number">[number]</td>
 <td class="result"><img align="left" needresize="1" src="[iconsrc]" width="36px"></td>
-<td class="result"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
+<td class="result textresult"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
 </tr></table></div>
 [ENDBLOCK DOCS]
 [IFNOT SUBSEARCH]
