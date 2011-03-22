@@ -2,12 +2,7 @@
 [ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
 <style>
-#divdoc {
-  position:absolute;
-  left:0px;
-  top:0px;
-  margin:0px;
-}
+
 #aide {
   position:absolute;
   display:inline;
@@ -24,10 +19,7 @@
   overflow-y:auto;
   width:100%;
 }
-span.result {
-  width:350px;
-  overflow:hidden;
-}
+
 
 </style>
 <script>
