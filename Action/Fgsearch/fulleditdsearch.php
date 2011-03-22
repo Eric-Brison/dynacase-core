@@ -38,6 +38,7 @@ function fulleditdsearch(&$action) {
 
   $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FGSEARCH/Layout/fulleditdsearch.js");
 
+    $action->parent->AddCssRef("FGSEARCH:fullsearch.css",true);
 
 
   $dbaccess = $action->GetParam("FREEDOM_DB");

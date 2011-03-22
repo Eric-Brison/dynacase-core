@@ -34,7 +34,7 @@ div.result b { color:[COLOR_A2]; font-weight:bold; }
 
 /* Over the result */
 div.result:hover { border-color:[COLOR_A5]; cursor:pointer; }
-div.result:hover div.textresult  { color:[COLOR_A3];  }
+div.result:hover div.inforesult  { color:[COLOR_A3];  }
 div.result:hover div.number  { background-color :[COLOR_A5]; color:[COLOR_WHITE]; }
 
 div.result:hover  span.title { color :[COLOR_BLACK]; }
@@ -64,7 +64,7 @@ div.result:hover  img { opacity:1 }
 div.result img {
 	float:left;
 }
-div.textresult {
+div.inforesult, div.iconresult, div.textresult {
     float:left;	
 }
 div.number {
@@ -109,7 +109,7 @@ div.selectedresult {
 }
 
 div.selectedresult  span.title { color :[COLOR_BLACK]; }
-div.selectedresult div.textresult { color :[COLOR_A0]; }
+div.selectedresult div.inforesult { color :[COLOR_A0]; }
 div.selectedresult  b { color :[COLOR_A0]; }
 div.selectedresult  img { opacity:1 }
 
@@ -134,3 +134,22 @@ div.searchp select.little {
     font-size:[SIZE_MEDIUM];
     margin:5px 0 0 0;
 }
+/*  -- for detailled search */
+SELECT.little { font-size:90%; }
+DIV.search {
+  
+  border:none;
+  background-color:[COLOR_WHITE];
+  padding:10px;
+}
+DIV.famselect {
+	float:left;
+}
+DIV.famselect div.select {
+    float:left;
+}
+DIV.famicon {
+    float:left;
+}
+
+

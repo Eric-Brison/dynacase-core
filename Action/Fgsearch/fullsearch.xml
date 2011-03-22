@@ -31,15 +31,18 @@ addEvent(window,"resize",resizeiframe);
 
 
 
-[IF viewform]
+[IF isdetail]
 <div class="searchbarmenu" style="text-align:right">
 <a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
 <a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a>
 <a   onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
 </div>
-
+[ENDIF isdetail]
 <div id="searchzone" class="zsearch">
+[IF isdetail]
 <div class="logo"><img class="logomini" align="middle" needresize="1"  src="[CORE_LOGOCLIENT]"></div>
+[ENDIF isdetail]
+
 <div class="searchp">
 <form  id="fedit"  
        class="fborder" 
@@ -51,19 +54,20 @@ addEvent(window,"resize",resizeiframe);
 <input type="hidden" name="dirid" value="[dirid]">
 <input type="hidden" name="sole" value="Y">
 <input type="hidden" name="action" value="FULLSEARCH">
+[IF isdetail]
 <input name="keyword" type="text" size="30" value="[key]">
 <select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
         [BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>   
         [ENDBLOCK SELECTCLASS]
       </select>
   <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]">
+[ENDIF isdetail]
   
 </form>
 </div>
 </div>
 
 <div style="clear:both"></div>
-[ENDIF viewform]
 
 <table id="searchtop" cellspacing="0" cellpadding="0"  cellborder="0" >
 <tr>
@@ -91,8 +95,8 @@ addEvent(window,"resize",resizeiframe);
 
 <div class="number">[number]</div>
 
-<div class="textresult"><span class="title">[title]</span> <i>[mdate]</i><br >
-<div><img align="left" needresize="1" src="[iconsrc]" width="36px"></img></div><div>[htext]</div>
+<div class="inforesult"><span class="title">[title]</span> <i>[mdate]</i><br >
+<div class="iconresult"><img align="left" needresize="1" src="[iconsrc]" width="36px"></img></div><div class="textresult">[htext]</div>
 </div>
 <div class="endresult"></div>
 </div>

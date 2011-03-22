@@ -62,9 +62,9 @@ function viewUrlFromSearch(event, source, url) {
 		//dr.style.opacity='0.5';
 		//fe.style.opacity='0.5';
 		//fe.className='dark';
-		if (ds) ds.style.display='none';
+		//if (ds) ds.style.display='none';
 		//source.className='selectedresult';
-		var lt=dr.getElementsByTagName('div');
+	    lt=dr.getElementsByTagName('div');
 		for (var i=0;i<lt.length;i++)  {
 			if (lt[i].className=='selectedresult result') lt[i].className='result';
 		}
@@ -77,17 +77,10 @@ function hideUrlFromSearch() {
 
 	var idiv=document.getElementById('divdoc');
 	var ifr=document.getElementById('detaildoc');
-	var dr=document.getElementById('dresult');
-
 	var ds=window.parent.document.getElementById('dsearch');
-	var fe=document.getElementById('fedit');
 
 	ifr.src='';
 	idiv.style.display='none';
-	// dr.style.display='none';
-	dr.style.opacity='';
-	fe.style.opacity='';
-	fe.className='';
 	if (ds) ds.style.display='';
 	
 }
@@ -119,7 +112,9 @@ function resizeiframe(event) {
     var ds=window.parent.document.getElementById('dsearch');
     var xydetail=getAnchorPosition("dresult");
     var nhdetail=fh-xydetail.y;
-    if (ds) nhdetail-=50;
+    if (ds) {
+    	nhdetail-=50;
+    }
     if (nhdetail> 150) dd.style.height=(nhdetail)+'px';
     if (nh> 100) document.getElementById("dresult").style.height=nh+'px';
     // alert(xy.y+' - '+fh+' - '+nh);

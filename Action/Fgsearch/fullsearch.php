@@ -45,7 +45,7 @@ function fullsearch(&$action)
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FGSEARCH/Layout/fullsearch.js");
     $action->parent->AddCssRef("FGSEARCH:fullsearch.css",true);
     
-    $action->lay->set("viewform", true);
+    $action->lay->set("isdetail", true);
     $action->lay->set("page", $page + 1);
     $action->lay->set("dirid", $dirid);
     $action->lay->set("SUBSEARCH", ($start > 0));
@@ -229,7 +229,7 @@ function fullsearch(&$action)
         if ($dirid != 0) {
             $sdoc = new_doc($dbaccess, $dirid);
             if ($sdoc->isAffected()) {
-                $action->lay->set("viewform", false);
+                $action->lay->set("isdetail", false);
                 $action->lay->set("searchtitle", $sdoc->title);
                 $action->lay->set("dirid", $sdoc->id);
             }
