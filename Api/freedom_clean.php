@@ -13,7 +13,7 @@
 
 // remove all tempory doc and orphelines values
 include_once("FDL/Class.Doc.php");
-
+include_once("WHAT/Class.SessionUtils.php");
 
 $dbaccess=$action->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
@@ -34,5 +34,10 @@ $real=(getHttpVars("real")=="yes");
 $dbfreedom=getServiceName($dbaccess);
 if ($real) system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_realclean.sql\""); 
 else system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_clean.sql\""); 
+
+// Cleanup session files
+$core_db = $action->GetParam('CORE_DB');
+$sessionUtils = new SessionUtils($core_db);
+$sessionUtils->deleteExpiredSessionFiles();
 
 ?>

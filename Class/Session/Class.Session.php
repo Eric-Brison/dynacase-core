@@ -47,7 +47,7 @@ include_once ("Class.SessionCache.php");
 
 Class Session extends DbObj{
 
-  var $fields = array ( "id","userid","name");
+  var $fields = array ( "id","userid","name","last_seen");
 
   var $id_fields = array ("id");
   
@@ -57,7 +57,9 @@ Class Session extends DbObj{
                         userid   int,
                         name text not null,
                         last_seen timestamp with time zone not null DEFAULT now() );
-                  create index sessions_idx on sessions(id);";
+                  create unique index sessions_idx on sessions(id);
+                  create index sessions_idx_name on sessions(name);
+                  create index sessions_idx_userid on sessions(userid)";
     
   var $isCacheble= false;
   var $sessiondb;
@@ -67,6 +69,7 @@ Class Session extends DbObj{
   function __construct($session_name = 'freedom_param') {
     parent::__construct();
     if ($session_name != '')   $this->session_name = $session_name;
+    $this->last_seen = strftime('%d/%m/%Y %H:%M:%S %Z', time());
   }
 
   function Set($id="")  {
@@ -80,20 +83,21 @@ Class Session extends DbObj{
 
     $query=new QueryDb($this->dbaccess,"Session");
     $query->addQuery("id = '".pg_escape_string($id)."'");
-    $query->addQuery("name = '".pg_escape_string($this->session_name)."'");
-    $query->addQuery("last_seen > timestamp 'now' - interval '".pg_escape_string($this->getSessionMaxAge())."'");
     $list = $query->Query(0,0,"TABLE");
+    $createNewSession = true;
     if ($query->nb != 0) {
       $this->Affect($list[0]);
-      $this->touch();
-      session_name($this->session_name);
-      session_id($id);
-      @session_start();
-      @session_write_close(); // avoid block
-      //print_r2("@session_write_close");
-      //	$this->initCache();
-    } else {
-      // Init the database with the app file if it exists      
+      if( ! $this->hasExpired() ) {
+      	$createNewSession = false;
+      	$this->touch();
+      	session_name($this->session_name);
+      	session_id($id);
+      	@session_start();
+      	@session_write_close(); // avoid block
+      }
+    }
+
+    if( $createNewSession ) {
       $u = new User();
       if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {	
 	$this->open($u->id);
@@ -162,6 +166,7 @@ Class Session extends DbObj{
     $this->name     = $this->session_name;
     $this->id       = $idsess;
     $this->userid   = $uid;
+    $this->last_seen = strftime('%d/%m/%Y %H:%M:%S %Z', time());
     $this->Add();
     $this->log->debug("Nouvelle Session : {$this->id}");
   }
@@ -251,56 +256,16 @@ Class Session extends DbObj{
     }
     return 0;
   }
-  
-  function getSessionMaxAge($default="1 week") {
-    $err = $this->exec_query("SELECT val FROM paramv WHERE name = 'CORE_SESSIONMAXAGE'");
-    if( $err != "" ) {
-      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned with error: ".$err);
-      return $default;
-    }
-    if( $this->numrows() <= 0 ) {
-      error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned an empty result set");
-      return $default;
-    }
-    $res = $this->fetch_array(0);
-    if( is_numeric($res['val']) ) {
-      return $res['val']." seconds";
-    }
-    return $res['val'];
-  }
-  
-  function getSessionMaxAgeSeconds($default="1 week") {
-    $session_maxage = $this->getSessionMaxAge($default);
-    if( preg_match('/^(\d+)\s+(\w+)/i', $session_maxage, $m) ) {
-      $maxage = $m[1];
-      $unit = strtolower($m[2]);
-      switch( substr($unit, 0, 1) ) {
-      case 'y':
-	$maxage = $maxage*364*24*60*60; break; # years
-      case 'm':
-	if( substr($unit, 0, 2) == 'mo' ) {
-	  $maxage = $maxage*30*24*60*60; break; # months
-	} else {
-	  $maxage = $maxage*60; break; # minutes
-	}
-      case 'w':
-	$maxage = $maxage*7*24*60*60; break; # weeks
-      case 'd':
-	$maxage = $maxage*24*60*60; break; # days
-      case 'h':
-	$maxage = $maxage*60*60; break; # hours
-      case 's':
-	break; # seconds
-      default:
-	return FALSE;
-      }
-      return $maxage;
-    }
-    return FALSE;
-  }
 
-  function getSessionTTL($default=0) {
-    $err = $this->exec_query("SELECT val FROM paramv WHERE name = 'CORE_SESSIONTTL'");
+  function getSessionTTL($default = 0, $ttlParamName = '') {
+  	if( $ttlParamName == '' ) {
+  		if( $this->userid == ANONYMOUS_ID ) {
+  			$ttlParamName = 'CORE_GUEST_SESSIONTTL';
+  		} else {
+  			$ttlParamName = 'CORE_SESSIONTTL';
+  		}
+  	}
+    $err = $this->exec_query(sprintf("SELECT val FROM paramv WHERE name = '%s'", pg_escape_string($ttlParamName)));
     if( $err != "" ) {
       error_log(__CLASS__."::".__FUNCTION__." "."exec_query returned with error: ".$err);
       return $default;
@@ -336,64 +301,27 @@ Class Session extends DbObj{
   }
   
   function touch() {
-    $err = $this->exec_query("UPDATE sessions SET last_seen = now() WHERE id = '".pg_escape_string($this->id)."' AND name = '".pg_escape_string($this->name)."'");
+    $this->last_seen = strftime('%d/%m/%Y %H:%M:%S %Z', time());
+    $err = $this->modify();
     return $err;
   }
   
-  function deleteExpiredSessions() {
-    $err = $this->exec_query("DELETE FROM sessions WHERE last_seen < timestamp 'now()' - interval '".pg_escape_string($this->getSessionMaxAge())."'");
-    if( $err != "" ) {
-      return $err;
-    }
-
-    return "";
+  function deleteUserExpiredSessions() {
+  	$ttl = $this->getSessionTTL(0, 'CORE_SESSIONTTL');
+  	if( $ttl > 0 ) {
+  		return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid != %s AND last_seen < timestamp 'now()' - interval '%s seconds'", ANONYMOUS_ID, pg_escape_string($ttl)));
+  	}
+  	return '';
   }
 
-  function deleteExpiredSessionFiles() {
-    include_once('Lib.Prefix.php');
-
-    global $pubdir;
-
-    $session_maxage = $this->getSessionMaxAgeSeconds();
-    if( $session_maxage === false ) {
-      $err = sprintf("Malformed CORE_SESSIONMAXAGE");
-      return $err;
-    }
-    $maxage = time() - $session_maxage;
-
-    $sessionDir = sprintf("%s/session", $pubdir);
-    $dir = opendir($sessionDir);
-    if( $dir === false ) {
-      $err = sprintf("Error opening directory '%s'.", $sessionDir);
-      return $err;
-    }
-
-    $sessions = array();
-    while( $file = readdir($dir) ) {
-      if( preg_match("/^sess_(.+)$/", $file, $m) ) {
-	$sessions[$m[1]] = sprintf("%s/%s", $sessionDir, $file);
-      }
-    }
-    closedir($dir);
-
-    if( count(array_keys($sessions)) <= 0 ) {
-      return "";
-    }
-
-    foreach( $sessions as $sess_id => $sess_file ) {
-      $stat = @stat($sess_file);
-      if( $stat === false ) {
-	$err = sprintf("Error stat(%s).", $sess_file);
-	return $err;
-      }
-      if( $stat['mtime'] < $maxage ) {
-	@unlink($sess_file);
-      }
-    }
-
-    return "";
+  function deleteGuestExpiredSessions() {
+  	$ttl = $this->getSessionTTL(0, 'CORE_GUEST_SESSIONTTL');
+  	if( $ttl > 0 ) {
+  		return $this->exec_query(sprintf("DELETE FROM sessions WHERE userid = %s AND last_seen < timestamp 'now()' - interval '%s seconds'", ANONYMOUS_ID, pg_escape_string($ttl)));
+  	}
+  	return '';
   }
-  
+
   function gcSessions() {
     $gcP = $this->getSessionGcProbability();
     if( $gcP <= 0 ) {
@@ -401,15 +329,13 @@ Class Session extends DbObj{
     }
     $p = rand()/getrandmax();
     if( $p <= $gcP ) {
-      $err = $this->deleteExpiredSessions();
+      $err = $this->deleteUserExpiredSessions();
       if( $err != "" ) {
-	error_log(__CLASS__."::".__FUNCTION__." "."Error cleaning up sessions : ".$err);
-	return $err;
+		error_log(__CLASS__."::".__FUNCTION__." "."Error cleaning up user sessions: ".$err);
       }
-      $err = $this->deleteExpiredSessionFiles();
+      $err = $this->deleteGuestExpiredSessions();
       if( $err != "" ) {
-	error_log(__CLASS__."::".__FUNCTION__." "."Error cleaning up session files : ".$err);
-	return $err;
+      	error_log(__CLASS__."::".__FUNCTION__." "."Error cleaning up guest sessions: ".$err);
       }
     }
     return "";
@@ -449,5 +375,29 @@ Class Session extends DbObj{
     return true;
   }
 
+  function hasExpired() {
+  	include_once('FDL/Lib.util.php');
+  	$ttl = $this->getSessionTTL(0);
+  	if( $ttl > 0 ) {
+  		$now = time();
+  		$last_seen = stringDateToUnixTs($this->last_seen);
+  		if( $now > $last_seen + $ttl ) {
+  			return true;
+  		}
+  	}
+  	return false;
+  }
+
+  function removeSessionFile($sessid = null) {
+  	include_once('WHAT/Lib.Prefix.php');
+	global $pubdir;
+  	if( $sessid === null ) {
+  		$sessid = $this->id;
+  	}
+  	$sessionFile = sprintf("%s/session/sess_%s", $pubdir, $sessid);
+  	if( file_exists($sessionFile) ) {
+  		unlink($sessionFile);
+  	}
+  }
 } // Class Session
 ?>

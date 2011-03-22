@@ -2033,6 +2033,9 @@ msgstr "Application lancée au démarrage"
 msgid "core_sessionttl"
 msgstr "Durée des sessions (en secondes)"
 
+msgid "core_guest_sessionttl"
+msgstr "Durée des sessions guest (en secondes)"
+
 msgid "core_sessionmaxage"
 msgstr ""
 "Temps maximal au bout duquel une session non utilisée est éligible à la "

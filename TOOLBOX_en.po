@@ -2159,6 +2159,9 @@ msgstr ""
 msgid "core_sessionttl"
 msgstr "Session lifetime (in seconds)"
 
+msgid "core_guest_sessionttl"
+msgstr "Guest session lifetime (in seconds)"
+
 msgid "core_sessionmaxage"
 msgstr "Maximum time after which an unused session is eligible for suppression"
 
