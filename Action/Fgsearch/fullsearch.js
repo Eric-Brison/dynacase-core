@@ -56,20 +56,20 @@ function viewUrlFromSearch(event, source, url) {
 	    //console.log(x,w);
 		ifr.src=url;
 		idiv.style.display='';
-		idiv.style.left=(x + w)+'px';
-		idiv.style.width=(fw -(x + w +40))+'px';
+		//idiv.style.left=(x + w)+'px';
+		//idiv.style.width=(fw -(x + w +40))+'px';
 		// dr.style.display='none';
 		//dr.style.opacity='0.5';
 		//fe.style.opacity='0.5';
 		//fe.className='dark';
 		if (ds) ds.style.display='none';
 		//source.className='selectedresult';
-		var lt=dr.getElementsByTagName('table');
+		var lt=dr.getElementsByTagName('div');
 		for (var i=0;i<lt.length;i++)  {
-			if (lt[i].className=='selectedresult') lt[i].className='';
+			if (lt[i].className=='selectedresult') lt[i].className='result';
 		}
 
-		result.className='selectedresult';
+		source.className='selectedresult';
 		
 	}
 }
@@ -112,7 +112,7 @@ function resizeiframe(event) {
   if (document.getElementById("dresult")) {
     var fh=getFrameHeight();
     var xy=getAnchorPosition("dresult");
-    var nh=fh-xy.y-5;
+    var nh=fh-xy.y-15;
     var dd=document.getElementById("detaildoc");
     var divdoc=document.getElementById("divdoc");
     var ds=window.parent.document.getElementById('dsearch');
@@ -122,6 +122,6 @@ function resizeiframe(event) {
     if (nhdetail> 150) dd.style.height=(nhdetail)+'px';
     if (nh> 100) document.getElementById("dresult").style.height=nh+'px';
     // alert(xy.y+' - '+fh+' - '+nh);
-    divdoc.style.top=(xy.y-30)+'px';
+    //divdoc.style.top=(xy.y-30)+'px';
   }
 }

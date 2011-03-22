@@ -17,7 +17,7 @@
 
 #dresult {
   overflow-y:auto;
-  width:100%;
+  
 }
 
 
@@ -28,6 +28,7 @@ addEvent(window,"resize",resizeiframe);
 </script>
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
+
 <form  id="fedit"  
        class="fborder" 
        name="searchdoc"       
@@ -40,29 +41,22 @@ addEvent(window,"resize",resizeiframe);
 <input type="hidden" name="action" value="FULLSEARCH">
 
 [IF viewform]
-<div style="text-align:right">
-<a style="font-size:80%; "  onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
+<div class="searchbarmenu" style="text-align:right">
+<a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
+<a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a>
+<a   onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
 </div>
 
 <div id="searchzone" class="zsearch">
-
 <div class="logo"><img class="logomini" align="middle" needresize="1"  src="[CORE_LOGOCLIENT]"></div>
 <div class="searchp">
-<div><input name="keyword" type="text" size="30" value="[key]"></div>
-<div><select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
+<input name="keyword" type="text" size="30" value="[key]">
+<select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
         [BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>   
         [ENDBLOCK SELECTCLASS]
-      </select></div>
-</div>
-
-<div class="searchc">
+      </select>
   <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]">
 </div>
-<div class="searchm">
-<a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
-<br><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a>
-</div>
-
 </div>
 
 <div style="clear:both"></div>
@@ -75,7 +69,7 @@ addEvent(window,"resize",resizeiframe);
 </tr>
 </table> 
 <div style="right:15px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
-[BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5 0 5" width="12px"></div>[ENDBLOCK filterfam]
+[BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5px 0 5px" width="12px"></div>[ENDBLOCK filterfam]
 </div>
 <div id="aide" style="display:none">
 <div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
@@ -90,10 +84,10 @@ addEvent(window,"resize",resizeiframe);
 [IFNOT INITSEARCH]
 <div id="dresult" >
 <a name="page[page]" style="visibility:hidden">Page [page]</a>
-[BLOCK DOCS]<div title="[title]" class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')"><table cellspacing=0>
+[BLOCK DOCS]<div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')"><table cellspacing=0>
 <tr class="result"><td class="number">[number]</td>
-<td class="result"><img align="left" needresize="1" src="[iconsrc]" width="36px"></td>
-<td class="result textresult"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
+<td class="result"></td>
+<td class="result textresult"><span class="title">[title]</span> <i>[mdate]</i><br ><img align="left" needresize="1" src="[iconsrc]" width="36px">[htext]</td>
 </tr></table></div>
 [ENDBLOCK DOCS]
 [IFNOT SUBSEARCH]
@@ -109,7 +103,7 @@ addEvent(window,"resize",resizeiframe);
 [IFNOT SUBSEARCH]
 <iframe id="nextresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="nextresult"></iframe>
 <div id="divdoc" style="display:none;">
-<p id="closeBar" ><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a> | <a onclick="hideUrlFromSearch()">[TEXT:Close]</a></p>
+<p id="closeBar" ><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a> <a onclick="hideUrlFromSearch()">[TEXT:Close]</a></p>
 <iframe id="detaildoc" src="[IMG:1x1.gif]"  name="detaildoc"></iframe>
 </div>
 
