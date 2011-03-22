@@ -29,16 +29,7 @@ addEvent(window,"resize",resizeiframe);
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
 
-<form  id="fedit"  
-       class="fborder" 
-       name="searchdoc"       
-       target="_self"
-       action="?app=FGSEARCH"
-       method="POST"        >
-<input type="hidden" name="page" value="0">
-<input type="hidden" name="dirid" value="[dirid]">
-<input type="hidden" name="sole" value="Y">
-<input type="hidden" name="action" value="FULLSEARCH">
+
 
 [IF viewform]
 <div class="searchbarmenu" style="text-align:right">
@@ -50,19 +41,31 @@ addEvent(window,"resize",resizeiframe);
 <div id="searchzone" class="zsearch">
 <div class="logo"><img class="logomini" align="middle" needresize="1"  src="[CORE_LOGOCLIENT]"></div>
 <div class="searchp">
+<form  id="fedit"  
+       class="fborder" 
+       name="searchdoc"       
+       target="_self"
+       action="?app=FGSEARCH"
+       method="POST"        >
+<input type="hidden" name="page" value="0">
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="sole" value="Y">
+<input type="hidden" name="action" value="FULLSEARCH">
 <input name="keyword" type="text" size="30" value="[key]">
 <select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
         [BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>   
         [ENDBLOCK SELECTCLASS]
       </select>
   <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]">
+  
+</form>
 </div>
 </div>
 
 <div style="clear:both"></div>
 [ENDIF viewform]
 
-<table  cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
+<table id="searchtop" cellspacing="0" cellpadding="0"  cellborder="0" >
 <tr>
 <td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
 <td class="bresume right">[CORE_CLIENT]</td>
@@ -80,21 +83,25 @@ addEvent(window,"resize",resizeiframe);
 [ENDIF INITSEARCH]
 [ENDIF SUBSEARCH]
 
-</form>
 [IFNOT INITSEARCH]
 <div id="dresult" >
 <a name="page[page]" style="visibility:hidden">Page [page]</a>
-[BLOCK DOCS]<div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')"><table cellspacing=0>
-<tr class="result"><td class="number">[number]</td>
-<td class="result"></td>
-<td class="result textresult"><span class="title">[title]</span> <i>[mdate]</i><br ><img align="left" needresize="1" src="[iconsrc]" width="36px">[htext]</td>
-</tr></table></div>
+[BLOCK DOCS]
+<div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')">
+
+<div class="number">[number]</div>
+
+<div class="textresult"><span class="title">[title]</span> <i>[mdate]</i><br >
+<div><img align="left" needresize="1" src="[iconsrc]" width="36px"></img></div><div>[htext]</div>
+</div>
+<div class="endresult"></div>
+</div>
 [ENDBLOCK DOCS]
 [IFNOT SUBSEARCH]
-<table id="searchbottom" cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
+<table id="searchbottom" cellspacing="0" cellpadding="0"  cellborder="0" style="">
 <tr>
 <td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
-<td class="bresume right"></td>
+<td class="bresume right">&nbsp;</td>
 </tr>
 </table> [ENDIF SUBSEARCH]
 </div>

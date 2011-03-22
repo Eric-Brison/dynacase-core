@@ -51,7 +51,7 @@ function viewUrlFromSearch(event, source, url) {
 	    var lt=source.getElementsByTagName('table');
 	    var result=lt[0];
 
-	    var x=AnchorPosition_getPageOffsetLeft(result);
+	    var x=AnchorPosition_getPageOffsetLeft(source);
 	    var w=getObjectWidth(result);
 	    //console.log(x,w);
 		ifr.src=url;
@@ -66,10 +66,10 @@ function viewUrlFromSearch(event, source, url) {
 		//source.className='selectedresult';
 		var lt=dr.getElementsByTagName('div');
 		for (var i=0;i<lt.length;i++)  {
-			if (lt[i].className=='selectedresult') lt[i].className='result';
+			if (lt[i].className=='selectedresult result') lt[i].className='result';
 		}
 
-		source.className='selectedresult';
+		source.className='selectedresult result';
 		
 	}
 }
@@ -112,7 +112,8 @@ function resizeiframe(event) {
   if (document.getElementById("dresult")) {
     var fh=getFrameHeight();
     var xy=getAnchorPosition("dresult");
-    var nh=fh-xy.y-15;
+    var nh=fh-xy.y-10;
+    //if (isIE) nh-=25;
     var dd=document.getElementById("detaildoc");
     var divdoc=document.getElementById("divdoc");
     var ds=window.parent.document.getElementById('dsearch');
