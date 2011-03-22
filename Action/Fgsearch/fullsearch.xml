@@ -1,27 +1,6 @@
 [IFNOT SUBSEARCH]
 [ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
-<style>
-
-#aide {
-  position:absolute;
-  display:inline;
-  border: 1px solid [COLOR_B4];
-  background-color: [COLOR_WHITE];
-  padding-top:10px;
-  left : 50px;
-  right : 50px;
-  -moz-border-radius: 10px;
-}
-#aide #closeaide {  right:10px; margin : 5px 0px 10px 0px; }
-
-#dresult {
-  overflow-y:auto;
-  
-}
-
-
-</style>
 <script>
 addEvent(window,"load",resizeiframe);
 addEvent(window,"resize",resizeiframe);
@@ -32,11 +11,7 @@ addEvent(window,"resize",resizeiframe);
 
 
 [IF isdetail]
-<div class="searchbarmenu" style="text-align:right">
-<a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
-<a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a>
-<a   onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
-</div>
+<div class="searchbarmenu" style="text-align:right"><a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a><a onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a></div>
 [ENDIF isdetail]
 <div id="searchzone" class="zsearch">
 [IF isdetail]
@@ -94,9 +69,11 @@ addEvent(window,"resize",resizeiframe);
 <div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')">
 
 <div class="number">[number]</div>
-
-<div class="inforesult"><span class="title">[title]</span> <i>[mdate]</i><br >
-<div class="iconresult"><img align="left" needresize="1" src="[iconsrc]" width="36px"></img></div><div class="textresult">[htext]</div>
+<div class="inforesult"><span class="title">[title]</span><i>[mdate]</i><br/>
+  <div class="iconresult">
+    <img needresize="1" src="[iconsrc]"></img>
+  </div>
+  <div class="textresult">[htext]</div>
 </div>
 <div class="endresult"></div>
 </div>
