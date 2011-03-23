@@ -121,3 +121,14 @@ function resizeiframe(event) {
     //divdoc.style.top=(xy.y-30)+'px';
   }
 }
+
+function switchSearchMode() {
+    
+    if (document.getElementById('basic-search')) document.getElementById('basic-search').style.display = (basicSearch?'none':'block');
+    if (document.getElementById('detailed-search')) document.getElementById('detailed-search').style.display = (basicSearch?'block':'none');
+    if (document.getElementById('label-basic-search')) document.getElementById('label-basic-search').style.display = (basicSearch?'inline':'none');
+    if (document.getElementById('label-detailed-search')) document.getElementById('label-detailed-search').style.display = (basicSearch?'none':'inline');
+    basicSearch = basicSearch ? false : true;
+    return true;
+}	
+  

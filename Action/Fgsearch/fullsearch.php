@@ -32,7 +32,6 @@ function fullsearch(&$action)
     $target = GetHttpVars("target"); // target window when click on document
     $page = GetHttpVars("page", 0); // page number
     $dirid = GetHttpVars("dirid", 0); // special search
-    
 
     $slice = 10;
     $start = $page * $slice;
@@ -45,7 +44,7 @@ function fullsearch(&$action)
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FGSEARCH/Layout/fullsearch.js");
     $action->parent->AddCssRef("FGSEARCH:fullsearch.css",true);
     
-    $action->lay->set("isdetail", true);
+    $action->lay->set("isdetail", false);
     $action->lay->set("page", $page + 1);
     $action->lay->set("dirid", $dirid);
     $action->lay->set("SUBSEARCH", ($start > 0));
@@ -255,6 +254,7 @@ function fullsearch(&$action)
         $selectclass[$k]["famselect"] = ($cdoc["initid"] == $famid) ? "selected" : "";
     }
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
+    $action->lay->set("searchdate", Doc::getDate(0,0,0,0,true));
 
 }
 
