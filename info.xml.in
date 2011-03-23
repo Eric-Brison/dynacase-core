@@ -188,8 +188,10 @@
   </pre-upgrade>
   
   <post-upgrade>
+    <process command="programs/core_sanitize"><label lang="en">Sanitize core database</label></process>
     <process command="programs/core_update"><label lang="en">Update core</label></process>
     <process command="programs/pre_migration CORE"><label lang="en">Migration first level</label></process>
+    <process command="programs/app_post CORE U"/>
     <process command="programs/record_application CORE U"><label lang="en">Update core application in database</label></process>
     <process command="programs/record_application USERS U"><label lang="en">Record users application in database</label></process>
     <process command="programs/record_application ACCESS U"><label lang="en">Update access application in database</label></process>

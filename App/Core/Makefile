@@ -11,7 +11,7 @@ export appname
 include $(utildir)/PubRule
 
 
-DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_post file.htaccess
+DISTFILES += Makefile  $(appname).app $(appname)_init.php.in $(appname)_post file.htaccess core_migration.sql
 
 $(pubdir)/file:
 	mkdir -p $@
@@ -19,4 +19,6 @@ $(pubdir)/file:
 $(pubdir)/file/.htaccess: file.htaccess $(pubdir)/file
 	cp $< $@
 
-publish:  $(pubdir)/file/.htaccess
+$(pubdir)/CORE/core_migration.sql: core_migration.sql $(pubdir)/CORE
+
+publish:  $(pubdir)/file/.htaccess $(pubdir)/CORE/core_migration.sql
