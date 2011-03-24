@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-23 19:06+0100\n"
+"POT-Creation-Date: 2011-03-24 10:35+0100\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -106,25 +106,31 @@ msgstr ""
 msgid "Error : Cleaning %s  status %d"
 msgstr ""
 
-#, fuzzy
-msgid "more families"
-msgstr "Start search"
-
-#, c-format
-msgid "View %d next results"
-msgstr ""
+msgid "View next results"
+msgstr "view next documents"
 
 #, fuzzy, c-format
 msgid "Search %s"
 msgstr "Start search"
 
-#, c-format
-msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
-msgstr ""
+msgid "search dynacase documents"
+msgstr "search documents"
 
 #, c-format
-msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
-msgstr ""
+msgid "familie seearch result"
+msgstr "limit to family"
+
+#, c-format
+msgid "No document found for <b>%s</b>%s"
+msgstr "No document for \"<b>%s</b>\"%s"
+
+#, c-format
+msgid "One document for <b>%s</b>%s"
+msgstr "One document for \"<b>%s</b>\"%s"
+
+#, c-format
+msgid "Found <b>%d</b>  Result for <b>%s</b>%s"
+msgstr "<b>%d</b> documents found for \"<b>%s</b>\"%s"
 
 #, c-format
 msgid "document too big (%dKo): no highlight"
@@ -6915,6 +6921,10 @@ msgid "View historique"
 msgstr ""
 
 #, fuzzy
+msgid "more families"
+msgstr "Start search"
+
+#, fuzzy
 msgid "restrict to preferred families"
 msgstr "Modify"
 
@@ -9226,6 +9236,9 @@ msgstr ""
 
 msgid "Continue (Y|N) ?"
 msgstr ""
+
+#~ msgid "One document <b>%d</b>  Results for <b>%s</b>%s"
+#~ msgstr "One document found for \"<b>%s</b>\"%s"
 
 #, fuzzy
 #~ msgid "View the search query"

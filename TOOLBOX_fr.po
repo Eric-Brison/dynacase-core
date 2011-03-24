@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-23 19:06+0100\n"
+"POT-Creation-Date: 2011-03-24 10:35+0100\n"
 "PO-Revision-Date: 2011-03-21 10:50+0100\n"
 "Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -109,24 +109,31 @@ msgstr "Orphelins supprimés dans le répertoire %s"
 msgid "Error : Cleaning %s  status %d"
 msgstr "Erreur : Nettoyage %s état %d"
 
-msgid "more families"
-msgstr "toutes les familles"
-
-#, c-format
-msgid "View %d next results"
-msgstr "Voir les %d prochains résultats"
+msgid "View next results"
+msgstr "voir les documents suivants..."
 
 #, c-format
 msgid "Search %s"
 msgstr "Recherche %s"
 
-#, c-format
-msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
-msgstr "<b>%d</b> résultats pour <b>%s</b> %s"
+msgid "search dynacase documents"
+msgstr "rechercher des documents..."
 
 #, c-format
-msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
-msgstr "<b>%d</b> résultat pour <b>%s</b> %s"
+msgid "familie seearch result"
+msgstr "limité à la famille"
+
+#, c-format
+msgid "No document found for <b>%s</b>%s"
+msgstr "Aucun document pour la recherche \"<b>%s</b>\"%s"
+
+#, c-format
+msgid "One document for <b>%s</b>%s"
+msgstr "Un document trouvé pour \"<b>%s</b>\"%s"
+
+#, c-format
+msgid "Found <b>%d</b>  Result for <b>%s</b>%s"
+msgstr "<b>%d</b> documents trouvés pour \"<b>%s</b>\"%s"
 
 #, c-format
 msgid "document too big (%dKo): no highlight"
@@ -5972,7 +5979,7 @@ msgid "any familly"
 msgstr "toute famille"
 
 msgid "searchdate prefix"
-msgstr "date "
+msgstr "exécutée le "
 
 msgid "close search online help"
 msgstr "Fermer l'aide à la recherche"
@@ -6624,6 +6631,9 @@ msgstr "Manuel de description de famille"
 
 msgid "View historique"
 msgstr "Voir l'historique"
+
+msgid "more families"
+msgstr "toutes les familles"
 
 msgid "restrict to preferred families"
 msgstr "restriction aux familles préférées"
@@ -8713,6 +8723,15 @@ msgstr "Base de données : [%s]"
 
 msgid "Continue (Y|N) ?"
 msgstr "Continuer (Y (oui) |N (non)) ?"
+
+#~ msgid "View %d next results"
+#~ msgstr "documents suivants..."
+
+#~ msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
+#~ msgstr "<b>%d</b> résultats pour <b>%s</b> %s"
+
+#~ msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
+#~ msgstr "<b>%d</b> résultat pour <b>%s</b> %s"
 
 #~ msgid "Undisplay the search query"
 #~ msgstr "Ne pas afficher la requête"

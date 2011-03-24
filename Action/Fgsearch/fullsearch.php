@@ -92,7 +92,7 @@ function fullsearch(&$action)
         }
     }
     
-    $bfam = array();
+    /* $bfam = array(); */
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, array(
         1,
         2
@@ -103,31 +103,19 @@ function fullsearch(&$action)
         $famfilter = $or = $and = "";
         if (count($kfams) > 0) {
             $famid = 0;
-            reset($bfam);
             $tmpdoc = new Doc($dbaccess);
             foreach ( $kfams as $k => $v ) {
                 foreach ( $tclassdoc as $kdoc => $cdoc ) {
                     if (strstr(strtolower($cdoc["title"]), $v["kfam"]) != false) {
                         if ($v["include"]) $or .= ($or != "" ? " OR " : "") . "(fromid" . ($v["include"] ? "=" : "!=") . $cdoc["initid"] . ")";
                         else $and .= ($and != "" ? " AND " : "") . "(fromid" . ($v["include"] ? "=" : "!=") . $cdoc["initid"] . ")";
-                        $bfam[] = array(
-                            "fam" => $cdoc["title"],
-                            "include" => $v["include"],
-                            "icon" => $tmpdoc->getIcon($cdoc["icon"])
-                        );
                     }
                 }
             }
             if ($or != "") $famfilter = "($or)";
             if ($and != "") $famfilter .= ($famfilter != "" ? " AND " : "") . " ($and)";
         }
-        
-        if (count($bfam) == 0) $bfam[0] = array(
-            "fam" => $action->text("more families"),
-            "include" => true,
-            "icon" => $action->getImageUrl($action->parent->icon)
-        );
-        
+                
         if ($keyword != "") {
             if ($keyword[0] == '~') {
                 $sqlfilters[] = "svalues ~* '" . pg_escape_string(substr($keyword, 1)) . "'";
@@ -142,14 +130,6 @@ function fullsearch(&$action)
             $keys = implode('|', $tkeys);
         }
         if ($famfilter != "") $sqlfilters[] = $famfilter;
-        if ($famid > 0) {
-            $fdoc = new_Doc($dbaccess, $famid);
-            $bfam[0] = array(
-                "fam" => $fdoc->getTitle(),
-                "include" => true,
-                "icon" => $fdoc->getIcon()
-            );
-        }
         
         $s = new SearchDoc($dbaccess, $famid);
         if ($dirid) $s->useCollection($dirid);
@@ -186,7 +166,7 @@ function fullsearch(&$action)
         }
         
         $action->lay->set("notfirst", ($start != 0));
-        $action->lay->set("theFollowingText", sprintf(_("View %d next results"), $slice));
+        $action->lay->set("theFollowingText", _("View next results"));
         $c=0;
         foreach ( $tdocs as $k => $tdoc ) {
             if ($tdoc["confidential"]) {
@@ -238,15 +218,23 @@ function fullsearch(&$action)
         $action->lay->set("notfirst", false);
         $action->lay->set("notthenend", false);
     }
-    $action->lay->setBlockData("filterfam", $bfam);
     $action->lay->set("famid", $famid);
     $action->lay->set("searchtitle", sprintf(_("Search %s"), $keyword));
-    $action->lay->set("key", str_replace("\"", "&quot;", $fkeyword));
-    if ($globalCount > 1) {
-        $action->lay->set("resulttext", sprintf(_("Found <b>%d</b>  Results for <b>%s</b> %s"), $globalCount, $keyword, $famtitle));
+    if ($fkeyword == "") $action->lay->set("key", _("search dynacase documents"));
+    else $action->lay->set("key", str_replace("\"", "&quot;", $fkeyword));
+    $action->lay->set("guideKeyword", _("search dynacase documents"));
+    $action->lay->set("initKeyword", ($fkeyword == "" ? true : false ));
+    
+    $famsuffix = ($famid==0?"":sprintf("<span class=\"families\">(%s %s)</span>",_("familie seearch result"),$famtitle));
+    if ($globalCount == 0) {
+      $action->lay->set("resulttext", sprintf(_("No document found for <b>%s</b>%s"), $keyword, $famsuffix));
+    } else if ($globalCount == 1) {
+      $action->lay->set("resulttext", sprintf(_("One document for <b>%s</b>%s"), $keyword, $famsuffix));
     } else {
-        $action->lay->set("resulttext", sprintf(_("Found <b>%d</b>  Result for <b>%s</b> %s"), $globalCount, $keyword, $famtitle));
+      $action->lay->set("resulttext", sprintf(_("Found <b>%d</b>  Result for <b>%s</b>%s"), $globalCount, $keyword, $famsuffix));
     }
+    $action->lay->set("displayBottomBar", ($globalCount==0?false:true));
+    
     
     foreach ( $tclassdoc as $k => $cdoc ) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
