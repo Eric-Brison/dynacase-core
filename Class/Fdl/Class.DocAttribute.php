@@ -549,16 +549,17 @@ function enum_getXmlSchema(&$la) {
   /**
    * return array of enumeration definition
    * the array'skeys are the enum single key and the values are the complete labels
+   * @param string $enumid the key of enumerate (if no parameter all labels are returned
    * @return array
    */
-  function getEnumLabel($enumid="") {
+  function getEnumLabel($enumid=null) {
 		global $__tlenum;
 
 		$this->getEnum();
 
 		$implode = false;
 		if (isset($__tlenum[$this->id])) { // is set
-			if ($enumid == "")
+			if ($enumid === null)
 				return $__tlenum[$this->id];
 			if (strstr($enumid, "\n")) {
 				$enumid = explode("\n", $enumid);

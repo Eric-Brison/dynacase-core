@@ -1,20 +1,25 @@
+[IFNOT SUBSEARCH]
 [ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
 <style>
 SELECT.little { font-size:90%; }
 div.logo { margin-top:-20px;  float:left; width:20%; z-index:100; text-align:center; }
-img.logomini { width:70px; padding-left:0px; }
+img.logomini { width:50px; padding-left:0px; }
 div.zsearch { margin-top:20px;}
 div.searchp { float:left; padding:0px 5px 0px 5px; text-align:right; }
 div.searchc { float:left; padding:0px 5px 0px 5px; text-align:left; }
 div.searchm { float:left; padding:0px 15px 0px 15px; text-align:left; }
-
+#nextresultbutton { text-align:center;}
 .bresume { 
   background-color:[COLOR_B8]; 
   border-color:[COLOR_B4]; 
   border-style:solid;
   border-width:1px 0px 1px 0px;width:50%; 
   padding:0px 5px 0px 5px;
+}
+
+#dresult {
+  overflow-y:auto;
 }
 .left { text-align:left; }
 .right { text-align:right; }
@@ -33,7 +38,7 @@ tr.result  {
 }
 td.result .title { color:[COLOR_B0]; font-size:110%; font-weight:bold; }
 td.result b { color:[COLOR_A0]; }
-td.result:hover {background-color :[COLOR_B8]}
+div.result:hover {background-color :[COLOR_B8]}
 tr.result:hover td.result {background-color :[COLOR_B8]}
 a.result:active, a.result:link, a.result:visited {text-decoration:none}
 a.result img {border:none}
@@ -49,56 +54,69 @@ a.result img {border:none}
   -moz-border-radius: 10px;
 }
 #aide #closeaide {  right:10px; margin : 5px 0px 10px 0px; }
+
+#divdoc {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:90%;
+  background-color:[COLOR_WHITE];
+  border: [COLOR_A0] 2px solid;
+  padding:0px;
+  margin:50px;
+}
+#detaildoc {
+  width:100%;
+  background-color:[COLOR_WHITE];
+  border: none;
+  padding:0px;
+  margin:0px;
+}
+#closeBar {
+ text-align:right;
+ background-color:[COLOR_A7];
+ margin:0px;
+ }
+ form.dark {
+   background-color:[COLOR_A7];
+ }
+ 
+ div.result {
+    width:95%;
+    display:block;
+    cursor:pointer;
+ }
+ div.result:hover_ {
+    z-index:10;
+    position:absolute;
+    beackground-color:[COLOR_WHITE];
+ }
+ td.number {
+   width:30px;
+   text-align:center;
+   vertical-align:top;
+   padding-top:10px;
+ }
 </style>
 <script>
-function buttonNumber(event) {
-  
-  if (window.event) return button=window.event.button;
-  else return button= event.button +1;
-}
-function hideresult(event) {
-  if (buttonNumber(event)==3) return;
-  var ifr=document.getElementById('searchresult');
-  var dr=document.getElementById('dresult');
-  var ipr=document.getElementById('iprev');
-    ifr.src="[IMG:1x1.gif]";
-  ifr.style.display='';
-  dr.style.display='none';  
-  ipr.style.visibility='visible';
-  
-  }
-function showresult() {
-  var ifr=document.getElementById('searchresult');
-  var dr=document.getElementById('dresult');
-  var ipr=document.getElementById('iprev');
-  ifr.style.display='none';
-  dr.style.display='';  
-  ipr.style.visibility='hidden';
-  }
 
-function resizeiframe(event) {
-  if (document.getElementById("dresult")) {
-    var fh=getFrameHeight();
-    var xy=getAnchorPosition("dresult");
-    var nh=fh-xy.y-5;
 
-    if (nh> 100) document.getElementById("searchresult").style.height=nh+'px';
-    //   alert(xy.y+' - '+fh+' - '+nh);
-  }
-}
+
+
 addEvent(window,"load",resizeiframe);
 addEvent(window,"resize",resizeiframe);
+
 </script>
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
 <form  id="fedit"  
-       class="fborder" style="display:inline"
+       class="fborder" 
        name="searchdoc"       
        target="_self"
-       method="GET"        >
-<input type="hidden" name="start" value="0">
+       action="?app=FGSEARCH"
+       method="POST"        >
+<input type="hidden" name="page" value="0">
 <input type="hidden" name="dirid" value="[dirid]">
-<input type="hidden" name="app" value="FGSEARCH">
 <input type="hidden" name="sole" value="Y">
 <input type="hidden" name="action" value="FULLSEARCH">
 
@@ -109,7 +127,7 @@ addEvent(window,"resize",resizeiframe);
 
 <div id="searchzone" class="zsearch">
 
-<div class="logo"><img class="logomini" align="middle" needresize="1"  src="[IMG:fgsearch.png]"></div>
+<div class="logo"><img class="logomini" align="middle" needresize="1"  src="[CORE_LOGOCLIENT]"></div>
 <div class="searchp">
 <div><input name="keyword" type="text" size="30" value="[key]"></div>
 <div><select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
@@ -119,7 +137,7 @@ addEvent(window,"resize",resizeiframe);
 </div>
 
 <div class="searchc">
-  <input type="submit" value="[TEXT:ToSearch]">
+  <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]">
 </div>
 <div class="searchm">
 <a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
@@ -133,13 +151,13 @@ addEvent(window,"resize",resizeiframe);
 
 <table  cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
 <tr>
-<td class="bresume left"><img title="[TEXT:Return to results]" style="height:[SIZE_IMG-XX-SMALL];visibility:hidden;cursor:pointer" id="iprev" onclick="showresult()" src="[IMG:prev.png]" needresiez="1">[CORE_CLIENT]</td>
-<td class="bresume right">[resulttext]
-<div style="right:5px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
-[BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5 0 5" width="12px"></div>[ENDBLOCK filterfam]
-</div></td>
+<td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
+<td class="bresume right">[CORE_CLIENT]</td>
 </tr>
 </table> 
+<div style="right:15px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
+[BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5 0 5" width="12px"></div>[ENDBLOCK filterfam]
+</div>
 <div id="aide" style="display:none">
 <div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
 [ZONE FGSEARCH:HELP]
@@ -147,19 +165,55 @@ addEvent(window,"resize",resizeiframe);
 [IF INITSEARCH]
 <div style="text-align:center;vertical-align:middle"><img src="[IMG:logodynacase.png]"></div>
 [ENDIF INITSEARCH]
-<div id="dresult">
-[BLOCK DOCS]<a target="searchresult" onmouseup="hideresult(event)" class="result" onclick="searchresult.location.href=this.href"  href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]"><table cellspacing=0>
-<tr class="result"  >
+[ENDIF SUBSEARCH]
+
+</form>
+[IFNOT INITSEARCH]
+<div id="dresult" >
+<a name="page[page]" style="visibility:hidden">Page [page]</a>
+[BLOCK DOCS]<div title="[title]" class="result" onmousedown="viewUrlFromSearch(event,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')"><table cellspacing=0>
+<tr class="result"><td class="number">[number]</td>
 <td class="result"><img align="left" needresize="1" src="[iconsrc]" width="36px"></td>
 <td class="result"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
-</tr></table></a>
+</tr></table></div>
 [ENDBLOCK DOCS]
-<div style="text-align:center;border-top-color:[COLOR_B4];border-top-style:solid;border-top-width:1px">
-[IF notfirst]
- <a onclick="document.searchdoc.start.value=[pstart];document.searchdoc.submit()">  <img style="border:none" align="absbottom"  src="[IMG:freeleft.png]"> [TEXT:Previous]</a>[ENDIF notfirst] 
-[BLOCK PAGES]<a  onclick="document.searchdoc.start.value=[xstart];document.searchdoc.submit()">[xpage] </a>[ENDBLOCK PAGES] <b>[cpage]</b>
- <a onclick="document.searchdoc.start.value=[nstart];document.searchdoc.submit()"> [IF notthenend][TEXT:Next] <img style="border:none" align="absbottom"  src="[IMG:freeright.png]"></a>[ENDIF notthenend]</div>
+[IFNOT SUBSEARCH]
+<table id="searchbottom" cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
+<tr>
+<td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
+<td class="bresume right"></td>
+</tr>
+</table> [ENDIF SUBSEARCH]
 </div>
-</form>
-<iframe id="searchresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="searchresult"></iframe>
+
+
+[IFNOT SUBSEARCH]
+<iframe id="nextresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="nextresult"></iframe>
+<div id="divdoc" style="display:none;">
+<p id="closeBar" ><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a> | <a onclick="hideUrlFromSearch()">[TEXT:Close]</a></p>
+<iframe id="detaildoc" src="[IMG:1x1.gif]"  name="detaildoc"></iframe>
+</div>
+
+[ENDIF SUBSEARCH]
+[ENDIF INITSEARCH]
+[IF SUBSEARCH]
+<script>
+if (window.parent && window.parent != window) {
+    var targetS=window.parent.document.getElementById('dresult');
+    var targetB=window.parent.document.getElementById('searchbottom');
+    var targetBB=window.parent.document.getElementById('nextresultbuttonbottom');
+    var targetBT=window.parent.document.getElementById('nextresultbuttontop');
+    var origin=document.getElementById('dresult');
+    var target=  window.parent.document.createElement("div");
+    target.style.borderTop="solid 1px [COLOR_B5]";
+    target.innerHTML=origin.innerHTML;
+    targetB.parentNode.insertBefore(target, targetB);
+    window.parent.location.hash='#page[page]';
+    [IFNOT notthenend]
+    targetBB.style.display="none";
+    targetBT.style.display="none";
+    [ENDIF notthenend]
+}
+</script>
+[ENDIF SUBSEARCH]
 [ZONE FDL:HTMLFOOT]

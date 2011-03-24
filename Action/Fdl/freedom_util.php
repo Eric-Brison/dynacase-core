@@ -377,7 +377,7 @@ function simpleQuery($dbaccess,$query,&$result=array(),$singlecolumn=false,$sing
       else $result = pg_fetch_all($r);      
       if ($singleresult) $result= $result[0];
     } else {
-      if ($singleresult) $result=false;;
+      if ($singleresult) $result=false;
     }
   } else {
     $err=pg_last_error($dbid);

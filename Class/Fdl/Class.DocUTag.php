@@ -21,6 +21,7 @@ Class DocUtag extends DbObj {
 			   "date", // date of entry
 			   "tag", // tag code
 			   "fromuid", // user what id of the user which has set the tag	
+               "fixed",
 			   "comment"
 			   );
 
@@ -56,6 +57,7 @@ Class DocUtag extends DbObj {
    */
   public $fromuid;
 
+  public $fixed='false';
 
   public $id_fields = array ("id","uid","tag");
 
@@ -70,6 +72,7 @@ create table docutag ( id int not null,
                    date timestamp,
                    tag text,
                    fromuid int,
+                   fixed boolean default false,
                    comment text);
 create index i_docutag on docutag(id);
 create index in_docutag on docutag(initid);

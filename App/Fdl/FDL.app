@@ -29,8 +29,8 @@ $app_desc = array (
 "access_free"	=>"N",			//Access free ? (Y,N)
 "icon" 		=>"fdl.gif",
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
-"iorder"	        =>20,                   // install order
-
+"iorder"	=>20,                   // install order
+"tag"           => "CORE"
 );
 
 $app_acl = array (

@@ -31,7 +31,8 @@ $app_desc = array (
 "icon"		=>"freedom.png",	//Icon
 "displayable"	=>"Y",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
-"iorder"        =>130
+"iorder"        =>130,
+"tag"           =>"CORE"
 );
 
 $app_acl = array (

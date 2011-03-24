@@ -28,6 +28,8 @@ function fulleditdsearch(&$action) {
 
   $famid=GetHttpVars("famid",0);
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
+  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
+  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
   $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/inserthtml.js");
   $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/editdsearch.js");

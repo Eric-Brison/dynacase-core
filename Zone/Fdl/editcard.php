@@ -156,6 +156,7 @@ function editcard(&$action) {
     $action->lay->Set("ZONEBODYCARD", $doc->viewDoc($zonebodycard));
     setNeededAttributes($action,$doc);
   }
+  $action->lay->set("maxFileUpload",ini_get("max_file_uploads"));
   $action->lay->Set("NOFORM", (preg_match("/[A-Z]+:[^:]+:U/", $zonebodycard, $reg)));
   // compute modify condition js
 

@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Toolbox\n"
+"Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-09 10:56+0100\n"
-"PO-Revision-Date: 2011-03-09 10:56+0100\n"
-"Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
+"POT-Creation-Date: 2011-03-24 08:24+0100\n"
+"PO-Revision-Date: 2011-03-24 08:28+0100\n"
+"Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -1890,7 +1890,7 @@ msgid "user own account modification"
 msgstr "modifier compte personnel"
 
 msgid "Core"
-msgstr "Noyau"
+msgstr "Platform Core"
 
 msgid "Core Application Manager"
 msgstr "Page d'accueil"
@@ -2048,6 +2048,12 @@ msgstr ""
 
 msgid "core_layout_execute_recursion_limit"
 msgstr "Limite de récursion de la fonction Layout execute"
+
+msgid "dynacase control URL"
+msgstr ""
+
+msgid "dynacase control PATH"
+msgstr ""
 
 msgid "language"
 msgstr "langue"
@@ -2666,6 +2672,20 @@ msgstr "Cliquez pour changer les options"
 msgid "%s inserted"
 msgstr "%s inséré"
 
+msgid "Creation aborded : no family specified"
+msgstr "Création abandonnée : pas de famille spécifiée"
+
+#, c-format
+msgid "Creation aborded : unknow family %s"
+msgstr "Création abandonnée : famille inconnue : %s"
+
+#, c-format
+msgid "no privilege to create this kind (%s) of document"
+msgstr "vous n'avez pas la permission de créer ce type (%s) de document "
+
+msgid "document not referenced"
+msgstr "document non référencé"
+
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -3239,10 +3259,6 @@ msgid "unknown folder document %s"
 msgstr "dossier inconnu %s"
 
 #, c-format
-msgid "no privilege to create this kind (%s) of document"
-msgstr "vous n'avez pas la permission de créer ce type (%s) de document "
-
-#, c-format
 msgid "batch from %s folder"
 msgstr "lot issu du dossier %s"
 
@@ -3381,9 +3397,6 @@ msgstr "pas de famille de document"
 
 msgid "default values"
 msgstr "Valeurs par défaut"
-
-msgid "document not referenced"
-msgstr "document non référencé"
 
 #, c-format
 msgid "attribute %s"
@@ -3805,13 +3818,6 @@ msgstr "définition de l'attribut énuméré %s de la famille %s"
 msgid "Modification for attribute %s for family %s"
 msgstr "Modification de l'attribut %s de la famille %s"
 
-msgid "Creation aborded : no family specified"
-msgstr "Création abandonnée : pas de famille spécifiée"
-
-#, c-format
-msgid "Creation aborded : unknow family %s"
-msgstr "Création abandonnée : famille inconnue : %s"
-
 #, c-format
 msgid "creation %s"
 msgstr "création %s"
@@ -3883,8 +3889,16 @@ msgid "more families"
 msgstr "toutes les familles"
 
 #, c-format
-msgid "Results <b>%d</b> - <b>%d</b> for <b>%s</b> %s"
-msgstr "Résultats <b>%d</b> - <b>%d</b> pour <b>%s</b> %s"
+msgid "View %d next results"
+msgstr "Voir les %d prochains résultats"
+
+#, c-format
+msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
+msgstr "<b>%d</b> résultats pour <b>%s</b> %s"
+
+#, c-format
+msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
+msgstr "<b>%d</b> résultat pour <b>%s</b> %s"
 
 #, c-format
 msgid "document too big (%dKo): no highlight"
@@ -4093,6 +4107,9 @@ msgstr "Choisissez un document avant de choisir les options"
 
 msgid "quick save not possible"
 msgstr "Sauvegarde rapide impossible"
+
+msgid "Too many input file. The maximum accepted is"
+msgstr "Trop de champs de type fichier dans le formulaire.\\nLe maximum est de"
 
 msgid "Save in progress"
 msgstr "Enregistrement en cours"
@@ -4696,10 +4713,10 @@ msgid "Clear Folder"
 msgstr "Vider le dossier"
 
 msgid "atype"
-msgstr "atype"
+msgstr "Type"
 
 msgid "fieldset"
-msgstr "cadre"
+msgstr "Cadre"
 
 msgid "attrname"
 msgstr "Nom"
@@ -6452,11 +6469,11 @@ msgstr "Recherche avancée"
 msgid "search online help"
 msgstr "Aide à la recherche"
 
-msgid "Return to results"
-msgstr "Retour aux résultats"
-
 msgid "close search online help"
 msgstr "Fermer l'aide à la recherche"
+
+msgid "Open in new window"
+msgstr "Ouvrir dans une nouvelle fenêtre"
 
 msgid "warning_name"
 msgstr "la saisie de votre nom est obligatoire."
@@ -8705,6 +8722,12 @@ msgstr "%s non présent dans %s"
 #, c-format
 msgid "error ::moveDocument %s %s"
 msgstr "erreur ::moveDocument %s %s"
+
+#~ msgid "Return to results"
+#~ msgstr "Retour aux résultats"
+
+#~ msgid "Results <b>%d</b> - <b>%d</b> for <b>%s</b> %s"
+#~ msgstr "Résultats <b>%d</b> - <b>%d</b> pour <b>%s</b> %s"
 
 #~ msgid "create databases ?"
 #~ msgstr "Créer les bases de données ?"

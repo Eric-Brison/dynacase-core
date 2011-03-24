@@ -32,7 +32,7 @@ function f_paramglog($var) { // filter to select only not global
 
 Class Application extends DbObj
 {
-  public $fields = array ( "id",  "name","short_name",  "description",  "access_free",  "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine","iorder");
+  public $fields = array ( "id",  "name","short_name",  "description",  "access_free",  "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine","iorder", "tag");
 
   public $id_fields = array ( "id");
   public $rootdir='';
@@ -52,7 +52,8 @@ create table application ( 	id 	int not null,
                         objectclass char,
                         ssl char,
                         machine text,
-                        iorder int);
+                        iorder int,
+                        tag text);
 create index application_idx1 on application(id);
 create index application_idx2 on application(name);
 create sequence SEQ_ID_APPLICATION start 10;

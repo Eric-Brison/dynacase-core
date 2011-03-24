@@ -9,7 +9,8 @@ $app_desc = array (
 "icon"		=>"dav.gif",	//Icon
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
 "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
-"childof"	=>""		// 	
+"childof"	=>"",		// 	
+"tag"		=>"CORE",		// 	
 );
 
 

@@ -99,7 +99,7 @@ function generic_tab(&$action) {
     //    $sqlfilter[]= "locked != -1";
 
     $wkdoc=createDoc($dbaccess,$famid,false);
-    $sqlfilter[]= "doctype='".$wkdoc->defDoctype."'";
+   // $sqlfilter[]= "doctype='".$wkdoc->defDoctype."'";
     //    $sqlfilter[] = "usefor != 'D'";
 
     if ($tabletter[$tab]!="") $sqlfilter[]="title ~* '^[".$tabletter[$tab]."].*'";

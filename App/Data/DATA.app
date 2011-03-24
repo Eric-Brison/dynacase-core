@@ -29,7 +29,8 @@ $app_desc = array (
 		   "icon"	=>"dataapi.png",	//Icon
 		   "displayable"=>"N",			//Should be displayed on an app list (Y,N)
 		   "with_frame"	=>"Y",			//Use multiframe ? (Y,N)
-		   "childof"	=>""		        // instance of FREEDOM GENERIC application	
+		   "childof"	=>"",		        // instance of FREEDOM GENERIC application	
+                   "tag"        => "CORE"
 		   );
 
   

@@ -1,5 +1,3 @@
-/* debug */
-
 /* The main calendar widget.  DIV containing a table. */
 
 .calendar {
@@ -24,7 +22,7 @@
   font-size: 11px;
   color: [COLOR_BLACK];
   cursor: default;
-  background: [COLORS_A8];
+  background: [COLOR_A8];
   font-family: tahoma,verdana,sans-serif;
 }
 
@@ -40,7 +38,7 @@
 }
 
 .calendar .nav {
-  background: transparent url(menuarrow.gif) no-repeat 100% 100%;
+  background: transparent url(jscalendar/menuarrow.gif) no-repeat 100% 100%;
 }
 
 .calendar thead .title { /* This holds the current "month, year" */

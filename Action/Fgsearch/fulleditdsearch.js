@@ -62,13 +62,15 @@ function filterfuncz(o) {
     se.style.width=(w2+20)+'px';
   }
 }
-function resizedivsearch() {
-  var  co=document.getElementById('dsearch');
 
-  var w=getObjectWidth(co);
-  alert(w);
-  
-  
-  w.style.right=(w+30)+'px';
-  
-}
+function resizeiframedetail(event) {
+	  if (document.getElementById("searchresult")) {
+	    var fh=getFrameHeight();
+	    var xy=getAnchorPosition("searchresult");
+	    var nh=fh-xy.y-5;
+if (isIE) nh-=5; // border
+	    if (nh> 100) document.getElementById("searchresult").style.height=nh+'px';
+	     //  alert('EDIT:'+xy.y+' - '+fh+' - '+nh);
+	  }
+	}
+ 

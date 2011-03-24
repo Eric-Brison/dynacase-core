@@ -1090,6 +1090,10 @@ create unique index i_docir on doc(initid, revision);";
     if ($err=="") {      
       $dvi = new DocVaultIndex($this->dbaccess);
       $err = $dvi->DeleteDoc($this->id);
+      if ($this->name != '') {
+        $this->exec_query(sprintf("delete from docname where name='%s'",pg_escape_string($this->name)));
+      }
+      $this->exec_query(sprintf("delete from docfrom where id='%s'",pg_escape_string($this->id)));
     }
     return $err;
   }
@@ -3304,7 +3308,7 @@ create unique index i_docir on doc(initid, revision);";
 
     $h->id=$this->id;
     $h->initid=$this->initid;
-  
+    $h->fixed=($allrevision)?'false':'true';
     $h->date=date("d-m-Y H:i:s");
     if ($uid > 0) {
       $u=new User("",$uid);
@@ -3383,15 +3387,15 @@ create unique index i_docir on doc(initid, revision);";
    * Remove all user tag for the document
    * 
    * @param int $uid the system user identificator
-   * @param string $atg the tag to add
    */
-  final public function delUTags($tag) { 
+  final public function delUTags($uid="") { 
     if ($tag == "") return _("no user tag specified");
     if (! $this->initid) return "";
+    if (!$uid) $uid=$this->userid;
     include_once("FDL/Class.DocUTag.php");
     $q=new QueryDb($this->dbaccess,"docUTag");
     $q->Query(0,0,"TABLE",
-	      sprintf("delete from docutag where initid=%d and uid=%d",$this->initid,$this->userid));
+	      sprintf("delete from docutag where initid=%d and uid=%d",$this->initid,$uid));
     
 
     return $err;
@@ -3405,19 +3409,22 @@ create unique index i_docir on doc(initid, revision);";
     include_once("FDL/Class.DocUTag.php");
     $q=new QueryDb($this->dbaccess,"docUTag");
     $q->Query(0,0,"TABLE",
-	      sprintf("update docutag set id=%d where initid=%d",$this->id,$this->initid));
+	      sprintf("update docutag set id=%d where initid=%d and (not fixed)",$this->id,$this->initid));
 
     return $err;
   } 
   /**
    * search all user tag for the document 
+   * @param string $tag tag to search
+   * @param boolean $allrevision view tags for all revision
+   * @param boolean $allusers view tags of all users
    * @return array user tags key=>value
    */
-  final public function searchUTags($tag="",$allrevision=true) { 
+  final public function searchUTags($tag="",$allrevision=true, $allusers=false) { 
     if (! $this->initid) return "";
     include_once("FDL/Class.DocUTag.php");
     $q=new QueryDb($this->dbaccess,"docUTag");
-    $q->addQuery("uid=".intval($this->userid));
+    if (! $allusers) $q->addQuery("uid=".intval($this->userid));
     if ($tag) $q->addQuery("tag = '".pg_escape_string($tag)."'");
     if ($allrevision) $q->addQuery("initid = ".$this->initid);
     else $q->addQuery("id = ".$this->id);
@@ -3598,7 +3605,7 @@ create unique index i_docir on doc(initid, revision);";
     $err=$this->modify(); // need to applicate SQL triggers
        
     $this->UpdateVaultIndex();
-    if ($allocated > 0)	 $this->refreshUTags();
+    $this->refreshUTags();
     if ($err=="") {
       $this->addLog("revision",array("id"=>$this->id,"initid"=>$this->initid,"revision"=>$this->revision,"title"=>$this->title,"fromid"=>$this->fromid,"fromname"=>$this->fromname));
       // max revision
@@ -3971,7 +3978,7 @@ create unique index i_docir on doc(initid, revision);";
 	  }
 	  $this->addLog('allocate',array("allocated"=>array("id"=>$u->id,"firstname"=>$u->firstname,"lastname"=>$u->lastname)));
 
-	  $this->delUTags("AFFECTED");
+	  $this->delUTag("AFFECTED");
 	  $this->addUTag($userid,"AFFECTED",$comment);	  
 	  if ($autolock) $err=$this->lock(false,$userid);
 	}
@@ -4009,7 +4016,7 @@ create unique index i_docir on doc(initid, revision);";
       if ($u->isAffected()) {	
 	$err=$this->unlock();
 	if ($err == "") {
-	  $this->delUTags("AFFECTED");
+	  $this->delUTag("AFFECTED");
 	  if ($revision) $this->addRevision(sprintf(_("Unallocated of %s %s : %s"),$u->firstname,$u->lastname,$comment));
 	  else $this->addComment(sprintf(_("Unallocated of %s %s: %s"),$u->firstname,$u->lastname,$comment));
 	}
@@ -4682,8 +4689,8 @@ create unique index i_docir on doc(initid, revision);";
   					 
 
 	  $dxml=new DomDocument();
-	  $rowlayfile=getLayoutFile($reg[1],strtolower($reg[2]).".xml");
-	  if (! @$dxml->load(DEFAULT_PUBDIR."/$rowlayfile")) {
+	  $rowlayfile=getLayoutFile($reg[1],($reg[2]));
+	  if (! @$dxml->load($rowlayfile)) {
 	    AddwarningMsg(sprintf(_("cannot open %s layout file"),DEFAULT_PUBDIR."/$rowlayfile"));
 	    break;
 	  }
@@ -5525,11 +5532,8 @@ create unique index i_docir on doc(initid, revision);";
 
   			return $this->vault_filename_fromvalue($template, true);
   		}
-  		if( strstr($aid, '.') ) {
-  			return getLayoutFile($reg['app'], ($aid));
-  		} else {
-  			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
-  		}
+  		return getLayoutFile($reg['app'], ($aid));
+  		
   	}
   }
   /** 
@@ -6082,7 +6086,7 @@ create unique index i_docir on doc(initid, revision);";
     $answers=$this->getWasks(false);
   
     foreach ($answers as $ka=>$ans) {
-      $utags=$this->searchUTags("ASK_".$ans["waskid"],false);
+      $utags=$this->searchUTags("ASK_".$ans["waskid"],false,true);
       $wask=new_doc($this->dbaccess,$ans["waskid"]);
       $wask->set($this);
     

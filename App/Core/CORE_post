@@ -122,6 +122,7 @@ if [ "$1" = "U" ] ; then
     $wpub/wsh.php  --api=import_size 
     $wpub/wsh.php  --api=import_style --name=DEFAULT
     $wpub/wsh.php  --api=import_style --name=ORIGINAL
+    $wpub/wsh.php  --api=import_style --name=MODERN
     echo 'delete from permission where abs(id_acl) not in (select id from acl where acl.id_application=permission.id_application)' | PGSERVICE=$pgservice_core psql
 fi
 

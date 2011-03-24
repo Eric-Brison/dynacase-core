@@ -9,7 +9,8 @@ $app_desc = array (
 "access_free"	=>"Y",			//Access free ? (Y,N)
 "icon"		=>"authent.gif",		//Icon
 "displayable"	=>"N",			//Should be displayed on an app list (Y,N)
-"iorder"         =>10                  // install order
+"iorder"         =>10,                  // install order
+"tag"           =>"CORE"
 );
 
 $action_desc = array (

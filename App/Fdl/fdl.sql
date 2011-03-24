@@ -141,7 +141,7 @@ returns bool as $$
 declare 
   a_userid alias for $1;
   a_profid alias for $2;
-  a_pos alias for $3;
+  a_pos alias for $3; -- binary mask say 1024 for 11th bit
   uperm int;
   gperm int;
   upperm int;
