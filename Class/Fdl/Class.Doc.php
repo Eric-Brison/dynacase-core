@@ -4689,8 +4689,8 @@ create unique index i_docir on doc(initid, revision);";
   					 
 
 	  $dxml=new DomDocument();
-	  $rowlayfile=getLayoutFile($reg[1],strtolower($reg[2]).".xml");
-	  if (! @$dxml->load(DEFAULT_PUBDIR."/$rowlayfile")) {
+	  $rowlayfile=getLayoutFile($reg[1],($reg[2]));
+	  if (! @$dxml->load($rowlayfile)) {
 	    AddwarningMsg(sprintf(_("cannot open %s layout file"),DEFAULT_PUBDIR."/$rowlayfile"));
 	    break;
 	  }
@@ -5532,11 +5532,8 @@ create unique index i_docir on doc(initid, revision);";
 
   			return $this->vault_filename_fromvalue($template, true);
   		}
-  		if( strstr($aid, '.') ) {
-  			return getLayoutFile($reg['app'], ($aid));
-  		} else {
-  			return getLayoutFile($reg['app'], strtolower($aid)).".xml";
-  		}
+  		return getLayoutFile($reg['app'], ($aid));
+  		
   	}
   }
   /** 

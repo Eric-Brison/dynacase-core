@@ -88,6 +88,7 @@ function getSessionValue($name, $def = "")
 
 function getLayoutFile($app, $layfile)
 {
+    if (! strstr($layfile,'.')) $layfile.=".xml";
     $socStyle = Getparam("CORE_SOCSTYLE");
     $style = Getparam("STYLE");
     $root = Getparam("CORE_PUBDIR");
@@ -123,7 +124,7 @@ function getLayoutFile($app, $layfile)
         return ($file);
     }
     
-    return $app . "/Layout/" . $layfile;
+    return "";
 }
 
 function microtime_diff($a,$b) {
