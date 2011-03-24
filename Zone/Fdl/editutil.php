@@ -1034,8 +1034,8 @@ function getZoneLayArray(&$lay,&$doc,&$oattr,$zone) {
 		$ta = $doc->attributes->getArrayElements($attrid);
 
 		$dxml=new DomDocument();
-		$rowlayfile=getLayoutFile($reg[1],strtolower($reg[2]).".xml");
-		if (! @$dxml->load(DEFAULT_PUBDIR."/$rowlayfile")) {
+		$rowlayfile=getLayoutFile($reg[1],($reg[2]));
+		if (! @$dxml->load($rowlayfile)) {
 			AddwarningMsg(sprintf(_("cannot open %s layout file"),DEFAULT_PUBDIR."/$rowlayfile"));
 			return;
 		}
@@ -1049,9 +1049,10 @@ function getZoneLayArray(&$lay,&$doc,&$oattr,$zone) {
 				$thstyle=$theadcells->item($i)->getAttribute("style");
 
 				$talabel[] = array("alabel"=>$th,
-"ahw"=>"auto",
-"astyle"=>$thstyle,
-"ahvis"=>"visible");
+                                     "ahw"=>"auto",
+   	                             "astyle"=>$thstyle,
+			                  	"ahclass"=>"",
+                                   "ahvis"=>"visible");
 			}
 			$lay->setBlockData("TATTR",$talabel);
 		}
@@ -1075,11 +1076,13 @@ function getZoneLayArray(&$lay,&$doc,&$oattr,$zone) {
 			$lay->set("L_".strtoupper($v->id),ucfirst($v->getLabel()));
 		}
 
-
 		$lay->set("attrid",$attrid);
 		$lay->set("caption",$oattr->getLabel());
 		$lay->set("footspan",count($ta)*2);
-
+		$lay->set("eiclass",'');
+		$lay->set("tableWidth",$oattr->getOption("twidth",'100%'));
+		$lay->set("tableStyle",$oattr->getOption("tstyle",''));
+		
 
 		// get default values
 		$fdoc=$doc->getFamDoc();
