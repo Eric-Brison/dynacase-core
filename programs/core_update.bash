@@ -44,8 +44,6 @@ sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_p
 export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
 . "$WIFF_CONTEXT_ROOT"/programs/core_environment
 
-"$corepost" U
-
 # set dynacase control acces url & path 
 dc_path=`"$WIFF_ROOT"/wiff config get wiff-path`
 dc_url=`"$WIFF_ROOT"/wiff config get wiff-url`
