@@ -1849,6 +1849,7 @@ function addtr(trid, tbodyid) {
     }
     if (ltrfil.length > 1) ltrfil[ltrfil.length-2].parentNode.insertBefore(ntr,ltrfil[ltrfil.length-2]);
   }
+  verifyMaxFileUpload(document.getElementById('fedit'));
   return ntr;
   
 }
@@ -2644,9 +2645,33 @@ function trim(aString) {
   return aString.replace(regExpBeginning, '').replace(regExpEnd, '');
 }
 
+function verifyMaxFileUpload(f) {
+	if (!f) return true;
+	var inputs=f.getElementsByTagName("input");
+	var maxfile=f.maxFileUpload.value;
+	if (! (maxfile > 0))  return true;
+	var nif=0;
+	var nifh=0; // count hidden
+	var sid;
+	for (var i=0;i<inputs.length;i++) {
+		if (inputs[i].type=="file") {
+			nif++;
+			sid=inputs[i].id;
+			if (sid && sid.substring(sid.length - 4)=='_1x_') nifh++;
+		}
+	}
+	
+	if (nif > maxfile) {
+		alert("[TEXT:Too many input file. The maximum accepted is]"+" "+(maxfile-nifh));
+	    return false;
+	}
+	return true;
+}
+
 function documentsubmit(f) {
   if (document.isSubmitted) return false;
   if (!canmodify()) return false;
+  if (!verifyMaxFileUpload(f)) return false;
   document.isSubmitted=true;
   enableall();
   if (parent) if (parent.flist) f.catgid.value=parent.flist.catgid;
