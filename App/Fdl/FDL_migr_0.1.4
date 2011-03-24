@@ -1,9 +1,0 @@
-#!/bin/bash
-if [ "$dbpsql" == "" ]; then
-    #load environement variable for freedom
-  . /etc/freedom.conf
-   wchoose -b
-fi
-echo "update doc set profid=id where profid=-1" | psql $dbfree
-
-
