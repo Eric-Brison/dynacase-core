@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 08:24+0100\n"
+"POT-Creation-Date: 2011-03-23 19:06+0100\n"
 "PO-Revision-Date: 2010-02-08 15:48+0100\n"
 "Last-Translator: anakeen <devel@anakeen.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,76 +14,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "data:action name not set"
-msgstr ""
-
-msgid "setValue: document is fixed"
-msgstr ""
-
-msgid "save : document is fixed"
-msgstr ""
-
-msgid "data::no tag specified"
-msgstr "pas de tag donné"
-
-msgid "data::login not defined"
-msgstr "login non défini"
-
-msgid "data::password not defined"
-msgstr "mot de passe non défini"
-
-msgid "data:document id must not be an object"
-msgstr "l'identificateur du document ne doit pâs être un objet"
-
-#, fuzzy
-msgid "data:document id not set"
-msgstr "l'identificateur du document ne doit pâs être un objet"
-
-msgid "eui::missing right"
-msgstr "Droit manquant"
-
-msgid "eui::You have no right to access this document"
-msgstr "Vous n'avez pas les droits requis pour consulter ce document"
-
-msgid "eui::Content"
-msgstr "Contenu"
-
-msgid "eui::Informations"
-msgstr "Informations"
-
-msgid "eui::Creation :"
-msgstr "Création :"
-
-msgid "eui::ToEdit"
-msgstr "Éditer"
-
-msgid "eui::lock_as_name"
-msgstr "verrou"
-
-msgid "eui::infolder"
-msgstr "Dans"
-
-msgid "eui::Duplicate"
-msgstr "Dupliquer"
-
-msgid "eui::Link"
-msgstr "Lier"
-
-msgid "eui::Move"
-msgstr "Déplacer"
-
-msgid "eui::documents"
-msgstr "documents"
-
-msgid "eui::delete"
-msgstr "Supprimer"
-
-msgid "eui::totrash"
-msgstr "Dans la Corbeille"
-
-msgid "eui:cannot delete"
-msgstr "Suppression impossible"
 
 msgid "eui::Search"
 msgstr "Recherche"
@@ -129,3 +59,73 @@ msgstr "Horizontal"
 
 msgid "eui::Vertical"
 msgstr "Vertical"
+
+msgid "eui::ToEdit"
+msgstr "Éditer"
+
+msgid "eui::missing right"
+msgstr "Droit manquant"
+
+msgid "eui::You have no right to access this document"
+msgstr "Vous n'avez pas les droits requis pour consulter ce document"
+
+msgid "eui::Creation :"
+msgstr "Création :"
+
+msgid "eui::lock_as_name"
+msgstr "verrou"
+
+msgid "eui::infolder"
+msgstr "Dans"
+
+msgid "eui::Duplicate"
+msgstr "Dupliquer"
+
+msgid "eui::Link"
+msgstr "Lier"
+
+msgid "eui::Move"
+msgstr "Déplacer"
+
+msgid "eui::documents"
+msgstr "documents"
+
+msgid "eui::delete"
+msgstr "Supprimer"
+
+msgid "eui::totrash"
+msgstr "Dans la Corbeille"
+
+msgid "eui:cannot delete"
+msgstr "Suppression impossible"
+
+msgid "eui::Content"
+msgstr "Contenu"
+
+msgid "eui::Informations"
+msgstr "Informations"
+
+msgid "setValue: document is fixed"
+msgstr ""
+
+msgid "save : document is fixed"
+msgstr ""
+
+msgid "data::no tag specified"
+msgstr "pas de tag donné"
+
+msgid "data::login not defined"
+msgstr "login non défini"
+
+msgid "data::password not defined"
+msgstr "mot de passe non défini"
+
+msgid "data:document id must not be an object"
+msgstr "l'identificateur du document ne doit pâs être un objet"
+
+#, fuzzy
+msgid "data:document id not set"
+msgstr "l'identificateur du document ne doit pâs être un objet"
+
+msgid "data:action name not set"
+msgstr ""

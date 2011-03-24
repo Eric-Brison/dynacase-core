@@ -1,80 +1,69 @@
 [IFNOT SUBSEARCH]
 [ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
-<style>
-
-#aide {
-  position:absolute;
-  display:inline;
-  border: 1px solid [COLOR_B4];
-  background-color: [COLOR_WHITE];
-  padding-top:10px;
-  left : 50px;
-  right : 50px;
-  -moz-border-radius: 10px;
-}
-#aide #closeaide {  right:10px; margin : 5px 0px 10px 0px; }
-
-#dresult {
-  overflow-y:auto;
-  
-}
-
-
-</style>
 <script>
 addEvent(window,"load",resizeiframe);
 addEvent(window,"resize",resizeiframe);
+var basicSearch = [IFNOT isdetail]true[ENDIF isdetail][IF isdetail]false[ENDIF isdetail];
 </script>
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
 
+<div class="search-head">
 
+  <div id="searchzone" class="zsearch">
 
-[IF isdetail]
-<div class="searchbarmenu" style="text-align:right">
-<a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
-<a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a>
-<a   onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
-</div>
-[ENDIF isdetail]
-<div id="searchzone" class="zsearch">
-[IF isdetail]
-<div class="logo"><img class="logomini" align="middle" needresize="1"  src="[CORE_LOGOCLIENT]"></div>
-[ENDIF isdetail]
+    <div class="logo"><img class="logomini" needresize="1" src="[CORE_LOGOCLIENT]" /></div>
 
-<div class="searchp">
-<form  id="fedit"  
-       class="fborder" 
-       name="searchdoc"       
-       target="_self"
-       action="?app=FGSEARCH"
-       method="POST"        >
-<input type="hidden" name="page" value="0">
-<input type="hidden" name="dirid" value="[dirid]">
-<input type="hidden" name="sole" value="Y">
-<input type="hidden" name="action" value="FULLSEARCH">
-[IF isdetail]
-<input name="keyword" type="text" size="30" value="[key]">
-<select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
-        [BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>   
-        [ENDBLOCK SELECTCLASS]
-      </select>
-  <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]">
-[ENDIF isdetail]
+    <div class="searchbarmenu"><a href="#" onclick="switchSearchMode()" title="[TEXT:switch search mode (basic/advanced)]"><span id="label-basic-search" [IFNOT isdetail]style="display:none"[ENDIF isdetail]>[TEXT:Basic search]</span><span id="label-detailed-search" [IF isdetail]style="display:none"[ENDIF isdetail]>[TEXT:Advanced search]</span></a><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a><a onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a></div>
+
+    <div class="block-search">
+
+      <div class="criteria">
+	
+	<div id="basic-search" class="search-criterion"  [IF isdetail]style="display:none;"[ENDIF isdetail]>
+	  <div class="searchp">
+	    <form  id="fedit" class="fborder" name="searchdoc" target="_self"
+		   action="?app=FGSEARCH"
+		   method="POST"        >
+	      <input type="hidden" name="page" value="0" />
+	      <input type="hidden" name="dirid" value="[dirid]" />
+	      <input type="hidden" name="sole" value="Y" />
+	      <input type="hidden" name="action" value="FULLSEARCH" />
+	      <input name="keyword" type="text" size="30" value="[key]" />
+	      <select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
+		[BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>[ENDBLOCK SELECTCLASS]
+	      </select>
+	      <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]" />
+	    </form>
+	  </div>
+	</div> <!-- end of basic search block -->
+	
+	<div id="detailed-search" class="search-criterion"  [IFNOT isdetail]style="display:none;"[ENDIF isdetail]>
+	  <h1> un grosse zone de rechercher a completer un grosse zone de rechercher a completer </h1>
+	  <h1> un grosse zone de rechercher a completer un grosse zone de rechercher a completer </h1>
+	  <h1> un grosse zone de rechercher a completer un grosse zone de rechercher a completer </h1>
+	  <h1> un grosse zone de rechercher a completer un grosse zone de rechercher a completer </h1>
+	  <h1> un grosse zone de rechercher a completer un grosse zone de rechercher a completer </h1>
+	</div> <!-- end of detailled search block -->
+	
+      </div>
+    </div>
+
+  </div><!-- end of detailled search block -->
   
-</form>
-</div>
 </div>
 
 <div style="clear:both"></div>
 
 <table id="searchtop" cellspacing="0" cellpadding="0"  cellborder="0" >
-<tr>
-<td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
-<td class="bresume right">[CORE_CLIENT]</td>
-</tr>
-</table> 
+  <tr>
+    <td class="bresume btop left">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
+    <td class="bresume btop right">[CORE_CLIENT]</td>
+  </tr>
+  <tr><td class="bresume bbottom" colspan="2"><span class="searchdate">([TEXT:searchdate prefix][searchdate])</searchdate></tr>
+</table>
+ 
 <div style="right:15px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
 [BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5px 0 5px" width="12px"></div>[ENDBLOCK filterfam]
 </div>
@@ -94,9 +83,11 @@ addEvent(window,"resize",resizeiframe);
 <div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')">
 
 <div class="number">[number]</div>
-
-<div class="inforesult"><span class="title">[title]</span> <i>[mdate]</i><br >
-<div class="iconresult"><img align="left" needresize="1" src="[iconsrc]" width="36px"></img></div><div class="textresult">[htext]</div>
+<div class="inforesult"><span class="title">[title]</span><i>[mdate]</i><br/>
+  <div class="iconresult">
+    <img needresize="1" src="[iconsrc]"></img>
+  </div>
+  <div class="textresult">[htext]</div>
 </div>
 <div class="endresult"></div>
 </div>
@@ -104,8 +95,8 @@ addEvent(window,"resize",resizeiframe);
 [IFNOT SUBSEARCH]
 <table id="searchbottom" cellspacing="0" cellpadding="0"  cellborder="0" style="">
 <tr>
-<td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
-<td class="bresume right">&nbsp;</td>
+<td class="bresume btop bbottom left">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
+<td class="bresume btop bbottom right">&nbsp;</td>
 </tr>
 </table> [ENDIF SUBSEARCH]
 </div>
