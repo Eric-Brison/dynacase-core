@@ -69,7 +69,15 @@ putenv(sprintf("pgservice_freedom=%s", $PGSERVICE_CORE));
 putenv(sprintf("freedom_context=%s", $FREEDOM_CONTEXT));
 
 $err=getCheckActions($pubdir, array($appname=>$app), $actions, $version_override);
-$postmigr=array_filter($actions, create_function('$x',"return strstr(\$x,'/'.$appname.'_pmigr')!==false;"));
+
+$postmigr = array_filter(
+  $actions,
+  create_function(
+    '$x',
+    "return preg_match('@/\\Q$appname\\E_(p|post)migr@', \$x);"
+  )
+);
+
 foreach ($postmigr as $cmd) {
   error_log(sprintf("Executing [%s]...", $cmd));
   exec ( $cmd , $out ,$ret );

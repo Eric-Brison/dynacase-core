@@ -1,9 +1,0 @@
-#!/bin/bash
-if [ "$dbpsql" == "" ]; then
-    #load environement variable for freedom
-  . /etc/freedom.conf
-   wchoose -b
-fi
-
-$wpub/wsh.php --api=migr_histo
-
