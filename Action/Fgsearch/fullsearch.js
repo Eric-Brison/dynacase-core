@@ -18,12 +18,12 @@ function sendNextSearch() {
 	}
 }
 function sendNewSearch() {
-	var form=document.searchdoc;
-	if (form) {
-		form.target='';
-		form.page.value=0;
-		// form.submit();
-	}
+    var form=document.searchdoc;
+    if (form) {
+	form.target='';
+	form.page.value=0;
+	// form.submit();
+    }
 }
 
 function openDocInNewWindow() {
@@ -117,8 +117,6 @@ function resizeiframe(event) {
     }
     if (nhdetail> 150) dd.style.height=(nhdetail)+'px';
     if (nh> 100) document.getElementById("dresult").style.height=nh+'px';
-    // alert(xy.y+' - '+fh+' - '+nh);
-    //divdoc.style.top=(xy.y-30)+'px';
   }
 }
 
@@ -131,4 +129,20 @@ function switchSearchMode() {
     basicSearch = basicSearch ? false : true;
     return true;
 }	
-  
+
+function fgSearchOnBlur(ob) {
+    if (ob.value=='') {
+	ob.className = 'unsetter';
+	ob.value = guideKeyword;
+	initKeyword = true;
+	document.getElementById('send-search').disabled = true;
+    }
+}
+function fgSearchOnFocus(ob) {
+    if (initKeyword) {
+	ob.className = 'setter';
+	ob.value = '';
+	initKeyword = false;
+	document.getElementById('send-search').disabled = false;
+    }
+}

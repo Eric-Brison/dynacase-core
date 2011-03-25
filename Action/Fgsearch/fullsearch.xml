@@ -5,6 +5,8 @@
 addEvent(window,"load",resizeiframe);
 addEvent(window,"resize",resizeiframe);
 var basicSearch = [IFNOT isdetail]true[ENDIF isdetail][IF isdetail]false[ENDIF isdetail];
+var guideKeyword = "[guideKeyword]";
+var initKeyword = [IF initKeyword]true[ENDIF initKeyword][IFNOT initKeyword]false[ENDIF initKeyword];
 </script>
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
@@ -15,7 +17,10 @@ var basicSearch = [IFNOT isdetail]true[ENDIF isdetail][IF isdetail]false[ENDIF i
 
     <div class="logo"><img class="logomini" needresize="1" src="[CORE_LOGOCLIENT]" /></div>
 
-    <div class="searchbarmenu"><a href="#" onclick="switchSearchMode()" title="[TEXT:switch search mode (basic/advanced)]"><span id="label-basic-search" [IFNOT isdetail]style="display:none"[ENDIF isdetail]>[TEXT:Basic search]</span><span id="label-detailed-search" [IF isdetail]style="display:none"[ENDIF isdetail]>[TEXT:Advanced search]</span></a><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a><a onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a></div>
+    <div class="searchbarmenu">
+      <div class="menu"><a href="#" onclick="switchSearchMode()" title="[TEXT:switch search mode (basic/advanced)]"><span id="label-basic-search" [IFNOT isdetail]style="display:none"[ENDIF isdetail]>[TEXT:Basic search]</span><span id="label-detailed-search" [IF isdetail]style="display:none"[ENDIF isdetail]>[TEXT:Advanced search]</span></a><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a><a onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a><span class="client">[CORE_CLIENT]</span></div>
+      
+    </div>
 
     <div class="block-search">
 
@@ -30,11 +35,12 @@ var basicSearch = [IFNOT isdetail]true[ENDIF isdetail][IF isdetail]false[ENDIF i
 	      <input type="hidden" name="dirid" value="[dirid]" />
 	      <input type="hidden" name="sole" value="Y" />
 	      <input type="hidden" name="action" value="FULLSEARCH" />
-	      <input name="keyword" type="text" size="30" value="[key]" />
+	      <input name="keyword" type="text" size="30" class="[IF initKeyword]un[ENDIF initKeyword]setter"
+		     onBlur="fgSearchOnBlur(this)" onFocus="fgSearchOnFocus(this)"  value="[key]" />
 	      <select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
 		[BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>[ENDBLOCK SELECTCLASS]
 	      </select>
-	      <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]" />
+	      <input id="send-search" type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]" [IF initKeyword]disabled[ENDIF initKeyword] />
 	    </form>
 	  </div>
 	</div> <!-- end of basic search block -->
@@ -56,56 +62,45 @@ var basicSearch = [IFNOT isdetail]true[ENDIF isdetail][IF isdetail]false[ENDIF i
 
 <div style="clear:both"></div>
 
-<table id="searchtop" cellspacing="0" cellpadding="0"  cellborder="0" >
-  <tr>
-    <td class="bresume btop left">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
-    <td class="bresume btop right">[CORE_CLIENT]</td>
-  </tr>
-  <tr><td class="bresume bbottom" colspan="2"><span class="searchdate">([TEXT:searchdate prefix][searchdate])</searchdate></tr>
-</table>
- 
-<div style="right:15px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
-[BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5px 0 5px" width="12px"></div>[ENDBLOCK filterfam]
+[IFNOT INITSEARCH]
+<div id="searchtop">
+  <div class="count">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
+  <div class="date">([TEXT:searchdate prefix][searchdate])</div>
 </div>
-<div id="aide" style="display:none">
-<div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
-[ZONE FGSEARCH:HELP]
-</div>
-[IF INITSEARCH]
-<div style="text-align:center;vertical-align:middle"><img src="[IMG:logodynacase.png]"></div>
 [ENDIF INITSEARCH]
+
+<div id="aide" style="display:none">
+  <div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
+  [ZONE FGSEARCH:HELP]
+</div>
 [ENDIF SUBSEARCH]
 
 [IFNOT INITSEARCH]
 <div id="dresult" >
-<a name="page[page]" style="visibility:hidden">Page [page]</a>
-[BLOCK DOCS]
-<div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')">
-
-<div class="number">[number]</div>
-<div class="inforesult"><span class="title">[title]</span><i>[mdate]</i><br/>
-  <div class="iconresult">
-    <img needresize="1" src="[iconsrc]"></img>
+  <a name="page[page]" style="visibility:hidden"></a>
+  [BLOCK DOCS]
+  <div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')">
+    <div class="number">[number]</div>
+    <div class="inforesult"><span class="title">[title]</span><i>[mdate]</i><br/>
+      <div class="iconresult">
+	<img needresize="1" src="[iconsrc]" />
+      </div>
+      <div class="textresult">[htext]</div>
+    </div>
+    <div class="endresult"></div>
   </div>
-  <div class="textresult">[htext]</div>
-</div>
-<div class="endresult"></div>
-</div>
-[ENDBLOCK DOCS]
-[IFNOT SUBSEARCH]
-<table id="searchbottom" cellspacing="0" cellpadding="0"  cellborder="0" style="">
-<tr>
-<td class="bresume btop bbottom left">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
-<td class="bresume btop bbottom right">&nbsp;</td>
-</tr>
-</table> [ENDIF SUBSEARCH]
+  [ENDBLOCK DOCS]
+  [IFNOT SUBSEARCH][IF displayBottomBar]
+  <div id="searchbottom">
+    <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
+  </div>[ENDIF displayBottomBar] [ENDIF SUBSEARCH]
 </div>
 
 
 [IFNOT SUBSEARCH]
 <iframe id="nextresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="nextresult"></iframe>
 <div id="divdoc" style="display:none;">
-<p id="closeBar" ><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a> <a onclick="hideUrlFromSearch()">[TEXT:Close]</a></p>
+<p id="closeBar"><a onclick="hideUrlFromSearch()">[TEXT:Close]</a><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a></p>
 <iframe id="detaildoc" src="[IMG:1x1.gif]"  name="detaildoc"></iframe>
 </div>
 
@@ -120,7 +115,6 @@ if (window.parent && window.parent != window) {
     var targetBT=window.parent.document.getElementById('nextresultbuttontop');
     var origin=document.getElementById('dresult');
     var target=  window.parent.document.createElement("div");
-    target.style.borderTop="solid 1px [COLOR_B5]";
     target.innerHTML=origin.innerHTML;
     targetB.parentNode.insertBefore(target, targetB);
     window.parent.location.hash='#page[page]';
