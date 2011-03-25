@@ -616,7 +616,11 @@ create unique index i_docir on doc(initid, revision);";
   }
   
   /**
+   * Regenerate the template referenced by an attribute
    * 
+   * @param string $aid the name of the attribute holding the template
+   * @param string $index the value for $index row (default value -1 means all values)
+   * @return string error message, if no error empty string
    */
   function regenerateTemplate($aid, $index=-1) {
   	$layout = 'THIS:'.$aid;
@@ -624,45 +628,73 @@ create unique index i_docir on doc(initid, revision);";
   		$layout.='['.$index.']';
   	}
   	$orifile=$this->getZoneFile($layout);
-  	if ($orifile) {
-  		if (! file_exists($orifile)) {
-  			addWarningMsg(sprintf(_("Dynamic template %s not found "), $orifile));
-  		} else if (getFileExtension($orifile) != 'odt') {
-  			addWarningMsg(sprintf(_("Dynamic template %s not an odt file "), $orifile));
-  		} else {
-  			$outfile = $this->viewDoc($layout.':B', 'ooo');
-  			if(file_exists($outfile)) {
-  				$fh = fopen($outfile, 'rb');
-  				if($fh) {
-  					$this->saveFile($aid, $fh, '', $index);
-  					fclose($fh);
-  					$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
-  					return true;
-  				}
-  			}
-  		}
+  	if( ! $orifile ) {
+  		$err = sprintf(_("Dynamic template %s not found "), $orifile);
+  		return $err;
   	}
-  	return false;
+  	if( ! file_exists($orifile) ) {
+  		$err = sprintf(_("Dynamic template %s not found "), $orifile);
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	if( getFileExtension($orifile) != 'odt' ) {
+  		$err = sprintf(_("Dynamic template %s not an odt file "), $orifile);
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	$outfile = $this->viewDoc($layout.':B', 'ooo');
+  	if( ! file_exists($outfile) ) {
+  		$err = sprintf(_("viewDoc did not returned a valid file"));
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	$fh = fopen($outfile, 'rb');
+  	if( $fh === false ) {
+  		$err = sprintf(_("Error opening %s file '%s'", 'outfile', $outfile));
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	$err = $this->saveFile($aid, $fh, '', $index);
+  	if( $err != '' ) {
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	fclose($fh);
+  	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+  	return '';
   }
   
   /**
+   * Regenerate all templates referenced by the document attributes
    * 
+   * @return string error message, if no error empty string
    */
   final function regenerateTemplates() {
     $fa = $this->GetFileAttributes();
+    $errorList = array();
     foreach ($fa as $aid=>$oattr) {
       $opt = $oattr->getOption("template");
       if ($opt == "dynamic" || $opt == "form") {
 	if ($oattr->inArray()) {
 	  $ta=$this->getTValue($aid);
 	  foreach($ta as $k=>$v) {
-	    $this->regenerateTemplate($aid,$k);
+	    $err = $this->regenerateTemplate($aid,$k);
+	    if( $err != '' ) {
+			array_push($errorList, $err);
+	    }
 	  }
 	} else {
-	  $this->regenerateTemplate($aid);
+	  $err = $this->regenerateTemplate($aid);
+	  if( $err != '' ) {
+		array_push($errorList, $err);
+	  }
 	}
       }
     }
+    if( count($errorList) > 0 ) {
+    	return join("\n", $errorList);
+    }
+    return '';
   }
 
   /**
