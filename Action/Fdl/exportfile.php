@@ -135,7 +135,7 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype="",$width="",
           $teng_name='pdf';
           $err=$vf->Show($vaultid, $info,$teng_name);
           if ($err == "") {
-              $filecache=sprintf("%s/.img-resize/vid-%s-%s.png",DEFAULT_PUBDIR,$info->id_file,$pngpage);
+              $filecache=sprintf("%s/.img-resize/vid-%s-%d.png",DEFAULT_PUBDIR,$info->id_file,$pngpage);
               if (file_exists($filecache)) {
                   //  print_r2($filecache);
                   $resample=true;
@@ -179,7 +179,11 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype="",$width="",
 
               if ($ret == 1) $err=implode("\n",$out);
               if (file_exists($cible)) {
-
+                  // update cache
+                  if ($pngpage == 0) {
+                      include_once("FDL/insertfile.php");
+                      createPdf2Png($info->path, $info->id_file);
+                  }
                   if($resample) {
                       $filename=$cible;
                       list($owidth, $oheight) = getimagesize($filename);
