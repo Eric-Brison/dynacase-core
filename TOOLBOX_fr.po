@@ -4,11 +4,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Toolbox\n"
+"Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-21 10:49+0100\n"
-"PO-Revision-Date: 2011-03-21 10:50+0100\n"
-"Last-Translator: Arnaud BUATHIER <arnaud.buathier@anakeen.com>\n"
+"POT-Creation-Date: 2011-03-24 08:24+0100\n"
+"PO-Revision-Date: 2011-03-24 08:28+0100\n"
+"Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -4104,6 +4104,9 @@ msgstr "Choisissez un document avant de choisir les options"
 
 msgid "quick save not possible"
 msgstr "Sauvegarde rapide impossible"
+
+msgid "Too many input file. The maximum accepted is"
+msgstr "Trop de champs de type fichier dans le formulaire.\\nLe maximum est de"
 
 msgid "Save in progress"
 msgstr "Enregistrement en cours"

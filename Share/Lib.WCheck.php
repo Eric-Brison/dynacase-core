@@ -228,7 +228,7 @@ function getCheckActions($pubdir,$tapp,&$tact,$version_override=array()) {
     // search Migration file
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
-	if (preg_match("/{$pattern}_migr_([0-9\.]+)$/", $file, $reg)) {
+	if (preg_match("/{$pattern}_(?:migr|premigr)_([0-9\.]+)$/", $file, $reg)) {
 	  if (($tvdb[$k] != "") && ( vercmp($tvdb[$k], $reg[1]) < 0) )
 	    $migr[]="$pubdir/$k/$file";
 	}
@@ -276,7 +276,7 @@ function getCheckActions($pubdir,$tapp,&$tact,$version_override=array()) {
     $migr=array();
     if ($dir = @opendir("$pubdir/$k")) {
       while (($file = readdir($dir)) !== false) {
-	if (preg_match("/{$pattern}_pmigr_([0-9\.]+)$/", $file, $reg)) {
+	if (preg_match("/{$pattern}_(?:pmigr|postmigr)_([0-9\.]+)$/", $file, $reg)) {
 
 	  if (($tvdb[$k] != "") && ( vercmp($tvdb[$k], $reg[1]) < 0 ) )
 	    $migr[]="$pubdir/$k/$file";
@@ -318,8 +318,8 @@ function cmpapp($a,$b) {
 function cmpmigr($migr_a, $migr_b) {
   $v_a = "";
   $v_b = "";
-  preg_match("/_p?migr_(?P<version>[0-9\.]+)$/", $migr_a, $v_a);
-  preg_match("/_p?migr_(?P<version>[0-9\.]+)$/", $migr_b, $v_b);
+  preg_match("/_(?:p|post|pre)?migr_(?P<version>[0-9\.]+)$/", $migr_a, $v_a);
+  preg_match("/_(?:p|post|pre)?migr_(?P<version>[0-9\.]+)$/", $migr_b, $v_b);
 
   return version_compare($v_a['version'], $v_b['version']);
 }
