@@ -35,4 +35,11 @@ $dbfreedom=getServiceName($dbaccess);
 if ($real) system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_realclean.sql\""); 
 else system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_clean.sql\""); 
 
+if ($real) {
+    $cmd=sprintf('find "%s/.img-resize" -name "*png" -atime +5 -exec rm -f {} \;',DEFAULT_PUBDIR);
+    print "$cmd\n";
+    system($cmd);
+    print "clean .img-resize directory cache\n";
+}
+
 ?>

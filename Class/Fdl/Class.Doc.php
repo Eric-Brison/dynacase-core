@@ -4610,15 +4610,12 @@ create unique index i_docir on doc(initid, revision);";
 	                
 	                $lay->set("pdflink", '');
 	                if ($pdfattr=$oattr->getOption('pdffile')) {
-	                    //$infopdf=$this->vault_properties($this->getAttribute($pdfattr));
-	                    
 	                    if (! preg_match('/^(text|image)/',$info->mime_s)) {
-	                    //$pdfidx=($idx <0)?0:$idx;
-	                    if ( $waiting || preg_match('/(pdf)/',$infopdf->mime_s)) {
-	                       $lay->set("pdflink", $this->getFileLink($pdfattr,$idx,false,false));	                       
+	                        if ( $waiting || preg_match('/(pdf)/',$infopdf->mime_s)) {
+	                            $lay->set("pdflink", $this->getFileLink($pdfattr,$idx,false,false));
+	                        }
 	                    }
-	                    }
-	                } 
+	                }
 	                $lay->set("pages", $pages); // todo
 	                $htmlval =$lay->gen();
 	                $standardview=false;
