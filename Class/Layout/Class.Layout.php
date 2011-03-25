@@ -117,14 +117,9 @@ class Layout {
 	$file=GetParam("CORE_PUBDIR")."/$file"; // try absolute
       }
       if (file_exists($file)) {
-	if (filesize($file) > 0) {
-	  $fd = fopen($file,"r");
-	  if ($fd) {
-	    $this->file=$file;
-	    $this->template = fread($fd,filesize($file));
-	  }
-	}
-      } 
+        $this->file = $file;
+        $this->template = file_get_contents($file);
+      }
     }
   }
 
