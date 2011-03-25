@@ -4564,7 +4564,8 @@ create unique index i_docir on doc(initid, revision);";
 	        else $idx=$index;
 	        $standardview=true;
 	        $infopdf=false;
-	        if ($oattr->getOption("viewfiletype")=="image") {
+	        $viewfiletype=$oattr->getOption("viewfiletype");
+	        if ($viewfiletype=="image" || $viewfiletype=="pdf") {
 	            global $action;
 	            $waiting=false;
 	            if (substr($info->mime_s,0,5) == "image") {
@@ -4582,7 +4583,9 @@ create unique index i_docir on doc(initid, revision);";
 	                        $infopdf->teng_state == TransformationEngine::status_waiting||
                                 $infopdf->teng_state == TransformationEngine::status_inprogress) {
 	                        $imageview=true;
-	                        $viewfiletype='png';
+	                        if ($viewfiletype=='image') $viewfiletype='png';
+	                        else if ($viewfiletype=='pdf') $viewfiletype='embed';
+	                        
 	                        $pages=getPdfNumberOfPages($infopdf->path);
 	                        if ($infopdf->teng_state == TransformationEngine::status_waiting ||
 	                            $infopdf->teng_state == TransformationEngine::status_inprogress) $waiting=true;
@@ -4593,6 +4596,7 @@ create unique index i_docir on doc(initid, revision);";
 
 	            if ($imageview && (!$abstract)) {
 	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
+	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/detectPdfPlugin.js");
 	                $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
 	                $lay->set("docid",$this->id);
                         $lay->set("waiting",($waiting?'true':'false'));
@@ -4603,7 +4607,19 @@ create unique index i_docir on doc(initid, revision);";
                         $lay->set("vid", ($infopdf?$infopdf->id_file:$vid));
 	                $lay->set("filetitle", $fname);
 	                $lay->set("height", $oattr->getOption('viewfileheight','300px'));	                 
-	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
+	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx,false,false));
+	                
+	                $lay->set("pdflink", '');
+	                if ($pdfattr=$oattr->getOption('pdffile')) {
+	                    //$infopdf=$this->vault_properties($this->getAttribute($pdfattr));
+	                    
+	                    if (! preg_match('/^(text|image)/',$info->mime_s)) {
+	                    //$pdfidx=($idx <0)?0:$idx;
+	                    if ( $waiting || preg_match('/(pdf)/',$infopdf->mime_s)) {
+	                       $lay->set("pdflink", $this->getFileLink($pdfattr,$idx,false,false));	                       
+	                    }
+	                    }
+	                } 
 	                $lay->set("pages", $pages); // todo
 	                $htmlval =$lay->gen();
 	                $standardview=false;
@@ -6748,15 +6764,27 @@ create unique index i_docir on doc(initid, revision);";
 
   /**
    * get vault file name or server path of filename
-   * @param string $idAttr identificator of file attribute 
+   * @param NormalAttribute $idAttr identificator of file attribute 
    * @param bool false return original file name (basename) , true the real path
    * @return array of properties :
-   *         [name] => search.svg
-   *         [size] => 166137
-   *         [public_access] => 
-   *         [path] => /var/freedom/fs/1/6132.svg
+          [0]=>
+            [name] => TP_Users.pdf
+            [size] => 179435
+            [public_access] => 
+            [mime_t] => PDF document, version 1.4
+            [mime_s] => application/pdf
+            [cdate] => 24/12/2010 11:44:36
+            [mdate] => 24/12/2010 11:44:41
+            [adate] => 25/03/2011 08:13:34
+            [teng_state] => 1
+            [teng_lname] => pdf
+            [teng_vid] => 15
+            [teng_comment] => 
+            [path] => /var/www/eric/vaultfs/1/16.pdf
+            [vid] => 16
+
    */
-  final public function vault_properties($attr) {
+  final public function vault_properties(NormalAttribute $attr) {
     if ($attr->inArray()) $fileids= $this->getTValue($attr->id);
     else $fileids[]= $this->getValue($attr->id);
    

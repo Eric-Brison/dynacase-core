@@ -147,7 +147,6 @@ function createPdf2Png($file,$vid) {
       $cmd[]=sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s",
 		   $width,$density,$file,$i,$cible);
     }
-
     bgexec($cmd,$result,$err);
 
   }
