@@ -17,6 +17,7 @@ widgetFile.prototype = {
 		showPager:false,
 		mimeIcon:'',
 		fileLink:'',
+		pdfLink:'',
 		fileTitle:'',
 		pages:0,
 		waiting:false,
@@ -37,11 +38,23 @@ widgetFile.prototype = {
 	toString : function() {
 		return 'widgetFile';
  	},
+ 	canViewPdf : function() {
+ 		var can=(window.PluginDetect.getVersion('adobereader') ||
+			(window.PluginDetect.isMinVersion('PDFReader') == 0));
+ 		if (! can) {
+ 			// special for safari on macosx
+ 			if ((navigator.platform.indexOf('Mac') != -1) && (navigator.vendor.indexOf('Apple') != -1) ) can=true;
+ 		}
+ 		return can;
+ 	},
  	show : function (config) {
- 		
  		for (var name in config) {
  			this[name]=config[name];
  		}
+ 		if (this.pdfLink && this.type=='embed' && (!this.canViewPdf())) {
+ 			this.type='png';
+ 		}
+
  		if (config && config.height) {
  			if (config.height != '100%') this.staticHeight=parseInt(config.height);
  		}
