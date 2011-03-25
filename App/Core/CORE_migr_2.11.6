@@ -1,8 +1,0 @@
-#!/bin/bash
-if [ "$pgservice_core" == "" ]; then
-    # load environement variable for freedom
-    . /etc/freedom.conf
-    wchoose -b
-fi
-
-echo "DELETE FROM sessions; ALTER TABLE sessions ADD COLUMN last_seen timestamp with time zone not null DEFAULT now();" | PGSERVICE="$pgservice_core" psql

@@ -157,6 +157,9 @@ function postModify() {
 	else  $dfld->delFile($this->initid);
       }      
     }    
+
+    $err = $this->refreshMailMembersOnChange();
+
   } 
 
   if ($err=="") $err="-"; // don't do modify after because it is must be set by USER::setGroups
