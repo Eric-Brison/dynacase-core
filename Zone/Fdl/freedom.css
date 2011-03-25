@@ -997,6 +997,7 @@ div.fullscreen {
   position:absolute;
   left:0px;
   top:0px;
+	z-index:2;
   background-color:[COLOR_WHITE];
 }
 div.fileimage {
