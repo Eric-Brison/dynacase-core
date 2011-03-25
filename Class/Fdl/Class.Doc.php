@@ -4596,6 +4596,7 @@ create unique index i_docir on doc(initid, revision);";
 
 	            if ($imageview && (!$abstract)) {
 	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
+	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/detectPdfPlugin.js");
 	                $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
 	                $lay->set("docid",$this->id);
                         $lay->set("waiting",($waiting?'true':'false'));
@@ -4610,12 +4611,15 @@ create unique index i_docir on doc(initid, revision);";
 	                
 	                $lay->set("pdflink", '');
 	                if ($pdfattr=$oattr->getOption('pdffile')) {
+	                    //$infopdf=$this->vault_properties($this->getAttribute($pdfattr));
+	                    
 	                    if (! preg_match('/^(text|image)/',$info->mime_s)) {
-	                        if ( $waiting || preg_match('/(pdf)/',$infopdf->mime_s)) {
-	                            $lay->set("pdflink", $this->getFileLink($pdfattr,$idx,false,false));
-	                        }
+	                    //$pdfidx=($idx <0)?0:$idx;
+	                    if ( $waiting || preg_match('/(pdf)/',$infopdf->mime_s)) {
+	                       $lay->set("pdflink", $this->getFileLink($pdfattr,$idx,false,false));	                       
 	                    }
-	                }
+	                    }
+	                } 
 	                $lay->set("pages", $pages); // todo
 	                $htmlval =$lay->gen();
 	                $standardview=false;
