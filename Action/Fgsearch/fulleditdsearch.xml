@@ -1,17 +1,4 @@
-[ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
-
-<style>
-
-</style>
-
-<script>
-addEvent(window,"load",resizeiframedetail);
-addEvent(window,"resize",resizeiframedetail);
-</script>
-<div class="searchbarmenu" style="text-align:right">
-<a href="[CORE_STANDURL]app=FGSEARCH&action=FULLSEARCH&famid=[famid]">[TEXT:Simple search]</a>
-</div>
 <div class="search" id="dsearch">
 <table border=0 width="100%">
 <thead>
@@ -66,14 +53,15 @@ addEvent(window,"resize",resizeiframedetail);
 </table>
 
 
-<form  id="fedit"  
+<form  id="feditdetail"  
        class="fborder" style="display:inline"
-       name="searchdoc"       
-       target="searchresult"
+       name="searchddetail"       
+       target="nextresult"
        method="POST" ENCTYPE="multipart/form-data" 
        action="[CORE_STANDURL]&app=FGSEARCH&action=FULLDSEARCH" >
 
 
+<input type="hidden" name="page" value="0" />
 
 <table id="conditions" border=0 class="conditions">
 <thead>
@@ -81,7 +69,7 @@ addEvent(window,"resize",resizeiframedetail);
 <td><div class="famicon"><img needresize="1" src="[famicon]" height="[SIZE_IMG-SMALL]"></div></td>
 <td><div class="famselect" id="famselection" >
 
-<div class="select"><select onchange="document.location.href='[CORE_STANDURL]&app=FGSEARCH&action=FULLEDITDSEARCH&famid='+this.options[this.selectedIndex].value" class="little"   name="famid" >  
+<div class="select"><select onchange="changeDetailForm(this.options[this.selectedIndex].value)" class="little"   name="famid" >  
          [BLOCK SELECTFAM]
            <option [famselect] VALUE="[idcdoc]" >[classname]</option>   
          [ENDBLOCK SELECTFAM]
@@ -140,7 +128,14 @@ addEvent(window,"resize",resizeiframedetail);
 
 </form>
 </div>
+[IF substitute]
+<script>
+if (window.parent && window.parent != window) {
+    var targetS=window.parent.document.getElementById('dsearch');
+    var origin=document.getElementById('dsearch');
 
-<iframe src="[IMG:1x1.gif]" style="width:100%;border:none;padding:0px;margin:0px" name="searchresult" id="searchresult"></iframe>
+    targetS.innerHTML=origin.innerHTML;
+}
+</script>
 
-[ZONE FDL:HTMLFOOT]
+[ENDIF substitute]

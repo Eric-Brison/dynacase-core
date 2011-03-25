@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 10:35+0100\n"
+"POT-Creation-Date: 2011-03-25 18:48+0100\n"
 "PO-Revision-Date: 2010-02-08 15:49+0100\n"
 "Last-Translator: anakeen\n"
 "Language-Team: english\n"
@@ -14,6 +14,77 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "data:action name not set"
+msgstr ""
+
+msgid "setValue: document is fixed"
+msgstr ""
+
+msgid "save : document is fixed"
+msgstr ""
+
+#, fuzzy
+msgid "data::no tag specified"
+msgstr "login not defined"
+
+msgid "data::login not defined"
+msgstr "login not defined"
+
+msgid "data::password not defined"
+msgstr "password not defined"
+
+msgid "data:document id must not be an object"
+msgstr "document id must not be an object"
+
+#, fuzzy
+msgid "data:document id not set"
+msgstr "document id must not be an object"
+
+msgid "eui::missing right"
+msgstr "Missing Right"
+
+msgid "eui::You have no right to access this document"
+msgstr "You have no right to access this document"
+
+msgid "eui::Content"
+msgstr "Content"
+
+msgid "eui::Informations"
+msgstr "Information"
+
+msgid "eui::Creation :"
+msgstr "Creation :"
+
+msgid "eui::ToEdit"
+msgstr "Edit"
+
+msgid "eui::lock_as_name"
+msgstr "lock"
+
+msgid "eui::infolder"
+msgstr "in"
+
+msgid "eui::Duplicate"
+msgstr "Duplicate"
+
+msgid "eui::Link"
+msgstr "Link"
+
+msgid "eui::Move"
+msgstr "Move"
+
+msgid "eui::documents"
+msgstr "documents"
+
+msgid "eui::delete"
+msgstr "Delete"
+
+msgid "eui::totrash"
+msgstr "To Trash"
+
+msgid "eui:cannot delete"
+msgstr "cannot delete"
 
 msgid "eui::Search"
 msgstr "Search"
@@ -60,74 +131,3 @@ msgstr "Horizontal"
 
 msgid "eui::Vertical"
 msgstr "Vertical"
-
-msgid "eui::ToEdit"
-msgstr "Edit"
-
-msgid "eui::missing right"
-msgstr "Missing Right"
-
-msgid "eui::You have no right to access this document"
-msgstr "You have no right to access this document"
-
-msgid "eui::Creation :"
-msgstr "Creation :"
-
-msgid "eui::lock_as_name"
-msgstr "lock"
-
-msgid "eui::infolder"
-msgstr "in"
-
-msgid "eui::Duplicate"
-msgstr "Duplicate"
-
-msgid "eui::Link"
-msgstr "Link"
-
-msgid "eui::Move"
-msgstr "Move"
-
-msgid "eui::documents"
-msgstr "documents"
-
-msgid "eui::delete"
-msgstr "Delete"
-
-msgid "eui::totrash"
-msgstr "To Trash"
-
-msgid "eui:cannot delete"
-msgstr "cannot delete"
-
-msgid "eui::Content"
-msgstr "Content"
-
-msgid "eui::Informations"
-msgstr "Information"
-
-msgid "setValue: document is fixed"
-msgstr ""
-
-msgid "save : document is fixed"
-msgstr ""
-
-#, fuzzy
-msgid "data::no tag specified"
-msgstr "login not defined"
-
-msgid "data::login not defined"
-msgstr "login not defined"
-
-msgid "data::password not defined"
-msgstr "password not defined"
-
-msgid "data:document id must not be an object"
-msgstr "document id must not be an object"
-
-#, fuzzy
-msgid "data:document id not set"
-msgstr "document id must not be an object"
-
-msgid "data:action name not set"
-msgstr ""

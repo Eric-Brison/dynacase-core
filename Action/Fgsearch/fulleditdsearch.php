@@ -26,19 +26,9 @@ include_once("FDL/freedom_util.php");
  */
 function fulleditdsearch(&$action) {
 
-  $famid=GetHttpVars("famid",0);
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/inserthtml.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FREEDOM/Layout/editdsearch.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=EDITJS");
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/edittable.js");
-
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FGSEARCH/Layout/fulleditdsearch.js");
-
-    $action->parent->AddCssRef("FGSEARCH:fullsearch.css",true);
+  $famid=$action->getArgument("famid",0);
+  $substitute=($action->getArgument("substitute")=="yes");
+  
 
 
   $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -47,6 +37,7 @@ function fulleditdsearch(&$action) {
   
 
   $action->lay->set("searchtitle",_("detailled search"));
+  $action->lay->set("substitute", $substitute);
 
   $tclassdoc=GetClassesDoc($dbaccess, $action->user->id,array(1,2),"TABLE");
   foreach ($tclassdoc as $k=>$cdoc) {
