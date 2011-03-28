@@ -156,7 +156,7 @@ function switchSearchMode() {
 function searchFocusFirst() {
 	var ikey=document.searchdoc.keyword;
 	ikey.focus();
-	fgSearchOnBlur(ikey);
+	//fgSearchOnBlur(ikey);
 }
 function fgSearchOnBlur(ob) {
 	if (ob.value=='') {

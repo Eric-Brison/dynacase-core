@@ -17,16 +17,16 @@ include_once ("FDL/Class.DocSearch.php");
 include_once ("FDL/freedom_util.php");
 
 /**
- * Fulltext Search document 
+ * Fulltext Search document
  * @param Action &$action current action
  * @global keyword Http var : word to search in any values
  * @global famid Http var : restrict to this family identioficator
- * @global start Http var : page number 
+ * @global start Http var : page number
  * @global dirid Http var : search identificator
  */
 function fullsearchresult(&$action)
 {
-    
+
     $famid = GetHttpVars("famid", 0);
     $keyword = GetHttpVars("_se_key", GetHttpVars("keyword")); // keyword to search
     $target = GetHttpVars("target"); // target window when click on document
@@ -35,9 +35,9 @@ function fullsearchresult(&$action)
 
     $slice = 10;
     $start = $page * $slice;
-    
- 
-    
+
+
+
     $action->lay->set("isdetail", false);
     $action->lay->set("page", $page + 1);
     $action->lay->set("dirid", $dirid);
@@ -47,14 +47,14 @@ function fullsearchresult(&$action)
     $orderby = "title";
     $dbaccess = $action->GetParam("FREEDOM_DB");
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
-    
+
     if ($detailsearch) {
-     $search=createTmpDoc($dbaccess,16);
-    
-    $search->setValue("se_famid",$famid);
-    $search->setValue("se_latest","yes");
-    $search->lay=$action->lay;
-    $search->editdsearch();
+        $search=createTmpDoc($dbaccess,16);
+
+        $search->setValue("se_famid",$famid);
+        $search->setValue("se_latest","yes");
+        $search->lay=$action->lay;
+        $search->editdsearch();
     }
     $fdoc=new_doc($dbaccess,$famid);
     $nosearch = false;
@@ -92,14 +92,14 @@ function fullsearchresult(&$action)
             }
         }
     }
-    
+
     /* $bfam = array(); */
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, array(
-        1,
-        2
+    1,
+    2
     ), "TABLE");
     if (!$nosearch) {
-        
+
         $sqlfilters = array();
         $famfilter = $or = $and = "";
         if (count($kfams) > 0) {
@@ -116,7 +116,7 @@ function fullsearchresult(&$action)
             if ($or != "") $famfilter = "($or)";
             if ($and != "") $famfilter .= ($famfilter != "" ? " AND " : "") . " ($and)";
         }
-                
+
         if ($keyword != "") {
             if ($keyword[0] == '~') {
                 $sqlfilters[] = "svalues ~* '" . pg_escape_string(substr($keyword, 1)) . "'";
@@ -127,36 +127,48 @@ function fullsearchresult(&$action)
             $sdoc = new_doc($dbaccess, $dirid);
             $tkeys = $sdoc->getTValue("se_keys");
             foreach ( $tkeys as $k => $v )
-                if (!$v) unset($tkeys[$k]);
+            if (!$v) unset($tkeys[$k]);
             $keys = implode('|', $tkeys);
         }
         if ($famfilter != "") $sqlfilters[] = $famfilter;
-        
+
         $s = new SearchDoc($dbaccess, $famid);
-        if ($dirid) $s->useCollection($dirid);
-        $s->setOrder($orderby . ', id desc');
-        $s->setSlice($slice + 1);
-        $s->setStart($start);
-        $s->excludeConfidential();
-        if (! $dirid) {
+        if ($dirid) {
+            $s->useCollection($dirid);
+            $vardids="did_$dirid";
+        } else  {
+            $vardids="did_$famid$keys";
             foreach ( $sqlfilters as $filter ) {
                 $s->addFilter($filter);
             }
         }
+        $displayedIds=array();
+        if ($start > 0) {
+            $displayedIds=$action->read($vardids);
+            if ($displayedIds && count($displayedIds)>0) {
+                $sqlExclude=sprintf("initid not in (%s)",implode(",", $displayedIds));
+                $s->addFilter($sqlExclude);
+            } else {
+                $s->setStart($start);
+            }
+        }
+        $s->setOrder($orderby . ', id desc');
+        $s->setSlice($slice + 1);
+        $s->excludeConfidential();
+
         $tdocs = $s->search();
         if ($s->getError()) addLogMsg($s->getSearchInfo());
-        
         if ($start == 0) {
             if ($s->count() < ($slice + 1)) $globalCount = $s->count();
             else {
                 $sc = new SearchDoc($dbaccess, $famid);
                 if ($dirid) $sc->useCollection($dirid);
                 foreach ( $sqlfilters as $filter )
-                    $sc->addFilter($filter);
+                $sc->addFilter($filter);
                 $globalCount = $sc->onlyCount();
             }
         }
-        
+
         $workdoc = new Doc($dbaccess);
         if ($famid) $famtitle = $workdoc->getTitle($famid);
         else $famtitle = "";
@@ -167,7 +179,7 @@ function fullsearchresult(&$action)
         } else {
             $action->lay->set("notthenend", false);
         }
-        
+
         $action->lay->set("notfirst", ($start != 0));
         $action->lay->set("theFollowingText", _("View next results"));
         $c=0;
@@ -178,22 +190,24 @@ function fullsearchresult(&$action)
                     continue;
                 }
             }
+            $displayedIds[]=$tdoc["initid"];
             $c++;
             $tdocs[$k]["number"]=$c+$start;
             $tdoc["values"] .= getFileTxt($dbid, $tdoc);
             $tdocs[$k]["htext"] = nl2br(str_replace(array('[b]', '[/b]', ),
-                                              array(  '<b>', '</b>'), (str_replace("<", "&lt;", preg_replace("/<\\/?(\\w+[^:]?|\\w+\\s.*?)>/", "", 
-                                              str_replace(array(
+            array(  '<b>', '</b>'), (str_replace("<", "&lt;", preg_replace("/<\\/?(\\w+[^:]?|\\w+\\s.*?)>/", "",
+            str_replace(array(
                 '<b>',
                 '</b>'
-            ), array(
+                ), array(
                 '[b]',
                 '[/b]'
-            ), nl2br(wordwrap(nobr(highlight_text($dbid, $tdoc["values"], $keys), 80)))))))));
-            $tdocs[$k]["iconsrc"] = $workdoc->getIcon($tdoc["icon"]);
-            $tdocs[$k]["mdate"] = strftime("%a %d %b %Y", $tdoc["revdate"]);
+                ), nl2br(wordwrap(nobr(highlight_text($dbid, $tdoc["values"], $keys), 80)))))))));
+                $tdocs[$k]["iconsrc"] = $workdoc->getIcon($tdoc["icon"]);
+                $tdocs[$k]["mdate"] = strftime("%a %d %b %Y", $tdoc["revdate"]);
         }
-        
+        $action->register($vardids, $displayedIds);
+
         if ($start > 0) {
             for($i = 0; $i < $start; $i += $slice) {
                 $tpages[] = array(
@@ -201,12 +215,12 @@ function fullsearchresult(&$action)
                     "xstart" => $i
                 );
             }
-            
+
             $action->lay->setBlockData("PAGES", $tpages);
         }
-        
+
         $action->lay->setBlockData("DOCS", $tdocs);
-        
+
         $action->lay->set("dirid", $dirid);
         if ($dirid != 0) {
             $sdoc = new_doc($dbaccess, $dirid);
@@ -225,19 +239,19 @@ function fullsearchresult(&$action)
     $action->lay->set("searchtitle", sprintf(_("Search %s"), $keyword));
     if ($fkeyword == "") $action->lay->set("key", _("search dynacase documents"));
     else $action->lay->set("key", str_replace("\"", "&quot;", $fkeyword));
-    
+
     $famsuffix = ($famid==0?"":sprintf("<span class=\"families\">(%s %s)</span>",_("family search result"),$famtitle));
     if ($globalCount == 0) {
-      $action->lay->set("resulttext", sprintf(_("No document found for <b>%s</b>%s"), $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("No document found for <b>%s</b>%s"), $keyword, $famsuffix));
     } else if ($globalCount == 1) {
-      $action->lay->set("resulttext", sprintf(_("One document for <b>%s</b>%s"), $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("One document for <b>%s</b>%s"), $keyword, $famsuffix));
     } else {
-      $action->lay->set("resulttext", sprintf(_("Found <b>%d</b>  Result for <b>%s</b>%s"), $globalCount, $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("Found <b>%d</b>  Result for <b>%s</b>%s"), $globalCount, $keyword, $famsuffix));
     }
     $action->lay->set("displayBottomBar", ($globalCount==0?false:true));
-        $action->lay->set("displayTopBar", ($page == 0));
-    
-    
+    $action->lay->set("displayTopBar", ($page == 0));
+
+
     foreach ( $tclassdoc as $k => $cdoc ) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
         $selectclass[$k]["classname"] = $cdoc["title"];
@@ -253,11 +267,11 @@ function fullsearchresult(&$action)
  */
 function getFileTxt($dbid, &$tdoc)
 {
-    
+
     $sqlselect = 'svalues';
     $sqlfrom = 'doc' . $tdoc["fromid"];
     $sqlwhere = 'id=' . $tdoc["id"];
-    
+
     $result = pg_query($dbid, "select $sqlselect from $sqlfrom where $sqlwhere ;");
     if (pg_numrows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
@@ -295,93 +309,93 @@ function highlight_text($dbid, &$s, $k)
             $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
             $headline = $arr["ts_headline"];
         }
-        
+
         // $headline=str_replace('  ',' ',$headline);
         $headline = preg_replace('/[ ]+ /', ' ', $headline);
         $headline = str_replace(array(
             " \r",
             "\n "
-        ), array(
+            ), array(
             '',
             "\n"
-        ), $headline);
-        $pos = mb_strpos($headline, '<b>');
-        
-        //    print "<hr> POSBEG:".$pos;
-        if ($pos !== false) {
-            $sw = (str_replace(array(
+            ), $headline);
+            $pos = mb_strpos($headline, '<b>');
+
+            //    print "<hr> POSBEG:".$pos;
+            if ($pos !== false) {
+                $sw = (str_replace(array(
                 "<b>",
                 "</b>"
-            ), array(
+                ), array(
                 '',
                 ''
-            ), $headline));
-            $s = preg_replace('/[ ]+ /', ' ', $s);
-            $s = preg_replace('/<[a-z][^>]+>/', '', $s);
-            $s = str_replace(array(
+                ), $headline));
+                $s = preg_replace('/[ ]+ /', ' ', $s);
+                $s = preg_replace('/<[a-z][^>]+>/', '', $s);
+                $s = str_replace(array(
                 "<br />",
                 "\r"
-            ), array(
+                ), array(
                 '',
                 ''
-            ), $s);
-            $offset = mb_strpos($s, $sw);
-            
-            if ($offset === false) return $headline; // case mismatch in characters
-            
+                ), $s);
+                $offset = mb_strpos($s, $sw);
 
-            $before = 20; // 20 characters before;
-            if (($pos + $offset) < $before) $p0 = 0;
-            else $p0 = $pos + $offset - $before;
-            $h = mb_substr($s, $p0, $pos + $offset - $p0); // begin of text
-            $possp = mb_strpos($h, ' ');
-            if ($possp > 0) $h = mb_substr($h, $possp); // first word
-            
+                if ($offset === false) return $headline; // case mismatch in characters
 
-            $pe = mb_strpos($headline, '</b>', $pos);
-            if ($pe > 0) {
-                $h .= "<b>";
-                $h .= mb_substr($s, $pos + $offset, $pe - $pos - 3);
-                $h .= "</b>";
-            }
-            //      print "<br> POS:$pos [ $pos : $pe ]";
-            $pos = $pe + 1;
-            $i = 1;
-            // 7 is strlen('<b></b>');
-            
 
-            while ( $pe > 0 ) {
-                $pb = mb_strpos($headline, '<b>', $pos);
+                $before = 20; // 20 characters before;
+                if (($pos + $offset) < $before) $p0 = 0;
+                else $p0 = $pos + $offset - $before;
+                $h = mb_substr($s, $p0, $pos + $offset - $p0); // begin of text
+                $possp = mb_strpos($h, ' ');
+                if ($possp > 0) $h = mb_substr($h, $possp); // first word
+
+
                 $pe = mb_strpos($headline, '</b>', $pos);
-                //	print "<br> POS:$pos [ $pb : $pe ]";
-                if (($pe) && ($pb < $pe)) {
-                    $pb--;
-                    $pe; //
-                    $h .= mb_substr($s, $pos - 4 - (7 * ($i - 1)) + $offset, $pb - $pos - 3);
+                if ($pe > 0) {
                     $h .= "<b>";
-                    $h .= mb_substr($s, $pb - (7 * $i) + $offset, $pe - $pb - 3);
+                    $h .= mb_substr($s, $pos + $offset, $pe - $pos - 3);
                     $h .= "</b>";
-                    $pos = $pe + 1;
-                    $i++;
-                } else {
-                    $cur = $pos - (7 * $i) + 3 + $offset;
-                    if (($cur - $offset) > 150) $pend = 30;
-                    else $pend = 180 - $cur + $offset;
-                    $send = mb_substr($s, $cur, $pend);
-                    $possp = mb_strrpos($send, ' ');
-                    $send = mb_substr($send, 0, $possp);
-                    $pe = 0;
-                    $h .= $send;
-                
-     //  print "<br> POSEND: $cur $pend";
                 }
-            
+                //      print "<br> POS:$pos [ $pos : $pe ]";
+                $pos = $pe + 1;
+                $i = 1;
+                // 7 is strlen('<b></b>');
+
+
+                while ( $pe > 0 ) {
+                    $pb = mb_strpos($headline, '<b>', $pos);
+                    $pe = mb_strpos($headline, '</b>', $pos);
+                    //	print "<br> POS:$pos [ $pb : $pe ]";
+                    if (($pe) && ($pb < $pe)) {
+                        $pb--;
+                        $pe; //
+                        $h .= mb_substr($s, $pos - 4 - (7 * ($i - 1)) + $offset, $pb - $pos - 3);
+                        $h .= "<b>";
+                        $h .= mb_substr($s, $pb - (7 * $i) + $offset, $pe - $pb - 3);
+                        $h .= "</b>";
+                        $pos = $pe + 1;
+                        $i++;
+                    } else {
+                        $cur = $pos - (7 * $i) + 3 + $offset;
+                        if (($cur - $offset) > 150) $pend = 30;
+                        else $pend = 180 - $cur + $offset;
+                        $send = mb_substr($s, $cur, $pend);
+                        $possp = mb_strrpos($send, ' ');
+                        $send = mb_substr($send, 0, $possp);
+                        $pe = 0;
+                        $h .= $send;
+
+                        //  print "<br> POSEND: $cur $pend";
+                    }
+
+                }
+                //print "<br>[$headline]";
+                return $h;
+
             }
-            //print "<br>[$headline]";
-            return $h;
-        
-        }
-    
+
     }
     return $headline;
 }
