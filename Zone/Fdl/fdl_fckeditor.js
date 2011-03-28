@@ -9,7 +9,7 @@ FCKConfig.ToolbarSets["Simple"] = [
 				   ['Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','SpecialChar','Link','Unlink'],
 				   '/',
 				   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['OrderedList','UnorderedList','-','Outdent','Indent'],
-				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','SpellCheck','About']
+				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','About']
 ] ;
 
 FCKConfig.ToolbarSets["SimpleNoQS"] = [
@@ -17,13 +17,13 @@ FCKConfig.ToolbarSets["SimpleNoQS"] = [
 				   ['Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','SpecialChar','Link','Unlink'],
 				   '/',
 				   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['OrderedList','UnorderedList','-','Outdent','Indent'],
-				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','SpellCheck','About']
+				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','About']
 ] ;
 
 FCKConfig.ToolbarSets["Table"] = [
 				   ['QuickSave'],
 				   ['Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','SpecialChar','Link','Unlink'],				   
-				   ['Table','-','FitWindow','-','Source','SpellCheck','About']
+				   ['Table','-','FitWindow','-','Source','About']
 ] ;
 
 FCKConfig.ToolbarSets["DocAttr"] = [
@@ -31,11 +31,10 @@ FCKConfig.ToolbarSets["DocAttr"] = [
 				   ['Bold','Italic','Underline','StrikeThrough','-','OrderedList','UnorderedList','-','SpecialChar','Link','Unlink'],
 				   '/',
 				   ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],['OrderedList','UnorderedList','-','Outdent','Indent'],
-				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','SpellCheck','About']
+				   ['TextColor','BGColor','Anchor','Image','Table','-','FitWindow','-','Source','About']
 ] ;
 
 FCKConfig.Plugins.Add( 'quicksave', 'en,fr' ) ;
 
 FCKConfig.HtmlEncodeOutput = true ; 
 
-FCKConfig.SpellChecker = 'SpellerPages';
