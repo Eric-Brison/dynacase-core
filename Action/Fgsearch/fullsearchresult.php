@@ -158,13 +158,17 @@ function fullsearchresult(&$action)
 
         $tdocs = $s->search();
         if ($s->getError()) addLogMsg($s->getSearchInfo());
+        //print_r2($s->getSearchInfo());
         if ($start == 0) {
             if ($s->count() < ($slice + 1)) $globalCount = $s->count();
             else {
                 $sc = new SearchDoc($dbaccess, $famid);
-                if ($dirid) $sc->useCollection($dirid);
-                foreach ( $sqlfilters as $filter )
-                $sc->addFilter($filter);
+                if ($dirid) {
+                    $sc->useCollection($dirid);
+                } else {
+                    foreach ( $sqlfilters as $filter ) $sc->addFilter($filter);
+                }
+                $sc->excludeConfidential();
                 $globalCount = $sc->onlyCount();
             }
         }
