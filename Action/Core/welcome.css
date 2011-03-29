@@ -18,6 +18,7 @@ p { margin:0; padding:0 }
     margin:0; 
     position:fixed; 
     width:30%;
+    left:0px;
 }
 #apropos { padding:10px; color:[COLOR_C7]; }
 #apropos .intro { text-align:right; font-size:80%; font-weight:bold; color:[COLOR_WHITE]; }
@@ -25,22 +26,15 @@ p { margin:0; padding:0 }
 #apropos a, #apropos a:link, #apropos a:visited   { color:[COLOR_C3]; text-decoration:underline; }
 #apropos a:hover { text-decoration:none; background-color:[COLOR_A6]; }
 #apropos p { margin-bottom:10px; }
-
+#apropos a.anakeen, #apropos a.anakeen:visited, #apropos a.anakeen:hover { font-weight:bold; text-decoration:none; }
 
 /* 
- * left block
+ * right block
  */
-.right-block {
-    margin:0 0 0 30%;
-    padding:40px;
-}
+.right-block { margin:0 0 0 30%; padding:10px; }
+.right-block .intro { text-align:right; font-size:80%; font-weight:bold; color:[COLOR_A0]; }
 
-
-
-
-#hello { 
-    padding:60px 40px; 
-}
+#hello {  padding:60px 40px; }
 
 #header { color:[COLOR_A7];}
 #header .title { font-weight:bold; font-size:400%; }
@@ -60,11 +54,14 @@ p { margin:0; padding:0 }
 
 
 #footer { 
-    margin : 10px;
-    border-top:1px solid [COLOR_A1];
     text-align:right;
+    position:fixed;
+    bottom:0px;
+    width:100%;
+    background-color:[COLOR_A0];
+    color:[COLOR_A9];
 }
-#footer a { color:[COLOR_A1]; }
+#footer a { color:[COLOR_A9]; }
 
 
 .clear { clear:both; }
