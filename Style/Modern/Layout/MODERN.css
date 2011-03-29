@@ -201,8 +201,11 @@ input[type="image"] {
     padding: 10px;
 }
 
-.document legend {
+.document legend, .document div.legend {
     font-style: italic;
+}
+.document div.legend {
+    margin-top:-1.5em;	
 }
 
 .document legend {
@@ -245,7 +248,7 @@ input[type="image"] {
  */
 
 
-.document fieldset {
+.document fieldset, .document div.mfield {
     border-style: solid;
     border-width: 1px ;
     -moz-border-radius: 0px;
@@ -459,7 +462,7 @@ input[type="image"] {
     background-color: #FFFFFF; 
 }
 
-.document fieldset {
+.document fieldset, .document div.mfield {
     background-color: white !important;
     border-color:  #B5B8C8;
 }

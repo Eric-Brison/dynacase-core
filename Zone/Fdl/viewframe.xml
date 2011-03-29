@@ -3,7 +3,7 @@
 [BLOCK FIELDSET]
 <tr >
   <td  colspan="3" >
- <fieldset class="mfield" style="cursor:[cursor];"><legend class="frame" onclick="viewornot('T[frameid]')">[flabel]</legend>
+ <div class="mfield" style="cursor:[cursor];"><div class="legend" onclick="viewornot('T[frameid]')">[flabel]</div>
 <table id="T[frameid]" cellspacing="0" width="100%" >
 [BLOCK FVALUES]
 <tr class="FREEDOMBack1"><td valign="top" >&nbsp;</td>
@@ -14,7 +14,7 @@
   [IF uplabel]<td valign="top" colspan="2" class="FREEDOMText" ><P style="margin:0px" ><u>[alabel]</u>&nbsp;:&nbsp;</P><div style="margin-left:20px">[avalue]</div></td>[ENDIF uplabel]
 </tr>
 [ENDBLOCK FVALUES]
-</table></fieldset>
+</table></div>
 </td></tr>
 
 [ENDBLOCK FIELDSET]

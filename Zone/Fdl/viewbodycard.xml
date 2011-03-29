@@ -1,5 +1,5 @@
 [BLOCK TABLEBODY]
-<fieldset [IF notloaded]loaded="no" [ENDIF notloaded]id="F[frameid]" style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB][IFNOT NOTAB]display:none;[ENDIF NOTAB][ENDIF TAB]" [IF TAB]name="[tag]"[ENDIF TAB]  class="mfield" >[IF frametext]<legend class="frame"  onmousedown="viewornot('T[frameid]')">[frametext]</legend>[ENDIF frametext]
+<div [IF notloaded]loaded="no" [ENDIF notloaded]id="F[frameid]" style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB][IFNOT NOTAB]display:none;[ENDIF NOTAB][ENDIF TAB]" [IF TAB]name="[tag]"[ENDIF TAB]  class="mfield" >[IF frametext]<div class="legend"  onmousedown="viewornot('T[frameid]')">[frametext]</div>[ENDIF frametext]
 [IF viewtpl]<div  width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF viewtpl]
 [IFNOT viewtpl]<table width="100%" cellspacing="0" id="T[frameid]" >
 <tr class="FREEDOMBack1">
@@ -16,7 +16,7 @@
 </tr>
 [ENDBLOCK [TABLEVALUE]]
 </table>[ENDIF viewtpl]
-</fieldset>
+</div>
 [ENDBLOCK TABLEBODY]
 [IFNOT NOTAB]
 [IF ONETAB]
