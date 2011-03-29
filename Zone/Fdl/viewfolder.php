@@ -124,9 +124,9 @@ $famid="")       // folder containt special fam id
         
         $doc1=$sd->nextDoc();
 
-        if ($doc1["doctype"]=="D")  redirect($action,"FREEDOM","OPENFOLIO&id=".$doc1["id"],
+        if ($doc1->doctype=="D")  redirect($action,"FREEDOM","OPENFOLIO&id=".$doc1->initid,
         $action->GetParam("CORE_STANDURL"));
-        else redirect($action,"FDL","FDL_CARD&latest=Y&id=".$doc1["id"],
+        else redirect($action,"FDL","FDL_CARD&latest=Y&id=".$doc1->id,
         $action->GetParam("CORE_STANDURL"));
         exit;
     }

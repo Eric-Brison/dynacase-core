@@ -121,12 +121,15 @@ LEGEND.frame, div.legend {
 }
 
 div.legend {
-	background-color: [COLOR_WHITE];
-    /*border: 1px solid red;*/
-    display: inline;
-	float:left;
-    margin-left: 10px;
+	background-color: inherit;
+	border-width: 1px;
+    border-color: inherit;
+    border-style: none none solid none; 
+    
+    /*display: inline;
+    margin-left: 7px;
     margin-top: -0.7em;
+	float:left;*/
     padding-left: 3px;
     padding-right: 3px;
 }
@@ -137,12 +140,12 @@ FIELDSET {
    -moz-border-radius: 6px;
 }[ENDIF ISIE]
 
-FIELDSET.mfield table td, div.mfield table td {
+FIELDSET.frame table td, div.frame table td {
   padding:2px;  
   }
-div.mfield {
+div.frame {
     border : 1px solid [COLOR_B0];
-    margin-top:10px;
+	margin:10px;
 }
 TABLE.barmenu {
 /*	background-color: [CORE_BGCOLORALTERN];*/
@@ -673,9 +676,9 @@ A.state, A.boldstate {
   DIV.tabsh {
     display:none;
   }
-  /*FIELDSET.mfield {
-    display:block!important;
-  }*/
+  FIELDSET.frame, div.frame {
+    display:block!important; /* to see frame in tabs */
+  }
   TBODY.overflow {
     overflow:visible;
   }

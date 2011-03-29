@@ -36,7 +36,7 @@
   DIV.tabsh {
     display:none;
   }
-  FIELDSET.mfield {
+  FIELDSET.frame, div.frame {
     display:block!important;
   }
   TBODY.overflow {

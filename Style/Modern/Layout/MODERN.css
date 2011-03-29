@@ -205,7 +205,7 @@ input[type="image"] {
     font-style: italic;
 }
 .document div.legend {
-    margin-top:-1.5em;	
+   /* margin-top:-1.5em;	*/
 }
 
 .document legend {
@@ -248,12 +248,12 @@ input[type="image"] {
  */
 
 
-.document fieldset, .document div.mfield {
+.document fieldset, .document div.frame {
     border-style: solid;
     border-width: 1px ;
     -moz-border-radius: 0px;
     margin-bottom: 10px;
-    padding: 10px 5px 5px 5px;
+    padding: 0px 5px 5px 5px;
 }
 
 .document .FREEDOMLabel {
@@ -462,7 +462,7 @@ input[type="image"] {
     background-color: #FFFFFF; 
 }
 
-.document fieldset, .document div.mfield {
+.document fieldset, .document div.frame {
     background-color: white !important;
     border-color:  #B5B8C8;
 }

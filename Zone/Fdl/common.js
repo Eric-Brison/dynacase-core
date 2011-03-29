@@ -96,11 +96,11 @@ function copy_clip(meintext)
    
    // maak een interface naar het clipboard
    var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
-   if (!clip) return;
+   if (!clip) return false;
    
    // maak een transferable
    var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
-   if (!trans) return;
+   if (!trans) return false;
    
    // specificeer wat voor soort data we op willen halen; text in dit geval
    trans.addDataFlavor('text/unicode');
@@ -322,8 +322,7 @@ function getHSL(c) {
 }
 function getAltern(c,ct,l) {
 
-  var r,g,b;
-  var rgb,dhsl;
+  var dhsl;
 
   hsl= getHSL(c);
   
@@ -341,6 +340,7 @@ function getAltern(c,ct,l) {
     }
     return('#'+trgb.join(''));
   }
+  return '';
 }
 
 // altern color in a table between rows
@@ -400,10 +400,10 @@ function alterfieldset(tid,co,cot,by) {
   var t=document.getElementById(tid);
   var tds;
   if (t) {
-    var ttr=t.getElementsByTagName('fieldset');  
+    var ttr=getFieldSets(t);//t.getElementsByTagName('fieldset');  
     if (by) by2=2*by;
     for (var i=0;i<ttr.length;i++) {
-      if (ttr[i].className=='mfield') {
+      if (ttr[i].className=='frame') {
 	if (!ttr[i].style.backgroundColor) {
 	  if (!by) ttr[i].style.backgroundColor=c[(ci%2)];
 	  else ttr[i].style.backgroundColor=c[parseInt((ci % by2)/by)];
@@ -452,7 +452,7 @@ function showDiv(th,id) {
 }
 
 function moveFieldset() {
-  var ttr=document.getElementsByTagName('fieldset');
+  var ttr=getFieldSets(document);//document.getElementsByTagName('fieldset');
   var i,ln;
   var ltop=document.getElementById('toptab');
   var lf=new Array();
@@ -493,10 +493,25 @@ function showThisFieldset(event,tabid) {
     ltr.className='tabsel';    
   }
 }
+
+function getFieldSets(o) {
+	var tfs=o.getElementsByTagName('fieldset');
+	var dfs=o.getElementsByTagName('div');
+	var ttr=[];
+	var i=0;
+	for ( i=0;i<tfs.length;i++) {
+		if (dfs[i].className=='frame') ttr.push(tfs[i]);
+	}
+	for ( i=0;i<dfs.length;i++) {
+		if (dfs[i].className=='frame') ttr.push(dfs[i]);
+	}
+	console.log(o, ttr);
+	return ttr;
+}
 // display element fieldset with this name
 function showFieldset(event,o,n,docid,force) {
 
-  var ttr=document.getElementsByTagName('fieldset');
+  var ttr=getFieldSets(document);//document.getElementsByTagName('fieldset');
   var btag=getElementsByNameTag(document,o.getAttribute('name'),'span');
   var ln,i;
   var prevtabname=o.id.substr(3);

@@ -3594,7 +3594,7 @@ create unique index i_docir on doc(initid, revision);";
 
     // double control
     if (! $this->isFixed()) {
-      $err=sprintf("track error revision [%s]".pg_last_error($this->dbid));
+      $err=sprintf("track error revision [%s]", pg_last_error($this->dbid));
       $this->Addcomment($err,HISTO_ERROR,"REVERROR");
       $this->exec_query("commit;");
       return $err;

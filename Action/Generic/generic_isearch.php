@@ -24,7 +24,7 @@ include_once("FDL/Class.DocRel.php");
 
 
 // -----------------------------------
-function generic_isearch(&$action) {
+function generic_isearch(Action &$action) {
   // -----------------------------------
    
 
@@ -37,8 +37,12 @@ function generic_isearch(&$action) {
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
   if (($famid !== 0) && (! is_numeric($famid))) {
-    $famid=getFamIdFromName($dbaccess,$famid);  
+    $nfamid=getFamIdFromName($dbaccess,$famid);
+    if (! $nfamid) $action->addWarningMsg(sprintf("family %s not found", $famid));
+    else $famid=$nfamid;
+     
   }
+  
   if ($docid == "") $action->exitError(_("related search aborted : no parameter found"));
 
 
