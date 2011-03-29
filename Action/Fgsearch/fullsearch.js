@@ -49,12 +49,9 @@ function viewUrlFromSearch(event, source, url) {
 
 		var idiv=document.getElementById('divdoc');
 		var ifr=document.getElementById('detaildoc');
-		var dr=document.getElementById('dresult');
+		var dr=document.getElementById('searchresults');
 		
 	    
-
-	 
-
 		ifr.src=url;
 		idiv.style.display='';
 		source.className='selectedresult result';
