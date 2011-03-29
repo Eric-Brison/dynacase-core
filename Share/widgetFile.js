@@ -17,6 +17,7 @@ widgetFile.prototype = {
 		showPager:false,
 		mimeIcon:'',
 		fileLink:'',
+		pdfLink:'',
 		fileTitle:'',
 		pages:0,
 		waiting:false,
@@ -37,11 +38,23 @@ widgetFile.prototype = {
 	toString : function() {
 		return 'widgetFile';
  	},
+ 	canViewPdf : function() {
+ 		var can=(window.PluginDetect.getVersion('adobereader') ||
+			(window.PluginDetect.isMinVersion('PDFReader') == 0));
+ 		if (! can) {
+ 			// special for safari on macosx
+ 			if ((navigator.platform.indexOf('Mac') != -1) && (navigator.vendor.indexOf('Apple') != -1) ) can=true;
+ 		}
+ 		return can;
+ 	},
  	show : function (config) {
- 		
  		for (var name in config) {
  			this[name]=config[name];
  		}
+ 		if (this.pdfLink && this.type=='embed' && (!this.canViewPdf())) {
+ 			this.type='png';
+ 		}
+
  		if (config && config.height) {
  			if (config.height != '100%') this.staticHeight=parseInt(config.height);
  		}
@@ -52,7 +65,7 @@ widgetFile.prototype = {
 				hpagerbegin='<table width="100%"><thead><tr><td>';
 
 				hpagerbegin+='<img class="mime\" needresize=1  src="Images/'+this.mimeIcon+'"> ';
-				hpagerbegin+='<a href="'+this.fileLink+'">'+this.fileTitle+'</a>';
+				hpagerbegin+='<a href="'+this.fileLink+'" title="Download file">'+this.fileTitle+'</a>';
 				if (this.type=='png' && this.pages > 1) {
 					hpagerbegin+='<div style="float:right">';
 					hpagerbegin+='<span style="margin-left:30px"><img alt="Prev" style="cursor:pointer" src="Images/prev16.png"></span><span><img alt="Next"  style="cursor:pointer" src="Images/next16.png"></span>';
@@ -60,8 +73,10 @@ widgetFile.prototype = {
 					hpagerbegin+='/'+this.pages;
 					hpagerbegin+='</div>';
 				}
-				hpagerbegin+=' <a class="fullheight" title="Plain Heigth">&nbsp;&nbsp;</a>';
-				hpagerbegin+=' <a class="fullwidth" title="Plain Width">&nbsp;&nbsp;</a>';
+				if (this.type=='png') {
+			 	    hpagerbegin+=' <a class="fullheight" title="Plain Heigth">&nbsp;&nbsp;</a>';
+				    hpagerbegin+=' <a class="fullwidth" title="Plain Width">&nbsp;&nbsp;</a>';
+				}
 				hpagerbegin+=' <a class="fullscreen" title="fullscreen">&nbsp;&nbsp;</a>';
 				hpagerbegin+='</td></tr></thead><tbody><tr><td>';
 				hpagerend='</td></tr></tbody></table>';
@@ -71,7 +86,7 @@ widgetFile.prototype = {
 				if (this.height) herr+=' height:'+this.height+';';
 				herr+='text-align:center;';
 				herr+='"><p>'+this.error+'</p>';
- 				herr+='<img src="Images/loading.gif">';
+ 				//herr+='<img src="Images/loading.gif">';
 				herr+='</div>';
  	 			if (this.target) {
  	 				this.target.innerHTML=herr;
@@ -146,29 +161,29 @@ widgetFile.prototype = {
 						if (tds.length > 1) {
 							tds[0].wf=this;
 							tds[1].wf=this;
-							addEvent(tds[0],"click",function (event) {this.wf.prevPage();});
-							addEvent(tds[1],"click",function (event) {this.wf.nextPage();});
+							addEvent(tds[0],"click",function (event) {if (! this.wf) this.wf=window.event.srcElement.wf;this.wf.prevPage();});
+							addEvent(tds[1],"click",function (event) {if (! this.wf) this.wf=window.event.srcElement.wf;this.wf.nextPage();});
 						}
 						//addEvent(this.target,"keyup",function (event) {console.log('key', event);});
 						tds=this.target.getElementsByTagName('input');
 						if (tds.length > 0) {
 							tds[0].wf=this;
 							tds[0].value=this.page+1;
-							addEvent(tds[0],"keyup",function (event) {this.wf.showPage(event, this);});
+							addEvent(tds[0],"keyup",function (event) {if (! this.wf) this.wf=window.event.srcElement.wf;this.wf.showPage(event, this);});
 						}
 						tds=this.target.getElementsByTagName('a');
 						for (var i=0;i<tds.length;i++) {
 							if (tds[i].className=='fullheight') {
 								tds[i].wf=this;
-								addEvent(tds[i],"click",function (event) {this.wf.fullHeight(event, this);});
+								addEvent(tds[i],"click",function (event) {if (! this.wf) this.wf=window.event.srcElement.wf;this.wf.fullHeight(event, this);});
 							}
 							if (tds[i].className=='fullwidth') {
 								tds[i].wf=this;
-								addEvent(tds[i],"click",function (event) {this.wf.fullWidth(event, this);});
+								addEvent(tds[i],"click",function (event) {if (! this.wf) this.wf=window.event.srcElement.wf;this.wf.fullWidth(event, this);});
 							}
 							if (tds[i].className=='fullscreen') {
 								tds[i].wf=this;
-								addEvent(tds[i],"click",function (event) {this.wf.fullScreen(event, this);});
+								addEvent(tds[i],"click",function (event) {if (! this.wf) this.wf=window.event.srcElement.wf;this.wf.fullScreen(event, this);});
 							}
 						}
 						/*
@@ -182,13 +197,42 @@ widgetFile.prototype = {
 					this.fixWidth();
 
 				}
- 		} else if (this.type='embed') {
- 			var hembed='<iframe src="'+this.fileLink+'&inline=yes" style="';
+ 		} else if (this.type=='embed') {
+ 			
+ 			var hembed='<iframe id="fembed" src="';
+ 			if (this.pdfLink) hembed+=this.pdfLink;
+ 			else hembed+=this.fileLink;
+ 			
+ 			hembed+='&inline=yes" style="';
  			hembed+='border:none;width:100%;';
- 			if (this.height) hembed+=' height:'+this.height+';';
- 			hembed+='" src="'+this.fileLink+'&inline=yes">';
+ 			if (this.staticHeight) hembed+=' height:'+this.staticHeight+'px;';
+ 			else {
+ 				var yt=AnchorPosition_getPageOffsetTop(this.target);
+ 				var dh=getFrameHeight();//this.getInnerHeight(document.body);
+ 				var ih=this.getInnerHeight(this.target);
+ 				var absHeight=dh-yt-ih-54;
+ 				if (absHeight < 100) absHeight=100;
+ 				hembed+=' height:'+absHeight+'px;';
+ 				if (! this.resizeEnabled) {
+					var wftr2=this;
+					this.resizeEnabled=true; // one shot 
+					addEvent(window,"resize",function() {wftr2.onWindowResize();});
+				}
+ 			}
+ 			hembed+='">';
  			if (this.target) {
+ 				
  				this.target.innerHTML=hpagerbegin+hembed+hpagerend; 		
+ 				var als=this.target.getElementsByTagName('a');
+ 				for (var i=0;i<als.length;i++) {
+
+ 					if (als[i].className=='fullscreen') {
+ 						als[i].setAttribute('wf',this);
+ 						als[i].wf=this;
+ 						this.wf=this;
+ 						addEvent(als[i],"click",function (event) {if (! this.wf) this.wf=window.event.srcElement.wf;this.wf.fullScreen(event, this);});
+ 					}
+ 				}
  			}
  		}
  	},
@@ -245,7 +289,6 @@ widgetFile.prototype = {
  			var oriwidth=getObjectWidth(imgfile);
  			if (hi > dh) {
  				// the image est greater than document page => decrease image
- 				var minus=wi-dh;
  				imgfile.style.width='';
  				imgfile.style.border='none';
  				imgfile.style.height=(dh - hhead)+'px';
@@ -253,7 +296,6 @@ widgetFile.prototype = {
  				this.width=wi;
  			} else if ((! this.fullScreenActivated) &&(sh < dh)) {
  				// the image est lesser than document page=> increase image
- 				var minus=sh-dh;
  				imgfile.style.width='';
  				imgfile.style.border='none';
  				imgfile.style.height=(hi - minus)+'px';
@@ -321,6 +363,16 @@ widgetFile.prototype = {
  			this.width=wi;
  			this.fullScreenActivated=true;
  			if (oriwidth < wi) this.show();
+ 		}else if (this.type=='embed') {
+ 			this.target.className='fullscreen';
+ 			var fe=document.getElementById('fembed');
+ 			var sh=document.body.scrollHeight;
+ 			var yt=AnchorPosition_getPageOffsetTop(fe);
+ 			var dh=getFrameHeight();//
+ 			var nh=(dh-yt-10);
+ 			if (nh <100) nh=100;
+			fe.style.height=nh+'px';
+ 			this.fullScreenActivated=true;
  		}
  	},	
  	unFullScreen: function (event) {
@@ -361,6 +413,20 @@ widgetFile.prototype = {
  			this.width=wi;
  			this.fullScreenActivated=false;
 
+ 		}else if (this.type=='embed') {
+ 			var fe=document.getElementById('fembed');
+ 			var sh=document.body.scrollHeight;
+ 			var nh;
+
+ 			this.target.className='';
+ 			if (this.staticHeight) {
+ 				nh=this.staticHeight;
+ 				fe.style.height=nh+'px';
+ 			} else {
+ 				this.onWindowResize();
+ 			}
+ 			
+			
  		}
  	},
  	fullWidth : function (event) {
@@ -472,6 +538,23 @@ widgetFile.prototype = {
  				return;
  				
  			
+ 		} else if (this.type=='embed') {
+ 			
+ 			var fe=document.getElementById('fembed');
+ 			var sh=document.body.scrollHeight;
+ 			var dh=getFrameHeight();//
+ 			var bodyHeight=this.getInnerHeight(document.body);
+ 			var feHeight=parseInt(fe.style.height);
+
+ 			
+ 			if (sh > dh) {
+ 				feHeight-=(sh-dh);
+ 				if (feHeight < 100) feHeight=100;
+ 			} else {
+ 				feHeight+=(dh-bodyHeight);
+ 			}
+
+				fe.style.height=feHeight+'px';
  		}
  	},
  	getInnerWidth : function (o) {
@@ -497,7 +580,7 @@ widgetFile.prototype = {
  			else if (o.clip && o.clip.Height) iw=o.clip.Height;
  			if (iw > 0) {
  				if (iw > 100) {
- 					iw-=50;
+ 					//iw-=50;
  				}
  			}
  			return iw;
@@ -507,7 +590,10 @@ widgetFile.prototype = {
  	verifyWaiting : function (event) {
  		if (XHT_FILES) {
  			 // from verifycomputedfiles.js
- 			var status=parseInt(XHT_FILES.files[this.vid]);
+ 			var status=-1;
+ 			if (XHT_FILES.files) {
+ 			   status=parseInt(XHT_FILES.files[this.vid]);
+ 			}
  			if (status > 1) {
  	 			
  			} else {

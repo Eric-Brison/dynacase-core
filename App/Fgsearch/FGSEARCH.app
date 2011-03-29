@@ -46,20 +46,27 @@ $app_acl = array (
 $action_desc = array (
   array( 
    "name"		=>"FULLSEARCH",
-   "short_name"		=>N_("freedom global search"),
+   "short_name"		=>N_("global search"),
    "acl"		=>"FGSEARCH_READ",
    "root"		=>"Y"
   )  ,
   array( 
    "name"		=>"FULLDSEARCH",
-   "short_name"		=>N_("freedom  global search"),
+   "short_name"		=>N_("global search detail results"),
+   "layout"   => "fullsearchresult.xml",
+   "acl"		=>"FGSEARCH_READ"
+  ) ,
+  array( 
+   "name"		=>"FULLSEARCHRESULT",
+   "short_name"		=>N_("global search results"),
    "acl"		=>"FGSEARCH_READ"
   ) ,
   array( 
    "name"		=>"FULLEDITDSEARCH",
-   "short_name"		=>N_("freedom detailled global search"),
+   "short_name"		=>N_("global edit detail search"),
    "acl"		=>"FGSEARCH_READ"
-  ) ,
+  ) 
+
 );
 
 ?>

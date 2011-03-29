@@ -11,7 +11,7 @@
  /**
  */
 
-include_once("FREEDOM/fullsearch.php");  
+include_once("FGSEARCH/fullsearchresult.php");  
 include_once("FDL/modcard.php");  
 
 
@@ -44,12 +44,10 @@ function fulldsearch(&$action) {
 
     if ($err!="") $action->exitError($err);
     $search->SpecRefresh();
-
-    $action->lay = new Layout(getLayoutFile("FREEDOM","fullsearch.xml"),$action);
     
 
     setHttpVar("dirid",$search->id);
-    fullsearch($action);
+    fullsearchresult($action);
   }
 
 }

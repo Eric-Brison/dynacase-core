@@ -1,219 +1,84 @@
-[IFNOT SUBSEARCH]
 [ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
-<style>
-SELECT.little { font-size:90%; }
-div.logo { margin-top:-20px;  float:left; width:20%; z-index:100; text-align:center; }
-img.logomini { width:50px; padding-left:0px; }
-div.zsearch { margin-top:20px;}
-div.searchp { float:left; padding:0px 5px 0px 5px; text-align:right; }
-div.searchc { float:left; padding:0px 5px 0px 5px; text-align:left; }
-div.searchm { float:left; padding:0px 15px 0px 15px; text-align:left; }
-#nextresultbutton { text-align:center;}
-.bresume { 
-  background-color:[COLOR_B8]; 
-  border-color:[COLOR_B4]; 
-  border-style:solid;
-  border-width:1px 0px 1px 0px;width:50%; 
-  padding:0px 5px 0px 5px;
-}
-
-#dresult {
-  overflow-y:auto;
-}
-.left { text-align:left; }
-.right { text-align:right; }
-
-td.result  {
-  padding : 5px 5px 10px 5px;
-  border-width : 1px; 
-  border-color : [COLOR_A8]; 
-  border-style : none;
-  vertical-align:top; 
-  font-size:90%; 
-  background-color:transparent;
-  color:[COLOR_A3]; }
-tr.result  {
-  background-color:transparent;
-}
-td.result .title { color:[COLOR_B0]; font-size:110%; font-weight:bold; }
-td.result b { color:[COLOR_A0]; }
-div.result:hover {background-color :[COLOR_B8]}
-tr.result:hover td.result {background-color :[COLOR_B8]}
-a.result:active, a.result:link, a.result:visited {text-decoration:none}
-a.result img {border:none}
-
-#aide {
-  position:absolute;
-  display:inline;
-  border: 1px solid [COLOR_B4];
-  background-color: [COLOR_WHITE];
-  padding:10px;
-  left : 50px;
-  right : 50px;
-  -moz-border-radius: 10px;
-}
-#aide #closeaide {  right:10px; margin : 5px 0px 10px 0px; }
-
-#divdoc {
-  position:absolute;
-  left:0px;
-  top:0px;
-  width:90%;
-  background-color:[COLOR_WHITE];
-  border: [COLOR_A0] 2px solid;
-  padding:0px;
-  margin:50px;
-}
-#detaildoc {
-  width:100%;
-  background-color:[COLOR_WHITE];
-  border: none;
-  padding:0px;
-  margin:0px;
-}
-#closeBar {
- text-align:right;
- background-color:[COLOR_A7];
- margin:0px;
- }
- form.dark {
-   background-color:[COLOR_A7];
- }
- 
- div.result {
-    width:95%;
-    display:block;
-    cursor:pointer;
- }
- div.result:hover_ {
-    z-index:10;
-    position:absolute;
-    beackground-color:[COLOR_WHITE];
- }
- td.number {
-   width:30px;
-   text-align:center;
-   vertical-align:top;
-   padding-top:10px;
- }
-</style>
 <script>
-
-
-
-
 addEvent(window,"load",resizeiframe);
+[IF key]addEvent(window,"load",searchIfKeyword);[ENDIF key]
+addEvent(window,"load",searchFocusFirst);
 addEvent(window,"resize",resizeiframe);
-
+var basicSearch = true;
+var guideKeyword = "[guideKeyword]";
+var initKeyword = [IF initKeyword]true[ENDIF initKeyword][IFNOT initKeyword]false[ENDIF initKeyword];
 </script>
 
 [ZONE FGSEARCH:FGSEARCH_ADDSEARCH]
-<form  id="fedit"  
-       class="fborder" 
-       name="searchdoc"       
-       target="_self"
-       action="?app=FGSEARCH"
-       method="POST"        >
-<input type="hidden" name="page" value="0">
-<input type="hidden" name="dirid" value="[dirid]">
-<input type="hidden" name="sole" value="Y">
-<input type="hidden" name="action" value="FULLSEARCH">
 
-[IF viewform]
-<div style="text-align:right">
-<a style="font-size:80%; "  onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a>
-</div>
+<div class="search-head">
 
-<div id="searchzone" class="zsearch">
+  <div id="searchzone" class="zsearch">
 
-<div class="logo"><img class="logomini" align="middle" needresize="1"  src="[CORE_LOGOCLIENT]"></div>
-<div class="searchp">
-<div><input name="keyword" type="text" size="30" value="[key]"></div>
-<div><select  class="little"   name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
-        [BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>   
-        [ENDBLOCK SELECTCLASS]
-      </select></div>
-</div>
+    <div class="logo"><img class="logomini" needresize="1" src="[CORE_LOGOCLIENT]" /></div>
 
-<div class="searchc">
-  <input type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]">
-</div>
-<div class="searchm">
-<a href="[CORE_STANDURL]app=FGSEARCH&action=FULLEDITDSEARCH&famid=[famid]">[TEXT:Advanced search]</a>
-<br><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a>
-</div>
+    <div class="searchbarmenu">
+      <div class="menu"><a href="#" onclick="switchSearchMode()" title="[TEXT:switch search mode (basic/advanced)]"><span  style="display:none" id="label-basic-search" >[TEXT:Basic search]</span><span id="label-detailed-search">[TEXT:Advanced search]</span></a><a href="#" onclick="document.getElementById('aide').style.display='inline'">[TEXT:search online help]</a><a onclick="addFreedomEngine()" type="text/smartbookmark" rel="[CORE_STANDURL]&app=FGSEARH&action=FULLSEARCH&keyword=%s" title="[TEXT:Add search engine to your browser]">[TEXT:Add search engine]</a><span class="client">[CORE_CLIENT]</span></div>
+      
+    </div>
 
+    <div class="block-search">
+
+      <div class="criteria">
+	
+	<div id="basic-search" class="search-criterion" >
+	  <div class="searchp">
+	    <form  id="fedit" class="fborder" name="searchdoc" 
+		   action="?app=FGSEARCH" target="nextresult"
+		   method="POST"        >
+	      <input type="hidden" name="page" value="0" />
+	      <input type="hidden" name="dirid" value="0" />
+	      <input type="hidden" name="sole" value="Y" />
+	      <input type="hidden" name="action" value="FULLSEARCHRESULT" />
+	      <input name="keyword" type="text" size="30" class="[IF initKeyword]un[ENDIF initKeyword]setter"
+		     onBlur="fgSearchOnBlur(this)" onFocus="fgSearchOnFocus(this)"  value="[key]" />
+	      <select  class="little" onchange="fgSearchOnBlur(this.form.keyword)"  name="famid" ><option VALUE="0" >[TEXT:any familly]</option>
+		[BLOCK SELECTCLASS]<option [famselect] VALUE="[idcdoc]" >[classname]</option>[ENDBLOCK SELECTCLASS]
+	      </select>
+	      <input id="send-search" type="submit" onclick="sendNewSearch()" value="[TEXT:ToSearch]" [IF initKeyword]disabled[ENDIF initKeyword] />
+	    </form>
+	  </div>
+	</div> <!-- end of basic search block -->
+	
+	<div id="detailed-search" class="search-criterion"  style="display:none;">
+	  [ZONE FGSEARCH:FULLEDITDSEARCH]
+	</div> <!-- end of detailled search block -->
+	
+      </div>
+    </div>
+
+  </div><!-- end of detailled search block -->
+  
 </div>
 
 <div style="clear:both"></div>
-[ENDIF viewform]
 
-<table  cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
-<tr>
-<td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
-<td class="bresume right">[CORE_CLIENT]</td>
-</tr>
-</table> 
-<div style="right:15px; position:absolute; padding:5px; margin:5px; border:1px solid [COLOR_B4]">
-[BLOCK filterfam]<div><span [IFNOT include]style="text-decoration:line-through; font-style:italic"[ENDIF include]>[fam]</span><img needresize="1" src="[icon]" style="padding:0 5 0 5" width="12px"></div>[ENDBLOCK filterfam]
+<div id="searchtop">
+   &nbsp;
 </div>
+<div id="searchresults">
+   &nbsp;
+</div>
+
 <div id="aide" style="display:none">
-<div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
-[ZONE FGSEARCH:HELP]
-</div>
-[IF INITSEARCH]
-<div style="text-align:center;vertical-align:middle"><img src="[IMG:logodynacase.png]"></div>
-[ENDIF INITSEARCH]
-[ENDIF SUBSEARCH]
-
-</form>
-[IFNOT INITSEARCH]
-<div id="dresult" >
-<a name="page[page]" style="visibility:hidden">Page [page]</a>
-[BLOCK DOCS]<div title="[title]" class="result" onmousedown="viewUrlFromSearch(event,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')"><table cellspacing=0>
-<tr class="result"><td class="number">[number]</td>
-<td class="result"><img align="left" needresize="1" src="[iconsrc]" width="36px"></td>
-<td class="result"><span class="title">[title]</span> <i>[mdate]</i><br >[htext]</td>
-</tr></table></div>
-[ENDBLOCK DOCS]
-[IFNOT SUBSEARCH]
-<table id="searchbottom" cellspacing="0" cellpadding="0"  cellborder="0" style="width:100%; margin:10px 0px 5px 0px; padding:0">
-<tr>
-<td class="bresume left">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></td>
-<td class="bresume right"></td>
-</tr>
-</table> [ENDIF SUBSEARCH]
+  <div id="closeaide"><a href="#" onclick="document.getElementById('aide').style.display='none'">[TEXT:close search online help]</a></div>
+  [ZONE FGSEARCH:HELP]
 </div>
 
 
-[IFNOT SUBSEARCH]
+
+
 <iframe id="nextresult" src="[IMG:1x1.gif]" style="display:none;width:100%;border:none;padding:0px;margin:0px" name="nextresult"></iframe>
 <div id="divdoc" style="display:none;">
-<p id="closeBar" ><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a> | <a onclick="hideUrlFromSearch()">[TEXT:Close]</a></p>
+<p id="closeBar"><a onclick="hideUrlFromSearch()">[TEXT:Close]</a><a onclick="openDocInNewWindow()">[TEXT:Open in new window]</a></p>
 <iframe id="detaildoc" src="[IMG:1x1.gif]"  name="detaildoc"></iframe>
 </div>
 
-[ENDIF SUBSEARCH]
-[ENDIF INITSEARCH]
-[IF SUBSEARCH]
-<script>
-if (window.parent && window.parent != window) {
-    var targetS=window.parent.document.getElementById('dresult');
-    var targetB=window.parent.document.getElementById('searchbottom');
-    var targetBB=window.parent.document.getElementById('nextresultbuttonbottom');
-    var targetBT=window.parent.document.getElementById('nextresultbuttontop');
-    var origin=document.getElementById('dresult');
-    var target=  window.parent.document.createElement("div");
-    target.style.borderTop="solid 1px [COLOR_B5]";
-    target.innerHTML=origin.innerHTML;
-    targetB.parentNode.insertBefore(target, targetB);
-    window.parent.location.hash='#page[page]';
-    [IFNOT notthenend]
-    targetBB.style.display="none";
-    targetBT.style.display="none";
-    [ENDIF notthenend]
-}
-</script>
-[ENDIF SUBSEARCH]
+
 [ZONE FDL:HTMLFOOT]

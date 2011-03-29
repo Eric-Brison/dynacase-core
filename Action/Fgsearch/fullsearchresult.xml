@@ -1,0 +1,77 @@
+<html>
+<body>
+[IF displayTopBar]
+<div id="searchtop">
+    <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
+ <div class="date">([TEXT:searchdate prefix][searchdate])</div></div>[ENDIF displayTopBar]
+<div id="results" >
+  
+  <a name="page[page]" style="visibility:hidden"></a>
+  [BLOCK DOCS]
+  <div  class="result" onmousedown="viewUrlFromSearch(event,this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]')">
+    <div class="number">[number]</div>
+    <div class="inforesult"><span class="title">[title]</span><i>[mdate]</i><br/>
+      <div class="iconresult">
+	<img needresize="1" src="[iconsrc]" />
+      </div>
+      <div class="textresult">[htext]</div>
+    </div>
+    <div class="endresult"></div>
+  </div>
+  [ENDBLOCK DOCS]
+  [IF displayBottomBar]
+  <div id="searchbottom">
+    <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttonbottom"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
+  </div>[ENDIF displayBottomBar] 
+</div>
+
+<script>
+if (window.parent && window.parent != window) {
+    var dirid='[dirid]';
+    var targetS=window.parent.document.getElementById('searchresults');
+    var targetB=window.parent.document.getElementById('searchbottom');
+    var targetBB=window.parent.document.getElementById('nextresultbuttonbottom');
+    var targetBT=window.parent.document.getElementById('nextresultbuttontop');
+    var origin=document.getElementById('results');
+
+
+     var topBar=document.getElementById('searchtop');
+     
+    var target=  window.parent.document.createElement("div");
+    target.innerHTML=origin.innerHTML;
+     
+     if (topBar) {
+        var pTopBar=window.parent.document.getElementById('searchtop');
+        pTopBar.innerHTML=topBar.innerHTML;
+        //targetS.innerHTML=''; // reset results
+        while(targetS.childNodes.length>0) {
+             targetS.removeChild(targetS.childNodes[0]);
+        }
+        targetS.appendChild(target);
+        window.parent.document.searchdoc.page.value=0;
+     } else {
+       if (targetB) {
+         targetB.parentNode.insertBefore(target, targetB);
+       } else {
+         targetS.appendChild(target);
+       }
+     }
+     
+    
+     var bottomBar=document.getElementById('searchbottom');
+     if (bottomBar) {
+        var pBottomBar=window.parent.document.getElementById('searchbottom');
+        if (pBottomBar) pBottomBar.innerHTML=bottomBar.innerHTML;
+     }
+    
+    if (dirid) {
+        window.parent.document.searchdoc.dirid.value=dirid;
+    }
+    window.parent.location.hash='#page[page]';
+    [IFNOT notthenend]
+    if (targetBB) targetBB.style.display="none";
+    if (targetBT) targetBT.style.display="none";
+    [ENDIF notthenend]
+}
+</script>
+</body></html>

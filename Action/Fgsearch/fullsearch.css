@@ -1,0 +1,186 @@
+/* ----------------- aide ---------------------- */
+#aide {
+  position:absolute;
+  display:inline;
+  border-style:solid;
+  border-width:3px;
+  border-color: [COLOR_A7];
+  background-color: [COLOR_WHITE];
+  padding:0;
+  left : 80px;
+  top : 50px;
+  right : 50px;
+}
+div.hblock {   color:[COLOR_A2];   font-size:90%; padding:10px; }
+div.htitle { color:[COLOR_A0]; font-size:110%; font-weight:bold; margin:5px; border-bottom:1px solid [COLOR_A0]}
+div.hcontent { margin:5px 5px 5px 10px; } 
+div.hblock b { font-weight:bold;  font-size:110%; color:[COLOR_B0]; }
+
+/* ----------------- navbar ---------------------- */
+#searchbottom  { width:95%; margin:0 0 0 0; padding:0; }
+#searchtop { margin:0;  padding:0; }
+
+#searchbottom, #searchtop { margin:0 ; padding-left:10px; background-color:[COLOR_C6]; border-top:1px solid [COLOR_B0]; border-bottom:1px solid [COLOR_B0]; }
+#searchtop b { font-size:120%; font-weight:bold; }
+#searchtop .count {  }
+#searchtop .families, #searchbottom .families { padding:0 10px 0 10px; font-size:80%; font-style:italic; }
+#searchtop .date { font-size:80%; color:[COLOR_A6]; }
+#nextresultbuttontop, #nextresultbuttonbottom { padding-left:10px; }
+
+/* ---------------- result zone ------------------------ */
+
+#searchresults {   overflow-y:auto; border:none; padding : 0 10px 0 10px; }
+
+div.result { 
+    border-style:solid;
+    border-width:3px;
+    border-color: [COLOR_WHITE]; 
+    border-bottom:3px solid [COLOR_WHITE];    
+    margin:5px 0 5px 0; padding:0px;
+    border-left:2.5em solid [COLOR_A9]; 
+    color:[COLOR_A5];
+}
+div.result div.number { 
+    font-size:120%; 
+    margin:0 0 0 -2em;
+    padding:0.5em; 
+    color:[COLOR_A5]; 
+    font-weight:bold; 
+}
+div.iconresult { float:left;  }
+div.iconresult img { opacity:0.6; width:1.5em; padding:1em 1em 0 1em; }
+div.result span.title { font-size:120%; font-weight:bold; padding-left:5px; color:[COLOR_A2]; }
+div.result i { padding:0 0 0 40px; font-variant:italic; }
+div.result b { color:[COLOR_A2]; font-weight:bold; }
+
+/* Over the result */
+div.result:hover { border-color:[COLOR_A5]; cursor:pointer; }
+div.result:hover div.inforesult  { color:[COLOR_A3];  }
+div.result:hover div.number  { color:[COLOR_WHITE]; }
+
+div.result:hover  span.title { color :[COLOR_BLACK]; }
+div.result:hover  i { color :[COLOR_A0]; }
+div.result:hover div.inforesult { color :[COLOR_A0]; }
+div.result:hover  b { color :[COLOR_A0]; }
+div.result:hover  img { opacity:1 }
+
+/* selected result */
+div.selectedresult { background-color:[COLOR_C5]; border-color:[COLOR_A7]; }
+div.selectedresult  div.number { color :[COLOR_WHITE]; }
+div.selectedresult  span.title { color :[COLOR_BLACK]; }
+div.selectedresult div.inforesult { color :[COLOR_A0]; }
+div.selectedresult  b { color :[COLOR_A0]; }
+div.selectedresult  img { opacity:1 }
+
+/* --------- incorporated document --------------------------- */
+#divdoc {
+    position:absolute;
+    bottom:10px;
+    right:20px;
+    width:60%;
+    border-style:solid;
+    border-width:3px;
+    border-color: [COLOR_A7];
+    padding:0px;
+    background-color:[COLOR_WHITE];
+    margin:0px;
+    background-color:[COLOR_A7];
+}
+#closeaide, #divdoc > p { padding:2px; margin:0; }
+#closeaide, #divdoc > p {
+    background-color:[COLOR_C6];
+}
+#closeaide a, #divdoc > p a {
+    border-right : 1px solid [COLOR_A2];
+    color:[COLOR_A2];
+    padding:0 5px 0 5px;
+/*
+    background-color:[COLOR_A5];
+    border-style:solid;
+    border-width:1px;
+    border-color: [COLOR_A8] [COLOR_A4] [COLOR_A4] [COLOR_A8];
+    color:[COLOR_WHITE];
+    padding:0px 5px 0px 5px;
+    margin: 0; 
+*/
+}
+#closeaide a:hover, #divdoc > p a:hover { 
+    text-decoration:none; 
+    border-color:  [COLOR_A4] [COLOR_A8] [COLOR_A8] [COLOR_A4];
+}
+div.inforesult,  div.textresult {
+    float:left;	
+}
+div.number {
+    float:left; 
+}
+div.endresult {
+    clear:both; 
+}
+
+#detaildoc {
+    width:100%;
+    padding:0;
+    margin: 0;
+    background-color:[COLOR_WHITE];
+    border-width:0px;
+}
+
+/* -------------- search zone -------------------- */
+#searchzone { margin:10px;  }
+#searchzone .logo { margin:0 10px 10px 10px; float:left; } 
+#searchzone img.logomini { width:24px; } 
+#searchzone .searchbarmenu  { }
+#searchzone .searchbarmenu .client { padding:0 10px 0 10px; font-weight:bold; color:[COLOR_B2];}
+#searchzone .searchbarmenu .menu { float:right; text-align:right; }
+#searchzone .searchbarmenu a { text-decoration:none; padding:0 5px 0 5px; border-right:1px solid [COLOR_A4];}
+
+#searchzone .block-search { margin:0 0 10px 0;  float:left; } 
+
+#searchzone .search-criterion { }
+
+div.searchp {  }
+div.searchp input[type=text] { 
+    border-style:solid;
+    border-width:1px;
+    border-color:[COLOR_A4] [COLOR_A8] [COLOR_A8] [COLOR_A4];
+    background-color:[COLOR_B9]; 
+    font-size:[SIZE_MEDIUM];
+}
+div.searchp input[type=text].unsetter { color:[COLOR_A6]; }
+div.searchp input[type=text].setter { color:[COLOR_A0]; }
+
+div.searchp input[type=submit] { 
+    font-size:[SIZE_MEDIUM];
+    padding:1px 5px 1px 5px;
+    margin-left:10px;
+    vertical-align:bottom;
+}
+div.searchp input[disabled], div.searchp input[disabled="disabled"], div.searchp input.disabled { 
+    border:1px solid [COLOR_WHITE];
+    color:[COLOR_WHITE] !important;
+}
+	
+div.searchp select.little { 
+    font-size:[SIZE_MEDIUM];
+    margin:5px 0 0 0;
+}
+/*  -- for detailled search */
+SELECT.little { font-size:90%; }
+DIV.search {
+  
+  border:none;
+  background-color:[COLOR_WHITE];
+  padding:10px;
+}
+DIV.famselect {
+	float:left;
+}
+DIV.famselect div.select {
+    float:left;
+}
+DIV.famicon {
+    float:left;
+}
+
+

@@ -214,7 +214,7 @@ function _correctOnePNG(img,iknowitisapng) {// correctly handle PNG transparency
       
 }
 
-if (isIE && (!isIE7)) addEvent(window,"load",correctPNG);
+//if (isIE6) addEvent(window,"load",correctPNG);
 
 function sendActionNotification(code,arg) {
   
