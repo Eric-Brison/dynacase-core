@@ -3,7 +3,7 @@
 [IF displayTopBar]
 <div id="searchtop">
     <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
-</div>[ENDIF displayTopBar]
+ <div class="date">([TEXT:searchdate prefix][searchdate])</div></div>[ENDIF displayTopBar]
 <div id="results" >
   
   <a name="page[page]" style="visibility:hidden"></a>
