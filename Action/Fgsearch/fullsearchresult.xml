@@ -72,6 +72,7 @@ if (window.parent && window.parent != window) {
     if (targetBB) targetBB.style.display="none";
     if (targetBT) targetBT.style.display="none";
     [ENDIF notthenend]
+    window.parent.resizeiframe();
 }
 </script>
 </body></html>
