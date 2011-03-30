@@ -8,8 +8,8 @@
 </td>
 
 <td class="und" >
-  <select  name="_se_attrids[]"  onchange="filterfuncz(this)">
-  [BLOCK ATTR]<option atype="[attrtype]" value="[attrid]">[attrname]</option>
+  <select  class="cond" name="_se_attrids[]"  onchange="filterfuncz(this)">
+  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" value="[attrid]">[attrname]</option>
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">

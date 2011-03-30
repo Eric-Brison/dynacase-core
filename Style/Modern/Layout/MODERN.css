@@ -133,7 +133,7 @@ input[disabled], input[disabled="disabled"],input.disabled,
 textarea[disabled],
 select[disabled], select.disabled, select[disabled="disabled"] {
   color:[input-text-disabled-color];
-  background-color:[input-background-disabled-color] !important;
+  background-color:[input-background-disabled-color];
 }
 TEXTAREA {
   border:inset 1px [input-text-normal-color];

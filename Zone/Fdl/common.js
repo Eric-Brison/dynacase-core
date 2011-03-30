@@ -500,12 +500,11 @@ function getFieldSets(o) {
 	var ttr=[];
 	var i=0;
 	for ( i=0;i<tfs.length;i++) {
-		if (dfs[i].className=='frame') ttr.push(tfs[i]);
+		if (tfs[i].className=='frame') ttr.push(tfs[i]);
 	}
 	for ( i=0;i<dfs.length;i++) {
 		if (dfs[i].className=='frame') ttr.push(dfs[i]);
 	}
-	console.log(o, ttr);
 	return ttr;
 }
 // display element fieldset with this name
