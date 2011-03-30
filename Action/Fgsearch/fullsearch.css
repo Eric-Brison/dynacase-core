@@ -135,7 +135,7 @@ div.endresult {
 #searchzone .searchbarmenu .menu { float:right; text-align:right; }
 #searchzone .searchbarmenu a { text-decoration:none; padding:0 5px 0 5px; border-right:1px solid [COLOR_A4];}
 
-#searchzone .block-search { width:70%; padding:0 0 10px 0;  float:left; border:1px solid red; }
+#searchzone .block-search { width:70%; padding:0 0 10px 0;  float:left; }
 #searchzone #basic-search, #searchzone #detailed-search  { }
 #searchzone .search-criterion { }
 
