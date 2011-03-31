@@ -144,9 +144,27 @@ FIELDSET.frame table td, div.frame table td {
   padding:2px;  
   }
 div.frame {
-    border : 1px solid [COLOR_B0];
-	margin:10px;
-}
+     border:0px;
+     padding:0px;
+     margin:10px 0 0 20px;
+ }
+ 
+  div.frame .legend { 
+     display:inline;
+     border-width:0px;
+     padding:0 5px 0 5px;
+     margin-left:10px;
+ }
+div.frame .legend:hover { background-color:[COLOR_A9]; }
+
+ div.frame .content {
+     margin-top:-0.7em;
+     border-style:solid solid solid solid;
+     border-color:[COLOR_A6] [COLOR_A6] [COLOR_A6] [COLOR_A6];
+     border-width:1px 1px 1px 1px;
+ 	
+     -moz-border-radius: 6px; 	
+ }
 TABLE.barmenu {
 /*	background-color: [CORE_BGCOLORALTERN];*/
 	background-color: orange;

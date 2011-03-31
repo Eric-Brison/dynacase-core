@@ -392,37 +392,53 @@ function opalterrow(tid,by) {
 }
 
 function alterfieldset(tid,co,cot,by) {
-  if (!isNetscape) return; // not nice on IE
-  var c1=getAltern(co,cot,240);
-  var c2=getAltern(co,cot,250);
-  var c=[c1,c2];
-  var ci=0;
-  var t=document.getElementById(tid);
-  var tds;
-  if (t) {
-    var ttr=getFieldSets(t);//t.getElementsByTagName('fieldset');  
-    if (by) by2=2*by;
-    for (var i=0;i<ttr.length;i++) {
-      if (ttr[i].className=='frame') {
-	if (!ttr[i].style.backgroundColor) {
-	  if (!by) ttr[i].style.backgroundColor=c[(ci%2)];
-	  else ttr[i].style.backgroundColor=c[parseInt((ci % by2)/by)];
+	if (!isNetscape) return; // not nice on IE
+	var c1=getAltern(co,cot,240);
+	var c2=getAltern(co,cot,250);
+	var c=[c1,c2];
+	var ci=0;
+	var t=document.getElementById(tid);
+	var tds;
+	var field;
+	if (t) {
+		var ttr=getFieldSets(t);//t.getElementsByTagName('fieldset');  
+		if (by) by2=2*by;
+		for (var i=0;i<ttr.length;i++) {
+			if (ttr[i].className=='frame') {
+				field=null;
+				if (ttr[i].tagName.toLowerCase() == 'fieldset') {
+					field=ttr[i];
+				} else {
+					var dcs=ttr[i].getElementsByTagName('div');
+					for (var j=0;j<dcs.length;j++) {
+						if (dcs[j].className=='content') {
+							field=dcs[j];
+						}
+					}
+				}
+				if (field) {
+					if (!field.style.backgroundColor) {
+						if (!by) field.style.backgroundColor=c[(ci%2)];
+						else field.style.backgroundColor=c[parseInt((ci % by2)/by)];
+					}
+					tds=field.getElementsByTagName('td');
+					//      alert(tds.lenght);
+					for (var j=0;j<tds.length;j++) {
+						if (!tds[j].style.backgroundColor) {
+							//if (!by) tds[j].style.backgroundColor=c[(ci%2)];
+							//else tds[j].style.backgroundColor=c[parseInt((ci % by2)/by)]; 
+							tds[j].style.backgroundColor='transparent';
+
+						}
+					}
+					ci++;
+				}
+			}
+		}
 	}
-	tds=ttr[i].getElementsByTagName('td');
-	//      alert(tds.lenght);
-	for (var j=0;j<tds.length;j++) {
-	  if (!tds[j].style.backgroundColor) {
-	    //if (!by) tds[j].style.backgroundColor=c[(ci%2)];
-	    //else tds[j].style.backgroundColor=c[parseInt((ci % by2)/by)]; 
-	    tds[j].style.backgroundColor='transparent';
-	    
-	  }
-	}
-	ci++;
-      }
-    }
-  }
 }
+
+
 
 function addBookmark(url,title) {
        if ( isNetscape ){
