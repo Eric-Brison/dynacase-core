@@ -475,6 +475,7 @@ input[type="image"] {
 
 .document div.content {
     background-color: white !important;
+    -moz-border-radius: 0px;
 }
 .document input,.document select,.document textarea,.document file,
 .freedom input {
