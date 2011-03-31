@@ -68,11 +68,16 @@ function hideUrlFromSearch() {
 
 	var idiv=document.getElementById('divdoc');
 	var ifr=document.getElementById('detaildoc');
-	var ds=window.parent.document.getElementById('dsearch');
+	var dr=document.getElementById('searchresults');
 
 	ifr.src='';
 	idiv.style.display='none';
-	if (ds) ds.style.display='';
+	
+	
+	var lt=dr.getElementsByTagName('div');
+	for (var i=0;i<lt.length;i++)  {
+		if (lt[i].className=='selectedresult result') lt[i].className='result';
+	}
 	
 }
 

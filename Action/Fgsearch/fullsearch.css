@@ -20,7 +20,7 @@ div.hblock b { font-weight:bold;  font-size:110%; color:[COLOR_B0]; }
 #searchbottom  { width:95%; margin:0 0 0 0; padding:0; }
 #searchtop { margin:0;  padding:0; }
 
-#searchbottom, #searchtop { margin:0 ; padding-left:10px; background-color:[COLOR_C6]; border-top:1px solid [COLOR_B0]; border-bottom:1px solid [COLOR_B0]; }
+#searchbottom, #searchtop { margin:0 ; padding-left:10px; background-color:[COLOR_B6]; border-top:1px solid [COLOR_B0]; border-bottom:1px solid [COLOR_B0]; }
 #searchtop b { font-size:120%; font-weight:bold; }
 #searchtop .count {  }
 #searchtop .families, #searchbottom .families { padding:0 10px 0 10px; font-size:80%; font-style:italic; }
@@ -65,7 +65,7 @@ div.result:hover  b { color :[COLOR_A0]; }
 div.result:hover  img { opacity:1 }
 
 /* selected result */
-div.selectedresult { background-color:[COLOR_C5]; border-color:[COLOR_A7]; }
+div.selectedresult { background-color:[COLOR_B5]; border-color:[COLOR_A7]; }
 div.selectedresult  div.number { color :[COLOR_WHITE]; }
 div.selectedresult  span.title { color :[COLOR_BLACK]; }
 div.selectedresult div.inforesult { color :[COLOR_A0]; }
@@ -88,7 +88,7 @@ div.selectedresult  img { opacity:1 }
 }
 #closeaide, #divdoc > p { padding:2px; margin:0; }
 #closeaide, #divdoc > p {
-    background-color:[COLOR_C6];
+    background-color:[COLOR_B6];
 }
 #closeaide a, #divdoc > p a {
     border-right : 1px solid [COLOR_A2];

@@ -146,7 +146,7 @@ FIELDSET.frame table td, div.frame table td {
 div.frame {
      border:0px;
      padding:0px;
-     margin:10px 0 0 20px;
+     margin:0px 10px 10px 10px;
  }
  
   div.frame .legend { 
@@ -158,7 +158,6 @@ div.frame {
 div.frame .legend:hover { background-color:[COLOR_A9]; }
 
  div.frame .content {
-     margin-top:-0.7em;
      border-style:solid solid solid solid;
      border-color:[COLOR_A6] [COLOR_A6] [COLOR_A6] [COLOR_A6];
      border-width:1px 1px 1px 1px;
