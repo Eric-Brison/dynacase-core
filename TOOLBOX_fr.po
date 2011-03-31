@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-29 09:31+0200\n"
-"PO-Revision-Date: 2011-03-25 18:50+0100\n"
+"POT-Creation-Date: 2011-03-31 11:33+0200\n"
+"PO-Revision-Date: 2011-03-31 11:34+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -3751,6 +3751,12 @@ msgstr "Cr&eacute;ation d'application"
 msgid "titlemodify"
 msgstr "Modification de l'application"
 
+msgid "param Changed"
+msgstr "Modifié"
+
+msgid "param not changed"
+msgstr "Inchangé"
+
 msgid "err_mod_parameter"
 msgstr "Impossible de modifier le param&egrave;tre"
 
@@ -6113,9 +6119,6 @@ msgstr "Sélectionnez un style"
 
 msgid "style parameters list"
 msgstr "Liste des paramètres style"
-
-msgid "param Changed"
-msgstr "Modifié"
 
 msgid "application parameters list"
 msgstr "Liste des paramètres applicatif"

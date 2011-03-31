@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-29 09:31+0200\n"
+"POT-Creation-Date: 2011-03-31 11:33+0200\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -3913,6 +3913,12 @@ msgstr "Add Application"
 msgid "titlemodify"
 msgstr "Modify Application"
 
+msgid "param Changed"
+msgstr ""
+
+msgid "param not changed"
+msgstr ""
+
 #, fuzzy
 msgid "err_mod_parameter"
 msgstr "Can't modify parameter"
@@ -6550,9 +6556,6 @@ msgstr "Modify"
 #, fuzzy
 msgid "style parameters list"
 msgstr "Add parameter"
-
-msgid "param Changed"
-msgstr ""
 
 #, fuzzy
 msgid "application parameters list"
