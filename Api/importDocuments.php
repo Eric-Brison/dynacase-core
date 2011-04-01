@@ -26,6 +26,11 @@ $usage->addOption("reinitattr","reset attribute before import family update",arr
 $usage->addOption("to","email address to send report");
 $usage->verify();
 
+$filename=$action->getArgument("file");
+if (! file_exists($filename)) {
+    $action->ExitError(sprintf(_("import file %s not found"), $filename));
+}
+
 
 $to = $action->getArgument("to");
 // mode HTML

@@ -55,12 +55,13 @@ class apiUsage
             }
         }
         $allArgs=array_merge($this->needArgs, $this->optArgs);
-        foreach ($this->allArgs as $arg) {
-            if ($arg["restriction"]) {
+        foreach ($allArgs as $arg) {
+            $value=$action->getArgument($arg["name"]);
+            if ($value && $arg["restriction"]) {
                 if (! in_array($value, $arg["restriction"])) {
     
-                $error=sprintf("argument '%s' must be one of these values\n", $arg["name"],
-                                  implode(",",$arg["restriction"]));
+                $error=sprintf("argument '%s' must be one of these values : %s\n", $arg["name"],
+                                  implode(", ",$arg["restriction"]));
                 $error.=$this->getUsage();
                 $action->exitError($error);
                 }
