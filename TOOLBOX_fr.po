@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-31 11:33+0200\n"
-"PO-Revision-Date: 2011-03-31 11:34+0200\n"
+"POT-Creation-Date: 2011-04-01 10:56+0200\n"
+"PO-Revision-Date: 2011-04-01 10:59+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -550,13 +550,9 @@ msgstr "ne peut créer %s : %s\n"
 msgid "vault %s created.\n"
 msgstr "coffre %s créé.\n"
 
-#, fuzzy, c-format
+#, c-format
 msgid "vault already created %s: aborted\n"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"coffre déjà crée %s: abandon\n"
-"#-#-#-#-#  VAULT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"coffre déjà créé %s : abandon\n"
+msgstr "coffre déjà crée %s: abandon\n"
 
 #, c-format
 msgid "ERROR %s\n"
@@ -660,13 +656,8 @@ msgstr "révision"
 msgid "owner"
 msgstr "identifiant propriétaire"
 
-#, fuzzy
 msgid "short_name"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"nom court\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Nom abr&eacute;g&eacute;"
+msgstr "nom abrégé"
 
 msgid "need to select workflow"
 msgstr "le cycle doit être sélectionné"
@@ -1020,8 +1011,11 @@ msgstr ""
 "nombre d'heures : durée pendant lequel un minuteur peut être activé lorsque "
 "son heure à sonné"
 
-msgid "Documents management"
-msgstr "Gestion documentaire"
+msgid "Docs admin"
+msgstr "Docs admin"
+
+msgid "Documents administration"
+msgstr "Administration des documents"
 
 msgid "Access Families Management"
 msgstr "Accès à la gestion des familles"
@@ -1029,13 +1023,8 @@ msgstr "Accès à la gestion des familles"
 msgid "Access Batch Management"
 msgstr "Accès à la gestion par des lots"
 
-#, fuzzy
 msgid "Access To My Own account"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"Accès à mon compte\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Accès à mon propre compte"
+msgstr "Accès à mon compte"
 
 msgid "Access To Read Only"
 msgstr "Accès en lecture seule"
@@ -7883,8 +7872,8 @@ msgid "control :: user identificator is null"
 msgstr "control :: identifiant de l'utilisateur est vide"
 
 #, c-format
-msgid "template file %s not found"
-msgstr ""
+msgid "template file (layout [%s]) not found"
+msgstr "Fichier modèle (zone [%s]) non trouvé"
 
 #, c-format
 msgid "unknow set for attribute %s %s"
@@ -8742,6 +8731,9 @@ msgstr "%s non présent dans %s"
 #, c-format
 msgid "error ::moveDocument %s %s"
 msgstr "erreur ::moveDocument %s %s"
+
+#~ msgid "Documents management"
+#~ msgstr "Gestion documentaire"
 
 #, fuzzy
 #~ msgid "View %d next results"

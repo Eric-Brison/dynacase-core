@@ -9,7 +9,7 @@
 
 <td class="und" >
   <select  class="cond" name="_se_attrids[]"  onchange="filterfuncz(this)">
-  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" value="[attrid]">[attrname]</option>
+  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" [attrdisabled] value="[attrid]">[attrname]</option>
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">
@@ -66,7 +66,7 @@
 <table id="conditions" border=0 class="conditions">
 <thead>
 <tr>
-<td><div class="famicon"><img needresize="1" src="[famicon]" height="[SIZE_IMG-SMALL]"></div></td>
+<td><div class="famicon"><img needresize="1" src="[famicon]" width="[SIZE_IMG-SMALL]"></div></td>
 <td><div class="famselect" id="famselection" >
 
 <div class="select"><select onchange="changeDetailForm(this.options[this.selectedIndex].value)" class="little"   name="famid" >  
