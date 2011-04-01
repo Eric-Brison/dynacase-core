@@ -3740,6 +3740,12 @@ msgstr "Cr&eacute;ation d'application"
 msgid "titlemodify"
 msgstr "Modification de l'application"
 
+msgid "param Changed"
+msgstr "Modifié"
+
+msgid "param not changed"
+msgstr "Inchangé"
+
 msgid "err_mod_parameter"
 msgstr "Impossible de modifier le param&egrave;tre"
 
@@ -6102,9 +6108,6 @@ msgstr "Sélectionnez un style"
 
 msgid "style parameters list"
 msgstr "Liste des paramètres style"
-
-msgid "param Changed"
-msgstr "Modifié"
 
 msgid "application parameters list"
 msgstr "Liste des paramètres applicatif"

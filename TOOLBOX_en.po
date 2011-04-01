@@ -3915,6 +3915,12 @@ msgstr "Add Application"
 msgid "titlemodify"
 msgstr "Modify Application"
 
+msgid "param Changed"
+msgstr ""
+
+msgid "param not changed"
+msgstr ""
+
 #, fuzzy
 msgid "err_mod_parameter"
 msgstr "Can't modify parameter"
@@ -6552,9 +6558,6 @@ msgstr "Modify"
 #, fuzzy
 msgid "style parameters list"
 msgstr "Add parameter"
-
-msgid "param Changed"
-msgstr ""
 
 #, fuzzy
 msgid "application parameters list"
