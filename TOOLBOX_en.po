@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-28 12:43+0200\n"
+"POT-Creation-Date: 2011-03-31 15:50+0200\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -6976,6 +6976,9 @@ msgstr ""
 msgid "Open in new window"
 msgstr ""
 
+msgid "searchdate prefix"
+msgstr "at "
+
 msgid "warning_name"
 msgstr "Your name is required"
 
@@ -8391,7 +8394,7 @@ msgid "control :: user identificator is null"
 msgstr ""
 
 #, c-format
-msgid "template file %s not found"
+msgid "template file (layout [%s]) not found"
 msgstr ""
 
 #, c-format
@@ -9285,9 +9288,6 @@ msgstr ""
 
 #~ msgid "familie seearch result"
 #~ msgstr "limit to family"
-
-#~ msgid "searchdate prefix"
-#~ msgstr "at "
 
 #~ msgid "One document <b>%d</b>  Results for <b>%s</b>%s"
 #~ msgstr "One document found for \"<b>%s</b>\"%s"

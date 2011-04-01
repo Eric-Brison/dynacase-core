@@ -30,6 +30,11 @@ pushd "$wpub/Images" > /dev/null
 ln -sf ../*/Images/* .
 popd > /dev/null
 
+rm $wpub/img-cache/*png
+rm $wpub/img-cache/*gif
+rm $wpub/img-cache/*xml
+rm $wpub/img-cache/*src
+
 pushd "$wpub/Docs" > /dev/null
 ln -sf ../*/Docs/* .
 popd > /dev/null

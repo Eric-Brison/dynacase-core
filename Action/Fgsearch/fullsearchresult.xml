@@ -3,7 +3,7 @@
 [IF displayTopBar]
 <div id="searchtop">
     <div class="bresume">[resulttext] [IF notthenend]<span id="nextresultbuttontop"><a onclick="sendNextSearch()">[theFollowingText]</a>[ENDIF notthenend]</span></div>
-</div>[ENDIF displayTopBar]
+ <div class="date">([TEXT:searchdate prefix][searchdate])</div></div>[ENDIF displayTopBar]
 <div id="results" >
   
   <a name="page[page]" style="visibility:hidden"></a>
@@ -72,6 +72,7 @@ if (window.parent && window.parent != window) {
     if (targetBB) targetBB.style.display="none";
     if (targetBT) targetBT.style.display="none";
     [ENDIF notthenend]
+    window.parent.resizeiframe();
 }
 </script>
 </body></html>

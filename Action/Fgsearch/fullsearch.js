@@ -49,30 +49,13 @@ function viewUrlFromSearch(event, source, url) {
 
 		var idiv=document.getElementById('divdoc');
 		var ifr=document.getElementById('detaildoc');
-		var dr=document.getElementById('dresult');
-		var ds=window.parent.document.getElementById('dsearch');
-		var fe=document.getElementById('fedit');
-
-	    var fw=getFrameWidth();
+		var dr=document.getElementById('searchresults');
+		
 	    
-
-	    var lt=source.getElementsByTagName('table');
-	    var result=lt[0];
-
-	    var x=AnchorPosition_getPageOffsetLeft(source);
-	    var w=getObjectWidth(result);
-	    //console.log(x,w);
 		ifr.src=url;
 		idiv.style.display='';
-		//idiv.style.left=(x + w)+'px';
-		//idiv.style.width=(fw -(x + w +40))+'px';
-		// dr.style.display='none';
-		//dr.style.opacity='0.5';
-		//fe.style.opacity='0.5';
-		//fe.className='dark';
-		//if (ds) ds.style.display='none';
-		//source.className='selectedresult';
-	    lt=dr.getElementsByTagName('div');
+		source.className='selectedresult result';
+	    var lt=dr.getElementsByTagName('div');
 		for (var i=0;i<lt.length;i++)  {
 			if (lt[i].className=='selectedresult result') lt[i].className='result';
 		}
@@ -85,11 +68,16 @@ function hideUrlFromSearch() {
 
 	var idiv=document.getElementById('divdoc');
 	var ifr=document.getElementById('detaildoc');
-	var ds=window.parent.document.getElementById('dsearch');
+	var dr=document.getElementById('searchresults');
 
 	ifr.src='';
 	idiv.style.display='none';
-	if (ds) ds.style.display='';
+	
+	
+	var lt=dr.getElementsByTagName('div');
+	for (var i=0;i<lt.length;i++)  {
+		if (lt[i].className=='selectedresult result') lt[i].className='result';
+	}
 	
 }
 

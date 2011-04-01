@@ -133,7 +133,7 @@ input[disabled], input[disabled="disabled"],input.disabled,
 textarea[disabled],
 select[disabled], select.disabled, select[disabled="disabled"] {
   color:[input-text-disabled-color];
-  background-color:[input-background-disabled-color] !important;
+  background-color:[input-background-disabled-color];
 }
 TEXTAREA {
   border:inset 1px [input-text-normal-color];
@@ -201,8 +201,11 @@ input[type="image"] {
     padding: 10px;
 }
 
-.document legend {
+.document legend, .document div.legend {
     font-style: italic;
+}
+.document div.legend {
+   /* margin-top:-1.5em;	*/
 }
 
 .document legend {
@@ -250,7 +253,7 @@ input[type="image"] {
     border-width: 1px ;
     -moz-border-radius: 0px;
     margin-bottom: 10px;
-    padding: 10px 5px 5px 5px;
+    padding: 0px 5px 5px 5px;
 }
 
 .document .FREEDOMLabel {
@@ -462,8 +465,19 @@ input[type="image"] {
 .document fieldset {
     background-color: white !important;
     border-color:  #B5B8C8;
+    -moz-border-radius: 0px;
 }
 
+.document div.frame {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+}
+
+.document div.frame div.content {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+    margin-top:-0.7em; 
+}
 .document input,.document select,.document textarea,.document file,
 .freedom input {
     border-color: #B5B8C8;

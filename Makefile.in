@@ -49,8 +49,6 @@ $(pubdir)/wcontrol.xml: wcontrol.xml
 	cp $< $@
 $(pubdir)/.htaccess: htaccess
 	cp $< $@
-$(pubdir)/apropos.html: apropos.html
-	cp $< $@
 
 $(pubdir)/FDLGEN:
 	mkdir -p $@
@@ -102,7 +100,7 @@ $(pubdir)/FREEDOM:
 $(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
 	cp $< $@
 
-publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess $(pubdir)/$(applib) $(pubdir)/img-cache $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron $(pubdir)/apropos.html
+publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess $(pubdir)/$(applib) $(pubdir)/img-cache $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron 
 
 clean:
 	rm -f *.*~ config.* Makefile configure \

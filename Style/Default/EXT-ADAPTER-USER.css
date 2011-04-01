@@ -44,6 +44,17 @@
 	border-color: #B5B8C8;
 }
 
+.document div.frame {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+}
+
+.document div.frame div.content {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+    margin-top:-0.7em; 
+    padding: 5px;
+}
 .document input,.document select,.document textarea,.document file {
 	background-color: #FFFFFF;
 	background: url(../../../lib/ext/resources/images/default/form/text-bg.gif);

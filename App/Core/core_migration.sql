@@ -161,3 +161,8 @@ SELECT pg_temp.addColumnIfNotExists('', 'application', 'tag', 'text');
 -- Add `parsable' column to `style' table
 --
 SELECT pg_temp.addColumnIfNotExists('', 'style', 'parsable', 'char DEFAULT ''N''');
+
+--
+-- Add `tag' column to `application' table
+--
+SELECT pg_temp.addColumnIfNotExists('', 'docutag', 'fixed', 'boolean default false');

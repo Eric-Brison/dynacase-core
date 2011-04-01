@@ -88,6 +88,9 @@ function getSessionValue($name, $def = "")
 
 function getLayoutFile($app, $layfile)
 {
+    if (strstr($layfile,'..')) {
+        return "";
+    }
     if (! strstr($layfile,'.')) $layfile.=".xml";
     $socStyle = Getparam("CORE_SOCSTYLE");
     $style = Getparam("STYLE");

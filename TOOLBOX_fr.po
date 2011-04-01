@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-28 12:43+0200\n"
-"PO-Revision-Date: 2011-03-25 18:50+0100\n"
+"POT-Creation-Date: 2011-03-31 15:50+0200\n"
+"PO-Revision-Date: 2011-03-31 15:51+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -6482,6 +6482,9 @@ msgstr "Fermer l'aide à la recherche"
 msgid "Open in new window"
 msgstr "Ouvrir dans une nouvelle fenêtre"
 
+msgid "searchdate prefix"
+msgstr "exécutée le "
+
 msgid "warning_name"
 msgstr "la saisie de votre nom est obligatoire."
 
@@ -7877,8 +7880,8 @@ msgid "control :: user identificator is null"
 msgstr "control :: identifiant de l'utilisateur est vide"
 
 #, c-format
-msgid "template file %s not found"
-msgstr ""
+msgid "template file (layout [%s]) not found"
+msgstr "Fichier modèle (zone [%s]) non trouvé"
 
 #, c-format
 msgid "unknow set for attribute %s %s"
@@ -8779,6 +8782,3 @@ msgstr "erreur ::moveDocument %s %s"
 
 #~ msgid "familie seearch result"
 #~ msgstr "limité à la famille"
-
-#~ msgid "searchdate prefix"
-#~ msgstr "exécutée le "

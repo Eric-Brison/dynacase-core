@@ -3594,7 +3594,7 @@ create unique index i_docir on doc(initid, revision);";
 
     // double control
     if (! $this->isFixed()) {
-      $err=sprintf("track error revision [%s]".pg_last_error($this->dbid));
+      $err=sprintf("track error revision [%s]", pg_last_error($this->dbid));
       $this->Addcomment($err,HISTO_ERROR,"REVERROR");
       $this->exec_query("commit;");
       return $err;
@@ -5759,7 +5759,7 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay = new Layout($tplfile, $action);
     }
 
-    if (! file_exists($this->lay->file)) return sprintf(_("template file %s not found"),$tplfile);
+    if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->setZone($reg);
        
     $this->lay->set("_readonly",($this->Control('edit')!=""));
