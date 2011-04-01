@@ -55,6 +55,7 @@ class apiUsage
             }
         }
         $allArgs=array_merge($this->needArgs, $this->optArgs);
+        $argsKey=array("api");
         foreach ($allArgs as $arg) {
             $value=$action->getArgument($arg["name"]);
             if ($value && $arg["restriction"]) {
@@ -65,6 +66,14 @@ class apiUsage
                 $error.=$this->getUsage();
                 $action->exitError($error);
                 }
+            }
+            $argsKey[]=$arg["name"];
+        }
+        foreach ($_GET as $k=>$v) {
+            if (! in_array($k, $argsKey)) {
+                $error=sprintf("argument '%s' is not defined\n", $k);
+                $error.=$this->getUsage();
+                $action->exitError($error);
             }
         }
     }
