@@ -31,7 +31,7 @@
       <img src="[appicon]" title="[apptitle]" alt="[apptitle]">
 </div>
 <div id="logo2" style="display:none;position:absolute;top:0px;left:0px;[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE][IFNOT ISIE]opacity:.5;[ENDIF ISIE]z-index:2">
-      <img  src="[IMG:logofreedom.gif]" title="[apptitle]" alt="[apptitle]">
+      <img  src="[IMG:logodynacase.png]" title="[apptitle]" alt="[apptitle]">
 </div>
 </body>
 </html>
