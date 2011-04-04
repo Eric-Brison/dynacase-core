@@ -542,7 +542,9 @@ create sequence SEQ_ID_APPLICATION start 10;
   }
 
   function GetLayoutFile($layname) {
-
+   if (strstr($layname,'..')) {
+        return ""; // not authorized
+    }
     $file= $this->style->GetLayoutFile($layname,"");
     if ($file != "") return $file;
 
