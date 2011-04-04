@@ -85,6 +85,10 @@ function getSessionValue($name, $def="") {
 }
 
 function getLayoutFile($app, $layfile) {
+  if (strstr($layfile,'..')) {
+        return ""; // not authorized
+    }
+
 	$socStyle = Getparam("CORE_SOCSTYLE");
 	if ($socStyle != "") {
 		$root = Getparam("CORE_PUBDIR");
