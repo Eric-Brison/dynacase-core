@@ -634,7 +634,29 @@ create sequence seq_id_users start 10";
     return $uid;
   }
 
- 
+  /**
+   * return all user members (recursive)
+   * @return array of user values ["login"=>, "id"=>, "fid"=>,...)
+   */
+  public function getUserMembers() {
+      $tr = array();
+
+      $g=new Group($this->dbaccess);
+      $lg=$g->getChildsGroupId($this->id);
+      $lg[]=$this->id;
+      $cond=getSqlCond($lg,"idgroup",true);
+      if (! $cond) $cond="true";
+
+      $condname="";
+       
+      $sort='lastname';
+      $sql=sprintf("SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and isgroup != 'Y' order by %s",
+                     $sort, $cond,$condname,$sort);
+
+      $err=simpleQuery($this->dbaccess,$sql,$result);
+      if ($err!="") return $err;
+      return $result;
+  }
   
 
   // only use for group
