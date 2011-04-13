@@ -119,7 +119,7 @@ function AttrToPhp($dbaccess, $tdoc) {
       switch (strtolower($v->type)) {
       case "menu": // menu
 	if (substr($v->link,0,2)=="::") {
-	  if (preg_match("/::([^\(]+)\(([^\)]*)\)/",$v->link, $reg)) {
+	  if (preg_match('/::([^\(]+)\(([^\)]*)\)/',$v->link, $reg)) {
 	    /*
 	    $iattr = explode(",",$reg[2]);
 	    $iattr2 = $iattr;
@@ -140,7 +140,7 @@ function AttrToPhp($dbaccess, $tdoc) {
 					     "link"=>str_replace("\"","\\\"",$v->link),
 					     "visibility"=>$v->visibility,
 					     "options"=>str_replace("\"","\\\"",$v->options),
-					     "precond"=>$v->phpfunc);
+					     "precond"=>str_replace("\"","\\\"",$v->phpfunc));
 	break;
       case "tab": 
       case "frame": // frame
@@ -159,13 +159,13 @@ function AttrToPhp($dbaccess, $tdoc) {
 					     "order"=>intval($v->ordered),
 					     "options"=>str_replace("\"","\\\"",$v->options),
 					     "wapplication"=>$v->phpfile,
-					     "waction"=>$v->phpfunc,
-					     "precond"=>$v->phpconstraint);
+					     "waction"=>str_replace("\"","\\\"",$v->phpfunc),
+					     "precond"=>str_replace("\"","\\\"",$v->phpconstraint));
 	break;
 	
       default: // normal
 	
-	if (preg_match("/\[([a-z=0-9]+)\](.*)/",$v->phpfunc, $reg)) {
+	if (preg_match('/\[([a-z=0-9]+)\](.*)/',$v->phpfunc, $reg)) {
 	  $v->phpfunc=$reg[2];
 	  $funcformat=$reg[1];
 	} else {	  
@@ -194,11 +194,11 @@ function AttrToPhp($dbaccess, $tdoc) {
 	$atype=strtolower(trim($atype));
 	// create code for calculated attributes  
 	if (substr($v->phpfunc,0,2)=="::") {
-	  if (preg_match("/::([^\(]+)\(([^\)]*)\)[:]{0,1}(.*)/",$v->phpfunc, $reg)) {
+	  if (preg_match('/::([^\(]+)\(([^\)]*)\)[:]{0,1}(.*)/',$v->phpfunc, $reg)) {
 	    $iattr = explode(",",$reg[2]);
 	    $iattr2 = $iattr;
 	    $tiattr=array();
-	    while(list($ka,$va) = each($iattr))   {
+	    foreach ($iattr as $ka=>$va)   {
 	      $tiattr[]= array("niarg"=>trim($va));
 	      if (($va[0] == "'")||($va[0] == '"')) unset($iattr2[$ka]); // not really attribute
 	      
@@ -239,8 +239,8 @@ function AttrToPhp($dbaccess, $tdoc) {
 				   "frame"=>($v->frameid=="")?"FIELD_HIDDENS":strtolower($v->frameid),
 				   "elink"=>$v->elink,
 				   "phpfile"=>$v->phpfile,
-				   "phpfunc"=>str_replace(", |",",  |",$v->phpfunc),
-				   "phpconstraint"=>$v->phpconstraint,
+				   "phpfunc"=>str_replace("\"","\\\"",str_replace(", |",",  |",$v->phpfunc)),
+				   "phpconstraint"=>str_replace("\"","\\\"",$v->phpconstraint),
 				   "usefor"=>$v->usefor);
 	 
 	if (($atype != "array") && ($v->usefor!="Q")) {
@@ -523,7 +523,7 @@ function activateTrigger($dbaccess, $docid) {
 
     //$cdoc = new_Doc($dbacceanss, $docid);
     //  print $cdoc->SqlTrigger();
-    while (list($k,$sqlquery)=each($sqlcmds)) {
+    foreach($sqlcmds as $k=>$sqlquery) {
       if ($sqlquery != "") $msg=$cdoc->exec_query($sqlquery,1);
     }
 }

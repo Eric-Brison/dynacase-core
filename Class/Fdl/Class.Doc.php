@@ -3051,57 +3051,91 @@ create unique index i_docir on doc(initid, revision);";
     $value=$this->ApplyMethod($value,$value);
     
     return $value;
-  } 
-
-  /**
-   * apply a method to a doc 
-   * specified like ::getFoo(10)
-   * @param string $method the method to apply
-   * @param string $def default value if no method
-   * @param int $index index in case of value in row
-   * @param array $bargs first arguments sent before for the method
-   * 
-   * @return string the value
-   */
-  final public function ApplyMethod($method,$def="",$index=-1, $bargs=false) {
-    $value=$def;
-    if (preg_match("/::([^\(]+)\(([^\)]*)\)/",$method, $reg)) {
-      if (method_exists ( $this, $reg[1])) {
-	if (($reg[2] == "")&& (!$bargs)) {
-	  // without argument
-	  $value = call_user_func(array($this, $reg[1]));
-	} else {
-	  // with argument
-	  $args = explode(",",$reg[2]);
-	  if ($bargs && is_array($bargs)) $args=array_merge($bargs,$args);
-	  if ($attrid != "") {
-	    $this->AddParamRefresh($reg[2],$attrid);
-	  }
-	      
-	  foreach($args as $k=>$v) { 
-	    if ($v != " ") $v=trim($v);
-	    if ($attr=$this->getAttribute($v)) {
-	      if ($attr->inArray())   $args[$k]=$this->GetTValue($v,"",$index);
-	      else $args[$k]=$this->GetValue($v);
-	    } else {
-	      if (($v[0]=="'")|| ($v[0] == '"')) {
-		$lc=substr($v,-1);
-		if (($lc == "'") || ($lc == '"')) $v= substr($v,1,-1);
-		else $v=substr($v,1);
-	      }
-	      $args[$k]=$v; // not an attribute just text
-	    }
-	    //   $args[$k]=$this->GetTValue($args[$k],$def,$index);
-	  }	  	  
-	  $value = call_user_func_array(array($this, $reg[1]), $args);
-	}
-      } else {
-	addWarningMsg(sprintf(_("Method [%s] not exists"),$reg[1]));
-      }
-	
-    }
-    return $value;
   }
+    
+    /**
+     * apply a method to a doc 
+     * specified like ::getFoo(10)
+     * @param string $method the method to apply
+     * @param string $def default value if no method
+     * @param int $index index in case of value in row
+     * @param array $bargs first arguments sent before for the method
+     * 
+     * @return string the value
+     */
+    final public function ApplyMethod($method, $def = "", $index = -1, $bargs = false)
+    {
+        $value = $def;
+        if (preg_match("/::([^\(]+)\(([^\)]*)\)/", $method, $reg)) {
+            if (method_exists($this, $reg[1])) {
+                if (($reg[2] == "") && (!$bargs)) {
+                    // without argument
+                    $value = call_user_func(array(
+                        $this,
+                        $reg[1]
+                    ));
+                } else {
+                    // with argument
+                    //$args = explode(",", $reg[2]);
+                    $sargs=$reg[2];
+                    $args=array();
+                    $ak=0;
+                    $bq='';
+                    for($i = 0; $i < strlen($sargs); $i++) {
+                        $c = $sargs[$i];
+                        
+                        if ($c == '"')  {
+                            if ($bq == $c) $bq = '';
+                            else if (($bq == '') && (strlen(trim($args[$ak])) == 0)) {
+                                $bq = $c;
+                                $args[$ak] = "'";
+                            } else
+                                $args[$ak] .= $c;
+                        } elseif ($c == ',') {
+                            if (!$bq) {
+                                $args[$ak] .= '';
+                                $ak++;
+                            } else {
+                                $args[$ak] .= $c;
+                            }
+                        } else {
+                            $args[$ak] .= $c;
+                        }
+                    }
+                    
+                    if ($bargs && is_array($bargs)) $args = array_merge($bargs, $args);
+                    if ($attrid != "") {
+                        $this->AddParamRefresh($reg[2], $attrid);
+                    }
+                    
+                    foreach ( $args as $k => $v ) {
+                        if ($v != " ") $v = trim($v);
+                        if ($attr = $this->getAttribute($v)) {
+                            if ($attr->inArray()) $args[$k] = $this->GetTValue($v, "", $index);
+                            else $args[$k] = $this->GetValue($v);
+                        } else {
+                            if (($v[0] == "'") || ($v[0] == '"')) {
+                                $lc = substr($v, -1);
+                                if (($lc == "'") || ($lc == '"')) $v = substr($v, 1, -1);
+                                else $v = substr($v, 1);
+                            }
+                            $args[$k] = $v; // not an attribute just text
+                        }
+                    
+     //   $args[$k]=$this->GetTValue($args[$k],$def,$index);
+                    }
+                    $value = call_user_func_array(array(
+                        $this,
+                        $reg[1]
+                    ), $args);
+                }
+            } else {
+                addWarningMsg(sprintf(_("Method [%s] not exists"), $reg[1]));
+            }
+        
+        }
+        return $value;
+    }
  
   /**
    * verify attribute constraint
