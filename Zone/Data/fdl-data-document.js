@@ -25,7 +25,7 @@ if (d && d.isAlive()) {
 
 Fdl.Document = function(config){
     if (config) {
-	var data;
+	var data=null;
 	if (config.context) {
 		this.context=config.context;
 	}
@@ -75,8 +75,10 @@ Fdl.Document.prototype = {
 		}
 	    } else {
 		this.context.setErrorMessage(data.error);
+		return false;
 	    }
 	}
+	return false;
     },
     toString: function() {
 	return 'Fdl.Document';
@@ -167,10 +169,11 @@ Fdl.Document.prototype = {
 
     		if (oas.length > 0 && this.getValue(oas[0].id).length > 0) {
     			// first find max rows
-    			for (var i=0;i<this.getValue(oas[0].id).length;i++) {
+    			var i=0;
+    			for ( i=0;i<this.getValue(oas[0].id).length;i++) {
     				rv[i]=new Object();
     			}
-    			for (var i=0; i< oas.length; i++) {
+    			for ( i=0; i< oas.length; i++) {
     				vc=this.getValue(oas[i].id);
     				for (var ic=0;ic<vc.length;ic++) {	    
     					rv[ic][oas[i].id]=vc[ic];
@@ -189,15 +192,16 @@ Fdl.Document.prototype = {
      */
     getDisplayValue: function(id,config) {
     	var oa=this.getAttribute(id);
+    	var i=0,vs=null,tv=[];
     	if (oa) {
     		if (oa.toString() == 'Fdl.RelationAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
     		if (oa.toString() == 'Fdl.ThesaurusAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
     		if (oa.toString() == 'Fdl.EnumAttribute') {
     			if (oa.inArray() || oa.isMultiple()) {
-    				var tv=[];
-    				var vs=this._data.values[id];
+    				 tv=[];
+    				 vs=this._data.values[id];
     				if (vs) {
-    				for (var i=0;i<vs.length;i++) {   
+    				for (i=0;i<vs.length;i++) {   
     					tv.push(oa.getEnumLabel({key:vs[i]}));
     				}
     				}
@@ -208,10 +212,10 @@ Fdl.Document.prototype = {
     		}
     		if (oa.toString() == 'Fdl.FileAttribute') {
     			if (oa.inArray()) {
-    				var tv=[];
-    				var vs=this._data.values[id];
+    				 tv=[];
+    				 vs=this._data.values[id];
     				if (vs) {
-    				for (var i=0;i<vs.length;i++) {   					
+    				for (i=0;i<vs.length;i++) {   					
     					if (config && config.url) {
     						if (config.dav) {
         						tv.push(oa.getDavUrl(vs[i],this.id));
@@ -319,7 +323,7 @@ Fdl.Document.prototype = {
     getAttribute: function(id) {
     	if (! this._attributes) this.getFamilyAttributes();
     	if (! this._attributes) return null;
-    	if (this._attributes && this._attributes[id]) return this._attributes[id];
+    	if (typeof this._attributes == 'object' && this._attributes[id]) return this._attributes[id];
     	return null;
     },
     /**
@@ -435,62 +439,61 @@ Fdl.Document.prototype = {
 
 
 Fdl.Document.prototype.completeAttributes = function(attrs) {
-    if (attrs) {
-	var o;
-	this._attributes=new Object();
-	for (var name in attrs) {
-	    switch (attrs[name].type) {
-	    case 'text':
-	    case 'longtext':
-	    case 'htmltext':
-		this._attributes[attrs[name].id]=new Fdl.TextAttribute(attrs[name]);
-		break;
-	    case 'int':
-	    case 'double':
-	    case 'money':
-		this._attributes[attrs[name].id]=new Fdl.NumericAttribute(attrs[name]);
-		break;
-	    case 'date':
-	    case 'time':
-	    case 'timestamp':
-		this._attributes[attrs[name].id]=new Fdl.DateAttribute(attrs[name]);
-		break;
-	    case 'docid':
-		this._attributes[attrs[name].id]=new Fdl.RelationAttribute(attrs[name]);
-		break;
-	    case 'color':
-		this._attributes[attrs[name].id]=new Fdl.ColorAttribute(attrs[name]);
-		break;
-	    case 'enum':
-		this._attributes[attrs[name].id]=new Fdl.EnumAttribute(attrs[name]);
-		break;
-	    case 'thesaurus':
-		this._attributes[attrs[name].id]=new Fdl.ThesaurusAttribute(attrs[name]);
-		break;
-	    case 'file':
-	    case 'image':
-		this._attributes[attrs[name].id]=new Fdl.FileAttribute(attrs[name]);
-		break;
-	    case 'tab':
-		this._attributes[attrs[name].id]=new Fdl.TabAttribute(attrs[name]);
-		break;
-	    case 'frame':
-		this._attributes[attrs[name].id]=new Fdl.FrameAttribute(attrs[name]);
-		break;
-	    case 'array':
-		this._attributes[attrs[name].id]=new Fdl.ArrayAttribute(attrs[name]);
-		break;
-	    case 'menu':
-	    case 'action':
-		this._attributes[attrs[name].id]=new Fdl.MenuAttribute(attrs[name]);
-		break;
-	    default:
-		this._attributes[attrs[name].id]=new Fdl.Attribute(attrs[name]);
-	    }
-	    this._attributes[attrs[name].id]._family=this;
-	}
+	if (attrs) {
+		this._attributes=new Object();
+		for (var name in attrs) {
+			switch (attrs[name].type) {
+			case 'text':
+			case 'longtext':
+			case 'htmltext':
+				this._attributes[attrs[name].id]=new Fdl.TextAttribute(attrs[name]);
+				break;
+			case 'int':
+			case 'double':
+			case 'money':
+				this._attributes[attrs[name].id]=new Fdl.NumericAttribute(attrs[name]);
+				break;
+			case 'date':
+			case 'time':
+			case 'timestamp':
+				this._attributes[attrs[name].id]=new Fdl.DateAttribute(attrs[name]);
+				break;
+			case 'docid':
+				this._attributes[attrs[name].id]=new Fdl.RelationAttribute(attrs[name]);
+				break;
+			case 'color':
+				this._attributes[attrs[name].id]=new Fdl.ColorAttribute(attrs[name]);
+				break;
+			case 'enum':
+				this._attributes[attrs[name].id]=new Fdl.EnumAttribute(attrs[name]);
+				break;
+			case 'thesaurus':
+				this._attributes[attrs[name].id]=new Fdl.ThesaurusAttribute(attrs[name]);
+				break;
+			case 'file':
+			case 'image':
+				this._attributes[attrs[name].id]=new Fdl.FileAttribute(attrs[name]);
+				break;
+			case 'tab':
+				this._attributes[attrs[name].id]=new Fdl.TabAttribute(attrs[name]);
+				break;
+			case 'frame':
+				this._attributes[attrs[name].id]=new Fdl.FrameAttribute(attrs[name]);
+				break;
+			case 'array':
+				this._attributes[attrs[name].id]=new Fdl.ArrayAttribute(attrs[name]);
+				break;
+			case 'menu':
+			case 'action':
+				this._attributes[attrs[name].id]=new Fdl.MenuAttribute(attrs[name]);
+				break;
+			default:
+				this._attributes[attrs[name].id]=new Fdl.Attribute(attrs[name]);
+			}
+			this._attributes[attrs[name].id]._family=this;
+		}
 
-    }
+	}
 };
 /**
  * convert document object to json string
@@ -582,40 +585,41 @@ function mycallback(doc) {
  * @return {Boolean} true if saved is done. If false error can be retrieve with getLastErrorMessage()
  */
 Fdl.Document.prototype.savefromform = function(config) {
-    if (config && config.form!==null) {
-	if (config.form.nodeName != 'FORM' && config.form.nodeName != 'html:form') {	  
-	    this.context.setErrorMessage('not a form object');
-	    return false;
-	}
-	var f=config.form;
-	var oriaction=f.action;
-	var oritarget=f.target;
-	var t=null;
-	if (oritarget) t=document.getElementById(f.target);
+	if (config && config.form!==null) {
+		if (config.form.nodeName != 'FORM' && config.form.nodeName != 'html:form') {	  
+			this.context.setErrorMessage('not a form object');
+			return false;
+		}
+		var f=config.form;
+		var oriaction=f.action;
+		var oritarget=f.target;
+		var t=null;
+		if (oritarget) t=document.getElementById(f.target);
 
-	if (t && t.contentDocument.body.firstChild) {
-	    t.contentDocument.body.innerHTML='';	  
-	}
-	var callid=Fdl._waitSave(this, config);
-	f.action=this.context.url+'?app=DATA&action=DOCUMENT&method=saveform&id='+this.id+'&callid='+callid;
-	if (config.autounlock) f.action += '&autounlock=true';
+		if (t && t.contentDocument.body.firstChild) {
+			t.contentDocument.body.innerHTML='';	  
+		}
+		var callid=Fdl._waitSave(this, config);
+		f.action=this.context.url+'?app=DATA&action=DOCUMENT&method=saveform&id='+this.id+'&callid='+callid;
+		if (config.autounlock) f.action += '&autounlock=true';
 
-	f.target=Fdl.getHiddenTarget();
-	f.submit();
-	if (t && t.contentDocument.body.firstChild) {
-	    try {
-		var v=eval('('+t.contentDocument.body.innerHTML+')');	  
-		//	  Fdl.print_r(v);
-	    } catch (ex) {
-	    }
-	}
-	//	if (t.contentDocument.body.firstChild) alert(t.contentDocument.body.firstChild.innerHTML);
+		f.target=Fdl.getHiddenTarget();
+		f.submit();
+		if (t && t.contentDocument.body.firstChild) {
+			try {
+				var v=eval('('+t.contentDocument.body.innerHTML+')');	  
+				//	  Fdl.print_r(v);
+			} catch (ex) {
+			}
+		}
+		//	if (t.contentDocument.body.firstChild) alert(t.contentDocument.body.firstChild.innerHTML);
 
-	//	console.log(document.getElementById(f.target));
-	f.action=oriaction;
-	f.target=oritarget;
-	return true;
-    }
+		//	console.log(document.getElementById(f.target));
+		f.action=oriaction;
+		f.target=oritarget;
+		return true;
+	}
+	return false;
 };
 
 

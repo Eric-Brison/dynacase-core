@@ -178,17 +178,17 @@ Fdl.getLastErrorMessage = function() {
 Fdl.retrieveData = function(urldata, parameters, anonymousmode) {
 	var bsend = '';
 	var ANAKEENBOUNDARY = '--------Anakeen www.anakeen.com 2009';
-	var xreq;
+	
 	/*
 	 * if ((!anonymousmode) && ! Fdl.isAuthenticated()) { alert('not
 	 * authenticate'); return null; }
 	 */
-
+	var xreq=null;
 	if (window.XMLHttpRequest) {
-		var xreq = new XMLHttpRequest();
+		 xreq = new XMLHttpRequest();
 	} else if (window.ActiveXObject) {
 		// branch for IE/Windows ActiveX version
-		var xreq = new ActiveXObject("Microsoft.XMLHTTP");
+		 xreq = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	var sync = true;
 
@@ -262,7 +262,7 @@ Fdl.retrieveData = function(urldata, parameters, anonymousmode) {
 Fdl.isConnected = function(config) {
 	if (config && config.reset)
 		this._isConnected = null;
-	if (this._isConnected === null && this.context && this.context.url) {
+	if (this._isConnected === null && (typeof this.context == 'object') && this.context.url) {
 		var data = Fdl.retrieveData( {
 			app : 'DATA',
 			action : 'USER',
@@ -454,8 +454,7 @@ Fdl.json2xml = function(json, node, childs) {
 Fdl.text2xml = function(strXML) {
 	var xmlDoc = null;
 	try {
-		xmlDoc = (document.all) ? new ActiveXObject("Microsoft.XMLDOM")
-				: new DOMParser();
+		xmlDoc = (document.all) ? new ActiveXObject("Microsoft.XMLDOM"): new DOMParser();
 		xmlDoc.async = false;
 	} catch (e) {
 		throw new Error("XML Parser could not be instantiated");

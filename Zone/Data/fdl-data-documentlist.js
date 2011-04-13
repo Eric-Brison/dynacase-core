@@ -22,6 +22,7 @@ Fdl.DocumentList = function(config) {
 		for ( var i in config)
 			this[i] = config[i];
 	}
+	if (this.content) this.length=this.content.length;
 };
 Fdl.DocumentList.prototype = {
 	/**
@@ -42,6 +43,13 @@ Fdl.DocumentList.prototype = {
 	 * @type Object
 	 */
 	info : null,
+
+	/**
+	 * count of document list
+	 * 
+	 * @type Numeric
+	 */
+	length : 0,
 	/**
 	 * Connexion context
 	 * 
@@ -67,12 +75,32 @@ Fdl.DocumentList.prototype = {
 		return out;
 	},
 	/**
+	 * return document at index position
+	 * Fdl.SearchDocument::search()
+	 * 
+	 * @return {Fdl.Document} document 
+	 */
+	getDocument : function(index) {
+		
+			if (typeof this.content[index] == 'object') {
+				return (this.context.getDocument( {
+					data : this.content[index]
+				}));
+			}
+		
+		return null;
+	},
+	/**
 	 * return total count of folder content or search result
 	 * 
 	 * @return {Numeric} number of documents found
 	 */
 	count : function() {
 		return this.totalCount;
+	},
+	
+	toString : function() {
+		return 'Fdl.DocumentList';
 	}
 
 };

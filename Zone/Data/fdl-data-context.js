@@ -39,6 +39,7 @@ Fdl.Context = function(config) {
 Fdl.Context.prototype = {
 		url : '',
 		_isConnected : null,
+		_isAuthenticated : null,
 		_serverTime : null,
 		_documents : new Object(), // cache for latest revision document
 		_fixDocuments : new Object(),// cache for fix revision document
@@ -53,6 +54,8 @@ Fdl.Context.prototype = {
 		autoLoadCatalog:true, 
 		/** default locale 'fr' (french) or 'en' (english) @type {String}*/
 		locale:null, 
+		/** mapping family's document to special js class @type {Object}*/
+		familyMap:null,
 		getPropertiesInformation: function() {
 	if (! this.propertiesInformation) {
 			// not initialised yet i retreive the folder family
@@ -186,7 +189,7 @@ Fdl.Context.prototype.connect = function(config) {
  * @return {Boolean} true if connected
  */
 Fdl.Context.prototype.isConnected = function(config) {
-	if (config && config.reset) this._isConnected = null;
+	if (typeof config == 'object' && config.reset) this._isConnected = null;
 	if (this._isConnected === null && this.url) {
 		var data = this.retrieveData( {
 			app : 'DATA',
@@ -219,9 +222,8 @@ Fdl.Context.prototype.isConnected = function(config) {
  * @return {Boolean} true if authentication succeded
  */
 Fdl.Context.prototype.isAuthenticated = function(config) {
-	if (config && config.reset)
-		this._isAuthenticate = null;
-	if (this._isAuthenticate === null) {
+	if (config && config.reset) this._isAuthenticated = null;
+	if (this._isAuthenticated === null) {
 		var userdata = this.retrieveData( {
 			app : 'DATA',
 			action : 'USER'
@@ -229,7 +231,7 @@ Fdl.Context.prototype.isAuthenticated = function(config) {
 		if (userdata) {
 			if (userdata.error) {
 				this.setErrorMessage(userdata.error);
-				this._isAuthenticate = false;
+				this._isAuthenticated = false;
 			} else {
 				if (!this.user)
 					this.user = new Fdl.User( {
@@ -237,11 +239,11 @@ Fdl.Context.prototype.isAuthenticated = function(config) {
 						context : this
 					});
 				if (this.autoLoadCatalog) this.loadCatalog();
-				this._isAuthenticate = true;
+				this._isAuthenticated = true;
 			}
 		}
 	}
-	return this._isAuthenticate;
+	return this._isAuthenticated;
 };
 
 /**
@@ -274,11 +276,11 @@ Fdl.Context.prototype.setAuthentification = function(config) {
 			method : 'authent'
 		}, config, true);
 		if (userdata.error) {
-			this._isAuthenticate = false;
+			this._isAuthenticated = false;
 			this.setErrorMessage(userdata.error);
 			return null;
 		} else {
-			this._isAuthenticate = true;
+			this._isAuthenticated = true;
 			this.user = new Fdl.User( {
 				data : userdata,
 				context : this
@@ -377,7 +379,7 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 		anonymousmode, otherroot) {
 	var bsend = '';
 	var ANAKEENBOUNDARY = '--------Anakeen www.anakeen.com 2009';
-	var xreq;
+	var xreq=null;
 
 	if (window.XMLHttpRequest) {
 		 xreq = new XMLHttpRequest();
@@ -404,9 +406,7 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 		}
 		xreq.open(method, url, (!sync));
 		if (method) {
-			var params = '';
-			var ispost = false;
-			var name;
+			var name=null;
 			xreq.setRequestHeader("Content-Type",
 							"multipart/form-data; boundary=\""
 									+ ANAKEENBOUNDARY + "\"");
@@ -477,7 +477,7 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 
 /**
  * Send a request to the server
- * @param Object urldata object list of key:value : {a:2,app:MYTEST,action:MYACTION}
+ * @param Object filepath 
  * @param Object parameters other parameters to complte urldata
  * @param Boolean anonymousmode 
  * @param String otherroot to call another file in same domain (it is forbidden to call another server domain) 
@@ -525,6 +525,41 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
 	form.submit();
 	return true;
 };
+
+/**
+ * get a document object
+ * 
+ * @param {object} config
+ *     <p><ul>
+ *          <li><b>familyName</b> family name to map</li>
+ *          <li><b>className</b> class name to map</li>
+ *     </ul></p>
+ *     
+ * @return {Boolean}
+ */
+Fdl.Context.prototype.addFamilyMap = function(config) {
+	if (config.familyName && config.className) {
+		if (this.familyMap == null) this.familyMap={};
+		this.familyMap[config.familyName]=config.className;
+	}
+	return true;
+};
+Fdl.Context.prototype.stringToFunction = function(str) {
+	  var arr = str.split(".");
+
+	  var fn = window;
+	  if (! fn) fn=this;
+	  for (var i = 0, len = arr.length; i < len; i++) {
+	    fn = fn[arr[i]];
+	  }
+
+	  if (typeof fn !== "function") {
+	    throw new Error("function not found");
+	  }
+
+	  return  fn;
+	};
+
 /**
  * get a document object
  * 
@@ -546,6 +581,7 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
  *           want set the document in cache</li>
  *            <li><b>getUserTags</b> Boolean (Optional) set to true if you want user tags also</li>
  *            <li><b>contentStore</b> Boolean (Optional) set to true if you want also retriev content of o a collection. This is possible only for collection. After get you can retrieve content with method getStoredContent of Fdl.collection</li>
+ *            <li><b>contentConfig : </b> {Object}(optional)  Option for content (see Fdl.Collection.getContent() </li>
  *            </ul>
  *            <pre><code>
  		var d = C.getDocument( {
@@ -583,7 +619,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 	var docid = config.id;
 
 	var latest=true;
-	if (config && config.latest === false) latest=false;
+	if (typeof config == 'object' && config.latest === false) latest=false;
 	
 	if (docid && (typeof docid == 'object') && (docid.length==1)) {
 		docid=docid[0];
@@ -612,8 +648,15 @@ Fdl.Context.prototype.getDocument = function(config) {
 	   return null;
    }
 	var wdoc = new Fdl.Document(config);
+	
 	if (! wdoc._data) return null;
-	if ((wdoc.getProperty('defdoctype') == 'D')
+	if (this.familyMap != null && this.familyMap[wdoc.getProperty('fromname')]) {
+		var sname=wdoc.getProperty('fromname');
+		config.data = wdoc._data;
+		
+		var sclass=this.stringToFunction(this.familyMap[sname])
+		wdoc = new sclass(config);
+	}else if ((wdoc.getProperty('defdoctype') == 'D')
 			|| (wdoc.getProperty('defdoctype') == 'S')) {
 		config.data = wdoc._data;
 		wdoc = new Fdl.Collection(config);

@@ -422,9 +422,9 @@ function preDocDelete() {
       if ($this->name) {
 	$dxml=new DomDocument();
 	$famfile=DEFAULT_PUBDIR.sprintf("/families/%s.fam",$this->name);
-	if (! @$dxml->load($famfile)) {	      
-	  $err=sprintf(_("cannot open %s configuration file"),$famfile);
-	  $o->error=$err;
+	if (! @$dxml->load($famfile)) {	  
+	    return null;    
+	  
 	  return $o;
 	} else {
 	  $properties=$dxml->getElementsByTagName('property');
