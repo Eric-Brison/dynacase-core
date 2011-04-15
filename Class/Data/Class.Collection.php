@@ -161,10 +161,9 @@ class Fdl_Collection extends Fdl_Document
      * @param boolean $completeprop
      * @return array of raw documents
      */
-    public function getDocumentList(SearchDoc $s, $onlyvalues = true, $completeprop = false)
+    public function getDocumentList(DocumentList $dl, $onlyvalues = true, $completeprop = false)
     {
-        $s->excludeConfidential();
-        $s->search();
+        $s=$dl->getSearchDocument();
         $out=null;
         $out->info = $s->getSearchInfo();
         $out->slice = $s->slice;
@@ -172,11 +171,12 @@ class Fdl_Collection extends Fdl_Document
         $this->setError($out->info["error"]);
         $tmpdoc = new Fdl_Document();
         $kd = 0;
-        while ( $doc = $s->nextDoc() ) {
+        foreach ($dl as $doc) {
             $tmpdoc->affect($doc);
-            
-            $content[$kd] = $tmpdoc->getDocument($onlyvalues, $completeprop);
-            $kd++;
+            if (! $doc->isConfidential()) {
+                $content[$kd] = $tmpdoc->getDocument($onlyvalues, $completeprop);
+                $kd++;
+            }
         }
         
         $out->totalCount = $s->count();

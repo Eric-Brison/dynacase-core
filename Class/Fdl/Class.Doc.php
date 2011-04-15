@@ -1447,16 +1447,27 @@ create unique index i_docir on doc(initid, revision);";
 		 
     return false;
   }
-  /**
-   * return all the attributes object 
-   * the attribute can be defined in fathers
-   * @return array DocAttribute
-   */
-  final public function GetAttributes()     {     
-    if (!$this->_maskApplied) $this->ApplyMask();
-    reset($this->attributes->attr);
-    return $this->attributes->attr;
-  }
+    /**
+     * return all the attributes object 
+     * the attribute can be defined in fathers
+     * @return array DocAttribute
+     */
+    final public function GetAttributes()
+    {
+        $fromname = ($this->doctype == 'C') ? $this->name : $this->fromname;
+        if ($this->attributes->fromname != $fromname) {
+            // reset when use partial cache
+            $fromid = ($this->doctype == 'C') ? $this->id : $this->fromid;
+            $adocClassName = "ADoc" . $fromid;
+            $classname = "Doc" . $fromid;
+            $GEN = getGen($this->dbaccess);
+            include_once ("FDL$GEN/Class.$classname.php");
+            $this->attributes = new $adocClassName();
+        }
+        if (!$this->_maskApplied) $this->ApplyMask();
+        reset($this->attributes->attr);
+        return $this->attributes->attr;
+    }
 
 
   /**

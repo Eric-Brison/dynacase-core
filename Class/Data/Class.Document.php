@@ -315,9 +315,10 @@ Class Fdl_Document  {
     function getAttributes() {
         $attrs=null;
         if ($this->doc) {
+           
             $props=array();
             $listattr = $this->doc->getAttributes();
-
+           
             foreach($listattr as $k=>$oa) {
                 if ($oa && ($oa->id != 'FIELD_HIDDENS')&& ($oa->usefor != "Q")) {
                     foreach ($oa as $aid=>$v) {
@@ -375,7 +376,8 @@ Class Fdl_Document  {
         if ($usertags) {
             $out["userTags"]=$this->getUserTags();
         }
-        if (! $onlyvalues) {
+        
+        if (! $onlyvalues) {            
             $out["attributes"]=$this->getAttributes();
         }
         return $out;
