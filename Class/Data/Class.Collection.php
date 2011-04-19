@@ -18,42 +18,74 @@ include_once ("DATA/Lib.FullSearch.php");
  */
 class Fdl_Collection extends Fdl_Document
 {
+    private $completeProperties=false;
+    private $contentOnlyValue=true;
+    private $contentOrderBy='';
+    private $contentSlice='ALL';
+    private $contentStart=0;
+    private $contentKey='';
+    private $contentKeyMode='';
+    private $contentSearchProperty='';
+    private $contentFilter='';
+    private $contentVerifyHasChild=false;
+    private $contentRecursiveLevel=0;
+    /**
+     * Internal document list
+     * @var DocumentList
+     */
+    private $documentList=null;
     
-    public function setContentCompleteProperties($value) {
-        $this->completeProperties=$value;
+    public function setContentCompleteProperties($value)
+    {
+        $this->completeProperties = $value;
     }
-    public function setContentOnlyValue($value) {
-        $this->contentOnlyValue=$value;
+    public function setContentOnlyValue($value)
+    {
+        $this->contentOnlyValue = $value;
     }
-    public function setContentOrderBy($value) {
-        $this->contentOrderBy=$value;
+    public function setContentOrderBy($value)
+    {
+        $this->contentOrderBy = $value;
     }
-    public function setContentSlice($value) {
-        $this->contentSlice=$value;
+    public function setContentSlice($value)
+    {
+        $this->contentSlice = $value;
     }
-    public function setContentStart($value) {
-        $this->contentStart=$value;
+    public function setContentStart($value)
+    {
+        $this->contentStart = $value;
     }
-    public function setContentKey($value) {
-        $this->contentKey=$value;
+    public function setContentKey($value)
+    {
+        $this->contentKey = $value;
     }
-    public function setContentKeyMode($value) {
-        $this->contentKeyMode=$value;
+    public function setContentKeyMode($value)
+    {
+        $this->contentKeyMode = $value;
     }
-    public function setContentSearchProperty($value) {
-        $this->contentSearchProperty=$value;
+    public function setContentSearchProperty($value)
+    {
+        $this->contentSearchProperty = $value;
     }
-    public function setContentFilter($value) {
-        $this->contentFilter=$value;
+    public function setContentFilter($value)
+    {
+        $this->contentFilter = $value;
     }
-    public function setContentVerifyHasChild($value) {
-        $this->contentVerifyHasChild=$value;
+    public function setContentVerifyHasChild($value)
+    {
+        $this->contentVerifyHasChild = $value;
     }
-    public function setContentRecursiveLevel($value) {
-        $this->contentRecursiveLevel=intval($value);
+    public function setContentRecursiveLevel($value)
+    {
+        $this->contentRecursiveLevel = intval($value);
     }
-    
-    
+    /**
+     * return documents list
+     */
+    public function getContent() {
+        if ($this->documentList) return $this->getDocumentListContent();
+        else return $this->getCollectionContent();
+    }
     /**
      * return documents list
      * @param boolean $onlyvalues
@@ -65,7 +97,7 @@ class Fdl_Collection extends Fdl_Document
      * @param boolean $verifyhaschild
      * @return array of raw documents
      */
-    public function getContent()
+    public function getCollectionContent()
     {
         include_once ("FDL/Class.SearchDoc.php");
         $s = new SearchDoc($this->dbaccess);
@@ -74,19 +106,19 @@ class Fdl_Collection extends Fdl_Document
         $s->setSlice($this->contentSlice);
         $s->setStart($this->contentStart);
         $s->excludeConfidential();
-        $s->recursiveSearch=($this->contentRecursiveLevel>0);
-        $s->folderRecursiveLevel=$this->contentRecursiveLevel;
+        $s->recursiveSearch = ($this->contentRecursiveLevel > 0);
+        $s->folderRecursiveLevel = $this->contentRecursiveLevel;
         
         $out = false;
         $content = array();
         if ($s->dirid > 0) {
             $s->setObjectReturn();
-            $key=$this->contentKey;
+            $key = $this->contentKey;
             if ($key) {
                 if ($this->contentKeyMode == "word") {
-                    $sqlfilters=array();
-                    $fullorderby='';
-                    $keyword='';
+                    $sqlfilters = array();
+                    $fullorderby = '';
+                    $keyword = '';
                     DocSearch::getFullSqlFilters($key, $sqlfilters, $fullorderby, $keyword);
                     foreach ( $sqlfilters as $vfilter )
                         $s->addFilter($vfilter);
@@ -103,8 +135,8 @@ class Fdl_Collection extends Fdl_Document
                         $s->addFilter($this->contentFilter);
                     }
                 } elseif (is_object($this->contentFilter)) {
-                    $ofamid=0;
-                    $sfilter='';
+                    $ofamid = 0;
+                    $sfilter = '';
                     $err = $this->doc->object2SqlFilter($this->contentFilter, $ofamid, $sfilter);
                     $this->setError($err);
                     if ($ofamid) $s->fromid = $ofamid;
@@ -144,7 +176,7 @@ class Fdl_Collection extends Fdl_Document
         } else
             $this->error = sprintf(_("document not initialized"));
         $out->error = $this->error;
-       
+        
         foreach ( $content as &$v ) {
             $out->content[] = $v;
         }
@@ -155,44 +187,56 @@ class Fdl_Collection extends Fdl_Document
         return $out;
     }
     
+    public function useDocumentList(DocumentList $dl)
+    {
+        $this->documentList = $dl;
+    }
+    
     /**
      * return documents list
      * @param boolean $onlyvalues
      * @param boolean $completeprop
      * @return array of raw documents
      */
-    public function getDocumentList(DocumentList $dl, $onlyvalues = true, $completeprop = false)
+    private function getDocumentListContent()
     {
-        $s=$dl->getSearchDocument();
-        $out=null;
-        $out->info = $s->getSearchInfo();
-        $out->slice = $s->slice;
-        $out->start = $s->start;
-        $this->setError($out->info["error"]);
-        $tmpdoc = new Fdl_Document();
-        $kd = 0;
-        foreach ($dl as $doc) {
-            $tmpdoc->affect($doc);
-            if (! $doc->isConfidential()) {
-                $content[$kd] = $tmpdoc->getDocument($onlyvalues, $completeprop);
-                $kd++;
+        $dl = $this->documentList;
+        $content = null;
+        if (!$dl) {
+            $this->setError("document list uninitialized");
+        } else {
+            $s = $dl->getSearchDocument();
+            $out = null;
+            $out->info = $s->getSearchInfo();
+            $out->slice = $s->slice;
+            $out->start = $s->start;
+            $this->setError($out->info["error"]);
+            $tmpdoc = new Fdl_Document();
+            $kd = 0;
+            foreach ( $dl as $doc ) {
+                $tmpdoc->affect($doc);
+                if (!$doc->isConfidential()) {
+                    $content[$kd] = $tmpdoc->getDocument($this->contentOnlyValue, $this->completeProperties);
+                    $kd++;
+                }
             }
-        }
-        
-        $out->totalCount = $s->count();
-        if (($out->totalCount == $s->slice) || ($s->start > 0)) {
-            $s->slice = 'ALL';
-            $s->start = 0;
-            $s->reset();
-            $oc = $s->onlyCount();
-            $out->info["totalCount"] = $s->getSearchInfo();
-            if ($oc) $out->totalCount = $oc;
-        
+            
+            $out->totalCount = $s->count();
+            if (($out->totalCount == $s->slice) || ($s->start > 0)) {
+                $s->slice = 'ALL';
+                $s->start = 0;
+                $s->reset();
+                $oc = $s->onlyCount();
+                $out->info["totalCount"] = $s->getSearchInfo();
+                if ($oc) $out->totalCount = $oc;
+            
+            }
         }
         $out->error = $this->error;
         $out->content = $content;
         $out->date = date('Y-m-d H:i:s');
         return $out;
+    
     }
     
     /**
