@@ -450,6 +450,7 @@ Fdl.Document.prototype.completeAttributes = function(attrs) {
 				break;
 			case 'int':
 			case 'double':
+			case 'float':
 			case 'money':
 				this._attributes[attrs[name].id]=new Fdl.NumericAttribute(attrs[name]);
 				break;
