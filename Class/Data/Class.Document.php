@@ -18,12 +18,13 @@ include_once("FDL/Class.Doc.php");
 Class Fdl_Document  {
 
     protected $doc;
-    function __construct($id=0, $config=null) {
+    function __construct($id=0, $config=null, Doc &$doc=null) {
         $this->dbaccess=getParam("FREEDOM_DB");
         if (isset($config->latest)) $latest=$config->latest;
         else $latest=true;
-        if ($id) {
-            $this->doc=new_doc($this->dbaccess, $id,$latest);
+        if ($id ||-$doc ) {
+            if ($doc) $this->doc=$doc;
+            else $this->doc=new_doc($this->dbaccess, $id,$latest);
             if (! $this->doc->isAffected()) $this->error=sprintf(_("document %s not exist"),$id);
             if (! $this->error) {
             	// no control families if structure is required
