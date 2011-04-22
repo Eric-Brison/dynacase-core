@@ -879,6 +879,32 @@ create unique index i_docir on doc(initid, revision);";
   }  
 
   /**
+   * save document if attribute are changed
+   * not be use when modify properties
+   * only use with use of setValue.
+   * @return string error message
+   */
+  public function save(&$info, $skipConstraint=false) {
+      $err='';
+        $info = '';
+        $info->constraint = '';
+        if (!$skipConstraint) {
+            $err = $this->verifyAllConstraints(false, $info->constraint);
+        }
+        if ($err == '') {
+            $info->refresh = $this->refresh();
+            $info->postModify = $this->postModify();
+            if ($this->hasChanged) {
+                //in case of change in postModify
+                $err = $this->modify();
+            }
+            if ($err == "") $this->addComment(_("save document"), HISTO_INFO, "MODIFY");
+        }
+        $info->error = $err;
+        return $err;
+  }
+  
+  /**
    * test if the document can be edit by the current user
    * the diffence between ::canUpdateDoc is that document is not need to be locked
    * @return string empty means user can update else message of the raison

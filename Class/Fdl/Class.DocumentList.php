@@ -74,3 +74,4 @@ class DocumentList implements Iterator
         $this->initSearch();
     }
 }
+?>

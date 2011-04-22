@@ -29,7 +29,7 @@ class DocWaitManager
             
             $wd->uid=$doc->getSystemUserId();
             $wd->values=serialize($doc->getValues());
-            $wd->status='recorded';
+            $wd->status=docWait::indetermined;
             $wd->title=$doc->getTitle();
             $wd->fromid=$doc->fromid;
             $wd->refererid=$doc->id;
@@ -41,6 +41,12 @@ class DocWaitManager
             if ($wd->isAffected()) {
                 $err=$wd->modify();
             } else {
+                $orivalues=$doc->getValues();
+                $ori=new_doc($doc->dbaccess, $doc->id, true);
+                if ($ori->isAlive()) {
+                $wd->orivalues=serialize($ori->getValues());
+                $wd->status=docWait::notModified;
+                }
                 $err=$wd->add();
             }
         } else {
@@ -56,13 +62,26 @@ class DocWaitManager
      */
     public static function getWaitingDoc($id) {
         $wd=new DocWait(getDbAccess(), array($id, Doc::getSystemUserId()));
-        print_r($wd);
+        
         if ($wd->isAffected()) {
-            print_r($wd);
+            return $wd;
         }
-         
+         return null;
     }
     
+
+   /**
+     * return waiting doc for a transaction
+     * @param int $transaction transaction identificator
+     * @return DbObjectList docWait list
+     */
+    public static function getWaitingDocs($transaction)
+    {
+        $q=new QueryDb(getDbAccess(), "docWait");
+        $q->addQuery(sprintf("transaction = %d", $transaction));
+        
+        return $q->Query(0,0,'ITER');
+    }
     public static function getTransaction() {
         $err=simpleQuery(getDbAccess(),"select nextval ('seq_waittransaction')",$transaction,true,true);
         return $transaction;

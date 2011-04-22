@@ -251,7 +251,7 @@ function getValues() {
 function Affect($array)
   {
     reset($array);
-    while(list($k,$v) = each($array)) {
+    foreach($array as $k=>$v) {
       if (!is_integer($k)) {
 	$this->$k = $v;
       }
