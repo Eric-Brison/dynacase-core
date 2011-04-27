@@ -101,9 +101,11 @@ create sequence seq_waittransaction start 1;
     const conflict = "conflict";
     const constraint = "constraint";
     const invalid = "invalid";
-    const indetermined= "indetermined";
+    const indetermined = "indetermined";
     /** referer document @var Doc */
-    private $currentDoc = null;
+    private $refererDoc = null;
+    /** referer document identificator @var int */
+    private $refererDocId = null;
     /** waiting document @var Doc */
     private $waitingDoc = null;
     public function save()
@@ -113,8 +115,8 @@ create sequence seq_waittransaction start 1;
         if ($this->status == self::conflict) $err = $this->statusMessage;
         else {
             $wdoc = $this->getWaitingDocument();
+            $wdoc->doctype = $wdoc->defDoctype; // become consistent
             $info = null;
-            
             $err = $wdoc->save($info);
             if ($err) {
                 $this->status = self::constraint;
@@ -127,15 +129,16 @@ create sequence seq_waittransaction start 1;
         return $err;
     }
     
-    public function resetWaitingDocument() {
-        $doc=$this->getRefererDocument();
+    public function resetWaitingDocument()
+    {
+        $doc = $this->getRefererDocument(true);
         if ($doc) {
-        $this->orivalues=serialize($doc->getValues());
-        $this->status=self::notModified;
-        $this->statusMessage='';
-        $this->transaction=0;
-        $this->date=date('Y-m-d H:i:s.u');
-        $this->modify();
+            $this->orivalues = serialize($doc->getValues());
+            $this->status = self::notModified;
+            $this->statusMessage = '';
+            $this->transaction = 0;
+            $this->date = date('Y-m-d H:i:s.u');
+            $this->modify();
         }
     }
     
@@ -153,19 +156,36 @@ create sequence seq_waittransaction start 1;
     
     public function complete()
     {
-        $this->currentDoc = null;
+        $this->refererDoc = null;
         $this->waitingDoc = null;
     }
     /**
      * the referer (null if new document)
      * @return Doc the referer
      */
-    public function getRefererDocument()
+    public function getRefererDocument($reset = false)
     {
-        if (!$this->currentDoc) {
-            $this->currentDoc = new_doc($this->dbaccess, $this->refererid);
+        if ($reset) $this->refererDoc = null;
+        if (!$this->refererDoc) {
+            $this->refererDoc = new_doc($this->dbaccess, $this->refererid, true);
+            $this->refererDocId = $this->refererDoc->id;
+            if ($this->waitingDoc) {
+                $this->values = serialize($this->waitingDoc->getValues());
+                
+                $this->waitingDoc = null;
+            }
+        } else {
+            if (($this->refererDoc->id != $this->refererDocId) || $this->refererDoc->isFixed()) {
+                $this->refererDoc = new_doc($this->dbaccess, $this->refererid, true);
+                $this->refererDocId = $this->refererDoc->id;
+                if ($this->waitingDoc) {
+                    $this->values = serialize($this->waitingDoc->getValues());
+                    $this->waitingDoc = null;
+                }
+            
+            }
         }
-        return $this->currentDoc;
+        return $this->refererDoc;
     }
     
     /**
@@ -175,23 +195,23 @@ create sequence seq_waittransaction start 1;
      */
     public function getWaitingDocument()
     {
+        $cdoc = $this->getRefererDocument(); // refresh referer if needed
         if (!$this->waitingDoc) {
-            $cdoc = $this->getRefererDocument();
             
             $this->waitingDoc = clone $cdoc;
             $waitValues = unserialize($this->values);
             foreach ( $waitValues as $aid => $v ) {
                 $this->waitingDoc->setValue($aid, $v);
             }
+            $this->waitingDoc->doctype = 'I';
         }
         return $this->waitingDoc;
     }
     
-    public function isValid() {
-        return ($this->status==self::newDocument || 
-        $this->status == self::modified ||
-        $this->status == self::notModified);
-        
+    public function isValid()
+    {
+        return ($this->status == self::newDocument || $this->status == self::modified || $this->status == self::notModified);
+    
     }
     
     /**
@@ -204,7 +224,7 @@ create sequence seq_waittransaction start 1;
         if ($this->status != self::invalid) {
             if ($this->refererid) {
                 $originValues = unserialize($this->orivalues);
-                $currentDoc = new_doc($this->dbaccess, $this->refererid);
+                $currentDoc = $this->getRefererDocument();
                 if ($currentDoc->isAlive()) {
                     $err = $currentDoc->canEdit();
                     if ($err) {
@@ -225,7 +245,7 @@ create sequence seq_waittransaction start 1;
                                 "ori" => $originValues
                             ));
                             */
-                            $waitingDoc=$this->getWaitingDocument();
+                            $waitingDoc = $this->getWaitingDocument();
                             foreach ( $attrs as $aid => $oa ) {
                                 $ovalue = $originValues[$oa->id];
                                 $cvalue = $currentDoc->getValue($oa->id);
