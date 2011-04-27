@@ -571,8 +571,9 @@ create unique index i_docir on doc(initid, revision);";
    */
   function PreUpdate() {
     if ($this->id == "") return _("cannot update no initialized document");
+    if ($this->doctype == 'I') return _("cannot update inconsistent document"); // provides from waiting document
     if (! $this->withoutControl) {
-      $err = $this->Control("edit");
+      $err = $this->control("edit");
       if ($err != "") return ($err); 
     }
     if ($this->locked == -1) $this->lmodify='N';
@@ -810,8 +811,8 @@ create unique index i_docir on doc(initid, revision);";
     $cdoc->prelid=$this->prelid;
     
     $values = $this->getValues();
-
-    $this->exec_query("begin;"); // begin transaction in case of fail add
+    $point="convert".$this->id;
+    $this->savePoint($point); // begin transaction in case of fail add
     $err=$this->delete(true,false,true); // delete before add to avoid double id (it is not authorized)
     if ($err != "") return $err;
 
@@ -820,7 +821,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     $err=$cdoc->Add(true,true);
     if ($err != "") {
-       $this->exec_query("rollback;");
+       $this->rollbackPoint($point);
         return $err;
     }
 
@@ -838,7 +839,7 @@ create unique index i_docir on doc(initid, revision);";
     
     $cdoc->AddComment(sprintf(_("convertion from %s to %s family"),$f1from,$f2from));
 		
-    $this->exec_query("commit;");
+    $this->commitPoint($point);
     global $gdocs; //reset cache if needed
     if (isset($gdocs[$this->id])) {
         $gdocs[$this->id]=&$cdoc;
@@ -910,7 +911,7 @@ create unique index i_docir on doc(initid, revision);";
    * @return string empty means user can update else message of the raison
    */
   public function CanEdit() {
-    if ($this->locked == -1) {
+    if ($this->locked == -1) {        
       $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title,$this->revision);  
       return($err);     
     }
@@ -3654,11 +3655,13 @@ create unique index i_docir on doc(initid, revision);";
     $this->forumid=0;
     $date = gettimeofday();
     $this->revdate = $date['sec']; // change rev date
-    $this->exec_query("begin;");
+    $point="revision".$this->id;
+    $this->savePoint($point);
     if ($comment != '') $this->Addcomment($comment,HISTO_MESSAGE,"REVISION");
     $err=$this->modify();
     if ($err != "") {
-      $this->exec_query("rollback;");
+        $this->rollbackPoint($point);
+      //$this->exec_query("rollback;");
       $this->select($this->id); // reset db values
       return $err;
     }
@@ -3667,7 +3670,7 @@ create unique index i_docir on doc(initid, revision);";
     if (! $this->isFixed()) {
       $err=sprintf("track error revision [%s]", pg_last_error($this->dbid));
       $this->Addcomment($err,HISTO_ERROR,"REVERROR");
-      $this->exec_query("commit;");
+      $this->commitPoint($point);
       return $err;
     }
 
@@ -3697,12 +3700,15 @@ create unique index i_docir on doc(initid, revision);";
     $err=$this->Add();
     if ($err != "") {
       // restore last revision      
-      $this->exec_query("rollback;");
+     // $this->exec_query("rollback;");
+              $this->rollbackPoint($point);
+      
       $this->select($olddocid); // reset db values
       return $err;
     }
     
-    $this->exec_query("commit;");
+     $this->commitPoint($point);
+    
     $this->refresh(); // to recompute possible dynamic profil variable
     if ($this->dprofid > 0) $this->setProfil($this->dprofid); // recompute profil if needed
     $err=$this->modify(); // need to applicate SQL triggers
