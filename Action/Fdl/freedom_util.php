@@ -727,7 +727,9 @@ function ComputeVisibility($vis, $fvis) {
   if (($fvis == "O") && ($vis == "W")) return $fvis;
   if (($fvis == "R") && ($vis == "U")) return $fvis;
   if (($fvis == "S") && (($vis == "W")||($vis == "O"))) return $fvis;
+  if ((($fvis == "R")||($fvis == "S")) && ($vis == "U")) return $fvis;
 
+  if ($fvis == "I") return $fvis;
   return $vis;
 
 }
