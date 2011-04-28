@@ -1469,7 +1469,8 @@ create unique index i_docir on doc(initid, revision);";
   final public function &getAttribute($idAttr,&$oa=null)   {
     if (!$this->_maskApplied) $this->ApplyMask();
     $idAttr = strtolower($idAttr);
-    $oa=$this->attributes->attr[$idAttr];
+    $oas=$this->getAttributes();
+    $oa=$oas[$idAttr];
     if (isset($this->attributes->attr[$idAttr])) return $oa;
 		 
     return false;
@@ -1479,7 +1480,7 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute can be defined in fathers
      * @return array DocAttribute
      */
-    final public function GetAttributes()
+    final public function &getAttributes()
     {
         $fromname = ($this->doctype == 'C') ? $this->name : $this->fromname;
         if ($this->attributes->fromname != $fromname) {
@@ -1548,14 +1549,15 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function ApplyMask($mid = 0) {    
     // copy default visibilities
-    if (is_object($this->attributes)) {
-      foreach($this->attributes->attr as $k=>$v) {
-	if ($this->attributes->attr[$k]) $this->attributes->attr[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
-
+    $this->_maskApplied=true;
+    $oas=$this->getAttributes();
+    if (is_object($oas)) {
+      foreach($oas as $k=>$v) {
+	if ($oas[$k]) $oas[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
       }
     }
-    $this->_maskApplied=true;
-    if (($this->doctype=='C')||(($this->doctype=='T')&&($mid==0))) return;
+    
+    if (($this->doctype=='C2')||(($this->doctype=='T')&&($mid==0))) return;
     // modify visibilities if needed
     if ((! is_numeric($mid)) && ($mid!="")) $mid=getIdFromName($this->dbaccess,$mid);  
     if ($mid == 0) $mid=$this->mid;
@@ -1577,28 +1579,28 @@ create unique index i_docir on doc(initid, revision);";
       $mdoc = new_Doc($this->dbaccess,$mid );
       if ($mdoc->isAlive()) {
 	$tvis = $mdoc->getCVisibilities();
-	  
 	foreach ($tvis as $k=>$v) {
-	  if (isset($this->attributes->attr[$k])) {
-	    if ($v != "-") $this->attributes->attr[$k]->mvisibility=$v;	      
+	  if (isset($oas[$k])) {
+	    if ($v != "-") $oas[$k]->mvisibility=$v;	      
 	  }
 	}
-	$tdiff=array_diff(array_keys($this->attributes->attr),array_keys($tvis));
+	$tdiff=array_diff(array_keys($oas),array_keys($tvis));
 	// recompute loosed attributes
 	foreach	($tdiff	as $k)	{
-	  $v=$this->attributes->attr[$k];
-	  $this->attributes->attr[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
+	  $v=$oas[$k];
+	  $oas[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
         }
 
 	// modify needed attribute also
 	$tneed = $mdoc->getNeedeeds();
 	foreach ($tneed as $k=>$v) {
-	  if (isset($this->attributes->attr[$k])) {
-	    if ($v == "Y") $this->attributes->attr[$k]->needed=true;
-	    else if ($v == "N") $this->attributes->attr[$k]->needed=false;
+	  if (isset($oas[$k])) {
+	    if ($v == "Y") $oas[$k]->needed=true;
+	    else if ($v == "N") $oas[$k]->needed=false;
 	  }
 	}
       }
+      
     }
     uasort($this->attributes->attr,"tordered"); 
   }
