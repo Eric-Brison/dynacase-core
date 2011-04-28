@@ -13,6 +13,8 @@ class DocumentList implements Iterator
 {
     private $search = null;
     private $currentDoc = null;
+    /** anonymous function */
+    private $hookFunction = null;
     public $length = 0;
     
     public function __construct(SearchDoc &$s = null)
@@ -36,12 +38,23 @@ class DocumentList implements Iterator
     {
         
         $this->currentDoc = $this->search->nextDoc();
-    
+        $this->callHook();
+       
     }
     public function next()
     {
         $this->currentDoc = $this->search->nextDoc();
+        $this->callHook();
+    }
     
+    private function callHook() {
+        if ($this->currentDoc && $this->hookFunction) {
+       
+           // call_user_func($function, $this->currentDoc);
+            $h=$this->hookFunction;
+            $h($this->currentDoc);
+        
+        }
     }
     public function key()
     {
@@ -72,6 +85,9 @@ class DocumentList implements Iterator
         $sid = $useInitid ? "initid" : "id";
         $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
         $this->initSearch();
+    }
+    public function setHook($hookFunction) {
+        $this->hookFunction=$hookFunction;
     }
 }
 ?>
