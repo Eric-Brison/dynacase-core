@@ -113,6 +113,24 @@ create sequence seq_id_users start 10";
       return TRUE;
     }
 
+    /**
+     * affect user from its document id
+     * 
+     * @param int $fid
+     */
+  function setFid($fid)
+    {
+      $query = new QueryDb($this->dbaccess,"User");
+      $query->AddQuery(sprintf("fid = %d", $fid));
+      $list = $query->Query(0,0,"TABLE");
+      if ($query->nb != 0) {
+	$this->Affect($list[0]);
+      } else {
+	return false;
+      }
+      return true;
+    }
+    
   function PreInsert()    {
     if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";                                            
     if ($this->login=="") return _("login must not be empty");                                          
@@ -205,16 +223,11 @@ create sequence seq_id_users start 10";
     $ugroups=$group->groups;
     $err=$group->Delete();
     if ($err == "") {
-      //remove MailAccount
-      if (@include_once("Class.MailAccount.php")) {
-	$mailaccount=new MailAccount("",$this->id);
-	$mailaccount-> Remove();
-      }
       if (usefreedomuser()) {
 	refreshGroups($ugroups,true);
       }
     }
-    $msg=$this->deleteWebCal();
+    
 
     global $action;
     $action->session->CloseUsers($this->id);
@@ -222,17 +235,7 @@ create sequence seq_id_users start 10";
     return $msg;
   }
 
-  function deleteWebCal() {
-    $a = new Application();
-    if ($a->Exists("CALENDAR")) {
-      $db="user=anakeen dbname=webcalendar";
-      $dbidc=pg_connect($db);
-      if ($dbidc) {
-	$rq=@pg_query ($dbidc, "delete  from webcal_user where wid=".$this->id);
-	return "webcal deleted".$this->id;
-      }
-    }
-  }
+
 
   function CheckLogin($login,$domain,$whatid)
     {
