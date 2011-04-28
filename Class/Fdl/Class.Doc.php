@@ -1547,17 +1547,16 @@ create unique index i_docir on doc(initid, revision);";
    *
    * @param int $mid mask ident, if not set it is found from possible workflow
    */
-  final public function ApplyMask($mid = 0) {    
+  final public function ApplyMask($mid = 0, $force=false) {    
     // copy default visibilities
     $this->_maskApplied=true;
     $oas=$this->getAttributes();
-    if (is_object($oas)) {
+    if (is_array($oas)) {
       foreach($oas as $k=>$v) {
 	if ($oas[$k]) $oas[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
       }
     }
-    
-    if (($this->doctype=='C2')||(($this->doctype=='T')&&($mid==0))) return;
+    if ((! $force) && (($this->doctype=='C')||(($this->doctype=='T')&&($mid==0)))) return;
     // modify visibilities if needed
     if ((! is_numeric($mid)) && ($mid!="")) $mid=getIdFromName($this->dbaccess,$mid);  
     if ($mid == 0) $mid=$this->mid;
@@ -5911,7 +5910,6 @@ create unique index i_docir on doc(initid, revision);";
       $listattr = $this->GetNormalAttributes($onlyopt);    
     }
     
-
     $nattr = count($listattr); // attributes list count
 
 
