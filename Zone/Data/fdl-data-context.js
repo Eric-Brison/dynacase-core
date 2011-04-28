@@ -654,7 +654,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 		var sname=wdoc.getProperty('fromname');
 		config.data = wdoc._data;
 		
-		var sclass=this.stringToFunction(this.familyMap[sname])
+		var sclass=this.stringToFunction(this.familyMap[sname]);
 		wdoc = new sclass(config);
 	}else if ((wdoc.getProperty('defdoctype') == 'D')
 			|| (wdoc.getProperty('defdoctype') == 'S')) {
