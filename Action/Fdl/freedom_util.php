@@ -715,6 +715,7 @@ function getFamTitle(&$tdoc) {
  */
 function isFixedDoc($dbaccess,$id) {
   $tdoc=getTDoc($dbaccess,$id,array(),array("locked"));
+  if (! $tdoc) return null;
   return ($tdoc["locked"]== -1);
 }
 
