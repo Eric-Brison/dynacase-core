@@ -175,7 +175,8 @@ create sequence seq_waittransaction start 1;
                 $this->waitingDoc = null;
             }
         } else {
-            if (($this->refererDoc->id != $this->refererDocId) || $this->refererDoc->isFixed()) {
+            
+            if (($this->refererDoc->id != $this->refererDocId) || ($fix=$this->refererDoc->isFixed()) || ($fix===null)) {
                 $this->refererDoc = new_doc($this->dbaccess, $this->refererid, true);
                 $this->refererDocId = $this->refererDoc->id;
                 if ($this->waitingDoc) {
