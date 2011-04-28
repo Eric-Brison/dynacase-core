@@ -95,10 +95,11 @@ Class Fdl_Document  {
                 }
             } else {
                 $nattr = $this->doc->getNormalAttributes();
+                $this->doc->applyMask();
                 foreach($nattr as $k=>$v) {
                     if ($v->mvisibility!="I" && $this->doc->$k) {
                         if ($v->inArray() || ($v->getOption("multiple")=="yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
-                        else $lvalues[$v->id] = $this->doc->GetValue($v->id);
+                        else $lvalues[$v->id] = $this->doc->getValue($v->id);
                         
                         if (($v->type=="docid") && ($v->visibility!='H') && ($v->getOption("doctitle")!="auto")) {
                             $lvalues[$v->id."_title"]=$this->doc->getTitle($this->doc->getValue($v->id));

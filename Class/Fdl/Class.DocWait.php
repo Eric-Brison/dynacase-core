@@ -96,7 +96,7 @@ create sequence seq_waittransaction start 1;
      * constant for waiting status"
      */
     const newDocument = "new";
-    const notModified = "same";
+    const notModified = "uptodate";
     const modified = "modified";
     const conflict = "conflict";
     const constraint = "constraint";
@@ -252,7 +252,7 @@ create sequence seq_waittransaction start 1;
                                 $cvalue = $currentDoc->getValue($oa->id);
                                 if ($ovalue != $cvalue) {
                                     $this->status = self::conflict;
-                                    $this->statusMessage .= sprintf(_("conflict %s [%s]: current=%s, modified=%s"), $oa->getLabel(), $oa->id, $cvalue, $ovalue) . "\n";
+                                    $this->statusMessage .= sprintf(_("conflict %s [%s]: referer=%s, modified=%s"), $oa->getLabel(), $oa->id, $cvalue, $ovalue) . "\n";
                                 }
                             }
                             $this->statusMessage = substr($this->statusMessage, 0, -1);
