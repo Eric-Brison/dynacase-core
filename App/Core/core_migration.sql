@@ -166,3 +166,10 @@ SELECT pg_temp.addColumnIfNotExists('', 'style', 'parsable', 'char DEFAULT ''N''
 -- Add `tag' column to `application' table
 --
 SELECT pg_temp.addColumnIfNotExists('', 'docutag', 'fixed', 'boolean default false');
+--
+-- Add `tag' column to `application' table
+--
+SELECT pg_temp.addColumnIfNotExists('', 'doc', 'lockdomainid', 'int');
+SELECT pg_temp.addColumnIfNotExists('', 'docread', 'lockdomainid', 'int');
+SELECT pg_temp.addColumnIfNotExists('', 'doc', 'domainid', 'text');
+SELECT pg_temp.addColumnIfNotExists('', 'docread', 'domainid', 'text');
