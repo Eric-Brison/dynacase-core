@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-01 10:56+0200\n"
+"POT-Creation-Date: 2011-05-02 12:10+0200\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -255,6 +255,9 @@ msgid "current_state"
 msgstr ""
 
 msgid "cannot see unknow folder"
+msgstr ""
+
+msgid "domain locked"
 msgstr ""
 
 msgid "locked"
@@ -2622,6 +2625,37 @@ msgstr "Category"
 msgid "chgstates"
 msgstr "Change state"
 
+#, c-format
+msgid "Domain %s"
+msgstr ""
+
+msgid "Offline menu"
+msgstr ""
+
+msgid "Book in my space"
+msgstr ""
+
+msgid "book the document to modify it with offline application"
+msgstr ""
+
+msgid "Set in my space to read it"
+msgstr ""
+
+msgid "insert the document to see it with offline application"
+msgstr ""
+
+msgid "remove from my space"
+msgstr ""
+
+msgid "remove the document from my space"
+msgstr ""
+
+msgid "view my space"
+msgstr ""
+
+msgid "access to documents of my space"
+msgstr ""
+
 #, fuzzy
 msgid "no label"
 msgstr "Email"
@@ -4661,6 +4695,9 @@ msgstr "Edit"
 #, fuzzy
 msgid "goto forum"
 msgstr "Import"
+
+msgid "Insert in a domain"
+msgstr ""
 
 #, fuzzy
 msgid "View postit"
@@ -7402,6 +7439,10 @@ msgstr ""
 msgid "Twprocess_public"
 msgstr ""
 
+#, c-format
+msgid "conflict %s [%s]: referer=%s, modified=%s"
+msgstr ""
+
 msgid "impossible conversion"
 msgstr ""
 
@@ -8058,6 +8099,12 @@ msgstr "application tags"
 msgid "prop_prelid"
 msgstr "primary relation"
 
+msgid "prop_lockdomainid"
+msgstr ""
+
+msgid "prop_domainid"
+msgstr ""
+
 msgid "prop_confidential"
 msgstr "confidential"
 
@@ -8084,6 +8131,9 @@ msgid "creation : workflow %s not exists"
 msgstr ""
 
 msgid "cannot update no initialized document"
+msgstr ""
+
+msgid "cannot update inconsistent document"
 msgstr ""
 
 msgid "cannot update fixed document"
@@ -8115,12 +8165,15 @@ msgstr ""
 msgid "convertion from %s to %s family"
 msgstr "Category"
 
+msgid "save document"
+msgstr ""
+
 #, c-format
 msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
 msgstr ""
 
 #, c-format
-msgid "the file %s (rev %d) must be locked before"
+msgid "document is booked in domain %s"
 msgstr ""
 
 #, c-format
@@ -8129,14 +8182,6 @@ msgstr ""
 
 #, c-format
 msgid "you are not allowed to update the file %s (rev %d) is locked by %s."
-msgstr ""
-
-#, c-format
-msgid "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
-msgstr ""
-
-#, c-format
-msgid "cannot lock file %s [%d] : already locked by %s."
 msgstr ""
 
 #, fuzzy
@@ -8721,6 +8766,9 @@ msgstr ""
 msgid "Emptying temporary database '%s' ..."
 msgstr ""
 
+msgid "waiting : document not set"
+msgstr ""
+
 msgid "timer already set"
 msgstr ""
 
@@ -8785,10 +8833,6 @@ msgid "no revisable"
 msgstr ""
 
 msgid "unlimited revisions"
-msgstr ""
-
-#, c-format
-msgid "cannot open %s configuration file"
 msgstr ""
 
 msgid "Close archive"

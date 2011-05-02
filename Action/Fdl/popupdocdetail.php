@@ -374,6 +374,7 @@ function getpopupdocdetail(&$action, $docid)
     
     addFamilyPopup($tlink, $doc);
     addArchivePopup($tlink, $doc);
+    addOfflinePopup($tlink, $doc);
     
     return $tlink;
 
@@ -448,7 +449,8 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
         $tv = array(); // consult array views
         $te = array(); // edit array views
         
-$count=array();
+
+        $count = array();
         if (count($tk) > 0) {
             foreach ( $tk as $k => $v ) {
                 if ($td[$k] != "no") {
@@ -647,11 +649,98 @@ function addFamilyPopup(&$tlink, &$doc)
     }
 
 }
+
+function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self")
+{
+    if (file_exists("OFFLINE/Class.DomainManager.php")) {
+        include_once ("OFFLINE/Class.DomainManager.php");
+        $onlysub = getHttpVars("submenu");
+        $docDomainsId = $doc->getDomainIds();
+        $allDomains = DomainManager::getDomains();
+        foreach ( $allDomains as $domain ) {
+            if ($domain->isAlive()) {
+                $families = $domain->getFamilies();
+                if (!in_array($doc->fromid, $families)) continue;
+                if ($domain->isMember($doc->getSystemUserId())) {
+                    $tlink["dom" . $domain->id] = array(
+                        "descr" => sprintf(_("Domain %s"), $domain->getTitle()),
+                        "url" => ".",
+                        "separator" => true,
+                        "confirm" => "false",
+                        "control" => "false",
+                        "tconfirm" => "",
+                        "target" => "",
+                        "visibility" => POPUP_INACTIVE,
+                        "submenu" => _("Offline menu"),
+                        "barmenu" => "false"
+                    );
+                    if ($domain->getUserMode($doc->getSystemUserId()) == 'advanced') {
+                        $tlink["book" . $domain->id] = array(
+                            "descr" => _("Book in my space"),
+                            "title" => _("book the document to modify it with offline application"),
+                            "url" => "?app=OFFLINE&action=OFF_DOMAINAPI&htmlRedirect=" . $doc->initid . "&docid=" . $doc->initid . "&id=" . $domain->initid . '&method=bookDocument',
+                            "confirm" => "false",
+                            "control" => "false",
+                            "tconfirm" => "",
+                            "target" => "_self",
+                            "visibility" => ((($doc->CanLockFile() == '') && ($doc->lockdomainid == 0)) ? POPUP_ACTIVE : POPUP_INACTIVE),
+                            "submenu" => _("Offline menu"),
+                            "barmenu" => "false"
+                        );
+                        $inDomain = in_array($domain->id, $docDomainsId);
+                        $tlink["bookread" . $domain->id] = array(
+                            "descr" => _("Set in my space to read it"),
+                            "title" => _("insert the document to see it with offline application"),
+                            "url" => "?app=OFFLINE&action=OFF_DOMAINAPI&htmlRedirect=" . $doc->initid . "&docid=" . $doc->initid . "&id=" . $domain->initid . '&method=putDocument',
+                            "confirm" => "false",
+                            "control" => "false",
+                            "tconfirm" => "",
+                            "target" => "_self",
+                            "visibility" => ($inDomain) ? POPUP_INACTIVE : POPUP_ACTIVE,
+                            "submenu" => _("Offline menu"),
+                            "barmenu" => "false"
+                        );
+                        
+                        $tlink["unset" . $domain->id] = array(
+                            "descr" => _("remove from my space"),
+                            "title" => _("remove the document from my space"),
+                            "url" => "?app=OFFLINE&action=OFF_DOMAINAPI&htmlRedirect=" . $doc->initid . "&docid=" . $doc->initid . "&id=" . $domain->initid . '&method=removeDocument',
+                            "confirm" => "false",
+                            "control" => "false",
+                            "tconfirm" => "",
+                            "target" => "_self",
+                            "visibility" => ($inDomain) ? POPUP_ACTIVE : POPUP_INACTIVE,
+                            "submenu" => _("Offline menu"),
+                            "barmenu" => "false"
+                        );
+                    
+                    }
+                    $tlink["access" . $domain->id] = array(
+                        "descr" => _("view my space"),
+                        "title" => _("access to documents of my space"),
+                        "url" => "?app=FREEDOM&action=ADDDIRFILE&docid=" . $doc->initid . "&dirid=" . $domain->initid,
+                        "confirm" => "false",
+                        "control" => "false",
+                        "tconfirm" => "",
+                        "target" => "",
+                        "visibility" => POPUP_ACTIVE,
+                        "submenu" => _("Offline menu"),
+                        "barmenu" => "false"
+                    );
+                }
+            }
+        
+        }
+    }
+}
+
+/**
+ * Add control view menu
+ */
 function changeMenuVisibility(&$action, &$tlink, &$doc)
 {
-    $clf = ($doc->CanLockFile() == "");
     $cuf = ($doc->CanUnLockFile() == "");
-    $cud = ($doc->CanUpdateDoc() == "");
+    $cud = ($doc->CanEdit() == "");
     $tlink["toxml"]["visibility"] = POPUP_INVISIBLE;
     //  $tlink["reference"]["visibility"]=POPUP_CTRLACTIVE;
     
@@ -659,7 +748,7 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
     if (getParam("FREEDOM_IDBASKET") == 0) $tlink["tobasket"]["visibility"] = POPUP_INVISIBLE;
     
     if ($doc->locked == $doc->userid) $tlink["lockdoc"]["visibility"] = POPUP_INVISIBLE;
-    else if (($doc->locked != $doc->userid) && $clf) $tlink["lockdoc"]["visibility"] = POPUP_CTRLACTIVE;
+    else if (($doc->locked != $doc->userid) && $cud) $tlink["lockdoc"]["visibility"] = POPUP_CTRLACTIVE;
     else $tlink["lockdoc"]["visibility"] = POPUP_INVISIBLE;
     
     if ($doc->isLocked()) {
@@ -669,7 +758,7 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         $tlink["unlockdoc"]["visibility"] = POPUP_INVISIBLE;
     
     if (!$doc->isRevisable()) $tlink["revise"]["visibility"] = POPUP_INVISIBLE;
-    else if ((($doc->lmodify == 'Y') || ($doc->revision == 0)) && ($cud || $clf)) $tlink["revise"]["visibility"] = POPUP_CTRLACTIVE;
+    else if ((($doc->lmodify == 'Y') || ($doc->revision == 0)) && ($cud)) $tlink["revise"]["visibility"] = POPUP_CTRLACTIVE;
     else $tlink["revise"]["visibility"] = POPUP_CTRLINACTIVE;
     
     if ($doc->IsControlled() && ($doc->profid > 0) && ($doc->Control("viewacl") == "")) {
@@ -702,7 +791,7 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         $tlink["delete"]["visibility"] = POPUP_INACTIVE;
     }
     
-    if (($clf) || ($cud)) {
+    if ($cud) {
         $tlink["editdoc"]["visibility"] = POPUP_ACTIVE;
         $tlink["chgicon"]["visibility"] = POPUP_CTRLACTIVE;
         if ($doc->allocated > 0) $tlink["reaffect"]["visibility"] = POPUP_ACTIVE;

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-01 10:56+0200\n"
-"PO-Revision-Date: 2011-04-01 10:59+0200\n"
+"POT-Creation-Date: 2011-05-02 12:10+0200\n"
+"PO-Revision-Date: 2011-05-02 12:14+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -253,6 +253,9 @@ msgstr "courant"
 
 msgid "cannot see unknow folder"
 msgstr "dossier inconnu, ne peut être consulté"
+
+msgid "domain locked"
+msgstr "verrouillé dans un domaine"
 
 msgid "locked"
 msgstr "verrouillé"
@@ -2460,6 +2463,37 @@ msgstr "Changement d'état vers %s"
 msgid "chgstates"
 msgstr "Changer d'état"
 
+#, c-format
+msgid "Domain %s"
+msgstr "Domaine %s"
+
+msgid "Offline menu"
+msgstr "Offline"
+
+msgid "Book in my space"
+msgstr "Réserver dans mon espace"
+
+msgid "book the document to modify it with offline application"
+msgstr "réserver le document pour le modifier avec l'application offline"
+
+msgid "Set in my space to read it"
+msgstr "Mettre dans mon espace"
+
+msgid "insert the document to see it with offline application"
+msgstr "insérer le document pour le voir avec l'application offline"
+
+msgid "remove from my space"
+msgstr "Enlever de mon espace"
+
+msgid "remove the document from my space"
+msgstr "Enlever le document de mon espace"
+
+msgid "view my space"
+msgstr "Voir mon espace"
+
+msgid "access to documents of my space"
+msgstr "Accéder aux documents de mon espace"
+
 msgid "no label"
 msgstr "pas de désignation"
 
@@ -4443,6 +4477,9 @@ msgstr "Envoyer le document"
 
 msgid "goto forum"
 msgstr "aller au forum"
+
+msgid "Insert in a domain"
+msgstr ""
 
 msgid "View postit"
 msgstr "Voir le post-it"
@@ -6892,6 +6929,10 @@ msgstr "vers privé"
 msgid "Twprocess_public"
 msgstr "vers public"
 
+#, c-format
+msgid "conflict %s [%s]: referer=%s, modified=%s"
+msgstr ""
+
 msgid "impossible conversion"
 msgstr "conversion impossible"
 
@@ -7534,6 +7575,12 @@ msgstr "tag applicatfs"
 msgid "prop_prelid"
 msgstr "dossier primaire"
 
+msgid "prop_lockdomainid"
+msgstr ""
+
+msgid "prop_domainid"
+msgstr ""
+
 msgid "prop_confidential"
 msgstr "confidentialité"
 
@@ -7560,6 +7607,9 @@ msgstr "création : cycle de vie %s n'existe pas"
 
 msgid "cannot update no initialized document"
 msgstr "mise à jour impossible : document non initialisé"
+
+msgid "cannot update inconsistent document"
+msgstr ""
 
 msgid "cannot update fixed document"
 msgstr "Un document figé ne peut pas être mis à jour"
@@ -7590,13 +7640,16 @@ msgstr "Erreur lors de l'envoi du fichier"
 msgid "convertion from %s to %s family"
 msgstr "conversion de la famille %s vers la famille %s"
 
+msgid "save document"
+msgstr ""
+
 #, c-format
 msgid "cannot update file %s (rev %d) : fixed. Get the latest version"
 msgstr "le fichier %s (rév. %d) est figé. Utilisez la dernière version"
 
 #, c-format
-msgid "the file %s (rev %d) must be locked before"
-msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
+msgid "document is booked in domain %s"
+msgstr ""
 
 #, c-format
 msgid "Document %s is in edition by %s."
@@ -7605,14 +7658,6 @@ msgstr "Document %s est en cours de modification par %s"
 #, c-format
 msgid "you are not allowed to update the file %s (rev %d) is locked by %s."
 msgstr "le fichier %s (rév. %d) est verrouillé par %s."
-
-#, c-format
-msgid "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
-msgstr "le fichier %s [%d] (rév. %d) est figé. Utilisez la dernière version"
-
-#, c-format
-msgid "cannot lock file %s [%d] : already locked by %s."
-msgstr "le fichier %s [%d] est déjà verrouillé par %s."
 
 msgid "cannot unlock"
 msgstr "ne peut pas déverrouiller"
@@ -8190,6 +8235,9 @@ msgstr "Connexion au pg service temporaire '%s' OK !"
 msgid "Emptying temporary database '%s' ..."
 msgstr "Vidage de la base temporaire '%s'"
 
+msgid "waiting : document not set"
+msgstr ""
+
 msgid "timer already set"
 msgstr "minuteur déjà attaché"
 
@@ -8255,10 +8303,6 @@ msgstr "non révisable"
 
 msgid "unlimited revisions"
 msgstr "révisions illimités"
-
-#, c-format
-msgid "cannot open %s configuration file"
-msgstr "ne peut ouvrir le fichier de configuration %s"
 
 msgid "Close archive"
 msgstr "Clôture de l'archive"
@@ -8731,6 +8775,19 @@ msgstr "%s non présent dans %s"
 #, c-format
 msgid "error ::moveDocument %s %s"
 msgstr "erreur ::moveDocument %s %s"
+
+#~ msgid "the file %s (rev %d) must be locked before"
+#~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
+
+#~ msgid ""
+#~ "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
+#~ msgstr "le fichier %s [%d] (rév. %d) est figé. Utilisez la dernière version"
+
+#~ msgid "cannot lock file %s [%d] : already locked by %s."
+#~ msgstr "le fichier %s [%d] est déjà verrouillé par %s."
+
+#~ msgid "cannot open %s configuration file"
+#~ msgstr "ne peut ouvrir le fichier de configuration %s"
 
 #~ msgid "Documents management"
 #~ msgstr "Gestion documentaire"
