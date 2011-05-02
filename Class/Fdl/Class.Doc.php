@@ -77,6 +77,8 @@ Class Doc extends DocCtrl {
 			   "wid",
 			   "postitid",
 			   "forumid",
+			   "domainid",
+			   "lockdomainid",
 			   "cvid",
 			   "name",
 			   "dprofid",
@@ -116,7 +118,9 @@ Class Doc extends DocCtrl {
 			       "dprofid"=>array("type"=>"docid","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_dprofid"), # N_("prop_dprofid")
 			       "atags"=>array("type"=>"text","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_atags"), # N_("prop_atags")
 			       "prelid"=>array("type"=>"docid","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_prelid"), # N_("prop_prelid")
-			       "confidential"=>array("type"=>"integer","displayable"=>false,"sortable"=>true,"filterable"=>true,"label"=>"prop_confidential"), # N_("prop_confidential")
+  			       "lockdomainid"=>array("type"=>"docid","displayable"=>true,"sortable"=>true,"filterable"=>false,"label"=>"prop_lockdomainid"), # N_("prop_lockdomainid")
+  			       "domainid"=>array("type"=>"docid","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_domainid"), # N_("prop_domainid")
+                               "confidential"=>array("type"=>"integer","displayable"=>false,"sortable"=>false,"filterable"=>true,"label"=>"prop_confidential"), # N_("prop_confidential")
   			       "svalues"=>array("type"=>"fulltext","displayable"=>false,"sortable"=>false,"filterable"=>true,"label"=>"prop_svalues"), # N_("prop_svalues")
 			       "ldapdn"=>array("type"=>"text","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_ldapdn")); # N_("prop_ldapdn");
   /**
@@ -154,6 +158,16 @@ Class Doc extends DocCtrl {
    * @public int
    */
   public $fromid;
+  /**
+   * domain where document is lock
+   * @public int
+   */
+  public $lockdomainid;
+  /**
+   * domain where document is attached
+   * @public array
+   */
+  public $domainid;
   /**
    * the type of document
    *
@@ -369,6 +383,8 @@ create table doc ( id int not null,
                    fulltext tsvector,  
                    postitid text,
                    forumid int,
+                   domainid text,
+                   lockdomainid int,
                    cvid int,
                    name text,
                    dprofid int DEFAULT 0,
@@ -848,39 +864,21 @@ create unique index i_docir on doc(initid, revision);";
     return $cdoc;
     
   }
-
-  /**
-   * test if the document can be revised now
-   * it must be locked by the current user
-   * @return string empty means user can update else message of the raison
-   */
-  final public function CanUpdateDoc() {
-
-    if ($this->locked == -1) {
-      $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title,$this->revision);      
-      return $err;
-    }
-
-    if ($this->userid == 1) return "";// admin can do anything but not modify fixed doc
-    $err="";
-  
-    if ($this->locked == 0) {     
-      $err = sprintf(_("the file %s (rev %d) must be locked before"), $this->title,$this->revision);      
-    } else {
-      if (abs($this->locked) != $this->userid) {
-	  
-	$user = new User("", abs($this->locked));
-	if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
-	else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname); 
-	  
-      } else $err = $this-> Control( "edit");
-    }
     
-    return($err);
-  }  
+    /**
+     * test if the document can be revised now
+     * it must be locked by the current user
+     * @deprecated
+     * @return string empty means user can update else message of the raison
+     */
+    final public function canUpdateDoc()
+    {
+        return $this->canEdit();
+    
+    }  
 
   /**
-   * save document if attribute are changed
+   * save document if attribute are change
    * not be use when modify properties
    * only use with use of setValue.
    * @return string error message
@@ -904,30 +902,34 @@ create unique index i_docir on doc(initid, revision);";
         $info->error = $err;
         return $err;
   }
-  
-  /**
-   * test if the document can be edit by the current user
-   * the diffence between ::canUpdateDoc is that document is not need to be locked
-   * @return string empty means user can update else message of the raison
-   */
-  public function CanEdit() {
-    if ($this->locked == -1) {        
-      $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title,$this->revision);  
-      return($err);     
+    
+    /**
+     * test if the document can be edit by the current user
+     * the diffence between ::canUpdateDoc is that document is not need to be locked
+     * @return string empty means user can update else message of the raison
+     */
+    public function canEdit()
+    {
+        if ($this->locked == -1) {
+            $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title, $this->revision);
+            return ($err);
+        }
+        if ($this->userid == 1) return ""; // admin can do anything but not modify fixed doc
+        $err = "";
+        if ($this->lockdomainid > 0) $err = sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
+        else {
+            if ($this->withoutControl) return ""; // no more test if disableEditControl activated
+            if (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
+                $user = new User("", abs($this->locked));
+                if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(), $user->firstname . " " . $user->lastname);
+                else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->getTitle(), $this->revision, $user->firstname . " " . $user->lastname);
+            
+            } else {
+                $err = $this->Control("edit");
+            }
+        }
+        return ($err);
     }
-    if ($this->userid == 1) return "";// admin can do anything but not modify fixed doc
-    $err="";      
-    if ($this->withoutControl) return ""; // no more test if disableEditControl activated
-    if  (($this->locked != 0) && (abs($this->locked) != $this->userid)) {	  
-      $user = new User("", abs($this->locked));
-      if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
-      else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->getTitle(),$this->revision,$user->firstname." ".$user->lastname); 
-	  
-    } else {
-      $err = $this->Control("edit");
-    }        
-    return($err);
-  }
 
   /**
    * test if the document can be locked
@@ -935,27 +937,8 @@ create unique index i_docir on doc(initid, revision);";
    * @return string empty means user can update else message of the raison
    */
   final public function CanLockFile() {
-    $err="";
+    $err=$this->canEdit();
     
-    if ($this->locked == -1) {
-      
-      $err = sprintf(_("cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"), 
-		     $this->title,$this->id,$this->revision);
-    }  else {
-      if ($this->userid == 1) return ""; // admin can do anything
-      if ($this->locked == 0) $err = $this-> Control( "edit");
-      // test if is not already locked
-      else {
-	if ( abs($this->locked) != $this->userid) {
-	  $user = new User("", abs($this->locked));
-	  if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname); 
-	  else $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."),
-			      $this->title,$this->id,$user->firstname." ".$user->lastname);
-	}   else  {      
-	  $err = $this-> Control( "edit");
-	}
-      }
-    }
     
 
     return($err);  
@@ -1135,6 +1118,7 @@ create unique index i_docir on doc(initid, revision);";
   {      
     if ($this->doctype == 'Z') return _("already deleted");
     if ($this->isLocked(true)) return _("locked");
+    if ($this->lockdomainid > 0) return sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
     $err = $this->Control("delete");
                         
     return $err;      
@@ -4011,7 +3995,7 @@ create unique index i_docir on doc(initid, revision);";
 	if (! $err) $this->addLog('lock');
       }
     } else { 
-      if ($this->locked != $userid) {
+      if (($this->locked != $userid)||($this->lockDomain)) {
 	$this->locked = $userid;     
 	$err=$this->modify(false,array("locked"));
 	if (! $err) $this->addLog('lock');
@@ -4047,8 +4031,9 @@ create unique index i_docir on doc(initid, revision);";
       }
     } else {
       if ($this->locked != -1) {
-	$this->locked = "0";      
-	$this->modify(false,array("locked"));
+	$this->locked = "0";
+	$this->lockdomainid = '';
+	$this->modify(false,array("locked","lockdomainid"));
 	if (! $err) $this->addLog('unlock');
       }
     }
@@ -7433,23 +7418,29 @@ create unique index i_docir on doc(initid, revision);";
       if (! $doc->isAffected()) $this->deleteValue($nameId);
     }
   }
-
-
-  /**
-   * get image emblem for the doc like lock/nowrite
-   * @return string the url of the image
-   */
-  function getEmblem() {
-    global $action;
-    if ($this->confidential >0) return  $action->getImageUrl("confidential.gif");
-    else if ($this->locked == -1) return  $action->getImageUrl("revised.png");
-    else if ($this->allocated == $this->userid) return $action->getImageUrl("clef3.gif");
-    else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("clef1.gif");
-    else if ($this->locked != 0) return $action->getImageUrl("clef2.gif");
-    else if ($this->archiveid != 0) return $action->getImageUrl("archive.png");
-    else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png");
-    else return $action->getImageUrl("1x1.gif");
-  }
+    
+    /**
+     * get image emblem for the doc like lock/nowrite
+     * @return string the url of the image
+     */
+    function getEmblem()
+    {
+        global $action;
+        if ($this->confidential > 0) return $action->getImageUrl("confidential.gif");
+        else if ($this->locked == -1) return $action->getImageUrl("revised.png");
+        else if ($this->lockdomainid > 0) {
+            if ($this->locked > 0) {
+                if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockorangegreen.png");
+                else return $action->getImageUrl("lockorangered.png");
+            } else
+                return $action->getImageUrl("lockorange.png");
+        } else if ($this->allocated == $this->userid) return $action->getImageUrl("lockblue.png");
+        else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockgreen.png");
+        else if ($this->locked != 0) return $action->getImageUrl("lockred.png");
+        else if ($this->archiveid != 0) return $action->getImageUrl("archive.png");
+        else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png");
+        else return $action->getImageUrl("1x1.gif");
+    }
 
   /**
    * use only for paramRefresh in attribute definition of a family
@@ -7848,7 +7839,77 @@ create unique index i_docir on doc(initid, revision);";
     if (is_array($l))  return $l;    
     return array();
   }
-
+    /**
+     * get all domains where document is attached by current user
+     * @param boolean $user is set to false list all domains (independant of current user)
+     * @param boolean $folderName is set to true append also folder name
+     * @return array id
+     */
+    public function getDomainIds($user=true, $folderName=false)
+    {
+        if (file_exists("OFFLINE/Class.DomainManager.php")) {
+            include_once("FDL/Class.SearchDoc.php");
+            $s = new searchDoc($this->dbaccess, "OFFLINEFOLDER");
+            $s->join("id = fld(dirid)");
+            $s->addFilter("fld.childid = %d", $this->initid);
+            if ($user) $s->addFilter("off_user = '%d' or off_user is null", $this->getUserId());
+            $s->noViewControl();
+            $t=$s->search();
+            $ids=array();
+            foreach ($t as $v) {
+                $ids[]=$v['off_domain'];
+                if ($folderName) $ids[]=$v["name"];
+            }
+            return array_unique($ids);
+        }
+        return null;
+    }
+    
+    /**
+     * attach lock to specific domain.
+     * @param int $domainId domain identificator
+     */
+    public function lockToDomain($domainId)
+    {
+        if ($this->locked == $this->userid) {
+            $this->lockdomainid = $domainId;
+            $this->modify(true, array(
+                "lockdomainid"
+            ), true);
+        }
+    }
+    
+    /**
+     * update Domain list
+     */
+    public function updateDomains()
+    {
+        $domains = $this->getDomainIds(false, true);
+        //delete domain lock if is not in the list
+        if ($this->lockdomainid && (!in_array($this->lockdomainid, $domains))) $this->lockdomainid = '';
+        $this->domainid = trim($this->_array2val($domains));
+        $this->modify(true, array(
+            "domainid",
+            "lockdomainid"
+        ), true);
+    }
+  /**
+     * verify is doc is set in a domain
+     */
+    public function isInDomain($user=true)
+    {
+        if ($user) {
+            global $action;
+            $login=$action->user->login;
+            if (preg_match('/_'.$login.'$/m', $this->domainid)) return true;
+            return false;
+        } else {
+            return (!empty($this->domainid ));
+        }
+    }
+    
+  
+  
   /**
    * Parse a zone string "FOO:BAR[-1]:B:PDF?k1=v1,k2=v2" into an array:
    *
