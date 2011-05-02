@@ -662,6 +662,26 @@ create sequence seq_id_users start 10";
   }
   
 
+  /**
+   * verify if user is member of group (recursive)
+   * @return boolean
+   */
+  public function isMember($uid) {
+      $tr = array();
+
+      $g=new Group($this->dbaccess);
+      $lg=$g->getChildsGroupId($this->id);
+      $lg[]=$this->id;
+      $cond=getSqlCond($lg,"idgroup",true);
+      if (! $cond) $cond="true";
+
+      $sql=sprintf("select users.id from users, groups where %s and (groups.iduser=users.id) and users.id=%d and isgroup != 'Y'",
+                     $cond,$uid);
+
+      $err=simpleQuery($this->dbaccess,$sql,$result, true, true);
+ 
+      return ($result!='');
+  }
   // only use for group
   // get user member of group
   function getGroupUserList($qtype="LIST", $withgroup=false) {
