@@ -79,7 +79,7 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 		if ($err != "")   $action->ExitError($err);
 
 		// test object permission before modify values (no access control on values yet)
-		$err=$doc-> CanUpdateDoc();
+		$err=$doc-> canEdit();
 		if ($err != "")  $action-> ExitError($err);
 
 	}

@@ -33,7 +33,7 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
     <IMG align="left" class="documentIcon" border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1"  SRC="[iconsrc]" onclick="visibleornot('url[id]');" >
 <IMG  style="float:left" class="emblem" title="[locked]" SRC="[emblem]">
    [IF forum]<a href="#forum" style="border:0px"><IMG  style="border:0px;float:left;cursor:pointer" class="emblem" title="[TEXT:goto forum]" SRC="[IMG:forum.png]"></a>[ENDIF forum]
-   [IF inDomain]<IMG  style="float:left" class="emblem" title="[TEXT:Insert in a domain]"  SRC="[IMG:domainsync.png]">[ENDIF inDomain]
+   [IF inDomain]<IMG  style="float:left" class="emblem" title="[TEXT:Inserted in a domain]"  SRC="[IMG:domainsync.png]">[ENDIF inDomain]
    [IF postitid]<IMG  style="float:left;cursor:pointer" class="emblem" title="[TEXT:View postit]" onclick="showbox('POSTIT')" SRC="[IMG:stickynotes.png]">[ENDIF postitid]
   [IF RSS]<a href="[rsslink]"><IMG  style="float:left;border:none" class="emblem" title="[TEXT:RSS link]" SRC="[IMG:rss22.png]"></a>[ENDIF RSS]
   <span class="familyTitle">[classtitle]</span><br>

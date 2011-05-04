@@ -54,7 +54,7 @@ function modattribute(&$action) {
 
     if ($err != "") {    
       // test object permission before modify values (no access control on values yet)
-      $err=$doc->CanUpdateDoc();
+      $err=$doc->canEdit();
     }
 
 
