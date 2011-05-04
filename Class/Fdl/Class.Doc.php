@@ -908,7 +908,7 @@ create unique index i_docir on doc(initid, revision);";
      * the diffence between ::canUpdateDoc is that document is not need to be locked
      * @return string empty means user can update else message of the raison
      */
-    public function canEdit()
+    public function canEdit($verifyDomain=true)
     {
         if ($this->locked == -1) {
             $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title, $this->revision);
@@ -916,7 +916,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         if ($this->userid == 1) return ""; // admin can do anything but not modify fixed doc
         $err = "";
-        if ($this->lockdomainid > 0) $err = sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
+        if ($verifyDomain && ($this->lockdomainid > 0)) $err = sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
         else {
             if ($this->withoutControl) return ""; // no more test if disableEditControl activated
             if (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
@@ -3084,12 +3084,14 @@ create unique index i_docir on doc(initid, revision);";
      * @param int $index index in case of value in row
      * @param array $bargs first arguments sent before for the method
      * @param array $mapArgs indexed array to add more possibilities to map arguments
+     * @param string $err error message
      * 
      * @return string the value
      */
-    final public function applyMethod($method, $def = "", $index = -1, array $bargs = array(), array $mapArgs=array())
+    final public function applyMethod($method, $def = "", $index = -1, array $bargs = array(), array $mapArgs=array(), &$err='')
     {
         $value = $def;
+        $err='';
         if (preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method, $reg)) {
             $staticClass=$reg[1];
             if (! $staticClass) $staticClass=$this;
@@ -3162,7 +3164,9 @@ create unique index i_docir on doc(initid, revision);";
                     ), $args);
                 }
             } else {
-                addWarningMsg(sprintf(_("Method [%s] not exists"), $method));
+                $err=sprintf(_("Method [%s] not exists"), $method);
+                addWarningMsg($err);
+                return null;
             }
         
         }
@@ -7447,22 +7451,22 @@ create unique index i_docir on doc(initid, revision);";
      * get image emblem for the doc like lock/nowrite
      * @return string the url of the image
      */
-    function getEmblem()
+    function getEmblem($size=null)
     {
         global $action;
-        if ($this->confidential > 0) return $action->getImageUrl("confidential.gif");
-        else if ($this->locked == -1) return $action->getImageUrl("revised.png");
+        if ($this->confidential > 0) return $action->getImageUrl("confidential.gif",true, $size);
+        else if ($this->locked == -1) return $action->getImageUrl("revised.png",true, $size);
         else if ($this->lockdomainid > 0) {
             if ($this->locked > 0) {
-                if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockorange.png");
-                else return $action->getImageUrl("lockred.png");
+                if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockorange.png",true, $size);
+                else return $action->getImageUrl("lockred.png",true, $size);
             } else
-                return $action->getImageUrl("lockorange.png");
-        } else if ($this->allocated == $this->userid) return $action->getImageUrl("lockblue.png");
-        else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockgreen.png");
-        else if ($this->locked != 0) return $action->getImageUrl("lockred.png");
-        else if ($this->archiveid != 0) return $action->getImageUrl("archive.png");
-        else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png");
+                return $action->getImageUrl("lockorange.png",true, $size);
+        } else if ($this->allocated == $this->userid) return $action->getImageUrl("lockblue.png",true, $size);
+        else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockgreen.png",true, $size);
+        else if ($this->locked != 0) return $action->getImageUrl("lockred.png",true, $size);
+        else if ($this->archiveid != 0) return $action->getImageUrl("archive.png",true, $size);
+        else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png",true, $size);
         else return $action->getImageUrl("1x1.gif");
     }
 
@@ -7910,21 +7914,36 @@ create unique index i_docir on doc(initid, revision);";
     {
         $domains = $this->getDomainIds(false, true);
         //delete domain lock if is not in the list
-        if ($this->lockdomainid && (!in_array($this->lockdomainid, $domains))) $this->lockdomainid = '';
-        $this->domainid = trim($this->_array2val($domains));
+         $this->domainid = trim($this->_array2val($domains));
+        if ($this->lockdomainid) {
+            if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
+            else {
+                if ($this->locked > 0) {
+                    $err = simpleQuery($this->dbaccess, sprintf("select login from users where id=%d", $this->locked), $lockLogin, true, true);
+                    
+                    if ($lockLogin && (!$this->isInDomain(true, $lockLogin))) {
+                        $this->lockdomainid = '';
+                    }
+                }
+            }
+        }
+       
         $this->modify(true, array(
             "domainid",
             "lockdomainid"
         ), true);
     }
-  /**
+
+    /**
      * verify is doc is set in a domain
+     * @param boolean $user limit domains where user as set document
+     * @param string $login another login else current user
      */
-    public function isInDomain($user=true)
+    public function isInDomain($user=true, $login='')
     {
         if ($user) {
             global $action;
-            $login=$action->user->login;
+            if (! $login) $login=$action->user->login;
             if (preg_match('/_'.$login.'$/m', $this->domainid)) return true;
             return false;
         } else {
