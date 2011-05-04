@@ -60,7 +60,7 @@ class DocWait extends DbObj
      * document status message
      * @public string
      */
-    public $statusMessage;
+    public $statusmessage;
     
     /**
      * arg of code
@@ -112,7 +112,7 @@ create sequence seq_waittransaction start 1;
     {
         $err = '';
         $this->status = $this->computeStatus();
-        if ($this->status == self::conflict) $err = $this->statusMessage;
+        if ($this->status == self::conflict) $err = $this->statusmessage;
         else {
             $wdoc = $this->getWaitingDocument();
             $wdoc->doctype = $wdoc->defDoctype; // become consistent
@@ -120,7 +120,7 @@ create sequence seq_waittransaction start 1;
             $err = $wdoc->save($info);
             if ($err) {
                 $this->status = self::constraint;
-                $this->statusMessage = $info;
+                $this->statusmessage = $info;
             } else {
                 $this->resetWaitingDocument();
             }
@@ -133,9 +133,10 @@ create sequence seq_waittransaction start 1;
     {
         $doc = $this->getRefererDocument(true);
         if ($doc) {
+            $this->refererid=$doc->id;
             $this->orivalues = serialize($doc->getValues());
             $this->status = self::notModified;
-            $this->statusMessage = '';
+            $this->statusmessage = '';
             $this->transaction = 0;
             $this->date = date('Y-m-d H:i:s.u');
             $this->modify();
@@ -227,19 +228,19 @@ create sequence seq_waittransaction start 1;
                 $originValues = unserialize($this->orivalues);
                 $currentDoc = $this->getRefererDocument();
                 if ($currentDoc->isAlive()) {
-                    $err = $currentDoc->canEdit();
+                    $err = $currentDoc->canEdit(false);
                     if ($err) {
-                        $this->statusMessage = $err;
+                        $this->statusmessage = $err;
                         $this->status = self::conflict;
                     } else {
                         if ($currentDoc->locked != $currentDoc->getSystemUserId()) {
-                            $this->statusMessage = sprintf("document %s [%d] not locked");
+                            $this->statusmessage = sprintf("document %s [%d] not locked");
                             $this->status = self::conflict;
                         } else {
                             if ($mask) $currentDoc->ApplyMask($mask);
                             $attrs = $this->getWriteAttribute($currentDoc);
                             $this->status = self::notModified;
-                            $this->statusMessage = '';
+                            $this->statusmessage = '';
                             /*print_r2(array(
                                 "cur" => $currentDoc->getValues(),
                                 "wai" => $this->getWaitingDocument()->getValues(),
@@ -252,14 +253,14 @@ create sequence seq_waittransaction start 1;
                                 $cvalue = $currentDoc->getValue($oa->id);
                                 if ($ovalue != $cvalue) {
                                     $this->status = self::conflict;
-                                    $this->statusMessage .= sprintf(_("conflict %s [%s]: referer=%s, modified=%s"), $oa->getLabel(), $oa->id, $cvalue, $ovalue) . "\n";
+                                    $this->statusmessage .= sprintf(_("conflict %s [%s]: referer=%s, modified=%s"), $oa->getLabel(), $oa->id, $cvalue, $ovalue) . "\n";
                                 }
                             }
-                            $this->statusMessage = substr($this->statusMessage, 0, -1);
+                            $this->statusmessage = substr($this->statusmessage, 0, -1);
                         }
                     }
                 } else {
-                    $this->statusMessage = sprintf("document %s [%d] not exists");
+                    $this->statusmessage = sprintf("document %s [%d] not exists");
                     $this->status = self::conflict;
                 }
             } else {
