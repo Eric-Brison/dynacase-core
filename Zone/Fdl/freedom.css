@@ -56,6 +56,12 @@ TR.FREEDOMBack2{
 	color : [CORE_TEXTFGCOLOR];
 }
 
+a.relation {
+	padding-left:15px;
+	background-repeat: no-repeat;
+}
+
+
 TABLE.edittable TD { vertical-align:top; }
 
 TD.FREEDOMText, .FREEDOMText {
