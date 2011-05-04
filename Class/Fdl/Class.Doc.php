@@ -968,7 +968,7 @@ create unique index i_docir on doc(initid, revision);";
       if ($this->profid > 0) 	$err = $this->Control("unlock"); // first control unlock privilege
       else $err=_("cannot unlock"); // not control unlock if the document is not controlled
     }
-    if ($err != "") $err=$this->CanUpdateDoc();
+    if ($err != "") $err=$this->canEdit();
     else {      
       $err = $this->Control("edit");
       if ($err != "") {
@@ -3083,24 +3083,29 @@ create unique index i_docir on doc(initid, revision);";
      * @param string $def default value if no method
      * @param int $index index in case of value in row
      * @param array $bargs first arguments sent before for the method
+     * @param array $mapArgs indexed array to add more possibilities to map arguments
      * 
      * @return string the value
      */
-    final public function ApplyMethod($method, $def = "", $index = -1, $bargs = false)
+    final public function applyMethod($method, $def = "", $index = -1, array $bargs = array(), array $mapArgs=array())
     {
         $value = $def;
-        if (preg_match("/::([^\(]+)\(([^\)]*)\)/", $method, $reg)) {
-            if (method_exists($this, $reg[1])) {
-                if (($reg[2] == "") && (!$bargs)) {
+        if (preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method, $reg)) {
+            $staticClass=$reg[1];
+            if (! $staticClass) $staticClass=$this;
+            $methodName=$reg[2];
+            $returnArgs=$reg[3];
+            if (method_exists($staticClass, $methodName)) {
+                if (($returnArgs == "") && (empty($bargs))) {
                     // without argument
                     $value = call_user_func(array(
-                        $this,
-                        $reg[1]
+                        $staticClass,
+                        $methodName
                     ));
                 } else {
                     // with argument
                     //$args = explode(",", $reg[2]);
-                    $sargs=$reg[2];
+                    $sargs=$returnArgs;
                     $args=array();
                     $ak=0;
                     $bq='';
@@ -3126,34 +3131,38 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                     
-                    if ($bargs && is_array($bargs)) $args = array_merge($bargs, $args);
-                    if ($attrid != "") {
-                        $this->AddParamRefresh($reg[2], $attrid);
-                    }
+                    if (count($bargs)>0) $args = array_merge($bargs, $args);
                     
                     foreach ( $args as $k => $v ) {
                         if ($v != " ") $v = trim($v);
-                        if ($attr = $this->getAttribute($v)) {
-                            if ($attr->inArray()) $args[$k] = $this->GetTValue($v, "", $index);
+                        $mapped=$mapArgs[$v];
+                        if ($mapped) {
+                            if (is_object($mapped)) $args[$k]=&$mapArgs[$v];
+                            else $args[$k]=$mapArgs[$v];
+                        } elseif ($attr = $this->getAttribute($v)) {
+                            if ($attr->inArray()) $args[$k] = $this->getTValue($v, "", $index);
                             else $args[$k] = $this->GetValue($v);
                         } else {
-                            if (($v[0] == "'") || ($v[0] == '"')) {
+                            if ($v == 'THIS') {
+                                $args[$k] = &$this;
+                            } elseif ($v == 'K') {
+                                $args[$k] = $index;
+                            }  elseif (($v[0] == "'") || ($v[0] == '"')) {
                                 $lc = substr($v, -1);
                                 if (($lc == "'") || ($lc == '"')) $v = substr($v, 1, -1);
                                 else $v = substr($v, 1);
+                                
+                                $args[$k] = $v; // not an attribute just text
                             }
-                            $args[$k] = $v; // not an attribute just text
                         }
-                    
-     //   $args[$k]=$this->GetTValue($args[$k],$def,$index);
                     }
                     $value = call_user_func_array(array(
-                        $this,
-                        $reg[1]
+                        $staticClass,
+                        $methodName,
                     ), $args);
                 }
             } else {
-                addWarningMsg(sprintf(_("Method [%s] not exists"), $reg[1]));
+                addWarningMsg(sprintf(_("Method [%s] not exists"), $method));
             }
         
         }
@@ -4133,27 +4142,31 @@ create unique index i_docir on doc(initid, revision);";
    * if no icon found return doc.gif
    * @return string icon url
    */
-  final public function getIcon($idicon="") {
+  final public function getIcon($idicon="", $size=null) {
 
     global $action;
     if ($idicon=="") $idicon=$this->icon;
     if ($idicon != "") {
     
       if (preg_match(PREGEXPFILE, $idicon, $reg)) {    
+          if ($size) {
+              	$efile="resizeimg.php?vid=".$reg[2]."&size=".$size;
+          } else {
 	$efile="FDL/geticon.php?vaultid=".$reg[2]."&mimetype=".$reg[1];
+          }
       } else {
-	$efile=$action->parent->GetImageUrl($idicon,false);
+	$efile=$action->parent->GetImageUrl($idicon,true, $size);
       }
       return $efile;
 
     } else {
       if ($this->fromid == 0) {
 
-	return  $action->GetImageUrl("doc.gif");
+	return  $action->GetImageUrl("doc.gif",true,$size);
       }
       //$fdoc = new_Doc(newDoc($this->dbaccess, $this->fromid);
     
-      return  $action->GetImageUrl("doc.gif");
+      return  $action->GetImageUrl("doc.gif",true,$size);
       // don't recursivity to increase speed
       //    return $fdoc->geticon();
     }
@@ -4453,7 +4466,7 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $docrev style of link (default:latest, other values: fixed or state(xxx))
    * @return string the html anchor
    */
-  final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
+  final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest", $viewIcon=false) {
     $a="";
     $latest=($docrev=="latest" || $docrev=="");
     if ($htmllink) {
@@ -4462,6 +4475,8 @@ create unique index i_docir on doc(initid, revision);";
       if ($title == "") {
 	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
+          
+       
 	$ul=getParam("CORE_STANDURL");
 	if ($target=="mail") {
 	  $ul=GetParam("CORE_EXTERNURL")."?";
@@ -4479,8 +4494,12 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	    $ec=str_replace("%V%",$id,$ec);
 	    $ecu=str_replace("'",'"',$ec);
-        
-	    $a="<a  onclick='parent.$ecu'>$title</a>";
+	    $ajs;
+	  if ($viewIcon) {
+           simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
+	        $ajs=sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)).$title;
+	    }
+	    $a="<a $ajs onclick='parent.$ecu'>$title</a>";
 	  } else {
 	    if ($docrev=="latest" || $docrev=="" || !$docrev)
 	      $ul.="&latest=Y";
@@ -4506,7 +4525,10 @@ create unique index i_docir on doc(initid, revision);";
           $ul.="&app=FDL&action=FDL_CARD&id=$id";
 	  if ($js) $ajs="oncontextmenu=\"popdoc(event,'$ul');return false;\"" ;
 	  else $ajs="";
-
+	if ($viewIcon) {
+           simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
+	        $ajs.=sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)).$title;
+	    }
 	  $a="<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
 	}
       }
@@ -4969,14 +4991,16 @@ create unique index i_docir on doc(initid, revision);";
 		$link=$this->urlWhatEncode( $oattr->link, $kvalue);
 		if ($link) $thval[]='<a target="'.$dtarget.'" href="'.$link.'">'.$this->getHTMLTitle($vv).'</a>';
 		else $thval[]=$this->getHTMLTitle($vv);
-	      } else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
+	      } else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"),true);
 	    }
 	    if ($oattr->link) $htmllink=false;
 	    $htmlval=implode("<br/>",$thval);
 	  } else {
 	    if ($avalue=="") $htmlval = $avalue;
 	    elseif ($oattr->link != "") $htmlval=$this->getHTMLTitle($avalue);
-	    else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"));
+	    else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"),true);
+	    
+	   
 	  }
 	} else
 	  $htmlval=$avalue;
@@ -7430,8 +7454,8 @@ create unique index i_docir on doc(initid, revision);";
         else if ($this->locked == -1) return $action->getImageUrl("revised.png");
         else if ($this->lockdomainid > 0) {
             if ($this->locked > 0) {
-                if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockorangegreen.png");
-                else return $action->getImageUrl("lockorangered.png");
+                if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockorange.png");
+                else return $action->getImageUrl("lockred.png");
             } else
                 return $action->getImageUrl("lockorange.png");
         } else if ($this->allocated == $this->userid) return $action->getImageUrl("lockblue.png");
