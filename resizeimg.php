@@ -147,7 +147,7 @@ else $location=$img;
 
 
 
-Http_DownloadFile($location,basename($location),"image/png");
+Http_DownloadFile($location,basename($location),"image/png", true);
 //Header("Location: $location");
 
 ?>
