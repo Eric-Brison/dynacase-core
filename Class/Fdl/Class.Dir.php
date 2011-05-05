@@ -276,6 +276,9 @@ Class Dir extends PDir
 			}
 
 			if ($err == "") {
+			    global $action;
+			    $action->AddActionDone("ADDFILE",$this->initid);
+			    
 				$this->updateFldRelations();
 				// use post virtual method
 				if (!$noprepost) $err=$this->postInsertDoc($docid,false);
@@ -487,6 +490,9 @@ Class Dir extends PDir
 			$this->updateFldRelations();
 			$err=$this->postUnlinkDoc($docid);
 		}
+		
+			    global $action;
+			    $action->AddActionDone("DELFILE",$this->initid);
 
 		return $err;
 	}

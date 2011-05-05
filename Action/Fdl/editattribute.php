@@ -42,7 +42,7 @@ function editattribute(&$action) {
   if ($err == "") {
     $action->lay->set("docid",$doc->id);
     $err = $doc->lock(true); // autolock
-    if ($err=="") $action->AddActionDone("LOCKFILE",$doc->id);
+    if ($err=="") $action->AddActionDone("LOCKDOC",$doc->id);
     if ($err != "") {    
       // test object permission before modify values (no access control on values yet)
       $err=$doc->canEdit();

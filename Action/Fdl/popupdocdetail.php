@@ -48,7 +48,7 @@ function getpopupdocdetail(&$action, $docid)
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
-            "target" => "headers",
+            "target" => "prop$docid",
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
@@ -374,7 +374,7 @@ function getpopupdocdetail(&$action, $docid)
     
     addFamilyPopup($tlink, $doc);
     addArchivePopup($tlink, $doc);
-    addOfflinePopup($tlink, $doc);
+    addOfflinePopup($tlink, $doc, "_self", _("Offline menu"));
     
     return $tlink;
 
@@ -650,7 +650,7 @@ function addFamilyPopup(&$tlink, &$doc)
 
 }
 
-function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self")
+function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self", $menu='offline')
 {
     if (file_exists("OFFLINE/Class.DomainManager.php")) {
         include_once ("OFFLINE/Class.DomainManager.php");
@@ -669,9 +669,9 @@ function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self")
                         "confirm" => "false",
                         "control" => "false",
                         "tconfirm" => "",
-                        "target" => "",
+                        "target" => "$target",
                         "visibility" => POPUP_INACTIVE,
-                        "submenu" => _("Offline menu"),
+                        "submenu" => $menu,
                         "barmenu" => "false"
                     );
                     if ($domain->getUserMode($doc->getSystemUserId()) == 'advanced') {
@@ -682,9 +682,9 @@ function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self")
                             "confirm" => "false",
                             "control" => "false",
                             "tconfirm" => "",
-                            "target" => "_self",
+                            "target" => "$target",
                             "visibility" => ((($doc->CanLockFile() == '') && ($doc->lockdomainid == 0)) ? POPUP_ACTIVE : POPUP_INACTIVE),
-                            "submenu" => _("Offline menu"),
+                            "submenu" => $menu,
                             "barmenu" => "false"
                         );
                         $inDomain = in_array($domain->id, $docDomainsId);
@@ -695,9 +695,9 @@ function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self")
                             "confirm" => "false",
                             "control" => "false",
                             "tconfirm" => "",
-                            "target" => "_self",
+                            "target" => "$target",
                             "visibility" => ($inDomain) ? POPUP_INACTIVE : POPUP_ACTIVE,
-                            "submenu" => _("Offline menu"),
+                            "submenu" => $menu,
                             "barmenu" => "false"
                         );
                         
@@ -708,9 +708,9 @@ function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self")
                             "confirm" => "false",
                             "control" => "false",
                             "tconfirm" => "",
-                            "target" => "_self",
+                            "target" => "$target",
                             "visibility" => ($inDomain) ? POPUP_ACTIVE : POPUP_INACTIVE,
-                            "submenu" => _("Offline menu"),
+                            "submenu" => $menu,
                             "barmenu" => "false"
                         );
                     
@@ -724,7 +724,7 @@ function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self")
                         "tconfirm" => "",
                         "target" => "",
                         "visibility" => POPUP_ACTIVE,
-                        "submenu" => _("Offline menu"),
+                        "submenu" => $menu,
                         "barmenu" => "false"
                     );
                 }
