@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-02 12:10+0200\n"
-"PO-Revision-Date: 2011-05-02 12:14+0200\n"
+"POT-Creation-Date: 2011-05-05 14:42+0200\n"
+"PO-Revision-Date: 2011-05-05 14:43+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -2428,6 +2428,9 @@ msgstr "Liste des chemins d'accès"
 msgid "Search linked documents"
 msgstr "Recherche des documents liés"
 
+msgid "Offline menu"
+msgstr "Offline"
+
 #, c-format
 msgid "Insert in %s"
 msgstr "Insérer dans %s"
@@ -2466,9 +2469,6 @@ msgstr "Changer d'état"
 #, c-format
 msgid "Domain %s"
 msgstr "Domaine %s"
-
-msgid "Offline menu"
-msgstr "Offline"
 
 msgid "Book in my space"
 msgstr "Réserver dans mon espace"
@@ -4478,7 +4478,7 @@ msgstr "Envoyer le document"
 msgid "goto forum"
 msgstr "aller au forum"
 
-msgid "Insert in a domain"
+msgid "Inserted in a domain"
 msgstr ""
 
 msgid "View postit"
@@ -6931,7 +6931,7 @@ msgstr "vers public"
 
 #, c-format
 msgid "conflict %s [%s]: referer=%s, modified=%s"
-msgstr ""
+msgstr "conflit %s [%s] : référence=%s, modification=%s"
 
 msgid "impossible conversion"
 msgstr "conversion impossible"
