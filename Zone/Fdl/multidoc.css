@@ -1,0 +1,158 @@
+* { font-family : Trebuchet MS, sans;}
+
+body, html
+{
+	background-color:white;
+	color:#575757;
+	height:95%;
+	/*width:100%;*/
+}
+
+li
+{
+	text-decoration:none;
+	float:left;
+	list-style-type: none; 
+}
+
+#left
+{
+	background-color:white;
+	float:left;
+	width:20%;
+	height: auto;
+	font-size:0.6em;
+	background-color:#D7D7D7;
+	-moz-border-radius: 5px;
+  	-webkit-border-radius: 5px;
+}
+
+#multidoc
+{
+	margin-left:10%;
+	background-color:white;
+	height:90%;
+	float:left;
+	width:70%;
+}
+
+.onglets
+{
+	width:auto;
+	height:40px;
+}
+
+.doc_content
+{
+	height:100%;
+	background-color:white;
+	float:left;
+	width:100%;
+}
+
+.onglets_horizontal
+{
+	float:left;
+	width:30%;
+	height:40px;
+}
+
+.doc_content_horizontal
+{
+	height:100%;
+	background-color:white;
+	float:left;
+	width:70%;
+}
+
+
+.onglet
+{
+	float:left;
+	font-size:0.6em;
+	height:35px;
+	width:auto;
+	background-color:#E6E6E6;
+  	-moz-border-radius: 5px;
+  	-webkit-border-radius: 5px;
+  	-moz-box-shadow: 1px 1px 5px #555;
+  	-webkit-box-shadow: 1px 1px 5px #555;
+  	text-align:center;
+  	cursor:pointer;
+}
+
+.onglet-active
+{
+	float:left;
+	font-size:0.6em;
+	height:35px;
+	width:auto;
+	background-color:#C1C3C3;
+  	-moz-border-radius: 5px;
+  	-webkit-border-radius: 5px;
+  	-moz-box-shadow: 1px 1px 5px #555;
+  	-webkit-box-shadow: 1px 1px 5px #555;
+  	text-align:center;
+  	cursor:pointer;
+}
+
+.clickable
+{
+	float:left;
+}
+
+.content
+{
+	float:left;
+	padding:2px;
+	width:auto;
+	margin:7px;
+	margin-top:10px;
+	font-weight: bold; 
+}
+
+.onglet:hover, .onglet-active:hover
+{
+	text-decoration:underline;
+}
+
+.img_new
+{
+	float:left;
+	margin-top:10px;
+	background-image:url(../images/aller.png);
+	margin-right:2px;
+	width:16px;
+	height:16px;
+}
+
+.icone_doc
+{
+	float:left;
+	margin-top:10px;
+}
+
+	
+.img_suppr
+{
+	float:left;
+	margin-top:10px;
+	background-image:url(../images/suppr.png);
+	margin-right:2px;
+	width:16px;
+	height:16px;
+}
+
+.img_suppr:hover, .img_new:hover
+{
+  	-moz-box-shadow: 1px 1px 5px #555; 
+  	-moz-border-radius: 5px;
+  	-webkit-box-shadow: 1px 1px 5px #555; 
+  	-webkit-border-radius: 5px;
+  	background-color:#EAEAEA;
+}
+
+.clear
+{
+	clear:both;
+}
