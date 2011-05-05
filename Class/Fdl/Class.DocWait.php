@@ -96,12 +96,12 @@ create sequence seq_waittransaction start 1;
      * constant for waiting status"
      */
     const newDocument = "new";
-    const notModified = "uptodate";
+    const upToDate = "uptodate";
     const modified = "modified";
     const conflict = "conflict";
     const constraint = "constraint";
     const invalid = "invalid";
-    const indetermined = "indetermined";
+    const recording = "recording";
     /** referer document @var Doc */
     private $refererDoc = null;
     /** referer document identificator @var int */
@@ -120,9 +120,11 @@ create sequence seq_waittransaction start 1;
             $err = $wdoc->save($info);
             if ($err) {
                 $this->status = self::constraint;
-                $this->statusmessage = $info;
+                $this->statusmessage = $info->error;
+            $this->modify();
             } else {
                 $this->resetWaitingDocument();
+             
             }
         }
         //print "save [$this->status]" . $this->title;
@@ -133,9 +135,9 @@ create sequence seq_waittransaction start 1;
     {
         $doc = $this->getRefererDocument(true);
         if ($doc) {
-            $this->refererid=$doc->id;
+            $this->refererid = $doc->id;
             $this->orivalues = serialize($doc->getValues());
-            $this->status = self::notModified;
+            $this->status = self::upToDate;
             $this->statusmessage = '';
             $this->transaction = 0;
             $this->date = date('Y-m-d H:i:s.u');
@@ -177,7 +179,7 @@ create sequence seq_waittransaction start 1;
             }
         } else {
             
-            if (($this->refererDoc->id != $this->refererDocId) || ($fix=$this->refererDoc->isFixed()) || ($fix===null)) {
+            if (($this->refererDoc->id != $this->refererDocId) || ($fix = $this->refererDoc->isFixed()) || ($fix === null)) {
                 $this->refererDoc = new_doc($this->dbaccess, $this->refererid, true);
                 $this->refererDocId = $this->refererDoc->id;
                 if ($this->waitingDoc) {
@@ -212,7 +214,7 @@ create sequence seq_waittransaction start 1;
     
     public function isValid()
     {
-        return ($this->status == self::newDocument || $this->status == self::modified || $this->status == self::notModified);
+        return ($this->status == self::newDocument || $this->status == self::modified || $this->status == self::upToDate);
     
     }
     
@@ -239,7 +241,7 @@ create sequence seq_waittransaction start 1;
                         } else {
                             if ($mask) $currentDoc->ApplyMask($mask);
                             $attrs = $this->getWriteAttribute($currentDoc);
-                            $this->status = self::notModified;
+                            $this->status = self::upToDate;
                             $this->statusmessage = '';
                             /*print_r2(array(
                                 "cur" => $currentDoc->getValues(),

@@ -29,7 +29,7 @@ class DocWaitManager
             
             $wd->uid=$doc->getSystemUserId();
             $wd->values=serialize($doc->getValues());
-            $wd->status=docWait::indetermined;
+            $wd->status=docWait::recording;
             $wd->title=$doc->getTitle();
             $wd->fromid=$doc->fromid;
             $wd->refererid=$doc->id;
@@ -45,7 +45,7 @@ class DocWaitManager
                 $ori=new_doc($doc->dbaccess, $doc->id, true);
                 if ($ori->isAlive()) {
                 $wd->orivalues=serialize($ori->getValues());
-                $wd->status=docWait::notModified;
+                $wd->status=docWait::upToDate;
                 }
                 $err=$wd->add();
             }
