@@ -4476,11 +4476,9 @@ create unique index i_docir on doc(initid, revision);";
     if ($htmllink) {
     	
       if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'),'',$latest);
-      if ($title == "") {
+      if (trim($title) == "") {
 	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
-          
-       
 	$ul=getParam("CORE_STANDURL");
 	if ($target=="mail") {
 	  $ul=GetParam("CORE_EXTERNURL")."?";
@@ -4498,10 +4496,10 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	    $ec=str_replace("%V%",$id,$ec);
 	    $ecu=str_replace("'",'"',$ec);
-	    $ajs;
+	     $ajs="";
 	  if ($viewIcon) {
            simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
-	        $ajs=sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)).$title;
+	        $ajs.=sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)).$title;
 	    }
 	    $a="<a $ajs onclick='parent.$ecu'>$title</a>";
 	  } else {
@@ -6301,11 +6299,17 @@ create unique index i_docir on doc(initid, revision);";
     $owner = new User("", abs($this->owner));
     $this->lay->Set("username", $owner->firstname." ".$owner->lastname);
     $this->lay->Set("userid", $owner->fid);
+    $this->lay->Set("lockedby", $this->lay->get("locked"));
+    
+      $this->lay->Set("lockdomain",'');
     if ($this->locked== -1) {
       $this->lay->Set("lockedid",false);
     } else {
       $user = new User("", abs($this->locked));
       // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
+      if ($this->lockdomainid) {
+        $this->lay->Set("lockdomain", sprintf(_("in domain %s"), $this->getDocAnchor($this->lockdomainid,'_blank',true,'',false,true,true)));
+      }
       $this->lay->Set("lockedid", $user->fid);
     }
     $state=$this->getState();
@@ -6331,36 +6335,46 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay->Set("revdate", strftime ("%x %T",$this->revdate));
     }
     $this->lay->Set("version", $this->version);
-    
-    $this->lay->Set("profid", abs($this->profid));
-    if ((abs($this->profid) > 0) && ($this->profid != $this->id)) {
-      $pdoc = new_Doc($this->dbaccess, abs($this->profid));
-      $this->lay->Set("profile", $pdoc->title);
-    } else {
-      if ($this->profid == 0)
-	$this->lay->Set("profile", _("no access control"));
-      else {
-	if ($this->dprofid==0) $this->lay->Set("profile", _("specific control"));
-	else {
-	
-	  $this->lay->Set("profile", _("dynamic control"));
-	  $this->lay->Set("profid", abs($this->dprofid));
-	}
-      }
-    }
-    if ($this->cvid == 0) {
-      $this->lay->Set("cview", _("no view control"));
-    } else {  
-      $cvdoc= new_Doc($this->dbaccess, $this->cvid);
-      $this->lay->Set("cview", $cvdoc->title);
-    }
-    if ($this->prelid == 0) {
-      $this->lay->Set("prel", _("no folder"));
-    } else {  
-      $cvdoc= new_Doc($this->dbaccess, $this->prelid);
-      $this->lay->Set("prel", $cvdoc->title);
-    }
-    if ($this->allocated == 0) {
+        
+        if ((abs($this->profid) > 0) && ($this->profid != $this->id)) {
+            
+            $this->lay->Set("profile", $this->getDocAnchor(abs($this->profid), '_blank', true, '', false, 'latest', true));
+        
+        } else {
+            if ($this->profid == 0) {
+                $this->lay->Set("profile", _("no access control"));
+            } else {
+                if ($this->dprofid == 0) {
+                    
+                    $this->lay->Set("profile", $this->getDocAnchor(abs($this->profid), '_blank', true, _("specific control"), false, 'latest', true));
+                
+                } else {
+                    $this->lay->Set("profile", $this->getDocAnchor(abs($this->dprofid), '_blank', true, _("dynamic control"), false,'latest', true));
+                }
+            }
+        }
+        if ($this->cvid == 0) {
+            $this->lay->Set("cview", _("no view control"));
+        } else {
+            $this->lay->Set("cview", $this->getDocAnchor($this->cvid, '_blank', true, '', false, 'latest', true));
+        }
+        if ($this->prelid == 0) {
+            $this->lay->Set("prel", _("no folder"));
+        } else {
+            
+            $this->lay->Set("prel", $this->getDocAnchor($this->prelid, '_blank', true, '', false, 'latest', true));
+            $fldids = $this->getParentFolderIds();
+            
+            foreach ( $fldids as $fldid ) {
+                if ($fldid != $this->prelid) {
+                    $tfld[] = array(
+                        "fld" => $this->getDocAnchor($fldid, '_blank', true, '', false, 'latest', true)
+                    );
+                }
+            }
+            $this->lay->setBlockData("FOLDERS", $tfld);
+        }
+        if ($this->allocated == 0) {
       $this->lay->Set("allocate", _("no allocate"));      
       $this->lay->Set("allocateid", false);
     } else {
@@ -7906,7 +7920,16 @@ create unique index i_docir on doc(initid, revision);";
             ), true);
         }
     }
-    
+    /**
+     * return folder where document is set into
+     * @return array of folder identificators
+     */
+    public function getParentFolderIds()
+    {
+        $fldids=array();
+        $err = simpleQuery($this->dbaccess, sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid), $fldids, true, false);
+        return $fldids;
+    }
     /**
      * update Domain list
      */
