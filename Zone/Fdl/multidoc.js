@@ -1,6 +1,8 @@
 //------------------------------ MULTI DOC MODEL ------------------------------//
 $(function(){
-
+	
+	var bodyTemplate="<div id='tabs' class='tabs'></div><div id='doc_content' class='doc_content'></div>";
+	
 	//Modèle d'un document
  	Doc = Backbone.Model.extend({
  	
@@ -12,7 +14,7 @@ $(function(){
  		
  		url: null,
  			
- 		effacer: function() {
+ 		erase: function() {
 	      this.view.remove();
     	}
  	});
@@ -35,8 +37,11 @@ $(function(){
 		events:
 		{
 			"click .img_new" : "newPage",
-			"click .img_suppr" : "close",
-			"click .clickable" : "open"
+			"click .img_del" : "close",
+			"click .tab" : "open",
+			"mouseover .tabcontent" : "showOptions",
+			"click .tabcontent" : "showOptions",
+			"mouseout .tabcontent" : "hideOptions"
 		},
 		
 		initialize: function() 
@@ -48,10 +53,6 @@ $(function(){
 	   
 		render: function() {			
 			var title = this.model.get('title'); //reçoit le title du document
-			if(title.length>20)
-			{
-				title = title.substr(0,20) + "..";
-			}
 
 	      $(this.el).html(this.template({
 	      	content: title,
@@ -73,7 +74,6 @@ $(function(){
     	
     	close: function()
     	{
-    		//$('#onglet_' + this.model.get('id')).next('.onglet').css('background-color','#838787');
     		if((document.getElementById('frame_' + this.model.get('id')).style.display)=="block")
     		{
     			$('.content_frame').css('display','none');
@@ -81,7 +81,8 @@ $(function(){
     			{
     				$('#frame_' + this.model.get('id')).next().css('display','block');
     				var idnew = $('#frame_' + this.model.get('id')).next().attr('id').substr(6,10);
-    				$('#onglet_' + idnew).removeClass().addClass('onglet-active');
+    				$('#tab_' + idnew).removeClass().addClass('tab-active');   
+    				$('#options_' + idnew).css('visibility','visible');		
     			}
     			else
     			{
@@ -89,7 +90,8 @@ $(function(){
     				{
     					$('#frame_' + this.model.get('id')).prev().css('display','block');
     					var idnew = $('#frame_' + this.model.get('id')).prev().attr('id').substr(6,10);
-    					$('#onglet_' + idnew).removeClass().addClass('onglet-active');
+    					$('#tab_' + idnew).removeClass().addClass('tab-active');
+    					$('#options_' + idnew).css('visibility','visible');
     				}
     			}
     			$('#frame_' + this.model.get('id')).remove();
@@ -98,14 +100,15 @@ $(function(){
     		{
     			$('#frame_' + this.model.get('id')).remove();
     		}
-    		this.model.effacer();
+    		this.model.erase();
    	},
    	
    	open: function()
    	{
    		$('.content_frame').css('display','none');
-   		$('.onglet-active').removeClass().addClass('onglet');
-   		$('#onglet_' + this.model.get('id')).removeClass().addClass('onglet-active');
+   		$('.tab-active').removeClass().addClass('tab');
+   		$('.options').css('visibility','hidden');
+   		$('#tab_' + this.model.get('id')).removeClass().addClass('tab-active');
    		
    		if($('#frame_' + this.model.get('id')).length>0)
    		{
@@ -119,76 +122,66 @@ $(function(){
 
    	},
    
+   	showOptions: function() {
+   		$('#options_' + this.model.get('id')).css('visibility','visible');
+   	},
+   	
+   	hideOptions: function() {
+   		$('#options_' + this.model.get('id')).css('visibility','hidden');
+   	},
+   	
 	   remove: function() {
 	     	$(this.el).remove();
 	   },
 	});
 	
-	DocListView = Backbone.View.extend({
+	MultiDocument = Backbone.View.extend({
 	
 		el: $("#multidoc"),
 		
 		initialize: function() {
-	      _.bindAll(this, 'newOnglet', 'render');
-			Docs.bind('all', this.newOnglet);
+	      _.bindAll(this, 'newTab', 'render');
+			Docs.bind('all', this.newTab);
 	   },
 
-   	newOnglet: function(_title, _icon, _id, _url) {
+   	newTab: function(_title, _icon, _id, _url) {
    		if($('#frame_' + _id).length<=0)
    		{
-	   		doc = new Doc({title: _title, icon: _icon, id: _id, url: _url}); // on instantie notre modèle avec les bons paramètres !
+	   		doc = new Doc({title: _title, icon: _icon, id: _id, url: _url});
 	   		
-		      var view = new DocView({model: doc}); // on crée la vue affiliée au modèle précédemment créé
+		      var view = new DocView({model: doc});
 		 		
-		      this.$("#onglets").append(view.render().el);
+		      this.$("#tabs").append(view.render().el);
 		      view.open();
 	    	}
 	    	else
 	    	{
 	    		$('.content_frame').css('display','none');
-   			$('.onglet-active').removeClass().addClass('onglet');
+   			$('.tab-active').removeClass().addClass('tab');
    			$('#frame_' + _id).css('display','block');
-   			$('#onglet_' + _id).removeClass().addClass('onglet-active');
+   			$('#tab_' + _id).removeClass().addClass('tab-active');
    		}
     	},
     	
-    	setInterface: function(position) {
+    	setInterfacePosition: function(position) {
     		if(position=="left")
     		{
-    			$('#onglets').removeClass().addClass('onglets_horizontal');
+    			$('#tabs').removeClass().addClass('tabs_horizontal');
     			$('#doc_content').removeClass().addClass('doc_content_horizontal');
     		}
 			else
 			{
 				if(position=="top")
 				{
-					$('#onglets').removeClass().addClass('onglets');
+					$('#tabs').removeClass().addClass('tabs');
     				$('#doc_content').removeClass().addClass('doc_content');
     			}
 			}
+    	},
+    	
+    	setLocation: function(div) {
+    		$('#' + div).append(bodyTemplate);
     	}
 
    });
-   window.MultiDoc = new DocListView({model:Docs});
- 
-
- // TESTS
- // URL TYPE : http://localhost/dynacase/?app=FDL&action=FDL_CARD&latest=Y&id=1017
- $('#idopen').keypress( function(event) {
-   if (event.keyCode == 13) {
-  		 var cpt = document.getElementById('idopen').value;  
- 		MultiDoc.newOnglet("Document" + cpt, "doc2", cpt, "http://localhost/dynacase/?app=FDL&action=FDL_CARD&latest=Y&id=" + cpt);
- 		$("#left").append("<br/>Nouvel onglet : <br/><b>MultiDoc.newOnglet('Document" + cpt + "', 'doc2', '" + cpt + "','http://...id=" + cpt + "');</b>")
-	} 	
- 	});
- 	
- 	$('.left').click( function() {
-  		 MultiDoc.setInterface("left");
-       $("#left").append("<br/><FONT color='red'>mode <b>LEFT</b> : </FONT> MultiDoc.setInterface('left');")
- 	});
- 	
-  $('.top').click( function() {
-		 MultiDoc.setInterface("top");
- 		 $("#left").append("<br/><FONT color='red'>mode <b>TOP</b> : </FONT> MultiDoc.setInterface('top');")
- 	});
  });
