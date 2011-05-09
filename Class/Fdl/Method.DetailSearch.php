@@ -455,6 +455,8 @@ Class _DSEARCH extends DocSearch {
 								$cond1 = " $col !='". implode("' and $col != '",$tkids)."'";
 							}
 							$cond= " (($cond1) or ($col is null))";
+						} elseif ($op=='!~*') {
+						  $cond = sprintf("( (%s is null) or (%s %s %s) )", $col, $col, trim($op), $this->_pg_val($val));
 						}
 
 						break;
@@ -889,11 +891,16 @@ Class _DSEARCH extends DocSearch {
 		   "locked" => _("id locked"),
 		   "allocated" => _("id allocated"),
 		   "svalues"=> _("any values"));
-		$tattr[]=array("attrid"=> "_prop",
-                   "attrtype"=>"set",
-                   "attrdisabled"=>"disabled",
-                   "attrname" => _("DocProperties"));
-                foreach($internals as $k=>$v) {
+
+		$tattr[]=array(
+			"attrid"=> "_prop",
+			"attrtype"=>"set",
+			"attrdisabled"=>"disabled",
+			"attrname" => _("DocProperties"),
+			"ismultiple" => 'no'
+		);
+
+		foreach($internals as $k=>$v) {
 			if ($k=="revdate") $type="date";
 			else if ($k=="owner") $type="docid";
 			else if ($k=="locked") $type="docid";
@@ -902,10 +909,14 @@ Class _DSEARCH extends DocSearch {
 			else if ($k=="revision") $type="int";
 			else if ($k=="state") $type="docid";
 			else $type="text";
-			$tattr[]=array("attrid"=> $k,
-		   "attrtype"=>$type,
-                   "attrdisabled"=>"",
-		   "attrname" => $v);
+
+			$tattr[]=array(
+				"attrid"=> $k,
+				"ismultiple" => 'no',
+				"attrtype"=>$type,
+				"attrdisabled"=>"",
+				"attrname" => $v
+			);
 		}
 
 		$fdoc=new_Doc($this->dbaccess, abs($famid));
@@ -913,18 +924,21 @@ Class _DSEARCH extends DocSearch {
 		$lastSet=array();
                 foreach($zpi as $k=>$v) {
                 	if ($v->type == "array") continue;
-                	if ($v->isMultiple() && ($v->type!='file')) $type="array";
-                	else $type=$v->type;   
+                	$type = $v->type;
                 	if ($lastSet[0] != $v->fieldSet->id) {
                 		$tset=$this->editGetSetAttribute($v->fieldSet);
                 		if (count($tset)>0) $tattr=array_merge($tattr, array_reverse($tset));
                 	}
 
-                	$tattr[]=array("attrid"=> $v->id,
-		   "attrtype"=>$type,
-                   "attrdisabled"=>"",
-		   "attrname" => $v->getLabel());
+                	$tattr[]=array(
+                		"attrid"=> $v->id,
+                		"ismultiple"=> ($v->isMultiple())?'yes':'no',
+                		"attrtype"=>$type,
+                		"attrdisabled"=>"",
+                		"attrname" => $v->getLabel()
+                	);
                 }
+
 		$this->lay->SetBlockData("ATTR", $tattr);
 
 		foreach($this->top as $k=>$v) {
@@ -1011,10 +1025,14 @@ Class _DSEARCH extends DocSearch {
 					}
 					if (! $stateselected) $tcond[$k]["ISENUM"]=false;
 					$this->lay->SetBlockData("sstate$k",$tstates );
-					$tattr[]=array("attrid"=> $taid[$k],
-							 "attrtype"=>"docid",
-		       "attrselected" => "selected",
-		       "attrname" => _("state"));
+
+					$tattr[]=array(
+						"attrid"=> $taid[$k],
+						"ismultiple" => 'no',
+						"attrtype"=>"docid",
+						"attrselected" => "selected",
+						"attrname" => _("state")
+					);
 				} else {
 					if ($oa->type=="enum") {
 						$te=$oa->getEnum();
@@ -1029,26 +1047,34 @@ Class _DSEARCH extends DocSearch {
 						$this->lay->SetBlockData("sstate$k",$tstates );
 						if (! $enumselected) $tcond[$k]["ISENUM"]=false;
 					}
-					$tattr[]=array("attrid"=> "_prop",
-                                                   "attrtype"=>"set",
-                                                   "attrdisabled"=>"disabled",
-                                                   "attrselected"=>"",
-                                                    "attrname" => _("DocProperties"));
+
+					$tattr[]=array(
+						"attrid"=> "_prop",
+						"ismultiple" => 'no',
+						"attrtype"=>"set",
+						"attrdisabled"=>"disabled",
+						"attrselected"=>"",
+						"attrname" => _("DocProperties")
+					);
+
 					foreach($internals as $ki=>$vi) {
 						if ($ki=="revdate") $type="date";
 						else if ($ki=="owner") $type="docid";
 						else $type="text";
-						$tattr[]=array("attrid"=> $ki,
-							 "attrtype"=>$type,
-							 "attrselected" => ($taid[$k]==$ki)?"selected":"",
+
+						$tattr[]=array(
+							"attrid"=> $ki,
+							"ismultiple" => 'no',
+							"attrtype"=>$type,
+							"attrselected" => ($taid[$k]==$ki)?"selected":"",
                                                            "attrdisabled"=>"",
-							 "attrname" => $vi);
+							 "attrname" => $vi
+						);
 					}
 					$lastSet=array();
 					$this->editGetSetAttribute(null,true);
 					foreach($zpi as $ki=>$vi) {
-						if ($vi->inArray() && ($vi->type!='file')) $type="array";
-						else $type=$vi->type;
+						$type = $vi->type;
 						if ($lastSet[0] != $vi->fieldSet->id) {
 							
                                                 $tset=$this->editGetSetAttribute($vi->fieldSet);
@@ -1057,11 +1083,14 @@ Class _DSEARCH extends DocSearch {
                               
                         }
                         
-						$tattr[]=array("attrid"=> $vi->id,
-			 				"attrtype"=>$type,
-			 "attrselected" => ($taid[$k]==$vi->id)?"selected":"",
-                   "attrdisabled"=>"",
-			 "attrname" => $vi->getLabel());
+						$tattr[]=array(
+							"attrid"=> $vi->id,
+							"ismultiple" => ($vi->isMultiple())?'yes':'no',
+							"attrtype"=>$type,
+							"attrselected" => ($taid[$k]==$vi->id)?"selected":"",
+							"attrdisabled"=>"",
+							"attrname" => $vi->getLabel()
+						);
 					}
 				}
 				$this->lay->SetBlockData("attrcond$k", $tattr);
