@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 08:24+0100\n"
-"PO-Revision-Date: 2011-03-24 08:28+0100\n"
+"POT-Creation-Date: 2011-04-01 10:56+0200\n"
+"PO-Revision-Date: 2011-04-01 10:59+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -550,13 +550,9 @@ msgstr "ne peut créer %s : %s\n"
 msgid "vault %s created.\n"
 msgstr "coffre %s créé.\n"
 
-#, fuzzy, c-format
+#, c-format
 msgid "vault already created %s: aborted\n"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"coffre déjà crée %s: abandon\n"
-"#-#-#-#-#  VAULT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"coffre déjà créé %s : abandon\n"
+msgstr "coffre déjà crée %s: abandon\n"
 
 #, c-format
 msgid "ERROR %s\n"
@@ -660,13 +656,8 @@ msgstr "révision"
 msgid "owner"
 msgstr "identifiant propriétaire"
 
-#, fuzzy
 msgid "short_name"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"nom court\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Nom abr&eacute;g&eacute;"
+msgstr "nom abrégé"
 
 msgid "need to select workflow"
 msgstr "le cycle doit être sélectionné"
@@ -1020,8 +1011,11 @@ msgstr ""
 "nombre d'heures : durée pendant lequel un minuteur peut être activé lorsque "
 "son heure à sonné"
 
-msgid "Documents management"
-msgstr "Gestion documentaire"
+msgid "Docs admin"
+msgstr "Docs admin"
+
+msgid "Documents administration"
+msgstr "Administration des documents"
 
 msgid "Access Families Management"
 msgstr "Accès à la gestion des familles"
@@ -1029,13 +1023,8 @@ msgstr "Accès à la gestion des familles"
 msgid "Access Batch Management"
 msgstr "Accès à la gestion par des lots"
 
-#, fuzzy
 msgid "Access To My Own account"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"Accès à mon compte\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Accès à mon propre compte"
+msgstr "Accès à mon compte"
 
 msgid "Access To Read Only"
 msgstr "Accès en lecture seule"
@@ -1728,11 +1717,17 @@ msgstr "Recherche générale"
 msgid "freedom global search"
 msgstr "Recherche générale dynacase"
 
-msgid "freedom  global search"
-msgstr "Recherche générale dynacase"
+msgid "global search"
+msgstr ""
 
-msgid "freedom detailled global search"
-msgstr "recherche détaillée générale"
+msgid "global search detail results"
+msgstr ""
+
+msgid "global search results"
+msgstr ""
+
+msgid "global edit detail search"
+msgstr ""
 
 msgid "show request for password"
 msgstr "Affiche le lien pour la demande de mot de passe"
@@ -3748,6 +3743,12 @@ msgstr "Cr&eacute;ation d'application"
 msgid "titlemodify"
 msgstr "Modification de l'application"
 
+msgid "param Changed"
+msgstr "Modifié"
+
+msgid "param not changed"
+msgstr "Inchangé"
+
 msgid "err_mod_parameter"
 msgstr "Impossible de modifier le param&egrave;tre"
 
@@ -3885,20 +3886,30 @@ msgstr "Modification des attributs énumérés de la famille : %s"
 msgid "no vcard file specified"
 msgstr "pas de fichier vcard spécifié"
 
-msgid "more families"
-msgstr "toutes les familles"
+msgid "General search"
+msgstr ""
+
+msgid "search dynacase documents"
+msgstr "rechercher des documents..."
+
+msgid "View next results"
+msgstr "voir les documents suivants..."
 
 #, c-format
-msgid "View %d next results"
-msgstr "Voir les %d prochains résultats"
+msgid "family search result"
+msgstr "Famille"
 
 #, c-format
-msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
-msgstr "<b>%d</b> résultats pour <b>%s</b> %s"
+msgid "No document found for <b>%s</b>%s"
+msgstr "Aucun document pour la recherche \"<b>%s</b>\"%s"
 
 #, c-format
-msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
-msgstr "<b>%d</b> résultat pour <b>%s</b> %s"
+msgid "One document for <b>%s</b>%s"
+msgstr "Un document trouvé pour <b>%s</b>%s"
+
+#, c-format
+msgid "Found <b>%d</b>  Result for <b>%s</b>%s"
+msgstr "<b>%d</b> documents trouvés pour <b>%s</b>%s"
 
 #, c-format
 msgid "document too big (%dKo): no highlight"
@@ -5780,6 +5791,9 @@ msgstr "rapport à (email)"
 msgid "proceed background import"
 msgstr "Effectuer l'import en tache de fond"
 
+msgid "more families"
+msgstr "toutes les familles"
+
 msgid "restrict to preferred families"
 msgstr "restriction aux familles préférées"
 
@@ -6097,9 +6111,6 @@ msgstr "Sélectionnez un style"
 
 msgid "style parameters list"
 msgstr "Liste des paramètres style"
-
-msgid "param Changed"
-msgstr "Modifié"
 
 msgid "application parameters list"
 msgstr "Liste des paramètres applicatif"
@@ -6433,21 +6444,6 @@ msgstr "Résultat de l'importation VCARD"
 msgid "State"
 msgstr "État"
 
-msgid "Undisplay the search query"
-msgstr "Ne pas afficher la requête"
-
-msgid "Mask"
-msgstr "Masquer"
-
-msgid "View the search query"
-msgstr "Voir la requête"
-
-msgid "Unmask"
-msgstr "Démasquer"
-
-msgid "Simple search"
-msgstr "Recherche simple"
-
 msgid "Add filter"
 msgstr "Ajouter une condition"
 
@@ -6463,6 +6459,12 @@ msgstr "Ajout du moteur de recherche DYNACASE dans votre navigateur"
 msgid "Add search engine"
 msgstr "Ajouter le moteur de recherche"
 
+msgid "switch search mode (basic/advanced)"
+msgstr "recherche simple / recherche avancée"
+
+msgid "Basic search"
+msgstr "Recherche simple"
+
 msgid "Advanced search"
 msgstr "Recherche avancée"
 
@@ -6474,6 +6476,9 @@ msgstr "Fermer l'aide à la recherche"
 
 msgid "Open in new window"
 msgstr "Ouvrir dans une nouvelle fenêtre"
+
+msgid "searchdate prefix"
+msgstr "exécutée le "
 
 msgid "warning_name"
 msgstr "la saisie de votre nom est obligatoire."
@@ -7577,6 +7582,13 @@ msgstr ""
 msgid "Dynamic template %s not an odt file "
 msgstr ""
 
+msgid "viewDoc did not returned a valid file"
+msgstr "viewDoc n'a pas retourné de fichier valide"
+
+#, fuzzy, c-format
+msgid "Error opening %s file '%s'"
+msgstr "Erreur lors de l'envoi du fichier"
+
 #, c-format
 msgid "convertion from %s to %s family"
 msgstr "conversion de la famille %s vers la famille %s"
@@ -7863,8 +7875,8 @@ msgid "control :: user identificator is null"
 msgstr "control :: identifiant de l'utilisateur est vide"
 
 #, c-format
-msgid "template file %s not found"
-msgstr ""
+msgid "template file (layout [%s]) not found"
+msgstr "Fichier modèle (zone [%s]) non trouvé"
 
 #, c-format
 msgid "unknow set for attribute %s %s"
@@ -8723,6 +8735,40 @@ msgstr "%s non présent dans %s"
 msgid "error ::moveDocument %s %s"
 msgstr "erreur ::moveDocument %s %s"
 
+#~ msgid "Documents management"
+#~ msgstr "Gestion documentaire"
+
+#, fuzzy
+#~ msgid "View %d next results"
+#~ msgstr "documents suivants..."
+
+#~ msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
+#~ msgstr "<b>%d</b> résultats pour <b>%s</b> %s"
+
+#~ msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
+#~ msgstr "<b>%d</b> résultat pour <b>%s</b> %s"
+
+#~ msgid "freedom  global search"
+#~ msgstr "Recherche générale dynacase"
+
+#~ msgid "freedom detailled global search"
+#~ msgstr "recherche détaillée générale"
+
+#~ msgid "Undisplay the search query"
+#~ msgstr "Ne pas afficher la requête"
+
+#~ msgid "Mask"
+#~ msgstr "Masquer"
+
+#~ msgid "View the search query"
+#~ msgstr "Voir la requête"
+
+#~ msgid "Unmask"
+#~ msgstr "Démasquer"
+
+#~ msgid "Simple search"
+#~ msgstr "Recherche simple"
+
 #~ msgid "Return to results"
 #~ msgstr "Retour aux résultats"
 
@@ -8731,3 +8777,6 @@ msgstr "erreur ::moveDocument %s %s"
 
 #~ msgid "create databases ?"
 #~ msgstr "Créer les bases de données ?"
+
+#~ msgid "familie seearch result"
+#~ msgstr "limité à la famille"

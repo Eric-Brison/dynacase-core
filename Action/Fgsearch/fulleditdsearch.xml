@@ -1,23 +1,4 @@
-[ZONE FDL:HTMLHEAD?title=[searchtitle]]
 
-
-<style>
-SELECT.little { font-size:90%; }
-DIV.search {
-  width:50%;
-  position:absolute;
-  top:30px;right:30px;
-  border:[COLOR_B8] 2px outset;
-  background-color:[COLOR_WHITE];
-  padding:10px;
-  -moz-border-radius:15px;
-}
-</style>
-
-<script>
-addEvent(window,"load",resizeiframedetail);
-addEvent(window,"resize",resizeiframedetail);
-</script>
 <div class="search" id="dsearch">
 <table border=0 width="100%">
 <thead>
@@ -27,8 +8,8 @@ addEvent(window,"resize",resizeiframedetail);
 </td>
 
 <td class="und" >
-  <select  name="_se_attrids[]"  onchange="filterfuncz(this)">
-  [BLOCK ATTR]<option atype="[attrtype]" value="[attrid]">[attrname]</option>
+  <select  class="cond" name="_se_attrids[]"  onchange="filterfuncz(this)">
+  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" [attrdisabled] value="[attrid]">[attrname]</option>
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">
@@ -71,30 +52,30 @@ addEvent(window,"resize",resizeiframedetail);
 </thead>
 </table>
 
-<table align="right"><tr><td align="right"><a  title="[TEXT:Undisplay the search query]" onclick="maskfilter()" id="amask" >[TEXT:Mask]</a><a  style="display:none" onclick="unmaskfilter()" id="aunmask" title="[TEXT:View the search query]">[TEXT:Unmask]</a></td>
-</tr></table>
-<br>
 
-<form  id="fedit"  
+<form  id="feditdetail"  
        class="fborder" style="display:inline"
-       name="searchdoc"       
-       target="searchresult"
+       name="searchddetail"       
+       target="nextresult"
        method="POST" ENCTYPE="multipart/form-data" 
        action="[CORE_STANDURL]&app=FGSEARCH&action=FULLDSEARCH" >
 
-<table id="famselection" width="100%" ><tr>
-<td  align="right"></td>
-<td><select onchange="document.location.href='[CORE_STANDURL]&app=FGSEARCH&action=FULLEDITDSEARCH&famid='+this.options[this.selectedIndex].value" class="little"   name="famid" >  
+
+<input type="hidden" name="page" value="0" />
+
+<table id="conditions" border=0 class="conditions">
+<thead>
+<tr>
+<td><div class="famicon"><img needresize="1" src="[famicon]" width="[SIZE_IMG-SMALL]"></div></td>
+<td><div class="famselect" id="famselection" >
+
+<div class="select"><select onchange="changeDetailForm(this.options[this.selectedIndex].value)" class="little"   name="famid" >  
          [BLOCK SELECTFAM]
            <option [famselect] VALUE="[idcdoc]" >[classname]</option>   
          [ENDBLOCK SELECTFAM]
-    </select><img needresize="1" src="[famicon]" height="[SIZE_IMG-MEDIUM]"></td>
-<td align="left"><a href="[CORE_STANDURL]app=FGSEARCH&action=FULLSEARCH&famid=[famid]">[TEXT:Simple search]</a>
-</td>
-</tr></table>
-<table id="conditions" border=0 width="100%">
-<thead>
-<tr><td align="center" colspan="4">[V_SE_OL]</td></tr>
+    </select></div>
+</div></td>
+<td align="center" colspan="2">[V_SE_OL]</td></tr>
 <tr class="FREEDOMBack2">
 <td>&nbsp;</td>
 <td>[L_SE_ATTRIDS]</td>
@@ -147,7 +128,14 @@ addEvent(window,"resize",resizeiframedetail);
 
 </form>
 </div>
+[IF substitute]
+<script>
+if (window.parent && window.parent != window) {
+    var targetS=window.parent.document.getElementById('dsearch');
+    var origin=document.getElementById('dsearch');
 
-<iframe src="[IMG:1x1.gif]" style="width:100%;border:none;padding:0px;margin:0px" name="searchresult" id="searchresult"></iframe>
+    targetS.innerHTML=origin.innerHTML;
+}
+</script>
 
-[ZONE FDL:HTMLFOOT]
+[ENDIF substitute]

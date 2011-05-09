@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 08:24+0100\n"
+"POT-Creation-Date: 2011-04-01 10:56+0200\n"
 "PO-Revision-Date: 2011-01-06 15:36+0100\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1070,9 +1070,11 @@ msgstr ""
 msgid "hour number where timer can be execute until date is reached"
 msgstr ""
 
-#, fuzzy
-msgid "Documents management"
-msgstr "Import"
+msgid "Docs admin"
+msgstr ""
+
+msgid "Documents administration"
+msgstr ""
 
 #, fuzzy
 msgid "Access Families Management"
@@ -1835,11 +1837,17 @@ msgstr "Global search"
 msgid "freedom global search"
 msgstr "Global search"
 
-msgid "freedom  global search"
-msgstr "Global search"
+msgid "global search"
+msgstr ""
 
-msgid "freedom detailled global search"
-msgstr "Detailed global search"
+msgid "global search detail results"
+msgstr ""
+
+msgid "global search results"
+msgstr ""
+
+msgid "global edit detail search"
+msgstr ""
 
 msgid "show request for password"
 msgstr "Show password request link in login panel"
@@ -3910,6 +3918,12 @@ msgstr "Add Application"
 msgid "titlemodify"
 msgstr "Modify Application"
 
+msgid "param Changed"
+msgstr ""
+
+msgid "param not changed"
+msgstr ""
+
 #, fuzzy
 msgid "err_mod_parameter"
 msgstr "Can't modify parameter"
@@ -4048,20 +4062,29 @@ msgstr ""
 msgid "no vcard file specified"
 msgstr ""
 
-#, fuzzy
-msgid "more families"
-msgstr "Start search"
+msgid "General search"
+msgstr ""
 
-#, c-format
-msgid "View %d next results"
+msgid "search dynacase documents"
+msgstr "search documents"
+
+msgid "View next results"
 msgstr ""
 
 #, c-format
-msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
+msgid "family search result"
 msgstr ""
 
 #, c-format
-msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
+msgid "No document found for <b>%s</b>%s"
+msgstr "No document for \"<b>%s</b>\"%s"
+
+#, c-format
+msgid "One document for <b>%s</b>%s"
+msgstr "One document for \"<b>%s</b>\"%s"
+
+#, c-format
+msgid "Found <b>%d</b>  Result for <b>%s</b>%s"
 msgstr ""
 
 #, c-format
@@ -5030,9 +5053,8 @@ msgstr "Start search"
 msgid "Search to insert"
 msgstr "Start search"
 
-#, fuzzy
 msgid "any familly"
-msgstr "Start search"
+msgstr "any familiy"
 
 #, fuzzy
 msgid "More options"
@@ -6171,6 +6193,10 @@ msgid "proceed background import"
 msgstr ""
 
 #, fuzzy
+msgid "more families"
+msgstr "Start search"
+
+#, fuzzy
 msgid "restrict to preferred families"
 msgstr "Modify"
 
@@ -6535,9 +6561,6 @@ msgstr "Modify"
 #, fuzzy
 msgid "style parameters list"
 msgstr "Add parameter"
-
-msgid "param Changed"
-msgstr ""
 
 #, fuzzy
 msgid "application parameters list"
@@ -6924,23 +6947,6 @@ msgstr "Import"
 msgid "State"
 msgstr "Identity"
 
-msgid "Undisplay the search query"
-msgstr ""
-
-msgid "Mask"
-msgstr ""
-
-#, fuzzy
-msgid "View the search query"
-msgstr "Start search"
-
-msgid "Unmask"
-msgstr ""
-
-#, fuzzy
-msgid "Simple search"
-msgstr "Start search"
-
 #, fuzzy
 msgid "Add filter"
 msgstr "Modify"
@@ -6960,11 +6966,15 @@ msgstr ""
 msgid "Add search engine"
 msgstr "Start search"
 
-#, fuzzy
-msgid "Advanced search"
-msgstr "Start search"
+msgid "switch search mode (basic/advanced)"
+msgstr "basic/advanced mode"
 
-#, fuzzy
+msgid "Basic search"
+msgstr "basic search"
+
+msgid "Advanced search"
+msgstr "Advanced search"
+
 msgid "search online help"
 msgstr "Start search"
 
@@ -6973,6 +6983,9 @@ msgstr ""
 
 msgid "Open in new window"
 msgstr ""
+
+msgid "searchdate prefix"
+msgstr "at "
 
 msgid "warning_name"
 msgstr "Your name is required"
@@ -8094,6 +8107,13 @@ msgstr ""
 msgid "Dynamic template %s not an odt file "
 msgstr ""
 
+msgid "viewDoc did not returned a valid file"
+msgstr ""
+
+#, c-format
+msgid "Error opening %s file '%s'"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "convertion from %s to %s family"
 msgstr "Category"
@@ -8382,7 +8402,7 @@ msgid "control :: user identificator is null"
 msgstr ""
 
 #, c-format
-msgid "template file %s not found"
+msgid "template file (layout [%s]) not found"
 msgstr ""
 
 #, c-format
@@ -9241,5 +9261,45 @@ msgid "error ::moveDocument %s %s"
 msgstr ""
 
 #, fuzzy
+#~ msgid "Documents management"
+#~ msgstr "Import"
+
+#, fuzzy
+#~ msgid "View %d next results"
+#~ msgstr "view next documents"
+
+#, fuzzy
+#~ msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
+#~ msgstr "<b>%d</b> documents found for \"<b>%s</b>\"%s"
+
+#, fuzzy
+#~ msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
+#~ msgstr "<b>%d</b> documents found for \"<b>%s</b>\"%s"
+
+#~ msgid "freedom  global search"
+#~ msgstr "Global search"
+
+#~ msgid "freedom detailled global search"
+#~ msgstr "Detailed global search"
+
+#, fuzzy
+#~ msgid "Undisplay the search query"
+#~ msgstr "Start search"
+
+#, fuzzy
+#~ msgid "View the search query"
+#~ msgstr "Start search"
+
+#, fuzzy
+#~ msgid "Simple search"
+#~ msgstr "Start search"
+
+#, fuzzy
 #~ msgid "Return to results"
 #~ msgstr "Import"
+
+#~ msgid "familie seearch result"
+#~ msgstr "limit to family"
+
+#~ msgid "One document <b>%d</b>  Results for <b>%s</b>%s"
+#~ msgstr "One document found for \"<b>%s</b>\"%s"

@@ -255,6 +255,17 @@ function refreshMembers() {
   $err=$this->modify();
 }
 
+function refreshMailMembersOnChange() {
+  // Recompute mail/members when the hasmail/hasmembers enum is changed
+  if( $this->getOldValue('GRP_HASMAIL') !== false || $this->getOldValue('GRP_HASMEMBERS') !== false ) {
+    $err = $this->refreshGroup();
+    if( $err != '' ) {
+      return $err;
+    }
+  }
+  return '';
+}
+
         /**
         * @begin-method-ignore
         * this part will be deleted when construct document class until end-method-ignore

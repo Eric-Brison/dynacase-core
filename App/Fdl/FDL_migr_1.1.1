@@ -1,9 +1,0 @@
-#!/bin/bash
-if [ "$dbpsql" == "" ]; then
-    #load environement variable for freedom
-  . /etc/freedom.conf
-   wchoose -b
-fi
- 
- 
-echo "UPDATE docattr set usefor = 'N' where usefor is null;" | psql $dbfree

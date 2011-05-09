@@ -21,7 +21,8 @@ if (window.parent) {
                for (var i=0; i< kids.length; i++) {
                  kids[i].style.display='inline';
                  if (kids[i].tagName=='SPAN') {
-                     kids[i].innerHTML=avalue+" <i>([TEXT:param Changed])</i>";
+                 if (avalue == null) avalue='';
+                     kids[i].innerHTML=avalue+" <i>([textModify])</i>";
                      kids[i].className+=' changed';
                  }
                }

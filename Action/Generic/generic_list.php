@@ -52,7 +52,7 @@ function generic_list(&$action) {
   $sfamid=$famid;
   if ($dirid) {
       $dir=new_doc($dbaccess,$dirid);
-      if ($dir->isAlive() && ($dir->doctype == 'S')) {
+      if ($dir->isAlive() && ($dir->defDoctype == 'S')) {
           $sfamid=$dir->getValue("se_famid");
       }
   }

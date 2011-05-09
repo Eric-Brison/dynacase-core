@@ -11,7 +11,7 @@ function addFreedomEngine() {
                         '[CORE_ABSURL]img-cache/[HOST]-freedom.src',
                         '[CORE_ABSURL]img-cache/[HOST]-freedom.gif', "[CORE_CLIENT]", '' );
         } else {
-                window.sidebar.addPanel("[CORE_CLIENT]", "[CORE_ABSURL][CORE_STANDURL]&app=FGSEARCH&action=FULLSEARCH", "");
+                window.sidebar.addPanel("[CORE_CLIENT]", "[CORE_ABSURL]&app=FGSEARCH&action=FULLSEARCH", "");
         }
 }
 </script>

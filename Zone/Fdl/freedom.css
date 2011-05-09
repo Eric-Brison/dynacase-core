@@ -113,20 +113,57 @@ SPAN.FREEDOMLabel:first-letter {
   [IFNOT ISIE]opacity:.5;[ENDIF ISIE]
 	
 }
-LEGEND {
+LEGEND, div.legend {
   color: [CORE_ACOLOR];
 }
-LEGEND.frame {
+LEGEND.frame, div.legend {
   cursor:pointer;
 }
 
-
+div.legend {
+	background-color: inherit;
+	border-width: 1px;
+    border-color: inherit;
+    border-style: none none solid none; 
+    
+    /*display: inline;
+    margin-left: 7px;
+    margin-top: -0.7em;
+	float:left;*/
+    padding-left: 3px;
+    padding-right: 3px;
+}
 
 [IFNOT ISIE]
 FIELDSET {
 /*   background-color: [CORE_BGCELLCOLOR];*/
    -moz-border-radius: 6px;
 }[ENDIF ISIE]
+
+FIELDSET.frame table td, div.frame table td {
+  padding:2px;  
+  }
+div.frame {
+     border:0px;
+     padding:0px;
+     margin:0px 10px 10px 10px;
+ }
+ 
+  div.frame .legend { 
+     display:inline;
+     border-width:0px;
+     padding:0 5px 0 5px;
+     margin-left:10px;
+ }
+div.frame .legend:hover { background-color:[COLOR_A9]; }
+
+ div.frame .content {
+     border-style:solid solid solid solid;
+     border-color:[COLOR_A6] [COLOR_A6] [COLOR_A6] [COLOR_A6];
+     border-width:1px 1px 1px 1px;
+ 	
+     -moz-border-radius: 6px; 	
+ }
 TABLE.barmenu {
 /*	background-color: [CORE_BGCOLORALTERN];*/
 	background-color: orange;
@@ -633,9 +670,7 @@ A.state, A.boldstate {
 }
 
 
-FIELDSET.mfield table td {
-  padding:2px;  
-  }
+
 @media print {
   .noprint {
     display:none;
@@ -658,8 +693,8 @@ FIELDSET.mfield table td {
   DIV.tabsh {
     display:none;
   }
-  FIELDSET.mfield {
-    display:block!important;
+  FIELDSET.frame, div.frame {
+    display:block!important; /* to see frame in tabs */
   }
   TBODY.overflow {
     overflow:visible;
@@ -997,6 +1032,7 @@ div.fullscreen {
   position:absolute;
   left:0px;
   top:0px;
+	z-index:2;
   background-color:[COLOR_WHITE];
 }
 div.fileimage {

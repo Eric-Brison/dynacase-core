@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [ "$dbpsql" == "" ]; then
-    #load environement variable for freedom
-  . /etc/freedom.conf
-   wchoose -b
-fi
-psql $dbpsql -f $wpub/WHAT/getprivilege.sql
-echo "select alter_table_column('mailaccount','vacmsg','text');" | psql $dbpsql

@@ -30,14 +30,14 @@ Class TransformationEngine {
    * port number of the transformation engine server
    * @private int
    */
-  private $port=10000;
+  private $port=51968;
   /**
    * initialize host and port
    * @param string $host host name
    * @param int $port port number
    * 
    */
-  function __construct($host="localhost",$port=10000) {
+  function __construct($host="localhost",$port=51968) {
     if ($host != "") $this->host=$host;
     if ($port > 0) $this->port=$port;
   }

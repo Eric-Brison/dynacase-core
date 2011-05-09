@@ -18,14 +18,22 @@ function sendNextSearch() {
 	}
 }
 function sendNewSearch() {
-	var form=document.searchdoc;
-	if (form) {
-		form.target='';
-		form.page.value=0;
-		// form.submit();
+    var form=document.searchdoc;
+    if (form) {
+	
+	form.page.value=0;
+	// form.submit();
+    }
+}
+function changeDetailForm(famid) {
+	var inr=document.getElementById('nextresult');
+	inr.src='?app=FGSEARCH&action=FULLEDITDSEARCH&substitute=yes&famid='+famid;
+	var opts=document.searchdoc.famid.options;
+	for (var i=0; i < opts.length; i++) {
+		if (opts[i].value == famid) opts[i].selected=true;
+		else opts[i].selected=false;
 	}
 }
-
 function openDocInNewWindow() {
 	var ifr=document.getElementById('detaildoc');
 	if (ifr.src) {
@@ -33,7 +41,7 @@ function openDocInNewWindow() {
 		hideUrlFromSearch();
 	}
 }
-function viewUrlFromSearch(event, url) {
+function viewUrlFromSearch(event, source, url) {
 	var bn=buttonNumber(event);
 	if ((bn == 2 )||(bn == 4 ))  {
 		window.open(url,'_blank');
@@ -41,35 +49,35 @@ function viewUrlFromSearch(event, url) {
 
 		var idiv=document.getElementById('divdoc');
 		var ifr=document.getElementById('detaildoc');
-		var dr=document.getElementById('dresult');
-		var ds=window.parent.document.getElementById('dsearch');
-		var fe=document.getElementById('fedit');
-
+		var dr=document.getElementById('searchresults');
+		
+	    
 		ifr.src=url;
 		idiv.style.display='';
-		// dr.style.display='none';
-		//dr.style.opacity='0.5';
-		fe.style.opacity='0.5';
-		fe.className='dark';
-		if (ds) ds.style.display='none';
+		source.className='selectedresult result';
+	    var lt=dr.getElementsByTagName('div');
+		for (var i=0;i<lt.length;i++)  {
+			if (lt[i].className=='selectedresult result') lt[i].className='result';
+		}
+
+		source.className='selectedresult result';
+		
 	}
 }
 function hideUrlFromSearch() {
 
 	var idiv=document.getElementById('divdoc');
 	var ifr=document.getElementById('detaildoc');
-	var dr=document.getElementById('dresult');
-
-	var ds=window.parent.document.getElementById('dsearch');
-	var fe=document.getElementById('fedit');
+	var dr=document.getElementById('searchresults');
 
 	ifr.src='';
 	idiv.style.display='none';
-	// dr.style.display='none';
-	dr.style.opacity='';
-	fe.style.opacity='';
-	fe.className='';
-	if (ds) ds.style.display='';
+	
+	
+	var lt=dr.getElementsByTagName('div');
+	for (var i=0;i<lt.length;i++)  {
+		if (lt[i].className=='selectedresult result') lt[i].className='result';
+	}
 	
 }
 
@@ -88,18 +96,79 @@ function buttonNumber(event) {
 
 	return 0;
 }
-
+function searchIfKeyword() {
+	var form=document.searchdoc;
+	if (form) {
+		form.page.value=0;
+		form.submit();
+	}
+}
 function resizeiframe(event) {
-  if (document.getElementById("dresult")) {
+  if (document.getElementById("searchresults")) {
     var fh=getFrameHeight();
-    var xy=getAnchorPosition("dresult");
-    var nh=fh-xy.y-5;
+    var xy=getAnchorPosition("searchresults");
+    var nh=fh-xy.y-10;
+    //if (isIE) nh-=25;
+    var dd=document.getElementById("detaildoc");
+    var divdoc=document.getElementById("divdoc");
     var ds=window.parent.document.getElementById('dsearch');
-    var xydetail=getAnchorPosition("dresult");
+    var xydetail=getAnchorPosition("searchresults");
     var nhdetail=fh-xydetail.y;
-    if (ds) nhdetail-=50;
-    if (nhdetail> 150) document.getElementById("detaildoc").style.height=(nhdetail)+'px';
-    if (nh> 100) document.getElementById("dresult").style.height=nh+'px';
-    // alert(xy.y+' - '+fh+' - '+nh);
+    if (ds) {
+    	nhdetail-=50;
+    }
+    if (nhdetail> 150) dd.style.height=(nhdetail)+'px';
+    if (nh> 100) document.getElementById("searchresults").style.height=nh+'px';
   }
+}
+var basicSearch=true;
+function switchSearchMode() {
+    
+    if (document.getElementById('basic-search')) document.getElementById('basic-search').style.display = (basicSearch?'none':'block');
+    if (document.getElementById('detailed-search')) document.getElementById('detailed-search').style.display = (basicSearch?'block':'none');
+    if (document.getElementById('label-basic-search')) document.getElementById('label-basic-search').style.display = (basicSearch?'inline':'none');
+    if (document.getElementById('label-detailed-search')) document.getElementById('label-detailed-search').style.display = (basicSearch?'none':'inline');
+    basicSearch = (!basicSearch);
+    if (basicSearch) document.searchdoc.dirid.value=0;
+    else {
+    	var selectFam=document.searchdoc.famid;
+    	var famid=selectFam.options[selectFam.selectedIndex].value;
+    	if (famid > 0) changeDetailForm(famid);
+    	
+    }
+    
+    resizeiframe();
+    return true;
+}	
+
+function searchFocusFirst() {
+	var ikey=document.searchdoc.keyword;
+	ikey.focus();
+	//fgSearchOnBlur(ikey);
+}
+function fgSearchOnBlur(ob) {
+	if (ob.value=='') {
+		ob.className = 'unsetter';
+		initKeyword = true;
+		var selectFam=document.searchdoc.famid;
+		if (selectFam.options[selectFam.selectedIndex].value > 0) {
+			document.getElementById('send-search').disabled = false;
+			if (ob.value==guideKeyword) ob.value='';
+			
+		} else {
+			ob.value = guideKeyword;
+			document.getElementById('send-search').disabled = true;
+		}
+	} else {
+		if (ob.value==guideKeyword) ob.value='';
+		document.getElementById('send-search').disabled = false;
+	}
+}
+function fgSearchOnFocus(ob) {
+    if (initKeyword) {
+	ob.className = 'setter';
+	ob.value = '';
+	initKeyword = false;
+	document.getElementById('send-search').disabled = false;
+    }
 }

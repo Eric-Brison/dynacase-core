@@ -1,8 +1,0 @@
-#!/bin/bash
-if [ "$dbpsql" == "" ]; then
-    #load environement variable for freedom
-  . /etc/freedom.conf
-   wchoose -b
-fi
-echo "ALTER TABLE docattr ADD COLUMN options text;" | psql $dbfree
-echo "UPDATE doc set profid=504 where usefor='D' and profid = 0;" | psql $dbfree

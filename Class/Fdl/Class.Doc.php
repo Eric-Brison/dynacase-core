@@ -616,7 +616,11 @@ create unique index i_docir on doc(initid, revision);";
   }
   
   /**
+   * Regenerate the template referenced by an attribute
    * 
+   * @param string $aid the name of the attribute holding the template
+   * @param string $index the value for $index row (default value -1 means all values)
+   * @return string error message, if no error empty string
    */
   function regenerateTemplate($aid, $index=-1) {
   	$layout = 'THIS:'.$aid;
@@ -624,45 +628,73 @@ create unique index i_docir on doc(initid, revision);";
   		$layout.='['.$index.']';
   	}
   	$orifile=$this->getZoneFile($layout);
-  	if ($orifile) {
-  		if (! file_exists($orifile)) {
-  			addWarningMsg(sprintf(_("Dynamic template %s not found "), $orifile));
-  		} else if (getFileExtension($orifile) != 'odt') {
-  			addWarningMsg(sprintf(_("Dynamic template %s not an odt file "), $orifile));
-  		} else {
-  			$outfile = $this->viewDoc($layout.':B', 'ooo');
-  			if(file_exists($outfile)) {
-  				$fh = fopen($outfile, 'rb');
-  				if($fh) {
-  					$this->saveFile($aid, $fh, '', $index);
-  					fclose($fh);
-  					$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
-  					return true;
-  				}
-  			}
-  		}
+  	if( ! $orifile ) {
+  		$err = sprintf(_("Dynamic template %s not found "), $orifile);
+  		return $err;
   	}
-  	return false;
+  	if( ! file_exists($orifile) ) {
+  		$err = sprintf(_("Dynamic template %s not found "), $orifile);
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	if( getFileExtension($orifile) != 'odt' ) {
+  		$err = sprintf(_("Dynamic template %s not an odt file "), $orifile);
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	$outfile = $this->viewDoc($layout.':B', 'ooo');
+  	if( ! file_exists($outfile) ) {
+  		$err = sprintf(_("viewDoc did not returned a valid file"));
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	$fh = fopen($outfile, 'rb');
+  	if( $fh === false ) {
+  		$err = sprintf(_("Error opening %s file '%s'", 'outfile', $outfile));
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	$err = $this->saveFile($aid, $fh, '', $index);
+  	if( $err != '' ) {
+  		addWarningMsg($err);
+  		return $err;
+  	}
+  	fclose($fh);
+  	$this->AddComment(sprintf(_('regeneration of file template %s'), $aid));
+  	return '';
   }
   
   /**
+   * Regenerate all templates referenced by the document attributes
    * 
+   * @return string error message, if no error empty string
    */
   final function regenerateTemplates() {
     $fa = $this->GetFileAttributes();
+    $errorList = array();
     foreach ($fa as $aid=>$oattr) {
       $opt = $oattr->getOption("template");
       if ($opt == "dynamic" || $opt == "form") {
 	if ($oattr->inArray()) {
 	  $ta=$this->getTValue($aid);
 	  foreach($ta as $k=>$v) {
-	    $this->regenerateTemplate($aid,$k);
+	    $err = $this->regenerateTemplate($aid,$k);
+	    if( $err != '' ) {
+			array_push($errorList, $err);
+	    }
 	  }
 	} else {
-	  $this->regenerateTemplate($aid);
+	  $err = $this->regenerateTemplate($aid);
+	  if( $err != '' ) {
+		array_push($errorList, $err);
+	  }
 	}
       }
     }
+    if( count($errorList) > 0 ) {
+    	return join("\n", $errorList);
+    }
+    return '';
   }
 
   /**
@@ -3562,7 +3594,7 @@ create unique index i_docir on doc(initid, revision);";
 
     // double control
     if (! $this->isFixed()) {
-      $err=sprintf("track error revision [%s]".pg_last_error($this->dbid));
+      $err=sprintf("track error revision [%s]", pg_last_error($this->dbid));
       $this->Addcomment($err,HISTO_ERROR,"REVERROR");
       $this->exec_query("commit;");
       return $err;
@@ -4564,7 +4596,8 @@ create unique index i_docir on doc(initid, revision);";
 	        else $idx=$index;
 	        $standardview=true;
 	        $infopdf=false;
-	        if ($oattr->getOption("viewfiletype")=="image") {
+	        $viewfiletype=$oattr->getOption("viewfiletype");
+	        if ($viewfiletype=="image" || $viewfiletype=="pdf") {
 	            global $action;
 	            $waiting=false;
 	            if (substr($info->mime_s,0,5) == "image") {
@@ -4582,7 +4615,9 @@ create unique index i_docir on doc(initid, revision);";
 	                        $infopdf->teng_state == TransformationEngine::status_waiting||
                                 $infopdf->teng_state == TransformationEngine::status_inprogress) {
 	                        $imageview=true;
-	                        $viewfiletype='png';
+	                        if ($viewfiletype=='image') $viewfiletype='png';
+	                        else if ($viewfiletype=='pdf') $viewfiletype='embed';
+	                        
 	                        $pages=getPdfNumberOfPages($infopdf->path);
 	                        if ($infopdf->teng_state == TransformationEngine::status_waiting ||
 	                            $infopdf->teng_state == TransformationEngine::status_inprogress) $waiting=true;
@@ -4593,6 +4628,7 @@ create unique index i_docir on doc(initid, revision);";
 
 	            if ($imageview && (!$abstract)) {
 	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/widgetFile.js");
+	                $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/detectPdfPlugin.js");
 	                $lay = new Layout("FDL/Layout/viewfileimage.xml", $action);
 	                $lay->set("docid",$this->id);
                         $lay->set("waiting",($waiting?'true':'false'));
@@ -4603,7 +4639,19 @@ create unique index i_docir on doc(initid, revision);";
                         $lay->set("vid", ($infopdf?$infopdf->id_file:$vid));
 	                $lay->set("filetitle", $fname);
 	                $lay->set("height", $oattr->getOption('viewfileheight','300px'));	                 
-	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx));
+	                $lay->set("filelink", $this->getFileLink($oattr->id,$idx,false,false));
+	                
+	                $lay->set("pdflink", '');
+	                if ($pdfattr=$oattr->getOption('pdffile')) {
+	                    //$infopdf=$this->vault_properties($this->getAttribute($pdfattr));
+	                    
+	                    if (! preg_match('/^(text|image)/',$info->mime_s)) {
+	                    //$pdfidx=($idx <0)?0:$idx;
+	                    if ( $waiting || preg_match('/(pdf)/',$infopdf->mime_s)) {
+	                       $lay->set("pdflink", $this->getFileLink($pdfattr,$idx,false,false));	                       
+	                    }
+	                    }
+	                } 
 	                $lay->set("pages", $pages); // todo
 	                $htmlval =$lay->gen();
 	                $standardview=false;
@@ -5711,7 +5759,7 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay = new Layout($tplfile, $action);
     }
 
-    if (! file_exists($this->lay->file)) return sprintf(_("template file %s not found"),$tplfile);
+    if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->setZone($reg);
        
     $this->lay->set("_readonly",($this->Control('edit')!=""));
@@ -6748,15 +6796,27 @@ create unique index i_docir on doc(initid, revision);";
 
   /**
    * get vault file name or server path of filename
-   * @param string $idAttr identificator of file attribute 
+   * @param NormalAttribute $idAttr identificator of file attribute 
    * @param bool false return original file name (basename) , true the real path
    * @return array of properties :
-   *         [name] => search.svg
-   *         [size] => 166137
-   *         [public_access] => 
-   *         [path] => /var/freedom/fs/1/6132.svg
+          [0]=>
+            [name] => TP_Users.pdf
+            [size] => 179435
+            [public_access] => 
+            [mime_t] => PDF document, version 1.4
+            [mime_s] => application/pdf
+            [cdate] => 24/12/2010 11:44:36
+            [mdate] => 24/12/2010 11:44:41
+            [adate] => 25/03/2011 08:13:34
+            [teng_state] => 1
+            [teng_lname] => pdf
+            [teng_vid] => 15
+            [teng_comment] => 
+            [path] => /var/www/eric/vaultfs/1/16.pdf
+            [vid] => 16
+
    */
-  final public function vault_properties($attr) {
+  final public function vault_properties(NormalAttribute $attr) {
     if ($attr->inArray()) $fileids= $this->getTValue($attr->id);
     else $fileids[]= $this->getValue($attr->id);
    
