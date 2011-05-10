@@ -224,9 +224,25 @@ function autocompletion(&$action)
             }
 
             if ($err == "") {
-                // add  index for return args
+                // add  index for return args only if the element is not in a array
                 while ( list($k, $v) = each($rargids) ) {
-                    $targids[]["attrid"] = trim(strtolower($rargids[$k] . $domindex));
+                    $linkprefix = "ilink_";
+                    $isILink = false;
+                    $attrId = $rargids[$k];
+                    if (substr($attrId, 0, strlen($linkprefix)) == $linkprefix) {
+                        $attrId = substr($attrId, strlen($linkprefix));
+                        $isILink = true;
+                    }
+                    $docAttr = $doc->getAttribute($attrId);
+                    if (is_object($docAttr) && !$docAttr->inArray()) {
+                        $targid = trim(strtolower($attrId));
+                    } else {
+                        $targid = trim(strtolower($attrId . $domindex));
+                    }
+                    if ($isILink) {
+                        $targid = $linkprefix . $targid;
+                    }
+                    $targids[]["attrid"] = $targid;
                 }
 
                 $action->lay->SetBlockData("cibles", $targids);
