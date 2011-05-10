@@ -202,7 +202,7 @@ Class Fdl_Document  {
                 $props["mdate"]=strftime("%d/%m/%Y %H:%M:%S",$this->doc->revdate);
                 $props["readonly"]=($this->doc->canEdit()!="");
                 
-                $props["lockdomainid"] = $this->doc->lockdomainid;
+                $props["lockdomainid"] = intval($this->doc->lockdomainid);
                 // numeric values
                 if ($props["postitid"]) $props["postitid"]=$this->doc->_val2array($props["postitid"]);
                 else $props["postitid"]=array();
