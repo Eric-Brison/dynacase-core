@@ -86,10 +86,9 @@ static $savepoint=array();
  */
 function __construct($dbaccess='', $id='',$res='',$dbid=0)
   {
-    
+    if (! $dbaccess) $dbaccess=getDbAccess();
     $this->dbaccess = $dbaccess;
     $this->init_dbid();
-
 
   
     //global ${$this->oname};
