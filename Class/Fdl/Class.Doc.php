@@ -1473,8 +1473,11 @@ create unique index i_docir on doc(initid, revision);";
             $adocClassName = "ADoc" . $fromid;
             $classname = "Doc" . $fromid;
             $GEN = getGen($this->dbaccess);
-            include_once ("FDL$GEN/Class.$classname.php");
+            $includePath="FDL$GEN/Class.$classname.php";
+            if (file_exists($includePath)) {
+            include_once($includePath);
             $this->attributes = new $adocClassName();
+            }
         }
         if (!$this->_maskApplied) $this->ApplyMask();
         reset($this->attributes->attr);
@@ -7910,15 +7913,22 @@ create unique index i_docir on doc(initid, revision);";
     /**
      * attach lock to specific domain.
      * @param int $domainId domain identificator
+     * @return string error message
      */
-    public function lockToDomain($domainId)
+    public function lockToDomain($domainId, $userid='')
     {
-        if ($this->locked == $this->userid) {
+        $err='';
+        if (! $userid) $userid=$this->userid;
+        if ($this->locked != $userid) {
+          $err=$this->lock(false,$userid);
+        }
+        if ((!$err) && ($this->locked == $userid)) {
             $this->lockdomainid = $domainId;
-            $this->modify(true, array(
+            $err=$this->modify(true, array(
                 "lockdomainid"
             ), true);
         }
+        return $err;
     }
     /**
      * return folder where document is set into
