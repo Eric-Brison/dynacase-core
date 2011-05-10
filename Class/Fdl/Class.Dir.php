@@ -564,7 +564,7 @@ Class Dir extends PDir
 	 * return families that can be use in insertion
 	 * @param int $classid : restrict for same usefor families
 	 */
-	function getAuthorizedFamilies($classid=0) {
+	function getAuthorizedFamilies($classid=0, $verifyCreate=false) {
 
 		if (! $this->authfam) {
 
@@ -606,7 +606,7 @@ Class Dir extends PDir
 				//add families
 				foreach ($tfamid as $k=>$famid) {
 					$tfdoc=getTDoc($this->dbaccess,$famid);
-					if ($tfdoc && controlTdoc($tfdoc,'icreate'))  {
+					if ($tfdoc && ((!$verifyCreate) || controlTdoc($tfdoc,'icreate')))  {
 						$tclassdoc[intval($famid)]=array("id"=> ($tsubfam[$k]=="no")?(-intval($famid)):intval($famid),
 					     "title"=>$tfam[$k]);
 					}
