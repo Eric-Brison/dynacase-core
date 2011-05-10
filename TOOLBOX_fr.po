@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-05 14:42+0200\n"
-"PO-Revision-Date: 2011-05-05 14:43+0200\n"
+"POT-Creation-Date: 2011-05-10 13:59+0200\n"
+"PO-Revision-Date: 2011-05-10 13:59+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -4385,6 +4385,9 @@ msgstr "contrôle de vues"
 msgid "primary folder"
 msgstr "Dossier principal"
 
+msgid "other folders"
+msgstr ""
+
 msgid "view constraints"
 msgstr "voir les contraintes"
 
@@ -4474,6 +4477,9 @@ msgstr "mail"
 
 msgid "senddoc"
 msgstr "Envoyer le document"
+
+msgid "double-clic to update document"
+msgstr "double-cliquez pour mettre à jour le document"
 
 msgid "goto forum"
 msgstr "aller au forum"
@@ -7938,6 +7944,10 @@ msgstr "%d réponses"
 #, c-format
 msgid "%d answer"
 msgstr "%d réponse"
+
+#, c-format
+msgid "in domain %s"
+msgstr ""
 
 #, c-format
 msgid "current (<i>%s</i>)"
