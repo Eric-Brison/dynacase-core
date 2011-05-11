@@ -7897,13 +7897,17 @@ create unique index i_docir on doc(initid, revision);";
             $s = new searchDoc($this->dbaccess, "OFFLINEFOLDER");
             $s->join("id = fld(dirid)");
             $s->addFilter("fld.childid = %d", $this->initid);
-            if ($user) $s->addFilter("off_user = '%d' or off_user is null", $this->getUserId());
+            $uid=$this->getUserId();
+            if ($user) $s->addFilter("off_user = '%d' or off_user is null", $uid);
             $s->noViewControl();
             $t=$s->search();
             $ids=array();
             foreach ($t as $v) {
                 $ids[]=$v['off_domain'];
-                if ($folderName) $ids[]=$v["name"];
+                if ($folderName && ((!$user)||($v['off_user']==$uid))) {
+                    $ids[]=$v["name"];
+                    
+                }
             }
             return array_unique($ids);
         }
