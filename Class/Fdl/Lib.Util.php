@@ -133,13 +133,14 @@ function FrenchDateToLocaleDate($fdate, $format='') {
  * convert French date DD/MM/YYYY to iso 
  * date must be > 01/01/1970 and < 2038
  * @param string $fdate DD/MM/YYYY HH:MM
- * @return string  YYYY-MM-DD HH:MM
+ * @param boolean $withT return YYYY-MM-DDTHH:MM:SS else YYYY-MM-DD HH:MM:SS
+ * @return string  YYYY-MM-DD HH:MM:SS
  */
-function FrenchDateToIso($fdate) {
-  if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/", $fdate,$r)) {
+function FrenchDateToIso($fdate, $withT=true) {
+  if (preg_match('/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/', $fdate,$r)) {
 
     if ($r[4] == "") $dt=sprintf("%04d-%02d-%02d",$r[3],$r[2],$r[1]);
-    else $dt=sprintf("%04d-%02d-%02dT%02d:%02d:%02d",$r[3],$r[2],$r[1],$r[4],$r[5],$r[6]);
+    else $dt=sprintf("%04d-%02d-%02d%s%02d:%02d:%02d",$r[3],$r[2],$r[1],($withT)?'T':' ',$r[4],$r[5],$r[6]);
   } else {
     $dt = "";
   }
@@ -220,7 +221,7 @@ function stringDateToIso($date,$format="") {
 		return $dt;
 	}
 	else {
-		$dt=FrenchDateToIso($date);
+		$dt=FrenchDateToIso($date, false);
 		if (! $dt) return  $date;
 		return $dt;
 	}

@@ -374,7 +374,7 @@ function getpopupdocdetail(&$action, $docid)
     
     addFamilyPopup($tlink, $doc);
     addArchivePopup($tlink, $doc);
-    addOfflinePopup($tlink, $doc, "_self", _("Offline menu"));
+    addDocOfflinePopup($tlink, $doc, "_self", _("Offline menu"));
     
     return $tlink;
 
@@ -650,90 +650,14 @@ function addFamilyPopup(&$tlink, &$doc)
 
 }
 
-function addOfflinePopup(&$tlink, Doc &$doc, $target = "_self", $menu='offline')
+
+function addDocOfflinePopup(&$tlink, Doc &$doc, $target = "_self", $menu = 'offline')
 {
-    if (file_exists("OFFLINE/Class.DomainManager.php")) {
-        include_once ("OFFLINE/Class.DomainManager.php");
-        $onlysub = getHttpVars("submenu");
-        $docDomainsId = $doc->getDomainIds();
-        $allDomains = DomainManager::getDomains();
-        foreach ( $allDomains as $domain ) {
-            if ($domain->isAlive()) {
-                $families = $domain->getFamilies();
-                if (!in_array($doc->fromid, $families)) continue;
-                if ($domain->isMember($doc->getSystemUserId())) {
-                    $tlink["dom" . $domain->id] = array(
-                        "descr" => sprintf(_("Domain %s"), $domain->getTitle()),
-                        "url" => ".",
-                        "separator" => true,
-                        "confirm" => "false",
-                        "control" => "false",
-                        "tconfirm" => "",
-                        "target" => "$target",
-                        "visibility" => POPUP_INACTIVE,
-                        "submenu" => $menu,
-                        "barmenu" => "false"
-                    );
-                    if ($domain->getUserMode($doc->getSystemUserId()) == 'advanced') {
-                        $tlink["book" . $domain->id] = array(
-                            "descr" => _("Book in my space"),
-                            "title" => _("book the document to modify it with offline application"),
-                            "url" => "?app=OFFLINE&action=OFF_DOMAINAPI&htmlRedirect=" . $doc->initid . "&docid=" . $doc->initid . "&id=" . $domain->initid . '&method=bookDocument',
-                            "confirm" => "false",
-                            "control" => "false",
-                            "tconfirm" => "",
-                            "target" => "$target",
-                            "visibility" => ((($doc->CanLockFile() == '') && ($doc->lockdomainid == 0)) ? POPUP_ACTIVE : POPUP_INACTIVE),
-                            "submenu" => $menu,
-                            "barmenu" => "false"
-                        );
-                        $inDomain = in_array($domain->id, $docDomainsId);
-                        $tlink["bookread" . $domain->id] = array(
-                            "descr" => _("Set in my space to read it"),
-                            "title" => _("insert the document to see it with offline application"),
-                            "url" => "?app=OFFLINE&action=OFF_DOMAINAPI&htmlRedirect=" . $doc->initid . "&docid=" . $doc->initid . "&id=" . $domain->initid . '&method=putDocument',
-                            "confirm" => "false",
-                            "control" => "false",
-                            "tconfirm" => "",
-                            "target" => "$target",
-                            "visibility" => ($inDomain) ? POPUP_INACTIVE : POPUP_ACTIVE,
-                            "submenu" => $menu,
-                            "barmenu" => "false"
-                        );
-                        
-                        $tlink["unset" . $domain->id] = array(
-                            "descr" => _("remove from my space"),
-                            "title" => _("remove the document from my space"),
-                            "url" => "?app=OFFLINE&action=OFF_DOMAINAPI&htmlRedirect=" . $doc->initid . "&docid=" . $doc->initid . "&id=" . $domain->initid . '&method=removeDocument',
-                            "confirm" => "false",
-                            "control" => "false",
-                            "tconfirm" => "",
-                            "target" => "$target",
-                            "visibility" => ($inDomain) ? POPUP_ACTIVE : POPUP_INACTIVE,
-                            "submenu" => $menu,
-                            "barmenu" => "false"
-                        );
-                    
-                    }
-                    $tlink["access" . $domain->id] = array(
-                        "descr" => _("view my space"),
-                        "title" => _("access to documents of my space"),
-                        "url" => "?app=FREEDOM&action=ADDDIRFILE&docid=" . $doc->initid . "&dirid=" . $domain->initid,
-                        "confirm" => "false",
-                        "control" => "false",
-                        "tconfirm" => "",
-                        "target" => "",
-                        "visibility" => POPUP_ACTIVE,
-                        "submenu" => $menu,
-                        "barmenu" => "false"
-                    );
-                }
-            }
-        
-        }
+    if (file_exists("OFFLINE/off_popupdocfolder.php")) {
+        include_once ("OFFLINE/off_popupdocfolder.php");
+        addOfflinePopup($tlink, $doc, $target, $menu );
     }
 }
-
 /**
  * Add control view menu
  */

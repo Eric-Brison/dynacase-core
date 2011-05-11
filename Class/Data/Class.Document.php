@@ -96,7 +96,8 @@ Class Fdl_Document  {
             } else {
                 $nattr = $this->doc->getNormalAttributes();
                 $this->doc->applyMask();
-                foreach($nattr as $k=>$v) {
+                $isoDate=(getParam("DATA_LCDATE")=='iso');
+                foreach ($nattr as $k=>$v) {
                     if ($v->mvisibility!="I" && $this->doc->$k) {
                         if ($v->inArray() || ($v->getOption("multiple")=="yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
                         else $lvalues[$v->id] = $this->doc->getValue($v->id);
@@ -107,7 +108,9 @@ Class Fdl_Document  {
                         } elseif (($v->type=="thesaurus")) {
                             $lvalues[$v->id."_title"]=$this->doc->getTitle($this->doc->getValue($v->id));
                             if ($v->inArray() || ($v->getOption("multiple")=="yes"))  $lvalues[$v->id."_title"]=$this->doc->_val2array($lvalues[$v->id."_title"]);
-                        } 
+                        } elseif ($isoDate && ($v->type=='date' || $v->type=='timestamp')) {
+                            $lvalues[$v->id]=FrenchDateToIso($lvalues[$v->id],false);
+                        }
                     }
                 }
             }
@@ -219,6 +222,11 @@ Class Fdl_Document  {
                 $props["fromid"]=intval($props["fromid"]);
                 $props["allocated"]=intval($props["allocated"]);
                 $props["owner"]=intval($props["owner"]);
+                if (getParam("DATA_LCDATE")=="iso") {
+                $props["cdate"]=FrenchDateToIso($props["cdate"],false);
+                $props["mdate"]=FrenchDateToIso($props["mdate"],false);
+                $props["adate"]=FrenchDateToIso($props["adate"],false);
+                }
 
 
 
@@ -336,10 +344,12 @@ Class Fdl_Document  {
                         } elseif (! is_object($v)) $attrs[$oa->id][$aid]=$v;
                         else if ($aid=="fieldSet") if ($v->id != 'FIELD_HIDDENS') $attrs[$oa->id]["parentId"]=$v->id; else $attrs[$oa->id]["parentId"]=null;
                     }
+                    $attrs[$oa->id]['labelText']=$oa->getLabel();
                 }
                 if ($oa->type=="enum") {
                     $attrs[$oa->id]["enumerate"]=$oa->getEnum();
                 }
+                
 
             }
 
