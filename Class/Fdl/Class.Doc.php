@@ -881,9 +881,11 @@ create unique index i_docir on doc(initid, revision);";
    * save document if attribute are change
    * not be use when modify properties
    * only use with use of setValue.
+   * @param stdClass $info refresh and postModify messages
+   * @param boolean $skipConstraint set to true to not test constraints
    * @return string error message
    */
-  public function save(&$info, $skipConstraint=false) {
+  public function save(&$info=null, $skipConstraint=false) {
       $err='';
         $info = '';
         $info->constraint = '';
