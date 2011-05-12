@@ -29,6 +29,7 @@ class Fdl_Collection extends Fdl_Document
     private $contentFilter='';
     private $contentVerifyHasChild=false;
     private $contentRecursiveLevel=0;
+    private $contentMap=null;
     /**
      * Internal document list
      * @var DocumentList
@@ -78,6 +79,10 @@ class Fdl_Collection extends Fdl_Document
     public function setContentRecursiveLevel($value)
     {
         $this->contentRecursiveLevel = intval($value);
+    }
+    public function setContentMap($callback)
+    {
+        $this->contentMap = $callback;
     }
     /**
      * return documents list
@@ -150,27 +155,9 @@ class Fdl_Collection extends Fdl_Document
                 if ($err) {
                     $this->setError($out->info["error"]);
                 } else {
-                    $tmpdoc = new Fdl_Document();
-                    $kd = 0;
-                    while ( $doc = $s->nextDoc() ) {
-                        $tmpdoc->affect($doc);
-                        if ($this->contentVerifyHasChild) {
-                            $tmpdoc->setVolatileProperty("haschildfolder", hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid'), ($doc->doctype == 'S')));
-                        
-                        }
-                        $content[$doc->id] = $tmpdoc->getDocument($this->contentOnlyValue, $this->completeProperties);
-                        $kd++;
-                    }
-                    
-                    $out->totalCount = $s->count();
-                    if (($out->totalCount == $s->slice) || ($s->start > 0)) {
-                        $s->slice = 'ALL';
-                        $s->start = 0;
-                        $s->reset();
-                        $oc = $s->onlyCount();
-                        $out->info["totalCount"] = $s->getSearchInfo();
-                        if ($oc) $out->totalCount = $oc;
-                    }
+                    $this->useDocumentList($s->getDocumentList());
+                    return $this->getDocumentListContent();
+       
                 }
             }
         } else
@@ -187,7 +174,12 @@ class Fdl_Collection extends Fdl_Document
         return $out;
     }
     
-    public function useDocumentList(DocumentList $dl)
+    /**
+     * use DocumentList instead a folder
+     * @param DocumentList $dl
+     * @return void
+     */
+    public function useDocumentList(DocumentList &$dl)
     {
         $this->documentList = $dl;
     }
@@ -206,6 +198,7 @@ class Fdl_Collection extends Fdl_Document
             $this->setError("document list uninitialized");
         } else {
             $s = $dl->getSearchDocument();
+            if ($this->contentMap) $dl->listMap($this->contentMap);
             $out = null;
             $out->info = $s->getSearchInfo();
             $out->slice = $s->slice;
@@ -213,6 +206,7 @@ class Fdl_Collection extends Fdl_Document
             $this->setError($out->info["error"]);
             $tmpdoc = new Fdl_Document();
             $kd = 0;
+            
             foreach ( $dl as $doc ) {
                 $tmpdoc->affect($doc);
                 if (!$doc->isConfidential()) {
@@ -258,7 +252,7 @@ class Fdl_Collection extends Fdl_Document
     {
         include_once ("FDL/Class.SearchDoc.php");
         static $sw = null;
-        
+        $out='';
         $tfid = array();
         if (strstr($famid, '|')) {
             // multi family search
@@ -270,13 +264,14 @@ class Fdl_Collection extends Fdl_Document
             
             $famid = 0;
         }
-        if (preg_match("/([\w:]*)\s?strict/", trim($famid), $reg)) {
+        if (preg_match('/([\w:]*)\s?strict/', trim($famid), $reg)) {
             if (!is_numeric($reg[1])) $reg[1] = getFamIdFromName($this->dbaccess, $reg[1]);
             $famid = '-' . $reg[1];
         }
         $s = new SearchDoc($this->dbaccess, $famid);
         if ($key) {
             if ($mode == "word") {
+                $sqlfilters=array();$fullorderby='';$keyword='';
                 DocSearch::getFullSqlFilters($key, $sqlfilters, $fullorderby, $keyword);
                 foreach ( $sqlfilters as $vfilter )
                     $s->addFilter($vfilter);
@@ -297,6 +292,7 @@ class Fdl_Collection extends Fdl_Document
                     $sw = createTmpDoc($this->dbaccess, "DSEARCH");
                     $sw->setValue("se_famid", $famid);
                 }
+                $ofamid=0;$sfilter='';
                 $err = $sw->object2SqlFilter($filter, $ofamid, $sfilter);
                 $this->setError($err);
                 if ($ofamid) {
@@ -368,6 +364,7 @@ class Fdl_Collection extends Fdl_Document
      */
     public function getSubFamilies($famid, $controlcreate = false)
     {
+        $out='';
         $fam = new_doc($this->dbaccess, $famid);
         if (!$fam->isAlive()) {
             $out->error = sprintf(_("data:family %s not alive"), $famid);
@@ -403,6 +400,7 @@ class Fdl_Collection extends Fdl_Document
      */
     public function insertDocument($docid)
     {
+        $out='';
         if ($this->docisset()) {
             $err = $this->doc->addFile($docid);
             if ($err != "") {
@@ -422,6 +420,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function unlinkDocument($docid)
     {
+        $out='';
         if ($this->docisset()) {
             $err = $this->doc->delFile($docid);
             if ($err != "") {
@@ -442,6 +441,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function unlinkDocuments($selection)
     {
+        $out='';
         include_once ("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
@@ -476,6 +476,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function unlinkAllDocuments()
     {
+        $out='';
         if ($this->docisset()) {
             $out->error = "";
             $err = $this->doc->canModify();
@@ -496,6 +497,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function moveDocuments($selection, $targetId)
     {
+        $out='';
         include_once ("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         $ids = $os->getIdentificators();
@@ -543,6 +545,7 @@ class Fdl_Collection extends Fdl_Document
      */
     function insertDocuments($selection)
     {
+        $out='';
         include_once ("DATA/Class.DocumentSelection.php");
         $os = new Fdl_DocumentSelection($selection);
         if ($this->docisset()) {
