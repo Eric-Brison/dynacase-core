@@ -38,21 +38,25 @@ class DocumentList implements Iterator
     {
         
         $this->currentDoc = $this->search->nextDoc();
-        $this->callHook();
+        $good=($this->callHook() !== false);
+        if (! $good) {
+            while ($this->currentDoc = $this->search->nextDoc()) {
+                $good=($this->callHook() !== false);
+                if ($good) break;
+            }
+        }
        
     }
     public function next()
     {
-        $this->currentDoc = $this->search->nextDoc();
-        $this->callHook();
+        $this->rewind();
     }
     
     private function callHook() {
         if ($this->currentDoc && $this->hookFunction) {
-       
            // call_user_func($function, $this->currentDoc);
             $h=$this->hookFunction;
-            $h($this->currentDoc);
+            return $h($this->currentDoc);
         
         }
     }
@@ -86,7 +90,12 @@ class DocumentList implements Iterator
         $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
         $this->initSearch();
     }
-    public function setHook($hookFunction) {
+    /**
+     * apply a callback on each document
+     * if callback return false, the document is skipped from list
+     * @return void
+     */
+    public function listMap($hookFunction) {
         $this->hookFunction=$hookFunction;
     }
 }

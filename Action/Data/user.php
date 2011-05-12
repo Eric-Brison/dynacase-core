@@ -62,7 +62,6 @@ function user(&$action) {
       $out->error=sprintf(_("method %s not defined"),$method);
     }
   
-  
 
   $action->lay->template=json_encode($out);  
 }

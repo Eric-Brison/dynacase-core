@@ -18,6 +18,7 @@ include_once("FDL/Class.Doc.php");
 Class Fdl_Document  {
 
     protected $doc;
+    public $dbaccess;
     function __construct($id=0, $config=null, Doc &$doc=null) {
         $this->dbaccess=getParam("FREEDOM_DB");
         if (isset($config->latest)) $latest=$config->latest;
