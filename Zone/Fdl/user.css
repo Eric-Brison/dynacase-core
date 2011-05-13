@@ -1,0 +1,125 @@
+body, html
+{
+	background-color:white;
+	color:#575757;
+	overflow-y:hidden;
+}
+
+#left
+{
+	background-color:white;
+	float:left;
+	text-align:center;
+	width:100px;
+	height: 100%;
+	font-size:0.6em;
+	background-color:#D7D7D7;
+	-moz-border-radius: 5px;
+  	-webkit-border-radius: 5px;
+}
+
+#right
+{
+	height:100%;
+}
+
+.multidoc
+{
+	background-color:white;
+}
+
+.multidoc #arrow_down
+{
+	background-image:url(../images/more3.png);
+	width:32px;
+	height:32px;
+	margin-right:20px;
+}
+
+.multidoc #tabs_plus
+{
+	border-top: 1px solid #9B9776;
+	border-bottom: 1px solid #9B9776;
+	margin-top:5px;
+	background-color:#E6E6E6;
+	max-height:350px;
+	width:196px;
+	overflow:auto;
+	overflow-x:hidden;
+	-moz-border-radius: 5px;
+  	-webkit-border-radius: 5px;
+}
+
+.multidoc .tab
+{
+	font-size:0.6em;
+	background-color:#E6E6E6;
+  	text-align:center;
+  	cursor:pointer;
+}
+
+.multidoc .tab-active
+{
+	font-size:0.6em;
+	background-color:#C1C3C3;
+  	text-align:center;
+  	cursor:pointer;
+}
+
+.multidoc .tab:hover, .tab-active:hover
+{
+	text-decoration:underline;
+	background-color:#C8D2D1;
+	font-size:0.66em;
+}
+
+.multidoc .content
+{
+	font-weight: bold;
+}
+
+.multidoc .content_frame
+{
+	height:600px;
+}
+
+.multidoc .doc_content
+{
+	height:100%;
+	background-color:white;
+	width:100%;
+}
+
+.multidoc .icon_doc
+{
+	margin-top:10px;
+}
+
+.multidoc .options
+{
+	background-color:#E9DDC1;
+}
+
+.multidoc .img_new
+{
+	background-image:url(../images/goto.png);
+	width:16px;
+	height:16px;
+}
+
+.multidoc .img_del
+{
+	background-image:url(../images/del.png);
+	width:16px;
+	height:16px;
+}
+
+.multidoc .tabcontent
+{
+	margin-right:3px;
+}
+
+.multidoc .img_del:hover, .multidoc .img_new:hover
+{
+  	background-color:#C8D2D1;
+}
