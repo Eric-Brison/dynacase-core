@@ -101,6 +101,33 @@ Fdl.getCookie = function(c_name) {
 	}
 	return "";
 };
+
+/**
+ * @param string isodate date to format YYYY-MM-DD HH:MM:SS
+ * @param string fmt return format like %d/%m/%Y
+ * @return string
+ */
+
+Fdl.formatDate = function (isodate, fmt) {
+	if (isodate && fmt) {
+		var year=isodate.substring(0,4);
+		var month=isodate.substring(5,7);
+		var day=isodate.substring(8,10);
+		var hour=isodate.substring(11,13);
+		var minute=isodate.substring(14,16);
+		var second=isodate.substring(17,19);
+
+		var r=fmt;
+		r=r.replace('%d',day);
+		r=r.replace('%m',month);
+		r=r.replace('%Y',year);
+		r=r.replace('%H',hour);
+		r=r.replace('%M',minute);
+		r=r.replace('%S',second);
+		return r;
+	}
+	return '';
+}
 /**
  * @deprecated
  */

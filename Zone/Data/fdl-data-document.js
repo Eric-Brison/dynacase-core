@@ -234,6 +234,21 @@ Fdl.Document.prototype = {
     			} else return Fdl.encodeHtmlTags(oa.getFileName(this._data.values[id]));
     			}
     		}
+    		if (oa.toString() == 'Fdl.DateAttribute') {
+    			var fmt=this.context.getUser().getLocaleFormat();
+    			var dateFmt='';
+    			if (oa.type=='date') {
+    				dateFmt=fmt.dateFormat;
+    			} else if (oa.type=='timestamp') {
+    				dateFmt=fmt.dateTimeFormat;
+    			}  else if (oa.type=='time') {
+    				dateFmt=fmt.timeFormat;
+    			}  
+    			if (dateFmt) {
+    				return Fdl.formatDate(this._data.values[id],dateFmt);
+    			} 
+    			
+    		}
     	}
     	return Fdl.encodeHtmlTags(this._data.values[id]);
     },
