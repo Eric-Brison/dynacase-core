@@ -220,6 +220,17 @@ class BasicAttribute
         return sprintf("<!-- no value %s (%s)-->", $this->id, $this->type);
     }
     /**
+     * Get human readable textual value
+     * Fallback method
+     *
+     * @return NULL
+     */
+    function getTextualValue()
+    {
+        return null;
+    }
+
+    /**
      * Generate XML schema layout
      *
      * @param unknown_type $play
@@ -347,7 +358,6 @@ class NormalAttribute extends BasicAttribute
      */
     function getXmlSchema($la)
     {
-
         switch ($this->type) {
         case 'text' :
             return $this->text_getXmlSchema($la);
@@ -663,6 +673,213 @@ class NormalAttribute extends BasicAttribute
         }
         $lay->setBlockData("ATTR", $tax);
         return $lay->gen();
+    }
+    /**
+     * Get the textual value of an attribute
+     *
+     * @param Doc $doc current Doc
+     *
+     * @return string
+     */
+    public function getTextualValue(Doc $doc, $index = -1, $decimalSeparator = ".")
+    {
+        switch ($this->type) {
+        case 'text' :
+        case 'longtext' :
+        case 'time' :
+        case 'htmltext' :
+            return $this->getTextualValueText($doc, $index);
+        case 'image' :
+        case 'file' :
+            return $this->getTextualValueFile($doc, $index);
+        case 'enum' :
+            return $this->getTextualValueEnum($doc, $index);
+        case 'thesaurus' :
+        case 'docid' :
+            return $this->getTextualValueDocId($doc, $index);
+        case 'timestamp' :
+        case 'date' :
+            return $this->getTextualValueDate($doc, $index);
+        case 'array' :
+            return "";
+        case 'float':
+        case 'money' :
+            return $this->getTextualFloat($doc, $index, $decimalSeparator);
+        case 'int' :
+        case 'integer' :
+        case 'color' :
+        default :
+            return $this->getTextualValueRaw($doc, $index);
+        }
+    }
+
+    private function getTextualFloat($doc, $index, $decimalSeparator){
+        $values = $this->getTextualValueRaw($doc, $index);
+        if ($decimalSeparator != ".") {
+            if (is_array($values)){
+                $returnValues = array();
+                foreach ($values as $value) {
+                    $returnValues = str_replace(".", $decimalSeparator, $values);
+                }
+                return $returnValues;
+            }else{
+                return str_replace(".", $decimalSeparator, $values);
+            }
+        }else{
+            return $values;
+        }
+    }
+
+    private function getTextualValueText(Doc $doc, $index = -1)
+    {
+        if ($this->inArray()) {
+            if ($index >= 0) {
+                return strip_tags($doc->getValue($this->id, "_self", 2, $index));
+            } else {
+                $nbValue = count($doc->getTValue($this->id));
+                $returnValues = array();
+                for($i = 0; $i < $nbValue; $i++) {
+                    $returnValues[] = $this->getTextualValueText($doc, $i);
+                }
+                return implode("\n", $returnValues);
+            }
+        } else {
+            return strip_tags($doc->getValue($this->id));
+        }
+    }
+
+    private function getTextualValueRaw(Doc $doc, $index = -1)
+    {
+        if ($this->inArray()) {
+            if ($index >= 0) {
+                return $doc->getTValue($this->id, "", $index);
+            } else {
+                $returnValues = $doc->getTValue($this->id);
+                return implode("\n", $returnValues);
+            }
+        } else {
+            return $doc->getValue($this->id);
+        }
+    }
+    private function getTextualValueDate(Doc $doc, $index = -1)
+    {
+        if ($this->inArray()) {
+            if ($index >= 0) {
+                return FrenchDateToIso($doc->getTValue($this->id, "", $index));
+            } else {
+                $nbValue = count($doc->getTValue($this->id));
+                $returnValues = array();
+                for($i = 0; $i < $nbValue; $i++) {
+                    $returnValues[] = $this->getTextualValueDate($doc, $i);
+                }
+                return implode("\n", $returnValues);
+            }
+        } else {
+            return FrenchDateToIso($doc->getValue($this->id));
+        }
+    }
+    private function getTextualValueFile(Doc $doc, $index = -1)
+    {
+        if ($this->inArray()) {
+            if ($index >= 0) {
+                return $doc->vault_filename($this->id, false, $index);
+            } else {
+                $nbValue = count($doc->getTValue($this->id));
+                $returnValues = array();
+                for($i = 0; $i < $nbValue; $i++) {
+                    $returnValues[] = $this->getTextualValueFile($doc, $i);
+                }
+                return implode("\n", $returnValues);
+            }
+        } else {
+            return $doc->vault_filename($this->id);
+        }
+    }
+    private function getTextualValueEnum(Doc $doc, $index = -1)
+    {
+        if ($this->inArray()) {
+            if ($index >= 0) {
+                if ($this->getOption('multiple') == 'yes') {
+                    $values = $doc->getTValue($this->id, "", $index);
+                    $returnValues = array();
+                    if (is_array($values)) {
+                        foreach ( $values as $currentKey ) {
+                            $returnValues[] = $this->getEnumLabel($currentKey);
+                        }
+                        return implode(" , ", $returnValues);
+                    } else {
+                        return $this->getEnumLabel($values);
+                    }
+                } else {
+                    return $this->getEnumLabel($doc->getTValue($this->id, "", $index));
+                }
+
+            } else {
+                $nbValue = count($doc->getTValue($this->id));
+                $returnValues = array();
+                for($i = 0; $i < $nbValue; $i++) {
+                    $returnValues[] = $this->getTextualValueEnum($doc, $i);
+                }
+                return implode("\n", $returnValues);
+            }
+        } else {
+            if ($this->getOption('multiple') == 'yes') {
+                $value = $doc->getValue($this->id);
+                $values = $doc->_val2array($value);
+                if ($index >= 0) {
+                    return $this->getEnumLabel($values[$index]);
+                } else {
+                    $returnValues = array();
+                    foreach ( $values as $currentKey ) {
+                        $returnValues[] = $this->getEnumLabel($currentKey);
+                    }
+                    return implode(" , ", $returnValues);
+                }
+            }
+            return $this->getEnumLabel($doc->getValue($this->id));
+        }
+    }
+    private function getTextualValueDocId(Doc $doc, $index = -1)
+    {
+        if ($this->inArray()) {
+            if ($index >= 0) {
+                if ($this->getOption('multiple') == 'yes') {
+                    $values = $doc->getTValue($this->id, "", $index);
+                    if (is_array($values)) {
+                        $returnValues = array();
+                        foreach ( $values as $currentId ) {
+                            $returnValues[] = $doc->getTitle($currentId);
+                        }
+                        return implode(" , ", $returnValues);
+                    }
+                    return $doc->getTitle($values);
+                } else {
+                    return $doc->getTitle($doc->getTValue($this->id, "", $index));
+                }
+            } else {
+                $nbValue = count($doc->getTValue($this->id));
+                $returnValues = array();
+                for($i = 0; $i < $nbValue; $i++) {
+                    $returnValues[] = $this->getTextualValueDocId($doc, $i);
+                }
+                return implode("\n", $returnValues);
+            }
+        } else {
+            if ($this->getOption('multiple') == 'yes') {
+                $value = $doc->getValue($this->id);
+                $values = $doc->_val2array($value);
+                if ($index >= 0) {
+                    return $doc->getTitle($values[$index]);
+                } else {
+                    $returnValues = array();
+                    foreach ( $values as $currentId ) {
+                        $returnValues[] = $doc->getTitle($currentId);
+                    }
+                    return implode(" , ", $returnValues);
+                }
+            }
+            return $doc->getTitle($doc->getValue($this->id));
+        }
     }
     /**
      * Return array of enumeration definition
