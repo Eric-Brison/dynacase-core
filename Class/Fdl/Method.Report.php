@@ -27,20 +27,21 @@ class _REPORT extends _DSEARCH
     var $eviews = array(
         "FREEDOM:EDITREPORT"
     );
-    function _getInternals()
+    protected function _getInternals()
     {
         return array(
             "title" => _("doctitle"),
             "revdate" => _("revdate"),
             "revision" => _("revision"),
-            "state" => _("state")
+            "state" => _("state"),
+            "owner" => _("owner")
         );
     }
     /**
      * Compute the values fo the edit display
      *
      */
-    function editreport()
+    public function editreport()
     {
         global $action;
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/selectbox.js");
@@ -96,7 +97,7 @@ class _REPORT extends _DSEARCH
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
      */
-    function viewreport($target = "_self", $ulink = true, $abstract = false)
+    public function viewreport($target = "_self", $ulink = true, $abstract = false)
     {
         global $action;
         $this->viewattr($target, $ulink, $abstract);
@@ -270,7 +271,7 @@ class _REPORT extends _DSEARCH
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
      **/
-    function viewreportcsv($target = "_self", $ulink = true, $abstract = false)
+    public function viewreportcsv($target = "_self", $ulink = true, $abstract = false)
     {
         include_once ("FDL/Class.SearchDoc.php");
         $rfamid = $this->getValue("SE_FAMID", 1);
@@ -365,14 +366,207 @@ class _REPORT extends _DSEARCH
         }
         $this->lay->setBlockData("rows", $trow);
     }
+
     /**
-     * Compute the values for the view display
+     * Generate data struct to csv export of a report
+     *
+     * @param boolean $refresh true to refresh the doc before export
+     * @param boolean $isPivotExport if is pivot true
+     * @param string $pivotElement id of the pivot element
+     *
+     * @return array
+     */
+    public function generateCSVReportStruct($separator = ".", $refresh = true, $isPivotExport = false, $pivotId = "id")
+    {
+        require_once 'WHAT/Class.twoDimensionnalArray.php';
+        require_once 'FDL/Class.SearchDoc.php';
+
+        $famId = $this->getValue("se_famid", 1);
+        $limit = $this->getValue("rep_limit", "ALL");
+        $order = $this->getValue("rep_idsort", "title");
+
+        $search = new SearchDoc($this->dbaccess, $famId);
+        $search->dirid = $this->initid;
+        $search->slice = $limit;
+        $search->orderby = $order;
+        $search->setObjectReturn();
+        $search->search();
+
+        $famDoc = createDoc($this->dbaccess, $famId, false);
+        $tcols = $this->getTValue("rep_idcols");
+
+        if ($isPivotExport) {
+            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator);
+        } else {
+            return $this->generateBasicCSV($search, $tcols, $famDoc, $refresh, $separator);
+        }
+    }
+
+    protected function generatePivotCSV(SearchDoc $search, Array $columns, Doc $famDoc, $pivotId, $refresh, $separator)
+    {
+        $pivotColumnName = uniqid();
+
+        $singleAttributes = array();
+        $multipleAttributes = array();
+        $resultSingleArray = array();
+        $resultMultipleArray = array();
+
+        $internals = $this->_getInternals();
+
+        //Generate column organisation
+        $resultSingleArray[$pivotColumnName] = array();
+
+        foreach ( $columns as $currentColumnID ) {
+            $attributeObject = $famDoc->getAttribute($currentColumnID);
+            if (!$attributeObject) {
+                $singleAttributes[] = $currentColumnID;
+                $resultSingleArray[$currentColumnID] = array();
+            } elseif ($attributeObject->isMultiple()) {
+                if ($attributeObject->getOption('multiple') == "yes" && !$attributeObject->inArray()) {
+                    $multipleAttributes[$currentColumnID] = array();
+                    $multipleAttributes[$currentColumnID][] = $currentColumnID;
+                    $resultMultipleArray[$currentColumnID] = array();
+                    $resultMultipleArray[$currentColumnID][$pivotColumnName] = array();
+                    $resultMultipleArray[$currentColumnID][$currentColumnID] = array();
+                } else {
+                    $arrayID = $attributeObject->fieldSet->id;
+                    if (!isset($multipleAttributes[$arrayID])) {
+                        $multipleAttributes[$arrayID] = array();
+                        $resultMultipleArray[$arrayID] = array();
+                        $resultMultipleArray[$arrayID][$pivotColumnName] = array();
+                    }
+                    $multipleAttributes[$arrayID][] = $currentColumnID;
+                    $resultMultipleArray[$arrayID][$currentColumnID] = array();
+                }
+            } else {
+                $singleAttributes[] = $currentColumnID;
+                $resultSingleArray[$currentColumnID] = array();
+            }
+        }
+
+        //Get Value
+        while ( $currentDoc = $search->nextDoc() ) {
+            if ($refresh) {
+                $currentDoc->refresh();
+            }
+            $pivotAttribute = $famDoc->getAttribute($pivotId);
+            $pivotValue = $pivotAttribute ? $pivotAttribute->getTextualValue($currentDoc, -1, $separator) : $this->convertInternalElement($pivotId, $currentDoc);
+            $resultSingleArray[$pivotColumnName][] = $pivotValue;
+            foreach ( $singleAttributes as $currentColumnID ) {
+                $currentAttribute = $famDoc->getAttribute($currentColumnID);
+                $resultSingleArray[$currentColumnID][] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $separator) : $this->convertInternalElement($currentColumnID, $currentDoc);
+            }
+            foreach ( $multipleAttributes as $currentKey => $currentArrayID ) {
+                foreach ( $currentArrayID as $currentColumnID ) {
+                    $currentAttribute = $famDoc->getAttribute($currentColumnID);
+                    $nbElement = count($currentDoc->getTValue($currentColumnID));
+                    for($i = 0; $i < $nbElement; $i++) {
+                        $resultMultipleArray[$currentKey][$currentColumnID][] = $currentAttribute->getTextualValue($currentDoc, $i, $separator);
+                    }
+                }
+                for($i = 0; $i < $nbElement; $i++) {
+                    $resultMultipleArray[$currentKey][$pivotColumnName][] = $pivotValue;
+                }
+            }
+        }
+
+        //Generate result array
+        $firstRow = array();
+        $twoDimStruct = new TwoDimensionStruct();
+
+        //Generate first line
+        $firstRow[] = _("REPORT_pivot");
+        $twoDimStruct->addColumn($resultSingleArray[$pivotColumnName]);
+
+        foreach ( $singleAttributes as $currentColumnID ) {
+            $currentAttribute = $famDoc->getAttribute($currentColumnID);
+            $firstRow[] = $currentAttribute ? $currentAttribute->getLabel() : $internals[$currentColumnID];
+            $twoDimStruct->addColumn($resultSingleArray[$currentColumnID]);
+        }
+
+        //Generate content
+        foreach ( $multipleAttributes as $currentKey => $currentArrayID ) {
+            $firstRow[] = "";
+            $emptyArray = array("");
+            $twoDimStruct->addColumn($emptyArray);
+            $firstRow[] = _("REPORT_pivot");
+            $twoDimStruct->addColumn($resultMultipleArray[$currentKey][$pivotColumnName]);
+            foreach ( $currentArrayID as $currentColumnID ) {
+                $currentAttribute = $famDoc->getAttribute($currentColumnID);
+                $firstRow[] = $currentAttribute ? $currentAttribute->getLabel() : $internals[$currentColumnID];
+                $twoDimStruct->addColumn($resultMultipleArray[$currentKey][$currentColumnID]);
+            }
+        }
+
+        if ($twoDimStruct->insertRow(0, $firstRow, true) == null) {
+            var_export($twoDimStruct->getLastErrorMessage());
+        }
+
+        return $twoDimStruct->getArray();
+    }
+
+    /**
+     * Generate a basic CSV export
+     *
+     * @param SearchDoc $search the result of the report
+     * @param array $columns an array of id
+     * @param Doc $famDoc the associated family doc
+     *
+     * @return array
+     */
+    protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh)
+    {
+        $twoDimStruct = new TwoDimensionStruct();
+        $firstRow = array();
+        $internals = $this->_getInternals();
+        foreach ( $columns as $currentColumn ) {
+            $currentAttribute = $famDoc->getAttribute($currentColumn);
+            $firstRow[] = $currentAttribute ? $currentAttribute->getLabel() : $internals[$currentColumn];
+        }
+        $twoDimStruct->addRow($firstRow);
+        while ( $currentDoc = $search->nextDoc() ) {
+            if ($refresh) {
+                $currentDoc->refresh();
+            }
+            $currentRow = array();
+            foreach ( $columns as $currentColumn ) {
+                $currentAttribute = $famDoc->getAttribute($currentColumn);
+                $currentRow[] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $separator) : $this->convertInternalElement($currentColumn, $currentDoc);
+            }
+            $twoDimStruct->addRow($currentRow);
+        }
+        return $twoDimStruct->getArray();
+    }
+
+    protected function convertInternalElement($internalName, Doc $doc)
+    {
+        switch ($internalName) {
+        case "revdate" :
+            return strftime("%x %T", $doc->getValue($internalName));
+        case "state" :
+            $stateValue = $doc->getstate();
+            if (empty($stateValue)){
+                return "";
+            }
+            return _($stateValue);
+        case "title" :
+            return $doc->getHTMLTitle();
+        case "id" :
+            return $doc->id;
+        case "owner":
+            return $doc->owner;
+        default :
+            return $doc->getValue($internalName);
+        }
+    }
+    /**
+     * Compute the values for the mini view display (portal)
      *
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated
      */
-    function viewminireport($target = "_self", $ulink = true, $abstract = false)
+    public function viewminireport($target = "_self", $ulink = true, $abstract = false)
     {
         return $this->viewreport($target, $ulink, $abstract);
     }
