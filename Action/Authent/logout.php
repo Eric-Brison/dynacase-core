@@ -4,7 +4,7 @@
  *
  * @author Anakeen 1999
  * @version $Id: logout.php,v 1.12 2008/06/24 16:05:51 jerome Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package WHAT
  * @subpackage CORE
  * @deprecated since HTTP Authentification
@@ -23,6 +23,8 @@ function logout(&$action) {
   global $_POST;
 
   include_once('WHAT/Lib.Common.php');
+
+  $log = new Log("", "Dynacase", "Session");
 
   $authtype = getAuthType();
   
@@ -44,6 +46,8 @@ function logout(&$action) {
     $redir_uri = $action->GetParam("CORE_BASEURL");
     $action->session->close();
 
+    $log->wlog("W","[terminated] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
+
     $auth->logout($redir_uri);
     exit(0);
   }
@@ -52,6 +56,7 @@ function logout(&$action) {
   $raction = GetHttpVars("raction");
   $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
   
+  $log->wlog("W","[terminated] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
   $action->session->close();
 
   if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {

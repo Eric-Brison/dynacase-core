@@ -3,7 +3,7 @@
  * PHP Authentification control
  *
  * @author Anakeen 1999
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package WHAT
  * @subpackage CORE
  * @deprecated since HTTP Authentification
@@ -14,13 +14,16 @@ function checkauth(&$action) {
   include_once('WHAT/Class.htmlAuthenticator.php');
   include_once('WHAT/Class.Session.php');
   include_once('WHAT/Class.User.php');
+  include_once('WHAT/Class.Log.php');
+
+  $log = new Log("", "Dynacase", "Session");
 
   $authtype = getAuthType();
   $authProviderList = getAuthProviderList();
   foreach ($authProviderList as $ka=>$authprovider) {
    $auth = new htmlAuthenticator( 'html', $authprovider );
     $status = $auth->checkAuthentication();
-//     error_log(__FILE__.":".__LINE__." provider = ".$authprovider." status = ".($status?"OK":"NOK"));
+     //error_log(__FILE__.":".__LINE__." provider = ".$authprovider." status = ".($status?"OK":"NOK"));
     if ($status) {
       break;
     }
@@ -39,8 +42,8 @@ function checkauth(&$action) {
       }
     }
     $action->session->close();
+    $log->wlog("W","[authentication failure] [invalid credentials] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
     sleep(1); // for robots
-//     error_log(__CLASS__."::".__FUNCTION__." ".'Location : '.$_SERVER['SCRIPT_NAME'].'?sole=A&app=AUTHENT&action=LOGINFORM&error=1');
     // Redirect to authentication
     global $_POST;
     Redirect($action, 'AUTHENT', 'LOGINFORM&error=1&auth_user='.urlencode($_POST['auth_user']));
@@ -56,7 +59,7 @@ function checkauth(&$action) {
   }
    
   if (!$existu) {
-    error_log(basename(__FILE__).":".__LINE__." User $login has no account");
+    $log->wlog("W","[authentication failure] [user has no account] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
     global $_POST;
     Redirect($action, 'AUTHENT', 'LOGINFORM&error=1&auth_user='.urlencode($_POST['auth_user']));
     exit(0);
@@ -66,9 +69,11 @@ function checkauth(&$action) {
   
   
   if( $session_auth->read('username') == "" ) {
-    error_log(__CLASS__."::".__FUNCTION__." "."Error: 'username' should exists in session ".$auth->parms{'cookie'});
+    $log->wlog("W","[authentication failure] [username should exists in session] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
     exit(0);
   }
+
+    $log->wlog("W","[authentication success] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
 
   $fromuri = $session_auth->read('fromuri');
   if (($fromuri == "" )|| (preg_match('/app=AUTHENT/',$fromuri))) {
