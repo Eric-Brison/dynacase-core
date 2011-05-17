@@ -30,16 +30,24 @@ function loginform(&$action) {
   if ($ulang)  {
     setLanguage($ulang);
     //$action->setparamu("CORE_LANG",$ulang);
-  }  else $ulang=getParam('CORE_LANG');
-
-    $error = GetHttpVars("error");
-    if ($error) $error=_("auth_failure");
-    $auth_user = GetHttpVars("auth_user");
-    $auth_pass = GetHttpVars("auth_pass");
-    $app_redir = GetHttpVars("appd","CORE");
-    $act_redir = GetHttpVars("actd","");
-    $arg_redir = GetHttpVars("argd",""); // redirect url
-    $domain = GetHttpVars("domain");
+  }  else {
+    $ulang=getParam('CORE_LANG');
+  }
+ 
+  $error = GetHttpVars("error",0);
+  $merr = "";
+  if ($error>0) {
+    switch ($error) {
+    case 2 : $merr = _("to many incorrect password attempts"); break;
+    default: $merr = _("auth_failure");
+    }
+  }
+  $auth_user = GetHttpVars("auth_user");
+  $auth_pass = GetHttpVars("auth_pass");
+  $app_redir = GetHttpVars("appd","CORE");
+  $act_redir = GetHttpVars("actd","");
+  $arg_redir = GetHttpVars("argd",""); // redirect url
+  $domain = GetHttpVars("domain");
 
 
 
@@ -50,7 +58,7 @@ function loginform(&$action) {
     $action->lay->set("title",_("welcome"));
     $action->lay->set("auth_user",$auth_user);
     $action->lay->set("passfocus", ($auth_user!=="" ? true : false ));
-    $action->lay->set("error",$error);
+    $action->lay->set("error",$merr);
 
     if( $action->getParam('AUTHENT_SHOW_REQPASSWD') == 'yes' ) {
       $action->lay->set('AUTHENT_SHOW_REQPASSWD', True);

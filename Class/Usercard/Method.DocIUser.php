@@ -536,6 +536,32 @@ function setPassword($password) {
 
   return "";
 }
+/**
+ * Increase login failure count
+ */
+function increaseLoginFailure() {
+  $this->disableEditControl();
+  $lf = $this->getValue("us_loginfailure",0) + 1;
+  $err = $this->SetValue("us_loginfailure",$lf);
+  if( $err=="") {
+    $err = $this->modify(true, array("us_loginfailure"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
+
+/**
+ * Reset login failure count
+ */
+function resetLoginFailure() {
+  $this->disableEditControl();
+  $err = $this->SetValue("us_loginfailure",0);
+  if( $err=="") {
+    $err = $this->modify(true, array("us_loginfailure"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
      /**
         * @begin-method-ignore
         * this part will be deleted when construct document class until end-method-ignore

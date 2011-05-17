@@ -43,6 +43,19 @@ function checkauth(&$action) {
     }
     $action->session->close();
     $log->wlog("W","[authentication failure] [invalid credentials] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
+
+    // count login failure
+    if ($action->getParam("AUTHENT_FAILURECOUNT") > 0) {
+      $wu = new User();
+      if ($wu->SetLoginName($_REQUEST["auth_user"])) {
+	if ($wu->id!=1) {
+	  include_once("FDL/freedom_util.php");
+	  $du = new_Doc(getParam("FREEDOM_DB"), $wu->fid);
+	  if ($du->isAlive()) {  $du->increaseLoginFailure(); }
+	}
+      } 
+    }
+      
     sleep(1); // for robots
     // Redirect to authentication
     global $_POST;
@@ -54,7 +67,7 @@ function checkauth(&$action) {
   $login = $auth->getAuthUser();
   $wu = new User();   
   $existu = false;
-  if( $wu->SetLoginName($login) ) {
+  if ($wu->SetLoginName($login) ) {
     $existu = true;
   }
    
@@ -65,8 +78,24 @@ function checkauth(&$action) {
     exit(0);
   }
   
+  if ($wu->id!=1) {
+    include_once("FDL/freedom_util.php");
+    $du = new_Doc(getParam("FREEDOM_DB"), $wu->fid);
+
+    // check count of login failure
+    $maxfail = $action->getParam("AUTHENT_FAILURECOUNT");
+    if ( $maxfail > 0 && $du->getValue("us_loginfailure",0) >= $maxfail ) {
+      $log->wlog("W","[session refused] [max connection (".$maxfail.") attempts exceeded] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH); 
+    global $_POST;
+    Redirect($action, 'AUTHENT', 'LOGINFORM&error=2&auth_user='.urlencode($_POST['auth_user']));
+    exit(0);
+    }
+
+    // authen OK, max login failure OK => reset count of login failure
+    $du->resetLoginFailure();
+  }
+
   $session_auth = $auth->getAuthSession();
-  
   
   if( $session_auth->read('username') == "" ) {
     $log->wlog("W","[authentication failure] [username should exists in session] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
