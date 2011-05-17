@@ -223,6 +223,18 @@ function setToDefaultGroup() {
   return $err;
 }
 
+function postCreated() {
+  $err = "";
+  global $action;
+  $ed = $action->getParam("AUTHENT_ACCOUNTEXPIREDELAY");
+  if ( $ed>0 ) {
+    $expdate = time() + ($ed*24*3600); 
+    $err = $this->SetValue("us_accexpiredate",strftime("%d/%m/%Y 00:00:00",$expdate));
+    if ($err=='') $err = $this->modify(true, array("us_accexpiredate"), true);
+  }
+  return $err;
+}
+
 /**
  * Modify IUSER via Freedom    
  */
@@ -561,6 +573,50 @@ function resetLoginFailure() {
   }
   $this->enableEditControl();
   return "";
+}
+
+/**
+ * Manage account activation
+ */
+function isAccountActive() {
+  return ($this->getValue("us_status",'A')=='A');
+}
+function activateAccount() {
+  $this->disableEditControl();
+  $err = $this->SetValue("us_status",'A');
+  if( $err=="") {
+    $err = $this->modify(true, array("us_status"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
+function isAccountInactive() {
+  return ($this->getValue("us_status",'A')!='A');
+}
+function desactivateAccount() {
+  $this->disableEditControl();
+  $err = $this->SetValue("us_status",'D');
+  if( $err=="") {
+    $err = $this->modify(true, array("us_status"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
+function accountHasExpired() {
+    $expd=$this->GetValue("us_accexpiredate");
+    //convert date 
+    $expires=0;
+    if ($expd != "") {
+      if (preg_match("|([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9])|", 
+	       $expd, $reg)) {   
+	$expires=mktime(0,0,0,$reg[2],$reg[1],$reg[3]);
+      } else  if (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9]|", 
+	       $expd, $reg)) {   
+	$expires=mktime(0,0,0,$reg[2],$reg[3],$reg[1]);
+      }
+      return ($expires<=time());
+    }
+    return false;
 }
      /**
         * @begin-method-ignore

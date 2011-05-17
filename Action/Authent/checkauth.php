@@ -79,8 +79,25 @@ function checkauth(&$action) {
   }
   
   if ($wu->id!=1) {
+
     include_once("FDL/freedom_util.php");
     $du = new_Doc(getParam("FREEDOM_DB"), $wu->fid);
+
+    // First check if account is active
+    if ( $du->isAccountInactive() ) {
+      $log->wlog("W","[session refused] [account inactive] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH); 
+      global $_POST;
+      Redirect($action, 'AUTHENT', 'LOGINFORM&error=3&auth_user='.urlencode($_POST['auth_user']));
+      exit(0);
+    }
+   
+    // check if the account expiration date is elapsed
+    if ( $du->accountHasExpired() ) {
+      $log->wlog("W","[session refused] [account has expired] provider=[".$authprovider."] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$_REQUEST["auth_user"]."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH); 
+      global $_POST;
+      Redirect($action, 'AUTHENT', 'LOGINFORM&error=4&auth_user='.urlencode($_POST['auth_user']));
+      exit(0);
+    }
 
     // check count of login failure
     $maxfail = $action->getParam("AUTHENT_FAILURECOUNT");

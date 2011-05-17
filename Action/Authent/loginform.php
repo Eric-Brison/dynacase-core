@@ -38,7 +38,9 @@ function loginform(&$action) {
   $merr = "";
   if ($error>0) {
     switch ($error) {
-    case 2 : $merr = _("to many incorrect password attempts"); break;
+    case 2 : $merr = _("To many incorrect password attempts.")._(" Please, see your manager"); break;
+    case 3 : $merr = _("This account is desactivated.")._(" Please, see your manager"); break;
+    case 4 : $merr = _("This account has expired.")._(" Please, see your manager"); break;
     default: $merr = _("auth_failure");
     }
   }

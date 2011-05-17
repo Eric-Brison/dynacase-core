@@ -52,6 +52,12 @@ $app_const= array(
                                     "kind" => "text",
                                     "global" => "N"
                                     ),
+  "AUTHENT_ACCOUNTEXPIREDELAY" => array(
+                                    "val" => 0,
+                                    "descr" => N_("Default delay for account expiration (days)"),
+                                    "kind" => "text",
+                                    "global" => "Y"
+                                    ),
 
 );
 
