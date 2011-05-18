@@ -25,6 +25,7 @@ function logout(&$action) {
   include_once('WHAT/Lib.Common.php');
 
   $log = new Log("", "Dynacase", "Session");
+  $facility = constant($action->getParam("AUTH_LOGFACILITY", "LOG_AUTH"));
 
   $authtype = getAuthType();
   
@@ -46,7 +47,7 @@ function logout(&$action) {
     $redir_uri = $action->GetParam("CORE_BASEURL");
     $action->session->close();
 
-    $log->wlog("W","[terminated] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$action->user->login."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
+    $log->wlog("W","[terminated] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$action->user->login."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, $facility);
 
     $auth->logout($redir_uri);
     exit(0);
@@ -56,7 +57,7 @@ function logout(&$action) {
   $raction = GetHttpVars("raction");
   $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
   
-  $log->wlog("W","[terminated] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$action->user->login."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, LOG_AUTH);
+  $log->wlog("W","[terminated] ip=[".$_SERVER["REMOTE_ADDR"]."] user=[".$action->user->login."] user-agent=[".$_SERVER["HTTP_USER_AGENT"]."]", NULL, $facility);
   $action->session->close();
 
   if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {

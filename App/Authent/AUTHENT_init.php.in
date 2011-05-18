@@ -58,6 +58,12 @@ $app_const= array(
                                     "kind" => "text",
                                     "global" => "Y"
                                     ),
+  "AUTHENT_LOGFACILITY" => array(
+                                    "val" => "LOG_AUTH",
+                                    "descr" => N_("Session authentication log facility"),
+                                    "kind" => "text",
+                                    "global" => "Y"
+                                    ),
 
 );
 

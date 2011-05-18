@@ -103,46 +103,26 @@ function whatLogin($login) {
 
 function webdav_auth() {
   include_once('WHAT/Lib.Main.php');
+  include_once('WHAT/Class.AuthenticatorManager.php');
 
   global $_SERVER;
 
-  $authtype = getAuthType();
-  if( $authtype == 'apache' ) {
-    if( $_SERVER['PHP_AUTH_USER'] == '' ) {
-      header('HTTP/1.0 403 Forbidden');
-      echo _("User must be authenticate");
-      exit;
-    }
-  } else {
-    $authtype = 'basic';
+  $status = AuthenticatorManager::checkAccess('basic');
 
-    $authProviderList = getAuthProviderList();
-    foreach ($authProviderList as $ka=>$authprovider) {
-      $authClass = strtolower($authtype)."Authenticator";
-      if( ! @include_once('WHAT/Class.'.$authClass.'.php') ) {
-	error_log(__FILE__.":".__LINE__."> Unknown authtype ".$authtype);
-      } else {  
-	$auth = new $authClass( $authtype, $authprovider);
-	$status = $auth->checkAuthentication();
-	if ($status) {
-	  $statusA = $auth->checkAuthorization( array( 'username' => $auth->getauthUser() ) );
-	  if( $statusA == FALSE ) {
-	    $auth->logout("guest.php?sole=A&app=AUTHENT&action=UNAUTHORIZED");
-	    exit(0);
-	  }
-	  break;
-	}
-      }
-    }
+  switch ($status) {
+ 
+  case 0: // it'good, user is authentified
+    break;
 
-    if( $status == FALSE ) {
-      sleep(2); // wait for robots
-      $auth->askAuthentication();
-      exit(0);
-    }
-
-    $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
+  default:
+    $action->session->close();
+    sleep(1); // for robots
+    // Redirect to authentication
+    AuthenticatorManager::$auth->askAuthentication();
+    exit(0);
   }
+
+  $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
 
 }
 

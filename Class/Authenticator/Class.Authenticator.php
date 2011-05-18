@@ -89,7 +89,7 @@ abstract class Authenticator {
 
   abstract function checkAuthentication();
   abstract function checkAuthorization($opt);
-  abstract function askAuthentication();
+  abstract function askAuthentication($args);
   abstract function getAuthUser();
   abstract function getAuthPw();
   abstract function logout($redir_uri);

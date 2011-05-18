@@ -83,7 +83,7 @@ Class htmlAuthenticator extends Authenticator {
    **
    **
    **/
-  public function askAuthentication() {
+  public function askAuthentication($args) {
 
     $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
     
@@ -110,6 +110,8 @@ Class htmlAuthenticator extends Authenticator {
     }
         
         if (array_key_exists('authurl', $this->parms)) {
+	  $sargs = '';
+	  foreach ($args as $k=>$v) $sargs .= sprintf("&%s=%s",$k,urlencode($v));
             if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
                 $dirname = dirname($_SERVER["SCRIPT_NAME"]);
                 header('Location: ' . str_replace('//','/',$dirname . '/' . $this->parms{'authurl'}));
