@@ -8,13 +8,15 @@
  * @class Fdl
  * @singleton
  */
-if (!("console" in window)) {
+
+if (typeof window != 'undefined') {
+if ((!("console" in window))) {
 	window.console = {
 		'log' : function(s) {
 		}
 	};
 }; // to debug
-
+}
 var Fdl = {
 	version : "0.1",
 	_isAuthenticate : null,
@@ -211,11 +213,15 @@ Fdl.retrieveData = function(urldata, parameters, anonymousmode) {
 	 * authenticate'); return null; }
 	 */
 	var xreq=null;
-	if (window.XMLHttpRequest) {
-		 xreq = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		// branch for IE/Windows ActiveX version
-		 xreq = new ActiveXObject("Microsoft.XMLHTTP");
+	if (typeof window != 'undefined') {
+		if (window.XMLHttpRequest) {
+			xreq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			// branch for IE/Windows ActiveX version
+			xreq = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	} else {
+		xreq = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 	}
 	var sync = true;
 

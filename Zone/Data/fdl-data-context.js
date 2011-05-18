@@ -3,7 +3,6 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
-if (!("console" in window)) {window.console = {'log': function(s) {}};}
 /**
  * @class Fdl.Context The connection context object to access to freedom
  *        documents
@@ -380,12 +379,15 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 	var bsend = '';
 	var ANAKEENBOUNDARY = '--------Anakeen www.anakeen.com 2009';
 	var xreq=null;
-
-	if (window.XMLHttpRequest) {
-		 xreq = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		// branch for IE/Windows ActiveX version
-		 xreq = new ActiveXObject("Microsoft.XMLHTTP");
+	if (typeof window != 'undefined') {
+		if (window.XMLHttpRequest) {
+			xreq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			// branch for IE/Windows ActiveX version
+			xreq = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	} else {
+		xreq = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 	}
 	var sync = true;
 
@@ -545,13 +547,7 @@ Fdl.Context.prototype.addFamilyMap = function(config) {
 	return true;
 };
 Fdl.Context.prototype.stringToFunction = function(str) {
-	  var arr = str.split(".");
-
-	  var fn = window;
-	  if (! fn) fn=this;
-	  for (var i = 0, len = arr.length; i < len; i++) {
-	    fn = fn[arr[i]];
-	  }
+	  var fn=eval(str);
 
 	  if (typeof fn !== "function") {
 	    throw new Error("function not found");
