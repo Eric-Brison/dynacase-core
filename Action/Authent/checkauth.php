@@ -21,7 +21,8 @@ function checkauth(&$action) {
 
   switch ($status) {
  
-  case 0: // it'good, user is authentified
+  case 0: // it'good, user is authentified, just log the connexion
+    AuthenticatorManager::secureLog("success", "welcome", AuthenticatorManager::$auth->provider->parms['type']."/".AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], AuthenticatorManager::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
     break;
 
   case -1:

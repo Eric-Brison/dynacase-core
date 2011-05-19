@@ -27,8 +27,35 @@ abstract class AuthenticatorManager {
 
   public static function checkAccess($authtype=null) {
 
+     $authtype = getAuthType();
+    if( $authtype == 'apache' ) {
+
+    // Apache has already handled the authentication
+
+    } else {
+
+      $authClass = strtolower($authtype)."Authenticator";
+      if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
+	print "Unknown authtype ".$_GET['authtype'];
+	exit;
+      }
+      $auth = new $authClass( $authtype, "__for_logout__" );
+    }
+
     $error = 0;
     if ($authtype==null) $authtype = getAuthType();
+    if( $authtype == 'apache' ) {
+      // Apache has already handled the authentication
+      return 0;
+    } else {
+      $authClass = strtolower($authtype)."Authenticator";
+      if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
+	print "Unknown authtype ".$_GET['authtype'];
+	exit;
+      }
+      $auth = new $authClass( $authtype, "__for_logout__" );
+    }
+
     $authProviderList = getAuthProviderList();
     foreach ($authProviderList as $ka=>$authprovider) {
       self::$auth = new htmlAuthenticator( 'html', $authprovider );
@@ -49,7 +76,7 @@ abstract class AuthenticatorManager {
 	  
 	}
       }
-      self::secureLog("failure", "invalid credential", $authprovider, $_SERVER["REMOTE_ADDR"], $_REQUEST["auth_user"], $_SERVER["HTTP_USER_AGENT"]);
+      self::secureLog("failure", "invalid credential", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $_REQUEST["auth_user"], $_SERVER["HTTP_USER_AGENT"]);
       
       // count login failure
       if (getParam("AUTHENT_FAILURECOUNT") > 0) {
@@ -74,7 +101,7 @@ abstract class AuthenticatorManager {
     }
    
     if (!$existu) {
-      self::secureLog("failure", "login have no Dynacase account", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+      self::secureLog("failure", "login have no Dynacase account", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
       return 1;
     }
 
@@ -85,20 +112,20 @@ abstract class AuthenticatorManager {
       
       // First check if account is active
       if ( $du->isAccountInactive() ) {
-	self::secureLog("failure", "inactive account", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+	self::secureLog("failure", "inactive account", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
 	return 3;
       }
       
       // check if the account expiration date is elapsed
       if ( $du->accountHasExpired() ) {
-	self::secureLog("failure", "account has expired", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+	self::secureLog("failure", "account has expired", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
 	return 4;
       }
 
       // check count of login failure
       $maxfail = getParam("AUTHENT_FAILURECOUNT");
       if ( $maxfail > 0 && $du->getValue("us_loginfailure",0) >= $maxfail ) {
-	self::secureLog("failure", "max connection (".$maxfail.") attempts exceeded", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+	self::secureLog("failure", "max connection (".$maxfail.") attempts exceeded", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
 	return 2;
       }
 
@@ -112,13 +139,66 @@ abstract class AuthenticatorManager {
       exit(0);
     }
     
-    self::secureLog("success", "welcome", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
     return 0;
     
   }
 
-  public function secureLog($status="", $additionalMessage="", $provider="", $clientIp="", $account="", $userAgent="") {
+  public function closeAccess() {
+  
+    $authtype = getAuthType();
+    if( $authtype == 'apache' ) {
 
+    // Apache has already handled the authentication
+
+    } else {
+
+      $authClass = strtolower($authtype)."Authenticator";
+      if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
+	print "Unknown authtype ".$_GET['authtype'];
+	exit;
+      }
+      $auth = new $authClass( $authtype, "__for_logout__" );
+    }
+
+    if( $authtype == 'cas' || $authtype == 'html' || $authtype == 'basic') {
+      $redir_uri = GetParam("CORE_BASEURL");
+
+      AuthenticatorManager::secureLog("close", "see you tomorrow", AuthenticatorManager::$auth->provider->parms['type']."/".AuthenticatorManager::$auth->provider->parms['provider'],  $_SERVER["REMOTE_ADDR"], AuthenticatorManager::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
+      AuthenticatorManager::$auth->logout($redir_uri);
+      exit(0);
+    }
+
+    $rapp = GetHttpVars("rapp");
+    $raction = GetHttpVars("raction");
+    $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
+    
+    AuthenticatorManager::secureLog("close", "see you tomorrow", "",  $_SERVER["REMOTE_ADDR"], $action->user->login, $_SERVER["HTTP_USER_AGENT"]);
+    
+    if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {
+      self::authenticate($action);
+    } else {
+      redirect($action,$rapp,$raction,$rurl);
+    }
+
+  }
+
+/**
+ * Send a 401 Unauthorized HTTP header
+ */
+  public function authenticate(&$action) {
+    //   Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=FALSE");
+    //Header( "WWW-Authenticate: Basic realm=\"WHAT Connection\", stale=true");
+    //Header( "HTTP/1.0 401 Unauthorized");
+    
+    header('WWW-Authenticate: Basic realm="'.getParam("CORE_REALM","Dynacase Platform connection").'"');
+    header('HTTP/1.0 401 Unauthorized');
+    // Header("Location:guest.php");
+    echo _("Vous devez entrer un nom d'utilisateur valide et un mot de passe correct pour acceder a cette ressource");
+    exit;
+  }     
+
+  public function secureLog($status="", $additionalMessage="", $provider="", $clientIp="", $account="", $userAgent="") {
+    global $_GET;
     $log = new Log("", "Session", "Authentication");
     $facility = constant(getParam("AUTH_LOGFACILITY", "LOG_AUTH"));
     $log->wlog( "S", 
@@ -128,7 +208,8 @@ abstract class AuthenticatorManager {
 			$provider,
 			$clientIp,
 			$account,
-			$userAgent),
+			$userAgent
+			),
 		NULL, 
 		$facility);
     return 0;
