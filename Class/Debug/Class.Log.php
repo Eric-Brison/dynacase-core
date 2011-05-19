@@ -104,9 +104,9 @@ function wlog($sta, $str, $args=NULL, $facility=LOG_LOCAL6) {
 
   if (! $str) return;
   if (is_array($str)) $str=implode(", ",$str);
-  if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta))) {
+  if ($sta=="S" || (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta)))) {
     $addr=$_SERVER["REMOTE_ADDR"];
-    $appf = "[{$sta}] What";
+    $appf = "[{$sta}] Dynacase";
     $appf .= ($this->application!=""?":".$this->application:"");
     $appf .= ($this->function!=""?":".$this->function:"");
     $str=' '.$this->loghead.': '.$str;
@@ -119,7 +119,7 @@ function wlog($sta, $str, $args=NULL, $facility=LOG_LOCAL6) {
     } else {
       switch($sta) {
       case "D" :
-	$pri = LOG_NOTICE;
+	$pri = LOG_DEBUG;
 	break;
       case "I" :
 	$pri = LOG_INFO;
