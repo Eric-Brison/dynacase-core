@@ -49,6 +49,7 @@ Fdl.Document.prototype = {
     revision: null,
     context:Fdl,
     followingStates:null,
+    requestDate:'',
     _mvalues:new Object(),
     _attributes:null,
     /**
@@ -69,6 +70,7 @@ Fdl.Document.prototype = {
 		    if (data.attributes) this.completeAttributes(data.attributes);
 		    if (data.followingStates) this.followingStates=data.followingStates;
 		    if (data.userTags) this.userTags=data.userTags;
+		    if (data.requestDate) this.requestDate=data.requestDate;
 		    return true;
 		} else {
 		    alert('error no properties');

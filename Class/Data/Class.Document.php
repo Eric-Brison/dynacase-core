@@ -381,7 +381,7 @@ Class Fdl_Document  {
 	       "properties"=>$this->getProperties($completeprop,$infoprop),
 	       "configuration"=>$this->getConfiguration($completeprop),
 	       "security"=>$this->getSecurity(),
-	       "requestDate"=>microtime(true),
+	       "requestDate"=>date('Y-m-d H:i:s'),
 	       "values"=>$this->getValues());
 
         if ($completeprop) {
