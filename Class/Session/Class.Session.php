@@ -376,7 +376,7 @@ Class Session extends DbObj{
   }
 
   function hasExpired() {
-  	include_once('FDL/Lib.util.php');
+  	include_once('FDL/Lib.Util.php');
   	$ttl = $this->getSessionTTL(0);
   	if( $ttl > 0 ) {
   		$now = time();
