@@ -1388,6 +1388,7 @@ create unique index i_docir on doc(initid, revision);";
       if (($this->locked != -1) && (!$fixed)) return $this->id;
       if ($fixed && ($this->lmodify == "L")) return $this->id;
     }
+    if (! $fixed) return getLatestDocId($this->dbaccess, $this->initid);
     $query = new QueryDb($this->dbaccess, strtolower(get_class($this)));
     $query->AddQuery("initid = ".$this->initid);
     if ($fixed) $query->AddQuery("lmodify = 'L'");
