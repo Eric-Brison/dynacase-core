@@ -15,53 +15,44 @@
 .multidoc .tabs
 {
 	white-space:nowrap;
-	text-align:center;
-	height:35px;
-	margin-right:35px;
+	margin-right:16px;
+}
+
+.multidoc .tabs_
+{
+	float:left;
+	width:148px;
+	white-space:nowrap;
 }
 
 
 .multidoc #arrow_down
 {
-	cursor:pointer;
 	display:none;
 	float:right;
-	margin-top:-30px;
 }
 
 .multidoc #tabs_plus
 {
 	position: absolute;
-   right: 5px;
-   top: 43px;
 	display:none;
 }
 
-.multidoc .tab
+.multidoc #loader
 {
-	position:relative;
-	z-index:1;
-	float:left;
-	height:35px;
-	width:auto;
+	display:none;
 }
 
-.multidoc .tab-active
+.multidoc .tab, .multidoc .tab-active
 {
 	position:relative;
 	z-index:1;
 	float:left;
-	height:35px;
-	width:auto;
 }
 
 .multidoc .content
 {
 	float:left;
-	padding:2px;
-	width:140px;
-	margin:auto;
-	margin-top:10px;
 	text-overflow:ellipsis;
   	white-space:nowrap; 
 	overflow:hidden;  
@@ -70,14 +61,11 @@
 .multidoc .doc_content
 {
 	float:left;
-	margin-right:410px;
 }
 
 .multidoc #arrow_down
 {
 	background-image:url(../images/more.png);
-	width:32px;
-	height:32px;
 }
 
 .multidoc .img_new
@@ -94,47 +82,16 @@
 	height:16px;
 }
 
-.multidoc .icon_doc
+.multidoc .icon_doc, .multidoc .img_new, .multidoc .img_del
 {
 	float:left;
-	width:16px;
 }
 
 .multidoc .options
 {
 	float:left;
 	visibility:hidden;
-	margin-right:-20px;
+	margin-right:-16px;
 	position:relative;
 	z-index: 100;
-	width:20px;
-	height:35px;
-}
-
-.multidoc .img_new
-{
-	float:left;
-	margin-left:2px;
-}
-	
-.multidoc .img_del
-{
-	margin-top:1.5px;
-	float:left;
-	margin-left:2px;
-}
-
-/* HORIZONTAL MODE */
-
-.multidoc .tabs_horizontal
-{
-	float:left;
-	width:200px;
-}
-
-.multidoc .doc_content_horizontal
-{
-	height:100%;
-	background-color:white;
-	margin-left:200px;
 }

@@ -1,0 +1,151 @@
+body, html
+{
+	background-color:white;
+	color:#575757;
+}
+
+#left
+{
+	position:absolute;
+	top:90%;
+	background-color:white;
+	float:left;
+	text-align:center;
+	width:90px;
+	font-size:0.6em;
+	background-color:#D7D7D7;
+}
+
+#right
+{
+	width:100%;
+	height:90%
+	/*height:100%;*/
+}
+
+.multidoc
+{
+	background-color:white;
+}
+
+.multidoc #arrow_down
+{	
+	cursor:pointer;
+	background-image:url(../images/more4.png);
+	width:32px;
+	height:32px;
+}
+
+.multidoc .tab, .multidoc #tabs_plus
+{
+	background-color:#d2e1f4;
+}
+
+.multidoc #tabs_plus
+{
+	right:0px; /*complementary with the width*/
+   top: 42px;
+	border-top: 1px solid #8098b7;
+	border-bottom: 1px solid #8098b7;
+	max-height:300px;
+	width:159px;
+	overflow:auto;
+	overflow-x:hidden;
+}
+
+.multidoc .tab, .multidoc .tab-active
+{
+	color:#2A3B47;
+	border-left:1px double #8098b7;
+	padding-top: 7px;
+	padding-bottom:7px;
+	padding-left:2px;
+	padding-right:5px;
+	font-size:0.6em;
+  	cursor:pointer;
+  	/*-moz-box-shadow: 1px 1px 1px #050505;
+	box-shadow: 1px 1px 1px #050505; 
+	-moz-border-radius: 4px;
+	border-radius: 4px; */
+	-moz-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	-webkit-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	-o-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	-ms-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+}
+
+.multidoc .tab-active
+{
+	background-color:#b1c7e1;
+}
+
+.multidoc .tab:hover, .tab-active:hover
+{
+	text-decoration:underline;
+	background-color:#BBD8E5;
+}
+
+.multidoc .content
+{
+	padding-left:3px;
+	padding-top:6px;
+	width:100px;
+}
+
+.multidoc .content_frame
+{
+	height:600px;
+	overflow:auto;
+}
+
+.multidoc .doc_content
+{
+	height:100%;
+	background-color:white;
+	width:100%;
+}
+
+.multidoc .icon_doc, .multidoc .img_icon
+{
+	max-width:16px;
+	max-height:16px;
+}
+
+.multidoc .options
+{
+	background-color:#A6BDF3;
+	max-width:16px;
+	opacity: 0.9; 
+	
+	/*-moz-box-shadow: 1px 1px 1px #050505;
+	box-shadow: 1px 1px 1px #050505; 
+	-moz-border-radius: 4px;
+	border-radius: 4px; */
+	-moz-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	-webkit-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	-o-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	-ms-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+}
+
+.multidoc .img_new, .multidoc .img_del
+{
+	background-image:url(../images/goto.png);
+	width:16px;
+	height:16px;
+}
+
+.multidoc .img_new
+{
+	background-image:url(../images/goto.png);
+}
+
+.multidoc .img_del
+{
+	background-image:url(../images/del.png);
+}
+
+.multidoc .img_del:hover, .multidoc .img_new:hover
+{
+  	background-color:#BBD8E5;
+}
