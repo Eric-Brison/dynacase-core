@@ -15,7 +15,13 @@
  */
 
 abstract class Authenticator {
-  
+  /* Authentication success */
+  const AUTH_OK = 0;
+  /* Authentication failed */
+  const AUTH_NOK = 1;
+  /* Authentication status cannot be determined, and credentials should be asked */
+  const AUTH_ASK = 2;
+
   public function __construct($authtype, $authprovider) {
     
     include_once('WHAT/Lib.Common.php');

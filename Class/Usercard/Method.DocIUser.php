@@ -568,7 +568,6 @@ function increaseLoginFailure() {
  * Reset login failure count
  */
 function resetLoginFailure() {
-  if (!$this->canExecute(FUSERS,FUSERS_IUSER)) return "";
   if ($this->getValue("us_whatid")==1) return ""; // it makes non sense for admin
   $this->disableEditControl();
   $err = $this->SetValue("us_loginfailure",0);
@@ -580,7 +579,6 @@ function resetLoginFailure() {
 }
 
 function canResetLoginFailure() {
-  if (!$this->canExecute(FUSERS,FUSERS_IUSER)) return false;
   if ($this->getValue("us_whatid")==1) return false; // it makes non sense for admin
   return ($this->getValue("us_loginfailure")>0?true:false);
 }
@@ -589,7 +587,6 @@ function canResetLoginFailure() {
  * Manage account security
  */
 function isAccountActive() {
-  if (!$this->canExecute(FUSERS,FUSERS_IUSER)) return false;
   if ($this->getValue("us_whatid")==1) return false; // it makes non sense for admin
   return ($this->getValue("us_status",'A')=='A');
 }
@@ -605,7 +602,6 @@ function activateAccount() {
   return "";
 }
 function isAccountInactive() {
-  if (!$this->canExecute(FUSERS,FUSERS_IUSER)) return false;
   if ($this->getValue("us_whatid")==1) return false; // it makes non sense for admin
   return ($this->getValue("us_status",'A')!='A');
 }

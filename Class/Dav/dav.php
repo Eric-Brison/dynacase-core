@@ -115,7 +115,6 @@ function webdav_auth() {
     break;
 
   default:
-    $action->session->close();
     sleep(1); // for robots
     // Redirect to authentication
     AuthenticatorManager::$auth->askAuthentication();

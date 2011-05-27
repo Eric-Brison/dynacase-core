@@ -38,7 +38,7 @@ if ($authtype == 'apache') {
     
    case -1:
     // User must change his password
-    $action->session->close();
+    // $action->session->close();
     AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
     exit(0);
     break;
@@ -46,10 +46,10 @@ if ($authtype == 'apache') {
   default:
     sleep(1); // for robots
     // Redirect to authentication
-    global $_POST;
-    AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
-    AuthenticatorManager::$auth->askAuthentication(array("error" => $status));
-    Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
+    AuthenticatorManager::$auth->askAuthentication();
+    // AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
+    // AuthenticatorManager::$auth->askAuthentication(array("error" => $status));
+    // Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
     exit(0);
 
   }

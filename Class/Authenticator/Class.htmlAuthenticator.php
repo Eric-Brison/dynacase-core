@@ -26,30 +26,29 @@ Class htmlAuthenticator extends Authenticator {
   public function checkAuthentication() {
     $session = $this->getAuthSession();
     
-    if( $session->read('username') != "" ) return TRUE;
+    if( $session->read('username') != "" ) return Authenticator::AUTH_OK;
         
-    if( ! array_key_exists($this->parms{'username'}, $_POST) ) return FALSE;
-    if( ! array_key_exists($this->parms{'password'}, $_POST) ) return FALSE;
+    if( ! array_key_exists($this->parms{'username'}, $_POST) ) return Authenticator::AUTH_ASK;
+    if( ! array_key_exists($this->parms{'password'}, $_POST) ) return Authenticator::AUTH_ASK;
 
     if( is_callable(array($this->provider, 'validateCredential')) ) {
       if( ! $this->provider->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}]) ) {
-	return FALSE;
+	return Authenticator::AUTH_NOK;
       }
 
       if( ! $this->freedomUserExists($_POST[$this->parms{'username'}]) ) {
 	if( ! $this->tryInitializeUser($_POST[$this->parms{'username'}]) ) {
-	  return FALSE;
+	  return Authenticator::AUTH_NOK;
 	}
       }
       $session->register('username', $_POST[$this->parms{'username'}]);
       $session->setuid($_POST[$this->parms{'username'}]);
-      return TRUE;
+      return Authenticator::AUTH_OK;
     }
 
     error_log(__CLASS__."::".__FUNCTION__." "."Error: ".get_class($this->provider)." must implement function validateCredential()");
-    return FALSE;
+    return Authenticator::AUTH_NOK;
   }
-
 
   /**
    * retrieve authentification session
@@ -83,7 +82,7 @@ Class htmlAuthenticator extends Authenticator {
    **
    **
    **/
-  public function askAuthentication($args) {
+  public function askAuthentication($args=array()) {
 
     $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
     
@@ -146,17 +145,20 @@ Class htmlAuthenticator extends Authenticator {
    **
    **
    **/
-  public function logout($redir_uri) {
+  public function logout($redir_uri='') {
     $session_auth=$this->getAuthSession();
     if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
 //       error_log("Closing auth session for cookie : ".$this->parms{'cookie'});
       $session_auth->close();
     }
-    if( $redir_uri == "" && array_key_exists('indexurl', $this->parms) ) {
-      header('Location: '.$this->parms{'indexurl'});
-    } else {
-      header('Location: '.$redir_uri);
+    if( $redir_uri == "" ) {
+      if( array_key_exists('authurl', $this->parms) ) {
+        header('Location: '.$this->parms['authurl']);
+        return TRUE;
+      }
+      $redir_uri = GetParam("CORE_BASEURL");
     }
+    header('Location: '.$redir_uri);
     return TRUE;
   }
 

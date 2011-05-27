@@ -15,7 +15,7 @@
  */
 
 include_once('WHAT/Lib.Common.php');
-include_once('WHAT/Class.htmlAuthenticator.php');
+include_once('WHAT/Class.Authenticator.php');
 include_once('WHAT/Class.Session.php');
 include_once('WHAT/Class.User.php');
 include_once('WHAT/Class.Log.php');
@@ -24,25 +24,11 @@ abstract class AuthenticatorManager {
 
   public static $session = null;
   public static $auth = null;
+  public static $provider_errno = 0;
 
   public static function checkAccess($authtype=null) {
-
-     $authtype = getAuthType();
-    if( $authtype == 'apache' ) {
-
-    // Apache has already handled the authentication
-
-    } else {
-
-      $authClass = strtolower($authtype)."Authenticator";
-      if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
-	print "Unknown authtype ".$_GET['authtype'];
-	exit;
-      }
-      $auth = new $authClass( $authtype, "__for_logout__" );
-    }
-
     $error = 0;
+    self::$provider_errno = 0;
     if ($authtype==null) $authtype = getAuthType();
     if( $authtype == 'apache' ) {
       // Apache has already handled the authentication
@@ -57,16 +43,23 @@ abstract class AuthenticatorManager {
     }
 
     $authProviderList = getAuthProviderList();
-    foreach ($authProviderList as $ka=>$authprovider) {
-      self::$auth = new htmlAuthenticator( 'html', $authprovider );
+    foreach ($authProviderList as $authProvider) {
+      self::$auth = new $authClass($authtype, $authProvider);
       $status = self::$auth->checkAuthentication();
-      if ($status) { break; }
+      if( $status === Authenticator::AUTH_ASK ) {
+        self::$auth->askAuthentication();
+        exit(0);
+      }
+      if( $status === Authenticator::AUTH_OK ) {
+        break;
+      }
     }
-    
-    if ( $status == false) {
+
+    if ( $status === Authenticator::AUTH_NOK) {
       $error = 1;
       $providerErrno = self::$auth->getProviderErrno();
       if( $providerErrno != 0 ) {
+	self::$provider_errno = $providerErrno;
 	switch( $providerErrno ) {
 	  
 	case Provider::ERRNO_BUG_639:
@@ -81,7 +74,7 @@ abstract class AuthenticatorManager {
       // count login failure
       if (getParam("AUTHENT_FAILURECOUNT") > 0) {
 	$wu = new User();
-	if ($wu->SetLoginName($_REQUEST["auth_user"])) {
+	if ($wu->SetLoginName(self::$auth->getAuthUser())) {
 	  if ($wu->id!=1) {
 	    include_once("FDL/freedom_util.php");
 	    $du = new_Doc(getParam("FREEDOM_DB"), $wu->fid);
@@ -132,13 +125,18 @@ abstract class AuthenticatorManager {
       // authen OK, max login failure OK => reset count of login failure
       $du->resetLoginFailure();
     }
-  
-    self::$session = self::$auth->getAuthSession();
-    if( self::$session->read('username') == "" ) {
-      self::secureLog("failure", "username should exists in session", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
-      exit(0);
+
+    /*
+     * All authenticators are not necessarily based on sessions (i.e. 'basic')
+     */
+    if( method_exists(self::$auth, 'getAuthSession') ) {
+        self::$session = self::$auth->getAuthSession();
+        if( self::$session->read('username') == "" ) {
+            self::secureLog("failure", "username should exists in session", $authprovider, $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+            exit(0);
+        }
     }
-    
+
     return 0;
     
   }
@@ -161,10 +159,8 @@ abstract class AuthenticatorManager {
     }
 
     if( $authtype == 'cas' || $authtype == 'html' || $authtype == 'basic') {
-      $redir_uri = GetParam("CORE_BASEURL");
-
       AuthenticatorManager::secureLog("close", "see you tomorrow", AuthenticatorManager::$auth->provider->parms['type']."/".AuthenticatorManager::$auth->provider->parms['provider'],  $_SERVER["REMOTE_ADDR"], AuthenticatorManager::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
-      AuthenticatorManager::$auth->logout($redir_uri);
+      AuthenticatorManager::$auth->logout();
       exit(0);
     }
 
