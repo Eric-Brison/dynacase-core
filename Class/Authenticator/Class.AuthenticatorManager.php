@@ -82,6 +82,7 @@ abstract class AuthenticatorManager {
 	  }
 	} 
       }
+      self::clearGDocs();
       return $error;
     }
 
@@ -106,12 +107,14 @@ abstract class AuthenticatorManager {
       // First check if account is active
       if ( $du->isAccountInactive() ) {
 	self::secureLog("failure", "inactive account", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+	self::clearGDocs();
 	return 3;
       }
       
       // check if the account expiration date is elapsed
       if ( $du->accountHasExpired() ) {
 	self::secureLog("failure", "account has expired", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+	self::clearGDocs();
 	return 4;
       }
 
@@ -119,6 +122,7 @@ abstract class AuthenticatorManager {
       $maxfail = getParam("AUTHENT_FAILURECOUNT");
       if ( $maxfail > 0 && $du->getValue("us_loginfailure",0) >= $maxfail ) {
 	self::secureLog("failure", "max connection (".$maxfail.") attempts exceeded", self::$auth->provider->parms['type']."/".self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $login, $_SERVER["HTTP_USER_AGENT"]);
+	self::clearGDocs();
 	return 2;
       }
 
@@ -137,6 +141,7 @@ abstract class AuthenticatorManager {
         }
     }
 
+    self::clearGDocs();
     return 0;
     
   }
@@ -211,8 +216,11 @@ abstract class AuthenticatorManager {
     return 0;
     
   }
-    
 
+  private static function clearGDocs() {
+  	global $gdocs;
+  	$gdocs = array();
+  }
 
 }
 

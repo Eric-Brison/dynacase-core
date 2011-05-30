@@ -19,6 +19,11 @@ Class htmlAuthenticator extends Authenticator {
 
   public $auth_session=null;
 
+  /*
+   * Store the current authenticating user
+   */
+  private $username = '';
+
   /**
    **
    **
@@ -26,11 +31,13 @@ Class htmlAuthenticator extends Authenticator {
   public function checkAuthentication() {
     $session = $this->getAuthSession();
     
-    if( $session->read('username') != "" ) return Authenticator::AUTH_OK;
+    $this->username = $session->read('username');
+    if( $this->username != "" ) return Authenticator::AUTH_OK;
         
     if( ! array_key_exists($this->parms{'username'}, $_POST) ) return Authenticator::AUTH_ASK;
     if( ! array_key_exists($this->parms{'password'}, $_POST) ) return Authenticator::AUTH_ASK;
 
+    $this->username = $_POST[$this->parms{'username'}];
     if( is_callable(array($this->provider, 'validateCredential')) ) {
       if( ! $this->provider->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}]) ) {
 	return Authenticator::AUTH_NOK;
@@ -129,8 +136,12 @@ Class htmlAuthenticator extends Authenticator {
    **
    **/
   public function getAuthUser() {
-    $session_auth=$this->getAuthSession();    
-    return $session_auth->read('username');
+    $session_auth=$this->getAuthSession();
+    $username = $session_auth->read('username');
+    if( $username != '' ) {
+      return $username;
+    }
+    return $this->username;
   }
   
   /**
