@@ -223,6 +223,8 @@ Class Fdl_Document  {
                 $props["fromid"]=intval($props["fromid"]);
                 $props["allocated"]=intval($props["allocated"]);
                 $props["owner"]=intval($props["owner"]);
+                if ($props["domainid"]) $props["domainid"]=$this->doc->_val2array($props["domainid"]);
+                else $props["domainid"]=array();
                 if (getParam("DATA_LCDATE")=="iso") {
                 $props["cdate"]=FrenchDateToIso($props["cdate"],false);
                 $props["mdate"]=FrenchDateToIso($props["mdate"],false);
