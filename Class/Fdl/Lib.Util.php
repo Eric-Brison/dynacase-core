@@ -153,7 +153,7 @@ function FrenchDateToIso($fdate, $withT=true) {
  * @return float number of second since epoch (return -1 if incorrect date)
  */
 function iso8601DateToUnixTs($isodate,$utc=false) {
-  if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/",$isodate ,$r)) {  
+  if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/",$isodate ,$r)) {  
     if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
     else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
   } else {
