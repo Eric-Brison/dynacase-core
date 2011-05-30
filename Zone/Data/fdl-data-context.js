@@ -181,8 +181,11 @@ Fdl.Context.prototype.connect = function(config) {
  *            config
  *            <p>
  *            <ul>
- *            <li><b>reset:</b> Boolean (Optional) set to true to force a new
- *            ping
+ *            <li><b>reset:</b> Boolean (Optional) set to true to force a new ping</li>
+ *            <li><b>timeout:</b> Number (Optional) millisecond to wait connection/ need to have callback</li>
+  *           <li><b>onConnect:</b> Function (Optional) callback call when connection is ok</li>
+  *           <li><b>onFail:</b> Function (Optional) callback call when connection has failed</li>
+
  *            </ul>
  *            </p>
  * @return {Boolean} true if connected
@@ -190,11 +193,43 @@ Fdl.Context.prototype.connect = function(config) {
 Fdl.Context.prototype.isConnected = function(config) {
 	if (typeof config == 'object' && config.reset) this._isConnected = null;
 	if (this._isConnected === null && this.url) {
+	    var lconfig={};
+	    var me=this;
+	    if (config && config.onConnect && config.onFail) {
+	        lconfig.onComplete=function () {
+	            me._isConnected=true;
+	            if (me._connectTimeId) {
+	                clearTimeout(me._connectTimeId);
+	                me._connectTimeId=0;
+	            }
+	            config.onConnect();
+	        };
+            lconfig.onError=function (x) {
+                if (me._isConnected === null) {
+                    me._isConnected=false;
+                    if (me._connectTimeId) {
+                        clearTimeout(me._connectTimeId);
+                        me._connectTimeId=0;
+                    }
+                    config.onFail();
+                }
+            };
+            
+            if (config.timeout > 0) {
+                me._connectTimeId=setTimeout(function () {
+                    if (me._isConnected === null) {
+                        me._isConnected=false;
+                        me._connectTimeId=0;
+                        config.onFail();
+                    }
+                },config.timeout);
+            }
+	    }
 		var data = this.retrieveData( {
 			app : 'DATA',
 			action : 'USER',
 			method : 'ping'
-		}, config, true);
+		}, lconfig, true);
 		this._serverTime = null;
 		if (data) {
 			if (data.error) {
@@ -392,6 +427,21 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 	var sync = true;
 
 	if (xreq) {
+	    if (parameters && parameters.onComplete) {
+	        sync=false;
+	        xreq.onreadystatechange=function () {
+	            if (xreq.readyState == 4) {
+	                if (xreq.status == 200) {
+	                    parameters.onComplete(xreq);
+	                } else {
+	                    if (parameters.onError) {
+	                        parameters.onError(xreq);
+	                    }
+	                }
+	            }
+	           
+	        }
+	    }
 		var url = this.url;
 		if (!url)
 			url = '/';
@@ -437,41 +487,42 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 			}
 		}
 		try {
-			if (bsend.length == 0)
-				xreq.send('');
-			else
-				xreq.send(bsend);
+		    if (bsend.length == 0)
+		        xreq.send('');
+		    else
+		        xreq.send(bsend);
 		} catch (e) {
-			this.setErrorMessage('HTTP status: unable to send request');
+		    this.setErrorMessage('HTTP status: unable to send request');
 		}
-		if (xreq.status == 200) {
-			var r = false;
-			try {
-				var db1=new Date().getTime();
-				if (parameters && parameters.plainfile) {
-					r =  xreq.responseText;
-				} else {
-				r = eval('(' + xreq.responseText + ')');
-				if (this.debug) r["evalDebugTime"]=(new Date().getTime())-db1;
-				if (r.error) this.setErrorMessage(r.error);
-                if (r.log) {
-                	console.log('datalog:',r.log);
-                	delete r.log;
-                }
-				if (r.spentTime)
-					console.log( {
-						time : r.spentTime
-					});
-            	    delete r.spentTime;
-				}
-			} catch (ex) {
-				alert('error on serveur data');
-				alert(xreq.responseText);
-			}
-			return r;
-		} else {
-			if (xreq)
-				this.setErrorMessage('HTTP status:' + xreq.status);
+		if (sync) {
+		    if (xreq.status == 200) {
+		        var r = false;
+		        try {
+		            var db1=new Date().getTime();
+		            if (parameters && parameters.plainfile) {
+		                r =  xreq.responseText;
+		            } else {
+		                r = eval('(' + xreq.responseText + ')');
+		                if (this.debug) r["evalDebugTime"]=(new Date().getTime())-db1;
+		                if (r.error) this.setErrorMessage(r.error);
+		                if (r.log) {
+		                    console.log('datalog:',r.log);
+		                    delete r.log;
+		                }
+		                if (r.spentTime)
+		                    console.log( {
+		                        time : r.spentTime
+		                    });
+		                delete r.spentTime;
+		            }
+		        } catch (ex) {
+		            alert('error on serveur data:'+xreq.responseText);
+		        }
+		        return r;
+		    } else {
+		        if (xreq)
+		            this.setErrorMessage('HTTP status:' + xreq.status);
+		    }
 		}
 	}
 	return false;
