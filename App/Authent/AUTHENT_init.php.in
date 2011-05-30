@@ -48,7 +48,7 @@ $app_const= array(
 					 ),
   "AUTHENT_FAILURECOUNT" => array(
                                     "val" => 0,
-                                    "descr" => N_("Authentication failure before account desactivation"),
+                                    "descr" => N_("Authentication failures before account deactivation"),
                                     "kind" => "text",
                                     "global" => "N"
                                     ),
