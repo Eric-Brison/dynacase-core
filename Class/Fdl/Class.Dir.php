@@ -675,7 +675,7 @@ Class Dir extends PDir
 
 	/**
 	 * return number of item in the static folder
-	 * @param boll $onlyprimary set to true if you wnat only document linked by primary relation
+	 * @param bool $onlyprimary set to true if you wnat only document linked by primary relation
 	 * @return int -1 if it is not a static folder
 	 */
 	public function count($onlyprimary=false) {
@@ -690,6 +690,19 @@ Class Dir extends PDir
 		return -1;
 	}
 
+	/**
+	 * return array of document identificators included in folder
+	 * @return array of initial identificators (initid) 
+	 */
+	public function getContentInitid()
+         {
+        $query = sprintf("select childid from fld where dirid=%d and qtype='S'", $this->initid);
+        $initids=array();
+        $err = simpleQuery($this->dbaccess, $query, $initids, true, false);
+        if ($err == "") return $initids;
+        
+        return array();
+         }
 
 	/**
 	 * get  document which primary relation is this folder
