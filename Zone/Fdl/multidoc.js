@@ -5,7 +5,7 @@
 
 $(function(){
 	//DECLARATION OF SOME EVENTS WITH JQUERY FOR THE DOC LIST
-	
+
 	//If click on the arrow to see more tabs
 	$("#arrow_down").live('click', function(){
 	   if($('#tabs_plus').css("display")=="none")
@@ -18,16 +18,27 @@ $(function(){
 	   }
 	});
 	
-	//If click on a tab on the ul tabs 
+	//If click on a tab on the ul tabs plus
 	$('li','ul#tabs_plus').live('click', function(){
-		var width_tabs = $("#tabs").outerWidth();
-		var width_options = $(".options").outerWidth();
-    	var width_tab = $(".tab").outerWidth();
-   	var count_tabs = Math.floor((width_tabs-width_options)/width_tab); 	   
+ 		if($('#arrow_down').attr('class')=='vmode')
+  		{
+	  		var width_tabs = $("#tabs").outerHeight();
+    		var width_tab = $(".tab-active").outerHeight();
+   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
+   		var count_li = document.getElementsByClassName("tabs_li").length;
+   	}
+   	else
+   	{
+		 	var width_tabs = $("#tabs").outerWidth();
+		 	var width_options = $(".options").outerWidth();
+		   var width_tab = $(".tab-active").outerWidth();
+		   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
+		   var count_li = document.getElementsByClassName("tabs_li").length;
+		}	   
    	var idtab = $(this).attr("id");
 		
-		$("ul.tabs > li:nth-child(" + (count_tabs) + " )").attr("class","tabs_plus_li");
-		$("#tabs_plus").prepend($("ul.tabs > li:nth-child(" + (count_tabs) + " )"));
+		$("ul#tabs > li:nth-child(" + (count_tabs) + " )").attr("class","tabs_plus_li");
+		$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs) + " )"));
 	   $("#" + idtab).attr("class","tabs_li");
 	   $("#tabs").prepend($("#" + idtab).css("display","block"));
 	   
@@ -41,18 +52,29 @@ $(function(){
 	
 	//We have to manipulate tabs during the resize
 	$(window).resize(function() {
-		var width_tabs = $("#tabs").outerWidth();
-		var width_options = $(".options").outerWidth(); 
-		var width_tab = $(".tab").outerWidth();
+			if($('#arrow_down').attr('class')=='vmode')
+	  		{
+	  			var wwindow = $(".multidoc").width();
+		  	 	var wwidth = wwindow - 200;
+		   	$(".doc_content_vertical").css('width', wwidth + 'px');
+		  		var width_tabs = $("#tabs").outerHeight();
+	    		var width_tab = $(".tab-active").outerHeight();
+	    		var count_tabs = parseInt(Math.floor((width_tabs)/width_tab),10);
+	   	}
+	   	else
+	   	{
+			 	var width_tabs = $("#tabs").outerWidth();
+				var width_options = $(".options").outerWidth(); 
+				var width_tab = $(".tab").outerWidth();
 		
-		if(width_tab==0)
-		{
-			var width_content = parseInt($(".content").css("width").substr(0,3),10);
-			var width_opt = parseInt($(".options").css("width").substr(0,2),10);
-			width_tab=width_content + width_opt;
-		}
-		
-  		var count_tabs = parseInt(Math.floor((width_tabs-width_options)/width_tab),10);
+				if(width_tab==0)
+				{
+					var width_content = parseInt($(".content").css("width").substr(0,3),10);
+					var width_opt = parseInt($(".options").css("width").substr(0,2),10);
+					width_tab=width_content + width_opt;
+				}
+				var count_tabs = parseInt(Math.floor((width_tabs-width_options)/width_tab),10);
+			}
   		var nb_tabs = parseInt(document.getElementsByClassName("tabs_li").length,10);
   		var nb_tabs_plus = parseInt(document.getElementsByClassName("tabs_plus_li").length,10);
   		var itt = nb_tabs - count_tabs;
@@ -61,8 +83,8 @@ $(function(){
   		{
   			for(var i=0;i<itt;i++)
   			{
-  				$("ul.tabs > li:nth-child(" + (count_tabs+1) + ")").attr("class","tabs_plus_li");
-  				$("#tabs_plus").prepend($("ul.tabs > li:nth-child(" + (count_tabs+1) + ")"));
+  				$("ul#tabs > li:nth-child(" + (count_tabs+1) + ")").attr("class","tabs_plus_li");
+  				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs+1) + ")"));
   			}
   			
   			if(document.getElementsByClassName("tabs_plus_li").length > 0)
@@ -174,10 +196,21 @@ $(function(){
     	newPage: function()
     	{	
     		//We have to control the widht of tabs
-    		var width_tabs = $("#tabs").outerWidth();
-    		var width_options = $(".options").outerWidth();
-    		var width_tab = $(".tab").outerWidth();
-   		var count_tabs = Math.floor((width_tabs-width_options)/width_tab);
+    		if($('#arrow_down').attr('class')=='vmode')
+	  		{
+		  		var width_tabs = $("#tabs").outerHeight();
+	    		var width_tab = $(".tab-active").outerHeight();
+	   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
+	   		var count_li = document.getElementsByClassName("tabs_li").length;
+	   	}
+	   	else
+	   	{
+			 	var width_tabs = $("#tabs").outerWidth();
+			 	var width_options = $(".options").outerWidth();
+			   var width_tab = $(".tab-active").outerWidth();
+			   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
+			   var count_li = document.getElementsByClassName("tabs_li").length;
+			}
    		
     		//We retrieve the last url of the iframe
     		var path = document.getElementById('frame_' + this.model.get('id')).contentDocument.location.href; 
@@ -203,10 +236,21 @@ $(function(){
     	close: function(id)
     	{
 			id = this.model.get('id');
-	    	var width_tabs = $("#tabs").outerWidth();
-	    	var width_options = $(".options").outerWidth();
-    		var width_tab = $(".tab").outerWidth();
-   		var count_tabs = Math.floor((width_tabs-width_options)/width_tab);   
+	    	if($('#arrow_down').attr('class')=='vmode')
+	  		{
+		  		var width_tabs = $("#tabs").outerHeight();
+	    		var width_tab = $(".tab-active").outerHeight();
+	   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
+	   		var count_li = document.getElementsByClassName("tabs_li").length;
+	   	}
+	   	else
+	   	{
+			 	var width_tabs = $("#tabs").outerWidth();
+			 	var width_options = $(".options").outerWidth();
+			   var width_tab = $(".tab-active").outerWidth();
+			   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
+			   var count_li = document.getElementsByClassName("tabs_li").length;
+			}   
    	
     		if((document.getElementById('frame_' + id).style.display)=="block")
     		{
@@ -259,8 +303,8 @@ $(function(){
    		else
    		{ 			
 	   		$('#doc_content').append("<iframe class='content_frame' id='frame_" + id + "' style='display:block;' frameborder='no' name='document' src='" + this.model.get('url') +"' width='100%' height='400px'></iframe>");	   		
-	   		$('ul.tabs > li:nth-child(1)').attr('id', id);
-   			$('ul.tabs > li:nth-child(1)').attr('class', 'tabs_li');
+	   		$('ul#tabs > li:nth-child(1)').attr('id', id);
+   			$('ul#tabs > li:nth-child(1)').attr('class', 'tabs_li');
    			
    			//FRAME LOADING
    			$("#frame_" + id).load(function() {
@@ -302,7 +346,7 @@ $(function(){
 			   				if(_relations[i].href!="" && _relations[i].class!="relation" && _relations[i].target=="")
 			   				{
 			   					var relhref = _relations[i].getAttribute("href");
-		   						_relations[i].setAttribute('onclick','window.open("' + relhref + '","' + relhref + '", "width=600,height=600").moveTo((screen.width)/2-300,(screen.height)/2-300)');
+		   						_relations[i].setAttribute('onclick','window.open("' + relhref + '","' + relhref + '", "width=600,height=600,scrollbars=yes").moveTo((screen.width)/2-300,(screen.height)/2-300)');
 		   						_relations[i].removeAttribute('href');
 		   					}
 		   				}
@@ -397,12 +441,22 @@ $(function(){
 
    	newDoc: function(_id, _url) {
 	   	//TABS GESTION
-	 		var width_tabs = $("#tabs").outerWidth();
-	 		var width_options = $(".options").outerWidth();
-	    	var width_tab = $(".tab-active").outerWidth();
-	   	var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
-	   	var count_li = document.getElementsByClassName("tabs_li").length;
-		
+	  		if($('#arrow_down').attr('class')=='vmode')
+	  		{
+		  		var width_tabs = $("#tabs").outerHeight();
+	    		var width_tab = $(".tab-active").outerHeight();
+	   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
+	   		var count_li = document.getElementsByClassName("tabs_li").length;
+	   	}
+	   	else
+	   	{
+			 	var width_tabs = $("#tabs").outerWidth();
+			 	var width_options = $(".options").outerWidth();
+			   var width_tab = $(".tab-active").outerWidth();
+			   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
+			   var count_li = document.getElementsByClassName("tabs_li").length;
+			}
+			
    		if($('#frame_' + _id).length<=0)
    		{
 	   		doc = new Doc({id: _id, url: _url});
@@ -417,7 +471,7 @@ $(function(){
 		     	else
 		     	{
 		     		$('#arrow_down').css("display","block");
-		     		$("li:nth-child(" + count_tabs + " )").attr('class', 'tabs_plus_li');
+		     		$("ul#tabs > li:nth-child(" + count_tabs + " )").attr('class', 'tabs_plus_li');
 		     		$("#tabs_plus").prepend($("li:nth-child(" + count_tabs + " )"));
 		     		this.$("#tabs").prepend(view.render().el);
 		     		view.open();
@@ -433,7 +487,7 @@ $(function(){
 	   		$('#tab_' + _id).removeClass().addClass('tab-active');
 	   		$("#" + _id).attr("class","tabs_li");
 	   		$("#tabs").prepend($("#" + _id).css("display","block"));
-	   		$("ul.tabs > li:nth-child(" + (count_tabs+1) + " )").attr("class","tabs_plus_li");
+	   		$("ul#tabs > li:nth-child(" + (count_tabs+1) + " )").attr("class","tabs_plus_li");
 	   		$("#tabs_plus").prepend($("li:nth-child(" + (count_tabs+1) + " )"));
    		}
     	},
@@ -450,10 +504,21 @@ $(function(){
     	removeDoc: function(id) {
     		if($("#frame_"+id).length>0)
 	    	{
-		    	var width_tabs = $("#tabs").outerWidth();
-		    	var width_options = $(".options").outerWidth();
-	    		var width_tab = $(".tab").outerWidth();
-	   		var count_tabs = Math.floor((width_tabs-width_options)/width_tab);   
+			   if($('#arrow_down').attr('class')=='vmode')
+		  		{
+			  		var width_tabs = $("#tabs").outerHeight();
+		    		var width_tab = $(".tab-active").outerHeight();
+		   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
+		   		var count_li = document.getElementsByClassName("tabs_li").length;
+		   	}
+		   	else
+		   	{
+				 	var width_tabs = $("#tabs").outerWidth();
+				 	var width_options = $(".options").outerWidth();
+				   var width_tab = $(".tab-active").outerWidth();
+				   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
+				   var count_li = document.getElementsByClassName("tabs_li").length;
+				}  
 	
 	    		if((document.getElementById('frame_' + id).style.display)=="block")
 	    		{
@@ -499,10 +564,21 @@ $(function(){
 	    	if($("#frame_"+id).length>0)
 	    	{
 	    	   //We have to control the widht of tabs
-	    		var width_tabs = $("#tabs").outerWidth();
-	    		var width_options = $(".options").outerWidth();
-	    		var width_tab = $(".tab").outerWidth();
-	   		var count_tabs = Math.floor((width_tabs-width_options)/width_tab);
+		    	if($('#arrow_down').attr('class')=='vmode')
+		  		{
+			  		var width_tabs = $("#tabs").outerHeight();
+		    		var width_tab = $(".tab-active").outerHeight();
+		   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
+		   		var count_li = document.getElementsByClassName("tabs_li").length;
+		   	}
+		   	else
+		   	{
+				 	var width_tabs = $("#tabs").outerWidth();
+				 	var width_options = $(".options").outerWidth();
+				   var width_tab = $(".tab-active").outerWidth();
+				   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
+				   var count_li = document.getElementsByClassName("tabs_li").length;
+				}
 	   		
 	    		//We retrieve the last url of the iframe
 	    		var path = document.getElementById('frame_' + id).contentDocument.location.href; 
@@ -549,8 +625,125 @@ $(function(){
 	    	$('#tab_plus').css("display","none");
     	},
     	
-    	setDisplayMode: function(mode) {
-    	//todo
+    	setDisplayMode: function(mode) {    		
+	    	if(mode == 'V')
+	    	{
+	    		var wwindow = $(".multidoc").width();
+	    		var wwidth = wwindow - 200;
+	    		$("#arrow_down").attr('class','vmode');
+	    		$("#tabs").removeClass().addClass('tabs_vertical');
+	    		$("#doc_content").removeClass().addClass('doc_content_vertical');
+	    		$(".doc_content_vertical").css('width', wwidth + 'px');
+	    		$("#arrow_down").css('float','left');
+	    		$("#arrow_down").css('margin-left','-120px');
+				$("#tabs_plus").removeClass().addClass('tabs_plus_vertical');
+				
+				//Readjustement
+				var count_li = document.getElementsByClassName("tabs_li").length;
+				var count_li_plus = document.getElementsByClassName("tabs_plus_li").length;
+									
+				if(count_li>0)
+				{
+					var width_tabs = $("#tabs").outerHeight();
+					var width_tab = $(".tab-active").outerHeight();
+					if(!width_tab)
+					{
+						width_tab = $(".tab").outerHeight();
+					}
+					var count_tabs = Math.floor(width_tabs/width_tab);  	  
+
+					var transf = count_li - count_tabs;
+					
+					if(count_tabs<count_li)
+					{
+						for(var i=0;i<transf;i++)
+						{
+							$("ul#tabs > li:last-child").attr('class', 'tabs_plus_li');
+		     				$("#tabs_plus").prepend($("ul#tabs > li:last-child"));
+		     			}
+		     			$('#arrow_down').css("display","block");
+				    	$('#tab_plus').css("display","block");
+					}
+					else
+					{
+						if( (count_tabs>count_li) && count_li_plus>0 )
+						{
+							for(var i=0;i<Math.abs(transf);i++)
+							{
+								$("ul#tabs_plus > li:nth-child(1)").attr('class', 'tabs_li');
+			     				$("#tabs").append($("ul#tabs_plus > li:nth-child(1)"));
+			     			}			     			
+						}
+					}	
+				}	
+				
+				if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+				{
+					$('#arrow_down').css("display","none");
+				   $('#tab_plus').css("display","none");
+		 		}	
+    		}
+	    	else
+	    	{
+		    	if(mode == 'H')
+		    	{
+		    		$("#arrow_down").attr('class','hmode');
+		    		$("#tabs").removeClass().addClass('tabs');
+	    			$("#doc_content").removeClass().addClass('doc_content');
+	    			$(".doc_content").css('width', '100%');
+	    			$("#arrow_down").css('float','right');
+	    			$("#arrow_down").css('margin-left','0px');
+	    			$("#tabs_plus").removeClass().addClass('tabs_plus');
+				
+					//Readjustement
+					var count_li = document.getElementsByClassName("tabs_li").length;
+					var count_li_plus = document.getElementsByClassName("tabs_plus_li").length;
+										
+					if(count_li>0)
+					{
+						var width_tabs = $("#tabs").outerWidth();
+						var width_tab = $(".tab-active").outerWidth();
+						if(!width_tab)
+						{
+							width_tab = $(".tab").outerHeight();
+						}
+						var width_options = $(".options").outerWidth();
+						var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	  
+						
+						var transf = count_li - count_tabs;
+						
+						if(count_tabs<count_li)
+						{
+							for(var i=0;i<transf;i++)
+							{
+								$("ul#tabs > li:last-child").attr('class', 'tabs_plus_li');
+			     				$("#tabs_plus").prepend($("ul#tabs > li:last-child"));
+			     			}
+						}
+						else
+						{
+							if( (count_tabs>count_li) && count_li_plus>0 )
+							{
+								for(var i=0;i<Math.abs(transf);i++)
+								{
+									$("ul#tabs_plus > li:nth-child(1)").attr('class', 'tabs_li');
+				     				$("#tabs").append($("ul#tabs_plus > li:nth-child(1)"));
+				     			}
+	
+					    		if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+					    		{
+					    			$('#arrow_down').css("display","none");
+					    			$('#tab_plus').css("display","none");
+					    		}
+							}
+						}
+					}
+				}
+	    		else
+	    		{
+	    			return false;
+	    		}
+	    	}
    	}
    });	
 });

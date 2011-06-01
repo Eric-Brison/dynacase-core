@@ -7,11 +7,10 @@ body, html
 #left
 {
 	position:absolute;
-	top:90%;
+	top:95%;
 	background-color:white;
-	float:left;
+	right:0;
 	text-align:center;
-	width:90px;
 	font-size:0.6em;
 	background-color:#D7D7D7;
 }
@@ -19,8 +18,7 @@ body, html
 #right
 {
 	width:100%;
-	height:90%
-	/*height:100%;*/
+	height:100%;
 }
 
 .multidoc
@@ -36,21 +34,35 @@ body, html
 	height:32px;
 }
 
+.multidoc .tabs
+{
+	height:100%;
+}
+
+.multidoc .tabs_vertical
+{
+	height:400px;
+}
+
 .multidoc .tab, .multidoc #tabs_plus
 {
 	background-color:#d2e1f4;
 }
 
-.multidoc #tabs_plus
+.multidoc .tabs_plus
 {
-	right:0px; /*complementary with the width*/
-   top: 42px;
 	border-top: 1px solid #8098b7;
 	border-bottom: 1px solid #8098b7;
-	max-height:300px;
+	max-height:320px;
 	width:159px;
-	overflow:auto;
-	overflow-x:hidden;
+}
+
+.multidoc .tabs_plus_vertical
+{
+	border-top: 1px solid #8098b7;
+	border-bottom: 1px solid #8098b7;
+	max-height:160px;
+	width:159px;
 }
 
 .multidoc .tab, .multidoc .tab-active
@@ -100,15 +112,15 @@ body, html
 
 .multidoc .doc_content
 {
-	height:100%;
+	height:90%;
 	background-color:white;
 	width:100%;
 }
 
-.multidoc .icon_doc, .multidoc .img_icon
+.multidoc .doc_content_vertical
 {
-	max-width:16px;
-	max-height:16px;
+	height:90%;
+	background-color:white;
 }
 
 .multidoc .options
@@ -131,8 +143,7 @@ body, html
 .multidoc .img_new, .multidoc .img_del
 {
 	background-image:url(../images/goto.png);
-	width:16px;
-	height:16px;
+	cursor:pointer;
 }
 
 .multidoc .img_new
