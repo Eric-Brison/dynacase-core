@@ -32,7 +32,6 @@ function user(&$action) {
     case '':
       $ou=new Fdl_User($action->user);    
       $out=$ou->getUser();
-      $out->localeFormat=getLocaleConfig();
       break;
     case 'ping':
       $out->status='ok';  
