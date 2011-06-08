@@ -584,7 +584,8 @@ function exec_query($sql,$lvl=0)
 	default:
 	  break;
 	}
-	//print_r(debug_backtrace(false));
+	//print_r2(debug_backtrace(false));
+	//throw new Exception($this->msg_err);
 	error_log("DbObj::exec_query [".$this->msg_err." (".$this->err_code.")]:$action_needed.[$sql]");
       }
     }

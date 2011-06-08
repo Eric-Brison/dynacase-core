@@ -137,7 +137,7 @@ Class VaultDiskFs extends DbObj {
   function Show($id_fs, $id_dir, &$f_path) {
   // --------------------------------------------------------------------
     $query = new QueryDb($this->dbaccess, $this->dbtable);
-    $query->basic_elem->sup_where=array("id_fs=".$id_fs);
+    $query->basic_elem->sup_where=array(sprintf("id_fs=%d",$id_fs));
     $t = $query->Query(0,0,"TABLE");
     if ($query->nb > 0) {
       $sd = new VaultDiskDir($this->dbaccess,  $id_dir,$this->specific);

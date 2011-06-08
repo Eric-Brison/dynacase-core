@@ -1834,7 +1834,6 @@ create unique index i_docir on doc(initid, revision);";
       if (preg_match(PREGEXPFILE, $va, $reg)) {  
 	$vidin=$reg[2];
 	$info=vault_properties($vidin,$engine);
-
 	// in case of server not reach : try again
       if ($info->teng_state == TransformationEngine::error_connect) $info->teng_state=TransformationEngine::status_inprogress;
 	if ((! $info->teng_vid) || ($info->teng_state==TransformationEngine::status_inprogress)) {

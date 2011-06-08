@@ -274,20 +274,22 @@ function createTmpDoc($dbaccess,$fromid) {
  * 
  * @return int false if error occured (return -1 if family document )
  */
-function getFromId($dbaccess, $id) {
-
-  if (!($id > 0)) return false;
-  if (! is_numeric($id)) return false;
-  $dbid=getDbid($dbaccess);   
-  $fromid=false;
-  $result = pg_query($dbid,sprintf("select fromid from docfrom where id=%d",$id));
-
-  if (pg_numrows ($result) > 0) {
-    $arr = pg_fetch_array ($result, 0,PGSQL_ASSOC);
-    $fromid= $arr["fromid"];
-  }
-  
-  return $fromid;    
+function getFromId($dbaccess, $id)
+{
+    if (!($id > 0)) return false;
+    if (!is_numeric($id)) return false;
+    $dbid = getDbid($dbaccess);
+    $fromid = false;
+    
+    $result = pg_query($dbid, sprintf("select fromid from docfrom where id=%d", $id));
+    if ($result) {
+        if (pg_numrows($result) > 0) {
+            $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
+            $fromid = $arr["fromid"];
+        }
+    }
+    
+    return $fromid;
 } 
 
 /**
