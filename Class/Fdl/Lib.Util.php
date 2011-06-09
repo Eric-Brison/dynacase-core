@@ -137,6 +137,7 @@ function FrenchDateToLocaleDate($fdate, $format='') {
  * @return string  YYYY-MM-DD HH:MM:SS
  */
 function FrenchDateToIso($fdate, $withT=true) {
+    if (!$fdate) return '';
   if (preg_match('/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/', $fdate,$r)) {
 
     if ($r[4] == "") $dt=sprintf("%04d-%02d-%02d",$r[3],$r[2],$r[1]);

@@ -110,7 +110,12 @@ Class Fdl_Document  {
                             $lvalues[$v->id."_title"]=$this->doc->getTitle($this->doc->getValue($v->id));
                             if ($v->inArray() || ($v->getOption("multiple")=="yes"))  $lvalues[$v->id."_title"]=$this->doc->_val2array($lvalues[$v->id."_title"]);
                         } elseif ($isoDate && ($v->type=='date' || $v->type=='timestamp')) {
-                            $lvalues[$v->id]=FrenchDateToIso($lvalues[$v->id],false);
+                            if (is_array($lvalues[$v->id])) {
+                                foreach ($lvalues[$v->id] as $kd=>$vd) {
+                                   $lvalues[$v->id][$kd]=FrenchDateToIso($vd,false);
+                                }
+                            }
+                            else $lvalues[$v->id]=FrenchDateToIso($lvalues[$v->id],false);
                         }
                     }
                 }
