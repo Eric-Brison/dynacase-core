@@ -6558,7 +6558,7 @@ create unique index i_docir on doc(initid, revision);";
 	 */
 	function setLogicalIdentificator($name) {
 		if ($name) {
-			if (!preg_match("/^[A-Z][0-9A-Z:_-]*$/i", $name)) {
+			if (!preg_match("/^[A-Z]/i", $name)) {
 				return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"), $name));
 			}
 			elseif (!$this->isAffected()) {
