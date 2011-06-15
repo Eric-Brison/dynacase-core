@@ -41,7 +41,7 @@
         </div>
         <div id="Export Option" class="frame">
             <div class="legend" onclick='switchBlock();' title="[TEXT:EXPORT_CSV Click to show options]">[TEXT:EXPORT_CSV CSV options :] </div>
-            <div onclick='switchBlock();' class="content" style="background-color: rgb(249, 250, 251);" >
+            <div class="content" style="background-color: rgb(249, 250, 251);" >
                 <table id="csvOption" style="display : none; margin : 10px">
                     <tr>
                         <td>
