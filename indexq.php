@@ -17,6 +17,7 @@ global $tic1;
 $deb=gettimeofday();
 $tic1 = $deb["sec"]+$deb["usec"]/1000000;
 include_once('WHAT/Lib.Main.php');
+include_once('WHAT/Class.AuthenticatorManager.php');
 include_once('WHAT/wdebug.php');
 
 global $SQLDELAY, $SQLDEBUG;
@@ -36,39 +37,37 @@ if ($authtype == 'apache') {
   
  } else {
 
-  $authProviderList = getAuthProviderList();
-  foreach ($authProviderList as $ka=>$authprovider) {
-    $authClass = strtolower($authtype)."Authenticator";
-    if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
-      error_log(__FILE__.":".__LINE__."> Unknown authtype ".$authtype);
-    } else {
-  
-      $auth = new $authClass( $authtype, $authprovider);
-      $status = $auth->checkAuthentication();
-      if ($status) {
-	$statusA = $auth->checkAuthorization( array( 'username' => $auth->getauthUser() ) );
-	if( $statusA == FALSE ) {
-	  $auth->logout("guest.php?sole=A&app=AUTHENT&action=UNAUTHORIZED");
-	  exit(0);
-	}
-	break;
-      }
-    }
-  }
-
-  if( $status == FALSE ) {
-    sleep(2); // wait for robots
-    $auth->askAuthentication();
+  $status = AuthenticatorManager::checkAccess();
+  switch ($status) {
+ 
+  case 0: // it'good, user is authentified
+    break;
+    
+   case -1:
+    // User must change his password
+    $action->session->close();
+    AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
     exit(0);
+    break;
+    
+  default:
+    sleep(1); // for robots
+    // Redirect to authentication
+    global $_POST;
+    AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
+    AuthenticatorManager::$auth->askAuthentication(array("error" => $status));
+    Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
+    exit(0);
+
   }
   
-  $_SERVER['PHP_AUTH_USER'] = $auth->getAuthUser();
+  $_SERVER['PHP_AUTH_USER'] = AuthenticatorManager::$auth->getAuthUser();
  }
 
 if( file_exists('maintenance.lock') ) {
   if( $_SERVER['PHP_AUTH_USER'] != 'admin' ) {
     if( $authtype != 'apache' ) {
-      $auth->logout("");
+      AuthenticatorManager::$auth->logout("");
     }
     include_once('WHAT/stop.php');
     exit(0);
@@ -91,7 +90,7 @@ if(!isset($_SERVER['PHP_AUTH_USER'])  ) {
 
 // ----------------------------------------
 
-getmainAction($auth,$action);
+getmainAction(AuthenticatorManager::$auth,$action);
 $deb=gettimeofday();
 $ticainit= $deb["sec"]+$deb["usec"]/1000000;
 $trace=$action->read("trace");

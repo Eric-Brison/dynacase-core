@@ -41,6 +41,7 @@ function generic_tab(&$action) {
   $famid = getDefFam($action);
   $emptyfld=false;
   if ($famid == "0") $action->exitError(_("cookies seem to be blocked"));
+  if (($famid!="") && (! is_numeric($famid))) $famid=getFamIdFromName($dbaccess,$famid);
 
   $fdoc = new DocFam($dbaccess,$famid);
 
@@ -89,9 +90,7 @@ function generic_tab(&$action) {
       $sdirid=$dir->id;
     }
 
-
-
- 
+	$sdoc->setValue('se_famid', $famid);
 
     $sdoc->Add();
 
@@ -106,7 +105,6 @@ function generic_tab(&$action) {
 
 
     $only=(getInherit($action,$famid)=="N");
-    if (($famid!="") && (! is_numeric($famid))) $famid=getFamIdFromName($dbaccess,$famid);
     
 
     $query = getSqlSearchDoc($dbaccess,$sdirid,($only)?-(abs($famid)):abs($famid),$sqlfilter);
