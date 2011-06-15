@@ -116,6 +116,7 @@
 	<process command="./wsh.php --api=freedom_import --file=./FDL/searches.ods" />
 	<process command="./wsh.php --api=freedom_import --file=./FDL/misc.ods" />
 	<process command="./wsh.php --api=freedom_import --file=./FDL/freeaction.ods" />
+    <process command="./wsh.php --api=freedom_import --file=./FDL/helps.csv" />
     <process command="programs/app_post FDL U" />
     
     <process command="programs/app_post USERCARD I" />
@@ -207,6 +208,7 @@
 	<process command="./wsh.php --api=freedom_import --file=./FDL/searches.ods" />
 	<process command="./wsh.php --api=freedom_import --file=./FDL/misc.ods" />
 	<process command="./wsh.php --api=freedom_import --file=./FDL/freeaction.ods" />
+    <process command="./wsh.php --api=freedom_import --file=./FDL/helps.csv" />
     <process command="programs/app_post FDL U" />
     <process command="programs/post_migration FDL" />
 
