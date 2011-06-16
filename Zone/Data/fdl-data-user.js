@@ -73,6 +73,7 @@ Fdl.User.prototype = {
 			this.context.setErrorMessage(data.error);
 		}
 	}
+	return false;
 },
 toString: function() {
 	return 'Fdl.User';
@@ -106,6 +107,30 @@ Fdl.User.prototype.getDisplayName = function() {
 Fdl.User.prototype.getInfo = function() {    
 	if (this.info) {
 		return this.info;
+	}
+	return null;
+};
+
+/** get all format of different locale
+ * dateFormat
+	"%m/%d/%Y"
+	
+   dateTimeFormat
+	"%m/%d/%Y %H:%M"
+	
+   label
+	"English"
+	
+   locale
+	"en"
+	
+   timeFormat
+	"%H:%M:%S"
+ * @return {Object}
+ */
+Fdl.User.prototype.getLocaleFormat = function() {    
+	if (this._data.localeFormat) {
+		return this._data.localeFormat;
 	}
 	return null;
 };

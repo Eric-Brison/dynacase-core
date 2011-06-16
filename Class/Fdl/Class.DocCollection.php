@@ -284,6 +284,20 @@ include_once("FDL/Class.Doc.php");
         public function hasSpecificFilters() {
             return (count($this->getSpecificFilters())>0);
         }
+    /**
+     * return content of collection
+     * @return DocumentList
+     */
+    public function getDocumentList()
+    {
+        include_once("FDL/Class.SearchDoc.php");
+        $s = new SearchDoc($this->dbaccess);
+        $s->useCollection($this->initid);
+        $s->setObjectReturn();
+        $s->excludeConfidential();
+        return $s->search()->getDocumentList();
+        
+    }
 }
 
 ?>

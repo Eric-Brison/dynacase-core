@@ -16,40 +16,40 @@
 include_once('WHAT/Class.Authenticator.php');
 
 Class basicAuthenticator extends Authenticator {
-  
+
   public function checkAuthentication() {
     
     if( array_key_exists('logout', $_COOKIE) && $_COOKIE['logout'] == "true" )  {
       setcookie('logout', '', time() - 3600);
-      return FALSE;
+      return Authenticator::AUTH_ASK;
     }
     
     if( ! array_key_exists('PHP_AUTH_USER', $_SERVER) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_USER]");
-      return FALSE;
+      return Authenticator::AUTH_ASK;
     }
     
     if( ! array_key_exists('PHP_AUTH_PW', $_SERVER) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: undefined _SERVER[PHP_AUTH_PW] for user ".$_SERVER['PHP_AUTH_USER']);
-      return FALSE;
+      return Authenticator::AUTH_ASK;
     }
     
     if(! is_callable(array($this->provider, 'validateCredential')) ) {
       error_log(__CLASS__."::".__FUNCTION__." "."Error: ".$this->parms{'type'}.$this->parms{'provider'}."Provider must implement validateCredential()");
-      return FALSE;
+      return Authenticator::AUTH_NOK;
     }
     
     if( ! $this->provider->validateCredential($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) ) {
-      return FALSE;
+      return Authenticator::AUTH_NOK;
     }
 
     if( ! $this->freedomUserExists($_SERVER['PHP_AUTH_USER']) ) {
       if( ! $this->tryInitializeUser($_SERVER['PHP_AUTH_USER']) ) {
-	return FALSE;
+	return Authenticator::AUTH_NOK;
       }
     }
 
-    return TRUE;
+    return Authenticator::AUTH_OK;
   }
 
   public function checkAuthorization($opt) {
@@ -60,12 +60,13 @@ Class basicAuthenticator extends Authenticator {
     return TRUE;
   }
   
-  public function askAuthentication() {
+  public function askAuthentication($args=array()) {
     if( is_callable(array($this->provider, 'askAuthentication')) ) {
       return $this->provider->askAuthentication();
     }
     header('HTTP/1.1 401 Authentication Required');
     header('WWW-Authenticate: Basic realm="'.$this->parms{'realm'}.'"');
+    header('Connection: close');
     return TRUE;
   }
   
@@ -85,12 +86,15 @@ Class basicAuthenticator extends Authenticator {
     return $_SERVER['PHP_AUTH_PW'];
   }
   
-  public function logout($redir_uri) {
+  public function logout($redir_uri='') {
     setcookie('logout', 'true', 0);
+    if( $redir_uri == '' ) {
+      $redir_uri = getParam('CORE_BASEURL');
+    }
     header('Location: '.$redir_uri);
     return TRUE;
   }
- 
+
   public function setSessionVar($name, $value) {
     return TRUE;
   }

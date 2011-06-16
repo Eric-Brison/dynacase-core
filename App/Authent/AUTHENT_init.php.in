@@ -45,7 +45,26 @@ $app_const= array(
 					 "descr" => N_("show language selection"),
 					 "kind" => "enum(yes|no",
 					 "global" => "N"
-					 )
+					 ),
+  "AUTHENT_FAILURECOUNT" => array(
+                                    "val" => 0,
+                                    "descr" => N_("Authentication failures before account deactivation"),
+                                    "kind" => "text",
+                                    "global" => "N"
+                                    ),
+  "AUTHENT_ACCOUNTEXPIREDELAY" => array(
+                                    "val" => 0,
+                                    "descr" => N_("Default delay for account expiration (days)"),
+                                    "kind" => "text",
+                                    "global" => "Y"
+                                    ),
+  "AUTHENT_LOGFACILITY" => array(
+                                    "val" => "LOG_AUTH",
+                                    "descr" => N_("Session authentication log facility"),
+                                    "kind" => "text",
+                                    "global" => "Y"
+                                    ),
+
 );
 
 ?>

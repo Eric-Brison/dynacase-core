@@ -139,17 +139,31 @@ class BasicAttribute
      *
      * @return string
      */
-    static function encodeXml($s)
+    static function encodeXml($s, $quot = false)
     {
-        return str_replace(array(
-            '&',
-            '<',
-            '>'
-        ), array(
-            '&amp;',
-            '&lt;',
-            '&gt;'
-        ), $s);
+        if ($quot) {
+            return str_replace(array(
+                '&',
+                '<',
+                '>',
+                '"'
+            ), array(
+                '&amp;',
+                '&lt;',
+                '&gt;',
+                '&quot;'
+            ), $s);
+        } else {
+            return str_replace(array(
+                '&',
+                '<',
+                '>'
+            ), array(
+                '&amp;',
+                '&lt;',
+                '&gt;'
+            ), $s);
+        }
     }
     /**
      * to see if an attribute is n item of an array

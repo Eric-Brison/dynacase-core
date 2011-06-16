@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+	echo "Undefined or empty pgservice_core!"
+	exit 1
+fi
+
+PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on <<EOF 2>&1
+BEGIN;
+
+	CREATE UNIQUE INDEX sessions_idx_tmp ON sessions (id);
+	DROP INDEX sessions_idx;
+	ALTER INDEX sessions_idx_tmp RENAME TO sessions_idx;
+
+	CREATE INDEX sessions_idx_name ON sessions (name);
+
+	CREATE INDEX sessions_idx_userid ON sessions (userid);
+
+COMMIT;
+EOF
+
+RET=$?
+if [ $RET -ne 0 ]; then
+	echo "Error: SQL error in `basename $0`"
+	exit $RET
+fi
+
+exit 0

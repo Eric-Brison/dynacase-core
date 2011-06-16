@@ -27,7 +27,7 @@ function revision(&$action)
 
   $doc= new_Doc($dbaccess,$docid);
 
-  $err = $doc->CanUpdateDoc();
+  $err = $doc->canEdit();
   if ($err != "") $action->ExitError($err);
   
 

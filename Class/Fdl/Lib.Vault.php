@@ -66,6 +66,7 @@ function vault_generate($dbaccess,$engine,$vidin,$vidout,$isimage=false,$docid='
       include_once("FDL/Class.TaskRequest.php");
       $of=new VaultDiskStorage($dbaccess,$vidin);
       $filename=$of->getPath();
+      if (! $of->isAffected()) return "no file $vidin";
       $ofout=new VaultDiskStorage($dbaccess,$vidout);
       $ofout->teng_state=TransformationEngine::status_waiting; // in progress
       $ofout->modify();

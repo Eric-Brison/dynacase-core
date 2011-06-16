@@ -77,6 +77,8 @@ Class Doc extends DocCtrl {
 			   "wid",
 			   "postitid",
 			   "forumid",
+			   "domainid",
+			   "lockdomainid",
 			   "cvid",
 			   "name",
 			   "dprofid",
@@ -116,7 +118,9 @@ Class Doc extends DocCtrl {
 			       "dprofid"=>array("type"=>"docid","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_dprofid"), # N_("prop_dprofid")
 			       "atags"=>array("type"=>"text","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_atags"), # N_("prop_atags")
 			       "prelid"=>array("type"=>"docid","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_prelid"), # N_("prop_prelid")
-			       "confidential"=>array("type"=>"integer","displayable"=>false,"sortable"=>true,"filterable"=>true,"label"=>"prop_confidential"), # N_("prop_confidential")
+  			       "lockdomainid"=>array("type"=>"docid","displayable"=>true,"sortable"=>true,"filterable"=>false,"label"=>"prop_lockdomainid"), # N_("prop_lockdomainid")
+  			       "domainid"=>array("type"=>"docid","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_domainid"), # N_("prop_domainid")
+                               "confidential"=>array("type"=>"integer","displayable"=>false,"sortable"=>false,"filterable"=>true,"label"=>"prop_confidential"), # N_("prop_confidential")
   			       "svalues"=>array("type"=>"fulltext","displayable"=>false,"sortable"=>false,"filterable"=>true,"label"=>"prop_svalues"), # N_("prop_svalues")
 			       "ldapdn"=>array("type"=>"text","displayable"=>false,"sortable"=>false,"filterable"=>false,"label"=>"prop_ldapdn")); # N_("prop_ldapdn");
   /**
@@ -154,6 +158,16 @@ Class Doc extends DocCtrl {
    * @public int
    */
   public $fromid;
+  /**
+   * domain where document is lock
+   * @public int
+   */
+  public $lockdomainid;
+  /**
+   * domain where document is attached
+   * @public array
+   */
+  public $domainid;
   /**
    * the type of document
    *
@@ -369,6 +383,8 @@ create table doc ( id int not null,
                    fulltext tsvector,
                    postitid text,
                    forumid int,
+                   domainid text,
+                   lockdomainid int,
                    cvid int,
                    name text,
                    dprofid int DEFAULT 0,
@@ -571,9 +587,10 @@ create unique index i_docir on doc(initid, revision);";
    */
   function PreUpdate() {
     if ($this->id == "") return _("cannot update no initialized document");
+    if ($this->doctype == 'I') return _("cannot update inconsistent document"); // provides from waiting document
     if (! $this->withoutControl) {
-      $err = $this->Control("edit");
-      if ($err != "") return ($err);
+      $err = $this->control("edit");
+      if ($err != "") return ($err); 
     }
     if ($this->locked == -1) $this->lmodify='N';
     if ($this->isFixed()) return _("cannot update fixed document");
@@ -810,8 +827,8 @@ create unique index i_docir on doc(initid, revision);";
     $cdoc->prelid=$this->prelid;
 
     $values = $this->getValues();
-
-    $this->exec_query("begin;"); // begin transaction in case of fail add
+    $point="convert".$this->id;
+    $this->savePoint($point); // begin transaction in case of fail add
     $err=$this->delete(true,false,true); // delete before add to avoid double id (it is not authorized)
     if ($err != "") return $err;
 
@@ -820,7 +837,7 @@ create unique index i_docir on doc(initid, revision);";
     }
     $err=$cdoc->Add(true,true);
     if ($err != "") {
-       $this->exec_query("rollback;");
+       $this->rollbackPoint($point);
         return $err;
     }
 
@@ -837,70 +854,84 @@ create unique index i_docir on doc(initid, revision);";
     $this->exec_query(sprintf("update fld set fromid=%d where childid=%d",$cdoc->fromid,$this->initid));
 
     $cdoc->AddComment(sprintf(_("convertion from %s to %s family"),$f1from,$f2from));
-
-    $this->exec_query("commit;");
+		
+    $this->commitPoint($point);
     global $gdocs; //reset cache if needed
     if (isset($gdocs[$this->id])) {
         $gdocs[$this->id]=&$cdoc;
     }
 
     return $cdoc;
-
+    
   }
+    
+    /**
+     * test if the document can be revised now
+     * it must be locked by the current user
+     * @deprecated
+     * @return string empty means user can update else message of the raison
+     */
+    final public function canUpdateDoc()
+    {
+        return $this->canEdit();
+    
+    }  
 
   /**
-   * test if the document can be revised now
-   * it must be locked by the current user
-   * @return string empty means user can update else message of the raison
+   * save document if attribute are change
+   * not be use when modify properties
+   * only use with use of setValue.
+   * @param stdClass $info refresh and postModify messages
+   * @param boolean $skipConstraint set to true to not test constraints
+   * @return string error message
    */
-  final public function CanUpdateDoc() {
-
-    if ($this->locked == -1) {
-      $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title,$this->revision);
-      return $err;
-    }
-
-    if ($this->userid == 1) return "";// admin can do anything but not modify fixed doc
-    $err="";
-
-    if ($this->locked == 0) {
-      $err = sprintf(_("the file %s (rev %d) must be locked before"), $this->title,$this->revision);
-    } else {
-      if (abs($this->locked) != $this->userid) {
-
-	$user = new User("", abs($this->locked));
-	if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname);
-	else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->title,$this->revision,$user->firstname." ".$user->lastname);
-
-      } else $err = $this-> Control( "edit");
-    }
-
-    return($err);
+  public function save(&$info=null, $skipConstraint=false) {
+      $err='';
+        $info = '';
+        $info->constraint = '';
+        if (!$skipConstraint) {
+            $err = $this->verifyAllConstraints(false, $info->constraint);
+        }
+        if ($err == '') {
+            $info->refresh = $this->refresh();
+            $info->postModify = $this->postModify();
+            if ($this->hasChanged) {
+                //in case of change in postModify
+                $err = $this->modify();
+            }
+            if ($err == "") $this->addComment(_("save document"), HISTO_INFO, "MODIFY");
+        }
+        $info->error = $err;
+        return $err;
   }
-
-  /**
-   * test if the document can be edit by the current user
-   * the diffence between ::canUpdateDoc is that document is not need to be locked
-   * @return string empty means user can update else message of the raison
-   */
-  public function CanEdit() {
-    if ($this->locked == -1) {
-      $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title,$this->revision);
-      return($err);
+    
+    /**
+     * test if the document can be edit by the current user
+     * the diffence between ::canUpdateDoc is that document is not need to be locked
+     * @return string empty means user can update else message of the raison
+     */
+    public function canEdit($verifyDomain=true)
+    {
+        if ($this->locked == -1) {
+            $err = sprintf(_("cannot update file %s (rev %d) : fixed. Get the latest version"), $this->title, $this->revision);
+            return ($err);
+        }
+        if ($this->userid == 1) return ""; // admin can do anything but not modify fixed doc
+        $err = "";
+        if ($verifyDomain && ($this->lockdomainid > 0)) $err = sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
+        else {
+            if ($this->withoutControl) return ""; // no more test if disableEditControl activated
+            if (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
+                $user = new User("", abs($this->locked));
+                if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(), $user->firstname . " " . $user->lastname);
+                else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->getTitle(), $this->revision, $user->firstname . " " . $user->lastname);
+            
+            } else {
+                $err = $this->Control("edit");
+            }
+        }
+        return ($err);
     }
-    if ($this->userid == 1) return "";// admin can do anything but not modify fixed doc
-    $err="";
-    if ($this->withoutControl) return ""; // no more test if disableEditControl activated
-    if  (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
-      $user = new User("", abs($this->locked));
-      if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname);
-      else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s."), $this->getTitle(),$this->revision,$user->firstname." ".$user->lastname);
-
-    } else {
-      $err = $this->Control("edit");
-    }
-    return($err);
-  }
 
   /**
    * test if the document can be locked
@@ -908,30 +939,11 @@ create unique index i_docir on doc(initid, revision);";
    * @return string empty means user can update else message of the raison
    */
   final public function CanLockFile() {
-    $err="";
+    $err=$this->canEdit();
+    
+    
 
-    if ($this->locked == -1) {
-
-      $err = sprintf(_("cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"),
-		     $this->title,$this->id,$this->revision);
-    }  else {
-      if ($this->userid == 1) return ""; // admin can do anything
-      if ($this->locked == 0) $err = $this-> Control( "edit");
-      // test if is not already locked
-      else {
-	if ( abs($this->locked) != $this->userid) {
-	  $user = new User("", abs($this->locked));
-	  if ($this->locked < -1) $err = sprintf(_("Document %s is in edition by %s."), $this->getTitle(),$user->firstname." ".$user->lastname);
-	  else $err = sprintf(_("cannot lock file %s [%d] : already locked by %s."),
-			      $this->title,$this->id,$user->firstname." ".$user->lastname);
-	}   else  {
-	  $err = $this-> Control( "edit");
-	}
-      }
-    }
-
-
-    return($err);
+    return($err);  
   }
   /**
    * @return boolean true if can lock file
@@ -958,8 +970,8 @@ create unique index i_docir on doc(initid, revision);";
       if ($this->profid > 0) 	$err = $this->Control("unlock"); // first control unlock privilege
       else $err=_("cannot unlock"); // not control unlock if the document is not controlled
     }
-    if ($err != "") $err=$this->CanUpdateDoc();
-    else {
+    if ($err != "") $err=$this->canEdit();
+    else {      
       $err = $this->Control("edit");
       if ($err != "") {
 	if ($this->profid > 0) {
@@ -1108,6 +1120,7 @@ create unique index i_docir on doc(initid, revision);";
   {
     if ($this->doctype == 'Z') return _("already deleted");
     if ($this->isLocked(true)) return _("locked");
+    if ($this->lockdomainid > 0) return sprintf(_("document is booked in domain %s"), $this->getTitle($this->lockdomainid));
     $err = $this->Control("delete");
 
     return $err;
@@ -1375,6 +1388,7 @@ create unique index i_docir on doc(initid, revision);";
       if (($this->locked != -1) && (!$fixed)) return $this->id;
       if ($fixed && ($this->lmodify == "L")) return $this->id;
     }
+    if (! $fixed) return getLatestDocId($this->dbaccess, $this->initid);
     $query = new QueryDb($this->dbaccess, strtolower(get_class($this)));
     $query->AddQuery("initid = ".$this->initid);
     if ($fixed) $query->AddQuery("lmodify = 'L'");
@@ -1442,21 +1456,36 @@ create unique index i_docir on doc(initid, revision);";
   final public function &getAttribute($idAttr,&$oa=null)   {
     if (!$this->_maskApplied) $this->ApplyMask();
     $idAttr = strtolower($idAttr);
-    $oa=$this->attributes->attr[$idAttr];
+    $oas=$this->getAttributes();
+    $oa=$oas[$idAttr];
     if (isset($this->attributes->attr[$idAttr])) return $oa;
 
     return false;
   }
-  /**
-   * return all the attributes object
-   * the attribute can be defined in fathers
-   * @return array DocAttribute
-   */
-  final public function GetAttributes()     {
-    if (!$this->_maskApplied) $this->ApplyMask();
-    reset($this->attributes->attr);
-    return $this->attributes->attr;
-  }
+    /**
+     * return all the attributes object 
+     * the attribute can be defined in fathers
+     * @return array DocAttribute
+     */
+    final public function &getAttributes()
+    {
+        $fromname = ($this->doctype == 'C') ? $this->name : $this->fromname;
+        if ($this->attributes->fromname != $fromname) {
+            // reset when use partial cache
+            $fromid = ($this->doctype == 'C') ? $this->id : $this->fromid;
+            $adocClassName = "ADoc" . $fromid;
+            $classname = "Doc" . $fromid;
+            $GEN = getGen($this->dbaccess);
+            $includePath="FDL$GEN/Class.$classname.php";
+            if (file_exists($includePath)) {
+            include_once($includePath);
+            $this->attributes = new $adocClassName();
+            }
+        }
+        if (!$this->_maskApplied) $this->ApplyMask();
+        reset($this->attributes->attr);
+        return $this->attributes->attr;
+    }
 
 
   /**
@@ -1508,16 +1537,16 @@ create unique index i_docir on doc(initid, revision);";
    *
    * @param int $mid mask ident, if not set it is found from possible workflow
    */
-  final public function ApplyMask($mid = 0) {
+  final public function ApplyMask($mid = 0, $force=false) {    
     // copy default visibilities
-    if (is_object($this->attributes)) {
-      foreach($this->attributes->attr as $k=>$v) {
-	if ($this->attributes->attr[$k]) $this->attributes->attr[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
-
+    $this->_maskApplied=true;
+    $oas=$this->getAttributes();
+    if (is_array($oas)) {
+      foreach($oas as $k=>$v) {
+	if ($oas[$k]) $oas[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
       }
     }
-    $this->_maskApplied=true;
-    if (($this->doctype=='C')||(($this->doctype=='T')&&($mid==0))) return;
+    if ((! $force) && (($this->doctype=='C')||(($this->doctype=='T')&&($mid==0)))) return;
     // modify visibilities if needed
     if ((! is_numeric($mid)) && ($mid!="")) $mid=getIdFromName($this->dbaccess,$mid);
     if ($mid == 0) $mid=$this->mid;
@@ -1539,28 +1568,28 @@ create unique index i_docir on doc(initid, revision);";
       $mdoc = new_Doc($this->dbaccess,$mid );
       if ($mdoc->isAlive()) {
 	$tvis = $mdoc->getCVisibilities();
-
 	foreach ($tvis as $k=>$v) {
-	  if (isset($this->attributes->attr[$k])) {
-	    if ($v != "-") $this->attributes->attr[$k]->mvisibility=$v;
+	  if (isset($oas[$k])) {
+	    if ($v != "-") $oas[$k]->mvisibility=$v;	      
 	  }
 	}
-	$tdiff=array_diff(array_keys($this->attributes->attr),array_keys($tvis));
+	$tdiff=array_diff(array_keys($oas),array_keys($tvis));
 	// recompute loosed attributes
 	foreach	($tdiff	as $k)	{
-	  $v=$this->attributes->attr[$k];
-	  $this->attributes->attr[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
+	  $v=$oas[$k];
+	  $oas[$k]->mvisibility=ComputeVisibility($v->visibility,$v->fieldSet->mvisibility);
         }
 
 	// modify needed attribute also
 	$tneed = $mdoc->getNeedeeds();
 	foreach ($tneed as $k=>$v) {
-	  if (isset($this->attributes->attr[$k])) {
-	    if ($v == "Y") $this->attributes->attr[$k]->needed=true;
-	    else if ($v == "N") $this->attributes->attr[$k]->needed=false;
+	  if (isset($oas[$k])) {
+	    if ($v == "Y") $oas[$k]->needed=true;
+	    else if ($v == "N") $oas[$k]->needed=false;
 	  }
 	}
       }
+      
     }
     uasort($this->attributes->attr,"tordered");
   }
@@ -1805,7 +1834,6 @@ create unique index i_docir on doc(initid, revision);";
       if (preg_match(PREGEXPFILE, $va, $reg)) {
 	$vidin=$reg[2];
 	$info=vault_properties($vidin,$engine);
-
 	// in case of server not reach : try again
       if ($info->teng_state == TransformationEngine::error_connect) $info->teng_state=TransformationEngine::status_inprogress;
 	if ((! $info->teng_vid) || ($info->teng_state==TransformationEngine::status_inprogress)) {
@@ -3052,57 +3080,104 @@ create unique index i_docir on doc(initid, revision);";
 
     return $value;
   }
-
-  /**
-   * apply a method to a doc
-   * specified like ::getFoo(10)
-   * @param string $method the method to apply
-   * @param string $def default value if no method
-   * @param int $index index in case of value in row
-   * @param array $bargs first arguments sent before for the method
-   *
-   * @return string the value
-   */
-  final public function ApplyMethod($method,$def="",$index=-1, $bargs=false) {
-    $value=$def;
-    if (preg_match("/::([^\(]+)\(([^\)]*)\)/",$method, $reg)) {
-      if (method_exists ( $this, $reg[1])) {
-	if (($reg[2] == "")&& (!$bargs)) {
-	  // without argument
-	  $value = call_user_func(array($this, $reg[1]));
-	} else {
-	  // with argument
-	  $args = explode(",",$reg[2]);
-	  if ($bargs && is_array($bargs)) $args=array_merge($bargs,$args);
-	  if ($attrid != "") {
-	    $this->AddParamRefresh($reg[2],$attrid);
-	  }
-
-	  foreach($args as $k=>$v) {
-	    if ($v != " ") $v=trim($v);
-	    if ($attr=$this->getAttribute($v)) {
-	      if ($attr->inArray())   $args[$k]=$this->GetTValue($v,"",$index);
-	      else $args[$k]=$this->GetValue($v);
-	    } else {
-	      if (($v[0]=="'")|| ($v[0] == '"')) {
-		$lc=substr($v,-1);
-		if (($lc == "'") || ($lc == '"')) $v= substr($v,1,-1);
-		else $v=substr($v,1);
-	      }
-	      $args[$k]=$v; // not an attribute just text
-	    }
-	    //   $args[$k]=$this->GetTValue($args[$k],$def,$index);
-	  }
-	  $value = call_user_func_array(array($this, $reg[1]), $args);
-	}
-      } else {
-	addWarningMsg(sprintf(_("Method [%s] not exists"),$reg[1]));
-      }
-
+    
+    /**
+     * apply a method to a doc 
+     * specified like ::getFoo(10)
+     * @param string $method the method to apply
+     * @param string $def default value if no method
+     * @param int $index index in case of value in row
+     * @param array $bargs first arguments sent before for the method
+     * @param array $mapArgs indexed array to add more possibilities to map arguments
+     * @param string $err error message
+     * 
+     * @return string the value
+     */
+    final public function applyMethod($method, $def = "", $index = -1, array $bargs = array(), array $mapArgs=array(), &$err='')
+    {
+        $value = $def;
+        $err='';
+        if (preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method, $reg)) {
+            $staticClass=$reg[1];
+            if (! $staticClass) $staticClass=$this;
+            $methodName=$reg[2];
+            $returnArgs=$reg[3];
+            if (method_exists($staticClass, $methodName)) {
+                if (($returnArgs == "") && (empty($bargs))) {
+                    // without argument
+                    $value = call_user_func(array(
+                        $staticClass,
+                        $methodName
+                    ));
+                } else {
+                    // with argument
+                    //$args = explode(",", $reg[2]);
+                    $sargs=$returnArgs;
+                    $args=array();
+                    $ak=0;
+                    $bq='';
+                    for($i = 0; $i < strlen($sargs); $i++) {
+                        $c = $sargs[$i];
+                        
+                        if ($c == '"')  {
+                            if ($bq == $c) $bq = '';
+                            else if (($bq == '') && (strlen(trim($args[$ak])) == 0)) {
+                                $bq = $c;
+                                $args[$ak] = "'";
+                            } else
+                                $args[$ak] .= $c;
+                        } elseif ($c == ',') {
+                            if (!$bq) {
+                                $args[$ak] .= '';
+                                $ak++;
+                            } else {
+                                $args[$ak] .= $c;
+                            }
+                        } else {
+                            $args[$ak] .= $c;
+                        }
+                    }
+                    
+                    if (count($bargs)>0) $args = array_merge($bargs, $args);
+                    
+                    foreach ( $args as $k => $v ) {
+                        if ($v != " ") $v = trim($v);
+                        $mapped=$mapArgs[$v];
+                        if ($mapped) {
+                            if (is_object($mapped)) $args[$k]=&$mapArgs[$v];
+                            else $args[$k]=$mapArgs[$v];
+                        } elseif ($attr = $this->getAttribute($v)) {
+                            if ($attr->inArray()) $args[$k] = $this->getTValue($v, "", $index);
+                            else $args[$k] = $this->GetValue($v);
+                        } else {
+                            if ($v == 'THIS') {
+                                $args[$k] = &$this;
+                            } elseif ($v == 'K') {
+                                $args[$k] = $index;
+                            }  elseif (($v[0] == "'") || ($v[0] == '"')) {
+                                $lc = substr($v, -1);
+                                if (($lc == "'") || ($lc == '"')) $v = substr($v, 1, -1);
+                                else $v = substr($v, 1);
+                                
+                                $args[$k] = $v; // not an attribute just text
+                            }
+                        }
+                    }
+                    $value = call_user_func_array(array(
+                        $staticClass,
+                        $methodName,
+                    ), $args);
+                }
+            } else {
+                $err=sprintf(_("Method [%s] not exists"), $method);
+                addWarningMsg($err);
+                return null;
+            }
+        
+        }
+        return $value;
     }
-    return $value;
-  }
-
+ 
   /**
    * verify attribute constraint
    *
@@ -3583,11 +3658,13 @@ create unique index i_docir on doc(initid, revision);";
     $this->forumid=0;
     $date = gettimeofday();
     $this->revdate = $date['sec']; // change rev date
-    $this->exec_query("begin;");
+    $point="revision".$this->id;
+    $this->savePoint($point);
     if ($comment != '') $this->Addcomment($comment,HISTO_MESSAGE,"REVISION");
     $err=$this->modify();
     if ($err != "") {
-      $this->exec_query("rollback;");
+        $this->rollbackPoint($point);
+      //$this->exec_query("rollback;");
       $this->select($this->id); // reset db values
       return $err;
     }
@@ -3596,7 +3673,7 @@ create unique index i_docir on doc(initid, revision);";
     if (! $this->isFixed()) {
       $err=sprintf("track error revision [%s]", pg_last_error($this->dbid));
       $this->Addcomment($err,HISTO_ERROR,"REVERROR");
-      $this->exec_query("commit;");
+      $this->commitPoint($point);
       return $err;
     }
 
@@ -3625,13 +3702,16 @@ create unique index i_docir on doc(initid, revision);";
 
     $err=$this->Add();
     if ($err != "") {
-      // restore last revision
-      $this->exec_query("rollback;");
+      // restore last revision      
+     // $this->exec_query("rollback;");
+              $this->rollbackPoint($point);
+      
       $this->select($olddocid); // reset db values
       return $err;
     }
-
-    $this->exec_query("commit;");
+    
+     $this->commitPoint($point);
+    
     $this->refresh(); // to recompute possible dynamic profil variable
     if ($this->dprofid > 0) $this->setProfil($this->dprofid); // recompute profil if needed
     $err=$this->modify(); // need to applicate SQL triggers
@@ -3932,9 +4012,9 @@ create unique index i_docir on doc(initid, revision);";
 	$err=$this->modify(false,array("locked"));
 	if (! $err) $this->addLog('lock');
       }
-    } else {
-      if ($this->locked != $userid) {
-	$this->locked = $userid;
+    } else { 
+      if (($this->locked != $userid)||($this->lockDomain)) {
+	$this->locked = $userid;     
 	$err=$this->modify(false,array("locked"));
 	if (! $err) $this->addLog('lock');
       }
@@ -3970,7 +4050,8 @@ create unique index i_docir on doc(initid, revision);";
     } else {
       if ($this->locked != -1) {
 	$this->locked = "0";
-	$this->modify(false,array("locked"));
+	$this->lockdomainid = '';
+	$this->modify(false,array("locked","lockdomainid"));
 	if (! $err) $this->addLog('unlock');
       }
     }
@@ -4070,27 +4151,31 @@ create unique index i_docir on doc(initid, revision);";
    * if no icon found return doc.gif
    * @return string icon url
    */
-  final public function getIcon($idicon="") {
+  final public function getIcon($idicon="", $size=null) {
 
     global $action;
     if ($idicon=="") $idicon=$this->icon;
     if ($idicon != "") {
-
-      if (preg_match(PREGEXPFILE, $idicon, $reg)) {
+    
+      if (preg_match(PREGEXPFILE, $idicon, $reg)) {    
+          if ($size) {
+              	$efile="resizeimg.php?vid=".$reg[2]."&size=".$size;
+          } else {
 	$efile="FDL/geticon.php?vaultid=".$reg[2]."&mimetype=".$reg[1];
+          }
       } else {
-	$efile=$action->parent->GetImageUrl($idicon,false);
+	$efile=$action->parent->GetImageUrl($idicon,true, $size);
       }
       return $efile;
 
     } else {
       if ($this->fromid == 0) {
 
-	return  $action->GetImageUrl("doc.gif");
+	return  $action->GetImageUrl("doc.gif",true,$size);
       }
       //$fdoc = new_Doc(newDoc($this->dbaccess, $this->fromid);
-
-      return  $action->GetImageUrl("doc.gif");
+    
+      return  $action->GetImageUrl("doc.gif",true,$size);
       // don't recursivity to increase speed
       //    return $fdoc->geticon();
     }
@@ -4390,13 +4475,13 @@ create unique index i_docir on doc(initid, revision);";
    * @param string $docrev style of link (default:latest, other values: fixed or state(xxx))
    * @return string the html anchor
    */
-  final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest") {
+  final public function getDocAnchor($id,$target="_self",$htmllink=true,$title=false,$js=true,$docrev="latest", $viewIcon=false) {
     $a="";
     $latest=($docrev=="latest" || $docrev=="");
     if ($htmllink) {
 
       if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'),'',$latest);
-      if ($title == "") {
+      if (trim($title) == "") {
 	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
       } else {
 	$ul=getParam("CORE_STANDURL");
@@ -4416,8 +4501,12 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	    $ec=str_replace("%V%",$id,$ec);
 	    $ecu=str_replace("'",'"',$ec);
-
-	    $a="<a  onclick='parent.$ecu'>$title</a>";
+	     $ajs="";
+	  if ($viewIcon) {
+           simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
+	        $ajs.=sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)).$title;
+	    }
+	    $a="<a $ajs onclick='parent.$ecu'>$title</a>";
 	  } else {
 	    if ($docrev=="latest" || $docrev=="" || !$docrev)
 	      $ul.="&latest=Y";
@@ -4443,7 +4532,10 @@ create unique index i_docir on doc(initid, revision);";
           $ul.="&app=FDL&action=FDL_CARD&id=$id";
 	  if ($js) $ajs="oncontextmenu=\"popdoc(event,'$ul');return false;\"" ;
 	  else $ajs="";
-
+	if ($viewIcon) {
+           simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
+	        $ajs.=sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)).$title;
+	    }
 	  $a="<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
 	}
       }
@@ -4906,14 +4998,16 @@ create unique index i_docir on doc(initid, revision);";
 		$link=$this->urlWhatEncode( $oattr->link, $kvalue);
 		if ($link) $thval[]='<a target="'.$dtarget.'" href="'.$link.'">'.$this->getHTMLTitle($vv).'</a>';
 		else $thval[]=$this->getHTMLTitle($vv);
-	      } else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink);
+	      } else $thval[]=$this->getDocAnchor(trim($vv),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"),true);
 	    }
 	    if ($oattr->link) $htmllink=false;
 	    $htmlval=implode("<br/>",$thval);
 	  } else {
 	    if ($avalue=="") $htmlval = $avalue;
 	    elseif ($oattr->link != "") $htmlval=$this->getHTMLTitle($avalue);
-	    else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"));
+	    else $htmlval = $this->getDocAnchor(trim($avalue),$dtarget,$htmllink,false,true,$oattr->getOption("docrev"),true);
+	    
+	   
 	  }
 	} else
 	  $htmlval=$avalue;
@@ -5848,10 +5942,9 @@ create unique index i_docir on doc(initid, revision);";
       // only 3 properties for abstract mode
       $listattr = $this->GetAbstractAttributes();
     } else {
-      $listattr = $this->GetNormalAttributes($onlyopt);
+      $listattr = $this->GetNormalAttributes($onlyopt);    
     }
-
-
+    
     $nattr = count($listattr); // attributes list count
 
 
@@ -6230,11 +6323,17 @@ create unique index i_docir on doc(initid, revision);";
     $owner = new User("", abs($this->owner));
     $this->lay->Set("username", $owner->firstname." ".$owner->lastname);
     $this->lay->Set("userid", $owner->fid);
+    $this->lay->Set("lockedby", $this->lay->get("locked"));
+    
+      $this->lay->Set("lockdomain",'');
     if ($this->locked== -1) {
       $this->lay->Set("lockedid",false);
     } else {
       $user = new User("", abs($this->locked));
       // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
+      if ($this->lockdomainid) {
+        $this->lay->Set("lockdomain", sprintf(_("in domain %s"), $this->getDocAnchor($this->lockdomainid,'_blank',true,'',false,true,true)));
+      }
       $this->lay->Set("lockedid", $user->fid);
     }
     $state=$this->getState();
@@ -6260,37 +6359,47 @@ create unique index i_docir on doc(initid, revision);";
       $this->lay->Set("revdate", strftime ("%x %T",$this->revdate));
     }
     $this->lay->Set("version", $this->version);
-
-    $this->lay->Set("profid", abs($this->profid));
-    if ((abs($this->profid) > 0) && ($this->profid != $this->id)) {
-      $pdoc = new_Doc($this->dbaccess, abs($this->profid));
-      $this->lay->Set("profile", $pdoc->title);
-    } else {
-      if ($this->profid == 0)
-	$this->lay->Set("profile", _("no access control"));
-      else {
-	if ($this->dprofid==0) $this->lay->Set("profile", _("specific control"));
-	else {
-
-	  $this->lay->Set("profile", _("dynamic control"));
-	  $this->lay->Set("profid", abs($this->dprofid));
-	}
-      }
-    }
-    if ($this->cvid == 0) {
-      $this->lay->Set("cview", _("no view control"));
-    } else {
-      $cvdoc= new_Doc($this->dbaccess, $this->cvid);
-      $this->lay->Set("cview", $cvdoc->title);
-    }
-    if ($this->prelid == 0) {
-      $this->lay->Set("prel", _("no folder"));
-    } else {
-      $cvdoc= new_Doc($this->dbaccess, $this->prelid);
-      $this->lay->Set("prel", $cvdoc->title);
-    }
-    if ($this->allocated == 0) {
-      $this->lay->Set("allocate", _("no allocate"));
+        
+        if ((abs($this->profid) > 0) && ($this->profid != $this->id)) {
+            
+            $this->lay->Set("profile", $this->getDocAnchor(abs($this->profid), '_blank', true, '', false, 'latest', true));
+        
+        } else {
+            if ($this->profid == 0) {
+                $this->lay->Set("profile", _("no access control"));
+            } else {
+                if ($this->dprofid == 0) {
+                    
+                    $this->lay->Set("profile", $this->getDocAnchor(abs($this->profid), '_blank', true, _("specific control"), false, 'latest', true));
+                
+                } else {
+                    $this->lay->Set("profile", $this->getDocAnchor(abs($this->dprofid), '_blank', true, _("dynamic control"), false,'latest', true));
+                }
+            }
+        }
+        if ($this->cvid == 0) {
+            $this->lay->Set("cview", _("no view control"));
+        } else {
+            $this->lay->Set("cview", $this->getDocAnchor($this->cvid, '_blank', true, '', false, 'latest', true));
+        }
+        if ($this->prelid == 0) {
+            $this->lay->Set("prel", _("no folder"));
+        } else {
+            
+            $this->lay->Set("prel", $this->getDocAnchor($this->prelid, '_blank', true, '', false, 'latest', true));
+            $fldids = $this->getParentFolderIds();
+            
+            foreach ( $fldids as $fldid ) {
+                if ($fldid != $this->prelid) {
+                    $tfld[] = array(
+                        "fld" => $this->getDocAnchor($fldid, '_blank', true, '', false, 'latest', true)
+                    );
+                }
+            }
+            $this->lay->setBlockData("FOLDERS", $tfld);
+        }
+        if ($this->allocated == 0) {
+      $this->lay->Set("allocate", _("no allocate"));      
       $this->lay->Set("allocateid", false);
     } else {
       $user = new User("", ($this->allocated));
@@ -6468,7 +6577,7 @@ create unique index i_docir on doc(initid, revision);";
 	 */
 	function setLogicalIdentificator($name) {
 		if ($name) {
-			if (!preg_match("/^[A-Z][0-9A-Z:_-]*$/i", $name)) {
+			if (!preg_match("/^[A-Z]/i", $name)) {
 				return(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]"), $name));
 			}
 			elseif (!$this->isAffected()) {
@@ -7375,23 +7484,29 @@ create unique index i_docir on doc(initid, revision);";
       if (! $doc->isAffected()) $this->deleteValue($nameId);
     }
   }
-
-
-  /**
-   * get image emblem for the doc like lock/nowrite
-   * @return string the url of the image
-   */
-  function getEmblem() {
-    global $action;
-    if ($this->confidential >0) return  $action->getImageUrl("confidential.gif");
-    else if ($this->locked == -1) return  $action->getImageUrl("revised.png");
-    else if ($this->allocated == $this->userid) return $action->getImageUrl("clef3.gif");
-    else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("clef1.gif");
-    else if ($this->locked != 0) return $action->getImageUrl("clef2.gif");
-    else if ($this->archiveid != 0) return $action->getImageUrl("archive.png");
-    else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png");
-    else return $action->getImageUrl("1x1.gif");
-  }
+    
+    /**
+     * get image emblem for the doc like lock/nowrite
+     * @return string the url of the image
+     */
+    function getEmblem($size=null)
+    {
+        global $action;
+        if ($this->confidential > 0) return $action->getImageUrl("confidential.gif",true, $size);
+        else if ($this->locked == -1) return $action->getImageUrl("revised.png",true, $size);
+        else if ($this->lockdomainid > 0) {
+            if ($this->locked > 0) {
+                if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockorange.png",true, $size);
+                else return $action->getImageUrl("lockred.png",true, $size);
+            } else
+                return $action->getImageUrl("lockorange.png",true, $size);
+        } else if ($this->allocated == $this->userid) return $action->getImageUrl("lockblue.png",true, $size);
+        else if ((abs($this->locked) == $this->userid)) return $action->getImageUrl("lockgreen.png",true, $size);
+        else if ($this->locked != 0) return $action->getImageUrl("lockred.png",true, $size);
+        else if ($this->archiveid != 0) return $action->getImageUrl("archive.png",true, $size);
+        else if ($this->control("edit") != "") return $action->getImageUrl("nowrite.png",true, $size);
+        else return $action->getImageUrl("1x1.gif");
+    }
 
   /**
    * use only for paramRefresh in attribute definition of a family
@@ -7790,7 +7905,112 @@ create unique index i_docir on doc(initid, revision);";
     if (is_array($l))  return $l;
     return array();
   }
+    /**
+     * get all domains where document is attached by current user
+     * @param boolean $user is set to false list all domains (independant of current user)
+     * @param boolean $folderName is set to true append also folder name
+     * @return array id
+     */
+    public function getDomainIds($user=true, $folderName=false)
+    {
+        if (file_exists("OFFLINE/Class.DomainManager.php")) {
+            include_once("FDL/Class.SearchDoc.php");
+            $s = new searchDoc($this->dbaccess, "OFFLINEFOLDER");
+            $s->join("id = fld(dirid)");
+            $s->addFilter("fld.childid = %d", $this->initid);
+            $uid=$this->getUserId();
+            if ($user) $s->addFilter("off_user = '%d' or off_user is null", $uid);
+            $s->noViewControl();
+            $t=$s->search();
+            $ids=array();
+            foreach ($t as $v) {
+                $ids[]=$v['off_domain'];
+                if ($folderName && ((!$user)||($v['off_user']==$uid))) {
+                    $ids[]=$v["name"];
+                    
+                }
+            }
+            return array_unique($ids);
+        }
+        return null;
+    }
+    
+    /**
+     * attach lock to specific domain.
+     * @param int $domainId domain identificator
+     * @return string error message
+     */
+    public function lockToDomain($domainId, $userid='')
+    {
+        $err='';
+        if (! $userid) $userid=$this->userid;
+        if ($this->locked != $userid) {
+          $err=$this->lock(false,$userid);
+        }
+        if ((!$err) && ($this->locked == $userid)) {
+            $this->lockdomainid = $domainId;
+            $err=$this->modify(true, array(
+                "lockdomainid"
+            ), true);
+        }
+        return $err;
+    }
+    /**
+     * return folder where document is set into
+     * @return array of folder identificators
+     */
+    public function getParentFolderIds()
+    {
+        $fldids=array();
+        $err = simpleQuery($this->dbaccess, sprintf("select dirid from fld where qtype='S' and childid=%d", $this->initid), $fldids, true, false);
+        return $fldids;
+    }
+    /**
+     * update Domain list
+     */
+    public function updateDomains()
+    {
+        $domains = $this->getDomainIds(false, true);
+        //delete domain lock if is not in the list
+         $this->domainid = trim($this->_array2val($domains));
+        if ($this->lockdomainid) {
+            if (!in_array($this->lockdomainid, $domains)) $this->lockdomainid = '';
+            else {
+                if ($this->locked > 0) {
+                    $err = simpleQuery($this->dbaccess, sprintf("select login from users where id=%d", $this->locked), $lockLogin, true, true);
+                    
+                    if ($lockLogin && (!$this->isInDomain(true, $lockLogin))) {
+                        $this->lockdomainid = '';
+                    }
+                }
+            }
+        }
+       
+        $this->modify(true, array(
+            "domainid",
+            "lockdomainid"
+        ), true);
+    }
 
+    /**
+     * verify is doc is set in a domain
+     * @param boolean $user limit domains where user as set document
+     * @param string $login another login else current user
+     */
+    public function isInDomain($user=true, $login='')
+    {
+        if ($user) {
+            global $action;
+            if (! $login) $login=$action->user->login;
+            if (preg_match('/_'.$login.'$/m', $this->domainid)) return true;
+            return false;
+        } else {
+            return (!empty($this->domainid ));
+        }
+    }
+    
+  
+  
   /**
    * Parse a zone string "FOO:BAR[-1]:B:PDF?k1=v1,k2=v2" into an array:
    *

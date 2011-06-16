@@ -37,7 +37,7 @@ Class [docNameIndirect] extends [RedirectDocParent] {
    [METHODS2]
 }
      [ENDBLOCK INDIRECT]
-Class Doc[docid] extends [DocParent] {
+Class _[PHPclassName] extends [DocParent] {
    //  family : [title]
 
    public $dbtable="doc[docid]";
@@ -128,7 +128,7 @@ Class Doc[docid] extends [DocParent] {
 
      [BLOCK CLASSALIAS]
 // alias name for the class
-Class _[PHPclassName] extends Doc[docid] {
+Class Doc[docid] extends  _[PHPclassName]{
 }
      [ENDBLOCK CLASSALIAS]
 

@@ -223,6 +223,18 @@ function setToDefaultGroup() {
   return $err;
 }
 
+function postCreated() {
+  $err = "";
+  global $action;
+  $ed = $action->getParam("AUTHENT_ACCOUNTEXPIREDELAY");
+  if ( $ed>0 ) {
+    $expdate = time() + ($ed*24*3600); 
+    $err = $this->SetValue("us_accexpiredate",strftime("%d/%m/%Y 00:00:00",$expdate));
+    if ($err=='') $err = $this->modify(true, array("us_accexpiredate"), true);
+  }
+  return $err;
+}
+
 /**
  * Modify IUSER via Freedom    
  */
@@ -535,6 +547,91 @@ function setPassword($password) {
   }
 
   return "";
+}
+/**
+ * Increase login failure count
+ */
+function increaseLoginFailure() {
+  if (!$this->canExecute(FUSERS,FUSERS_IUSER)) return "";
+  if ($this->getValue("us_whatid")==1) return ""; // it makes non sense for admin
+  $this->disableEditControl();
+  $lf = $this->getValue("us_loginfailure",0) + 1;
+  $err = $this->SetValue("us_loginfailure",$lf);
+  if( $err=="") {
+    $err = $this->modify(true, array("us_loginfailure"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
+
+/**
+ * Reset login failure count
+ */
+function resetLoginFailure() {
+  if ($this->getValue("us_whatid")==1) return ""; // it makes non sense for admin
+  $this->disableEditControl();
+  $err = $this->SetValue("us_loginfailure",0);
+  if( $err=="") {
+    $err = $this->modify(true, array("us_loginfailure"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
+
+function canResetLoginFailure() {
+  if ($this->getValue("us_whatid")==1) return false; // it makes non sense for admin
+  return ($this->getValue("us_loginfailure")>0?true:false);
+}
+
+/**
+ * Manage account security
+ */
+function isAccountActive() {
+  if ($this->getValue("us_whatid")==1) return false; // it makes non sense for admin
+  return ($this->getValue("us_status",'A')=='A');
+}
+function activateAccount() {
+  if (!$this->canExecute(FUSERS,FUSERS_IUSER)) return "";
+  if ($this->getValue("us_whatid")==1) return "";
+  $this->disableEditControl();
+  $err = $this->SetValue("us_status",'A');
+  if( $err=="") {
+    $err = $this->modify(true, array("us_status"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
+function isAccountInactive() {
+  if ($this->getValue("us_whatid")==1) return false; // it makes non sense for admin
+  return ($this->getValue("us_status",'A')!='A');
+}
+function desactivateAccount() {
+  if (!$this->canExecute(FUSERS,FUSERS_IUSER)) return "";
+  if ($this->getValue("us_whatid")==1) return "";
+  $this->disableEditControl();
+  $err = $this->SetValue("us_status",'D');
+  if( $err=="") {
+    $err = $this->modify(true, array("us_status"), true);
+  }
+  $this->enableEditControl();
+  return "";
+}
+function accountHasExpired() {
+  if ($this->getValue("us_whatid")==1) return false;
+    $expd=$this->GetValue("us_accexpiredate");
+    //convert date 
+    $expires=0;
+    if ($expd != "") {
+      if (preg_match("|([0-9][0-9])/([0-9][0-9])/(2[0-9][0-9][0-9])|", 
+	       $expd, $reg)) {   
+	$expires=mktime(0,0,0,$reg[2],$reg[1],$reg[3]);
+      } else  if (preg_match("|(2[0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9]|", 
+	       $expd, $reg)) {   
+	$expires=mktime(0,0,0,$reg[2],$reg[3],$reg[1]);
+      }
+      return ($expires<=time());
+    }
+    return false;
 }
      /**
         * @begin-method-ignore
