@@ -639,7 +639,7 @@ Fdl.Context.prototype.stringToFunction = function(str) {
 				orderBy : 'title desc'
 			}
 		});
-		if (d.isAlive()) {
+		if (d && d.isAlive()) {
 			var dl = d.getStoredContent(); // document list object			
 			var p = dl.getDocuments();  // array of Fdl.Documents   
  *            </code></pre>
@@ -825,7 +825,7 @@ Fdl.Context.prototype.getHomeFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._homeFolder = h;
 			return h;
 		}
@@ -835,7 +835,7 @@ Fdl.Context.prototype.getHomeFolder = function(config) {
 /**
  * get desktop folder of current user
  * 
- * @return {Fdl.Collection} the home folder, null is no home
+ * @return {Fdl.Collection} the home folder, null is no desktop folder
  */
 Fdl.Context.prototype.getDesktopFolder = function(config) {
 	if (this._desktopFolder)
@@ -846,7 +846,7 @@ Fdl.Context.prototype.getDesktopFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._desktopFolder = h;
 			return h;
 		}
@@ -856,7 +856,7 @@ Fdl.Context.prototype.getDesktopFolder = function(config) {
 /**
  * get offline folder of current user
  * 
- * @return {Fdl.Collection} the home folder, null is no home
+ * @return {Fdl.Collection} the home folder, null is no offline folder
  */
 Fdl.Context.prototype.getOfflineFolder = function(config) {
 	if (this._offlineFolder)
@@ -867,7 +867,7 @@ Fdl.Context.prototype.getOfflineFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._offlineFolder = h;
 			return h;
 		}
@@ -888,7 +888,7 @@ Fdl.Context.prototype.getBasketFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._basketFolder = h;
 			return h;
 		} else {

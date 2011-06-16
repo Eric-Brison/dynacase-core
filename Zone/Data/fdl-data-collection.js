@@ -533,7 +533,7 @@ Fdl.getHomeFolder = function() {
   if (u != null && u.id) {
     var idhome='FLDHOME_'+u.id;
     var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) return h;
+    if (h && h.isAlive()) return h;
   }
   return null;
 };
@@ -544,7 +544,7 @@ Fdl.getDesktopFolder = function() {
   if (u != null && u.id) {
     var idhome='FLDDESKTOP_'+u.id;
     var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) {
+    if (h && h.isAlive()) {
       Fdl._desktopFolder=h;
       return h;
     }
@@ -558,7 +558,7 @@ Fdl.getOfflineFolder = function() {
   if (u != null && u.id) {
     var idhome='FLDOFFLINE_'+u.id;
     var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) {
+    if (h && h.isAlive()) {
       Fdl._offlineFolder=h;
       return h;
     }
