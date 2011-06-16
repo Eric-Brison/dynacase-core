@@ -18,12 +18,14 @@ include_once("FDL/Class.Doc.php");
 Class Fdl_Document  {
 
     protected $doc;
-    function __construct($id=0, $config=null) {
+    public $dbaccess;
+    function __construct($id=0, $config=null, Doc &$doc=null) {
         $this->dbaccess=getParam("FREEDOM_DB");
         if (isset($config->latest)) $latest=$config->latest;
         else $latest=true;
-        if ($id) {
-            $this->doc=new_doc($this->dbaccess, $id,$latest);
+        if ($id ||-$doc ) {
+            if ($doc) $this->doc=$doc;
+            else $this->doc=new_doc($this->dbaccess, $id,$latest);
             if (! $this->doc->isAffected()) $this->error=sprintf(_("document %s not exist"),$id);
             if (! $this->error) {
             	// no control families if structure is required
@@ -94,10 +96,12 @@ Class Fdl_Document  {
                 }
             } else {
                 $nattr = $this->doc->getNormalAttributes();
-                foreach($nattr as $k=>$v) {
+                $this->doc->applyMask();
+                $isoDate=(getParam("DATA_LCDATE")=='iso');
+                foreach ($nattr as $k=>$v) {
                     if ($v->mvisibility!="I" && $this->doc->$k) {
                         if ($v->inArray() || ($v->getOption("multiple")=="yes")) $lvalues[$v->id] = $this->doc->GetTValue($v->id);
-                        else $lvalues[$v->id] = $this->doc->GetValue($v->id);
+                        else $lvalues[$v->id] = $this->doc->getValue($v->id);
                         
                         if (($v->type=="docid") && ($v->visibility!='H') && ($v->getOption("doctitle")!="auto")) {
                             $lvalues[$v->id."_title"]=$this->doc->getTitle($this->doc->getValue($v->id));
@@ -105,7 +109,14 @@ Class Fdl_Document  {
                         } elseif (($v->type=="thesaurus")) {
                             $lvalues[$v->id."_title"]=$this->doc->getTitle($this->doc->getValue($v->id));
                             if ($v->inArray() || ($v->getOption("multiple")=="yes"))  $lvalues[$v->id."_title"]=$this->doc->_val2array($lvalues[$v->id."_title"]);
-                        } 
+                        } elseif ($isoDate && ($v->type=='date' || $v->type=='timestamp')) {
+                            if (is_array($lvalues[$v->id])) {
+                                foreach ($lvalues[$v->id] as $kd=>$vd) {
+                                   $lvalues[$v->id][$kd]=FrenchDateToIso($vd,false);
+                                }
+                            }
+                            else $lvalues[$v->id]=FrenchDateToIso($lvalues[$v->id],false);
+                        }
                     }
                 }
             }
@@ -199,7 +210,8 @@ Class Fdl_Document  {
             if ($props['id'] > 0) {
                 $props["mdate"]=strftime("%d/%m/%Y %H:%M:%S",$this->doc->revdate);
                 $props["readonly"]=($this->doc->canEdit()!="");
-
+                
+                $props["lockdomainid"] = intval($this->doc->lockdomainid);
                 // numeric values
                 if ($props["postitid"]) $props["postitid"]=$this->doc->_val2array($props["postitid"]);
                 else $props["postitid"]=array();
@@ -216,6 +228,13 @@ Class Fdl_Document  {
                 $props["fromid"]=intval($props["fromid"]);
                 $props["allocated"]=intval($props["allocated"]);
                 $props["owner"]=intval($props["owner"]);
+                if ($props["domainid"]) $props["domainid"]=$this->doc->_val2array($props["domainid"]);
+                else $props["domainid"]=array();
+                if (getParam("DATA_LCDATE")=="iso") {
+                $props["cdate"]=FrenchDateToIso($props["cdate"],false);
+                $props["mdate"]=FrenchDateToIso($props["mdate"],false);
+                $props["adate"]=FrenchDateToIso($props["adate"],false);
+                }
 
 
 
@@ -315,9 +334,10 @@ Class Fdl_Document  {
     function getAttributes() {
         $attrs=null;
         if ($this->doc) {
+           
             $props=array();
             $listattr = $this->doc->getAttributes();
-
+           
             foreach($listattr as $k=>$oa) {
                 if ($oa && ($oa->id != 'FIELD_HIDDENS')&& ($oa->usefor != "Q")) {
                     foreach ($oa as $aid=>$v) {
@@ -332,10 +352,12 @@ Class Fdl_Document  {
                         } elseif (! is_object($v)) $attrs[$oa->id][$aid]=$v;
                         else if ($aid=="fieldSet") if ($v->id != 'FIELD_HIDDENS') $attrs[$oa->id]["parentId"]=$v->id; else $attrs[$oa->id]["parentId"]=null;
                     }
+                    $attrs[$oa->id]['labelText']=$oa->getLabel();
                 }
                 if ($oa->type=="enum") {
                     $attrs[$oa->id]["enumerate"]=$oa->getEnum();
                 }
+                
 
             }
 
@@ -366,7 +388,7 @@ Class Fdl_Document  {
 	       "properties"=>$this->getProperties($completeprop,$infoprop),
 	       "configuration"=>$this->getConfiguration($completeprop),
 	       "security"=>$this->getSecurity(),
-	       "requestDate"=>microtime(true),
+	       "requestDate"=>date('Y-m-d H:i:s'),
 	       "values"=>$this->getValues());
 
         if ($completeprop) {
@@ -375,7 +397,8 @@ Class Fdl_Document  {
         if ($usertags) {
             $out["userTags"]=$this->getUserTags();
         }
-        if (! $onlyvalues) {
+        
+        if (! $onlyvalues) {            
             $out["attributes"]=$this->getAttributes();
         }
         return $out;

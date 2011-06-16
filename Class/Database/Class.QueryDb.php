@@ -156,6 +156,7 @@ function QueryDb ($dbaccess,$class)
   *        LISTC : means a table of completed objects
   *        TABLE : means a table of table fields
   *        ITEM  : means a ressource to step by step use table field rows
+  *        ITER  : return class DbObjectList
   */
  function Query($start=0,$slice=0,$res_type="LIST",$p_query="")  {
       
@@ -163,6 +164,16 @@ function QueryDb ($dbaccess,$class)
    $this->res_type=$res_type;	
    $err = $this->basic_elem->exec_query($query);
    //	print "$query $res_type $p_query<BR>\n";
+   
+ 
+   if ($res_type == "ITER") {
+       if ($err) {
+           throw new Exception("query fail : ".$err);
+       }
+       include_once("Class.DbObjectList.php");
+       return new DbObjectList($this->dbaccess, $this->basic_elem->res, $this->class);
+   }
+   
    if ($err != "") return($err);      
 
    $this->nb = $this->basic_elem->numrows();    
@@ -173,7 +184,7 @@ function QueryDb ($dbaccess,$class)
    if ($res_type == "ITEM") {
      $this->cindex=0; // current index row
      return $this->basic_elem->res;
-   }
+   } 
    if ($start >= $this->nb) {$start=0;}
    if ($slice == 0) {$slice = $this->nb;}
 

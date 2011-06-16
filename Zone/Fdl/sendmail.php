@@ -356,7 +356,7 @@ function createSentMessage($to,$from,$cc,$bcc,$subject,&$mimemail,&$doc=null) {
 			$multipart = $partList[$i];
 			array_splice($partList, $i, 1);
 			foreach( $multipart->_subparts as &$part ) {
-				array_push($partList, &$part);
+				$partList[] = &$part;
 			}
 			unset($part);
 		}

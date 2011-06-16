@@ -47,7 +47,7 @@ function user(&$action) {
 	$auth = new htmlAuthenticator(getAuthType(),'freedom') ;
 	$_POST[$auth->parms{'username'}]=$login;
 	$_POST[$auth->parms{'password'}]=$password;
-	if (! $auth->checkAuthentication()) {
+	if ($auth->checkAuthentication() != Authenticator::AUTH_OK) {
 	  $out->error=sprintf(_("authentication failed"));
 	} else {	  
 	  $ou=new Fdl_User($u);    
@@ -60,7 +60,6 @@ function user(&$action) {
     default:
       $out->error=sprintf(_("method %s not defined"),$method);
     }
-  
   
 
   $action->lay->template=json_encode($out);  

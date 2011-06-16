@@ -4,7 +4,7 @@
  *
  * @author Anakeen 2000 
  * @version $Id: Class.Log.php,v 1.15 2008/10/31 16:57:18 jerome Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
  * @package WHAT
  * @subpackage CORE
  */
@@ -97,16 +97,16 @@ function pop() {
 }
 
 // ------------------------------------------------------------------------
-function wlog($sta, $str, $args=NULL) {
+function wlog($sta, $str, $args=NULL, $facility=LOG_LOCAL6) {
 
   global $_SERVER; 
   global  $CORE_LOGLEVEL;
 
   if (! $str) return;
   if (is_array($str)) $str=implode(", ",$str);
-  if (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta))) {
+  if ($sta=="S" || (isset($CORE_LOGLEVEL) && is_int(strpos($CORE_LOGLEVEL, $sta)))) {
     $addr=$_SERVER["REMOTE_ADDR"];
-    $appf = "[{$sta}] What";
+    $appf = "[{$sta}] Dynacase";
     $appf .= ($this->application!=""?":".$this->application:"");
     $appf .= ($this->function!=""?":".$this->function:"");
     $str=' '.$this->loghead.': '.$str;
@@ -119,7 +119,7 @@ function wlog($sta, $str, $args=NULL) {
     } else {
       switch($sta) {
       case "D" :
-	$pri = LOG_NOTICE;
+	$pri = LOG_DEBUG;
 	break;
       case "I" :
 	$pri = LOG_INFO;
@@ -139,7 +139,7 @@ function wlog($sta, $str, $args=NULL) {
       if ($_SERVER['HTTP_HOST'] == "") {
 	error_log(sprintf("%s LOG::$appf %s",date("d/m/Y H:i:s",time()),$str));
       } 
-      openlog("{$appf}", 0, LOG_LOCAL6);
+      openlog("{$appf}", 0, $facility);
       syslog($pri, "[{$addr}] ".$str);
       closelog();
 
