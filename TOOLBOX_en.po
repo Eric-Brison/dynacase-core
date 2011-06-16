@@ -261,8 +261,16 @@ msgid ""
 "Must precise request with appname arguments\n"
 msgstr ""
 
+
+msgid "domain locked"
+msgstr ""
+
+msgid "locked"
+msgstr ""
+
 msgid "short_name"
 msgstr "Short Name"
+
 
 #, c-format
 msgid "file for %s not found."
@@ -486,8 +494,6 @@ msgstr ""
 msgid "Udm_Find Error : "
 msgstr ""
 
-msgid "locked"
-msgstr ""
 
 msgid "fixed"
 msgstr ""
@@ -1627,12 +1633,6 @@ msgstr "Delete"
 msgid "typeview"
 msgstr ""
 
-#, fuzzy, c-format
-msgid "Change state %s"
-msgstr "Category"
-
-msgid "chgstates"
-msgstr "Change state"
 
 #, c-format
 msgid "Sure %s ?"
@@ -1765,9 +1765,6 @@ msgstr "Delete"
 msgid "File:: failed"
 msgstr "Update Title Cards"
 
-#, fuzzy
-msgid "no label"
-msgstr "Email"
 
 #, c-format
 msgid "unknown attribute %s"
@@ -2711,8 +2708,13 @@ msgstr ""
 msgid "default style"
 msgstr ""
 
-msgid "font size"
+
+
+
+
+msgid "Offline menu"
 msgstr ""
+
 
 msgid "connection type"
 msgstr ""
@@ -2729,8 +2731,42 @@ msgstr ""
 msgid "background image for menu"
 msgstr ""
 
-msgid "background color for table cells"
+
+msgid "chgstates"
+msgstr "Change state"
+
+#, c-format
+msgid "Domain %s"
 msgstr ""
+
+msgid "Book in my space"
+msgstr ""
+
+msgid "book the document to modify it with offline application"
+msgstr ""
+
+msgid "Set in my space to read it"
+msgstr ""
+
+msgid "insert the document to see it with offline application"
+msgstr ""
+
+msgid "remove from my space"
+msgstr ""
+
+msgid "remove the document from my space"
+msgstr ""
+
+msgid "view my space"
+msgstr ""
+
+msgid "access to documents of my space"
+msgstr ""
+
+#, fuzzy
+msgid "no label"
+msgstr "Email"
+
 
 msgid "second background color"
 msgstr ""
@@ -4513,9 +4549,7 @@ msgstr "Organisation"
 msgid "view"
 msgstr ""
 
-#, fuzzy
-msgid "send document"
-msgstr "Import"
+
 
 #, fuzzy
 msgid "send"
@@ -7093,7 +7127,10 @@ msgstr ""
 msgid "Formated data"
 msgstr ""
 
-msgid "XML data (Zip with one xml by document)"
+msgid "Xml schema"
+msgstr ""
+
+msgid "csv, ods, xml, zip (xml) supported import files"
 msgstr ""
 
 msgid "XML data (only one xml file)"
@@ -7231,11 +7268,7 @@ msgstr "Import"
 msgid "View Xml Schema"
 msgstr ""
 
-msgid "Xml schema"
-msgstr ""
 
-msgid "csv, ods, xml, zip (xml) supported import files"
-msgstr ""
 
 msgid "policy if same title"
 msgstr ""
@@ -7733,8 +7766,21 @@ msgstr "Category"
 msgid "Only one line by personn is authorized"
 msgstr ""
 
+
+msgid "prop_lockdomainid"
+msgstr ""
+
+msgid "prop_domainid"
+msgstr ""
+
 msgid "other sites"
 msgstr ""
+"<p>You new password is now:</p>\n"
+"<pre>\n"
+"[PASSWORD]\n"
+"</pre>\n"
+"<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a></"
+"p>"
 
 #, fuzzy
 msgid "choose colums"
@@ -7756,6 +7802,11 @@ msgstr "Dynacase address book"
 #, fuzzy
 msgid "Choose in icon list"
 msgstr "Title"
+
+
+msgid "cannot update inconsistent document"
+msgstr ""
+
 
 msgid "Or upload a new icon"
 msgstr ""
@@ -7817,6 +7868,10 @@ msgstr ""
 msgid "Log:Code"
 msgstr ""
 
+msgid "save document"
+msgstr ""
+
+
 msgid "Last History"
 msgstr ""
 
@@ -7834,6 +7889,7 @@ msgstr ""
 
 msgid "Cannot do this action. The function of parent window is not found"
 msgstr ""
+
 
 #, fuzzy
 msgid "option: "
@@ -8369,8 +8425,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-msgid "list"
-msgstr ""
+
 
 #, fuzzy
 msgid "detail"
@@ -8691,6 +8746,9 @@ msgstr "Edit"
 msgid "todate"
 msgstr "Identity"
 
+msgid "waiting : document not set"
+msgstr ""
+
 msgid "mini view"
 msgstr ""
 
@@ -8759,8 +8817,6 @@ msgstr ""
 msgid "Modify acls for familly"
 msgstr ""
 
-msgid " No privilege to change acl for familly access"
-msgstr ""
 
 msgid "No acl for family"
 msgstr ""

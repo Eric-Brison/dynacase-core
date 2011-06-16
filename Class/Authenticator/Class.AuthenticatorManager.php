@@ -26,7 +26,7 @@ abstract class AuthenticatorManager {
   public static $auth = null;
   public static $provider_errno = 0;
 
-  public static function checkAccess($authtype=null) {
+  public static function checkAccess($authtype=null, $noask=false) {
     $error = 0;
     self::$provider_errno = 0;
     if ($authtype==null) $authtype = getAuthType();
@@ -47,8 +47,12 @@ abstract class AuthenticatorManager {
       self::$auth = new $authClass($authtype, $authProvider);
       $status = self::$auth->checkAuthentication();
       if( $status === Authenticator::AUTH_ASK ) {
+          if ($noask) {
+              return 1;
+          } else {
         self::$auth->askAuthentication();
         exit(0);
+          }
       }
       if( $status === Authenticator::AUTH_OK ) {
         break;

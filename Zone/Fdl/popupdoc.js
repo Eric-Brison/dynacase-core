@@ -121,6 +121,7 @@ function menuSend(event,menuurl,cible,coord) {
 	//	clipboardWait(cible);
 	return true;
     }    
+    return false;
 }
 
 function viewmenu(event,murl,source,coord) {

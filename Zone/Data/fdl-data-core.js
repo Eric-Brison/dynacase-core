@@ -8,13 +8,15 @@
  * @class Fdl
  * @singleton
  */
-if (!("console" in window)) {
+
+if (typeof window != 'undefined') {
+if ((!("console" in window))) {
 	window.console = {
 		'log' : function(s) {
 		}
 	};
 }; // to debug
-
+}
 var Fdl = {
 	version : "0.1",
 	_isAuthenticate : null,
@@ -101,6 +103,33 @@ Fdl.getCookie = function(c_name) {
 	}
 	return "";
 };
+
+/**
+ * @param string isodate date to format YYYY-MM-DD HH:MM:SS
+ * @param string fmt return format like %d/%m/%Y
+ * @return string
+ */
+
+Fdl.formatDate = function (isodate, fmt) {
+	if (isodate && fmt) {
+		var year=isodate.substring(0,4);
+		var month=isodate.substring(5,7);
+		var day=isodate.substring(8,10);
+		var hour=isodate.substring(11,13);
+		var minute=isodate.substring(14,16);
+		var second=isodate.substring(17,19);
+
+		var r=fmt;
+		r=r.replace('%d',day);
+		r=r.replace('%m',month);
+		r=r.replace('%Y',year);
+		r=r.replace('%H',hour);
+		r=r.replace('%M',minute);
+		r=r.replace('%S',second);
+		return r;
+	}
+	return '';
+}
 /**
  * @deprecated
  */
@@ -178,17 +207,21 @@ Fdl.getLastErrorMessage = function() {
 Fdl.retrieveData = function(urldata, parameters, anonymousmode) {
 	var bsend = '';
 	var ANAKEENBOUNDARY = '--------Anakeen www.anakeen.com 2009';
-	var xreq;
+	
 	/*
 	 * if ((!anonymousmode) && ! Fdl.isAuthenticated()) { alert('not
 	 * authenticate'); return null; }
 	 */
-
-	if (window.XMLHttpRequest) {
-		var xreq = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		// branch for IE/Windows ActiveX version
-		var xreq = new ActiveXObject("Microsoft.XMLHTTP");
+	var xreq=null;
+	if (typeof window != 'undefined') {
+		if (window.XMLHttpRequest) {
+			xreq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			// branch for IE/Windows ActiveX version
+			xreq = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	} else {
+		xreq = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 	}
 	var sync = true;
 
@@ -262,7 +295,7 @@ Fdl.retrieveData = function(urldata, parameters, anonymousmode) {
 Fdl.isConnected = function(config) {
 	if (config && config.reset)
 		this._isConnected = null;
-	if (this._isConnected === null && this.context && this.context.url) {
+	if (this._isConnected === null && (typeof this.context == 'object') && this.context.url) {
 		var data = Fdl.retrieveData( {
 			app : 'DATA',
 			action : 'USER',
@@ -454,8 +487,7 @@ Fdl.json2xml = function(json, node, childs) {
 Fdl.text2xml = function(strXML) {
 	var xmlDoc = null;
 	try {
-		xmlDoc = (document.all) ? new ActiveXObject("Microsoft.XMLDOM")
-				: new DOMParser();
+		xmlDoc = (document.all) ? new ActiveXObject("Microsoft.XMLDOM"): new DOMParser();
 		xmlDoc.async = false;
 	} catch (e) {
 		throw new Error("XML Parser could not be instantiated");

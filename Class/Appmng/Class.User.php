@@ -113,6 +113,24 @@ create sequence seq_id_users start 10";
       return TRUE;
     }
 
+    /**
+     * affect user from its document id
+     * 
+     * @param int $fid
+     */
+  function setFid($fid)
+    {
+      $query = new QueryDb($this->dbaccess,"User");
+      $query->AddQuery(sprintf("fid = %d", $fid));
+      $list = $query->Query(0,0,"TABLE");
+      if ($query->nb != 0) {
+	$this->Affect($list[0]);
+      } else {
+	return false;
+      }
+      return true;
+    }
+    
   function PreInsert()    {
     if ($this->Setlogin($this->login,$this->iddomain)) return "this login exists";                                            
     if ($this->login=="") return _("login must not be empty");                                          
@@ -205,16 +223,11 @@ create sequence seq_id_users start 10";
     $ugroups=$group->groups;
     $err=$group->Delete();
     if ($err == "") {
-      //remove MailAccount
-      if (@include_once("Class.MailAccount.php")) {
-	$mailaccount=new MailAccount("",$this->id);
-	$mailaccount-> Remove();
-      }
       if (usefreedomuser()) {
 	refreshGroups($ugroups,true);
       }
     }
-    $msg=$this->deleteWebCal();
+    
 
     global $action;
     $action->session->CloseUsers($this->id);
@@ -222,17 +235,7 @@ create sequence seq_id_users start 10";
     return $msg;
   }
 
-  function deleteWebCal() {
-    $a = new Application();
-    if ($a->Exists("CALENDAR")) {
-      $db="user=anakeen dbname=webcalendar";
-      $dbidc=pg_connect($db);
-      if ($dbidc) {
-	$rq=@pg_query ($dbidc, "delete  from webcal_user where wid=".$this->id);
-	return "webcal deleted".$this->id;
-      }
-    }
-  }
+
 
   function CheckLogin($login,$domain,$whatid)
     {
@@ -634,9 +637,51 @@ create sequence seq_id_users start 10";
     return $uid;
   }
 
- 
+  /**
+   * return all user members (recursive)
+   * @return array of user values ["login"=>, "id"=>, "fid"=>,...)
+   */
+  public function getUserMembers() {
+      $tr = array();
+
+      $g=new Group($this->dbaccess);
+      $lg=$g->getChildsGroupId($this->id);
+      $lg[]=$this->id;
+      $cond=getSqlCond($lg,"idgroup",true);
+      if (! $cond) $cond="true";
+
+      $condname="";
+       
+      $sort='lastname';
+      $sql=sprintf("SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and isgroup != 'Y' order by %s",
+                     $sort, $cond,$condname,$sort);
+
+      $err=simpleQuery($this->dbaccess,$sql,$result);
+      if ($err!="") return $err;
+      return $result;
+  }
   
 
+  /**
+   * verify if user is member of group (recursive)
+   * @return boolean
+   */
+  public function isMember($uid) {
+      $tr = array();
+
+      $g=new Group($this->dbaccess);
+      $lg=$g->getChildsGroupId($this->id);
+      $lg[]=$this->id;
+      $cond=getSqlCond($lg,"idgroup",true);
+      if (! $cond) $cond="true";
+
+      $sql=sprintf("select users.id from users, groups where %s and (groups.iduser=users.id) and users.id=%d and isgroup != 'Y'",
+                     $cond,$uid);
+
+      $err=simpleQuery($this->dbaccess,$sql,$result, true, true);
+ 
+      return ($result!='');
+  }
   // only use for group
   // get user member of group
   function getGroupUserList($qtype="LIST", $withgroup=false) {

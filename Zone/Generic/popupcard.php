@@ -40,7 +40,7 @@ function popupcard(&$action) {
 
   $clf = ($doc->CanLockFile() == "");
   $cuf = ($doc->CanUnLockFile() == "");
-  $cud = ($doc->CanUpdateDoc() == "");
+  $cud = ($doc->canEdit() == "");
 
 
   Popupactive('popupcard',$kdiv,'cancel');

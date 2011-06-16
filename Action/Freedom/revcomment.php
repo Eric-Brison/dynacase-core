@@ -31,7 +31,7 @@ function revcomment(&$action)
   $err= $doc -> lock(true); // auto lock
   if ($err != "")    $action-> ExitError($err);
   
-  $err = $doc->CanUpdateDoc();
+  $err = $doc->canEdit();
   if ($err != "") $action->ExitError($err);
   
 

@@ -54,7 +54,7 @@ function modprof(&$action) {
   
   
   // test object permission before modify values (no access control on values yet)
-  $err=$doc-> CanUpdateDoc();
+  $err=$doc-> canEdit();
   if ($err != "")    $action-> ExitError($err);
   
   if ($profid=="private") {

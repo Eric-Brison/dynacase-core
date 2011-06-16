@@ -44,7 +44,7 @@ function modattribute(&$action) {
   if (! $stayedit) {
     $err = $doc->unlock(true); // autounlock
 
-    if ($err=="") $action->AddActionDone("UNLOCKFILE",$doc->id);
+    if ($err=="") $action->AddActionDone("UNLOCKDOC",$doc->id);
   }
   $a=$doc->getAttribute($attrid);
   if (($value==="") && ($a->type != "file")&&($a->type != "image")&&($a->type != "password")) $value=DELVALUE;
@@ -54,7 +54,7 @@ function modattribute(&$action) {
 
     if ($err != "") {    
       // test object permission before modify values (no access control on values yet)
-      $err=$doc->CanUpdateDoc();
+      $err=$doc->canEdit();
     }
 
 

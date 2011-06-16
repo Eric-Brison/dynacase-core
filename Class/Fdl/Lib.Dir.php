@@ -725,9 +725,10 @@ function getChildDirId($dbaccess, $dirid) {
   
   $tdir=getChildDoc($dbaccess,$dirid,"0","ALL",array(),$userid,"TABLE",2);
 
-  while(list($k,$v) = each($tdir)) {
+  foreach($tdir as $k=>$v) {
     $tableid[] = $v["id"];
   }
+
   
   
   return($tableid);
@@ -759,7 +760,7 @@ function getRChildDirId($dbaccess, $dirid, $rchilds=array(), $level=0,$levelmax=
   $childs = getChildDirId($dbaccess, $dirid, true);
 
   if (count($childs) > 0) {
-    while(list($k,$v) = each($childs)) {
+    foreach($childs as $k=>$v) {
       if (!in_array($v,$rchilds)) {
 	$t = array_merge($rchilds, getRChildDirId($dbaccess,$v,$rchilds,$level+1,$levelmax));
 	if (is_array($t)) $rchilds = array_values(array_unique($t));

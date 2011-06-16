@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-05-30 16:21+0200\n"
-"PO-Revision-Date: 2011-05-30 16:44+0200\n"
+"PO-Revision-Date: 2011-06-15 16:09+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -220,9 +220,17 @@ msgstr "Inchangé"
 msgid "err_mod_parameter"
 msgstr "Impossible de modifier le param&egrave;tre"
 
+
+msgid "domain locked"
+msgstr "verrouillé dans un domaine"
+
+msgid "locked"
+msgstr "verrouillé"
+
 msgid "only user parameters can be modified with its action"
 msgstr ""
 "seul les paramêtres utilisateurs peuvent être modifiés avec cette action"
+
 
 msgid "only current user parameters can be modified with its action"
 msgstr ""
@@ -487,8 +495,6 @@ msgstr "connexion à la base de données mnogosearch impossible"
 msgid "Udm_Find Error : "
 msgstr "Udm_Find_Error : "
 
-msgid "locked"
-msgstr "verrouillé"
 
 msgid "fixed"
 msgstr "figé"
@@ -2576,6 +2582,9 @@ msgstr "les applications"
 msgid "delete parameters"
 msgstr "suppression de paramètres"
 
+msgid "Offline menu"
+msgstr "Offline"
+
 msgid "modify parameters"
 msgstr "modification des paramètres"
 
@@ -2606,8 +2615,39 @@ msgstr ""
 msgid "get a value for a set of document"
 msgstr ""
 
+
+#, c-format
+msgid "Domain %s"
+msgstr "Domaine %s"
+
+msgid "Book in my space"
+msgstr "Réserver dans mon espace"
+
+msgid "book the document to modify it with offline application"
+msgstr "réserver le document pour le modifier avec l'application offline"
+
+msgid "Set in my space to read it"
+msgstr "Mettre dans mon espace"
+
+msgid "insert the document to see it with offline application"
+msgstr "insérer le document pour le voir avec l'application offline"
+
+msgid "remove from my space"
+msgstr "Enlever de mon espace"
+
+msgid "remove the document from my space"
+msgstr "Enlever le document de mon espace"
+
+msgid "view my space"
+msgstr "Voir mon espace"
+
+msgid "access to documents of my space"
+msgstr "Accéder aux documents de mon espace"
+
+
 msgid "get all properties of document"
 msgstr ""
+
 
 msgid "set user parameter"
 msgstr ""
@@ -4303,9 +4343,17 @@ msgstr "ne peut envoyer le courriel %s avec le modèle %s :%s"
 msgid "cannot send mail %s"
 msgstr "ne peut envoyer le courriel %s"
 
+
+msgid "other folders"
+msgstr ""
+
+msgid "view constraints"
+msgstr "voir les contraintes"
+
 #, c-format
 msgid "php file %s needed for request not found"
 msgstr "le fichier PHP %s nécessaire à la requête n'a pas pu être trouvé"
+
 
 #, c-format
 msgid "no delay specified in timer %s [%d]"
@@ -4403,11 +4451,25 @@ msgstr "voir les droits"
 msgid "modifyacl"
 msgstr "modifier les droits"
 
+
+msgid "double-clic to update document"
+msgstr "double-cliquez pour mettre à jour le document"
+
+msgid "goto forum"
+msgstr "aller au forum"
+
+msgid "Inserted in a domain"
+msgstr ""
+
+msgid "View postit"
+msgstr "Voir le post-it"
+
 msgid "create doc"
 msgstr "Créer des documents de la famille"
 
 msgid "unlock"
 msgstr "déverrouiller"
+
 
 msgid "unlock unowner locked doc"
 msgstr "déverrouiller autres verrous"
@@ -6962,6 +7024,12 @@ msgstr "Voir les groupes"
 msgid "Max user reach. Use search filter"
 msgstr "Utiliser la recherche pour voir la suite"
 
+
+#, c-format
+msgid "conflict %s [%s]: referer=%s, modified=%s"
+msgstr "conflit %s [%s] : référence=%s, modification=%s"
+
+
 msgid "filter on login and lastname"
 msgstr "filtre sur le login et le nom"
 
@@ -7439,9 +7507,6 @@ msgstr ""
 msgid "option: "
 msgstr "option: "
 
-msgid "view constraints"
-msgstr "voir les contraintes"
-
 msgid "Constraints"
 msgstr "Contraintes"
 
@@ -7707,8 +7772,17 @@ msgstr ""
 msgid "warning_name"
 msgstr "la saisie de votre nom est obligatoire."
 
+
+msgid "prop_lockdomainid"
+msgstr ""
+
+msgid "prop_domainid"
+msgstr ""
+
+
 msgid "warning_pass"
 msgstr "la saisie de votre mot de passe est obligatoire."
+
 
 msgid "yourusername"
 msgstr "votre nom d'utilisateur"
@@ -7731,8 +7805,14 @@ msgstr "Affichage"
 msgid "eui:Grid display"
 msgstr "Grille"
 
+
+msgid "cannot update inconsistent document"
+msgstr ""
+
+
 msgid "eui:Tree display"
 msgstr "Arbre"
+
 
 msgid "eui:Icon display"
 msgstr "Icones"
@@ -7755,17 +7835,29 @@ msgstr "Verrouiller la sélection"
 msgid "eui:Cancel locking"
 msgstr "Annuler le verrouillage"
 
+
+msgid "save document"
+msgstr "sauvegarde de document"
+
+
+#, c-format
+msgid "document is booked in domain %s"
+msgstr ""
+
 msgid "eui:Export selected documents"
 msgstr "Exporter les documents sélectionnés"
 
 msgid "eui:Tools"
 msgstr "Outils"
 
+
 msgid "eui:Export all documents"
 msgstr "Exporter le contenu du dossier"
 
 msgid "eui:View Document"
 msgstr "Voir"
+
+
 
 msgid "eui:Edit document"
 msgstr "Editer"
@@ -7775,6 +7867,7 @@ msgstr "Supprimer"
 
 msgid "eui:Sure delete ?"
 msgstr "Etes vous sûr de vouloir supprimer ?"
+
 
 msgid "eui:Cancel deletion"
 msgstr "Annuler la suppression"
@@ -8005,8 +8098,15 @@ msgstr "Professionnel"
 msgid "socname"
 msgstr "Nom"
 
+
+#, c-format
+msgid "in domain %s"
+msgstr "dans le domain %s"
+
+
 msgid "Phone"
 msgstr "Téléphone"
+
 
 msgid "Fax"
 msgstr "Fax"
@@ -8225,11 +8325,7 @@ msgstr "mail"
 msgid "senddoc"
 msgstr "Envoyer le document"
 
-msgid "goto forum"
-msgstr "aller au forum"
 
-msgid "View postit"
-msgstr "Voir le post-it"
 
 msgid "RSS link"
 msgstr "S'abonner au lien RSS"
@@ -8267,8 +8363,13 @@ msgstr "Nombre maximum de révisions"
 msgid "Modify acls for familly"
 msgstr "Modifier les droits de la famille"
 
+
+msgid "waiting : document not set"
+msgstr ""
+
 msgid " No privilege to change acl for familly access"
 msgstr "Pas de privilège pour modifier les droits d'accès à la famille"
+
 
 msgid "No acl for family"
 msgstr "Pas de droits définis pour la famille"
@@ -8322,11 +8423,13 @@ msgstr "dernier"
 msgid "it is the first"
 msgstr "premier"
 
+
 msgid "forum open/close"
 msgstr "déplier/replier le fil de discussion"
 
 msgid "new forum answer"
 msgstr "ajouter une entrée"
+
 
 msgid "save"
 msgstr "Sauver"
@@ -8756,48 +8859,3 @@ msgstr "Base de données : [%s]"
 msgid "Continue (Y|N) ?"
 msgstr "Continuer (Y (oui) |N (non)) ?"
 
-#~ msgid "Documents management"
-#~ msgstr "Gestion documentaire"
-
-#, fuzzy
-#~ msgid "View %d next results"
-#~ msgstr "documents suivants..."
-
-#~ msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
-#~ msgstr "<b>%d</b> résultats pour <b>%s</b> %s"
-
-#~ msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
-#~ msgstr "<b>%d</b> résultat pour <b>%s</b> %s"
-
-#~ msgid "freedom  global search"
-#~ msgstr "Recherche générale dynacase"
-
-#~ msgid "freedom detailled global search"
-#~ msgstr "recherche détaillée générale"
-
-#~ msgid "Undisplay the search query"
-#~ msgstr "Ne pas afficher la requête"
-
-#~ msgid "Mask"
-#~ msgstr "Masquer"
-
-#~ msgid "View the search query"
-#~ msgstr "Voir la requête"
-
-#~ msgid "Unmask"
-#~ msgstr "Démasquer"
-
-#~ msgid "Simple search"
-#~ msgstr "Recherche simple"
-
-#~ msgid "Return to results"
-#~ msgstr "Retour aux résultats"
-
-#~ msgid "Results <b>%d</b> - <b>%d</b> for <b>%s</b> %s"
-#~ msgstr "Résultats <b>%d</b> - <b>%d</b> pour <b>%s</b> %s"
-
-#~ msgid "create databases ?"
-#~ msgstr "Créer les bases de données ?"
-
-#~ msgid "familie seearch result"
-#~ msgstr "limité à la famille"

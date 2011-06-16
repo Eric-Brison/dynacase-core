@@ -274,22 +274,47 @@ function createTmpDoc($dbaccess,$fromid) {
  * 
  * @return int false if error occured (return -1 if family document )
  */
-function getFromId($dbaccess, $id) {
+function getFromId($dbaccess, $id)
+{
+    if (!($id > 0)) return false;
+    if (!is_numeric($id)) return false;
+    $dbid = getDbid($dbaccess);
+    $fromid = false;
+    
+    $result = pg_query($dbid, sprintf("select fromid from docfrom where id=%d", $id));
+    if ($result) {
+        if (pg_numrows($result) > 0) {
+            $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
+            $fromid = $arr["fromid"];
+        }
+    }
+    
+    return $fromid;
+} 
+
+/**
+ * return from name for document (not for family (use @see getFamFromId() instead)
+ * @param string $dbaccess database specification
+ * @param int $id identificator of the object
+ * 
+ * @return string false if error occured (return -1 if family document )
+ */
+function getFromName($dbaccess, $id) {
 
   if (!($id > 0)) return false;
   if (! is_numeric($id)) return false;
   $dbid=getDbid($dbaccess);   
-  $fromid=false;
-  $result = pg_query($dbid,"select  fromid from docfrom where id=$id;");
+  $fromname=false;
+  $result = pg_query($dbid,
+  sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d",$id));
 
   if (pg_numrows ($result) > 0) {
     $arr = pg_fetch_array ($result, 0,PGSQL_ASSOC);
-    $fromid= $arr["fromid"];
+    $fromname= $arr["name"];
   }
   
-  return $fromid;    
+  return $fromname;    
 } 
-
 /**
  * return from id for family document
  * @param string $dbaccess database specification
@@ -692,6 +717,7 @@ function getFamTitle(&$tdoc) {
  */
 function isFixedDoc($dbaccess,$id) {
   $tdoc=getTDoc($dbaccess,$id,array(),array("locked"));
+  if (! $tdoc) return null;
   return ($tdoc["locked"]== -1);
 }
 
@@ -703,7 +729,9 @@ function ComputeVisibility($vis, $fvis) {
   if (($fvis == "O") && ($vis == "W")) return $fvis;
   if (($fvis == "R") && ($vis == "U")) return $fvis;
   if (($fvis == "S") && (($vis == "W")||($vis == "O"))) return $fvis;
+  if ((($fvis == "R")||($fvis == "S")) && ($vis == "U")) return $fvis;
 
+  if ($fvis == "I") return $fvis;
   return $vis;
 
 }

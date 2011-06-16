@@ -21,7 +21,7 @@ include_once("DATA/document.php");
  * @param Action &$action current action
  * @global id Http var : document identificator
  */
-function grouprequest(&$action) {
+function grouprequest(Action &$action) {
 
     $request=json_decode(getHttpVars("request"));
     $out=array();
@@ -48,12 +48,12 @@ function grouprequest(&$action) {
                     $outi=array();
                     if (is_array($ds)) {
                         foreach ($ds as $k=>$v) {
-                            documentApplyMethod($v["properties"]["id"],$method,$returntype,$outi[$k],$document);
+                            documentApplyMethod(action, $v["properties"]["id"],$method,$returntype,$outi[$k],$document);
                         }
                     }
                     $out[$varname]=array("iterative"=>$outi);
                 } else {
-                    documentApplyMethod($id,$method,$returntype,$out[$varname],$document);
+                    documentApplyMethod(action, $id,$method,$returntype,$out[$varname],$document);
                     if ($document) {
                         $docid[$varname]=$document->getProperty('id');
                     }

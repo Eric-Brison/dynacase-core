@@ -10,7 +10,7 @@
 <tr class="FREEDOMBack2"><td  colspan="2" height="1px"></td></tr>
 <tr><td class="FREEDOMLabel">[TEXT:author]&nbsp;:&nbsp;</td>     <td><A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[userid]">[username]</a></td></tr>
 <tr><td class="FREEDOMLabel">[TEXT:allocated to]&nbsp;:&nbsp;</td>  <td>[IF allocateid]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[allocateid]">[ENDIF allocateid][allocate][IF allocateid]</a>[ENDIF allocateid]</td></tr>
-<tr><td class="FREEDOMLabel">[TEXT:locked by]&nbsp;:&nbsp;</td>  <td>[IF lockedid]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[lockedid]">[ENDIF lockedid][locked][IF lockedid]</a>[ENDIF lockedid]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:locked by]&nbsp;:&nbsp;</td>  <td>[IF lockedid]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[lockedid]">[ENDIF lockedid][locked] [lockdomain][IF lockedid]</a>[ENDIF lockedid]</td></tr>
 <tr><td class="FREEDOMLabel">[TEXT:revision]&nbsp;:&nbsp;</td>   <td>[REVISION] <i><b>[version]</b></i></td></tr>
 <tr><td class="FREEDOMLabel">[TEXT:forum state]&nbsp;:&nbsp;</td>     <td>[IF hforum]<A href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[forumid]">[ENDIF hforum][forum][IF hforum]</a>[ENDIF hforum]</td></tr>
 
@@ -20,9 +20,10 @@
 <tr><td class="FREEDOMLabel">[TEXT:access date]&nbsp;:&nbsp;</td><td>[ADATE]</td></tr>
 
 <tr class="FREEDOMBack2"><td  colspan="2" height="1px"></td></tr>
-<tr><td class="FREEDOMLabel">[TEXT: profile access]&nbsp;:&nbsp;</td><td>[IF profid]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[profid]">[ENDIF profid][profile][IF profid]</a>[ENDIF profid]</td></tr>
-<tr><td class="FREEDOMLabel">[TEXT:control view]&nbsp;:&nbsp;</td>   <td>[IF CVID]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[CVID]">[ENDIF CVID][cview][IF CVID]</a>[ENDIF CVID]</td></tr>
-<tr><td class="FREEDOMLabel">[TEXT:primary folder]&nbsp;:&nbsp;</td>   <td>[IF PRELID]<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[PRELID]">[ENDIF PRELID][prel][IF PRELID]</a>[ENDIF PRELID]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT: profile access]&nbsp;:&nbsp;</td><td>[profile]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:control view]&nbsp;:&nbsp;</td>   <td>[cview]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:primary folder]&nbsp;:&nbsp;</td>   <td>[prel]</td></tr>
+<tr><td class="FREEDOMLabel">[TEXT:other folders]&nbsp;:&nbsp;</td><td><ul style="margin:0px;padding:0;list-style:none"> [BLOCK FOLDERS]<li>[fld]</li> [ENDBLOCK FOLDERS]</ul> </td></tr>
 
 </table>
 [IF Timers][ZONE FDL:VIEWTIMERS?id=[ID]&szone=Y][ENDIF Timers]

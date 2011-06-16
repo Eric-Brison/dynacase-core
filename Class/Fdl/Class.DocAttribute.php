@@ -98,8 +98,12 @@ Class BasicAttribute {
    function isReal() {
     
    }
-   static function encodeXml($s) {
-      return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$s);
+   static function encodeXml($s, $quot=false) {
+       if ($quot) {
+          return str_replace(array('&','<','>','"'),array('&amp;','&lt;','&gt;','&quot;'),$s);
+       } else {
+          return str_replace(array('&','<','>'),array('&amp;','&lt;','&gt;'),$s);
+       }
   }
   /**
    * to see if an attribute is n item of an array
