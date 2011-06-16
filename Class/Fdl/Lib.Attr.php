@@ -193,8 +193,8 @@ function AttrToPhp($dbaccess, $tdoc)
                 } else {
                     if ($tnormal[strtolower($v->frameid)]["type"] == "array") $repeat = "true";
                     else if (strpos($v->options, "multiple=yes") !== false) $repeat = "true";
-                    else if ($pa[strtolower($v->frameid)]["type"] == "array") $repeat = "true";
-                    else $repeat = "false";
+		    else if (getTypeMain($pa[strtolower($v->frameid)]["type"])=="array") $repeat="true";
+		    else $repeat = "false";
                 }
                 $atype = strtolower(trim($atype));
                 // create code for calculated attributes  
@@ -649,4 +649,36 @@ function getParentAttributes($dbaccess, $fromid)
     }
     return array();
 }
+/**
+ * Extract the main type and the format from a type string
+ *
+ * @param string $type e.g. 'array("empty")'
+ *
+ * @return array() struct e.g. array('type' => 'array', 'format' => '"empty"')
+ */
+function parseType($type) {
+	if( preg_match('/^\s*(?P<type>[a-z]+)(?P<format>\(.+\))?\s*$/i', $type, $m) ) {
+		/* Remove leading and trailing parenthesis from format */
+		$m['format'] = substr($m['format'], 1, -1);
+		return array(
+			'type' => $m['type'],
+			'format' => $m['format']
+		);
+	}
+	return array(
+		'type' => $type,
+		'format' => ''
+	);
+}
+
+function getTypeMain($type) {
+	$p = parseType($type);
+	return $p['type'];
+}
+
+function getTypeFormat($type) {
+	$p = parseType($type);
+	return $p['format'];
+}
+
 ?>
