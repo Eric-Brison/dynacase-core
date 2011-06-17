@@ -727,7 +727,7 @@ if (($oattr->type != "array") && ($oattr->type != "htmltext")) {
             if (!$notd) $input .= "</td><td class=\"nowrap\">";
         }
         
-        $input.=addDocidCreate($oattr, $doc, $attridk, $value);
+        $input.=addDocidCreate($oattr, $doc, $attridk, $value, $index);
         if ($oattr->elink != "" && (!$alone)) {
             if (substr($oattr->elink, 0, 3) == "JS:") {
                 // javascript action
@@ -768,7 +768,7 @@ elseif($oattr->type == "htmltext") {
 return $input;
 }
 
-function elinkEncode(&$doc, $attrik, $link,$index,&$ititle,&$isymbol) {
+function elinkEncode(&$doc, $attrik, $link,$index,&$ititle="",&$isymbol="") {
 
     $linkprefix = "ilink_";
     $ititle = _("add inputs");
@@ -1534,10 +1534,35 @@ function editmode(&$action) {
  * 
  * @param DocAttribute $oattr
  */
-function addDocIdCreate(BasicAttribute &$oattr, Doc &$doc, $attridk, $value) {
+function addDocIdCreate(BasicAttribute &$oattr, Doc &$doc, $attridk, $value, $index) {
     if ($oattr->type=="docid") {
         $creation=$oattr->getOption("creation");
-        if ($creation) {
+        if ($creation && ($creation!="no")) {
+            
+            $urlcreate='';
+            if ($creation != "yes") {
+                $create=str_replace('"','&quote;', $creation);
+                $create=str_replace(array('{','}',':',','), 
+                                    array('{"','"}','":"','","'),$create );
+                
+                $jscreate = json_decode($create);
+                if ($jscreate===null) {
+                    addWarningMsg("creation option syntax error: ", $creation);
+                } else {
+                    foreach ( $jscreate as $k => $v ) {
+                        $k = strtolower(trim($k));
+                        $v = str_replace('&quote;', '"', $v);
+                        $ocreate[trim($k)] = trim(str_replace('&quote;', '"', $v));
+                        if ($v[0] == '"') {
+                            $urlcreate .= sprintf("&%s=%s", $k, urlencode(trim($v, '"')));
+                        } else {
+                            $urlcreate .= sprintf("&%s=%%%s%%", $k, $v);
+                        }
+                    }
+                    
+                    $urlcreate = elinkencode($doc, $attridk, $urlcreate, $index);
+                }
+            }
             $esymbol = '&nbsp;';
             if (! $attridk) $attridk=$oattr->id;
             
@@ -1545,10 +1570,12 @@ function addDocIdCreate(BasicAttribute &$oattr, Doc &$doc, $attridk, $value) {
            
               $emtitle = sprintf(_("modify document"));
             
-            $jsfunc=sprintf("editRelation('%s',elinkvalue('%s'),'%s')", $oattr->format, $attridk, $attridk);
+            $jsfunc=sprintf("editRelation('%s',elinkvalue('%s'),'%s','%s')", $oattr->format, $attridk, 
+                    $attridk,
+                    ($urlcreate));
             $input = sprintf("<input id=\"icr_%s\" class=\"%s\" type=\"button\" value=\"%s\" titleedit=\"%s\" titleview=\"%s\" onclick=\"%s\">",
                        $attridk, 
-                       "",//$value?"view-doc":"add-doc",
+                       "add-doc",
                        $esymbol, $ectitle, $emtitle, $jsfunc);
             return $input;
         }

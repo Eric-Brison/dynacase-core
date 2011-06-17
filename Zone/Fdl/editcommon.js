@@ -427,7 +427,7 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
 /**
  * open document in edit mode if can else in view mode
  */
-function editRelation(famname, docid, attrid) {
+function editRelation(famname, docid, attrid, opt) {
     var url='?app=FDL&action=OPENDOC';
     var w=500;
     var h=400;
@@ -438,6 +438,7 @@ function editRelation(famname, docid, attrid) {
     } else if (famname) {
         url+='&famid='+famname;
         url+='&updateAttrid='+attrid;
+        if (opt) url+=opt;
         subwindow(h,w, '_blank', url);
     } else {
         alert('[TEXT:Cannot open document]');
