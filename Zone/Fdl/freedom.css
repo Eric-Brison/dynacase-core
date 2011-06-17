@@ -953,10 +953,19 @@ DIV.static {
 	cursor: pointer;
 }
 
-.tarray .add-button {
-	background : url('[IMG:add22.gif]') no-repeat;
+
+input[type=button].add-doc {
+	background : url('[IMG:add22.gif|16]') no-repeat;
+    width:16px;
+}
+input[type=button].view-doc {
+    background : url('[IMG:point22.gif|16]') no-repeat;
+    width:16px;
 }
 
+.tarray .add-button {
+    background : url('[IMG:add22.gif]') no-repeat;
+}
 .tarray .trash-button {
 	background : url('[IMG:trash22.gif]') no-repeat;
 }

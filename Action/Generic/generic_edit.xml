@@ -82,6 +82,8 @@ addEvent(window,"load",resetbodyopacity);
 <input type="hidden" name="quicksave" value="0">
 <input type="hidden" name="catgid" >
 <input type="hidden" name="noconstraint" value="N">
+<input type="hidden" name="updateAttrid" value="[updateAttrid]">
+
 [ENDIF NOFORM]
 [IF HEAD]
 <table id="fixtablehead" class="[IFNOT ISIE]tablehead [ENDIF ISIE]documentHead"   cellspacing="0" width="100%">

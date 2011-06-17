@@ -119,7 +119,7 @@ function addmdocsattrid(attrid,nid,ntitle) {
   inptext=document.getElementById(attrid);
   inpsel=document.getElementById(isel);
   if (inpsel && inptext) {
-    find=false;
+    var find=false;
     for (var k=0;k<inpsel.options.length;k++) {
       if (inpsel.options[k].value==nid) find=true;
     }
@@ -330,7 +330,7 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
 
   if (! options) options='';
 
-  f =inp.form;
+  var f =inp.form;
   // modify to initial action
   oldact = f.action;
   oldtar = f.target;
@@ -369,12 +369,13 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     h = (h) ? h : 30;
     w = (w) ? w : 290;
     var inp  = inp=document.getElementById(inpid);
-    var attrid;
+    
 
     var domindex=''; // needed to set values in arrays
     //search the input button in previous element
  
     var inid;
+    var f=null;
 
     if (enuminprogress) return;
     enuminprogress=true;  
@@ -406,7 +407,6 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
 		f.action += '&extjs=yes';
 	}
 
-    var xy= getAnchorWindowPosition(inp.id);
 
     var wname='helpi'+inp.id;
     // subwindow(30,290, wname, 'about:blank');
@@ -424,7 +424,27 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
 
     enuminprogress=false;
 }
+/**
+ * open document in edit mode if can else in view mode
+ */
+function editRelation(famname, docid, attrid) {
+    var url='?app=FDL&action=OPENDOC';
+    var w=500;
+    var h=400;
+    if (docid) {
+      url+='&id='+docid;
+      url+='&latest=Y';
+      subwindow(h,w, '_blank', url);
+    } else if (famname) {
+        url+='&famid='+famname;
+        url+='&updateAttrid='+attrid;
+        subwindow(h,w, '_blank', url);
+    } else {
+        alert('[TEXT:Cannot open document]');
+    }
+    
 
+}
 /**
  * clear all rows of table
  * @param config
@@ -440,7 +460,9 @@ function clearTableRow(attributename) {
 			}
 			t.removeChild(child);
 		}
+		return true;
 	}
+	return false;
 }
 /**
  * add a row in form array attribute
@@ -550,29 +572,29 @@ function addTableRow(config) {
  * @return Boolean true if succeed
  */
 function setFormValue(config) {
-	for (var i in config) {
-		var inp=document.getElementById(i.toLowerCase());
-		if (inp && (inp.name == '_'+i)) {
-			if (typeof config[i] == 'object') {
-				if (config[i].id) {
-					inp.value = config[i].id;	
-					if (config[i].title) {
-					var t=document.getElementById('ilink_'+inp.id);
-					if (t) t.value=config[i].title;
-					}
-					if (config[i].url) {
-						var t=document.getElementById('img_'+inp.id);
-						if (t) t.src=config[i].url;
-					}
-				}
-			} else {
-				setIValue(inp, config[i]);
-				sendEvent(inp,"change");
-			}
-			return true;
-		}
-	}
-	return false;
+    for (var i in config) {
+        var inp=document.getElementById(i.toLowerCase());
+        if (inp && (inp.name == '_'+i)) {
+            if (typeof config[i] == 'object') {
+                if (config[i].id) {
+                    inp.value = config[i].id;	
+                    if (config[i].title) {
+                        var t=document.getElementById('ilink_'+inp.id);
+                        if (t) t.value=config[i].title;
+                    }
+                    if (config[i].url) {
+                        var ti=document.getElementById('img_'+inp.id);
+                        if (ti) ti.src=config[i].url;
+                    }
+                }
+            } else {
+                setIValue(inp, config[i]);
+                sendEvent(inp,"change");
+            }
+            return true;
+        }
+    }
+    return false;
 }
 /**
  * set value in document form 
@@ -946,109 +968,118 @@ function isInputLocked(id) {
 
 
 function disableReadAttribute() {
-    
-  var ndis = true;
-  var i;
-  var vin;
-  var lin,aid;
-  var inx,inc,ind,inb; // input button
-  if (tain) {
-    for (var c=0; c< tain.length; c++) {
-      ndis = true;
-      for (var i=0; i< tain[c].length; i++) {
-	vin = getInputValue(tain[c][i]);
 
-	if ((vin == '') || (vin == ' ')) ndis = false;
-      
-      }
+    var ndis = true;
+    var i;
+    var vin;
+    var lin,aid;
+    var inx,inc,ind,inb,incr; // input button
+    if (tain) {
+        for (var c=0; c< tain.length; c++) {
+            ndis = true;
+            for (var i=0; i< tain[c].length; i++) {
+                vin = getInputValue(tain[c][i]);
 
-      for (var i=0; i< taout[c].length; i++) {
-    	  var iout=document.getElementById(taout[c][i]);
-	if (iout) {
-	    if (iout.type != 'hidden') {
-		if (iout.getAttribute('readonly') != '1')  iout.disabled=ndis;
-	      inc=document.getElementById('ic_'+taout[c][i]);
-	      inx=document.getElementById('ix_'+taout[c][i]);
-	      ind=document.getElementById('id_'+taout[c][i]);
-	      if (inc) inc.disabled=ndis;
-	      if (ind) ind.disabled=ndis;	 
-	      disabledIE(iout);
-	      if (ndis) {
-		// iout.style.backgroundColor='[CORE_BGCOLORALTERN]';
-		//if (inc)  inc.style.backgroundColor='[CORE_BGCOLORALTERN]';	      	    
-	      } else {
-	    
-		if (inc) inc.style.backgroundColor='';
-		//if (iout.style.backgroundColor == '[CORE_BGCOLORALTERN]')
-		//document.getElementById(taout[c][i]).style.backgroundColor == '';
-	      }
-	    } else {
-	      // search radio
-	    
-	      var rx=document.getElementById(taout[c][i]+'0');
-	      if (rx && (rx.type=='radio')) {
-		var ir=1;
-		while (rx) {
-		  rx.disabled=ndis;
-		  rx=document.getElementById(taout[c][i]+ir);
-		  ir++;
-		}
-	      }
-	    }
-	  
-	} else {
-	  // search in arrays
-	 
-		  lin = getInputsByName('_'+taout[c][i]);
-	 
-		  var kj;
-	  for (var j=0; j< lin.length; j++) {
-	    ndis=true;
-	    for (var k=0; k< tain[c].length; k++) {
-	    	var linname=lin[j].name;
-	    	if (linname) kj=linname.substring(linname.indexOf('[')+1,linname.indexOf(']'));
-	    	if (!kj) kj=j;
-	      vin = getInputValue(tain[c][k],kj);
-	      if ((vin == '') || (vin == ' ')) {
-			  if (lin[j].getAttribute('readonly') != '1') ndis = false;
-		  }
-	    
-	    }
-	    //	  alert(tain[c].toString()+'['+j+']'+ndis);
-	    if (lin[j].type != 'hidden') {
-	      aid=lin[j].id;
-	      lin[j].disabled=ndis;
-	      disabledIE(lin[j]);
-	      inc=document.getElementById('ic_'+aid);
-	      ind=document.getElementById('ic_'+aid);
-	      if (inc) inc.disabled=ndis;
-	      if (ind) ind.disabled=ndis;
-	      if (lin[j].type=='checkbox') { // for bool checkbox
-		if (aid) aid=aid.substring(0,aid.length -1);
-		inb=document.getElementById(aid);
-		if (inb && (inb.type='checkbox')) inb.disabled=ndis;
-	      }
-	      
-	      //lin[j].style.backgroundColor=(ndis)?'[CORE_BGCOLORALTERN]':'';		
-	    } else {
-	      aid=lin[j].id;
-	      // search radio
-	    
-	      var rx=document.getElementById(aid+'0');
-	      if (rx && (rx.type=='radio')) {
-		var ir=1;
-		while (rx) {
-		  rx.disabled=ndis;
-		  rx=document.getElementById(aid+ir);
-		  ir++;
-		}
-	      }
-	    }
-	  }	
-	}
-      }
-    }
-  } 
+                if ((vin == '') || (vin == ' ')) ndis = false;
+
+            }
+
+            incr=document.getElementById('icr_'+tain[c][0]);
+            if (incr) {
+                incr.className=ndis?'view-doc':'add-doc';
+                incr.title=ndis?incr.getAttribute('titleview'):incr.getAttribute('titleedit');
+            }
+            for (var i=0; i< taout[c].length; i++) {
+                var iout=document.getElementById(taout[c][i]);
+                if (iout) {
+                    if (iout.type != 'hidden') {
+                        if (iout.getAttribute('readonly') != '1')  iout.disabled=ndis;
+                        inc=document.getElementById('ic_'+taout[c][i]);
+                        inx=document.getElementById('ix_'+taout[c][i]);
+                        ind=document.getElementById('id_'+taout[c][i]);
+                        if (inc) inc.disabled=ndis;
+                        if (ind) ind.disabled=ndis;	 
+                        disabledIE(iout);
+                        if (ndis) {
+                            // iout.style.backgroundColor='[CORE_BGCOLORALTERN]';
+                            //if (inc)  inc.style.backgroundColor='[CORE_BGCOLORALTERN]';	      	    
+                        } else {
+
+                            if (inc) inc.style.backgroundColor='';
+                            //if (iout.style.backgroundColor == '[CORE_BGCOLORALTERN]')
+                            //document.getElementById(taout[c][i]).style.backgroundColor == '';
+                        }
+                    } else {
+                        // search radio
+
+                        var rx=document.getElementById(taout[c][i]+'0');
+                        if (rx && (rx.type=='radio')) {
+                            var ir=1;
+                            while (rx) {
+                                rx.disabled=ndis;
+                                rx=document.getElementById(taout[c][i]+ir);
+                                ir++;
+                            }
+                        }
+                    }
+
+                } else {
+                    // search in arrays
+
+                    lin = getInputsByName('_'+taout[c][i]);
+
+                    var kj;
+                    for (var j=0; j< lin.length; j++) {
+                        ndis=true;
+                        for (var k=0; k< tain[c].length; k++) {
+                            var linname=lin[j].name;
+                            if (linname) kj=linname.substring(linname.indexOf('[')+1,linname.indexOf(']'));
+                            if (!kj) kj=j;
+                            vin = getInputValue(tain[c][k],kj);
+                            if ((vin == '') || (vin == ' ')) {
+                                if (lin[j].getAttribute('readonly') != '1') ndis = false;
+                            }
+                        }
+                        incr=document.getElementById('icr_'+tain[c][0]+'_'+kj);
+                        if (incr) {
+                            incr.className=ndis?'view-doc':'add-doc';
+                            incr.title=ndis?incr.getAttribute('titleview'):incr.getAttribute('titleedit');
+                        }
+                        //	  alert(tain[c].toString()+'['+j+']'+ndis);
+                        if (lin[j].type != 'hidden') {
+                            aid=lin[j].id;
+                            lin[j].disabled=ndis;
+                            disabledIE(lin[j]);
+                            inc=document.getElementById('ic_'+aid);
+                            ind=document.getElementById('ic_'+aid);
+                            if (inc) inc.disabled=ndis;
+                            if (ind) ind.disabled=ndis;
+                            if (lin[j].type=='checkbox') { // for bool checkbox
+                                if (aid) aid=aid.substring(0,aid.length -1);
+                                inb=document.getElementById(aid);
+                                if (inb && (inb.type='checkbox')) inb.disabled=ndis;
+                            }
+
+                            //lin[j].style.backgroundColor=(ndis)?'[CORE_BGCOLORALTERN]':'';		
+                        } else {
+                            aid=lin[j].id;
+                            // search radio
+
+                            var rx=document.getElementById(aid+'0');
+                            if (rx && (rx.type=='radio')) {
+                                var ir=1;
+                                while (rx) {
+                                    rx.disabled=ndis;
+                                    rx=document.getElementById(aid+ir);
+                                    ir++;
+                                }
+                            }
+                        }
+                    }	
+                }
+            }
+        }
+    } 
 }
 
 // add a class for IE when disabled input
@@ -1101,7 +1132,10 @@ function clearInputs(tinput, idx,attrid, tOutsideInput) {
 	disableReadAttribute();
 
 	if (err != '')  alert('[TEXT:NOT Clear]'+err);
-	if (attrid && document.getElementById(attrid)) try {document.getElementById(attrid).focus();} catch (exception) {} ;
+	if (attrid && document.getElementById(attrid)) {
+	    
+	    try {document.getElementById(attrid).focus();} catch (exception) {} ;
+	}
 
 }
 function deleteInputValue(id){
@@ -1860,6 +1894,7 @@ function addtr(trid, tbodyid) {
     if (ltrfil.length > 1) ltrfil[ltrfil.length-2].parentNode.insertBefore(ntr,ltrfil[ltrfil.length-2]);
   }
   verifyMaxFileUpload(document.getElementById('fedit'));
+  disableReadAttribute();
   return ntr;
   
 }
