@@ -27,7 +27,7 @@
     <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic" needed="Y" />
     <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y" />
     <param name="core_tmpdir" label="temporary folder" default="/tmp" type="text" needed="Y" />
-    <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="Y" oninstall="W" onupgrade="H" onedit="H" />
+    <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="yes" oninstall="W" onupgrade="H" onedit="H" />
   </parameters>
 
   <pre-install>    
