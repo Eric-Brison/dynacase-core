@@ -5869,23 +5869,31 @@ create unique index i_docir on doc(initid, revision);";
       $ulink=false;
       $this->lay = new OOoLayout($tplfile, $action, $this);
     } else {
-      $this->lay = new Layout($tplfile, $action);
+      $this->lay = new Layout($tplfile, $action, "");
     }
 
-    if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
+    //if (! file_exists($this->lay->file)) return sprintf(_("template file (layout [%s]) not found"), $layout);
         $this->lay->setZone($reg);
 
     $this->lay->set("_readonly",($this->Control('edit')!=""));
     $method = strtok(strtolower($reg['layout']),'.');
+        
+        if (method_exists($this, $method)) {
+            try {
+                $this->$method($target, $ulink, $abstract);
+            } catch ( Exception $e ) {
+                if ((!file_exists($this->lay->file) && (!$this->lay->template))) {
+                    return sprintf(_("template file (layout [%s]) not found"), $layout);
+                } else throw $e;
+            }
+        } else {
+            $this->viewdefaultcard($target, $ulink, $abstract);
+        }
 
-
-    if (method_exists ( $this, $method)) {
-      $this->$method($target,$ulink,$abstract);
-    } else {
-      $this->viewdefaultcard($target,$ulink,$abstract);
+    if ((! file_exists($this->lay->file) && (!$this->lay->template))) {
+        return sprintf(_("template file (layout [%s]) not found"), $layout);
     }
-
-
+    
     $laygen=$this->lay->gen();
 
     if (!$changelayout)       $this->lay=$play;
