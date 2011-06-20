@@ -137,11 +137,20 @@ function undisplayConstraint() {
 function updateOpenerLink(data) {
     if (window.parent != null && window.parent.opener != null) {
         var wop=window.parent.opener;
-        var inp=wop.document.getElementById(data.attrid);
-        if (inp) inp.value=data.id;
+        var inp;
+
         inp=wop.document.getElementById('ilink_'+data.attrid);
         if (inp) inp.value=data.title;
-        
+
+        inp=wop.document.getElementById('mdocid_work'+data.attrid);
+        if (inp) {
+             inp.value=data.id;
+             wop.addmdocs('_'+data.attrid);
+        } else { 
+            inp=wop.document.getElementById(data.attrid);
+            if (inp) inp.value=data.id;
+        }
+
         wop.disableReadAttribute();
     }
 }

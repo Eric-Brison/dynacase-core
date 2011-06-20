@@ -29,6 +29,7 @@ include_once("GENERIC/generic_util.php");
  * @global rtarget Http var : if set, to return result in another window (the window will be closed)
  * @global vid Http var : if set, edit represention describe in view control (can be use only if doc has controlled view)
  * @global mskid Http var : is set special mask applied for edition
+ * @global autoclose Http var : set to yes to close window after modification
  */
 function generic_edit(Action &$action) {
 	// -----------------------------------
@@ -46,12 +47,14 @@ function generic_edit(Action &$action) {
 	if ($docid==0) setHttpVar("classid",$classid);
 	$vid = $action->getArgument("vid"); // special controlled view
 	$mskid = $action->getArgument("mskid"); // special mask
+	$autoclose = $action->getArgument("autoclose"); // to close window after modification
 
 	$action->lay->Set("vid", $vid);
 	$action->lay->Set("ezone", $zonebodycard); // use for return in case of constraint
 	$action->lay->Set("rzone", $rzone);
 	$action->lay->Set("rvid", $rvid);
 	$action->lay->Set("rtarget", $rtarget);
+	$action->lay->Set("autoclose", $autoclose);
 	$action->lay->Set("updateAttrid", $updateAttrid);
 	$action->lay->Set("SELFTARGET",($rtarget=="_self"));
 	// Set the globals elements

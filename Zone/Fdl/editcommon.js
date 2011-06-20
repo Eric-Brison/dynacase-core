@@ -40,11 +40,7 @@ Array.prototype.getUnique = function () {
 };
 
 function scrutemdocs() { 
-  var n,iid,tiid;
-  var inpid,inptext,inpsel,inptitle;
-  var itext,isel,ititle;
-  var ti;
-  var nid,ntitle,nval;
+
   
   if (MDOCSCRUCT.length > 0) {
     MDOCSCRUCT=MDOCSCRUCT.getUnique();
@@ -58,7 +54,7 @@ function scrutemdocs() {
 
 var addmdocsSemaphore = false; // avoid several launchs of addmdocs
 function addmdocs(n) {    
-  var n,iid,tiid;
+  var iid,tiid;
   var inpid,inptext,inpsel,inptitle;
   var itext,isel,ititle;
   var ti;
@@ -68,6 +64,7 @@ function addmdocs(n) {
   }
   addmdocsSemaphore = true;
       
+  
   tiid=[];
   if (n.substr(n.length-1,1) == ']') {
       var postfix=n.substr(n.lastIndexOf('['));
@@ -165,6 +162,11 @@ function disableClearDocIdInputs(attrid, inpsel) {
       if (inpsel.options[k].selected) needdisable=false;
     }
     iinput.disabled=needdisable;
+    var icrinput=document.getElementById('icr_'+attrid);
+    if (icrinput) {
+        icrinput.className=needdisable?'add-doc':'view-doc';
+        icrinput.title=needdisable?icrinput.getAttribute('titleedit'):icrinput.getAttribute('titleview');
+    }
   }
 }
 
@@ -432,6 +434,7 @@ function editRelation(famname, docid, attrid, opt) {
     var w=500;
     var h=400;
     if (docid) {
+        if (opt) url+=opt;
       url+='&id='+docid;
       url+='&latest=Y';
       subwindow(h,w, '_blank', url);

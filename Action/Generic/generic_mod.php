@@ -34,6 +34,7 @@ function generic_mod(Action &$action) {
 	$rzone = $action->getArgument("rzone"); // special zone when finish edition
 	$rvid = $action->getArgument("rvid"); // special zone when finish edition
 	$viewext = $action->getArgument("viewext")=="yes"; // special zone when finish edition
+	$autoclose = $action->getArgument("autoclose")=="yes"; // special zone when finish edition
     $updateAttrid=$action->getArgument("updateAttrid");
 	
 	$dbaccess = $action->GetParam("FREEDOM_DB");
@@ -104,6 +105,7 @@ function generic_mod(Action &$action) {
             $action->lay->set("updateData","null");
         }
 	
+		$action->lay->set("autoclose",$autoclose?"true":"false");
 		$action->lay->set("id",$ndocid);
 		$action->lay->set("constraintinfo",json_encode($info));
 		$action->lay->set("quicksave",$quicksave);

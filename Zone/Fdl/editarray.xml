@@ -26,7 +26,7 @@
                     <input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()">
                     <input class="button select-button" type="button" title="[TEXT:select]" onmousedown="selecttr(this,this.parentNode.parentNode);adrag(event,this);">
                 </td>[ENDIF readonly]
-                [BLOCK [bevalue]]<td class="[eiclass]" style="width:[vhw];background-color:[bgcolor];[tdstyle]">
+                [BLOCK [bevalue]]<td class="[eiclass]" attrid="[cellattrid]" type="[cellatype]" multiple="[cellmultiple]" style="width:[vhw];background-color:[bgcolor];[tdstyle]">
                     [eivalue]
                 </td>[ENDBLOCK [bevalue]]
             </tr>[ENDBLOCK EATTR]
@@ -47,7 +47,7 @@
                     <input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()">
                     <input class="button select-button" type="button" title="[TEXT:select]" onmousedown="selecttr(this,this.parentNode.parentNode);adrag(event,this);">
                 </td>
-                [BLOCK IATTR]<td class="[ihclass]" style="background-color:[bgcolor];width:[ihw];[tdstyle]">
+                [BLOCK IATTR]<td class="[ihclass]" attrid="[cellattrid]" type="[cellatype]" multiple="[cellmultiple]" style="background-color:[bgcolor];width:[ihw];[tdstyle]">
                     [ilabel]
                 </td>[ENDBLOCK IATTR]
             </tr>

@@ -381,7 +381,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
             if (!$cible) {
                 $doc->addparamrefresh($attrid, $linkprefix . $attrid);
             } else {
-                $input .= $input2;
+                $input = $input2.$input;
             }
         
         } else {
@@ -627,9 +627,10 @@ if (($oattr->type != "array") && ($oattr->type != "htmltext")) {
                         $ititle = addslashes($reg[1]);
                     }
                 }
-                if (!$notd) $input .= "</td><td class=\"nowrap\">";
+                if (!$notd) $input .= "</td><td class=\"editbutton\">";
                 if (preg_match("/list/", $attrtype, $reg)) $ctype = "multiple";
                 else $ctype = "single";
+                
                 
                 if ($alone) $ctype .= "-alone";
                 
@@ -655,8 +656,9 @@ if (($oattr->type != "array") && ($oattr->type != "htmltext")) {
                     if ($notd) {
                         
                         $input = str_replace("<br/>", $ib, $input);
-                    } else
-                        $input .= "<br/>" . $ib;
+                    } else {
+                        $input .=  $ib;
+                    }
                 } elseif (preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
                     if ($alone && $oattr->type != "docid") {
                         $arg = array(
@@ -930,6 +932,9 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
             "ihw" => (!$visible) ? "0px" : $width,
             "bgcolor" => $v->getOption("bgcolor", "inherit"),
             "tdstyle" => $v->getOption("cellbodystyle"),
+                "cellatype" => $v->type,
+                "cellattrid" => $v->id,
+                "cellmultiple" => ($v->getOption("multiple")=="yes")?"true":"false",
             "ihclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute"
         );
         
@@ -1023,6 +1028,9 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
             $tivalue[] = array(
                 "eivalue" => getHtmlInput($doc, $va, $tval[$ka][$k], $pindex . $k),
                 "bgcolor" => $va->getOption("bgcolor", "inherit"),
+                "cellatype" => $va->type,
+                "cellattrid" => $va->id,
+                "cellmultiple" => ($va->getOption("multiple")=="yes")?"true":"false",
                 "tdstyle" => $va->getOption("cellbodystyle"),
                 "vhw" => (!$visible) ? "0px" : $va->getOption("cwidth", "auto"),
                 "eiclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute"
@@ -1547,7 +1555,7 @@ function addDocIdCreate(BasicAttribute &$oattr, Doc &$doc, $attridk, $value, $in
                 
                 $jscreate = json_decode($create);
                 if ($jscreate===null) {
-                    addWarningMsg("creation option syntax error: ", $creation);
+                    addWarningMsg(sprintf("creation option syntax error:%s [%s] ",$oattr->id, $creation));
                 } else {
                     foreach ( $jscreate as $k => $v ) {
                         $k = strtolower(trim($k));

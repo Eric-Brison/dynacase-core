@@ -6,51 +6,60 @@
 var constraint=[constraintinfo];
 var error=[error];
 var warning=[warning];
+var autoclose=[autoclose];
 var updateOpenerData=[updateData];
-
-
 if (window.parent) {
-	if (window.parent.document) {
-	    
-	    var c=0;
-	    for (var i in constraint) c++;
-	    
-	    if ((parseInt('[id]')>0) && (window.parent.document.modifydoc))  window.parent.document.modifydoc.id.value=parseInt('[id]');
-	    var s=window.parent.document.getElementById('iSubmit');
-	    if (error) {
-		if (s) s.value='[TEXT:Save]';
-		s=window.parent.document.getElementById('aSubmit');
-		if (s) s.innerHTML='[TEXT:Save]';
-		var s=window.parent.document.getElementById('iCancel');
-		if (s) s.style.display='';
-		var s=window.parent.document.getElementById('iSaveForce');
-		if(window.parent && window.parent.displaySaveForce){
-			window.parent.displaySaveForce();
-		}
-		if (s) s.style.display='';
-		window.parent.document.isSubmitted=false;
-		window.parent.setbodyopacity(1);
-		if (c > 0) {
-		  setConstraint(constraint);
-		} else {
-		  window.parent.displayWarningMsg(error);
-		  if (warning) window.parent.displayWarningMsg(warning);
-		  if (! error) {
-		    [IFNOT quicksave]window.setTimeout("window.parent.location.href='[url]'",4000);[ENDIF quicksave]
-		  }
-		}
-		window.parent.disableReadAttribute();
-	    } else {
-	            undisplayConstraint();
-                if (updateOpenerData) updateOpenerLink(updateOpenerData);
-        	    if (warning) {
-        	       //window.parent.displayWarningMsg(warning); // not need :set by global fonction
-        	       window.setTimeout("window.parent.location.href='[url]'",4000);
-        	    } else {
-        		[IFNOT quicksave]window.parent.location.href='[url]';[ENDIF quicksave]
-        		}
-        	    }
-	
+    if (window.parent.document) {
+    
+    var c=0;
+    for (var i in constraint) c++;
+    
+    if ((parseInt('[id]')>0) && (window.parent.document.modifydoc))  window.parent.document.modifydoc.id.value=parseInt('[id]');
+    var s=window.parent.document.getElementById('iSubmit');
+    if (error) {
+        if (s) s.value='[TEXT:Save]';
+        s=window.parent.document.getElementById('aSubmit');
+        if (s) s.innerHTML='[TEXT:Save]';
+        var s=window.parent.document.getElementById('iCancel');
+        if (s) s.style.display='';
+        var s=window.parent.document.getElementById('iSaveForce');
+        if(window.parent && window.parent.displaySaveForce){
+          window.parent.displaySaveForce();
+        }
+        if (s) s.style.display='';
+        window.parent.document.isSubmitted=false;
+        window.parent.setbodyopacity(1);
+        if (c > 0) {
+           setConstraint(constraint);
+        } else {
+            window.parent.displayWarningMsg(error);
+            if (warning) window.parent.displayWarningMsg(warning);
+            if (! error) {
+                [IFNOT quicksave]window.setTimeout("window.parent.location.href='[url]'",4000);[ENDIF quicksave]
+            }
+        }
+        window.parent.disableReadAttribute();
+    } else {
+        undisplayConstraint();
+            if (updateOpenerData) updateOpenerLink(updateOpenerData);
+            if (warning) {
+            //window.parent.displayWarningMsg(warning); // not need :set by global fonction
+                if (!autoclose) {
+               
+                window.setTimeout("window.parent.location.href='[url]'",4000);
+                } else {
+                    window.setTimeout(function () {window.parent.close();},4000);
+                }
+            } else {
+               [IFNOT quicksave]
+               if (!autoclose) {
+                window.parent.location.href='[url]';
+               } else {
+                    window.setTimeout(function () {window.parent.close();},300);
+               }[ENDIF quicksave]
+            }
+        }
+    
     }
     window.parent.viewwait(false);
 }
