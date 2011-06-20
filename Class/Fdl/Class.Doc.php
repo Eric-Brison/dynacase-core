@@ -4532,11 +4532,14 @@ create unique index i_docir on doc(initid, revision);";
           $ul.="&app=FDL&action=FDL_CARD&id=$id";
 	  if ($js) $ajs="oncontextmenu=\"popdoc(event,'$ul');return false;\"" ;
 	  else $ajs="";
+
+      $ajs.=sprintf(' documentId="%s" ', $id);
 	if ($viewIcon) {
            simpleQuery($this->dbaccess, sprintf('select icon from docread where id=%d', $id), $iconValue, true, true);
 	        $ajs.=sprintf('class="relation" style="background-image:url(%s)"', $this->getIcon($iconValue, 14)).$title;
 	    }
 	  $a="<a $ajs target=\"$target\" href=\"$ul\">$title</a>";
+
 	}
       }
 
