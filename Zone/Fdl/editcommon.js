@@ -2248,40 +2248,38 @@ function canceloption(said) {
 
 // to adjust height of body in edit card in fixed positionning
 function fixedPosition() {
-  var fspan=document.getElementById('fixspanhead');
-  var ftable=document.getElementById('fixtablehead');
-  var xy;
-  var h;
+    var fspan=document.getElementById('fixspanhead');
+    var ftable=document.getElementById('fixtablehead');
+    var xy;
+    var h;
 
+    if (isIE && ((document.body.scrollHeight) <= document.body.clientHeight)) {    
+        if (fspan && ftable) {
+            ftable.style.position='static';
+            fspan.style.display='none';
+        }
+        fspan=document.getElementById('fixspanfoot');
+        ftable=document.getElementById('fixtablefoot');
+        if (fspan && ftable) {
+            ftable.style.position='static';
+            fspan.style.display='none';
+        }
+    } else {
+        if (fspan && ftable) {
+            xy=getAnchorPosition(ftable.id);
+            h=parseInt(getObjectHeight(ftable))-xy.y;
+            if (h>0) {
+                fspan.style.height=parseInt(getObjectHeight(ftable))+'px';
+                fspan.style.top=xy.y+'px';
+            }
+        }
+        fspan=document.getElementById('fixspanfoot');
+        ftable=document.getElementById('fixtablefoot');
 
-  if (isIE && ((document.body.scrollHeight) <= document.body.clientHeight)) {    
-    if (fspan && ftable) {
-      ftable.style.position='static';
-      fspan.style.display='none';
+        if (fspan && ftable) {
+            fspan.style.height=parseInt(getObjectHeight(ftable))+'px';
+        }
     }
-    fspan=document.getElementById('fixspanfoot');
-    ftable=document.getElementById('fixtablefoot');
-    if (fspan && ftable) {
-      ftable.style.position='static';
-      fspan.style.display='none';
-    }
-  } else {;     
-    if (fspan && ftable) {
-      xy=getAnchorPosition(ftable.id);
-      h=parseInt(getObjectHeight(ftable))-xy.y;
-      if (h>0) {
-	fspan.style.height=getObjectHeight(ftable);
-	fspan.style.top=xy.y;
-      }
-    }
-    fspan=document.getElementById('fixspanfoot');
-    ftable=document.getElementById('fixtablefoot');
-
-    if (fspan && ftable) {
-      fspan.style.height=parseInt(getObjectHeight(ftable))+'px';;
-    
-    }
-  }
 }
 
 function focusFirst() {
@@ -2605,10 +2603,10 @@ function adrag(event,o) {
   dro=o.parentNode.parentNode.cloneNode(true);
   dro.style.position='absolute';
   dro.className='move';
-  dro.style.width=getObjectWidth(o.parentNode.parentNode);
+  dro.style.width=getObjectWidth(o.parentNode.parentNode)+'px';
   idro=o.parentNode.parentNode;
   hidro=getObjectHeight(idro);
-  dro.style.top=Ypos-Math.round(hidro/2);
+  dro.style.top=Ypos-Math.round(hidro/2)+'px';
   ytr=Ypos;  
   addEvent(document,"mousemove",dragtr); 
   stopPropagation(event);
@@ -2663,7 +2661,7 @@ function sdrag(event) {
 function dragtr(event) {  
   if (dro && draggo) {
     GetXY(event); 
-    dro.style.top=Ypos-Math.round(hidro/2);
+    dro.style.top=Ypos-Math.round(hidro/2)+'px';
     //    dro.style.left=Xpos-10;
     // window.status='drag='+Ypos+'x'+Xpos;
   }
@@ -2697,6 +2695,7 @@ function trim(aString) {
 function verifyMaxFileUpload(f) {
 	if (!f) return true;
 	var inputs=f.getElementsByTagName("input");
+	if (! f.maxFileUpload) return true;
 	var maxfile=f.maxFileUpload.value;
 	if (! (maxfile > 0))  return true;
 	var nif=0;
