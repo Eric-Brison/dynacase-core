@@ -81,11 +81,11 @@ function bgCommand($masteruserid=false) {
     $this->execuserid=$this->getUserId();
   }
   $cmd.= " --userid=$wuid";
-  if (!$bgapi) $cmd.= " --app=$bgapp --action=$bgact";
-  else $cmd.= " --api=$bgapi";
+  if (!$bgapi) $cmd.= sprintf(" --app=%s --action=%s", escapeshellarg($bgapp), escapeshellarg($bgact));
+  else $cmd.= sprintf(" --api=%s", escapeshellarg($bgapi));
   
   foreach ($tp as $k=>$v) {
-    $b=sprintf(" --%s=\"%s\"",$v["exec_idvar"],str_replace("\"","'",$v["exec_valuevar"]));
+    $b=sprintf(" --%s=%s", escapeshellarg($v["exec_idvar"]), escapeshellarg($v["exec_valuevar"]));
     $cmd.=$b;
   }
   return $cmd;

@@ -19,8 +19,7 @@ function rezizelocalimage($img,$size,$basedest) {
 
     $dest=DEFAULT_PUBDIR.$basedest;
 
-    $cmd=sprintf("convert  -thumbnail %d $source $dest",$size);
-    //$cmd=sprintf("convert  -scale %dx%d $source $dest",$size,$size);
+    $cmd=sprintf("convert  -thumbnail %d %s %s", $size, escapeshellarg($source), escapeshellarg($dest));
     system($cmd);
     if (file_exists($dest)) return $basedest;
     return false;
@@ -31,7 +30,7 @@ function copylocalimage($img,$size,$basedest) {
 
     $dest=DEFAULT_PUBDIR.$basedest;
 
-    $cmd=sprintf("/bin/cp $source $dest",$size);
+    $cmd=sprintf("/bin/cp %s %s", escapeshellarg($source), escapeshellarg($dest));
     system($cmd);
     if (file_exists($dest)) return $basedest;
     return false;

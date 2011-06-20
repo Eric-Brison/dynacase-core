@@ -45,7 +45,7 @@ function install_file($from, $to, $access,$owner="",$group="") {
 }
 
 function remove_dir($dir) {
-  $cmd = "rm -rf $dir";
+  $cmd = sprintf("rm -rf %s", escapeshellarg($dir));
   system($cmd);
 }
 

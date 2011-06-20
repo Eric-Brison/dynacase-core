@@ -47,7 +47,7 @@ if ($clean) {
   $msg= sprintf(_("delete %s on server %s...\n"),$ldapr,$ldaphost);
   print $msg;
   wbar(1,-1,$msg); 
-  system("ldapdelete -r -h $ldaphost -D '$ldapdn' -x -w '$ldappw' '$ldapr'");
+  system("ldapdelete -r -h %s -D %s -x -w %s %s", escapeshellarg($ldaphost), escapeshellarg($ldapdn), escapeshellarg($ldappw), escapeshellarg($ldapr));
   wbar(1,-1,_("LDAP cleaned")); 
  }
 

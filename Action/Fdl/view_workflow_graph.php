@@ -32,6 +32,19 @@ function view_workflow_graph(&$action) {
   $ratio = GetHttpVars("ratio","auto"); // ratio of graph
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
+  if( $type != 'simple' && $type != 'activity' && $type != 'complet' ) {
+    return $action->exitError(sprintf("Invalid type '%s'", htmlspecialchars($type)));
+  }
+  if( $format != 'dot' && $format != 'png' && $format != 'svg' ) {
+    return $action->exitError(sprintf("Invalid format '%s'", htmlspecialchars($format)));
+  }
+  if( $orient != 'LR' && $orient != 'TB' ) {
+    return $action->exitError(sprintf("Invalid orient '%s'", htmlspecialchars($orient)));
+  }
+  if( $ratio != 'fill' && $ratio != 'compress' && $ratio != 'expand' && $ratio != 'auto' ) {
+    return $action->exitError(sprintf("Invalid ratio '%s'", htmlspecialchars($ratio)));
+  }
+
   $doc=new_doc($dbaccess,$docid);
   $cmd=getWshCmd(false,$action->user->id);
 
@@ -39,13 +52,20 @@ function view_workflow_graph(&$action) {
     $action->lay->template=_("no cycle defined");
   } else {
 
-  $cmd.="--api=wdoc_graphviz --size=$size --ratio=$ratio --type=$type --orient=$orient --docid=".$doc->id;
+  $cmd .= sprintf("--api=wdoc_graphviz --size=%d --ratio=%s --type=%s --orient=%s --docid=%d",
+    $size,
+    escapeshellarg($ratio),
+    escapeshellarg($type),
+    escapeshellarg($orient),
+    $doc->id
+  );
   $svgfile="img-cache/w$type-".$action->getParam("CORE_LANG")."-".$doc->id.".$format";
   if ($format == "dot") $svgfile.=".txt"; // conflict with document template
   $dest=DEFAULT_PUBDIR."/$svgfile";
-  if ($format == "dot")   $cmd .= ">  $dest";
-  if ($format == "svg")   $cmd .= "| dot -T$format | sed -e s\"-".DEFAULT_PUBDIR ."-..-\" > $dest";
-  else $cmd .= "| dot -T$format> $dest";
+  if ($format == "dot")   $cmd .= sprintf("> %s", escapeshellarg($dest));
+  $sed = sprintf("s/%s/../", str_replace('/', '\/', DEFAULT_PUBDIR));
+  if ($format == "svg")   $cmd .= sprintf("| dot -T%s | sed -e %s > %s",  escapeshellarg($format), escapeshellarg($sed), escapeshellarg($dest));
+  else $cmd .= sprintf("| dot -T%s > %s", escapeshellarg($format), escapeshellarg($dest));
 
   system($cmd);
   //   print_r2( $cmd);
