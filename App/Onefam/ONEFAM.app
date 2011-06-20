@@ -48,6 +48,12 @@ $action_desc = array (
    "root"               =>"N"
   )  ,
   array( 
+   "name"               =>"ONEFAM_NG",
+   "short_name"         =>N_("one family multi document"),
+   "acl"                =>"ONEFAM_READ",
+   "root"               =>"N"
+  ),
+  array( 
    "name"		=>"ONEFAM_GENROOT",
    "short_name"		=>N_("one family generic root"),
    "acl"		=>"ONEFAM_READ"
