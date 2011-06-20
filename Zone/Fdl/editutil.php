@@ -1547,6 +1547,9 @@ function addDocIdCreate(BasicAttribute &$oattr, Doc &$doc, $attridk, $value, $in
         $creation=$oattr->getOption("creation");
         if ($creation && ($creation!="no")) {
             
+            $reldoc=new_doc($doc->dbaccess, $oattr->format);
+            if ($reldoc->control('icreate')!="") return '';
+            
             $urlcreate='';
             if ($creation != "yes") {
                 $create=str_replace('"','&quote;', $creation);
@@ -1558,23 +1561,23 @@ function addDocIdCreate(BasicAttribute &$oattr, Doc &$doc, $attridk, $value, $in
                     addWarningMsg(sprintf("creation option syntax error:%s [%s] ",$oattr->id, $creation));
                 } else {
                     foreach ( $jscreate as $k => $v ) {
-                        $k = strtolower(trim($k));
+                        $kl = trim(strtolower($k));
                         $v = str_replace('&quote;', '"', $v);
-                        $ocreate[trim($k)] = trim(str_replace('&quote;', '"', $v));
+                        
                         if ($v[0] == '"') {
-                            $urlcreate .= sprintf("&%s=%s", $k, urlencode(trim($v, '"')));
+                            $urlcreate .= sprintf("&%s=%s", $kl, urlencode(trim($v, '"')));
                         } else {
-                            $urlcreate .= sprintf("&%s=%%%s%%", $k, $v);
+                            $urlcreate .= sprintf("&%s=%%%s%%", $kl, $v);
                         }
                     }
                     
                     $urlcreate = elinkencode($doc, $attridk, $urlcreate, $index);
                 }
+               
             }
             $esymbol = '&nbsp;';
             if (! $attridk) $attridk=$oattr->id;
-            
-              $ectitle = sprintf(_("create a %s document"), $doc->getFamDoc()->getTitle());
+              $ectitle = sprintf(_("create a %s document"), $reldoc->getTitle());
            
               $emtitle = sprintf(_("modify document"));
             
