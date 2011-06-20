@@ -48,6 +48,7 @@ function generic_edit(Action &$action) {
 	$vid = $action->getArgument("vid"); // special controlled view
 	$mskid = $action->getArgument("mskid"); // special mask
 	$autoclose = $action->getArgument("autoclose"); // to close window after modification
+	$recallhelper = $action->getArgument("recallhelper"); // to recall helper input
 
 	$action->lay->Set("vid", $vid);
 	$action->lay->Set("ezone", $zonebodycard); // use for return in case of constraint
@@ -55,6 +56,7 @@ function generic_edit(Action &$action) {
 	$action->lay->Set("rvid", $rvid);
 	$action->lay->Set("rtarget", $rtarget);
 	$action->lay->Set("autoclose", $autoclose);
+	$action->lay->Set("recallhelper", $recallhelper);
 	$action->lay->Set("updateAttrid", $updateAttrid);
 	$action->lay->Set("SELFTARGET",($rtarget=="_self"));
 	// Set the globals elements

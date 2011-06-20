@@ -142,13 +142,24 @@ function updateOpenerLink(data) {
         inp=wop.document.getElementById('ilink_'+data.attrid);
         if (inp) inp.value=data.title;
 
+        // special for doc multiple
         inp=wop.document.getElementById('mdocid_work'+data.attrid);
         if (inp) {
              inp.value=data.id;
              wop.addmdocs('_'+data.attrid);
         } else { 
+            // normal case
             inp=wop.document.getElementById(data.attrid);
-            if (inp) inp.value=data.id;
+            if (inp) {
+                inp.value=data.id;
+                if (data.recallhelper)
+                    var ic=wop.document.getElementById('ic_ilink_'+data.attrid);
+                    if (ic) {
+                      ic.onclick.apply(ic, []);
+                      
+                }
+            }
+            
         }
 
         wop.disableReadAttribute();
