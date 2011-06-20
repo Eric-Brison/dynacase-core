@@ -26,19 +26,19 @@ Class openAuthenticator extends Authenticator {
     include_once('WHAT/Lib.Http.php');
 
     $privatekey=getHttpVars("privateid");
-    if (! $privatekey) return false;
+    if (! $privatekey) return Authenticator::AUTH_NOK;
 
     $this->privatelogin = $this->getLoginFromPrivateKey($privatekey);
     if( $this->privatelogin === false ) {
-      return false;
+      return Authenticator::AUTH_NOK;
     }
 
     $err = $this->consumeToken($privatekey);
     if( $err === false ) {
-      return false;
+      return Authenticator::AUTH_NOK;
     }
 
-    return $this->privatelogin;
+    return Authenticator::AUTH_OK;
   }
 
   public function getLoginFromPrivateKey($privatekey) {
@@ -85,7 +85,7 @@ Class openAuthenticator extends Authenticator {
   /**
    * no ask
    */
-  public function askAuthentication() {    
+  public function askAuthentication($args) {
     return TRUE;
   }
   

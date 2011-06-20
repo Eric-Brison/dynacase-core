@@ -74,7 +74,7 @@ function editextdoc(&$action) {
 		setHttpVar("id",$doc->id);
 		$err = $doc->lock(true); // autolock
 		if ($err != "")   $action->ExitError($err);
-		if ($err=="") $action->AddActionDone("LOCKFILE",$doc->id);
+		if ($err=="") $action->AddActionDone("LOCKDOC",$doc->id);
 
 
 		$classid = $doc->fromid;

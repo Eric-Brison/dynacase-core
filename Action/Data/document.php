@@ -21,7 +21,7 @@ include_once("DATA/Class.Collection.php");
  * @param Action &$action current action
  * @global id Http var : document identificator
  */
-function document(&$action) {
+function document(Action &$action) {
     $mb1=microtime(true);
     $id=getHttpVars("id");
     $method=strtolower(getHttpVars("method"));
@@ -30,7 +30,7 @@ function document(&$action) {
         $out->error=$err;
     } else {
         $start=microtime(true);
-        documentApplyMethod($id,$method,$returntype,$out);
+        documentApplyMethod($action,$id,$method,$returntype,$out);
     }
     if ($returntype!="json") $action->lay->template=$out;
     else {
@@ -61,7 +61,7 @@ function getPerfoInfo($time='') {
  * Display info before download
  * @global id Http var : document for file to edit (SIMPLEFILE family)
  */
-function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
+function documentApplyMethod(Action &$action, $id,$method,&$returntype,&$out,&$doc=null) {
     $returntype="json";
     $doc=null;
     $out=false;
@@ -82,21 +82,23 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
             break;
         case 'getcontent':
             if (! $id) {$err=sprintf(_("empty reference"));break;}
-            $onlyValues=getHttpVars("onlyValues","true")=="true";
-            $orderby=getHttpVars("orderBy");
-            $completeprop=getHttpVars("completeProperties","false")=="true";
             $doc=new Fdl_Collection($id);
             if (! $doc->error) {
-                $start=getHttpVars("start",0);
-                $slice=getHttpVars("slice",100);
-                $key=getHttpVars("key");
-                $keymode=getHttpVars("mode","word");
-                $keyproperty=getHttpVars("searchProperty","svalues");
-                $filter=getHttpVars("filter");
+                $doc->setContentCompleteProperties($action->getArgument("completeProperties","false")=="true");
+                $doc->setContentOnlyValue($action->getArgument("onlyValues","true")=="true");
+                $doc->setContentOrderBy($action->getArgument("orderBy"));
+                $doc->setContentSlice($action->getArgument("slice",100));
+                $doc->setContentStart($action->getArgument("start",0));
+                $doc->setContentKey($action->getArgument("key"));
+                $doc->setContentKeyMode($action->getArgument("mode","word"));
+                $doc->setContentRecursiveLevel($action->getArgument("recursiveLevel",0));
+                $doc->setContentSearchProperty($action->getArgument("searchProperty","svalues"));
+                $filter=$action->getArgument("filter");
                 if ($filter) $filter=json_decode($filter);
                 if ($filter=="undefined") $filter="";
-                $vhc=getHttpVars("verifyhaschild")=="true";
-                $out=$doc->getContent($onlyValues,$completeprop,$filter,$start,$slice,$orderby,$vhc,$key,$keymode,$keyproperty);
+                $doc->setContentFilter($filter);
+                $doc->setContentVerifyHasChild($action->getArgument("verifyhaschild")=="true");
+                $out=$doc->getContent();
             } else $out->error=$doc->error;
             break;
         case 'getauthorizedfamilies':
@@ -546,19 +548,26 @@ function documentApplyMethod($id,$method,&$returntype,&$out,&$doc=null) {
                 if ($withContent) {
                     if ($doc->isCollection()) {
                     $configContent=getHttpVars("contentConfig");
-                    if ($configContent) $configContent=json_decode($configContent);
+                    if ($configContent) {
+                        $configContent=json_decode($configContent);
+                    
+                $doc->setContentCompleteProperties($configContent->completeProperties===true);
+                $doc->setContentOnlyValue($configContent->onlyValues!==false);
+                $doc->setContentOrderBy($configContent->orderBy);
+                $doc->setContentSlice(($configContent->slice)?$configContent->slice:100);
+                $doc->setContentStart($configContent->start);
+                $doc->setContentKey($configContent->key);
+                $doc->setContentKeyMode($configContent->mode);
+                $doc->setContentSearchProperty($configContent->searchProperty);
+                $doc->setContentRecursiveLevel($configContent->recursiveLevel);
+                
+                $doc->setContentFilter($configContent->filter);
+                $doc->setContentVerifyHasChild($configContent->verifyhaschild===true);
                      
-                    $onlyValues=($configContent->onlyValues!==false);
-                    $completeprop=($configContent->completeProperties===true);
-                    $orderby=$configContent->orderBy;
-                    $vhc=($configContent->verifyhaschild===true);
-                    $key=$configContent->key;
-                    $keymode=$configContent->mode;
-                    $keyproperty=$configContent->searchProperty;
-                    $filter=$configContent->filter;
-                    $start=$configContent->start;
-                    $slice=($configContent->slice)?$configContent->slice:100;
-                    $out["storedContent"]=$doc->getContent($onlyValues,$completeprop,$filter,$start,$slice,$orderby,$vhc,$key,$keymode,$keyproperty);
+                    
+                 
+                    }
+                    $out["storedContent"]=$doc->getContent();
                     }
                 else {
                     $out["storedContent"]=null;

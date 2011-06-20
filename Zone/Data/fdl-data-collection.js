@@ -108,7 +108,8 @@ Fdl.Collection.prototype.toString= function() {
  * concordance with the main keyword</li>
  * <li><b>key : </b> {String}(optional) main keyword filter  </li>
  * <li><b>mode : </b> {String}(optional) search mode fir main keyword must be 'word' or 'regexp' (default is word)</li>
- * <li><b>searchProperty : </b> {String}(optional) main property or attribute identicator where apply the key. The operator is ~* (insensitive case include) by default equal to any values ("svalues" property) </li>
+ * <li><b>recursiveLevel : </b> {Numeric}(optional) inspect subdirectories until depth level. A limit is necessary because the graph can be cyclic </li>
+ * <li><b>mode : </b> {String}(optional) search mode fir main keyword must be 'word' or 'regexp' (default is word)</li>
  * </ul>
  * @return {Fdl.DocumentList} list of Fdl.Document
  */
@@ -532,7 +533,7 @@ Fdl.getHomeFolder = function() {
   if (u != null && u.id) {
     var idhome='FLDHOME_'+u.id;
     var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) return h;
+    if (h && h.isAlive()) return h;
   }
   return null;
 };
@@ -543,7 +544,7 @@ Fdl.getDesktopFolder = function() {
   if (u != null && u.id) {
     var idhome='FLDDESKTOP_'+u.id;
     var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) {
+    if (h && h.isAlive()) {
       Fdl._desktopFolder=h;
       return h;
     }
@@ -557,7 +558,7 @@ Fdl.getOfflineFolder = function() {
   if (u != null && u.id) {
     var idhome='FLDOFFLINE_'+u.id;
     var h=new Fdl.Collection({id:idhome});
-    if (h.isAlive()) {
+    if (h && h.isAlive()) {
       Fdl._offlineFolder=h;
       return h;
     }

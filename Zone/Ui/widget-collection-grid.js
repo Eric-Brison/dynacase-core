@@ -1586,16 +1586,20 @@ Ext.fdl.GridCollection = Ext.extend(Ext.grid.GridPanel, {
                                 }
                             }
                             
-                            if (this.dataIndex == 'revdate') {
-                                return record.get('_fdldoc').getProperty('mdate');
-                            }
+                         
                             
                             if (this.dataIndex == 'fromid') {
                                 return Fdl.encodeHtmlTags(record.get('_fdldoc').getProperty('fromtitle'));
                             }
-                            if (this.dataIndex == 'cdate') {
+                            if (this.dataIndex == 'cdate' || this.dataIndex == 'revdate'|| this.dataIndex == 'adate') {
                                 // not view hours
-                                return String.format('<span ext:qtip="{0}">{1}</span>', value, value.substr(0, 10));
+                            	if (this.dataIndex == 'revdate') {
+                            		value=record.get('_fdldoc').getProperty('mdate');
+                                }
+                                
+                                
+                            	var fmtDate=me.context.getUser().getLocaleFormat().dateFormat;
+                                return String.format('<span ext:qtip="{0}">{1}</span>', value, Fdl.formatDate(value, fmtDate));
                             }
                             
                             if (this.dataIndex == 'icon') {

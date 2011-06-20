@@ -3,7 +3,6 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
-if (!("console" in window)) {window.console = {'log': function(s) {}};}
 /**
  * @class Fdl.Context The connection context object to access to freedom
  *        documents
@@ -39,6 +38,7 @@ Fdl.Context = function(config) {
 Fdl.Context.prototype = {
 		url : '',
 		_isConnected : null,
+		_isAuthenticated : null,
 		_serverTime : null,
 		_documents : new Object(), // cache for latest revision document
 		_fixDocuments : new Object(),// cache for fix revision document
@@ -53,6 +53,8 @@ Fdl.Context.prototype = {
 		autoLoadCatalog:true, 
 		/** default locale 'fr' (french) or 'en' (english) @type {String}*/
 		locale:null, 
+		/** mapping family's document to special js class @type {Object}*/
+		familyMap:null,
 		getPropertiesInformation: function() {
 	if (! this.propertiesInformation) {
 			// not initialised yet i retreive the folder family
@@ -179,20 +181,55 @@ Fdl.Context.prototype.connect = function(config) {
  *            config
  *            <p>
  *            <ul>
- *            <li><b>reset:</b> Boolean (Optional) set to true to force a new
- *            ping
+ *            <li><b>reset:</b> Boolean (Optional) set to true to force a new ping</li>
+ *            <li><b>timeout:</b> Number (Optional) millisecond to wait connection/ need to have callback</li>
+  *           <li><b>onConnect:</b> Function (Optional) callback call when connection is ok</li>
+  *           <li><b>onFail:</b> Function (Optional) callback call when connection has failed</li>
+
  *            </ul>
  *            </p>
  * @return {Boolean} true if connected
  */
 Fdl.Context.prototype.isConnected = function(config) {
-	if (config && config.reset) this._isConnected = null;
+	if (typeof config == 'object' && config.reset) this._isConnected = null;
 	if (this._isConnected === null && this.url) {
+	    var lconfig={};
+	    var me=this;
+	    if (config && config.onConnect && config.onFail) {
+	        lconfig.onComplete=function () {
+	            me._isConnected=true;
+	            if (me._connectTimeId) {
+	                clearTimeout(me._connectTimeId);
+	                me._connectTimeId=0;
+	            }
+	            config.onConnect();
+	        };
+            lconfig.onError=function (x) {
+                if (me._isConnected === null) {
+                    me._isConnected=false;
+                    if (me._connectTimeId) {
+                        clearTimeout(me._connectTimeId);
+                        me._connectTimeId=0;
+                    }
+                    config.onFail();
+                }
+            };
+            
+            if (config.timeout > 0) {
+                me._connectTimeId=setTimeout(function () {
+                    if (me._isConnected === null) {
+                        me._isConnected=false;
+                        me._connectTimeId=0;
+                        config.onFail();
+                    }
+                },config.timeout);
+            }
+	    }
 		var data = this.retrieveData( {
 			app : 'DATA',
 			action : 'USER',
 			method : 'ping'
-		}, config, true);
+		}, lconfig, true);
 		this._serverTime = null;
 		if (data) {
 			if (data.error) {
@@ -219,9 +256,8 @@ Fdl.Context.prototype.isConnected = function(config) {
  * @return {Boolean} true if authentication succeded
  */
 Fdl.Context.prototype.isAuthenticated = function(config) {
-	if (config && config.reset)
-		this._isAuthenticate = null;
-	if (this._isAuthenticate === null) {
+	if (config && config.reset) this._isAuthenticated = null;
+	if (this._isAuthenticated === null) {
 		var userdata = this.retrieveData( {
 			app : 'DATA',
 			action : 'USER'
@@ -229,7 +265,7 @@ Fdl.Context.prototype.isAuthenticated = function(config) {
 		if (userdata) {
 			if (userdata.error) {
 				this.setErrorMessage(userdata.error);
-				this._isAuthenticate = false;
+				this._isAuthenticated = false;
 			} else {
 				if (!this.user)
 					this.user = new Fdl.User( {
@@ -237,11 +273,11 @@ Fdl.Context.prototype.isAuthenticated = function(config) {
 						context : this
 					});
 				if (this.autoLoadCatalog) this.loadCatalog();
-				this._isAuthenticate = true;
+				this._isAuthenticated = true;
 			}
 		}
 	}
-	return this._isAuthenticate;
+	return this._isAuthenticated;
 };
 
 /**
@@ -274,11 +310,11 @@ Fdl.Context.prototype.setAuthentification = function(config) {
 			method : 'authent'
 		}, config, true);
 		if (userdata.error) {
-			this._isAuthenticate = false;
+			this._isAuthenticated = false;
 			this.setErrorMessage(userdata.error);
 			return null;
 		} else {
-			this._isAuthenticate = true;
+			this._isAuthenticated = true;
 			this.user = new Fdl.User( {
 				data : userdata,
 				context : this
@@ -377,17 +413,35 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 		anonymousmode, otherroot) {
 	var bsend = '';
 	var ANAKEENBOUNDARY = '--------Anakeen www.anakeen.com 2009';
-	var xreq;
-
-	if (window.XMLHttpRequest) {
-		 xreq = new XMLHttpRequest();
-	} else if (window.ActiveXObject) {
-		// branch for IE/Windows ActiveX version
-		 xreq = new ActiveXObject("Microsoft.XMLHTTP");
+	var xreq=null;
+	if (typeof window != 'undefined') {
+		if (window.XMLHttpRequest) {
+			xreq = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+			// branch for IE/Windows ActiveX version
+			xreq = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+	} else {
+		xreq = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
 	}
 	var sync = true;
 
 	if (xreq) {
+	    if (parameters && parameters.onComplete) {
+	        sync=false;
+	        xreq.onreadystatechange=function () {
+	            if (xreq.readyState == 4) {
+	                if (xreq.status == 200) {
+	                    parameters.onComplete(xreq);
+	                } else {
+	                    if (parameters.onError) {
+	                        parameters.onError(xreq);
+	                    }
+	                }
+	            }
+	           
+	        }
+	    }
 		var url = this.url;
 		if (!url)
 			url = '/';
@@ -404,9 +458,7 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 		}
 		xreq.open(method, url, (!sync));
 		if (method) {
-			var params = '';
-			var ispost = false;
-			var name;
+			var name=null;
 			xreq.setRequestHeader("Content-Type",
 							"multipart/form-data; boundary=\""
 									+ ANAKEENBOUNDARY + "\"");
@@ -435,41 +487,42 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 			}
 		}
 		try {
-			if (bsend.length == 0)
-				xreq.send('');
-			else
-				xreq.send(bsend);
+		    if (bsend.length == 0)
+		        xreq.send('');
+		    else
+		        xreq.send(bsend);
 		} catch (e) {
-			this.setErrorMessage('HTTP status: unable to send request');
+		    this.setErrorMessage('HTTP status: unable to send request');
 		}
-		if (xreq.status == 200) {
-			var r = false;
-			try {
-				var db1=new Date().getTime();
-				if (parameters && parameters.plainfile) {
-					r =  xreq.responseText;
-				} else {
-				r = eval('(' + xreq.responseText + ')');
-				if (this.debug) r["evalDebugTime"]=(new Date().getTime())-db1;
-				if (r.error) this.setErrorMessage(r.error);
-                if (r.log) {
-                	console.log('datalog:',r.log);
-                	delete r.log;
-                }
-				if (r.spentTime)
-					console.log( {
-						time : r.spentTime
-					});
-            	    delete r.spentTime;
-				}
-			} catch (ex) {
-				alert('error on serveur data');
-				alert(xreq.responseText);
-			}
-			return r;
-		} else {
-			if (xreq)
-				this.setErrorMessage('HTTP status:' + xreq.status);
+		if (sync) {
+		    if (xreq.status == 200) {
+		        var r = false;
+		        try {
+		            var db1=new Date().getTime();
+		            if (parameters && parameters.plainfile) {
+		                r =  xreq.responseText;
+		            } else {
+		                r = eval('(' + xreq.responseText + ')');
+		                if (this.debug) r["evalDebugTime"]=(new Date().getTime())-db1;
+		                if (r.error) this.setErrorMessage(r.error);
+		                if (r.log) {
+		                    console.log('datalog:',r.log);
+		                    delete r.log;
+		                }
+		                if (r.spentTime)
+		                    console.log( {
+		                        time : r.spentTime
+		                    });
+		                delete r.spentTime;
+		            }
+		        } catch (ex) {
+		            alert('error on serveur data:'+xreq.responseText);
+		        }
+		        return r;
+		    } else {
+		        if (xreq)
+		            this.setErrorMessage('HTTP status:' + xreq.status);
+		    }
 		}
 	}
 	return false;
@@ -477,7 +530,7 @@ Fdl.Context.prototype.retrieveData = function(urldata, parameters,
 
 /**
  * Send a request to the server
- * @param Object urldata object list of key:value : {a:2,app:MYTEST,action:MYACTION}
+ * @param Object filepath 
  * @param Object parameters other parameters to complte urldata
  * @param Boolean anonymousmode 
  * @param String otherroot to call another file in same domain (it is forbidden to call another server domain) 
@@ -525,6 +578,35 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
 	form.submit();
 	return true;
 };
+
+/**
+ * get a document object
+ * 
+ * @param {object} config
+ *     <p><ul>
+ *          <li><b>familyName</b> family name to map</li>
+ *          <li><b>className</b> class name to map</li>
+ *     </ul></p>
+ *     
+ * @return {Boolean}
+ */
+Fdl.Context.prototype.addFamilyMap = function(config) {
+	if (config.familyName && config.className) {
+		if (this.familyMap == null) this.familyMap={};
+		this.familyMap[config.familyName]=config.className;
+	}
+	return true;
+};
+Fdl.Context.prototype.stringToFunction = function(str) {
+	  var fn=eval(str);
+
+	  if (typeof fn !== "function") {
+	    throw new Error("function not found");
+	  }
+
+	  return  fn;
+	};
+
 /**
  * get a document object
  * 
@@ -546,6 +628,7 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
  *           want set the document in cache</li>
  *            <li><b>getUserTags</b> Boolean (Optional) set to true if you want user tags also</li>
  *            <li><b>contentStore</b> Boolean (Optional) set to true if you want also retriev content of o a collection. This is possible only for collection. After get you can retrieve content with method getStoredContent of Fdl.collection</li>
+ *            <li><b>contentConfig : </b> {Object}(optional)  Option for content (see Fdl.Collection.getContent() </li>
  *            </ul>
  *            <pre><code>
  		var d = C.getDocument( {
@@ -556,7 +639,7 @@ Fdl.Context.prototype.sendForm = function(urldata, target, otherroot) {
 				orderBy : 'title desc'
 			}
 		});
-		if (d.isAlive()) {
+		if (d && d.isAlive()) {
 			var dl = d.getStoredContent(); // document list object			
 			var p = dl.getDocuments();  // array of Fdl.Documents   
  *            </code></pre>
@@ -583,7 +666,7 @@ Fdl.Context.prototype.getDocument = function(config) {
 	var docid = config.id;
 
 	var latest=true;
-	if (config && config.latest === false) latest=false;
+	if (typeof config == 'object' && config.latest === false) latest=false;
 	
 	if (docid && (typeof docid == 'object') && (docid.length==1)) {
 		docid=docid[0];
@@ -612,8 +695,15 @@ Fdl.Context.prototype.getDocument = function(config) {
 	   return null;
    }
 	var wdoc = new Fdl.Document(config);
+	
 	if (! wdoc._data) return null;
-	if ((wdoc.getProperty('defdoctype') == 'D')
+	if (this.familyMap != null && this.familyMap[wdoc.getProperty('fromname')]) {
+		var sname=wdoc.getProperty('fromname');
+		config.data = wdoc._data;
+		
+		var sclass=this.stringToFunction(this.familyMap[sname]);
+		wdoc = new sclass(config);
+	}else if ((wdoc.getProperty('defdoctype') == 'D')
 			|| (wdoc.getProperty('defdoctype') == 'S')) {
 		config.data = wdoc._data;
 		wdoc = new Fdl.Collection(config);
@@ -735,7 +825,7 @@ Fdl.Context.prototype.getHomeFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._homeFolder = h;
 			return h;
 		}
@@ -745,7 +835,7 @@ Fdl.Context.prototype.getHomeFolder = function(config) {
 /**
  * get desktop folder of current user
  * 
- * @return {Fdl.Collection} the home folder, null is no home
+ * @return {Fdl.Collection} the home folder, null is no desktop folder
  */
 Fdl.Context.prototype.getDesktopFolder = function(config) {
 	if (this._desktopFolder)
@@ -756,7 +846,7 @@ Fdl.Context.prototype.getDesktopFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._desktopFolder = h;
 			return h;
 		}
@@ -766,7 +856,7 @@ Fdl.Context.prototype.getDesktopFolder = function(config) {
 /**
  * get offline folder of current user
  * 
- * @return {Fdl.Collection} the home folder, null is no home
+ * @return {Fdl.Collection} the home folder, null is no offline folder
  */
 Fdl.Context.prototype.getOfflineFolder = function(config) {
 	if (this._offlineFolder)
@@ -777,7 +867,7 @@ Fdl.Context.prototype.getOfflineFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._offlineFolder = h;
 			return h;
 		}
@@ -798,7 +888,7 @@ Fdl.Context.prototype.getBasketFolder = function(config) {
 		if (! config) config={};
 		config.id=idhome;
 		var h = this.getDocument(config);
-		if (h.isAlive()) {
+		if (h!=null && h.isAlive()) {
 			this._basketFolder = h;
 			return h;
 		} else {

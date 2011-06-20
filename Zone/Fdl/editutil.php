@@ -653,16 +653,48 @@ if (($oattr->type == "docid")&& ($oattr->getOption("multiple")=="yes")) {
 	} else {
 		$argids = explode(",",$reg[3]);  // output args
 		$arg = array();
-		while (list($k, $v) = each($argids)) {
-			if (strlen($v) > 1) $arg[$k]= strtolower(chop($v));
-		}
+		$outsideArg = array();
+	 while ( list($k, $v) = each($argids) ) {
+        $linkprefix = "ilink_";
+        $isILink = false;
+        $attrId = $argids[$k];
+        if (substr($attrId, 0, strlen($linkprefix)) == $linkprefix) {
+            $attrId = substr($attrId, strlen($linkprefix));
+            $isILink = true;
+        }
+        $docAttr = $doc->getAttribute($attrId);
+        if (is_object($docAttr) && !$docAttr->inArray()) {
+            $targid = trim(strtolower($attrId));
+             if ($isILink) {
+                $targid = $linkprefix . $targid;
+            }
+            $outsideArg[] = $targid;
+        } else {
+            $targid = strtolower(trim($attrId));
+            if ($isILink) {
+                $targid = $linkprefix . $targid;
+            }
+            if (strlen($attrId) > 1) $arg[$targid]= $targid;
+        }
+    }
 	}
-	if (count($arg) > 0) {
-		$jarg="'".implode("','",$arg)."'";
+	if (count($arg) > 0 || count($outsideArg) > 0) {
+	    if (count($arg) == 0 ){
+	        $jarg="'".implode("','",$outsideArg)."'";
+	    }else {
+    		$jarg="'".implode("','",$arg)."'";
+    		$jOutsideArg = "";
+    		if (count($outsideArg) > 0) {
+    		    $jOutsideArg="'".implode("','",$outsideArg)."'";
+    		}
+    		if (!empty($jOutsideArg)){
+    		    $jOutsideArg = ",[$jOutsideArg]";
+    		}
+	    }
 
 		$input.="<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"".
 " title=\""._("clear inputs")."\"".
-" onclick=\"clearInputs([$jarg],'$index','$attridk')\">";
+" onclick=\"clearInputs([$jarg],'$index','$attridk' $jOutsideArg)\">";
 	}
 }
 }  else if (($oattr->type == "date") || ($oattr->type == "timestamp")) {
@@ -887,8 +919,8 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 	// get default values
 	$ddoc = createDoc($doc->dbaccess, $doc->fromid==0?$doc->id:$doc->fromid,false);
 	$ddoc->setDefaultValues($ddoc->getFamDoc()->getDefValues(), true, true);
-	
-	
+
+
 	$tad = $ddoc->attributes->getArrayElements($attrid);
 	$tval=array();
 	$nbcolattr=0; // number of column
@@ -917,11 +949,11 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 		if ($visible) $nbcolattr++;
 		$tval[$k]=$doc->getTValue($k);
 		$nbitem=count($tval[$k]);
-		
+
 		if( ($visible) && ($width=="auto") ){
 			$autoWidthAttr=true;
 		}
-		
+
 		if ($nbitem==0) {
 			// add first range
 			if ($oattr->format != "empty" && $oattr->getOption("empty")!="yes") {
@@ -929,7 +961,7 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 				$nbitem=1;
 			}
 		}
-		
+
 		//Dead code?
 		//("bvalue_" or "ivalue" could not be found in editarray.xml neither in this function.
 		// and $tivalue is redefined as empty array in code below.
@@ -963,17 +995,17 @@ function getLayArray(&$lay,&$doc,&$oattr,$row=-1) {
 		$oattr->mvisibility="U";
 		$pindex='s';
 	}
-	
+
 	//Compute table width with some compatibility rules
 	$tableWidth=$oattr->getOption("twidth",'100%');//compatibility
-	
+
 	//but if all columns are fixed, you probably want an 'auto' layout...
 	if( (!$autoWidthAttr) && ($tableWidth != 'auto') ){
 		//TODO: should write something in the log
 		$tableWidth='auto';
 	}
 	$lay->set("tableWidth", $tableWidth);
-	
+
 	$lay->setBlockData("TATTR",$talabel);
 	$lay->setBlockData("IATTR",$tilabel);
 	$lay->set("attrid",$attrid);
@@ -1082,7 +1114,7 @@ function getZoneLayArray(&$lay,&$doc,&$oattr,$zone) {
 		$lay->set("eiclass",'');
 		$lay->set("tableWidth",$oattr->getOption("twidth",'100%'));
 		$lay->set("tableStyle",$oattr->getOption("tstyle",''));
-		
+
 
 		// get default values
 		$fdoc=$doc->getFamDoc();
@@ -1186,7 +1218,7 @@ function getLayMultiDoc(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 	if ($index!=="") $idocid=$oattr->id.'_'.$index;
 	else $idocid=$oattr->id;
 	$needLatest=($oattr->getOption("docrev","latest")=="latest");
-	
+
 	$lay->set("name",$aname);
 	$lay->set("aid",$idocid);
 	$lay->set("value",$value);
@@ -1269,7 +1301,7 @@ function getLayOptions(&$lay,&$doc, &$oattr,$value, $aname,$index) {
 
 	$lay->set("lvalue",$value);
 	$enuml = $oattr->getenumlabel();
-	
+
 	$enumk=array_keys($enuml);
 	if (($etype=="free") && ($eformat!="auto")){
 		$enuml['...']=_("Other...");

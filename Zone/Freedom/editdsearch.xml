@@ -69,7 +69,7 @@ select.cond option.set, option[disabled] {
 	</td>
 <td class="und" >
   <select class="cond"  name="_se_attrids[]"  onchange="filterfunc(this)">
-  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" [attrdisabled] value="[attrid]">[attrname]</option>
+  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" ismultiple="[ismultiple]" [attrdisabled] value="[attrid]">[attrname]</option>
   [ENDBLOCK ATTR]
   </select></td>
 <td class="und">
@@ -163,7 +163,7 @@ select.cond option.set, option[disabled] {
 	</td>
 <td class="und" >
   <select class="cond" name="_se_attrids[]"  onchange="filterfunc(this)" >
-  [BLOCK [ATTRCOND]]<option [attrselected] atype="[attrtype]" [attrdisabled] class="[attrtype]" value="[attrid]">[attrname]</option>
+  [BLOCK [ATTRCOND]]<option [attrselected] atype="[attrtype]" [attrdisabled] class="[attrtype]" value="[attrid]" ismultiple="[ismultiple]">[attrname]</option>
   [ENDBLOCK [ATTRCOND]]
   </select></td>
 <td class="und">

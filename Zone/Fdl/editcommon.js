@@ -1083,32 +1083,42 @@ function clearEmptyEnum(ikey, ival) {
   }
 }
 
-function clearInputs(tinput, idx,attrid) {
-  var iinput;
-  var err='';
- 
-  for (var i=0; i< tinput.length; i++) {
-      if (idx) iinput=tinput[i]+'_'+idx;
-      else iinput=tinput[i];
-   
-    if (document.getElementById(iinput)) {
-      if (! isInputLocked(iinput)) {	
-	document.getElementById(iinput).value=' ';
-	//	document.getElementById(iinput).style.backgroundColor='[CORE_BGCOLORHIGH]';
-	
-      } else {
-	err = err + "\n" + iinput;
-      }
-    } else {
-      if (! document.getElementById(iinput+'0'))   alert('[TEXT:Attribute not found]'+' : '+iinput);
-    }
-  }
-  disableReadAttribute();
+function clearInputs(tinput, idx,attrid, tOutsideInput) {
+	var iinput;
+	var err='';
 
-  if (err != '')  alert('[TEXT:NOT Clear]'+err);
-  if (attrid && document.getElementById(attrid)) try {document.getElementById(attrid).focus();} catch (exception) {} ;
+	for (var i=0; i< tinput.length; i++) {
+		if (idx) iinput=tinput[i]+'_'+idx;
+		else iinput=tinput[i];
+		err += deleteInputValue(iinput);
+	}
+	if (tOutsideInput){
+		for (var i=0; i< tOutsideInput.length; i++) {
+			iinput=tOutsideInput[i];
+			err += deleteInputValue(iinput);
+		}
+	}
+	disableReadAttribute();
+
+	if (err != '')  alert('[TEXT:NOT Clear]'+err);
+	if (attrid && document.getElementById(attrid)) try {document.getElementById(attrid).focus();} catch (exception) {} ;
 
 }
+function deleteInputValue(id){
+	var err = "";
+	if (document.getElementById(id)) {
+		if (! isInputLocked(id)) {	
+			document.getElementById(id).value=' ';
+			//	document.getElementById(iinput).style.backgroundColor='[CORE_BGCOLORHIGH]';
+		} else {
+			err = err + "\n" + id;
+		}
+	} else {
+		if (! document.getElementById(id+'0'))   alert('[TEXT:Attribute not found]'+' : '+id);
+	}
+	return err;
+}
+
 function addEnum(th,cible,docid,attrid,key) {
   if (cible) {
     if (key.style.display=='none') {

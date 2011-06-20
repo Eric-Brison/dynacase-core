@@ -214,14 +214,23 @@ Class SearchDoc {
     }
     return $this->count;
   }  
-  /* reset results to use another search
-   *
+  /** 
+   *reset results to use another search
    * @return void
    */
   public function reset() {
     $this->result=false;
     $this->debuginfo="";
   }
+  
+  /** 
+   * Verify if query is already sended to database
+   * @return boolean
+   */
+  public function isExecuted() {
+    return ($this->result!=false);
+  }
+  
   /**
    * Return sql filters used for request
    * @return array of string
@@ -294,7 +303,14 @@ Class SearchDoc {
     $this->debuginfo=$debuginfo;
     if (($this->searchmode=="TABLE") && ($this->mode=="ITEM")) $this->mode="TABLEITEM";
 
+    if ($this->mode=="ITEM") return $this;
+    
     return $this->result;
+  }
+  
+  public function getDocumentList() {
+      include_once("FDL/Class.DocumentList.php");
+      return new DocumentList($this);
   }
   /**
    * 

@@ -72,6 +72,7 @@ var $order_by="";
  */
 var $isset = false; // indicate if fields has been affected (call affect methods)
 
+static $savepoint=array();
 //----------------------------------------------------------------------------
 /** 
  * Database Object constructor
@@ -85,10 +86,9 @@ var $isset = false; // indicate if fields has been affected (call affect methods
  */
 function __construct($dbaccess='', $id='',$res='',$dbid=0)
   {
-    
+    if (! $dbaccess) $dbaccess=getDbAccess();
     $this->dbaccess = $dbaccess;
     $this->init_dbid();
-
 
   
     //global ${$this->oname};
@@ -102,13 +102,13 @@ function __construct($dbaccess='', $id='',$res='',$dbid=0)
     $this->selectstring="";
     // SELECTED FIELDS
     reset($this->fields);
-    while(list($k,$v) = each($this->fields)) {
+    foreach($this->fields as $k=>$v) {
       $this->selectstring=$this->selectstring.$this->dbtable.".".$v.",";
       $this->$v="";
     }
 
     reset($this->sup_fields);
-    while (list($k,$v) = each($this->sup_fields)) {
+    foreach($this->sup_fields as $k=>$v) {
       $this->selectstring=$this->selectstring."".$v.",";
       $this->$v="";
     }  
@@ -146,7 +146,7 @@ function Select($id)  {
     $fromstr="{$this->dbtable}"; 
     if (is_array($this->sup_tables)) {
       reset($this->sup_tables);
-      while(list($k,$v) = each($this->sup_tables)) {
+      foreach($this->sup_tables as $k=>$v) {
 	$fromstr.=",".$v;
       }
     } 
@@ -157,7 +157,7 @@ function Select($id)  {
       $count=0;
       $wherestr=" where "; 
       reset($this->id_fields);
-      while(list($k,$v) = each($this->id_fields)) {
+      foreach($this->id_fields as $k=>$v) {
 	if ($count >0) {
 	  $wherestr=$wherestr." AND ";
 	}
@@ -177,7 +177,7 @@ function Select($id)  {
     }
     if (is_array($this->sup_where)) {
       reset($this->sup_where);
-      while(list($k,$v) = each($this->sup_where)) {
+      foreach($this->sup_where as $k=>$v) {
 	$wherestr=$wherestr." AND ";
 	$wherestr=$wherestr."( ".$v." )";
 	$count=$count+1;
@@ -251,7 +251,7 @@ function getValues() {
 function Affect($array)
   {
     reset($array);
-    while(list($k,$v) = each($array)) {
+    foreach($array as $k=>$v) {
       if (!is_integer($k)) {
 	$this->$k = $v;
       }
@@ -358,7 +358,7 @@ function Add($nopost=false,$nopre=false)
     
     $valstring = "";
     reset($this->fields);
-    while (list($k,$v) = each($this->fields)) {
+    foreach($this->fields as $k=>$v) {
       $valstring = $valstring.$this->lw($this->$v).",";
     }
     $valstring=substr($valstring,0,strlen($valstring)-1);
@@ -441,7 +441,7 @@ function Delete($nopost=false)
     $count=0;
     
     reset($this->id_fields);
-    while(list($k,$v) = each($this->id_fields)) {
+    foreach($this->id_fields as $k=>$v) {
       if ($count >0) {
         $wherestr=$wherestr." AND ";
       }
@@ -512,12 +512,12 @@ function Create($nopost=false)
     if (isset($this->sqlcreate)) {
       // step by step
       if (is_array($this->sqlcreate)) {
-	while (list($k,$sqlquery)=each($this->sqlcreate)) {
+	foreach($this->sqlcreate as $k=>$sqlquery) {
 	  $msg.=$this->exec_query($sqlquery,1);
 	}
       } else {	
 	$sqlcmds = explode(";",$this->sqlcreate);
-	while (list($k,$sqlquery)=each($sqlcmds)) {
+	foreach($sqlcmds as $k=>$sqlquery) {
 	  $msg.=$this->exec_query($sqlquery,1);
 	}
       }
@@ -584,7 +584,8 @@ function exec_query($sql,$lvl=0)
 	default:
 	  break;
 	}
-	//print_r(debug_backtrace(false));
+	//print_r2(debug_backtrace(false));
+	//throw new Exception($this->msg_err);
 	error_log("DbObj::exec_query [".$this->msg_err." (".$this->err_code.")]:$action_needed.[$sql]");
       }
     }
@@ -626,6 +627,7 @@ function exec_query($sql,$lvl=0)
        $TSQLDELAY[]=array("t"=>sprintf("%.04f",microtime_diff(microtime(),$sqlt1)),"s"=>str_replace("from","<br/>from",$sql),
 			  "st"=>stacktrace(8));
      }
+   
     return ($this->msg_err);
 }
     
@@ -713,7 +715,7 @@ function Update()
 	  $inter_fields = array_intersect(array_keys($row),$this->fields);
 	reset($this->fields);
 	$fields = "(";
-	while (list($k,$v)=each($inter_fields)) {
+	foreach($inter_fields as $k=>$v) {
 	  $fields .= $v.",";
 	}
 	$fields=substr($fields,0,strlen($fields)-1); // remove last comma
@@ -724,7 +726,7 @@ function Update()
       // compute compatible values
 	$values = "(";
       reset($inter_fields);
-      while (list($k,$v)=each($inter_fields)) {
+      foreach($inter_fields as $k=>$v) {
 	$values.= "E'".pg_escape_string($row[$v])."',";
       }
       $values=substr($values,0,strlen($values)-1); // remove last comma
@@ -743,7 +745,73 @@ function Update()
     
     return ($err);
   }
-
+    /**
+     * set a database transaction save point
+     * @param string $point
+     * @return string error message
+     */
+    public function savePoint($point)
+    {
+        $err = '';
+        if (!self::$savepoint[$this->dbid]) {
+            self::$savepoint[$this->dbid] = array(
+                $point
+            );
+            $err = $this->exec_query("begin");
+        } else {
+            self::$savepoint[$this->dbid][] = $point;
+        }
+        if (!$err) {
+            $err=$this->exec_query(sprintf("savepoint %s", pg_escape_string($point)));
+        }
+               // error_log(__METHOD__." $point : $err");
+        return $err;
+    }
+    /**
+     * revert to last transaction save point
+     * @param string $point
+     * @return string error message
+     */
+    public function rollbackPoint($point)
+    {
+        $lastPoint = array_pop(self::$savepoint[$this->dbid]);
+        if ($lastPoint == $point) {
+            $err = $this->exec_query(sprintf("rollback to savepoint %s", pg_escape_string($lastPoint)));
+            
+            if ((!$err) && (count(self::$savepoint[$this->dbid]) == 0)) {
+                $err = $this->exec_query("commit");
+            }
+        } else {
+            if ($lastPoint !== null) {
+                self::$savepoint[$this->dbid][] = $lastPoint;
+            }
+            $err = sprintf("cannot rollback unsaved point : %s", $point);
+        }
+        
+        return $err;
+    
+    } 
+    /**
+     * commit last transaction save point
+     * @param string $point
+     * @return string error message
+     */
+    public function commitPoint($point)
+    {
+        $lastPoint = array_pop(self::$savepoint[$this->dbid]);
+        if ($lastPoint == $point) {
+            $err = $this->exec_query(sprintf("release savepoint %s", pg_escape_string($lastPoint)));
+            if ((!$err) && (count(self::$savepoint[$this->dbid]) == 0)) {
+                $err = $this->exec_query("commit");
+            }
+        } else {
+            if ($lastPoint !== null) {
+                self::$savepoint[$this->dbid][] = $lastPoint;
+            }
+            $err = sprintf("cannot commit unsaved point : %s", $point);
+        }
+        return $err;
+    }
 // FIN DE CLASSE
 }
 ?>

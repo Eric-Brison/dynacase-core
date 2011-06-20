@@ -35,6 +35,8 @@ Fdl.Application.prototype = {
 	description : null,
 	/** icon url @type {String} */
 	icon : null,
+	/** version @type {Numeric} */
+	version : null,
 	/** internal data @type {Object} */
 	_data:null,
 	/** context @private @type {Fdl.Context} */
@@ -50,6 +52,7 @@ Fdl.Application.prototype = {
 				this.context.setErrorMessage(data.error);
 			}
 		}
+		return false;
 	},
 	toString : function() {
 		return 'Fdl.Application';
@@ -67,6 +70,7 @@ Fdl.Application.prototype.completeData = function(data) {
 			this.available=this._data.available;
 			this.icon=this._data.icon;
 			this.displayable=this._data.displayable;
+			this.version=this._data.version;
 		} else {
 			this.context.setErrorMessage(data.error);
 		}

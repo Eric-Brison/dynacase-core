@@ -73,7 +73,7 @@ function popupcard(&$action) {
 
   $clf = ($doc->CanLockFile() == "");
   $cuf = ($doc->CanUnLockFile() == "");
-  $cud = ($doc->CanUpdateDoc() == "");
+  $cud = ($doc->canEdit() == "");
   
   popupInvisible('popupcard',$kdiv,'toxml'); // don't display for the moment
   popupCtrlActive('popupcard',$kdiv,'reference'); 

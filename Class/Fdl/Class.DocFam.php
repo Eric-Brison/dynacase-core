@@ -241,7 +241,7 @@ function preDocDelete() {
    * @param string $def default value returned if parameter not found or if is empty
    * @return array the list of parameter values
    */
-  function GetParamTValue($idAttr, $def="",$index=-1)  {
+  function getParamTValue($idAttr, $def="",$index=-1)  {
     $t = $this->_val2array($this->getParamValue("$idAttr",$def));
     if ($index == -1) return $t;
     if (isset($t[$index])) return $t[$index];
@@ -257,6 +257,7 @@ function preDocDelete() {
    */
   function setParam($idp, $val) {
     $this->setChanged();
+    if (is_array($val)) $val=$this->_array2val($val);
     return $this->setXValue("param",$idp, $val);
     
   }
@@ -422,9 +423,9 @@ function preDocDelete() {
       if ($this->name) {
 	$dxml=new DomDocument();
 	$famfile=DEFAULT_PUBDIR.sprintf("/families/%s.fam",$this->name);
-	if (! @$dxml->load($famfile)) {	      
-	  $err=sprintf(_("cannot open %s configuration file"),$famfile);
-	  $o->error=$err;
+	if (! @$dxml->load($famfile)) {	  
+	    return null;    
+	  
 	  return $o;
 	} else {
 	  $properties=$dxml->getElementsByTagName('property');
