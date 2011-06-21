@@ -89,7 +89,7 @@ addEvent(window,"load",resetbodyopacity);
 <tr class="FREEDOMBack1">
  <td width="60%">
   <IMG class="documentIcon" align="left" border="0"  title="[FTITLE]" alt="[FTITLE]" align="absbottom" needresize="1"  SRC="[iconsrc]">
-  <IMG style="float:left" border="0" title="[locked]" SRC="[emblem]">
+  <IMG style="float:left" border="0" class="iconimg20" title="[TEXT:locked]" SRC="[emblem]">
   <span class="familyTitle">[FTITLE]</span><br><span  class="FREEDOMTextBigTitle documentTitle">[title]</span>
   [IF FOOT][ZONE FDL:EDITBARMENU][ENDIF FOOT]
      </td><td align="right">

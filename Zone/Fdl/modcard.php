@@ -79,7 +79,7 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 		if ($err != "")   $action->ExitError($err);
 
 		// test object permission before modify values (no access control on values yet)
-		$err=$doc-> CanUpdateDoc();
+		$err=$doc-> canEdit();
 		if ($err != "")  $action-> ExitError($err);
 
 	}
@@ -224,14 +224,19 @@ function modcard(Action &$action, &$ndocid, &$info=array()) {
 			if ($err=="") {$err.=$doc-> Modify();  }
 		}
 	}
-
-        if (! $err) {
-            if ($info) {
-            foreach ($info as $k=>$v) {
-                if ($v["err"]!="") $err=$v["err"];
-            }
+    
+    if (!$err) {
+        if ($info) {
+            foreach ( $info as $k => $v ) {
+                if ($v["err"] != "") $err = $v["err"];
             }
         }
+        // add events for  folders
+        $fdlids = $doc->getParentFolderIds();
+        foreach ( $fdlids as $fldid ) {
+            $action->AddActionDone("MODFOLDERCONTAINT", $fldid);
+        }
+    }
 	return $err;
 }
 

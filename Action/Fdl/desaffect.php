@@ -35,7 +35,7 @@ function desaffect(&$action) {
   if ($err != "") $action->exitError($err);
   
   if ($err == "") {
-    $action->AddActionDone("UNLOCKFILE",$doc->id);
+    $action->AddActionDone("UNLOCKDOC",$doc->id);
 
     $action->addWarningMsg(sprintf(_("document %s has been unaffected"),$doc->title,$docu->title));
 

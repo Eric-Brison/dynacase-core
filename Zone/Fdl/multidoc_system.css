@@ -1,0 +1,121 @@
+* { font-family : Trebuchet MS, sans;}
+
+.multidoc ul
+{
+	list-style-type: none; 
+	margin:0;
+	padding:0;
+}
+
+.multidoc
+{
+	height:100%;
+}
+
+.multidoc .tabs
+{
+	white-space:nowrap;
+	margin-right:16px;
+	z-index:1;
+}
+
+.multidoc .tabs_vertical
+{
+	float:left;
+	margin-top:40px;
+}
+
+.multidoc #arrow_down
+{
+	display:none;
+	float:right;
+}
+
+.multidoc .tabs_plus_vertical
+{
+	display:none;
+	position:absolute;
+	left:0px;
+   top: 42px;
+  	overflow:auto;
+	overflow-x:hidden;
+	z-index:100;
+}
+
+.multidoc .tabs_plus
+{
+	right:0px;
+   top: 42px;
+	position: absolute;
+	display: none;
+	overflow:auto;
+	overflow-x:hidden;
+}
+
+.multidoc #loader
+{
+	display:none;
+}
+
+.multidoc .tab, .multidoc .tab-active
+{
+	position:relative;
+	z-index:1;
+	float:left;
+}
+
+.multidoc .content
+{
+	float:left;
+	text-overflow:ellipsis;
+  	white-space:nowrap; 
+	overflow:hidden;  
+	width:100px;
+}
+
+.multidoc .doc_content
+{
+	float:left;
+}
+
+.multidoc .doc_content_vertical
+{
+	float:right;
+}
+
+.multidoc #arrow_down
+{
+	background-image:url(../images/more.png);
+}
+
+.multidoc .icon_doc, .multidoc .img_icon
+{
+	max-width:16px;
+	max-height:16px;
+}
+
+.multidoc .img_new
+{
+	background-image:url(../images/goto.png);
+}
+
+.multidoc .img_del
+{
+	background-image:url(../images/del.png);
+}
+
+.multidoc .icon_doc, .multidoc .img_new, .multidoc .img_del
+{
+	float:left;
+	width:16px;
+	height:16px;
+}
+
+.multidoc .options
+{
+	float:left;
+	visibility:hidden;
+	margin-right:-16px;
+	position:relative;
+	z-index: 100;
+}

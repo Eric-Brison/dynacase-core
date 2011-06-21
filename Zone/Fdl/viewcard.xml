@@ -30,9 +30,10 @@ if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FD
        <img class="click"  align="right" needresize="1" height="22px" src="[IMG:mail.png]" style="display:[amail]"  onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'email[id]','[CORE_STANDURL]&app=FDL&action=EDITMAIL&mid=[id]')"   alt="[TEXT:mail]"  title="[TEXT:senddoc]">
    
 <div id="url[id]" onmouseout="visibleornot('url[id]');" style="position:absolute; visibility:hidden; display:inline; margin:10px; padding:10px; border:1px inset [COLOR_C2]; color:[COLOR_B1]; background-color:[COLOR_C9];  font-size:85%">[CORE_EXTERNURL][CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]</div>
-    <IMG align="left" class="documentIcon" border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1"  SRC="[iconsrc]" onclick="visibleornot('url[id]');" >
+    <IMG align="left" class="documentIcon" border="0"  title="[TEXT:double-clic to update document]" alt="[classtitle]" align="absbottom" needresize="1"  SRC="[iconsrc]" ondblclick="window.location.href+='&latest=Y'" onclick="setTimeout(function() { visibleornot('url[id]'); }, 500);" >
 <IMG  style="float:left" class="emblem" title="[locked]" SRC="[emblem]">
    [IF forum]<a href="#forum" style="border:0px"><IMG  style="border:0px;float:left;cursor:pointer" class="emblem" title="[TEXT:goto forum]" SRC="[IMG:forum.png]"></a>[ENDIF forum]
+   [IF inDomain]<IMG  style="float:left" class="emblem" title="[TEXT:Inserted in a domain]"  SRC="[IMG:domainsync.png]">[ENDIF inDomain]
    [IF postitid]<IMG  style="float:left;cursor:pointer" class="emblem" title="[TEXT:View postit]" onclick="showbox('POSTIT')" SRC="[IMG:stickynotes.png]">[ENDIF postitid]
   [IF RSS]<a href="[rsslink]"><IMG  style="float:left;border:none" class="emblem" title="[TEXT:RSS link]" SRC="[IMG:rss22.png]"></a>[ENDIF RSS]
   <span class="familyTitle">[classtitle]</span><br>

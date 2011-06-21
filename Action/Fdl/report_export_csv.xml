@@ -1,0 +1,108 @@
+
+[ZONE FDL:HTMLHEAD]
+<div class="document" style="padding : 10px">
+    <br />
+    <span class="FREEDOMTextBigTitle documentTitle">[TEXT:EXPORT_CSV Definition of the export param :]</span>
+    <br />
+    <a style="float : right" href="./?sole=Y&&app=FDL&action=FDL_CARD&props=N&abstract=N&id=HELP_REPORT" target="_blank">[TEXT:EXPORT_CSV help]</a>
+    <br />
+
+    <form name="fviewidoc" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]&app=FDL&action=REPORT_EXPORT_CSV">
+        <div id="exportKind" class="frame" style="">
+            <div class="legend">[TEXT:EXPORT_CSV Select export kind :]</div>
+            <div class="content" style="background-color: rgb(249, 250, 251); padding : 10px">
+                <table>
+                    <tr>
+                        <td>
+                            [TEXT:EXPORT_CSV Kind of export :]
+                        </td>
+                        <td>
+                            <select id="kind" name="kind" onchange="computePivotVisibility();">
+                                <option value="simple">[TEXT:EXPORT_CSV Simple]</option>
+                                <option value="pivot">[TEXT:EXPORT_CSV pivot]</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <table id="pivot-tab">
+                    <tr>
+                        <td>
+                            [TEXT:EXPORT_CSV Select pivot :]</td>
+                        <td>
+                            <select name="pivot">
+                                [BLOCK pivotAttribute]
+                                <option value='[key]'>[libelle]</option>
+                                [ENDBLOCK pivotAttribute]
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="Export Option" class="frame">
+            <div class="legend" onclick='switchBlock();' title="[TEXT:EXPORT_CSV Click to show options]">[TEXT:EXPORT_CSV CSV options :] </div>
+            <div class="content" style="background-color: rgb(249, 250, 251);" >
+                <table id="csvOption" style="display : none; margin : 10px">
+                    <tr>
+                        <td>
+                            [TEXT:EXPORT_CSV Delimiter :]
+                        </td>
+                        <td>
+                            <input name="delimiter" value=";" style="width : 3em;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            [TEXT:EXPORT_CSV Enclosure :]
+                        </td>
+                        <td>
+                            <input name="enclosure" value='"' style="width : 3em;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            [TEXT:EXPORT_CSV Decimal separator :]
+                        </td>
+                        <td>
+                            <input name="decimalSeparator" value=',' style="width : 3em;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            [TEXT:EXPORT_CSV Encoding :]
+                    </td>
+                        <td>
+                            <select name="encoding">
+                                <option value="ISO-8859-1//TRANSLIT">[TEXT:EXPORT_CSV ISO-8859 (european)]</option>
+                                <option value="utf8">[TEXT:EXPORT_CSV utf8]</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <input type="hidden" value="[id]" name="id" />
+        <input style='float : right; margin-right : 25 px' type='submit' value="[TEXT: EXPORT_CSV Exporter]" />
+    </form>
+</div>
+<script type="text/javascript">
+    function computePivotVisibility() {
+        var value = document.getElementById("kind").value;
+        if (value != "pivot") {
+        document.getElementById("pivot-tab").style.display = 'none';
+        }else{
+        document.getElementById("pivot-tab").style.display = 'block';
+        }
+    }
+    
+    function switchBlock() {
+        if (document.getElementById("csvOption").style.display != 'none') {
+            document.getElementById("csvOption").style.display = 'none';
+        }else {
+            document.getElementById("csvOption").style.display = 'block';
+        }
+    }
+
+    window.onload = computePivotVisibility;
+</script>
+[ZONE FDL:HTMLFOOT]

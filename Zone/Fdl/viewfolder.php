@@ -200,44 +200,54 @@ $famid="")       // folder containt special fam id
             $tdoc[$k]["canedit"] =1;
             $tdoc[$k]["postitid"] = ($doc->postitid>0)?$doc->postitid:false;
             $tdoc[$k]["forumid"] = ($doc->forumid>0)?$doc->forumid:false;
+            $tdoc[$k]["inDomain"] = $doc->isInDomain();
+           
 
+                $tdoc[$k]["emblem"] = $doc->getEmblem();
             if ($doc->confidential > 0) {
-                $tdoc[$k]["emblem"] = $action->GetImageUrl("confidential.gif");
+               // $tdoc[$k]["emblem"] = $action->GetImageUrl("confidential.gif");
                 $tdoc[$k]["emblemt"] = _("confidential");
-                $tdoc[$k]["emblemw"] ="12";
+                //$tdoc[$k]["emblemw"] ="12";
                 $tdoc[$k]["canedit"] =false;
                 $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
             } else if ($doc->locked == -1) {
-                $tdoc[$k]["emblem"] = $action->GetImageUrl("revised.gif");
+               // $tdoc[$k]["emblem"] = $action->GetImageUrl("revised.gif");
                 $tdoc[$k]["emblemt"] = _("fixed");
-                $tdoc[$k]["emblemw"] ="12";
+               // $tdoc[$k]["emblemw"] ="12";
                 $tdoc[$k]["canedit"] =false;
+                $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
+                
+            } else if ($doc->lockdomainid > 0) {
+               
+              //  $tdoc[$k]["emblem"] = $action->GetImageUrl("clef1.gif");
+                $tdoc[$k]["emblemt"] = _("domain locked");
+              //  $tdoc[$k]["emblemw"] ="12";
                 $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
             } else if ((abs($doc->locked) == $action->parent->user->id)) {
 
-                $tdoc[$k]["emblem"] = $action->GetImageUrl("clef1.gif");
+              //  $tdoc[$k]["emblem"] = $action->GetImageUrl("clef1.gif");
                 $tdoc[$k]["emblemt"] = _("locked");
-                $tdoc[$k]["emblemw"] ="12";
+              //  $tdoc[$k]["emblemw"] ="12";
                 $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
 
             } else if ($doc->locked != 0) {
-                $tdoc[$k]["emblem"] = $action->GetImageUrl("clef2.gif");
+               // $tdoc[$k]["emblem"] = $action->GetImageUrl("clef2.gif");
                 $tdoc[$k]["emblemt"] = _("locked");
-                $tdoc[$k]["emblemw"] ="12";
+             //   $tdoc[$k]["emblemw"] ="12";
                 $tdoc[$k]["canedit"] =false;
                 $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
 
             } else if ($doc->archiveid != 0) {
-                $tdoc[$k]["emblem"] = $action->GetImageUrl("archive.png");
+               // $tdoc[$k]["emblem"] = $action->GetImageUrl("archive.png");
                 $tdoc[$k]["emblemt"] = _("archived");
-                $tdoc[$k]["emblemw"] ="12";
+               // $tdoc[$k]["emblemw"] ="12";
                 $tdoc[$k]["canedit"] =false;
                 $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
 
             } else if ($doc->control("edit") != "")  {
-                $tdoc[$k]["emblem"] = $action->GetImageUrl("nowrite.png");
+               // $tdoc[$k]["emblem"] = $action->GetImageUrl("nowrite.png");
                 $tdoc[$k]["emblemt"] = _("read-only");
-                $tdoc[$k]["emblemw"] ="12";
+              //  $tdoc[$k]["emblemw"] ="12";
                 $tdoc[$k]["canedit"] =false;
                 $tdoc[$k]["locked"] = sprintf("<img src=\"%s\" title=\"%s\" width=\"20px\">",$tdoc[$k]["emblem"],$tdoc[$k]["emblemt"]);
             }

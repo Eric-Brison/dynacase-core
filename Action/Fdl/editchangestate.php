@@ -37,7 +37,7 @@ function editchangestate(&$action) {
   if ($doc->wid > 0) {
     $tneed=array();
     $err = $doc->lock(true); // autolock
-    if ($err=="") $action->AddActionDone("LOCKFILE",$doc->id);
+    if ($err=="") $action->AddActionDone("LOCKDOC",$doc->id);
   
     $wdoc = new_Doc($dbaccess,$doc->wid);
     $wdoc->Set($doc);

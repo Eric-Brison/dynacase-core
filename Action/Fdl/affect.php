@@ -55,7 +55,7 @@ function affect(&$action) {
     if ($err != "") $action->addWarningMsg($err);
   
     if ($err == "") {
-      $action->AddActionDone("LOCKFILE",$doc->id);
+      $action->AddActionDone("LOCKDOC",$doc->id);
 
       $action->addWarningMsg(sprintf(_("document %s has been allocate to %s"),$doc->title,$docu->title));
 

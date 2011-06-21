@@ -31,10 +31,10 @@ $vf = newFreeVaultFile($dbaccess);
     {
       //Header("Location: $url");
       if (( $info->public_access)) {
-	Http_DownloadFile($info->path, $info->name, $mimetype);
+	Http_DownloadFile($info->path, $info->name, $mimetype, true);
 	
       } else {
-	Http_DownloadFile("FREEDOM/Images/doc.gif", "unknow", "image/gif");
+	Http_DownloadFile("FREEDOM/Images/doc.gif", "unknow", "image/gif", true);
       }
     }
 
