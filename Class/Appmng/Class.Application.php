@@ -74,7 +74,7 @@ create sequence SEQ_ID_APPLICATION start 10;
   public $parent="";
 
   public $param;
-  public $permission = ""; // permission object
+  public $permission = null; // permission object
 
   public $jsref=array();
   public $jscode=array();
@@ -150,6 +150,7 @@ create sequence SEQ_ID_APPLICATION start 10;
           // error
           return sprintf(_("Application %s (%s) not available"),$this->name,_($this->short_name));
       }
+      $this->permission=null;
   }
 
   function Complete() {

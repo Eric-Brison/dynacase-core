@@ -89,9 +89,9 @@ function characterData($parser, $data)
 {
   global $rows,$nrow,$inrow,$incell,$ncol,$celldata;
   if ($inrow && $incell) {
-    $celldata.=preg_replace(
+    $celldata.=preg_replace('/\s/u', ' ', preg_replace(
       '/^\s*[\r\n]\s*$/ms', '', str_replace(SEPCHAR,ALTSEPCHAR,$data)
-    );
+    ));
   }
   //  print $data. "- ";
 }

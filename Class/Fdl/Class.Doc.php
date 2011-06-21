@@ -6771,6 +6771,8 @@ create unique index i_docir on doc(initid, revision);";
 	  $tableframe[$v]["helpid"]=$helpid;
 	  $tableframe[$v]["ehelp"]=($helpid!=false) && (in_array($listattr[$i]->id,$helpattr));
 
+	  $tableframe[$v]["multiple"]=($attr->getOption("multiple")=="yes")?"true":"false";
+	  $tableframe[$v]["atype"]=$attr->type;
 	  $tableframe[$v]["name"]=ucfirst($label);
 	  $tableframe[$v]["classback"]=($attr->usefor=="O")?"FREEDOMOpt":"FREEDOMBack1";
 	  //$tableframe[$v]["name"]=$action->text($label);
