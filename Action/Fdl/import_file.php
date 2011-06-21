@@ -1133,8 +1133,8 @@ function ods2csv($odsfile) {
 	$wsh = getWshCmd();
 	$cmd=sprintf("%s --api=ods2csv --odsfile=%s --csvfile=%s >/dev/null",
 	getWshCmd(),
-	$odsfile,
-	$csvfile );
+	escapeshellarg($odsfile),
+	escapeshellarg($csvfile) );
 	$err=system($cmd,$out);
 	if ($err===false) return false;
 	return $csvfile;
