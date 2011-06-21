@@ -17,7 +17,7 @@ include_once("Lib.Common.php");
 
 class LibSystem {
 
-  function getCommandPath($cmdname) {
+  static function getCommandPath($cmdname) {
     $path_env = getenv("PATH");
     if( $path_env == false ) {
       return false;
@@ -30,11 +30,11 @@ class LibSystem {
     return false;
   }
   
-  function getHostName() {
+  static function getHostName() {
     return php_uname('n');
   }
   
-  function getHostIPAddress($hostname="") {
+  static function getHostIPAddress($hostname="") {
     if( $hostname == false ) {
       $hostname = LibSystem::getHostName();
     }
@@ -45,19 +45,19 @@ class LibSystem {
     return $ip;
   }
 
-  function getServerName() {
+  static function getServerName() {
     return getenv("SERVER_NAME");
   }
 
-  function getServerAddr() {
+  static function getServerAddr() {
     return getenv("SERVER_ADDR");
   }
 
-  function runningInHttpd() {
+  static function runningInHttpd() {
     return LibSystem::getServerAddr();
   }
 
-  function ssystem($args, $opt=null) {
+  static function ssystem($args, $opt=null) {
     $pid = pcntl_fork();
     if( $pid == -1 ) {
       return -1;
@@ -86,14 +86,14 @@ class LibSystem {
     pcntl_exec($cmd, $args, $envs);
   }
 
-  function getAbsolutePath($path) {
+  static function getAbsolutePath($path) {
     if( is_link($path) ) {
       $path = readlink($path);
     }
     return realpath($path);
   }
 
-  function tempnam($dir, $prefix) {
+  static function tempnam($dir, $prefix) {
     if( $dir === null || $dir === false ) {
       $dir = getTmpDir();
 	}
