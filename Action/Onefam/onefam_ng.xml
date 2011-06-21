@@ -7,6 +7,10 @@
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+<script type="text/javascript" src="jquery/jquery.js"></script>
+<script type="text/javascript" src="FDL/Layout/underscore.js"></script>
+<script type="text/javascript" src="FDL/Layout/backbone.js"></script>
+<script type="text/javascript" src="FDL/Layout/multidoc.js"></script>
 
 [CSS:REF]
 [JS:REF]
@@ -105,6 +109,12 @@ function openfirst(docid) {
     openiframe(null,null,docid)
   }
 }
+
+function Start_Multidoc()
+{
+	MultiDocument = new MultiDocument();
+	MultiDocument.setAnchor("#tdiframe");
+}
 [IF OPENFAM]
 addEvent(window,'load',function zou() {openfirst('[openfam]');})
 [ENDIF OPENFAM]
@@ -112,7 +122,7 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
 
  </head>
 
-<body style="background-color:[ONEFAM_BGCOLOR]">
+<body style="background-color:[ONEFAM_BGCOLOR]" onload="Start_Multidoc()">
 
 <table style="width:100%;height:100%"><tr><td style="width:[wcols]px" valign="top">
 [BLOCK SELECTMASTER]
