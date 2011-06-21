@@ -15,8 +15,6 @@ include_once('Class.Action.php');
 include_once('Class.Application.php');
 include_once('Class.Session.php');
 include_once('Class.Log.php');
-include_once('Class.ApiUsage.php');
-include_once('Lib.System.php');
 
 function print_usage() {
     print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n".
