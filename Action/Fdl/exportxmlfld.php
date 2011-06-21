@@ -154,25 +154,71 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
 
     if ($eformat=="X") {
         $zipfile = uniqid(getTmpDir()."/xml").".zip";
-        system("cd $foutdir && zip -r $zipfile * > /dev/null",$ret);
+        system(sprintf("cd %s && zip -r %s * > /dev/null", escapeshellarg($foutdir), escapeshellarg($zipfile)), $ret);
         if (is_file($zipfile)) {
-            system("rm -fr $foutdir");
+            system(sprintf("rm -fr %s", $foutdir));
             Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip",false,false,true);
         } else {
             exportExit($action,_("Zip Archive cannot be created"));
         }
     } elseif ($eformat=="Y") {
         $xmlfile = uniqid(getTmpDir()."/xml").".xml";
-        $cmde=array();
-        $cmde[]="cd $foutdir";
-        $cmde[]=sprintf("echo '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' > %s",$xmlfile);
-        $cmde[]=sprintf("echo '<documents date=\"%s\" author=\"%s\" name=\"%s\">' >> %s",
-        strftime("%FT%T"),User::getDisplayName($action->user->id),$exportname,$xmlfile);
-        $cmde[]="cat *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> $xmlfile";
-        $cmde[]="echo '</documents>' >> $xmlfile";
-        system(implode(" && ",$cmde),$ret);
+
+        $fh = fopen($xmlfile, 'x');
+        if( $fh === false ) {
+            return exportExit($action, sprintf("%s (Error creating file '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
+        }
+
+        /* Print XML header */
+        $xml_head = <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="%s" author="%s" name="%s">
+EOF;
+        $xml_head = sprintf($xml_head,
+            htmlspecialchars(strftime("%FT%T")),
+            htmlspecialchars(User::getDisplayName($action->user->id)),
+            htmlspecialchars($exportname)
+        );
+        $xml_footer = "</documents>";
+
+        $ret = fwrite($fh, $xml_head);
+        if( $ret === false ) {
+            return exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
+        }
+        fflush($fh);
+
+        /* chdir into dir containing the XML files
+         * and concatenate them into the output file
+         */
+        $cwd = getcwd();
+        $ret = chdir($foutdir);
+        if( $ret === false ) {
+            return exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created"), htmlspecialchars($foutdir)));
+        }
+
+        $cmd = sprintf("cat *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> %s", escapeshellarg($xmlfile));
+        system($cmd, $ret);
+
+        $ret = chdir($cwd);
+        if( $ret === false ) {
+            return exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created"), htmlspecialchars($cwd)));
+        }
+
+        /* Print XML footer */
+        $ret = fseek($fh, 0, SEEK_END);
+        if( $ret === -1 ) {
+            return exportExit($action, sprintf("%s (Error fseek '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
+        }
+
+        $ret = fwrite($fh, $xml_footer);
+        if( $ret === false ) {
+            return exportExit($action, sprintf("%s (Error writing to file '%s')", _("Xml file cannot be created"), htmlspecialchars($xmlfile)));
+        }
+        fflush($fh);
+        fclose($fh);
+
         if (is_file($xmlfile)) {
-            system("rm -fr $foutdir");
+            system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
             Http_DownloadFile($xmlfile, "$exportname.xml", "text/xml",false,false,true);
         } else {
             exportExit($action,_("Xml file cannot be created"));

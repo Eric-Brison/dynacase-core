@@ -386,7 +386,7 @@ class OOoLayout extends Layout {
 		if (! file_exists($odtfile)) return "file $odtfile not found";
 		$this->cibledir=uniqid(getTmpDir()."/odf");
 
-		$cmd = sprintf("unzip  %s  -d %s >/dev/null", $odtfile, $this->cibledir );
+		$cmd = sprintf("unzip  %s  -d %s >/dev/null", escapeshellarg($odtfile), escapeshellarg($this->cibledir) );
 		system($cmd);
 
 		$contentxml=$this->cibledir."/content.xml";
@@ -453,7 +453,7 @@ class OOoLayout extends Layout {
 		$contentxml=$this->cibledir."/meta.xml";
 		file_put_contents($contentxml,$this->meta_template);
 
-		$cmd = sprintf("cd %s;zip -r %s * >/dev/null && /bin/rm -fr %s", $this->cibledir, $odsfile, $this->cibledir );
+		$cmd = sprintf("cd %s;zip -r %s * >/dev/null && /bin/rm -fr %s", escapeshellarg($this->cibledir), escapeshellarg($odsfile), escapeshellarg($this->cibledir) );
 		system($cmd);
 		//rmdir($this->cibledir);
 	}
