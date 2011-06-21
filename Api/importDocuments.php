@@ -52,21 +52,30 @@ $htmlmode=($action->getArgument("htmlmode","yes")=="yes");
 setHttpVar('htmlmode', $htmlmode?'Y':'N');
 $archive=($action->getArgument("archive","no")=="yes");
 
+$to = $action->getArgument("to");
 $cr=importDocuments($action, $filename, $analyze, $archive);
 
-if ($logfile) {
-    writeImportLog($logfile, $cr);
+$filetmp=false;
+if ((!$logfile) && $to) {
+    $logfile = tempnam(getTmpDir(), 'logimport');
+    $filetmp=true;
 }
-print_r($cr);
-$to = $action->getArgument("to");
+if ($logfile) {
+    if ($htmlmode) {
+        writeHTMLImportLog($logfile, $cr);
+    } else {
+        writeImportLog($logfile, $cr);
+    }
+}
 // mode HTML
 
 if ($to) {
     include_once("FDL/sendmail.php");
 
     $themail = new Fdl_Mail_mime();
-    $themail->setHTMLBody($out,false);
-
+   
+      $themail->setHTMLBody(file_get_contents($logfile),false);
+    
     $from=getMailAddr($action->user->id);
     if ($from == "")  $from = getParam('SMTP_FROM');
     if ($from == "")  $from = $action->user->login.'@'.php_uname('n');
@@ -74,6 +83,7 @@ if ($to) {
     $subject=sprintf(_("result of import  %s"), basename(GetHttpVars("file")));
     $err=sendmail($to,$from,$cc,$bcc,$subject,$themail);
     if ($err) error_log("import sending mail: Error:$err");
+    if ($filetmp) unlink($logfile);
 } else {
     if (GetHttpVars("htmlmode") == "Y") print $out;
 }

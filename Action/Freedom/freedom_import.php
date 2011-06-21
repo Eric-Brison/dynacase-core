@@ -49,22 +49,37 @@ function freedom_import(Action &$action) {
 
     if (isset($_FILES["file"])) @unlink($csvfile); // tmp file
 }
-
-
-function writeHtmlCr(Layout &$lay,array $cr) {
-    foreach ($cr as $k=>$v) {
-        $cr[$k]["taction"]=_($v["action"]); // translate action
-        $cr[$k]["order"]=$k; // translate action
-        $cr[$k]["svalues"]="";
-        $cr[$k]["msg"]=nl2br($v["msg"]);
-        foreach ($v["values"] as $ka=>$va) {
-            $cr[$k]["svalues"].= "<LI".(($va=="/no change/")?' class="no"':'').">[$ka:$va]</LI>"; //
+function writeHTMLImportLog($log, array $cr) {
+    if ($log) {
+        $flog=fopen($log, "w");
+        if (! $flog) {
+            $action->addWarningMsg(sprintf(_("cannot write log in %s"),$log));
+        } else {
+            global $action;
+            $lay=new Layout(getLayoutFile("FREEDOM","freedom_import.xml"),$action);
+            writeHtmlCr($lay, $cr);
+            fputs($flog,$lay->gen());
+            fclose($flog);
         }
     }
-    $nbdoc=count(array_filter($cr,"isdoc"));
-    $lay->SetBlockData("ADDEDDOC",$cr);
-    $lay->Set("nbdoc",$nbdoc);
-    $lay->Set("nbprof",count(array_filter($cr,"isprof")));
+}
+
+function writeHtmlCr(Layout &$lay,array $cr) {
+    foreach ( $cr as $k => $v ) {
+        $cr[$k]["taction"] = _($v["action"]); // translate action
+        $cr[$k]["order"] = $k; // translate action
+        $cr[$k]["svalues"] = "";
+        $cr[$k]["msg"] = nl2br($v["msg"]);
+        if (is_array($v["values"])) {
+            foreach ( $v["values"] as $ka => $va ) {
+                $cr[$k]["svalues"] .= "<LI" . (($va == "/no change/") ? ' class="no"' : '') . ">[$ka:$va]</LI>"; //
+            }
+        }
+    }
+    $nbdoc = count(array_filter($cr, "isdoc"));
+    $lay->SetBlockData("ADDEDDOC", $cr);
+    $lay->Set("nbdoc", $nbdoc);
+    $lay->Set("nbprof", count(array_filter($cr, "isprof")));
 }
 
 
@@ -76,12 +91,11 @@ function isprof($var) {
 }
 
 function importDocuments(Action &$action, $file, $onlyAnalyze=false, $archive=false) {
-    print "archive $archive\n";
     if ($archive) {
         include_once("FREEDOM/freedom_ana_tar.php");
         $untardir=getTarExtractDir($action,basename($file));
         $mime=getSysMimeFile($file, basename($file));
-        print_r(array($untardir, $file, $mime));
+        //print_r(array($untardir, $file, $mime));
         $status=extractTar($file, $untardir,$mime);
         if ($status != 0) {
             $err= sprintf(_("cannot extract archive %s: status : %s"),$file, $status);
@@ -118,7 +132,7 @@ function writeImportLog($log, array $cr) {
     if ($log) {
         $flog=fopen($log, "w");
         if (! $flog) {
-            $action->addWarningMsg(sprintf(_("cannot write log in %s"),$log));
+            addWarningMsg(sprintf(_("cannot write log in %s"),$log));
         } else {
             fputs($flog,sprintf("IMPORT BEGIN OK : %s\n",$begtime));
             $countok=0;
