@@ -339,8 +339,12 @@ function exportonedoc(&$doc,&$ef,$fout,$wprof,$wfile,$wident,$wutf8,$nopref,$efo
   static $lattr;
   static $trans=false;
   static $fromname;
+  static $alreadyExported=array();
 
   if (!$doc->isAffected()) return;
+  if (in_array($doc->id, $alreadyExported)) return;
+  $alreadyExported[]=$doc->id;
+  
   if (! $trans) {
     // to invert HTML entities
     $trans = get_html_translation_table (HTML_ENTITIES);
