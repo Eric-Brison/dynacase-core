@@ -29,7 +29,7 @@ body, html
 .multidoc #arrow_down
 {	
 	cursor:pointer;
-	background-image:url(../images/more4.png);
+	background-image:url(../../ONEFAM/Images/more4.png);
 	width:32px;
 	height:32px;
 }
@@ -142,18 +142,18 @@ body, html
 
 .multidoc .img_new, .multidoc .img_del
 {
-	background-image:url(../images/goto.png);
+	background-image:url(../../ONEFAM/Images/goto.png);
 	cursor:pointer;
 }
 
 .multidoc .img_new
 {
-	background-image:url(../images/goto.png);
+	background-image:url(../../ONEFAM/Images/goto.png);
 }
 
 .multidoc .img_del
 {
-	background-image:url(../images/del.png);
+	background-image:url(../../ONEFAM/Images/del.png);
 }
 
 .multidoc .img_del:hover, .multidoc .img_new:hover
