@@ -37,6 +37,7 @@ Class Fdl_User {
       foreach ($ti as $i)  $info->$i=$this->_user->$i;
       $info->locale=getParam("CORE_LANG");
       $out->info=$info;
+      $out->localeFormat=getLocaleConfig();
     }
     $out->error=$this->error;
     return $out;

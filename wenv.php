@@ -69,7 +69,7 @@ function setCurrentContext($freedomctx="default") {
   fprintf($fcur, $freedomctx);
   fclose($fcur);
   $dpath = DEFAULT_PUBDIR."/context/".$freedomctx;
-  system("ln -sf \"$dpath/dbaccess.sh\" \"".DEFAULT_PUBDIR."/.freedom.sh\"");
+  system(sprintf("ln -sf %s/dbaccess.sh %s/.freedom.sh", escapeshellarg($dpath), escapeshellarg(DEFAULT_PUBDIR)));
 }
 
 function getCurrentDb() {
@@ -101,12 +101,18 @@ function initDbContext( $freedomctx = "default",
   $httpu = getenv("httpuser");
   $httpconf = getenv("httpconf");
 
-  $command = "sed -e 's,@PGSERVICE_CORE@,$pgservice_core,g'"
-    .        "    -e 's,@PGSERVICE_FREEDOM@,$pgservice_freedom,g'"
-    .        "    -e 's,@FREEDOM_CONTEXT@,$freedomctx,g'"
-    ;  
-  system("cat $inphpfile | $command > $dbfphp");
-  system("cat $inshfile | $command > $dbfsh");
+  $sed_1 = sprintf('s/@PGSERVICE_CORE@/%s/g', str_replace('/', '\/', $pgservice_core));
+  $sed_2 = sprintf('s/@PGSERVICE_FREEDOM@/%s/g', str_replace('/', '\/', $pgservice_freedom));
+  $sed_3 = sprintf('s/@FREEDOM_CONTEXT@/%s/g', str_replace('/', '\/', $freedomctx));
+
+  $command = sprintf("sed -e %s -e %s -e %s",
+    escapeshellarg($sed_1),
+    escapeshellarg($sed_2),
+    escapeshellarg($sed_3)
+  );
+
+  system(sprintf("cat %s | $command > %s", escapeshellarg($inphpfile), escapeshellarg($dbfphp)));
+  system(sprintf("cat %s | $command > %s", escapeshellarg($inshfile), escapeshellarg($dbfsh)));
 
   setCurrentContext($freedomctx);
 }

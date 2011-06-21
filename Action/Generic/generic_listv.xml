@@ -198,7 +198,7 @@ addEvent(window,"load",focusInput);
      oncontextmenu="viewdocmenu(event,'[id]',false,false,this);return false" 
      onclick="if (document.noselect) document.noselect=false; else {select(this,[id],[divid]);;subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'finfo[famid]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&props=N&id=[id]');}" >   
  <td class="tlist">
-<IMG width="16" align="absbottom" [IFNOT canedit]class="aiconnoh"[ENDIF canedit][IF canedit]class="aicon" title="[TEXT:toedit]" onclick="document.noselect=true;select(this.parentNode.parentNode,[id],[divid]);vedit(event,'[id]');"[ENDIF canedit]  id="i[divid]"      src="[iconsrc]">[title] <i>[state]</i></td>
+<IMG width="16" align="absbottom" [IFNOT canedit]class="aiconnoh"[ENDIF canedit][IF canedit]class="aicon" title="[TEXT:Modify]" onclick="document.noselect=true;select(this.parentNode.parentNode,[id],[divid]);vedit(event,'[id]');"[ENDIF canedit]  id="i[divid]"      src="[iconsrc]">[title] <i>[state]</i></td>
        
 <td class="tlist">[values]</td>
         

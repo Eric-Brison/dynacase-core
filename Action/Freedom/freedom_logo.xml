@@ -30,7 +30,7 @@
 <table style="width:100%;height:100%;"><tr><td style="text-align:center;vertical-align:middle">
 <img        src="[IMG:logodynacase.png]" title="[apptitle]" alt="[apptitle]" >
        <span style="border:white 7px solid;-moz-border-radius:20px;padding:5px;position:absolute;margin-left:-195px;margin-top:15px">
-    <img width="48px"  src="[appicon]" title="[apptitle]" alt="[apptitle]" needresize="1"></span>
+    <img width="48px" style="visibility:hidden" src="[appicon]" title="[apptitle]" alt="[apptitle]" needresize="1"></span>
 </td></tr></table>
 
 </body>

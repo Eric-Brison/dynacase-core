@@ -108,7 +108,12 @@ function viewcard(&$action) {
   }
   // set emblem
   $action->lay->set("emblem",$doc->getEmblem());
-  
+  $domains=$doc->getDomainIds();
+  if (empty($domains)) {
+      $action->lay->set("inDomain",false);
+  } else {
+      $action->lay->set("inDomain",true);
+  }
   
   if ($doc->doctype == 'Z') {
     $err =_("This document has been deleted");

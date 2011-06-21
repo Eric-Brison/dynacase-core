@@ -37,7 +37,7 @@ Class Crontab {
   private function load() {
     $cmd = 'crontab -l';
     if( $this->user != NULL ) {
-      $cmd .= ' -u '.escapeshellcmd($this->user);
+      $cmd .= ' -u '.escapeshellarg($this->user);
     }
     $cmd .= ' 2> /dev/null';
 
@@ -75,9 +75,9 @@ Class Crontab {
 
     $cmd = 'crontab';
     if( $this->user != NULL ) {
-      $cmd .= ' -u '.escapeshellcmd($this->user);
+      $cmd .= ' -u '.escapeshellarg($this->user);
     }
-    $cmd .= ' '.escapeshellcmd($tmp);
+    $cmd .= ' '.escapeshellarg($tmp);
     $cmd .= ' > /dev/null 2>&1';
 
     system($cmd, $ret);

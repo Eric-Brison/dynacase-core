@@ -6,15 +6,18 @@
  */
 
 // ---------------------------------------------------------------
-// $Id: NU_init.php.in,v 1.6 2007/12/20 08:54:21 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/networkuser/NU_init.php.in,v $
+// $Id:  $
 // ---------------------------------------------------------------
 
 global $app_const;
 
 $app_const= array(
 		  "INIT" => "yes",
-		  "VERSION" => "@VERSION@-@RELEASE@"
+		  "VERSION" => "@VERSION@-@RELEASE@",
+		  "DATA_LCDATE"=> array("val"=>"iso",
+                                  "descr"=>N_("format in date"),
+                                    "kind"=>"enum(iso|local)",
+                                   "global"=>"Y")
 		  );
 
 ?>

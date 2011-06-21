@@ -53,7 +53,7 @@ function moddfld(&$action) {
   
   // test object permission before modify values (no access control on values yet)
   $doc->lock(true); // enabled autolock
-  $err=$doc-> CanUpdateDoc();
+  $err=$doc-> canEdit();
   if ($err != "") $action-> ExitError($err);
   
   $doc-> Modify();

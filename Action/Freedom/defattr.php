@@ -125,7 +125,6 @@ function defattr(&$action)
         $newelem[$k]["profundator"]=getPuceAttributeProfunder($attr);
 	$newelem[$k]["SELECTFRAME"]="SELECTFRAME_$k";
 
-
 	if ($attr->type=="frame") {
 	  foreach($selecttab as $kopt=>$opt)  {
 	    if ($opt["frameid"] == $attr->fieldSet->id){
@@ -361,6 +360,14 @@ function defattr(&$action)
     $newelem[$k]["disabled"]="";
   }
   unset($newelem["FIELD_HIDDENS"]);
+  
+  
+  foreach ($newelem as $ia=>$va) {
+      foreach ($va as $ip=>$vp) {
+          $newelem[$ia][$ip]=str_replace('"', '&quot;', $vp);
+      }
+  }
+  
   $action->lay->SetBlockData("NEWELEM",$newelem);
 
 }

@@ -235,6 +235,7 @@ function seems_utf8($Str) {
 
    if ($this->id_file!=-1) {
       $this->fs->Show($this->id_fs, $this->id_dir, $f_path);
+      $f_infos=new stdClass();
       $f_infos->id_file = $this->id_file;
       $f_infos->name = $this->name;
       $f_infos->size = $this->size;

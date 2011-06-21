@@ -21,22 +21,25 @@ include_once("FDL/Class.Dir.php");
 
 
 // -----------------------------------
-function generic_mod(&$action) {
+function generic_mod(Action &$action) {
 	// -----------------------------------
 
 	// Get all the params
-	$dirid=GetHttpVars("dirid",0);
-	$docid=GetHttpVars("id",0);
-	$catgid=GetHttpVars("catgid",0);
-	$retedit=(GetHttpVars("retedit","N")=="Y"); // true  if return need edition
-	$noredirect=(GetHttpVars("noredirect")=="1"); // true  if return need edition
-	$quicksave=(GetHttpVars("quicksave")=="1"); // true  if return need edition
-	$rzone = GetHttpVars("rzone"); // special zone when finish edition
-	$rvid = GetHttpVars("rvid"); // special zone when finish edition
-	$viewext = GetHttpVars("viewext")=="yes"; // special zone when finish edition
-
+	$dirid=$action->getArgument("dirid",0);
+	$docid=$action->getArgument("id",0);
+	$catgid=$action->getArgument("catgid",0);
+	$retedit=($action->getArgument("retedit","N")=="Y"); // true  if return need edition
+	$noredirect=($action->getArgument("noredirect")=="1"); // true  if return need edition
+	$quicksave=($action->getArgument("quicksave")=="1"); // true  if return need edition
+	$rzone = $action->getArgument("rzone"); // special zone when finish edition
+	$rvid = $action->getArgument("rvid"); // special zone when finish edition
+	$viewext = $action->getArgument("viewext")=="yes"; // special zone when finish edition
+	$autoclose = $action->getArgument("autoclose")=="yes"; // special zone when finish edition
+	$recallhelper = $action->getArgument("recallhelper")=="yes"; // special zone when finish edition
+    $updateAttrid=$action->getArgument("updateAttrid");
+	
 	$dbaccess = $action->GetParam("FREEDOM_DB");
-
+    $action->parent->addJsRef("GENERIC/Layout/generic_mod.js");
 	$err = modcard($action, $ndocid, $info); // ndocid change if new doc
 	if (!$noredirect)  $action->AddWarningMsg($err);
 
@@ -93,6 +96,18 @@ function generic_mod(&$action) {
 
 
 	if ($noredirect) {
+        if ((!$err) && $updateAttrid) {
+            $action->lay->set("updateData", json_encode(array(
+                "id" => $doc->id,
+                "title" => $doc->getTitle(),
+                "attrid" => $updateAttrid,
+                "recallhelper"=>$recallhelper
+            )));
+        } else {
+            $action->lay->set("updateData","null");
+        }
+	
+		$action->lay->set("autoclose",$autoclose?"true":"false");
 		$action->lay->set("id",$ndocid);
 		$action->lay->set("constraintinfo",json_encode($info));
 		$action->lay->set("quicksave",$quicksave);

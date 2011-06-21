@@ -56,6 +56,12 @@ TR.FREEDOMBack2{
 	color : [CORE_TEXTFGCOLOR];
 }
 
+a.relation {
+	padding-left:15px;
+	background-repeat: no-repeat;
+}
+
+
 TABLE.edittable TD { vertical-align:top; }
 
 TD.FREEDOMText, .FREEDOMText {
@@ -183,11 +189,26 @@ DIV.barmenu A {
   padding-left:5px;
   white-space:nowrap;
 }
-TD.nowrap {
+TD.editbutton, TD.nowrap {
   white-space:nowrap;
   [IFNOT ISIE]width:2px;[ENDIF ISIE]
   [IF ISIE]width:50px;[ENDIF ISIE]
 }
+TD[type=docid][multiple=true]+TD.editbutton, 
+TABLE[type=docid][multiple=true] TD.editbutton {
+    vertical-align:bottom;
+}
+
+select.multidoc {
+    border:none;
+    width:100%
+}
+[IF ISIE]
+table[type=array] select.multidoc {
+    width:auto;/* cause IE bug */
+}
+[ENDIF ISIE]
+
 TD.MenuInactive{  
   vertical-align:middle;
 	background-color: [CORE_BGCOLORALTERN];
@@ -947,10 +968,19 @@ DIV.static {
 	cursor: pointer;
 }
 
-.tarray .add-button {
-	background : url('[IMG:add22.gif]') no-repeat;
+
+input[type=button].add-doc {
+	background : url('[IMG:add22.gif|16]') no-repeat;
+    width:16px;
+}
+input[type=button].view-doc {
+    background : url('[IMG:point22.gif|16]') no-repeat;
+    width:16px;
 }
 
+.tarray .add-button {
+    background : url('[IMG:add22.gif]') no-repeat;
+}
 .tarray .trash-button {
 	background : url('[IMG:trash22.gif]') no-repeat;
 }

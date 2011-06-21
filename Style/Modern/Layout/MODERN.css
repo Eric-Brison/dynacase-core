@@ -476,7 +476,7 @@ input[type="image"] {
 .document div.frame div.content {
     background-color: white !important;
     -moz-border-radius: 0px;
-    margin-top:-0.7em; 
+    margin-top:-0.6em; 
 }
 .document input,.document select,.document textarea,.document file,
 .freedom input {
@@ -523,6 +523,14 @@ input[type="image"] {
     background-image: [tabs-sprite-image];
 }
 
+.document input[type=button].add-doc {
+    background : url('lib/ui/icon/add.png') no-repeat;
+    width:16px;
+}
+.document input[type=button].view-doc {
+    background : url('lib/ui/icon/accept.png') no-repeat;
+    width:16px;
+}
 .document .tarray .add-button,.document .tarray .add-button:HOVER {
     background-image: url(lib/ui/icon/add.png) ;
 }

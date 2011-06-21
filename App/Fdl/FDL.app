@@ -53,46 +53,51 @@ $app_acl = array (
 );
 
 $action_desc = array (
-  
-  array( 
+
+  array(
    "name"		=>"NONE",
    "short_name"		=>N_("nothing action"),
    "acl"		=>"NORMAL",
    "root"		=>"Y"
   ) ,
-  array( 
+  array(
    "name"		=>"ENUM_CHOICE",
    "short_name"		=>N_("to choose value from set"),
    "acl"		=>"NORMAL",
   ) ,
-  array( 
+  array(
    "name"               =>"SPECIALHELP",
    "short_name"         =>N_("to choose value from special interface"),
    "acl"                =>"NORMAL",
   ) ,
-  array( 
+  array(
    "name"		=>"AUTOCOMPLETION",
    "short_name"		=>N_("to choose value from input help"),
    "acl"		=>"NORMAL",
   ) ,
-  array( 
+  array(
    "name"               =>"FDL_FAMILYSCHEMA",
    "short_name"         =>N_("get family import schema"),
    "acl"                =>"NORMAL",
   ) ,
-  array( 
+  array(
    "name"		=>"EDITICON",
    "short_name"		=>N_("change icon of document"),
    "acl"		=>"NORMAL",
   ) ,
-  array( 
+  array(
    "name"       =>"VIEWEXTDOC",
    "short_name"     =>N_("view document in extjs"),
    "acl"        =>"NORMAL",
   ) ,
-  array( 
+  array(
    "name"       =>"EDITEXTDOC",
    "short_name"     =>N_("edit document in extjs"),
+   "acl"        =>"NORMAL",
+  ) ,
+  array(
+   "name"       =>"OPENDOC",
+   "short_name"     =>N_("open document to edit or view it"),
    "acl"        =>"NORMAL",
   ) ,
   array(
@@ -124,154 +129,154 @@ $action_desc = array (
   array(
    "name"		=>"FREEDOM_INIT",
    "short_name"		=>N_("Freedom initialisation"),
-   "acl"		=>"NORMAL"	
+   "acl"		=>"NORMAL"
   ),
   array(
    "name"		=>"POPUPDOCDETAIL",
    "short_name"		=>N_("Document context menu"),
-   "acl"		=>"NORMAL"	
+   "acl"		=>"NORMAL"
   ),
   array(
    "name"		=>"POPUPEDITSTATE",
    "short_name"		=>N_("Edit state bar menu"),
-   "acl"		=>"EDIT"	
+   "acl"		=>"EDIT"
   ),
   array(
    "name"		=>"POPUPFAMDETAIL",
    "short_name"		=>N_("Document context menu"),
-   "acl"		=>"FAMILY"	
+   "acl"		=>"FAMILY"
   ),
-  array( 
+  array(
    "name"		=>"EXPORTFLD",
    "short_name"		=>N_("export folder"),
    "acl"		=>"EXPORT"
   ) ,
-  
-  array( 
+
+  array(
    "name"               =>"EXPORTXMLFLD",
    "short_name"         =>N_("export folder in xml format"),
    "acl"                =>"EXPORT"
   ) ,
-  array( 
+  array(
    "name"		=>"EXPORTFILE",
    "short_name"		=>N_("export file to consulting"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"VIEWWASK",
    "short_name"		=>N_("view specific ask"),
    "acl"		=>"NORMAL"
-  ) ,  
-  array( 
+  ) ,
+  array(
    "name"		=>"EDITWASK",
    "short_name"		=>N_("edit specific ask"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"GOTOWASK",
    "short_name"		=>N_("goto latest specific ask"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"SETWASK",
    "short_name"		=>N_("set specific ask"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"EXPORTFIRSTFILE",
    "short_name"		=>N_("export first file to consulting"),
    "acl"		=>"NORMAL",
    "script"		=>"exportfile.php",
    "function"		=>"exportfirstfile"
   ) ,
-  array( 
+  array(
    "name"		=>"MAILCARD",
    "short_name"		=>N_("send a document"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"DIFFDOC",
    "short_name"		=>N_("difference between 2 documents"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"               =>"VIEWDESTROYDOC",
    "short_name"         =>N_("view last historic items for a destroyed document"),
    "acl"                =>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"EDITMAIL",
    "short_name"		=>N_("edit mail"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"FAMILY_HELP",
    "short_name"		=>N_("help manual for family"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"               =>"DOCHELP",
    "short_name"         =>N_("help inline"),
    "acl"                =>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"CONFIRMMAIL",
    "short_name"		=>N_("confirm mail sended before change state"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"MODACL",
    "short_name"		=>N_("modify acl"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"VIEWSCARD",
    "short_name"		=>N_("view standalone card"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"IMPCARD",
    "short_name"		=>N_("printed view card"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"FDL_CARD",
    "short_name"		=>N_("view card"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"FDL_GETVALUE",
    "short_name"		=>N_("get value of an attribute"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"FDL_CONFIDENTIAL",
    "short_name"		=>N_("display a confidential doc"),
    "acl"		=>"NORMAL"
   ) ,
 
-  array( 
+  array(
    "name"		=>"LOCKFILE",
    "short_name"		=>N_("lock file to edit"),
    "acl"		=>"EDIT"
   ) ,
-  array( 
+  array(
    "name"		=>"RESTOREDOC",
    "short_name"		=>N_("restore document from trash"),
    "acl"		=>"EDIT"
   ) ,
-  array( 
+  array(
    "name"		=>"EDITOPTION",
    "short_name"		=>N_("interface to change document option"),
    "acl"		=>"EDIT"
   ) ,
-  array( 
+  array(
    "name"		=>"MODOPTION",
    "short_name"		=>N_("modify document option"),
    "acl"		=>"EDIT"
   ) ,
 
-  array( 
+  array(
    "name"		=>"VIEWOPTION",
    "short_name"		=>N_("view document option"),
    "script"		=>"editoption.php",
@@ -279,205 +284,210 @@ $action_desc = array (
    "acl"		=>"NORMAL"
   ) ,
 
-  array( 
+  array(
    "name"		=>"VIEWXML",
    "short_name"		=>N_("view xml"),
    "acl"		=>"NORMAL"
   ) ,
 
-  array( 
+  array(
    "name"		=>"UNLOCKFILE",
    "short_name"		=>N_("unlock file to discard edit"),
    "acl"		=>"EDIT",
    "layout"		=>"unlockfile.xml"
   ) ,
 
-  array( 
+  array(
    "name"		=>"FDL_METHOD",
    "short_name"		=>N_("apply a method to a document"),
    "acl"		=>"EDIT"
   ) ,
-  array( 
+  array(
    "name"		=>"WORKFLOW_INIT",
    "short_name"		=>N_("init workflow profile attributes"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"MVIEW_SAVEGEO",
    "short_name"		=>N_("save geometry of mini view"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"VCONSTRAINT",
    "short_name"		=>N_("verify constraint attribute"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"EDITCHANGESTATE",
    "short_name"		=>N_("interface to change state"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"FDL_PUBMAIL",
    "short_name"		=>N_("emailing"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"FDL_PUBPRINT",
    "short_name"		=>N_("eprinting"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"FDL_PUBPREVIEW",
    "short_name"		=>N_("epreview"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"FDL_PUBNAVPREVIEW",
    "short_name"		=>N_("enavpreview"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"EDITATTRIBUTE",
    "short_name"		=>N_("edit attribute inline"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"MODATTRIBUTE",
    "short_name"		=>N_("modify attribute inline"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"EDITAFFECT",
    "short_name"		=>N_("edition to affect user"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"ADDENUMITEM",
    "short_name"		=>N_("add enum html input attribute"),
    "acl"		=>"NORMAL"
   )  ,
-  array( 
+  array(
    "name"		=>"AFFECT",
    "short_name"		=>N_("affect user to a document"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"DESAFFECT",
    "short_name"		=>N_("unaffect user to a document"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"VIEW_WORKFLOW_GRAPH",
    "short_name"		=>N_("view graph of workflow"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"WORKFLOW_GRAPH",
    "short_name"		=>N_("view graph of workflow"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"PARAM_WORKFLOW_GRAPH",
    "short_name"		=>N_("view graph of workflow"),
    "acl"		=>"NORMAL"
   ) ,
-  array( 
+  array(
    "name"		=>"SETTXTFILE",
    "short_name"		=>N_("update text file for fulltext"),
    "openaccess"		=>"Y",
    "acl"		=>"EDIT"
   ),
-  array( 
+  array(
    "name"		=>"INSERTFILE",
    "short_name"		=>N_("insert converted file"),
    "openaccess"		=>"Y",
    "acl"		=>"EDIT"
   ),
-  array( 
+  array(
    "name"		=>"INSERTDOCUMENT",
    "short_name"		=>N_("insert document in a folder"),
    "acl"		=>"EDIT"
   ),
-  array( 
+  array(
    "name"		=>"EDITINSERTDOCUMENT",
    "short_name"		=>N_("interface insert document in a folder"),
    "acl"		=>"EDIT"
   ),
-  array( 
+  array(
    "name"		=>"SEARCHDOCUMENT",
    "short_name"		=>N_("search document to insert in a folder"),
    "acl"		=>"NORMAL"
   ),
 
-  array( 
+  array(
    "name"		=>"FDL_FORUMADDENTRY",
    "short_name"		=>N_("add entry in a document forum"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"FDL_FORUMDELENTRY",
    "short_name"		=>N_("del entry from a document forum"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"FDL_FORUMOPEN",
    "short_name"		=>N_("open forum"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"FDL_FORUMCLOSE",
    "short_name"		=>N_("close forum"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"FDL_FORUMCREATE",
    "short_name"		=>N_("create forum"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"FDL_FORUMMENU",
    "short_name"		=>N_("menu forum"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"FCKIMAGE",
    "short_name"		=>N_("fck image browser"),
    "acl"		=>"EDIT"
   ),
-  array( 
+  array(
    "name"		=>"FCKUPLOAD",
    "short_name"		=>N_("fck image upload"),
    "acl"		=>"EDIT"
   ),
-  array( 
+  array(
    "name"		=>"VERIFYCOMPUTEDFILES",
    "short_name"		=>N_("verify files status"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"GETFILETRANSFORMATION",
    "short_name"		=>N_("retrieve file converted"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"GETFILETRANSSTATUS",
    "short_name"		=>N_("retrieve task status"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"FCKDOCATTR",
    "short_name"		=>N_("get attribute for fck toobar"),
    "acl"		=>"NORMAL"
   ),
-  array( 
+  array(
    "name"		=>"VIEWTIMERS",
    "short_name"		=>N_("view timers attached to a document"),
    "acl"		=>"NORMAL"
+  ),
+  array(
+      "name"	=> "REPORT_EXPORT_CSV",
+      "short_name" => N_("export a report"),
+      "acl" => "NORMAL"
   )
-	
-	
-	
-			);	
-   		      
+
+
+
+			);
+
 ?>

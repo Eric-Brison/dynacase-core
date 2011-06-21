@@ -276,6 +276,9 @@ Class Dir extends PDir
 			}
 
 			if ($err == "") {
+			    global $action;
+			    $action->AddActionDone("ADDFILE",$this->initid);
+			    
 				$this->updateFldRelations();
 				// use post virtual method
 				if (!$noprepost) $err=$this->postInsertDoc($docid,false);
@@ -487,6 +490,9 @@ Class Dir extends PDir
 			$this->updateFldRelations();
 			$err=$this->postUnlinkDoc($docid);
 		}
+		
+			    global $action;
+			    $action->AddActionDone("DELFILE",$this->initid);
 
 		return $err;
 	}
@@ -558,7 +564,7 @@ Class Dir extends PDir
 	 * return families that can be use in insertion
 	 * @param int $classid : restrict for same usefor families
 	 */
-	function getAuthorizedFamilies($classid=0) {
+	function getAuthorizedFamilies($classid=0, $verifyCreate=false) {
 
 		if (! $this->authfam) {
 
@@ -600,7 +606,7 @@ Class Dir extends PDir
 				//add families
 				foreach ($tfamid as $k=>$famid) {
 					$tfdoc=getTDoc($this->dbaccess,$famid);
-					if ($tfdoc && controlTdoc($tfdoc,'icreate'))  {
+					if ($tfdoc && ((!$verifyCreate) || controlTdoc($tfdoc,'icreate')))  {
 						$tclassdoc[intval($famid)]=array("id"=> ($tsubfam[$k]=="no")?(-intval($famid)):intval($famid),
 					     "title"=>$tfam[$k]);
 					}
@@ -669,7 +675,7 @@ Class Dir extends PDir
 
 	/**
 	 * return number of item in the static folder
-	 * @param boll $onlyprimary set to true if you wnat only document linked by primary relation
+	 * @param bool $onlyprimary set to true if you wnat only document linked by primary relation
 	 * @return int -1 if it is not a static folder
 	 */
 	public function count($onlyprimary=false) {
@@ -684,6 +690,19 @@ Class Dir extends PDir
 		return -1;
 	}
 
+	/**
+	 * return array of document identificators included in folder
+	 * @return array of initial identificators (initid) 
+	 */
+	public function getContentInitid()
+         {
+        $query = sprintf("select childid from fld where dirid=%d and qtype='S'", $this->initid);
+        $initids=array();
+        $err = simpleQuery($this->dbaccess, $query, $initids, true, false);
+        if ($err == "") return $initids;
+        
+        return array();
+         }
 
 	/**
 	 * get  document which primary relation is this folder

@@ -214,7 +214,7 @@ helppage.edit.change = function(obj, langkey) {
 		if(help_langs[i] == langkey) {
 			helppage.get('help-name').innerHTML = help_names[i];
 			helppage.get('help-description').innerHTML = help_descriptions[i].replace(/\n/g, "<br />");
-			var flags = Sizzle('#help-langs a');
+			var flags = jQuery.find('#help-langs a');
 			for(var j=0; j < flags.length; j++) {
 				if(flags[j].className == 'current') {
 					flags[j].className = 'active';
@@ -331,7 +331,7 @@ helppage.edit.calls.getCurrentLang = function() {
 
 // helpcallGetCurrentSectionLang
 helppage.edit.calls.getCurrentSectionLang = function(seckey) {
-	var items = Sizzle('#sec-langs-'+seckey+' a');
+	var items = jQuery.find('#sec-langs-'+seckey+' a');
 	var found = -1;
 
 	for(var i=0; i < items.length; i++) {
@@ -406,7 +406,7 @@ helppage.edit.calls.saveSection = function(config) {
 	var trToRemove = [];
 	for(var i = 0; i < trs.length; i++) {
 		var found = false;
-		var inputs = Sizzle('input', trs[i]);
+		var inputs = jQuery.find('input', trs[i]);
 		for(var k=0; k < inputs.length; k++) {
 			if(inputs[k].name.substr(0, 13) == '_help_sec_key' && inputs[k].value == config.seckey) {
 				found = true;
@@ -467,7 +467,7 @@ helppage.edit.calls.saveSection = function(config) {
 		}
 	}
 	// update text
-	var items = Sizzle('#sec-langs-'+config.seckey+' a');
+	var items = jQuery.find('#sec-langs-'+config.seckey+' a');
 	var item_current;
 	var i = 0;
 	for(var lang in helppage.langs) {
@@ -535,7 +535,7 @@ helppage.edit.tools.orderToSeckey = function(order) {
 
 helppage.edit.tools.getTableRows = function() {
 	var rows = [];
-	var trs = Sizzle('#tbodyhelp_t_sections > tr');
+	var trs = jQuery.find('#tbodyhelp_t_sections > tr');
 	for(var i=0; i < trs.length; i++) {
 		if(trs[i].id && trs[i].id.match(/^lasttr/i)) {
 			break;
@@ -548,7 +548,7 @@ helppage.edit.tools.getTableRows = function() {
 helppage.edit.tools.incrementOrders = function() {
 	var trs = helppage.edit.tools.getTableRows();
 	for(var i=0; i < trs.length; i++) {
-		var inputs = Sizzle('input', trs[i]);
+		var inputs = jQuery.find('input', trs[i]);
 		for(var k=0; k < inputs.length; k++) {
 			var input = inputs[k];
 			if(input.name && input.name.match(/^_help_sec_order/i)) {
@@ -561,7 +561,7 @@ helppage.edit.tools.incrementOrders = function() {
 helppage.edit.tools.reOrder = function(secorder) {
 	var trs = helppage.edit.tools.getTableRows();
 	for(var i=0; i < trs.length; i++) {
-		var inputs = Sizzle('input', trs[i]);
+		var inputs = jQuery.find('input', trs[i]);
 		for(var k=0; k < inputs.length; k++) {
 			var input = inputs[k];
 			if(input.name && input.name.match(/^_help_sec_order/i) && input.value > secorder) {
@@ -601,7 +601,7 @@ helppage.edit.section.add = function(seckey) {
 	div.innerHTML = helppage.edit.section.template.replace(/\{SECKEY\}/gi, seckey);
 
 	// try to find first correct child
-	var sections = Sizzle('#help-sections .help-section');
+	var sections = jQuery.find('#help-sections .help-section');
 	if(sections && sections.length > 0) {
 		helppage.get('help-sections').insertBefore(div, sections[0]);
 	}
@@ -626,7 +626,7 @@ helppage.edit.section.changeLang = function(obj, seckey, langkey) {
 		return false;
 	}
 	var i=0;
-	var childs = Sizzle('#sec-langs-'+seckey+' a');
+	var childs = jQuery.find('#sec-langs-'+seckey+' a');
 	for(var lang in helppage.langs) {
 		if(childs[i].className != 'inactive') {
 			childs[i].className = 'active';
@@ -708,7 +708,7 @@ helppage.edit.section.down = function(seckey) {
 	// change values in array HTML
 	var trs = helppage.edit.tools.getTableRows();
 	for(var i=0; i < trs.length; i++) {
-		var inputs = Sizzle('input', trs[i]);
+		var inputs = jQuery.find('input', trs[i]);
 		for(var k=0; k < inputs.length; k++) {
 			var input = inputs[k];
 			if(input.name && input.name.match(/^_help_sec_order/i)) {
@@ -749,7 +749,7 @@ helppage.edit.section.up = function(seckey) {
 	// change values in array HTML
 	var trs = helppage.edit.tools.getTableRows();
 	for(var i=0; i < trs.length; i++) {
-		var inputs = Sizzle('input', trs[i]);
+		var inputs = jQuery.find('input', trs[i]);
 		for(var k=0; k < inputs.length; k++) {
 			var input = inputs[k];
 			if(input.name && input.name.match(/^_help_sec_order/i)) {
@@ -803,7 +803,7 @@ helppage.edit.popup.get_objects = function() {
 		input: null
 	};
 	var i;
-	var inputs = Sizzle('#HELPPOPUP_c input');
+	var inputs = jQuery.find('#HELPPOPUP_c input');
 	for(i in inputs) {
 		if(inputs[i].name == 'help_popup_key') {
 			datas.input = inputs[i];
@@ -817,7 +817,7 @@ helppage.edit.popup.get_objects = function() {
 			}
 		}
 	}
-	var selects = Sizzle('#HELPPOPUP_c select');
+	var selects = jQuery.find('#HELPPOPUP_c select');
 	for(i in selects) {
 		if(selects[i].name == 'help_popup_select') {
 			datas.select = selects[i];
@@ -906,7 +906,7 @@ helppage.edit.popup.show = function(event) {
 helppage.view.changeall = function(lang) {
 	helppage.view.changeallchecks(lang);
 	var i, descsel;
-	var sp = Sizzle('#helppage-description span');
+	var sp = jQuery.find('#helppage-description span');
 	if (sp && sp.length > 0) {
 		for (i = 0;i<sp.length;i++ ) {
 			sp[i].style.display = 'none';
@@ -917,7 +917,7 @@ helppage.view.changeall = function(lang) {
 			sp[0].style.display = '';
 		}
 	}
-	sp = Sizzle('#helppage-titles span');
+	sp = jQuery.find('#helppage-titles span');
 	if (sp && sp.length > 0) {
 		for (i = 0;i<sp.length;i++ ) {
 			sp[i].style.display = 'none';
@@ -941,7 +941,7 @@ helppage.view.changeallcheck = function(lang, secid) {
 	if(o1 && o2) {
 		if(secid.substr(secid.length-5, 5) == lang) {
 			o1.style.display = 'block';
-			var ldiv = Sizzle('div', o1);
+			var ldiv = jQuery.find('div', o1);
 			for (var i = 0;i<ldiv.length;i++) {
 				if (ldiv[i].className == 'help-section-title') {
 					if (ldiv[i].innerHTML) {
@@ -960,7 +960,7 @@ helppage.view.changeallcheck = function(lang, secid) {
 };
 
 helppage.view.changeallchecks = function(lang) {
-	var divs = Sizzle('#helppage-content .help-section-item');
+	var divs = jQuery.find('#helppage-content .help-section-item');
 	for(var i = 0; i < divs.length; i++) {
 		helppage.view.changeallcheck(lang, divs[i].id);
 	}
@@ -989,7 +989,7 @@ helppage.view.change = function(src, dst, sectitle) {
 	if(o_src && o_dst) {
 		o_src.style.display = 'none';
 		o_dst.style.display = 'block';
-		var ldiv = Sizzle('div', o_dst);
+		var ldiv = jQuery.find('div', o_dst);
 		for (var i = 0 ; i < ldiv.length ; i++) {
 			if (ldiv[i].className == 'help-section-title') {
 				if (ldiv[i].innerHTML) {
