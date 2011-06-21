@@ -104,6 +104,7 @@ function import_directory(&$action, $ldir,$dirid=0,$famid=7,$dfldid=2,
 				"foldername"=>$ldir,
 				"filename"=>$file,
 				"title"=>"",
+				"specmsg"=>"",
 				"id"=>0,
 				"anaclass"=>"fileclass",
 				"familyid"=>$ddoc->fromid,
@@ -130,6 +131,7 @@ function import_directory(&$action, $ldir,$dirid=0,$famid=7,$dfldid=2,
 		  if ($err!="") {
 		    $tr[$index]["action"]=_("not added");
 		  } else {
+		    $ddoc->addComment(sprintf("create by import from archive %s", substr(basename($ldir),0,-2)));
 		    $tr[$index]["action"]=_("added");
 		    $tr[$index]["id"]=$ddoc->id;
 		    $ddoc->PostModify();
@@ -137,6 +139,10 @@ function import_directory(&$action, $ldir,$dirid=0,$famid=7,$dfldid=2,
 		    if ($dirid > 0) {
 		      $dir->AddFile($ddoc->id);
 		    }
+		    $tr[$index]["title"]=$ddoc->getTitle();
+		    $tr[$index]["id"]=$ddoc->id;
+		    $tr[$index]["familyid"]=$ddoc->fromid;
+		    $tr[$index]["familyname"]=$ddoc->fromname;
 		  }
 		}
 	      }
@@ -153,6 +159,7 @@ function import_directory(&$action, $ldir,$dirid=0,$famid=7,$dfldid=2,
 			      "foldername"=>$ldir,
 			      "filename"=>$file,
 			      "title"=>"",
+				"specmsg"=>"",
 			      "id"=>0,
 			      "anaclass"=>"fldclass",
 			      "familyid"=>$newdir->fromid,

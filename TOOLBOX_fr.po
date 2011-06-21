@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-20 17:58+0200\n"
-"PO-Revision-Date: 2011-06-20 18:00+0200\n"
+"POT-Creation-Date: 2011-06-21 12:11+0200\n"
+"PO-Revision-Date: 2011-06-21 12:10+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -510,7 +510,7 @@ msgid "Access path list"
 msgstr "Liste des chemins d'accès"
 
 msgid "Access to edit action"
-msgstr "Accès aux actions d'édition"
+msgstr "Accès aux actions de modification"
 
 msgid "Access to user refresh function"
 msgstr "Accès aux fonctions de raffraichissement des utilisateurs"
@@ -2774,7 +2774,7 @@ msgid "Save and quit edit mode"
 msgstr "Sauver et quitter le mode édition"
 
 msgid "Save and stay in edition"
-msgstr "Sauver et rester en édition"
+msgstr "Sauver et rester en modification"
 
 msgid "Save changes ?"
 msgstr "Sauver les changements ?"
@@ -3454,6 +3454,7 @@ msgstr "Données XML (Zip avec un fichier XML par document)"
 msgid "XML data (only one xml file)"
 msgstr "Données XML (un seul fichier XML)"
 
+#, c-format
 msgid "Xml file cannot be created"
 msgstr "Le fichier XML n'a pas pu être créé"
 
@@ -5216,7 +5217,7 @@ msgid "edition to affect user"
 msgstr "édition pour affecter un utilisateur"
 
 msgid "edition: "
-msgstr "éditer"
+msgstr "modifier:"
 
 msgid "electronic messages cannot be modified"
 msgstr "les courriels ne peuvent être modifiés"
@@ -5384,7 +5385,7 @@ msgid "eui:Duplicate document"
 msgstr "Dupliquer"
 
 msgid "eui:Edit document"
-msgstr "Editer"
+msgstr "Modifier"
 
 msgid "eui:Export all documents"
 msgstr "Exporter le contenu du dossier"
@@ -5812,7 +5813,7 @@ msgid "fusers root window"
 msgstr "fuser fenêtre principale"
 
 msgid "fusers view/edit window"
-msgstr "fuser voir/éditer"
+msgstr "fuser voir/modifier"
 
 msgid "gate geometry"
 msgstr "disposition du portail"
@@ -6031,7 +6032,7 @@ msgid "import csv"
 msgstr "Import csv"
 
 msgid "import edition"
-msgstr "édition de l'importation"
+msgstr "modification de l'importation"
 
 msgid "import file:"
 msgstr "Fichier à importer :"
@@ -6105,7 +6106,7 @@ msgid "interface to choose column export documents"
 msgstr "Interface pour choisir les colonnes d'exportation"
 
 msgid "interface to edit enum attribute"
-msgstr "interface pour éditer les attributs énumérés"
+msgstr "interface pour modifier les attributs énumérés"
 
 msgid "interface to export documents"
 msgstr "interface pour exporter des documents"
@@ -6200,7 +6201,7 @@ msgid "list"
 msgstr "Liste"
 
 msgid "lock file to edit"
-msgstr "verrouillez le document pour l'éditer"
+msgstr "verrouillez le document pour le modifier"
 
 msgid "locked"
 msgstr "verrouillé"
@@ -6236,7 +6237,7 @@ msgid "mail dest is empty"
 msgstr "le destinataire du email est vide"
 
 msgid "mail edition"
-msgstr "édition de mail"
+msgstr "rédaction de mail"
 
 msgid "mail will be calculated from domain"
 msgstr "l'adresse email sera calculée à partir du domaine"
@@ -7764,7 +7765,7 @@ msgstr "Éditions spéciales"
 
 #, c-format
 msgid "specialedit %s"
-msgstr "Édition %s"
+msgstr "Modification %s"
 
 msgid "specialview"
 msgstr "Vues spéciales"
@@ -8151,9 +8152,6 @@ msgstr "date de fin"
 msgid "today"
 msgstr "aujourd'hui"
 
-msgid "toedit"
-msgstr "éditer"
-
 msgid "tomorrow"
 msgstr "demain"
 
@@ -8296,7 +8294,7 @@ msgid "unlock"
 msgstr "déverrouiller"
 
 msgid "unlock file to discard edit"
-msgstr "déverrouillez le document pour l'éditer"
+msgstr "déverrouillez le document pour le modifier"
 
 msgid "unlock unowner locked doc"
 msgstr "déverrouiller autres verrous"
@@ -8428,7 +8426,7 @@ msgid "user %s not found"
 msgstr ""
 
 msgid "user account edition"
-msgstr "éditer compte utilisateur"
+msgstr "modifier compte utilisateur"
 
 msgid "user account modification"
 msgstr "modifier compte utilisateur"
@@ -8446,7 +8444,7 @@ msgid "user not know"
 msgstr "utilisateur inconnu"
 
 msgid "user own account edition"
-msgstr "éditer compte personnel"
+msgstr "modification compte personnel"
 
 msgid "user own account modification"
 msgstr "modifier compte personnel"
@@ -8902,6 +8900,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "the file %s (rev %d) must be locked before"
 #~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
+
+#~ msgid "toedit"
+#~ msgstr "éditer"
 
 #~ msgid "view my space"
 #~ msgstr "Voir mon espace"
