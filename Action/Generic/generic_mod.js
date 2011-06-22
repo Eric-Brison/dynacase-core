@@ -9,12 +9,14 @@ function setConstraint(info) {
     for ( var i in info) {
         if (info[i].index == null) {
             // mono value
-             inp = window.parent.document.getElementById(info[i].id);
+            inp = window.parent.document.getElementById(info[i].id);
+            if (!inp) inp = window.parent.document.getElementById('F'+info[i].id);
+            if (!inp) inp = window.parent.document.getElementById('T'+info[i].id);
             if (first) {
                 focusConstraint(inp);
                 // first=false;
             }
-            viewContraint(inp, info[i]);
+            viewConstraint(inp, info[i]);
 
         } else {
             var linp = window.parent.getInputsByName('_' + info[i].id,
@@ -26,18 +28,26 @@ function setConstraint(info) {
                         // first=false;
                         focusConstraint(inp);
                     }
-                    viewContraint(inp, info[i]);
+                    viewConstraint(inp, info[i]);
                 }
             }
         }
     }
     for ( var j in info) {
         if (!info[j].displayed) {
-            window.parent.displayWarningMsg(info[j].err);
+            tryToDisplayStructureAttribute(info[j]);
+            window.parent.displayWarningMsg(info[j].prefix+':'+info[j].err);
+            
         }
     }
-
 }
+
+function tryToDisplayStructureAttribute(cinfo) {
+    var elt=window.parent.document.getElementById('F'+cinfo.id);
+    if (!elt) elt=window.parent.document.getElementById('T'+cinfo.id);
+    if (elt) elt.className+=' invalid';
+}
+
 function focusConstraint(inp) {
     if (inp) {
         var p = inp.parentNode;
@@ -60,7 +70,7 @@ function focusConstraint(inp) {
         }
     }
 }
-function viewContraint(inp, info) {
+function viewConstraint(inp, info) {
     if (inp) {
         var realinp = inp;
         if ((inp.style.display == 'none') || (inp.type == 'hidden')) {
@@ -123,7 +133,7 @@ function undisplayConstraint() {
             i--;
         }
     }
-    var itag = new Array('input', 'textarea', 'select');
+    var itag = new Array('input', 'textarea', 'select', 'table', 'fieldset');
     for (var t in itag) {
         var ti = window.parent.document.getElementsByTagName(itag[t]);
 

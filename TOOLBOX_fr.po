@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 12:11+0200\n"
-"PO-Revision-Date: 2011-06-21 12:10+0200\n"
+"POT-Creation-Date: 2011-06-22 08:16+0200\n"
+"PO-Revision-Date: 2011-06-22 08:17+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -4168,6 +4168,10 @@ msgid "cannot execute timer : timer %s is not found"
 msgstr "ne peut exécuter le minuteur : %s non trouvé"
 
 #, c-format
+msgid "cannot extract archive %s: status : %s"
+msgstr ""
+
+#, c-format
 msgid "cannot extract archive file %s"
 msgstr "L'archive %s n'a pas pue être extraite"
 
@@ -4516,6 +4520,10 @@ msgstr "contrainte non respectée %s"
 
 msgid "constraint error"
 msgstr "Erreur de contrainte"
+
+#, c-format
+msgid "constraint not validated for %s attribute"
+msgstr "contraite non validée pour l'attribut %s"
 
 msgid "construct batch document"
 msgstr "construction d'un document lot"
@@ -6034,6 +6042,10 @@ msgstr "Import csv"
 msgid "import edition"
 msgstr "modification de l'importation"
 
+#, c-format
+msgid "import file %s not found"
+msgstr ""
+
 msgid "import file:"
 msgstr "Fichier à importer :"
 
@@ -6211,6 +6223,10 @@ msgstr "verrouillé par"
 
 msgid "locked document of "
 msgstr "documents verrouillés par "
+
+#, c-format
+msgid "log file %s not writable"
+msgstr ""
 
 msgid "login"
 msgstr "Nom de connexion"

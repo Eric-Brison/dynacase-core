@@ -109,6 +109,11 @@ function generic_mod(Action &$action) {
 	
 		$action->lay->set("autoclose",$autoclose?"true":"false");
 		$action->lay->set("id",$ndocid);
+		if (is_array($info)) {
+		    foreach ($info as $k=>$v) {
+		        $info[$k]["prefix"]=sprintf(_("constraint not validated for %s attribute"), $v["label"]);
+		    }
+		}
 		$action->lay->set("constraintinfo",json_encode($info));
 		$action->lay->set("quicksave",$quicksave);
                 if ($rzone != "") $zone="&zone=$rzone";

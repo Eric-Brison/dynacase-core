@@ -20,9 +20,9 @@ if (window.parent) {
         if (s) s.value='[TEXT:Save]';
         s=window.parent.document.getElementById('aSubmit');
         if (s) s.innerHTML='[TEXT:Save]';
-        var s=window.parent.document.getElementById('iCancel');
+        s=window.parent.document.getElementById('iCancel');
         if (s) s.style.display='';
-        var s=window.parent.document.getElementById('iSaveForce');
+        s=window.parent.document.getElementById('iSaveForce');
         if(window.parent && window.parent.displaySaveForce){
           window.parent.displaySaveForce();
         }
