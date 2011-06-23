@@ -369,7 +369,7 @@ function getWshCmd($nice=false,$userid=0,$sudo=false) {
 	$wsh="export freedom_context=\"$freedomctx\";";
 	if ($nice) $wsh.= "nice -n +10 ";
 	if ($sudo) $wsh.= "sudo ";
-	$wsh.=GetParam("CORE_PUBDIR")."/wsh.php  ";
+	$wsh .= escapeshellarg(GetParam("CORE_PUBDIR"))."/wsh.php  ";
 	$userid=intval($userid);
 	if ($userid>0) $wsh.="--userid=$userid ";
 	return $wsh;

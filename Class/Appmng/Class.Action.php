@@ -11,6 +11,7 @@
  /**
  */
 
+require_once 'WHAT/autoload.php';
 include_once('Class.DbObj.php');
 include_once('Class.User.php');
 include_once('Class.QueryDb.php');

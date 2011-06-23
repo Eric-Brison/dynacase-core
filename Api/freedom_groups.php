@@ -33,13 +33,18 @@ $pgservice_freedom = getServiceFreedom();
 
 $big=false; // need to set to true when table group count > 20000
 if ($pgservice_core == $pgservice_freedom) {
-  system("PGSERVICE=\"$pgservice_freedom\" psql -c 'delete from docperm where upacl=0 and unacl=0;update docperm set cacl=0 where cacl != 0;'");
+  system(sprintf("PGSERVICE=%s psql -c 'delete from docperm where upacl=0 and unacl=0;update docperm set cacl=0 where cacl != 0;'",
+    escapeshellarg($pgservice_freedom)));
 } else {
-  if ($big) system("PGSERVICE=\"$pgservice_freedom\" psql -c 'DROP INDEX groups_idx2;DROP INDEX groups_idx1;'");
-  system("PGSERVICE=\"$pgservice_freedom\" psql -c 'delete from groups;delete from docperm where upacl=0 and unacl=0;update docperm set cacl=0 where cacl != 0;'");
-  system("PGSERVICE=\"$pgservice_core\" pg_dump -a --disable-triggers -t groups | PGSERVICE=\"$pgservice_freedom\" psql");
-  
-  if ($big) system("PGSERVICE=\"$pgservice_core\" psql 'CREATE unique INDEX groups_idx2 on groups(iduser,idgroup);CREATE INDEX groups_idx1 on  groups(iduser);' | PGSERVICE=\"freedom\" psql");
+  if ($big) system(sprintf("PGSERVICE=%s psql -c 'DROP INDEX groups_idx2;DROP INDEX groups_idx1;'",
+    escapeshellarg(pgservice_freedom)));
+  system(sprintf("PGSERVICE=%s psql -c 'delete from groups;delete from docperm where upacl=0 and unacl=0;update docperm set cacl=0 where cacl != 0;'",
+    escapeshellarg($pgservice_freedom)));
+  system(sprintf("PGSERVICE=%s pg_dump -a --disable-triggers -t groups | PGSERVICE=%s psql",
+    escapeshellarg($pgservice_core), escapeshellarg($pgservice_freedom)));
+
+  if ($big) system(sprintf("PGSERVICE=%s psql -c 'CREATE unique INDEX groups_idx2 on groups(iduser,idgroup);CREATE INDEX groups_idx1 on  groups(iduser);'",
+    escapeshellarg($pgservice_freedom)));
 }
 
 system("PGSERVICE=\"$pgservice_core\" psql -c 'DELETE FROM permission WHERE computed = TRUE;'");

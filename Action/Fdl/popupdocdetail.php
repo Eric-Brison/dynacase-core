@@ -65,7 +65,7 @@ function getpopupdocdetail(&$action, $docid)
             "barmenu" => "false"
         ),
         "editdoc" => array(
-            "descr" => _("Edit"),
+            "descr" => _("Modify"),
             "url" => "$surl&app=GENERIC&action=GENERIC_EDIT&rzone=$zone&id=$docid",
             "confirm" => "false",
             "control" => "false",

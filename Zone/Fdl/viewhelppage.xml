@@ -1,4 +1,4 @@
-<script type="text/javascript" language="JavaScript" src="./sizzle/sizzle.js"></script>
+<script type="text/javascript" language="JavaScript" src="./lib/jquery/jquery.js"></script>
 <script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
 
 <style type="text/css">

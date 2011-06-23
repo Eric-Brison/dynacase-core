@@ -3228,6 +3228,7 @@ create unique index i_docir on doc(initid, revision);";
 	    $res= $this->verifyConstraint($v->id,$i);
 	    if ($res["err"]!="") {
 	      $info[$v->id.$i]=array("id"=>$v->id,
+	                 "label"=>$v->getLabel(),
 				     "sug"=>$res["sug"],
 				     "err"=>$res["err"],
 				     "index"=>$i,
@@ -3240,6 +3241,7 @@ create unique index i_docir on doc(initid, revision);";
 	  $res= $this->verifyConstraint($v->id);
 	  if ($res["err"]!="") {
 	    $info[$v->id]=array("id"=>$v->id,
+	            "label"=>$v->getLabel(),
 				"pid"=>$v->fieldSet->id,
 				"sug"=>$res["sug"],
 				"err"=>$res["err"]);
@@ -6771,6 +6773,8 @@ create unique index i_docir on doc(initid, revision);";
 	  $tableframe[$v]["helpid"]=$helpid;
 	  $tableframe[$v]["ehelp"]=($helpid!=false) && (in_array($listattr[$i]->id,$helpattr));
 
+	  $tableframe[$v]["multiple"]=($attr->getOption("multiple")=="yes")?"true":"false";
+	  $tableframe[$v]["atype"]=$attr->type;
 	  $tableframe[$v]["name"]=ucfirst($label);
 	  $tableframe[$v]["classback"]=($attr->usefor=="O")?"FREEDOMOpt":"FREEDOMBack1";
 	  //$tableframe[$v]["name"]=$action->text($label);

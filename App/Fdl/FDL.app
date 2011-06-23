@@ -96,6 +96,11 @@ $action_desc = array (
    "acl"        =>"NORMAL",
   ) ,
   array(
+   "name"       =>"OPENDOC",
+   "short_name"     =>N_("open document to edit or view it"),
+   "acl"        =>"NORMAL",
+  ) ,
+  array(
    "name"               =>"FDL_CSS",
    "layout"		=>"freedom.css"
   ),

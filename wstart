@@ -34,6 +34,7 @@ rm -f $wpub/img-cache/*png
 rm -f $wpub/img-cache/*gif
 rm -f $wpub/img-cache/*xml
 rm -f $wpub/img-cache/*src
+rm -f $wpub/.autoloader.cache
 
 pushd "$wpub/Docs" > /dev/null
 ln -sf ../*/Docs/* .

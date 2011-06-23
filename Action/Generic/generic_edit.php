@@ -29,29 +29,35 @@ include_once("GENERIC/generic_util.php");
  * @global rtarget Http var : if set, to return result in another window (the window will be closed)
  * @global vid Http var : if set, edit represention describe in view control (can be use only if doc has controlled view)
  * @global mskid Http var : is set special mask applied for edition
+ * @global autoclose Http var : set to yes to close window after modification
  */
-function generic_edit(&$action) {
+function generic_edit(Action &$action) {
 	// -----------------------------------
 
 	// Get All Parameters
-	$docid = trim(GetHttpVars("id",0));        // document to edit
-	$classid = GetHttpVars("classid",getDefFam($action)); // use when new doc or change class
-	$dirid = GetHttpVars("dirid",0); // directory to place doc if new doc
-	$usefor = GetHttpVars("usefor"); // default values for a document
-	$zonebodycard = GetHttpVars("zone"); // define view action
-	$rzone = GetHttpVars("rzone"); // special zone when finish edition
-	$rvid = GetHttpVars("rvid"); // special zone when finish edition
-	$rtarget = GetHttpVars("rtarget","_self"); // special zone when finish edition return target
-
+	$docid = trim($action->getArgument("id",0));        // document to edit
+	$classid = $action->getArgument("classid",getDefFam($action)); // use when new doc or change class
+	$dirid = $action->getArgument("dirid",0); // directory to place doc if new doc
+	$usefor = $action->getArgument("usefor"); // default values for a document
+	$zonebodycard = $action->getArgument("zone"); // define view action
+	$rzone = $action->getArgument("rzone"); // special zone when finish edition
+	$rvid = $action->getArgument("rvid"); // special zone when finish edition
+	$rtarget = $action->getArgument("rtarget","_self"); // special zone when finish edition return target
+    $updateAttrid=$action->getArgument("updateAttrid");
 	if ($docid==0) setHttpVar("classid",$classid);
-	$vid = GetHttpVars("vid"); // special controlled view
-	$mskid = GetHttpVars("mskid"); // special mask
+	$vid = $action->getArgument("vid"); // special controlled view
+	$mskid = $action->getArgument("mskid"); // special mask
+	$autoclose = $action->getArgument("autoclose"); // to close window after modification
+	$recallhelper = $action->getArgument("recallhelper"); // to recall helper input
 
 	$action->lay->Set("vid", $vid);
 	$action->lay->Set("ezone", $zonebodycard); // use for return in case of constraint
 	$action->lay->Set("rzone", $rzone);
 	$action->lay->Set("rvid", $rvid);
 	$action->lay->Set("rtarget", $rtarget);
+	$action->lay->Set("autoclose", $autoclose);
+	$action->lay->Set("recallhelper", $recallhelper);
+	$action->lay->Set("updateAttrid", $updateAttrid);
 	$action->lay->Set("SELFTARGET",($rtarget=="_self"));
 	// Set the globals elements
 	$dbaccess = $action->GetParam("FREEDOM_DB");

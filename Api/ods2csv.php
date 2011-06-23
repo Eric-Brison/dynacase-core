@@ -89,9 +89,9 @@ function characterData($parser, $data)
 {
   global $rows,$nrow,$inrow,$incell,$ncol,$celldata;
   if ($inrow && $incell) {
-    $celldata.=preg_replace(
+    $celldata.=preg_replace('/\s/u', ' ', preg_replace(
       '/^\s*[\r\n]\s*$/ms', '', str_replace(SEPCHAR,ALTSEPCHAR,$data)
-    );
+    ));
   }
   //  print $data. "- ";
 }
@@ -125,7 +125,7 @@ function ods2content($odsfile,&$content) {
   if (! file_exists($odsfile)) return "file $odsfile not found";
   $cibledir=uniqid(getTmpDir()."/ods");
   
-  $cmd = sprintf("unzip -j %s content.xml -d %s >/dev/null", $odsfile, $cibledir );
+  $cmd = sprintf("unzip -j %s content.xml -d %s >/dev/null", escapeshellarg($odsfile), escapeshellarg($cibledir) );
   system($cmd);
   
   $contentxml=$cibledir."/content.xml";

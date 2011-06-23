@@ -6,7 +6,7 @@ include("WHAT/Lib.Common.php");
 include("WHAT/wncurses.php");
 include("WHAT/Lib.WCheck.php");
 
-if( system("$pubdir/wcontrol", $status) == FALSE ) {
+if( system(sprintf("%s/wcontrol", escapeshellarg($pubdir)), $status) == FALSE ) {
   error_log("Error executing $pubdir/wcontrol !");
   exit( 1 );
 }

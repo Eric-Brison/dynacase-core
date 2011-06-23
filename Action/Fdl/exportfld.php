@@ -214,7 +214,7 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
       
     }
     if ($err) $action->addWarningMsg($err);
-    system("cd $foutdir && zip -r fdl * > /dev/null",$ret);
+    system(sprintf("cd %s && zip -r fdl * > /dev/null", escapeshellarg($foutdir)), $ret);
     if (is_file("$foutdir/fdl.zip")) {
       $foutname=$foutdir."/fdl.zip";
       Http_DownloadFile($foutname, "$fname.zip", "application/x-zip",false,false);
@@ -339,8 +339,12 @@ function exportonedoc(&$doc,&$ef,$fout,$wprof,$wfile,$wident,$wutf8,$nopref,$efo
   static $lattr;
   static $trans=false;
   static $fromname;
+  static $alreadyExported=array();
 
   if (!$doc->isAffected()) return;
+  if (in_array($doc->id, $alreadyExported)) return;
+  $alreadyExported[]=$doc->id;
+  
   if (! $trans) {
     // to invert HTML entities
     $trans = get_html_translation_table (HTML_ENTITIES);
