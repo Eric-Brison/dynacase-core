@@ -28,10 +28,12 @@ class DocWaitManager
         if ($doc) {
             $wd = new DocWait($doc->dbaccess, array(
                 $doc->initid,
+                $doc->localid,
                 $doc->getSystemUserId()
             ));
             
             $wd->uid = $doc->getSystemUserId();
+            $wd->localid = $doc->localid;
             $wd->values = serialize($doc->getValues());
             $wd->status = docWait::recording;
             $wd->title = $doc->getTitle();
