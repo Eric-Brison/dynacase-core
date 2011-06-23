@@ -84,7 +84,7 @@
 
 .multidoc #arrow_down
 {
-	background-image:url(../../ONEFAM/Images/more.png);
+	background-image:url(ONEFAM/Images/more.png);
 }
 
 .multidoc .icon_doc, .multidoc .img_icon
@@ -95,12 +95,12 @@
 
 .multidoc .img_new
 {
-	background-image:url(../../ONEFAM/Images/goto.png);
+	background-image:url(ONEFAM/Images/goto.png);
 }
 
 .multidoc .img_del
 {
-	background-image:url(../../ONEFAM/Images/del.png);
+	background-image:url(ONEFAM/Images/del.png);
 }
 
 .multidoc .icon_doc
