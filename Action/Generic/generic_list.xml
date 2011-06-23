@@ -10,7 +10,7 @@
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
-
+<script type="text/javascript" src="jquery/jquery.js"></script>
 [CSS:REF]
 
 
@@ -139,14 +139,69 @@ addEvent(window,"load",focusInput);
 
 -->
 
-function test()
+function multidoc()
 {
-	alert("test");
+	//DOCUMENTS LINK
+	var relations = $('div[value="multidoc"]');
+	for(var i=0;i<relations.length;i++)
+	{
+		var relhref = relations[i].getAttribute("hrefDoc");
+		var relid = relations[i].getAttribute("documentId");
+		relations[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"http://' + top.location.host + "/dynacase/" + relhref + '")');
+	}
+	
+	//EDIT IMAGE LINKS
+	var editions = $('.aicon');
+	for(var i=0;i<editions.length;i++)
+	{
+		var relhref = editions[i].getAttribute("hrefDoc");
+		var relid = editions[i].getAttribute("documentId");
+		editions[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"http://' + top.location.host + "/dynacase/" + relhref + '");return false;');
+	}
+	
+	$(".aicon").click(function(event){
+  		event.stopPropagation();
+	});  
+	
+	//CLASS LINKS UNDER DOCUMENT NAME
+	var editions = $('.relation');
+	for(var i=0;i<editions.length;i++)
+	{
+		var relhref = editions[i].getAttribute("href");
+		var relid = editions[i].getAttribute("documentId");
+		editions[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',\'http://' + top.location.host + "/dynacase/" + relhref + '\');return false;');
+		editions[i].removeAttribute('href');
+		editions[i].removeAttribute('target');
+	}
+	
+	$(".relation").click(function(event){
+  		event.stopPropagation();
+	});  
+
+	//MENU LINK CREATION
+	var menus = $('#newmenu > a');
+	for(var i=0;i<menus.length;i++)
+	{
+		var relhref = menus[i].getAttribute("hrefDoc");
+		var relid = menus[i].getAttribute("documentId");
+		menus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',\'http://' + top.location.host + "/dynacase/" + relhref + '\');return false;');
+		menus[i].removeAttribute('href');
+	}
+	
+	//MENU LINK TOOLS
+	var helpmenus = $('#helpmenu > a[hrefDoc]');
+	for(var i=0;i<helpmenus.length;i++)
+	{
+		var relhref = helpmenus[i].getAttribute("hrefDoc");
+		var relid = helpmenus[i].getAttribute("documentId");
+		helpmenus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',\'http://' + top.location.host + "/dynacase/" + relhref + '\');return false;');
+		helpmenus[i].removeAttribute('href');
+	}
 }
 </script>   
  </head>
 
-<body class="freedom" onload="test()">
+<body class="freedom" onload="multidoc()">
 
 
 [ZONE [APPNAME]:GENERIC_BARMENU?catg=[catg]]
@@ -188,24 +243,24 @@ function test()
 <td id="cellmain" valign="top">
 
 
-                    [BLOCK TABLEBODY]
+[BLOCK TABLEBODY]
 
 <!-- TABLEBODY -->
 <div  id="d[id]"
-      style="width:[ACARD_WIDTH];float:left;cursor:crosshair;"
+      value="multidoc" documentId="[id]" hrefDoc='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]' style="width:[ACARD_WIDTH];float:left;cursor:crosshair;"
         onmouseover="if (this.className.charAt(0) == 'u') this.className='unselecth'"
         onmouseout="if (this.className.charAt(0) == 'u') this.className='unselect'" 
         onclick="if (document.noselect) document.noselect=false; else {vselect(this);subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[famtarget]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]');}" 
 oncontextmenu="viewdocmenu(event,'[id]',false,false,this);return false" 
      class="unselect" >   
-     <img   align="right" width="30" id="ic[id]" [IFNOT canedit]class="aiconnoh"[ENDIF canedit][IF canedit]class="aicon" title="[TEXT:toedit]" onclick="document.noselect=true;vselect(this.parentNode);vedit(event,'[id]');"[ENDIF canedit]  needresize="1" src="[iconsrc]"><img  align="right" title="[emblemt]" src="[emblem]" width="20">
+     <img   align="right" width="30" id="ic[id]" documentId="[id]" hrefDoc='?sole=Y&&app=GENERIC&action=GENERIC_EDIT&&latest=Y&id=[id]' [IFNOT canedit]class="aiconnoh"[ENDIF canedit][IF canedit]class="aicon" title="[TEXT:toedit]" onclick="document.noselect=true;vselect(this.parentNode);vedit(event,'[id]');"[ENDIF canedit]  needresize="1" src="[iconsrc]"><img  align="right" title="[emblemt]" src="[emblem]" width="20">
      [IF postitid]<img  align="right" needresize="1" src="[IMG:stickynotes.png]" width="20px">[ENDIF postitid][IF inDomain]<img  align="right" needresize="1" src="[IMG:domainsync.png]" width="20px">[ENDIF inDomain][IF forumid]<img  align="right" needresize="1" src="[IMG:forum.png]" width="20px">[ENDIF forumid]
 <A class="title"  style="float:left;" id="t[id]">[title]</A> <I class="statetext" style="float:right;border-color:[statecolor]">[state]</I><br style="clear:both"/>
 [ABSTRACTVALUES]
 </div>
 
 
-                    [ENDBLOCK TABLEBODY]
+[ENDBLOCK TABLEBODY]
 <BR>
 <!-- /TABLEBODY -->
 </td>

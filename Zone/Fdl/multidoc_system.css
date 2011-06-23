@@ -35,9 +35,8 @@
 {
 	display:none;
 	position:absolute;
-	left:0px;
-   top: 42px;
-  	overflow:auto;
+  top: 42px;
+  overflow:auto;
 	overflow-x:hidden;
 	z-index:100;
 }
@@ -104,13 +103,19 @@
 	background-image:url(../../ONEFAM/Images/del.png);
 }
 
-.multidoc .icon_doc, .multidoc .img_new, .multidoc .img_del
+.multidoc .icon_doc
 {
 	float:left;
 	width:16px;
 	height:16px;
 }
 
+.multidoc .img_new, .multidoc .img_del
+{
+	float:left;
+	width:16px;
+	height:14px;
+}
 .multidoc .options
 {
 	float:left;

@@ -36,12 +36,13 @@ body, html
 
 .multidoc .tabs
 {
-	height:100%;
+	/*height:100%;*/
 }
 
 .multidoc .tabs_vertical
 {
 	height:400px;
+	
 }
 
 .multidoc .tab, .multidoc #tabs_plus
@@ -53,7 +54,7 @@ body, html
 {
 	border-top: 1px solid #8098b7;
 	border-bottom: 1px solid #8098b7;
-	max-height:320px;
+	max-height:250px;
 	width:159px;
 }
 
@@ -67,23 +68,21 @@ body, html
 
 .multidoc .tab, .multidoc .tab-active
 {
-	color:#2A3B47;
-	border-left:1px double #8098b7;
-	padding-top: 7px;
-	padding-bottom:7px;
-	padding-left:2px;
-	padding-right:5px;
-	font-size:0.6em;
+	color:[COLOR_B5];
+	border-left:1px solid #8098b7;
+	padding:3px;
+	padding-bottom:4px;
+	font-size:1em;
   	cursor:pointer;
   	/*-moz-box-shadow: 1px 1px 1px #050505;
 	box-shadow: 1px 1px 1px #050505; 
 	-moz-border-radius: 4px;
-	border-radius: 4px; */
+	border-radius: 4px; 
 	-moz-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
 	-webkit-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
 	-o-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
 	-ms-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
-	transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);*/
 }
 
 .multidoc .tab-active
@@ -91,7 +90,7 @@ body, html
 	background-color:#b1c7e1;
 }
 
-.multidoc .tab:hover, .tab-active:hover
+.tab:hover, .tab-active:hover
 {
 	text-decoration:underline;
 	background-color:#BBD8E5;
@@ -132,12 +131,12 @@ body, html
 	/*-moz-box-shadow: 1px 1px 1px #050505;
 	box-shadow: 1px 1px 1px #050505; 
 	-moz-border-radius: 4px;
-	border-radius: 4px; */
+	border-radius: 4px; 
 	-moz-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
 	-webkit-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
 	-o-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
 	-ms-transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
-	transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);
+	transform: scale(1) rotate(0.5deg) translate(0px, 0px) skew(0deg, 0deg);*/
 }
 
 .multidoc .img_new, .multidoc .img_del
@@ -156,7 +155,7 @@ body, html
 	background-image:url(../../ONEFAM/Images/del.png);
 }
 
-.multidoc .img_del:hover, .multidoc .img_new:hover
+.img_del:hover, .img_new:hover
 {
   	background-color:#BBD8E5;
 }

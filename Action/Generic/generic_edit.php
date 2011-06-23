@@ -186,7 +186,6 @@ function generic_edit(&$action) {
 	// information propagation
 	$action->lay->Set("classid", $classid);
 	$action->lay->Set("dirid", $dirid);
-	$action->lay->Set("id", $docid);
 
 
 }

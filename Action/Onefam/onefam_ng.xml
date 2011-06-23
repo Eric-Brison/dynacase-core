@@ -59,7 +59,11 @@ function openiframe(event,th,docid) {
   if (nf && (nf.style.display!= 'none')) reloadlist=true;
   var lif=document.getElementsByTagName('iframe');
   for (var i=0;i<lif.length;i++) {
+  var classname = lif[i].getAttribute("class");
+ 	if(classname!='content_frame')
+  	{
     lif[i].style.display='none';
+   }
   }
   if (nf) {
     if (reloadlist) {
@@ -80,7 +84,7 @@ function openiframe(event,th,docid) {
      nf.id=idf;
      nf.name=idf;
      nf.className='ifonefam';
-     nf.src='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_GENROOT&famid='+docid;
+     nf.src='[CORE_STANDURL]&app=GENERIC&action=GENERIC_TAB&famid='+docid+'&catg=0&tab=0&viewfld=no&refresh=no';
      tdi.appendChild(nf);
      [IF ISAPPLEWEBKIT]
      window.setTimeout(function() {nf.style.width='90%';}, 50);
@@ -95,7 +99,7 @@ function reloadiframe(event,th,docid) {
   nf=document.getElementById(idf);
   if (nf) {
     nf.style.display='';
-    nf.src='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_GENROOT&famid='+docid;
+    nf.src='[CORE_STANDURL]&app=GENERIC&action=GENERIC_TAB&famid='+docid+'&catg=0&tab=0&viewfld=no&refresh=no';
   } 
   
 }
@@ -113,7 +117,27 @@ function openfirst(docid) {
 function Start_Multidoc()
 {
 	MultiDocument = new MultiDocument();
-	MultiDocument.setAnchor("#tdiframe");
+	MultiDocument.setAnchor("#multidoc");
+	MultiDocument.setDisplayMode("H");
+	
+	var final=false;
+	var t = window.location.search;
+	t.substr(1);
+	tab = t.split("&");
+	for(var i=0;i<tab.length;i++)
+	{
+		if(tab[i].indexOf("action")!=-1)
+		{
+			tab2 = tab[i].split("=");
+			for(var j=0;j<tab2.length;j++)
+			{
+				if(tab2[j]=="ONEFAM_NG")
+				{
+					var final = true;
+				}
+			}
+		}
+	}
 }
 [IF OPENFAM]
 addEvent(window,'load',function zou() {openfirst('[openfam]');})
@@ -122,9 +146,9 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
 
  </head>
 
-<body style="background-color:[ONEFAM_BGCOLOR]" onload="Start_Multidoc()">
+<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR]" onload="Start_Multidoc()">
 
-<table style="width:100%;height:100%"><tr><td style="width:[wcols]px" valign="top">
+<div id="listicon" style="float:left;margin:5px;width:[wcols]px" valign="top">
 [BLOCK SELECTMASTER]
 <img style="width:[izpx]"
      src="[iconsrc]"  needresize="1"
@@ -157,12 +181,18 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
      alt="[ftitle]"
      title="[ftitle]">
 [ENDBLOCK SELECTUSER]
-<BR style="clear:both">
+
 [BLOCK CHOOSEUSERFAMILIES]
 <input style="float:left;width:[izpx]px" type="button" value="+" 
        title="[TEXT:choose user families]" 
        onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITPREF')">
 [ENDBLOCK CHOOSEUSERFAMILIES]
-</td><td id="tdiframe"></td></tr></table>
+<BR style="clear:both">
+</div>
+
+<div id="tdiframe" style="float:left; width:30%"></div>
+<div style="position:absolute;bottom:5px;right:10px;"><a onclick='window.parent.MultiDocument.setDisplayMode("V")'>Vertical Mode</a> // <a onclick='window.parent.MultiDocument.setDisplayMode("H")'>Horizontal Mode</a> // <a onclick='window.parent.MultiDocument.resetMultiDoc()'>Close all</a></div>
+
+<div id="multidoc" style="margin-left:2px;border-left:2px solid grey;padding-left:3px;float:left; width:65%"></div>
 </body>
 </html>

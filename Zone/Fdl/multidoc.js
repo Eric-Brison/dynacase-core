@@ -114,8 +114,8 @@ $(function(){
 	var bodyTemplate="<div class='multidoc'><ul id='tabs' class='tabs'></ul><div id='arrow_down' title='View more...'></div><ul id='tabs_plus' class='tabs_plus'></ul><div id='doc_content' class='doc_content'></div></div>";
 	var backboneTemplate = "<div class='tabcontent'><div class='tab' id='tab_<%= id %>' title='<%= content %>'><div class='icon_doc'><img class='img_icon' id='img_<%= id %>' src='ONEFAM/Images/loader5.gif' /></div><div class='content'>Loading...<%= content %></div></div><div class='options' id='options_<%= id %>'><div class='img_del' title='Delete'></div><div class='img_new' title='Extract'></div></div></div>";
 	
-	var systemcss = '<link href="FDL/Layout/multidoc_system.css" rel="stylesheet" type="text/css" />';
-	var usercss = '<link id="usercss" href="FDL/Layout/multidoc_user.css" rel="stylesheet" type="text/css" />';
+	var systemcss = '<link href="?app=CORE&action=CORE_CSS&layout=FDL:multidoc_system.css" rel="stylesheet" type="text/css" />';
+	var usercss = '<link id="usercss" href="?app=CORE&action=CORE_CSS&layout=FDL:multidoc_user.css" rel="stylesheet" type="text/css" />';
 
 	$('head').append(systemcss);
 	$('head').append(usercss);
@@ -333,7 +333,7 @@ $(function(){
 			   			{
 			   				var relhref = relations[i].getAttribute("href");
 			   				var relid = relations[i].getAttribute("documentId");
-		   					relations[i].setAttribute('onclick','window.parent.MultiDocument.prototype.newDoc(\''+ relid + '\',"http://' + top.location.host + "/dynacase/" + relhref + '")');
+		   					relations[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"http://' + top.location.host + "/dynacase/" + relhref + '")');
 		   					relations[i].removeAttribute('href');
 		   				}
 		   			}
