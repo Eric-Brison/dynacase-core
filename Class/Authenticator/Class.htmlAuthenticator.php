@@ -104,7 +104,9 @@ Class htmlAuthenticator extends Authenticator {
       $referer_uri .= "#".$parsed_referer['fragment'];
     }
     $session = $this->getAuthSession();
-
+    /* Force removal of username if it already exists on the session */
+	$session->register('username', '');
+	$session->setuid(ANONYMOUS_ID);
     
 //     error_log("referer_uri = ".$referer_uri." / REQUEST_URI = ".$_SERVER['REQUEST_URI']);
     if( $referer_uri == "" ) {
@@ -115,17 +117,27 @@ Class htmlAuthenticator extends Authenticator {
       $session->register('fromuri', $_SERVER['REQUEST_URI']);
     }
         
-        if (array_key_exists('authurl', $this->parms)) {
+    if (array_key_exists('authurl', $this->parms)) {
 	  $sargs = '';
 	  foreach ($args as $k=>$v) $sargs .= sprintf("&%s=%s",$k,urlencode($v));
-            if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
-                $dirname = dirname($_SERVER["SCRIPT_NAME"]);
-                header('Location: ' . str_replace('//','/',$dirname . '/' . $this->parms{'authurl'}));
-            } else {
-                header('Location: ' . $this->parms{'authurl'});
-            }
-            return TRUE;
-        }
+
+	  $location = '';
+      if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
+      	$dirname = dirname($_SERVER["SCRIPT_NAME"]);
+		$location = str_replace('//','/',$dirname . '/' . $this->parms{'authurl'});
+		if( strpos($location, '?') === false && $sargs != '' ) {
+			$sargs = sprintf('?%s', $sargs);
+		}
+      } else {
+		$location = $this->parms{'authurl'};
+		if( strpos($location, '?') === false && $sargs != '' ) {
+			$sargs = sprintf('?%s', $sargs);
+		}
+   	  }
+
+   	  header(sprintf('Location: %s%s', $location, $sargs));
+   	  return TRUE;
+    }
     
     error_log(__CLASS__."::".__FUNCTION__." "."Error: no authurl of askAuthentication() method defined for ".$this->parms{'type'}.$this->parms{'provider'}."Provider");
     return FALSE;
