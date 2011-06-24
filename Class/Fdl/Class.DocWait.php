@@ -76,7 +76,6 @@ class DocWait extends DbObj
     
     public $id_fields = array(
         "refererinitid",
-        "localid",
         "uid"
     );
     public $dbtable = "docwait";
@@ -128,12 +127,12 @@ create sequence seq_waittransaction start 1;
                 // create it
                 $err = $wdoc->add();
                 if (!$err) {
-                    if (!$this->refererinitid) {
+                    if ($this->localid) {
                         $this->refererid = $wdoc->id;
                         $this->refererinitid = $wdoc->initid;
                         // change primary key
-                        $this->exec_query(sprintf("delete from docwait  where localid='%s'", pg_escape_string($this->localid)));
-                        $this->exec_query(sprintf("update docwait set refererid=%d, refererinitid=%d where localid='%s'", $this->refererid, $this->refererinitid, pg_escape_string($this->localid)));
+                        //$this->exec_query(sprintf("delete from docwait where localid='%s'", pg_escape_string($this->localid)));
+                        $this->exec_query(sprintf("update docwait set refererid=%d, refererinitid=%d, localid='' where localid='%s'", $this->refererid, $this->refererinitid, pg_escape_string($this->localid)));
                     }
                 }
             }
@@ -143,7 +142,8 @@ create sequence seq_waittransaction start 1;
             }
             if ($err) {
                 $this->status = self::constraint;
-                $this->statusmessage = ($info->error) ? $info->error : $err;
+                $this->statusmessage = ($info->error) ? $info->label.' : '.$info->error : $err;
+               // $this->statusmessage=json_encode($info->error);
                 $this->modify();
             } else {
                 $this->resetWaitingDocument();
@@ -156,6 +156,7 @@ create sequence seq_waittransaction start 1;
         return $err;
     }
     
+  
     public function resetWaitingDocument()
     {
         $doc = $this->getRefererDocument(true);
@@ -197,7 +198,7 @@ create sequence seq_waittransaction start 1;
     public function getRefererDocument($reset = false)
     {
         if ($reset) $this->refererDoc = null;
-        if (!$this->refererid) return null;
+        if ($this->refererid <= 0) return null;
         if (!$this->refererDoc) {
             $this->refererDoc = new_doc($this->dbaccess, $this->refererid, true);
             $this->refererDocId = $this->refererDoc->id;
@@ -237,6 +238,7 @@ create sequence seq_waittransaction start 1;
             $this->waitingDoc = clone $cdoc;
             $waitValues = unserialize($this->values);
             foreach ( $waitValues as $aid => $v ) {
+                if ($v == '') $v=' ';
                 $this->waitingDoc->setValue($aid, $v);
             }
             $this->waitingDoc->doctype = 'I';

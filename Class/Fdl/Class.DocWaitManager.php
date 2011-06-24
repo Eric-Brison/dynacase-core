@@ -28,7 +28,6 @@ class DocWaitManager
         if ($doc) {
             $wd = new DocWait($doc->dbaccess, array(
                 $doc->initid,
-                $doc->localid,
                 $doc->getSystemUserId()
             ));
             
