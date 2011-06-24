@@ -49,6 +49,10 @@ function onefam_ng(Action &$action) {
 
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
+        $action->parent->AddJsRef("lib/jquery/jquery.js",false);
+        $action->parent->AddJsRef("FDL:underscore.js",true);
+        $action->parent->AddJsRef("FDL:backbone.js",true);
+        $action->parent->AddJsRef("FDL:multidoc.js",true);
 
 
 
