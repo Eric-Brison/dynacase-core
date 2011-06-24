@@ -34,11 +34,7 @@ function checkauth(&$action) {
     break;
     
   default:
-    $action->session->close();
-    sleep(1); // for robots
-    // Redirect to authentication
-    global $_POST;
-    Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
+  	AuthenticatorManager::$auth->askAuthentication(array('error' => $status, 'auth_user' => urlencode($_POST['auth_user'])));
     exit(0);
 
   }
