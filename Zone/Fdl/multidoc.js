@@ -25,7 +25,8 @@ $(function(){
 	  		var width_tabs = $("#tabs").outerHeight();
     		var width_tab = $(".tab-active").outerHeight();
    		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
-   		var count_li = document.getElementsByClassName("tabs_li").length;
+   		var count_li = $('ul#tabs > li').length;
+		console.log(' ************** '+count_li);
    	}
    	else
    	{
@@ -44,8 +45,8 @@ $(function(){
 	   
 	   $('.content_frame').css('display','none');
    	$('.tab-active').removeClass().addClass('tab');
-   	$('.options').css('visibility','hidden');
-   	$('#tab_' + idtab).removeClass().addClass('tab-active');
+   	// $('.options').css('display','block');
+   	$('#' + idtab).removeClass().addClass('tab-active');
 		$('#frame_' + idtab).css('display','block');
 		$('#tabs_plus').hide(500);
 	});
@@ -111,8 +112,8 @@ $(function(){
   	});
   	
 	//Two variables to stock templates
-	var bodyTemplate="<div class='multidoc'><ul id='tabs' class='tabs'></ul><div id='arrow_down' title='View more...'></div><ul id='tabs_plus' class='tabs_plus'></ul><div id='doc_content' class='doc_content'></div></div>";
-	var backboneTemplate = "<div class='tabcontent'><div class='tab' id='tab_<%= id %>' title='<%= content %>'><div class='icon_doc'><img class='img_icon' id='img_<%= id %>' src='ONEFAM/Images/loader5.gif' /></div><div class='content'>Loading...<%= content %></div></div><div class='options' id='options_<%= id %>'><div class='img_del' title='Delete'></div><div class='img_new' title='Extract'></div></div></div>";
+	var bodyTemplate="<div class='multidoc'><div id='header'><ul id='tabs' class='tabs'></ul><div id='arrow_down' title='View more...'></div><ul id='tabs_plus' class='tabs_plus'></ul></div><div class='clear'></div><div id='doc_content' class='doc_content'></div></div>";
+	var backboneTemplate = "<div class='tab' id='tab_<%= id %>' title='<%= content %>'><div class='icon_doc'><img class='img_icon' id='img_<%= id %>' src='images/loading.gif' /></div><div class='content'>Loading...<%= content %></div></div><div class='options' id='options_<%= id %>'><div class='img_del' title='Delete'></div><div class='img_new' title='Extract'></div></div>";
 	
 	var systemcss = '<link href="?app=CORE&action=CORE_CSS&layout=FDL:multidoc_system.css" rel="stylesheet" type="text/css" />';
 	var usercss = '<link id="usercss" href="?app=CORE&action=CORE_CSS&layout=FDL:multidoc_user.css" rel="stylesheet" type="text/css" />';
@@ -160,7 +161,7 @@ $(function(){
 
 	DocView = Backbone.View.extend({
 		
-		tagName: "li",
+		tagName: 'li',
 		
 		template: _.template($('#doc-object').html()),
 		
@@ -169,10 +170,7 @@ $(function(){
 			"click .img_new" : "newPage",
 			"click .img_del" : "close",
 			"click ul#tabs .tab" : "open",
-			"mouseover .tabcontent" : "showOptions",
-			"click .tabcontent" : "showOptions",
-			"mouseleave .tabcontent" : "hideOptions",
-			"contextmenu .tabcontent" : "goFirst"
+			"contextmenu ul#tabs .tab" : "goFirst"
 		},
 		
 		initialize: function() 
@@ -261,14 +259,14 @@ $(function(){
     			if(idnext)
     			{
 	    			$('#frame_' + idnext).css('display','block');
-	    			$('#tab_' + idnext).removeClass().addClass('tab-active');   
-    				$('#options_' + idnext).css('visibility','visible');
+	    			$('#' + idnext).removeClass().addClass('tab-active');   
+    				// $('#options_' + idnext).css('display','block');
 	    		}
 				else
 				{
 					$('#frame_' + idprev).css('display','block');
-	    			$('#tab_' + idprev).removeClass().addClass('tab-active');   
-    				$('#options_' + idprev).css('visibility','visible');
+	    			$('#' + idprev).removeClass().addClass('tab-active');   
+    				// $('#options_' + idprev).css('display','block');
 				}
     		}
     		$('#frame_' + id).remove();
@@ -292,8 +290,8 @@ $(function(){
    		id = this.model.get('id');
    		$('.content_frame').css('display','none');
    		$('.tab-active').removeClass().addClass('tab');
-   		$('.options').css('visibility','hidden');
-   		$('#tab_' + id).removeClass().addClass('tab-active');
+   		// $('.options').css('display','block');
+   		$('#' + id).removeClass().addClass('tab-active');
    		
    		if($('#frame_' + id).length>0)
    		{
@@ -304,7 +302,7 @@ $(function(){
    		{ 			
 	   		$('#doc_content').append("<iframe class='content_frame' id='frame_" + id + "' style='display:block;' frameborder='no' name='document' src='" + this.model.get('url') +"' width='100%' height='400px'></iframe>");	   		
 	   		$('ul#tabs > li:nth-child(1)').attr('id', id);
-   			$('ul#tabs > li:nth-child(1)').attr('class', 'tabs_li');
+   			$('ul#tabs > li:nth-child(1)').attr('class', 'tabs_li tab-active');
    			
    			//FRAME LOADING
    			$("#frame_" + id).load(function() {
@@ -366,7 +364,7 @@ $(function(){
 						{
 							$("#tab_" + id).children(".content").html("Error Document");
 							$("#tab_" + id).attr("title","Error Document");
-							$("#img_" + id).attr("src","ONEFAM/Images/erreur.png");
+							$("#img_" + id).attr("src","[IMG:erreur.png|12]");
 							var error = true;
 						}
 						
@@ -385,7 +383,7 @@ $(function(){
 							if(metaicone.length>0)
 							{
 								var icone = metaicone[0].content;
-								$("#img_" + id).attr("src","../../dynacase/" + icone); /*MODIF*/
+								$("#img_" + id).attr("src", icone); /*MODIF*/
 							}
 							
 							//IF DURING LOAD this frame already exist 	
@@ -394,7 +392,7 @@ $(function(){
 								$("#" + id).attr('id',idpage);
 								$("#tab_" + id).attr('id','tab_' + idpage);
 								$("#img_" + id).attr('id','img_' + idpage);
-								$("#options_" + id).attr('id','options_' + idpage);
+								// $("#options_" + id).attr('id','options_' + idpage);
 							}						
 						}
 					}	
@@ -402,29 +400,25 @@ $(function(){
 					{
 						$("#tab_" + id).children(".content").html("Extern URL");
 						$("#tab_" + id).attr("title","Extern URL");
-						$("#img_" + id).attr("src","ONEFAM/Images/extern.png");
+						$("#img_" + id).attr("src","[IMG:extern.png|12]");
 					}
    			});
    		}
+
+   		var count_li = $('ul#tabs > li').length;
+		console.log(' ************** '+count_li);
    	},
    	
-   	showOptions: function() {
-   		$('#options_' + this.model.get('id')).css('visibility','visible');
-   	},
-   	
-   	hideOptions: function() {
-   		$('#options_' + this.model.get('id')).css('visibility','hidden');
-   	},
    	
 	   remove: function() {
 	     	$(this.el).remove();
 	   },
 	   
 	   goFirst: function() {
-		   if($("#" + this.model.get('id')).attr("class") == 'tabs_li')
+		    if($("#" + this.model.get('id')).parent().attr('id') == 'tabs')
 		   {
-		   	$('.options').css('visibility','hidden');
-	   		$('#options_' + this.model.get('id')).css('visibility','visible');
+		   	// $('.options').css('display','block');
+	   		// $('#options_' + this.model.get('id')).css('display','block');
 		   	$("#"+this.model.get('id')).prependTo($("#tabs"));
 		   	return false;
 		   }
@@ -479,12 +473,12 @@ $(function(){
 	    	}
 	    	else
 	    	{
-   			$('.options').css('visibility','hidden');
-   			$('#options_' + _id).css('visibility','visible');
+   			// $('.options').css('display','block');
+   			// $('#options_' + _id).css('display','block');
 	    		$('.content_frame').css('display','none');
 	   		$('.tab-active').removeClass().addClass('tab');
 	   		$('#frame_' + _id).css('display','block');
-	   		$('#tab_' + _id).removeClass().addClass('tab-active');
+	   		$('#' + _id).removeClass().addClass('tab-active');
 	   		$("#" + _id).attr("class","tabs_li");
 	   		$("#tabs").prepend($("#" + _id).css("display","block"));
 	   		$("ul#tabs > li:nth-child(" + (count_tabs+1) + " )").attr("class","tabs_plus_li");
@@ -529,14 +523,14 @@ $(function(){
 	    			if(idnext)
 	    			{
 		    			$('#frame_' + idnext).css('display','block');
-		    			$('#tab_' + idnext).removeClass().addClass('tab-active');   
-	    				$('#options_' + idnext).css('visibility','visible');
+		    			$('#' + idnext).removeClass().addClass('tab-active');   
+	    				// $('#options_' + idnext).css('display','block');
 		    		}
 					else
 					{
 						$('#frame_' + idprev).css('display','block');
-		    			$('#tab_' + idprev).removeClass().addClass('tab-active');   
-	    				$('#options_' + idprev).css('visibility','visible');
+		    			$('#' + idprev).removeClass().addClass('tab-active');   
+	    				// $('#options_' + idprev).css('display','block');
 					}
 	    		}
 	    		$('#frame_' + id).remove();
