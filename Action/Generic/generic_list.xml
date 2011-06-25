@@ -10,7 +10,7 @@
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
-<script type="text/javascript" src="jquery/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery/jquery.js"></script>
 [CSS:REF]
 
 
@@ -139,25 +139,35 @@ addEvent(window,"load",focusInput);
 
 -->
 
+function create_url(type, hroot, removeHref, target)
+{
+	for(var i=0;i<type.length;i++)
+	{
+		var relhref = type[i].getAttribute("hrefDoc");
+		var relid = type[i].getAttribute("documentId");
+		type[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
+		if(removeHref==true)
+		{
+			type[i].removeAttribute('href');
+		}
+		if(target==true)
+		{
+			type[i].removeAttribute('target');
+		}
+	}
+}
+
 function multidoc()
 {
+	var hroot = window.location.href.substr(0,window.location.href.indexOf('?'));
+	
 	//DOCUMENTS LINK
 	var relations = $('div[value="multidoc"]');
-	for(var i=0;i<relations.length;i++)
-	{
-		var relhref = relations[i].getAttribute("hrefDoc");
-		var relid = relations[i].getAttribute("documentId");
-		relations[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"http://' + top.location.host + "/dynacase/" + relhref + '")');
-	}
+	create_url(relations,hroot,false,false);
 	
 	//EDIT IMAGE LINKS
 	var editions = $('.aicon');
-	for(var i=0;i<editions.length;i++)
-	{
-		var relhref = editions[i].getAttribute("hrefDoc");
-		var relid = editions[i].getAttribute("documentId");
-		editions[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"http://' + top.location.host + "/dynacase/" + relhref + '");return false;');
-	}
+	create_url(editions,hroot,false,false);
 	
 	$(".aicon").click(function(event){
   		event.stopPropagation();
@@ -169,7 +179,7 @@ function multidoc()
 	{
 		var relhref = editions[i].getAttribute("href");
 		var relid = editions[i].getAttribute("documentId");
-		editions[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',\'http://' + top.location.host + "/dynacase/" + relhref + '\');return false;');
+		editions[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		editions[i].removeAttribute('href');
 		editions[i].removeAttribute('target');
 	}
@@ -183,8 +193,9 @@ function multidoc()
 	for(var i=0;i<menus.length;i++)
 	{
 		var relhref = menus[i].getAttribute("hrefDoc");
-		var relid = menus[i].getAttribute("documentId");
-		menus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',\'http://' + top.location.host + "/dynacase/" + relhref + '\');return false;');
+		var d = new Date();
+		var relid = "idtmp" + i + d.getTime();
+		menus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		menus[i].removeAttribute('href');
 	}
 	
@@ -193,8 +204,9 @@ function multidoc()
 	for(var i=0;i<helpmenus.length;i++)
 	{
 		var relhref = helpmenus[i].getAttribute("hrefDoc");
-		var relid = helpmenus[i].getAttribute("documentId");
-		helpmenus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',\'http://' + top.location.host + "/dynacase/" + relhref + '\');return false;');
+		var d = new Date();
+		var relid = "idtmp" + i + d.getTime();
+		helpmenus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		helpmenus[i].removeAttribute('href');
 	}
 }

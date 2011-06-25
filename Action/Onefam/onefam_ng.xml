@@ -7,10 +7,7 @@
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
-<script type="text/javascript" src="jquery/jquery.js"></script>
-<script type="text/javascript" src="FDL/Layout/underscore.js"></script>
-<script type="text/javascript" src="FDL/Layout/backbone.js"></script>
-<script type="text/javascript" src="FDL/Layout/multidoc.js"></script>
+
 
 [CSS:REF]
 [JS:REF]

@@ -331,7 +331,8 @@ $(function(){
 			   			{
 			   				var relhref = relations[i].getAttribute("href");
 			   				var relid = relations[i].getAttribute("documentId");
-		   					relations[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"http://' + top.location.host + "/dynacase/" + relhref + '")');
+			   				var hroot = window.location.href.substr(0,window.location.href.indexOf('?'));
+		   					relations[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '")');
 		   					relations[i].removeAttribute('href');
 		   				}
 		   			}
@@ -387,12 +388,14 @@ $(function(){
 							}
 							
 							//IF DURING LOAD this frame already exist 	
-							if($("#" + idpage).length<=0 && idpage!=null)
+							if($("#" + idpage).length<=0 && idpage!=null && idpage!="0")
 							{
+								var change = "true";
 								$("#" + id).attr('id',idpage);
 								$("#tab_" + id).attr('id','tab_' + idpage);
 								$("#img_" + id).attr('id','img_' + idpage);
-								// $("#options_" + id).attr('id','options_' + idpage);
+								$("#frame_" + id).attr('id','frame_' + idpage);
+								$("#options_" + id).attr('id','options_' + idpage);
 							}						
 						}
 					}	
@@ -402,7 +405,23 @@ $(function(){
 						$("#tab_" + id).attr("title","Extern URL");
 						$("#img_" + id).attr("src","[IMG:extern.png|12]");
 					}
-   			});
+					
+					if(change=="true")
+		 			{
+		 				window.parent.doc.set({id:idpage});
+		 				var title = this.contentWindow.document.title;
+		 				$("#tab_" + idpage).children(".content").html(title);
+						$("#tab_" + idpage).attr("title",title);
+						
+						var metaicone = this.contentWindow.document.getElementsByName("document-icon");
+						if(metaicone.length>0)
+						{
+							var icone = metaicone[0].content;
+							$("#img_" + idpage).attr("src","../../dynacase/" + icone);
+						}
+						$("#tab_" + idpage).attr("class","tab-active");
+		 			}
+   			});   			
    		}
 
    		var count_li = $('ul#tabs > li').length;
