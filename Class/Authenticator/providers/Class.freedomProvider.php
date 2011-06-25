@@ -69,7 +69,7 @@ Class freedomProvider extends Provider {
       $this->errno = 0;
       return TRUE;
     }
-    error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Password mismatch for user %s (%s / %s / %s)", $username, $encrypted_password, crypt($password, $salt[0]), $salt[0]));
+    error_log(__CLASS__."::".__FUNCTION__." ".sprintf("Password mismatch for user %s", $username));
     $this->errno = 0;
     return FALSE;
   }

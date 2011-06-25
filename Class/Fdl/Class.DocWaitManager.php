@@ -32,6 +32,7 @@ class DocWaitManager
             ));
             
             $wd->uid = $doc->getSystemUserId();
+            $wd->localid = $doc->localid;
             $wd->values = serialize($doc->getValues());
             $wd->status = docWait::recording;
             $wd->title = $doc->getTitle();
@@ -78,6 +79,31 @@ class DocWaitManager
     }
     
     /**
+     * return unresolved links
+     * @param int $domain domain identificator
+     * @param int $user user identificator
+     * @return array index=localid, value=serverid
+     */
+    public static function getUnresolvedLocalLinks($domain = -1, $user = -1)
+    {
+        $q = new QueryDb(getDbAccess(), "docWait");
+        $q->addQuery(sprintf("domain = %d", $domain));
+        $q->addQuery(sprintf("uid = %d", $user));
+        $q->addQuery("localid is not null");
+        $q->addQuery("refererinitid < 0");
+        
+        
+        $res= $q->Query(0, 0, 'TABLE');
+        $out=array();
+        if (is_array($res)) {
+            foreach ($res as $k=>$v) {
+                $out[$v['localid']]=$v['refererinitid'];
+            }
+        }
+        return $out;
+    }
+
+    /**
      * return waiting doc for a transaction
      * @param int $transaction transaction identificator
      * @return DbObjectList docWait list
@@ -89,7 +115,19 @@ class DocWaitManager
         
         return $q->Query(0, 0, 'ITER');
     }
-    
+
+    /**
+     * return waiting doc for a domain
+     * @param int $transaction transaction identificator
+     * @return DbObjectList docWait list
+     */
+    public static function getWaitingDocsByDomain($domainId)
+    {
+        $q = new QueryDb(getDbAccess(), "docWait");
+        $q->addQuery(sprintf("domain = %d", $domainId));
+        
+        return $q->Query(0, 0, 'ITER');
+    }
     /**
      * create a new transaction id
      * @return int transaction identificator
@@ -109,16 +147,16 @@ class DocWaitManager
     {
         $err = '';
         $wheres=array();
-        if ($domain > 0) {
+        if ($domain >= 0) {
             $wheres[]=sprintf("domain = %d", $domain);
         }
-        if ($user > 0) {
+        if ($user >= 0) {
             $wheres[]=sprintf("uid = %d", $user);
         }
-        if ($docinitid > 0) {
+        if ($docinitid >= 0) {
             $wheres[]=sprintf("refererinitid = %d", $docinitid);
         }
-        
+        error_log("clearWaitingDocs $domain - $user - $docinitid");
         if (count($wheres) == 0){
             $err = simpleQuery(getDbAccess(), "delete from docwait");
         } else {

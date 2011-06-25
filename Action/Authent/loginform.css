@@ -72,7 +72,7 @@ html {
   text-align : center;
   margin : 10px;
   padding : 10px;
-  color : [COLOR_B0];
+  color : [COLOR_ERRORCOLOR];
   text-transform : lowercase;
   font-weight : bold;
 }
