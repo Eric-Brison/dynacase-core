@@ -34,18 +34,15 @@ $(function(){
 		 	var width_options = $(".options").outerWidth();
 		   var width_tab = $(".tab-active").outerWidth();
 		   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
-		   var count_li = document.getElementsByClassName("tabs_li").length;
+		   var count_li = $('ul#tabs > li').length;
 		}	   
    	var idtab = $(this).attr("id");
 		
-		$("ul#tabs > li:nth-child(" + (count_tabs) + " )").attr("class","tabs_plus_li");
 		$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs) + " )"));
-	   $("#" + idtab).attr("class","tabs_li");
 	   $("#tabs").prepend($("#" + idtab).css("display","block"));
 	   
 	   $('.content_frame').css('display','none');
    	$('.tab-active').removeClass().addClass('tab');
-   	// $('.options').css('display','block');
    	$('#' + idtab).removeClass().addClass('tab-active');
 		$('#frame_' + idtab).css('display','block');
 		$('#tabs_plus').hide(500);
@@ -76,19 +73,18 @@ $(function(){
 				}
 				var count_tabs = parseInt(Math.floor((width_tabs-width_options)/width_tab),10);
 			}
-  		var nb_tabs = parseInt(document.getElementsByClassName("tabs_li").length,10);
-  		var nb_tabs_plus = parseInt(document.getElementsByClassName("tabs_plus_li").length,10);
+  		var nb_tabs = parseInt($('ul#tabs > li').length,10);
+  		var nb_tabs_plus = parseInt($('ul#tabs_plus > li').length,10);
   		var itt = nb_tabs - count_tabs;
   		
   		if(itt>0)
   		{
   			for(var i=0;i<itt;i++)
   			{
-  				$("ul#tabs > li:nth-child(" + (count_tabs+1) + ")").attr("class","tabs_plus_li");
   				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs+1) + ")"));
   			}
   			
-  			if(document.getElementsByClassName("tabs_plus_li").length > 0)
+  			if($('ul#tabs_plus > li').length > 0)
     		{
     			$('#arrow_down').css("display","block");
     			$('#tabs_plus').css("display","block");
@@ -99,11 +95,10 @@ $(function(){
   			itt_add = Math.abs(itt);
   			for(var i=0;i<itt_add;i++)
   			{
-  				$("ul.tabs_plus > li:nth-child(1)").attr("class","tabs_li");
   				$("#tabs").append($("ul.tabs_plus > li:nth-child(1)"));
   			}
   			
-  			if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+  			if ($('ul#tabs_plus > li').length <= 0)
     		{
     			$('#arrow_down').css("display","none");
     			$('#tabs_plus').css("display","none");
@@ -112,8 +107,8 @@ $(function(){
   	});
   	
 	//Two variables to stock templates
-	var bodyTemplate="<div class='multidoc'><div id='header'><ul id='tabs' class='tabs'></ul><div id='arrow_down' title='View more...'></div><ul id='tabs_plus' class='tabs_plus'></ul></div><div class='clear'></div><div id='doc_content' class='doc_content'></div></div>";
-	var backboneTemplate = "<div class='tab' id='tab_<%= id %>' title='<%= content %>'><div class='icon_doc'><img class='img_icon' id='img_<%= id %>' src='images/loading.gif' /></div><div class='content'>Loading...<%= content %></div></div><div class='options' id='options_<%= id %>'><div class='img_del' title='Delete'></div><div class='img_new' title='Extract'></div></div>";
+	var bodyTemplate="<div class='multidoc'><div id='header'><div class='mcontent'><div id='arrow_down' title='[TEXT:mdoc show next docs]'>&nbsp;</div><div class='clear'></div><ul id='tabs_plus' class='tabs_plus'></ul></div><ul id='tabs' class='tabs'></ul><div id='close-all' onclick='alert();' class='ico-action' title='[TEXT:mdoc close all docs]'></div></div><div class='clear'></div><div id='doc_content' class='doc_content'></div></div>";
+	var backboneTemplate = "<div class='tab' id='tab_<%= id %>' title='<%= content %>'><div class='icon_doc'><img class='img_icon' id='img_<%= id %>' src='[IMG:loading.gif]' /></div><div class='content'>Loading...<%= content %></div></div><div class='options' id='options_<%= id %>'><div class='img_del' title='[TEXT:mdoc: remove doc]'></div><div class='img_new' title='[TEXT:mdoc: open in a new window]'></div></div>";
 	
 	var systemcss = '<link href="?app=CORE&action=CORE_CSS&layout=FDL:multidoc_system.css" rel="stylesheet" type="text/css" />';
 	var usercss = '<link id="usercss" href="?app=CORE&action=CORE_CSS&layout=FDL:multidoc_user.css" rel="stylesheet" type="text/css" />';
@@ -170,7 +165,7 @@ $(function(){
 			"click .img_new" : "newPage",
 			"click .img_del" : "close",
 			"click ul#tabs .tab" : "open",
-			"contextmenu ul#tabs .tab" : "goFirst"
+			"contextmenu ul#tabs .tab" : "goFirst",
 		},
 		
 		initialize: function() 
@@ -199,7 +194,7 @@ $(function(){
 		  		var width_tabs = $("#tabs").outerHeight();
 	    		var width_tab = $(".tab-active").outerHeight();
 	   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
-	   		var count_li = document.getElementsByClassName("tabs_li").length;
+	   		var count_li = $('ul#tabs > li').length;
 	   	}
 	   	else
 	   	{
@@ -207,7 +202,7 @@ $(function(){
 			 	var width_options = $(".options").outerWidth();
 			   var width_tab = $(".tab-active").outerWidth();
 			   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
-			   var count_li = document.getElementsByClassName("tabs_li").length;
+			   var count_li = $('ul#tabs > li').length;
 			}
    		
     		//We retrieve the last url of the iframe
@@ -218,13 +213,12 @@ $(function(){
     		//We close the tab calling the close() function
     		this.close();
     		
-			if(document.getElementsByClassName("tabs_li").length < count_tabs)
+			if($('ul#tabs > li').length < count_tabs)
     		{
-    			$("#tabs_plus").children("li:first").attr('class', 'tabs_li');
     			$("#tabs").append($("#tabs_plus").children("li:first"));
     		}
     		
-    		if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+    		if(document.getElementsByClassName("ul#tabs_plus > li").length <= 0)
     		{
     			$('#arrow_down').css("display","none");
     			$('#tab_plus').css("display","none");
@@ -239,7 +233,7 @@ $(function(){
 		  		var width_tabs = $("#tabs").outerHeight();
 	    		var width_tab = $(".tab-active").outerHeight();
 	   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
-	   		var count_li = document.getElementsByClassName("tabs_li").length;
+	   		var count_li = $('ul#tabs > li').length;
 	   	}
 	   	else
 	   	{
@@ -247,7 +241,7 @@ $(function(){
 			 	var width_options = $(".options").outerWidth();
 			   var width_tab = $(".tab-active").outerWidth();
 			   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
-			   var count_li = document.getElementsByClassName("tabs_li").length;
+			   var count_li = $('ul#tabs > li').length;
 			}   
    	
     		if((document.getElementById('frame_' + id).style.display)=="block")
@@ -260,25 +254,22 @@ $(function(){
     			{
 	    			$('#frame_' + idnext).css('display','block');
 	    			$('#' + idnext).removeClass().addClass('tab-active');   
-    				// $('#options_' + idnext).css('display','block');
 	    		}
 				else
 				{
 					$('#frame_' + idprev).css('display','block');
 	    			$('#' + idprev).removeClass().addClass('tab-active');   
-    				// $('#options_' + idprev).css('display','block');
 				}
     		}
     		$('#frame_' + id).remove();
     		this.model.erase();
     		
-    		if(document.getElementsByClassName("tabs_li").length < count_tabs)
+    		if($('ul#tabs > li').length < count_tabs)
     		{
-    			$("#tabs_plus").children("li:first").attr('class', 'tabs_li');
     			$("#tabs").append($("#tabs_plus").children("li:first"));
     		}
     		
-    		if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+    		if($('ul#tabs_plus > li').length <= 0)
     		{
     			$('#arrow_down').css("display","none");
     			$('#tabs_plus').hide(500);
@@ -290,10 +281,9 @@ $(function(){
    		id = this.model.get('id');
    		$('.content_frame').css('display','none');
    		$('.tab-active').removeClass().addClass('tab');
-   		// $('.options').css('display','block');
    		$('#' + id).removeClass().addClass('tab-active');
    		
-   		if($('#frame_' + id).length>0)
+   		if($('#frame_' + id).length>0) 
    		{
    			$('#frame_' + id).css('display','block');
    			var existe=true;
@@ -302,7 +292,7 @@ $(function(){
    		{ 			
 	   		$('#doc_content').append("<iframe class='content_frame' id='frame_" + id + "' style='display:block;' frameborder='no' name='document' src='" + this.model.get('url') +"' width='100%' height='400px'></iframe>");	   		
 	   		$('ul#tabs > li:nth-child(1)').attr('id', id);
-   			$('ul#tabs > li:nth-child(1)').attr('class', 'tabs_li tab-active');
+   			$('ul#tabs > li:nth-child(1)').attr('class', 'tab-active');
    			
    			//FRAME LOADING
    			$("#frame_" + id).load(function() {
@@ -425,7 +415,6 @@ $(function(){
    		}
 
    		var count_li = $('ul#tabs > li').length;
-		console.log(' ************** '+count_li);
    	},
    	
    	
@@ -436,8 +425,6 @@ $(function(){
 	   goFirst: function() {
 		    if($("#" + this.model.get('id')).parent().attr('id') == 'tabs')
 		   {
-		   	// $('.options').css('display','block');
-	   		// $('#options_' + this.model.get('id')).css('display','block');
 		   	$("#"+this.model.get('id')).prependTo($("#tabs"));
 		   	return false;
 		   }
@@ -459,15 +446,15 @@ $(function(){
 		  		var width_tabs = $("#tabs").outerHeight();
 	    		var width_tab = $(".tab-active").outerHeight();
 	   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
-	   		var count_li = document.getElementsByClassName("tabs_li").length;
+				var count_li = $('ul#tabs > li').length;
 	   	}
 	   	else
 	   	{
 			 	var width_tabs = $("#tabs").outerWidth();
 			 	var width_options = $(".options").outerWidth();
 			   var width_tab = $(".tab-active").outerWidth();
-			   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
-			   var count_li = document.getElementsByClassName("tabs_li").length;
+			   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  				var count_li = $('ul#tabs > li').length;
+	   
 			}
 			
    		if($('#frame_' + _id).length<=0)
@@ -484,7 +471,6 @@ $(function(){
 		     	else
 		     	{
 		     		$('#arrow_down').css("display","block");
-		     		$("ul#tabs > li:nth-child(" + count_tabs + " )").attr('class', 'tabs_plus_li');
 		     		$("#tabs_plus").prepend($("li:nth-child(" + count_tabs + " )"));
 		     		this.$("#tabs").prepend(view.render().el);
 		     		view.open();
@@ -492,15 +478,11 @@ $(function(){
 	    	}
 	    	else
 	    	{
-   			// $('.options').css('display','block');
-   			// $('#options_' + _id).css('display','block');
 	    		$('.content_frame').css('display','none');
 	   		$('.tab-active').removeClass().addClass('tab');
 	   		$('#frame_' + _id).css('display','block');
 	   		$('#' + _id).removeClass().addClass('tab-active');
-	   		$("#" + _id).attr("class","tabs_li");
 	   		$("#tabs").prepend($("#" + _id).css("display","block"));
-	   		$("ul#tabs > li:nth-child(" + (count_tabs+1) + " )").attr("class","tabs_plus_li");
 	   		$("#tabs_plus").prepend($("li:nth-child(" + (count_tabs+1) + " )"));
    		}
     	},
@@ -522,7 +504,7 @@ $(function(){
 			  		var width_tabs = $("#tabs").outerHeight();
 		    		var width_tab = $(".tab-active").outerHeight();
 		   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
-		   		var count_li = document.getElementsByClassName("tabs_li").length;
+		   		var count_li = $('ul#tabs > li').length;
 		   	}
 		   	else
 		   	{
@@ -530,7 +512,7 @@ $(function(){
 				 	var width_options = $(".options").outerWidth();
 				   var width_tab = $(".tab-active").outerWidth();
 				   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
-				   var count_li = document.getElementsByClassName("tabs_li").length;
+				   var count_li = $('ul#tabs > li').length;
 				}  
 	
 	    		if((document.getElementById('frame_' + id).style.display)=="block")
@@ -543,25 +525,22 @@ $(function(){
 	    			{
 		    			$('#frame_' + idnext).css('display','block');
 		    			$('#' + idnext).removeClass().addClass('tab-active');   
-	    				// $('#options_' + idnext).css('display','block');
 		    		}
 					else
 					{
 						$('#frame_' + idprev).css('display','block');
 		    			$('#' + idprev).removeClass().addClass('tab-active');   
-	    				// $('#options_' + idprev).css('display','block');
 					}
 	    		}
 	    		$('#frame_' + id).remove();
 	    		$('#' + id).remove();
 	    		
-	    		if(document.getElementsByClassName("tabs_li").length < count_tabs)
+	    		if($('ul#tabs > li').length < count_tabs)
 	    		{
-	    			$("#tabs_plus").children("li:first").attr('class', 'tabs_li');
 	    			$("#tabs").append($("#tabs_plus").children("li:first"));
 	    		}
 	    		
-	    		if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+	    		if($('ul#tabs_plus > li').length <= 0)
 	    		{
 	    			$('#arrow_down').css("display","none");
 	    			$('#tabs_plus').hide(500);
@@ -582,7 +561,7 @@ $(function(){
 			  		var width_tabs = $("#tabs").outerHeight();
 		    		var width_tab = $(".tab-active").outerHeight();
 		   		var count_tabs = Math.floor((width_tabs)/width_tab);  	   
-		   		var count_li = document.getElementsByClassName("tabs_li").length;
+					var count_li = $('ul#tabs > li').length;
 		   	}
 		   	else
 		   	{
@@ -590,7 +569,7 @@ $(function(){
 				 	var width_options = $(".options").outerWidth();
 				   var width_tab = $(".tab-active").outerWidth();
 				   var count_tabs = Math.floor((width_tabs-width_options)/width_tab);  	   
-				   var count_li = document.getElementsByClassName("tabs_li").length;
+					var count_li = $('ul#tabs > li').length;
 				}
 	   		
 	    		//We retrieve the last url of the iframe
@@ -601,13 +580,12 @@ $(function(){
 	    		//We close the tab calling the close() function
 	    		this.removeDoc(id);
 	    		
-				if(document.getElementsByClassName("tabs_li").length < count_tabs)
+				if($('ul#tabs > li').length < count_tabs)
 	    		{
-	    			$("#tabs_plus").children("li:first").attr('class', 'tabs_li');
 	    			$("#tabs").append($("#tabs_plus").children("li:first"));
 	    		}
 	    		
-	    		if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+	    		if($('ul#tabs_plus > li').length <= 0)
 	    		{
 	    			$('#arrow_down').css("display","none");
 	    			$('#tab_plus').css("display","none");
@@ -647,13 +625,12 @@ $(function(){
 	    		$("#tabs").removeClass().addClass('tabs_vertical');
 	    		$("#doc_content").removeClass().addClass('doc_content_vertical');
 	    		$(".doc_content_vertical").css('width', wwidth + 'px');
-	    		$("#arrow_down").css('float','left');
 	    		$("#arrow_down").css('margin-left','-120px');
 				$("#tabs_plus").removeClass().addClass('tabs_plus_vertical');
 				
 				//Readjustement
-				var count_li = document.getElementsByClassName("tabs_li").length;
-				var count_li_plus = document.getElementsByClassName("tabs_plus_li").length;
+				var count_li = $('ul#tabs > li').length;
+				var count_li_plus = $('ul#tabs_plus > li').length;
 									
 				if(count_li>0)
 				{
@@ -671,7 +648,6 @@ $(function(){
 					{
 						for(var i=0;i<transf;i++)
 						{
-							$("ul#tabs > li:last-child").attr('class', 'tabs_plus_li');
 		     				$("#tabs_plus").prepend($("ul#tabs > li:last-child"));
 		     			}
 		     			$('#arrow_down').css("display","block");
@@ -683,14 +659,13 @@ $(function(){
 						{
 							for(var i=0;i<Math.abs(transf);i++)
 							{
-								$("ul#tabs_plus > li:nth-child(1)").attr('class', 'tabs_li');
 			     				$("#tabs").append($("ul#tabs_plus > li:nth-child(1)"));
 			     			}			     			
 						}
 					}	
 				}	
 				
-				if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+				if($('ul#tabs_plus > li').length <= 0)
 				{
 					$('#arrow_down').css("display","none");
 				   $('#tab_plus').css("display","none");
@@ -704,13 +679,12 @@ $(function(){
 		    		$("#tabs").removeClass().addClass('tabs');
 	    			$("#doc_content").removeClass().addClass('doc_content');
 	    			$(".doc_content").css('width', '100%');
-	    			$("#arrow_down").css('float','right');
 	    			$("#arrow_down").css('margin-left','0px');
 	    			$("#tabs_plus").removeClass().addClass('tabs_plus');
 				
 					//Readjustement
-					var count_li = document.getElementsByClassName("tabs_li").length;
-					var count_li_plus = document.getElementsByClassName("tabs_plus_li").length;
+					var count_li = $('ul#tabs > li').length;
+					var count_li_plus = $('ul#tabs_plus > li').length;
 										
 					if(count_li>0)
 					{
@@ -729,7 +703,6 @@ $(function(){
 						{
 							for(var i=0;i<transf;i++)
 							{
-								$("ul#tabs > li:last-child").attr('class', 'tabs_plus_li');
 			     				$("#tabs_plus").prepend($("ul#tabs > li:last-child"));
 			     			}
 						}
@@ -739,11 +712,10 @@ $(function(){
 							{
 								for(var i=0;i<Math.abs(transf);i++)
 								{
-									$("ul#tabs_plus > li:nth-child(1)").attr('class', 'tabs_li');
 				     				$("#tabs").append($("ul#tabs_plus > li:nth-child(1)"));
 				     			}
 	
-					    		if(document.getElementsByClassName("tabs_plus_li").length <= 0)
+					    		if($('ul#tabs_plus > li').length <= 0)
 					    		{
 					    			$('#arrow_down').css("display","none");
 					    			$('#tab_plus').css("display","none");
