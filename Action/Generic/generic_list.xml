@@ -159,6 +159,8 @@ function create_url(type, hroot, removeHref, target)
 
 function multidoc()
 {
+	window.parent.parent.document.getElementById('finfo').style.display="block";
+	window.parent.parent.redisplaywsdiv();
 	var hroot = window.location.href.substr(0,window.location.href.indexOf('?'));
 	
 	//DOCUMENTS LINK

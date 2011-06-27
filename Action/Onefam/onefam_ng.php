@@ -75,6 +75,30 @@ function onefam_ng(Action &$action) {
         $izpx=intval($action->getParam("SIZE_IMG-SMALL"));
 
         $action->lay->set("izpx",$izpx);
+  // Change CSS
+  $famid='128';  
+  $dbaccess = $action->GetParam("FREEDOM_DB");
+  if ($famid && (! is_numeric($famid))) $famid=getFamIdFromName($dbaccess,$famid);
+  if ($famid != "") $action->register("DEFAULT_FAMILY",$famid); // for old compatibility
+
+  $action->lay->set("famid",$famid);
+  $smode = getSplitMode($action);
+
+  switch ($smode) {
+  case "vertical": 
+    $action->parent->AddCssRef("WHAT/Layout/HB.css");
+    break;
+  case "inverse":    
+    $action->parent->AddCssRef("WHAT/Layout/inverse.css");
+    break;
+  default:
+  case "basic":
+    $action->parent->AddCssRef("WHAT/Layout/basic.css");
+    break;
+    
+  }
+
+
     }
 }
 function getTableFamilyList($idsfam) {
