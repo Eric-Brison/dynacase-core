@@ -115,7 +115,7 @@ create sequence seq_waittransaction start 1;
     private $refererDocId = null;
     /** waiting document @var Doc */
     private $waitingDoc = null;
-    public function save()
+    public function save(&$info=null)
     {
         $err = '';
         $this->status = $this->computeStatus();
