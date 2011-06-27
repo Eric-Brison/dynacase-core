@@ -8,17 +8,28 @@
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
 
+<script type="text/javascript" language="JavaScript" src="WHAT/Layout/geometry.js"></script>
+<script type="text/javascript" language="JavaScript" src="FDL/Layout/common.js"></script>
+<script type="text/javascript" language="JavaScript" src="ONEFAM/Layout/onefam_resize.js"></script>
 
 [CSS:REF]
 [JS:REF]
 
-
    <style type="text/css">
 [CSS:CODE]
-.ifonefam {
+.ifonefam1, .ifonefam2 {
   width:100%;
   height:100%;
   border:none;
+}
+
+#cacheiframes {
+  z-index:5;
+}
+
+#forIe {
+  width:100%;
+  height:100%;
 }
    </style>
 
@@ -34,72 +45,111 @@ function ctrlPushed(event) {
   if (!event) return false;
   return event.ctrlKey;
 }
+
 var selimg=null;
+
 function openiframe(event,th,docid) {
+
   var wfgtop;
-  if (selimg != null) {
+
+  if (selimg != null)  
+  {
     selimg.className='iconone';
     selimg.style.width=[izpx];
     selimg.style.borderLeftStyle='solid';
     selimg.style.borderLeftColor='[COLOR_C5]';
     selimg.style.borderLeftWidth='2px';
   }
-  if (th) { th.className='icononesel';
+
+  if (th) 
+  { 
+    th.className='icononesel';
     selimg=th;
     selimg.style.width=[izpx]-4;
   }
 
-  var idf='if_'+docid;
+  var flist='if_'+docid;
+  var multidoc='multidoc'+docid;
   var nf;
+  var nf2;
   var reloadlist=false;
-  nf=document.getElementById(idf);
+  nf=document.getElementById(flist);
+  nf2=document.getElementById(multidoc);
   if (nf && (nf.style.display!= 'none')) reloadlist=true;
   var lif=document.getElementsByTagName('iframe');
-  for (var i=0;i<lif.length;i++) {
-  var classname = lif[i].getAttribute("class");
- 	if(classname!='content_frame')
-  	{
+
+  for (var i=0;i<lif.length;i++) 
+  {
     lif[i].style.display='none';
-   }
   }
-  if (nf) {
-    if (reloadlist) {
+
+  if (nf) 
+  {
+    if (reloadlist) 
+    {
       var isrc;
-      if (window.frames[idf]) {
-	lif=window.frames[idf].document.getElementsByTagName('frame');
-	//      lif=nf.contentDocument.getElementsByTagName('frame');
-	if (lif.length >0) {
-	  isrc=lif[0].src;
-	  window.frames[idf].flist.location.href=isrc;
-	}
+      if (window.frames[flist]) 
+      {
+        lif=window.frames[flist].document.getElementsByTagName('frame');
+        //      lif=nf.contentDocument.getElementsByTagName('frame');
+        if (lif.length >0) 
+        {
+          isrc=lif[0].src;
+          window.frames[flist].flist.location.href=isrc;
+        }
       }
     }
     nf.style.display='';
-  } else {
-    var tdi=document.getElementById('tdiframe');
-     nf=document.createElement('iframe');
-     nf.id=idf;
-     nf.name=idf;
-     nf.className='ifonefam';
-     nf.src='[CORE_STANDURL]&app=GENERIC&action=GENERIC_TAB&famid='+docid+'&catg=0&tab=0&viewfld=no&refresh=no';
-     tdi.appendChild(nf);
-     [IF ISAPPLEWEBKIT]
-     window.setTimeout(function() {nf.style.width='90%';}, 50);
-     window.setTimeout(function() {nf.style.width='';}, 100);
-     [ENDIF ISAPPLEWEBKIT]
+    nf2.style.display='';
+  } 
+  else 
+  {
+    var draggable=document.getElementById('draggable');
+    draggable.style.display='';
+
+    var divlist=document.getElementById('flist');
+    var divinfo=document.getElementById('multidoc');
+
+    nf=document.createElement('iframe');
+    nf.id=flist;
+    nf.name=flist;
+    nf.className='ifonefam1';
+    nf.src='[CORE_STANDURL]&app=GENERIC&action=GENERIC_TAB&famid='+docid+'&catg=0&tab=0&viewfld=no&refresh=no';
+
+    [IF ISIE]
+      nf2=document.createElement("<iframe name="+multidoc+">"); 
+    [ENDIF ISIE]
+    [IFNOT ISIE]
+      nf2=document.createElement('iframe');
+      nf2.name=multidoc;
+    [ENDIF ISIE]
+    nf2.id=multidoc;                       
+    nf2.className='ifonefam2';
+    nf2.src='[CORE_STANDURL]&app=GENERIC&action=GENERIC_LOGO&famid='+docid;
+
+    divlist.appendChild(nf);
+    divinfo.appendChild(nf2);
+
+    [IF ISAPPLEWEBKIT]
+      window.setTimeout(function() {nf.style.width='90%';}, 50);
+      window.setTimeout(function() {nf.style.width='';}, 100);
+    [ENDIF ISAPPLEWEBKIT]
   }
 }
+
+
 function reloadiframe(event,th,docid) {
-  var idf='if_'+docid;
+  var flist='if_'+docid;
   var nf;
 
-  nf=document.getElementById(idf);
-  if (nf) {
+  nf=document.getElementById(flist);
+  if (nf) 
+  {
     nf.style.display='';
-    nf.src='[CORE_STANDURL]&app=GENERIC&action=GENERIC_TAB&famid='+docid+'&catg=0&tab=0&viewfld=no&refresh=no';
+    nf.src='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_GENROOT&famid='+docid;
   } 
-  
 }
+
 function openfirst(docid) {
   var i=document.getElementById('imgu'+docid);
 
@@ -110,10 +160,61 @@ function openfirst(docid) {
     openiframe(null,null,docid)
   }
 }
+[IF OPENFAM]
+addEvent(window,'load',function zou() {openfirst('[openfam]');})
+[ENDIF OPENFAM]
 
-function Start_Multidoc()
-{
-	MultiDocument = new MultiDocument();
+
+function basic() {
+  var links = document.getElementsByTagName('link');
+  var draggable = document.getElementById('draggable');
+  var style = 'no';
+  var lg = links.length;
+
+  for(i=0; i<lg; i++)
+  {
+    if(links[i].href.indexOf('basic.css') != -1) style = 'basic';
+  }
+  if(style == 'basic') return true;
+
+  return false;
+}
+
+
+function vertical() {
+  var links = document.getElementsByTagName('link');
+  var draggable = document.getElementById('draggable');
+  var style = 'no';
+  var lg = links.length;
+
+  for(i=0; i<lg; i++)
+  {
+    if(links[i].href.indexOf('HB.css') != -1) style = 'vertical';
+  }
+  if(style == 'vertical') return true; 
+
+  return false;
+}
+
+function style() {
+  var links = document.getElementsByTagName('link');
+  var lg = links.length;
+  var href, style;
+  for(var i=0; i<lg; i++)
+  {
+    href = links[i].getAttribute('href');
+    if(href.indexOf('HB.css') != -1) 
+    { style = 'vertical'; 
+      links[i].setAttribute('href', 'STYLE/MC/Layout/HB.css'); 
+      links[i].setAttribute('id', 'styleactif'); 
+    }
+    if(href.indexOf('basic.css') != -1) 
+    { style = 'basic'; 
+      links[i].setAttribute('href', 'STYLE/MC/Layout/basic.css'); 
+      links[i].setAttribute('id', 'styleactif'); 
+    }
+  }
+  	MultiDocument = new MultiDocument();
 	MultiDocument.setAnchor("#multidoc");
 	MultiDocument.setDisplayMode("H");
 	
@@ -136,14 +237,12 @@ function Start_Multidoc()
 		}
 	}
 }
-[IF OPENFAM]
-addEvent(window,'load',function zou() {openfirst('[openfam]');})
-[ENDIF OPENFAM]
+
    </script>
 
  </head>
 
-<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR]" onload="Start_Multidoc()">
+<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR]" onload="style()">
 
 <div id="listicon" style="float:left;margin:5px;width:[wcols]px" valign="top">
 [BLOCK SELECTMASTER]
@@ -187,9 +286,12 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
 <BR style="clear:both">
 </div>
 
-<div id="tdiframe" style="float:left; width:30%"></div>
-<div style="position:absolute;bottom:5px;right:10px;"><a onclick='window.parent.MultiDocument.setDisplayMode("V")'>Vertical Mode</a> // <a onclick='window.parent.MultiDocument.setDisplayMode("H")'>Horizontal Mode</a> // <a onclick='window.parent.MultiDocument.resetMultiDoc()'>Close all</a></div>
+<div id="divframes">
+    <div id='flist'></div>
+    <div id='draggable' onmousedown="if(basic()) startResizeH(event); else { if(vertical()) startResizeV(event);}" style="display:none;"> <div id="forIe"></div> </div>
+    <div id='multidoc'></div>
+    <div id="cacheiframes" style="display:none; background-color:transparent;"></div>
+</div>
 
-<div id="multidoc" style="margin-left:2px;border-left:2px solid grey;padding-left:3px;float:left; width:65%"></div>
 </body>
 </html>
