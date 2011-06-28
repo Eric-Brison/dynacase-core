@@ -87,6 +87,11 @@ $(function(){
   			{
   				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs+1) + ")"));
   			}
+  			
+  			if($('ul#tabs_plus > li').length > 0)
+    		{
+    			$('#arrow_down').css("display","block");
+    		}
   		}
   		else
   		{
@@ -318,7 +323,7 @@ $(function(){
 			   				var relhref = relations[i].getAttribute("href");
 			   				var relid = relations[i].getAttribute("documentId");
 			   				var hroot = window.location.href.substr(0,window.location.href.indexOf('?'));
-		   					relations[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '")');
+		   					relations[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '")'); // ONEFAM
 		   					relations[i].removeAttribute('href');
 		   				}
 		   			}
@@ -377,11 +382,8 @@ $(function(){
 							if($("#" + idpage).length<=0 && idpage!=null && idpage!="0")
 							{
 								var change = "true";
-								$("#" + id).attr('id',idpage);
-								$("#tab_" + id).attr('id','tab_' + idpage);
-								$("#img_" + id).attr('id','img_' + idpage);
-								$("#frame_" + id).attr('id','frame_' + idpage);
-								$("#options_" + id).attr('id','options_' + idpage);
+								$("#" + id).remove();
+								$("#frame_" + id).remove();
 							}						
 						}
 					}	
@@ -394,19 +396,8 @@ $(function(){
 					
 					if(change=="true")
 		 			{
-						var tabnumber = $('ul#tabs > li').length - 1;
-						window.parent.doc.set({id:idpage});
-		 				var title = this.contentWindow.document.title;
-		 				$("#tab_" + idpage).children(".content").html(title);
-						$("#tab_" + idpage).attr("title",title);
-						
-						var metaicone = this.contentWindow.document.getElementsByName("document-icon");
-						if(metaicone.length>0)
-						{
-							var icone = metaicone[0].content;
-							$("#img_" + idpage).attr("src","../../dynacase/" + icone);
-						}
-						$("#tab_" + idpage).attr("class","tab-active");
+						var hroot = window.location.href.substr(0,window.location.href.indexOf('?'));
+		   			window.parent.MultiDocument.newDoc(idpage, hroot + "?app=FDL&action=FDL_CARD&refreshfld=Y&id=" + idpage); // ONEFAM
 		 			}
    			});   			
    		}

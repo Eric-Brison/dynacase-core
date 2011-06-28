@@ -230,7 +230,7 @@ function style() {
 
  </head>
 
-<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR]" onload="style()">
+<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR];" onload="style()">
 
 <div id="listicon" style="z-index:100;float:left;margin:5px;width:[wcols]px" valign="top">
 [BLOCK SELECTMASTER]
