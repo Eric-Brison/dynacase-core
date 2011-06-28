@@ -477,6 +477,7 @@ $(function(){
    		$('#' + _id).removeClass().addClass('tab-active');
    		$("#tabs").prepend($("#" + _id).css("display","block"));
    		$("#tabs_plus").prepend($("li:nth-child(" + (count_tabs+1) + " )"));
+
 		}
  	},
     	
