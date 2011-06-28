@@ -52,12 +52,17 @@ function viewcard(&$action) {
 
   // Set the globals elements
 
+  $action->parent->AddJsRef(sprintf("%sapp=FDL&action=ALLVIEWJS&wv=%s", $action->getParam("CORE_SSTANDURL"), $action->getParam('WVERSION')));
+
+  /*
  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/WHAT/Layout/AnchorPosition.js");
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
  // $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/idoc.js");
  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/common.js");
  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/setparamu.js");
  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/inserthtml.js");
+ */
+
  //pour les idocs
  $jsfile=$action->GetLayoutFile("viewicard.js");
  $jslay = new Layout($jsfile,$action);
@@ -67,8 +72,11 @@ function viewcard(&$action) {
   $standurl=$action->GetParam("CORE_STANDURL");
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
+  /*
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/DHTMLapi.js");
   $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/iframe.js");
+  */
+
    if ($reload) {
      $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/reload.js");
      $action->unregister("reload$docid");
@@ -124,7 +132,9 @@ function viewcard(&$action) {
     $err.=$doc->preConsultation();
     $doc->enableEditControl();
     if ($doc->hasWaitingFiles()) {
+    	/*
       $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/verifycomputedfiles.js");
+      */
       $action->lay->set('verifyfiles',true);
     }
   }
@@ -147,10 +157,11 @@ function viewcard(&$action) {
   $action->lay->Set("ZONEBODYCARD", $doc->viewDoc($zonebodycard,$target,$ulink,$abstract));
   
  
-
+  /*
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/geometry.js");
   $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
   $action->parent->AddJsRef($action->GetParam("CORE_STANDURL")."app=FDL&action=VIEWDOCJS&sesscache=".$action->session->id);
+  */
 
 
 

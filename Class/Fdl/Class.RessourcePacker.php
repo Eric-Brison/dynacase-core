@@ -31,7 +31,7 @@ class RessourcePacker {
 		foreach ($dynamic_js as $jsfile) {
 			if (is_file($jsfile)) {
 				$action->lay->template .= sprintf("// --- <dynamic file='%s'> ---\n", $jsfile);
-				$action->lay->template .= file_get_contents($jsfile)."\n";
+				$action->lay->template .= str_replace("include_js(","//include_js(",file_get_contents($jsfile))."\n";
 				$action->lay->template .= sprintf("// --- </dynamic file='%s'> ---\n", $jsfile);
 			} else {
 				$action->lay->template.=("\nalert(\"$jsfile not found\");\n");
