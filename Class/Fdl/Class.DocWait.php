@@ -27,7 +27,8 @@ class DocWait extends DbObj
         "status", // status code
         "statusmessage", // status message
         "transaction", // transaction id
-        "date"
+        "date",
+        "extradata"
     );
     
     /**
@@ -93,9 +94,10 @@ create table docwait ( refererid int not null,
                    domain int,
                    transaction int,
                    statusmessage text,
-                   status text );
+                   status text,
+                   extradata text );
 create index i_docwait on docwait(transaction);
-create unique index iu_docwait on docwait(refererinitid, uid, localid);
+create unique index iu_docwait on docwait(refererinitid, uid);
 create sequence seq_waittransaction start 1;
 ";
     
