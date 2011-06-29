@@ -128,74 +128,78 @@ function HandleXmlError($errno, $errstr, $errfile, $errline)
  */
 function new_Doc($dbaccess, $id='',$latest=false) {
 
-  global $gdocs;// optimize for speed
-
-  
-  if ($dbaccess=="") {
-    // don't test if file exist or must be searched in include_path 
-    $dbaccess=getDbAccess();
-           
-  }
-  //    print("doctype:".$res["doctype"]);
-  $classname="";
-  if (($id == '') ) {
-    include_once("FDL/Class.DocFile.php");
-    $doc=new DocFile($dbaccess);
-
-    return ($doc);
-  }
-  $fromid="";
-  $gen=""; // path GEN or not
-  if (! is_numeric($id)) $id=getIdFromName($dbaccess,$id);
-
-  $id=intval($id);
-  if ($id > 0) {
-    if (isset($gdocs[$id]) && ((!$latest)||($gdocs[$id]->locked != -1)) ) {
-      $doc= $gdocs[$id];
-      if (($doc->doctype!='W')||(!isset($doc->doc))) {
-	$doc = $gdocs[$id]; // optimize for speed
-	//	if ($doc->id != $id) print_r2("<b>Error $id /".$doc->id."</b>");
-	if ($doc->id == $id) {
-	  $doc->cached=1;
-	  return $doc;
-	} else unset($gdocs[$id]);
-      }
-    } 
-  
-
-    $fromid= getFromId($dbaccess,$id);
-    if ($fromid > 0) {
-      $classname= "Doc$fromid";
-      $gen=getGen($dbaccess);
-    }else if ($fromid == -1) $classname="DocFam"; 
+  global $gdocs; // optimize for speed
     
 
+    if ($dbaccess == "") {
+        // don't test if file exist or must be searched in include_path 
+        $dbaccess = getDbAccess();
     
-  }
-	    
-  if ($classname != "") {
-    include_once("FDL$gen/Class.$classname.php");
-    $doc=new $classname($dbaccess, $id);
-    if ($latest && $doc->locked == -1) {
-      $tl=getLatestTDoc($dbaccess,$doc->initid);
-      $doc->Affect($tl);
-      $id=$doc->id;
     }
-
-    if (($id > 0)  && (count($gdocs) < MAXGDOCS)) {
-        if (($doc->doctype != 'C') || (count($doc->attributes->attr) > 0)) {
-       $doc->iscached=1;
-       $gdocs[$id]=&$doc; 
+    //    print("doctype:".$res["doctype"]);
+    $classname = "";
+    if (($id == '')) {
+        include_once ("FDL/Class.DocFile.php");
+        $doc = new DocFile($dbaccess);
+        
+        return ($doc);
+    }
+    $fromid = "";
+    $gen = ""; // path GEN or not
+    if (!is_numeric($id)) $id = getIdFromName($dbaccess, $id);
+    elseif ($latest) {
+        $lid=getLatestDocId($dbaccess, $id);
+        if ($lid > 0) {
+            $id=$lid;
+            $latest=false;
         }
-       //print_r2("<b>use cache $id /".$doc->id."</b>");
     }
-    return ($doc);
-  } else {
-    include_once("FDL/Class.DocFile.php");
-    $doc=new DocFile($dbaccess, $id);
-
-    return ($doc);
-  }
+    $id = intval($id);
+    if ($id > 0) {
+        if (isset($gdocs[$id]) && ((!$latest) || ($gdocs[$id]->locked != -1))) {
+            $doc = $gdocs[$id];
+            if (($doc->doctype != 'W') || (!isset($doc->doc))) {
+                $doc = $gdocs[$id]; // optimize for speed
+                //	if ($doc->id != $id) print_r2("<b>Error $id /".$doc->id."</b>");
+                if ($doc->id == $id) {
+                    $doc->cached = 1;
+                    return $doc;
+                } else
+                    unset($gdocs[$id]);
+            }
+        }
+        
+        $fromid = getFromId($dbaccess, $id);
+        if ($fromid > 0) {
+            $classname = "Doc$fromid";
+            $gen = getGen($dbaccess);
+        } else if ($fromid == -1) $classname = "DocFam";
+    }
+    
+    if ($classname != "") {
+        include_once ("FDL$gen/Class.$classname.php");
+        $doc = new $classname($dbaccess, $id);
+        if ($latest && $doc->locked == -1) {
+            $tl = getLatestTDoc($dbaccess, $doc->initid);
+            $doc->Affect($tl);
+            $id = $doc->id;
+        }
+        
+        if (($id > 0) && (count($gdocs) < MAXGDOCS)) {
+            if (($doc->doctype != 'C') || (count($doc->attributes->attr) > 0)) {
+                $doc->iscached = 1;
+                $gdocs[$id] = &$doc;
+            }
+        
+     //print_r2("<b>use cache $id /".$doc->id."</b>");
+        }
+        return ($doc);
+    } else {
+        include_once ("FDL/Class.DocFile.php");
+        $doc = new DocFile($dbaccess, $id);
+        
+        return ($doc);
+    }
 } 
 
 /**
