@@ -133,7 +133,8 @@ function redisplaywsdiv(event) {
   var dx=0;
   var ch=0;//current height
   var w2,w3; // width of flist finfo
-
+  var w4 = window.parent.outerWidth;
+  
   listicon.style.top='0px';
   listicon.style.left=dx;
   listicon.style.height='100%'; 
@@ -152,6 +153,8 @@ function redisplaywsdiv(event) {
   {
     if (COL<250) COL=250;
     ch=parseInt(COL);
+    if (COL>(w4-250)) COL=w4-250;
+    ch=parseInt(COL);
     flist.style.width=ww-40;
     flist.style.height=ch;
     draggable.style.top=parseInt(ch);
@@ -167,6 +170,8 @@ function redisplaywsdiv(event) {
   {
     if (ROW<440) ROW=440;
     wcol2=parseInt(ROW)-parseInt(40);
+    if (ROW>w4-250) ROW=w4-250;
+    wcol2=parseInt(ROW)-parseInt(40);
     flist.style.width=wcol2;
     flist.style.height=wh; 
     draggable.style.left=parseInt(wcol2)+parseInt(40);
@@ -176,8 +181,7 @@ function redisplaywsdiv(event) {
     finfo.style.right='0px';
     finfo.style.height='100%'; 
   } 
-
-
+  window.parent.MultiDocument.onResize();
 }
 
 

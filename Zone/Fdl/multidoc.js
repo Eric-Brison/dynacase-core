@@ -5,7 +5,7 @@
 
 $(function(){
 	//DECLARATION OF SOME EVENTS WITH JQUERY FOR THE DOC LIST
-
+	 
 	//Close all documents
 	$("#close-all").live('click',function(){
 	    	$("#doc_content").html("");
@@ -19,6 +19,12 @@ $(function(){
 	$("#arrow_down").live('click', function(){
 	   if($('#tabs_plus').css("display")=="none")
 		{
+			var width_tab = $("ul#tabs > .tab").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
+	 		$("#tabs_plus").css('width', width_tab + 'px');
 	   	$('#tabs_plus').show(500);
 	   }
 	   else
@@ -26,6 +32,12 @@ $(function(){
 	   	$('#tabs_plus').hide(500);
 	   }
 	});
+	
+	 $("#tabs_plus").live('mouseenter', function(){
+	 	$("#tabs_plus").clearQueue();
+    }).live('mouseleave', function(){
+      $('#tabs_plus').delay(600).fadeOut();
+    });
 	
 	//If click on a tab on the ul tabs plus
 	$('li','ul#tabs_plus').live('click', function(){
@@ -42,6 +54,10 @@ $(function(){
 		 	var width_more = $("#arrow_down").outerWidth();
 		 	var width_close = $("#close-all").outerWidth();
 		   var width_tab = $(".tab-active").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
 		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
 			var count_li = $('ul#tabs > li').length;	  
 		}	   
@@ -59,6 +75,7 @@ $(function(){
 	
 	//We have to manipulate tabs during the resize
 	$(window).resize(function() {
+  		
 		if($('#arrow_down').attr('class')=='vmode')
   		{
   			var wwindow = $(".multidoc").width();
@@ -73,7 +90,11 @@ $(function(){
 		 	var width_tabs = $("#tabs").outerWidth();
 		 	var width_more = $("#arrow_down").outerWidth();
 		 	var width_close = $("#close-all").outerWidth();
-		   var width_tab = $(".tab-active").outerWidth();
+		   var width_tab = $("ul#tabs > .tab").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
 		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
 			var count_li = $('ul#tabs > li').length;	  
 		}
@@ -164,7 +185,7 @@ $(function(){
 			"click .img_new" : "newPage",
 			"click .img_del" : "close",
 			"click ul#tabs .tab" : "open",
-			"contextmenu ul#tabs .tab" : "goFirst",
+			"contextmenu ul#tabs .tab" : "goFirst"
 		},
 		
 		initialize: function() 
@@ -172,6 +193,7 @@ $(function(){
 			_.bindAll(this, 'render', 'close', 'open');
 	      this.model.bind('change', this.render);
       	this.model.view = this;
+      	this.browser();
 	   },
 	   
 		render: function() {			
@@ -184,6 +206,16 @@ $(function(){
 	      return this;
     	},
     	
+    	browser: function()
+    	{
+    		if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent))
+    		{
+			  var ffversion=new Number(RegExp.$1);
+			  if (ffversion<3.6)
+			  	alert("Vous utilisez une version de Firefox inférieur à la version 3.6 qui n'a pas été vérifiée");
+			}
+		},
+		
     	//This fonction is called when the user click on the extract button to open a new window of the select tab
     	newPage: function()
     	{	
@@ -201,6 +233,10 @@ $(function(){
 			 	var width_more = $("#arrow_down").outerWidth();
 			 	var width_close = $("#close-all").outerWidth();
 			   var width_tab = $(".tab-active").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
 			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}
@@ -241,6 +277,10 @@ $(function(){
 			 	var width_more = $("#arrow_down").outerWidth();
 			 	var width_close = $("#close-all").outerWidth();
 			   var width_tab = $(".tab-active").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
 			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}   
@@ -291,7 +331,7 @@ $(function(){
    		}
    		else
    		{ 			
-	   		$('#doc_content').append("<iframe class='content_frame' id='frame_" + id + "' style='display:block;' frameborder='no' name='document' src='" + this.model.get('docurl') +"' width='100%' height='400px'></iframe>");	   		
+	   		$('#doc_content').append("<iframe class='content_frame' id='frame_" + id + "' style='display:block;' frameborder='no' name='document' src='" + this.model.get('docurl') +"' width='100%' height='100%'></iframe>");	   		
 	   		$('ul#tabs > li:nth-child(1)').attr('id', id);
    			$('ul#tabs > li:nth-child(1)').attr('class', 'tab-active');
    			
@@ -431,6 +471,11 @@ $(function(){
 	   //Docs.add(this.doc); Docs.create()
 	   var view = new DocView({model: doc});
 
+		heightwin = $(window).height();
+  		heighttabs = $("#header").outerHeight();
+  		heightdoc = heightwin - heighttabs;
+  		$("#doc_content").css("height",heightdoc+"px");
+  		
 		if(count_li<count_tabs)
    	{
       	this.$("#tabs").prepend(view.render().el);
@@ -446,7 +491,6 @@ $(function(){
 	},
 
 	newDoc: function(_id, _url) {
-		
    	//TABS GESTION
   		if($('#arrow_down').attr('class')=='vmode')
   		{
@@ -461,6 +505,10 @@ $(function(){
 		 	var width_more = $("#arrow_down").outerWidth();
 		 	var width_close = $("#close-all").outerWidth();
 		   var width_tab = $(".tab-active").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
 		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
 			var count_li = $('ul#tabs > li').length;	   
 		}
@@ -506,6 +554,10 @@ $(function(){
 			 	var width_more = $("#arrow_down").outerWidth();
 			 	var width_close = $("#close-all").outerWidth();
 			   var width_tab = $(".tab-active").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
 			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}  
@@ -564,6 +616,10 @@ $(function(){
 			 	var width_more = $("#arrow_down").outerWidth();
 			 	var width_close = $("#close-all").outerWidth();
 			   var width_tab = $(".tab-active").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
 			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}
@@ -612,6 +668,61 @@ $(function(){
     	$('#tab_plus').css("display","none");
  	},
  	
+ 	onResize: function() {
+ 		if($('#arrow_down').attr('class')=='vmode')
+  		{
+  			var wwindow = $(".multidoc").width();
+	  	 	var wwidth = wwindow - 200;
+	   	$(".doc_content_vertical").css('width', wwidth + 'px');
+	  		var width_tabs = $("#tabs").outerHeight();
+    		var width_tab = $(".tab-active").outerHeight();
+    		var count_tabs = parseInt(Math.floor((width_tabs)/width_tab),10);
+   	}
+   	else
+   	{
+		 	var width_tabs = $("#tabs").outerWidth();
+		 	var width_more = $("#arrow_down").outerWidth();
+		 	var width_close = $("#close-all").outerWidth();
+		   var width_tab = $(".tab-active").outerWidth();
+		   if(width_tab==0)
+		   {
+		   	var width_tab = $("ul#tabs > .tab").outerWidth();
+		   }
+		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+			var count_li = $('ul#tabs > li').length;	  
+		}
+  		var nb_tabs = parseInt($('ul#tabs > li').length,10);
+  		var nb_tabs_plus = parseInt($('ul#tabs_plus > li').length,10);
+  		var itt = nb_tabs - count_tabs;
+  		
+  		if(itt>0)
+  		{
+  			for(var i=0;i<itt;i++)
+  			{
+  				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs+1) + ")"));
+  			}
+  			
+  			if($('ul#tabs_plus > li').length > 0)
+    		{
+    			$('#arrow_down').css("display","block");
+    		}
+  		}
+  		else
+  		{
+  			itt_add = Math.abs(itt);
+  			for(var i=0;i<itt_add;i++)
+  			{
+  				$("#tabs").append($("ul.tabs_plus > li:nth-child(1)"));
+  			}
+  			
+  			if ($('ul#tabs_plus > li').length <= 0)
+    		{
+    			$('#arrow_down').css("display","none");
+    			$('#tabs_plus').css("display","none");
+    		}
+  		}
+  	},
+  	
  	setDisplayMode: function(mode) {    		
     	if(mode == 'V')
     	{

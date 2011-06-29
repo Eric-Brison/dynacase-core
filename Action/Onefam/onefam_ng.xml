@@ -80,7 +80,10 @@ function openiframe(event,th,docid) {
 
   for (var i=0;i<lif.length;i++) 
   {
+  	if(lif[i].className!="content_frame")
+  	{
     lif[i].style.display='none';
+   }
   }
 
   if (nf) 
@@ -230,9 +233,9 @@ function style() {
 
  </head>
 
-<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR];" onload="style()">
+<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR];overflow-y:hidden;" onload="style()">
 
-<div id="listicon" style="z-index:100;float:left;margin:5px;width:[wcols]px" valign="top">
+<div id="listicon" style="z-index:100;float:left;width:[wcols]px;padding-left:5px;padding-top:5px;" valign="top">
 [BLOCK SELECTMASTER]
 <img style="width:[izpx]"
      src="[iconsrc]"  needresize="1"
@@ -276,7 +279,7 @@ function style() {
 
 <div id="divframes" style="z-index:1;">
     <div id='flist'></div>
-    <div id='draggable' onmousedown="if(basic()) startResizeH(event); else { if(vertical()) startResizeV(event);}" style="display:none;"> <div id="forIe"></div> </div>
+    <div id='draggable' onmousedown="if(basic()) startResizeH(event); else { if(vertical()) startResizeV(event);}" style="display:none;z-index:10000;"> <div id="forIe"></div> </div>
     <div id='finfo' style="display:none;"></div>
     <div id="cacheiframes" style="display:none; background-color:transparent;"></div>
 </div>

@@ -44,21 +44,36 @@
 
 .multidoc .tabs_plus {
     border:0px; 
+	 margin-top:2px;
 }
 #header ul#tabs_plus li, #header ul#tabs_plus li:hover {
-    color : [COLOR_A2];
-    background-color: [COLOR_WHITE]; 
-    background: -webkit-gradient(linear,0% 0,0% 100%,from([COLOR_WHITE]),to([COLOR_A9]));
-    background: -moz-linear-gradient(270deg,[COLOR_WHITE],[COLOR_A9]);
+    color : [COLOR_A4];
+    background-color: [COLOR_A7]; 
+    background: -webkit-gradient(linear,0% 0,0% 100%,from([COLOR_A9]),to([COLOR_A7]));
+    background: -moz-linear-gradient(270deg,[COLOR_A9],[COLOR_A7]);
     border-color : [COLOR_A9] [COLOR_A6] [COLOR_A6] [COLOR_A9];
     padding : 3px;
     -moz-box-shadow: 1px 1px 5px [COLOR_A9];
     -webkit-box-shadow: 1px 1px 5px [COLOR_A9];
     box-shadow: 1px 1px 5px [COLOR_A9];
 }
+
 #header ul#tabs_plus li:hover {
-    background-color: [COLOR_WHITE]; 
-    background: -webkit-gradient(linear,0% 0,0% 100%,from([COLOR_A9]),to([COLOR_WHITE]));
-    background: -moz-linear-gradient(270deg,[COLOR_A9],[COLOR_WHITE]);
+    color : [COLOR_A2];
+    background-color: [COLOR_A8]; 
+    background: -webkit-gradient(linear,0% 0,0% 100%,from([COLOR_A9]),to([COLOR_A8]));
+    background: -moz-linear-gradient(270deg,[COLOR_A9],[COLOR_A8]);
     border-color : [COLOR_A6] [COLOR_A9] [COLOR_A9] [COLOR_A6];
 }
+
+#header ul#tabs_plus li.tab-active {
+    color : [COLOR_A2];
+    background-color: [COLOR_WHITE]; 
+    background: -webkit-gradient(linear,0% 0,0% 100%,from([COLOR_WHITE]),to([COLOR_A9]));
+    background: -moz-linear-gradient(270deg,[COLOR_WHITE],[COLOR_A9]);
+    border-color : [COLOR_A9] [COLOR_A6] [COLOR_A6] [COLOR_A9];
+    -moz-box-shadow: 1px 1px 5px [COLOR_A9];
+    -webkit-box-shadow: 1px 1px 5px [COLOR_A9];
+    box-shadow: 1px 1px 5px [COLOR_A9];
+}
+
