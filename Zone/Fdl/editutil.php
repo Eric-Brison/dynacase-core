@@ -461,11 +461,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
         
         if (($visibility == "R") || ($visibility == "S")) $input .= $idisabled;
         else if ($doc->usefor != 'D') $input .= " disabled "; // always but default
-        
+
+        $input .= " class=\"color {pickerOnfocus:true,hash:true}\" ";
 
         $input .= " >&nbsp;";
         if (!(($visibility == "R") || ($visibility == "S"))) {
-            $input .= "<input id=\"ic_$attridk\" type=\"button\" value=\"&#133;\"" . " title=\"" . _("color picker") . "\" onclick=\"colorPick.select(document.getElementById('$attridk'),'$attridk')\"" . ">";
+            $input .= "<input id=\"ic_$attridk\" type=\"button\" value=\"&#133;\"" . " title=\"" . _("color picker") . "\" onclick=\"document.getElementById('$attridk').color.showPicker()\"" . ">";
         }
         break;
     

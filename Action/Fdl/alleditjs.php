@@ -20,7 +20,6 @@ function alleditjs(Action &$action) {
 		"$jurl/geometry.js",
 		"$jurl/AnchorPosition.js",
 		"$jurl/PopupWindow.js",
-		"$jurl/ColorPicker2.js",
 		"$jurl/DHTMLapi.js",
 		"jscalendar/Layout/calendar.js",
 		"jscalendar/Layout/calendar-setup.js",
@@ -31,7 +30,8 @@ function alleditjs(Action &$action) {
 		"FDC/Layout/inserthtml.js",
 		"FDL/Layout/popupdoc.js",
 		"FDL/Layout/popupdocmenu.js",
-		"$jurl/resizeimg.js"
+		"$jurl/resizeimg.js",
+		"lib/jscolor/jscolor.js"
 	);
 	if ($action->Read("navigator")=="EXPLORER") {
 		$statics[]="$jurl/iehover.js";
