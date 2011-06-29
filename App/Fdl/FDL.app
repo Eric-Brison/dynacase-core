@@ -109,6 +109,16 @@ $action_desc = array (
    "layout"		=>"viewdoc.js"
   ),
   array(
+   "name"               =>"ALLEDITJS",
+   "short_name"         =>N_("All js in one for edition"),
+   "acl"                =>"NORMAL"
+  ),
+  array(
+   "name"               =>"ALLEDITCSS",
+   "short_name"         =>N_("All css in one for edition"),
+   "acl"                =>"NORMAL"
+  ),
+  array(
    "name"               =>"EDITJS",
    "script"		=>"cacheone.php",
    "function"		=>"cacheone",
