@@ -309,6 +309,9 @@ create sequence seq_waittransaction start 1;
         }
         return $this->status;
     }
+    function getExtraData() {
+        return ($this->extradata)?json_decode($this->extradata):null;
+    }
 }
 
 ?>
