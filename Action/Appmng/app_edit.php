@@ -49,19 +49,8 @@ function app_edit(&$action) {
     $action->lay->Set("TITRE",$action->text("titlemodify"));
     $action->lay->Set("BUTTONTYPE",$action->text("butmodify"));
   }
-  $tab = array();
-  if ($AppCour->access_free=='Y') {
-    $tab[0]["selected"] = "selected";
-    $tab[1]["selected"] = "";
-  } else {
-    $tab[0]["selected"] = "";
-    $tab[1]["selected"] = "selected";
-  }
-  $tab[0]["access_free"] = "Y";
-  $tab[1]["access_free"] = "N";
 
-  $action->lay->SetBlockData("SELECTACCESS", $tab);
-  unset($tab);
+  $action->lay->Set("access_free", $AppCour->access_free);
 
   $tab = array();
   if ($AppCour->ssl=='Y') {
@@ -89,22 +78,6 @@ function app_edit(&$action) {
   $tab[1]["available"] = "N";
 
   $action->lay->SetBlockData("SELECTAVAILABLE", $tab);
-
-
-  unset($tab);
-  $tab = array();
-  if ($AppCour->displayable=='Y') {
-    $tab[0]["selected"] = "selected";
-    $tab[1]["selected"] = "";
-  } else {
-    $tab[0]["selected"] = "";
-    $tab[1]["selected"] = "selected";
-  }
-  $tab[0]["displayable"] = "Y";
-  $tab[1]["displayable"] = "N";
-
-  $action->lay->SetBlockData("SELECTDISPLAYABLE", $tab);
-
 
   unset($tab);
   $tab = array();

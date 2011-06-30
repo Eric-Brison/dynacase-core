@@ -42,6 +42,7 @@ function action_edit(&$action) {
     } else {
       $action->info("Not Allowed Access Attempt");
     }
+    $action->lay->set("openaccess", "");
   } else {
     $ActionCour = new Action($action->GetParam("CORE_DB"),$id);
     $action->lay->Set("id",$id);
@@ -53,21 +54,9 @@ function action_edit(&$action) {
     $action->lay->Set("toc",$ActionCour->toc);
     $action->lay->Set("TITRE",$action->text("titlemodifyaction"));
     $action->lay->Set("BUTTONTYPE",$action->text("butmodify"));
+    $action->lay->set("openaccess",$ActionCour->openaccess);
   }
-  $tab = array();
-  if ($ActionCour->root=='Y') {
-    $tab[0]["selected"] = "selected";
-    $tab[1]["selected"] = "";
-  } else {
-    $tab[0]["selected"] = "";
-    $tab[1]["selected"] = "selected";
-  }
-  $tab[0]["root"] = "Y";
-  $tab[1]["root"] = "N";
-
-  $action->lay->SetBlockData("SELECTROOT", $tab);
-
-  unset($tab);
+  
   $tab = array();
   if ($ActionCour->available=='Y') {
     $tab[0]["selected"] = "selected";
@@ -80,50 +69,7 @@ function action_edit(&$action) {
   $tab[1]["available"] = "N";
 
   $action->lay->SetBlockData("SELECTAVAILABLE", $tab);
-
-
   unset($tab);
-  $tab = array();
-  if ($ActionCour->toc=='Y') {
-    $tab[0]["selected"] = "selected";
-    $tab[1]["selected"] = "";
-  } else {
-    $tab[0]["selected"] = "";
-    $tab[1]["selected"] = "selected";
-  }
-  $tab[0]["toc"] = "Y";
-  $tab[1]["toc"] = "N";
-
-  $action->lay->SetBlockData("SELECTTOC", $tab);
-  
-  unset($tab);
-  $tab = array();
-  if ($ActionCour->openaccess=='Y') {
-    $tab[0]["selected"] = "selected";
-    $tab[1]["selected"] = "";
-  } else {
-    $tab[0]["selected"] = "";
-    $tab[1]["selected"] = "selected";
-  }
-  $tab[0]["openaccess"] = "Y";
-  $tab[1]["openaccess"] = "N";
-
-  $action->lay->SetBlockData("SELECTOPENACCESS", $tab);
-  /*
-  $form = new SubForm("edit");
-  $form->SetParam("name");
-  $form->SetParam("short_name");
-  $form->SetParam("long_name");
-  $form->SetParam("acl");
-  $form->SetParam("root","","sel");
-  $form->SetParam("toc","","sel");
-  $form->SetParam("available","","sel");
-  $form->SetParam("id");
-  $action->parent->AddJsCode($form->GetSubJs());
-  $control=$action->GetLayoutFile("action_control.js");
-  $lay = new Layout($control);
-  $action->parent->AddJsCode($lay->gen());
-  */
 
   $action->parent->AddJsRef("APPMNG/Layout/action_control.js");
 }
