@@ -42,7 +42,7 @@ $(function(){
 	   }
 	   else
 	   {
-	   	$('#tabs_plus').hide(500);
+	   	$('#tabs_plus').fadeOut(500);
 	   }
 	});
 	
