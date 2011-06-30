@@ -61,12 +61,6 @@ function generic_edit(Action &$action) {
 	$action->lay->Set("SELFTARGET",($rtarget=="_self"));
 	// Set the globals elements
 	$dbaccess = $action->GetParam("FREEDOM_DB");
-	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/popupdoc.js");
-	$action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/popupdocmenu.js");
-	$action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
-
-	$action->parent->AddCssRef("FDL:POPUP.CSS",true);
-
 
 	if (($docid === 0) || ($docid === "") || ($docid === "0") )  {
 		if ($classid == "") $action->exitError(sprintf(_("Creation aborded : no family specified")));

@@ -31,6 +31,7 @@ include_once("FDL/Class.Dir.php");
  * @global inline Http var : (Y|N) set to Y for binary template. View in navigator
  * @global reload Http var : (Y|N) if Y update freedom folders in client navigator
  * @global dochead Http var :  (Y|N) if N don't see head of document (not title and icon)
+ * @global unlock Http var : (Y|N) set to Y to unlock the document before viewing (default N)
  */
 function fdl_card(&$action) {
   // -----------------------------------
@@ -43,6 +44,8 @@ function fdl_card(&$action) {
   $vid = GetHttpVars("vid"); // special controlled view
   $state = GetHttpVars("state"); // search doc in this state
   $inline=getHttpVars("inline"=="Y"); // view file inline
+  $unlock = (getHttpVars("unlock", "N") == "Y");
+
   $dbaccess = $action->GetParam("FREEDOM_DB");
 
   if ($docid=="") $action->exitError(_("no document reference"));
@@ -55,6 +58,10 @@ function fdl_card(&$action) {
       else $action->exitError(sprintf(_("cannot see unknow reference %s"),$docid));
   }
 
+  if( $unlock ) {
+    $err = $doc->UnLock(true);
+    if ($err != "") $action->ExitError($err);
+  }
 
   if ($state != "") {
     $docid=$doc->getRevisionState($state,true);
