@@ -6,6 +6,19 @@
 $(function(){
 	//DECLARATION OF SOME EVENTS WITH JQUERY FOR THE DOC LIST
 	 
+	$(document.documentElement).keyup(function (event) {
+		if (event.keyCode == 90) {
+			altPressed=event.altKey;
+			if(altPressed) 
+				window.parent.MultiDocument.setDisplayMode("H");
+		 } else if (event.keyCode == 86) {
+		 	altPressed=event.altKey;
+			if(altPressed)
+				window.parent.MultiDocument.setDisplayMode("V");
+		 }
+	});
+	
+
 	//Close all documents
 	$("#close-all").live('click',function(){
 	    	$("#doc_content").html("");
@@ -106,7 +119,7 @@ $(function(){
   		{
   			for(var i=0;i<itt;i++)
   			{
-  				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs+1) + ")"));
+  				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (nb_tabs-i) + ")"));
   			}
   			
   			if($('ul#tabs_plus > li').length > 0)
@@ -699,7 +712,7 @@ $(function(){
   		{
   			for(var i=0;i<itt;i++)
   			{
-  				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (count_tabs+1) + ")"));
+  				$("#tabs_plus").prepend($("ul#tabs > li:nth-child(" + (nb_tabs-i) + ")"));
   			}
   			
   			if($('ul#tabs_plus > li').length > 0)
@@ -712,7 +725,7 @@ $(function(){
   			itt_add = Math.abs(itt);
   			for(var i=0;i<itt_add;i++)
   			{
-  				$("#tabs").append($("ul.tabs_plus > li:nth-child(1)"));
+  				$("#tabs").append($("ul#tabs_plus > li:nth-child(1)"));
   			}
   			
   			if ($('ul#tabs_plus > li').length <= 0)

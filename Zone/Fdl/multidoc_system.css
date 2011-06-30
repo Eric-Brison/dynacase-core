@@ -26,6 +26,7 @@
 }
 
 .multidoc .tabs_plus {
+	margin-left:-6px;
     position:absolute;
     z-index : 1000;
 }
