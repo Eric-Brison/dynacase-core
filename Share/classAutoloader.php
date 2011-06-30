@@ -347,6 +347,12 @@ class DirectoriesAutoloader
      */
     private function _saveIncache()
     {
+        foreach( $this->_classes as $className => &$fileName ) {
+            if( substr($fileName, 0, 2) == './' ) {
+                $fileName = substr($fileName, 2);
+            }
+        }
+        unset($fileName);
         $toSave = '<?php' . PHP_EOL;
         $toSave .= '// Cache generated at: ' . date(DATE_W3C) . PHP_EOL;
         $toSave .= '$classes = ' . var_export($this->_classes, true);
