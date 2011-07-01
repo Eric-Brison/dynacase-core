@@ -154,7 +154,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
 
     if ($eformat=="X") {
         $zipfile = uniqid(getTmpDir()."/xml").".zip";
-        system(sprintf("cd %s && zip -r %s * > /dev/null", escapeshellarg($foutdir), escapeshellarg($zipfile)), $ret);
+        system(sprintf("cd %s && zip -r %s -- * > /dev/null", escapeshellarg($foutdir), escapeshellarg($zipfile)), $ret);
         if (is_file($zipfile)) {
             system(sprintf("rm -fr %s", $foutdir));
             Http_DownloadFile($zipfile, "$exportname.zip", "application/x-zip",false,false,true);
@@ -196,7 +196,7 @@ EOF;
             return exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created"), htmlspecialchars($foutdir)));
         }
 
-        $cmd = sprintf("cat *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> %s", escapeshellarg($xmlfile));
+        $cmd = sprintf("cat -- *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> %s", escapeshellarg($xmlfile));
         system($cmd, $ret);
 
         $ret = chdir($cwd);
