@@ -33,35 +33,28 @@
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:name] : </span></td>
     <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
-      <font size="-1"><input type="text" size="25" name="name" value="[name]"></font>
+      <font size="-1">[name]</font>
     </span></td>
   </tr>
 
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:short_name] : </span></td>
     <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
-      <font size="-1"><input type="text" size="25" name="short_name" value="[short_name]"></font>
+      <font size="-1">[short_name]</font>
     </span></td>
   </tr>
 
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:description] : </span></td>
     <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
-      <font size="-1"><input type="text" size="25" name="description" value="[description]"></font>
+      <font size="-1">[description]</font>
     </span></td>
   </tr>
 
   <tr>
     <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:access_free] : </span></td>
     <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
-    <SELECT NAME="access_free" SIZE=1>
-      [BLOCK SELECTACCESS]
-
-        <option value="[access_free]" [selected]>[access_free]</option>
-
-      [ENDBLOCK SELECTACCESS]
-
-    </SELECT
+      <font size="-1">[access_free]</font>
     </span></td>
   </tr>
   

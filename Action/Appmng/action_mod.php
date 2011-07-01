@@ -29,15 +29,8 @@ function action_mod(&$action) {
   } else {
     $ActionCour = new Action($action->GetParam("CORE_DB"),array( $id,$appl_id));
   }
-  $ActionCour->name=GetHttpVars("name");
-  $ActionCour->short_name=GetHttpVars("short_name");
-  $ActionCour->long_name=GetHttpVars("long_name");
-  $ActionCour->acl=GetHttpVars("acl");
-  $ActionCour->root=GetHttpVars("root");
-  $ActionCour->toc=GetHttpVars("toc");
+
   $ActionCour->available=GetHttpVars("available");
-  $ActionCour->access_free=GetHttpVars("access_free");
-  $ActionCour->openaccess=GetHttpVars("openaccess");
 
   if ($id == "") {
     $res=$ActionCour->Add();

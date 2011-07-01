@@ -281,8 +281,21 @@ class DirectoriesAutoloader
      */
     private function _includesAll()
     {
+        $cwd = getcwd();
         //include known classes
         foreach ( $this->_directories as $directory => $recursive ) {
+            /*
+             * Relative directories are handled relative to _cachePath
+             */
+            $changedCwd = false;
+            if( strpos($directory, '/') !== 0 ) {
+                $ret = chdir($this->_cachePath.DIRECTORY_SEPARATOR.$directory);
+                if( $ret === false ) {
+                    continue;
+                }
+                $changedCwd = true;
+            }
+
             $directories = new \AppendIterator();
             //add all paths that we want to browse
             if ($recursive) {
@@ -307,6 +320,10 @@ class DirectoriesAutoloader
                     $this->_classes[strtolower($className)] = $fileName;
                 }
             }
+
+            if( $changedCwd ) {
+                chdir($cwd);
+            }
         }
         //error_log('included all classes as ' . var_export($this->_classes, true));
     }
@@ -330,6 +347,12 @@ class DirectoriesAutoloader
      */
     private function _saveIncache()
     {
+        foreach( $this->_classes as $className => &$fileName ) {
+            if( substr($fileName, 0, 2) == './' ) {
+                $fileName = substr($fileName, 2);
+            }
+        }
+        unset($fileName);
         $toSave = '<?php' . PHP_EOL;
         $toSave .= '// Cache generated at: ' . date(DATE_W3C) . PHP_EOL;
         $toSave .= '$classes = ' . var_export($this->_classes, true);

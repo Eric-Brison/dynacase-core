@@ -16,24 +16,20 @@ include_once("Class.SubForm.php");
 include_once("Class.Application.php");
 
 // -----------------------------------
-function app_mod(&$action) {
+function app_mod(Action &$action) {
 // -----------------------------------
   // Get all the params      
-  $id=GetHttpVars("id");
+  $id=$action->getArgument("id");
 
   if ($id == "") {
     $AppCour = new Application($action->GetParam("CORE_DB"));
   } else {
     $AppCour = new Application($action->GetParam("CORE_DB"),$id);
   }
-  $AppCour->name=GetHttpVars("name");
-  $AppCour->short_name=GetHttpVars("short_name");
-  $AppCour->description=GetHttpVars("description");
-  $AppCour->displayable=GetHttpVars("displayable");
-  $AppCour->available=GetHttpVars("available");
-  $AppCour->access_free=GetHttpVars("access_free");
-  $AppCour->machine=GetHttpVars("machine");
-  $AppCour->ssl=GetHttpVars("ssl");
+  $AppCour->displayable=$action->getArgument("displayable");
+  $AppCour->available=$action->getArgument("available");
+  $AppCour->machine=$action->getArgument("machine");
+  $AppCour->ssl=$action->getArgument("ssl");
 
   if ($id == "") {
     $res=$AppCour->Add();
