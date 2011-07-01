@@ -16,7 +16,7 @@
   </replaces>
 
   <requires>
-    <installer version="0.8.0" comp="ge"/>
+    <installer version="1.1.0" comp="ge"/>
     <module name="dynacase-extjs" />
     <module name="dynacase-jquery" />
   </requires>
