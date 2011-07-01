@@ -706,6 +706,7 @@ create sequence SEQ_ID_APPLICATION start 10;
 	if ($update) {
 	  foreach ($app_desc as $k=>$v) {
 	    switch ($k) {
+	    case 'displayable':
 	    case 'available':
 	      break;
 	    default:
