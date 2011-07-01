@@ -103,7 +103,6 @@ function openiframe(event,th,docid) {
       }
     }
     nf.style.display='';
-    nf2.style.display='';
   } 
   else 
   {
@@ -120,7 +119,7 @@ function openiframe(event,th,docid) {
     nf.src='[CORE_STANDURL]&app=GENERIC&action=GENERIC_TAB&famid='+docid+'&catg=0&tab=0&viewfld=no&refresh=no';
 
     divlist.appendChild(nf);
-
+	 nf.style.width='';
     [IF ISAPPLEWEBKIT]
       window.setTimeout(function() {nf.style.width='90%';}, 50);
       window.setTimeout(function() {nf.style.width='';}, 100);
@@ -155,7 +154,9 @@ function openfirst(docid) {
 addEvent(window,'load',function zou() {openfirst('[openfam]');})
 [ENDIF OPENFAM]
 
+</script>
 
+<script type="text/javascript">
 function basic() {
   var links = document.getElementsByTagName('link');
   var draggable = document.getElementById('draggable');
@@ -228,12 +229,10 @@ function style() {
 		}
 	}
 }
-
-   </script>
-
+</script>
  </head>
 
-<body style="width:1OO%;background-color:[ONEFAM_BGCOLOR];overflow-y:hidden;" onload="style()">
+<body id="body" style="width:1OO%;background-color:[ONEFAM_BGCOLOR];overflow-y:hidden;" onload="style()">
 
 <div id="listicon" style="z-index:100;float:left;width:[wcols]px;padding-left:5px;padding-top:5px;" valign="top">
 [BLOCK SELECTMASTER]

@@ -6,6 +6,7 @@
 $(function(){
 	//DECLARATION OF SOME EVENTS WITH JQUERY FOR THE DOC LIST
 	 
+	//alt+v vertical mode & alt+h horizontal mode
 	$(document.documentElement).keyup(function (event) {
 		if (event.keyCode == 90) {
 			altPressed=event.altKey;
@@ -18,14 +19,16 @@ $(function(){
 		 }
 	});
 	
-
 	//Close all documents
 	$("#close-all").live('click',function(){
+		if(confirm("Do you really want to close all documents ?"))
+		{
 	    	$("#doc_content").html("");
     		$("#tabs").html("");
     		$("#tabs_plus").html("");
     		$('#arrow_down').css("display","none");
 	    	$('#tab_plus').css("display","none");  
+	   }
 	});
 
 	//If click on the arrow to see more tabs
@@ -46,6 +49,7 @@ $(function(){
 	   }
 	});
 	
+	//Close tabs_plus after 600ms timer 
 	 $("#tabs_plus").live('mouseenter', function(){
 	 	$("#tabs_plus").clearQueue();
     }).live('mouseleave', function(){
@@ -71,7 +75,7 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 			var count_li = $('ul#tabs > li').length;	  
 		}	   
    	var idtab = $(this).attr("id");
@@ -108,7 +112,7 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 			var count_li = $('ul#tabs > li').length;	  
 		}
   		var nb_tabs = parseInt($('ul#tabs > li').length,10);
@@ -154,15 +158,20 @@ $(function(){
 	$('head').append(usercss);
 	
 	//Create the Backbone template for DOC TAB with Javascript	
-	var Script = document.createElement('script');
+	
+	var script = document.createElement("script");
+	script.setAttribute('type','text/template');
+	script.setAttribute('id','doc-object');
+	script.text = backboneTemplate;
+	$('body').append(script);	
+/*	var Script = document.createElement('<script>');
 	Script.type = "text/template";
 	Script.id = 'doc-object';
-   Script.innerHTML = backboneTemplate;
+	var body = document.getElementById("body");
+	$('body').append(Script);	
+   $("#doc-object").html(backboneTemplate);*/
    
-   //And append to the body element
-   $("body").append(Script);
-	
-	
+
 	//BACKBONE MODEL 
 	//Definition of my model for one Document
  	Doc = Backbone.Model.extend({
@@ -179,7 +188,7 @@ $(function(){
 	//Definition of the collection
  	DocList = Backbone.Collection.extend({
  	
- 		model: Doc,
+ 		model: Doc
  		
   	});
    
@@ -206,7 +215,6 @@ $(function(){
 			_.bindAll(this, 'render', 'close', 'open');
 	      this.model.bind('change', this.render);
       	this.model.view = this;
-      	this.browser();
 	   },
 	   
 		render: function() {			
@@ -218,16 +226,7 @@ $(function(){
 	      }));
 	      return this;
     	},
-    	
-    	browser: function()
-    	{
-    		if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent))
-    		{
-			  var ffversion=new Number(RegExp.$1);
-			  if (ffversion<3.6)
-			  	alert("Vous utilisez une version de Firefox inférieur à la version 3.6 qui n'a pas été vérifiée");
-			}
-		},
+
 		
     	//This fonction is called when the user click on the extract button to open a new window of the select tab
     	newPage: function()
@@ -250,13 +249,13 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}
    		
     		//We retrieve the last url of the iframe
     		var path = document.getElementById('frame_' + this.model.get('id')).contentDocument.location.href; 
-    		extract = window.open(path,this.model.get('title'),'width=600,height=600');
+    		extract = window.open(path,"targ"+this.model.get('id'),'width=600,height=600');
     		extract.moveTo((screen.width)/2-300,(screen.height)/2-300);
     		extract.focus();
     		//We close the tab calling the close() function
@@ -294,7 +293,7 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}   
    	
@@ -365,6 +364,7 @@ $(function(){
 	   				//RELATIONS
 	   				//With class relation
 	   				var relations = this.contentWindow.document.getElementsByClassName('relation');
+	   				
 	   				//Whitout class relation, but link on other document
 	   				var _relations = this.contentWindow.document.getElementsByTagName("a");
    				
@@ -386,7 +386,7 @@ $(function(){
 		   			{
 		   				for(var i=0;i<_relations.length;i++)
 			   			{
-			   				if(_relations[i].href!="" && _relations[i].class!="relation" && _relations[i].target=="")
+			   				if(_relations[i].href!="" && _relations[i].className!="relation" && _relations[i].target=="")
 			   				{
 			   					var relhref = _relations[i].getAttribute("href");
 		   						_relations[i].setAttribute('onclick','window.open("' + relhref + '","' + relhref + '", "width=600,height=600,scrollbars=yes").moveTo((screen.width)/2-300,(screen.height)/2-300)');
@@ -476,8 +476,109 @@ $(function(){
 		initialize: function() {
 	      _.bindAll(this, 'newDoc', 'render');
 			Docs.bind('add', this.createDoc);
+			this.browserVerification();
 	   },
     
+   browserVerification: function() {
+   	
+		var BrowserDetect = {
+		init: function () {
+			this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+			this.version = this.searchVersion(navigator.userAgent)
+				|| this.searchVersion(navigator.appVersion)
+				|| "an unknown version";
+		},
+		searchString: function (data) {
+			for (var i=0;i<data.length;i++)	{
+				var dataString = data[i].string;
+				var dataProp = data[i].prop;
+				this.versionSearchString = data[i].versionSearch || data[i].identity;
+				if (dataString) {
+					if (dataString.indexOf(data[i].subString) != -1)
+						return data[i].identity;
+				}
+				else if (dataProp)
+					return data[i].identity;
+			}
+		},
+		searchVersion: function (dataString) {
+			var index = dataString.indexOf(this.versionSearchString);
+			if (index == -1) return;
+			return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+		},
+		dataBrowser: [
+			{
+				string: navigator.userAgent,
+				subString: "Chrome",
+				identity: "Chrome"
+			},
+			{
+				string: navigator.vendor,
+				subString: "Apple",
+				identity: "Safari",
+				versionSearch: "Version"
+			},
+			{
+				prop: window.opera,
+				identity: "Opera"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Firefox",
+				identity: "Firefox"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "MSIE",
+				identity: "Explorer",
+				versionSearch: "MSIE"
+			},
+			{
+				string: navigator.userAgent,
+				subString: "Gecko",
+				identity: "Mozilla",
+				versionSearch: "rv"
+			},
+			{ 		// for older Netscapes (4-)
+				string: navigator.userAgent,
+				subString: "Mozilla",
+				identity: "Netscape",
+				versionSearch: "Mozilla"
+			}
+		]
+	
+	};
+	BrowserDetect.init();
+
+	if(BrowserDetect.browser=="Firefox" && BrowserDetect.version<3.6)
+	{
+		var Script = document.createElement('div');
+		Script.id = 'erreur';
+	   Script.innerHTML = "Le navigateur Firefox en version " + BrowserDetect.version + " n'est pas correctement supporté.";
+	   $("body").prepend(Script);
+	}
+	else
+	{
+		if(BrowserDetect.browser=="Chrome" && BrowserDetect.version<8)
+		{
+			var Script = document.createElement('div');
+			Script.id = 'erreur';
+	  	 	Script.innerHTML = "Le navigateur Chrome en version " + BrowserDetect.version + " n'est pas correctement supporté.";
+	   	$("body").prepend(Script);	
+	   }
+		else
+		{
+			if(BrowserDetect.browser=="Explorer" && BrowserDetect.version<9)
+			{
+				var Script = document.createElement('div');
+				Script.id = 'erreur';
+	  	 		Script.innerHTML = "Le navigateur Internet Explorer en version " + BrowserDetect.version + " n'est pas correctement supporté.";
+	   		$("body").prepend(Script);	
+	   	}
+	   }
+	 }
+},
+   
 	createDoc: function (_id,_url,count_li,count_tabs)
 	{
 		doc = new Doc({id: _id, docurl: _url});
@@ -522,7 +623,7 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 			var count_li = $('ul#tabs > li').length;	   
 		}
 		
@@ -571,7 +672,7 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}  
 
@@ -633,7 +734,7 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+			   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 				var count_li = $('ul#tabs > li').length;	  
 			}
    		
@@ -701,7 +802,7 @@ $(function(){
 		   {
 		   	var width_tab = $("ul#tabs > .tab").outerWidth();
 		   }
-		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+5));  				
+		   var count_tabs = Math.floor((width_tabs-width_more-width_close)/(width_tab+2));  				
 			var count_li = $('ul#tabs > li').length;	  
 		}
   		var nb_tabs = parseInt($('ul#tabs > li').length,10);
