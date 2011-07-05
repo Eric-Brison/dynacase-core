@@ -1,5 +1,34 @@
 
 --
+-- tableExists function
+--
+CREATE OR REPLACE FUNCTION pg_temp.tableExists(arg_schema text, arg_table text)
+RETURNS BOOLEAN AS
+$$
+DECLARE
+  t_schema text;
+  res text;
+BEGIN
+
+  t_schema := arg_schema;
+  IF t_schema = '' THEN
+    SELECT current_schema() INTO t_schema;
+  END IF;
+
+  SELECT * INTO res FROM information_schema.tables WHERE
+    table_schema = t_schema
+    AND table_name = arg_table
+  ;
+
+  IF FOUND THEN
+    RETURN TRUE;
+  END IF;
+
+  RETURN FALSE;
+END;
+$$ LANGUAGE plpgsql;
+
+--
 -- addColumnIfNotExists function
 --
 CREATE OR REPLACE FUNCTION pg_temp.addColumnIfNotExists(arg_schema text, arg_table text, arg_column text, arg_column_spec text)
@@ -14,6 +43,10 @@ BEGIN
   t_schema := arg_schema;
   IF t_schema = '' THEN
     SELECT current_schema() INTO t_schema;
+  END IF;
+
+  IF NOT pg_temp.tableExists(t_schema, arg_table) THEN
+    RETURN FALSE;
   END IF;
 
   SELECT * INTO res FROM information_schema.columns WHERE
@@ -50,6 +83,10 @@ BEGIN
     SELECT current_schema() INTO t_schema;
   END IF;
 
+  IF NOT pg_temp.tableExists(t_schema, arg_table) THEN
+    RETURN FALSE;
+  END IF;
+
   SELECT * INTO res FROM information_schema.columns WHERE
     table_schema = t_schema
     AND table_name = arg_table
@@ -83,6 +120,10 @@ BEGIN
   t_schema := arg_schema;
   IF t_schema = '' THEN
     SELECT current_schema() INTO t_schema;
+  END IF;
+
+  IF NOT pg_temp.tableExists(t_schema, arg_table) THEN
+    RETURN FALSE;
   END IF;
 
   t_unique := '';
@@ -129,6 +170,10 @@ BEGIN
     SELECT current_schema() INTO t_schema;
   END IF;
 
+  IF NOT pg_temp.tableExists(t_schema, arg_table) THEN
+    RETURN FALSE;
+  END IF;
+
   SELECT relname INTO res FROM pg_index, pg_class WHERE
     indrelid IN (
       SELECT oid FROM pg_class WHERE
@@ -166,6 +211,7 @@ SELECT pg_temp.addColumnIfNotExists('', 'style', 'parsable', 'char DEFAULT ''N''
 -- Add `tag' column to `application' table
 --
 SELECT pg_temp.addColumnIfNotExists('', 'docutag', 'fixed', 'boolean default false');
+
 --
 -- Add `tag' column to `application' table
 --
