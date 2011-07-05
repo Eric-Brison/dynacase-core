@@ -219,3 +219,4 @@ SELECT pg_temp.addColumnIfNotExists('', 'doc', 'lockdomainid', 'int');
 SELECT pg_temp.addColumnIfNotExists('', 'docread', 'lockdomainid', 'int');
 SELECT pg_temp.addColumnIfNotExists('', 'doc', 'domainid', 'text');
 SELECT pg_temp.addColumnIfNotExists('', 'docread', 'domainid', 'text');
+SELECT pg_temp.addColumnIfNotExists('', 'docwait', 'extradata', 'text');
