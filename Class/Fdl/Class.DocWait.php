@@ -27,7 +27,8 @@ class DocWait extends DbObj
         "status", // status code
         "statusmessage", // status message
         "transaction", // transaction id
-        "date"
+        "date",
+        "extradata"
     );
     
     /**
@@ -93,9 +94,10 @@ create table docwait ( refererid int not null,
                    domain int,
                    transaction int,
                    statusmessage text,
-                   status text );
+                   status text,
+                   extradata text );
 create index i_docwait on docwait(transaction);
-create unique index iu_docwait on docwait(refererinitid, uid, localid);
+create unique index iu_docwait on docwait(refererinitid, uid);
 create sequence seq_waittransaction start 1;
 ";
     
@@ -115,7 +117,7 @@ create sequence seq_waittransaction start 1;
     private $refererDocId = null;
     /** waiting document @var Doc */
     private $waitingDoc = null;
-    public function save()
+    public function save(&$info=null)
     {
         $err = '';
         $this->status = $this->computeStatus();
@@ -306,6 +308,9 @@ create sequence seq_waittransaction start 1;
             $this->modify();
         }
         return $this->status;
+    }
+    function getExtraData() {
+        return ($this->extradata)?json_decode($this->extradata):null;
     }
 }
 

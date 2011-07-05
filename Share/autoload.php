@@ -1,6 +1,7 @@
 <?php
 
 require_once 'WHAT/classAutoloader.php';
+include_once 'WHAT/Lib.Prefix.php';
 
 class excludeSomeFiles extends FilterIterator
 {
@@ -26,5 +27,5 @@ class excludeSomeFiles extends FilterIterator
     }
 }
 
-\dcp\DirectoriesAutoloader::instance('.', '.autoloader.cache')->addDirectory('./')->addCustomFilter('excludeSomeFiles')->register();
+\dcp\DirectoriesAutoloader::instance(DEFAULT_PUBDIR, '.autoloader.cache')->addDirectory('./')->addCustomFilter('excludeSomeFiles')->register();
 ?>

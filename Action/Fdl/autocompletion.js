@@ -4,6 +4,18 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
+/**
+ * By default, submit autocompletion POST request with 'urlencoded'
+ * format (instead of 'form-data'). This ought to reduce the size
+ * of POST requests.
+ *
+ * Allowed values are: 'urlencoded' or 'form-data'.
+ */
+var autocompletion_enctype = 'urlencoded';
+if( ! encodeURIComponent ) {
+	autocompletion_enctype = 'form-data';
+}
+
 var BOUNDARY='--------Eric TYYOUPLABOOM7893';
 
 var _documentForm=null; // le formulaire contenant notre champ texte
@@ -32,6 +44,17 @@ var _autodebug=false;
 var _timebegin;
 var _timeend;
 var _wdate=new Date();
+
+/**
+ * Encode a string for using as a POST urlencoded variable name or value.
+ * Spaces (normally encoded as '%20') are replaced with '+' (plus sign).
+ *
+ * @param String str the string to encode
+ * @returns String the encoded string
+ */
+function encodeURIComponentPlusSpaces(str) {
+	return encodeURIComponent(str).replace(/%20/g, '+');
+}
 
 function sendAutoChoice(event,docid,  choiceButton,attrid, iopt,expnameid,idx ) {
 	inp=document.getElementById(attrid);
@@ -94,8 +117,11 @@ function activeAuto(event,docid,  inp, iopt, expname, idx ) {
 	if (! _autoisinit) _mainLoopId=setTimeout("mainLoop()",_mainLoopDelay);
 	_autoisinit=true;
 }
-
 function addPostValue(post,thename,thevalue) {
+	if( autocompletion_enctype == 'urlencoded' ) {
+		return post+"&"+encodeURIComponentPlusSpaces(thename)+"="+encodeURIComponentPlusSpaces(thevalue);
+	}
+	
 	var bs = new String("\r\n--" + BOUNDARY + "\r\n");
 	bs += "Content-Disposition: form-data; name=\""+thename+"\"\r\n\r\n";
 	bs += thevalue;
@@ -202,7 +228,11 @@ var _adresseRecherche = "options.php" //l'adresse à interroger pour trouver les
 		displayMessage('searching...');
 		//appel à l'url distante
 		_xmlHttp.open("POST",_adresseRecherche+'&skey='+valeur,true);
-		_xmlHttp.setRequestHeader("Content-Type", "multipart/form-data; boundary=\"" + BOUNDARY +"\"");
+		if( autocompletion_enctype == 'urlencoded' ) {
+			_xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		} else {
+			_xmlHttp.setRequestHeader("Content-Type", "multipart/form-data; boundary=\"" + BOUNDARY +"\"");
+		}
 		var ie=_documentForm.elements.length;
 		for (var i=0;i<ie;i++) {
 			if (_documentForm.elements[i].name && _documentForm.elements[i].name!='') {

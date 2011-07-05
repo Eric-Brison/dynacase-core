@@ -10,20 +10,18 @@
    <title>[TEXT:edition: ] [title]</title>
 
 <link rel="shortcut icon" href="[shorticon]">
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLEDITCSS&wv=[WVERSION]" >
 
 [CSS:REF]
 
-
    <style type="text/css">
 
- 
 [CSS:CODE]
+
    </style>
 
 [JS:REF]
-
 
    <script language="JavaScript">
   <!--

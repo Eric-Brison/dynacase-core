@@ -63,10 +63,10 @@ function sendform() {
   var p = self.opener.document.forms.[name];
   var lf = self.document.[name];
 [BLOCK PAR]
-  p.[name].value = lf.[name].value; [ENDBLOCK PAR]
+  if( lf.[name] ) { p.[name].value = lf.[name].value; } [ENDBLOCK PAR]
 
 [BLOCK SEL]
-  p.[name].value = lf.[name].options[lf.[name].selectedIndex].value; [ENDBLOCK SEL]
+  if( lf.[name] ) { p.[name].value = lf.[name].options[lf.[name].selectedIndex].value; } [ENDBLOCK SEL]
   p.submit();
 }';  
 

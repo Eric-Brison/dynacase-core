@@ -1146,7 +1146,11 @@ function deleteInputValue(id){
 	var err = "";
 	if (document.getElementById(id)) {
 		if (! isInputLocked(id)) {	
-			document.getElementById(id).value=' ';
+			var el = document.getElementById(id);
+			el.value = ' ';
+			if( el.className.match(/^color\b/) ) {
+				el.style.backgroundColor = '';
+			}
 			//	document.getElementById(iinput).style.backgroundColor='[CORE_BGCOLORHIGH]';
 		} else {
 			err = err + "\n" + id;
