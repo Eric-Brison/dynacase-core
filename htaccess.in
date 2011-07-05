@@ -9,7 +9,17 @@ php_value session.gc_maxlifetime 2147483647
 SetEnv FREEDOM_ACCESS CORE
 
 ExpiresActive On
-ExpiresByType application/x-javascript  A31536000
+# -- JavaScript
+ExpiresByType application/x-javascript  "access plus 1 hour"
+ExpiresByType application/javascript "access plus 1 hour"
+ExpiresByType text/javascript "access plus 1 hour"
+# -- CSS
+ExpiresByType text/css "access plus 1 hour"
+# -- Images
+ExpiresByType image/gif "access plus 1 hour"
+ExpiresByType image/jpeg "access plus 1 hour"
+ExpiresByType image/png "access plus 1 hour"
+ExpiresByType image/vnd.microsoft.icon "access plus 1 hour"
 
 DirectoryIndex index.php
 

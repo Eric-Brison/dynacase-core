@@ -146,9 +146,21 @@ function openMenu(event, menuid, itemid) {
  // event.stopPropagation();
   return false; // no navigator context menu
 }
-document.write('<img id="WIMG" src="Images/loading.gif" style="display:none;position:absolute;background-color:#FFFFFF;border:groove black 2px;padding:4px;-moz-border-radius:4px">');
+
 function viewwait() {
   var wimgo = document.getElementById('WIMG');
+  if (! wimgo) {
+    wimgo = document.createElement('img');
+    wimgo.setAttribute('src','Images/loading.gif');
+    wimgo.setAttribute('id','WIMG');
+    wimgo.style.display='none';
+    wimgo.style.position='absolute';
+    wimgo.style.backgroundColor='#FFFFFF';
+    wimgo.style.border='groove black 2px';
+    wimgo.style.padding='4px';
+    wimgo.style.MozBorderRadius='4px';
+    document.body.appendChild(wimgo);
+  }
   if (wimgo) {
     wimgo.style.display='inline';
     CenterDiv(wimgo.id);

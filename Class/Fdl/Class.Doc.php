@@ -4484,7 +4484,11 @@ create unique index i_docir on doc(initid, revision);";
 
       if (! $title) $title=$this->getHTMLTitle(strtok($id,'#'),'',$latest);
       if (trim($title) == "") {
-	$a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
+          if ($id < 0) {
+             $a="<a>".sprintf(_("document not exists yet"))."</a>";
+          } else {
+             $a="<a>".sprintf(_("unknown document id %s"),$id)."</a>";
+          }
       } else {
 	$ul=getParam("CORE_STANDURL");
 	if ($target=="mail") {

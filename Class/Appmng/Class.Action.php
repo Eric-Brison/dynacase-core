@@ -471,11 +471,19 @@ create sequence SEQ_ID_ACTION;
 
       // If the action already exists ,set it
       if ($action->Exists($node["name"],$app->id)) {
-	$action->Set($node["name"],$app);
-      }
-      reset($node);
-      while (list($k,$v)=each($node)) {
-	$action->$k = $v;
+		$action->Set($node["name"],$app);
+		while( list($k,$v) = each($node) ) {
+			if( $k == 'available' && $update ) {
+				continue;
+			}
+			$action->$k = $v;
+		}
+		reset($node);
+      } else {
+			while( list($k,$v) = each($node) ) {
+			$action->$k = $v;
+			}
+			reset($node);
       }
   
       // Get the acl grant level

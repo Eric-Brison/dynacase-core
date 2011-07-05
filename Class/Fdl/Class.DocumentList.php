@@ -83,11 +83,15 @@ class DocumentList implements Iterator
         $this->search->setObjectReturn();
         $this->search->excludeConfidential();
         foreach ( $ids as $k => $v ) {
-            if (!$v) unset($ids[$k]);
+            if ((!$v)||(!is_numeric($v))) unset($ids[$k]);
         }
         $ids = array_unique($ids);
         $sid = $useInitid ? "initid" : "id";
+        if (count($ids)==0) {
+            $this->search->addFilter("false");
+        } else {
         $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
+        }
         $this->initSearch();
     }
     /**

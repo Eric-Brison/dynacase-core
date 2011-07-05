@@ -69,7 +69,7 @@ if( file_exists('maintenance.lock') ) {
     if( $authtype != 'apache' ) {
       AuthenticatorManager::$auth->logout("");
     }
-    include_once('WHAT/stop.php');
+    include_once('TOOLBOX/stop.php');
     exit(0);
   }
  }

@@ -3,6 +3,7 @@
 authtype=`"$WIFF_ROOT"/wiff --getValue=authtype`
 core_db=`"$WIFF_ROOT"/wiff --getValue=core_db`
 freedom_db=`"$WIFF_ROOT"/wiff --getValue=freedom_db`
+mod_deflate=`"$WIFF_ROOT"/wiff --getValue=mod_deflate`
 
 if [ -z "$freedom_db" ]; then
     freedom_db=$core_db
@@ -40,6 +41,24 @@ sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" -e"s;@HTTPUSER@;$apacheuser;" "$prefixtp
 sed  -e"s;@prefix@;$WIFF_CONTEXT_ROOT;" "$htaccesstpl" > "$htaccess"
 
 sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_path[[:space:]][[:space:]]*\).*$;\1\"${WIFF_CONTEXT_ROOT}/session\";" "$WIFF_CONTEXT_ROOT"/.htaccess
+
+if [ "$mod_deflate" = "yes" ]; then
+    cat <<EOF >> "$WIFF_CONTEXT_ROOT/.htaccess"
+
+<IfModule mod_deflate.c>
+	SetOutputFilter DEFLATE
+</IfModule>
+
+EOF
+else
+    cat <<EOF >> "$WIFF_CONTEXT_ROOT/.htaccess"
+
+#<IfModule mod_deflate.c>
+#	SetOutputFilter DEFLATE
+#</IfModule>
+
+EOF
+fi
 
 export wpub=$WIFF_CONTEXT_ROOT # same as `wiff --getValue=rootdirectory`
 . "$WIFF_CONTEXT_ROOT"/programs/core_environment

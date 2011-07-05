@@ -21,7 +21,7 @@ class DocWaitManager
      * @param Doc $doc
      * @return string error message
      */
-    public static function saveWaitingDoc(Doc &$doc, $domainId = null, $transaction = null)
+    public static function saveWaitingDoc(Doc &$doc, $domainId = null, $transaction = null, $extraData=null)
     {
         $err = '';
         
@@ -42,6 +42,7 @@ class DocWaitManager
             $wd->domain = $domainId;
             $wd->transaction = $transaction;
             $wd->date = date('Y-m-d H:i:s.u');
+            if ($extraData !== null) $wd->extradata = json_encode($extraData);
             
             if ($wd->isAffected()) {
                 $err = $wd->modify();
@@ -156,7 +157,7 @@ class DocWaitManager
         if ($docinitid >= 0) {
             $wheres[]=sprintf("refererinitid = %d", $docinitid);
         }
-        error_log("clearWaitingDocs $domain - $user - $docinitid");
+        //error_log("clearWaitingDocs $domain - $user - $docinitid");
         if (count($wheres) == 0){
             $err = simpleQuery(getDbAccess(), "delete from docwait");
         } else {

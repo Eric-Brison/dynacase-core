@@ -45,6 +45,11 @@ Class WDoc extends Doc {
   var $firstState=""; // first state in workflow
   var $viewnext="list"; // view interface as select list may be (list|button)
   var $nosave=array(); // states where it is not permitted to save and stay (force next state)
+  /**
+   * document instance
+   * @var Doc
+   */
+  public $doc=null;
   function __construct($dbaccess='', $id='',$res='',$dbid=0) {
     // first construct acl array
 
@@ -61,7 +66,11 @@ Class WDoc extends Doc {
 
   }
 
-  function Set(&$doc) {
+  /**
+   * affect document instance
+   * @param Doc $doc
+   */
+  function set(Doc &$doc) {
     if ((! isset($this->doc)) || ($this->doc->id != $doc->id) ) {
       $this->doc= &$doc;
       if (($doc->doctype!='C')&&($doc->state == "")) {	
@@ -609,7 +618,7 @@ Class WDoc extends Doc {
    * @param bool $need set to false if you want to not verify needed attribute are set
    * @return string error message, if no error empty string
    */
-  function ChangeState ($newstate, $addcomment="", $force=false,$withcontrol=true,$wm1=true,$wm2=true,$wneed=true) {
+  function changeState ($newstate, $addcomment="", $force=false,$withcontrol=true,$wm1=true,$wm2=true,$wneed=true) {
       
     // if ($this->doc->state == $newstate) return ""; // no change => no action
     // search if possible change in concordance with transition array
@@ -715,7 +724,7 @@ Class WDoc extends Doc {
     }
     $this->doc->addLog("state",array("id"=>$this->id,"initid"=>$this->initid,"revision"=>$this->revision,"title"=>$this->title,"state"=>$this->state,"message"=>$err));
     $this->doc->disableEditControl();
-    $this->doc->unlock(false,true);
+    if (!$this->domainid) $this->doc->unlock(false,true);
     $this->workflowSendMailTemplate($newstate,$addcomment,$tname);
     $this->workflowAttachTimer($newstate,$tname);    
     $err.=$this->changeAllocateUser($newstate);
@@ -725,7 +734,7 @@ Class WDoc extends Doc {
   
   
   // --------------------------------------------------------------------
-  function GetFollowingStates () {   
+  function getFollowingStates () {   
     // search if following states in concordance with transition array
     if ($this->doc->locked == -1) return array(); // no next state for revised document
     if (($this->doc->locked > 0)&&($this->doc->locked != $this->doc->userid)) return array(); // no next state if locked by another person
