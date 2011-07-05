@@ -11,6 +11,11 @@
  /**
  */
 
+if( file_exists('maintenance.lock') ) {
+  include_once('TOOLBOX/stop.php');
+  exit(0);
+}
+
 include_once('WHAT/Lib.Main.php');
 
 $authtype = getAuthType();

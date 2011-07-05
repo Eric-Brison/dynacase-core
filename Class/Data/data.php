@@ -59,10 +59,7 @@ if ($authtype == 'apache') {
 
 if (file_exists('maintenance.lock')) {
     if ($_SERVER['PHP_AUTH_USER'] != 'admin') {
-        if ($authtype != 'apache') {
-            AuthenticatorManager::$auth->logout("");
-        }
-        
+        header("HTTP/1.0 503 Service Unavailable");
         $o["error"] = _("maintenance in progress");
         print json_encode($o);
         exit(0);

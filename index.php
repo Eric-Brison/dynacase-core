@@ -60,9 +60,6 @@ if ($authtype == 'apache') {
 
 if( file_exists('maintenance.lock') ) {
   if( $_SERVER['PHP_AUTH_USER'] != 'admin' ) {
-    if( $authtype != 'apache' ) {
-      AuthenticatorManager::$auth->logout("");
-    }
     include_once('TOOLBOX/stop.php');
     exit(0);
   }

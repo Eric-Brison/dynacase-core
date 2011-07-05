@@ -9,6 +9,7 @@
  * @package WHAT
  * @subpackage CORE
  */
+header("HTTP/1.0 503 Service Unavailable");
 ?>
 <HTML>
 <HEAD>
