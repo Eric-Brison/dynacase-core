@@ -19,6 +19,10 @@ function onefam_root(Action &$action) {
         include_once("ONEFAM/onefam_ext.php");
         $action->lay = new Layout(getLayoutFile("ONEFAM","onefam_ext.xml"),$action);
         onefam_ext($action);
+    } elseif (strtok($mode,' ')=="ng") {
+        include_once("ONEFAM/onefam_ng.php");
+        $action->lay = new Layout(getLayoutFile("ONEFAM","onefam_ng.xml"),$action);
+        onefam_ng($action);
     } else {
 	    $action->lay->set("APP_TITLE", _($action->parent->description));
 

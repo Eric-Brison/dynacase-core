@@ -93,7 +93,7 @@ function onefam_ng(Action &$action) {
     break;
   default:
   case "basic":
-    $action->parent->AddCssRef("WHAT/Layout/basic.css");
+    $action->parent->AddCssRef("ONEFAM/Layout/onefam_ng.css");
     break;
     
   }

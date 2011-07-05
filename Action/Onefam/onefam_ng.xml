@@ -2,7 +2,7 @@
 <html>
   <head>
 
-   <title>[APP_TITLE]</title>
+   <title>[APP_TITLE] (beta)</title>
 <link rel="icon" href="[DYNACASE_FAVICO]">
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
@@ -55,7 +55,7 @@ function openiframe(event,th,docid) {
   if (selimg != null)  
   {
     selimg.className='iconone';
-    selimg.style.width=[izpx];
+    selimg.style.width='[izpx]px';
     selimg.style.borderLeftStyle='solid';
     selimg.style.borderLeftColor='[COLOR_C5]';
     selimg.style.borderLeftWidth='2px';
@@ -65,7 +65,7 @@ function openiframe(event,th,docid) {
   { 
     th.className='icononesel';
     selimg=th;
-    selimg.style.width=[izpx]-4;
+    selimg.style.width=([izpx]-4)+'px';
   }
 
   var flist='if_'+docid;
@@ -165,7 +165,7 @@ function basic() {
 
   for(i=0; i<lg; i++)
   {
-    if(links[i].href.indexOf('basic.css') != -1) style = 'basic';
+    if(links[i].href.indexOf('onefam_ng.css') != -1) style = 'basic';
   }
   if(style == 'basic') return true;
 

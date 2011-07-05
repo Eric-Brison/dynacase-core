@@ -148,7 +148,7 @@ function create_url(type, hroot, removeHref, target)
 	{
 		var relhref = type[i].getAttribute("hrefDoc");
 		var relid = type[i].getAttribute("documentId");
-		type[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
+		type[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		//WORKS ON IE ... type[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
 		if(removeHref==true)
 		{
@@ -163,8 +163,8 @@ function create_url(type, hroot, removeHref, target)
 
 function multidoc()
 {
-	window.parent.parent.document.getElementById('finfo').style.display="block";
-	window.parent.parent.redisplaywsdiv();
+	window.parent.document.getElementById('finfo').style.display="block";
+	window.parent.redisplaywsdiv();
 	var hroot = window.location.href.substr(0,window.location.href.indexOf('?'));
 	
 	//DOCUMENTS LINK
@@ -185,7 +185,7 @@ function multidoc()
 	{
 		var relhref = editions[i].getAttribute("href");
 		var relid = editions[i].getAttribute("documentId");
-		editions[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
+		editions[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		////WORKS ON IE ... editions[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
 		editions[i].removeAttribute('href');
 		editions[i].removeAttribute('target');
@@ -203,7 +203,7 @@ function multidoc()
 		var d = new Date();
 		var relid = "idtmp" + i + d.getTime();
 		//WORKS ON IE ... menus[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
-		menus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
+		menus[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		menus[i].removeAttribute('href');
 	}
 	
@@ -215,7 +215,7 @@ function multidoc()
 		var d = new Date();
 		var relid = "idtmp" + i + d.getTime();
 		//WORKS ON IE ... helpmenus[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
-		helpmenus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
+		helpmenus[i].setAttribute('onclick','window.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		helpmenus[i].removeAttribute('href');
 	}
 }

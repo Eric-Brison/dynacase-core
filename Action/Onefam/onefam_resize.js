@@ -181,7 +181,7 @@ function redisplaywsdiv(event) {
     finfo.style.right='0px';
     finfo.style.height='100%'; 
   } 
-  window.parent.MultiDocument.onResize();
+  window.MultiDocument.onResize();
 }
 
 
