@@ -59,6 +59,28 @@ position:relative;
     float:left;
 }
 
+#erreur {
+	position: absolute;
+	width:300px;
+	text-align:center;
+	margin:auto;
+	z-index:1000;
+	margin-top:3px;
+	bottom:0px;
+	right:0px;
+	border:2px;
+	color:[COLOR_A2]
+	background-color: [COLOR_A8]; 
+   background: -webkit-gradient(linear,0% 0,0% 100%,from([COLOR_A9]),to([COLOR_A8]));
+   background: -moz-linear-gradient(270deg,[COLOR_A9],[COLOR_A8]);
+   -webkit-border-radius: 5px 5px 0px 0px;
+   -moz-border-radius: 5px 5px 0px 0px;;
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+   border-bottom-left-radius: 0px;
+   border-bottom-right-radius: 0px;
+}
+
 .multidoc .doc_content_vertical {
 	float:right;
 }

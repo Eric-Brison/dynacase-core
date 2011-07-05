@@ -11,6 +11,7 @@
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
 <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+
 [CSS:REF]
 
 
@@ -139,6 +140,8 @@ addEvent(window,"load",focusInput);
 
 -->
 
+</script>
+<script type="text/javascript">
 function create_url(type, hroot, removeHref, target)
 {
 	for(var i=0;i<type.length;i++)
@@ -146,6 +149,7 @@ function create_url(type, hroot, removeHref, target)
 		var relhref = type[i].getAttribute("hrefDoc");
 		var relid = type[i].getAttribute("documentId");
 		type[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
+		//WORKS ON IE ... type[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
 		if(removeHref==true)
 		{
 			type[i].removeAttribute('href');
@@ -182,6 +186,7 @@ function multidoc()
 		var relhref = editions[i].getAttribute("href");
 		var relid = editions[i].getAttribute("documentId");
 		editions[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
+		////WORKS ON IE ... editions[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
 		editions[i].removeAttribute('href');
 		editions[i].removeAttribute('target');
 	}
@@ -197,6 +202,7 @@ function multidoc()
 		var relhref = menus[i].getAttribute("hrefDoc");
 		var d = new Date();
 		var relid = "idtmp" + i + d.getTime();
+		//WORKS ON IE ... menus[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
 		menus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		menus[i].removeAttribute('href');
 	}
@@ -208,14 +214,17 @@ function multidoc()
 		var relhref = helpmenus[i].getAttribute("hrefDoc");
 		var d = new Date();
 		var relid = "idtmp" + i + d.getTime();
+		//WORKS ON IE ... helpmenus[i].onclick = function(){window.parent.parent.MultiDocument.newDoc(relid, hroot + relhref);return false;};
 		helpmenus[i].setAttribute('onclick','window.parent.parent.MultiDocument.newDoc(\''+ relid + '\',"' + hroot + relhref + '");return false;');
 		helpmenus[i].removeAttribute('href');
 	}
 }
+
 </script>   
+<script type="text/javascript">window.onload=function(){multidoc();}</script>
  </head>
 
-<body class="freedom" onload="multidoc()">
+<body class="freedom" onload="multidoc();">
 
 
 [ZONE [APPNAME]:GENERIC_BARMENU?catg=[catg]]
