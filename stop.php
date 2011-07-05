@@ -13,14 +13,14 @@ header("HTTP/1.0 503 Service Unavailable");
 ?>
 <HTML>
 <HEAD>
-<TITLE>Update</TITLE>
+<TITLE>Maintenance</TITLE>
 </HEAD>
 
-<BODY  style="background-image:url('CORE/Images/bg.gif')">
+<BODY  style="">
 <div align="center">
-<div style="width:80%;border: groove 4px red">
-<IMG align="right"  src="CORE/Images/freeeye.png">
-<H2 align="left">Update is in progress.</H2>
-<H2 align="left">Wait few minutes, please.</H2></div></div>
+<div style="width:80%;border: solid 4px red;padding: 0.5em">
+<H2 align="left">The system is currently unavailable due to maintenance works.</H2>
+<H2 align="left">Please come back later.</H2>
+</div></div>
 </BODY>
 </HTML>
