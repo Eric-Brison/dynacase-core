@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-27 11:42+0200\n"
-"PO-Revision-Date: 2011-06-27 11:49+0200\n"
+"POT-Creation-Date: 2011-07-05 13:21+0200\n"
+"PO-Revision-Date: 2011-07-05 13:21+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -641,6 +641,9 @@ msgstr "Affectation à %s %s"
 
 msgid "All To basket"
 msgstr "Tout insérer dans le porte-documents"
+
+msgid "All css in one for edition"
+msgstr ""
 
 msgid "All js in one for edition"
 msgstr "Concatène tous les scripts JS pour l'édition"
@@ -5034,6 +5037,9 @@ msgstr "Le document n'est pas controllé par un cycle de vie"
 #, c-format
 msgid "document not alive %s"
 msgstr "document %s inexistant"
+
+msgid "document not exists yet"
+msgstr "le document n'existe pas encore"
 
 msgid "document not initialized"
 msgstr "document non initialisé"
