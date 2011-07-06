@@ -45,7 +45,7 @@ popd > /dev/null
 PGSERVICE="$pgservice_core" psql -c "delete from sessions where name='freedom_param'" > /dev/null
 
 #change pg mode connection
-cdb=`$wpub/wsh.php --api=get_param --param=CORE_DBCONNECT`
+cdb=`"$wpub/wsh.php" --api=get_param --param=CORE_DBCONNECT`
 if [ $cdb == 'persistent' ] ; then
   sed -ibak -e"s/pg_connect/pg_pconnect/g" "$wpub/WHAT/Lib.Common.php"
 else

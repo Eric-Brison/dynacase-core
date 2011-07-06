@@ -504,7 +504,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server {
    */
   function _mimetype($fspath) 
   {
-    return trim(`file -ib $fspath`);
+    return trim(shell_exec(sprintf("file -ib %s", escapeshellarg($fspath))));
     if (@is_dir($fspath)) {
       // directories are easy
       return "httpd/unix-directory"; 

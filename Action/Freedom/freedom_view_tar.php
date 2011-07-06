@@ -61,7 +61,7 @@ function freedom_view_tar(&$action) {
     $uploaddir = getTarUploadDir($action);
     $tar = $uploaddir . $selfile;
     $status=extractTar($tar,$untardir);
-    if ($status == -2) $action->AddWarningMsg(sprintf(_("cannot extract archive file %s.\nType %s not recognized as archive file"),$selfile,trim(`file -b "$tar"`)));
+    if ($status == -2) $action->AddWarningMsg(sprintf(_("cannot extract archive file %s.\nType %s not recognized as archive file"),$selfile,trim(shell_exec(sprintf("file -b %s", escapeshellarg($tar))))));
     else if ($status != 0) $action->AddWarningMsg(sprintf(_("cannot extract archive file %s"),$selfile));
   }
   

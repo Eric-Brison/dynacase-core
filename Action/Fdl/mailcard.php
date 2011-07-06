@@ -567,7 +567,7 @@ function sendCard(&$action,
 		$multi_rel->addSubpart('',
       		array(
       			'body_file' => $v,
-      			'content_type' => trim(`file --mime -b "$v"`),
+      			'content_type' => trim(shell_exec(sprintf("file --mime -b %s", escapeshellarg($v)))),
       			'charset' => 'UTF-8',
       			'filename' => $k,
       			'dfilename' => $k,

@@ -50,7 +50,7 @@ foreach($argv as $k=>$v) {
     if ($reg[1] == "listapi") {
       print "application list :\n";
       echo "\t- ";
-      echo str_replace("\n","\n\t- ",shell_exec ("cd $pubdir/API;ls -1 *.php| cut -f1 -d'.'"));
+      echo str_replace("\n","\n\t- ",shell_exec (sprintf("cd %s/API;ls -1 *.php| cut -f1 -d'.'", escapeshellarg($pubdir))));
       echo "\n";
       exit;
     }
