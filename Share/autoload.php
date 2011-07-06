@@ -11,9 +11,18 @@ class excludeSomeFiles extends FilterIterator
         
         if (substr($c, -4) != '.php') return false;
         $exclusionPatterns = array(
-            './lib/zendframework/',
+            './.img-resize/',
+            './admin/',
+            './context/',
+            './fckeditor/',
+            './jscalendar/',
+            './Images/',
+            './img-cache/',
             './lib/ext/',
-            './context/'
+            './lib/zendframework/',
+            './locale/',
+            './session/',
+            './vaultfs/'
         );
         
         foreach ( $exclusionPatterns as $pattern ) {
