@@ -34,6 +34,10 @@ abstract class AuthenticatorManager {
       // Apache has already handled the authentication
       return 0;
     } else {
+      if( ! preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype) ) {
+        print sprintf("Invalid authtype '%s'", $authtype);
+        exit;
+      }
       $authClass = strtolower($authtype)."Authenticator";
       if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
 	print "Unknown authtype ".$_GET['authtype'];
