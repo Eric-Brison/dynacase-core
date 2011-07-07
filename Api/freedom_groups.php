@@ -37,7 +37,7 @@ if ($pgservice_core == $pgservice_freedom) {
     escapeshellarg($pgservice_freedom)));
 } else {
   if ($big) system(sprintf("PGSERVICE=%s psql -c 'DROP INDEX groups_idx2;DROP INDEX groups_idx1;'",
-    escapeshellarg(pgservice_freedom)));
+    escapeshellarg($pgservice_freedom)));
   system(sprintf("PGSERVICE=%s psql -c 'delete from groups;delete from docperm where upacl=0 and unacl=0;update docperm set cacl=0 where cacl != 0;'",
     escapeshellarg($pgservice_freedom)));
   system(sprintf("PGSERVICE=%s pg_dump -a --disable-triggers -t groups | PGSERVICE=%s psql",
