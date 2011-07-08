@@ -31,6 +31,12 @@ function logout(&$action) {
     // Apache has already handled the authentication
 
   } else {
+    if( ! preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype) ) {
+      header('HTTP/1.0 500 Internal Server Error');
+      echo sprintf("Invalid authtype '%s'", $authtype);
+      error_log(__FILE__.":".__LINE__."> Invalid authtype ".$authtype);
+      exit;
+    }
 
     $authClass = strtolower($authtype)."Authenticator";
     if (! @include_once('WHAT/Class.'.$authClass.'.php')) {

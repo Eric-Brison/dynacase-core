@@ -28,6 +28,12 @@ if ($authtype == 'apache') {
   }
   
  } else {
+  if( ! preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $authtype) ) {
+    header('HTTP/1.0 500 Internal Server Error');
+    echo sprintf("Invalid authtype '%s'", $authtype);
+    error_log(__FILE__.":".__LINE__."> Invalid authtype ".$authtype);
+    exit;
+  }
 //print_r2("coucuo");
   $authProviderList = getAuthProviderList();
   foreach ($authProviderList as $ka=>$authprovider) {
