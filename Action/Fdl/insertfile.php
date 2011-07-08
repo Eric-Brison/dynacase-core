@@ -138,7 +138,7 @@ function createPdf2Png($file,$vid) {
   if (file_exists($file) && ($vid>0)) {
     $density=200;
     $width=1200;
-    $nbpages=trim(`grep -c "/Type[[:space:]]*/Page\>" $file`);
+    $nbpages=trim(shell_exec(sprintf('grep -c "/Type[[:space:]]*/Page\>" %s', escapeshellarg($file))));
     $cmd[]=sprintf("/bin/rm -f %s/vid-%d*.png;",DEFAULT_PUBDIR."/.img-resize",$vid);
     
     for ($i=0;$i<$nbpages;$i++) {

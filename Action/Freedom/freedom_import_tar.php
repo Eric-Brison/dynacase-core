@@ -82,8 +82,8 @@ function extractTar($tar,$untardir,$mime="") {
   
 
       
-  $mime=trim(`file -ib "$tar"`);
-  $mime=trim(`file -b "$tar"`);
+  $mime=trim(shell_exec(sprintf("file -ib %s", escapeshellarg($tar))));
+  $mime=trim(shell_exec(sprintf("file -b %s", escapeshellarg($tar))));
   $mime = substr($mime,0,strpos($mime, " "));
 
       

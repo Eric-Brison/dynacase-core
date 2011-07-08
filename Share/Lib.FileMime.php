@@ -130,7 +130,7 @@ function getSysMimeFile($f,$fn="") {
     return $ret;
   }
 
-  $sys = trim(`file --mime -b "$f"`);
+  $sys = trim(shell_exec(sprintf("file --mime -b %s", escapeshellarg($f))));
   $txt=getTextMimeFile($f);
   $sys=strtok($sys," ;\n\t"); // only first part
   // correct errors of file function
@@ -196,7 +196,7 @@ function getTextMimeFile($f, $fn='') {
     return $ret;
   }
 
-  $txt = trim(`file -b "$f"`);
+  $txt = trim(shell_exec(sprintf("file -b %s", escapeshellarg($f))));
   if ($txt=='data') {
     if (preg_match('/\.ods$/',$f)) $txt='OpenDocument Spreadsheet';
     else if (preg_match('/\.odt$/',$f)) $txt='OpenDocument Text';
@@ -309,7 +309,7 @@ function loadMimeConf() {
 function getPdfNumberOfPages($file) {
     $nbpages=0;
   if (file_exists($file)) {
-    $nbpages=intval(trim(`grep -c "/Type[[:space:]]*/Page\>" $file`));
+    $nbpages=intval(trim(shell_exec(sprintf('grep -c "/Type[[:space:]]*/Page\>" %s', escapeshellarg($file)))));
   }
   return $nbpages;
 }

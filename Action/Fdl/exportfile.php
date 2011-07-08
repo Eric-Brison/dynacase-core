@@ -338,7 +338,7 @@ function rezizelocalimage($img,$size,$basedest) {
         mkdir(RESIZEDIR);
     }
     if (! file_exists($dest)) {
-        $cmd=sprintf("convert  -thumbnail %d $source $dest",$size);
+        $cmd=sprintf("convert  -thumbnail %d %s %s", $size, escapeshellarg($source), escapeshellarg($dest));
         //print_r2($cmd);
         //$cmd=sprintf("convert  -scale %dx%d $source $dest",$size,$size);
         system($cmd);

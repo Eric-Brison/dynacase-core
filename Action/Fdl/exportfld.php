@@ -214,7 +214,7 @@ function exportfld(Action &$action, $aflid="0", $famid="") {
       
     }
     if ($err) $action->addWarningMsg($err);
-    system("cd $foutdir && zip -r fdl * > /dev/null",$ret);
+    system(sprintf("cd %s && zip -r fdl * > /dev/null", escapeshellarg($foutdir)), $ret);
     if (is_file("$foutdir/fdl.zip")) {
       $foutname=$foutdir."/fdl.zip";
       Http_DownloadFile($foutname, "$fname.zip", "application/x-zip",false,false);

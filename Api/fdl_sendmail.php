@@ -27,7 +27,7 @@ if ($from == "")  $from = $from = $action->user->login.'@'.php_uname('n');
 
 $themail = new Fdl_Mail_mime();
 if ($file && $file!='stdin') {
-  $mime=trim(`file -ib $file`);
+  $mime=trim(shell_exec(sprintf("file -ib %s", escapeshellarg($file))));
   if (preg_match("|text/html|",$mime)) {
     $themail->setHTMLBody($file,true);
   } else if (preg_match("|text|",$mime)) {

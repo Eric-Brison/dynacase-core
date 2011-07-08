@@ -28,7 +28,7 @@ if ($handle = opendir($pubdir)) {
    while (false !== ($file = readdir($handle))) {
      if (($file != "") && ($file[0]!= ".")) {
        // HERE HERE HERE
-       $info=`strings $pubdir/$file | grep -A 10 "/Title"`;
+       $info=shell_exec(sprintf('strings %s | grep -A 10 "/Title"', escapeshellarg("$pubdir/$file")));
 
        $title=$file;
        $subject="";

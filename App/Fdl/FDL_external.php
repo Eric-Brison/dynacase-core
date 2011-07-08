@@ -658,7 +658,7 @@ function lactions($app,$n="") {
 
 
 function lapi($name="") {
-  $cmd=sprintf("cd %s/API;ls -1 *.php| cut -f1 -d'.'",DEFAULT_PUBDIR);
+  $cmd=sprintf("cd %s/API;ls -1 *.php| cut -f1 -d'.'", escapeshellarg(DEFAULT_PUBDIR));
   $apis=shell_exec($cmd);
   $tapi=explode("\n",$apis);
 

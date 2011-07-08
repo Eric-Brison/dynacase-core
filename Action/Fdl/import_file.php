@@ -1096,7 +1096,7 @@ function AddVaultFile($dbaccess,$path,$analyze,&$vid) {
 
 	$absfile2=str_replace('"','\\"',$path);
 	// $mime=mime_content_type($absfile);
-	$mime=trim(`file -ib "$absfile2"`);
+	$mime=trim(shell_exec(sprintf("file -ib %s", escapeshellarg($absfile2))));
 	if (!$analyze) {
 		$vf = newFreeVaultFile($dbaccess);
 		$err=$vf->Store($path, false , $vid);
@@ -1117,7 +1117,7 @@ function AddVaultFile($dbaccess,$path,$analyze,&$vid) {
 }
 function seemsODS($filename) {
 	if (preg_match('/\.ods$/',$filename)) return true;
-	$sys = trim(`file -bi "$filename"`);
+	$sys = trim(shell_exec(sprintf("file -bi %s", escapeshellarg($filename))));
 	if ($sys=="application/x-zip") return true;
 	if ($sys=="application/vnd.oasis.opendocument.spreadsheet") return true;
 	return false;
@@ -1133,8 +1133,8 @@ function ods2csv($odsfile) {
 	$wsh = getWshCmd();
 	$cmd=sprintf("%s --api=ods2csv --odsfile=%s --csvfile=%s >/dev/null",
 	getWshCmd(),
-	$odsfile,
-	$csvfile );
+	escapeshellarg($odsfile),
+	escapeshellarg($csvfile) );
 	$err=system($cmd,$out);
 	if ($err===false) return false;
 	return $csvfile;

@@ -32,7 +32,7 @@ $dir=dirname($_SERVER["argv"][0]);
 $real=(getHttpVars("real")=="yes");
 
 $dbfreedom=getServiceName($dbaccess);
-if ($real) system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_realclean.sql\""); 
-else system("PGSERVICE=$dbfreedom psql -f \"$dir/API/freedom_clean.sql\""); 
+if ($real) system(sprintf("PGSERVICE=%s psql -f %s/API/freedom_realclean.sql", escapeshellarg($dbfreedom), escapeshellarg($dir)));
+else system(sprintf("PGSERVICE=%s psql -f %s/API/freedom_clean.sql", escapeshellarg($dbfreedom), escapeshellarg($dir)));
 
 ?>

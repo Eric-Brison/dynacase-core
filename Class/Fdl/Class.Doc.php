@@ -2669,7 +2669,7 @@ create unique index i_docir on doc(initid, revision);";
 	}
       }
       if ($err == "") {
-	$mime=trim(`file -ib $filename`);
+	$mime=trim(shell_exec(sprintf("file -ib %s", escapeshellarg($filename))));
 	$value="$mime|$vid|$basename";
 	$err=$this->setValue($attrid,$value);
 	//$err="file conversion $mime|$vid";	
@@ -2778,7 +2778,7 @@ create unique index i_docir on doc(initid, revision);";
     	}
     	if ($err == "") {
 	  if ($mimetype) $mime=$mimetype;
-	  else $mime=trim(`file -ib $filename`);
+	  else $mime=trim(shell_exec(sprintf("file -ib %s", escapeshellarg($filename))));
 	  if ($ftitle) $value="$mime|$vaultid|$ftitle";
 	  else $value="$mime|$vaultid|$oftitle";
 	  $err=$this->setValue($attrid,$value,$index);
