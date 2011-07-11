@@ -1223,7 +1223,7 @@ create unique index i_docir on doc(initid, revision);";
    */
   final public function revive() {
     $err="";
-    if (($this->owner == $this->userid) || ($this->userid==1)) {
+    if (($this->control('delete')=="") || ($this->userid==1)) {
       if (! $this->isAlive()) {
 	$err=simpleQuery($this->dbaccess,
 			 sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1",$this->fromid,$this->initid),$latestId,true, true);
@@ -1254,8 +1254,8 @@ create unique index i_docir on doc(initid, revision);";
 	    }
 	  }
 	}
-      } else return sprintf(_("document %s [%d] is not in the trash"),$this->title,$this->id);
-    } else return _("Only owner of document can restore it");
+      } else return sprintf(_("document %s [%d] is not in the trash"),$this->getTitle(),$this->id);
+    } else return sprintf(_("need privilege delete to restore %s"), $this->getTitle());
     return $err;
   }
 

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-05 13:21+0200\n"
-"PO-Revision-Date: 2011-07-05 13:21+0200\n"
+"POT-Creation-Date: 2011-07-11 10:01+0200\n"
+"PO-Revision-Date: 2011-07-11 10:02+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -6503,6 +6503,10 @@ msgstr "navigation entre relations suivantes"
 
 msgid "need answer"
 msgstr "nécessite une réponse"
+
+#, c-format
+msgid "need privilege delete to restore %s"
+msgstr "Le privilège delete est nécessaire pour restaurer %s"
 
 msgid "need to select family"
 msgstr "Vous devez sélectionner une famille"
