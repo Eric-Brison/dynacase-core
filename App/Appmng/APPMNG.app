@@ -70,7 +70,7 @@ $action_desc = array (
   array(
    "name"               =>"PARAM_CUACCOUNT",
    "short_name"         =>N_("current user account"),
-   "toc"                =>"Y",
+   "toc"                =>"N",
    "acl"                =>"USER"
   ) ,
   array(
