@@ -334,12 +334,35 @@ function setStylePourElement(c,name){
 
 //calcule le décalage à gauche
 function calculateOffsetLeft(r){
-	return calculateOffset(r,"offsetLeft")
+    var t=calculateOffset(r,"offsetLeft");
+    if (t==0) {
+        t=calculateOffset(r.previousSibling,"offsetLeft");
+    }
+	return t;
 }
 
 //calcule le décalage vertical
 function calculateOffsetTop(r){
-	return calculateOffset(r,"offsetTop")
+    var t=calculateOffset(r,"offsetTop");
+    if (t==0) {
+        var n=null;
+        if (r.nextSibling) {
+             n=r.nextSibling;
+            while (n && n.nodeType!=1) {
+                n=n.nextSibling;
+            }
+            t=calculateOffset(n,"offsetTop");
+        } 
+        if ((t==0) && r.previousSibling) {
+             n=r.previousSibling;
+            while (n && n.nodeType!=1) {
+                n=n.previousSibling;
+            }
+            t=calculateOffset(n,"offsetTop");
+            if (t) t+= getObjectHeight(n);
+        }
+    }
+    return t;
 }
 
 function calculateOffset(r,attr){
