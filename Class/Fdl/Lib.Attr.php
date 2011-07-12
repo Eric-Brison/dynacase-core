@@ -302,6 +302,7 @@ function AttrToPhp($dbaccess, $tdoc)
     
     }
     
+    if ($tdoc["name"]=='') $tdoc["name"]='F__'.$tdoc["id"];
     if ($tdoc["name"] != "") { // create name alias classes
         $phpAdoc->SetBlockData("CLASSALIAS", array(
             array(
