@@ -27,7 +27,11 @@ class _REPORT extends _DSEARCH
     var $eviews = array(
         "FREEDOM:EDITREPORT"
     );
-    protected function _getInternals()
+    /**
+     * public because use in RSS
+     * 
+     */
+    public function _getInternals()
     {
         return array(
             "title" => _("doctitle"),
