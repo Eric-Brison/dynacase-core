@@ -54,7 +54,7 @@ TABLE.tableborder TBODY TR TD{
 </style>
 
 <div  class="tabh">
-<span  class="tabsel" onclick="showDiv(this,'DUsers');"><img width="14"  src="[IMG:ipersonne.gif]">[TEXT:Users]</span>
+<span  class="tabsel" onclick="showDiv(this,'DUsers');"><img width="14"  src="[IMG:dynacase-iuser.png]">[TEXT:Users]</span>
 <span  onclick="showDiv(this,'DGroups');"><img width="14"  src="[IMG:igroup.gif]">[TEXT:Groups]</span>
 [IF isMaster]<span  onclick="showDiv(this,'DAdmin');"><img width="14"  src="[IMG:freeaction.gif]">[TEXT:Admin]</span>[ENDIF isMaster]
 </div>
