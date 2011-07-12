@@ -610,7 +610,7 @@ case "option" :
 
 }
 
-if (($oattr->type != "array") && ($oattr->type != "htmltext")) {
+if (($oattr->type != "array")) {
         if ($visibility != "S") {
             if ($usephpfunc && ($oattr->phpfunc != "") && ($oattr->phpfile != "") && ($oattr->type != "enum") && ($oattr->type != "enumlist")) {
                 $phpfunc = $oattr->phpfunc;

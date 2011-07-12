@@ -1,10 +1,10 @@
 
-<textarea id="_[aid]" name="[aname]">[Value]</textarea>
+<textarea id="[aid]" name="[aname]" type="htmltext" onchange="fck_setData_[aid](this)">[Value]</textarea>
 
 <script type="text/javascript">
 NB_FCKEDITORS++;
 
-FCKEDITORS.push('_[aid]');
+FCKEDITORS.push('[aid]');
 function trackQS_[aid]() {
 
   if (typeof( window['FCKeditorAPI']) == "undefined" ) {   
@@ -12,15 +12,21 @@ function trackQS_[aid]() {
     return;
   }
 
-  var oEditor_[aid] = FCKeditorAPI.GetInstance('_[aid]') ;
+  var oEditor_[aid] = FCKeditorAPI.GetInstance('[aid]') ;
   if (oEditor_[aid] && oEditor_[aid].EditorDocument) {   
     addEvent(oEditor_[aid].EditorDocument,"keydown",trackKeysQuickSave);  
+    
+     oEditor_[aid].Events.AttachEvent( 'OnBlur', function ()  {oEditor_[aid].UpdateLinkedField();}) ;
     //if (isNetscape) addEvent(oEditor.EditorDocument,"mouseover",fckforceedit_[aid]);    
   } else window.setTimeout( trackQS_[aid], 2400 ) ;
 }
 
+function fck_setData_[aid](text) {
+  var oFCKeditor = FCKeditorAPI.GetInstance('[aid]') ;
+  oFCKeditor.SetData(text.value);
+}
 function loadFCKeditor_[aid]() {
-  var oFCKeditor = new FCKeditor( '_[aid]' ) ;
+  var oFCKeditor = new FCKeditor( '[aid]' ) ;
   oFCKeditor.BasePath = 'fckeditor/';
   oFCKeditor.Config['FullPage'] = false ;
   oFCKeditor.Config['SkinPath'] =  window.location.pathname.replace(/\/[^\/]*[^\/]$/, '/')+'fckeditor/editor/skins/silver/';
@@ -31,21 +37,19 @@ function loadFCKeditor_[aid]() {
   oFCKeditor.Config['ImageBrowserWindowWidth'] = '550px';
   oFCKeditor.Config['ImageBrowserWindowHeight'] = '400px';
   oFCKeditor.Config['LinkBrowser'] = false ;
-
   //oFCKeditor.Config['FontNames'] =  'serif;sans-serif;cursive;fantasy;monospace' ;
   oFCKeditor.ToolbarSet = '[toolbar]';
   oFCKeditor.Config["CustomConfigurationsPath"] = "../../FDL/Layout/fdl_fckeditor.js"  ;
   oFCKeditor.Height='[height]';
 
   oFCKeditor.ReplaceTextarea() ;
-
   self.setTimeout( trackQS_[aid], 2600 );
 
   return;
 }
 
 function fckforceedit_[aid]() {
-  var oEditor = FCKeditorAPI.GetInstance('_[aid]') ;
+  var oEditor = FCKeditorAPI.GetInstance('[aid]') ;
 
   if (oEditor && oEditor.EditorDocument) {
     if (  oEditor.EditMode == FCK_EDITMODE_WYSIWYG ) {
@@ -60,7 +64,7 @@ function wstop_[aid]() {
     window.setTimeout( wstop_[aid], 1000 ) ;
     return;
   }
-  var oEditor = FCKeditorAPI.GetInstance('_[aid]') ;
+  var oEditor = FCKeditorAPI.GetInstance('[aid]') ;
 
   if (oEditor && oEditor.EditorDocument && (oEditor.Status==FCK_STATUS_COMPLETE)) {  
     NB_FCKEDITORS--;    

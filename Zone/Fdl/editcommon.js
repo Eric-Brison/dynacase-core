@@ -978,6 +978,7 @@ function disableReadAttribute() {
     var vin;
     var lin,aid;
     var inx,inc,ind,inb,incr; // input button
+    
     if (tain) {
         for (var c=0; c< tain.length; c++) {
             ndis = true;
@@ -1148,6 +1149,13 @@ function deleteInputValue(id){
 		if (! isInputLocked(id)) {	
 			var el = document.getElementById(id);
 			el.value = ' ';
+			
+			if ((el.tagName.toLowerCase()=='textarea') && (el.getAttribute('type')=='htmltext')) {
+			    var oFck=FCKeditorAPI.GetInstance(el.id);
+			    if (oFck) {
+			        oFck.SetData('');
+			    } 
+			}
 			if( el.className.match(/^color\b/) ) {
 				el.style.backgroundColor = '';
 			}
@@ -1234,6 +1242,14 @@ function autoUnlock(docid) {
   }  	
   return false;  
 }
+
+function refreshFCKs() {
+    var oEditor;
+    for (var i=0;i<FCKEDITORS.length;i++) {
+        oEditor = FCKeditorAPI.GetInstance(FCKEDITORS[i]);
+        if (oEditor) oEditor.UpdateLinkedField();
+    }
+}
 function submitEdit(event,force) {
 	var fedit= document.getElementById('fedit');
 	var r=true;
@@ -1241,11 +1257,7 @@ function submitEdit(event,force) {
 		var fedit= document.getElementById('fedit');
 
 		if (force) fedit.noconstraint.value='Y';
-		var oEditor;
-		for (var i=0;i<FCKEDITORS.length;i++) {
-			oEditor = FCKeditorAPI.GetInstance(FCKEDITORS[i]);
-			if (oEditor) oEditor.UpdateLinkedField();
-		}
+		refreshFCKs();
 		//bsubmit.onclick.apply(null,[event]);
 		if (fedit.onsubmit) r=fedit.onsubmit();
 		if (r) {
