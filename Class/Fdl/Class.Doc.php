@@ -5858,7 +5858,7 @@ create unique index i_docir on doc(initid, revision);";
       global $ZONE_ARGS;
       $layout = $reg['fulllayout'];
       if( array_key_exists('argv', $reg) ) {
-	foreach( $p['argv'] as $k => $v ) {
+	foreach( $reg['argv'] as $k => $v ) {
 	  $ZONE_ARGS[$k] = $v;
 	}
       }
@@ -8069,6 +8069,7 @@ create unique index i_docir on doc(initid, revision);";
     if( $right != "" ) {
       $p['args'] = $right;
       $argList = preg_split('/&/', $p['args']);
+      $p['argv']=array();
       foreach( $argList as $arg ) {
 	$split = preg_split('/=/', $arg, 2);
 	$left = urldecode($split[0]);
