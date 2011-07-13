@@ -167,8 +167,9 @@ function Http_DownloadFile($filename,$name,$mime_type='',$inline=false,$cache=tr
   else header("Content-Disposition: inline;filename=\"$name\"");
    
   if ($cache) {
-   header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
-   header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
+      $duration=24*3600;
+   header("Cache-Control: private, max-age=$duration"); // use cache client (one hour) for speed optimsation
+   header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+$duration));  // for mozilla
   } else {
     header("Cache-Control: private");
   }
@@ -222,9 +223,10 @@ function glue_url($parsed) {
  */
 function setHeaderCache($mime="text/css") {
   ini_set('session.cache_limiter','none');
-  header("Cache-Control: private, max-age=3600"); // use cache client (one hour) for speed optimsation
+  $duration=24*3600;
+  header("Cache-Control: private, max-age=$duration"); // use cache client (one hour) for speed optimsation
 
-  header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+3600));  // for mozilla
+  header("Expires: ".gmdate ("D, d M Y H:i:s T\n",time()+$duration));  // for mozilla
   header("Pragma: none"); // HTTP 1.0
 
   header("Content-type: $mime");
