@@ -466,7 +466,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 
         $input .= " >&nbsp;";
         if (!(($visibility == "R") || ($visibility == "S"))) {
-            $input .= "<input id=\"ic_$attridk\" type=\"button\" value=\"&#133;\"" . " title=\"" . _("color picker") . "\" onclick=\"document.getElementById('$attridk').color.showPicker()\"" . ">";
+            $input .= "<input id=\"ic_$attridk\" type=\"button\" value=\"&#133;\"" . " title=\"" . _("color picker") . "\" onclick=\"jscolor.init(); document.getElementById('$attridk').color.showPicker()\"" . ">";
         }
         break;
     
