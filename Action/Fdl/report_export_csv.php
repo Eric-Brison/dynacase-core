@@ -89,7 +89,7 @@ function convertLine($currentLine, $encoding)
 {
     $returnArray = array();
     foreach ( $currentLine as $currentValue ) {
-        $returnArray[] = iconv("utf8", $encoding, $currentValue);
+        $returnArray[] = iconv("UTF-8", $encoding, $currentValue);
     }
     return $returnArray;
 }
