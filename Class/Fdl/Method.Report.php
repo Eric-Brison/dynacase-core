@@ -378,7 +378,7 @@ class _REPORT extends _DSEARCH
      */
     public function generateCSVReportStruct($separator = ".", $refresh = true, $isPivotExport = false, $pivotId = "id")
     {
-        require_once 'WHAT/Class.twoDimensionnalArray.php';
+        require_once 'WHAT/Class.twoDimensionalArray.php';
         require_once 'FDL/Class.SearchDoc.php';
 
         $famId = $this->getValue("se_famid", 1);

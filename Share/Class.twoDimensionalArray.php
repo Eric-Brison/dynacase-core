@@ -3,7 +3,7 @@
 /**
  * A two dim struct
  *
- * That struct give some helper to manipulate element addRow, addColumn, insertColumn etc...
+ * This struct gives some helpers to manipulate rows and columns (addRow, addColumn, insertColumn etc...)
  *
  * @author anakeen
  *
@@ -35,7 +35,7 @@ class TwoDimensionStruct
                         $this->setValue($x, $y, $value, true);
                     }
                 } else {
-                    $this->addErrorMessage(sprintf("The array have to be a two dimensionnal array for all the column"));
+                    $this->addErrorMessage(sprintf("The array have to be a two dimensional array for all the column"));
                 }
             }
         }
