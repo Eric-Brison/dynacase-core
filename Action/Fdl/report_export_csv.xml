@@ -73,7 +73,7 @@
                     </td>
                         <td>
                             <select name="encoding">
-                                <option value="ISO-8859-1//TRANSLIT">[TEXT:EXPORT_CSV ISO-8859 (european)]</option>
+                                <option value="ISO-8859-15//TRANSLIT">[TEXT:EXPORT_CSV ISO-8859-15 (european)]</option>
                                 <option value="utf8">[TEXT:EXPORT_CSV utf8]</option>
                             </select>
                         </td>
@@ -82,7 +82,7 @@
             </div>
         </div>
         <input type="hidden" value="[id]" name="id" />
-        <input style='float : right; margin-right : 25 px' type='submit' value="[TEXT: EXPORT_CSV Exporter]" />
+        <input style='float : right; margin-right : 25 px' type='submit' value="[TEXT:EXPORT_CSV Exporter]" />
     </form>
 </div>
 <script type="text/javascript">

@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-11 10:01+0200\n"
-"PO-Revision-Date: 2011-07-11 10:02+0200\n"
+"PO-Revision-Date: 2011-07-18 17:18+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -26,9 +26,6 @@ msgstr "Choisir un document profil existant"
 
 msgid " Choose an existing family profil"
 msgstr "Choisir un profil de famille existant"
-
-msgid " EXPORT_CSV Exporter"
-msgstr ""
 
 msgid " Modify acls for transitions"
 msgstr "Modifier les droits pour les transitions"
@@ -1458,52 +1455,55 @@ msgid "ERROR :"
 msgstr ""
 
 msgid "EXPORT_CSV : identifiant unique"
-msgstr ""
+msgstr "id (identifiant unique)"
 
 msgid "EXPORT_CSV CSV options :"
-msgstr ""
+msgstr "Options CSV : "
 
 msgid "EXPORT_CSV Click to show options"
-msgstr ""
+msgstr "Voir les options CSV"
 
 msgid "EXPORT_CSV Decimal separator :"
-msgstr ""
+msgstr "Séparateur décimal : "
 
 msgid "EXPORT_CSV Definition of the export param :"
-msgstr ""
+msgstr "Définition des paramètres d'export"
 
 msgid "EXPORT_CSV Delimiter :"
-msgstr ""
+msgstr "Séparateur de cellule : "
 
 msgid "EXPORT_CSV Enclosure :"
-msgstr ""
+msgstr "Séparateur de texte : "
 
 msgid "EXPORT_CSV Encoding :"
-msgstr ""
+msgstr "Jeu de caractères : "
 
-msgid "EXPORT_CSV ISO-8859 (european)"
-msgstr ""
+msgid "EXPORT_CSV Exporter"
+msgstr "Exporter"
+
+msgid "EXPORT_CSV ISO-8859-15 (european)"
+msgstr "ISO-8859-15 (européen)"
 
 msgid "EXPORT_CSV Kind of export :"
-msgstr ""
+msgstr "Type d'export : "
 
 msgid "EXPORT_CSV Select export kind :"
-msgstr ""
+msgstr "Sélectionner le type d'export : "
 
 msgid "EXPORT_CSV Select pivot :"
-msgstr ""
+msgstr "Selectionner pivot : "
 
 msgid "EXPORT_CSV Simple"
-msgstr ""
+msgstr "Simple"
 
 msgid "EXPORT_CSV help"
-msgstr ""
+msgstr "Aide"
 
 msgid "EXPORT_CSV pivot"
-msgstr ""
+msgstr "Pivot"
 
 msgid "EXPORT_CSV utf8"
-msgstr ""
+msgstr "UTF-8"
 
 msgid "Edit"
 msgstr "Éditer"
