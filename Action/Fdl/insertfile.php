@@ -69,7 +69,7 @@ function insertfile(&$action) {
 	  
 	  
 	  if ($engine=="pdf") {
-	    createPdf2Png($infoout->path,$vidout );
+	   // createPdf2Png($infoout->path,$vidout );
 	  }
 
 	  @unlink($filename);

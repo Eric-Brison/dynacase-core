@@ -42,7 +42,7 @@ function viewtpl(Action &$action) {
             $doc->lay=&$action->lay;
            // $doc->viewdefaultcard($target,$ulink,$abstract,false);
             $doc->viewdefaultcard($target);
-            $method = strtok(strtolower($zone),'.');
+            $method = strtok(strtolower($reg[2]),'.');
             if (method_exists ( $doc, $method)) {
                 $doc->$method();
             }

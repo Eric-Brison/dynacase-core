@@ -41,7 +41,7 @@ function edittpl(Action &$action) {
             $doc->lay=&$action->lay;
             $doc->editattr($withtd);
             $doc->viewprop();
-            $method = strtok(strtolower($zone),'.');
+            $method = strtok(strtolower($reg[2]),'.');
             if (method_exists ( $doc, $method)) {
                 $doc->$method();
             }
