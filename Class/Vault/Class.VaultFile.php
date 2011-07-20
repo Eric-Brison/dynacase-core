@@ -110,7 +110,7 @@ Class VaultFile {
 	$this->logger->warning("Access mode forced to RESTRICTED for ".$infile."].");
       }
       $msg = $this->storage->Store($infile, $public_access, $id,$fsname,$te_name,$te_id_file);
-      $this->logger->error($msg);
+      if ($msg) $this->logger->error($msg);
     }
     if ($this->chrono) $this->logger->end("Store");
     return($msg);
@@ -129,7 +129,7 @@ Class VaultFile {
      }
 
     $msg = $this->storage->Save($infile, $public_access, $id);
-    $this->logger->error($msg);
+    if ($msg) $this->logger->error($msg);
     
     $this->storage->mime_t = getTextMimeFile($infile);
     $this->storage->mime_s = getSysMimeFile($infile, $this->storage->name);
@@ -177,7 +177,7 @@ Class VaultFile {
 	  }
 	}
       }
-      $this->logger->error($msg);
+      if ($msg) $this->logger->error($msg);
     }
     
     if ($this->chrono) $this->logger->end("Rename");
