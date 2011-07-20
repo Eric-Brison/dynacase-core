@@ -286,7 +286,11 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
 				$lay = new Layout("THESAURUS/Layout/editinputthconcept.xml");
 				if ($value) {
 					$th=new_doc($doc->dbaccess,$value);
+					if ($th->isAlive()) {
 					$thtitle=$th->getLangTitle();
+					} else {
+					    $thtitle='nc';
+					}
 					$lay->set("atitle", $thtitle);
 				} else  $lay->set("atitle", false);
 			}
