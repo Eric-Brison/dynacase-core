@@ -300,7 +300,7 @@ class OOoLayout extends Layout {
 		$contentxml=$this->cibledir."/meta.xml";
 		file_put_contents($contentxml,$this->meta_template);
 
-		$cmd = sprintf("cd %s;zip -r %s * >/dev/null && /bin/rm -fr %s", $this->cibledir, $odsfile, $this->cibledir );
+		$cmd = sprintf("cd %s;zip -q -Z store -X %s mimetype ;zip -q -r -X -u  %s  *  && /bin/rm -fr %s", $this->cibledir,$odsfile, $odsfile, $this->cibledir );
 		system($cmd);
 		//rmdir($this->cibledir);
 	}
