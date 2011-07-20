@@ -59,9 +59,11 @@ function exportfile(&$action) {
     // ADD CONTROL ACCESS HERE
     $err = $doc->control("view");
     if ($err != "") $action->exiterror($err);
-    $isControled=true;;
-    if ($doc->doctype=="C") $ovalue=$doc->getDefValue($attrid);
-    else $ovalue = $doc->getValue($attrid);
+    $isControled=true;
+    if ($doc->doctype=="C") {
+        $ovalue=$doc->getParamValue($attrid);
+        if (!$ovalue)  $ovalue=$doc->getDefValue($attrid);
+    } else $ovalue = $doc->getValue($attrid);
     if (($index !== "") && ($index >= 0)) {
       $tvalue = explode("\n",$ovalue);
       $ovalue= $tvalue[$index];
