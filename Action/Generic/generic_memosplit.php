@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: generic_memosplit.php,v 1.5 2007/05/04 10:19:43 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

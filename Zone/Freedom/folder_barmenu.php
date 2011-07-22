@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: folder_barmenu.php,v 1.16 2007/10/15 13:01:06 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

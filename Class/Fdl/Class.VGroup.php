@@ -5,7 +5,7 @@
  * @author Anakeen 2004
  * @version $Id: Class.VGroup.php,v 1.2 2004/02/12 10:32:09 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  */
  /**
  */
@@ -19,7 +19,7 @@ include_once('Class.Log.php');
 define("STARTIDVGROUP",1000000);
 /**
  * Virtual groups
- * @package FREEDOM
+ * @package FDL
  *
  */
 class VGroup extends DbObj

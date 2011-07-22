@@ -5,7 +5,7 @@
  * @author Anakeen 2005
  * @version $Id: Method.BatchDoc.php,v 1.2 2005/09/21 16:02:21 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

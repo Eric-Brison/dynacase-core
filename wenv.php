@@ -5,7 +5,7 @@
  * @author Anakeen 2004
  * @version $Id: wenv.php,v 1.11 2008/05/06 17:04:16 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  */
 /**
  */

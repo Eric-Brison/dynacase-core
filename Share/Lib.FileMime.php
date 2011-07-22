@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: Lib.FileMime.php,v 1.9 2008/05/06 08:20:43 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
 /**

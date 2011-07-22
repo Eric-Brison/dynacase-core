@@ -5,7 +5,7 @@
  * @author Anakeen 2000
  * @version $Id: Class.DocAttribute.php,v 1.47 2008/12/11 10:06:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  */
 /**
  */

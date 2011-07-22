@@ -5,7 +5,7 @@
  * @author Anakeen 2005
  * @version $Id: Class.TaskRequest.php,v 1.1 2007/05/31 16:14:57 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  */
 /**
  */

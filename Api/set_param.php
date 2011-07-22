@@ -6,7 +6,7 @@
  * @author Anakeen 2004
  * @version $Id: set_param.php,v 1.3 2006/04/28 14:31:49 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage WSH
  */
 /**

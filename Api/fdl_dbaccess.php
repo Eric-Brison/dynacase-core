@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: fdl_dbaccess.php,v 1.2 2006/02/03 16:03:13 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

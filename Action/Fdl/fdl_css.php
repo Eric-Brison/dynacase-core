@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: fdl_css.php,v 1.6 2007/11/08 15:53:59 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

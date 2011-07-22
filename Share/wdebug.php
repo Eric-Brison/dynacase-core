@@ -5,7 +5,7 @@
  * @author Anakeen 2008
  * @version $Id: wdebug.php,v 1.2 2008/12/11 15:16:21 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
 /**

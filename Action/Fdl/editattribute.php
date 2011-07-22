@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: editattribute.php,v 1.4 2006/11/13 16:06:39 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

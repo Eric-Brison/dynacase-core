@@ -5,7 +5,7 @@
  * @author Anakeen 2000
  * @version $Id: editutil.php,v 1.182 2009/01/14 12:33:31 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage
  */
 /**

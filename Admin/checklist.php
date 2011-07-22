@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: checklist.php,v 1.8 2008/12/31 14:37:26 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
 /**

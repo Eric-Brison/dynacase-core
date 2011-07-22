@@ -5,7 +5,7 @@
  * @author Anakeen 2008 
  * @version $Id: getfiletransstatus.php,v 1.1 2008/01/03 09:05:13 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

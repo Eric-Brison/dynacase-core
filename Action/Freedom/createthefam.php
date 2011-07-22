@@ -5,7 +5,7 @@
  * @author Anakeen 2006
  * @version $Id: createthefam.php,v 1.1 2006/03/31 12:29:30 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

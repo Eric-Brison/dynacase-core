@@ -7,7 +7,7 @@
  * @author Anakeen 2010
  * @version $Id:  $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package FREEDOM
+ * @package FDL
  * 
  *
  * @global login Http var : login

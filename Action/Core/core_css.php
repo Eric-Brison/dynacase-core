@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: core_css.php,v 1.6 2005/09/27 15:01:15 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: fgsearch_addsearch.php,v 1.1 2007/10/17 05:52:35 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

@@ -5,7 +5,7 @@
  * @author Anakeen 2006
  * @version $Id: vault_generatefs.php,v 1.1 2006/11/28 18:28:16 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package VAULT
+ * @package FDL
  * @subpackage 
  */
  /**

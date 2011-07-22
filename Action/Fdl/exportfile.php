@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: exportfile.php,v 1.21 2008/05/20 15:26:48 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

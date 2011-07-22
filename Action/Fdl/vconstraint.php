@@ -5,7 +5,7 @@
  * @author Anakeen 2003
  * @version $Id: vconstraint.php,v 1.6 2008/02/27 08:55:53 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage
  */
  /**

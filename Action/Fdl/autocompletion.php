@@ -5,7 +5,7 @@
  * @author Anakeen 2000
  * @version $Id: autocompletion.php,v 1.22 2009/01/13 14:17:36 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage
  */
 /**

@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: mailcard.php,v 1.83 2008/12/16 15:52:35 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

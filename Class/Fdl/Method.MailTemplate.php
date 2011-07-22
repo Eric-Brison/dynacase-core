@@ -5,7 +5,7 @@
  * @author Anakeen 2009
  * @version $Id: Method.MailTemplate.php,v 1.11 2009/01/16 12:47:38 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

@@ -5,7 +5,7 @@
  * @author Anakeen 2004
  * @version $Id: generic_importcsv.php,v 1.19 2008/09/01 06:21:09 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

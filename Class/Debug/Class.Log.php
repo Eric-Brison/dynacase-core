@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Class.Log.php,v 1.15 2008/10/31 16:57:18 jerome Exp $
  * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

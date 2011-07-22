@@ -5,7 +5,7 @@
  * @author Anakeen 2001
  * @version \$Id: Class.UsercardLdif.php,v 1.9 2005/02/01 16:23:25 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage USERCARD
  */
 /**

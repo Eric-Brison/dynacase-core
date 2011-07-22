@@ -4,7 +4,7 @@
  *
  * @author Anakeen 1999
  * @license http://www.gnu.org/licenses/lgpl-3.0.html GNU Lesser General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  * @deprecated since HTTP Authentification
  */

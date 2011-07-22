@@ -6,7 +6,7 @@
  * @author Anakeen 2002
  * @version $Id: import_style.php,v 1.10 2007/02/21 11:07:12 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage WSH
  */
 /**

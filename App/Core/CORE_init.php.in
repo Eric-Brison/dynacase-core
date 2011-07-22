@@ -1,11 +1,28 @@
 <?php
 /**
+ * @mainpage Dynacase Platform Documentation
+ * @brief 
+ * @author Anakeen Dynacase Labs
+ * @version @VERSION@-@RELEASE@
+ * @date 2011
+ *
+ * 
+ *
+ * @par Reference manual:
+ * The Dynacase Reference Manual gives you all informations you need to design, code, test your applications. 
+ation. This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
+ * ==> http://www.dynacase.org/documentation
+ *
+ *
+ */
+
+/**
  * Application parameters 
  *
  * @author Anakeen 2002
  * @version $Id: CORE_init.php.in,v 1.45 2009/01/12 15:25:32 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
 /**

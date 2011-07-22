@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Class.DocPerm.php,v 1.15 2007/06/14 15:48:25 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  */
  /**
  */
@@ -15,7 +15,7 @@ include_once("Class.DbObj.php");
 
 /**
  * Managing permissions of documents
- * @package FREEDOM
+ * @package FDL
  *
  */
 class DocPerm extends DbObj

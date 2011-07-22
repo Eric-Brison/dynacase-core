@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: htmlhead.php,v 1.4 2005/01/21 17:47:40 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

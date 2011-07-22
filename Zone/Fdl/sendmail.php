@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: sendmail.php,v 1.4 2007/10/10 16:15:35 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage
  */
 /**

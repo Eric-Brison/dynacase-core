@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Class.MailAccount.php,v 1.6 2006/01/27 07:49:38 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

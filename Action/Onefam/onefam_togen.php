@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: onefam_togen.php,v 1.8 2007/05/28 08:13:57 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Class.DocValue.php,v 1.8 2003/08/18 15:47:04 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  */
  /**
  */
@@ -25,7 +25,7 @@ include_once('Class.Log.php');
 
 /**
  * Values of Attribute document
- * @package FREEDOM
+ * @package FDL
  * @deprecated
  *
  */

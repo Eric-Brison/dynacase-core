@@ -5,7 +5,7 @@
  * @author Anakeen 2004
  * @version $Id: docpdf.php,v 1.3 2005/12/12 09:23:42 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

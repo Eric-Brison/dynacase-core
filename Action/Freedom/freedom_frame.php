@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: freedom_frame.php,v 1.4 2005/03/24 15:06:56 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

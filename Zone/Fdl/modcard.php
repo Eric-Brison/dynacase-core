@@ -5,7 +5,7 @@
  * @author Anakeen 2000
  * @version $Id: modcard.php,v 1.111 2009/01/12 12:11:42 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage
  */
 /**

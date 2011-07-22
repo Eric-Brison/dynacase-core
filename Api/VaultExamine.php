@@ -5,7 +5,7 @@
  * @author Anakeen 2004
  * @version $Id: VaultExamine.php,v 1.5 2006/12/08 17:51:17 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

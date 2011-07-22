@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Class.ObjectPermission.php,v 1.13 2003/08/18 15:46:42 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

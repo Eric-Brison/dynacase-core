@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: foliotab.php,v 1.9 2008/01/22 16:42:49 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

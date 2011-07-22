@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: migr_histo.php,v 1.2 2006/08/10 08:45:36 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

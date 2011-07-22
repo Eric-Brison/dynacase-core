@@ -5,7 +5,7 @@
  * @author Anakeen 2003
  * @version $Id: USERCARD_external.php,v 1.20 2008/11/06 10:16:24 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
 /**

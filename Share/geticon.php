@@ -5,7 +5,7 @@
  * @author Anakeen 2002
  * @version $Id: geticon.php,v 1.6 2006/08/01 15:31:43 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

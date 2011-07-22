@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: modattr.php,v 1.31 2008/06/24 07:57:02 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

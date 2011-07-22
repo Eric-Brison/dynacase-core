@@ -9,7 +9,7 @@
  * @author Anakeen 2000
  * @version $Id: Method.Report.php,v 1.20 2008/11/20 09:34:20 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  **/
 class _REPORT extends _DSEARCH

@@ -5,7 +5,7 @@
  * @author Anakeen 2003
  * @version $Id: editcard.php,v 1.76 2008/11/10 16:53:06 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

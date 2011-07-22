@@ -5,7 +5,7 @@
  * @author Anakeen 2006
  * @version $Id: inputattribute.php,v 1.4 2008/09/15 16:29:24 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

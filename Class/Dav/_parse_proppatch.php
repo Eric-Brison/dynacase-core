@@ -3,7 +3,7 @@
 /**
  * helper class for parsing PROPPATCH request bodies
  * 
- * @package DAV
+ * @package FDL
  * @author Hartmut Holzgraefe <hholzgra@php.net>
  * @version @package-version@
  */

@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: affect.php,v 1.6 2009/01/08 17:47:08 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

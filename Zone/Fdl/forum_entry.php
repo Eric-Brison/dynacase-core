@@ -5,7 +5,7 @@
  * @author Anakeen 2008
  * @version $Id: forum_entry.php,v 1.6 2008/03/12 09:59:24 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

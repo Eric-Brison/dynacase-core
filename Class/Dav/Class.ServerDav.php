@@ -4,7 +4,7 @@
  *
  * WebDAV server base class, needs to be extended to do useful work
  * 
- * @package DAV
+ * @package FDL
  * @author  Hartmut Holzgraefe <hholzgra@php.net>
  * @version @package_version@
  */

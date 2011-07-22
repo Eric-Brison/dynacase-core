@@ -5,7 +5,7 @@
  * @author Anakeen 2002
  * @version $Id: Class.DocCtrl.php,v 1.54 2008/08/05 15:16:58 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  */
 /**
  */
@@ -41,7 +41,7 @@ define("POS_WF", 12); // begin of workflow privilege definition
 // end of privilege is 31 : (coded on 32bits)
 /**
  * Control Access Document Class
- * @package FREEDOM
+ * @package FDL
  *
  */
 class DocCtrl extends DocLDAP

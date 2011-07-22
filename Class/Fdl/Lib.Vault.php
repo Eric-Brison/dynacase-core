@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: Lib.Vault.php,v 1.23 2008/07/24 16:03:15 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

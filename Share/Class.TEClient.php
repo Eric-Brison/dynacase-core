@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: Class.TEClient.php,v 1.12 2007/08/14 09:39:33 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  */
 /**
  */

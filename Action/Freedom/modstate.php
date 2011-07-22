@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: modstate.php,v 1.11 2008/10/30 16:11:44 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

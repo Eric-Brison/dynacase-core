@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: upload.php,v 1.10 2004/03/22 15:21:40 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage ACCESS
  */
  /**

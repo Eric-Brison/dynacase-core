@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: freedom_view.php,v 1.12 2006/11/22 11:13:30 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

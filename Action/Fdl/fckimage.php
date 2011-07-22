@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: fckimage.php,v 1.5 2007/12/04 16:04:52 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

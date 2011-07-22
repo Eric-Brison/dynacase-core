@@ -1,6 +1,6 @@
 <?php
 /**
- * @package FREEDOM
+ * @package FDL
  */
 $lang = $_GET['lang'];
 if (!$lang) {

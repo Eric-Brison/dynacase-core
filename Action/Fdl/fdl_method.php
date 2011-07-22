@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: fdl_method.php,v 1.8 2008/12/12 14:38:29 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

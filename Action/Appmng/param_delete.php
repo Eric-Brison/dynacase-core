@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: param_delete.php,v 1.7 2006/06/22 16:19:07 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage APPMNG
  */
  /**

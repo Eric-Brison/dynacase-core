@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Class.Param.php,v 1.29 2008/11/13 16:43:11 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

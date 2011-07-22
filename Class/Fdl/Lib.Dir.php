@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Lib.Dir.php,v 1.149 2008/11/13 16:46:48 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

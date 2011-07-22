@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: usercard_ldapinit.php,v 1.18 2007/03/26 14:09:35 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

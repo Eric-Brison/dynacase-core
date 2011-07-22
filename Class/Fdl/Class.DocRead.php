@@ -5,7 +5,7 @@
  * @author Anakeen 2005
  * @version $Id: Class.DocRead.php,v 1.6 2007/10/16 10:22:57 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  */
 /**
  */

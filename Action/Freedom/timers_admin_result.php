@@ -5,7 +5,7 @@
  * @author Anakeen 2008
  * @version $Id: timers_admin_result.php,v 1.4 2009/01/07 18:04:19 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

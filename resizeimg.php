@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: resizeimg.php,v 1.10 2007/11/30 17:14:09 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
 /**

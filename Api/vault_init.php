@@ -6,7 +6,7 @@
  * @author Anakeen 2000 
  * @version $Id: vault_init.php,v 1.1 2007/02/19 16:25:40 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage WSH
  */
  /**

@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: fullsearch.php,v 1.19 2007/10/22 07:30:17 marc Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

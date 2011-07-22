@@ -5,7 +5,7 @@
  * @author Anakeen 2006
  * @version $Id: restoredoc.php,v 1.1 2007/10/16 14:07:14 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

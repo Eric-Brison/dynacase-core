@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: Method.DocUser.php,v 1.37 2006/06/23 15:30:55 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage USERCARD
  */
  /**

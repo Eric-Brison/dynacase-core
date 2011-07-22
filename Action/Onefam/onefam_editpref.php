@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: onefam_editpref.php,v 1.11 2008/08/11 16:29:44 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

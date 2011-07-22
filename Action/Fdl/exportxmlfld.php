@@ -5,7 +5,7 @@
  * @author Anakeen 2003
  * @version $Id: exportfld.php,v 1.44 2009/01/12 13:23:11 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

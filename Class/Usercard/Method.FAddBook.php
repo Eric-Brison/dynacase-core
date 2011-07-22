@@ -5,7 +5,7 @@
  * @author Anakeen 2005
  * @version $Id: Method.FAddBook.php,v 1.15 2008/05/13 10:21:01 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage USERCARD
  */
  /**

@@ -6,7 +6,7 @@
  * @author Anakeen 2000 
  * @version $Id: Class.DbObj.php,v 1.58 2008/12/29 17:05:38 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
  /**

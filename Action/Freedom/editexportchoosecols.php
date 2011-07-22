@@ -5,7 +5,7 @@
  * @author Anakeen 2007
  * @version $Id: editexportchoosecols.php,v 1.2 2008/11/14 12:41:43 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

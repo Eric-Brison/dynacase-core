@@ -5,7 +5,7 @@
  * @author Anakeen 2005
  * @version $Id: freedom_addbatch.php,v 1.4 2007/09/10 13:26:47 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage GED
  */
  /**

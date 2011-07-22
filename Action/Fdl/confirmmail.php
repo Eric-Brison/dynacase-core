@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: confirmmail.php,v 1.3 2008/02/28 17:50:36 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

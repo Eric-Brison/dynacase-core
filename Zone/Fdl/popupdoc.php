@@ -5,7 +5,7 @@
  * @author Anakeen 2000 
  * @version $Id: popupdoc.php,v 1.23 2008/10/09 08:00:55 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**

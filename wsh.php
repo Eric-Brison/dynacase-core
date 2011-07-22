@@ -6,7 +6,7 @@
  * @author Anakeen 2002
  * @version $Id: wsh.php,v 1.35 2008/05/06 08:43:33 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  */
 
 ini_set("max_execution_time", "3600");

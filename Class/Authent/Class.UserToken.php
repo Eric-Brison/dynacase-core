@@ -9,7 +9,7 @@
  * @author Anakeen 2009
  * @version $Id: Class.UserToken.php,v 1.6 2009/01/16 13:33:00 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage
  */
  /**

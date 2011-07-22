@@ -8,7 +8,7 @@
  *  This file implements a simple PHP wrapper for the calendar.  It
  *  allows you to easily include all the calendar files and setup the
  *  calendar by instantiating and calling a PHP object.
- * @package FREEDOM
+ * @package FDL
  */
 
 define('NEWLINE', "\n");

@@ -5,7 +5,7 @@
  * @author Anakeen 2005
  * @version $Id: fdl_execute.php,v 1.6 2008/10/02 15:42:43 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FREEDOM
+ * @package FDL
  * @subpackage 
  */
  /**
