@@ -111,7 +111,7 @@ Fdl.getCookie = function(c_name) {
  */
 
 Fdl.formatDate = function (isodate, fmt) {
-	if (isodate && fmt) {
+	if (isodate && fmt && typeof isodate == 'string') {
 		var year=isodate.substring(0,4);
 		var month=isodate.substring(5,7);
 		var day=isodate.substring(8,10);
