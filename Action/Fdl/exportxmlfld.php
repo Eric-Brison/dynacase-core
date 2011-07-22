@@ -173,6 +173,7 @@ function exportxmlfld(Action &$action, $aflid="0", $famid="") {
         $xml_head = <<<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <documents date="%s" author="%s" name="%s">
+
 EOF;
         $xml_head = sprintf($xml_head,
             htmlspecialchars(strftime("%FT%T")),
