@@ -16,7 +16,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _TIMER extends Doc {
+class _TIMER extends Doc {
         /*
          * @end-method-ignore
          */

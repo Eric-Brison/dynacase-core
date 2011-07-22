@@ -15,7 +15,7 @@ include_once("VAULT/Class.VaultDiskFsCache.php");
 include_once("VAULT/Class.VaultDiskDirStorage.php");
 include_once("VAULT/Lib.VaultCommon.php");
 
-Class VaultDiskStorage extends DbObj {
+class VaultDiskStorage extends DbObj {
   var $fields = array ( "id_file", 
 			"id_fs", 
 			"id_dir", 

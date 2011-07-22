@@ -16,7 +16,7 @@
 // ---------------------------------------------------------------
 include_once("VAULT/Class.VaultDiskFs.php");
 
-Class VaultDiskFsStorage extends VaultDiskFs {
+class VaultDiskFsStorage extends VaultDiskFs {
 
   function __construct($dbaccess, $id_fs='') {
     $this->specific = "storage";

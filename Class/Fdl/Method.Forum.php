@@ -14,7 +14,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _FORUM extends Doc {
+class _FORUM extends Doc {
         /*
          * @end-method-ignore
          */

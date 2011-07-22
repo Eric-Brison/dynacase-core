@@ -24,7 +24,7 @@ $CLASS_DBOBJ_PHP = '$Id: Class.DbObj.php,v 1.58 2008/12/29 17:05:38 eric Exp $';
  * inherit from this basic Class.
  *
  */
-Class DbObj 
+class DbObj 
 {
 
 /**

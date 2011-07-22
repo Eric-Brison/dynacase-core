@@ -15,7 +15,7 @@ include_once("DATA/Class.Document.php");
  * Document Class
  *
  */
-Class Fdl_User {
+class Fdl_User {
   private $_user=null;
   
   function __construct(&$user) {

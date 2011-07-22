@@ -17,7 +17,7 @@ include_once('Class.QueryDb.php');
 include_once('Class.Application.php');
 include_once('Class.User.php');
 
-Class Acl extends DbObj
+class Acl extends DbObj
 {
 var $fields = array ( "id","id_application","name","grant_level","description","group_default");
 

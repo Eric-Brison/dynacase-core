@@ -20,7 +20,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _HELPPAGE extends Doc {
+class _HELPPAGE extends Doc {
 	/*
 	 * @end-method-ignore
 	 */

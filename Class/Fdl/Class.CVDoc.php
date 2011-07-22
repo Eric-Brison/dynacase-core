@@ -19,7 +19,7 @@ include_once('FDL/Class.Doc.php');
 /**
  * Control view Class
  */
-Class CVDoc extends Doc {
+class CVDoc extends Doc {
 
   
   /**

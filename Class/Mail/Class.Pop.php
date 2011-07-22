@@ -16,7 +16,7 @@
 // ---------------------------------------------------------------------------
 include_once('Class.DbObj.php');
 
-Class Pop extends DbObj {
+class Pop extends DbObj {
 
 var $Class = '$Id: Class.Pop.php,v 1.4 2005/10/05 16:28:42 eric Exp $';
 

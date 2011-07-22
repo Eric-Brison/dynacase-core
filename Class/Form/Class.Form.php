@@ -58,7 +58,7 @@
 
 $CLASS_FORM_PHP = '$Id';
 
-Class Form {
+class Form {
 
   var $cell_class;
   var $label_class;

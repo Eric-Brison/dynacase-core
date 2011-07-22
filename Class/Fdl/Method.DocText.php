@@ -22,7 +22,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _TEXT extends Doc {
+class _TEXT extends Doc {
         /*
          * @end-method-ignore
          */

@@ -13,7 +13,7 @@
 
 
 include_once("Class.DbObj.php");
-Class DocTimer extends DbObj {
+class DocTimer extends DbObj {
   public $fields = array ( "timerid", // timer id
 			   "level", // current level
                            "originid", // doc which create attach

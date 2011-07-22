@@ -19,7 +19,7 @@ include_once('FDL/Class.Doc.php');
 /**
  * WorkFlow Class
  */
-Class WDoc extends Doc {
+class WDoc extends Doc {
 
   
   /**

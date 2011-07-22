@@ -26,7 +26,7 @@ define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
 define("GADMIN_ID", 4);
 
-Class User extends DbObj
+class User extends DbObj
 {
   var $fields = array ( "id","iddomain","lastname","firstname","login","password","isgroup","expires","passdelay","status","mail","ntpasswordhash","lmpasswordhash","fid");
 

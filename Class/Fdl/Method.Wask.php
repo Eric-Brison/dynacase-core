@@ -15,7 +15,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _WASK extends Doc {
+class _WASK extends Doc {
         /*
          * @end-method-ignore
          */

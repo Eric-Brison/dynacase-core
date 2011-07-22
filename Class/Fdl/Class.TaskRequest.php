@@ -13,7 +13,7 @@
 
 
 include_once("Class.DbObj.php");
-Class TaskRequest extends DbObj {
+class TaskRequest extends DbObj {
   public $fields = array ( "tid", // task id
                            "fkey", // foreign key
 			   "uid",  // user what id

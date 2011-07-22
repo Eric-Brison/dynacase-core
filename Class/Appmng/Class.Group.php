@@ -17,7 +17,7 @@ include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
 include_once('Class.Application.php');
 
-Class Group extends DbObj
+class Group extends DbObj
 {
   var $fields = array ( "iduser","idgroup");
 

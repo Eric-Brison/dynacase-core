@@ -17,7 +17,7 @@
 
 include_once('Class.DbObj.php');
 
-Class UserToken extends DbObj
+class UserToken extends DbObj
 {
   var $Class = '$Id: Class.UserToken.php,v 1.6 2009/01/16 13:33:00 jerome Exp $';
 

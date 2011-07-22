@@ -51,7 +51,7 @@ include_once('Class.Out.php');
 include_once('Class.Table.php');
 include_once('Class.Log.php');
 
-Class OldQueryObj {
+class OldQueryObj {
 
 var $nb=0;
 var $LastQuery="";

@@ -22,7 +22,7 @@ define("PARAM_GLB","G");
 define("PARAM_USER","U");
 define("PARAM_STYLE","S");
 
-Class Param extends DbObj
+class Param extends DbObj
 {
 var $fields = array ("name","type","appid","val");
 

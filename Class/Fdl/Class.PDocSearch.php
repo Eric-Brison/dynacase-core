@@ -17,7 +17,7 @@ $CLASS_CONTACT_PHP = '$Id: Class.PDocSearch.php,v 1.9 2006/04/03 14:56:26 eric E
 include_once("FDL/Class.DocCollection.php");
 
 
-Class PDocSearch extends DocCollection {
+class PDocSearch extends DocCollection {
 	// --------------------------------------------------------------------
 	//---------------------- OBJECT CONTROL PERMISSION --------------------
 

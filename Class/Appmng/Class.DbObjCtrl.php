@@ -23,7 +23,7 @@ $CLASS_DBOBJCTRL_PHP = '$Id: Class.DbObjCtrl.php,v 1.9 2003/08/18 15:46:42 eric 
 include_once('Class.ObjectPermission.php');
 include_once('Class.Application.php');
 
-Class DbObjCtrl extends DbObj
+class DbObjCtrl extends DbObj
 {
   var $obj_acl = array (); //should be replaced by the Child Class 
 

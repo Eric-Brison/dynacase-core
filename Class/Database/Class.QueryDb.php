@@ -14,7 +14,7 @@
 
 include_once('Class.Log.php');
 
-Class QueryDb  {
+class QueryDb  {
 
 var $nb=0;
 var $LastQuery="";

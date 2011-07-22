@@ -25,7 +25,7 @@ include_once('Class.Acl.php');
 include_once('Class.User.php');
 include_once('Class.Group.php');
 
-Class ControlObject extends DbObj
+class ControlObject extends DbObj
 {
   var $fields = array ( "id_obj","id_class", "description");
 

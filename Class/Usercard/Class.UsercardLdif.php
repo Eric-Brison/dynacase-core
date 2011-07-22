@@ -19,7 +19,7 @@
  *
  * @deprecated use Method.User.php instead
  */
-Class UsercardLdif 
+class UsercardLdif 
 {
   var $import = array(
 		      // Person Class

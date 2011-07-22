@@ -11,7 +11,7 @@
  */
 
 include_once("Class.DbObj.php");
-Class DocRel extends DbObj {
+class DocRel extends DbObj {
   public $fields = array ( "sinitid", // source id
 			   "cinitid",  // cible id
 			   "ctitle", // title of cible

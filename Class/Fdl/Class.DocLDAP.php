@@ -12,7 +12,7 @@
 
 include_once("Class.DbObj.php");
 
-Class DocLDAP extends DbObj {
+class DocLDAP extends DbObj {
   // LDAP parameters
   var $serveur;
   var $port ;

@@ -15,7 +15,7 @@ include_once("DATA/Class.Document.php");
  * Family Class
  *
  */
-Class Fdl_Family extends Fdl_Document {
+class Fdl_Family extends Fdl_Document {
 
   /**
    * Add a new attribute in family

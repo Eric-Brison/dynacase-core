@@ -14,7 +14,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _EXEC extends Doc {
+class _EXEC extends Doc {
         /*
          * @end-method-ignore
          */

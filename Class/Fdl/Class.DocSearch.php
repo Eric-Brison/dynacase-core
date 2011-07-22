@@ -16,7 +16,7 @@ include_once("FDL/Class.PDocSearch.php");
 include_once("FDL/Lib.Dir.php");
 
 
-Class DocSearch extends PDocSearch {
+class DocSearch extends PDocSearch {
   
 
   public $defDoctype='S';

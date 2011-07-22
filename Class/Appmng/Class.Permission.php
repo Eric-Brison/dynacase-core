@@ -19,7 +19,7 @@ include_once('Class.Acl.php');
 include_once('Class.User.php');
 include_once('Class.Group.php');
 
-Class Permission extends DbObj
+class Permission extends DbObj
 {
   var $fields = array ( "id_user","id_application","id_acl", "computed");
 

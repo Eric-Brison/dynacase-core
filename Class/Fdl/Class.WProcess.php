@@ -22,7 +22,7 @@ define ("Twprocess_public", "Twprocess_public");      # N_("Twprocess_public")
  * Process Workflow
  *
  */     
-Class WProcess extends WDoc {    
+class WProcess extends WDoc {    
 
   var $attrPrefix="PROWF"; // prefix attribute
   var $firstState=wprocess_private;

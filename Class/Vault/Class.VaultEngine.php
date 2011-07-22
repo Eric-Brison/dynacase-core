@@ -12,7 +12,7 @@
 
 
 include_once("Class.DbObj.php");
-Class VaultEngine extends DbObj {
+class VaultEngine extends DbObj {
   public $fields = array ( "name", 
                            "mime",
 			   "command",

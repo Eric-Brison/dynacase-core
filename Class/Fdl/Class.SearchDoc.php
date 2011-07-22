@@ -14,7 +14,7 @@
 include_once("FDL/Lib.Dir.php");
 
 
-Class SearchDoc {  
+class SearchDoc {  
   /**
    * family identificator filter
    * @public string

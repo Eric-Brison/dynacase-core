@@ -15,7 +15,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _PUBLIMAIL extends Doc {
+class _PUBLIMAIL extends Doc {
         /*
          * @end-method-ignore
          */

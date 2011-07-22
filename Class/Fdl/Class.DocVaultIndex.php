@@ -16,7 +16,7 @@ include_once('Class.QueryDb.php');
 include_once('Class.Log.php');
 include_once("WHAT/Class.TEClient.php");
 
-Class DocVaultIndex extends DbObj
+class DocVaultIndex extends DbObj
 {
   var $fields = array ( "docid","vaultid");
 

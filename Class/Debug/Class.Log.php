@@ -18,7 +18,7 @@
 
 $CLASS_LOG_PHP="";
 
-Class Log {
+class Log {
 
   public $loghead;
   public $application;

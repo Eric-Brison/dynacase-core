@@ -11,7 +11,7 @@
  */
 
 include_once("Class.DbObj.php");
-Class DocAttrLDAP extends DbObj {
+class DocAttrLDAP extends DbObj {
   public $fields = array ( "famid", // family id
 			   "ldapname",  // 
 			   "ldapmap", // 

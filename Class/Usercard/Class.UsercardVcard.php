@@ -14,7 +14,7 @@
  * Class use to read, import and export VCARD format with FREEDOM USER Family
  *
  */
-Class UsercardVcard 
+class UsercardVcard 
 {
   var $import = array(
 		      "FN" => "",

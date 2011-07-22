@@ -45,7 +45,7 @@ include_once('Class.User.php');
 include_once('Class.SessionConf.php');
 include_once ("Class.SessionCache.php");
 
-Class Session extends DbObj{
+class Session extends DbObj{
 
   var $fields = array ( "id","userid","name","last_seen");
 

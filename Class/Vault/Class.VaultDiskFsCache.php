@@ -16,7 +16,7 @@
 // ---------------------------------------------------------------
 include_once("VAULT/Class.VaultDiskFs.php");
 
-Class VaultDiskFsCache extends VaultDiskFs {
+class VaultDiskFsCache extends VaultDiskFs {
 
   function __construct($dbaccess, $id_fs='') {
     $this->specific = "cache";

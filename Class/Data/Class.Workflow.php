@@ -15,7 +15,7 @@ include_once("DATA/Class.Document.php");
  * Workflow Class
  *
  */
-Class Fdl_Workflow extends Fdl_Document {
+class Fdl_Workflow extends Fdl_Document {
  /**
    * return properties, values and attributes definition
    */

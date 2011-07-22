@@ -19,7 +19,7 @@ include_once('Class.Application.php');
 
 define ("THROW_EXITERROR",1968);
 
-Class Action extends DbObj
+class Action extends DbObj
 {
   var $fields = array ( "id","id_application","name","short_name","long_name","script","function","layout","available","acl","grant_level","openaccess","root","icon","toc","father","toc_order");
 

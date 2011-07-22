@@ -21,7 +21,7 @@ include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Acl.php');
 include_once('Class.ControlObject.php');
-Class ObjectPermission extends DbObj
+class ObjectPermission extends DbObj
 {
   var $fields = array ( "id_user","id_obj","id_class","ids_acl");
 

@@ -37,7 +37,7 @@ include_once('Class.DbObj.php');
 
 $CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $';
 
-Class ParamDef extends DbObj
+class ParamDef extends DbObj
 {
 var $fields = array ("name","isuser","isstyle","isglob","appid","descr","kind");
 

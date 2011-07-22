@@ -30,7 +30,7 @@ function f_paramglog($var) { // filter to select only not global
 }
 
 
-Class Application extends DbObj
+class Application extends DbObj
 {
   public $fields = array ( "id",  "name","short_name",  "description",  "access_free",  "available", "icon", "displayable", "with_frame", "childof","objectclass","ssl","machine","iorder", "tag");
 

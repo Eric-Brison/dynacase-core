@@ -18,7 +18,7 @@ include_once("Class.QueryDb.php");
 
 define("VAULT_MAXENTRIESBYDIR",1000);
 define("VAULT_MAXDIRBYDIR",100);
-Class VaultDiskDir extends DbObj {
+class VaultDiskDir extends DbObj {
 
   public $fields = array ( "id_dir", "id_fs", "free_entries", "l_path" );
   public $id_fields = array ("id_dir");

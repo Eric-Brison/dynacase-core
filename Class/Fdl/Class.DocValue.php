@@ -29,7 +29,7 @@ include_once('Class.Log.php');
  * @deprecated
  *
  */
-Class DocValue extends DbObj
+class DocValue extends DbObj
 {
   var $fields = array ( "docid","attrid","value");
 

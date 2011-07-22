@@ -15,7 +15,7 @@
  /**
  */
 
-Class Crontab {
+class Crontab {
   var $user = NULL;
   var $crontab = '';
 

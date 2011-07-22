@@ -112,7 +112,7 @@ include_once('Class.Table.php');
 include_once('Class.Log.php');
 include_once('Class.QueryDb.php');
 
-Class QueryObj extends QueryDb {
+class QueryObj extends QueryDb {
 
 
 

@@ -19,7 +19,7 @@ include_once("Class.QueryDb.php");
 include_once("Class.DbObj.php");
 include_once("VAULT/Class.VaultDiskDir.php");
 
-Class VaultDiskFs extends DbObj {
+class VaultDiskFs extends DbObj {
 
   var $fields = array ( "id_fs", 
 			"fsname",

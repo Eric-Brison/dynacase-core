@@ -15,7 +15,7 @@ include_once("FDL/Class.DocAttribute.php");
  * Attribute Document Class
  *
  */
-Class ADoc  {
+class ADoc  {
 
 	function __construct () {
 		$this->attr["FIELD_HIDDENS"] = new FieldSetAttribute("FIELD_HIDDENS",0, "hiddens");

@@ -21,7 +21,7 @@ define ("HISTO_WARNING", 8);
 define ("HISTO_ERROR", 16);
 
 include_once("Class.DbObj.php");
-Class DocHisto extends DbObj {
+class DocHisto extends DbObj {
   public $fields = array ( "id", // doc id
                            "initid", // doc initid
 			   "uid",  // user what id

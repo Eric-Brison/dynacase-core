@@ -15,7 +15,7 @@ include_once("DATA/Class.Document.php");
  * Document selection Class
  *
  */
-Class Fdl_DocumentSelection  {
+class Fdl_DocumentSelection  {
   function __construct($config) {
     foreach ($config as $k=>$v) $this->$k=$v; 
     $this->dbaccess=getParam("FREEDOM_DB");

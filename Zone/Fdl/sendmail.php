@@ -280,7 +280,7 @@ class Fdl_Mail_mime extends Mail_mime {
     
 }
 
-Class Fdl_Mail_mimePart	extends	Mail_mimePart {
+class Fdl_Mail_mimePart	extends	Mail_mimePart {
   var $_filename = '';
 
   function Fdl_Mail_mimePart($body = '', $params = array()) {

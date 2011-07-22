@@ -23,7 +23,7 @@ define ("UNCLASS_FLD",10);
  * Folder document Class
  *
  */
-Class Dir extends PDir
+class Dir extends PDir
 {
 
 	var $defDoctype='D';

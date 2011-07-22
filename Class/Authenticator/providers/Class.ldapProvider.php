@@ -12,7 +12,7 @@
   */
 
 include_once("WHAT/Class.Provider.php");
-Class ldapProvider extends Provider {
+class ldapProvider extends Provider {
   
   public function validateCredential($username, $password) {  
 

@@ -15,7 +15,7 @@ include_once("Class.Log.php");
 define("VAULT_FMODE",0600);
 define("VAULT_DMODE",0700);
 
-Class VaultFile {
+class VaultFile {
 
   function __construct($access, $vaultname="Sample", $idf=-1) {
 

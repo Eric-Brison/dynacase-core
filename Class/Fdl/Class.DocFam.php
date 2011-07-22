@@ -11,7 +11,7 @@
  */
 include_once('FDL/Class.PFam.php');
 
-Class DocFam extends PFam {
+class DocFam extends PFam {
  
   var $dbtable="docfam";
 

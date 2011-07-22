@@ -16,7 +16,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _ARCHIVING extends Dir {
+class _ARCHIVING extends Dir {
 	/*
 	 * @end-method-ignore
 	 */

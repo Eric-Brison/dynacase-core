@@ -23,7 +23,7 @@ include_once("FDL/Class.PDoc.php");
 
 
 
-Class DocFile extends PDoc
+class DocFile extends PDoc
 {
     
   var $defDoctype='F';

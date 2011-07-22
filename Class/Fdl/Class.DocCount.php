@@ -14,7 +14,7 @@
 
 include_once("Class.DbObj.php");
 
-Class DocCount extends DbObj {
+class DocCount extends DbObj {
   public $fields = array ( "famid", // family identificator
                            "aid", // attribute identificator
 			   "filter",  // sql filter

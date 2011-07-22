@@ -12,7 +12,7 @@
 
 include_once("WHAT/Lib.FileMime.php");
 
-Class TransformationEngine {
+class TransformationEngine {
     const error_connect=-2;
     const error_noengine=-3;
     const error_sendfile=-4;

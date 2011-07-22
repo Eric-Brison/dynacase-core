@@ -19,7 +19,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _MASK extends Doc {
+class _MASK extends Doc {
         /*
          * @end-method-ignore
          */

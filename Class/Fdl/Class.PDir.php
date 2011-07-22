@@ -15,7 +15,7 @@
 include_once("FDL/Class.DocCollection.php");
 
 
-Class PDir extends DocCollection {
+class PDir extends DocCollection {
   // --------------------------------------------------------------------
   //---------------------- OBJECT CONTROL PERMISSION --------------------
   var $acls = array("view","edit","delete","open","modify","send","unlock","confidential","forum");

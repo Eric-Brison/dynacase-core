@@ -36,7 +36,7 @@
 
 $CLASS_OUT_PHP = "";
 
-Class Out {
+class Out {
 
 var $stream;
 var $cr;

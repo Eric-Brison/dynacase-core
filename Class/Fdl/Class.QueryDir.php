@@ -21,7 +21,7 @@ include_once("Class.Log.php");
  * @package FREEDOM
  *
  */
-Class QueryDir extends DbObj
+class QueryDir extends DbObj
 {
   public $fields = array ( "dirid","query","childid","qtype","fromid","doctype");
   /*public $sup_fields= array("fromid",

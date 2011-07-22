@@ -56,7 +56,7 @@ define("PREGEXPFILE", "/([^\|]*)\|([0-9]*)\|?(.*)?/");
  * Document Class
  *
  */
-Class Doc extends DocCtrl {
+class Doc extends DocCtrl {
   public $fields = array ( "id","owner","title",
 			   "revision","version",
 			   "initid","fromid",

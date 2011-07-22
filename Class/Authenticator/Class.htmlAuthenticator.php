@@ -15,7 +15,7 @@
  */
 include_once('WHAT/Class.Authenticator.php');
 
-Class htmlAuthenticator extends Authenticator {
+class htmlAuthenticator extends Authenticator {
 
   public $auth_session=null;
 

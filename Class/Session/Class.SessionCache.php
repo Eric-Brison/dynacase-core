@@ -13,7 +13,7 @@
 
 include_once('Class.DbObj.php');
 
-Class SessionCache extends DbObj
+class SessionCache extends DbObj
 {
 
 var $fields = array (  "index", "lasttime");

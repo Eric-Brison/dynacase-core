@@ -13,7 +13,7 @@
 
 
 include_once("Class.Doc.php");
-Class DocRead extends DbObj {
+class DocRead extends DbObj {
  
 
   /**

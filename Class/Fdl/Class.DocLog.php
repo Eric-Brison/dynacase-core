@@ -21,7 +21,7 @@ define ("LOG_WARNING", 8);
 define ("LOG_ERROR", 16);
 
 include_once("Class.DbObj.php");
-Class DocLog extends DbObj {
+class DocLog extends DbObj {
   public $fields = array ( "id", // doc id
                            "initid", // doc initid
 			   "title", // doc title

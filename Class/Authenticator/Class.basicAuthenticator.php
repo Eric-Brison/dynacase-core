@@ -15,7 +15,7 @@
  */
 include_once('WHAT/Class.Authenticator.php');
 
-Class basicAuthenticator extends Authenticator {
+class basicAuthenticator extends Authenticator {
 
   public function checkAuthentication() {
     

@@ -15,7 +15,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _IGROUP extends _GROUP {
+class _IGROUP extends _GROUP {
         /*
          * @end-method-ignore
          */

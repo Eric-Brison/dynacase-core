@@ -30,7 +30,7 @@
 
 $CLASS_FORMDATE_PHP = '$Id: Class.FormDate.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
 
-Class FormDate
+class FormDate
 {
 // This class is used to produce HTML/JS code when you want to
 // create a separate window which exchange values with its parent

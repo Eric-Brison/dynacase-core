@@ -22,7 +22,7 @@ define("STARTIDVGROUP",1000000);
  * @package FREEDOM
  *
  */
-Class VGroup extends DbObj
+class VGroup extends DbObj
 {
   var $fields = array ("id",
 		       "num");

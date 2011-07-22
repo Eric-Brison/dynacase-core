@@ -18,7 +18,7 @@ include_once("Class.DbObj.php");
  * @package FREEDOM
  *
  */
-Class DocPerm extends DbObj
+class DocPerm extends DbObj
 {
   var $fields = array ("docid",
 		       "userid",

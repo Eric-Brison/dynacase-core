@@ -16,7 +16,7 @@ include_once("FDL/Class.Doc.php");
 
 
 
-Class PDoc extends Doc
+class PDoc extends Doc
 {
     // --------------------------------------------------------------------
   //---------------------- OBJECT CONTROL PERMISSION --------------------

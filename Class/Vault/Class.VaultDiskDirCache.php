@@ -16,7 +16,7 @@
 // ---------------------------------------------------------------
 include_once("VAULT/Class.VaultDiskDir.php");
 
-Class VaultDiskDirCache extends VaultDiskDir {
+class VaultDiskDirCache extends VaultDiskDir {
 
   function __construct($dbaccess, $id_dir='') {
     parent::__construct($dbaccess, $id_dir,"cache");

@@ -18,7 +18,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _IMAGE extends Doc {
+class _IMAGE extends Doc {
         /*
          * @end-method-ignore
          */

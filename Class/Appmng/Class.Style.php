@@ -15,7 +15,7 @@ include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Param.php');
 
-Class Style extends DbObj
+class Style extends DbObj
 {
 var $fields = array ( "name","description","parsable");
 

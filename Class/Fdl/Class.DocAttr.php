@@ -27,7 +27,7 @@ include_once('Class.Log.php');
  * @package FREEDOM
  *
  */
-Class DocAttr extends DbObj
+class DocAttr extends DbObj
 {
   var $fields = array ("id",
 		       "docid",

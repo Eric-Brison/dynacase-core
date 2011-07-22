@@ -13,7 +13,7 @@
  */
 include_once("WHAT/Class.Provider.php");
 
-Class freedomProvider extends Provider {
+class freedomProvider extends Provider {
 
   
   public function validateCredential($username, $password) {  

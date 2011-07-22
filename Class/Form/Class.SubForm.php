@@ -38,7 +38,7 @@
 
 $CLASS_SUBFORM_PHP = '$Id: Class.SubForm.php,v 1.3 2006/06/20 16:18:07 eric Exp $';
 
-Class SubForm
+class SubForm
 {
 // This class is used to produce HTML/JS code when you want to
 // create a separate window which exchange values with its parent

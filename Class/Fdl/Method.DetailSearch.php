@@ -16,7 +16,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _DSEARCH extends DocSearch {
+class _DSEARCH extends DocSearch {
 	/*
 	 * @end-method-ignore
 	 */

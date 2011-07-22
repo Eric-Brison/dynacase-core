@@ -15,7 +15,7 @@ include_once("FDL/Class.Doc.php");
  * Document Class
  *
  */
-Class Fdl_Document  {
+class Fdl_Document  {
 
     protected $doc;
     public $dbaccess;

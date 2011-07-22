@@ -16,7 +16,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _PORTFOLIO extends Doc {
+class _PORTFOLIO extends Doc {
         /*
          * @end-method-ignore
          */

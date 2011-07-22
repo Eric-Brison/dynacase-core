@@ -15,7 +15,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-Class _IUSER extends _USER {
+class _IUSER extends _USER {
         /*
          * @end-method-ignore
          */

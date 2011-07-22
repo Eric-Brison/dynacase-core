@@ -58,7 +58,7 @@ $DROITS_CLASS_SESSIONVAR_PHP = '$Id: Class.SessionVar.php,v 1.3 2003/08/18 15:46
 
 include_once('Class.DbObj.php');
 
-Class SessionVar extends DbObj
+class SessionVar extends DbObj
 {
 
 var $fields = array ( "session", "key", "val");

@@ -12,7 +12,7 @@
   */
 
 include_once("WHAT/Class.Provider.php");
-Class fileProvider extends Provider {
+class fileProvider extends Provider {
 
   private function readPwdFile($pwdfile) {
     $fh = fopen($pwdfile, 'r');

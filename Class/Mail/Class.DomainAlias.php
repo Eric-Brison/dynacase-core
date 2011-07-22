@@ -16,7 +16,7 @@ include_once('Class.DbObj.php');
 include_once('Class.QueryDb.php');
 include_once('Class.Pop.php');
 
-Class DomainAlias extends DbObj {
+class DomainAlias extends DbObj {
 
 var $Class = '$Id: Class.DomainAlias.php,v 1.4 2005/10/05 16:28:42 eric Exp $';
 

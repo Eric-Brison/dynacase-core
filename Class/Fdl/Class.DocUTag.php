@@ -13,7 +13,7 @@
 
 
 include_once("Class.DbObj.php");
-Class DocUtag extends DbObj {
+class DocUtag extends DbObj {
   public $fields = array ( "id", // doc id
                            "initid", // doc initid
 			   "uid",  // user what id
