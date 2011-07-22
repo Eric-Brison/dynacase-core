@@ -206,10 +206,13 @@ class Fdl_Collection extends Fdl_Document
             $this->setError($out->info["error"]);
             $tmpdoc = new Fdl_Document();
             $kd = 0;
-            
+            $verifyhaschild=$this->contentVerifyHasChild;
             foreach ( $dl as $doc ) {
                 $tmpdoc->affect($doc);
                 if (!$doc->isConfidential()) {
+                    if ($verifyhaschild) {
+                        $tmpdoc->setVolatileProperty("haschildfolder",hasChildFld($this->dbaccess, $tmpdoc->getProperty('initid'),($doc->doctype=='S')));
+                    }
                     $content[$kd] = $tmpdoc->getDocument($this->contentOnlyValue, $this->completeProperties);
                     $kd++;
                 }

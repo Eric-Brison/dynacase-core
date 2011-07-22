@@ -563,9 +563,7 @@ function documentApplyMethod(Action &$action, $id,$method,&$returntype,&$out,&$d
                 
                 $doc->setContentFilter($configContent->filter);
                 $doc->setContentVerifyHasChild($configContent->verifyhaschild===true);
-                     
-                    
-                 
+                                      
                     }
                     $out["storedContent"]=$doc->getContent();
                     }
