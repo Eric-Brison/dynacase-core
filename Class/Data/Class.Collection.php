@@ -197,6 +197,7 @@ class Fdl_Collection extends Fdl_Document
         if (!$dl) {
             $this->setError("document list uninitialized");
         } else {
+            $content=array();
             $s = $dl->getSearchDocument();
             if ($this->contentMap) $dl->listMap($this->contentMap);
             $out = null;
@@ -374,6 +375,8 @@ class Fdl_Collection extends Fdl_Document
         } elseif ($fam->doctype != 'C') {
             $out->error = sprintf(_("data:document %s is not a family"), $famid);
         } else {
+            
+            $content = array();
             $fld = new Dir($this->dbaccess);
             if (!is_numeric($famid)) $famid = getFamIdFromName($this->dbaccess, $famid);
             $tfam = $fld->GetChildFam($famid, $controlcreate);
@@ -381,7 +384,6 @@ class Fdl_Collection extends Fdl_Document
                 $tmpdoc = new Fdl_Document();
                 $onlyvalues = true;
                 $completeprop = false;
-                $content = array();
                 foreach ( $tfam as $id => $rawfam ) {
                     $fam->affect($rawfam);
                     $tmpdoc->affect($fam);
