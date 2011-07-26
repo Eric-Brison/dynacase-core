@@ -906,6 +906,32 @@ create unique index i_docir on doc(initid, revision);";
   }
     
     /**
+     * record new document 
+     * not be use when modify properties
+     * only use with use of setValue.
+     * @param stdClass $info refresh and postModify messages
+     * @param boolean $skipConstraint set to true to not test constraints
+     * @return string error message
+     */
+    public function create(&$info = null, $skipConstraint = false)
+    {
+        $err = $this->add();
+        $info = '';
+        $constraint = '';
+        if ($err == "") {
+            if (!$skipConstraint) {
+                $err = $this->verifyAllConstraints(false, $constraint);
+            }
+            if ($err == '') {
+                $err=$this->save($info,true);
+            }
+            $info->constraint=$constraint;
+        }
+        $info->error = $err;
+        return $err;
+    }
+    
+    /**
      * test if the document can be edit by the current user
      * the diffence between ::canUpdateDoc is that document is not need to be locked
      * @return string empty means user can update else message of the raison
