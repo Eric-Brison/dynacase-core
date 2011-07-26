@@ -123,6 +123,7 @@ class SearchDoc {
    * 
    */
   public function __construct($dbaccess, $fromid=0) {
+    if ($dbaccess=="") $dbaccess=getDbAccess();
     $this->dbaccess=$dbaccess;
     $this->fromid=$fromid;
     $this->orderby='title';
