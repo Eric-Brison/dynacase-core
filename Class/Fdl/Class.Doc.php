@@ -911,7 +911,7 @@ create unique index i_docir on doc(initid, revision);";
      * @param boolean $skipConstraint set to true to not test constraints
      * @return string error message
      */
-    public function addNew(&$info = null, $skipConstraint = false)
+    public function fullAdd(&$info = null, $skipConstraint = false)
     {
         $err = '';
         $constraint = '';
