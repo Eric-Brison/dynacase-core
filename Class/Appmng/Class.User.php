@@ -62,6 +62,8 @@ create sequence seq_id_users start 10";
 
   /** 
    * affect user from login name
+     * @param string $loginDomain login
+     * @return boolean true if ok
    */ 
   function SetLoginName($loginDomain)  {
     include_once("Class.Domain.php");
@@ -92,8 +94,14 @@ create sequence seq_id_users start 10";
 
     return TRUE;
   }
-
-  function SetLogin($login,$domain)
+ /**
+     * affect user from its login
+     * 
+     * @param string $login login
+     * @deprecated
+     * @return boolean true if ok
+     */
+  function setLogin($login,$domain)
     {
       $login=mb_strtolower($login);
       $domain=mb_strtolower($domain);
@@ -117,6 +125,7 @@ create sequence seq_id_users start 10";
      * affect user from its document id
      * 
      * @param int $fid
+     * @return boolean true if ok
      */
   function setFid($fid)
     {
@@ -274,7 +283,7 @@ create sequence seq_id_users start 10";
   }
 
   /**
-   * update user from FREEDOM IUSER document
+   * update user from IUSER document
    * @param int $fid document id
    * @param string $login login
    * @param int $iddomain mail domain identificator
