@@ -907,26 +907,25 @@ create unique index i_docir on doc(initid, revision);";
     
     /**
      * record new document 
-     * not be use when modify properties
-     * only use with use of setValue.
      * @param stdClass $info refresh and postModify messages
      * @param boolean $skipConstraint set to true to not test constraints
      * @return string error message
      */
-    public function create(&$info = null, $skipConstraint = false)
+    public function addNew(&$info = null, $skipConstraint = false)
     {
-        $err = $this->add();
-        $info = '';
+        $err = '';
         $constraint = '';
-        if ($err == "") {
-            if (!$skipConstraint) {
-                $err = $this->verifyAllConstraints(false, $constraint);
-            }
-            if ($err == '') {
-                $err=$this->save($info,true);
-            }
-            $info->constraint=$constraint;
+        $info = '';
+        if (!$skipConstraint) {
+            $err = $this->verifyAllConstraints(false, $constraint);
         }
+        if ($err == "") {
+            $err = $this->add();
+            if ($err == "") {
+                 $err = $this->save($info, true);
+            }
+        }
+        $info->constraint = $constraint;
         $info->error = $err;
         return $err;
     }
