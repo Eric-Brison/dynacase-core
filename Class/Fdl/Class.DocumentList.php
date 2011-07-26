@@ -15,6 +15,8 @@ class DocumentList implements Iterator
     private $currentDoc = null;
     /** anonymous function */
     private $hookFunction = null;
+    
+    private $init = false;
     public $length = 0;
     
     public function __construct(SearchDoc &$s = null)
@@ -23,39 +25,57 @@ class DocumentList implements Iterator
         $this->initSearch();
     }
     
+    /**
+     * get number of returned documents
+     * can be upper of real length due to callback map
+     * @return int
+     */
+    public function count() {
+        $this->initSearch();
+        return $this->length;
+    }
     private function initSearch()
     {
         if ($this->search) {
-            if (!$this->search->isExecuted()) $this->search->search();
-            if ($this->search->getError()) {
-                throw new Exception($this->search->getError());
+            if (!$this->init) {
+                if (!$this->search->isExecuted()) $this->search->search();
+                if ($this->search->getError()) {
+                    throw new Exception($this->search->getError());
+                }
+                $this->length = $this->search->count();
+                $this->init=true;
             }
-            $this->length = $this->search->count();
+        }
+    }
+    
+    private function getCurrentDoc() {
+        $this->currentDoc = $this->search->nextDoc();
+        $good = ($this->callHook() !== false);
+        if (!$good) {
+            while ( $this->currentDoc = $this->search->nextDoc() ) {
+                $good = ($this->callHook() !== false);
+                if ($good) break;
+            }
         }
     }
     
     public function rewind()
     {
-        
-        $this->currentDoc = $this->search->nextDoc();
-        $good=($this->callHook() !== false);
-        if (! $good) {
-            while ($this->currentDoc = $this->search->nextDoc()) {
-                $good=($this->callHook() !== false);
-                if ($good) break;
-            }
-        }
-       
+        $this->initSearch();
+        $this->getCurrentDoc();
+    
+    
     }
     public function next()
     {
-        $this->rewind();
+        $this->getCurrentDoc();
     }
     
-    private function callHook() {
+    private function callHook()
+    {
         if ($this->currentDoc && $this->hookFunction) {
-           // call_user_func($function, $this->currentDoc);
-            $h=$this->hookFunction;
+            // call_user_func($function, $this->currentDoc);
+            $h = $this->hookFunction;
             return $h($this->currentDoc);
         
         }
@@ -83,24 +103,24 @@ class DocumentList implements Iterator
         $this->search->setObjectReturn();
         $this->search->excludeConfidential();
         foreach ( $ids as $k => $v ) {
-            if ((!$v)||(!is_numeric($v))) unset($ids[$k]);
+            if ((!$v) || (!is_numeric($v))) unset($ids[$k]);
         }
         $ids = array_unique($ids);
         $sid = $useInitid ? "initid" : "id";
-        if (count($ids)==0) {
+        if (count($ids) == 0) {
             $this->search->addFilter("false");
         } else {
-        $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
+            $this->search->addFilter($this->search->sqlCond($ids, $sid, true));
         }
-        $this->initSearch();
     }
     /**
      * apply a callback on each document
      * if callback return false, the document is skipped from list
      * @return void
      */
-    public function listMap($hookFunction) {
-        $this->hookFunction=$hookFunction;
+    public function listMap($hookFunction)
+    {
+        $this->hookFunction = $hookFunction;
     }
 }
 ?>
