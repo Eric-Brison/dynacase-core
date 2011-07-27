@@ -273,6 +273,9 @@
 
   <changelog>
   	
+    <version number="3.1.0" date="2011-07-27">
+      <change title="Autoload, Transaction, and many other improvement" url="http://dev.dynacase.org/versions/show/98"/>        
+    </version>
     <version number="3.0.16" date="2010-12-17">
       <change title="Somes new possibilities for Ooo Layout" url="http://dev.dynacase.org/versions/show/78"/>        
     </version>
