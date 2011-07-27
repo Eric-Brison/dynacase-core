@@ -676,25 +676,37 @@ Fdl.Context.prototype.getDocument = function(config) {
 		this.setErrorMessage(this._("data:document id must not be an object"));
 		return null;
 	}
-	if ((!docid) && (config.data))
+	if ((!docid) && config.data && config.data.properties) {
 		docid = config.data.properties.id;
-	if (config.data && config.data.properties.id && this._documents[docid] && this._documents[docid]._data) {
-		// verify revdate
-		if (docid && 
-				(config.data.requestDate <= this._documents[docid]._data.requestDate)) {
-			// use cache if data is oldest cache
-			return this._documents[docid];
-		}
+	}
+	if (config.data && config.data.properties && config.data.properties.id && docid) {
+	    if (latest) {
+	        // verify revdate
+	        if (this._documents[docid] && this._documents[docid]._data && 
+	                (config.data.requestDate <= this._documents[docid]._data.requestDate)) {
+	            // use cache if data is oldest cache
+	           // console.log("use latest cache", docid, this._documents[docid].getTitle());
+	            return this._documents[docid];
+	        }
+	    } else {
+	        if (this._fixDocuments[docid] && this._fixDocuments[docid]._data) {
+               // console.log("use fix cache", docid, this._fixDocuments[docid].getTitle());
+                return this._fixDocuments[docid];
+            }
+	    }
 	} else if (docid) {
-		// no data
-		if (config.useCache && this._documents[docid])
-			return this._documents[docid];
+	    // no data
+	    if (config.useCache && this._documents[docid]) {
+            //console.log("use latest cache", docid, this._documents[docid].getTitle());
+	        return this._documents[docid];
+	    }
 	}
    if (! docid) {
 	   this.setErrorMessage(this._("data:document id not set"));
 	   return null;
    }
 	var wdoc = new Fdl.Document(config);
+  
 	
 	if (! wdoc._data) return null;
 	if (this.familyMap != null && this.familyMap[wdoc.getProperty('fromname')]) {
