@@ -158,7 +158,7 @@ $famid="")       // folder containt special fam id
         $nbdoc=0;
         $prevFromId = -2;
 
-
+      $tfamdoc=array();
 
         $k=0;
         while($doc = $sd->nextDoc() )  {
@@ -385,7 +385,6 @@ $famid="")       // folder containt special fam id
         }
          if ($column==1) {
             usort($tdoc,"orderbyfromid");
-            $tfamdoc=array();
         } else {
             if ((GetHttpVars("sqlorder")=="")&&($slice >= $action->GetParam("FDL_FOLDERMAXITEM",1000))) uasort($tdoc,"orderbytitle");
         }
