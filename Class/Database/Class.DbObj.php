@@ -763,54 +763,54 @@ function Update()
             self::$savepoint[$this->dbid][] = $point;
         }
         if (!$err) {
-            $err=$this->exec_query(sprintf("savepoint %s", pg_escape_string($point)));
+            $err=$this->exec_query(sprintf('savepoint "%s"', pg_escape_string($point)));
         }
-               // error_log(__METHOD__." $point : $err");
+        if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
     /**
-     * revert to last transaction save point
+     * revert to transaction save point
      * @param string $point
      * @return string error message
      */
     public function rollbackPoint($point)
-    {
-        $lastPoint = array_pop(self::$savepoint[$this->dbid]);
-        if ($lastPoint == $point) {
-            $err = $this->exec_query(sprintf("rollback to savepoint %s", pg_escape_string($lastPoint)));
+    {  
+        $lastPoint = array_search($point,self::$savepoint[$this->dbid]);
+        if ($lastPoint !== false) {
+            self::$savepoint[$this->dbid]=array_slice(self::$savepoint[$this->dbid], 0, $lastPoint);
+            $err = $this->exec_query(sprintf('rollback to savepoint "%s"', pg_escape_string($point)));
             
             if ((!$err) && (count(self::$savepoint[$this->dbid]) == 0)) {
                 $err = $this->exec_query("commit");
             }
         } else {
-            if ($lastPoint !== null) {
-                self::$savepoint[$this->dbid][] = $lastPoint;
-            }
+            
             $err = sprintf("cannot rollback unsaved point : %s", $point);
         }
         
+        if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     
-    } 
+    }
     /**
-     * commit last transaction save point
+     * commit transaction save point
      * @param string $point
      * @return string error message
      */
     public function commitPoint($point)
     {
-        $lastPoint = array_pop(self::$savepoint[$this->dbid]);
-        if ($lastPoint == $point) {
-            $err = $this->exec_query(sprintf("release savepoint %s", pg_escape_string($lastPoint)));
+        $lastPoint = array_search($point, self::$savepoint[$this->dbid]);
+       
+        if ($lastPoint !== false) {
+            self::$savepoint[$this->dbid] = array_slice(self::$savepoint[$this->dbid],0, $lastPoint);
+            $err = $this->exec_query(sprintf('release savepoint "%s"', pg_escape_string($point)));
             if ((!$err) && (count(self::$savepoint[$this->dbid]) == 0)) {
                 $err = $this->exec_query("commit");
             }
         } else {
-            if ($lastPoint !== null) {
-                self::$savepoint[$this->dbid][] = $lastPoint;
-            }
             $err = sprintf("cannot commit unsaved point : %s", $point);
         }
+        if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
 // FIN DE CLASSE

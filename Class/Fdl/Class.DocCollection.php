@@ -15,7 +15,7 @@
 include_once("FDL/Class.Doc.php");
 
 
- Class DocCollection extends Doc {
+class DocCollection extends Doc {
     var $top=array(  
 
 		 "~*"=>array("label"=>"include",
