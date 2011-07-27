@@ -25,6 +25,7 @@ function grouprequest(Action &$action) {
 
     $request=json_decode(getHttpVars("request"));
     $out=array();
+    $docid=array();
     foreach ($request as $kr=>$rs) {
         foreach ($rs as $varname=>$r) {
             $method=strtolower($r->method);
@@ -48,12 +49,12 @@ function grouprequest(Action &$action) {
                     $outi=array();
                     if (is_array($ds)) {
                         foreach ($ds as $k=>$v) {
-                            documentApplyMethod(action, $v["properties"]["id"],$method,$returntype,$outi[$k],$document);
+                            documentApplyMethod($action, $v["properties"]["id"],$method,$returntype,$outi[$k],$document);
                         }
                     }
                     $out[$varname]=array("iterative"=>$outi);
                 } else {
-                    documentApplyMethod(action, $id,$method,$returntype,$out[$varname],$document);
+                    documentApplyMethod($action, $id,$method,$returntype,$out[$varname],$document);
                     if ($document) {
                         $docid[$varname]=$document->getProperty('id');
                     }
