@@ -40,7 +40,9 @@ Fdl.DocumentHistory = function(config){
 		this.items=data.items;
 		this.revisions=[];
 		for (var i=0;i<data.revisions.length;i++) {
-		    this.revisions.push(this.context.getDocument({data:data.revisions[i]})); 	
+		    if (! data.revisions[i].error) {
+		       this.revisions.push(this.context.getDocument({latest:false,data:data.revisions[i]})); 	
+		    }
 		}
 	    }
 	} 
