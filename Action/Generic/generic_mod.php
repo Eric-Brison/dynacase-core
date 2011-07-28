@@ -39,7 +39,7 @@ function generic_mod(Action &$action) {
     $updateAttrid=$action->getArgument("updateAttrid");
 	
 	$dbaccess = $action->GetParam("FREEDOM_DB");
-    $action->parent->addJsRef("GENERIC/Layout/generic_mod.js");
+    $action->parent->addJsRef("GENERIC:generic_mod.js",true);
 	$err = modcard($action, $ndocid, $info); // ndocid change if new doc
 	if (!$noredirect)  $action->AddWarningMsg($err);
 
