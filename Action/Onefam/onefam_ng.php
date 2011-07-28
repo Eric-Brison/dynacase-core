@@ -3,15 +3,15 @@
  * Generated Header (not documented yet)
  *
  * @author Anakeen 2000
- * @version $Id: onefam_root.php,v 1.9 2008/04/18 09:47:38 eric Exp $
+ * @version $Id: onefam_ng.php,v 1.9 2008/04/18 09:47:38 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
+ * @package FREEDOM
  * @subpackage
  */
 /**
  */
 include_once("GENERIC/generic_util.php");
-function onefam_root(Action &$action) {
+function onefam_ng(Action &$action) {
     // -----------------------------------
     $mode=$action->getArgument("mode");
     if (! $mode) $mode=$action->getParam("ONEFAM_DISPLAYMODE");
@@ -19,10 +19,6 @@ function onefam_root(Action &$action) {
         include_once("ONEFAM/onefam_ext.php");
         $action->lay = new Layout(getLayoutFile("ONEFAM","onefam_ext.xml"),$action);
         onefam_ext($action);
-    } elseif (strtok($mode,' ')=="ng") {
-        include_once("ONEFAM/onefam_ng.php");
-        $action->lay = new Layout(getLayoutFile("ONEFAM","onefam_ng.xml"),$action);
-        onefam_ng($action);
     } else {
 	    $action->lay->set("APP_TITLE", _($action->parent->description));
 
@@ -53,6 +49,11 @@ function onefam_root(Action &$action) {
 
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
+        /* Multidoc */
+        $action->parent->AddJsRef("lib/jquery/jquery.js",false);
+        $action->parent->AddJsRef("FDL:underscore.js",true);
+        $action->parent->AddJsRef("FDL:backbone.js",true);
+        $action->parent->AddJsRef("FDL:multidoc.js",true);
 
 
 
@@ -74,6 +75,30 @@ function onefam_root(Action &$action) {
         $izpx=intval($action->getParam("SIZE_IMG-SMALL"));
 
         $action->lay->set("izpx",$izpx);
+  // Change CSS
+  $famid='128';  
+  $dbaccess = $action->GetParam("FREEDOM_DB");
+  if ($famid && (! is_numeric($famid))) $famid=getFamIdFromName($dbaccess,$famid);
+  if ($famid != "") $action->register("DEFAULT_FAMILY",$famid); // for old compatibility
+
+  $action->lay->set("famid",$famid);
+  $smode = getSplitMode($action);
+
+  switch ($smode) {
+  case "vertical": 
+    $action->parent->AddCssRef("WHAT/Layout/HB.css");
+    break;
+  case "inverse":    
+    $action->parent->AddCssRef("WHAT/Layout/inverse.css");
+    break;
+  default:
+  case "basic":
+    $action->parent->AddCssRef("ONEFAM/Layout/onefam_ng.css");
+    break;
+    
+  }
+
+
     }
 }
 function getTableFamilyList($idsfam) {
