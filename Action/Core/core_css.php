@@ -20,13 +20,20 @@
 function core_css(&$action) {
   
   $layout=getHttpVars("layout");
+  $type=getHttpVars("type");
 
   if (preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $layout, $reg)) {
     $lfile= getLayoutFile($reg[1],strtolower($reg[2]));
     if ($lfile) $action->lay = new Layout(getLayoutFile($reg[1],strtolower($reg[2])), $action);
   }
 
-  setHeaderCache();
+  if( $type == '' || $type == 'css' ) {
+    $type = 'text/css';
+  } elseif( $type == 'js' ) {
+    $type = 'text/javascript';
+  }
+
+  setHeaderCache($type);
 
 }
 ?>

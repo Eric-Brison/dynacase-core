@@ -1495,6 +1495,7 @@ function getLayIdoc(&$doc, &$oattr,$attridk,$attrin,$value,$zone="") {
  */
 function editmode(&$action) {
 	$action->parent->AddJsRef(sprintf("%sapp=FDL&action=ALLEDITJS&wv=%s", $action->GetParam("CORE_STANDURL"), $action->GetParam("WVERSION")));
+	$action->parent->AddCssRef(sprintf("%sapp=FDL&action=ALLEDITCSS&wv=%s", $action->GetParam("CORE_STANDURL"), $action->GetParam("WVERSION")));
 }
 
 /**
