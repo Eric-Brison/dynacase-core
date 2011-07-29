@@ -1,42 +1,4 @@
-/*
- * ------------------------------------------
- * DISPOSITION BASIC ONEFAM
- * ------------------------------------------
- */
-#listicon,#divframes,#flist,#finfo,#draggable,#cacheiframes {
-    position: absolute;
-    height: 100%;
-}
 
-#flist {
-    left: 40px;
-    min-width: 400px;
-}
-
-#finfo {
-    right: 0;
-    margin-left: 0px;
-    left: 445px;
-}
-
-#draggable {
-    background-color: #d0d0d0;
-    width: 5px;
-    left: 440px;
-}
-
-#draggable:hover {
-    cursor: e-resize;
-    background-color: black;
-}
-
-.resizeH {
-    position: absolute;
-    cursor: e-resize;
-    z-index: 10;
-    background-color: transparent;
-    border: none;
-}
 
 img.onefamico {
     border-style: solid;

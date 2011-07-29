@@ -1,4 +1,4 @@
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
 
@@ -54,18 +54,14 @@ function openiframe(event,th,docid) {
 
   if (selimg != null)  
   {
-    selimg.className='iconone';
-    selimg.style.width='[izpx]px';
-    selimg.style.borderLeftStyle='solid';
-    selimg.style.borderLeftColor='[COLOR_C5]';
-    selimg.style.borderLeftWidth='2px';
+    selimg.setAttribute("selected",0);
   }
 
   if (th) 
   { 
-    th.className='icononesel';
+    th.setAttribute("selected",1);
     selimg=th;
-    selimg.style.width=([izpx]-4)+'px';
+    
   }
 
   var flist='if_'+docid;
@@ -236,12 +232,10 @@ function style() {
 
 <div id="listicon" style="z-index:100;float:left;width:[wcols]px;padding-left:5px;padding-top:5px;" valign="top">
 [BLOCK SELECTMASTER]
-<img style="width:[izpx]"
+<img style="width:[izpx]px"
      src="[iconsrc]"  needresize="1"
      onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
-     onmouseover="if (this.className != 'icononesel') {this.className='icononehi';this.style.width=[izpx]-4;}"
-     onmouseout="if (this.className != 'icononesel') {this.className='iconone';this.style.width=[izpx]}"
-     class="iconone"
+     class="onefamico"
      id="imgm[idcdoc]"
      alt="[ftitle]"
      title="[ftitle]">
@@ -257,13 +251,11 @@ function style() {
 <HR style="float:left;clear:both" width="100%">
 [ENDBLOCK SEPARATOR]
 [BLOCK SELECTUSER]
-<img style="width:[izpx]"
+<img style="width:[izpx]px"
      src="[iconsrc]"  needresize="1"
      id="imgu[idcdoc]"
      onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
-     onmouseover="if (this.className != 'icononesel') {this.className='icononehi';this.style.width=[izpx]-4;}"
-     onmouseout="if (this.className != 'icononesel') {this.className='iconone';this.style.width=[izpx]}"
-     class="iconone"
+     class="onefamico"
      alt="[ftitle]"
      title="[ftitle]">
 [ENDBLOCK SELECTUSER]

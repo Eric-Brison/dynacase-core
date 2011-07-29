@@ -1,0 +1,22 @@
+div.docresume, tr.docresume {
+  border : solid 1px [COLOR_B1];
+  background-color:[CORE_BGCELLCOLOR];
+  color:[CORE_TEXTFGCOLOR];
+  border-width : 1px;
+  margin: 2px 0px 0px 0px;
+
+}
+
+div.docresume:hover, tr.docresume:hover {
+  background-color:[CORE_BGCOLORHIGH];
+
+}
+
+div.docresume[selected="1"], tr.docresume[selected="1"] {
+    background-color:[COLOR_B5]!important;
+    background: -webkit-gradient(linear, 0% 0, 0% 100%, from([COLOR_B9]),
+        to([COLOR_B1]) );
+    background: -moz-linear-gradient(270deg, [COLOR_B9], [COLOR_B1]);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='[COLOR_B9]', endColorstr='[COLOR_B1]'); 
+    
+}

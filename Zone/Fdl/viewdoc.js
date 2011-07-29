@@ -147,7 +147,7 @@ function reloadWindow(w) {
 
   
 }
-function refreshParentWindows() {  
+function refreshParentWindows(famid) {  
 
   if (parent.flist) reloadWindow(parent.flist);
   else if (parent.fvfolder) reloadWindow(parent.fvfolder);
@@ -156,6 +156,9 @@ function refreshParentWindows() {
     if (parent.ffoliotab) reloadWindow(parent.ffoliotab);
   } else if (window.opener && window.opener.document.needreload) reloadWindow(window.opener);
   
+  if (famid) {
+      if (parent['if_'+famid]) reloadWindow(parent['if_'+famid]);
+  }
 }
 function updatePopDocTitle() {
   if (window.parent && window.name) {

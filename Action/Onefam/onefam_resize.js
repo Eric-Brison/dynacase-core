@@ -136,17 +136,17 @@ function redisplaywsdiv(event) {
   var w4 = window.parent.outerWidth;
   
   listicon.style.top='0px';
-  listicon.style.left=dx;
+  listicon.style.left=dx+'px';
   listicon.style.height='100%'; 
 
   divframes.style.top='0px';
-  divframes.style.left=dx;
+  divframes.style.left=dx+'px';
   divframes.style.height='100%';
   divframes.style.width='100%';  
 
   dx+=40;
   flist.style.top='0px';
-  flist.style.left=dx;
+  flist.style.left=dx+'px';
 
   // Vertical style
   if (COL && (COL>0))
@@ -155,12 +155,12 @@ function redisplaywsdiv(event) {
     ch=parseInt(COL);
     if (COL>(w4-250)) COL=w4-250;
     ch=parseInt(COL);
-    flist.style.width=ww-40;
-    flist.style.height=ch;
-    draggable.style.top=parseInt(ch);
+    flist.style.width=(ww-40)+'px';
+    flist.style.height=ch+'px';
+    draggable.style.top=parseInt(ch)+'px';
     dx=ch+5;
-    finfo.style.top=dx;
-    finfo.style.left=40;
+    finfo.style.top=dx+'px';
+    finfo.style.left='40px';
     finfo.style.right='0px';
     finfo.style.bottom='0px'; 
   }
@@ -172,12 +172,12 @@ function redisplaywsdiv(event) {
     wcol2=parseInt(ROW)-parseInt(40);
     if (ROW>w4-250) ROW=w4-250;
     wcol2=parseInt(ROW)-parseInt(40);
-    flist.style.width=wcol2;
-    flist.style.height=wh; 
+    flist.style.width=wcol2+'px';
+    flist.style.height=wh+'px'; 
     draggable.style.left=parseInt(wcol2)+parseInt(40);
     dx=ROW+5;
     finfo.style.top='0px';
-    finfo.style.left=dx;
+    finfo.style.left=dx+'px';
     finfo.style.right='0px';
     finfo.style.height='100%'; 
   } 

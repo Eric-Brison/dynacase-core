@@ -363,7 +363,7 @@ $(function(){
 	   			{	
 	   				//RELATIONS
 	   				//With class relation
-	   				var relations = this.contentWindow.document.getElementsByClassName('relation');
+	   				var relations = $(this.contentWindow.document).find('relation');
 	   				
 	   				//Whitout class relation, but link on other document
 	   				var _relations = this.contentWindow.document.getElementsByTagName("a");

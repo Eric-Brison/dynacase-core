@@ -47,7 +47,8 @@ function generic_list(&$action) {
 
   $column=generic_viewmode($action,$famid); // choose the good view mode
 
-  
+  $dbaccess = $action->GetParam("FREEDOM_DB");
+  $action->parent->addCssRef("GENERIC:generic_list.css",true);
   //change famid if it is a simplesearch
   $sfamid=$famid;
   if ($dirid) {
@@ -62,7 +63,6 @@ function generic_list(&$action) {
     $wonglet=(getTabLetter($action,$famid)=='Y');
   }
 
-  $dbaccess = $action->GetParam("FREEDOM_DB");
   $dir = new_Doc($dbaccess,$dirid);
   $catg = new_Doc($dbaccess,$catgid);
   $action->lay->set("folderid","0");
