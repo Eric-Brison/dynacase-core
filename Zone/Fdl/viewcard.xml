@@ -14,7 +14,7 @@ if ("[LGTEXTERROR]" != "0") {
   centerError();
   window.onscroll=centerError;
 }
-if ("[refreshfld]" == "Y")  refreshParentWindows();
+if ("[refreshfld]" == "Y")  refreshParentWindows('[cid]');
 
 [IF POSTIT]if (parseInt('[postitid]') > 0) setTimeout("postit('[CORE_STANDURL]&app=FDL&action=FDL_CARD&dochead=N&id=[postitid]')",1000);[ENDIF POSTIT]
 if (parseInt('[waskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FDL&action=EDITWASK&docid=[id]&waskid=[waskid]')",1000);

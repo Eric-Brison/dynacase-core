@@ -1,6 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- HEAD HTML -->
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
 
@@ -41,8 +39,8 @@ var prevselid;
 var PDS='';
 // view select document
 function vselect(th) { 
-  if (prevselid)  document.getElementById(prevselid).className="unselect";
-  th.className="select";
+   if (prevselid)  document.getElementById(prevselid).setAttribute("selected",0);
+  th.setAttribute("selected",1);
   prevselid = th.id;
 }
 function vedit(e,id) {
@@ -134,6 +132,7 @@ function focusInput(event,did) {
   if (i) i.focus();
 }
 addEvent(window,"load",focusInput);
+addEvent(window,"load",function () {if (window.parent && window.parent.multidoc) window.parent.multidoc(window.document);});
 -->
 </script>   
  </head>
@@ -191,14 +190,13 @@ addEvent(window,"load",focusInput);
 <tbody id="tbody[fid]">
 [BLOCK [blockvalue]]
 <tr  id="d[divid]"
-     class="unselect" 
-     style="max-height:20px;overflow:hidden;cursor:crosshair"
-     onmouseover="if (this.className.charAt(0) == 'u') this.className='unselecth'"
-     onmouseout="if (this.className.charAt(0) == 'u')  this.className='unselect'" 
+     class="docresume" 
+     style="max-height:20px;overflow:hidden;cursor:crosshair" view="multidoc" documentId="[id]" hrefDoc='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]'
+   
      oncontextmenu="viewdocmenu(event,'[id]',false,false,this);return false" 
-     onclick="if (document.noselect) document.noselect=false; else {select(this,[id],[divid]);;subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'finfo[famid]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&props=N&id=[id]');}" >   
+     onclick="if (document.noselect) document.noselect=false; else {vselect(this);subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'finfo[famid]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&props=N&id=[id]');}" >   
  <td class="tlist">
-<IMG width="16" align="absbottom" [IFNOT canedit]class="aiconnoh"[ENDIF canedit][IF canedit]class="aicon" title="[TEXT:Modify]" onclick="document.noselect=true;select(this.parentNode.parentNode,[id],[divid]);vedit(event,'[id]');"[ENDIF canedit]  id="i[divid]"      src="[iconsrc]">[title] <i>[state]</i></td>
+<IMG width="16px" align="absbottom" [IFNOT canedit]class="aiconnoh"[ENDIF canedit][IF canedit]class="aicon" documentId="[id]" hrefDoc='?sole=Y&&app=GENERIC&action=GENERIC_EDIT&&latest=Y&id=[id]' title="[TEXT:Modify]" onclick="document.noselect=true;select(this.parentNode.parentNode,[id],[divid]);vedit(event,'[id]');"[ENDIF canedit]  id="i[divid]"      src="[iconsrc]">[title] <i>[state]</i></td>
        
 <td class="tlist">[values]</td>
         
@@ -206,7 +204,6 @@ addEvent(window,"load",focusInput);
 </tr>
 [ENDBLOCK [blockvalue]]
 </tbody>
-<script>alterrow('tbody[fid]','[CORE_BGCOLORALTERN]','[CORE_TEXTFGCOLOR]');</script>
 
 
 

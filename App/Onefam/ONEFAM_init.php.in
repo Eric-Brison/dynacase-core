@@ -44,7 +44,7 @@ array(
 				"descr"=>_("default background color")),
       "ONEFAM_DISPLAYMODE" => array("val"=>"html",
                                 "user"=>"Y",
-                                "kind"=>"enum(html|extjs)",
+                                "kind"=>"enum(html|extjs|ng -beta-)",
                                 "global"=>"N",
                                 "descr"=>_("display mode"))
       );

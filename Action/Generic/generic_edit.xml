@@ -3,6 +3,10 @@
   <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="document-icon" content="[shorticon]"/>
+	<meta name="document-id" content="[id]"/>
+	<meta name="document-initid" content="[initid]"/>
+	<meta name="document-icon" content="[docicon]"/>
    <title>[TEXT:edition: ] [title]</title>
 
 <link rel="shortcut icon" href="[shorticon]">

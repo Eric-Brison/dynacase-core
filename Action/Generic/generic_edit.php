@@ -107,6 +107,7 @@ function generic_edit(Action &$action) {
 
 	if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon",getParam("DYNACASE_FAVICO"));
 	else $action->lay->Set("shorticon",$doc->getIcon());
+	$action->lay->Set("docicon",$doc->getIcon('',16));
 	$action->lay->Set("STITLE",addJsSlashes($action->lay->get("title"))); // for include in JS
 	if ($zonebodycard == "") {
 		if ($doc->cvid > 0) {
@@ -186,7 +187,6 @@ function generic_edit(Action &$action) {
 	// information propagation
 	$action->lay->Set("classid", $classid);
 	$action->lay->Set("dirid", $dirid);
-	$action->lay->Set("id", $docid);
 
 
 }

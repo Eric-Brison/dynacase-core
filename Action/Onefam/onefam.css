@@ -1,0 +1,28 @@
+
+
+img.onefamico {
+    border-style: solid;
+    border-width: 2px;
+    border-color: transparent;    
+    float: left;
+    cursor: pointer;
+}
+
+img.onefamico:hover {
+    border-color: [COLOR_C0];
+    background-color: [COLOR_C3];
+}
+
+img.onefamico[selected="1"] {
+    border-style: solid;
+    border-width: 2px;
+    border-color: [COLOR_B0];
+    background-color: [COLOR_B3];
+    background: -webkit-gradient(linear, 0% 0, 0% 100%, from([COLOR_B9]),
+        to([COLOR_B1]) );
+    background: -moz-linear-gradient(270deg, [COLOR_B9], [COLOR_B1]);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='[COLOR_B9]', endColorstr='[COLOR_B1]'); /* for IE */
+    
+    float: left;
+    cursor: pointer;
+}

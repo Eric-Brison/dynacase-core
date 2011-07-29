@@ -99,6 +99,7 @@ function fdl_card(&$action) {
   $action->lay->Set("initid",$doc->initid);
   if ($action->read("navigator")=="EXPLORER")  $action->lay->Set("shorticon",getParam("DYNACASE_FAVICO"));
   else $action->lay->Set("shorticon",$doc->getIcon());
+  $action->lay->Set("docicon",$doc->getIcon('',16));
   $action->lay->Set("pds",$doc->urlWhatEncodeSpec(""));
   
   $action->lay->Set("forum", false);

@@ -19,6 +19,10 @@ function onefam_root(Action &$action) {
         include_once("ONEFAM/onefam_ext.php");
         $action->lay = new Layout(getLayoutFile("ONEFAM","onefam_ext.xml"),$action);
         onefam_ext($action);
+    } elseif (strtok($mode,' ')=="ng") {
+        include_once("ONEFAM/onefam_ng.php");
+        $action->lay = new Layout(getLayoutFile("ONEFAM","onefam_ng.xml"),$action);
+        onefam_ng($action);
     } else {
 	    $action->lay->set("APP_TITLE", _($action->parent->description));
 
@@ -46,13 +50,13 @@ function onefam_root(Action &$action) {
         }
 
 
-
+        $action->parent->AddCssRef("ONEFAM:onefam.css",true);
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
 
+$action->lay->Set("oneBgColor", (($action->getParam("ONEFAM_BGCOLOR")!='inherit') && ($action->getParam("ONEFAM_BGCOLOR")!='')));
 
-
-        $action->lay->SetBlockData("SELECTMASTER",getTableFamilyList($action->GetParam("ONEFAM_MIDS")) );
+        $action->lay->SetBlockData("SELECTMASTER",getTableFamilyList($action->GetParam("ONEFAM_MIDS"),$izpx) );
 
         if (($action->GetParam("ONEFAM_IDS") != "")&&($action->GetParam("ONEFAM_MIDS") != "")) {
             $action->lay->SetBlockData("SEPARATOR", array(array("zou")));
@@ -61,7 +65,7 @@ function onefam_root(Action &$action) {
 
         if ($action->HasPermission("ONEFAM"))  {
             $action->lay->SetBlockData("CHOOSEUSERFAMILIES", array(array("zou")));
-            $action->lay->SetBlockData("SELECTUSER",  getTableFamilyList($action->GetParam("ONEFAM_IDS")) );
+            $action->lay->SetBlockData("SELECTUSER",  getTableFamilyList($action->GetParam("ONEFAM_IDS"),$izpx) );
         }
         if ($action->HasPermission("ONEFAM_MASTER"))  {
             $action->lay->SetBlockData("CHOOSEMASTERFAMILIES", array(array("zou")));
@@ -72,7 +76,7 @@ function onefam_root(Action &$action) {
         $action->lay->set("izpx",$izpx);
     }
 }
-function getTableFamilyList($idsfam) {
+function getTableFamilyList($idsfam, $izpx=null) {
     $selectclass=array();
     if ($idsfam != "") {
         $tidsfam = explode(",",$idsfam);
@@ -86,7 +90,7 @@ function getTableFamilyList($idsfam) {
                 if ( $cdoc->control('view')=="") {
                     $selectclass[$k]["idcdoc"]=$cdoc->initid;
                     $selectclass[$k]["ftitle"]=$cdoc->title;
-                    $selectclass[$k]["iconsrc"]=$cdoc->getIcon();
+                    $selectclass[$k]["iconsrc"]=$cdoc->getIcon('',$izpx);
                 }
             }
         }
