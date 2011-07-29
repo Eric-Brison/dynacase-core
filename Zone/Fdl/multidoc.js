@@ -389,7 +389,7 @@ $(function(){
 			   				if(_relations[i].href!="" && _relations[i].className!="relation" && _relations[i].target=="")
 			   				{
 			   					var relhref = _relations[i].getAttribute("href");
-		   						_relations[i].setAttribute('onclick','window.open("' + relhref + '","' + relhref + '", "width=600,height=600,scrollbars=yes").moveTo((screen.width)/2-300,(screen.height)/2-300)');
+		   						_relations[i].setAttribute('onclick','window.open("' + relhref + '","' + '_blank' + '", "width=600,height=600,scrollbars=yes").moveTo((screen.width)/2-300,(screen.height)/2-300)');
 		   						_relations[i].removeAttribute('href');
 		   					}
 		   				}
