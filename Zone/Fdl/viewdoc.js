@@ -139,11 +139,13 @@ function centerError() {
   CenterDiv('error');
 }
 function reloadWindow(w) {
+    if (w && w.location) {
   var h=w.location.href;
 
   var l=h.substring(h.length-1);
   if (l=='#') h=h.substring(0,h.length-1);
   w.location.href=h;
+    }
 
   
 }

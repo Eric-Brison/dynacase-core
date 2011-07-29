@@ -41,7 +41,7 @@
 img.onefamico {
     border-style: solid;
     border-width: 2px;
-    border-color: [CORE_BGCOLOR];
+    border-color: transparent;
     float: left;
     cursor: pointer;
 }

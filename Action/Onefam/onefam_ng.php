@@ -37,6 +37,7 @@ function onefam_ng(Action &$action)
     } else {
         $action->lay->set("OPENFAM", false);
     }
+    $action->lay->Set("oneBgColor", (($action->getParam("ONEFAM_BGCOLOR")!='inherit') && ($action->getParam("ONEFAM_BGCOLOR")!='')));
     
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");

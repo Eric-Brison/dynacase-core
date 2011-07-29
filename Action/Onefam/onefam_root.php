@@ -54,7 +54,7 @@ function onefam_root(Action &$action) {
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/subwindow.js");
         $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/resizeimg.js");
 
-
+$action->lay->Set("oneBgColor", (($action->getParam("ONEFAM_BGCOLOR")!='inherit') && ($action->getParam("ONEFAM_BGCOLOR")!='')));
 
         $action->lay->SetBlockData("SELECTMASTER",getTableFamilyList($action->GetParam("ONEFAM_MIDS"),$izpx) );
 

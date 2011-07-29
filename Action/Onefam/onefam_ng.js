@@ -6,7 +6,7 @@ function create_url(type, hroot, removeHref, target) {
     for ( var i = 0; i < type.length; i++) {
         var relhref = type[i].getAttribute("hrefDoc");
         var relid = type[i].getAttribute("documentId");
-        type[i].setAttribute('onclick', 'window.parent.MultiDocument.newDoc(\''
+        type[i].setAttribute('onclick', 'vselect(this);window.parent.MultiDocument.newDoc(\''
                 + relid + '\',"' + hroot + relhref + '");return false;');
         // WORKS ON IE ... type[i].onclick =
         // function(){window.parent.parent.MultiDocument.newDoc(relid, hroot +
