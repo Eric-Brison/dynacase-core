@@ -20,6 +20,8 @@ function popupdocmenu(&$action) {
   $docid = GetHttpVars("id");
   $abstract = (GetHttpVars("abstract",'N') == "Y");
   $zone = GetHttpVars("mzone"); // special zone
+  $js = (GetHttpVars("js", "true") == "true")?true:false;
+  $css = (GetHttpVars("css", "true") == "true")?true:false;
 
   $dbaccess = $action->GetParam("FREEDOM_DB");
   $doc = new_Doc($dbaccess, $docid); # _("States")
@@ -36,10 +38,14 @@ function popupdocmenu(&$action) {
 
   $action->lay->set("menuapp",$menuapp);
   $action->lay->set("menuaction",$menuaction);
-  $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/popupdoc.js");
-  $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/popupdocmenu.js");
-  $action->parent->AddCssRef("FDL:POPUP.CSS",true);
+  if( $js ) {
+    $action->parent->AddJsRef($action->GetParam("CORE_JSURL")."/AnchorPosition.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/popupdoc.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDL/Layout/popupdocmenu.js");
+  }
+  if( $css ) {
+    $action->parent->AddCssRef("FDL:POPUP.CSS",true);
+  }
 
 }
 

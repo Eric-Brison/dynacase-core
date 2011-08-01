@@ -43,7 +43,7 @@
 <input type="hidden" name="famid">
 </form>
 
-[ZONE FDL:POPUPDOCMENU?id=[id]]
+[ZONE FDL:POPUPDOCMENU?id=[id]&js=false&css=false]
 
 <div width="100%" class="tablesimple" id="terrible"
      style="cursor:crosshair;"
