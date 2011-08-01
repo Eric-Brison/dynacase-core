@@ -1,21 +1,62 @@
 <?php
-
-
+/**
+ * Vérify arguments for wsh programs
+ * @author anakeen 
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ * @class apiUsage
+ * @code
+$usage = new ApiUsage();
+$usage->setText("Refresh documents ");
+$usage->addNeeded("famid", "the family filter");
+$usage->addOption("revision", "use all revision - default is no", array(
+    "yes",
+    "no"
+));
+$usage->addOption("save", "use modify default is light", array(
+    "complete",
+    "light",
+    "none"
+));
+$usage->verify();
+ * @endcode
+ */
 class apiUsage
 {
 
     private $text='';
     private $optArgs=array();
     private $needArgs=array();
+    public function __construct() {
+        $this->addOption('userid', "user system id to execute function - default is 1 (admin)");
+    }
+    /**
+     * add textual definition of program
+     * @param string $text
+     */
     public function setText($text) {
         $this->text=$text;
     }
 
+     /**
+     * add needed argument
+     * @param string $argName argument name 
+     * @param string $argDefinition argument définition 
+     * @param array $restriction optionnal enumeration for argument  
+     * @return void
+     */
     public function addNeeded($argName, $argDefinition, array $restriction=null) {
         $this->needArgs[]=array("name"=>$argName,
                               "def"=>$argDefinition,
                               "restriction"=>$restriction);
     }
+    /**
+     * add optionnal argument
+     * @param string $argName argument name 
+     * @param string $argDefinition argument définition 
+     * @param array $restriction optionnal enumeration for argument 
+     * @return void
+     */
     public function addOption($argName, $argDefinition, array $restriction=null) {
         $this->optArgs[]=array("name"=>$argName,
                               "def"=>$argDefinition,
@@ -44,6 +85,11 @@ class apiUsage
         return $usage;
     }
 
+    /**
+     * verify if wsh program argument are valids
+     * if not wsh exit 
+     * @return void
+     */
     public function verify() {
         global $action;
         foreach ($this->needArgs as $arg) {
