@@ -11,8 +11,6 @@
 
 <link rel="shortcut icon" href="[shorticon]">
 
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLEDITCSS&wv=[WVERSION]" >
-
 [CSS:REF]
 
    <style type="text/css">
