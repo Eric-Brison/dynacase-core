@@ -23,7 +23,7 @@ include_once("FDL/Lib.Dir.php");
  * @global reload Http var : [Y|N] if Y not xml but redirect to fdl_card
  * @global containt Http var : if 'yes' restore also folder items 
  */
-function restoredoc(&$action) {
+function restoredoc(Action &$action) {
 
   $docid = GetHttpVars("id");
   $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -37,7 +37,7 @@ function restoredoc(&$action) {
     }
   } else $err=sprintf(_("document [%s] not found"));
 
-  if ($err) $action->lay->set("warning",$err);
+  if ($err) $action->addWarningMsg($err);
     
   redirect($action,"FDL","FDL_CARD&sole=Y&refreshfld=Y&latest=Y&id=$docid");
     				

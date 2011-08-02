@@ -25,6 +25,7 @@ function grouprequest(&$action) {
 
     $request=json_decode(getHttpVars("request"));
     $out=array();
+    $docid=array();
     foreach ($request as $kr=>$rs) {
         foreach ($rs as $varname=>$r) {
             $method=strtolower($r->method);

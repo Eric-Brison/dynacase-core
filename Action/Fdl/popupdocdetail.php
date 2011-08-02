@@ -170,7 +170,7 @@ function getpopupdocdetail(&$action,$docid) {
 			       "barmenu"=>"false"),
 	       "reaffect"=>array( "descr"=>_("Reaffect"),
 				  "url"=>"",
-				  "jsfunction"=>"popdoc(event,'$surl&app=FDL&action=EDITAFFECT&id=$docid')",
+				  "jsfunction" => "popdoc(null,'$surl&app=FDL&action=EDITAFFECT&id=$docid')",
 				  "confirm"=>"false",
 				  "control"=>"false",
 				  "tconfirm"=>"",
@@ -421,7 +421,7 @@ function addCvPopup(&$tlink,&$doc,$target="_self") {
       $engine=$cvdoc->getZoneTransform($v["zoneview"]);
       $url=($v["typeview"]=='specialview')?"$surl&app=FDL&action=FDL_CARD&vid=".$v["idview"]."&id=$docid":"$surl&app=GENERIC&action=GENERIC_EDIT&rvid=$rvid&vid=".$v["idview"]."&id=$docid";
       if ($engine) {	
-	$js="popdoc(event,'$url')";
+	$js = "popdoc(null,'$url')";
 	$url="";
       } else {	
 	$js="";
@@ -468,8 +468,7 @@ function addStatesPopup(&$tlink,&$doc) {
       $jsf="";
      
 	if ((! $tr["nr"]) || (is_array($tr["ask"]) && (count($tr["ask"])>0))) {
-	    $jsf=sprintf("popdoc(event,'$surl&app=FDL&action=EDITCHANGESTATE&id=$docid&nstate=$v','%s',0,40,400,250)",
-             (str_replace("'","&rsquo;",sprintf(_("Change state %s"),_($v)))));
+	    $jsf = sprintf("popdoc(null,'$surl&app=FDL&action=EDITCHANGESTATE&id=$docid&nstate=$v','%s',0,40,400,250)", (str_replace("'", "&rsquo;", sprintf(_("Change state %s"), _($v)))));
 	  
 	} else {
 	  $jsf=sprintf("subwindow(100,100,'_self','$surl&app=FREEDOM&action=MODSTATE&newstate=$v&id=$docid');");

@@ -9300,3 +9300,11 @@ msgstr ""
 
 #~ msgid "One document <b>%d</b>  Results for <b>%s</b>%s"
 #~ msgstr "One document found for \"<b>%s</b>\"%s"
+
+#, c-format
+msgid "constraint not validated for %s attribute"
+msgstr ""
+
+#, c-format
+msgid "need privilege delete to restore %s"
+msgstr ""

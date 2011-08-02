@@ -8777,3 +8777,11 @@ msgstr "erreur ::moveDocument %s %s"
 
 #~ msgid "familie seearch result"
 #~ msgstr "limité à la famille"
+
+#, c-format
+msgid "constraint not validated for %s attribute"
+msgstr "contraite non validée pour l'attribut %s"
+
+#, c-format
+msgid "need privilege delete to restore %s"
+msgstr "Le privilège delete est nécessaire pour restaurer %s"

@@ -1020,8 +1020,8 @@ table.tarray tfoot tr td.tools {
   padding:3px;
   cursor: pointer;
 }
-input.invalid, textarea.invalid , select.invalid, input[type="text"].invalid, span.invalid {  
-  border:solid 1px [CORE_ERRORCOLOR];
+input.invalid, textarea.invalid , select.invalid, input[type="text"].invalid, span.invalid, table.invalid, fieldset.invalid {
+  border:solid 1px [CORE_ERRORCOLOR]!important;
 }
 div.tabsh span.invalid {
   border:solid 1px [CORE_ERRORCOLOR];

@@ -94,6 +94,11 @@ function generic_mod(&$action) {
 
 	if ($noredirect) {
 		$action->lay->set("id",$ndocid);
+		if (is_array($info)) {
+		    foreach ($info as $k=>$v) {
+		        $info[$k]["prefix"]=sprintf(_("constraint not validated for %s attribute"), $v["label"]);
+		    }
+		}
 		$action->lay->set("constraintinfo",json_encode($info));
 		$action->lay->set("quicksave",$quicksave);
                 if ($rzone != "") $zone="&zone=$rzone";

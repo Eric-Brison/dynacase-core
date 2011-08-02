@@ -17,11 +17,13 @@ function setConstraint(info) {
 	if (info[i].index == null) {
 	    // mono value
 	    var inp=window.parent.document.getElementById(info[i].id);
+	    if (!inp) inp = window.parent.document.getElementById('F'+info[i].id);
+	    if (!inp) inp = window.parent.document.getElementById('T'+info[i].id);
             if (first) {
 		focusConstraint(inp);
 		//first=false;
             }
-            viewContraint(inp,info[i]);
+            viewConstraint(inp,info[i]);
 	    
 	} else {
             var linp=window.parent.getInputsByName('_'+info[i].id,window.parent.document.getElementById('T'+info[i].pid));
@@ -32,18 +34,25 @@ function setConstraint(info) {
 			//first=false;
 			focusConstraint(inp);
                     }
-                    viewContraint(inp,info[i]);
+                    viewConstraint(inp,info[i]);
 		}
             }
 	}
     }
     for (var i in info) {
       if (! info[i].displayed) {
-         window.parent.displayWarningMsg(info[i].err);
+         tryToDisplayStructureAttribute(info[j]);
+         window.parent.displayWarningMsg(info[j].prefix+':'+info[j].err);
        }
     }
-
 }
+
+function tryToDisplayStructureAttribute(cinfo) {
+    var elt=window.parent.document.getElementById('F'+cinfo.id);
+    if (!elt) elt=window.parent.document.getElementById('T'+cinfo.id);
+    if (elt) elt.className+=' invalid';
+}
+
 function focusConstraint(inp) {
     if (inp) {
 	var p=inp.parentNode;
@@ -64,7 +73,7 @@ function focusConstraint(inp) {
          }
     } 
 }
-function viewContraint(inp, info) {
+function viewConstraint(inp, info) {
     if (inp) {
         var realinp=inp;
         if ((inp.style.display=='none') || (inp.type=='hidden')) {
@@ -113,7 +122,7 @@ function undisplayConstraint() {
 	    i--;
 	}
     }
-    var itag=new Array('input','textarea','select');
+    var itag = new Array('input', 'textarea', 'select', 'table', 'fieldset');
 
     for (t in itag) {
 	var ti= window.parent.document.getElementsByTagName(itag[t]);
@@ -135,9 +144,9 @@ if (window.parent) {
 		if (s) s.value='[TEXT:Save]';
 		s=window.parent.document.getElementById('aSubmit');
 		if (s) s.innerHTML='[TEXT:Save]';
-		var s=window.parent.document.getElementById('iCancel');
+		s=window.parent.document.getElementById('iCancel');
 		if (s) s.style.display='';
-		var s=window.parent.document.getElementById('iSaveForce');
+		s=window.parent.document.getElementById('iSaveForce');
 		if(window.parent && window.parent.displaySaveForce){
 			window.parent.displaySaveForce();
 		}

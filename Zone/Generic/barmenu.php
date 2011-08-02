@@ -92,6 +92,7 @@ function barmenu(&$action) {
 
 
   include_once("FDL/popup_util.php");
+  include_once("FDL/Lib.Attr.php");
   //--------------------- kind menu -----------------------
 	$lattr = $sfdoc->getNormalAttributes();
 
@@ -238,11 +239,31 @@ function barmenu(&$action) {
   }
   $lattr=$sfdoc->GetSortAttributes();
   foreach($lattr as $k=>$a) {
-    
+    $pType = parseType($a->type);
+
+    if( $pType['type'] == 'docid' ) {
+      $doctitleAttr = $a->getOption('doctitle');
+      if( $doctitleAttr != '' ) {
+        $sortAttribute = false;
+        if( $doctitleAttr == 'auto' ) {
+          $sortAttribute = $sfdoc->getAttribute(sprintf("%s_title", $a->id));
+        } else {
+          $sortAttribute = $sfdoc->getAttribute($doctitleAttr);
+        }
+        if( $sortAttribute === false ) {
+          $action->log->error(sprintf("Could not find doctitle attribute '%s' for attribute '%s'", $doctitleAttr, $a->id));
+          continue;
+        }
+        $tsort[$sortAttribute->id] = array("said" => $sortAttribute->id, "satitle" => sprintf("%s (title)", $a->getLabel()));
+        $tmsort[$sortAttribute->id] = "sortdoc".$sortAttribute->id;
+        continue;
+      }
+    }
+
     $tsort[$a->id] = array("said"=>$a->id,
 			   "satitle"=>$a->getLabel());
     $tmsort[$a->id] = "sortdoc".$a->id;
-    
+
   }
 
   $action->lay->set("ukey",getDefUKey($action));

@@ -107,6 +107,7 @@ function filterfunc(th) {
 	var p=th.parentNode;
 	var opt=th.options[th.selectedIndex];
 	var atype=opt.getAttribute('atype');
+	var ismultiple=(opt.getAttribute('ismultiple')=='yes')?true:false;
 	var ctypes,i;
 	var pnode,so=false;
 	var aid=opt.value;
@@ -138,7 +139,7 @@ function filterfunc(th) {
 	for (i=0;i<so.options.length;i++) {
 		opt=so.options[i];
 		ctype=opt.getAttribute('ctype');
-		if ((ctype=='') || (ctype.indexOf(atype)>=0)) {
+		if ( (ismultiple && (ctype=='' || ctype.indexOf('array') >= 0)) || (!ismultiple && ((ctype=='') || (ctype.indexOf(atype)>=0))) ) {
 			if (ifirst == -1) ifirst=i;
 			opt.style.display='';
 			opt.disabled=false;
