@@ -50,7 +50,7 @@ foreach($argv as $k=>$v) {
     if ($reg[1] == "listapi") {
       print "application list :\n";
       echo "\t- ";
-      echo str_replace("\n","\n\t- ",shell_exec (sprintf("cd %s/API;ls -1 *.php| cut -f1 -d'.'", escapeshellarg($pubdir))));
+      echo str_replace("\n","\n\t- ",shell_exec (sprintf("cd %s/API;ls -1 *.php| cut -f1 -d'.'", escapeshellarg(DEFAULT_PUBDIR))));
       echo "\n";
       exit;
     }
@@ -127,7 +127,7 @@ setLanguage($action->Getparam("CORE_LANG"));
 
 if (isset($_GET["api"])) {
     $apifile=trim($_GET["api"]);
-    if (! file_exists(sprintf("%s/API/%s.php",$pubdir,$apifile))) {
+    if (! file_exists(sprintf("%s/API/%s.php",DEFAULT_PUBDIR,$apifile))) {
         echo sprintf(_("API file %s not found\n"),"API/".$apifile.".php");
     } else {
         try {
