@@ -883,6 +883,7 @@ create unique index i_docir on doc(initid, revision);";
    * only use with use of setValue.
    * @param stdClass $info refresh and postModify messages
    * @param boolean $skipConstraint set to true to not test constraints
+   * @deprecated use ::store() instead
    * @return string error message
    */
   public function save(&$info=null, $skipConstraint=false) {
@@ -906,23 +907,34 @@ create unique index i_docir on doc(initid, revision);";
   }
     
     /**
-     * record new document 
+     * record new document or update
      * @param stdClass $info refresh and postModify messages
      * @param boolean $skipConstraint set to true to not test constraints
      * @return string error message
      */
-    public function fullAdd(&$info = null, $skipConstraint = false)
+    public function store(&$info = null, $skipConstraint = false)
     {
         $err = '';
         $constraint = '';
         $info = '';
+        
         if (!$skipConstraint) {
             $err = $this->verifyAllConstraints(false, $constraint);
         }
-        if ($err == "") {
-            $err = $this->add();
-            if ($err == "") {
-                 $err = $this->save($info, true);
+        if ($err == '') {
+            $create = false;
+            if (!$this->isAffected()) {
+                $err = $this->add();
+                $create = true;
+            }
+            if ($err == '') {
+                $info->refresh = $this->refresh();
+                $info->postModify = $this->postModify();
+                if ($this->hasChanged) {
+                    //in case of change in postModify
+                    $err = $this->modify();
+                }
+                if ($err == "" && (!$create)) $this->addComment(_("save document"), HISTO_INFO, "MODIFY");
             }
         }
         $info->constraint = $constraint;
