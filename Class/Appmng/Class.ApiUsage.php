@@ -28,7 +28,10 @@ class apiUsage
     private $optArgs=array();
     private $needArgs=array();
     public function __construct() {
-        $this->addOption('userid', "user system id to execute function - default is 1 (admin)");
+        global $action;
+        $this->action=&$action;
+        $u=1;
+        $this->addOption('userid', "user system id to execute function - default is (admin)",$u,array(),1);
     }
     /**
      * add textual definition of program
@@ -42,25 +45,32 @@ class apiUsage
      * add needed argument
      * @param string $argName argument name 
      * @param string $argDefinition argument définition 
+     * @param string $argument variable will be set 
      * @param array $restriction optionnal enumeration for argument  
      * @return void
      */
-    public function addNeeded($argName, $argDefinition, array $restriction=null) {
+    public function addNeeded($argName, $argDefinition,&$argument=null, array $restriction=null) {
         $this->needArgs[]=array("name"=>$argName,
                               "def"=>$argDefinition,
+                              "default"=>$default,
                               "restriction"=>$restriction);
+        $argument=$this->action->getArgument($argName);
     }
     /**
      * add optionnal argument
      * @param string $argName argument name 
      * @param string $argDefinition argument définition 
+     * @param string $argument variable will be set 
      * @param array $restriction optionnal enumeration for argument 
+     * @param string $default default value if no value set 
      * @return void
      */
-    public function addOption($argName, $argDefinition, array $restriction=null) {
+    public function addOption($argName, $argDefinition,&$argument=null, array $restriction=null,$default=null) {
         $this->optArgs[]=array("name"=>$argName,
                               "def"=>$argDefinition,
+                              "default"=>$default,
                               "restriction"=>$restriction);
+        $argument=$this->action->getArgument($argName,$default);
     }
 
     private function getArgumentText($args)
@@ -71,10 +81,18 @@ class apiUsage
             if ($arg["restriction"]) {
                 $res=' ['.implode('|',$arg["restriction"]).']';
             }
-            $usage.=sprintf("\t--%s : %s%s\n",$arg["name"], $arg["def"], $res);
+            $default="";
+            if ($arg["default"]!==null) {
+                $default=sprintf(", default is '%s'", $arg["default"]);
+            }
+            $usage.=sprintf("\t--%s=<%s>%s%s\n",$arg["name"], $arg["def"], $res,$default);
         }
         return $usage;
     }
+    /**
+     * return usage text for the action
+     * @return string
+     */
     public function getUsage() {
         $usage=$this->text;
         $usage.="\nUsage :\n";
