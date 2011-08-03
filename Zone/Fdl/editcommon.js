@@ -6,6 +6,7 @@
 
 include_js("FDC/Layout/inserthtml.js");
 var isNetscape = navigator.appName=="Netscape";
+if (!("console" in window)) {window.console = {'log': function(s) {}};};
 // auxilarry window to select choice
 var wichoose= false;
 
@@ -2017,6 +2018,7 @@ function delseltr() {
     }
   }
   unseltr();
+  seltr=null;
   return;
   
 }
@@ -2115,10 +2117,10 @@ function selecttr(o,tr) {
     seltr.className='';
     
   }   
-  o=o.previousSibling;
-  while (o && (o.nodeType != 1)) o = o.previousSibling; // case TEXT attribute in mozilla between TR 
-  if (!o) alert('[TEXT:no trash image]');
-  else o.style.visibility='visible';
+  o=o.nextSibling;
+  while (o && (o.nodeType != 1)) o = o.nextSibling; // case TEXT attribute in mozilla between TR 
+ 
+      if (o) o.style.visibility='visible';
 
   seltr=tr;
 
@@ -2130,17 +2132,24 @@ function selecttr(o,tr) {
 
 //unselect selected
 function unseltr() {
+    if (seltr) {
+        seltr.className='';
+        if (seltr.parentNode) {
+            var inputs=seltr.parentNode.getElementsByTagName('input');
+            for (var i=0;i<inputs.length;i++) {
+                if (inputs[i].type=='radio') {
+                    console.log("check", inputs[i]);
+                    inputs[i].checked=false;
+                }
+            }
+        }
+        visibilityinsert('insertup','hidden');
+    }
+    visibilityinsert('trash','hidden');
+    visibilityinsert('unselect','hidden');
+    seltr=false;
 
-  if (seltr) {
-    seltr.className='';
-    
-    visibilityinsert('insertup','hidden');
-  }
-  visibilityinsert('trash','hidden');
-  visibilityinsert('unselect','hidden');
-  seltr=false;
-
-  return;  
+    return;  
 }
 var specMovetr=null;
 function movetr(tr) {
@@ -2150,7 +2159,7 @@ function movetr(tr) {
   if (seltr) {  
 
     while (pnode && (pnode.nodeType != 1)) pnode = pnode.previousSibling; // case TEXT attribute in mozilla between TR ??
-    if (pnode)  {
+    if (pnode && trnode)  {
       trnode.parentNode.insertBefore(trnode,pnode);
     
     }  else {
@@ -2575,31 +2584,6 @@ function trackKeys(event,onlystop)
     
   return true;
 }
-var dro=null; // clone use to move
-var idro=null; // real tr to move
-var hidro=null; // height of idro
-var ytr=0;
-var draggo=false;
-
-
-function adraggo(event) {
-  if (dro) {
-    if (idro) {
-      idro.style.visibility='hidden'; 
-      var ti=dro.getElementsByTagName('input');    
-      for (var i=0;i<ti.length;i++) { // to avoid conflict with others inputs
-	ti[i].id='';
-	ti[i].name='';
-	ti[i].disabled=true;
-      }
-      
-      idro.parentNode.appendChild(dro); 
-      visibilityinsert('trash','hidden');
-    }
-    //    dragtr(event); 
-    draggo=true;
-  }
-}
 
 function increaselongtext(oid) {
   var o=document.getElementById(oid);
@@ -2613,77 +2597,56 @@ function increaselongtext(oid) {
     
   }
 }
-function adrag(event,o) {
-  sdrag(event); // in case of already in drag
-  GetXY(event);
-  dro=o.parentNode.parentNode.cloneNode(true);
-  dro.style.position='absolute';
-  dro.className='move';
-  dro.style.width=getObjectWidth(o.parentNode.parentNode)+'px';
-  idro=o.parentNode.parentNode;
-  hidro=getObjectHeight(idro);
-  dro.style.top=Ypos-Math.round(hidro/2)+'px';
-  ytr=Ypos;  
-  addEvent(document,"mousemove",dragtr); 
-  stopPropagation(event);
+var _SELROW=null; // real tr to move
 
-  setTimeout('adraggo()',300); 
-  //adraggo(event);
-}
-function sdrag(event) {
-  var dytr; //delta
-  if (dro && draggo) {
-    if (dro.parentNode) dro.parentNode.removeChild(dro);
-    GetXY(event); 
-    dytr=Ypos-ytr;
-    if (dytr > 0) dytr=dytr-(hidro/2);
-    dtr=Math.round(dytr/hidro);
-    //alert(hidro+'/'+dytr+'/'+dytr/hidro+'/'+dtr);
-    
-    trmo=idro;
-    if (dtr > 0) {
-      while (trmo && (dtr >= 0)) {
-	trmo=trmo.nextSibling;
-	while (trmo && (trmo.nodeType != 1)) trmo = trmo.nextSibling; // case TEXT attribute in mozilla between TR
-	dtr--;
-      }
-      if (trmo) {
-	seltr=idro;
-	movetr(trmo);
-      }
-    } else if (dtr < 0) {
-      while (trmo && (dtr < -1)) {
-	trmo=trmo.previousSibling;
-	while (trmo && (trmo.nodeType != 1)) trmo = trmo.previousSibling; // case TEXT attribute in mozilla between TR
-	dtr++;
-      }
-      if (trmo) {
-	seltr=idro;
-	movetr(trmo);
-      }
+function enableDocumentSelection(enable) {
+    if(enable) {
+      document.onselectstart = _original_onselectstart;
+    }
+    else {
+      _original_onselectstart = document.onselectstart;
+      document.onselectstart = function() { return false; }
     }
   }
-  if (idro) idro.style.visibility='visible';
-  dro=null;
-  idro=null;
-  draggo=false;
-  delEvent(document,"mousemove",dragtr);   
-  //stopPropagation(event);
 
-  
+function adrag(event,o) {
+    // @deprecated
 }
-
-
-function dragtr(event) {  
-  if (dro && draggo) {
-    GetXY(event); 
-    dro.style.top=Ypos-Math.round(hidro/2)+'px';
-    //    dro.style.left=Xpos-10;
-    // window.status='drag='+Ypos+'x'+Xpos;
-  }
-  return false;
+function sdrag(event) {
+    // @deprecated
 }
+function begindrag(event,o) {
+    unseltr();
+    if (isIE) enableDocumentSelection(false);
+    _SELROW=o.parentNode.parentNode;
+    selecttr(o,_SELROW);
+    addEvent(document,"mouseup",enddrag); 
+    stopPropagation(event);
+}
+function droptr(event) {
+    if (_SELROW) {
+        if (! event) event=window.event;
+        var o= (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);
+        if (o) {
+            while (o && o.tagName.toLowerCase() != 'tr') {
+                o=o.parentNode;
+            }
+            if (o) {
+                if (o.previousSibling != _SELROW && o!=_SELROW) {
+                    movetr(o);
+                }
+            }
+        }
+    }
+}
+function enddrag(event) {
 
+    dro=null;
+    _SELROW=null;
+    delEvent(document,"mouseup",enddrag);
+    unseltr();
+    //stopPropagation(event);
+}
 
 
 

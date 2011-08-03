@@ -34,7 +34,7 @@ function alleditjs(Action &$action) {
 		"lib/jscolor/jscolor.js"
 	);
 	if ($action->Read("navigator")=="EXPLORER") {
-		$statics[]="$jurl/iehover.js";
+		//$statics[]="$jurl/iehover.js";
 	}
 	$lang = substr($action->GetParam("CORE_LANG"), 0, 2);
 	if(preg_match('#^[a-z0-9_\.-]+$#i', $lang) && file_exists("jscalendar/Layout/calendar-".$lang.".js")) {

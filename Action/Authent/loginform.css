@@ -64,6 +64,7 @@ html {
   border-color : [COLOR_A5] [COLOR_A8] [COLOR_A8] [COLOR_A5];
   background-color : [COLOR_WHITE];
   font-weight : bold;
+  width:80%;
 }
 .authmain .input input:focus {
   background-color : [COLOR_C5];

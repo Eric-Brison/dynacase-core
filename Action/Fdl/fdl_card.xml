@@ -6,6 +6,8 @@
 	<meta name="document-initid" content="[initid]"/>
 	<meta name="document-icon" content="[docicon]"/>
    <title>[TITLE]</title>
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 [IFNOT nocss]
 <link rel="shortcut icon" href="[shorticon]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >[ENDIF nocss]

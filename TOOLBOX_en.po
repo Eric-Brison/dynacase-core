@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-03 13:28+0200\n"
-"PO-Revision-Date: 2011-08-03 13:38+0200\n"
+"POT-Creation-Date: 2011-08-03 13:37+0200\n"
+"PO-Revision-Date: 2011-07-18 17:17+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "Language: \n"
@@ -3042,6 +3042,9 @@ msgid ""
 "reimport in the same database"
 msgstr ""
 
+msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
+msgstr ""
+
 msgid "Send document"
 msgstr ""
 
@@ -5403,6 +5406,9 @@ msgstr "Download access file"
 msgid "download file"
 msgstr ""
 
+msgid "drag to move"
+msgstr ""
+
 #, fuzzy
 msgid "duplicate"
 msgstr "Edit"
@@ -7240,10 +7246,6 @@ msgstr ""
 msgid "no template defined"
 msgstr ""
 
-#, fuzzy
-msgid "no trash image"
-msgstr "Firstname"
-
 msgid "no user tag specified"
 msgstr ""
 
@@ -8132,10 +8134,6 @@ msgstr "Start search"
 #, fuzzy
 msgid "security"
 msgstr "Locality"
-
-#, fuzzy
-msgid "select"
-msgstr "Delete"
 
 #, fuzzy
 msgid "select a style"
@@ -9481,6 +9479,14 @@ msgstr ""
 
 #~ msgid "freedom detailled global search"
 #~ msgstr "Detailed global search"
+
+#, fuzzy
+#~ msgid "no trash image"
+#~ msgstr "Firstname"
+
+#, fuzzy
+#~ msgid "select"
+#~ msgstr "Delete"
 
 #, fuzzy
 #~ msgid "toedit"

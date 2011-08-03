@@ -542,7 +542,8 @@ input[type="image"] {
 
 .document .tarray .select-button,.document .tarray .select-button:HOVER {
     background-color: transparent ;
-    background-image: url(lib/ui/icon/application_get.png);
+    border:none;
+   /* background-image: url(lib/ui/icon/application_get.png);*/
 }
 
 .document .tarray .unselect-button,.document .tarray .unselect-button:HOVER {
