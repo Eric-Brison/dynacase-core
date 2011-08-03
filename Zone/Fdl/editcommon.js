@@ -2597,7 +2597,7 @@ function increaselongtext(oid) {
     
   }
 }
-var idro=null; // real tr to move
+var _SELROW=null; // real tr to move
 
 function enableDocumentSelection(enable) {
     if(enable) {
@@ -2610,17 +2610,21 @@ function enableDocumentSelection(enable) {
   }
 
 function adrag(event,o) {
-  //sdrag(event); // in case of already in drag
+    // @deprecated
+}
+function sdrag(event) {
+    // @deprecated
+}
+function begindrag(event,o) {
     unseltr();
     if (isIE) enableDocumentSelection(false);
-  idro=o.parentNode.parentNode;
-  selecttr(o,idro);
-  addEvent(document,"mouseup",sdrag); 
-  stopPropagation(event);
-
+    _SELROW=o.parentNode.parentNode;
+    selecttr(o,_SELROW);
+    addEvent(document,"mouseup",enddrag); 
+    stopPropagation(event);
 }
 function droptr(event) {
-    if (idro) {
+    if (_SELROW) {
         if (! event) event=window.event;
         var o= (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);
         if (o) {
@@ -2628,23 +2632,20 @@ function droptr(event) {
                 o=o.parentNode;
             }
             if (o) {
-                if (o.previousSibling != idro && o!=idro) {
-                movetr(o);
-                console.log('drop drag', o);
+                if (o.previousSibling != _SELROW && o!=_SELROW) {
+                    movetr(o);
                 }
             }
         }
     }
 }
-function sdrag(event) {
- 
-  dro=null;
-  idro=null;
-  delEvent(document,"mouseup",sdrag);
-  unseltr();
-  //stopPropagation(event);
+function enddrag(event) {
 
-  
+    dro=null;
+    _SELROW=null;
+    delEvent(document,"mouseup",enddrag);
+    unseltr();
+    //stopPropagation(event);
 }
 
 

@@ -23,7 +23,7 @@
         <tbody id="tbody[attrid]" [IFNOT ISIE][IF tableheight]style="height:[tableheight];overflow:auto"[ENDIF tableheight][ENDIF ISIE]>
             [BLOCK EATTR]<tr index="[index]" onmouseover="droptr(event);">
                 [IFNOT readonly]<td class="tools" align="left">
-                    <div class="drag-button" title="[TEXT:drag to move]" onmousedown="adrag(event,this);return false;">&nbsp;&nbsp;</div>
+                    <div class="drag-button" title="[TEXT:drag to move]" onmousedown="begindrag(event,this);return false;">&nbsp;&nbsp;</div>
                     <input class="button select-button" name="sel[attrid]" type="radio" title="[TEXT:Select. Use ctrl-&uarr; &darr; to up/down selection]" onmousedown="selecttr(this,this.parentNode.parentNode);">
                     <input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()">
                 </td>[ENDIF readonly]
@@ -45,7 +45,7 @@
         <tfoot>
             <tr style="display:none;" onmouseover="droptr(event);" id="tnew[attrid]">
                 <td class="tools" align="left">
-                    <div class="drag-button" title="[TEXT:drag to move]" onmousedown="adrag(event,this);">&nbsp;&nbsp;</div>
+                    <div class="drag-button" title="[TEXT:drag to move]" onmousedown="begindrag(event,this);">&nbsp;&nbsp;</div>
                     <input class="button select-button" name="sel[attrid]" type="radio" title="[TEXT:Select. Use ctrl-&uarr; &darr; to up/down selection]" onmousedown="selecttr(this,this.parentNode.parentNode);">
                      <input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()">
                 </td>
