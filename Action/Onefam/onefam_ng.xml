@@ -5,8 +5,7 @@
    <title>[APP_TITLE] (beta)</title>
 <link rel="icon" href="[DYNACASE_FAVICO]">
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
 
 <script type="text/javascript" language="JavaScript" src="WHAT/Layout/geometry.js"></script>
 <script type="text/javascript" language="JavaScript" src="FDL/Layout/common.js"></script>

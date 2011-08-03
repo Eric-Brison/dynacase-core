@@ -6,8 +6,7 @@
    <title>[TITLE]</title>
 [IFNOT nocss]
 <link rel="shortcut icon" href="[shorticon]">
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >[ENDIF nocss]
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >[ENDIF nocss]
 [IF RSS]<link rel="alternate" type="application/rss+xml" title="[TITLE]" href="[rsslink]"/>[ENDIF RSS]
 [IFNOT nocss]
 [CSS:REF]

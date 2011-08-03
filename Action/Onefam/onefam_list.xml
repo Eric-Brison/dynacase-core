@@ -4,8 +4,7 @@
    <title>[APP_TITLE]</title>
 <link rel="icon" href="[DYNACASE_FAVICO]">
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
 
 [CSS:REF]
 [JS:REF]
