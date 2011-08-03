@@ -1,6 +1,9 @@
 <html>
 
 <head>
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 [JS:REF]
    <script language="JavaScript">

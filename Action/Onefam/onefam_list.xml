@@ -1,5 +1,6 @@
 <html>
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 
    <title>[APP_TITLE]</title>
 <link rel="icon" href="[DYNACASE_FAVICO]">
