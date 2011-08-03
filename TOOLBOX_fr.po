@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-11 10:01+0200\n"
-"PO-Revision-Date: 2011-07-18 17:18+0200\n"
+"POT-Creation-Date: 2011-08-03 13:37+0200\n"
+"PO-Revision-Date: 2011-08-03 13:38+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -2444,9 +2444,6 @@ msgstr "Une seule ligne par document est autorisée"
 msgid "Only one line by personn is authorized"
 msgstr "Une seule ligne par personne est autorisée"
 
-msgid "Only owner of document can restore it"
-msgstr "Seul le propriétaire peut restaurer un document"
-
 msgid "Only these characters are allowed : a..z, A..Z, 0..9, _, -"
 msgstr "Seuls ces caractères sont autorisés : a..z, A..Z, 0..9, _, -"
 
@@ -2869,6 +2866,9 @@ msgid ""
 msgstr ""
 "Sélectionnez identificateur pour remplir la deuxième colonne -specid-. Le "
 "fichier exporté ne pourra être réutilisé que dans la même base de données"
+
+msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
+msgstr "Sélectionner. Utiliser ctrl-&uarr; &darr; pour monter/descendre la sélection"
 
 msgid "Send document"
 msgstr "Envoyer par courriel"
@@ -5111,6 +5111,9 @@ msgstr "Télécharger le fichier d'acces"
 msgid "download file"
 msgstr "Télécharger le fichier"
 
+msgid "drag to move"
+msgstr "glisser/déposer pour déplacer la rangée"
+
 msgid "duplicate"
 msgstr "Dupliquer"
 
@@ -6304,6 +6307,18 @@ msgstr "max révision '%d'"
 msgid "maximum document can be imported directly"
 msgstr "nombre maximum de documents pouvant être importé en direct"
 
+msgid "mdoc close all docs"
+msgstr ""
+
+msgid "mdoc show next docs"
+msgstr ""
+
+msgid "mdoc: open in a new window"
+msgstr ""
+
+msgid "mdoc: remove doc"
+msgstr ""
+
 msgid "memorisation of pref search"
 msgstr "mémorisation de la recherche"
 
@@ -6804,9 +6819,6 @@ msgstr "Pas d'identificateur de tâche trouvé"
 msgid "no template defined"
 msgstr "Pas de modèle défini"
 
-msgid "no trash image"
-msgstr "image de la poubelle non trouvée"
-
 msgid "no user tag specified"
 msgstr "pas d'étiquette utilisateur spécifiée"
 
@@ -6935,6 +6947,9 @@ msgstr "interface extjs"
 
 msgid "one family generic root"
 msgstr "racine generic gestion par famille"
+
+msgid "one family multi document"
+msgstr ""
 
 msgid "one value equal"
 msgstr "une des valeurs égale"
@@ -7629,9 +7644,6 @@ msgstr "seconde famille utilisée"
 
 msgid "security"
 msgstr "sécurité"
-
-msgid "select"
-msgstr "sélectionner"
 
 msgid "select a style"
 msgstr "Sélectionnez un style"
@@ -8899,6 +8911,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
+#~ msgid "Only owner of document can restore it"
+#~ msgstr "Seul le propriétaire peut restaurer un document"
+
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
 
@@ -8918,14 +8933,25 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot open %s configuration file"
 #~ msgstr "ne peut ouvrir le fichier de configuration %s"
 
+#~ msgid "drag to move. Use ctrl-&uarr; &darr; to up/down"
+#~ msgstr ""
+#~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
+#~ "descendre"
+
 #~ msgid "insert the document to see it with offline application"
 #~ msgstr "insérer le document pour le voir avec l'application offline"
+
+#~ msgid "no trash image"
+#~ msgstr "image de la poubelle non trouvée"
 
 #~ msgid "remove from my space"
 #~ msgstr "Enlever de mon espace"
 
 #~ msgid "remove the document from my space"
 #~ msgstr "Enlever le document de mon espace"
+
+#~ msgid "select"
+#~ msgstr "sélectionner"
 
 #~ msgid "the file %s (rev %d) must be locked before"
 #~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"

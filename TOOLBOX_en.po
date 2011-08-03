@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-11 10:01+0200\n"
+"POT-Creation-Date: 2011-08-03 13:37+0200\n"
 "PO-Revision-Date: 2011-07-18 17:17+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2573,9 +2573,6 @@ msgstr ""
 msgid "Only one line by personn is authorized"
 msgstr ""
 
-msgid "Only owner of document can restore it"
-msgstr ""
-
 msgid "Only these characters are allowed : a..z, A..Z, 0..9, _, -"
 msgstr ""
 
@@ -3037,6 +3034,9 @@ msgstr ""
 msgid ""
 "Select identificator to set the second column -specid- this file can only "
 "reimport in the same database"
+msgstr ""
+
+msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
 msgstr ""
 
 msgid "Send document"
@@ -5400,6 +5400,9 @@ msgstr "Download access file"
 msgid "download file"
 msgstr ""
 
+msgid "drag to move"
+msgstr ""
+
 #, fuzzy
 msgid "duplicate"
 msgstr "Edit"
@@ -6686,6 +6689,18 @@ msgstr ""
 msgid "maximum document can be imported directly"
 msgstr ""
 
+msgid "mdoc close all docs"
+msgstr ""
+
+msgid "mdoc show next docs"
+msgstr ""
+
+msgid "mdoc: open in a new window"
+msgstr ""
+
+msgid "mdoc: remove doc"
+msgstr ""
+
 msgid "memorisation of pref search"
 msgstr ""
 
@@ -7225,10 +7240,6 @@ msgstr ""
 msgid "no template defined"
 msgstr ""
 
-#, fuzzy
-msgid "no trash image"
-msgstr "Firstname"
-
 msgid "no user tag specified"
 msgstr ""
 
@@ -7361,6 +7372,9 @@ msgstr ""
 #, fuzzy
 msgid "one family generic root"
 msgstr "Start search"
+
+msgid "one family multi document"
+msgstr ""
 
 msgid "one value equal"
 msgstr ""
@@ -8114,10 +8128,6 @@ msgstr "Start search"
 #, fuzzy
 msgid "security"
 msgstr "Locality"
-
-#, fuzzy
-msgid "select"
-msgstr "Delete"
 
 #, fuzzy
 msgid "select a style"
@@ -9463,6 +9473,14 @@ msgstr ""
 
 #~ msgid "freedom detailled global search"
 #~ msgstr "Detailed global search"
+
+#, fuzzy
+#~ msgid "no trash image"
+#~ msgstr "Firstname"
+
+#, fuzzy
+#~ msgid "select"
+#~ msgstr "Delete"
 
 #, fuzzy
 #~ msgid "toedit"
