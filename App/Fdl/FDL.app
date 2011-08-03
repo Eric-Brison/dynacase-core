@@ -120,7 +120,12 @@ $action_desc = array (
   ),
   array(
    "name"               =>"ALLVIEWJS",
-   "short_name"         =>N_("All js in one for edition"),
+   "short_name"         =>N_("All js in one for consultation"),
+   "acl"                =>"NORMAL"
+  ),
+  array(
+   "name"               =>"ALLVIEWCSS",
+   "short_name"         =>N_("All css in one for consultation"),
    "acl"                =>"NORMAL"
   ),
   array(

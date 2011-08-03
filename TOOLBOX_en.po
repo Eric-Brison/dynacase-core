@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-11 10:01+0200\n"
-"PO-Revision-Date: 2011-07-18 17:17+0200\n"
+"POT-Creation-Date: 2011-08-03 13:28+0200\n"
+"PO-Revision-Date: 2011-08-03 13:38+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
 "Language: \n"
@@ -670,8 +670,14 @@ msgstr "Edit"
 msgid "All To basket"
 msgstr ""
 
+msgid "All css in one for consultation"
+msgstr "Concatenate all CSS for consultation"
+
 msgid "All css in one for edition"
-msgstr ""
+msgstr "Concatenate all CSS for edition"
+
+msgid "All js in one for consultation"
+msgstr "Concatenate all JS scripts for consultation"
 
 msgid "All js in one for edition"
 msgstr "Concatenate all JS scripts for edition"
@@ -2571,9 +2577,6 @@ msgid "Only one line by document is authorized"
 msgstr ""
 
 msgid "Only one line by personn is authorized"
-msgstr ""
-
-msgid "Only owner of document can restore it"
 msgstr ""
 
 msgid "Only these characters are allowed : a..z, A..Z, 0..9, _, -"
@@ -6686,6 +6689,18 @@ msgstr ""
 msgid "maximum document can be imported directly"
 msgstr ""
 
+msgid "mdoc close all docs"
+msgstr ""
+
+msgid "mdoc show next docs"
+msgstr ""
+
+msgid "mdoc: open in a new window"
+msgstr ""
+
+msgid "mdoc: remove doc"
+msgstr ""
+
 msgid "memorisation of pref search"
 msgstr ""
 
@@ -7361,6 +7376,9 @@ msgstr ""
 #, fuzzy
 msgid "one family generic root"
 msgstr "Start search"
+
+msgid "one family multi document"
+msgstr ""
 
 msgid "one value equal"
 msgstr ""
