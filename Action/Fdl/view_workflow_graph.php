@@ -69,7 +69,10 @@ function view_workflow_graph(&$action) {
 
   system($cmd);
   //   print_r2( $cmd);
-  header("location:$svgfile");
+  if ($format=="png") $mime="image/png";
+  elseif($format=="svg") $mime="image/svg+xml";
+  else $mime="text/plain";
+  Http_DownloadFile($svgfile, sprintf("graph %s.%s",$doc->getTitle(),$format),$mime,true, false,true);
   exit;
   }
   

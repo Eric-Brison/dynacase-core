@@ -34,35 +34,29 @@ function color_warning($msg)
     if ($msg) return chr(0x1b) . "[1;33m" . $msg . chr(0x1b) . "[0;39m";
 }
 
+$famId=$method=$arg=$revision=$docid=$start=$slice=$fldid=$filter=$save='';
 $usage = new ApiUsage();
 $usage->setText("Refresh documents ");
-$usage->addNeeded("famid", "the family filter");
-$usage->addOption("method", "method to use - default use refresh()");
-$usage->addOption("arg", "optional method argument to set when calling method");
-$usage->addOption("revision", "use all revision - default is no", array(
+$usage->addNeeded("famid", "the family identificator used to filter",$famId);
+$usage->addOption("method", "method to use)",$method,array(),"refresh");
+$usage->addOption("arg", "optional method argument to set when calling method", $arg);
+$usage->addOption("revision", "use all revision", $revision, array(
     "yes",
     "no"
-));
-$usage->addOption("start", "start from offset - default 0");
-$usage->addOption("slice", "limit from offset - default all");
-$usage->addOption("fldid", "use collection id to limit search");
-$usage->addOption("save", "use modify default is light", array(
+),"no");
+$usage->addOption("docid", "use only for this document id",$docid);
+$usage->addOption("start", "start from offset",$start,array(),0);
+$usage->addOption("slice", "limit from offset",$slice,array(),"all");
+$usage->addOption("fldid", "use collection id to limit search",$fldid);
+$usage->addOption("filter", "sql filter to limit search",$filter);
+$usage->addOption("save", "store mode", $save,array(
     "complete",
     "light",
     "none"
-));
+),"light");
 $usage->verify();
 
-$famId = $action->getArgument("famid"); // familly filter
-$docid = $action->getArgument("docid", ""); // doc filter
-$method = $action->getArgument("method", "refresh"); // method to use
-$allrev = ($action->getArgument("revision", "no") == "yes"); // method to use
-$slice = $action->getArgument("slice", "all"); // slice
-$start = $action->getArgument("start", "0"); // start
-$arg = $action->getArgument("arg"); // arg for method
-$fldid = $action->getArgument("fldid"); // arg for method
-$filter = $action->getArgument("filter"); // arg for method
-$save = ($action->getArgument("save", "light")); // save method
+$allrev = ($revision == "yes"); // method to use
 
 
 $dbaccess = $action->getParam("FREEDOM_DB");
@@ -84,13 +78,20 @@ if ($famId) {
 
 $s = new SearchDoc($dbaccess, $famId);
 $s->setObjectReturn();
-$s->orderby = 'id';
+$s->orderby = 'id desc';
 $s->slice = $slice;
 $s->start = $start;
 if ($docid > 0) $s->addFilter('id = %d', $docid);
 if ($fldid > 0) $s->dirid = $fldid;
 if ($allrev) $s->latest = false;
-if ($filter) $s->addFilter($filter);
+if ($filter) {
+    // verify validity and prevent hack
+    if (@pg_prepare($s->dbid, sprintf("select id from doc%d where %s",$s->fromid, $filter))==false) {
+        $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
+    } else {
+    $s->addFilter($filter);
+    }
+}
 $s->search();
 
 if ($s->searchError()) {

@@ -462,7 +462,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index="",$jsevent="",$notd=false)
         if (($visibility == "R") || ($visibility == "S")) $input .= $idisabled;
         else if ($doc->usefor != 'D') $input .= " disabled "; // always but default
 
-        $input .= " class=\"color {pickerOnfocus:true,hash:true}\" ";
+        $input .= " class=\"color {pickerOnfocus:true,hash:true,required:false}\" ";
 
         $input .= " >&nbsp;";
         if (!(($visibility == "R") || ($visibility == "S"))) {

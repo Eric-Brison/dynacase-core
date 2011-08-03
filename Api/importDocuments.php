@@ -17,23 +17,27 @@ global $appl,$action;
 include_once("FDL/import_file.php");
 include_once("FREEDOM/freedom_import.php");
 
-
+$filename='';
+$logfile='';
+$archive='';
+$analyze='';
+$htmlmode='';
+$reinit='';
+$to='';
 $usage=new ApiUsage();
 $usage->setText("Import documents from description file");
-$usage->addNeeded("file","the description file path");
-$usage->addOption("analyze","analyze only",array("yes","no"));
-$usage->addOption("archive","description file is an standard archive (not xml)",array("yes","no"));
-$usage->addOption("log","log file output");
-$usage->addOption("htmlmode","analyze report mode in html",array("yes","no"));
-$usage->addOption("reinitattr","reset attribute before import family update",array("yes","no"));
-$usage->addOption("to","email address to send report");
+$usage->addNeeded("file","the description file path",$filename);
+$usage->addOption("analyze","analyze only",$analyze, array("yes","no"),"no");
+$usage->addOption("archive","description file is an standard archive (not xml)",$archive,array("yes","no"),"no");
+$usage->addOption("log","log file output",$logfile);
+$usage->addOption("htmlmode","analyze report mode in html",$htmlmode, array("yes","no"),"yes");
+$usage->addOption("reinitattr","reset attribute before import family update",$reinit,array("yes","no"));
+$usage->addOption("to","email address to send report",$to);
 $usage->verify();
 
-$filename=$action->getArgument("file");
 if (! file_exists($filename)) {
     $action->ExitError(sprintf(_("import file %s not found"), $filename));
 }
-$logfile=$action->getArgument("log");
 if ($logfile) {
     if (file_exists($logfile) && (! is_writable($logfile))) {
         $action->ExitError(sprintf(_("log file %s not writable"), $logfile));
@@ -46,13 +50,10 @@ if ($logfile) {
         fclose($f);
     }
 }
-$analyze=($action->getArgument("analyze","no")=="yes");
-setHttpVar('analyze', $analyze?'Y':'N');
-$htmlmode=($action->getArgument("htmlmode","yes")=="yes");
-setHttpVar('htmlmode', $htmlmode?'Y':'N');
-$archive=($action->getArgument("archive","no")=="yes");
+setHttpVar('analyze', ($analyze=="yes")?'Y':'N');
+setHttpVar('htmlmode', ($htmlmode=="yes")?'Y':'N');
+$archive=($archive=="yes");
 
-$to = $action->getArgument("to");
 $cr=importDocuments($action, $filename, $analyze, $archive);
 
 $filetmp=false;
@@ -61,7 +62,7 @@ if ((!$logfile) && $to) {
     $filetmp=true;
 }
 if ($logfile) {
-    if ($htmlmode) {
+    if ($htmlmode=="yes") {
         writeHTMLImportLog($logfile, $cr);
     } else {
         writeImportLog($logfile, $cr);
