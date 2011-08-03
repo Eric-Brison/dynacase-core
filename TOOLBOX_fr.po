@@ -639,8 +639,14 @@ msgstr "Affectation à %s %s"
 msgid "All To basket"
 msgstr "Tout insérer dans le porte-documents"
 
+msgid "All css in one for consultation"
+msgstr "Concatène toutes les CSS pour la consultation"
+
 msgid "All css in one for edition"
-msgstr ""
+msgstr "Concatène toutes les CSS pour l'édition"
+
+msgid "All js in one for consultation"
+msgstr "Concatène tous les scripts JS pour la consultation"
 
 msgid "All js in one for edition"
 msgstr "Concatène tous les scripts JS pour l'édition"

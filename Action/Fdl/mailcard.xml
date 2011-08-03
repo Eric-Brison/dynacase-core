@@ -2,11 +2,11 @@
 
 <html>
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 
    <title>[TEXT:Properties:] [TITLE]</title>
 
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
 
 
 [CSS:REF]

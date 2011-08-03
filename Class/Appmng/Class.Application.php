@@ -213,25 +213,115 @@ create sequence SEQ_ID_APPLICATION start 10;
       return ($query->nb > 0)?$r[0]["id"]:false;
     }
 
-  function AddJsRef($ref,$needparse=false)
-    {
-      // Js Ref are stored in the top level application
-      if (file_exists($this->rootdir."/".$this->name."/Layout/".$ref)) {
-	$ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
-      }
-      if ($this->hasParent()) {
-	$this->parent->AddJsRef($ref,$needparse);
-      } else {
-	(!isset($this->jscount) ? $this->jscount = 0 : $this->jscount++);
-	if ($needparse) {
-	  $this->jsref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
-	} else {
-	  $c=(strstr($ref, '?'))?'&':'?';
-	  $this->jsref[$ref]=$ref.$c."wv=".$this->getParam("WVERSION");
+  /**
+   * Strip the pubdir/wpub directory from a file pathname
+   * @param string $pathname the file pathname
+   * @return string file pathname without the root dir
+   */
+  private function stripRootDir($pathname) {
+    if( substr($pathname, 0, strlen($this->rootdir)-1) == $this->rootdir ) {
+      $pathname = substr($location, strlen($this->rootdir)+1);
+    }
+
+    return $pathname;
+  }
+
+  /**
+   * Try to resolve a JS/CSS reference to a supported location
+   * @param string $ref the JS/CSS reference
+   * @return string the resolved location of the reference or an empty string on failure
+   */
+  private function resolveRessourceLocation($ref) {
+	if( $this->rootdir == '') {
+		$this->rootdir = $this->GetParam("CORE_PUBDIR");
 	}
-	$this->log->debug("AddJsRef [$ref] = <{$this->jsref[$ref]}>");
+
+    if( strstr($ref, '../') !== false ) {
+      return '';
+    }
+
+    /* Resolve through getLayoutFile */
+    $location = $this->GetLayoutFile($ref);
+    if( $location != '' ) {
+      return $this->stripRootDir($location);
+    }
+
+    /* Try "APP:file.extension" notation */
+    if( preg_match('/^(?P<appname>[a-z][a-z0-9_-]*):(?P<filename>.*)$/i', $ref, $m) ) {
+      $location = sprintf('%s/%s/Layout/%s', $this->rootdir, $m['appname'], $m['filename']);
+      if( is_file($location) ) {
+        return sprintf('%s/Layout/%s', $m['appname'], $m['filename']);
       }
     }
+
+    /* Try hardcoded locations */
+    foreach( array(
+                   $ref,
+                   sprintf("%s/Layout/%s", $this->name, $ref)
+                   ) as $filename ) {
+      if( is_file(sprintf("%s/%s", $this->rootdir, $filename)) ) {
+        return $filename;
+      }
+    }
+
+    /* Detect URLs */
+    $pUrl = parse_url($ref);
+    if( isset($pUrl['scheme']) || isset($pUrl['query']) ) {
+      return $ref;
+    }
+
+    return '';
+  }
+
+  /**
+   * Add a ressource (JS/CSS) to the page
+   * @param string $type 'js' or 'css'
+   * @param string $ref the ressource reference
+   * @param boolean $needparse should the ressource be parsed (default false)
+   */
+  function AddRessourceRef($type, $ref, $needparse) {
+    /* Try to attach the ressource to the parent app */
+    if( $this->hasParent() ) {
+      $ret = $this->parent->AddRessourceRef($type, $ref, $needparse);
+      if( $ret !== '' ) {
+        return $ret;
+      }
+    }
+
+    /* Try to attach the ressource to the current app */
+    $ressourceLocation = '';
+    if( $needparse ) {
+      $ressourceLocation = $this->GetParam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref."&type=".$type;
+    } else {
+      $location = $this->resolveRessourceLocation($ref);
+      if( $location != '' ) {
+        $ressourceLocation = $location;
+      }
+    }
+
+    if( $ressourceLocation == '' ) {
+      /* The ressource could not be resolved */
+      return '';
+    }
+
+    if( $type == 'js' ) {
+      $this->jsref[$ref] = $ressourceLocation;
+    } elseif( $type == 'css' ) {
+      $this->cssref[$ref] = $ressourceLocation;
+    } else {
+      return '';
+    }
+
+    return $ressourceLocation;
+  }
+
+  function AddCssRef($ref, $needparse = false) {
+    return $this->AddRessourceRef('css', $ref, $needparse);
+  }
+
+  function AddJsRef($ref, $needparse = false) {
+    return $this->AddRessourceRef('js', $ref, $needparse);
+  }
 
   function AddJsCode($code)
     {
@@ -311,32 +401,6 @@ create sequence SEQ_ID_APPLICATION start 10;
   function ClearWarningMsg()
     {
       $this->session->unregister("warningmsg");
-    }
-  function AddCssRef($ref,$needparse=false)   {
-      if ($this->hasParent()) {
-	$this->parent->AddCssRef($ref,$needparse);
-      } else {
-      // Css Ref are stored in the top level application
-	  
-      if (! $needparse) {
-	$fccs=false;
-	if (file_exists($this->rootdir."/".$ref)) $fccs=true;
-	elseif (file_exists($this->rootdir."/".$this->name."/Layout/".$ref)) {
-	  $ref=$this->Getparam("CORE_PUBURL")."/".$this->name."/Layout/".$ref;
-	  $fccs=true;
-	}
-	if (! $fccs) {
-	  return false; // css file bot found
-	}
-      }
-
-	if ($needparse) {
-	  $this->cssref[$ref]=$this->Getparam("CORE_STANDURL")."&app=CORE&action=CORE_CSS&session=".$this->session->id."&layout=".$ref;
-	} else {
-	  $c=(strstr($ref, '?'))?'&':'?';
-	  $this->cssref[$ref]=$ref.$c."wv=".$this->getParam("WVERSION");
-	}
-      }
     }
 
   function AddCssCode($code)
@@ -560,10 +624,6 @@ create sequence SEQ_ID_APPLICATION start 10;
     $file= $this->style->GetLayoutFile($layname,"");
     if ($file != "") return $file;
 
-    $nav=$this->session->Read("navigator");
-    $ver=doubleval($this->session->Read("navversion"));
-
-  
     $laydir = $this->rootdir."/".$this->name."/Layout/";
     $file = $laydir.$layname; // default file
  
