@@ -2,6 +2,7 @@
 <head>
 
 <title>[APP_TITLE]</title>
+   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 
 <noscript>
 <H1>[TEXT:Javascript must be enabled in your navigator]</H1>

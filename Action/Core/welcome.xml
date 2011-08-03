@@ -3,6 +3,8 @@
 
 <head> 
 [CSS:REF]
+   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
 </head> 
 
 <body id="body" class="fr"> 

@@ -5,6 +5,8 @@
    <title>[TEXT: folder containt]</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
 <link rel="shortcut icon" href="[DYNACASE_FAVICO]">
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
 <LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
