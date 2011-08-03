@@ -26,6 +26,7 @@ function alleditcss(Action &$action) {
 
 	$dynamic_css[] = "CORE/Layout/core.css";
 	$dynamic_css[] = "FDL/Layout/freedom.css";
+	$dynamic_css[] = "FDL/Layout/editdoc.css";
 	$dynamic_css[] = "FDL/Layout/autocompletion.css";
 	$dynamic_css[] = "FDL/Layout/popup.css";
 
