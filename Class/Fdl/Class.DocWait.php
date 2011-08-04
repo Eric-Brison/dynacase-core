@@ -1,27 +1,35 @@
 <?php
-/**
- * Waiting documents
- * Temporary saving
- *
- * @author Anakeen 
- * @version $Id:  $
+/*
+ * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  */
-/**
- */
 
-include_once ("Class.DbObj.php");
+
+require_once "Class.DbObj.php";
+
+/**
+ * Waiting document
+ * 
+ * @brief Temporary saving
+ * @class DocWait
+ * @package FDL
+ */
 class DocWait extends DbObj
 {
+    /**
+     * database field 
+     * 
+     * @var array
+     */
     public $fields = array(
         "refererid", // doc id
         "refererinitid", // doc initid
         "localid", // temporary id in case of creation
         "title", // doc title
         "fromid", // family
-        "values", // values of document (serialized object)  
-        "orivalues", // original values of document (serialized object)  
+        "values", // values of document (serialized object)
+        "orivalues", // original values of document (serialized object)
         "uid", // user id
         "domain", // domain id
         "status", // status code
@@ -30,57 +38,75 @@ class DocWait extends DbObj
         "date",
         "extradata"
     );
-    
     /**
      * identificator of referer document
-     * @public int
+     * 
+     * @var integer
      */
     public $refererid;
     /**
      * temporary identificator use before creation
-     * @public int
+     * 
+     * @var integer
      */
     public $localid;
-    
     /**
      * identificator system of the user
-     * @public int
+     * 
+     * @var integer
      */
     public $uid;
     /**
      * document title
-     * @public string
+     * 
+     * @var string
      */
     public $title;
     /**
      * date record
-     * @public date
+     * 
+     * @var date
      */
     public $date;
     /**
      * document status : ok|constraint|obsolete
-     * @public string
+     * 
+     * @var string
      */
     public $status;
-    
     /**
      * document status message
-     * @public string
+     * 
+     * @var string
      */
     public $statusmessage;
-    
     /**
      * arg of code
-     * @public text serialize object
+     * 
+     * @var text serialize object
      */
     public $arg;
     
+    /**
+     * fields primary key
+     * 
+     * @var array fields primary key
+     */
     public $id_fields = array(
         "refererinitid",
         "uid"
     );
-    public $dbtable = "docwait";
-    
+     /**
+     * database table name
+     * 
+     * @var array
+     */
+    public $dbtable = "docwait"; 
+    /**
+     * sql create table
+     * 
+     * @var array
+     */
     public $sqlcreate = "
 create table docwait ( refererid int not null,   
                    refererinitid int not null,
@@ -100,10 +126,9 @@ create index i_docwait on docwait(transaction);
 create unique index iu_docwait on docwait(refererinitid, uid);
 create sequence seq_waittransaction start 1;
 ";
-    
     /**#@+
      * constant for waiting status"
-     */
+    */
     const newDocument = "new";
     const upToDate = "uptodate";
     const modified = "modified";
@@ -111,13 +136,32 @@ create sequence seq_waittransaction start 1;
     const constraint = "constraint";
     const invalid = "invalid";
     const recording = "recording";
-    /** referer document @var Doc */
+    /**
+     * referer document 
+     * 
+     * @var Doc
+     */
     private $refererDoc = null;
-    /** referer document identificator @var int */
+    /**
+     * referer document identificator 
+     * 
+     * @var integer
+     */
     private $refererDocId = null;
-    /** waiting document @var Doc */
+    /**
+     * waiting document 
+     * 
+     * @var Doc
+     */
     private $waitingDoc = null;
-    public function save(&$info=null)
+    /**
+     * save waiting document
+     * 
+     * @param mixed &$info informations for save
+     * 
+     * @return string error message
+     */
+    public function save(&$info = null)
     {
         $err = '';
         $this->status = $this->computeStatus();
@@ -144,21 +188,22 @@ create sequence seq_waittransaction start 1;
             }
             if ($err) {
                 $this->status = self::constraint;
-                $this->statusmessage = ($info->error) ? $info->label.' : '.$info->error : $err;
-               // $this->statusmessage=json_encode($info->error);
+                $this->statusmessage = ($info->error) ? $info->label . ' : ' . $info->error : $err;
+                // $this->statusmessage=json_encode($info->error);
                 $this->modify();
             } else {
                 $this->resetWaitingDocument();
-            
             }
         }
-        
         // error_log("try create $err".$this->localid."::".$wdoc->id);
-        //print "save [$this->status]" . $this->title; 
+        //print "save [$this->status]" . $this->title;
         return $err;
     }
-    
-  
+    /**
+     * get waiting document from database
+     * 
+     * @return string error message
+     */
     public function resetWaitingDocument()
     {
         $doc = $this->getRefererDocument(true);
@@ -175,19 +220,29 @@ create sequence seq_waittransaction start 1;
         }
         return $err;
     }
-    
+    /**
+     * get write attribute of a doc
+     * 
+     * @param Doc &$doc the doc 
+     * 
+     * @return array of docAttribute
+     */
     private function getWriteAttribute(Doc &$doc)
     {
         $attrs = $doc->getNormalAttributes();
         $wattr = array();
-        foreach ( $attrs as $aid => $oa ) {
+        foreach ($attrs as $aid => $oa) {
             if (($oa->mvisibility == 'W') || ($oa->mvisibility == 'O') || $oa->getOption("writted") == "yes") {
                 $wattr[$aid] = $oa;
             }
         }
         return $wattr;
     }
-    
+    /**
+     * complete
+     * 
+     * @return void
+     */
     public function complete()
     {
         $this->refererDoc = null;
@@ -195,6 +250,9 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * the referer (null if new document)
+     * 
+     * @param boolean $reset set to true to force update from database
+     * 
      * @return Doc the referer
      */
     public function getRefererDocument($reset = false)
@@ -206,11 +264,9 @@ create sequence seq_waittransaction start 1;
             $this->refererDocId = $this->refererDoc->id;
             if ($this->waitingDoc) {
                 $this->values = serialize($this->waitingDoc->getValues());
-                
                 $this->waitingDoc = null;
             }
         } else {
-            
             if (($this->refererDoc->id != $this->refererDocId) || ($fix = $this->refererDoc->isFixed()) || ($fix === null)) {
                 $this->refererDoc = new_doc($this->dbaccess, $this->refererid, true);
                 $this->refererDocId = $this->refererDoc->id;
@@ -218,15 +274,13 @@ create sequence seq_waittransaction start 1;
                     $this->values = serialize($this->waitingDoc->getValues());
                     $this->waitingDoc = null;
                 }
-            
             }
         }
         return $this->refererDoc;
     }
-    
     /**
-     * the referer with new values
-     * document ready to update original
+     * the referer with new values, document ready to update original
+     * 
      * @return Doc the document
      */
     public function getWaitingDocument()
@@ -236,28 +290,32 @@ create sequence seq_waittransaction start 1;
             if (!$cdoc) {
                 $cdoc = createDoc($this->dbaccess, $this->fromid, false, false);
             }
-            
             $this->waitingDoc = clone $cdoc;
             $waitValues = unserialize($this->values);
-            foreach ( $waitValues as $aid => $v ) {
-                if ($v == '') $v=' ';
+            foreach ($waitValues as $aid => $v) {
+                if ($v == '') $v = ' ';
                 $this->waitingDoc->setValue($aid, $v);
             }
             $this->waitingDoc->doctype = 'I';
         }
         return $this->waitingDoc;
-    }
-    
+    }  
+    /**
+     * verify if waiting document status is valid
+     * 
+     * @return boolean true if valid
+     */
     public function isValid()
     {
         return ($this->status == self::newDocument || $this->status == self::modified || $this->status == self::upToDate);
-    
     }
-    
     /**
      * verify if origin values are same as current alive values
-     * restrict to W/O visibilities values
-     * @param int $mask identificator to use specific mask to detect W attributes
+     * 
+     * @param integer $mask identificator to use specific mask to detect W attributes
+     * 
+     * @brief restrict to W/O visibilities values
+     * @return integer ths status code
      */
     public function computeStatus($mask = 0)
     {
@@ -286,12 +344,12 @@ create sequence seq_waittransaction start 1;
                             ));
                             */
                             $waitingDoc = $this->getWaitingDocument();
-                            foreach ( $attrs as $aid => $oa ) {
+                            foreach ($attrs as $aid => $oa) {
                                 $ovalue = $originValues[$oa->id];
                                 $cvalue = $currentDoc->getValue($oa->id);
                                 if ($ovalue != $cvalue) {
                                     $this->status = self::conflict;
-                                    $this->statusmessage .= sprintf(_("conflict %s [%s]: referer=%s, modified=%s"), $oa->getLabel(), $oa->id, $cvalue, $ovalue) . "\n";
+                                    $this->statusmessage.= sprintf(_("conflict %s [%s]: referer=%s, modified=%s") , $oa->getLabel() , $oa->id, $cvalue, $ovalue) . "\n";
                                 }
                             }
                             $this->statusmessage = substr($this->statusmessage, 0, -1);
@@ -304,14 +362,18 @@ create sequence seq_waittransaction start 1;
             } else {
                 $this->status = self::newDocument;
             }
-            
             $this->modify();
         }
         return $this->status;
     }
-    function getExtraData() {
-        return ($this->extradata)?json_decode($this->extradata):null;
+    /**
+     * get extrat data of waiting document
+     * 
+     * @return string the data
+     */
+    public function getExtraData()
+    {
+        return ($this->extradata) ? json_decode($this->extradata) : null;
     }
 }
-
 ?>
