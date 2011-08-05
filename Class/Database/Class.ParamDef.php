@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage CORE
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------------------
 // Param
 // ---------------------------------------------------------------------------
@@ -32,20 +36,30 @@
 // ---------------------------------------------------------------------------
 //  $Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $
 //
-include_once('Class.Log.php');
-include_once('Class.DbObj.php');
+include_once ('Class.Log.php');
+include_once ('Class.DbObj.php');
 
 $CLASS_PARAMDEF_PHP = '$Id: Class.ParamDef.php,v 1.4 2005/10/31 11:52:17 eric Exp $';
 
 class ParamDef extends DbObj
 {
-var $fields = array ("name","isuser","isstyle","isglob","appid","descr","kind");
-
-var $id_fields = array ("name");
-
-var $dbtable = "paramdef";
-
-var $sqlcreate = '
+    var $fields = array(
+        "name",
+        "isuser",
+        "isstyle",
+        "isglob",
+        "appid",
+        "descr",
+        "kind"
+    );
+    
+    var $id_fields = array(
+        "name"
+    );
+    
+    var $dbtable = "paramdef";
+    
+    var $sqlcreate = '
       create table paramdef (
               name    text,
               isuser   varchar(1),
@@ -56,6 +70,5 @@ var $sqlcreate = '
               kind    text);
       create unique index paramdef_idx1 on paramdef(name);
                  ';
-
 }
 ?>

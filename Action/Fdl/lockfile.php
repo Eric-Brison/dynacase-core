@@ -1,12 +1,17 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Lock a document
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: lockfile.php,v 1.6 2006/04/28 14:33:39 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- * @subpackage 
+ * @subpackage
  */
 /**
  */
@@ -26,15 +31,13 @@ function lockfile(&$action)
     if ($err != "") $action->ExitError($err);
     
     $action->AddActionDone("LOCKDOC", $doc->id);
-    $action->AddLogMsg(sprintf(_("%s has been locked"), $doc->title));
+    $action->AddLogMsg(sprintf(_("%s has been locked") , $doc->title));
     // add events for  folders
     $fdlids = $doc->getParentFolderIds();
-    foreach ( $fdlids as $fldid ) {
+    foreach ($fdlids as $fldid) {
         $action->AddActionDone("MODFOLDERCONTAINT", $fldid);
     }
     
     redirect($action, "FDL", "FDL_CARD&id=" . $doc->id, $action->GetParam("CORE_STANDURL"));
-
 }
-
 ?>

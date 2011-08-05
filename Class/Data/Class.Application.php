@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Document Object Definition
  *
@@ -10,7 +15,6 @@
 /**
  */
 include_once ("DATA/Class.Document.php");
-
 /**
  * Document Class
  *
@@ -40,7 +44,7 @@ class Fdl_Application
             return null;
         } else {
             $out->value = $this->_app->getParam($key, null);
-            if ($out->value === null) $this->error = sprintf(_("parameter %s not exists"), $key);
+            if ($out->value === null) $this->error = sprintf(_("parameter %s not exists") , $key);
             $js = json_decode($out->value);
             if ($js) $out->value = $js;
         }
@@ -62,12 +66,10 @@ class Fdl_Application
                 if ($op->isuser == "Y") {
                     $this->_app->setParamU($key, $nv);
                     $out->value = $this->_app->getParam($key);
-                } else
-                    $this->error = sprintf(_("not authorized : parameter %s is not a user parameter"), $key);
+                } else $this->error = sprintf(_("not authorized : parameter %s is not a user parameter") , $key);
             } else {
-                $this->error = sprintf(_("parameter %s not exists"), $key);
+                $this->error = sprintf(_("parameter %s not exists") , $key);
             }
-        
         }
         $out->error = $this->error;
         return $out;
@@ -83,8 +85,8 @@ class Fdl_Application
             "description" => $this->_app->description ? _($this->_app->description) : '',
             "label" => $this->_app->short_name ? _($this->_app->short_name) : '',
             "icon" => $this->_app->icon ? 'Images/' . $this->_app->icon : '',
-            "available" => ($this->_app->available != 'N'),
-            "version" => $this->_app->getParam("VERSION"),
+            "available" => ($this->_app->available != 'N') ,
+            "version" => $this->_app->getParam("VERSION") ,
             "displayable" => ($this->_app->displayable != 'N')
         );
         
@@ -101,12 +103,12 @@ class Fdl_Application
         $queryact->AddQuery("available!='N'");
         $listact = $queryact->Query(0, 0, "TABLE");
         $actions = array();
-        foreach ( $listact as $k => $v ) {
+        foreach ($listact as $k => $v) {
             if ($this->_app->HasPermission($v["acl"])) {
                 $actions[] = array(
                     "id" => $v["id"],
                     "name" => $v["name"],
-                    "root" => ($v["root"] == "Y"),
+                    "root" => ($v["root"] == "Y") ,
                     "label" => ($v["short_name"]) ? _($v["short_name"]) : ''
                 );
             }
@@ -114,7 +116,5 @@ class Fdl_Application
         
         return $actions;
     }
-
 }
-
 ?>

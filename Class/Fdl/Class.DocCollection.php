@@ -8,10 +8,9 @@
  * Document searches classes
  */
 require_once "FDL/Class.Doc.php";
-
 /**
  * Document searches classes
- * 
+ *
  * @brief class use to search documents
  * @class DocCollection
  * @package FDL
@@ -20,7 +19,7 @@ class DocCollection extends Doc
 {
     /**
      * conditionnal operator compatibilities
-     * 
+     *
      * @var array
      */
     public $top = array(
@@ -308,10 +307,10 @@ class DocCollection extends Doc
     );
     /**
      * get label forom operatore code
-     * 
+     *
      * @param string $operator operator code
      * @param string $attributeType sttribute type
-     * 
+     *
      * @return string
      */
     public function getOperatorLabel($operator, $attributeType)
@@ -331,24 +330,24 @@ class DocCollection extends Doc
     }
     /**
      * return document includes in search folder
-     * 
+     *
      * @param boolean $controlview if false all document are returned else only visible for current user  document are return
      * @param array $filter to add list sql filter for selected document
      * @param integer $famid family identificator to restrict search
-     * 
+     *
      * @return array array of document array
      */
     public function getContent($controlview = true, array $filter = array() , $famid = "")
     {
-           return array();
+        return array();
     }
     /**
      * return sql filter from object filter
-     * 
+     *
      * @param object $of the object filter
      * @param integer &$famid return the family filter
      * @param string &$fsql return the sql filter
-     * 
+     *
      * @return string error message if incorrect filter, empty if no errors
      */
     public function object2SqlFilter($of, &$famid, &$fsql)
@@ -392,7 +391,7 @@ class DocCollection extends Doc
         if ($of->criteria && is_array($of->criteria)) {
             foreach ($of->criteria as $c) {
                 if ($c->operator) {
-                    $sqlone='';
+                    $sqlone = '';
                     $err.= $this->_1object2SqlFilter($c, $sqlone, $famid);
                     if ($err == "") $sql[] = $sqlone;
                 } elseif ($c->or && is_array($c->or)) {
@@ -402,8 +401,8 @@ class DocCollection extends Doc
                         else {
                             $oone = new stdClass();
                             $oone->criteria = $cor;
-                            $sqlone='';
-                            $_f='';
+                            $sqlone = '';
+                            $_f = '';
                             $this->object2SqlFilter($oone, $_f, $sqlone);
                         }
                         if ($err == "") $sqlor[] = $sqlone;
@@ -418,7 +417,7 @@ class DocCollection extends Doc
                         else {
                             $oone = new stdClass();
                             $oone->criteria = $cor;
-                            $_f='';
+                            $_f = '';
                             $this->object2SqlFilter($oone, $_f, $sqlone);
                         }
                         if ($err == "") $sqlor[] = $sqlone;
@@ -438,17 +437,17 @@ class DocCollection extends Doc
     }
     /**
      * return sql from a single object filter
-     * 
+     *
      * @param object $c the filter object
      * @param string &$sql return the sql where clause
      * @param string $famid family identificator
-     * 
+     *
      * @return string error message. Empty is no errors
      */
     private function _1object2SqlFilter($c, &$sql, $famid = "")
     {
         static $sw = false;
-        $err='';
+        $err = '';
         if ($c->operator) {
             $top = $this->top[$c->operator];
             if ($top) {
@@ -494,7 +493,7 @@ class DocCollection extends Doc
     }
     /**
      * return specfic filters instead of normal content
-     * 
+     *
      * @return array of sql filters
      */
     public function getSpecificFilters()
@@ -503,7 +502,7 @@ class DocCollection extends Doc
     }
     /**
      * test if document has specific filters
-     * 
+     *
      * @return boolean true if has filter
      */
     public function hasSpecificFilters()
@@ -512,7 +511,7 @@ class DocCollection extends Doc
     }
     /**
      * return content of collection
-     * 
+     *
      * @return DocumentList
      */
     public function getDocumentList()

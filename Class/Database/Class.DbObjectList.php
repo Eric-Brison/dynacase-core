@@ -1,8 +1,13 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Document list class
  *
- * @author Anakeen  
+ * @author Anakeen
  * @version $Id:  $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
@@ -22,22 +27,16 @@ class DbObjectList implements Iterator
             $this->res = $res;
             $this->object = new $classname($dbaccess);
             $this->length = pg_num_rows($this->res);
-        
         }
     }
-    
- 
     
     public function rewind()
     {
         $this->index = 0;
-        
-    
     }
     public function next()
     {
         $this->index++;
-    
     }
     public function key()
     {
@@ -59,6 +58,5 @@ class DbObjectList implements Iterator
     {
         return ($this->index < $this->length);
     }
-
 }
 ?>

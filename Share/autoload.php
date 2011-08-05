@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 
 require_once 'WHAT/classAutoloader.php';
 include_once 'WHAT/Lib.Prefix.php';
@@ -25,7 +30,7 @@ class excludeSomeFiles extends FilterIterator
             './vaultfs/'
         );
         
-        foreach ( $exclusionPatterns as $pattern ) {
+        foreach ($exclusionPatterns as $pattern) {
             if (substr($c, 0, strlen($pattern)) == $pattern) {
                 return false;
             }

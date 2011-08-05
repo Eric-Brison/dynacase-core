@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: refreshdir.php,v 1.3 2003/08/18 15:47:03 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage GED
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------
 // $Id: refreshdir.php,v 1.3 2003/08/18 15:47:03 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Freedom/refreshdir.php,v $
@@ -33,33 +37,23 @@
 //
 //
 // ---------------------------------------------------------------
-include_once("FDL/Class.Doc.php");
-include_once("FDL/Class.QueryDir.php");
-
-
-
+include_once ("FDL/Class.Doc.php");
+include_once ("FDL/Class.QueryDir.php");
 // -----------------------------------
 // -----------------------------------
-function refreshdir(&$action) {
-// -----------------------------------
-
-  $action->log->start();
-  // Set the globals elements
-
-
-  $baseurl=$action->GetParam("CORE_BASEURL");
-  $standurl=$action->GetParam("CORE_STANDURL");
-  $dbaccess = $action->GetParam("FREEDOM_DB");
-
-  // Get all the params      
-  $dirid=GetHttpVars("dirid"); // directory to refresh
-  
-
-
-
-
-  $oqd = new QueryDir($dbaccess);
-  $oqd->RefreshDir($dirid);
-  redirect($action,GetHttpVars("app"),"FREEDOM_VIEW&dirid=$dirid");
+function refreshdir(&$action)
+{
+    // -----------------------------------
+    $action->log->start();
+    // Set the globals elements
+    $baseurl = $action->GetParam("CORE_BASEURL");
+    $standurl = $action->GetParam("CORE_STANDURL");
+    $dbaccess = $action->GetParam("FREEDOM_DB");
+    // Get all the params
+    $dirid = GetHttpVars("dirid"); // directory to refresh
+    
+    $oqd = new QueryDir($dbaccess);
+    $oqd->RefreshDir($dirid);
+    redirect($action, GetHttpVars("app") , "FREEDOM_VIEW&dirid=$dirid");
 }
 ?>

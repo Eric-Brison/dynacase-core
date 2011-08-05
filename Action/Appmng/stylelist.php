@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: stylelist.php,v 1.3 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage APPMNG
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------
 // $Id: stylelist.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/stylelist.php,v $
@@ -35,27 +39,23 @@
 // prise en compte de la gestion des parametres
 //
 // ---------------------------------------------------------------
-include_once("Class.Param.php");
+include_once ("Class.Param.php");
 // -----------------------------------
-function stylelist(&$action) {
-// -----------------------------------
-
-
- $styleid=GetHttpVars("styleid");
-
-
-  $action->register("PARAM_ACT","STYLELIST&styleid=$styleid");
-
-
-    $query = new QueryDb($action->dbaccess,"Style");
-  $list = $query->Query(0,0,"TABLE");
-  // select the wanted style
-    while (list($k,$v)=each($list)) {
-	if ($v["name"] == $styleid) $list[$k]["selected"]="selected";
-	else $list[$k]["selected"]="";
+function stylelist(&$action)
+{
+    // -----------------------------------
+    $styleid = GetHttpVars("styleid");
+    
+    $action->register("PARAM_ACT", "STYLELIST&styleid=$styleid");
+    
+    $query = new QueryDb($action->dbaccess, "Style");
+    $list = $query->Query(0, 0, "TABLE");
+    // select the wanted style
+    while (list($k, $v) = each($list)) {
+        if ($v["name"] == $styleid) $list[$k]["selected"] = "selected";
+        else $list[$k]["selected"] = "";
     }
-  $action->lay->SetBlockData("SELSTYLE",$list);
+    $action->lay->SetBlockData("SELSTYLE", $list);
     return;
-
 }
 ?>

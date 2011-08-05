@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: Class.Out.php,v 1.2 2003/08/18 15:46:42 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage CORE
  */
- /**
+/**
  */
-
 // --------------------------------------------------------------------------
 // $Id: Class.Out.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 // anakeen 1999 - marc.claverie@anakeen.com
@@ -33,33 +37,33 @@
 // Creation
 //
 // --------------------------------------------------------------------------
-
 $CLASS_OUT_PHP = "";
 
-class Out {
-
-var $stream;
-var $cr;
-
-function Out($rt=0)
+class Out
 {
-    $this->stream = "";
-    if ($rt) $this->cr = "\n";
-    else $this->cr = "";
-}
-
-function Cat($string)
-{
-    $this->stream = $this->stream . $string . $this->cr;
-}
-function Reset() 
-{
-    $this->stream = "";
-}
-
-function Flush() 
-{
-    return($this->stream);
-}
+    
+    var $stream;
+    var $cr;
+    
+    function Out($rt = 0)
+    {
+        $this->stream = "";
+        if ($rt) $this->cr = "\n";
+        else $this->cr = "";
+    }
+    
+    function Cat($string)
+    {
+        $this->stream = $this->stream . $string . $this->cr;
+    }
+    function Reset()
+    {
+        $this->stream = "";
+    }
+    
+    function Flush()
+    {
+        return ($this->stream);
+    }
 }
 ?>

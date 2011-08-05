@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * HTML Header
  *
@@ -7,13 +12,12 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  */
- /**
+/**
  */
 
-
-
-function htmlhead(&$action) {
-  $title = GetHttpVars("title");
-  $action->lay->set("doctitle", $title);
+function htmlhead(&$action)
+{
+    $title = GetHttpVars("title");
+    $action->lay->set("doctitle", $title);
 }
 ?>

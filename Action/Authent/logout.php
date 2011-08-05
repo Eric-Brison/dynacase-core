@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Close session
  *
@@ -11,18 +16,18 @@
  */
 /**
  */
-include_once('WHAT/Class.AuthenticatorManager.php');
+include_once ('WHAT/Class.AuthenticatorManager.php');
 /**
  * Close session
  *
  */
-function logout(&$action) {
-  global $_SERVER;
-  global $_POST;
-  
-  $action->session->close();
-  AuthenticatorManager::closeAccess();
-  exit(0);
+function logout(&$action)
+{
+    global $_SERVER;
+    global $_POST;
+    
+    $action->session->close();
+    AuthenticatorManager::closeAccess();
+    exit(0);
 }
-
 ?>

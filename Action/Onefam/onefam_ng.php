@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
@@ -11,9 +16,9 @@
 /**
  */
 include_once ("ONEFAM/onefam_root.php");
-function onefam_ng(Action &$action)
+function onefam_ng(Action & $action)
 {
-
+    
     $action->lay->set("APP_TITLE", _($action->parent->description));
     
     $nbcol = intval($action->getParam("ONEFAM_LWIDTH", 1));
@@ -37,7 +42,7 @@ function onefam_ng(Action &$action)
     } else {
         $action->lay->set("OPENFAM", false);
     }
-    $action->lay->Set("oneBgColor", (($action->getParam("ONEFAM_BGCOLOR")!='inherit') && ($action->getParam("ONEFAM_BGCOLOR")!='')));
+    $action->lay->Set("oneBgColor", (($action->getParam("ONEFAM_BGCOLOR") != 'inherit') && ($action->getParam("ONEFAM_BGCOLOR") != '')));
     
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
@@ -50,7 +55,7 @@ function onefam_ng(Action &$action)
     
     $iz = $action->getParam("CORE_ICONSIZE");
     $izpx = intval($action->getParam("SIZE_IMG-SMALL"));
-    $action->lay->SetBlockData("SELECTMASTER", getTableFamilyList($action->GetParam("ONEFAM_MIDS"),$izpx));
+    $action->lay->SetBlockData("SELECTMASTER", getTableFamilyList($action->GetParam("ONEFAM_MIDS") , $izpx));
     
     if (($action->GetParam("ONEFAM_IDS") != "") && ($action->GetParam("ONEFAM_MIDS") != "")) {
         $action->lay->SetBlockData("SEPARATOR", array(
@@ -58,7 +63,6 @@ function onefam_ng(Action &$action)
                 "zou"
             )
         ));
-    
     }
     
     if ($action->HasPermission("ONEFAM")) {
@@ -67,7 +71,7 @@ function onefam_ng(Action &$action)
                 "zou"
             )
         ));
-        $action->lay->SetBlockData("SELECTUSER", getTableFamilyList($action->GetParam("ONEFAM_IDS"),$izpx));
+        $action->lay->SetBlockData("SELECTUSER", getTableFamilyList($action->GetParam("ONEFAM_IDS") , $izpx));
     }
     if ($action->HasPermission("ONEFAM_MASTER")) {
         $action->lay->SetBlockData("CHOOSEMASTERFAMILIES", array(
@@ -79,23 +83,21 @@ function onefam_ng(Action &$action)
     
     $action->lay->set("izpx", $izpx);
     // Change CSS
-    
     $smode = getSplitMode($action);
     
     switch ($smode) {
-    case "vertical" :
-        $action->parent->AddCssRef("WHAT/Layout/HB.css");
-        break;
-    case "inverse" :
-        $action->parent->AddCssRef("WHAT/Layout/inverse.css");
-        break;
-    default :
-    case "basic" :
-        $action->parent->AddCssRef("ONEFAM:onefam_ng.css",true);
-        break;
-    
+        case "vertical":
+            $action->parent->AddCssRef("WHAT/Layout/HB.css");
+            break;
+
+        case "inverse":
+            $action->parent->AddCssRef("WHAT/Layout/inverse.css");
+            break;
+
+        default:
+        case "basic":
+            $action->parent->AddCssRef("ONEFAM:onefam_ng.css", true);
+            break;
     }
-
 }
-
 ?>

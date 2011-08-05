@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Manage Waiting Doc
  *
@@ -17,11 +22,11 @@ class DocWaitManager
 {
     /**
      * create or update a new entry in docWait
-     * 
+     *
      * @param Doc $doc
      * @return string error message
      */
-    public static function saveWaitingDoc(Doc &$doc, $domainId = null, $transaction = null, $extraData=null)
+    public static function saveWaitingDoc(Doc & $doc, $domainId = null, $transaction = null, $extraData = null)
     {
         $err = '';
         
@@ -60,15 +65,14 @@ class DocWaitManager
         }
         return $err;
     }
-    
     /**
-     * Return waiting doc 
+     * Return waiting doc
      * @param int $id doc identificator
      * @return Doc
      */
     public static function getWaitingDoc($id)
     {
-        $wd = new DocWait(getDbAccess(), array(
+        $wd = new DocWait(getDbAccess() , array(
             $id,
             Doc::getSystemUserId()
         ));
@@ -78,32 +82,29 @@ class DocWaitManager
         }
         return null;
     }
-    
     /**
      * return unresolved links
      * @param int $domain domain identificator
      * @param int $user user identificator
      * @return array index=localid, value=serverid
      */
-    public static function getUnresolvedLocalLinks($domain = -1, $user = -1)
+    public static function getUnresolvedLocalLinks($domain = - 1, $user = - 1)
     {
-        $q = new QueryDb(getDbAccess(), "docWait");
+        $q = new QueryDb(getDbAccess() , "docWait");
         $q->addQuery(sprintf("domain = %d", $domain));
         $q->addQuery(sprintf("uid = %d", $user));
         $q->addQuery("localid is not null");
         $q->addQuery("refererinitid < 0");
         
-        
-        $res= $q->Query(0, 0, 'TABLE');
-        $out=array();
+        $res = $q->Query(0, 0, 'TABLE');
+        $out = array();
         if (is_array($res)) {
-            foreach ($res as $k=>$v) {
-                $out[$v['localid']]=$v['refererinitid'];
+            foreach ($res as $k => $v) {
+                $out[$v['localid']] = $v['refererinitid'];
             }
         }
         return $out;
     }
-
     /**
      * return waiting doc for a transaction
      * @param int $transaction transaction identificator
@@ -111,12 +112,11 @@ class DocWaitManager
      */
     public static function getWaitingDocs($transaction)
     {
-        $q = new QueryDb(getDbAccess(), "docWait");
+        $q = new QueryDb(getDbAccess() , "docWait");
         $q->addQuery(sprintf("transaction = %d", $transaction));
         
         return $q->Query(0, 0, 'ITER');
     }
-
     /**
      * return waiting doc for a domain
      * @param int $transaction transaction identificator
@@ -124,7 +124,7 @@ class DocWaitManager
      */
     public static function getWaitingDocsByDomain($domainId)
     {
-        $q = new QueryDb(getDbAccess(), "docWait");
+        $q = new QueryDb(getDbAccess() , "docWait");
         $q->addQuery(sprintf("domain = %d", $domainId));
         
         return $q->Query(0, 0, 'ITER');
@@ -135,36 +135,35 @@ class DocWaitManager
      */
     public static function getTransaction()
     {
-        $err = simpleQuery(getDbAccess(), "select nextval ('seq_waittransaction')", $transaction, true, true);
+        $err = simpleQuery(getDbAccess() , "select nextval ('seq_waittransaction')", $transaction, true, true);
         return $transaction;
     }
     /**
-     * delete waiting document for a domain, an user or an user in a domain 
+     * delete waiting document for a domain, an user or an user in a domain
      * @param int $domain domain identificator
      * @param int $user user identificator
      * @param int $docinitid initial document identificator
      */
-    public static function clearWaitingDocs($domain = -1, $user = -1, $docinitid=-1)
+    public static function clearWaitingDocs($domain = - 1, $user = - 1, $docinitid = - 1)
     {
         $err = '';
-        $wheres=array();
+        $wheres = array();
         if ($domain >= 0) {
-            $wheres[]=sprintf("domain = %d", $domain);
+            $wheres[] = sprintf("domain = %d", $domain);
         }
         if ($user >= 0) {
-            $wheres[]=sprintf("uid = %d", $user);
+            $wheres[] = sprintf("uid = %d", $user);
         }
         if ($docinitid >= 0) {
-            $wheres[]=sprintf("refererinitid = %d", $docinitid);
+            $wheres[] = sprintf("refererinitid = %d", $docinitid);
         }
         //error_log("clearWaitingDocs $domain - $user - $docinitid");
-        if (count($wheres) == 0){
-            $err = simpleQuery(getDbAccess(), "delete from docwait");
+        if (count($wheres) == 0) {
+            $err = simpleQuery(getDbAccess() , "delete from docwait");
         } else {
-            $err = simpleQuery(getDbAccess(), sprintf("delete from docwait where %s", implode(" and ",$wheres)));
+            $err = simpleQuery(getDbAccess() , sprintf("delete from docwait where %s", implode(" and ", $wheres)));
         }
         return $err;
     }
 }
-
 ?>

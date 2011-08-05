@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * digestAuthenticator class
  *
@@ -13,14 +17,14 @@
  * @package FDL
  * @subpackage
  */
- /**
+/**
  */
 
-class digestAuthenticator {
-  function __construct($parms) {
-    throw new Exception(__CLASS__."::".__FUNCTION__." "."Not available yet...");
-  }
-
+class digestAuthenticator
+{
+    function __construct($parms)
+    {
+        throw new Exception(__CLASS__ . "::" . __FUNCTION__ . " " . "Not available yet...");
+    }
 }
-
 ?>
