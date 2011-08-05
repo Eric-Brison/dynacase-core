@@ -1,7 +1,7 @@
 Dynacase Platform  
 =================
 
-Create dynamic business applications with an open source platform.  
+_Create dynamic business applications with an open source platform._  
 
 Dynacase Platform offers an innovative Open Source PHP Platform for Case Management. Dynacase Platform integrates Business Process Management (BPM), Enterprise Content Management (ECM) and Collaboration Management.  
 
@@ -10,13 +10,17 @@ Dynacase Platform is an open source development platform, with core functionalit
 Getting Help
 ------------
 
+### Documentation 
+
+[Dynacase documentation](http://www.dynacase.org/) provides guides (installation) & reference manuals (developpment).
+
 ### Forum 
 
 [Dynacase Forum](http://forum.dynacase.org/) the better place for getting some help by the community.  
 
 ### Bug report
 
-[Dynacase Bug Report](http://dev.dynacase.org/) 
+Use [Dynacase Bug Report](http://dev.dynacase.org/) to be sure that major bugs don't go unnoticed by developpers. 
 
 ### Commercial Support, Licensing
 
