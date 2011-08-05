@@ -24,7 +24,9 @@ Use [Dynacase Bug Report](http://dev.dynacase.org/) to be sure that major bugs d
 
 ### Commercial Support, Licensing
 
-If you want information go to [Anakeen](http://anakeen.com) (ISV of Dynacase).
+If you want information on commercial support, licensing go to [Anakeen (ISV of Dynacase)](http://anakeen.com).
+
+Follow Anakeen on twitter [@anakeen Twitter](http://www.twitter.com/anakeen) or on [its french blog](http://anakeen.com/category/blog/nouvelles).
 
 
 Contributing
@@ -36,7 +38,7 @@ Dynacase is an open source project. You can help us by contributing to documenta
 Legal Stuff
 -----------
 
-All rights reserved under the granted license by Anakeen (ISV of Dynacase).
+All rights reserved under the granted license by Anakeen.
 The enterprise edition is guaranteed and allows access to corrective patch on private repository.
 The enterprise edition allows the customer to change the license in agreement with Anakeen.
 The community edition is not guaranteed and necessarily under GNU Affero General Public License V3 - AGPL V3.
