@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * History log for document
  *
@@ -10,24 +15,21 @@
 /**
  */
 
-
-
-include_once("Class.Doc.php");
-Class DocRead extends DbObj {
- 
-
-  /**
-   * identificator of document
-   * @public int
-   */
-  public $id;  
-
-
-
-  public $id_fields = array ("id");
-
-  public $dbtable = "docread";
-  public $sqlcreate = "
+include_once ("Class.Doc.php");
+Class DocRead extends DbObj
+{
+    /**
+     * identificator of document
+     * @public int
+     */
+    public $id;
+    
+    public $id_fields = array(
+        "id"
+    );
+    
+    public $dbtable = "docread";
+    public $sqlcreate = "
 create table docread ( id int not null,
                    primary key (id),
                    owner int,
@@ -70,38 +72,46 @@ create index initid_docread on docread(initid);
 create index title_docread on docread(title);
 create index docty_docread on docread(doctype);
 create index full_docread on docread using gist(fulltext);";
-
- public $fields = array ( "id","owner","title",
-			   "revision","version",
-			   "initid","fromid",
-			   "doctype",
-			   "locked",
-			   "allocated",
-                           "archiveid",
-			   "icon",
-			   "lmodify",
-			   "profid",
-			   "usefor",
-			   "cdate",
-			   "adate",
-			   "revdate",
-			   "comment",
-			   "classname",
-			   "state",
-			   "wid",
-			   "postitid",
-			   "forumid",
-			   "cvid",
-			   "name",
-			   "dprofid",
-			   "atags",
-			   "prelid",
-			   "confidential",
-			   "ldapdn");
-
-  public $sup_fields= array("values",
-			    "svalues",
-			    "attrids"); // not be in fields else trigger error
-
+    
+    public $fields = array(
+        "id",
+        "owner",
+        "title",
+        "revision",
+        "version",
+        "initid",
+        "fromid",
+        "doctype",
+        "locked",
+        "allocated",
+        "archiveid",
+        "icon",
+        "lmodify",
+        "profid",
+        "usefor",
+        "cdate",
+        "adate",
+        "revdate",
+        "comment",
+        "classname",
+        "state",
+        "wid",
+        "postitid",
+        "forumid",
+        "cvid",
+        "name",
+        "dprofid",
+        "atags",
+        "prelid",
+        "confidential",
+        "ldapdn"
+    );
+    
+    public $sup_fields = array(
+        "values",
+        "svalues",
+        "attrids"
+    ); // not be in fields else trigger error
+    
 }
 ?>

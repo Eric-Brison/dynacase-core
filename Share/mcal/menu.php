@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * For TEST widget menu Calendar
  *
@@ -6,9 +11,9 @@
  * @version $Id: menu.php,v 1.2 2005/11/24 13:47:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FREEDOM
- * @subpackage 
+ * @subpackage
  */
- /**
+/**
  */
 ?>
 <html>

@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: access_user_chg.php,v 1.4 2007/02/14 15:13:16 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage ACCESS
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------
 // $Id: access_user_chg.php,v 1.4 2007/02/14 15:13:16 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/access_user_chg.php,v $
@@ -49,30 +53,28 @@
 //
 //
 // ---------------------------------------------------------------
-include_once("Class.QueryDb.php");
-include_once("Class.Application.php");
-include_once("Class.Acl.php");
-include_once("Class.Permission.php");
-
+include_once ("Class.QueryDb.php");
+include_once ("Class.Application.php");
+include_once ("Class.Acl.php");
+include_once ("Class.Permission.php");
 // -----------------------------------
-function access_user_chg(&$action) {
-// -----------------------------------
-
-  // select the first user if not set
-  // What user are we working on ? ask session.
-  $user_id=GetHttpVars("id");
-  $group = (GetHttpVars("group") == "yes");
-  $filteruser=getHttpVars("userfilter");
- 
-  $action->log->debug("user_id : ".$user_id);
-
-  if ($group) {
-    $action->Register("access_group_id",$user_id);
-    redirect($action,"ACCESS","GROUP_ACCESS");
-  } else {
-    $action->Register("access_user_id",$user_id);
-    redirect($action,"ACCESS","USER_ACCESS&userfilter=$filteruser");
-  }
-
+function access_user_chg(&$action)
+{
+    // -----------------------------------
+    // select the first user if not set
+    // What user are we working on ? ask session.
+    $user_id = GetHttpVars("id");
+    $group = (GetHttpVars("group") == "yes");
+    $filteruser = getHttpVars("userfilter");
+    
+    $action->log->debug("user_id : " . $user_id);
+    
+    if ($group) {
+        $action->Register("access_group_id", $user_id);
+        redirect($action, "ACCESS", "GROUP_ACCESS");
+    } else {
+        $action->Register("access_user_id", $user_id);
+        redirect($action, "ACCESS", "USER_ACCESS&userfilter=$filteruser");
+    }
 }
 ?>

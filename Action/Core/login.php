@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: login.php,v 1.3 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */
- /**
+/**
  */
-
 // $Id: login.php,v 1.3 2003/08/18 15:46:41 eric Exp $
 // $Log: login.php,v $
 // Revision 1.3  2003/08/18 15:46:41  eric
@@ -41,26 +45,23 @@
 // Importation
 //
 
-
-function login(&$action) {
-
-// This function is used to show curent user if set
-// TODO
-
-  if (!isset($action->user)) {
-    $action->lay->set("USER","");
-    $action->lay->set("ONOUT",$action->parent->GetImageUrl("bblue.gif"));
-    $action->lay->set("ONOVER",$action->parent->GetImageUrl("bgreen.gif"));
-    $action->lay->set("ALTLOGINOUT","login");
-    $action->lay->set("ACTION","");
-  } else {
-    $action->lay->set("USER",$action->user->firstname." ".$action->user->lastname);
-    $action->lay->set("ONOUT",$action->parent->GetImageUrl("bgreen.gif"));
-    $action->lay->set("ONOVER",$action->parent->GetImageUrl("bred.gif"));
-    $action->lay->set("ALTLOGINOUT","logout");
-    $action->lay->set("ACTION","LOGOUT");
-    $action->lay->set("OUT","");
-  }
+function login(&$action)
+{
+    // This function is used to show curent user if set
+    // TODO
+    if (!isset($action->user)) {
+        $action->lay->set("USER", "");
+        $action->lay->set("ONOUT", $action->parent->GetImageUrl("bblue.gif"));
+        $action->lay->set("ONOVER", $action->parent->GetImageUrl("bgreen.gif"));
+        $action->lay->set("ALTLOGINOUT", "login");
+        $action->lay->set("ACTION", "");
+    } else {
+        $action->lay->set("USER", $action->user->firstname . " " . $action->user->lastname);
+        $action->lay->set("ONOUT", $action->parent->GetImageUrl("bgreen.gif"));
+        $action->lay->set("ONOVER", $action->parent->GetImageUrl("bred.gif"));
+        $action->lay->set("ALTLOGINOUT", "logout");
+        $action->lay->set("ACTION", "LOGOUT");
+        $action->lay->set("OUT", "");
+    }
 }
-
 ?>

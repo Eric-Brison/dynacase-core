@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Display WHAT logo
  *
@@ -10,26 +15,23 @@
  */
 /**
  */
-
-
-
-
 /**
  * Display WHAT logo and clear object cache
  */
-function logo(&$action) {
-  global $_SERVER;
-  global $CacheObj;
-
-  $CacheObj=array();
- 
-  unset($_SESSION["CacheObj"]);// clearcache
-  $action->lay->set("PHP_AUTH_USER",$_SERVER['PHP_AUTH_USER']);    
-
-  $action->lay->set("navigator",$action->Read("navigator"));  
-  $action->lay->set("navversion",$action->Read("navversion")); 
-  global $zou;
-  $zou="1";
-  session_register("zou");
+function logo(&$action)
+{
+    global $_SERVER;
+    global $CacheObj;
+    
+    $CacheObj = array();
+    
+    unset($_SESSION["CacheObj"]); // clearcache
+    $action->lay->set("PHP_AUTH_USER", $_SERVER['PHP_AUTH_USER']);
+    
+    $action->lay->set("navigator", $action->Read("navigator"));
+    $action->lay->set("navversion", $action->Read("navversion"));
+    global $zou;
+    $zou = "1";
+    session_register("zou");
 }
 ?>

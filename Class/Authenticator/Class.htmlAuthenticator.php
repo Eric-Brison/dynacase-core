@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * htmlAuthenticator class
  *
@@ -11,176 +15,183 @@
  * @package WHAT
  * @subpackage
  */
- /**
+/**
  */
-include_once('WHAT/Class.Authenticator.php');
+include_once ('WHAT/Class.Authenticator.php');
 
-Class htmlAuthenticator extends Authenticator {
-
-  public $auth_session=null;
-
-  /**
-   **
-   **
-   **/
-  public function checkAuthentication() {
-    $session = $this->getAuthSession();
+Class htmlAuthenticator extends Authenticator
+{
     
-    if( $session->read('username') != "" ) return TRUE;
+    public $auth_session = null;
+    /**
+     **
+     **
+     *
+     */
+    public function checkAuthentication()
+    {
+        $session = $this->getAuthSession();
         
-    if( ! array_key_exists($this->parms{'username'}, $_POST) ) return FALSE;
-    if( ! array_key_exists($this->parms{'password'}, $_POST) ) return FALSE;
-
-    if( is_callable(array($this->provider, 'validateCredential')) ) {
-      if( ! $this->provider->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}]) ) {
-	return FALSE;
-      }
-
-      if( ! $this->freedomUserExists($_POST[$this->parms{'username'}]) ) {
-	if( ! $this->tryInitializeUser($_POST[$this->parms{'username'}]) ) {
-	  return FALSE;
-	}
-      }
-      $session->register('username', $_POST[$this->parms{'username'}]);
-      $session->setuid($_POST[$this->parms{'username'}]);
-      return TRUE;
+        if ($session->read('username') != "") return TRUE;
+        
+        if (!array_key_exists($this->parms{'username'}, $_POST)) return FALSE;
+        if (!array_key_exists($this->parms{'password'}, $_POST)) return FALSE;
+        
+        if (is_callable(array(
+            $this->provider,
+            'validateCredential'
+        ))) {
+            if (!$this->provider->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}])) {
+                return FALSE;
+            }
+            
+            if (!$this->freedomUserExists($_POST[$this->parms{'username'}])) {
+                if (!$this->tryInitializeUser($_POST[$this->parms{'username'}])) {
+                    return FALSE;
+                }
+            }
+            $session->register('username', $_POST[$this->parms{'username'}]);
+            $session->setuid($_POST[$this->parms{'username'}]);
+            return TRUE;
+        }
+        
+        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: " . get_class($this->provider) . " must implement function validateCredential()");
+        return FALSE;
     }
-
-    error_log(__CLASS__."::".__FUNCTION__." "."Error: ".get_class($this->provider)." must implement function validateCredential()");
-    return FALSE;
-  }
-
-
-  /**
-   * retrieve authentification session
-   * @return Session the session object
-   */
-  public function getAuthSession() {
-    if (! $this->auth_session) {
-      include_once('WHAT/Class.Session.php');
-      $this->auth_session = new Session($this->parms{'cookie'});
-      if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-	$this->auth_session->Set($_COOKIE[$this->parms{'cookie'}]);
-      } else {
-	$this->auth_session->Set();
-      }
+    /**
+     * retrieve authentification session
+     * @return Session the session object
+     */
+    public function getAuthSession()
+    {
+        if (!$this->auth_session) {
+            include_once ('WHAT/Class.Session.php');
+            $this->auth_session = new Session($this->parms{'cookie'});
+            if (array_key_exists($this->parms{'cookie'}, $_COOKIE)) {
+                $this->auth_session->Set($_COOKIE[$this->parms{'cookie'}]);
+            } else {
+                $this->auth_session->Set();
+            }
+        }
+        return $this->auth_session;
     }
-    return $this->auth_session;
-  }
-
-  /**
-   **
-   **
-   **/
-  function checkAuthorization($opt) {
-    if( is_callable(array($this->provider, 'validateAuthorization')) ) {
-      return $this->provider->validateAuthorization($opt);
+    /**
+     **
+     **
+     *
+     */
+    function checkAuthorization($opt)
+    {
+        if (is_callable(array(
+            $this->provider,
+            'validateAuthorization'
+        ))) {
+            return $this->provider->validateAuthorization($opt);
+        }
+        return TRUE;
     }
-    return TRUE;
-  }
-  
-  /**
-   **
-   **
-   **/
-  public function askAuthentication() {
-
-    $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
-    
-    $referer_uri = "";
-    if( $parsed_referer['path'] != "" ) {
-      $referer_uri .= $parsed_referer['path'];
-    }
-    if( $parsed_referer['query'] != "" ) {
-      $referer_uri .= "?".$parsed_referer['query'];
-    }
-    if( $parsed_referer['fragment'] != "" ) {
-      $referer_uri .= "#".$parsed_referer['fragment'];
-    }
-    $session = $this->getAuthSession();
-
-    
-//     error_log("referer_uri = ".$referer_uri." / REQUEST_URI = ".$_SERVER['REQUEST_URI']);
-    if( $referer_uri == "" ) {
-//       error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
-      $session->register('fromuri', $_SERVER['REQUEST_URI']);
-    } else if( $session->read('fromuri') == "" && $referer_uri != $_SERVER['REQUEST_URI'] ) {
-//       error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
-      $session->register('fromuri', $_SERVER['REQUEST_URI']);
-    }
+    /**
+     **
+     **
+     *
+     */
+    public function askAuthentication()
+    {
+        
+        $parsed_referer = parse_url($_SERVER['HTTP_REFERER']);
+        
+        $referer_uri = "";
+        if ($parsed_referer['path'] != "") {
+            $referer_uri.= $parsed_referer['path'];
+        }
+        if ($parsed_referer['query'] != "") {
+            $referer_uri.= "?" . $parsed_referer['query'];
+        }
+        if ($parsed_referer['fragment'] != "") {
+            $referer_uri.= "#" . $parsed_referer['fragment'];
+        }
+        $session = $this->getAuthSession();
+        //     error_log("referer_uri = ".$referer_uri." / REQUEST_URI = ".$_SERVER['REQUEST_URI']);
+        if ($referer_uri == "") {
+            //       error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
+            $session->register('fromuri', $_SERVER['REQUEST_URI']);
+        } else if ($session->read('fromuri') == "" && $referer_uri != $_SERVER['REQUEST_URI']) {
+            //       error_log("Setting fromuri = ".$_SERVER['REQUEST_URI']);
+            $session->register('fromuri', $_SERVER['REQUEST_URI']);
+        }
         
         if (array_key_exists('authurl', $this->parms)) {
             if (substr($this->parms{'authurl'}, 0, 9) == "guest.php") {
                 $dirname = dirname($_SERVER["SCRIPT_NAME"]);
-                header('Location: ' . str_replace('//','/',$dirname . '/' . $this->parms{'authurl'}));
+                header('Location: ' . str_replace('//', '/', $dirname . '/' . $this->parms{'authurl'}));
             } else {
                 header('Location: ' . $this->parms{'authurl'});
             }
             return TRUE;
         }
-    
-    error_log(__CLASS__."::".__FUNCTION__." "."Error: no authurl of askAuthentication() method defined for ".$this->parms{'type'}.$this->parms{'provider'}."Provider");
-    return FALSE;
-  }
-
-  /**
-   **
-   **
-   **/
-  public function getAuthUser() {
-    $session_auth=$this->getAuthSession();    
-    return $session_auth->read('username');
-  }
-  
-  /**
-   **
-   **
-   **/
-  public function getAuthPw() {    
-    return null;
-  }
-  
-  /**
-   **
-   **
-   **/
-  public function logout($redir_uri) {
-    $session_auth=$this->getAuthSession();
-    if( array_key_exists($this->parms{'cookie'}, $_COOKIE) ) {
-//       error_log("Closing auth session for cookie : ".$this->parms{'cookie'});
-      $session_auth->close();
+        
+        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: no authurl of askAuthentication() method defined for " . $this->parms{'type'} . $this->parms{'provider'} . "Provider");
+        return FALSE;
     }
-    if( $redir_uri == "" && array_key_exists('indexurl', $this->parms) ) {
-      header('Location: '.$this->parms{'indexurl'});
-    } else {
-      header('Location: '.$redir_uri);
+    /**
+     **
+     **
+     *
+     */
+    public function getAuthUser()
+    {
+        $session_auth = $this->getAuthSession();
+        return $session_auth->read('username');
     }
-    return TRUE;
-  }
-
-
- 
-  /**
-   **
-   **
-   **/
-  public function setSessionVar($name, $value) { 
-    $session_auth=$this->getAuthSession();
-    $session_auth->register($name, $value);
-    
-    return $session_auth->read($name);
-  }
-  
-  /**
-   **
-   **
-   **/
-  public function getSessionVar($name) {
-    $session_auth=$this->getAuthSession();    
-    return $session_auth->read($name);
-  }
-
-
+    /**
+     **
+     **
+     *
+     */
+    public function getAuthPw()
+    {
+        return null;
+    }
+    /**
+     **
+     **
+     *
+     */
+    public function logout($redir_uri)
+    {
+        $session_auth = $this->getAuthSession();
+        if (array_key_exists($this->parms{'cookie'}, $_COOKIE)) {
+            //       error_log("Closing auth session for cookie : ".$this->parms{'cookie'});
+            $session_auth->close();
+        }
+        if ($redir_uri == "" && array_key_exists('indexurl', $this->parms)) {
+            header('Location: ' . $this->parms{'indexurl'});
+        } else {
+            header('Location: ' . $redir_uri);
+        }
+        return TRUE;
+    }
+    /**
+     **
+     **
+     *
+     */
+    public function setSessionVar($name, $value)
+    {
+        $session_auth = $this->getAuthSession();
+        $session_auth->register($name, $value);
+        
+        return $session_auth->read($name);
+    }
+    /**
+     **
+     **
+     *
+     */
+    public function getSessionVar($name)
+    {
+        $session_auth = $this->getAuthSession();
+        return $session_auth->read($name);
+    }
 }
-
 ?>

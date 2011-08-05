@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: setactpar.php,v 1.3 2004/03/22 15:21:40 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------
 // $Id: setactpar.php,v 1.3 2004/03/22 15:21:40 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/setactpar.php,v $
@@ -39,39 +43,38 @@
 //
 //
 // ---------------------------------------------------------------
-include_once("Class.Action.php");
-
-
+include_once ("Class.Action.php");
 // -----------------------------------
-function setactpar(&$action) {
-// -----------------------------------
-  global $_POST;
-  reset($_POST);
-  $sapp = GetHttpVars("sapp",$action->name);
-  $sact = GetHttpVars("sact",$action->parent->name);
-
-  $key  = GetHttpVars("key","");
-
-  $app = new Application($action->dbaccess);
-  $app->Set($sapp,$action->parent);
-  $act = new Action($action->dbaccess);
-  $act->Set($sact,$app,$action->session);
-
-  if ($key != "") {
-    if ($key != "all") {
-      $val = GetHttpVars("$key","");
-      $act->ActRegister($key,$val);
-    } else {
-      global $_POST;
-      reset($_POST);
-      while (list($k,$v)=each($_POST)) {
-        if (($k != "key") && ($k != "sapp") && ($k != "sact")) {
-          $act->ActRegister($k,$v);
+function setactpar(&$action)
+{
+    // -----------------------------------
+    global $_POST;
+    reset($_POST);
+    $sapp = GetHttpVars("sapp", $action->name);
+    $sact = GetHttpVars("sact", $action->parent->name);
+    
+    $key = GetHttpVars("key", "");
+    
+    $app = new Application($action->dbaccess);
+    $app->Set($sapp, $action->parent);
+    $act = new Action($action->dbaccess);
+    $act->Set($sact, $app, $action->session);
+    
+    if ($key != "") {
+        if ($key != "all") {
+            $val = GetHttpVars("$key", "");
+            $act->ActRegister($key, $val);
+        } else {
+            global $_POST;
+            reset($_POST);
+            while (list($k, $v) = each($_POST)) {
+                if (($k != "key") && ($k != "sapp") && ($k != "sact")) {
+                    $act->ActRegister($k, $v);
+                }
+            }
         }
-      }
     }
-  }
-
-  redirect($action,$sapp,$sact);
+    
+    redirect($action, $sapp, $sact);
 }
 ?>

@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * regenerate js version file
  *
@@ -12,19 +17,18 @@
 /**
  */
 
-$nv=getJsVersion();
+$nv = getJsVersion();
 
-$fjs=getParam("CORE_PUBDIR")."/CORE/wversion.js.in";
+$fjs = getParam("CORE_PUBDIR") . "/CORE/wversion.js.in";
 
-$fc=file_get_contents($fjs);
-$fc = str_replace("%VERSION%",$nv,$fc);
+$fc = file_get_contents($fjs);
+$fc = str_replace("%VERSION%", $nv, $fc);
 
-$cible=getParam("CORE_PUBDIR")."/CORE/wversion.js";
-$fj=fopen($cible,"w");
-fputs($fj,$fc);
+$cible = getParam("CORE_PUBDIR") . "/CORE/wversion.js";
+$fj = fopen($cible, "w");
+fputs($fj, $fc);
 fclose($fj);
 
-$action->parent->param->Set("WVERSION",$nv);
+$action->parent->param->Set("WVERSION", $nv);
 print "$cible [$nv]\n";
-
 ?>
