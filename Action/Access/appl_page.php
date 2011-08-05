@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: appl_page.php,v 1.2 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage ACCESS
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------
 // $Id: appl_page.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/appl_page.php,v $
@@ -43,21 +47,19 @@
 //
 //
 // ---------------------------------------------------------------
-include_once("Class.QueryDb.php");
-include_once("Class.Application.php");
-include_once("Class.Acl.php");
-include_once("Class.Permission.php");
-
+include_once ("Class.QueryDb.php");
+include_once ("Class.Application.php");
+include_once ("Class.Acl.php");
+include_once ("Class.Permission.php");
 // -----------------------------------
-function appl_page(&$action) {
-// -----------------------------------
-
-  // select the first user if not set
-  // What user are we working on ? ask session.
-  $start=GetHttpVars("start");
-  $action->Register("appl_access_page",$start);
-
-  redirect($action,"ACCESS","APPL_ACCESS");
-
+function appl_page(&$action)
+{
+    // -----------------------------------
+    // select the first user if not set
+    // What user are we working on ? ask session.
+    $start = GetHttpVars("start");
+    $action->Register("appl_access_page", $start);
+    
+    redirect($action, "ACCESS", "APPL_ACCESS");
 }
 ?>

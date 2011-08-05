@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: access_appl_chg.php,v 1.2 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage ACCESS
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------
 // $Id: access_appl_chg.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/access_appl_chg.php,v $
@@ -46,28 +50,26 @@
 //
 //
 // ---------------------------------------------------------------
-include_once("Class.QueryDb.php");
-include_once("Class.Application.php");
-include_once("Class.Acl.php");
-include_once("Class.Permission.php");
-
+include_once ("Class.QueryDb.php");
+include_once ("Class.Application.php");
+include_once ("Class.Acl.php");
+include_once ("Class.Permission.php");
 // -----------------------------------
-function access_appl_chg(&$action) {
-// -----------------------------------
-
-  // select the first user if not set
-  // What user are we working on ? ask session.
-  $user_id=GetHttpVars("id");
-  $isclass = (GetHttpVars("isclass") == "yes");
-  $action->log->debug("appl_id : ".$user_id);
-
-
-  if ($isclass) {
-    $action->Register("access_class_id",$user_id);
-    redirect($action,"ACCESS","OBJECT_ACCESS");
-  } else {
-  $action->Register("access_appl_id",$user_id);
-    redirect($action,"ACCESS","APPL_ACCESS");
-  }
+function access_appl_chg(&$action)
+{
+    // -----------------------------------
+    // select the first user if not set
+    // What user are we working on ? ask session.
+    $user_id = GetHttpVars("id");
+    $isclass = (GetHttpVars("isclass") == "yes");
+    $action->log->debug("appl_id : " . $user_id);
+    
+    if ($isclass) {
+        $action->Register("access_class_id", $user_id);
+        redirect($action, "ACCESS", "OBJECT_ACCESS");
+    } else {
+        $action->Register("access_appl_id", $user_id);
+        redirect($action, "ACCESS", "APPL_ACCESS");
+    }
 }
 ?>

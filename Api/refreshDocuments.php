@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * importation of documents
  *
@@ -12,11 +17,8 @@
  */
 
 global $action;
-
 // refreah for a classname
 // use this only if you have changed title attributes
-
-
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.SearchDoc.php");
 function color_failure($msg)
@@ -34,31 +36,29 @@ function color_warning($msg)
     if ($msg) return chr(0x1b) . "[1;33m" . $msg . chr(0x1b) . "[0;39m";
 }
 
-$famId=$method=$arg=$revision=$docid=$start=$slice=$fldid=$filter=$save='';
+$famId = $method = $arg = $revision = $docid = $start = $slice = $fldid = $filter = $save = '';
 $usage = new ApiUsage();
 $usage->setText("Refresh documents ");
-$usage->addNeeded("famid", "the family identificator used to filter",$famId);
-$usage->addOption("method", "method to use)",$method,array(),"refresh");
+$usage->addNeeded("famid", "the family identificator used to filter", $famId);
+$usage->addOption("method", "method to use)", $method, array() , "refresh");
 $usage->addOption("arg", "optional method argument to set when calling method", $arg);
 $usage->addOption("revision", "use all revision", $revision, array(
     "yes",
     "no"
-),"no");
-$usage->addOption("docid", "use only for this document id",$docid);
-$usage->addOption("start", "start from offset",$start,array(),0);
-$usage->addOption("slice", "limit from offset",$slice,array(),"all");
-$usage->addOption("fldid", "use collection id to limit search",$fldid);
-$usage->addOption("filter", "sql filter to limit search",$filter);
-$usage->addOption("save", "store mode", $save,array(
+) , "no");
+$usage->addOption("docid", "use only for this document id", $docid);
+$usage->addOption("start", "start from offset", $start, array() , 0);
+$usage->addOption("slice", "limit from offset", $slice, array() , "all");
+$usage->addOption("fldid", "use collection id to limit search", $fldid);
+$usage->addOption("filter", "sql filter to limit search", $filter);
+$usage->addOption("save", "store mode", $save, array(
     "complete",
     "light",
     "none"
-),"light");
+) , "light");
 $usage->verify();
 
 $allrev = ($revision == "yes"); // method to use
-
-
 $dbaccess = $action->getParam("FREEDOM_DB");
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
@@ -86,10 +86,10 @@ if ($fldid > 0) $s->dirid = $fldid;
 if ($allrev) $s->latest = false;
 if ($filter) {
     // verify validity and prevent hack
-    if (@pg_prepare($s->dbid, sprintf("select id from doc%d where %s",$s->fromid, $filter))==false) {
+    if (@pg_prepare($s->dbid, sprintf("select id from doc%d where %s", $s->fromid, $filter)) == false) {
         $action->exitError(sprintf("filter not valid :%s", pg_last_error()));
     } else {
-    $s->addFilter($filter);
+        $s->addFilter($filter);
     }
 }
 $s->search();
@@ -100,9 +100,9 @@ if ($s->searchError()) {
 $targ = array();
 if ($arg != "") $targ[] = $arg;
 $card = $s->count();
-printf("\n%d %s to update with %s\n", $card, $f->getTitle(), $method);
+printf("\n%d %s to update with %s\n", $card, $f->getTitle() , $method);
 
-while ( $doc = $s->nextDoc() ) {
+while ($doc = $s->nextDoc()) {
     $usemethod = ($method && (method_exists($doc, $method)));
     if ($method && (!method_exists($doc, $method))) {
         printf("\nmethod not exists %s \n", $method);
@@ -115,33 +115,31 @@ while ( $doc = $s->nextDoc() ) {
         $ret = call_user_func_array(array(
             $doc,
             $method
-        ), $targ);
+        ) , $targ);
         if ($doc->isChanged()) {
             $olds = $doc->getOldValues();
-            foreach ( $olds as $k => $v ) {
-                $smod .= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getValue($k));
+            foreach ($olds as $k => $v) {
+                $smod.= sprintf("\t- %s [%s]:[%s]\n", $k, $v, $doc->getValue($k));
             }
             switch ($save) {
-            case "light" :
-                $err = $doc->modify(true);
-                $modified = true;
-                break;
-            case "complete" :
-                $err = $doc->save();
-                $modified = true;
-                break;
+                case "light":
+                    $err = $doc->modify(true);
+                    $modified = true;
+                    break;
+
+                case "complete":
+                    $err = $doc->save();
+                    $modified = true;
+                    break;
             }
-            $ret.=$err;
+            $ret.= $err;
         }
     }
     $memory = '';
     //$memory= round(memory_get_usage() / 1024)."Ko";
-    
-
     printf("%s)%s[%d] %s %s %s\n", $card, $doc->title, $doc->id, ($modified) ? '-M-' : '', $memory, color_failure($ret));
     if ($smod) print $smod;
     
     $card--;
 }
-
 ?>

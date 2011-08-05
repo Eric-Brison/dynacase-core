@@ -1,8 +1,13 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Document list class
  *
- * @author Anakeen  
+ * @author Anakeen
  * @version $Id:  $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
@@ -19,18 +24,18 @@ class DocumentList implements Iterator
     private $init = false;
     public $length = 0;
     
-    public function __construct(SearchDoc &$s = null)
+    public function __construct(SearchDoc & $s = null)
     {
         $this->search = $s;
         $this->initSearch();
     }
-    
     /**
      * get number of returned documents
      * can be upper of real length due to callback map
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         $this->initSearch();
         return $this->length;
     }
@@ -43,16 +48,17 @@ class DocumentList implements Iterator
                     throw new Exception($this->search->getError());
                 }
                 $this->length = $this->search->count();
-                $this->init=true;
+                $this->init = true;
             }
         }
     }
     
-    private function getCurrentDoc() {
+    private function getCurrentDoc()
+    {
         $this->currentDoc = $this->search->nextDoc();
         $good = ($this->callHook() !== false);
         if (!$good) {
-            while ( $this->currentDoc = $this->search->nextDoc() ) {
+            while ($this->currentDoc = $this->search->nextDoc()) {
                 $good = ($this->callHook() !== false);
                 if ($good) break;
             }
@@ -63,8 +69,6 @@ class DocumentList implements Iterator
     {
         $this->initSearch();
         $this->getCurrentDoc();
-    
-    
     }
     public function next()
     {
@@ -77,7 +81,6 @@ class DocumentList implements Iterator
             // call_user_func($function, $this->currentDoc);
             $h = $this->hookFunction;
             return $h($this->currentDoc);
-        
         }
     }
     public function key()
@@ -102,7 +105,7 @@ class DocumentList implements Iterator
         $this->search = new SearchDoc(getDbAccess());
         $this->search->setObjectReturn();
         $this->search->excludeConfidential();
-        foreach ( $ids as $k => $v ) {
+        foreach ($ids as $k => $v) {
             if ((!$v) || (!is_numeric($v))) unset($ids[$k]);
         }
         $ids = array_unique($ids);

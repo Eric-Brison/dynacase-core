@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: Class.Upload.php,v 1.2 2003/08/18 15:46:42 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package FDL
  * @subpackage CORE
  */
- /**
+/**
  */
-
 //--------------------------------#
 // LICENSE
 //--------------------------------#
@@ -58,7 +62,7 @@
 //
 // ---------------------------------------------------------------------------
 //
-$CLASS_UPLOAD_PHP = '$Id:';   
+$CLASS_UPLOAD_PHP = '$Id:';
 /*
 Error codes:
   0 - "No file was uploaded"
@@ -68,153 +72,160 @@ Error codes:
   4 - "File already exists" (save only)
 */
 
-class uploader {
-
-  var $file;
-  var $errors;
-  var $accepted="";
-  var $new_file="";
-  var $max_filesize=100000;
-  var $max_image_width=1000;
-  var $max_image_height=1000;
-
-  function max_filesize($size){
-    $this->max_filesize=$size;
-  }
-
-  function max_image_size($width, $height){
-    $this->max_image_width=$width;
-    $this->max_image_height=$height;
-  }
-
-  function upload($filename, $accept_type, $extension) {
-    // get all the properties of the file
-    $index=array("file", "name", "size", "type");
-    for($i=0; $i < 4; $i++) {
-      $file_var='$' . $filename . (($index[$i] != "file") ? "_" . $index[$i] : "");
-      eval('global ' . $file_var . ';');
-      eval('$this->file[$index[$i]]=' . $file_var . ';');
-    }
-  
-    if($this->file["file"] && $this->file["file"] != "none") {
-      //test max size
-      if($this->max_filesize && $this->file["size"] > $this->max_filesize) {
-        $this->errors[]="Taille maximale dépassée:. Le fichier ne doit pas excéder " . $this->max_filesize/1000 . "KB.";
-        return False;
-      }
-       if(preg_match("/image/", $this->file["type"])) {
-
-         $image=getimagesize($this->file["file"]);
-         $this->file["width"]=$image[0];
-         $this->file["height"]=$image[1];
-      
-        // test max image size
-        if(($this->max_image_width || $this->max_image_height) && 
-           (($this->file["width"] > $this->max_image_width) || 
-           ($this->file["height"] > $this->max_image_height))) {
-          $this->errors[]="Les dimensions de l'image sont trop importantes. ".
-                          "L'image ne doit pas faire plus de : " . 
-                           $this->max_image_width . " x " . 
-                           $this->max_image_height . " pixels";
-          return False;
-        }
-         switch($image[2]) {
-           case 1:
-             $this->file["extension"]=".gif";
-             break;
-           case 2:
-             $this->file["extension"]=".jpg";
-             break;
-           case 3:
-             $this->file["extension"]=".png";
-             break;
-           default:
-            $this->file["extension"]=$extension;
-             break;
-         }
-      }
-       else if(!preg_match("/(\.)([a-z0-9]{3,5})$/",$this->file["name"])&&!$extension) {
-        // add new mime types here
-        switch($this->file["type"]) {
-          case "text/plain":
-            $this->file["extension"]=".txt";
-            break;
-          default:
-            break;
-        }      
-       }
-      else {
-        $this->file["extension"]=$extension;
-      }
+class uploader
+{
     
-      // check to see if the file is of type specified
-      if($accept_type) {
-	$pattern = preg_quote($accept_type);
-        if(preg_match("/$pattern/", $this->file["type"])) { $this->accepted=True; }
-        else { $this->errors[]="Seuls les fichiers de type " . 
-               preg_replace("/\|/", " or ", $accept_type) . 
-               " sont acceptés"; }
-      }
-      else { $this->accepted=True; }
-    }
-    else { $this->errors[]="Fichier introuvable..."; }
-    return $this->accepted;
-  }
-
-  function save_file($path, $mode){
-    global $NEW_NAME;
+    var $file;
+    var $errors;
+    var $accepted = "";
+    var $new_file = "";
+    var $max_filesize = 100000;
+    var $max_image_width = 1000;
+    var $max_image_height = 1000;
     
-    if($this->accepted) {
-      if(!file_exists($path )) { mkdir( $path, 0775); }
-      // very strict naming of file.. only lowercase letters, 
-      // numbers and underscores
-      $new_name=preg_replace("/[^a-z0-9._]/", "", 
-		preg_replace("/ /", "_", 
-		preg_replace("/%20/", "_", strtolower($this->file["name"]))));
-
-      // check for extension and remove
-      if(preg_match("/(\.)([a-z0-9]{3,5})$/", $new_name)) {
-        $pos=strrpos($new_name, ".");
-        if(!isset($this->file["extension"])) { 
-	  $this->file["extension"]=substr($new_name,$pos,strlen($new_name));
+    function max_filesize($size)
+    {
+        $this->max_filesize = $size;
+    }
+    
+    function max_image_size($width, $height)
+    {
+        $this->max_image_width = $width;
+        $this->max_image_height = $height;
+    }
+    
+    function upload($filename, $accept_type, $extension)
+    {
+        // get all the properties of the file
+        $index = array(
+            "file",
+            "name",
+            "size",
+            "type"
+        );
+        for ($i = 0; $i < 4; $i++) {
+            $file_var = '$' . $filename . (($index[$i] != "file") ? "_" . $index[$i] : "");
+            eval('global ' . $file_var . ';');
+            eval('$this->file[$index[$i]]=' . $file_var . ';');
         }
-        $new_name=substr($new_name, 0, $pos);
         
-      }
-      $new_name= uniqid("")."_".$new_name; 
-      if (!isset($this->file["extension"])) $this->file["extension"]="";
-      $this->new_file=$path . $new_name . $this->file["extension"];
-      $NEW_NAME=$new_name . $this->file["extension"];
-      
-      switch($mode) {
-        case 1: // overwrite mode
-          $aok=copy($this->file["file"], $this->new_file);
-          break;
-        case 2: // create new with incremental extension
-          while(file_exists($path . $new_name . $copy . 
-                            $this->file["extension"])) 
-          {
-            $copy="_copy" . $n;
-            $n++;
-          }
-          $this->new_file=$path.$new_name.$copy.$this->file["extension"];
-          $aok=copy($this->file["file"], $this->new_file);
-          break;
-        case 3: // do nothing if exists, highest protection
-          if(file_exists($this->new_file)){
-            $this->errors[]="Le fichier &quot".
-                             $this->new_file."&quot existe déjà";
-          }
-          else {
-            $aok=rename($this->file["file"], $this->new_file);
-          }
-          break;
-        default:
-          break;
-      }
-      if(!$aok) { unset($this->new_file); }
-      return $aok;
+        if ($this->file["file"] && $this->file["file"] != "none") {
+            //test max size
+            if ($this->max_filesize && $this->file["size"] > $this->max_filesize) {
+                $this->errors[] = "Taille maximale dépassée:. Le fichier ne doit pas excéder " . $this->max_filesize / 1000 . "KB.";
+                return False;
+            }
+            if (preg_match("/image/", $this->file["type"])) {
+                
+                $image = getimagesize($this->file["file"]);
+                $this->file["width"] = $image[0];
+                $this->file["height"] = $image[1];
+                // test max image size
+                if (($this->max_image_width || $this->max_image_height) && (($this->file["width"] > $this->max_image_width) || ($this->file["height"] > $this->max_image_height))) {
+                    $this->errors[] = "Les dimensions de l'image sont trop importantes. " . "L'image ne doit pas faire plus de : " . $this->max_image_width . " x " . $this->max_image_height . " pixels";
+                    return False;
+                }
+                switch ($image[2]) {
+                    case 1:
+                        $this->file["extension"] = ".gif";
+                        break;
+
+                    case 2:
+                        $this->file["extension"] = ".jpg";
+                        break;
+
+                    case 3:
+                        $this->file["extension"] = ".png";
+                        break;
+
+                    default:
+                        $this->file["extension"] = $extension;
+                        break;
+                }
+            } else if (!preg_match("/(\.)([a-z0-9]{3,5})$/", $this->file["name"]) && !$extension) {
+                // add new mime types here
+                switch ($this->file["type"]) {
+                    case "text/plain":
+                        $this->file["extension"] = ".txt";
+                        break;
+
+                    default:
+                        break;
+                }
+            } else {
+                $this->file["extension"] = $extension;
+            }
+            // check to see if the file is of type specified
+            if ($accept_type) {
+                $pattern = preg_quote($accept_type);
+                if (preg_match("/$pattern/", $this->file["type"])) {
+                    $this->accepted = True;
+                } else {
+                    $this->errors[] = "Seuls les fichiers de type " . preg_replace("/\|/", " or ", $accept_type) . " sont acceptés";
+                }
+            } else {
+                $this->accepted = True;
+            }
+        } else {
+            $this->errors[] = "Fichier introuvable...";
+        }
+        return $this->accepted;
     }
-  }
+    
+    function save_file($path, $mode)
+    {
+        global $NEW_NAME;
+        
+        if ($this->accepted) {
+            if (!file_exists($path)) {
+                mkdir($path, 0775);
+            }
+            // very strict naming of file.. only lowercase letters,
+            // numbers and underscores
+            $new_name = preg_replace("/[^a-z0-9._]/", "", preg_replace("/ /", "_", preg_replace("/%20/", "_", strtolower($this->file["name"]))));
+            // check for extension and remove
+            if (preg_match("/(\.)([a-z0-9]{3,5})$/", $new_name)) {
+                $pos = strrpos($new_name, ".");
+                if (!isset($this->file["extension"])) {
+                    $this->file["extension"] = substr($new_name, $pos, strlen($new_name));
+                }
+                $new_name = substr($new_name, 0, $pos);
+            }
+            $new_name = uniqid("") . "_" . $new_name;
+            if (!isset($this->file["extension"])) $this->file["extension"] = "";
+            $this->new_file = $path . $new_name . $this->file["extension"];
+            $NEW_NAME = $new_name . $this->file["extension"];
+            
+            switch ($mode) {
+                case 1: // overwrite mode
+                    $aok = copy($this->file["file"], $this->new_file);
+                    break;
+
+                case 2: // create new with incremental extension
+                    while (file_exists($path . $new_name . $copy . $this->file["extension"])) {
+                        $copy = "_copy" . $n;
+                        $n++;
+                    }
+                    $this->new_file = $path . $new_name . $copy . $this->file["extension"];
+                    $aok = copy($this->file["file"], $this->new_file);
+                    break;
+
+                case 3: // do nothing if exists, highest protection
+                    if (file_exists($this->new_file)) {
+                        $this->errors[] = "Le fichier &quot" . $this->new_file . "&quot existe déjà";
+                    } else {
+                        $aok = rename($this->file["file"], $this->new_file);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            if (!$aok) {
+                unset($this->new_file);
+            }
+            return $aok;
+        }
+    }
 }
 ?>

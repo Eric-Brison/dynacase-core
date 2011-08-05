@@ -3,14 +3,12 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
-
+*/
 
 require_once "Class.DbObj.php";
-
 /**
  * Waiting document
- * 
+ *
  * @brief Temporary saving
  * @class DocWait
  * @package FDL
@@ -18,8 +16,8 @@ require_once "Class.DbObj.php";
 class DocWait extends DbObj
 {
     /**
-     * database field 
-     * 
+     * database field
+     *
      * @var array
      */
     public $fields = array(
@@ -40,71 +38,70 @@ class DocWait extends DbObj
     );
     /**
      * identificator of referer document
-     * 
+     *
      * @var integer
      */
     public $refererid;
     /**
      * temporary identificator use before creation
-     * 
+     *
      * @var integer
      */
     public $localid;
     /**
      * identificator system of the user
-     * 
+     *
      * @var integer
      */
     public $uid;
     /**
      * document title
-     * 
+     *
      * @var string
      */
     public $title;
     /**
      * date record
-     * 
+     *
      * @var date
      */
     public $date;
     /**
      * document status : ok|constraint|obsolete
-     * 
+     *
      * @var string
      */
     public $status;
     /**
      * document status message
-     * 
+     *
      * @var string
      */
     public $statusmessage;
     /**
      * arg of code
-     * 
+     *
      * @var text serialize object
      */
     public $arg;
-    
     /**
      * fields primary key
-     * 
+     *
      * @var array fields primary key
      */
     public $id_fields = array(
         "refererinitid",
         "uid"
     );
-     /**
+    /**
      * database table name
-     * 
+     *
      * @var array
      */
-    public $dbtable = "docwait"; 
+    public $dbtable = "docwait";
     /**
      * sql create table
-     * 
+     *
      * @var array
      */
     public $sqlcreate = "
@@ -137,28 +134,28 @@ create sequence seq_waittransaction start 1;
     const invalid = "invalid";
     const recording = "recording";
     /**
-     * referer document 
-     * 
+     * referer document
+     *
      * @var Doc
      */
     private $refererDoc = null;
     /**
-     * referer document identificator 
-     * 
+     * referer document identificator
+     *
      * @var integer
      */
     private $refererDocId = null;
     /**
-     * waiting document 
-     * 
+     * waiting document
+     *
      * @var Doc
      */
     private $waitingDoc = null;
     /**
      * save waiting document
-     * 
+     *
      * @param mixed &$info informations for save
-     * 
+     *
      * @return string error message
      */
     public function save(&$info = null)
@@ -201,7 +198,7 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * get waiting document from database
-     * 
+     *
      * @return string error message
      */
     public function resetWaitingDocument()
@@ -222,12 +219,12 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * get write attribute of a doc
-     * 
-     * @param Doc &$doc the doc 
-     * 
+     *
+     * @param Doc &$doc the doc
+     *
      * @return array of docAttribute
      */
-    private function getWriteAttribute(Doc &$doc)
+    private function getWriteAttribute(Doc & $doc)
     {
         $attrs = $doc->getNormalAttributes();
         $wattr = array();
@@ -240,7 +237,7 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * complete
-     * 
+     *
      * @return void
      */
     public function complete()
@@ -250,9 +247,9 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * the referer (null if new document)
-     * 
+     *
      * @param boolean $reset set to true to force update from database
-     * 
+     *
      * @return Doc the referer
      */
     public function getRefererDocument($reset = false)
@@ -280,7 +277,7 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * the referer with new values, document ready to update original
-     * 
+     *
      * @return Doc the document
      */
     public function getWaitingDocument()
@@ -299,10 +296,10 @@ create sequence seq_waittransaction start 1;
             $this->waitingDoc->doctype = 'I';
         }
         return $this->waitingDoc;
-    }  
+    }
     /**
      * verify if waiting document status is valid
-     * 
+     *
      * @return boolean true if valid
      */
     public function isValid()
@@ -311,9 +308,9 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * verify if origin values are same as current alive values
-     * 
+     *
      * @param integer $mask identificator to use specific mask to detect W attributes
-     * 
+     *
      * @brief restrict to W/O visibilities values
      * @return integer ths status code
      */
@@ -368,7 +365,7 @@ create sequence seq_waittransaction start 1;
     }
     /**
      * get extrat data of waiting document
-     * 
+     *
      * @return string the data
      */
     public function getExtraData()

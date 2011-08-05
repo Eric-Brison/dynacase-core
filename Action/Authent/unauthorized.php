@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * unauthorized function for the unauthorized layout
  *
@@ -9,17 +13,17 @@
  * @package FDL
  * @subpackage
  */
- /**
+/**
  */
 
-function unauthorized(&$action) {
-  $action->lay->set("msg", "Vous n'êtes pas autorisé à consulter cette ressource.");
-
-  echo $action->lay->gen();
-
-  $action->session->close();
-
-  exit(0);
+function unauthorized(&$action)
+{
+    $action->lay->set("msg", "Vous n'êtes pas autorisé à consulter cette ressource.");
+    
+    echo $action->lay->gen();
+    
+    $action->session->close();
+    
+    exit(0);
 }
-
 ?>

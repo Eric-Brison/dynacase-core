@@ -1,12 +1,17 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Specific menu for family
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: popupdocdetail.php,v 1.45 2009/01/08 17:48:40 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- * @subpackage 
+ * @subpackage
  */
 /**
  */
@@ -20,30 +25,22 @@ function popupdocdetail(&$action)
     $popup = getpopupdocdetail($action, $docid);
     
     popupdoc($action, $popup);
-
 }
 function getpopupdocdetail(&$action, $docid)
 {
     // define accessibility
     $zone = GetHttpVars("zone"); // special zone
-    
-
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $doc = new_Doc($dbaccess, $docid);
     if ($doc->isAffected()) $docid = $doc->id;
     //  if ($doc->doctype=="C") return; // not for familly
-    
-
     $tsubmenu = array();
-    
     // -------------------- Menu menu ------------------
-    
-
     $surl = $action->getParam("CORE_STANDURL");
     
     $tlink = array(
         "headers" => array(
-            "descr" => _("Properties"),
+            "descr" => _("Properties") ,
             "url" => "$surl&app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -52,9 +49,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "latest" => array(
-            "descr" => _("View latest"),
+            "descr" => _("View latest") ,
             "url" => "$surl&app=FDL&action=FDL_CARD&latest=Y&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -63,9 +60,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "editdoc" => array(
-            "descr" => _("Modify"),
+            "descr" => _("Modify") ,
             "url" => "$surl&app=GENERIC&action=GENERIC_EDIT&rzone=$zone&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -81,18 +78,18 @@ function getpopupdocdetail(&$action, $docid)
     addStatesPopup($tlink, $doc);
     $tlink = array_merge($tlink, array(
         "delete" => array(
-            "descr" => _("Delete"),
+            "descr" => _("Delete") ,
             "url" => "$surl&app=GENERIC&action=GENERIC_DEL&id=$docid",
             "confirm" => "true",
             "control" => "false",
-            "tconfirm" => sprintf(_("Sure delete %s ?"), str_replace("'", "&rsquo;", $doc->title)),
+            "tconfirm" => sprintf(_("Sure delete %s ?") , str_replace("'", "&rsquo;", $doc->title)) ,
             "target" => "_self",
             "visibility" => POPUP_INACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "restore" => array(
-            "descr" => _("restore"),
+            "descr" => _("restore") ,
             "url" => "$surl&app=FDL&action=RESTOREDOC&id=$docid",
             "tconfirm" => "",
             "confirm" => "false",
@@ -100,9 +97,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "editstate" => array(
-            "descr" => _("Change state"),
+            "descr" => _("Change state") ,
             "url" => "$surl&app=FREEDOM&action=FREEDOM_EDITSTATE&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -111,20 +108,20 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "lockdoc" => array(
-            "descr" => _("Lock"),
+            "descr" => _("Lock") ,
             "url" => "$surl&app=FDL&action=LOCKFILE&id=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
             "target" => "_self",
             "visibility" => POPUP_INACTIVE,
-            "submenu" => N_("security"),
+            "submenu" => N_("security") ,
             "barmenu" => "false"
-        ),
+        ) ,
         "unlockdoc" => array(
-            "descr" => _("Unlock"),
+            "descr" => _("Unlock") ,
             "url" => "$surl&app=FDL&action=UNLOCKFILE&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -133,9 +130,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INACTIVE,
             "submenu" => "security",
             "barmenu" => "false"
-        ),
+        ) ,
         "revise" => array(
-            "descr" => _("Revise"),
+            "descr" => _("Revise") ,
             "url" => "$surl&app=FREEDOM&action=REVCOMMENT&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -144,9 +141,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "editprof" => array(
-            "descr" => _("Change profile"),
+            "descr" => _("Change profile") ,
             "url" => "$surl&app=FREEDOM&action=EDITPROF&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -155,9 +152,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INACTIVE,
             "submenu" => "security",
             "barmenu" => "false"
-        ),
+        ) ,
         "privateprof" => array(
-            "descr" => _("Set private"),
+            "descr" => _("Set private") ,
             "url" => "$surl&app=FREEDOM&action=MODPROF&docid=$docid&profid=private",
             "confirm" => "false",
             "control" => "false",
@@ -166,9 +163,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "security",
             "barmenu" => "false"
-        ),
+        ) ,
         "specprof" => array(
-            "descr" => _("Set autonome profil"),
+            "descr" => _("Set autonome profil") ,
             "url" => "$surl&app=FREEDOM&action=MODPROF&docid=$docid&profid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -177,9 +174,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "security",
             "barmenu" => "false"
-        ),
+        ) ,
         "publicprof" => array(
-            "descr" => _("Set public"),
+            "descr" => _("Set public") ,
             "url" => "$surl&app=FREEDOM&action=MODPROF&docid=$docid&profid=0",
             "confirm" => "false",
             "control" => "false",
@@ -188,9 +185,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "security",
             "barmenu" => "false"
-        ),
+        ) ,
         "histo" => array(
-            "descr" => _("History"),
+            "descr" => _("History") ,
             "url" => "$surl&app=FREEDOM&action=HISTO&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -199,9 +196,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_ACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "reaffect" => array(
-            "descr" => _("Reaffect"),
+            "descr" => _("Reaffect") ,
             "url" => "",
             "jsfunction" => "popdoc(null,'$surl&app=FDL&action=EDITAFFECT&id=$docid')",
             "confirm" => "false",
@@ -211,20 +208,20 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "duplicate" => array(
-            "descr" => _("Duplicate"),
+            "descr" => _("Duplicate") ,
             "url" => "$surl&app=GENERIC&action=GENERIC_DUPLICATE&id=$docid",
             "confirm" => "true",
             "control" => "false",
-            "tconfirm" => _("Sure duplicate ?"),
+            "tconfirm" => _("Sure duplicate ?") ,
             "target" => "_self",
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "access" => array(
-            "descr" => _("goaccess"),
+            "descr" => _("goaccess") ,
             "url" => "$surl&app=FREEDOM&action=FREEDOM_GACCESS&id=" . $doc->profid,
             "confirm" => "false",
             "control" => "false",
@@ -235,10 +232,10 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_ACTIVE,
             "submenu" => "security",
             "barmenu" => "false"
-        ),
+        ) ,
         "tobasket" => array(
-            "descr" => _("Add to basket"),
-            "url" => "$surl&app=FREEDOM&action=ADDDIRFILE&docid=$docid&dirid=" . $action->getParam("FREEDOM_IDBASKET"),
+            "descr" => _("Add to basket") ,
+            "url" => "$surl&app=FREEDOM&action=ADDDIRFILE&docid=$docid&dirid=" . $action->getParam("FREEDOM_IDBASKET") ,
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
@@ -246,9 +243,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "chgicon" => array(
-            "descr" => _("Change icon"),
+            "descr" => _("Change icon") ,
             "url" => "$surl&app=FDL&action=EDITICON&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -257,9 +254,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "addpostit" => array(
-            "descr" => _("Add postit"),
+            "descr" => _("Add postit") ,
             "jsfunction" => "postit('$surl&app=GENERIC&action=GENERIC_EDIT&classid=27&pit_title=&pit_idadoc=$docid',50,50,300,200)",
             "confirm" => "false",
             "control" => "false",
@@ -268,9 +265,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_ACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "viewask" => array(
-            "descr" => _("View my ask"),
+            "descr" => _("View my ask") ,
             "jsfunction" => "viewwask('$surl&app=FDL&action=VIEWWASK&docid=$docid',50,50,300,200)",
             "confirm" => "false",
             "control" => "false",
@@ -279,9 +276,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "viewanswers" => array(
-            "descr" => _("View answers"),
+            "descr" => _("View answers") ,
             "url" => "$surl&app=FDL&action=IMPCARD&zone=FDL:VIEWANSWERS&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -290,9 +287,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "createforum" => array(
-            "descr" => _("create forum"),
+            "descr" => _("create forum") ,
             "url" => "$surl&app=FDL&action=FDL_FORUMCREATE&docid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -301,9 +298,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "openforum" => array(
-            "descr" => _("open forum"),
+            "descr" => _("open forum") ,
             "url" => "$surl&app=FDL&action=FDL_FORUMOPEN&docid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -312,9 +309,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "closeforum" => array(
-            "descr" => _("close forum"),
+            "descr" => _("close forum") ,
             "url" => "$surl&app=FDL&action=FDL_FORUMCLOSE&docid=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -323,9 +320,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_INVISIBLE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "toxml" => array(
-            "descr" => _("View XML"),
+            "descr" => _("View XML") ,
             "url" => "$surl&app=FDL&action=VIEWXML&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -334,9 +331,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "relations" => array(
-            "descr" => _("Document relations"),
+            "descr" => _("Document relations") ,
             "url" => "$surl&app=FREEDOM&action=RNAVIGATE&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -345,9 +342,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "path" => array(
-            "descr" => _("Access path list"),
+            "descr" => _("Access path list") ,
             "url" => "$surl&app=FREEDOM&action=FREEDOM_IFLD&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -356,9 +353,9 @@ function getpopupdocdetail(&$action, $docid)
             "visibility" => POPUP_CTRLACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ),
+        ) ,
         "reference" => array(
-            "descr" => _("Search linked documents"),
+            "descr" => _("Search linked documents") ,
             "url" => "$surl&app=GENERIC&action=GENERIC_ISEARCH&id=$docid",
             "confirm" => "false",
             "control" => "false",
@@ -377,7 +374,6 @@ function getpopupdocdetail(&$action, $docid)
     addDocOfflinePopup($tlink, $doc, "_self", _("Offline menu"));
     
     return $tlink;
-
 }
 /**
  * Add control view menu
@@ -392,31 +388,30 @@ function addArchivePopup(&$tlink, &$doc, $target = "_self")
     $s->search();
     
     if ($s->count() > 0) {
-        while ( $archive = $s->nextDoc() ) {
+        while ($archive = $s->nextDoc()) {
             if ($archive->control("modify") == "") {
                 $tlink["arch" . $archive->id] = array(
-                    "descr" => sprintf(_("Insert in %s"), $archive->getTitle()),
+                    "descr" => sprintf(_("Insert in %s") , $archive->getTitle()) ,
                     "url" => "?app=FREEDOM&action=ADDDIRFILE&docid=" . $doc->initid . "&dirid=" . $archive->initid,
                     "confirm" => "false",
                     "control" => "false",
                     "tconfirm" => "",
                     "target" => "",
                     "visibility" => POPUP_ACTIVE,
-                    "submenu" => _("Archive menu"),
+                    "submenu" => _("Archive menu") ,
                     "barmenu" => "false"
                 );
-                
                 // app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=[dirid]&id=[FREEDOM_IDBASKET]
                 if (($doc->defDoctype == "S") || ($doc->defDoctype == "D")) {
                     $tlink["farch" . $archive->id] = array(
-                        "descr" => sprintf(_("Insert the content in %s"), $archive->getTitle()),
+                        "descr" => sprintf(_("Insert the content in %s") , $archive->getTitle()) ,
                         "url" => "?app=FREEDOM&action=FREEDOM_INSERTFLD&dirid=" . $doc->initid . "&id=" . $archive->initid,
                         "confirm" => "true",
                         "control" => "false",
-                        "tconfirm" => sprintf("Sure insert the content of %s n archive ?", $doc->getTitle()),
+                        "tconfirm" => sprintf("Sure insert the content of %s n archive ?", $doc->getTitle()) ,
                         "target" => "",
                         "visibility" => POPUP_ACTIVE,
-                        "submenu" => _("Archive menu"),
+                        "submenu" => _("Archive menu") ,
                         "barmenu" => "false"
                     );
                 }
@@ -448,11 +443,9 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
         
         $tv = array(); // consult array views
         $te = array(); // edit array views
-        
-
         $count = array();
         if (count($tk) > 0) {
-            foreach ( $tk as $k => $v ) {
+            foreach ($tk as $k => $v) {
                 if ($td[$k] != "no") {
                     if ($tz[$k] != "") {
                         if ($ti[$k] == "") $cvk = "CV$k";
@@ -461,7 +454,7 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
                             if ($cud) {
                                 if ($cvdoc->control($cvk) == "") {
                                     $tv[$cvk] = array(
-                                        "typeview" => N_("specialedit"), # N_("specialedit %s")
+                                        "typeview" => N_("specialedit") , # N_("specialedit %s")
                                         "idview" => $cvk,
                                         "menu" => $tmenu[$k],
                                         "zoneview" => $tz[$k],
@@ -472,7 +465,7 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
                         } else {
                             if ($cvdoc->control($cvk) == "") {
                                 $tv[$cvk] = array(
-                                    "typeview" => N_("specialview"), # N_("specialview %s") 
+                                    "typeview" => N_("specialview") , # N_("specialview %s")
                                     "idview" => $cvk,
                                     "menu" => $tmenu[$k],
                                     "zoneview" => $tz[$k],
@@ -485,11 +478,11 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
             }
         }
         
-        foreach ( $tv as $v ) {
+        foreach ($tv as $v) {
             $count[$v["typeview"]]++;
         }
         
-        foreach ( $tv as $v ) {
+        foreach ($tv as $v) {
             $engine = $cvdoc->getZoneTransform($v["zoneview"]);
             $url = ($v["typeview"] == 'specialview') ? "$surl&app=FDL&action=FDL_CARD&vid=" . $v["idview"] . "&id=$docid" : "$surl&app=GENERIC&action=GENERIC_EDIT&rvid=$rvid&vid=" . $v["idview"] . "&id=$docid";
             if ($engine) {
@@ -504,7 +497,7 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
                 $mtitle = $v["txtview"];
             } else {
                 $submenu = ($count[$v["typeview"]] > 1) ? $v["typeview"] : "";
-                $mtitle = ($count[$v["typeview"]] > 1) ? $v["txtview"] : sprintf(_($v["typeview"] . " %s"), $v["txtview"]);
+                $mtitle = ($count[$v["typeview"]] > 1) ? $v["txtview"] : sprintf(_($v["typeview"] . " %s") , $v["txtview"]);
             }
             $tlink[$v["idview"]] = array(
                 "descr" => $mtitle,
@@ -519,10 +512,8 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
                 "barmenu" => "false"
             );
         }
-    
     }
 }
-
 /**
  * Add control view menu
  */
@@ -537,40 +528,38 @@ function addStatesPopup(&$tlink, &$doc)
         $surl = getParam("CORE_STANDURL");
         $docid = $doc->id;
         
-        foreach ( $fstate as $v ) {
+        foreach ($fstate as $v) {
             $tr = $wdoc->getTransition($doc->state, $v);
             $jsf = "";
             
             if ((!$tr["nr"]) || (is_array($tr["ask"]) && (count($tr["ask"]) > 0))) {
-                $jsf = sprintf("popdoc(null,'$surl&app=FDL&action=EDITCHANGESTATE&id=$docid&nstate=$v','%s',0,40,400,250)", (str_replace("'", "&rsquo;", sprintf(_("Change state %s"), _($v)))));
-            
+                $jsf = sprintf("popdoc(null,'$surl&app=FDL&action=EDITCHANGESTATE&id=$docid&nstate=$v','%s',0,40,400,250)", (str_replace("'", "&rsquo;", sprintf(_("Change state %s") , _($v)))));
             } else {
                 $jsf = sprintf("subwindow(100,100,'_self','$surl&app=FREEDOM&action=MODSTATE&newstate=$v&id=$docid');");
             }
             
             $tlink[$v] = array(
-                "title" => $wdoc->getActivity($v, ucfirst(_($v))),
-                "descr" => $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, ucfirst(_($v))),
+                "title" => $wdoc->getActivity($v, ucfirst(_($v))) ,
+                "descr" => $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, ucfirst(_($v))) ,
                 "jsfunction" => $jsf,
                 "confirm" => "false",
                 "control" => "false",
-                "color" => $wdoc->getColor($v),
+                "color" => $wdoc->getColor($v) ,
                 "tconfirm" => "",
-                "icon" => (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : ""),
+                "icon" => (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "") ,
                 "target" => "_self",
                 "visibility" => POPUP_ACTIVE,
                 "submenu" => "chgstates", #_("chgstates")
                 "barmenu" => "false"
             );
         }
-    
     }
 }
 function addFamilyPopup(&$tlink, &$doc)
 {
     $lmenu = $doc->GetMenuAttributes(true);
     
-    foreach ( $lmenu as $k => $v ) {
+    foreach ($lmenu as $k => $v) {
         
         $confirm = false;
         $control = false;
@@ -601,7 +590,7 @@ function addFamilyPopup(&$tlink, &$doc)
         $tlink[$k]["control"] = $control;
         $tlink[$k]["mwidth"] = $v->getOption("mwidth");
         $tlink[$k]["mheight"] = $v->getOption("mheight");
-        $tlink[$k]["tconfirm"] = $v->getOption("tconfirm", sprintf(_("Sure %s ?"), addslashes($v->getLabel())));
+        $tlink[$k]["tconfirm"] = $v->getOption("tconfirm", sprintf(_("Sure %s ?") , addslashes($v->getLabel())));
         if ($v->visibility == "H") $tlink[$k]["visibility"] = POPUP_INVISIBLE;
         else $tlink[$k]["visibility"] = ($control) ? POPUP_CTRLACTIVE : POPUP_ACTIVE;
         $tlink[$k]["submenu"] = $v->getOption("submenu");
@@ -610,13 +599,11 @@ function addFamilyPopup(&$tlink, &$doc)
             $tlink[$k]["visibility"] = $doc->ApplyMethod($v->precond, POPUP_ACTIVE);
             if ($tlink[$k]["visibility"] === false) $tlink[$k]["visibility"] = POPUP_INVISIBLE;
             elseif ($tlink[$k]["visibility"] === true) $tlink[$k]["visibility"] = POPUP_ACTIVE;
-        
         }
-    
     }
     // -------------------- Menu action ------------------
     $lactions = $doc->GetActionAttributes();
-    foreach ( $lactions as $k => $v ) {
+    foreach ($lactions as $k => $v) {
         
         $confirm = false;
         $control = false;
@@ -628,8 +615,7 @@ function addFamilyPopup(&$tlink, &$doc)
             $v->link = $reg[2];
             $tlink[$k]["target"] = $reg[1];
         } else {
-            $tlink[$k]["target"] = $v->id . "_" . $doc->id;
-            ;
+            $tlink[$k]["target"] = $v->id . "_" . $doc->id;;
         }
         if ($v->getOption("ltarget") != "") $tlink[$k]["target"] = $v->getOption("ltarget");
         $tlink[$k]["barmenu"] = ($v->getOption("barmenu") == "yes") ? "true" : "false";
@@ -640,22 +626,19 @@ function addFamilyPopup(&$tlink, &$doc)
         $tlink[$k]["control"] = $control;
         $tlink[$k]["mwidth"] = $v->getOption("mwidth");
         $tlink[$k]["mheight"] = $v->getOption("mheight");
-        $tlink[$k]["tconfirm"] = sprintf(_("Sure %s ?"), addslashes($v->getLabel()));
+        $tlink[$k]["tconfirm"] = sprintf(_("Sure %s ?") , addslashes($v->getLabel()));
         if ($v->visibility == "H") $tlink[$k]["visibility"] = POPUP_INVISIBLE;
         else $tlink[$k]["visibility"] = ($control) ? POPUP_CTRLACTIVE : POPUP_ACTIVE;
         $tlink[$k]["submenu"] = $v->getOption("submenu");
         if ($v->precond != "") $tlink[$k]["visibility"] = $doc->ApplyMethod($v->precond, POPUP_ACTIVE);
-    
     }
-
 }
 
-
-function addDocOfflinePopup(&$tlink, Doc &$doc, $target = "_self", $menu = 'offline')
+function addDocOfflinePopup(&$tlink, Doc & $doc, $target = "_self", $menu = 'offline')
 {
     if (file_exists("OFFLINE/off_popupdocfolder.php")) {
         include_once ("OFFLINE/off_popupdocfolder.php");
-        addOfflinePopup($tlink, $doc, $target, $menu );
+        addOfflinePopup($tlink, $doc, $target, $menu);
     }
 }
 /**
@@ -667,8 +650,6 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
     $cud = ($doc->CanEdit() == "");
     $tlink["toxml"]["visibility"] = POPUP_INVISIBLE;
     //  $tlink["reference"]["visibility"]=POPUP_CTRLACTIVE;
-    
-
     if (getParam("FREEDOM_IDBASKET") == 0) $tlink["tobasket"]["visibility"] = POPUP_INVISIBLE;
     
     if ($doc->locked == $doc->userid) $tlink["lockdoc"]["visibility"] = POPUP_INVISIBLE;
@@ -678,8 +659,7 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
     if ($doc->isLocked()) {
         if ($cuf) $tlink["unlockdoc"]["visibility"] = POPUP_ACTIVE;
         else $tlink["unlockdoc"]["visibility"] = POPUP_INACTIVE;
-    } else
-        $tlink["unlockdoc"]["visibility"] = POPUP_INVISIBLE;
+    } else $tlink["unlockdoc"]["visibility"] = POPUP_INVISIBLE;
     
     if (!$doc->isRevisable()) $tlink["revise"]["visibility"] = POPUP_INVISIBLE;
     else if ((($doc->lmodify == 'Y') || ($doc->revision == 0)) && ($cud)) $tlink["revise"]["visibility"] = POPUP_CTRLACTIVE;
@@ -723,14 +703,13 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         $tlink["editdoc"]["visibility"] = POPUP_INACTIVE;
     }
     
-    if ($doc->locked == -1) { // fixed document
+    if ($doc->locked == - 1) { // fixed document
         if ($doc->doctype != 'Z') {
             $tmpdoc = new_Doc($doc->dbaccess, $doc->initid, true);
             if ($tmpdoc->Control("view") == "") {
                 $tlink["latest"]["visibility"] = POPUP_ACTIVE;
             }
-        } else
-            $tlink["restore"]["visibility"] = POPUP_ACTIVE;
+        } else $tlink["restore"]["visibility"] = POPUP_ACTIVE;
         $tlink["editdoc"]["visibility"] = POPUP_INVISIBLE;
         $tlink["delete"]["visibility"] = POPUP_INVISIBLE;
         $tlink["editprof"]["visibility"] = POPUP_INVISIBLE;
@@ -739,15 +718,14 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         $tlink["publicprof"]["visibility"] = POPUP_INVISIBLE;
         $tlink["privateprof"]["visibility"] = POPUP_INVISIBLE;
     }
-    
     /*
-  if ($doc->locked != -1) {
+    if ($doc->locked != -1) {
     if ($doc->wid > 0) {
       $wdoc=new_Doc($doc->dbaccess, $doc->wid);
       if ($wdoc->isAlive()) {
-	$wdoc->Set($doc);
-	if (count($wdoc->GetFollowingStates()) > 0)  $tlink["editstate"]["visibility"]=POPUP_ACTIVE;
-	else $tlink["editstate"]["visibility"]=POPUP_INACTIVE;
+    $wdoc->Set($doc);
+    if (count($wdoc->GetFollowingStates()) > 0)  $tlink["editstate"]["visibility"]=POPUP_ACTIVE;
+    else $tlink["editstate"]["visibility"]=POPUP_INACTIVE;
       }
     }
     }*/
@@ -762,18 +740,16 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         // find the wask in fixed revision
         if (($doc->control("wask") == "") && ($doc->wid > 0)) {
             $latestwaskid = $doc->getLatestIdWithAsk(); // change variable
-            
-
             if ($latestwaskid) {
                 $tlink["viewanswers"]["visibility"] = POPUP_ACTIVE;
-                $tlink["viewanswers"]["url"] .= "&id=$latestwaskid";
+                $tlink["viewanswers"]["url"].= "&id=$latestwaskid";
             }
         }
     }
     
     if ($doc->doctype == "F") $tlink["chgicon"]["visibility"] = POPUP_INVISIBLE;
     
-    if (($doc->postitid > 0) || ($doc->locked == -1)) $tlink["addpostit"]["visibility"] = POPUP_INVISIBLE;
+    if (($doc->postitid > 0) || ($doc->locked == - 1)) $tlink["addpostit"]["visibility"] = POPUP_INVISIBLE;
     else if ($doc->fromid == 27) $tlink["addpostit"]["visibility"] = POPUP_INVISIBLE; // for post it family
     else {
         $fnote = new_doc($doc->dbaccess, 27);
@@ -781,7 +757,6 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         else $tlink["addpostit"]["visibility"] = POPUP_ACTIVE;
     }
     if (!$action->parent->Haspermission("FREEDOM", "FREEDOM")) {
-        
         // actions not available
         $tlink["editstate"]["visibility"] = POPUP_INVISIBLE;
         $tlink["revise"]["visibility"] = POPUP_INVISIBLE;
@@ -792,7 +767,6 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
     if (!$action->parent->Haspermission("FREEDOM_READ", "FREEDOM")) {
         $tlink["histo"]["visibility"] = POPUP_INVISIBLE;
     }
-    
     // Forum
     $tlink["createforum"]["visibility"] = POPUP_INVISIBLE;
     $tlink["openforum"]["visibility"] = POPUP_INVISIBLE;
@@ -804,7 +778,5 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         $tlink["closeforum"]["visibility"] = ($vf > 0 ? POPUP_ACTIVE : POPUP_INVISIBLE);
         $tlink["openforum"]["visibility"] = ($vf < 0 ? POPUP_ACTIVE : POPUP_INVISIBLE);
     }
-
 }
-
 ?>

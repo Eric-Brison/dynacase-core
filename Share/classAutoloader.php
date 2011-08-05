@@ -1,21 +1,26 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 
 namespace dcp;
 
 class ExtensionFilterIteratorDecorator extends \FilterIterator
 {
     private $_ext;
-    
     /**
      * Check whether the current element of the iterator is acceptable
      *
      * @see FilterIterator::accept()
      *
      * @return bool true if the current element is acceptable, otherwise false.
-     **/
+     *
+     */
     public function accept()
     {
-        if (substr($this->current(), -1 * strlen($this->_ext)) === $this->_ext) {
+        if (substr($this->current() , -1 * strlen($this->_ext)) === $this->_ext) {
             return is_readable($this->current());
         }
         return false;
@@ -38,18 +43,17 @@ class ExtensionFilterIteratorDecorator extends \FilterIterator
  * @author dev@dynacase.org <dev@dynacase.org>
  *
  */
-interface IClassHunter
-{
+interface IClassHunter {
     /**
      * Find all classes in given file
      *
      * @param text $pFileName file name
      *
      * @return array of strings
-     **/
+     *
+     */
     public function find($pFileName);
 }
-
 /**
  * Class in charge of detecting classes declarations in files (only for PHP 5.3)
  *
@@ -64,7 +68,8 @@ class ClassHunterForPHP5_3 implements IClassHunter
      * @param text $pFileName file name
      *
      * @return array of strings
-     **/
+     *
+     */
     public function find($pFileName)
     {
         $toReturn = array();
@@ -74,7 +79,7 @@ class ClassHunterForPHP5_3 implements IClassHunter
         $validatedNamespaceHunt = false;
         $classHunt = false;
         $whitespaceCount = 0;
-        foreach ( $tokens as $token ) {
+        foreach ($tokens as $token) {
             if (is_array($token)) {
                 if ($token[0] === T_INTERFACE || $token[0] === T_CLASS) {
                     $classHunt = true;
@@ -87,7 +92,7 @@ class ClassHunterForPHP5_3 implements IClassHunter
                     $toReturn[(strlen($currentNamespace) > 0 ? $currentNamespace . '\\' : '') . $token[1]] = $pFileName;
                     $classHunt = false;
                 } elseif ($namespaceHunt && $validatedNamespaceHunt && ($token[0] === T_STRING || $token[0] === T_NS_SEPARATOR)) {
-                    $currentNamespace .= $token[1];
+                    $currentNamespace.= $token[1];
                 } elseif ($namespaceHunt && !$validatedNamespaceHunt && $token[0] === T_WHITESPACE) {
                     $currentNamespace = '';
                     $validatedNamespaceHunt = true;
@@ -163,7 +168,6 @@ class DirectoriesAutoloader
             'autoload'
         ));
     }
-    
     /**
      * force autoloader to regenerate cache now!
      *
@@ -176,7 +180,6 @@ class DirectoriesAutoloader
         $this->_saveIncache();
         return self::$_instance;
     }
-    
     //--- Cache
     private $_cachePath;
     private $_cacheFileName = 'directoriesautoloader.cache.php';
@@ -219,7 +222,6 @@ class DirectoriesAutoloader
     //--- /Cache
     //--- custom filters
     private $_customFilterClasses = null;
-    
     /**
      * add an instance of FilterIterator as custom filter
      *
@@ -238,6 +240,7 @@ class DirectoriesAutoloader
                     $pCustomFilterClass
                 );
                 //error_log("adding [$pCustomFilterClass] as custom filter");
+                
             } else {
                 $this->_customFilterClasses[] = $pCustomFilterClass;
             }
@@ -248,6 +251,7 @@ class DirectoriesAutoloader
     }
     //--- /custom filters
     //--- Autoload
+    
     /**
      * autoloader
      *
@@ -283,19 +287,19 @@ class DirectoriesAutoloader
     {
         $cwd = getcwd();
         //include known classes
-        foreach ( $this->_directories as $directory => $recursive ) {
+        foreach ($this->_directories as $directory => $recursive) {
             /*
              * Relative directories are handled relative to _cachePath
-             */
+            */
             $changedCwd = false;
-            if( strpos($directory, '/') !== 0 ) {
-                $ret = chdir($this->_cachePath.DIRECTORY_SEPARATOR.$directory);
-                if( $ret === false ) {
+            if (strpos($directory, '/') !== 0) {
+                $ret = chdir($this->_cachePath . DIRECTORY_SEPARATOR . $directory);
+                if ($ret === false) {
                     continue;
                 }
                 $changedCwd = true;
             }
-
+            
             $directories = new \AppendIterator();
             //add all paths that we want to browse
             if ($recursive) {
@@ -304,37 +308,37 @@ class DirectoriesAutoloader
                 $directories->append(new \DirectoryIterator($directory));
             }
             if (is_array($this->_customFilterClasses)) {
-                foreach ( $this->_customFilterClasses as $customFilterClass ) {
+                foreach ($this->_customFilterClasses as $customFilterClass) {
                     //error_log("trying to use [$customFilterClass] as filter");
                     //error_log("directories was a " . get_class($directories));
                     $directories = new $customFilterClass($directories);
                     //error_log("directories is now a " . get_class($directories));
+                    
                 }
             }
             //restrict files to php ones
             $files = new ExtensionFilterIteratorDecorator($directories);
             $files->setExtension('.php');
-            foreach ( $files as $fileName ) {
-                $classes = $this->_classHunterStrategy->find((string) $fileName);
-                foreach ( $classes as $className => $fileName ) {
-                    $this->_classes[strtolower($className)] = $fileName;
+            foreach ($files as $fileName) {
+                $classes = $this->_classHunterStrategy->find((string)$fileName);
+                foreach ($classes as $className => $fileName) {
+                    $this->_classes[strtolower($className) ] = $fileName;
                 }
             }
-
-            if( $changedCwd ) {
+            
+            if ($changedCwd) {
                 chdir($cwd);
             }
         }
         //error_log('included all classes as ' . var_export($this->_classes, true));
+        
     }
-    
     /**
      * array of files containing classes indexed by class name
      *
      * @var array $_classes
      */
     private $_classes = array();
-    
     /**
      * write cache file
      *
@@ -347,22 +351,21 @@ class DirectoriesAutoloader
      */
     private function _saveIncache()
     {
-        foreach( $this->_classes as $className => &$fileName ) {
-            if( substr($fileName, 0, 2) == './' ) {
+        foreach ($this->_classes as $className => & $fileName) {
+            if (substr($fileName, 0, 2) == './') {
                 $fileName = substr($fileName, 2);
             }
         }
         unset($fileName);
         $toSave = '<?php' . PHP_EOL;
-        $toSave .= '// Cache generated at: ' . date(DATE_W3C) . PHP_EOL;
-        $toSave .= '$classes = ' . var_export($this->_classes, true);
-        $toSave .= '; ?>';
+        $toSave.= '// Cache generated at: ' . date(DATE_W3C) . PHP_EOL;
+        $toSave.= '$classes = ' . var_export($this->_classes, true);
+        $toSave.= '; ?>';
         //error_log('will save classes');
-        if (file_put_contents($this->getCacheFilePath(), $toSave) === false) {
+        if (file_put_contents($this->getCacheFilePath() , $toSave) === false) {
             throw new DirectoriesAutoloaderException('Cannot write cache file ' . $this->getCacheFilePath());
         }
     }
-    
     /**
      * try to load a class
      *
@@ -387,7 +390,6 @@ class DirectoriesAutoloader
         }
         return false;
     }
-    
     /**
      * add a directory to autoloaded directories
      *
@@ -419,6 +421,6 @@ class ClassHunterFactory
      */
     public static function create($version)
     {
-            return new ClassHunterForPHP5_3();
+        return new ClassHunterForPHP5_3();
     }
 }

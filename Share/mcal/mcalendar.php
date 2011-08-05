@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * For test Calendar Widget
  *
@@ -6,9 +11,9 @@
  * @version $Id: mcalendar.php,v 1.13 2005/11/24 13:47:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- * @subpackage 
+ * @subpackage
  */
- /**
+/**
  */
 ?>
 <html>
@@ -61,16 +66,16 @@ $rwhat = '/what/WHAT/Layout/';
 $rxml = '/what/jsXMLParser/Layout/';
 $rmcal = '/what/mcal/Layout/';
 echo '
-<script type="text/javascript" src="'.$rwhat.'geometry.js"></script>
-<script type="text/javascript" src="'.$rwhat.'DHTMLapi.js"></script>
-<script type="text/javascript" src="'.$rwhat.'AnchorPosition.js"></script>
-<script language="JavaScript" src="'.$rwhat.'logmsg.js"></script>
-<script language="JavaScript" src="'.$rwhat.'subwindow.js"></script>
-<script type="text/javascript" src="'.$rxml.'xmldom.js"></script>
-<script type="text/javascript" src="'.$rmcal.'mcallib.js"></script>
-<script type="text/javascript" src="'.$rmcal.'mcalCookie.js"></script>
-<script type="text/javascript" src="'.$rmcal.'mcalmenu.js"></script>
-<script type="text/javascript" src="'.$rmcal.'mcalendar.js"></script>
+<script type="text/javascript" src="' . $rwhat . 'geometry.js"></script>
+<script type="text/javascript" src="' . $rwhat . 'DHTMLapi.js"></script>
+<script type="text/javascript" src="' . $rwhat . 'AnchorPosition.js"></script>
+<script language="JavaScript" src="' . $rwhat . 'logmsg.js"></script>
+<script language="JavaScript" src="' . $rwhat . 'subwindow.js"></script>
+<script type="text/javascript" src="' . $rxml . 'xmldom.js"></script>
+<script type="text/javascript" src="' . $rmcal . 'mcallib.js"></script>
+<script type="text/javascript" src="' . $rmcal . 'mcalCookie.js"></script>
+<script type="text/javascript" src="' . $rmcal . 'mcalmenu.js"></script>
+<script type="text/javascript" src="' . $rmcal . 'mcalendar.js"></script>
 ';
 ?>
 

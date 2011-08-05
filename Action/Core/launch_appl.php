@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: launch_appl.php,v 1.3 2004/03/22 15:21:40 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage CORE
  */
- /**
+/**
  */
-
 // $Id: launch_appl.php,v 1.3 2004/03/22 15:21:40 eric Exp $
 // $Log: launch_appl.php,v $
 // Revision 1.3  2004/03/22 15:21:40  eric
@@ -34,32 +38,29 @@
 // Revision 1.1.1.1  2000/10/05 17:29:10  yannick
 // Importation
 //
+include_once ('Class.Application.php');
 
-include_once('Class.Application.php');
-
-function launch_appl(&$action) {
-
-// This function is used to launch a function in an application
-// get the app and function name
-
-  global $_GET;
-  $appl = new Application();
-  $appl->Set(GetHttpVars("app"),$action->parent);
-  
-  $called = new Action();
-  $called->Set(GetHttpVars("action"),$appl,$action->session); 
-
-  $action->lay->set("OUT",$called->execute());
-
+function launch_appl(&$action)
+{
+    // This function is used to launch a function in an application
+    // get the app and function name
+    global $_GET;
+    $appl = new Application();
+    $appl->Set(GetHttpVars("app") , $action->parent);
+    
+    $called = new Action();
+    $called->Set(GetHttpVars("action") , $appl, $action->session);
+    
+    $action->lay->set("OUT", $called->execute());
 }
 
-function app_title(&$action) {
-
-  global $_GET;
-  $appl = new Application();
-  $appl->Set(GetHttpVars("app"),$action->parent);
-
-  $action->lay->set("OUT",$appl->description);
+function app_title(&$action)
+{
+    
+    global $_GET;
+    $appl = new Application();
+    $appl->Set(GetHttpVars("app") , $action->parent);
+    
+    $action->lay->set("OUT", $appl->description);
 }
-
 ?>

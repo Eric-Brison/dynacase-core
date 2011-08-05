@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: app_delete.php,v 1.2 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage APPMNG
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------
 // $Id: app_delete.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/app_delete.php,v $
@@ -33,17 +37,17 @@
 //
 //
 // ---------------------------------------------------------------
-include_once("Class.TableLayout.php");
-include_once("Class.QueryDb.php");
-
+include_once ("Class.TableLayout.php");
+include_once ("Class.QueryDb.php");
 // -----------------------------------
-function app_delete(&$action) {
-// -----------------------------------
-  $appsel=GetHttpVars("appsel");
-
-  $application = new Application("",$appsel);
-  $action->log->info("Remove ".$application->name);
-  $application->DeleteApp();
-  redirect($action,"APPMNG","");
+function app_delete(&$action)
+{
+    // -----------------------------------
+    $appsel = GetHttpVars("appsel");
+    
+    $application = new Application("", $appsel);
+    $action->log->info("Remove " . $application->name);
+    $application->DeleteApp();
+    redirect($action, "APPMNG", "");
 }
 ?>

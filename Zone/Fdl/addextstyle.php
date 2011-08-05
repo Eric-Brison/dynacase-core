@@ -1,5 +1,9 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * Incorporate scripts for extjs
  *
@@ -8,13 +12,11 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  */
- /**
+/**
  */
 
-
-
-function addextstyle(Action &$action) {
-  $action->lay->noparse=true;
-  
+function addextstyle(Action & $action)
+{
+    $action->lay->noparse = true;
 }
 ?>
