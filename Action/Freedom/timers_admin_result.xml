@@ -1,0 +1,21 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Timers management]]
+[IF isnext]<META http-equiv="Refresh" content="300">[ENDIF isnext]
+
+<table width="98%" class="transparent">
+<thead>
+<tr>
+<td>[TEXT:Document]</td><td>[TEXT:Action]</td>[IF isnext]<td>[TEXT:Rest delay]</td>[ENDIF isnext][IF isprev]<td>[TEXT:Done date]</td><td>[TEXT:Timer result]</td>[ENDIF isprev]
+
+</tr>
+
+</thead>
+<tbody>
+[BLOCK TIMERS]
+<tr>  
+  <td><a target="detailresult" href="[CORE_STANDURL]app=FDL&action=VIEWTIMERS&latest=Y&id=[docid]">[title]</a></td>
+  <td>[hact]</td>[IF isnext]<td>[tododate] <b>[hdelay]</b>[ENDIF isnext]</td>[IF isprev]<td>[donedate]</td><td>[result]</td>[ENDIF isprev]</tr>
+[ENDBLOCK TIMERS]
+</tbody>
+</table>
+
+[ZONE FDL:HTMLFOOT]

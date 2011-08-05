@@ -1,0 +1,39 @@
+
+<style>
+.button A {
+  color: #000000;  
+  border-color: [CORE_BGCOLORALTERN];
+  background-color: [CORE_BGCOLORALTERN];
+  border-style:outset;
+  padding: 2px;
+  line-height:20pt;
+  text-decoration: none;
+}
+.button A:hover {
+  border-style:inset;
+}
+</style>
+
+<table  width="100%" cellspacing="0">
+<tbody>
+<!-- TABLEBODY -->
+<tr class="FREEDOMBack2" ><td  colspan="3" height="1px"></td></tr>
+[BLOCK TABLEFILE]
+
+
+
+
+<tr class="FREEDOMBack1">
+<td colspan="2">[V_FI_DESCRIPTION]</td>
+   <td  align="center" > 
+     <span class="button">[imgsrc]</span>([size] ko)
+  </td>
+</tr>
+
+
+[ENDBLOCK TABLEFILE]
+
+[ZONE FDL:VIEWFRAME?frameid=FI_FR_OFORMAT]
+</tbody>
+</table>
+

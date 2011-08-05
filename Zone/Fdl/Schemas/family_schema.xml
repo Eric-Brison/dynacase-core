@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fdl="http://www.freedom-ecm.org/schema-att" fdl:schemaLocation="fdloptions.xsd">
+        [includefdlxsd]
+        <xs:element name="[famname]">
+        	 <xs:annotation><xs:appinfo xmlns:fdl="http://www.freedom-ecm.org/schema">
+                      <fdl:label>[famtitle]</fdl:label>     
+                </xs:appinfo></xs:annotation>
+                <xs:complexType>
+                        <xs:all >
+                        	[BLOCK LEVEL1]
+                                <xs:element minOccurs="0" maxOccurs="1" ref="[level1name]"></xs:element>[ENDBLOCK LEVEL1]
+                        </xs:all>                               
+                         <xs:attribute name="id" type="xs:integer" />
+                         <xs:attribute name="name" type="xs:token" />
+                         <xs:attribute name="version" type="xs:token" />
+                         <xs:attribute name="key" type="xs:token" />
+                         <xs:attribute name="revision" type="xs:integer" />
+                         <xs:attribute name="state" type="xs:token" />
+                         <xs:attribute name="title" type="xs:token" />
+                         <xs:attribute name="modification-date" type="xs:dateTime" />
+
+                </xs:complexType>
+        </xs:element>        
+        [BLOCK ATTR][tax]
+        [ENDBLOCK ATTR]  
+</xs:schema>

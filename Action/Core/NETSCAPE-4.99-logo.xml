@@ -1,0 +1,14 @@
+
+<script language="JavaScript">
+  <!--
+    // this page must be on top frame
+if (window != top) top.location.href = location.href;
+  //-->
+</script>
+
+
+
+<H1>[TEXT:You use an too old Netscape navigator] [navigator] [navversion]</H1>
+<H2>[TEXT:please upgrade to Nescape 7.0 or greater or Mozilla 1.0.1 or greater]</H2>
+<A href="http://www.mozilla.org">[TEXT:mozilla site]</A>
+<A href="http://www.netscape.com">[TEXT:nestcape site]</A>

@@ -1,0 +1,69 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TITLE] [doctitle]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+<!-- Title Table -->
+<form  class="fborder" 
+       id="fedit" 
+       name="modifydoc" 
+       onsubmit="if (document.isSubmitted) return false;if (!canmodify()) return false;document.isSubmitted=true;enableall();return true"
+       method="POST"  
+       action="[CORE_STANDURL]&app=[APPNAME]&action=MODSTATE&id=[docid]" >
+
+
+<table id="fixtablehead" class="[tablehead]"   cellspacing="0" width="100%">
+<thead>     
+<tr class="FREEDOMBack1">
+  <td colspan="3"><span class="FREEDOMTextBigTitle">[title]</span>  </td>
+</tr></thead>
+<tbody>
+[ZONE FDL:EDITSTATE?wneed=Y]  
+</tbody>
+<tfoot>
+<tr >
+  <td  colspan="3" align="right" id="editbutton"><input id="iSubmit" type="submit" value="[TEXT:Change State]"   >
+    <input type="button" value="[TEXT:Cancel]" onclick="document.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]';"> 
+  </td>
+</tr>
+</tfoot>
+</table> 
+<div id="fixspanhead" style="visibility:hidden;padding:0px;margin:0px;"></div>
+
+
+
+</form>
+[ZONE FDL:VIEWSCARD]  
+<!--  FOOT HTML -->
+
+</body>
+</html>

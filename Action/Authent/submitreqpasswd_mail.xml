@@ -1,0 +1,8 @@
+<html>
+<p>
+[TEXT:submitreqpasswd_mail_hello] [US_FNAME] [US_LNAME],
+</p>
+<!-- <p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est pas le cas, veuillez détruire ce message.</p> -->
+<!-- <p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez suivre le lien suivant :<br /><a href="[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]">[CORE_EXTERNURL][CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p> -->
+[TEXT:submitreqpasswd_mail_callbackurl]
+</html>

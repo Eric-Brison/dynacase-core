@@ -1,0 +1,4 @@
+<span id="p[ID]"></span>
+<script>if ('[US_PRIVCARD]' == 'P') document.getElementById('p[ID]').innerHTML='[TEXT:(private)]';</script>
+<P align="right" style="margin:0pt;padding:0pt">[V_US_SOCIETY]&nbsp;</P>
+[V_US_PHONE]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  [V_US_MOBILE]<BR>[V_US_MAIL]&nbsp;

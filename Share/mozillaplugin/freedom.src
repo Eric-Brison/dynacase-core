@@ -1,0 +1,27 @@
+# Mozilla/Google plug-in by amitp+mozilla@google.com
+
+<search 
+   name="SearchTitle"
+   description="Recherche SearchTitle"
+   method="GET"
+   action="http://localhost/freedom/"
+   update="http://localhost/freedom/img-cache/orifile"
+   updateCheckDays=1   
+   queryEncoding="utf-8"
+   queryCharset="utf-8"
+>
+
+<input type="hidden" name="app" value="FGSEARCH" >
+<input type="hidden" name="action" value="FULLSEARCH" >
+<input type="hidden" name="sole" value="Y" >
+<input type="text" name="keyword" user>
+
+<interpret 
+    browserResultType="result" 
+    charset = "utf-8"
+    resultListStart="<!--a-->" 
+    resultListEnd="<!--z-->" 
+    resultItemStart="<!--m-->" 
+    resultItemEnd="<!--n-->"
+>
+</search>

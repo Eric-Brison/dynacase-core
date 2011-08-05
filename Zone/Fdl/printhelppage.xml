@@ -1,0 +1,122 @@
+<script type="text/javascript" language="JavaScript" src="./lib/jquery/jquery.js"></script>
+<script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
+
+<style type="text/css">
+a {
+	outline: 0;
+}
+#helppage-title {
+	border: 1px solid [COLOR_A4];
+	background: [COLOR_A9];
+	padding: 2px 5px;
+	overflow: hidden;
+}
+#helppage-title div {
+	float: right;
+}
+#helppage-title div img {
+	vertical-align:middle;
+	border: 0;
+}
+#helppage-content-title {
+	padding: 2px 5px;
+	display: block;
+	border-left: 1px solid [COLOR_A4];
+	border-right: 1px solid [COLOR_A4];
+	border-bottom: 1px solid [COLOR_A4];
+	background: [COLOR_A9];
+}
+#helppage-content-title div {
+	float: right;
+}
+#helppage-content-title div a img {
+	vertical-align: middle;
+	padding: 0 4px;
+	border: 0;
+	background: 0;
+}
+.help-section-langs img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+.help-section-langs a.current img {
+	background: [COLOR_B9];
+	border-color: [COLOR_B5];
+}
+.help-section-langs a.active img {
+	background: [CORE_BGCOLOR];
+	border-color: [COLOR_A7];
+}
+.help-section-langs a.active:hover img {
+	background: [COLOR_A9];
+	border-color: [COLOR_A5];
+}
+.help-section-langs a.inactive {
+	opacity: 0.25;
+	-moz-opacity: 0.25;
+	-webkit-opacity: 0.25;
+}
+.help-section-langs a:hover {
+	background:none;
+}
+.help-section {
+	margin: 0 0 2em 0;
+}
+.help-section-title {
+	color: [COLOR_B0];
+	font-weight: bold;
+	font-size: 16px;
+}
+.help-section-langs {
+	float: right;
+}
+.help-section-text {
+	margin-left: 24px;
+}
+</style>
+<style type="text/css" media="print">
+.help-section-langs a {
+	display: none;
+}
+.help-section-langs a.current {
+	display: inline;
+}
+.onlyprint {
+	display: none;
+}
+</style>
+
+	<div id="helppage-title">
+	<span id="helppage-titles">
+		[BLOCK TITLES]
+		<span class="FREEDOMTextBigTitle" id="helppage-title-[help_lang]" [IFNOT firstdesc]style="display:none"[ENDIF firstdesc]>[help_name]</span>[ENDBLOCK TITLES]</span>
+	</div>
+		<div id="helppage-content-title">
+			<div>
+[BLOCK ALLLANGS]
+				<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return helppage.view.changeall('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+[ENDBLOCK ALLLANGS]
+			</div>
+			<span id="helppage-description">
+			[BLOCK DESCR]
+			<span id="helppage-desc-[help_lang]" [IFNOT firstdesc]style="display:none"[ENDIF firstdesc]>[help_description]</span>[ENDBLOCK DESCR]</span>
+		</div>
+		<div id="helppage-content">
+[BLOCK CONTENTSECTIONS]
+	[IF SECHEADER]<div class="help-section" id="sec-[SECKEY]">[ENDIF SECHEADER]
+			<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
+				<div class="help-section-langs">
+[BLOCK [SECLANGS]]
+					<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return helppage.view.change('sec-[SECKEY]-[SECLANG]','sec-[SECKEY]-[LANGKEY]','helppage-sec-[SECKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+[ENDBLOCK [SECLANGS]]
+				</div>
+				<div class="help-section-title" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</div>
+				<div class="help-section-text">[SECTEXT]</div>
+			</div>
+	[IF SECFOOTER]</div>[ENDIF SECFOOTER]
+[ENDBLOCK CONTENTSECTIONS]
+		</div>
+
+<script type="text/javascript">
+	//addEvent(window, 'load', helppage.print);
+</script>

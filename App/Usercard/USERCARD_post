@@ -1,0 +1,40 @@
+#!/bin/bash
+if [ "$freedom_context" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+
+#------------------------------
+#post installation
+#------------------------------
+if [ "$1" = "I" ] ; then
+  $wpub/FDL/FDL_post U
+  $wpub/wsh.php --api=freedom_import --file=$wpub/USERCARD/usercard.ods
+  $wpub/wsh.php --api=freedom_import --file=$wpub/USERCARD/usercard.ods
+#  su - postgres -c "psql $dbfree anakeen -f $wpub/USERCARD/init.sql"
+  $wpub/wsh.php --api=freedom_import --file=$wpub/USERCARD/userinit.ods
+  $wpub/wsh.php --api=freedom_import --file=$wpub/USERCARD/personnldap.ods
+  $wpub/wsh.php   --api=freedom_clean
+  $wpub/wsh.php   --api=usercard_iuser
+  $wpub/wsh.php   --api=freedom_clean
+fi
+
+#------------------------------
+#post update
+#------------------------------
+if [ "$1" = "U" ] ; then
+
+  $wpub/wsh.php --api=freedom_import --file=$wpub/USERCARD/usercard.ods
+  $wpub/wsh.php --api=freedom_import --file=$wpub/USERCARD/userinit.ods
+#  $wpub/wsh.php --api=usercard_iuser
+
+fi
+
+#------------------------------
+#post uninstallation
+#------------------------------
+if [ "$1" = "D" ] ; then
+    echo
+fi

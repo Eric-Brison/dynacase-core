@@ -1,0 +1,52 @@
+[ZONE CORE:HTMLHEAD?title=[TEXT:Batch Action Choose]]
+
+<style type="text/css">
+DIV.batch {
+  border:2px outset black;
+  float:left;
+  text-align:center;
+  width:100px;
+  height:100px;
+  overhide : hidden;
+  margin: 3px;
+  -moz-border-radius-bottomleft:25px;
+  -moz-border-radius-bottomright:25px;
+}
+
+DIV.batch BUTTON {
+  background:[CORE_BGCOLORALTERN];
+  cursor:pointer;
+}
+DIV.batch BUTTON:hover {
+  border:2px inset black;
+  background:[CORE_FGCOLOR];
+  color:[CORE_TEXTBGCOLOR];
+  cursor:pointer;
+}
+DIV.batch:hover {
+  border:2px inset black;
+  background:[CORE_BGCOLORHIGH]!important;
+}
+
+
+.label {
+  background-color:[CORE_BGCOLORALTERN];
+  background-image:url('Images/brushed.png');
+  width:100%;  
+}
+DIV.batch:hover .label{
+  background-color:[CORE_FGCOLOR]!important;
+  color:[CORE_TEXTBGCOLOR];
+}
+   </style>
+
+
+[BLOCK ACTIONS]
+<div class="batch" >
+<div class="label"><b>[label]</b></div><br>
+
+<button onclick="document.location.href='[url]'" title="[TEXT:Create a new  process document]" style="width:40%">[TEXT:Create]</button>
+</div>
+[ENDBLOCK ACTIONS]
+
+[ZONE CORE:HTMLFOOT]

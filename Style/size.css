@@ -1,0 +1,40 @@
+/* ---------------------------------------------------------------------------
+ * $Id: size.css,v 1.6 2008/01/02 14:03:25 eric Exp $
+ * ---------------------------------------------------------------------------
+ 
+ * ---------------------------------------------------------------------------
+ */
+
+
+
+body, .core, P {
+  font-size: [SIZE_MEDIUM];
+  font-family : Helvetica, Arial, sans-serif;
+}
+H1 {
+  font-size: [SIZE_XX-LARGE];
+}
+TD, TR, TH {
+  font-size: [SIZE_MEDIUM];
+}
+
+
+
+
+/* ------------------------------------------
+ * POPUPMENU
+ * ------------------------------------------
+ */
+
+
+
+.popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , popup a.menuItemDisabled, popup a.menuItemDisabled:link,  .popup a.separator {
+  
+  font-size:[SIZE_SMALL];
+  font-weight: normal;
+}
+
+
+.popup a:link {
+  font-size:[SIZE_SMALL];
+}

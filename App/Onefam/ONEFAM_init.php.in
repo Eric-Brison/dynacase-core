@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
+// ---------------------------------------------------------------
+// $Id: ONEFAM_init.php.in,v 1.10 2008/12/11 15:52:07 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/freedom/App/Onefam/ONEFAM_init.php.in,v $
+// ---------------------------------------------------------------
+
+global $app_const;
+
+
+$app_const= 
+array(
+      "VERSION"	   =>"@VERSION@-@RELEASE@",
+      "ONEFAM_IDS" => array("val"=>"",
+			    "global"=>"N",
+			    "user"=>"Y",
+			    "kind"=>"static",
+			    "descr"=>_("visible user families")),
+      "ONEFAM_MIDS" => array("val"=>"",
+			     "global"=>"N",
+			     "user"=>"N",
+			     "descr"=>_("visible master families")),
+		 
+      "ONEFAM_LWIDTH" => array("val"=>"1",
+			       "user"=>"Y",
+			       "global"=>"N",
+			       "descr"=>_("icon column number")),
+		 
+      "ONEFAM_FAMOPEN" => array("val"=>"",
+				"user"=>"Y",
+				"kind"=>"static",
+				"global"=>"N",
+				"descr"=>_("default opened family")),
+		 
+      "ONEFAM_BGCOLOR" => array("val"=>"inherit",
+				"user"=>"N",
+				"kind"=>"",
+				"global"=>"N",
+				"descr"=>_("default background color")),
+      "ONEFAM_DISPLAYMODE" => array("val"=>"html",
+                                "user"=>"Y",
+                                "kind"=>"enum(html|extjs|ng -beta-)",
+                                "global"=>"N",
+                                "descr"=>_("display mode"))
+      );
+
+
+?>

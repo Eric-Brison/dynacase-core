@@ -1,0 +1,58 @@
+[ZONE FDL:HTMLHEAD?title=[thetitle]]
+<script>
+attrNid=[Wattrnid];
+attrNtitle=[Wattrntitle];
+addEvent(window,'load',disableReadAttribute);
+addEvent(window,'load',function () {setTimeout("hasScrollbar()",2000);});
+addEvent(window,'unload',function () {autoUnlock('[docid]');});
+function hasScrollbar() {
+    var d=document.documentElement;
+    if (d.clientHeight < d.scrollHeight) {
+	document.getElementById('afoot').style.display='';
+    }
+}
+</script>
+<style>
+a.state:hover { 
+          background-color:[wcolor];
+           }
+a.state { 
+border-color:[wcolor];
+border-width:1px;
+border-style:none none solid none;
+ }
+</style>
+
+<form  class="fborder document" 
+       id="fedit" 
+       name="modifydoc" 
+       target="_parent"
+       onsubmit="if (document.isSubmitted) return false;if (!canmodify()) return false;document.isSubmitted=true;enableall();viewwait(true);return true"
+       method="POST"  ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=FREEDOM&action=MODSTATE&id=[docid]" >
+<input type="hidden" name="newstate" value="[nextstate]">
+<input type="hidden" name="viewext" value="[viewext]">
+<input type="hidden" name="wiid" value="[docid]">
+
+ <a  class="state" title="[tonewstate]"  onclick="submitEdit(event);return true"> [tostate]</a> |
+ <a   title="[TEXT:Cancel the change state]"  onclick="window.parent.hidebox('POPDOC')">[TEXT:Cancel] </a> <br/>
+[BLOCK FINPUTS]
+<div style="display:[idisplay];"  id="TWF[aid]" class="FREEDOMBack1">
+  <span  valign="top" class="[labelclass]">[alabel]&nbsp;:&nbsp;</span><br>
+
+  <table width="100%"><tr><td style="padding-left:20px">[avalue]</td></tr></table>
+</div>
+[ENDBLOCK FINPUTS]
+
+
+[IFNOT noreason]
+[TEXT:Comment] : <br/><textarea style="margin-left:20px;width:90%" name="comment" title="[TEXT:Comment for change state]"></textarea>
+[ENDIF noreason]
+[IFNOT realtransition]<div class="Error">[TEXT:Be carreful, this transition is not defined in workflow]</div>[ENDIF realtransition]
+<div style="display:none" id="afoot">
+ <br/> 
+ <a class="state" title="[tonewstate]"  onclick="submitEdit(event);return true"> [tostate]</a> |
+ <a title="[TEXT:Cancel the change state]"  onclick="window.parent.hidebox('POPDOC')">[TEXT:Cancel] </a>
+</div>
+</form>
+[ZONE FDL:HTMLFOOT]

@@ -1,0 +1,1002 @@
+/* ---------------------------------------------------------------------------
+ * $Id: freedom.css,v 1.151 2009/01/14 14:16:49 eric Exp $
+ * ---------------------------------------------------------------------------
+ */
+.FREEDOMTblTitle{
+	background-color: [CORE_BGCOLORALTERN];	
+}
+html,body.freedom html {
+width:100%;height:100%;
+}
+body.freedom  {
+width:100%;height:100%;
+margin:0;padding:0;
+}
+.FREEDOMTextBigTitle{
+  font-weight: bold;
+  font-size: [SIZE_X-LARGE];
+  font-variant: small-caps;
+}
+.emblem { margin-right : 2px;
+  height:22px }
+
+.FREEDOMTextTitle{
+  font-weight: bold;
+  color: [CORE_TEXTFGCOLOR];
+  text-transform:capitalize;
+}
+
+span.familyTitle {
+  font-size:70%;
+  font-style: italic;
+}
+img.documentIcon {
+	width:[SIZE_IMG-MEDIUM];
+	}
+
+body.documentView img.documentIcon{ margin-right : 5px; }
+
+.FREEDOMTextTitle:first-letter {
+  text-transform:capitalize;
+}
+
+TABLE.tablehead TR.FREEDOMBack1 {
+	background-color: [CORE_BGCELLCOLOR];
+}
+TR.FREEDOMBack1 {
+	color : [CORE_TEXTFGCOLOR];	
+}
+
+TR.FREEDOMBack2:first-letter {
+  text-transform:capitalize;
+}
+
+TR.FREEDOMBack2{
+	background-color: [CORE_BGCOLORALTERN];
+	color : [CORE_TEXTFGCOLOR];
+}
+
+a.relation {
+	padding-left:15px;
+	background-repeat: no-repeat;
+}
+
+
+TABLE.edittable TD { vertical-align:top; }
+
+TD.FREEDOMText, .FREEDOMText {
+  color: [CORE_TEXTFGCOLOR];
+}
+TD.FREEDOMLabel, .FREEDOMLabel {
+  text-align:right;
+}
+TR.FREEDOMOpt TD.FREEDOMLabel {
+  color: [CORE_TEXTFGCOLOR];
+  text-align:right;
+  font-style: italic;
+  background-color: [CORE_BGCOLORALTERN];
+  vertical-align:top;
+}
+TR.FREEDOMOpt TD.FREEDOMText {
+  color: [CORE_TEXTFGCOLOR];
+  text-align:left;
+  background-color: [CORE_BGCOLORALTERN];
+  vertical-align:top;
+}
+TR.FREEDOMOpt TD {
+  color: [CORE_TEXTFGCOLOR];
+  text-align:left;
+  background-color: [CORE_BGCOLORALTERN];
+}
+.FREEDOMLabelNeeded{
+  color: [CORE_TEXTFGCOLOR];
+  text-align:right;
+  font-weight: bold;
+}
+TD.FREEDOMLabel:first-letter {
+  text-transform:capitalize;
+}
+TD.FREEDOMLabel SPAN:first-letter {
+  text-transform:capitalize;
+}
+
+TD.FREEDOMLabelNeeded:first-letter {
+  text-transform:capitalize;
+}
+TD.FREEDOMLabelNeeded SPAN:first-letter {
+  text-transform:capitalize;
+}
+
+TABLE.edittable TD {
+  padding: 0px 0px 3px 0px;
+}
+SPAN.FREEDOMLabel:first-letter {
+  text-transform:capitalize;
+  color:red;
+}
+
+LEGEND, div.legend {
+  color: [CORE_ACOLOR];
+}
+LEGEND.frame, div.legend {
+  cursor:pointer;
+}
+
+div.legend {
+	background-color: inherit;
+	border-width: 1px;
+    border-color: inherit;
+    border-style: none none solid none; 
+    
+    /*display: inline;
+    margin-left: 7px;
+    margin-top: -0.7em;
+	float:left;*/
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+[IFNOT ISIE]
+FIELDSET {
+/*   background-color: [CORE_BGCELLCOLOR];*/
+   -moz-border-radius: 6px;
+}[ENDIF ISIE]
+
+FIELDSET.frame table td, div.frame table td {
+  padding:2px;  
+  }
+div.frame {
+     border:0px;
+     padding:0px;
+     margin:0px 10px 10px 10px;
+ }
+ 
+  div.frame .legend { 
+     display:inline;
+     border-width:0px;
+     padding:0 5px 0 5px;
+     margin-left:10px;
+ }
+div.frame .legend:hover { background-color:[COLOR_A9]; }
+
+ div.frame .content {
+     border-style:solid solid solid solid;
+     border-color:[COLOR_A6] [COLOR_A6] [COLOR_A6] [COLOR_A6];
+     border-width:1px 1px 1px 1px;
+ 	
+     -moz-border-radius: 6px; 	
+ }
+TABLE.barmenu {
+/*	background-color: [CORE_BGCOLORALTERN];*/
+	background-color: orange;
+        background-image: [CORE_FGIMG];
+	width : 100%;
+	border-width: 0px;
+	border-spacing: 0px;
+	empty-cells: show;
+}
+DIV.barmenu {
+  margin-bottom : 10px; 
+}
+DIV.barmenu A {
+  border-color: [COLOR_B5];
+  border-width: 1px;
+  border-style:  none none none solid;
+  padding-left:5px;
+  white-space:nowrap;
+}
+TD.editbutton, TD.nowrap {
+  white-space:nowrap;
+  [IFNOT ISIE]width:2px;[ENDIF ISIE]
+  [IF ISIE]width:50px;[ENDIF ISIE]
+}
+TD[type=docid][multiple=true]+TD.editbutton, 
+TABLE[type=docid][multiple=true] TD.editbutton {
+    vertical-align:bottom;
+}
+
+select.multidoc {
+    border:none;
+    width:100%
+}
+[IF ISIE]
+table[type=array] select.multidoc {
+    width:auto;/* cause IE bug */
+}
+[ENDIF ISIE]
+
+TD.MenuInactive{  
+  vertical-align:middle;
+	background-color: [CORE_BGCOLORALTERN];
+        background-image: [CORE_FGIMG];	
+	color : [CORE_TEXTFGCOLOR];
+        text-transform:capitalize;	
+	border-width : 1px;
+	border-style : outset;
+	border-color : [CORE_BGCOLORALTERN];
+}
+TD.MenuActive {
+  vertical-align:middle;
+	background-color: [CORE_BGCOLORALTERN];
+        background-image: [CORE_FGIMG];	
+	color : [CORE_TEXTFGCOLOR];
+        text-transform:capitalize;
+	border-width : 1px;
+	border-style : solid;
+	border-color : [CORE_BGCOLORALTERN];
+}
+TD.MenuSelected {
+  vertical-align:middle;
+	background-color: [CORE_FGCOLOR];
+        background-image: [CORE_FGIMG];
+	color : [CORE_TEXTBGCOLOR];
+	color : [CORE_TEXTBGCOLOR];   
+        text-transform:capitalize;
+	border-width : 1px;
+	border-style : outset;
+	border-color : [CORE_BGCOLORALTERN];
+}
+
+TD.MenuInactive div, TD.MenuActive div, TD.MenuSelected div {
+  vertical-align:middle;
+	height:[SIZE_XX-LARGE];
+	overflow:hidden;
+}
+
+.iconimg {
+  border-style: hidden;
+  border-width: 1px;
+  border-color: [CORE_FGCOLOR];
+  width:[SIZE_IMG-SMALL];
+  height:[SIZE_IMG-SMALL];
+}
+.iconimg20 {
+  border-style: hidden;
+  border-width: 1px;
+  border-color: [CORE_FGCOLOR];
+  width:[SIZE_IMG-X-SMALL];
+  height:[SIZE_IMG-X-SMALL];
+  
+}
+.iconline {
+  border-color: [CORE_FGCOLOR];
+  margin:1px;
+  padding:0px;
+  border-width:3px;
+  border-style: hidden;
+  /*background-color: palegoldenrod;*/
+  
+}
+ 
+IMG.iconone {
+  border-style: none;
+  border-width: 0px;
+  float:left;
+  cursor:pointer;
+}
+IMG.icononesel {
+  border-style: outset;
+  border-width: 2px;
+  border-color: [CORE_FGCOLOR];
+  background-color:[COLOR_B7];
+  float:left;
+  cursor:pointer;
+}
+IMG.icononehi {
+  border-style: inset;
+  border-width: 2px;
+  border-color: [CORE_FGCOLOR];
+  background-color:[CORE_BGCOLORHIGH];
+  float:left;
+  cursor:pointer;
+}
+
+TD.und {
+ border-bottom:1px solid;
+ border-left:1px solid;
+ border-color:[COLOR_A5];
+}
+
+TD.tlist {
+  /* border-width : inherit;
+   border-style : inherit;*/
+  border-left-style:none;
+  border-right-style:none;
+  border-color : [COLOR_A5];
+  border-top-style:solid;
+  border-top-width:1px;
+  border-bottom-style:none;
+}
+
+DIV.unselect {
+   border-style : inset;
+  background-color:[CORE_BGCELLCOLOR];
+  color:[CORE_TEXTFGCOLOR];
+   border-width : 1px;
+  margin: 2px 0px 0px 0px;
+
+}
+DIV.normal {
+  background-color:[CORE_BGCELLCOLOR];  
+}
+DIV.unselecth {
+   border-style : inset;
+  background-color:[CORE_BGCOLORHIGH]!important;
+  color:[CORE_TEXTFGCOLOR];
+   border-width : 1px;
+  margin: 2px 0px 0px 0px;
+
+}
+TR.unselecth {
+   /*border-top-style : inset;
+   border-bottom-style : inset;*/
+  background-color:[CORE_BGCOLORHIGH]!important;
+  color:[CORE_TEXTFGCOLOR];
+   border-width : 1px;
+  margin: 2px 0px 0px 0px;
+
+}
+
+DIV.select {
+  background-color:[COLOR_B7];
+  color:[CORE_TEXTFGCOLOR];
+  border-style : outset;
+  border-width : 1px;
+  margin: 2px 0px 0px 0px;
+} 
+
+DIV.contour {
+  background: [CORE_BGCOLOR];
+  width:auto;
+  border:ridge 4px [CORE_BGCOLORALTERN];
+  padding:2px;
+} 
+HR {
+  color:[CORE_FGCOLOR];
+}
+
+A.title {
+  font-weight:bold;
+  color:[CORE_TEXTFGCOLOR];  
+  cursor:pointer;
+}
+
+
+A.title:hover {
+  background-color:[CORE_BGCELLCOLOR];
+   
+}
+
+TABLE.rows TBODY TR TD {  
+  border-width:1px 0px 0px 0px;	 
+  border-color:[CORE_BGCOLORALTERN];
+  border-style:solid;
+}
+
+TABLE.border  {  
+  border:1px solid [CORE_BGCOLORALTERN]; 
+}
+
+TABLE.tarray  TR TD {  
+  border-width:0px 0px 1px 0px;	 
+  border-color:[CORE_BGCOLORALTERN]; 
+  border-style:none none solid none;
+  padding:0px;
+  vertical-align:top;
+/*  white-space:nowrap;*/
+}
+TABLE.tarray  TR TH {
+  background-color:[COLOR_B8];
+  border-width:0px 0px 1px 0px;
+  border-color:[COLOR_B6];
+  border-style:none none solid none;
+  padding:0px 4px 0px 4px;
+  text-align:left;
+}
+TABLE.tarray  TH {  
+  font-weight: normal;
+}
+
+TABLE.transparent TBODY TR TD,TABLE.transparent TBODY TR,TABLE.transparent THEAD TR TH {  
+  border-width:1px 0px 0px 0px;
+  border-color:[CORE_BGCOLORALTERN];
+  border-style:solid;
+  background-color:transparent;
+}
+TBODY.overflow {
+  overflow:auto;
+}
+TABLE.tablefoot {
+	position:fixed;
+	top:auto;
+	right:0;
+	bottom:0;
+	left:0;
+}
+TABLE.tablehead {
+	position:fixed;
+	z-index:10;
+	bottom:auto;
+	right:0;
+	top:0;
+	left:0;
+}
+.onglet {
+	font-size: [SIZE_X-SMALL];
+	background-image:url('[IMG:tab.png]');
+	color:black;
+	cursor: pointer;
+	border-style: none;
+}
+
+.ongleth {
+	position: relative;
+	font-size: [SIZE_X-SMALL];
+	background-image:url('[IMG:tabh.png]');
+	color:[COLOR_WHITE];
+	cursor: pointer;
+	border-style: none;
+}
+
+.onglets {
+	font-size: [SIZE_X-SMALL];
+	cursor: pointer;
+	background-image:url('[IMG:tabh.png]');
+	color:[COLOR_BLACK];
+	border-style: none;
+}
+
+.ongletv {
+	vertical-align: middle;
+	font-size: [SIZE_SMALL];
+	cursor: pointer;
+	border-style: none;
+	background-image:url('[IMG:tabv.png]');
+	color:[CORE_TEXTFGCOLOR];
+}
+
+.tabcontainer {
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: -1;
+	border-bottom: 1px solid #888;
+	line-height: 32px;
+	height: 32px;
+	width: 100%;
+}
+
+.ongletvg,
+.ongletvgie,
+.ongletvs,
+.ongletvsie {
+	line-height: 29px;
+	height: 29px;
+	position: relative;
+	padding: 0 8px 0 36px;
+	font-size: [SIZE_SMALL];
+	cursor: pointer;
+	border-style: none;
+	background-color:[CORE_BGCOLORALTERN];
+	float: left;
+	margin: 2px 3px 1px 3px;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+}
+
+.ongletvs,
+.ongletvsie {
+	margin: 2px 3px 0 3px;
+	border-left: 1px solid #888;
+	border-right: 1px solid #888;
+	border-top: 1px solid #888;
+	border-bottom: 1px solid #fff;
+}
+
+.ongletvg img,
+.ongletvgie img,
+.ongletvs img,
+.ongletvsie img {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding: 4px 6px 5px 6px;
+	background:url('[IMG:tabbar.png]') no-repeat right -150px;
+}
+
+.ongletvs img,
+.ongletvsie img {
+	background-position:right -100px;
+}
+
+.ongletvg {
+	background-image:url('[IMG:tabvg.png]');
+	color:[CORE_TEXTFGCOLOR];
+}
+.ongletvgie {
+	color:[CORE_TEXTFGCOLOR];
+[IF ISIE6]
+  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale');
+[ENDIF ISIE6]
+}
+.ongletvs {
+	background-image:url('[IMG:tabvig.png]');
+/*  color:[CORE_TEXTBGCOLOR];*/
+}
+.ongletvsie {
+[IF ISIE6]
+  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvig.png]',sizingMethod='scale');
+[ENDIF ISIE6]
+/*  color:[CORE_TEXTBGCOLOR];*/
+}
+
+UL {
+  margin-top:0px;
+}
+
+LI.translucide {
+  list-style:url('USERCARD/Images/bblue10.gif');
+}
+
+IMG.unselect {
+  border-style: hidden;
+  border-width: 3px;
+  border-style : none;
+  width:[SIZE_IMG-SMALL];
+  height:[SIZE_IMG-SMALL];  
+  cursor: crosshair;
+}
+IMG.unselect:hover {
+  border-style: hidden;
+  border-width: 1px;
+  border-color: [CORE_FGCOLOR];
+  background-color:[CORE_BGCOLORALTERN];
+  border-style : solid;
+  cursor: pointer;
+  -moz-border-radius:25px;
+}
+IMG.select {
+  border-style: hidden;
+  border-width: 1px;
+  border-color: [CORE_FGCOLOR];
+  width:40px;
+  height:40px;  
+  background-color:[COLOR_B7];
+  border-style : solid;
+  cursor: crosshair;
+  -moz-border-radius:25px;
+}
+
+TBODY.unselect, TR.unselect {
+  cursor: crosshair;
+}
+TR.unselect {
+  border-color:[COLOR_A5];
+  border-width:1px;
+}
+TR.unselect:hover, TBODY.unselect:hover TR{
+  cursor: crosshair;
+  background-color:[CORE_BGCOLORHIGH]!important;
+}
+
+TBODY.unselect:hover TR {
+  cursor: crosshair;
+  background-color:[CORE_BGCOLORHIGH];
+}
+TR.selhead {
+  cursor: pointer;
+  background-color:[CORE_BGCOLORALTERN];
+[IFNOT ISIE6]background-image:url('[IMG:tabvig.png]');[ENDIF ISIE6]
+[IF ISIE6] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale'); float:right;width:100%;
+  text-transform:capitalize;[ENDIF ISIE6]
+}
+TR.selhead:hover {
+  background-color:[CORE_BGCOLORHIGH];
+}
+TR.dash TD {
+   border-width : 1px;
+   border-style : dashed none none none;
+   border-color : [CORE_FGCOLOR];
+}
+
+TR.selecta TD{
+  background:[CORE_BGCOLORHIGH]!important;
+  border-style : solid;
+} 
+
+TR.select {
+  background:[COLOR_B7]!important;
+  border-style : solid;
+  cursor: crosshair;
+} 
+TBODY.select TR {
+  background:[COLOR_B7]!important;;  
+  cursor: crosshair;
+} 
+ 
+DIV.icon{
+  font-weight: normal;
+  font-size: [SIZE_X-SMALL];
+  text-align: center;
+  /*font-variant: small-caps;*/
+  width:[SIZE_IMG-LARGE];
+  height:80px;
+  float:left;
+  border-style:none;
+  border-color:[CORE_FGCOLOR];
+  overflow : hidden;
+}
+
+IMG.aicon, IMG.aiconnoh {
+	margin:0pt;
+	padding:0pt;
+	-moz-border-radius:0px 0px 0px 25px;
+}
+IMG.aicon:hover {
+  cursor: pointer;
+  background-color:[CORE_BGCOLORALTERN];
+}
+IMG.button {
+  border:none;
+}
+TR.fileclass TD {	
+}
+TR.fldclass TD {
+  font-weight: bold;
+  color: red;	
+}
+TD.hidden {
+  background-color:red;
+  width:1px;
+  display:none;
+}
+.onlyprint {
+    display:none;
+}
+
+
+TABLE.sortable TH {
+  cursor:pointer;
+}
+INPUT.fullresize, TEXTAREA.fullresize {
+  width:100%;
+}
+TEXTAREA.autoresize {
+  overflow:hidden;
+  vertical-align:text-top;
+  width:100%;
+}
+input[type="file"] { 
+	width:auto;
+}
+input.dsubmit {
+  font-weight: bold;
+  background: [CORE_BGCOLORALTERN]; 
+}
+input.state {
+  background: [CORE_BGCOLORALTERN]; 
+}
+A.boldstate {
+  font-weight: bold;
+}
+A.state, A.boldstate {
+  border-style:none none solid none !important;
+  border-width:2px!important;
+}
+
+
+
+@media print {
+  .noprint {
+    display:none;
+  }
+  #error  {
+    display:none ! important;
+  }
+  *, A, A:link, A:visited, p {
+    color:black;
+  }
+  .tableborder {
+    border:none;
+  }
+  TD, TH {
+  }
+  .onlyprint { 
+    display:block;
+  }
+
+  DIV.tabsh {
+    display:none;
+  }
+  FIELDSET.frame, div.frame {
+    display:block!important; /* to see frame in tabs */
+  }
+  TBODY.overflow {
+    overflow:visible;
+  }
+}
+TABLE.huge {
+  width:100%;
+}
+TABLE.huge TBODY {
+   overflow:auto;
+   height:200px;	
+}
+DIV.button {
+	cursor:pointer;
+	border:2pt solid transparent;
+}
+
+DIV.button:hover {
+	border:outset [CORE_BGCOLORALTERN] 2px;
+}
+DIV#tooltip {
+   border:outset [COLOR_A9] 1px;
+   background-color: [COLOR_B7]; 
+   position:absolute;
+   visibility:hidden;
+}
+BUTTON.binline {
+  border:none;
+  background:none;
+  color:[CORE_ACOLOR];
+  cursor:pointer;
+  font-size:[SIZE_SMALL];
+}
+BUTTON.binline:hover, BUTTON.binline:focus {
+        background-color: [COLOR_A9]; 
+        text-decoration:  underline;
+  border:none;
+}
+input[type="button"].searchbutton {
+  border:none;
+  width:[SIZE_LARGE];
+}
+SPAN.selected {
+  cursor: pointer;
+  background-color:lightgreen;
+  background-image:url('[IMG:buttongreen.png]');
+  color:black;
+  border-style: none;
+  font-size:[SIZE_SMALL];
+  height:20px;
+  padding:1px;
+  -moz-border-radius:25px;
+}
+
+SPAN.unselected {
+  cursor: pointer;
+ color:[CORE_TEXTFGCOLOR];
+  border-style: none;
+  padding:1px;
+  height:20px;
+  font-size:[SIZE_SMALL];
+  -moz-border-radius:25px;
+}
+SPAN.hselected {
+  cursor: pointer;
+  font-size:[SIZE_SMALL];
+  background-color:lightblue;
+  background-image:url('[IMG:buttonblue.png]');
+  color:black;
+  border-style: none;
+  padding:1px;
+  height:20px;
+  -moz-border-radius:25px;
+}
+SPAN.wselected {
+  cursor: pointer;
+  font-size:[SIZE_SMALL];
+  background-color:lightblue;
+  background-image:url('[IMG:buttonred.png]');
+  color:black;
+  border-style: none;
+  padding:1px;
+  height:20px;
+  -moz-border-radius:25px;
+}
+SPAN.selected:hover, SPAN.unselected:hover, SPAN.hselected:hover{
+  color:[CORE_BGCOLORHIGH];
+  -moz-border-radius:25px;	
+}
+
+SPAN.checked, TR.checked {
+        background: [COLOR_B6]; 	
+}
+SPAN.nochecked:hover, TR.nochecked:hover {
+      background-color: [COLOR_C3]; 	
+}
+
+DIV.tabh SPAN  {
+  -moz-border-radius: 8px 8px 0px 0px;	
+  border-width : 1px;
+  border-style :outset;
+  border-color : [COLOR_B7];
+[IFNOT ISIE6]  background-image:url('[IMG:tabvig.png]'); [ENDIF ISIE6]
+[IF ISIE6] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale');[ENDIF ISIE6]
+  background-color : [COLOR_B7];
+  padding:2px;
+  cursor:pointer;
+  float:left;
+}
+[IFNOT ISIE]DIV.tabh SPAN:first-letter  {
+  text-transform:capitalize;	
+}[ENDIF ISIE]
+DIV.tabh SPAN.tabsel, .divsel{
+  background-color : [COLOR_B3];
+/*  color : [CORE_TEXTBGCOLOR];*/
+}
+
+DIV.tabh SPAN:hover {
+  border-width : 1px;
+  border-style :outset;
+  border-color : [COLOR_C5];
+  background-color : [COLOR_C3];
+  cursor:pointer;	
+
+}
+@media screen, print { 
+	/* Turn off list bullets */
+	ul.mktree  li { list-style: none; } 
+	/* Control how "spaced out" the tree is */
+	ul.mktree, ul.mktree ul , ul.mktree li { margin-left:10px; padding:0px; }
+	/* Provide space for our own "bullet" inside the LI */
+	ul.mktree  li           .bullet { padding-left: 15px; }
+
+	/* Show "bullets" in the links, depending on the class of the LI that the link's in */
+	ul.mktree  li.liOpen    .bullet { cursor: pointer; background: url([IMG:minus.png])  center left no-repeat; }
+	ul.mktree  li.liClosed  .bullet { cursor: pointer; background: url([IMG:plus.png])   center left no-repeat; }
+	ul.mktree  li.liBullet  .bullet { cursor: default; background: url([IMG:bullet.gif]) center left no-repeat; }
+	/* Sublists are visible or not based on class of parent LI */
+	ul.mktree  li.liOpen    ul { display: block; }
+	ul.mktree  li.liClosed  ul { display: none; }
+[IFNOT ISIE]
+    div.mktreetop {   padding-left : 20px; }
+       div.mktreetop ul.mktree  li  .bullet { margin-left : -20px; }[ENDIF ISIE]
+	
+}
+
+
+
+
+/* - for ftien4 - */
+   TD.fld {
+     text-decoration: none;
+     white-space:nowrap;
+      background:transparent;} 
+   TD.fld IMG{
+/*     width:[SIZE_IMG-X-SMALL];*/
+     height:[SIZE_IMG-X-SMALL];
+   }
+   A  {text-decoration: none;
+       color: [CORE_ACOLOR]}
+   DIV.folder  {width:100%;
+                border-style: none;      
+                display:block;
+                cursor: default}
+   DIV.folder TR {
+	background-color:transparent;
+	}
+   DIV.select TR {
+	background-color:transparent;
+	}
+
+   .urltext {
+      cursor:pointer;
+      color: [CORE_TEXTFGCOLOR];
+      text-decoration:none;
+      font-size: [SIZE_SMALL];
+   }
+   .urltextsel {
+      cursor:pointer;
+      text-decoration:underline overline;
+      color: [CORE_TEXTFGCOLOR];
+       background-color:[CORE_BGCOLORHIGH];
+       font-size: [SIZE_SMALL];
+      
+   }
+
+DIV.fldh {	
+  cursor:pointer;
+  overflow:hidden;
+  max-height:25px;
+}
+DIV.fldh IMG:hover {
+       background-color:[CORE_BGCOLORHIGH];
+}
+DIV.line {
+  border-style:solid none none none;
+  border-width:1px;
+  border-color: [CORE_BGCOLORHIGH];
+  clear:both;	
+}
+DIV.tabsh SPAN  {
+  border-width : 1px;
+  border-style :outset;
+  border-color : [COLOR_B5];
+  background-image:url('[IMG:tabvig.png]');
+  -moz-border-radius: 8px 8px 0px 0px;
+[IF ISIE6] background-image:none;[ENDIF ISIE6]
+  background-color : [COLOR_B7];
+  padding:2px;
+  cursor:pointer;
+  float:left;
+}
+
+
+DIV.tabsh SPAN.tabsel  {
+  background-color : [COLOR_B3];
+  /*color : [CORE_TEXTBGCOLOR];	*/
+}
+DIV.tabsh SPAN:hover  {
+  background-color : [COLOR_C3];
+}
+#thefolderh {
+   border:solid [CORE_BGCOLORALTERN] 1px;
+   float:right;
+   max-width:150px;
+  background: [CORE_BGCOLOR];
+}
+.statetext {
+  border-style:none solid solid none ;
+  border-width:0px 10px 1px 0px;
+  -moz-border-radius:0px 0px 8px 0px;
+  padding-right:2px;
+  text-decoration:none;
+}
+
+img.mime {
+  width:[SIZE_IMG-X-SMALL];
+  border:none;
+  vertical-align:bottom;
+}
+
+DIV.static {
+  border : 1px solid [COLOR_A0];
+}
+
+
+/*
+ *
+ * end of #1443
+ *
+ */
+
+
+div.tabsh span.invalid {
+  border:solid 1px [CORE_ERRORCOLOR];
+  background-color:[CORE_ERRORCOLOR];
+}
+div.fullscreen {
+  width:100%;
+  position:absolute;
+  left:0px;
+  top:0px;
+	z-index:2;
+  background-color:[COLOR_WHITE];
+}
+div.fileimage {
+        /*overflow-y:scroll;*/
+        overflow-x:auto;
+        border : inset 1px;
+        }
+div.fullscreen div.fileimage {
+        overflow-y:auto;
+	}
+a.fullscreen {
+  background:url('[IMG:window_fullscreen.png]') no-repeat;
+  padding-left:20px;
+  float:right;
+}
+a.fullwidth {
+  background:url('[IMG:fullwidth.png]') no-repeat;
+  padding-left:20px;
+  float:right;
+}
+a.fullheight {
+  background:url('[IMG:fullheight.png]') no-repeat;
+  padding-left:20px;
+  float:right;
+}

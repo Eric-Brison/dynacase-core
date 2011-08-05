@@ -1,0 +1,83 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <title>[TITLE]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+function changeone(uid) {
+  var wone=windowExist('onepreview');
+  if (wone) {
+    wone.location.href="[CORE_STANDURL]app=FDL&action=VIEWSCARD&zone=FDL:FDL_PUBPRINT&id=[dirid]&uid="+uid;
+  }
+}
+function nextone() {
+  var osel=document.getElementById('sone');
+  
+  if (osel) {
+    if (osel.selectedIndex < (osel.options.length-1)) {
+      osel.selectedIndex++;
+      viewnumero();
+      
+    } else {
+      alert('[TEXT:it is the last]')
+    }    
+  }
+}
+function prevone() {
+  var osel=document.getElementById('sone');
+  
+  if (osel) {
+    if (osel.selectedIndex > 0) {
+      osel.selectedIndex--;
+      viewnumero();
+    } else {
+      alert('[TEXT:it is the first]')
+    }    
+  }
+}
+
+function viewnumero() {
+  var onum=document.getElementById('numero');
+  var osel=document.getElementById('sone');
+
+  if (onum && osel) {
+    onum.innerHTML=(osel.selectedIndex+1)+'/'+(osel.options.length)
+      changeone(osel.options[osel.selectedIndex].value);
+  }
+}
+addEvent(window,"load",viewnumero);
+  //-->
+   </script>
+ </head>
+
+<body class="freedom"  >
+<table class="transparent"><tr>
+<td><select id="sone"  onchange="viewnumero()">
+[BLOCK DOCS]
+<option value="[udocid]">[utitle]</option>
+[ENDBLOCK DOCS]
+</select></td><td><input  type="image" src="[IMG:prev.png]" onclick="prevone()"><b><span id="numero"></span></b><input type="image" src="[IMG:next.png]" onclick="nextone()"></td>
+</tr></table>
+
+
+
+</body>
+</html>

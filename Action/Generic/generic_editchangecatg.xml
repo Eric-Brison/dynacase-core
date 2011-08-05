@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:change category]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+<style type="text/css">
+[CSS:CODE]
+
+.ZOU { 
+        background-color: [CORE_BGCOLORALTERN];
+        color: [CORE_TEXTFGCOLOR];
+	text-align: left;
+	border-style : groove;
+	border-color : [CORE_FGCOLOR];
+	border-width: 4pt;
+	padding : 3pt;		
+}
+
+</style>
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+
+-->
+</script>   
+ </head>
+
+<body class="freedom"  >
+
+
+<form  name="addcatg"  method="POST" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_CHANGECATG" >
+<div  class="ZOU">
+<p><span class="FREEDOMTextBigTitle">[username]</span></p>
+<hr>
+<p>[TEXT:Choose new categories]</p>
+
+                    [BLOCK CATG]
+<input onclick="document.getElementById('cneg[id]').checked=(!checked)" style="margin:0px [level]px 0px 0px" type="checkbox" name="dirid[]" value="[id]" [checked]>[title]</input >
+<input style="visibility:hidden" id="cneg[id]" type="checkbox" name="ndirid[]" value="[id]" ></input>
+<br>
+                    [ENDBLOCK CATG]
+<input type="hidden" name="docid" value="[docid]"></input><BR>
+ <input type="submit" value="[TEXT:change category]"> 
+</div>
+
+</form>
+
+
+</body>
+</html>

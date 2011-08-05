@@ -1,0 +1,1 @@
+[USER]&nbsp;<a target="fbody" href="[CORE_BASEURL]app=AUTHENT&action=[ACTION]" ><img onMouseOut="src='[ONOUT]'" onMouseOver="this.src='[ONOVER]'" src="[ONOUT]"   alt="[ALTLOGINOUT]" title="[ALTLOGINOUT]" border=0 align="absmiddle"></a>

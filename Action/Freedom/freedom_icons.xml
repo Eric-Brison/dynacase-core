@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[foldername] [TEXT: folder containt]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+[IF RSS]<link rel="alternate" type="application/rss+xml" title="[foldername]" href="[rsslink]"/>[ENDIF RSS]
+
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+    document.dirid='[dirid]';
+-->
+</script>   
+ </head>
+
+<body class="freedom" topmargin=1 leftmargin=1
+      onload="initmicon();"       
+      onclick="closeMenu('popuplist');" >
+
+
+
+<img id="micon" width="[SIZE_IMG-X-SMALL]" height="[SIZE_IMG-X-SMALL]"  style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
+
+
+[ZONE FREEDOM:FOLDER_BARMENU?nbdoc=[nbdoc]&dirid=[dirid]]
+[ZONE FREEDOM:POPUP]
+<BR>
+<!-- TABLEBODY -->
+                             [BLOCK TABLEBODY]
+<div class="icon" id="d[divid]"  >
+<IMG class="unselect" id="i[divid]" needresize="1"
+     onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid],'[wtarget]');" 
+     onContextMenu="openMenu(event,'popuplist',[divid]);return false" 
+     onDblClick="if ([isfld]) openFld([id]); else sendFirstFile([id]);return false"
+     onmouseover="oselect([id])"  onmouseout="ounselect()"
+     align="absbottom"  src="[iconsrc]"
+     title="[icontitle]"><br>  
+  [abrvtitle]
+</div>
+                           [ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+
+
+
+
+
+<!--  FOOT HTML -->
+
+</body>
+</html>

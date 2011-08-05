@@ -1,0 +1,27 @@
+
+<style>
+TD {
+background:[CORE_BGCOLOR];
+}
+fieldset div{
+  font-size: [fontsize]%;
+  font-weight: bold;
+  cursor:crosshair;
+}
+DIV.tableborder {
+  background-color:transparent;
+  border:none;
+}
+
+</style>
+[BLOCK TEXT]
+<fieldset style="margin:2pt;background-color:[color];"><legend style="border-style:groove groove none groove;border-width: 2px;border-color:[color];background-color:[color];color:black;-moz-border-radius:25px;">[user] [date]</legend>
+<div style="color:black;background:[CORE_INPUTBGCOLOR];background-color:[color];margin:2pt;border: 1pt inset [color]">[comments]</div>
+</fieldset>
+
+[ENDBLOCK TEXT]
+
+<script>
+document.needreload=true;
+</script>
+[IF EMPTY]<div style="border:black solid 1px;height:50px;background-color:yellow;text-align:center">[TEXT:Empty Post-It]</div>[ENDIF EMPTY]

@@ -1,0 +1,76 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TITLE] [doctitle]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+<!-- Title Table -->
+<form  class="fborder" name="modifyfreedom" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=MODWDOC&docid=[docid]" >
+
+
+                         
+
+<input type="hidden" name="title" value="[TITLE]"> 
+
+<div class="TITLE">
+<p>[TEXT:Choose Worflow]</p>
+<table width="100%"  cellspacing="0" cellpadding="0" >
+<tr class="FREEDOMBack1">
+ <td >
+   <span class="FREEDOMTextTitle">[doctitle]</span>
+  </td> 
+  <td  align="right"><span class="FREEDOMText">[TEXT:workflow]</span>
+   <select name="wid" >   
+           <option VALUE="0">[TEXT:no workflow]</option>      
+         [BLOCK SELECTFLD]
+           <option VALUE="[idpdoc]" [selected]>[profname]</option>   
+         [ENDBLOCK SELECTFLD]
+           
+    </select>
+   </td>
+</tr>
+<tr class="FREEDOMBack1">
+  <td colspan="3" class = "tdstyle">
+ <input type="submit" value="[TEXT:Validate]"> 
+  </td>
+</tr>
+</table>
+</div>
+<!-- Frame Table -->
+
+
+
+
+
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

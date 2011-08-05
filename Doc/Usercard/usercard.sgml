@@ -1,0 +1,348 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.0//EN"
+[
+<!ENTITY index SYSTEM "index.sgml">
+]
+>
+
+<article id="usercard" lang="fr" revision="$Id: usercard.sgml,v 1.5 2002/08/19 12:15:34 eric Exp $">
+  <title>
+  <inlinemediaobject>
+    <imageobject>
+<imagedata scale="50"  fileref="./images/usercard.jpg">
+</imageobject>
+  </inlinemediaobject>Carnet d'adresses</title>
+ <articleinfo>
+    <revhistory>
+      <revision>
+        <revnumber>0.1</revnumber>
+        <date>25 Février 2002</date>
+        <authorinitials>EB</authorinitials>
+	<revremark>Version initiale</revremark>
+      </revision>
+      <revision>
+        <revnumber>0.2</revnumber>
+        <date>11 Mars 2002</date>
+        <authorinitials>EB</authorinitials>
+	<revremark>CSV import</revremark>
+      </revision>
+      <revision>
+        <revnumber>0.3</revnumber>
+        <date>27 Mars 2002</date>
+        <authorinitials>EB</authorinitials>
+	<revremark>CSV export</revremark>
+      </revision>
+    </revhistory>
+    <mediaobject><imageobject>
+	<imagedata scale="50"  fileref="./images/usercard.jpg">
+      </imageobject>
+      <textobject>
+	<phrase>capture écran carnet d'adresse</phrase>
+      </textobject>
+    </mediaobject>
+  </articleinfo>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			FUNCTIONS				   -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+  <sect1 id="usercard.gen">
+    <title>Utilisation</title>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			CREATE					   -->
+
+    <sect2 id="usercard.func.creation">
+      <title>création de cartes</title>
+      <para>La création de carte est déclechée par l'appui sur le l'item 'Nouvelle personne' du menu 'Nouveau'
+ présentée en haut à droite de la fenêtre</para>
+      <para>Cela a pour effet de présenter les champs à saisir sur la partie droite du navigateur. Aucun champ n'est strictement obligatoire mais il est conseillé de remplir au moins le nom ou le prénom de la nouvelle personne. En effet la recherche de carte ce fait à partir du couple (nom, prénom). Eventuellement une photographie d'une personne peut être insérée. Vous choissisez le fichier image en appuyant sur le bouton 'Parcourir' (ou 'Browse' en anglais). </para>
+      <para>Ensuite on  définit la confidentialité de la carte. Trois choix sont possibles : <itemizedlist> 
+	  <listitem><para><emphasis>carte privée</emphasis></para>
+	            <para>autorise la lecture et la modification seulement pour le propriétaire. La carte est invisible pour les autres personnes. Le mot <emphasis>privé</emphasis> entre parenthèses est ajouté dans la présentation des cartes dans la partie droite du navigateur pour les cartes à accès privés. </para>
+	  </listitem>
+	  <listitem><para><emphasis>carte publique - accès lecture</emphasis></para>
+	            <para>autorise la lecture de la carte pour tout le monde. La modification ne peut-être faite que par le créateur de la carte</para>
+	  </listitem>
+	  <listitem><para><emphasis>carte publique - accès écriture</emphasis></para>
+	            <para>autorise la modification et la lecture de la carte pour tout le monde</para>
+	  </listitem>
+        </itemizedlist> 
+    Il suffit ensuite de cliquer sur le bouton <emphasis>créer</emphasis> pour prendre en compte la nouvelle carte.
+</para>
+    </sect2>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			VIEW					   -->
+
+    <sect2 id="usercard.func.view">
+      <title>visualisation de carte</title>
+      <para>La lecture de la carte est activée par clic sur le titre d'une carte dans la partie gauche de la fenêtre (partie qui passe en surimpression). La carte complète est affichée dans la partie droite de la fenêtre. Seules les informations remplies sont affichées.</para>
+    </sect2>
+    <sect2 id="usercard.func.print">
+      <title>impression de carte</title>
+      <para>L'impression de la carte est activée en cliquant sur l'icone <inlinemediaobject> <imageobject>
+<imagedata scale="50"  fileref="./images/print.jpg">
+</imageobject>
+</inlinemediaobject> qui se trouve en haut à droite lors de l'affichage d'une carte.</para>
+    </sect2>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			MODIFY					   -->
+
+    <sect2 id="usercard.func.modif">
+      <title>modification de carte</title>
+      <para>Les modification de carte se font via un menu popup. Il peut être activé lorsque le pointeur de la souris est sur une description de carte dans la partie droite du navigateur. Lorsque le pointeur représente une croix, il indique qu'un menu contextuel peut être activé en appuyant sur le bouton droit de la souris.</para>
+      <para><inlinemediaobject> 
+	  <imageobject>
+	    <imagedata scale="50"  fileref="./images/popup.jpg">
+	  </imageobject>
+	</inlinemediaobject> 
+      </para>
+      <sect3><title>édition de carte</title>
+	<para>L'édition de carte se fait de la même façon que pour la création. L'ensemble des champs à saisir est affiché dans la partie droite du navigateur. Lorsque vous voulez modifier un champ il suffit de modifier le champs de saisie. Si vous voulez supprimer le contenu d'un champ, il faut saisir un seul espace dans le champ de saisie (si vous effacer totalement le champ la modification de ce champ ne sera pas pris en compte). Pour valider la modification , il faut appuyer sur le bouton <emphasis>modifier</emphasis> qui se trouve en bas de la fenêtre de saisie.</para>
+      </sect3>
+      <sect3><title>suppression de carte</title>
+	<para>La suppression de la carte est précédée d'une confirmation. <caution><para>Toute personne qui a la droit de modifier une carte peut la supprimer</para></caution>.</para>
+
+      </sect3>
+      <sect3><title>changement de catégorie</title>
+	<para>Une personne peut appartenir à plusieurs catégories. L'appartenance à une catégorie qui a des sous-catégories n'implique pas que la personne est aussi classée dans ces sous-catégories. La hierarchie des catégories doit être vue comme un simple plan de classements fait pour aider l'utilisateur à choisir ses catégories.</para>
+      <screenshot>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata scale="50" align="center" fileref="./images/choosecatg.jpg">
+	  </imageobject>
+	  <textobject>
+	    <phrase>capture d'écran pour le choix de catégorie</phrase>
+	  </textobject>
+	</mediaobject>
+      </screenshot>
+      </sect3>
+      <sect3><title>vcard</title>
+	<para>Cette action permet d'exporter la carte au format Vcard (<ulink url="http://www.imc.org/pdi/vcardoverview.html"><citetitle>pour en savoir plus</citetitle></ulink>). Ceci permet entre autre d'utiliser cette Vcard dans Outlook (Microsoft)</para>
+
+	<mediaobject>
+	  <imageobject>
+	    <imagedata scale="34" align="center" fileref="./images/vcardie.jpg">
+	  </imageobject>
+	  <textobject>
+	    <phrase>capture d'écran pour le choix de catégorie</phrase>
+	  </textobject>
+	</mediaobject>
+      </sect3>
+      
+      
+    </sect2>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			SEARCH					   -->
+
+    <sect2 id="usercard.func.rech">
+      <title>recherche de carte</title>
+      <para>L'édition de la recherche est effectuée en appuyant sur le menu <emphasis>Recherche</emphasis>. Une zone de saisie apparait pour saisir le texte recherché. Pour lancer la rechercher, il faut taper sur la touche 'Entrée' de votre clavier.</para>
+      <para>La recherche d'une carte est effectuée sur le contenu textuel des cartes. Le texte saisie peut être une expression régulière. On peut ainsi chercher les cartes contenant soit éric soit adèle en tapant l'expression suivante <emphasis>adèle|éric</emphasis></para>
+      <para>La conjonction de condition (le ET) ne peut être exploité car la recherche porte sur chacun des champs de la carte et non sur l'ensemble de la carte. On ne peut pas rechercher les cartes qui contiennent 'dupont' et 'martin'.</para>
+      <para>La recherche n'est pas sensible à la casse (pas de différence entre majuscule et minuscule).</para>
+      <para>Elle s'effectue dans la catégorie courante choisie. Pour faire une recherche globale, il faut au préalable avoir choisi 'toutes catégories' dans le menu <emphasis>catg</emphasis>.</para>
+         
+    </sect2>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			LDAP					   -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+
+    <sect2 id="usercard.ldap.config">
+    <title>LDAP</title>
+    <para>Les cartes publiques sont aussi consultables via un serveur LDAP. Si l'administrateur a autorisé cette synchronisation WHAT -> LDAP, vous pouvez consulter (la modification n'est pas autorisée) les cartes publiques enregistrées dans <emphasis>Usercard</emphasis>. La schéma utilisé pour le LDAP est <ulink url="http://docs.iplanet.com/docs/manuals/directory/schema/oc_dir30.htm"><citetitle>inetOrgPerson</citetitle></ulink>. Il décrit les caractéristiques d'une personne au sein d'une entreprise munie d'un réseau informatique.</para>
+      
+      <para>Par défaut, le serveur LDAP fonctionne sur la même machine que WHAT. Dans votre client LDAP (Netscape, Outlook express), il vous faut renseigner au moins les 3 champs servant à la connection avec le serveur.
+         <itemizedlist> 
+	  <listitem><para><emphasis>LDAP Host</emphasis></para>
+	            <para>Adresse IP du serveur LDAP.</para>
+	  </listitem>
+	  <listitem><para><emphasis>LDAP Port</emphasis></para>
+	    <para>Numéro du port sur lequel LDAP établi sa connection. Par défaut sa valeur est 389.</para>
+	  </listitem>
+	  <listitem><para><emphasis>base DN</emphasis></para>
+	    <para>Répertoire racine contenant les informations. Par défaut <emphasis>o=Anakeen,c=fr</emphasis>.</para>
+	  </listitem>
+        </itemizedlist></para>
+      <screenshot>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata scale="50" align="center" fileref="./images/contact_ldap.jpg">
+	  </imageobject>
+	  <textobject>
+	    <phrase>capture d'écran LDAP configuration</phrase>
+	  </textobject>
+	</mediaobject>
+      </screenshot>
+    </sect2>
+</sect1>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			ADMIN					   -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+  <sect1 id="usercard.adm">
+    <title>administration</title>
+    <sect2 id="usercard.adm.catg">
+      <title>catégories</title>
+      <para>Seul l'administrateur (privilège USERCARD_MASTER) à le droit d'ajouter de nouvelles catégories. On peut ajouter une catégorie principale (sans père) ou une sous-catégorie. Les catégories sont visibles par tout le monde, on ne peut pas créer des catégories à usage privatif. Ces catégories sont utilisées pour une recherches plus rapide, elle permettent d'avoir un classement des personnes sachant qu'un même personne peut appartenir à plusieurs catégories.</para>
+    </sect2>
+
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			IMPORT					   -->
+    <sect2 id="usercard.adm.import">
+      <title>import par fichier</title>		
+      <para>L'importation d'une base existante peut être faite à l'aide d'un fichier comportant des Vcard. On déclenche l'importation de Vcard  par le menu 'Nouveau' </para>
+      <para>Seul l'administrateur (privilège USERCARD_MASTER) à le droit d'importer des fichiers. Seul deux formats d'import sont supportés <ulink url="http://www.imc.org/pdi/vcardoverview.html"><citetitle>Vcard</citetitle></ulink> et CSV.(fichier texte multi-colonne avec séparateur point-virgule)</para>
+      <sect3 id="usercard.adm.import.vcard">
+	<title>import Vcard</title>
+	<para>Le format Vcard ne permet pas de remplir tous les attributs d'une personne. Seul les attributs principaux sont pris en compte ce sont :</para>  
+	<itemizedlist> 
+	  <listitem><para><emphasis>N;GIVEN</emphasis> : prénom</para></listitem>
+	  <listitem><para><emphasis>N;FAMILY</emphasis> : nom</para></listitem>
+	  <listitem><para><emphasis>URL;WORK</emphasis> : site web</para></listitem>
+	  <listitem><para><emphasis>ORG;NAME</emphasis> : société</para></listitem>
+	  <listitem><para><emphasis>EMAIL;INTERNET;WORK</emphasis> : adresse email</para></listitem>
+	  <listitem><para><emphasis>ADR;WORK;STREET</emphasis> : adresse postale</para></listitem>
+	  <listitem><para><emphasis>ADR;WORK;LOCALITY</emphasis> : ville</para></listitem>
+	  <listitem><para><emphasis>ADR;WORK;POSTALCODE</emphasis> : code postal</para></listitem>
+	</itemizedlist> 
+      <screenshot>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata scale="50" align="center" fileref="./images/importvcard.jpg">
+	  </imageobject>
+	  <textobject>
+	    <phrase>capture d'écran import vcard</phrase>
+	  </textobject>
+	</mediaobject>
+      </screenshot>
+      </sect3>
+      <sect3 id="usercard.adm.import.ssv">
+	<title>import CSV</title>
+	<para>Le format CSV permet de remplir tous les attributs définis dans la fiche. L'ordre et le contenu des colonnes est donné dans la fenêtre d'import. L'ordre des attributs est calculé en fonction de la définition des attributs de la fiche. Il faut impérativement que l'ordre des colonne soit respecté. Dans le cas contraire les informations seront décalées et incohérentes. La première colonne doit toujours contenir le mot clef 'DOC', ce qui permet d'identifier une ligne a prendre en compte. Si ce n'est pas le cas la ligne sera considérée comme un commentaire.</para>
+      <caution><para>Il est impératif de ne pas avoir de saut de ligne dans la définition d'une personne. Dans la cas contraire, les attributs définis dans les lignes suivantes ne seront pas pris en compte. On indiquera le saut de ligne pas les caractères "\n".</para></caution>
+      </sect3>
+      <sect3 id="usercard.adm.import.catg">
+	<title>Options d'import</title>
+      <para>Vous pouvez indiquer les catégories dans lesquelles vous voulez insérer les nouvelles cartes. Il est conseillé d'avoir un fichier différent par catégories.</para>
+      <para>Trois politiques sont proposées si dans le fichier d'importation sont présent des personnes avec le même nom et prénom
+      <itemizedlist> 
+	  <listitem><para><emphasis>ajouter</emphasis></para>
+	            <para>On ajoute de toutes façon la carte. On aura ainsi plusieurs personnes avec le même nom et prénom</para>
+	  </listitem>
+	  <listitem><para><emphasis>remplacer</emphasis></para>
+	            <para>L'ancienne carte est remplacé par la nouvelle carte. Si le remplacement ne peut se faire (carte en lecture seule), le nouvelle carte sera ajouté sans avoir supprimée l'ancienne. On obtient alors deux carte avec le même nom et prénom.</para>
+	  </listitem>
+	  <listitem><para><emphasis>laisser</emphasis></para>
+	            <para>La nouvelle carte n'est pas ajoutée.</para>
+	  </listitem>	  
+	</itemizedlist> 
+      </para>
+
+      <para> On peut aussi déclencher l'importation de Vcard ou de CSV par les commandes shell suivantes. Dans ce cas le remplacement (policy=update), si nécessaire, est toujours effectué. Les possibilités de l'argument policy sont : <emphasis>add</emphasis> (ajout), <emphasis>update</emphasis> (remplacer) et <emphasis>keep</emphasis> (laisser)</para>
+      <screen width=80>[root@yoda]# /home/httpd/what/wsh.php --app=USERCARD --action=USERCARD_IMPORTVCARD 
+           --file=/home/eric/everybody.vcf --policy=update</screen>
+      <screen width=80>[root@yoda]# /home/httpd/what/wsh.php --app=USERCARD --action=GENERIC_IMPORTCSV
+           --file=/home/eric/everybody.csv --policy=update</screen>
+	</sect3>
+    </sect2>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			ACCESS					   -->
+    <sect2 id="usercard.adm.access">
+      <title>accessibilités</title>
+      <para></para> <screenshot>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata scale="50" align="center" fileref="./images/usercard_access.jpg">
+	  </imageobject>
+	  <textobject>
+	    <phrase>capture d'écran LDAP configuration</phrase>
+	  </textobject>
+	</mediaobject>
+      </screenshot>
+      <itemizedlist> 
+	  <listitem><para><emphasis>USERCARD_READ</emphasis></para>
+	            <para>permet de lire les cartes publique</para>
+	  </listitem>
+	  <listitem><para><emphasis>USERCARD</emphasis></para>
+	            <para>permet de créer des cartes et autorise la modification de la carte par le propriétaire</para>
+	  </listitem>
+	  <listitem><para><emphasis>USERCARD_MASTER</emphasis></para>
+	            <para>permet de créer des catégories et d'importer des fichiers Vcard</para>
+	  </listitem>	  
+	</itemizedlist> 
+
+      <warning>
+	<para>L'administrateur WHAT (admin), à tous les droits, il peut ainsi voir et modifier n'importe quelles cartes privée ou publique. Ce compte ne doit être utilisé que pour des interventions de réparations (suppression de cartes privée obsolètes par exemple).</para>
+      </warning>
+    </sect2>
+    <sect2 id="usercard.adm.config">
+      <title>paramètres</title>
+      <para></para>
+<informaltable pgwide="1">
+<tgroup cols='3' align="center">
+<thead>
+<row><entry>nom</entry><entry>valeur par défaut</entry><entry>description</entry></row>
+</thead>
+<tbody>
+<row><entry>LDAP_ENABLED</entry><entry>no</entry><entry>(yes/no) autorise la synchronisation avec le serveur LDAP</entry></row>
+<row><entry>LDAP_SERVEUR</entry><entry>localhost</entry><entry>address IP du serveur LDAP. S'il est vide la synchronisation avec un serveur LDAP ne sera pas effectué.</entry></row>
+<row><entry>LDAP_PORT</entry><entry>389</entry><entry>numéro du port pour le serveur LDAP</entry></row>
+<row><entry>LDAP_ROOT</entry><entry>o=Anakeen,c=fr</entry><entry>répertoire racine LDAP de stockage des cartes</entry></row>
+<row><entry>LDAP_ROOTDN</entry><entry>cn=Manager,o=Anakeen,c=fr</entry><entry>administrateur de la base LDAP</entry></row>
+<row><entry>LDAP_ROOTPW</entry><entry>******</entry><entry>mot de passe de l'administrateur LDAP</entry></row>
+<row><entry>CARD_SLICE_LIST</entry><entry>8</entry><entry>Nombre de carte maximum présentée dans la partie droite.</entry></row>
+<row><entry>IDFAMUSER</entry><entry>120</entry><entry>Identifiant de la famille personne à utiliser.</entry></row>
+<row><entry>FREEDOM_DB</entry><entry>host=localhost user=anakeen port=5432 dbname=freedom</entry><entry>Coordonnées de la base de données où sont mémorisées les personnes.</entry></row>
+
+</tbody>
+</tgroup>
+</informaltable>
+
+      
+    </sect2>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			SYNC LDAP				   -->
+    <sect2 id="usercard.ldap.syn">
+      <title>synchronisation LDAP</title>
+      <para>Si le serveur LDAP est activé, les mises à jour se font dès qu'une carte est modifiée. Cependant on peut remettre à jour l'ensemble des cartes, en utilisant une commande de l'API shell du carnet d'adresse. Cette commande shell doit être éxécutée en tant que root sur la machine serveur</para>
+      <screen width=80>[root@yoda]# /home/httpd/what/wsh.php --api=usercard_ldapinit</screen>
+    </sect2>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+    <!--			EXPORT				   -->
+    <sect2 id="usercard.adm.export">
+      <title>exportation</title>
+      <para>L'exportation au format CSV est possible par l'API shell. Le seul paramètre est l'identifiant de la catégorie. L'identifiant pour toutes catégories est 121.</para>
+      <para>De manière générale l'identifiant est donné dans l'URL de la fenêtre (frame). Pour obtenir l'URL, placez le curseur de la souris sur le titre de la fenêtre de droite et sélectionnez l'item 'Propriété' (pour IE) ou 'Afficher les informations sur le cadre' (pour Netscape) du menu contextuel. L'URL est de la forme  <itemizedlist> 
+	  <listitem><para>http://.../what/index.php? ... ;action=USERCARD_LIST&amp;tab=1&amp;<emphasis>dirid=4336</emphasis>&amp;<emphasis>catg=3177</emphasis></para>
+	  </listitem>	 
+	</itemizedlist> </para>
+      <para> L'identifiant de la catégorie est donnée par la variable <emphasis>catg</emphasis>. Vous devez  mettre cette valeur pour exporter la catégorie courante. Vous pouvez exporter la sélection courante en utilisant la valeur donnée par <emphasis>dirid</emphasis>. Dans ce cas l'exportation tient compte de l'onglet courant (ABC, DEF, ...) et/ou de la recherche texte effectuée.
+      </para>
+      <screen width=80>[root@yoda]# /home/httpd/what/wsh.php --app=FDL --action=EXPORTFLD --id=121</screen>
+    </sect2>
+  </sect1>
+</article>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

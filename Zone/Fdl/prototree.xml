@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status count="[count]"  code="[code]" warning="[warning]">
+[BLOCK ACTIONS]
+<action name="[actname]" docid="[actdocid]"></action>
+[ENDBLOCK ACTIONS]
+  <branch><![CDATA[
+[BLOCK TREE]
+  <li><img id='il[ulid]'  onclick="viewtree(event,'[ulid]','[expandurl]')" ondblclick="reloadtree(event,'[ulid]','[expandurl]')" class="button" [IF leaf]style="visibility:hidden"[ENDIF leaf] src="[IMG:b_right.png]">
+   <a [IF selectnone]class="anosel" [ENDIF selectnone][IF selecturl]href="[selecturl]" target="[target]" [ENDIF selecturl] 
+	[IF selectjs] onclick="[selectjs]" [ENDIF selectjs]>
+	 <img class="icon" id="img[ulid]"  needresize="1" src="[icon]">[label]</a><ul id="[ulid]" style="display:none"></ul></li>
+[ENDBLOCK TREE]  
+
+
+]]></branch>
+</status>

@@ -1,0 +1,42 @@
+BrowserMatch "Microsoft-WebDAV-MiniRedir/5.1.2600" redirect-carefully
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+  #Classic Authentificated Dav Server
+  ServerName <WEBDAV_SERVEUR>
+  DocumentRoot  @prefix@/dav
+  <Directory @prefix@/dav/>
+     DirectoryIndex  zou679__e.php
+     #        AcceptPathInfo On
+     <Files ~ "zou679__e.php">
+        AuthType Basic
+	AuthName 'Dynacase Platform connection'
+	AuthBasicProvider pam
+	AuthnPAMService httpd
+        Require valid-user
+    </Files>
+    RewriteEngine On
+    #RewriteBase   /dav
+    RewriteCond %{REQUEST_URI} !.*zou679__e.php$
+    RewriteRule ^(.*)$ /zou679__e.php?filename=$1 [PT,L]
+  </Directory>
+</VirtualHost>
+
+
+<VirtualHost *:80>
+	ServerName <FREEDAV_SERVEUR>
+	
+	DocumentRoot @prefix@/freedav
+	
+	<Directory @prefix@/freedav/>
+		Order allow,deny
+		Allow from All
+		
+		DirectoryIndex index.php
+		
+		Options FollowSymLinks
+		AllowOverride All
+	</Directory>
+	
+	ErrorLog /var/log/apache2/freedav.error.log
+</VirtualHost>

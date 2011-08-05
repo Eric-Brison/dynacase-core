@@ -1,0 +1,75 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <title>[TEXT:edition: ] [TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+   @import url(htmlarea/htmlarea.css);
+
+ 
+[CSS:CODE]
+   </style>
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom" 
+      onLoad="editOnLoad();autoVresize()"
+      onsubmit="selectall()"
+      onUnLoad="closechoose();pleaseSave(event);">
+
+<form  id="fedit"  
+       class="fborder" 
+       name="modifydoc" 
+       onsubmit="if (document.isSubmitted) return false;if (!canmodify()) return false;document.isSubmitted=true;enableall();if (parent) if (parent.flist) this.catgid.value=parent.flist.catgid"
+       method="POST" ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=FDL&action=MODOPTION" >
+<INPUT TYPE="hidden" name="id" value="[id]"></input>
+<INPUT TYPE="hidden" name="aid" value="[aid]"></input>
+
+<IMG   border="0"  title="[FTITLE]" alt="icon" align="absbottom" height="25px" SRC="[iconsrc]">
+<b>[FTITLE]</b>
+
+[ZONE FDL:EDITCARD?zone=FDL:EDITOPTCARD]
+<div id="fixspanfoot" style="display:[ddivfoot];visibility:hidden;padding:0px;margin:0px;"></div>
+<table id="fixtablefoot" class="[tablefoot]"   cellspacing="0" width="100%">
+<tfoot >
+<tr class="FREEDOMBack2"><td  colspan="3"><img src="[IMG:1x1.png]" border="0"></td></tr>
+<tr class="FREEDOMBack1">
+  <td colspan="3"  align="right" id="editbutton">
+<input type="hidden" name="catgid" >
+<input type="hidden" name="noconstraint" value="N">
+ <input id="iSubmit" type="submit" value="[TEXT:Ok]" onmousedown="multiple_for_select();" > 
+ <input type="button" title="[TEXT:view constraints]" style="display:[bconsdisplay]" 
+        value="[TEXT:Constraints]" onclick="document.isSubmitted=true;selectall();document.modifydoc.action='[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&viewconstraint=Y';document.modifydoc.submit();"> 
+ <input type="submit" title="[TEXT:override constraints]" style="display:[boverdisplay]" value="[editaction]!" onclick="document.modifydoc.noconstraint.value='Y';return true"> 
+ <input type="button" value="[TEXT:Cancel]" onclick="document.isCancelled=true;canceloption('[aid]'); "> 
+  </td>
+  
+</tr>
+</tfoot>
+</table>
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

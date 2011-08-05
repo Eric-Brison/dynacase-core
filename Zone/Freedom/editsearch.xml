@@ -1,0 +1,99 @@
+<script>
+function verifytrash() {
+  var o=document.getElementById("se_trash");
+  var v,d;
+  if (o) {
+    v=o.options[o.selectedIndex].value;
+    if (v != 'no') d='hidden';
+    else d='';
+    o=document.getElementById("se_latest");
+    if (o) o.style.visibility=d;
+    o=document.getElementById("ifromdir");
+    if (o) o.style.visibility=d;
+    
+  }
+}
+function simplesearch(){
+  sendsearch('[CORE_STANDURL]&app=FREEDOM&action=SEARCH','[rtarget]');
+}
+</script>
+
+
+
+
+<table width="100%" cellspacing="0">
+<tbody>
+<tr><td style="vertical-align:top">
+	<table>
+<tr><td>[L_SE_KEY]&nbsp;:</td><td> <input onkeydown="if (trackCR(event)) {simplesearch();return false;}" type="text" name="_se_key" value="[thekey]" id="se_key"  ></td></tr>
+
+<tr>
+ <td>[TEXT:familly]&nbsp;: </td><td><select name="_se_famid" onchange="document.getElementById('se_fam').value=this.options[this.selectedIndex].text">  
+           <option VALUE="0" >[TEXT:any familly]</option> 
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" [selected] >[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select> </td></tr>
+    <tr><td><input type="hidden" id="se_fam" name="_se_fam" value="[selfam]"></td><td>
+    	<a onclick="document.getElementById('moreoptions').style.visibility='visible';this.style.display='none'">[TEXT:More options]</a>
+    </td></tr>
+</table>
+ <br/>
+ <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="simplesearch();return false"> </td>
+ 
+
+</td><td>
+<table  cellspacing="0" style="visibility:hidden" id="moreoptions">
+<tbody>
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" align="right">
+      [L_SE_LATEST]&nbsp;: </td>
+  <td   >[V_SE_LATEST]</td>
+</tr>
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" style="text-align:left" colspan="2">
+       [TEXT:from current folder]&nbsp;: 
+      <input type="checkbox" id="ifromdir" name="fromdir" value="true" 
+             onclick="document.getElementById('se_idfld').value=(this.checked)?parent.ffolder.dirid:'0';document.getElementById('se_cfld').value=(this.checked)?'dossier':' ';" > 
+      <input type="hidden" id="se_idfld" name="_se_idfld" value="0" >
+      <input type="hidden" id="se_cfld" name="_se_cfld" value=" " ></td>
+  <td>&nbsp</td>
+</tr>
+
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" align="right">
+       [L_SE_CASE]&nbsp;: </td>
+  <td >[V_SE_CASE]</td>
+</tr>
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" align="right">
+       [L_SE_FAMONLY]&nbsp;: </td>
+  <td >[V_SE_FAMONLY]</td>
+</tr>
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" align="right">
+       [L_SE_ACL]&nbsp;: </td>
+  <td >[V_SE_ACL]</td>
+</tr>
+
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" align="right">
+       [L_SE_TRASH]&nbsp;: </td>
+  <td onmouseout="verifytrash()">[V_SE_TRASH]</td>
+</tr>
+[IF archive]
+<tr class="FREEDOMBack1">
+  <td class="FREEDOMLabel" align="right">
+       [L_SE_ARCHIVE]&nbsp;: </td>
+  <td onmouseout="verifytrash()">[V_SE_ARCHIVE]</td>
+</tr>[ENDIF archive]
+
+ 
+</tbody>
+</table>
+</td></tr></tbody>
+</table>
+
+<table width="100%" cellspacing="0">
+[ZONE FDL:EDITFRAME?frameid=FR_BASIC]
+</table>

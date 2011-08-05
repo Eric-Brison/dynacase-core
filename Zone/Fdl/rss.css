@@ -1,0 +1,64 @@
+rss, channel
+{
+  font-family: Geneva, Arial, sans-serif;
+  background: [COLOR_A0];
+  color: [COLOR_A9];
+  padding:1.5em;
+}
+
+item, title, description, link, pubDate
+{
+  display: block;
+}
+
+language, copyright, lastBuildDate, ttl, docs, image, skipDays, day, skipHours, hour, webMaster, source, author
+{
+  display: none;
+}
+
+item 
+{
+  color: [COLOR_A0];
+  border: 2px solid [COLOR_A4]; 
+  padding: 1em;
+  width:90%;
+  margin-top: 1em;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  background: [COLOR_A9];
+}
+
+guid, title 
+{
+  margin-left: 1em;
+  font-weight: bold;
+  text-align: left;
+  font-size: 1em;
+  padding-bottom: 0.5em;
+}
+
+description,  pubDate
+{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 0.8em;
+  text-align: justify;
+  margin-left: 1em;
+}
+
+link 
+{
+  margin-top: 1em;
+  text-decoration: underline;
+  margin-left: 1em;
+  font-size: 0.8em;
+}
+
+category
+{
+  font-size: 1em;
+  margin-left: 1em;
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
+}

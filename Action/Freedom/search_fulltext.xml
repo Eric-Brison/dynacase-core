@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT: folder containt]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+<style type="text/css">
+[CSS:CODE]
+.iconimg {
+  border-style: hidden;
+  border-width: 1;
+  border-color: [CORE_FGCOLOR];
+  width:30;
+  height:30;
+  
+}
+.iconline {
+  border-color: [CORE_FGCOLOR];
+  margin:1px;
+  padding:0px;
+  border-width:3px;
+  border-style: hidden;
+  /*background-color: palegoldenrod;*/
+  
+}
+
+TD.tlist {
+   border-width : 1px;
+   border-style : none none none none;
+   border-color : [CORE_BGCOLOR];
+   font-size: 100%;
+}
+
+TR.unselect {
+  cursor: crosshair;
+
+}
+
+
+TR.select {
+  background-color:[CORE_BGCOLORALTERN];
+  border-style : solid;
+  cursor: crosshair;
+} 
+
+.button A {
+  color: #000000;
+  border-color: [CORE_BGCOLORALTERN];
+  background-color: [CORE_BGCOLORALTERN];
+  border-style:outset;
+  padding: 2px;
+  line-height:20pt;
+  text-decoration: none;
+}
+
+.button A:hover {
+  border-style:inset;
+}
+
+</style>
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+    document.dirid='[dirid]';
+
+-->
+</script>   
+ </head>
+
+<body class="freedom" 
+      onLoad="initmicon();" 
+      onClick="closeMenu('popuplist');" 
+      onResize="">
+
+
+<img id="micon" width="20" height="20"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
+
+
+[ZONE FREEDOM:POPUP]
+
+<table class="tablesimple" cellspacing="0" width="100%" >
+<tr class="FREEDOMBack2"><td  colspan="4" height="1px"></td></tr>
+<tr class="FREEDOMBack1">
+   <td colspan="2" align="left"> [dirtitle] </td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">[TEXT: familly] : </td><td align="left">[classdoc]</td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">[TEXT:founded] : </td><td align="left">[nbdoc]</td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">[TEXT:search time] : </td><td align="left">[stime]</td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">[TEXT:total count] : </td><td align="left">[totalcnt]</td>
+</tr>
+                    [BLOCK ADMIN]
+<tr class="FREEDOMBack1">
+   <td  align="right">[TEXT:informations] : </td><td align="left">[infos]</td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">Files found : </td><td align="left">[ffound]</td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">Files viewed : </td><td align="left">[fviewed]</td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">Match : </td><td align="left">[match]</td>
+</tr>
+<tr class="FREEDOMBack1">
+   <td align="right">Search for : </td><td align="left">[searchfor]</td>
+</tr>
+                    [ENDBLOCK ADMIN]
+                    [BLOCK ADMINFILES]
+<tr class="FREEDOMBack1">
+   <td colspan="2" align="left">File : [filename] Doc ref : [ix]</td>
+</tr>
+                    [ENDBLOCK ADMINFILES]
+</table>
+<!-- TABLEBODY -->
+ <table class="tablesimple" cellspacing="0" width="100%" >
+                   [BLOCK TABLEBODY]
+<tr class="FREEDOMBack2"><td  colspan="4" height="1px"></td></tr>
+<tr  id="d[divid]"
+     class="unselect"
+     onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid]);" 
+     onContextMenu="openMenu(event,'popuplist',[divid]);return false" 
+     onDblClick="if ([isfld]) openFld([id]); else sendFirstFile([id]);return false"
+     >
+<td class="tlist" width="40" >
+<IMG class="iconimg" id="i[divid]" 
+     align="absmiddle"  src="[iconsrc]">
+</td>
+<td class="tlist"  >  
+  
+     [title]
+
+</td>
+     <td class="tlist" width="20"><sup style="font-size:50%">[revision]</sup></td>
+     <td class="tlist" width="20">[locked]</td>
+
+    
+</tr>
+              [SEARCHRESULT]
+                    [ENDBLOCK TABLEBODY]
+<tr class="FREEDOMBack2"><td  class="tlist" colspan="4" height="1px"></td></tr>
+</table>
+<!-- /TABLEBODY -->
+
+
+
+
+
+<!--  FOOT HTML -->
+
+</body>
+</html>

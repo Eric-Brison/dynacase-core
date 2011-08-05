@@ -1,0 +1,79 @@
+.forum {
+  margin : 0px  ; 
+  padding : 4px 1px 1px 4px;
+  border : 1px solid [COLOR_A3];
+  background-color: [COLOR_WHITE];
+  -moz-border-radius:4px;  
+}
+.forum_over {
+  border : 1px solid [COLOR_A0];
+  background-color: [COLOR_A8];
+}
+
+.forum_edit {
+  display:none;  
+  border:1px solid [COLOR_C1]; 
+  background-color:[COLOR_C8]; 
+  text-align:center; 
+  margin:5px;  
+  padding:3px;  
+}
+
+#f_X {
+  margin-top : 5px;
+  padding : 3px;
+  border : 1px solid [COLOR_A3];
+  background-color: [COLOR_WHITE];
+  -moz-border-radius:4px;  
+}
+.forum_head {
+  margin : 5px 0px 5px 5px; 
+}
+.forum #resume {
+  cursor : pointer;
+}
+.forum #resume.first {
+  margin : 3px;
+  padding : 3px;
+  border-width : 1px ;
+  border-style : none none solid none;
+  border-color : [COLOR_A5];
+  background-color: [COLOR_A9];
+}
+.forum .content {
+  padding : 0px;
+  border-width : 0px ;
+  border-style : none;
+  border-color : [COLOR_A6];
+}
+.forum .content_first {
+  margin-left : 3px;
+  padding : 0px;
+  border-width : 0px ;
+  border-style : solid;
+  border-color : [COLOR_A6];
+}
+.forum .text {
+  padding : 5px;
+}
+.forum img {
+  padding : 0px 2px 0px 2px;
+}
+.forum #who, .forum #date {
+  font-size : 90%;
+  color: [COLOR_A1];
+}
+.forum #response  {
+  font-size : 90%;
+  margin-left : 5px;
+  color: [COLOR_A1];
+  text-transform:none;
+}
+.forum #action {
+  cursor : pointer;
+  margin : 0px;
+  padding : 0px 2px 0px 2px;
+  font-size : 90%;
+  color : [COLOR_B5];
+  text-transform:none;
+}

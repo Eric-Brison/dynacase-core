@@ -1,0 +1,65 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:Properties:] [TITLE]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
+   <style>
+[ZONE CORE:GENCSS]
+[ZONE FDL:GENCSS]
+   </style>
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+var ourl=window.opener.location.href;
+function autoclose() {
+  if (window.opener.location.href != ourl) self.close();
+}
+window.setInterval('autoclose()',2000);
+
+  //-->
+   </script>
+ </head>
+
+<body class="freedom" 
+      onload="autoVresize();"
+      >
+
+<!--pour visualisation-->
+
+<form id="fviewidoc"
+      name="fviewidoc"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"
+      >
+<input type="hidden" name="xml">
+<input type="hidden" name="famid">
+</form>
+<!--      end               -->
+
+
+
+<div width="100%" class="tableborder" 
+     style="cursor:crosshair;">
+    
+
+[ZONE FDL:VIEWCARD]
+</div>
+
+
+
+</body>
+</html>

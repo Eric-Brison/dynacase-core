@@ -1,0 +1,81 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Edit help]]
+<script type="text/javascript" src="lib/data/fdl-data.js"></script>
+<script type="text/javascript" language="JavaScript" src="./lib/jquery/jquery.js"></script>
+<script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
+<style type="text/css">
+#help-menu {
+	overflow: hidden;
+	padding: 5px 10px;
+}
+#help-menu strong {
+	font-size: 16px;
+}
+#help-menu div {
+	float: right;
+}
+#help-menu img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-menu a {
+	outline: 0;
+}
+fieldset legend img {
+	vertical-align: middle;
+	padding-right: 4px;
+}
+#help-menu a:hover {
+	background: [CORE_BGCOLOR];
+}
+#help-description textarea {
+	width: 95%;
+}
+</style>
+
+<div class="document">
+<div id="help-menu">
+	<strong>[DOCTITLE]</strong>
+
+	&nbsp; &nbsp; &nbsp; &nbsp;
+	<a onclick="return helppage.edithelp.apply();">[TEXT:Apply]</a>&nbsp;|&nbsp;
+	<a onclick="return helppage.edithelp.cancel();">[TEXT:Cancel]</a>
+	
+
+	<div>
+[BLOCK HELPLANGS2]
+	<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return helppage.edithelp.view('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+[ENDBLOCK HELPLANGS2]
+	</div>
+</div>
+
+[BLOCK HELPLANGS1]
+<div id="help-[LANGKEY]" style="display:[LANGDISPLAY]">
+	<fieldset><legend><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /> [LANGNAME]</legend>
+		<table style="width:100%" cellspacing="0" class="edittable">
+			<tr>
+				<td class="FREEDOMLabel" width="20%"><span >[TEXT:Help name]&nbsp:&nbsp;</span></td>
+				<td>[INPUTLANGNAME]</td>
+			</tr>
+			<tr>
+				<td class="FREEDOMLabel" width="20%"><span >[TEXT:Help description]&nbsp:&nbsp;</span></td>
+				<td id="help-description">[INPUTLANGDESCRIPTION]</td>
+			</tr>
+			<tr>
+				<td class="FREEDOMLabel" width="20%"></td>
+				<td id="help-description"><a onclick="return helppage.edithelp.clear('[LANGKEY]');">[TEXT:Clear this translation]</a></td>
+			</tr>
+		</table>
+	</fieldset>
+</div>
+[ENDBLOCK HELPLANGS1]
+</div>
+
+
+
+<script type="text/javascript">
+helppage.langs = [JSONLANGS];
+
+addEvent(window,"load",helppage.edithelp.load);
+addEvent(window,"load",autoVresize);
+</script>
+[ZONE FDL:HTMLFOOT]

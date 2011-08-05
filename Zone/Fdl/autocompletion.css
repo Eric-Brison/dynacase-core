@@ -1,0 +1,32 @@
+.AutoCompleteDivListeStyle {
+  font-size: 13px; font-family: arial,sans-serif; 
+  white-space:nowrap;
+  cursor:default;
+  border: inset 1px [COLOR_BLACK];
+  background-color: [COLOR_WHITE];
+  padding:0px;
+  z-index:1;
+  overflow: auto;
+}
+
+.AutoCompleteDiv {
+  display: block; 
+  padding-left: 3px; 
+  padding-right: 3px; 
+}
+
+.AutoCompleteDivAct {
+  display: block; 
+  background-color: [COLOR_C2]; 
+  padding-left: 3px; 
+  padding-right: 3px;
+  color: [COLOR_BLACK] ! important; 
+}
+
+div.AutoCompleteDivAct span{
+  background-color: [COLOR_C2];    
+}
+.AutoMessage {
+  background-color: [COLOR_WHITE]; 
+  color: [COLOR_A5];  
+}

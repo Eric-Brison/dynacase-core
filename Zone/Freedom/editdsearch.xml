@@ -1,0 +1,247 @@
+
+<script language="javascript">
+  addEvent(document.modifydoc,'submit',deletenew);
+</script>
+<style>
+select.cond option {
+  margin-left:10px;
+}
+select.cond option.set, option[disabled] {
+  margin-left:0px;
+  font-weight: bold;
+  [IF ISIE]background-color:[COLOR_A0];[ENDIF ISIE]
+  [IF ISCHROME]background-color:[COLOR_A2];[ENDIF ISCHROME]
+}
+
+</style>
+
+<table width="100%" cellspacing="0">
+<tbody>
+<tr class="FREEDOMBack1">  
+  <td   >
+   <img needresize="1" align="top" style="width:[SIZE_IMG-SMALL]" src="[icon]">
+      <label for="sensitive"> [TEXT:familly]&nbsp;:</label>
+     <select name="_se_famid" id="famid" onchange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=[ACTION]&classid=[classid]&dirid=[dirid]&onlysubfam=[onlysubfam]&sfamid='+this.options[this.selectedIndex].value">
+         [BLOCK SELECTCLASS]<option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>  
+    <input type="hidden" name="_se_fam" value="[selfam]">
+    <input type="hidden" name="id" value="[id]">
+    </td>
+ </tr></tbody>
+</table>
+
+<input type="hidden" name="_se_attrids[-1]">
+<input type="hidden" name="_se_funcs[-1]">
+<input type="hidden" name="_se_keys[-1]">
+
+<table width="100%" cellspacing="0">
+
+<tr class="FREEDOMBack1">
+<td colspan="3" align="center"> 
+
+<fieldset><legend>[TEXT:Conditions]</legend>
+<table>
+<tr><td><label for="latest"> [L_SE_LATEST]&nbsp;:</label>[V_SE_LATEST]</td></tr>
+<tr><td><label for="latest"> [L_SE_ACL]&nbsp;:</label>[V_SE_ACL]</td></tr>
+<tr><td><label for="latest"> [L_SE_FAMONLY]&nbsp;:</label>[V_SE_FAMONLY]</td></tr>
+<tr><td>[V_SE_OL]</td></tr>
+</table>
+<table border=0 width="100%">
+<thead>
+
+<tr id="newcond" style="display:none">
+<td class="und" align="left">
+  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]">
+</td>
+<td class="und">
+		 <select  name="_se_ols[]"   >
+  <option selected  value="">[TEXT:OP_GLOB]</option>
+  <option value="and">[TEXT:OP_AND]</option>
+  <option value="or">[TEXT:OP_OR]</option>
+  </select>
+	</td>
+	<td class="und">
+		 <select  name="_se_leftp[]"   >
+  <option selected  value="no"></option>
+  <option value="yes">(</option>
+  </select>
+	</td>
+<td class="und" >
+  <select class="cond"  name="_se_attrids[]"  onchange="filterfunc(this)">
+  [BLOCK ATTR]<option atype="[attrtype]" class="[attrtype]" ismultiple="[ismultiple]" [attrdisabled] value="[attrid]">[attrname]</option>
+  [ENDBLOCK ATTR]
+  </select></td>
+<td class="und">
+  <select  name="_se_funcs[]"  onchange="filterfunc2(this)">
+    [BLOCK FUNC]<option  ctype="[functype]" style="display:[funcdisplay]" value="[funcid]">[funcname]</option>
+    [ENDBLOCK FUNC]
+  </select></td>
+<td class="und"  >
+   <input id="thekey" type="text"  size="20"  name="_se_keys[]" ></td><td>
+   <input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
+   </td>
+   	<td class="und">
+		 <select  name="_se_rightp[]"   >
+  <option selected  value="no"></option>
+  <option   value="yes">)</option>
+  </select></td>
+</tr>
+<tr id="newstate" style="display:none">
+<td class="und" align="left">
+  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]">
+</td>
+<td>
+		 <select  name="_se_ols[]"   >
+  <option selected  value="">[TEXT:OP_GLOB]</option>
+  <option value="and">[TEXT:OP_AND]</option>
+  <option value="or">[TEXT:OP_OR]</option>
+  </select>
+	</td>
+	<td class="und">
+		 <select  name="_se_leftp[]"   >
+  <option selected  value="no"></option>
+  <option value="yes">(</option>
+  </select>
+	</td>
+<td class="und" >
+  <select  name="_se_attrids[]" >
+     <option selected value="state">[TEXT:state]</option>
+  </select></td>
+<td class="und">
+  <select  name="_se_funcs[]" >
+    [BLOCK FUNCSTATE]<option  value="[funcid]">[funcname]</option>
+    [ENDBLOCK FUNCSTATE]
+  </select></td>
+<td class="und"  >
+  <select  name="_se_keys[]" >
+  [BLOCK STATE]<option  value="[stateid]">[statename]</option>
+  [ENDBLOCK STATE]
+  </select></td><td><input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)"></td>
+	<td class="und">
+		 <select  name="_se_rightp[]"   >
+  <option selected  value="no"></option>
+  <option   value="yes">)</option>
+  </select></td>
+</tr>
+<tr class="FREEDOMBack2">
+<td>&nbsp;</td>
+<td>[L_SE_OLS]</td>
+<td>[L_SE_LEFTP]</td>
+<td>[L_SE_ATTRIDS]</td>
+<td>[L_SE_FUNCS]</td>
+<td>[L_SE_KEYS]</td>
+<td>[TEXT:Opt]</td>
+<td>[L_SE_RIGHTP]</td>
+</tr>
+[BLOCK ENUMS]
+<tr  style="display:none"><td colspan="4">
+  <select id="selenum[attrid]"  >
+    [BLOCK [SELENUM]]<option  value="[enumkey]">[enumlabel]</option>
+    [ENDBLOCK [SELENUM]]
+  </select>
+</td></tr>
+[ENDBLOCK ENUMS]
+</thead>
+
+<tbody id="condlist">
+[BLOCK CONDITIONS]<tr id="ART[ak]">
+<td class="und">
+  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]"></td>  
+	<td class="und">
+		 <select  name="_se_ols[]"   >
+  <option selected  value="">[TEXT:OP_GLOB]</option>
+  <option [ols_and_selected]  value="and">[TEXT:OP_AND]</option>
+  <option [ols_or_selected]  value="or">[TEXT:OP_OR]</option>
+  </select>
+	</td>
+	<td class="und">
+		 <select  name="_se_leftp[]"   >
+  <option [leftp_none_selected]  value="no"></option>
+  <option [leftp_open_selected]  value="yes">(</option>
+  </select>
+	</td>
+<td class="und" >
+  <select class="cond" name="_se_attrids[]"  onchange="filterfunc(this)" >
+  [BLOCK [ATTRCOND]]<option [attrselected] atype="[attrtype]" [attrdisabled] class="[attrtype]" value="[attrid]" ismultiple="[ismultiple]">[attrname]</option>
+  [ENDBLOCK [ATTRCOND]]
+  </select></td>
+<td class="und">
+  <select  name="_se_funcs[]"  onchange="filterfunc2(this)">
+  [BLOCK [FUNCCOND]]
+     <option [func_selected] ctype="[func_type]"  style="display:[func_display]" value="[func_id]">[func_name]</option>
+  [ENDBLOCK [FUNCCOND]]
+  </select></td>
+<td class="und"  >
+  [IFNOT ISENUM]
+	  [IFNOT ISDOCID]
+	   <input  type="text"  size="20" name="_se_keys[]" value="[key]">
+	  [ENDIF ISDOCID]
+	  [IF ISDOCID]
+		<input type="hidden"  name="_se_keys[]" id="[DOCID_AID]" value="[key]">
+		<input autocomplete="off" autoinput="1" onfocus="activeAuto(event,[FAMID],this,'','[DOCID_AID]','')"   onchange="addmdocs('_[DOCID_AID]')" type="text" name="_ilink_[DOCID_AID]" id="ilink_[DOCID_AID]" value="[DOCID_TITLE]">
+	  [ENDIF ISDOCID]
+  [ENDIF ISENUM]
+  [IF ISENUM]
+  <select  name="_se_keys[]" >
+  [BLOCK [SSTATE]]<option  value="[sstateid]" [sstate_selected]>[sstatename]</option>
+  [ENDBLOCK [SSTATE]]
+  </select>  
+  [ENDIF ISENUM]</td>
+<td>
+<input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
+   
+</td>
+	<td class="und">
+		 <select  name="_se_rightp[]"   >
+  <option [rightp_none_selected]  value="no"></option>
+  <option [rightp_open_selected]  value="yes">)</option>
+  </select></td>
+</tr>
+[ENDBLOCK CONDITIONS]
+
+</tbody>
+<tfoot>
+<tr>
+
+<td class="und" colspan="6" id="lastcell">
+   
+
+   <input   value="[TEXT:addcond]"   type="button" onclick="addrow('newcond','condlist')">
+   <input  style="display:[dstate]" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist')">
+
+<select id="example"  style="display:none" onchange="setKey(event,this)">
+           <option disabled style="font-weight: bold;" value="">[TEXT:function examples]</option>
+           <option value=""></option>
+           <option value="::getUserId()">[TEXT:my id]</option>
+           <option value="::getUserName()">[TEXT:my last name]</option>
+           <option value="::getDate()">[TEXT:today]</option>
+           <option value="::getDate(-1)">[TEXT:yesterday]</option>
+           <option value="::getDate(1)">[TEXT:tomorrow]</option>
+    </select>
+
+ </td>
+</tr>
+
+
+</tfoot>
+</table>
+</fieldset>
+
+
+</td>
+</tr>
+
+<tr class="FREEDOMBack1"> 
+  <td  align="left" colspan="2" >
+ 
+ <input type="submit" style="font-weight: bold;" value="[TEXT: send search]" onClick="sendsearch('[CORE_STANDURL]&app=FREEDOM&action=SEARCH');return false" /> </td>
+  <td  align="right"></td>
+</tr>
+
+</tbody>
+</table>
+
+<table width="100%" cellspacing="0">
+[ZONE FDL:EDITFRAME?frameid=FR_BASIC]
+</table>

@@ -1,0 +1,88 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Family Creation]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom" onload="autoWresize()">
+
+                         
+
+
+<!-- Title Table -->
+<form target="fdoc" class="fborder" name="modifyfamilly" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=CREATETHEFAM" >
+
+
+                         
+
+
+<table class="tableborder"  width="100%" cellspacing="0" cellpadding="0" >
+<tr>
+ <td class="FREEDOMTblTitle">
+   <span class="FREEDOMTextTitle">[TITLE]</span>
+  </td> 
+  <td class="FREEDOMTblTitle" align="right"><span class="FREEDOMTextName">[TEXT:inherit from]</span>
+   <select name="classid" >   
+           <option VALUE="0">[TEXT:no document family]</option>      
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>
+   </td>
+</tr>
+</table>
+
+<!-- Frame Table -->
+
+
+<table  class="tablesimple" width="100%"  cellspacing="0" cellpadding="0" >
+
+<tbody>
+<tr><td colspan="2">&nbsp;<br></td></tr>
+
+<tr>
+  <td  >
+ <b>[TEXT:family title]</b> : <input type="text" value="[ftitle]"
+       name="ftitle"> 
+  </td>
+  <td  >
+ <input type="submit" value="[TEXT:Create new family]"
+        onclick="setTimeout('self.close()',2000)"> 
+  </td>
+</tr>
+
+</tbody>
+
+</table>
+
+
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

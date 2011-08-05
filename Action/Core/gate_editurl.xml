@@ -1,0 +1,23 @@
+
+[ZONE CORE:HTMLHEAD]
+<H1>[TEXT:Choose Gate Urls]</H1>
+
+<form action="[CORE_BASEURL]&app=CORE&action=GATE_MODURL" 
+      method=post name="saveurl">
+
+<table width="100%" border=1 class="tableborder">
+
+<tr>
+  <td><input type="text" size=30 name="urlG11" value="[urlG11]"></td>
+  <td><input type="text" size=30 name="urlG21" value="[urlG21]"></td>
+  <td><input type="text" size=30 name="urlG31" value="[urlG31]"></td>
+<tr>
+<tr>
+  <td><input type="text" size=30 name="urlG12" value="[urlG12]"></td>
+  <td><input type="text" size=30 name="urlG22" value="[urlG22]"></td>
+  <td><input type="text" size=30 name="urlG32" value="[urlG32]"></td>
+<tr>
+</table>
+<input type="submit">
+</form>
+[ZONE CORE:HTMLFOOT]

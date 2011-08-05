@@ -1,0 +1,589 @@
+/* ---------------------------------------------------------------------------
+ * $Id: DEFAULT.css,v 1.16 2008/12/11 15:28:04 eric Exp $
+ * ---------------------------------------------------------------------------
+ 
+ * ---------------------------------------------------------------------------
+ */
+
+
+
+body, .core {
+  color: [CORE_TEXTFGCOLOR];
+}
+body.core {
+  background-color: [CORE_BGCOLOR];
+  background-image: [CORE_BGIMAGE];
+}
+
+TD {
+  background-color: inherit;
+  background-image: inherit;
+}
+
+
+
+TR {
+/*  background: [CORE_BGCELLCOLOR];*/
+  color: [CORE_TEXTFGCOLOR];
+}
+
+
+
+
+/*
+ * ------------------------------------------
+ * LINKS
+ * ------------------------------------------
+ */
+A:link, A:visited {
+  color: [CORE_ACOLOR];
+  text-decoration: none;
+}
+A {
+  color: [CORE_ACOLOR];
+  cursor:pointer  
+} 
+
+A:hover {
+        background-color: [COLOR_A9]; 
+        text-decoration:  underline ;
+}
+/*
+ * ------------------------------------------
+ * INPUTS
+ * ------------------------------------------
+ */
+input, SELECT, OPTION, TEXTAREA, FILE {
+   color:[input-text-normal-color];
+   background-color:[input-background-normal-color];
+   margin:0pt;
+/*  filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:bg.png]',sizingMethod='scale');*/
+}
+OPTION {
+   color:[input-text-normal-color];
+   background-color:[input-background-normal-color];
+}
+BUTTON, input[type="button"], input[type="submit"] { 
+  /*-moz-border-radius:25px;*/
+  padding:0pt;
+  margin:0px;
+  vertical-align:top;
+  overflow:hidden;
+  border:1px outset;
+  color:[input-text-normal-color];
+  background-color:[input-background-normal-color];
+  background-image: [input-background-image];
+   }
+
+TABLE.edittable input[type="button"] {
+  border-left-style:none;
+  /*margin-right:1px;*/
+  [IF ISCHROME]/*Chrome hack*/
+  min-width: 1.5em;
+  padding: 1px
+  /*EO Chrome hack*/[ENDIF ISCHROME]
+}
+BUTTON:hover { 		
+  background-image: [input-background-image];
+  margin:0px;
+  border:1px inset;
+   }
+
+
+
+OPTION:hover {  
+  color:[input-text-hover-color];
+  background-color:[input-background-hover-color];
+}
+input:hover,  TEXTAREA:hover,  SELECT:hover { 
+  border-style:inset;
+  color:[input-text-hover-color];
+  background-color:[input-background-hover-color];
+   }
+input:focus,  textarea:focus, input.sffocus, textarea.sffocus { 
+  border-style:inset;
+  color:[input-text-focus-color];
+  background-color:[input-background-focus-color];
+   }
+
+
+/*
+ SELECT:focus { 
+  color:[input-text-focus-color];
+  background-color:[input-background-focus-color];
+   }
+*/
+/*
+input[type="submit"] { -moz-border-radius:25px;
+   }
+input[type="select"] { -moz-border-radius:25px;
+  }
+input[type="reset"] { -moz-border-radius:25px ;
+ }
+*/
+input[type="text"] { 
+  /*-moz-border-radius:7px ;*/
+
+  border:inset 1px [input-text-normal-color];
+ }
+input[type="checkbox"], input[type="radio"] { 
+  vertical-align:middle; 
+ }
+input[disabled], input[disabled="disabled"],input.disabled,
+textarea[disabled],
+select[disabled], select.disabled, select[disabled="disabled"] {
+  color:[input-text-disabled-color];
+  background-color:[input-background-disabled-color];
+}
+TEXTAREA {
+  border:inset 1px [input-text-normal-color];
+}
+
+input[type="image"] { 
+  border-style : none;
+  background-color:transparent;
+ }
+
+
+/*
+ * ------------------------------------------
+ * POPUPMENU
+ * ------------------------------------------
+ */
+
+
+.popup {
+  background-color: [menu-background-normal-color]!important;  
+  border-color: [menu-background-normal-color]!important;
+}
+
+.popup a.menuItem * ,.popup a.menuItem, .popup a.menuItem:link, .popup a.menuItem:visited ,.popup a.menuItemCtrl:link, .popup a.menuItemCtrl:visited , .popup a.separator {
+  color: [menu-text-normal-color]!important;
+  font-weight: normal;
+}
+
+ .popup a.menuItemDisabled, .popup a.menuItemDisabled:link, .popup a.menuItemDisabled:visited,.popup a.menuItemCtrlDisabled,.popup a.menuItemCtrlDisabled:link,.popup a.menuItemCtrlDisabled:visited {
+  color: [menu-text-disabled-color]!important;
+  font-weight: normal;
+}
+.popup a.separator {
+  border-color:[menu-text-normal-color]!important;
+}
+.popup a.separator:hover {
+  text-decoration: none;
+  color: [menu-text-hover-color]!important;
+  background-color: [menu-background-hover-color]!important;  
+}
+.popup a.menuItem:hover,.popup a.menuItemCtrl:hover  {
+  color: [menu-text-hover-color]!important;
+  background-color: [menu-background-hover-color]!important;
+}
+.popup a.menuItemDisabled:hover,.popup a.menuItemCtrlDisabled:hover {
+  color: [menu-text-disabled-color]!important;
+  background-color: [menu-background-hover-color]!important;	
+}
+.popup a.menuItem:hover *,.popup a.menuItemCtrl:hover *  {
+  background-color: [menu-background-hover-color]!important;  
+  color: [menu-text-hover-color]!important;
+}
+.popup a.menuItemDisabled:hover *,.popup a.menuItemCtrlDisabled:hover * {
+  color: [menu-text-disabled-color]!important;
+}
+
+/*
+ * ------------------------------------------
+ * EXT-ADAPTER-SYSTEM.css
+ * ------------------------------------------
+ */
+
+.document {
+    font-family: tahoma, arial, helvetica, sans-serif;
+    padding: 10px;
+}
+
+.document legend, .document div.legend {
+    font-style: italic;
+}
+.document div.legend {
+   /* margin-top:-1.5em;	*/
+}
+
+.document legend {
+    /*font-size: [SIZE_MEDIUM];*/
+}
+
+.document a:HOVER {
+    text-decoration: none;
+}
+
+/**
+ * autocompletion.css
+ */
+
+.document .AutoCompleteDivListeStyle {
+  font-size: [SIZE_LARGE]; font-family: arial,sans-serif; 
+  white-space:nowrap;
+  cursor:default;
+  border-style: inset ;
+  border-width: 1px ;
+  padding:0px;
+  z-index:1;
+  overflow: auto;
+}
+
+.document .AutoCompleteDiv {
+  display: block; 
+  padding-left: 3px; 
+  padding-right: 3px; 
+}
+
+.document .AutoCompleteDivAct {
+  display: block; 
+  padding-left: 3px; 
+  padding-right: 3px;
+}
+
+/**
+ * End of Autocomplete.css
+ */
+
+
+.document fieldset {
+    border-style: solid;
+    border-width: 1px ;
+    -moz-border-radius: 0px;
+    margin-bottom: 10px;
+    padding: 0px 5px 5px 5px;
+}
+
+.document .FREEDOMLabel {
+    text-align: right;
+}
+
+.document .FREEDOMLabelNeeded {
+    text-align: right;
+}
+
+.document input,.document select,.document textarea,.document file,
+.freedom input {
+    border-width: 1px;
+    border-style: solid;
+    /*font-size: [SIZE_MEDIUM];*/
+}
+
+.document select {
+    background-repeat: repeat-x;
+    border-width: 1px ;
+    border-style: solid ;
+    /*font-size: [SIZE_MEDIUM];*/
+}
+/*
+.document input[type=button] {
+    border-top: 0px;
+    border-right: 0px;
+    width: 17px;
+    margin-right: 0px !important;
+    cursor: pointer;
+    height: 22px;
+}
+*/
+.document input.constraint {
+    border-top: 0px;
+    border-right: 0px;
+    width: 17px;
+    margin-right: 0px !important;
+    cursor: pointer;
+    height: 22px;
+}
+
+.document input.normal {
+    background: transparent none repeat-x scroll 0 -1096px;
+    width: auto;
+    margin-right: 0px !important;
+    cursor: pointer;
+    height: 22px;
+}
+
+.document input.normal:hover {
+    background-position: 0px -2168px !important;
+}
+/*
+.document input[type=button]:HOVER {
+    background-position: -17px 0px;
+}
+*/
+/*
+.document input[type=text],.document input[type=password],.document select,.document textarea {
+    padding: 3px;
+}
+*/
+
+.document td,.document tr,.document th {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.document th,
+.barmenu td {
+    background-repeat: repeat-x;
+    height: 24px;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-top: 0px !important;
+    padding-left: 3px !important;
+}
+
+.document td {
+    border: 0px !important;
+}
+
+.document td,.document th {
+    /*font-size: [SIZE_MEDIUM];*/
+}
+
+.document .tarray {
+    border: 0;
+}
+
+.document .border {
+    border-width: 1px;
+    border-style: solid;
+}
+
+.document .line {
+    margin-bottom: 10px;
+    height: 2px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-top-width: 1px ;
+    border-top-style: solid;
+    position: relative;
+    top: -1px;
+}
+
+.document .tabsh span {
+    font-weight: bold;
+    /*font-size: [SIZE_MEDIUM];*/
+    -moz-border-radius: 0px;
+    border-left-width: 1px ;
+    border-left-style: solid;
+    border-right-width: 1px ;
+    border-right-style: solid ;
+    border-top: 0;
+    border-bottom: 0;
+    margin-left: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-position:0 -201px;
+    background-repeat:repeat-x;
+    background-attachment:scroll;
+}
+
+.document .tabsh .tabsel {
+    background-repeat: repeat-x;
+    background-position: 0 -151px;
+    background-attachment: scroll;
+    position: relative;
+    z-index: 1;
+}
+
+.document .tarray .add-button,.document .tarray .add-button:HOVER {
+    background-repeat: no-repeat;
+}
+
+.document .tarray .trash-button,.document .tarray .trash-button:HOVER {
+    background-attachment: scroll;
+    background-position: 2px 2px;
+    background-repeat: no-repeat;
+}
+
+.document .tarray .select-button,.document .tarray .select-button:HOVER {
+    background-attachment: scroll;
+    background-position: 2px 2px;
+    background-repeat: no-repeat;
+}
+
+.document .tarray .unselect-button,.document .tarray .unselect-button:HOVER {
+    background-repeat: no-repeat;
+}
+
+.document .tarray .duplicate-button,.document .tarray .duplicate-button:HOVER {
+    background-repeat: no-repeat;
+}
+
+.calendar {
+    z-index: 1;
+}
+
+/*
+ * ------------------------------------------
+ * EXT-ADAPTER-USER.css
+ * ------------------------------------------
+ */
+
+
+.document legend,.document a {
+    color: [CORE_ACOLOR];
+}
+
+.document .normal {
+    background-color: #FFFFFF !important;
+}
+
+/**
+ * autocompletion.css
+ */
+
+.document .AutoCompleteDivListeStyle {
+  border-color: #B5B8C8;
+  background-color: #FFFFFF;
+}
+
+.document .AutoCompleteDivAct {
+  background-color: #D5E2F0; 
+  color: #222222; 
+}
+
+.document div.AutoCompleteDivAct span{
+  background-color: #D5E2F0;    
+}
+
+.document .AutoMessage {
+  background-color: #FFFFFF; 
+  color: #99BBE8;  
+}
+
+/**
+ * End of Autocomplete.css
+ */
+
+.tablesimple {
+    background-color: #FFFFFF; 
+}
+
+.document fieldset {
+    background-color: white !important;
+    border-color:  #B5B8C8;
+    -moz-border-radius: 0px;
+}
+
+.document div.frame {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+}
+
+.document div.frame div.content {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+    margin-top:-0.6em; 
+}
+.document input,.document select,.document textarea,.document file,
+.freedom input {
+    border-color: #B5B8C8;
+}
+
+.document select {
+    background-color: #FFFFFF;
+    border-color: #B5B8C8;
+}
+
+.document input.constraint {
+    background-image: [input-background-image];
+}
+
+.document input.normal {
+    background-image: url(lib/ext/resources/images/default/button/btn.gif);
+}
+
+.document th ,
+.barmenu td{
+    background-image: url(lib/ext/resources/images/default/panel/top-bottom.gif);
+    border-color: #99BBE8 !important;
+}
+
+.document .border {
+    border-color:#99BBE8;
+}
+
+.document .line {
+    border-bottom-color:#99BBE8;
+    border-top-color: #99BBE8;
+    background-color: #DFE8F6;
+}
+
+.document .tabsh span {
+    color: #15428B;
+    border-left-color: #99BBE8;
+    border-right-color: #99BBE8;
+    background-image: [tabs-sprite-image];
+}
+
+.document .tabsh .tabsel {
+    background-image: [tabs-sprite-image];
+}
+
+.document input[type=button].add-doc {
+    background : url('lib/ui/icon/add.png') no-repeat;
+    width:16px;
+}
+.document input[type=button].view-doc {
+    background : url('lib/ui/icon/accept.png') no-repeat;
+    width:16px;
+}
+.document .tarray .add-button,.document .tarray .add-button:HOVER {
+    background-image: url(lib/ui/icon/add.png) ;
+}
+
+.document .tarray .trash-button,.document .tarray .trash-button:HOVER {
+    background-color: transparent;
+    background-image: url(lib/ui/icon/bin.png);
+}
+
+.document .tarray .select-button,.document .tarray .select-button:HOVER {
+    background-color: transparent ;
+    border:none;
+   /* background-image: url(lib/ui/icon/application_get.png);*/
+}
+
+.document .tarray .unselect-button,.document .tarray .unselect-button:HOVER {
+    background-image: url(lib/ui/icon/application_put.png) ;
+}
+
+.document .tarray .duplicate-button,.document .tarray .duplicate-button:HOVER {
+    background-image: url(lib/ui/icon/application_double.png);
+}
+
+.document tr.selecta td {
+    background-color: #DFE8F6 !important;
+}
+
+
+/*
+ * ------------------------------------------
+ * customisations css
+ * ------------------------------------------
+ */
+
+td.MenuSelected {
+    color: [COLOR_BLACK];
+    border-style: inset !important;
+}
+
+td.MenuActive {
+    color: [COLOR_BLACK];
+    border-style: inset !important;
+}
+.headtitle {
+    color: [CORE_TEXTFGCOLOR];
+    font-weight: bold;
+}
+
+A.headtitle:link,A.headtitle:visited {
+    color: [CORE_TEXTFGCOLOR];  
+}
+A.headtitle:hover {
+    color: [CORE_TEXTFGCOLOR];
+    background-color: [CORE_BGCOLOR];[IFNOT ISIE6]
+    background-image: [CORE_BGIMAGE];[ENDIF ISIE6]
+}

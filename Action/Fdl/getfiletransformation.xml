@@ -1,0 +1,18 @@
+[ZONE FDL:HTMLHEAD?title=[TITLE]]
+[IFNOT error]
+<script>
+verifytid('[tid]');
+</script>[ENDIF error]
+
+
+<p [IF error]class="Error"[ENDIF error]>[processtext]</p>
+
+<div style="text-align:center;max-width:300px;background-color:[COLOR_A9];border:1px solid [COLOR_A0]">
+[TEXT:Status] : <b id="message">[message]</b>
+<br/>
+[IFNOT error]<img id="loading" src="[IMG:loading.gif]"><br/>
+<span  id="counter"></span>[ENDIF error]<br/>
+
+</div>
+
+[ZONE FDL:HTMLFOOT]

@@ -1,0 +1,93 @@
+.tarray .button {
+    width: 22px;
+    height: 22px;
+    border: 0;
+    cursor: pointer;
+}
+
+
+input[type=button].add-doc {
+    background : url('[IMG:add22.gif|16]') no-repeat;
+    width:16px;
+}
+input[type=button].view-doc {
+    background : url('[IMG:point22.gif|16]') no-repeat;
+    width:16px;
+}
+
+.tarray .add-button {
+    background : url('[IMG:add22.gif]') no-repeat;
+}
+.tarray .trash-button {
+    background : url('[IMG:trash22.gif]') no-repeat;
+}
+
+.tarray .select-button {
+    /*background : url('[IMG:next22.gif]') no-repeat;*/
+}
+
+.tarray .unselect-button {
+    background : url('[IMG:point22.gif]') no-repeat;
+}
+
+.tarray .duplicate-button {
+    background : url('[IMG:dup22.gif]') no-repeat;
+}
+
+/*
+ *
+ * refs #1443: trash columns in edition
+ *
+ */
+
+table.tarray thead tr th.withElabel {
+    cursor: help;
+}
+
+table.tarray thead tr th.visibleAttribute,
+table.tarray tbody tr td.visibleAttribute,
+table.tarray tfoot tr td.visibleAttribute {
+    visibility: visible;
+    border-style: none none solid solid;
+    border-width: 0 0 1px 1px;
+}
+
+table.tarray tbody tr td.visibleAttribute,
+table.tarray tfoot tr td.visibleAttribute {
+    padding-left: 4px;
+}
+
+/*please use empty in getHtmlInput...*/
+table.tarray tbody tr td.empty,
+table.tarray tfoot tr td.empty,
+table.tarray thead tr th.hiddenAttribute,
+table.tarray tbody tr td.hiddenAttribute,
+table.tarray tfoot tr td.hiddenAttribute{
+    display: none;
+}
+table.tarray div.drag-button {
+  cursor:move;
+  display:inline;
+  background : url('[IMG:drag22.png]') no-repeat;
+ width:12px;
+}
+
+
+table.tarray thead tr td.tools,
+table.tarray tbody tr td.tools ,
+table.tarray tfoot tr td.tools {
+    width: 55px;
+    white-space:nowrap;
+}
+.constraint {  
+  color: [CORE_ERRORCOLOR];
+  border:solid 1px [CORE_ERRORCOLOR];
+  [IFNOT ISIE6]z-index:10;position:absolute;
+  margin:10px 10px 10px 30px;[ENDIF ISIE6]
+  background-color:[COLOR_A9];
+  padding:3px;
+  cursor: pointer;
+}
+input.invalid, textarea.invalid , select.invalid, input[type="text"].invalid, span.invalid, table.invalid, fieldset.invalid {  
+  border:solid 1px [CORE_ERRORCOLOR]!important;
+}

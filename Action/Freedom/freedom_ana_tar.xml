@@ -1,0 +1,124 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Import Result] </title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+.dir {
+  font-weight: bold;
+  list-style: square;
+  color:red;
+}
+.file {
+  font-weight: medium;
+  color:black;
+  list-style: circle;
+}
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+   function enabledImport(enabled) {
+     var bimport = document.anatar.bgimport;
+     var bana = document.anatar.banalyze;
+     bimport.disabled=(!enabled);
+     bana.disabled=(enabled);
+
+   }
+   
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+[BLOCK AFORM]
+<form  class="fborder" 
+       name="anatar" 
+       method="POST" 
+       target="i_bgtaranalyze"
+       ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_ANA_TAR" >
+
+      
+
+   <H1>[TEXT:Analyze Archive]</H1>
+
+<input type="hidden" name="dirid" value="[dirid]"></input> 
+<input type="hidden" name="analyze" value="Y"> </input> 
+<input type="hidden" name="filename" value="[selfile]"></input> 
+<table width="100%" cols="2">
+<tr><td>
+<fieldset >
+<legend>[TEXT:Options import]</legend> 
+   [TEXT:default file family]
+   <select name="famid" [fdisabled] onchange="enabledImport(false)">  
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select><BR>
+   [TEXT:default folder family]
+   <select name="dfldid"  onchange="enabledImport(false)">  
+         [BLOCK SELECTDFLD]
+           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTDFLD]
+    </select><BR>
+
+<input type="radio" value="1" [oselected] onclick="document.anatar.famid.disabled=true;enabledImport(false)" name="onlycsv">[TEXT:Analyse fdl.csv]</input>
+<input type="radio" value="2" [notoselected]  onclick="document.anatar.famid.disabled=false;enabledImport(false)" name="onlycsv">[TEXT:Raw archive]</input><br/>
+<input type="checkbox" name="topfld" onclick="enabledImport(false)" value="1" [tselected]>[TEXT:Add top folder]</input> 
+<hr width="50%">
+<input type="submit" name="banalyze" disabled value="[TEXT:Analyze]"> 
+<input type="submit" name="bimport" style="display:none" onmousedown="document.anatar.analyze.value='N'"  value="[TEXT:Import Direct]"> 
+</fieldset></td><td>
+<fieldset width="40%">
+<legend>[TEXT:Lauch Import]</legend> 
+<label for="to">[TEXT:report to (mail address)]</label>
+<input type="text" size=30 name="to" value=[mailaddr]></input><br><hr width="50%">
+<input id="bgimport" name="bgimport" type="submit" [bgdisabled]
+       onclick="document.anatar.analyze.value='N';document.anatar.action='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_IMPORT_DIR'" 
+       value="[importtext]">
+</fieldset>
+</td></tr></table>
+</form>
+
+[ENDBLOCK AFORM]
+
+<fieldset>
+<legend>[TEXT:Analysis Results]</legend> 
+<table width="100%" >
+
+<thead><tr><th>[TEXT:foldername]</th>
+<th>[TEXT:filename]</th>
+<th>[TEXT:familyname]</th>
+<th>[TEXT:action]</th>
+<th>[TEXT:err]</th></tr></thead>
+<tbody  >
+[BLOCK ADDEDDOC]
+<tr class="[anaclass]"><td>[foldername]</td><td>[filename]</td><td>[familyname]</td><td>[action]</td><td>[err]</td></tr>
+[ENDBLOCK ADDEDDOC]
+</tbody></table>
+</fieldset>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+
+<input type="image" title="[TEXT:open in new window]" style="margin-bottom:-14px;margin-left:-10px;" src="[IMG:window_fullscreen.gif]" onclick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'_blank','[CORE_STANDURL]app=FDL&action=FDL_GETVALUE&attrid=[aid]&latest=N&id=[id]')"></input>
+<iframe width="100%" style="height:[iheight];border:none;padding:0px" id="ifile[aid]" src="[CORE_STANDURL]app=FDL&action=FDL_GETVALUE&attrid=[aid]&latest=N&id=[id]"></iframe>
+

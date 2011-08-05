@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT: choose value]. [ititle]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+
+[CSS:REF]
+
+
+<style type="text/css">
+[CSS:CODE]
+
+</style>
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+
+    //--------------------- MOVE  --------------------------
+
+var    winfo = self.opener;
+
+
+
+    //--------------------- ATTR  --------------------------
+var tattrid= new Array();
+    tattrid= [attrid];
+
+var tattrv= new Array();
+[BLOCK ATTRVAL]
+tattrv[[index]] =[attrv]; 
+[ENDBLOCK ATTRVAL]
+notalone=[notalone];
+-->
+</script>   
+ </head>
+
+<body style="padding:0pt;margin:0pt"
+      onLoad="autoClose();autoWresize()">
+
+
+<div id="dchoose" style="border-width:4px;border-style:groove;border-color:[CORE_FGCOLOR]">
+<table width="100%">
+<tr><td>
+<img src="[IMG:bred.gif]" 
+     style="cursor:pointer" 
+     onClick="self.close()"
+     title="[TEXT:Close]"
+     alt="[TEXT:Close]">
+</td></tr>
+<tr><td>
+[BLOCK SELECTSINGLE]
+<select id="schoose" 
+	onchange="completechoice(this.options[this.selectedIndex].value,tattrid,tattrv,winfo);setTimeout('self.close()',200);" > 
+                    [BLOCK SELECT]
+<option value="[cindex]" >[choice]</option>        
+                    [ENDBLOCK SELECT]
+<option value="-1" selected disabled style="display:none"></option> 
+</select>
+[ENDBLOCK SELECTSINGLE]
+
+[BLOCK SELECTMULTIPLE]
+<select id="schoose" multiple
+        style="align:center" 
+	size="[nselect]" 
+	onchange="completechoices()" > 
+                    [BLOCK SELECT]
+<option value="[cindex]" >[choice]</option>        
+                    [ENDBLOCK SELECT]
+</select>
+[ENDBLOCK SELECTMULTIPLE]
+
+</td></tr>
+</table>
+</body>
+</html>

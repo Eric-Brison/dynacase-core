@@ -1,0 +1,3 @@
+<a href="[CORE_BASEURL]&app=USERS&action=ADMIN_VIEW&id=-1&group=[group]&papp=USERS&paction=[paction]">
+   <img alt="[title]" title="[title]" border="0" src="[IMG:edit.gif]">
+</a>

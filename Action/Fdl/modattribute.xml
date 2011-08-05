@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status count="[count]" delay="[delay]" code="[CODE]" warning="[warning]" >
+[BLOCK ACTIONS]<action code="[acode]" arg="[aarg]"></action>[ENDBLOCK ACTIONS]
+  <branch><![CDATA[
+[thetext]
+]]></branch>
+</status>

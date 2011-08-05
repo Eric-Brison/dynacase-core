@@ -1,0 +1,579 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+<article id="users" lang="fr" revision="$Id: users.sgml,v 1.3 2003/01/06 16:07:50 yannick Exp $">
+  <title>
+
+  <inlinemediaobject>
+      <imageobject>
+	<imagedata align="center"
+           scale="50" fileref="./images/group-small.jpg">
+      </imageobject>
+    </inlinemediaobject> Gestion des utilisateurs</title>
+  
+  <articleinfo>
+    <revhistory>
+      
+      <revision>
+        <revnumber>0.1</revnumber>
+        <date>20 Mars 2002</date>
+        <authorinitials>MC</authorinitials>
+	<revremark>Version initiale</revremark>
+      </revision>
+      <revision>
+        <revnumber>0.2</revnumber>
+        <date>28 Mars 2002</date>
+        <authorinitials>EB</authorinitials>
+	<revremark>Accès des utilisateurs, modification groupe à la création</revremark>
+      </revision>
+      
+    </revhistory>
+
+    <abstract>
+      <para>Ce chapitre présente la gestion des utilisateurs et des groupes d'utilisateurs 
+           <emphasis>WHAT</emphasis>.</para>
+    </abstract>
+    
+  </articleinfo>
+  
+  <para>Ce document est disponible au <ulink url="../print/users.pdf">format PDF</ulink>.</para>
+
+  <sect1>
+    <title>Utilisateurs et Groupes WHAT</title>
+
+     <sect2>
+      <title>Généralités WHAT</title>
+      
+      <para>WHAT peut intégrer deux type d'applications :</para>
+      <orderedlist>
+	<listitem><para>des applications WEB (carnet d'adresses/LDAP, base documentaire, 
+                        suivi d'incidents...);</para></listitem>
+	<listitem><para>des applications permettant d'administrer ou de surveiller des services 
+                        de type messagerie, proxy accès Internet, connexions nomades...
+                     </para></listitem>
+      </orderedlist>
+
+      <para>L'accès aux applications hébergées par WHAT est contrôlé. L'<emphasis>utilisateur</emphasis>
+            doit s'authentifier pour accèder à une application (ou à un service fourni par le serveur) 
+            et de plus, en fonction de son profil, il est autorisé ou non à utiliser ces
+            applications ou certaines de leurs fonctions.
+            </para>
+
+      <para>Afin de simplifier la gestion des utilisateurs et en particulier, la gestion de leur droits
+            d'accès aux différentes applications, fonctions et services, l'administrateur peut définir
+            des <emphasis>groupes</emphasis>. Un groupe rassemble un ensemble d'utilisateurs ayant des droits
+            identiques (pour la majorité d'entre eux au moins; la possibilité de modifier les droits d'un
+            utilisateur -suppression ou ajout par rapport au groupe- reste possible).
+            </para>
+
+       <para>La documentation en ligne concernant la gestion des droits groupes/utilisateurs 
+             est consultable <ulink url="/what/ACCESS/doc/html/access.html">ici</ulink>.</para>
+      
+    </sect2>
+
+   <sect2>
+      <title>Les utilisateurs</title>
+      
+      <para>Les utilisateurs WHAT possèdent un ensemble de caractéristiques communes :</para>
+
+       <itemizedlist>
+	<listitem><para>un prénom et un nom correspondant généralement à leur état civil
+                        (par exemple <literal>Jean Martin</literal>);</para></listitem>
+	<listitem><para>un nom de connexion permettant de s'identifier auprès des applications
+                        (par exemple <literal>jean.martin</literal>);</para></listitem>
+	<listitem><para>un mot de passe qui leur sera demandé par les applications afin de
+                        les authentifier.</para></listitem>
+      </itemizedlist>
+
+      <para>Enfin, l'utilisateur peut posséder un compte de messagerie dans un domaine
+            desservi par le serveur (suivant la configuration mise en oeuvre).</para>
+
+      <para>Il existe un super-utilisateur WHAT, il est nommé <literal>admin</literal>.</para>
+      <para>Si un domaine de messagerie est géré par le serveur, l'utilisateur <literal>postmaster</literal>
+            existe. Il possède les droits nécessaires pour gérer les utilisateurs WHAT appartenant à
+            ce domaine de messagerie.</para>
+
+    </sect2>
+
+    <sect2>
+      <title>Les groupes</title>
+      
+      <para>Les caractéristiques d'un groupe sont :</para>
+       <itemizedlist>
+	<listitem><para>un prénom et un nom informatif
+                        (par exemple <literal>Groupe Utilisateur Web</literal>);</para></listitem>
+	<listitem><para>son identifiant unique (exemple : 
+                        <literal>webusers</literal>);</para></listitem>
+      </itemizedlist>
+
+       <para>Il existe un groupe par défaut auquel tout les utilisateurs créés sont rattachés, 
+             il est nommé <literal>all</literal>.</para>
+
+      <para>Si un domaine de messagerie est géré par le serveur, le groupe <literal>all@&lt;nom-du-domaine&gt;</literal>
+            existe. Les utilisateurs possédant un compte de messagerie sont rattachés à ce groupe lors de leur
+            création.</para>
+
+      <para>Un utilisateur peut appartenir à 0, 1 ou n groupes</para>
+
+    </sect2>
+    
+  </sect1>
+
+  <sect1 id="users.gestion">
+    <title id="users.gestion.title">Gestion des Utilisateurs et Groupes</title>
+
+      <para>L'ensemble des fonctions d'administration des utilisateurs et groupes
+          sont accessibles via l'application <emphasis>Gestion des utilisateurs
+          </emphasis> symbolisée par l'icone <inlinemediaobject><imageobject>
+	  <imagedata fileref="./images/group-small.jpg"></imageobject></inlinemediaobject>.
+          </para>
+
+    <sect2 id="users.gestion.interface">
+      <title id="users.gestion.interface.title">Présentation de l'interface</title>
+ 
+       <para>L'accès à la gestion des <emphasis>utilisateurs</emphasis> est réalisé grâce à 
+             l'onglet <emphasis>[A]</emphasis>, pour la gestion des groupes, utilisez
+             l'onglet <emphasis>[B]</emphasis>.
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/users-001.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Utilisateurs et Groupes</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+          </para>
+
+    </sect2>
+    
+    <sect2 id="users.gestion.groupes">
+      <title id="users.gestion.groupes.title">Les Groupes</title>
+
+    <sect3 id="users.gestion.groupe.general">
+      <title id="users.gestion.groupe.general.title">Liste des groupes</title>
+      
+       <para>La sélection de l'onglet <literal>les groupes</literal> affiche la page 
+             suivante : <screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/group-000.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Les groupes</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot></para>
+      <para>Elle présente 4 zones distinctes :</para>
+      <orderedlist>
+	<listitem>
+          <para><emphasis>[A]</emphasis>, la recherche est réalisée sur le nom du groupe;
+                 pour lancer une recherche saisissez le nom ou une partie du nom recherché
+                 et tapez <literal>Entrée</literal>
+                </para>
+	  </listitem>
+	<listitem>
+	    <para><emphasis>[B]</emphasis>, les icones permettent l'accès à :
+                 <itemizedlist>
+		<listitem><para>                     
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/edit.jpg">
+		      </imageobject>
+		    </inlinemediaobject> la création d'un groupe d'utilisateurs;</para></listitem>
+		<listitem><para>
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/print.jpg">
+		      </imageobject>
+		    </inlinemediaobject> l'impression de la page</para></listitem>
+		<listitem><para>
+	         <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/help.jpg">
+		      </imageobject>
+		    </inlinemediaobject> l'aide en ligne.</para></listitem>
+
+                 </itemizedlist>
+                </para>
+	  </listitem>
+	<listitem>
+          <para><emphasis>[C]</emphasis>, pour chacun des groupes les informations 
+                 suivantes sont affichées :</para>
+                 <itemizedlist>
+	         <listitem><para>sa description (informatif);</para></listitem>
+	         <listitem><para>son nom;</para></listitem>
+	         <listitem><para>éventuellement le domaine de messagerie auquel il est rattaché.</para></listitem>
+                 </itemizedlist>
+                 <para>Chaque groupe (hors groupes spéciaux) est précédé de 2 icones :</para>
+                 <itemizedlist>
+	         <listitem><para>
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/edit.jpg">
+		      </imageobject>
+		    </inlinemediaobject> modification du groupe;</para></listitem>
+	         <listitem><para>
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/delete.jpg">
+		      </imageobject>
+		    </inlinemediaobject> suppression du groupe après confirmation.</para></listitem>
+                 </itemizedlist>
+	  </listitem>
+	<listitem>
+          <para><emphasis>[D]</emphasis>, cette zone propose un tourne-page si la liste
+                des groupes le nécessite.
+                </para>
+	  </listitem>
+
+      </orderedlist>
+
+    </sect3>
+
+    <sect3 id="users.gestion.groupe.edition">
+      <title id="users.gestion.groupe.edition.title">Création</title>
+      <para>L'appui sur l'icone de création d'un groupe fait apparaitre la fenêtre
+            suivante
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/group-001.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Création</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+            </para>
+	<para>Cette fenêtre permet de saisir l'ensemble des informations caractérisant
+              le groupe :</para>
+	<itemizedlist>
+	  <listitem><para>son prénom;</para></listitem>
+	  <listitem><para>son nom;</para></listitem>
+	  <listitem><para>son identifiant (unique);</para></listitem>
+	  <listitem><para>son rattachement à un éventuel domaine de messagerie.
+                          Suivant la configuration de votre serveur, une liste de domaines
+                          de messagerie peut être proposée.</para></listitem>
+	</itemizedlist>
+ 
+     <warning><para>Le nom identifiant doit être unique. Il n'est pas modifiable par la suite.
+                    </para></warning>
+
+	<para>Le groupe peut hériter d'un autre groupe : les droits du groupe seront, par
+              défaut, ceux du groupe dont il hérite. La particularisation des droits pour
+              le groupe reste possible. Pour plus d'information se reporter au manuel
+              <ulink url="/what/ACCESS/doc/html/access.html">Gestion des droits d'accès</ulink>.</para>
+
+	<para>Lors de la modification du domaine de messagerie, le groupe <literal>all@&lt;domain&gt;</literal> est proposé par défaut.</para>
+	
+	<para>Il est possible de spécifier les groupes dont
+              hérite le groupe en cours de création.
+              L'accès à cette fonction est réalisée en cliquant
+              sur l'icone <inlinemediaobject><imageobject><imagedata align="center"
+				   scale="25" fileref="./images/group-small.jpg"></imageobject>
+	                     </inlinemediaobject>. La fenêtre est alors complétée comme il suit
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/group-004.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Création</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+</para>
+
+	<para>Le fenêtre présente alors 2 listes :</para>
+	<orderedlist>
+	  <listitem><para>à gauche, les groupes associés à des domaines de messagerie;
+               </para></listitem>
+	  <listitem><para>à droite, les autres groupes.
+               </para></listitem>
+	</orderedlist>
+	  
+	<para>Le groupe en modification hérite des groupes sélectionnés.
+              La sélection/déselection d'un groupe se fait en combinant le maintien
+              de la touche <literal>Ctrl</literal> enfoncée et le clic avec le bouton
+              gauche de la souris.</para>
+
+	<para>La création est effective lors de l'appui sur le bouton <literal>Créer</literal>.
+              La fenêtre reste ouverte et permet de créer un nouveau groupe. Durant la création, la liste 
+              des groupes est mise à jour. Le bouton
+              <literal>Fermer la fenêtre</literal> permet d'arrêter la création.
+              </para>
+
+    </sect3>
+
+    <sect3 id="users.gestion.groupe.modif">
+      <title id="users.gestion.groupe.modif.title">Modification</title>
+      <para>L'appui sur l'icone de modification d'un groupe fait apparaitre la fenêtre
+            suivante
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/group-002.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Création</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+            </para>
+	<para>Cette fenêtre est identique à celle de création. Les champs de saisie sont 
+              pré-renseignés avec les caractéristiques courantes. L'identifiant
+              du groupe ne peut plus être modifié, ni son éventuel domaine de messagerie
+              de rattachement.
+              </para>
+
+	<para>La modification est effective lors de l'appui sur le bouton <literal>Modifier</literal>.
+              </para>
+      </sect3>
+   </sect2>
+    
+    <sect2 id="users.gestion.utilisateurs">
+      <title id="users.gestion.utilisateurs.title">Les Utilisateurs</title>
+      
+    <sect3 id="users.gestion.utilisateurs.general">
+      <title id="users.gestion.utilisateurs.general.title">Liste des utilisateurs</title>
+      
+       <para>La page de gestion des utilisateurs est présentée ci-dessous.
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/users-000.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Utilisateurs et Groupes</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+          </para>
+      <para>Elle présente 4 zones distinctes :</para>
+      <orderedlist>
+	<listitem>
+          <para><emphasis>[A]</emphasis>, la recherche est réalisée sur le nom de 
+                de l'utilisateur et son nom de connexion; pour lancer une recherche
+                saisissez le nom ou une partie et tapez <literal>Entrée</literal>
+                </para>
+	  </listitem>
+	<listitem>
+	    <para><emphasis>[B]</emphasis>, les icones permettent l'accès à :
+                 <itemizedlist>
+		<listitem><para>                     
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/edit.jpg">
+		      </imageobject>
+		    </inlinemediaobject> la création d'un utilisateur;</para></listitem>
+		<listitem><para>
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/print.jpg">
+		      </imageobject>
+		    </inlinemediaobject> l'impression de la page</para></listitem>
+		<listitem><para>
+	         <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/help.jpg">
+		      </imageobject>
+		    </inlinemediaobject> l'aide en ligne.</para></listitem>
+
+                 </itemizedlist>
+                </para>
+	  </listitem>
+	<listitem>
+          <para><emphasis>[C]</emphasis>, pour chacun des utilisateurs les informations 
+                 suivantes sont affichées :</para>
+                 <itemizedlist>
+	         <listitem><para>son nom (prénon et nom);</para></listitem>
+	         <listitem><para>son nom de connexion (nom d'utilisateur WHAT);</para></listitem>
+	         <listitem><para>éventuellement le domaine de messagerie auquel il appartient.</para></listitem>
+                 </itemizedlist>
+                 <para>Chaque utilisateur (hors utilisateurs spéciaux) est précédé de 2 icones :</para>
+                 <itemizedlist>
+	         <listitem><para>
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/edit.jpg">
+		      </imageobject>
+		    </inlinemediaobject> modification de l'utilisateur;</para></listitem>
+	         <listitem><para>
+                     <inlinemediaobject>
+		      <imageobject>
+			<imagedata align="center"
+				   scale="50" fileref="./images/delete.jpg">
+		      </imageobject>
+		    </inlinemediaobject> suppression de l'utilisateur après confirmation;</para></listitem>
+                 </itemizedlist>
+	  </listitem>
+	<listitem>
+          <para><emphasis>[D]</emphasis>, cette zone propose un tourne-page si la liste
+                des utilisateurs le nécessite.
+                </para>
+	  </listitem>
+
+      </orderedlist>
+
+    </sect3>
+
+    <sect3 id="users.gestion.utilisateurs.edition">
+      <title id="users.gestion.utilisateurs.edition.title">Création</title>
+      <para>L'appui sur l'icone de création d'un utilisateur fait apparaitre la fenêtre
+            suivante
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/users-002.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Création</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+            </para>
+	<para>Cette fenêtre permet de saisir l'ensemble des informations caractérisant
+              l'utilisateur :</para>
+	<itemizedlist>
+	  <listitem><para>son prénom;</para></listitem>
+	  <listitem><para>son nom;</para></listitem>
+	  <listitem><para>son nom de connexion (unique);</para></listitem>
+	  <listitem><para>son mot de passe (une double saisie est nécessaire pour vérification);
+                          </para></listitem>
+	  <listitem><para>son rattachement à un éventuel domaine de messagerie.
+                          Suivant la configuration de votre serveur, une liste de domaines
+                          de messagerie peut être proposée.</para></listitem>
+	</itemizedlist>
+ 
+	<caution>
+	  
+	  <para>Le nom de connexion doit être unique. Il n'est pas modifiable par la suite.
+                    </para> 
+        </caution>
+
+	<para>La création est effective lors de l'appui sur le bouton <literal>Créer</literal>.
+              La fenêtre reste ouverte et permet de créer un nouvel utilisateur. Le bouton
+              <literal>Fermer la fenêtre</literal> permet de terminer la création.
+              Durant la création, la liste des utilisateurs est mise à jour.</para>
+
+      <para>La gestion des caractéristiques du compte de messagerie 
+                     d'un utilisateur rattaché à un domaine est décrite dans le 
+                     manuel <ulink url="/what/ACCESS/doc/html/access.html">
+                     Administration de la messagerie</ulink>.</para>
+        
+    </sect3>
+
+    <sect3 id="users.gestion.utilisateurs.modif">
+      <title id="users.gestion.utilisateurs.modif.title">Modification</title>
+      <para>L'appui sur l'icone de modification d'un utilisateur fait apparaitre la fenêtre
+            suivante
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/users-003.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Création</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+            </para>
+	<para>Cette fenêtre est identique à celle de création. Les champs de saisie sont 
+              pré-renseignés avec les caractéristiques courantes. Le nom de connexion de
+              l'utilisateur ne peut plus être modifié, ni son éventuel domaine de messagerie
+              de rattachement.
+              </para>
+
+	<para>Lors de la modification de l'utilisateur, il est possible de gérer les groupes
+              auxquels on souhaite le rattacher. L'accès à cette fonction est réalisé en cliquant
+              sur l'icone <inlinemediaobject><imageobject><imagedata align="center"
+				   scale="25" fileref="./images/group-small.jpg"></imageobject>
+	                     </inlinemediaobject>. La fenêtre est alors complétée comme il suit
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/users-004.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Création</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+</para>
+
+	<para>Le fenêtre présente alors 2 listes :</para>
+	<orderedlist>
+	  <listitem><para>la liste de gauche propose les groupes associés à des domaines de messagerie;
+               </para></listitem>
+	  <listitem><para>la liste de droite identifie les autres groupes.
+               </para></listitem>
+	</orderedlist>
+	  
+	<para>Les groupes sélectionnés sont ceux auxquels appartient l'utilisateur.
+              La sélection/déselection d'un groupe se fait en combinant le maintien
+              de la touche <literal>Ctrl</literal> enfoncée et le clic avec le bouton
+              gauche de la souris.</para>
+
+	<para>La modification est effective lors de l'appui sur le bouton <literal>Modifier</literal>.
+              </para>
+      </sect3>
+
+    </sect2>
+    
+  </sect1>
+
+  <sect1 id="users.access">
+    <title id="users.access.title">Droits d'accès</title>
+       <para>Trois droits d'accès à l'application User sont définis. Ils sont les suivants :
+           </para>
+	<itemizedlist>
+      <listitem><para><emphasis>USER</emphasis> : permet de modifier son propre mot de passe ainsi que son nom et prénom</para></listitem>
+      <listitem><para><emphasis>DOMAIN_MASTER</emphasis> : permet de créer et de modifier des utilisateurs dans son domaine de messagerie. Ce droit est généralement réservé à l'utilisateur <emphasis>postmaster</emphasis></para></listitem>
+      <listitem><para><emphasis>ADMIN</emphasis> : permet de créer et de modifier les utilisateurs dans tous les domaines</para></listitem>
+	  
+	</itemizedlist>
+    <para>Ces droits sont modifiables via l'application <emphasis>ACCESS</emphasis>. Par défaut le droit pour un utilisateur est restreint à USER.</para>
+	<screenshot>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" scale="75" fileref="./images/accessuser.jpg">
+	    </imageobject>
+	    <textobject>
+	      <phrase>Accès USER</phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>     
+  </sect1>
+
+</article>
+
+
+
+
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

@@ -1,0 +1,74 @@
+<html>
+
+<head>
+[JS:REF]
+   <script language="JavaScript">
+
+document.wstyle='[iconFolderPath]';
+
+    [JS:CODE]
+  //-->
+   </script>  
+
+
+
+
+
+
+
+
+<!-- Execution of the code that actually builds the specific tree.
+     The variable foldersTree creates its structure with calls to
+	 gFld, insFld, and insDoc -->
+
+
+<script language="JavaScript">
+  <!--
+
+    var ffolder = window.parent;
+
+
+     var fldtop =ffolder.indexOfEntries[ffolder.fldidtoexpand];
+
+  //   var nch=fldtop.nChildren;
+  //   for (i=0; i < nch; i++){ 
+  //     if (fldtop.children[i].navObj) //is a folder 
+  //        ffolder.document.getElementById('bodyid').removeChild(fldtop.children[i].navObj);
+  //   } 
+
+  
+  if (fldtop.nChildren > 0) {
+    // necessary when refresh folder
+    fldtop.setState(false);// set old html child invisible
+    fldtop.nChildren=0;    // remove old child 
+    fldtop.setState(true);
+  }
+
+   var BeginnEntries;
+   BeginnEntries=ffolder.indexOfEntries.length;
+     
+     
+     [subtree]
+     
+     
+     
+     //-->
+     </script>
+     </head>
+     
+     <body topmargin=16 marginheight=16     >
+     
+     <!-- Removing this link will make the script stop from working -->
+     
+     <div style="position:absolute; top:30px; left:0; "><table border=0><tr><td><font size=-2><a style="font-size:6pt;text-decoration:none;color:gray" href="http://www.mmartins.com" target="_top"></a></font></td></table></div>
+     
+     <script language="JavaScript">
+        copypopup( tdiv, BeginnEntries);
+        addbranch(fldtop, BeginnEntries, '[navmode]' );
+     </script>
+     
+     
+ 
+
+</body>
+</html>

@@ -1,0 +1,353 @@
+/* ---------------------------------------------------------------------------
+ * $Id: core.css,v 1.55 2009/01/12 15:13:11 jerome Exp $
+ * ---------------------------------------------------------------------------
+ 
+ * ---------------------------------------------------------------------------
+ */
+
+
+body, .core {
+  margin:0px;
+}
+
+TD {
+	empty-cells: show;
+	border-style : inherit;
+}
+TH {
+  empty-cells: show;
+  font-weight: bold;
+}
+
+
+/*
+ *
+ * --------------------------------------------
+ * Header CSS specific
+ * --------------------------------------------
+ */
+
+.tablesimple {
+	width : 100%;
+	border-width: 0px;
+	border-spacing: 0px;
+	empty-cells: show;
+        background: [CORE_BGCELLCOLOR];
+
+
+}
+
+.tableborder {
+	border : [CORE_FGCOLOR] inset 1pt;
+	border-spacing: 0px;
+	empty-cells: show;
+        background: [CORE_BGCELLCOLOR];
+}
+
+
+
+.headtitle {
+  color: [CORE_TEXTBGCOLOR];
+  font-weight: bold;
+}
+
+A.headtitle:link,A.headtitle:visited {
+  color: [CORE_TEXTBGCOLOR];  
+}
+A.headtitle:hover {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: [CORE_FGCOLOR];
+[IFNOT ISIE6]  background-image: [CORE_FGIMG];[ENDIF ISIE6]
+}
+
+TR.headcell  {
+  background-color: [CORE_FGCOLOR];
+[IFNOT ISIE6]  background-image: [CORE_FGIMG];[ENDIF ISIE6]
+  
+  border: none;
+}
+
+
+.historique {
+  color: [CORE_TEXTFGCOLOR];
+}  
+
+.anakeen {
+  color: [CORE_TEXTFGCOLOR];
+}
+
+
+/*
+ * --------------------------------------------
+ * TDM Specific styles
+ * --------------------------------------------
+ */
+
+.toctitle {
+  font-weight: bold;
+  color: [CORE_FGCOLOR];
+}  
+
+.tocitem0on {
+  background-color: [CORE_FGCOLOR];
+  font-weight: bold;
+  color: [CORE_BGCELLCOLOR];
+}  
+
+.tocitem0off {
+  color: [CORE_FGCOLOR];
+}  
+
+
+/*
+ * ------------------------------------------
+ * LINKS
+ * ------------------------------------------
+ */
+A:link, A:visited {
+  text-decoration: none;
+}
+
+IMG.click {
+  	cursor: pointer;
+	border:none;
+}
+IMG.click:hover {
+        background-color: [CORE_BGCOLORHIGH]; 
+}
+
+/*
+ * ------------------------------------------
+ * TAB STYLES
+ * ------------------------------------------
+ */
+.TABBackgroundSelected {
+  background-color: [CORE_FGCOLOR];
+[IFNOT ISIE]  background-image: url('CORE/Images/tab.png');[ENDIF ISIE]
+  
+  color: [CORE_TEXTFGCOLOR];
+  font-weight: bold;
+}
+.TABBackground {
+  background: [CORE_BGCOLORALTERN];
+[IFNOT ISIE]  background-image: url('CORE/Images/tab.png');[ENDIF ISIE]
+  
+
+  color: [CORE_TEXTBGCOLOR];
+}
+.TABOdd {
+  background: [CORE_BGCOLORALTERN];
+  border-color: [CORE_BGCOLORALTERN];
+  border-style:inset none none none;;
+  border-width: 2px 0pt 0pt 0pt;
+  color: [CORE_TEXTBGCOLOR];
+}
+.TABLabelSelected {
+  color: [CORE_TEXTBGCOLOR];
+}
+.TABLabel {
+  color: [CORE_TEXTFGCOLOR];
+}
+
+
+/*
+ * ------------------------------------------
+ * PAGE CONTENT STYLES
+ * ------------------------------------------
+ */
+
+.CORETblHead {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: [CORE_FGCOLOR];
+[IFNOT ISIE6]  background-image: [CORE_FGIMG];[ENDIF ISIE6]
+}
+
+.CORETblHeadBold {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: [CORE_FGCOLOR];
+[IFNOT ISIE6]  background-image: [CORE_FGIMG];[ENDIF ISIE6]
+  font-weight: bold;
+}
+.CORETblHeadCell {
+  background-color: [CORE_FGCOLOR];
+[IFNOT ISIE6]  background-image: [CORE_FGIMG];[ENDIF ISIE6]
+}
+.CORETblHeadCell TD{
+  color: [CORE_TEXTBGCOLOR];
+}
+.CORETblHeadCellLine {
+  background-color: [CORE_FGCOLOR];
+[IFNOT ISIE6]  background-image: [CORE_FGIMG];[ENDIF ISIE6]
+  border-style : solid none none none;
+  border-width : 1px;
+  border-color : [CORE_BGCELLCOLOR];
+}
+
+.CORETbl {
+  color: [CORE_TEXTFGCOLOR];
+}
+
+.CORETblBold {
+  color: [CORE_TEXTFGCOLOR];
+  font-weight: bold;
+}
+
+.CORETblCell {
+  background-color: [CORE_BGCELLCOLOR];
+}
+.CORETblCellLine {
+  background-color: [CORE_BGCELLCOLOR];
+  border-style : solid none none none;
+  border-width : 1px;
+}
+
+.CORETblCellAltern, OPTION.CORETblCellAltern {
+  background-color: [CORE_BGCOLORALTERN]!important;
+}
+
+.Error {  
+  color: [CORE_ERRORCOLOR];
+}
+.COREError {
+  color: [CORE_ERRORCOLOR];
+  font-weight: bold;
+  padding:20px;
+
+[IFNOT ISIE]background-image:url('Images/op20.png');[ENDIF ISIE]
+  [IF ISIE]filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Images/op20.png',sizingMethod='scale');float:left;[ENDIF ISIE]
+  border:solid 1px;
+  text-align:center;
+}
+.CORETextError {
+
+}
+.COREErrorBg {
+  color: [CORE_ERRORCOLOR];
+  font-weight: bold;
+  padding:20px;
+  background:[CORE_BGCOLOR];
+
+  border:solid 1px;
+  text-align:center;
+}
+
+IMG.Fade {
+	[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE]
+	[IFNOT ISIE]opacity:.5;[ENDIF ISIE]
+}
+IMG.NotFade {
+} 
+TD.NotFade A:hover {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: inherit;
+  background-image: inherit;
+}
+IMG.Select {	
+}
+TD.Fade {
+[IF ISIE]
+	padding-left:2px;
+	padding-right:2px;
+        border-left-style:none;
+        border-right-style:none;[ENDIF ISIE]
+[IFNOT ISIE]
+	border-left:2px transparent solid;
+	border-right:2px transparent solid;[ENDIF ISIE]
+}
+TD.Select {
+[IF ISIE]
+	padding-left:2px;
+	padding-right:2px;[ENDIF ISIE]
+[IFNOT ISIE]
+	border-left:2px transparent solid;
+	border-right:2px transparent solid;[ENDIF ISIE]
+}
+TD.NotFade {
+/*	background-image:url('[IMG:bgunfade.png]');*/
+	/*background-color:[CORE_BGCOLORALTERN];*/
+	border:2px outset [CORE_BGCOLORALTERN];
+[IF ISIE]
+	padding-left:0px;
+	padding-right:0px;[ENDIF ISIE]
+}
+
+div.detail {
+  font-weight : bold ;
+  background:[CORE_BGCOLORALTERN];
+  border: solid ;
+  border-color: [CORE_FGCOLOR];
+  border-width: 1pt;
+  background: #FFFFFF;
+  float:left;
+  width:300px;
+  padding:10px;
+  margin:10px;
+	
+  -moz-border-radius:25px;
+}
+
+/*
+ * LOG Style (like serial VT)
+ */
+.LOGConsole {
+   background-color: #000000;
+   color: #eaea67;
+   font-family : monospace;
+}
+
+
+
+DIV.TITLE { color : [COLOR_BLACK];
+	text-align:center;
+	border-style : inset;
+	border-color : [CORE_FGCOLOR];
+	border-width: 1pt;
+	padding : 3pt;		
+}
+
+
+
+[IF ISIE6]
+/*
+Select Fix for IE6 and IE5.x
+Version 0.3
+
+CSS instructions from http://www.hedgerwow.com/360/bugs/css-select-free.html
+But keep in mind that these classes are a bit modified.
+*/
+
+.select-free {
+  overflow:hidden;/*must have*/
+}
+.select-free .innerFixer {
+  position:absolute;/*must have*/
+  top:0;/*must have*/
+  left:0;/*must have*/
+  display:none;/*sorry for IE5*/
+  display/**/:block;/*sorry for IE5*/
+  width:100%;/* (old value 3000px) must have for any big value*/
+  height:100%;/* (old value 3000px) must have for any big value*/
+}
+.select-free iframe.innerFixer {
+  border: 0;
+  filter:mask();/*must have*/
+  z-index:-1;/*must have*/
+}
+[ENDIF ISIE6]
+
+[IF ISAPPLEWEBKIT]
+/**
+ * Apple Webkit automatically lighten, or darken, the color
+ * of disabled text input fields. So let him handle it
+ * from the inherited color, instead of messing our own
+ * finely chosen color.
+ *
+ * (Not perfect, as the inherited color might not be the
+ * same color as non disabled input fields...)
+ *
+ * Bug ref. <https://bugs.webkit.org/show_bug.cgi?id=13818>
+ */
+input[disabled], textarea[disabled] {
+  color: inherit !important;
+}
+[ENDIF ISAPPLEWEBKIT]

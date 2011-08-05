@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TITLE]</title>
+[IFNOT nocss]
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+[IF viewprint]
+@media screen {
+  .noprint {
+    display:none;
+  }
+  #error  {
+    display:none ! important;
+  }
+  *, A, A:link, A:visited, p {
+    color:black;
+  }
+  .tableborder {
+    border:none;
+  }
+  TD, TH {
+  }
+  .onlyprint { 
+    display:block;
+  }
+
+  DIV.tabsh {
+    display:none;
+  }
+  FIELDSET.frame, div.frame {
+    display:block!important;
+  }
+  TBODY.overflow {
+    overflow:visible;
+  }
+}
+[ENDIF viewprint]
+   </style>[ENDIF nocss]
+[JS:REF]  
+<script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   addEvent(window,"load",autoWresize);
+
+   </script>
+ </head>
+
+<body class="document documentView" >
+
+<div width="100%" class="tablesimple">
+[ZONE FDL:VIEWCARD]
+</div>
+</body>
+</html>

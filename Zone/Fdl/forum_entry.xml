@@ -1,0 +1,22 @@
+[IF show]<div style="margin:0; padding:0">
+  <fieldset id="f_[eid]" class="forum" onmouseover="forum_over(event, [eid]);" onmouseout="forum_out(event, [eid]);" >
+    <legend id="resume" onclick="forum_openclose(event,[eid]);" >
+      <img id="fi_[eid]" title="[TEXT:forum open/close]" src="[IMGF:forum_open.gif:0,0,0|COLOR_BLACK]">&nbsp;
+      [IF havemail]<a id="who" onclick="forum_sendmail(event, '[mail]', [docid], [eid])">[who]</a>[ENDIF havemail]
+      [IFNOT havemail]<span id="who">[who]</span>[ENDIF havemail]&nbsp
+      <span id="date">[date]</span>&nbsp;-&nbsp;
+      [IF opened]<a id="action" class="first" onclick="forum_edit(event,[docid], [eid], -1, [eid])">[TEXT:forum answer]</a>
+      [IF editable]&nbsp;-&nbsp;<a id="action" onclick="forum_edit(event,[docid],[eid],[eid],-1)">[TEXT:forum edit]</a>
+      [ENDIF editable]&nbsp;-&nbsp;[ENDIF opened]
+      [IF candelete]<a href="#" id="action" onclick="forum_delete(event,[docid],[eid], [lid])">[TEXT:forum delete]</a>&nbsp;-&nbsp;[ENDIF candelete]
+      [IF hasresponse]&nbsp;<span id="response">[[rcount] [TEXT:response for this forum entry]]</span>[ENDIF hasresponse]
+    </legend>
+    <div class="content" id="fc_[eid]">
+      <div id="ft_[eid]" [IF opened]ondblclick="forum_edit(event,[docid], [eid], -1, [eid])"[ENDIF opened] class="text">[content]</div>
+      <div style="border:0px" id="fm_[eid]">
+        [BLOCK forum_answer][ZONE FDL:FORUM_ENTRY?fid=[fid]&eid=[eid]][ENDBLOCK forum_answer]
+      </div>
+    </div>
+  </fieldset>
+</div>[ENDIF show]
+[IFNOT show]<!-- Entrie [eid] on forum [fid] not found -->[ENDIF show]

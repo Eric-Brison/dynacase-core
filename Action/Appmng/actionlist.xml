@@ -1,0 +1,118 @@
+<!-- 
+  $Id: actionlist.xml,v 1.2 2002/01/30 13:44:54 eric Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/actionlist.xml,v $
+-->
+
+
+
+
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+  
+ <tr><td colspan="3"> [ZONE CORE:TABINDEX]  </td></tr>
+ <tr>
+  <td class="CORETblHeadCell" >
+    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=APPMNG&action=[ACTION_CHG]">
+    <font size="-1">
+       <select name="id" onChange="submit()">
+[BLOCK SELAPPLI]
+         <option [selected] value="[id]">[text]</option> 
+[ENDBLOCK SELAPPLI]
+       </select>
+     </font>
+    </form>
+  </td>
+     <td class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[TEXT:titleaction]</span></td>
+     <td valign="baseline" align="right" class="CORETblHeadCell"><span class="CORETblHead">
+    <a href="#" onclick="self.print()">
+      <img height="22" alt="[TEXT:print]" border="0" src="[IMG:print.gif]">
+      </a>
+    <a href="#" 
+       onClick="javascript:subwindow(300,500,'[CORE_BASEURL]app=HELP&happ=35H&hact=IMPUTATION')">
+      <img alt="[TEXT:help]" border="0" src="[IMG:help.gif]">
+      </a></span>
+    </td>
+ </tr>
+</table>
+
+
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left" colspan="4" class="CORETblCell">
+
+  &nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="right" colspan="4" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+
+<!-- TABLEHEAD -->
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<tr>
+  <td width="20" class="CORETblCell">&nbsp;</td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:name]</span></td>
+  <td class="CORETblCell" nowrap><span class="CORETblBold">[TEXT:short_name]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:available]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:acl]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:openaccess]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:root]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:toc]</span></td>
+</tr>
+
+<!-- /TABLEHEAD -->
+
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEBODY -->
+[BLOCK TABLEBODY]
+<tr>
+  <td width="20">
+       <a href="#" onclick="subwindow(330,350,'edit','[CORE_BASEURL]app=APPMNG&action=ACTION_EDIT&sole=Y&id=[id]')">
+      <img border=0 src="[IMG:edit.gif]"  alt="Edit" title="[TEXT:edit]">
+    </a></td>
+  <td ><span class="CORETbl">[name]</span></td>
+  <td nowrap ><span class="CORETbl">[short_name]&nbsp;</span></td>
+  <td ><span class="CORETbl">[available]</span></td>
+  <td align="center"><span class="CORETbl">[acl]</span></td>
+  <td align="center"><span class="CORETbl">[openaccess]</span></td>
+  <td ><span class="CORETbl">[root]</span></td>
+  <td ><span class="CORETbl">[toc]</span></td>
+</tr>
+[ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="center" colspan="4" class="CORETblCell">
+
+  <span class="CORETblBold">[TABLE_NUM]&nbsp;/&nbsp;[TABLE_NB]</span>
+
+  </td>
+  <td align="right" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+</table>
+

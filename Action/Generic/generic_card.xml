@@ -1,0 +1,49 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Properties:] [TITLE]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="freedom" 
+      onload="autoVresize()";
+      onClick="closeMenu('popupcard');" >
+
+
+
+
+[ZONE [APPNAME]:POPUPCARD]
+
+<div width="100%" class="tableborder" 
+     style="cursor:crosshair;"
+     onContextMenu="openMenu(event,'popupcard',1);return false" 
+     onMouseDown="if (shiftKeyPushed(event)) openMenu(event,'popupcard',1)"      >
+[ZONE FDL:VIEWCARD?props=[PROPS]]
+</div>
+
+
+
+
+</body>
+</html>

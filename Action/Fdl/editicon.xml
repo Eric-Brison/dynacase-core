@@ -1,0 +1,73 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[APP_TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+img.chicon:hover {
+  background-color:[COLOR_C4];
+}
+img.chiconsel {
+  background-color:[COLOR_B4];
+}
+img.chiconsel,img.chicon {
+  width:[SIZE_IMG-MEDIUM];
+  height:[SIZE_IMG-MEDIUM];
+}
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+   var po=null;
+   function selecticon(o,vid) {
+     document.edit.vid.value=vid;
+     o.className='chiconsel';
+     if (po) po.className='chicon';
+     po=o;
+   }
+  //-->
+   </script>
+ </head>
+
+<body class="freedom">
+
+
+
+
+<!-- Title Table -->
+<div style="text-align:center;">
+
+<h4>[TEXT:Change icon]</h4>
+<p>[title]</p>
+<img src="[iconsrc]" alt="icon"><hr>
+<p>[TEXT:Choose in icon list]</p>
+[BLOCK ICONLIST]
+<img class="chicon" onclick="selecticon(this,'[id_file]')" src="FDL/geticon.php?vaultid=[id_file]">
+[ENDBLOCK ICONLIST]
+
+<hr>
+
+<form  name="edit" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]app=FREEDOM&action=CHANGEICON&id=[docid]">
+  <p>[TEXT:Or upload a new icon]:<input type="file" name="ifile" value="[ifilevalue]"></p>
+  <input type="hidden" name="vid" value=""><br>
+  <input type="submit" value="[TEXT:Change icon]" >
+</form>
+</div>
+
+
+</body>
+</html>

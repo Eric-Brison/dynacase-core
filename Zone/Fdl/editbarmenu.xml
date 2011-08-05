@@ -1,0 +1,28 @@
+<div   class="barmenu">
+
+
+ [IF INPUTCONSTRAINT]
+ <a   title="[TEXT:view constraints]" style="display:[bconsdisplay]" 
+     onclick="document.isSubmitted=true;document.modifydoc.action='[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&viewconstraint=Y';document.modifydoc.submit();"> [TEXT:Constraints]</a>
+ <a   title="[TEXT:override constraints]" style="display:[boverdisplay]"  onclick="document.modifydoc.noconstraint.value='Y';submitEdit(event);return true"> [editaction]!</a>
+ [ENDIF INPUTCONSTRAINT]
+[IFNOT INPUTCONSTRAINT][IF admin]
+  <a title="[TEXT:override constraints]" id="iSaveForce" style="display:none"  onclick="document.modifydoc.noconstraint.value='Y';submitEdit(event);return true"> [editaction]!</a>
+[ENDIF admin][ENDIF INPUTCONSTRAINT]
+[IFNOT NOSAVE]
+<a  style="display:none" onmouseover="godocmenu(event,this)" onmouseout="aborddocmenu()" onclick="viewsubmenu(event,'[CORE_STANDURL]&app=FDL&action=POPUPEDITSTATE&id=[id]',this);">[TEXT:States]</a>
+<a   id="aSubmit"    title="[TEXT:Save and quit edit mode]. [TEXT:Use Ctrl-S to save and stay in edit mode]"   onclick="submitEdit(event)">[editaction]</a>
+<a   style="display:none" id="iQuicksave" title="[TEXT:Save and stay in edition]"  onclick="quicksave();return false">[TEXT:Save]</a>
+<input id="iSubmit" style="display:none" type="submit">
+[ENDIF NOSAVE]
+
+[BLOCK WACTION]
+<a    title="[wadesc]" 
+      onclick="preview('[CORE_STANDURL]&app=[wapplication]&action=[waction]&fromedit=Y','[wtarget]');return false"> [walabel]</a>
+ [ENDBLOCK WACTION]
+
+ [IFNOT NOSAVE]
+[IF SELFTARGET]<a   id="iCancel"  title="[TEXT:Cancel changes and quit edit mode]"  onclick="document.isCancelled=true;if (('[id]' == '')||('[id]' == '0')) document.location.href='[CORE_STANDURL]&app=GENERIC&action=GENERIC_LOGO'; else document.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&unlock=Y&vid=[rvid]&zone=[rzone]&id=[id]'">[TEXT:Cancel]</a>[ENDIF SELFTARGET]
+[IFNOT SELFTARGET]<a   id="iCancel" title="[TEXT:Cancel changes and close window]"  onclick="document.isCancelled=true;if (('[id]' == '')||('[id]' == '0')) self.close(); else subwindow(100,100,'[rtarget]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&unlock=Y&zone=[rzone]&id=[id]');self.close()">[TEXT:Cancel]</a>[ENDIF SELFTARGET]
+[ENDIF NOSAVE]
+</div>

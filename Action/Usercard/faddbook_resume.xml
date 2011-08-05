@@ -1,0 +1,44 @@
+<div class="fabresume">
+
+<table  cellpadding="0" cellspacing="0" border="0">
+
+<tr>
+<td width="60px" align="center">
+<img src="[IF hasPhoto][photo][ENDIF hasPhoto][IFNOT hasPhoto][IMG:faddbook_nophoto.gif][ENDIF hasPhoto]" width="40px">
+</td>
+<td>
+<div><span class="fabresumetitle">[prenom]</span>&nbsp;<span class="fabresumetitle">[nom]</span></div>
+[IF hasSoc]<div class="fabresumesoc">[societe]</div>[ENDIF hasSoc]
+</td>
+</tr>
+
+
+</td></tr>
+</table>
+
+[IF hasMail]<div>
+<a href="mailto:[addmail]"><img border="0" src="[IMG:faddbook_ico_mail.gif]" title="[addmail]" height="16"></a>
+<span class="fabresumeinfo"><a href="mailto:[addmail]">[addmail]</a></span>
+</div>[ENDIF hasMail]
+
+[IF hasTel]<div>
+<img src="[IMG:faddbook_ico_tel.gif]" height="16">
+<span class="fabresumeinfo">[notel]</span>
+</div>[ENDIF hasTel]
+
+[IF hasMob]<div>
+<img src="[IMG:faddbook_ico_mob.gif]" height="16">
+<span class="fabresumeinfo">[nomob]</span>
+</div>[ENDIF hasMob]
+
+[IF hasSky]<div>
+<img src="[IMG:faddbook_ico_skype.gif]" height="16">
+<span class="fabresumeinfo">[skypeid]</span>
+</div>[ENDIF hasSky]
+
+[IF hasMsn]<div>
+<img src="[IMG:faddbook_ico_msn.gif]" height="16">
+<span class="fabresumeinfo">[msnid]</span>
+</div>[ENDIF hasMsn]
+
+</div>

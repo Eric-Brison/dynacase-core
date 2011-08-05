@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+
+   <title>[APP_TITLE]</title>
+      <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+   
+<link rel="icon" href="[DYNACASE_FAVICO]">
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+[JS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+.ifonefam {
+  width:100%;
+  height:100%;
+  border:none;
+}
+body.onefam {
+ width:100%;
+ height:100%;
+ [IF oneBgColor]
+ background-color:[ONEFAM_BGCOLOR];
+  background: -moz-linear-gradient(270deg, [ONEFAM_BGCOLOR], [CORE_BGCOLOR]);   
+  background: -webkit-gradient(linear, 0% 0, 0% 100%, from([ONEFAM_BGCOLOR]), to([CORE_BGCOLOR]) );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='[ONEFAM_BGCOLOR]', endColorstr='[CORE_BGCOLOR]'); 
+  
+  [ENDIF oneBgColor]
+ 
+ 
+}
+   </style>
+
+   <script language="javascript">
+function imgborder() {
+  for (var i=0; i< document.images.length; i++) {
+    document.images[i].style.borderStyle='inset';
+  }
+}
+
+function ctrlPushed(event) {  
+  if (!event) event=window.event;
+  if (!event) return false;
+  return event.ctrlKey;
+}
+var selimg=null;
+function openiframe(event,th,docid) {
+  var wfgtop;
+  if (selimg != null) {
+    selimg.setAttribute("selected",0);
+  }
+  if (th) {
+    th.setAttribute("selected",1);
+    selimg=th;
+  }
+
+  var idf='if_'+docid;
+  var nf;
+  var reloadlist=false;
+  nf=document.getElementById(idf);
+  if (nf && (nf.style.display!= 'none')) reloadlist=true;
+  var lif=document.getElementsByTagName('iframe');
+  for (var i=0;i<lif.length;i++) {
+    lif[i].style.display='none';
+  }
+  if (nf) {
+    if (reloadlist) {
+      var isrc;
+      if (window.frames[idf]) {
+	lif=window.frames[idf].document.getElementsByTagName('frame');
+	//      lif=nf.contentDocument.getElementsByTagName('frame');
+	if (lif.length >0) {
+	  isrc=lif[0].src;
+	  window.frames[idf].flist.location.href=isrc;
+	}
+      }
+    }
+    nf.style.display='';
+  } else {
+    var tdi=document.getElementById('tdiframe');
+     nf=document.createElement('iframe');
+     nf.id=idf;
+     nf.name=idf;
+     nf.className='ifonefam';
+     nf.src='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_GENROOT&famid='+docid;
+     tdi.appendChild(nf);
+    
+  }
+}
+function reloadiframe(event,th,docid) {
+  var idf='if_'+docid;
+  var nf;
+
+  nf=document.getElementById(idf);
+  if (nf) {
+    nf.style.display='';
+    nf.src='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_GENROOT&famid='+docid;
+  } 
+  
+}
+function openfirst(docid) {
+  var i=document.getElementById('imgu'+docid);
+
+  if (!i) i=document.getElementById('imgm'+docid);
+  if (i) {
+    i.onclick.apply(i,[]);
+  } else {
+    openiframe(null,null,docid)
+  }
+}
+[IF OPENFAM]
+addEvent(window,'load',function zou() {openfirst('[openfam]');})
+[ENDIF OPENFAM]
+   </script>
+
+ </head>
+
+<body class="onefam" >
+
+<table style="width:100%;height:100%"><tr><td style="width:[wcols]px" valign="top">
+[BLOCK SELECTMASTER]
+<img style="width:[izpx]px"
+     src="[iconsrc]"  needresize="1"
+     onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
+     class="onefamico"
+     id="imgm[idcdoc]"
+     alt="[ftitle]"
+     title="[ftitle]">
+[ENDBLOCK SELECTMASTER]
+
+[BLOCK CHOOSEMASTERFAMILIES]
+<BR style="clear:both">
+<input style="float:left;width:[izpx]px"  type="button" value="+" 
+       title="[TEXT:master choose families]" 
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITMASTERPREF')">
+[ENDBLOCK CHOOSEMASTERFAMILIES]
+[BLOCK SEPARATOR]
+<HR style="float:left;clear:both" width="100%">
+[ENDBLOCK SEPARATOR]
+[BLOCK SELECTUSER]
+<img style="width:[izpx]px"
+     src="[iconsrc]"  needresize="1"
+     id="imgu[idcdoc]"
+     onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
+     class="onefamico"
+     alt="[ftitle]"
+     title="[ftitle]">
+[ENDBLOCK SELECTUSER]
+<BR style="clear:both">
+[BLOCK CHOOSEUSERFAMILIES]
+<input style="float:left;width:[izpx]px" type="button" value="+" 
+       title="[TEXT:choose user families]" 
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITPREF')">
+[ENDBLOCK CHOOSEUSERFAMILIES]
+</td><td style="height:100%" id="tdiframe"></td></tr></table>
+</body>
+</html>

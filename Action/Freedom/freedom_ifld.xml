@@ -1,0 +1,54 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:access path folder list:] [TITLE]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+P {
+   margin:0pt;
+   padding:0pt;
+}
+A {
+   border-style:none none solid solid;
+   border-width:1px;
+}
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="freedom"  >
+
+<h4>[TEXT:Access Path Folder List] : [TITLE]</h4>
+
+[BLOCK IFLD]
+<p style="margin-left:[level]px">
+  <img border=0 valign="bottom" src="[IMG:ftv2lastnodearrow.gif]"
+       onload="if ([level] == 0) this.style.marginTop=20">
+  <a target="info" href="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_VIEW&dirid=[fid]">
+     [ftitle]
+  </a></p>
+
+[ENDBLOCK IFLD]
+
+
+
+</body>
+</html>

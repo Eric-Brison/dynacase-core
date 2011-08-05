@@ -1,0 +1,13 @@
+[ZONE FDL:HTMLHEAD]
+<style>
+body { height:100%; }
+</style>
+<table style="width:100%;height:100%;"><tr style="background-color:transparent;"><td style="text-align:center;vertical-align:middle">
+<img        src="[IMG:logodynacase.png]" title="[apptitle]" alt="[apptitle]" >
+       <span style="border:none;-moz-border-radius:20px;padding:5px;position:absolute;margin-left:-150px;margin-top:10px">
+    <img width="48" style="visibility:hidden" src="[appicon]" title="[apptitle]" alt="[apptitle]" needresize="1"></span>
+</td></tr></table>
+
+
+</body>
+</html>

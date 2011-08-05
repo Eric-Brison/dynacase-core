@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="document-id" content="[id]"/>
+	<meta name="document-initid" content="[initid]"/>
+	<meta name="document-icon" content="[docicon]"/>
+   <title>[TITLE]</title>
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+[IFNOT nocss]
+<link rel="shortcut icon" href="[shorticon]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >[ENDIF nocss]
+[IF RSS]<link rel="alternate" type="application/rss+xml" title="[TITLE]" href="[rsslink]"/>[ENDIF RSS]
+[IFNOT nocss]
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+[ENDIF nocss]
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+    var PDS='[pds]';
+[IF VALTERN]addEvent(window,"load",function al1() {alterfieldset('terrible','[CORE_BGCOLORALTERN]','[CORE_TEXTFGCOLOR]');});[ENDIF VALTERN]
+  //-->
+   </script>
+ </head>
+
+<body class="document documentView" 
+      onload="autoVresize();" >
+
+
+<form id="fviewidoc"
+      name="fviewidoc"
+      style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"      >
+<input type="hidden" name="xml">
+<input type="hidden" name="famid">
+</form>
+
+[ZONE FDL:POPUPDOCMENU?id=[id]&js=false&css=false]
+
+<div width="100%" class="tablesimple" id="terrible"
+     style="cursor:crosshair;"
+     onContextMenu="return viewdocmenu(event,'[id]');" 
+     onMouseDown="if (shiftPushed(event)) viewdocmenu(event,'[id]')"      >
+
+[ZONE FDL:VIEWCARD]
+<div class="noprint" align="right">
+[BLOCK WACTION]
+<input  type="button" title="[wadesc]" 
+        value="[walabel]" onclick="subwindow('[wheight]','[wwidth]','[wtarget]','[wlink]')"> 
+ [ENDBLOCK WACTION]
+</div>
+</div>
+
+[IF forum]<a name="forum"></a>[ZONE FDL:IMPCARD?sole=Y&zone=FDL:FORUM_VIEW:S&id=[forumid]][ENDIF forum]
+
+</body>
+</html>

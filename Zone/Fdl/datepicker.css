@@ -1,0 +1,44 @@
+TD,TR,TH {
+  text-align:center;
+}
+
+TH.day {
+    color:darkslateblue;
+}
+
+TD.day {
+    empty-cells: show;
+    color:blue;
+    background-color: lavender;
+}
+
+TD.day A {
+  color: #000000;  
+  font-size: 10pt;
+  font-family: arial,helvetica;
+  text-decoration: none;
+}
+
+
+TD.day A:hover {
+    background-color: darkslateblue;
+    color: white;
+}
+
+A.callink {
+  color: #000000;  
+  border-color: lavender;
+  background-color: lavender;
+  border-style:solid;
+  border-width:1pt;
+  font-size: 10pt;
+  margin: 5px;
+  font-family: arial,helvetica;
+  padding: 4px;
+  text-decoration: none;
+}
+A.callink:hover {
+  border-color: darkslateblue;
+  color: darkslateblue; 
+  font-weight:bold;
+}

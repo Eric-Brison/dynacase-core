@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE menu SYSTEM "menu.dtd">
+<menu id="DIR">
+	<itemmenu id="createsearch" target="_self" visibility="hidden">
+        <label>[TEXT:eui:Create a search]</label>
+        <control method="equal(doctype,'T')" visibility="visible"/>
+        <control method="!equal(defDoctype,'S')" visibility="hidden"/>
+		<script file="lib/ui/fdl-interface-action-collection.js" class="Fdl.InterfaceAction.CreateSearch"/>
+    </itemmenu>
+	<itemlistmenu id="display">
+        <label>[TEXT:eui:Display]</label>
+        <itemmenu id="griddisplay" target="_self">
+            <label>[TEXT:eui:Grid display]</label>
+			<script file="lib/ui/fdl-interface-action-collection.js" class="Fdl.InterfaceAction.GridDisplay"/>
+        </itemmenu>
+		<itemmenu id="treedisplay" target="_self">
+            <label>[TEXT:eui:Tree display]</label>
+			<script file="lib/ui/fdl-interface-action-collection.js" class="Fdl.InterfaceAction.TreeDisplay"/>
+        </itemmenu>
+		<itemmenu id="icondisplay" target="_self">
+            <label>[TEXT:eui:Icon display]</label>
+			<script file="lib/ui/fdl-interface-action-collection.js" class="Fdl.InterfaceAction.IconDisplay"/>
+        </itemmenu>
+		<itemmenu id="abstractdisplay" target="_self">
+            <label>[TEXT:eui:Abstract display]</label>
+			<script file="lib/ui/fdl-interface-action-collection.js" class="Fdl.InterfaceAction.AbstractDisplay"/>
+        </itemmenu>
+    </itemlistmenu>
+	<itemlistmenu id="selection">
+		<label>[TEXT:eui:Selection]</label>
+		<itemmenu id="lock" target="_self" useselection="yes">
+			<label>[TEXT:eui:Lock selected documents]</label>
+			<icon src="lock.png"/>
+			<script file="lib/ui/fdl-interface-action-common.js" class="Fdl.InterfaceAction.Lock"/>
+			<confirm>
+				<label>[TEXT:eui:Sure lock selected document ?]</label>
+				<continue>[TEXT:eui:Lock selection]</continue> 
+				<cancel>[TEXT:eui:Cancel locking]</cancel> 
+			</confirm>
+		</itemmenu>
+        <itemmenu id="exportsel" target="_hidden" useselection="yes">
+            <label>[TEXT:eui:Export selected documents]</label>
+            <script file="lib/ui/fdl-interface-action-collection.js" class="Fdl.InterfaceAction.ExportSelection"/>
+        </itemmenu>
+	</itemlistmenu>
+	<itemlistmenu id="tool">
+        <label>[TEXT:eui:Tools]</label>
+        <itemmenu id="export" target="_hidden">
+            <label>[TEXT:eui:Export all documents]</label>
+            <url href="?app=FDL&amp;action=EXPORTFLD&amp;id=%ID%&amp;wfile=Y&amp;code=utf8"/>
+        </itemmenu>
+    </itemlistmenu>
+</menu>

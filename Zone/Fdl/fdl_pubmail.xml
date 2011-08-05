@@ -1,0 +1,9 @@
+<H1>[TEXT:Status for sending mail]</H1>
+<div style="width:100%;border:solid black 1px">
+[V_PUBM_BODY]</div>
+<table width="100%" class="tarray">
+<tr><th>[TEXT:username]</th><th>[TEXT:address]</th><th>[TEXT:mailstatus]</th></tr>
+[BLOCK MAILS]
+<tr style="background-color:[color]"><td>[name]</td><td>[mailto]</td><td>[status]</td></tr>
+[ENDBLOCK MAILS]
+</table>

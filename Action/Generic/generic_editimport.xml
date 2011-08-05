@@ -1,0 +1,194 @@
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:import edition] [TITLE]</title>
+
+
+<link rel="icon" href="[DYNACASE_FAVICO]" >
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+   @import url(htmlarea/htmlarea.css);
+
+ 
+[CSS:CODE]
+   </style>
+[JS:REF]
+<script type="text/javascript" src="[CORE_STANDURL]app=FDL&action=EDITJS"></script>
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+
+
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<style>
+DIV { color : black;
+	text-align:left;
+	border-style : inset;
+	border-color : [CORE_FGCOLOR];
+	border-width: 1pt;
+  background-color: [CORE_BGCOLORALTERN];
+	padding : 3pt;		
+}
+</style>
+<script language="JavaScript">
+function changeFormat(fmt) {
+    switch(fmt) {
+      case 'csv':
+          document.getElementById('fedit').action='[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_IMPORTCSV';
+          document.getElementById('bsubmit').value='[TEXT:Import CSV]';
+          document.getElementById('dvcard').style.display='none';
+          document.getElementById('dcsv').style.display='block';
+       break;
+    }
+}
+function rewriteOrder() {
+  var ocolorder=document.getElementById('icolorder');
+  var oformat=document.modifydoc.iformat;
+  var s='ORDER;[classname];0;0';
+  if ((ocolorder) && (oformat)) {
+    for (var i=0; i<ocolorder.options.length; i++) {
+    
+      s = s+ '; ' + ocolorder.options[i].value;
+      
+    }
+    s=s+'\n';
+    s=s+'#DOC;[classname];0;[topdir]';
+    for (var i=0; i<ocolorder.options.length; i++) {
+    
+      s = s+ '; ' + ocolorder.options[i].text;
+      
+    }
+    s=s+'\n';
+    oformat.value=s;
+  }
+}
+  
+
+</script>
+
+
+
+
+<body class="freedom"
+      onsubmit="enableall()" >
+
+<H2 id="title">[dtitle]
+
+<select  name="saction" onchange="changeFormat(this.options[this.selectedIndex].value)">
+    <option   value="csv">[TEXT:CSV]</option>
+</select>
+
+
+</H2>
+
+<FORM ENCTYPE="multipart/form-data" id="fedit" name="modifydoc" action="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_IMPORTCSV" method="post" target="fresult"
+      onsubmit="selectAllOptions(document.getElementById('icolorder'))"  >
+
+
+
+
+<div   id="dcsv">
+<p>[TEXT:CSV specification file]</p>
+<p>[TEXT:The separator field is the semicolon(;)]. 
+[TEXT:The first four fields must not be change, they identified the card structure]. 
+[TEXT:Only one line by document is authorized]. 
+[TEXT:If an attribut is a multiline string, use the \ n characters to specify the new line]</p>
+<p style="font-family:courier">[format]</p>
+</div>
+
+
+<fieldset><legend style="cursor:pointer" onclick="viewornot('dcolumns');rewriteOrder()" title="[TEXT:if you want to change order of column]">
+[TEXT:column order]
+<a style="display:[dnallcol]" onclick="return confirm('[TEXT:View all attributes ?]\n[TEXT:Be carreful.]\n[TEXT:Certain attribute can be not use for import]');" href="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_EDITIMPORT&famid=[classid]&allcol=Y">
+[TEXT:view all columns]</A></legend>
+<div  id="dcolumns" style="display:[dallcol]" >   
+ <TABLE BORDER=0 width="100%">
+<TR>
+	<TD width="40%">
+
+	<SELECT style="width:100%" id="icolorder" NAME="colorder[]" MULTIPLE SIZE=10 onDblClick="moveSelectedOptions(document.getElementById('icolorder'),this.form['uwcolumn'],false);rewriteOrder()" > 
+
+[BLOCK COLUMNS]
+		<OPTION VALUE="[idattr]">[lattr]</OPTION>
+[ENDBLOCK COLUMNS]
+
+	</SELECT>
+	</TD>
+	<TD VALIGN=MIDDLE ALIGN=CENTER width="20%">	
+                <INPUT TYPE="button" VALUE="&uarr;" onClick="moveOptionUp(document.getElementById('icolorder'));rewriteOrder()"><BR><BR>
+		<INPUT TYPE="button" VALUE="&rarr;" title="[TEXT:suppress column]" ONCLICK="moveSelectedOptions(document.getElementById('icolorder'),this.form['uwcolumn'],false);rewriteOrder()"><BR><BR>
+		<INPUT TYPE="button" VALUE="&larr;" title="[TEXT:add column]" ONCLICK="moveSelectedOptions(this.form['uwcolumn'],document.getElementById('icolorder'),false);rewriteOrder()"><BR><BR>		
+	        <INPUT TYPE="button" VALUE="&darr;" onClick="moveOptionDown(document.getElementById('icolorder'));rewriteOrder()">
+	</TD>
+	<TD width="40%">
+
+	<SELECT style="width:100%" NAME="uwcolumn" MULTIPLE SIZE=10 onDblClick="moveSelectedOptions(this.form['uwcolumn'],document.getElementById('icolorder'),false);rewriteOrder()">
+	</SELECT>
+	</TD>
+</TR>
+
+</TABLE>
+<textarea style="width:100%"  rows="4" wrap="virtual" id="iformat"></textarea>
+</div></fieldset>
+
+
+<input type="hidden" value="[classid]" name="famid">
+<fieldset><legend style="cursor:pointer" onclick="viewornot('dfolders')" title="[TEXT:to insert document in sub folder]">
+[TEXT:folders]</legend>
+<div  id="dfolders" style="display:none" >    
+[BLOCK CATG]
+    <input type="checkbox" name="category[]" VALUE="[id]" style="margin:0px [level]px 0px 0px">[title]</input><BR>
+[ENDBLOCK CATG]
+</div></fieldset>
+
+<fieldset><legend style="cursor:pointer" onclick="viewornot('dpolicy')">[TEXT:policy]</legend>
+<div  id="dpolicy" style="display:none" > 
+<label for="policy"> [TEXT:policy if same keys]&nbsp;:</label>
+  <SELECT NAME="policy">
+            <OPTION VALUE="update">[TEXT:Update document if has permission else ignored]</OPTION>
+            <OPTION VALUE="add">[TEXT:Add new document (similar document)]</OPTION>
+            <OPTION VALUE="keep">[TEXT:Keep original document]</OPTION>
+  </SELECT><BR><label for="key1"> [TEXT:import keys]&nbsp;:</label>
+  <SELECT NAME="key1">
+            <OPTION VALUE="title">[TEXT:doctitle]</OPTION>
+[BLOCK AKEYS1]
+            <OPTION VALUE="[idattr]">[lattr]</OPTION>
+[ENDBLOCK AKEYS1]
+  </SELECT>
+  <SELECT NAME="key2">
+            <OPTION VALUE="">[TEXT:no key2]</OPTION>
+            <OPTION VALUE="title">[TEXT:doctitle]</OPTION>
+[BLOCK AKEYS2]
+            <OPTION VALUE="[idattr]">[lattr]</OPTION>
+[ENDBLOCK AKEYS2]
+  </SELECT><BR>
+</div></fieldset>
+<fieldset><legend title="[TEXT:values use for new document (not for update)]"
+          style="cursor:pointer" onclick="viewornot('deditdefault')">[TEXT:default import values]</legend>
+<div  id="deditdefault" style="display:none" >
+[ZONE FDL:EDITCARD?classid=[classid]]
+</div></fieldset>
+<HR><label for="vcardfile"> [TEXT:Import description file]&nbsp;:</label><INPUT NAME="vcardfile" SIZE=48 TYPE="file" accept="text/x-vcard,text/*.csv" VALUE=""><HR>
+ <input type="checkbox" name="analyze" checked value="Y">[TEXT:Analyze only]</input> 
+<input type="submit" id="bsubmit" value="[TEXT:Import CSV]">
+
+</FORM>
+
+<iframe src="[CORE_STANDURL]app=GENERIC&action=GENERIC_LOGO&famid=[classid]" name="fresult" width="100%" height="300px">
+
+[ZONE CORE:HTMLFOOT]
+
+

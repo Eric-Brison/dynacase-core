@@ -1,0 +1,164 @@
+<html>
+
+<head>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS&layout=USERCARD:faddbook.css">
+
+
+
+[JS:REF]
+
+[CSS:REF]
+<script type="text/javascript">
+
+[JS:CODE]
+
+function sendform(evt) {
+  evt = (evt) ? evt : ((event) ? event : null );
+  var cc = (evt.keyCode) ? evt.keyCode : evt.charCode;
+  if (cc == 13) {
+    document.getElementById('suser').submit();
+    return false;
+  }
+  return true;
+}
+
+function manageCols() {
+  subwindow(600, 200, 'colums', '[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAINCOLS&dfam=[dfam]');
+}
+
+
+
+var InitValue="*%$";
+
+function changeContact(evt, cid, attr) {
+  evt = (evt) ? evt : ((event) ? event : null );
+  var cc = (evt.keyCode) ? evt.keyCode : evt.charCode;
+  var nitem = document.getElementById('fmc_'+attr+'_'+cid);
+  if ((cc == 13)  && (nitem.value != "")) {
+    var fvl = document.getElementById('suser');
+    var attrN = document.getElementById('chgAttr');
+    var attrV = document.getElementById('chgValue');
+    var attrI = document.getElementById('chgId');
+    attrN.value = attr;
+    attrV.value = nitem.value;
+    attrI.value = cid;
+    fvl.submit();
+    return false;
+  }
+  return true;
+} 
+function fviewdoc(id) {
+  subwindow(300, 550, '[target]', '[CORE_STANDURL]&app=FDL&action=FDL_CARD&zone=[fabzone]&id='+id)
+}
+function feditdoc(id) {
+  subwindow(300, 400, '[etarget]', '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&rzone=[fabzone]&id='+id);
+}
+function createuserfam(o) {
+  var s=document.getElementById('famedittitle');
+  if (s) {
+    s.innerHTML=o.options[o.selectedIndex].text;
+    o.style.display='none';
+    s=document.getElementById('famedit');
+    s.style.display='';
+    document.suser.defaulteditfamid.value=o.options[o.selectedIndex].value;
+  }
+  subwindow(300, 400, '[target]', '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid='+o.options[o.selectedIndex].value);
+}
+[IF idone]
+function viewfirst() {
+  fviewdoc('[idone]');
+}
+addEvent(window,"load",viewfirst);
+[ENDIF idone]
+</script>
+
+</head>
+
+<body class="fabbody">
+
+<form style="display:none" id="setline" name="setline" method="POST" target="_self" action="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_SETUPARAM">
+<input type="hidden" name="pname" id="pname" value="FADDBOOK_MAINLINE">
+<input type="hidden" name="pvalue" id="pvalue" value="[linep]">
+<input type="hidden" name="rapp" value="[APPNAME]">
+<input type="hidden" name="raction" value="FADDBOOK_MAIN&dfam=[dfam]">
+</form>
+
+
+<form style="display:none" id="addpref" name="addpref" method="POST" target="faddbook_prefered" action="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_ADDPREFERED">
+<input type="hidden" name="cid" id="cid" value="-1">
+</form>
+
+<form style="display:none" id="suserv" name="suserv" method="POST" target="_self" action="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAIN&dfam=[dfam]">
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="target" value="[target]">
+<input type="hidden" name="etarget" value="[etarget]">
+<input type="hidden" name="viewone" value="[viewone]">
+<input type="hidden" name="usedefaultview" value="[usedefaultview]">
+<input type="hidden" name="cols" value="[cols]">
+</form>
+<form id="suser" name="suser" method="POST" target="_self" action="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAIN&dfam=[dfam]">
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="target" value="[target]">
+<input type="hidden" name="etarget" value="[etarget]">
+<input type="hidden" name="viewone" value="[viewone]">
+<input type="hidden" name="usedefaultview" value="[usedefaultview]">
+<input type="hidden" name="cols" value="[cols]">
+<input type="hidden" name="createsubfam" value="[createsubfam]">
+<input type="hidden" name="defaulteditfamid" value="[famid]">
+<table class="fabtable" width="100%" align="center" cellspacing="0">
+<tr class="fabzone">
+<td colspan="[colspan]">
+
+<table  class="fabtable" width="100%" align="center" cellspacing="0">
+<tr>
+<td><img title="Page précédente" style="visibility:[IF PrevPage]visible[ENDIF PrevPage][IFNOT PrevPage]hidden[ENDIF PrevPage]; cursor:pointer; border:0" src="[IMG:faddbook_prevpage.gif]" onclick="getElementById('sp').value='[pprev]'; getElementById('suser').submit();">
+<img title="Initialiser la recherche..." style="cursor:pointer; border:0" src="[IMG:faddbook_initsearch.gif]" onclick="getElementById('suserv').submit();">
+<img title="Page suivante" style="visibility:[IF NextPage]visible[ENDIF NextPage][IFNOT NextPage]hidden[ENDIF NextPage]; cursor:pointer; border:0" src="[IMG:faddbook_nextpage.gif]" onclick="getElementById('sp').value='[pnext]'; getElementById('suser').submit();">[dirtitle]
+</td>
+<td>[IF cancreate]<span id="famedit"><a title="[TEXT:click here to create a new]" onclick="subwindow(300, 400, '[target]', '[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid='+document.suser.defaulteditfamid.value);"><img  width="16px" src="[IMG:add22.gif]" border="0"><span id="famedittitle" style="font-weight:bold; border:1px outset; cursor:pointer"  onmouseover="this.className='fabcontactsel'" onmouseout="this.className=''"   >[famsearch]</span></a>&nbsp;[IF viewsubfam]<a><img  title="[TEXT:view sub families]" width="16px" onclick="document.getElementById('famedit').style.display='none';document.getElementById('icreatefam').style.display=''" src="[IMG:down22.gif]" border="0"></a></span><select id="icreatefam" style="display:none" name="editfamid" onchange="createuserfam(this);" title="[TEXT:Choose family to create]">[BLOCK NEW]<option value="[id]" >[title]</option>[ENDBLOCK NEW]</select>[ENDIF viewsubfam][ENDIF cancreate]</td>
+<td   class="fabzone">[TEXT:lines] : <select title="[TEXT:lines per page]" name="linepp" onchange="getElementById('pvalue').value=this.options[this.selectedIndex].value; getElementById('setline').submit();">[BLOCK BLine]<option value="[count]" [init]>[count][ENDBLOCK BLine]</select></td>
+<td align="right">[ZONE [APPNAME]:FADDBOOK_MENU?dfamid=[dfam]]</td>
+</tr>
+</table>
+
+</td>
+</tr>
+
+<tr class="fabheadlist">
+
+<td >[IF choosecolumn]<img title="[TEXT:manage columns]" style="cursor:pointer; border:0" src="[IMG:faddbook_cols.gif]" height="16px" onclick="manageCols()">[ENDIF choosecolumn]<input [IF fullsearch]checked [ENDIF fullsearch]type="checkbox" name="sfullsearch" title="[TEXT:search all containing]"></td>
+[BLOCK COLS]<td nowrap>
+[IF ATTimage][label][ENDIF ATTimage]
+[IF ATTnormal]<input name="rqi_[id]" type="text" style="width:90%;[IF filter]color:red;[ENDIF filter]" value="[label]" title="[TEXT:filter on] [label]..." onmouseover="this.style.background='[COLOR_C7]'" onmouseout="this.style.background='';this.style.color='[IF filter]red[ENDIF filter]';" onclick="this.value=''" onkeypress="return sendform(event);"><img style="border:0; position:relative; left:-20px; top:2px" src="[IMG:faddbook_search.gif]">[ENDIF ATTnormal]</td>[ENDBLOCK COLS]</tr>
+
+[BLOCK DLines]<tr title="[title]"  class="fabcontact"    
+onmouseover="this.className='fabcontactsel'; [IF viewpref]document.getElementById('p[cid]').style.visibility = 'visible'; [ENDIF viewpref]document.getElementById('e[cid]').style.visibility = [IF canChange]'visible'[ENDIF canChange][IFNOT canChange]'hidden'[ENDIF canChange];" 
+onmouseout="this.className='fabcontact'; [IF viewpref]document.getElementById('p[cid]').style.visibility = 'hidden';[ENDIF viewpref] document.getElementById('e[cid]').style.visibility = 'hidden';" >
+<td nowrap align="center">
+<img id="e[cid]" title="[TEXT:edit contact card]" height="14" style="visibility:hidden; cursor:pointer; border:0" src="[icop]" onclick="feditdoc('[cid]');">
+[IF viewpref]<img id="p[cid]" title="[TEXT:add to prefered]" height="12" style="visibility:hidden; cursor:pointer; border:0" src="[IMG:faddbook_ico_favorite.png]" onclick="document.getElementById('cid').value=[cid]; document.getElementById('addpref').submit();">[ENDIF viewpref]&nbsp;</td>
+[BLOCK C[Line]]
+<td nowrap  onclick="fviewdoc('[cid]'); ">[IF ATTimage]<img border="0" height="16" src="[content]">[ENDIF ATTimage][IF ATTnormal][IF ATTchange]<input onblur="if (InitValue!='*%$') { this.value=InitValue; InitValue='*%$'; };  this.className='inputInactive';"; onclick="InitValue=this.value; this.className='inputActive';" onkeypress="return changeContact(event, '[cid]', '[ATTname]');" id="fmc_[ATTname]_[cid]" class="inputInactive" value="[content]">[ENDIF ATTchange][IFNOT ATTchange][content][ENDIF ATTchange][ENDIF ATTnormal]&nbsp;</td>[ENDBLOCK C[Line]]
+</tr>
+[ENDBLOCK DLines]
+
+
+
+</table>
+
+<input type="hidden" name="order" id="order" value="[order]">
+<input type="hidden" name="sp" id="sp" value="[sp]">
+<input type="hidden" name="lp" id="sp" value="[lp]">
+<input type="hidden" name="dfam" id="dfam" value="[dfam]">
+<input type="hidden" name="chgAttr" id="chgAttr" value="">
+<input type="hidden" name="chgValue" id="chgValue" value="">
+<input type="hidden" name="chgId" id="chgId" value="-1">
+
+</form>
+
+<iframe name="faddbook_main_hidden" id="faddbook_main_hidden" style="display:none" src="[IMG:1x1.gif]"></iframe>
+
+</body>
+</html>
+      

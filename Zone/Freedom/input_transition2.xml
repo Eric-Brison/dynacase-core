@@ -1,0 +1,14 @@
+<td width="[width]%" title="[value_descrip]">
+<form id="fview_tt"
+      name="fview_tt"
+      target="view_tt"
+      method="POST"  ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"
+>
+
+<input type="hidden" name="xml" value=[xml]></input>
+<input type="hidden" name="famid" value=[famid]></input>
+<input type="submit" value="+">[text_tt]</input>
+</form>
+</td>
+

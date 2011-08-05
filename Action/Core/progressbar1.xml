@@ -1,0 +1,22 @@
+<html>
+<head>
+
+<title>[TEXT:Progress bar]</title>
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+[CSS:REF]
+<LINK REL="icon" HREF="[DYNACASE_FAVICO]" >
+
+
+</head>
+<body>
+
+<table height="30px" border=1 width="100%">
+<tr ><td  colspan="2" style="background-color:grey"><img id="imgbar" height="30px" width="0%" src="[IMG:barblue.png]"></td></tr>
+<tr ><td id="tddone" align="right" ><b><span id="done"></span></b></td><td align="right"><b><span id="reste"></span></b></td></tr>
+<tr ><td colspan="2" align="center" ><b><span id="total"></span></b>
+  <select id="text"></select></td></tr>
+</table>
+</body>
+       
+
+</html>

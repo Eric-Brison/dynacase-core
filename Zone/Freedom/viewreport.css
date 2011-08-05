@@ -1,0 +1,298 @@
+TABLE.standard1 {
+	empty-cells: show;
+	background-color : [COLOR_WHITE];
+}
+.standard1 TR.trodd{
+	background-color : [COLOR_A9];
+	color: [COLOR_BLACK];
+}
+.standard1 TR.treven{
+	background-color : [COLOR_WHITE];
+	color: [COLOR_BLACK];
+}
+
+.standard1 TH{
+	background-color : [COLOR_A7];
+	color: [COLOR_BLACK];
+	border-color : [COLOR_A9];
+	border-style : inset none none none;
+	border-width : 1px;
+
+}
+.standard1 A{
+	color : [COLOR_A1]; 
+}
+.standard1 A:hover{
+        color: [COLOR_WHITE]; 
+	background-color : [COLOR_A1];
+        text-decoration: overline underline;
+}
+
+.standard1 TD.tdodd{
+	empty-cells: show;
+	border-color : [COLOR_A9];
+	border-style : inset none none none;
+	border-width : 1px;
+}
+.standard1 TD.tdeven{
+	empty-cells: show;
+	border-color : [COLOR_A9];
+	border-style : inset none none none;
+	border-width : 1px;
+}
+
+
+
+
+/* DeuxiÃ¨me sÃ©rie de couleurs du thÃ¨me */
+TABLE.standard2 {
+	empty-cells: show;
+	background-color : [COLOR_WHITE];
+}
+.standard2 TR.trodd{
+	background-color : [COLOR_B9];
+	color: [COLOR_BLACK];
+}
+.standard2 TR.treven{
+	background-color : [COLOR_WHITE];
+	color: [COLOR_BLACK];
+}
+
+.standard2 TH{
+	background-color : [COLOR_B7];
+	color: [COLOR_BLACK];
+
+	border-color : [COLOR_B9];
+	border-style : inset none none none;
+	border-width : 1px;
+
+}
+.standard2 A{
+	color : [COLOR_B1]; 
+}
+.standard2 A:hover{
+        color: [COLOR_WHITE]; 
+	background-color : [COLOR_B1];
+        text-decoration: overline underline;
+}
+
+.standard2 TD.tdodd{
+	empty-cells: show;
+	border-color : [COLOR_B9];
+	border-style : inset none none none;
+	border-width : 1px;
+}
+.standard2 TD.tdeven{
+	empty-cells: show;
+	border-color : [COLOR_B9];
+	border-style : inset none none none;
+	border-width : 1px;
+}
+
+
+
+/* TroisiÃ¨me sÃ©rie de couleurs du thÃ¨me */
+TABLE.standard3 {
+	empty-cells: show;
+	background-color : [COLOR_WHITE];
+}
+.standard3 TR.trodd{
+	background-color : [COLOR_C9];
+	color: [COLOR_BLACK];
+}
+.standard3 TR.treven{
+	background-color : [COLOR_WHITE];
+	color: [COLOR_BLACK];
+}
+
+.standard3 TH{
+	background-color : [COLOR_C7];
+	color: [COLOR_BLACK];
+
+	border-color : [COLOR_C9];
+	border-style : inset none none none;
+	border-width : 1px;
+
+}
+.standard3 A{
+	color : [COLOR_C1]; 
+}
+.standard3 A:hover{
+        color: [COLOR_WHITE]; 
+	background-color : [COLOR_C1];
+        text-decoration: overline underline;
+}
+
+.standard3 TD.tdodd{
+	empty-cells: show;
+	border-color : [COLOR_C9];
+	border-style : inset none none none;
+	border-width : 1px;
+}
+.standard3 TD.tdeven{
+	empty-cells: show;
+	border-color : [COLOR_C9];
+	border-style : inset none none none;
+	border-width : 1px;
+}
+/*--------------------------*/
+/* report CSS */
+TABLE.reportHBlue {
+	empty-cells: show;
+	color : black;	
+        -moz-border-radius:25px
+}
+.reportHBlue TR.trodd{
+	background-color: #99CCFF;
+}
+.reportHBlue TR.treven{
+	background-color: lavender;
+}
+
+.reportHBlue TH{
+	color : black;
+	background-color: cornflowerblue;
+}
+
+.reportHBlue A{
+	color : #2e67c9; 
+}
+.reportHBlue A:hover{
+        background-color: #a7bee5; 
+        text-decoration: overline underline;
+}
+.reportHBlue TD.tdodd{
+	color : black;
+	empty-cells: show;
+	border-color : lavender cornflowerblue cornflowerblue lavender ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+.reportHBlue TD.tdeven{
+	color : black;
+	empty-cells: show;
+	border-color : lavender cornflowerblue cornflowerblue lavender ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+
+/* report Yellow */
+TABLE.reportHYellow {
+	empty-cells: show;
+	color : black;	
+        -moz-border-radius:25px
+}
+.reportHYellow TR.trodd{
+	background-color: #e8e89d;
+}
+.reportHYellow TR.treven{
+	background-color: #f4f4c3;
+}
+
+.reportHYellow TH{
+	color : black;
+	background-color: #cccc2a;
+}
+.reportHYellow A{
+	color : #d68031; 
+}
+.reportHYellow A:hover{
+        background-color: #f9f92f; 
+        text-decoration: overline underline;
+}
+
+.reportHYellow TD.tdodd{
+	color : black;
+	empty-cells: show;
+	border-color : lightyellow #c1aa11 #c1aa11 lightyellow ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+.reportHYellow TD.tdeven{
+	color : black;
+	empty-cells: show;
+	border-color : lightyellow #c1aa11 #c1aa11 lightyellow ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+/* report Inverse */
+TABLE.reportHInverse {
+	empty-cells: show;
+	background-color : black;
+        -moz-border-radius:25px
+}
+.reportHInverse TR.trodd{
+	background-color : black;
+	color: #e8e89d;
+}
+.reportHInverse TR.treven{
+	background-color : black;
+	color: #f4f4c3;
+}
+
+.reportHInverse TH{
+	background-color : black;
+	color: #cccc2a;
+}
+.reportHInverse A{
+	color : #d68031; 
+}
+.reportHInverse A:hover{
+        color: #f9f92f; 
+	background-color : black;
+        text-decoration: overline underline;
+}
+
+.reportHInverse TD.tdodd{
+	empty-cells: show;
+	border-color : lightyellow #c1aa11 #c1aa11 lightyellow ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+.reportHInverse TD.tdeven{
+	empty-cells: show;
+	border-color : lightyellow #c1aa11 #c1aa11 lightyellow ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+/*--------------------------*/
+/* report Col GREEN */
+TABLE.reportVGreen {
+	empty-cells: show;
+	color : black;	
+        -moz-border-radius:25px;
+}
+.reportVGreen TR.trodd{	
+	border-style : inset none none none;
+	border-color : #60d050;
+	border-width : 1px;
+}
+.reportVGreen TR.treven{
+	border-style : outset none none none;
+	border-width : 1px;
+}
+.reportVGreen TH{
+	color : black;
+	background-color: #60d050;
+}
+.reportVGreen TD.tdodd{
+	color : black;
+	empty-cells: show;
+	border-color : #60d050;
+	background-color: #40e0b0;
+
+}
+.reportVGreen TD.tdeven{
+	color : black;
+	empty-cells: show;
+	border-color : #60d050;
+	background-color: #80f0e0;
+}
+
+.reportVGreen A{
+	color : #2e5e2d; 
+}
+.reportVGreen A:hover{
+        background-color: #84ea81; 
+        text-decoration: overline underline;
+}

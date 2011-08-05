@@ -1,0 +1,38 @@
+<!-- 
+  $Id: param_cumail.xml,v 1.1 2002/07/29 11:15:18 marc Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_cumail.xml,v $
+-->
+
+<style>
+TD.gparam, TD.aparam{  
+   font-weight:medium; 
+}
+TD.uparam {   
+   font-weight:bold;
+}
+TD.sparam {   
+   font-weight:medium; 
+   font-style:italic;
+}
+IMG.gparam, IMG.aparam, IMG.sparam {   
+   display:none;
+}
+</style>
+
+<table width="90%" align="center"  border="0" cellspacing="0" cellpadding="0">
+<tr><td>
+[ZONE CORE:TABINDEX] 
+</td></tr>
+
+
+<tr><td>
+<br>
+</td></tr>
+
+<tr><td align="center">
+[ZONE MAIL:MYACCOUNT]
+</td></tr>
+
+</table>
+
+

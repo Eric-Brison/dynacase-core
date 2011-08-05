@@ -1,0 +1,133 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Data 3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-03 13:37+0200\n"
+"PO-Revision-Date: 2010-02-08 15:49+0100\n"
+"Last-Translator: anakeen\n"
+"Language-Team: english\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "data::login not defined"
+msgstr "login not defined"
+
+#, fuzzy
+msgid "data::no tag specified"
+msgstr "login not defined"
+
+msgid "data::password not defined"
+msgstr "password not defined"
+
+msgid "data:action name not set"
+msgstr ""
+
+msgid "data:document id must not be an object"
+msgstr "document id must not be an object"
+
+#, fuzzy
+msgid "data:document id not set"
+msgstr "document id must not be an object"
+
+msgid "eui::Administrator"
+msgstr "Administrator"
+
+msgid "eui::Content"
+msgstr "Content"
+
+msgid "eui::Create Search"
+msgstr "Create Search"
+
+msgid "eui::Create search :"
+msgstr "Create Search :"
+
+msgid "eui::Creation :"
+msgstr "Creation :"
+
+msgid "eui::Display"
+msgstr "Display"
+
+msgid "eui::Duplicate"
+msgstr "Duplicate"
+
+#, fuzzy
+msgid "eui::Edit search :"
+msgstr "Edit Search"
+
+msgid "eui::Enter search name"
+msgstr "Enter search name"
+
+msgid "eui::Evaluate"
+msgstr "Evaluate"
+
+msgid "eui::Families"
+msgstr "Families"
+
+msgid "eui::Horizontal"
+msgstr "Horizontal"
+
+msgid "eui::Informations"
+msgstr "Information"
+
+msgid "eui::Link"
+msgstr "Link"
+
+msgid "eui::Move"
+msgstr "Move"
+
+msgid "eui::Save"
+msgstr "Save"
+
+msgid "eui::Search"
+msgstr "Search"
+
+msgid "eui::Search by exp"
+msgstr "Search by expression"
+
+msgid "eui::Search by word"
+msgstr "Search by word"
+
+msgid "eui::ToEdit"
+msgstr "Edit"
+
+msgid "eui::User"
+msgstr "User"
+
+msgid "eui::Vertical"
+msgstr "Vertical"
+
+msgid "eui::You have no right to access this document"
+msgstr "You have no right to access this document"
+
+msgid "eui::delete"
+msgstr "Delete"
+
+msgid "eui::documents"
+msgstr "documents"
+
+msgid "eui::infolder"
+msgstr "in"
+
+msgid "eui::lock_as_name"
+msgstr "lock"
+
+msgid "eui::missing right"
+msgstr "Missing Right"
+
+msgid "eui::totrash"
+msgstr "To Trash"
+
+msgid "eui:cannot delete"
+msgstr "cannot delete"
+
+msgid "save : document is fixed"
+msgstr ""
+
+msgid "setValue: document is fixed"
+msgstr ""

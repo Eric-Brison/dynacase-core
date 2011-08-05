@@ -1,0 +1,87 @@
+[ZONE FDL:HTMLHEAD]
+<style>
+DIV.uresult {
+  border-bottom:solid 1px;
+  width:100%;
+  cursor:pointer;
+}
+DIV.uresult IMG {
+  vertical-align:bottom;
+  height:12px;
+}
+DIV.uresult:hover {
+  background-color:[COLOR_C7];
+}
+TABLE.tsearch {
+  border:solid 1px;
+}
+TABLE.tsearch TH {
+  background-color:[COLOR_A8];
+}
+#uresult {
+  vertical-align:top;  
+}
+TR.modified {
+  background-color:[COLOR_B9];
+}
+#members img {
+  height:20px;
+}
+</style>
+<table class="noprint"  cellspacing="0" width="100%"   >
+<thead>
+<tr class="FREEDOMBack1">  
+ <td >    
+  <IMG align="left" class="famicon" border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1" width="[SIZE_IMG-MEDIUM]" SRC="[iconsrc]">
+  
+  <I style="font-size:70%">[classtitle]</I><br><span class="FREEDOMTextBigTitle">[TITLE]</span>
+<div  style="float:right">
+     <span ><b title="[TEXT:Version]">[version]</b>[IF hasstate]<b class="statetext" style="border-color:[statecolor]">[state]</b>[ENDIF hasstate]</span></div>  
+  </td>
+</tr>
+</thead>
+</table>
+<div   class="barmenu">
+<a href="#" onclick="document.fidoc.submit()">[TEXT:Change content]</a>
+<a href="[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]">[TEXT:Cancel]</a>
+</div>
+<center>
+<table style="display:none"><tr><td>[V_WSP_IDADMIN]</td></tr></table>
+<form id="fidoc"
+      name="fidoc" style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FDL&action=INSERTDOCUMENT"
+      >
+<input type="hidden" value="[docid]" name="id">
+<table class="tsearch">
+<thead><tr><th>
+[IFNOT famid]
+ <select id="se_famid">  
+          [IFNOT restrict] <option VALUE="0" >[TEXT:any familly]</option> [ENDIF restrict]
+         [BLOCK SELECTCLASS]
+           <option VALUE="[id]"  >[title]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select> [ENDIF famid]
+[IF famid]<input type="hidden" id="se_famid" value="[famid]"><img title="[famtitle]" style="width:22px;" src="[famicon]">[ENDIF famid]
+<input title="[TEXT:type characters to filter document on it's title]" type="text" id="ukey"><input type="image" class="button" title="[TEXT:Send document searches]" onclick="fdl_searchDocs(event,document.getElementById('ukey').value,document.getElementById('uresult'),getIValue(document.getElementById('se_famid')));return false" align="absbottom" style="width:22px;border:none;background-color:transparent" src="[IMG:search.png]"></th><th><span id="scount">[count]</span> [TEXT:document(s)]</th></tr></thead>
+<tbody>
+<tr>
+<td  style="width:50%" id="uresult"></td>
+<td style="width:50%;vertical-align:top"><table><tbody id="members">
+[BLOCK CONTENT]
+<tr><td><img needresize="1" src="[icon]">[title]</td><td><input type="hidden" name="uchange[[initid]]" value="nochange">
+              
+              <input type="image" align="absbottom" src="[IMG:b_ministop.png]" title="[TEXT:suppress document]" onclick="fld_deleteDoc(this,'[initid]');return false"></td></tr>
+[ENDBLOCK CONTENT]
+<tr id="trtemplate" class="modified" style="display:none;"><td><img src="jsicon"> jsuname</td><td><input type="hidden" name="uchange[jsuid]" value="new">
+              
+              <img align="absbottom" style="cursor:pointer" src="[IMG:b_ministop.png]" title="[TEXT:suppress document]" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);fld_countDoc()" ></td></tr>
+
+</tbody>
+
+</table></td></tr>
+</tbody></table>
+
+</form>
+</center>
+[ZONE FDL:HTMLFOOT]

@@ -1,0 +1,60 @@
+
+[ZONE CORE:HTMLHEAD]
+
+
+
+<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
+<tr>
+  <td class="headcell" align="left"><span class="headtitle">&nbsp;[APP_TITLE]</span></td>
+  <td class="headcell" align="right"><span class="headtitle">[ZONE CORE:USERNAME]&nbsp;</span><a target="fbody" href="[CORE_STANDURL]?&session=[SESSION]"><img alt="Welcome Page" height="22" src="[IMG:logo-1-mini.gif]" border="0"></a>&nbsp;</td>
+</tr>
+<tr>
+  <td height="3" colspan="2" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+</tr>
+<tr>
+  <td class="headcell" height="1" colspan="2" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+</tr>
+<tr>
+  <td height="1" colspan="2" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+</tr>
+<tr>
+  <td height="1" colspan="2" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+</tr>
+<tr>
+<td colspan="2" align="center" class="headcellappbuttons">
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<tr valign="baseline">
+<td class="headcellappbuttons" align="left">
+
+ [BLOCK FUNCTION]
+     <a  href="[CORE_BASEURL]app=CORE&action=HEAD&capp=[name]" onclick="javascript:parent.body.location.replace('[CORE_BASEURL]app=[NAME]');" ><img src="[CORE_PUBURL]/[NAME]/Images/[IMAGE]" border="0" height="30" alt="[DESCR]" title="[DESCR]" ></a>
+  [ENDBLOCK FUNCTION]
+
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+<tr>
+  <td height="1" colspan="2" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+</tr>
+<tr>
+  <td class="headcell" height="1" colspan="2" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+</tr>
+<tr>
+<td colspan="2"><span class="historique">
+[ZONE CORE:PATH]
+</span></td>
+</tr>
+<tr>
+  <td class="headcell" height="1" colspan="2" align="left"><img border="0" src="[IMG:1x1.png]"></td>
+</tr>
+<tr>
+<td>
+&nbsp;
+</td>
+</tr>
+</table>
+[ZONE CORE:HTMLFOOT]

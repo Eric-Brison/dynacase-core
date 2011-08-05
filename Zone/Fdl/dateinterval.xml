@@ -1,0 +1,27 @@
+        [TEXT:fromdate]
+
+
+      <select name="fmonth"  >        
+         [BLOCK SELECTMONTHFROM]
+           <option VALUE="[monthvalue]" [fselectmonth]>[monthname]</option>   
+         [ENDBLOCK SELECTMONTHFROM]
+      </select>
+      <select name="fyear"  >        
+         [BLOCK SELECTYEARFROM]
+           <option VALUE="[yearvalue]" [fselectyear]>[yearvalue]</option>   
+         [ENDBLOCK SELECTYEARFROM]
+      </select>
+        [TEXT:todate]
+
+
+      <select name="tmonth"  >      
+           <option VALUE="0" >[TEXT:today]</option>    
+         [BLOCK SELECTMONTHTO]
+           <option VALUE="[monthvalue]" [tselectmonth]>[monthname]</option>   
+         [ENDBLOCK SELECTMONTHTO]
+      </select>
+      <select name="tyear"  >        
+         [BLOCK SELECTYEARTO]
+           <option VALUE="[yearvalue]" [tselectyear]>[yearvalue]</option>   
+         [ENDBLOCK SELECTYEARTO]
+      </select>

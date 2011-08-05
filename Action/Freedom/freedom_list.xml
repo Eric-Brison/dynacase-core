@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[foldername] [TEXT: folder containt]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+[IF RSS]<link rel="alternate" type="application/rss+xml" title="[foldername]" href="[rsslink]"/>[ENDIF RSS]
+
+[CSS:REF]
+
+
+<style type="text/css">
+[CSS:CODE]
+
+
+</style>
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+    document.dirid='[dirid]';
+[IF VALTERN]
+addEvent(window,"load",function al1() {alterrow('terrible','[CORE_BGCOLORALTERN]','[CORE_TEXTFGCOLOR]');});
+[ENDIF VALTERN]
+[IFNOT VALTERN]
+addEvent(window,"load",function al1() {opalterrow('terrible');});
+[ENDIF VALTERN]
+
+
+-->
+</script>   
+ </head>
+
+<body 
+      onLoad="initmicon();" topmargin=1 leftmargin=1
+      onClick="closeMenu('popuplist');" 
+      onResize="">
+
+
+
+
+
+<img id="micon" width="[SIZE_IMG-X-SMALL]" height="[SIZE_IMG-X-SMALL]"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
+
+
+[ZONE FREEDOM:FOLDER_BARMENU?nbdoc=[nbdoc]&dirid=[dirid]]
+[ZONE FREEDOM:POPUP]
+<br>
+<table class="tablesimple" id="terrible" cellspacing="0" width="100%" >
+<!-- TABLEBODY -->
+                    [BLOCK TABLEBODY]
+<tr  id="d[divid]"
+     class="unselect"
+     onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid],'[wtarget]');" 
+     onContextMenu="openMenu(event,'popuplist',[divid]);return false" 
+     onDblClick="if ([isfld]) openFld([id]); else sendFirstFile([id]);return false"
+     onmouseover="oselect([id])"  onmouseout="ounselect()"
+     title="[highlight]">
+<td class="tlist" width="30" >
+<IMG class="iconimg20" id="i[divid]" needresize="1"
+     align="absmiddle"  src="[iconsrc]">
+</td>
+<td class="tlist" >[title] <i>[state]</i></td>
+<td class="tlist" width="40"><I style="font-size:80%">[revdate]</I></td>
+<td class="tlist" width="20">[locked]</td>
+<td class="tlist" width="20"><span style="font-size:80%">[revision]&nbsp;</span></td></tr>
+                    [ENDBLOCK TABLEBODY]
+</table>
+<!-- /TABLEBODY -->
+
+
+
+
+
+<!--  FOOT HTML -->
+
+</body>
+</html>

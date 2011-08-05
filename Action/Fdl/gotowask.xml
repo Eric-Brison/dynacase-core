@@ -1,0 +1,13 @@
+[ZONE FDL:HTMLHEAD?title=[title]]
+<script>
+    function gotoask() {
+	var url='?app=FDL&action=FDL_CARD&id=[id]';
+	if ((window.name=='VIEWWASK_ifrm') && window.parent) {
+	    window.parent.location.href=url;
+	}
+    }
+</script>
+<p>[comment]</p>
+
+<a onclick="gotoask()" >[doctitle]</a>
+[ZONE FDL:HTMLFOOT]

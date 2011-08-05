@@ -1,0 +1,43 @@
+<html>
+<head>
+[JS:REF]
+<script>
+	
+    [JS:CODE] 
+
+var error=[error];
+var avalue=[value];
+
+
+
+if (window.parent) {
+	if (window.parent.document) {
+	    if (error) window.parent.displayWarningMsg(error);
+	    else {
+	       
+	      if ( window.parent.editedParam) {
+	       window.parent.editedParam.setAttribute('avalue',avalue);
+	       var kids= window.parent.editedParam.childNodes;
+               for (var i=0; i< kids.length; i++) {
+                 kids[i].style.display='inline';
+                 if (kids[i].tagName=='SPAN') {
+                 if (avalue == null) avalue='';
+                     kids[i].innerHTML=avalue+" <i>([textModify])</i>";
+                     kids[i].className+=' changed';
+                 }
+               }
+               }
+               window.parent.editedParam='';
+               var pedit=window.parent.document.getElementById('dedit');
+               if (pedit) {
+                  pedit.style.display='none';
+               }
+               if (window.parent.colorPick2) window.parent.colorPick2.hidePopup();
+               window.parent.submiting=false;
+	    }
+    }
+    
+}
+</script>
+</head>
+</html>

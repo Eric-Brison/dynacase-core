@@ -1,0 +1,169 @@
+<!-- 
+  $Id:  $
+-->
+<div id="dedit" style="display:none">
+<form name="fedit" target="saveparam" id="fedit" method="POST"  action="[CORE_BASEURL]app=APPMNG&action=[ACTIONMOD]">
+<input type="hidden" name="appid" >
+<input type="hidden" name="atype" >
+<input type="hidden" name="aname" >
+<input type="hidden" name="direct" value="yes" >
+<input type="text" size="35" name="val" id="val" value="" onblur="if (this.value != this.getAttribute('originvalue')) { submiting=true;this.form.submit();}">     
+</form>
+</div>
+
+
+<script language="JavaScript">
+<!--
+[JS:CODE]
+var submiting=false;
+var colorPick2 = false;
+var op = new OptionPicker();
+function pickColor(color) {
+	document.fedit.val.value = color;
+	document.fedit.val.style.backgroundColor=color;
+	document.fedit.val.focus();
+	}
+
+function pickOption(value) {
+	document.fedit.val.value = value;
+	document.fedit.val.focus();
+	}
+
+
+var editedParam='';
+function movediv(th,Aname,Atype,Appid,Kind,Value) {
+  if (submiting) return; // wait return of submit
+  if (Kind == 'static') {
+    alert('[TEXT:unmodifiable parameter]');
+    return;
+  } 
+
+  if ((editedParam != '') && (editedParam.id == th.id)) return;
+
+  // undisplay cell containt
+  var kids=th.childNodes;
+  for (var i=0; i< kids.length; i++) {
+     kids[i].style.display='none';
+  }
+  document.getElementById('dedit').style.display='block';
+  th.appendChild(document.getElementById('dedit'));
+  var formEdit=document.getElementById('fedit');
+  
+  formEdit.appid.value=Appid;
+  formEdit.atype.value=Atype;
+  formEdit.aname.value=Aname;
+  formEdit.val.value=Value;
+  if (Kind=='password') formEdit.val.type='password';
+  else formEdit.val.type='text';
+  formEdit.val.focus();
+  formEdit.val.select();
+  formEdit.val.setAttribute('originvalue',Value);
+  
+  
+  // redisplay precedent cell 
+  if (editedParam != '') {
+     
+     var kids=editedParam.childNodes;
+     for (var i=0; i< kids.length; i++) {
+         kids[i].style.display='inline';
+     }
+  }
+
+  editedParam=th;
+  
+  // show color picker if needed
+  if (Kind == 'color') {
+    if (! colorPick2) colorPick2=new ColorPicker();
+    colorPick2.show('dedit');
+  } else {
+    if (colorPick2)  colorPick2.hidePopup();
+    if (Kind.substr(0,4) == 'enum') {
+     op.show('dedit');
+     op.setOptions(Kind.substr(5,Kind.length-6).split('|'));
+     }
+  }
+  
+}
+function switchVisibility(app) {
+  eltApp = document.getElementById(app);
+  eltAppP = document.getElementById('P'+app);
+  if (eltAppP.style.display == '' ) {
+    eltAppP.style.display = 'none';
+    eltApp.className = 'CORETblCellAltern';
+  } else {
+    eltAppP.style.display = '';
+    eltApp.className = 'CORETblHeadCell';
+  }
+}
+var AppList = new Array( [AppList] );
+function showAllParam() {
+  for (iapp in AppList) {
+    eltApp = document.getElementById(AppList[iapp]);
+    if (!eltApp) {
+      //alert(iapp+' '+AppList[iapp]);
+    } else {
+      eltAppP = document.getElementById('P'+AppList[iapp]);
+      eltAppP.style.display = '';
+      eltApp.className = 'CORETblHeadCell';
+    }
+  }
+}
+
+//-->
+</script>
+<style>
+TD.highlight {
+  background-color: [CORE_BGCOLORHIGH];
+  cursor:pointer;
+}
+TD.static {  
+  cursor:not-allowed;
+}
+SPAN.changed {
+  background-color: [COLOR_B5];
+}
+</style>
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+
+
+<!-- /TABLEPAGING -->
+
+<!-- TABLEHEAD -->
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<tr>
+  <td width="40" class="CORETblCell">&nbsp;</td>
+  <td width="40%"  class="CORETblCell"><span class="CORETblBold">[TEXT:name]</span></td>
+  <td  class="CORETblCell"><span class="CORETblBold">[TEXT:val]</span></td>
+</tr>
+
+<!-- /TABLEHEAD -->
+
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+[BLOCK APPLI] 
+<tr title="[appname] : [appdesc]" id="[appname]" style="cursor:pointer;" onclick="switchVisibility('[appname]')" class="CORETblCellAltern">
+<td colspan="2" width="15%"><img border="0" width="25" src="[appicon]">[appdesc]</td><td align="right"><!-- [appname] --></td></tr>
+<tr><td colspan="3" ><table style="display:none" id="P[appname]" width="100%">
+<!-- TABLEBODY -->
+[BLOCK [PARAM]]
+<tr title="[tooltip]" >
+  <td width="5%"  >       
+       <a href="[CORE_STANDURL]&app=APPMNG&action=[ACTIONDEL]&id=[name]&appid=[appid]&atype=[type]" onClick="return confirm('[TEXT:delconfirmparam] [name]')"><img class="[classtype]" border=0 src="[IMG:delete.gif]" title="[TEXT:delete]"></a> </td>
+  <td  width="40%" class="[classtype]"><span class="CORETbl" style="color:[colorstatic]">[descr]</span></td>
+  <td  width="55%"  id="v[name]" 
+       class="[classtype]";
+       onmouseover="if ('[kind]'!='static') this.className='highlight'; else this.className='static'"
+       onmouseout="this.className='[classtype]'" avalue="[sval]"
+       onclick="movediv(this,'[name]','[type]','[appid]','[kind]',this.getAttribute('avalue'))"><span style="color:[colorstatic]">[val]</span></td>
+</tr>
+[ENDBLOCK [PARAM]]
+</td></tr></table>
+[ENDBLOCK APPLI]
+<!-- /TABLEBODY -->
+
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+
+
+</table>
+<iframe name="saveparam" style="display:none"></iframe>

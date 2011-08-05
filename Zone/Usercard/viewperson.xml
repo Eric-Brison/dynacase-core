@@ -1,0 +1,79 @@
+
+<style>
+  div.wpmain {
+    background-color:[COLOR_WHITE];
+  }
+  div.wptitle {
+    background-color:[COLOR_A7];
+    font-size:[SIZE_XX-LARGE];
+  }
+  table.wptable th {
+    background-color:[COLOR_A9];    
+  }
+  table.wptable td.tdlabel {
+    width:15%;
+  }
+  table.wptable td.tdvalue,wptable td.tdnovalue {
+    width:35%;
+  }
+  table.wptable td.tdnovalue {
+    color:[COLOR_A5];
+  }
+  table.wptable td.tdlabel:first-letter {
+    text-transform:capitalize;
+  }
+</style>
+<script>
+function viewemptycell() {
+  var tc=document.getElementsByTagName('td');
+
+  for (var i=0;i<tc.length;i++) {
+    if (tc[i].className=='tdvalue') {
+      if (tc[i].innerHTML == '') {
+	//tc[i].innerHTML='[TEXT:not defined]';
+	tc[i].innerHTML='--';
+	tc[i].className='tdnovalue';
+      }
+    }
+  }
+}
+addEvent(window,'load',viewemptycell);
+</script>
+
+
+
+<div class="wpmain">
+<div class="wptitle"><img align="right;" style="position:absolute;right:2px;float:right;border:ridge [COLOR_A5] 2px" src="[IF S_US_PHOTO][V_US_PHOTO][ENDIF S_US_PHOTO][IFNOT S_US_PHOTO][IMG:faddbook_nophoto.gif][ENDIF S_US_PHOTO]" width="80px">[V_US_CIVILITY] [V_US_FNAME] [V_US_LNAME]</div>
+<table class="wptable" width="100%">
+<thead>
+<tr><th  width="50%" colspan="2">[TEXT:Professional]</th><th width="50%" colspan="2">[TEXT:Society]</th></tr>
+</thead>
+<tbody>
+<tr><td align="right" class="tdlabel">[L_US_MAIL] : </td><td align="left" class="tdvalue">[V_US_MAIL]</td>
+    <td align="right" class="tdlabel">[TEXT:socname] : </td><td  align="left" class="tdvalue"><img align="right"  style="width:80px;height:20px" src="[IMG:none.gif]">[IF S_US_IDSOCIETY]<a href="[CORE_STANDURL]app=FDL&action=FDL_CARD&zone=USERCARD:FADDBOOKSOC_CARD:U&id=[US_IDSOCIETY]">[US_SOCIETY]</a>[ENDIF S_US_IDSOCIETY][IFNOT S_US_IDSOCIETY][V_US_SOCIETY][ENDIF S_US_IDSOCIETY]</td>
+    </tr>
+<tr><td align="right" class="tdlabel">[TEXT:Phone] : </td><td align="left" class="tdvalue">[V_US_PPHONE]</td>
+    <td align="right" class="tdlabel">[TEXT:Phone] : </td><td align="left" class="tdvalue">[socphone]</td>
+    </tr>
+<tr><td align="right" class="tdlabel">[TEXT:Fax] : </td><td align="left" class="tdvalue">[V_US_PFAX]</td>
+    <td align="right" class="tdlabel">[TEXT:Fax] : </td><td align="left" class="tdvalue">[socfax]</td>
+    </tr>
+<tr><td align="right" class="tdlabel">[L_US_MOBILE] : </td><td align="left" class="tdvalue">[V_US_MOBILE]</td>
+    <td></td><td></td>
+    </tr>
+<tr><td align="right" class="tdlabel">[L_US_INTPHONE] : </td><td align="left" class="tdvalue">[V_US_INTPHONE]</td>   
+    <td align="right" class="tdlabel">[L_US_TYPE] : </td><td align="left" class="tdvalue">[V_US_TYPE]</td>
+    </tr>
+<tr> <td align="right" class="tdlabel">[TEXT:Secretary] : </td><td align="left" class="tdvalue">[IF S_US_IDSECR]<a href="[CORE_STANDURL]app=FDL&action=FDL_CARD&zone=USERCARD:VIEWPERSON:T&id=[US_IDSECR]">[secrphone]</a>[ENDIF S_US_IDSECR]</td>
+    <td align="right" class="tdlabel">[L_US_ROLE] : </td><td align="left" class="tdvalue">[V_US_ROLE]</td>
+    </tr>
+
+<tr><th colspan="2">[TEXT:Personnel]</th><th colspan="2"></th></tr>
+<tr><td align="right" class="tdlabel">[L_US_HOMEMAIL] : </td><td align="left" class="tdvalue">[V_US_HOMEMAIL]</td><td colspan="2" rowspan="3" style="text-align:center;vertical-align:middle"><button onclick="document.location.href='[CORE_STANDURL]app=FDL&action=FDL_CARD&zone=FDL:VIEWBODYCARD&id=[ID]'">[TEXT:Complete view]</button></td></tr>
+<tr><td align="right" class="tdlabel">[TEXT:Phone] : </td><td align="left" class="tdvalue">[V_US_HOMEPHONE]</td>     </tr>
+<tr><td align="right" class="tdlabel">[L_US_HOMEMOBILE] : </td><td align="left" class="tdvalue">[V_US_HOMEMOBILE]</td>    </tr>
+
+
+</tbody>
+
+</table></div>

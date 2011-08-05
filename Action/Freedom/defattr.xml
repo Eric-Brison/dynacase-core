@@ -1,0 +1,213 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Attributes definition]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+table.defattr input{
+  background-color:transparent;
+}
+table.defattr tr.frame, table.defattr option.frame {
+   background-color:#6eb9d5; // sky blue
+ }
+table.defattr tr.tab, table.defattr option.tab {
+   background-color:#cba4de; /* violet */
+ }
+table.defattr tr.menu, table.defattr tr.action {
+   background-color:#a4dec6; /* green */
+ }
+table.defattr tr.array, table.defattr option {
+   background-color:#f3cc81; /* orange */
+ }
+table.defattr option.invalid {
+   background-color:red;
+ }
+table.defattr tr {
+   background-color:[COLOR_A9];
+ }
+table.defattr select {
+   background-color:transparent; 
+ }
+ 
+table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.menu .iselect, table.defattr tr.action .iselect, table.defattr tr.tab .iselect {
+   visibility:hidden;
+ }
+ table.defattr tr:hover {
+   
+   background-color:[COLOR_C7]; 
+ }
+ table.defattr tr.Farray .iname {   
+   border-color:#f3cc81; /* orange */
+ }
+ table.defattr tr.Fframe .iname {   
+   border-color:#6eb9d5; 
+ }
+ table.defattr tr.Ftab .iname {   
+   border-color:#cba4de; /* violet */
+ }
+ table.defattr tr.invalid  {   
+   background-color:red; /* red */
+ }
+ span.tab {
+   color:#cba4de; 
+   background-color:#cba4de; 
+ }
+ span.frame {
+   color:#6eb9d5; 
+   background-color:#6eb9d5; 
+ }
+ span.array {
+   color:#f3cc81; 
+   background-color:#f3cc81; 
+ }
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+
+
+<!-- Title Table -->
+<form target="fdoc" class="fborder" name="modifyfamilly" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=MODATTR&docid=[docid]&dirid=[dirid]" >
+
+
+                         
+
+<input type="hidden" name="title" value="[TITLE]"> 
+
+
+<table class="tableborder"  width="100%" cellspacing="0" cellpadding="0" >
+<tr>
+ <td class="FREEDOMTblTitle">
+   <span class="FREEDOMTextTitle">[TITLE]</span>
+  </td> 
+  <td class="FREEDOMTblTitle" align="right"><span class="FREEDOMTextName">[TEXT:inherit from]</span>
+   <select name="classid" onChange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=DEFATTR&id='+self.document.modifyfamilly.classid.options[self.document.modifyfamilly.classid.selectedIndex].value">   
+           <option VALUE="0">[TEXT:no document family]</option>      
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>
+   </td>
+</tr>
+</table>
+
+<!-- Frame Table -->
+
+
+<table  class="defattr"   cellspacing="0" cellpadding="0" >
+<thead>
+<tr>
+  <td class="CORETblHeadBold">[TEXT:ID]</td>
+  <td class="CORETblHeadBold">[TEXT:order]</td>
+  <td class="CORETblHeadBold">[TEXT:name]</td>
+  <td class="CORETblHeadBold">[TEXT:type]</td>
+  <td class="CORETblHeadBold">[TEXT:frame]</td>
+  <td class="CORETblHeadBold">[TEXT:A?]</td>
+  <td class="CORETblHeadBold">[TEXT:T?]</td>
+  <td class="CORETblHeadBold">[TEXT:N?]</td>
+  <td class="CORETblHeadBold">[TEXT:Vi]</td>
+  <td class="CORETblHeadBold">[TEXT:Link]</td>
+  <td class="CORETblHeadBold">[TEXT:file]</td>
+  <td class="CORETblHeadBold">[TEXT:func]</td>
+  <td class="CORETblHeadBold">[TEXT:elink]</td>
+  <td class="CORETblHeadBold">[TEXT:constraint]</td>
+  <td class="CORETblHeadBold">[TEXT:options]</td>
+</tr>
+</thead>
+<tbody>
+
+
+[BLOCK NEWELEM]
+<tr class="[classvalue]" >
+   <td style="white-space : nowrap">
+   <input type="hidden" name="attrid[[neweltid]]" value="[attrid]" >
+   	[profundator]
+      <input type="text" class="iname" name="nattrid[[neweltid]]" value="[attrid]"  [disabledid]>
+   </td>
+   <td  >
+
+      <input class="iorder" type="text" name="order[[neweltid]]" value="[order]" size="3" [disabled]>
+   </td>
+   <td  >
+      <input type="text" name="name[[neweltid]]" value="[attrname]" [disabled]>
+   </td>
+   <td  >
+      <input type="text" name="type[[neweltid]]" value='[typevalue]' [disabled]>      
+   </td>
+   <td  >
+      <select class="iselect" name="frameid[[neweltid]]"  [disabled]>        
+         [BLOCK [SELECTFRAME]]
+           <option class="[frameclass]" VALUE="[frameid]" [selected]>[framevalue]</option>
+         [ENDBLOCK [SELECTFRAME]]
+    </select>
+   </td>
+   <td  >
+      <input type="checkbox" value="Y" name="abstractyn[[neweltid]]" [abscheck] [disabled]></input>
+   </td>
+   <td  >
+      <input type="checkbox" value="Y" name="titleyn[[neweltid]]" [titcheck] [disabled]></input>
+   </td>
+   <td  >
+      <input type="checkbox" value="Y" name="neededyn[[neweltid]]" [neededcheck] [disabled]></input>
+   </td>
+   <td  >
+      <input type="text" size="1"  name="visibility[[neweltid]]" value="[visibility]" [disabled]></input>
+   </td>
+   <td  >
+      <input type="text"   name="link[[neweltid]]" value="[link]" [disabled]></input>
+   </td>
+   <td  >
+      <input type="text"  name="phpfile[[neweltid]]" value="[phpfile]" [disabled]></input>
+   </td>
+   <td  >
+      <input type="text"   name="phpfunc[[neweltid]]" value="[phpfunc]" [disabled]></input>
+   </td>
+   <td  >
+      <input type="text"   name="elink[[neweltid]]" value="[elink]" [disabled]></input>
+   </td>
+   <td  >
+      <input type="text"   name="phpconstraint[[neweltid]]" value="[phpconstraint]" [disabled]></input>
+   </td>
+   <td  >
+      <input type="text"   name="options[[neweltid]]" value="[options]" [disabled]></input>
+   </td>
+  
+</tr>
+[ENDBLOCK NEWELEM]
+
+
+</tbody>
+
+</table>
+<br/>
+<input type="submit" value="[TEXT:Validate]"
+        onclick="setTimeout('self.close()',2000)"> 
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

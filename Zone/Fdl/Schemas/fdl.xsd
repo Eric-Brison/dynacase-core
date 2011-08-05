@@ -1,0 +1,57 @@
+ 
+	<xs:complexType name="fdl-relation">
+                <xs:simpleContent>
+                        <xs:extension base="xs:token">
+                                <xs:attribute name="id" type="xs:integer" />
+                                <xs:attribute name="name" type="xs:Name" />
+                        </xs:extension>
+                </xs:simpleContent>              
+        </xs:complexType>
+        <xs:complexType name="fdl-file">      
+                <xs:simpleContent>
+                        <xs:extension base="xs:base64Binary">
+                                <xs:attribute name="href" type="xs:anyURI" />
+                                <xs:attribute name="title" type="xs:token" use="required"/>
+                                <xs:attribute name="vid" type="xs:integer" />
+                                <xs:attribute name="mime" type="xs:token" use="required"/>
+                                <xs:attribute name="type" type="xs:token" />
+                        </xs:extension>
+                </xs:simpleContent>
+        </xs:complexType>
+        <xs:complexType name="fdl-enum">
+                <xs:simpleContent>
+                        <xs:extension base="xs:token">
+                                <xs:attribute name="id" type="xs:NMTOKEN" />
+                        </xs:extension>
+                </xs:simpleContent>
+        </xs:complexType>
+	<xs:simpleType name="fdl-color">
+		<xs:restriction base="xs:token">
+			<xs:whiteSpace value="collapse"></xs:whiteSpace>
+			<xs:pattern value="#([0-9A-Fa-f]){6}"></xs:pattern>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="fdl-htmltext">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="fdl-date">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+        <xs:simpleType name="fdl-time">
+                <xs:restriction base="xs:time"/>
+        </xs:simpleType>
+        <xs:simpleType name="fdl-timestamp">
+                <xs:restriction base="xs:dateTime"/>
+        </xs:simpleType>
+	<xs:simpleType name="fdl-text">
+		<xs:restriction base="xs:token"/>
+	</xs:simpleType>
+        <xs:simpleType name="fdl-longtext">
+                <xs:restriction base="xs:string"/>
+        </xs:simpleType>
+        <xs:simpleType name="fdl-int">
+                <xs:restriction base="xs:integer"/>
+        </xs:simpleType>
+        <xs:simpleType name="fdl-float">
+                <xs:restriction base="xs:decimal"/>
+        </xs:simpleType>

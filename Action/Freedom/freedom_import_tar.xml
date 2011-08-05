@@ -1,0 +1,53 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Import Result] </title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+ 
+
+
+
+ </head>
+
+<body class="freedom">
+
+   <H1>[TEXT:Result Import TAR Documents]</H1>
+
+<H2>[report]</H2>
+<H3>[extract]</H3>
+
+<form  class="fborder" 
+       name="importtar" 
+       method="POST" 
+       ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_VIEW_TAR" >
+
+      
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="filename" value="[filename]">
+<input type="hidden" name="analyze" value="E">
+
+ <input type="submit" value="[TEXT:View Archive] - [filename]-"   > 
+</fieldset>
+
+</form>
+
+
+</body>
+</html>

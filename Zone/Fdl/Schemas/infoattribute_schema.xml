@@ -1,0 +1,15 @@
+               <fdl:label>[label]</fdl:label>         	
+               <fdl:type>[type]</fdl:type>             
+               <fdl:visibility>[visibility]</fdl:visibility>[IF link]
+               <fdl:link href="[link]"/>[ENDIF link][IF elink]
+               <fdl:extralink href="[elink]"/>[ENDIF elink][IF isTitle]
+               <fdl:title>true</fdl:title>[ENDIF isTitle][IF phpfile][IF phpfunc]
+               <fdl:inputsearch>
+                 <fdl:searchfile>[phpfile]</fdl:searchfile>
+                 <fdl:searchfunction>[phpfunc]</fdl:searchfunction>
+               </fdl:inputsearch>[ENDIF phpfunc][ENDIF phpfile][IF default]
+               <fdl:defaultMethod>[default]</fdl:defaultMethod> [ENDIF default][IF computed]
+               <fdl:compute><fdl:method>[phpfunc]</fdl:method></fdl:compute>[ENDIF computed][IF constraint]
+               
+               <fdl:constraint><fdl:method>[constraint]</fdl:method></fdl:constraint>[ENDIF constraint][BLOCK options]
+               <fdl:options key="[key]">[val]</fdl:options>[ENDBLOCK options]

@@ -1,0 +1,9 @@
+<td width="[width]%" title="[value_descrip]" onclick="recup_tt('[id_tt]');">
+<input type="hidden" name="_wor_trans_etat_ini[]" value=[value_etat_ini]></input>
+<input type="hidden" name="_wor_trans_idetat_ini[]" value=[value_idetat_ini]></input>
+<input type="hidden" name="_wor_trans_etat_fin[]" value=[value_etat_fin]></input>
+<input type="hidden" name="_wor_trans_idetat_fin[]" value=[value_idetat_fin]></input>
+<input type="hidden" name="_wor_trans_tt[]" id="[id_tt]" value=[value_tt]>[text_tt]</input>
+<input type="hidden" name="_wor_trans_descrip[]" value=[value_descrip]></input>
+</td>
+<!-- le input de _wor_trans_descrip[] doit etre juste apres le input de _wor_trans_tt[] -->

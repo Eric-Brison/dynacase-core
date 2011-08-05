@@ -1,0 +1,106 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Choose visibles families]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+function fselect(o) {
+  var i=o.previousSibling; // input
+  while (i && (i.nodeType != 1)) i = i.previousSibling;
+  if (i.checked) {
+    document.getElementById('preffirstfam').value=i.value;
+    viewfirst();
+  }
+}
+function hiselect(o) {
+  var i=o.previousSibling; // input
+  while (i && (i.nodeType != 1)) i = i.previousSibling;
+  if (i.checked) {
+    o.style.backgroundColor='[CORE_BGCOLORHIGH]';
+    o.title='[TEXT:set as first family view]';
+    o.style.cursor='pointer';
+  }
+}
+function loselect(o) {
+  var i=o.previousSibling; // input
+  if (i.checked) o.style.backgroundColor='';
+}
+
+function viewfirst() {
+  var first=document.getElementById('preffirstfam').value;
+
+  var d=document.getElementById('d'+first);
+  var of=document.getElementById('openfirst');
+  of.innerHTML='';
+  if (d) {
+    of.innerHTML=d.innerHTML;
+
+    for (i=0;i<of.childNodes.length;i++) {
+      if (of.childNodes[i].tagName == 'INPUT') {
+	of.childNodes[i].style.display='none';
+	of.childNodes[i].disabled=true;
+      }
+    }
+  }
+
+  var fo=document.modpref;
+  if (window.opener) {
+    fo.target=window.opener.name;
+  }
+
+}
+function clearfirst() {
+  document.getElementById('preffirstfam').value=''; 
+  viewfirst();
+}
+addEvent(window,"load",viewfirst);
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body onload="autoVresize()">
+
+                         
+<!-- Title Table -->
+<form  class="fborder" target="famlist" name="modpref" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=[modaction]" >
+<table><tr><th width="40%">[TEXT:Choose visibles families]</th><td>
+<fieldset style="width:90%;"><legend>[TEXT:open first family]</legend>
+<div  style="display:inline" id="openfirst"></div>
+<input type="image" title="[TEXT:No family first]" onclick="clearfirst();return false;" src="[IMG:clear.gif]">
+</fieldset></td></tr></table>
+   
+         [BLOCK SELECTPREF] 
+<div id="d[cid]"  style="float:left;overflow:hidden;width:150px">
+<img needresize="1" src="[iconsrc]" width="20"><input type="checkbox" [selected] name="idsfam[]"  value="[cid]"><span onmouseover="hiselect(this)" onmouseout="loselect(this)" onclick="fselect(this)">[ctitle]</span></div>
+         [ENDBLOCK SELECTPREF]
+<input type="hidden" value="[openfirst]" id="preffirstfam" name="preffirstfam">
+<br>
+
+ <table style="width:90%;float:left;"><tr>
+  <td align="right"><input type="submit" value="[TEXT:Validate]" onclick="setTimeout('self.close()',1000)"> <input  type="button" value="[TEXT:Close]" onclick="self.close()"></td></tr></table> 
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

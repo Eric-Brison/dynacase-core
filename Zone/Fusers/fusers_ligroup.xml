@@ -1,0 +1,3 @@
+<UL>[BLOCK LI]<LI name="LI[id]" >
+<img class="click" title="[TEXT:view detail] ([login]@[domain])"  src="[icon]" width="12px" onclick="viewdoc('[fid]')"><a onclick="viewfld('[fid]')"><span  title="[login]@[domain]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span></A>
+[SUBUL]</LI>[ENDBLOCK LI]</UL>

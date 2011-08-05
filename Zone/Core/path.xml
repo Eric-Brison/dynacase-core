@@ -1,0 +1,8 @@
+
+[BLOCK PATHEMPTY]
+[NOPCAR]
+[ENDBLOCK PATHEMPTY]
+
+[BLOCK PATH]
+&gt;<a href="[BASE]app=[APPL]&page=[NAME]"><span class="">[DESCR]</span></a>
+[ENDBLOCK PATH]

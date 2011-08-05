@@ -1,0 +1,318 @@
+<?php
+/**
+ * @mainpage Dynacase Platform Documentation
+ * @brief 
+ * @author Anakeen Dynacase Labs
+ * @version @VERSION@-@RELEASE@
+ * @date 2011
+ *
+ * 
+ *
+ * @par Reference manual:
+ * The Dynacase Reference Manual gives you all informations you need to design, code, test your applications. 
+ation. This manual should be your daily companion, with all answers to all questions when developping on Dynacase Platform.
+ * ==> http://www.dynacase.org/documentation
+ *
+ *
+ */
+
+/**
+ * Application parameters 
+ *
+ * @author Anakeen 2002
+ * @version $Id: CORE_init.php.in,v 1.45 2009/01/12 15:25:32 jerome Exp $
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ * @subpackage CORE
+ */
+/**
+ */
+ /**
+  * Application parameters 
+  * @name $app_const
+  * @global array $GLOBALS['app_const'] 
+  */
+global $app_const;
+$app_const = array (
+		    "INIT"			=>"yes",
+		    "CORE_LOGLEVEL"		=>"@LOGLEVEL@",
+		    "VERSION"			=>array("val"=>"@VERSION@-@RELEASE@",
+							"descr"=>N_("application version"),
+							"kind"=>"static"),
+		    "CORE_FRONTPAGE"		=>array("val"=>"",
+							"descr"=>N_("Dynacase frontpage description"),
+							"kind"=>"text"),
+		    "WVERSION"			=>array("val"=>"@VERSION@-@RELEASE@",
+							"descr"=>N_("version identificator"),
+							"kind"=>"static",
+							"global"=>"Y"),
+		    "USE_FREEDOM_USER"			=>array("val"=>"yes",
+								"descr"=>N_("use dynacase user management"),
+								"kind"=>"enum(yes|no)",
+								"global"=>"Y"),
+		    "STYLE"	                =>array("val"=>"MODERN",
+							"descr"=>N_("default style"),
+							"user"=>"Y"),
+		    "FONTSIZE"	                =>array("val"=>"normal",
+							"descr"=>N_("font size"),
+							"user"=>"Y",
+							"kind"=>"enum(small|normal|large|x-large)"),
+		    "CORE_PUBDIR"		=>"@prefix@",
+		    "CORE_DB"	        =>"",
+		    "CORE_TMPDIR"	    =>"/tmp",
+
+		    "CORE_DBCONNECT"		        =>array("val"=>"unpersistent",
+								"descr"=>N_("connection type"),
+								"user"=>"N",
+								"style"=>"N",
+								"kind"=>"enum(unpersistent|persistent)",
+								"global"=>"Y"),
+
+		    // Layout Param
+		   
+		    "CORE_BGCOLOR"		=>array("val"=>"url('CORE/Images/bg.gif')",
+							"descr"=>N_("background color or image"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"N",
+							"global"=>"N"),
+		    "CORE_SSLBGCOLOR"	        =>array("val"=>"url('CORE/Images/bgssl.gif')",
+							"descr"=>N_("background color or image in security mode"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"),
+		    "CORE_FGIMG"		=>array("val"=>"none",
+							"descr"=>N_("background image for bar"),
+							"user"=>"N",
+							"style"=>"Y",
+							"global"=>"N"),
+		    "CORE_FGIMGMENU"		=>array("val"=>"none",
+							"descr"=>N_("background image for menu"),
+							"user"=>"N",
+							"style"=>"Y",
+							"global"=>"N"),
+		    "CORE_BGCELLCOLOR"	        =>array("val"=>"snow",
+							"descr"=>N_("background color for table cells"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"),          // normal bg in cells
+		    "CORE_BGCOLORALTERN"	=>array("val"=>"#DEDEEF",
+							"descr"=>N_("second background color"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"),
+		    "CORE_BGCOLORHIGH"	        =>array("val"=>"lightsteelblue",
+							"descr"=>N_("highlight background color"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"),
+		    "CORE_FGCOLOR"		=>array("val"=>"darkslateblue",
+							"descr"=>N_("inverse video background color"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"), // inverse video bg
+		    "CORE_TEXTFGCOLOR"	        =>array("val"=>"black",
+							"descr"=>N_("text color"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"),  // normal text
+		    "CORE_TEXTBGCOLOR"	         =>array("val"=>"white",
+							 "descr"=>N_("inverse video color text"),
+							 "user"=>"N",
+							"kind"=>"color",
+							 "style"=>"Y",
+							 "global"=>"N"),         // inverse video text
+		    "CORE_INPUTBGCOLOR"	         =>array("val"=>"#b8ceef",
+							 "descr"=>N_("input color bg"),
+							 "user"=>"N",
+							"kind"=>"color",
+							 "style"=>"Y",
+							 "global"=>"N"),         // input color bg
+		    "CORE_ACOLOR"		=>array("val"=>"dodgerblue",
+							"descr"=>N_("anchor color"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"),    // anchor color
+		    "CORE_ERRORCOLOR"	        =>array("val"=>"#E51616",
+							"descr"=>N_("error color"),
+							"user"=>"N",
+							"kind"=>"color",
+							"style"=>"Y",
+							"global"=>"N"),
+		   
+		    "HELP_PUBURL" 		=>array("val"=>"doc",
+							"descr"=>N_("top url to find help documentation"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"N"),
+		   
+		    "CORE_FULLWIDTH"	        =>array("val"=>"100%",
+							"descr"=>N_("frame size"),
+							"user"=>"N",
+							"style"=>"Y",
+							"global"=>"N"),		    
+		    "CORE_SEPWIDTH"		=>array("val"=>"5",
+							"descr"=>N_("frame border size"),
+							"user"=>"N",
+							"style"=>"Y",
+							"global"=>"N"),
+		
+		    "CORE_CLIENT"		=>array("val"=>"&lt;N O M&nbsp;&nbsp;&nbsp;&nbsp;D U&nbsp;&nbsp;&nbsp;&nbsp;C L I E N T&gt;",
+							"descr"=>N_("client name"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "DYNACASE_FAVICO"		=>array("val"=>"CORE/Images/dynacase.ico",
+							"descr"=>N_("Dynacase pages favico"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_LOGOCLIENT"		=>array("val"=>"CORE/Images/logo-mini.png",
+							"descr"=>N_("client logo"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_ANAKEEN"		=>array("val"=>"Anakeen&nbsp;2005",
+							"descr"=>N_("anakeen"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_URLINDEX"	        =>array("val"=>"",
+							"descr"=>N_("url to reach http server index"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_OPENURL"	        =>array("val"=>"",
+							"descr"=>N_("url to reach http server index in open mode"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "MEMORY_LIMIT"	        =>array("val"=>"32",
+							"descr"=>N_("memory max for PHP in Mo"),
+							"user"=>"N",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "GATE_URL"		        =>array("val"=>"",
+							"descr"=>N_("gate urls"),
+							"user"=>"Y",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "GATE_GEO"	        	=>array("val"=>"",
+							"descr"=>N_("gate geometry"),
+							"user"=>"Y",
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_SOCSTYLE"		=>array("val"=>"",
+							"descr"=>N_("society style"),
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_PLUGZONE"		=>array("val"=>"",
+							"descr"=>N_("plug inserted in footer"),
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_PASSWDDELAY"		=>array("val"=>"0",
+							"descr"=>N_("default delay before expiration of password in day"),
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_RFOOT"		=>array("val"=>"<B>Dynacase</B>",
+							"descr"=>N_("name displayed in the right of the foot"),
+							"style"=>"N",
+							"global"=>"Y"),
+		    "CORE_REALM"		=>array("val"=>"Dynacase Connection",
+							"descr"=>N_("realm name for http authenticate"),
+							"style"=>"N",
+							"global"=>"Y"),
+                    "CORE_MOTD"              =>array("val"=>"",
+                                                        "descr"=>N_("mot of the day"),
+                                                        "style"=>"N",
+						     "global"=>"Y"),
+		    "CORE_ICONSIZE"		=>array("val"=>"small",
+							"descr"=>N_("icon size"),
+							"user"=>"Y",
+							"style"=>"N",
+							"kind"=>"enum(small|normal)",
+							"global"=>"Y"),
+                    "CORE_LOGDURATION"              =>array("val"=>"30",
+                                                        "descr"=>N_("duration for log conservation (in days)"),
+                                                        "style"=>"N",
+                                                     "global"=>"Y"),
+
+		    // Mail link production, see setMailAnchor in Lib.Common.php
+		    "CORE_MAIL_LINK"         => array( "val"    => "optimal",
+						       "descr"  => N_("produce link for"),
+						       "user"   => "Y",
+						       "kind"   => "enum(optimal|mailto|squirrel)",
+						       "global" => "Y" ),
+		    "CORE_MAIL_SQUIRRELBASE" => array( "val"    => "squirrel",
+						       "descr"  => N_("squirrelmail install dir (relative)"),
+						       "user"   => "N",
+						       "global" => "Y" ),
+		    "CORE_START_APP" => array( "val"    => "WEBDESK",
+						       "descr"  => N_("default start application"),
+						       "user"   => "N",
+						       "global" => "Y" ),
+
+		    // Session
+		    "CORE_SESSIONTTL" => array( "val"    => "0",
+						"descr"  => N_("core_sessionttl"),
+						"user"   => "N",
+						"global" => "Y"),
+			"CORE_GUEST_SESSIONTTL" => array( "val" => "3600",
+						"descr"  => N_("core_guest_sessionttl"),
+						"user"   => "N",
+						"global" => "Y",
+						"kind"   => "static"),
+		    "CORE_SESSIONMAXAGE" => array( "val"    => "1 week",
+						   "descr"  => N_("core_sessionmaxage"),
+						   "user"   => "N",
+						   "global" => "Y",
+						   "kind"   => "enum(1 day|1 week|1 month)"),
+		    "CORE_SESSIONGCPROBABILITY" => array( "val"    => "0.01",
+							  "descr"  => N_("core_sessiongcprobability"),
+							  "user"   => "N",
+							  "global" => "Y"),
+
+
+            // Layout->execute recursion limit
+            "CORE_LAYOUT_EXECUTE_RECURSION_LIMIT" => array( "val"    => "30",
+                                                            "descr"  => N_("core_layout_execute_recursion_limit"),
+                                                            "user"   => "N",
+                                                            "global" => "Y"),
+
+
+                    "DYNACASECONTROL_URL" => array( "val"    => "",
+                                                       "descr"  => N_("dynacase control URL"),
+                                                       "user"   => "N",
+                                                       "global" => "Y"),
+                    "DYNACASECONTROL_PATH" => array( "val"    => "",
+                                                        "descr"  => N_("dynacase control PATH"),
+                                                        "user"   => "N",
+                                                        "global" => "Y")
+
+		    );
+
+
+@include_once('WHAT/Lib.Prefix.php');
+@include_once("CORE/lang.php");
+if (isset($lang)) {
+  foreach ($lang as $k => $v) {
+    $tl[] = $k;
+  }
+  $ll = implode("|", $tl);
+  $app_const["CORE_LANG"] = array( "val"=>"fr_FR",
+				   "descr"=>N_("language"),
+				   "user"=>"Y",
+				   "style"=>"N",
+				   "kind"=>"enum(".$ll.")",
+				   "global"=>"Y");
+ }
+
+
+?>

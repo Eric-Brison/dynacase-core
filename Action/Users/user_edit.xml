@@ -1,0 +1,153 @@
+<form target="fbody" name="edit" method="POST" action="[CORE_STANDURL]app=USERS&action=USER_MOD">
+<input type="hidden" name="id" value="[id]">
+
+
+  <table width="100%">
+
+[BLOCK FIRSTNAME] 
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:firstname] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <input type="text" size="25" name="firstname" value="[firstname]">
+    </span></td>
+    
+  </tr>
+[ENDBLOCK FIRSTNAME]
+[BLOCK HIDDENFIRSTNAME]
+  <input type="hidden"  name="firstname" value="">
+[ENDBLOCK HIDDENFIRSTNAME]
+
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:lastname] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <input type="text" size="25" name="lastname" value="[lastname]">
+    </span></td>
+  </tr>
+
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:login] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell">
+     [LOGIN_MOD]
+    </td>
+  </tr>
+
+[BLOCK PASSWD]
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:password] : </span></td>
+    <td valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <input type="password" size="12" name="passwd" value="">
+    </span></td>
+    <td valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <input type="password" size="12" name="passwdchk" value="">
+    </span></td>
+  </tr>
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:expire default delay (in day)] : </span></td>
+    <td   colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+     
+     <input onchange="document.getElementById('expdate').disabled=(parseInt(this.value)==0)" title="[TEXT: 0 means no delay]" name="passdelay" id="passdelay"  type="text" value="[daydelay]"></input>
+    </span></td>
+  </tr>
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:expire date] : </span></td>
+    <td   colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+     
+     <input title="[TEXT:if not set, will be the current date more delay]" name="expdate" id="expdate" type="text" value="[expdate]"></input>
+<script>document.getElementById('expdate').disabled=(parseInt(document.getElementById('passdelay').value)==0);</script>
+    </span></td>
+  </tr>
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:user status] : </span></td>
+    <td   colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+     <select name="status" >
+        <option value="A"> [TEXT:active user]</option>
+        <option value="D" [selected_desactive]>[TEXT:desactived user]</option>
+      </select>
+    </span></td>
+  </tr>
+<input type="hidden" name="group" value="no">
+[ENDBLOCK PASSWD]
+[BLOCK HIDDENPASSWD]
+<input type="hidden" name="passwd" value="">
+<input type="hidden" name="passwdchk" value="">
+<input type="hidden" name="group" value="yes">
+[ENDBLOCK HIDDENPASSWD]
+
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><span class="CORETbl">[TEXT:domain] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <select onChange="selectGroupDomain(this.options[this.selectedIndex].text)" id="domainid" name="domainid" [disableddomain]>
+
+      [BLOCK SELECTDOMAIN]
+
+        <option value="[domainid]" [selected]>[domainname]</option>
+
+      [ENDBLOCK SELECTDOMAIN]
+      </select>
+      
+    </span></td>
+  </tr>
+
+  <tr>
+    <td valign="center" align="right" class="CORETblCell"><A href="#xou" onClick="groupVisibility()">[imgchggroup]</A><span class="CORETbl">[TEXT:groups] : </span></td>
+    <td colspan="2" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <select   multiple size="[sizegv]" id="groupview" name="groupview[]" onClick="if (this.size<this.length) this.size++" >
+
+      [BLOCK VIEWGROUP]
+        <option value="[groupid]" disabled  >[groupname]</option>        
+      [ENDBLOCK VIEWGROUP]
+      </select>
+      
+    </span></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="left" class="CORETbCell">&nbsp;
+
+<!-- ----------- GROUP DIV ------------ -->
+<A name="xou">
+<div id="changegroup" style="align:center;display:none">
+
+<table align="center"  border="0" cellspacing="0" cellpadding="0" cols="2">
+<tr>
+<td colspan="2" class="CORETblHeadCell"><span class="CORETblHead">
+    [TEXT:changegroup]
+</span></td>
+</tr>
+  <tr>    
+    <td align="center" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+    [TEXT:domaingroup]<BR>
+      <select  multiple size="8" onMouseUp="setTimeout('refreshGroupView()',10)" id="domaingroup" name="groupselect[]">
+      [BLOCK SELECTDOMAINGROUP]
+        <option value="[groupid]"  [selectgroup]>[groupname]</option>        
+      [ENDBLOCK SELECTDOMAINGROUP]        
+      </select>
+    </span></td>
+    <td align="center" valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+    [TEXT:othergroup]<BR>
+      <select  multiple size="8" onMouseUp="setTimeout('refreshGroupView()',10)" id="othergroup" name="groupselect[]">
+      [BLOCK SELECTOTHERGROUP]
+        <option value="[groupid]"  [selectgroup]>[groupname]</option>        
+      [ENDBLOCK SELECTOTHERGROUP]
+      </select>
+    </span></td>
+  </tr>
+  
+</table>
+</div>
+<!-- ----------- END GROUP DIV ------------ -->
+
+    </td>
+  </tr>
+  <tr>
+
+    <td colspan="3" align="center" class="CORETblCell">
+      <input class="CORETblHead" type="button" 
+        onClick="return Valid_Send()" name="Creer" value="[BUTTONTYPE]">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      
+    </td>
+
+  </tr>
+  </table>
+
+</form>

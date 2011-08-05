@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Choose visibles families]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body onload="autoVresize()">
+
+                         
+<!-- Title Table -->
+<form  class="fborder" target="foot" name="modpref" method="POST"  action="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_MODPREFFAM" >
+
+
+                         
+
+
+<p>[TEXT:Choose visibles families]</p>
+   
+        
+         [BLOCK SELECTPREF] 
+	 <input type="checkbox" [selected] name="idsfam[]" value="[cid]">[ctitle]</input><br>
+         [ENDBLOCK SELECTPREF]
+
+  
+ <input align="right" type="button" value="[TEXT:Close]" onclick="self.close()"> 
+ <input type="submit" value="[TEXT:Validate]"> 
+
+
+
+
+
+
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

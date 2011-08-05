@@ -1,0 +1,59 @@
+<!-- 
+  $Id: param_culist.xml,v 1.4 2005/04/14 09:53:50 marc Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_culist.xml,v $
+-->
+
+<style>
+TD.gparam, TD.aparam{  
+   font-weight:medium; 
+}
+TD.uparam {   
+   font-weight:bold;
+}
+TD.sparam {   
+   font-weight:medium; 
+   font-style:italic;
+}
+IMG.gparam, IMG.aparam, IMG.sparam {   
+   display:none;
+}
+</style>
+
+<table width="90%" align="center"  border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan="3">
+[ZONE CORE:TABINDEX] 
+</td></tr>
+
+
+ <tr>
+
+
+ <tr>         
+      <td width="1px" valign="middle" class="CORETblHeadCell">
+      </td>
+
+
+  
+     <td class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[TEXT:my parameters]</span></td>
+     <td valign="baseline" align="right" class="CORETblHeadCell"><span class="CORETblHead">
+    <a href="#" onclick="showAllParam()">
+      <img height="22" alt="[TEXT:print]" title="[TEXT:view all]" border="0" src="[IMG:view.gif]">
+      </a>
+
+    <a href="#" onclick="self.print()">
+      <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
+      </a>
+<!--
+    <a href="#" 
+       onClick="javascript:subwindow(300,500,'[CORE_BASEURL]app=HELP&happ=35H&hact=IMPUTATION')">
+      <img alt="[TEXT:help]" title="[TEXT:help]" border="0" src="[IMG:help.gif]">
+      </a>
+-->
+      </span>
+    </td>
+ </tr>
+</table>
+
+
+[ZONE APPMNG:PARAM_LIST?pview=singleuser&userid=[userid]]
+

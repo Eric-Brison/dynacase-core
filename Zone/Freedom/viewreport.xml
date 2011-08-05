@@ -1,0 +1,88 @@
+<script language="javascript" type="text/javascript">
+function stabilo(a,pointeur) {
+  if (!a) return;
+  if (pointeur == 'over') {
+    if (a.getAttribute('isclicked')!=1 ) { 
+      a.style.backgroundColor = '[COLOR_C5]'; 
+    } 
+  }
+  if (pointeur == 'out') {
+    if (a.getAttribute('isclicked')!=1 ) { 
+      a.style.backgroundColor = ''; 
+    } 
+  }
+  if (pointeur == 'click') {
+    if (a.getAttribute('isclicked')!=1 ) { 
+      a.style.backgroundColor = '[COLOR_C0]'; 
+      a.setAttribute('isclicked',1);
+    } else {
+      a.style.backgroundColor = ''; 	
+      a.setAttribute('isclicked',0);
+    } 
+  }
+ }
+</script>
+[IF isperso]
+<style>
+TABLE.perso {
+	empty-cells: show;
+	color : black;	
+        -moz-border-radius:25px
+}
+.perso TR.trodd{
+	background-color: [REP_COLORODD];
+}
+.perso TR.treven{
+	background-color: [REP_COLOREVEN];
+}
+
+.perso TH{
+	color : black;
+	background-color: [REP_COLORHF];
+}
+
+.perso A{
+	color : #2e67c9; 
+}
+.perso A:hover{
+        background-color: #a7bee5; 
+        text-decoration: overline underline;
+}
+.perso TD.tdodd{
+	color : black;
+	empty-cells: show;
+	border-color : [REP_COLOREVEN] [REP_COLORHF] [REP_COLORHF] [REP_COLOREVEN] ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+.perso TD.tdeven{
+	color : black;
+	empty-cells: show;
+	border-color : [REP_COLOREVEN] [REP_COLORHF] [REP_COLORHF] [REP_COLOREVEN] ;
+	border-style : inset none outset none;
+	border-width : 1px;
+}
+</style>
+[ENDIF isperso]
+
+<H1 align="center">[TITLE]</H1>
+[BLOCK PARAMS]
+[ZONE FDL:IMPCARD?zone=FREEDOM:PARAMDSEARCH:S&sapp=FDL&saction=FDL_CARD&sid=id&starget=_self]
+[ENDBLOCK PARAMS]
+[IF HASCOLS]
+<table class="[reportstyle] sortable" width="100%" cellspacing=0>
+<caption>[V_REP_CAPTION]</caption>
+<thead><tr>
+[BLOCK COLS]<th align="[rightfornumber]" id="[colid]">[collabel]</th>[ENDBLOCK COLS]
+</tr></thead>
+
+<tbody >
+[BLOCK ROWS]<tr class="[troddoreven]"  onmouseover = "stabilo(this,'over')" onmouseout  = "stabilo(this,'out')" onclick     = "stabilo(this,'click')" ondblclick="subwindowm(200,600,'reportdetail','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]');"> [BLOCK [CELLS]]<td  valign="top" style="color:[bgcell]" align="[rightfornumber]" class="[tdoddoreven]">[cellval]</td>[ENDBLOCK [CELLS]]
+
+</tr>[ENDBLOCK ROWS]
+</tbody><tfoot><tr>
+[BLOCK TFOOT]<th align="[rightfornumber]" >[footval]</th>[ENDBLOCK TFOOT]
+</tr></tfoot>
+</table>[ENDIF HASCOLS]
+
+[IFNOT HASCOLS]<p>[TEXT:No columns has been defined]</p>[ENDIF HASCOLS]

@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" />
+<title>[TEXT:PortFolio] </title>
+
+    [JS:REF]
+<script language="JavaScript">
+  <!--
+
+var isSelected=false;
+
+function selectDoc(id) {
+	var w=windowExist('ffoliolist');
+
+	if (w)  w.docTarget='folio'+id;
+
+	var otherid=(parseInt(id)+1)%2;
+	w=windowExist('fsel'+otherid);
+	isSelected=true;
+
+
+	document.body.style.backgroundColor='[CORE_BGCOLORHIGH]';
+	document.body.style.borderColor='[CORE_BGCOLORHIGH]';
+	document.body.style.borderStyle='outset';
+
+
+	if (w) {
+		if (w.document.body) {
+			w.document.body.style.backgroundColor='[CORE_BGCOLORALTERN]';
+			w.document.body.style.borderColor='[CORE_BGCOLORALTERN]';
+			w.document.body.style.borderStyle='inset';
+			w.isSelected=false;
+		}
+	}
+
+}
+   
+
+function updateSelect(id) {
+	var w=wref=windowExist('ffoliolist');
+	if (isSelected) {
+		if (w)  w.docTarget='folio'+id;
+	} else {
+		var otherid=(parseInt(id)+1)%2;
+		if (w)  w.docTarget='folio'+otherid;
+	}
+}
+  -->
+   </script>
+<style>
+body, div {
+ margin:0pt;
+ padding:0pt;
+ border-width:2px;
+ height:3px;
+ border-style:inset;
+ border-color:[CORE_BGCOLORALTERN];
+ background-color:[CORE_BGCOLORALTERN];
+ cursor:pointer;
+}
+</style>
+
+
+</head>
+
+<body onmouseover="if (document.body.style.borderTopStyle=='inset') document.body.style.borderStyle='groove';"
+      onmouseout="if (document.body.style.borderTopStyle=='groove')document.body.style.borderStyle='inset';"
+      onmousedown="selectDoc('[selid]');return false; " 
+      onload="if ([selected]) {selectDoc('[selid]');setInterval('updateSelect(\'[selid]\')',500);} ">
+&nbsp;
+</body>
+</html>

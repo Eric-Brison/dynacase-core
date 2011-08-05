@@ -1,0 +1,53 @@
+<html>
+<head>
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+
+[JS:REF]
+<script language="JavaScript">
+<!--
+[JS:CODE]
+//-->
+</script>
+
+</head>
+
+<body>
+
+<form name="search" method="POST">
+
+<table align="center"  border="0" cellspacing="1" cellpadding="1">
+<tr>
+  
+  <tr>
+    <td  valign="center" align="left" class="CORETblCell"><span class="CORETbl">
+      <font size="-1"><input type="text" size="25" name="firstname" value="[string]"></font>
+    </span></td>
+  </tr>
+
+  <tr>
+    <td  align="left" class="CORETbCell">&nbsp;</td>
+  </tr>
+
+  <tr>
+
+    <td  align="center" class="CORETblHeadCell">
+      <font size="-1">
+       <input class="CORETblHead" type="reset" onClick="self.close()" name="Close" value="[TEXT:butclosew]">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <input class="CORETblHead" type="reset" 
+        onClick="return Valid_Send()" name="search" value="[TEXT:search]">
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <input class="CORETblHead" type="reset"
+        onClick="return Clear_Send()" name="clear" value="[TEXT:clear]">
+      </font>
+    </td>
+
+  </tr>
+  </table>
+
+</td>
+</tr>
+</table>
+</form>
+</body>
+</head>

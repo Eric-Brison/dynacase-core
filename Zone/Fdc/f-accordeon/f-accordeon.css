@@ -1,0 +1,33 @@
+.faccordeon-title, .faccordeon-title-open {
+  font-size : 9pt;
+  color : #3a3a3a;
+  background-color : #a3a3a3;
+  border-width : 1px;
+  border-color : #545454;
+  border-style : solid solid none solid;
+  cursor : pointer;
+  padding-left:5px;
+  -moz-border-radius: 0px 5px 0px 0px;
+}
+.faccordeon-title-open {
+  background-color : #3a3a3a;
+  color : #a3a3a3;
+  cursor : pointer;
+}
+.end>.faccordeon-title {
+  border-style : solid solid solid solid;
+}
+.end>.faccordeon-title-open {
+  border-style : solid solid none solid;
+}
+
+.faccordeon-content {
+  font-size : 9pt;
+  background-color : #e5e5e5;
+  margin : 0px;
+  padding : 3px;
+  border-width : 1px;
+  border-style : none solid solid solid;
+  border-color : #545454;
+  overflow : auto;
+}

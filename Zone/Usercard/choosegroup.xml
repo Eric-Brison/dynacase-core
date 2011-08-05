@@ -1,0 +1,82 @@
+
+<h3>[TEXT:Select group appartenance]</h3>
+<input type="image"  src="[IMG:plus.gif]" value="+" onclick="expandTree('gtree');return false" title="[TEXT:expand all]">
+<input type="image" src="[IMG:minus.gif]" value="-" onclick="collapseTree('gtree');return false" title="[TEXT:collapse all]">
+<iframe style="position:fixed;float: right;right:0;bottom:auto;left:auto;top:50px;width:40%;height:50%;display:none" id="iviewgroup" src="[IMG:info.gif]"></iframe>
+<UL class="mktree" id="gtree" >[BLOCK LI]<LI  name="LI[id]" ><img class="click" width="14" title="[TEXT:view detail] ([login]@[domain])" src="[icon]" onclick="viewgroup([fid])"><span onmouseover="this.style.textDecoration='underline overline'" onmouseout="this.style.textDecoration=''" onclick="selectcb('[id]')" title="[login]@[domain]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span>[SUBUL]</LI>[ENDBLOCK LI]</UL>
+
+<script>addEvent(window,"load",convertTrees)</script>
+<input  style="display:none" type="checkbox" checked name="gidnew" value="Y"></input>
+[BLOCK SELECTGROUP]
+<input  style="display:none" type="checkbox" [checkbox] id="gid[id]" name="gid[]" value="[id]"></input>
+
+[ENDBLOCK SELECTGROUP]
+
+
+<script>
+
+var cgid=[wid];
+var alreadyalert=false;
+var oiviewgroup=document.getElementById('iviewgroup');
+
+function viewgroup(id) {
+  if (oiviewgroup) {
+    oiviewgroup.style.display='';
+    oiviewgroup.src='[CORE_STANDURL]&app=FDL&action=IMPCARD&id='+id;
+  }
+}
+function beautifullli() {
+  var lgid=document.getElementsByName('gid[]');
+  alreadyalert=false;
+  // first unselect all
+  for (var i=0;i<lgid.length;i++) {
+    cssSelect(lgid[i].value,'unselected');
+  }
+
+  // second select what needed
+  for (var i=0;i<lgid.length;i++) {
+    if (lgid[i].checked) {
+      cssSelect(lgid[i].value,'selected');   
+    }
+  }
+}
+function cssSelect(id,csssel) {
+    var lgli=document.getElementsByName('SPAN'+id);
+      // select also parent
+      
+    for (var j=0;j<lgli.length;j++) {
+      if ((lgli[j].className != 'selected') || (csssel!='hselected'))lgli[j].className = csssel;
+      if (csssel == 'selected') {
+	selectFather(lgli[j]);
+      } 
+      if ((csssel != 'unselected') && (id == cgid) ){	
+	lgli[j].className='wselected';
+	if (!alreadyalert) {
+	  alert('[TEXT:loop detected. You must undo this selection]');
+	  alreadyalert=true;
+	}
+      }
+    }
+}
+function selectFather(oi) {
+  var f;
+  f=oi.parentNode.parentNode;
+  if (f.tagName == "UL") f=f.parentNode;
+  if (f.tagName == "SPAN") f=f.parentNode;
+  if (f.tagName == "LI") {
+    cssSelect(f.getAttribute('name').substr(2),'hselected');
+    selectFather(f);
+  }
+}
+function selectcb(id) {
+  var oi=document.getElementById('gid'+id);
+  if (oi) {
+    oi.checked=!(oi.checked);
+    beautifullli();
+  }
+  return false;
+}
+beautifullli();
+//setTimeout("expandTree('gtree')",1000);
+</script>
+

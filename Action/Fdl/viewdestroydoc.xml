@@ -1,0 +1,33 @@
+[ZONE FDL:HTMLHEAD?title=[title]]
+<style>
+THEAD TH {
+  background-color:[COLOR_B8];
+}
+</style>
+
+<h3 >[trace]</h3>
+
+
+<table class="rows" rules="all" border="1"><CAPTION>[TEXT:Last log]</CAPTION>
+
+<thead>
+<tr><th>[TEXT:Log:Date]</th><th>[TEXT:Log:User]</th><th>[TEXT:Log:Comment]</th><th>[TEXT:Log:Code]</th></tr>
+</thead>
+<tbody>
+[BLOCK LOG]<tr><td >[date]</td><td>[uname]</td><td >[comment]</td><td>[code]</td></tr>
+[ENDBLOCK LOG]
+</tbody>
+</table>
+<br/>
+<table class="rows" rules="all" border="1"><CAPTION>[TEXT:Last History]</CAPTION>
+<thead>
+<tr><th>[TEXT:Histo:Date]</th><th>[TEXT:Histo:User]</th><th>[TEXT:Histo:Comment]</th></tr>
+</thead>
+<tbody>
+[BLOCK HISTO]<tr><td >[date]</td><td>[uname]</td><td >[comment]</td></tr>
+[ENDBLOCK HISTO]
+</tbody>
+</table>
+
+
+[ZONE FDL:HTMLFOOT]

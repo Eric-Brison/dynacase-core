@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="document-id" content="[id]"/>
+   <title>[TITLE]</title>
+[IFNOT nocss]
+<link rel="shortcut icon" href="[shorticon]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >[ENDIF nocss]
+[IF RSS]<link rel="alternate" type="application/rss+xml" title="[TITLE]" href="[rsslink]"/>[ENDIF RSS]
+[IFNOT nocss]
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+[ENDIF nocss]
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+[IF VALTERN]addEvent(window,"load",function al1() {alterfieldset('terrible','[CORE_BGCOLORALTERN]','[CORE_TEXTFGCOLOR]');});[ENDIF VALTERN]
+var documentMenu=[documentMenu];
+  //-->
+   </script>
+ </head>
+
+<body class="document">
+
+
+
+
+<div width="100%" class="tablesimple" id="terrible"
+     onMouseDown="if (shiftPushed(event)) viewdocmenu(event,'[id]')"      >
+
+[ZONE FDL:VIEWCARD?target=ext&dochead=N&postit=N]
+
+</div>
+
+[IF forum]<a name="forum"></a>[ZONE FDL:IMPCARD?sole=Y&zone=FDL:FORUM_VIEW:S&id=[forumid]][ENDIF forum]
+
+</body>
+</html>

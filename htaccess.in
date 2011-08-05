@@ -1,0 +1,52 @@
+php_value post_max_size "80M"
+php_value upload_max_filesize "80M"
+php_value default_charset utf-8
+php_value magic_quotes_gpc "On"
+
+php_value session.save_path "@prefix@/session"
+php_value session.gc_maxlifetime 2147483647
+
+SetEnv FREEDOM_ACCESS CORE
+
+ExpiresActive On
+# -- JavaScript
+ExpiresByType application/x-javascript  "access plus 24 hours"
+ExpiresByType application/javascript "access plus 24 hours"
+ExpiresByType text/javascript "access plus 24 hours"
+# -- CSS
+ExpiresByType text/css "access plus 24 hours"
+# -- Images
+ExpiresByType image/gif "access plus 24 hours"
+ExpiresByType image/jpeg "access plus 24 hours"
+ExpiresByType image/png "access plus 24 hours"
+ExpiresByType image/vnd.microsoft.icon "access plus 24 hours"
+
+DirectoryIndex index.php
+
+Options -Indexes
+
+<FilesMatch "^.+$">
+        Order Allow,Deny
+        Deny from All
+</FilesMatch>
+
+<FilesMatch "^(what|freedom)$">
+        Order Deny,Allow
+        Allow from All
+</FilesMatch>
+
+
+<FilesMatch "^(index|indexq|guest|data|nu|notifier).php$">
+        Order Deny,Allow
+        Allow from All
+</FilesMatch>
+
+<FilesMatch "\.(gif|jpe?g|png|xpm|ico|js|html|css|svg|pdf)$">
+        Order Deny,Allow
+        Allow from All
+</FilesMatch>
+
+<FilesMatch "^(install|resizeimg|geticon|chgpasswd).php$">
+        Order Deny,Allow
+        Allow from All
+</FilesMatch>

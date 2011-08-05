@@ -1,0 +1,28 @@
+<html>
+<head>
+
+<title>[TEXT:Gate]</title>
+
+
+
+</head>
+
+
+<frameset id="WGATE" name="WGATE" frameborder="yes" framespacing="1" border="3" cols="[bw],[G1W],[G2W],[G3W]" >
+
+<frame name="G0" src="[CORE_STANDURL]&app=CORE&action=GATE_EDIT" scrolling="no" noresize marginwidth="0">
+<frameset id="WGATE1" name="WGATE1"  frameborder="yes" framespacing="1" border="3" rows="[G1H],*" >
+  <frame id="G11" name="G11" src="[urlG11]" scrolling="needed"> 
+  <frame id="G12" name="G12" src="[urlG12]" scrolling="needed">
+</frameset>
+<frameset id="WGATE2" name="WGATE2"  frameborder="yes" framespacing="1" border="3" rows="[G2H],*" >
+  <frame id="G21" name="G21" src="[urlG21]" scrolling="needed">
+  <frame id="G22" name="G22" src="[urlG22]" scrolling="needed">
+</frameset>
+<frameset id="WGATE3" name="WGATE3"  frameborder="yes" framespacing="1" border="3" rows="[G3H],*" >
+  <frame id="G31" name="G31" src="[urlG31]" scrolling="needed">
+  <frame id="G32" name="G32" src="[urlG32]" scrolling="needed">
+</frameset>
+
+</frameset>
+</html>

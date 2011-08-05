@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ */
+
+// ---------------------------------------------------------------
+// $Id: FDC_init.php.in,v 1.1 2006/05/30 16:32:46 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/fdc/FDC_init.php.in,v $
+// ---------------------------------------------------------------
+
+global $app_const;
+
+$app_const= array(
+  "INIT" => "yes",
+  "VERSION" => "@VERSION@-@RELEASE@",
+  "GATE_USEOLD"    =>array("val"=>"no",
+			   "descr"=>N_("use what gate"),
+			   "user"=>"Y",
+			   "global"=>"Y",
+			   "kind"=>"enum(yes|no)"),
+  "GATE_PREFID" => array("val"=>"",
+			 "user"=>"Y",
+			 "global"=>"Y",
+			 "descr"=>N_("preferential doc gate id")),
+  
+);
+
+?>

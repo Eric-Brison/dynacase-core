@@ -1,0 +1,36 @@
+<!-- 
+   ------------------------------------------------------------------------------------
+   TOC CONTENT Template 
+   $Source: /home/cvsroot/anakeen/freedom/core/Action/Core/toc.xml,v $
+   $Id: toc.xml,v 1.1 2002/01/08 12:41:33 eric Exp $
+   ------------------------------------------------------------------------------------ 
+-->
+<table bgcolor="[CORE_BGCOLOR]" cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
+<tr>
+  <td class="headcell"><img src="1x1.png" border="0"></td>
+</tr>
+<tr>
+  <td><span class="toctitle">[CORE_TDMTITLE]</span></td>
+</tr>
+<tr>
+  <td class="headcell"><img src="1x1.png" border="0"></td>
+</tr>
+[BLOCK TOC_ENTRY]
+<tr>
+  <td>
+    <a href="[TOC_ENTRYURLROOT]app=[TOC_ENTRYAPP]&action=[TOC_ENTRYPAGE]">
+      <b>&middot;</b>&nbsp;
+      <span class="[TOC_ENTRYSTYLE]">[TOC_ENTRYLABEL]</span>
+    </a>
+  </td>
+</tr>
+[ENDBLOCK TOC_ENTRY]
+<tr>
+  <td height="1"><img src="1x1.png" border="0"></td>
+</tr>
+<tr>
+  <td height="1" class="headcell"><img src="1x1.png" border="0"></td>
+</tr>
+</table>
+
+<!-- END TOC --> 

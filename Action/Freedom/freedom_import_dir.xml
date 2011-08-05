@@ -1,0 +1,36 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+   <title>[TEXT:Import Result] </title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+ 
+
+
+
+ </head>
+
+<body class="freedom">
+
+   <H1>[TEXT:Archive import in progress]</H1>
+
+<H2>[text]</H2>
+
+
+</body>
+</html>

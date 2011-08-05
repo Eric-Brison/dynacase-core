@@ -1,0 +1,23 @@
+
+<table id="viewdetail" style="display:[ddetail]"  width="100%" cellspacing="0">
+<tbody>
+[ZONE FDL:VIEWFRAME?frameid=FR_BASIC]
+[ZONE FDL:VIEWFRAME?frameid=SE_CRIT]
+
+
+<tr class="FREEDOMBack1">
+   <td colspan="2" align="center"> 
+  <fieldset><legend style="cursor:pointer" onclick="viewornot('viewcond')">[L_SE_FR_DETAIL]</legend>
+  <table id="viewcond" border=0 width="100%">
+    <tbody>
+       <tr ><td >[V_SE_OL]</td></tr>
+       <tr ><td ><ul>[BLOCK COND]
+          <li>[condition]</li>
+                 [ENDBLOCK COND]</ul></td></tr></tbody>
+     </table>
+     </fieldset>
+  </td></tr>
+</tbody>
+</table>
+
+

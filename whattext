@@ -1,0 +1,59 @@
+#!/bin/bash
+
+DIRNAME=`dirname "$0"`
+REAL_DIRNAME=`cd "$DIRNAME" 1> /dev/null 2>&1 && pwd`
+if [ -z "$REAL_DIRNAME" ]; then
+    echo "Could not get real dir name from '$0'."
+    exit 1
+fi
+export wpub=$REAL_DIRNAME
+
+shopt -s nullglob
+
+function whattext ()
+{    
+    ntf="$wpub/locale/.gettextnumber"
+    if [ ! -f $ntf ]; then
+	echo "0" > $ntf
+    fi
+    numberone=`cat $ntf`
+    numbertwo=`expr $numberone + 1`
+    today=`date "+%F %T"`
+    for lang_dir in "$wpub"/locale/*; do
+	if [ ! -d "$lang_dir/LC_MESSAGES" ]; then
+	    continue
+	fi
+
+	pushd "$lang_dir/LC_MESSAGES" >/dev/null
+	mv freedom-catalog.mo freedom-catalog.mo.old 1> /dev/null 2>&1
+	
+        find . -type l -name "freedom-catalog[0-9]*.mo" -exec /bin/rm {} \;
+
+	if [ -h "freedom-catalog$numberone.mo" ]; then
+	    \rm "freedom-catalog$numberone.mo"
+	fi
+        for mo in `ls *.mo` ; do
+	    msgunfmt --force-po $mo -o $mo.po
+	done
+	msgcat  --use-first  *.po > freedom-catalog.po
+
+	msgfmt freedom-catalog.po  -o freedom-catalog.mo
+	rm -f *.po *.old
+	if [ ! -a "freedom-catalog$numbertwo.mo" ]; then
+	    \ln -s freedom-catalog.mo "freedom-catalog$numbertwo.mo" && echo $numbertwo > $ntf
+	    
+	fi
+	popd >/dev/null
+
+	if [ -d "$lang_dir/js" ]; then
+	  pushd "$lang_dir/js" > /dev/null
+	  echo '{"fdl:creationDate":"'$today'"}'> null-mo.js
+	  php "$wpub/programs/json_concat" *mo.js > catalog.js
+	  \rm null-mo.js
+	  popd >/dev/null
+	fi
+    done
+
+}
+whattext
+exit 0

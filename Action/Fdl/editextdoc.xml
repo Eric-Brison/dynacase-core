@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <title>[TEXT:edition: ] [title]</title>
+
+<link rel="shortcut icon" href="[shorticon]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+
+ 
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+addEvent(window,"load",editOnLoad);
+addEvent(window,"load",focusFirst);
+addEvent(window,"load",resetbodyopacity);
+var documentMenu=[documentMenu];
+var beforeUnload=function(){
+	if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled)) {
+		return "[STITLE] : [TEXT:Changes will be loosed if you continue]";
+	}
+}
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="document" id="terrible" style="[IFNOT ISIE]opacity:0.5;[ENDIF ISIE][IF ISIE]filter: alpha(opacity = 50);[ENDIF ISIE]"
+      onbeforeunload="if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled))return '[STITLE] : [TEXT:Changes will be loosed if you continue]'";
+      onUnLoad="if ((! document.isCancelled)&& (!document.isSubmitted)) autoUnlock('[id]');closechoose();"
+     >
+<!-- for idoc -->
+<form id="fviewidoc"
+      name="fviewidoc"style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"
+       >
+<input type="hidden" name="xml">
+<input type="hidden" name="famid">
+</form>
+
+<form id="fidoc"
+      name="fidoc" style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_IEDIT"
+      >
+<input type="hidden" name="xml">
+<input type="hidden" name="famid">
+<input type="hidden" name="attrid">
+<input type="hidden" name="type_attr">
+</form>
+
+<!-- end for idoc -->
+
+<!-- Title Table -->
+<form  id="fedit"  
+       class="fborder" style="display:inline"
+       name="modifydoc" 
+       onsubmit="return documentsubmit(this)"
+       target="fsave[id]"
+       method="POST" ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=GENERIC&action=GENERIC_MOD&viewext=yes" >
+<INPUT TYPE="hidden" name="classid" value="[classid]">
+<INPUT TYPE="hidden" name="id" value="[id]">
+<INPUT TYPE="hidden" name="dirid" value="[dirid]">
+<INPUT TYPE="hidden" name="viewext" value="yes">
+<INPUT TYPE="hidden" name="rtarget" value="[rtarget]">
+<INPUT TYPE="hidden" name="eapp" value="FDL">
+<INPUT TYPE="hidden" name="eact" value="EDITEXTDOC">
+<input type="hidden" name="vid" value="[vid]">
+<input type="hidden" name="ezone" value="[ezone]">
+<input type="hidden" name="rzone" value="[rzone]">
+<input type="hidden" name="rvid" value="[rvid]">
+<input type="hidden" name="noredirect" value="1">
+<input type="hidden" name="quicksave" value="0">
+<input type="hidden" name="catgid" >
+<input type="hidden" name="noconstraint" value="N">
+
+[IFNOT ISIE]<div id="fixspanhead" style="visibility:visible;padding:0px;margin:0px;height:0px"></div>[ENDIF ISIE]
+[ZONE FDL:EDITCARD]
+
+</form>
+<!--  FOOT HTML -->
+<iframe name="fhsave" style="display:none" src="[IMG:1x1.gif]"></iframe>
+<iframe name="fsave[id]" style="display:none" src="[IMG:1x1.gif]"></iframe>
+</body>
+</html>

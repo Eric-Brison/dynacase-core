@@ -1,0 +1,7 @@
+<input type="hidden" name="[name]" id="[id]" [disabled] value="[value]" >
+<div  class="button" id="pdiv_[id]" onclick="viewoption('[di]','[didx]','if_[id]','[id]')">
+<div id="div_[id]" >
+[ZONE FDL:VIEWOPTION?id=[said]&opt=[uuvalue]]
+</div>
+</div>
+<iframe width="100%" style="display:none" id="if_[id]" name="if_[id]"  src="[IMG:1x1.gif]"></iframe>
