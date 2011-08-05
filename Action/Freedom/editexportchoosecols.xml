@@ -1,0 +1,97 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Choose export column]]
+<style>
+span.needed {
+            font-weight: bold;
+            }
+span.select {
+            background-color: [COLOR_B5];
+            }
+span.hidden {
+            color: [COLOR_A5];
+            } 
+
+fieldset.floating span:hover { 
+        background-color: [COLOR_C3];                          
+}
+fieldset.floating span { 
+        cursor: pointer;
+}
+fieldset.floating {
+  float:left;
+}
+</style>
+<script>
+include_js('WHAT/Layout/resizeimg.js');
+
+function removeClass(o, cl) {
+	if (!(o && o.className)) {
+		return;
+	}
+	var cls = o.className.split(" ");
+	var ar = new Array();
+	for (var i = cls.length; i > 0;) {
+	    if (cls[--i] != cl) {
+	      ar[ar.length] = cls[i];
+	    }
+	  }
+	o.className = ar.join(" ");
+	     };
+function addClass(o,cl) {
+  removeClass(o,cl);
+  o.className+=' '+cl;
+}
+function chex(o) {
+  var spans=o.nextSibling;
+  
+  if (o.checked) addClass(spans, 'select')
+  else removeClass(spans, 'select');
+  
+}
+function chspex(o) {
+  var ch=o.previousSibling;
+  ch.checked=(! ch.checked);
+
+  chex(ch);  
+}
+
+function selectAllColumns() {
+  var chs=document.getElementsByName('ch[]');
+
+  for (var i=0;i<chs.length;i++) {
+    chs[i].checked=true;
+    chex(chs[i]);
+  }
+}
+function invertAllColumns() {
+  var chs=document.getElementsByName('ch[]');
+
+  for (var i=0;i<chs.length;i++) {
+    chs[i].checked=(! chs[i].checked);
+    chex(chs[i]);
+  }
+}
+
+
+</script>
+
+<img align="right" width="[SIZE_IMG-MEDIUM]" needresize="1" src="[famicon]">
+<h1>[TEXT:Choose column export] : [famtitle]</h1>
+<a onclick="document.fcols.submit()">[TEXT:Save preferences]</a> | 
+<a onclick="selectAllColumns()">[TEXT:Select all columns]</a> | 
+<a onclick="invertAllColumns()">[TEXT:Invert all columns]</a> | 
+<a onclick="document.fcols.clear.value='yes';document.fcols.submit()">[TEXT:Clear preferences]</a>
+<form name="fcols" style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=MODEXPORTCHOOSECOLS">
+<input type="hidden" name="id" value="[famid]">
+<input type="hidden" name="clear" value="">
+<fieldset style="display:none">
+[BLOCK ATTRS]
+[IF newframe]</fieldset>[ENDIF newframe]
+[IF newtab]<div style="clear:both;background-color:[COLOR_B8];width:100%">[tabname]</div>[ENDIF newtab]
+[IF newframe]<fieldset class="floating"><legend>[framename]</legend>[ENDIF newframe]
+<input onclick="chex(this)" type="checkbox" [IF selected]checked [ENDIF selected]name="ch[]" value="[attrid]"><span onclick="chspex(this) " class="[IF need] needed[ENDIF need][IF hidden] hidden[ENDIF hidden][IF selected] select[ENDIF selected]"> [attrname]</span><br/>
+[ENDBLOCK ATTRS]
+</fieldset>
+</form>
+[ZONE FDL:HTMLFOOT]

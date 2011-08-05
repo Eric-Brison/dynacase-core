@@ -1,0 +1,154 @@
+<!-- 
+  $Id: applist.xml,v 1.5 2005/06/04 06:35:05 marc Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/applist.xml,v $
+-->
+
+<script>
+
+function edit(cmd, id) {
+  self.document.forms.exec.cmd.value = cmd;
+  self.document.forms.exec.id.value = id;
+  inputwindow(320,550,'[CORE_STANDURL]app=APPMNG&action=APP_EDIT&id='+id)
+}
+
+function inputwindow(h, w, url) {
+   var screen_width, screen_height;
+   var win_top, win_left;
+   var HelpWin;
+   screen_height        = 0;     screen_width      = 0;
+   win_top              = 0;     win_left          = 0;
+   if (window.innerWidth) screen_width = window.innerWidth;
+   if (window.innerHeight) screen_height = window.innerHeight;
+   win_top  = screen_height - h - 20;
+   win_left = screen_width  - w  - 20;
+   me  = window.open(
+              url,
+              'aaa',
+              'width='+w+',height='+h+',top='+win_top+',left='+win_left);
+  me.focus();
+
+}
+
+function confirmdel(id, name) {
+  self.document.forms.exec.cmd.value = "del";
+  self.document.forms.exec.id.value = id;
+  if (confirm("Confirmez la suppression de l'application :" +name)) {
+    self.document.forms.exec.submit();
+  }
+}
+
+</script>
+
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan="3">
+[ZONE CORE:TABINDEX]
+</td></tr>
+<tr>
+  <td colspan="2" class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[APPLIST]</span></td>
+  <td valign="baseline" colspan="2" align="right" class="CORETblHeadCell"><span class="CORETblHead">
+
+
+    <a href="#" onclick="self.print()">
+      <img height="22" alt="Imprimer la page" title="Imprimer la page" border="0" src="[IMG:print.gif]">
+      </a>
+    <a href="#" 
+       onClick="javascript:inputwindow(300,500,'[CORE_PUBURL]/index_HELP.php?app=HELP&happ=35H&hact=IMPUTATION')">
+      <img alt="Aide sur cette page" title=[TEXT:help] border="0" src="[IMG:help.gif]">
+      </a>
+  </span></td>
+</tr>
+</table>
+
+
+<table align="center" width="90%" border="0" cellspacing="0" cellpadding="0">
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left" colspan="4" class="CORETblCell">
+
+  &nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="right" colspan="4" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+
+<!-- TABLEHEAD -->
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<tr>
+  <td  class="CORETblCell"><a href="[CORE_BASEURL]app=APPMNG&action=APP_UPDATEALL"><img border=0 src="[IMG:reload.gif]"  alt="UpdateAll" title="UpdateAll"></a></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:appname]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:Version]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:description]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:available]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:access_free]</span></td>
+  <td class="CORETblCell"><span class="CORETblBold">[TEXT:displayable]</span></td>
+</tr>
+
+<!-- /TABLEHEAD -->
+
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEBODY -->
+[BLOCK TABLEBODY]
+<tr>
+  <td width="15%" class="[CLASS]">
+    <a href="[CORE_BASEURL]app=APPMNG&action=APP_UPDATE&appsel=[id]">
+      <img border=0 src="[IMG:reload.gif]"  alt="Update" title="[TEXT:update]">
+    </a>
+    <a href="#" onclick="javascript:submit_withpar(330,350,'edit','[id]','[CORE_BASEURL]app=APPMNG&action=APP_EDIT&sole=Y&appsel=[id]')">
+      <img border=0 src="[IMG:edit.gif]"  alt="Edit" title="[TEXT:edit]">
+    </a>
+    <a href="[CORE_BASEURL]app=APPMNG&action=APP_DELETE&appsel=[id]" onClick="return confirm('[TEXT:delconfirm] [name]')">
+      <img border=0 src="[IMG:delete.gif]"  alt="Uninstall" title="[TEXT:delete]">
+    </a>
+  </td>
+  <td ><span class="CORETbl"><img border="0" width="20" src="[appicon]"> [name]</span>&nbsp;</td>
+   <td ><span class="CORETbl" style="font-size:70%">[version]</span></td>
+   <td ><span class="CORETbl">[description]</span></td>
+  <td ><span class="CORETbl">[available]</span></td>
+  <td ><span class="CORETbl">[access_free]</span></td>
+  <td ><span class="CORETbl">[displayable]</span></td>
+</tr>
+[ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left"  class="CORETblCell">
+
+  &nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="center" colspan="6" class="CORETblCell">
+
+  <span class="CORETblBold">[TABLE_NUM]&nbsp;/&nbsp;[TABLE_NB]</span>
+
+  </td>
+  <td align="right" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+<tr><td colspan="8" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+</table>
+
+[MAINFORM]
+[QUERY_FORM]
+<form name="exec" method="POST" method="[CORE_BASEURL]app=APPMNG">
+<input type="hidden" name="cmd" value="nop">
+<input type="hidden" name="id" value="-1">
+</form>

@@ -1,0 +1,28 @@
+[ZONE CORE:HTMLHEAD]
+
+<table border="1" bgcolor="[CORE_BGCOLOR]" width="60%" align="center">
+<tr>
+<td class="FREEDOMTblFrame" align="center" width="40%">
+<form method="post" action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_UPDATETITLE">
+<input type="submit" value="[TEXT:updatetitle]" >
+
+</form>
+</td>
+<td rowspan="2" class="FREEDOMTblTitle">
+ [CR] 
+ [CRKO] 
+ <a target="helpwhat" href="[CORE_STANDURL]&app=HELP&action=VIEW&id=freedom.ldap"><img alt="[TEXT:help]" title="[TEXT:help] "border="0" src="[IMG:help.gif]"></a>
+</td>
+</tr>
+<tr>
+<td class="FREEDOMTblFrame" align="center">
+<form method="post" action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_UPDATELDAP">
+
+<input type="submit" value="[TEXT:updateldap]" >
+</form>
+</td>
+</tr>
+</table>
+
+[ZONE CORE:HTMLFOOT]
+

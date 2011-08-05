@@ -1,0 +1,12 @@
+<html>
+<head>
+<title>[TEXT:Processes plan]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+</head>
+  <frameset  frameborder="yes" border=3  framespacing="3" cols="40%,*" 
+            scrolling="no" frameborder="no" >
+     <frame name="flprocess"  src="[CORE_STANDURL]&app=FREEDOM&action=SEARCH&view=column&famid=EXEC&target=fvprocess" scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+       <frame name="fvprocess" src="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_LOGO" scrolling="needed" bordercolor="[CORE_FGCOLOR]" >
+  </frameset>
+    
+</html>

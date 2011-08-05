@@ -1,0 +1,98 @@
+html {
+  background-color : [COLOR_A1];
+}
+.zhelp {
+  width:650px;
+  background-color : [COLOR_A9];
+  padding : 20px;
+  border : 1px solid [COLOR_A4];
+  -moz-border-radius : 8px;
+}
+.zhelp .title {
+  font-weight : bold;
+  border-top:0;
+  border-left:0;
+  border-right:0;
+  border-bottom:1px solid [COLOR_A4];
+  padding : 20px 0px 5px 0px;
+  margin : 10px 0px 20px 0px;
+ text-align:left;
+}
+.zhelp .content {
+  text-align : justify;
+  padding : 0 0 10px 10px;
+}
+
+.authmain {
+  width:420px;
+}
+.authmain .form {
+  border-color : [COLOR_A9] [COLOR_A3] [COLOR_A3] [COLOR_A9];
+  border-width : 1px;
+  border-style : solid;
+  background-color : [COLOR_A8];
+  -moz-border-radius : 5px;
+  padding : 10px;
+
+}
+.authmain table {
+  width:100%;
+}
+
+.authmain .banner {
+  margin : 10px 0px 20px 0px;
+  padding : 0px 0px 20px 0px;
+  border-bottom:1px solid [COLOR_A4];
+}
+.authmain .banner .societe { 
+  font-size : 150%;
+  font-weight : bold;
+}
+
+.authmain .zoneinput {
+  text-align:center;
+}
+
+.authmain .zoneinput td.label {
+  text-align:right;
+  padding-right: 10px;
+  white-space : nowrap;
+}
+.authmain .input input {
+  border-width : 1px;
+  border-style : solid;
+  border-color : [COLOR_A5] [COLOR_A8] [COLOR_A8] [COLOR_A5];
+  background-color : [COLOR_WHITE];
+  font-weight : bold;
+}
+.authmain .input input:focus {
+  background-color : [COLOR_C5];
+}
+.authmain .message {
+  text-align : center;
+  margin : 10px;
+  padding : 10px;
+  color : [COLOR_B0];
+  text-transform : lowercase;
+  font-weight : bold;
+}
+.zhelp .close, .authmain .buttons {
+  text-align : right;
+  margin : 10px 0px 10px 0px;
+  padding : 5px 0px 10px 0px;
+  border-top:1px solid [COLOR_A4];
+  background-image: url('[IMG:login-by-dynacase.png]');
+  background-repeat: no-repeat;
+
+}
+.zhelp .close a, .authmain .buttons a {
+  font-weight : bold;
+  margin : 0 0 0 10px;
+  text-decoration : none;
+  text-transform : lowercase;
+  color : [COLOR_A0];
+}
+.zhelp .close a:hover, .authmain .buttons a:hover {
+  color : [COLOR_B3];
+}
+

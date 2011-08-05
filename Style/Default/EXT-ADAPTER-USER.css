@@ -1,0 +1,214 @@
+.document legend,.document a {
+	color: #15428B;
+}
+
+.document a:HOVER {
+	background-color: white;
+}
+
+.document .normal {
+	background-color: #FFFFFF !important;
+}
+
+/**
+ * autocompletion.css
+ */
+.document .AutoCompleteDivListeStyle {
+	border-color: #B5B8C8;
+	background-color: #FFFFFF;
+}
+
+.document .AutoCompleteDivAct {
+	background-color: #D5E2F0;
+	color: #222222;
+}
+
+.document div.AutoCompleteDivAct span {
+	background-color: #D5E2F0;
+}
+
+.document .AutoMessage {
+	background-color: #FFFFFF;
+	color: #99BBE8;
+}
+
+/**
+ * End of Autocomplete.css
+ */
+.tablesimple {
+	background-color: #FFFFFF;
+}
+
+.document fieldset {
+	background-color: white !important;
+	border-color: #B5B8C8;
+}
+
+.document div.frame {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+}
+
+.document div.frame div.content {
+    background-color: white !important;
+    -moz-border-radius: 0px;
+    margin-top:-0.7em; 
+    padding: 5px;
+}
+.document input,.document select,.document textarea,.document file {
+	background-color: #FFFFFF;
+	background: url(../../../lib/ext/resources/images/default/form/text-bg.gif);
+	background-repeat: repeat-x;
+	border-color: #B5B8C8;
+}
+
+.document select {
+	background-color: #FFFFFF;
+	border-color: #B5B8C8;
+}
+
+.document input[type=button] {
+	background-image: url(../../../lib/ext/resources/images/default/form/trigger-tpl.gif);
+}
+
+.document input.constraint {
+	background-image: url(../../../Images/tabvig.png);
+}
+
+.document input[disabled],.document textarea[disabled],.document input.disabled {
+	background-color: #DBDBDB;
+	background-image: url(../Images/text-bg-disabled.gif);
+}
+
+.document input:hover,.document  TEXTAREA:hover {
+	background-color: #94b0e3;
+	background-image: url(../Images/text-bg-focus.png);
+}
+
+.document input:focus,.document textarea:focus,.document input.sffocus,.document textarea.sffocus {
+	background-color: #c4cfe3;
+	background-image: url(../Images/text-bg-focus.png);
+}
+
+.document input.normal {
+	background-image: url(../../../lib/ext/resources/images/default/button/btn.gif);
+}
+
+.document th {
+	background-image: url(../../../lib/ext/resources/images/default/panel/top-bottom.gif);
+	border-color: #99BBE8 !important;
+}
+
+.document .border {
+	border-color: #99BBE8;
+}
+
+.document .line {
+	border-bottom-color: #99BBE8;
+	border-top-color: #99BBE8;
+	background-color: #DFE8F6;
+}
+
+.document .tabsh span {
+	color: #15428B;
+	border-left-color: #99BBE8;
+	border-right-color: #99BBE8;
+	background-image: url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif);
+}
+
+.document .tabsh .tabsel {
+	background-image: url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif);
+}
+
+.document .tarray .add-button,.document .tarray .add-button:HOVER {
+	background-image: url(../../../lib/ui/icon/add.png);
+}
+
+.document .tarray .trash-button,.document .tarray .trash-button:HOVER {
+	background-color: transparent;
+	background-image: url(../../../lib/ui/icon/bin.png);
+}
+
+.document .tarray .select-button,.document .tarray .select-button:HOVER {
+	background-color: transparent;
+	background-image: url(../../../lib/ui/icon/application_get.png);
+}
+
+.document .tarray .unselect-button,.document .tarray .unselect-button:HOVER {
+	background-image: url(../../../lib/ui/icon/application_put.png);
+}
+
+.document .tarray .duplicate-button,.document .tarray .duplicate-button:HOVER {
+	background-image: url(../../../lib/ui/icon/application_double.png);
+}
+
+.document tr.selecta td {
+	background-color: #DFE8F6 !important;
+}
+
+#POPDOC_s {
+	display: none;
+}
+
+#POPDOC_b {
+	background-image: url("../../../lib/ext/resources/images/default/window/top-bottom.png");
+	border: 1px solid #8EA4C1 !important;
+	border-top: 0px !important;
+}
+
+#POPDOC_c {
+	border: 1px solid #99BBE8 !important;
+	left: 5px !important;
+	top: 22px !important;
+}
+
+#POPDOC_t {
+	background-color: transparent !important;
+	background-image: none !important;
+	height: 20px !important;
+}
+
+#POPDOC_ti {
+	color: #15428B !important;
+	font: bold 11px tahoma, arial, helvetica !important;
+}
+
+.btn_min {
+	background-image: url("../../../lib/ext/resources/images/default/panel/tool-sprites.gif") !important;
+	background-position: 0 -15px !important;
+	height: 15px !important;
+	width: 15px !important;
+}
+
+.btn_max {
+	background-image: url("../../../lib/ext/resources/images/default/panel/tool-sprites.gif") !important;
+	background-position: 0 -285px !important;
+	height: 15px !important;
+	width: 15px !important;
+}
+
+.btn_cls {
+	background-image: url("../../../lib/ext/resources/images/default/panel/tool-sprites.gif") !important;
+	background-position: 0 0 !important;
+	height: 15px !important;
+	width: 15px !important;
+}
+/* #fedit a {
+	color: #15428B;
+	background-color:transparent;
+}
+
+#fedit a:hover {
+	background-color:transparent;
+}
+
+#fedit input,#fedit select,#fedit textarea,#fedit file {
+	background-color: #FFFFFF;
+	background:	url(../../../lib/ext/resources/images/default/form/text-bg.gif);
+	background-repeat: repeat-x;
+	border-color: #B5B8C8;
+}
+
+#fedit input[type=button] {
+	background-image: url(../../../lib/ext/resources/images/default/form/trigger-tpl.gif);
+} */

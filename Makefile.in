@@ -1,0 +1,115 @@
+# ============================================
+# $id: Makefile.in,v 1.14 2002/01/04 16:04:35 eric Exp $
+# ============================================
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+utildir=@PUBRULE@
+pubdir = @prefix@
+srcdir = @srcdir@
+libdir = $(pubdir)/lib
+applib = @PACKAGELIB@
+appname = @APPNAME@
+export pubdir utildir applib targetdir utildir libdir
+
+TAR = tar
+GZIP_ENV = --best
+
+SUBDIR = Class Zone Action Api App Admin CONTRIB Doc Expire Images programs Share Style 
+
+TOP_MODULES = indexq.php index.php whattext wsh.php wvirtual.php guest.php wcheck wstop wstart wdbcreate winitrc resizeimg.php libutil.sh wcontrol wcontrol.xml .htaccess
+
+pages_not_xml = info.xml
+pages_not_php = fam2po.php po2js.php
+
+include $(utildir)/PubRule
+
+#FIXME: DISTFILES
+
+$(pubdir)/indexq.php: indexq.php
+	cp $< $@
+$(pubdir)/index.php: index.php
+	cp $< $@
+$(pubdir)/whattext: whattext
+	cp $< $@
+$(pubdir)/wcheck: wcheck
+	cp $< $@
+$(pubdir)/wdbcreate: wdbcreate
+	cp $< $@
+$(pubdir)/winitrc: winitrc
+	cp $< $@
+$(pubdir)/wstop: wstop
+	cp $< $@
+$(pubdir)/wstart: wstart
+	cp $< $@
+$(pubdir)/libutil.sh: libutil.sh
+	cp $< $@
+$(pubdir)/wcontrol: wcontrol
+	cp $< $@
+$(pubdir)/wcontrol.xml: wcontrol.xml
+	cp $< $@
+$(pubdir)/.htaccess: htaccess
+	cp $< $@
+
+$(pubdir)/FDLGEN:
+	mkdir -p $@
+$(pubdir)/FDLGEN/default: $(pubdir)/FDLGEN
+	ln -sf ../context/default/FDLGEN $@
+$(pubdir)/context/default/FDLGEN:
+	mkdir -p $@
+$(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
+	cp $< $@
+$(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
+	cp $< $@
+
+$(pubdir)/session:
+	mkdir -p $@
+$(pubdir)/session/.htaccess: htaccess.session $(pubdir)/session
+	cp $< $@
+
+$(pubdir)/.img-resize:
+	mkdir -p $@
+$(pubdir)/.img-resize/.htaccess: htaccess.session $(pubdir)/.img-resize
+	cp $< $@
+
+$(pubdir)/img-cache:
+	mkdir -p $@
+$(pubdir)/img-cache/.htaccess: htaccess.img-cache $(pubdir)/img-cache
+	cp $< $@
+	
+$(pubdir)/$(applib) :
+	mkdir -p $@
+
+$(pubdir)/$(applib)/FREEDOM.vault : FREEDOM.vault
+	cp $< $(pubdir)/$(applib)/$<
+
+$(pubdir)/$(applib)/Layout:
+	mkdir -p $@
+$(pubdir)/$(applib)/Layout/editoptcard.xml: $(pubdir)/$(applib)/Layout
+	ln -sf editbodycard.xml $@
+$(pubdir)/$(applib)/Layout/viewoptcard.xml: $(pubdir)/$(applib)/Layout
+	ln -sf viewbodycard.xml $@
+
+$(pubdir)/EXTERNALS:
+	mkdir -p $@
+
+$(pubdir)/EXTERNALS/fdlsearches.php: $(pubdir)/EXTERNALS
+	ln -sf ../FDL/fdlsearches.php $@
+
+$(pubdir)/FREEDOM:
+	mkdir -p $@
+$(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
+	cp $< $@
+
+publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess $(pubdir)/$(applib) $(pubdir)/img-cache $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron 
+
+clean:
+	rm -f *.*~ config.* Makefile configure \
+	      dynacase-platform-*-*.webinst \
+	      $(PACKAGE)-$(VERSION).tar.gz \
+	      dbaccess.php.sample apache.conf \
+	      App/Core/CORE_init.php \
+	      App/Users/USERS_init.php \
+	      App/Access/ACCESS_init.php \
+	      App/Authent/AUTHENT_init.php \
+	      App/Appmng/APPMNG_init.php \
+	      Api/updateclass.php

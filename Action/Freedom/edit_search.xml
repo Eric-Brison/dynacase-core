@@ -1,0 +1,134 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:edition: ] [TITLE]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+TD.tlist {
+  font-family: [CORE_FONTLIST1];
+  font-size: 100%;
+}
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+
+// IE doesn't understand CSS2 really
+var isNetscape = navigator.appName=="Netscape";
+if (! isNetscape) displaytable='inline'
+else displaytable='table-row'
+
+
+
+function refreshfld(dirid) {
+   if (dirid > 0 )
+   top.fhidden.document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=EXPANDFLD&dirid='+dirid;
+}
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+
+
+<!-- Title Table -->
+<form  target="finfo" class="fborder" name="search" method="POST" 
+       onsubmit="if (document.getElementById('isave').checked) setTimeout('refreshfld(parent.ffolder.dirid)',2000)"
+       action="[CORE_STANDURL]&app=[APPNAME]&action=SEARCH" >
+
+<table class="tablesimple" cellspacing="0"  width="100%" >
+<thead>
+<tr><td class="CORETblHeadBold" align="center" colspan="4">[TEXT:search document]</td><tr>
+</thead>
+<tbody>
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="keyword"> [TEXT:keyword]&nbsp;:</label></td>
+  <td class="tlist"  >
+      <input type="text" name="keyword"></input></td>
+</tr>
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="latest"> [TEXT:only latest revision]&nbsp;:</label></td>
+  <td class="tlist"  >
+      <input type="checkbox" name="latest" value="true" checked> </td>
+</tr>
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="fromdir"> [TEXT:from current folder]&nbsp;:</label></td>
+  <td class="tlist"  >
+      <input type="checkbox" name="fromdir" value="true" > </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="sensitive"> [TEXT:case sensitive]&nbsp;:</label></td>
+  <td class="tlist">
+      <input type="checkbox" name="sensitive" value="true" > </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="sensitive"> [TEXT:familly]&nbsp;:</label></td>
+  <td class="tlist">
+     <select name="famid" >  
+           <option VALUE="0" >[TEXT:any familly]</option> 
+           <option VALUE="2" >[TEXT:folders]</option>  
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" >[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>  </td>
+</tr>
+
+
+
+<tr class="tlist">
+     <td class="tlist" align="right">
+      <label for="isave"> [TEXT:save query in current folder]&nbsp;:</label></td>
+     <td class="tlist">
+      <input id="isave" type="checkbox" name="save" value="true"  
+             onClick="if (this.checked) document.getElementById('ititle').style.display=displaytable; else document.getElementById('ititle').style.display='none';"> </td>
+</tr>
+
+<tr class="tlist" id="ititle" style="display:none">
+  <td class="tlist"  align="right">
+      <label for="title">[TEXT:search title]&nbsp;:</label></td>
+  <td class="tlist">
+      <input  type="text" name="title"></input></td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right" >
+ <input type="hidden" name="dirid" value="[dirid]" > 
+ <input type="submit" value="[TEXT: send search]" onClick="document.search.dirid.value=parent.ffolder.dirid"> </td>
+  <td class="tlist" align="right">
+<input type="reset" value="[TEXT: cancel]" onClick="history.back()"></td>
+</tr>
+
+ 
+</tbody>
+</table>
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+
+
+<script language="JavaScript1.2">
+function SendSearchId(e,id) {
+
+     var keyCode;
+
+     if (window.event) keyCode=window.event.keyCode;
+     else keyCode = e.which;
+
+     if (keyCode==13) {
+        parent.fdoc.location.href='[CORE_STANDURL]app=FDL&action=FDL_CARD&id='+id;
+     }
+}
+
+</script>   
+
+<!-- ------------------ BAR MENU ------------------ -->
+<div id="barmenu" style="width:100%;position:fixed;left:0;top:0;cursor:default;" >
+<table  class="barmenu"  cols="4"  cellspacing="0"  >
+<thead>
+<tr>
+<td  class="MenuInactive"  
+     style="padding: 0px 0pt 0px 10px;" 
+     onmouseup="openBarMenu(event,this,'newmenu');stopPropagation(event);return false" 
+     onMouseOver="ActiveMenu(this)"
+     onMouseOut="DeactiveMenu(this)">
+[TEXT:Creation]
+</td>
+<td  class="MenuInactive"  
+     onmouseup="openBarMenu(event,this,'bookmarks');;stopPropagation(event);return false" 
+     onMouseOver="ActiveMenu(this)"
+     onMouseOut="DeactiveMenu(this)">
+[TEXT:Bookmarks]
+</td>
+<td  class="MenuInactive"  
+     onmouseup="openBarMenu(event,this,'searchmenu');document.getElementById('searchid').focus();document.getElementById('searchid').select();;stopPropagation(event);return false" 
+     onMouseOver="ActiveMenu(this)"
+     onMouseOut="DeactiveMenu(this)">
+[TEXT:Search]
+</td>
+
+<td  class="MenuInactive"  
+     onmouseup="openBarMenu(event,this,'helpmenu');stopPropagation(event);return false" 
+     onMouseOver="ActiveMenu(this)"
+     onMouseOut="DeactiveMenu(this)">
+[TEXT:Tools]
+</td>
+</tr>
+</thead>
+
+</table >
+</div>
+
+
+<!-- ------------ MENU NEW --------------------- -->
+<div  id="newmenu" class="popup">
+
+<a  id="newdoc" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDIT&classid=7&id=&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Document]</a>
+<a  id="newsystem" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDIT&classid=21&id=&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:System document]</a>
+<a  id="newfld" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDIT&classid=2&id=&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Folder]</a>
+<a  id="newact" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDIT&classid=36&id=&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:BatchProcess]</a>
+<a  id="newprof" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDIT&classid=3&id=&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Profile]</a>
+<a  id="newfam" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=CREATEFAM&classid=0&id=0&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Family]</a>
+<a  id="newwf" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDIT&classid=20&onlysubfam=20';closeAllMenu();">[TEXT:Workflow]</a>
+</div>
+
+<div  id="bookmarks" class="popup">
+     <a  id="addtobook" href="#" onClick="subwindow(10,10,'fhidden','[CORE_BASEURL]app=[APPNAME]&action=FREEDOM_ADDBOOKMARK&dirid='+parent.ffolder.dirid);closeAllMenu();">[TEXT:add to bookmarks]</a>
+     <a  id="broot" href="#" onClick="location.href='[CORE_STANDURL]app=[APPNAME]&action=FOLDERS&dirid=[ROOTFLD]';closeAllMenu();">[rootlabel]</a>
+<a class="separator"></a>
+[BLOCK MARKS]
+     <a  id="[idmark]" href="#" onClick="location.href='[CORE_STANDURL]app=[APPNAME]&action=FOLDERS&dirid=[markid]';closeAllMenu();">[labelmark]</a>
+
+[ENDBLOCK MARKS]
+<a class="separator"></a>
+     <a  id="managebook" href="#" onClick="alert('not yet implemented')">[TEXT:manage bookmarks]</a>
+</div>
+
+<!-- ------------ MENU SEARCH  --------------------- -->
+<div  id="searchmenu" class="popup">
+  <a  id="speedsearch" href="#" onClick="fsearch.location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&classid=5&zone=FREEDOM:EDITSPEEDSEARCH:S';closeAllMenu();">[TEXT:speed]</a>
+  <a  id="newsearch" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&classid=5&id=&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:simple]</a>
+  <a  id="newdsearch" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_EDIT&classid=16&id=&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:detailled]</a>
+  <a  id="newsearchfulltext" href="[CORE_STANDURL]app=FGSEARCH&action=FULLSEARCH" target="_blank" onclick="closeAllMenu();">[TEXT:fulltext]</a>
+  <a class="menuItem"> [TEXT:Ref]
+  <input   onmouseup="return false" onmousedown="document.menuclosed=false;this.focus();" onKeyPress="SendSearchId(event,this.value)" type="text" size=6 id="searchid"></a>
+</div>
+
+
+
+<!-- ------------ MENU HELP --------------------- -->
+<div  id="helpmenu" class="popup">
+  <a id="help" target="fhidden" href="[CORE_STANDURL]app=CORE&action=HELPVIEW&filename=dynacase-platform.pdf" onClick="closeAllMenu()"><img  border="0" height="10" src="[IMG:help.gif]">[TEXT:Reference Manuel]</a>
+     <a  id="import" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDITIMPORT&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Import documents]</a>
+     <a  id="importtar" href="#" onClick="parent.fdoc.location.href='[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_EDITIMPORTTAR&classid=7&dirid='+parent.ffolder.dirid;closeAllMenu();">[TEXT:Import Tar]</a>
+     <a  id="planexec" href="#" onClick="subwindow([FDL_HD2SIZE],[FDL_VD2SIZE],'fplanexec','[CORE_STANDURL]app=[APPNAME]&action=FREEDOM_PLANEXEC');closeAllMenu();">[TEXT:exec plan]</a>
+</div>
+

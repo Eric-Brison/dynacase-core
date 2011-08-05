@@ -1,0 +1,21 @@
+[IF caption]<fieldset ><legend>[caption]</legend>[ENDIF caption]
+    <table width="100%" class="tarray[IF issort] sortable[ENDIF issort][IFNOT caption] border[ENDIF caption]">
+        <thead>
+            <tr>
+                [BLOCK TATTR]<th [astyle] width="[cwidth]">[alabel]</th>[ENDBLOCK TATTR]
+                [IFNOT ISIE][IF tableheight]<th style="width:20px;visibility:visible">
+                    <a title="[TEXT:View all rows]" onclick="unsrolltable(document.getElementById('tbody[aid]'),this.parentNode)">
+                        +
+                    </a>
+                </th>[ENDIF tableheight][ENDIF ISIE]
+            </tr>
+        </thead>
+        <tbody id="tbody[aid]" [IFNOT ISIE][IF tableheight]class="overflow" style="height:[tableheight];"[ENDIF tableheight][ENDIF ISIE] >
+            [BLOCK EATTR]<tr>
+                [BLOCK [bevalue]]<td style="color:[color];background-color:[bgcolor];text-align:[align];[tdstyle]">
+                    [evalue]
+                </td>[ENDBLOCK [bevalue]]
+            </tr>[ENDBLOCK EATTR]
+        </tbody>
+    </table>
+[IF caption]</fieldset>[ENDIF caption]

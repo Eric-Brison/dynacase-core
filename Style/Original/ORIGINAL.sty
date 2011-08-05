@@ -1,0 +1,58 @@
+<?php
+// ---------------------------------------------------------------
+// $Id: ORIGINAL.sty,v 1.1 2006/11/08 17:52:16 eric Exp $
+// $Source: /home/cvsroot/anakeen/freedom/core/Style/Original/ORIGINAL.sty,v $
+// ---------------------------------------------------------------
+//  O   Anakeen - 2001
+// O*O  Anakeen development team
+//  O   dev@anakeen.com
+// ---------------------------------------------------------------
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or (at
+//  your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+// or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+// for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+// ---------------------------------------------------------------
+
+global $sty_desc, $sty_const;
+
+$sty_desc= array (
+"name" 		=> "ORIGINAL",              //Name
+"description"	=> N_("old style")   //long description
+);
+
+
+$sty_inherit="DEFAULT";
+$sty_const= array (  
+		   "CORE_FGIMGMENU"			=>"url('Images/bg.png')",
+		   "CORE_BGIMAGE"			=>"url('../Images/bg.gif')",
+		   "CORE_TEXTFGCOLOR"			=>"#483d8b",
+		   "CORE_FGCOLOR"			=>"#483d8b",
+		   "CORE_ACOLOR"			=>"#2495fc",
+		   "COLOR_BLACK"                        =>"#483d8b"
+		  );
+$sty_colors = array("A"=>'#a4a4ef', // ligh blue
+		    "B"=>'#126ab5', //blue
+		    "C"=>"#94b9f2"); // light blue2
+
+
+// local variable for compose style css
+
+$sty_local = array(
+		   "menu-background-disabled-color"=>"COLOR_BLACK",
+		   "menu-background-hover-color"=>"COLOR_C5",
+		   "menu-background-normal-color"=>"COLOR_BLACK",
+		   "menu-text-normal-color"=>"COLOR_WHITE",
+		   "menu-text-disabled-color"=>"COLOR_C3",
+		   "menu-text-hover-color"=>"COLOR_BLACK"
+
+		   );
+?>

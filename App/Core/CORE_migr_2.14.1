@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ "$freedom_context" == "" ]; then
+    # load environement variable for freedom
+    . /etc/freedom.conf
+    wchoose -b
+fi
+
+echo "ALTER TABLE usertoken ADD COLUMN context text;" | PGSERVICE="$pgservice_core" psql
+RET=$?
+if [ $RET -ne 0 ]; then
+    echo "Error altering table 'usertoken'"
+    exit $RET
+fi

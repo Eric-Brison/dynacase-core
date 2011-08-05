@@ -1,0 +1,17 @@
+<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+<ShortName>SearchTitle</ShortName>
+<Description>Recherche SearchTitle</Description>
+<InputEncoding>UTF-8</InputEncoding>
+<Image width="16" height="16">data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8R/f//ju78/9Xp+Pvj4vf63OL8/9fi/P/X4v3/1+L9/9fu/v/U/f//jP///xYAAAAAruniAKPm0wCr59AA/v//lW3i/+IB0f//rOz2/6Df6P8E2ff/AOb//wDr//8A8P//AfX//2T8/9n+//+fHbGSAAqzhwAEvoEABcB6APD8/9UAzP//ANH//zze/P/z+/v/IMLZ/wDm//8A6///APD//wD1//8A+v//8f//0Fq+pQAywZEABbuDAAHAgADs+//QAMz//wDR//8A1f7/0fb6/3rR3f8I2O//Aer+/wDv/v8A9f//APr//+7//84AAAAAAAAAAEvLngACwH8A7Pv/0ADM//8F0v//hej6/8nv9P/h9fb/ld3k/5Pj6f8w1N7/AfP9/wD6///u///OAAAAAAAAAABy2LkACryBAOz7/9AAzP//ANH//ybc//8z4Pz/7Pz8/3fU3v802OX/Ee78/wD0/v8A+v//7v//zv///1D///9P////GlnRrQDs+//QAMz//wDR//8A1v//ANv//4fw/v+48/f/G7K5/wauj/8ApnT/AKl0/2ekeueIrIjmjq+O5dnj2dv///90+P3/zQbN//kA0f//ANb//wDb//8O4v//2vv9/1q+r/8be0//Eng+/xFyLf8cYh//DmMO/w1jDf8OZQ7/8fTx1////13j+f/QauT/0UDg/+FA5P/hQOj/4Wfw/+fm9/P/m9O//3e4m/+dw6r/RIRN/xBiEP8NYw3/DWMN/+bs5toAAAAA////IP///3D///+B////g////4X////DX7Kj60OskP93vqT/a7OQ/y6LU/8NbyX/DWUR/w1jDf/m7ObaAAAAAAAAAAC+KmIAoTqaAAAAAAAAAAAA////fFu4s+sNo5D/DZl9/w2Rav8Nh1b/DX1D/w10L/8Nahz/5uzm2gAAAADfiJIAziBlAKAelAC/ocwAAAAAAP///2yBy87hDbGu/w2om/8Nnof/DZZ0/w2MYf8Ng07/EXs9//P29NkAAAAA4qKzAL4lXwDk8emY1ebX4dHj0eDg7ODh+Pz82rrh5N6b1NXmmtHO5pnNxuWXyb7lm8e74+Lt6dz///9jAAAAAAAAAAD///8Pw+ba6QCCP/8AcRr/CmoK/+Pu49f///8t////Qf///0L///9E////Rv///0T///8NAAAAAAAAAAAAAAAA////EL3q4+gAmnD/AIhM/wR5Kv/j7uPYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wHl+fmw0vHu5s3s5uXf8ern5/PsXQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAMA/AACAHwAAgB8AAIAfAACAHwAAgB8AAMABAAD+AQAA/wEAAP8BAAD/AQAA//8AAPH/AADx/wAA//8AAA==</Image>
+<Url type="text/html" method="GET" template="http://localhost/freedom/">
+  <Param name="keyword" value="{searchTerms}"/>
+  <Param name="latest" value="true"/>
+  <Param name="app" value="FGSEARCH"/>
+  <Param name="action" value="FULLSEARCH"/>
+  <Param name="sole" value="Y"/>
+  <Param name="fromdir" value="false"/>
+  <Param name="sensitive" value="false"/>
+  <Param name="viewone" value=""/>
+</Url>
+<SearchForm>http://localhost/freedom/?sole=Y&amp;app=FGSEARCH&amp;action=FULLSEARCH</SearchForm>
+</SearchPlugin>

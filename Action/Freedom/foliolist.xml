@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT: folder containt]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+
+.tableportfolio td {
+	white-space: nowrap;
+	overflow: hidden;
+	overflow: elipsis;
+}
+
+body.freedom {
+	height: auto;
+}
+   </style>
+
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+    document.dirid='[dirid]';
+  [IF refreshtab]
+    if (parent.ffoliotab) parent.ffoliotab.location.reload();
+  [ENDIF refreshtab]
+
+
+var ajax_width_callback = null;
+var saved_list_width = [FRAMELISTWIDTH];
+
+function frameListResized() {
+	if(ajax_width_callback) {
+		window.clearTimeout(ajax_width_callback);
+	}
+	ajax_width_callback = window.setTimeout(function() {
+		ajax_width_callback = null;
+		var current_list_width = getFrameWidth();
+		if(current_list_width && current_list_width != saved_list_width) {
+			saved_list_width = current_list_width;
+			xhr_send('framelistwidth='+saved_list_width);
+		}
+	}, 1000);
+}
+
+function xhr_send(datas) {
+	var xhr = null;
+    if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+	}
+    else if (window.ActiveXObject) {
+        var names = [
+            "Msxml2.XMLHTTP.6.0",
+            "Msxml2.XMLHTTP.3.0",
+            "Msxml2.XMLHTTP",
+            "Microsoft.XMLHTTP"
+        ];
+        for(var i in names) {
+            try{ xhr = new ActiveXObject(names[i]); break; }
+            catch(e){}
+        }
+    }
+	if(xhr) {
+		xhr.open("POST", "?app=FREEDOM&action=FOLIOPARAMS&id=[docid]&"+datas, true);
+		xhr.send();
+	}
+    return null; // non supporté
+}
+  
+-->
+</script>   
+ </head>
+
+<body class="freedom" 
+      onLoad="initmicon()" 
+      onclick="closeAllMenu();"      
+      onContextMenu="openMenu(event,'popupfolio',1);return false"
+	  onresize="frameListResized()"
+      style="cursor:crosshair" >
+
+
+
+<img id="micon" width="20" height="20"   style="position:absolute;visibility:hidden;z-index:10" border="0" src="FREEDOM/Images/doc.gif">
+<p align="center">[dirtitle]<br/><i>[nbdoc] [docs]</i><br />
+[IF LISTICON]<a onclick="window.location.href = window.location.href+'&foliolisttype=list'">[TEXT:List view]</a>[ENDIF LISTICON]
+[IFNOT LISTICON]<a onclick="window.location.href = window.location.href+'&foliolisttype=icon'">[TEXT:Icons view]</a>[ENDIF LISTICON]
+</p>
+
+[ZONE FREEDOM:POPUPFOLIO]
+[ZONE FREEDOM:POPUP?folio=Y]
+
+[IF LISTICON]
+<!-- TABLEBODY -->
+[BLOCK TABLEBODY]
+<div class="icon" id="d[divid]" >
+<IMG class="unselect" id="i[divid]" title="[title]" needresize="1"
+     onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid]);" 
+     onContextMenu="closeAllMenu();openMenu(event,'popuplist',[divid]);return false" 
+     onDblClick="if ([isfld]) openFld([id]); else sendFirstFile([id]);return false"
+     align="absbottom"  src="[iconsrc]"><br>
+  [abrvtitle]
+</div>
+[ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+[ENDIF LISTICON]
+
+[IFNOT LISTICON]
+<!-- TABLEBODY -->
+<table class="tablesimple tableportfolio" id="terrible" cellspacing="0" width="100%" >
+[BLOCK TABLEBODY]<tr  id="d[divid]"
+     class="unselect"
+     onMouseDown="select(this,[id],[divid]);openMenuOrProperties(event,'popuplist',[divid]);"
+     onContextMenu="closeAllMenu();openMenu(event,'popuplist',[divid]);return false"
+     onDblClick="if ([isfld]) openFld([id]); else sendFirstFile([id]);return false"
+     onmouseover="oselect([id])"  onmouseout="ounselect()"
+     title="[highlight]">
+<td class="tlist" width="30" >
+<IMG class="iconimg20" id="i[divid]" needresize="1"
+     align="absmiddle"  src="[iconsrc]">
+</td>
+<td class="tlist" >[title]</td></tr>[ENDBLOCK TABLEBODY]</table>
+
+<!-- /TABLEBODY -->
+[ENDIF LISTICON]
+<!--  FOOT HTML -->
+</body>
+</html>

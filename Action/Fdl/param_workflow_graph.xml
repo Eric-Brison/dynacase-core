@@ -1,0 +1,65 @@
+[ZONE CORE:HTMLHEAD?title=[TEXT:Workflow - parameters]]
+
+<form 
+      name="fwkf"style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FDL&action=VIEW_WORKFLOW_GRAPH"
+   onsubmit="setifit()"
+   target="wkf[id]"
+       >
+<input type="hidden" value="[id]" name="id">
+
+<select title="[TEXT:dotType]" name="type">
+  <option value="simple">[TEXT:Just states]</option>
+  <option value="activity">[TEXT:With Activity]</option>
+  <option value="complet">[TEXT:With conditions]</option>
+  </select>
+<select title="[TEXT:dotFormat]" name="format">
+  <option value="svg">[TEXT:SVG]</option>
+  <option selected value="png">[TEXT:Image]</option>
+  <option value="dot">[TEXT:Dot]</option>
+  </select>
+<select title="[TEXT:dotOrient]" name="orient">
+  <option selected value="LR">[TEXT:Left Right]</option>
+  <option value="TB">[TEXT:Top Bottom]</option>
+  </select>
+<select title="[TEXT:dotSize]" name="size">
+  <option  value="auto">[TEXT:dotNoSize]</option>
+  <option value="5">5cmx5cm</option>
+  <option value="10">10cmx10cm</option>
+  <option value="20">20cmx20cm</option>
+  <option value="A4">21cmx29.7cm</option>
+  <option value="30,30">30cmx30cm</option>
+  <option value="40">40cmx40cm</option>
+  <option selected id="fit" value="40">[TEXT:Fit to screen]</option>
+  </select>
+<select title="[TEXT:dotRatio]" name="ratio">
+  <option value="fill">fill</option>
+  <option selected value="compress">compress</option>
+  <option value="expand">expand</option>
+  <option selected value="auto">auto</option>
+  </select>
+<input type="submit" value="[TEXT:Draw graph]">
+</form>
+
+<script>
+var normDPI = 96;
+
+
+function setifit() {
+  var optfit=document.getElementById('fit');
+  if (optfit) {
+    var margebody=8;
+    var fw=(getFrameWidth(window.parent.wkf[id]))-(margebody*2);
+    var fh=(getFrameHeight(window.parent.wkf[id]))-(margebody*2);
+    var wcm=(fw/normDPI)*2.54;
+    var hcm=(fh/normDPI)*2.54;
+    optfit.value=wcm+','+hcm;
+
+  }
+}
+
+addEvent(window,'load',function z() {setifit();document.fwkf.submit();});
+
+</script>
+</html>

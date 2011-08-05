@@ -1,0 +1,87 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:Import Result] </title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+TR.updated TD{
+   background-color:#efef53;
+}
+TR.ignored TD{
+   background-color:#ef5653;
+}
+TR.added TD{
+   background-color:#adf4b2;
+}
+LI {
+	white-space:nowrap;
+	}
+LI.no {
+        color:[COLOR_A5]
+        }
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+    if (window.opener) {
+       var b=window.opener.document.getElementById('bgimport');
+       if (b) {
+	 b.disabled=true;
+	 if ([nbdoc]+[nbprof]>0) b.disabled=false;
+       }
+       b=window.opener.document.getElementById('fgimport');
+       if (b) {
+	 b.disabled=true;
+	 if (([nbdoc]<[FDL_MAX_FGEXPORTDOC]) && ([nbdoc]+[nbprof]>0)) b.disabled=false;
+       }
+   }
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+
+
+      
+
+   <H1>[TEXT:Result Import Documents]</H1>
+<H3>[nbdoc] [TEXT:documents to examine].</H3>
+
+<table class="rows" width="100%" >
+
+<thead><tr><th>[TEXT:line]</th>
+<th>[TEXT:doctitle]</th>
+<th>[TEXT:foldername]</th>
+<th>[TEXT:id]</th>
+<th>[TEXT:familyname]</th>
+<th>[TEXT:action]</th>
+<th>[TEXT:message]</th>
+<th>[TEXT:specmessage]</th>
+<th>[TEXT:changes]</th>
+<th>[TEXT:error]</th></tr></thead>
+<tbody  >
+[BLOCK ADDEDDOC]
+<tr class="[action]"><td>[order]</td><td>[title]</td><td>[foldername]</td><td><a href="#" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'fimport','[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&props=N&id=[id]');">[id]</a></td><td><a href="#" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'fimport','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[familyid]');">[familyname]</a></td><td>[taction]</td><td>[msg]</td><td>[specmsg]</td><td>[svalues]</td><td>[err]</td></tr>
+[ENDBLOCK ADDEDDOC]
+</tbody></table>
+</body>
+</html>

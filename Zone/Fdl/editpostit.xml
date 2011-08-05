@@ -1,0 +1,33 @@
+
+[V_PIT_IDADOC]
+[V_PIT_TITLE]
+
+<select onchange="colorsel2(this)" id="pit_ncolor" name="_pit_ncolor">
+<option value="#f7f58c" onmouseover="colorsel(this)" style="background-color:#f7f58c">Jaune</option>
+<option value="#bbf78c" onmouseover="colorsel(this)" style="background-color:#bbf78c">Vert</option>
+<option value="#8ce5f7" onmouseover="colorsel(this)" style="background-color:#8ce5f7">Bleu</option>
+<option value="#f7d78c" onmouseover="colorsel(this)" style="background-color:#f7d78c">Orange</option>
+<option value="#b98cf7" onmouseover="colorsel(this)" style="background-color:#b98cf7">Violet</option>
+<option value="#eaa6a4" onmouseover="colorsel(this)" style="background-color:#eaa6a4">Rouge</option>
+</select>
+
+<textarea id="pit_ncom" style="width:100%;font-size: 120%;font-weight: bold;background-color:#f7f58c" name="_pit_ncom"></textarea>
+
+<script>
+function colorsel(o) {
+  var c=o.value;
+  document.getElementById('pit_ncolor').style.backgroundColor=c;
+  document.getElementById('pit_ncom').style.backgroundColor=c;
+}
+function colorsel2(o) {
+  var c=o.options[o.selectedIndex].value;
+ 
+  document.getElementById('pit_ncolor').style.backgroundColor=c;
+  document.getElementById('pit_ncom').style.backgroundColor=c;
+}
+function focusncom() {
+  document.getElementById('pit_ncom').focus();
+}
+
+addEvent(window,"load",focusncom);
+</script>

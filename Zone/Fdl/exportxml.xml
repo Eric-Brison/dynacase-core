@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<[famname] [IFNOT flat]xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="[famname].xsd"  [ENDIF flat][IF id]id="[id]"[ENDIF id] [IF name]name="[name]"[ENDIF name] title="[title]" revision="[revision]" modification-date="[mdate]" version="[version]" state="[state]"> 
+[BLOCK top][level]
+[ENDBLOCK top]
+</[famname]>

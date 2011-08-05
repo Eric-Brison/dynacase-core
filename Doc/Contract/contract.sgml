@@ -1,0 +1,59 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.0//EN"
+[
+<!ENTITY index SYSTEM "index.sgml">
+]
+>
+
+<article id="contract" lang="fr" revision="$Id: contract.sgml,v 1.1 2002/08/19 12:15:34 eric Exp $">
+  <title>
+  <inlinemediaobject>
+    <imageobject>
+<imagedata scale="50"  fileref="./images/contract.jpg">
+</imageobject>
+  </inlinemediaobject>Gestion des contrats</title>
+ <articleinfo>
+    <revhistory>
+      <revision>
+        <revnumber>0.1</revnumber>
+        <date>19 Août 2002</date>
+        <authorinitials>EB</authorinitials>
+	<revremark>Version initiale</revremark>
+      </revision>      
+    </revhistory>
+    <mediaobject><imageobject>
+	<imagedata scale="50"  fileref="./images/contract.jpg">
+      </imageobject>
+      <textobject>
+	<phrase>logo contract</phrase>
+      </textobject>
+    </mediaobject>
+  </articleinfo>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+<!--			FUNCTIONS				   -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   -->
+  <sect1 id="contract.ini">
+    <title>Utilisation</title>
+
+    <para>Non disponible encore...</para>
+    
+
+</sect1>
+
+</article>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-namecase-general:t
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:nil
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

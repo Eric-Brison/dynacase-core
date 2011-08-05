@@ -1,0 +1,30 @@
+/* ---------------------------------------------------------------------------
+ * $Id: ORIGINAL.css,v 1.2 2007/08/08 15:37:36 eric Exp $
+ * ---------------------------------------------------------------------------
+ 
+ * ---------------------------------------------------------------------------
+ */
+
+
+
+body, .core {
+  background-color: transparent;
+  background-image: [CORE_BGIMAGE]!important;
+}
+
+TABLE.headbarmenu TD {  
+  background-image: none;
+}
+
+
+.popup {
+  background-image: none!important;  
+}
+
+input[type="button"],BUTTON,input[type="reset"],input[type="select"],input[type="submit"] {  
+  -moz-border-radius:25px;
+}
+
+input[type="text"],TEXTAREA { 
+  -moz-border-radius:7px;
+}

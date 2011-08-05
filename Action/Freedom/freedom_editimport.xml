@@ -1,0 +1,109 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:edition: ] [TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+function editimport() {
+  var eurl;
+  var famid;
+  if (document.getElementById('classid')) {
+    famid=document.getElementById('classid').options[document.getElementById('classid').selectedIndex].value;
+    eurl='[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDITIMPORT&famid='+famid;
+    subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'editimport',eurl);
+  }
+}
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+
+
+<!-- Title Table -->
+<form  class="fborder" 
+       name="modifydoc" 
+       method="POST" 
+       ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_IMPORT&id=[id]" >
+
+      
+
+   <H1>[TEXT:Import Documents]</H1>
+
+<input type="hidden" name="dirid" value="[dirid]">
+<input type="hidden" name="analyze" value="N">
+[IF descr]<fieldset>
+<legend>[TEXT:Description of the import format]</legend> 
+   [TEXT:for]
+   <select name="classid" id="classid" onchange="document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_EDITIMPORT&classid='+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value">  
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>
+<input type="button" value="[TEXT:specific import]" onclick="editimport()" >
+	<input type="button" title="[TEXT:View Xml Schema]" value="[TEXT:Xml schema]" onclick='subwindow(200,400,"_xsd","[CORE_STANDURL]&app=FDL&action=FDL_FAMILYSCHEMA&id="+self.document.modifydoc.classid.options[self.document.modifydoc.classid.selectedIndex].value)' >
+<BR>
+
+    <textarea cols=80>[format]
+</textarea>
+     <table border=1 cols=[cols]>
+     <tr>
+     [BLOCK TFORMAT]
+     <td style="border-left:solid 1px">[labeltext]</td>
+     [ENDBLOCK TFORMAT]
+     </tr>
+     </table>
+<hr width="50%">[ENDIF descr]
+ <label for="file">[TEXT:import file:] </label>
+ <input type="file" name="file" title="[TEXT:csv, ods, xml, zip (xml) supported import files]" onchange="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" onblur="document.getElementById('bgimport').disabled=true;document.getElementById('fgimport').disabled=true;" > 
+ <input type="submit" value="[TEXT:Analyze]" 
+        onclick="document.modifydoc.target='anaimport';document.modifydoc.analyze.value='Y'"> 
+[IF policy]<br><label for="policy"> [TEXT:policy if same title]&nbsp;:</label>
+  <SELECT NAME="policy">
+            <OPTION VALUE="update">[TEXT:Update document if has permission else ignored]</OPTION>
+            <OPTION VALUE="add">[TEXT:Add new document (similar document)]</OPTION>
+            <OPTION VALUE="keep">[TEXT:Keep original document]</OPTION>
+  </SELECT>[ENDIF policy]
+</fieldset>
+<fieldset>
+<legend>[TEXT:Direct Import]</legend> 
+ <input id="fgimport" type="submit" value="[TEXT:Import document description]" disabled
+        onclick="document.modifydoc.target='_self';document.modifydoc.analyze.value='N'" > 
+
+</fieldset>
+<fieldset>
+<legend>[TEXT:Background Import]</legend> 
+<label for="to">[TEXT:report to (mail address)]</label>
+<input type="text" size=30 name="to" value=[mailaddr]></input><br>
+<input id="bgimport" type="submit" disabled
+       onclick="document.modifydoc.target='_self';document.modifydoc.action='[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_BGIMPORT'" 
+       value="[TEXT:proceed background import]">
+</fieldset>
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

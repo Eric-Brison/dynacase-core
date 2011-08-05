@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+
+<head> 
+[CSS:REF]
+</head> 
+
+<body id="body" class="fr"> 
+  
+  <div class="header"></div>
+  
+  <div class="page">
+    
+    <div class="left-block"><!-- block dynacase -->
+      
+      <div id="apropos">
+	<div class="intro">&rarr; about</div>
+	<div class="en">
+	  <p>All rights reserved under the granted license by <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
+          <p>The enterprise edition is guaranteed and allows access to corrective patch on private repository.</p>
+          <p>The enterprise edition allows the customer to change the license in agreement with <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
+          <p>The community edition is not guaranteed and necessarily under <a  target="_blank" href="http://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License V3 - AGPL V3</a>.</p>
+          <p><a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase</a> and <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a> and associated logos are trademarks of <a class="anakeen" href="http://www.anakeen.com" target="_blank">Anakeen</a>.</p>
+          <p><a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase</a> is written in <a href="http://www.php.net" target="_blank">PHP</a>.</p>
+            [IF HAVE_EXTERNALS]<a class="anakeen" href="http://www.dynacase.org" target="_blank">Dynacase Platform</a> uses the following open source components&nbsp;:
+          <ul>
+            [BLOCK EXTERNALS]<li><a href="[site]" target="_blank">[name]</a> <a href="[license]" target="_blank">(license)</a></li>
+            [ENDBLOCK EXTERNALS]
+	  </ul>[ENDIF HAVE_EXTERNALS]
+	</div>
+      </div> <!-- block apropos -->
+
+    </div> <!-- enf of block left-block -->
+    
+    <div class="right-block"><!-- block dynacase -->
+      <div class="intro">&rarr; welcome</div>
+      
+      <div id="hello"><!-- block hello -->
+	
+	<div id="header">
+	  <div class="title"> Dynacase Platform</div>
+	  <div class="content">The open source case management platform.</div> 
+	  <div class="version">installed version <span>[version]</span></div>
+	</div>
+	
+	<div id="welcome">Hello [userRealName],<br/>congratulations, Dynacase Platform is ready to run.</div>
+	
+	<div class="description"></div>
+	
+	<div class="links">
+	  <div>
+	    <a href="http://www.dynacase.org/freedom_3/install/wiff" target="_blank" > 
+	      <img src="[IMG:dc-control-130x60.png]" />
+	      <div class="label">Manage repository, context and archive with Control.</div>
+	    </a>
+	  </div>
+	  <div>
+	    <a href="http://www.dynacase.org" target="_blank" > 
+	      <img src="[IMG:dc-platform-130x60.png]" />
+	      <div class="label">Build your case management applications with Platform</div>
+	    </a>
+	  </div>
+	</div>
+	<div class="clear"> </div>
+	
+      </div><!-- block hello -->
+      
+    </div><!-- block right -->
+    
+    <div class="clear"></div>
+    
+  </div><!-- page  -->
+  
+  
+  
+  <div id="footer">
+    <div class="copy">&copy; 2010-[thisyear] <a href="http://www.anakeen.com" target="_blank">Anakeen</a>.</div>
+  </div>
+  
+  
+</body>
+    
+</html>

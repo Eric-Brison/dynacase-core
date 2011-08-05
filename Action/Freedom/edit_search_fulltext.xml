@@ -1,0 +1,139 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:edition: ] [TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+TD.tlist {
+  font-family: [CORE_FONTLIST1];
+  font-size: 100%;
+}
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+
+// IE doesn't understand CSS2 really
+var isNetscape = navigator.appName=="Netscape";
+if (! isNetscape) displaytable='inline'
+else displaytable='table-row'
+
+
+
+function refreshfld(dirid) {
+   if (dirid > 0 )
+   top.fhidden.document.location.href='[CORE_STANDURL]&app=[APPNAME]&action=EXPANDFLD&dirid='+dirid;
+}
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+
+
+<!-- Title Table -->
+<form  target="finfo" class="flist" name="search_fulltext" method="POST" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=SEARCH_FULLTEXT" >
+
+<table class="tablesimple" cellspacing="0"  width="100%" >
+<thead>
+<tr><td class="CORETblHeadBold" align="center" colspan="4">[TEXT:search fulltext]</td><tr>
+</thead>
+<tbody>
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="keyword"> [TEXT: search words]&nbsp;:</label></td>
+  <td class="tlist"  >
+      <input type="text" name="keyword"></input></td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="match"> [TEXT: match]&nbsp;:</label></td>
+  <td class="tlist">
+     <select name="matchid" >  
+         [BLOCK SELECTMATCH]
+           <option VALUE="[idmatch]" >[matchdescr]</option>   
+         [ENDBLOCK SELECTMATCH]
+    </select>  </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="searchfor"> [TEXT: search for]&nbsp;:</label></td>
+  <td class="tlist">
+     <select name="searchforid" >  
+         [BLOCK SELECTSEARCHFOR]
+           <option VALUE="[idsearchfor]" >[searchfordescr]</option>   
+         [ENDBLOCK SELECTSEARCHFOR]
+    </select>  </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="latest"> [TEXT: only latest revision]&nbsp;:</label></td>
+  <td class="tlist"  >
+      <input type="checkbox" name="latest" value="true" checked> </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="fromdir"> [TEXT: from current folder]&nbsp;:</label></td>
+  <td class="tlist"  >
+      <input type="checkbox" name="fromdir" value="true" > </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="sensitive"> [TEXT: familly]&nbsp;:</label></td>
+  <td class="tlist">
+     <select name="famid" >  
+           <option VALUE="" >[TEXT: any familly]</option> 
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" >[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>  </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right">
+      <label for="viewfile"> [TEXT: view files]&nbsp;:</label></td>
+  <td class="tlist"  >
+      <input type="checkbox" name="viewfile" value="false" > </td>
+</tr>
+
+<tr class="tlist">
+  <td class="tlist" align="right" >
+ <input type="hidden" name="dirid" value="[dirid]" > 
+ <input type="submit" value="[TEXT: send search]" onClick="document.search_fulltext.dirid.value=parent.ffolder.dirid"> </td>
+  <td class="tlist" align="right">
+<input type="reset" value="[TEXT: cancel]" onClick="history.back()"></td>
+</tr>
+
+ 
+</tbody>
+</table>
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

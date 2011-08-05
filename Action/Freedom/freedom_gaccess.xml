@@ -1,0 +1,113 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Permissions]:[stitle]]
+<script>
+function enablefrom(th) {
+  var checkboxes = th.getElementsByTagName("input");
+ 
+  for (var i=0; i < checkboxes.length; i++)  {
+    checkboxes[i].disabled=false;
+    checkboxes[i].style.display='inline';
+  }
+
+  // undisplay button images
+  var imgs = th.getElementsByTagName("img");
+
+  for (var i=2; i < imgs.length; i++)  {
+    imgs[i].style.display='none';
+  }
+}
+[IFNOT ISIE]
+function resizetbody() {
+  var eiurl=document.getElementById("idtbody");
+  var xy=getAnchorPosition("idtbody");
+  var hiurl=getFrameHeight();
+  var nh=hiurl - xy.y - 50; // offset for scrollbar
+  
+  eiurl.style.height=nh;
+}
+addEvent(window,"load",resizetbody);
+addEvent(window,"resize",resizetbody);[ENDIF ISIE]
+</script>
+<style>
+TABLE.hborder td {
+  border-style: none none solid none;
+  border-color:[COLOR_B0];
+  border-width:1px;
+}
+TABLE.hborder td.left {
+  background-color:[COLOR_A9];
+}
+TABLE.hborder TBODY td.even {
+  background-color:[COLOR_A8];
+}
+TABLE.hborder TBODY td.odd {
+  background-color:[COLOR_A9];
+}
+TABLE.hborder THEAD td.even {
+  background-color:[COLOR_B8];
+  width:[cellwidth];
+}
+TABLE.hborder THEAD td.odd {
+  background-color:[COLOR_B9];
+  width:[cellwidth];
+}
+TABLE.hborder td.headaccess {
+  background-color:[COLOR_B7];
+  font-weight: bold;
+}
+</style>
+<form  name="edit" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_MODACCESS">
+<input type="hidden" name="docid" value="[docid]">
+<input type="hidden" name="allgreen" value="[allgreen]">
+
+<table class="hborder" style="margin-bottom:2px" cellspacing="0" cellpadding="0" 
+       width="100%" >
+<thead>
+
+<TR >
+<TD colspan="2" class="headaccess"><a title="[TEXT:View profil definition]" href="[CORE_STANDURL]app=FDL&action=FDL_CARD&id=[docid]" target="_blank">[title]</a></TD>
+ [BLOCK DACLS]<TD class="[oddoreven]" align="center" valign="top" title="[acldesc]" style="cursor:help">[aclname]</TD>
+ [ENDBLOCK DACLS]
+[IFNOT ISIE]<td style="width:20px;visibility:visible"></td>[ENDIF ISIE]
+</TR>
+</thead>
+<tbody id="idtbody"  [IFNOT ISIE]class="overflow" style="height:100%;"[ENDIF ISIE]>
+   [BLOCK GROUPS]
+<TR >
+    <TD   align="left" class="left" >
+    <span style="margin:0px 0px 0px [level]px">
+      <img style="display:[displaygroup];cursor:pointer" src="[IMG:bblue.png]" width="10" height="10" onclick="subwindow(300,600,'gaccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&gid=[gid]')" >
+      <img style="display:[displayuser]" src="[IMG:bgreen.png]" width="10" height="10"  >
+      <img style="display:[displaydyn]" src="[IF isdyngroup][IMG:borange.png][ENDIF isdyngroup][IFNOT isdyngroup][IMG:byellow.png][ENDIF isdyngroup]" width="10" height="10"  >
+      <A  href="#" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'uaccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]&userid=[gid]')"
+           >[gname]</A></span>
+    <input id="acls_[gid]_nc" type="hidden" disabled name="acls[[gid]][500]" value="nc"></TD>
+
+   <TD align="right"  class="left"  >
+     <button style="display:[dmodify]" onclick="enablefrom(this.parentNode.parentNode);"  type="button" >&there4;</button></TD>
+    [BLOCK [ACLS]]
+    <TD  align="center" class="[oddoreven]">
+      <img  src="[IMG:[bimg]]" width="10px" height="10px"  >
+      <input id="acls_[gid]_[iacl]" align="top" style="display:none" disabled type="checkbox" name="acls[[gid]][[iacl]]" value="[aclid]" [selected] >
+  </TD>
+    [ENDBLOCK [ACLS]]
+    
+  
+</TR>
+  [ENDBLOCK GROUPS]
+</tbody>
+</TABLE>
+[BLOCK MODIFY]
+<input class="CORETblHead" type="submit" 
+         name="Modify" value="[TEXT:Validate]"  >
+
+<input class="CORETblHead" type="button" onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=[allgreen]'" title="[TEXT:Reload page]" value="[TEXT:Reset]" >
+[ENDBLOCK MODIFY]
+[IFNOT isgreen]
+<input class="CORETblHead" type="button" 
+         name="Modify"  onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=Y'" title="[TEXT:View only access set. Green or Red flag]" value="[TEXT:All set only]"  >[ENDIF isgreen]
+[IF isgreen]
+<input class="CORETblHead" type="button" 
+         name="Modify" onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=N'" value="[TEXT:Normal view]"  >[ENDIF isgreen]
+</form>
+
+[ZONE CORE:HTMLFOOT]

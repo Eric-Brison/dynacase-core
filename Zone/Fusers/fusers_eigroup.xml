@@ -1,0 +1,64 @@
+
+
+<script type="text/javascript">
+[IF firsttab]
+addEvent(window,"load",function al(event) {viewTab(event,'[firsttab]');});
+[ENDIF firsttab][IFNOT firsttab]
+addEvent(window,"load",function al(event) {viewTab(event,'tabsystem');});
+[ENDIF firsttab]
+ addEvent(window,"load",viewFirstTab);
+</script>
+
+<div class="fabcard">
+
+
+<table width="100%" cellspacing="0" border="0"><tr>
+<td width="50px" align="center">
+<img src="[ICON]" width="48px">
+</td>
+<td>
+<div class="fabctitlep"><span class="fablabel">[L_GRP_NAME]</span>&nbsp;:&nbsp;<span class="fabctitle">[V_GRP_NAME]</span></div>
+</td></tr>
+
+<tr><td></td><td><div height="30px">&nbsp;</div></td></tr>
+</table>
+
+
+
+<div  class="tabh" >
+<span id="tabsystem" class="tabsel" onclick="showDiv(this,'dsystem')">[TEXT:System]</span>
+<span id="tabgroup" onclick="showDiv(this,'dgroup')">[TEXT:Group]</span>
+[IF HasOTHERS]<span id="tabother" onclick="showDiv(this,'dothers')">[TEXT:Others]</span>[ENDIF HasOTHERS]</div>
+<div class="tab" ></div>
+<div class="do" id="dsystem" style="display:none">
+<table>
+<tr><td align="right"><span class="fablabel">[L_US_LOGIN]&nbsp;:&nbsp;</span></td><td>[V_US_LOGIN][V_US_WHATID]</td></tr>
+<tr><td align="right"><span class="fablabel">[IF hasdomain][L_US_DOMAIN][ENDIF hasdomain]</span>[IF hasdomain]&nbsp;:&nbsp;[ENDIF hasdomain]</td><td>[IF hasdomain][V_US_DOMAIN][ENDIF hasdomain][V_US_IDDOMAIN] </td></tr>
+<tr><td align="right"><span class="fablabel">[L_GRP_HASMAIL]</span>&nbsp;:&nbsp;</td><td> [V_GRP_HASMAIL]</td></tr>
+<tr><td align="right"><span class="fablabel">[L_GRP_HASMEMBERS]</span>&nbsp;:&nbsp;</td><td> [V_GRP_HASMEMBERS]</td></tr>
+<tr><td align="right"><span class="fablabel">[L_GRP_ROLE]&nbsp;:&nbsp;</span></td><td>[V_GRP_ROLE]</td></tr>
+<tr><td align="right"><span class="fablabel">[L_GRP_TYPE]&nbsp;:&nbsp;</span></td><td>[V_GRP_TYPE]</td></tr>
+</table>
+</div>
+<div class="do"id="dgroup" style="display:none">
+[ZONE GENERIC:GENERIC_EDIT?zone=USERCARD:CHOOSEGROUP:U]
+</div>
+
+
+
+
+
+<div class="do"  id="dothers" style="display:none">
+<div id="ttabs" class="tabh">
+[BLOCK TABS]
+<span style="font-size:80%"  onclick="showAttributes(event,this,[aids])">[tabtitle]</span>
+[ENDBLOCK TABS]</div>
+<table class="tab" width="100%" id="tothers">
+[BLOCK OTHERS]
+<tr class="tro" id="TR[aid]">[IFNOT isarray]<td width="30%" align="right" ><span class="fablabel">[lothers]&nbsp;:</span></td>[ENDIF isarray]<td [IF isarray]colspan="2"[ENDIF isarray]>[vothers]</td></tr>
+[ENDBLOCK OTHERS]
+</table>
+[BLOCK IHIDDENS][vothers]
+[ENDBLOCK IHIDDENS]
+</div>
+

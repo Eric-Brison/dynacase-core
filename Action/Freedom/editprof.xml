@@ -1,0 +1,92 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TITLE] [doctitle]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+<!-- Title Table -->
+<form  class="fborder" name="modifyfreedom" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=MODPROF&create=[create]&docid=[docid]" >
+
+
+                         
+
+<input type="hidden" name="title" value="[TITLE]"> 
+
+<div class="TITLE">
+<p>[TITLE]</p>
+<table width="100%"  cellspacing="0" cellpadding="0" >
+<tr class="FREEDOMBack1">
+ <td >
+   <span class="FREEDOMTextTitle">[doctitle]</span>
+  </td> 
+  <td  align="right"><span class="FREEDOMText">[TEXT:profile access] : </span></td>
+  <td><select name="profid" >   
+           <option VALUE="0">[TEXT:no profile]</option>      
+         [BLOCK SELECTPROF]
+           <option VALUE="[idpdoc]" [selected]>[profname]</option>   
+         [ENDBLOCK SELECTPROF]
+	 [IF NOCREATE]
+           <option VALUE="[docid]" [selected_spec]>[TEXT:specific control]</option> [ENDIF NOCREATE]
+    </select>
+   </td>
+</tr>
+[IF CV]
+<tr class="FREEDOMBack1">
+ <td >
+   <span class="FREEDOMTextTitle">&nbsp;</span>
+  </td> 
+  <td  align="right"><span class="FREEDOMText">[TEXT:view control] : </span></td>
+  <td><select name="cvid" >   
+           <option VALUE="0">[TEXT:no control]</option>      
+         [BLOCK SELECTCV]
+           <option VALUE="[id]" [selcv]>[title]</option>   
+         [ENDBLOCK SELECTCV]          
+    </select>
+   </td>
+</tr>
+[ENDIF CV]
+<tr class="FREEDOMBack1">
+  <td colspan="3"  align="right" class = "tdstyle">
+ <input type="submit" value="[TEXT:Validate]"> 
+ <input type="button" value="[TEXT:Cancel]" onclick="document.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]'">
+  </td>
+</tr>
+</table>
+</div>
+
+
+
+
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<html>
+   <head> 
+    <title>edition des transitions</title>
+   <style>
+[ZONE CORE:GENCSS]
+[ZONE FDL:GENCSS]
+    </style>
+
+   </head>
+
+<body class="freedom">
+<table width="100%">
+
+
+<tr>
+<td><h2>Etat initial/etat final</h2></td>
+[BLOCK LIGNE1]
+<td><h2>[nom_etat]</h2></td>
+[ENDBLOCK LIGNE1]
+</tr>
+
+
+[BLOCK LIGNES]
+
+<tr height=50>
+<td><h2>[etat]</h2></td>
+[BLOCK [LIGNEEE]]
+
+[input]
+
+[ENDBLOCK [LIGNEEE]]
+</tr>
+
+[ENDBLOCK LIGNES]
+
+</table>
+
+
+</body>
+<html>

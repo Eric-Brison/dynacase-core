@@ -1,0 +1,110 @@
+
+
+<script type="text/javascript">
+
+[IF firsttab]
+addEvent(window,"load",function al(event) {viewTab(event,'[firsttab]');});
+[ENDIF firsttab][IFNOT firsttab]
+addEvent(window,"load",function al(event) {viewTab(event,'tabsystem');});
+[ENDIF firsttab]
+ addEvent(window,"load",viewFirstTab);
+</script>
+
+<div class="fabcard">
+
+
+
+
+<table style="width:400px"><tr><td><span class="fablabel">[L_US_CIVILITY]&nbsp;:&nbsp;</span><br/>[V_US_CIVILITY]</td>
+           <td><span class="fablabel">[L_US_FNAME]&nbsp;:&nbsp;</span><br/>[V_US_FNAME]</td>
+	   <td><span class="fablabel">[L_US_LNAME]&nbsp;:&nbsp;</span><br/>[V_US_LNAME][V_US_WHATID]</td></tr></table>
+
+
+
+<div  id="tabs" class="tabh" >
+<span id="tabsystem"  class="tabsel" onclick="showDiv(this,'dsystem')">[TEXT:System]</span>
+[IF editgroup]<span id="tabgroup" onclick="showDiv(this,'dgroup')">[TEXT:Group]</span>[ENDIF editgroup]
+<span id="tabcoord"  onclick="showDiv(this,'dcoord');autoVresize()">[TEXT:Coordonates]</span>
+[IF HasOTHERS]<span id="tabother" onclick="showDiv(this,'dothers')">[TEXT:Others]</span>[ENDIF HasOTHERS]</div>
+<div class="tab" ></div>
+<div class="do" id="dsystem" style="display:none">
+[IF W_US_LOGIN]<table><tr><td><span class="fablabel">[L_US_LOGIN]&nbsp;:&nbsp;</span>[V_US_LOGIN]</td>
+	   <td><span class="fablabel">[L_US_STATUS]&nbsp;:&nbsp;</span>[V_US_STATUS]</td></tr></table>
+[ENDIF W_US_LOGIN]
+<fieldset style="width:400px"><legend>[TEXT:Password]</legend>
+<table >
+<tr><td colspan="2"><span class="fablabel">[L_US_PASSWD1]&nbsp;:&nbsp;</td><td colspan="2"></span>[V_US_PASSWD1]</td></tr>
+<tr><td colspan="2"><span class="fablabel">[L_US_PASSWD2]&nbsp;:&nbsp;</td><td colspan="2"></span>[V_US_PASSWD2]</td></tr>
+[IF W_US_EXPIRESD]<tr><td><span class="fablabel">[L_US_EXPIRESD]</span>&nbsp;:&nbsp;</td><td>[V_US_EXPIRESD][V_US_EXPIREST]</td></tr>
+<tr><td colspan="2"><span class="fablabel">[L_US_DAYDELAY]</span>&nbsp;:&nbsp;</td><td colspan="2">[V_US_DAYDELAY]</td></tr>[ENDIF W_US_EXPIRESD]
+</table>
+
+</fieldset>
+
+[IF W_US_DOMAIN]<br/><span class="fablabel">[L_US_DOMAIN]</span>&nbsp;:&nbsp;[V_US_DOMAIN][ENDIF W_US_DOMAIN]
+
+<span class="fablabel">[L_US_MAIL]&nbsp;:&nbsp;</span>[V_US_EXTMAIL]
+[V_US_AUTOMAIL][V_US_IDDOMAIN]
+</div>[IF editgroup]
+<div class="do"id="dgroup" style="display:none">
+
+[ZONE GENERIC:GENERIC_EDIT?zone=USERCARD:CHOOSEGROUP:U]
+
+</div>[ENDIF editgroup]
+
+
+<div class="do"id="dcoord" style="display:none">
+<div align="center" style="width:700px">
+<table><tr><th style="width:50%">[TEXT:Person]</th><th style="width:50%">[TEXT:Society]</th></tr>
+<tr><td>
+   <table>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_INITIALS]&nbsp;:</span></td><td>[V_US_INITIALS]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_PHOTO]&nbsp;:</span></td><td>[V_US_PHOTO]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_PPHONE]&nbsp;:</span></td><td>[V_US_PPHONE]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_MOBILE]&nbsp;:</span></td><td>[V_US_MOBILE]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_INTPHONE]&nbsp;:</span></td><td>[V_US_INTPHONE]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_PFAX]&nbsp;:</span></td><td>[V_US_PFAX]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_ROLE]&nbsp;:</span></td><td>[V_US_ROLE]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_TYPE]&nbsp;:</span></td><td>[V_US_TYPE]</td></tr>
+
+
+    </table>
+</td><td>
+   <table>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_SOCIETY]&nbsp;:</span></td><td colspan="3">[V_US_SOCIETY]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_WORKADDR]&nbsp;:</span></td><td colspan="3">[V_US_WORKADDR]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_WORKPOSTALCODE], [L_US_WORKTOWN], [L_US_WORKCEDEX]&nbsp;:</span></td><td>[V_US_WORKPOSTALCODE][V_US_WORKTOWN][V_US_WORKCEDEX]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_COUNTRY]&nbsp;:</span></td><td colspan="3">[V_US_COUNTRY]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_JOB]&nbsp;:</span></td><td colspan="3">[V_US_JOB]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_SCATG]&nbsp;:</span></td><td colspan="3">[V_US_SCATG]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_WORKWEB]&nbsp;:</span></td><td colspan="3">[V_US_WORKWEB]</td></tr>
+<tr ><td width="30%" align="right" ><span class="fablabel">[L_US_SERVICE]&nbsp;:</span></td><td colspan="3">[V_US_SERVICE]</td></tr>
+    </table>
+
+</td></tr>
+</table>
+
+
+[V_US_IDSOCIETY][V_US_SOCADDR][V_US_IDSERVICE]
+
+</div>
+</div>
+
+
+
+<div class="do"  id="dothers" style="display:none">
+<div id="ttabs" class="tabh">
+[BLOCK TABS]
+<span style="font-size:80%"  onclick="showAttributes(event,this,[aids])">[tabtitle]</span>
+[ENDBLOCK TABS]</div>
+<table class="tab"  id="tothers">
+[BLOCK OTHERS]
+<tr class="tro" id="TR[aid]">[IFNOT isarray]<td width="30%" align="right" ><span class="fablabel">[lothers]&nbsp;:</span></td>[ENDIF isarray]<td [IF isarray]colspan="2"[ENDIF isarray]>[vothers]</td></tr>
+[ENDBLOCK OTHERS]
+</table>
+[BLOCK IHIDDENS][vothers]
+[ENDBLOCK IHIDDENS]
+</div>
+
+</div>
+

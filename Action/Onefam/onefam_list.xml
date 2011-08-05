@@ -1,0 +1,83 @@
+<html>
+  <head>
+
+   <title>[APP_TITLE]</title>
+<link rel="icon" href="[DYNACASE_FAVICO]">
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+[JS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+   <script language="javascript">
+function imgborder() {
+  for (var i=0; i< document.images.length; i++) {
+    document.images[i].style.borderStyle='inset';
+  }
+}
+var selimg=null;
+function sendgeneric(event,th,docid) {
+  var wfgtop;
+  if (selimg != null) {
+    selimg.className='iconone';
+    selimg.style.width=[izpx];
+  }
+  th.className='icononesel';
+  selimg=th;
+  selimg.style.width=[izpx]-4;
+    if (parent.faminfo.flist) {
+      parent.faminfo.flist.location.href='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_TOGEN&gonlylist=yes&famid='+docid;
+    } else {
+      parent.faminfo.location.href='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_TOGEN&famid='+docid;
+    }
+}
+
+   </script>
+
+ </head>
+
+<body >
+[BLOCK SELECTMASTER]
+<img style="width:[izpx]" needresize="yes"
+     src="[iconsrc]"  
+     onclick="sendgeneric(event,this,'[idcdoc]');"
+     onmouseover="if (this.className != 'icononesel') {this.className='icononehi';this.style.width=[izpx]-4;}"
+     onmouseout="if (this.className != 'icononesel') {this.className='iconone';this.style.width=[izpx]}"
+     class="iconone"
+     alt="[ftitle]"
+     title="[ftitle]">
+[ENDBLOCK SELECTMASTER]
+
+[BLOCK CHOOSEMASTERFAMILIES]
+<BR style="clear:both">
+<input style="float:left;width:[izpx]px"  type="button" value="+" 
+       title="[TEXT:master choose families]" 
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITMASTERPREF')">
+[ENDBLOCK CHOOSEMASTERFAMILIES]
+[BLOCK SEPARATOR]
+<BR><BR><br><HR style="float:left;" width="100%"><br >
+[ENDBLOCK SEPARATOR]
+[BLOCK SELECTUSER]
+<img style="width:[izpx]" needresize="yes"
+     src="[iconsrc]"  
+     onclick="sendgeneric(event,this,'[idcdoc]');"
+     onmouseover="if (this.className != 'icononesel') {this.className='icononehi';this.style.width=[izpx]-4;}"
+     onmouseout="if (this.className != 'icononesel') {this.className='iconone';this.style.width=[izpx]}"
+     class="iconone"
+     alt="[ftitle]"
+     title="[ftitle]">
+[ENDBLOCK SELECTUSER]
+<BR style="clear:both">
+[BLOCK CHOOSEUSERFAMILIES]
+<input style="float:left;width:[izpx]px" type="button" value="+" 
+       title="[TEXT:choose user families]" 
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITPREF')">
+[ENDBLOCK CHOOSEUSERFAMILIES]
+</body>
+</html>

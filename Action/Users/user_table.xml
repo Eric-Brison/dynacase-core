@@ -1,0 +1,117 @@
+<!-- 
+  $Id: user_table.xml,v 1.7 2004/10/11 15:40:27 eric Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Users/user_table.xml,v $
+-->
+
+
+[QUERY_FORM]
+
+<table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
+<tr><td colspan="2">
+[ZONE CORE:TABINDEX] 
+</td></tr>
+</table>
+
+<table align="center"  border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
+
+<tr>
+  <td class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[title]</span></td>
+  <td valign="baseline" align="right" class="CORETblHeadCell"><span class="CORETblHead">
+
+<a href="#" onclick="subwindow(300,400,'useredit','[CORE_BASEURL]&app=USERS&action=USER_EDIT&group=[yngroup]')"><img border=0 src="[IMG:edit.gif]" alt="[TEXT:adduser]" title="[createuser]"></a>
+    <a href="#" onclick="self.print()">
+      <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
+      </a>
+    <a id="helpwhat" target="[fhelp]"   href="[CORE_BASEURL]app=CORE&action=HELPVIEW&appname=USERS&sectid=users"  >
+      <img alt="[TEXT:help]" title="[TEXT:help]"border="0" src="[IMG:help.gif]">
+      </a>
+  </span></td>
+</tr>
+</table>
+
+
+<table align="center" border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
+<tr>
+ <td rowspan="[slice9]" align="left" valign="top">
+  <span class="CORETblBold">[TEXT:search]</span>
+  <span class="CORETbl">
+  <font size="-1">
+     [FULLTEXTFORM]
+  </font></span>
+
+ </td>
+
+ <td>
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left" colspan="2" class="CORETblCell">
+
+  &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="right" colspan="3" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]&nbsp;[TABLE_LAST]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+
+<!-- TABLEHEAD -->
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<tr>
+  <td width="50" class="CORETblCell">&nbsp;</td>
+  <td  class="CORETblCell"><span class="CORETblBold">[head_lastname]</span></td>
+  <td  class="CORETblCell"><span class="CORETblBold">[head_login]</span></td>
+  <td  class="CORETblCell"><span class="CORETblBold">[head_domain]</span></td>
+  <td  class="CORETblCell" style="display:[duser]"><span class="CORETblBold">[head_expires]</span></td>
+</tr>
+
+<!-- /TABLEHEAD -->
+
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEBODY -->
+[BLOCK TABLEBODY]
+<tr>
+  <td width="50" class="[CLASS]">
+       <a href="#" onclick="subwindow(300,400,'useredit','[CORE_BASEURL]&app=USERS&action=USER_EDIT&id=[id]&group=[group]')"><img border=0 src="[IMG:edit.gif]" alt="[TEXT:edit]" title="[TEXT:edit]"></a>
+       <a href="[CORE_STANDURL]&app=USERS&action=USER_DEL&id=[id]" onClick="return confirm('[TEXT:delconfirm] [login]')">[delete]</a> </td>
+  <td  class="[CLASS]"><span class="CORETbl">[fullname]</span></td>
+  <td  class="[CLASS]"><span class="CORETbl">[login]</span></td>
+  <td  class="[CLASS]"><span class="CORETbl">[domain]</span></td>
+  <td  class="[CLASS]" style="display:[duser]"><span class="CORETbl">[expires]&nbsp;</span></td>
+</tr>
+[ENDBLOCK TABLEBODY]
+<!-- /TABLEBODY -->
+
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+
+<!-- TABLEPAGING -->
+<tr>
+  <td align="left"  class="CORETblCell">
+
+  &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
+
+  </td>
+  <td align="center" colspan="3" class="CORETblCell">
+
+  <span class="CORETblBold">[TABLE_NUM]&nbsp;/&nbsp;[TABLE_NB]</span>
+
+  </td>
+  <td align="right" class="CORETblCell">
+
+  &nbsp;[TABLE_NEXT]&nbsp;[TABLE_LAST]
+
+  </td>
+</tr>
+<!-- /TABLEPAGING -->
+<tr><td colspan="5" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+</td> </tr>
+</table>
+<br>
+

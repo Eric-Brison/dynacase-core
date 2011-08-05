@@ -1,0 +1,12 @@
+<span id="sp_[id]"><select multiple size="[msize]" name="[name][]" onchange="disableReadAttribute();[IF isfree]viewOtherEnumInput('[id]');[ENDIF isfree]" id="[id]" [disabled]>
+[BLOCK OPTIONS]
+<option [selected] value="[kvalue]">[fvalue]</option>
+[ENDBLOCK OPTIONS]<option  style="display:none"  value=" "></option>
+</select>
+<input [disabled] id="ix_[id]" type="button" value="&times;"
+	  title="[TEXT:clear inputs]"
+	  onclick="unselectInput('[id]')">
+[IF isopen]
+<input style="display:none" title="[TEXT:Set new entry]" onkeypress="if (trackCR(event)) {addEnum(document.getElementById('bbkeysp_[id]'),document.getElementById('sp_[id]'),'[docid]','[idi]',this) ;return false}" type="text" id="keysp_[id]">
+<input id="bbkeysp_[id]" type="button" onclick="addEnum(this,document.getElementById('sp_[id]'),'[docid]','[idi]',document.getElementById('keysp_[id]'));return false" title="[TEXT:Add new entry]" value="+">[ENDIF isopen][IF isfreeselected]<script>createOtherEnumInput(document.getElementById('[id]'),document.getElementById('[id]'),true);</script>[ENDIF isfreeselected]
+</span>

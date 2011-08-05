@@ -1,0 +1,104 @@
+<style>
+	table.tablemask {
+	   width:100%;
+	}
+	table.tablemask tr.tab { 
+	   background-color:#cba4de; // violet
+           background-image:url("Images/tabvig.png");
+	}
+	
+        table.tablemask tr.frame { 
+           background-color:#6eb9d5; // sky blue
+           background-image:url("Images/tabvig.png");
+        }
+	table.tablemask tr.array { 
+           background-color:#f3cc81; // orange
+           background-image:url("Images/tabvig.png");
+        }
+        table.tablemask tr.menu, table.tablemask tr.action {
+            background-color:#a4dec6; // green
+        }
+        /*table.tablemask tr.tab, table.tablemask tr.frame, table.tablemask tr.array{ 
+           background-image:url("Images/tabvig.png");
+        }*/
+</style>
+
+
+
+ [IF creation]
+ <p><b>[TEXT:Mask title] : </b></p>
+ [V_BA_TITLE]
+ <p><b>[TEXT:Choose mask family] : </b></p>
+   <select id="msk_famid" name="_msk_famid" onChange="document.getElementById('retedit').value='Y';submitEdit();">   
+           <option selected VALUE="">[TEXT:Choose family]</option>      
+         [BLOCK SELECTCLASS]
+           <option VALUE="[idcdoc]" [selected]>[classname]</option>   
+         [ENDBLOCK SELECTCLASS]
+    </select>[ENDIF creation]
+    <input type="hidden" name="retedit" id="retedit" value="N">
+    
+<!-- Frame Table -->
+
+[IFNOT creation]
+<table width="100%" cellspacing="0"><tbody>
+<tr><td colspan=3>
+<table class="tableborder"  width="100%" cellspacing="0" cellpadding="0" >
+<tr>
+ <td class="FREEDOMTblTitle" style="width:50%">
+   <span class="FREEDOMTextTitle">[V_BA_TITLE]</span>
+  </td> 
+  <td class="FREEDOMTblTitle" align="right"><span class="FREEDOMTextName">[TEXT:for]</span>
+   
+    <b>[family]</b><span style="display:none">[V_MSK_FAMID]</span>
+    <input type="hidden" name="retedit" id="retedit" value="N">
+   </td>
+</tr>
+</table>
+<table  class="tablemask"   cellspacing="0" cellpadding="0" >
+<thead>
+<tr>
+  <td class="CORETblHeadBold">[TEXT:fieldset]</td>
+  <td class="CORETblHeadBold">[TEXT:attrname]</td>
+  <td class="CORETblHeadBold">[TEXT:new visibility]</td>
+  <td class="CORETblHeadBold">[TEXT:new needed]</td>
+  <td class="CORETblHeadBold">[TEXT:default visibility]</td>
+</tr>
+</thead>
+<tbody>
+
+
+[BLOCK NEWELEM]
+<tr title="[attrinfo]" class="[type]">
+   <td  >[framelabel]</td>
+  
+   
+   <td   style="font-weight:[fieldweight]">
+   <input type="hidden" name="_MSK_ATTRIDS[[neweltid]]" value="[attrid]" >[attrname]</td>
+  
+   <td  >
+      <select name="_MSK_VISIBILITIES[[neweltid]]"  >        
+         [BLOCK [SELECTVIS]]
+           <option VALUE="[visid]" [selected]>[vislabel]</option>
+         [ENDBLOCK [SELECTVIS]]
+    </select>
+   </td>
+   <td>
+      <select name="_MSK_NEEDEEDS[[neweltid]]"  >        
+         [BLOCK [SELECTNEED]]
+           <option VALUE="[needid]" [selectedneed]>[needlabel]</option>
+         [ENDBLOCK [SELECTNEED]]
+    </select></td>
+   <td style="font-weight:[wneed]">[visibility]</td>
+  
+   
+  
+</tr>
+[ENDBLOCK NEWELEM]
+
+
+</tbody>
+</table>
+</td></tr>
+</tbody>
+</table>
+[ENDIF creation]

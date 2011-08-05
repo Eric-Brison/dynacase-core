@@ -1,0 +1,222 @@
+<html>
+
+<head>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+[JS:REF]
+   <script language="JavaScript">
+  <!--
+var isNetscape = navigator.appName=="Netscape";
+
+var Xpos = 0;
+var Ypos = 0;
+
+// just save mouse position for animate() to use
+function MoveHandler(e)
+{
+    Xpos = e.pageX;
+    Ypos = e.pageY;	
+    return true;
+}
+
+// just save mouse position for animate() to use
+function MoveHandlerIE() {
+    Xpos = window.event.x + document.body.scrollLeft;
+    Ypos = window.event.y + document.body.scrollTop;	  
+}
+
+
+var drag=0;
+
+    document.onmousemove = moveicon;
+
+function moveicon(e) {
+    
+   window.status=Xpos+"x"+Ypos;
+  if (drag ) {
+   if (isNetscape) {
+     MoveHandler(e);
+   } else {
+     MoveHandlerIE();
+   }
+    micon.style.visibility = 'visible';
+    micon.style.top = Ypos+2; 
+    micon.style.left = Xpos+2; 
+    //    micon.style.zIndex = 4; 
+  }
+}
+var micon=false;
+var cdocid=0;
+function initDrag() {
+
+  if (! parent.fvfolder) return;
+  if (! parent.fvfolder.drag) return;
+  if (parent.fvfolder.drag == 1) {
+    drag=1;
+    cdocid = parent.fvfolder.document.docid;
+    parent.fvfolder.drag=0;
+    imicon = parent.fvfolder.document.getElementById('micon');
+    micon.src=imicon.src;
+    //    alert(micon.src);
+    imicon.style.visibility="hidden";
+  }
+}
+
+function endDrag() {  
+    drag=0;    
+    if (micon) micon.style.visibility="hidden";
+}
+
+function initmicon() {
+  micon = document.getElementById('micon');
+}
+    [JS:CODE]
+  //-->
+   </script>   
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+[CSS:REF]
+<!-- if you want black backgound, remove this style block -->
+<style type="text/css">
+
+
+   DIV.select2  {
+       width:100%;
+       /*border-style: inset;*/
+       background-color:[CORE_BGCOLORALTERN];
+       display:block;
+       cursor: default}
+
+
+[CSS:CODE]
+   
+</style>
+
+
+<!-- if you want black backgound, remove this line and the one marked XXXX and keep the style block below 
+
+<style>
+   BODY {background-color: black}
+   TD {font-size: 10pt; 
+       font-family: verdana,helvetica 
+	   text-decoration: none;
+	   white-space:nowrap;}
+   A  {text-decoration: none;
+       color: white}
+</style>
+
+XXXX -->
+
+
+<!-- NO CHANGES PAST THIS LINE -->
+
+
+<!-- Code for browser detection -->
+<script src="FREEDOM/Layout/ua.js"></script>
+<script language="JavaScript">document.wstyle='[iconFolderPath]';</script>
+<!-- Infrastructure code for the tree -->
+<script src="FREEDOM/Layout/ftiens4.js"></script>
+
+<!-- Execution of the code that actually builds the specific tree.
+     The variable foldersTree creates its structure with calls to
+	 gFld, insFld, and insDoc -->
+
+
+<script language="JavaScript">
+
+
+// Decide if the names are links or just the icons
+USETEXTLINKS = 0  //replace 0 with 1 for hyperlinks
+
+// Decide if the tree is to start all open or just showing the root folders
+STARTALLOPEN = 0 //replace 0 with 1 to show the whole tree
+
+var actionaddfile = "[CORE_STANDURL]&app=[APPNAME]&action=ADDDIRFILE";
+var actionviewfile = "[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_VIEW";
+
+var actionexpfld = "[CORE_STANDURL]&app=[APPNAME]&action=EXPANDFLD&dirid=";
+var navmode='[FREEDOM_VIEWFRAME]';
+
+var fldtop = gFld("<i>[reptitle]</i>", "#",[dirid],"[icon]",true)
+
+
+[subtree]
+[hometree]
+
+if (document.all) {
+  window.onscroll = floatMenu; /* position fixed not IE supported yet */
+
+}
+function floatMenu () {
+  document.getElementById('barmenu').style.position = 'absolute';
+    document.getElementById('barmenu').style.top = getScrollYOffset();
+    return true;
+}
+
+function viewhome(event) {
+  var homeicon= document.getElementById('text[idHomeFolder]');
+
+  homeicon.onmousedown.apply(null,[event]);
+}
+
+
+</script>
+</head>
+
+<body topmargin=16 marginheight=16 id="bodyid"
+      onLoad="initmicon();viewhome(event);if (document.all) document.getElementById('barmenu').style.position = 'absolute';" 
+      onMouseOver="initDrag()" 
+      onMouseUp="if (buttonNumber(event)==1) {if (drag==0) closeAllMenu(); else closeMenu('popfld')};endDrag(); " >
+
+<!-- By making any changes to this code you are violating your user agreement;
+     this can be specially troublesome for corporate users. Check the online 
+	 instructions to obtain a version without the link -->
+<!-- Removing this link will make the script stop from working -->
+
+<div style="position:absolute; top:30px; left:0; "><table border=0><tr><td><font size=-2><a style="font-size:6pt;text-decoration:none;color:gray" href="http://www.mmartins.com" target="_top"></a></font></td></table></div>
+
+<!-- ------------------ BAR MENU ------------------ -->
+[ZONE [APPNAME]:BARMENU]
+<div style="padding:0px;margin-top:30px"></div>
+
+<!-- ------------ POPUP DIVISION --------------------- -->
+<div  id="popfld" class="popup">
+
+<a href="#" id="vprop"
+    onClick="activate(this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id='+dirid,'fdoc');closeMenu('popfld');return false">[TEXT:Properties] </a>
+<a id="export" href="#" onclick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=EDITEXPORT&id='+dirid,'fdoc');closeMenu('popfld');return false">[TEXT:Export]...</a>
+<a href="#" id="mkdir"     
+    onClick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_EDIT&id=&classid=2&dirid='+dirid,'fdoc');closeMenu('popfld');return false">
+[TEXT:Create subfolder]</a>
+<a href="#" id="refresh"     
+    onClick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=EXPANDFLD&dirid='+dirid,'fexpand');closeMenu('popfld');return false">
+[TEXT:Refresh folder]</a>
+<a href="#" id="cancel"  
+    onClick="closeMenu('popfld');return false"  >[TEXT:cancel]</a>
+</div>
+<!-- ------------------ end POPUP DIVISION ------------------ -->
+
+<!-- ------------ SECOND POPUP DIVISION (paste)--------------------- -->
+<div  id="poppaste" class="popup">
+
+<a href="#" id="pastelatest"        
+    onClick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=ADDDIRFILE&mode=latest&dirid='+dirid+'&docid='+cdocid,'fvfolder');closeMenu('poppaste');return false">
+   [TEXT:Copy reference]</a>
+<a href="#" id="staticpaste"
+    onClick="activate(this,'[CORE_STANDURL]&app=[APPNAME]&action=MOVEDIRFILE&todirid='+dirid+'&fromdirid='+parent.fvfolder.document.dirid+'&docid='+cdocid,'fvfolder');closeMenu('poppaste');return false">
+   [TEXT:Move reference] </a>
+<a href="#" id="cancel2"  
+    onClick="closeMenu('poppaste');return false">[TEXT:cancel]</a>
+</div>
+
+<!-- ------------------ end POPUP DIVISION ------------------ -->
+
+
+
+<!-- Build the browser's objects and display default view of the 
+     tree. -->
+<script>initializeDocument()</script>
+<div  id="thefolderh"></div>
+<img id="micon" width="20" height="20"  style="position:absolute;visibility:hidden">
+    <iframe id="fexpand" name="fexpand" style="display:none"   src="[IMG:1x1.gif]"  ></iframe>
+</body>
+</html>

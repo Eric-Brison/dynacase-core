@@ -1,0 +1,129 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Edit help]]
+<script type="text/javascript" src="lib/data/fdl-data.js"></script>
+<script type="text/javascript" language="JavaScript" src="./sizzle/sizzle.js"></script>
+<script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
+<style type="text/css">
+#help-menu {
+	overflow: hidden;
+	padding: 5px 10px;
+}
+#help-menu strong {
+	font-size: 16px;
+}
+#help-menu div {
+	float: right;
+}
+#help-menu img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-menu a {
+	outline: 0;
+}
+fieldset legend img {
+	vertical-align: middle;
+	padding-right: 4px;
+}
+#help-menu a:hover {
+	background: [CORE_BGCOLOR];
+}
+fieldset legend span {
+	display: none;
+}
+[BLOCK LEGENDCSSLANGS]
+fieldset legend.[LANGKEY] span.[LANGKEY] {
+	display: inline;
+}
+[ENDBLOCK LEGENDCSSLANGS]
+</style>
+<div class="document">
+<div id="help-menu">
+	<strong>[DOCTITLE]</strong>
+
+	&nbsp; &nbsp; &nbsp; &nbsp;
+	<a onclick="return helppage.editsection.apply();">[TEXT:Apply]</a>&nbsp;|&nbsp;
+	<a onclick="return helppage.editsection.cancel();">[TEXT:Cancel]</a>&nbsp;|&nbsp;
+	<a onclick="return helppage.editsection.clearall();">[TEXT:Delete this section]</a>
+
+	<div>
+[BLOCK MENULANGS]
+	<a href="#[LANGKEY]" title="[LANGNAME]" onclick="return helppage.editsection.view('[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+[ENDBLOCK MENULANGS]
+	</div>
+</div>
+
+
+<fieldset><legend id="help-legend">[BLOCK LEGENDLANGS]<span class="[LANGKEY]"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /> [LANGNAME]</span>[ENDBLOCK LEGENDLANGS]</legend>
+
+<table style="width:100%" cellspacing="0" class="edittable">
+	<tr>
+		<td class="FREEDOMLabel" width="20%"><span >[TEXT:Section key]&nbsp:&nbsp;</span></td>
+		<td>[SECTIONKEY]</td>
+	</tr>
+	<tr>
+		<td class="FREEDOMLabel" width="20%"><span >[TEXT:Section name]&nbsp:&nbsp;</span></td>
+		<td><input type="text" name="sec_name" id="sec-name" value="" /></td>
+	</tr>
+	<tr>
+		<td class="FREEDOMLabel" width="20%"><span >[TEXT:Section text]&nbsp:&nbsp;</span></td>
+		<td><textarea name="sec_text"  id="sec-text"  ></textarea></td>
+	</tr>
+	<tr>
+		<td class="FREEDOMLabel" width="20%"></td>
+		<td><a onclick="return helppage.editsection.clear();">[TEXT:Clear this translation]</a></td>
+	</tr>
+</table>
+
+</fieldset>
+</div>
+
+<script type="text/javascript">
+helppage.langs = [JSONLANGS];
+helppage.editsection.seckey = '[SECTIONKEY]';
+
+function helpEditsectionLoaded() {
+	try {
+		if (typeof( window['FCKeditorAPI']) == "undefined" ) {
+			self.setTimeout( helpEditsectionLoaded, 500 );
+			return;
+		}
+	}
+	catch(e) {}
+	helppage.editsection.load();
+}
+
+function helpEditsectionLoad() {
+	helppage.editsection.init();
+
+	try {
+		var oFCKeditor = new FCKeditor( 'sec-text' ) ;
+		oFCKeditor.BasePath = 'fckeditor/';
+		oFCKeditor.Config['FullPage'] = false ;
+		oFCKeditor.Config['SkinPath'] =  window.location.pathname.replace(/\/[^\/]*[^\/]$/, '/')+'fckeditor/editor/skins/silver/';
+		oFCKeditor.Config['ToolbarStartExpanded'] =  true;
+
+		oFCKeditor.Config['ImageBrowserURL'] = '../../../?sole=Y&app=FDL&action=FCKIMAGE' ;
+		oFCKeditor.Config['ImageUploadURL'] = '../../../?sole=Y&app=FDL&action=FCKUPLOAD' ;
+		oFCKeditor.Config['ImageBrowserWindowWidth'] = '550px';
+		oFCKeditor.Config['ImageBrowserWindowHeight'] = '400px';
+		oFCKeditor.Config['LinkBrowser'] = false ;
+
+		//oFCKeditor.Config['FontNames'] =  'serif;sans-serif;cursive;fantasy;monospace' ;
+		oFCKeditor.ToolbarSet = 'SimpleNoQS';
+		oFCKeditor.Config["CustomConfigurationsPath"] = "../../FDL/Layout/fdl_fckeditor.js"  ;
+		oFCKeditor.Height='300';
+
+		oFCKeditor.ReplaceTextarea() ;
+
+		self.setTimeout( helpEditsectionLoaded, 500 );
+	}
+	catch(e) { }
+	autoVresize();
+	return true;
+}
+
+
+addEvent(window,"load",helpEditsectionLoad);
+</script>
+
+[ZONE FDL:HTMLFOOT]

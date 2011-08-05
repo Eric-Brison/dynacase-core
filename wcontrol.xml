@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control>
+
+  <!-- Check system commands -->
+
+  <check type="syscommand" command="rm" />
+  <check type="syscommand" command="file" />
+  <check type="syscommand" command="mkdir" />
+  <check type="syscommand" command="tar" />
+  <check type="syscommand" command="zip" />
+  <check type="syscommand" command="unzip" />
+  <check type="syscommand" command="dot" />
+  <check type="syscommand" command="convert" />
+  <check type="syscommand" command="html2ps" />
+  <check type="syscommand" command="ps2pdf" />
+  <check type="syscommand" command="php" />
+  <check type="syscommand" command="ldapdelete" optional="yes" />
+  <check type="syscommand" command="psql" />
+  <check type="syscommand" command="pg_dump" />
+
+  <!-- Check PHP functions/extensions -->
+
+  <check type="phpfunction" function="gettext">
+    <help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help>
+  </check>
+  <check type="phpfunction" function="pg_connect">
+    <help>You might need to install a php-pg package from your distribution in order to have Postgresql support in PHP.</help>
+  </check>
+  <check type="phpfunction" function="imagegd">
+    <help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help>
+  </check>
+  <check type="phpfunction" function="xml_set_default_handler">
+    <help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help>
+  </check>
+  <check type="phpfunction" function="mhash">
+    <help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help>
+  </check>
+  <check type="phpfunction" function="ldap_connect">
+    <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in PHP.</help>
+  </check>
+  <check type="phpfunction" function="ncurses_init" optional="yes">
+    <help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help>
+  </check>
+  <check type="phpfunction" function="pspell_new" optional="yes">
+    <help>You might need to install a php-pspell package from your distribution in order to have spelling support in PHP.</help>
+  </check>
+
+  <!-- Check PEAR modules -->
+
+  <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP">
+    <help>You might need to run : pear install Crypt_CHAP</help>
+  </check>
+  <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP">
+    <help>You might need to run : pear install Net_SMTP</help>
+  </check>
+  <check type="pearmodule" include="Mail/mime.php" class="Mail_mime">
+    <help>You might need to run : pear install Mail_Mime</help>
+  </check>
+
+</control>

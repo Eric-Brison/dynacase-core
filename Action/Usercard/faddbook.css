@@ -1,0 +1,288 @@
+.fabbody, BODY.freedom {
+margin : 2px;
+background: [CORE_BGCOLOR]; 
+color: [CORE_TEXTFGCOLOR];
+}
+
+TABLE.fabtable TR TD {
+padding : 0px;
+margin : 0px;
+font-size : [SIZE_SMALL];
+}
+TABLE.fabtable TH {
+padding : 0px;
+margin : 0px;
+font-size : [SIZE_SMALL];
+font-weight : bold;
+text-align:left;
+  border-style: none  none solid none;
+  border-color: [CORE_BGCOLORALTERN];
+  border-width: 1px;
+}
+FIELDSET {
+  -moz-border-radius: 8px;
+}
+LEGEND {
+  font-size : [SIZE_SMALL]; 
+  font-weight : bold;
+  background-color: [CORE_BGCOLORALTERN];
+  -moz-border-radius: 8px
+}
+IMG.zoom {
+	position:absolute;
+	left:0;
+	top:0;
+	width:auto;
+}
+
+
+.inputInactive {
+  cursor: pointer;
+  border-width: 0px;
+  border-style: none none none none;
+  background-color: transparent;
+  color: [CORE_TEXTFGCOLOR];
+}
+
+.inputActive {
+  cursor: pointer;
+  border-width: 1px;
+  border-color: black;
+  color: [CORE_TEXTFGCOLOR];
+}
+
+
+DIV.fabzone, TR.fabzone TD {
+  background-color: [CORE_BGCOLORALTERN];
+  border-style: outset none outset none;
+  border-color: [CORE_BGCOLORALTERN];
+  border-width: 1px;
+}
+
+TR.fabheadlist TD {
+  background-color: [CORE_BGCOLORALTERN];
+  border-style: inset none inset none;
+  border-color: [CORE_BGCOLORALTERN];
+  border-width: 1px;
+  margin : 2px;
+  font-weight : bold;
+}
+
+IMG.fabbutsel {
+  border-style: inset;
+  border-color: [CORE_BGCOLORHIGH];
+  border-width: 1px;
+  cursor:pointer;
+}
+IMG.fabbutunsel {
+  border-style: outset;
+  border-color: [CORE_BGCOLORHIGH];
+  border-width: 1px;
+  cursor:pointer;
+}
+
+.fabcontact, TR.fabcontact TD {
+  cursor: crosshair;
+  border-style: outset none inset none;
+  border-color: [CORE_BGCOLORALTERN];
+  border-width: 1px;
+  empty-cells: show;
+}
+.fabcontactsel, TR.fabcontactsel TD {
+  cursor: pointer;
+  border-width: 1px;
+  border-color: lightgrey;
+  border-style: inset none outset none;
+  background-color: [CORE_BGCOLORHIGH];
+  empty-cells: show;
+}
+
+DIV.fabcontact {
+  cursor: crosshair;
+  border-style: outset;
+  border-color: lightgrey;
+  border-width: 1px;
+  empty-cells: show;
+}
+DIV.fabcontact:hover {
+  cursor: crosshair;
+  border-style: inset;
+  border-color: lightgrey;
+  border-width: 1px;
+  empty-cells: show;
+}
+DIV.fabcontactsel {
+  cursor: pointer;
+  border-width: 1px;
+  border-color: lightgrey;
+  border-style: inset;
+  background-color: [CORE_BGCOLORHIGH];
+  empty-cells: show;
+}
+
+
+
+/*    Resume card */
+
+DIV.fabresume {
+cursor:pointer;
+-moz-border-radius: 8px;
+margin:0pt;
+padding:3pt;
+border-width : 2px;
+border-style : outset;
+border-color : [CORE_BGCOLORALTERN];
+}
+DIV.fabresume:hover {
+border-style : inset;
+background-color: [CORE_BGCELLCOLOR];
+}
+
+.fabresumetitle {
+font-weight : bold;
+font-variant: small-caps;
+font-size : [SIZE_LARGE];
+} 
+
+.fabresumesoc {
+font-style: italic;
+text-transform : lowercase;
+}
+[IFNOT ISIE]
+.fabresumesoc:first-letter {
+text-transform:capitalize;
+}[ENDIF ISIE]
+
+DIV.fabresume  TBODY TR TD, DIV.fabresume  TBODY TR {  
+  background-color:transparent;
+}
+/* Carte */
+
+DIV.fabcard {
+padding:5pt;
+margin:0pt;
+[IFNOT ISIE]
+-moz-border-radius: 8;[ENDIF ISIE]
+border-width : 2px;
+border-style : outset;
+border-color : [CORE_BGCOLORALTERN];
+background-color: [CORE_BGCELLCOLOR];
+}
+
+.fabctitlep {
+padding:10px 0px 0px 10px;
+} 
+
+SPAN.fabctitle, .fabctitle {
+font-weight : bold;
+font-variant: small-caps;
+font-size : [SIZE_XX-LARGE];
+} 
+.fabcsoc {
+font-weight : bold;
+font-variant: small-caps;
+font-size : [SIZE_X-LARGE];
+} 
+
+SPAN.fabcrub, .fabcrub {
+font-size : [SIZE_LARGE];
+font-weight : bold;
+}
+.fabcrubbigger {
+font-weight : bold;
+font-size : [SIZE_X-LARGE];
+}
+.fabccom {   
+}
+.fablabel {
+ 
+}
+SPAN.fabvalue, .fabvalue {
+font-weight : bold; 
+}
+
+.fabcciv {
+font-style: italic;
+text-transform : lowercase;
+font-size : [SIZE_LARGE];
+}
+[IFNOT ISIE]
+.fabcciv:first-letter {
+text-transform:capitalize;
+}[ENDIF ISIE]
+
+.fabcaddress {
+padding:10px 0px 0px 0px;
+font-style: italic;
+text-transform : lowercase;
+font-size : [SIZE_LARGE];
+border-width : 1px;
+border-style :  none none solid none;
+}
+
+.fabogcontent {
+padding:2px;
+border-width : 1px;
+border-style : outset;
+border-color : [CORE_BGCOLORALTERN];
+}
+.fabogdetail {
+padding: 0px 10px 0px 10px;
+border-width : 1px;
+border-style : none  none none solid;
+border-color : [CORE_BGCOLORALTERN];
+}
+
+
+.fabog {
+border-width : 1px;
+border-style :outset;
+border-color : [CORE_BGCOLORALTERN];
+[IFNOT ISIE]background-image:url('[IMG:tabvig.png]');[ENDIF ISIE]
+[IF ISIE] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale'); float:right;width:100%;
+  text-transform:capitalize;[ENDIF ISIE]
+background-color : [CORE_BGCOLORALTERN];
+cursor:pointer;
+}
+.fabogover {
+border-width : 1px;
+border-style : inset;
+border-color : [CORE_BGCOLORALTERN];
+background-color : [CORE_BGCOLORALTERN];
+[IFNOT ISIE]  background-image:url('[IMG:tabvig.png]'); [ENDIF ISIE]
+[IF ISIE] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale'); float:right;width:100%;
+  text-transform:capitalize;[ENDIF ISIE]
+cursor:pointer;
+}
+.fabogsel {
+border-width : 1px;
+border-style : inset;
+border-color : [CORE_BGCOLORALTERN];
+  background-color : [CORE_FGCOLOR];
+  color : [CORE_TEXTBGCOLOR];
+[IFNOT ISIE]  background-image:url('[IMG:tabvig.png]'); [ENDIF ISIE]
+[IF ISIE] filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='[IMG:tabvg.png]',sizingMethod='scale'); float:right;width:100%;
+  text-transform:capitalize;[ENDIF ISIE]
+cursor:pointer;
+}
+[IFNOT ISIE]
+.fabogover:first-letter, .fabog:first-letter, .fabogsel:first-letter {
+text-transform:capitalize;
+}[ENDIF ISIE]
+
+TABLE.tab {
+	border-width : 1px;
+	border-style :  solid none solid none;
+	clear:both;
+}
+DIV.tab {
+	border-width : 1px;
+	border-style :  solid none none none;
+	clear:both;
+}
+TABLE.tab TD {
+	vertical-align:top;
+}
+TABLE.noborder TD {
+	border:none;
+}

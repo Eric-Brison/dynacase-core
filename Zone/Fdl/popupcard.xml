@@ -1,0 +1,137 @@
+<!-- ------------ POPUP DIVISION --------------------- -->
+<div style="width:0px;display:block">
+<div  style="display:none" id="popupcard" class="popup">
+
+
+
+<a href="#" id="headers" 
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=IMPCARD&zone=FDL:VIEWPROPERTIES:T&id=[id]','props');closeMenu('popupcard');">[TEXT:Properties]</a>
+
+
+
+<a href="#" id="latest"     
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[id]','');closeMenu('popupcard')"  >[TEXT:View latest]</a>
+
+<a href="#" id="editdoc"     
+    onclick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&rzone=[zone]&id=[id]','');closeMenu('popupcard')"  >[TEXT:Edit]</a>
+
+<a href="#" id="lockdoc" 
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=LOCKFILE&id=[id]','');closeMenu('popupcard')"  >[TEXT:Lock]</a>
+
+<a href="#" id="editstate"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_EDITSTATE&id=[id]','');closeMenu('popupcard')" >[TEXT:Change state]</a>
+
+<a href="#" id="properties"     
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]','');closeMenu('popupcard');">
+[TEXT:View all properties]</a>
+
+<a  href="#" id="sview"       
+    onmouseover="openSubMenu(event,this,'popupview');">[TEXT:Special view] &gt;</a>
+
+<a href="#" id="sedit"       
+    onmouseover="openSubMenu(event,this,'popupedit');">[TEXT:Special edit] &gt;</a>
+
+<a href="#" id="unlockdoc"
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=UNLOCKFILE&id=[id]','');closeMenu('popupcard')" >[TEXT:Unlock]</a>
+
+<a href="#" id="revise" 
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=REVCOMMENT&id=[id]','');closeMenu('popupcard')" >[TEXT:Revise]</a>
+
+<a href="#" id="allocate" 
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=EDITAFFECT&id=[id]','affect',false,500,200);closeMenu('popupcard')" >[TEXT:Allocate]</a>
+
+<a href="#" id="editprof"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&id=[id]','');closeMenu('popupcard')" >[TEXT:Change profile]</a>
+
+<a href="#" id="histo"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=HISTO&id=[id]','histo');closeMenu('popupcard')" >[TEXT:History]</a>
+
+<a href="#" id="duplicate"     
+    onclick="if (confirm('[TEXT:Confirm] [TEXT:Duplicate] ?')) activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_DUPLICATE&id=[id]','finfo');closeMenu('popupcard');">[TEXT:Duplicate]</a>
+
+<a href="#" id="access"     
+    onclick="activate(this,'[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[profid]','access');closeMenu('popupcard');">
+[TEXT:goaccess]...</a>
+
+<a href="#" id="tobasket"     
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=ADDDIRFILE&dirid=[FREEDOM_IDBASKET]&docid=[id]','basket');closeMenu('popupcard');">[TEXT:Add to basket]</a>
+
+<a href="#" id="addpostit"     
+    onclick="postit('[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid=27&pit_title=[dtitle]&pit_idadoc=[id]',50,50,300,200);closeMenu('popupcard');">[TEXT:Add postit]</a>
+
+<a href="#" id="toxml"     
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=VIEWXML&id=[id]','finfo');closeMenu('popupcard');">[TEXT:View XML]</a>
+<a href="#" id="reference"     
+    onclick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_ISEARCH&id=[id]','fisearch');closeMenu('popupcard');">[TEXT:Search linked documents]</a>
+
+
+<!-- ------------ special family --------------------- -->
+<a href="#" id="chicon"     
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=QUERYFILE&id=[id]','');closeMenu('popupcard');">
+[TEXT: change icon]</a>
+
+<a href="#" id="editattr"     
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=DEFATTR&id=[id]','defattr');closeMenu('popupcard')"  >[TEXT:Edit attributes]</a>
+
+<a href="#" id="defval" 
+    onclick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&usefor=D&classid=[id]','');closeMenu('popupcard')" >[TEXT:Set default values]</a>
+
+<a href="#" id="param" 
+    onclick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&usefor=Q&classid=[id]','');closeMenu('popupcard')" >[TEXT:Parameters values]</a>
+
+<a href="#" id="chgtitle" 
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=QUERYTITLE&id=[id]','');closeMenu('popupcard')" >[TEXT:Rename]</a>
+
+
+<a href="#" id="editcprof"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&create=1&id=[id]','');closeMenu('popupcard')" >[TEXT:Change creation profile]</a>
+
+<a href="#" id="editdfld"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=EDITDFLD&id=[id]','');closeMenu('popupcard')" >[TEXT:Change default folder]</a>
+<a href="#" id="editcfld"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=EDITDFLD&current=Y&id=[id]','');closeMenu('popupcard')" >[TEXT:Change current folder]</a>
+<a href="#" id="editwdoc"
+    onclick="activate(this,'[CORE_STANDURL]&app=FREEDOM&action=EDITWDOC&current=Y&id=[id]','');closeMenu('popupcard')" >[TEXT:Choose workflow]</a>
+
+
+<!-- ------------ common latest --------------------- -->
+<a href="#" id="delete"     
+    onclick="if ((this.className == 'menuItem') || (this.className == 'menuItemCtrl'))  {ok =confirm('[TEXT:delconfirm] [dtitle] ([ftitle])'); if (ok) activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_DEL&id=[id]','');}closeMenu('popupcard');">
+[TEXT:Delete]</a>
+
+
+[BLOCK SUBMENU]
+<a  href="#" id="[idmenu]"       
+    onmouseover="openSubMenu(event,this,'popup[idmenu]');">[labelmenu] &gt;</a>
+[ENDBLOCK SUBMENU]
+<a href="#" id="cancel"  onclick="closeMenu('popupcard')"  >[TEXT:Cancel]</a>
+[IF SEP]
+<a class="separator"></a>
+[ENDIF SEP]
+
+[BLOCK ADDLINK]
+<a href="#" id="[idlink]"  
+    onclick="if (([confirm] && confirm('[tconfirm]')) || (! [confirm])) activate(this,'[url]','[target]',[barmenu]);closeMenu('popupcard');">
+[descr]</a>
+
+[ENDBLOCK ADDLINK]
+
+</div>
+<div  id="popupview" name="popupcard" class="popup">
+[BLOCK SVIEW]
+<a href="#" id="[idview]"     
+    onclick="activate(this,'[CORE_STANDURL]&app=FDL&action=FDL_CARD&vid=[idview]&id=[id]','',true);closeMenu('popupcard');">[txtview]</a>
+[ENDBLOCK SVIEW]
+</div>
+<div  id="popupedit" name="popupcard" class="popup">
+[BLOCK SEDIT]
+<a href="#" id="[idview]"     
+    onclick="activate(this,'[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&vid=[idview]&id=[id]','',true);closeMenu('popupcard');">[txtview]</a>
+[ENDBLOCK SEDIT]
+</div>
+[BLOCK SUBDIVMENU]
+<div  id="popup[idmenu]" name="popupcard" class="popup"></div>
+    <script>addSubMenuItems('popupcard','[idmenu]','popup[idmenu]');</script>
+[ENDBLOCK SUBDIVMENU]
+<!-- ------------------ end POPUP DIVISION ------------------ -->
+</div>

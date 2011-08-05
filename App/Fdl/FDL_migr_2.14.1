@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ "$freedom_context" == "" ]; then
+    #load environement variable for freedom
+  . /etc/freedom.conf
+   wchoose -b
+fi
+
+PGSERVICE="$pgservice_freedom" psql -c "alter table docfam add column maxrev int;"

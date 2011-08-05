@@ -1,0 +1,83 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TITLE] [doctitle]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom">
+
+                         
+<!-- Title Table -->
+<form  class="fborder" name="modifyfreedom" method="POST"  action="[CORE_STANDURL]&app=[APPNAME]&action=MODDFLD&current=[current]&docid=[docid]" >
+
+
+                         
+<input type="hidden" id="autofolder" name="autofolder" value="N"> 
+
+<input type="hidden" name="title" value="[TITLE]"> 
+
+<div class="TITLE">
+<p>[TITLE]</p>
+<table width="100%"  cellspacing="0" cellpadding="0" >
+<tr class="FREEDOMBack1">
+ <td >
+   <span class="FREEDOMTextTitle">[doctitle]</span>
+  </td> 
+  <td  align="right"><span class="FREEDOMText">[IF ROOTFOLDER][TEXT:Folder][ENDIF ROOTFOLDER][IFNOT ROOTFOLDER][TEXT:Search][ENDIF ROOTFOLDER]</span> : 
+   <select name="dfldid" >   
+           <option VALUE="0">[IF ROOTFOLDER][TEXT:no folder][ENDIF ROOTFOLDER][IFNOT ROOTFOLDER][TEXT:no search][ENDIF ROOTFOLDER]</option>      
+         [BLOCK SELECTFLD]
+           <option VALUE="[idpdoc]" [selected]>[profname]</option>   
+         [ENDBLOCK SELECTFLD]
+           
+    </select>
+   </td>
+</tr>
+<tr class="FREEDOMBack1">
+  
+  <td  colspan="2" align="right" class = "tdstyle">
+ [IF ROOTFOLDER]<input type="submit" [autodisabled] onclick="document.getElementById('autofolder').value='Y'" 
+        value="[TEXT:Create New]"> &nbsp;&nbsp;&nbsp;[ENDIF ROOTFOLDER]
+ <input type="submit" value="[TEXT:Validate]"> 
+ <input type="reset" value="[TEXT:Cancel]" onclick="document.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[docid]'"> 
+  
+  </td>
+</tr>
+</table>
+</div>
+<!-- Frame Table -->
+
+
+
+
+
+</form>
+<!--  FOOT HTML -->
+
+</body>
+</html>

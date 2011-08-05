@@ -1,0 +1,70 @@
+[ZONE CORE:HTMLHEAD]
+
+<script>
+function viewornot(id) {
+  var o=document.getElementById(id);
+  if (o) {
+    if (o.style.display=='none') o.style.display='';
+    else o.style.display='none';
+  }
+}
+function view(id) {
+  var o=document.getElementById(id);
+  if (o && o.style.display=='none')   o.style.display='';   
+  if (o && o.style.visibility=='hidden')   o.style.visibility='visible';    
+}
+function unview(id) {
+  var o=document.getElementById(id);
+  if (o.style.visibility=='visible') o.style.visibility='hidden';
+  else if (o)   o.style.display='none';    
+}</script>
+
+<button onclick="viewornot('genefs');return false">[TEXT:New Vault FS]</button>
+<form  name="fcreatefs"style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=VAULT&action=VAULT_CREATEFS"><div style="display:none" id="genefs"> [TEXT:Directory] : <input type=text size=30 name="directory"> [TEXT:Size] : <input type=text size=3 name="size"><select name="unitsize"><option title="[TEXT:thousands bytes]" value="Kb">[TEXT:Kb]</option><option title="[TEXT:million bytes]" selected value="Mb">[TEXT:Mb]</option><option  value="Gb" title="[TEXT:thousands of Megabytes]">[TEXT:Gb]</option><option title="[TEXT:million of Megabytes]" value="Tb">[TEXT:Tb]</option></select><button>[TEXT:Generate new vault]</button></div>
+</form>
+<hr>
+[BLOCK FS]
+<table class="tableborder" width="700px"  onmouseover="view('inputs[fsid]')" onmouseout="unview('inputs[fsid]')">
+<thead>
+<tr><td style="text-align:left;;background-color:[COLOR_A9];" colspan="2"><b>[TEXT:Directory] : [path]</b><br>
+       <span id="inputs[fsid]" style="visibility:hidden">
+         <input  type="button" onclick="unview('tmove[fsid]');view('tincrease[fsid]');return false" value="[TEXT:Increase vault size]"> 
+	 [IF orphan]<input   type="button" onclick="document.location.href='[CORE_STANDURL]&app=VAULT&action=VAULT_CLEAN&idfs=[fsid]&clean=orphan'" value="[TEXT:Clear orphan]"> [ENDIF orphan]	 
+	 <input type="button" onclick="unview('tincrease[fsid]');view('tmove[fsid]');return false" value="[TEXT:Move directory]"></span>
+      </td></tr>
+<tr id="tincrease[fsid]" style="display:none;background-color:[COLOR_A8];"><td colspan="2" style="text-align:center">
+   <form  name="increase[fsid]" style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=VAULT&action=VAULT_INCREASEFS"><input type="hidden" size=3 name="idfs" value="[fsid]"><b>[TEXT:New size]</b>  : <input type=text size=3 name="size">
+        <select name="unitsize"><option title="[TEXT:thousands bytes]" value="Kb">[TEXT:Kb]</option><option title="[TEXT:million bytes]" selected value="Mb">[TEXT:Mb]</option><option  value="Gb" title="[TEXT:thousands of Megabytes]">[TEXT:Gb]</option><option title="[TEXT:million of Megabytes]" value="Tb">[TEXT:Tb]</option></select>
+        <input type="submit" value="[TEXT:Increase FS]">
+   </form>
+</td></tr>
+<tr id="tmove[fsid]" style="display:none;background-color:[COLOR_A8];"><td colspan="2" style="text-align:center">
+   <form  name="move[fsid]" style="display:inline"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=VAULT&action=VAULT_MOVEFS"><input type="hidden" size=3 name="idfs" value="[fsid]"><b>[TEXT:New directory]</b> : <input type=text size=40 name="directory" value="">
+        <input type="submit" value="[TEXT:Move FS]">
+   </form>
+</td></tr>
+<tr style="background-color:[COLOR_A8];height:2px"><td colspan="2"></td></tr>
+</thead>
+<tbody  >
+    <tr>
+        <td style="width:50%"><b style="font-size:200%;margin-right:40px">[pcrealused]</b> [TEXT:Capacity] : <b>[total]</b>, [count]
+	<table align="center"><tr><td><li style="list-style-type:square;color:#900000"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Used] :</span></li></td><td><b>[used]</b> - [pcoccuped]</td></tr>
+	       <tr><td><li style="list-style-type:square;color:#b54f12"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Trash] :</span></td><td><b>[trash_size]</b> - [pctrash]</td></tr>
+	       [IF orphan]<tr><td><li style="list-style-type:square;color:#b59412"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Orphean] :</span></td><td><b>[orphean_size]</b> - [pcorphean]</span></td></tr>[ENDIF orphan]
+	       <tr><td><li style="list-style-type:square;color:#009000"><span style="color:[CORE_TEXTFGCOLOR]">[TEXT:Free]</span></td><td><b>[free]</b> - [pcfree]</td></tr>
+	       </table>
+         </td>
+   <td style="vertical-align:top;" ><img  src="[CORE_STANDURL]&app=VAULT&action=VAULT_DISKIMAGE&idfs=[fsid]"><img style="[IF ISIE]filter:alpha(opacity=50);[ENDIF ISIE]opacity:0.5;position:absolute;margin-left:-150px;width:100px" src="[IMG:harddrive100.png]"></td>
+</tr>
+</tbody>
+</table>
+<br>
+
+[ENDBLOCK FS]
+[ZONE CORE:HTMLFOOT]

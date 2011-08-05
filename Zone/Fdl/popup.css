@@ -1,0 +1,138 @@
+
+/* pop up style */
+
+
+
+.popup {
+  background-color: [CORE_FGCOLOR];  
+  background-image: [CORE_FGIMGMENU];
+  border-color: [CORE_FGCOLOR];
+  border-style: outset;
+  border-width: 2px; 
+  margin: 0px;
+  position: absolute;
+  visibility: hidden;
+  text-decoration: none;
+  z-index:10;
+}
+
+.popup img {
+  width:15px;
+  height:15px;
+}
+.popup a.menuItem * {
+  color: [CORE_TEXTBGCOLOR];
+}
+
+@media print {
+  .popup {
+    display:none;
+  }
+}
+
+a.menuItem, a.menuItem:link, a.menuItem:visited {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: transparent; 
+  cursor: default;
+  display: block;
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 2px 12px 2px 8px;
+  text-decoration: none;
+  white-space:nowrap;
+}
+
+a.menuItemCtrl:link, a.menuItemCtrl:visited {
+  color: [CORE_TEXTBGCOLOR];
+  background-color: transparent; 
+  border-style:none  none none outset;
+  border-width:3px;
+  cursor: default;
+  display: block;
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 2px 12px 2px 8px;
+  text-decoration: none;
+  white-space:nowrap;
+}
+
+a.separator {
+  color: [CORE_BGCOLORALTERN];
+  background-color: [CORE_FGCOLOR];
+  background-image: [CORE_FGIMGMENU];
+  cursor: default;
+  display: block;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px;
+  border-color : [CORE_TEXTBGCOLOR];
+  border-style : solid none none none;
+  border-width : 1px 0px 0px 0px;
+  text-decoration: none;
+}
+
+popup a.separator:hover {
+  text-decoration: none;
+  color: [CORE_BGCOLORALTERN];
+  background-color: [CORE_FGCOLOR];  
+  background-image: [CORE_FGIMGMENU];	
+}
+
+.popup a.menuItem:hover,.popup a.menuItemCtrl:hover  {
+  color: [CORE_TEXTFGCOLOR];
+  background-color: [CORE_BGCOLORALTERN];
+  text-decoration: none;	
+}
+.popup a.menuItemDisabled:hover,.popup a.menuItemCtrlDisabled:hover {
+  color: [CORE_BGCOLORALTERN];
+  background-color: [CORE_BGCOLORALTERN];
+  text-decoration: none;	
+}
+.popup a.menuItem:hover *,.popup a.menuItemCtrl:hover *  {
+  color: [CORE_TEXTFGCOLOR];
+}
+.popup a.menuItemDisabled:hover *,.popup a.menuItemCtrlDisabled:hover * {
+  color: [CORE_BGCOLORALTERN]	
+}
+
+a.menuItemDisabled, a.menuItemDisabled:link,a.menuItemDisabled:visited,a.menuItemCtrlDisabled,a.menuItemCtrlDisabled:link,a.menuItemCtrlDisabled:visited { 
+  color: [CORE_BGCOLORALTERN];
+  background-color: transparent; 
+  cursor: default;
+  display: block;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-style: italic;
+  padding: 2px 12px 2px 8px;
+  text-decoration: none;
+}
+a.menuItemCtrlDisabled:link {
+  border-style:none none none outset;
+  border-width:3px;
+  border-color:[CORE_BGCOLORALTERN];
+}
+
+a.menuItemInvisible{ 
+  display: none;
+  cursor: default;
+}
+/* don't use: not supported by IE6  with hover
+a.menuItem:first-letter, a.menuItemDisabled:first-letter {
+  text-transform: uppercase;
+}
+*/
+
+TR.popupsource TD.tlist,  TR.popupsource TD  {
+  border-top-style:dashed!important;
+  border-bottom-style:dashed!important;
+  border-width:1px!important;
+  border-color:[COLOR_C0]!important;
+}
+
+
+DIV.popupsource, .popupsource {
+  border-style:dashed!important;
+  border-width:1px!important;
+  border-color:[COLOR_C0]!important;
+}

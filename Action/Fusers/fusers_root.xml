@@ -1,0 +1,18 @@
+<html>
+<head>
+
+<title>[TEXT:Users Management]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
+
+</head>
+
+
+
+<frameset name="ffusers" id="fgtop" frameborder="1" framespacing="3" border="3"  cols="350px,*">
+     <frame name="flist" src="[CORE_STANDURL]&app=[APPNAME]&action=FUSERS_LIST" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+     <frame name="finfo[APPNAME]" src="[CORE_STANDURL]&app=GENERIC&action=GENERIC_LOGO&famid=128" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+</frameset>
+
+
+
+</html>

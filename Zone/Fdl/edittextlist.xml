@@ -1,0 +1,24 @@
+<select [disabled] id="schoose[id]" [oc]
+	onchange="if (this.options[this.selectedIndex].value > -1) completechoice(this.options[this.selectedIndex].value,tattrid[id],tattrv[id],window);" > 
+<option value="-1"  disabled style="display:none"></option> 
+                    [BLOCK SELECTENUM]
+<option [selected] value="[cindex]" >[choice]</option>        
+                    [ENDBLOCK SELECTENUM]
+</select>
+<input type="[atype]"  name="[name]" id="[id]" value="[value]" [adisabled]>
+<script language="JavaScript1.2">
+  <!--
+var tattrid[id]= new Array();
+    tattrid[id]= [attrid];
+
+var tattrv[id]= new Array();
+[BLOCK ATTRVAL]
+tattrv[id][[index]] =[attrv]; 
+[ENDBLOCK ATTRVAL]
+
+if ('[value]' == '') {
+  // preload first value
+  setTimeout('completechoice(0,tattrid[id],tattrv[id],window)',1000);
+}
+-->
+</script>  

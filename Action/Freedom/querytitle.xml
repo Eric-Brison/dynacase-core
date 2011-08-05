@@ -1,0 +1,50 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[APP_TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="freedom">
+
+
+
+
+<!-- Title Table -->
+<div class="TITLE">
+
+<p>[TEXT: change title]</p>
+<p>[title]</p>
+<img src="[iconsrc]" alt="icon">
+<form  name="edit" method="POST"  action="[CORE_STANDURL]app=[APPNAME]&action=CHANGETITLE&id=[docid]">
+      
+  <input type="text" name="ititle" value="[title]">
+  <input type="submit" value="[TEXT:Change title]" >
+  <input type="submit" value="[TEXT:Cancel]" onclick="document.edit.action='[CORE_STANDURL]app=FDL&action=FDL_CARD&id=[docid]'">
+</form>
+</div>
+
+
+</body>
+</html>

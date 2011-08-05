@@ -1,0 +1,44 @@
+<!-- 
+  $Id: param_alist.xml,v 1.4 2005/04/14 09:53:50 marc Exp $
+  $Source: /home/cvsroot/anakeen/freedom/core/Action/Appmng/param_alist.xml,v $
+-->
+
+<style>
+.gparam {   
+   font-weight:bold
+}
+.aparam {   
+
+}
+IMG.gparam, IMG.aparam {   
+   display:none;
+}
+</style>
+<table width="90%" align="center"  border="0" cellspacing="0" cellpadding="0">
+<tr><td colspan="3">
+[ZONE CORE:TABINDEX] 
+</td></tr>
+
+
+ <tr>
+  <td class="CORETblHeadCell">
+    
+  </td>
+  
+     <td class="CORETblHeadCell"><span class="CORETblHead">&nbsp;[TEXT:application parameters list]</span></td>
+     <td valign="baseline" align="right" class="CORETblHeadCell"><span class="CORETblHead">
+
+    <a href="#" onclick="showAllParam()">
+      <img height="22" alt="[TEXT:print]" title="[TEXT:view all]" border="0" src="[IMG:view.gif]">
+      </a>
+    <a href="#" onclick="self.print()">
+      <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
+      </a>
+  
+    </td>
+ </tr>
+</table>
+
+
+[ZONE APPMNG:PARAM_LIST?pview=allapp]
+

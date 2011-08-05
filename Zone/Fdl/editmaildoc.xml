@@ -1,0 +1,8 @@
+
+[ZONE FDL:EDITARRAY?arrayid=MAIL_DEST]
+
+<table style="width:100%">
+<tr><td  class="FREEDOMLabel">[L_MAIL_SUBJECT] : </td><td style="width:50%">[V_MAIL_SUBJECT]</td><td  class="FREEDOMLabel">[L_MAIL_FORMAT] : </td><td>[V_MAIL_FORMAT]</td></tr>
+<tr><td  class="FREEDOMLabel">&nbsp;</td><td colspan="2">&nbsp;</td><td  class="FREEDOMLabel"><label for="mail_savecopy">[L_MAIL_SAVECOPY]</label> : </td><td>[V_MAIL_SAVECOPY]</td></tr>
+<tr><td colspan="6" >[L_MAIL_CM] : [V_MAIL_CM]</td></tr>
+</table>

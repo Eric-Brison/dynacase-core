@@ -1,0 +1,114 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:edition: ] [TITLE]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+   
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+
+    [JS:CODE]
+
+
+var ourl=window.opener.location.href;
+function autoclose() {
+  if (window.opener.location.href != ourl) self.close();
+}
+window.setInterval('autoclose()',2000);
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom" 
+      onLoad="editOnLoad();autoVresize();" 
+      onbeforeunload="if (document.isChanged && (! document.isSubmitted) && (! document.isCancelled))return '[STITLE]:[TEXT:Changes will be loosed if you continue]'";
+      onUnLoad="closechoose();"
+      onResize="resizeInputFields()">
+
+<form id="fviewidoc"
+      name="fviewidoc"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=VIEWICARD"
+      >
+
+<input type="hidden" name="xml">
+<input type="hidden" name="famid">
+</form>
+
+<form id="fidoc"
+      name="fidoc"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_IEDIT";
+      >
+<input type="hidden" name="xml">
+<input type="hidden" name="famid">
+<input type="hidden" name="attrid">
+<input type="hidden" name="type_attr">
+</form>
+
+
+
+
+<!-- Title Table -->
+<form  id="fedit" 
+       class="fborder" 
+       name="modifydoc" 
+       method="POST" ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_IMOD&famid=[famid]&attrid=[attrid]" >
+<input type="hidden" id="idattr" value="[attrid]">
+<INPUT TYPE="hidden" name="id" value="[id]"></input>
+<input type="hidden" name="noredirect" value="0">
+
+
+<table class="tableborder"  cellspacing="0" width="100%">
+<thead>
+<tr class="FREEDOMBack1">
+ <td  colspan="2"><IMG   border="0"   alt="icon" align="absbottom" height="25px" SRC="[iconsrc]">
+   <span class="FREEDOMTextBigTitle">[TITLE]</span>
+  </td> 
+</tr>
+<tr class="FREEDOMBack2"><td  colspan="3"><img src="[IMG:1x1.png]" border="0"></td></tr>
+</thead> 
+   </table>
+ 
+[ZONE FDL:EDITCARD]
+
+
+<input type="hidden" name="xml_initial" id="xml_initial" value="[xml_initial]">
+<table class="tableborder"  cellspacing="0" width="100%">
+<tfoot>
+<tr class="FREEDOMBack2"><td  colspan="3"><img src="[IMG:1x1.png]" border="0"></td></tr>
+<tr class="FREEDOMBack1">
+  <td  align="right" id="editbutton">
+<input id="iQuicksave" type="button"  style="display:none" onmouseout="viewquick(event,false)"  value="[TEXT:Quick Save]" onclick="if (hasOpener()) quicksave();return false">
+ <input id="iSubmit" type="submit" value="[TEXT:Ok]" onmouseover="viewquick(event,true)"
+        onclick="if ((!hasOpener()) || (!canmodify())) return false;enableall();document.isSubmitted=true;return true">  
+ <input type="button" value="[TEXT:Close]" onclick="document.isCancelled=true;window.close();"> 
+  </td>
+</tr>
+</tfoot>
+</table>
+</form>
+<iframe name="fhsave" style="visibility:hidden;display:none" src="[IMG:1x1.gif]"></iframe>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[APP_TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="freedom">
+
+
+
+
+<!-- Title Table -->
+<div class="TITLE">
+
+<p>[TEXT: change icon]</p>
+<p>[title]</p>
+<img src="[iconsrc]" alt="icon">
+<form  name="edit" method="POST" ENCTYPE="multipart/form-data" action="[CORE_STANDURL]app=[APPNAME]&action=CHANGEICON&id=[docid]">
+  <input type="file" name="ifile" value="[ifilevalue]">
+  <input type="submit" value="[TEXT: lauch importation]" >
+</form>
+</div>
+
+
+</body>
+</html>

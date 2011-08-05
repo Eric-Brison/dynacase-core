@@ -1,0 +1,111 @@
+
+
+<script type="text/javascript">
+
+
+var lOnglet = [ 'contact', 'society', 'others' ];
+
+
+addEvent(window,"load",viewFirstTab);
+
+</script>
+
+[ZONE FDL:POPUPCARD]
+<div class="fabcard">
+
+<table class="fabtable"  cellspacing="0" border="0">
+
+<tr>
+<td width="80px" align="center">
+<img src="[IF S_US_PHOTO][V_US_PHOTO][ENDIF S_US_PHOTO][IFNOT S_US_PHOTO][IMG:faddbook_nophoto.gif][ENDIF S_US_PHOTO]" width="80px">
+</td>
+<td>
+<div class="fabctitlep">[IF S_US_CIVILITY]<span class="fabcciv">[V_US_CIVILITY]</span>&nbsp;[ENDIF S_US_CIVILITY][IF S_US_FNAME]<span class="fabctitle">[V_US_FNAME]</span>&nbsp;[ENDIF S_US_FNAME]<span class="fabctitle">[V_US_LNAME]</span></div>
+[IF S_US_SOCIETY]<div class="fabctitlep"><span class="fabcsoc"><a href="[CORE_STANDURL]app=FDL&action=FDL_CARD&zone=USERCARD:FADDBOOKSOC_CARD:U&id=[US_IDSOCIETY]">[US_SOCIETY]</a></span></div>[ENDIF S_US_SOCIETY]
+</td></tr>
+
+<tr><td></td><td><div height="30px">&nbsp;</div></td></tr>
+
+<tr valign="top">
+
+<td class="fabogcontent" align="center">
+
+<div id="ocontact" class="fabogsel" onmouseout="if (this.className!='fabogsel') this.className='fabog'" onmouseover="if (this.className!='fabogsel') this.className='fabogover';" onclick="showInfo('contact')">[TEXT:contact]</div>
+<div id="osociety" class="fabog" onmouseout="if (this.className!='fabogsel') this.className='fabog'" onmouseover="if (this.className!='fabogsel') this.className='fabogover';" onclick="showInfo('society')">[TEXT:society]</div>
+<div id="oothers" class="fabog" onmouseout="if (this.className!='fabogsel') this.className='fabog'" onmouseover="if (this.className!='fabogsel') this.className='fabogover';" onclick="showInfo('others')">[TEXT:other]</div>
+
+</td>
+
+<td>
+
+<div class="fabogdetail" id="contact"><table class="fabtable" width="100%">
+[IF S_US_MAIL]<tr>
+<td align="right"><span class="fabccom">[L_US_MAIL]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_US_MAIL]</span></td>
+</tr>[ENDIF S_US_MAIL]
+
+<tr><td colspan="3">&nbsp;</td><tr>
+
+[IF S_US_PPHONE]<tr>
+<td align="right"><span class="fabccom">[L_US_PHONE]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_US_PPHONE]</span></td>
+</tr>[ENDIF S_US_PPHONE]
+[IF S_US_MOBILE]<tr>
+<td align="right"><span class="fabccom">[L_US_MOBILE]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_US_MOBILE]</span></td>
+</tr>[ENDIF S_US_MOBILE]
+[IF S_US_PFAX]<tr>
+<td align="right"><span class="fabccom">[L_US_FAX]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_US_PFAX]</span></td>
+</tr>[ENDIF S_US_PFAX]
+
+[IF S_US_INTPHONE]
+<tr><td colspan="3">&nbsp;</td><tr>
+
+<tr>
+<td align="right"><span class="fabccom">[L_US_INTPHONE]</span></td>
+<td align="center"><span class="fabccom">:</span></td>
+<td align="left"><span class="fabcrub">[V_US_INTPHONE]</span></td>
+</tr>[ENDIF S_US_INTPHONE]
+</table>
+</div>
+
+<div id="society" class="fabogdetail" style="display:none"><table class="fabtable" width="100%"><tr><td width="20%"></td><td width="20%"></td><td width="60%"></td></tr>
+
+
+<tr><td></td><td colspan="2" align="left"><div class="fabcaddress">[TEXT:address]</div><div>&nbsp;</div></td></tr>
+[IF S_US_WORKADDR]<tr><td></td>
+<td colspan="2"><span class="fabcrub">[V_US_WORKADDR]</span></td></tr>[ENDIF S_US_WORKADDR]
+<tr><td></td>
+<td colspan="2"><span class="fabcrub">[IF S_US_WORKPOSTALCODE][V_US_WORKPOSTALCODE] [ENDIF S_US_WORKPOSTALCODE][V_US_WORKTOWN][IF S_US_WORKCEDEX]</span><span class="fabccom"> </span> <span class="fabcrub">[V_US_WORKCEDEX]</span>[ENDIF S_US_WORKCEDEX]</td></tr>
+[IF S_US_COUNTRY]<tr><td></td><td colspan="2"><span class="fabcrub">[V_US_COUNTRY]</span></td></tr>[ENDIF S_US_COUNTRY]
+
+<tr><td></td><td colspan="2" align="left">
+<div class="fabcaddress">[TEXT:other infos]</div><div>&nbsp;</div></td></tr>
+
+[IF S_US_WORKWEB]<tr><td></td>
+<td colspan="2"><span class="fabccom">[TEXT:web]&nbsp;</span><span class="fabcrub">[V_US_WORKWEB]</span></td></tr>[ENDIF S_US_WORKWEB]
+[IF S_US_SCATG]<tr><td></td>
+<td colspan="2"><span class="fabccom">[TEXT:categorie]&nbsp;</span><span class="fabcrub">[V_US_SCATG]</span></td></tr>[ENDIF S_US_SCATG]
+
+</table>
+</div>
+
+<div class="fabogdetail" id="others" style="display:none">
+<div id="ttabs" class="tabh">
+[BLOCK TABS]
+<span  onclick="showAttributes(event,this,[aids])">[tabtitle]</span>
+[ENDBLOCK TABS]</div>
+<table  class="tab" width="100%" id="tothers">
+[BLOCK OTHERS]
+<tr class="tro" id="TR[aid]">[IFNOT isarray]<td width="30%" align="right" ><span class="fabccom">[lothers]&nbsp;:</span></td>[ENDIF isarray]<td [IF isarray]colspan="2"[ENDIF isarray]><span class="fabcrub">[vothers]</span></td></tr>
+[ENDBLOCK OTHERS]
+</table>
+</div>
+</td>
+</tr></table>
+

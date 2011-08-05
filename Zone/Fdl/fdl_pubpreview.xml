@@ -1,0 +1,18 @@
+<html>
+<head>
+<title>[TEXT:PubliPreview]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+</head>
+
+
+
+  <frameset  frameborder="yes" border=3  framespacing="3" rows="50px,*" 
+            scrolling="no" frameborder="no" >
+     <frame name="navpreview"  src="[CORE_STANDURL]&app=FDL&action=VIEWSCARD&id=[dirid]&zone=FDL:FDL_PUBNAVPREVIEW:S" scrolling="no" bordercolor="[CORE_FGCOLOR]" >
+
+  
+       <frame name="onepreview" src="[IMG:1x1.gif]" 
+              scrolling="needed" bordercolor="[CORE_FGCOLOR]"  >
+    
+  </frameset>
+</html>

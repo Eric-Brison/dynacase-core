@@ -1,0 +1,102 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:mail edition]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+<script type="text/javascript" src="[CORE_STANDURL]app=FDL&action=EDITJS"></script>
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+
+function sendState(w) {
+ 
+    w.location.href='[CORE_STANDURL]&app=FREEDOM&action=MODSTATE&id=[mid]&newstate=[state]&fstate=yes&comment=[TEXT:email sended]';
+}
+function viewCard(w) {
+ 
+    w.location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&latest=Y&id=[mid]';
+}
+
+  //-->
+   </script>   
+
+
+
+ </head>
+
+<body class="freedom" 
+      onLoad="resizeInputFields()"
+      onUnLoad="closechoose()"
+      onResize="resizeInputFields()">
+
+
+<!-- Title Table -->
+<form  id="fedit"  
+       class="fborder" 
+       name="modifydoc" 
+       method="POST" ENCTYPE="multipart/form-data" 
+       action="[CORE_STANDURL]&app=FDL&action=MAILCARD&target=mail&ulink=[ulink]&props=N&cr=Y&id=[mid]" >
+
+<input type="hidden" name="zone" value="[mzone]">
+<input type="hidden" name="szone" value="[szone]">
+<input type="hidden" name="dochead" value="[dochead]">
+<input type="hidden" name="state" value="[state]">
+
+<table class="tableborder"  cellspacing="0" width="100%">
+<thead>
+<tr class="FREEDOMBack1">
+ <td  colspan="3">
+   <span class="FREEDOMTextBigTitle">[TEXT:mail edition]-[title]</span>
+  </td> 
+</tr>
+
+<tr class="FREEDOMBack2"><td  colspan="3" height="1px"></td></tr>
+</thead>
+</table>
+[ZONE FDL:EDITCARD?classid=15]
+
+<table>
+<tfoot>
+<tr class="FREEDOMBack2"><td  colspan="3"  height="1px"></td></tr>
+<tr class="FREEDOMBack1">
+  <td  >
+ <input type="submit" title="[TEXT:Send the email and change document state to] [tstate]" 
+        value="[TEXT:send mail]" onclick="if (!canmodify()) return false;enableall();"> 
+ 
+
+  </td>
+  <td align="right" >
+ <input type="button" title="[TEXT:Change the document state to] [tstate]" 
+        value="[TEXT:confirm manually send]" onclick="sendState(self);"> </td>
+  <td align="right" >
+ <input type="button" value="[TEXT:cancel]" onclick="location.href='[CORE_STANDURL]&app=FDL&action=FDL_CARD&refreshfld=Y&latest=Y&id=[mid]'"> 
+  </td>
+  
+</tr>
+</tfoot>
+</table>
+</form>
+<!--  FOOT HTML -->
+
+
+<iframe width="100%" src="[CORE_STANDURL]&app=FDL&action=IMPCARD&dochead=[dochead]&zone=[mzone]&szone=[szone]&id=[mid]"></iframe>
+
+
+</body>
+</html>

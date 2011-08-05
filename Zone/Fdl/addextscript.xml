@@ -1,0 +1,24 @@
+ [IF debug]
+            <script type="text/javascript" src="lib/ext/adapter/ext/ext-base-debug.js"></script>
+                <script type="text/javascript" src="lib/ext/ext-all-debug.js"></script>
+        
+        <!-- Freedom Data Library -->
+        <script type="text/javascript" src="lib/data/fdl-data-debug.js?v=[WVERSION]"></script>
+        
+        <!-- Freedom Widget Library -->
+        <script type="text/javascript" src="lib/ui/freedom-extui-debug.js?v=[WVERSION]"></script>
+        [ENDIF debug]
+            [IFNOT debug]
+        <script type="text/javascript" src="lib/ext/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="lib/ext/ext-all.js"></script>
+        
+        <!-- Freedom Data Library -->
+        <script type="text/javascript" src="lib/data/fdl-data.js?v=[WVERSION]"></script>
+        
+        <!-- Freedom Widget Library -->
+        <script type="text/javascript" src="lib/ui/freedom-extui.js?v=[WVERSION]"></script>
+            [ENDIF debug]
+            
+            [IF lang]
+        <script type="text/javascript" src="lib/ext/src/locale/ext-lang-[lang].js"></script>
+            [ENDIF lang]

@@ -1,0 +1,71 @@
+
+
+[IFNOT MAILVIEW]
+<div id="error" class="COREError" onmouseup="this.style.visibility='hidden'"  onmouseover="this.className='COREErrorBg'"  onmouseout="this.className='COREError'" 
+     style="display:none;position:absolute;top:0px; left:0px;">
+<div  class="CoreTextError">[TEXTERROR]</div>
+</div>
+<form target="fhidden" style="display:inline" action="[CORE_BASEURL]&app=FDL&action=MVIEW_SAVEGEO" method=post name="savegeo" id="savegeo">
+<input type="hidden" name="geometry" id="geometry" value="">
+</form>
+<script language="JavaScript">
+<!-- 
+if ("[LGTEXTERROR]" != "0") {
+  centerError();
+  window.onscroll=centerError;
+}
+if ("[refreshfld]" == "Y")  refreshParentWindows();
+
+[IF POSTIT]if (parseInt('[postitid]') > 0) setTimeout("postit('[CORE_STANDURL]&app=FDL&action=FDL_CARD&dochead=N&id=[postitid]')",1000);[ENDIF POSTIT]
+if (parseInt('[waskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FDL&action=EDITWASK&docid=[id]&waskid=[waskid]')",1000);
+if (parseInt('[latestwaskid]') > 0) setTimeout("viewwask('[CORE_STANDURL]&app=FDL&action=GOTOWASK&id=[latestwaskid]')",1000);
+[IF verifyfiles]addEvent(window,"load",function fileverf() {verifycomputedfiles('[id]');}) [ENDIF verifyfiles]
+-->
+</script>
+[IF HEAD]
+<table class="noprint documentHead"  cellspacing="0" width="100%"   >
+<thead>
+<tr class="FREEDOMBack1">  
+ <td > <img class="click"  style="margin-left:2px" align="right" needresize="1" height="22px" onclick="self.print()"  alt="[TEXT:Print]" title="[TEXT:Print]"  src="[IMG:print.png]">
+       <img class="click"  align="right" needresize="1" height="22px" src="[IMG:mail.png]" style="display:[amail]"  onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'email[id]','[CORE_STANDURL]&app=FDL&action=EDITMAIL&mid=[id]')"   alt="[TEXT:mail]"  title="[TEXT:senddoc]">
+   
+<div id="url[id]" onmouseout="visibleornot('url[id]');" style="position:absolute; visibility:hidden; display:inline; margin:10px; padding:10px; border:1px inset [COLOR_C2]; color:[COLOR_B1]; background-color:[COLOR_C9];  font-size:85%">[CORE_EXTERNURL][CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]</div>
+    <IMG align="left" class="documentIcon" border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1"  SRC="[iconsrc]" onclick="visibleornot('url[id]');" >
+<IMG  style="float:left" class="emblem" title="[locked]" SRC="[emblem]">
+   [IF forum]<a href="#forum" style="border:0px"><IMG  style="border:0px;float:left;cursor:pointer" class="emblem" title="[TEXT:goto forum]" SRC="[IMG:forum.png]"></a>[ENDIF forum]
+   [IF postitid]<IMG  style="float:left;cursor:pointer" class="emblem" title="[TEXT:View postit]" onclick="showbox('POSTIT')" SRC="[IMG:stickynotes.png]">[ENDIF postitid]
+  [IF RSS]<a href="[rsslink]"><IMG  style="float:left;border:none" class="emblem" title="[TEXT:RSS link]" SRC="[IMG:rss22.png]"></a>[ENDIF RSS]
+  <span class="familyTitle">[classtitle]</span><br>
+<span class="FREEDOMTextBigTitle documentTitle">[title]</span>
+
+<div  style="float:right">
+  <a  style="display:none" href="[CORE_STANDURL]&app=FDL&action=VIEWSCARD&wedit=Y&id=[id]" target="_blank"><img  align="absmiddle"  alt="[TEXT:wordedit]" title="[TEXT:wordedit]" height="22" width="30" border="0" src="[IMG:openoffice.png]"></a>   
+      <img class="click" style="display:[dhelp]" align="absmiddle"  onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'[fhelp]','[CORE_STANDURL]&app=FDL&action=FAMILY_HELP&id=[helpid]')"  alt="[TEXT:help]" title="[TEXT:family manual]"  src="[IMG:help.gif]"> 
+         <span ><b title="[TEXT:Version]">[version]</b> <a onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'graph','[CORE_STANDURL]&app=FDL&action=VIEW_WORKFLOW_GRAPH&size=20&orient=TB&id=[wid]')"><b class="statetext" style="border-color:[statecolor]" title="[TEXT:View cycle graph]">[state]</b></A></span></div>
+[IF ACTIONS]  
+[ZONE FDL:VIEWBARMENU]
+[ENDIF ACTIONS]
+  </td>
+</tr>
+</thead>
+</table>
+<table class="onlyprint"><tr><td>
+<IMG  border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1" width="[SIZE_IMG-MEDIUM]" SRC="[iconsrc]"></td><td><I style="font-size:70%">[classtitle]</I><br><H1>[title]</H1></td></tr></table>
+[ENDIF HEAD]
+
+[IFNOT HEAD]
+[IF viewbarmenu]	[IF ACTIONS]  
+[ZONE FDL:VIEWBARMENU]
+[ENDIF ACTIONS][ENDIF viewbarmenu]
+[ENDIF HEAD]
+
+[ENDIF MAILVIEW]
+[IF MAILVIEW][IF HEAD]
+<table><tr><td>
+<IMG  border="0"  title="[classtitle]" alt="[classtitle]" align="absbottom" needresize="1" width="[SIZE_IMG-MEDIUM]" SRC="[iconsrc]"><br><I style="font-size:70%">[classtitle]</I></td><td><H1>[IF ulink]<a href="[CORE_EXTERNURL][CORE_STANDURL]&app=FDL&action=FDL_CARD&id=[id]">[ENDIF ulink][title][IF ulink]</a>[ENDIF ulink]</H1></td></tr></table>
+[ENDIF HEAD][ENDIF MAILVIEW]
+
+<!-- TABLEBODY -->
+[ZONEBODYCARD]
+
+

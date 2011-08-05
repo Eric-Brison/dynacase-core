@@ -1,0 +1,24 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\editdav]
+@="URL:editdav Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\editdav\shell]
+
+[HKEY_CLASSES_ROOT\editdav\shell\open]
+
+[HKEY_CLASSES_ROOT\editdav\shell\open\command]
+@="wscript.exe \"C:\\WINDOWS\\opendav.vbs\" 0 \"%1\"" 
+
+
+[HKEY_CLASSES_ROOT\asdav]
+@="URL:asdav Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\asdav\shell]
+
+[HKEY_CLASSES_ROOT\asdav\shell\open]
+
+[HKEY_CLASSES_ROOT\asdav\shell\open\command]
+@="wscript.exe \"C:\\WINDOWS\\opendav.vbs\" 1 \"%1\"" 

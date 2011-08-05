@@ -1,0 +1,23 @@
+
+
+<fieldset><legend>[TEXT:Search criteria]</legend>
+
+[ZONE FDL:EDITCARD?zone=FREEDOM:EDITDSEARCH]
+
+</fieldset>
+
+<table  cellspacing="0" cellpadding="0" width="100%">
+<tbody>
+
+[ZONE FDL:EDITFRAME?frameid=REP_FR_PRESENTATION]
+
+
+
+</tbody>
+</table>
+
+
+
+<script language="javascript">
+  addEvent(document.modifydoc,'submit',deletenew);
+</script>

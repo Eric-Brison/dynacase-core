@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[TEXT:Constraint test]</title>
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+
+[CSS:REF]
+
+
+<style type="text/css">
+[CSS:CODE]
+
+</style>
+
+[JS:REF]
+
+   <script language="JavaScript1.2">
+  <!--
+    [JS:CODE]
+
+    //--------------------- MOVE  --------------------------
+//var    winfo = window.open('','[wname]','');
+var    winfo = self.opener;
+
+var isNetscape = navigator.appName=="Netscape";
+
+    //--------------------- ATTR  --------------------------
+var tattrid= new Array();
+    tattrid= [attrid];
+
+var tattrv= new Array();
+[BLOCK ATTRVAL]
+tattrv[[index]] =[attrv]; 
+[ENDBLOCK ATTRVAL]
+
+
+function completechoice(index) {
+
+  var rvalue;
+
+  for (i=0; i< tattrid.length; i++) {
+      if  (tattrv[index][i].substring(0,1) != '?')  {
+	
+	if (winfo.document.getElementById(tattrid[i])) {
+	  winfo.document.getElementById(tattrid[i]).value = tattrv[index][i].replace(/\\n/g,'\n');
+
+	  winfo.document.getElementById(tattrid[i]).style.backgroundColor='[CORE_BGCOLORHIGH]';
+	  winfo.document.getElementById('co_'+tattrid[i]).style.backgroundColor='';
+	} else {
+	  alert('[TEXT:Attribute not found]'+'['+tattrid[i]+']'+winfo.name);
+	}
+
+      } else {
+	if ((tattrv[index][i].length > 1) &&
+	    ((winfo.document.getElementById(tattrid[i]).value == "") || (winfo.document.getElementById(tattrid[i]).value == " "))) {
+	  rvalue = tattrv[index][i].substring(1).replace(/\\n/g,'\n');
+	  winfo.document.getElementById(tattrid[i]).value = rvalue;
+	  winfo.document.getElementById(tattrid[i]).style.backgroundColor='[CORE_BGCOLORHIGH]';
+	}
+						      
+      }
+  }
+  winfo.disableReadAttribute();
+   self.close();
+
+}
+
+
+function autoClose() {
+  
+  // see if only one possibility
+  if (tattrv.length == 1) {
+     completechoice(0);     
+  }
+
+
+ 
+}
+
+function cok() {
+  
+  // if ok
+  if ('[iserror]'=='') {
+
+    if (tattrv.length == 0) {
+      winfo.document.getElementById('co_'+tattrid[0]).style.backgroundColor='mediumaquamarine';
+      self.close();
+    } else {
+      winfo.document.getElementById('co_'+tattrid[0]).style.backgroundColor='orange';
+      
+    }
+    
+    
+    
+  } else {
+    winfo.document.getElementById('co_'+tattrid[0]).style.backgroundColor='tomato';
+  }
+
+
+ 
+}
+
+-->
+</script>   
+ </head>
+
+<body style="padding:0pt;margin:0pt"
+      onLoad="cok();autoVresize()">
+
+
+<div id="dchoose" style="border-width:4px;border-style:groove;border-color:[CORE_FGCOLOR]">
+<table width="100%">
+<tr><th>[error]</th></tr>
+[IF suggest]
+<tr><td>
+[TEXT:suggestions]:<select id="schoose" 
+        style="align:center" 
+	onchange="completechoice(this.options[this.selectedIndex].value)" > 
+                    [BLOCK SELECT]
+<option value="[cindex]" >[choice]</option>        
+                    [ENDBLOCK SELECT]
+<option value="-1" selected disabled style="display:none"></option> 
+</select>
+
+</td></tr>
+[ENDIF suggest]
+</table>
+</body>
+</html>

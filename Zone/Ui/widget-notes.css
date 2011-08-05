@@ -1,0 +1,53 @@
+
+
+.x-fdl-note .x-window-tl {
+   opacity:0.5;
+   background-image:none;
+   background-color:transparent;                          
+}
+.x-fdl-note div.x-window-mc {
+   background-color:transparent;                          
+}
+.x-fdl-note .x-window-tr, .x-fdl-note .x-window-tc {
+   background-image:none;
+   background-color:transparent;  
+                              }
+.x-fdl-note .x-window-bc, .x-fdl-note .x-resizable-handle {
+   opacity:0;
+}
+.x-fdl-note .x-window-ml {
+   padding:0px;
+   background-image:none;
+}
+.x-fdl-note .x-window-mr {
+   padding:0px;
+   background-image:none;
+}
+.x-fdl-note .x-panel-mr, .x-fdl-note .x-panel-tl, .x-fdl-note .x-panel-mc,.x-fdl-note .x-panel-bc, .x-fdl-note .x-panel-br, .x-fdl-note .x-panel-bl, .x-fdl-note .x-panel-ml, .x-fdl-note .x-window-mc, .x-fdl-note .x-window-body {
+   background-color:transparent;
+   background-image:none;
+   border:none;                                                                                                     
+}
+.x-fdl-note .x-window-br, .x-fdl-note .x-window-bc, .x-fdl-note .x-window-bl {
+   padding:0px;
+   opacity:0;
+}
+.x-fdl-note .x-resizable-handle { 
+   opacity:0;
+}
+.x-fdl-note .x-resizable-mr { 
+   opacity:0;
+}
+.x-fdl-note .x-panel-body-noheader, .x-fdl-note .x-grid3, .x-fdl-note .x-grid3-row-alt, .x-fdl-note .x-grid3-row {
+ background-color:transparent;
+ border:none;
+}
+div.x-fdl-note {
+/*  -moz-border-radius:10px;*/
+ /* background-image:url('../../Images/op20.png');*/
+                 background-image:url('widget-note.png');
+                 min-height:130px;
+}
+
+
+

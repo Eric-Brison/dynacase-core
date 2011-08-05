@@ -1,0 +1,66 @@
+
+
+
+<tbody>
+<!-- TABLEBODY -->
+
+<tr  >
+  <td  colspan="3" >
+<input type="hidden" name="title" value="[TITLE]"></input>
+
+<fieldset><legend>workflow</legend>
+
+<table width="100%">
+           
+<tr >
+
+
+  <td  width="20%"><span class="FREEDOMLabel">[name1]&nbsp;:&nbsp;</span></td>
+  <td  width="80%">[inputtype1]</td>
+</tr>
+  
+         
+<tr >
+  <td  width="20%"><span class="FREEDOMLabel">[name5]&nbsp;:&nbsp;</span></td>
+  <td  width="80%">[inputtype5]</td>
+</tr>
+<tr >
+         
+<tr >
+  <td  width="20%"><span class="FREEDOMLabel">[name2]&nbsp;:&nbsp;</span></td>
+  <td  width="80%">[inputtype2]</td>
+</tr>
+<tr >
+
+
+  <td  width="20%"><span class="FREEDOMLabel">[name3]&nbsp;:&nbsp;</span></td>
+  <td  width="80%">[inputtype3]</td>
+</tr>
+
+<tr >
+
+
+  <td  width="20%"><span class="FREEDOMLabel">[name4]&nbsp;:&nbsp;</span></td>
+  <td  width="80%">[inputtype4]</td>
+</tr>
+
+<tr >
+
+
+  <td  width="20%"><span class="FREEDOMLabel">edition des transitions</span></td>
+  <td  width="80%"><a id="editransition" onclick="[onclick]">edition des transitions</a></td>
+</tr>
+
+
+
+</table>
+
+</fieldset>
+</td>
+</tr>
+
+
+
+
+</tbody>
+

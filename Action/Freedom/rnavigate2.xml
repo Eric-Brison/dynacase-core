@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<relations>
+<path><![CDATA[[Title]]]></path>
+[BLOCK RELS]
+<relation docid="[initid]" ><icon><![CDATA[[iconsrc]]]></icon><title><![CDATA[[title]]]></title><kind><![CDATA[[type]]]></kind><aid><![CDATA[[aid]]]></aid><alabel><![CDATA[[alabel]]]></alabel>
+</relation>
+[ENDBLOCK RELS]
+</relations>

@@ -1,0 +1,37 @@
+<!-- TABLEBODY -->
+<input type="hidden" name="title" value="[title]">
+[BLOCK TABLEBODY]
+<fieldset id="F[frameid]" [IF TAB]name="[tag]" [ENDIF TAB]   style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB]display:none;[ENDIF TAB]" class="frame" ><legend style="cursor:pointer" onclick="viewornot('T[frameid]')">[frametext]</legend>
+[IF edittpl]<div width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF edittpl]
+[IFNOT edittpl]<div id="T[frameid]" >
+            [BLOCK [TABLEVALUE]]
+<table style="width:100%" cellspacing="0" class="edittable">
+<tr class="[classback]">
+            [IF SINGLEROW]
+  <td class="[labelclass]"  width="30%"><span [IF elabel]style="cursor:help" title="[elabel]"  [ENDIF elabel]>[IFNOT ehelp][name][ENDIF ehelp][IF ehelp]<a style="cursor:help" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'help[fromid]','?app=FDL&action=DOCHELP&id=[helpid]&anchor=[attrid]')">[name]</a>[ENDIF ehelp]&nbsp;:&nbsp;</span></td>
+  <td >[inputtype]</td>
+            [ENDIF SINGLEROW]
+            [IFNOT SINGLEROW]
+  
+  <td colspan="3">[IF viewlabel]<span class="[labelclass]" >[name]&nbsp;:&nbsp;</span><br>[ENDIF viewlabel][inputtype]</td>
+            [ENDIF SINGLEROW]
+</tr>
+</table>
+           [ENDBLOCK [TABLEVALUE]]
+</div>[ENDIF edittpl]
+</fieldset>
+[ENDBLOCK TABLEBODY]
+<div style="display:none">
+[BLOCK HIDDENS]
+[inputtype]
+[ENDBLOCK HIDDENS]
+</div>
+
+[IF ONETAB]
+<div id="ttabs" class="tabsh" >
+[BLOCK TABS]
+<span  name="spantabs" id="TAB[tabid]" onmousedown="showFieldset(event,this,'TAG[tabid]','[docid]')">[tabtitle]</span>
+[ENDBLOCK TABS]</div>
+<div class="line" id="toptab"></div>
+  <script>moveFieldset();[IFNOT firsttab] showFirstFieldset()[ENDIF firsttab][IF firsttab]showThisFieldset(null,'TAB[firsttab]','[docid]')[ENDIF firsttab]</script>
+[ENDIF ONETAB]

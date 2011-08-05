@@ -1,0 +1,24 @@
+<script>
+
+
+   var FCK_DocAttr= '[BLOCK ATTR][aid]|[alabel];[ENDBLOCK ATTR]';
+
+</script>
+<table class="tableborder"  cellspacing="0" width="100%">
+<tbody>
+
+<!-- TABLEBODY -->
+
+[ZONE FDL:EDITFRAME?frameid=PUBM_FR_IDENT]
+
+<tr class="FREEDOMBack1"><td colspan="2" align="center"> 
+[V_PUBM_BGIMG]
+<input style="display:none" type="button" onclick="editorpubm_body.insertHTML('<hr>');return false" value="H">
+</td></tr>
+<tr class="FREEDOMBack1"><td colspan="2" align="center"> 
+[V_PUBM_BODY]
+</td></tr>
+[ZONE FDL:EDITFRAME?frameid=PUBM_FR_ATT]
+</tbody>
+</table>
+

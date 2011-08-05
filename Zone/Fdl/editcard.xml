@@ -1,0 +1,7 @@
+[IFNOT NOFORM]
+<INPUT TYPE="hidden" name="classid" value="[classid]">
+<input type="hidden" name="usefor" value="[usefor]">
+<input type="hidden" name="maxFileUpload" value="[maxFileUpload]">
+<div class="normal">[ENDIF NOFORM]
+[ZONEBODYCARD]
+[IFNOT NOFORM]</div>[ENDIF NOFORM]

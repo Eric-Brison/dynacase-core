@@ -1,0 +1,20 @@
+
+[ZONE CORE:HTMLHEAD]
+<script language="javascript">
+if (window.name == 'fhidden') {
+  alert('[serror]');
+}
+
+</script>
+
+<div  class="COREError" style="border:ridge 3pt">
+
+<HR width="50%" color="[CORE_FGCOLOR]">
+<H4 class="CoreTextError" title="[appname]/[appact]">[error]</H4>
+
+<HR width="50%" color="[CORE_FGCOLOR]">
+
+
+
+</div>
+[ZONE CORE:HTMLFOOT]

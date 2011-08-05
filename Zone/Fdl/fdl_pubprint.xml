@@ -1,0 +1,37 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<head>
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]   
+  //-->
+   </script>   
+<style type="text/css">
+ 
+  .otto { 
+          border-width : thin;
+          padding : 3pt;         
+          border-style: outset;
+         }
+   P {color:[CORE_TEXTFGCOLOR]}
+   A:link, A:visited {color:[CORE_TEXTFGCOLOR]}
+   A:hover {background-color:[CORE_BGCOLORALTERN]}
+@media print {
+  .noprint {
+    display:none;
+  }
+   A:link, A:visited {text-decoration:none}
+}
+</style>
+</head>
+<body >
+[BLOCK DOCS]
+<div style="background-image:url('[BGIMG]')" title="[subject]">
+[doc]
+</div><hr class="noprint"><!--NewPage-->
+<span style="page-break-before: always;"></span>
+[ENDBLOCK DOCS]
+</BODY>
+</HTML>

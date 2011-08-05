@@ -1,0 +1,158 @@
+
+<html>
+  <head>
+
+   <title>[APP_TITLE]</title>
+<link rel="icon" href="[DYNACASE_FAVICO]">
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+[JS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+.ifonefam {
+  width:100%;
+  height:100%;
+  border:none;
+}
+   </style>
+
+   <script language="javascript">
+function imgborder() {
+  for (var i=0; i< document.images.length; i++) {
+    document.images[i].style.borderStyle='inset';
+  }
+}
+
+function ctrlPushed(event) {  
+  if (!event) event=window.event;
+  if (!event) return false;
+  return event.ctrlKey;
+}
+var selimg=null;
+function openiframe(event,th,docid) {
+  var wfgtop;
+  if (selimg != null) {
+    selimg.className='iconone';
+    selimg.style.width=[izpx];
+    selimg.style.borderLeftStyle='solid';
+    selimg.style.borderLeftColor='[COLOR_C5]';
+    selimg.style.borderLeftWidth='2px';
+  }
+  if (th) { th.className='icononesel';
+    selimg=th;
+    selimg.style.width=[izpx]-4;
+  }
+
+  var idf='if_'+docid;
+  var nf;
+  var reloadlist=false;
+  nf=document.getElementById(idf);
+  if (nf && (nf.style.display!= 'none')) reloadlist=true;
+  var lif=document.getElementsByTagName('iframe');
+  for (var i=0;i<lif.length;i++) {
+    lif[i].style.display='none';
+  }
+  if (nf) {
+    if (reloadlist) {
+      var isrc;
+      if (window.frames[idf]) {
+	lif=window.frames[idf].document.getElementsByTagName('frame');
+	//      lif=nf.contentDocument.getElementsByTagName('frame');
+	if (lif.length >0) {
+	  isrc=lif[0].src;
+	  window.frames[idf].flist.location.href=isrc;
+	}
+      }
+    }
+    nf.style.display='';
+  } else {
+    var tdi=document.getElementById('tdiframe');
+     nf=document.createElement('iframe');
+     nf.id=idf;
+     nf.name=idf;
+     nf.className='ifonefam';
+     nf.src='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_GENROOT&famid='+docid;
+     tdi.appendChild(nf);
+     [IF ISAPPLEWEBKIT]
+     window.setTimeout(function() {nf.style.width='90%';}, 50);
+     window.setTimeout(function() {nf.style.width='';}, 100);
+     [ENDIF ISAPPLEWEBKIT]
+  }
+}
+function reloadiframe(event,th,docid) {
+  var idf='if_'+docid;
+  var nf;
+
+  nf=document.getElementById(idf);
+  if (nf) {
+    nf.style.display='';
+    nf.src='[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_GENROOT&famid='+docid;
+  } 
+  
+}
+function openfirst(docid) {
+  var i=document.getElementById('imgu'+docid);
+
+  if (!i) i=document.getElementById('imgm'+docid);
+  if (i) {
+    i.onclick.apply(i,[]);
+  } else {
+    openiframe(null,null,docid)
+  }
+}
+[IF OPENFAM]
+addEvent(window,'load',function zou() {openfirst('[openfam]');})
+[ENDIF OPENFAM]
+   </script>
+
+ </head>
+
+<body style="background-color:[ONEFAM_BGCOLOR]">
+
+<table style="width:100%;height:100%"><tr><td style="width:[wcols]px" valign="top">
+[BLOCK SELECTMASTER]
+<img style="width:[izpx]"
+     src="[iconsrc]"  needresize="1"
+     onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
+     onmouseover="if (this.className != 'icononesel') {this.className='icononehi';this.style.width=[izpx]-4;}"
+     onmouseout="if (this.className != 'icononesel') {this.className='iconone';this.style.width=[izpx]}"
+     class="iconone"
+     id="imgm[idcdoc]"
+     alt="[ftitle]"
+     title="[ftitle]">
+[ENDBLOCK SELECTMASTER]
+
+[BLOCK CHOOSEMASTERFAMILIES]
+<BR style="clear:both">
+<input style="float:left;width:[izpx]px"  type="button" value="+" 
+       title="[TEXT:master choose families]" 
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITMASTERPREF')">
+[ENDBLOCK CHOOSEMASTERFAMILIES]
+[BLOCK SEPARATOR]
+<HR style="float:left;clear:both" width="100%">
+[ENDBLOCK SEPARATOR]
+[BLOCK SELECTUSER]
+<img style="width:[izpx]"
+     src="[iconsrc]"  needresize="1"
+     id="imgu[idcdoc]"
+     onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
+     onmouseover="if (this.className != 'icononesel') {this.className='icononehi';this.style.width=[izpx]-4;}"
+     onmouseout="if (this.className != 'icononesel') {this.className='iconone';this.style.width=[izpx]}"
+     class="iconone"
+     alt="[ftitle]"
+     title="[ftitle]">
+[ENDBLOCK SELECTUSER]
+<BR style="clear:both">
+[BLOCK CHOOSEUSERFAMILIES]
+<input style="float:left;width:[izpx]px" type="button" value="+" 
+       title="[TEXT:choose user families]" 
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITPREF')">
+[ENDBLOCK CHOOSEUSERFAMILIES]
+</td><td id="tdiframe"></td></tr></table>
+</body>
+</html>

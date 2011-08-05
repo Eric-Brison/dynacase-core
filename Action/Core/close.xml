@@ -1,0 +1,6 @@
+[ZONE CORE:HTMLHEAD]
+<script language="JavaScript">
+if (window==top) window.close();
+</script>
+
+[ZONE CORE:HTMLFOOT]

@@ -1,0 +1,37 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:Family preferences]]
+<img needresize="1" width="48px" src="[iconsrc]" align="right"><h2>[TEXT:Preferences for] [famtitle]</h2>
+<style>
+span.view:hover {
+  background-color:[COLOR_B4];
+}
+span.view {
+  padding:3px;
+}
+</style>
+
+<FORM ENCTYPE="multipart/form-data" id="fprefs" name="prefs" 
+     action="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_MODPREFS" 
+    method="post"   >
+
+<input type="hidden" name="famid" value="[famid]">
+<input type="hidden" name="dirid" value="[dirid]">
+<table><tr><td>
+<span class="view"><input [dispocheck1] type="radio" value="1" id="d1" name="dispo"><img onclick="document.getElementById('d1').checked=true"  src="[IMG:gview1.png]"></span>
+<span class="view"><input [dispocheck2] type="radio" value="2" id="d2" name="dispo"><img onclick="document.getElementById('d2').checked=true"  src="[IMG:gview2.png]"></span>
+<span class="view"><input [dispocheck3] type="radio" value="3" id="d3" name="dispo"><img onclick="document.getElementById('d3').checked=true"  src="[IMG:gview3.png]"></span>
+<span class="view"><input [dispocheck4] type="radio" value="4" id="d4" name="dispo"><img onclick="document.getElementById('d4').checked=true"  src="[IMG:gview4.png]"></span>
+</td></tr>
+<tr><td>
+[TEXT:View tab letters] : <input type="checkbox" [lettercheck] name="letters" value="1">
+</td></tr>
+<tr><td>
+[IF viewinh] [TEXT:View inherit family] : <input type="checkbox" [inhcheck] name="inherit" value="1"><i> ([ftitle])</i>[ENDIF viewinh]
+</td></tr>
+<tr><td align="right">
+<input type="submit" value="[TEXT:Save]">
+<input type="reset" onclick="document.location.href='[CORE_STANDURL]app=GENERIC&action=GENERIC_TAB&tab=0&dirid=[dirid]&famid=[famid]'" value="[TEXT:Cancel]">
+</td></tr></table>
+</form>
+
+
+[ZONE FDL:HTMLFOOT]

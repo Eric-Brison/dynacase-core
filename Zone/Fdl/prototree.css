@@ -1,0 +1,42 @@
+#firstul, #secondul  {
+  padding-left:0px;
+  margin-left:0px;
+  margin-top:2px;
+}
+DIV.prototree UL {
+  padding-left:20px;
+  margin-left:0px;
+}
+DIV.prototree IMG.icon {
+  width:20px;
+  border:none;
+}
+DIV.prototree IMG.button {
+  cursor:pointer;
+  -moz-border-radius:15px;
+}
+DIV.prototree IMG.button:hover {
+  background-color:orange;
+}
+
+DIV.prototree LI {
+ list-style:none;
+ /*  list-style-position:inside;*/
+  font-family:arial;
+  font-size:8pt;  
+  white-space:nowrap;
+  padding:0px;
+  margin:0px;
+}
+DIV.prototree LI A {
+  font-family:arial;
+  font-size:8pt;  
+  height:22px;
+  overflow:hidden;
+  white-space:nowrap;
+}
+DIV.prototree LI A.anosel:hover {
+  cursor:default;
+  text-decoration: none;
+  background-color:transparent;
+}

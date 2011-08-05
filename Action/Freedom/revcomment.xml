@@ -1,0 +1,49 @@
+
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+
+   <title>[APP_TITLE]</title>
+
+
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=FDL_CSS" >
+
+[CSS:REF]
+
+
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+
+[JS:REF]
+
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="freedom">
+
+
+
+
+<!-- Title Table -->
+<div class="TITLE">
+
+<p>[title]</p>
+<p>[TEXT: comment for revision]</p>
+<form  name="edit" 
+       method="POST"
+       action="[CORE_STANDURL]app=[APPNAME]&action=REVISION&id=[docid]">
+  <textarea cols="40" rows="4" name="comment" ></textarea><br>
+  <input type="submit" value="[TEXT: revise document]" ></input>
+</form>
+</div>
+
+
+</body>
+</html>

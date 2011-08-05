@@ -1,0 +1,25 @@
+<html>
+[JS:REF]
+<script language="JavaScript">
+function reload(){
+formulaire=document.getElementById("parametre");
+formulaire.submit();
+}
+</script>
+
+
+<body onLoad="reload()">
+<form id="parametre"
+      action="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_IEDIT2&famid=[famid]&type_attr=idoc&attrid=[attrid]&mod=special"
+      method="POST"
+      ENCTYPE="multipart/form-data"
+      target="deux"    
+           
+>
+<input type="hidden" id="xml" name="xml" value="[xml2]">
+
+
+</form>
+</body>
+   
+</html>

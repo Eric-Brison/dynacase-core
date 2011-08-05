@@ -1,0 +1,9 @@
+[ZONE FDL:HTMLHEAD?title=[TEXT:enum attribute list]]
+
+<img align="right"src="[icon]"><h3>[title]</h3><hr>
+
+
+[BLOCK CATG]
+<button title="[TEXT:Add or modify item's category]" onclick="subwindow(100,100,'feditattr','[CORE_STANDURL]app=GENERIC&action=GENERIC_EDITCATG&fid=[famid]&aid=[kindid]')">[TEXT:Modify] <i>[label]</i></button>
+[ENDBLOCK CATG]
+[ZONE FDL:HTMLFOOT]

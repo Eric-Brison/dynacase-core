@@ -1,0 +1,10 @@
+<span id="sp_[id]"><table cellpadding="0" cellspacing="0" width="100%"><tr><td><textarea style="display:none" onchange="updateEnumauto(this,'enum_isel_[id]','li_[id]');" id="[id]" name="[name]" >[value]</textarea>
+<select tabindex="-1" onchange="disableClearDocIdInputs('[id]',this)"  style="width:100%;border:none" multiple="yes" id="enum_isel_[id]">[BLOCK OPTIONS]<option  value="[kvalue]">[fvalue]</option>[ENDBLOCK OPTIONS]</select></td><td class="nowrap"><input id="ix_[id]" type="button" value="&times;" disabled="1"
+	      title="[TEXT:clear selected inputs]"
+	      onclick="clearDocIdInputs('[id]','enum_isel_[id]');this.disabled=true">
+</td></tr>
+<tr><td><input class="fullresize" type="text" id="li_[id]" name="_li[name]" value="" autocomplete="off" onfocus="activeAuto(event,'[docid]',this,'&enum=[idi]')"  onblur="clearEmptyEnum('[id]','li_[id]')"></td><td><input id="ic_[id]" type="button" value="&#133" title="[TEXT:View selection]"
+	  onclick="sendAutoChoice(event,'[docid]',this,'li_[id]','&enum=[idi]')">[IF isopen]<input style="display:none" title="[TEXT:Set new entry]" onkeypress="if (trackCR(event)) {addEnum(this,document.getElementById('sp_[id]'),'[docid]','[idi]',document.getElementById('keysp_[id]'));return false}" type="text" id="keysp_[id]"><input type="button" onclick="addEnum(this,document.getElementById('sp_[id]'),'[docid]','[idi]',document.getElementById('keysp_[id]'));return false" title="[TEXT:Add new entry]" value="+">[ENDIF isopen]</td>
+</tr></table>
+</span>
+

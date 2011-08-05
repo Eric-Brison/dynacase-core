@@ -1,0 +1,22 @@
+<html>
+<head>
+
+<title>[TEXT:Generic Management]</title>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]" >
+
+</head>
+
+          <frameset   frameborder="no" border=0 framespacing="0" rows="*"   >
+
+<frameset name="fgtop" id="fgtop" frameborder="1" framespacing="3" border="3" cols="[cols]" rows="[rows]">
+
+
+  <frame name="flist" src="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_TAB&tab=0&viewfld=no&refresh=no" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+  <frameset name="ffusers" id="fgtop" frameborder="1" framespacing="3" border="3"  rows="30pt,*">
+     <frame name="ftop" src="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LOGO" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+     <frame name="finfo" src="[CORE_STANDURL]&app=[APPNAME]&action=GENERIC_LOGO" scrolling="needed" bordercolor="[CORE_FGCOLOR]">
+  </frameset>
+  </frameset>
+
+</frameset>
+</html>

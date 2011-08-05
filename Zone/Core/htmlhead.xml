@@ -1,0 +1,25 @@
+<!-- HEAD HTML -->
+
+<html>
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<LINK REL="icon" HREF="[DYNACASE_FAVICO]" >
+<LINK REL="SHORTCUT ICON" HREF="[DYNACASE_FAVICO]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+   <title>[TITLE]</title>
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+[JS:REF]
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="core">
+
+<!-- END HEAD HTML -->

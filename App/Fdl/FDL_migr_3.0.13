@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ -z "$pgservice_freedom" ]; then
+    echo "Undefined or empty pgservice_freedom!"
+    exit 1
+fi
+
+. "$wpub/libutil.sh"
+
+PGSERVICE="$pgservice_freedom"
+export PGSERVICE
+
+psql -c "CREATE INDEX vault_teng ON vaultdiskstorage (teng_state);" 2>&1
+RET=$?
+if [ $RET -ne 0 ]; then
+	echo "Error: SQL error in `basename $0`: could not create index 'vault_teng' on table 'vaultdiskstorage'."
+	exit $RET
+fi
+
+pgTableExists "doclog"
+RET=$?
+if [ $? -eq 0 ]; then
+	pgTableIndexExists "doclog" "in_doclog"
+	RET=$?
+	if [ $? -ne 0 ]; then
+		psql -c "CREATE INDEX in_doclog ON doclog(initid);" 2>&1
+		RET=$?
+		if [ $RET -ne 0 ]; then
+			echo "Error: SQL error in `basename $0`: could not create index 'in_doclog' on table 'doclog'."
+			exit $RET
+		fi
+	fi
+fi
+
+$wpub/wsh.php --api=cleanFileName
+
+exit 0

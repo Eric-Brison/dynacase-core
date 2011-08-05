@@ -1,0 +1,135 @@
+<?php
+
+
+include_once("FDL[GEN]/Class.[DocParent1].php");
+[include]
+Class ADoc[docid] extends [AParent] {
+    // for familly : [title]
+
+   function __construct () {
+      [AParent]::__construct();
+
+     [BLOCK AATTR]
+     $this->attr["[attrid]"]=new ActionAttribute("[attrid]", "[docid]","[label]",[order],"[visibility]","[wapplication]","[waction]","[precond]","[options]","[docName]");    
+     [ENDBLOCK AATTR]
+     [BLOCK MATTR]
+     $this->attr["[attrid]"]=new MenuAttribute("[attrid]", "[docid]","[label]",[order],"[link]","[visibility]","[precond]","[options]","[docName]");    
+     [ENDBLOCK MATTR]
+     [BLOCK FATTR]
+     $this->attr["[attrid]"]=new FieldSetAttribute("[attrid]", "[docid]","[label]","[visibility]","[usefor]","[type]",$this->attr["[frame]"],"[options]","[docName]");
+     [ENDBLOCK FATTR]
+     [BLOCK NATTR]
+     $this->attr["[attrid]"]=new NormalAttribute("[attrid]", "[docid]","[label]","[type]","[format]",[repeat],[order],"[link]",
+                                                "[visibility]",[needed],[title],[abstract],
+						$this->attr["[frame]"],"[phpfile]","[phpfunc]","[elink]","[phpconstraint]","[usefor]","[eformat]","[options]","[docName]");
+
+     [ENDBLOCK NATTR]
+     $this->fromids[[docid]]=[docid];
+     $this->fromname='[docName]';
+[BLOCK ATTRFIELD]
+    $this->fields["[attrid]"]="[attrid]";[ENDBLOCK ATTRFIELD]
+   }
+}
+
+     [BLOCK INDIRECT]
+// redirect class : to simulate double inherit
+Class [docNameIndirect] extends [RedirectDocParent] {
+   [METHODS2]
+}
+     [ENDBLOCK INDIRECT]
+Class Doc[docid] extends [DocParent] {
+   //  family : [title]
+
+   public $dbtable="doc[docid]";
+   public $dbseq="seq_doc[docid]";
+   public $sqlcreate = array("create table doc[docid] ([sattr]) inherits (doc[fromid]);",
+     "create sequence seq_doc[docid] start 1;",
+     "alter TABLE doc[docid] ADD primary key (id);",
+     "select setval('seq_doc[docid]', count(distinct initid)+1, false )  from only doc[docid];");
+   
+
+     public $fromid=[docid];
+     public $fromname='[docName]';
+     public $fromtitle="[docTitle]";
+
+   function __construct ($dbaccess='', $id='',$res='',$dbid=0) {
+    $this->attributes = new ADoc[docid]();
+    
+
+    if (isset($this->attributes->fields))  $this->fields += $this->attributes->fields;
+    [pinit]::__construct($dbaccess, intval($id), $res, $dbid);
+
+     $this->postConstructor();
+//    uasort($this->attributes->attr,"tordered"); 
+       
+   }
+
+   function SpecRefreshGen($onlyspec=false) {
+     $err = parent::SpecRefreshGen();
+[BLOCK ACALC]
+    // -------------------
+  if (method_exists($this,"[method]")) {
+    $arraycount=0;
+    $iargs=array();
+    $ca=$this->getAttribute("[callattr]");
+    if ("[callmethod]" == $ca->phpfunc) {      
+      [BLOCK [biattr]]
+	$attr = $this->getAttribute("[niarg]");
+  
+      if (! $attr) {
+	$tmparg = "[niarg]";
+	if (($tmparg[0] == "'")||($tmparg[0] == '"')) {
+	  $lc=substr($tmparg,-1);
+          if (($lc == "'") || ($lc == '"')) $tmparg=substr($tmparg,1,-1);
+	  else $tmparg=substr($tmparg,1);
+        }
+	$iargs[]=$tmparg;
+      } else {
+	if ($attr->inArray()) {
+	  $t = $this->getTValue("[niarg]");
+	  $iargs[]=$t;
+	  $arraycount=count($t);
+	} else $iargs[]=$this->getValue("[niarg]");
+      }
+      [ENDBLOCK [biattr]]
+
+	$this->AddParamRefresh("[niargs]","[rarg]");
+      if (!$onlyspec) {
+      if ($ca->inArray()) {
+	$tv=array();
+	$tvi=$this->getTValue("[rarg]");
+	for ($c=0;$c<$arraycount;$c++) {
+	  $tiargs=array(); // parameters for each row
+	  foreach($iargs as $k=>$va) {
+	    if (is_array($va)) $tiargs[]=$va[$c];
+	    else $tiargs[]=$va;
+	  }
+	  $vi = call_user_func_array(array($this, "[method]"), $tiargs);
+	  if ($vi !== "") $tv[] = $vi;
+	  else $tv[]=$tvi[$c];
+	}
+	$this->setValue("[rarg]",$tv); 
+      } else {
+	$v = call_user_func_array(array($this, "[method]"), $iargs);
+	$this->setValue("[rarg]",$v); 
+      }
+      }
+    } 
+  } else {
+      $err.= sprintf(_("method %s does not exist."),"[method]");
+    }[ENDBLOCK ACALC]
+       
+       return $err;
+   }
+   
+   [METHODS]
+
+}
+
+     [BLOCK CLASSALIAS]
+// alias name for the class
+Class _[PHPclassName] extends Doc[docid] {
+}
+     [ENDBLOCK CLASSALIAS]
+
+?>

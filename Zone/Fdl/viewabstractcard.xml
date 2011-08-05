@@ -1,0 +1,9 @@
+
+<UL>
+[BLOCK TABLEVALUE]
+
+<LI>[name]&nbsp;:&nbsp;[value]</LI>
+
+
+[ENDBLOCK TABLEVALUE]
+</UL>

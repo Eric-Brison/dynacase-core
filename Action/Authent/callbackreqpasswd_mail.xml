@@ -1,0 +1,6 @@
+<html>
+<p>
+[TEXT:callbackreqpasswd_mail_hello] [US_FNAME] [US_LNAME],
+</p>
+[TEXT:callbackreqpasswd_mail_password]
+</html>

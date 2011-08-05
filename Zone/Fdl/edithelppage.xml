@@ -1,0 +1,249 @@
+<script type="text/javascript" language="JavaScript" src="./sizzle/sizzle.js"></script>
+<script type="text/javascript" language="JavaScript" src="./FDL/Layout/helppage.js"></script>
+
+<style type="text/css">
+
+#help-lang-name {
+	vertical-align: middle;
+}
+#help-langs a {
+	outline: 0;
+}
+#help-langs {
+	float: right;
+}
+#help-langs img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-langs a.current img {
+	background: [COLOR_B9];
+	border-color: [COLOR_B5];
+}
+#help-langs a.active img {
+	background: [CORE_BGCOLOR];
+	border-color: [COLOR_A7];
+}
+#help-langs .help-section-langs a.active:hover img {
+	background: [COLOR_A9];
+	border-color: [COLOR_A5];
+}
+#help-langs a.inactive {
+	opacity: 0.25;
+	-moz-opacity: 0.25;
+	-webkit-opacity: 0.25;
+}
+.help-section-item {
+	padding-bottom: 8px;
+}
+.help-section {
+	overflow: hidden;
+	clear: both;
+}
+#help-sections .help-section-langs img {
+	border: 1px solid [CORE_BGCOLOR];
+	padding: 0 3px;
+}
+#help-sections .help-section-langs a.current img {
+	background: [COLOR_B9];
+	border-color: [COLOR_B5];
+}
+#help-sections .help-section-langs a.active img {
+	background: [CORE_BGCOLOR];
+	border-color: [COLOR_A7];
+}
+#help-sections .help-section-langs a.active:hover img {
+	background: [COLOR_A9];
+	border-color: [COLOR_A5];
+}
+#help-sections .help-section-langs a.inactive {
+	opacity: 0.25;
+	-moz-opacity: 0.25;
+	-webkit-opacity: 0.25;
+}
+#help-sections .help-section-langs a:hover {
+	background:none;
+}
+.help-section-title {
+	color: [COLOR_B0];
+	font-weight: bold;
+	font-size: 16px;
+}
+#help-sections .help-section-title {
+	background: url([IMG:minus.png]) no-repeat left center;
+	padding-left: 20px;
+	cursor: pointer;
+}
+#help-sections .section-closed {
+	background-image: url([IMG:plus.png]);
+}
+#help-sections .help-section-langs {
+	float: right;
+}
+.help-section-text {
+	margin-left: 24px;
+}
+.help-first .help_up {
+	display: none;
+}
+.help-last .help_down {
+	display: none;
+}
+</style>
+
+<div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_HELP]</div>
+<div style="display:none">[ZONE FDL:EDITARRAY?arrayid=HELP_T_SECTIONS]</div>
+
+<fieldset><legend>[TEXT:Online help]</legend>
+	<div id="help-langs">
+	[BLOCK HELPLANGS]
+		<a href="#[LANGKEY]" id="help-langs-[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return helppage.edit.change(this,'[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+	[ENDBLOCK HELPLANGS]
+	</div>
+	<div id="help-langs">
+		<a onclick="return helppage.edit.subwindow(event,'help_t_help');">[TEXT:Edit translations]</a>&nbsp;
+		&nbsp;&nbsp;
+	</div>
+
+	<div class="help-section-item">
+		<div class="help-section-title">[TEXT:Help name]</div>
+		<div class="help-section-text" id="help-name">[HELPNAME]</div>
+	</div>
+
+	<div class="help-section-item">
+		<div class="help-section-title">[TEXT:Help description]</div>
+		<div class="help-section-text" id="help-description">[HELPDESCRIPTION]</div>
+	</div>
+	
+</fieldset>
+
+<div id="help-section-add-div" style="display:none">
+	<table style="width:100%" cellspacing="0" class="edittable">
+		[IF HELPATTRIBUTESLIST]
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"><span>[TEXT:Attribut]&nbsp:&nbsp;</span></td>
+			<td><input type="radio" name="help_popup_type" value="1" />
+				<select name="help_popup_select" onchange="helppage.edit.popup.select_change(this.value)">
+				<option value="">- [TEXT:Choose an attribute] -</option>
+				[BLOCK HELPATTRIBUTES]<option value="[HELPATTRVALUE]">[HELPATTRNAME]</option>[ENDBLOCK HELPATTRIBUTES]
+			</select></td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"></td>
+			<td>[TEXT:or]</td>
+		</tr>[ENDIF HELPATTRIBUTESLIST]
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"><span>[TEXT:Section free key]&nbsp:&nbsp;</span></td>
+			<td><input type="radio" name="help_popup_type" value="2" /> <input type="text" name="help_popup_key" value="" onchange="helppage.edit.popup.input_change(this.value)" /></td>
+		</tr>
+		<tr>
+			<td class="FREEDOMLabel" style="width:120px"></td>
+			<td><a onclick="helppage.edit.popup.add()">[TEXT:Add section popup]</a> | <a onclick="helppage.edit.popup.close()">[TEXT:Cancel]</a></td>
+		</tr>
+	</table>
+</div>
+
+<fieldset id="help-sections"><legend>[TEXT:Sections] (<a onclick="helppage.edit.popup.show(event)">[TEXT:Add section]</a>)</legend>
+
+<input type="hidden" name="section_name" value="" id="section_name" />
+<input type="hidden" name="edit_section_key" value="" id="edit_section_key" />
+
+[BLOCK CONTENTSECTIONS]<div class="help-section" id="sec-[SECKEY]"><div class="help-section-langs" id="sec-langs-[SECKEY]">
+	[BLOCK [SECTIONLANGS]]
+	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return helppage.edit.section.changeLang(this,'[SECKEY]','[LANGKEY]')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>
+	[ENDBLOCK [SECTIONLANGS]]
+</div><div class="help-section-langs">
+	<a onclick="return helppage.edit.section.up('[SECKEY]')" class="help_up">[TEXT:Up] &uarr;</a>&nbsp;
+	<a onclick="return helppage.edit.section.down('[SECKEY]')" class="help_down">[TEXT:Down] &darr;</a>&nbsp;
+	<a onclick="return helppage.edit.subwindow(event,'help_t_sections','[SECKEY]');">[TEXT:Edit translations]</a>&nbsp;
+	&nbsp;&nbsp;
+</div>[BLOCK [SECTIONITEMS]]<div class="help-section-item" style="display:[SECDISPLAY]" id="sec-[SECKEY]-[SECLANG]">
+	<div class="help-section-title" id="sec-name-[SECKEY]-[SECLANG]" onclick="helppage.edit.section.toggle('[SECKEY]')" title="[TEXT:Section key] : [SECKEY]">[SECNAME]</div>
+	<div class="help-section-text" id="sec-text-[SECKEY]-[SECLANG]">[SECTEXT]</div>
+</div>[ENDBLOCK [SECTIONITEMS]]</div>[ENDBLOCK CONTENTSECTIONS]
+
+
+</fieldset>
+
+<script type="text/javascript">
+
+/** 
+ * params needed
+ */
+
+helppage.edit.params = {
+	msg1: "[TEXT:It cannot be empty]",
+	msg2: "[TEXT:Only these characters are allowed : a..z, A..Z, 0..9, _, -]",
+	msg3: "[TEXT:Sorry but this section key already exists !]",
+	msg4: "[TEXT:Add section]",
+	msg5: "[TEXT:New section]",
+	color1: '[COLOR_B5]',
+	color2: '[CORE_TEXTFGCOLOR]',
+	color3: '[COLOR_B7]',
+	color4: '[CORE_BGCOLORALTERN]',
+	color5: '[CORE_BGCOLOR]',
+	color6: '[CORE_TEXTFGCOLOR]'
+};
+
+/**
+ * variables
+ */
+
+helppage.langs = [JSONLANGS];
+
+helppage.edit.section.template = '\n\
+<div class="help-section-langs" id="sec-langs-{SECKEY}">\n\
+	[BLOCK TEMPLATELANGS1]\n\
+	<a href="#[LANGKEY]" class="[LANGCLASS]" title="[LANGNAME]" onclick="return helppage.edit.section.changeLang(this,\'{SECKEY}\',\'[LANGKEY]\')"><img src="[IMG:flags/[LANGISO].png|16]" title="[LANGNAME]" width="16" height="16" /></a>\n\
+	[ENDBLOCK TEMPLATELANGS1]\n\
+</div><div class="help-section-langs">\n\
+	<a onclick="return helppage.edit.section.up(\'{SECKEY}\')" class="help_up">[TEXT:Up] &uarr;</a>&nbsp;\n\
+	<a onclick="return helppage.edit.section.down(\'{SECKEY}\')" class="help_down">[TEXT:Down] &darr;</a>&nbsp;\n\
+	<a onclick="return helppage.edit.subwindow(event,\'help_t_sections\',\'{SECKEY}\');">[TEXT:Edit translations]</a>&nbsp;\n\
+	&nbsp;&nbsp;\n\
+</div>[BLOCK TEMPLATELANGS2]<div class="help-section-item" style="display:[LANGDISPLAY]" id="sec-{SECKEY}-[LANGKEY]">\n\
+	<div class="help-section-title" id="sec-name-{SECKEY}-[LANGKEY]" onclick="helppage.edit.section.toggle(\'{SECKEY}\')" title="[TEXT:Section key] : [SECKEY]">[TEXT:New section] : {SECKEY}</div>\n\
+	<div class="help-section-text" id="sec-text-{SECKEY}-[LANGKEY]"></div>\n\
+</div>[ENDBLOCK TEMPLATELANGS2]';
+
+
+/**
+ * used in editsection
+ */
+
+function helpcallSaveSection(config) {
+	return helppage.edit.calls.saveSection(config);
+}
+
+function helpcallGetSectionOrder(config) {
+	return helppage.edit.calls.getSectionOrder(config);
+}
+
+function helpcallGetSection(config) {
+	return helppage.edit.calls.getSection(config);
+}
+
+function helpcallGetCurrentSectionLang(config) {
+	return helppage.edit.calls.getCurrentSectionLang(config);
+}
+
+/**
+ * used in edithelp
+ */
+
+function helpcallGetCurrentLang() {
+	return helppage.edit.calls.getCurrentLang();
+}
+
+function helpcallReloadLangs() {
+	return helppage.edit.calls.reloadLangs();
+}
+
+
+/**
+ * events
+ */
+
+addEvent(window, 'load', helppage.edit.load);
+
+</script>

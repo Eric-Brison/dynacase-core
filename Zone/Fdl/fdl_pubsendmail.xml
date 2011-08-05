@@ -1,0 +1,25 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<HTML>
+<head>
+<style type="text/css">
+ 
+  .otto { 
+          border-width : thin;
+          padding : 3pt;         
+          border-style: outset;
+         }
+   P {color:[CORE_TEXTFGCOLOR]}
+   A:link, A:visited {text-decoration:none;color:black}
+   A:hover {background-color:[CORE_BGCOLORALTERN]}
+</style>
+</head>
+<body background="[V_PUBM_BGIMG]" >
+<div class="otto" >
+[V_PUBM_BODY]
+<div style="width:200px;" class="noprint">
+[ZONE FDL:VIEWARRAY?arrayid=PUBM_T_ATT]
+</div>
+</div>
+<div style="display:none"><img src="[V_PUBM_BGIMG]"></div>
+</BODY>
+</HTML>

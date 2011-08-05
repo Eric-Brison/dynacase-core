@@ -1,0 +1,113 @@
+
+<html>
+   <head> 
+    <title>edition des transitions</title>
+   <style>
+[ZONE CORE:GENCSS]
+[ZONE FDL:GENCSS]
+    </style>
+
+<script language="JavaScript">
+
+function recup_tt(id_tt){
+
+var select_tt=document.getElementById("select_tt");
+var tt_selected=select_tt.options[select_tt.selectedIndex];
+var tt=document.getElementById(id_tt);
+var descr=(tt.nextSibling).nextSibling;
+
+
+switch(tt_selected.value){
+
+case "suppr":
+tt.value="";
+(tt.nextSibling).nodeValue="";
+descr.value="";
+var td = descr.parentNode;
+td.title="";
+break;
+
+case "descrip":
+//alert(tt.value);
+if (tt.value!=""){
+var description=document.getElementById("description");
+descr.value=description.value;
+var td = descr.parentNode;
+td.title=description.value;
+}
+else{
+alert("impossible, pas de transition existante");
+}
+break;
+
+
+case "voir_descrip":
+var description=document.getElementById("description");
+//description.value=descr.title;
+var td = descr.parentNode;
+description.value=td.title;
+break;
+
+
+case "separation":
+break;
+
+default:
+tt.value=tt_selected.value;
+(tt.nextSibling).nodeValue=tt_selected.text;
+
+}
+
+
+}
+</script>
+   </head>
+
+<body class="freedom" onUnLoad="window.close()">
+<table width="100%">
+<form id="fedit_trans"
+      name="fedit_trans"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=[APPNAME]&action=FREEDOM_MOD&id=[id]"
+>
+
+
+<tr>
+<td><h2>Etat initial/etat final</h2></td>
+[BLOCK LIGNE1]
+<td><h2>[nom_etat]</h2></td>
+[ENDBLOCK LIGNE1]
+</tr>
+
+
+[BLOCK LIGNES]
+
+<tr height=50>
+<td><h2>[etat]</h2></td>
+[BLOCK [LIGNEEE]]
+
+[input]
+
+[ENDBLOCK [LIGNEEE]]
+</tr>
+
+[ENDBLOCK LIGNES]
+
+</table>
+
+<input type="submit" value="valider">
+</form>
+<br><br>
+<select id="select_tt" size=8>
+<option value="suppr">supprimer transition</option>
+<option value="descrip">ajouter description</option>
+<option value="voir_descrip">voir description</option>
+<option value="separation">----------------------</option>
+[BLOCK OPTIONS]
+<option value="[id_tt]">[titre]</option>
+[ENDBLOCK OPTIONS]
+</select>
+<textarea id="description"></textarea>
+<input type="button" onclick="document.getElementById('description').value=''" value="x"></input>
+</body>
+<html>
