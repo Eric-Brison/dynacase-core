@@ -1,8 +1,12 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * helper class for parsing PROPPATCH request bodies
- * 
+ *
  * @package DAV
  * @author Hartmut Holzgraefe <hholzgra@php.net>
  * @version @package-version@
@@ -29,98 +33,93 @@
 //
 // $Id: _parse_proppatch.php,v 1.1 2006/11/22 10:33:59 eric Exp $
 //
-
-class _parse_proppatch 
+class _parse_proppatch
 {
     /**
      *
-     * 
+     *
      * @var
      * @access
      */
     var $success;
-
     /**
      *
-     * 
+     *
      * @var
      * @access
      */
     var $props;
-
     /**
      *
-     * 
+     *
      * @var
      * @access
      */
     var $depth;
-
     /**
      *
-     * 
+     *
      * @var
      * @access
      */
     var $mode;
-
     /**
      *
-     * 
+     *
      * @var
      * @access
      */
     var $current;
-
     /**
      * constructor
-     * 
-     * @param  string  path of input stream 
+     *
+     * @param  string  path of input stream
      * @access public
      */
-    function _parse_proppatch($path) 
+    function _parse_proppatch($path)
     {
         $this->success = true;
-
+        
         $this->depth = 0;
         $this->props = array();
         $had_input = false;
-
+        
         $f_in = fopen($path, "r");
         if (!$f_in) {
             $this->success = false;
             return;
         }
-
+        
         $xml_parser = xml_parser_create_ns("UTF-8", " ");
-
-        xml_set_element_handler($xml_parser,
-                                array(&$this, "_startElement"),
-                                array(&$this, "_endElement"));
-
-        xml_set_character_data_handler($xml_parser,
-                                       array(&$this, "_data"));
-
-        xml_parser_set_option($xml_parser,
-                              XML_OPTION_CASE_FOLDING, false);
-
-        while($this->success && !feof($f_in)) {
+        
+        xml_set_element_handler($xml_parser, array(&$this,
+            "_startElement"
+        ) , array(&$this,
+            "_endElement"
+        ));
+        
+        xml_set_character_data_handler($xml_parser, array(&$this,
+            "_data"
+        ));
+        
+        xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, false);
+        
+        while ($this->success && !feof($f_in)) {
             $line = fgets($f_in);
             if (is_string($line)) {
                 $had_input = true;
-                $this->success &= xml_parse($xml_parser, $line, false);
+                $this->success&= xml_parse($xml_parser, $line, false);
             }
-        } 
-        
-        if($had_input) {
-            $this->success &= xml_parse($xml_parser, "", true);
         }
-
+        
+        if ($had_input) {
+            $this->success&= xml_parse($xml_parser, "", true);
+        }
+        
         xml_parser_free($xml_parser);
-
+        
         fclose($f_in);
     }
-
     /**
      * tag start handler
      *
@@ -130,44 +129,47 @@ class _parse_proppatch
      * @return void
      * @access private
      */
-    function _startElement($parser, $name, $attrs) 
+    function _startElement($parser, $name, $attrs)
     {
         if (strstr($name, " ")) {
             list($ns, $tag) = explode(" ", $name);
-            if ($ns == "")
-                $this->success = false;
+            if ($ns == "") $this->success = false;
         } else {
             $ns = "";
             $tag = $name;
         }
-
+        
         if ($this->depth == 1) {
             $this->mode = $tag;
-        } 
-
+        }
+        
         if ($this->depth == 3) {
-            $prop = array("name" => $tag);
-            $this->current = array("name" => $tag, "ns" => $ns, "status"=> 200);
+            $prop = array(
+                "name" => $tag
+            );
+            $this->current = array(
+                "name" => $tag,
+                "ns" => $ns,
+                "status" => 200
+            );
             if ($this->mode == "set") {
-                $this->current["val"] = "";     // default set val
+                $this->current["val"] = ""; // default set val
+                
             }
         }
-
+        
         if ($this->depth >= 4) {
-            $this->current["val"] .= "<$tag";
+            $this->current["val"].= "<$tag";
             if (isset($attr)) {
                 foreach ($attr as $key => $val) {
-                    $this->current["val"] .= ' '.$key.'="'.str_replace('"','&quot;', $val).'"';
+                    $this->current["val"].= ' ' . $key . '="' . str_replace('"', '&quot;', $val) . '"';
                 }
             }
-            $this->current["val"] .= ">";
+            $this->current["val"].= ">";
         }
-
         
-
         $this->depth++;
     }
-
     /**
      * tag end handler
      *
@@ -176,23 +178,22 @@ class _parse_proppatch
      * @return void
      * @access private
      */
-    function _endElement($parser, $name) 
+    function _endElement($parser, $name)
     {
         if (strstr($name, " ")) {
             list($ns, $tag) = explode(" ", $name);
-            if ($ns == "")
-                $this->success = false;
+            if ($ns == "") $this->success = false;
         } else {
             $ns = "";
             $tag = $name;
         }
-
+        
         $this->depth--;
-
+        
         if ($this->depth >= 4) {
-            $this->current["val"] .= "</$tag>";
+            $this->current["val"].= "</$tag>";
         }
-
+        
         if ($this->depth == 3) {
             if (isset($this->current)) {
                 $this->props[] = $this->current;
@@ -200,7 +201,6 @@ class _parse_proppatch
             }
         }
     }
-
     /**
      * input data handler
      *
@@ -209,18 +209,17 @@ class _parse_proppatch
      * @return void
      * @access private
      */
-    function _data($parser, $data) 
+    function _data($parser, $data)
     {
         if (isset($this->current)) {
-            $this->current["val"] .= $data;
+            $this->current["val"].= $data;
         }
     }
 }
-
 /*
  * Local variables:
  * tab-width: 4
  * c-basic-offset: 4
  * indent-tabs-mode:nil
  * End:
- */
+*/

@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: Class.FormDate.php,v 1.2 2003/08/18 15:46:42 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */
- /**
+/**
  */
-
 // ---------------------------------------------------------------------------
 // $Id: Class.FormDate.php,v 1.2 2003/08/18 15:46:42 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/core/Class/Form/Class.FormDate.php,v $
@@ -27,15 +31,14 @@
 //
 // ---------------------------------------------------------------
 //
-
 $CLASS_FORMDATE_PHP = '$Id: Class.FormDate.php,v 1.2 2003/08/18 15:46:42 eric Exp $';
 
 Class FormDate
 {
-// This class is used to produce HTML/JS code when you want to
-// create a separate window which exchange values with its parent
-// window (for instance an edit/update window or a query window)
-var $formdate='
+    // This class is used to produce HTML/JS code when you want to
+    // create a separate window which exchange values with its parent
+    // window (for instance an edit/update window or a query window)
+    var $formdate = '
 <input type="hidden" name="[NOM_DATE]" value="[VALEUR_DATE]">
 <small>
 <select size="1" 
@@ -60,92 +63,90 @@ var $formdate='
 [ENDBLOCK ANNEE]
 </select>
 ';
-
-function FormDate($time,$name) {
-  $this->date=	$time;
-  $this->name=	$name;
-  $this->mois=	strftime("%m",$time);
-  $this->jour=	strftime("%d",$time);
-  $this->annee=	strftime("%Y",$time);
-}
-
-function Get() {
-  $lay = new Layout("","",$this->formdate);
-  $lay->Set("NOM_DATE",$this->name);
-  $lay->Set("VALEUR_DATE",$this->date);
-
-  // Jours
-  for ($d=1; $d<=31; $d++) {
-    $tab_jour[$d]["jour"]=$d;
-    if ($d==$this->jour) {
-      $tab_jour[$d]["selected_jour"]="selected";
-    } else {
-      $tab_jour[$d]["selected_jour"]="";
+    
+    function FormDate($time, $name)
+    {
+        $this->date = $time;
+        $this->name = $name;
+        $this->mois = strftime("%m", $time);
+        $this->jour = strftime("%d", $time);
+        $this->annee = strftime("%Y", $time);
     }
-  }  
-  $lay->SetBlockCorresp("JOUR", "jour", "jour"); 
-  $lay->SetBlockCorresp("JOUR", "selected_jour", "selected_jour"); 
-  $lay->SetBlockData("JOUR",$tab_jour);
-
-  // Mois
-  for ($d=1; $d<=12; $d++) {
-    $mois=mktime(0,0,0,$d,1,$this->annee); 
-    $tab_mois[$d]["mois"]=strftime("%B",$mois);;
-    $tab_mois[$d]["val_mois"]=$d;
-    if ($d==$this->mois) {
-      $tab_mois[$d]["selected_mois"]="selected";
-    } else {
-      $tab_mois[$d]["selected_mois"]="";
+    
+    function Get()
+    {
+        $lay = new Layout("", "", $this->formdate);
+        $lay->Set("NOM_DATE", $this->name);
+        $lay->Set("VALEUR_DATE", $this->date);
+        // Jours
+        for ($d = 1; $d <= 31; $d++) {
+            $tab_jour[$d]["jour"] = $d;
+            if ($d == $this->jour) {
+                $tab_jour[$d]["selected_jour"] = "selected";
+            } else {
+                $tab_jour[$d]["selected_jour"] = "";
+            }
+        }
+        $lay->SetBlockCorresp("JOUR", "jour", "jour");
+        $lay->SetBlockCorresp("JOUR", "selected_jour", "selected_jour");
+        $lay->SetBlockData("JOUR", $tab_jour);
+        // Mois
+        for ($d = 1; $d <= 12; $d++) {
+            $mois = mktime(0, 0, 0, $d, 1, $this->annee);
+            $tab_mois[$d]["mois"] = strftime("%B", $mois);;
+            $tab_mois[$d]["val_mois"] = $d;
+            if ($d == $this->mois) {
+                $tab_mois[$d]["selected_mois"] = "selected";
+            } else {
+                $tab_mois[$d]["selected_mois"] = "";
+            }
+        }
+        $lay->SetBlockCorresp("MOIS", "val_mois", "val_mois");
+        $lay->SetBlockCorresp("MOIS", "mois", "mois");
+        $lay->SetBlockCorresp("MOIS", "selected_mois", "selected_mois");
+        $lay->SetBlockData("MOIS", $tab_mois);
+        // Annee
+        $annee_deb = $this->annee - 10;
+        $annee_fin = $this->annee + 5;
+        for ($d = $annee_deb; $d <= $annee_fin; $d++) {
+            $tab_annee[$d]["annee"] = $d;
+            if ($d == $this->annee) {
+                $tab_annee[$d]["selected_annee"] = "selected";
+            } else {
+                $tab_annee[$d]["selected_annee"] = "";
+            }
+        }
+        $lay->SetBlockCorresp("ANNEE", "annee", "annee");
+        $lay->SetBlockCorresp("ANNEE", "selected_annee", "selected_annee");
+        $lay->SetBlockData("ANNEE", $tab_annee);
+        /*
+        $tab=array();
+        reset($this->param);
+        $isel = $c = -1;
+        while (list($k,$v) = each($this->param)) {
+        if ($v["typ"] == "sel" ) {
+        $isel++;
+        $tabsel[$isel]["name"] = $k;
+        } else {
+        $c++;
+        $tab[$c]["name"]=$k;
+        }
+        }
+        if ($isel>-1) {
+        $lay->SetBlockData("SEL",$tabsel);
+        } else {
+        $lay->SetBlockData("SEL",NULL);
+        }
+        if ($c>-1) {
+        $lay->SetBlockData("PAR",$tab);
+        } else {
+        $lay->SetBlockData("PAR",NULL);
+        }
+        $lay->Set("name",$this->name);
+        */
+        return ($lay->gen());
     }
-  }  
-  $lay->SetBlockCorresp("MOIS", "val_mois", "val_mois"); 
-  $lay->SetBlockCorresp("MOIS", "mois", "mois"); 
-  $lay->SetBlockCorresp("MOIS", "selected_mois", "selected_mois"); 
-  $lay->SetBlockData("MOIS",$tab_mois);
-
-  // Annee
-  $annee_deb=$this->annee-10;
-  $annee_fin=$this->annee+5;
-  for ($d=$annee_deb; $d<=$annee_fin; $d++) {
-    $tab_annee[$d]["annee"]=$d;
-    if ($d==$this->annee) {
-      $tab_annee[$d]["selected_annee"]="selected";
-    } else {
-      $tab_annee[$d]["selected_annee"]="";
-    }
-  }  
-  $lay->SetBlockCorresp("ANNEE", "annee", "annee"); 
-  $lay->SetBlockCorresp("ANNEE", "selected_annee", "selected_annee"); 
-  $lay->SetBlockData("ANNEE",$tab_annee);
-
-/*
-  $tab=array();
-  reset($this->param);
-  $isel = $c = -1;
-  while (list($k,$v) = each($this->param)) {
-    if ($v["typ"] == "sel" ) {
-      $isel++;
-      $tabsel[$isel]["name"] = $k;
-    } else {
-      $c++;
-      $tab[$c]["name"]=$k;
-    }
-  }
-  if ($isel>-1) {
-    $lay->SetBlockData("SEL",$tabsel);
-  } else {
-    $lay->SetBlockData("SEL",NULL);
-  }
-  if ($c>-1) {
-    $lay->SetBlockData("PAR",$tab);
-  } else {
-    $lay->SetBlockData("PAR",NULL);
-  }
-  $lay->Set("name",$this->name);
-*/
-  return($lay->gen()); 
-}
-
-// CLASS END
+    // CLASS END
+    
 }
 ?>

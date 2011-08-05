@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Set of usefull Time functions
  *
@@ -15,21 +20,21 @@
 // $Source: /home/cvsroot/anakeen/freedom/core/Share/Lib.Time.php,v $
 // ---------------------------------------------------------------
 
-
-function hour2sec($h=0, $m=0, $s=0) {
-  return (($h * 3600) + ($m * 60) + $s);
+function hour2sec($h = 0, $m = 0, $s = 0)
+{
+    return (($h * 3600) + ($m * 60) + $s);
 }
 
-function sec2hour($s, &$H, &$M, &$S) {
-  $H = ($s / 3600);
-  settype($H, "integer");
-  $M = (($s % 3600) / 60 );
-  settype($M, "integer");
-  $S = ($s - ($H*3600) - ($M * 60));
-  settype($S, "integer");
-  if (strlen($H) == 1) $H = "0{$H}";
-  if (strlen($M) == 1) $M = "0{$M}";
-  if (strlen($S) == 1) $S = "0{$S}";
+function sec2hour($s, &$H, &$M, &$S)
+{
+    $H = ($s / 3600);
+    settype($H, "integer");
+    $M = (($s % 3600) / 60);
+    settype($M, "integer");
+    $S = ($s - ($H * 3600) - ($M * 60));
+    settype($S, "integer");
+    if (strlen($H) == 1) $H = "0{$H}";
+    if (strlen($M) == 1) $M = "0{$M}";
+    if (strlen($S) == 1) $S = "0{$S}";
 }
-  
 ?>

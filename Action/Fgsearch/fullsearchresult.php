@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Full Text Search document
  *
@@ -15,7 +20,6 @@ include_once ("FDL/Class.SearchDoc.php");
 include_once ("FDL/Class.DocSearch.php");
 
 include_once ("FDL/freedom_util.php");
-
 /**
  * Fulltext Search document
  * @param Action &$action current action
@@ -26,18 +30,15 @@ include_once ("FDL/freedom_util.php");
  */
 function fullsearchresult(&$action)
 {
-
+    
     $famid = GetHttpVars("famid", 0);
     $keyword = GetHttpVars("_se_key", GetHttpVars("keyword")); // keyword to search
     $target = GetHttpVars("target"); // target window when click on document
     $page = GetHttpVars("page", 0); // page number
     $dirid = GetHttpVars("dirid", 0); // special search
-
     $slice = 10;
     $start = $page * $slice;
-
-
-
+    
     $action->lay->set("isdetail", false);
     $action->lay->set("page", $page + 1);
     $action->lay->set("dirid", $dirid);
@@ -47,20 +48,20 @@ function fullsearchresult(&$action)
     $orderby = "title";
     $dbaccess = $action->GetParam("FREEDOM_DB");
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
-
+    
     if ($detailsearch) {
-        $search=createTmpDoc($dbaccess,16);
-
-        $search->setValue("se_famid",$famid);
-        $search->setValue("se_latest","yes");
-        $search->lay=$action->lay;
+        $search = createTmpDoc($dbaccess, 16);
+        
+        $search->setValue("se_famid", $famid);
+        $search->setValue("se_latest", "yes");
+        $search->lay = $action->lay;
         $search->editdsearch();
     }
-    $fdoc=new_doc($dbaccess,$famid);
+    $fdoc = new_doc($dbaccess, $famid);
     $nosearch = false;
     if (($keyword == "") && ($dirid == 0) && ($famid == 0)) {
         if ($initpage) {
-            $action->lay = new Layout(getLayoutFile("FGSEARCH", "fullsearch_empty.xml"), $action);
+            $action->lay = new Layout(getLayoutFile("FGSEARCH", "fullsearch_empty.xml") , $action);
             return;
         }
         $nosearch = true;
@@ -75,7 +76,7 @@ function fullsearchresult(&$action)
             $keyword = $kl[1];
             $faml = $kl[0];
             $tf = explode(",", $faml);
-            foreach ( $tf as $k => $v ) {
+            foreach ($tf as $k => $v) {
                 if ($v == "") continue;
                 $v = trim($v);
                 if ($v[0] != "~") {
@@ -92,31 +93,30 @@ function fullsearchresult(&$action)
             }
         }
     }
-
     /* $bfam = array(); */
     $tclassdoc = GetClassesDoc($dbaccess, $action->user->id, array(
-    1,
-    2
-    ), "TABLE");
+        1,
+        2
+    ) , "TABLE");
     if (!$nosearch) {
-
+        
         $sqlfilters = array();
         $famfilter = $or = $and = "";
         if (count($kfams) > 0) {
             $famid = 0;
             $tmpdoc = new Doc($dbaccess);
-            foreach ( $kfams as $k => $v ) {
-                foreach ( $tclassdoc as $kdoc => $cdoc ) {
-                    if (strstr(strtolower($cdoc["title"]), $v["kfam"]) != false) {
-                        if ($v["include"]) $or .= ($or != "" ? " OR " : "") . "(fromid" . ($v["include"] ? "=" : "!=") . $cdoc["initid"] . ")";
-                        else $and .= ($and != "" ? " AND " : "") . "(fromid" . ($v["include"] ? "=" : "!=") . $cdoc["initid"] . ")";
+            foreach ($kfams as $k => $v) {
+                foreach ($tclassdoc as $kdoc => $cdoc) {
+                    if (strstr(strtolower($cdoc["title"]) , $v["kfam"]) != false) {
+                        if ($v["include"]) $or.= ($or != "" ? " OR " : "") . "(fromid" . ($v["include"] ? "=" : "!=") . $cdoc["initid"] . ")";
+                        else $and.= ($and != "" ? " AND " : "") . "(fromid" . ($v["include"] ? "=" : "!=") . $cdoc["initid"] . ")";
                     }
                 }
             }
             if ($or != "") $famfilter = "($or)";
-            if ($and != "") $famfilter .= ($famfilter != "" ? " AND " : "") . " ($and)";
+            if ($and != "") $famfilter.= ($famfilter != "" ? " AND " : "") . " ($and)";
         }
-
+        
         if ($keyword != "") {
             if ($keyword[0] == '~') {
                 $sqlfilters[] = "svalues ~* '" . pg_escape_string(substr($keyword, 1)) . "'";
@@ -126,27 +126,26 @@ function fullsearchresult(&$action)
         } else {
             $sdoc = new_doc($dbaccess, $dirid);
             $tkeys = $sdoc->getTValue("se_keys");
-            foreach ( $tkeys as $k => $v )
-            if (!$v) unset($tkeys[$k]);
+            foreach ($tkeys as $k => $v) if (!$v) unset($tkeys[$k]);
             $keys = implode('|', $tkeys);
         }
         if ($famfilter != "") $sqlfilters[] = $famfilter;
-
+        
         $s = new SearchDoc($dbaccess, $famid);
         if ($dirid) {
             $s->useCollection($dirid);
-            $vardids="did_$dirid";
-        } else  {
-            $vardids="did_$famid$keys";
-            foreach ( $sqlfilters as $filter ) {
+            $vardids = "did_$dirid";
+        } else {
+            $vardids = "did_$famid$keys";
+            foreach ($sqlfilters as $filter) {
                 $s->addFilter($filter);
             }
         }
-        $displayedIds=array();
+        $displayedIds = array();
         if ($start > 0) {
-            $displayedIds=$action->read($vardids);
-            if ($displayedIds && count($displayedIds)>0) {
-                $sqlExclude=sprintf("initid not in (%s)",implode(",", $displayedIds));
+            $displayedIds = $action->read($vardids);
+            if ($displayedIds && count($displayedIds) > 0) {
+                $sqlExclude = sprintf("initid not in (%s)", implode(",", $displayedIds));
                 $s->addFilter($sqlExclude);
             } else {
                 $s->setStart($start);
@@ -155,7 +154,7 @@ function fullsearchresult(&$action)
         $s->setOrder($orderby . ', id desc');
         $s->setSlice($slice + 1);
         $s->excludeConfidential();
-
+        
         $tdocs = $s->search();
         if ($s->getError()) addLogMsg($s->getSearchInfo());
         //print_r2($s->getSearchInfo());
@@ -166,13 +165,13 @@ function fullsearchresult(&$action)
                 if ($dirid) {
                     $sc->useCollection($dirid);
                 } else {
-                    foreach ( $sqlfilters as $filter ) $sc->addFilter($filter);
+                    foreach ($sqlfilters as $filter) $sc->addFilter($filter);
                 }
                 $sc->excludeConfidential();
                 $globalCount = $sc->onlyCount();
             }
         }
-
+        
         $workdoc = new Doc($dbaccess);
         if ($famid) $famtitle = $workdoc->getTitle($famid);
         else $famtitle = "";
@@ -183,48 +182,52 @@ function fullsearchresult(&$action)
         } else {
             $action->lay->set("notthenend", false);
         }
-
+        
         $action->lay->set("notfirst", ($start != 0));
         $action->lay->set("theFollowingText", _("View next results"));
-        $c=0;
-        foreach ( $tdocs as $k => $tdoc ) {
+        $c = 0;
+        foreach ($tdocs as $k => $tdoc) {
             if ($tdoc["confidential"]) {
                 if (($tdoc["profid"] > 0) && ($workdoc->controlId($tdoc["profid"], "confidential") != "")) {
                     unset($tdocs[$k]);
                     continue;
                 }
             }
-            $displayedIds[]=$tdoc["initid"];
+            $displayedIds[] = $tdoc["initid"];
             $c++;
-            $tdocs[$k]["number"]=$c+$start;
-            $tdoc["values"] .= getFileTxt($dbid, $tdoc);
-            $tdocs[$k]["htext"] = nl2br(str_replace(array('[b]', '[/b]', ),
-            array(  '<b>', '</b>'), (str_replace("<", "&lt;", preg_replace("/<\\/?(\\w+[^:]?|\\w+\\s.*?)>/", "",
-            str_replace(array(
+            $tdocs[$k]["number"] = $c + $start;
+            $tdoc["values"].= getFileTxt($dbid, $tdoc);
+            $tdocs[$k]["htext"] = nl2br(str_replace(array(
+                '[b]',
+                '[/b]',
+            ) , array(
                 '<b>',
                 '</b>'
-                ), array(
+            ) , (str_replace("<", "&lt;", preg_replace("/<\\/?(\\w+[^:]?|\\w+\\s.*?)>/", "", str_replace(array(
+                '<b>',
+                '</b>'
+            ) , array(
                 '[b]',
                 '[/b]'
-                ), nl2br(wordwrap(nobr(highlight_text($dbid, $tdoc["values"], $keys), 80)))))))));
-                $tdocs[$k]["iconsrc"] = $workdoc->getIcon($tdoc["icon"]);
-                $tdocs[$k]["mdate"] = strftime("%a %d %b %Y", $tdoc["revdate"]);
+            ) , nl2br(wordwrap(nobr(highlight_text($dbid, $tdoc["values"], $keys) , 80)))))))));
+            $tdocs[$k]["iconsrc"] = $workdoc->getIcon($tdoc["icon"]);
+            $tdocs[$k]["mdate"] = strftime("%a %d %b %Y", $tdoc["revdate"]);
         }
         $action->register($vardids, $displayedIds);
-
+        
         if ($start > 0) {
-            for($i = 0; $i < $start; $i += $slice) {
+            for ($i = 0; $i < $start; $i+= $slice) {
                 $tpages[] = array(
                     "xpage" => $i / $slice + 1,
                     "xstart" => $i
                 );
             }
-
+            
             $action->lay->setBlockData("PAGES", $tpages);
         }
-
+        
         $action->lay->setBlockData("DOCS", $tdocs);
-
+        
         $action->lay->set("dirid", $dirid);
         if ($dirid != 0) {
             $sdoc = new_doc($dbaccess, $dirid);
@@ -240,53 +243,49 @@ function fullsearchresult(&$action)
         $action->lay->set("notthenend", false);
     }
     $action->lay->set("famid", $famid);
-    $action->lay->set("searchtitle", sprintf(_("Search %s"), $keyword));
+    $action->lay->set("searchtitle", sprintf(_("Search %s") , $keyword));
     if ($fkeyword == "") $action->lay->set("key", _("search dynacase documents"));
     else $action->lay->set("key", str_replace("\"", "&quot;", $fkeyword));
-
-    $famsuffix = ($famid==0?"":sprintf("<span class=\"families\">(%s %s)</span>",_("family search result"),$famtitle));
+    
+    $famsuffix = ($famid == 0 ? "" : sprintf("<span class=\"families\">(%s %s)</span>", _("family search result") , $famtitle));
     if ($globalCount == 0) {
-        $action->lay->set("resulttext", sprintf(_("No document found for <b>%s</b>%s"), $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("No document found for <b>%s</b>%s") , $keyword, $famsuffix));
     } else if ($globalCount == 1) {
-        $action->lay->set("resulttext", sprintf(_("One document for <b>%s</b>%s"), $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("One document for <b>%s</b>%s") , $keyword, $famsuffix));
     } else {
-        $action->lay->set("resulttext", sprintf(_("Found <b>%d</b>  Result for <b>%s</b>%s"), $globalCount, $keyword, $famsuffix));
+        $action->lay->set("resulttext", sprintf(_("Found <b>%d</b>  Result for <b>%s</b>%s") , $globalCount, $keyword, $famsuffix));
     }
-    $action->lay->set("displayBottomBar", ($globalCount==0?false:true));
+    $action->lay->set("displayBottomBar", ($globalCount == 0 ? false : true));
     $action->lay->set("displayTopBar", ($page == 0));
-
-
-    foreach ( $tclassdoc as $k => $cdoc ) {
+    
+    foreach ($tclassdoc as $k => $cdoc) {
         $selectclass[$k]["idcdoc"] = $cdoc["initid"];
         $selectclass[$k]["classname"] = $cdoc["title"];
         $selectclass[$k]["famselect"] = ($cdoc["initid"] == $famid) ? "selected" : "";
     }
     $action->lay->SetBlockData("SELECTCLASS", $selectclass);
-    $action->lay->set("searchdate", Doc::getDate(0,0,0,0,true));
-
+    $action->lay->set("searchdate", Doc::getDate(0, 0, 0, 0, true));
 }
-
 /**
  * return file text values from  _txt column
  */
 function getFileTxt($dbid, &$tdoc)
 {
-
+    
     $sqlselect = 'svalues';
     $sqlfrom = 'doc' . $tdoc["fromid"];
     $sqlwhere = 'id=' . $tdoc["id"];
-
+    
     $result = pg_query($dbid, "select $sqlselect from $sqlfrom where $sqlwhere ;");
     if (pg_numrows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
         return implode(' - ', $arr);
     }
-
 }
 function strtr8($s, $c1, $c2)
 {
     $s9 = utf8_decode($s);
-    $s9 = strtr($s9, utf8_decode($c1), utf8_decode($c2));
+    $s9 = strtr($s9, utf8_decode($c1) , utf8_decode($c2));
     return utf8_encode($s9);
 }
 /**
@@ -305,7 +304,7 @@ function highlight_text($dbid, &$s, $k)
         $pos2 = mb_strrpos($h, ' ');
         $headline = substr($h, $pos1, ($pos2 - $pos1));
     } else if ((strlen($s) / 1024) > getParam("FULLTEXT_HIGHTLIGHTSIZE", 200)) {
-        $headline = sprintf(_("document too big (%dKo): no highlight"), (strlen($s) / 1024));
+        $headline = sprintf(_("document too big (%dKo): no highlight") , (strlen($s) / 1024));
     } else {
         $s = strtr8($s, "£", " ");
         $result = pg_query($dbid, "select ts_headline('french','" . pg_escape_string(unaccent($s)) . "',to_tsquery('french','$k'))");
@@ -313,100 +312,90 @@ function highlight_text($dbid, &$s, $k)
             $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
             $headline = $arr["ts_headline"];
         }
-
         // $headline=str_replace('  ',' ',$headline);
         $headline = preg_replace('/[ ]+ /', ' ', $headline);
         $headline = str_replace(array(
             " \r",
             "\n "
-            ), array(
+        ) , array(
             '',
             "\n"
-            ), $headline);
-            $pos = mb_strpos($headline, '<b>');
-
-            //    print "<hr> POSBEG:".$pos;
-            if ($pos !== false) {
-                $sw = (str_replace(array(
+        ) , $headline);
+        $pos = mb_strpos($headline, '<b>');
+        //    print "<hr> POSBEG:".$pos;
+        if ($pos !== false) {
+            $sw = (str_replace(array(
                 "<b>",
                 "</b>"
-                ), array(
+            ) , array(
                 '',
                 ''
-                ), $headline));
-                $s = preg_replace('/[ ]+ /', ' ', $s);
-                $s = preg_replace('/<[a-z][^>]+>/', '', $s);
-                $s = str_replace(array(
+            ) , $headline));
+            $s = preg_replace('/[ ]+ /', ' ', $s);
+            $s = preg_replace('/<[a-z][^>]+>/', '', $s);
+            $s = str_replace(array(
                 "<br />",
                 "\r"
-                ), array(
+            ) , array(
                 '',
                 ''
-                ), $s);
-                $offset = mb_strpos($s, $sw);
-
-                if ($offset === false) return $headline; // case mismatch in characters
-
-
-                $before = 20; // 20 characters before;
-                if (($pos + $offset) < $before) $p0 = 0;
-                else $p0 = $pos + $offset - $before;
-                $h = mb_substr($s, $p0, $pos + $offset - $p0); // begin of text
-                $possp = mb_strpos($h, ' ');
-                if ($possp > 0) $h = mb_substr($h, $possp); // first word
-
-
-                $pe = mb_strpos($headline, '</b>', $pos);
-                if ($pe > 0) {
-                    $h .= "<b>";
-                    $h .= mb_substr($s, $pos + $offset, $pe - $pos - 3);
-                    $h .= "</b>";
-                }
-                //      print "<br> POS:$pos [ $pos : $pe ]";
-                $pos = $pe + 1;
-                $i = 1;
-                // 7 is strlen('<b></b>');
-
-
-                while ( $pe > 0 ) {
-                    $pb = mb_strpos($headline, '<b>', $pos);
-                    $pe = mb_strpos($headline, '</b>', $pos);
-                    //	print "<br> POS:$pos [ $pb : $pe ]";
-                    if (($pe) && ($pb < $pe)) {
-                        $pb--;
-                        $pe; //
-                        $h .= mb_substr($s, $pos - 4 - (7 * ($i - 1)) + $offset, $pb - $pos - 3);
-                        $h .= "<b>";
-                        $h .= mb_substr($s, $pb - (7 * $i) + $offset, $pe - $pb - 3);
-                        $h .= "</b>";
-                        $pos = $pe + 1;
-                        $i++;
-                    } else {
-                        $cur = $pos - (7 * $i) + 3 + $offset;
-                        if (($cur - $offset) > 150) $pend = 30;
-                        else $pend = 180 - $cur + $offset;
-                        $send = mb_substr($s, $cur, $pend);
-                        $possp = mb_strrpos($send, ' ');
-                        $send = mb_substr($send, 0, $possp);
-                        $pe = 0;
-                        $h .= $send;
-
-                        //  print "<br> POSEND: $cur $pend";
-                    }
-
-                }
-                //print "<br>[$headline]";
-                return $h;
-
+            ) , $s);
+            $offset = mb_strpos($s, $sw);
+            
+            if ($offset === false) return $headline; // case mismatch in characters
+            
+            $before = 20; // 20 characters before;
+            if (($pos + $offset) < $before) $p0 = 0;
+            else $p0 = $pos + $offset - $before;
+            $h = mb_substr($s, $p0, $pos + $offset - $p0); // begin of text
+            $possp = mb_strpos($h, ' ');
+            if ($possp > 0) $h = mb_substr($h, $possp); // first word
+            
+            $pe = mb_strpos($headline, '</b>', $pos);
+            if ($pe > 0) {
+                $h.= "<b>";
+                $h.= mb_substr($s, $pos + $offset, $pe - $pos - 3);
+                $h.= "</b>";
             }
-
+            //      print "<br> POS:$pos [ $pos : $pe ]";
+            $pos = $pe + 1;
+            $i = 1;
+            // 7 is strlen('<b></b>');
+            
+            while ($pe > 0) {
+                $pb = mb_strpos($headline, '<b>', $pos);
+                $pe = mb_strpos($headline, '</b>', $pos);
+                //	print "<br> POS:$pos [ $pb : $pe ]";
+                if (($pe) && ($pb < $pe)) {
+                    $pb--;
+                    $pe; //
+                    $h.= mb_substr($s, $pos - 4 - (7 * ($i - 1)) + $offset, $pb - $pos - 3);
+                    $h.= "<b>";
+                    $h.= mb_substr($s, $pb - (7 * $i) + $offset, $pe - $pb - 3);
+                    $h.= "</b>";
+                    $pos = $pe + 1;
+                    $i++;
+                } else {
+                    $cur = $pos - (7 * $i) + 3 + $offset;
+                    if (($cur - $offset) > 150) $pend = 30;
+                    else $pend = 180 - $cur + $offset;
+                    $send = mb_substr($s, $cur, $pend);
+                    $possp = mb_strrpos($send, ' ');
+                    $send = mb_substr($send, 0, $possp);
+                    $pe = 0;
+                    $h.= $send;
+                    //  print "<br> POSEND: $cur $pend";
+                    
+                }
+            }
+            //print "<br>[$headline]";
+            return $h;
+        }
     }
     return $headline;
 }
 function nobr($text)
 {
-    return strtr8(preg_replace('/<br\\s*?\/??>/i', '', $text), "\n\t£", "  -");
+    return strtr8(preg_replace('/<br\\s*?\/??>/i', '', $text) , "\n\t£", "  -");
 }
-
-
 ?>

@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * display interface to insert document in portfolio
  *
@@ -8,20 +13,14 @@
  * @package FREEDOM
  * @subpackage GED
  */
- /**
+/**
  */
-
-
 // -----------------------------------
-function foliosearch(&$action) {
-  // -----------------------------------
-
-  // Get all the params      
-  $docid=GetHttpVars("id",0); // portfolio id
-
-  $action->lay->set("docid",$docid);
-
-  
+function foliosearch(&$action)
+{
+    // -----------------------------------
+    // Get all the params
+    $docid = GetHttpVars("id", 0); // portfolio id
+    $action->lay->set("docid", $docid);
 }
-
 ?>

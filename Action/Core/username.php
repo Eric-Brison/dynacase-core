@@ -1,16 +1,20 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Generated Header (not documented yet)
  *
- * @author Anakeen 2000 
+ * @author Anakeen 2000
  * @version $Id: username.php,v 1.2 2003/08/18 15:46:41 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package WHAT
  * @subpackage CORE
  */
- /**
+/**
  */
-
 // $Id: username.php,v 1.2 2003/08/18 15:46:41 eric Exp $
 // $Log: username.php,v $
 // Revision 1.2  2003/08/18 15:46:41  eric
@@ -29,18 +33,16 @@
 // Importation
 //
 
-
-function username(&$action) {
-
-// This function is used to show curent user if set
-// TODO
-  if ($action->parent->Exists("AUTHENT")) {
-    $act_login=new Action();
-    $act_login->Set("LOGIN",$action->parent,$action->session);
-    $action->lay->set("OUT",$act_login->execute());
-  } else {
-    $action->lay->set("OUT","");
-  }
-
+function username(&$action)
+{
+    // This function is used to show curent user if set
+    // TODO
+    if ($action->parent->Exists("AUTHENT")) {
+        $act_login = new Action();
+        $act_login->Set("LOGIN", $action->parent, $action->session);
+        $action->lay->set("OUT", $act_login->execute());
+    } else {
+        $action->lay->set("OUT", "");
+    }
 }
 ?>

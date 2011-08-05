@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * For TEST widget calendar
  *
@@ -6,39 +11,88 @@
  * @version $Id: mcalendar-rep.php,v 1.7 2005/11/24 13:47:51 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FREEDOM
- * @subpackage 
+ * @subpackage
  */
- /**
+/**
  */
 global $_GET;
 $startp = $_GET["ts"];
 $endp = $_GET["te"];
 $lastreq = $_GET["LR"];
-
 //  sleep(5);
-
-$events = array(  100 =>array( "time" => $startp + (8*3600), "dura" => 3600, "mode"=> 1 ),
-		  1001 =>array( "time" => $startp + (34*3600) - 1800, "dura" => 3400, "mode"=> 1 ),
-		  1002 =>array( "time" => $startp + (34*3600) - 1800, "dura" => 5*3600, "mode"=> 1 ),
-		  1003 =>array( "time" => $startp + (36*3600) - 1800, "dura" => 3600, "mode"=> 1 ),
-		  101 =>array( "time" => $startp + (34*3600), "dura" => 1800 , "mode"=> 1),
-		  1011 =>array( "time" => $startp + (34*3600) + 1800, "dura" => 1800 , "mode"=> 1),
-		  1013 =>array( "time" => $startp + (34*3600) + 1800 + 2000, "dura" => 6600 , "mode"=> 1),
-		  1012 =>array( "time" => $startp + (48*3600), "dura" => (24*3600)-1, "mode"=> 1 ),
-		  102 =>array( "time" => $startp + (110*3600), "dura" => 5400, "mode"=> 1),
-		  1022 =>array( "time" => $startp + (110*3600), "dura" => 3600, "mode"=> 1),
-		  1021 =>array( "time" => $startp + (110*3600), "dura" => 0, "mode"=> 1),
-		  1023 =>array( "time" => $startp + (96*3600), "dura" => (3600*20), "mode"=> 0),
-		  103 =>array( "time" => $startp + (130*3600), "dura" => 26*3600, "mode"=> 1),
-		 );
-
+$events = array(
+    100 => array(
+        "time" => $startp + (8 * 3600) ,
+        "dura" => 3600,
+        "mode" => 1
+    ) ,
+    1001 => array(
+        "time" => $startp + (34 * 3600) - 1800,
+        "dura" => 3400,
+        "mode" => 1
+    ) ,
+    1002 => array(
+        "time" => $startp + (34 * 3600) - 1800,
+        "dura" => 5 * 3600,
+        "mode" => 1
+    ) ,
+    1003 => array(
+        "time" => $startp + (36 * 3600) - 1800,
+        "dura" => 3600,
+        "mode" => 1
+    ) ,
+    101 => array(
+        "time" => $startp + (34 * 3600) ,
+        "dura" => 1800,
+        "mode" => 1
+    ) ,
+    1011 => array(
+        "time" => $startp + (34 * 3600) + 1800,
+        "dura" => 1800,
+        "mode" => 1
+    ) ,
+    1013 => array(
+        "time" => $startp + (34 * 3600) + 1800 + 2000,
+        "dura" => 6600,
+        "mode" => 1
+    ) ,
+    1012 => array(
+        "time" => $startp + (48 * 3600) ,
+        "dura" => (24 * 3600) - 1,
+        "mode" => 1
+    ) ,
+    102 => array(
+        "time" => $startp + (110 * 3600) ,
+        "dura" => 5400,
+        "mode" => 1
+    ) ,
+    1022 => array(
+        "time" => $startp + (110 * 3600) ,
+        "dura" => 3600,
+        "mode" => 1
+    ) ,
+    1021 => array(
+        "time" => $startp + (110 * 3600) ,
+        "dura" => 0,
+        "mode" => 1
+    ) ,
+    1023 => array(
+        "time" => $startp + (96 * 3600) ,
+        "dura" => (3600 * 20) ,
+        "mode" => 0
+    ) ,
+    103 => array(
+        "time" => $startp + (130 * 3600) ,
+        "dura" => 26 * 3600,
+        "mode" => 1
+    ) ,
+);
 // $events = array(  1001 =>array( "time" => $startp + (34*3600) - 1800, "dura" => 3400 ),
 //                  1002 =>array( "time" => $startp + (34*3600) - 1800, "dura" => 5*3600 ),
 //                  1003 =>array( "time" => $startp + (36*3600) - 1800, "dura" => 3600 ),
 //                  101 =>array( "time" => $startp + (34*3600), "dura" => 1800 ),
 //                  1011 =>array( "time" => $startp + (34*3600) + 1800, "dura" => 1800 ),
 // 		 );
-
 // 		 200 =>array( "time" => $startp + (8*3600), "dura" => 3600 ),
 //                  201 =>array( "time" => $startp + (34*3600), "dura" => 1800 ),
 //                  2011 =>array( "time" => $startp + (34*3600) + 1800, "dura" => 1800 ),
@@ -99,32 +153,37 @@ echo '   </item>';
 echo '</menu>';
 
 foreach ($events as $k => $v) {
-  echo '<event id="'.$k.'" rid="evc'.$k.'" cid="evc'.$k.'" dmode="'.(isset($v["mode"])?$v["mode"]:1).'" time="'.$v["time"].'" duration="'.$v["dura"].'">';
-  echo '<menuref id="evt_menu" use="'.(isset($v["mode"]) && $v["mode"]==0?0:1).',1,1,1,2,1" />';
-  echo '<title>'.getTitle($k).'</title>';
-  echo '<content>'.getContent($k,$v).'</content>';
-  echo '</event>';
+    echo '<event id="' . $k . '" rid="evc' . $k . '" cid="evc' . $k . '" dmode="' . (isset($v["mode"]) ? $v["mode"] : 1) . '" time="' . $v["time"] . '" duration="' . $v["dura"] . '">';
+    echo '<menuref id="evt_menu" use="' . (isset($v["mode"]) && $v["mode"] == 0 ? 0 : 1) . ',1,1,1,2,1" />';
+    echo '<title>' . getTitle($k) . '</title>';
+    echo '<content>' . getContent($k, $v) . '</content>';
+    echo '</event>';
 }
 echo '</eventdesc>';
 return;
 
-function getTitle($x) {
-  return "Event number $x";
+function getTitle($x)
+{
+    return "Event number $x";
 }
-function getContent($x,$v) {
-  $color = array( 0 => "#eef1ed", 1 => "#DCE5FF" );
-  $r = '<styleinfo>';
-  $r .= '<style id="background-color" val="'.(isset($v["mode"])?$color[$v["mode"]]:$color[1]).'"/>';
-  $r .= '<style id="color" val="marron"/>';
-  $r .= '<style id="border" val="1px solid #8B96AA"/>';
-  $r .= '</styleinfo>';
-  $r .= '<chtml>';
-  $r .= '<img style="vertical-align:middle; width:14" src="/what/mcal/Images/defico.png"/>';
-  $r .= '<img style="vertical-align:middle; width:14" src="/what/mcal/Images/defico.png"/>';
-  $r .= '<img style="vertical-align:middle; width:14" src="/what/mcal/Images/defico.png"/>';
-  $r .= '<span style="vertical-align:middle">'.getTitle($x).' ('.(isset($v["mode"])?$v["mode"]:1).')</span>';
-  $r .= '<div>'.strftime("%H:%M",$v["time"]).' - '.strftime("%H:%M",($v["time"] + $v["dura"])).'</div>';
-  $r .= '</chtml>';
-  return $r;
+function getContent($x, $v)
+{
+    $color = array(
+        0 => "#eef1ed",
+        1 => "#DCE5FF"
+    );
+    $r = '<styleinfo>';
+    $r.= '<style id="background-color" val="' . (isset($v["mode"]) ? $color[$v["mode"]] : $color[1]) . '"/>';
+    $r.= '<style id="color" val="marron"/>';
+    $r.= '<style id="border" val="1px solid #8B96AA"/>';
+    $r.= '</styleinfo>';
+    $r.= '<chtml>';
+    $r.= '<img style="vertical-align:middle; width:14" src="/what/mcal/Images/defico.png"/>';
+    $r.= '<img style="vertical-align:middle; width:14" src="/what/mcal/Images/defico.png"/>';
+    $r.= '<img style="vertical-align:middle; width:14" src="/what/mcal/Images/defico.png"/>';
+    $r.= '<span style="vertical-align:middle">' . getTitle($x) . ' (' . (isset($v["mode"]) ? $v["mode"] : 1) . ')</span>';
+    $r.= '<div>' . strftime("%H:%M", $v["time"]) . ' - ' . strftime("%H:%M", ($v["time"] + $v["dura"])) . '</div>';
+    $r.= '</chtml>';
+    return $r;
 }
 ?>
