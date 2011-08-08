@@ -42,22 +42,22 @@ class htmlAuthenticator extends Authenticator
         if (!array_key_exists($this->parms{'username'}, $_POST)) return Authenticator::AUTH_ASK;
         if (!array_key_exists($this->parms{'password'}, $_POST)) return Authenticator::AUTH_ASK;
         
-        $this->username = $_POST[$this->parms{'username'}];
+        $this->username = getHttpVars($this->parms{'username'});
         if (is_callable(array(
             $this->provider,
             'validateCredential'
         ))) {
-            if (!$this->provider->validateCredential($_POST[$this->parms{'username'}], $_POST[$this->parms{'password'}])) {
+            if (!$this->provider->validateCredential(getHttpVars($this->parms{'username'}), getHttpVars($this->parms{'password'}))) {
                 return Authenticator::AUTH_NOK;
             }
             
-            if (!$this->freedomUserExists($_POST[$this->parms{'username'}])) {
-                if (!$this->tryInitializeUser($_POST[$this->parms{'username'}])) {
+            if (!$this->freedomUserExists(getHttpVars($this->parms{'username'}))) {
+                if (!$this->tryInitializeUser(getHttpVars($this->parms{'username'}))) {
                     return Authenticator::AUTH_NOK;
                 }
             }
-            $session->register('username', $_POST[$this->parms{'username'}]);
-            $session->setuid($_POST[$this->parms{'username'}]);
+            $session->register('username', getHttpVars($this->parms{'username'}));
+            $session->setuid(getHttpVars($this->parms{'username'}));
             return Authenticator::AUTH_OK;
         }
         
