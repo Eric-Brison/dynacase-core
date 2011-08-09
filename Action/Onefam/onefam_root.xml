@@ -112,6 +112,12 @@ function openfirst(docid) {
     openiframe(null,null,docid)
   }
 }
+     [IF ISAPPLEWEBKIT]
+     window.setTimeout(function() {nf.style.width='90%';}, 50);
+     window.setTimeout(function() {nf.style.width='';}, 100);
+     [ENDIF ISAPPLEWEBKIT]
+
+
 [IF OPENFAM]
 addEvent(window,'load',function zou() {openfirst('[openfam]');})
 [ENDIF OPENFAM]
