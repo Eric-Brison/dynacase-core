@@ -10,7 +10,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 [IFNOT nocss]
 <link rel="shortcut icon" href="[shorticon]">
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >[ENDIF nocss]
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&popup=true&wv=[WVERSION]" >[ENDIF nocss]
 [IF RSS]<link rel="alternate" type="application/rss+xml" title="[TITLE]" href="[rsslink]"/>[ENDIF RSS]
 [IFNOT nocss]
 [CSS:REF]
@@ -44,7 +44,7 @@
 <input type="hidden" name="famid">
 </form>
 
-[ZONE FDL:POPUPDOCMENU?id=[id]&js=false&css=false]
+[ZONE FDL:POPUPDOCMENU?id=[id]]
 
 <div width="100%" class="tablesimple" id="terrible"
      style="cursor:crosshair;"
