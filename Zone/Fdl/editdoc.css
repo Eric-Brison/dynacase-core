@@ -72,6 +72,12 @@ table.tarray div.drag-button {
  width:12px;
 }
 
+tbody[moving="true"] {
+    cursor:move!important;
+}
+tbody[moving="true"] input {
+    cursor:move!important;
+}
 
 table.tarray thead tr td.tools,
 table.tarray tbody tr td.tools ,

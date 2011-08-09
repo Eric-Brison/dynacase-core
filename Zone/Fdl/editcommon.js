@@ -2621,6 +2621,7 @@ function begindrag(event,o) {
     _SELROW=o.parentNode.parentNode;
     selecttr(o,_SELROW);
     addEvent(document,"mouseup",enddrag); 
+    _SELROW.parentNode.setAttribute('moving',  "true");
     stopPropagation(event);
 }
 function droptr(event) {
@@ -2642,6 +2643,7 @@ function droptr(event) {
 function enddrag(event) {
 
     dro=null;
+    _SELROW.parentNode.setAttribute('moving',  "false");
     _SELROW=null;
     delEvent(document,"mouseup",enddrag);
     unseltr();
