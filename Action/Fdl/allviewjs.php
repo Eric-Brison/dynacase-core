@@ -5,16 +5,17 @@
  * @package FDL
 */
 /**
- * Edition to affect document
+ * concatenate js use to view documents
  *
- * @author Anakeen 2011
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
-include_once ("FDL/viewdocjs.php");
+require_once "FDL/viewdocjs.php";
 /**
  * All edit js scripts in one single file
+ * 
  * @param Action &$action current action
+ * 
+ * @return void
  */
 function allviewjs(Action & $action)
 {
@@ -37,6 +38,7 @@ function allviewjs(Action & $action)
         "FDL/Layout/viewdoc.js",
     );
     
+ 
     viewdocjs($action);
     $action->lay->template = "";
     

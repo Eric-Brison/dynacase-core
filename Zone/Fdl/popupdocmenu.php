@@ -6,27 +6,25 @@
 */
 /**
  * Specific menu for family
- *
- * @author Anakeen 2000
- * @version $Id: popupdocmenu.php,v 1.4 2007/09/04 09:07:22 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
  */
-/**
- */
+require_once "FDL/popupdoc.php";
 
-include_once ("FDL/popupdoc.php");
-// -----------------------------------
-function popupdocmenu(&$action)
+/**
+ * define popupmenu for a document
+ * 
+ * @param Action &$action current action
+ * 
+ * @return void
+ */
+function popupdocmenu(Action &$action)
 {
     // -----------------------------------
     // define accessibility
-    $docid = GetHttpVars("id");
-    $abstract = (GetHttpVars("abstract", 'N') == "Y");
-    $zone = GetHttpVars("mzone"); // special zone
-    $js = (GetHttpVars("js", "true") == "true") ? true : false;
-    $css = (GetHttpVars("css", "true") == "true") ? true : false;
+    $docid = $action->getArgument("id");
+    $abstract = ($action->getArgument("abstract", 'N') == "Y");
+    $zone = $action->getArgument("mzone"); // special zone
+    $js = ($action->getArgument("js", "true") == "true") ? true : false;
+    $css = ($action->getArgument("css", "true") == "true") ? true : false;
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $doc = new_Doc($dbaccess, $docid); # _("States")
@@ -43,7 +41,6 @@ function popupdocmenu(&$action)
     $action->lay->set("menuapp", $menuapp);
     $action->lay->set("menuaction", $menuaction);
     if ($js) {
-        $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/AnchorPosition.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/popupdoc.js");
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/popupdocmenu.js");
     }
