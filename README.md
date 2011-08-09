@@ -12,7 +12,7 @@ Getting Help
 
 ### Documentation 
 
-[Dynacase documentation](http://www.dynacase.org/) provides guides (installation) & reference manuals (developpment).
+[Dynacase documentation](http://www.dynacase.org/) provides guides (installation) & reference manuals (development).
 
 ### Forum 
 
@@ -20,7 +20,7 @@ Getting Help
 
 ### Bug report
 
-Use [Dynacase Bug Report](http://dev.dynacase.org/) to be sure that major bugs don't go unnoticed by developpers. 
+Use [Dynacase Bug Report](http://dev.dynacase.org/) to be sure that major bugs don't go unnoticed by developers. 
 
 ### Commercial Support, Licensing
 
