@@ -476,6 +476,7 @@ create sequence SEQ_ID_ACTION;
                 $this->parent->parent->cssref = array();
                 $this->parent->parent->jsref = array();
             }
+            header('Warning: '.strtok($texterr,"\n"));
             print $this->lay->gen();
             exit;
         } else {
