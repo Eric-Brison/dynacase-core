@@ -1,4 +1,3 @@
-
 [ZONE CORE:HTMLHEAD]
 <script language="javascript">
 if (window.name == 'fhidden') {
@@ -6,13 +5,25 @@ if (window.name == 'fhidden') {
 }
 
 </script>
+<style>
+div.error {
+  color:[CORE_ERRORCOLOR];
+  margin-left:auto;
+  margin-right:auto;
+  width:50%;
+  text-align:left;
+}
+div.COREError {
+    margin:10px;
+    border: solid 3px;
+}
+</style>
+<div  class="COREError" >
 
-<div  class="COREError" style="border:ridge 3pt">
+<div class="CoreTextError" title="[appname]/[appact]">
+<div class="error">[error]</div>
+<div>
 
-<HR width="50%" color="[CORE_FGCOLOR]">
-<H4 class="CoreTextError" title="[appname]/[appact]">[error]</H4>
-
-<HR width="50%" color="[CORE_FGCOLOR]">
 
 
 
