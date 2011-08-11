@@ -407,8 +407,8 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     $sqlfields = implode(", ", $tsqlfields);
                     if ($userid > 1) { // control view privilege
                         $qsql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
-                        // and get permission
-                        $qsql = str_replace("* from ", "$sqlfields ,getuperm($userid,${maintabledot}profid) as uperm from ", $qsql);
+                        // no compute permission here, just test it
+                        $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
                     } else {
                         
                         $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
