@@ -814,7 +814,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                                     $attr = $doc->getAttribute($sattrid);
                                     if (!$attr) {
                                         global $action;
-                                        $action->exitError(sprintf(_("elinkEncode::attribute not found %s") , $sattrid));
+                                        $action->exitError(sprintf(_("elinkEncode::attribute not found %s in %s : %s") , $sattrid, $attrik, $link));
                                     }
                                     if ($attr->inArray()) $sattrid.= '_' . $index;
                                     //print "attr=$sattrid";
@@ -1505,11 +1505,10 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                                 if ($v[0] == '"') {
                                     $urlcreate.= sprintf("&%s=%s", $kl, urlencode(trim($v, '"')));
                                 } else {
-                                    $urlcreate.= sprintf("&%s=%%%s%%", $kl, $v);
+                                    $urlcreate.= sprintf("&%s=%s", $kl, elinkencode($doc, $attridk, "%$v%", $index));
                                 }
                             }
                             
-                            $urlcreate = elinkencode($doc, $attridk, $urlcreate, $index);
                         }
                     }
                     $esymbol = '&nbsp;';
