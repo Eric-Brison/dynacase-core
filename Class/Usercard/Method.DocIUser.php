@@ -639,14 +639,16 @@ class _IUSER extends _USER
     function resetLoginFailure()
     {
         if ($this->getValue("us_whatid") == 1) return ""; // it makes non sense for admin
-        $this->disableEditControl();
-        $err = $this->SetValue("us_loginfailure", 0);
-        if ($err == "") {
-            $err = $this->modify(true, array(
-                "us_loginfailure"
-            ) , true);
+        if (intval($this->getValue("us_loginfailure")) > 0) {
+            $this->disableEditControl();
+            $err = $this->setValue("us_loginfailure", 0);
+            if ($err == "") {
+                $err = $this->modify(true, array(
+                    "us_loginfailure"
+                ), true);
+            }
+            $this->enableEditControl();
         }
-        $this->enableEditControl();
         return "";
     }
     
