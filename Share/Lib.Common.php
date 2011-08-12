@@ -70,18 +70,50 @@ function getTmpDir($def = '/tmp')
     }
     return $tmp;
 }
-
+/**
+ * return value of parameters
+ * 
+ * @brief must be in core or global type
+ * @param string $name param name
+ * @param string $def default value if value is empty
+ * 
+ * @return string
+ */
 function getParam($name, $def = "")
 {
     global $action;
     if ($action) return $action->getParam($name, $def);
-    // case of without what context
-    include_once ("Class.Action.php");
-    $core = new Application();
-    $core->Set("CORE", $CoreNull);
-    $act = new Action();
-    $act->Set("", $core);
-    return $act->getParam($name, $def);
+    
+    // if context not yet initialized
+    return getCoreParam($name, $def = "");
+}
+
+/**
+ * return value of a parameter
+ * 
+ * @brief must be in core or global type
+ * @param string $name param name
+ * @param string $def default value if value is empty
+ * 
+ * @return string
+ */
+function getCoreParam($name, $def = "")
+{
+    static $params = null;
+    
+    if (!$params) {
+        $tparams = array();
+        $err = simpleQuery("", "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));", $tparams);
+        if ($err=="") {
+            foreach ($tparams as $p) {
+                $params[$p['name']]=$p['val'];
+            }
+        }
+    }
+    if ($params[$p['name']]===null) {
+        error_log(sprintf("parameter %s not found",$name));
+    }
+    return $params[$name] ? $params[$name] : $def;
 }
 /**
  *
@@ -172,6 +204,7 @@ function getDebugStack($slice = 1)
 function getDbid($dbaccess)
 {
     global $CORE_DBID;
+    if (!$dbaccess) $dbaccess=getDbAccess();
     if (!isset($CORE_DBID) || !($CORE_DBID[$dbaccess])) {
         $CORE_DBID[$dbaccess] = pg_connect($dbaccess);
         if (!$CORE_DBID[$dbaccess]) {
@@ -276,7 +309,47 @@ function getServiceName($dbaccess)
         return $reg[1];
     }
 }
-
+/**
+ * send simple query to database
+ * @param string $dbaccessaccess database coordonates
+ * @param string $query sql query
+ * @param string/array &$result  query result
+ * @param boolean $singlecolumn  set to true if only onz field is return
+ * @param boolean $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array
+ * @return string error message. Empty message if no errors.
+ */
+function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = false, $singleresult = false)
+{
+    global $SQLDEBUG;
+    $dbid = getDbid($dbaccess);
+    if ($dbid) {
+        $result = array();
+        if ($SQLDEBUG) $sqlt1 = microtime();
+        $r = pg_query($dbid, $query);
+        if ($r) {
+            if (pg_numrows($r) > 0) {
+                if ($singlecolumn) $result = pg_fetch_all_columns($r, 0);
+                else $result = pg_fetch_all($r);
+                if ($singleresult) $result = $result[0];
+            } else {
+                if ($singleresult) $result = false;
+            }
+        if ($SQLDEBUG) {
+            global $TSQLDELAY;
+            $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
+            $TSQLDELAY[] = array(
+                "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
+                "s" => str_replace(array("from",'where'), array("\nfrom","\nwhere"), $query) ,
+                "st" => getDebugStack(1)
+            );
+        }
+            
+        } else {
+            $err = pg_last_error($dbid);
+        }
+    } else $err = sprintf(_("cannot connect to %s") , $dbaccess);
+    return $err;
+}
 function getAuthType($freedomctx = "")
 {
     global $pubdir;
