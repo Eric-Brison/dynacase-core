@@ -630,8 +630,8 @@ class DbObj
             $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
                 "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
-                "s" => str_replace("from", "<br/>from", $sql) ,
-                "st" => stacktrace(8)
+                "s" => str_replace(array("from",'where'), array("\nfrom","\nwhere"), $sql) ,
+                "st" => getDebugStack(1)
             );
         }
         

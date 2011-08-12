@@ -103,7 +103,7 @@ function sortqdelay($a, $b)
     else if ($xa < $xb) return 1;
     return 0;
 }
-usort($TSQLDELAY, "sortqdelay");
+//usort($TSQLDELAY, "sortqdelay");
 addLogMsg($TSQLDELAY);
 $deb = gettimeofday();
 $tic4 = $deb["sec"] + $deb["usec"] / 1000000;
