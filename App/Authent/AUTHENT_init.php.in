@@ -50,7 +50,7 @@ $app_const= array(
                                     "val" => 0,
                                     "descr" => N_("Authentication failures before account deactivation"),
                                     "kind" => "text",
-                                    "global" => "N"
+                                    "global" => "Y"
                                     ),
   "AUTHENT_ACCOUNTEXPIREDELAY" => array(
                                     "val" => 0,
