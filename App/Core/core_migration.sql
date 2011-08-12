@@ -220,3 +220,9 @@ SELECT pg_temp.addColumnIfNotExists('', 'docread', 'lockdomainid', 'int');
 SELECT pg_temp.addColumnIfNotExists('', 'doc', 'domainid', 'text');
 SELECT pg_temp.addColumnIfNotExists('', 'docread', 'domainid', 'text');
 SELECT pg_temp.addColumnIfNotExists('', 'docwait', 'extradata', 'text');
+--
+-- Update global type for parameters
+--
+update paramv set type='G' from paramdef where paramv.type='A' and paramdef.name=paramv.name and paramdef.isglob='Y';
+
+
