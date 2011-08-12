@@ -380,35 +380,7 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     }
     return false;
 }
-/**
- * send simple query to database
- * @param string $dbaccessaccess database coordonates
- * @param string $query sql query
- * @param string/array &$result  query result
- * @param boolean $singlecolumn  set to true if only onz field is return
- * @param boolean $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array
- * @return string error message. Empty message if no errors.
- */
-function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = false, $singleresult = false)
-{
-    $dbid = getDbid($dbaccess);
-    if ($dbid) {
-        $result = array();
-        $r = pg_query($dbid, $query);
-        if ($r) {
-            if (pg_numrows($r) > 0) {
-                if ($singlecolumn) $result = pg_fetch_all_columns($r, 0);
-                else $result = pg_fetch_all($r);
-                if ($singleresult) $result = $result[0];
-            } else {
-                if ($singleresult) $result = false;
-            }
-        } else {
-            $err = pg_last_error($dbid);
-        }
-    } else $err = sprintf(_("cannot connect to %s") , $dbaccess);
-    return $err;
-}
+
 /**
  * return the value of an doc array item
  *
