@@ -280,40 +280,12 @@ class Session extends DbObj
                 $ttlParamName = 'CORE_SESSIONTTL';
             }
         }
-        $err = $this->exec_query(sprintf("SELECT val FROM paramv WHERE name = '%s'", pg_escape_string($ttlParamName)));
-        if ($err != "") {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "exec_query returned with error: " . $err);
-            return $default;
-        }
-        if ($this->numrows() <= 0) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "exec_query returned an empty result set");
-            return $default;
-        }
-        $res = $this->fetch_array(0);
-        if (!is_numeric($res['val'])) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "result value is not numeric");
-            return $default;
-        }
-        return $res['val'];
+        return getParam($ttlParamName,$default);
     }
     
     function getSessionGcProbability($default = "0.01")
     {
-        $err = $this->exec_query("SELECT val FROM paramv WHERE name = 'CORE_SESSIONGCPROBABILITY'");
-        if ($err != "") {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "exec_query returned with error: " . $err);
-            return $default;
-        }
-        if ($this->numrows() <= 0) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "exec_query returned an empty result set");
-            return $default;
-        }
-        $res = $this->fetch_array(0);
-        if (!is_numeric($res['val'])) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "result value is not numeric");
-            return $default;
-        }
-        return $res['val'];
+        return getParam("CORE_SESSIONGCPROBABILITY",$default);
     }
     
     function touch()
