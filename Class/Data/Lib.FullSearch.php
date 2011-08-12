@@ -15,7 +15,7 @@
 /**
  */
 
-include_once ("FGSEARCH/fullsearch.php");
+include_once ("FGSEARCH/fullsearchresult.php");
 
 function getHighlight(&$doc, $keys)
 {
