@@ -314,7 +314,12 @@ class DocCtrl extends DocLDAP
                         $perm->unacl = $vunacl[$uid];
                         //   print "<BR>set perm $uid : ".$this->id."/".$perm->upacl;
                         if ($perm->isAffected()) $err = $perm->modify();
-                        else $err = $perm->Add();
+                        else { 
+                            if ($perm->upacl || $perm->unacl) {
+                                // add if necessary
+                                $err = $perm->Add();
+                            }
+                        }
                     }
                 }
             }
