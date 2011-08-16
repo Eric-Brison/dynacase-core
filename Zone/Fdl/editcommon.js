@@ -2108,7 +2108,7 @@ function selecttr(o,tr) {
   for (var i=0; i< ti.length; i++) { 
     if (ti[i].name=='unselect') ti[i].style.visibility='visible';
   }
-  var ti = tr.parentNode.getElementsByTagName('textarea');
+  ti = tr.parentNode.getElementsByTagName('textarea');
   for (var i=0; i< ti.length; i++) { 
     ti[i].rows=1;
     if (ti[i].id && document.getElementById('exp'+ti[i].id)) document.getElementById('exp'+ti[i].id).style.display='none';
@@ -2117,10 +2117,10 @@ function selecttr(o,tr) {
     seltr.className='';
     
   }   
-  o=o.nextSibling;
-  while (o && (o.nodeType != 1)) o = o.nextSibling; // case TEXT attribute in mozilla between TR 
+  o=o.parentNode.firstChild;
+  while (o && ((o.nodeType != 1) || o.name != 'trash')) o = o.nextSibling; // case TEXT attribute in mozilla between TR 
  
-      if (o) o.style.visibility='visible';
+  if (o) o.style.visibility='visible';
 
   seltr=tr;
 
