@@ -85,7 +85,7 @@ function getParam($name, $def = "")
     if ($action) return $action->getParam($name, $def);
     
     // if context not yet initialized
-    return getCoreParam($name, $def = "");
+    return getCoreParam($name, $def);
 }
 
 /**
@@ -110,8 +110,8 @@ function getCoreParam($name, $def = "")
             }
         }
     }
-    if ($params[$p['name']]===null) {
-        error_log(sprintf("parameter %s not found",$name));
+    if ($params[$name]===null) {
+        error_log(sprintf("parameter %s not found use %s instead",$name, $def));
     }
     return $params[$name] ? $params[$name] : $def;
 }
