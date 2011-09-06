@@ -295,6 +295,12 @@ class NormalAttribute extends BasicAttribute
     public $usefor; // = Q if parameters
     
     /**
+     * Array of separator by level of multiplicity for textual export
+     * @var unknown_type
+     */
+    protected $textualValueMultipleSeparator = array(0 => "\n", 1=> ", ");
+
+    /**
      * Normal Attribute constructor : non structural attribute
      *
      * @param int $id id of the attribute
@@ -726,7 +732,7 @@ class NormalAttribute extends BasicAttribute
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueText($doc, $i);
                     }
-                    return implode("\n", $returnValues);
+                    return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
                 return strip_tags($doc->getValue($this->id));
@@ -740,7 +746,7 @@ class NormalAttribute extends BasicAttribute
                     return $doc->getTValue($this->id, "", $index);
                 } else {
                     $returnValues = $doc->getTValue($this->id);
-                    return implode("\n", $returnValues);
+                    return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
                 return $doc->getValue($this->id);
@@ -757,7 +763,7 @@ class NormalAttribute extends BasicAttribute
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueDate($doc, $i);
                     }
-                    return implode("\n", $returnValues);
+                    return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
                 return FrenchDateToIso($doc->getValue($this->id));
@@ -774,7 +780,7 @@ class NormalAttribute extends BasicAttribute
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueFile($doc, $i);
                     }
-                    return implode("\n", $returnValues);
+                    return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
                 return $doc->vault_filename($this->id);
@@ -784,61 +790,52 @@ class NormalAttribute extends BasicAttribute
         {
             if ($this->inArray()) {
                 if ($index >= 0) {
-                    if ($this->getOption('multiple') == 'yes') {
-                        $values = $doc->getTValue($this->id, "", $index);
-                        $returnValues = array();
-                        if (is_array($values)) {
-                            foreach ($values as $currentKey) {
-                                $returnValues[] = $this->getEnumLabel($currentKey);
-                            }
-                            return implode(" , ", $returnValues);
-                        } else {
-                            return $this->getEnumLabel($values);
-                        }
-                    } else {
                         return $this->getEnumLabel($doc->getTValue($this->id, "", $index));
-                    }
                 } else {
                     $nbValue = count($doc->getTValue($this->id));
                     $returnValues = array();
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueEnum($doc, $i);
                     }
-                    return implode("\n", $returnValues);
+                    return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
                 if ($this->getOption('multiple') == 'yes') {
                     $value = $doc->getValue($this->id);
                     $values = $doc->_val2array($value);
-                    if ($index >= 0) {
-                        return $this->getEnumLabel($values[$index]);
-                    } else {
-                        $returnValues = array();
-                        foreach ($values as $currentKey) {
-                            $returnValues[] = $this->getEnumLabel($currentKey);
-                        }
-                        return implode(" , ", $returnValues);
+                    $returnValues = array();
+                    foreach ($values as $currentKey) {
+                        $returnValues[] = $this->getEnumLabel($currentKey);
                     }
+                    return implode($this->textualValueMultipleSeparator[1], $returnValues);
                 }
                 return $this->getEnumLabel($doc->getValue($this->id));
             }
         }
         private function getTextualValueDocId(Doc $doc, $index = - 1)
         {
+            $optionDoc = $this->getOption('docrev', "");
+            $displayTitle = function($id) use ($optionDoc, $doc) {
+                if ($optionDoc == "fixed") {
+                    return $doc->getTitle($id);
+                }else{
+                    return $doc->getTitle($id, "", true);
+                }
+            };
             if ($this->inArray()) {
                 if ($index >= 0) {
                     if ($this->getOption('multiple') == 'yes') {
-                        $values = $doc->getTValue($this->id, "", $index);
+                        $values = explode("<BR>", $doc->getTValue($this->id, "", $index));
                         if (is_array($values)) {
                             $returnValues = array();
                             foreach ($values as $currentId) {
-                                $returnValues[] = $doc->getTitle($currentId);
+                                $returnValues[] = $displayTitle($currentId);
                             }
-                            return implode(" , ", $returnValues);
+                            return implode($this->textualValueMultipleSeparator[1], $returnValues);
                         }
-                        return $doc->getTitle($values);
+                        return $displayTitle($values);
                     } else {
-                        return $doc->getTitle($doc->getTValue($this->id, "", $index));
+                        return $displayTitle($doc->getTValue($this->id, "", $index));
                     }
                 } else {
                     $nbValue = count($doc->getTValue($this->id));
@@ -846,23 +843,23 @@ class NormalAttribute extends BasicAttribute
                     for ($i = 0; $i < $nbValue; $i++) {
                         $returnValues[] = $this->getTextualValueDocId($doc, $i);
                     }
-                    return implode("\n", $returnValues);
+                    return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
                 if ($this->getOption('multiple') == 'yes') {
                     $value = $doc->getValue($this->id);
                     $values = $doc->_val2array($value);
                     if ($index >= 0) {
-                        return $doc->getTitle($values[$index]);
+                        return $displayTitle($values[$index]);
                     } else {
                         $returnValues = array();
                         foreach ($values as $currentId) {
-                            $returnValues[] = $doc->getTitle($currentId);
+                            $returnValues[] = $displayTitle($currentId);
                         }
-                        return implode(" , ", $returnValues);
+                        return implode($this->textualValueMultipleSeparator[1], $returnValues);
                     }
                 }
-                return $doc->getTitle($doc->getValue($this->id));
+                return $displayTitle($doc->getValue($this->id));
             }
         }
         /**
