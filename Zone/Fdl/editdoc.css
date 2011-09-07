@@ -7,11 +7,11 @@
 
 
 input[type=button].add-doc {
-    background : url('[IMG:add22.gif|16]') no-repeat;
+    background : url('[IMG:createdoc.png|16]') no-repeat;
     width:16px;
 }
 input[type=button].view-doc {
-    background : url('[IMG:point22.gif|16]') no-repeat;
+    background : url('[IMG:editdoc.png|16]') no-repeat;
     width:16px;
 }
 

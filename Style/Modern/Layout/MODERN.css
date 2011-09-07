@@ -524,11 +524,11 @@ input[type="image"] {
 }
 
 .document input[type=button].add-doc {
-    background : url('lib/ui/icon/add.png') no-repeat;
+   /* background : url('lib/ui/icon/add.png') no-repeat;*/
     width:16px;
 }
 .document input[type=button].view-doc {
-    background : url('lib/ui/icon/accept.png') no-repeat;
+   /* background : url('lib/ui/icon/accept.png') no-repeat; */
     width:16px;
 }
 .document .tarray .add-button,.document .tarray .add-button:HOVER {
