@@ -10,7 +10,7 @@
  * @author Anakeen 2000
  * @version $Id: openfolio.php,v 1.6 2005/06/28 08:37:46 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
+ * @package FREEDOM
  * @subpackage GED
  */
 /**
@@ -36,7 +36,8 @@ function openfolio(&$action)
     $action->lay->Set("title", $folio->title);
     
     $dir = new_Doc($dbaccess, $folio->initid);
-    $savedtab = $dir->getParamValue('pfl_savetab');
+    $savedTab = $dir->getParamValue('pfl_savetab');
+    $savedDispo = $dir->getParamValue('pfl_savedispo', 1);
     $pfctx = portfolio_get_context($dir);
     
     $action->lay->set("FRAMELISTWIDTH", '180');
@@ -46,15 +47,7 @@ function openfolio(&$action)
     $action->lay->set("FRAME2", '&app=FREEDOM&action=FREEDOM_LOGO');
     $action->lay->set("FRAMELIST", '&app=FREEDOM&action=FOLIOLIST&dirid=' . $folio->initid);
     
-    if (isset($pfctx['framelistwidth'])) {
-        $action->lay->set("FRAMELISTWIDTH", $pfctx['framelistwidth']);
-    }
-    
-    if (isset($pfctx['viewstate'])) {
-        $action->lay->set("VIEWSTATE", $pfctx['viewstate']);
-    }
-    
-    if ($savedtab) {
+    if ($savedTab) {
         if (isset($pfctx['tabselected'])) {
             $action->lay->set("TABSELECTED", $pfctx['tabselected']);
         }
@@ -62,16 +55,26 @@ function openfolio(&$action)
             $action->lay->set("FRAMELIST", '&app=FREEDOM&action=FOLIOLIST&dirid=' . $pfctx['framelist']['dirid'] . '&folioid=' . $pfctx['framelist']['folioid']);
         }
     }
-    if (isset($pfctx['frame1'])) {
-        $doc1 = new_Doc($dbaccess, $pfctx['frame1']);
-        if ($doc1->isAlive()) {
-            $action->lay->set("FRAME1", '&app=FDL&action=FDL_CARD&latest=Y&id=' . $pfctx['frame1']);
+    
+    if ($savedDispo) {
+        if (isset($pfctx['framelistwidth'])) {
+            $action->lay->set("FRAMELISTWIDTH", $pfctx['framelistwidth']);
         }
-    }
-    if (isset($pfctx['frame2'])) {
-        $doc2 = new_Doc($dbaccess, $pfctx['frame2']);
-        if ($doc2->isAlive()) {
-            $action->lay->set("FRAME2", '&app=FDL&action=FDL_CARD&latest=Y&id=' . $pfctx['frame2']);
+        
+        if (isset($pfctx['viewstate'])) {
+            $action->lay->set("VIEWSTATE", $pfctx['viewstate']);
+        }
+        if (isset($pfctx['frame1'])) {
+            $doc1 = new_Doc($dbaccess, $pfctx['frame1']);
+            if ($doc1->isAlive()) {
+                $action->lay->set("FRAME1", '&app=FDL&action=FDL_CARD&latest=Y&id=' . $pfctx['frame1']);
+            }
+        }
+        if (isset($pfctx['frame2'])) {
+            $doc2 = new_Doc($dbaccess, $pfctx['frame2']);
+            if ($doc2->isAlive()) {
+                $action->lay->set("FRAME2", '&app=FDL&action=FDL_CARD&latest=Y&id=' . $pfctx['frame2']);
+            }
         }
     }
 }
