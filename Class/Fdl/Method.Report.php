@@ -272,7 +272,7 @@ class _REPORT extends _DSEARCH
      *
      * @return array
      */
-    public function generateCSVReportStruct($separator = ".", $refresh = true, $isPivotExport = false, $pivotId = "id")
+    public function generateCSVReportStruct($isPivotExport = false, $pivotId = "id", $separator = ".", $dateFormat = "US", $refresh = true)
     {
         require_once 'WHAT/Class.twoDimensionalArray.php';
         require_once 'FDL/Class.SearchDoc.php';
@@ -292,14 +292,19 @@ class _REPORT extends _DSEARCH
         $tcols = $this->getTValue("rep_idcols");
         
         if ($isPivotExport) {
-            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator);
+            return $this->generatePivotCSV($search, $tcols, $famDoc, $pivotId, $refresh, $separator, $dateFormat);
         } else {
-            return $this->generateBasicCSV($search, $tcols, $famDoc, $refresh, $separator);
+            return $this->generateBasicCSV($search, $tcols, $famDoc, $refresh, $separator, $dateFormat);
         }
     }
     
-    protected function generatePivotCSV(SearchDoc $search, Array $columns, Doc $famDoc, $pivotId, $refresh, $separator)
+    protected function generatePivotCSV(SearchDoc $search, Array $columns, Doc $famDoc, $pivotId, $refresh, $separator, $dateFormat)
     {
+        $convertFormat = array(
+            "dateFormat" => $dateFormat,
+            'decimalSeparator' => $separator
+        );
+
         $pivotColumnName = uniqid();
         
         $singleAttributes = array();
@@ -344,18 +349,18 @@ class _REPORT extends _DSEARCH
                 $currentDoc->refresh();
             }
             $pivotAttribute = $famDoc->getAttribute($pivotId);
-            $pivotValue = $pivotAttribute ? $pivotAttribute->getTextualValue($currentDoc, -1, $separator) : $this->convertInternalElement($pivotId, $currentDoc);
+            $pivotValue = $pivotAttribute ? $pivotAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($pivotId, $currentDoc);
             $resultSingleArray[$pivotColumnName][] = $pivotValue;
             foreach ($singleAttributes as $currentColumnID) {
                 $currentAttribute = $famDoc->getAttribute($currentColumnID);
-                $resultSingleArray[$currentColumnID][] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $separator) : $this->convertInternalElement($currentColumnID, $currentDoc);
+                $resultSingleArray[$currentColumnID][] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($currentColumnID, $currentDoc);
             }
             foreach ($multipleAttributes as $currentKey => $currentArrayID) {
                 foreach ($currentArrayID as $currentColumnID) {
                     $currentAttribute = $famDoc->getAttribute($currentColumnID);
                     $nbElement = count($currentDoc->getTValue($currentColumnID));
                     for ($i = 0; $i < $nbElement; $i++) {
-                        $resultMultipleArray[$currentKey][$currentColumnID][] = $currentAttribute->getTextualValue($currentDoc, $i, $separator);
+                        $resultMultipleArray[$currentKey][$currentColumnID][] = $currentAttribute->getTextualValue($currentDoc, $i, $convertFormat);
                     }
                 }
                 for ($i = 0; $i < $nbElement; $i++) {
@@ -406,8 +411,13 @@ class _REPORT extends _DSEARCH
      *
      * @return array
      */
-    protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh)
+    protected function generateBasicCSV(SearchDoc $search, Array $columns, Doc $famDoc, $refresh, $separator, $dateFormat)
     {
+        $convertFormat = array(
+            "dateFormat" => $dateFormat,
+            'decimalSeparator' => $separator
+        );
+
         $twoDimStruct = new TwoDimensionStruct();
         $firstRow = array();
         $internals = $this->_getInternals();
@@ -423,7 +433,7 @@ class _REPORT extends _DSEARCH
             $currentRow = array();
             foreach ($columns as $currentColumn) {
                 $currentAttribute = $famDoc->getAttribute($currentColumn);
-                $currentRow[] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $separator) : $this->convertInternalElement($currentColumn, $currentDoc);
+                $currentRow[] = $currentAttribute ? $currentAttribute->getTextualValue($currentDoc, -1, $convertFormat) : $this->convertInternalElement($currentColumn, $currentDoc);
             }
             $twoDimStruct->addRow($currentRow);
         }

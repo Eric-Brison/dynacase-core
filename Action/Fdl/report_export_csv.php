@@ -30,6 +30,7 @@ function report_export_csv(&$action)
     $enclosure = $action->getArgument('enclosure', '"');
     $encoding = $action->getArgument('encoding', 'utf8');
     $decimalSeparator = $action->getArgument('decimalSeparator', ".");
+    $dateFormat = $action->getArgument('dateFormat', "US");
     $displayForm = $action->getArgument('displayForm', false);
     
     if (!$id) {
@@ -62,11 +63,11 @@ function report_export_csv(&$action)
             
             switch ($kind) {
                 case "pivot":
-                    $csvStruct = $currentDoc->generateCSVReportStruct($decimalSeparator, $refresh, true, $pivot);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(true, $pivot, $decimalSeparator, $dateFormat, $refresh);
                     break;
 
                 default:
-                    $csvStruct = $currentDoc->generateCSVReportStruct($decimalSeparator, $refresh, false);
+                    $csvStruct = $currentDoc->generateCSVReportStruct(false, "", $decimalSeparator, $dateFormat, $refresh);
             }
             
             $csvFile = tempnam($action->GetParam("CORE_TMPDIR", "/tmp") , "csv$id") . ".csv";

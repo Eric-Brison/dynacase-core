@@ -78,6 +78,18 @@
                             </select>
                         </td>
                     </tr>
+                   <tr>
+                        <td>
+                            [TEXT:EXPORT_CSV Date format :]
+                    </td>
+                        <td>
+                            <select name="dateFormat">
+                                <option value="US">[TEXT:EXPORT_CSV Date format US]</option>
+                                <option value="FR">[TEXT:EXPORT_CSV Date format FR]</option>
+                                <option value="ISO">[TEXT:EXPORT_CSV Date format ISO]</option>
+                            </select>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

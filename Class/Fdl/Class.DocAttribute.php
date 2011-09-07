@@ -298,8 +298,10 @@ class NormalAttribute extends BasicAttribute
      * Array of separator by level of multiplicity for textual export
      * @var unknown_type
      */
-    protected $textualValueMultipleSeparator = array(0 => "\n", 1=> ", ");
-
+    protected $textualValueMultipleSeparator = array(
+        0 => "\n",
+        1 => ", "
+    );
     /**
      * Normal Attribute constructor : non structural attribute
      *
@@ -668,64 +670,94 @@ class NormalAttribute extends BasicAttribute
          * Get the textual value of an attribute
          *
          * @param Doc $doc current Doc
+         * @param int $index index if multiple
+         * @param array $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
+         * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple') (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
          *
          * @return string
          */
-        public function getTextualValue(Doc $doc, $index = - 1, $decimalSeparator = ".")
+        public function getTextualValue(Doc $doc, $index = - 1, Array $configuration = array())
         {
+            $oldMultipleSep = $this->textualValueMultipleSeparator;
+            $this->textualValueMultipleSeparator = (isset($configuration['multipleSeparator']) && is_array($configuration['multipleSeparator'])) ? $configuration['multipleSeparator'] : $this->textualValueMultipleSeparator;
+            $return = "";
             switch ($this->type) {
                 case 'text':
                 case 'longtext':
                 case 'time':
                 case 'htmltext':
-                    return $this->getTextualValueText($doc, $index);
+                    $return = $this->getTextualValueText($doc, $index);
+                    break;
+
                 case 'image':
                 case 'file':
-                    return $this->getTextualValueFile($doc, $index);
+                    $return = $this->getTextualValueFile($doc, $index);
+                    break;
+
                 case 'enum':
-                    return $this->getTextualValueEnum($doc, $index);
+                    $return = $this->getTextualValueEnum($doc, $index);
+                    break;
+
                 case 'thesaurus':
                 case 'docid':
-                    return $this->getTextualValueDocId($doc, $index);
+                    $return = $this->getTextualValueDocId($doc, $index);
+                    break;
+
                 case 'timestamp':
                 case 'date':
-                    return $this->getTextualValueDate($doc, $index);
+                    $date = isset($configuration['dateFormat']) ? $configuration['dateFormat'] : 'US';
+                    $return = $this->getTextualValueDate($doc, $index, $date);
+                    break;
+
                 case 'array':
-                    return "";
+                    break;
+
                 case 'float':
                 case 'money':
-                    return $this->getTextualFloat($doc, $index, $decimalSeparator);
+                    $decimalSeparator = isset($configuration['decimalSeparator']) ? $configuration['decimalSeparator'] : '.';
+                    $return = $this->getTextualFloat($doc, $index, $decimalSeparator);
+                    break;
+
                 case 'int':
                 case 'integer':
                 case 'color':
                 default:
-                    return $this->getTextualValueRaw($doc, $index);
+                    $return = $this->getTextualValueRaw($doc, $index);
             }
+            $this->textualValueMultipleSeparator = $oldMultipleSep;
+            return $return;
         }
-        
-        private function getTextualFloat($doc, $index, $decimalSeparator)
+        /**
+         * Get textual value for a float attribute
+         *
+         * @param Doc $doc class doc
+         * @param int $index current index of the element if multiple
+         * @param string $decimalSeparator current decimal separator
+         *
+         * @return string
+         */
+        private function getTextualFloat(Doc $doc, $index, $decimalSeparator)
         {
             $values = $this->getTextualValueRaw($doc, $index);
             if ($decimalSeparator != ".") {
-                if (is_array($values)) {
-                    $returnValues = array();
-                    foreach ($values as $value) {
-                        $returnValues = str_replace(".", $decimalSeparator, $values);
-                    }
-                    return $returnValues;
-                } else {
-                    return str_replace(".", $decimalSeparator, $values);
-                }
+                return str_replace(".", $decimalSeparator, $values);
             } else {
                 return $values;
             }
         }
-        
+        /**
+         * Get textual value for a text attribute
+         *
+         * @param Doc $doc class doc
+         * @param int $index current index of the element if multiple
+         *
+         * @return string
+         */
         private function getTextualValueText(Doc $doc, $index = - 1)
         {
             if ($this->inArray()) {
                 if ($index >= 0) {
-                    return strip_tags($doc->getValue($this->id, "_self", 2, $index));
+                    return strip_tags($doc->getTValue($this->id, "", $index));
                 } else {
                     $nbValue = count($doc->getTValue($this->id));
                     $returnValues = array();
@@ -738,7 +770,14 @@ class NormalAttribute extends BasicAttribute
                 return strip_tags($doc->getValue($this->id));
             }
         }
-        
+        /**
+         * Get textual value for a attribute
+         *
+         * @param Doc $doc class doc
+         * @param int $index current index of the element if multiple
+         *
+         * @return string
+         */
         private function getTextualValueRaw(Doc $doc, $index = - 1)
         {
             if ($this->inArray()) {
@@ -752,23 +791,49 @@ class NormalAttribute extends BasicAttribute
                 return $doc->getValue($this->id);
             }
         }
-        private function getTextualValueDate(Doc $doc, $index = - 1)
+        /**
+         * Get textual value for a date attribute
+         *
+         * @param Doc $doc class doc
+         * @param int $index current index of the element if multiple
+         * @param string dateFormat US/ISO/FR
+         *
+         * @return string
+         */
+        private function getTextualValueDate(Doc $doc, $index = - 1, $dateFormat)
         {
+            $convertDate = function ($date) use ($dateFormat)
+            {
+                if (strtoupper($dateFormat) == "US") {
+                    $date = FrenchDateToIso($date, false);
+                } elseif (strtoupper($dateFormat) == "ISO") {
+                    $date = FrenchDateToIso($date);
+                }
+                return $date;
+            };
             if ($this->inArray()) {
                 if ($index >= 0) {
-                    return FrenchDateToIso($doc->getTValue($this->id, "", $index));
+                    return $convertDate($doc->getTValue($this->id, "", $index));
                 } else {
                     $nbValue = count($doc->getTValue($this->id));
                     $returnValues = array();
                     for ($i = 0; $i < $nbValue; $i++) {
-                        $returnValues[] = $this->getTextualValueDate($doc, $i);
+                        $returnValues[] = $this->getTextualValueDate($doc, $i, $dateFormat);
                     }
                     return implode($this->textualValueMultipleSeparator[0], $returnValues);
                 }
             } else {
-                return FrenchDateToIso($doc->getValue($this->id));
+                return $convertDate($doc->getValue($this->id));
             }
         }
+        /**
+         * Get textual value for a file attribute
+         *
+         * @param Doc $doc class doc
+         * @param int $index current index of the element if multiple
+         *
+         * @return string
+         */
         private function getTextualValueFile(Doc $doc, $index = - 1)
         {
             if ($this->inArray()) {
@@ -786,11 +851,19 @@ class NormalAttribute extends BasicAttribute
                 return $doc->vault_filename($this->id);
             }
         }
+        /**
+         * Get textual value for an enum attribute
+         *
+         * @param Doc $doc class doc
+         * @param int $index current index of the element if multiple
+         *
+         * @return string
+         */
         private function getTextualValueEnum(Doc $doc, $index = - 1)
         {
             if ($this->inArray()) {
                 if ($index >= 0) {
-                        return $this->getEnumLabel($doc->getTValue($this->id, "", $index));
+                    return $this->getEnumLabel($doc->getTValue($this->id, "", $index));
                 } else {
                     $nbValue = count($doc->getTValue($this->id));
                     $returnValues = array();
@@ -812,13 +885,22 @@ class NormalAttribute extends BasicAttribute
                 return $this->getEnumLabel($doc->getValue($this->id));
             }
         }
+        /**
+         * Get textual value for a docid attribute
+         *
+         * @param Doc $doc class doc
+         * @param int $index current index of the element if multiple
+         *
+         * @return string
+         */
         private function getTextualValueDocId(Doc $doc, $index = - 1)
         {
             $optionDoc = $this->getOption('docrev', "");
-            $displayTitle = function($id) use ($optionDoc, $doc) {
+            $displayTitle = function ($id) use ($optionDoc, $doc)
+            {
                 if ($optionDoc == "fixed") {
                     return $doc->getTitle($id);
-                }else{
+                } else {
                     return $doc->getTitle($id, "", true);
                 }
             };
