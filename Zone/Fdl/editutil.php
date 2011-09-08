@@ -446,12 +446,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             case "color":
                 $elabel = $oattr->getOption("elabel");
                 if ($elabel != "") $eopt.= " title=\"$elabel\"";
-                $input = "<input size=7  $eopt style=\"background-color:$value\" type=\"text\"  name=\"" . $attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
+                $input = "<input size=7  $eopt style=\"background-color:$value\" type=\"text\" name=\"" . $attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
                 $input.= " id=\"" . $attridk . "\" ";
                 
                 if (($visibility == "R") || ($visibility == "S")) $input.= $idisabled;
                 else if ($doc->usefor != 'D') $input.= " disabled "; // always but default
-                $input.= " class=\"color {pickerOnfocus:true,hash:true,required:false}\" ";
+                $input.= " class=\"color {pickerOnfocus:false,pickerClosable:true,pickerCloseText:'"._("Close")."',hash:true,required:false}\" ";
                 
                 $input.= " >&nbsp;";
                 if (!(($visibility == "R") || ($visibility == "S"))) {

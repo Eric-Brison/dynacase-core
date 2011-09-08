@@ -1,4 +1,4 @@
-JSCOLOR_FILES = arrow.gif cross.gif hs.png hv.png jscolor.js .htaccess
+JSCOLOR_FILES = arrow.gif cross.gif hs.png hv.png close.png jscolor.js .htaccess
 
 $(libdir)/jscolor:
 	mkdir -p $@
