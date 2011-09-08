@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * document to present a report on one family document
  *
@@ -314,10 +314,23 @@ Class _REPORT extends _DSEARCH
                             break;
 
                         default:
-                            $cval = str_replace(array(
-                                '<BR>',
-                                '<br/>'
-                            ) , '\\n', $doc->getHtmlAttrValue($vc, '', false, -1, false));;
+                            $oa = $doc->getAttribute($vc);
+                            switch ($oa->type) {
+                                case 'money':
+                                case 'double':
+                                case 'int':
+                                    $cval = str_replace(array(
+                                        '<BR>',
+                                        '<br/>'
+                                    ) , '\\n', $doc->getValue($vc));
+                                    break;
+
+                                default:
+                                    $cval = str_replace(array(
+                                        '<BR>',
+                                        '<br/>'
+                                    ) , '\\n', $doc->getHtmlAttrValue($vc, '', false, -1, false));
+                            }
                     }
                     
                     if ($lattr[$vc]->type == "image") $cval = $doc->vault_filename($vc);
