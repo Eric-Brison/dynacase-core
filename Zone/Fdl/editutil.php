@@ -419,9 +419,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                         $lay = new Layout("FDL/Layout/editenumbool.xml", $action);
                         
                         $lset = next($enuml);
+                        $boolkeys = array_keys($enuml);
                         if ($value == key($enuml)) $lay->set("checkedyesno", "checked");
                         else $lay->set("checkedyesno", "");
                         $lay->set("tyesno", sprintf(_("set for %s, unset for %s") , $lset, $lunset));
+                        $lay->set("val1", $boolkeys[0]);
+                        $lay->set("val2", $boolkeys[1]);
                         break;
 
                     default:
@@ -1508,7 +1511,6 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                                     $urlcreate.= sprintf("&%s=%s", $kl, elinkencode($doc, $attridk, "%$v%", $index));
                                 }
                             }
-                            
                         }
                     }
                     $esymbol = '&nbsp;';

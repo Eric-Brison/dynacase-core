@@ -6,27 +6,27 @@
 
 var notalone=true;
 function completechoice(index,tattrid,tattrv,winfo) {
-  var rvalue;
-  for (i=0; i< tattrid.length; i++) {
-      if (tattrv[index][i]) {	 
-      if  (tattrv[index][i].substring(0,1) != '?')  {	
-	if (winfo.document.getElementById(tattrid[i])) {
-	  rvalue = tattrv[index][i].replace(/\\n/g,'\n');
-	  ec_setIValue(winfo,winfo.document.getElementById(tattrid[i]),rvalue);
-	  winfo.document.getElementById(tattrid[i]).style.backgroundColor='[COLOR_C8]';
-	  sendEvent(winfo.document.getElementById(tattrid[i]),"change");
-	  // This condition is for IE which does not send event in this case
-	  if(isIE && winfo.document.getElementById(tattrid[i]).onchange){
-	      eval(winfo.document.getElementById(tattrid[i]).onchange);
-	  }
-	} else {
-	  rvalue = tattrv[index][i].replace(/\\n/g,'\n');
-	  if (! ec_setIValuePlus(winfo,tattrid[i],rvalue)) {
-	      if ((tattrid[i].substring(0,1) !='?') && (tattrid[i]!='')) {
-	    if (notalone) alert('[TEXT:Attribute not found]'+'['+tattrid[i]+']'+winfo.name);
-	      }
-	  }
-	}
+    var rvalue;
+    for (var i=0; i< tattrid.length; i++) {
+        if (tattrv[index][i]) {	 
+            if  (tattrv[index][i].substring(0,1) != '?')  {	
+                if (winfo.document.getElementById(tattrid[i])) {
+                    rvalue = tattrv[index][i].replace(/\\n/g,'\n');
+                    ec_setIValue(winfo,winfo.document.getElementById(tattrid[i]),rvalue);
+                    winfo.document.getElementById(tattrid[i]).style.backgroundColor='[COLOR_C8]';
+                    sendEvent(winfo.document.getElementById(tattrid[i]),"change");
+                    // This condition is for IE which does not send event in this case
+                    if(isIE && winfo.document.getElementById(tattrid[i]).onchange){
+                        eval(winfo.document.getElementById(tattrid[i]).onchange);
+                    }
+                } else {
+                    rvalue = tattrv[index][i].replace(/\\n/g,'\n');
+                    if (! ec_setIValuePlus(winfo,tattrid[i],rvalue)) {
+                        if ((tattrid[i].substring(0,1) !='?') && (tattrid[i]!='')) {
+                            if (notalone) alert('[TEXT:Attribute not found]'+'['+tattrid[i]+']'+winfo.name);
+                        }
+                    }
+                }
 
       } else {
 	if ((tattrv[index][i].length > 1) &&
@@ -58,6 +58,8 @@ var isNetscape = navigator.appName=="Netscape";
 
 function completechoices() {
     var cvalues = new Array();
+    var i=0;
+    var c=0;
     for (i=0; i< tattrid.length; i++) {	
       cvalues[i] ="";
     }
@@ -97,51 +99,54 @@ function autoClose() {
 }
 
 function ec_setIValue(winfo,i,v) {
-  if (i) {
-   
-    if (i.tagName == "INPUT") {
-      if ((i.type=='radio')||(i.type=='checkbox')) {
-	var oi=i.checked;
-	if (v=='0') v=false;
-	i.checked=v;	
+    if (i) {
 
-	if (v && (i.type=='radio')) winfo.changeCheckClasses(i,false);
-	if (v && (i.type=='checkbox')) {
-	  if (oi != v)  i.onclick.apply(i,[]);
-	  //	  winfo.changeCheckBoolClasses(i,false);
-	}
-      }
-      else i.value=v;
+        if (i.tagName == "INPUT") {
+            if ((i.type=='radio')) {
+                var oi=i.checked;
+                if (v=='0') v=false;
+                i.checked=v;	
+
+                if (v && (i.type=='radio')) winfo.changeCheckClasses(i,false);
+                if (v && (i.type=='checkbox')) {
+                    if (oi != v)  i.onclick.apply(i,[]);
+                    //	  winfo.changeCheckBoolClasses(i,false);
+                }
+            } else if ((i.type=='checkbox')) {
+                
+            } else {
+                i.value=v;
+            }
+        }
+        else if (i.tagName == "TEXTAREA")  i.value=v;
+        else  if (i.tagName == "SELECT") {
+            for (var k=0;k<i.options.length;k++) {
+                if (i.options[k].value == v) i.selectedIndex=k;
+            }
+        }
     }
-    else if (i.tagName == "TEXTAREA")  i.value=v;
-    else  if (i.tagName == "SELECT") {
-      for (var k=0;k<i.options.length;k++) {
-	if (i.options[k].value == v) i.selectedIndex=k;
-      }
-    }
-  }
-  ec_setIValuePlus(winfo,i.id,v);
+    ec_setIValuePlus(winfo,i.id,v);
 }
 
 function ec_setIValuePlus(winfo,iid,v) {    
-    var iid0= iid+'0';
+    var iid0= iid+'_0';
     var i=0;
     var oi=winfo.document.getElementById(iid0);
     var ret=false;
 
     while (oi) {
-      if (oi) {
-	if ((oi.type=='radio')||(oi.type=='checkbox')) {
-	  if (oi.value==v) {
-	    oi.checked=true;
-	    oi.onclick.apply(oi,[]);
-	    ret=true;
-	  }
-	} 
-      }
-      i++;
-      iid0=iid+i.toString();
-      oi=winfo.document.getElementById(iid0);
+        if (oi) {
+            if ((oi.type=='radio')||(oi.type=='checkbox')) {
+                if (oi.value==v) {
+                    oi.checked=true;
+                    oi.onclick.apply(oi,[]);
+                    ret=true;
+                }
+            } 
+        }
+        i++;
+        iid0=iid+'_'+i.toString();
+        oi=winfo.document.getElementById(iid0);
     }
     return ret;
 }
