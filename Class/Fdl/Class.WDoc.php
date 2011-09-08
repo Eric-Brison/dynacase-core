@@ -301,7 +301,7 @@ class WDoc extends Doc
             $oattr->options = "autocreated=yes";
             
             $oattr->phpfile = "fdl.php";
-            $oattr->phpfunc = "lprofil(D,{$oattr->id},WF_FAMID):$aidprofilid,CT";
+            $oattr->phpfunc = "lprofil(D,CT,WF_FAMID):$aidprofilid,CT";
             $oattr->ordered = $ordered++;
             if ($oattr->isAffected()) $oattr->Modify();
             else $oattr->Add();
@@ -321,7 +321,7 @@ class WDoc extends Doc
             $oattr->link = "";
             $oattr->frameid = $aidframe;
             $oattr->phpfile = "fdl.php";
-            $oattr->phpfunc = "lmask(D,{$oattr->id},WF_FAMID):$aid,CT";
+            $oattr->phpfunc = "lmask(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink='';
             $oattr->options='autocreated=yes|creation={autoclose:"yes",msk_famid:wf_famid,ba_title:"'._($state).'"}';
             $oattr->ordered = $ordered++;
