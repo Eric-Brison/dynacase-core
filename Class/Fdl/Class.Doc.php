@@ -5379,7 +5379,7 @@ create unique index i_docir on doc(initid, revision);";
                         case 'htmltext':
                             $shtmllink = $htmllink ? "true" : "false";
                             $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)", $avalue);
-                            $htmlval = "<DIV>$avalue</DIV>";
+                            $htmlval = '<div class="htmltext">'.$avalue.'</div>';
                             break;
 
                         case 'date':

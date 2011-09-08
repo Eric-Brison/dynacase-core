@@ -1,11 +1,11 @@
 /**
  * jscolor, JavaScript Color Picker
  *
- * @version 1.3.5
+ * @version 1.3.9
  * @license GNU Lesser General Public License, http://www.gnu.org/copyleft/lesser.html
  * @author  Jan Odvarko, http://odvarko.cz
  * @created 2008-06-15
- * @updated 2011-06-21
+ * @updated 2011-07-28
  * @link    http://jscolor.com
  */
 
@@ -136,13 +136,13 @@ var jscolor = {
 		if(!el) {
 			return;
 		}
-		if(document.createEventObject) {
-			var ev = document.createEventObject();
-			el.fireEvent('on'+evnt, ev);
-		} else if(document.createEvent) {
+		if(document.createEvent) {
 			var ev = document.createEvent('HTMLEvents');
 			ev.initEvent(evnt, true, true);
 			el.dispatchEvent(ev);
+		} else if(document.createEventObject) {
+			var ev = document.createEventObject();
+			el.fireEvent('on'+evnt, ev);
 		} else if(el['on'+evnt]) { // alternatively use the traditional event model (IE5)
 			el['on'+evnt]();
 		}
@@ -174,12 +174,12 @@ var jscolor = {
 	getRelMousePos : function(e) {
 		var x = 0, y = 0;
 		if (!e) { e = window.event; }
-		if (typeof e.layerX === "number") {
-			x = e.layerX;
-			y = e.layerY;
-		} else if (typeof e.offsetX === "number") {
+		if (typeof e.offsetX === 'number') {
 			x = e.offsetX;
 			y = e.offsetY;
+		} else if (typeof e.layerX === 'number') {
+			x = e.layerX;
+			y = e.layerY;
 		}
 		return { x: x, y: y };
 	},
@@ -339,6 +339,10 @@ var jscolor = {
 		this.pickerOnfocus = true; // display picker on focus?
 		this.pickerMode = 'HSV'; // HSV | HVS
 		this.pickerPosition = 'bottom'; // left | right | top | bottom
+		this.pickerButtonHeight = 20; // px
+		this.pickerClosable = false;
+		this.pickerCloseText = 'Close';
+		this.pickerButtonColor = 'ButtonText'; // px
 		this.pickerFace = 10; // px
 		this.pickerFaceColor = 'ThreeDFace'; // CSS color
 		this.pickerBorder = 1; // px
@@ -357,23 +361,20 @@ var jscolor = {
 
 		this.hidePicker = function() {
 			if(isPickerOwner()) {
-				this.valueElement.disabled = true;
+			    this.valueElement.disabled = true;
 				removePicker();
 			}
 		};
 
 
 		this.showPicker = function() {
-			this.valueElement.disabled = false;
 			if(!isPickerOwner()) {
+			    this.valueElement.disabled = false;
 				var tp = jscolor.getElementPos(target); // target pos
 				var ts = jscolor.getElementSize(target); // target size
 				var vp = jscolor.getViewPos(); // view pos
 				var vs = jscolor.getViewSize(); // view size
-				var ps = [ // picker size
-					2*this.pickerBorder + 2*this.pickerInset + 2*this.pickerFace + jscolor.images.pad[0] + (this.slider ? 2*this.pickerInset + 2*jscolor.images.arrow[0] + jscolor.images.sld[0] : 0),
-					2*this.pickerBorder + 2*this.pickerInset + 2*this.pickerFace + jscolor.images.pad[1]
-				];
+				var ps = getPickerDims(this); // picker size
 				var a, b, c;
 				switch(this.pickerPosition.toLowerCase()) {
 					case 'left': a=1; b=0; c=-1; break;
@@ -556,7 +557,10 @@ var jscolor = {
 					padM : document.createElement('div'),
 					sld : document.createElement('div'),
 					sldB : document.createElement('div'),
-					sldM : document.createElement('div')
+					sldM : document.createElement('div'),
+					btn : document.createElement('div'),
+					btnS : document.createElement('span'),
+					btnT : document.createTextNode(THIS.pickerCloseText)
 				};
 				for(var i=0,segSize=4; i<jscolor.images.sld[1]; i+=segSize) {
 					var seg = document.createElement('div');
@@ -571,6 +575,9 @@ var jscolor = {
 				jscolor.picker.padB.appendChild(jscolor.picker.pad);
 				jscolor.picker.box.appendChild(jscolor.picker.padB);
 				jscolor.picker.box.appendChild(jscolor.picker.padM);
+				//jscolor.picker.btnS.appendChild(jscolor.picker.btnT);
+				jscolor.picker.btn.appendChild(jscolor.picker.btnS);
+				jscolor.picker.box.appendChild(jscolor.picker.btn);
 				jscolor.picker.boxB.appendChild(jscolor.picker.box);
 			}
 
@@ -599,8 +606,9 @@ var jscolor = {
 			p.sldM.onmousedown = function(e) { holdSld=true; setSld(e); };
 
 			// picker
-			p.box.style.width = (2*THIS.pickerInset + 2*THIS.pickerFace + jscolor.images.pad[0] + (THIS.slider ? 2*THIS.pickerInset + 2*jscolor.images.arrow[0] + jscolor.images.sld[0] : 0)) + 'px';
-			p.box.style.height = (2*THIS.pickerInset + 2*THIS.pickerFace + jscolor.images.pad[1]) + 'px';
+			var dims = getPickerDims(THIS);
+			p.box.style.width = dims[0] + 'px';
+			p.box.style.height = dims[1] + 'px';
 
 			// picker border
 			p.boxB.style.position = 'absolute';
@@ -637,7 +645,7 @@ var jscolor = {
 			p.sld.style.height = jscolor.images.sld[1]+'px';
 
 			// slider border
-			p.sldB.style.display = THIS.slider ? "block" : "none";
+			p.sldB.style.display = THIS.slider ? 'block' : 'none';
 			p.sldB.style.position = 'absolute';
 			p.sldB.style.right = THIS.pickerFace+'px';
 			p.sldB.style.top = THIS.pickerFace+'px';
@@ -645,7 +653,7 @@ var jscolor = {
 			p.sldB.style.borderColor = THIS.pickerInsetColor;
 
 			// slider mouse area
-			p.sldM.style.display = THIS.slider ? "block" : "none";
+			p.sldM.style.display = THIS.slider ? 'block' : 'none';
 			p.sldM.style.position = 'absolute';
 			p.sldM.style.right = '0';
 			p.sldM.style.top = '0';
@@ -657,14 +665,48 @@ var jscolor = {
 				p.sldM.style.cursor = 'hand';
 			}
 
+			// "close" button
+			function setBtnBorder() {
+				var insetColors = THIS.pickerInsetColor.split(/\s+/);
+				var pickerOutsetColor = insetColors.length < 2 ? insetColors[0] : insetColors[1] + ' ' + insetColors[0] + ' ' + insetColors[0] + ' ' + insetColors[1];
+				p.btn.style.borderColor = pickerOutsetColor;
+			}
+			p.btn.style.display = THIS.pickerClosable ? 'block' : 'none';
+			p.btn.style.position = 'absolute';
+			p.btn.style.right = (-20) + 'px';
+			p.btn.style.top = (THIS.pickerFace-15) + 'px';
+			p.btn.style.padding = '0 15px';
+			p.btn.style.height = '18px';
+            p.btn.title = THIS.pickerCloseText;
+			//p.btn.style.border = THIS.pickerInset + 'px solid';
+            p.btn.style.backgroundImage = "url('"+jscolor.getDir()+"close.png')";
+            p.btn.style.backgroundRepeat = "no-repeat";
+			//setBtnBorder();
+			p.btn.style.color = THIS.pickerButtonColor;
+			p.btn.style.font = '12px sans-serif';
+			p.btn.style.textAlign = 'center';
+			try {
+				p.btn.style.cursor = 'pointer';
+			} catch(eOldIE) {
+				p.btn.style.cursor = 'hand';
+			}
+			p.btn.onmousedown = function () {
+				THIS.hidePicker();
+			};
+			p.btnS.style.lineHeight = p.btn.style.height;
+
 			// load images in optimal order
 			switch(modeID) {
 				case 0: var padImg = 'hs.png'; break;
 				case 1: var padImg = 'hv.png'; break;
 			}
-			p.padM.style.background = "url('"+jscolor.getDir()+"cross.gif') no-repeat";
-			p.sldM.style.background = "url('"+jscolor.getDir()+"arrow.gif') no-repeat";
-			p.pad.style.background = "url('"+jscolor.getDir()+padImg+"') 0 0 no-repeat";
+			p.padM.style.backgroundImage = "url('"+jscolor.getDir()+"cross.gif')";
+			p.padM.style.backgroundRepeat = "no-repeat";
+			p.sldM.style.backgroundImage = "url('"+jscolor.getDir()+"arrow.gif')";
+			p.sldM.style.backgroundRepeat = "no-repeat";
+			p.pad.style.backgroundImage = "url('"+jscolor.getDir()+padImg+"')";
+			p.pad.style.backgroundRepeat = "no-repeat";
+			p.pad.style.backgroundPosition = "0 0";
 
 			// place pointers
 			redrawPad();
@@ -672,6 +714,18 @@ var jscolor = {
 
 			jscolor.picker.owner = THIS;
 			document.getElementsByTagName('body')[0].appendChild(p.boxB);
+		}
+
+
+		function getPickerDims(o) {
+			var dims = [
+				2*o.pickerInset + 2*o.pickerFace + jscolor.images.pad[0] +
+					(o.slider ? 2*o.pickerInset + 2*jscolor.images.arrow[0] + jscolor.images.sld[0] : 0),
+				o.pickerClosable&&false ?
+					4*o.pickerInset + 3*o.pickerFace + jscolor.images.pad[1] + o.pickerButtonHeight :
+					2*o.pickerInset + 2*o.pickerFace + jscolor.images.pad[1]
+			];
+			return dims;
 		}
 
 
@@ -748,9 +802,9 @@ var jscolor = {
 			if(valueElement === target) {
 				THIS.importColor();
 			}
-			// if(THIS.pickerOnfocus) {
+			//if(THIS.pickerOnfocus) {
 				THIS.hidePicker();
-			// }
+			//}
 		}
 
 

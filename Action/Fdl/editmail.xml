@@ -87,7 +87,7 @@ function viewloading(event) {
 <tr class="FREEDOMBack1">
 
   <td colspan="3" align="right" id="buttons">
- <input type="submit" value="[TEXT:Send mail]" onclick="if (!canmodify()) return false;enableall();">
+ <input type="button" value="[TEXT:Send mail]" onclick="if (!canmodify()) return false;enableall();this.disabled=true;viewloading(event);this.form.submit()">
  <input type="button" value="[TEXT:Cancel]" onclick="if (window.top==window) window.close(); else history.back();"> 
   </td>
   

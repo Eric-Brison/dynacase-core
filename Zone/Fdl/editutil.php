@@ -419,9 +419,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                         $lay = new Layout("FDL/Layout/editenumbool.xml", $action);
                         
                         $lset = next($enuml);
+                        $boolkeys = array_keys($enuml);
                         if ($value == key($enuml)) $lay->set("checkedyesno", "checked");
                         else $lay->set("checkedyesno", "");
                         $lay->set("tyesno", sprintf(_("set for %s, unset for %s") , $lset, $lunset));
+                        $lay->set("val1", $boolkeys[0]);
+                        $lay->set("val2", $boolkeys[1]);
                         break;
 
                     default:
@@ -443,12 +446,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             case "color":
                 $elabel = $oattr->getOption("elabel");
                 if ($elabel != "") $eopt.= " title=\"$elabel\"";
-                $input = "<input size=7  $eopt style=\"background-color:$value\" type=\"text\"  name=\"" . $attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
+                $input = "<input size=7  $eopt style=\"background-color:$value\" type=\"text\" name=\"" . $attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
                 $input.= " id=\"" . $attridk . "\" ";
                 
                 if (($visibility == "R") || ($visibility == "S")) $input.= $idisabled;
                 else if ($doc->usefor != 'D') $input.= " disabled "; // always but default
-                $input.= " class=\"color {pickerOnfocus:true,hash:true,required:false}\" ";
+                $input.= " class=\"color {pickerOnfocus:false,pickerClosable:true,pickerCloseText:'"._("Close")."',hash:true,required:false}\" ";
                 
                 $input.= " >&nbsp;";
                 if (!(($visibility == "R") || ($visibility == "S"))) {
@@ -1508,7 +1511,6 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                                     $urlcreate.= sprintf("&%s=%s", $kl, elinkencode($doc, $attridk, "%$v%", $index));
                                 }
                             }
-                            
                         }
                     }
                     $esymbol = '&nbsp;';

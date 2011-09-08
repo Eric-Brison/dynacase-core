@@ -1664,47 +1664,83 @@ function checkinput(cid,check,iin,resetiin,thname) {
     }
   }
 }
+function updateEnumBoolCheck(icheck) {
+    var idc=icheck.id;
+    var idx=0;
+    var check=document.getElementById(idc+'_'+idx);
+    while (check) {
+        if (check.value==icheck.value) {
+            oi.onclick.apply(oi,[]);
+        }
+        idx++;
+        check=document.getElementById(idc+'_'+idx);
+    }
+    
+}
+function updateEnumCheck(icheck) {
+    var idc=icheck.id;
+    var ichecks=document.getElementsByName(idc+'[]');
+    if (ichecks.length==0) {
+        // other method for IE
+        ichecks=new Array();
+        var ti=icheck.parentNode.parentNode.parentNode.getElementsByTagName('input'); 
+        for (var i=0;i<ti.length;i++) {
+            if (ti[i].name && (ti[i].name == idc)) {
+                ichecks.push(ti[i]);
+            }
+        }
+    }
+    for (var i=0;i<ichecks.length;i++) {
+        if (ichecks[i].value==icheck.value) {
+            ichecks[i].checked=true;
+            ichecks[i].onclick.apply(ichecks[i],[]);
+        } else {
+            ichecks[i].checked=false;
+        }
+    }
+}
+
 // change style classes for check input
 function changeCheckClasses(th,iin,resetiin,thname) {
-  if (! thname) thname=th.name;
-  if (th && thname) {
-    var icheck=document.getElementsByName(thname);
-    if (icheck.length==0) {
-      // other method for IE
-      icheck=new Array();
-      var ti=th.parentNode.parentNode.parentNode.getElementsByTagName('input');     
-      for (var i=0;i<ti.length;i++) {
- 	if (ti[i].name && (ti[i].name == thname)) {
-	  icheck.push(ti[i]);
- 	}
-      }
-    }
+    if (! thname) thname=th.name;
+    if (th && thname) {
+        var icheck=document.getElementsByName(thname);
+        if (icheck.length==0) {
+            // other method for IE
+            icheck=new Array();
+            var ti=th.parentNode.parentNode.parentNode.getElementsByTagName('input'); 
+            for (var i=0;i<ti.length;i++) {
+                if (ti[i].name && (ti[i].name == thname)) {
+                    icheck.push(ti[i]);
+                }
+            }
+        }
 
-    if (icheck.length==0) return;
-    var  needuncheck=false;
-    for (var i=0;i<icheck.length;i++) {
-      if (icheck[i].checked) icheck[i].parentNode.parentNode.className='checked';
-      else icheck[i].parentNode.parentNode.className='nochecked';
+        if (icheck.length==0) return;
+        var  needuncheck=false;
+        for (var i=0;i<icheck.length;i++) {
+            if (icheck[i].checked) icheck[i].parentNode.parentNode.className='checked';
+            else icheck[i].parentNode.parentNode.className='nochecked';
+        }
+        //alert(icheck[0].type);
+
+        for (var i=0;i<icheck.length-1;i++) {
+            if (icheck[i].checked) needuncheck=true;
+        }
+        icheck[icheck.length-1].checked=(!needuncheck);
+        if (iin) {
+            var oi=document.getElementById(iin);
+            if (resetiin) oi.value='';
+            else {
+                for (var i=0;i<icheck.length;i++) {
+                    if (icheck[i].checked) {
+                        oi.value=icheck[i].value;
+                    }
+                }
+            }
+            createOtherEnumInput(th,oi);
+        }    
     }
-    //alert(icheck[0].type);
-   
-    for (var i=0;i<icheck.length-1;i++) {
-      if (icheck[i].checked) needuncheck=true;
-    }
-    icheck[icheck.length-1].checked=(!needuncheck);
-    if (iin) {
-      var oi=document.getElementById(iin);
-      if (resetiin) oi.value='';
-      else {
-	for (var i=0;i<icheck.length;i++) {
-	  if (icheck[i].checked) {
-	    oi.value=icheck[i].value;
-	  }
-	}
-      }
-      createOtherEnumInput(th,oi);
-    }    
-  }
 }
 
 function viewOtherEnumInput(selid) {
@@ -1773,22 +1809,25 @@ function changeCheckBoolClasses(th,name) {
 
   }
 }
-
-// change checkbox value for boolean style
-function changeCheckBoxCheck(oboolid,idx,th) {
-  obool=document.getElementById(oboolid);
-  obool.checked=(idx!='0');
-  var i=0;
-  var p=obool.previousSibling;
-  while (p && (i<2)) {
-    if (p.name == th.name) {	
-      if (p.id != th.id) p.checked=false;
-      i++;
+function updateBoolValue(check,inpid,val1,val2) {
+    var inp=document.getElementById(inpid);
+    if (check.checked) {
+        inp.value=val2;
+    } else {
+        inp.value=val1;
     }
-    p=p.previousSibling;
-  }
-
 }
+// change checkbox value for boolean style
+function updateBoolCheck(inp, val1, val2) {
+    var ci=document.getElementById(inp.id+'_0');
+    if (inp.value==val2) {
+        ci.checked=true;
+    } else {
+        ci.checked=false;
+    }
+}
+
+
 
 function addinlist(sel,value,key,notselected) {
 
@@ -2138,7 +2177,6 @@ function unseltr() {
             var inputs=seltr.parentNode.getElementsByTagName('input');
             for (var i=0;i<inputs.length;i++) {
                 if (inputs[i].type=='radio') {
-                    console.log("check", inputs[i]);
                     inputs[i].checked=false;
                 }
             }

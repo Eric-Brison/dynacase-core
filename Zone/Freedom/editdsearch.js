@@ -28,9 +28,10 @@ function sendsearch(faction,artarget) {
 
 		enableall();
 		var na=document.getElementById('newcond');
+		
 		if (na) {
 			disabledInput(na,true);
-			var nt=document.getElementById('newstate');
+		    nt=document.getElementById('newstate');
 			if (nt)   disabledInput(nt,true);
 		}
 		if ((!artarget) &&  (window.parent.fvfolder)) artarget='fvfolder';
@@ -66,7 +67,7 @@ function setKey(event,th) {
 	var pnode;
 
 	pnode=th.previousSibling;
-	while (pnode && ((pnode.nodeType != 1) || (pnode.name != '_se_keys[]'))) pnode = pnode.previousSibling;
+	while (pnode!=null && ((pnode.nodeType != 1) || (pnode.name != '_se_keys[]'))) pnode = pnode.previousSibling;
 
 	pnode.value = th.options[th.selectedIndex].value;
 
@@ -90,7 +91,7 @@ function getPrevElement(th) {
 }
 
 function filterfunc2(th) {
-	var so, i;
+	var so=null, i;
 	var pnode = th.parentNode.previousSibling;
 	while (pnode && ((pnode.nodeType != 1) || (pnode.tagName != 'TD'))) pnode = pnode.previousSibling;
 	for (i=0;i<pnode.childNodes.length;i++) {
@@ -108,7 +109,7 @@ function filterfunc(th) {
 	var opt=th.options[th.selectedIndex];
 	var atype=opt.getAttribute('atype');
 	var ismultiple=(opt.getAttribute('ismultiple')=='yes')?true:false;
-	var ctypes,i;
+	var i;
 	var pnode,so=false;
 	var aid=opt.value;
 	var sec,se;
@@ -120,11 +121,14 @@ function filterfunc(th) {
 	if (ex)  {
 		ex.style.display='none';
 		lc.appendChild(ex);
+		for (i=0;i<ex.options.length;i++) {
+		    ex.options[i].selected=false;
+		}
 	}
 
 	// search brother select input
 	pnode=p.nextSibling;
-	while (pnode && ((pnode.nodeType != 1) || (pnode.tagName != 'TD'))) pnode = pnode.nextSibling;
+	while (pnode!=null && ((pnode.nodeType != 1) || (pnode.tagName != 'TD'))) pnode = pnode.nextSibling;
 
  
 	for (i=0;i<pnode.childNodes.length;i++) {
@@ -161,11 +165,11 @@ function filterfunc(th) {
 
 	// find key cell
 	pnode=pnode.nextSibling;
-	while (pnode && ((pnode.nodeType != 1) || (pnode.tagName != 'TD'))) pnode = pnode.nextSibling;
+	while (pnode!=null && ((pnode.nodeType != 1) || (pnode.tagName != 'TD'))) pnode = pnode.nextSibling;
 	// now enum
 	if ((atype=='enum') || (atype=='enumlist')) {
 		se=document.getElementById('selenum'+aid);
-		if (se && pnode) {
+		if (se!=null && pnode!=null) {
 			pnode.innerHTML='';
 			sec=se.cloneNode(true);
 			sec.name='_se_keys[]';
@@ -174,7 +178,7 @@ function filterfunc(th) {
 		}
 	} else if(atype == 'docid') {
 		se=document.getElementById('thekey');
-		if (se && pnode) {
+		if (se!=null && pnode!=null) {
 			if(!egaloperator) {
 				sec=se.cloneNode(true);
 				sec.name='_se_keys[]';
@@ -183,7 +187,7 @@ function filterfunc(th) {
 				pnode.appendChild(sec);
 			}
 			else {
-				var famid;
+				var famid=null;
 				if(document.getElementById('famid')) {
 					famid = document.getElementById('famid').value;
 				}
@@ -203,7 +207,7 @@ function filterfunc(th) {
 		}
 	} else {
 		se=document.getElementById('thekey');
-		if (se && pnode) {
+		if (se!=null && pnode!=null) {
 			sec=se.cloneNode(true);
 			sec.name='_se_keys[]';
 			sec.id='';
