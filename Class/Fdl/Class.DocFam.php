@@ -134,6 +134,7 @@ create unique index idx_idfam on docfam(id);";
         global $action;
         
         $this->lay->set("modifyacl", ($this->control("modifyacl") == ""));
+        $this->lay->set("canInitProfil", $action->HasPermission("FREEDOM_ADMIN", "FREEDOM"));
         
         foreach ($this->fields as $k => $v) {
             
