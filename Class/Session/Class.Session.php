@@ -123,10 +123,26 @@ class Session extends DbObj
         // set cookie session
         if ($_SERVER['HTTP_HOST'] != "") {
             if (!$_SERVER["REDIRECT_URL"]) {
-                setcookie($this->name, $this->id, $this->SetTTL());
+                $this->setCookieSession($this->id, $this->SetTTL());
             }
         }
         return true;
+    }
+    
+    function setCookieSession($id, $ttl = 0)
+    {
+        $turl = parse_url($_SERVER["REQUEST_URI"]);
+        if ($turl['path']) {
+            if (substr($turl['path'], -1) != '/') {
+                $path = dirname($turl['path']) . '/';
+            } else {
+                $path = $turl['path'];
+            }
+            $path = preg_replace(':/+:', '/', $path);
+            setcookie($this->name, $id, $ttl, $path);
+        } else {
+            setcookie($this->name, $id, $ttl);
+        }
     }
     /** 
      * Closes session and removes all datas
@@ -140,7 +156,8 @@ class Session extends DbObj
             @session_unset();
             @session_destroy();
             @session_write_close();
-            setcookie($this->name, "", 0);
+            // delete session cookie
+            setcookie($this->name, false, time() - 3600);
             $this->Delete();
         }
         $this->status = $this->SESSION_CT_CLOSE;
@@ -280,12 +297,12 @@ class Session extends DbObj
                 $ttlParamName = 'CORE_SESSIONTTL';
             }
         }
-        return getParam($ttlParamName,$default);
+        return getParam($ttlParamName, $default);
     }
     
     function getSessionGcProbability($default = "0.01")
     {
-        return getParam("CORE_SESSIONGCPROBABILITY",$default);
+        return getParam("CORE_SESSIONGCPROBABILITY", $default);
     }
     
     function touch()
