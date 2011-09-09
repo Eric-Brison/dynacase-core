@@ -3616,22 +3616,25 @@ create unique index i_docir on doc(initid, revision);";
          * Add a application tag for the document
          * if it is already set no set twice
          * @param string $atg the tag to add
+         * @return string error message
          */
         final public function addATag($tag)
         {
+            $err = "";
             if ($this->atags == "") {
                 $this->atags = $tag;
-                $this->modify(true, array(
+                $err = $this->modify(true, array(
                     "atags"
                 ) , true);
             } else {
                 if (!$this->getATag($tag)) {
                     $this->atags.= "\n$tag";
-                    $this->modify(true, array(
+                    $err = $this->modify(true, array(
                         "atags"
                     ) , true);
                 }
             }
+            return $err;
         }
         /**
          * Return true if tag is present
@@ -3642,26 +3645,28 @@ create unique index i_docir on doc(initid, revision);";
         final public function getATag($tag)
         {
             if ($this->atags == "") return false;
-            return preg_match("/\b$tag\b/", $this->atags);
+            return (preg_match("/\b$tag\b/", $this->atags) > 0);
         }
         /**
          * Delete a application tag for the document
          *
          * @param string $tag the tag to delete
-         * @return void
+         * @return string error message
          */
         final public function delATag($tag)
         {
+            $err = "";
             if ($this->atags == "") return "";
             $atags = preg_replace("/\b$tag\b/", "", $this->atags);
             $atags = str_replace("\n\n", "\n", $atags);
             $atags = preg_replace("/\n$/m", '', $atags);
             if ($atags != $this->atags) {
                 $this->atags = $atags;
-                $this->modify(true, array(
+                $err = $this->modify(true, array(
                     "atags"
                 ) , true);
             }
+            return $err;
         }
         /**
          * Add a user tag for the document
@@ -3670,6 +3675,7 @@ create unique index i_docir on doc(initid, revision);";
          * @param string $tag the key tag
          * @param string $datas a comment or a value for the tag
          * @param bool $allrevision set to false if attach a tag to a specific version
+         * @return string error message
          */
         final public function addUTag($uid, $tag, $datas = "", $allrevision = true)
         {
@@ -3743,6 +3749,7 @@ create unique index i_docir on doc(initid, revision);";
          * @param int $uid the system user identificator
          * @param string $tag the tag to add
          * @param bool $allrevision set to false to del a tag to a specific version
+         * @return string error message
          */
         final public function delUTag($uid, $tag, $allrevision = true)
         {
@@ -3762,21 +3769,19 @@ create unique index i_docir on doc(initid, revision);";
          * Remove all user tag for the document
          *
          * @param int $uid the system user identificator
+         * @return string error message
          */
         final public function delUTags($uid = "")
         {
-            if ($tag == "") return _("no user tag specified");
             if (!$this->initid) return "";
             if (!$uid) $uid = $this->userid;
-            include_once ("FDL/Class.DocUTag.php");
-            $q = new QueryDb($this->dbaccess, "docUTag");
-            $q->Query(0, 0, "TABLE", sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
+            $err = $this->exec_query(sprintf("delete from docutag where initid=%d and uid=%d", $this->initid, $uid));
             
             return $err;
         }
         /**
          * Refresh all user tag for the document in case of revision
-         *
+         * @return string error message
          */
         final public function refreshUTags()
         {
@@ -5379,7 +5384,7 @@ create unique index i_docir on doc(initid, revision);";
                         case 'htmltext':
                             $shtmllink = $htmllink ? "true" : "false";
                             $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)", $avalue);
-                            $htmlval = '<div class="htmltext">'.$avalue.'</div>';
+                            $htmlval = '<div class="htmltext">' . $avalue . '</div>';
                             break;
 
                         case 'date':
@@ -7019,7 +7024,6 @@ create unique index i_docir on doc(initid, revision);";
                             // ------------------------------------------------------
                             // Perform SQL search for doc attributes
                             // ------------------------------------------------------
-                            
                             $frames = array();
                             $listattr = $this->GetInputAttributes($onlyopt);
                             
@@ -7453,7 +7457,6 @@ create unique index i_docir on doc(initid, revision);";
                             //$this->lay->Set("IDFAM",$fromid);
                             //$idfam=$fam_doc->classname;
                             //$this->lay->Set("TYPEOBJECT",$doctype);
-                            
                             ////debut
                             $listattr = $this->GetNormalAttributes();
                             
