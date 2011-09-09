@@ -48,7 +48,7 @@ if ($MODULE_VERSION_FROM !== false) {
     $version_override[$appname] = $MODULE_VERSION_FROM;
 }
 
-$err = getCheckApp($pubdir, &$tapp, $version_override);
+$err = getCheckApp($pubdir, $tapp, $version_override);
 if ($err) {
     print $err;
     exit(1);
