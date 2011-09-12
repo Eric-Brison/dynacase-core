@@ -1,137 +1,193 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
-
 // ---------------------------------------------------------------
 // $Id: FDL_init.php.in,v 1.29 2009/01/07 18:04:19 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/freedom/App/Fdl/FDL_init.php.in,v $
 // ---------------------------------------------------------------
-
 global $app_const;
 
-$app_const= array(
-  "INIT" => "yes",
-  "VERSION" => "@VERSION@-@RELEASE@",
-  "FREEDOM_DB" => array("val"=>"user=@DBUSER@ dbname=@DBNAME@",
-			"global"=>"Y",
-			"descr"=>N_("freedom database")),
-  "ENUM_TITLE_SIZE" => array("val"=>"40",
-			     "user"=>"Y",
-			     "global"=>"Y",
-			     "descr"=>N_("string limit for popup enum")),
-  "FDL_BCC"    =>array("val"=>"no",
-		       "descr"=>N_("send mail copy"),
-		       "user"=>"Y",
-		       "global"=>"Y",
-		       "kind"=>"enum(yes|no)"),
-  
-  "FDL_HD2SIZE"    =>array("val"=>"600",
-		       "descr"=>N_("horizontal size for secondary windows"),
-		       "user"=>"Y",
-		       "global"=>"Y"),
-  "FDL_VD2SIZE"    =>array("val"=>"400",
-		       "descr"=>N_("vertical size for secondary windows"),
-		       "user"=>"Y",
-		       "global"=>"Y"),
-  "FDL_FOLDERMAXITEM"    =>array("val"=>"1000",
-		       "descr"=>N_("max items return when open a folder"),
-		       "user"=>"N",
-		       "global"=>"Y"),
-  "FDL_MAX_FGEXPORTDOC"    =>array("val"=>"100",
-				  "descr"=>N_("maximum document can be imported directly"),
-				  "user"=>"N",
-				  "global"=>"Y"),
-  "SOCIETY_COORD"   =>array("val"=>"SomeOne<BR>12 paradise road<BR>34000 NewYork<BR>Phone:08.789.678<BR>Fax:09.5627.32",
-			    "global"=>"Y",
-			    "descr"=>N_("name and address of our society")),
-  "SOCIETY_LOGO"   =>array("val"=>"Images/logo.png",
-			   "global"=>"Y",
-			   "descr"=>N_("logo of our society")),
-  "SOCIETY_TOWN"   =>array("val"=>"New York",
-			   "global"=>"Y",
-			   "descr"=>N_("town of our society")),
-  "SOCIETY_NAME"   =>array("val"=>"SomeOne",
-			   "global"=>"Y",
-			   "descr"=>N_("name of our society")),
-  "SOCIETY_PHONE"   =>array("val"=>"00 00 00 00",
-			   "global"=>"Y",
-			   "descr"=>N_("phone of our society")),
-  "FDL_CTRLKEY"   =>array("val"=>"yes",
-			  "global"=>"Y",
-			  "user"=>"Y",
-			  "descr"=>N_("use ctrl key in popup menu"),
-			  "kind"=>"enum(yes|no)"),
-  "FDL_VIEWALTERN"   =>array("val"=>"yes",
-			  "global"=>"Y",
-			  "user"=>"Y",
-			  "descr"=>N_("view altern color in document fieldset"),
-			  "kind"=>"enum(yes|no)"),
-  "MVIEW_GEO"   =>array("val"=>"",
-			"global"=>"Y",
-			"user"=>"Y",
-			"kind"=>"static",
-			"descr"=>N_("geometry of mini view")),
-  "SMTP_HOST"   =>array("val"=>"localhost",
-			"global"=>"Y",
-			"user"=>"N",
-			"descr"=>N_("SMTP host")),  
-  "SMTP_PORT"   =>array("val"=>"25",
-			"global"=>"Y",
-			"user"=>"N",
-			"descr"=>N_("SMTP port")),
-  "SMTP_LOGIN"   =>array("val"=>"",
-			"global"=>"Y",
-			"user"=>"N",
-			 "descr"=>N_("SMTP login")),
-  "SMTP_PASSWORD"   =>array("val"=>"",
-			"global"=>"Y",
-			"kind"=>"password",
-			"user"=>"N",
-			    "descr"=>N_("SMTP password")),
+$app_const = array(
+    "INIT" => "yes",
+    "VERSION" => "@VERSION@-@RELEASE@",
+    "FREEDOM_DB" => array(
+        "val" => "user=@DBUSER@ dbname=@DBNAME@",
+        "global" => "Y",
+        "descr" => N_("freedom database")
+    ) ,
+    "ENUM_TITLE_SIZE" => array(
+        "val" => "40",
+        "user" => "Y",
+        "global" => "Y",
+        "descr" => N_("string limit for popup enum")
+    ) ,
+    "FDL_BCC" => array(
+        "val" => "no",
+        "descr" => N_("send mail copy") ,
+        "user" => "Y",
+        "global" => "Y",
+        "kind" => "enum(yes|no)"
+    ) ,
 
-  "SMTP_FROM"   =>array("val"=>"",
-			"global"=>"Y",
-			"user"=>"N",
-			"descr"=>N_("SMTP default from if not")),
-  "TE_HOST"   =>array("val"=>"",
-		      "global"=>"Y",
-		      "user"=>"N",
-		      "descr"=>N_("Transformation Engine server host name")),
-  "TE_PORT"   =>array("val"=>"",
-		      "global"=>"Y",
-		      "user"=>"N",
-		      "descr"=>N_("Transformation Engine server port number")),
-  "TE_ACTIVATE"   =>array("val"=>"no",
-			  "global"=>"Y",
-			  "user"=>"N",
-			  "descr"=>N_("Activate Transformation Engine"),
-			  "kind"=>"enum(yes|no)"),
-  "TE_FULLTEXT"   =>array("val"=>"yes",
-			  "global"=>"Y",
-			  "user"=>"N",
-			  "descr"=>N_("Activate file indexing with TE"),
-			  "kind"=>"enum(yes|no)"),
-  "TE_URLINDEX"   =>array("val"=>"",
-			  "global"=>"Y",
-			  "user"=>"N",
-			  "descr"=>N_("Transformation Engine callback url")),
-  "TE_TIMEOUT"   =>array("val"=>"2",
-                          "global"=>"Y",
-                          "user"=>"N",
-                          "descr"=>N_("Transformation Engine timeout connection (in seconds)")),
-  "FDL_FULLIDX"    =>array("val"=>"gist",
-			   "descr"=>N_("fulltext index mode"),
-			   "user"=>"N",
-			   "global"=>"Y",
-			   "kind"=>"enum(gist|gin)"),
-  "FDL_TIMERHOURLIMIT"    =>array("val"=>"2",
-				  "descr"=>N_("hour number where timer can be execute until date is reached"),
-				  "user"=>"N",
-				  "global"=>"Y")
+    "FDL_HD2SIZE" => array(
+        "val" => "600",
+        "descr" => N_("horizontal size for secondary windows") ,
+        "user" => "Y",
+        "global" => "Y"
+    ) ,
+    "FDL_VD2SIZE" => array(
+        "val" => "400",
+        "descr" => N_("vertical size for secondary windows") ,
+        "user" => "Y",
+        "global" => "Y"
+    ) ,
+    "FDL_FOLDERMAXITEM" => array(
+        "val" => "1000",
+        "descr" => N_("max items return when open a folder") ,
+        "user" => "N",
+        "global" => "Y"
+    ) ,
+    "FDL_MAX_FGEXPORTDOC" => array(
+        "val" => "100",
+        "descr" => N_("maximum document can be imported directly") ,
+        "user" => "N",
+        "global" => "Y"
+    ) ,
+    "SOCIETY_COORD" => array(
+        "val" => "SomeOne<BR>12 paradise road<BR>34000 NewYork<BR>Phone:08.789.678<BR>Fax:09.5627.32",
+        "global" => "Y",
+        "descr" => N_("name and address of our society")
+    ) ,
+    "SOCIETY_LOGO" => array(
+        "val" => "Images/logo.png",
+        "global" => "Y",
+        "descr" => N_("logo of our society")
+    ) ,
+    "SOCIETY_TOWN" => array(
+        "val" => "New York",
+        "global" => "Y",
+        "descr" => N_("town of our society")
+    ) ,
+    "SOCIETY_NAME" => array(
+        "val" => "SomeOne",
+        "global" => "Y",
+        "descr" => N_("name of our society")
+    ) ,
+    "SOCIETY_PHONE" => array(
+        "val" => "00 00 00 00",
+        "global" => "Y",
+        "descr" => N_("phone of our society")
+    ) ,
+    "FDL_CTRLKEY" => array(
+        "val" => "yes",
+        "global" => "Y",
+        "user" => "Y",
+        "descr" => N_("use ctrl key in popup menu") ,
+        "kind" => "enum(yes|no)"
+    ) ,
+    "FDL_VIEWALTERN" => array(
+        "val" => "yes",
+        "global" => "Y",
+        "user" => "Y",
+        "descr" => N_("view altern color in document fieldset") ,
+        "kind" => "enum(yes|no)"
+    ) ,
+    "MVIEW_GEO" => array(
+        "val" => "",
+        "global" => "Y",
+        "user" => "Y",
+        "kind" => "static",
+        "descr" => N_("geometry of mini view")
+    ) ,
+    "SMTP_HOST" => array(
+        "val" => "localhost",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("SMTP host")
+    ) ,
+    "SMTP_PORT" => array(
+        "val" => "25",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("SMTP port")
+    ) ,
+    "SMTP_LOGIN" => array(
+        "val" => "",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("SMTP login")
+    ) ,
+    "SMTP_PASSWORD" => array(
+        "val" => "",
+        "global" => "Y",
+        "kind" => "password",
+        "user" => "N",
+        "descr" => N_("SMTP password")
+    ) ,
+
+    "SMTP_FROM" => array(
+        "val" => "",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("SMTP default from if not")
+    ) ,
+    "TE_HOST" => array(
+        "val" => "",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("Transformation Engine server host name")
+    ) ,
+    "TE_PORT" => array(
+        "val" => "",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("Transformation Engine server port number")
+    ) ,
+    "TE_ACTIVATE" => array(
+        "val" => "no",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("Activate Transformation Engine") ,
+        "kind" => "enum(yes|no)"
+    ) ,
+    "TE_FULLTEXT" => array(
+        "val" => "yes",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("Activate file indexing with TE") ,
+        "kind" => "enum(yes|no)"
+    ) ,
+    "TE_URLINDEX" => array(
+        "val" => "",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("Transformation Engine callback url")
+    ) ,
+    "TE_TIMEOUT" => array(
+        "val" => "2",
+        "global" => "Y",
+        "user" => "N",
+        "descr" => N_("Transformation Engine timeout connection (in seconds)")
+    ) ,
+    "FDL_FULLIDX" => array(
+        "val" => "gist",
+        "descr" => N_("fulltext index mode") ,
+        "user" => "N",
+        "global" => "Y",
+        "kind" => "enum(gist|gin)"
+    ) ,
+    "FDL_TIMERHOURLIMIT" => array(
+        "val" => "2",
+        "descr" => N_("hour number where timer can be execute until date is reached") ,
+        "user" => "N",
+        "global" => "Y"
+    )
 );
-
-
 ?>
