@@ -188,6 +188,11 @@ $app_const = array(
         "descr" => N_("hour number where timer can be execute until date is reached") ,
         "user" => "N",
         "global" => "Y"
+    ),
+    "REPORT_DEFAULT_CSV" => array(
+        "val" => "[]",
+        "descr" => N_("fulltext index mode") ,
+        "user" => "Y"
     )
 );
 ?>
