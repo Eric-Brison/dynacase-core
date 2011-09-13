@@ -45,7 +45,12 @@ li.warning {
 [ENDIF modifyacl]
 [ENDIF profid]
 [IFNOT profid]<li class="warning" title="[TEXT:No acl for family]">
+[IF canInitProfil]
   <a  target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&docid=[id]&profid=[id]">[TEXT:Initialize acls]</a> <a style="display:none" target="_self" href="[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&id=[id]">[TEXT: Choose an existing family profil]</a> 
+[ENDIF canInitProfil]
+[IFNOT canInitProfil]
+    [TEXT:Not enough access to define privileges]
+[ENDIF canInitProfil]
   </li>[ENDIF profid]
 </ul></li>
 
@@ -56,17 +61,19 @@ li.warning {
 [ENDIF cmodifyacl]
 
 [ENDIF cprofid]
-[IFNOT cprofid][IFNOT wid]<li title="[TEXT:No acl for new documents of this family]" class="warning" >[IF modifyacl] 
+[IFNOT cprofid][IFNOT wid]<li title="[TEXT:No acl for new documents of this family]" class="warning" >
+[IF canInitProfil]
+[IF modifyacl] 
 <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=CREATEPROF&redirid=[id]&targetid=[id]&attrid=cprofid&famid=[id]">[TEXT:Initialize acls]</a>
-<a style="display:none" target="_self" href="[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&create=1&id=[id]">[TEXT: Choose an existing document profil]</a>[ENDIF modifyacl]</li>[ENDIF wid][ENDIF cprofid]
-
-
-
+<a style="display:none" target="_self" href="[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&create=1&id=[id]">[TEXT: Choose an existing document profil]</a>[ENDIF modifyacl][ENDIF canInitProfil]
+[IFNOT canInitProfil]
+    [TEXT:Not enough access to define privileges]
+[ENDIF canInitProfil]</li>[ENDIF wid]
+[ENDIF cprofid]
 [IF wid]
 
 <li>[TEXT:States]<ul>
 [BLOCK pstate]
-
 [IF smodifyacl]
 [IF sactif]
 <li>[states] : <a target="p[stateid]" href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[pstateid]">[TEXT:Modify acls]</a>, 
@@ -82,7 +89,14 @@ li.warning {
 
 [BLOCK nopstate]
 [IF wedit]
-<li class="warning" title="[TEXT:Acls not initialize]">[states] : <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=CREATEPROF&redirid=[id]&targetid=[wid]&attrid=[pstateattrid]&famid=[id]">[TEXT:Initialize acls]</a></li>
+<li class="warning" title="[TEXT:Acls not initialize]">[states] :
+[IF canInitProfil]
+ <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=CREATEPROF&redirid=[id]&targetid=[wid]&attrid=[pstateattrid]&famid=[id]">[TEXT:Initialize acls]</a>
+[ENDIF canInitProfil]
+[IFNOT canInitProfil]
+    [TEXT:Not enough access to define privileges]
+[ENDIF canInitProfil]
+</li>
 [ENDIF wedit]
 [IFNOT wedit]
 <li class="warning" title="[TEXT:Acls not initialize]">[states] : [TEXT:No privilege to change acls]</li>
@@ -98,7 +112,14 @@ li.warning {
 <li><a target="p[wid]" href="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[wid]">[TEXT: Modify acls for transitions]</a>, <a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&redirid=[id]&docid=[wid]&profid=0">[TEXT:Desactivate acls]</a></li>
 [ENDIF wactif]
 [IFNOT wactif]
-<li class="warning" title="[TEXT:Acls not activated]"><a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&redirid=[id]&docid=[wid]&profid=[wid]">[TEXT:Activate acls]</a></li>
+<li class="warning" title="[TEXT:Acls not activated]">
+[IF canInitProfil]
+<a target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&redirid=[id]&docid=[wid]&profid=[wid]">[TEXT:Activate acls]</a>
+[ENDIF canInitProfil]
+[IFNOT canInitProfil]
+    [TEXT:Not enough access to define privileges]
+[ENDIF canInitProfil]
+</li>
 [ENDIF wactif]
 [ENDIF wcontrol]
 [IFNOT wcontrol]

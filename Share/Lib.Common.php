@@ -41,7 +41,12 @@ function AddWarningMsg($msg)
     global $action;
     if (isset($action->parent)) $action->parent->AddWarningMsg($msg);
 }
-
+/**
+ * get mail addr of a user
+ * @param int $userid system user identificator
+ * @param bool $full if true email is like : "John Doe" <John.doe@blackhole.net> else only system email address : john.doe@blackhole.net
+ * @return string mail address, false if user not exists
+ */
 function getMailAddr($userid, $full = false)
 {
     $user = new User("", $userid);
@@ -49,9 +54,8 @@ function getMailAddr($userid, $full = false)
     if ($user->isAffected()) {
         $pren = $postn = "";
         if ($full) {
-            //	$pren = ucfirst(strtolower($user->getTitle()))." <";
-            // $postn = ">";
-            
+            $pren = '"' . trim(str_replace('"', '-', ucwords(strtolower($user->getDisplayName($user->id))))) . '" <';
+            $postn = '>';
         }
         return $pren . $user->getMail() . $postn;
     }
@@ -72,29 +76,27 @@ function getTmpDir($def = '/tmp')
 }
 /**
  * return value of parameters
- * 
+ *
  * @brief must be in core or global type
  * @param string $name param name
  * @param string $def default value if value is empty
- * 
+ *
  * @return string
  */
 function getParam($name, $def = "")
 {
     global $action;
     if ($action) return $action->getParam($name, $def);
-    
     // if context not yet initialized
     return getCoreParam($name, $def);
 }
-
 /**
  * return value of a parameter
- * 
+ *
  * @brief must be in core or global type
  * @param string $name param name
  * @param string $def default value if value is empty
- * 
+ *
  * @return string
  */
 function getCoreParam($name, $def = "")
@@ -104,14 +106,14 @@ function getCoreParam($name, $def = "")
     if (!$params) {
         $tparams = array();
         $err = simpleQuery("", "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));", $tparams);
-        if ($err=="") {
+        if ($err == "") {
             foreach ($tparams as $p) {
-                $params[$p['name']]=$p['val'];
+                $params[$p['name']] = $p['val'];
             }
         }
     }
-    if ($params[$name]===null) {
-        error_log(sprintf("parameter %s not found use %s instead",$name, $def));
+    if ($params[$name] === null) {
+        error_log(sprintf("parameter %s not found use %s instead", $name, $def));
     }
     return $params[$name] ? $params[$name] : $def;
 }
@@ -204,7 +206,7 @@ function getDebugStack($slice = 1)
 function getDbid($dbaccess)
 {
     global $CORE_DBID;
-    if (!$dbaccess) $dbaccess=getDbAccess();
+    if (!$dbaccess) $dbaccess = getDbAccess();
     if (!isset($CORE_DBID) || !($CORE_DBID[$dbaccess])) {
         $CORE_DBID[$dbaccess] = pg_connect($dbaccess);
         if (!$CORE_DBID[$dbaccess]) {
@@ -334,16 +336,21 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
             } else {
                 if ($singleresult) $result = false;
             }
-        if ($SQLDEBUG) {
-            global $TSQLDELAY;
-            $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
-            $TSQLDELAY[] = array(
-                "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
-                "s" => str_replace(array("from",'where'), array("\nfrom","\nwhere"), $query) ,
-                "st" => getDebugStack(1)
-            );
-        }
-            
+            if ($SQLDEBUG) {
+                global $TSQLDELAY;
+                $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
+                $TSQLDELAY[] = array(
+                    "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
+                    "s" => str_replace(array(
+                        "from",
+                        'where'
+                    ) , array(
+                        "\nfrom",
+                        "\nwhere"
+                    ) , $query) ,
+                    "st" => getDebugStack(1)
+                );
+            }
         } else {
             $err = pg_last_error($dbid);
         }

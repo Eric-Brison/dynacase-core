@@ -96,10 +96,10 @@ function lmail($dbaccess, $name)
         $uid = "";
         if ($usw > 0) {
             $uid = $v["id"];
-            $type = "1"; //$type="link";  // cause it is a bool
+            $type = "link"; //$type="link";  // cause it is a bool
             
         } else {
-            $type = "0"; //$type="plain";
+            $type = "plain"; //$type="plain";
             $uid = " ";
         }
         $tr[] = array(

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-03 13:37+0200\n"
-"PO-Revision-Date: 2011-08-03 13:38+0200\n"
+"POT-Creation-Date: 2011-09-09 18:12+0200\n"
+"PO-Revision-Date: 2011-09-09 18:13+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -31,8 +31,7 @@ msgid " Modify acls for transitions"
 msgstr "Modifier les droits pour les transitions"
 
 msgid " No privilege to change acl for document access"
-msgstr ""
-"Pas de privilège pour modifier les droits des documents de cette famille"
+msgstr "Aucun privilège pour modifier les droits d'accès au document"
 
 msgid " No privilege to change acl for familly access"
 msgstr "Pas de privilège pour modifier les droits d'accès à la famille"
@@ -2402,6 +2401,9 @@ msgstr ""
 "Tous les utilisateurs ne peuvent être affichés.\n"
 "La limite %d a été atteinte"
 
+msgid "Not enough access to define privileges"
+msgstr "Droits insuffisants pour initialiser les privilèges"
+
 msgid "November"
 msgstr "Novembre"
 
@@ -2874,7 +2876,8 @@ msgstr ""
 "fichier exporté ne pourra être réutilisé que dans la même base de données"
 
 msgid "Select. Use ctrl-&uarr; &darr; to up/down selection"
-msgstr "Sélectionner. Utiliser ctrl-&uarr; &darr; pour monter/descendre la sélection"
+msgstr ""
+"Sélectionner. Utiliser ctrl-&uarr; &darr; pour monter/descendre la sélection"
 
 msgid "Send document"
 msgstr "Envoyer par courriel"
@@ -5252,8 +5255,8 @@ msgid "elink"
 msgstr "extra Lien"
 
 #, c-format
-msgid "elinkEncode::attribute not found %s"
-msgstr "elinkEncode :  attribut non trouvé %s"
+msgid "elinkEncode::attribute not found %s in %s : %s"
+msgstr ""
 
 msgid "email sended"
 msgstr "email envoyé"
@@ -8917,6 +8920,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
+#~ msgid "No privilege to define accessibilities"
+#~ msgstr "Aucun privilège pour définir les droits d'accès"
+
 #~ msgid "Only owner of document can restore it"
 #~ msgstr "Seul le propriétaire peut restaurer un document"
 
@@ -8943,6 +8949,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
 #~ "descendre"
+
+#~ msgid "elinkEncode::attribute not found %s"
+#~ msgstr "elinkEncode :  attribut non trouvé %s"
 
 #~ msgid "insert the document to see it with offline application"
 #~ msgstr "insérer le document pour le voir avec l'application offline"

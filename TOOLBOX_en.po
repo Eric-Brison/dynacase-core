@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-03 13:37+0200\n"
+"POT-Creation-Date: 2011-09-09 18:12+0200\n"
 "PO-Revision-Date: 2011-07-18 17:17+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2527,6 +2527,9 @@ msgstr ""
 msgid ""
 "Not all users can be vieved.\n"
 "limit %d has been reached"
+msgstr ""
+
+msgid "Not enough access to define privileges"
 msgstr ""
 
 #, fuzzy
@@ -5556,7 +5559,7 @@ msgid "elink"
 msgstr "Delete"
 
 #, c-format
-msgid "elinkEncode::attribute not found %s"
+msgid "elinkEncode::attribute not found %s in %s : %s"
 msgstr ""
 
 msgid "email sended"

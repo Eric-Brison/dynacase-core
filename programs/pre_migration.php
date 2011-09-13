@@ -42,7 +42,7 @@ if ($argc != 2) {
 }
 $appname = $argv[1];
 
-$err = getCheckApp($pubdir, &$tapp);
+$err = getCheckApp($pubdir, $tapp);
 if ($err) {
     print $err;
     exit(1);

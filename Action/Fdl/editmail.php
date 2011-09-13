@@ -57,7 +57,7 @@ function editmail(&$action)
     setHttpVar("mail_copymode", $tt);
     
     if ($from == "") {
-        $from = getMailAddr($action->user->id, true);
+        $from = getMailAddr($action->user->id, false);
     }
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
