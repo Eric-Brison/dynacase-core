@@ -16,7 +16,7 @@
   </replaces>
 
   <requires>
-    <installer version="1.1.0" comp="ge"/>
+    <installer version="1.1.1" comp="ge"/>
     <module name="dynacase-extjs" />
     <module name="dynacase-jquery" />
   </requires>
@@ -33,6 +33,7 @@
 
   <pre-install>    
 
+    <check type="phpversion" predicate="ge" version="5.3.0"><label lang="en">Check PHP version &gt;= 5.3.0</label></check>
     <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
     
     <check type="pgempty" service="@core_db" optional="yes"><label lang="en">Check database empty</label></check>
@@ -56,7 +57,19 @@
     
     <!-- Check PHP functions/extensions -->
     
-    <check type="phpbug45996"><help>Your PHP installation seems to have a known bug (ref #45996: http://bugs.php.net/bug.php?id=45996). Please use an updated PHP version that corrects this bug.</help></check>
+    <check type="phpbug45996"><help><![CDATA[
+Your PHP installation seems to have a known bug (ref #45996: <a href="http://bugs.php.net/bug.php?id=45996" target="_blank">http://bugs.php.net/bug.php?id=45996</a>).<br/>
+<br/>
+Please use an updated PHP version that corrects this bug.
+]]></help></check>
+    <check type="phpbug40926" service="@core_db"><help><![CDATA[
+Your PHP installation seems to have a known bug (ref #40926: <a href="http://bugs.php.net/bug.php?id=40926" target="_blank">http://bugs.php.net/bug.php?id=40926</a>).<br/>
+<br/>
+This can be solved by:<br/>
+-&nbsp;upgrading your postgresql client librairies to version &gt;= 8.4<br/>
+-&nbsp;or, configuring your postgres services (pg_service.conf) with the option 'sslmode=disable'<br/>
+]]></help></check>
+
     <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
     <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
     <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
@@ -140,6 +153,7 @@
   
   <pre-upgrade>  
 
+    <check type="phpversion" predicate="ge" version="5.3.0"><label lang="en">Check PHP version &gt;= 5.3.0</label></check>
     <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
     
     <check type="syscommand" command="rm" />
@@ -161,7 +175,19 @@
     
     <!-- Check PHP functions/extensions -->
     
-    <check type="phpbug45996"><help>Your PHP installation seems to have a known bug (ref #45996: http://bugs.php.net/bug.php?id=45996). Please use an updated PHP version that corrects this bug.</help></check>
+    <check type="phpbug45996"><help><![CDATA[
+Your PHP installation seems to have a known bug (ref #45996: <a href="http://bugs.php.net/bug.php?id=45996" target="_blank">http://bugs.php.net/bug.php?id=45996</a>).<br/>
+<br/>
+Please use an updated PHP version that corrects this bug.
+]]></help></check>
+    <check type="phpbug40926" service="@core_db"><help><![CDATA[
+Your PHP installation seems to have a known bug (ref #40926: <a href="http://bugs.php.net/bug.php?id=40926" target="_blank">http://bugs.php.net/bug.php?id=40926</a>).<br/>
+<br/>
+This can be solved by:<br/>
+-&nbsp;upgrading your postgresql client librairies to version &gt;= 8.4<br/>
+-&nbsp;or, configuring your postgres services (pg_service.conf) with the option 'sslmode=disable'<br/>
+]]></help></check>
+
     <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
     <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
     <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
