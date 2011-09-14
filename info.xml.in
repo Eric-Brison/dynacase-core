@@ -60,7 +60,7 @@ Your PHP installation seems to have a known bug (ref #45996: <a href="http://bug
 <br/>
 Please use an updated PHP version that corrects this bug.
 ]]></help></check>
-    <check type="phpbug40926"><help><![CDATA[
+    <check type="phpbug40926" service="@core_db"><help><![CDATA[
 Your PHP installation seems to have a known bug (ref #40926: <a href="http://bugs.php.net/bug.php?id=40926" target="_blank">http://bugs.php.net/bug.php?id=40926</a>).<br/>
 <br/>
 This can be solved by:<br/>
@@ -176,7 +176,7 @@ Your PHP installation seems to have a known bug (ref #45996: <a href="http://bug
 <br/>
 Please use an updated PHP version that corrects this bug.
 ]]></help></check>
-    <check type="phpbug40926"><help><![CDATA[
+    <check type="phpbug40926" service="@core_db"><help><![CDATA[
 Your PHP installation seems to have a known bug (ref #40926: <a href="http://bugs.php.net/bug.php?id=40926" target="_blank">http://bugs.php.net/bug.php?id=40926</a>).<br/>
 <br/>
 This can be solved by:<br/>
