@@ -28,7 +28,7 @@ sorttable = {
     if (_timer) clearInterval(_timer);
     
     if (!document.createElement || !document.getElementsByTagName) return;
-    sorttable.DATE_RE = /^(\d\d?)[\/\.-](\d\d?)[\/\.-]((\d\d)?\d\d)$/;
+    sorttable.DATE_RE = /^(\d\d?)[\/\.-](\d\d?)[\/\.-]((\d\d)?\d\d) ?([\d:]*)$/;
     forEach(document.getElementsByTagName('table'), function(table) {
       if (table.className.search(/\bsortable\b/) != -1) {
         sorttable.makeSortable(table);
@@ -171,7 +171,7 @@ sorttable = {
     for (var i=0; i<table.tBodies[0].rows.length; i++) {
       text = sorttable.getInnerText(table.tBodies[0].rows[i].cells[column]);
       if (text != '') {
-        if (text.match(/^-?[£$€]?[\d,.]+%?$/)) {
+        if (text.replace(String.fromCharCode(160),'').match(/^-?[£$€]?[ \d,.]+[%£$€]?$/)) {
           return sorttable.sort_numeric;
         }
         // check for a date: dd/mm/yyyy or dd/mm/yy 
@@ -259,9 +259,9 @@ sorttable = {
      each sort function takes two parameters, a and b
      you are comparing a[0] and b[0] */
   sort_numeric: function(a,b) {
-    aa = parseFloat(a[0].replace(/[^0-9.-]/g,''));
+    var aa = parseFloat(a[0].replace(/[^0-9.-]/g,''));
     if (isNaN(aa)) aa = 0;
-    bb = parseFloat(b[0].replace(/[^0-9.-]/g,'')); 
+    var bb = parseFloat(b[0].replace(/[^0-9.-]/g,'')); 
     if (isNaN(bb)) bb = 0;
     return aa-bb;
   },
@@ -271,38 +271,44 @@ sorttable = {
     return 1;
   },
   sort_ddmm: function(a,b) {
-    mtch = a[0].match(sorttable.DATE_RE);
+      var y='',m='',d='',dt1='',dt2='',hs='';
+    var mtch = a[0].match(sorttable.DATE_RE);
     if (mtch) {
       y = mtch[3]; m = mtch[2]; d = mtch[1];
+      hs=mtch[5];
       if (m.length == 1) m = '0'+m;
       if (d.length == 1) d = '0'+d;
-      dt1 = y+m+d;
+      dt1 = y+m+d+hs;
     } else dt1=0;
     mtch = b[0].match(sorttable.DATE_RE); 
     if (mtch) {
       y = mtch[3]; m = mtch[2]; d = mtch[1];
+      hs=mtch[5];
       if (m.length == 1) m = '0'+m;
       if (d.length == 1) d = '0'+d;
-      dt2 = y+m+d;
+      dt2 = y+m+d+hs;
     } else dt2=0;
     if (dt1==dt2) return 0;
     if (dt1<dt2) return -1;
     return 1;
   },
   sort_mmdd: function(a,b) {
-    mtch = a[0].match(sorttable.DATE_RE);
+      var y='',m='',d='',dt1='',dt2='',hs='';
+    var mtch = a[0].match(sorttable.DATE_RE);
     if (mtch) {
       y = mtch[3]; d = mtch[2]; m = mtch[1];
+      hs=mtch[5];
       if (m.length == 1) m = '0'+m;
       if (d.length == 1) d = '0'+d;
-      dt1 = y+m+d;
+      dt1 = y+m+d+hs;
     } else dt1=0;
     mtch = b[0].match(sorttable.DATE_RE);
     if (mtch) {
       y = mtch[3]; d = mtch[2]; m = mtch[1];
+      hs=mtch[5];
       if (m.length == 1) m = '0'+m;
       if (d.length == 1) d = '0'+d;
-      dt2 = y+m+d;
+      dt2 = y+m+d+hs;
     } else dt2=0;
     if (dt1==dt2) return 0;
     if (dt1<dt2) return -1;
