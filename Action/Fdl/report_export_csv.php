@@ -8,22 +8,25 @@
 require_once 'FDL/Class.Doc.php';
 require_once 'FDL/freedom_util.php';
 require_once 'EXTERNALS/fdl.php';
-/*
+/**
  * Export a report in CSV
  *
- * @note Usage :
- *	--app=FDL : <application name>
- *	--action=REPORT_EXPORT_CSV : <action name>
- *	--id=<the id of the report>
- *   Options:
- *	--refresh=<would you refresh doc before build report> [TRUE|FALSE], default is 'FALSE'
- *	--kind=<the kind of report> [simple|pivot], default is 'simple'
- *	--pivot=<the pivot attr>, default is 'id'
- *	--delimiter=<the CSV delimiter>, default is ';'
- *	--enclosure=<the CSV enclosure>, default is '"'
- *	--encoding=<the CSV encoding>, default is 'ISO-8859-15//TRANSLIT'
- *	--decimalSeparator=<the decimalSeparator>, default is '.'
- *	--dateFormat=<the dateFormat> [US|FR|ISO], default is 'US'
+ * @note 
+ * @verbatim
+ Usage :
+ 	--app=FDL : <application name>
+ 	--action=REPORT_EXPORT_CSV : <action name>
+ 	--id=<the id of the report>
+    Options:
+ 	--refresh=<would you refresh doc before build report> [TRUE|FALSE], default is 'FALSE'
+ 	--kind=<the kind of report> [simple|pivot], default is 'simple'
+ 	--pivot=<the pivot attr>, default is 'id'
+ 	--delimiter=<the CSV delimiter>, default is ';'
+ 	--enclosure=<the CSV enclosure>, default is '"'
+ 	--encoding=<the CSV encoding>, default is 'ISO-8859-15//TRANSLIT'
+ 	--decimalSeparator=<the decimalSeparator>, default is '.'
+ 	--dateFormat=<the dateFormat> [US|FR|ISO], default is 'US
+@endverbatim
 */
 function report_export_csv(Action & $action)
 {
