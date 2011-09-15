@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-09 18:12+0200\n"
+"POT-Creation-Date: 2011-09-13 10:57+0200\n"
 "PO-Revision-Date: 2011-07-18 17:17+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -171,15 +171,15 @@ msgstr ""
 msgid "%d days"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%d document"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%d documents"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%d group(s) to update\n"
 msgstr "Update LDAP server"
 
@@ -227,19 +227,19 @@ msgstr ""
 msgid "%s affected user"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%s all "
 msgstr "readall"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%s application has no aclss"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%s application not exists"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%s attribute"
 msgstr "Update Title Cards"
 
@@ -359,7 +359,7 @@ msgstr ""
 msgid "%s needed\n"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%s new revision %d"
 msgstr "Organisation"
 
@@ -371,7 +371,7 @@ msgstr ""
 msgid "%s persistent timer"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%s profile"
 msgstr "Category"
 
@@ -391,7 +391,7 @@ msgstr ""
 msgid "%s unattach timer"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "%s updated\n"
 msgstr "Update LDAP server"
 
@@ -567,7 +567,7 @@ msgstr ""
 msgid "Activate file indexing with TE"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Add %d document(s)"
 msgstr "Import"
 
@@ -575,7 +575,7 @@ msgstr "Import"
 msgid "Add %s in %s folder"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Add Attributes : %s"
 msgstr "Update Title Cards"
 
@@ -590,7 +590,7 @@ msgstr ""
 msgid "Add filter"
 msgstr "Modify"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Add it in %s folder"
 msgstr "Modify"
 
@@ -655,15 +655,15 @@ msgstr "Edit"
 msgid "Affectation aborded : user not know"
 msgstr "Edit"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Affectation for %s"
 msgstr "Edit"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Affected for %s"
 msgstr "Edit"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Affected to %s %s"
 msgstr "Edit"
 
@@ -958,7 +958,7 @@ msgid ""
 " %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Change creation profil to %s [%d]"
 msgstr "Category"
 
@@ -966,7 +966,7 @@ msgstr "Category"
 msgid "Change creation profile"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Change creation view control to %s [%d]"
 msgstr "Start search"
 
@@ -991,15 +991,15 @@ msgstr "Start search"
 msgid "Change my ask"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Change profil to %s [%d]"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Change profil to default document profil : %d"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Change profil to default subfolder profil : %d"
 msgstr "Delete"
 
@@ -1030,7 +1030,7 @@ msgstr ""
 msgid "Change state to"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Change state to %s"
 msgstr "Category"
 
@@ -1042,7 +1042,7 @@ msgstr "Category"
 msgid "Change title"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Change view control  to %s [%d]"
 msgstr "Start search"
 
@@ -1149,8 +1149,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Close"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Create\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Close"
@@ -1295,7 +1294,7 @@ msgstr "Create"
 msgid "Create !"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Create %s"
 msgstr "Create"
 
@@ -1348,7 +1347,7 @@ msgstr ""
 msgid "Creation aborded : no family specified"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Creation aborded : unknow family %s"
 msgstr "Category"
 
@@ -1442,11 +1441,11 @@ msgstr "Import"
 msgid "Document %s has been destroyed."
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Document %s in %s state not found"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Document %s inserted"
 msgstr "Import"
 
@@ -1454,11 +1453,11 @@ msgstr "Import"
 msgid "Document %s is in edition by %s."
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Document %s is not alive"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Document %s umounted"
 msgstr "Import"
 
@@ -1553,6 +1552,18 @@ msgstr "CSV options: "
 
 msgid "EXPORT_CSV Click to show options"
 msgstr "View CSV options"
+
+msgid "EXPORT_CSV Date format :"
+msgstr "Date Format :"
+
+msgid "EXPORT_CSV Date format FR"
+msgstr "Date format FR"
+
+msgid "EXPORT_CSV Date format ISO"
+msgstr "Date format ISO"
+
+msgid "EXPORT_CSV Date format US"
+msgstr "Date format US"
 
 msgid "EXPORT_CSV Decimal separator :"
 msgstr "Decimal separator: "
@@ -2354,7 +2365,7 @@ msgstr ""
 msgid "Message to indicate invalid configuration"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Method [%s] not exists"
 msgstr "Import"
 
@@ -2662,7 +2673,7 @@ msgstr "Organisation"
 msgid "Person"
 msgstr "Organisation"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Personal profile for %s %s"
 msgstr "Category"
 
@@ -2974,13 +2985,12 @@ msgstr "Category"
 
 #, fuzzy
 msgid "Search"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Start search\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "user"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Search %s"
 msgstr "Start search"
 
@@ -3167,7 +3177,7 @@ msgstr "Permission"
 msgid "Supported format"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Suppress %d document(s)"
 msgstr "Import"
 
@@ -3175,11 +3185,11 @@ msgstr "Import"
 msgid "Sure %s ?"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Sure delete %s ?"
 msgstr "Delete"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Sure duplicate %s ?"
 msgstr "Edit"
 
@@ -3223,7 +3233,7 @@ msgid ""
 "be parameter allowOverride is not set to All"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid ""
 "The change state to %s has been aborted.\n"
 "%s"
@@ -3372,7 +3382,7 @@ msgstr "Edit"
 msgid "Unallocated of %s %s : %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "Unallocated of %s %s: %s"
 msgstr "Category"
 
@@ -3780,8 +3790,7 @@ msgstr ""
 
 #, fuzzy
 msgid "actions"
-msgstr ""
-"#-#-#-#-#  DATA_en.po (Data)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  DATA_en.po (Data)  #-#-#-#-#\n"
 "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Function"
@@ -3802,11 +3811,11 @@ msgstr ""
 msgid "add %s id [%d]  "
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "add %s search"
 msgstr "Start search"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "add acl %s"
 msgstr "Add new contact card"
 
@@ -3829,7 +3838,7 @@ msgstr "Add new contact card"
 msgid "add comment before revise document"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "add default value %s %s"
 msgstr "Delete"
 
@@ -3978,7 +3987,7 @@ msgstr ""
 msgid "allocated to"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "allocation for %s document"
 msgstr "Delete"
 
@@ -4205,11 +4214,11 @@ msgstr ""
 msgid "author"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "auto revision"
 msgstr "Organisation"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid ""
 "automaticaly by change state of %s\n"
 "%s"
@@ -4252,7 +4261,7 @@ msgstr ""
 msgid "batch execution"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "batch from %s folder"
 msgstr "Modify"
 
@@ -4279,8 +4288,7 @@ msgid "butmodify"
 msgstr "Modify"
 
 msgid "callbackreqpasswd_callback_not_ok"
-msgstr ""
-"<p>The system could not fulfill your request.</p>\n"
+msgstr "<p>The system could not fulfill your request.</p>\n"
 "<p>The link that you used might have expired or is not valid. In this case, "
 "renew your request.</p>\n"
 "<p>If the problem persist, please contact <a href=\"mailto:"
@@ -4288,16 +4296,14 @@ msgstr ""
 "[ON_ERROR_CONTACT]</a></p>"
 
 msgid "callbackreqpasswd_callback_ok"
-msgstr ""
-"<p>Your password has been re-initialized, and the new password has been sent "
+msgstr "<p>Your password has been re-initialized, and the new password has been sent "
 "to you by mail.</p>"
 
 msgid "callbackreqpasswd_mail_hello"
 msgstr "Hello"
 
 msgid "callbackreqpasswd_mail_password"
-msgstr ""
-"<p>You new password is now:</p>\n"
+msgstr "<p>You new password is now:</p>\n"
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
@@ -4312,8 +4318,7 @@ msgstr ""
 
 #, fuzzy
 msgid "cancel"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Start search\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Acl"
@@ -4328,7 +4333,7 @@ msgstr ""
 msgid "cannot change owner of %s: aborted\n"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "cannot change state of document #%d to %s"
 msgstr "Category"
 
@@ -4346,7 +4351,7 @@ msgstr ""
 msgid "cannot control : object not initialized : %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "cannot copy %s"
 msgstr "Category"
 
@@ -4420,7 +4425,7 @@ msgstr ""
 msgid "cannot lauch <b>%s</b> transformation"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "cannot modify forum %s"
 msgstr "Category"
 
@@ -4428,7 +4433,7 @@ msgstr "Category"
 msgid "cannot object update %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "cannot open %s layout file"
 msgstr "Category"
 
@@ -4454,11 +4459,11 @@ msgstr ""
 msgid "cannot send mail %s with template %s : %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "cannot set free state for document %s: document cannot be revised"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "cannot set free state for document %s: workflow not allowed"
 msgstr "Category"
 
@@ -4516,14 +4521,13 @@ msgstr ""
 msgid "change"
 msgstr "Start search"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change %s"
-msgstr ""
-"#-#-#-#-#  DATA_en.po (Data)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  DATA_en.po (Data)  #-#-#-#-#\n"
 "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Start search"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change application tag to '%s'"
 msgstr "Category"
 
@@ -4534,7 +4538,7 @@ msgstr "Category"
 msgid "change creation profile"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change default creation profile id  to '%s'"
 msgstr "Category"
 
@@ -4552,11 +4556,11 @@ msgstr "Category"
 msgid "change king in enum attribute"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change methods to '%s'"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change profil %s"
 msgstr "Category"
 
@@ -4566,7 +4570,7 @@ msgstr ""
 msgid "change profile access"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change profile id  to '%s'"
 msgstr "Category"
 
@@ -4574,11 +4578,11 @@ msgstr "Category"
 msgid "change root folder"
 msgstr "Delete"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change special use to '%s'"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change state : %s to %s"
 msgstr "Category"
 
@@ -4586,7 +4590,7 @@ msgstr "Category"
 msgid "change state to %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "change state to %s : %s"
 msgstr "Category"
 
@@ -4630,7 +4634,7 @@ msgstr ""
 msgid "choose for edit enum attribute"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "choose inputs for %s"
 msgstr "Modify"
 
@@ -4819,7 +4823,7 @@ msgstr "Organisation"
 msgid "conversion failed for %s: "
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "conversion of %s in progress"
 msgstr "Organisation"
 
@@ -4835,7 +4839,7 @@ msgstr ""
 msgid "convert file %s as %s failed : %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "convertion from %s to %s family"
 msgstr "Category"
 
@@ -4857,8 +4861,7 @@ msgid "core_layout_execute_recursion_limit"
 msgstr "Recursion limit for the Layout execute function"
 
 msgid "core_sessiongcprobability"
-msgstr ""
-"Probability of running the suppression of unused sessions (expressed as a "
+msgstr "Probability of running the suppression of unused sessions (expressed as a "
 "percentage by a number between 0 and 1)"
 
 msgid "core_sessionmaxage"
@@ -4867,7 +4870,7 @@ msgstr "Maximum time after which an unused session is eligible for suppression"
 msgid "core_sessionttl"
 msgstr "Session lifetime (in seconds)"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "create %s family %s"
 msgstr "Category"
 
@@ -4878,14 +4881,13 @@ msgstr ""
 msgid "create a new session id"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "create default folder (id [%d])\n"
 msgstr "Delete"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "create directory %s\n"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Edit\n"
 "#-#-#-#-#  VAULT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 
@@ -4908,7 +4910,7 @@ msgstr "Modify"
 msgid "create help"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "create new %s"
 msgstr "Edit"
 
@@ -4930,7 +4932,7 @@ msgstr "Create"
 msgid "creation"
 msgstr "Edit"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "creation %s"
 msgstr "Edit"
 
@@ -5050,7 +5052,7 @@ msgstr ""
 msgid "default values"
 msgstr "Delete"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "default values for %s"
 msgstr "Delete"
 
@@ -5071,8 +5073,7 @@ msgstr "Delete"
 
 #, fuzzy
 msgid "delconfirm"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Really Delete\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Sure to delete user"
@@ -5297,14 +5298,14 @@ msgstr ""
 msgid "document '%s' [revision %d] has no state"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "document [%s] not found"
 msgstr "Import"
 
 msgid "document already revised"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "document creation"
 msgstr "Organisation"
 
@@ -5634,13 +5635,12 @@ msgstr "Can't modify parameter"
 msgid "err_mod_parameter"
 msgstr "Can't modify parameter"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid ""
 "errldapadd:%s\n"
 "%s\n"
 "%d\n"
-msgstr ""
-"Card is not modify in LDAP server : one of this attribute is not appropriate"
+msgstr "Card is not modify in LDAP server : one of this attribute is not appropriate"
 
 msgid "errldapconnect"
 msgstr "LDAP server cannot be contacted"
@@ -5650,8 +5650,7 @@ msgid "errldaporginit"
 msgstr "LDAP server cannot be contacted"
 
 msgid "errno_bug_639_message"
-msgstr ""
-"<p>You must re-initialize your password.</p>\n"
+msgstr "<p>You must re-initialize your password.</p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Re-initialize my "
 "password</a></p>"
 
@@ -5683,7 +5682,7 @@ msgstr ""
 msgid "error in filename"
 msgstr "Firstname"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "error in import keys : %s"
 msgstr "Import"
 
@@ -5929,11 +5928,11 @@ msgstr "Update Title Cards"
 msgid "file"
 msgstr "Update Title Cards"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "file %d"
 msgstr "Update Title Cards"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "file %s not found"
 msgstr "Import"
 
@@ -6123,7 +6122,7 @@ msgstr ""
 msgid "frame size"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "free item %s"
 msgstr "Create"
 
@@ -6389,7 +6388,7 @@ msgstr ""
 msgid "ignored"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "import <I>%s</I> documents from"
 msgstr "Import"
 
@@ -6512,7 +6511,7 @@ msgstr "Category"
 msgid "interface to save choice of column export documents"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "invalid freestate document %s"
 msgstr "Delete"
 
@@ -6745,7 +6744,7 @@ msgstr ""
 msgid "method %s not defined"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "method %s not found"
 msgstr "Import"
 
@@ -6775,11 +6774,11 @@ msgstr ""
 msgid "modify"
 msgstr "Modify"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "modify %s family"
 msgstr "Modify"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "modify [%s] attribute"
 msgstr "Update Title Cards"
 
@@ -6816,7 +6815,7 @@ msgstr ""
 msgid "modify family preference"
 msgstr "Modify"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "modify file %s"
 msgstr "Modify"
 
@@ -6895,11 +6894,11 @@ msgstr "Lastname"
 msgid "my parameters"
 msgstr "Can't modify parameter"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "my search %s"
 msgstr "Start search"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "my searches about %s"
 msgstr "Start search"
 
@@ -6985,11 +6984,11 @@ msgstr ""
 msgid "new guide-card"
 msgstr "Start search"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "new import keys : %s"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "new item %s"
 msgstr "Import"
 
@@ -7026,8 +7025,7 @@ msgstr "Visibility"
 
 #, fuzzy
 msgid "next"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Export this card\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 
@@ -7061,7 +7059,7 @@ msgstr ""
 msgid "no avalaible persons found"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "no change icon : document %s not found"
 msgstr "Category"
 
@@ -7122,7 +7120,7 @@ msgstr ""
 msgid "no father category (its a top category)"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "no file referenced for %s document"
 msgstr "Delete"
 
@@ -7175,7 +7173,7 @@ msgstr ""
 msgid "no mail"
 msgstr "Email"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "no match for %s"
 msgstr "Modify"
 
@@ -7189,7 +7187,7 @@ msgstr ""
 msgid "no permission to modify this attribute %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "no privilege %s for %s"
 msgstr "Category"
 
@@ -7299,11 +7297,11 @@ msgstr "None"
 msgid "noone document"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "not a freestate document %s"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "not a static folder %s"
 msgstr "Modify"
 
@@ -7478,8 +7476,7 @@ msgid "other infos"
 msgstr ""
 
 msgid "other sites"
-msgstr ""
-"<p>You new password is now:</p>\n"
+msgstr "<p>You new password is now:</p>\n"
 "<pre>\n"
 "[PASSWORD]\n"
 "</pre>\n"
@@ -7605,11 +7602,11 @@ msgstr ""
 msgid "post it"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "postit of %s"
 msgstr "Import"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "pre-import:%s"
 msgstr "Import"
 
@@ -7659,7 +7656,7 @@ msgstr ""
 msgid "proceed background import of %d documents"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "process search comes from %s"
 msgstr "Start search"
 
@@ -7680,7 +7677,7 @@ msgstr ""
 msgid "profil id unknow %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "profil id unkonow %s"
 msgstr "Category"
 
@@ -7860,7 +7857,7 @@ msgstr "Delete"
 msgid "refresh users intranet attributes"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "refreshing %s"
 msgstr "Delete"
 
@@ -7868,14 +7865,14 @@ msgstr "Delete"
 msgid "reinit all attributes"
 msgstr "Title"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "related documents of %s"
 msgstr "Import"
 
 msgid "related search aborted : no parameter found"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "remove state : %s"
 msgstr "Create"
 
@@ -7998,7 +7995,7 @@ msgstr "Root"
 msgid "root folder id"
 msgstr "Modify"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "root for %s"
 msgstr "Modify"
 
@@ -8032,8 +8029,7 @@ msgstr "Delete"
 
 #, fuzzy
 msgid "search"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Start search\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "user"
@@ -8042,18 +8038,17 @@ msgstr ""
 msgid "search  contains %s in all state"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "search %s"
-msgstr ""
-"#-#-#-#-#  DATA_en.po (Data)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  DATA_en.po (Data)  #-#-#-#-#\n"
 "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Start search"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "search %s is %s"
 msgstr "Start search"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "search %s is %s in %s"
 msgstr "Start search"
 
@@ -8217,7 +8212,7 @@ msgstr ""
 msgid "set as first family view"
 msgstr "Organisation"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "set default folder to '%s'"
 msgstr "Delete"
 
@@ -8247,7 +8242,7 @@ msgstr "Lastname"
 msgid "set logical name identificator"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "set primary folder to '%s'"
 msgstr "Delete"
 
@@ -8264,7 +8259,7 @@ msgstr ""
 msgid "set user parameter"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "set view control to '%s'"
 msgstr "Start search"
 
@@ -8310,14 +8305,14 @@ msgstr "Lastname"
 msgid "specialedit"
 msgstr "Delete"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "specialedit %s"
 msgstr "Delete"
 
 msgid "specialview"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "specialview %s"
 msgstr "Delete"
 
@@ -8376,33 +8371,28 @@ msgid "submenu"
 msgstr ""
 
 msgid "submitreqpasswd_form_send_error_external_auth"
-msgstr ""
-"<p>Your account uses an external authentication.</p>\n"
+msgstr "<p>Your account uses an external authentication.</p>\n"
 "<p>You cannot change your password from this application.</p>\n"
 "<p>Please use the application dedicated to your authentication system.</p>"
 
 msgid "submitreqpasswd_form_send_error_invalid_args"
-msgstr ""
-"<p>The login or e-mail address is not valid</p>\n"
+msgstr "<p>The login or e-mail address is not valid</p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Back</a></p>"
 
 msgid "submitreqpasswd_form_send_error_unknown"
-msgstr ""
-"<p>The server accountered an error processing your request</p>\n"
+msgstr "<p>The server accountered an error processing your request</p>\n"
 "<p>Retry your request, and if the problem persist, please contact <a href="
 "\"mailto:[ON_ERROR_CONTACT]?subject=Problem%20with%20password%20request\">"
 "[ON_ERROR_CONTACT]</a></p>\n"
 "<p><a href=\"[CORE_BASEURL]app=AUTHENT&action=REQPASSWD\">Back</a></p>"
 
 msgid "submitreqpasswd_form_send_ok"
-msgstr ""
-"<p>Your request has been taken into account.</p>\n"
+msgstr "<p>Your request has been taken into account.</p>\n"
 "<p>You'll receive a mail containing instructions to follow in order to "
 "complete your password reinitialization.</p>"
 
 msgid "submitreqpasswd_mail_callbackurl"
-msgstr ""
-"<p>You have requested a reinitilization of your password. If you have not "
+msgstr "<p>You have requested a reinitilization of your password. If you have not "
 "requested such action, please delete this message.</p>\n"
 "<p>To continue the reinitialization process, please follow the following "
 "link:<br /><a href=\"[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
@@ -8661,7 +8651,7 @@ msgstr "User List"
 msgid "to"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "to %s"
 msgstr "Modify"
 
@@ -8684,7 +8674,7 @@ msgstr ""
 msgid "to insert document in sub folder"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "to the %s state"
 msgstr "Category"
 
@@ -8715,7 +8705,7 @@ msgstr ""
 msgid "town of our society"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "try add acl %s"
 msgstr "Add new contact card"
 
@@ -8762,7 +8752,7 @@ msgstr ""
 msgid "unknow %s file property"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "unknow acl %s"
 msgstr "Modify"
 
@@ -8773,7 +8763,7 @@ msgstr ""
 msgid "unknow attribute %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "unknow attribute %s (family %s)"
 msgstr "Modify"
 
@@ -8785,7 +8775,7 @@ msgstr ""
 msgid "unknow document reference '%s'"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "unknow item %s"
 msgstr "Modify"
 
@@ -8812,15 +8802,15 @@ msgstr ""
 msgid "unknown attribute %s"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "unknown attribute %s for document %s"
 msgstr "Modify"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "unknown batch document %s"
 msgstr "Modify"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "unknown document id %s"
 msgstr "Start search"
 
@@ -8858,7 +8848,7 @@ msgstr ""
 msgid "unselect"
 msgstr ""
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "untitle %s %d"
 msgstr "Update Title Cards"
 
@@ -8871,24 +8861,23 @@ msgstr "Delete"
 
 #, fuzzy
 msgid "update"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Edit\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "update %s [%d] "
 msgstr "Update Title Cards"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "update %s attribute"
 msgstr "Update Title Cards"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "update %s family %s"
 msgstr "Category"
 
-#, fuzzy, c-format
+#, fuzzy
 msgid "update %s search"
 msgstr "Update Title Cards"
 
@@ -9034,8 +9023,7 @@ msgstr "Name"
 
 #, fuzzy
 msgid "users list"
-msgstr ""
-"#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
+msgstr "#-#-#-#-#  FREEDOM_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Login"
 
@@ -9436,61 +9424,3 @@ msgstr ""
 msgid "{left} title include {right}"
 msgstr ""
 
-#~ msgid "Authentification failure before account desactivation"
-#~ msgstr "Authentification failure before account desactivation"
-
-#, fuzzy
-#~ msgid "Documents management"
-#~ msgstr "Import"
-
-#, fuzzy
-#~ msgid "Found <b>%d</b>  Result for <b>%s</b> %s"
-#~ msgstr "<b>%d</b> documents found for \"<b>%s</b>\"%s"
-
-#, fuzzy
-#~ msgid "Found <b>%d</b>  Results for <b>%s</b> %s"
-#~ msgstr "<b>%d</b> documents found for \"<b>%s</b>\"%s"
-
-#~ msgid "One document <b>%d</b>  Results for <b>%s</b>%s"
-#~ msgstr "One document found for \"<b>%s</b>\"%s"
-
-#, fuzzy
-#~ msgid "Return to results"
-#~ msgstr "Import"
-
-#, fuzzy
-#~ msgid "Simple search"
-#~ msgstr "Start search"
-
-#, fuzzy
-#~ msgid "Undisplay the search query"
-#~ msgstr "Start search"
-
-#, fuzzy
-#~ msgid "View %d next results"
-#~ msgstr "view next documents"
-
-#, fuzzy
-#~ msgid "View the search query"
-#~ msgstr "Start search"
-
-#~ msgid "familie seearch result"
-#~ msgstr "limit to family"
-
-#~ msgid "freedom  global search"
-#~ msgstr "Global search"
-
-#~ msgid "freedom detailled global search"
-#~ msgstr "Detailed global search"
-
-#, fuzzy
-#~ msgid "no trash image"
-#~ msgstr "Firstname"
-
-#, fuzzy
-#~ msgid "select"
-#~ msgstr "Delete"
-
-#, fuzzy
-#~ msgid "toedit"
-#~ msgstr "Edit"

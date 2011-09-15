@@ -36,22 +36,21 @@ function color_warning($msg)
     if ($msg) return chr(0x1b) . "[1;33m" . $msg . chr(0x1b) . "[0;39m";
 }
 
-$famId = $method = $arg = $revision = $docid = $start = $slice = $fldid = $filter = $save = '';
 $usage = new ApiUsage();
 $usage->setText("Refresh documents ");
-$usage->addNeeded("famid", "the family identificator used to filter", $famId);
-$usage->addOption("method", "method to use)", $method, array() , "refresh");
-$usage->addOption("arg", "optional method argument to set when calling method", $arg);
-$usage->addOption("revision", "use all revision", $revision, array(
+$famId = $usage->addNeeded("famid", "the family identificator used to filter");
+$method = $usage->addOption("method", "method to use)", array() , "refresh");
+$arg = $usage->addOption("arg", "optional method argument to set when calling method");
+$revision = $usage->addOption("revision", "use all revision", array(
     "yes",
     "no"
 ) , "no");
-$usage->addOption("docid", "use only for this document id", $docid);
-$usage->addOption("start", "start from offset", $start, array() , 0);
-$usage->addOption("slice", "limit from offset", $slice, array() , "all");
-$usage->addOption("fldid", "use collection id to limit search", $fldid);
-$usage->addOption("filter", "sql filter to limit search", $filter);
-$usage->addOption("save", "store mode", $save, array(
+$docid = $usage->addOption("docid", "use only for this document id");
+$start = $usage->addOption("start", "start from offset", array() , 0);
+$slice = $usage->addOption("slice", "limit from offset", array() , "all");
+$fldid = $usage->addOption("fldid", "use collection id to limit search");
+$filter = $usage->addOption("filter", "sql filter to limit search");
+$save = $usage->addOption("save", "store mode", array(
     "complete",
     "light",
     "none"

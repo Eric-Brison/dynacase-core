@@ -40,7 +40,7 @@ else
   if test "x$PUBRULEDIR" == "x"; then
      AC_CHECK_FILE($HOME/anakeen/devtools/PubRule, PUBRULEDIR=$HOME/anakeen/devtools/)
      if test "x$PUBRULEDIR" = "x"; then
-          PUBRULEDIR=.
+          PUBRULEDIR=`pwd`
      fi
   fi
 fi

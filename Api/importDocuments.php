@@ -21,34 +21,27 @@ global $appl, $action;
 include_once ("FDL/import_file.php");
 include_once ("FREEDOM/freedom_import.php");
 
-$filename = '';
-$logfile = '';
-$archive = '';
-$analyze = '';
-$htmlmode = '';
-$reinit = '';
-$to = '';
 $usage = new ApiUsage();
 $usage->setText("Import documents from description file");
-$usage->addNeeded("file", "the description file path", $filename);
-$usage->addOption("analyze", "analyze only", $analyze, array(
+$filename = $usage->addNeeded("file", "the description file path");
+$analyze = $usage->addOption("analyze", "analyze only", array(
     "yes",
     "no"
 ) , "no");
-$usage->addOption("archive", "description file is an standard archive (not xml)", $archive, array(
+$archive = $usage->addOption("archive", "description file is an standard archive (not xml)", array(
     "yes",
     "no"
 ) , "no");
-$usage->addOption("log", "log file output", $logfile);
-$usage->addOption("htmlmode", "analyze report mode in html", $htmlmode, array(
+$logfile = $usage->addOption("log", "log file output");
+$htmlmode = $usage->addOption("htmlmode", "analyze report mode in html", array(
     "yes",
     "no"
 ) , "yes");
-$usage->addOption("reinitattr", "reset attribute before import family update", $reinit, array(
+$reinit = $usage->addOption("reinitattr", "reset attribute before import family update", array(
     "yes",
     "no"
 ));
-$usage->addOption("to", "email address to send report", $to);
+$to = $usage->addOption("to", "email address to send report");
 $usage->verify();
 
 if (!file_exists($filename)) {

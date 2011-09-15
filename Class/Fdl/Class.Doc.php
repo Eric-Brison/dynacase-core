@@ -5551,16 +5551,17 @@ create unique index i_docir on doc(initid, revision);";
                  * Get a textual representation of the content of an attribute
                  *
                  * @param string $attrId logical name of the attr
-                 * @param int $index position of the attr value (in array multiple)
+                 * @param array $configuration value config array : dateFormat => 'US' 'ISO', decimalSeparator => '.',
+                 * multipleSeparator => array(0 => 'arrayLine', 1 => 'multiple') (defaultValue : dateFormat : 'US', decimalSeparator : '.', multiple => array(0 => "\n", 1 => ", "))
                  *
                  * @return string|BOOLEAN
                  *
                  */
-                final public function getTextualAttrValue($attrId, $index = - 1)
+                final public function getTextualAttrValue($attrId, $index = - 1, Array $configuration = array())
                 {
                     $objectAttr = $this->getAttribute($attrId);
                     if ($objectAttr) {
-                        return $objectAttr->getTextualValue($this, $index);
+                        return $objectAttr->getTextualValue($this, $index, $configuration);
                     } else {
                         return $objectAttr;
                     }
