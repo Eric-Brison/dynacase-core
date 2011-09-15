@@ -299,6 +299,9 @@ This can be solved by:<br/>
 
   <changelog>
   	
+    <version number="3.1.1" date="2011-09-15">
+      <change title="Pivot export, Action usage, and many fixes" url="http://dev.dynacase.org/versions/show/117"/>        
+    </version>
     <version number="3.1.0" date="2011-07-27">
       <change title="Autoload, Transaction, and many other improvement" url="http://dev.dynacase.org/versions/show/98"/>        
     </version>
