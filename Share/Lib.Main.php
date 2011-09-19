@@ -170,6 +170,8 @@ function getMainAction($auth, &$action)
         }
         
         $ISIE6 = false;
+        $ISIE7 = false;
+        $ISIE8 = false;
         $ISAPPLEWEBKIT = false;
         $ISSAFARI = false;
         $ISCHROME = false;
@@ -177,6 +179,12 @@ function getMainAction($auth, &$action)
             switch ($match[1]) {
                 case "6":
                     $ISIE6 = true;
+                    break;
+                case "7":
+                    $ISIE7 = true;
+                    break;
+                case "8":
+                    $ISIE8 = true;
                     break;
             }
         } elseif (preg_match('|\bAppleWebKit/(.*?)\b|', $nav, $match)) {
@@ -191,6 +199,8 @@ function getMainAction($auth, &$action)
         
         $core->SetVolatileParam("ISIE", ($action->read("navigator") == "EXPLORER"));
         $core->SetVolatileParam("ISIE6", ($ISIE6 === true));
+        $core->SetVolatileParam("ISIE7", ($ISIE7 === true));
+        $core->SetVolatileParam("ISIE8", ($ISIE8 === true));
         $core->SetVolatileParam("ISAPPLEWEBKIT", ($ISAPPLEWEBKIT === true));
         $core->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
         $core->SetVolatileParam("ISCHROME", ($ISCHROME === true));

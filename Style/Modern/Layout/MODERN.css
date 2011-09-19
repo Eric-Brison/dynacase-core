@@ -476,7 +476,7 @@ input[type="image"] {
 .document div.frame div.content {
     background-color: white !important;
     -moz-border-radius: 0px;
-    margin-top:-0.6em; 
+    [IFNOT ISIE7][IFNOT ISIE6]margin-top:-0.6em;[ENDIF ISIE6][ENDIF ISIE7]
 }
 .document input,.document select,.document textarea,.document file,
 .freedom input {
