@@ -71,8 +71,7 @@ class ApiUsage
         global $action;
         $this->action = & $action;
         $this->addHidden("api", "api file to use");
-        $u = 1;
-        $this->addOption('userid', "user system id to execute function - default is (admin)", $u, array() , 1);
+        $this->addOption('userid', "user system id to execute function - default is (admin)", array() , 1);
     }
     /**
      * add textual definition of program
