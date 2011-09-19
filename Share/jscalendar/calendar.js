@@ -733,6 +733,7 @@ Calendar.prototype.create = function (_par) {
 	if (this.isPopup) {
 		div.style.position = "absolute";
 		div.style.display = "none";
+        div.style.width = "17em";
 	}
 	div.appendChild(table);
 
