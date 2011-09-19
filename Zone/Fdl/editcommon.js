@@ -127,19 +127,24 @@ function addmdocsattrid(attrid,nid,ntitle) {
   }  
 }
 function clearDocIdInputs(attrid,selid,th) {
-  var inpsel=document.getElementById(selid);
-  
-  if (inpsel) {
-    var itext=attrid;
-    var inptext=document.getElementById(itext);
-    if (inptext) {
-      for (var k=0;k<inpsel.options.length;k++) {
-	if (inpsel.options[k].selected) inpsel.remove(k--);
-      }
-      if (th) th.disabled=true;
-      transfertDocIdInputs(inpsel,inptext);
+    var inpsel=document.getElementById(selid);
+
+    if (inpsel) {
+        var itext=attrid;
+        var inptext=document.getElementById(itext);
+        if (inptext) {
+            for (var k=0;k<inpsel.options.length;k++) {
+                if (inpsel.options[k].selected) inpsel.remove(k--);
+            }
+            if (th) th.disabled=true;
+            transfertDocIdInputs(inpsel,inptext);
+        }
     }
-  }
+    var icrinput=document.getElementById('icr_'+attrid); 
+    if (icrinput) {
+        icrinput.className='add-doc';
+        icrinput.title=icrinput.getAttribute('titleedit');
+    }
 }
 
 function transfertDocIdInputs(inpsel,inptext) {
@@ -152,6 +157,7 @@ function transfertDocIdInputs(inpsel,inptext) {
   if (inpsel.options.length == 0) inpsel.size=1;
   else if (inpsel.options.length < maxsize) inpsel.size=inpsel.options.length;
   else inpsel.size=maxsize;
+  
 
   inptext.value=nval.substr(0,nval.length - 1);
 }
