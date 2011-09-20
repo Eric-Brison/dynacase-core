@@ -100,7 +100,7 @@ function GetHttpVars($name, $def = "")
     if (isset($ZONE_ARGS[$name])) return ($ZONE_ARGS[$name]); // try zone args first : it is set be Layout::execute for a zone
     if (isset($_GET[$name])) return stripslashes($_GET[$name]);
     if (isset($_POST[$name])) {
-        if (is_array($_POST[$name])) return $_POST[$name];
+        if (is_array($_POST[$name])) return array_map(create_function('$v', 'return is_scalar($v)?stripslashes($v):$v;'), $_POST[$name]);
         else return stripslashes($_POST[$name]);
     }
     return ($def);
