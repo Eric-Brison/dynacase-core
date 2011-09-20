@@ -66,11 +66,22 @@ function centerZone() {
 aumilieu('authform');
 aumilieu('zonehelp');
 }
+function initZone() {
+  centerZone();
+  var focus='auth_[IFNOT passfocus]user[ENDIF passfocus][IF passfocus]pass[ENDIF passfocus]';
+  
+  document.getElementById('zonehelp').style.visibility = 'hidden';
+  document.getElementById('authform').style.visibility = 'visible';
+  
+  var ifocus=document.getElementById(focus);
+  if (ifocus) ifocus.focus();
+  
+}
 -->
 
 </script>
 
-<div id="zonehelp" class="zhelp">
+<div id="zonehelp" class="zhelp" style="visibility:hidden">
   <div class="title">Aide &agrave; la connexion </div>
   <div class="content">Cette fen&ecirc;tre permet de vous identifier, c'est &agrave; dire indiquer aux applications qui vous &ecirc;tes.
     <br/><br/>Cci est n&eacute;cessaire pour garantir que les informations vous concernant sont accessibles seulement par vous-m&ecirc;me. Pour vous identifier, il vous faut saisir un nom d'utilisateur et un mot de passe (si vous n'en poss&eacute;dez pas adressez vous &agrave; au gestionnaire du site).
@@ -85,7 +96,7 @@ aumilieu('zonehelp');
 <input type="hidden" name="actd" value="[act_redir]">
 <input type="hidden" name="argd" value="[arg_redir]">
 
-<div id="authform" class="authmain">
+<div id="authform" class="authmain" style="visibility:hidden">
 
   <div class="form">
 
@@ -100,11 +111,11 @@ aumilieu('zonehelp');
       <table cellspacing="0">
         <tr>
           <td class="label">[TEXT:yourusername]</td>
-          <td class="input"><input name="auth_user" type="text" value="[auth_user]" /></td>
+          <td class="input"><input id="auth_user" placeholder="[TEXT:Enter your login]" name="auth_user" type="text" value="[auth_user]" /></td>
         </tr>
         <tr>
           <td class="label">[TEXT:yourpassword]</td>
-          <td class="input"><input name="auth_pass" type="password" value="" /></td>
+          <td class="input"><input id="auth_pass" placeholder="[TEXT:Enter your password]" name="auth_pass" type="password" value="" /></td>
         </tr>
       </table>
     </div>
@@ -135,9 +146,6 @@ aumilieu('zonehelp');
 </form>
 
 <script>
-addEvent(window,'load',centerZone);
+addEvent(window,'load',initZone);
 addEvent(window,'resize',centerZone);
-document.forms['loginform'].elements['auth_[IFNOT passfocus]user[ENDIF passfocus][IF passfocus]pass[ENDIF passfocus]'].focus(); 
-document.getElementById('zonehelp').style.visibility = 'hidden';
-
 </script>

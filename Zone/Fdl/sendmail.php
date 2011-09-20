@@ -59,8 +59,12 @@ function sendmail($to, $from, $cc, $bcc, $subject, &$mimemail, $multipart = null
         }
     }
     /* Send the 'MAIL FROM:' SMTP command. */
-    if (PEAR::isError($smtp->mailFrom($from))) {
-        return ("Unable to set sender to <$from>");
+    $smtp_from = $from;
+    if( preg_match('/<(?<from>[^>]*)>/', $from, $reg) ) {
+        $smtp_from = $reg['from'];
+    }
+    if (PEAR::isError($smtp->mailFrom($smtp_from))) {
+        return ("Unable to set sender to <$smtp_from>");
     }
     /* Address the message to each of the recipients. */
     foreach ($rcpt as $v) {

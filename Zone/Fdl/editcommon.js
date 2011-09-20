@@ -127,19 +127,24 @@ function addmdocsattrid(attrid,nid,ntitle) {
   }  
 }
 function clearDocIdInputs(attrid,selid,th) {
-  var inpsel=document.getElementById(selid);
-  
-  if (inpsel) {
-    var itext=attrid;
-    var inptext=document.getElementById(itext);
-    if (inptext) {
-      for (var k=0;k<inpsel.options.length;k++) {
-	if (inpsel.options[k].selected) inpsel.remove(k--);
-      }
-      if (th) th.disabled=true;
-      transfertDocIdInputs(inpsel,inptext);
+    var inpsel=document.getElementById(selid);
+
+    if (inpsel) {
+        var itext=attrid;
+        var inptext=document.getElementById(itext);
+        if (inptext) {
+            for (var k=0;k<inpsel.options.length;k++) {
+                if (inpsel.options[k].selected) inpsel.remove(k--);
+            }
+            if (th) th.disabled=true;
+            transfertDocIdInputs(inpsel,inptext);
+        }
     }
-  }
+    var icrinput=document.getElementById('icr_'+attrid); 
+    if (icrinput) {
+        icrinput.className='add-doc';
+        icrinput.title=icrinput.getAttribute('titleedit');
+    }
 }
 
 function transfertDocIdInputs(inpsel,inptext) {
@@ -152,6 +157,7 @@ function transfertDocIdInputs(inpsel,inptext) {
   if (inpsel.options.length == 0) inpsel.size=1;
   else if (inpsel.options.length < maxsize) inpsel.size=inpsel.options.length;
   else inpsel.size=maxsize;
+  
 
   inptext.value=nval.substr(0,nval.length - 1);
 }
@@ -1160,12 +1166,15 @@ function deleteInputValue(id){
 			if( el.className.match(/^color\b/) ) {
 				el.style.backgroundColor = '';
 			}
+			if (el.onchange) el.onchange.apply(el,[]);
 			//	document.getElementById(iinput).style.backgroundColor='[CORE_BGCOLORHIGH]';
 		} else {
 			err = err + "\n" + id;
 		}
 	} else {
-		if (! document.getElementById(id+'0'))   alert('[TEXT:Attribute not found]'+' : '+id);
+		if ((! document.getElementById(id+'_0')) && (! document.getElementById(id+'0'))) {
+		    alert('[TEXT:Attribute not found]'+' : '+id);
+		}
 	}
 	return err;
 }
@@ -1696,6 +1705,7 @@ function updateEnumCheck(icheck) {
             ichecks[i].onclick.apply(ichecks[i],[]);
         } else {
             ichecks[i].checked=false;
+            ichecks[i].parentNode.parentNode.className='nochecked';
         }
     }
 }
@@ -1997,7 +2007,6 @@ function resetTrInputs(tr) {
   for (var i=0; i< tin.length; i++) { 
     if (tin[i].name) resetInputsByName(tin[i].name);
   }
-
 }
 // up tr order 
 function uptr(trnode) {
@@ -2063,48 +2072,54 @@ function delseltr() {
 }
 var specDuptr=false;
 function duptr() {
-  var dsel;
-  var tbodysel;
-  var i;
-  if (seltr) {
-    tbodysel=seltr.parentNode;
-    tbodyselid=tbodysel.id;
-    tnewid='tnew'+tbodyselid.substr(5);
-    if (document.getElementById(tnewid)) {
-      ntr=addtr(tnewid,tbodyselid);
-      afterCloneBug(seltr,ntr);    
-    } else {
-      // direct clone tr
-      csel=seltr.cloneNode(true);
-      csel.style.backgroundColor='';
-      seltr.parentNode.insertBefore(csel,seltr);
-      visibilityinsert('trash','hidden');
-      // after clone (correct bug)
-      afterCloneBug(seltr,csel);
+    var newtr;
+    var tbodysel;
+    var i;
+    if (seltr) {
+        tbodysel=seltr.parentNode;
+        tbodyselid=tbodysel.id;
+        var tnewid='tnew'+tbodyselid.substr(5);
+        if (document.getElementById(tnewid)) {
+            newtr=addtr(tnewid,tbodyselid);
+            newtr.className='';
+            afterCloneBug(seltr,newtr);
+            selecttr(null,seltr);
+        } else {
+            // direct clone tr
+            newtr=seltr.cloneNode(true);
+            seltr.parentNode.insertBefore(newtr,seltr);
+            newtr.className='';
+            newtr.style.backgroundColor='yellow';
+            visibilityinsert('trash','hidden');
+            // after clone (correct bug)
+            afterCloneBug(seltr,newtr);
+        }
+       // unseltr();
+        disableReadAttribute();
+        if (specDuptr) {
+            eval(specDuptr);
+            try {
+            }
+            catch(exception) {
+                alert(exception);
+            }
+        }
     }
-    disableReadAttribute();
-    if (specDuptr) {
-      eval(specDuptr);
-      try {
-      }
-      catch(exception) {
-	alert(exception);
-      }
-    }
-  }  
 }
 
 function afterCloneBug(o1,o2) {
-  var ti1,ti2,t;
-  var itag=new Array('input','textarea','select');
+    var ti1,ti2,t=null,i;
+    var itag=new Array('input','textarea','select');
 
-  for (t in itag) {
-    ti1= o1.getElementsByTagName(itag[t]);
-    ti2= o2.getElementsByTagName(itag[t]);
-    for ( i=0; i< ti1.length; i++) {
-      setIValue(ti2[i],getIValue(ti1[i]));
+    for (t in itag) {
+        ti1= o1.getElementsByTagName(itag[t]);
+        ti2= o2.getElementsByTagName(itag[t]);
+        for ( i=0; i< ti1.length; i++) {
+            if ((ti1[i].type!='radio') || (!ti1[i].getAttribute('selector'))) {
+                setIValue(ti2[i],getIValue(ti1[i]));
+            }
+        }
     }
-  }
 }
 
 // change input (id) value (v) in node n
@@ -2138,34 +2153,50 @@ function visibilityinsert(n,d) {
   }
 }
 
+function selectUnselecttr(radio, tr) {
+    if (tr && tr.className=='selecta') {
+        unseltr();
+        if (radio) window.setTimeout(function (){radio.checked=false;}, 50);
+    } else selecttr(radio,tr);
+}
 function selecttr(o,tr) {
 
+  
   visibilityinsert('trash','hidden');
   visibilityinsert('unselect','hidden');
+  if (! o) {
+      //search radio
+      var trad = tr.getElementsByTagName('input');
+      for (var i=0; i< trad.length; i++) { 
+          if (trad[i].type=='radio') {
+              o=trad[i];
+              break;
+          }
+        }
+  }
+  
   var ti = tr.parentNode.getElementsByTagName('input');
   //var ti = tr.parentNode.getElementsByTagName('img');
   for (var i=0; i< ti.length; i++) { 
-    if (ti[i].name=='unselect') ti[i].style.visibility='visible';
+      if (ti[i].name=='unselect') ti[i].style.visibility='visible';
   }
   ti = tr.parentNode.getElementsByTagName('textarea');
   for (var i=0; i< ti.length; i++) { 
-    ti[i].rows=1;
-    if (ti[i].id && document.getElementById('exp'+ti[i].id)) document.getElementById('exp'+ti[i].id).style.display='none';
+      ti[i].rows=1;
+      if (ti[i].id && document.getElementById('exp'+ti[i].id)) document.getElementById('exp'+ti[i].id).style.display='none';
   }
   if (seltr) {
-    seltr.className='';
-    
+      seltr.className='';
   }   
-  o=o.parentNode.firstChild;
-  while (o && ((o.nodeType != 1) || o.name != 'trash')) o = o.nextSibling; // case TEXT attribute in mozilla between TR 
- 
-  if (o) o.style.visibility='visible';
+
+  var trash=o.parentNode.firstChild;
+  while (trash && ((trash.nodeType != 1) || trash.name != 'trash')) trash = trash.nextSibling; // case TEXT attribute in mozilla between TR 
+
+  if (trash) trash.style.visibility='visible';
 
   seltr=tr;
 
   seltr.className='selecta';
-
-
   return;  
 }
 
@@ -2190,31 +2221,32 @@ function unseltr() {
     return;  
 }
 var specMovetr=null;
-function movetr(tr) {
+function movetr(tr, sourcetr) {
 
-  var trnode= seltr;
-  var pnode = tr;
-  if (seltr) {  
+    if (! sourcetr) sourcetr=seltr;
+    var trnode= sourcetr;
+    var pnode = tr;
+    if (sourcetr) {  
 
-    while (pnode && (pnode.nodeType != 1)) pnode = pnode.previousSibling; // case TEXT attribute in mozilla between TR ??
-    if (pnode && trnode)  {
-      trnode.parentNode.insertBefore(trnode,pnode);
-    
-    }  else {
-      //trnode.parentNode.appendChild(trnode); // latest (cyclic)
+        while (pnode && (pnode.nodeType != 1)) pnode = pnode.previousSibling; // case TEXT attribute in mozilla between TR ??
+        if (pnode && trnode)  {
+            trnode.parentNode.insertBefore(trnode,pnode);
+
+        }  else {
+            //trnode.parentNode.appendChild(trnode); // latest (cyclic)
+        }
+
+        resetTrInputs(trnode);
+        if (specMovetr) {
+            eval(specMovetr);
+            try {
+            }
+            catch(exception) {
+                alert(exception);
+            }
+        }
     }
-    
-    resetTrInputs(trnode);
-    if (specMovetr) {
-      eval(specMovetr);
-      try {
-      }
-      catch(exception) {
-	alert(exception);
-      }
-    }
-  }
-  return;  
+    return;  
 }
 
 
@@ -2654,12 +2686,17 @@ function sdrag(event) {
     // @deprecated
 }
 function begindrag(event,o) {
-    unseltr();
+    //unseltr();
     if (isIE) enableDocumentSelection(false);
     _SELROW=o.parentNode.parentNode;
-    selecttr(o,_SELROW);
+    _SELROWSELECTED=false;
+    if (_SELROW.className=='selecta') {
+        _SELROWSELECTED=true;
+    } 
+    //selecttr(o,_SELROW);
     addEvent(document,"mouseup",enddrag); 
     _SELROW.parentNode.setAttribute('moving',  "true");
+    _SELROW.setAttribute('moving',  "true");
     stopPropagation(event);
 }
 function droptr(event) {
@@ -2672,19 +2709,23 @@ function droptr(event) {
             }
             if (o) {
                 if (o.previousSibling != _SELROW && o!=_SELROW) {
-                    movetr(o);
+                    movetr(o,_SELROW);
+                    return true;
                 }
             }
         }
     }
+    return false;
 }
+
 function enddrag(event) {
 
     dro=null;
     _SELROW.parentNode.setAttribute('moving',  "false");
+    _SELROW.setAttribute('moving',  "false");
     _SELROW=null;
     delEvent(document,"mouseup",enddrag);
-    unseltr();
+    
     //stopPropagation(event);
 }
 

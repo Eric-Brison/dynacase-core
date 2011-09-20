@@ -112,7 +112,7 @@ function getCoreParam($name, $def = "")
             }
         }
     }
-    if ($params[$name] === null) {
+    if (array_key_exists($name, $params) == false) {
         error_log(sprintf("parameter %s not found use %s instead", $name, $def));
     }
     return $params[$name] ? $params[$name] : $def;

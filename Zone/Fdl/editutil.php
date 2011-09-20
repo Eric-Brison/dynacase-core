@@ -221,7 +221,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 ) , $value));
                 $lay->set("label", ucFirst($oattr->getLabel()));
                 $lay->set("need", $oattr->needed);
-                $lay->set("height", $oattr->getOption("editheight", "100%"));
+                $lay->set("height", $oattr->getOption("editheight", "150px"));
                 $lay->set("toolbar", $oattr->getOption("toolbar", "Simple"));
                 $lay->set("toolbarexpand", (strtolower($oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");
                 $lay->set("aid", $attridk);

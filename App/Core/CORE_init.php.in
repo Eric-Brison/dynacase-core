@@ -19,8 +19,7 @@ ation. This manual should be your daily companion, with all answers to all quest
 /**
  * Application parameters 
  *
- * @author Anakeen 2002
- * @version $Id: CORE_init.php.in,v 1.45 2009/01/12 15:25:32 jerome Exp $
+ * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  * @subpackage CORE
@@ -194,7 +193,7 @@ $app_const = array (
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
-		    "MEMORY_LIMIT"	        =>array("val"=>"32",
+		    "MEMORY_LIMIT"	        =>array("val"=>"64",
 							"descr"=>N_("memory max for PHP in Mo"),
 							"user"=>"N",
 							"style"=>"N",
