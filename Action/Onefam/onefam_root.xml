@@ -20,6 +20,11 @@
   height:100%;
   border:none;
 }
+.iframecell {
+  height:100%;
+  vertical-align:top;
+}
+
 body.onefam {
  width:100%;
  height:100%;
@@ -162,6 +167,6 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
        title="[TEXT:choose user families]" 
        onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITPREF')">
 [ENDBLOCK CHOOSEUSERFAMILIES]
-</td><td style="height:100%" id="tdiframe"></td></tr></table>
+</td><td  class="iframecell" id="tdiframe"></td></tr></table>
 </body>
 </html>
