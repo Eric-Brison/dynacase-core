@@ -1166,12 +1166,15 @@ function deleteInputValue(id){
 			if( el.className.match(/^color\b/) ) {
 				el.style.backgroundColor = '';
 			}
+			if (el.onchange) el.onchange.apply(el,[]);
 			//	document.getElementById(iinput).style.backgroundColor='[CORE_BGCOLORHIGH]';
 		} else {
 			err = err + "\n" + id;
 		}
 	} else {
-		if (! document.getElementById(id+'0'))   alert('[TEXT:Attribute not found]'+' : '+id);
+		if ((! document.getElementById(id+'_0')) && (! document.getElementById(id+'0'))) {
+		    alert('[TEXT:Attribute not found]'+' : '+id);
+		}
 	}
 	return err;
 }
@@ -1702,6 +1705,7 @@ function updateEnumCheck(icheck) {
             ichecks[i].onclick.apply(ichecks[i],[]);
         } else {
             ichecks[i].checked=false;
+            ichecks[i].parentNode.parentNode.className='nochecked';
         }
     }
 }
@@ -2679,11 +2683,14 @@ function droptr(event) {
             if (o) {
                 if (o.previousSibling != _SELROW && o!=_SELROW) {
                     movetr(o);
+                    return true;
                 }
             }
         }
     }
+    return false;
 }
+
 function enddrag(event) {
 
     dro=null;
