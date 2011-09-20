@@ -20,20 +20,20 @@
 <th style="width:20px;visibility:hidden"/>[ENDIF tableheight][ENDIF ISIE]
             </tr>
         </thead>
-        <tbody id="tbody[attrid]" [IFNOT ISIE][IF tableheight]style="height:[tableheight];overflow:auto"[ENDIF tableheight][ENDIF ISIE]>
-            [BLOCK EATTR]<tr index="[index]" onmouseover="droptr(event);">
+        <tbody  onmouseover="droptr(event)" id="tbody[attrid]" [IFNOT ISIE][IF tableheight]style="height:[tableheight];overflow:auto"[ENDIF tableheight][ENDIF ISIE]>
+            [BLOCK EATTR]<tr index="[index]" >
                 [IFNOT readonly]<td class="tools" align="left">
                     <div class="drag-button" title="[TEXT:drag to move]" onmousedown="begindrag(event,this);return false;">&nbsp;&nbsp;</div>
-                    <input class="button select-button" name="sel[attrid]" type="radio" title="[TEXT:Select. Use ctrl-&uarr; &darr; to up/down selection]" onmousedown="selecttr(this,this.parentNode.parentNode);">
+                    <input class="button select-button" name="sel[attrid]" selector="true" type="radio" title="[TEXT:Select. Use ctrl-&uarr; &darr; to up/down selection]" onmouseup="selectUnselecttr(this,this.parentNode.parentNode);">
                     <input class="button trash-button" type="button" name="trash" style="visibility:hidden" title="[TEXT:delete selected]" onclick="delseltr()">
                 </td>[ENDIF readonly]
                 [BLOCK [bevalue]]<td class="[eiclass]" attrid="[cellattrid]" type="[cellatype]" multiple="[cellmultiple]" style="width:[vhw];background-color:[bgcolor];[tdstyle]">
                     [eivalue]
                 </td>[ENDBLOCK [bevalue]]
             </tr>[ENDBLOCK EATTR]
-            [IFNOT readonly]<tr id="lasttr[attrid]" onmouseover="droptr(event);">
+            [IFNOT readonly]<tr id="lasttr[attrid]">
                 <td class="und tools" align="right">
-                    [IF useadd]<input class="button unselect-button" type="button" name="unselect" style="visibility:hidden" title="[TEXT:unselect]" align="bottom" onclick="unseltr()">[ENDIF useadd]
+                    [IF useadd]<input class="button unselect-button" type="button" name="unselect" style="display:none;visibility:hidden" title="[TEXT:unselect]" align="bottom" onclick="unseltr()">[ENDIF useadd]
                     <input class="button duplicate-button" type="button" name="unselect" style="visibility:hidden" title="[TEXT:duplicate]" onclick="duptr();return false;">
                 </td>
                 <td colspan="[footspan]">
@@ -43,7 +43,7 @@
             </tr>[ENDIF readonly] 
         </tbody>
         <tfoot>
-            <tr style="display:none;" onmouseover="droptr(event);" id="tnew[attrid]">
+            <tr style="display:none;"  id="tnew[attrid]">
                 <td class="tools" align="left">
                     <div class="drag-button" title="[TEXT:drag to move]" onmousedown="begindrag(event,this);">&nbsp;&nbsp;</div>
                     <input class="button select-button" name="sel[attrid]" type="radio" title="[TEXT:Select. Use ctrl-&uarr; &darr; to up/down selection]" onmousedown="selecttr(this,this.parentNode.parentNode);">
