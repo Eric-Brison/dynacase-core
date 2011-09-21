@@ -131,7 +131,7 @@ class Session extends DbObj
     
     function setCookieSession($id, $ttl = 0)
     {
-        $turl = parse_url($_SERVER["REQUEST_URI"]);
+        $turl = @parse_url($_SERVER["REQUEST_URI"]);
         if ($turl['path']) {
             if (substr($turl['path'], -1) != '/') {
                 $path = dirname($turl['path']) . '/';
