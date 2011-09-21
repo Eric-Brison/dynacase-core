@@ -52,7 +52,14 @@ p { margin:0; padding:0 }
 .links div.label { clear:both; padding:0px; font-size:100%; }
 .links img {  float:left; margin-right:10px;  }
 
-
+div.manual {
+    margin-top:20px;
+}
+a.manual {
+    background-image: url([IMG:mime-pdf.png|16]);
+    padding-left:17px;
+    background-repeat: no-repeat;
+}
 #footer { 
     text-align:right;
     position:fixed;
