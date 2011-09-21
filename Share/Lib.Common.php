@@ -29,13 +29,25 @@ function print_r2($z, $ret = false)
     print "</PRE>";
     flush();
 }
-
+/**
+ * send a message to system log
+ * @param string $msg message to log
+ * @param int $cut size limit
+ */
 function AddLogMsg($msg, $cut = 80)
 {
     global $action;
     if (isset($action->parent)) $action->parent->AddLogMsg($msg, $cut);
 }
-
+/**
+ * send a message to system log
+ * @param string $functioName
+ */
+function deprecatedFunction($msg = '')
+{
+    global $action;
+    if (isset($action->parent)) $action->parent->log->deprecated("Deprecated : " . $msg);
+}
 function AddWarningMsg($msg)
 {
     global $action;

@@ -338,6 +338,7 @@ class SearchDoc
      */
     public function setDebugMode($debug = true)
     {
+        deprecatedFunction();
         $this->debug = $debug;
     }
     /**
@@ -357,6 +358,7 @@ class SearchDoc
      */
     public function getDebugInfo()
     {
+        deprecatedFunction();
         return $this->debuginfo;
     }
     /**
@@ -538,6 +540,7 @@ class SearchDoc
      */
     public function setValueReturn()
     {
+        deprecatedFunction();
         $this->mode = "TABLE";
     }
     /**

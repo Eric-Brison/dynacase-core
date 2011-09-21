@@ -344,11 +344,12 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      * @param string $orderby field order
      * @param bool $latest if true only latest else all revision
      * @param string $trash (no|only|also) search in trash or not
+     * @deprecated use searchDoc instead
      * @return array/Doc
      */
     function getChildDoc($dbaccess, $dirid, $start = "0", $slice = "ALL", $sqlfilters = array() , $userid = 1, $qtype = "LIST", $fromid = "", $distinct = false, $orderby = "title", $latest = true, $trash = "", &$debug = null, $folderRecursiveLevel = 2, $join = '')
     {
-        
+        deprecatedFunction();
         global $action;
         // query to find child documents
         if (($fromid != "") && (!is_numeric($fromid))) $fromid = getFamIdFromName($dbaccess, $fromid);
