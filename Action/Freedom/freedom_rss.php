@@ -45,14 +45,15 @@ function freedom_rss(&$action)
     $cssf = getparam("CORE_STANDURL") . "$addauth&app=CORE&action=CORE_CSS&session=" . $action->session->id . "&layout=FDL:RSS.CSS";
     $action->lay->set("rsscss", $cssf);
     
+    setlocale(LC_TIME, "C");
     $rsslink = $baseurl . __xmlentities("?sole=Y$addauth&app=FDL&action=FDL_CARD&latest=Y&id=" . $id);
     $action->lay->set("rsslink", $rsslink);
     $action->lay->set("copy", "Copyright 2006 Anakeen");
     $action->lay->set("lang", substr(getParam("CORE_LANG") , 0, 2));
     $action->lay->set("datepub", strftime("%a, %d %b %Y %H:%M:%S %z", time()));
     $action->lay->set("ttl", 60);
-    $action->lay->set("category", "Freedom documents");
-    $action->lay->set("generator", "Freedom version " . $action->parent->getParam("VERSION"));
+    $action->lay->set("category", "Dynacase documents");
+    $action->lay->set("generator", "Dynacase version " . $action->parent->getParam("VERSION"));
     
     $doc = new_Doc($dbaccess, $id);
     $action->lay->set("lastbuild", strftime("%a, %d %b %Y %H:%M:%S %z", $doc->revdate));
@@ -110,10 +111,9 @@ function freedom_rss(&$action)
         }
     }
     // $action->lay->set("rssname", $doc->getTitle()."  -".count($ldoc)."-");
-    $action->lay->set("rssname", $doc->getTitle());
+    $action->lay->set("rssname", __xmlentities($doc->getTitle()));
     
     $lines = array();
-    setlocale(LC_TIME, "C");
     foreach ($ldoc as $kdoc => $vdoc) {
         $zdoc = getDocObject($dbaccess, $vdoc);
         $descr = '';
@@ -124,9 +124,9 @@ function freedom_rss(&$action)
             "descr" => "",
             "revdate" => strftime("%a, %d %b %Y %H:%M:%S %z", $zdoc->revdate) ,
             "id" => $zdoc->id,
-            "category" => getFamTitle($zdoc->fromid) ,
-            "author" => getMailAddr($zdoc->owner, true) ,
-            "rssname" => $doc->getTitle,
+            "category" => $zdoc->fromname,
+            "author" => __xmlentities(getMailAddr($zdoc->owner, true)) ,
+            "rssname" => __xmlentities($doc->getTitle()),
             "rsslink" => $rsslink,
             "report" => $report,
         );
