@@ -72,6 +72,7 @@ class _IUSER extends _USER
      */
     function getOtherGroups()
     {
+        deprecatedFunction();
         if ($this->id == 0) return array();
         
         include_once ("FDL/freedom_util.php");
@@ -645,7 +646,7 @@ class _IUSER extends _USER
             if ($err == "") {
                 $err = $this->modify(true, array(
                     "us_loginfailure"
-                ), true);
+                ) , true);
             }
             $this->enableEditControl();
         }

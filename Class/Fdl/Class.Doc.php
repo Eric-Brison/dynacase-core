@@ -1096,6 +1096,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function canUpdateDoc()
     {
+        deprecatedFunction();
         return $this->canEdit();
     }
     /**
@@ -1109,6 +1110,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function save(&$info = null, $skipConstraint = false)
     {
+        deprecatedFunction();
         $err = '';
         $info = '';
         $info->constraint = '';
@@ -8022,6 +8024,8 @@ create unique index i_docir on doc(initid, revision);";
                         public static function getWhatUserId()
                         {
                             global $action;
+                            deprecatedFunction();
+                            
                             return $action->user->id;
                         }
                         /**

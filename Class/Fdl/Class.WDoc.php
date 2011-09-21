@@ -322,8 +322,8 @@ class WDoc extends Doc
             $oattr->frameid = $aidframe;
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "lmask(D,CT,WF_FAMID):$aid,CT";
-            $oattr->elink='';
-            $oattr->options='autocreated=yes|creation={autoclose:"yes",msk_famid:wf_famid,ba_title:"'._($state).'"}';
+            $oattr->elink = '';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",msk_famid:wf_famid,ba_title:"' . _($state) . '"}';
             $oattr->ordered = $ordered++;
             if ($oattr->isAffected()) $oattr->Modify();
             else $oattr->Add();
@@ -360,8 +360,8 @@ class WDoc extends Doc
             $oattr->link = "";
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "lcvdoc(D,CT,WF_FAMID):$aid,CT";
-            $oattr->elink='';
-            $oattr->options='autocreated=yes|creation={autoclose:"yes",cv_famid:wf_famid,ba_title:"'._($state).'"}';
+            $oattr->elink = '';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",cv_famid:wf_famid,ba_title:"' . _($state) . '"}';
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
@@ -386,8 +386,8 @@ class WDoc extends Doc
             $oattr->frameid = $aidframe;
             $oattr->options = "multiple=yes|autocreated=yes";
             
-            $oattr->elink='';
-            $oattr->options='autocreated=yes|multiple=yes|creation={autoclose:"yes",tmail_family:wf_famid,tmail_workflow:fromid}';
+            $oattr->elink = '';
+            $oattr->options = 'autocreated=yes|multiple=yes|creation={autoclose:"yes",tmail_family:wf_famid,tmail_workflow:fromid}';
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s mail template") , _($state));
             if ($oattr->isAffected()) $oattr->Modify();
@@ -406,8 +406,8 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->id = $aid;
-            $oattr->elink='';
-            $oattr->options='autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"'._($state).'"}';
+            $oattr->elink = '';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($state) . '"}';
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s timer") , _($state));
@@ -427,8 +427,8 @@ class WDoc extends Doc
             $oattr->phpfile = "";
             $oattr->phpfunc = "";
             $oattr->id = $aid;
-            $oattr->elink='';
-            $oattr->options='multiple=yes|autocreated=yes|creation={autoclose:"yes"}';
+            $oattr->elink = '';
+            $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes"}';
             $oattr->frameid = $aidframe;
             $oattr->ordered = $ordered++;
             $oattr->labeltext = sprintf(_("%s wask") , _($state));
@@ -856,6 +856,7 @@ class WDoc extends Doc
      */
     function getAction($state, $def = "")
     {
+        deprecatedFunction();
         return $this->getActivity($state, $def);
     }
     /**
