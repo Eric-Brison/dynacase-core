@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2011-02-07T12:49:43" author="Default Master"
+	name="testLogicalName">
+	<dir xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="dir.xsd" name="TST_ONE" title="test un"
+		revision="0" modification-date="2010-12-14T14:49:40" version="" state="">
+
+		<fr_basic>
+			<ba_title>test un</ba_title>
+		</fr_basic>
+
+	</dir>
+	<dir xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="dir.xsd" name="TST_TWO" title="test deux"
+		revision="0" modification-date="2010-12-14T14:49:40" version="" state="">
+
+		<fr_basic>
+			<ba_title>test deux</ba_title>
+		</fr_basic>
+
+	</dir>
+</documents>
