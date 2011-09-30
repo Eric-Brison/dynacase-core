@@ -1,0 +1,27 @@
+//;héritage;titre;id;class;name
+BEGIN;;Dev 1526;;;DEV_1526
+//
+TYPE;C
+DFLDID;auto
+METHOD;Method.DEV_1526.php
+//
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;constraint;option
+//
+ATTR;FRAME;;FRAME;N;N;frame;;W;N
+ATTR;HTML_T1;FRAME;HTML_T1;N;N;htmltext;10;W;N
+ATTR;ARR;FRAME;ARR;N;N;array;30;W;N
+ATTR;HTML_T2;ARR;HTML_T2;N;N;htmltext;40;W;N
+//
+ATTR;FRAME_2;;FRAME_2;N;N;frame;;W;N
+ATTR;ARR_2;FRAME_2;ARR_2;N;N;array;50;W;N
+ATTR;COL_1;ARR_2;COL_1;N;N;text;60;W;N
+ATTR;COL_2;ARR_2;COL_2;N;N;text;70;W;N
+ATTR;COL_3;ARR_2;COL_3;N;N;text;80;W;N
+ATTR;COL_4;ARR_2;COL_4;N;N;text;90;W;N
+ATTR;COL_5;ARR_2;COL_5;N;N;thesaurus("DEV_1526_TH");;100;W;N
+//
+ATTR;FRAME_3;;FRAME_3;N;N;frame;;W;N
+ATTR;ARR_3;FRAME_3;ARR_3;N;N;array;110;W;N
+ATTR;ARR_3_COL_1;ARR_3;ARR_3_COL_1;N;N;htmltext;120;W;N
+//
+END

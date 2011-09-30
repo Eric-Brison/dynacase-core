@@ -157,4 +157,5 @@ AC_OUTPUT(Makefile \
           dbaccess.php.sample \
           Admin/htaccess \
           htaccess \
-          info.xml )
+          info.xml \
+	  Test/info.xml )

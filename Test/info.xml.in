@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<module name="@PACKAGE@-test" disabled="no" version="@VERSION@" release="@RELEASE@" basecomponent="no">
+  <description>Test case for dynacase-platform.</description>
+
+  <requires>
+    <module name="@PACKAGE@" />
+  </requires>
+
+  <post-install>
+    <process command="programs/update_catalog" />
+  </post-install>
+
+  <post-upgrade>
+    <process command="programs/update_catalog" />
+  </post-upgrade>
+  
+  <changelog> 
+   
+  </changelog>
+
+</module>

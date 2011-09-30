@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2011-02-22T16:31:55" author="Default Master" name="Porte-document">
+<tst_ooolayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_ooolayout.xsd"   name="TST_SIMPLEODT" title="Test Ooo Simple" revision="0" modification-date="2011-02-22T09:12:44" version="" state=""> 
+<frame><tst_title>Test Ooo Simple</tst_title>
+<html_single>&lt;p&gt;Ligne n&amp;deg;1&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ligne n&amp;deg;2 gras&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Ligne n&amp;deg;3 italique&lt;/em&gt;&lt;/p&gt;</html_single>
+<arr><html_multi>&lt;p&gt;Premi&amp;egrave;re rang&amp;eacute;e Ligne n&amp;deg;1&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Rang&amp;eacute;e 1 Ligne&amp;nbsp; n&amp;deg;2 gras&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;em&gt;Rang&amp;eacute;e 1 Ligne n&amp;deg;3 italique&lt;br /&gt;&lt;/em&gt;&lt;/p&gt;</html_multi>
+<text_array>Texte simple rangée n°1</text_array></arr>
+<arr><html_multi>&lt;p&gt;Deuxi&amp;egrave;me rang&amp;eacute;e Ligne n&amp;deg;1&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Rang&amp;eacute;e 2 Ligne n&amp;deg;2 gras&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;em&gt;Rang&amp;eacute;e 2 : Ligne n&amp;deg;3 italique&lt;/em&gt;&lt;/p&gt;</html_multi>
+<text_array>Texte simple rangée n°2</text_array></arr></frame>
+
+</tst_ooolayout>
+<tst_ooolayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_ooolayout.xsd"   name="TST_PUCEODT" title="Test puces" revision="0" modification-date="2011-02-22T16:29:53" version="" state=""> 
+<frame><tst_title>Test puces</tst_title>
+<html_single>&lt;p&gt;Num&amp;eacute;rotation :&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;Un&lt;/li&gt;
+    &lt;li&gt;Deux&lt;/li&gt;
+    &lt;li&gt;Trois&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;</html_single>
+<arr><html_multi>&lt;p&gt;Non num&amp;eacute;rot&amp;eacute;&lt;/p&gt;&lt;ul&gt;    &lt;li&gt;texte 1&lt;/li&gt;    &lt;li&gt;texte 2&lt;/li&gt;    &lt;li&gt;texte 3&lt;/li&gt;&lt;/ul&gt;</html_multi>
+<text_array>puces 1</text_array></arr></frame>
+
+</tst_ooolayout>
+<tst_ooolayout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_ooolayout.xsd"   name="TST_TABLEODT" title="Test tableau" revision="0" modification-date="2011-02-22T16:08:16" version="" state=""> 
+<frame><tst_title>Test tableau</tst_title>
+<html_single>&lt;table cellspacing="1" cellpadding="1" border="1" width="200"&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+            &lt;p&gt;Note Am&amp;eacute;ricaine&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;Notation Europ&amp;eacute;enne&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+            &lt;p&gt;&lt;strong&gt;A&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;Premi&amp;egrave;re note&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;La&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+            &lt;p&gt;&lt;strong&gt;B&lt;/strong&gt;&lt;/p&gt;
+            &lt;p&gt;Deuxi&amp;egrave;me note&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td&gt;Si&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</html_single>
+<arr><html_multi>&lt;h3&gt;Tableaux de fruits&lt;/h3&gt;&lt;table cellspacing="0" cellpadding="4" width="100%"&gt;    &lt;col width="49*" /&gt; 	&lt;col width="150*" /&gt;    &lt;tbody&gt;        &lt;tr valign="TOP"&gt;            &lt;td bgcolor="#ffff99" width="19%" style="border-width: 1px medium 1px 1px; border-style: solid none solid solid; border-color: rgb(0, 0, 0) -moz-use-text-color rgb(0, 0, 0) rgb(0, 0, 0); padding: 0.1cm 0cm 0.1cm 0.1cm;"&gt;            &lt;p&gt;Fruits jaunes&lt;/p&gt;            &lt;/td&gt;            &lt;td bgcolor="#ffff99" width="59%" style="border-width: 1px medium 1px 1px; border-style: solid none solid solid; border-color: rgb(0, 0, 0) -moz-use-text-color rgb(0, 0, 0) rgb(0, 0, 0); padding: 0.1cm 0cm 0.1cm 0.1cm;"&gt;            &lt;p&gt;banane&lt;/p&gt;            &lt;/td&gt;        &lt;/tr&gt;        &lt;tr valign="TOP"&gt;            &lt;td width="19%" style="border-width: medium medium 1px 1px; border-style: none none solid solid; border-color: -moz-use-text-color -moz-use-text-color rgb(0, 0, 0) rgb(0, 0, 0); padding: 0cm 0cm 0.1cm 0.1cm;"&gt;            &lt;p&gt;Fruits rouges&lt;/p&gt;            &lt;/td&gt;            &lt;td width="59%" style="border-width: medium medium 1px 1px; border-style: none none solid solid; border-color: -moz-use-text-color -moz-use-text-color rgb(0, 0, 0) rgb(0, 0, 0); padding: 0cm 0cm 0.1cm 0.1cm;"&gt;            &lt;p&gt;cerise&lt;/p&gt;            &lt;p&gt;framboise&lt;/p&gt;            &lt;p&gt;groseille&lt;/p&gt;            &lt;/td&gt;        &lt;/tr&gt;        &lt;tr valign="TOP"&gt;            &lt;td bgcolor="#ccccff" width="19%" style="border-width: medium medium 1px 1px; border-style: none none solid solid; border-color: -moz-use-text-color -moz-use-text-color rgb(0, 0, 0) rgb(0, 0, 0); padding: 0cm 0cm 0.1cm 0.1cm;"&gt;            &lt;p&gt;&amp;nbsp;Fruits verts&lt;/p&gt;            &lt;/td&gt;            &lt;td bgcolor="#ccccff" width="59%" style="border-width: medium medium 1px 1px; border-style: none none solid solid; border-color: -moz-use-text-color -moz-use-text-color rgb(0, 0, 0) rgb(0, 0, 0); padding: 0cm 0cm 0.1cm 0.1cm;"&gt;            &lt;p&gt;&amp;nbsp;concombre&lt;/p&gt;            &lt;/td&gt;        &lt;/tr&gt;    &lt;/tbody&gt;&lt;/table&gt;</html_multi>
+<text_array xsi:nil="true"/></arr></frame>
+
+</tst_ooolayout>
+</documents>

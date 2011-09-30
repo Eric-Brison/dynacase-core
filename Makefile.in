@@ -75,7 +75,7 @@ $(pubdir)/img-cache:
 	mkdir -p $@
 $(pubdir)/img-cache/.htaccess: htaccess.img-cache $(pubdir)/img-cache
 	cp $< $@
-	
+
 $(pubdir)/$(applib) :
 	mkdir -p $@
 
@@ -101,6 +101,16 @@ $(pubdir)/FREEDOM/freedom.cron: freedom.cron $(pubdir)/FREEDOM
 	cp $< $@
 
 publish: $(pubdir)/context/default/dbaccess.php.sample $(pubdir)/context/default/dbaccess.php.in $(pubdir)/session/.htaccess $(pubdir)/img-cache/.htaccess $(pubdir)/.img-resize/.htaccess $(pubdir)/$(applib) $(pubdir)/img-cache $(pubdir)/$(applib)/FREEDOM.vault $(pubdir)/$(applib)/Layout/editoptcard.xml $(pubdir)/$(applib)/Layout/viewoptcard.xml $(pubdir)/EXTERNALS/fdlsearches.php $(pubdir)/FREEDOM/freedom.cron 
+
+
+webinst-test:
+	make -C Test webinst RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=DCPTEST
+	mv Test/*webinst .
+
+publish-test:
+	make -C Test publish RELEASE=$(RELEASE) PACKAGE=$(PACKAGE)-test VERSION=$(VERSION) appname=DCPTEST
+
+webinst: webinst-test
 
 clean:
 	rm -f *.*~ config.* Makefile configure \
