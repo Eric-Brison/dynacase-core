@@ -176,7 +176,6 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width 
                 if (file_exists($cible)) {
                     // update cache
                     if ($pngpage == 0) {
-                        include_once ("FDL/insertfile.php");
                         createPdf2Png($info->path, $info->id_file);
                     }
                     if ($resample) {
@@ -340,4 +339,21 @@ function rezizelocalimage($img, $size, $basedest)
     }
     return false;
 }
+
+function createPdf2Png($file, $vid)
+{
+    if (file_exists($file) && ($vid > 0)) {
+        $density = 200;
+        $width = 1200;
+        $nbpages = trim(shell_exec(sprintf('grep -c "/Type[[:space:]]*/Page\>" %s', escapeshellarg($file))));
+        $cmd[] = sprintf("/bin/rm -f %s/vid-%d*.png;", DEFAULT_PUBDIR . "/.img-resize", $vid);
+        
+        for ($i = 0; $i < $nbpages; $i++) {
+            $cible = DEFAULT_PUBDIR . "/.img-resize/vid-${vid}-${i}.png";
+            $cmd[] = sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s", $width, $density, $file, $i, $cible);
+        }
+        bgexec($cmd, $result, $err);
+    }
+}
+
 ?>

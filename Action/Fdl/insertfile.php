@@ -71,11 +71,6 @@ function insertfile(&$action)
                 $vf->storage->teng_state = 1;
                 $vf->storage->modify();
                 
-                if ($engine == "pdf") {
-                    //createPdf2Png($infoout->path,$vidout );
-                    
-                }
-                
                 @unlink($filename);
             } else {
                 $vf = newFreeVaultFile($dbaccess);
@@ -133,21 +128,5 @@ function getTEFile($tid, $filename, &$info)
         }
     }
     return $err;
-}
-function createPdf2Png($file, $vid)
-{
-    if (file_exists($file) && ($vid > 0)) {
-        $density = 200;
-        $width = 1200;
-        $nbpages = trim(shell_exec(sprintf('grep -c "/Type[[:space:]]*/Page\>" %s', escapeshellarg($file))));
-        $cmd[] = sprintf("/bin/rm -f %s/vid-%d*.png;", DEFAULT_PUBDIR . "/.img-resize", $vid);
-        
-        for ($i = 0; $i < $nbpages; $i++) {
-            $cible = DEFAULT_PUBDIR . "/.img-resize/vid-${vid}-${i}.png";
-            print $cible;
-            $cmd[] = sprintf("nice convert -interlace plane -thumbnail %d  -density %d %s[%d] %s", $width, $density, $file, $i, $cible);
-        }
-        bgexec($cmd, $result, $err);
-    }
 }
 ?>
