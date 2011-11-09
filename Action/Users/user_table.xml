@@ -22,9 +22,7 @@
     <a href="#" onclick="self.print()">
       <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
       </a>
-    <a id="helpwhat" target="[fhelp]"   href="[CORE_BASEURL]app=CORE&action=HELPVIEW&appname=USERS&sectid=users"  >
-      <img alt="[TEXT:help]" title="[TEXT:help]"border="0" src="[IMG:help.gif]">
-      </a>
+    
   </span></td>
 </tr>
 </table>

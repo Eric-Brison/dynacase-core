@@ -15,7 +15,7 @@
     <option value="W" [selectw]>[TEXT:public card - write access]</option>
   </select>
   </td>
-  <td align="right"><input type="button" value=[TEXT:help] onClick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'helpwhat','[CORE_STANDURL]app=CORE&action=HELPVIEW&appname=USERCARD&sectid=usercard.func.creation');"> </td>
+  <td align="right">&nbsp; </td>
 </tr>
 
 
