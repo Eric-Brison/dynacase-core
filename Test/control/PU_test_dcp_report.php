@@ -10,6 +10,7 @@ require_once 'PU_testcase_dcp_action.php';
 
 class TestReport extends TestCaseDcpAction
 {
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -32,6 +33,11 @@ class TestReport extends TestCaseDcpAction
         $this->resetCurrentParameters();
     }
 
+    public static function tearDownAfterClass()
+    {
+
+        printf( "\nResult data for %s written in file://%s.\n", __CLASS__, self::getOutputDir());
+    }
     /**
      * Test report with default option
      */
@@ -104,14 +110,23 @@ class TestReport extends TestCaseDcpAction
         $content = file_get_contents($csvFile);
         return $content;
     }
-    
+
+    private static function getOutputDir() {
+        $tmpdir=getParam("CORE_TMPDIR", "/tmp/");
+        $subdir=$tmpdir."/PU_Report/";
+        if (! is_dir($subdir)) {
+            mkdir ($subdir);
+        }
+        return $subdir;
+    }
+
     private function saveReport($testName, $content) {
         $testName = str_replace(":", "_", $testName);
-        $csvFile = tempnam($this->testAction->GetParam("CORE_TMPDIR", "/tmp") , sprintf('csv_%s', $testName)).'.csv';
+        $testName = str_replace('\\', "_", $testName);
+        $csvFile = sprintf('%s/csv_%s.csv', $this->getOutputDir() ,$testName);
         $fp = fopen($csvFile, 'w');
         fwrite($fp, $content);
         fclose($fp);
-        echo "Content report save in $csvFile \n";
     }
 }
 ?>
