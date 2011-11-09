@@ -451,7 +451,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 
                 if (($visibility == "R") || ($visibility == "S")) $input.= $idisabled;
                 else if ($doc->usefor != 'D') $input.= " disabled "; // always but default
-                $input.= " class=\"color {pickerOnfocus:false,pickerClosable:true,pickerCloseText:'"._("Close")."',hash:true,required:false}\" ";
+                $input.= " class=\"color {pickerOnfocus:false,pickerClosable:true,pickerCloseText:'" . _("Close") . "',hash:true,required:false}\" ";
                 
                 $input.= " >&nbsp;";
                 if (!(($visibility == "R") || ($visibility == "S"))) {
@@ -631,20 +631,13 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                             $input.= "<input id=\"ic_${linkprefix}$attridk\" type=\"button\" value=\"Z\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendSpecialChoice(event,'${linkprefix}${attridk}'," . $docid . ",'$attrid','$index','$mheight','$mwidth')\">";
                         } else {
                             $ib = "<input id=\"ic_${linkprefix}$attridk\" type=\"button\" value=\"&#133;\"" . " title=\"" . $ititle . "\"" . " onclick=\"sendAutoChoice(event," . $docid . ",this,'${linkprefix}${attridk}','$iopt','$attrid','$index')\">";
-                            if (($oattr->type == "docid") && ($oattr->getOption("multiple") == "yes") && $notd) {
-                                $input = str_replace("<br/>", $ib . "<br/>", $input);
-                            } else $input.= $ib;
+                            $input.= $ib;
                         }
                         // clear button
                         if (($oattr->type == "docid") && ($oattr->getOption("multiple") == "yes")) {
                             $ib = "<input id=\"ix_$attridk\" type=\"button\" value=\"&times;\"" . " title=\"" . _("clear selected inputs") . "\" disabled " . " onclick=\"clearDocIdInputs('$attridk','mdocid_isel_$attridk',this)\">";
                             //$input.="</td><td>";
-                            if ($notd) {
-                                
-                                $input = str_replace("<br/>", $ib, $input);
-                            } else {
-                                $input.= $ib;
-                            }
+                            $input.= $ib;
                         } elseif (preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
                             if ($alone && $oattr->type != "docid") {
                                 $arg = array(
