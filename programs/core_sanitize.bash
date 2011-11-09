@@ -16,7 +16,7 @@ if [ -z "$pgservice_core" ]; then
     exit 1
 fi
 
-PGSERVICE=$pgservice_core psql --set ON_ERROR_STOP=on -f "$WIFF_CONTEXT_ROOT/CORE/core_migration.sql" 2>&1
+cat "$WIFF_CONTEXT_ROOT/CORE/core_database_utils.sql" "$WIFF_CONTEXT_ROOT/CORE/core_migration.sql" | PGSERVICE="$pgservice_core" psql --set ON_ERROR_STOP=on -f - 2>&1
 RET=$?
 if [ $RET -ne 0 ]; then
     echo "Error: SQL error executing '$WIFF_CONTEXT_ROOT/CORE/core_migration.sql': $RET"
