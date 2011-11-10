@@ -17,6 +17,7 @@
  */
 
 include_once ("FDL/import_tar.php");
+include_once ('FDL/Class.XMLSplitter.php');
 /**
  * export global xml file
  * @param Action $action main action
@@ -352,48 +353,14 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
     }
     function splitXmlDocument($xmlfiles, $splitdir)
     {
-        $f = fopen($xmlfiles, "r");
-        if (!$f) return sprintf(_("Xml import : Cannot open file %s") , $xmlfiles);
-        // find first document
-        $findfirst = false;
-        while ((!feof($f)) && (!$findfirst)) {
-            $buffer = fgets($f, 4096);
-            if (strpos($buffer, "<documents") !== false) {
-                $findfirst = true;
-            }
+        try {
+            $xs = new XMLSplitter($splitdir);
+            $xs->split($xmlfiles);
+            $xs->close();
         }
-        while (!feof($f)) {
-            $buffer = fgets($f, 4096);
-            if (preg_match("/<([a-z-_0-9]+)/", $buffer, $reg)) {
-                //print_r2($reg);
-                $top = $reg[1];
-                if (preg_match("/name=[\"|']([a-z-_0-9]+)[\"|']/", $buffer, $reg)) {
-                    $fname = $reg[1];
-                } else if (preg_match("/id=[\"|']([0-9]+)[\"|']/", $buffer, $reg)) {
-                    $fname = $reg[1];
-                } else {
-                    $fname = uniqid("new");
-                }
-                $fxo = $splitdir . '/' . $fname . ".xml";
-                $xo = fopen($fxo, "w");
-                if (!$xo) return sprintf(_("Xml import : Cannot create file %s") , $fxo);
-                fputs($xo, '<?xml version="1.0" encoding="UTF-8"?>' . "\n");
-                fputs($xo, $buffer);
-                $theend = false;
-                while (!feof($f) && (!$theend)) {
-                    $buffer = fgets($f, 4096);
-                    if (strpos($buffer, '</' . $top . '>') !== false) {
-                        $theend = true;
-                    }
-                    fputs($xo, $buffer);
-                }
-                fclose($xo);
-            }
-            if (strpos($buffer, "<documents") !== false) {
-                $findfirst = true;
-            }
+        catch(Exception $e) {
+            return $e->getMessage();
         }
-        fclose($f);
     }
     
     function base64_decodefile($filename)

@@ -21,6 +21,8 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestProfil');
         $suite->addTestSuite('PU\TestTag');
         $suite->addTestSuite('PU\TestReport');
+        $suite->addTestSuite('PU\TestLink');
+        $suite->addTestSuite('PU\TestSplitXmlDocument');
         // ...
  
         return $suite;

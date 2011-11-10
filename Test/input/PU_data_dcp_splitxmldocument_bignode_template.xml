@@ -1,0 +1,10 @@
+<file xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file.xsd"    name="@NAME@" title="@TITLE@" revision="1" modification-date="2011-11-09T13:26:39" version="" state=""> 
+<fi_frdesc><fi_title>@TITLE@</fi_title>
+<fi_titlew>@TITLE@</fi_titlew>
+<fi_subject xsi:nil="true"/>
+<fi_keyword xsi:nil="true"/>
+<fi_description xsi:nil="true"/></fi_frdesc>
+<fi_fr_oformat><fi_file vid="0" mime="application/vnd.oasis.opendocument.text" title="@TITLE@">@DATA@</fi_file>
+</fi_fr_oformat>
+
+</file>
