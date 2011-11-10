@@ -35,8 +35,7 @@ function showmenu(event,o) {
 </div>
 
 
-<div  id="helpmenu" class="popup" style="display:none;font-size : 120%;position:[positionstyle];">
-  <a id="help" target="[fhelp]" href="[CORE_STANDURL]app=CORE&action=HELPVIEW&appname=[APPNAME]" onClick="closeAllMenu()"><img  border="0" height="10" src="[IMG:help.gif]">[TEXT:Help]</a>
+<div  id="helpmenu" class="popup" style="display:none;font-size : 120%;position:[positionstyle];">  
 <a  id="impcsv" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'icsv','[CORE_STANDURL]app=GENERIC&action=GENERIC_EDITIMPORT&famid=[famid]');closeAllMenu()">[TEXT:Import CSV]</a>
 <a  id="folders" href="#" onClick="subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'freedom','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_FRAME&dirid=[topid]&famid=[famid]');closeAllMenu()">[TEXT:Freedom]</a><a class="separator"></a>
 [BLOCK FAMMENU]<a  id="[mid]" href="#" onClick="if (([confirm] && confirm('[tconfirm]')) || (! [confirm])) subwindowm([FDL_VD2SIZE],[FDL_HD2SIZE],'[mtarget]','[murl]');closeAllMenu()">[mtitle]</a>

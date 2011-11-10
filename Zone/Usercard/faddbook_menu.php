@@ -45,7 +45,6 @@ function faddbook_menu(&$action)
     include_once ("FDL/popup_util.php");
     //--------------------- construction of  menu -----------------------
     popupInit("helpmenu", array(
-        'help',
         'impcsv',
         'folders'
     ));
@@ -82,8 +81,7 @@ function faddbook_menu(&$action)
         popupInvisible("helpmenu", 1, 'impcsv');
     }
     
-    popupInvisible("helpmenu", 1, 'help');
-    
+
     popupInvisible("helpmenu", 1, 'folders');
     if ($action->HasPermission("FREEDOM_GED", "FREEDOM")) {
         popupActive("helpmenu", 1, 'folders');
