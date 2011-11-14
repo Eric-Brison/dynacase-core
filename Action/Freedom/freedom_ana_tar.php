@@ -142,7 +142,7 @@ function analyze_tar(&$action, $selfile)
     $action->lay->SetBlockCorresp("ADDEDDOC", "err");
     $action->lay->SetBlockCorresp("ADDEDDOC", "anaclass");
     $action->lay->SetBlockData("ADDEDDOC", $tr);
-    $action->lay->Set("selfile", stripslashes($selfile));
+    $action->lay->Set("selfile", $selfile);
     $action->lay->Set("oselected", $onlycsv ? "checked" : "");
     $action->lay->Set("notoselected", $onlycsv ? "" : "checked");
     $action->lay->Set("tselected", $topfld ? "checked" : "");

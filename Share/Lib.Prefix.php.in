@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Default install directory
  *
@@ -11,7 +16,7 @@
 /**
  */
 global $pubdir;
-$pubdir="@prefix@";
+$pubdir = "@prefix@";
 
 set_include_path(get_include_path() . PATH_SEPARATOR . "$pubdir:$pubdir/WHAT");
 
@@ -19,13 +24,12 @@ ini_set("session.use_cookies", "0");
 ini_set("session.name", "session");
 @ini_set("session.use_trans_sid", "0");
 ini_set("session.cache_limiter", "nocache");
-ini_set("magic_quotes_gpc", "On");
+ini_set("magic_quotes_gpc", "Off");
 ini_set("default_charset", "utf-8");
 ini_set("pcre.backtrack_limit", "10000000");
 ini_set("post_max_size", "80M");
 ini_set("upload_max_filesize", "80M");
 //ini_set("error_reporting", ini_get("error_reporting") & ~E_NOTICE);
-
-define("DEFAULT_PUBDIR",$pubdir);
-define("HTTP_USER","@HTTPUSER@");
+define("DEFAULT_PUBDIR", $pubdir);
+define("HTTP_USER", "@HTTPUSER@");
 ?>

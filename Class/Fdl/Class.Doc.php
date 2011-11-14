@@ -5084,8 +5084,8 @@ create unique index i_docir on doc(initid, revision);";
 
                         case "longtext":
                         case "xml":
-                            if ($entities) $bvalue = nl2br(htmlentities(stripslashes(str_replace("<BR>", "\n", $avalue)) , ENT_COMPAT, "UTF-8"));
-                            else $bvalue = stripslashes(str_replace("<BR>", "\n", $avalue));
+                            if ($entities) $bvalue = nl2br(htmlentities((str_replace("<BR>", "\n", $avalue)) , ENT_COMPAT, "UTF-8"));
+                            else $bvalue = (str_replace("<BR>", "\n", $avalue));
                             $shtmllink = $htmllink ? "true" : "false";
                             $bvalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)", $bvalue);
                             $htmlval = str_replace(array(
@@ -5098,7 +5098,7 @@ create unique index i_docir on doc(initid, revision);";
                             break;
 
                         case "password":
-                            $htmlval = preg_replace("/./", "*", htmlentities(stripslashes($avalue) , ENT_COMPAT, "UTF-8"));
+                            $htmlval = preg_replace("/./", "*", htmlentities(($avalue) , ENT_COMPAT, "UTF-8"));
                             
                             break;
 
@@ -5438,8 +5438,8 @@ create unique index i_docir on doc(initid, revision);";
                             break;
 
                         default:
-                            if ($entities) $avalue = htmlentities(stripslashes($avalue) , ENT_COMPAT, "UTF-8");
-                            else $avalue = stripslashes($avalue);
+                            if ($entities) $avalue = htmlentities(($avalue) , ENT_COMPAT, "UTF-8");
+                            else $avalue = ($avalue);
                             $htmlval = str_replace(array(
                                 "[",
                                 "$"
@@ -5866,7 +5866,7 @@ create unique index i_docir on doc(initid, revision);";
                                 break;
 
                             default:
-                                $htmlval = stripslashes($avalue);
+                                $htmlval = $avalue;
                                 $htmlval = str_replace(array(
                                     "<",
                                     ">",

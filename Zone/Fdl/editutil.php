@@ -58,7 +58,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
     else $classname = "";
     
     if (($visibility == "H") || ($visibility == "R")) {
-        $input = "<input  type=\"hidden\" name=\"" . $attrin . "\" value=\"" . chop(htmlentities(stripslashes($value) , ENT_COMPAT, "UTF-8")) . "\"";
+        $input = "<input  type=\"hidden\" name=\"" . $attrin . "\" value=\"" . chop(htmlentities(($value) , ENT_COMPAT, "UTF-8")) . "\"";
         $input.= " id=\"" . $attridk . "\" ";
         $input.= " > ";
         if (!$notd) $input.= '</td><td class="hiddenAttribute">';
@@ -189,7 +189,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             ) , array(
                 "&#091;",
                 "&#036;"
-            ) , htmlentities(stripslashes(str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8")) . "</textarea>";
+            ) , htmlentities((str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8")) . "</textarea>";
             
             break;
             //----------------------------------------
@@ -546,7 +546,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                     $input = "<textarea $oc $classname rows=2 name=\"" . $attrin . "\" ";
                     $input.= " id=\"" . $attridk . "\" ";
                     if (($visibility == "R") || ($visibility == "S")) $input.= $idisabled;
-                    $input.= " >\n" . htmlentities(stripslashes(str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8") . "</textarea>";
+                    $input.= " >\n" . htmlentities((str_replace("<BR>", "\n", $value)) , ENT_COMPAT, "UTF-8") . "</textarea>";
                 } else {
                     $hvalue = str_replace(array(
                         "[",
@@ -554,7 +554,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                     ) , array(
                         "&#091;",
                         "&#036;"
-                    ) , chop(htmlentities(stripslashes($value) , ENT_COMPAT, "UTF-8")));
+                    ) , chop(htmlentities(($value) , ENT_COMPAT, "UTF-8")));
                     
                     if ($oattr->eformat != "") {
                         // input help with selector

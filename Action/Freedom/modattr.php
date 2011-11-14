@@ -43,7 +43,6 @@ function modattr(&$action)
     $phpconstraint = GetHttpVars("phpconstraint");
     $options = GetHttpVars("options");
     $nattrids = GetHttpVars("nattrid"); // for new attributes
-    
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $bdfreedomattr = new DocAttr($dbaccess);
@@ -104,20 +103,20 @@ function modattr(&$action)
             
             if ($oattr->id == "") print "Error line $k";
             
-            $oattr->labeltext = stripslashes($names[$k]);
+            $oattr->labeltext = ($names[$k]);
             $oattr->title = isset($titles[$k]) ? $titles[$k] : "N";
             $oattr->abstract = isset($abstracts[$k]) ? $abstracts[$k] : "N";
             $oattr->needed = isset($needed[$k]) ? $needed[$k] : "N";
-            $oattr->type = stripslashes($types[$k]);
+            $oattr->type = ($types[$k]);
             $oattr->frameid = isset($frameids[$k]) ? $frameids[$k] : "0";
             $oattr->ordered = isset($orders[$k]) ? $orders[$k] : "999";
             $oattr->visibility = $visibilities[$k];
-            $oattr->link = stripslashes($links[$k]);
+            $oattr->link = ($links[$k]);
             $oattr->phpfile = $phpfiles[$k];
-            $oattr->phpfunc = stripslashes($phpfuncs[$k]);
-            $oattr->elink = stripslashes($elinks[$k]);
-            $oattr->phpconstraint = stripslashes($phpconstraint[$k]);
-            $oattr->options = stripslashes($options[$k]);
+            $oattr->phpfunc = ($phpfuncs[$k]);
+            $oattr->elink = ($elinks[$k]);
+            $oattr->phpconstraint = ($phpconstraint[$k]);
+            $oattr->options = ($options[$k]);
             $oattr->usefor = 'N';
             if (!$oattr->isAffected()) {
                 // print "add $names[$k]<BR>";
