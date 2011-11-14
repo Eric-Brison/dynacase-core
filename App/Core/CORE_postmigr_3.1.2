@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+	echo "Undefined or empty pgservice_core!"
+	exit 1
+fi
+
+PGSERVICE="$pgservice_core" psql -t -c "select 'admin:'||password from users where id=1" | cut -c2- > $wpub/admin/.htpasswd
+echo "copy admin password to admin/ .htpasswd"
