@@ -246,10 +246,10 @@ function setPostVars(&$doc, &$info = array())
                 if (isset($v["__1x_"])) unset($v["__1x_"]);
                 
                 if ((count($v) == 0)) $value = " "; // delete column
-                else $value = array_map("stripslashes", $v);
+                else $value = $v;
                 //$value = array_values($value);
                 
-            } else $value = stripslashes($v);
+            } else $value = $v;
             
             if ($value == "") $doc->SetValue($attrid, DELVALUE);
             else {
@@ -361,7 +361,7 @@ function insert_file(&$doc, $attrid, $strict = false)
             $rt[$k] = " "; // delete reference file
             continue;
         }
-        $userfile['name'] = stripslashes($userfile['name']); // cause gpc_magicquote
+        $userfile['name'] = ($userfile['name']); // cause gpc_magicquote
         if (($userfile['tmp_name'] == "none") || ($userfile['tmp_name'] == "") || ($userfile['size'] == 0)) {
             // if no file specified, keep current file
             if ($userfile['name'] != "") {
@@ -495,8 +495,8 @@ function specialmodcard(&$action, $usefor)
             if (is_array($v)) {
                 if (isset($v["-1"])) unset($v["-1"]);
                 if (isset($v["__1x_"])) unset($v["__1x_"]);
-                $value = stripslashes(implode("\n", str_replace("\n", "<BR>", $v)));
-            } else $value = stripslashes($v);
+                $value = (implode("\n", str_replace("\n", "<BR>", $v)));
+            } else $value = ($v);
             $value = trim($value);
             if ($usefor == "D") $cdoc->setDefValue($attrid, $value);
             else if ($usefor == "Q") $cdoc->setParam($attrid, $value);

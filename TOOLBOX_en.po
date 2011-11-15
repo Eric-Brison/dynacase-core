@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-19 15:56+0200\n"
+"POT-Creation-Date: 2011-11-14 16:51+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1285,7 +1285,15 @@ msgid "Could not find psql command in PATH."
 msgstr ""
 
 #, c-format
+msgid "Could not generate output file name for node '%s'."
+msgstr ""
+
+#, c-format
 msgid "Could not get family id for '%s'."
+msgstr ""
+
+#, c-format
+msgid "Could not open '%s' for reading."
 msgstr ""
 
 #, fuzzy
@@ -1707,6 +1715,10 @@ msgid "Error opening %s file '%s'"
 msgstr ""
 
 msgid "Error sending file"
+msgstr ""
+
+#, c-format
+msgid "Error writing to ouput file '%s'."
 msgstr ""
 
 #, c-format
@@ -2174,6 +2186,10 @@ msgstr ""
 msgid "Internet explorer site"
 msgstr ""
 
+#, c-format
+msgid "Invalid directory '%s'."
+msgstr ""
+
 msgid "Invert all columns"
 msgstr ""
 
@@ -2633,6 +2649,13 @@ msgstr "Delete"
 #, fuzzy
 msgid "Others"
 msgstr "Delete"
+
+#, c-format
+msgid "Output file '%s' already exists."
+msgstr ""
+
+msgid "Output file '%s' is already opened."
+msgstr ""
 
 #, c-format
 msgid "PDF conversion failed for %s"
@@ -3667,6 +3690,10 @@ msgstr ""
 msgid "XML Error: only one <database/> root node allowed."
 msgstr ""
 
+#, c-format
+msgid "XML Root node is not a '%s' node (root node is '%s')."
+msgstr ""
+
 msgid "XML config parsed OK !"
 msgstr ""
 
@@ -3677,15 +3704,15 @@ msgid "XML data (only one xml file)"
 msgstr ""
 
 #, c-format
+msgid "XML error %s at line %d"
+msgstr ""
+
+#, c-format
 msgid "Xml file cannot be created"
 msgstr ""
 
 #, c-format
 msgid "Xml import : Cannot create file %s"
-msgstr ""
-
-#, c-format
-msgid "Xml import : Cannot open file %s"
 msgstr ""
 
 #, c-format

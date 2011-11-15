@@ -41,10 +41,10 @@ class Acl extends DbObj
     var $sqlcreate = '
 create table acl (id int not null,
                   id_application int not null,
-                  name varchar(30) not null,
+                  name text not null,
                   grant_level int not null,
-                  description varchar(100),
-                  group_default varchar(1));
+                  description text,
+                  group_default char);
 create index acl_idx1 on acl(id);
 create index acl_idx2 on acl(id_application);
 create index acl_idx3 on acl(name);

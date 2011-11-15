@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2011-11-14T16:57:38" author="Default Master" name="recherche_Test_Link">
+    <tst_linkdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_linkdoc.xsd"
+                 name="linkOne"
+                 title="Arbre + Feuilles" revision="0" modification-date="2011-11-14T16:57:14" version="" state="">
+        <tst_frame><tst_title>Arbre + Feuilles</tst_title>
+            <tst_longtext>La nature est jolie &lt;en automne&gt;</tst_longtext>
+        </tst_frame>
+
+    </tst_linkdoc>
+    <tst_linkdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_linkdoc.xsd"
+                 name="linkTwo"
+                 title="Joe &amp; Jane" revision="0" modification-date="2011-11-14T16:55:53" version="" state="">
+        <tst_frame><tst_title>Joe &amp; Jane</tst_title>
+            <tst_longtext>Première ligne
+Et deuxième ligne</tst_longtext>
+            <tst_array><tst_coltext>Ligne n°1</tst_coltext>
+                <tst_coldate>01/11/2011</tst_coldate></tst_array>
+            <tst_array><tst_coltext>Ligne n°2</tst_coltext>
+                <tst_coldate>02/11/2011</tst_coldate></tst_array></tst_frame>
+
+    </tst_linkdoc>
+    <tst_linkdoc xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_linkdoc.xsd"
+                 name="linkThree"
+                 title="Test" revision="0" modification-date="2011-11-14T16:54:39" version="" state="">
+        <tst_frame><tst_title>Test</tst_title>
+            <tst_longtext>Long</tst_longtext>
+            <tst_array><tst_coltext>Ligne un</tst_coltext>
+                <tst_coldate>15/11/2011</tst_coldate></tst_array></tst_frame>
+
+    </tst_linkdoc>
+</documents>

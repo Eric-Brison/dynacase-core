@@ -48,7 +48,7 @@ function freedom_view_tar(&$action)
     if ($selfile != "") {
         foreach ($ttar as $k => $v) {
             // need suppress slashes
-            $ttar[$k]["filename"] = stripslashes($v["filename"]);
+            $ttar[$k]["filename"] = $v["filename"];
         }
         $action->lay->setBlockData("SELECTFILE", $ttar);
         
@@ -71,7 +71,7 @@ function freedom_view_tar(&$action)
         )
     ));
     
-    $action->lay->Set("selfile", stripslashes($selfile));
+    $action->lay->Set("selfile", $selfile);
     
     $action->lay->set("huge", ($action->Read("navigator", "") == "EXPLORER") ? "" : "huge");
     

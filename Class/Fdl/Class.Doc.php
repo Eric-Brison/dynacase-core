@@ -4672,7 +4672,7 @@ create unique index i_docir on doc(initid, revision);";
                                         break;
 
                                     case "T": // title
-                                        $urllink.= $this->title;
+                                        $urllink.= rawurlencode($this->title);
                                         break;
 
                                     default:
@@ -4696,11 +4696,9 @@ create unique index i_docir on doc(initid, revision);";
                                     $ovalue = $this->GetValue($sattrid);
                                 }
                                 if ($ovalue == "") return false;
-                                //$urllink.=urlencode($ovalue); // encode because url values must be encoded
-                                //$urllink.=urlencode($ovalue); // not encode cause url will became invalid
-                                if ($ovalue[0] == '[') $urllink.= urlencode($ovalue);
-                                else if (strstr($ovalue, "\n")) $urllink.= str_replace("\n", '\n', $ovalue);
-                                else $urllink.= ($ovalue); // not encode cause url will became invalid
+
+                                if (strstr($ovalue, "\n")) $ovalue = str_replace("\n", '\n', $ovalue);
+                                $urllink.= rawurlencode($ovalue); // need encode
                                 
                             }
                         }
@@ -4715,8 +4713,8 @@ create unique index i_docir on doc(initid, revision);";
                             $i++;
                         }
                         //	  print "attr=$sattrid";
-                        $ovalue = $action->GetParam($sattrid);
-                        $urllink.= $ovalue;
+                        $ovalue = $action->getParam($sattrid);
+                        $urllink.= rawurlencode($ovalue);
                         
                         break;
 
@@ -5084,8 +5082,8 @@ create unique index i_docir on doc(initid, revision);";
 
                         case "longtext":
                         case "xml":
-                            if ($entities) $bvalue = nl2br(htmlentities(stripslashes(str_replace("<BR>", "\n", $avalue)) , ENT_COMPAT, "UTF-8"));
-                            else $bvalue = stripslashes(str_replace("<BR>", "\n", $avalue));
+                            if ($entities) $bvalue = nl2br(htmlentities((str_replace("<BR>", "\n", $avalue)) , ENT_COMPAT, "UTF-8"));
+                            else $bvalue = (str_replace("<BR>", "\n", $avalue));
                             $shtmllink = $htmllink ? "true" : "false";
                             $bvalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)", $bvalue);
                             $htmlval = str_replace(array(
@@ -5098,7 +5096,7 @@ create unique index i_docir on doc(initid, revision);";
                             break;
 
                         case "password":
-                            $htmlval = preg_replace("/./", "*", htmlentities(stripslashes($avalue) , ENT_COMPAT, "UTF-8"));
+                            $htmlval = preg_replace("/./", "*", htmlentities(($avalue) , ENT_COMPAT, "UTF-8"));
                             
                             break;
 
@@ -5438,8 +5436,8 @@ create unique index i_docir on doc(initid, revision);";
                             break;
 
                         default:
-                            if ($entities) $avalue = htmlentities(stripslashes($avalue) , ENT_COMPAT, "UTF-8");
-                            else $avalue = stripslashes($avalue);
+                            if ($entities) $avalue = htmlentities(($avalue) , ENT_COMPAT, "UTF-8");
+                            else $avalue = ($avalue);
                             $htmlval = str_replace(array(
                                 "[",
                                 "$"
@@ -5866,7 +5864,7 @@ create unique index i_docir on doc(initid, revision);";
                                 break;
 
                             default:
-                                $htmlval = stripslashes($avalue);
+                                $htmlval = $avalue;
                                 $htmlval = str_replace(array(
                                     "<",
                                     ">",
