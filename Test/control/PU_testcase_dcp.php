@@ -29,6 +29,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * @var string
      */
     protected  static $user=null;
+
     
     protected function setUp()
     {
@@ -79,6 +80,23 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
             WhatInitialisation();
             setSystemLogin("admin");
         }
+    }
+    /**
+     * Current action
+     * @return \Action
+     */
+    protected function getAction() {
+        global $action;
+        return $action;
+    }
+    /**
+     * Current application
+     * @return \Application
+     */
+    protected function getApplication() {
+        global $action;
+        if ($action) return $action->parent;
+        return null;
     }
     /**
      * return a single value from DB

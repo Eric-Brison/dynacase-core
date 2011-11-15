@@ -4672,7 +4672,7 @@ create unique index i_docir on doc(initid, revision);";
                                         break;
 
                                     case "T": // title
-                                        $urllink.= $this->title;
+                                        $urllink.= rawurlencode($this->title);
                                         break;
 
                                     default:
@@ -4696,11 +4696,9 @@ create unique index i_docir on doc(initid, revision);";
                                     $ovalue = $this->GetValue($sattrid);
                                 }
                                 if ($ovalue == "") return false;
-                                //$urllink.=urlencode($ovalue); // encode because url values must be encoded
-                                //$urllink.=urlencode($ovalue); // not encode cause url will became invalid
-                                if ($ovalue[0] == '[') $urllink.= urlencode($ovalue);
-                                else if (strstr($ovalue, "\n")) $urllink.= str_replace("\n", '\n', $ovalue);
-                                else $urllink.= ($ovalue); // not encode cause url will became invalid
+
+                                if (strstr($ovalue, "\n")) $ovalue = str_replace("\n", '\n', $ovalue);
+                                $urllink.= rawurlencode($ovalue); // need encode
                                 
                             }
                         }
@@ -4715,8 +4713,8 @@ create unique index i_docir on doc(initid, revision);";
                             $i++;
                         }
                         //	  print "attr=$sattrid";
-                        $ovalue = $action->GetParam($sattrid);
-                        $urllink.= $ovalue;
+                        $ovalue = $action->getParam($sattrid);
+                        $urllink.= rawurlencode($ovalue);
                         
                         break;
 
