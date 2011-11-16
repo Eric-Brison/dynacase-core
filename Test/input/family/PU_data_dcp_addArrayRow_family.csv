@@ -1,0 +1,15 @@
+BEGIN;;Test addArrayRow;;;TST_ADDARRAYROW
+//
+TYPE;C
+DFLDID;auto
+//
+//;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink;phpconstraint;options
+ATTR;FRAME;;Frame;N;N;frame;;W;N;;;
+ATTR;TEXT;FRAME;Text;Y;N;text;10;W;N;;;
+ATTR;ARR;FRAME;Array;N;N;array;30;W;N;;;
+ATTR;COL_1;ARR;Col. 1;N;N;text;40;W;N;;;
+ATTR;COL_2;ARR;Col. 2;N;N;text;50;W;N;;;
+ATTR;COL_3;ARR;Col. 3;N;N;text;60;W;N;;;
+ATTR;COL_4;ARR;Col. 4;N;N;text;70;W;N;;;
+//
+END
