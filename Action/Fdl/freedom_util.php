@@ -203,6 +203,15 @@ function new_Doc($dbaccess, $id = '', $latest = false)
  * @param string $fromid identificator of the family document (the number or internal name)
  * @param bool $control if false don't control the user hability to create this kind of document
  * @param bool $defaultvalues  if false not affect default values
+ * @param bool $temporary  if true create document as temporary doc (use Doc::createTmpDoc instead)
+ * @see createTmpDoc to create temporary/working document
+ * @code
+ * $myDoc=createDoc("", "SOCIETY");
+ * if ($myDoc) {
+ *     $myDoc->setValue("si_name", "my company");
+ *     $err=$myDoc->store();
+ * }
+ * @endcode
  * @return Doc may be return false if no hability to create the document
  */
 function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $temporary = false)
