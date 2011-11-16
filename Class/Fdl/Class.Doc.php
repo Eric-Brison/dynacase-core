@@ -2543,6 +2543,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addArrayRow($idAttr, $tv, $index = - 1)
     {
+        $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
             $err = $this->completeArrayRow($idAttr);
