@@ -399,11 +399,6 @@ array(
    "acl"		=>"FREEDOM_READ"
   ) ,
   array( 
-   "name"		=>"FULLSEARCH",
-   "short_name"		=>N_("full text search document"),
-   "acl"		=>"FREEDOM_READ"
-  ) ,
-  array( 
    "name"		=>"EDIT_SEARCH",
    "short_name"		=>N_("search document criteria"),
    "acl"		=>"FREEDOM_READ"

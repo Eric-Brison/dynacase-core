@@ -50,7 +50,7 @@ $action_desc = array (
    "acl"		=>"FGSEARCH_READ",
    "root"		=>"Y"
   )  ,
-  array( 
+  array(
    "name"		=>"FULLDSEARCH",
    "short_name"		=>N_("global search detail results"),
    "layout"   => "fullsearchresult.xml",
