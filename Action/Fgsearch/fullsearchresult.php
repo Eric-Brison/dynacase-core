@@ -28,7 +28,7 @@ include_once ("FDL/freedom_util.php");
  * @global start Http var : page number
  * @global dirid Http var : search identificator
  */
-function fullsearchresult(&$action)
+function fullsearchresult(Action & $action)
 {
     
     $famid = GetHttpVars("famid", 0);
@@ -49,14 +49,6 @@ function fullsearchresult(&$action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     
-    if ($detailsearch) {
-        $search = createTmpDoc($dbaccess, 16);
-        
-        $search->setValue("se_famid", $famid);
-        $search->setValue("se_latest", "yes");
-        $search->lay = $action->lay;
-        $search->editdsearch();
-    }
     $fdoc = new_doc($dbaccess, $famid);
     $nosearch = false;
     if (($keyword == "") && ($dirid == 0) && ($famid == 0)) {

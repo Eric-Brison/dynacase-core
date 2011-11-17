@@ -22,12 +22,19 @@ include_once ("FDL/Class.DocAttribute.php");
  */
 class ADoc
 {
+    /**
+     * @var BasicAttribute[]
+     */
+    public $attr = array();
     
     function __construct()
     {
         $this->attr["FIELD_HIDDENS"] = new FieldSetAttribute("FIELD_HIDDENS", 0, "hiddens");
     }
-    
+    /**
+     * @param string $id attribute identificator
+     * @return BasicAttribute
+     */
     function getAttr($id)
     {
         if (isset($this->attr[$id])) return $this->attr[$id];
@@ -42,6 +49,11 @@ class ADoc
     {
         return array_keys($this->attr);
     }
+    /**
+     * return all the attributes except frame & menu & action
+     * @param bool $onlyopt
+     * @return BasicAttribute[]
+     */
     function GetNormalAttributes($onlyopt = false)
     {
         $tsa = array();
@@ -52,7 +64,11 @@ class ADoc
         }
         return $tsa;
     }
-    
+    /**
+     * return action attributes
+     *
+     * @return  ActionAttribute[]
+     */
     public function GetActionAttributes()
     {
         $tsa = array();
@@ -62,7 +78,10 @@ class ADoc
         }
         return $tsa;
     }
-    
+    /**
+     * return all the family parameters except frame & menu & action
+     * @return BasicAttribute[]
+     */
     function getParamAttributes()
     {
         $tsa = array();
@@ -74,10 +93,14 @@ class ADoc
         }
         return $tsa;
     }
-    
+    /**
+     * get attributes included in an arrary
+     * @return BasicAttribute[]
+     */
     function getArrayElements($id)
     {
         $a = $this->getAttr($id);
+        
         if ($a && ($a->type == "array")) {
             if ($a->usefor != "Q") {
                 $tsa = $this->GetNormalAttributes();

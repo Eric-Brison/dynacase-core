@@ -26,9 +26,12 @@ class BasicAttribute
     public $docid;
     public $labelText;
     public $visibility; // W, R, H, O, M, I
+    public $mvisibility; ///mask visibility
     public $options;
     public $docname;
     public $type; // text, longtext, date, file, ...
+    public $usefor; // = Q if parameters
+    public $fieldSet; // field set object
     
     
     /**
@@ -128,7 +131,7 @@ class BasicAttribute
     /**
      * test if attribute is not a auto created attribute
      *
-     * @return void
+     * @return boolean
      */
     function isReal()
     {
@@ -285,18 +288,16 @@ class NormalAttribute extends BasicAttribute
     public $repeat; // true if is a repeatable attribute
     public $isInTitle;
     public $isInAbstract;
-    public $fieldSet; // field set object
     public $link; // hypertext link
     public $phpfile;
     public $phpfunc;
     public $elink; // extra link
     public $ordered;
     public $phpconstraint; // special constraint set
-    public $usefor; // = Q if parameters
     
     /**
      * Array of separator by level of multiplicity for textual export
-     * @var unknown_type
+     * @var array
      */
     protected $textualValueMultipleSeparator = array(
         0 => "\n",
@@ -325,7 +326,7 @@ class NormalAttribute extends BasicAttribute
      * @param string $usefor Attribute or Parameter
      * @param string $eformat eformat option
      * @param string $options option string
-     * @param unknown_type $docname
+     * @param string $docname
      */
     function __construct($id, $docid, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, &$fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint = "", $usefor = "", $eformat = "", $options = "", $docname = "")
     {
