@@ -55,7 +55,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         $workingXML = $testDir . DIRECTORY_SEPARATOR . $data['xml'];
         $ret = copy($src, $workingXML);
         if ($ret === false) {
-            throw new Exception(sprintf("Could not copy '%s' to '%s'.", $src, $dst));
+            throw new \Exception(sprintf("Could not copy '%s' to '%s'.", $src, $dst));
         }
         if (isset($data['xml_alter'])) {
             $args = array();
@@ -67,7 +67,7 @@ class TestSplitXmlDocument extends TestCaseDcp
                 $data['xml_alter']
             ) , $workingXML, $args);
             if ($ret === false) {
-                throw new Exception($this->errmsg);
+                throw new \Exception($this->errmsg);
             }
         }
         /* check splitXmlDocument() */
@@ -95,15 +95,15 @@ class TestSplitXmlDocument extends TestCaseDcp
     {
         $tmpdir = getParam('CORE_TMPDIR', '/tmp');
         if (!is_dir($tmpdir)) {
-            throw new Exception(sprintf("Invalid directory '%s'.", $tmpdir));
+            throw new \Exception(sprintf("Invalid directory '%s'.", $tmpdir));
         }
         $tmpname = tempnam($tmpdir, 'PU_TEST_DCP_SPLITXMLDOCUMENT');
         if ($tmpname === false) {
-            throw new Exception(sprintf("Could not create temporary file in '%s'.", $tmpdir));
+            throw new \Exception(sprintf("Could not create temporary file in '%s'.", $tmpdir));
         }
         unlink($tmpname);
         if (mkdir($tmpname, 0700) === false) {
-            throw new Exception(sprintf("Could not create directory '%s'."));
+            throw new \Exception(sprintf("Could not create directory '%s'.", $tmpname));
         }
         self::$workDir = $tmpname;
     }
