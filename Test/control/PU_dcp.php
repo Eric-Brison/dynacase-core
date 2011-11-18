@@ -13,14 +13,23 @@ require_once 'WHAT/autoload.php';
 // ...
 class TestSuiteDcp
 {
+    const logFile="/var/tmp/pudcp.log";
     public static function suite()
     {
+        self::configure();
         $suite = new FrameworkDcp('Project');
         
         $suite->addTest(SuiteDcp::suite());
         $suite->addTest(SuiteDcpAttribute::suite());
         // ...
+
+        print "\nerror log in ".self::logFile."\n";
         return $suite;
+    }
+
+    private static function configure() {
+        unlink(self::logFile);
+        ini_set("error_log",self::logFile);
     }
 }
 ?>

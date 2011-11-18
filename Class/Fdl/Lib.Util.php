@@ -184,6 +184,21 @@ function stringDateToUnixTs($isodate, $utc = false)
     return $dt;
 }
 /**
+ * verify if a date seems valid
+ * @param string $date iso, french english date
+ * @return bool true if it ia a valid date
+ */
+function isValidDate($date)
+{
+    if ((strlen($date) > 0) && (strlen($date) < 3)) return false;
+    $c = strtotime($date);
+    if ($c > 0) return true;
+    // replace month/day
+    $date = preg_replace('/(\d+)\/(\d+)\/(.*)/', '${2}/${1}/${3}', $date);
+    $c = strtotime($date);
+    return ($c > 0);
+}
+/**
  * convert string date to iso
  *
  * @param string $isodate YYYY-MM-DD HH:MM

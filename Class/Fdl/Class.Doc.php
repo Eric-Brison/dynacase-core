@@ -2722,13 +2722,14 @@ create unique index i_docir on doc(initid, revision);";
                                         } else if (count($tt) == 3) {
                                             list($hh, $mm, $ss) = $tt;
                                             $tvalues[$kvalue] = sprintf("%02d:%02d:%02d", intval($hh) % 24, intval($mm) % 60, intval($ss) % 60);
-                                        }
+                                        } else return sprintf(_("value [%s] is not a valid time") , $avalue);
                                         break;
 
                                     case 'date':
                                         if (trim($avalue) == "") {
                                             if (!$oattr->repeat) $tvalues[$kvalue] = "";
                                         } else {
+                                            if (!isValidDate($avalue)) return sprintf(_("value [%s] is not a valid date") , $avalue);
                                             
                                             $localeconfig = getLocaleConfig();
                                             if ($localeconfig !== false) {
@@ -2744,6 +2745,7 @@ create unique index i_docir on doc(initid, revision);";
                                         if (trim($avalue) == "") {
                                             if (!$oattr->repeat) $tvalues[$kvalue] = "";
                                         } else {
+                                            if (!isValidDate($avalue)) return sprintf(_("value [%s] is not a valid timestamp") , $avalue);
                                             
                                             $localeconfig = getLocaleConfig();
                                             if ($localeconfig !== false) {

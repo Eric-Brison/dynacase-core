@@ -127,12 +127,12 @@ This can be solved by:<br/>
     <process command="programs/set_param CORE_TMPDIR core_tmpdir" ><label lang="en">Register temporary folder</label></process>
     
     <process command="programs/app_post FDL I" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/fdl.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/workflows.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/searches.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/misc.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/freeaction.ods" />
-    <process command="./wsh.php --api=freedom_import --file=./FDL/helps.csv" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/fdl.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/workflows.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/searches.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/misc.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/freeaction.ods" />
+    <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv" />
     <process command="programs/app_post FDL U" />
     
     <process command="programs/app_post USERCARD I" />
@@ -232,12 +232,12 @@ This can be solved by:<br/>
     
     <process command="programs/pre_migration FDL" />
     <process command="programs/record_application FDL U" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/fdl.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/workflows.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/searches.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/misc.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/freeaction.ods" />
-    <process command="./wsh.php --api=freedom_import --file=./FDL/helps.csv" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/fdl.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/workflows.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/searches.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/misc.ods" />
+	<process command="./wsh.php --api=importDocuments --file=./FDL/freeaction.ods" />
+    <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv" />
     <process command="programs/app_post FDL U" />
     <process command="programs/post_migration FDL" />
 

@@ -26,7 +26,7 @@ include_once ("FDL/Class.DocAttrLDAP.php");
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
 
-function add_import_file(&$action, $fimport)
+function add_import_file(Action &$action, $fimport)
 {
     // -----------------------------------
     $gerr = ""; // general errors
@@ -39,6 +39,9 @@ function add_import_file(&$action, $fimport)
     
     $nbdoc = 0; // number of imported document
     $dbaccess = $action->GetParam("FREEDOM_DB");
+    $structAttr=null;
+    $syntaxAttr=null;
+    $tcolorder=array();
     $cvsfile = "";
     if (seemsODS($fimport)) {
         $cvsfile = ods2csv($fimport);
@@ -251,7 +254,7 @@ function add_import_file(&$action, $fimport)
                     $famicon = $data[1]; // reported to end section
                     $tcr[$nline]["msg"] = sprintf(_("set icon to '%s'") , $data[1]);
                 } else {
-                    $tcr[$nline]["err"] = sprintf(_("icon already set. No update allowed"));
+                    $tcr[$nline]["msg"] = sprintf(_("icon already set. No update allowed"));
                 }
                 break;
                 // -----------------------------------
@@ -276,7 +279,7 @@ function add_import_file(&$action, $fimport)
                         }
                     } else {
                         $fldid = $doc->dfldid;
-                        $tcr[$nline]["err"] = sprintf(_("default folder already set. Auto ignored"));
+                        $tcr[$nline]["msg"] = sprintf(_("default folder already set. Auto ignored"));
                     }
                 } elseif (is_numeric($data[1])) $fldid = $data[1];
                 else $fldid = getIdFromName($dbaccess, $data[1], 2);
@@ -464,10 +467,44 @@ function add_import_file(&$action, $fimport)
                     $tcr[$nline]["err"] = "Error in line $nline: $num cols < 3";
                     break;
                 }
+
                 foreach ($data as $kd => $vd) {
                     $data[$kd] = str_replace(ALTSEPCHAR, $comma, $vd); // restore ; semi-colon
-                    
+
                 }
+                $order = array(
+                    "id",
+                    "setid",
+                    "label",
+                    "istitle",
+                    "isabstract",
+                    "type",
+                    "order",
+                    "visibility",
+                    "isneeded",
+                    "link",
+                    "phpfile",
+                    "phpfunc",
+                    "elink",
+                    "constraint",
+                    "options"
+                );
+                    if (! $structAttr) {
+                      $structAttr = new StructAttribute();
+                        $syntaxAttr=new SyntaxAttribute();
+                    }
+                $cid = 1;
+                foreach ($order as $key) {
+                    $structAttr->$key = trim($data[$cid]);
+                    $cid++;
+                }
+                    if ($data[0] != "MODATTR") {
+                $attrError = $syntaxAttr->analyze($structAttr);
+                    if ($attrError) {
+                        $tcr[$nline]["err"]=sprintf("%s:%s",$structAttr->id,$attrError);
+                        break;
+                    }
+                    }
                 if (trim($data[1]) == '') {
                     $tcr[$nline]["err"].= sprintf(_("attr key is empty"));
                 } else {
@@ -864,7 +901,7 @@ function add_import_file(&$action, $fimport)
                                         $tvfids[] = '';
                                     }
                                 }
-                                $doc->setValue($attr->id, $tvfids);
+                                $err.= $doc->setValue($attr->id, $tvfids);
                             } else {
                                 // one file only
                                 if (preg_match(PREGEXPFILE, $dv, $reg)) {
@@ -879,7 +916,7 @@ function add_import_file(&$action, $fimport)
                                     if ($err != "") {
                                         $tcr["err"] = $err;
                                     } else {
-                                        $doc->setValue($attr->id, $vfid);
+                                        $tcr["err"] = $doc->setValue($attr->id, $vfid);
                                     }
                                 }
                             }
@@ -889,7 +926,8 @@ function add_import_file(&$action, $fimport)
                             else $tcr["values"][$attr->getLabel() ] = dv;
                         }
                     } else {
-                        $doc->setValue($attr->id, $dv);
+                        $errv = $doc->setValue($attr->id, $dv);
+                        if ($errv) $err.= sprintf("%s:%s.", $attr->id, $errv);
                         if ($doc->getOldValue($attr->id) !== false) $tcr["values"][$attr->getLabel() ] = $dv;
                         else $tcr["values"][$attr->getLabel() ] = ("/no change/");
                     }
@@ -1098,7 +1136,7 @@ function add_import_file(&$action, $fimport)
                         $tcr["msg"].= $err . " " . sprintf(_("and add in %s folder ") , $dir->title);
                     }
                 } else if ($ndirid == 0) {
-                    if ($dirid > 0) {
+                    if ($dirid) {
                         
                         $dir = new_Doc($dbaccess, $dirid);
                         if ($dir->isAlive() && method_exists($dir, "AddFile")) {
@@ -1117,7 +1155,8 @@ function add_import_file(&$action, $fimport)
             
             return $tcr;
         }
-        
+
+
         function AddImportLog($msg)
         {
             global $action;

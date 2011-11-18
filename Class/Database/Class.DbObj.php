@@ -73,6 +73,10 @@ class DbObj
      */
     var $isset = false; // indicate if fields has been affected (call affect methods)
     static $savepoint = array();
+    /**
+     * @var bool
+     */
+    public $debug = false;
     //----------------------------------------------------------------------------
     
     /** 
@@ -540,6 +544,7 @@ class DbObj
             $this->dbaccess = getDbAccess();
         }
         $this->dbid = getDbid($this->dbaccess);
+        if ($this->dbid == 0) error_log(__METHOD__ . "null dbid");
         return $this->dbid;
     }
     function exec_query($sql, $lvl = 0)
@@ -623,6 +628,9 @@ class DbObj
         if ($this->msg_err != "") {
             $this->log->warning("exec_query :" . $sql);
             $this->log->warning("PostgreSQL Error : " . $this->msg_err);
+            //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
+            // throw new Exception($this->msg_err);
+            
         }
         
         if ($SQLDEBUG) {
@@ -630,7 +638,13 @@ class DbObj
             $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
                 "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
-                "s" => str_replace(array("from",'where'), array("\nfrom","\nwhere"), $sql) ,
+                "s" => str_replace(array(
+                    "from",
+                    'where'
+                ) , array(
+                    "\nfrom",
+                    "\nwhere"
+                ) , $sql) ,
                 "st" => getDebugStack(1)
             );
         }
@@ -734,18 +748,27 @@ class DbObj
      */
     public function savePoint($point)
     {
+        if (!$this->dbid) {
+            $err = sprintf("dbid is null cannot save point %s", $point);
+            error_log(__METHOD__ . ":$err");
+            return $err;
+        }
+        if ($this->debug) error_log('[DBG]' . 'BEFORE' . __METHOD__ . $this->dbid);
         $err = '';
         if (!self::$savepoint[$this->dbid]) {
             self::$savepoint[$this->dbid] = array(
                 $point
             );
             $err = $this->exec_query("begin");
+            if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(1) $point");
         } else {
             self::$savepoint[$this->dbid][] = $point;
+            if ($this->debug) error_log('[DBG]' . __METHOD__ . "add(2) $point");
         }
         if (!$err) {
             $err = $this->exec_query(sprintf('savepoint "%s"', pg_escape_string($point)));
         }
+        if ($this->debug) error_log('[DBG]' . 'AFTER' . __METHOD__ . $this->dbid . ":$point:" . implode(',', self::$savepoint[$this->dbid]));
         if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
@@ -756,6 +779,11 @@ class DbObj
      */
     public function rollbackPoint($point)
     {
+        if (!$this->dbid) {
+            $err = sprintf("dbid is null cannot save point %s", $point);
+            error_log(__METHOD__ . ":$err");
+            return $err;
+        }
         $lastPoint = array_search($point, self::$savepoint[$this->dbid]);
         if ($lastPoint !== false) {
             self::$savepoint[$this->dbid] = array_slice(self::$savepoint[$this->dbid], 0, $lastPoint);
@@ -769,6 +797,7 @@ class DbObj
             $err = sprintf("cannot rollback unsaved point : %s", $point);
         }
         
+        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$this->dbid]));
         if ($err) error_log(__METHOD__ . ":$err");
         return $err;
     }
@@ -779,6 +808,13 @@ class DbObj
      */
     public function commitPoint($point)
     {
+        if (!$this->dbid) {
+            $err = sprintf("dbid is null cannot save point %s", $point);
+            error_log(__METHOD__ . ":$err");
+            return $err;
+        }
+        if ($this->debug) error_log('[DBG]' . __METHOD__ . ":$point:" . implode(',', self::$savepoint[$this->dbid]));
+        
         $lastPoint = array_search($point, self::$savepoint[$this->dbid]);
         
         if ($lastPoint !== false) {
