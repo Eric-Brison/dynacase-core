@@ -46,15 +46,19 @@ function user(&$action)
             $u = new User();
             if ($u->setLoginname($login)) {
                 include_once ('WHAT/Class.htmlAuthenticator.php');
-                // hard code freedom for the moment
-                $auth = new htmlAuthenticator(getAuthType() , 'freedom');
-                $_POST[$auth->parms{'username'}] = $login;
-                $_POST[$auth->parms{'password'}] = $password;
-                if ($auth->checkAuthentication() != Authenticator::AUTH_OK) {
-                    $out->error = sprintf(_("authentication failed"));
-                } else {
-                    $ou = new Fdl_User($u);
-                    $out = $ou->getUser();
+                
+                $authProviderList = getAuthProviderList();
+                foreach ($authProviderList as $provider) {
+                    $auth = new htmlAuthenticator(getAuthType() , $provider);
+                    $_POST[$auth->parms{'username'}] = $login;
+                    $_POST[$auth->parms{'password'}] = $password;
+                    if ($auth->checkAuthentication() != Authenticator::AUTH_OK) {
+                        $out->error = sprintf(_("authentication failed for %s") , $login);
+                    } else {
+                        $ou = new Fdl_User($u);
+                        $out = $ou->getUser();
+                        break;
+                    }
                 }
             } else {
                 $out->error = sprintf(_("user %s not found") , $login);
