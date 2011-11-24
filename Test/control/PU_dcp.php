@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 
 namespace PU;
 /**
@@ -13,7 +18,7 @@ require_once 'WHAT/autoload.php';
 // ...
 class TestSuiteDcp
 {
-    const logFile="/var/tmp/pudcp.log";
+    const logFile = "/var/tmp/pudcp.log";
     public static function suite()
     {
         self::configure();
@@ -22,14 +27,14 @@ class TestSuiteDcp
         $suite->addTest(SuiteDcp::suite());
         $suite->addTest(SuiteDcpAttribute::suite());
         // ...
-
-        print "\nerror log in ".self::logFile."\n";
+        print "\nerror log in " . self::logFile . "\n";
         return $suite;
     }
-
-    private static function configure() {
-        unlink(self::logFile);
-        ini_set("error_log",self::logFile);
+    
+    private static function configure()
+    {
+        @unlink(self::logFile);
+        ini_set("error_log", self::logFile);
     }
 }
 ?>
