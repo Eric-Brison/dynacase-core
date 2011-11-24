@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 class SyntaxAttribute
 {
@@ -46,6 +46,16 @@ class SyntaxAttribute
         "docid",
         "htmltext"
     );
+    
+    private $visibilities = array(
+        'I',
+        'H',
+        'R',
+        'W',
+        'O',
+        'S',
+        'U'
+    );
     /**
      * a struct is
      * @param StructAttribute $attributeStruct
@@ -66,6 +76,8 @@ class SyntaxAttribute
         $this->syntaxId();
         $this->syntaxSet();
         $this->syntaxType();
+        $this->syntaxOrder();
+        $this->syntaxVisibility();
         
         return $this->getResultError();
     }
@@ -103,13 +115,28 @@ class SyntaxAttribute
      */
     public function syntaxOrder()
     {
-        $id = $this->setKey('order');
-        if ($this->isNodeNoNeedOrder()) {
+        $order = $this->setKey('order');
+        if ($this->isNodeNeedOrder()) {
+            
+            if (empty($order)) {
+                $this->errKey('is empty');
+            } elseif (!is_numeric($order)) {
+                $this->errKey(sprintf('%s not a number', $order));
+            }
         }
-        if (empty($id)) {
+    }
+    /**
+     * test syntax order
+     * must be an integer
+     * @return void
+     */
+    public function syntaxVisibility()
+    {
+        $vis = $this->setKey('visibility');
+        if (empty($vis)) {
             $this->errKey('is empty');
-        } elseif (!is_integer($id)) {
-            $this->errKey('not a number');
+        } elseif (!in_array($vis, $this->visibilities)) {
+            $this->errKey(sprintf('%s is not valid', $vis));
         }
     }
     /**
@@ -119,17 +146,17 @@ class SyntaxAttribute
     public function syntaxSet()
     {
         $key = $this->setKey('setid');
-        if ($this->isNodeNoNeedSet()) {
-            if ($key) {
-                if (strlen($key) > 63) {
-                    $this->errKey('too long (max 64 characters)');
-                }
-            }
-        } else {
+        if ($this->isNodeNeedSet()) {
             if (empty($key)) {
                 $this->errKey('is empty');
             } elseif (strlen($key) > 63) {
                 $this->errKey('too long (max 64 characters)');
+            }
+        } else {
+            if ($key) {
+                if (strlen($key) > 63) {
+                    $this->errKey('too long (max 64 characters)');
+                }
             }
         }
     }
@@ -162,16 +189,16 @@ class SyntaxAttribute
         }
         return $type;
     }
-    private function isNodeNoNeedSet()
+    private function isNodeNeedSet()
     {
         $type = $this->getType();
-        return (($type == "tab") || ($type == "frame") || ($type == "menu") || ($type == "action"));
+        return (($type != "tab") && ($type != "frame") && ($type != "menu") && ($type != "action"));
     }
     
-    private function isNodeNoNeedOrder()
+    private function isNodeNeedOrder()
     {
         $type = $this->getType();
-        return (($type == "tab") || ($type == "frame"));
+        return (($type != "tab") && ($type != "frame"));
     }
     
     private function setKey($key)
