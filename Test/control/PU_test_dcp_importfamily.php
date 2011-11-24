@@ -18,7 +18,7 @@ class TestImportFamily extends TestCaseDcpDocument
 {
     protected static $outputDir;
     /**
-     * @dataProvider dataFamilyFiles
+     * @dataProvider dataBadFamilyFiles
      */
     public function testErrorImportFamily($familyFile, $expectedError)
     {
@@ -31,8 +31,29 @@ class TestImportFamily extends TestCaseDcpDocument
         $this->assertNotEmpty($err, "no import error detected");
         $this->assertContains($expectedError, $err, sprintf("not the correct error reporting"));
     }
-    
-    public function dataFamilyFiles()
+
+    /**
+     * @dataProvider dataGoodFamilyFiles
+     */
+    public function testSqlViewFamily($familyFile)
+    {
+        $err='';
+        try {
+            $this->importDocument($familyFile);
+        }
+        catch(\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertEmpty($err, "import error detected");
+        $doc=createDoc("","TST_GOODFAMIMP1");
+        $this->assertTrue(is_object($doc));
+        $err=$doc->store();
+        $this->assertEmpty($err, "cannot create good doc");
+        $id=$this->_DBGetValue("select id from family.tst_goodfamimp1 limit 1");
+
+        $this->assertGreaterThan(1000, $id, "not found by view");
+    }
+    public function dataBadFamilyFiles()
     {
         return array(
             // test attribute too long
@@ -45,6 +66,16 @@ class TestImportFamily extends TestCaseDcpDocument
                 "PU_data_dcp_badfamily2.ods",
                 "Method.NotFound"
             )
+        );
+    }
+
+    public function dataGoodFamilyFiles()
+    {
+        return array(
+            // test attribute too long
+            array(
+                "PU_data_dcp_goodfamily1.ods"
+            ) 
         );
     }
 }

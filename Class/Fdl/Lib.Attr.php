@@ -394,6 +394,7 @@ function AttrToPhp($dbaccess, $tdoc)
         $row = $doc->fetch_array(0, PGSQL_ASSOC);
         $relid = $row["oid"]; // pg id of the table
         // create view
+
         if ($docname != "") {
             $docname = strtolower($docname);
             $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
@@ -569,17 +570,15 @@ function AttrToPhp($dbaccess, $tdoc)
     // refresh PHP Class & Postgres Table Definition
     function refreshPhpPgDoc($dbaccess, $docid)
     {
-        
         $query = new QueryDb($dbaccess, "DocFam");
         $query->AddQuery("doctype='C'");
         $query->AddQuery("id=$docid");
         $table1 = $query->Query(0, 0, "TABLE");
-        
         if ($query->nb > 0) {
             $v = $table1[0];
             $df = createDocFile($dbaccess, $v);
             
-            $msg = PgUpdateFamilly($dbaccess, $v["id"]);
+            $msg = PgUpdateFamilly($dbaccess, $v["id"], $v["name"]);
             //------------------------------
             // see if workflow
             AddLogMsg($msg);
