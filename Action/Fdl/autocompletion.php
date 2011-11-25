@@ -149,13 +149,13 @@ function autocompletion(&$action)
                 $oattr->phpfile = "fdl.php";
             } else {
                 //getDeclaration(D,ACOM_ENT_ID,ILINK_ACOM_DEPOTDECL):ACOM_DEPOTDECL,ILINK_ACOM_DEPOTDECL
-                $phpfunc = preg_replace('/([\s|,|:])CT([\s|,|\)]|$)/', '$1' . $linkprefix . $aname . '$2', $oattr->phpfunc);
+                $phpfunc = preg_replace('/([\s|,|:|\(])CT([\s|,|\)]|$)/', '$1' . $linkprefix . $aname . '$2', $oattr->phpfunc);
                 $phpfunc = str_replace("):$aname,", "):${cible}${aname},", $phpfunc);
                 $phpfunc = str_replace("):" . strtoupper($aname) . ",", "):${cible}${aname},", $phpfunc);
                 $oattr->phpfunc = $phpfunc;
             }
         }
-        $oattr->phpfunc = preg_replace('/([\s|,|:])CT\[([^]]+)\]/e', "'\\1'.$linkprefix.strtolower('\\2')", $oattr->phpfunc);
+        $oattr->phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.$linkprefix.strtolower('\\2')", $oattr->phpfunc);
         
         $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval, true, $index);
         if (!is_array($res)) {
