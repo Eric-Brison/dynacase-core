@@ -52,6 +52,33 @@ class TestImportFamily extends TestCaseDcpDocument
         
         $this->assertGreaterThan(1000, $id, "not found by view");
     }
+
+
+    /**
+     * @dataProvider dataBadUpdateFamilyFiles
+     */
+    public function testBadUpdateFamily($installFamilyFile, $updateFamilyFile, $expectedError)
+    {
+        $this->importDocument($installFamilyFile);
+        try {
+            $this->importDocument($updateFamilyFile);
+        }
+        catch(\Exception $e) {
+            $err = $e->getMessage();
+        }
+        $this->assertNotEmpty($err, "no update error detected");
+        $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+    }
+
+    public function dataBadUpdateFamilyFiles() {
+        return array(
+            // test attribute too long
+            array(
+                "PU_data_dcp_initfamily1.ods",
+                "PU_data_dcp_updatefamily1.ods",
+                "TST_TITLE"
+            ));
+    }
     public function dataBadFamilyFiles()
     {
         return array(

@@ -51,7 +51,7 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
 <table width="100%" height="100%" >
 <tr><TD align="right" width="50%"><img style="border:none;" src="Images/freeeye.png"></td>
     <td align="left">  
-       <a class="abut"  href="checklist.php"><span class="bigbutton">Check List</span></a><br>
+       <a class="abut"  href="checklist.php"><span class="bigbutton">Check Database</span></a><br>
        <a class="abut"  href="phpinfo.php"><span class="bigbutton">PHP info</span></a><br>
        <a class="abut"  href="../lib/examples/perfotest.html"><span class="bigbutton">Performance test</span></a><br>
 <?php

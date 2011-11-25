@@ -17,7 +17,6 @@ class excludeSomeFiles extends FilterIterator
         if (substr($c, -4) != '.php') return false;
         $exclusionPatterns = array(
             './.img-resize/',
-            './admin/',
             './context/',
             './fckeditor/',
             './jscalendar/',

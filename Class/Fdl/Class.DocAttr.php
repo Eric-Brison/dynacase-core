@@ -62,6 +62,24 @@ class DocAttr extends DbObj
         "labeltext"
     );
     
+    public $id;
+    public $docid;
+    public $frameid;
+    public $labeltext;
+    public $title;
+    public $abstract;
+    public $type;
+    public $ordered;
+    public $visibility; // W, R, H, O, M, C
+    public $needed;
+    public $link;
+    public $phpfile;
+    public $phpfunc;
+    public $elink;
+    public $phpconstraint;
+    public $usefor;
+    public $options;
+    
     var $sqlcreate = "
 create table docattr ( id  name,
                      docid int not null,

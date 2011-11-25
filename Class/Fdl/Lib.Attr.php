@@ -429,9 +429,7 @@ function AttrToPhp($dbaccess, $tdoc)
         }
         // -----------------------------
         // add column attribute
-        $classname = "Doc" . $docid;
-        include_once ("FDL$GEN/Class.$classname.php");
-        $cdoc = new $classname($dbaccess);
+      
         
         $qattr = new QueryDb($dbaccess, "DocAttr");
         $qattr->AddQuery("docid=" . $docid);
@@ -518,13 +516,7 @@ function AttrToPhp($dbaccess, $tdoc)
             }
         }
         
-        $ncdoc = new_Doc($dbaccess, $docid);
-        if (isset($ncdoc->attributes->fromids) && (in_array(2, $ncdoc->attributes->fromids)) && ($ncdoc->usefor == "N")) {
-            // its a folder
-            $ncdoc->usefor = "F";
-            print "\nchange usefor to F\n";
-            $ncdoc->modify();
-        }
+        
         
         return $msg;
     }

@@ -169,7 +169,10 @@ function add_import_file(Action & $action, $fimport)
                         global $tFamIdName;
                         $msg = refreshPhpPgDoc($dbaccess, $doc->id);
                         if (isset($tFamIdName)) $tFamIdName[$doc->name] = $doc->id; // refresh getFamIdFromName for multiple family import
-                        
+                        $checkCr = checkDb::verifyDbFamily($doc->id);
+                        if (count($checkCr) > 0) {
+                            $tcr[$nline]["err"].= implode(",", $checkCr);
+                        }
                     }
                     
                     if ((!$analyze) && ($famicon != "")) $doc->changeIcon($famicon);
@@ -527,49 +530,61 @@ function add_import_file(Action & $action, $fimport)
                     $tcr[$nline]["err"].= sprintf(_("attr key is empty"));
                 } else {
                     $modattr = ($data[0] == "MODATTR");
-                    if ($data[0] == "MODATTR") $data[1] = ':' . $data[1]; // to mark the modified attribute
-                    $tcr[$nline]["msg"].= sprintf(_("update %s attribute") , $data[1]);
+                    if ($data[0] == "MODATTR") $structAttr->id = ':' . $structAttr->id; // to mark the modified
+                    $tcr[$nline]["msg"].= sprintf(_("update %s attribute") , $structAttr->id);
                     if ($analyze) continue;
                     $oattr = new DocAttr($dbaccess, array(
                         $doc->id,
-                        strtolower($data[1])
+                        strtolower($structAttr->id)
                     ));
-                    
-                    if ($data[0] == "PARAM") $oattr->usefor = 'Q'; // parameters
-                    elseif ($data[0] == "OPTION") $oattr->usefor = 'O'; // options
-                    $oattr->docid = $doc->id;
-                    $oattr->id = trim(strtolower($data[1]));
-                    
-                    $oattr->frameid = trim(strtolower($data[2]));
-                    $oattr->labeltext = $data[3];
-                    
-                    $oattr->title = ($data[4] == "Y") ? "Y" : "N";
-                    
-                    $oattr->abstract = ($data[5] == "Y") ? "Y" : "N";
-                    if ($modattr) $oattr->abstract = $data[5];
-                    
-                    $oattr->type = trim($data[6]);
-                    
-                    $oattr->ordered = $data[7];
-                    $oattr->visibility = $data[8];
-                    $oattr->needed = ($data[9] == "Y") ? "Y" : "N";
-                    if ($modattr) {
-                        $oattr->title = $data[4];
-                        $oattr->needed = $data[9];
+                    if ($data[0] != "PARAM") {
+                        // modification of type is forbidden
+                        if ($oattr->isAffected()) {
+                            $curType = trim(strtok($oattr->type, '('));
+                            $newType = trim(strtok($structAttr->type, '('));
+                            if ($curType != $newType) {
+                                $tcr[$nline]["err"].= sprintf("cannot change attribute %s type definition from %s to %s", $structAttr->id, $curType, $newType);
+                            }
+                        }
                     }
-                    $oattr->link = $data[10];
-                    $oattr->phpfile = $data[11];
-                    if (isset($data[13])) $oattr->elink = $data[13];
-                    else $oattr->elink = '';
-                    if (isset($data[14])) $oattr->phpconstraint = $data[14];
-                    else $oattr->phpconstraint = '';
-                    if (isset($data[15])) $oattr->options = $data[15];
-                    else $oattr->options = '';
-                    if (((($data[11] != "") && ($data[11] != "-")) || (($data[6] != "enum") && ($data[6] != "enumlist"))) || ($oattr->phpfunc == "") || (strpos($oattr->options, "system=yes") !== false)) $oattr->phpfunc = $data[12]; // don(t modify  enum possibilities
-                    if ($oattr->isAffected()) $err = $oattr->Modify();
-                    else $err = $oattr->Add();
                     
-                    $tcr[$nline]["err"].= $err;
+                    if (!$tcr[$nline]["err"]) {
+                        if ($data[0] == "PARAM") $oattr->usefor = 'Q'; // parameters
+                        elseif ($data[0] == "OPTION") $oattr->usefor = 'O'; // options
+                        $oattr->docid = $doc->id;
+                        $oattr->id = trim(strtolower($structAttr->id));
+                        
+                        $oattr->frameid = trim(strtolower($structAttr->setid));
+                        $oattr->labeltext = $structAttr->label;
+                        
+                        $oattr->title = ($structAttr->istitle == "Y") ? "Y" : "N";
+                        
+                        $oattr->abstract = ($structAttr->isabstract == "Y") ? "Y" : "N";
+                        if ($modattr) $oattr->abstract = $structAttr->isabstract;
+                        
+                        $oattr->type = trim($structAttr->type);
+                        
+                        $oattr->ordered = $structAttr->order;
+                        $oattr->visibility = $structAttr->visibility;
+                        $oattr->needed = ($structAttr->isneeded == "Y") ? "Y" : "N";
+                        if ($modattr) {
+                            $oattr->title = $structAttr->istitle;
+                            $oattr->needed = $structAttr->isneeded;
+                        }
+                        $oattr->link = $structAttr->link;
+                        $oattr->phpfile = $structAttr->phpfile;
+                        if ($structAttr->elink) $oattr->elink = $structAttr->elink;
+                        else $oattr->elink = '';
+                        if ($structAttr->constraint) $oattr->phpconstraint = $structAttr->constraint;
+                        else $oattr->phpconstraint = '';
+                        if ($structAttr->options) $oattr->options = $structAttr->options;
+                        else $oattr->options = '';
+                        if (((($structAttr->phpfile != "") && ($structAttr->phpfile != "-")) || (($structAttr->type != "enum") && ($structAttr->type != "enumlist"))) || ($oattr->phpfunc == "") || (strpos($oattr->options, "system=yes") !== false)) $oattr->phpfunc = $structAttr->phpfunc; // don(t modify  enum possibilities
+                        if ($oattr->isAffected()) $err = $oattr->Modify();
+                        else $err = $oattr->Add();
+                        
+                        $tcr[$nline]["err"].= $err;
+                    }
                 }
                 break;
 
