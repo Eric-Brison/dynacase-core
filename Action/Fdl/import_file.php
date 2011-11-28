@@ -537,20 +537,28 @@ function add_import_file(Action & $action, $fimport)
                         $doc->id,
                         strtolower($structAttr->id)
                     ));
-                    if ($data[0] != "PARAM") {
+                    
+                    if ($oattr->isAffected()) {
                         // modification of type is forbidden
-                        if ($oattr->isAffected()) {
-                            $curType = trim(strtok($oattr->type, '('));
-                            $newType = trim(strtok($structAttr->type, '('));
-                            if ($curType != $newType) {
-                                $tcr[$nline]["err"].= sprintf("cannot change attribute %s type definition from %s to %s", $structAttr->id, $curType, $newType);
-                            }
+                        $curType = trim(strtok($oattr->type, '('));
+                        $newType = trim(strtok($structAttr->type, '('));
+                        if ($curType != $newType) {
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute %s type definition from %s to %s", $structAttr->id, $curType, $newType);
+                        }
+                        // modification of target is forbidden
+                        if (($data[0] == "PARAM") && ($oattr->usefor != 'Q')) {
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to PARAM for %s",
+                                                          $structAttr->id);
+                        } elseif (($data[0] == "ATTR") && ($oattr->usefor == 'Q')) {
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to ATTR for %s",
+                                                          $structAttr->id);
                         }
                     }
                     
                     if (!$tcr[$nline]["err"]) {
                         if ($data[0] == "PARAM") $oattr->usefor = 'Q'; // parameters
                         elseif ($data[0] == "OPTION") $oattr->usefor = 'O'; // options
+                        else $oattr->usefor = 'N'; // normal
                         $oattr->docid = $doc->id;
                         $oattr->id = trim(strtolower($structAttr->id));
                         

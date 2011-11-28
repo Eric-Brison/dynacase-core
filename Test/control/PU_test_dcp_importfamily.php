@@ -77,6 +77,14 @@ class TestImportFamily extends TestCaseDcpDocument
                 "PU_data_dcp_initfamily1.ods",
                 "PU_data_dcp_updatefamily1.ods",
                 "TST_TITLE"
+            ),array(
+                "PU_data_dcp_initfamily2.ods",
+                "PU_data_dcp_updatefamily2.ods",
+                "TST_TITLE"
+            ),array(
+                "PU_data_dcp_initfamily2.ods",
+                "PU_data_dcp_updatefamily2.ods",
+                "TST_PARAM"
             ));
     }
     public function dataBadFamilyFiles()
