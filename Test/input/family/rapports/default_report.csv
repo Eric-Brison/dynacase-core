@@ -1,4 +1,4 @@
-titre;"color ";"date ";docid;docid_multiple;"double ";"enum ";"htmltext ";"integer ";"longtext ";"money ";"text ";"time ";"timestamp ";"color _array";"date _array";"docid _array";"docid_multiple _array";"double _array";"enum _array";"htmltext _array";"integer _array";"longtext _array";"money _array";"text _array";"timestamp _array";"time _array"
+titre;color;date;docid;docid_multiple;double;enum;htmltext;integer;longtext;money;text;time;timestamp;"color _array";"date _array";"docid _array";"docid_multiple _array";"double _array";"enum _array";"htmltext _array";"integer _array";"longtext _array";"money _array";"text _array";"timestamp _array";"time _array"
 ééééèèèttt;;2011-09-15;ééééèèèttt;"ééééèèèttt, test2";12.25;"Iles Cocos, Centre-Afrique, Congo, Suisse, Côte d'Ivoire, Iles Cook, Chili";jjhgh;1212;gfgdgfd;12.25;ééééèèèttt;12:00:00;"2011-09-29 18:01:00";"#FFD970
 #75FFFF";"2011-09-16
 2011-09-30";"ééééèèèttt
