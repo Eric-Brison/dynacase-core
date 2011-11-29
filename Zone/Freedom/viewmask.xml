@@ -40,7 +40,6 @@
 </style>
 <table  width="100%" cellspacing="0">
 <tbody>
-[ZONE FDL:VIEWFRAME?frameid=MSK_FR_REST]
 
 
 <tr >
@@ -65,6 +64,7 @@
 [ENDBLOCK MASK]
 </table>
 </td></tr>
+[ZONE FDL:VIEWFRAME?frameid=MSK_FR_REST]
 </tbody>
 
 </table>

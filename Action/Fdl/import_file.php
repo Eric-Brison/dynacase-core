@@ -26,7 +26,7 @@ include_once ("FDL/Class.DocAttrLDAP.php");
 define("ALTSEPCHAR", ' --- ');
 define("SEPCHAR", ';');
 
-function add_import_file(&$action, $fimport)
+function add_import_file(Action & $action, $fimport)
 {
     // -----------------------------------
     $gerr = ""; // general errors
@@ -39,6 +39,9 @@ function add_import_file(&$action, $fimport)
     
     $nbdoc = 0; // number of imported document
     $dbaccess = $action->GetParam("FREEDOM_DB");
+    $structAttr = null;
+    $syntaxAttr = null;
+    $tcolorder = array();
     $cvsfile = "";
     if (seemsODS($fimport)) {
         $cvsfile = ods2csv($fimport);
@@ -73,52 +76,59 @@ function add_import_file(&$action, $fimport)
         );
         $tcr[$nline]["title"] = substr($data[0], 0, 10);
         $data[0] = trim($data[0]);
+        $beginLine = 0;
         switch ($data[0]) {
                 // -----------------------------------
                 
             case "BEGIN":
                 $err = "";
                 // search from name or from id
-                if (($data[3] == "") || ($data[3] == "-")) $doc = new DocFam($dbaccess, getFamIdFromName($dbaccess, $data[5]) , '', 0, false);
-                else $doc = new DocFam($dbaccess, $data[3], '', 0, false);
-                $famicon = "";
-                
-                if (!$doc->isAffected()) {
+                try {
+                    if (($data[3] == "") || ($data[3] == "-")) $doc = new DocFam($dbaccess, getFamIdFromName($dbaccess, $data[5]) , '', 0, false);
+                    else $doc = new DocFam($dbaccess, $data[3], '', 0, false);
                     
-                    if (!$analyze) {
-                        $doc = new DocFam($dbaccess);
+                    $famicon = "";
+                    
+                    if (!$doc->isAffected()) {
                         
-                        if (isset($data[3]) && ($data[3] > 0)) $doc->id = $data[3]; // static id
+                        if (!$analyze) {
+                            $doc = new DocFam($dbaccess);
+                            
+                            if (isset($data[3]) && ($data[3] > 0)) $doc->id = $data[3]; // static id
+                            if (is_numeric($data[1])) $doc->fromid = $data[1];
+                            else $doc->fromid = getFamIdFromName($dbaccess, $data[1]);
+                            if (isset($data[5])) $doc->name = $data[5]; // internal name
+                            $err = $doc->Add();
+                        }
+                        $tcr[$nline]["msg"] = sprintf(_("create %s family %s") , $data[2], $data[5]);
+                        $tcr[$nline]["action"] = "added";
+                    } else {
+                        $tcr[$nline]["action"] = "updated";
+                        $tcr[$nline]["msg"] = sprintf(_("update %s family %s") , $data[2], $data[5]);
+                    }
+                    if ($data[1] && ($data[1] != '-')) {
                         if (is_numeric($data[1])) $doc->fromid = $data[1];
                         else $doc->fromid = getFamIdFromName($dbaccess, $data[1]);
-                        if (isset($data[5])) $doc->name = $data[5]; // internal name
-                        $err = $doc->Add();
                     }
-                    $tcr[$nline]["msg"] = sprintf(_("create %s family %s") , $data[2], $data[5]);
-                    $tcr[$nline]["action"] = "added";
-                } else {
-                    $tcr[$nline]["action"] = "updated";
-                    $tcr[$nline]["msg"] = sprintf(_("update %s family %s") , $data[2], $data[5]);
-                }
-                if ($data[1] && ($data[1] != '-')) {
-                    if (is_numeric($data[1])) $doc->fromid = $data[1];
-                    else $doc->fromid = getFamIdFromName($dbaccess, $data[1]);
-                }
-                if ($data[2] && ($data[2] != '-')) $doc->title = $data[2];
-                if ($data[4] && ($data[4] != '-')) $doc->classname = $data[4]; // new classname for familly
-                if ($data[5] && ($data[5] != '-')) $doc->name = $data[5]; // internal name
-                $tcr[$nline]["err"].= $err;
-                if ($reinit == "yes") {
-                    $tcr[$nline]["msg"].= sprintf(_("reinit all attributes"));
-                    if ($analyze) continue;
-                    $oattr = new DocAttr($dbaccess);
-                    $oattr->docid = intval($doc->id);
-                    if ($oattr->docid > 0) {
-                        $err = $oattr->exec_query("delete from docattr where docid=" . $oattr->docid);
-                    }
+                    if ($data[2] && ($data[2] != '-')) $doc->title = $data[2];
+                    if ($data[4] && ($data[4] != '-')) $doc->classname = $data[4]; // new classname for familly
+                    if ($data[5] && ($data[5] != '-')) $doc->name = $data[5]; // internal name
                     $tcr[$nline]["err"].= $err;
+                    if ($reinit == "yes") {
+                        $tcr[$nline]["msg"].= sprintf(_("reinit all attributes"));
+                        if ($analyze) continue;
+                        $oattr = new DocAttr($dbaccess);
+                        $oattr->docid = intval($doc->id);
+                        if ($oattr->docid > 0) {
+                            $err = $oattr->exec_query("delete from docattr where docid=" . $oattr->docid);
+                        }
+                        $tcr[$nline]["err"].= $err;
+                    }
                 }
-                
+                catch(Exception $e) {
+                    $tcr[$nline]["err"].= $e->getMessage();
+                }
+                $beginLine = $nline;
                 break;
 
             case "RESET":
@@ -148,21 +158,29 @@ function add_import_file(&$action, $fimport)
                     continue;
                 }
                 if (($num > 3) && ($data[3] != "")) $doc->doctype = "S";
-                
-                $doc->modify();
-                
-                if ($doc->doctype == "C") {
-                    global $tFamIdName;
-                    $msg = refreshPhpPgDoc($dbaccess, $doc->id);
-                    if (isset($tFamIdName)) $tFamIdName[$doc->name] = $doc->id; // refresh getFamIdFromName for multiple family import
-                    
+                $ferr = '';
+                for ($i = $beginLine; $i < $nline; $i++) {
+                    if ($tcr[$i]["err"]) $ferr.= $tcr[$i]["err"];
                 }
-                
-                if ((!$analyze) && ($famicon != "")) $doc->changeIcon($famicon);
-                $tcr[$nline]["msg"].= $doc->postImport();
-                $doc->AddComment(_("Update by importation"));
-                
-                $nbdoc++;
+                if ($ferr == "") {
+                    $doc->modify();
+                    
+                    if ($doc->doctype == "C") {
+                        global $tFamIdName;
+                        $msg = refreshPhpPgDoc($dbaccess, $doc->id);
+                        if (isset($tFamIdName)) $tFamIdName[$doc->name] = $doc->id; // refresh getFamIdFromName for multiple family import
+                        $checkCr = checkDb::verifyDbFamily($doc->id);
+                        if (count($checkCr) > 0) {
+                            $tcr[$nline]["err"].= implode(",", $checkCr);
+                        }
+                    }
+                    
+                    if ((!$analyze) && ($famicon != "")) $doc->changeIcon($famicon);
+                    $tcr[$nline]["msg"].= $doc->postImport();
+                    $doc->AddComment(_("Update by importation"));
+                    
+                    $nbdoc++;
+                }
                 
                 break;
                 // -----------------------------------
@@ -251,7 +269,7 @@ function add_import_file(&$action, $fimport)
                     $famicon = $data[1]; // reported to end section
                     $tcr[$nline]["msg"] = sprintf(_("set icon to '%s'") , $data[1]);
                 } else {
-                    $tcr[$nline]["err"] = sprintf(_("icon already set. No update allowed"));
+                    $tcr[$nline]["msg"] = sprintf(_("icon already set. No update allowed"));
                 }
                 break;
                 // -----------------------------------
@@ -276,7 +294,7 @@ function add_import_file(&$action, $fimport)
                         }
                     } else {
                         $fldid = $doc->dfldid;
-                        $tcr[$nline]["err"] = sprintf(_("default folder already set. Auto ignored"));
+                        $tcr[$nline]["msg"] = sprintf(_("default folder already set. Auto ignored"));
                     }
                 } elseif (is_numeric($data[1])) $fldid = $data[1];
                 else $fldid = getIdFromName($dbaccess, $data[1], 2);
@@ -296,8 +314,23 @@ function add_import_file(&$action, $fimport)
             case "WID":
                 if (is_numeric($data[1])) $wid = $data[1];
                 else $wid = getIdFromName($dbaccess, $data[1], 20);
-                $doc->wid = $wid;
-                $tcr[$nline]["msg"] = sprintf(_("set default workflow to '%s'") , $data[1]);
+                if ($data[1]) {
+                    $wdoc = new_doc($dbaccess, $wid);
+                    if (!$wdoc->isAlive()) {
+                        $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' not found") , $data[1]);
+                    } else {
+                        if (!is_subclass_of($wdoc, "WDoc")) {
+                            $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' is not a workflow") , $data[1]);
+                        } else {
+                            $doc->wid = $wdoc->id;
+                        }
+                    }
+                    $tcr[$nline]["msg"] = sprintf(_("set default workflow to '%s'") , $data[1]);
+                } else {
+                    $doc->wid = '';
+                    
+                    $tcr[$nline]["msg"] = _("unset default workflow");
+                }
                 break;
                 // -----------------------------------
                 
@@ -334,6 +367,12 @@ function add_import_file(&$action, $fimport)
                 } else $doc->methods = $data[1];
                 
                 $tcr[$nline]["msg"] = sprintf(_("change methods to '%s'") , $doc->methods);
+                $tmethods = explode("\n", $doc->methods);
+                foreach ($tmethods as $method) {
+                    if (!file_exists(sprintf("FDL/%s", $method))) {
+                        $tcr[$nline]["err"].= sprintf("Method file '%s' not found.", $method);
+                    }
+                }
                 
                 break;
                 // -----------------------------------
@@ -464,57 +503,109 @@ function add_import_file(&$action, $fimport)
                     $tcr[$nline]["err"] = "Error in line $nline: $num cols < 3";
                     break;
                 }
+                
                 foreach ($data as $kd => $vd) {
                     $data[$kd] = str_replace(ALTSEPCHAR, $comma, $vd); // restore ; semi-colon
                     
+                }
+                $order = array(
+                    "id",
+                    "setid",
+                    "label",
+                    "istitle",
+                    "isabstract",
+                    "type",
+                    "order",
+                    "visibility",
+                    "isneeded",
+                    "link",
+                    "phpfile",
+                    "phpfunc",
+                    "elink",
+                    "constraint",
+                    "options"
+                );
+                if (!$structAttr) {
+                    $structAttr = new StructAttribute();
+                    $syntaxAttr = new SyntaxAttribute();
+                }
+                $cid = 1;
+                foreach ($order as $key) {
+                    $structAttr->$key = trim($data[$cid]);
+                    $cid++;
+                }
+                if ($data[0] != "MODATTR") {
+                    $attrError = $syntaxAttr->analyze($structAttr);
+                    if ($attrError) {
+                        $tcr[$nline]["err"] = sprintf("%s:%s", $structAttr->id, $attrError);
+                        break;
+                    }
                 }
                 if (trim($data[1]) == '') {
                     $tcr[$nline]["err"].= sprintf(_("attr key is empty"));
                 } else {
                     $modattr = ($data[0] == "MODATTR");
-                    if ($data[0] == "MODATTR") $data[1] = ':' . $data[1]; // to mark the modified attribute
-                    $tcr[$nline]["msg"].= sprintf(_("update %s attribute") , $data[1]);
+                    if ($data[0] == "MODATTR") $structAttr->id = ':' . $structAttr->id; // to mark the modified
+                    $tcr[$nline]["msg"].= sprintf(_("update %s attribute") , $structAttr->id);
                     if ($analyze) continue;
                     $oattr = new DocAttr($dbaccess, array(
                         $doc->id,
-                        strtolower($data[1])
+                        strtolower($structAttr->id)
                     ));
                     
-                    if ($data[0] == "PARAM") $oattr->usefor = 'Q'; // parameters
-                    elseif ($data[0] == "OPTION") $oattr->usefor = 'O'; // options
-                    $oattr->docid = $doc->id;
-                    $oattr->id = trim(strtolower($data[1]));
-                    
-                    $oattr->frameid = trim(strtolower($data[2]));
-                    $oattr->labeltext = $data[3];
-                    
-                    $oattr->title = ($data[4] == "Y") ? "Y" : "N";
-                    
-                    $oattr->abstract = ($data[5] == "Y") ? "Y" : "N";
-                    if ($modattr) $oattr->abstract = $data[5];
-                    
-                    $oattr->type = trim($data[6]);
-                    
-                    $oattr->ordered = $data[7];
-                    $oattr->visibility = $data[8];
-                    $oattr->needed = ($data[9] == "Y") ? "Y" : "N";
-                    if ($modattr) {
-                        $oattr->title = $data[4];
-                        $oattr->needed = $data[9];
+                    if ($oattr->isAffected()) {
+                        // modification of type is forbidden
+                        $curType = trim(strtok($oattr->type, '('));
+                        $newType = trim(strtok($structAttr->type, '('));
+                        if ($curType != $newType) {
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute %s type definition from %s to %s", $structAttr->id, $curType, $newType);
+                        }
+                        // modification of target is forbidden
+                        if (($data[0] == "PARAM") && ($oattr->usefor != 'Q')) {
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to PARAM for %s", $structAttr->id);
+                        } elseif (($data[0] == "ATTR") && ($oattr->usefor == 'Q')) {
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to ATTR for %s", $structAttr->id);
+                        }
                     }
-                    $oattr->link = $data[10];
-                    $oattr->phpfile = $data[11];
-                    if (isset($data[13])) $oattr->elink = $data[13];
-                    else $oattr->elink = '';
-                    if (isset($data[14])) $oattr->phpconstraint = $data[14];
-                    else $oattr->phpconstraint = '';
-                    if (isset($data[15])) $oattr->options = $data[15];
-                    else $oattr->options = '';
-                    if (((($data[11] != "") && ($data[11] != "-")) || (($data[6] != "enum") && ($data[6] != "enumlist"))) || ($oattr->phpfunc == "") || (strpos($oattr->options, "system=yes") !== false)) $oattr->phpfunc = $data[12]; // don(t modify  enum possibilities
-                    if ($oattr->isAffected()) $err = $oattr->Modify();
-                    else $err = $oattr->Add();
                     
-                    $tcr[$nline]["err"].= $err;
+                    if (!$tcr[$nline]["err"]) {
+                        if ($data[0] == "PARAM") $oattr->usefor = 'Q'; // parameters
+                        elseif ($data[0] == "OPTION") $oattr->usefor = 'O'; // options
+                        else $oattr->usefor = 'N'; // normal
+                        $oattr->docid = $doc->id;
+                        $oattr->id = trim(strtolower($structAttr->id));
+                        
+                        $oattr->frameid = trim(strtolower($structAttr->setid));
+                        $oattr->labeltext = $structAttr->label;
+                        
+                        $oattr->title = ($structAttr->istitle == "Y") ? "Y" : "N";
+                        
+                        $oattr->abstract = ($structAttr->isabstract == "Y") ? "Y" : "N";
+                        if ($modattr) $oattr->abstract = $structAttr->isabstract;
+                        
+                        $oattr->type = trim($structAttr->type);
+                        
+                        $oattr->ordered = $structAttr->order;
+                        $oattr->visibility = $structAttr->visibility;
+                        $oattr->needed = ($structAttr->isneeded == "Y") ? "Y" : "N";
+                        if ($modattr) {
+                            $oattr->title = $structAttr->istitle;
+                            $oattr->needed = $structAttr->isneeded;
+                        }
+                        $oattr->link = $structAttr->link;
+                        $oattr->phpfile = $structAttr->phpfile;
+                        if ($structAttr->elink) $oattr->elink = $structAttr->elink;
+                        else $oattr->elink = '';
+                        if ($structAttr->constraint) $oattr->phpconstraint = $structAttr->constraint;
+                        else $oattr->phpconstraint = '';
+                        if ($structAttr->options) $oattr->options = $structAttr->options;
+                        else $oattr->options = '';
+                        if (((($structAttr->phpfile != "") && ($structAttr->phpfile != "-")) || (($structAttr->type != "enum") && ($structAttr->type != "enumlist"))) || ($oattr->phpfunc == "") || (strpos($oattr->options, "system=yes") !== false)) $oattr->phpfunc = $structAttr->phpfunc; // don(t modify  enum possibilities
+                        if ($oattr->isAffected()) $err = $oattr->Modify();
+                        else $err = $oattr->Add();
+                        
+                        $tcr[$nline]["err"].= $err;
+                    }
                 }
                 break;
 
@@ -547,7 +638,7 @@ function add_import_file(&$action, $fimport)
                 
                 if (!($pid > 0)) $tcr[$nline]["err"] = sprintf(_("profil id unkonow %s") , $data[1]);
                 else {
-                    
+                    clearCacheDoc(); // need to reset computed acls
                     $pdoc = new_Doc($dbaccess, $pid);
                     if ($pdoc->isAlive()) {
                         $tcr[$nline]["msg"] = sprintf(_("change profil %s") , $data[1]);
@@ -864,7 +955,7 @@ function add_import_file(&$action, $fimport)
                                         $tvfids[] = '';
                                     }
                                 }
-                                $doc->setValue($attr->id, $tvfids);
+                                $err.= $doc->setValue($attr->id, $tvfids);
                             } else {
                                 // one file only
                                 if (preg_match(PREGEXPFILE, $dv, $reg)) {
@@ -879,7 +970,7 @@ function add_import_file(&$action, $fimport)
                                     if ($err != "") {
                                         $tcr["err"] = $err;
                                     } else {
-                                        $doc->setValue($attr->id, $vfid);
+                                        $tcr["err"] = $doc->setValue($attr->id, $vfid);
                                     }
                                 }
                             }
@@ -889,7 +980,8 @@ function add_import_file(&$action, $fimport)
                             else $tcr["values"][$attr->getLabel() ] = dv;
                         }
                     } else {
-                        $doc->setValue($attr->id, $dv);
+                        $errv = $doc->setValue($attr->id, $dv);
+                        if ($errv) $err.= sprintf("%s:%s.", $attr->id, $errv);
                         if ($doc->getOldValue($attr->id) !== false) $tcr["values"][$attr->getLabel() ] = $dv;
                         else $tcr["values"][$attr->getLabel() ] = ("/no change/");
                     }
@@ -1098,7 +1190,7 @@ function add_import_file(&$action, $fimport)
                         $tcr["msg"].= $err . " " . sprintf(_("and add in %s folder ") , $dir->title);
                     }
                 } else if ($ndirid == 0) {
-                    if ($dirid > 0) {
+                    if ($dirid) {
                         
                         $dir = new_Doc($dbaccess, $dirid);
                         if ($dir->isAlive() && method_exists($dir, "AddFile")) {

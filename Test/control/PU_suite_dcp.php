@@ -23,6 +23,8 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestReport');
         $suite->addTestSuite('PU\TestLink');
         $suite->addTestSuite('PU\TestSplitXmlDocument');
+        $suite->addTestSuite('PU\TestImportFamily');
+        $suite->addTestSuite('PU\TestImportDocument');
         // ...
  
         return $suite;

@@ -1,0 +1,9 @@
+Makefile
+configure
+autom4te.cache/
+config.log
+config.status
+info.xml
+dbaccess.php.sample
+htaccess
+FREEDOM.vault

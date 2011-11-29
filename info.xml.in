@@ -1,386 +1,605 @@
 <?xml version="1.0"?>
-<module	name="dynacase-platform" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
+<module name="dynacase-platform" version="@VERSION@" release="@RELEASE@" license="@LICENSE@" basecomponent="yes">
 
-  <description lang="en">Hosting Application Toolkit dynacase platform</description>
-  <description lang="fr">Serveur d'application dynacase platform</description>
+    <description lang="en">Hosting Application Toolkit dynacase platform</description>
+    <description lang="fr">Serveur d'application dynacase platform</description>
 
-  <replaces>
-        <module name="freedom-extui" />
-        <module name="freedom-toolbox" />
-  	<module name="freedom-core" />
-  	<module name="freedom-api" />
-  	<module name="freedom-dav" />
-  	<module name="freedom-common" />
-  	<module name="freedom-vault" />
-  	<module name="freedom" />
-  </replaces>
+    <replaces>
+        <module name="freedom-extui"/>
+        <module name="freedom-toolbox"/>
+        <module name="freedom-core"/>
+        <module name="freedom-api"/>
+        <module name="freedom-dav"/>
+        <module name="freedom-common"/>
+        <module name="freedom-vault"/>
+        <module name="freedom"/>
+    </replaces>
 
-  <requires>
-    <installer version="1.1.1" comp="ge"/>
-    <module name="dynacase-extjs" />
-    <module name="dynacase-jquery" />
-  </requires>
+    <requires>
+        <installer version="1.1.1" comp="ge"/>
+        <module name="dynacase-extjs"/>
+        <module name="dynacase-jquery"/>
+    </requires>
 
-  <parameters>
-    <param name="client_name" label="client name" type="text" />
-    <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y" />
-    <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic" needed="Y" />
-    <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y" />
-    <param name="core_tmpdir" label="temporary folder" default="/tmp" type="text" needed="Y" />
-    <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="yes" oninstall="W" onupgrade="H" onedit="H" />
-    <param name="mod_deflate" label="Enable compression (requires Apache mod_deflate)" default="yes" type="enum" values="yes|no" needed="Y" />
-  </parameters>
+    <parameters>
+        <param name="client_name" label="client name" type="text"/>
+        <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y"/>
+        <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic"
+               needed="Y"/>
+        <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y"/>
+        <param name="core_tmpdir" label="temporary folder" default="/tmp" type="text" needed="Y"/>
+        <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="yes"
+               oninstall="W" onupgrade="H" onedit="H"/>
+        <param name="mod_deflate" label="Enable compression (requires Apache mod_deflate)" default="yes" type="enum"
+               values="yes|no" needed="Y"/>
+    </parameters>
 
-  <pre-install>    
+    <pre-install>
 
-    <check type="phpversion" predicate="ge" version="5.3.0"><label lang="en">Check PHP version &gt;= 5.3.0</label></check>
-    <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
-    
-    <check type="pgempty" service="@core_db" optional="yes"><label lang="en">Check database empty</label></check>
+        <check type="phpversion" predicate="ge" version="5.3.0">
+            <label lang="en">Check PHP version &gt;= 5.3.0</label>
+        </check>
+        <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0">
+            <label lang="en">Check database access</label>
+        </check>
 
-    <check type="syscommand" command="rm" />
-    <check type="syscommand" command="file" />
-    <check type="syscommand" command="mkdir" />
-    <check type="syscommand" command="tar" />
-    <check type="syscommand" command="zip" />
-    <check type="syscommand" command="unzip" />
-    <check type="syscommand" command="dot" />
-    <check type="syscommand" command="convert" />
-    <check type="syscommand" command="recode" />
-    <check type="syscommand" command="html2ps" />
-    <check type="syscommand" command="ps2pdf" />
-    <check type="syscommand" command="php" />
-    <check type="syscommand" command="ldapdelete" optional="yes" />
-    <check type="syscommand" command="psql" />
-    <check type="syscommand" command="pg_dump" />
-    <check type="syscommand" command="msgcat" />
-    
-    <!-- Check PHP functions/extensions -->
-    
-    <check type="phpbug45996"><help><![CDATA[
+        <check type="pgempty" service="@core_db" optional="yes">
+            <label lang="en">Check database empty</label>
+        </check>
+
+        <check type="syscommand" command="rm"/>
+        <check type="syscommand" command="file"/>
+        <check type="syscommand" command="mkdir"/>
+        <check type="syscommand" command="tar"/>
+        <check type="syscommand" command="zip"/>
+        <check type="syscommand" command="unzip"/>
+        <check type="syscommand" command="dot"/>
+        <check type="syscommand" command="convert"/>
+        <check type="syscommand" command="recode"/>
+        <check type="syscommand" command="html2ps"/>
+        <check type="syscommand" command="ps2pdf"/>
+        <check type="syscommand" command="php"/>
+        <check type="syscommand" command="ldapdelete" optional="yes"/>
+        <check type="syscommand" command="psql"/>
+        <check type="syscommand" command="pg_dump"/>
+        <check type="syscommand" command="msgcat"/>
+
+        <!-- Check PHP functions/extensions -->
+
+        <check type="phpbug45996">
+            <help><![CDATA[
 Your PHP installation seems to have a known bug (ref #45996: <a href="http://bugs.php.net/bug.php?id=45996" target="_blank">http://bugs.php.net/bug.php?id=45996</a>).<br/>
 <br/>
 Please use an updated PHP version that corrects this bug.
-]]></help></check>
-    <check type="phpbug40926" service="@core_db"><help><![CDATA[
+]]></help>
+        </check>
+        <check type="phpbug40926" service="@core_db">
+            <help><![CDATA[
 Your PHP installation seems to have a known bug (ref #40926: <a href="http://bugs.php.net/bug.php?id=40926" target="_blank">http://bugs.php.net/bug.php?id=40926</a>).<br/>
 <br/>
 This can be solved by:<br/>
 -&nbsp;upgrading your postgresql client librairies to version &gt;= 8.4<br/>
 -&nbsp;or, configuring your postgres services (pg_service.conf) with the option 'sslmode=disable'<br/>
-]]></help></check>
+]]></help>
+        </check>
 
-    <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
-    <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
-    <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
-    <!--<check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>-->
-    <check type="phpfunction" function="ldap_connect"><help>You might need to install a php-ldap package from your distribution in order to have LDAP support in PHP.</help></check>
-    <!--<check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>-->
-    <check type="phpfunction" function="pspell_new" optional="yes"><help>You might need to install a php-pspell package from your distribution in order to have spelling support in PHP.</help></check>
-    <check type="phpfunction" function="iconv"><help>You might need to install a php-iconv package from your distribution in order to have iconv support in PHP.</help></check>
-    <check type="phpfunction" function="mb_get_info"><help>You might need to install a php-mbstring package from your distribution in order to have mbstring support in PHP.</help></check>
-    <check type="phpfunction" function="mcrypt_module_open"><help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support in PHP.</help></check>
-    <check type="phpfunction" function="gd_info"><help>You might need to install a php-gd package from your distribution in order to have GD image support in PHP.</help></check>
-    <check type="phpfunction" function="cal_info"><help>You might need to install a php-calendar package from your distribution in order to have calendar and date manipulation support in PHP.</help></check>
-    <check type="phpfunction" function="json_encode"><help>You might need to install a php-json package in order to have JSON support in PHP.</help></check>
-    <check type="phpfunction" function="simplexml_load_file"><help>You might need to install a php-simplexml package in order to have SimpleXML support in PHP.</help></check>
-    
-    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package form your distribution in order to have XSLT support in PHP.</help></check>
-    
-    <!-- Check PEAR modules -->
-    
-    <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP"><help>You might need to run : pear install Crypt_CHAP</help></check>
-    <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP"><help>You might need to run : pear install Net_SMTP</help></check>
-    <check type="pearmodule" include="Mail/mime.php" class="Mail_mime"><help>You might need to run : pear install Mail_Mime</help></check>
+        <check type="phpfunction" function="gettext">
+            <help>You might need to install a php-gettext package from your distribution in order to have localization
+                support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="imagegd">
+            <help>You might need to install a php-gd package from your distribution in order to have GD support in
+                PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="xml_set_default_handler">
+            <help>You might need to install a php-xml package from your distribution in order to have XML support in
+                PHP.
+            </help>
+        </check>
+        <!--<check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>-->
+        <check type="phpfunction" function="ldap_connect">
+            <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
+                PHP.
+            </help>
+        </check>
+        <!--<check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>-->
+        <check type="phpfunction" function="pspell_new" optional="yes">
+            <help>You might need to install a php-pspell package from your distribution in order to have spelling
+                support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="iconv">
+            <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
+                PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="mb_get_info">
+            <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
+                support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="mcrypt_module_open">
+            <help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support
+                in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="gd_info">
+            <help>You might need to install a php-gd package from your distribution in order to have GD image support in
+                PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="cal_info">
+            <help>You might need to install a php-calendar package from your distribution in order to have calendar and
+                date manipulation support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="json_encode">
+            <help>You might need to install a php-json package in order to have JSON support in PHP.</help>
+        </check>
+        <check type="phpfunction" function="simplexml_load_file">
+            <help>You might need to install a php-simplexml package in order to have SimpleXML support in PHP.</help>
+        </check>
 
-    <!-- Check Apache modules -->
+        <check type="phpclass" class="XSLTProcessor">
+            <help>You might need to install a php-xsl package form your distribution in order to have XSLT support in
+                PHP.
+            </help>
+        </check>
 
-    <check type="apachemodule" module="mod_expires"><help>You might need to install and/or activate the Apache mod_expires module.</help></check>
-    <check type="apachemodule" module="mod_rewrite"><help>You might need to install and/or load the mod_rewrite Apache module.</help></check>
-    
-  </pre-install>
-  
-  <post-install>
-    <process command="programs/core_initialize"><label lang="en">Initialize system database</label></process>
-    <process command="programs/record_application CORE I"><label lang="en">Record core application in database</label></process>
-    <process command="programs/init_admin_passwd"><label lang="en">Initialize admin password</label></process>
-    <process command="programs/record_application USERS I"><label lang="en">Record users application in database</label></process>
-    <process command="programs/record_application ACCESS I"><label lang="en">Record access application in database</label></process>
-    <process command="programs/record_application AUTHENT I"><label lang="en">Record authent application in database</label></process>
-    <process command="programs/record_application APPMNG I"><label lang="en">Record appmng application in database</label></process>
-    
-    <process command="programs/record_application FDL I" />
-    <process command="programs/record_application USERCARD I" />
-    <process command="programs/record_application ONEFAM I" />
-    <process command="programs/record_application GENERIC I" />
-    <process command="programs/record_application FUSERS I" />
-    <process command="programs/record_application FREEDOM I" />
-    <process command="programs/record_application FGSEARCH I" />
-    <process command="programs/record_application DATA  I" />
-    <process command="programs/record_application EXTUI I" />
-    <process command="programs/record_application VAULT I" />
-    <process command="programs/record_application DAV I" />
-    <process command="programs/record_application FDC I" />
-    
-    <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
-    <process command="programs/set_param CORE_CLIENT client_name" ><label lang="en">Register client name</label></process>
-    <process command="programs/set_param CORE_TMPDIR core_tmpdir" ><label lang="en">Register temporary folder</label></process>
-    
-    <process command="programs/app_post FDL I" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/fdl.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/workflows.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/searches.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/misc.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/freeaction.ods" />
-    <process command="./wsh.php --api=freedom_import --file=./FDL/helps.csv" />
-    <process command="programs/app_post FDL U" />
-    
-    <process command="programs/app_post USERCARD I" />
-    <process command="programs/app_post USERCARD U" />
-     
-    <process command="programs/app_post FREEDOM I" />
-    <process command="programs/app_post FREEDOM U" />
-    
-    <process command="wsh.php --api=vault_init" />
-    
-    <process command="programs/app_post DAV I" />
-    <process command="programs/app_post DAV U" />
-    
-    <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron" />
-    
-    <process command="programs/update_catalog" />
-  </post-install>
-  
-  <pre-upgrade>  
+        <!-- Check PEAR modules -->
 
-    <check type="phpversion" predicate="ge" version="5.3.0"><label lang="en">Check PHP version &gt;= 5.3.0</label></check>
-    <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0" ><label lang="en">Check database access</label></check>
-    
-    <check type="syscommand" command="rm" />
-    <check type="syscommand" command="file" />
-    <check type="syscommand" command="mkdir" />
-    <check type="syscommand" command="tar" />
-    <check type="syscommand" command="zip" />
-    <check type="syscommand" command="unzip" />
-    <check type="syscommand" command="dot" />
-    <check type="syscommand" command="convert" />
-    <check type="syscommand" command="recode" />
-    <check type="syscommand" command="html2ps" />
-    <check type="syscommand" command="ps2pdf" />
-    <check type="syscommand" command="php" />
-    <check type="syscommand" command="ldapdelete" optional="yes" />
-    <check type="syscommand" command="psql" />
-    <check type="syscommand" command="pg_dump" />
-    <check type="syscommand" command="msgcat" />
-    
-    <!-- Check PHP functions/extensions -->
-    
-    <check type="phpbug45996"><help><![CDATA[
+        <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP">
+            <help>You might need to run : pear install Crypt_CHAP</help>
+        </check>
+        <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP">
+            <help>You might need to run : pear install Net_SMTP</help>
+        </check>
+        <check type="pearmodule" include="Mail/mime.php" class="Mail_mime">
+            <help>You might need to run : pear install Mail_Mime</help>
+        </check>
+
+        <!-- Check Apache modules -->
+
+        <check type="apachemodule" module="mod_expires">
+            <help>You might need to install and/or activate the Apache mod_expires module.</help>
+        </check>
+        <check type="apachemodule" module="mod_rewrite">
+            <help>You might need to install and/or load the mod_rewrite Apache module.</help>
+        </check>
+
+    </pre-install>
+
+    <post-install>
+        <process command="programs/core_initialize">
+            <label lang="en">Initialize system database</label>
+        </process>
+        <process command="programs/record_application CORE I">
+            <label lang="en">Record core application in database</label>
+        </process>
+        <process command="programs/init_admin_passwd">
+            <label lang="en">Initialize admin password</label>
+        </process>
+        <process command="programs/record_application USERS I">
+            <label lang="en">Record users application in database</label>
+        </process>
+        <process command="programs/record_application ACCESS I">
+            <label lang="en">Record access application in database</label>
+        </process>
+        <process command="programs/record_application AUTHENT I">
+            <label lang="en">Record authent application in database</label>
+        </process>
+        <process command="programs/record_application APPMNG I">
+            <label lang="en">Record appmng application in database</label>
+        </process>
+
+        <process command="programs/record_application FDL I"/>
+        <process command="programs/record_application USERCARD I"/>
+        <process command="programs/record_application ONEFAM I"/>
+        <process command="programs/record_application GENERIC I"/>
+        <process command="programs/record_application FUSERS I"/>
+        <process command="programs/record_application FREEDOM I"/>
+        <process command="programs/record_application FGSEARCH I"/>
+        <process command="programs/record_application DATA  I"/>
+        <process command="programs/record_application EXTUI I"/>
+        <process command="programs/record_application VAULT I"/>
+        <process command="programs/record_application DAV I"/>
+        <process command="programs/record_application FDC I"/>
+
+        <process command="programs/update_catalog">
+            <label lang="en">Generate traduction catalog</label>
+        </process>
+        <process command="programs/set_param CORE_CLIENT client_name">
+            <label lang="en">Register client name</label>
+        </process>
+        <process command="programs/set_param CORE_TMPDIR core_tmpdir">
+            <label lang="en">Register temporary folder</label>
+        </process>
+
+        <process command="programs/app_post FDL I"/>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/fdl.ods">
+            <label>Import basic system families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/workflows.ods">
+            <label>Import workflow system families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/searches.ods">
+            <label>Import searches families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/misc.ods">
+            <label>Import others system families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/freeaction.ods">
+            <label>Import process system families</label>
+        </process>
+        <process command="programs/app_post FDL U"/>
+
+
+        <process command="./wsh.php --api=importDocuments --file=./USERCARD/usercard.ods">
+            <label>Create User families</label>
+        </process>
+
+        <process command="./wsh.php --api=usercard_iuser">
+            <label>Update user account documents</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./USERCARD/userinit.ods">
+            <label>Create admin profli</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./USERCARD/personnldap.ods">
+            <label>Create user LDAP mapping</label>
+        </process>
+
+        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv">
+            <label></label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/defaultprofil.ods"/>
+
+
+        <process command="programs/app_post FREEDOM I"/>
+        <process command="programs/app_post FREEDOM U"/>
+
+        <process command="wsh.php --api=vault_init"/>
+
+        <process command="programs/app_post DAV I"/>
+        <process command="programs/app_post DAV U"/>
+
+        <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron"/>
+
+        <process command="programs/update_catalog"/>
+    </post-install>
+
+    <pre-upgrade>
+
+        <check type="phpversion" predicate="ge" version="5.3.0">
+            <label lang="en">Check PHP version &gt;= 5.3.0</label>
+        </check>
+        <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0">
+            <label lang="en">Check database access</label>
+        </check>
+
+        <check type="syscommand" command="rm"/>
+        <check type="syscommand" command="file"/>
+        <check type="syscommand" command="mkdir"/>
+        <check type="syscommand" command="tar"/>
+        <check type="syscommand" command="zip"/>
+        <check type="syscommand" command="unzip"/>
+        <check type="syscommand" command="dot"/>
+        <check type="syscommand" command="convert"/>
+        <check type="syscommand" command="recode"/>
+        <check type="syscommand" command="html2ps"/>
+        <check type="syscommand" command="ps2pdf"/>
+        <check type="syscommand" command="php"/>
+        <check type="syscommand" command="ldapdelete" optional="yes"/>
+        <check type="syscommand" command="psql"/>
+        <check type="syscommand" command="pg_dump"/>
+        <check type="syscommand" command="msgcat"/>
+
+        <!-- Check PHP functions/extensions -->
+
+        <check type="phpbug45996">
+            <help><![CDATA[
 Your PHP installation seems to have a known bug (ref #45996: <a href="http://bugs.php.net/bug.php?id=45996" target="_blank">http://bugs.php.net/bug.php?id=45996</a>).<br/>
 <br/>
 Please use an updated PHP version that corrects this bug.
-]]></help></check>
-    <check type="phpbug40926" service="@core_db"><help><![CDATA[
+]]></help>
+        </check>
+        <check type="phpbug40926" service="@core_db">
+            <help><![CDATA[
 Your PHP installation seems to have a known bug (ref #40926: <a href="http://bugs.php.net/bug.php?id=40926" target="_blank">http://bugs.php.net/bug.php?id=40926</a>).<br/>
 <br/>
 This can be solved by:<br/>
 -&nbsp;upgrading your postgresql client librairies to version &gt;= 8.4<br/>
 -&nbsp;or, configuring your postgres services (pg_service.conf) with the option 'sslmode=disable'<br/>
-]]></help></check>
+]]></help>
+        </check>
 
-    <check type="phpfunction" function="gettext"><help>You might need to install a php-gettext package from your distribution in order to have localization support in PHP.</help></check>
-    <check type="phpfunction" function="imagegd"><help>You might need to install a php-gd package from your distribution in order to have GD support in PHP.</help></check>
-    <check type="phpfunction" function="xml_set_default_handler"><help>You might need to install a php-xml package from your distribution in order to have XML support in PHP.</help></check>
-    <!--<check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>-->
-    <check type="phpfunction" function="ldap_connect"><help>You might need to install a php-ldap package from your distribution in order to have LDAP support in PHP.</help></check>
-    <!--<check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>-->
-    <check type="phpfunction" function="pspell_new" optional="yes"><help>You might need to install a php-pspell package from your distribution in order to have spelling support in PHP.</help></check>
-    <check type="phpfunction" function="iconv"><help>You might need to install a php-iconv package from your distribution in order to have iconv support in PHP.</help></check>
-    <check type="phpfunction" function="mb_get_info"><help>You might need to install a php-mbstring package from your distribution in order to have mbstring support in PHP.</help></check>
-    <check type="phpfunction" function="mcrypt_module_open"><help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support in PHP.</help></check>
-    <check type="phpfunction" function="gd_info"><help>You might need to install a php-gd package from your distribution in order to have GD image support in PHP.</help></check>
-    <check type="phpfunction" function="cal_info"><help>You might need to install a php-calendar package from your distribution in order to have calendar and date manipulation support in PHP.</help></check>
-    <check type="phpfunction" function="json_encode"><help>You might need to install a php-json package in order to have JSON support in PHP.</help></check>
-    
-    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package form your distribution in order to have XSLT support in PHP.</help></check>
-    
-    <!-- Check PEAR modules -->
-    
-    <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP"><help>You might need to run : pear install Crypt_CHAP</help></check>
-    <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP"><help>You might need to run : pear install Net_SMTP</help></check>
-    <check type="pearmodule" include="Mail/mime.php" class="Mail_mime"><help>You might need to run : pear install Mail_Mime</help></check>
+        <check type="phpfunction" function="gettext">
+            <help>You might need to install a php-gettext package from your distribution in order to have localization
+                support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="imagegd">
+            <help>You might need to install a php-gd package from your distribution in order to have GD support in
+                PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="xml_set_default_handler">
+            <help>You might need to install a php-xml package from your distribution in order to have XML support in
+                PHP.
+            </help>
+        </check>
+        <!--<check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>-->
+        <check type="phpfunction" function="ldap_connect">
+            <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
+                PHP.
+            </help>
+        </check>
+        <!--<check type="ncurses" optional="yes"><help>You might need to install a php-ncurses package from your distribution in order to have ncurses support in PHP.</help></check>-->
+        <check type="phpfunction" function="pspell_new" optional="yes">
+            <help>You might need to install a php-pspell package from your distribution in order to have spelling
+                support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="iconv">
+            <help>You might need to install a php-iconv package from your distribution in order to have iconv support in
+                PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="mb_get_info">
+            <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
+                support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="mcrypt_module_open">
+            <help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support
+                in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="gd_info">
+            <help>You might need to install a php-gd package from your distribution in order to have GD image support in
+                PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="cal_info">
+            <help>You might need to install a php-calendar package from your distribution in order to have calendar and
+                date manipulation support in PHP.
+            </help>
+        </check>
+        <check type="phpfunction" function="json_encode">
+            <help>You might need to install a php-json package in order to have JSON support in PHP.</help>
+        </check>
 
-    <!-- Check Apache modules -->
+        <check type="phpclass" class="XSLTProcessor">
+            <help>You might need to install a php-xsl package form your distribution in order to have XSLT support in
+                PHP.
+            </help>
+        </check>
 
-    <check type="apachemodule" module="mod_expires"><help>You might need to install and/or activate the Apache mod_expires module.</help></check>
-    <check type="apachemodule" module="mod_rewrite"><help>You might need to install and/or load the mod_rewrite Apache module.</help></check>
-    
-  </pre-upgrade>
-  
-  <post-upgrade>
-    <process command="programs/core_sanitize"><label lang="en">Sanitize core database</label></process>
-    <process command="programs/core_update"><label lang="en">Update core</label></process>
-    <process command="programs/pre_migration CORE"><label lang="en">Migration first level</label></process>
-    <process command="programs/app_post CORE U"/>
-    <process command="programs/record_application CORE U"><label lang="en">Update core application in database</label></process>
-    <process command="programs/record_application USERS U"><label lang="en">Record users application in database</label></process>
-    <process command="programs/record_application ACCESS U"><label lang="en">Update access application in database</label></process>
-    <process command="programs/record_application AUTHENT U"><label lang="en">Update authent application in database</label></process>
-    <process command="programs/record_application APPMNG U"><label lang="en">Update appmng application in database</label></process>
-    <process command="programs/post_migration CORE"><label lang="en">Migration second level</label></process>
-    <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
-    
-    <process command="programs/pre_migration FDL" />
-    <process command="programs/record_application FDL U" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/fdl.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/workflows.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/searches.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/misc.ods" />
-	<process command="./wsh.php --api=freedom_import --file=./FDL/freeaction.ods" />
-    <process command="./wsh.php --api=freedom_import --file=./FDL/helps.csv" />
-    <process command="programs/app_post FDL U" />
-    <process command="programs/post_migration FDL" />
+        <!-- Check PEAR modules -->
 
-    <process command="programs/pre_migration USERCARD" />
-    <process command="programs/record_application USERCARD U" />
-    <process command="programs/app_post USERCARD U" />
+        <check type="pearmodule" include="Crypt/CHAP.php" class="Crypt_CHAP">
+            <help>You might need to run : pear install Crypt_CHAP</help>
+        </check>
+        <check type="pearmodule" include="Net/SMTP.php" class="Net_SMTP">
+            <help>You might need to run : pear install Net_SMTP</help>
+        </check>
+        <check type="pearmodule" include="Mail/mime.php" class="Mail_mime">
+            <help>You might need to run : pear install Mail_Mime</help>
+        </check>
 
-    <process command="programs/pre_migration GENERIC" />
-    <process command="programs/record_application GENERIC U" />
-    <process command="programs/post_migration GENERIC" />
+        <!-- Check Apache modules -->
 
-    <process command="programs/pre_migration ONEFAM" />
-    <process command="programs/record_application ONEFAM U" />
-    <process command="programs/post_migration ONEFAM" />
+        <check type="apachemodule" module="mod_expires">
+            <help>You might need to install and/or activate the Apache mod_expires module.</help>
+        </check>
+        <check type="apachemodule" module="mod_rewrite">
+            <help>You might need to install and/or load the mod_rewrite Apache module.</help>
+        </check>
 
-    <process command="programs/pre_migration FUSERS" />
-    <process command="programs/record_application FUSERS U" />
-    <process command="programs/post_migration FUSERS" />
+    </pre-upgrade>
 
-    <process command="programs/pre_migration FREEDOM" />
-    <process command="programs/record_application FREEDOM U" />
-    <process command="programs/app_post FREEDOM U" />
-    <process command="programs/post_migration FREEDOM" />
+    <post-upgrade>
+        <process command="programs/core_sanitize">
+            <label lang="en">Sanitize core database</label>
+        </process>
+        <process command="programs/core_update">
+            <label lang="en">Update core</label>
+        </process>
+        <process command="programs/pre_migration CORE">
+            <label lang="en">Migration first level</label>
+        </process>
+        <process command="programs/app_post CORE U"/>
+        <process command="programs/record_application CORE U">
+            <label lang="en">Update core application in database</label>
+        </process>
+        <process command="programs/record_application USERS U">
+            <label lang="en">Record users application in database</label>
+        </process>
+        <process command="programs/record_application ACCESS U">
+            <label lang="en">Update access application in database</label>
+        </process>
+        <process command="programs/record_application AUTHENT U">
+            <label lang="en">Update authent application in database</label>
+        </process>
+        <process command="programs/record_application APPMNG U">
+            <label lang="en">Update appmng application in database</label>
+        </process>
+        <process command="programs/post_migration CORE">
+            <label lang="en">Migration second level</label>
+        </process>
+        <process command="programs/update_catalog">
+            <label lang="en">Generate traduction catalog</label>
+        </process>
 
-    <process command="programs/pre_migration FGSEARCH" />
-    <process command="programs/record_application FGSEARCH U" />
-    <process command="programs/post_migration FGSEARCH" />
-    
-    <process command="programs/pre_migration DATA" />
-    <process command="programs/record_application DATA U" />
-    <process command="programs/post_migration DATA" />
-    
-    <process command="programs/pre_migration EXTUI" />
-    <process command="programs/record_application EXTUI U" />
-    <process command="programs/post_migration EXTUI" />
-    
-    <process command="programs/pre_migration VAULT" />
-    <process command="programs/record_application VAULT U" />
-    <process command="programs/post_migration VAULT" />
-    
-    <process command="programs/pre_migration DAV" />
-    <process command="programs/app_post DAV U" /><!-- FIXME: Required?-->
-    <process command="programs/record_application DAV U" />
-    <process command="programs/post_migration DAV" />
-    
-    <process command="programs/record_application FDC U" />
+        <process command="programs/pre_migration FDL"/>
+        <process command="programs/record_application FDL U"/>
 
-    <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron" />
+        <process command="./wsh.php --api=importDocuments --file=./FDL/fdl.ods">
+            <label>Update basic system families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/workflows.ods">
+            <label>Update workflow system families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/searches.ods">
+            <label>Update searches families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/misc.ods">
+            <label>Update others system families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/freeaction.ods">
+            <label>Update process system families</label>
+        </process>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv"/>
+        <process command="programs/app_post FDL U"/>
+        <process command="programs/post_migration FDL"/>
 
-    <process command="programs/update_catalog" />
-  </post-upgrade>
+        <process command="programs/pre_migration USERCARD"/>
+        <process command="programs/record_application USERCARD U"/>
+        <process command="./wsh.php --api=importDocuments --file=./USERCARD/usercard.ods">
+            <label>Update User families</label>
+        </process>
+        <process command="programs/pre_migration GENERIC"/>
+        <process command="programs/record_application GENERIC U"/>
+        <process command="programs/post_migration GENERIC"/>
 
-  <pre-remove></pre-remove>
-  <post-remove></post-remove>
-  
-  <reconfigure>  
-  	<process command="programs/toolbox_reconfigure" />
-  </reconfigure>
+        <process command="programs/pre_migration ONEFAM"/>
+        <process command="programs/record_application ONEFAM U"/>
+        <process command="programs/post_migration ONEFAM"/>
 
-  <changelog>
-  	
-    <version number="3.1.1" date="2011-09-15">
-      <change title="Pivot export, Action usage, and many fixes" url="http://dev.dynacase.org/versions/show/117"/>        
-    </version>
-    <version number="3.1.0" date="2011-07-27">
-      <change title="Autoload, Transaction, and many other improvement" url="http://dev.dynacase.org/versions/show/98"/>        
-    </version>
-    <version number="3.0.16" date="2010-12-17">
-      <change title="Somes new possibilities for Ooo Layout" url="http://dev.dynacase.org/versions/show/78"/>        
-    </version>
-    <version number="3.0.15" date="2010-11-26">
-      <change title="Join in searchDoc" url="http://dev.dynacase.org/versions/show/73"/>        
-    </version>
-    <version number="3.0.14" date="2010-11-10">
-      <change title="Specific methods can be use in search criteria" url="http://dev.dynacase.org/versions/show/72"/>        
-    </version>
-    <version number="3.0.13" date="2010-10-27">
-      <change title="Fix files with quote " url="http://dev.dynacase.org/versions/show/71"/>        
-    </version>
-    <version number="3.0.12" date="2010-09-15">
-      <change title="Rename to dynacase" url="http://dev.dynacase.org/versions/show/40"/>        
-    </version>
-    <version number="3.0.11" date="2010-09-15">
-      <change title="Many fixes" url="http://dev.freedom-ecm.org/versions/show/37"/>        
-    </version>
-    <version number="3.0.10" date="2010-08-13">
-      <change title="inline help document" url="http://dev.freedom-ecm.org/versions/show/35"/>        
-    </version>
-    <version number="3.0.9" date="2010-07-30">
-      <change title="first normal form export" url="http://dev.freedom-ecm.org/versions/show/33"/>        
-    </version>
-    <version number="3.0.8" date="2010-07-12">
-      <change title="new feature for XML import/export" url="http://dev.freedom-ecm.org/versions/show/31"/>        
-    </version>
-    <version number="3.0.7-3" date="2010-06-25">
-      <change title="Update reference manual " >
-      </change>
-    </version>
-    <version number="3.0.7" date="2010-06-24">
-      <change title="New feature for openOffice template " url="http://dev.freedom-ecm.org/versions/show/26">
-         Add report export in latin encoding for microsoft windows users
-         Possibility to export applications acls
-      </change>
-    </version>
-    <version number="3.0.6" date="2010-06-16">
-      <change title="Importation XML" url="http://dev.freedom-ecm.org/versions/show/23">
-         Locale for dates
-         Fix constraint errors
-      </change>
-    </version>
-    
+        <process command="programs/pre_migration FUSERS"/>
+        <process command="programs/record_application FUSERS U"/>
+        <process command="programs/post_migration FUSERS"/>
 
-    <version number="3.0.5" date="2010-06-07">
-      <change title="Correct wsh freedom_refresh" />
-      <change title="Archive and XML" url="http://dev.freedom-ecm.org/versions/show/18">
-        
-         Document's archive management.
-         New vision of attribute constraint 
-         Document XML export
-      </change>
-    </version>
-    <version number="3.0.4" date="2010-05-07">
-      <change title="gpc_magic_quote in htaccess" url="http://dev.freedom-ecm.org/issues/733" />
-      <change title="Evolution about attribute zone" url="http://dev.freedom-ecm.org/versions/show/16">
-      	 Correction to add more easily other language.
-      	 Continue onefam application extjs version
-      	 Better integration of document look with new extjs interfaces
-      </change>
-    </version>
-    
-    <version number="3.0.2" date="2010-04-19">
-      <change title="View default document link in ext mode" url="http://dev.freedom-ecm.org/issues/671" />
-      <change title="Update families with export file" url="http://dev.freedom-ecm.org/issues/669" />
-      <change title="View families in folders" url="http://dev.freedom-ecm.org/issues/668" />
-      <change title="Correct usage on 'nr' option in transition's workflow" url="http://dev.freedom-ecm.org/issues/667" />
-    </version>
-    
-    <version number="3.0.1" date="2010-04-09">
-      <change title="SearchDoc::addFilter() support argument to string filter">Arguments are automatically escaped to avoid sql injection $s->addFilter("title ~ '%s'",$arg)</change>
-      <change title="Use thumbnail when display image in array" url="http://dev.freedom-ecm.org/issues/612" />
-	</version>
-	
+        <process command="programs/pre_migration FREEDOM"/>
+        <process command="programs/record_application FREEDOM U"/>
+        <process command="programs/app_post FREEDOM U"/>
+        <process command="programs/post_migration FREEDOM"/>
+
+        <process command="programs/pre_migration FGSEARCH"/>
+        <process command="programs/record_application FGSEARCH U"/>
+        <process command="programs/post_migration FGSEARCH"/>
+
+        <process command="programs/pre_migration DATA"/>
+        <process command="programs/record_application DATA U"/>
+        <process command="programs/post_migration DATA"/>
+
+        <process command="programs/pre_migration EXTUI"/>
+        <process command="programs/record_application EXTUI U"/>
+        <process command="programs/post_migration EXTUI"/>
+
+        <process command="programs/pre_migration VAULT"/>
+        <process command="programs/record_application VAULT U"/>
+        <process command="programs/post_migration VAULT"/>
+
+        <process command="programs/pre_migration DAV"/>
+        <process command="programs/app_post DAV U"/>
+        <!-- FIXME: Required?-->
+        <process command="programs/record_application DAV U"/>
+        <process command="programs/post_migration DAV"/>
+
+        <process command="programs/record_application FDC U"/>
+
+        <process command="wsh.php --api=crontab --cmd=register --file=FREEDOM/freedom.cron"/>
+
+        <process command="programs/update_catalog"/>
+    </post-upgrade>
+
+    <pre-remove></pre-remove>
+    <post-remove></post-remove>
+
+    <reconfigure>
+        <process command="programs/toolbox_reconfigure"/>
+    </reconfigure>
+
+    <changelog>
+
+        <version number="3.1.1" date="2011-09-15">
+            <change title="Pivot export, Action usage, and many fixes" url="http://dev.dynacase.org/versions/show/117"/>
+        </version>
+        <version number="3.1.0" date="2011-07-27">
+            <change title="Autoload, Transaction, and many other improvement"
+                    url="http://dev.dynacase.org/versions/show/98"/>
+        </version>
+        <version number="3.0.16" date="2010-12-17">
+            <change title="Somes new possibilities for Ooo Layout" url="http://dev.dynacase.org/versions/show/78"/>
+        </version>
+        <version number="3.0.15" date="2010-11-26">
+            <change title="Join in searchDoc" url="http://dev.dynacase.org/versions/show/73"/>
+        </version>
+        <version number="3.0.14" date="2010-11-10">
+            <change title="Specific methods can be use in search criteria"
+                    url="http://dev.dynacase.org/versions/show/72"/>
+        </version>
+        <version number="3.0.13" date="2010-10-27">
+            <change title="Fix files with quote " url="http://dev.dynacase.org/versions/show/71"/>
+        </version>
+        <version number="3.0.12" date="2010-09-15">
+            <change title="Rename to dynacase" url="http://dev.dynacase.org/versions/show/40"/>
+        </version>
+        <version number="3.0.11" date="2010-09-15">
+            <change title="Many fixes" url="http://dev.freedom-ecm.org/versions/show/37"/>
+        </version>
+        <version number="3.0.10" date="2010-08-13">
+            <change title="inline help document" url="http://dev.freedom-ecm.org/versions/show/35"/>
+        </version>
+        <version number="3.0.9" date="2010-07-30">
+            <change title="first normal form export" url="http://dev.freedom-ecm.org/versions/show/33"/>
+        </version>
+        <version number="3.0.8" date="2010-07-12">
+            <change title="new feature for XML import/export" url="http://dev.freedom-ecm.org/versions/show/31"/>
+        </version>
+        <version number="3.0.7-3" date="2010-06-25">
+            <change title="Update reference manual ">
+            </change>
+        </version>
+        <version number="3.0.7" date="2010-06-24">
+            <change title="New feature for openOffice template " url="http://dev.freedom-ecm.org/versions/show/26">
+                Add report export in latin encoding for microsoft windows users
+                Possibility to export applications acls
+            </change>
+        </version>
+        <version number="3.0.6" date="2010-06-16">
+            <change title="Importation XML" url="http://dev.freedom-ecm.org/versions/show/23">
+                Locale for dates
+                Fix constraint errors
+            </change>
+        </version>
 
 
-</changelog>
+        <version number="3.0.5" date="2010-06-07">
+            <change title="Correct wsh freedom_refresh"/>
+            <change title="Archive and XML" url="http://dev.freedom-ecm.org/versions/show/18">
+
+                Document's archive management.
+                New vision of attribute constraint
+                Document XML export
+            </change>
+        </version>
+        <version number="3.0.4" date="2010-05-07">
+            <change title="gpc_magic_quote in htaccess" url="http://dev.freedom-ecm.org/issues/733"/>
+            <change title="Evolution about attribute zone" url="http://dev.freedom-ecm.org/versions/show/16">
+                Correction to add more easily other language.
+                Continue onefam application extjs version
+                Better integration of document look with new extjs interfaces
+            </change>
+        </version>
+
+        <version number="3.0.2" date="2010-04-19">
+            <change title="View default document link in ext mode" url="http://dev.freedom-ecm.org/issues/671"/>
+            <change title="Update families with export file" url="http://dev.freedom-ecm.org/issues/669"/>
+            <change title="View families in folders" url="http://dev.freedom-ecm.org/issues/668"/>
+            <change title="Correct usage on 'nr' option in transition's workflow"
+                    url="http://dev.freedom-ecm.org/issues/667"/>
+        </version>
+
+        <version number="3.0.1" date="2010-04-09">
+            <change title="SearchDoc::addFilter() support argument to string filter">Arguments are automatically escaped
+                to avoid sql injection $s->addFilter("title ~ '%s'",$arg)
+            </change>
+            <change title="Use thumbnail when display image in array" url="http://dev.freedom-ecm.org/issues/612"/>
+        </version>
+
+
+    </changelog>
 </module>

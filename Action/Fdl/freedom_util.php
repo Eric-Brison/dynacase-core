@@ -109,6 +109,15 @@ function HandleXmlError($errno, $errstr, $errfile, $errline)
         throw new DOMException($errstr);
     } else return false;
 }
+
+/**
+ * clear all cache used by new_doc function
+ * @return void
+ */
+function clearCacheDoc() {
+    global $gdocs; // optimize for speed
+    $gdocs=array();
+}
 /** 
  * optimize for speed : memorize object for future use
  * @global array $_GLOBALS["gdocs"]
@@ -171,8 +180,13 @@ function new_Doc($dbaccess, $id = '', $latest = false)
     }
     
     if ($classname != "") {
-        include_once ("FDL$gen/Class.$classname.php");
+        if (!include_once ("FDL$gen/Class.$classname.php")) {
+            AddWarningMsg(sprintf("cannot include %s class", $classname));
+            return null;
+        }
+        
         $doc = new $classname($dbaccess, $id);
+        
         if ($latest && $doc->locked == - 1) {
             $tl = getLatestTDoc($dbaccess, $doc->initid);
             $doc->Affect($tl);
@@ -389,7 +403,6 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     }
     return false;
 }
-
 /**
  * return the value of an doc array item
  *

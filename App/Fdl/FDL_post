@@ -88,6 +88,8 @@ if [ "$1" = "I" ] ; then
     #copy postgres group table
     $wpub/wsh.php --api=freedom_groups
 
+    $wpub/wsh.php --api=fdl_trigger --docid=-1 | PGSERVICE="$pgservice_freedom" psql
+    $wpub/wsh.php --api=fdl_trigger --trigger=Y --docid=-1 | PGSERVICE="$pgservice_freedom" psql
     #if [ ! -f "$wpub/VAULT/${freedom_context}.vault" ]; then
     #    #cp $wpub/FDL/FREEDOM.vault $wpub/VAULT/FREEDOM.vault
     #	sed -e"s/fs1/$freedom_context/g" "$wpub/FDL/FREEDOM.vault" > "$wpub/VAULT/${freedom_context}.vault"

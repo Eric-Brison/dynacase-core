@@ -68,10 +68,13 @@ create unique index idx_idfam on docfam(id);";
         if ($include && ($this->id > 0) && ($this->isAffected())) {
             $adoc = "Doc" . $this->id;
             $GEN = getGen($dbaccess);
-            include_once ("FDL$GEN/Class.$adoc.php");
-            $adoc = "ADoc" . $this->id;
-            $this->attributes = new $adoc();
-            uasort($this->attributes->attr, "tordered");
+            if (@include_once ("FDL$GEN/Class.$adoc.php")) {
+                $adoc = "ADoc" . $this->id;
+                $this->attributes = new $adoc();
+                uasort($this->attributes->attr, "tordered");
+            } else {
+                throw new Exception(sprintf("cannot access attribute definition for %s family", $this->id));
+            }
         }
     }
     function preDocDelete()

@@ -25,7 +25,6 @@ include_once ("FDL/Class.Dir.php");
 
 global $wg;
 $wg = new group("", 2); // working group
-
 function refreshGroups($groupIdList, $refresh = false, &$currentPath = array() , &$groupDepth = array())
 {
     global $wg;
@@ -71,7 +70,7 @@ function refreshOneGroup($gid, $refresh)
         $dbaccess = GetParam("FREEDOM_DB");
         $doc = new_Doc($dbaccess, $g->fid);
         if ($doc->isAlive()) {
-            if ($_SERVER['HTTP_HOST'] == "") print sprintf("\trefreshing %s\n", $doc->title);
+            if ($_SERVER['HTTP_HOST'] == "") error_log(sprintf("\trefreshing %s\n", $doc->title));
             wbartext(sprintf(_("refreshing %s") , $doc->title));
             if ($refresh) $doc->refreshMembers();
             $doc->SetGroupMail(($doc->GetValue("US_IDDOMAIN") > 1));

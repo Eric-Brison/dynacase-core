@@ -76,11 +76,11 @@ class TestProfil extends TestCaseDcpDocument
         $df = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($df->isAlive(), "document $docName is not alive");
         $df->setProfil($prfName);
-        
+
+        $this->importDocument($newPrfAcl);
         $this->sudo($login);
         
         $this->resetDocumentCache();
-        $this->importDocument($newPrfAcl);
         $df = new_doc(self::$dbaccess, $docName);
         
         

@@ -16,10 +16,10 @@ TH {
   background-image:url('../Images/brushed.png');
 }
 SPAN {
-        -moz-border-radius:25px;
+        -moz-border-radius:5px;
 }
 IMG {
-        -moz-border-radius:25px;
+        -moz-border-radius:5px;
 }
 IMG.button {
 	cursor:pointer;
@@ -46,7 +46,7 @@ BUTTON {
  background-color:lightgreen;
 }
 BODY {
-  background-image:url('../Images/bg.gif');
+  /*background-image:url('../Images/bg.gif');*/
 }
 div.bouton {
    background:transparent url('../Images/freeeye.gif') no-repeat;

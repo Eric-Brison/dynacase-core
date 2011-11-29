@@ -42,6 +42,12 @@ $reinit = $usage->addOption("reinitattr", "reset attribute before import family 
     "no"
 ));
 $to = $usage->addOption("to", "email address to send report");
+$dirid = $usage->addOption("dir", "folder where imported documents are put");
+
+$strict = $usage->addOption("strict", "don't import if one error detected", array(
+    "yes",
+    "no"
+) , "yes");
 $usage->verify();
 
 if (!file_exists($filename)) {
@@ -63,7 +69,16 @@ setHttpVar('analyze', ($analyze == "yes") ? 'Y' : 'N');
 setHttpVar('htmlmode', ($htmlmode == "yes") ? 'Y' : 'N');
 $archive = ($archive == "yes");
 
-$cr = importDocuments($action, $filename, $analyze, $archive);
+if ($dirid) {
+    $dir=new_doc("", $dirid);
+    if (! $dir->isAlive()) {
+        $action->exitError(sprintf("folder %s not found (dir option)",$dirid));
+    }
+}
+$oImport = new ImportDocument();
+if ($strict=='no') $oImport->setStrict(false);
+
+$cr = $oImport->importDocuments($action, $filename, $analyze, $archive);
 
 $filetmp = false;
 if ((!$logfile) && $to) {
@@ -72,9 +87,9 @@ if ((!$logfile) && $to) {
 }
 if ($logfile) {
     if ($htmlmode == "yes") {
-        writeHTMLImportLog($logfile, $cr);
+        $oImport->writeHTMLImportLog($logfile);
     } else {
-        writeImportLog($logfile, $cr);
+        $oImport->writeImportLog($logfile);
     }
 }
 // mode HTML
@@ -96,4 +111,6 @@ if ($to) {
 } else {
     if (GetHttpVars("htmlmode") == "Y") print $out;
 }
+$err = $oImport->getErrorMessage();
+if ($err) $action->ExitError($err);
 ?>

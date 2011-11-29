@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documents date="2011-11-17T14:17:06" author="Default Master" name="recherche_Test_Famille_1">
+    <tst_famimp1 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tst_famimp1.xsd"
+                 title="Un" revision="0" modification-date="2011-11-17T14:15:27" version="" state="">
+        <tst_frame>
+            <tst_title>Three</tst_title>
+            <tst_number>One</tst_number>
+            <tst_date>2011-54-10</tst_date>
+            <tst_time>12</tst_time>
+        </tst_frame>
+
+    </tst_famimp1>
+</documents>
