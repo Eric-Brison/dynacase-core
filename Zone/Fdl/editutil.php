@@ -650,7 +650,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                                 foreach ($argids as $k => $v) {
                                     $linkprefix = "ilink_";
                                     $isILink = false;
-                                    $attrId = $argids[$k];
+                                    $attrId = trim($v);
                                     if (substr($attrId, 0, strlen($linkprefix)) == $linkprefix) {
                                         $attrId = substr($attrId, strlen($linkprefix));
                                         $isILink = true;
