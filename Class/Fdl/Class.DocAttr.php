@@ -100,7 +100,7 @@ create table docattr ( id  name,
                      options text
                    );
 create sequence seq_id_docattr start 1000;
-create unique index idx_iddocid on docattr(id, docid)";
+create unique index idx_iddocid on docattr(id, docid);";
     // possible type of attributes
     var $deftype = array(
         "text",

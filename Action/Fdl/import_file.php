@@ -314,8 +314,23 @@ function add_import_file(Action & $action, $fimport)
             case "WID":
                 if (is_numeric($data[1])) $wid = $data[1];
                 else $wid = getIdFromName($dbaccess, $data[1], 20);
-                $doc->wid = $wid;
-                $tcr[$nline]["msg"] = sprintf(_("set default workflow to '%s'") , $data[1]);
+                if ($data[1]) {
+                    $wdoc = new_doc($dbaccess, $wid);
+                    if (!$wdoc->isAlive()) {
+                        $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' not found") , $data[1]);
+                    } else {
+                        if (!is_subclass_of($wdoc, "WDoc")) {
+                            $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' is not a workflow") , $data[1]);
+                        } else {
+                            $doc->wid = $wdoc->id;
+                        }
+                    }
+                    $tcr[$nline]["msg"] = sprintf(_("set default workflow to '%s'") , $data[1]);
+                } else {
+                    $doc->wid = '';
+                    
+                    $tcr[$nline]["msg"] = _("unset default workflow");
+                }
                 break;
                 // -----------------------------------
                 
@@ -547,11 +562,9 @@ function add_import_file(Action & $action, $fimport)
                         }
                         // modification of target is forbidden
                         if (($data[0] == "PARAM") && ($oattr->usefor != 'Q')) {
-                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to PARAM for %s",
-                                                          $structAttr->id);
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to PARAM for %s", $structAttr->id);
                         } elseif (($data[0] == "ATTR") && ($oattr->usefor == 'Q')) {
-                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to ATTR for %s",
-                                                          $structAttr->id);
+                            $tcr[$nline]["err"].= sprintf("cannot change attribute declaration to ATTR for %s", $structAttr->id);
                         }
                     }
                     

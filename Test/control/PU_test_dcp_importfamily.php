@@ -34,7 +34,7 @@ class TestImportFamily extends TestCaseDcpDocument
     /**
      * @dataProvider dataGoodFamilyFiles
      */
-    public function testSqlViewFamily($familyFile)
+    public function testSqlViewFamily($familyFile, $familyName, $testWorkflow = false)
     {
         $err = '';
         try {
@@ -44,21 +44,25 @@ class TestImportFamily extends TestCaseDcpDocument
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, "import error detected $err");
-        $doc = createDoc("", "TST_GOODFAMIMP1");
+        $doc = createDoc("", $familyName);
         $this->assertTrue(is_object($doc));
         $err = $doc->store();
         $this->assertEmpty($err, "cannot create good doc");
-        $id = $this->_DBGetValue("select id from family.tst_goodfamimp1 limit 1");
+        $id = $this->_DBGetValue(sprintf("select id from family.%s limit 1", strtolower($familyName)));
         
         $this->assertGreaterThan(1000, $id, "not found by view");
+        if ($testWorkflow) {
+            $wdoc = new_doc('', $doc->wid);
+            $this->assertTrue($wdoc->isAlive() , "workflow not alive");
+            $this->assertTrue(is_subclass_of($wdoc, "WDoc"));
+        }
     }
-
-
     /**
      * @dataProvider dataBadUpdateFamilyFiles
      */
     public function testBadUpdateFamily($installFamilyFile, $updateFamilyFile, $expectedError)
     {
+        //print "log:".ini_get("error_log").".\n";
         $this->importDocument($installFamilyFile);
         try {
             $this->importDocument($updateFamilyFile);
@@ -69,23 +73,22 @@ class TestImportFamily extends TestCaseDcpDocument
         $this->assertNotEmpty($err, "no update error detected");
         $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
     }
-
-    public function dataBadUpdateFamilyFiles() {
+    
+    public function dataBadUpdateFamilyFiles()
+    {
         return array(
             // test attribute too long
             array(
                 "PU_data_dcp_initfamily1.ods",
                 "PU_data_dcp_updatefamily1.ods",
                 "TST_TITLE"
-            ),array(
+            ) ,
+            array(
                 "PU_data_dcp_initfamily2.ods",
                 "PU_data_dcp_updatefamily2.ods",
                 "TST_TITLE"
-            ),array(
-                "PU_data_dcp_initfamily2.ods",
-                "PU_data_dcp_updatefamily2.ods",
-                "TST_PARAM"
-            ));
+            )
+        );
     }
     public function dataBadFamilyFiles()
     {
@@ -114,6 +117,11 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily3.ods",
                 "W3"
+            ) ,
+            // test workflow
+            array(
+                "PU_data_dcp_badfamily4.ods",
+                "WTST_WFFAMIMP4"
             )
         );
     }
@@ -123,7 +131,14 @@ class TestImportFamily extends TestCaseDcpDocument
         return array(
             // test attribute too long
             array(
-                "PU_data_dcp_goodfamily1.ods"
+                "PU_data_dcp_goodfamily1.ods",
+                "TST_GOODFAMIMP1",
+                false
+            ) ,
+            array(
+                "PU_data_dcp_impworkflowfamily1.ods",
+                "TST_WFFAMIMP1",
+                true
             )
         );
     }
