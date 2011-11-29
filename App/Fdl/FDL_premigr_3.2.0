@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -z "$pgservice_core" ]; then
+	echo "Undefined or empty pgservice_core!"
+	exit 1
+fi
+
+PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'enum' where type='enumlist' and docid < 200;"
+PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'text' where type='textlist' and docid < 200;"
+echo "change old attribute syntax type enumlist, textlist"
