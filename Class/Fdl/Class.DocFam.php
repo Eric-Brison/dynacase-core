@@ -114,6 +114,7 @@ create unique index idx_idfam on docfam(id);";
             if (!$this->cprofid) $this->cprofid = $cdoc->cprofid;
             if (!$this->defval) $this->defval = $cdoc->defval;
             if (!$this->schar) $this->schar = $cdoc->schar;
+            if (!$this->usefor) $this->usefor = $cdoc->usefor;
         }
     }
     /**

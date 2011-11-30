@@ -112,6 +112,13 @@ function add_import_file(Action & $action, $fimport)
                     }
                     if ($data[2] && ($data[2] != '-')) $doc->title = $data[2];
                     if ($data[4] && ($data[4] != '-')) $doc->classname = $data[4]; // new classname for familly
+                    if ($doc->usefor == 'W') {
+                        $checkW = new checkWorkflow($doc->classname);
+                        $checkCr = $checkW->verifyWorflow();
+                        if (count($checkCr) > 0) {
+                            $tcr[$nline]["err"].= implode(",", $checkCr);
+                        }
+                    }
                     if ($data[5] && ($data[5] != '-')) $doc->name = $data[5]; // internal name
                     $tcr[$nline]["err"].= $err;
                     if ($reinit == "yes") {
@@ -129,22 +136,6 @@ function add_import_file(Action & $action, $fimport)
                     $tcr[$nline]["err"].= $e->getMessage();
                 }
                 $beginLine = $nline;
-                break;
-
-            case "RESET":
-                if ($data[1] == "attributes") {
-                    $tcr[$nline]["msg"].= sprintf(_("reinit all attributes"));
-                    if ($analyze) continue;
-                    $oattr = new DocAttr($dbaccess);
-                    $oattr->docid = intval($doc->id);
-                    if ($oattr->docid > 0) {
-                        $err = $oattr->exec_query("delete from docattr where docid=" . $oattr->docid);
-                    }
-                } else {
-                    $err = "reset argument must be 'attributes'";
-                }
-                
-                $tcr[$nline]["err"].= $err;
                 break;
                 // -----------------------------------
                 
@@ -167,6 +158,7 @@ function add_import_file(Action & $action, $fimport)
                     
                     if ($doc->doctype == "C") {
                         global $tFamIdName;
+                        
                         $msg = refreshPhpPgDoc($dbaccess, $doc->id);
                         if (isset($tFamIdName)) $tFamIdName[$doc->name] = $doc->id; // refresh getFamIdFromName for multiple family import
                         $checkCr = checkDb::verifyDbFamily($doc->id);
@@ -182,6 +174,22 @@ function add_import_file(Action & $action, $fimport)
                     $nbdoc++;
                 }
                 
+                break;
+
+            case "RESET":
+                if ($data[1] == "attributes") {
+                    $tcr[$nline]["msg"].= sprintf(_("reinit all attributes"));
+                    if ($analyze) continue;
+                    $oattr = new DocAttr($dbaccess);
+                    $oattr->docid = intval($doc->id);
+                    if ($oattr->docid > 0) {
+                        $err = $oattr->exec_query("delete from docattr where docid=" . $oattr->docid);
+                    }
+                } else {
+                    $err = "reset argument must be 'attributes'";
+                }
+                
+                $tcr[$nline]["err"].= $err;
                 break;
                 // -----------------------------------
                 
@@ -315,17 +323,22 @@ function add_import_file(Action & $action, $fimport)
                 if (is_numeric($data[1])) $wid = $data[1];
                 else $wid = getIdFromName($dbaccess, $data[1], 20);
                 if ($data[1]) {
-                    $wdoc = new_doc($dbaccess, $wid);
-                    if (!$wdoc->isAlive()) {
-                        $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' not found") , $data[1]);
-                    } else {
-                        if (!is_subclass_of($wdoc, "WDoc")) {
-                            $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' is not a workflow") , $data[1]);
+                    try {
+                        $wdoc = new_doc($dbaccess, $wid);
+                        if (!$wdoc->isAlive()) {
+                            $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' not found") , $data[1]);
                         } else {
-                            $doc->wid = $wdoc->id;
+                            if (!is_subclass_of($wdoc, "WDoc")) {
+                                $tcr[$nline]["err"] = sprintf(_("WID : workflow '%s' is not a workflow") , $data[1]);
+                            } else {
+                                $doc->wid = $wdoc->id;
+                            }
                         }
+                        $tcr[$nline]["msg"] = sprintf(_("set default workflow to '%s'") , $data[1]);
                     }
-                    $tcr[$nline]["msg"] = sprintf(_("set default workflow to '%s'") , $data[1]);
+                    catch(Exception $e) {
+                        $tcr[$nline]["err"] = sprintf(_("WID : %s") , $e->getMessage());
+                    }
                 } else {
                     $doc->wid = '';
                     
@@ -881,7 +894,7 @@ function add_import_file(Action & $action, $fimport)
                 //       $doc = new_Doc($doc->dbaccess,$doc->latestId());
                 $tcr["action"] = "ignored";
                 $tcr["id"] = $doc->id;
-                $tcr["err"] = _('not same family');
+                $tcr["err"] = sprintf(_('not same family %s (%d)') , $doc->getTitle() , $doc->id);
                 return $tcr;
             }
             if ($doc->doctype == 'Z') {

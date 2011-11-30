@@ -22,6 +22,7 @@ class TestImportFamily extends TestCaseDcpDocument
      */
     public function testErrorImportFamily($familyFile, $expectedError)
     {
+        $err = '';
         try {
             $this->importDocument($familyFile);
         }
@@ -64,6 +65,7 @@ class TestImportFamily extends TestCaseDcpDocument
     {
         //print "log:".ini_get("error_log").".\n";
         $this->importDocument($installFamilyFile);
+        $err = '';
         try {
             $this->importDocument($updateFamilyFile);
         }
@@ -122,6 +124,36 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily4.ods",
                 "WTST_WFFAMIMP4"
+            ) ,
+            // test workflow class name syntax error
+            array(
+                "PU_data_dcp_badfamily5.ods",
+                "WImpTest5"
+            ) ,
+            // test workflow without class
+            array(
+                "PU_data_dcp_badfamily6.ods",
+                "WNotFound"
+            ) ,
+            // test workflow with a incorrect class name
+            array(
+                "PU_data_dcp_badfamily7.ods",
+                "WTestBadNameImp7"
+            ) ,
+            // test workflow with class syntax error
+            array(
+                "PU_data_dcp_badfamily8.ods",
+                "Parse error"
+            ) ,
+            // test workflow attrPrefix empty
+            array(
+                "PU_data_dcp_badfamily9.ods",
+                "attrPrefix"
+            ) ,
+            // test workflow attrPrefix syntax
+            array(
+                "PU_data_dcp_badfamily10.ods",
+                "syntax"
             )
         );
     }
