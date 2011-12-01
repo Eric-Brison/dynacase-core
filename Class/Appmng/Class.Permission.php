@@ -54,6 +54,14 @@ create index permission_idx3 on permission(id_acl);
 create index permission_idx4 on permission(computed);
                  ';
     
+    public $id_user;
+    public $id_application;
+    public $id_acl;
+    /**
+     * @var bool
+     */
+    public $computed;
+    
     var $actions = array(); // actions array for a user (including group) in an application
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $computed = true)
     {
