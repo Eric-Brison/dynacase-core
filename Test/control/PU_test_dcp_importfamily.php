@@ -97,78 +97,114 @@ class TestImportFamily extends TestCaseDcpDocument
             )
         );
     }
+    
     public function dataBadFamilyFiles()
     {
         return array(
             // test attribute too long
             array(
                 "PU_data_dcp_badfamily1.ods",
-                "AAAAAA"
+                array(
+                    "FA002",
+                    "AAAAAA"
+                )
             ) ,
             // test method not found
             array(
                 "PU_data_dcp_badfamily2.ods",
-                "Method.NotFound"
+                array(
+                    "Method.NotFound"
+                )
             ) ,
             // test order needed
             array(
                 "PU_data_dcp_badfamily3.ods",
-                "TST_ARRAY"
-            ) ,
-            // test order needed
-            array(
-                "PU_data_dcp_badfamily3.ods",
-                "TST_TITLE"
-            ) ,
-            // test visibility
-            array(
-                "PU_data_dcp_badfamily3.ods",
-                "W3"
+                array(
+                    "FA003",
+                    "FA006",
+                    "FA004",
+                    "TST_ARRAY",
+                    "TST_TITLE",
+                    "W3"
+                )
             ) ,
             // test workflow
             array(
                 "PU_data_dcp_badfamily4.ods",
-                "WTST_WFFAMIMP4"
+                array(
+                    "W0008",
+                    "WTST_WFFAMIMP4"
+                )
             ) ,
             // test workflow class name syntax error
             array(
                 "PU_data_dcp_badfamily5.ods",
-                "WImpTest5"
+                array(
+                    "W0017",
+                    "WImpTest5"
+                )
             ) ,
             // test workflow without class
             array(
                 "PU_data_dcp_badfamily6.ods",
-                "WNotFound"
+                array(
+                    "W0018",
+                    "WNotFound"
+                )
             ) ,
             // test workflow with a incorrect class name
             array(
                 "PU_data_dcp_badfamily7.ods",
-                "WTestBadNameImp7"
+                array(
+                    "W0013",
+                    "WTestBadNameImp7"
+                )
             ) ,
             // test workflow with class syntax error
             array(
                 "PU_data_dcp_badfamily8.ods",
-                "Parse error"
+                array(
+                    "W0012",
+                    "Parse error"
+                )
             ) ,
             // test workflow attrPrefix empty
             array(
                 "PU_data_dcp_badfamily9.ods",
-                "attrPrefix"
+                array(
+                    "W0008",
+                    "W0014",
+                    "attrPrefix"
+                )
             ) ,
             // test workflow attrPrefix syntax
             array(
                 "PU_data_dcp_badfamily10.ods",
-                "syntax"
+                array(
+                    "W0015",
+                    "syntax"
+                ) ,
             ) ,
-            // test workflow transition definition
+            // test workflow transition model definition
             array(
                 "PU_data_dcp_badfamily11.ods",
                 array(
-                    " m1 ",
-                    " m2 ",
-                    "T sick",
-                    "m5",
-                    "ask"
+                    "W0006",
+                    "W0007",
+                    "W0008",
+                    "W0009",
+                    "W0011"
+                )
+            ) ,
+            // test workflow transition definition
+            array(
+                "PU_data_dcp_badfamily12.ods",
+                array(
+                    "W0011",
+                    "W0002",
+                    "W0003",
+                    "dead or not",
+                    " e3 "
                 )
             )
         );
