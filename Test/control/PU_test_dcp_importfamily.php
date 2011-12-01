@@ -20,7 +20,7 @@ class TestImportFamily extends TestCaseDcpDocument
     /**
      * @dataProvider dataBadFamilyFiles
      */
-    public function testErrorImportFamily($familyFile, $expectedError)
+    public function testErrorImportFamily($familyFile, $expectedErrors)
     {
         $err = '';
         try {
@@ -30,7 +30,12 @@ class TestImportFamily extends TestCaseDcpDocument
             $err = $e->getMessage();
         }
         $this->assertNotEmpty($err, "no import error detected");
-        $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+        if (!is_array($expectedErrors)) $expectedErrors = array(
+            $expectedErrors
+        );
+        foreach ($expectedErrors as $expectedError) {
+            $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
+        }
     }
     /**
      * @dataProvider dataGoodFamilyFiles
@@ -154,6 +159,17 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily10.ods",
                 "syntax"
+            ) ,
+            // test workflow transition definition
+            array(
+                "PU_data_dcp_badfamily11.ods",
+                array(
+                    " m1 ",
+                    " m2 ",
+                    "T sick",
+                    "m5",
+                    "ask"
+                )
             )
         );
     }
@@ -161,12 +177,13 @@ class TestImportFamily extends TestCaseDcpDocument
     public function dataGoodFamilyFiles()
     {
         return array(
-            // test attribute too long
+            // test simple family
             array(
                 "PU_data_dcp_goodfamily1.ods",
                 "TST_GOODFAMIMP1",
                 false
             ) ,
+            // test workflow family
             array(
                 "PU_data_dcp_impworkflowfamily1.ods",
                 "TST_WFFAMIMP1",

@@ -30,6 +30,15 @@ class checkWorkflow
      * @var string
      */
     private $className;
+    /**
+     * @var array
+     */
+    private $transitionProperties = array(
+        'm1',
+        'm2',
+        'ask',
+        'nr'
+    );
     public function __construct($className)
     {
         $this->className = $className;
@@ -54,14 +63,53 @@ class checkWorkflow
             $this->checkIsAWorkflow();
             if (!$this->getErrorMessage()) {
                 $this->checkPrefix();
-                $this->checkAsk();
+                $this->checkTransitions();
             }
         }
         return $this->getError();
     }
     
-    public function checkAsk()
+    public function checkTransitions()
     {
+        
+        $transitions = $this->wdoc->transitions;
+        if (!is_array($transitions)) {
+            $this->addError(sprintf("workflow transition is not an array for class %s", $this->className));
+        } else {
+            foreach ($transitions as $tkey => $transition) {
+                $this->checkTransitionStateKey($tkey);
+                
+                $props = array_keys($transition);
+                $diff = array_diff($props, $this->transitionProperties);
+                if (count($diff) > 0) {
+                    $this->addError(sprintf("workflow transition unknow property %s for transition %s in class %s (must be one of %s)", implode(',', $diff) , $tkey, $this->className, implode(',', $this->transitionProperties)));
+                }
+                
+                if ($transition["ask"] && (!is_array($transition["ask"]))) {
+                    $this->addError(sprintf("workflow transition ask is not an array for transition %s in class %s", $tkey, $this->className));
+                }
+                if ($transition["m1"]) {
+                    if (!method_exists($this->wdoc, $transition["m1"])) {
+                        
+                        $this->addError(sprintf("workflow unknow m1 method %s for transition %s in class %s", $transition["m1"], $tkey, $this->className));
+                    }
+                }
+                if ($transition["m2"]) {
+                    if (!method_exists($this->wdoc, $transition["m2"])) {
+                        
+                        $this->addError(sprintf("workflow unknow m2 method %s for transition %s in class %s", $transition["m2"], $tkey, $this->className));
+                    }
+                }
+            }
+        }
+    }
+    
+    private function checkTransitionStateKey($key)
+    {
+        $limit = 45 - strlen($this->wdoc->attrPrefix);
+        if (!preg_match("/^[a-zA-Z_][a-zA-Z0-9_:]{0,$limit}$/", $key)) {
+            $this->addError(sprintf("workflow transition or state key %s syntax error for %s (limit to %d alpha characters)", $key, $this->className, $limit + 1));
+        }
     }
     
     public function checkIsAWorkflow()
