@@ -25,6 +25,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestSplitXmlDocument');
         $suite->addTestSuite('PU\TestImportFamily');
         $suite->addTestSuite('PU\TestImportDocument');
+        $suite->addTestSuite('PU\TestGetParam');
         // ...
  
         return $suite;
