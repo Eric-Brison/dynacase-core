@@ -115,7 +115,8 @@ function getCoreParam($name, $def = "")
 {
     static $params = null;
     
-    if (!$params) {
+    if (empty($params)) {
+        $params = array();
         $tparams = array();
         $err = simpleQuery("", "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));", $tparams);
         if ($err == "") {
@@ -126,8 +127,9 @@ function getCoreParam($name, $def = "")
     }
     if (array_key_exists($name, $params) == false) {
         error_log(sprintf("parameter %s not found use %s instead", $name, $def));
+        return $def;
     }
-    return $params[$name] ? $params[$name] : $def;
+    return ($params[$name] === null) ? $def : $params[$name];
 }
 /**
  *
