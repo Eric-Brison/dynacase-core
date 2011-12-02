@@ -90,7 +90,8 @@ class SyntaxAttribute
         $terr = array();
         foreach ($this->syntaxResult as $k => $v) {
             if ($v) {
-                $terr[] = sprintf("%s:%s.", $k, $v);
+                list($code, $err) = $v;
+                $terr[] = sprintf("{%s} %s:%s.", $code, $k, $err);
             }
         }
         return implode("\n", $terr);
@@ -103,9 +104,9 @@ class SyntaxAttribute
     {
         $id = $this->setKey('id');
         if (empty($id)) {
-            $this->errKey('is empty');
+            $this->errKey('FA001', 'is empty');
         } elseif (strlen($id) > 63) {
-            $this->errKey('too long (max 64 characters)');
+            $this->errKey('FA002', 'too long (max 64 characters)');
         }
     }
     /**
@@ -119,9 +120,9 @@ class SyntaxAttribute
         if ($this->isNodeNeedOrder()) {
             
             if (empty($order)) {
-                $this->errKey('is empty');
+                $this->errKey('FA003', 'is empty');
             } elseif (!is_numeric($order)) {
-                $this->errKey(sprintf('%s not a number', $order));
+                $this->errKey('FA004', sprintf('%s not a number', $order));
             }
         }
     }
@@ -134,9 +135,9 @@ class SyntaxAttribute
     {
         $vis = $this->setKey('visibility');
         if (empty($vis)) {
-            $this->errKey('is empty');
+            $this->errKey('FA005', 'is empty');
         } elseif (!in_array($vis, $this->visibilities)) {
-            $this->errKey(sprintf('%s is not valid', $vis));
+            $this->errKey('FA006', sprintf('%s is not valid', $vis));
         }
     }
     /**
@@ -148,14 +149,14 @@ class SyntaxAttribute
         $key = $this->setKey('setid');
         if ($this->isNodeNeedSet()) {
             if (empty($key)) {
-                $this->errKey('is empty');
+                $this->errKey('FA007', 'is empty');
             } elseif (strlen($key) > 63) {
-                $this->errKey('too long (max 64 characters)');
+                $this->errKey('FA008', 'too long (max 64 characters)');
             }
         } else {
             if ($key) {
                 if (strlen($key) > 63) {
-                    $this->errKey('too long (max 64 characters)');
+                    $this->errKey('FA008', 'too long (max 64 characters)');
                 }
             }
         }
@@ -168,15 +169,15 @@ class SyntaxAttribute
     {
         $key = $this->setKey('type');
         if (!$key) {
-            $this->errKey('is empty');
+            $this->errKey('FA009', 'is empty');
         } elseif (!in_array($key, $this->types)) {
             if (preg_match('/([a-z]+)\(["\'].+["\']\)/i', $key, $reg)) {
                 $type = $reg[1];
                 if (!in_array($type, $this->types)) {
-                    $this->errKey(sprintf('%s unrecognized in %s', $type, $key));
+                    $this->errKey('FA010', sprintf('%s unrecognized in %s', $type, $key));
                 }
             } else {
-                $this->errKey(sprintf('%s syntax error', $key));
+                $this->errKey('FA011', sprintf('%s syntax error', $key));
             }
         }
     }
@@ -207,9 +208,13 @@ class SyntaxAttribute
         return $this->struct->$key;
     }
     
-    private function errKey($err)
+    private function errKey($code, $err)
     {
-        $this->syntaxResult[$this->cKey] = $err;
+        
+        $this->syntaxResult[$this->cKey] = array(
+            $code,
+            $err
+        );
     }
 }
 

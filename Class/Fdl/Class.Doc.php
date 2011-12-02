@@ -496,7 +496,7 @@ class Doc extends DocCtrl
      *
      * @varring
      */
-    public $atag;
+    public $atags;
     /**
      * confidential level
      * if not 0 this document is confidential, only user with the permission 'confidential' can read this

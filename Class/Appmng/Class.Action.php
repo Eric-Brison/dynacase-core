@@ -82,7 +82,9 @@ create index action_idx2 on action(id_application);
 create index action_idx3 on action(name);
 create sequence SEQ_ID_ACTION;
                  ';
-    
+    /**
+     * @var Application
+     */
     var $parent;
     
     var $def = array(
@@ -476,7 +478,7 @@ create sequence SEQ_ID_ACTION;
                 $this->parent->parent->cssref = array();
                 $this->parent->parent->jsref = array();
             }
-            header('Warning: '.strtok($texterr,"\n"));
+            header('Warning: ' . strtok($texterr, "\n"));
             print $this->lay->gen();
             exit;
         } else {

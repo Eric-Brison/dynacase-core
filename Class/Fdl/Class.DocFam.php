@@ -56,6 +56,17 @@ create unique index idx_idfam on docfam(id);";
         "schar",
         "maxrev"
     );
+    public $genversion;
+    public $dfldid;
+    public $cfldid;
+    public $ccvid;
+    public $cprofid;
+    public $ddocid;
+    public $methods;
+    public $defval;
+    public $param;
+    public $schar;
+    public $maxrev;
     
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
     {
@@ -114,6 +125,7 @@ create unique index idx_idfam on docfam(id);";
             if (!$this->cprofid) $this->cprofid = $cdoc->cprofid;
             if (!$this->defval) $this->defval = $cdoc->defval;
             if (!$this->schar) $this->schar = $cdoc->schar;
+            if (!$this->usefor) $this->usefor = $cdoc->usefor;
         }
     }
     /**
