@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-14 16:51+0100\n"
-"PO-Revision-Date: 2011-11-14 16:58+0100\n"
+"POT-Creation-Date: 2011-12-05 15:06+0100\n"
+"PO-Revision-Date: 2011-12-05 15:13+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -106,17 +106,17 @@ msgstr "afficher les fichiers attachés"
 msgid "$code"
 msgstr ""
 
-#, fuzzy, c-format
+#, c-format
 msgid "%.02f Gb"
-msgstr "%d Go"
+msgstr "%.02f Go"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%.02f Kb"
-msgstr "%d Ko"
+msgstr "%.02f Ko"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%.02f Mb"
-msgstr "%d Mo"
+msgstr "%.02f Mo"
 
 #, c-format
 msgid "%d Gb"
@@ -398,6 +398,9 @@ msgstr "(Autre)"
 
 msgid "(Other)"
 msgstr "(Autre)"
+
+msgid "(file not found)"
+msgstr "(fichier non trouvé)"
 
 msgid "(free item)"
 msgstr "(inséré)"
@@ -846,6 +849,9 @@ msgstr "Annuler les changements et quitter le mode édition"
 msgid "Cancel the change state"
 msgstr "Annulation du changement d'état"
 
+msgid "Cannot access to vault file system"
+msgstr "Accès au coffre des fichiers impossible"
+
 #, c-format
 msgid ""
 "Cannot add %s in %s folder, restriction set to add this kind of document"
@@ -862,8 +868,12 @@ msgid "Cannot adding : [%s]"
 msgstr "Ajout impossible : [%s]"
 
 #, c-format
+msgid "Cannot copy file %s to %s"
+msgstr "Ne peut copier le fichier %s vers %s"
+
+#, c-format
 msgid "Cannot create directory %s for xml import"
-msgstr ""
+msgstr "Ne peux créer le répertoire %s pour import xml"
 
 msgid "Cannot do this action. Parent window is closed"
 msgstr "Ne peut faire cette action. La fenêtre parent est fermée"
@@ -881,7 +891,7 @@ msgid "Cannot include '%s'"
 msgstr "Ne peut inclure '%s'"
 
 msgid "Cannot open document"
-msgstr ""
+msgstr "Ne peut ouvrir le document"
 
 #, c-format
 msgid "Cannot set logical name %s because object is not affected"
@@ -889,7 +899,7 @@ msgstr "Le nom logique %s ne peut être affecté qu'après création du document
 
 #, c-format
 msgid "Cannot write to log %s"
-msgstr ""
+msgstr "Ne peux pas écrire dans les logs %s"
 
 msgid "Capacity"
 msgstr "Capacité"
@@ -939,7 +949,7 @@ msgid "Change default search"
 msgstr "Changer la recherche par défaut"
 
 msgid "Change enum"
-msgstr ""
+msgstr "Changer d'énuméré"
 
 msgid "Change icon"
 msgstr "Changer d'icone"
@@ -1344,6 +1354,10 @@ msgstr "Répertoire"
 msgid "Directory already exists"
 msgstr "Répertoire déjà existant"
 
+#, c-format
+msgid "Disease of %s "
+msgstr ""
+
 msgid "Display available choices"
 msgstr "Afficher les choix possibles"
 
@@ -1454,18 +1468,18 @@ msgstr ""
 
 #, c-format
 msgid "Dynamic template %s not an odt file "
-msgstr ""
+msgstr "Le fichier %s utilié pour un modèle dynamique n'est pas un odt"
 
 #, c-format
 msgid "Dynamic template %s not found "
-msgstr ""
+msgstr "Le modèle dynamique %s n'a pas été trouvé"
 
 #, c-format
 msgid "ERROR %s\n"
 msgstr "ERREUR %s\n"
 
 msgid "ERROR :"
-msgstr ""
+msgstr "ERREUR :"
 
 msgid "EXPORT_CSV : identifiant unique"
 msgstr "id (identifiant unique)"
@@ -1620,9 +1634,9 @@ msgstr "Erreur pendant la création du fichier temporaire de log sql."
 msgid "Error in portfolio : folder %s not exists"
 msgstr "Erreur dans la chemise : dossier %s n'existe pas"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening %s file '%s'"
-msgstr "Erreur lors de l'envoi du fichier"
+msgstr "Erreur lors de l'ouverture %s du fichier %s"
 
 msgid "Error sending file"
 msgstr "Erreur lors de l'envoi du fichier"
@@ -1690,8 +1704,13 @@ msgstr ""
 msgid "Ext user interface api"
 msgstr ""
 
-msgid "Failed to copy $infile to $f"
-msgstr "Echec de la copie de $infile vers $f"
+#, c-format
+msgid "Failed to copy %s to %s"
+msgstr "Échec de la copie du fichier %s vers %s"
+
+#, c-format
+msgid "Failed to copy %s to vault"
+msgstr "Échec de la copie du fichier %s dans le coffre"
 
 msgid "Familly Document"
 msgstr "Famille de document"
@@ -1900,7 +1919,7 @@ msgid "Gb"
 msgstr "Go"
 
 msgid "General search"
-msgstr ""
+msgstr "Recherche générale"
 
 msgid "Generate new vault"
 msgstr "Créer un nouveau coffre"
@@ -2075,7 +2094,7 @@ msgid "Insert the content in %s"
 msgstr "Insérer le contenu dans %s"
 
 msgid "Inserted in a domain"
-msgstr ""
+msgstr "Inséré dans un domaine"
 
 msgid "Internet explorer site"
 msgstr "Site de Microsoft"
@@ -2397,7 +2416,7 @@ msgstr "Pas d'identificateurs"
 
 #, c-format
 msgid "No identificator found for relation %s"
-msgstr ""
+msgstr "Aucun identificateur pour la relation %s"
 
 msgid "No need to refresh group"
 msgstr "Tous les groupes sont actualisés"
@@ -2425,7 +2444,7 @@ msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
 #, c-format
 msgid "Not a family [%s]"
-msgstr ""
+msgstr "Pas une famille [%s]"
 
 #, c-format
 msgid ""
@@ -2521,6 +2540,7 @@ msgstr "Autres"
 msgid "Output file '%s' already exists."
 msgstr "Le fichier de sortie '%s' existe déjà."
 
+#, c-format
 msgid "Output file '%s' is already opened."
 msgstr "Le fichier de sortie '%s' est déjà ouvert."
 
@@ -3054,6 +3074,12 @@ msgstr "Système"
 msgid "System document"
 msgstr "Documents système"
 
+msgid "T1"
+msgstr ""
+
+msgid "T3"
+msgstr ""
+
 msgid "T?"
 msgstr "T?"
 
@@ -3072,6 +3098,9 @@ msgstr "Table '%s' inconnue !"
 
 msgid "Tb"
 msgstr "To"
+
+msgid "Tconvalescent"
+msgstr ""
 
 #, c-format
 msgid "Template [%s] not found"
@@ -3218,6 +3247,7 @@ msgstr "Numéro de port du serveur de transformation"
 
 msgid "Transformation Engine timeout connection (in seconds)"
 msgstr ""
+"Temps d'attente de connexion pour le moteur de transformation (en secondes)"
 
 msgid "Transition parameters"
 msgstr "Paramètres pour le changement d'état"
@@ -3227,6 +3257,9 @@ msgstr "Transitions"
 
 msgid "Trash"
 msgstr "Poubelle"
+
+msgid "Tsick"
+msgstr ""
 
 msgid "Tuesday"
 msgstr "Mardi"
@@ -3437,6 +3470,18 @@ msgid ""
 msgstr ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
 "pour accéder à cette ressource"
+
+#, c-format
+msgid "WID : %s"
+msgstr ""
+
+#, c-format
+msgid "WID : workflow '%s' is not a workflow"
+msgstr ""
+
+#, c-format
+msgid "WID : workflow '%s' not found"
+msgstr ""
 
 msgid "WebDav FREEDOM system file"
 msgstr "Système de fichiers WebDAV DYNACASE"
@@ -3797,6 +3842,9 @@ msgstr "pas de courriel"
 msgid "affect user to a document"
 msgstr "affecter un utilisateur à un document"
 
+msgid "alive"
+msgstr ""
+
 msgid "all"
 msgstr "tous les mots"
 
@@ -4021,8 +4069,9 @@ msgstr "échec de l'authentification"
 msgid "authent reqpassword"
 msgstr "Mot de passe oublié ?"
 
-msgid "authentication failed"
-msgstr "échec d'authentification"
+#, c-format
+msgid "authentication failed for %s"
+msgstr ""
 
 msgid "author"
 msgstr "auteur"
@@ -4144,6 +4193,9 @@ msgstr "accès à la base de données $db refusé\n"
 msgid "cannot access to core database service [service='$pgservice_core']"
 msgstr ""
 "accès impossible à la base de données par défaut [service='$pgservice_core']"
+
+msgid "cannot access to vault file system"
+msgstr "Accès impossible au coffre des fichiers"
 
 #, c-format
 msgid "cannot change owner of %s: aborted\n"
@@ -4609,6 +4661,9 @@ msgstr "contrôle de vues"
 msgid "controlaccess"
 msgstr "Contrôle des accès"
 
+msgid "convalescent"
+msgstr ""
+
 #, c-format
 msgid "conversion %s in progress"
 msgstr "conversion %s en cours"
@@ -4788,6 +4843,9 @@ msgstr "date"
 msgid "days"
 msgstr "jours"
 
+msgid "dead"
+msgstr ""
+
 #, c-format
 msgid "declaration syntax does not match special help input '%s'"
 msgstr "Syntaxe de déclaration ne correspond pas à une aide à la saisie '%s'"
@@ -4848,13 +4906,8 @@ msgstr "définition de l'attribut énuméré %s de la famille %s"
 msgid "del entry from a document forum"
 msgstr "supprimer une entrée de forum"
 
-#, fuzzy
 msgid "delconfirm"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"Voulez-vous supprimer\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Confirmez-vous la suppression de l`utilisateur"
+msgstr "Voulez-vous supprimer"
 
 msgid "delconfirmparam"
 msgstr "Confirmez-vous la suppression du param&egrave;tre "
@@ -4862,13 +4915,8 @@ msgstr "Confirmez-vous la suppression du param&egrave;tre "
 msgid "delconfirmstyle"
 msgstr "Confirmez-vous la suppression du style"
 
-#, fuzzy
 msgid "delete"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"supprimer\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Détruire"
+msgstr "supprimer"
 
 #, c-format
 msgid "delete %s for %s"
@@ -5201,13 +5249,8 @@ msgstr "e1"
 msgid "e2"
 msgstr "e2"
 
-#, fuzzy
 msgid "edit"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"éditer\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Modifier"
+msgstr "Modifier"
 
 msgid "edit args of actions in workflow edition "
 msgstr "édition des arguments des actions dans l'édition des cycles"
@@ -5659,6 +5702,10 @@ msgid "file %d"
 msgstr "fichier %d"
 
 #, c-format
+msgid "file %s : %s"
+msgstr "fichier %s : %s"
+
+#, c-format
 msgid "file %s not found"
 msgstr "fichier %s non trouvé"
 
@@ -5853,9 +5900,6 @@ msgstr "date de début"
 
 msgid "full phrase"
 msgstr "la phrase entière"
-
-msgid "full text search document"
-msgstr "recherche plein texte"
 
 msgid "fullname"
 msgstr "Utilisateur"
@@ -6110,7 +6154,7 @@ msgstr "modification de l'importation"
 
 #, c-format
 msgid "import file %s not found"
-msgstr ""
+msgstr "fichier d'import %s non trouvé"
 
 msgid "import file:"
 msgstr "Fichier à importer :"
@@ -6667,13 +6711,8 @@ msgstr "suivant"
 msgid "next level"
 msgstr "niveau supérieur"
 
-#, fuzzy
 msgid "no"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"non\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Non"
+msgstr "non"
 
 msgid "no access control"
 msgstr "pas de contrôle d'accès"
@@ -6781,9 +6820,6 @@ msgstr ""
 
 msgid "no image"
 msgstr "pas d'image"
-
-msgid "no import file specified"
-msgstr "pas de fichier d'import spécifié"
 
 msgid "no key2"
 msgstr "pas de clef"
@@ -6911,13 +6947,8 @@ msgstr "pas de cycle de vie pour ce document"
 msgid "no zone specified"
 msgstr "pas de zone spécifiée"
 
-#, fuzzy
 msgid "nomail"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"pas d'email\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Pas de compte mail"
+msgstr "pas d'email"
 
 msgid "none"
 msgstr "Aucun"
@@ -7231,13 +7262,8 @@ msgstr "Recherche préférée"
 msgid "preferential doc gate id"
 msgstr ""
 
-#, fuzzy
 msgid "prev"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"suivant\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"précédent"
+msgstr "précédent"
 
 msgid "previous level"
 msgstr "niveau inférieur"
@@ -7570,13 +7596,8 @@ msgstr "révision du document"
 msgid "revival document"
 msgstr "restauration du document"
 
-#, fuzzy
 msgid "root"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"racine\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Root"
+msgstr "racine"
 
 msgid "root folder id"
 msgstr "Identificateur du dossier racine"
@@ -7832,9 +7853,11 @@ msgstr "Affiche la sélection de la langue lors de la demande de mot de passe"
 msgid "show request for password"
 msgstr "Affiche le lien pour la demande de mot de passe"
 
-#, fuzzy
 msgid "show vaults occupation"
-msgstr "Analyse des taux d'occupation des coffres"
+msgstr "Affiche les taux d'occupation des coffres"
+
+msgid "sick"
+msgstr ""
 
 #, c-format
 msgid "similar document %s found. keep similar"
@@ -8263,6 +8286,9 @@ msgstr "nombre total de fichiers indexés"
 msgid "town of our society"
 msgstr "ville de votre société"
 
+msgid "transfered"
+msgstr ""
+
 #, c-format
 msgid "try add acl %s"
 msgstr "essai d'ajout de l'acl %s "
@@ -8403,6 +8429,9 @@ msgstr "document non référencé"
 msgid "unselect"
 msgstr "déselectionner"
 
+msgid "unset default workflow"
+msgstr ""
+
 #, c-format
 msgid "untitle %s %d"
 msgstr "%s sans titre %d"
@@ -8413,13 +8442,8 @@ msgstr "document sans titre"
 msgid "untitle family"
 msgstr "famille sans titre"
 
-#, fuzzy
 msgid "update"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"mis à jour\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"mise à jour"
+msgstr "mise à jour"
 
 #, c-format
 msgid "update %s [%d] "
@@ -8571,13 +8595,8 @@ msgstr "Login"
 msgid "username"
 msgstr "Nom"
 
-#, fuzzy
 msgid "users list"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"liste des utilisateurs\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"les utilisateurs"
+msgstr "liste des utilisateurs"
 
 msgid "val"
 msgstr "Valeur"
@@ -8589,6 +8608,10 @@ msgstr "la valeur [%s] n'est pas un nombre"
 #, c-format
 msgid "value [%s] is not a valid date"
 msgstr "la valeur [%s] n'est pas une date valide"
+
+#, c-format
+msgid "value [%s] is not a valid time"
+msgstr ""
 
 #, c-format
 msgid "value [%s] is not a valid timestamp"
@@ -8855,13 +8878,8 @@ msgstr ""
 msgid "xml parse error %s"
 msgstr ""
 
-#, fuzzy
 msgid "yes"
-msgstr ""
-"#-#-#-#-#  FREEDOM_fr.po (FREEDOM)  #-#-#-#-#\n"
-"oui\n"
-"#-#-#-#-#  WHAT_fr.po (WHAT 1.3)  #-#-#-#-#\n"
-"Oui"
+msgstr "oui"
 
 msgid "yesterday"
 msgstr "hier"
@@ -8965,6 +8983,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
+#~ msgid "Failed to copy $infile to $f"
+#~ msgstr "Echec de la copie de $infile vers $f"
+
 #~ msgid "No privilege to define accessibilities"
 #~ msgstr "Aucun privilège pour définir les droits d'accès"
 
@@ -8976,6 +8997,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"
+
+#~ msgid "authentication failed"
+#~ msgstr "échec d'authentification"
 
 #~ msgid "book the document to modify it with offline application"
 #~ msgstr "réserver le document pour le modifier avec l'application offline"
@@ -8998,8 +9022,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "elinkEncode::attribute not found %s"
 #~ msgstr "elinkEncode :  attribut non trouvé %s"
 
+#~ msgid "full text search document"
+#~ msgstr "recherche plein texte"
+
 #~ msgid "insert the document to see it with offline application"
 #~ msgstr "insérer le document pour le voir avec l'application offline"
+
+#~ msgid "no import file specified"
+#~ msgstr "pas de fichier d'import spécifié"
 
 #~ msgid "no trash image"
 #~ msgstr "image de la poubelle non trouvée"

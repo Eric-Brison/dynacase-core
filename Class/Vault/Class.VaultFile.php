@@ -22,7 +22,20 @@ define("VAULT_DMODE", 0700);
 
 class VaultFile
 {
-    
+    /**
+     * @var int file ideentificator
+     */
+    public $idf;
+    public $u_owner = HTTP_USER;
+    public $g_owner = HTTP_USER;
+    public $f_mode = 0600;
+    public $d_mode = 0700;
+    public $type = "fs";
+    public $use_cache = true;
+    /**
+     * @var VaultDiskStorage
+     */
+    public $storage;
     function __construct($access, $vaultname = "Sample", $idf = - 1)
     {
         
@@ -53,7 +66,14 @@ class VaultFile
         }
 }
 // ---------------------------------------------------------
-function Show($id_file, &$infos, $teng_lname = "")
+
+/**
+ * @param int $id_file vault file identificator
+ * @param vaultFileInfo $infos file properties
+ * @param string $teng_lname engine name
+ * @return string error message
+ */
+function show($id_file, &$infos, $teng_lname = "")
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Show");
@@ -63,7 +83,7 @@ function Show($id_file, &$infos, $teng_lname = "")
     return ($msg);
 }
 // ---------------------------------------------------------
-function Retrieve($id_file, &$infos)
+function retrieve($id_file, &$infos)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Retrieve");
@@ -102,7 +122,7 @@ function Retrieve($id_file, &$infos)
     }
 }
 // ---------------------------------------------------------
-function Store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_id_file = 0)
+function store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_id_file = 0)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Store");
@@ -122,7 +142,7 @@ function Store($infile, $public_access, &$id, $fsname = "", $te_name = "", $te_i
     return ($msg);
 }
 // ---------------------------------------------------------
-function Save($infile, $public_access, $id)
+function save($infile, $public_access, $id)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Save");
@@ -144,7 +164,7 @@ function Save($infile, $public_access, $id)
 /**
  * Modification of properties if file
  */
-function Rename($id_file, $newname)
+function rename($id_file, $newname)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Rename");
@@ -193,7 +213,7 @@ function Rename($id_file, $newname)
     return ($msg);
 }
 // ---------------------------------------------------------
-function Stats(&$s)
+function stats(&$s)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Stats");
@@ -202,7 +222,7 @@ function Stats(&$s)
     return '';
 }
 // ---------------------------------------------------------
-function ListFiles(&$s)
+function listFiles(&$s)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("ListFiles");
@@ -211,7 +231,7 @@ function ListFiles(&$s)
     return '';
 }
 // ---------------------------------------------------------
-function Destroy($id)
+function destroy($id)
 {
     // ---------------------------------------------------------
     if ($this->chrono) $this->logger->start("Destroy");

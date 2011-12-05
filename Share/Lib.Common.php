@@ -48,10 +48,14 @@ function deprecatedFunction($msg = '')
     global $action;
     if (isset($action->parent)) $action->parent->log->deprecated("Deprecated : " . $msg);
 }
-function AddWarningMsg($msg)
+/**
+ * send a warning msg to the user interface
+ * @param string $msg
+ */
+function addWarningMsg($msg)
 {
     global $action;
-    if (isset($action->parent)) $action->parent->AddWarningMsg($msg);
+    if (isset($action->parent)) $action->parent->addWarningMsg($msg);
 }
 /**
  * get mail addr of a user

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-14 16:51+0100\n"
+"POT-Creation-Date: 2011-12-05 15:06+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -412,6 +412,9 @@ msgid "(Other input)"
 msgstr ""
 
 msgid "(Other)"
+msgstr ""
+
+msgid "(file not found)"
 msgstr ""
 
 #, fuzzy
@@ -888,6 +891,9 @@ msgstr ""
 msgid "Cancel the change state"
 msgstr "Category"
 
+msgid "Cannot access to vault file system"
+msgstr ""
+
 #, c-format
 msgid ""
 "Cannot add %s in %s folder, restriction set to add this kind of document"
@@ -899,6 +905,10 @@ msgstr ""
 
 #, c-format
 msgid "Cannot adding : [%s]"
+msgstr ""
+
+#, c-format
+msgid "Cannot copy file %s to %s"
 msgstr ""
 
 #, c-format
@@ -1427,6 +1437,10 @@ msgstr ""
 msgid "Directory already exists"
 msgstr ""
 
+#, c-format
+msgid "Disease of %s "
+msgstr ""
+
 msgid "Display available choices"
 msgstr ""
 
@@ -1777,7 +1791,12 @@ msgstr ""
 msgid "Ext user interface api"
 msgstr ""
 
-msgid "Failed to copy $infile to $f"
+#, c-format
+msgid "Failed to copy %s to %s"
+msgstr ""
+
+#, c-format
+msgid "Failed to copy %s to vault"
 msgstr ""
 
 #, fuzzy
@@ -2654,6 +2673,7 @@ msgstr "Delete"
 msgid "Output file '%s' already exists."
 msgstr ""
 
+#, c-format
 msgid "Output file '%s' is already opened."
 msgstr ""
 
@@ -3236,6 +3256,12 @@ msgstr "Identity"
 msgid "System document"
 msgstr "Import"
 
+msgid "T1"
+msgstr ""
+
+msgid "T3"
+msgstr ""
+
 msgid "T?"
 msgstr ""
 
@@ -3253,6 +3279,9 @@ msgid "Table '%s' unknown !"
 msgstr ""
 
 msgid "Tb"
+msgstr ""
+
+msgid "Tconvalescent"
 msgstr ""
 
 #, c-format
@@ -3391,6 +3420,9 @@ msgid "Transitions"
 msgstr ""
 
 msgid "Trash"
+msgstr ""
+
+msgid "Tsick"
 msgstr ""
 
 msgid "Tuesday"
@@ -3617,6 +3649,18 @@ msgstr "Start search"
 msgid ""
 "Vous devez entrer un nom d'utilisateur valide et un mot de passe correct "
 "pour acceder a cette ressource"
+msgstr ""
+
+#, c-format
+msgid "WID : %s"
+msgstr ""
+
+#, c-format
+msgid "WID : workflow '%s' is not a workflow"
+msgstr ""
+
+#, c-format
+msgid "WID : workflow '%s' not found"
 msgstr ""
 
 msgid "WebDav FREEDOM system file"
@@ -4010,6 +4054,9 @@ msgstr ""
 msgid "affect user to a document"
 msgstr "Delete"
 
+msgid "alive"
+msgstr ""
+
 #, fuzzy
 msgid "all"
 msgstr "readall"
@@ -4244,7 +4291,8 @@ msgstr "Authentication failed : try again"
 msgid "authent reqpassword"
 msgstr "Lost password?"
 
-msgid "authentication failed"
+#, c-format
+msgid "authentication failed for %s"
 msgstr ""
 
 msgid "author"
@@ -4367,6 +4415,9 @@ msgid "cannot access to  database $db\n"
 msgstr ""
 
 msgid "cannot access to core database service [service='$pgservice_core']"
+msgstr ""
+
+msgid "cannot access to vault file system"
 msgstr ""
 
 #, c-format
@@ -4852,6 +4903,9 @@ msgstr "Category"
 msgid "controlaccess"
 msgstr "Access Control"
 
+msgid "convalescent"
+msgstr ""
+
 #, c-format
 msgid "conversion %s in progress"
 msgstr ""
@@ -5043,6 +5097,9 @@ msgid "date"
 msgstr "Edit"
 
 msgid "days"
+msgstr ""
+
+msgid "dead"
 msgstr ""
 
 #, c-format
@@ -5978,6 +6035,10 @@ msgstr "Update Title Cards"
 msgid "file %d"
 msgstr "Update Title Cards"
 
+#, c-format
+msgid "file %s : %s"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "file %s not found"
 msgstr "Import"
@@ -6194,10 +6255,6 @@ msgstr "Edit"
 
 msgid "full phrase"
 msgstr ""
-
-#, fuzzy
-msgid "full text search document"
-msgstr "Start search"
 
 msgid "fullname"
 msgstr "Username"
@@ -7198,9 +7255,6 @@ msgstr ""
 #, fuzzy
 msgid "no image"
 msgstr "Firstname"
-
-msgid "no import file specified"
-msgstr ""
 
 msgid "no key2"
 msgstr ""
@@ -8328,6 +8382,9 @@ msgstr "Show password request link in login panel"
 msgid "show vaults occupation"
 msgstr ""
 
+msgid "sick"
+msgstr ""
+
 #, c-format
 msgid "similar document %s found. keep similar"
 msgstr ""
@@ -8760,6 +8817,9 @@ msgstr ""
 msgid "town of our society"
 msgstr ""
 
+msgid "transfered"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "try add acl %s"
 msgstr "Add new contact card"
@@ -8901,6 +8961,9 @@ msgid "unreferenced document"
 msgstr ""
 
 msgid "unselect"
+msgstr ""
+
+msgid "unset default workflow"
 msgstr ""
 
 #, fuzzy, c-format
@@ -9093,6 +9156,10 @@ msgstr ""
 
 #, c-format
 msgid "value [%s] is not a valid date"
+msgstr ""
+
+#, c-format
+msgid "value [%s] is not a valid time"
 msgstr ""
 
 #, c-format
@@ -9480,3 +9547,7 @@ msgstr ""
 
 msgid "{left} title include {right}"
 msgstr ""
+
+#, fuzzy
+#~ msgid "full text search document"
+#~ msgstr "Start search"

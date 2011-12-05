@@ -97,8 +97,10 @@ create sequence SEQ_ID_APPLICATION start 10;
             "type" => "TXT"
         )
     );
-    
-    public $parent = "";
+    /**
+     * @var Application
+     */
+    public $parent = null;
     
     public $param;
     public $permission = null; // permission object
@@ -371,12 +373,17 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->log->info($suser . $code);
         }
     }
-    function AddWarningMsg($code)
+    /**
+     * send a message to the user interface
+     * @param string $code message
+     * @return mixed
+     */
+    function addWarningMsg($code)
     {
         if (($code == "") || ($code == "-")) return;
         // Js Code are stored in the top level application
         if ($this->hasParent()) {
-            $this->parent->AddWarningMsg($code);
+            $this->parent->addWarningMsg($code);
         } else {
             if ($_SERVER['HTTP_HOST'] != "") {
                 $logmsg = $this->session->read("warningmsg", array());

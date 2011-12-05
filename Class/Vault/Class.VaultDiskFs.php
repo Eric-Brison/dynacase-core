@@ -52,6 +52,20 @@ class VaultDiskFs extends DbObj
                                  r_path varchar(2048)
                                );
            create sequence seq_id_vaultdiskfs%s start 10;";
+    /**
+     * @var int file system id (10 is the first)
+     */
+    public $id_fs;
+    public $fsname;
+    public $max_size;
+    public $free_size;
+    public $subdir_cnt_bydir;
+    public $subdir_deep;
+    public $max_entries_by_dir;
+    /**
+     * @var string path to vault root
+     */
+    public $r_path;
     // --------------------------------------------------------------------
     function __construct($dbaccess, $id_fs = '')
     {
@@ -77,6 +91,19 @@ class VaultDiskFs extends DbObj
             $err = $this->Add();
         }
         return $err;
+    }
+    /**
+     * verify if fs is availlable (file system is mounted)
+     * @return book
+     */
+    function isAvailable()
+    {
+        if ($this->isAffected()) {
+            if ($this->r_path) {
+                if (is_dir($this->r_path)) return true;
+            }
+        }
+        return false;
     }
     // --------------------------------------------------------------------
     function PreInsert()

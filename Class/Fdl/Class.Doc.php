@@ -582,6 +582,10 @@ class Doc extends DocCtrl
     private $constraintbroken = false; // true if one constraint is not verified
     
     /**
+     * @var bool to send once vault error
+     */
+    private $vaultErrorSent = false;
+    /**
      * default family id for the profil access
      * @var int
      */
@@ -4883,7 +4887,16 @@ create unique index i_docir on doc(initid, revision);";
             }
             return $v;
         }
-        
+        /**
+         * @param NormalAttribute $oattr
+         * @param string $value
+         * @param string $target
+         * @param bool $htmllink
+         * @param int $index
+         * @param bool $entities
+         * @param bool $abstract
+         * @return string the formated value
+         */
         final public function getHtmlValue($oattr, $value, $target = "_self", $htmllink = true, $index = - 1, $entities = true, $abstract = false)
         {
             global $action;
@@ -4897,7 +4910,6 @@ create unique index i_docir on doc(initid, revision);";
                 $tvalues[$index] = $value;
             }
             $idocfamid = $oattr->format;
-            
             $attrid = $oattr->id;
             foreach ($tvalues as $kvalue => $avalue) {
                 $htmlval = "";
@@ -4933,7 +4945,18 @@ create unique index i_docir on doc(initid, revision);";
                             $vid = "";
                             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
                                 $vid = $reg[2];
-                                
+                                $fileInfo = new VaultFileInfo();
+                                $vf = newFreeVaultFile($this->dbaccess);
+                                if ($vf->Show($reg[2], $fileInfo) == "") {
+                                    if (!file_exists($fileInfo->path)) {
+                                        if (!$vf->storage->fs->isAvailable()) {
+                                            if (!$this->vaultErrorSent) addWarningMsg(sprintf(_("cannot access to vault file system")));
+                                            $this->vaultErrorSent = true;
+                                        } else {
+                                            addWarningMsg(sprintf(_("file %s not found") , $fileInfo->name));
+                                        }
+                                    }
+                                }
                                 if (($oattr->repeat) && ($index <= 0)) $idx = $kvalue;
                                 else $idx = $index;
                                 $inline = $oattr->getOption("inline");
@@ -4949,15 +4972,27 @@ create unique index i_docir on doc(initid, revision);";
 
                     case "file":
                         $vid = "";
-                        $info = false;
+                        $fileInfo = false;
                         if (preg_match(PREGEXPFILE, $avalue, $reg)) {
                             // reg[1] is mime type
                             $vid = $reg[2];
                             $mime = $reg[1];
                             include_once ("FDL/Lib.Dir.php");
                             $vf = newFreeVaultFile($this->dbaccess);
-                            if ($vf->Show($reg[2], $info) == "") $fname = $info->name;
-                            else $htmlval = _("vault file error");
+                            $fileInfo = new VaultFileInfo();
+                            if ($vf->Show($reg[2], $fileInfo) == "") {
+                                $fname = $fileInfo->name;
+                                if (!file_exists($fileInfo->path)) {
+                                    if (!$vf->storage->fs->isAvailable()) {
+                                        if (!$this->vaultErrorSent) addWarningMsg(sprintf(_("Cannot access to vault file system")));
+                                        $this->vaultErrorSent = true;
+                                    } else {
+                                        addWarningMsg(sprintf(_("file %s not found") , $fileInfo->name));
+                                    }
+                                    
+                                    $fname.= ' ' . _("(file not found)");
+                                }
+                            } else $htmlval = _("vault file error");
                         } else $htmlval = _("no filename");
                         
                         if ($target == "mail") {
@@ -4966,11 +5001,11 @@ create unique index i_docir on doc(initid, revision);";
                             if ($index >= 0) $htmlval.= "+$index";
                             $htmlval.= "\">" . $fname . "</a>";
                         } else {
-                            if ($info) {
-                                if ($info->teng_state < 0 || $info->teng_state > 1) {
+                            if ($fileInfo) {
+                                if ($fileInfo->teng_state < 0 || $fileInfo->teng_state > 1) {
                                     $htmlval = "";
                                     include_once ("WHAT/Class.TEClient.php");
-                                    switch (intval($info->teng_state)) {
+                                    switch (intval($fileInfo->teng_state)) {
                                         case TransformationEngine::error_convert: // convert fail
                                             $textval = _("file conversion failed");
                                             break;
@@ -4992,15 +5027,15 @@ create unique index i_docir on doc(initid, revision);";
                                             break;
 
                                         default:
-                                            $textval = sprintf(_("unknown file state %s") , $info->teng_state);
+                                            $textval = sprintf(_("unknown file state %s") , $fileInfo->teng_state);
                                     }
                                     if ($htmllink) {
                                         //$errconvert=trim(file_get_contents($info->path));
                                         //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
-                                        if ($info->teng_state > 1) $waiting = "<img class=\"mime\" src=\"Images/loading.gif\">";
+                                        if ($fileInfo->teng_state > 1) $waiting = "<img class=\"mime\" src=\"Images/loading.gif\">";
                                         else $waiting = "<img class=\"mime\" needresize=1 src=\"lib/ui/icon/bullet_error.png\">";;
-                                        $htmlval = sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>', $this->getFileLink($oattr->id, $index) , $info->id_file, str_replace("'", "&rsquo;", _("file status")) , $waiting, $textval);
-                                        if ($info->teng_state < 0) {
+                                        $htmlval = sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>', $this->getFileLink($oattr->id, $index) , $fileInfo->id_file, str_replace("'", "&rsquo;", _("file status")) , $waiting, $textval);
+                                        if ($fileInfo->teng_state < 0) {
                                             $htmlval.= sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>', $this->id, $oattr->id, $index, _("retry file conversion") , "lib/ui/icon/arrow_refresh.png");
                                         }
                                     } else {
@@ -5008,7 +5043,7 @@ create unique index i_docir on doc(initid, revision);";
                                     }
                                 } elseif ($htmllink) {
                                     
-                                    $mimeicon = getIconMimeFile($info->mime_s == "" ? $mime : $info->mime_s);
+                                    $mimeicon = getIconMimeFile($fileInfo->mime_s == "" ? $mime : $fileInfo->mime_s);
                                     if (($oattr->repeat) && ($index <= 0)) $idx = $kvalue;
                                     else $idx = $index;
                                     $standardview = true;
@@ -5017,15 +5052,16 @@ create unique index i_docir on doc(initid, revision);";
                                     if ($viewfiletype == "image" || $viewfiletype == "pdf") {
                                         global $action;
                                         $waiting = false;
-                                        if (substr($info->mime_s, 0, 5) == "image") {
+                                        if (substr($fileInfo->mime_s, 0, 5) == "image") {
                                             $imageview = true;
                                             $viewfiletype = 'png';
                                             $pages = 1;
-                                        } elseif (substr($info->mime_s, 0, 4) == "text") {
+                                        } elseif (substr($fileInfo->mime_s, 0, 4) == "text") {
                                             $imageview = true;
                                             $viewfiletype = 'embed';
                                             $pages = 1;
                                         } else {
+                                            $infopdf = new VaultFileInfo();
                                             $err = $vf->Show($vid, $infopdf, 'pdf');
                                             if ($err == "") {
                                                 if ($infopdf->teng_state == TransformationEngine::status_done || $infopdf->teng_state == TransformationEngine::status_waiting || $infopdf->teng_state == TransformationEngine::status_inprogress) {
@@ -5057,7 +5093,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $lay->set("pdflink", '');
                                             if ($pdfattr = $oattr->getOption('pdffile')) {
                                                 //$infopdf=$this->vault_properties($this->getAttribute($pdfattr));
-                                                if (!preg_match('/^(text|image)/', $info->mime_s)) {
+                                                if (!preg_match('/^(text|image)/', $fileInfo->mime_s)) {
                                                     //$pdfidx=($idx <0)?0:$idx;
                                                     if ($waiting || preg_match('/(pdf)/', $infopdf->mime_s)) {
                                                         $lay->set("pdflink", $this->getFileLink($pdfattr, $idx, false, false));
@@ -5070,7 +5106,7 @@ create unique index i_docir on doc(initid, revision);";
                                         }
                                     }
                                     if ($standardview) {
-                                        $size = round($info->size / 1024) . _("AbbrKbyte");
+                                        $size = round($fileInfo->size / 1024) . _("AbbrKbyte");
                                         $utarget = ($action->Read("navigator", "") == "NETSCAPE") ? "_self" : "_blank";
                                         $opt = "";
                                         $inline = $oattr->getOption("inline");
@@ -5080,7 +5116,7 @@ create unique index i_docir on doc(initid, revision);";
                                         $htmlval.= $fname . "</a>";
                                     }
                                 } else {
-                                    $htmlval = $info->name;
+                                    $htmlval = $fileInfo->name;
                                 }
                             }
                         }
