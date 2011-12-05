@@ -69,19 +69,44 @@ class VaultDiskStorage extends DbObj
                                );
            create sequence seq_id_vaultdiskstorage start 10;
            CREATE INDEX vault_teng on vaultdiskstorage (teng_state);";
-    
+    public $id_file;
+    public $id_fs;
+    public $id_dir;
+    public $name;
+    public $size;
+    public $public_access;
+    public $mime_t;
+    public $mime_s;
+    public $cdate;
+    public $mdate;
+    public $adate;
+    public $teng_state;
+    public $teng_lname;
+    public $teng_id_file;
+    public $teng_comment;
     var $storage = 1;
+    /**
+     * @var VaultDiskFsStorage
+     */
+    public $fs;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
-        
         DbObj::__construct($dbaccess, $id, $res, $dbid);
-        if ($this->storage == 1) {
-            $this->fs = new VaultDiskFsStorage($dbaccess, $this->id_fs);
-        } else {
-            $this->fs = new VaultDiskFsCache($dbaccess, $this->id_fs);
-        }
         $this->logger = new Log("", "vault", $this->name);
+        $this->fs = new VaultDiskFsStorage($this->dbaccess);
+    }
+    /**
+     * set fs object
+     */
+    function Complete()
+    {
+        if ($this->storage == 1) {
+            $this->fs->Select($this->id_fs);
+        } else {
+            // not implemented
+            $this->fs = new VaultDiskFsCache($this->dbaccess, $this->id_fs);
+        }
     }
     // --------------------------------------------------------------------
     function PreInsert()
@@ -166,7 +191,7 @@ class VaultDiskStorage extends DbObj
         $this->mime_s = getSysMimeFile($infile, $this->name);
         $this->cdate = $this->mdate = $this->adate = date("c", time());
         
-        $this->teng_state = $te_state;
+        $this->teng_state = '';
         $this->teng_lname = $te_lname;
         $this->teng_id_file = $te_id_file;
         
@@ -178,7 +203,8 @@ class VaultDiskStorage extends DbObj
         $f = vaultfilename($f_path, $infile, $this->id_file);
         if (!@copy($infile, $f)) {
             // Free entry
-            return (_("Failed to copy $infile to $f"));
+            $this->logger->error(sprintf(_("Failed to copy %s to %s") , $infile, $f));
+            return (sprintf(_("Failed to copy %s to vault") , $infile));
         }
         
         $this->fs->AddEntry($this->size);
@@ -194,7 +220,7 @@ class VaultDiskStorage extends DbObj
     {
         
         if (!$this->isAffected()) return _("vault file is not initialized");
-        
+        $err = '';
         $q = new QueryDb($this->dbaccess, "VaultDiskStorage");
         $q->AddQuery("teng_id_file=" . $this->id_file);
         $q->AddQuery("teng_lname='" . pg_escape_string($te_name) . "'");
@@ -204,7 +230,7 @@ class VaultDiskStorage extends DbObj
             $ngf->teng_id_file = $this->id_file;
             $ngf->teng_lname = $te_name;
             $size = 1;
-            $ngf->fs->SetFreeFs($size, $id_fs, $id_dir, $f_path, $fsname);
+            $ngf->fs->SetFreeFs($size, $id_fs, $id_dir, $f_path, $fsname = '');
             $ngf->cdate = $ngf->mdate = $ngf->adate = date("c", time());
             $ngf->id_fs = $id_fs;
             $ngf->id_dir = $id_dir;
@@ -216,8 +242,13 @@ class VaultDiskStorage extends DbObj
         }
         return $err;
     }
-    // --------------------------------------------------------------------
-    function Show($id_file, &$f_infos, $teng_lname = "")
+    /**
+     * @param int $id_file vault file identificator
+     * @param VaultFileInfo $f_infos
+     * @param string $teng_lname engine name
+     * @return string
+     */
+    function show($id_file, &$f_infos, $teng_lname = "")
     {
         // --------------------------------------------------------------------
         $this->id_file = - 1;
@@ -239,7 +270,7 @@ class VaultDiskStorage extends DbObj
         
         if ($this->id_file != - 1) {
             $this->fs->Show($this->id_fs, $this->id_dir, $f_path);
-            $f_infos = new stdClass();
+            $f_infos = new VaultFileInfo();
             $f_infos->id_file = $this->id_file;
             $f_infos->name = $this->name;
             $f_infos->size = $this->size;
@@ -290,36 +321,38 @@ class VaultDiskStorage extends DbObj
     // --------------------------------------------------------------------
     function Save($infile, $public_access, $idf)
     {
-        // --------------------------------------------------------------------
+        $err = '';
         $vf = new VaultFile($this->dbaccess);
         if ($vf->Show($idf, $info) == "") {
             $path = str_replace("//", "/", $info->path);
+            
+            $size = $this->size;
+            $this->size = filesize($infile);
+            $newsize = $this->size - $size;
+            // Verifier s'il y a assez de places ???
+            $this->public_access = $public_access;
+            //$this->name = my_basename($infile); // not rename
+            $fd = fopen($path, "w+");
+            //    if (!unlink($path))
+            //	return("NOT UNLINK $path\n");
+            $this->mdate = date("c", time());
+            
+            $msg = $this->modify();
+            if ($msg != '') return ($msg);
+            
+            if (!copy($infile, $path)) {
+                $err = sprintf(_("Cannot copy file %s to %s") , $infile, $path);
+            } else {
+                $this->fs->select($this->id_fs);
+                $this->fs->AddEntry($newsize - $size);
+                $this->logger->debug("File $infile saved in $path");
+                
+                $this->resetTEFiles();
+            }
+        } else {
+            $err = sprintf("cannot save file : invalid vault descriptor %s", $idf);
         }
-        
-        $size = $this->size;
-        $this->size = filesize($infile);
-        $newsize = $this->size - $size;
-        // Verifier s'il y a assez de places ???
-        $this->public_access = $public_access;
-        //$this->name = my_basename($infile); // not rename
-        $fd = fopen($path, "w+");
-        //    if (!unlink($path))
-        //	return("NOT UNLINK $path\n");
-        $this->mdate = date("c", time());
-        
-        $msg = $this->modify();
-        if ($msg != '') return ($msg);
-        
-        if (!copy($infile, $path)) {
-            return ("La copie du fichier $infile dans $path n'a pas r&eacute;ussi...\n");
-        }
-        $this->fs->select($this->id_fs);
-        $this->fs->AddEntry($newsize - $size);
-        $this->logger->debug("File $infile saved in $pathname");
-        
-        $this->resetTEFiles();
-        
-        return "";
+        return $err;
     }
     /**
      * reset all files product by transform engine
@@ -330,5 +363,21 @@ class VaultDiskStorage extends DbObj
         $this->exec_query($up);
     }
 } // End Class.VaultFileDisk.php
-
+class VaultFileInfo
+{
+    public $id_file;
+    public $name;
+    public $size;
+    public $public_access;
+    public $mime_t;
+    public $mime_s;
+    public $cdate;
+    public $mdate;
+    public $adate;
+    public $teng_state;
+    public $teng_lname;
+    public $teng_vid;
+    public $teng_comment;
+    public $path;
+}
 ?>

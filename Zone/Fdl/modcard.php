@@ -228,7 +228,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
     return $err;
 }
 
-function setPostVars(&$doc, &$info = array())
+function setPostVars(Doc & $doc, &$info = array())
 {
     // update POSGRES text values
     global $_POST;
@@ -310,7 +310,7 @@ function setPostVars(&$doc, &$info = array())
 /**
  * insert file in VAULT from HTTP upload
  */
-function insert_file(&$doc, $attrid, $strict = false)
+function insert_file(Doc &$doc, $attrid, $strict = false)
 {
     
     global $action;
@@ -427,6 +427,7 @@ function insert_file(&$doc, $attrid, $strict = false)
                 
                 if ($err != "") {
                     AddWarningMsg($err);
+                    $doc->AddComment(sprintf(_("file %s : %s"),$userfile['name'], $err) ,HISTO_WARNING);
                 } else {
                     if ($oa && $oa->getOption('preventfilechange') == "yes") {
                         if (preg_match(PREGEXPFILE, $userfile["oldvalue"], $reg)) {
@@ -444,13 +445,13 @@ function insert_file(&$doc, $attrid, $strict = false)
                             }
                         }
                     }
+                    $rt[$k] = $userfile['type'] . "|" . $vid . '|' . $userfile['name']; // return file type and upload file name
+                    
                 }
             } else {
                 $err = sprintf(_("Possible file upload attack: filename '%s'.") , $userfile['name']);
                 $action->ExitError($err);
             }
-            $rt[$k] = $userfile['type'] . "|" . $vid . '|' . $userfile['name']; // return file type and upload file name
-            
         }
     }
     
