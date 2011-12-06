@@ -594,8 +594,30 @@ class importDocumentDescription
     {
         if (is_numeric($data[1])) $cvid = $data[1];
         else $cvid = getIdFromName($this->dbaccess, $data[1], 28);
-        $this->doc->ccvid = $cvid;
-        $this->tcr[$this->nLine]["msg"] = sprintf(_("set view control to '%s'") , $data[1]);
+
+
+        if ($data[1]) {
+                    try {
+                        $cvdoc = new_doc($this->dbaccess, $cvid);
+                        if (!$cvdoc->isAlive()) {
+                            $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' not found") , $data[1]);
+                        } else {
+                            if (!is_subclass_of($cvdoc, "CVDoc")) {
+                                $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' is not a view control") , $data[1]);
+                            } else {
+                                $this->doc->ccvid = $cvdoc->id;
+                            }
+                        }
+                        $this->tcr[$this->nLine]["msg"] = sprintf(_("set default view control to '%s'") , $data[1]);
+                    }
+                    catch(Exception $e) {
+                        $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : %s") , $e->getMessage());
+                    }
+                } else {
+                    $this->doc->ccvid = '';
+
+                    $this->tcr[$this->nLine]["msg"] = _("unset default view control");
+                }
     }
     /**
      * analyze METHOD
