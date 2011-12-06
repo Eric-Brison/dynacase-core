@@ -30,7 +30,6 @@ class _IGROUP extends _GROUP
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
-    //var $defaultview="FUSERS:FUSERS_IGROUP:V";
     var $defaultedit = "FUSERS:FUSERS_EIGROUP:T";
     var $exportLdap = array(
         // posixGroup
@@ -44,8 +43,7 @@ class _IGROUP extends _GROUP
         //  $err=$this->ComputeGroup();
         $err = "";
         $this->AddParamRefresh("US_WHATID", "GRP_MAIL,US_LOGIN");
-        if ($this->getValue("US_IDDOMAIN", 1) > 1) $this->AddParamRefresh("US_WHATID", "US_DOMAIN");
-        $this->AddParamRefresh("US_IDDOMAIN", "US_DOMAIN");
+
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
         $iduser = $this->getValue("US_WHATID");
@@ -100,14 +98,13 @@ class _IGROUP extends _GROUP
      */
     function RefreshGroup()
     {
-        if ($this->norefreshggroup) return;
+        if ($this->norefreshggroup) return '';
         include_once ("FDL/Lib.Usercard.php");
         //  $err=_GROUP::RefreshGroup();
-        $err.= $this->RefreshDocUser();
+        $err= $this->RefreshDocUser();
         //$err.=$this->refreshMembers();
         // refreshGroups(array($this->getValue("us_whatid")));
         $err.= $this->insertGroups();
-        //$err.=$this->SetGroupMail(($this->GetValue("US_IDDOMAIN")>1));
         $err.= $this->Modify();
         //AddWarningMsg(sprintf("RefreshGroup %d %s",$this->id, $this->title));
         if ($err == "") {
@@ -137,15 +134,17 @@ class _IGROUP extends _GROUP
         $uid = $this->GetValue("US_WHATID");
         $gname = $this->GetValue("GRP_NAME");
         $login = $this->GetValue("US_LOGIN");
-        $iddomain = $this->GetValue("US_IDDOMAIN");
         
         $fid = $this->id;
+        /**
+         * @var User $user
+         */
         $user = $this->getWUser();
         if (!$user) {
             $user = new User(""); // create new user
             $this->wuser = & $user;
         }
-        $err.= $user->SetGroups($fid, $gname, $login, $iddomain);
+        $err = $user->SetGroups($fid, $gname, $login);
         if ($err == "") {
             $this->setValue("US_WHATID", $user->id);
             $this->modify(false, array(
@@ -221,7 +220,7 @@ class _IGROUP extends _GROUP
         $gid = $this->getValue("US_WHATID");
         if ($gid > 0) {
             
-            $g = new Group("", $uid);
+            $g = new Group("");
             foreach ($tdocid as $k => $docid) {
                 $du = new_Doc($this->dbaccess, $docid);
                 $uid = $du->getValue("us_whatid");
@@ -341,11 +340,7 @@ class _IGROUP extends _GROUP
                 $this->SetValue("GRP_NAME", $wuser->lastname);
                 //   $this->SetValue("US_FNAME",$wuser->firstname);
                 $this->SetValue("US_LOGIN", $wuser->login);
-                $this->SetValue("US_IDDOMAIN", $wuser->iddomain);
-                include_once ("Class.Domain.php");
-                $dom = new Domain("", $wuser->iddomain);
-                $this->SetValue("US_DOMAIN", $dom->name);
-                if ($wuser->iddomain > 1) $this->SetValue("GRP_MAIL", getMailAddr($wid));
+
                 
                 $this->SetValue("US_MEID", $this->id);
                 // search group of the group
@@ -367,8 +362,6 @@ class _IGROUP extends _GROUP
                     "us_whatid",
                     "grp_name",
                     "us_login",
-                    "us_iddomain",
-                    "us_domain",
                     "us_meid",
                     "grp_pgroup",
                     "grp_idgroup"
@@ -385,7 +378,7 @@ class _IGROUP extends _GROUP
     function refreshMembers()
     {
         $norefresh = ($this->getValue("grp_hasmembers") == "no");
-        if ($norefrash) {
+        if ($norefresh) {
             $this->DeleteValue("GRP_USER");
             $this->DeleteValue("GRP_IDUSER");
         }
@@ -449,80 +442,7 @@ class _IGROUP extends _GROUP
             $oa->setVisibility('H');
         }
     }
-    
-    function fusers_igroup($target = "finfo", $ulink = true, $abstract = "Y")
-    {
-        global $action;
-        
-        $user = $this->getTvalue("grp_ruser");
-        $toomany = (count($user) > 100);
-        //setHttpVar("specialmenu","menuab");
-        $this->viewdefaultcard($target, $ulink, $abstract);
-        $action->parent->AddCssRef("USERCARD:faddbook.css", true);
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/USERCARD/Layout/faddbook.js");
-        // list of attributes displayed directly in layout
-        $ta = array(
-            "grp_groups",
-            "grp_rusers",
-            "grp_users",
-            "grp_parent",
-            "us_login",
-            "us_whatid",
-            "grp_mail",
-            "us_iddomain",
-            "us_domain",
-            "grp_name",
-            "grp_role",
-            "grp_type"
-        );
-        //$ta["ident"]=array("us_lo
-        $la = $this->getAttributes();
-        $to = array();
-        $tabs = array();
-        foreach ($la as $k => $v) {
-            $va = $this->getValue($v->id);
-            if (($va || ($v->type == "array")) && (!in_array($v->id, $ta)) && (!$v->inArray())) {
-                
-                if ((($v->mvisibility == "R") || ($v->mvisibility == "W"))) {
-                    if ($v->type == "array") {
-                        $hv = $this->getHtmlValue($v, $va, $target, $ulink);
-                        if ($hv) {
-                            $to[] = array(
-                                "lothers" => $v->labelText,
-                                "aid" => $v->id,
-                                "vothers" => $hv,
-                                "isarray" => true
-                            );
-                            $tabs[$v->fieldSet->labelText][] = $v->id;
-                        }
-                    } else {
-                        $to[] = array(
-                            "lothers" => $v->labelText,
-                            "aid" => $v->id,
-                            "vothers" => $this->getHtmlValue($v, $va, $target, $ulink) ,
-                            "isarray" => false
-                        );
-                        $tabs[$v->fieldSet->labelText][] = $v->id;
-                    }
-                }
-            }
-        }
-        $this->lay->setBlockData("OTHERS", $to);
-        $this->lay->set("HasOTHERS", (count($to) > 0));
-        $this->lay->set("Toomany", $toomany);
-        $ltabs = array();
-        foreach ($tabs as $k => $v) {
-            $ltabs[$k] = array(
-                "tabtitle" => $k,
-                "aids" => "['" . implode("','", $v) . "']"
-            );
-        }
-        $this->lay->setBlockData("TABS", $ltabs);
-        $this->lay->set("ICON", $this->getIcon());
-        $this->lay->set("nmembers", count($this->getTValue("GRP_IDUSER")));
-        $this->lay->set("HasDOMAIN", ($this->getValue("US_IDDOMAIN") > 9));
-        $this->lay->set("CanEdit", ($this->control("edit") == ""));
-    }
+
     function fusers_eigroup()
     {
         global $action;
@@ -535,8 +455,6 @@ class _IGROUP extends _GROUP
             "us_login",
             "us_whatid",
             "grp_mail",
-            "us_iddomain",
-            "us_domain",
             "grp_name",
             "grp_role",
             "grp_type",
@@ -544,9 +462,8 @@ class _IGROUP extends _GROUP
             "grp_hasmembers"
         );
         
-        $q = new QueryDb("", "Domain");
-        $q->AddQuery("iddomain>9");
-        $this->lay->set("hasdomain", ($q->count() > 0));
+
+        $this->lay->set("hasdomain", false);
         
         $this->lay->set("firsttab", $firsttab);
         $la = $this->getNormalAttributes();

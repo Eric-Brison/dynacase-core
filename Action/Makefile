@@ -5,6 +5,6 @@
 export targetdir
 export utildir
 
-SUBDIR = Access Appmng Authent Core Data Dav Fdc Fdl Fgsearch Freedom Fusers Generic Onefam Usercard Extui Users Vault
+SUBDIR = Access Appmng Authent Core Data Dav Fdc Fdl Fgsearch Freedom Fusers Generic Onefam Usercard Extui Vault
 
 include $(utildir)/PubRule

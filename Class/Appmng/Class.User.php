@@ -33,7 +33,6 @@ class User extends DbObj
 {
     var $fields = array(
         "id",
-        "iddomain",
         "lastname",
         "firstname",
         "login",
@@ -43,11 +42,29 @@ class User extends DbObj
         "passdelay",
         "status",
         "mail",
-        "ntpasswordhash",
-        "lmpasswordhash",
         "fid"
     );
     
+    public $id;
+    public $lastname;
+    public $firstname;
+    public $login;
+    public $password;
+    public $isgroup;
+    public $expires;
+    public $passdelay;
+    public $status;
+    public $mail;
+    public $fid;
+    /**
+     * family identificator of user document default is IUSER/IGROUP
+     * @var string
+     */
+    public $famid;
+    /**
+     * @var string new password
+     */
+    public $password_new;
     var $id_fields = array(
         "id"
     );
@@ -64,58 +81,38 @@ class User extends DbObj
     
     var $sqlcreate = "
 create table users ( id      int not null,
-                     iddomain int not null,
                 primary key (id),
                         lastname   text,
                         firstname  text,
                         login      text not null,
-                        password   varchar(30) not null,
+                        password   text not null,
                         isgroup    char,
                         expires    int,
                         passdelay  int,
                         status     char,
                         mail       text,
-                        ntpasswordhash text,
-                        lmpasswordhash text,
                         fid int);
 create index users_idx2 on users(lastname);
-create index users_idx3 on users(login);
-CREATE UNIQUE INDEX uni_users on users (login,iddomain);
-create sequence seq_id_users start 10";
+CREATE UNIQUE INDEX users_login on users (login);
+create sequence seq_id_users start 10;";
     /** 
      * affect user from login name
-     * @param string $loginDomain login
+     * @param string $login login
      * @return boolean true if ok
      */
-    function SetLoginName($loginDomain)
+    function setLoginName($login)
     {
-        include_once ("Class.Domain.php");
-        $loginDomain = trim(mb_strtolower($loginDomain));
+        $login = trim(mb_strtolower($login));
         $query = new QueryDb($this->dbaccess, "User");
-        $query->AddQuery("login='" . pg_escape_string($loginDomain) . "'");
-        $query->order_by = 'iddomain';
+        $query->AddQuery("login='" . pg_escape_string($login) . "'");
+        
         $list = $query->Query(0, 0, "TABLE");
         if ($query->nb > 0) {
             $this->Affect($list[0]);
-        } else {
-            if (preg_match("/(.*)@(.*)/", $loginDomain, $reg)) {
-                
-                $queryd = new QueryDb($this->dbaccess, "Domain");
-                $queryd->AddQuery("name='" . $reg[2] . "'");
-                $list = $queryd->Query();
-                
-                if ($queryd->nb == 1) {
-                    $domainId = $list[0]->iddomain;
-                    $query->AddQuery("iddomain='$domainId'");
-                    $query->AddQuery("login='" . pg_escape_string($reg[1]) . "'");
-                } else {
-                    return false;
-                }
-            }
-            return FALSE;
+            return true;
         }
         
-        return TRUE;
+        return false;
     }
     /**
      * affect user from its login
@@ -124,26 +121,9 @@ create sequence seq_id_users start 10";
      * @deprecated
      * @return boolean true if ok
      */
-    function setLogin($login, $domain)
+    function setLogin($login, $unused = '0')
     {
-        $login = mb_strtolower($login);
-        $domain = mb_strtolower($domain);
-        $query = new QueryDb($this->dbaccess, "User");
-        
-        $query->basic_elem->sup_where = array(
-            "login='" . pg_escape_string($login) . "'",
-            "iddomain=$domain"
-        );
-        
-        $list = $query->Query(0, 0, "TABLE");
-        
-        if ($query->nb != 0) {
-            $this->Affect($list[0]);
-        } else {
-            return FALSE;
-        }
-        
-        return TRUE;
+        return $this->setLoginName($login);
     }
     /**
      * affect user from its document id
@@ -164,9 +144,10 @@ create sequence seq_id_users start 10";
         return true;
     }
     
-    function PreInsert()
+    function preInsert()
     {
-        if ($this->Setlogin($this->login, $this->iddomain)) return "this login exists";
+        $err = '';
+        if ($this->setloginName($this->login)) return _("this login exists");
         if ($this->login == "") return _("login must not be empty");
         if ($this->id == "") {
             $res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
@@ -191,6 +172,7 @@ create sequence seq_id_users start 10";
         }
         //expires and passdelay
         $this->GetExpires();
+        return $err;
     }
     
     function PostInsert()
@@ -198,18 +180,7 @@ create sequence seq_id_users start 10";
         //Add default group to user
         $group = new group($this->dbaccess);
         $group->iduser = $this->id;
-        $gid = 2; //2 = default group
-        if ($this->iddomain > 1) {
-            $qu = new QueryDb($this->dbaccess, "User");
-            $qu->AddQuery("login='all'");
-            $qu->AddQuery("iddomain=" . $this->iddomain);
-            $qu->AddQuery("id !=" . $this->id);
-            $lu = $qu->Query(0, 0, "TABLE");
-            if ($lu) {
-                $gid = $lu[0]["id"];
-            }
-        }
-        
+        $gid = GALL_ID; //2 = default group
         $group->idgroup = $gid;
         // not added here it is added by freedom (generally)
         //    if (! $this->fid)   $group->Add();
@@ -218,19 +189,15 @@ create sequence seq_id_users start 10";
         return $err;
     }
     
-    function PostUpdate()
+    function postUpdate()
     {
         return $this->FreedomWhatUser();
     }
     
-    function PreUpdate()
+    function preUpdate()
     {
         if (isset($this->password_new) && ($this->password_new != "")) {
-            if (function_exists("mhash")) {
-                $this->cryptEngine = new Crypt_CHAP_MSv1;
-                $this->ntpasswordhash = strtoupper(bin2hex($this->cryptEngine->ntPasswordHash($this->password_new)));
-                $this->lmpasswordhash = strtoupper(bin2hex($this->cryptEngine->lmPasswordHash($this->password_new)));
-            }
+            
             $this->computepass($this->password_new, $this->password);
             if ($this->id == 1) {
                 $this->setAdminHtpasswd($this->password_new);
@@ -240,7 +207,7 @@ create sequence seq_id_users start 10";
         $this->GetExpires();
     }
     
-    function PostDelete()
+    function postDelete()
     {
         
         include_once ("WHAT/Class.Session.php");
@@ -257,16 +224,21 @@ create sequence seq_id_users start 10";
         global $action;
         $action->session->CloseUsers($this->id);
         
-        return $msg;
+        return $err;
     }
-    
-    function CheckLogin($login, $domain, $whatid)
+    /**
+     * @deprecated
+     * @param $login
+     * @param $domain
+     * @param $whatid
+     * @return bool
+     */
+    function CheckLogin($login, $unused, $whatid)
     {
         $query = new QueryDb($this->dbaccess, "User");
         
         $query->basic_elem->sup_where = array(
-            "login='" . pg_escape_string($login) . "'",
-            "iddomain=$domain"
+            "login='" . pg_escape_string($login) . "'"
         );
         
         $list = $query->Query();
@@ -301,11 +273,29 @@ create sequence seq_id_users start 10";
     }
     /**
      * update user from IUSER document
+     * @deprecated replace by updateUser
      * @param int $fid document id
      * @param string $login login
-     * @param int $iddomain mail domain identificator
      */
-    function SetUsers($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $iddomain, $extmail)
+    function setUsers($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $unused = '', $extmail = '')
+    {
+        return $this->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail);
+    }
+    /**
+     * update user from IUSER document
+     * @param int $fid document id
+     * @param string $lname  last name
+     * @param string $fname first name
+     * @param string $expires expiration date
+     * @param int $passdelay password delay
+     * @param string $login login
+     * @param char $status 'A' (Activate) , 'D' (Desactivated)
+     * @param string $pwd1 password one
+     * @param string $pwd2 password two
+     * @param string $extmail mail address
+     * @return string error message
+     */
+    function updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail = '')
     {
         
         $this->lastname = $lname;
@@ -316,32 +306,11 @@ create sequence seq_id_users start 10";
         if ($pwd1 == $pwd2 and $pwd1 <> "") {
             $this->password_new = $pwd2;
         }
-        if (($iddomain > 1) && ($this->iddomain != $iddomain) && ($this->iddomain < 2)) $needmail = true;
-        else $needmail = false;
         
-        if ($iddomain == 1) $iddomain = 0; // no use local domain now
-        if ($iddomain == 0) {
-            if ($extmail != "") {
-                $this->mail = trim($extmail);
-            }
-            $this->iddomain = "0";
+        if ($extmail != "") {
+            $this->mail = trim($extmail);
         } else {
-            if ($iddomain == 1) {
-                $this->mail = ""; // no mail
-                $this->iddomain = $iddomain;
-            } elseif ($this->iddomain != $iddomain) {
-                If ($this->iddomain > 1) {
-                    // need change mail account
-                    include_once ("Class.MailAccount.php");
-                    $uacc = new MailAccount(GetParam("MAILDB") , $this->id);
-                    if ($uacc->isAffected()) {
-                        $uacc->iddomain = $iddomain;
-                        $uacc->modify();
-                    }
-                }
-                $this->iddomain = $iddomain;
-                $this->mail = $this->getMail();
-            }
+            $this->mail = $this->getMail();
         }
         
         if ($expires > 0) $this->expires = $expires;
@@ -358,44 +327,18 @@ create sequence seq_id_users start 10";
             $err = $this->Modify();
         }
         
-        if ($err == "") {
-            if ($needmail) {
-                include_once ("Class.MailAccount.php");
-                $this->iddomain = $iddomain;
-                // create mail account
-                $mailapp = new Application();
-                if ($mailapp->Exists("MAILADMIN")) {
-                    $mailapp->Set("MAILADMIN", $action->parent);
-                    $uacc = new MailAccount($mailapp->GetParam("MAILDB"));
-                    $uacc->iddomain = $this->iddomain;
-                    $uacc->iduser = $this->id;
-                    $uacc->login = $this->login;
-                    $err = $uacc->Add(true);
-                    if ($err == "") {
-                        $this->mail = $this->getMail();
-                        
-                        $err = $this->Modify(true);
-                    }
-                }
-            }
-        }
         return $err;
     }
     /**
-     * update user from FREEDOM IUSER document
+     * update user from FREEDOM IGROUP document
      * @param int $fid document id
+     * @param string $gname group name
      * @param string $login login
-     * @param int $iddomain mail domain identificator
      */
-    function SetGroups($fid, $gname, $login, $iddomain)
+    function setGroups($fid, $gname, $login)
     {
         if ($gname != "") $this->lastname = $gname;
         if (($this->login == "") && ($login != "")) $this->login = $login;
-        
-        $this->iddomain = $iddomain;
-        if ($this->iddomain == 0) {
-            $this->iddomain = 1;
-        }
         
         $this->mail = $this->getMail();
         $this->fid = $fid;
@@ -410,7 +353,7 @@ create sequence seq_id_users start 10";
     }
     //Add and Update expires and passdelay for password
     //Call in PreUpdate and PreInsert
-    function GetExpires()
+    function getExpires()
     {
         if (intval($this->passdelay) == 0) {
             $this->expires = "0";
@@ -497,7 +440,6 @@ create sequence seq_id_users start 10";
         
         $group = new group($this->dbaccess);
         // Create admin user
-        $this->iddomain = 0;
         $this->id = 1;
         $this->lastname = "Master";
         $freedomctx = getFreedomContext();
@@ -508,7 +450,6 @@ create sequence seq_id_users start 10";
         $this->Add(true);
         $group->iduser = $this->id;
         // Create default group
-        $this->iddomain = 1;
         $this->id = GALL_ID;
         $this->lastname = "Utilisateurs";
         $this->firstname = "";
@@ -518,7 +459,6 @@ create sequence seq_id_users start 10";
         $group->idgroup = $this->id;
         $group->Add(true);
         // Create anonymous user
-        $this->iddomain = 0;
         $this->id = ANONYMOUS_ID;
         $this->lastname = "anonymous";
         $this->firstname = "guest";
@@ -526,7 +466,6 @@ create sequence seq_id_users start 10";
         $this->isgroup = "N";
         $this->Add(true);
         // Create admin group
-        $this->iddomain = 1;
         $this->id = GADMIN_ID;
         $this->lastname = "Administrateurs";
         $this->firstname = "";
@@ -540,7 +479,7 @@ create sequence seq_id_users start 10";
         
     }
     // get All Users (not group)
-    function GetUserList($qtype = "LIST", $start = 0, $slice = 0, $filteruser = false)
+    function getUserList($qtype = "LIST", $start = 0, $slice = 0, $filteruser = false)
     {
         $query = new QueryDb($this->dbaccess, "User");
         $query->order_by = "lastname";
@@ -549,7 +488,7 @@ create sequence seq_id_users start 10";
         return ($query->Query($start, $slice, $qtype));
     }
     // get All groups
-    function GetGroupList($qtype = "LIST")
+    function getGroupList($qtype = "LIST")
     {
         $query = new QueryDb($this->dbaccess, "User");
         $query->order_by = "lastname";
@@ -557,7 +496,7 @@ create sequence seq_id_users start 10";
         return ($query->Query(0, 0, $qtype));
     }
     // get All users & groups
-    function GetUserAndGroupList($qtype = "LIST")
+    function getUserAndGroupList($qtype = "LIST")
     {
         $query = new QueryDb($this->dbaccess, "User");
         $query->order_by = "isgroup desc, lastname";
@@ -566,7 +505,7 @@ create sequence seq_id_users start 10";
     /**
      * get All ascendant group ids of the user object
      */
-    function GetGroupsId()
+    function getGroupsId()
     {
         $query = new QueryDb($this->dbaccess, "Group");
         $query->AddQuery("iduser='{$this->id}'");
@@ -587,7 +526,7 @@ create sequence seq_id_users start 10";
      * @param int $id group identificator
      * @return array of user array
      */
-    function GetRUsersList($id, $r = array())
+    function getRUsersList($id, $r = array())
     {
         $query = new QueryDb($this->dbaccess, "User");
         $list = $query->Query(0, 0, "TABLE", "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup=$id ;");
@@ -613,7 +552,7 @@ create sequence seq_id_users start 10";
      * @param int $id group identificator
      * @param bool $onlygroup set to true if you want only child groups
      */
-    function GetUsersGroupList($gid, $onlygroup = false)
+    function getUsersGroupList($gid, $onlygroup = false)
     {
         $query = new QueryDb($this->dbaccess, "User");
         $optgroup = '';
@@ -737,9 +676,9 @@ create sequence seq_id_users start 10";
         
         global $pubdir;
         
-        if( $this->id != 1 ) {
-        	$err = sprintf("Method %s can only be used on the admin user.", __FUNCTION__);
-        	return $err;
+        if ($this->id != 1) {
+            $err = sprintf("Method %s can only be used on the admin user.", __FUNCTION__);
+            return $err;
         }
         
         $adminDir = $pubdir . DIRECTORY_SEPARATOR . 'admin';

@@ -42,8 +42,8 @@ create unique index groups_idx2 on groups(iduser,idgroup);
 create trigger t_nogrouploop before insert or update on groups for each row execute procedure nogrouploop();";
     
     var $groups = array(); // user groups
-    
-    
+    public $iduser;
+    public $idgroup;
     /**
      * get groups of a user
      * set groups attribute. This attribute containt id of group of a user

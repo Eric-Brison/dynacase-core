@@ -38,7 +38,6 @@ addEvent(window,"load",viewFirstTab);</script>
 <span class="fablabel">[TEXT:number of members]&nbsp;:&nbsp;</span></td><td><span class="fabvalue">[nmembers]</span><br/></td></tr>
 
 
-[IF HasDOMAIN]<tr><td align="right"><span class="fablabel">[L_US_DOMAIN]&nbsp;:&nbsp;</span></td><td><span class="fabvalue">[V_US_DOMAIN]</span></td></tr>[ENDIF HasDOMAIN]
 [IF S_GRP_ROLE]<tr><td align="right"><span class="fablabel">[L_GRP_ROLE]&nbsp;:&nbsp;</span></td><td><span class="fabvalue">[V_GRP_ROLE]</span>[ENDIF S_GRP_ROLE]</td></tr>
 [IF S_GRP_TYPE]<tr><td align="right"><span class="fablabel">[L_GRP_TYPE]&nbsp;:&nbsp;</span></td><td><span class="fabvalue">[V_GRP_TYPE]</span>[ENDIF S_GRP_TYPE]</td></tr>
 </table>

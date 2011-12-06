@@ -29,6 +29,7 @@ SELECT pg_temp.addColumnIfNotExists('', 'docwait', 'extradata', 'text');
 --
 -- Update global type for parameters
 --
+delete from paramv P1 where type='A' and name in (select name from paramv P2 where P2.val=P1.val and type='G');
 update paramv set type='G' from paramdef where paramv.type='A' and paramdef.name=paramv.name and paramdef.isglob='Y';
 
 --
@@ -52,3 +53,13 @@ SELECT pg_temp.changeColumnType('', 'action', 'icon', 'text', '');
 SELECT pg_temp.changeColumnType('', 'application', 'name', 'text', '');
 SELECT pg_temp.changeColumnType('', 'application', 'access_free', 'character', '');
 SELECT pg_temp.changeColumnType('', 'application', 'childof', 'text', '');
+
+--
+-- Update `users' data types
+--
+select pg_temp.dropIndexIfExists('', 'users', 'uni_users');
+select pg_temp.dropIndexIfExists('', 'users', 'users_idx3');
+SELECT pg_temp.dropColumnIfExists('', 'users', 'iddomain');
+SELECT pg_temp.dropColumnIfExists('', 'users', 'ntpasswordhash');
+SELECT pg_temp.dropColumnIfExists('', 'users', 'lmpasswordhash');
+select pg_temp.addIndexIfNotExists('', 'users', 'users_login', true, '(login)');

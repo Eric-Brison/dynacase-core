@@ -24,7 +24,6 @@ function getMainAction($auth, &$action)
     include_once ('Class.Session.php');
     include_once ('Lib.Http.php');
     include_once ('Class.Log.php');
-    include_once ('Class.Domain.php');
     include_once ('Class.DbObj.php');
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);
     

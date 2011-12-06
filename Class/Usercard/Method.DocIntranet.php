@@ -29,7 +29,7 @@ class _IGROUPUSER extends Doc
      * @param string $login login to test
      * @return array 2 items $err & $sug for view result of the constraint
      */
-    function ConstraintLogin($login, $iddomain)
+    function ConstraintLogin($login)
     {
         $sug = array(
             "-"
@@ -43,7 +43,7 @@ class _IGROUPUSER extends Doc
                 $err = _("the login syntax is like : john.doe");
             }
             if ($err == "") {
-                return $this->ExistsLogin($login, $iddomain);
+                return $this->ExistsLogin($login);
             }
         }
         return array(
@@ -56,17 +56,16 @@ class _IGROUPUSER extends Doc
      * @param string $login login to test
      * @return array 2 items $err & $sug for view result of the constraint
      */
-    function ExistsLogin($login, $iddomain = 0)
+    function ExistsLogin($login, $unused = 0)
     {
         $sug = array();
-        $err = "";
+
         $id = $this->GetValue("US_WHATID");
-        $user = new User("", $id);
+
         $q = new QueryDb("", "User");
         $q->AddQuery("login='" . strtolower(pg_escape_string($login)) . "'");
         if ($id) $q->AddQuery("id != $id");
-        $iddomain = intval($iddomain);
-        $q->AddQuery("iddomain=$iddomain");
+
         $q->Query(0, 0, "TABLE");
         $err = $q->basic_elem->msg_err;
         if (($err == "") && ($q->nb > 0)) $err = _("login yet use");
@@ -130,10 +129,10 @@ class _IGROUPUSER extends Doc
         $this->lay->set("wid", ($iduser == "") ? "0" : $iduser);
         
         $q2 = new queryDb("", "User");
-        $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup, domain.name as domain from users, groups, domain where users.id = groups.iduser and users.iddomain=domain.iddomain and users.isgroup='Y'");
+        $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser and users.isgroup='Y'");
         
         $q2 = new queryDb("", "User");
-        $mgroups = $q2->Query(0, 0, "TABLE", "select users.*, domain.name as domain from users,domain where users.iddomain=domain.iddomain and isgroup='Y' and id not in (select iduser from groups)");
+        $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where  isgroup='Y' and id not in (select iduser from groups)");
         
         if ($groups) {
             foreach ($groups as $k => $v) {
@@ -218,6 +217,7 @@ class _IGROUPUSER extends Doc
         include_once ("FDL/Lib.Usercard.php");
         
         global $_POST;
+        $err='';
         $gidnew = $_POST["gidnew"];
         $tgid = array(); // group ids will be modified
         if ($gidnew == "Y") {
@@ -234,12 +234,12 @@ class _IGROUPUSER extends Doc
                 foreach ($gadd as $gid) {
                     $g->iduser = $user->id;
                     $g->idgroup = $gid;
-                    //	$aerr.=$g->Add(true);
+                    $aerr='';
                     if ($aerr == "") {
                         // insert in folder group
                         $gdoc = $this->getDocUser($gid);
                         //  $gdoc->insertMember($this->id);
-                        $gdoc->addFile($this->id);
+                        $gdoc->addFile($this->id); // add in group is set here by postInsert
                         $tgid[$gid] = $gid;
                     }
                     $err.= $aerr;

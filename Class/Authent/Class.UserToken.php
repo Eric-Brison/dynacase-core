@@ -32,7 +32,13 @@ class UserToken extends DbObj
         'expendable',
         'context'
     );
-    
+
+    public $token;
+    public $userid;
+    public $expire;
+    public $expendable;
+    public $context;
+
     var $id_fields = array(
         'token'
     );

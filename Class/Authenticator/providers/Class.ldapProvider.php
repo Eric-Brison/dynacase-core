@@ -58,7 +58,12 @@ class ldapProvider extends Provider
         $this->errno = 0;
         return TRUE;
     }
-    
+    /**
+     * @param User $whatuser
+     * @param string $username
+     * @param string $password
+     * @return string error message
+     */
     public function initializeUser(&$whatuser, $username, $password)
     {
         global $action;
@@ -75,7 +80,6 @@ class ldapProvider extends Provider
         $whatuser->lastname = '(from ldap) ' . $username;
         $whatuser->login = $username;
         $whatuser->password_new = uniqid("ldap");
-        $whatuser->iddomain = "0";
         $whatuser->famid = "IUSER";
         $err = $whatuser->Add();
         error_log("What user $username added (id=" . $whatuser->id . ")");

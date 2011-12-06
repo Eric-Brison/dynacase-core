@@ -41,10 +41,9 @@ addEvent(window,"load",function al(event) {viewTab(event,'tabsystem');});
 
 </fieldset>
 
-[IF W_US_DOMAIN]<br/><span class="fablabel">[L_US_DOMAIN]</span>&nbsp;:&nbsp;[V_US_DOMAIN][ENDIF W_US_DOMAIN]
 
 <span class="fablabel">[L_US_MAIL]&nbsp;:&nbsp;</span>[V_US_EXTMAIL]
-[V_US_AUTOMAIL][V_US_IDDOMAIN]
+[V_US_AUTOMAIL]
 </div>[IF editgroup]
 <div class="do"id="dgroup" style="display:none">
 

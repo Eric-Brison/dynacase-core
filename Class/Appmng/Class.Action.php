@@ -45,7 +45,24 @@ class Action extends DbObj
         "father",
         "toc_order"
     );
-    
+    public $id;
+public $id_application;
+public $name;
+public $short_name;
+public $long_name;
+public $script;
+public $function;
+public $layout;
+public $available;
+public $acl;
+public $grant_level=0;
+public $openaccess;
+public $root;
+public $icon;
+public $toc;
+public $father;
+public $toc_order;
+
     var $id_fields = array(
         "id"
     );
@@ -98,8 +115,12 @@ create sequence SEQ_ID_ACTION;
             "type" => "TXT"
         )
     );
-    
-    var $grant_level = 0;
+
+
+    /**
+     * @var Layout
+     */
+    public $lay;
     
     function Set($name, &$parent)
     {

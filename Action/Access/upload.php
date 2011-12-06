@@ -23,8 +23,6 @@ include_once ("Class.QueryDb.php");
 include_once ("Class.Application.php");
 include_once ("Class.User.php");
 include_once ("Class.Acl.php");
-include_once ("Class.Domain.php");
-include_once ("Class.MailAccount.php");
 include_once ("Class.Permission.php");
 include_once ("Lib.Http.php");
 // -----------------------------------
@@ -63,13 +61,11 @@ function changeuser(&$action, $line, $verbose = false)
     
     $col = explode("|", $line);
     // eric.brison@local|hb7Qj/yFqxCGs|eric|brison|N|all@local;
-    list($uname, $udom) = explode("@", $col[0]);
-    $udom = chop($udom);
-    $use = new User($action->dbaccess);
-    $domain = new Domain($action->dbaccess);
-    $domain->Set($udom);
+    $uname = $col[0];
     
-    $use->SetLogin($uname, $domain->iddomain);
+    $use = new User($action->dbaccess);
+    
+    $use->SetLoginName($uname);
     $use->password = $col[1];
     $use->firstname = $col[2];
     $use->lastname = $col[3];
@@ -80,24 +76,10 @@ function changeuser(&$action, $line, $verbose = false)
         
         if ($verbose) printf(_("user %s %s has been modified\n") , $use->firstname, $use->lastname);
     } else {
-        $use->iddomain = $domain->iddomain;
         $use->login = $uname;
         $err = $use->Add(true);
         if ($err != "") print $err;
         if ($verbose) printf(_("user %s %s has been added\n") , $use->firstname, $use->lastname);
-    }
-    // add mail account if needed
-    if ($use->iddomain != 1) {
-        $mailapp = new Application();
-        if ($mailapp->Exists("MAILADMIN")) {
-            $mailapp->Set("MAILADMIN", $action->parent);
-            $uacc = new MailAccount($mailapp->GetParam("MAILDB") , $use->id);
-            $uacc->iddomain = $use->iddomain;
-            $uacc->iduser = $use->id;
-            $uacc->login = $use->login;
-            if ($uacc->isAffected()) $uacc->Modify(true);
-            else $uacc->Add(true);
-        }
     }
     // add group
     $groups = explode(";", $col[5]);
@@ -107,14 +89,9 @@ function changeuser(&$action, $line, $verbose = false)
     
     while (list($kg, $gd) = each($groups)) {
         
-        list($grname, $grdomain) = explode("@", $gd);
-        
         $gr = new User($action->dbaccess);
-        $gd = new Domain($action->dbaccess);
-        $grdomain = chop($grdomain);
-        $gd->Set($grdomain);
         
-        $gr->SetLogin($grname, $gd->iddomain);
+        $gr->SetLoginName($gd);
         if ($gr->IsAffected()) {
             $group->iduser = $use->id;
             $group->idgroup = $gr->id;
@@ -126,20 +103,16 @@ function changeacl(&$action, $line, $verbose = false)
 {
     // INCIDENT|all@cir.fr|INCIDENT_READ;INCIDENT
     $col = explode("|", $line);
-    if (!is_array($col)) continue;
-    if (count($col) != 3) continue;
-    if (substr($line, 0, 1) == "#") continue; // comment line
+    if (!is_array($col)) return;
+    if (count($col) != 3) return;
+    if (substr($line, 0, 1) == "#") return; // comment line
     $app = new Application($action->dbaccess);
     $app->Set($col[0], $action->parent);
-    
-    list($uname, $udom) = explode("@", $col[1]);
-    $udom = chop($udom);
+    $uname = $col[1];
     
     $use = new User($action->dbaccess);
-    $domain = new Domain($action->dbaccess);
-    $domain->Set($udom);
     
-    $use->SetLogin($uname, $domain->iddomain);
+    $use->SetLoginname($uname);
     // update the permission in database
     // first remove then add
     $perm = new Permission($action->dbaccess, array(

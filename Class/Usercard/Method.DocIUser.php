@@ -39,9 +39,7 @@ class _IUSER extends _USER
         
         $this->AddParamRefresh("US_WHATID", "US_LOGIN,US_GROUP");
         $this->AddParamRefresh("US_AUTOMAIL", "US_EXTMAIL");
-        if ($this->getValue("US_IDDOMAIN", 1) > 1) $this->AddParamRefresh("US_WHATID", "US_DOMAIN");
-        $this->AddParamRefresh("US_IDDOMAIN", "US_DOMAIN");
-        
+
         if ($this->getValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is desactivated");
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
@@ -166,10 +164,7 @@ class _IUSER extends _USER
                 $this->SetValue("US_PASSDELAY", $wuser->passdelay);
                 $this->SetValue("US_EXPIRES", $wuser->expires);
                 $this->SetValue("US_DAYDELAY", $wuser->passdelay / 3600 / 24);
-                $this->SetValue("US_IDDOMAIN", $wuser->iddomain);
-                include_once ("Class.Domain.php");
-                $dom = new Domain("", $wuser->iddomain);
-                $this->SetValue("US_DOMAIN", $dom->name);
+
                 $mail = $wuser->getMail();
                 if (!$mail) $this->DeleteValue("US_MAIL");
                 else $this->SetValue("US_MAIL", $mail);
@@ -239,6 +234,7 @@ class _IUSER extends _USER
      */
     function PostModify()
     {
+        $err = '';
         $uid = $this->GetValue("US_WHATID");
         $lname = $this->GetValue("US_LNAME");
         $fname = $this->GetValue("US_FNAME");
@@ -268,9 +264,6 @@ class _IUSER extends _USER
                 }
             }
             
-            $iddomain = $this->GetValue("US_IDDOMAIN");
-            $domain = $this->GetValue("US_DOMAIN");
-            
             $fid = $this->id;
             $newuser = false;
             $user = $this->getWUser();
@@ -279,7 +272,7 @@ class _IUSER extends _USER
                 $this->wuser = & $user;
                 $newuser = true;
             }
-            $err.= $user->SetUsers($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $iddomain, $extmail);
+            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail);
             if ($err == "") {
                 if ($user) {
                     $this->setValue("US_WHATID", $user->id);
@@ -306,7 +299,6 @@ class _IUSER extends _USER
         } else {
             // tranfert extern mail if no login specified yet
             if ($this->getValue("us_login") == "-") {
-                $this->setValue("US_IDDOMAIN", "0");
                 $email = $this->getValue("us_extmail", $this->getValue("us_homemail"));
                 if (($email != "") && ($email[0] != "<")) $this->setValue("us_mail", $email);
                 else $this->deleteValue("us_mail");
@@ -375,12 +367,12 @@ class _IUSER extends _USER
         $this->attributes->attr['us_tab_system']->visibility = 'R';
         $this->attributes->attr['us_fr_userchange']->visibility = 'R';
         $this->ApplyMask();
-        if ($this->getValue("us_iddomain") == 0) {
+
             $this->attributes->attr['us_extmail']->mvisibility = 'W';
             $this->attributes->attr['us_extmail']->fieldSet = $this->attributes->attr['us_fr_coord'];
             $this->attributes->attr['us_extmail']->ordered = $this->attributes->attr['us_pphone']->ordered - 1;
             uasort($this->attributes->attr, "tordered");
-        }
+
         
         $this->editbodycard($target, $ulink, $abstract);
     }
@@ -415,7 +407,6 @@ class _IUSER extends _USER
             "us_state",
             "us_login",
             "us_status",
-            "us_domain",
             "us_expiresd",
             "us_expirest",
             "us_daydelay",
@@ -455,7 +446,7 @@ class _IUSER extends _USER
         }
         $this->lay->setBlockData("OTHERS", $to);
         $this->lay->set("HasOTHERS", (count($to) > 0));
-        $this->lay->set("HasDOMAIN", ($this->getValue("US_IDDOMAIN") > 9));
+        $this->lay->set("HasDOMAIN", false);
         $this->lay->set("HasDPassword", (intval($this->getValue("US_DAYDELAY")) != 0));
         $ltabs = array();
         foreach ($tabs as $k => $v) {
@@ -506,8 +497,6 @@ class _IUSER extends _USER
             "us_state",
             "us_login",
             "us_status",
-            "us_domain",
-            "us_iddomain",
             "us_expiresd",
             "us_expirest",
             "us_daydelay",

@@ -35,10 +35,10 @@ function fusers_list(&$action)
     $user = new User();
     //$ugroup=$user->GetGroupsId();
     $q2 = new queryDb("", "User");
-    $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup, domain.name as domain from users, groups, domain where users.id = groups.iduser and users.iddomain=domain.iddomain and users.isgroup='Y'");
+    $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser  and users.isgroup='Y'");
     
     $q2 = new queryDb("", "User");
-    $mgroups = $q2->Query(0, 0, "TABLE", "select users.*, domain.name as domain from users,domain where users.iddomain=domain.iddomain and isgroup='Y' and id not in (select iduser from groups)");
+    $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where isgroup='Y' and id not in (select iduser from groups)");
     
     if ($groups) {
         foreach ($groups as $k => $v) {

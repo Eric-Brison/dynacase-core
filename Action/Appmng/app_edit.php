@@ -19,13 +19,12 @@
 include_once ("Class.SubForm.php");
 include_once ("Class.Application.php");
 // -----------------------------------
-function app_edit(&$action)
+function app_edit(Action &$action)
 {
     // -----------------------------------
     // Get all the params
-    global $_POST;
-    $id = GetHttpVars("id");
-    
+    $id = $action->getArgument("id");
+    $AppCour=null;
     if ($id == "") {
         $action->lay->Set("name", "");
         $action->lay->Set("short_name", "");
@@ -34,13 +33,7 @@ function app_edit(&$action)
         $action->lay->Set("id", "");
         $action->lay->Set("TITRE", $action->text("titlecreate"));
         $action->lay->Set("BUTTONTYPE", $action->text("butcreate"));
-        if ($action->HasPermission("ADMIN")) {
-            $seldom = 1;
-        } else if ($action->HasPermission("DOMAIN_MASTER")) {
-            $seldom = $action->AppCour->iddomain;
-        } else {
-            $action->info("Not Allowed Access Attempt");
-        }
+
     } else {
         $AppCour = new Application($action->GetParam("CORE_DB") , $id);
         $action->lay->Set("id", $id);

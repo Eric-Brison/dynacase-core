@@ -24,7 +24,6 @@ include_once ("Class.Application.php");
 include_once ("Class.User.php");
 include_once ("Class.Acl.php");
 include_once ("Class.Permission.php");
-include_once ("Class.Domain.php");
 include_once ("Lib.Http.php");
 include_once ("FDL/freedom_util.php");
 // -----------------------------------

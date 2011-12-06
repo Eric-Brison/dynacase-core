@@ -248,54 +248,7 @@ function members($dbaccess, $groupid, $name = "", $sort = 'lastname', $searchinm
     
     return $tr;
 }
-//get domain of IUSER
-function getdomainiuser()
-{
-    $dbaccess = GetParam("CORE_DB");
-    $tab = array();
-    $domain = new Domain($dbaccess);
-    $domain->ListAll(-1);
-    while (list($k, $v) = each($domain->qlist)) {
-        $extmail = "<" . _("mail will be calculated from domain") . ">";
-        $automail = "1";
-        if ($v->iddomain == 1) {
-            $v->name = "local";
-            $v->iddomain = "1";
-            $extmail = "<" . _("no mail") . ">";
-        }
-        if ($v->iddomain == 0) {
-            $v->name = "externe";
-            $v->iddomain = "0";
-            $extmail = "";
-            $automail = " ";
-        }
-        $tab[$k] = array(
-            $v->name,
-            $v->iddomain,
-            $v->name,
-            $extmail,
-            $automail
-        );
-    }
-    return $tab;
-}
-//get domain for group
-function getdomainigroup()
-{
-    $dbaccess = GetParam("CORE_DB");
-    $tab = array();
-    $domain = new Domain($dbaccess);
-    $domain->ListAll(0);
-    while (list($k, $v) = each($domain->qlist)) {
-        
-        $tab[$k] = array(
-            $v->name,
-            $v->iddomain,
-            $v->name
-        );
-    }
-    return $tab;
-}
+
 //return my groups
 function mygroups($name = "")
 {

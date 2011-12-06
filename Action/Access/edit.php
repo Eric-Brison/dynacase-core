@@ -21,8 +21,6 @@
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------
 include_once ("Class.SubForm.php");
-include_once ("Class.Domain.php");
-include_once ("Class.MailAccount.php");
 include_once ("Class.User.php");
 include_once ("Class.ControlObject.php");
 include_once ("Class.ObjectPermission.php");

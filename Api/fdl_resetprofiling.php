@@ -37,7 +37,7 @@ if (empty($user)) $action->exitError("login needed :\n $usage");
 if (empty($password)) $action->exitError("password needed :\n $usage");
 
 $u = new User($coreaccess);
-$u->setLogin($user, 0);
+$u->setLoginName($user);
 $uid = $u->id;
 if (!$uid) {
     $du = createDoc($dbaccess, "IUSER");
@@ -47,7 +47,6 @@ if (!$uid) {
         $du->setValue("us_fname", "");
         $du->setValue("us_passwd1", $password);
         $du->setValue("us_passwd2", $password);
-        $du->setValue("us_iddomain", "0");
         $err = $du->Add();
         if ($err == "") {
             $err = $du->postModify();

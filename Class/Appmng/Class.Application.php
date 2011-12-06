@@ -52,7 +52,21 @@ class Application extends DbObj
         "iorder",
         "tag"
     );
-    
+    public $id;
+public $name;
+public $short_name;
+public $description;
+public $access_free;
+public $available;
+public $icon;
+public $displayable;
+public $with_frame;
+public $childof;
+public $objectclass;
+public $ssl;
+public $machine;
+public $iorder;
+public $tag;
     public $id_fields = array(
         "id"
     );

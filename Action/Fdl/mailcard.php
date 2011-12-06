@@ -18,7 +18,6 @@
 
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/sendmail.php");
-include_once ("Class.MailAccount.php");
 // -----------------------------------
 function mailcard(&$action)
 {

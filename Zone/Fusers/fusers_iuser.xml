@@ -45,7 +45,6 @@ addEvent(window,"load",viewFirstTab);
 <span class="fablabel">[L_US_DAYDELAY]</span> <span class="fabvalue">[V_US_DAYDELAY]</span>
 </fieldset>
 [ENDIF HasDPassword]<br/>
-[IF HasDOMAIN]<span class="fablabel">[L_US_DOMAIN]</span>&nbsp;:&nbsp;<span class="fabvalue">[V_US_DOMAIN]</span>[ENDIF HasDOMAIN]
 
 <span class="fablabel">[L_US_MAIL]&nbsp;:&nbsp;</span><span class="fabvalue">[IF S_US_MAIL][V_US_MAIL][ENDIF S_US_MAIL][IFNOT S_US_MAIL][TEXT:nomail][ENDIF S_US_MAIL]</span>
 </div>

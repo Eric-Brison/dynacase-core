@@ -23,11 +23,14 @@ include_once ("FDL/Class.Dir.php");
  * @return
  */
 
-global $wg;
-$wg = new group("", 2); // working group
 function refreshGroups($groupIdList, $refresh = false, &$currentPath = array() , &$groupDepth = array())
 {
-    global $wg;
+    /**
+     * @var Group $wg
+     */
+    static $wg = null;
+    
+    if (!$wg) $wg = new group("", 2); // working group;
     // Iterate over given groups list
     foreach ($groupIdList as $groupId) {
         // Detect loops in groups
@@ -68,12 +71,15 @@ function refreshOneGroup($gid, $refresh)
     $g = new User("", $gid);
     if ($g->fid > 0) {
         $dbaccess = GetParam("FREEDOM_DB");
+        /**
+         * @var _IGROUP $doc
+         */
         $doc = new_Doc($dbaccess, $g->fid);
         if ($doc->isAlive()) {
-            if ($_SERVER['HTTP_HOST'] == "") error_log(sprintf("\trefreshing %s\n", $doc->title));
+            //if ($_SERVER['HTTP_HOST'] == "") error_log(sprintf("\trefreshing %s\n", $doc->title));
             wbartext(sprintf(_("refreshing %s") , $doc->title));
             if ($refresh) $doc->refreshMembers();
-            $doc->SetGroupMail(($doc->GetValue("US_IDDOMAIN") > 1));
+            $doc->SetGroupMail();
             $doc->modify();
             $doc->specPostInsert();
             $doc->setValue("grp_isrefreshed", "1");

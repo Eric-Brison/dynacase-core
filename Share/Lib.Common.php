@@ -594,25 +594,7 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
         $target = strtolower(GetParam("CORE_MAIL_LINK", "optimal"));
         if ($target == "optimal") {
             $target = "mailto";
-            if ($action->user->iddomain > 9) {
-                $query = new QueryDb($action->dbaccess, "Application");
-                $query->basic_elem->sup_where = array(
-                    "name='MAIL'",
-                    "available='Y'",
-                    "displayable='Y'"
-                );
-                $list = $query->Query(0, 0, "TABLE");
-                if ($query->nb > 0) {
-                    $queryact = new QueryDb($action->dbaccess, "Action");
-                    $queryact->AddQuery("id_application=" . $list[0]["id"]);
-                    $queryact->AddQuery("root='Y'");
-                    $listact = $queryact->Query(0, 0, "TABLE");
-                    $root_acl_name = $listact[0]["acl"];
-                    if ($action->HasPermission($root_acl_name, $list[0]["id"])) {
-                        $target = "squirrel";
-                    }
-                }
-            }
+
         }
     }
     $prot = ($_SERVER["HTTPS"] == "on" ? "https" : "http");

@@ -18,7 +18,6 @@
  */
 include_once ('Class.Session.php');
 include_once ('Class.User.php');
-include_once ('Class.Domain.php');
 include_once ('Class.QueryDb.php');
 include_once ('Lib.Http.php');
 /**
