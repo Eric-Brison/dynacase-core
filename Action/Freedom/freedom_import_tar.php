@@ -76,7 +76,7 @@ function freedom_import_tar(&$action)
 
 function extractTar($tar, $untardir, $mime = "")
 {
-    
+    $tar = realpath($tar);
     $mime = trim(shell_exec(sprintf("file -ib %s", escapeshellarg($tar))));
     $mime = trim(shell_exec(sprintf("file -b %s", escapeshellarg($tar))));
     $mime = substr($mime, 0, strpos($mime, " "));
