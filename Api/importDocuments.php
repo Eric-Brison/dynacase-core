@@ -70,15 +70,15 @@ setHttpVar('htmlmode', ($htmlmode == "yes") ? 'Y' : 'N');
 $archive = ($archive == "yes");
 
 if ($dirid) {
-    $dir=new_doc("", $dirid);
-    if (! $dir->isAlive()) {
-        $action->exitError(sprintf("folder %s not found (dir option)",$dirid));
+    $dir = new_doc("", $dirid);
+    if (!$dir->isAlive()) {
+        $action->exitError(sprintf("folder %s not found (dir option)", $dirid));
     }
 }
 $oImport = new ImportDocument();
-if ($strict=='no') $oImport->setStrict(false);
+if ($strict == 'no') $oImport->setStrict(false);
 
-$cr = $oImport->importDocuments($action, $filename, $analyze, $archive);
+$cr = $oImport->importDocuments($action, $filename, $analyze != "no", $archive == "yes");
 
 $filetmp = false;
 if ((!$logfile) && $to) {

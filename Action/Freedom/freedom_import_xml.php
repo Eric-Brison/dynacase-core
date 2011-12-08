@@ -347,6 +347,7 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
     function splitZipXmlDocument($zipfiles, $splitdir)
     {
         $err = "";
+        $zipfiles = realpath($zipfiles);
         $ll = exec(sprintf("cd %s && unzip %s", $splitdir, $zipfiles) , $out, $retval);
         if ($retval != 0) $err = sprintf(_("export Xml : cannot unzip %s : %s") , $zipfiles, $ll);
         return $err;
