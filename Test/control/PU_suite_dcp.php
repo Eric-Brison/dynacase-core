@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace PU;
 /**
@@ -30,6 +30,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestImportFamily');
         $suite->addTestSuite('PU\TestImportDocument');
         $suite->addTestSuite('PU\TestImportArchive');
+        $suite->addTestSuite('PU\TestExportXml');
         $suite->addTestSuite('PU\TestGetParam');
         // ...
         return $suite;

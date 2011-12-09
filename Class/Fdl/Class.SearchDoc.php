@@ -123,7 +123,7 @@ class SearchDoc
      * @param string $fromid family identificator to filter
      *
      */
-    public function __construct($dbaccess, $fromid = 0)
+    public function __construct($dbaccess = '', $fromid = 0)
     {
         if ($dbaccess == "") $dbaccess = getDbAccess();
         $this->dbaccess = $dbaccess;

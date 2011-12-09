@@ -333,7 +333,7 @@ function getServiceName($dbaccess)
  * send simple query to database
  * @param string $dbaccessaccess database coordonates
  * @param string $query sql query
- * @param string/array &$result  query result
+ * @param string|array &$result  query result
  * @param boolean $singlecolumn  set to true if only onz field is return
  * @param boolean $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array
  * @return string error message. Empty message if no errors.
@@ -594,7 +594,6 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
         $target = strtolower(GetParam("CORE_MAIL_LINK", "optimal"));
         if ($target == "optimal") {
             $target = "mailto";
-
         }
     }
     $prot = ($_SERVER["HTTPS"] == "on" ? "https" : "http");

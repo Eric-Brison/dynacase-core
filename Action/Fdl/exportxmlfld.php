@@ -31,17 +31,23 @@ include_once ("FDL/Class.SearchDoc.php");
  * @global eformat Http var :  (X|Y) I:  Y: only one xml, X: zip by document with files
  * @global log Http var :  log file output
  * @global selection Http var :  JSON document selection object
+ * @param string $afldid folder identificator to export
+ * @param string $famid restrict to specific family for folder
+ * @param SearchDoc $specSearch use this search instead folder
+ * @param string $outputFile put result into this file instead download it
+ * @param string $eformat X : zip (xml inside), Y: global xml file
+ * @param string $eformat X : zip (xml inside), Y: global xml file
  */
-function exportxmlfld(Action & $action, $aflid = "0", $famid = "")
+function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', Fdl_DocumentSelection $aSelection = null)
 {
     if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600); // 60 minutes
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $fldid = $action->getArgument("id", $aflid);
     $wprof = false; // no profil
     $wfile = (substr(strtolower($action->getArgument("wfile", "N")) , 0, 1) == "y"); // with files
-    $wident = (substr(strtolower($action->getArgument("wident", "Y")) , 0, 1) == "y"); // with numeric identificator
+    $wident = (substr(strtolower($action->getArgument("wident", $wident)) , 0, 1) == "y"); // with numeric identificator
     $flat = (substr(strtolower($action->getArgument("flat")) , 0, 1) == "y"); // flat xml
-    $eformat = strtoupper($action->getArgument("eformat", "X")); // export format
+    if (!$eformat) $eformat = strtoupper($action->getArgument("eformat", "X")); // export format
     $selection = $action->getArgument("selection"); // export selection  object (JSON)
     $log = $action->getArgument("log"); // log file
     $configxml = $action->getArgument("config");
@@ -66,6 +72,9 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "")
         if ($xml === false) {
             exportExit($action, sprintf(_("parse error config file %s : %s") , $configxml, print_r(libxml_get_last_error() , true)));
         }
+        /**
+         * @var SimpleXmlElement $family
+         */
         foreach ($xml->family as $family) {
             $afamid = @current($family->attributes()->name);
             if (!$afamid) exportExit($action, sprintf(_("Config file %s : family name not set") , $configxml));
@@ -84,10 +93,18 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "")
         }
     }
     // set the export's search
-    if ((!$fldid) && $selection) {
-        $selection = json_decode($selection);
-        include_once ("DATA/Class.DocumentSelection.php");
-        $os = new Fdl_DocumentSelection($selection);
+    if ($specSearch) {
+        $s = $specSearch;
+        $s->setObjectReturn();
+        $s->reset();
+    } elseif ((!$fldid) && ($selection || $aSelection)) {
+        if ($aSelection) {
+            $os = $aSelection;
+        } else {
+            $selection = json_decode($selection);
+            include_once ("DATA/Class.DocumentSelection.php");
+            $os = new Fdl_DocumentSelection($selection);
+        }
         $ids = $os->getIdentificators();
         $s = new SearchDoc($dbaccess);
         
@@ -161,7 +178,9 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "")
     }
     
     if ($eformat == "X") {
-        $zipfile = uniqid(getTmpDir() . "/xml") . ".zip";
+        
+        if ($outputFile) $zipfile = $outputFile;
+        else $zipfile = uniqid(getTmpDir() . "/xml") . ".zip";
         system(sprintf("cd %s && zip -r %s -- * > /dev/null", escapeshellarg($foutdir) , escapeshellarg($zipfile)) , $ret);
         if (is_file($zipfile)) {
             system(sprintf("rm -fr %s", $foutdir));
@@ -170,7 +189,8 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "")
             exportExit($action, _("Zip Archive cannot be created"));
         }
     } elseif ($eformat == "Y") {
-        $xmlfile = uniqid(getTmpDir() . "/xml") . ".xml";
+        if ($outputFile) $xmlfile = $outputFile;
+        else $xmlfile = uniqid(getTmpDir() . "/xml") . ".xml";
         
         $fh = fopen($xmlfile, 'x');
         if ($fh === false) {
@@ -199,8 +219,10 @@ EOF;
             return exportExit($action, sprintf("%s (Error chdir to '%s')", _("Xml file cannot be created") , htmlspecialchars($foutdir)));
         }
         
-        $cmd = sprintf("cat -- *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> %s", escapeshellarg($xmlfile));
-        system($cmd, $ret);
+        if ($s->count() > 0) {
+            $cmd = sprintf("cat -- *xml | grep -v '<?xml version=\"1.0\" encoding=\"UTF-8\"?>' >> %s", escapeshellarg($xmlfile));
+            system($cmd, $ret);
+        }
         
         $ret = chdir($cwd);
         if ($ret === false) {
@@ -221,7 +243,10 @@ EOF;
         
         if (is_file($xmlfile)) {
             system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
-            Http_DownloadFile($xmlfile, "$exportname.xml", "text/xml", false, false, true);
+            
+            if (!$outputFile) {
+                Http_DownloadFile($xmlfile, "$exportname.xml", "text/xml", false, false, true);
+            }
         } else {
             exportExit($action, _("Xml file cannot be created"));
         }
