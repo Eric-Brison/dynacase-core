@@ -38,7 +38,7 @@ include_once ("FDL/Class.SearchDoc.php");
  * @param string $eformat X : zip (xml inside), Y: global xml file
  * @param string $eformat X : zip (xml inside), Y: global xml file
  */
-function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y')
+function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $specSearch = null, $outputFile = '', $eformat = "", $wident = 'Y', Fdl_DocumentSelection $aSelection = null)
 {
     if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600); // 60 minutes
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -97,10 +97,14 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
         $s = $specSearch;
         $s->setObjectReturn();
         $s->reset();
-    } elseif ((!$fldid) && $selection) {
-        $selection = json_decode($selection);
-        include_once ("DATA/Class.DocumentSelection.php");
-        $os = new Fdl_DocumentSelection($selection);
+    } elseif ((!$fldid) && ($selection || $aSelection)) {
+        if ($aSelection) {
+            $os = $aSelection;
+        } else {
+            $selection = json_decode($selection);
+            include_once ("DATA/Class.DocumentSelection.php");
+            $os = new Fdl_DocumentSelection($selection);
+        }
         $ids = $os->getIdentificators();
         $s = new SearchDoc($dbaccess);
         
@@ -238,8 +242,9 @@ EOF;
         fclose($fh);
         
         if (is_file($xmlfile)) {
+            system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
+            
             if (!$outputFile) {
-                system(sprintf("rm -fr %s", escapeshellarg($foutdir)));
                 Http_DownloadFile($xmlfile, "$exportname.xml", "text/xml", false, false, true);
             }
         } else {

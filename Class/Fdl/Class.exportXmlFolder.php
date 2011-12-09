@@ -35,7 +35,6 @@ class exportXmlFolder
     {
         $this->dbaccess = getDbAccess();
     }
-
     /**
      * export format xml or zip
      * @param string $xy
@@ -49,7 +48,6 @@ class exportXmlFolder
             throw new Exception(sprintf("format must be %s or %s") , self::zipFormat, self::xmlFormat);
         }
     }
-
     /**
      * export (or not) system document identificator
      * @param bool $exportIdentificator export option
@@ -58,7 +56,6 @@ class exportXmlFolder
     {
         $this->useIdentificator = $exportIdentificator;
     }
-
     /**
      * return exported file name
      * @return string file path
@@ -106,22 +103,29 @@ class exportXmlFolder
         $this->setOutputFile($outputFile);
         exportxmlfld($action, $folder = "0", $famid = "", $search, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
-
-        /**
-         * export documents from search object
-         * @param string $folderId collection identificator
-         * @param string $outputFile path to output file
-         * @return void
-         */
+    /**
+     * export documents from search object
+     * @param string $folderId collection identificator
+     * @param string $outputFile path to output file
+     * @return void
+     */
     public function exportFromFolder($folderId, $outputFile = '')
     {
         global $action;
         $this->setOutputFile($outputFile);
-        exportxmlfld($action, $folderId , $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
+        exportxmlfld($action, $folderId, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N');
     }
-    public function exportFromSelection(Fdl_DocumentSelection $selection)
+    /**
+     *
+     * export documents from selection object
+     * @param Fdl_DocumentSelection $selection
+     * @param string $outputFile
+     */
+    public function exportFromSelection(Fdl_DocumentSelection $selection, $outputFile = '')
     {
-        // TODO
+        global $action;
+        $this->setOutputFile($outputFile);
+        exportxmlfld($action, $folder = 0, $famid = "", null, $this->outputFile, $this->format, $this->useIdentificator ? 'Y' : 'N', $selection);
     }
 }
 ?>

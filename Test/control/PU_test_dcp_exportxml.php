@@ -19,7 +19,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
     /**
      * @var \DOMDocument
      */
-    private static $dom;
+    private $dom;
     static function getCommonImportFile()
     {
         return array(
@@ -30,7 +30,46 @@ class TestExportXml extends TestCaseDcpCommonFamily
     /**
      * @return \DOMDocument
      */
-    private function getExportedDom()
+    private function getExportedSelectionDom()
+    {
+        if (!$this->dom) {
+            $selNames = array(
+                "TST_REL1",
+                "TST_REL2",
+                "TST_REL3",
+                "TST_REL4"
+            );
+            $config = array();
+            foreach ($selNames as $name) {
+                $id = getIdFromName(self::$dbaccess, $name);
+                if ($id) $config["selectionItems"][] = $id;
+            }
+            
+            $s = new \Fdl_DocumentSelection($config);
+            //print_r( $s->search());
+            $export = new \exportXmlFolder();
+            try {
+                $export->setOutputFormat(\exportXmlFolder::xmlFormat);
+                $export->useIdentificator(false);
+                $export->exportFromSelection($s);
+                $this->dom = new \DOMDocument();
+                $this->dom->load($export->getOutputFile());
+                
+                @unlink($export->getOutputFile());
+                return $this->dom;
+            }
+            catch(\Exception $e) {
+                print $e->getMessage();
+            }
+            return null;
+        } else {
+            return $this->dom;
+        }
+    }
+    /**
+     * @return \DOMDocument
+     */
+    private function getExportedSearchDom()
     {
         if (!$this->dom) {
             $s = new \SearchDoc(self::$dbaccess, "TST_EXPORTFAM1");
@@ -42,7 +81,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 $export->exportFromSearch($s);
                 $this->dom = new \DOMDocument();
                 $this->dom->load($export->getOutputFile());
-                
+                @unlink($export->getOutputFile());
                 return $this->dom;
             }
             catch(\Exception $e) {
@@ -58,7 +97,23 @@ class TestExportXml extends TestCaseDcpCommonFamily
      */
     public function testExportRelation($docName, $attrName, $expectedValue)
     {
-        $dom = $this->getExportedDom();
+        
+        $dom = $this->getExportedSearchDom();
+        $this->domTestExportRelation($dom, $docName, $attrName, $expectedValue);
+    }
+    /**
+     * @dataProvider dataDocumentFiles
+     */
+    public function testExportSelectionRelation($docName, $attrName, $expectedValue)
+    {
+        
+        $dom = $this->getExportedSelectionDom();
+        $this->domTestExportRelation($dom, $docName, $attrName, $expectedValue);
+    }
+    
+    private function domTestExportRelation(\DOMDocument $dom, $docName, $attrName, $expectedValue)
+    {
+        
         $docs = $dom->getElementsByTagName("tst_exportfam1");
         /**
          * \DOMElement $xmldoc
