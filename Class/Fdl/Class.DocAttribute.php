@@ -499,10 +499,27 @@ class NormalAttribute extends BasicAttribute
                     if ((strpos($v, '<BR>') === false) && (strpos($v, "\n") === false)) {
                         return sprintf('<%s id="%s">%s</%s>', $this->id, $v, _("unreferenced document") , $this->id);
                     } else {
-                        return sprintf('<%s id="%s">%s</%s>', $this->id, str_replace(array(
-                            "\n",
-                            '<BR>'
-                        ) , ',', $v) , _("multiple document") , $this->id);
+                        
+                        $tids = explode("\n", str_replace('<BR>', "\n", $v));
+                        $mName = array();
+                        $mId = array();
+                        $foundName = false;
+                        foreach ($tids as $id) {
+                            $lName = getNameFromId($doc->dbaccess, $id);
+                            $mName[] = $lName;
+                            $mId[] = $id;
+                            if ($lName) $foundName = true;
+                        }
+                        $sIds = '';
+                        if ($opt->withIdentificator) {
+                            $sIds = sprintf('id="%s"', implode(',', $mId));
+                        }
+                        $sName = '';
+                        if ($foundName) {
+                            
+                            $sName = sprintf('name="%s"', implode(',', $mName));
+                        }
+                        return sprintf('<%s %s %s>%s</%s>', $this->id, $sName, $sIds, _("multiple document") , $this->id);
                     }
                 }
             default:

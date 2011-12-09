@@ -21,6 +21,8 @@ include_once ("DATA/Class.Document.php");
  */
 class Fdl_DocumentSelection
 {
+    private $mainSelector;
+    private $selectionItems;
     function __construct($config)
     {
         foreach ($config as $k => $v) $this->$k = $v;
@@ -57,11 +59,14 @@ class Fdl_DocumentSelection
             $idc = $this->collectionId;
             $c = new Fdl_Collection($idc);
             if ($c->isAlive()) {
+                /**
+                 * @var DocCollection $idoc
+                 */
                 $idoc = $c->getInternalDocument();
                 $filter = array();
                 $famid = "";
                 if ($this->filter) {
-                    $err = $c->object2SqlFilter($this->filter, $famid, $sql);
+                    $err = $idoc->object2SqlFilter($this->filter, $famid, $sql);
                     if ($err == "") {
                         if ($sql) $filter[] = $sql;
                     } else return null;

@@ -91,7 +91,9 @@ class Fdl_Document
         }
         return null;
     }
-    
+    /**
+     * @return Doc|null
+     */
     function getInternalDocument()
     {
         return $this->doc;
