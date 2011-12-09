@@ -54,6 +54,7 @@ if (navigator.appVersion.indexOf("MSIE")!=-1){
        <a class="abut"  href="checklist.php"><span class="bigbutton">Check List</span></a><br>
        <a class="abut"  href="phpinfo.php"><span class="bigbutton">PHP info</span></a><br>
        <a class="abut"  href="../lib/examples/perfotest.html"><span class="bigbutton">Performance test</span></a><br>
+       <a class="abut"  href="pgsize.php"><span class="bigbutton">PG Size</span></a><br>
 <?php
 if (file_exists("dbmng.php")) { ?>
        <a class="abut"  href="dbmng.php"><span class="bigbutton">Check DB backups</span></a>
