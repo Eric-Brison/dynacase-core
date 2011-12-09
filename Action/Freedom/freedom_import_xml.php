@@ -37,7 +37,7 @@ function freedom_import_xml(Action & $action, $filename = "")
             $xmlfiles = $_FILES["file"]['tmp_name'];
             $ext = substr($filename, strrpos($filename, '.') + 1);
             rename($xmlfiles, $xmlfiles . ".$ext");
-            $xmlfile.= ".$ext";
+            $xmlfiles.= ".$ext";
         } else {
             $filename = GetHttpVars("file");
             $xmlfiles = $filename;
@@ -78,7 +78,7 @@ function freedom_import_xmlzip(Action & $action, $filename = "")
             $zipfiles = $_FILES["file"]['tmp_name'];
             $ext = substr($filename, strrpos($filename, '.') + 1);
             rename($zipfiles, $zipfiles . ".$ext");
-            $zipfile.= ".$ext";
+            $zipfiles.= ".$ext";
         } else {
             $filename = GetHttpVars("file");
             $zipfiles = $filename;
@@ -280,6 +280,10 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
         ($id) ? $id : $name,
         '-'
     );
+    $msg = '';
+    /**
+     * @var BasicAttribute $v
+     */
     foreach ($la as $k => & $v) {
         $n = $dom->getElementsByTagName($v->id);
         $val = array();
@@ -292,7 +296,18 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
                     $id = $item->getAttribute("id");
                     if (!$id) {
                         $name = $item->getAttribute("name");
-                        if ($name) $id = getIdFromName($dbaccess, $name);
+                        if ($name) {
+                            if (strpos($name, ',') !== false) {
+                                $names = explode(',', $name);
+                                $lids = array();
+                                foreach ($names as $lname) {
+                                    $lids[] = getIdFromName($dbaccess, $lname);
+                                }
+                                $id = implode(",", $lids);
+                            } else {
+                                $id = getIdFromName($dbaccess, $name);
+                            }
+                        }
                         if (!$id) {
                             // search from title
                             if ($item->nodeValue) {
