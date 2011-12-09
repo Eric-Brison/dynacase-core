@@ -64,6 +64,12 @@ class ApiUsage
      */
     protected $strict = true;
     /**
+     * force throw exception when verify fail instead of exitError
+     *
+     * @var boolean
+     */
+    protected $useException = false;
+    /**
      * init action
      */
     public function __construct()
@@ -180,20 +186,26 @@ class ApiUsage
      * exit when error
      *
      * @param string $error message error
-     *
+     * @throw ApiUsageException
      * @return void
      */
     public function exitError($error = '')
     {
         if ($error != '') $error.= "\n";
         $usage = $this->getUsage();
-        if ($_SERVER['HTTP_HOST'] != "") {
-            $usage = str_replace('--', '&', $usage);
-            $error.= '<pre>' . htmlspecialchars($usage) . '</pre>';
+        
+        if ((!$this->useException)) {
+            if ($_SERVER['HTTP_HOST'] != "") {
+                $usage = str_replace('--', '&', $usage);
+                $error.= '<pre>' . htmlspecialchars($usage) . '</pre>';
+            } else {
+                $error.= $usage;
+            }
+            $this->action->exitError($error);
         } else {
-            $error.= $usage;
+            // no usage when use exception mode
+            throw new ApiUsageException($error, 0, null, $usage);
         }
-        $this->action->exitError($error);
     }
     /**
      * list hidden keys
@@ -229,15 +241,13 @@ class ApiUsage
      */
     public function verify($useException = false)
     {
+        $this->useException = $useException;
         foreach ($this->needArgs as $arg) {
             $value = $this->action->getArgument($arg["name"]);
             if ($value == '') {
                 $error = sprintf("argument '%s' expected\n", $arg["name"]);
-                if ($useException) {
-                    throw ApiUsageException($error);
-                } else {
-                    $this->exitError($error);
-                }
+                
+                $this->exitError($error);
             }
         }
         $allArgs = array_merge($this->needArgs, $this->optArgs);
@@ -248,11 +258,8 @@ class ApiUsage
             if ($value !== null && $arg["restriction"]) {
                 if (!in_array($value, $arg["restriction"])) {
                     $error = sprintf("argument '%s' must be one of these values : %s\n", $arg["name"], implode(", ", $arg["restriction"]));
-                    if ($useException) {
-                        throw ApiUsageException($error);
-                    } else {
-                        $this->exitError($error);
-                    }
+                    
+                    $this->exitError($error);
                 }
             }
             $argsKey[] = $arg["name"];
@@ -261,11 +268,8 @@ class ApiUsage
             foreach ($_GET as $k => $v) {
                 if (!in_array($k, $argsKey)) {
                     $error = sprintf("argument '%s' is not defined\n", $k);
-                    if ($useException) {
-                        throw ApiUsageException($error);
-                    } else {
-                        $this->exitError($error);
-                    }
+                    
+                    $this->exitError($error);
                 }
             }
         }
@@ -274,5 +278,16 @@ class ApiUsage
 
 class ApiUsageException extends Exception
 {
+    private $usage = '';
+    public function __construct($message, $code, $previous = null, $usage = '')
+    {
+        parent::__construct($message, (int) $code);
+        $this->usage = $usage;
+    }
+    
+    public function getUsage()
+    {
+        return $this->usage;
+    }
 }
 ?>
