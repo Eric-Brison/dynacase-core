@@ -5014,7 +5014,13 @@ create unique index i_docir on doc(initid, revision);";
                                     $fname.= ' ' . _("(file not found)");
                                 }
                             } else $htmlval = _("vault file error");
-                        } else $htmlval = _("no filename");
+                        } else {
+                            if ($oattr->getOption('showempty')) {
+                                $htmlval = $oattr->getOption('showempty');
+                            } else {
+                                $htmlval = _("no filename");
+                            }
+                        }
                         
                         if ($target == "mail") {
                             $htmlval = "<a target=\"_blank\" href=\"";
@@ -5187,6 +5193,10 @@ create unique index i_docir on doc(initid, revision);";
                         break;
 
                     case "array":
+                        if (count($this->getAValues($oattr->id)) == 0 && $oattr->getOption('showempty')) {
+                            $htmlval = $oattr->getOption('showempty');
+                            break;
+                        }
                         $viewzone = $oattr->getOption("rowviewzone");
                         $sort = $oattr->getOption("sorttable");
                         if ($sort == "yes") {
@@ -5440,12 +5450,18 @@ create unique index i_docir on doc(initid, revision);";
                         break;
 
                     case 'money':
-                        
-                        $htmlval = money_format('%!.2n', doubleval($avalue));
-                        $htmlval = str_replace(" ", "&nbsp;", $htmlval); // need to replace space by non breaking spaces
+                        if ($avalue == '' && $oattr->getOption('showempty')) {
+                            $htmlval = $oattr->getOption('showempty');
+                        } else {
+                            $htmlval = money_format('%!.2n', doubleval($avalue));
+                            $htmlval = str_replace(" ", "&nbsp;", $htmlval); // need to replace space by non breaking spaces
+                        }
                         break;
 
                     case 'htmltext':
+                        if ($avalue == '' && $oattr->getOption('showempty')) {
+                            $avalue = $oattr->getOption('showempty');
+                        }
                         $shtmllink = $htmllink ? "true" : "false";
                         $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->getDocAnchor('\\2',\"$target\",$shtmllink)", $avalue);
                         $htmlval = '<div class="htmltext">' . $avalue . '</div>';
@@ -5469,7 +5485,6 @@ create unique index i_docir on doc(initid, revision);";
                             else $htmlval = $avalue;
                         } else {
                             $htmlval = substr($avalue, 0, 5); // do not display second
-                            
                         }
                         $aformat = "";
                         break;
@@ -5513,7 +5528,9 @@ create unique index i_docir on doc(initid, revision);";
                         break;
                     }
                     
-                    if (($aformat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
+                    if ($htmlval == '' && $oattr->getOption('showempty')) {
+                        $htmlval = $oattr->getOption('showempty');
+                    } else if (($aformat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
                         //printf($htmlval);
                         $htmlval = sprintf($aformat, $htmlval);
                     }
@@ -6478,8 +6495,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $htmlvalue = sprintf("[ZONE FDL:VIEWTPL?id=%d&famid=%d&target=%s&zone=%s]", $this->id, $this->fromid, $target, $viewtpl);
                                         }
                                     } else {
-                                        if ((($value == "") && ($attr->type != "array")) || (($attr->type == "array") && (count($this->getAValues($attr->id)) == 0))) $htmlvalue = $attr->getOption("showempty");
-                                        else $htmlvalue = $this->GetHtmlValue($attr, $value, $target, $ulink);
+                                        $htmlvalue = $this->GetHtmlValue($attr, $value, $target, $ulink);
                                     }
                                 } else {
                                     $htmlvalue = false; // display defer
