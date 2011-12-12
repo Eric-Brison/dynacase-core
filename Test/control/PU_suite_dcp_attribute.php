@@ -20,6 +20,7 @@ class SuiteDcpAttribute
         
         $suite->addTestSuite('PU\TestAddArrayRow');
         $suite->addTestSuite('PU\TestGetResPhpFunc');
+                $suite->addTestSuite('PU\TestGetEnum');
         // $suite->addTestSuite('PU\TestAutocompletion'); // This test requires a bootstrap.php with ob_start()
         // ...
         return $suite;

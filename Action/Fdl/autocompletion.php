@@ -218,6 +218,7 @@ function autocompletion(&$action)
             }
             
             if ($err == "") {
+                $targids = array();
                 // add  index for return args only if the element is not in a array
                 while (list($k, $v) = each($rargids)) {
                     $linkprefix = "ilink_";
@@ -236,7 +237,9 @@ function autocompletion(&$action)
                     if ($isILink) {
                         $targid = $linkprefix . $targid;
                     }
-                    $targids[]["attrid"] = $targid;
+                    $targids[] = array(
+                        "attrid" => $targid
+                    );
                 }
                 
                 $action->lay->SetBlockData("cibles", $targids);

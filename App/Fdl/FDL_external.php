@@ -65,6 +65,9 @@ function linkenum($famid, $attrid)
     if (!is_numeric($famid)) $famid = getFamIdFromName($dbaccess, $famid);
     $soc = new_Doc($dbaccess, $famid);
     if ($soc->isAffected()) {
+        /**
+         * @var NormalAttribute $a
+         */
         $a = $soc->getAttribute($attrid);
         return $a->phpfunc;
     }
@@ -337,7 +340,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         if (!is_numeric($famid)) {
             $famid = getFamIdFromName($dbaccess, $famid);
         }
-        
+        $filter = array();
         if ($name != "") {
             $name = pg_escape_string($name);
             $filter[] = "title ~* '$name'";
@@ -349,7 +352,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         }
         //$famid=-(abs($famid));
         if ($only) $famid = - ($famid);
-        $tinter = getChildDoc($dbaccess, $dirid, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
+        $tinter = getChildDoc($dbaccess, $dirid = 0, 0, 100, $filter, $action->user->id, "TABLE", $famid, false, "title");
         
         $tr = array();
         
@@ -448,18 +451,20 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
             ')'
         ) , $val);
         $enum = str_replace(array(
+            '---',
             '&lpar;',
             '&rpar;',
         ) , array(
+            ',',
             '(',
             ')'
         ) , $enum);
-        $tenum = explode("---", $enum);
+        
+        $oa = new NormalAttribute('z', '1', 'l', 'enum', '', '', 10, '', 'W', 'N', 'N', 'N', $f = null, '', $enum, '');
         
         $tr = array();
-        
-        foreach ($tenum as $k => $v) {
-            list($key, $label) = explode("|", $v);
+        $tenum = $oa->getEnumLabel();
+        foreach ($tenum as $key => $label) {
             $slabel = str_replace(array(
                 '&comma;',
                 '&point;'
@@ -594,6 +599,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
     {
         $tz = lzone_($dbaccess, $tview, $famid);
         $tz = array_unique($tz);
+        $tr = array();
         foreach ($tz as $v) {
             $tr[] = array(
                 $v,
@@ -607,6 +613,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
     function lview($tidview, $tlview)
     {
         
+        $tr = array();
         foreach ($tidview as $k => $v) {
             $tr[] = array(
                 $tlview[$k],
@@ -753,6 +760,8 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
     function lstates($dbaccess, $wid, $name = "")
     {
         $doc = createDoc($dbaccess, $wid, false);
+        
+        $tr = array();
         if ($doc && method_exists($doc, "getStates")) {
             $states = $doc->getStates();
             // HERE HERE HERE
@@ -790,6 +799,8 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
     function lmethods($dbaccess, $famid, $name = "")
     {
         $doc = createDoc($dbaccess, $famid, false);
+        
+        $tr = array();
         if ($doc) {
             $methods = get_class_methods($doc);
             $pattern_name = preg_quote($name);
