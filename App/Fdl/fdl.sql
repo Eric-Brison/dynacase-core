@@ -613,29 +613,40 @@ declare
   wt text;
   wti int;
   i int;
+  elementsCount int;
+  elements text[];
 begin
-  i:=1;
+  -- Expand multiples docid ('<BR>' separator), then
+  -- split the docid list ('\n' separator)
+  elements := regexp_split_to_array(replace(sfile, '<BR>', E'\n'), E'\\s*\n\\s*');
+  elementsCount := array_upper(elements, 1);
+  i := 1;
   LOOP
-    -- some computations
-    wt:=split_part(sfile,E'\n',i);   
-    IF wt = '' THEN
-        EXIT;  -- exit loop
+    IF i > elementsCount THEN
+       EXIT; -- exit loop
     END IF;
-    wti=wt::int;
-    --RAISE NOTICE 'wt %',wt;
+    wt := elements[i];
+    IF wt !~ E'^\\s*[0-9]+\\s*$' THEN
+      -- Skip non-numeric id
+	  i := i+1;
+	  CONTINUE;
+    END IF;
+    wti = wt::int;
+    -- RAISE NOTICE 'inserting (sinitid=%, cinitid=%, type=%)', a_docid, wti, $3;
     begin
     insert into docrel(sinitid,cinitid,type) values (a_docid,wti,$3);
      EXCEPTION
 	 WHEN OTHERS THEN
-	    RAISE NOTICE 'Error relindex %',wti;
+	    RAISE NOTICE 'Error relindex (sinitid=%, cinitid=%, type=%)', a_docid, wti, $3;
      end;
-    i:=i+1;
+     i := i+1;
   END LOOP;
-    
+
   return rvalue;
 end;
 $$ language 'plpgsql';
-create or replace function getreldocfld(int) 
+
+create or replace function getreldocfld(int)
 returns int[] as '
 declare 
   thechildid alias for $1;
