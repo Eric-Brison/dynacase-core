@@ -83,6 +83,10 @@ if [ "$1" = "I" ] ; then
         $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
     done
 
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskDirStorage"
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskFsStorage"
+    $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=VAULT "--class=VaultDiskStorage"
+
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --class=Group
 
     #copy postgres group table
