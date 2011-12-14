@@ -173,7 +173,7 @@ class checkWorkflow
         // Sort out the formatting of the filename
         $fileName = realpath($this->getWorkflowClassFile());
         // Get the shell output from the syntax check command
-        exec(sprintf('php -l %s 2>/dev/null', escapeshellarg($fileName)) , $output, $status);
+        exec(sprintf('php -n -l %s 2>&1', escapeshellarg($fileName)) , $output, $status);
         if ($status != 0) {
             $this->addError('W0012', implode("\n", $output));
         } else {
@@ -186,7 +186,6 @@ class checkWorkflow
             }
         }
         //restore_error_handler();
-        
     }
     
     public function errorHandler($errno, $errstr, $errfile, $errline)
