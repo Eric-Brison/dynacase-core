@@ -31,11 +31,11 @@ class TestImportArchive extends TestCaseDcp
      */
     public function testImportArchive($archiveFile, $resultDocuments)
     {
-        global $action;
+        
         $oImport = new \ImportDocument();
         $onlyAnalyze = false;
         $archive = true;
-        $oImport->importDocuments($action, $archiveFile, $onlyAnalyze, $archive);
+        $oImport->importDocuments($this->getAction() , $archiveFile, $onlyAnalyze, $archive);
         $err = $oImport->getErrorMessage();
         
         $this->assertEmpty($err, sprintf("import error %s", $err));
