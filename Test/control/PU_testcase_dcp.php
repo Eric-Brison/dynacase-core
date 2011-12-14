@@ -97,11 +97,15 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * Current action
      * @return \Action
      */
-    protected function getAction()
+    protected static function getAction()
     {
         global $action;
         
-        if (!$action->dbid) $action->init_dbid();
+        if (!$action->dbid) {
+            if (!$action->dbid) $action->init_dbid();
+            if (!$action->dbid) error_log(__METHOD__ . "lost action dbid");
+            $action->init_dbid();
+        }
         return $action;
     }
     /**
@@ -192,10 +196,8 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         }
         $oImport = new \ImportDocument();
         //error_log(__METHOD__."import $realfile");
-        if (!$action->dbid) $action->init_dbid();
-        if (!$action->dbid) error_log(__METHOD__ . "lost action dbid");
-        $oImport->importDocuments($action, $realfile);
-        $err=$oImport->getErrorMessage();
+        $oImport->importDocuments(self::getAction() , $realfile);
+        $err = $oImport->getErrorMessage();
         if ($err) throw new \Exception($err);
         return;
     }

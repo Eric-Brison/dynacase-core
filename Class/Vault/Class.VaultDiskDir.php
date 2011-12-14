@@ -32,6 +32,11 @@ class VaultDiskDir extends DbObj
     public $id_fields = array(
         "id_dir"
     );
+    public $id_dir;
+    public $id_fs;
+    public $free_entries;
+    public $l_path;
+    
     public $dbtable_tmpl = "vaultdiskdir%s";
     public $order_by = "";
     public $seq_tmpl = "seq_id_vaultdiskdir%s";
@@ -42,7 +47,7 @@ class VaultDiskDir extends DbObj
 				 free_entries   int,
                                  l_path varchar(2048)
                                );
-           create sequence seq_id_vaultdiskdir%s start 10";
+           create sequence seq_id_vaultdiskdir%s start 10;";
     // --------------------------------------------------------------------
     function __construct($dbaccess, $id_dir = '', $def = '')
     {
@@ -115,9 +120,12 @@ class VaultDiskDir extends DbObj
             $this->free_entries--;
             $err = $this->Add();
             if ($err == "") {
-                mkdir($rpath . "/" . $npath, VAULT_DMODE);
-                chown($rpath . "/" . $npath, HTTP_USER);
-                chgrp($rpath . "/" . $npath, HTTP_USER);
+                $dirpath = $rpath . "/" . $npath;
+                if (!is_dir($dirpath)) {
+                    mkdir($dirpath, VAULT_DMODE);
+                    chown($dirpath, HTTP_USER);
+                    chgrp($dirpath, HTTP_USER);
+                }
             } else {
                 error_log("Vault dirs full");
                 return (_("no empty vault dir found") . $err);
