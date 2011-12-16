@@ -153,6 +153,18 @@ function GetExt($mime_type)
     return ("");
 }
 
+/**
+ * Send a response with the given data to be downloaded by the client.
+ *
+ * No output should be generated on stdout after calling this function.
+ *
+ * @param string $src the data to send to the client
+ * @param string $ext the extension of the data (e.g. "pdf", "png", etc.)
+ * @param string $name the filename that will be used by the client for saving to a file
+ * @param bool $add_ext add the $ext extension to the $name filename (default = TRUE)
+ * @param string $mime_type the Content-Type MIME type of the response. If empty, compute MIME type from $ext extension (this is the default behaviour)
+ * @return void
+ */
 function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
 {
     if ($mime_type == '') $mime_type = GetMimeType($ext);
@@ -165,6 +177,19 @@ function Http_Download($src, $ext, $name, $add_ext = TRUE, $mime_type = "")
     echo $src;
 }
 
+/**
+ * Send a response with the content of a local file to be downloaded by the client
+ *
+ * No output should be generated on stdout after calling this function.
+ *
+ * @param string $filename pathname of the file that will be sent to the client (e.g. "/tmp/foo.pdf")
+ * @param string $name the basename of the file (e.g. "foo.pdf")
+ * @param string $mime_type the Content-Type MIME type of the response (e.g. "application/pdf")
+ * @param bool $inline Send the data with inline Content-Disposition (default = FALSE)
+ * @param bool $cache Instruct clients and/or proxies to cache the response for 24h (default = TRUE)
+ * @param bool $deleteafter Delete the $filename file when done (default = FALSE)
+ * @return void
+ */
 function Http_DownloadFile($filename, $name, $mime_type = '', $inline = false, $cache = true, $deleteafter = false)
 {
     if (!file_exists($filename)) {
