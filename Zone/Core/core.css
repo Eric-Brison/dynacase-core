@@ -217,6 +217,7 @@ IMG.click:hover {
   [IF ISIE]filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='Images/op20.png',sizingMethod='scale');float:left;[ENDIF ISIE]
   border:solid 1px;
   text-align:center;
+  z-index: 2;
 }
 .CORETextError {
 
@@ -229,6 +230,7 @@ IMG.click:hover {
 
   border:solid 1px;
   text-align:center;
+  z-index: 2;
 }
 
 IMG.Fade {
