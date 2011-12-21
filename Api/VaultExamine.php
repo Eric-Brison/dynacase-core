@@ -1,21 +1,15 @@
 <?php
 /*
+ * Examine vault files
+ *
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Examine vault files
- *
- * @author Anakeen 2004
- * @version $Id: VaultExamine.php,v 1.5 2006/12/08 17:51:17 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
- */
-/**
- */
+
 ini_set("max_execution_time", "36000");
+
+global $appl, $action;
 
 include_once ('FDL/Class.Doc.php');
 include_once ('FDL/Class.DocVaultIndex.php');
@@ -28,13 +22,36 @@ if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
 }
+/**
+ * Parse arguments
+ */
+$usage = new ApiUsage();
+$usage->setText("Examine vault files");
+/* --vaultname */
+$vaultname = $usage->addOption("vault", "Name of the vault to examine", null, "FREEDOM");
+/* --test */
+$test = $usage->addOption("test", "Enable/disable test mode: do not delete anything, just print what would be done", array(
+    "yes",
+    "no"
+) , "no");
+$test = ($test == "yes" ? true : false);
+/* --cmd=check */
+$command = $usage->addNeeded("cmd", "Examine command", array(
+    "check-all",
+    "check-noref",
+    "check-nofile",
+    "clean-unref"
+) , null);
+/* --csv */
+$csv = $usage->addOption("csv", "Output in CSV format", array(
+    1,
+    0,
+    "yes",
+    "no"
+) , "no");
+$csv = ($csv == 1 || $csv == "yes") ? true : false;
 
-$vaultname = GetHttpVars("vault", "FREEDOM");
-$test = GetHttpVars("test", false);
-$command = GetHttpVars("cmd", "");
-$csvp = GetHttpVars("csv", 0);
-$csv = false;
-if ($csvp == 1) $csv = true;
+$usage->verify();
 
 switch ($command) {
     case "check-all":
@@ -64,25 +81,10 @@ switch ($command) {
         break;
 
     default:
-        usage();
+        print sprintf("Unknown command '%s'.\n", $command);
         exit;
 }
 exit;
-
-function usage()
-{
-    echo "\n";
-    echo "  wsh.php --api=VaultExamine --vault=[vaultname] --cmd=[command] [--test]\n";
-    echo "     --vault=[vaultname]  : The vault name (see NAME.vault), by default set to FREEDOM\n";
-    echo "     --test               : In case of destructive command, no actions are done, only gives todo messages.\n";
-    echo "     --cmd=[command]      : Run command, where command are :\n";
-    echo "                             - check-all    : return the full listing of vault files\n";
-    echo "                             - check-noref  : return the unreferenced vault file (file not used by documents)\n";
-    echo "                             - check-nofile : return the vault file entries without file (...)\n";
-    echo "                             - clean-unref  : clear vault file not referenced by documents.\n";
-    echo "\n";
-    return;
-}
 
 function printres($t, $csv = false)
 {
