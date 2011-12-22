@@ -1,11 +1,13 @@
+<div class="page">
 [IF CALLBACK_OK]
-<div id="callback_ok">
+<div id="callback_ok" class="text error-false">
 [TEXT:callbackreqpasswd_callback_ok]
 </div>
 [ENDIF CALLBACK_OK]
 
 [IF CALLBACK_NOT_OK]
-<div id="callback_not_ok">
+<div id="callback_not_ok" class="text error-true">
 [TEXT:callbackreqpasswd_callback_not_ok]
 </div>
 [ENDIF CALLBACK_NOT_OK]
+</div>

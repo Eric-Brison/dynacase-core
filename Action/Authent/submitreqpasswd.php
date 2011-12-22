@@ -25,7 +25,9 @@ function submitreqpasswd(&$action)
     
     $submitted_login = GetHttpVars('form_login');
     $submitted_email = GetHttpVars('form_email');
-    
+
+    $action->parent->AddCssRef('AUTHENT:submitreqpasswd.css');
+
     $action->lay->set('FORM_SEND_OK', False);
     $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', False);
     $action->lay->set('FORM_SEND_ERROR_UNKNOWN', False);

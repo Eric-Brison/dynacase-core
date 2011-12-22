@@ -18,6 +18,8 @@
 
 function reqpasswd(&$action)
 {
+    $action->parent->AddCssRef('AUTHENT:reqpasswd.css');
+
     return "";
 }
 ?>

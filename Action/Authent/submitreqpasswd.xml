@@ -1,23 +1,25 @@
+<div class="page">
 [IF FORM_SEND_OK]
-<div id="form_send_ok">
+<div id="form_send_ok" class="text error-false">
 [TEXT:submitreqpasswd_form_send_ok]
 </div>
 [ENDIF FORM_SEND_OK]
 
 [IF FORM_SEND_ERROR_INVALID_ARGS]
-<div id="form_send_error_invalid_args">
+<div id="form_send_error_invalid_args" class="text error-true">
 [TEXT:submitreqpasswd_form_send_error_invalid_args]
 </div>
 [ENDIF FORM_SEND_ERROR_INVALID_ARGS]
 
 [IF FORM_SEND_ERROR_EXTERNAL_AUTH]
-<div id="form_send_error_external_auth">
+<div id="form_send_error_external_auth" class="text error-true">
 [TEXT:submitreqpasswd_form_send_error_external_auth]
 </div>
 [ENDIF FORM_SEND_ERROR_EXTERNAL_AUTH]
 
 [IF FORM_SEND_ERROR_UNKNOWN]
-<div id="form_send_error_unknown">
+<div id="form_send_error_unknown" class="text error-true">
 [TEXT:submitreqpasswd_form_send_error_unknown]
 </div>
 [ENDIF FORM_SEND_ERROR_UNKNOWN]
+</div>
