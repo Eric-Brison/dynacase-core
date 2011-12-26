@@ -1,0 +1,16 @@
+.text {
+    margin: 1em;
+    padding: 1em;
+}
+.text p {
+    font-family: sans-serif;
+    font-size: 1.25em;
+}
+.error-true {
+    background-color: #ffaaaa;
+    border: 0.25em solid #cc0000;
+}
+.error-false {
+    background-color: #aaffaa;
+    border: 0.25em solid #00cc00;
+}

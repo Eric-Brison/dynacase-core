@@ -1,0 +1,35 @@
+.page {
+    margin: 1em;
+    padding: 1em;
+    border: 0.25em solid #aaaaaa;
+    background-color: #dddddd;
+    position: absolute;
+    left: 30%;
+    margin-right: 30%;
+    width: 40%;
+}
+.page form {
+    padding-left: 20%;
+}
+.page p {
+    font-family: sans-serif;
+    font-size: 1.25em;
+}
+.input-login input {
+    display: block;
+}
+.input-login label:after {
+    content: " :";
+}
+.input-mail input {
+    display: block;
+}
+.input-mail label:after {
+    content: " :";
+}
+.or:after {
+    content: "—";
+}
+.or:before {
+    content: "—";
+}

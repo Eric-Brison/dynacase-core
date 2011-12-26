@@ -1,13 +1,13 @@
-<div id="form_get">
+<div class="page">
 <form action="[CORE_BASEURL]app=AUTHENT&action=SUBMITREQPASSWD" method="post" id="form" name="form">
-<p>
+<p class="input-login">
 <label for="form_login">[TEXT:reqpasswd_login]</label>
 <input type="text" name="form_login" id="form_login" /></li>
 </p>
-<p>
+<p class="or">
 [TEXT:reqpasswd_or]
 </p>
-<p>
+<p class="input-mail">
 <label for="form_email">[TEXT:reqpasswd_email]</label>
 <input type="text" name="form_email" id="form_email" />
 </p>

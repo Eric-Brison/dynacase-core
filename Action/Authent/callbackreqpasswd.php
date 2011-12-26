@@ -20,11 +20,13 @@ function callbackreqpasswd(&$action)
 {
     include_once ('FDL/Lib.Dir.php');
     include_once ('WHAT/Class.UserToken.php');
-    
+
+    $action->parent->AddCssRef('AUTHENT:callbackreqpasswd.css');
+
     $action->lay->set('CALLBACK_OK', False);
     $action->lay->set('CALLBACK_NOT_OK', False);
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
-    
+
     $token = getHttpVars('token');
     // Retrieve token from database
     $utok = new UserToken($action->dbaccess, $token);
