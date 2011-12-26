@@ -586,20 +586,58 @@ declare
   wt text;
   wti int;
   i int;
+  elementsCount int;
+  elements text[];
+  matches text[];
 begin
-  i:=1;
+  -- RAISE NOTICE 'vaultreindex(%, %)', a_docid, sfile;
+  -- Expand multiples file ('<BR>' separator), then
+  -- split the file list ('\n' separator)
+  elements := regexp_split_to_array(replace(sfile, '<BR>', E'\n'), E'\\s*\n\\s*');
+  elementsCount := array_upper(elements, 1);
+  i := 1;
   LOOP
-    wt:=split_part(sfile,E'\n',i);
-    IF wt = '' THEN
-      EXIT; -- exit loop
+    IF i > elementsCount THEN
+       EXIT; -- exit loop
     END IF;
-
-    wt:=split_part(wt,'|',2);
-    wti=wt::int;
-    insert into docvaultindex(docid,vaultid) values (a_docid,wti);
-
-    i:=i+1;
+    wt := elements[i];
+    -- RAISE NOTICE 'vaultreindex processing (wt=%)', wt;
+    matches := regexp_matches(wt, E'^[^|]*\\|([0-9]+)');
+    IF matches IS NULL OR array_upper(matches, 1) < 1 THEN
+      i := i + 1;
+      CONTINUE;
+    END IF;
+    wt := matches[1];
+    wti := wt::int;
+    -- RAISE NOTICE 'vaultreindex inserting (docid=%, vaultid=%)', a_docid, wti;
+    BEGIN
+      INSERT INTO docvaultindex(docid, vaultid) VALUES (a_docid, wti);
+      EXCEPTION
+      WHEN OTHERS THEN
+        RAISE NOTICE 'Error docvaultindex(docid=%, vaultid=%)', a_docid, wti;
+    END;
+    i := i+1;
   END LOOP;
+
+  return rvalue;
+end;
+$$ language 'plpgsql';
+
+create or replace function vaultreindexparam(int, text, text)
+returns bool as $$
+declare
+  docid alias for $1;
+  paramValue alias for $2;
+  paramName alias for $3;
+  rvalue bool;
+  matches text[];
+begin
+  -- RAISE NOTICE 'vaultreindexparam(%, %, %)', docid, paramValue, paramName;
+  matches = regexp_matches(paramValue, E'\\[' || paramName || E'\\|([^\\]]*)\\]');
+  IF matches IS NULL OR array_upper(matches, 1) < 1 THEN
+    return rvalue;
+  END IF;
+  PERFORM vaultreindex(docid, matches[1]);
   return rvalue;
 end;
 $$ language 'plpgsql';
