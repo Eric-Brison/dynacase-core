@@ -204,7 +204,6 @@ class XMLSplitter
                 throw new Exception($this->errmsg);
             }
         }
-        return $this;
     }
     /**
      * Write a starting node.
@@ -282,7 +281,7 @@ class XMLSplitter
             'attrs' => $attrs
         );
         $this->depth++;
-        if ($depth == 1 && $node['name'] != 'documents') {
+        if ($this->depth == 1 && $node['name'] != 'documents') {
             $this->errmsg = sprintf(_("XML Root node is not a '%s' node (root node is '%s').") , 'documents', $node['name']);
             throw new Exception($this->errmsg);
         }
@@ -351,8 +350,6 @@ class XMLSplitter
             throw new Exception($this->errmsg);
         }
         $this->writeOutputFile("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        
-        return $this;
     }
     /**
      * Close the XML input file

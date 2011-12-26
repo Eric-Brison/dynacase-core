@@ -55,7 +55,7 @@ class TestSplitXmlDocument extends TestCaseDcp
         $workingXML = $testDir . DIRECTORY_SEPARATOR . $data['xml'];
         $ret = copy($src, $workingXML);
         if ($ret === false) {
-            throw new \Exception(sprintf("Could not copy '%s' to '%s'.", $src, $dst));
+            throw new \Exception(sprintf("Could not copy '%s' to '%s'.", $src, $workingXML));
         }
         if (isset($data['xml_alter'])) {
             $args = array();
@@ -72,7 +72,12 @@ class TestSplitXmlDocument extends TestCaseDcp
         }
         /* check splitXmlDocument() */
         $err = splitXmlDocument($workingXML, $testDir);
-        $this->assertEmpty($err, sprintf("splitXmlDocument returned with '%s'", $err));
+        if (isset($data['expect_error']) && $data['expect_error'] === true) {
+            $this->assertNotEmpty($err, sprintf("splitXmlDocument did not returned with an expected error"));
+            return;
+        } else {
+            $this->assertEmpty($err, sprintf("splitXmlDocument returned with '%s'", $err));
+        }
         
         if (!isset($data['produces'])) {
             return;
@@ -90,7 +95,6 @@ class TestSplitXmlDocument extends TestCaseDcp
         
         $this->rm_Rf($testDir);
     }
-    
     private function createWorkDir()
     {
         $tmpdir = getParam('CORE_TMPDIR', '/tmp');
@@ -131,7 +135,7 @@ class TestSplitXmlDocument extends TestCaseDcp
             return false;
         }
         $xmlData = file_get_contents($xml);
-        if ($data === false) {
+        if ($xmlData === false) {
             $this->errmsg = sprintf("Could not get content from XML file '%s'.", $xml);
             return false;
         }
@@ -252,6 +256,13 @@ class TestSplitXmlDocument extends TestCaseDcp
                         'PU_DATA_DCP_SPLITXMLDOCUMENT_3.xml',
                         'PU_DATA_DCP_SPLITXMLDOCUMENT_BIGNODE.xml'
                     )
+                )
+            ) ,
+            array(
+                array(
+                    'description' => 'Invalid root node',
+                    'xml' => 'PU_data_dcp_splitxmldocument_invalid_root_node.xml',
+                    'expect_error' => true
                 )
             )
         );
