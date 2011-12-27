@@ -1,11 +1,11 @@
 <?php
-namespace PU;
-
-/**
+/*
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package DCP
- */
+*/
+
+namespace PU;
 
 require_once 'PU_testcase_dcp_document.php';
 
@@ -27,8 +27,7 @@ class TestSearch extends TestCaseDcpDocument
         $s->search();
         
         $err = $s->getError();
-        $this->assertEmpty( $err, sprintf("Search error %s %s", $criteria, $arg));
-    
+        $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
     }
     
     protected function createDataSearch()
@@ -41,7 +40,7 @@ class TestSearch extends TestCaseDcpDocument
             "Pomme-Banane",
             "Banane"
         );
-        foreach ( $societies as $socTitle ) {
+        foreach ($societies as $socTitle) {
             $d1 = createDoc(self::$dbaccess, "SOCIETY", false);
             $d1->setTitle($socTitle);
             $err = $d1->add();
@@ -49,11 +48,10 @@ class TestSearch extends TestCaseDcpDocument
         }
         return true;
     }
-    
     /**
      * test basic search criteria
      * @dataProvider countCriteria
-     * 
+     *
      */
     public function testCountSearch($criteria, $arg, $family, $count)
     {
@@ -66,11 +64,10 @@ class TestSearch extends TestCaseDcpDocument
         
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
-                
-        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
-    
+        
+        $this->assertEquals($count, $s->count() , sprintf("Count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
     }
-   /**
+    /**
      * test basic search criteria
      * @dataProvider countCriteria
      * @---depends testCountSearch
@@ -82,16 +79,15 @@ class TestSearch extends TestCaseDcpDocument
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
-        $c=$s->onlyCount();
+        $c = $s->onlyCount();
         
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
-                
-        $this->assertEquals($count, $s->count(), sprintf("Count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
-        $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count(), $criteria, $arg));
-    
+        
+        $this->assertEquals($count, $s->count() , sprintf("Count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
+        $this->assertEquals($count, $c, sprintf("Return count must be %d (found %d) error %s %s", $count, $s->count() , $criteria, $arg));
     }
-  /**
+    /**
      * test basic search criteria
      * @dataProvider countCriteria
      * @---depends testCountSearch
@@ -105,13 +101,12 @@ class TestSearch extends TestCaseDcpDocument
         $s->setObjectReturn(true);
         $s->setSlice(2);
         $s->search();
-        $c=$s->count();
+        $c = $s->count();
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
         $this->assertLessThanOrEqual(2, $c);
-    
     }
- /**
+    /**
      * test basic search criteria
      * @dataProvider countCriteria
      * @---depends testCountSearch
@@ -124,19 +119,18 @@ class TestSearch extends TestCaseDcpDocument
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
-        $c=$s->onlyCount();
-        $call=$s->count();
+        $c = $s->onlyCount();
+        $call = $s->count();
         
         $s = new \SearchDoc(self::$dbaccess, $family);
         if ($criteria) $s->addFilter($criteria, $arg);
         $s->setObjectReturn(true);
         $s->setStart(2);
         $s->search();
-        $cstart=$s->count();
+        $cstart = $s->count();
         $err = $s->getError();
         $this->assertEmpty($err, sprintf("Search error %s %s", $criteria, $arg));
         $this->assertLessThanOrEqual($call, $cstart);
-    
     }
     /**
      * test basic search criteria
@@ -152,7 +146,6 @@ class TestSearch extends TestCaseDcpDocument
         
         $err = $s->getError();
         $this->assertFalse($err == "", sprintf("Need detect Search error %s %s", $criteria, $arg));
-    
     }
     public function loginCriteria()
     {
@@ -161,7 +154,7 @@ class TestSearch extends TestCaseDcpDocument
                 "us_login ~* '%s'",
                 "Garfield",
                 "IUSER"
-            ),
+            ) ,
             array(
                 "us_mail='%s'",
                 "Léopol",
@@ -172,13 +165,21 @@ class TestSearch extends TestCaseDcpDocument
     public function errorCriteria()
     {
         return array(
+            // family error
             array(
                 "us_login ~* '%s'",
                 "Garfield",
                 "IUSER2"
-            ),
+            ) ,
+            // syntax error
             array(
                 "us_mail y '%s'",
+                "Léopol",
+                "IUSER"
+            ) ,
+            // injection error
+            array(
+                "us_mail ~ '%s');update users set id=0 where id = -6;--",
                 "Léopol",
                 "IUSER"
             )
@@ -192,13 +193,13 @@ class TestSearch extends TestCaseDcpDocument
                 "Pomme",
                 "SOCIETY",
                 2
-            ),
+            ) ,
             array(
                 "title ~ '%s'",
                 "Poire|Pomme|Cerise|Banane",
                 "SOCIETY",
                 5
-            ),
+            ) ,
             array(
                 "title = '%s'",
                 "Pomme",
