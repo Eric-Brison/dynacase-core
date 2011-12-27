@@ -59,11 +59,12 @@ class RessourcePacker
         foreach ($static_css as $cssfile) {
             if (is_file($cssfile)) {
                 print sprintf("/* <static file='%s'> */\n", $cssfile);
-                print file_get_contents($jsfile) . "\n";
+                print file_get_contents($cssfile) . "\n";
                 print sprintf("/* </static file='%s'> */\n", $cssfile);
                 print "\n";
             } else {
                 print sprintf("/* CSS file '%s' not found */\n", $cssfile);
+                $action->log->error(sprintf("CSS file '%s' not found", $cssfile));
             }
         }
         foreach ($dynamic_css as $cssfile) {
@@ -73,6 +74,7 @@ class RessourcePacker
                 $action->lay->template.= sprintf("/* </dynamic file='%s'> */\n", $cssfile);
             } else {
                 $action->lay->template.= sprintf("/* CSS file '%s' not found */\n", $cssfile);
+                $action->log->error(sprintf("CSS file '%s' not found", $cssfile));
             }
         }
         return true;

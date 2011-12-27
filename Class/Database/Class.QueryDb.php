@@ -83,6 +83,11 @@ class QueryDb
     var $criteria = "";
     var $order_by = "";
     var $list = array();
+
+    /**
+     * @var DbObj
+     */
+    public $basic_elem;
     
     function QueryDb($dbaccess, $class)
     {
@@ -184,7 +189,7 @@ class QueryDb
         
         $query = $this->initQuery($start, $slice, $p_query);
         $this->res_type = $res_type;
-        $err = $this->basic_elem->exec_query($query);
+        $err = $this->basic_elem->exec_query($query, 0, true);
         //	print "$query $res_type $p_query<BR>\n";
         if ($res_type == "ITER") {
             if ($err) {
