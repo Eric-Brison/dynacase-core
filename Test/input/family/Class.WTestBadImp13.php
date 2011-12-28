@@ -7,12 +7,11 @@
 
 include_once ("FDL/Class.WDoc.php");
 
-Class WTestImp1 extends WDoc
+Class WTestBadImp13 extends Doc
 {
-    var $attrPrefix = "WAN";
-    
+    var $attrPrefix = "WTST";
     const alive = "alive"; # N_("alive")
-    const dead = "dead"; # N_("dead")
+    const dead = "dead"; # N_("dead")// <-- STATE SYNTAX NAME ERROR
     const transfered = "transfered"; # N_("transfered")
     const sick = "sick"; # N_("sick")
     const convalescent = "convalescent"; # N_("convalescent")
@@ -21,19 +20,20 @@ Class WTestImp1 extends WDoc
     const Tconvalescent = "Tconvalescent"; # N_("Tconvalescent")
     const T3 = "T3"; # N_("T3")
     var $firstState = self::alive;
-    var $transitions = array(
+    public $transitions = array(
         self::T1 => array() ,
         self::Tsick => array(
             "m1" => "SendMailToVeto",
             "ask" => array(
-                "wtst_test1",
-                "wtst_test2"
+                "wan_idveto",
+                "wan_veto"
             ) ,
             "nr" => true
         ) ,
         self::Tconvalescent => array(
             "m1" => "toHealthCard"
         ) ,
+        
         self::T3 => array()
     );
     
@@ -46,7 +46,7 @@ Class WTestImp1 extends WDoc
         
         array(
             "e1" => self::alive,
-            "e2" => self::transfered,
+            "e3" => self::transfered, // <-- TRANSITION SYNTAX NAME ERROR
             "t" => self::T1
         ) ,
         
@@ -64,8 +64,7 @@ Class WTestImp1 extends WDoc
         
         array(
             "e1" => self::convalescent,
-            "e2" => self::alive,
-            "t" => self::T1
+            "e2" => self::alive
         ) ,
         
         array(
@@ -73,6 +72,10 @@ Class WTestImp1 extends WDoc
             "e2" => self::dead,
             "t" => "T3"
         )
+    );
+    
+    public $stateactivity = array(
+        'zou' => 'not correct state'
     );
     
     function SendMailToVeto($newstate)

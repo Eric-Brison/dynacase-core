@@ -5,7 +5,7 @@
  * @package FDL
 */
 
-class CheckBegin extends CheckData
+class CheckEnd extends CheckData
 {
     /**
      * @param array $data
@@ -16,7 +16,7 @@ class CheckBegin extends CheckData
     {
         if ($doc->usefor == 'W') {
             $checkW = new CheckWorkflow($doc->classname, $doc->name);
-            $checkCr = $checkW->verifyWorkflowClass();
+            $checkCr = $checkW->verifyWorkflowComplete();
             if (count($checkCr) > 0) {
                 $this->addError(implode("\n", $checkCr));
             }

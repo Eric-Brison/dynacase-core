@@ -39,6 +39,7 @@ class TestImportFamily extends TestCaseDcpDocument
         }
     }
     /**
+     * test sql view create
      * @dataProvider dataGoodFamilyFiles
      */
     public function testSqlViewFamily($familyFile, $familyName, $testWorkflow = false)
@@ -205,8 +206,46 @@ class TestImportFamily extends TestCaseDcpDocument
                     "WFL0201",
                     "WFL0202",
                     "WFL0052",
+                    "WFL0107",
                     "dead or not",
                     " e3 "
+                )
+            ) ,
+            // test inherit workflow class
+            array(
+                "PU_data_dcp_badfamily13.ods",
+                array(
+                    "WFL0006"
+                )
+            ) ,
+            // test inherit workflow class
+            array(
+                "PU_data_dcp_badfamily14.ods",
+                array(
+                    "WFL0100",
+                    "WFL0200",
+                    "WFL0051"
+                )
+            ) ,
+            // without classname
+            array(
+                "PU_data_dcp_badfamily15.ods",
+                array(
+                    "WFL0001"
+                )
+            ) ,
+            // too many transition model
+            array(
+                "PU_data_dcp_badfamily16.ods",
+                array(
+                    "WFL0102"
+                )
+            ) ,
+            // test ask unknow attribute
+            array(
+                "PU_data_dcp_badfamily17.ods",
+                array(
+                    "WFL0104"
                 )
             )
         );
