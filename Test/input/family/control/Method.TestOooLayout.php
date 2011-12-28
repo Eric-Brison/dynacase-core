@@ -3,9 +3,8 @@
  * Ooo Layout test
  *
  * @author Anakeen 2010
- * @version $Id: Method.Animal.php,v 1.9 2011/02/01 16:40:08 eric Exp $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @package freedom-zoo
+ * @package DCP
  */
 /**
  */
