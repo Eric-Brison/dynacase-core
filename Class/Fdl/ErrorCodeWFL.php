@@ -30,17 +30,17 @@ class ErrorCodeWFL
      * transition are declared in a an array
      * @code
      * public $transitions = array(
-    self::T1 => array(
-    "m1" => "SendMailToVeto",
-    "ask" => array(
-    "wan_idveto",
-    "wan_veto"
-    ) ,
-    "nr" => true
-    ) ,
+     self::T1 => array(
+     "m1" => "SendMailToVeto",
+     "ask" => array(
+     "wan_idveto",
+     "wan_veto"
+     ) ,
+     "nr" => true
+     ) ,
      * @endcode
      */
-    const WFL0100 = 'workflow transition is not an array for class %s';
+    const WFL0100 = 'workflow transition model is not an array for class %s';
     /**
      * field use for transition declaration must be valid
      */
@@ -53,19 +53,19 @@ class ErrorCodeWFL
      * declaration of ask must be in an array
      * @code
      * public $transitions = array(
-    self::T1 => array(
-    "ask" => array(
-    "wan_idveto",
-    "wan_veto"
-    )
-    ) ,
+     self::T1 => array(
+     "ask" => array(
+     "wan_idveto",
+     "wan_veto"
+     )
+     ) ,
      * @endcode
      */
     const WFL0103 = 'workflow transition ask is not an array for transition model %s in class %s';
     /**
      * ask array must reference workflow attributes
      */
-    const WFL0104 = '';
+    const WFL0104 = 'unknow attribute %s in workflow transition ask in class %s';
     /**
      * m1 property must be a worflow method
      */
@@ -95,17 +95,17 @@ class ErrorCodeWFL
      */
     const WFL0003 = 'PHP parsing %s';
     /**
-     *
+     * cannot find a class named as it is needed by workflow
      */
     const WFL0004 = 'workflow class %s not found';
     /**
-     *
+     * the file of the workflow PHP class is not found
      */
     const WFL0005 = 'file name for %s not found';
     /**
      * the workflow class must be a descendant of WDoc class
      */
-    const WFL0006 = '';
+    const WFL0006 = 'workflow class %s not inherit from WDoc class';
     /**
      * the attrPrefix must not be empty
      */

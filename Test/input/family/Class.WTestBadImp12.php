@@ -31,7 +31,8 @@ Class WTestBadImp12 extends WDoc
             "nr" => true
         ) ,
         self::Tconvalescent => array(
-            "m1" => "toHealthCard"
+            "m1" => "toHealthCard",
+            "nr" => "not a bool"
         ) ,
         
         self::T3 => array()

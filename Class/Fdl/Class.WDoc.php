@@ -61,13 +61,15 @@ class WDoc extends Doc
     {
         // first construct acl array
         $ka = POS_WF;
-        foreach ($this->transitions as $k => $trans) {
-            $this->dacls[$k] = array(
-                "pos" => $ka,
-                "description" => _($k)
-            );
-            $this->acls[] = $k;
-            $ka++;
+        if (is_array($this->transitions)) {
+            foreach ($this->transitions as $k => $trans) {
+                $this->dacls[$k] = array(
+                    "pos" => $ka,
+                    "description" => _($k)
+                );
+                $this->acls[] = $k;
+                $ka++;
+            }
         }
         if (isset($this->fromid)) $this->defProfFamId = $this->fromid; // it's a profil itself
         // don't use Doc constructor because it could call this constructor => infinitive loop

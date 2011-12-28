@@ -339,7 +339,7 @@ class importDocumentDescription
             if ($data[4] && ($data[4] != '-')) $this->doc->classname = $data[4]; // new classname for familly
             $check = new CheckBegin();
             $this->tcr[$this->nLine]["err"].= $check->check($data, $this->doc)->getErrors();
-
+            
             if ($data[5] && ($data[5] != '-')) $this->doc->name = $data[5]; // internal name
             $this->tcr[$this->nLine]["err"].= $err;
             if ($this->reinit) {
@@ -390,6 +390,8 @@ class importDocumentDescription
                     $this->tcr[$this->nLine]["err"].= implode(",", $checkCr);
                 }
             }
+            $check = new CheckEnd();
+            $this->tcr[$this->nLine]["err"].= $check->check($data, $this->doc)->getErrors();
             
             if ((!$this->analyze) && ($this->familyIcon != "")) $this->doc->changeIcon($this->familyIcon);
             $this->tcr[$this->nLine]["msg"].= $this->doc->postImport();

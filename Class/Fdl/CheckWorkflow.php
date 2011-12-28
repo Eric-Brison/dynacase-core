@@ -30,6 +30,10 @@ class CheckWorkflow
      * @var string
      */
     private $className;
+    /**
+     * @var string
+     */
+    private $familyName;
     
     const maxTransitionModel = 20;
     /**
@@ -49,10 +53,14 @@ class CheckWorkflow
         'e2',
         't'
     );
-    
-    public function __construct($className)
+    /**
+     * @param string $className workflow class name
+     * @param string $famName workflow family name
+     */
+    public function __construct($className, $famName)
     {
         $this->className = $className;
+        $this->familyName = $famName;
     }
     /**
      * @param $code
@@ -69,16 +77,18 @@ class CheckWorkflow
         }
     }
     
-    private function addCodeError($code, $args=null)
+    private function addCodeError($code, $args = null)
     {
         if ($code) {
-            $tArgs=array($code);
+            $tArgs = array(
+                $code
+            );
             $nargs = func_num_args();
-                                    for ($ip = 1; $ip < $nargs; $ip++) {
-                                        $tArgs[] = func_get_arg($ip);
-                                    }
-
-            $msg=call_user_func_array("ErrorCode::getError", $tArgs);
+            for ($ip = 1; $ip < $nargs; $ip++) {
+                $tArgs[] = func_get_arg($ip);
+            }
+            
+            $msg = call_user_func_array("ErrorCode::getError", $tArgs);
             if (!in_array($msg, $this->terr)) {
                 $this->terr[] = $msg;
             }
@@ -94,8 +104,11 @@ class CheckWorkflow
     {
         return $this->terr;
     }
-    
-    public function verifyWorflow()
+    /**
+     * verify php workflow class name
+     * @return array
+     */
+    public function verifyWorkflowClass()
     {
         $this->checkClassName();
         if (!$this->getErrorMessage()) {
@@ -104,35 +117,45 @@ class CheckWorkflow
                 $this->checkPrefix();
                 $this->checkTransitionModels();
                 $this->checkTransitions();
-                                $this->checkActivities();
+                $this->checkActivities();
             }
         }
         return $this->getError();
     }
-
-    public function checkActivities() {
-        $activities=$this->wdoc->stateactivity;
-        if (!is_array($activities)) {
-
-                    $this->addCodeError('WFL0051', $this->className);
-                } else {
-            $states=$this->wdoc->getStates();
-
-                    foreach ($activities as $state => $label) {
-                        if (! in_array($state, $states)) {
-                            $this->addCodeError('WFL0052', $state, $label, $this->className);
-                        }
-                    }
+    /**
+     * verify validity with attributes
+     */
+    public function verifyWorkflowComplete()
+    {
+        $this->checkIsAWorkflow();
+        if (!$this->getErrorMessage()) {
+            $this->checkAskAttributes();
         }
-
+        return $this->getError();
     }
-
+    public function checkActivities()
+    {
+        $activities = $this->wdoc->stateactivity;
+        if (!is_array($activities)) {
+            
+            $this->addCodeError('WFL0051', $this->className);
+        } else {
+            $states = $this->wdoc->getStates();
+            
+            foreach ($activities as $state => $label) {
+                if (!in_array($state, $states)) {
+                    $this->addCodeError('WFL0052', $state, $label, $this->className);
+                }
+            }
+        }
+    }
+    
     public function checkTransitions()
     {
         
         $cycle = $this->wdoc->cycle;
         if (!is_array($cycle)) {
-
+            
             $this->addCodeError('WFL0200', $this->className);
         } else {
             foreach ($cycle as $k => $state) {
@@ -141,8 +164,6 @@ class CheckWorkflow
                 if (count($diff) > 0) {
                     
                     $this->addCodeError('WFL0201', implode(',', $diff) , $k, $this->className, implode(',', $this->transitionProperties));
-
-                    
                 }
                 if ($state["e1"]) $this->checkTransitionStateKey($state["e1"]);
                 if ($state["e2"]) $this->checkTransitionStateKey($state["e2"]);
@@ -159,7 +180,7 @@ class CheckWorkflow
         
         $transitions = $this->wdoc->transitions;
         if (!is_array($transitions)) {
-            $this->addCodeError('WFL0100',  $this->className);
+            $this->addCodeError('WFL0100', $this->className);
         } else {
             if (count($transitions) > self::maxTransitionModel) {
                 $this->addCodeError('WFL0102', $this->className, count($transitions) , self::maxTransitionModel);
@@ -174,12 +195,12 @@ class CheckWorkflow
                 }
                 
                 if ($transition["ask"] && (!is_array($transition["ask"]))) {
-                    $this->addCodeError('WFL0103',  $tkey, $this->className);
+                    $this->addCodeError('WFL0103', $tkey, $this->className);
                 }
                 if ($transition["m1"]) {
                     if (!method_exists($this->wdoc, $transition["m1"])) {
                         
-                        $this->addCodeError('WFL0105',  $transition["m1"], $tkey, $this->className);
+                        $this->addCodeError('WFL0105', $transition["m1"], $tkey, $this->className);
                     }
                 }
                 if ($transition["m2"]) {
@@ -190,7 +211,35 @@ class CheckWorkflow
                 }
                 if (in_array("nr", $props)) {
                     if (!is_bool($transition["nr"])) {
-                        $this->addCodeError('WFL0107',  implode(',', $diff) , $tkey, $this->className);
+                        $this->addCodeError('WFL0107', $tkey, $this->className);
+                    }
+                }
+            }
+        }
+    }
+    
+    public function checkAskAttributes()
+    {
+        $transitions = $this->wdoc->transitions;
+        if (!is_array($transitions)) {
+            $this->addCodeError('WFL0100', $this->className);
+        } else {
+            
+            foreach ($transitions as $tkey => $transition) {
+                $this->checkTransitionStateKey($tkey);
+                $askes = $transition["ask"];
+                if ($askes) {
+                    if (!is_array($askes)) {
+                        $this->addCodeError('WFL0103', $tkey, $this->className);
+                    } else {
+                        
+                        $wi = createTmpDoc($this->wdoc->dbaccess, $this->familyName);
+                        $aids = array_keys($wi->getAttributes());
+                        foreach ($askes as $aid) {
+                            if (!in_array($aid, $aids)) {
+                                $this->addCodeError('WFL0104', $aid, $this->className);
+                            }
+                        }
                     }
                 }
             }
@@ -201,13 +250,12 @@ class CheckWorkflow
     {
         $limit = 45 - strlen($this->wdoc->attrPrefix);
         if (!preg_match("/^[a-zA-Z_][a-zA-Z0-9_:]{0,$limit}$/", $key)) {
-            $this->addCodeError('WFL0050',  $key, $this->className, $limit + 1);
+            $this->addCodeError('WFL0050', $key, $this->className, $limit + 1);
         }
     }
     
     public function checkIsAWorkflow()
     {
-
         // Sort out the formatting of the filename
         $fileName = realpath($this->getWorkflowClassFile());
         // Get the shell output from the syntax check command
@@ -221,19 +269,20 @@ class CheckWorkflow
             } else {
                 $class = $this->className;
                 $this->wdoc = new $class();
+                
+                if (!is_a($this->wdoc, "WDoc")) {
+                    $this->addCodeError('WFL0006', $this->className);
+                }
             }
         }
-
     }
-    
-
     
     public function checkPrefix()
     {
         if (!$this->wdoc->attrPrefix) {
             $this->addCodeError('WFL0007', $this->className);
         } elseif (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{0,9}$/', $this->wdoc->attrPrefix)) {
-            $this->addCodeError('WFL0008',  $this->className);
+            $this->addCodeError('WFL0008', $this->className);
         }
     }
     
@@ -251,7 +300,7 @@ class CheckWorkflow
     public function checkFileName()
     {
         if (!file_exists($this->getWorkflowClassFile())) {
-            $this->addCodeError('WFL0005',  $this->className);
+            $this->addCodeError('WFL0005', $this->className);
         }
     }
     
