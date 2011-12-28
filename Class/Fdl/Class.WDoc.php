@@ -37,6 +37,11 @@ class WDoc extends Doc
     var $defDoctype = 'W';
     var $defClassname = 'WDoc';
     var $attrPrefix = "WF"; // prefix attribute
+    
+    /**
+     * state's activities labels
+     * @var array
+     */
     var $stateactivity = array(); // label of states
     // --------------------------------------------------------------------
     //----------------------  TRANSITION DEFINITION --------------------

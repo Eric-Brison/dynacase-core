@@ -33,6 +33,7 @@ class TestImportFamily extends TestCaseDcpDocument
         if (!is_array($expectedErrors)) $expectedErrors = array(
             $expectedErrors
         );
+        
         foreach ($expectedErrors as $expectedError) {
             $this->assertContains($expectedError, $err, sprintf("not the correct error reporting : %s", $err));
         }
@@ -132,7 +133,7 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily4.ods",
                 array(
-                    "W0008",
+                    "WFL0105",
                     "WTST_WFFAMIMP4"
                 )
             ) ,
@@ -140,7 +141,7 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily5.ods",
                 array(
-                    "W0017",
+                    "WFL0002",
                     "WImpTest5"
                 )
             ) ,
@@ -148,7 +149,7 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily6.ods",
                 array(
-                    "W0018",
+                    "WFL0005",
                     "WNotFound"
                 )
             ) ,
@@ -156,7 +157,7 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily7.ods",
                 array(
-                    "W0013",
+                    "WFL0004",
                     "WTestBadNameImp7"
                 )
             ) ,
@@ -164,7 +165,7 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily8.ods",
                 array(
-                    "W0012",
+                    "WFL0003",
                     "Parse error"
                 )
             ) ,
@@ -172,8 +173,8 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily9.ods",
                 array(
-                    "W0008",
-                    "W0014",
+                    "WFL0105",
+                    "WFL0007",
                     "attrPrefix"
                 )
             ) ,
@@ -181,7 +182,7 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily10.ods",
                 array(
-                    "W0015",
+                    "WFL0008",
                     "syntax"
                 ) ,
             ) ,
@@ -189,20 +190,21 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badfamily11.ods",
                 array(
-                    "W0006",
-                    "W0007",
-                    "W0008",
-                    "W0009",
-                    "W0011"
+                    "WFL0101",
+                    "WFL0103",
+                    "WFL0105",
+                    "WFL0106",
+                    "WFL0050"
                 )
             ) ,
             // test workflow transition definition
             array(
                 "PU_data_dcp_badfamily12.ods",
                 array(
-                    "W0011",
-                    "W0002",
-                    "W0003",
+                    "WFL0050",
+                    "WFL0201",
+                    "WFL0202",
+                    "WFL0052",
                     "dead or not",
                     " e3 "
                 )

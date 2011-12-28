@@ -20,7 +20,7 @@ Class WTestBadImp12 extends WDoc
     const Tconvalescent = "Tconvalescent"; # N_("Tconvalescent")
     const T3 = "T3"; # N_("T3")
     var $firstState = self::alive;
-    var $transitions = array(
+    public $transitions = array(
         self::T1 => array() ,
         self::Tsick => array(
             "m1" => "SendMailToVeto",
@@ -72,6 +72,10 @@ Class WTestBadImp12 extends WDoc
             "e2" => self::dead,
             "t" => "T3"
         )
+    );
+    
+    public $stateactivity = array(
+        'zou' => 'not correct state'
     );
     
     function SendMailToVeto($newstate)
