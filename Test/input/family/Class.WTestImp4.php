@@ -77,6 +77,9 @@ Class WTestImp4 extends WDoc
         )
     );
     
+    public $stateactivity = array(
+        self::alive => 'live his life'
+    );
     function SendMailToVeto($newstate)
     {
     }

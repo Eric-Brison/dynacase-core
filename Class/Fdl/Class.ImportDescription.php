@@ -337,13 +337,9 @@ class importDocumentDescription
             }
             if ($data[2] && ($data[2] != '-')) $this->doc->title = $data[2];
             if ($data[4] && ($data[4] != '-')) $this->doc->classname = $data[4]; // new classname for familly
-            if ($this->doc->usefor == 'W') {
-                $checkW = new checkWorkflow($this->doc->classname);
-                $checkCr = $checkW->verifyWorflow();
-                if (count($checkCr) > 0) {
-                    $this->tcr[$this->nLine]["err"].= implode("\n", $checkCr);
-                }
-            }
+            $check = new CheckBegin();
+            $this->tcr[$this->nLine]["err"].= $check->check($data, $this->doc)->getErrors();
+
             if ($data[5] && ($data[5] != '-')) $this->doc->name = $data[5]; // internal name
             $this->tcr[$this->nLine]["err"].= $err;
             if ($this->reinit) {
@@ -594,30 +590,29 @@ class importDocumentDescription
     {
         if (is_numeric($data[1])) $cvid = $data[1];
         else $cvid = getIdFromName($this->dbaccess, $data[1], 28);
-
-
+        
         if ($data[1]) {
-                    try {
-                        $cvdoc = new_doc($this->dbaccess, $cvid);
-                        if (!$cvdoc->isAlive()) {
-                            $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' not found") , $data[1]);
-                        } else {
-                            if (!is_subclass_of($cvdoc, "CVDoc")) {
-                                $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' is not a view control") , $data[1]);
-                            } else {
-                                $this->doc->ccvid = $cvdoc->id;
-                            }
-                        }
-                        $this->tcr[$this->nLine]["msg"] = sprintf(_("set default view control to '%s'") , $data[1]);
-                    }
-                    catch(Exception $e) {
-                        $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : %s") , $e->getMessage());
-                    }
+            try {
+                $cvdoc = new_doc($this->dbaccess, $cvid);
+                if (!$cvdoc->isAlive()) {
+                    $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' not found") , $data[1]);
                 } else {
-                    $this->doc->ccvid = '';
-
-                    $this->tcr[$this->nLine]["msg"] = _("unset default view control");
+                    if (!is_subclass_of($cvdoc, "CVDoc")) {
+                        $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : view control '%s' is not a view control") , $data[1]);
+                    } else {
+                        $this->doc->ccvid = $cvdoc->id;
+                    }
                 }
+                $this->tcr[$this->nLine]["msg"] = sprintf(_("set default view control to '%s'") , $data[1]);
+            }
+            catch(Exception $e) {
+                $this->tcr[$this->nLine]["err"] = sprintf(_("CVID : %s") , $e->getMessage());
+            }
+        } else {
+            $this->doc->ccvid = '';
+            
+            $this->tcr[$this->nLine]["msg"] = _("unset default view control");
+        }
     }
     /**
      * analyze METHOD
