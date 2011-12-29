@@ -5,13 +5,10 @@
  * @package FDL
 */
 /**
- * Created by JetBrains PhpStorm.
- * User: eric
- * Date: 01/12/11
- * Time: 18:27
- * To change this template use File | Settings | File Templates.
+ * Errors code used to checking workflows
+ * @class ErrorCodeWFL
+ * @brief List all error code for workflows
  */
-
 class ErrorCodeWFL
 {
     /**

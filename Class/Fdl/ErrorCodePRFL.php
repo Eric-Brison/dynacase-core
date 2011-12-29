@@ -4,7 +4,11 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-
+/**
+ * Errors code used to checking document's profil
+ * @class ErrorCodePRFL
+ * @brief List all error code for profil
+ */
 class ErrorCodePRFL
 {
     /**

@@ -4,7 +4,12 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-
+/**
+ * Checking application accesses
+ * @class CheckAccess
+ * @brief Check application accesses when importing definition
+ * @see ErrorCodeACCS
+ */
 class CheckAccess extends CheckData
 {
     /**

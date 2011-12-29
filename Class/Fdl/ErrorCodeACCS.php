@@ -4,7 +4,11 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-
+/**
+ * Errors code used to checking application access
+ * @class ErrorCodeACCS
+ * @brief List all error code for access
+ */
 class ErrorCodeACCS
 {
     /**

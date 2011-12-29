@@ -6,16 +6,10 @@
 */
 /**
  * Verify several point for the integrity of a workflow
- *
- * @author Anakeen 2007
- * @version $Id: checklist.php,v 1.8 2008/12/31 14:37:26 jerome Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage CORE
+ * @class CheckWorkflow
+ * @brief Check worflow definition when importing definition
+ * @see ErrorCodeWFL
  */
-/**
- */
-
 class CheckWorkflow
 {
     /**

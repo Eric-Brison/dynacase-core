@@ -4,7 +4,12 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-
+/**
+ * Checking family profid property
+ * @class CheckProfid
+ * @brief Check family profid property  when importing definition
+ * @see ErrorCodePRFD
+ */
 class CheckProfid extends CheckData
 {
     /**
