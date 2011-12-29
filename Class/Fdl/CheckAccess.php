@@ -79,7 +79,10 @@ class CheckAccess extends CheckData
                 $findUser = User::getDisplayName($this->userId);
             } else {
                 // search document
-                $findUser = getTDoc(getDbAccess() , $this->userId);
+                $tu = getTDoc(getDbAccess() , $this->userId);
+                if ($tu) {
+                    $findUser = ($tu["us_whatid"] != '');
+                }
             }
             if ($findUser === false) {
                 $this->addError(ErrorCode::getError('ACCS0003', $this->userId));

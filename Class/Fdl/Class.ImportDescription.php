@@ -666,12 +666,11 @@ class importDocumentDescription
         
         $check = new CheckProfid();
         $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
-        if (!$this->tcr[$this->nLine]["err"]) {
-            if (is_numeric($data[1])) $pid = $data[1];
-            else $pid = getIdFromName($this->dbaccess, $data[1], 3);
-            $this->doc->setProfil($pid); // change profile
-            $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'") , $data[1]);
-        }
+        if ($this->tcr[$this->nLine]["err"]) return;
+        if (is_numeric($data[1])) $pid = $data[1];
+        else $pid = getIdFromName($this->dbaccess, $data[1], 3);
+        $this->doc->setProfil($pid); // change profile
+        $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'") , $data[1]);
     }
     /**
      * analyze DEFAULT
@@ -706,60 +705,59 @@ class importDocumentDescription
         global $action;
         $check = new CheckAccess();
         $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
-        if (!$this->tcr[$this->nLine]["err"]) {
-            if (ctype_digit(trim($data[1]))) $wid = trim($data[1]);
-            else {
-                $pid = getIdFromName($this->dbaccess, trim($data[1]));
-                $tdoc = getTDoc($this->dbaccess, $pid);
-                $wid = getv($tdoc, "us_whatid");
-            }
-            $idapp = $action->parent->GetIdFromName($data[2]);
-            if ($idapp == 0) {
-                $this->tcr[$this->nLine]["err"] = sprintf(_("%s application not exists") , $data[2]);
+        if ($this->tcr[$this->nLine]["err"]) return;
+        if (ctype_digit(trim($data[1]))) $wid = trim($data[1]);
+        else {
+            $pid = getIdFromName($this->dbaccess, trim($data[1]));
+            $tdoc = getTDoc($this->dbaccess, $pid);
+            $wid = getv($tdoc, "us_whatid");
+        }
+        $idapp = $action->parent->GetIdFromName($data[2]);
+        if ($idapp == 0) {
+            $this->tcr[$this->nLine]["err"] = sprintf(_("%s application not exists") , $data[2]);
+        } else {
+            $this->tcr[$this->nLine]["msg"] = "user #$wid";
+            array_shift($data);
+            array_shift($data);
+            array_shift($data);
+            $q = new QueryDb("", "Acl");
+            $q->AddQuery("id_application=$idapp");
+            $la = $q->Query(0, 0, "TABLE");
+            if (!$la) {
+                $this->tcr[$this->nLine]["err"] = sprintf(_("%s application has no aclss") , $data[2]);
             } else {
-                $this->tcr[$this->nLine]["msg"] = "user #$wid";
-                array_shift($data);
-                array_shift($data);
-                array_shift($data);
-                $q = new QueryDb("", "Acl");
-                $q->AddQuery("id_application=$idapp");
-                $la = $q->Query(0, 0, "TABLE");
-                if (!$la) {
-                    $this->tcr[$this->nLine]["err"] = sprintf(_("%s application has no aclss") , $data[2]);
-                } else {
-                    $tacl = array();
-                    foreach ($la as $k => $v) {
-                        $tacl[$v["name"]] = $v["id"];
-                    }
-                    
-                    $p = new Permission();
-                    $p->id_user = $wid;
-                    $p->id_application = $idapp;
-                    foreach ($data as $v) {
-                        $v = trim($v);
-                        if ($v != "") {
-                            if ($this->analyze) {
-                                $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("try add acl %s") , $v);
-                                $this->tcr[$this->nLine]["action"] = "added";
-                                continue;
+                $tacl = array();
+                foreach ($la as $k => $v) {
+                    $tacl[$v["name"]] = $v["id"];
+                }
+                
+                $p = new Permission();
+                $p->id_user = $wid;
+                $p->id_application = $idapp;
+                foreach ($data as $v) {
+                    $v = trim($v);
+                    if ($v != "") {
+                        if ($this->analyze) {
+                            $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("try add acl %s") , $v);
+                            $this->tcr[$this->nLine]["action"] = "added";
+                            continue;
+                        }
+                        if (substr($v, 0, 1) == '-') {
+                            $aclneg = true;
+                            $v = substr($v, 1);
+                        } else $aclneg = false;
+                        if (isset($tacl[$v])) {
+                            $p->id_acl = $tacl[$v];
+                            if ($aclneg) $p->id_acl = - $p->id_acl;
+                            $p->deletePermission($p->id_user, $p->id_application, $p->id_acl);
+                            $err = $p->Add();
+                            if ($err) $this->tcr[$this->nLine]["err"].= "\n$err";
+                            else {
+                                if ($aclneg) $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add negative acl %s") , $v);
+                                else $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add acl %s") , $v);
                             }
-                            if (substr($v, 0, 1) == '-') {
-                                $aclneg = true;
-                                $v = substr($v, 1);
-                            } else $aclneg = false;
-                            if (isset($tacl[$v])) {
-                                $p->id_acl = $tacl[$v];
-                                if ($aclneg) $p->id_acl = - $p->id_acl;
-                                $p->deletePermission($p->id_user, $p->id_application, $p->id_acl);
-                                $err = $p->Add();
-                                if ($err) $this->tcr[$this->nLine]["err"].= "\n$err";
-                                else {
-                                    if ($aclneg) $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add negative acl %s") , $v);
-                                    else $this->tcr[$this->nLine]["msg"].= "\n" . sprintf(_("add acl %s") , $v);
-                                }
-                            } else {
-                                $this->tcr[$this->nLine]["err"].= "\n" . sprintf(_("unknow acl %s") , $v);
-                            }
+                        } else {
+                            $this->tcr[$this->nLine]["err"].= "\n" . sprintf(_("unknow acl %s") , $v);
                         }
                     }
                 }
@@ -772,6 +770,10 @@ class importDocumentDescription
      */
     protected function doProfil(array $data)
     {
+        $check = new CheckProfil();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
+        
         if (ctype_digit(trim($data[1]))) $pid = trim($data[1]);
         else $pid = getIdFromName($this->dbaccess, trim($data[1]));
         

@@ -233,13 +233,15 @@ class DocCtrl extends DocLDAP
      * reset right for dynamic profil
      *
      * @param int dprofid identificator for dynamic profil document
+     * @return string error message
      */
     function computeDProfil($dprofid = 0, $fromdocidvalues = 0)
     {
-        if ($this->id == 0) return;
+        if ($this->id == 0) return '';
         if ($dprofid == 0) $dprofid = $this->dprofid;
-        if ($dprofid <= 0) return;
-        
+        if ($dprofid <= 0) return '';
+        $vupacl = array();
+        $vunacl = array();
         $pdoc = new_Doc($this->dbaccess, $dprofid);
         $pfamid = $pdoc->getValue("DPDOC_FAMID");
         if ($pfamid > 0) {
@@ -314,7 +316,7 @@ class DocCtrl extends DocLDAP
                         $perm->unacl = $vunacl[$uid];
                         //   print "<BR>set perm $uid : ".$this->id."/".$perm->upacl;
                         if ($perm->isAffected()) $err = $perm->modify();
-                        else { 
+                        else {
                             if ($perm->upacl || $perm->unacl) {
                                 // add if necessary
                                 $err = $perm->Add();
