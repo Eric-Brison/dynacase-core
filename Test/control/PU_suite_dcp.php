@@ -30,9 +30,10 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestImportFamily');
         $suite->addTestSuite('PU\TestImportDocument');
         $suite->addTestSuite('PU\TestImportArchive');
+        $suite->addTestSuite('PU\TestImportProfid');
         $suite->addTestSuite('PU\TestExportXml');
         $suite->addTestSuite('PU\TestGetParam');
-                $suite->addTestSuite('PU\TestUsage');
+        $suite->addTestSuite('PU\TestUsage');
         // ...
         return $suite;
     }

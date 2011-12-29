@@ -19,7 +19,14 @@ abstract class CheckData
     {
         return implode("\n", $this->errors);
     }
-    
+    /**
+     * call it after check to see if error occurs
+     * @return bool
+     */
+    public function hasErrors()
+    {
+        return count($this->errors) > 0;
+    }
     public function addError($msg)
     {
         if ($msg) {

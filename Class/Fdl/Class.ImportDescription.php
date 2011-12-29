@@ -664,10 +664,14 @@ class importDocumentDescription
     protected function doProfid(array $data)
     {
         
-        if (is_numeric($data[1])) $pid = $data[1];
-        else $pid = getIdFromName($this->dbaccess, $data[1], 3);
-        $this->doc->setProfil($pid); // change profile
-        $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'") , $data[1]);
+        $check = new CheckProfid();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        if (!$this->tcr[$this->nLine]["err"]) {
+            if (is_numeric($data[1])) $pid = $data[1];
+            else $pid = getIdFromName($this->dbaccess, $data[1], 3);
+            $this->doc->setProfil($pid); // change profile
+            $this->tcr[$this->nLine]["msg"] = sprintf(_("change profile id  to '%s'") , $data[1]);
+        }
     }
     /**
      * analyze DEFAULT
