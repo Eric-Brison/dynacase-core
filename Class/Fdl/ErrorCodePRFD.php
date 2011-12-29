@@ -4,13 +4,6 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Created by JetBrains PhpStorm.
- * User: eric
- * Date: 01/12/11
- * Time: 18:27
- * To change this template use File | Settings | File Templates.
- */
 
 class ErrorCodePRFD
 {

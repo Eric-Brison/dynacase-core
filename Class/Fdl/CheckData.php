@@ -42,5 +42,5 @@ abstract class CheckData
      * @param null $extra
      * @return CheckData this itself
      */
-    public abstract function check(array $data, $extra = null);
+    public abstract function check(array $data, &$extra = null);
 }

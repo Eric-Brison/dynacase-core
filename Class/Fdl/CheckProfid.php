@@ -21,7 +21,7 @@ class CheckProfid extends CheckData
      * @param array $data
      * @return CheckProfid
      */
-    function check(array $data, $extra = null)
+    function check(array $data, &$extra = null)
     {
         $this->prfName = $data[1];
         $this->checkUnknow();

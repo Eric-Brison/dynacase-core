@@ -12,7 +12,7 @@ class CheckBegin extends CheckData
      * @param Doc $doc
      * @return CheckBegin
      */
-    function check(array $data, $doc = null)
+    function check(array $data, &$doc = null)
     {
         if ($doc->usefor == 'W') {
             $checkW = new CheckWorkflow($doc->classname, $doc->name);
