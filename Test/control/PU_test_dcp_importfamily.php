@@ -169,6 +169,25 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR0401",
                     "tst_t_title",
                 )
+            ) ,
+            // input help
+            array(
+                "PU_data_dcp_badattr7.ods",
+                array(
+                    "ATTR1100",
+                    "tstNoHelp.php",
+                    "ATTR1101"
+                )
+            ) ,
+            // options syntax
+            array(
+                "PU_data_dcp_badattr8.ods",
+                array(
+                    "ATTR1500",
+                    "optionerror",
+                    "ATTR1501",
+                    "wrong error"
+                )
             )
         );
     }

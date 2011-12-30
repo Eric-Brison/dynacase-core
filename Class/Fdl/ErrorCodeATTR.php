@@ -87,4 +87,21 @@ class ErrorCodeATTR
      * The U visibility can be applied only on array attribute
      */
     const ATTR0802 = 'the U visibility is reserved to array, in attribute "%s"';
+    /**
+     * The input help file must exists before declared it
+     */
+    const ATTR1100 = 'the input help file "%s" not exists, in attribute "%s"';
+    /**
+     * The input help file must be a correct PHP file
+     */
+    const ATTR1101 = 'the input help file "%s" is not parsable, in attribute "%s" : %s';
+    /**
+     * The option name are composed only of alpha characters
+     */
+    const ATTR1500 = 'the option name "%s" is not valid in attribute "%s"';
+    /**
+     * The syntax option is : optname=optvalue
+     * @example elabel=enter a value
+     */
+    const ATTR1501 = 'the option "%s" must have = sign, in attribute "%s"';
 }

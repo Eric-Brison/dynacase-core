@@ -153,25 +153,32 @@ class CheckAttr extends CheckData
      * @param mixed $extra
      * @return CheckAttr
      */
+    /**
+     * true if check MODATTR
+     * @var bool
+     */
+    private $isModAttr = false;
     public function check(array $data, &$extra = null)
     {
         $this->structAttr = new StructAttribute($data);
         $this->attrid = strtolower($this->structAttr->id);
-        
-        $this->syntaxId();
+        $this->isModAttr = (strtolower($data[0]) == "modattr");
+        $this->checkId();
         $this->checkSet();
         $this->checkType();
         $this->checkOrder();
         $this->checkVisibility();
         $this->checkIsAbstract();
         $this->checkIsTitle();
+        $this->checkPhpFile();
+        $this->checkOptions();
         return $this;
     }
     /**
      * test syntax for document's identificator
      * @return void
      */
-    private function syntaxId()
+    private function checkId()
     {
         if (empty($this->attrid)) {
             $this->addError(ErrorCode::getError('ATTR0102'));
@@ -219,7 +226,9 @@ class CheckAttr extends CheckData
         
         $type = $this->structAttr->type;
         if (!$type) {
-            $this->addError(ErrorCode::getError('ATTR0600', $this->attrid));
+            if (!$this->isModAttr) {
+                $this->addError(ErrorCode::getError('ATTR0600', $this->attrid));
+            }
         } elseif (!in_array($type, $this->types)) {
             $basicType = $this->getType();
             if (!$basicType) {
@@ -260,7 +269,9 @@ class CheckAttr extends CheckData
     {
         $vis = $this->structAttr->visibility;
         if (empty($vis)) {
-            $this->addError(ErrorCode::getError('ATTR0800', $this->attrid));
+            if (!$this->isModAttr) {
+                $this->addError(ErrorCode::getError('ATTR0800', $this->attrid));
+            }
         } elseif (!in_array($vis, $this->visibilities)) {
             $this->addError(ErrorCode::getError('ATTR0801', $vis, $this->attrid, implode(',', $this->visibilities)));
         } elseif ($vis == "U" && ($this->getType() != "array")) {
@@ -291,6 +302,41 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
+    private function checkPhpFile()
+    {
+        $phpFile = trim($this->structAttr->phpfile);
+        if ($phpFile && $phpFile != '-' && ($this->getType() != "action")) {
+            $phpFile = sprintf("EXTERNALS/%s", $phpFile);
+            if (!file_exists($phpFile)) {
+                $this->addError(ErrorCode::getError('ATTR1100', $phpFile, $this->attrid));
+            } else {
+                $phpFile = realpath($phpFile);
+                // Get the shell output from the syntax check command
+                exec(sprintf('php -n -l %s 2>&1', escapeshellarg($phpFile)) , $output, $status);
+                if ($status != 0) {
+                    $this->addError(ErrorCode::getError('ATTR1101', $phpFile, $this->attrid, implode("\n", $output)));
+                }
+            }
+        }
+    }
+    
+    private function checkOptions()
+    {
+        
+        $options = trim($this->structAttr->options);
+        if ($options) {
+            $topt = explode("|", $options);
+            foreach ($topt as $opt) {
+                list($optName, $optValue) = explode("=", $opt, 2);
+                if (!preg_match('/^[a-z]{1,63}$/', $optName)) {
+                    $this->addError(ErrorCode::getError('ATTR1500', $optName, $this->attrid));
+                } else if ($optValue === null) {
+                    $this->addError(ErrorCode::getError('ATTR1501', $optName, $this->attrid));
+                }
+            }
+        }
+    }
     /**
      * @param string $attrid
      * @return bool
@@ -317,12 +363,14 @@ class CheckAttr extends CheckData
     
     private function isNodeNeedSet()
     {
+        if ($this->isModAttr) return false;
         $type = $this->getType();
         return (($type != "tab") && ($type != "frame") && ($type != "menu") && ($type != "action"));
     }
     
     private function isNodeNeedOrder()
     {
+        if ($this->isModAttr) return false;
         $type = $this->getType();
         return (($type != "tab") && ($type != "frame"));
     }
