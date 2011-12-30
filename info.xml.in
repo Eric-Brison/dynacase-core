@@ -254,10 +254,13 @@ This can be solved by:<br/>
             <label>Create user LDAP mapping</label>
         </process>
 
-        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv">
-            <label></label>
+        <process command="./wsh.php --api=importDocuments --file=./FDL/defaultprofil.ods">
+            <label>Profiling system families</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./FDL/defaultprofil.ods"/>
+
+        <process command="./wsh.php --api=importDocuments --file=./FDL/helps.csv">
+            <label>Help Documents</label>
+        </process>
 
 
         <process command="programs/app_post FREEDOM I"/>

@@ -28,6 +28,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestLink');
         $suite->addTestSuite('PU\TestSplitXmlDocument');
         $suite->addTestSuite('PU\TestImportFamily');
+        $suite->addTestSuite('PU\TestImportWorkflow');
         $suite->addTestSuite('PU\TestImportDocument');
         $suite->addTestSuite('PU\TestImportArchive');
         $suite->addTestSuite('PU\TestImportProfid');
