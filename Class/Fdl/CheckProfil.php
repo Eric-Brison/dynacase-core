@@ -80,6 +80,7 @@ class CheckProfil extends CheckData
     private function checkUnknow()
     {
         if ($this->prfName) {
+            clearCacheDoc();
             $this->profil = new_doc(getDbAccess() , $this->prfName);
             if (!$this->profil->isAlive()) {
                 $this->addError(ErrorCode::getError('PRFL0002', $this->prfName));
@@ -124,6 +125,7 @@ class CheckProfil extends CheckData
                         $aclId = $reg[1];
                         $userId = $reg[2];
                         if (!in_array($aclId, $profAcls)) {
+                            
                             $this->addError(ErrorCode::getError('PRFL0101', $aclId, $this->prfName, implode(',', $profAcls)));
                         }
                         $this->checkUsers(explode(',', $userId));

@@ -111,12 +111,17 @@ function HandleXmlError($errno, $errstr, $errfile, $errline)
 }
 /**
  * clear all cache used by new_doc function
+ * @param int $id document identificator : limit to destroy cache of only this document
  * @return void
  */
-function clearCacheDoc()
+function clearCacheDoc($id = 0)
 {
-    global $gdocs; // optimize for speed
-    $gdocs = array();
+    if ($id == 0) {
+        global $gdocs; // optimize for speed
+        $gdocs = array();
+    } else {
+        $gdocs[$id] = null;
+    }
 }
 /** 
  * optimize for speed : memorize object for future use
