@@ -10,9 +10,9 @@ class CheckEnd extends CheckData
     /**
      * @param array $data
      * @param Doc $doc
-     * @return CheckBegin
+     * @return CheckEnd
      */
-    function check(array $data, $doc = null)
+    function check(array $data, &$doc = null)
     {
         if ($doc->usefor == 'W') {
             $checkW = new CheckWorkflow($doc->classname, $doc->name);

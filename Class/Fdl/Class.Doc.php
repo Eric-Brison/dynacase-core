@@ -586,6 +586,11 @@ class Doc extends DocCtrl
      */
     private $vaultErrorSent = false;
     /**
+     * list of availaible control
+     * @var array
+     */
+    public $acls = array();
+    /**
      * default family id for the profil access
      * @var int
      */
@@ -2689,11 +2694,11 @@ create unique index i_docir on doc(initid, revision);";
                                                     $mids = explode("<BR>", $lname);
                                                     $tlids = array();
                                                     foreach ($mids as $llname) {
-                                                        if (! is_numeric($llname)) {
-                                                        $llid = getIdFromName($this->dbaccess, $llname);
-                                                        $tlids[] = $llid ? $llid : $llname;
+                                                        if (!is_numeric($llname)) {
+                                                            $llid = getIdFromName($this->dbaccess, $llname);
+                                                            $tlids[] = $llid ? $llid : $llname;
                                                         } else {
-                                                            $tlids[]=$llname;
+                                                            $tlids[] = $llname;
                                                         }
                                                     }
                                                     $tids[] = implode('<BR>', $tlids);
@@ -5455,6 +5460,7 @@ create unique index i_docir on doc(initid, revision);";
                         } else {
                             $htmlval = money_format('%!.2n', doubleval($avalue));
                             $htmlval = str_replace(" ", "&nbsp;", $htmlval); // need to replace space by non breaking spaces
+                            
                         }
                         break;
 
@@ -5485,6 +5491,7 @@ create unique index i_docir on doc(initid, revision);";
                             else $htmlval = $avalue;
                         } else {
                             $htmlval = substr($avalue, 0, 5); // do not display second
+                            
                         }
                         $aformat = "";
                         break;

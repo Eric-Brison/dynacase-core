@@ -168,7 +168,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    protected function exitSudo($login)
+    protected function exitSudo($login = '')
     {
         global $action;
         if (self::$user) {

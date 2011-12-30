@@ -109,14 +109,14 @@ function HandleXmlError($errno, $errstr, $errfile, $errline)
         throw new DOMException($errstr);
     } else return false;
 }
-
 /**
  * clear all cache used by new_doc function
  * @return void
  */
-function clearCacheDoc() {
+function clearCacheDoc()
+{
     global $gdocs; // optimize for speed
-    $gdocs=array();
+    $gdocs = array();
 }
 /** 
  * optimize for speed : memorize object for future use
@@ -812,7 +812,7 @@ function getLatestDocIds($dbaccess, $ids)
  */
 function getLatestDocId($dbaccess, $initid)
 {
-    if (is_array($ids)) return null;
+    if (is_array($initid)) return null;
     // first more quick if alive
     $err = simpleQuery($dbaccess, sprintf("select id from docread where initid='%d' and locked != -1", $initid) , $id, true, true);
     if (($err == '') && ($id > 0)) return $id;

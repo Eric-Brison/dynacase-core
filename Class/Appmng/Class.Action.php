@@ -46,23 +46,23 @@ class Action extends DbObj
         "toc_order"
     );
     public $id;
-public $id_application;
-public $name;
-public $short_name;
-public $long_name;
-public $script;
-public $function;
-public $layout;
-public $available;
-public $acl;
-public $grant_level=0;
-public $openaccess;
-public $root;
-public $icon;
-public $toc;
-public $father;
-public $toc_order;
-
+    public $id_application;
+    public $name;
+    public $short_name;
+    public $long_name;
+    public $script;
+    public $function;
+    public $layout;
+    public $available;
+    public $acl;
+    public $grant_level = 0;
+    public $openaccess;
+    public $root;
+    public $icon;
+    public $toc;
+    public $father;
+    public $toc_order;
+    
     var $id_fields = array(
         "id"
     );
@@ -115,8 +115,11 @@ create sequence SEQ_ID_ACTION;
             "type" => "TXT"
         )
     );
-
-
+    /**
+     * current user
+     * @var User
+     */
+    public $user;
     /**
      * @var Layout
      */

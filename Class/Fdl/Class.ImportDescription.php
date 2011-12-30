@@ -664,6 +664,9 @@ class importDocumentDescription
     protected function doProfid(array $data)
     {
         
+        $check = new CheckProfid();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
         if (is_numeric($data[1])) $pid = $data[1];
         else $pid = getIdFromName($this->dbaccess, $data[1], 3);
         $this->doc->setProfil($pid); // change profile
@@ -698,13 +701,17 @@ class importDocumentDescription
      */
     protected function doAccess(array $data)
     {
+        
+        global $action;
+        $check = new CheckAccess();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
         if (ctype_digit(trim($data[1]))) $wid = trim($data[1]);
         else {
             $pid = getIdFromName($this->dbaccess, trim($data[1]));
             $tdoc = getTDoc($this->dbaccess, $pid);
             $wid = getv($tdoc, "us_whatid");
         }
-        global $action;
         $idapp = $action->parent->GetIdFromName($data[2]);
         if ($idapp == 0) {
             $this->tcr[$this->nLine]["err"] = sprintf(_("%s application not exists") , $data[2]);
@@ -763,6 +770,10 @@ class importDocumentDescription
      */
     protected function doProfil(array $data)
     {
+        $check = new CheckProfil();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $action)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
+        
         if (ctype_digit(trim($data[1]))) $pid = trim($data[1]);
         else $pid = getIdFromName($this->dbaccess, trim($data[1]));
         
