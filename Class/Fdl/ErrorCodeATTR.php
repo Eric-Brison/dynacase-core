@@ -40,6 +40,22 @@ class ErrorCodeATTR
      */
     const ATTR0202 = 'attribute structure is same as attribute "%s"';
     /**
+     * Attribute isTitle is Y or N
+     */
+    const ATTR0400 = 'invalid value "%s" for isTitle in attribute "%s"';
+    /**
+     * Attribute isTitle must not be Y for structured attributes
+     */
+    const ATTR0401 = 'isTitle cannot be set for structured attribute "%s"';
+    /**
+     * Attribute isAbstract is Y or N
+     */
+    const ATTR0500 = 'invalid value "%s" for isAbstract in attribute "%s"';
+    /**
+     * Attribute isAbstract must not be Y for structured attributes
+     */
+    const ATTR0501 = 'isAbstract cannot be set for structured attribute "%s"';
+    /**
      * Attribute type is required
      */
     const ATTR0600 = 'type is not defined for attribute "%s"';
@@ -51,4 +67,24 @@ class ErrorCodeATTR
      * Attribute type is required
      */
     const ATTR0602 = 'syntax error for type "%s" in attribute "%s"';
+    /**
+     * The attribute's order must be a number
+     */
+    const ATTR0700 = 'the order "%s" must be a number in attribute "%s"';
+    /**
+     * The attribute's order is required on no-set attribute
+     */
+    const ATTR0702 = 'the order is required in attribute "%s"';
+    /**
+     * The attribute's visibility must be defined
+     */
+    const ATTR0800 = 'the visibility is required in attribute "%s"';
+    /**
+     * The attribute's visibility is limited to defined visibilities (H,R,...)
+     */
+    const ATTR0801 = 'the visibility "%s" in attribute "%s" must be one of %s';
+    /**
+     * The U visibility can be applied only on array attribute
+     */
+    const ATTR0802 = 'the U visibility is reserved to array, in attribute "%s"';
 }

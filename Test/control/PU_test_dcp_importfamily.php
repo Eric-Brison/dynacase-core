@@ -125,12 +125,10 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_badattr3.ods",
                 array(
-                    "FA003",
-                    "FA006",
-                    "FA004",
-                    "TST_ARRAY",
-                    "TST_TITLE",
-                    "W3"
+                    "ATTR0700",
+                    "tst_noorder",
+                    "ATTR0702",
+                    "tst_errorder"
                 )
             ) ,
             // test type
@@ -145,6 +143,33 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_notype"
                 )
             ) ,
+            // test visibility
+            array(
+                "PU_data_dcp_badattr5.ods",
+                array(
+                    "ATTR0800",
+                    "tst_novis",
+                    "ATTR0801",
+                    "tst_errvis",
+                    "ZS",
+                    "ATTR0802",
+                    "tst_noarray"
+                )
+            ) ,
+            // test isTitle isAbstract
+            array(
+                "PU_data_dcp_badattr6.ods",
+                array(
+                    "ATTR0500",
+                    "tst_noabstract",
+                    "ATTR0501",
+                    "tst_t_abstract",
+                    "ATTR0400",
+                    "tst_notitle",
+                    "ATTR0401",
+                    "tst_t_title",
+                )
+            )
         );
     }
     

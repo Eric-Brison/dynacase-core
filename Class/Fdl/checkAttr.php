@@ -44,6 +44,13 @@ class CheckAttr extends CheckData
         "htmltext"
     );
     
+    private $noValueTypes = array(
+        "frame",
+        "tab",
+        "menu",
+        "action",
+        "array"
+    );
     private $visibilities = array(
         'I',
         'H',
@@ -54,6 +61,10 @@ class CheckAttr extends CheckData
         'U'
     );
     
+    private $yesno = array(
+        'y',
+        'n'
+    );
     private $postgreSqlWords = array(
         'all',
         'analyse',
@@ -148,15 +159,19 @@ class CheckAttr extends CheckData
         $this->attrid = strtolower($this->structAttr->id);
         
         $this->syntaxId();
-        $this->syntaxSet();
-        $this->syntaxType();
+        $this->checkSet();
+        $this->checkType();
+        $this->checkOrder();
+        $this->checkVisibility();
+        $this->checkIsAbstract();
+        $this->checkIsTitle();
         return $this;
     }
     /**
      * test syntax for document's identificator
      * @return void
      */
-    public function syntaxId()
+    private function syntaxId()
     {
         if (empty($this->attrid)) {
             $this->addError(ErrorCode::getError('ATTR0102'));
@@ -177,7 +192,7 @@ class CheckAttr extends CheckData
      * test syntax for document's identificator
      * @return void
      */
-    public function syntaxSet()
+    private function checkSet()
     {
         $setId = strtolower($this->structAttr->setid);
         if ($setId && ($this->attrid == $setId)) {
@@ -199,7 +214,7 @@ class CheckAttr extends CheckData
      * test attribute type is a recognized type
      * @return void
      */
-    public function syntaxType()
+    private function checkType()
     {
         
         $type = $this->structAttr->type;
@@ -215,6 +230,68 @@ class CheckAttr extends CheckData
         }
     }
     /**
+     * test syntax order
+     * must be an integer
+     * @return void
+     */
+    private function checkOrder()
+    {
+        $order = $this->structAttr->order;
+        if ($this->isNodeNeedOrder()) {
+            if (empty($order)) {
+                $this->addError(ErrorCode::getError('ATTR0702', $this->attrid));
+            } elseif (!is_numeric($order)) {
+                $this->addError(ErrorCode::getError('ATTR0700', $order, $this->attrid));
+            }
+        } else {
+            if ($order) {
+                if (!is_numeric($order)) {
+                    $this->addError(ErrorCode::getError('ATTR0700', $order, $this->attrid));
+                }
+            }
+        }
+    }
+    /**
+     * test syntax order
+     * must be an integer
+     * @return void
+     */
+    private function checkVisibility()
+    {
+        $vis = $this->structAttr->visibility;
+        if (empty($vis)) {
+            $this->addError(ErrorCode::getError('ATTR0800', $this->attrid));
+        } elseif (!in_array($vis, $this->visibilities)) {
+            $this->addError(ErrorCode::getError('ATTR0801', $vis, $this->attrid, implode(',', $this->visibilities)));
+        } elseif ($vis == "U" && ($this->getType() != "array")) {
+            $this->addError(ErrorCode::getError('ATTR0802', $this->attrid));
+        }
+    }
+    
+    private function checkIsAbstract()
+    {
+        $isAbstract = strtolower($this->structAttr->isabstract);
+        if ($isAbstract) {
+            if (!in_array($isAbstract, $this->yesno)) {
+                $this->addError(ErrorCode::getError('ATTR0500', $isAbstract, $this->attrid));
+            } elseif ($isAbstract == 'y' && (!$this->isNodeHasValue())) {
+                $this->addError(ErrorCode::getError('ATTR0501', $this->attrid));
+            }
+        }
+    }
+    
+    private function checkIsTitle()
+    {
+        $isTitle = strtolower($this->structAttr->istitle);
+        if ($isTitle) {
+            if (!in_array($isTitle, $this->yesno)) {
+                $this->addError(ErrorCode::getError('ATTR0400', $isTitle, $this->attrid));
+            } elseif ($isTitle == 'y' && (!$this->isNodeHasValue())) {
+                $this->addError(ErrorCode::getError('ATTR0401', $this->attrid));
+            }
+        }
+    }
+    /**
      * @param string $attrid
      * @return bool
      */
@@ -225,6 +302,7 @@ class CheckAttr extends CheckData
         }
         return false;
     }
+    
     private function getType()
     {
         $type = trim($this->structAttr->type);
@@ -236,6 +314,7 @@ class CheckAttr extends CheckData
         }
         return $rtype;
     }
+    
     private function isNodeNeedSet()
     {
         $type = $this->getType();
@@ -246,6 +325,12 @@ class CheckAttr extends CheckData
     {
         $type = $this->getType();
         return (($type != "tab") && ($type != "frame"));
+    }
+    
+    private function isNodeHasValue()
+    {
+        $type = $this->getType();
+        return (!in_array($type, $this->noValueTypes));
     }
 }
 

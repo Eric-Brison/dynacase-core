@@ -923,36 +923,12 @@ class importDocumentDescription
             $data[$kd] = str_replace(ALTSEPCHAR, $this->comma, $vd); // restore ; semi-colon
             
         }
-        $order = array(
-            "id",
-            "setid",
-            "label",
-            "istitle",
-            "isabstract",
-            "type",
-            "order",
-            "visibility",
-            "isneeded",
-            "link",
-            "phpfile",
-            "phpfunc",
-            "elink",
-            "constraint",
-            "options"
-        );
+        
         if (!$this->structAttr) {
             $this->structAttr = new StructAttribute();
-            $this->syntaxAttr = new SyntaxAttribute();
         }
         $this->structAttr->set($data);
         
-        if ($data[0] != "MODATTR") {
-            $attrError = $this->syntaxAttr->analyze($this->structAttr);
-            if ($attrError) {
-                $this->tcr[$this->nLine]["err"] = sprintf("%s:%s", $this->structAttr->id, $attrError);
-                return;
-            }
-        }
         if (trim($data[1]) == '') {
             $this->tcr[$this->nLine]["err"].= sprintf(_("attr key is empty"));
         } else {
