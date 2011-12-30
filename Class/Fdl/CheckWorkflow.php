@@ -70,7 +70,11 @@ class CheckWorkflow
             }
         }
     }
-    
+    /**
+     * short cut to call ErrorCode::getError
+     * @param $code
+     * @param null $args
+     */
     private function addCodeError($code, $args = null)
     {
         if ($code) {

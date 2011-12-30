@@ -217,22 +217,3 @@ class SyntaxAttribute
         );
     }
 }
-
-class StructAttribute
-{
-    public $id;
-    public $setid;
-    public $label;
-    public $istitle;
-    public $isabstract;
-    public $type;
-    public $order;
-    public $visibility;
-    public $isneeded;
-    public $link;
-    public $phpfile;
-    public $phpfunc;
-    public $elink;
-    public $constraint;
-    public $options;
-}

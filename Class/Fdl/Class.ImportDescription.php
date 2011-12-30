@@ -486,7 +486,8 @@ class importDocumentDescription
             
             if ($data[2] > 0) { // dirid
                 
-                /**                                                                                                                         * @var Dir $dir
+                /**
+                 * @var Dir $dir
                  */
                 $dir = new_Doc($this->dbaccess, $data[2]);
                 if ($dir->isAlive() && method_exists($dir, "AddFile")) $dir->AddFile($search->id);
@@ -913,10 +914,10 @@ class importDocumentDescription
      */
     protected function doAttr(array $data)
     {
-        if (count($data) < 3) {
-            $this->tcr[$this->nLine]["err"] = "Error in line $this->nLine: count($data) cols < 3";
-            return;
-        }
+        
+        $check = new CheckAttr();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
         
         foreach ($data as $kd => $vd) {
             $data[$kd] = str_replace(ALTSEPCHAR, $this->comma, $vd); // restore ; semi-colon
@@ -943,11 +944,8 @@ class importDocumentDescription
             $this->structAttr = new StructAttribute();
             $this->syntaxAttr = new SyntaxAttribute();
         }
-        $cid = 1;
-        foreach ($order as $key) {
-            $this->structAttr->$key = trim($data[$cid]);
-            $cid++;
-        }
+        $this->structAttr->set($data);
+        
         if ($data[0] != "MODATTR") {
             $attrError = $this->syntaxAttr->analyze($this->structAttr);
             if ($attrError) {

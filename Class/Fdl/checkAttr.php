@@ -148,6 +148,8 @@ class CheckAttr extends CheckData
         $this->attrid = strtolower($this->structAttr->id);
         
         $this->syntaxId();
+        $this->syntaxSet();
+        $this->syntaxType();
         return $this;
     }
     /**
@@ -172,6 +174,47 @@ class CheckAttr extends CheckData
         }
     }
     /**
+     * test syntax for document's identificator
+     * @return void
+     */
+    public function syntaxSet()
+    {
+        $setId = strtolower($this->structAttr->setid);
+        if ($setId && ($this->attrid == $setId)) {
+            $this->addError(ErrorCode::getError('ATTR0202', $setId, $this->attrid));
+        }
+        if ($this->isNodeNeedSet()) {
+            if (empty($setId)) {
+                $this->addError(ErrorCode::getError('ATTR0201', $this->attrid));
+            } elseif (!$this->checkAttrSyntax($setId)) {
+                $this->addError(ErrorCode::getError('ATTR0200', $setId, $this->attrid));
+            }
+        } elseif ($setId) {
+            if (!$this->checkAttrSyntax($setId)) {
+                $this->addError(ErrorCode::getError('ATTR0200', $setId, $this->attrid));
+            }
+        }
+    }
+    /**
+     * test attribute type is a recognized type
+     * @return void
+     */
+    public function syntaxType()
+    {
+        
+        $type = $this->structAttr->type;
+        if (!$type) {
+            $this->addError(ErrorCode::getError('ATTR0600', $this->attrid));
+        } elseif (!in_array($type, $this->types)) {
+            $basicType = $this->getType();
+            if (!$basicType) {
+                $this->addError(ErrorCode::getError('ATTR0602', $type, $this->attrid));
+            } elseif (!in_array($basicType, $this->types)) {
+                $this->addError(ErrorCode::getError('ATTR0601', $basicType, $this->attrid, implode(', ', $this->types)));
+            }
+        }
+    }
+    /**
      * @param string $attrid
      * @return bool
      */
@@ -181,6 +224,28 @@ class CheckAttr extends CheckData
             return true;
         }
         return false;
+    }
+    private function getType()
+    {
+        $type = trim($this->structAttr->type);
+        $rtype = '';
+        if (preg_match('/^([a-z]+)\(["\'].+["\']\)$/i', $type, $reg)) {
+            $rtype = $reg[1];
+        } elseif (preg_match('/^([a-z]+)$/i', $type, $reg)) {
+            $rtype = $reg[1];
+        }
+        return $rtype;
+    }
+    private function isNodeNeedSet()
+    {
+        $type = $this->getType();
+        return (($type != "tab") && ($type != "frame") && ($type != "menu") && ($type != "action"));
+    }
+    
+    private function isNodeNeedOrder()
+    {
+        $type = $this->getType();
+        return (($type != "tab") && ($type != "frame"));
     }
 }
 

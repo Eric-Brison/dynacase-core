@@ -37,7 +37,7 @@ class TestImportFamily extends TestCaseDcpDocument
      * test sql view create
      * @dataProvider dataGoodFamilyFiles
      */
-    public function testSqlViewFamily($familyFile, $familyName, $testWorkflow = false)
+    public function testSqlViewFamily($familyFile, $familyName)
     {
         $err = '';
         try {
@@ -54,11 +54,6 @@ class TestImportFamily extends TestCaseDcpDocument
         $id = $this->_DBGetValue(sprintf("select id from family.%s limit 1", strtolower($familyName)));
         
         $this->assertGreaterThan(1000, $id, "not found by view");
-        if ($testWorkflow) {
-            $wdoc = new_doc('', $doc->wid);
-            $this->assertTrue($wdoc->isAlive() , "workflow not alive");
-            $this->assertTrue(is_subclass_of($wdoc, "WDoc"));
-        }
     }
     /**
      * @dataProvider dataBadUpdateFamilyFiles
@@ -100,22 +95,35 @@ class TestImportFamily extends TestCaseDcpDocument
         return array(
             // test attribute too long
             array(
-                "PU_data_dcp_badfamily1.ods",
+                "PU_data_dcp_badattr1.ods",
                 array(
-                    "FA002",
-                    "AAAAAA"
+                    "ATTR0100",
+                    "aaaaaa",
+                    "ATTR0102",
+                    "tst number",
+                    "ATTR0101",
+                    "select",
+                    "ATTR0103",
+                    "title",
+                    "ATTR0200",
+                    "tst_orphean",
+                    "ATTR0201",
+                    "tst_invstruct",
+                    "not defined",
+                    "ATTR0202",
+                    "tst_same"
                 )
             ) ,
             // test method not found
             array(
-                "PU_data_dcp_badfamily2.ods",
+                "PU_data_dcp_badattr2.ods",
                 array(
                     "Method.NotFound"
                 )
             ) ,
             // test order needed
             array(
-                "PU_data_dcp_badfamily3.ods",
+                "PU_data_dcp_badattr3.ods",
                 array(
                     "FA003",
                     "FA006",
@@ -125,124 +133,18 @@ class TestImportFamily extends TestCaseDcpDocument
                     "W3"
                 )
             ) ,
-            // test workflow
+            // test type
             array(
-                "PU_data_dcp_badfamily4.ods",
+                "PU_data_dcp_badattr4.ods",
                 array(
-                    "WFL0105",
-                    "WTST_WFFAMIMP4"
+                    "ATTR0600",
+                    "tst_typetest",
+                    "ATTR0601",
+                    "ATTR0602",
+                    "tst_errtype",
+                    "tst_notype"
                 )
             ) ,
-            // test workflow class name syntax error
-            array(
-                "PU_data_dcp_badfamily5.ods",
-                array(
-                    "WFL0002",
-                    "WImpTest5"
-                )
-            ) ,
-            // test workflow without class
-            array(
-                "PU_data_dcp_badfamily6.ods",
-                array(
-                    "WFL0005",
-                    "WNotFound"
-                )
-            ) ,
-            // test workflow with a incorrect class name
-            array(
-                "PU_data_dcp_badfamily7.ods",
-                array(
-                    "WFL0004",
-                    "WTestBadNameImp7"
-                )
-            ) ,
-            // test workflow with class syntax error
-            array(
-                "PU_data_dcp_badfamily8.ods",
-                array(
-                    "WFL0003",
-                    "Parse error"
-                )
-            ) ,
-            // test workflow attrPrefix empty
-            array(
-                "PU_data_dcp_badfamily9.ods",
-                array(
-                    "WFL0105",
-                    "WFL0007",
-                    "attrPrefix"
-                )
-            ) ,
-            // test workflow attrPrefix syntax
-            array(
-                "PU_data_dcp_badfamily10.ods",
-                array(
-                    "WFL0008",
-                    "syntax"
-                ) ,
-            ) ,
-            // test workflow transition model definition
-            array(
-                "PU_data_dcp_badfamily11.ods",
-                array(
-                    "WFL0101",
-                    "WFL0103",
-                    "WFL0105",
-                    "WFL0106",
-                    "WFL0050"
-                )
-            ) ,
-            // test workflow transition definition
-            array(
-                "PU_data_dcp_badfamily12.ods",
-                array(
-                    "WFL0050",
-                    "WFL0201",
-                    "WFL0202",
-                    "WFL0052",
-                    "WFL0107",
-                    "dead or not",
-                    " e3 "
-                )
-            ) ,
-            // test inherit workflow class
-            array(
-                "PU_data_dcp_badfamily13.ods",
-                array(
-                    "WFL0006"
-                )
-            ) ,
-            // test inherit workflow class
-            array(
-                "PU_data_dcp_badfamily14.ods",
-                array(
-                    "WFL0100",
-                    "WFL0200",
-                    "WFL0051"
-                )
-            ) ,
-            // without classname
-            array(
-                "PU_data_dcp_badfamily15.ods",
-                array(
-                    "WFL0001"
-                )
-            ) ,
-            // too many transition model
-            array(
-                "PU_data_dcp_badfamily16.ods",
-                array(
-                    "WFL0102"
-                )
-            ) ,
-            // test ask unknow attribute
-            array(
-                "PU_data_dcp_badfamily17.ods",
-                array(
-                    "WFL0104"
-                )
-            )
         );
     }
     
@@ -254,12 +156,6 @@ class TestImportFamily extends TestCaseDcpDocument
                 "PU_data_dcp_goodfamily1.ods",
                 "TST_GOODFAMIMP1",
                 false
-            ) ,
-            // test workflow family
-            array(
-                "PU_data_dcp_impworkflowfamily1.ods",
-                "TST_WFFAMIMP1",
-                true
             )
         );
     }
