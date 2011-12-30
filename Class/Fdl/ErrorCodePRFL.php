@@ -56,6 +56,10 @@ class ErrorCodePRFL
      */
     const PRFL0201 = 'attribute "%s" is not a relation in acl for "%s" dynamic profil, available are %s';
     /**
+     * family profy cannot be dynamic
+     */
+    const PRFL0202 = 'family profil"%s"  must not have dpdoc_famid';
+    /**
      *  dynamic profil must reference a valid family document
      */
     const PRFL0203 = 'unknow dynamic reference "%s" for "%s" dynamic profil';

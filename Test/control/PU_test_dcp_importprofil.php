@@ -90,6 +90,14 @@ class TestImportProfil extends TestCaseDcpDocument
                     'TST_DYNPDOC3',
                     "PRFL0203"
                 )
+            ) ,
+            
+            array(
+                "PU_data_dcp_badprofil4.ods",
+                array(
+                    "PRFL0202",
+                    "family document test"
+                )
             )
         );
     }

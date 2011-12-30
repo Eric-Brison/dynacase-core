@@ -36,5 +36,13 @@ class PFam extends Doc
         // don't use Doc constructor because it could call this constructor => infinitive loop
         DocCtrl::__construct($dbaccess, $id, $res, $dbid);
     }
+    
+    function preImport()
+    {
+        if ($this->getValue("dpdoc_famid")) {
+            return ErrorCode::getError('PRFL0202', $this->getValue('ba_title'));
+        }
+        return '';
+    }
 }
 ?>
