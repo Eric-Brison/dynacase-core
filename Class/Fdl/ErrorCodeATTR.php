@@ -101,7 +101,55 @@ class ErrorCodeATTR
     const ATTR1500 = 'the option name "%s" is not valid in attribute "%s"';
     /**
      * The syntax option is : optname=optvalue
-     * @example elabel=enter a value
+     * @note example : elabel=enter a value
      */
     const ATTR1501 = 'the option "%s" must have = sign, in attribute "%s"';
+    /**
+     * the phpfile must be a call to a valid function or method
+     */
+    const ATTR1200 = 'syntax error in phpfile attribute  "%s" : %s';
+    /**
+     * function must have 2 parenthesis one open and one close
+     */
+    const ATTR1201 = 'error parenthesis in method/file definition : "%s"';
+    /**
+     * function name must be a valid PHP name
+     */
+    const ATTR1202 = 'syntax error in function name : "%s"';
+    /**
+     * function name must exists
+     */
+    const ATTR1203 = 'function "%s" not exists';
+    /**
+     * double quote error in function call
+     */
+    const ATTR1204 = 'double quote syntax error (character %d) in function "%s"';
+    /**
+     * simple quote error in function call
+     */
+    const ATTR1205 = 'simple quote syntax error (character %d) in function "%s"';
+    /**
+     * output attributes must be declared after : characters
+     * @note
+     * example : test():MY_TEST1, MY_TEST2
+     */
+    const ATTR1206 = 'no output attribute missing ":" character in function "%s"';
+    /**
+     * output attributes must represent attribute name with a comma separator
+     * @note
+     *  example :test():MY_TEST1, MY_TEST2
+     *  test(My_TEST2):MY_TEST1
+     */
+    const ATTR1207 = 'outputs in function "%s" can be only alphanum characters ';
+    /**
+     * output attributes must represent attribute name with a comma separator
+     * @note
+     *  example : MY_APP:my_test():MY_TEST1, MY_TEST2
+     *
+     */
+    const ATTR1208 = 'appname in special help can be only alphanum characters ';
+    /**
+        * input help must be defined in declared file
+        */
+       const ATTR1209 = 'function "%s" is not defined in "%s" file';
 }

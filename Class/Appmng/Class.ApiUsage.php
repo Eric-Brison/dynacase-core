@@ -7,7 +7,7 @@
 /**
  * Verify arguments for wsh programs
  *
- * @class apiUsage
+ * @class ApiUsage
  * @brief Verify arguments for wsh programs
  * @code
  $usage = new ApiUsage();
@@ -281,7 +281,7 @@ class ApiUsageException extends Exception
     private $usage = '';
     public function __construct($message, $code, $previous = null, $usage = '')
     {
-        parent::__construct($message, (int) $code);
+        parent::__construct($message, (int)$code);
         $this->usage = $usage;
     }
     

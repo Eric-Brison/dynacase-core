@@ -176,7 +176,15 @@ class TestImportFamily extends TestCaseDcpDocument
                 array(
                     "ATTR1100",
                     "tstNoHelp.php",
-                    "ATTR1101"
+                    "ATTR1101",
+                    "ATTR1200",
+                    "ATTR1201",
+                    "tst_nphelp",
+                    "noParenthesis",
+                    "ATTR1202",
+                    "ATTR1203",
+                    "testNoExistsReally",
+                    "ATTR1209"
                 )
             ) ,
             // options syntax
