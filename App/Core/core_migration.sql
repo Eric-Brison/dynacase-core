@@ -63,3 +63,11 @@ SELECT pg_temp.dropColumnIfExists('', 'users', 'iddomain');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'ntpasswordhash');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'lmpasswordhash');
 select pg_temp.addIndexIfNotExists('', 'users', 'users_login', true, '(login)');
+
+--
+-- Set logical names on system groups and users
+--
+UPDATE doc127 SET name = 'GADMIN'     WHERE us_whatid = '4';
+UPDATE doc127 SET name = 'GDEFAULT'   WHERE us_whatid = '2';
+UPDATE doc128 SET name = 'USER_ADMIN' WHERE us_whatid = '1';
+UPDATE doc128 SET name = 'USER_GUEST' WHERE us_whatid = '3';
