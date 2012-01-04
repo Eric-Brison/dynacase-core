@@ -91,6 +91,13 @@ $famid = "") // folder containt special fam id
     if ($dirid) $sd->useCollection($dirid);
     $sd->excludeConfidential();
     $sd->distinct = $distinct;
+    if ($column) {
+        if ($sqlorder != "") {
+            $sqlorder = "fromid,$sqlorder";
+        } else {
+            $sqlorder = "fromid,title";
+        }
+    }
     $sd->setOrder($sqlorder);
     if ($sqlfilters) foreach ($sqlfilters as $filter) $sd->addFilter($filter);
     $sd->setObjectReturn();
