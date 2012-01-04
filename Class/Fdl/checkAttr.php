@@ -170,7 +170,9 @@ class CheckAttr extends CheckData
         $this->checkVisibility();
         $this->checkIsAbstract();
         $this->checkIsTitle();
-        $this->checkPhpFile();
+        if ($this->checkPhpFile()) {
+            $this->checkPhpFunction();
+        }
         $this->checkOptions();
         return $this;
     }
@@ -302,25 +304,62 @@ class CheckAttr extends CheckData
             }
         }
     }
-    
+    /**
+     * @return bool return false if some error detected
+     */
     private function checkPhpFile()
     {
+        $goodFile = true;
         $phpFile = trim($this->structAttr->phpfile);
         if ($phpFile && $phpFile != '-' && ($this->getType() != "action")) {
             $phpFile = sprintf("EXTERNALS/%s", $phpFile);
             if (!file_exists($phpFile)) {
                 $this->addError(ErrorCode::getError('ATTR1100', $phpFile, $this->attrid));
+                $goodFile = false;
             } else {
-                $phpFile = realpath($phpFile);
+                $realPhpFile = realpath($phpFile);
                 // Get the shell output from the syntax check command
-                exec(sprintf('php -n -l %s 2>&1', escapeshellarg($phpFile)) , $output, $status);
+                exec(sprintf('php -n -l %s 2>&1', escapeshellarg($realPhpFile)) , $output, $status);
                 if ($status != 0) {
                     $this->addError(ErrorCode::getError('ATTR1101', $phpFile, $this->attrid, implode("\n", $output)));
+                    $goodFile = false;
+                } else {
+                    require_once $phpFile;
                 }
             }
         }
+        return $goodFile;
     }
     
+    private function checkPhpFunction()
+    {
+        $phpFunc = trim($this->structAttr->phpfunc);
+        $phpFile = trim($this->structAttr->phpfile);
+        $type = $this->getType();
+        if ($phpFunc && $phpFunc != '-' && ($type != "action")) {
+            if ($phpFile && $phpFile != '-') {
+                // parse function for input help
+                $oParse = new parseFamilyFunction();
+                $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
+                if ($strucFunc->getError()) {
+                    $this->addError(ErrorCode::getError('ATTR1200', $this->attrid, $strucFunc->getError()));
+                } else {
+                    $phpFuncName = $strucFunc->name;
+                    try {
+                        $refFunc = new ReflectionFunction($phpFuncName);
+                        $targetFile=$refFunc->getFileName();
+                        $realPhpFile=realpath(sprintf("EXTERNALS/%s",$phpFile));
+                        if ($targetFile != $realPhpFile) $this->addError(ErrorCode::getError('ATTR1209', $phpFuncName,$realPhpFile));
+                    }
+                    catch(Exception $e) {
+                        $this->addError(ErrorCode::getError('ATTR1203', $phpFuncName ));
+                    }
+                }
+            } else {
+                // parse method for computed attribute
+            }
+        }
+    }
     private function checkOptions()
     {
         
