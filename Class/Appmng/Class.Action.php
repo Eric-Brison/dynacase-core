@@ -361,21 +361,21 @@ create sequence SEQ_ID_ACTION;
         return ($this->parent->HasPermission($acl_name, $app_name));
     }
     /** 
-     * return true if user can execute the specified action
+     * Check if the current user can execute the specified action.
      * @param string $actname action name
-     * @param string $appid application name or id (default itself)
-     * @return string error message (empty if no error)
+     * @param string $appid application name or application id (default is the current application)
+     * @return string with error message if the user cannot execute the given action, or an empty string if the user can execute the action
      *
      */
     function canExecute($actname, $appid = "")
     {
         
-        if ($this->user->id == 1) return;
+        if ($this->user->id == 1) return "";
         if ($appid == "") $appid = $this->parent->id;
         elseif (!is_numeric($appid)) $appid = $this->parent->GetIdFromName($appid);
         
         $aclname = $this->getAcl($actname, $appid);
-        if (!$aclname) return; // no control
+        if (!$aclname) return ""; // no control
         $acl = new Acl($this->dbaccess);
         if (!$acl->Set($aclname, $appid)) {
             return sprintf(_("Acl [%s] not available for App %s") , $aclname, $appid);
@@ -385,6 +385,7 @@ create sequence SEQ_ID_ACTION;
             $appid
         ));
         if (!$p->HasPrivilege($acl->id)) return sprintf("no privilege %s for %s %s", $aclname, $appid, $actname);
+        return "";
     }
     /**
      * return id from name for an application
