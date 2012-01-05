@@ -184,7 +184,10 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR1202",
                     "ATTR1203",
                     "testNoExistsReally",
-                    "ATTR1209"
+                    "ATTR1209",
+                    "is_a",
+                    "ATTR1210",
+                    "addLogMsg"
                 )
             ) ,
             // options syntax
@@ -195,6 +198,15 @@ class TestImportFamily extends TestCaseDcpDocument
                     "optionerror",
                     "ATTR1501",
                     "wrong error"
+                )
+            ) ,
+            // options syntax
+            array(
+                "PU_data_dcp_badattr9.ods",
+                array(
+                    "ATTR1250",
+                    "ATTR1252",
+                    "bad compute3"
                 )
             )
         );
@@ -207,6 +219,11 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_goodfamily1.ods",
                 "TST_GOODFAMIMP1",
+                false
+            ) , // with method file
+            array(
+                "PU_data_dcp_goodfamily2.ods",
+                "TST_GOODFAMIMP2",
                 false
             )
         );

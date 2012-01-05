@@ -158,6 +158,7 @@ class CheckAttr extends CheckData
      * @var bool
      */
     private $isModAttr = false;
+    
     public function check(array $data, &$extra = null)
     {
         $this->structAttr = new StructAttribute($data);
@@ -171,7 +172,7 @@ class CheckAttr extends CheckData
         $this->checkIsAbstract();
         $this->checkIsTitle();
         if ($this->checkPhpFile()) {
-            $this->checkPhpFunction();
+            $this->checkPhpFunctionOrMethod();
         }
         $this->checkOptions();
         return $this;
@@ -331,6 +332,21 @@ class CheckAttr extends CheckData
         return $goodFile;
     }
     
+    private function checkPhpFunctionOrMethod()
+    {
+        $phpFunc = trim($this->structAttr->phpfunc);
+        $phpFile = trim($this->structAttr->phpfile);
+        $type = $this->getType();
+        if ($phpFunc && $phpFunc != '-' && ($type != "action")) {
+            if ($phpFile && $phpFile != '-') {
+                // parse function for input help
+                $this->checkPhpFunction();
+            } else {
+                // parse method for computed attribute
+                $this->checkPhpMethod();
+            }
+        }
+    }
     private function checkPhpFunction()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
@@ -344,20 +360,50 @@ class CheckAttr extends CheckData
                 if ($strucFunc->getError()) {
                     $this->addError(ErrorCode::getError('ATTR1200', $this->attrid, $strucFunc->getError()));
                 } else {
-                    $phpFuncName = $strucFunc->name;
+                    $phpFuncName = $strucFunc->functionName;
                     try {
                         $refFunc = new ReflectionFunction($phpFuncName);
-                        $targetFile=$refFunc->getFileName();
-                        $realPhpFile=realpath(sprintf("EXTERNALS/%s",$phpFile));
-                        if ($targetFile != $realPhpFile) $this->addError(ErrorCode::getError('ATTR1209', $phpFuncName,$realPhpFile));
+                        if ($refFunc->isInternal()) {
+                            $this->addError(ErrorCode::getError('ATTR1209', $phpFuncName));
+                        } else {
+                            
+                            $targetFile = $refFunc->getFileName();
+                            $realPhpFile = realpath(sprintf("EXTERNALS/%s", $phpFile));
+                            if ($targetFile != $realPhpFile) {
+                                $this->addError(ErrorCode::getError('ATTR1210', $phpFuncName, $realPhpFile));
+                            } else {
+                                $numArgs = $refFunc->getNumberOfRequiredParameters();
+                                if ($numArgs > count($strucFunc->inputs)) {
+                                    $this->addError(ErrorCode::getError('ATTR1211', $phpFuncName, $numArgs));
+                                }
+                            }
+                        }
                     }
                     catch(Exception $e) {
-                        $this->addError(ErrorCode::getError('ATTR1203', $phpFuncName ));
+                        $this->addError(ErrorCode::getError('ATTR1203', $phpFuncName));
                     }
                 }
             } else {
                 // parse method for computed attribute
+                
             }
+        }
+    }
+    private function checkPhpMethod()
+    {
+        $phpFunc = trim($this->structAttr->phpfunc);
+        $phpFile = trim($this->structAttr->phpfile);
+        $type = $this->getType();
+        
+        $oParse = new parseFamilyMethod();
+        $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
+        if ($strucFunc->getError()) {
+            $this->addError(ErrorCode::getError('ATTR1250', $this->attrid, $strucFunc->getError()));
+        } else {
+            // validity of method call cannot be tested here
+            // it is tested in checkEnd
+            
+            
         }
     }
     private function checkOptions()

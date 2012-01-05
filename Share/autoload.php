@@ -35,7 +35,7 @@ class excludeSomeFiles extends FilterIterator
             }
         }
         
-        if (preg_match('/Method\./', $c)) return false;
+        if (preg_match('/^Method/', basename($c))) return false;
         return is_readable($c);
     }
 }

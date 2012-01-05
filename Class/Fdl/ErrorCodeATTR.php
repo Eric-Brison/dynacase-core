@@ -149,7 +149,38 @@ class ErrorCodeATTR
      */
     const ATTR1208 = 'appname in special help can be only alphanum characters ';
     /**
-        * input help must be defined in declared file
-        */
-       const ATTR1209 = 'function "%s" is not defined in "%s" file';
+     * input help can use only user function
+     */
+    const ATTR1209 = 'function "%s" is an internal php function';
+    /**
+     * input help must be defined in declared file
+     */
+    const ATTR1210 = 'function "%s" is not defined in "%s" file';
+    /**
+     * the called function need more arguments
+     */
+    const ATTR1211 = 'not enought argument call to use function "%s" (need %d arguments)';
+    /**
+     * declaration of call method is not correct
+     * @note example : ::test()  or myClass::test()
+     */
+    const ATTR1250 = 'syntax error in method call for attribute "%s" : %s';
+    /**
+     * call of a method mudt contains '::' characters
+     * @note example : ::test()  or myClass::test()
+     */
+    const ATTR1251 = 'no "::" delimiter in method call "%s"';
+    /**
+     * method name must be a valid PHP name
+     */
+    const ATTR1252 = 'syntax error in method name : "%s"';
+    /**
+     * method name must be a valid PHP class name
+     */
+    const ATTR1253 = 'syntax error in class name in method call: "%s"';
+    /**
+     * call method can be return only one value
+     * @note example : ::test():MY_RET
+     */
+    const ATTR1254 = 'only one output is possible in method "%s"';
 }

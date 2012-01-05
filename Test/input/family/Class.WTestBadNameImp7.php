@@ -7,7 +7,7 @@
 
 include_once ("FDL/Class.WDoc.php");
 
-Class WAnimal extends WDoc
+Class WTestBad extends WDoc
 {
     var $attrPrefix = "WAN";
     

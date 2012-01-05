@@ -5,11 +5,10 @@
  * @package FDL
 */
 /**
- * Created by JetBrains PhpStorm.
- * User: eric
- * Date: 01/12/11
- * Time: 18:27
- * To change this template use File | Settings | File Templates.
+ * @classname ErrorCode
+ * @brief static method use to retrieve error code
+ * @see ErrorCodeATTR
+ * @see ErrorCodeWFL
  */
 class ErrorCode
 {
@@ -53,7 +52,7 @@ class ErrorCode
                 $msg = sprintf("wrong error code %s", $code);
             }
         }
-        if ($msg) error_log("ERROR:" . $msg);
+        // if ($msg) error_log("ERROR:" . $msg);
         return $msg;
     }
 }

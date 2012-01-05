@@ -67,7 +67,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good():OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "outputs" => array(
                         "OUT"
                     )
@@ -77,14 +77,14 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good ():OUT",
                 array(
-                    "name" => "good"
+                    "functionName" => "good"
                 )
             ) ,
             // test simple function
             array(
                 "good ():OUT1, OUT2",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "outputs" => array(
                         "OUT1",
                         "OUT2"
@@ -95,7 +95,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good(ONE):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE",
@@ -107,7 +107,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good(ONE, CT):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE",
@@ -123,7 +123,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good(ONE, CT, 'CT'):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE",
@@ -142,9 +142,35 @@ class TestParseFunction extends TestCaseDcp
             ) ,
             // test attr attribute arg
             array(
+                'good( "ONE, TWO" ):OUT',
+                array(
+                    "functionName" => "good",
+                    "inputs" => array(
+                        array(
+                            "name" => "ONE, TWO",
+                            "type" => "string"
+                        )
+                    )
+                )
+            ) ,
+            // test attr attribute arg
+            array(
+                'good( " ONE \'TWO\' " ):OUT',
+                array(
+                    "functionName" => "good",
+                    "inputs" => array(
+                        array(
+                            "name" => " ONE 'TWO' ",
+                            "type" => "string"
+                        )
+                    )
+                )
+            ) ,
+            // test attr attribute arg
+            array(
                 "good( ONE ):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE",
@@ -157,7 +183,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 'good("ONE"):OUT',
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE",
@@ -170,7 +196,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 'good( "ONE" ):OUT',
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE",
@@ -183,7 +209,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 'good("ONE\"TWO"):OUT',
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => 'ONE"TWO',
@@ -196,7 +222,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 'good("ONE","TWO"):OUT',
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => 'ONE',
@@ -213,7 +239,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good('ONE'):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE",
@@ -226,7 +252,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good('ONE,'TWO):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => 'ONE',
@@ -243,7 +269,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good('ONE','TWO'):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => 'ONE',
@@ -260,7 +286,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good('(ONE)',')TWO(:'):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => '(ONE)',
@@ -277,7 +303,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good('ONE', 'TWO'):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => 'ONE',
@@ -294,7 +320,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good('ONE'TWO):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE'TWO",
@@ -307,7 +333,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good('ONE\\'TWO):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "ONE'TWO",
@@ -319,7 +345,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "good( a simple text ):OUT",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "inputs" => array(
                         array(
                             "name" => "a simple text",
@@ -332,7 +358,7 @@ class TestParseFunction extends TestCaseDcp
             array(
                 "MY_APP:good(ONE):",
                 array(
-                    "name" => "good",
+                    "functionName" => "good",
                     "appName" => "MY_APP",
                     "inputs" => array(
                         array(
@@ -370,6 +396,13 @@ class TestParseFunction extends TestCaseDcp
                 array(
                     "ATTR1202",
                     "test one"
+                )
+            ) ,
+            // test space func name
+            array(
+                "testone() O:UT",
+                array(
+                    "ATTR1201"
                 )
             ) ,
             // test double quote
