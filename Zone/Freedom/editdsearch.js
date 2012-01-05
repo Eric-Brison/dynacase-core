@@ -217,3 +217,95 @@ function filterfunc(th) {
 	}
   
 }
+
+function showModePersoIfSelected() {
+    /**
+     * Show parenthesis if global mode is 'perso'
+     */
+    if ($('select#se_ol').val() == 'perso') {
+        toggleModePerso(true);
+        return;
+    }
+
+    /**
+     * Lookup condlist lines and show parenthesis if
+     * parenthesis select is 'yes' or operator is 'and' or 'or'
+     */
+    var selectList = $('#condlist select.modeperso');
+    var visible = false;
+    for (var i = 0; i < selectList.length; i++) {
+        if (selectList[i].value == 'yes' || selectList[i].value == 'and' || selectList[i] == 'or') {
+            visible = true;
+            break;
+        }
+    }
+
+    if (visible) {
+        $('select#se_ol').val('perso');
+    }
+    toggleModePerso(visible);
+}
+
+function toggleModePerso(visible) {
+    if (typeof visible != "boolean") {
+        return;
+    }
+
+    /**
+     * Show/hide parenthesis controls and
+     */
+    $('span.modeperso-header').toggle(visible);
+    $('select.modeperso').toggle(visible);
+
+    if (visible) {
+        /**
+         * Remove the "global" operator in perso mode and
+         * set to default "and"
+         */
+        removeGlobalOperator();
+    } else {
+        /**
+         * Add the "global" operator in perso mode and
+         * set to default ""
+         */
+        addGlobalOperator();
+
+        /**
+         * Set parenthesis to default "no"
+         */
+        $.merge($('select[name="_se_leftp[]"]'), $('select[name="_se_rightp[]"]')).each(
+            function (index, elmt) {
+                $(elmt).val("no");
+            }
+        );
+    }
+
+    refreshCondList();
+}
+
+function removeGlobalOperator() {
+    $('select[name="_se_ols[]"] > option[value=""]').each(
+        function (index, elmt) {
+            if ($(this).parent().val() == '') {
+                $(this).parent().val("and");
+            }
+            $(this).remove();
+        }
+    );
+}
+
+function addGlobalOperator() {
+    $('select[name="_se_ols[]"]').each(
+        function (index, elmt) {
+            var option = document.createElement('option');
+            option.appendChild(document.createTextNode("global"));
+            option.value = "";
+            $(this).prepend(option);
+            $(this).val("");
+        }
+    )
+}
+
+function refreshCondList() {
+    $('#condlist select[name="_se_ols[]"]:eq(0)').toggle(false);
+}

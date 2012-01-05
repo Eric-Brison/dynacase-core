@@ -806,6 +806,7 @@ class _DSEARCH extends DocSearch
                     $tclassdoc = array();
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
+                    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
                     
                     if ($dirid > 0) {
                         $dir = new_Doc($this->dbaccess, $dirid);
