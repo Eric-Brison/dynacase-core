@@ -337,7 +337,7 @@ class CheckAttr extends CheckData
         $phpFunc = trim($this->structAttr->phpfunc);
         $phpFile = trim($this->structAttr->phpfile);
         $type = $this->getType();
-        if ($phpFunc && $phpFunc != '-' && ($type != "action")) {
+        if ($phpFunc && $phpFunc != '-' && ($type != "action")&& ($type != "enum")) {
             if ($phpFile && $phpFile != '-') {
                 // parse function for input help
                 $this->checkPhpFunction();

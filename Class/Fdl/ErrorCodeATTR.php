@@ -183,4 +183,16 @@ class ErrorCodeATTR
      * @note example : ::test():MY_RET
      */
     const ATTR1254 = 'only one output is possible in method "%s"';
+    /**
+     * call method must be defined in file method or in another class if precised
+     */
+    const ATTR1260 = 'method "%s" is not found for "%s" attribute';
+    /**
+     * call method require more arguments
+     */
+    const ATTR1261 = 'not enought argument call to use method "%s" (need %d arguments) for "%s" attribute';
+        /**
+         * the phpfunc is not correct generally detected on inherited attributes
+         */
+        const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute';
 }

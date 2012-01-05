@@ -206,7 +206,18 @@ class TestImportFamily extends TestCaseDcpDocument
                 array(
                     "ATTR1250",
                     "ATTR1252",
-                    "bad compute3"
+                    "ATTR1251",
+                    "bad Compute1"
+                )
+            ) ,
+            // method control in the end
+            array(
+                "PU_data_dcp_badattr10.ods",
+                array(
+                    "ATTR1260",
+                    "badCompute1",
+                    "ATTR1261",
+                    "goodCompute2"
                 )
             )
         );
