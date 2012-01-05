@@ -51,6 +51,15 @@ class WDoc extends Doc
     var $firstState = ""; // first state in workflow
     var $viewnext = "list"; // view interface as select list may be (list|button)
     var $nosave = array(); // states where it is not permitted to save and stay (force next state)
+    /**
+     * @var array
+     */
+    public $states=null;
+
+    /**
+     * @var WDoc|null
+     */
+    private $pdoc=null;
     
     /**
      * document instance
@@ -100,7 +109,7 @@ class WDoc extends Doc
      */
     function changeProfil($newstate)
     {
-        
+        $err='';
         if ($newstate != "") {
             $profid = $this->getValue($this->_Aid("_ID", $newstate));
             if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
@@ -122,6 +131,7 @@ class WDoc extends Doc
             $auserref = trim($this->getValue($this->_Aid("_AFFECTREF", $newstate)));
             if ($auserref) {
                 $uid = $this->getAllocatedUser($newstate);
+                $wuid=0;
                 if ($uid) $wuid = $this->getDocValue($uid, "us_whatid");
                 if ($wuid > 0) {
                     $lock = (trim($this->getValue($this->_Aid("_AFFECTLOCK", $newstate))) == "yes");
@@ -134,6 +144,7 @@ class WDoc extends Doc
                             if (!$to) addWarningMsg(sprintf(_("%s has no email address") , $this->getTitle($uid)));
                             else {
                                 $subject = sprintf(_("allocation for %s document") , $this->doc->title);
+                                $commentaction='';
                                 $err = sendCard($action, $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
                                 if ($err != "") addWarningMsg($err);
                             }
@@ -150,8 +161,8 @@ class WDoc extends Doc
         $auserref = trim($this->getValue($this->_Aid("_AFFECTREF", $newstate)));
         $type = trim($this->getValue($this->_Aid("_AFFECTTYPE", $newstate)));
         if (!$auserref) return false;
-        $wuid = false;
         $aid = strtok($auserref, " ");
+        $uid=false;
         switch ($type) {
             case 'F': // fixed address
                 //	$wuid=$this->getDocValue($aid,"us_whatid");
@@ -614,7 +625,7 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = "";
-            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($state) . '"}';
+            $oattr->options = 'autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($k) . '"}';
             
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -636,7 +647,7 @@ class WDoc extends Doc
             $oattr->phpfile = "fdl.php";
             $oattr->phpfunc = "ltimerdoc(D,CT,WF_FAMID):$aid,CT";
             $oattr->elink = "";
-            $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($state) . '"}';
+            $oattr->options = 'multiple=yes|autocreated=yes|creation={autoclose:"yes",tm_family:wf_famid,tm_workflow:fromid,tm_title:"' . _($k) . '"}';
             
             $oattr->id = $aid;
             $oattr->frameid = $aidframe;
@@ -682,10 +693,13 @@ class WDoc extends Doc
      */
     function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true)
     {
+        $err='';
         // if ($this->doc->state == $newstate) return ""; // no change => no action
         // search if possible change in concordance with transition array
         $foundFrom = false;
         $foundTo = false;
+        $tname='';
+        $tr=array();
         reset($this->cycle);
         while (list($k, $trans) = each($this->cycle)) {
             if (($this->doc->state == $trans["e1"])) {
@@ -821,7 +835,7 @@ class WDoc extends Doc
     
     function getStates()
     {
-        if (!isset($this->states)) {
+        if ($this->states === null) {
             $this->states = array();
             reset($this->cycle);
             while (list($k, $tr) = each($this->cycle)) {
@@ -880,6 +894,9 @@ class WDoc extends Doc
         if ($control) {
             $cask = array();
             foreach ($vasks as $askid) {
+                /**
+                 * @var $ask _WASK
+                 */
                 $ask = new_doc($this->dbaccess, $askid);
                 $ask->set($this->doc);
                 if ($ask->isAlive() && ($ask->control('answer') == "")) $cask[] = $ask->id;
@@ -912,12 +929,16 @@ class WDoc extends Doc
      */
     function workflowSendMailTemplate($state, $comment = "", $tname = "")
     {
+        $err='';
         $tmtid = $this->getTValue($this->_Aid("_TRANS_MTID", $tname));
         
         $tr = $this->transitions[$tname];
         if ($tmtid && (count($tmtid) > 0)) {
             foreach ($tmtid as $mtid) {
                 $keys = array();
+                /**
+                 * @var $mt _MAILTEMPLATE
+                 */
                 $mt = new_doc($this->dbaccess, $mtid);
                 if ($mt->isAlive()) {
                     $keys["WCOMMENT"] = nl2br($comment);
@@ -959,6 +980,7 @@ class WDoc extends Doc
      */
     function workflowAttachTimer($state, $tname = "")
     {
+        $err='';
         $mtid = $this->getValue($this->_Aid("_TRANS_TMID", $tname));
         
         $this->doc->unattachAllTimers($this);
@@ -1002,11 +1024,15 @@ class WDoc extends Doc
     
     function changeStateOfDocid($docid, $newstate, $comment = "")
     {
+        $err='';
         $cmd = new_Doc($this->dbaccess, $docid);
         $cmdid = $cmd->latestId(); // get the latest
         $cmd = new_Doc($this->dbaccess, $cmdid);
         
         if ($cmd->wid > 0) {
+            /**
+             * @var $wdoc Wdoc
+             */
             $wdoc = new_Doc($this->dbaccess, $cmd->wid);
             
             if (!$wdoc) $err = sprintf(_("cannot change state of document #%d to %s") , $cmd->wid, $newstate);
@@ -1015,6 +1041,7 @@ class WDoc extends Doc
             $err = $wdoc->ChangeState($newstate, sprintf(_("automaticaly by change state of %s\n%s") , $this->doc->title, $comment));
             if ($err != "") return $err;
         }
+        return $err;
     }
     /**
      * get transition array for the transition between $to and $from states
@@ -1047,7 +1074,7 @@ class WDoc extends Doc
         if ($err == "") return $err; // normal case
         if ($this->getValue("DPDOC_FAMID") > 0) {
             // special control for dynamic users
-            if (!isset($this->pdoc)) {
+            if ($this->pdoc===null) {
                 $pdoc = createDoc($this->dbaccess, $this->fromid, false);
                 $pdoc->doctype = "T"; // temporary
                 //	$pdoc->setValue("DPDOC_FAMID",$this->getValue("DPDOC_FAMID"));
