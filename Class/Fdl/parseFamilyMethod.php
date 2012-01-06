@@ -40,7 +40,8 @@ class parseFamilyMethod extends parseFamilyFunction
                     
                     $this->parseArguments();
                     $this->parseOutput();
-                    $this->limitOutputToOne();
+                    if ($noOut) $this->limitOutputToZero();
+                    else $this->limitOutputToOne();
                 }
             }
         }
@@ -52,6 +53,15 @@ class parseFamilyMethod extends parseFamilyFunction
     {
         if (count($this->outputs) > 1) {
             $this->setError(ErrorCode::getError('ATTR1254', $this->funcCall));
+        }
+    }
+    
+    protected function limitOutputToZero()
+    {
+        if (count($this->outputs) > 0) {
+            $this->setError(ErrorCode::getError('ATTR1255', $this->funcCall));
+        } elseif ($this->lastSemiColumn > $this->lastParenthesis) {
+            $this->setError(ErrorCode::getError('ATTR1255', $this->funcCall));
         }
     }
 }

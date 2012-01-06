@@ -164,7 +164,7 @@ class ErrorCodeATTR
      * declaration of call method is not correct
      * @note example : ::test()  or myClass::test()
      */
-    const ATTR1250 = 'syntax error in method call for attribute "%s" : %s';
+    const ATTR1250 = 'syntax error in method call (phpfunc) for attribute "%s" : %s';
     /**
      * call of a method mudt contains '::' characters
      * @note example : ::test()  or myClass::test()
@@ -184,6 +184,10 @@ class ErrorCodeATTR
      */
     const ATTR1254 = 'only one output is possible in method "%s"';
     /**
+     * generally when in constraint attribute
+     */
+    const ATTR1255 = 'no output is possible in method "%s"';
+    /**
      * call method must be defined in file method or in another class if precised
      */
     const ATTR1260 = 'method "%s" is not found for "%s" attribute';
@@ -191,8 +195,35 @@ class ErrorCodeATTR
      * call method require more arguments
      */
     const ATTR1261 = 'not enought argument call to use method "%s" (need %d arguments) for "%s" attribute';
-        /**
-         * the phpfunc is not correct generally detected on inherited attributes
-         */
-        const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute';
+    /**
+     * the phpfunc is not correct generally detected on inherited attributes
+     */
+    const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute : %s';
+    /**
+     * the phpfunc method must be static if a classname is set
+     * @note exemple : myClass::myStaticMethod()
+     */
+    const ATTR1263 = 'method "%s" is not static phpfunc for "%s" attribute';
+    /**
+     * declaration of call constraint is not correct
+     * @note example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
+     */
+    const ATTR1400 = 'syntax error in constraint call for attribute "%s" : %s';
+    /**
+     * call method in constraint require more arguments
+     */
+    const ATTR1401 = 'not enought argument call to use constraint "%s" (need %d arguments) for "%s" attribute';
+    /**
+     * call contraint method must be defined in file method or in another class if precised
+     */
+    const ATTR1402 = 'contraint method "%s" is not found for "%s" attribute';
+    /**
+     * the phpfunc method must be static if a classname is set
+     * @note exemple : myClass::myStaticMethod()
+     */
+    const ATTR1403 = 'method "%s" is not static phpfunc for "%s" attribute';
+    /**
+     * the constraint is not correct generally detected on inherited attributes
+     */
+    const ATTR1404 = 'syntax error in constraint "%s" for "%s" attribute : %s';
 }

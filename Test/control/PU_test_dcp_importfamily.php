@@ -205,9 +205,15 @@ class TestImportFamily extends TestCaseDcpDocument
                 "PU_data_dcp_badattr9.ods",
                 array(
                     "ATTR1250",
+                    "tst_number1",
                     "ATTR1252",
                     "ATTR1251",
-                    "bad Compute1"
+                    "tst_number2",
+                    "bad Compute1",
+                    "ATTR1400",
+                    "tst_number3",
+                    "ATTR1255",
+                    "tst_number4"
                 )
             ) ,
             // method control in the end
@@ -216,8 +222,14 @@ class TestImportFamily extends TestCaseDcpDocument
                 array(
                     "ATTR1260",
                     "badCompute1",
+                    "tst_number1",
                     "ATTR1261",
-                    "goodCompute2"
+                    "tst_number2",
+                    "goodCompute2",
+                    "tst_number3",
+                    "ATTR1401",
+                    "tst_number4",
+                    "ATTR1402"
                 )
             )
         );

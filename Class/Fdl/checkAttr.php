@@ -174,6 +174,7 @@ class CheckAttr extends CheckData
         if ($this->checkPhpFile()) {
             $this->checkPhpFunctionOrMethod();
         }
+        $this->checkPhpConstraint();
         $this->checkOptions();
         return $this;
     }
@@ -337,7 +338,7 @@ class CheckAttr extends CheckData
         $phpFunc = trim($this->structAttr->phpfunc);
         $phpFile = trim($this->structAttr->phpfile);
         $type = $this->getType();
-        if ($phpFunc && $phpFunc != '-' && ($type != "action")&& ($type != "enum")) {
+        if ($phpFunc && $phpFunc != '-' && ($type != "action") && ($type != "enum")) {
             if ($phpFile && $phpFile != '-') {
                 // parse function for input help
                 $this->checkPhpFunction();
@@ -403,7 +404,23 @@ class CheckAttr extends CheckData
             // validity of method call cannot be tested here
             // it is tested in checkEnd
             
+        }
+    }
+    
+    private function checkPhpConstraint()
+    {
+        $constraint = trim($this->structAttr->constraint);
+        if ($constraint) {
             
+            $oParse = new parseFamilyMethod();
+            $strucFunc = $oParse->parse($constraint, true);
+            if ($strucFunc->getError()) {
+                $this->addError(ErrorCode::getError('ATTR1400', $this->attrid, $strucFunc->getError()));
+            } else {
+                // validity of method call cannot be tested here
+                // it is tested in checkEnd
+                
+            }
         }
     }
     private function checkOptions()
