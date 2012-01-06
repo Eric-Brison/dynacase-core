@@ -1,6 +1,16 @@
 
 <script language="javascript">
   addEvent(document.modifydoc,'submit',deletenew);
+
+  $(document).ready(function() {
+    /* Set change handler on se_ol select */
+    $('select#se_ol').change(function(e) {
+        toggleModePerso($(this).val() == 'perso');
+    });
+
+    /* Set perso mode if parenthesis and/or operators are selected */
+    showModePersoIfSelected();
+  });
 </script>
 <style>
 select.cond option {
@@ -11,6 +21,13 @@ select.cond option.set, option[disabled] {
   font-weight: bold;
   [IF ISIE]background-color:[COLOR_A0];[ENDIF ISIE]
   [IF ISCHROME]background-color:[COLOR_A2];[ENDIF ISCHROME]
+}
+
+span.perso-header {
+  display: none;
+}
+select.perso {
+  display: none;
 }
 
 </style>
@@ -45,24 +62,26 @@ select.cond option.set, option[disabled] {
 <tr><td><label for="latest"> [L_SE_LATEST]&nbsp;:</label>[V_SE_LATEST]</td></tr>
 <tr><td><label for="latest"> [L_SE_ACL]&nbsp;:</label>[V_SE_ACL]</td></tr>
 <tr><td><label for="latest"> [L_SE_FAMONLY]&nbsp;:</label>[V_SE_FAMONLY]</td></tr>
-<tr><td>[V_SE_OL]</td></tr>
+<tr><td><label for="latest"> [L_SE_OL]&nbsp;:</label>[V_SE_OL]</td></tr>
 </table>
 <table border=0 width="100%">
 <thead>
 
+        <!-- Template for new attribute row -->
+
 <tr id="newcond" style="display:none">
 <td class="und" align="left">
-  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]">
+  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="lib/ui/icon/bin.png">
 </td>
 <td class="und">
-		 <select  name="_se_ols[]"   >
+		 <select class="modeperso" name="_se_ols[]"   >
   <option selected  value="">[TEXT:OP_GLOB]</option>
   <option value="and">[TEXT:OP_AND]</option>
   <option value="or">[TEXT:OP_OR]</option>
   </select>
 	</td>
 	<td class="und">
-		 <select  name="_se_leftp[]"   >
+		 <select class="modeperso" name="_se_leftp[]"   >
   <option selected  value="no"></option>
   <option value="yes">(</option>
   </select>
@@ -82,24 +101,27 @@ select.cond option.set, option[disabled] {
    <input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
    </td>
    	<td class="und">
-		 <select  name="_se_rightp[]"   >
+		 <select  class="modeperso" name="_se_rightp[]"   >
   <option selected  value="no"></option>
   <option   value="yes">)</option>
   </select></td>
 </tr>
+
+    <!-- Template for new state row -->
+    
 <tr id="newstate" style="display:none">
 <td class="und" align="left">
-  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]">
+  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="lib/ui/icon/bin.png">
 </td>
 <td>
-		 <select  name="_se_ols[]"   >
+		 <select class="modeperso" name="_se_ols[]"   >
   <option selected  value="">[TEXT:OP_GLOB]</option>
   <option value="and">[TEXT:OP_AND]</option>
   <option value="or">[TEXT:OP_OR]</option>
   </select>
 	</td>
 	<td class="und">
-		 <select  name="_se_leftp[]"   >
+		 <select class="modeperso" name="_se_leftp[]"   >
   <option selected  value="no"></option>
   <option value="yes">(</option>
   </select>
@@ -119,20 +141,23 @@ select.cond option.set, option[disabled] {
   [ENDBLOCK STATE]
   </select></td><td><input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)"></td>
 	<td class="und">
-		 <select  name="_se_rightp[]"   >
+		 <select class="modeperso" name="_se_rightp[]"   >
   <option selected  value="no"></option>
   <option   value="yes">)</option>
   </select></td>
 </tr>
+
+    <!-- Visible table header -->
+
 <tr class="FREEDOMBack2">
 <td>&nbsp;</td>
-<td>[L_SE_OLS]</td>
-<td>[L_SE_LEFTP]</td>
+<td><span class="modeperso-header">[L_SE_OLS]</span></td>
+<td><span class="modeperso-header">&nbsp;(&nbsp;</span></td>
 <td>[L_SE_ATTRIDS]</td>
 <td>[L_SE_FUNCS]</td>
 <td>[L_SE_KEYS]</td>
 <td>[TEXT:Opt]</td>
-<td>[L_SE_RIGHTP]</td>
+<td><span class="modeperso-header">&nbsp;)&nbsp;</span></td>
 </tr>
 [BLOCK ENUMS]
 <tr  style="display:none"><td colspan="4">
@@ -147,16 +172,16 @@ select.cond option.set, option[disabled] {
 <tbody id="condlist">
 [BLOCK CONDITIONS]<tr id="ART[ak]">
 <td class="und">
-  <img title="[TEXT:delete]" onclick="delart(this)" src="[IMG:trash22.gif]"></td>  
+  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="lib/ui/icon/bin.png"></td>
 	<td class="und">
-		 <select  name="_se_ols[]"   >
+		 <select class="modeperso" name="_se_ols[]"   >
   <option selected  value="">[TEXT:OP_GLOB]</option>
   <option [ols_and_selected]  value="and">[TEXT:OP_AND]</option>
   <option [ols_or_selected]  value="or">[TEXT:OP_OR]</option>
   </select>
 	</td>
 	<td class="und">
-		 <select  name="_se_leftp[]"   >
+		 <select  class="modeperso" name="_se_leftp[]"   >
   <option [leftp_none_selected]  value="no"></option>
   <option [leftp_open_selected]  value="yes">(</option>
   </select>
@@ -193,7 +218,7 @@ select.cond option.set, option[disabled] {
    
 </td>
 	<td class="und">
-		 <select  name="_se_rightp[]"   >
+		 <select  class="modeperso" name="_se_rightp[]"   >
   <option [rightp_none_selected]  value="no"></option>
   <option [rightp_open_selected]  value="yes">)</option>
   </select></td>
@@ -207,8 +232,8 @@ select.cond option.set, option[disabled] {
 <td class="und" colspan="6" id="lastcell">
    
 
-   <input   value="[TEXT:addcond]"   type="button" onclick="addrow('newcond','condlist')">
-   <input  style="display:[dstate]" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist')">
+   <input   value="[TEXT:addcond]"   type="button" onclick="addrow('newcond','condlist'); refreshCondList();">
+   <input  style="display:[dstate]" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist'); refreshCondList();">
 
 <select id="example"  style="display:none" onchange="setKey(event,this)">
            <option disabled style="font-weight: bold;" value="">[TEXT:function examples]</option>
