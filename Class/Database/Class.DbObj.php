@@ -11,7 +11,7 @@
  * @author Anakeen 2000
  * @version $Id: Class.DbObj.php,v 1.58 2008/12/29 17:05:38 eric Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package WHAT
+ * @package FDL
  * @subpackage CORE
  */
 /**
@@ -72,6 +72,23 @@ Class DbObj
      * @see Affect()
      */
     var $isset = false; // indicate if fields has been affected (call affect methods)
+    static $savepoint = array();
+    /**
+     * @var string error message
+     */
+    public $msg_err = '';
+    /**
+     * @var int
+     */
+    public $err_code = '';
+    /**
+     * @var ressource
+     */
+    public $res = '';
+    /**
+     * @var bool
+     */
+    public $debug = false;
     //----------------------------------------------------------------------------
     
     /** 
@@ -99,13 +116,13 @@ Class DbObj
         $this->selectstring = "";
         // SELECTED FIELDS
         reset($this->fields);
-        while (list($k, $v) = each($this->fields)) {
+        foreach ($this->fields as $k => $v) {
             $this->selectstring = $this->selectstring . $this->dbtable . "." . $v . ",";
             $this->$v = "";
         }
         
         reset($this->sup_fields);
-        while (list($k, $v) = each($this->sup_fields)) {
+        foreach ($this->sup_fields as $k => $v) {
             $this->selectstring = $this->selectstring . "" . $v . ",";
             $this->$v = "";
         }
@@ -137,7 +154,7 @@ Class DbObj
         $fromstr = "{$this->dbtable}";
         if (is_array($this->sup_tables)) {
             reset($this->sup_tables);
-            while (list($k, $v) = each($this->sup_tables)) {
+            foreach ($this->sup_tables as $k => $v) {
                 $fromstr.= "," . $v;
             }
         }
@@ -148,7 +165,7 @@ Class DbObj
             $count = 0;
             $wherestr = " where ";
             reset($this->id_fields);
-            while (list($k, $v) = each($this->id_fields)) {
+            foreach ($this->id_fields as $k => $v) {
                 if ($count > 0) {
                     $wherestr = $wherestr . " AND ";
                 }
@@ -168,7 +185,7 @@ Class DbObj
         }
         if (is_array($this->sup_where)) {
             reset($this->sup_where);
-            while (list($k, $v) = each($this->sup_where)) {
+            foreach ($this->sup_where as $k => $v) {
                 $wherestr = $wherestr . " AND ";
                 $wherestr = $wherestr . "( " . $v . " )";
                 $count = $count + 1;
@@ -240,7 +257,7 @@ Class DbObj
     function Affect($array)
     {
         reset($array);
-        while (list($k, $v) = each($array)) {
+        foreach ($array as $k => $v) {
             if (!is_integer($k)) {
                 $this->$k = $v;
             }
@@ -354,7 +371,7 @@ Class DbObj
         
         $valstring = "";
         reset($this->fields);
-        while (list($k, $v) = each($this->fields)) {
+        foreach ($this->fields as $k => $v) {
             $valstring = $valstring . $this->lw($this->$v) . ",";
         }
         $valstring = substr($valstring, 0, strlen($valstring) - 1);
@@ -434,7 +451,7 @@ Class DbObj
         $count = 0;
         
         reset($this->id_fields);
-        while (list($k, $v) = each($this->id_fields)) {
+        foreach ($this->id_fields as $k => $v) {
             if ($count > 0) {
                 $wherestr = $wherestr . " AND ";
             }
@@ -504,12 +521,12 @@ Class DbObj
         if (isset($this->sqlcreate)) {
             // step by step
             if (is_array($this->sqlcreate)) {
-                while (list($k, $sqlquery) = each($this->sqlcreate)) {
+                foreach ($this->sqlcreate as $k => $sqlquery) {
                     $msg.= $this->exec_query($sqlquery, 1);
                 }
             } else {
                 $sqlcmds = explode(";", $this->sqlcreate);
-                while (list($k, $sqlquery) = each($sqlcmds)) {
+                foreach ($sqlcmds as $k => $sqlquery) {
                     $msg.= $this->exec_query($sqlquery, 1);
                 }
             }
@@ -541,25 +558,51 @@ Class DbObj
         $this->dbid = getDbid($this->dbaccess);
         return $this->dbid;
     }
-    function exec_query($sql, $lvl = 0)
+    /**
+     * @param string $sql the query
+     * @param int $lvl level set to 0
+     * @param bool $prepare set to true to use pg_prepare, restrict to use single query
+     * @return string error message
+     */
+    function exec_query($sql, $lvl = 0, $prepare = false)
     {
         global $SQLDELAY, $SQLDEBUG;
         
-        if ($sql == "") return;
+        if ($sql == "") return '';
         
         if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
-        //   $mb=microtime();
         $this->init_dbid();
         $this->log->debug("exec_query : $sql");
         
-        if (pg_send_query($this->dbid, $sql) === false) {
-            $this->msg_err = "Error sending query";
+        $this->msg_err = '';
+        
+        if ($prepare) {
+            
+            if (@pg_prepare($this->dbid, '', $sql) === false) {
+                $this->msg_err = "Error prepare sending query : ";
+            } else {
+                if (pg_send_execute($this->dbid, '', array()) === false) {
+                    $this->msg_err = "Error execute sending query : ";
+                }
+            }
+        } else {
+            if (pg_send_query($this->dbid, $sql) === false) {
+                $this->msg_err = "Error sending query";
+            }
         }
+        
+        if ($this->msg_err) {
+            $this->msg_err.= pg_last_error();
+            error_log(__METHOD__ . $this->msg_err);
+            return $this->msg_err;
+        }
+        
         $this->res = pg_get_result($this->dbid);
         
         $this->msg_err = pg_result_error($this->res);
         $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
         
+        if ($this->msg_err) error_log($this->msg_err);
         $action_needed = "";
         if ($lvl == 0) {
             if ($this->err_code != "") {
@@ -583,8 +626,11 @@ Class DbObj
                     default:
                         break;
                 }
-                //print_r(debug_backtrace(false));
-                error_log("DbObj::exec_query [" . $this->msg_err . " (" . $this->err_code . ")]:$action_needed.[$sql]");
+                
+                error_log(__METHOD__ . " [" . $this->msg_err . " (" . $this->err_code . ")]:$action_needed.[$sql]");
+                //print_r2(getDebugStack());print $sql;
+                //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
+                
             }
         }
         
@@ -626,8 +672,14 @@ Class DbObj
             $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
                 "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
-                "s" => str_replace("from", "<br/>from", $sql) ,
-                "st" => stacktrace(8)
+                "s" => str_replace(array(
+                    "from",
+                    'where'
+                ) , array(
+                    "\nfrom",
+                    "\nwhere"
+                ) , $sql) ,
+                "st" => getDebugStack(1)
             );
         }
         return ($this->msg_err);
@@ -697,7 +749,7 @@ Class DbObj
                 $inter_fields = array_intersect(array_keys($row) , $this->fields);
                 reset($this->fields);
                 $fields = "(";
-                while (list($k, $v) = each($inter_fields)) {
+                foreach ($inter_fields as $k => $v) {
                     $fields.= $v . ",";
                 }
                 $fields = substr($fields, 0, strlen($fields) - 1); // remove last comma
@@ -707,7 +759,7 @@ Class DbObj
             // compute compatible values
             $values = "(";
             reset($inter_fields);
-            while (list($k, $v) = each($inter_fields)) {
+            foreach ($inter_fields as $k => $v) {
                 $values.= "E'" . pg_escape_string($row[$v]) . "',";
             }
             $values = substr($values, 0, strlen($values) - 1); // remove last comma
