@@ -7,8 +7,12 @@
 /**
  * @classname ErrorCode
  * @brief static method use to retrieve error code
- * @see ErrorCodeATTR
- * @see ErrorCodeWFL
+ * @see ErrorCodeATTR family attribute error codes
+ * @see ErrorCodeWFL workflow error codes
+ * @see ErrorCodeACCS application access error codes
+ * @see ErrorCodePRFL document's profil error codes
+ * @see ErrorCodePRFD family profil errot codes
+ *
  */
 class ErrorCode
 {

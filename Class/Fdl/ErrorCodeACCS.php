@@ -7,7 +7,9 @@
 /**
  * Errors code used to checking application access
  * @class ErrorCodeACCS
- * @brief List all error code for access
+ * @see ErrorCode
+ * @brief List all error code for application access
+ * It is triggered by 'ACCESS' keyword
  */
 class ErrorCodeACCS
 {

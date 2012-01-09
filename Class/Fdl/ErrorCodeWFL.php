@@ -7,7 +7,8 @@
 /**
  * Errors code used to checking workflows
  * @class ErrorCodeWFL
- * @brief List all error code for workflows
+ * @see ErrorCode
+ * @brief List all error code for workflows class definition
  */
 class ErrorCodeWFL
 {

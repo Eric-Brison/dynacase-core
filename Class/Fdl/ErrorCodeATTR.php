@@ -5,9 +5,11 @@
  * @package FDL
 */
 /**
- * Errors code used to checking application access
+ * Error codes used to checking family attribute structure
  * @class ErrorCodeATTR
- * @brief List all error code for access
+ * @see ErrorCode
+ * @brief List all error code for document's attribute errors
+ * It is triggered by 'ATTR', 'PARAM', 'MODATTR' keywords
  */
 class ErrorCodeATTR
 {
@@ -188,9 +190,9 @@ class ErrorCodeATTR
      */
     const ATTR1255 = 'no output is possible in method "%s"';
     /**
-     * call method must be defined in file method or in another class if precised
+     * call method in phpfunc propertyu must be defined in file method or in another class if precised
      */
-    const ATTR1260 = 'method "%s" is not found for "%s" attribute';
+    const ATTR1260 = 'method (phpfunc) "%s" is not found for "%s" attribute';
     /**
      * call method require more arguments
      */
