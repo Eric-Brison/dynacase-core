@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * Document Object Definition
  *
@@ -2514,7 +2514,6 @@ create unique index i_docir on doc(initid, revision);";
     final public function SetValue($attrid, $value, $index = - 1, &$kvalue = null)
     {
         // control edit before set values
-        
         if (!$this->withoutControl) {
             if ($this->id > 0) { // no control yet if no effective doc
                 $err = $this->Control("edit");
@@ -5001,7 +5000,6 @@ create unique index i_docir on doc(initid, revision);";
                             
                             if (($viewzone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $viewzone, $reg)) {
                                 // detect special row zone
-                                
                                 $dxml = new DomDocument();
                                 $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
                                 if (!@$dxml->load($rowlayfile)) {
@@ -5603,7 +5601,6 @@ create unique index i_docir on doc(initid, revision);";
                                     '&lt;',
                                     '&gt;'
                                 ) , $html_body); // prevent pb for quot in quot
-                                
                                 $xmldata = '<xhtml:body xmlns:xhtml="http://www.w3.org/1999/xhtml">' . $html_body . "</xhtml:body>";
                                 
                                 $xslt = new xsltProcessor;
@@ -6185,7 +6182,6 @@ create unique index i_docir on doc(initid, revision);";
                         }
                         
                         $nattr = count($listattr); // attributes list count
-                        
                         $k = 0; // number of frametext
                         $v = 0; // number of value in one frametext
                         $nbimg = 0; // number of image in one frametext
@@ -6302,9 +6298,11 @@ create unique index i_docir on doc(initid, revision);";
                                     $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
                                     $frames[$k]["notloaded"] = false;
                                     if ($oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
-                                        $frames[$k]["viewtpl"] = true;
-                                        $frames[$k]["zonetpl"] = _("Loading...");
-                                        $frames[$k]["notloaded"] = true;
+                                        if (!$frames[$k]["viewtpl"]) {
+                                            $frames[$k]["viewtpl"] = true;
+                                            $frames[$k]["zonetpl"] = _("Loading...");
+                                            $frames[$k]["notloaded"] = true;
+                                        }
                                     }
                                     unset($tableframe);
                                     unset($tableimage);
@@ -6416,9 +6414,11 @@ create unique index i_docir on doc(initid, revision);";
                                 $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
                                 $frames[$k]["notloaded"] = false;
                                 if ($oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
-                                    $frames[$k]["viewtpl"] = true;
-                                    $frames[$k]["zonetpl"] = _("Loading...");
-                                    $frames[$k]["notloaded"] = true;
+                                    if (!$frames[$k]["viewtpl"]) {
+                                        $frames[$k]["viewtpl"] = true;
+                                        $frames[$k]["zonetpl"] = _("Loading...");
+                                        $frames[$k]["notloaded"] = true;
+                                    }
                                 }
                             }
                             // Out
@@ -6852,7 +6852,6 @@ create unique index i_docir on doc(initid, revision);";
                             // ------------------------------------------------------
                             // Perform SQL search for doc attributes
                             // ------------------------------------------------------
-                            
                             $frames = array();
                             $listattr = $this->GetInputAttributes($onlyopt);
                             
@@ -6860,6 +6859,7 @@ create unique index i_docir on doc(initid, revision);";
                             $k = 0; // number of frametext
                             $v = 0; // number of value in one frametext
                             $currentFrameId = "";
+                            $currentFrame = null;
                             $changeframe = false;
                             $ih = 0; // index for hidden values
                             $thidden = array();
@@ -6887,6 +6887,7 @@ create unique index i_docir on doc(initid, revision);";
                                     if ($frametpl) {
                                         $changeframe = true;
                                         $currentFrameId = $attr->fieldSet->id;
+                                        $currentFrame = $attr->fieldSet;
                                         $v++;
                                     } elseif ($currentFrameId != "") $changeframe = true;
                                 }
@@ -6902,7 +6903,7 @@ create unique index i_docir on doc(initid, revision);";
                                         
                                         $oaf = $this->getAttribute($currentFrameId);
                                         $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-                                        if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
+                                        if ($currentFrame && ($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
                                             $frames[$k]["tag"] = "TAG" . $currentFrame->fieldSet->id;
                                             $frames[$k]["TAB"] = true;
                                             $ttabs[$currentFrame->fieldSet->id] = array(
@@ -7284,14 +7285,12 @@ create unique index i_docir on doc(initid, revision);";
                             //$this->lay->Set("IDFAM",$fromid);
                             //$idfam=$fam_doc->classname;
                             //$this->lay->Set("TYPEOBJECT",$doctype);
-                            
                             ////debut
                             $listattr = $this->GetNormalAttributes();
                             
                             $frames = array();
                             
                             $nattr = count($listattr); // attributes list count
-                            
                             $k = 0; // number of frametext
                             $v = 0; // number of value in one frametext
                             $currentFrameId = "";
@@ -7307,7 +7306,6 @@ create unique index i_docir on doc(initid, revision);";
                                 if ((chop($listattr[$i]->id) != "") && ($listattr[$i]->id != "FIELD_HIDDENS")) {
                                     //------------------------------
                                     // Compute value elements
-                                    
                                     if ($currentFrameId != $listattr[$i]->fieldSet->id) {
                                         if ($currentFrameId != "") $changeframe = true;
                                     }
