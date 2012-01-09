@@ -477,7 +477,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                         )
                     ));
                 }
-                if (($doc->usefor != 'D') && ($oattr->usefor != 'Q')) $lay->setBlockData("CONTROLCAL", array(
+                if (($doc->usefor != 'D') && ($doc->usefor != 'Q')) $lay->setBlockData("CONTROLCAL", array(
                     array(
                         "zou"
                     )
