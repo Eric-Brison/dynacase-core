@@ -140,7 +140,7 @@ class SearchDoc
     {
         if (!$this->result) {
             $fld = new_Doc($this->dbaccess, $this->dirid);
-            $userid = $fld->userid;
+            $userid = $this->userid;
             if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
                 $this->mode = "ITEM";
                 if ($this->debug) $debuginfo = array();
