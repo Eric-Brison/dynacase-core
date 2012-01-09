@@ -140,7 +140,7 @@ class SearchDoc
     {
         if (!$this->result) {
             $fld = new_Doc($this->dbaccess, $this->dirid);
-            $userid = $fld->userid;
+            $userid = $this->userid;
             if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
                 $this->mode = "ITEM";
                 if ($this->debug) $debuginfo = array();
@@ -159,7 +159,7 @@ class SearchDoc
                         $maintabledot = ($maintable) ? $maintable . '.' : '';
                         
                         $mainid = ($maintable) ? "$maintable.id" : "id";
-                        $sql = preg_replace('/select\s+(.*)\s+from\s/', "select count($mainid) from ", $sql);
+                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/i', "select count($mainid) from ", $sql, 1);
                         
                         if ($userid != 1) $sql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
                         $dbid = getDbid($this->dbaccess);
