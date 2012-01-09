@@ -37,6 +37,8 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestExportXml');
         $suite->addTestSuite('PU\TestGetParam');
         $suite->addTestSuite('PU\TestUsage');
+        $suite->addTestSuite('PU\TestParseFunction');
+        $suite->addTestSuite('PU\TestParseMethod');
         // ...
         return $suite;
     }

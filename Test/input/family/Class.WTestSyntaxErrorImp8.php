@@ -7,7 +7,7 @@
 
 include_once ("FDL/Class.WDoc.php");
 
-Class WAnimal extends WDoc
+Class WTestSyntax extends WDoc
 {
     var $attrPrefix = "WAN"const alive = "alive"; # N_("alive")
     const dead = "dead"; # N_("dead")

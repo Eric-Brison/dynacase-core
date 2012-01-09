@@ -52,7 +52,7 @@ class ADoc
     /**
      * return all the attributes except frame & menu & action
      * @param bool $onlyopt
-     * @return BasicAttribute[]
+     * @return NormalAttribute[]
      */
     function GetNormalAttributes($onlyopt = false)
     {

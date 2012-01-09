@@ -5,9 +5,11 @@
  * @package FDL
 */
 /**
- * Errors code used to checking application access
+ * Error codes used to checking family attribute structure
  * @class ErrorCodeATTR
- * @brief List all error code for access
+ * @see ErrorCode
+ * @brief List all error code for document's attribute errors
+ * It is triggered by 'ATTR', 'PARAM', 'MODATTR' keywords
  */
 class ErrorCodeATTR
 {
@@ -101,7 +103,129 @@ class ErrorCodeATTR
     const ATTR1500 = 'the option name "%s" is not valid in attribute "%s"';
     /**
      * The syntax option is : optname=optvalue
-     * @example elabel=enter a value
+     * @note example : elabel=enter a value
      */
     const ATTR1501 = 'the option "%s" must have = sign, in attribute "%s"';
+    /**
+     * the phpfile must be a call to a valid function or method
+     */
+    const ATTR1200 = 'syntax error in phpfile attribute  "%s" : %s';
+    /**
+     * function must have 2 parenthesis one open and one close
+     */
+    const ATTR1201 = 'error parenthesis in method/file definition : "%s"';
+    /**
+     * function name must be a valid PHP name
+     */
+    const ATTR1202 = 'syntax error in function name : "%s"';
+    /**
+     * function name must exists
+     */
+    const ATTR1203 = 'function "%s" not exists';
+    /**
+     * double quote error in function call
+     */
+    const ATTR1204 = 'double quote syntax error (character %d) in function "%s"';
+    /**
+     * simple quote error in function call
+     */
+    const ATTR1205 = 'simple quote syntax error (character %d) in function "%s"';
+    /**
+     * output attributes must be declared after : characters
+     * @note
+     * example : test():MY_TEST1, MY_TEST2
+     */
+    const ATTR1206 = 'no output attribute missing ":" character in function "%s"';
+    /**
+     * output attributes must represent attribute name with a comma separator
+     * @note
+     *  example :test():MY_TEST1, MY_TEST2
+     *  test(My_TEST2):MY_TEST1
+     */
+    const ATTR1207 = 'outputs in function "%s" can be only alphanum characters ';
+    /**
+     * output attributes must represent attribute name with a comma separator
+     * @note
+     *  example : MY_APP:my_test():MY_TEST1, MY_TEST2
+     *
+     */
+    const ATTR1208 = 'appname in special help can be only alphanum characters ';
+    /**
+     * input help can use only user function
+     */
+    const ATTR1209 = 'function "%s" is an internal php function';
+    /**
+     * input help must be defined in declared file
+     */
+    const ATTR1210 = 'function "%s" is not defined in "%s" file';
+    /**
+     * the called function need more arguments
+     */
+    const ATTR1211 = 'not enought argument call to use function "%s" (need %d arguments)';
+    /**
+     * declaration of call method is not correct
+     * @note example : ::test()  or myClass::test()
+     */
+    const ATTR1250 = 'syntax error in method call (phpfunc) for attribute "%s" : %s';
+    /**
+     * call of a method mudt contains '::' characters
+     * @note example : ::test()  or myClass::test()
+     */
+    const ATTR1251 = 'no "::" delimiter in method call "%s"';
+    /**
+     * method name must be a valid PHP name
+     */
+    const ATTR1252 = 'syntax error in method name : "%s"';
+    /**
+     * method name must be a valid PHP class name
+     */
+    const ATTR1253 = 'syntax error in class name in method call: "%s"';
+    /**
+     * call method can be return only one value
+     * @note example : ::test():MY_RET
+     */
+    const ATTR1254 = 'only one output is possible in method "%s"';
+    /**
+     * generally when in constraint attribute
+     */
+    const ATTR1255 = 'no output is possible in method "%s"';
+    /**
+     * call method in phpfunc propertyu must be defined in file method or in another class if precised
+     */
+    const ATTR1260 = 'method (phpfunc) "%s" is not found for "%s" attribute';
+    /**
+     * call method require more arguments
+     */
+    const ATTR1261 = 'not enought argument call to use method "%s" (need %d arguments) for "%s" attribute';
+    /**
+     * the phpfunc is not correct generally detected on inherited attributes
+     */
+    const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute : %s';
+    /**
+     * the phpfunc method must be static if a classname is set
+     * @note exemple : myClass::myStaticMethod()
+     */
+    const ATTR1263 = 'method "%s" is not static phpfunc for "%s" attribute';
+    /**
+     * declaration of call constraint is not correct
+     * @note example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
+     */
+    const ATTR1400 = 'syntax error in constraint call for attribute "%s" : %s';
+    /**
+     * call method in constraint require more arguments
+     */
+    const ATTR1401 = 'not enought argument call to use constraint "%s" (need %d arguments) for "%s" attribute';
+    /**
+     * call contraint method must be defined in file method or in another class if precised
+     */
+    const ATTR1402 = 'contraint method "%s" is not found for "%s" attribute';
+    /**
+     * the phpfunc method must be static if a classname is set
+     * @note exemple : myClass::myStaticMethod()
+     */
+    const ATTR1403 = 'method "%s" is not static phpfunc for "%s" attribute';
+    /**
+     * the constraint is not correct generally detected on inherited attributes
+     */
+    const ATTR1404 = 'syntax error in constraint "%s" for "%s" attribute : %s';
 }

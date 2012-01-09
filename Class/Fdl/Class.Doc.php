@@ -1859,7 +1859,7 @@ create unique index i_docir on doc(initid, revision);";
      * return all the attributes except frame & menu & action
      * @param boolean $onlyopt get only optionnal attributes
      *
-     * @return BasicAttribute[]
+     * @return NormalAttribute[]
      */
     final public function GetNormalAttributes($onlyopt = false)
     {

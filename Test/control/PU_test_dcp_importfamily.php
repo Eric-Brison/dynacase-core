@@ -176,7 +176,18 @@ class TestImportFamily extends TestCaseDcpDocument
                 array(
                     "ATTR1100",
                     "tstNoHelp.php",
-                    "ATTR1101"
+                    "ATTR1101",
+                    "ATTR1200",
+                    "ATTR1201",
+                    "tst_nphelp",
+                    "noParenthesis",
+                    "ATTR1202",
+                    "ATTR1203",
+                    "testNoExistsReally",
+                    "ATTR1209",
+                    "is_a",
+                    "ATTR1210",
+                    "addLogMsg"
                 )
             ) ,
             // options syntax
@@ -187,6 +198,38 @@ class TestImportFamily extends TestCaseDcpDocument
                     "optionerror",
                     "ATTR1501",
                     "wrong error"
+                )
+            ) ,
+            // options syntax
+            array(
+                "PU_data_dcp_badattr9.ods",
+                array(
+                    "ATTR1250",
+                    "tst_number1",
+                    "ATTR1252",
+                    "ATTR1251",
+                    "tst_number2",
+                    "bad Compute1",
+                    "ATTR1400",
+                    "tst_number3",
+                    "ATTR1255",
+                    "tst_number4"
+                )
+            ) ,
+            // method control in the end
+            array(
+                "PU_data_dcp_badattr10.ods",
+                array(
+                    "ATTR1260",
+                    "badCompute1",
+                    "tst_number1",
+                    "ATTR1261",
+                    "tst_number2",
+                    "goodCompute2",
+                    "tst_number3",
+                    "ATTR1401",
+                    "tst_number4",
+                    "ATTR1402"
                 )
             )
         );
@@ -199,6 +242,11 @@ class TestImportFamily extends TestCaseDcpDocument
             array(
                 "PU_data_dcp_goodfamily1.ods",
                 "TST_GOODFAMIMP1",
+                false
+            ) , // with method file
+            array(
+                "PU_data_dcp_goodfamily2.ods",
+                "TST_GOODFAMIMP2",
                 false
             )
         );

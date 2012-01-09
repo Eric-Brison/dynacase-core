@@ -33,6 +33,7 @@ abstract class CheckData
             
             if (!in_array($msg, $this->errors)) {
                 $this->errors[] = $msg;
+                error_log("ERROR:" . $msg);
             }
         }
     }

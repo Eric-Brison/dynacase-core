@@ -5,9 +5,11 @@
  * @package FDL
 */
 /**
- * Errors code used to checking profid
+ * Error codes used to checking profid
  * @class ErrorCodePRFD
- * @brief List all error code for profid
+ * @see ErrorCode
+ * @brief List all error code to check family security
+ * It is triggered by 'PROFID' keywords
  */
 class ErrorCodePRFD
 {

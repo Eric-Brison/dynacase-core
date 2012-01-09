@@ -24,19 +24,21 @@ class TestReport extends TestCaseDcpAction
 
     public function setUp()
     {
-        parent::setUp();
+        // no call parent
         $this->setUpTestAction("FDL", "REPORT_EXPORT_CSV");
     }
 
     public function tearDown()
     {
         $this->resetCurrentParameters();
+        // no call parent
     }
 
     public static function tearDownAfterClass()
     {
 
         printf( "\nResult data for %s written in file://%s.\n", __CLASS__, self::getOutputDir());
+        self::rollbackTransaction();
     }
     /**
      * Test report with default option
