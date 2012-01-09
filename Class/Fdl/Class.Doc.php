@@ -6547,9 +6547,11 @@ create unique index i_docir on doc(initid, revision);";
                                 $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
                                 $frames[$k]["notloaded"] = false;
                                 if ($oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
-                                    $frames[$k]["viewtpl"] = true;
-                                    $frames[$k]["zonetpl"] = _("Loading...");
-                                    $frames[$k]["notloaded"] = true;
+                                    if (!$frames[$k]["viewtpl"]) {
+                                        $frames[$k]["viewtpl"] = true;
+                                        $frames[$k]["zonetpl"] = _("Loading...");
+                                        $frames[$k]["notloaded"] = true;
+                                    }
                                 }
                                 unset($tableframe);
                                 unset($tableimage);
@@ -6661,9 +6663,11 @@ create unique index i_docir on doc(initid, revision);";
                             $this->lay->SetBlockData($frames[$k]["IMAGES"], $tableimage);
                             $frames[$k]["notloaded"] = false;
                             if ($oaf->type == "frame" && (count($tableframe) + count($tableimage)) == 0) {
-                                $frames[$k]["viewtpl"] = true;
-                                $frames[$k]["zonetpl"] = _("Loading...");
-                                $frames[$k]["notloaded"] = true;
+                                if (!$frames[$k]["viewtpl"]) {
+                                    $frames[$k]["viewtpl"] = true;
+                                    $frames[$k]["zonetpl"] = _("Loading...");
+                                    $frames[$k]["notloaded"] = true;
+                                }
                             }
                         }
                         // Out
@@ -7119,6 +7123,7 @@ create unique index i_docir on doc(initid, revision);";
                         $k = 0; // number of frametext
                         $v = 0; // number of value in one frametext
                         $currentFrameId = "";
+                        $currentFrame=null;
                         $changeframe = false;
                         $ih = 0; // index for hidden values
                         $thidden = array();
@@ -7146,6 +7151,7 @@ create unique index i_docir on doc(initid, revision);";
                                 if ($frametpl) {
                                     $changeframe = true;
                                     $currentFrameId = $attr->fieldSet->id;
+                                    $currentFrame = $attr->fieldSet;
                                     $v++;
                                 } elseif ($currentFrameId != "") $changeframe = true;
                             }
@@ -7158,10 +7164,9 @@ create unique index i_docir on doc(initid, revision);";
                                     $frames[$k]["TAB"] = false;
                                     $frames[$k]["edittpl"] = ($frametpl != "");
                                     $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
-                                    
                                     $oaf = $this->getAttribute($currentFrameId);
                                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
-                                    if (($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
+                                    if ($currentFrame && ($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
                                         $frames[$k]["tag"] = "TAG" . $currentFrame->fieldSet->id;
                                         $frames[$k]["TAB"] = true;
                                         $ttabs[$currentFrame->fieldSet->id] = array(
