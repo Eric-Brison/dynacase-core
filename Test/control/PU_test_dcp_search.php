@@ -362,7 +362,7 @@ class TestSearch extends TestCaseDcpDocument
                             "search:family" => "TST_SEARCH_FILTERS",
                             "search:filters" => array(
                                 "extract(year from a_timestamp) = '1970'",
-                                "a_text IN (select * from (values ('TST_SEARCH_FILTERS_01')) as foo)"
+                                "a_text IN (select * from (values ('TST_SEARCH_FILTERS_01')) as foo(name))"
                             ) ,
                             "expect:count" => 1
                         )

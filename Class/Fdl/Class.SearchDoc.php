@@ -159,7 +159,7 @@ class SearchDoc
                         $maintabledot = ($maintable) ? $maintable . '.' : '';
                         
                         $mainid = ($maintable) ? "$maintable.id" : "id";
-                        $sql = preg_replace('/select\s+(.*)\s+from\s/', "select count($mainid) from ", $sql);
+                        $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/i', "select count($mainid) from ", $sql, 1);
                         
                         if ($userid != 1) $sql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
                         $dbid = getDbid($this->dbaccess);
