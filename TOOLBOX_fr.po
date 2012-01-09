@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-19 15:56+0200\n"
-"PO-Revision-Date: 2011-09-19 16:00+0200\n"
+"POT-Creation-Date: 2012-01-09 18:19+0100\n"
+"PO-Revision-Date: 2012-01-09 18:20+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -3994,8 +3994,9 @@ msgstr "échec de l'authentification"
 msgid "authent reqpassword"
 msgstr "Mot de passe oublié ?"
 
-msgid "authentication failed"
-msgstr "échec d'authentification"
+#, c-format
+msgid "authentication failed for %s"
+msgstr ""
 
 msgid "author"
 msgstr "auteur"
@@ -8459,6 +8460,9 @@ msgstr "utiliser la touche ctrl dans les menus popup"
 msgid "use dynacase user management"
 msgstr ""
 
+msgid "use prepare statement in select queries"
+msgstr "Utiliser le prepare pour les requêtes sql"
+
 msgid "use what gate"
 msgstr ""
 
@@ -8949,6 +8953,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"
+
+#~ msgid "authentication failed"
+#~ msgstr "échec d'authentification"
 
 #~ msgid "book the document to modify it with offline application"
 #~ msgstr "réserver le document pour le modifier avec l'application offline"

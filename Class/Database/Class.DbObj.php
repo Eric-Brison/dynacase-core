@@ -73,6 +73,22 @@ class DbObj
      */
     var $isset = false; // indicate if fields has been affected (call affect methods)
     static $savepoint = array();
+    /**
+     * @var string error message
+     */
+    public $msg_err = '';
+    /**
+     * @var int
+     */
+    public $err_code = '';
+    /**
+     * @var ressource
+     */
+    public $res = '';
+    /**
+     * @var bool
+     */
+    public $debug = false;
     //----------------------------------------------------------------------------
     
     /** 
@@ -542,25 +558,51 @@ class DbObj
         $this->dbid = getDbid($this->dbaccess);
         return $this->dbid;
     }
-    function exec_query($sql, $lvl = 0)
+    /**
+     * @param string $sql the query
+     * @param int $lvl level set to 0
+     * @param bool $prepare set to true to use pg_prepare, restrict to use single query
+     * @return string error message
+     */
+    function exec_query($sql, $lvl = 0, $prepare = false)
     {
         global $SQLDELAY, $SQLDEBUG;
         
-        if ($sql == "") return;
+        if ($sql == "") return '';
         
         if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
-        //   $mb=microtime();
         $this->init_dbid();
         $this->log->debug("exec_query : $sql");
         
-        if (pg_send_query($this->dbid, $sql) === false) {
-            $this->msg_err = "Error sending query";
+        $this->msg_err = '';
+        
+        if ($prepare) {
+            
+            if (@pg_prepare($this->dbid, '', $sql) === false) {
+                $this->msg_err = "Error prepare sending query : ";
+            } else {
+                if (pg_send_execute($this->dbid, '', array()) === false) {
+                    $this->msg_err = "Error execute sending query : ";
+                }
+            }
+        } else {
+            if (pg_send_query($this->dbid, $sql) === false) {
+                $this->msg_err = "Error sending query";
+            }
         }
+        
+        if ($this->msg_err) {
+            $this->msg_err.= pg_last_error();
+            error_log(__METHOD__ . $this->msg_err);
+            return $this->msg_err;
+        }
+        
         $this->res = pg_get_result($this->dbid);
         
         $this->msg_err = pg_result_error($this->res);
         $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
         
+        if ($this->msg_err) error_log($this->msg_err);
         $action_needed = "";
         if ($lvl == 0) {
             if ($this->err_code != "") {
@@ -585,7 +627,7 @@ class DbObj
                         break;
                 }
                 
-                error_log("DbObj::exec_query [" . $this->msg_err . " (" . $this->err_code . ")]:$action_needed.[$sql]");
+                error_log(__METHOD__ . " [" . $this->msg_err . " (" . $this->err_code . ")]:$action_needed.[$sql]");
                 //print_r2(getDebugStack());print $sql;
                 //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
                 
@@ -630,7 +672,13 @@ class DbObj
             $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
             $TSQLDELAY[] = array(
                 "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
-                "s" => str_replace(array("from",'where'), array("\nfrom","\nwhere"), $sql) ,
+                "s" => str_replace(array(
+                    "from",
+                    'where'
+                ) , array(
+                    "\nfrom",
+                    "\nwhere"
+                ) , $sql) ,
                 "st" => getDebugStack(1)
             );
         }

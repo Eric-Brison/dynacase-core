@@ -67,6 +67,13 @@ $app_const = array (
 								"kind"=>"enum(unpersistent|persistent)",
 								"global"=>"Y"),
 
+    		"CORE_QUERYPREPARE"	=>array("val"=>"yes",
+    								"descr"=>N_("use prepare statement in select queries"),
+    								"user"=>"N",
+    								"style"=>"N",
+    								"kind"=>"enum(yes|no)",
+    								"global"=>"Y"),
+
 		    // Layout Param
 		   
 		    "CORE_BGCOLOR"		=>array("val"=>"url('CORE/Images/bg.gif')",
