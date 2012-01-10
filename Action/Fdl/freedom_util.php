@@ -16,7 +16,6 @@
 /**
  */
 
-include_once ("FDL/fdl_xml.php");
 include_once ("FDL/Lib.Util.php");
 //
 // ------------------------------------------------------
@@ -703,7 +702,7 @@ function isFixedDoc($dbaccess, $id)
     return ($tdoc["locked"] == - 1);
 }
 
-function ComputeVisibility($vis, $fvis)
+function ComputeVisibility($vis, $fvis, $ffvis='')
 {
     if ($vis == "I") return $vis;
     if ($fvis == "H") return $fvis;
@@ -712,9 +711,14 @@ function ComputeVisibility($vis, $fvis)
     if (($fvis == "O") && ($vis == "W")) return $fvis;
     if (($fvis == "R") && ($vis == "U")) return $fvis;
     if (($fvis == "S") && (($vis == "W") || ($vis == "O"))) return $fvis;
-    if ((($fvis == "R") || ($fvis == "S")) && ($vis == "U")) return $fvis;
-    
     if ($fvis == "I") return $fvis;
+    if ($fvis == 'U') {
+        if ($ffvis && ($vis == 'W' || $vis=='O')) {
+            if ($ffvis=='S') return 'S';
+            if ($ffvis=='R') return 'R';
+        }
+    }
+
     return $vis;
 }
 /**

@@ -1183,6 +1183,7 @@ function add_import_file(&$action, $fimport)
          */
         function ods2csv($odsfile)
         {
+            ;
             $csvfile = uniqid(getTmpDir() . "/csv") . "csv";
             $wsh = getWshCmd();
             $cmd = sprintf("%s --api=ods2csv --odsfile=%s --csvfile=%s >/dev/null", getWshCmd() , escapeshellarg($odsfile) , escapeshellarg($csvfile));
