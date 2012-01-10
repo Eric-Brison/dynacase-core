@@ -36,7 +36,7 @@ class CheckProfil extends CheckData
      * access control list
      * @var array
      */
-    private $acls = '';
+    private $acls = array();
     /**
      * modifier
      * @var string

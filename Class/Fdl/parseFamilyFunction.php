@@ -134,7 +134,7 @@ class parseFamilyFunction
             $this->outputs = explode(',', $this->outputString);
             foreach ($this->outputs as & $output) {
                 $output = trim($output);
-                if (!$this->isAlphaNum($output)) {
+                if (!$this->isAlphaNumOutAttribute($output)) {
                     $this->setError(ErrorCode::getError('ATTR1207', $this->funcCall));
                 }
             }
@@ -146,6 +146,10 @@ class parseFamilyFunction
         return preg_match('/^[a-z_][a-z0-9_]*$/i', $s);
     }
     
+    protected function isAlphaNumOutAttribute($s)
+    {
+        return preg_match('/^[a-z_\?][a-z0-9_\[\]]*$/i', $s);
+    }
     protected function isPHPName($s)
     {
         return preg_match('/^[a-z_][a-z0-9_]*$/i', $s);

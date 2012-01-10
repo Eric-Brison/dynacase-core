@@ -47,7 +47,8 @@ class CheckAccess extends CheckData
         $this->userId = $data[1];
         
         for ($i = 3; $i < count($data); $i++) {
-            if ($data[$i]) $this->acls[] = $data[$i];
+            if ($data[$i][0] == '-') $this->acls[] = substr($data[$i], 1);
+            else $this->acls[] = $data[$i];
         }
         
         $this->action = $action;
@@ -116,7 +117,7 @@ class CheckAccess extends CheckData
      */
     private function checkSyntax($acl)
     {
-        if (preg_match("/^[A-Z_0-9]{1,63}$/i", $acl)) {
+        if (preg_match("/^-?[A-Z_0-9]{1,63}$/i", $acl)) {
             return true;
         }
         return false;

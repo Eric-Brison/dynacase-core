@@ -27,7 +27,7 @@ include_once ("FDL/family_help.php");
 include_once ("VAULT/Class.VaultFile.php");
 // -----------------------------------
 // -----------------------------------
-function viewcard(&$action)
+function viewcard(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters
@@ -91,6 +91,10 @@ function viewcard(&$action)
     $action->lay->set("rsslink", $doc->getRssLink());
     if ($doc->cvid > 0) {
         // special controlled view
+        
+        /**
+         * @var $cvdoc CVDOC
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $cvdoc->set($doc);
         if ($vid != "") {

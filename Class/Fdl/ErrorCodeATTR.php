@@ -107,9 +107,9 @@ class ErrorCodeATTR
      */
     const ATTR1501 = 'the option "%s" must have = sign, in attribute "%s"';
     /**
-     * the phpfile must be a call to a valid function or method
+     * the phpfunc must be a call to a valid function or method
      */
-    const ATTR1200 = 'syntax error in phpfile attribute  "%s" : %s';
+    const ATTR1200 = 'syntax error in phpfunc attribute  "%s" : %s';
     /**
      * function must have 2 parenthesis one open and one close
      */
