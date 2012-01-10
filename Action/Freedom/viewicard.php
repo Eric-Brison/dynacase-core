@@ -17,6 +17,8 @@
  */
 
 include_once ("FDL/freedom_util.php");
+include_once ("FDL/fdl_xml.php");
+
 // -----------------------------------
 function viewicard(&$action)
 {

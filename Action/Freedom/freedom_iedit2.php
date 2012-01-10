@@ -22,6 +22,8 @@ include_once ("Class.QueryDb.php");
 include_once ("FDL/freedom_util.php");
 include_once ("FDL/Lib.Dir.php");
 include_once ("VAULT/Class.VaultFile.php");
+include_once ("FDL/fdl_xml.php");
+
 // -----------------------------------
 function freedom_iedit2(&$action)
 {
