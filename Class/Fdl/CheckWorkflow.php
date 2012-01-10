@@ -246,7 +246,7 @@ class CheckWorkflow
     
     private function checkTransitionStateKey($key)
     {
-        $limit = 45 - strlen($this->wdoc->attrPrefix);
+        $limit = 49 - strlen($this->wdoc->attrPrefix);
         if (!preg_match("/^[a-zA-Z_][a-zA-Z0-9_:]{0,$limit}$/", $key)) {
             $this->addCodeError('WFL0050', $key, $this->className, $limit + 1);
         }
