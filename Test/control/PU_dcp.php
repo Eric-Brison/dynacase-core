@@ -27,6 +27,7 @@ class TestSuiteDcp
         $suite->addTest(SuiteDcp::suite());
         $suite->addTest(SuiteDcpAttribute::suite());
         $suite->addTest(SuiteDcpUser::suite());
+        $suite->addTest(SuiteDcpSecurity::suite());
         // ...
         print "\nerror log in " . self::logFile . "\n";
         return $suite;

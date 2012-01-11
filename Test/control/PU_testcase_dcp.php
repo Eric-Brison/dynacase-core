@@ -36,7 +36,11 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * @var string
      */
     protected static $user = null;
-    
+    /**
+     * Store original include_path
+     */
+    protected static $include_path = null;
+
     protected function setUp()
     {
         $this->connectUser("admin");
@@ -187,19 +191,67 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     {
         $cr = array();
         global $action;
-        
-        $ext = substr($file, strrpos($file, '.') + 1);
-        if ($ext == "ods" || $ext == "csv") {
-            $realfile = "DCPTEST/" . $file;
-        } else {
-            $realfile = "DCPTEST/Layout/" . $file;
+
+        $realfile = $file;
+        if (!file_exists($realfile)) {
+            $ext = substr($file, strrpos($file, '.') + 1);
+            if ($ext == "ods" || $ext == "csv") {
+                $realfile = "DCPTEST/" . $file;
+            } else {
+                $realfile = "DCPTEST/Layout/" . $file;
+            }
+        }
+        if (!file_exists($realfile)) {
+            throw new \Exception(sprintf("File '%s' not found in '%s'.", $file, $realfile));
         }
         $oImport = new \ImportDocument();
         //error_log(__METHOD__."import $realfile");
-        $oImport->importDocuments(self::getAction() , $realfile);
+        $oImport->importDocuments(self::getAction(), $realfile);
         $err = $oImport->getErrorMessage();
         if ($err) throw new \Exception($err);
         return;
+    }
+    /**
+     * Import CSV data
+     * @param string $data CSV data
+     * @return void
+     */
+    public function importCsvData($data)
+    {
+        $tmpFile = tempnam(getTmpDir() , "importData");
+        if ($tmpFile === false) {
+            throw new \Exception(sprintf("Error creating temporary file in '%s'.", getTmpDir()));
+        }
+        $ret = rename($tmpFile, $tmpFile . '.csv');
+        if ($ret === false) {
+            throw new \Exception(sprintf("Error renaming '%s' to '%s'.", $tmpFile, $tmpFile . '.csv'));
+        }
+        $tmpFile = $tmpFile . '.csv';
+        $ret = file_put_contents($tmpFile, $data);
+        if ($ret === false) {
+            throw new \Exception(sprintf("Error writing to file '%s'.", $tmpFile));
+        }
+        $this->importDocument($tmpFile);
+        unlink($tmpFile);
+    }
+
+    /**
+     * Set the include_path INI parameter
+     * @param string $include_path the new include_path to use
+     */
+    public function setIncludePath($include_path) {
+        if (self::$include_path == null) {
+            self::$include_path = ini_get('include_path');
+        }
+        ini_set('include_path', $include_path);
+    }
+    /**
+     * Set back the original include_path INI parameter
+     */
+    public function resetIncludePath() {
+        if (self::$include_path !== null) {
+            ini_set('include_path', self::$include_path);
+        }
     }
 }
 ?>
