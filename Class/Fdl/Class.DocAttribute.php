@@ -30,10 +30,17 @@ class BasicAttribute
     public $options;
     public $docname;
     public $type; // text, longtext, date, file, ...
-    public $usefor; // = Q if parameters
-    public $fieldSet; // field set object
+    public $usefor; // = Q if parameters.
+    public $ordered; // order to place attributes
     
-    
+    /**
+     * @var FieldSetAttribute field set object
+     */
+    public $fieldSet;
+    /**
+     * @var array
+     */
+    protected $_topt = null;
     /**
      * Construct a basic attribute
      *
@@ -62,8 +69,8 @@ class BasicAttribute
     /**
      * Return value of option $x
      *
-     * @param $x option name
-     * @param $def default value
+     * @param string $x option name
+     * @param string $def default value
      *
      * @return string
      */
@@ -98,8 +105,8 @@ class BasicAttribute
     /**
      * Temporary change option
      *
-     * @param $x name
-     * @param $v value
+     * @param string $x name
+     * @param string $v value
      *
      * @return void
      */
@@ -118,15 +125,6 @@ class BasicAttribute
     function setVisibility($vis)
     {
         $this->mvisibility = $vis;
-    }
-    /**
-     * temporary change need
-     * @param bool $need true means needed, false not needed
-     * @return void
-     */
-    function setNeeded($need)
-    {
-        $this->needed = $need;
     }
     /**
      * test if attribute is not a auto created attribute
@@ -233,7 +231,7 @@ class BasicAttribute
     /**
      * Generate XML schema layout
      *
-     * @param unknown_type $play
+     * @param Layout $play
      */
     function common_getXmlSchema(&$play)
     {
@@ -243,19 +241,15 @@ class BasicAttribute
         $lay->set("label", $this->encodeXml($this->labelText));
         $lay->set("type", $this->type);
         $lay->set("visibility", $this->visibility);
-        $lay->set("isTitle", $this->isInTitle);
-        $lay->set("phpfile", $this->phpfile);
-        $lay->set("phpfunc", $this->phpfunc);
+        $lay->set("isTitle", false);
+        $lay->set("phpfile", false);
+        $lay->set("phpfunc", false);
         
-        if (($this->ype == "enum") && (!$this->phpfile) || ($this->phpfile == "-")) {
-            $lay->set("phpfile", false);
-            $lay->set("phpfunc", false);
-        }
-        $lay->set("computed", ((!$this->phpfile) && (substr($this->phpfunc, 0, 2) == "::")));
-        $lay->set("link", $this->encodeXml($this->link));
-        $lay->set("elink", $this->encodeXml($this->elink));
-        $lay->set("default", false); // TODO : need detect default value
-        $lay->set("constraint", $this->phpconstraint);
+        $lay->set("computed", false);
+        $lay->set("link", '');
+        $lay->set("elink", '');
+        $lay->set("default", false);
+        $lay->set("constraint", '');
         $tops = $this->getOptions();
         $t = array();
         foreach ($tops as $k => $v) {
@@ -266,9 +260,9 @@ class BasicAttribute
         }
         $lay->setBlockData("options", $t);
         
-        $play->set("minOccurs", $this->needed ? "1" : "0");
-        $play->set("isnillable", $this->needed ? "false" : "true");
-        $play->set("maxOccurs", (($this->getOption('multiple') == 'yes') ? "unbounded" : "1"));
+        $play->set("minOccurs", "0");
+        $play->set("isnillable", "true");
+        $play->set("maxOccurs", "1");
         $play->set("aname", $this->id);
         $play->set("appinfos", $lay->gen());
     }
@@ -292,9 +286,16 @@ class NormalAttribute extends BasicAttribute
     public $phpfile;
     public $phpfunc;
     public $elink; // extra link
-    public $ordered;
     public $phpconstraint; // special constraint set
     
+    /**
+     * @var $enum array use for enum attributes
+     */
+    public $enum;
+    /**
+     * @var $enumlabel array use for enum attributes
+     */
+    public $enumlabel;
     /**
      * Array of separator by level of multiplicity for textual export
      * @var array
@@ -318,7 +319,7 @@ class NormalAttribute extends BasicAttribute
      * @param char $needed is mandotary attribute
      * @param char $isInTitle is used to compute title
      * @param char $isInAbstract is used in abstract view
-     * @param string $fieldSet parent attribute
+     * @param FieldSetAttribute &$fieldSet parent attribute
      * @param string $phpfile php file used with the phpfunc
      * @param string $phpfunc helpers function
      * @param string $elink eling option
@@ -351,6 +352,15 @@ class NormalAttribute extends BasicAttribute
         $this->repeat = $repeat;
         $this->options = $options;
         $this->docname = $docname;
+    }
+    /**
+     * temporary change need
+     * @param bool $need true means needed, false not needed
+     * @return void
+     */
+    function setNeeded($need)
+    {
+        $this->needed = $need;
     }
     /**
      * Generate the xml schema fragment
@@ -392,14 +402,56 @@ class NormalAttribute extends BasicAttribute
             case 'color':
                 return $this->color_getXmlSchema($la);
             default:
-                return sprintf("<!-- no Schema %s (type %s)-->", $this->id, $this->type);;
+                return sprintf("<!-- no Schema %s (type %s)-->", $this->id, $this->type);
         }
+    }
+    /**
+     * Generate XML schema layout
+     *
+     * @param Layout $play
+     */
+    function common_getXmlSchema(&$play)
+    {
+        
+        $lay = new Layout(getLayoutFile("FDL", "infoattribute_schema.xml"));
+        $lay->set("aname", $this->id);
+        $lay->set("label", $this->encodeXml($this->labelText));
+        $lay->set("type", $this->type);
+        $lay->set("visibility", $this->visibility);
+        $lay->set("isTitle", $this->isInTitle);
+        $lay->set("phpfile", $this->phpfile);
+        $lay->set("phpfunc", $this->phpfunc);
+        
+        if (($this->type == "enum") && (!$this->phpfile) || ($this->phpfile == "-")) {
+            $lay->set("phpfile", false);
+            $lay->set("phpfunc", false);
+        }
+        $lay->set("computed", ((!$this->phpfile) && (substr($this->phpfunc, 0, 2) == "::")));
+        $lay->set("link", $this->encodeXml($this->link));
+        $lay->set("elink", $this->encodeXml($this->elink));
+        $lay->set("default", false); // TODO : need detect default value
+        $lay->set("constraint", $this->phpconstraint);
+        $tops = $this->getOptions();
+        $t = array();
+        foreach ($tops as $k => $v) {
+            if ($k) $t[] = array(
+                "key" => $k,
+                "val" => $this->encodeXml($v)
+            );
+        }
+        $lay->setBlockData("options", $t);
+        
+        $play->set("minOccurs", $this->needed ? "1" : "0");
+        $play->set("isnillable", $this->needed ? "false" : "true");
+        $play->set("maxOccurs", (($this->getOption('multiple') == 'yes') ? "unbounded" : "1"));
+        $play->set("aname", $this->id);
+        $play->set("appinfos", $lay->gen());
     }
     /**
      * export values as xml fragment
      *
      * @param Doc $doc working doc
-     * @param StdObject $opt
+     * @param exportOptionAttribute $opt
      *
      * @return string
      */
@@ -664,6 +716,7 @@ class NormalAttribute extends BasicAttribute
         }
         /**
          * Array XML schema
+         * @param BasicAttribute[] &$la
          *
          * @return string
          */
@@ -916,6 +969,9 @@ class NormalAttribute extends BasicAttribute
             $optionDoc = $this->getOption('docrev', "");
             $displayTitle = function ($id) use ($optionDoc, $doc)
             {
+                /**
+                 * @var Doc $doc
+                 */
                 if ($optionDoc == "fixed") {
                     return $doc->getTitle($id);
                 } else {
@@ -985,9 +1041,9 @@ class NormalAttribute extends BasicAttribute
                         global $action;
                         $action->exitError(sprintf(_("the external pluggin file %s cannot be read") , $this->phpfile));
                     }
-                    if (preg_match("/(.*)\((.*)\)/", $this->phpfunc, $reg)) {
+                    if (preg_match('/(.*)\((.*)\)/', $this->phpfunc, $reg)) {
                         $args = explode(",", $reg[2]);
-                        if (preg_match("/linkenum\((.*),(.*)\)/", $this->phpfunc, $dreg)) {
+                        if (preg_match('/linkenum\((.*),(.*)\)/', $this->phpfunc, $dreg)) {
                             $br = $dreg[1] . '#' . strtolower($dreg[2]) . '#';
                         }
                         if (function_exists($reg[1])) {
@@ -1096,7 +1152,7 @@ class NormalAttribute extends BasicAttribute
          *
          * @param string $enumid the key of enumerate (if no parameter all labels are returned
          *
-         * @return array
+         * @return array|string|null
          */
         function getEnumLabel($enumid = null)
         {
@@ -1124,6 +1180,7 @@ class NormalAttribute extends BasicAttribute
                     else return $enumid;
                 }
             }
+            return null;
         }
         /**
          * add new item in enum list items
@@ -1136,6 +1193,7 @@ class NormalAttribute extends BasicAttribute
          */
         function addEnum($dbaccess, $key, $label)
         {
+            $err = '';
             if ($key == "") return "";
             
             $a = new DocAttr($dbaccess, array(
@@ -1217,9 +1275,6 @@ class NormalAttribute extends BasicAttribute
      */
     class FieldSetAttribute extends BasicAttribute
     {
-        
-        public $fieldSet; // field set object
-        
         /**
          * Constructor
          *
@@ -1229,7 +1284,7 @@ class NormalAttribute extends BasicAttribute
          * @param string $visibility visibility option
          * @param string $usefor Attr or Param usage
          * @param string $type kind of
-         * @param string $fieldSet parent attribute
+         * @param FieldSetAttribute &$fieldSet parent field
          * @param string $options option string
          * @param unknown_type $docname
          */
@@ -1248,7 +1303,7 @@ class NormalAttribute extends BasicAttribute
         /**
          * Generate the xml schema fragment
          *
-         * @param array $la array of DocAttribute
+         * @param BasicAttribute[] $la
          *
          * @return string
          */
@@ -1277,7 +1332,7 @@ class NormalAttribute extends BasicAttribute
          * export values as xml fragment
          *
          * @param Doc $doc working doc
-         * @param StdObject $opt
+         * @param exportOptionAttribute $opt
          *
          * @return string
          */
@@ -1298,7 +1353,6 @@ class NormalAttribute extends BasicAttribute
     class MenuAttribute extends BasicAttribute
     {
         public $link; // hypertext link
-        public $ordered;
         public $precond; // pre-condition to activate menu
         function __construct($id, $docid, $label, $order, $link, $visibility = "", $precond = "", $options = "", $docname = "")
         {
@@ -1320,7 +1374,6 @@ class NormalAttribute extends BasicAttribute
         
         public $wapplication; // the what application name
         public $waction; // the what action name
-        public $ordered;
         public $precond; // pre-condition to activate action
         function __construct($id, $docid, $label, $order, $visibility = "", $wapplication = "", $waction = "", $precond = "", $options = "", $docname = "")
         {
@@ -1351,5 +1404,33 @@ class NormalAttribute extends BasicAttribute
             }
             return $l;
         }
+    }
+    
+    class exportOptionAttribute
+    {
+        /**
+         * @var array
+         */
+        public $exportAttributes;
+        /**
+         * @var bool
+         */
+        public $flat;
+        /**
+         * @var bool
+         */
+        public $withIdentificator;
+        /**
+         * @var bool
+         */
+        public $withFile;
+        /**
+         * @var string
+         */
+        public $outFile;
+        /**
+         * @var int
+         */
+        public $index;
     }
 ?>
