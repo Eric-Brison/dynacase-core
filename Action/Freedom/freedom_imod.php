@@ -24,6 +24,7 @@ include_once ("FDL/modcard.php");
 include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocFam.php");
 include_once ("FDL/Class.Doc.php");
+include_once ("FDL/fdl_xml.php");
 // -----------------------------------
 function freedom_imod(&$action)
 {
