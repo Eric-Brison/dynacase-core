@@ -105,7 +105,7 @@ create index permission_idx4 on permission(computed);
     function postInsert()
     {
         if (!$this->computed) {
-            $this->exec_query(sprintf("delete from permission where  id_application=%d and abs(id_acl)=%d and computed", $this->id_application, $this->id_acl));
+            $this->exec_query(sprintf("delete from permission where  id_application=%d and abs(id_acl)=%d and computed", $this->id_application, abs($this->id_acl)));
         }
         
         return "";
