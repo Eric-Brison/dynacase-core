@@ -591,6 +591,11 @@ class Doc extends DocCtrl
      */
     public $acls = array();
     /**
+     * document layout
+     * @var Layout
+     */
+    public $lay = null;
+    /**
      * default family id for the profil access
      * @var int
      */
@@ -1807,7 +1812,7 @@ create unique index i_docir on doc(initid, revision);";
         $oas = $this->getAttributes();
         if (is_array($oas)) {
             foreach ($oas as $k => $v) {
-                if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility);
+                if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
             }
         }
         if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) return;
@@ -1817,6 +1822,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($mid == 0) {
             if (($this->wid > 0) && ($this->wid != $this->id)) {
                 // search mask from workflow
+                
+                /**
+                 * @var $wdoc WDoc
+                 */
                 $wdoc = new_Doc($this->dbaccess, $this->wid);
                 if ($wdoc->isAlive()) {
                     if ($this->id == 0) {
@@ -1828,7 +1837,9 @@ create unique index i_docir on doc(initid, revision);";
             }
         }
         if ($mid > 0) {
-            
+            /**
+             * @var $mdoc _MASK
+             */
             $mdoc = new_Doc($this->dbaccess, $mid);
             if ($mdoc->isAlive()) {
                 $tvis = $mdoc->getCVisibilities();
@@ -1841,7 +1852,7 @@ create unique index i_docir on doc(initid, revision);";
                 // recompute loosed attributes
                 foreach ($tdiff as $k) {
                     $v = $oas[$k];
-                    $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility);
+                    $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
                 }
                 // modify needed attribute also
                 $tneed = $mdoc->getNeedeeds();
@@ -7123,7 +7134,7 @@ create unique index i_docir on doc(initid, revision);";
                         $k = 0; // number of frametext
                         $v = 0; // number of value in one frametext
                         $currentFrameId = "";
-                        $currentFrame=null;
+                        $currentFrame = null;
                         $changeframe = false;
                         $ih = 0; // index for hidden values
                         $thidden = array();

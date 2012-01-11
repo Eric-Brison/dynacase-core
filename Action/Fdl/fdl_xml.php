@@ -63,8 +63,8 @@ function _fromxml($xml, &$idoc)
     $xml_parser = xml_parser_create("ISO-8859-1");
     // use case-folding so we are sure to find the tag in $map_array
     xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, true);
-    xml_set_element_handler($xml_parser, "startElement", "endElement");
-    xml_set_character_data_handler($xml_parser, "characterData");
+    xml_set_element_handler($xml_parser, "startElementXml", "endElementXml");
+    xml_set_character_data_handler($xml_parser, "characterDataXml");
     
     if (!xml_parse($xml_parser, $fp)) {
         die(sprintf("XML error: %s at line %d", xml_error_string(xml_get_error_code($xml_parser)) , xml_get_current_line_number($xml_parser)));
@@ -113,7 +113,7 @@ function recreate_balise_fermante($name)
     return "</$name>";
 }
 
-function startElement($parser, $name, $attrs)
+function startElementXml($parser, $name, $attrs)
 {
     //this function is called when parser find a start element in the xml.
     global $depth_index;
@@ -197,7 +197,7 @@ function endElement($parser, $name)
     $depth_index--;
 }
 
-function characterData($parser, $data)
+function characterDataXml($parser, $data)
 {
     global $value;
     if (chop($data) != "") {

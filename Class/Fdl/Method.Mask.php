@@ -35,6 +35,7 @@ class _MASK extends Doc
     
     function SpecRefresh()
     {
+        $err = '';
         //  gettitle(D,AR_IDCONST):AR_CONST,AR_IDCONST
         $this->refreshDocTitle("MSK_FAMID", "MSK_FAM");
         
@@ -116,7 +117,8 @@ class _MASK extends Doc
             if ($tvisid[$k] == "-") $vis = $attr->visibility;
             else $vis = $tvisid[$k];
             
-            $tvisibilities[$v] = ComputeVisibility($vis, $tvisibilities[$fvisid]);
+            $tvisibilities[$v] = ComputeVisibility($vis, $tvisibilities[$fvisid],
+                $attr->fieldSet->fieldSet ? $attr->fieldSet->fieldSet->mvisibility : '');
         }
         return $tvisibilities;
     }
@@ -159,6 +161,9 @@ class _MASK extends Doc
         uasort($tmpdoc->attributes->attr, "tordered");
         
         foreach ($tmpdoc->attributes->attr as $k => $attr) {
+            /**
+             * @var $attr NormalAttribute|ActionAttribute
+             */
             if (!$attr->visibility) continue;
             if ($attr->usefor == 'Q') continue;
             $tmask[$k]["attrname"] = $attr->getLabel();
@@ -261,6 +266,9 @@ class _MASK extends Doc
             $tattr = $doc->getAttributes();
             uasort($tattr, "tordered");
             foreach ($tattr as $k => $attr) {
+                /**
+                 * @var $attr NormalAttribute|FieldSetAttribute|ActionAttribute
+                 */
                 if ($attr->usefor == "Q") continue; // not parameters
                 if ($attr->docid == 0) continue; // not parameters
                 $newelem[$k]["attrid"] = $attr->id;
