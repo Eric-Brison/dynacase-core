@@ -41,7 +41,7 @@ class BasicAttribute
     /**
      * @var array
      */
-    protected $_topt = null;
+    public $_topt = null;
     /**
      * Construct a basic attribute
      *

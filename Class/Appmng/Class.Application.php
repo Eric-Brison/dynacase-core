@@ -53,20 +53,20 @@ class Application extends DbObj
         "tag"
     );
     public $id;
-public $name;
-public $short_name;
-public $description;
-public $access_free;
-public $available;
-public $icon;
-public $displayable;
-public $with_frame;
-public $childof;
-public $objectclass;
-public $ssl;
-public $machine;
-public $iorder;
-public $tag;
+    public $name;
+    public $short_name;
+    public $description;
+    public $access_free;
+    public $available;
+    public $icon;
+    public $displayable;
+    public $with_frame;
+    public $childof;
+    public $objectclass;
+    public $ssl;
+    public $machine;
+    public $iorder;
+    public $tag;
     public $id_fields = array(
         "id"
     );
@@ -150,7 +150,9 @@ create sequence SEQ_ID_APPLICATION start 10;
                     if ($this->name == "") {
                         printf("Application name %s not found", $name);
                         exit;
-                    } else Redirect($this, $this->name, "");
+                    } elseif ($_SERVER['HTTP_HOST'] != "") {
+                        Redirect($this, $this->name, "");
+                    }
                 } else {
                     global $_SERVER;
                     if ($_SERVER['HTTP_HOST'] != "") Header("Location: " . $_SERVER['HTTP_REFERER']);

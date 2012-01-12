@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace PU;
 /**
@@ -12,6 +12,7 @@ namespace PU;
  * @package DCP
  */
 
+require_once 'WHAT/autoload.php';
 class SuiteDcpAttribute
 {
     public static function suite()

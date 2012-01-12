@@ -38,5 +38,11 @@ class TestSuiteDcp
         @unlink(self::logFile);
         ini_set("error_log", self::logFile);
     }
+    
+    public static function addMessage($msg)
+    {
+        static $msg = array();
+        $msg[] = $msg;
+    }
 }
 ?>
