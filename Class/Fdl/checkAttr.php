@@ -171,6 +171,7 @@ class CheckAttr extends CheckData
         $this->checkVisibility();
         $this->checkIsAbstract();
         $this->checkIsTitle();
+        $this->checkIsNeeded();
         if ($this->checkPhpFile()) {
             $this->checkPhpFunctionOrMethod();
         }
@@ -218,6 +219,10 @@ class CheckAttr extends CheckData
         } elseif ($setId) {
             if (!$this->checkAttrSyntax($setId)) {
                 $this->addError(ErrorCode::getError('ATTR0200', $setId, $this->attrid));
+            } else {
+                if ($this->getType() == 'tab') {
+                    $this->addError(ErrorCode::getError('ATTR0206', $setId, $this->attrid));
+                }
             }
         }
     }
@@ -278,8 +283,11 @@ class CheckAttr extends CheckData
             }
         } elseif (!in_array($vis, $this->visibilities)) {
             $this->addError(ErrorCode::getError('ATTR0801', $vis, $this->attrid, implode(',', $this->visibilities)));
-        } elseif ($vis == "U" && ($this->getType() != "array")) {
-            $this->addError(ErrorCode::getError('ATTR0802', $this->attrid));
+        } else {
+            $type = $this->getType();
+            if ($vis == "U" && $type && ($type != "array")) {
+                $this->addError(ErrorCode::getError('ATTR0802', $this->attrid));
+            }
         }
     }
     
@@ -303,6 +311,17 @@ class CheckAttr extends CheckData
                 $this->addError(ErrorCode::getError('ATTR0400', $isTitle, $this->attrid));
             } elseif ($isTitle == 'y' && (!$this->isNodeHasValue())) {
                 $this->addError(ErrorCode::getError('ATTR0401', $this->attrid));
+            }
+        }
+    }
+    private function checkIsNeeded()
+    {
+        $isNeeded = strtolower($this->structAttr->isneeded);
+        if ($isNeeded) {
+            if (!in_array($isNeeded, $this->yesno)) {
+                $this->addError(ErrorCode::getError('ATTR0900', $isNeeded, $this->attrid));
+            } elseif ($isNeeded == 'y' && (!$this->isNodeHasValue())) {
+                $this->addError(ErrorCode::getError('ATTR0901', $this->attrid));
             }
         }
     }

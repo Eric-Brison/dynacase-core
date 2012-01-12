@@ -111,7 +111,9 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_invstruct",
                     "not defined",
                     "ATTR0202",
-                    "tst_same"
+                    "tst_same",
+                    "ATTR0206",
+                    "none_tab"
                 )
             ) ,
             // test method not found
@@ -156,7 +158,7 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_noarray"
                 )
             ) ,
-            // test isTitle isAbstract
+            // test isTitle isAbstract isNeeded
             array(
                 "PU_data_dcp_badattr6.ods",
                 array(
@@ -168,6 +170,10 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_notitle",
                     "ATTR0401",
                     "tst_t_title",
+                    "ATTR0900",
+                    "tst_two",
+                    "ATTR0901",
+                    "tst_noneed"
                 )
             ) ,
             // input help
@@ -230,6 +236,22 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR1401",
                     "tst_number4",
                     "ATTR1402"
+                )
+            ) ,
+            // method control in the end
+            array(
+                "PU_data_dcp_badattr11.ods",
+                array(
+                    "ATTR0203",
+                    "tst_number2",
+                    "ATTR0204",
+                    "tst_number1",
+                    "ATTR0205",
+                    "tst_number4",
+                    "ATTR0207",
+                    "tst_frame2",
+                    "ATTR0902",
+                    "tst_colneed"
                 )
             )
         );

@@ -22,6 +22,7 @@
  */
 class BasicAttribute
 {
+    const hiddenFieldId = "FIELD_HIDDENS";
     public $id;
     public $docid;
     public $labelText;
@@ -197,7 +198,7 @@ class BasicAttribute
     function getTab()
     {
         if ($this->type == 'tab') return $this;
-        if ($this->fieldSet && ($this->fieldSet->id != 'FIELD_HIDDENS')) return $this->fieldSet->getTab();
+        if ($this->fieldSet && ($this->fieldSet->id != BasicAttribute::hiddenFieldId)) return $this->fieldSet->getTab();
         return false;
     }
     /**
@@ -1315,7 +1316,7 @@ class NormalAttribute extends BasicAttribute
             
             $lay->set("minOccurs", "0");
             $lay->set("maxOccurs", "1");
-            $lay->set("notop", ($this->fieldSet->id != '' && $this->fieldSet->id != 'FIELD_HIDDENS'));
+            $lay->set("notop", ($this->fieldSet->id != '' && $this->fieldSet->id != BasicAttribute::hiddenFieldId));
             $tax = array();
             foreach ($la as $k => $v) {
                 if ($v->fieldSet && $v->fieldSet->id == $this->id) {

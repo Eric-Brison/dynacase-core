@@ -27,8 +27,45 @@ class CheckEnd extends CheckData
             }
         }
         
+        $this->checkSetAttributes();
         $this->checkComputedConstraintAttributes();
         return $this;
+    }
+    
+    protected function checkSetAttributes()
+    {
+        $this->doc->getAttributes(); // force reattach attributes
+        $la = $this->doc->GetNormalAttributes();
+        foreach ($la as & $oa) {
+            $foa = $oa->fieldSet;
+            if (!$foa) {
+                $this->addError(ErrorCode::getError('ATTR0203', $oa->id));
+            } elseif ((!is_a($foa, "FieldSetAttribute")) && ($foa->type != 'array')) {
+                $this->addError(ErrorCode::getError('ATTR0204', $foa->id, $oa->id));
+            } else {
+                $type = $oa->type;
+                $ftype = $oa->fieldSet->type;
+                if (($ftype != 'frame') && ($ftype != 'array')) {
+                    $this->addError(ErrorCode::getError('ATTR0205', $foa->id, $oa->id));
+                } elseif ($ftype == 'array') {
+                    if ($oa->needed) {
+                        $this->addError(ErrorCode::getError('ATTR0902', $oa->id));
+                    }
+                }
+            }
+        }
+        
+        $la = $this->doc->GetFieldAttributes();
+        foreach ($la as & $oa) {
+            $foa = $oa->fieldSet;
+            if ($foa) {
+                $type = $oa->type;
+                $ftype = $oa->fieldSet->type;
+                if (($type == 'frame') && ($ftype != 'tab') && ($oa->fieldSet->id != BasicAttribute::hiddenFieldId)) {
+                    $this->addError(ErrorCode::getError('ATTR0207', $foa->id, $oa->id));
+                }
+            }
+        }
     }
     
     protected function checkComputedConstraintAttributes()
@@ -44,7 +81,6 @@ class CheckEnd extends CheckData
             }
         }
     }
-
     /**
      * check method validity for phpfunc property
      * @param NormalAttribute $oa
@@ -82,9 +118,9 @@ class CheckEnd extends CheckData
         }
     }
     /**
-         * check method validity for constraint property
-         * @param NormalAttribute $oa
-         */
+     * check method validity for constraint property
+     * @param NormalAttribute $oa
+     */
     private function checkConstraint(NormalAttribute & $oa)
     {
         $oParse = new parseFamilyMethod();
