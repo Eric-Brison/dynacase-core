@@ -174,6 +174,7 @@ class CheckAttr extends CheckData
         $this->checkIsNeeded();
         if ($this->checkPhpFile()) {
             $this->checkPhpFunctionOrMethod();
+            $this->checkEnum();
         }
         $this->checkPhpConstraint();
         $this->checkOptions();
@@ -314,6 +315,7 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
     private function checkIsNeeded()
     {
         $isNeeded = strtolower($this->structAttr->isneeded);
@@ -367,6 +369,30 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
+    private function checkEnum()
+    {
+        $phpFunc = trim($this->structAttr->phpfunc);
+        $phpFile = trim($this->structAttr->phpfile);
+        $type = $this->getType();
+        if ((!$phpFile || $phpFile == '-') && $phpFunc && ($type == "enum")) {
+            // parse static enum
+            $enums = str_replace(array(
+                "\\.",
+                "\\,"
+            ) , '-', $phpFunc); // to replace dot & comma separators
+            $topt = explode(",", $enums);
+            foreach ($topt as $opt) {
+                list($optName, $optValue) = explode("|", $opt, 2);
+                if (!preg_match('/^[\x20-\x7E]+$/', $optName)) {
+                    $this->addError(ErrorCode::getError('ATTR1271', $optName, $this->attrid));
+                } else if ($optValue === null) {
+                    $this->addError(ErrorCode::getError('ATTR1270', $optName, $this->attrid));
+                }
+            }
+        }
+    }
+    
     private function checkPhpFunction()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
@@ -409,6 +435,7 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
     private function checkPhpMethod()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
@@ -442,6 +469,7 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
     private function checkOptions()
     {
         

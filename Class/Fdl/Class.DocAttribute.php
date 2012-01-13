@@ -1063,7 +1063,7 @@ class NormalAttribute extends BasicAttribute
                 if ($sphpfunc != "") {
                     $tenum = explode(",", $sphpfunc);
                     foreach ($tenum as $k => $v) {
-                        list($enumKey, $enumValue) = explode("|", $v);
+                        list($enumKey, $enumValue) = explode("|", $v, 2);
                         $treeKeys = explode(".", $enumKey);
                         $enumKey = trim($enumKey);
                         if (strlen($enumKey) == 0) $enumKey = " ";

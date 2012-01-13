@@ -253,6 +253,17 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR0902",
                     "tst_colneed"
                 )
+            ) ,
+            // static enum
+            array(
+                "PU_data_dcp_badattr12.ods",
+                array(
+                    "ATTR1270",
+                    "tst_badeenum",
+                    "tst_badnenum",
+                    "ATTR1271",
+                    "tst_badkenum",
+                )
             )
         );
     }

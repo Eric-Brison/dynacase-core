@@ -259,10 +259,6 @@ class importDocumentDescription
                 case "PARAM":
                 case "OPTION":
                 case "ATTR":
-                    if (count($data) < 9) {
-                        $this->tcr[$this->nLine]["err"] = "Error in line $this->nLine: count($data) cols < 9";
-                        break;
-                    }
                 case "MODATTR":
                     $this->doAttr($data);
                     break;
@@ -659,9 +655,11 @@ class importDocumentDescription
     protected function doMethod(array $data)
     {
         if (!$this->doc) return;
+        $data = array_map("trim", $data);
+        
         $check = new CheckMethod();
-               $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
-               if ($this->tcr[$this->nLine]["err"]) return;
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
         $s1 = $data[1][0];
         if (($s1 == "+") || ($s1 == "*")) {
             if ($s1 == "*") $method = $data[1];

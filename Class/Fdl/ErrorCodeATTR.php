@@ -238,9 +238,19 @@ class ErrorCodeATTR
     const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute : %s';
     /**
      * the phpfunc method must be static if a classname is set
-     * @note exemple : myClass::myStaticMethod()
+     * @note example : myClass::myStaticMethod()
      */
     const ATTR1263 = 'method "%s" is not static phpfunc for "%s" attribute';
+    /**
+     * enum declaration must be a set of key value
+     * @note example : yellow|Yellow color,red|Red color
+     */
+    const ATTR1270 = 'syntax error in enum declaration near "%s"  for "%s" attribute';
+    /**
+     * the key must be a simple word without accent
+     * @note example : yellow|Yellow color,red|Red color
+     */
+    const ATTR1271 = 'key must not have accent characters in enum declaration "%s"  for "%s" attribute';
     /**
      * declaration of call constraint is not correct
      * @note example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
@@ -256,7 +266,7 @@ class ErrorCodeATTR
     const ATTR1402 = 'contraint method "%s" is not found for "%s" attribute';
     /**
      * the phpfunc method must be static if a classname is set
-     * @note exemple : myClass::myStaticMethod()
+     * @note example : myClass::myStaticMethod()
      */
     const ATTR1403 = 'method "%s" is not static phpfunc for "%s" attribute';
     /**
