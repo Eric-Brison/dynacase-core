@@ -104,7 +104,15 @@ class TestImportFamilyProperty extends TestCaseDcpDocument
                     //"CPRF0002",
                     
                 )
-            )
+            ),
+                        array(
+                            "PU_data_dcp_badfamprop6.ods",
+                            array(
+                                "MTHD0001",
+                                "MTHD0002",
+                                "Nothing"
+                            )
+                        )
         );
     }
 }

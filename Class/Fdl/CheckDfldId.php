@@ -13,9 +13,7 @@ class CheckDfldid extends CheckData
      */
     protected $doc;
     
-    protected $authorizedKeys = array(
-        "attributes"
-    );
+
     /**
      * @param array $data
      * @param Doc $doc

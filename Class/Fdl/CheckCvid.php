@@ -13,9 +13,7 @@ class CheckCvid extends CheckData
      */
     protected $doc;
     
-    protected $authorizedKeys = array(
-        "attributes"
-    );
+
     /**
      * @param array $data
      * @param Doc $doc
@@ -26,14 +24,14 @@ class CheckCvid extends CheckData
         
         $this->folderName = $data[1];
         $this->doc = $doc;
-        $this->checkSearch();
+        $this->checkCv();
         return $this;
     }
     /**
      * check id it is a search
      * @return void
      */
-    protected function checkSearch()
+    protected function checkCv()
     {
         if ($this->folderName) {
             $d = new_doc('', $this->folderName);

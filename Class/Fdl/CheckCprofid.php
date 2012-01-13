@@ -26,14 +26,14 @@ class CheckCprofid extends CheckData
         
         $this->folderName = $data[1];
         $this->doc = $doc;
-        $this->checkSearch();
+        $this->checkProfil();
         return $this;
     }
     /**
      * check id it is a search
      * @return void
      */
-    protected function checkSearch()
+    protected function checkProfil()
     {
         if ($this->folderName) {
             $d = new_doc('', $this->folderName);

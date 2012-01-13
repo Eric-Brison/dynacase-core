@@ -659,6 +659,9 @@ class importDocumentDescription
     protected function doMethod(array $data)
     {
         if (!$this->doc) return;
+        $check = new CheckMethod();
+               $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+               if ($this->tcr[$this->nLine]["err"]) return;
         $s1 = $data[1][0];
         if (($s1 == "+") || ($s1 == "*")) {
             if ($s1 == "*") $method = $data[1];
