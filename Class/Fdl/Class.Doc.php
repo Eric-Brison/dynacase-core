@@ -2223,7 +2223,7 @@ create unique index i_docir on doc(initid, revision);";
                 }
             } else {
                 foreach ($this->attributes->attr as $k => $v) {
-                    if (get_class($v) == "NormalAttribute") {
+                    if (get_class($v) == "NormalAttribute" && $v->usefor != 'Q') {
                         
                         if (($v->type != "array") && ($withfile || (($v->type != "image") && ($v->type != "file")))) $tsa[$v->id] = $v;
                     }
