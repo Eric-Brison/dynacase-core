@@ -723,6 +723,11 @@ class importDocumentDescription
     {
         
         if (!$this->doc) return;
+        $check = new CheckDefault();
+        $this->tcr[$this->nLine]["err"] = $check->check($data, $this->doc)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
+        
+        $attrid = trim(strtolower($data[1]));
         $defv = str_replace(array(
             '\n',
             ALTSEPCHAR
@@ -730,14 +735,14 @@ class importDocumentDescription
             "\n",
             SEPCHAR
         ) , $data[2]);
-        $this->doc->setDefValue($data[1], $defv);
+        $this->doc->setDefValue($attrid, $defv);
         $force = (str_replace(" ", "", trim(strtolower($data[3]))) == "force=yes");
-        if ($force || (!$this->doc->getParamValue($data[1]))) {
-            $this->doc->setParam($data[1], $defv);
+        if ($force || (!$this->doc->getParamValue($attrid))) {
+            $this->doc->setParam($attrid, $defv);
             $this->tcr[$this->nLine]["msg"] = "reset default parameter";
         }
         
-        $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s") , $data[1], $data[2]);
+        $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s") , $attrid, $data[2]);
     }
     /**
      * analyze ACCESS

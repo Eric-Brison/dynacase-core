@@ -39,7 +39,7 @@ class TestOooLayout extends TestCaseDcpDocument
     public static function tearDownAfterClass()
     {
         self::rollbackTransaction();
-        printf("\nResults for %s in file://%s\n", __CLASS__, self::$outputDir);
+        TestSuiteDcp::addMessage(sprintf("Results for %s in file://%s", __CLASS__, self::$outputDir));
     }
     
     protected function saveFileResult($file, $name)

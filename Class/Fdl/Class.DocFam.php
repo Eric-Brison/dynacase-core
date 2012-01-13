@@ -362,7 +362,7 @@ create unique index idx_idfam on docfam(id);";
         {
             $tval = "t$X";
             $defval = $this->$X;
-            
+            if (!$defval) return array();
             $tdefattr = explode("][", substr($defval, 1, strlen($defval) - 2));
             $this->$tval = array();
             
@@ -371,8 +371,7 @@ create unique index idx_idfam on docfam(id);";
                 
                 $aid = substr($v, 0, strpos($v, '|'));
                 $dval = substr(strstr($v, '|') , 1);
-                
-                $txval[$aid] = $dval;
+                if ($aid) $txval[$aid] = $dval;
             }
             $this->$tval = $txval;
             

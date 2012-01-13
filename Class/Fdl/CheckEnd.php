@@ -8,7 +8,7 @@
 class CheckEnd extends CheckData
 {
     /**
-     * @var Doc
+     * @var DocFam
      */
     protected $doc;
     /**
@@ -29,6 +29,7 @@ class CheckEnd extends CheckData
         
         $this->checkSetAttributes();
         $this->checkComputedConstraintAttributes();
+        $this->checkDefault();
         return $this;
     }
     
@@ -94,28 +95,64 @@ class CheckEnd extends CheckData
             $this->addError(ErrorCode::getError('ATTR1262', $oa->phpfunc, $oa->id, $error));
         } else {
             
-            $phpMethName = $strucFunc->methodName;
-            if ($strucFunc->className) {
-                $phpClassName = $strucFunc->className;
-            } else {
-                $phpClassName = sprintf("Doc%d", $this->doc->id);
+            $err = $this->verifyMethod($strucFunc, $oa);
+            if ($err) {
+                $this->addError($err);
+                $this->addError(ErrorCode::getError('ATTR1265', $this->doc->name, $err));
             }
-            $phpLongName = $strucFunc->className . '::' . $phpMethName;
-            try {
-                $refMeth = new ReflectionMethod($phpClassName, $phpMethName);
-                $numArgs = $refMeth->getNumberOfRequiredParameters();
-                if ($numArgs > count($strucFunc->inputs)) {
-                    $this->addError(ErrorCode::getError('ATTR1261', $phpLongName, $numArgs, $oa->id));
-                } else {
-                    if ($strucFunc->className && (!$refMeth->isStatic())) {
-                        $this->addError(ErrorCode::getError('ATTR1263', $phpLongName, $oa->id));
+        }
+    }
+    
+    private function checkDefault()
+    {
+        $defaults = $this->doc->getDefValues();
+        foreach ($defaults as $attrid => $def) {
+            /**
+             * @var $oa NormalAttribute
+             */
+            $oa = $this->doc->getAttribute($attrid);
+            if (!$oa) {
+                $this->addError(ErrorCode::getError('DFLT0005', $attrid, $this->doc->name));
+            } else {
+                $oParse = new parseFamilyMethod();
+                $strucFunc = $oParse->parse($def);
+                $error = $oParse->getError();
+                if (!$error) {
+                    
+                    $err = $this->verifyMethod($strucFunc, $oa);
+                    if ($err) {
+                        $this->addError(ErrorCode::getError('DFLT0004', $this->doc->name, $err));
                     }
                 }
             }
-            catch(Exception $e) {
-                $this->addError(ErrorCode::getError('ATTR1260', $phpLongName, $oa->id));
+        }
+    }
+    
+    private function verifyMethod($strucFunc, $oa)
+    {
+        $err = '';
+        $phpMethName = $strucFunc->methodName;
+        if ($strucFunc->className) {
+            $phpClassName = $strucFunc->className;
+        } else {
+            $phpClassName = sprintf("Doc%d", $this->doc->id);
+        }
+        $phpLongName = $strucFunc->className . '::' . $phpMethName;
+        try {
+            $refMeth = new ReflectionMethod($phpClassName, $phpMethName);
+            $numArgs = $refMeth->getNumberOfRequiredParameters();
+            if ($numArgs > count($strucFunc->inputs)) {
+                $err = (ErrorCode::getError('ATTR1261', $phpLongName, $numArgs, $oa->id));
+            } else {
+                if ($strucFunc->className && (!$refMeth->isStatic())) {
+                    $err = (ErrorCode::getError('ATTR1263', $phpLongName, $oa->id));
+                }
             }
         }
+        catch(Exception $e) {
+            $err = (ErrorCode::getError('ATTR1260', $phpLongName, $oa->id));
+        }
+        return $err;
     }
     /**
      * check method validity for constraint property

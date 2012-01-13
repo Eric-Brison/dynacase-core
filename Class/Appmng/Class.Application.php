@@ -115,6 +115,10 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @var Application
      */
     public $parent = null;
+    /**
+     * @var Session
+     */
+    public $session = null;
     
     public $param;
     public $permission = null; // permission object
@@ -405,7 +409,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $logmsg = $this->session->read("warningmsg", array());
                 $logmsg[] = str_replace("\n", "\\n", addslashes($code));
                 $this->session->register("warningmsg", $logmsg);
-            } else print "$code\n";
+            } else error_log("dcp warning: $code");
         }
     }
     function GetJsRef()

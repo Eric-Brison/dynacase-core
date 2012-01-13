@@ -490,7 +490,7 @@ class CheckAttr extends CheckData
      * @param string $attrid
      * @return bool
      */
-    private function checkAttrSyntax($attrid)
+    public static function checkAttrSyntax($attrid)
     {
         if (preg_match("/^[A-Z_0-9]{1,63}$/i", $attrid)) {
             return true;

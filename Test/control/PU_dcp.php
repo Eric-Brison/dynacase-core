@@ -19,6 +19,7 @@ require_once 'WHAT/autoload.php';
 class TestSuiteDcp
 {
     const logFile = "/var/tmp/pudcp.log";
+    const msgFile = "/var/tmp/pudcp.msg";
     public static function suite()
     {
         self::configure();
@@ -29,7 +30,7 @@ class TestSuiteDcp
         $suite->addTest(SuiteDcpUser::suite());
         $suite->addTest(SuiteDcpSecurity::suite());
         // ...
-        print "\nerror log in " . self::logFile . "\n";
+        printf("\nerror log in %s, messages in %s\n", self::logFile, self::msgFile);
         return $suite;
     }
     
@@ -37,12 +38,14 @@ class TestSuiteDcp
     {
         @unlink(self::logFile);
         ini_set("error_log", self::logFile);
+        file_put_contents(self::msgFile, strftime('%Y-%m-%d %T'));
     }
     
     public static function addMessage($msg)
     {
         static $msg = array();
         $msg[] = $msg;
+        file_put_contents(self::msgFile, $msg, FILE_APPEND);
     }
 }
 ?>

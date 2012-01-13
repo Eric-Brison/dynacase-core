@@ -235,7 +235,10 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_number3",
                     "ATTR1401",
                     "tst_number4",
-                    "ATTR1402"
+                    "ATTR1402",
+                    "DFLT0004",
+                    "DFLT0005",
+                    "tst_notfound"
                 )
             ) ,
             // method control in the end
@@ -263,6 +266,10 @@ class TestImportFamily extends TestCaseDcpDocument
                     "tst_badnenum",
                     "ATTR1271",
                     "tst_badkenum",
+                    "DFLT0001",
+                    "tst syntax",
+                    "DFLT0002",
+                    "DFLT0003",
                 )
             )
         );

@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 
 namespace PU;
 /**
@@ -10,7 +15,7 @@ require_once 'PU_testcase_dcp_action.php';
 
 class TestReport extends TestCaseDcpAction
 {
-
+    
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -21,23 +26,24 @@ class TestReport extends TestCaseDcpAction
         /*import twice : there links between documents*/
         self::importDocument("documents_rapport.csv");
     }
-
+    
     public function setUp()
     {
         // no call parent
         $this->setUpTestAction("FDL", "REPORT_EXPORT_CSV");
     }
-
+    
     public function tearDown()
     {
         $this->resetCurrentParameters();
         // no call parent
+        
     }
-
+    
     public static function tearDownAfterClass()
     {
-
-        printf( "\nResult data for %s written in file://%s.\n", __CLASS__, self::getOutputDir());
+        
+        TestSuiteDcp::addMessage(sprintf("\nResult data for %s written in file://%s.\n", __CLASS__, self::getOutputDir()));
         self::rollbackTransaction();
     }
     /**
@@ -48,9 +54,8 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
-        $this->assertEquals($this->readExampleFile("default_report.csv"), $csvContent);
+        $this->assertEquals($this->readExampleFile("default_report.csv") , $csvContent);
     }
-
     /**
      * Test report with kind pivot, and pivot == all_element_text
      */
@@ -61,9 +66,8 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('pivot', 'all_element_text');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
-        $this->assertEquals($this->readExampleFile("pivot_allelement_report.csv"), $csvContent);
+        $this->assertEquals($this->readExampleFile("pivot_allelement_report.csv") , $csvContent);
     }
-
     /**
      * Test report with custom CSV export
      */
@@ -75,9 +79,8 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('encoding', 'UTF-8');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
-        $this->assertEquals($this->readExampleFile("customCSV_report.csv"), $csvContent);
+        $this->assertEquals($this->readExampleFile("customCSV_report.csv") , $csvContent);
     }
-
     /**
      * Test report with custom date format
      */
@@ -86,14 +89,13 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('id', 'RAPPORT_4e6e2c77b36ed');
         $this->setCurrentParameters('dateFormat', 'ISO');
         $csvContent = $this->testAction->execute();
-        $this->saveReport(__METHOD__."_ISO", $csvContent);
-        $this->assertEquals($this->readExampleFile("dateISO_report.csv"), $csvContent);
+        $this->saveReport(__METHOD__ . "_ISO", $csvContent);
+        $this->assertEquals($this->readExampleFile("dateISO_report.csv") , $csvContent);
         $this->setCurrentParameters('dateFormat', 'FR');
         $csvContent = $this->testAction->execute();
-        $this->saveReport(__METHOD__."_FR", $csvContent);
-        $this->assertEquals($this->readExampleFile("dateFR_report.csv"), $csvContent);
+        $this->saveReport(__METHOD__ . "_FR", $csvContent);
+        $this->assertEquals($this->readExampleFile("dateFR_report.csv") , $csvContent);
     }
-
     /**
      * Test report with custom date format
      */
@@ -103,29 +105,31 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('decimalSeparator', '%');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__, $csvContent);
-        $this->assertEquals($this->readExampleFile("decimalSeparator_report.csv"), $csvContent);
+        $this->assertEquals($this->readExampleFile("decimalSeparator_report.csv") , $csvContent);
     }
-
+    
     private function readExampleFile($fileName)
     {
         $csvFile = 'DCPTEST/' . $fileName;
         $content = file_get_contents($csvFile);
         return $content;
     }
-
-    private static function getOutputDir() {
-        $tmpdir=getParam("CORE_TMPDIR", "/tmp/");
-        $subdir=$tmpdir."/PU_Report/";
-        if (! is_dir($subdir)) {
-            mkdir ($subdir);
+    
+    private static function getOutputDir()
+    {
+        $tmpdir = getParam("CORE_TMPDIR", "/tmp/");
+        $subdir = $tmpdir . "/PU_Report/";
+        if (!is_dir($subdir)) {
+            mkdir($subdir);
         }
         return $subdir;
     }
-
-    private function saveReport($testName, $content) {
+    
+    private function saveReport($testName, $content)
+    {
         $testName = str_replace(":", "_", $testName);
         $testName = str_replace('\\', "_", $testName);
-        $csvFile = sprintf('%s/csv_%s.csv', $this->getOutputDir() ,$testName);
+        $csvFile = sprintf('%s/csv_%s.csv', $this->getOutputDir() , $testName);
         $fp = fopen($csvFile, 'w');
         fwrite($fp, $content);
         fclose($fp);
