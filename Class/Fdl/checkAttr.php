@@ -372,7 +372,7 @@ class CheckAttr extends CheckData
     
     private function checkEnum()
     {
-        $phpFunc = trim($this->structAttr->phpfunc);
+        $phpFunc = $this->structAttr->phpfunc;
         $phpFile = trim($this->structAttr->phpfile);
         $type = $this->getType();
         if ((!$phpFile || $phpFile == '-') && $phpFunc && ($type == "enum")) {
@@ -383,11 +383,11 @@ class CheckAttr extends CheckData
             ) , '-', $phpFunc); // to replace dot & comma separators
             $topt = explode(",", $enums);
             foreach ($topt as $opt) {
-                list($optName, $optValue) = explode("|", $opt, 2);
-                if (!preg_match('/^[\x20-\x7E]+$/', $optName)) {
-                    $this->addError(ErrorCode::getError('ATTR1271', $optName, $this->attrid));
-                } else if ($optValue === null) {
-                    $this->addError(ErrorCode::getError('ATTR1270', $optName, $this->attrid));
+                list($enumKey, $enumLabel) = explode("|", $opt, 2);
+                if (!preg_match('/^[\x20-\x7E]+$/', $enumKey)) {
+                    $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
+                } else if ($enumLabel === null) {
+                    $this->addError(ErrorCode::getError('ATTR1270', $opt, $this->attrid));
                 }
             }
         }
@@ -575,7 +575,8 @@ class StructAttribute
     {
         $cid = 1;
         foreach ($this->dataOrder as $key) {
-            $this->$key = trim($data[$cid]);
+            if ($key == 'phpfunc') $this->$key = $data[$cid];
+            else $this->$key = trim($data[$cid]);
             $cid++;
         }
     }

@@ -84,7 +84,7 @@ create unique index idx_idfam on docfam(id);";
                 $this->attributes = new $adoc();
                 uasort($this->attributes->attr, "tordered");
             } else {
-                throw new Exception(sprintf("cannot access attribute definition for %s family", $this->id));
+                throw new Exception(sprintf("cannot access attribute definition for %s (#%s) family", $this->name, $this->id));
             }
         }
     }

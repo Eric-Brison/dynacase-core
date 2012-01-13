@@ -12,11 +12,15 @@
 class ErrorCodeWID
 {
     /**
-     * folder reference must be reference existing workflow
+     *  WID reference must be reference existing workflow
      */
-    const WID0001 = 'WID "%s" workflow is not found in attribute "%s"';
+    const WID0001 = 'WID "%s" workflow is not found in family "%s"';
     /**
-     * folder reference must be a workflow document
+     *  WID reference must be a workflow document
      */
-    const WID0002 = 'WID "%s" is not a workflow in attribute "%s"';
+    const WID0002 = 'WID "%s" is not a workflow in family "%s"';
+    /**
+     *  error when try retrieve WID reference
+     */
+    const WID0003 = 'WID reference error : "%s" for family "%s"';
 }

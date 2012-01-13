@@ -308,7 +308,7 @@ class importDocumentDescription
         try {
             $this->doc = null;
             $check = new CheckBegin();
-            $err = $check->check($data, $this->doc)->getErrors();
+            $err = $check->check($data)->getErrors();
             if ($err == "") {
                 if (($data[3] == "") || ($data[3] == "-")) $this->doc = new DocFam($this->dbaccess, getFamIdFromName($this->dbaccess, $data[5]) , '', 0, false);
                 else $this->doc = new DocFam($this->dbaccess, $data[3], '', 0, false);
@@ -343,7 +343,6 @@ class importDocumentDescription
                 if ($data[5] && ($data[5] != '-')) $this->doc->name = $data[5]; // internal name
                 $this->tcr[$this->nLine]["err"].= $err;
                 
-                $this->tcr[$this->nLine]["err"].= $check->check($data, $this->doc)->getErrors();
                 if ($this->reinit) {
                     $this->tcr[$this->nLine]["msg"].= sprintf(_("reinit all attributes"));
                     if ($this->analyze) return;

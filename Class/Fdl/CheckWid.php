@@ -12,8 +12,6 @@ class CheckWid extends CheckData
      * @var Doc
      */
     protected $doc;
-    
-
     /**
      * @param array $data
      * @param Doc $doc
@@ -24,21 +22,26 @@ class CheckWid extends CheckData
         
         $this->folderName = $data[1];
         $this->doc = $doc;
-        $this->checkSearch();
+        $this->checkWorkflow();
         return $this;
     }
     /**
      * check id it is a search
      * @return void
      */
-    protected function checkSearch()
+    protected function checkWorkflow()
     {
         if ($this->folderName) {
-            $d = new_doc('', $this->folderName);
-            if (!$d->isAlive()) {
-                $this->addError(ErrorCode::getError('WID0001', $this->folderName, $this->doc->name));
-            } elseif (!is_a($d, "WDoc")) {
-                $this->addError(ErrorCode::getError('WID0002', $this->folderName, $this->doc->name));
+            try {
+                $d = new_doc('', $this->folderName);
+                if (!$d->isAlive()) {
+                    $this->addError(ErrorCode::getError('WID0001', $this->folderName, $this->doc->name));
+                } elseif (!is_a($d, "WDoc")) {
+                    $this->addError(ErrorCode::getError('WID0002', $this->folderName, $this->doc->name));
+                }
+            }
+            catch(Exception $e) {
+                $this->addError(ErrorCode::getError('WID0003', $e->getMessage() , $this->doc->name));
             }
         }
     }
