@@ -444,6 +444,7 @@ class importDocumentDescription
         );
         
         $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $this->colOrders[$fromid]);
+
         if ($this->tcr[$this->nLine]["err"] == "") $this->nbDoc++;
     }
     /**

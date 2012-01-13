@@ -30,7 +30,8 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestImportFamily');
         $suite->addTestSuite('PU\TestImportFamilyProperty');
         $suite->addTestSuite('PU\TestImportWorkflow');
-        $suite->addTestSuite('PU\TestImportDocument');
+        $suite->addTestSuite('PU\TestImportXmlDocuments');
+                $suite->addTestSuite('PU\TestImportDocuments');
         $suite->addTestSuite('PU\TestImportArchive');
         $suite->addTestSuite('PU\TestImportProfid');
         $suite->addTestSuite('PU\TestImportAccess');

@@ -61,6 +61,15 @@ function csvAddDoc($dbaccess, $data, $dirid = 10, $analyze = false, $ldir = '', 
     "title"
 ) , $prevalues = array() , $torder = array())
 {
+
+    $o=new importSingleDocument();
+    $o->setKey($tkey);
+    $o->setOrder($torder);
+    $o->analyzeOnly($analyze);
+    $o->setTargetDirectory($dirid);
+    $o->setFilePath($ldir);
+    return $o->import($data);
+
     // return structure
     $tcr = array(
         "err" => "",
