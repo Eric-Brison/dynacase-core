@@ -225,9 +225,9 @@ class ErrorCodeATTR
      */
     const ATTR1255 = 'no output is possible in method "%s"';
     /**
-     * call method in phpfunc propertyu must be defined in file method or in another class if precised
+     * call method in phpfunc property must be defined in file method or in another class if precised
      */
-    const ATTR1260 = 'method (phpfunc) "%s" is not found for "%s" attribute';
+    const ATTR1260 = 'method  "%s" is not found for "%s" attribute';
     /**
      * call method require more arguments
      */
@@ -241,6 +241,14 @@ class ErrorCodeATTR
      * @note example : myClass::myStaticMethod()
      */
     const ATTR1263 = 'method "%s" is not static phpfunc for "%s" attribute';
+    /**
+     * call method in phpfunc property must be defined in file method or in another class if precised
+     * @see ATTR1260
+     * @see ATTR1261
+     * @see ATTR1262
+     * @see ATTR1263
+     */
+    const ATTR1265 = 'phpfunc method error in "%s" family : %s';
     /**
      * enum declaration must be a set of key value
      * @note example : yellow|Yellow color,red|Red color
