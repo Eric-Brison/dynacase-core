@@ -14,6 +14,7 @@ class SuiteDcpSecurity
         $suite = new FrameworkDcp('Package');
         
         $suite->addTestSuite('PU\TestAccess');
+        $suite->addTestSuite('PU\TestDocControl');
         // ...
         return $suite;
     }

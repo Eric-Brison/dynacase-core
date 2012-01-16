@@ -164,6 +164,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         global $action;
         self::$user = $action->user;
         $action->user = $u;
+        self::resetDocumentCache();
     }
     /**
      * exit sudo
@@ -189,6 +190,10 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      */
     protected static function importDocument($file)
     {
+        if (is_array($file)) {
+            return self::importDocuments($file);
+        }
+
         $cr = array();
         global $action;
 
@@ -210,6 +215,20 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         $err = $oImport->getErrorMessage();
         if ($err) throw new \Exception($err);
         return;
+    }
+    /**
+     * Import multiple files specified as a array list
+     * @param array $fileList list of files to import
+     * @return void
+     */
+    protected static function importDocuments($fileList) {
+        if (!is_array($fileList)) {
+            return self::importDocument($fileList);
+        }
+
+        foreach ($fileList as $file) {
+            self::importDocument($file);
+        }
     }
     /**
      * Import CSV data
