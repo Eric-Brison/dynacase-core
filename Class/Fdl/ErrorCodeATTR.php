@@ -260,6 +260,11 @@ class ErrorCodeATTR
      */
     const ATTR1271 = 'key must not have accent characters in enum declaration "%s"  for "%s" attribute';
     /**
+     * the key must be a simple word without accent
+     * @note example : yellow|Yellow color,red|Red color
+     */
+    const ATTR1272 = 'key must not be empty in enum declaration "%s"  for "%s" attribute';
+    /**
      * declaration of call constraint is not correct
      * @note example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
      */

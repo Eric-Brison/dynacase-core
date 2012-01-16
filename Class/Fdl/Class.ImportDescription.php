@@ -129,6 +129,7 @@ class importDocumentDescription
             );
             $this->tcr[$this->nLine]["title"] = substr($data[0], 0, 10);
             $data[0] = trim($data[0]);
+            if ($data[12][0] == '|') print_r2('[' . $data[12] . ']' . $buffer . "\n");
             $this->beginLine = 0;
             switch ($data[0]) {
                     // -----------------------------------
@@ -444,7 +445,7 @@ class importDocumentDescription
         );
         
         $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $this->colOrders[$fromid]);
-
+        
         if ($this->tcr[$this->nLine]["err"] == "") $this->nbDoc++;
     }
     /**

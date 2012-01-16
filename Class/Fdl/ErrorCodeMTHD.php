@@ -14,9 +14,9 @@ class ErrorCodeMTHD
     /**
      * method file must exists in FDL directory
      */
-    const MTHD0001 = 'method file "%s" is not found in attribute "%s"';
+    const MTHD0001 = 'method file "%s" is not found in family "%s"';
     /**
-     * syntax error in method file.
+     * syntax error in method file. Use begin-method-ignore en end-method-ignore comment tag
      */
-    const MTHD0002 = 'error in method file "%s" in attribute "%s" : %s';
+    const MTHD0002 = 'error in method file "%s" in family "%s" : %s';
 }

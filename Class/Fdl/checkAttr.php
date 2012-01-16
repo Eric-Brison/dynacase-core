@@ -384,7 +384,9 @@ class CheckAttr extends CheckData
             $topt = explode(",", $enums);
             foreach ($topt as $opt) {
                 list($enumKey, $enumLabel) = explode("|", $opt, 2);
-                if (!preg_match('/^[\x20-\x7E]+$/', $enumKey)) {
+                if ($enumKey === '') {
+                    $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
+                } elseif (!preg_match('/^[\x20-\x7E]+$/', $enumKey)) {
                     $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
                 } else if ($enumLabel === null) {
                     $this->addError(ErrorCode::getError('ATTR1270', $opt, $this->attrid));
