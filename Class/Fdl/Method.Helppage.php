@@ -83,6 +83,28 @@ class _HELPPAGE extends Doc
         return $err;
     }
     /**
+     * Check 'view' control acl against the help_family family profile
+     * @param $aclname
+     * @return string non-empty string with error message when forbidden or empty string if allowed
+     */
+    public function Control($aclname)
+    {
+        $control = parent::Control($aclname);
+        
+        if ($control != '') {
+            return $control;
+        }
+        
+        if ($aclname == 'view') {
+            $famId = $this->getValue('HELP_FAMILY');
+            $fam = new_Doc($this->dbaccess, $famId);
+            if ($fam->isAlive()) {
+                return $fam->Control('view');
+            }
+        }
+        return '';
+    }
+    /**
      *
      * @return array
      */
