@@ -53,6 +53,13 @@ function startElementOds($parser, $name, $attrs)
     if ($name == "TEXT:P") {
         if (strlen($rows[$nrow][$ncol]) > 0) $rows[$nrow][$ncol].= '\n';
     }
+    if ($name == "TEXT:S" && $incell) {
+        $count = intval($attrs["TEXT:C"]);
+        if ($count < 1) {
+            $count = 1;
+        }
+        $celldata .= str_repeat(" ", $count);
+    }
 }
 
 function endElementOds($parser, $name)
