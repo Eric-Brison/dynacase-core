@@ -24,7 +24,7 @@ $nrow = 0;
 $ncol = 0;
 $rows = array();
 $colrepeat = 0;
-function startElement($parser, $name, $attrs)
+function startElementOds($parser, $name, $attrs)
 {
     global $rows, $nrow, $inrow, $incell, $ncol, $colrepeat, $celldata;
     if ($name == "TABLE:TABLE-ROW") {
@@ -55,7 +55,7 @@ function startElement($parser, $name, $attrs)
     }
 }
 
-function endElement($parser, $name)
+function endElementOds($parser, $name)
 {
     global $rows, $nrow, $inrow, $incell, $ncol, $colrepeat, $celldata;
     if ($name == "TABLE:TABLE-ROW") {
@@ -89,7 +89,7 @@ function endElement($parser, $name)
     }
 }
 
-function characterData($parser, $data)
+function characterDataOds($parser, $data)
 {
     global $rows, $nrow, $inrow, $incell, $ncol, $celldata;
     if ($inrow && $incell) {
@@ -106,8 +106,8 @@ function xmlcontent2csv($xmlcontent, &$fcsv)
     // Utilisons la gestion de casse, de maniere a etre surs de trouver la balise dans $map_array
     xml_parser_set_option($xml_parser, XML_OPTION_CASE_FOLDING, true);
     xml_parser_set_option($xml_parser, XML_OPTION_SKIP_WHITE, 0);
-    xml_set_element_handler($xml_parser, "startElement", "endElement");
-    xml_set_character_data_handler($xml_parser, "characterData");
+    xml_set_element_handler($xml_parser, "startElementOds", "endElementOds");
+    xml_set_character_data_handler($xml_parser, "characterDataOds");
     
     if (!xml_parse($xml_parser, $xmlcontent)) {
         return (sprintf("error XML : %s line %d", xml_error_string(xml_get_error_code($xml_parser)) , xml_get_current_line_number($xml_parser)));
