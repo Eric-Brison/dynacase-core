@@ -8,6 +8,7 @@
  * Errors code used to checking document's profil
  * @class ErrorCodePRFL
  * @brief List all error code for profil
+ * @see ErrorCode
  */
 class ErrorCodePRFL
 {

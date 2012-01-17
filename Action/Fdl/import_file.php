@@ -86,10 +86,13 @@ function AddImportLog($msg)
         print "\n$msg";
     }
 }
-
-function getOrder($orderdata)
+/**
+ * @param array $orderdata
+ * @return array
+ */
+function getOrder(array $orderdata)
 {
-    return array_map("trim", array_slice($orderdata, 4));
+    return array_map("strtolower", array_map("trim", array_slice($orderdata, 4)));
 }
 
 function AddVaultFile($dbaccess, $path, $analyze, &$vid)

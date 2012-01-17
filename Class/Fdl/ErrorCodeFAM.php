@@ -8,6 +8,7 @@
  * Errors code used to checking document's family definition
  * @class ErrorCodeFAM
  * @brief List all error code for BEGIN keyword
+ * @see ErrorCode
  */
 class ErrorCodeFAM
 {

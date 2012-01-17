@@ -8,6 +8,7 @@
  * Errors code used to checking METHOD keyword
  * @class ErrorCodeRESE
  * @brief List all error code for METHOD
+ * @see ErrorCode
  */
 class ErrorCodeMTHD
 {

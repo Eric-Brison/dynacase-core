@@ -8,6 +8,7 @@
  * Errors code used to checking CPRFID keyword
  * @class ErrorCodeRESE
  * @brief List all error code for CPRFID
+ * @see ErrorCode
  */
 class ErrorCodeCPRF
 {
