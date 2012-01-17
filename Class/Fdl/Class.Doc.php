@@ -523,6 +523,10 @@ class Doc extends DocCtrl
      */
     public $archiveid;
     /**
+     * @var string logical name family
+     */
+    public $fromname;
+    /**
      * identification of special views
      *
      * @var array

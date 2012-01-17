@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Doc.php");
 
-function setlogicalname(&$action)
+function setlogicalname(Action & $action)
 {
     
     $dbaccess = $action->GetParam("FREEDOM_DB");

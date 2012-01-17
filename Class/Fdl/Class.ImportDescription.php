@@ -20,7 +20,7 @@ include_once ("FDL/import_file.php");
 class importDocumentDescription
 {
     
-    private $dirid = 10;
+    private $dirid = 0;
     private $analyze = false;
     private $policy = "update";
     private $reinit = false;
@@ -435,6 +435,9 @@ class importDocumentDescription
      */
     protected function doDoc(array $data)
     {
+        $check = new CheckDoc();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
         // case of specific order
         if (is_numeric($data[1])) $fromid = $data[1];
         else $fromid = getFamIdFromName($this->dbaccess, $data[1]);
@@ -447,6 +450,9 @@ class importDocumentDescription
         $this->tcr[$this->nLine] = csvAddDoc($this->dbaccess, $data, $this->dirid, $this->analyze, '', $this->policy, $tk, array() , $this->colOrders[$fromid]);
         
         if ($this->tcr[$this->nLine]["err"] == "") $this->nbDoc++;
+        else {
+            $check->addError($this->tcr[$this->nLine]["err"]);
+        }
     }
     /**
      * analyze SEARCH

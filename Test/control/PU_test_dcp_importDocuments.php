@@ -41,12 +41,12 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             $err = $e->getMessage();
         }
         $this->assertEmpty($err, "import error detected $err");
-        $name=$docNames["famName"];
-            $t = getTDoc(self::$dbaccess, $name);
-            $this->assertArrayHasKey('id', $t, sprintf("cannot find %s document", $name));
-                foreach ($docNames["expectValue"] as $aid=>$expVal) {
-                    $this->assertEquals($expVal, $t[$aid]);
-                }
+        $name = $docNames["famName"];
+        $t = getTDoc(self::$dbaccess, $name);
+        $this->assertArrayHasKey('id', $t, sprintf("cannot find %s document", $name));
+        foreach ($docNames["expectValue"] as $aid => $expVal) {
+            $this->assertEquals($expVal, $t[$aid]);
+        }
     }
     /**
      * @dataProvider dataBadDocFiles
@@ -62,8 +62,6 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
         }
         catch(\Exception $e) {
             $err = $e->getMessage();
-
-                        print($err);// todo add error_log
         }
         $this->assertNotEmpty($err, "no import error detected");
         if (!is_array($expectedErrors)) $expectedErrors = array(
@@ -81,8 +79,11 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             array(
                 "file" => "PU_data_dcp_importdocgood1.ods",
                 "names" => array(
-                    "famName"=>"TST_GOOD1",
-                    "expectValue"=>array("tst_title"=>"Test1","tst_number"=>"20")
+                    "famName" => "TST_GOOD1",
+                    "expectValue" => array(
+                        "tst_title" => "Test1",
+                        "tst_number" => "20"
+                    )
                 )
             )
         );
@@ -94,7 +95,24 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
             array(
                 "file" => "PU_data_dcp_importdocbad1.ods",
                 "errors" => array(
-                    "DOC0001","tst_number"
+                    "DOC0100",
+                    "tst_number",
+                    "DOC0002",
+                    "NoFamily",
+                    "DOC0003",
+                    "Bad Family",
+                    "DOC0004",
+                    "DOC0005",
+                    "UNKNOWFAMILY",
+                    "DOC0006",
+                    "NotFamily",
+                    "Bad name",
+                    "DOC0008",
+                    "DIR",
+                    "DOC0201",
+                    "TST_BADINSERT",
+                    "DOC0202",
+                    "TST_UNKFOLDER"
                 )
             )
         );
