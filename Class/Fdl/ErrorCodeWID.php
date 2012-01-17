@@ -8,6 +8,7 @@
  * Errors code used to checking WIDID keyword
  * @class ErrorCodeRESE
  * @brief List all error code for WIDID
+ * @see ErrorCode
  */
 class ErrorCodeWID
 {

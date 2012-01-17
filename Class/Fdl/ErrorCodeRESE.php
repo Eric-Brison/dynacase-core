@@ -8,6 +8,7 @@
  * Errors code used to checking RESET keyword
  * @class ErrorCodeRESE
  * @brief List all error code for RESET
+ * @see ErrorCode
  */
 class ErrorCodeRESE
 {

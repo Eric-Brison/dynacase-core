@@ -901,6 +901,9 @@ class importDocumentDescription
      */
     protected function doKeys(array $data)
     {
+        $check = new CheckKeys();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
         if (is_numeric($data[1])) $orfromid = $data[1];
         else $orfromid = getFamIdFromName($this->dbaccess, $data[1]);
         
@@ -919,7 +922,9 @@ class importDocumentDescription
      */
     protected function doOrder(array $data)
     {
-        
+        $check = new CheckOrder();
+        $this->tcr[$this->nLine]["err"] = $check->check($data)->getErrors();
+        if ($this->tcr[$this->nLine]["err"]) return;
         if (is_numeric($data[1])) $orfromid = $data[1];
         else $orfromid = getFamIdFromName($this->dbaccess, $data[1]);
         

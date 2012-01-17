@@ -113,6 +113,35 @@ class TestImportDocuments extends TestCaseDcpCommonFamily
                     "TST_BADINSERT",
                     "DOC0202",
                     "TST_UNKFOLDER"
+                ) ,
+            ) ,
+            array(
+                "file" => "PU_data_dcp_importdocbad2.ods",
+                "errors" => array(
+                    "ORDR0001",
+                    "ORDR0002",
+                    "TST_FOLDER1",
+                    "ORDR0003",
+                    "ORDR0006",
+                    "TST_FAMUNK",
+                    "ORDR0100",
+                    "tst_unknow"
+                )
+            ) ,
+            array(
+                "file" => "PU_data_dcp_importdocbad3.ods",
+                "errors" => array(
+                    "KEYS0001",
+                    "KEYS0002",
+                    "TST_FOLDER1",
+                    "KEYS0003",
+                    "KEYS0006",
+                    "TST_KEYFAMUNK",
+                    "KEYS0100",
+                    "tst_keyunknow",
+                    "KEYS0101",
+                    "KEYS0101",
+                    "KEYS0102"
                 )
             )
         );

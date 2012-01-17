@@ -11,7 +11,10 @@
  * @see ErrorCodeWFL workflow error codes
  * @see ErrorCodeACCS application access error codes
  * @see ErrorCodePRFL document's profil error codes
- * @see ErrorCodePRFD family profil errot codes
+ * @see ErrorCodePRFD family profil error codes
+ * @see ErrorCodeDOC document error codes
+ * @see ErrorCodeORDR order error codes
+ * @see ErrorCodeKEYS keys error codes
  *
  */
 class ErrorCode

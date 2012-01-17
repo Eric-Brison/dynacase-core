@@ -8,6 +8,7 @@
  * Errors code used when import document
  * @class ErrorCodeDOC
  * @brief List all error code for DOC
+ * @see ErrorCode
  */
 class ErrorCodeDOC
 {

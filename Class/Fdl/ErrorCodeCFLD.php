@@ -8,6 +8,7 @@
  * Errors code used to checking CFLDID keyword
  * @class ErrorCodeRESE
  * @brief List all error code for CFLDID
+ * @see ErrorCode
  */
 class ErrorCodeCFLD
 {
