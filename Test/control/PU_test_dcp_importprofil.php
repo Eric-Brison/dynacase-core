@@ -45,7 +45,7 @@ class TestImportProfil extends TestCaseDcpDocument
         catch(\Exception $e) {
             $err = $e->getMessage();
         }
-        $this->assertEmpty($err, sprintf("profil error detected %s", $err));
+        $this->assertEmpty($err, sprintf("profil error detected : %s", $err));
     }
     
     public function dataBadFamilyFiles()

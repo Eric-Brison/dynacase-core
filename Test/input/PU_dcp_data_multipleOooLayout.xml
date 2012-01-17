@@ -4,21 +4,17 @@
         xsi:noNamespaceSchemaLocation="tst_ooolayout.xsd" title="Multiples" revision="0" modification-date="2011-02-28T13:44:41"
         version="" state="">
         <tst_multi>
-            <tst_dirs id="9,10,11">racine,import,Les familles</tst_dirs>
+            <tst_dirs id="9,11">racine,Les familles</tst_dirs>
             <tst_colors>red
                 yellow
                 green</tst_colors>
             <tst_t_multi>
                 <tst_folder>un seul dossier : racine</tst_folder>
-                <tst_mdirs>racine</tst_mdirs>
+                <tst_mdirs>Racine</tst_mdirs>
             </tst_t_multi>
             <tst_t_multi>
-                <tst_folder>un seul dossier : import</tst_folder>
-                <tst_mdirs>import</tst_mdirs>
-            </tst_t_multi>
-            <tst_t_multi>
-                <tst_folder>trois dossiers: racine et import et les profils</tst_folder>
-                <tst_mdirs id="9,10,12">racine,import,Les profils</tst_mdirs>
+                <tst_folder>deux dossiers: racine et les profils</tst_folder>
+                <tst_mdirs id="9,12">racine,Les profils</tst_mdirs>
             </tst_t_multi>
         </tst_multi>
         <frame>

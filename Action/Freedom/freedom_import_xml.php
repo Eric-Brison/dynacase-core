@@ -313,7 +313,7 @@ function importXmlDocument($dbaccess, $xmlfile, &$log, $opt)
                             if ($item->nodeValue) {
                                 $afamid = $v->format;
                                 $id = getIdFromTitle($dbaccess, $item->nodeValue, $afamid);
-                                if (!$id) $msg.= sprintf(_("No identificator found for relation %s") . "\n", $v->id);
+                                if (!$id) $msg.= sprintf(_("No identificator found for relation '%s' %s in %s file") . "\n", $item->nodeValue, $v->id, $xmlfile);
                             }
                         }
                     }
