@@ -29,7 +29,7 @@ define("SEPCHAR", ';');
 function add_import_file(Action & $action, $fimport)
 {
     if (intval(ini_get("max_execution_time")) < 300) ini_set("max_execution_time", 300);
-    $dirid = GetHttpVars("dirid", 10); // directory to place imported doc
+    $dirid = GetHttpVars("dirid", 0); // directory to place imported doc
     $analyze = (GetHttpVars("analyze", "N") == "Y"); // just analyze
     $policy = GetHttpVars("policy", "update");
     $reinit = GetHttpVars("reinitattr");
@@ -57,7 +57,7 @@ function add_import_file(Action & $action, $fimport)
  * @global double Http var : Y if want double title document
  * @return array properties of document added (or analyzed to be added)
  */
-function csvAddDoc($dbaccess, $data, $dirid = 10, $analyze = false, $ldir = '', $policy = "add", $tkey = array(
+function csvAddDoc($dbaccess, $data, $dirid = 0, $analyze = false, $ldir = '', $policy = "add", $tkey = array(
     "title"
 ) , $prevalues = array() , $torder = array())
 {
@@ -70,7 +70,7 @@ function csvAddDoc($dbaccess, $data, $dirid = 10, $analyze = false, $ldir = '', 
     $o->setTargetDirectory($dirid);
     $o->setFilePath($ldir);
     if ($prevalues) $o->setPreValues($prevalues);
-    return $o->import($data);
+    return $o->import($data)->getImportResult();
 }
 
 function AddImportLog($msg)
