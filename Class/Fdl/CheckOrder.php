@@ -76,7 +76,7 @@ class CheckOrder extends CheckData
     {
         if ($this->family) {
             foreach ($this->attrIds as $aid) {
-                if (!$this->family->getAttribute($aid)) {
+                if ($aid && (!$this->family->getAttribute($aid))) {
                     $this->addError(ErrorCode::getError('ORDR0100', $aid, $this->family->name));
                 }
             }
