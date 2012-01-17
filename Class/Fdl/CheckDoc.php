@@ -50,16 +50,21 @@ class CheckDoc extends CheckData
             if (!$this->checkName($this->famName)) {
                 $this->addError(ErrorCode::getError('DOC0003', $this->famName, $this->specName));
             } else {
-                $f = new_doc(getDbAccess() , $this->famName);
-                if (!$f->isAlive()) {
-                    $this->addError(ErrorCode::getError('DOC0005', $this->famName, $this->specName));
-                } else {
-                    if ($f->doctype != 'C') {
-                        $this->addError(ErrorCode::getError('DOC0006', $this->famName, $this->specName));
+                try {
+                    $f = new_doc(getDbAccess() , $this->famName);
+                    if (!$f->isAlive()) {
+                        $this->addError(ErrorCode::getError('DOC0005', $this->famName, $this->specName));
                     } else {
-                        $canCreateError = $f->control('create');
-                        if ($canCreateError) $this->addError(ErrorCode::getError('DOC0007', $this->famName, $this->specName));
+                        if ($f->doctype != 'C') {
+                            $this->addError(ErrorCode::getError('DOC0006', $this->famName, $this->specName));
+                        } else {
+                            $canCreateError = $f->control('create');
+                            if ($canCreateError) $this->addError(ErrorCode::getError('DOC0007', $this->famName, $this->specName));
+                        }
                     }
+                }
+                catch(Exception $e) {
+                    $this->addError(ErrorCode::getError('DOC0010', $this->famName, $this->specName, $e->getMessage()));
                 }
             }
         } else {

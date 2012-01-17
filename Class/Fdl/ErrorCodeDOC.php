@@ -44,6 +44,10 @@ class ErrorCodeDOC
      */
     const DOC0009 = 'the document "%s" (family "%s") is fixed';
     /**
+     * the document cannot be imported because family is not completed
+     */
+    const DOC0010 = 'family error detected "%s" for the document "%s" : %s';
+    /**
      * error in setvalue when import document
      */
     const DOC0100 = 'setValue error "%s" for attribute "%s"';
