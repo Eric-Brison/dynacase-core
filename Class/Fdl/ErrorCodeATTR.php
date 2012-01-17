@@ -42,6 +42,29 @@ class ErrorCodeATTR
      */
     const ATTR0202 = 'attribute structure is same as attribute "%s"';
     /**
+     * Attribute structure must reference an attribute
+     */
+    const ATTR0203 = 'attribute structure reference is not an attribute for "%s"';
+    /**
+     * Attribute structure must compatible with level hierarchy
+     * @note a tab is upper everybody
+     * a frame must have only tab parent
+     * another attribute must have only frame parent or array parent
+     */
+    const ATTR0204 = 'attribute structure "%s" is not possible for "%s"';
+    /**
+     * Attribute structure must reference an frame or array attribute for normal attribute
+     */
+    const ATTR0205 = 'this attribute structure "%s" is not a allowed for normal attribute"%s"';
+    /**
+     * Attribute structure must be empty for tab attribute
+     */
+    const ATTR0206 = 'attribute structure "%s" is forbidden for a tab  attribute for "%s"';
+    /**
+     * Attribute structure must reference an frame or array attribute for normal attribute
+     */
+    const ATTR0207 = 'this attribute structure "%s" is not a allowed for frame attribute "%s"';
+    /**
      * Attribute isTitle is Y or N
      */
     const ATTR0400 = 'invalid value "%s" for isTitle in attribute "%s"';
@@ -89,6 +112,18 @@ class ErrorCodeATTR
      * The U visibility can be applied only on array attribute
      */
     const ATTR0802 = 'the U visibility is reserved to array, in attribute "%s"';
+    /**
+     * property isNeeded is Y or N
+     */
+    const ATTR0900 = 'invalid value "%s" for isNeeded in attribute "%s"';
+    /**
+     * property isNeeded must not be Y for structured attributes
+     */
+    const ATTR0901 = 'isNeeded cannot be set for structured attribute "%s"';
+    /**
+     * property isNeeded cannot be used when attribute is included in an array
+     */
+    const ATTR0902 = 'isNeeded cannot be set for  attribute included in array "%s"';
     /**
      * The input help file must exists before declared it
      */
@@ -190,9 +225,9 @@ class ErrorCodeATTR
      */
     const ATTR1255 = 'no output is possible in method "%s"';
     /**
-     * call method in phpfunc propertyu must be defined in file method or in another class if precised
+     * call method in phpfunc property must be defined in file method or in another class if precised
      */
-    const ATTR1260 = 'method (phpfunc) "%s" is not found for "%s" attribute';
+    const ATTR1260 = 'method  "%s" is not found for "%s" attribute';
     /**
      * call method require more arguments
      */
@@ -203,9 +238,32 @@ class ErrorCodeATTR
     const ATTR1262 = 'syntax error in method "%s" phpfunc for "%s" attribute : %s';
     /**
      * the phpfunc method must be static if a classname is set
-     * @note exemple : myClass::myStaticMethod()
+     * @note example : myClass::myStaticMethod()
      */
     const ATTR1263 = 'method "%s" is not static phpfunc for "%s" attribute';
+    /**
+     * call method in phpfunc property must be defined in file method or in another class if precised
+     * @see ATTR1260
+     * @see ATTR1261
+     * @see ATTR1262
+     * @see ATTR1263
+     */
+    const ATTR1265 = 'phpfunc method error in "%s" family : %s';
+    /**
+     * enum declaration must be a set of key value
+     * @note example : yellow|Yellow color,red|Red color
+     */
+    const ATTR1270 = 'syntax error in enum declaration near "%s"  for "%s" attribute';
+    /**
+     * the key must be a simple word without accent
+     * @note example : yellow|Yellow color,red|Red color
+     */
+    const ATTR1271 = 'key must not have accent characters in enum declaration "%s"  for "%s" attribute';
+    /**
+     * the key must be a simple word without accent
+     * @note example : yellow|Yellow color,red|Red color
+     */
+    const ATTR1272 = 'key must not be empty in enum declaration "%s"  for "%s" attribute';
     /**
      * declaration of call constraint is not correct
      * @note example : ::isInteger(MY_ATTR)  or myClass::isSpecial(MY_ATTR)
@@ -221,11 +279,15 @@ class ErrorCodeATTR
     const ATTR1402 = 'contraint method "%s" is not found for "%s" attribute';
     /**
      * the phpfunc method must be static if a classname is set
-     * @note exemple : myClass::myStaticMethod()
+     * @note example : myClass::myStaticMethod()
      */
     const ATTR1403 = 'method "%s" is not static phpfunc for "%s" attribute';
     /**
      * the constraint is not correct generally detected on inherited attributes
      */
     const ATTR1404 = 'syntax error in constraint "%s" for "%s" attribute : %s';
+    /**
+     * database type are incompatible with attribute type declaration
+     */
+    const ATTR1700 = 'database document column are erronous : %s';
 }

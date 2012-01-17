@@ -22,6 +22,7 @@
  */
 class BasicAttribute
 {
+    const hiddenFieldId = "FIELD_HIDDENS";
     public $id;
     public $docid;
     public $labelText;
@@ -40,7 +41,7 @@ class BasicAttribute
     /**
      * @var array
      */
-    protected $_topt = null;
+    public $_topt = null;
     /**
      * Construct a basic attribute
      *
@@ -197,7 +198,7 @@ class BasicAttribute
     function getTab()
     {
         if ($this->type == 'tab') return $this;
-        if ($this->fieldSet && ($this->fieldSet->id != 'FIELD_HIDDENS')) return $this->fieldSet->getTab();
+        if ($this->fieldSet && ($this->fieldSet->id != BasicAttribute::hiddenFieldId)) return $this->fieldSet->getTab();
         return false;
     }
     /**
@@ -1062,7 +1063,7 @@ class NormalAttribute extends BasicAttribute
                 if ($sphpfunc != "") {
                     $tenum = explode(",", $sphpfunc);
                     foreach ($tenum as $k => $v) {
-                        list($enumKey, $enumValue) = explode("|", $v);
+                        list($enumKey, $enumValue) = explode("|", $v, 2);
                         $treeKeys = explode(".", $enumKey);
                         $enumKey = trim($enumKey);
                         if (strlen($enumKey) == 0) $enumKey = " ";
@@ -1315,7 +1316,7 @@ class NormalAttribute extends BasicAttribute
             
             $lay->set("minOccurs", "0");
             $lay->set("maxOccurs", "1");
-            $lay->set("notop", ($this->fieldSet->id != '' && $this->fieldSet->id != 'FIELD_HIDDENS'));
+            $lay->set("notop", ($this->fieldSet->id != '' && $this->fieldSet->id != BasicAttribute::hiddenFieldId));
             $tax = array();
             foreach ($la as $k => $v) {
                 if ($v->fieldSet && $v->fieldSet->id == $this->id) {

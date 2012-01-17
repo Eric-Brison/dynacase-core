@@ -1248,7 +1248,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
          *
          * @param Layout $lay template of html input
          * @param Doc $doc current document in edition
-         * @param DocAttribute $oattr current attribute for input
+         * @param NormalAttribute $oattr current attribute for input
          * @param string $value value of the attribute to display (generaly the value comes from current document)
          * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
          * @param int $index current row number if it is in array ("" if it is not in array)

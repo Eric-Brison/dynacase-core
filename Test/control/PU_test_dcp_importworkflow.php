@@ -34,7 +34,7 @@ class TestImportWorkflow extends TestCaseDcpDocument
         }
     }
     /**
-     * test sql view create
+     * test import workflow
      * @dataProvider dataGoodFamilyFiles
      */
     public function testImportWorkflow($familyFile, $familyName)

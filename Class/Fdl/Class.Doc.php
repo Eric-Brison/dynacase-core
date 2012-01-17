@@ -523,6 +523,10 @@ class Doc extends DocCtrl
      */
     public $archiveid;
     /**
+     * @var string logical name family
+     */
+    public $fromname;
+    /**
      * identification of special views
      *
      * @var array
@@ -2084,7 +2088,7 @@ create unique index i_docir on doc(initid, revision);";
         $engine = strtolower($engine);
         $value = '';
         if (is_array($va)) return "";
-        
+        $err = '';
         if (getParam("TE_ACTIVATE") == "yes") {
             if (preg_match(PREGEXPFILE, $va, $reg)) {
                 $vidin = $reg[2];
@@ -2470,6 +2474,7 @@ create unique index i_docir on doc(initid, revision);";
         if ($a->type == "array") {
             $ta = $this->attributes->getArrayElements($a->id);
             $ti = array();
+            $ix = 0;
             // transpose
             foreach ($ta as $k => $v) {
                 $tv[$k] = $this->getTValue($k);
@@ -2527,6 +2532,7 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function completeArrayRow($idAttr)
     {
+        $err = '';
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
             $ta = $this->attributes->getArrayElements($a->id);
@@ -2970,7 +2976,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                     $vaultid = $reg[2];
                     $mimetype = $reg[1];
-                    
+                    $info = null;
                     $err = $vf->Retrieve($vaultid, $info);
                     
                     if ($err == "") {
@@ -3021,7 +3027,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (preg_match(PREGEXPFILE, $fvalue, $reg)) {
                     $vaultid = $reg[2];
                     $mimetype = $reg[1];
-                    
+                    $info = null;
                     $err = $vf->Retrieve($vaultid, $info);
                     
                     if ($err == "") {
@@ -3057,6 +3063,7 @@ create unique index i_docir on doc(initid, revision);";
                         $vaultid = $reg[2];
                         $mimetype = $reg[1];
                         $oftitle = $reg[3];
+                        $info = null;
                         $err = $vf->Retrieve($vaultid, $info);
                         
                         if ($err == "") {
@@ -3170,10 +3177,9 @@ create unique index i_docir on doc(initid, revision);";
                         if ($vf->Show($reg[2], $info) == "") {
                             $cible = $info->path;
                             if (file_exists($cible)) {
-                                if ($err == "") {
-                                    $vf->Rename($vid, $newname);
-                                    $this->setValue($idattr, $info->mime_s . '|' . $vid . '|' . $newname, $index);
-                                }
+                                
+                                $vf->Rename($vid, $newname);
+                                $this->setValue($idattr, $info->mime_s . '|' . $vid . '|' . $newname, $index);
                             }
                         }
                     }
@@ -3835,6 +3841,7 @@ create unique index i_docir on doc(initid, revision);";
          */
         final public function refreshUTags()
         {
+            $err = '';
             if (!$this->initid) return "";
             include_once ("FDL/Class.DocUTag.php");
             $q = new QueryDb($this->dbaccess, "docUTag");
@@ -4458,7 +4465,7 @@ create unique index i_docir on doc(initid, revision);";
                             )
                         ));
                         
-                        $this->delUTag("AFFECTED");
+                        $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
                         $this->addUTag($userid, "AFFECTED", $comment);
                         if ($autolock) $err = $this->lock(false, $userid);
                     }
@@ -4498,7 +4505,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($u->isAffected()) {
                     $err = $this->unlock();
                     if ($err == "") {
-                        $this->delUTag("AFFECTED");
+                        $this->delUTag($this->userid, "AFFECTED"); // TODO need delete all AFFECTED tag
                         if ($revision) $this->addRevision(sprintf(_("Unallocated of %s %s : %s") , $u->firstname, $u->lastname, $comment));
                         else $this->addComment(sprintf(_("Unallocated of %s %s: %s") , $u->firstname, $u->lastname, $comment));
                     }
@@ -5270,7 +5277,6 @@ create unique index i_docir on doc(initid, revision);";
                             foreach ($ta as $k => $v) {
                                 $tval[$k] = $this->getTValue($k);
                                 $nbitem = max($nbitem, count($tval[$k]));
-                                if ($emptyarray && ($this->getValue($k) != "")) $emptyarray = false;
                                 $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
                             }
                             // view values
@@ -6776,8 +6782,7 @@ create unique index i_docir on doc(initid, revision);";
                             
                             $this->lay->setBlockData("ANSWERS" . $wask->id, $t);
                             $this->lay->setBlockData("NOTANS" . $wask->id, $tna);
-                            if ($title != "") $title.= ', ';
-                            $title.= $wask->getTitle();
+                            $title = $wask->getTitle();
                             
                             $this->lay->set("asktitle", $title);
                             $tw[] = array(
@@ -7109,6 +7114,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                         } else {
                             // when modification
+                            global $action;
                             if (!$this->isAlive()) $action->ExitError(_("document not referenced"));
                             $this->lay->Set("title", $this->title);
                         }
@@ -7225,7 +7231,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $tableframe[$v]["atype"] = $attr->type;
                                     $tableframe[$v]["name"] = ucfirst($label);
                                     $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
-                                    //$tableframe[$v]["name"]=$action->text($label);
+                                    
                                     $tableframe[$v]["SINGLEROW"] = true;
                                     
                                     $vlabel = $listattr[$i]->getOption("vlabel");
@@ -7439,7 +7445,7 @@ create unique index i_docir on doc(initid, revision);";
                      */
                     public function exportXml(&$xml, $withfile = false, $outfile = "", $wident = true, $flat = false, $exportAttributes = array())
                     {
-                        
+                        $err = '';
                         $lay = new Layout(getLayoutFile("FDL", "exportxml.xml"));
                         //$lay=&$this->lay;
                         $lay->set("famname", strtolower($this->fromname));
@@ -7465,6 +7471,7 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($la as $k => $v) {
                             if ((!$v) || ($v->getOption("autotitle") == "yes") || ($v->usefor == 'Q')) unset($la[$k]);
                         }
+                        $option = new stdClass();
                         $option->withFile = $withfile;
                         $option->outFile = $outfile;
                         $option->withIdentificator = $wident;
@@ -8277,6 +8284,9 @@ create unique index i_docir on doc(initid, revision);";
                      */
                     final public function unattachAllTimers(&$origin = null)
                     {
+                        /**
+                         * @var $timer _TIMER
+                         */
                         $timer = createTmpDoc($this->dbaccess, "TIMER");
                         $err = $timer->unattachAllDocument($this, $origin, $c);
                         if ($err == "" && $c > 0) {

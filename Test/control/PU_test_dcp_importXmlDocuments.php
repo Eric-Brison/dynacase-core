@@ -14,7 +14,7 @@ namespace PU;
 
 require_once 'PU_testcase_dcp_commonfamily.php';
 
-class TestImportDocument extends TestCaseDcpCommonFamily
+class TestImportXmlDocuments extends TestCaseDcpCommonFamily
 {
     /**
      * import TST_FAMIMP1 family

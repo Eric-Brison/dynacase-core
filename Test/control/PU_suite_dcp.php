@@ -11,7 +11,7 @@ namespace PU;
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package DCP
  */
-
+require_once 'WHAT/autoload.php';
 class SuiteDcp
 {
     public static function suite()
@@ -28,8 +28,10 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestLink');
         $suite->addTestSuite('PU\TestSplitXmlDocument');
         $suite->addTestSuite('PU\TestImportFamily');
+        $suite->addTestSuite('PU\TestImportFamilyProperty');
         $suite->addTestSuite('PU\TestImportWorkflow');
-        $suite->addTestSuite('PU\TestImportDocument');
+        $suite->addTestSuite('PU\TestImportXmlDocuments');
+                $suite->addTestSuite('PU\TestImportDocuments');
         $suite->addTestSuite('PU\TestImportArchive');
         $suite->addTestSuite('PU\TestImportProfid');
         $suite->addTestSuite('PU\TestImportAccess');

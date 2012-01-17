@@ -70,7 +70,9 @@ function endElementOds($parser, $name)
         array_splice($rows[$nrow], $i + 1);
         $inrow = false;
     }
-    
+    if ($name == "TEXT:S") {
+        $celldata.= ' ';
+    }
     if ($name == "TABLE:TABLE-CELL") {
         $incell = false;
         

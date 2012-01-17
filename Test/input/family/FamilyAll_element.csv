@@ -1,7 +1,6 @@
 BEGIN;;all elements;;;ALL_ELEMENT;;;;;;;;;;;
 TYPE;C;;;;;;;;;;;;;;;
 ICON;all_element.png;;;;;;;;;;;;;;;
-DFLDID;Auto;;;;;;;;;;;;;;;
 //;idattr;idframe;label;T;A;type;ord;vis;need;link;phpfile;phpfunc;elink ;constraint ;option;Commentaires
 ATTR;ALL_ELEMENT_F_TAB;;tab;N;N;tab;1000;W;;;;;;;;
 ATTR;ALL_ELEMENT_FRAME;ALL_ELEMENT_F_TAB;frame;N;N;frame;1100;W;;;;;;;;

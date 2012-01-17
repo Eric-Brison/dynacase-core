@@ -171,8 +171,10 @@ class CheckAttr extends CheckData
         $this->checkVisibility();
         $this->checkIsAbstract();
         $this->checkIsTitle();
+        $this->checkIsNeeded();
         if ($this->checkPhpFile()) {
             $this->checkPhpFunctionOrMethod();
+            $this->checkEnum();
         }
         $this->checkPhpConstraint();
         $this->checkOptions();
@@ -218,6 +220,10 @@ class CheckAttr extends CheckData
         } elseif ($setId) {
             if (!$this->checkAttrSyntax($setId)) {
                 $this->addError(ErrorCode::getError('ATTR0200', $setId, $this->attrid));
+            } else {
+                if ($this->getType() == 'tab') {
+                    $this->addError(ErrorCode::getError('ATTR0206', $setId, $this->attrid));
+                }
             }
         }
     }
@@ -278,8 +284,11 @@ class CheckAttr extends CheckData
             }
         } elseif (!in_array($vis, $this->visibilities)) {
             $this->addError(ErrorCode::getError('ATTR0801', $vis, $this->attrid, implode(',', $this->visibilities)));
-        } elseif ($vis == "U" && ($this->getType() != "array")) {
-            $this->addError(ErrorCode::getError('ATTR0802', $this->attrid));
+        } else {
+            $type = $this->getType();
+            if ($vis == "U" && $type && ($type != "array")) {
+                $this->addError(ErrorCode::getError('ATTR0802', $this->attrid));
+            }
         }
     }
     
@@ -303,6 +312,18 @@ class CheckAttr extends CheckData
                 $this->addError(ErrorCode::getError('ATTR0400', $isTitle, $this->attrid));
             } elseif ($isTitle == 'y' && (!$this->isNodeHasValue())) {
                 $this->addError(ErrorCode::getError('ATTR0401', $this->attrid));
+            }
+        }
+    }
+    
+    private function checkIsNeeded()
+    {
+        $isNeeded = strtolower($this->structAttr->isneeded);
+        if ($isNeeded) {
+            if (!in_array($isNeeded, $this->yesno)) {
+                $this->addError(ErrorCode::getError('ATTR0900', $isNeeded, $this->attrid));
+            } elseif ($isNeeded == 'y' && (!$this->isNodeHasValue())) {
+                $this->addError(ErrorCode::getError('ATTR0901', $this->attrid));
             }
         }
     }
@@ -348,6 +369,32 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
+    private function checkEnum()
+    {
+        $phpFunc = $this->structAttr->phpfunc;
+        $phpFile = trim($this->structAttr->phpfile);
+        $type = $this->getType();
+        if ((!$phpFile || $phpFile == '-') && $phpFunc && ($type == "enum")) {
+            // parse static enum
+            $enums = str_replace(array(
+                "\\.",
+                "\\,"
+            ) , '-', $phpFunc); // to replace dot & comma separators
+            $topt = explode(",", $enums);
+            foreach ($topt as $opt) {
+                list($enumKey, $enumLabel) = explode("|", $opt, 2);
+                if ($enumKey === '') {
+                    $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
+                } elseif (!preg_match('/^[\x20-\x7E]+$/', $enumKey)) {
+                    $this->addError(ErrorCode::getError('ATTR1271', $opt, $this->attrid));
+                } else if ($enumLabel === null) {
+                    $this->addError(ErrorCode::getError('ATTR1270', $opt, $this->attrid));
+                }
+            }
+        }
+    }
+    
     private function checkPhpFunction()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
@@ -390,6 +437,7 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
     private function checkPhpMethod()
     {
         $phpFunc = trim($this->structAttr->phpfunc);
@@ -423,6 +471,7 @@ class CheckAttr extends CheckData
             }
         }
     }
+    
     private function checkOptions()
     {
         
@@ -443,7 +492,7 @@ class CheckAttr extends CheckData
      * @param string $attrid
      * @return bool
      */
-    private function checkAttrSyntax($attrid)
+    public static function checkAttrSyntax($attrid)
     {
         if (preg_match("/^[A-Z_0-9]{1,63}$/i", $attrid)) {
             return true;
@@ -528,7 +577,8 @@ class StructAttribute
     {
         $cid = 1;
         foreach ($this->dataOrder as $key) {
-            $this->$key = trim($data[$cid]);
+            if ($key == 'phpfunc') $this->$key = $data[$cid];
+            else $this->$key = trim($data[$cid]);
             $cid++;
         }
     }
