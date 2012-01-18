@@ -18,7 +18,7 @@ class ErrorCodeATTR
      */
     const ATTR0100 = 'syntax error for attribute "%s"';
     /**
-     * Attribute identificator can set as a reserved word postgresql reserved words
+     * Attribute identificator cannot be equal to a reserved postgresql word
      */
     const ATTR0101 = 'attribute identificator "%s" use a reserved word';
     /**
@@ -26,7 +26,7 @@ class ErrorCodeATTR
      */
     const ATTR0102 = 'attribute identificator is not set';
     /**
-     * Attribute identificator can set as a reserved word like doc properties
+     * Attribute identificator cannot be equal to a doc properties name
      */
     const ATTR0103 = 'attribute identificator "%s" use a property identificator';
     /**
@@ -47,13 +47,13 @@ class ErrorCodeATTR
     const ATTR0203 = 'attribute structure reference is not an attribute for "%s"';
     /**
      * Attribute structure must compatible with level hierarchy
-     * @note a tab is upper everybody
-     * a frame must have only tab parent
+     * @note a tab has no parent,
+     * a frame must have only tab parent,
      * another attribute must have only frame parent or array parent
      */
     const ATTR0204 = 'attribute structure "%s" is not possible for "%s"';
     /**
-     * Attribute structure must reference an frame or array attribute for normal attribute
+     * Attribute structure must reference a frame or array attribute for normal attribute
      */
     const ATTR0205 = 'this attribute structure "%s" is not a allowed for normal attribute"%s"';
     /**
@@ -61,7 +61,7 @@ class ErrorCodeATTR
      */
     const ATTR0206 = 'attribute structure "%s" is forbidden for a tab  attribute for "%s"';
     /**
-     * Attribute structure must reference an frame or array attribute for normal attribute
+     * Attribute structure must reference a tab attribute or nothing
      */
     const ATTR0207 = 'this attribute structure "%s" is not a allowed for frame attribute "%s"';
     /**
@@ -89,7 +89,8 @@ class ErrorCodeATTR
      */
     const ATTR0601 = 'unrecognized attribute type "%s" (attribute "%s"), type is one of %s';
     /**
-     * Attribute type is required
+     * a type is can be only a alpha characters
+     * @example text, double, money("%.02f $")
      */
     const ATTR0602 = 'syntax error for type "%s" in attribute "%s"';
     /**
@@ -97,7 +98,7 @@ class ErrorCodeATTR
      */
     const ATTR0700 = 'the order "%s" must be a number in attribute "%s"';
     /**
-     * The attribute's order is required on no-set attribute
+     * The attribute's order is required when  attribute is not a frame or a tab
      */
     const ATTR0702 = 'the order is required in attribute "%s"';
     /**
@@ -166,11 +167,11 @@ class ErrorCodeATTR
      */
     const ATTR1205 = 'simple quote syntax error (character %d) in function "%s"';
     /**
-     * output attributes must be declared after : characters
+     * output attributes must be declared after semicolumn characters
      * @note
      * example : test():MY_TEST1, MY_TEST2
      */
-    const ATTR1206 = 'no output attribute missing ":" character in function "%s"';
+    const ATTR1206 = 'no output attribute, missing ":" character in function "%s"';
     /**
      * output attributes must represent attribute name with a comma separator
      * @note
@@ -179,12 +180,10 @@ class ErrorCodeATTR
      */
     const ATTR1207 = 'outputs in function "%s" can be only alphanum characters ';
     /**
-     * output attributes must represent attribute name with a comma separator
-     * @note
-     *  example : MY_APP:my_test():MY_TEST1, MY_TEST2
-     *
+     * appname must be only alphanum characters
+     * @note when use special help as help input
      */
-    const ATTR1208 = 'appname in special help can be only alphanum characters ';
+    const ATTR1208 = 'appname in special help can be only alphanum characters';
     /**
      * input help can use only user function
      */
@@ -221,7 +220,7 @@ class ErrorCodeATTR
      */
     const ATTR1254 = 'only one output is possible in method "%s"';
     /**
-     * generally when in constraint attribute
+     * generally when it is in constraint attribute
      */
     const ATTR1255 = 'no output is possible in method "%s"';
     /**
@@ -255,12 +254,12 @@ class ErrorCodeATTR
      */
     const ATTR1270 = 'syntax error in enum declaration near "%s"  for "%s" attribute';
     /**
-     * the key must be a simple word without accent
+     * the enum key must be a simple word without accent
      * @note example : yellow|Yellow color,red|Red color
      */
     const ATTR1271 = 'key must not have accent characters in enum declaration "%s"  for "%s" attribute';
     /**
-     * the key must be a simple word without accent
+     * the enum key is required
      * @note example : yellow|Yellow color,red|Red color
      */
     const ATTR1272 = 'key must not be empty in enum declaration "%s"  for "%s" attribute';
