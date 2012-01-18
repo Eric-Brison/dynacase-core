@@ -288,11 +288,14 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
             $only = true;
             $famid = substr($famid, 1);
         }
-        
+
         if (!is_numeric($famid)) {
-            $famid = getFamIdFromName($dbaccess, $famid);
+            $famName = $famid;
+            $famid = getFamIdFromName($dbaccess, $famName);
+            if ($famid <= 0) {
+                return sprintf(_("family %s not found"), $famName);
+            }
         }
-        
         if ($name != "" && is_string($name)) {
             $name = pg_escape_string($name);
             $filter[] = "title ~* '$name'";
