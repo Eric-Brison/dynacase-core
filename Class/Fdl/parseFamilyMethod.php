@@ -12,18 +12,18 @@ class parseFamilyMethod extends parseFamilyFunction
     public $className = '';
     /**
      * @static
-     * @param $funcCall
+     * @param $methCall
      * @return parseFamilyMethod
      */
-    public function parse($funcCall, $noOut = false)
+    public function parse($methCall, $noOut = false)
     {
         
-        $this->initParse($funcCall);
+        $this->initParse($methCall);
         
-        $methodName = trim(substr($funcCall, 0, $this->firstParenthesis));
+        $methodName = trim(substr($methCall, 0, $this->firstParenthesis));
         if ($this->checkParenthesis()) {
             if (strpos($methodName, '::') === false) {
-                $this->setError(ErrorCode::getError('ATTR1251', $funcCall));
+                $this->setError(ErrorCode::getError('ATTR1251', $methCall));
             } else {
                 
                 list($className, $methodName) = explode('::', $methodName, 2);
@@ -35,7 +35,7 @@ class parseFamilyMethod extends parseFamilyFunction
                 } elseif ($className && (!$this->isPHPName($className))) {
                     $this->setError(ErrorCode::getError('ATTR1253', $className));
                 } else {
-                    $inputString = substr($funcCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
+                    $inputString = substr($methCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
                     $this->inputString = $inputString;
                     
                     $this->parseArguments();

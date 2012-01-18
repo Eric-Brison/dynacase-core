@@ -3399,13 +3399,19 @@ create unique index i_docir on doc(initid, revision);";
         {
             $value = $def;
             $err = '';
+            
             if (preg_match('/([^:]*)::([^\(]+)\(([^\)]*)\)/', $method, $reg)) {
-                $staticClass = $reg[1];
+                
+                $parseMethod = new parseFamilyMethod();
+                $parseMethod->parse($method);
+                $err = $parseMethod->getError();
+                if ($err) return $err;
+                
+                $staticClass = $parseMethod->className;
                 if (!$staticClass) $staticClass = $this;
-                $methodName = $reg[2];
-                $returnArgs = $reg[3];
+                $methodName = $parseMethod->methodName;
                 if (method_exists($staticClass, $methodName)) {
-                    if (($returnArgs == "") && (empty($bargs))) {
+                    if ((count($parseMethod->inputs) == 0) && (empty($bargs))) {
                         // without argument
                         $value = call_user_func(array(
                             $staticClass,
@@ -3413,58 +3419,39 @@ create unique index i_docir on doc(initid, revision);";
                         ));
                     } else {
                         // with argument
-                        //$args = explode(",", $reg[2]);
-                        $sargs = $returnArgs;
                         $args = array();
-                        $ak = 0;
-                        $bq = '';
-                        for ($i = 0; $i < strlen($sargs); $i++) {
-                            $c = $sargs[$i];
-                            
-                            if ($c == '"') {
-                                if ($bq == $c) $bq = '';
-                                else if (($bq == '') && (strlen(trim($args[$ak])) == 0)) {
-                                    $bq = $c;
-                                    $args[$ak] = "'";
-                                } else $args[$ak].= $c;
-                            } elseif ($c == ',') {
-                                if (!$bq) {
-                                    $args[$ak].= '';
-                                    $ak++;
+                        
+                        $inputs = $parseMethod->inputs;
+                        foreach ($bargs as $extraArg) {
+                            $inputs[] = new inputArgument($extraArg);
+                        }
+                        foreach ($parseMethod->inputs as $input) {
+                            $nextArg = null;
+                            if ($input->type == "string") {
+                                $nextArg = $input->name;
+                            } else {
+                                $mapped = $mapArgs[$input->name];
+                                if ($mapped) {
+                                    if (is_object($mapped)) $nextArg = & $mapArgs[$input->name];
+                                    else $nextArg = $mapArgs[$input->name];
+                                } elseif ($attr = $this->getAttribute($input->name)) {
+                                    if ($attr->inArray()) $nextArg = $this->getTValue($input->name, "", $index);
+                                    else $nextArg = $this->GetValue($input->name);
                                 } else {
-                                    $args[$ak].= $c;
-                                }
-                            } else {
-                                $args[$ak].= $c;
-                            }
-                        }
-                        
-                        if (count($bargs) > 0) $args = array_merge($bargs, $args);
-                        
-                        foreach ($args as $k => $v) {
-                            if ($v != " ") $v = trim($v);
-                            $mapped = $mapArgs[$v];
-                            if ($mapped) {
-                                if (is_object($mapped)) $args[$k] = & $mapArgs[$v];
-                                else $args[$k] = $mapArgs[$v];
-                            } elseif ($attr = $this->getAttribute($v)) {
-                                if ($attr->inArray()) $args[$k] = $this->getTValue($v, "", $index);
-                                else $args[$k] = $this->GetValue($v);
-                            } else {
-                                if ($v == 'THIS') {
-                                    $args[$k] = & $this;
-                                } elseif ($v == 'K') {
-                                    $args[$k] = $index;
-                                } elseif (($v[0] == "'") || ($v[0] == '"')) {
-                                    $lc = substr($v, -1);
-                                    if (($lc == "'") || ($lc == '"')) $v = substr($v, 1, -1);
-                                    else $v = substr($v, 1);
-                                    
-                                    $args[$k] = $v; // not an attribute just text
-                                    
+                                    if ($input->name == 'THIS') {
+                                        $nextArg = & $this;
+                                    } elseif ($input->name == 'K') {
+                                        $nextArg = $index;
+                                    } else {
+                                        
+                                        $nextArg = $input->name; // not an attribute just text
+                                        
+                                    }
                                 }
                             }
+                            $args[] = $nextArg;
                         }
+                        
                         $value = call_user_func_array(array(
                             $staticClass,
                             $methodName,

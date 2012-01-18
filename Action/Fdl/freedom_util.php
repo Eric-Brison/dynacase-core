@@ -248,6 +248,9 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
         $classname = "Doc" . $fromid;
         $GEN = getGen($dbaccess);
         include_once ("FDL$GEN/Class.$classname.php");
+        /**
+         * @var Doc $doc
+         */
         $doc = new $classname($dbaccess);
         
         $doc->revision = "0";
@@ -277,11 +280,12 @@ function createDoc($dbaccess, $fromid, $control = true, $defaultvalues = true, $
  * the create privilege is not tested in this case
  * @param string $dbaccess database specification
  * @param string $fromid identificator of the family document (the number or internal name)
+ * @param bool $defaultvalue set to false to not set default values
  * @return Doc may be return false if no hability to create the document
  */
-function createTmpDoc($dbaccess, $fromid)
+function createTmpDoc($dbaccess, $fromid, $defaultvalue = true)
 {
-    $d = createDoc($dbaccess, $fromid, false, true, true);
+    $d = createDoc($dbaccess, $fromid, false, $defaultvalue, true);
     if ($d) {
         $d->doctype = 'T'; // tag has temporary document
         $d->profid = 0; // no privilege

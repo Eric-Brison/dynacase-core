@@ -66,21 +66,21 @@ class parseFamilyFunction
     }
     /**
      * @static
-     * @param $funcCall
+     * @param $methCall
      * @return parseFamilyFunction
      */
-    public function parse($funcCall, $noOut = false)
+    public function parse($methCall, $noOut = false)
     {
         
-        $this->initParse($funcCall);
-        $funcName = trim(substr($funcCall, 0, $this->firstParenthesis));
+        $this->initParse($methCall);
+        $funcName = trim(substr($methCall, 0, $this->firstParenthesis));
         if (strpos($funcName, ':')) {
             list($appName, $funcName) = explode(':', $funcName, 2);
         } else $appName = '';
         
         if ($this->checkParenthesis()) {
             if ((!$noOut) && ($this->lastSemiColumn < $this->lastParenthesis)) {
-                $this->setError(ErrorCode::getError('ATTR1206', $funcCall));
+                $this->setError(ErrorCode::getError('ATTR1206', $methCall));
             } else {
                 
                 if (!$this->isPHPName($funcName)) {
@@ -90,7 +90,7 @@ class parseFamilyFunction
                 } else {
                     $this->functionName = $funcName;
                     $this->appName = $appName;
-                    $inputString = substr($funcCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
+                    $inputString = substr($methCall, $this->firstParenthesis + 1, ($this->lastParenthesis - $this->firstParenthesis - 1));
                     $this->inputString = $inputString;
                     
                     $this->parseArguments();
