@@ -51,6 +51,9 @@ class Action extends DbObj
     public $short_name;
     public $long_name;
     public $script;
+    /**
+     * @var string
+     */
     public $function;
     public $layout;
     public $available;
@@ -120,6 +123,23 @@ create sequence SEQ_ID_ACTION;
      * @var User
      */
     public $user;
+    /**
+     * current session
+     * @var Session
+     */
+    public $session;
+    /**
+     * @var string url to access action
+     */
+    public $url;
+    /**
+     * @var Authenticator|openAuthenticator
+     */
+    public $auth;
+    /**
+     * @var int inheritance level
+     */
+    public $level;
     /**
      * @var Layout
      */
@@ -192,6 +212,7 @@ create sequence SEQ_ID_ACTION;
         if (isset($this->session) && is_object($this->session)) {
             return ($this->session->Register($k, $v));
         }
+        return false;
     }
     
     function Unregister($k)
@@ -199,6 +220,7 @@ create sequence SEQ_ID_ACTION;
         if (is_object($this->session)) {
             return ($this->session->Unregister($k));
         }
+        return false;
     }
     
     function ActRead($k, $d = "")
@@ -222,11 +244,13 @@ create sequence SEQ_ID_ACTION;
         $msg_res = $this->exec_query("select nextval ('seq_id_action')");
         $arr = $this->fetch_array(0);
         $this->id = $arr["nextval"];
+        return '';
     }
     function PreUpdate()
     {
         if ($this->dbid == - 1) return FALSE;
         if ($this->Exists($this->name, $this->id_application, $this->id)) return "Action {$this->name} already exists...";
+        return '';
     }
     
     function GetParam($name, $def = "")
@@ -234,6 +258,7 @@ create sequence SEQ_ID_ACTION;
         if (isset($this->parent)) {
             return ($this->parent->GetParam($name, $def));
         }
+        return $def;
     }
     /**
      * set a new value for a user parameter
@@ -246,12 +271,14 @@ create sequence SEQ_ID_ACTION;
         if (isset($this->parent)) {
             return ($this->parent->setParamU($name, $val));
         }
+        return '';
     }
     function GetImageUrl($name, $detectstyle = true, $size = null)
     {
         if (isset($this->parent)) {
             return ($this->parent->GetImageUrl($name, $detectstyle, $size));
         }
+        return '';
     }
     
     function GetFilteredImageUrl($name)
@@ -259,6 +286,7 @@ create sequence SEQ_ID_ACTION;
         if (isset($this->parent)) {
             return ($this->parent->GetFilteredImageUrl($name));
         }
+        return '';
     }
     
     function GetImageFile($name)
@@ -266,6 +294,7 @@ create sequence SEQ_ID_ACTION;
         if (isset($this->parent)) {
             return ($this->parent->GetImageFile($name));
         }
+        return '';
     }
     
     function AddLogMsg($msg, $cut = 80)
@@ -273,6 +302,7 @@ create sequence SEQ_ID_ACTION;
         if (isset($this->parent)) {
             return ($this->parent->AddLogMsg($msg, $cut));
         }
+        return '';
     }
     
     function AddWarningMsg($msg)
@@ -280,6 +310,7 @@ create sequence SEQ_ID_ACTION;
         if (isset($this->parent)) {
             return ($this->parent->AddWarningMsg($msg));
         }
+        return '';
     }
     /**
      * store action done to be use in refreshing main window interface
@@ -330,6 +361,7 @@ create sequence SEQ_ID_ACTION;
     function GetLayoutFile($layname)
     {
         if (isset($this->parent)) return ($this->parent->GetLayoutFile($layname));
+        return '';
     }
     
     function Exists($name, $idapp, $id_func = '')
@@ -410,7 +442,7 @@ create sequence SEQ_ID_ACTION;
     function execute()
     {
         // If no parent set , it's a misconfiguration
-        if (!isset($this->parent)) return;
+        if (!isset($this->parent)) return '';
         
         if ($this->auth && $this->auth->parms["type"] == "open") {
             if ($this->openaccess != 'Y') {
@@ -589,7 +621,10 @@ create sequence SEQ_ID_ACTION;
                 "id_application = {$app->id}"
             );
             $list = $query->Query();
-            while (list($k, $act) = each($list)) {
+            /**
+             * @var Action $act
+             */
+            foreach ($list as $k => $act) {
                 $find = FALSE;
                 reset($action_desc);
                 while ((list($k2, $v2) = each($action_desc)) && (!$find)) {
@@ -602,6 +637,7 @@ create sequence SEQ_ID_ACTION;
                 }
             }
         }
+        return '';
     }
     /**
      * retrieve the value of an argument fot the action

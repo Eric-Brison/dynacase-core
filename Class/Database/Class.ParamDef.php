@@ -52,6 +52,13 @@ class ParamDef extends DbObj
         "descr",
         "kind"
     );
+    public $name;
+    public $isuser;
+    public $isstyle;
+    public $isglob;
+    public $appid;
+    public $descr;
+    public $kind;
     
     var $id_fields = array(
         "name"

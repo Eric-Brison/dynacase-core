@@ -50,7 +50,8 @@ include_once ("Class.SessionCache.php");
 
 class Session extends DbObj
 {
-    
+    const SESSION_CT_CLOSE = 2;
+    const SESSION_CT_ARGS = 3;
     var $fields = array(
         "id",
         "userid",
@@ -61,7 +62,11 @@ class Session extends DbObj
     var $id_fields = array(
         "id"
     );
-    
+    public $id;
+    public $userid;
+    public $name;
+    public $last_seen;
+    public $status;
     var $dbtable = "sessions";
     
     var $sqlcreate = "create table sessions ( id         varchar(100),
@@ -70,7 +75,7 @@ class Session extends DbObj
                         last_seen timestamp with time zone not null DEFAULT now() );
                   create unique index sessions_idx on sessions(id);
                   create index sessions_idx_name on sessions(name);
-                  create index sessions_idx_userid on sessions(userid)";
+                  create index sessions_idx_userid on sessions(userid);";
     
     var $isCacheble = false;
     var $sessiondb;
@@ -160,7 +165,7 @@ class Session extends DbObj
             setcookie($this->name, false, time() - 3600);
             $this->Delete();
         }
-        $this->status = $this->SESSION_CT_CLOSE;
+        $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
     /** 
@@ -169,7 +174,7 @@ class Session extends DbObj
     function CloseAll()
     {
         $this->exec_query("delete from sessions where name = '" . pg_escape_string($this->name) . "'");
-        $this->status = $this->SESSION_CT_CLOSE;
+        $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
     /** 
@@ -177,9 +182,9 @@ class Session extends DbObj
      */
     function CloseUsers($uid = - 1)
     {
-        if (!$uid > 0) return;
+        if (!$uid > 0) return '';
         $this->exec_query("delete from sessions where userid= '" . pg_escape_string($uid) . "'");
-        $this->status = $this->SESSION_CT_CLOSE;
+        $this->status = self::SESSION_CT_CLOSE;
         return $this->status;
     }
     
@@ -210,7 +215,7 @@ class Session extends DbObj
     {
         
         if ($k == "") {
-            $this->status = $this->SESSION_CT_ARGS;
+            $this->status = self::SESSION_CT_ARGS;
             return $this->status;
         }
         //      global $_SESSION;

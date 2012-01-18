@@ -379,7 +379,7 @@ function AttrToPhp($dbaccess, $tdoc)
         if ($doc->numrows() == 0) {
             $msg.= "Create table doc" . $docid . "\n";
             // create postgres table if new familly
-            $cdoc = createDoc($dbaccess, $docid);
+            $cdoc = createTmpDoc($dbaccess, $docid, false);
             $triggers = $cdoc->sqltrigger(false, true);
             $cdoc->exec_query($triggers, 1);
             // step by step
@@ -394,7 +394,6 @@ function AttrToPhp($dbaccess, $tdoc)
         $row = $doc->fetch_array(0, PGSQL_ASSOC);
         $relid = $row["oid"]; // pg id of the table
         // create view
-
         if ($docname != "") {
             $docname = strtolower($docname);
             $err = $doc->exec_query(sprintf("SELECT oid from pg_class where relname='%s' and relnamespace=(select oid from pg_namespace where nspname='family');", $docname));
@@ -429,8 +428,6 @@ function AttrToPhp($dbaccess, $tdoc)
         }
         // -----------------------------
         // add column attribute
-      
-        
         $qattr = new QueryDb($dbaccess, "DocAttr");
         $qattr->AddQuery("docid=" . $docid);
         $qattr->AddQuery("type != 'menu'");
@@ -516,8 +513,6 @@ function AttrToPhp($dbaccess, $tdoc)
             }
         }
         
-        
-        
         return $msg;
     }
     
@@ -544,7 +539,7 @@ function AttrToPhp($dbaccess, $tdoc)
     
     function activateTrigger($dbaccess, $docid)
     {
-        $cdoc = createTmpDoc($dbaccess, $docid);
+        $cdoc = createTmpDoc($dbaccess, $docid, false);
         $msg = $cdoc->exec_query($cdoc->sqltrigger(false, true) , 1);
         $sqlcmds = explode(";", $cdoc->SqlTrigger());
         //$cdoc = new_Doc($dbacceanss, $docid);
@@ -555,7 +550,7 @@ function AttrToPhp($dbaccess, $tdoc)
     }
     function setSqlIndex($dbaccess, $docid)
     {
-        $cdoc = createDoc($dbaccess, $docid);
+        $cdoc = createTmpDoc($dbaccess, $docid, false);
         $indexes = $cdoc->GetSqlIndex();
         if ($indexes) $msg = $cdoc->exec_query($indexes);
     }

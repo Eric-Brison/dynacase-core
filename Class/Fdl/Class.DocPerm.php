@@ -38,6 +38,13 @@ class DocPerm extends DbObj
         "docid",
         "userid"
     );
+    public $docid;
+    public $userid;
+    public $upacl;
+    public $unacl;
+    public $cacl;
+    public $uperm;
+    public $gacl;
     
     var $dbtable = "docperm";
     
@@ -69,6 +76,7 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
         if (($this->upacl == 0) && ($this->unacl == 0)) return "";
         if ($this->unacl === "") $this->unacl = "0";
         if ($this->cacl === "") $this->cacl = "0";
+        return '';
     }
     
     function preUpdate()

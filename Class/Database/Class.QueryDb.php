@@ -82,8 +82,14 @@ class QueryDb
     
     var $criteria = "";
     var $order_by = "";
+    public $operator;
+    public $string;
+    public $slice;
+    public $start;
+    public $desc;
+    public $res_type;
+    public $cindex;
     var $list = array();
-
     /**
      * @var DbObj
      */

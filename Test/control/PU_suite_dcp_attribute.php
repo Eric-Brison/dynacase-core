@@ -24,6 +24,7 @@ class SuiteDcpAttribute
         $suite->addTestSuite('PU\TestGetEnum');
         $suite->addTestSuite('PU\TestAttributeVisibility');
         $suite->addTestSuite('PU\TestAttributeValue');
+        $suite->addTestSuite('PU\TestAttributeDefault');
         // $suite->addTestSuite('PU\TestAutocompletion'); // This test requires a bootstrap.php with ob_start()
         // ...
         return $suite;

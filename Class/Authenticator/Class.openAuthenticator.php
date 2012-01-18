@@ -23,6 +23,7 @@ class openAuthenticator extends Authenticator
 {
     
     private $privatelogin = false;
+    public $token;
     /**
      * no need to ask authentication
      */

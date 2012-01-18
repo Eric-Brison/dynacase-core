@@ -75,7 +75,8 @@ class SessionConf extends DbObj
         "key",
         "val"
     );
-    
+    public $key;
+    public $val;
     var $id_fields = array(
         "key"
     );

@@ -120,6 +120,26 @@ class DocCtrl extends DocLDAP
         ) #  N_("view answers")
         
     );
+    /**
+     * @var int profil identificator
+     */
+    public $profid;
+    /**
+     * @var int dynamic profil identificator
+     */
+    public $dprofid;
+    /**
+     * @var int document identificator
+     */
+    public $id;
+    /**
+     * @var int user permission mask
+     */
+    public $uperm;
+    /**
+     * @var string  view control identificator
+     */
+    public $cvid;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -237,11 +257,14 @@ class DocCtrl extends DocLDAP
      */
     function computeDProfil($dprofid = 0, $fromdocidvalues = 0)
     {
+        $err = '';
         if ($this->id == 0) return '';
         if ($dprofid == 0) $dprofid = $this->dprofid;
         if ($dprofid <= 0) return '';
+        $perm = null;
         $vupacl = array();
         $vunacl = array();
+        $tnum = array();
         $pdoc = new_Doc($this->dbaccess, $dprofid);
         $pfamid = $pdoc->getValue("DPDOC_FAMID");
         if ($pfamid > 0) {
@@ -344,7 +367,7 @@ class DocCtrl extends DocLDAP
      */
     function modifyControl($uid, $aclname, $deletecontrol = false, $negativecontrol = false)
     {
-        
+        $err = '';
         if (!isset($this->dacls[$aclname])) {
             return sprintf(_("unknow privilege %s") , $aclname);
         }
