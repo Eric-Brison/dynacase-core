@@ -119,8 +119,21 @@ create sequence SEQ_ID_APPLICATION start 10;
      * @var Session
      */
     public $session = null;
-    
+    /**
+     * @var User
+     */
+    public $user = null;
+    /**
+     * @var Style
+     */
+    public $style;
+    /**
+     * @var Param
+     */
     public $param;
+    /**
+     * @var Permission
+     */
     public $permission = null; // permission object
     public $jsref = array();
     public $jscode = array();
@@ -179,7 +192,7 @@ create sequence SEQ_ID_APPLICATION start 10;
         }
         
         if ($session != "") $this->SetSession($session);
-        
+        $sessparam = false;
         $this->param = new Param($this->dbaccess);
         if ($this->session) $sessparam = $this->session->read("sessparam" . $this->id, false);
         if ($sessparam) {
@@ -197,6 +210,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             return sprintf(_("Application %s (%s) not available") , $this->name, _($this->short_name));
         }
         $this->permission = null;
+        return '';
     }
     
     function Complete()
@@ -227,12 +241,14 @@ create sequence SEQ_ID_APPLICATION start 10;
             $arr = $this->fetch_array(0);
             $this->id = $arr["nextval"];
         }
+        return '';
     }
     
     function PreUpdate()
     {
         if ($this->dbid == - 1) return FALSE;
         if ($this->Exists($this->name, $this->id)) return "Ce nom d'application existe deja...";
+        return '';
     }
     
     function Exists($app_name, $id_application = '')
@@ -265,7 +281,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     private function stripRootDir($pathname)
     {
         if (substr($pathname, 0, strlen($this->rootdir) - 1) == $this->rootdir) {
-            $pathname = substr($location, strlen($this->rootdir) + 1);
+            $pathname = substr($pathname, strlen($this->rootdir) + 1);
         }
         
         return $pathname;
@@ -902,6 +918,7 @@ create sequence SEQ_ID_APPLICATION start 10;
             $this->log->info("No {$name}/{$name}.app available");
             return false;
         }
+        return true;
     }
     
     function UpdateApp()
@@ -939,6 +956,9 @@ create sequence SEQ_ID_APPLICATION start 10;
         
         if ($query->nb > 0) {
             reset($list);
+            /**
+             * @var Action $v
+             */
             while (list($k, $v) = each($list)) {
                 $this->log->debug(" Delete action {$v->name} ");
                 $v->Delete();

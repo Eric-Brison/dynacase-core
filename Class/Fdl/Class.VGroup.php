@@ -35,6 +35,8 @@ class VGroup extends DbObj
         "id"
     );
     
+    public $id;
+    public $num;
     var $dbtable = "vgroup";
     
     var $order_by = "id";
@@ -42,7 +44,7 @@ class VGroup extends DbObj
     var $sqlcreate = "
 create table vgroup ( id  text primary key,
                       num int not null);
-create sequence seq_id_docvgroup start 1000000";
+create sequence seq_id_docvgroup start 1000000;";
     
     var $isCacheble = false;
     

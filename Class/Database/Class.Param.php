@@ -40,6 +40,10 @@ class Param extends DbObj
         "appid"
     );
     
+    public $name;
+    public $type;
+    public $appid;
+    public $val;
     var $dbtable = "paramv";
     
     var $sqlcreate = '

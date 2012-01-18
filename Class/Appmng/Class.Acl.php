@@ -35,7 +35,12 @@ class Acl extends DbObj
     var $id_fields = array(
         "id"
     );
-    
+    public $id;
+    public $id_application;
+    public $name;
+    public $grant_level;
+    public $description;
+    public $group_default;
     var $dbtable = "acl";
     
     var $sqlcreate = '
@@ -78,10 +83,12 @@ create sequence SEQ_ID_ACL;
         $msg_res = $this->exec_query("select nextval ('seq_id_acl')");
         $arr = $this->fetch_array(0);
         $this->id = $arr["nextval"];
+        return '';
     }
     function PreUpdate()
     {
         if ($this->dbid == - 1) return FALSE;
+        return '';
     }
     
     function Exists($name, $id_app)
@@ -103,7 +110,10 @@ create sequence SEQ_ID_ACL;
         );
         $list = $query->Query();
         if ($query->nb > 0) {
-            while (list($k, $v) = each($list)) {
+            /**
+             * @var Acl $v
+             */
+            foreach ($list as $v) {
                 $v->Delete();
             }
         }
@@ -125,6 +135,7 @@ create sequence SEQ_ID_ACL;
         // read init file
         $default_user_acl = array(); // default acl ids
         $default_acl = false; // to update default acl id
+        $smalestgrant = null;
         while (list($k, $tab) = each($app_acl)) {
             $acl = new Acl($this->dbaccess);
             if ($acl->Exists($tab["name"], $app->id)) {
@@ -228,6 +239,7 @@ create sequence SEQ_ID_ACL;
                 }
             }
         }
+        return '';
         // Remove unused Acl in case of update
         //   if ($update) {
         //     $query=new QueryDb($this->dbaccess,"Acl");

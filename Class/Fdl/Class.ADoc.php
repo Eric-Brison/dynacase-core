@@ -26,6 +26,7 @@ class ADoc
      * @var BasicAttribute[]
      */
     public $attr = array();
+    public $fromname = '';
     
     function __construct()
     {

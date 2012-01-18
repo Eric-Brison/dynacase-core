@@ -31,6 +31,13 @@ class Style extends DbObj
     var $id_fields = array(
         "name"
     );
+    public $name;
+    public $description;
+    public $parsable;
+    /**
+     * @var Application
+     */
+    public $parent;
     
     var $sqlcreate = "
     create table style (
@@ -44,12 +51,12 @@ class Style extends DbObj
     
     var $dbtable = "style";
     
-    function Set(&$parent)
+    function set(&$parent)
     {
         $this->parent = & $parent;
     }
     
-    function GetImageUrl($img, $default)
+    function getImageUrl($img, $default)
     {
         $root = $this->parent->Getparam("CORE_PUBDIR");
         
@@ -66,7 +73,7 @@ class Style extends DbObj
         }
     }
     
-    function GetLayoutFile($layname, $default = "")
+    function getLayoutFile($layname, $default = "")
     {
         $root = $this->parent->Getparam("CORE_PUBDIR");
         
