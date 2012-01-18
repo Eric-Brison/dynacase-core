@@ -83,7 +83,6 @@ class QueryDb
     var $criteria = "";
     var $order_by = "";
     var $list = array();
-
     /**
      * @var DbObj
      */
@@ -174,19 +173,23 @@ class QueryDb
         $this->LastQuery = $query;
         return $query;
     }
-
     /**
      * test CORE_QUERYPREPARE to know if can use prepare statement in queryDb
      * @static
      * @return bool
      */
-    static public function usePrepare() {
-
-        static $prepare=null;
-        if ($prepare===null) {
-            include_once('FDL/freedom_util.php');
-            simpleQuery(getDbAccess(),"select val from paramv where name='CORE_QUERYPREPARE' and type='G';",$sPrepare,true,true);
-            $prepare=($sPrepare!="no");
+    static public function usePrepare()
+    {
+        
+        static $prepare = null;
+        if ($prepare === null) {
+            include_once ('FDL/freedom_util.php');
+            $err = simpleQuery(getDbAccess() , "select val from paramv where name='CORE_QUERYPREPARE' and type='G';", $sPrepare, true, true);
+            if ($err != "") {
+                $prepare = false;
+            } else {
+                $prepare = ($sPrepare == "yes");
+            }
         }
         return $prepare;
     }
@@ -205,7 +208,7 @@ class QueryDb
         
         $query = $this->initQuery($start, $slice, $p_query);
         $this->res_type = $res_type;
-
+        
         $err = $this->basic_elem->exec_query($query, 0, $this->usePrepare());
         //	print "$query $res_type $p_query<BR>\n";
         if ($res_type == "ITER") {

@@ -84,7 +84,7 @@ class DbObj
     /**
      * @var ressource
      */
-    public $res = '';
+    public $res = null;
     /**
      * @var bool
      */
@@ -574,33 +574,40 @@ class DbObj
         $this->init_dbid();
         $this->log->debug("exec_query : $sql");
         
+        $this->res = null;
         $this->msg_err = '';
+        $this->err_code = '';
         
         if ($prepare) {
+            if (pg_send_prepare($this->dbid, '', $sql) === false) {
+                $this->msg_err = "Error preparing statement : " . pg_last_error($this->dbid);
+                error_log(__METHOD__ . " " . $this->msg_err);
+                return $this->msg_err;
+            }
+            $this->res = pg_get_result($this->dbid);
+            $this->msg_err = pg_result_error($this->res);
+            $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
             
-            if (@pg_prepare($this->dbid, '', $sql) === false) {
-                $this->msg_err = "Error prepare sending query : ";
-            } else {
+            if ($this->msg_err == "") {
                 if (pg_send_execute($this->dbid, '', array()) === false) {
-                    $this->msg_err = "Error execute sending query : ";
+                    $this->msg_err = "Error executing statement : " . pg_last_error($this->dbid);
+                    error_log(__METHOD__ . " " . $this->msg_err);
+                    return $this->msg_err;
                 }
+                $this->res = pg_get_result($this->dbid);
+                $this->msg_err = pg_result_error($this->res);
+                $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
             }
         } else {
             if (pg_send_query($this->dbid, $sql) === false) {
-                $this->msg_err = "Error sending query";
+                $this->msg_err = "Error sending query : " . pg_last_error($this->dbid);
+                error_log(__METHOD__ . " " . $this->msg_err);
+                return $this->msg_err;
             }
+            $this->res = pg_get_result($this->dbid);
+            $this->msg_err = pg_result_error($this->res);
+            $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
         }
-        
-        if ($this->msg_err) {
-            $this->msg_err.= pg_last_error();
-            error_log(__METHOD__ . $this->msg_err);
-            return $this->msg_err;
-        }
-        
-        $this->res = pg_get_result($this->dbid);
-        
-        $this->msg_err = pg_result_error($this->res);
-        $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
         
         if ($this->msg_err) error_log($this->msg_err);
         $action_needed = "";
