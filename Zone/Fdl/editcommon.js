@@ -2116,7 +2116,21 @@ function afterCloneBug(o1,o2) {
         ti2= o2.getElementsByTagName(itag[t]);
         for ( i=0; i< ti1.length; i++) {
             if ((ti1[i].type!='radio') || (!ti1[i].getAttribute('selector'))) {
-                setIValue(ti2[i],getIValue(ti1[i]));
+                if (ti1[i].tagName == 'TEXTAREA' && ti1[i].getAttribute('type') == 'htmltext') {
+                    /*
+                     * Use FCKeditorAPI for getting/setting text in HTML textareas
+                     */
+                    var fck1 = FCKeditorAPI.GetInstance(ti1[i].id);
+                    var value = (fck1) ? fck1.GetData('Text') : getIValue(ti1[i].id);
+                    var fck2 = FCKeditorAPI.GetInstance(ti2[i].id);
+                    if (fck2) {
+                        fck2.SetData(value);
+                    } else {
+                        setIValue(ti2[i], value);
+                    }
+                } else {
+                    setIValue(ti2[i], getIValue(ti1[i]));
+                }
             }
         }
     }
