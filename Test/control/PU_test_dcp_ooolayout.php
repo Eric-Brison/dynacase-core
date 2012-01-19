@@ -29,8 +29,9 @@ class TestOooLayout extends TestCaseDcpDocument
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$outputDir = uniqid(getTmpDir() . "/oootest-");
-        mkdir(self::$outputDir);
+        // self::$outputDir = uniqid(getTmpDir() . "/oootest-");
+        self::$outputDir = (getTmpDir() . "/oootest");
+        if (!is_dir(self::$outputDir)) mkdir(self::$outputDir);
         self::connectUser();
         self::beginTransaction();
         
@@ -79,6 +80,7 @@ class TestOooLayout extends TestCaseDcpDocument
                     "PU_dcp_data_simpleOooLayout.odt",
                     "PU_dcp_data_puceOooLayout.odt",
                     "PU_dcp_data_repeatMulti.odt",
+                    "PU_dcp_data_repeatOne.odt",
                     "PU_dcp_data_repeatOooLayout.odt",
                     "PU_dcp_data_rowOooLayout.odt",
                     "PU_dcp_data_ifOooLayout.odt"

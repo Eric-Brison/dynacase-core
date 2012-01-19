@@ -85,7 +85,20 @@ class Layout
     private $strip = 'Y';
     public $encoding = "";
     public $noparse = false; // return template without parse
-    
+    protected $corresp;
+    protected $data = null;
+    /**
+     * @var array
+     */
+    protected $rif = array();
+    /**
+     * @var array
+     */
+    protected $rkey = array();
+    /**
+     * @var array
+     */
+    protected $pkey = array();
     /**
      * @var array different par of original zone
      */
@@ -382,6 +395,7 @@ class Layout
         }
         if (!$onlylog) {
             // Add action notification messages
+            $actcode = $actarg = array();
             $this->action->getActionDone($actcode, $actarg);
             if (count($actcode) > 0) {
                 $out.= "var actcode=new Array();\n";
