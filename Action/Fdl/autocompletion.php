@@ -145,7 +145,7 @@ function autocompletion(&$action)
                 }
                 //make $filter safe to pass in a string for getResPhpFunc.
                 if (count($filter) == 0) $sfilter = serialize($filter);
-                $oattr->phpfunc = "lfamily(D,$famid,${linkprefix}${aname},0,$sfilter,'$idid):${cible}${aname},${linkprefix}${aname}";
+                $oattr->phpfunc = "lfamily(D,'$famid',${linkprefix}${aname},0,$sfilter,'$idid):${cible}${aname},${linkprefix}${aname}";
                 $oattr->phpfile = "fdl.php";
             } else {
                 //getDeclaration(D,ACOM_ENT_ID,ILINK_ACOM_DEPOTDECL):ACOM_DEPOTDECL,ILINK_ACOM_DEPOTDECL
