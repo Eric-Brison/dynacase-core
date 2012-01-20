@@ -377,7 +377,7 @@ function exportonedoc(&$doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopr
     reset($lattr);
     if ($doc->name != "") $name = $doc->name;
     else if ($wprof) {
-        $err = $doc->setNameAuto();
+        $err = $doc->setNameAuto(true);
         $name = $doc->name;
     } else if ($wident) $name = $doc->id;
     else $name = '';
