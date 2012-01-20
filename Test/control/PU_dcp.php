@@ -20,9 +20,11 @@ class TestSuiteDcp
 {
     const logFile = "/var/tmp/pudcp.log";
     const msgFile = "/var/tmp/pudcp.msg";
+    private static $allInProgress = false;
     public static function suite()
     {
         self::configure();
+        self::$allInProgress = true;
         $suite = new FrameworkDcp('Project');
         
         $suite->addTest(SuiteDcp::suite());
@@ -43,9 +45,12 @@ class TestSuiteDcp
     
     public static function addMessage($msg)
     {
-        static $msg = array();
-        $msg[] = $msg;
-        file_put_contents(self::msgFile, $msg, FILE_APPEND);
+        
+        if (!self::$allInProgress) {
+            print "$msg\n";
+        } else {
+            file_put_contents(self::msgFile, $msg, FILE_APPEND);
+        }
     }
 }
 ?>
