@@ -6281,14 +6281,20 @@ create unique index i_docir on doc(initid, revision);";
                  * set default name reference
                  * if no name a new name will ne computed from its initid and family name
                  * the new name is set to name attribute
-                 * @return string error messahe (empty means OK).
+                 * @param boolean $temporary compute a temporary logical name that will be deleted by the freedom_clean API
+                 * @return string error message (empty means OK).
                  */
-                final public function setNameAuto()
+                final public function setNameAuto($temporary = false)
                 {
+                    $err = '';
                     if (($this->name == "") && ($this->initid > 0)) {
                         $dfam = $this->getFamDoc();
                         if ($dfam->name == "") return sprintf("no family name %s", $dfam->id);
-                        $this->name = $dfam->name . '_' . $this->initid;
+                        if ($temporary) {
+                            $this->name = sprintf('TEMPORARY_%s_%s_%s', $dfam->name, $this->initid, uniqid());
+                        } else {
+                            $this->name = $dfam->name . '_' . $this->initid;
+                        }
                         $err = $this->modify(true, array(
                             "name"
                         ) , true);
