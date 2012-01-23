@@ -1,13 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
   <head>
 
    <title>[APP_TITLE]</title>
-      <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+      <meta http-equiv="X-UA-Compatible" content="IE=100" /> <!-- IE latest mode -->
    
-<link rel="icon" href="[DYNACASE_FAVICO]">
-<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
-<LINK REL="stylesheet" type="text/css" HREF="[CORE_SSTANDURL]app=FDL&action=ALLVIEWCSS&wv=[WVERSION]" >
+<link rel="icon" href="[DYNACASE_FAVICO]"/>
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]"/>
+<link rel="stylesheet" type="text/css" href="[CORE_SSTANDURL]app=FDL&amp;action=ALLVIEWCSS&amp;wv=[WVERSION]" />
 
 [CSS:REF]
 [JS:REF]
@@ -22,7 +22,7 @@
 }
 .iframecell {
   height:100%;
-  vertical-align:top;
+ /* vertical-align:top;*/
 }
 
 body.onefam {
@@ -140,17 +140,17 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
      class="onefamico"
      id="imgm[idcdoc]"
      alt="[ftitle]"
-     title="[ftitle]">
+     title="[ftitle]"/>
 [ENDBLOCK SELECTMASTER]
 
 [BLOCK CHOOSEMASTERFAMILIES]
-<BR style="clear:both">
+<br style="clear:both"/>
 <input style="float:left;width:[izpx]px"  type="button" value="+" 
        title="[TEXT:master choose families]" 
-       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITMASTERPREF')">
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&amp;app=[APPNAME]&amp;action=ONEFAM_EDITMASTERPREF')"/>
 [ENDBLOCK CHOOSEMASTERFAMILIES]
 [BLOCK SEPARATOR]
-<HR style="float:left;clear:both" width="100%">
+<hr style="float:left;clear:both" width="100%"/>
 [ENDBLOCK SEPARATOR]
 [BLOCK SELECTUSER]
 <img style="width:[izpx]px"
@@ -159,13 +159,13 @@ addEvent(window,'load',function zou() {openfirst('[openfam]');})
      onclick="if (ctrlPushed(event)) reloadiframe(event,this,'[idcdoc]'); else openiframe(event,this,'[idcdoc]');"
      class="onefamico"
      alt="[ftitle]"
-     title="[ftitle]">
+     title="[ftitle]"/>
 [ENDBLOCK SELECTUSER]
-<BR style="clear:both">
+<br style="clear:both"/>
 [BLOCK CHOOSEUSERFAMILIES]
 <input style="float:left;width:[izpx]px" type="button" value="+" 
        title="[TEXT:choose user families]" 
-       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&app=[APPNAME]&action=ONEFAM_EDITPREF')">
+       onclick="subwindow(250,350,'onepref','[CORE_STANDURL]&amp;app=[APPNAME]&amp;action=ONEFAM_EDITPREF')"/>
 [ENDBLOCK CHOOSEUSERFAMILIES]
 </td><td  class="iframecell" id="tdiframe"></td></tr></table>
 </body>
