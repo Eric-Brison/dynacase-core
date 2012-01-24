@@ -149,11 +149,27 @@ Fdl.Document.prototype = {
     },
     /**
      * Get value of a attribute
+     * If def is not set, the return value is null is attribute is empty or undefined if attribute not exists
+     * Else return def if value is empty
+     * <pre><code>
+ 		var d = C.getDocument( {
+			id : 9
+		});
+        if (d && d.isAlive()) {
+           var desc=d.getValue('ba_desc');
+        }
+     * </code></pre>
      * @param {String} id the attribute identificator
-     * @return {Any} return value of document
+     * @param {String} (optional) def the return value if value is empty
+     * @return {Any} return value of an attribute's document
      */
     getValue: function(id, def) {
     	var v=this._data.values[id];
+        if (v===undefined && def === undefined) {
+            var oa=this.getAttribute(id);
+            if (oa) return null;
+            else return undefined;
+        }
     	return ((v==null)?def:v);
     }, 
    
