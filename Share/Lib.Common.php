@@ -379,7 +379,12 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
         }
     } else $err = ErrorCode::getError('DB0102', $dbaccess, $err, $query);
     if ($err) {
-        error_log($err . implode(",", getDebugStack()));
+        
+        $st = getDebugStack(1);
+        foreach ($st as $k => $t) {
+            error_log(sprintf('%d) %s:%s %s::%s()', $k, $t["file"], $t["line"], $t["class"], $t["function"]));
+        }
+        error_log($err);
         if ($useStrict !== false) {
             if ($sqlStrict === null) $sqlStrict = (getParam("CORE_SQLSTRICT") != "no");
             if ($useStrict === true || $sqlStrict) {
