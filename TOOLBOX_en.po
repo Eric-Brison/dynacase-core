@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-05 15:06+0100\n"
+"POT-Creation-Date: 2012-01-25 18:04+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -14,9 +14,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
-
-msgid " 0 means no delay"
-msgstr ""
 
 msgid " Access Control for"
 msgstr ""
@@ -484,12 +481,6 @@ msgstr ""
 msgid "Access Path Folder List"
 msgstr "Delete"
 
-msgid "Access To All Users"
-msgstr ""
-
-msgid "Access To All Users in my domain"
-msgstr ""
-
 msgid "Access To Generic Management"
 msgstr ""
 
@@ -872,6 +863,18 @@ msgid "CSV Import Users"
 msgstr "Import"
 
 msgid "CSV specification file"
+msgstr ""
+
+#, c-format
+msgid "CVID : %s"
+msgstr ""
+
+#, c-format
+msgid "CVID : view control '%s' is not a view control"
+msgstr ""
+
+#, c-format
+msgid "CVID : view control '%s' not found"
 msgstr ""
 
 msgid "Call method"
@@ -2541,7 +2544,7 @@ msgid "No identificator"
 msgstr ""
 
 #, c-format
-msgid "No identificator found for relation %s"
+msgid "No identificator found for relation '%s' %s in %s file"
 msgstr ""
 
 #, fuzzy
@@ -2568,9 +2571,6 @@ msgstr ""
 #, fuzzy
 msgid "Normal view"
 msgstr "Category"
-
-msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr ""
 
 #, c-format
 msgid "Not a family [%s]"
@@ -3679,9 +3679,6 @@ msgstr ""
 msgid "What Application Management"
 msgstr ""
 
-msgid "What User Management"
-msgstr ""
-
 msgid "With Activity"
 msgstr ""
 
@@ -3876,10 +3873,6 @@ msgstr ""
 "Function"
 
 #, fuzzy
-msgid "active user"
-msgstr "User List"
-
-#, fuzzy
 msgid "add"
 msgstr "Add new contact card"
 
@@ -4031,12 +4024,6 @@ msgstr "Identity"
 
 msgid "addstyle"
 msgstr "New style"
-
-msgid "adduser"
-msgstr "New user"
-
-msgid "admin view"
-msgstr ""
 
 msgid "affect auto lock"
 msgstr ""
@@ -4431,10 +4418,6 @@ msgstr "Category"
 msgid "cannot compare two document which comes from two different family"
 msgstr ""
 
-#, c-format
-msgid "cannot connect to %s"
-msgstr ""
-
 msgid "cannot contact server"
 msgstr ""
 
@@ -4458,6 +4441,10 @@ msgstr ""
 
 #, c-format
 msgid "cannot create document for family [%s]"
+msgstr ""
+
+#, c-format
+msgid "cannot create from family [%s]"
 msgstr ""
 
 #, c-format
@@ -4702,9 +4689,6 @@ msgstr ""
 msgid "changed"
 msgstr ""
 
-msgid "changegroup"
-msgstr "Group Change"
-
 #, fuzzy
 msgid "changes"
 msgstr "Start search"
@@ -4740,10 +4724,6 @@ msgstr "Start search"
 #, fuzzy
 msgid "choose workflow"
 msgstr "Delete"
-
-#, fuzzy
-msgid "clear"
-msgstr "Close"
 
 msgid "clear containt of a folder"
 msgstr ""
@@ -5242,9 +5222,6 @@ msgstr "Delete"
 msgid "delete user parameters"
 msgstr "Add parameter"
 
-msgid "desactived user"
-msgstr ""
-
 #, fuzzy
 msgid "descr"
 msgstr "Description"
@@ -5464,14 +5441,8 @@ msgstr "Import"
 msgid "documents to examine"
 msgstr "Import"
 
-msgid "domain"
-msgstr "Domain"
-
 msgid "domain locked"
 msgstr ""
-
-msgid "domaingroup"
-msgstr "Domain"
 
 msgid "done\n"
 msgstr ""
@@ -5720,9 +5691,6 @@ msgstr "Can't create Application"
 msgid "err_add_param"
 msgstr "Can't create parameter"
 
-msgid "err_add_user"
-msgstr "Can't create user"
-
 msgid "err_mod_action"
 msgstr "Can't modify action"
 
@@ -5928,20 +5896,6 @@ msgstr ""
 msgid "expand folder tree"
 msgstr "Delete"
 
-#, fuzzy
-msgid "expire date"
-msgstr "Your login has expired"
-
-msgid "expire date format is not correct : will be set to default"
-msgstr ""
-
-msgid "expire default delay (in day)"
-msgstr ""
-
-#, fuzzy
-msgid "expires"
-msgstr "Your login has expired"
-
 #, c-format
 msgid "export Xml : cannot unzip %s : %s"
 msgstr ""
@@ -6109,9 +6063,6 @@ msgstr ""
 msgid "first family used"
 msgstr "Category"
 
-msgid "firstname"
-msgstr "Firstname"
-
 msgid "fixed"
 msgstr ""
 
@@ -6256,9 +6207,6 @@ msgstr "Edit"
 msgid "full phrase"
 msgstr ""
 
-msgid "fullname"
-msgstr "Username"
-
 #, fuzzy
 msgid "fulltext"
 msgstr "Start search"
@@ -6388,9 +6336,6 @@ msgstr ""
 msgid "goto latest specific ask"
 msgstr ""
 
-msgid "group"
-msgstr "Group"
-
 #, c-format
 msgid "group #%d does not exist"
 msgstr ""
@@ -6404,16 +6349,6 @@ msgstr ""
 
 msgid "group has not identificator"
 msgstr ""
-
-#, fuzzy
-msgid "group list"
-msgstr "Groups"
-
-msgid "groupdesc"
-msgstr "Description"
-
-msgid "groups"
-msgstr "Groups"
 
 msgid "height of the frame for abstract card"
 msgstr ""
@@ -6480,9 +6415,6 @@ msgid "identificator equal"
 msgstr ""
 
 msgid "identificator not equal"
-msgstr ""
-
-msgid "if not set, will be the current date more delay"
 msgstr ""
 
 msgid "if you want to change order of column"
@@ -6685,9 +6617,6 @@ msgstr ""
 msgid "last search text typed"
 msgstr ""
 
-msgid "lastname"
-msgstr "Lastname"
-
 msgid "level"
 msgstr ""
 
@@ -6727,9 +6656,6 @@ msgstr "Import"
 msgid "log file %s not writable"
 msgstr ""
 
-msgid "login"
-msgstr "Login name"
-
 msgid "login must not be empty"
 msgstr ""
 
@@ -6755,9 +6681,6 @@ msgstr ""
 #, fuzzy
 msgid "mail edition"
 msgstr "Edit"
-
-msgid "mail will be calculated from domain"
-msgstr ""
 
 msgid "mailstatus"
 msgstr ""
@@ -7270,10 +7193,6 @@ msgstr ""
 msgid "no login : passwd unchanged"
 msgstr ""
 
-#, fuzzy
-msgid "no mail"
-msgstr "Email"
-
 #, fuzzy, c-format
 msgid "no match for %s"
 msgstr "Modify"
@@ -7427,6 +7346,9 @@ msgstr "Modify"
 msgid "not equal"
 msgstr "Email"
 
+msgid "not in XML format"
+msgstr ""
+
 #, fuzzy
 msgid "not include"
 msgstr "Modify"
@@ -7445,6 +7367,9 @@ msgid "nothing action"
 msgstr ""
 
 msgid "nothing to add"
+msgstr ""
+
+msgid "nothing to export. Do export before"
 msgstr ""
 
 msgid "nothing to insert"
@@ -7585,9 +7510,6 @@ msgstr ""
 "<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a></"
 "p>"
 
-msgid "othergroup"
-msgstr "Others"
-
 msgid "others..."
 msgstr ""
 
@@ -7639,9 +7561,6 @@ msgstr ""
 #, c-format
 msgid "parse error config file %s : %s"
 msgstr ""
-
-msgid "password"
-msgstr "Password"
 
 msgid "password are not identicals : not changed"
 msgstr ""
@@ -7706,10 +7625,6 @@ msgstr "Import"
 
 #, fuzzy, c-format
 msgid "postit of %s"
-msgstr "Import"
-
-#, fuzzy, c-format
-msgid "pre-import:%s"
 msgstr "Import"
 
 #, fuzzy
@@ -8321,6 +8236,10 @@ msgid "set default folder to '%s'"
 msgstr "Delete"
 
 #, c-format
+msgid "set default view control to '%s'"
+msgstr ""
+
+#, c-format
 msgid "set default workflow to '%s'"
 msgstr ""
 
@@ -8362,10 +8281,6 @@ msgstr ""
 
 msgid "set user parameter"
 msgstr ""
-
-#, fuzzy, c-format
-msgid "set view control to '%s'"
-msgstr "Start search"
 
 msgid "setWaskAnswer::invalid parameters"
 msgstr ""
@@ -8452,6 +8367,9 @@ msgid "state"
 msgstr "Identity"
 
 msgid "static array"
+msgstr ""
+
+msgid "stop on sql error"
 msgstr ""
 
 msgid "string limit for popup enum"
@@ -8687,9 +8605,6 @@ msgstr ""
 msgid "the title of document [%s] is not conform to original [%s]"
 msgstr ""
 
-msgid "the user identification is unknow"
-msgstr ""
-
 #, fuzzy
 msgid "these needed attributes are empty"
 msgstr "Update Title Cards"
@@ -8698,6 +8613,9 @@ msgid "this groups must be refreshed"
 msgstr ""
 
 msgid "this kind of document cannot be duplicate"
+msgstr ""
+
+msgid "this login exists"
 msgstr ""
 
 msgid "this system user cannot be deleted"
@@ -8730,35 +8648,17 @@ msgstr "Add Application"
 msgid "titlecreateaction"
 msgstr "Add action"
 
-msgid "titlecreateg"
-msgstr "Add group"
-
-msgid "titlecreateu"
-msgstr "Add user"
-
-msgid "titlegroup"
-msgstr "Group List"
-
 msgid "titlemodify"
 msgstr "Modify Application"
 
 msgid "titlemodifyaction"
 msgstr "Modify action"
 
-msgid "titlemodifyg"
-msgstr "Modify group"
-
-msgid "titlemodifyu"
-msgstr "Modify user"
-
 msgid "titleparamcreate"
 msgstr "Add parameter"
 
 msgid "titleparammodify"
 msgstr "Modify parameter"
-
-msgid "titleuser"
-msgstr "User List"
 
 msgid "to"
 msgstr ""
@@ -8802,10 +8702,6 @@ msgid "today"
 msgstr "Identity"
 
 msgid "tomorrow"
-msgstr ""
-
-#, c-format
-msgid "too many similar document %s <B>ignored</B> "
 msgstr ""
 
 msgid "top url to find help documentation"
@@ -8963,6 +8859,9 @@ msgstr ""
 msgid "unselect"
 msgstr ""
 
+msgid "unset default view control"
+msgstr ""
+
 msgid "unset default workflow"
 msgstr ""
 
@@ -9085,13 +8984,6 @@ msgstr ""
 msgid "user %s not found"
 msgstr ""
 
-#, fuzzy
-msgid "user account edition"
-msgstr "Add parameter"
-
-msgid "user account modification"
-msgstr ""
-
 msgid "user has not identificator"
 msgstr ""
 
@@ -9102,12 +8994,6 @@ msgid "user not initialized"
 msgstr ""
 
 msgid "user not know"
-msgstr ""
-
-msgid "user own account edition"
-msgstr ""
-
-msgid "user own account modification"
 msgstr ""
 
 #, fuzzy
@@ -9126,10 +9012,6 @@ msgstr ""
 
 msgid "user ressource"
 msgstr ""
-
-#, fuzzy
-msgid "user status"
-msgstr "Login"
 
 msgid "usercard home page"
 msgstr ""
@@ -9549,5 +9431,105 @@ msgid "{left} title include {right}"
 msgstr ""
 
 #, fuzzy
+#~ msgid "active user"
+#~ msgstr "User List"
+
+#~ msgid "adduser"
+#~ msgstr "New user"
+
+#~ msgid "changegroup"
+#~ msgstr "Group Change"
+
+#, fuzzy
+#~ msgid "clear"
+#~ msgstr "Close"
+
+#~ msgid "domain"
+#~ msgstr "Domain"
+
+#~ msgid "domaingroup"
+#~ msgstr "Domain"
+
+#~ msgid "err_add_user"
+#~ msgstr "Can't create user"
+
+#, fuzzy
+#~ msgid "expire date"
+#~ msgstr "Your login has expired"
+
+#, fuzzy
+#~ msgid "expires"
+#~ msgstr "Your login has expired"
+
+#~ msgid "firstname"
+#~ msgstr "Firstname"
+
+#, fuzzy
 #~ msgid "full text search document"
 #~ msgstr "Start search"
+
+#~ msgid "fullname"
+#~ msgstr "Username"
+
+#~ msgid "group"
+#~ msgstr "Group"
+
+#, fuzzy
+#~ msgid "group list"
+#~ msgstr "Groups"
+
+#~ msgid "groupdesc"
+#~ msgstr "Description"
+
+#~ msgid "groups"
+#~ msgstr "Groups"
+
+#~ msgid "lastname"
+#~ msgstr "Lastname"
+
+#~ msgid "login"
+#~ msgstr "Login name"
+
+#, fuzzy
+#~ msgid "no mail"
+#~ msgstr "Email"
+
+#~ msgid "othergroup"
+#~ msgstr "Others"
+
+#~ msgid "password"
+#~ msgstr "Password"
+
+#, fuzzy
+#~ msgid "pre-import:%s"
+#~ msgstr "Import"
+
+#, fuzzy
+#~ msgid "set view control to '%s'"
+#~ msgstr "Start search"
+
+#~ msgid "titlecreateg"
+#~ msgstr "Add group"
+
+#~ msgid "titlecreateu"
+#~ msgstr "Add user"
+
+#~ msgid "titlegroup"
+#~ msgstr "Group List"
+
+#~ msgid "titlemodifyg"
+#~ msgstr "Modify group"
+
+#~ msgid "titlemodifyu"
+#~ msgstr "Modify user"
+
+#~ msgid "titleuser"
+#~ msgstr "User List"
+
+#, fuzzy
+#~ msgid "user account edition"
+#~ msgstr "Add parameter"
+
+#, fuzzy
+#~ msgid "user status"
+#~ msgstr "Login"

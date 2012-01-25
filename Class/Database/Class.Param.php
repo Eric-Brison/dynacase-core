@@ -63,6 +63,7 @@ class Param extends DbObj
         if (strpos($this->name, " ") != 0) {
             return _("Parameter name does not include spaces");
         }
+        return '';
     }
     function PostInit()
     {
@@ -140,10 +141,12 @@ class Param extends DbObj
         else $size = 'normal';
         $size = 'SIZE_' . strtoupper($size);
         $query = new QueryDb($this->dbaccess, "Param");
-        if ($userid) {
-            $list = $query->Query(0, 0, "TABLE", "select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where " . "(paramv.type = '" . PARAM_GLB . "') " . " OR (paramv.type='" . PARAM_APP . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $size . "')" . " order by paramv.name, paramv.type desc");
-        } else {
-            $list = $query->Query(0, 0, "TABLE", "SELECT * from paramv where type='G' or (type='A' and appid=$appid);");
+        if ($appid) {
+            if ($userid) {
+                $list = $query->Query(0, 0, "TABLE", "select distinct on(paramv.name) paramv.* from paramv left join paramdef on (paramv.name=paramdef.name) where " . "(paramv.type = '" . PARAM_GLB . "') " . " OR (paramv.type='" . PARAM_APP . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_USER . $userid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramv.appid=$appid)" . " OR (paramv.type='" . PARAM_STYLE . $styleid . "' and paramdef.isglob='Y')" . " OR (paramv.type='" . PARAM_STYLE . $size . "')" . " order by paramv.name, paramv.type desc");
+            } else {
+                $list = $query->Query(0, 0, "TABLE", sprintf("SELECT * from paramv where type='G' or (type='A' and appid=%d);", $appid));
+            }
         }
         $out = array();
         if ($query->nb != 0) {
@@ -209,6 +212,9 @@ class Param extends DbObj
         
         if ($query->nb != 0) {
             reset($list);
+            /**
+             * @var Param $v
+             */
             while (list($k, $v) = each($list)) {
                 $v->Delete();
                 if (isset($this->buffer[$v->name])) unset($this->buffer[$v->name]);

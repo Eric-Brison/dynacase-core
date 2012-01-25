@@ -51,4 +51,16 @@ class ErrorCodeDB
      * missing column on table
      */
     const DB0009 = 'no auto update for "%s" table';
+    /**
+     * simple query error
+     */
+    const DB0100 = 'simple query error "%s" for query "%s"';
+    /**
+     * database connection error
+     */
+    const DB0101 = 'cannot connect to "%s"';
+    /**
+     * simple query error connect
+     */
+    const DB0102 = 'cannot connect to "%s". Simple query error "%s" for query "%s"';
 }
