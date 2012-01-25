@@ -278,7 +278,7 @@ Ext.fdl.MultiDocumentPanel = Ext.extend(Ext.TabPanel, {
 			}
 
 			if(!document){
-				Ext.Msg.alert(me.context._("eui::missing right"),me.context._("eui::You have no right to access this document"));	
+				Ext.Msg.alert(me.context._("eui::missing right"),me.context._("eui::You cannot access to this document")+". <br/>\n"+this.context.getLastErrorMessage());
 				return;
 			}
 

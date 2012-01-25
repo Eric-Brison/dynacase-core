@@ -65,10 +65,14 @@ create index permission_idx4 on permission(computed);
     var $actions = array(); // actions array for a user (including group) in an application
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $computed = true)
     {
-        parent::__construct($dbaccess, $id, $res, $dbid);
+        if ($id && $id[0] && $id[1]) {
+            parent::__construct($dbaccess, $id, $res, $dbid);
+        } else {
+            parent::__construct($dbaccess, '', $res, $dbid);
+        }
         if (!$this->isAffected()) {
             
-            if (is_array($id)) {
+            if (is_array($id) && $id[0] && $id[1]) {
                 $this->Affect(array(
                     "id_user" => $id[0],
                     "id_application" => $id[1],

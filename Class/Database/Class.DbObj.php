@@ -52,6 +52,8 @@ class DbObj
      */
     var $dbtable = '';
     
+    public $id_fields;
+    
     var $criterias = array();
     /**
      * array of other SQL fields, not in attribute of object
@@ -73,6 +75,7 @@ class DbObj
      */
     var $isset = false; // indicate if fields has been affected (call affect methods)
     static $savepoint = array();
+    static $sqlStrict = null;
     /**
      * @var string error message
      */
@@ -89,6 +92,8 @@ class DbObj
      * @var bool
      */
     public $debug = false;
+    public $sqlcreate;
+    public $sqlinit;
     //----------------------------------------------------------------------------
     
     /** 
@@ -127,6 +132,9 @@ class DbObj
             $this->$v = "";
         }
         $this->selectstring = substr($this->selectstring, 0, strlen($this->selectstring) - 1);
+        if (self::$sqlStrict === null) {
+            self::$sqlStrict = (getParam('CORE_SQLSTRICT') != 'no');
+        }
         // select with the id
         if (($id != '') || (is_array($id)) || (!isset($this->id_fields[0]))) {
             $ret = $this->Select($id);
@@ -234,7 +242,7 @@ class DbObj
             return ("error : No Tables");
         }
         $fromstr = $this->dbtable;
-        
+        $w = array();
         foreach ($this->id_fields as $id) {
             $w[] = "($id = E'" . pg_escape_string($this->$id) . "') ";
         }
@@ -362,7 +370,7 @@ class DbObj
     function Add($nopost = false, $nopre = false)
     {
         if ($this->dbid == - 1) return FALSE;
-        
+        $msg = '';
         if (!$nopre) $msg = $this->PreInsert();
         if ($msg != '') return $msg;
         
@@ -384,7 +392,7 @@ class DbObj
         }
         $this->isset = true;
         if (!$nopost) $msg = $this->PostInsert();
-        if ($msg != '') return $msg;
+        return $msg;
     }
     /** 
      * Add the object to the database
@@ -440,7 +448,7 @@ class DbObj
         
         if (!$nopost) $msg = $this->PostUpdate();
         
-        if ($msg != '') return $msg;
+        return $msg;
     }
     
     function Delete($nopost = false)
@@ -468,7 +476,7 @@ class DbObj
         }
         
         if (!$nopost) $msg = $this->PostDelete();
-        if ($msg != '') return $msg;
+        return $msg;
     }
     /** 
      * Add several objects to the database
@@ -482,7 +490,7 @@ class DbObj
     {
         if ($this->dbid == - 1) return FALSE;
         if (!is_array($tcopy)) return FALSE;
-        
+        $msg = '';
         $sfields = implode(",", $this->fields);
         $sql = "copy " . $this->dbtable . "($sfields) from STDIN;\n";
         
@@ -502,7 +510,7 @@ class DbObj
         if (!$berr) return sprintf(_("DbObj::Adds error in multiple insertion"));
         
         if (!$nopost) $msg = $this->PostInsert();
-        if ($msg != '') return $msg;
+        return $msg;
     }
     function lw($prop)
     {
@@ -559,6 +567,79 @@ class DbObj
         if ($this->dbid == 0) error_log(__METHOD__ . "null dbid");
         return $this->dbid;
     }
+    
+    protected function tryCreate()
+    {
+        
+        $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
+        
+        $action_needed = "";
+        
+        if ($this->err_code != "") {
+            // http://www.postgresql.org/docs/8.3/interactive/errcodes-appendix.html
+            switch ($this->err_code) {
+                case "42P01":
+                    // UNDEFINED TABLE
+                    $action_needed = "create";
+                    break;
+
+                case "42703":
+                    // UNDEFINED COLUMN
+                    $action_needed = "update";
+                    break;
+
+                case "42P07":
+                    // DUPLICATE TABLE
+                    $action_needed = "none";
+                    break;
+
+                default:
+                    break;
+            }
+            // error_log(__METHOD__ . sprintf('[%s]%s {%s} - %s', $this->msg_err, $this->err_code, $action_needed, $this->dbtable));
+            //print_r2(getDebugStack());print $sql;
+            //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
+            
+        }
+        
+        $originError = $this->msg_err;
+        switch ($action_needed) {
+            case "create":
+                $st = $this->Create();
+                if ($st == "") {
+                    return true;
+                } else {
+                    
+                    $err = ErrorCode::getError('DB0003', $this->dbtable, $st);
+                    $this->msg_err = $originError . "\n" . $err;
+                }
+                break;
+
+            case "update":
+                return false;
+                // no more auto update
+                /*
+                $st = $this->Update();
+                if ($st == "") {
+                    return true;
+                } else {
+                    
+                    $err = ErrorCode::getError('DB0004', $this->dbtable, $st);
+                    $this->msg_err = $originError . "\n" . $err;
+                }
+                */
+                break;
+
+            case "none":
+                $this->msg_err = "";
+                return true;
+                break;
+
+            default:
+                break;
+        }
+        return false;
+    }
     /**
      * @param string $sql the query
      * @param int $lvl level set to 0
@@ -570,7 +651,7 @@ class DbObj
         global $SQLDELAY, $SQLDEBUG;
         
         if ($sql == "") return '';
-        
+        $sqlt1 = '';
         if ($SQLDEBUG) $sqlt1 = microtime(); // to test delay of request
         $this->init_dbid();
         $this->log->debug("exec_query : $sql");
@@ -578,97 +659,58 @@ class DbObj
         $this->msg_err = '';
         
         if ($prepare) {
+            if (pg_send_prepare($this->dbid, '', $sql) === false) {
+                $this->msg_err = ErrorCode::getError('DB0006', pg_last_error($this->dbid));
+                error_log(__METHOD__ . " " . $this->msg_err);
+                return $this->msg_err;
+            }
+            $this->res = pg_get_result($this->dbid);
+            $err = pg_result_error($this->res);
+            if ($err) {
+                $this->msg_err = ErrorCode::getError('DB0005', $err);
+                $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
+            }
             
-            if (@pg_prepare($this->dbid, '', $sql) === false) {
-                $this->msg_err = "Error prepare sending query : ";
-            } else {
+            if ($this->msg_err == "") {
                 if (pg_send_execute($this->dbid, '', array()) === false) {
-                    $this->msg_err = "Error execute sending query : ";
+                    
+                    $this->msg_err = ErrorCode::getError('DB0007', pg_last_error($this->dbid));
+                    $this->setError($sql);
+                    
+                    return $this->msg_err;
+                }
+                $this->res = pg_get_result($this->dbid);
+                $err = pg_result_error($this->res);
+                if ($err) {
+                    $this->msg_err = ErrorCode::getError('DB0002', $err);
+                    $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
                 }
             }
         } else {
             if (pg_send_query($this->dbid, $sql) === false) {
-                $this->msg_err = "Error sending query";
-            }
-        }
-        
-        if ($this->msg_err) {
-            $this->msg_err.= pg_last_error();
-            error_log(__METHOD__ . $this->msg_err);
-            return $this->msg_err;
-        }
-        
-        $this->res = pg_get_result($this->dbid);
-        
-        $this->msg_err = pg_result_error($this->res);
-        $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
-        
-        if ($this->msg_err) error_log($this->msg_err);
-        $action_needed = "";
-        if ($lvl == 0) {
-            if ($this->err_code != "") {
-                // http://www.postgresql.org/docs/8.3/interactive/errcodes-appendix.html
-                switch ($this->err_code) {
-                    case "42P01":
-                        // UNDEFINED TABLE
-                        $action_needed = "create";
-                        break;
-
-                    case "42703":
-                        // UNDEFINED COLUMN
-                        $action_needed = "update";
-                        break;
-
-                    case "42P07":
-                        // DUPLICATE TABLE
-                        $action_needed = "none";
-                        break;
-
-                    default:
-                        break;
-                }
+                $this->msg_err = ErrorCode::getError('DB0008', pg_last_error($this->dbid));
                 
-                error_log(__METHOD__ . " [" . $this->msg_err . " (" . $this->err_code . ")]:$action_needed.[$sql]");
-                //print_r2(getDebugStack());print $sql;
-                //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
-                
+                $this->setError($sql);
+                return $this->msg_err;
             }
+            $this->res = pg_get_result($this->dbid);
+            $err = pg_result_error($this->res);
+            if ($err) $this->msg_err = ErrorCode::getError('DB0001', $err);
+            $this->err_code = pg_result_error_field($this->res, PGSQL_DIAG_SQLSTATE);
         }
         
-        switch ($action_needed) {
-            case "create":
-                $st = $this->Create();
-                if ($st == "") {
-                    $this->msg_err = $this->exec_query($sql);
-                } else {
-                    return "Table {$this->dbtable} doesn't exist and can't be created";
-                }
-                break;
-
-            case "update":
-                $this->log->warning("sql fail: $sql");
-                $this->log->warning("try update :: " . $this->msg_err);
-                $st = $this->Update();
-                if ($st == "") {
-                    $this->msg_err = $this->exec_query($sql);
-                } else {
-                    return "Table {$this->dbtable} cannot be updated";
-                }
-                break;
-
-            case "none":
-                $this->msg_err = "";
-                break;
-
-            default:
-                break;
+        if ($this->msg_err && ($lvl == 0)) {
+            if ($this->tryCreate()) {
+                // redo the query if create table is done
+                $this->msg_err = $this->exec_query($sql, 1, $prepare);
+            }
         }
         if ($this->msg_err != "") {
             $this->log->warning("exec_query :" . $sql);
             $this->log->warning("PostgreSQL Error : " . $this->msg_err);
             //trigger_error('<pre>'.$this->msg_err."\n".$sql.'</pre>');
             // throw new Exception($this->msg_err);
-            
+            $this->setError($sql);
         }
         
         if ($SQLDEBUG) {
@@ -705,12 +747,37 @@ class DbObj
         return (pg_fetch_array($this->res, $c, $type));
     }
     
-    function Update()
+    function update()
+    {
+        $err = ErrorCode::getError('DB0009', $this->dbtable);
+        
+        return $err;
+    }
+    
+    function setError($moreerr = '')
+    {
+        if ($moreerr == '') $err = $this->msg_err;
+        $err = $this->msg_err . "\n" . $moreerr . "\n";
+        
+        $st = getDebugStack(2);
+        foreach ($st as $k => $t) {
+            error_log(sprintf('%d) %s:%s %s::%s()', $k, $t["file"], $t["line"], $t["class"], $t["function"]));
+        }
+        error_log($err);
+        if (self::$sqlStrict) {
+            throw new Exception($err);
+        }
+    }
+    /**
+     * @deprecated
+     * @return string
+     */
+    function autoUpdate()
     {
         print $this->msg_err;
         print (" - need update table " . $this->dbtable);
         $this->log->error("need Update table " . $this->dbtable);
-        exit;
+        
         $this->log->info("Update table " . $this->dbtable);
         // need to exec altering queries
         $objupdate = new DbObj($this->dbaccess);
@@ -742,7 +809,7 @@ class DbObj
         // ---------------------------------------------------
         // 4th : copy compatible data from old table to new table
         $first = true;
-        
+        $fields = '';
         $this->exec_query("SELECT * FROM " . $this->dbtable . "_old");
         $nbold = $this->numrows();
         for ($c = 0; $c < $nbold; $c++) {
@@ -870,4 +937,3 @@ class DbObj
     // FIN DE CLASSE
     
 }
-?>

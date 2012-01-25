@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-05 15:06+0100\n"
+"POT-Creation-Date: 2012-01-25 18:04+0100\n"
 "PO-Revision-Date: 2011-12-05 15:13+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -14,9 +14,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid " 0 means no delay"
-msgstr " 0 signifie pas de limite"
 
 msgid " Access Control for"
 msgstr "Contrôle des accès pour"
@@ -461,12 +458,6 @@ msgstr "Accès à l'administration générique"
 msgid "Access Path Folder List"
 msgstr "Liste des chemins d'accès"
 
-msgid "Access To All Users"
-msgstr "Accès à tous les utilisateurs"
-
-msgid "Access To All Users in my domain"
-msgstr "Acces aux utilisateurs de mon domaine"
-
 msgid "Access To Generic Management"
 msgstr "Accès à la gestion générique"
 
@@ -833,6 +824,18 @@ msgstr "Importation utilisateurs par CSV"
 
 msgid "CSV specification file"
 msgstr "Spécification fichier CSV"
+
+#, c-format
+msgid "CVID : %s"
+msgstr ""
+
+#, c-format
+msgid "CVID : view control '%s' is not a view control"
+msgstr ""
+
+#, c-format
+msgid "CVID : view control '%s' not found"
+msgstr ""
 
 msgid "Call method"
 msgstr "Appel de la méthode"
@@ -2415,8 +2418,8 @@ msgid "No identificator"
 msgstr "Pas d'identificateurs"
 
 #, c-format
-msgid "No identificator found for relation %s"
-msgstr "Aucun identificateur pour la relation %s"
+msgid "No identificator found for relation '%s' %s in %s file"
+msgstr ""
 
 msgid "No need to refresh group"
 msgstr "Tous les groupes sont actualisés"
@@ -2438,9 +2441,6 @@ msgstr "Pas de cycle de vie défini"
 
 msgid "Normal view"
 msgstr "Vue normale"
-
-msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
-msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
 #, c-format
 msgid "Not a family [%s]"
@@ -3498,9 +3498,6 @@ msgstr "Gestion des accessibilités"
 msgid "What Application Management"
 msgstr "Gestion des applications"
 
-msgid "What User Management"
-msgstr "Gestion des utilisateurs"
-
 msgid "With Activity"
 msgstr "Avec les activités"
 
@@ -3679,9 +3676,6 @@ msgstr ""
 msgid "actions"
 msgstr "actions"
 
-msgid "active user"
-msgstr "Utilisateur activé"
-
 msgid "add"
 msgstr "ajout"
 
@@ -3820,12 +3814,6 @@ msgstr "État"
 
 msgid "addstyle"
 msgstr "Ajouter un style"
-
-msgid "adduser"
-msgstr "Ajouter un utilisateur"
-
-msgid "admin view"
-msgstr "vue administrateur"
 
 msgid "affect auto lock"
 msgstr "auto-verrouillage"
@@ -4209,10 +4197,6 @@ msgid "cannot compare two document which comes from two different family"
 msgstr ""
 "la comparaison de 2 documents de famille différente ne peut être effectuée"
 
-#, c-format
-msgid "cannot connect to %s"
-msgstr "ne peut se connecter à %s"
-
 msgid "cannot contact server"
 msgstr "ne peut contacter le serveur"
 
@@ -4239,6 +4223,10 @@ msgstr ""
 #, c-format
 msgid "cannot create document for family [%s]"
 msgstr "création de document impossible pour la famille [%s]"
+
+#, c-format
+msgid "cannot create from family [%s]"
+msgstr ""
 
 #, c-format
 msgid "cannot create user %s: %s"
@@ -4485,9 +4473,6 @@ msgstr "Erreur changeCheckBoolClasses"
 msgid "changed"
 msgstr "modifié"
 
-msgid "changegroup"
-msgstr "Changement de groupe"
-
 msgid "changes"
 msgstr "modifications"
 
@@ -4518,9 +4503,6 @@ msgstr "Choix des familles personnelles"
 
 msgid "choose workflow"
 msgstr "choisir un cycle"
-
-msgid "clear"
-msgstr "Effacer"
 
 msgid "clear containt of a folder"
 msgstr "effacer le contenu d'un dossier"
@@ -4963,9 +4945,6 @@ msgstr "supprimer la sélection"
 msgid "delete user parameters"
 msgstr "suppression de paramètres utilisateur"
 
-msgid "desactived user"
-msgstr "Utilisateur désactivé"
-
 msgid "descr"
 msgstr "Description"
 
@@ -5168,14 +5147,8 @@ msgstr "documents"
 msgid "documents to examine"
 msgstr "documents à prendre en compte"
 
-msgid "domain"
-msgstr "Domaine"
-
 msgid "domain locked"
 msgstr "verrouillé dans un domaine"
-
-msgid "domaingroup"
-msgstr "Domaine"
 
 msgid "done\n"
 msgstr "effectué\n"
@@ -5397,9 +5370,6 @@ msgstr "Impossible de creer l'application"
 msgid "err_add_param"
 msgstr "Impossible de creer le param&egrave;tre"
 
-msgid "err_add_user"
-msgstr "Impossible de creer l'utilisateur"
-
 msgid "err_mod_action"
 msgstr "Impossible de modifier l'action"
 
@@ -5603,20 +5573,6 @@ msgstr "déplier tout"
 msgid "expand folder tree"
 msgstr "développer une branche"
 
-msgid "expire date"
-msgstr "date d'expiration"
-
-msgid "expire date format is not correct : will be set to default"
-msgstr ""
-"le format de la date d'expiration est incorrecte : la date par défaut sera "
-"prise en compte"
-
-msgid "expire default delay (in day)"
-msgstr "délai d'expiration par défaut (en jours)"
-
-msgid "expires"
-msgstr "expiration"
-
 #, c-format
 msgid "export Xml : cannot unzip %s : %s"
 msgstr ""
@@ -5772,9 +5728,6 @@ msgstr "premier"
 msgid "first family used"
 msgstr "première famille utilisée"
 
-msgid "firstname"
-msgstr "Prénom"
-
 msgid "fixed"
 msgstr "figé"
 
@@ -5901,9 +5854,6 @@ msgstr "date de début"
 msgid "full phrase"
 msgstr "la phrase entière"
 
-msgid "fullname"
-msgstr "Utilisateur"
-
 msgid "fulltext"
 msgstr "plein texte"
 
@@ -6029,9 +5979,6 @@ msgstr "Aller au dernier %s"
 msgid "goto latest specific ask"
 msgstr "Aller à la dernière demande"
 
-msgid "group"
-msgstr "Groupe"
-
 #, c-format
 msgid "group #%d does not exist"
 msgstr "le groupe n°%d n'existe pas"
@@ -6045,15 +5992,6 @@ msgstr "requête groupée de documents"
 
 msgid "group has not identificator"
 msgstr "Le groupe n'a pas d'identificateur"
-
-msgid "group list"
-msgstr "les groupes"
-
-msgid "groupdesc"
-msgstr "Description"
-
-msgid "groups"
-msgstr "Groupes"
 
 msgid "height of the frame for abstract card"
 msgstr ""
@@ -6122,9 +6060,6 @@ msgstr "identificateur égal"
 
 msgid "identificator not equal"
 msgstr "l'identifiant est différent"
-
-msgid "if not set, will be the current date more delay"
-msgstr "si vide, ce sera la date courante plus le délai"
 
 msgid "if you want to change order of column"
 msgstr "pour changer l'ordre des colonnes"
@@ -6301,9 +6236,6 @@ msgstr "le nom ou le prénom contient"
 msgid "last search text typed"
 msgstr "dernier texte tapé pour la recherche"
 
-msgid "lastname"
-msgstr "Nom"
-
 msgid "level"
 msgstr "niveau"
 
@@ -6338,9 +6270,6 @@ msgstr "documents verrouillés par "
 msgid "log file %s not writable"
 msgstr ""
 
-msgid "login"
-msgstr "Nom de connexion"
-
 msgid "login must not be empty"
 msgstr "le login ne doit pas être vide"
 
@@ -6364,9 +6293,6 @@ msgstr "le destinataire du email est vide"
 
 msgid "mail edition"
 msgstr "rédaction de mail"
-
-msgid "mail will be calculated from domain"
-msgstr "l'adresse email sera calculée à partir du domaine"
 
 msgid "mailstatus"
 msgstr "Status"
@@ -6834,9 +6760,6 @@ msgstr "pas de niveau 0 spécifié dans le minuteur %s [%d]"
 msgid "no login : passwd unchanged"
 msgstr "pas de login : mot de passe inchangé"
 
-msgid "no mail"
-msgstr "pas d'email"
-
 #, c-format
 msgid "no match for %s"
 msgstr "pas de choix possible pour %s"
@@ -6983,6 +6906,9 @@ msgstr "non défini"
 msgid "not equal"
 msgstr "pas égal"
 
+msgid "not in XML format"
+msgstr ""
+
 msgid "not include"
 msgstr "ne contient pas"
 
@@ -7001,6 +6927,9 @@ msgstr "action nulle"
 
 msgid "nothing to add"
 msgstr "rien à ajouter"
+
+msgid "nothing to export. Do export before"
+msgstr ""
 
 msgid "nothing to insert"
 msgstr "rien à insérer"
@@ -7125,9 +7054,6 @@ msgstr "Autres informations..."
 msgid "other sites"
 msgstr "Autres sites..."
 
-msgid "othergroup"
-msgstr "Autres"
-
 msgid "others..."
 msgstr "autres..."
 
@@ -7177,9 +7103,6 @@ msgstr "erreur de parenthésage : %d gauche, %d droite"
 #, c-format
 msgid "parse error config file %s : %s"
 msgstr ""
-
-msgid "password"
-msgstr "Mot de passe"
 
 msgid "password are not identicals : not changed"
 msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
@@ -7245,10 +7168,6 @@ msgstr "post-it"
 #, c-format
 msgid "postit of %s"
 msgstr "post-it de %s"
-
-#, c-format
-msgid "pre-import:%s"
-msgstr "pré-Import:%s"
 
 msgid "precise search"
 msgstr "Précisez la recherche"
@@ -7796,6 +7715,10 @@ msgid "set default folder to '%s'"
 msgstr "affecte le dossier par défaut à '%s'"
 
 #, c-format
+msgid "set default view control to '%s'"
+msgstr ""
+
+#, c-format
 msgid "set default workflow to '%s'"
 msgstr "affecte le cycle de vie par défaut à '%s'"
 
@@ -7836,10 +7759,6 @@ msgstr "Mettre le document sous contrôle"
 
 msgid "set user parameter"
 msgstr ""
-
-#, c-format
-msgid "set view control to '%s'"
-msgstr "affecte le contrôle de vue à '%s'"
 
 msgid "setWaskAnswer::invalid parameters"
 msgstr "setWaskAnswer:: paramètres invalides"
@@ -7918,6 +7837,9 @@ msgstr "état"
 
 msgid "static array"
 msgstr "tableau statique"
+
+msgid "stop on sql error"
+msgstr ""
 
 msgid "string limit for popup enum"
 msgstr "taille maximum de chaines de caractère pour les choix"
@@ -8159,9 +8081,6 @@ msgstr "L'état restera inchangé"
 msgid "the title of document [%s] is not conform to original [%s]"
 msgstr "le titre du document [%s] n'est pas conforme à l'original [%s]"
 
-msgid "the user identification is unknow"
-msgstr "l'identification de l'utilisateur est inconnue"
-
 msgid "these needed attributes are empty"
 msgstr "Ces attributs obligatoires sont vides :"
 
@@ -8170,6 +8089,9 @@ msgstr "Ce groupe doit être actualisé"
 
 msgid "this kind of document cannot be duplicate"
 msgstr "ce type de document ne peut être dupliqué"
+
+msgid "this login exists"
+msgstr ""
 
 msgid "this system user cannot be deleted"
 msgstr "Cet utilisateur système n epeut être supprimé"
@@ -8201,35 +8123,17 @@ msgstr "Cr&eacute;ation d'application"
 msgid "titlecreateaction"
 msgstr "Cr&eacute;ation d'action"
 
-msgid "titlecreateg"
-msgstr "Création d'un groupe"
-
-msgid "titlecreateu"
-msgstr "Création d'utilisateur"
-
-msgid "titlegroup"
-msgstr "Liste des groupes"
-
 msgid "titlemodify"
 msgstr "Modification de l'application"
 
 msgid "titlemodifyaction"
 msgstr "Modification de l'action"
 
-msgid "titlemodifyg"
-msgstr "Modification du groupe"
-
-msgid "titlemodifyu"
-msgstr "Modification de l'utilisateur"
-
 msgid "titleparamcreate"
 msgstr "Cr&eacute;ation d'un param&egrave;tre "
 
 msgid "titleparammodify"
 msgstr "Modification de param&egrave;tre"
-
-msgid "titleuser"
-msgstr "Liste des utilisateurs"
 
 msgid "to"
 msgstr "vers"
@@ -8272,10 +8176,6 @@ msgstr "aujourd'hui"
 
 msgid "tomorrow"
 msgstr "demain"
-
-#, c-format
-msgid "too many similar document %s <B>ignored</B> "
-msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
 
 msgid "top url to find help documentation"
 msgstr "url pour la documentation en ligne"
@@ -8429,6 +8329,9 @@ msgstr "document non référencé"
 msgid "unselect"
 msgstr "déselectionner"
 
+msgid "unset default view control"
+msgstr ""
+
 msgid "unset default workflow"
 msgstr ""
 
@@ -8544,12 +8447,6 @@ msgstr "l'utilisateur %s %s a été modifié\n"
 msgid "user %s not found"
 msgstr ""
 
-msgid "user account edition"
-msgstr "modifier compte utilisateur"
-
-msgid "user account modification"
-msgstr "modifier compte utilisateur"
-
 msgid "user has not identificator"
 msgstr "L'utilisateur n'a pas d'identificateur"
 
@@ -8561,12 +8458,6 @@ msgstr ""
 
 msgid "user not know"
 msgstr "utilisateur inconnu"
-
-msgid "user own account edition"
-msgstr "modification compte personnel"
-
-msgid "user own account modification"
-msgstr "modifier compte personnel"
 
 msgid "user parameters"
 msgstr "paramètres utilisateur"
@@ -8582,9 +8473,6 @@ msgstr "préférence utilisateur pour l'exportation de document"
 
 msgid "user ressource"
 msgstr "ressource utilisateur"
-
-msgid "user status"
-msgstr "état utilisateur"
 
 msgid "usercard home page"
 msgstr "Annuaire"
@@ -8972,6 +8860,15 @@ msgstr "l'identifiant système {left} est différent de {right}"
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
 
+#~ msgid " 0 means no delay"
+#~ msgstr " 0 signifie pas de limite"
+
+#~ msgid "Access To All Users"
+#~ msgstr "Accès à tous les utilisateurs"
+
+#~ msgid "Access To All Users in my domain"
+#~ msgstr "Acces aux utilisateurs de mon domaine"
+
 #~ msgid "Authentification failure before account desactivation"
 #~ msgstr ""
 #~ "Nombre de connexion avec mot de passe incorrect avant désactivation du "
@@ -8986,8 +8883,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Failed to copy $infile to $f"
 #~ msgstr "Echec de la copie de $infile vers $f"
 
+#~ msgid "No identificator found for relation %s"
+#~ msgstr "Aucun identificateur pour la relation %s"
+
 #~ msgid "No privilege to define accessibilities"
 #~ msgstr "Aucun privilège pour définir les droits d'accès"
+
+#~ msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
+#~ msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
 #~ msgid "Only owner of document can restore it"
 #~ msgstr "Seul le propriétaire peut restaurer un document"
@@ -8995,14 +8898,29 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
 
+#~ msgid "What User Management"
+#~ msgstr "Gestion des utilisateurs"
+
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"
+
+#~ msgid "active user"
+#~ msgstr "Utilisateur activé"
+
+#~ msgid "adduser"
+#~ msgstr "Ajouter un utilisateur"
+
+#~ msgid "admin view"
+#~ msgstr "vue administrateur"
 
 #~ msgid "authentication failed"
 #~ msgstr "échec d'authentification"
 
 #~ msgid "book the document to modify it with offline application"
 #~ msgstr "réserver le document pour le modifier avec l'application offline"
+
+#~ msgid "cannot connect to %s"
+#~ msgstr "ne peut se connecter à %s"
 
 #~ msgid ""
 #~ "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
@@ -9014,6 +8932,21 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot open %s configuration file"
 #~ msgstr "ne peut ouvrir le fichier de configuration %s"
 
+#~ msgid "changegroup"
+#~ msgstr "Changement de groupe"
+
+#~ msgid "clear"
+#~ msgstr "Effacer"
+
+#~ msgid "desactived user"
+#~ msgstr "Utilisateur désactivé"
+
+#~ msgid "domain"
+#~ msgstr "Domaine"
+
+#~ msgid "domaingroup"
+#~ msgstr "Domaine"
+
 #~ msgid "drag to move. Use ctrl-&uarr; &darr; to up/down"
 #~ msgstr ""
 #~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
@@ -9022,17 +8955,76 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "elinkEncode::attribute not found %s"
 #~ msgstr "elinkEncode :  attribut non trouvé %s"
 
+#~ msgid "err_add_user"
+#~ msgstr "Impossible de creer l'utilisateur"
+
+#~ msgid "expire date"
+#~ msgstr "date d'expiration"
+
+#~ msgid "expire date format is not correct : will be set to default"
+#~ msgstr ""
+#~ "le format de la date d'expiration est incorrecte : la date par défaut "
+#~ "sera prise en compte"
+
+#~ msgid "expire default delay (in day)"
+#~ msgstr "délai d'expiration par défaut (en jours)"
+
+#~ msgid "expires"
+#~ msgstr "expiration"
+
+#~ msgid "firstname"
+#~ msgstr "Prénom"
+
 #~ msgid "full text search document"
 #~ msgstr "recherche plein texte"
+
+#~ msgid "fullname"
+#~ msgstr "Utilisateur"
+
+#~ msgid "group"
+#~ msgstr "Groupe"
+
+#~ msgid "group list"
+#~ msgstr "les groupes"
+
+#~ msgid "groupdesc"
+#~ msgstr "Description"
+
+#~ msgid "groups"
+#~ msgstr "Groupes"
+
+#~ msgid "if not set, will be the current date more delay"
+#~ msgstr "si vide, ce sera la date courante plus le délai"
 
 #~ msgid "insert the document to see it with offline application"
 #~ msgstr "insérer le document pour le voir avec l'application offline"
 
+#~ msgid "lastname"
+#~ msgstr "Nom"
+
+#~ msgid "login"
+#~ msgstr "Nom de connexion"
+
+#~ msgid "mail will be calculated from domain"
+#~ msgstr "l'adresse email sera calculée à partir du domaine"
+
 #~ msgid "no import file specified"
 #~ msgstr "pas de fichier d'import spécifié"
 
+#~ msgid "no mail"
+#~ msgstr "pas d'email"
+
 #~ msgid "no trash image"
 #~ msgstr "image de la poubelle non trouvée"
+
+#~ msgid "othergroup"
+#~ msgstr "Autres"
+
+#~ msgid "password"
+#~ msgstr "Mot de passe"
+
+#~ msgid "pre-import:%s"
+#~ msgstr "pré-Import:%s"
 
 #~ msgid "remove from my space"
 #~ msgstr "Enlever de mon espace"
@@ -9043,11 +9035,53 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "select"
 #~ msgstr "sélectionner"
 
+#~ msgid "set view control to '%s'"
+#~ msgstr "affecte le contrôle de vue à '%s'"
+
 #~ msgid "the file %s (rev %d) must be locked before"
 #~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
 
+#~ msgid "the user identification is unknow"
+#~ msgstr "l'identification de l'utilisateur est inconnue"
+
+#~ msgid "titlecreateg"
+#~ msgstr "Création d'un groupe"
+
+#~ msgid "titlecreateu"
+#~ msgstr "Création d'utilisateur"
+
+#~ msgid "titlegroup"
+#~ msgstr "Liste des groupes"
+
+#~ msgid "titlemodifyg"
+#~ msgstr "Modification du groupe"
+
+#~ msgid "titlemodifyu"
+#~ msgstr "Modification de l'utilisateur"
+
+#~ msgid "titleuser"
+#~ msgstr "Liste des utilisateurs"
+
 #~ msgid "toedit"
 #~ msgstr "éditer"
+
+#~ msgid "too many similar document %s <B>ignored</B> "
+#~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
+
+#~ msgid "user account edition"
+#~ msgstr "modifier compte utilisateur"
+
+#~ msgid "user account modification"
+#~ msgstr "modifier compte utilisateur"
+
+#~ msgid "user own account edition"
+#~ msgstr "modification compte personnel"
+
+#~ msgid "user own account modification"
+#~ msgstr "modifier compte personnel"
+
+#~ msgid "user status"
+#~ msgstr "état utilisateur"
 
 #~ msgid "view my space"
 #~ msgstr "Voir mon espace"

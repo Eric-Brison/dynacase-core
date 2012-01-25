@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * @mainpage Dynacase Platform Documentation
  * @brief
@@ -82,6 +82,15 @@ $app_const = array(
         "user" => "N",
         "style" => "N",
         "kind" => "enum(unpersistent|persistent)",
+        "global" => "Y"
+    ) ,
+    
+    "CORE_SQLSTRICT" => array(
+        "val" => "yes",
+        "descr" => N_("stop on sql error") ,
+        "user" => "N",
+        "style" => "N",
+        "kind" => "enum(yes|no)",
         "global" => "Y"
     ) ,
     // Layout Param

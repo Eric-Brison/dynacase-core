@@ -22,6 +22,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestOooLayout');
         $suite->addTestSuite('PU\TestFolder');
         $suite->addTestSuite('PU\TestSearch');
+        $suite->addTestSuite('PU\TestSimpleQuery');
         $suite->addTestSuite('PU\TestProfil');
         $suite->addTestSuite('PU\TestTag');
         $suite->addTestSuite('PU\TestReport');
@@ -31,7 +32,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestImportFamilyProperty');
         $suite->addTestSuite('PU\TestImportWorkflow');
         $suite->addTestSuite('PU\TestImportXmlDocuments');
-                $suite->addTestSuite('PU\TestImportDocuments');
+        $suite->addTestSuite('PU\TestImportDocuments');
         $suite->addTestSuite('PU\TestImportArchive');
         $suite->addTestSuite('PU\TestImportProfid');
         $suite->addTestSuite('PU\TestImportAccess');

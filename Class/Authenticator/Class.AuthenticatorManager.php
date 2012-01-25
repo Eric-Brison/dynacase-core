@@ -28,6 +28,9 @@ abstract class AuthenticatorManager
 {
     
     public static $session = null;
+    /**
+     * @var Authenticator
+     */
     public static $auth = null;
     public static $provider_errno = 0;
     
@@ -53,6 +56,7 @@ abstract class AuthenticatorManager
         }
         
         $authProviderList = getAuthProviderList();
+        $status = false;
         foreach ($authProviderList as $authProvider) {
             self::$auth = new $authClass($authtype, $authProvider);
             $status = self::$auth->checkAuthentication();
@@ -154,42 +158,41 @@ abstract class AuthenticatorManager
     
     public function closeAccess()
     {
-       $authtype = getAuthType();
-       if( $authtype == 'apache' ) {
-           AuthenticatorManager::secureLog("close", "see you tomorrow", "apache/apache", $_SERVER["REMOTE_ADDR"], $_SERVER["PHP_AUTH_USER"], $_SERVER["HTTP_USER_AGENT"]);
-           global $action;
-           if( $action ) {
-               $rapp = GetHttpVars("rapp");
-               $raction = GetHttpVars("raction");
-               $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
-
-               if(!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"],$_SERVER['PHP_AUTH_USER'] )) ) {
-                   self::authenticate($action);
-               } else {
-                   redirect($action,$rapp,$raction,$rurl);
-               }
-           }
-           exit(0);
-       } else {
-           $authClass = strtolower($authtype)."Authenticator";
-           if (! @include_once('WHAT/Class.'.$authClass.'.php')) {
-               print "Unknown authtype ".$_GET['authtype'];
-               exit;
-           }
-           $auth = new $authClass( $authtype, "__for_logout__" );
-
-           if( method_exists(AuthenticatorManager::$auth, 'logout') ) {
-               AuthenticatorManager::secureLog("close", "see you tomorrow", AuthenticatorManager::$auth->provider->parms['type']."/".AuthenticatorManager::$auth->provider->parms['provider'],  $_SERVER["REMOTE_ADDR"], AuthenticatorManager::$auth->getAuthUser(), $_SERVER["HTTP_USER_AGENT"]);
-               AuthenticatorManager::$auth->logout();
-               exit(0);
-           }
-
-           header('HTTP/1.0 500 Internal Error');
-           print sprintf("logout method not supported by authtype '%s'", $authtype);
-           exit(0);
-       }
+        $authtype = getAuthType();
+        if ($authtype == 'apache') {
+            AuthenticatorManager::secureLog("close", "see you tomorrow", "apache/apache", $_SERVER["REMOTE_ADDR"], $_SERVER["PHP_AUTH_USER"], $_SERVER["HTTP_USER_AGENT"]);
+            global $action;
+            if ($action) {
+                $rapp = GetHttpVars("rapp");
+                $raction = GetHttpVars("raction");
+                $rurl = GetHttpVars("rurl", $action->GetParam("CORE_ROOTURL"));
+                
+                if (!isset($_SERVER['PHP_AUTH_USER']) || ($_POST["SeenBefore"] == 1 && !strcmp($_POST["OldAuth"], $_SERVER['PHP_AUTH_USER']))) {
+                    self::authenticate($action);
+                } else {
+                    redirect($action, $rapp, $raction, $rurl);
+                }
+            }
+            exit(0);
+        } else {
+            $authClass = strtolower($authtype) . "Authenticator";
+            if (!@include_once ('WHAT/Class.' . $authClass . '.php')) {
+                print "Unknown authtype " . $_GET['authtype'];
+                exit;
+            }
+            $auth = new $authClass($authtype, "__for_logout__");
+            
+            if (method_exists(AuthenticatorManager::$auth, 'logout')) {
+                AuthenticatorManager::secureLog("close", "see you tomorrow", AuthenticatorManager::$auth->provider->parms['type'] . "/" . AuthenticatorManager::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], AuthenticatorManager::$auth->getAuthUser() , $_SERVER["HTTP_USER_AGENT"]);
+                AuthenticatorManager::$auth->logout();
+                exit(0);
+            }
+            
+            header('HTTP/1.0 500 Internal Error');
+            print sprintf("logout method not supported by authtype '%s'", $authtype);
+            exit(0);
+        }
     }
-
     /**
      * Send a 401 Unauthorized HTTP header
      */

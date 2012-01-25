@@ -40,7 +40,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * Store original include_path
      */
     protected static $include_path = null;
-
+    
     protected function setUp()
     {
         $this->connectUser("admin");
@@ -104,6 +104,9 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     protected static function getAction()
     {
         global $action;
+        if (!$action) {
+            self::connectUser();
+        }
         
         if (!$action->dbid) {
             if (!$action->dbid) $action->init_dbid();
@@ -193,10 +196,10 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         if (is_array($file)) {
             return self::importDocuments($file);
         }
-
+        
         $cr = array();
         global $action;
-
+        
         $realfile = $file;
         if (!file_exists($realfile)) {
             $ext = substr($file, strrpos($file, '.') + 1);
@@ -211,7 +214,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         }
         $oImport = new \ImportDocument();
         //error_log(__METHOD__."import $realfile");
-        $oImport->importDocuments(self::getAction(), $realfile);
+        $oImport->importDocuments(self::getAction() , $realfile);
         $err = $oImport->getErrorMessage();
         if ($err) throw new \Exception($err);
         return;
@@ -221,11 +224,12 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      * @param array $fileList list of files to import
      * @return void
      */
-    protected static function importDocuments($fileList) {
+    protected static function importDocuments($fileList)
+    {
         if (!is_array($fileList)) {
             return self::importDocument($fileList);
         }
-
+        
         foreach ($fileList as $file) {
             self::importDocument($file);
         }
@@ -253,12 +257,12 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         $this->importDocument($tmpFile);
         unlink($tmpFile);
     }
-
     /**
      * Set the include_path INI parameter
      * @param string $include_path the new include_path to use
      */
-    public function setIncludePath($include_path) {
+    public function setIncludePath($include_path)
+    {
         if (self::$include_path == null) {
             self::$include_path = ini_get('include_path');
         }
@@ -267,7 +271,8 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     /**
      * Set back the original include_path INI parameter
      */
-    public function resetIncludePath() {
+    public function resetIncludePath()
+    {
         if (self::$include_path !== null) {
             ini_set('include_path', self::$include_path);
         }

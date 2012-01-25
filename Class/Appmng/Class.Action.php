@@ -522,12 +522,12 @@ create sequence SEQ_ID_ACTION;
      * display error to user and stop execution
      * @param string $texterr the error message
      */
-    function ExitError($texterr)
+    function exitError($texterr)
     {
         if ($_SERVER['HTTP_HOST'] != "") {
             //      redirect($this,"CORE&sole=Y","ERROR");
             $this->lay = new Layout("CORE/Layout/error.xml", $this);
-            $this->lay->set("error", $texterr);
+            $this->lay->set("error", nl2br($texterr));
             $this->lay->set("serror", str_replace("\n", "\\n", addslashes($texterr)));
             $this->lay->set("appname", $this->parent->name);
             $this->lay->set("appact", $this->name);

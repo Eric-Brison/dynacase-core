@@ -122,7 +122,7 @@ function getCoreParam($name, $def = "")
     if (empty($params)) {
         $params = array();
         $tparams = array();
-        $err = simpleQuery("", "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));", $tparams);
+        $err = simpleQuery("", "select name, val from paramv where (type = 'G') or (type='A' and appid = (select id from application where name ='CORE'));", $tparams, false, false, false);
         if ($err == "") {
             foreach ($tparams as $p) {
                 $params[$p['name']] = $p['val'];
@@ -213,7 +213,7 @@ function microtime_diff($a, $b)
 function getDebugStack($slice = 1)
 {
     $td = @debug_backtrace(false);
-    if (!is_array($td)) return;
+    if (!is_array($td)) return array();
     $t = array_slice($td, $slice);
     foreach ($t as $k => $s) {
         unset($t[$k]["args"]); // no set arg
@@ -229,9 +229,8 @@ function getDbid($dbaccess)
         $CORE_DBID[$dbaccess] = pg_connect($dbaccess);
         if (!$CORE_DBID[$dbaccess]) {
             // fatal error
-            error_log("Fail to DB connect to : $dbaccess");
             header('HTTP/1.0 503 DB connection unavalaible');
-            exit;
+            throw new Exception(ErrorCode::getError('DB0101', $dbaccess));
         }
     }
     return $CORE_DBID[$dbaccess];
@@ -273,7 +272,7 @@ function getServiceCore()
     global $pubdir;
     
     if ($pg_service) return $pg_service;
-    
+    $pgservice_core = '';
     $freedomctx = getFreedomContext();
     if ($freedomctx != "") {
         $filename = "$pubdir/context/$freedomctx/dbaccess.php";
@@ -298,7 +297,7 @@ function getServiceFreedom()
     global $pubdir;
     
     if ($pg_service) return $pg_service;
-    
+    $pgservice_freedom = '';
     $freedomctx = getFreedomContext();
     if ($freedomctx != "") {
         $filename = "$pubdir/context/$freedomctx/dbaccess.php";
@@ -334,18 +333,24 @@ function getServiceName($dbaccess)
  * @param string $dbaccessaccess database coordonates
  * @param string $query sql query
  * @param string|array &$result  query result
- * @param boolean $singlecolumn  set to true if only onz field is return
- * @param boolean $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array
- * @return string error message. Empty message if no errors.
+ * @param bool $singlecolumn  set to true if only one field is return
+ * @param bool $singleresult  set to true is only one row is expected (return the first row). If is combined with singlecolumn return the value not an array
+ * @param bool $useStrict set to true to force exception or false to force no exception, if null use global parameter
+ * @throw Exception when sql error in query
+ * @return string error message. Empty message if no errors (when strict mode is not enable)
  */
-function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = false, $singleresult = false)
+function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = false, $singleresult = false, $useStrict = null)
 {
     global $SQLDEBUG;
+    static $sqlStrict = null;
+    
     $dbid = getDbid($dbaccess);
+    $err = '';
     if ($dbid) {
         $result = array();
+        $sqlt1 = 0;
         if ($SQLDEBUG) $sqlt1 = microtime();
-        $r = pg_query($dbid, $query);
+        $r = @pg_query($dbid, $query);
         if ($r) {
             if (pg_numrows($r) > 0) {
                 if ($singlecolumn) $result = pg_fetch_all_columns($r, 0);
@@ -355,7 +360,7 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
                 if ($singleresult) $result = false;
             }
             if ($SQLDEBUG) {
-                global $TSQLDELAY;
+                global $TSQLDELAY, $SQLDELAY;
                 $SQLDELAY+= microtime_diff(microtime() , $sqlt1); // to test delay of request
                 $TSQLDELAY[] = array(
                     "t" => sprintf("%.04f", microtime_diff(microtime() , $sqlt1)) ,
@@ -370,9 +375,25 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
                 );
             }
         } else {
-            $err = pg_last_error($dbid);
+            $err = ErrorCode::getError('DB0100', pg_last_error($dbid) , $query);
         }
-    } else $err = sprintf(_("cannot connect to %s") , $dbaccess);
+    } else $err = ErrorCode::getError('DB0102', $dbaccess, $err, $query);
+    if ($err) {
+        
+        $st = getDebugStack(1);
+        foreach ($st as $k => $t) {
+            error_log(sprintf('%d) %s:%s %s::%s()', $k, $t["file"], $t["line"], $t["class"], $t["function"]));
+        }
+        error_log($err);
+        if ($useStrict !== false) {
+            if ($sqlStrict === null) $sqlStrict = (getParam("CORE_SQLSTRICT") != "no");
+            if ($useStrict === true || $sqlStrict) {
+                
+                throw new Exception($err);
+            }
+        }
+    }
+    
     return $err;
 }
 function getAuthType($freedomctx = "")
@@ -587,7 +608,7 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
     global $action;
     
     if ($to == "") return '';
-    
+    $classcode = '';
     if ($forcelink == "mailto" || $forcelink == "squirrel") {
         $target = $forcelink;
     } else {

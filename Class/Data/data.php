@@ -80,9 +80,16 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
 }
 // ----------------------------------------
 $DEBUGINFO["mbinit"] = microtime(true);
+$action = null;
 getmainAction(AuthenticatorManager::$auth, $action);
 $action->debug = true;
 $DEBUGINFO["mbaction"] = microtime(true);
-executeAction($action);
+try {
+    executeAction($action);
+}
+catch(Exception $e) {
+    $o["error"] = $e->getMessage();
+    print json_encode($o);
+}
 $DEBUGINFO["mbend"] = microtime(true);
 ?>

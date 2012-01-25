@@ -361,8 +361,9 @@ class Layout
         $list = array_merge($list, $this->action->parent->GetJsRef());
         
         reset($list);
-        while (list($k, $v) = each($list)) {
-            $js.= "<script type=\"text/javascript\" language=\"JavaScript\" src=\"$v\"></script>\n";
+        
+        foreach ($list as $k => $v) {
+            $js.= "\n" . sprintf('<script type="text/javascript" language="JavaScript" src="%s"></script>', $v);
         }
         return $js;
     }
@@ -530,4 +531,3 @@ class Layout
         exit;
     }
 }
-?>
