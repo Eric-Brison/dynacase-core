@@ -48,7 +48,7 @@ if ($authtype == 'apache') {
         default:
             sleep(1); // for robots
             // Redirect to authentication
-            AuthenticatorManager::$auth->askAuthentication();
+            AuthenticatorManager::$auth->askAuthentication(array());
             // AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
             // AuthenticatorManager::$auth->askAuthentication(array("error" => $status));
             // Redirect($action, 'AUTHENT', 'LOGINFORM&error='.$status.'&auth_user='.urlencode($_POST['auth_user']));
@@ -79,6 +79,16 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
     exit();
 }
 // ----------------------------------------
+
+/**
+ * @var Action $action
+ */
+$action = null;
 getmainAction(AuthenticatorManager::$auth, $action);
-executeAction($action);
+try {
+    executeAction($action);
+}
+catch(Exception $e) {
+    $action->exitError($e->getMessage());
+}
 ?>

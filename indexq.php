@@ -28,6 +28,15 @@ include_once ('WHAT/wdebug.php');
 global $SQLDELAY, $SQLDEBUG;
 global $TSQLDELAY;
 
+function sortqdelay($a, $b)
+{
+    $xa = doubleval($a["t"]);
+    $xb = doubleval($b["t"]);
+    if ($xa > $xb) return -1;
+    else if ($xa < $xb) return 1;
+    return 0;
+}
+
 $authtype = getAuthType();
 
 if ($authtype == 'apache') {
@@ -47,7 +56,6 @@ if ($authtype == 'apache') {
 
         case -1:
             // User must change his password
-            $action->session->close();
             AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
             exit(0);
             break;
@@ -57,10 +65,8 @@ if ($authtype == 'apache') {
             // Redirect to authentication
             global $_POST;
             AuthenticatorManager::$auth->logout("guest.php?sole=A&app=AUTHENT&action=ERRNO_BUG_639");
-            AuthenticatorManager::$auth->askAuthentication(array(
-                "error" => $status
-            ));
-            Redirect($action, 'AUTHENT', 'LOGINFORM&error=' . $status . '&auth_user=' . urlencode($_POST['auth_user']));
+            AuthenticatorManager::$auth->askAuthentication(array());
+            
             exit(0);
     }
     
@@ -86,6 +92,11 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
     exit;
 }
 // ----------------------------------------
+
+/**
+ * @var Action $action
+ */
+$action = null;
 getmainAction(AuthenticatorManager::$auth, $action);
 $deb = gettimeofday();
 $ticainit = $deb["sec"] + $deb["usec"] / 1000000;
@@ -95,14 +106,6 @@ $trace["init"] = sprintf("%.03fs", $ticainit - $tic1);
 $out = '';
 $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/tracetime.js");
 executeAction($action, $out);
-function sortqdelay($a, $b)
-{
-    $xa = doubleval($a["t"]);
-    $xb = doubleval($b["t"]);
-    if ($xa > $xb) return -1;
-    else if ($xa < $xb) return 1;
-    return 0;
-}
 //usort($TSQLDELAY, "sortqdelay");
 addLogMsg($TSQLDELAY);
 $deb = gettimeofday();
@@ -117,8 +120,9 @@ $strace = 'var TTRACE=new Object();' . "\n";
 foreach ($trace as $k => $v) $strace.= sprintf(" TTRACE['%s']='%s';\n", $k, str_replace("'", " ", $v));
 
 $logcode = $action->lay->GenJsCode(true, true);
-$out = str_replace("<head>", "<head><script>;$strace</script>", $out);
-$out = str_replace("</head>", "<script>$logcode</script></head>", $out);
+
+$out = str_replace("<head>", sprintf('<head><script>%s</script>', $strace) , $out);
+$out = str_replace('</head>', sprintf('<script type="text/javascript">%s</script></head>', $logcode) , $out);
 echo ($out);
 $action->unregister("trace");
 ?>

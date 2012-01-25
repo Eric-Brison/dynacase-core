@@ -243,16 +243,23 @@ class TestSearch extends TestCaseDcpDocument
      * @return void
      * @dataProvider errorCriteria
      */
-    public function testErrorSearch($criteria, $arg, $family)
+    public function testErrorSearch($criteria, $arg, $family, $expectErrors = array())
     {
-        require_once "FDL/Class.SearchDoc.php";
-        $s = new \SearchDoc(self::$dbaccess, $family);
-        $s->addFilter($criteria, $arg);
-        $s->setObjectReturn(true);
-        $s->search();
-        
-        $err = $s->getError();
+        try {
+            $s = new \SearchDoc(self::$dbaccess, $family);
+            $s->addFilter($criteria, $arg);
+            $s->setObjectReturn(true);
+            $s->search();
+            
+            $err = $s->getError();
+        }
+        catch(\Exception $e) {
+            $err = $e->getMessage();
+        }
         $this->assertFalse($err == "", sprintf("Need detect Search error %s %s", $criteria, $arg));
+        foreach ($expectErrors as $error) {
+            $this->assertContains($error, $err, sprintf("no good error code"));
+        }
     }
     public function loginCriteria()
     {
@@ -276,13 +283,19 @@ class TestSearch extends TestCaseDcpDocument
             array(
                 "us_login ~* '%s'",
                 "Garfield",
-                "IUSER2"
+                "IUSER2",
+                array(
+                    'IUSER2'
+                )
             ) ,
             // syntax error
             array(
                 "us_mail y '%s'",
                 "Léopol",
-                "IUSER"
+                "IUSER",
+                array(
+                    'DB0005'
+                )
             ) ,
             // injection error
             array(

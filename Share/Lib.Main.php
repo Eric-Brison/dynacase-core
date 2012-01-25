@@ -16,7 +16,10 @@
 /**
  */
 include_once ("Lib.Common.php");
-
+/**
+ * @param Authenticator $auth
+ * @param Action $action
+ */
 function getMainAction($auth, &$action)
 {
     include_once ('Class.Action.php');
@@ -51,7 +54,7 @@ function getMainAction($auth, &$action)
     else $sess_num = GetHttpVars('freedom_param'); //$_GET["session"];
     $session = new Session();
     if (!$session->Set($sess_num)) {
-        print "<B>:~((</B>";
+        print "<strong>:~((</strong>";
         exit;
     };
     
@@ -78,7 +81,7 @@ function getMainAction($auth, &$action)
         else $puburl = "https://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . $reg[1];
     } else {
         // it is not allowed
-        print "<B>:~(</B>";
+        print "<strong>:~(</strong>";
         exit;
     }
     $add_args = "";
@@ -179,9 +182,11 @@ function getMainAction($auth, &$action)
                 case "6":
                     $ISIE6 = true;
                     break;
+
                 case "7":
                     $ISIE7 = true;
                     break;
+
                 case "8":
                     $ISIE8 = true;
                     break;
@@ -212,6 +217,8 @@ function getMainAction($auth, &$action)
 /**
  * execute action
  * app and action http param
+ * @param Action $action
+ * @param string $out
  */
 function executeAction(&$action, &$out = null)
 {
