@@ -54,6 +54,8 @@ function editframe(&$action)
         
     }
     
+    $help = $doc->getHelpPage();
+    
     $thval = array();
     $tval = array();
     while (list($k, $v) = each($listattr)) {
@@ -63,6 +65,8 @@ function editframe(&$action)
         if ($v->mvisibility == "I") continue; // not editable
         $action->lay->set("flabel", $v->fieldSet->getLabel());
         $action->lay->set("frameid", $v->fieldSet->id);
+        $action->lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($v->fieldSet->id) : false);
+        $action->lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
         //------------------------------
         // Set the table value elements
         $value = chop($doc->GetValue($v->id));
@@ -85,6 +89,8 @@ function editframe(&$action)
             $tval[$k]["winput"] = ($v->type == "array") ? "1%" : "30%"; // width
             $tval[$k]["TESTARRAY"] = (($v->type == "array") || (($v->type == "htmltext") && ($vlabel != 'left')) || ($vlabel == 'up') || ($vlabel == 'none'));
             $tval[$k]["viewlabel"] = (($v->type != "array") && ($vlabel != 'none'));
+            $tval[$k]["aehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false;
+            $tval[$k]["aehelpid"] = ($help->isAlive()) ? $help->id : false;
         }
     }
     $action->lay->setBlockData("FVALUES", $tval);

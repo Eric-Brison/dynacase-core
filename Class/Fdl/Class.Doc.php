@@ -7151,16 +7151,8 @@ create unique index i_docir on doc(initid, revision);";
                         }
                         $this->lay->Set("id", $docid);
                         $this->lay->Set("classid", $this->fromid);
-                        // search inline help
-                        $s = new SearchDoc($this->dbaccess, "HELPPAGE");
-                        $s->addFilter("help_family='%d'", $this->fromid);
-                        $help = $s->search();
-                        $helpid = false;
-                        $helpattr = array();
-                        if ($s->count() > 0) {
-                            $helpid = $help[0]["id"];
-                            $helpattr = $this->_val2array($help[0]["help_sec_key"]);
-                        }
+                        // get inline help
+                        $help = $this->getHelpPage();
                         // ------------------------------------------------------
                         // Perform SQL search for doc attributes
                         // ------------------------------------------------------
@@ -7214,6 +7206,8 @@ create unique index i_docir on doc(initid, revision);";
                                     $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
                                     $oaf = $this->getAttribute($currentFrameId);
                                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
+                                    $frames[$k]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($currentFrameId) : false;
+                                    $frames[$k]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
                                     if ($currentFrame && ($currentFrame->fieldSet->id != "") && ($currentFrame->fieldSet->id != "FIELD_HIDDENS")) {
                                         $frames[$k]["tag"] = "TAG" . $currentFrame->fieldSet->id;
                                         $frames[$k]["TAB"] = true;
@@ -7255,8 +7249,8 @@ create unique index i_docir on doc(initid, revision);";
                                     $elabel = $listattr[$i]->getoption("elabel");
                                     $elabel = str_replace("'", "&rsquo;", $elabel);
                                     $tableframe[$v]["elabel"] = ucfirst(str_replace('"', "&rquot;", $elabel));
-                                    $tableframe[$v]["helpid"] = $helpid;
-                                    $tableframe[$v]["ehelp"] = ($helpid != false) && (in_array($listattr[$i]->id, $helpattr));
+                                    $tableframe[$v]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($listattr[$i]->id) : false;
+                                    $tableframe[$v]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
                                     
                                     $tableframe[$v]["multiple"] = ($attr->getOption("multiple") == "yes") ? "true" : "false";
                                     $tableframe[$v]["atype"] = $attr->type;
@@ -7296,6 +7290,8 @@ create unique index i_docir on doc(initid, revision);";
                             $frames[$k]["TAB"] = false;
                             $frames[$k]["edittpl"] = ($frametpl != "");
                             $frames[$k]["zonetpl"] = ($frametpl != "") ? sprintf("[ZONE FDL:EDITTPL?id=%d&famid=%d&zone=%s]", $this->id, $this->fromid, $frametpl) : '';
+                            $frames[$k]["ehelp"] = ($help->isAlive()) ? $help->getAttributeHelpUrl($currentFrameId) : false;
+                            $frames[$k]["ehelpid"] = ($help->isAlive()) ? $help->id : false;
                             
                             $oaf = $this->getAttribute($currentFrameId);
                             $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
@@ -8519,6 +8515,25 @@ create unique index i_docir on doc(initid, revision);";
                         }
                         
                         return $p;
+                    }
+                    /**
+                     * Get the helppage document associated to the document family.
+                     * @param string $fromid get the helppage for this family id (default is the family of the current document)
+                     * @return Doc the helppage document on success, or a non-alive document if no helppage is associated with the family
+                     */
+                    public function getHelpPage($fromid = "")
+                    {
+                        if ($fromid === "") {
+                            $fromid = $this->fromid;
+                        }
+                        $s = new SearchDoc($this->dbaccess, "HELPPAGE");
+                        $s->addFilter("help_family='%d'", $this->fromid);
+                        $help = $s->search();
+                        $helpId = "";
+                        if ($s->count() > 0) {
+                            $helpId = $help[0]["id"];
+                        }
+                        return new_Doc($this->dbaccess, $helpId);
                     }
                 }
 ?>

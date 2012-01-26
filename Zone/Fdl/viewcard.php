@@ -256,5 +256,9 @@ function viewcard(Action & $action)
     if ($doc->delUTag($action->user->id, "TOVIEW") == "") {
         $err = $doc->addUTag($action->user->id, "VIEWED");
     }
+    // Set help URL
+    $help = $doc->getHelpPage();
+    $action->lay->Set("helpurl", ($help->isAlive()) ? $help->getAttributeHelpUrl() : false);
+    $action->lay->Set("helpid", ($help->isAlive()) ? $help->id : false);
 }
 ?>

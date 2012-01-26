@@ -34,6 +34,7 @@ function alleditcss(Action & $action)
     $dynamic_css[] = "FDL/Layout/editdoc.css";
     $dynamic_css[] = "FDL/Layout/autocompletion.css";
     $dynamic_css[] = "FDL/Layout/popup.css";
+    $dynamic_css[] = "FDL/Layout/document.css";
     
     setHeaderCache("text/css");
     $action->lay->template = "";
