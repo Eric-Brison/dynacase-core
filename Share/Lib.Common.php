@@ -210,6 +210,11 @@ function microtime_diff($a, $b)
         return ($b_int - $a_int) + ($b_micro - $a_micro);
     }
 }
+/**
+ * return call stack
+ * @param int $slice last call to not return
+ * @return array
+ */
 function getDebugStack($slice = 1)
 {
     $td = @debug_backtrace(false);
@@ -220,6 +225,17 @@ function getDebugStack($slice = 1)
         
     }
     return $t;
+}
+/**
+ * @param int $slice
+ * @return void
+ */
+function logDebugStack($slice = 1)
+{
+    $st = getDebugStack(2);
+    foreach ($st as $k => $t) {
+        error_log(sprintf('%d) %s:%s %s::%s()', $k, $t["file"], $t["line"], $t["class"], $t["function"]));
+    }
 }
 function getDbid($dbaccess)
 {
@@ -379,11 +395,7 @@ function simpleQuery($dbaccess, $query, &$result = array() , $singlecolumn = fal
         }
     } else $err = ErrorCode::getError('DB0102', $dbaccess, $err, $query);
     if ($err) {
-        
-        $st = getDebugStack(1);
-        foreach ($st as $k => $t) {
-            error_log(sprintf('%d) %s:%s %s::%s()', $k, $t["file"], $t["line"], $t["class"], $t["function"]));
-        }
+        logDebugStack();
         error_log($err);
         if ($useStrict !== false) {
             if ($sqlStrict === null) $sqlStrict = (getParam("CORE_SQLSTRICT") != "no");

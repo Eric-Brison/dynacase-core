@@ -759,10 +759,7 @@ class DbObj
         if ($moreerr == '') $err = $this->msg_err;
         $err = $this->msg_err . "\n" . $moreerr . "\n";
         
-        $st = getDebugStack(2);
-        foreach ($st as $k => $t) {
-            error_log(sprintf('%d) %s:%s %s::%s()', $k, $t["file"], $t["line"], $t["class"], $t["function"]));
-        }
+        logDebugStack(2);
         error_log($err);
         if (self::$sqlStrict) {
             throw new Exception($err);
