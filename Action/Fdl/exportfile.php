@@ -138,7 +138,19 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width 
                     $resample = true;
                     if ($resample) {
                         $filename = $filecache;
-                        list($owidth, $oheight) = getimagesize($filename);
+                        $imageSize = getimagesize($filename);
+                        if ($imageSize === false) {
+                            $err = ErrorCode::getError('FILE0001', $filename);
+                            error_log($err);
+                            sendimgerror($err);
+                        }
+                        $owidth = $imageSize[0];
+                        $oheight = $imageSize[1];
+                        if ($owidth == 0 ||$oheight == 0) {
+                            $err = ErrorCode::getError('FILE0002', $owidth, $oheight, $filename);
+                            error_log($err);
+                            sendimgerror($err);
+                        }
                         $newwidth = $width;
                         $newheight = $oheight * ($width / $owidth);
                         // chargement
@@ -163,7 +175,7 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width 
                 // option 1
                 //$cmd=sprintf("gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=- -dFirstPage=%d -dLastPage=%d %s | convert -  -thumbnail %s %s",   min(intval($width/8.06),$quality),$pngpage+1,$pngpage+1,$info->path,$width,$cible);
                 // option 2
-                $cmd = sprintf("convert -thumbnail %s  -density %d %s[%d] %s", $width, $quality, $info->path, $pngpage, $cible);
+                $cmd = sprintf("convert -thumbnail %s  -density %d %s[%d] %s 2>&1", $width, $quality, $info->path, $pngpage, $cible);
                 // option 3
                 //$cmd=sprintf("gs -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r%d -sOutputFile=%s -dFirstPage=%d -dLastPage=%d %s",		   min(intval($width/8.06),$quality),$cible,$pngpage+1,$pngpage+1,$info->path);
                 // option 4
@@ -180,6 +192,19 @@ function DownloadVault(&$action, $vaultid, $isControled, $mimetype = "", $width 
                     }
                     if ($resample) {
                         $filename = $cible;
+                        $imageSize = getimagesize($filename);
+                        if ($imageSize === false) {
+                            $err = ErrorCode::getError('FILE0003', $filename);
+                            error_log($err);
+                            sendimgerror($err);
+                        }
+                        $owidth = $imageSize[0];
+                        $oheight = $imageSize[1];
+                        if ($owidth == 0 ||$oheight == 0) {
+                            $err = ErrorCode::getError('FILE0004', $owidth, $oheight, $filename);
+                            error_log($err);
+                            sendimgerror($err);
+                        }
                         list($owidth, $oheight) = getimagesize($filename);
                         $newwidth = $width;
                         $newheight = $oheight * ($width / $owidth);

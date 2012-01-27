@@ -102,6 +102,9 @@ class VaultDiskStorage extends DbObj
     function Complete()
     {
         if ($this->storage == 1) {
+            if (!$this->fs) {
+                $this->fs = new VaultDiskFsStorage($this->dbaccess);
+            }
             $this->fs->Select($this->id_fs);
         } else {
             // not implemented
