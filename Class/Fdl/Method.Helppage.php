@@ -206,13 +206,15 @@ class _HELPPAGE extends Doc
             $this->lay->set('HELPATTRIBUTESLIST', true);
             $docfam = createDoc($this->dbaccess, $famid, false);
             $docattributes = $docfam->GetNormalAttributes();
+            array_merge($docattributes, $docfam->getFieldAttributes());
             $attributes = array();
-            foreach ($docattributes as $attribute) {
+            foreach ($docattributes as & $attribute) {
                 $attributes[] = array(
                     'HELPATTRVALUE' => $attribute->id,
-                    'HELPATTRNAME' => $attribute->getLabel() ,
+                    'HELPATTRNAME' => sprintf("%s (%s)", $attribute->getLabel() , $attribute->type)
                 );
             }
+            unset($attribute);
             $this->lay->SetBlockData('HELPATTRIBUTES', $attributes);
         }
         
@@ -461,6 +463,37 @@ class _HELPPAGE extends Doc
             return $sec['help_sec_key'];
         }
         return false;
+    }
+    /**
+     * Get the list of attributes ids which have an help message
+     * @return array the list of attributes ids which have an help message
+     */
+    public function getHelpAttributes()
+    {
+        $attrList = $this->getTValue("help_sec_key");
+        if (!is_array($attrList)) {
+            return array();
+        }
+        return $attrList;
+    }
+    /**
+     * Get the Url to the section of the help message of a specific attribute
+     * @param string $attrId get the Url to the message for the given attribute
+     * @return bool|string boolean false if no help is available for the given attribute id, or the url to the help
+     */
+    public function getAttributeHelpUrl($attrId = "")
+    {
+        $attrId = strtolower($attrId);
+        if ($attrId == "") {
+            return sprintf("?app=FDL&action=DOCHELP&id=%s", $this->id);
+        }
+        
+        $helpAttrList = $this->getHelpAttributes();
+        if (!in_array($attrId, $helpAttrList)) {
+            return false;
+        }
+        
+        return sprintf("?app=FDL&action=DOCHELP&id=%s&anchor=%s", $this->id, $attrId);
     }
     /**
      * @begin-method-ignore

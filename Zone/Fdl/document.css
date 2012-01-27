@@ -1,0 +1,33 @@
+.documentEdit fieldset[opened="false"] > legend > span.dyp-frame-opener:before {
+  content: "► ";
+  font-family: monospace;
+  font-style: normal;
+  color: [CORE_BGCOLORALTERN];
+}
+
+.documentEdit fieldset[opened="true"] > legend > span.dyp-frame-opener:before {
+  content: "▼ ";
+  font-family: monospace;
+  font-style: normal;
+  color: [CORE_BGCOLORALTERN];
+}
+
+.documentEdit span.dyp-help-hint {
+  margin: 0px 0px 0px 0.5em;
+  padding-left: 12px;
+  background-image: url([IMG:helppage_gray.png|12]);
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: help;
+}
+
+.document span.dyp-help-header-icon {
+     background-image: url([IMG:helppage_gray.png|22]);
+     background-position: center center;
+     background-repeat: no-repeat;
+     cursor: help;
+     float: right;
+     margin-right: 2px;
+     height: 22px;
+     width: 22px;
+}

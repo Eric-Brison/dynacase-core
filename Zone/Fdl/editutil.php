@@ -861,6 +861,8 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             
             $max = - 1;
             $max0 = - 1;
+            // get inline help
+            $help = $doc->getHelpPage();
             
             foreach ($ta as $k => $v) { // detect uncompleted rows
                 $t = $doc->getTValue($k);
@@ -897,10 +899,13 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $visible = ($v->mvisibility != "H");
                 $width = $v->getOption("cwidth", "auto");
                 $talabel[] = array(
+                    "aid" => $v->id,
                     "alabel" => (!$visible) ? "" : $v->getLabel() ,
                     "elabel" => $v->getOption("elabel") ,
                     "astyle" => $v->getOption("cellheadstyle") ,
-                    "ahclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute"
+                    "ahclass" => (!$visible) ? "hiddenAttribute" : "visibleAttribute",
+                    "aehelp" => ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false,
+                    "aehelpid" => ($help->isAlive()) ? $help->id : false
                 );
                 $tilabel[] = array(
                     "ilabel" => getHtmlInput($doc, $v, $ddoc->getValue($tad[$k]->id) , '__1x_') ,
@@ -974,6 +979,8 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             $lay->setBlockData("TATTR", $talabel);
             $lay->setBlockData("IATTR", $tilabel);
             $lay->set("attrid", $attrid);
+            $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false);
+            $lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
             if (($oattr->getOption("vlabel") == "") || ($oattr->getOption("vlabel") == "up")) $lay->set("caption", $oattr->getLabel());
             else $lay->set("caption", "");
             $lay->set("footspan", count($ta) * 2);

@@ -23,6 +23,7 @@ function allviewcss(Action & $action)
     
     $dynamic_css[] = "CORE/Layout/core.css";
     $dynamic_css[] = "FDL/Layout/freedom.css";
+    $dynamic_css[] = "FDL/Layout/document.css";
     
     setHeaderCache("text/css");
     $action->lay->template = "";

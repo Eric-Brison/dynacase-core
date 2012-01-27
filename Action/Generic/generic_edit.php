@@ -184,6 +184,10 @@ function generic_edit(Action & $action)
     // information propagation
     $action->lay->Set("classid", $classid);
     $action->lay->Set("dirid", $dirid);
+    // Set help URL
+    $help = $doc->getHelpPage();
+    $action->lay->Set("helpurl", ($help->isAlive()) ? $help->getAttributeHelpUrl() : false);
+    $action->lay->Set("helpid", ($help->isAlive()) ? $help->id : false);
 }
 
 function cmp_cvorder($a, $b)
