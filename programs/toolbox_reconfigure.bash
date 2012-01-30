@@ -17,7 +17,7 @@ fi
 apacheuser=`"$WIFF_ROOT"/wiff --getValue=apacheuser`
 
 dbaccesstpl="$WIFF_CONTEXT_ROOT"/context/default/dbaccess.php.in
-dbaccess="$WIFF_CONTEXT_ROOT"/context/default/dbaccess.php
+dbaccess="$WIFF_CONTEXT_ROOT"/context/dbaccess.php
 
 prefixtpl="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php.in
 prefix="$WIFF_CONTEXT_ROOT"/WHAT/Lib.Prefix.php

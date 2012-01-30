@@ -21,13 +21,14 @@ function newFreeVaultFile($dbaccess)
     include_once ("VAULT/Class.VaultFile.php");
     return new VaultFile($dbaccess, "FREEDOM");
 }
+/**
+ * for FDLGEN directory
+ * @param $dbaccess
+ * @return string
+ */
 function getGen($dbaccess)
 {
-    $freedomctx = getenv("freedom_context");
-    if ($freedomctx != "") {
-        return "GEN/" . $freedomctx;
-    }
-    return "GEN/default";
+    return "GEN";
 }
 /**
  * convert French date to iso8601

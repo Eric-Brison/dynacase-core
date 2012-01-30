@@ -266,13 +266,19 @@ function getDbAccessFreedom()
 {
     return "service='" . getServiceFreedom() . "'";
 }
-
+/**
+ * @deprecated
+ * @return string
+ */
 function getDbEnv()
 {
     error_log("Deprecated call to getDbEnv() : use getFreedomContext()");
     return getFreedomContext();
 }
-
+/**
+ * @deprecated
+ * @return string
+ */
 function getFreedomContext()
 {
     $freedomctx = getenv("freedom_context");
@@ -285,20 +291,10 @@ function getFreedomContext()
 function getServiceCore()
 {
     static $pg_service = null;
-    global $pubdir;
     
     if ($pg_service) return $pg_service;
-    $pgservice_core = '';
-    $freedomctx = getFreedomContext();
-    if ($freedomctx != "") {
-        $filename = "$pubdir/context/$freedomctx/dbaccess.php";
-        if (file_exists($filename)) {
-            include ($filename);
-        }
-    }
-    if ($pgservice_core == "") {
-        include ("dbaccess.php");
-    }
+    $pgservice_core = getDbAccessvalue('pgservice_core');
+    
     if ($pgservice_core == "") {
         error_log("Undefined pgservice_core in dbaccess.php");
         exit(1);
@@ -307,23 +303,38 @@ function getServiceCore()
     return $pg_service;
 }
 
+function getDbAccessValue($varName)
+{
+    $included = false;
+    $filename = sprintf("%s/context/dbaccess.php", DEFAULT_PUBDIR);
+    if (file_exists($filename)) {
+        if (include ($filename)) {
+            $included = true;
+        }
+    } else {
+        $filename = sprintf("%s/context/default/dbaccess.php", DEFAULT_PUBDIR);
+        if (file_exists($filename)) {
+            if (include ($filename)) {
+                $included = true;
+            }
+        } else {
+            $filename = ('dbaccess.php');
+            if (include ("dbaccess.php")) {
+                $included = true;
+            }
+        }
+    }
+    if (!$included) {
+        throw new Exception(ErrorCode::getError("FILE0005", $filename));
+    }
+    return $$varName;
+}
 function getServiceFreedom()
 {
     static $pg_service = null;
-    global $pubdir;
     
     if ($pg_service) return $pg_service;
-    $pgservice_freedom = '';
-    $freedomctx = getFreedomContext();
-    if ($freedomctx != "") {
-        $filename = "$pubdir/context/$freedomctx/dbaccess.php";
-        if (file_exists($filename)) {
-            include ($filename);
-        }
-    }
-    if ($pgservice_freedom == "") {
-        include ("dbaccess.php");
-    }
+    $pgservice_freedom = getDbAccessValue('pgservice_freedom');
     if ($pgservice_freedom == "") {
         error_log("Undefined pgservice_freedom in dbaccess.php");
         exit(1);
@@ -343,6 +354,7 @@ function getServiceName($dbaccess)
     if (preg_match("/service='?([a-zA-Z0-9_.-]+)/", $dbaccess, $reg)) {
         return $reg[1];
     }
+    return '';
 }
 /**
  * send simple query to database
@@ -415,16 +427,7 @@ function getAuthType($freedomctx = "")
     if (array_key_exists('authtype', $_GET)) {
         return $_GET['authtype'];
     }
-    
-    if ($freedomctx == "") {
-        $freedomctx = getFreedomContext();
-    }
-    if ($freedomctx != "") {
-        $filename = "$pubdir/context/$freedomctx/dbaccess.php";
-        if (file_exists($filename)) {
-            include ($filename);
-        }
-    }
+    $freedom_authtype = getDbAccessValue('freedom_authtype');
     
     if ($freedom_authtype == "") {
         $freedom_authtype = "apache";
@@ -436,16 +439,7 @@ function getAuthType($freedomctx = "")
 function getAuthProvider($freedomctx = "")
 {
     global $pubdir;
-    
-    if ($freedomctx == "") {
-        $freedomctx = getFreedomContext();
-    }
-    if ($freedomctx != "") {
-        $filename = "$pubdir/context/$freedomctx/dbaccess.php";
-        if (file_exists($filename)) {
-            include ($filename);
-        }
-    }
+    $freedom_authprovider = getDbAccessValue('freedom_authprovider');
     
     if ($freedom_authprovider == "") {
         $freedom_authprovider = "apache";
@@ -464,19 +458,9 @@ function getAuthProviderList($freedomctx = "")
 function getAuthTypeParams($freedomctx = "")
 {
     global $pubdir;
-    
-    if ($freedomctx == "") {
-        $freedomctx = getFreedomContext();
-    }
-    if ($freedomctx != "") {
-        $filename = "$pubdir/context/$freedomctx/dbaccess.php";
-        if (file_exists($filename)) {
-            include ($filename);
-        }
-    }
+    $freedom_authtypeparams = getDbAccessValue('freedom_authtypeparams');
     if (!is_array($freedom_authtypeparams)) {
-        printf(_("filename %s does not contain freedom_authtypeparams variable. May be old syntax for configuration file") , $filename);
-        exit;
+        throw new Exception(ErrorCode::getError('FILE0006'));
     }
     
     if (!array_key_exists(getAuthType() , $freedom_authtypeparams)) {
@@ -492,17 +476,7 @@ function getAuthParam($freedomctx = "", $provider = "")
     global $pubdir;
     
     if ($provider == "") return array();
-    
-    if ($freedomctx == "") {
-        $freedomctx = getFreedomContext();
-    }
-    if ($freedomctx != "") {
-        $filename = "$pubdir/context/$freedomctx/dbaccess.php";
-        if (file_exists($filename)) {
-            include ($filename);
-        }
-    }
-    
+    $freedom_providers = getDbAccessValue('freedom_providers');
     if (!is_array($freedom_providers)) {
         return array();
     }

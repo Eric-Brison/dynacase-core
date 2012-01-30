@@ -23,4 +23,17 @@ if [ $RET -ne 0 ]; then
     exit $RET
 fi
 
+
+if [ -d $wpub/context/default/FDLGEN ]; then
+   mv $wpub/context/default/FDLGEN/Class*php $wpub/FDLGEN
+   $wpub/wsh.php --api=fdl_adoc
+   /bin/rm -f $wpub/FDLGEN/default
+   rmdir $wpub/context/default/FDLGEN
+fi
+if [ ! -f $wpub/context/dbaccess.php ]; then
+    if [ $wpub/context/default/dbaccess.php ]; then
+      mv $wpub/context/default/*dbaccess.php $wpub/context
+    fi
+fi
+
 exit 0

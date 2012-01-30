@@ -52,11 +52,9 @@ $(pubdir)/.htaccess: htaccess
 
 $(pubdir)/FDLGEN:
 	mkdir -p $@
-$(pubdir)/FDLGEN/default: $(pubdir)/FDLGEN
-	ln -sf ../context/default/FDLGEN $@
-$(pubdir)/context/default/FDLGEN:
+$(pubdir)/context/default:
 	mkdir -p $@
-$(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/context/default/FDLGEN $(pubdir)/FDLGEN/default
+$(pubdir)/context/default/dbaccess.php.sample: dbaccess.php.sample $(pubdir)/context/default/
 	cp $< $@
 $(pubdir)/context/default/dbaccess.php.in: dbaccess.php.in
 	cp $< $@

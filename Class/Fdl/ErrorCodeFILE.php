@@ -28,4 +28,12 @@ class ErrorCodeFILE
      * exportfile's thumbnail image have an invalid width and/or height equal to zero
      */
     const FILE0004 = 'exportfile found an invalid width/height (%s/%s) for thumbnail image "%s"';
+    /**
+     * dbaccess.php file is needed
+     */
+    const FILE0005 = 'dbaccess file not found "%s"';
+    /**
+     * dbaccess.php file is incomplete
+     */
+    const FILE0006 = 'dbaccess.php file does not contain freedom_authtypeparams variable. May be old syntax for configuration file';
 }
