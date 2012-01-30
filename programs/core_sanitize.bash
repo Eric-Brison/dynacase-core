@@ -30,5 +30,10 @@ if [ -d $wpub/context/default/FDLGEN ]; then
    /bin/rm -f $wpub/FDLGEN/default
    rmdir $wpub/context/default/FDLGEN
 fi
+if [ ! -f $wpub/context/dbaccess.php ]; then
+    if [ $wpub/context/default/dbaccess.php ]; then
+      mv $wpub/context/default/*dbaccess.php $wpub/context
+    fi
+fi
 
 exit 0
