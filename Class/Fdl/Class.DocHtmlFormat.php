@@ -46,13 +46,13 @@ class DocHtmlFormat
     }
     /**
      * @param NormalAttribute $oattr
-     * @param string $value
+     * @param string $value raw value
      * @param string $target
      * @param bool $htmlLink
      * @param int $index
      * @param bool $useEntities
-     * @param bool $this->abstractMode
-     * @return string the formated value
+     * @param bool $abstractMode
+     * @return string the HTML formated value
      */
     public function getHtmlValue($oattr, $value, $target = "_self", $htmlLink = true, $index = - 1, $useEntities = true, $abstractMode = false)
     {
@@ -255,9 +255,10 @@ class DocHtmlFormat
         return implode("<BR>", $thtmlval);
     }
     /**
-     * format Image attribute
+     * format Default attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatDefault($kvalue, $avalue)
     {
@@ -273,9 +274,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format iDoc attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatIDoc($kvalue, $avalue)
     {
@@ -303,6 +305,7 @@ class DocHtmlFormat
      * format Image attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatImage($kvalue, $avalue)
     {
@@ -344,9 +347,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format File attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatFile($kvalue, $avalue)
     {
@@ -517,9 +521,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Longtext attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatLongtext($kvalue, $avalue)
     {
@@ -537,9 +542,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Password attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatPassword($kvalue, $avalue)
     {
@@ -547,9 +553,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Enum attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatEnum($kvalue, $avalue)
     {
@@ -574,9 +581,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Array attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatArray($kvalue, $avalue)
     {
@@ -767,9 +775,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Doc attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatDoc($kvalue, $avalue)
     {
@@ -790,9 +799,10 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Docid attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatDocid($kvalue, $avalue)
     {
@@ -832,6 +842,7 @@ class DocHtmlFormat
      * format Image attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatThesaurus($kvalue, $avalue)
     {
@@ -845,7 +856,7 @@ class DocHtmlFormat
                 if (trim($vv) == "") $thval[] = $vv;
                 else {
                     $thc = new_doc($this->doc->dbaccess, trim($vv));
-                    if ($thc->isAlive()) $thval[] = $this->doc->getDocAnchor(trim($vv) , $this->target, $this->htmlLink, $thc->getLangTitle());
+                    if ($thc->isAlive()) $thval[] = $this->doc->getDocAnchor(trim($vv) , $this->target, $this->htmlLink, $thc->getSpecTitle());
                     else $thval[] = "th error $vv";
                 }
             }
@@ -854,16 +865,17 @@ class DocHtmlFormat
             if ($avalue == "") $htmlval = $avalue;
             else {
                 $thc = new_doc($this->doc->dbaccess, $avalue);
-                if ($thc->isAlive()) $htmlval = $this->doc->getDocAnchor(trim($avalue) , $this->target, $this->htmlLink, $thc->getLangTitle());
+                if ($thc->isAlive()) $htmlval = $this->doc->getDocAnchor(trim($avalue) , $this->target, $this->htmlLink, $thc->getSpecTitle());
                 else $htmlval = "th error $avalue";
             }
         }
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Option attribute
      * @param $kvalue
      * @param $avalue
+     * @return string HTML value
      */
     public function formatOption($kvalue, $avalue)
     {
