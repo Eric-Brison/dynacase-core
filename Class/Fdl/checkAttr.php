@@ -245,6 +245,14 @@ class CheckAttr extends CheckData
                 $this->addError(ErrorCode::getError('ATTR0602', $type, $this->attrid));
             } elseif (!in_array($basicType, $this->types)) {
                 $this->addError(ErrorCode::getError('ATTR0601', $basicType, $this->attrid, implode(', ', $this->types)));
+            } else {
+                $format = $this->getFormat();
+                if ($format) {
+                    $a = @sprintf($format, 123);
+                    if ($a === false) {
+                        $this->addError(ErrorCode::getError('ATTR0603', $format, $this->attrid));
+                    }
+                }
             }
         }
     }
@@ -510,6 +518,17 @@ class CheckAttr extends CheckData
             $rtype = $reg[1];
         }
         return $rtype;
+    }
+    
+    private function getFormat()
+    {
+        $type = trim($this->structAttr->type);
+        $rformat = '';
+        
+        if (preg_match('/^([a-z]+)\(["\'](.+)["\']\)$/i', $type, $reg)) {
+            $rformat = $reg[2];
+        }
+        return $rformat;
     }
     
     private function isNodeNeedSet()

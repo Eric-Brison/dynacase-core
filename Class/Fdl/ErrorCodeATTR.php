@@ -94,6 +94,10 @@ class ErrorCodeATTR
      */
     const ATTR0602 = 'syntax error for type "%s" in attribute "%s"';
     /**
+     * the format string must contains only one %s variable
+     */
+    const ATTR0603 = 'bad output format "%s" in attribute "%s" ';
+    /**
      * The attribute's order must be a number
      */
     const ATTR0700 = 'the order "%s" must be a number in attribute "%s"';
