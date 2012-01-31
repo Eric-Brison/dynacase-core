@@ -26,6 +26,7 @@ class excludeSomeFiles extends FilterIterator
             './lib/zendframework/',
             './locale/',
             './session/',
+            './FDLGEN/',
             './vaultfs/'
         );
         
