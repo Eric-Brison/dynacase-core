@@ -494,9 +494,14 @@ class Doc extends DocCtrl
      * applications tag
      * use by specifics applications to search documents by these tags
      *
-     * @varring
+     * @var string
      */
     public $atags;
+    /**
+     * idengtificator of document's note
+     * @var int
+     */
+    public $postitid;
     /**
      * confidential level
      * if not 0 this document is confidential, only user with the permission 'confidential' can read this
@@ -693,6 +698,11 @@ create unique index i_docir on doc(initid, revision);";
      * @var string
      */
     public $defaultabstract = "FDL:VIEWABSTRACTCARD";
+    /**
+     * default view use when edit document for the first time (creation mode)
+     * @var string
+     */
+    public $defaultcreate = "";
     /**
      * for email : the same as $defaultview by default
      * @var string
@@ -1866,6 +1876,7 @@ create unique index i_docir on doc(initid, revision);";
                 $mid = $imid;
             }
         }
+        
         if ($mid == 0) $mid = $this->mid;
         if ($mid == 0) {
             if (($this->wid > 0) && ($this->wid != $this->id)) {
@@ -1886,6 +1897,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         
         if ($mid) {
+            if ($argMid == 0) $argMid = $mid;
             /**
              * @var $mdoc _MASK
              */
@@ -7558,7 +7570,7 @@ create unique index i_docir on doc(initid, revision);";
             /**
              * Get the helppage document associated to the document family.
              * @param string $fromid get the helppage for this family id (default is the family of the current document)
-             * @return Doc the helppage document on success, or a non-alive document if no helppage is associated with the family
+             * @return _HELPPAGE the helppage document on success, or a non-alive document if no helppage is associated with the family
              */
             public function getHelpPage($fromid = "")
             {

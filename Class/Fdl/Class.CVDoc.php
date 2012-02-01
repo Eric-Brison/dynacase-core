@@ -38,12 +38,20 @@ class CVDoc extends Doc
     var $usefor = 'W';
     var $defDoctype = 'P';
     var $attrPrefix = "CVI"; // prefix attribute
+    
+    /**
+     * @var Doc instance document
+     */
+    public $doc = null;
+    /**
+     * @var CVDoc profil document
+     */
+    private $pdoc = null;
     // --------------------------------------------------------------------
     function CVDoc($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
         // first construct acl array
         if (isset($this->fromid)) $this->defProfFamId = $this->fromid; // it's a profil itself
-        
         // don't use Doc constructor because it could call this constructor => infinitive loop
         DocCtrl::__construct($dbaccess, $id, $res, $dbid);
         
@@ -163,7 +171,7 @@ class CVDoc extends Doc
         if ($this->getValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
                 // special control for dynamic users
-                if (!isset($this->pdoc)) {
+                if ($this->pdoc === null) {
                     $pdoc = createDoc($this->dbaccess, $this->fromid, false);
                     $pdoc->doctype = "T"; // temporary
                     //	$pdoc->setValue("DPDOC_FAMID",$this->getValue("DPDOC_FAMID"));
@@ -189,10 +197,11 @@ class CVDoc extends Doc
     /**
      * retrieve first compatible view
      * @param bool $edition if true edition view else consultation view
-     * @return array view definition "cv_idview", "cv_mskid"
+     * @return string view definition "cv_idview", "cv_mskid"
      */
     function getPrimaryView($edition = false)
     {
+        $view = '';
         if ($this->doc) {
             if ($edition && (!$this->doc->id)) {
                 $vidcreate = $this->getValue("cv_idcview");
