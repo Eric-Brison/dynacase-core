@@ -1823,6 +1823,7 @@ create unique index i_docir on doc(initid, revision);";
      * set visibility mask
      *
      * @param int $mid mask ident
+     * @return string error message
      */
     final public function setMask($mid)
     {
@@ -1833,17 +1834,19 @@ create unique index i_docir on doc(initid, revision);";
                 $this->attributes->attr[$k]->mvisibility = $v->visibility;
             }
         }
-        $this->ApplyMask($mid);
+        return $this->ApplyMask($mid);
     }
     /**
      * apply visibility mask
      *
      * @param int $mid mask ident, if not set it is found from possible workflow
      * @param bool $force set to true to force reapply mask even it is already applied
+     * @return string error message
      */
     final public function applyMask($mid = 0, $force = false)
     {
         // copy default visibilities
+        $err = '';
         $this->_maskApplied = true;
         $oas = $this->getAttributes();
         if (is_array($oas)) {
@@ -1851,9 +1854,18 @@ create unique index i_docir on doc(initid, revision);";
                 if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
             }
         }
-        if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) return;
+        $argMid = $mid;
+        if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) return '';
         // modify visibilities if needed
-        if ((!is_numeric($mid)) && ($mid != "")) $mid = getIdFromName($this->dbaccess, $mid);
+        if ((!is_numeric($mid)) && ($mid != "")) {
+            $imid = getIdFromName($this->dbaccess, $mid);
+            if (!$imid) {
+                $err = ErrorCode::getError('DOC1004', $argMid, $this->getTitle());
+                return $err;
+            } else {
+                $mid = $imid;
+            }
+        }
         if ($mid == 0) $mid = $this->mid;
         if ($mid == 0) {
             if (($this->wid > 0) && ($this->wid != $this->id)) {
@@ -1867,40 +1879,55 @@ create unique index i_docir on doc(initid, revision);";
                     if ($this->id == 0) {
                         $wdoc->set($this);
                     }
-                    $mid = $wdoc->getValue($wdoc->attrPrefix . "_MSKID" . $this->state);
+                    $mid = $wdoc->getStateMask($this->state);
                     if ((!is_numeric($mid)) && ($mid != "")) $mid = getIdFromName($this->dbaccess, $mid);
                 }
             }
         }
-        if ($mid > 0) {
+        
+        if ($mid) {
             /**
              * @var $mdoc _MASK
              */
             $mdoc = new_Doc($this->dbaccess, $mid);
             if ($mdoc->isAlive()) {
-                $tvis = $mdoc->getCVisibilities();
-                foreach ($tvis as $k => $v) {
-                    if (isset($oas[$k])) {
-                        if ($v != "-") $oas[$k]->mvisibility = $v;
+                if (is_a($mdoc, '_MASK')) {
+                    
+                    $maskFam = $mdoc->getValue("msk_famid");
+                    if (!in_array($maskFam, $this->getFromDoc())) {
+                        $err = ErrorCode::getError('DOC1002', $argMid, $this->getTitle() , getNameFromId($this->dbaccess, $maskFam));
+                    } else {
+                        $tvis = $mdoc->getCVisibilities();
+                        foreach ($tvis as $k => $v) {
+                            if (isset($oas[$k])) {
+                                if ($v != "-") $oas[$k]->mvisibility = $v;
+                            }
+                        }
+                        $tdiff = array_diff(array_keys($oas) , array_keys($tvis));
+                        // recompute loosed attributes
+                        foreach ($tdiff as $k) {
+                            $v = $oas[$k];
+                            $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
+                        }
+                        // modify needed attribute also
+                        $tneed = $mdoc->getNeedeeds();
+                        foreach ($tneed as $k => $v) {
+                            if (isset($oas[$k])) {
+                                if ($v == "Y") $oas[$k]->needed = true;
+                                else if ($v == "N") $oas[$k]->needed = false;
+                            }
+                        }
                     }
+                } else {
+                    $err = ErrorCode::getError('DOC1001', $argMid, $mdoc->fromname, $this->getTitle());
                 }
-                $tdiff = array_diff(array_keys($oas) , array_keys($tvis));
-                // recompute loosed attributes
-                foreach ($tdiff as $k) {
-                    $v = $oas[$k];
-                    $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
-                }
-                // modify needed attribute also
-                $tneed = $mdoc->getNeedeeds();
-                foreach ($tneed as $k => $v) {
-                    if (isset($oas[$k])) {
-                        if ($v == "Y") $oas[$k]->needed = true;
-                        else if ($v == "N") $oas[$k]->needed = false;
-                    }
-                }
+            } else {
+                $err = ErrorCode::getError('DOC1000', $argMid, $this->getTitle());
             }
         }
         uasort($this->attributes->attr, "tordered");
+        if ($err) error_log($err);
+        return $err;
     }
     /**
      * return all the attributes except frame & menu & action

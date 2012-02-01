@@ -124,4 +124,20 @@ class ErrorCodeDOC
      * @note when DOC has defined a folder target
      */
     const DOC0202 = '"%s" folder is not a folder (is is a "%s"). Cannot insert "%s" document';
+    /**
+     * the mask cannot be applied
+     */
+    const DOC1000 = '"%s" mask is not found , cannot apply it to "%s" document';
+    /**
+     * the mask to apply is not mask
+     */
+    const DOC1001 = '"%s" document is not a mask  (is is a "%s"), cannot apply it to "%s" document';
+    /**
+     * the family mask attribute is not compatible
+     */
+    const DOC1002 = '"%s" mask cannot be apply to "%s" document. It is set for "%s" family';
+    /**
+     * the mask cannot be applied from its logical mask
+     */
+    const DOC1004 = '"%s" mask is not found , cannot apply it to "%s" document';
 }
