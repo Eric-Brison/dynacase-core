@@ -18,7 +18,7 @@
 
 include_once ("FDL/enum_choice.php");
 
-function autocompletion(&$action)
+function autocompletion(Action & $action)
 {
     // list of choice to be insert in attribute values
     $docid = GetHttpVars("docid"); // document being edition
@@ -33,7 +33,8 @@ function autocompletion(&$action)
     
     $action->lay->setEncoding("utf-8");
     if ($enum != "") $attrid = $enum;
-    
+    $err = '';
+    $canitem = false;
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = intval($docid);
     $doc = new_Doc($dbaccess, $docid);
@@ -257,7 +258,7 @@ function autocompletion(&$action)
         }
     }
     
-    $action->lay->Set("autowarning", $err);
+    $action->lay->Set("autowarning", str_replace('"', "&quot;", $err));
     $action->lay->action = null; // don't want parameters - conflict with possible parameters
     
 }

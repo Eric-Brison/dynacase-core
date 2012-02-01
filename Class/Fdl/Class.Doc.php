@@ -555,6 +555,10 @@ class Doc extends DocCtrl
      */
     public $wdoc = null;
     /**
+     * @var array internal attribute
+     */
+    public $attr = array();
+    /**
      * @var Adoc
      */
     public $attributes = null;

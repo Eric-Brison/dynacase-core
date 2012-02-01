@@ -68,4 +68,26 @@ function PU_data_dcp_getResPhpFunc_mirror_args()
     );
     return $ret;
 }
+
+function PU_data_dcp_getResPhpFunc_latin1($a)
+{
+    $data = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $a);
+    if (seems_utf8($data)) $data2 = 'utf8';
+    else $data2 = 'other';
+    return array(
+        array(
+            $data,
+            $data2
+        )
+    );
+}
+
+function PU_data_dcp_getResPhpFunc_wrongArray($a)
+{
+    $data = $a;
+    return array(
+        $data,
+        $data
+    );
+}
 ?>

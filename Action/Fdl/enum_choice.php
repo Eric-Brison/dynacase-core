@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 
-function enum_choice(&$action)
+function enum_choice(Action & $action)
 {
     // list of choice to be insert in attribute values
     $docid = GetHttpVars("docid"); // document being edition
@@ -131,7 +131,14 @@ function enumjschoice(&$action)
     }
     $action->lay->set("notalone", $notalone);
 }
-
+/**
+ * @param string $n
+ * @param string $def
+ * @param bool $whttpvars
+ * @param Doc $doc
+ * @param NormalAttribute $oa
+ * @return array|bool|string
+ */
 function getFuncVar($n, $def = "", $whttpvars, &$doc, &$oa)
 {
     if ($whttpvars) return GetHttpVars("_" . strtolower($n) , $def);
@@ -145,7 +152,7 @@ function getFuncVar($n, $def = "", $whttpvars, &$doc, &$oa)
         return $r;
     }
 }
-function getResPhpFunc(&$doc, &$oattr, &$rargids, &$tselect, &$tval, $whttpvars = true, $index = "")
+function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselect, &$tval, $whttpvars = true, $index = "")
 {
     global $action;
     
@@ -157,7 +164,7 @@ function getResPhpFunc(&$doc, &$oattr, &$rargids, &$tselect, &$tval, $whttpvars 
         '&rparenthesis;',
         '&lparenthesis;'
     ) , $phpfunc);
-    if (!preg_match("/(.*)\((.*)\)\:(.*)/", $phpfunc, $reg)) {
+    if (!preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
         return sprintf(_("the pluggins function description '%s' is not conform for %s attribut") , $phpfunc, $oattr->id);
     }
     $callfunc = $reg[1];
@@ -173,10 +180,11 @@ function getResPhpFunc(&$doc, &$oattr, &$rargids, &$tselect, &$tval, $whttpvars 
     }
     $rargids = explode(",", $reg[3]); // return args
     // change parameters familly
-    $iarg = preg_replace("/\{([^\}]+)\}/e",
+    $iarg = preg_replace('/\{([^\}]+)\}/e',
     //"/\{([a-zA-Z0-9_]+)\}/e",
     "getAttr('\\1')", $reg[2]);
     $argids = explode(",", $iarg); // input args
+    $arg = array();
     foreach ($argids as $k => $v) {
         $v = str_replace(array(
             '&rparenthesis;',
@@ -258,7 +266,17 @@ function getResPhpFunc(&$doc, &$oattr, &$rargids, &$tselect, &$tval, $whttpvars 
         // addslahes for JS array
         reset($res);
         foreach ($res as $k => $v) {
+            if (!is_array($v)) {
+                $err = ErrorCode::getError("INH0001", $callfunc, $oattr->id);
+                error_log($err);
+                return $err;
+            }
             foreach ($v as $k2 => $v2) {
+                if (!seems_utf8($v2)) {
+                    $err = ErrorCode::getError("INH0002", iconv('ISO-8859-1', "UTF-8//TRANSLIT", $v2) , $callfunc, $oattr->id);
+                    error_log($err);
+                    return $err;
+                }
                 // not for the title
                 if ($k2 > 0) $res[$k][$k2] = addslashes(str_replace("\r", "", str_replace("\n", "\\n", $v2))); // because JS array
                 else $res[$k][$k2] = str_replace(array(

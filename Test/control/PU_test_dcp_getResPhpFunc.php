@@ -109,14 +109,43 @@ class TestGetResPhpFunc extends TestCaseDcp
             $err = $this->checkResult($data['expected:results'], $res);
             $this->assertEmpty($err, sprintf("Expected results not met: %s", $err));
         }
-
-        if( isset($data['expected:rargids']) ) {
+        
+        if (isset($data['expected:rargids'])) {
             $err = $this->checkRargids($data['expected:rargids'], $rargids);
             $this->assertEmpty($err, sprintf("Expected rargids not met: %s", $err));
         }
     }
-    
-    public function checkResult(&$expectedResult, &$actualResult)
+    /**
+     * @dataProvider dataBadGetResPhpFunc
+     */
+    public function testGetResPhpFuncError($family, $attrid, array $inputs, array $expectedErrors)
+    {
+        global $ZONE_ARGS;
+        $ZONE_ARGS = array();
+        
+        $doc = createDoc(self::$dbaccess, $family);
+        $this->assertTrue(is_object($doc) , sprintf("Could not create new document from family '%s'.", $family));
+        $err = $doc->add();
+        $this->assertEmpty($err, sprintf("Could not add new document to database: %s", $err));
+        
+        $oattr = $doc->getAttribute($attrid);
+        $this->assertTrue(is_object($oattr) , sprintf("Could not get attribute '%s' on document '%s' (id=%s).", $attrid, $doc->name, $doc->id));
+        
+        foreach ($inputs as $name => $value) {
+            SetHttpVar($name, $value);
+        }
+        
+        $rargids = array();
+        $tselect = array();
+        $tval = array();
+        $res = getResPhpFunc($doc, $oattr, $rargids, $tselect, $tval);
+        $this->assertTrue(is_string($res) , sprintf("getResPhpFunc mist return errors."));
+        //error_log($res);
+        foreach ($expectedErrors as $error) {
+            $this->assertContains($error, $res, "getResPhpFunc not the expected error");
+        }
+    }
+    private function checkResult(&$expectedResult, &$actualResult)
     {
         $expectedCount = count($expectedResult);
         $actualCount = count($actualResult);
@@ -143,18 +172,19 @@ class TestGetResPhpFunc extends TestCaseDcp
         }
         return '';
     }
-
-    public function checkRargids(&$expectedRargsid, &$actualRargids) {
+    
+    private function checkRargids(&$expectedRargsid, &$actualRargids)
+    {
         $expectedCount = count($expectedRargsid);
         $actualCount = count($actualRargids);
-        if( $actualCount != $expectedCount ) {
+        if ($actualCount != $expectedCount) {
             return sprintf("Rargids count mismatch: found '%s' while expecting '%s'", $actualCount, $expectedCount);
         }
-
-        for( $i = 0; $i < $expectedCount; $i++) {
+        
+        for ($i = 0; $i < $expectedCount; $i++) {
             $expected = $expectedRargsid[$i];
             $actual = $actualRargids[$i];
-            if( $actual != $expected ) {
+            if ($actual != $expected) {
                 return sprintf("Data mismatch at index #%s: found '%s' while expecting '%s'", $i, $actual, $expected);
             }
         }
@@ -270,6 +300,34 @@ class TestGetResPhpFunc extends TestCaseDcp
                 )
             )
             */
+        );
+    }
+    
+    public function dataBadGetResPhpFunc()
+    {
+        return array(
+            array(
+                "TST_GETRESPHPFUNC",
+                'S_LATIN1',
+                array(
+                    "_s_latin1" => "été"
+                ) ,
+                array(
+                    'INH0002',
+                    "s_latin1"
+                )
+            ) ,
+            array(
+                "TST_GETRESPHPFUNC",
+                'S_WRONGARRAY',
+                array(
+                    "_s_wrongarray" => "test"
+                ) ,
+                array(
+                    'INH0001',
+                    "s_wrongarray"
+                )
+            )
         );
     }
 }
