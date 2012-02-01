@@ -20,7 +20,7 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/editutil.php");
 
-function editcard(&$action)
+function editcard(Action & $action)
 {
     
     $docid = GetHttpVars("id", 0); // document to edit
@@ -32,7 +32,7 @@ function editcard(&$action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     editmode($action);
     if (!is_numeric($classid)) $classid = getFamIdFromName($dbaccess, $classid);
-    
+    $doc = $fdoc = null;
     if (($usefor == "D") && ($zonebodycard == "")) $zonebodycard = "FDL:EDITBODYCARD"; // always default view for default document
     if ($docid == 0) { // new document
         if ($classid > 0) {
@@ -89,6 +89,14 @@ function editcard(&$action)
         }
     } else {
         // normal edit
+        if ($doc->wid > 0) {
+            $err = $doc->setMask(0);
+            if ($err) addWarningMsg($err);
+        }
+        /**
+         * @var CVDoc $cvdoc
+         */
+        $cvdoc = null;
         if ($doc->cvid > 0) {
             if (!$vid) $vid = $doc->getDefaultView(true, "id");
             
@@ -102,13 +110,18 @@ function editcard(&$action)
             $err = $cvdoc->control(trim($vid)); // control special view
             if ($err != "") $action->exitError("CV:" . $cvdoc->title . "\n" . $err);
             $tview = $cvdoc->getView($vid);
-            $doc->setMask($tview["CV_MSKID"]);
+            $err = $doc->setMask($tview["CV_MSKID"]);
+            if ($err) addWarningMsg($err);
+            
             if ($zonebodycard == "") $zonebodycard = $tview["CV_ZVIEW"];
         }
         
         if (($vid == "") && ($mskid != "")) {
             $mdoc = new_Doc($dbaccess, $mskid);
-            if ($mdoc->isAlive() && ($mdoc->control('view') == "")) $doc->setMask($mdoc->id);
+            if ($mdoc->isAlive() && ($mdoc->control('view') == "")) {
+                $err = $doc->setMask($mdoc->id);
+                if ($err) addWarningMsg($err);
+            }
         }
         
         if (GetHttpVars("viewconstraint") == "Y") { // from modcard function if constraint error
@@ -134,7 +147,7 @@ function editcard(&$action)
         $jslay = new Layout($jsfile, $action);
         $jslay->Set("attrnid", '[]');
         $jslay->Set("attrntitle", '[]');
-        $jslay->SetBlockData("RATTR", $tjsa);
+        $jslay->SetBlockData("RATTR", array());
         $action->parent->AddJsCode($jslay->gen());
         $action->lay->Set("ZONEBODYCARD", $doc->viewDoc($zonebodycard));
     } else {
@@ -151,7 +164,7 @@ function editcard(&$action)
     
 }
 
-function setNeededAttributes(&$action, &$doc)
+function setNeededAttributes(Action & $action, Doc & $doc)
 {
     $attrn = $doc->GetNeededAttributes($doc->usefor == 'Q');
     
@@ -159,7 +172,11 @@ function setNeededAttributes(&$action, &$doc)
         $sattrNid = "[]";
         $sattrNtitle = "[]";
     } else {
-        while (list($k, $v) = each($attrn)) {
+        $attrNid = $attrNtitle = array();
+        /**
+         * @var NormalAttribute $v
+         */
+        foreach ($attrn as $v) {
             $attrNid[] = $v->id;
             $attrNtitle[] = addslashes($v->getLabel());
         }
@@ -194,7 +211,7 @@ function setNeededAttributes(&$action, &$doc)
     $jslay->SetBlockData("RATTR", $tjsa);
     $action->parent->AddJsCode($jslay->gen());
 }
-function setRefreshAttributes(&$action, &$doc)
+function setRefreshAttributes(Action & $action, Doc & $doc)
 {
     if ($doc->usefor != "D") {
         if ($doc->usefor == "Q") {

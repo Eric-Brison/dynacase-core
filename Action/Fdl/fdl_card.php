@@ -133,7 +133,10 @@ function fdl_card(&$action)
         }
         if ($zo == "B") {
             // binary layout file
-            if ($tview["CV_MSKID"]) $doc->setMask($tview["CV_MSKID"]);
+            if ($tview["CV_MSKID"]) {
+                $err = $doc->setMask($tview["CV_MSKID"]);
+                if ($err) addWarningMsg($err);
+            }
             $file = $doc->viewdoc($zone, $target, $ulink);
             if ((!file_exists($file))) { // error in  file generation
                 $action->lay->template = $file;

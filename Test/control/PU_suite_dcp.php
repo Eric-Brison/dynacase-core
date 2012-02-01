@@ -43,6 +43,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestParseFunction');
         $suite->addTestSuite('PU\TestParseMethod');
         $suite->addTestSuite('PU\TestExportCsv');
+        $suite->addTestSuite('PU\TestMask');
         // ...
         return $suite;
     }

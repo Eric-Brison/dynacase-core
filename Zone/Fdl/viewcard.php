@@ -89,6 +89,10 @@ function viewcard(Action & $action)
     }
     $action->lay->set("RSS", ($doc->getValue("gui_isrss") == "yes"));
     $action->lay->set("rsslink", $doc->getRssLink());
+    if ($doc->wid > 0) {
+        $err = $doc->setMask(0);
+        if ($err) addWarningMsg($err);
+    }
     if ($doc->cvid > 0) {
         // special controlled view
         
@@ -107,7 +111,9 @@ function viewcard(Action & $action)
         }
         if ($vid != "") {
             $tview = $cvdoc->getView($vid);
-            $doc->setMask($tview["CV_MSKID"]);
+            $err = $doc->setMask($tview["CV_MSKID"]);
+            if ($err) addWarningMsg($err);
+            
             if ($zonebodycard == "") $zonebodycard = $tview["CV_ZVIEW"];
         }
     }
