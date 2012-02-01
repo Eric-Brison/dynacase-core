@@ -53,7 +53,7 @@ class ErrorCode
                     }
                 }
                 catch(Exception $e) {
-                    $msg = sprintf("cannot find class error for %s : %s", $code, $e->getMessage());
+                    $msg = sprintf("cannot find class error for %s : %s (%s)", $code, $e->getMessage() , implode(', ', func_get_args()));
                 }
             } else {
                 $msg = sprintf("wrong error code %s", $code);
