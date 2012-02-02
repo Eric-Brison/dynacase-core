@@ -201,6 +201,11 @@ class ErrorCodeATTR
      */
     const ATTR1211 = 'not enought argument call to use function "%s" (need %d arguments)';
     /**
+     * the method use for computed must declarer an existed attribute
+     * @note triggered in Doc::specRefreshGen()
+     */
+    const ATTR1212 = 'unknow output attribut for method "%s" in family "%s"';
+    /**
      * declaration of call method is not correct
      * @note example : ::test()  or myClass::test()
      */

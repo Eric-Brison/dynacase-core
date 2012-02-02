@@ -555,10 +555,6 @@ class Doc extends DocCtrl
      */
     public $wdoc = null;
     /**
-     * @var array internal attribute
-     */
-    public $attr = array();
-    /**
      * @var Adoc
      */
     public $attributes = null;
@@ -1901,7 +1897,7 @@ create unique index i_docir on doc(initid, revision);";
         }
         
         if ($mid) {
-            if ($argMid == 0) $argMid = $mid;
+            if (!$argMid) $argMid = $mid;
             /**
              * @var $mdoc _MASK
              */

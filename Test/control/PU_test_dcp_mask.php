@@ -31,9 +31,7 @@ class TestMask extends TestCaseDcpCommonFamily
      */
     public function testsetMask($docid, $mid)
     {
-        /**
-         * @var \Dir $da
-         */
+        
         $doc = new_doc(self::$dbaccess, $docid, true);
         
         if ($doc->isAlive()) {
@@ -50,9 +48,7 @@ class TestMask extends TestCaseDcpCommonFamily
      */
     public function testsetMaskError($docid, $mid, array $expectedErrors)
     {
-        /**
-         * @var \Dir $da
-         */
+        
         $doc = new_doc(self::$dbaccess, $docid, true);
         
         if ($doc->isAlive()) {
