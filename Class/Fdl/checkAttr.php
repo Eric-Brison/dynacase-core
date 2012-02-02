@@ -248,9 +248,17 @@ class CheckAttr extends CheckData
             } else {
                 $format = $this->getFormat();
                 if ($format) {
-                    $a = @sprintf($format, 123);
-                    if ($a === false) {
-                        $this->addError(ErrorCode::getError('ATTR0603', $format, $this->attrid));
+                    if (in_array($basicType, array(
+                        'text',
+                        'int',
+                        'double',
+                        'money',
+                        'longtext'
+                    ))) {
+                        $a = @sprintf($format, 123);
+                        if ($a === false) {
+                            $this->addError(ErrorCode::getError('ATTR0603', $format, $this->attrid));
+                        }
                     }
                 }
             }
