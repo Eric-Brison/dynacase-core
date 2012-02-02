@@ -67,57 +67,20 @@ Class _[PHPclassName] extends [DocParent] {
    function SpecRefreshGen($onlyspec=false) {
      $err = parent::SpecRefreshGen();
 [BLOCK ACALC]
-    // -------------------
-  if (method_exists($this,"[method]")) {
-    $arraycount=0;
-    $iargs=array();
-    $ca=$this->getAttribute("[callattr]");
-    if ("[callmethod]" == $ca->phpfunc) {      
-      [BLOCK [biattr]]
-	$attr = $this->getAttribute("[niarg]");
-  
-      if (! $attr) {
-	$tmparg = "[niarg]";
-	if (($tmparg[0] == "'")||($tmparg[0] == '"')) {
-	  $lc=substr($tmparg,-1);
-          if (($lc == "'") || ($lc == '"')) $tmparg=substr($tmparg,1,-1);
-	  else $tmparg=substr($tmparg,1);
-        }
-	$iargs[]=$tmparg;
-      } else {
-	if ($attr->inArray()) {
-	  $t = $this->getTValue("[niarg]");
-	  $iargs[]=$t;
-	  $arraycount=count($t);
-	} else $iargs[]=$this->getValue("[niarg]");
+  $oAttr="[callattr]";
+       $callMethod="[callmethod]";
+  $ca=$this->getAttribute($oAttr);
+  if (! $ca) throw new Exception(ErrorCode::getError('ATTR1212',$callMethod, $this->fromname));
+  if ($ca->inArray()) {
+      $this->completeArrayRow($ca->fieldSet->id);
+      $t=$this->getTValue($oAttr);
+      foreach ($t as $k=>$v) {
+          $err.=$this->setValue($oAttr, $this->applyMethod($callMethod,'',$k),$k);
       }
-      [ENDBLOCK [biattr]]
-
-	$this->AddParamRefresh("[niargs]","[rarg]");
-      if (!$onlyspec) {
-      if ($ca->inArray()) {
-	$tv=array();
-	$tvi=$this->getTValue("[rarg]");
-	for ($c=0;$c<$arraycount;$c++) {
-	  $tiargs=array(); // parameters for each row
-	  foreach($iargs as $k=>$va) {
-	    if (is_array($va)) $tiargs[]=$va[$c];
-	    else $tiargs[]=$va;
-	  }
-	  $vi = call_user_func_array(array($this, "[method]"), $tiargs);
-	  if ($vi !== "") $tv[] = $vi;
-	  else $tv[]=$tvi[$c];
-	}
-	$this->setValue("[rarg]",$tv); 
-      } else {
-	$v = call_user_func_array(array($this, "[method]"), $iargs);
-	$this->setValue("[rarg]",$v); 
-      }
-      }
-    } 
   } else {
-      $err.= sprintf(_("method %s does not exist."),"[method]");
-    }[ENDBLOCK ACALC]
+    $err.=$this->setValue($oAttr, $this->applyMethod($callMethod));
+  }
+[ENDBLOCK ACALC]
        
        return $err;
    }

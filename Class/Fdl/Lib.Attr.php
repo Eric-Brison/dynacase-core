@@ -78,6 +78,7 @@ function AttrToPhp($dbaccess, $tdoc)
         $tattr = array();
         $attrids = array();
         $tcattr = array();
+        $taction = array();
         
         foreach ($table1 as $k => $v) {
             $type = trim(strtok($v->type, "("));
@@ -109,7 +110,7 @@ function AttrToPhp($dbaccess, $tdoc)
                 }
             }
         }
-        
+        $pM = new parseFamilyMethod();
         foreach ($table1 as $k => $v) {
             if ($v->id[0] == ':') $v = completeAttribute($dbaccess, $v);
             
@@ -200,30 +201,19 @@ function AttrToPhp($dbaccess, $tdoc)
                     }
                     $atype = strtolower(trim($atype));
                     // create code for calculated attributes
-                    if (substr($v->phpfunc, 0, 2) == "::") {
-                        if (preg_match('/::([^\(]+)\(([^\)]*)\)[:]{0,1}(.*)/', $v->phpfunc, $reg)) {
-                            $iattr = explode(",", $reg[2]);
-                            $iattr2 = $iattr;
-                            $tiattr = array();
-                            foreach ($iattr as $ka => $va) {
-                                $tiattr[] = array(
-                                    "niarg" => trim($va)
-                                );
-                                if (($va[0] == "'") || ($va[0] == '"')) unset($iattr2[$ka]); // not really attribute
-                                
-                                
-                            }
-                            
-                            $phpAdoc->SetBlockData("biattr" . $v->id, $tiattr);
-                            $tcattr[] = array(
-                                "method" => $reg[1],
-                                "callmethod" => $v->phpfunc,
-                                "callattr" => $v->id,
-                                "biattr" => "biattr" . $v->id,
-                                "rarg" => ($reg[3] == "") ? $v->id : trim($reg[3]) ,
-                                "niargs" => implode(",", $iattr2)
-                            );
+                    if ((!$v->phpfile) && preg_match('/^[a-z]*::[a-z0-9_ ]+\(/i', $v->phpfunc, $reg)) {
+                        
+                        $pM->parse($v->phpfunc);
+                        $error = $pM->getError();
+                        if ($error) {
+                            throw new Exception($error);
                         }
+                        if (!$pM->outputString) $oAid = $v->id;
+                        else $oAid = $pM->outputs[0];
+                        $tcattr[] = array(
+                            "callmethod" => $v->phpfunc,
+                            "callattr" => $oAid
+                        );
                     }
                     // complete attributes characteristics
                     $v->id = chop(strtolower($v->id));
@@ -266,26 +256,26 @@ function AttrToPhp($dbaccess, $tdoc)
                             
                         } else {
                             switch ($atype) {
-                                case double:
-                                case float:
-                                case money:
+                                case 'double':
+                                case 'float':
+                                case 'money':
                                     $attrids[$v->id] = ($v->id) . " float8";
                                     break;
 
-                                case int:
-                                case integer:
+                                case 'int':
+                                case 'integer':
                                     $attrids[$v->id] = ($v->id) . " int4";
                                     break;
 
-                                case date:
+                                case 'date':
                                     $attrids[$v->id] = ($v->id) . " date";
                                     break;
 
-                                case timestamp:
+                                case 'timestamp':
                                     $attrids[$v->id] = ($v->id) . " timestamp without time zone";
                                     break;
 
-                                case time:
+                                case 'time':
                                     $attrids[$v->id] = ($v->id) . " time";
                                     break;
 
@@ -325,6 +315,7 @@ function AttrToPhp($dbaccess, $tdoc)
         //----------------------------------
         // Add specials methods
         $cmethod = ""; // method file which is use as inherit virtual class
+        $contents2 = '';
         if (isset($tdoc["methods"]) && ($tdoc["methods"] != "")) {
             $tfmethods = explode("\n", $tdoc["methods"]);
             $contents = "";
@@ -441,6 +432,7 @@ function AttrToPhp($dbaccess, $tdoc)
         $qattr->AddQuery("usefor != 'Q' or usefor is null");
         
         $oattr = $qattr->Query();
+        $tattr = array();
         if ($qattr->nb > 0) {
             foreach ($oattr as $ka => $attr) {
                 $tattr[strtolower($attr->id) ] = $attr;
@@ -474,30 +466,30 @@ function AttrToPhp($dbaccess, $tdoc)
                         } else {
                             $rtype = strtok($attr->type, "(");
                             switch ($rtype) {
-                                case double:
-                                case float:
-                                case money:
+                                case 'double':
+                                case 'float':
+                                case 'money':
                                     $sqltype = " float8";
                                     break;
 
-                                case int:
-                                case integer:
+                                case 'int':
+                                case 'integer':
                                     $sqltype = " int4";
                                     break;
 
-                                case date:
+                                case 'date':
                                     $sqltype = " date";
                                     break;
 
-                                case timestamp:
+                                case 'timestamp':
                                     $sqltype = " timestamp without time zone";
                                     break;
 
-                                case time:
+                                case 'time':
                                     $sqltype = " time";
                                     break;
 
-                                case tsvector:
+                                case 'tsvector':
                                     $sqltype = " tsvector";
                                     break;
 
