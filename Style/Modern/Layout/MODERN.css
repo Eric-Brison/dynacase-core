@@ -333,8 +333,9 @@ input[type="image"] {
     padding-left: 3px !important;
 }
 
-.document td {
-    border: 0px !important;
+.document .tarray tr td {
+    border-style: inherit !important;
+    border-color: inherit !important;
 }
 
 .document td,.document th {
@@ -345,6 +346,12 @@ input[type="image"] {
     border: 0;
 }
 
+.document .tarray tbody tr {
+    border-bottom: solid 1px [COLOR_B3];
+}
+.document .tarray tbody tr:last-child {
+    border-bottom: none 0px white;
+}
 .document .border {
     border-width: 1px;
     border-style: solid;
@@ -363,7 +370,7 @@ input[type="image"] {
 
 .document .tabsh span {
     font-weight: bold;
-    /*font-size: [SIZE_MEDIUM];*/
+    font-size: 90%;
     -moz-border-radius: 0px;
     border-left-width: 1px ;
     border-left-style: solid;
@@ -371,10 +378,8 @@ input[type="image"] {
     border-right-style: solid ;
     border-top: 0;
     border-bottom: 0;
-    margin-left: 5px;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin-left: 1px;
+    padding: 5px 4px;
     background-position:0 -201px;
     background-repeat:repeat-x;
     background-attachment:scroll;
