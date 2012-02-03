@@ -44,6 +44,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestParseMethod');
         $suite->addTestSuite('PU\TestExportCsv');
         $suite->addTestSuite('PU\TestMask');
+        $suite->addTestSuite('PU\TestVolatileParam');
         // ...
         return $suite;
     }

@@ -155,64 +155,102 @@ function getMainAction($auth, &$action)
             $core->SetVolatileParam("CORE_BASICAUTH", '&authtype=basic');
         } else $core->SetVolatileParam("CORE_BASICAUTH", '');
         
-        $nav = $_SERVER['HTTP_USER_AGENT'];
-        $pos = strpos($nav, "MSIE");
-        if ($action->Read("navigator", "") == "") {
-            if ($pos !== false) {
-                $action->Register("navigator", "EXPLORER");
-                if (preg_match("/MSIE ([0-9.]+).*/", $nav, $reg)) {
-                    $action->Register("navversion", $reg[1]);
-                }
-            } else {
-                $action->Register("navigator", "NETSCAPE");
-                if (preg_match("|([a-zA-Z]+)/([0-9.]+).*|", $nav, $reg)) {
-                    $action->Register("navversion", $reg[2]);
-                }
-            }
-        }
-        
-        $ISIE6 = false;
-        $ISIE7 = false;
-        $ISIE8 = false;
-        $ISAPPLEWEBKIT = false;
-        $ISSAFARI = false;
-        $ISCHROME = false;
-        if (preg_match('/MSIE ([0-9]+).*/', $nav, $match)) {
-            switch ($match[1]) {
-                case "6":
-                    $ISIE6 = true;
-                    break;
-
-                case "7":
-                    $ISIE7 = true;
-                    break;
-
-                case "8":
-                    $ISIE8 = true;
-                    break;
-            }
-        } elseif (preg_match('|\bAppleWebKit/(.*?)\b|', $nav, $match)) {
-            $ISAPPLEWEBKIT = true;
-            if (preg_match('|\bSafari/(.*?)\b|', $nav, $match)) {
-                $ISSAFARI = true;
-                if (preg_match('|\bChrome/(.*?)\b|', $nav, $match)) {
-                    $ISCHROME = true;
-                }
-            }
-        }
-        
-        $core->SetVolatileParam("ISIE", ($action->read("navigator") == "EXPLORER"));
-        $core->SetVolatileParam("ISIE6", ($ISIE6 === true));
-        $core->SetVolatileParam("ISIE7", ($ISIE7 === true));
-        $core->SetVolatileParam("ISIE8", ($ISIE8 === true));
-        $core->SetVolatileParam("ISAPPLEWEBKIT", ($ISAPPLEWEBKIT === true));
-        $core->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
-        $core->SetVolatileParam("ISCHROME", ($ISCHROME === true));
+        initExplorerParam($core);
         // init for gettext
         setLanguage($action->Getparam("CORE_LANG"));
         
         $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
     }
+}
+/**
+ * init user agent volatile param
+ * @param Application $app
+ */
+function initExplorerParam(Application & $app)
+{
+    $app->SetVolatileParam("ISIE", false);
+    $app->SetVolatileParam("ISIE6", false);
+    $app->SetVolatileParam("ISIE7", false);
+    $app->SetVolatileParam("ISIE8", false);
+    $app->SetVolatileParam("ISIE9", false);
+    $app->SetVolatileParam("ISIE10", false);
+    $app->SetVolatileParam("ISAPPLEWEBKIT", false);
+    $app->SetVolatileParam("ISSAFARI", false);
+    $app->SetVolatileParam("ISCHROME", false);
+    if ($_SERVER["HTTP_HOST"]) {
+        initExplorerWebParam($app);
+    }
+}
+/**
+ * set volatile patram to detect web user agent
+ * @param Application $app
+ */
+function initExplorerWebParam(Application & $app)
+{
+    $nav = $_SERVER['HTTP_USER_AGENT'];
+    $pos = strpos($nav, "MSIE");
+    if ($app->session->Read("navigator", "") == "") {
+        if ($pos !== false) {
+            $app->session->Register("navigator", "EXPLORER");
+            if (preg_match("/MSIE ([0-9.]+).*/", $nav, $reg)) {
+                $app->session->Register("navversion", $reg[1]);
+            }
+        } else {
+            $app->session->Register("navigator", "NETSCAPE");
+            if (preg_match("|([a-zA-Z]+)/([0-9.]+).*|", $nav, $reg)) {
+                $app->session->Register("navversion", $reg[2]);
+            }
+        }
+    }
+    
+    $ISIE6 = false;
+    $ISIE7 = false;
+    $ISIE8 = false;
+    $ISIE9 = false;
+    $ISIE10 = false;
+    $ISAPPLEWEBKIT = false;
+    $ISSAFARI = false;
+    $ISCHROME = false;
+    if (preg_match('/MSIE ([0-9]+).*/', $nav, $match)) {
+        switch ($match[1]) {
+            case "6":
+                $ISIE6 = true;
+                break;
+
+            case "7":
+                $ISIE7 = true;
+                break;
+
+            case "8":
+                $ISIE8 = true;
+                break;
+
+            case "9":
+                $ISIE9 = true;
+                break;
+
+            case "10":
+                $ISIE10 = true;
+                break;
+        }
+    } elseif (preg_match('|\bAppleWebKit/(.*?)\b|', $nav, $match)) {
+        $ISAPPLEWEBKIT = true;
+        if (preg_match('|\bChrome/(.*?)\b|', $nav, $match)) {
+            $ISCHROME = true;
+        } elseif (preg_match('|\bSafari/(.*?)\b|', $nav, $match)) {
+            $ISSAFARI = true;
+        }
+    }
+    
+    $app->SetVolatileParam("ISIE", ($app->session->read("navigator") == "EXPLORER"));
+    $app->SetVolatileParam("ISIE6", ($ISIE6 === true));
+    $app->SetVolatileParam("ISIE7", ($ISIE7 === true));
+    $app->SetVolatileParam("ISIE8", ($ISIE8 === true));
+    $app->SetVolatileParam("ISIE9", ($ISIE9 === true));
+    $app->SetVolatileParam("ISIE10", ($ISIE10 === true));
+    $app->SetVolatileParam("ISAPPLEWEBKIT", ($ISAPPLEWEBKIT === true));
+    $app->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
+    $app->SetVolatileParam("ISCHROME", ($ISCHROME === true));
 }
 /**
  * execute action
@@ -246,8 +284,8 @@ function executeAction(&$action, &$out = null)
             // write HTML header
             $head = new Layout($action->GetLayoutFile("htmltablehead.xml") , $action);
             // copy JS ref & code from action to header
-            $head->jsref = $action->parent->GetJsRef();
-            $head->jscode = $action->parent->GetJsCode();
+            //$head->jsref = $action->parent->GetJsRef();
+            //$head->jscode = $action->parent->GetJsCode();
             $head->set("TITLE", _($action->parent->short_name));
             if ($out !== null) {
                 $out = $head->gen();
