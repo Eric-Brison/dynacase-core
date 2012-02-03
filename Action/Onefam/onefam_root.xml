@@ -22,7 +22,7 @@
 }
 .iframecell {
   height:100%;
- /* vertical-align:top;*/
+ [IF ISIE] vertical-align:top;[ENDIF ISIE]
 }
 
 body.onefam {
