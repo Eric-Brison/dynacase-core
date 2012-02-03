@@ -23,7 +23,7 @@ include_once ("VAULT/Class.VaultFile.php");
 /**
  * Compose html code to insert input
  * @param Doc &$doc document to edit
- * @param DocAttribute &$attr attribute to edit
+ * @param NormalAttribute &$oattr attribute to edit
  * @param string $value value of the attribute
  * @param string $index in case of array : row of the array
  * @param string $jsevent add an javascript callback on input (like onblur or onmouseover)
@@ -85,12 +85,16 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             //----------------------------------------
             
         case "image":
+            $originalname = '';
+            $check = "";
             if (preg_match(PREGEXPFILE, $value, $reg)) {
-                $check = "";
                 $originalname = "";
                 $dbaccess = GetParam("FREEDOM_DB");
                 $vf = newFreeVaultFile($dbaccess);
-                $info = array();
+                /**
+                 * @var vaultFileInfo $info
+                 */
+                $info = null;
                 if ($vf->Show($reg[2], $info) == "") {
                     $vid = $reg[2];
                     $fname = "<A target=\"_self\" href=\"" . GetParam("CORE_BASEURL") . "app=FDL&action=EXPORTFILE&vid=$vid&docid=$docid&attrid=$attrid&index=$index\" title=\"{$info->name}\">";
@@ -108,7 +112,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 } else $fname = _("error in filename");
             } else {
                 if ($value) {
-                    $fname.= "<img id=\"img_$attridk\" style=\"vertical-align:bottom;width:30px\" SRC=\"";
+                    $fname = "<img id=\"img_$attridk\" style=\"vertical-align:bottom;width:30px\" SRC=\"";
                     $fname.= $action->getImageUrl($value);
                     $fname.= "\">";
                 } else {
@@ -134,9 +138,10 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             //----------------------------------------
             
         case "file":
+            
+            $check = "";
+            $originalname = "";
             if (preg_match(PREGEXPFILE, $value, $reg)) {
-                $check = "";
-                $originalname = "";
                 $dbaccess = $action->GetParam("FREEDOM_DB");
                 $vf = newFreeVaultFile($dbaccess);
                 if ($vf->Show($reg[2], $info) == "") {
@@ -264,7 +269,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                     foreach ($thids as $kth => $vth) {
                         $th = new_doc($doc->dbaccess, trim($vth));
                         if ($th->isAlive()) {
-                            $thtitle = $th->getLangTitle();
+                            $thtitle = $th->getSpecTitle();
                             $top[] = array(
                                 "ltitle" => substr($thtitle, 0, 100) ,
                                 "ldocid" => $vth
@@ -279,7 +284,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $lay = new Layout("THESAURUS/Layout/editinputthconcept.xml");
                 if ($value) {
                     $th = new_doc($doc->dbaccess, $value);
-                    $thtitle = $th->getLangTitle();
+                    $thtitle = $th->getSpecTitle();
                     $lay->set("atitle", $thtitle);
                 } else $lay->set("atitle", false);
             }
@@ -310,6 +315,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             
         case "docid":
             $famid = $oattr->format;
+            $textvalue = '';
             if ($famid) {
                 $needLatest = ($oattr->getOption("docrev", "latest") == "latest");
                 // edit document relation
@@ -444,6 +450,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 
                 
             case "color":
+                $eopt = '';
                 $elabel = $oattr->getOption("elabel");
                 if ($elabel != "") $eopt.= " title=\"$elabel\"";
                 $input = "<input size=7  $eopt style=\"background-color:$value\" type=\"text\" name=\"" . $attrin . "\" value=\"" . chop(htmlentities($value, ENT_COMPAT, "UTF-8")) . "\"";
@@ -639,6 +646,8 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                             //$input.="</td><td>";
                             $input.= $ib;
                         } elseif (preg_match('/(.*)\((.*)\)\:(.*)/', $phpfunc, $reg)) {
+                            
+                            $outsideArg = array();
                             if ($alone && $oattr->type != "docid") {
                                 $arg = array(
                                     $oattr->id
@@ -646,7 +655,6 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                             } else {
                                 $argids = explode(",", $reg[3]); // output args
                                 $arg = array();
-                                $outsideArg = array();
                                 foreach ($argids as $k => $v) {
                                     $linkprefix = "ilink_";
                                     $isILink = false;
@@ -672,11 +680,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                                 }
                             }
                             if (count($arg) > 0 || count($outsideArg) > 0) {
+                                
+                                $jOutsideArg = "";
                                 if (count($arg) == 0) {
                                     $jarg = "'" . implode("','", $outsideArg) . "'";
                                 } else {
                                     $jarg = "'" . implode("','", $arg) . "'";
-                                    $jOutsideArg = "";
                                     if (count($outsideArg) > 0) {
                                         $jOutsideArg = "'" . implode("','", $outsideArg) . "'";
                                     }
@@ -730,6 +739,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 }
                 if (GetHttpVars("viewconstraint") == "Y") { // set in modcard
                     if (($oattr->phpconstraint != "") && ($index != "__1x_")) {
+                        $color = '';
                         $res = $doc->verifyConstraint($oattr->id, ($index == "") ? -1 : $index);
                         if (($res["err"] == "") && (count($res["sug"]) == 0)) $color = 'mediumaquamarine';
                         if (($res["err"] == "") && (count($res["sug"]) > 0)) $color = 'orange';
@@ -744,7 +754,15 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             
             return $input;
         }
-        
+        /**
+         * @param Doc $doc
+         * @param string $attrik
+         * @param string $link
+         * @param int $index
+         * @param string $ititle
+         * @param string $isymbol
+         * @return string
+         */
         function elinkEncode(&$doc, $attrik, $link, $index, &$ititle = "", &$isymbol = "")
         {
             
@@ -841,7 +859,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             
             return ($urllink);
         }
-        
+        /**
+         * @param Layout $lay
+         * @param Doc $doc
+         * @param NormalAttribute $oattr
+         * @param int $row
+         */
         function getLayArray(&$lay, &$doc, &$oattr, $row = - 1)
         {
             global $action;
@@ -979,7 +1002,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             $lay->setBlockData("TATTR", $talabel);
             $lay->setBlockData("IATTR", $tilabel);
             $lay->set("attrid", $attrid);
-            $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($v->id) : false);
+            $lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($attrid) : false);
             $lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
             if (($oattr->getOption("vlabel") == "") || ($oattr->getOption("vlabel") == "up")) $lay->set("caption", $oattr->getLabel());
             else $lay->set("caption", "");
@@ -1031,7 +1054,13 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             $lay->set("readonly", ($oattr->mvisibility == 'U'));
             if (count($tvattr) > 0) $lay->setBlockData("EATTR", $tvattr);
         }
-        
+        /**
+         * @param layout $lay
+         * @param Doc $doc
+         * @param NormalAttribute $oattr
+         * @param string $zone
+         * @return mixed
+         */
         function getZoneLayArray(&$lay, &$doc, &$oattr, $zone)
         {
             global $action;
@@ -1053,12 +1082,19 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 }
                 $theads = $dxml->getElementsByTagName('table-head');
                 if ($theads->length > 0) {
+                    /**
+                     * @var DOMElement $thead
+                     */
                     $thead = $theads->item(0);
                     $theadcells = $thead->getElementsByTagName('cell');
                     $talabel = array();
                     for ($i = 0; $i < $theadcells->length; $i++) {
-                        $th = xt_innerXML($theadcells->item($i));
-                        $thstyle = $theadcells->item($i)->getAttribute("style");
+                        /**
+                         * @var DOMElement $iti
+                         */
+                        $iti = $theadcells->item($i);
+                        $th = xt_innerXML($iti);
+                        $thstyle = $iti->getAttribute("style");
                         
                         $talabel[] = array(
                             "alabel" => $th,
@@ -1072,12 +1108,20 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 }
                 
                 $tbodies = $dxml->getElementsByTagName('table-body');
+                $tr = $tcellstyle = array();
                 if ($tbodies->length > 0) {
+                    /**
+                     * @var DOMElement $tbody
+                     */
                     $tbody = $tbodies->item(0);
                     $tbodycells = $tbody->getElementsByTagName('cell');
                     for ($i = 0; $i < $tbodycells->length; $i++) {
-                        $tr[] = xt_innerXML($tbodycells->item($i));
-                        $tcellstyle[] = $tbodycells->item($i)->getAttribute("style");
+                        /**
+                         * @var DOMElement $iti
+                         */
+                        $iti = $tbodycells->item($i);
+                        $tr[] = xt_innerXML($iti);
+                        $tcellstyle[] = $iti->getAttribute("style");
                     }
                 }
                 
@@ -1118,7 +1162,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                     }
                     $lay->setBlockData("bevalue_$k", $tivalue);
                 }
-                
+                $tilabel = array();
                 foreach ($tr as $kd => $td) {
                     $dval = preg_replace('/\[([^\]]*)\]/e', "rowattrReplace(\$doc,'\\1','__1x_',\$defval)", $td);
                     $tilabel[] = array(
@@ -1147,7 +1191,13 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 if (count($tvattr) > 0) $lay->setBlockData("EATTR", $tvattr);
             }
         }
-        
+        /**
+         * @param Doc $doc
+         * @param string $s
+         * @param int $index
+         * @param string $defval
+         * @return array|mixed|string
+         */
         function rowattrReplace(&$doc, $s, $index, &$defval = null)
         {
             if (substr($s, 0, 2) == "L_") return "[$s]";
@@ -1171,7 +1221,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
          *
          * @param Layout $lay template of html input
          * @param Doc $doc current document in edition
-         * @param DocAttribute $oattr current attribute for input
+         * @param NormalAttribute $oattr current attribute for input
          * @param string $value value of the attribute to display (generaly the value comes from current document)
          * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
          * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1189,7 +1239,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
          *
          * @param Layout $lay template of html input
          * @param Doc $doc current document in edition
-         * @param DocAttribute $oattr current attribute for input
+         * @param NormalAttribute $oattr current attribute for input
          * @param string $value value of the attribute to display (generaly the value comes from current document)
          * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
          * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1224,7 +1274,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
          *
          * @param Layout $lay template of html input
          * @param Doc $doc current document in edition
-         * @param DocAttribute $oattr current attribute for input
+         * @param NormalAttribute $oattr current attribute for input
          * @param string $value value of the attribute to display (generaly the value comes from current document)
          * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
          * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1295,9 +1345,12 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             $ki = 0;
             $noselect = true;
             $topt = array();
-            
             foreach ($enuml as $k => $v) {
-                if (in_array($k, $tvalue)) {
+                $found = false;
+                foreach ($tvalue as $valKey) {
+                    if ((string)$k === $valKey) $found = true;
+                }
+                if ($found) {
                     $topt[$k]["selected"] = "selected";
                     $topt[$k]["checked"] = "checked";
                     $lay->set("lvalue", $v);
@@ -1375,7 +1428,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
          *
          * @param Layout $lay template of html input
          * @param Doc $doc current document in edition
-         * @param DocAttribute $oattr current attribute for input
+         * @param NormalAttribute $oattr current attribute for input
          * @param string $value value of the attribute to display (generaly the value comes from current document)
          * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
          * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1400,7 +1453,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
          *
          * @param Layout $lay template of html input
          * @param Doc $doc current document in edition
-         * @param DocAttribute $oattr current attribute for input
+         * @param NormalAttribute $oattr current attribute for input
          * @param string $value value of the attribute to display (generaly the value comes from current document)
          * @param string $aname input HTML name (generaly it is '_'+$oattr->id)
          * @param int $index current row number if it is in array ("" if it is not in array)
@@ -1437,8 +1490,8 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
         }
         /**
          * generate HTML for idoc attribute
-         *
-         * @param DocAttribute $oattr current attribute for input
+         * @param Doc $doc
+         * @param NormalAttribute $oattr current attribute for input
          * @param string $value value of the attribute to display (generaly the value comes from current document)
          * @return String the formated output
          */
@@ -1462,8 +1515,9 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
         }
         /**
          * add different js files needed in edition mode
+         * @param Action $action
          */
-        function editmode(&$action)
+        function editmode(Action & $action)
         {
             $action->parent->AddJsRef(sprintf("%sapp=FDL&action=ALLEDITJS&wv=%s", $action->GetParam("CORE_SSTANDURL") , $action->GetParam("WVERSION")));
             $action->parent->AddCssRef(sprintf("%sapp=FDL&action=ALLEDITCSS&wv=%s", $action->GetParam("CORE_SSTANDURL") , $action->GetParam("WVERSION")));
@@ -1471,7 +1525,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
         /**
          * add button to create/modify document relation
          *
-         * @param DocAttribute $oattr
+         * @param NormalAttribute $oattr
          */
         function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $value, $index)
         {

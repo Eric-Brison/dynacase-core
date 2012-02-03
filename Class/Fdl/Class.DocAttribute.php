@@ -290,6 +290,10 @@ class NormalAttribute extends BasicAttribute
     public $phpconstraint; // special constraint set
     
     /**
+     * @var bool special use for application interface
+     */
+    public $isAlone = false;
+    /**
      * @var $enum array use for enum attributes
      */
     public $enum;
