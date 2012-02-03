@@ -17,7 +17,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _GROUP extends Dir
+class _GROUPSEARCH extends Dir
 {
     /*
      * @end-method-ignore

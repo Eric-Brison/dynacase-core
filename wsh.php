@@ -15,11 +15,12 @@
  */
 
 ini_set("max_execution_time", "3600");
-include_once ("WHAT/Lib.Prefix.php");
-include_once ('Class.Action.php');
-include_once ('Class.Application.php');
-include_once ('Class.Session.php');
-include_once ('Class.Log.php');
+require_once 'WHAT/Lib.Prefix.php';
+require_once 'Class.Action.php';
+require_once 'Class.Application.php';
+require_once 'Class.Session.php';
+require_once 'Class.Log.php';
+require_once 'Lib.Main.php';
 
 function print_usage()
 {
@@ -99,7 +100,7 @@ $core->SetVolatileParam("CORE_SBASEURL", "$absindex?sole=A&"); // no session
 $core->SetVolatileParam("CORE_STANDURL", "$absindex?sole=Y&");
 $core->SetVolatileParam("CORE_SSTANDURL", "$absindex?sole=Y&"); // no session
 $core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute links
-$core->SetVolatileParam("ISIE", false);
+initExplorerParam($core);
 
 if (isset($_GET["app"])) {
     $appl = new Application();
@@ -165,6 +166,9 @@ if (isset($_GET["api"])) {
         include_once ("FDL/Class.Doc.php");
         $http_iddoc = "id"; // default correspondance
         if (isset($_GET["wshfldhttpdocid"])) $http_iddoc = $_GET["wshfldhttpdocid"];
+        /**
+         * @var Dir $fld
+         */
         $fld = new_Doc($dbaccess, $_GET["wshfldid"]);
         $ld = $fld->getContent();
         foreach ($ld as $k => $v) {

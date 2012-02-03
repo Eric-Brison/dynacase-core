@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
@@ -106,7 +106,7 @@ class TestFolder extends TestCaseDcpCommonFamily
     public function testMoveDocument($a, $b, $c)
     {
         /**
-         * @var $da \Dir
+         * @var \Dir $da
          */
         $da = new_doc(self::$dbaccess, $a, true);
         $db = new_doc(self::$dbaccess, $b, true);
