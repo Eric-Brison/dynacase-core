@@ -62,6 +62,10 @@ select pg_temp.dropIndexIfExists('', 'users', 'users_idx3');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'iddomain');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'ntpasswordhash');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'lmpasswordhash');
+SELECT pg_temp.dropColumnIfExists('', 'doc128', 'us_iddomain');
+SELECT pg_temp.dropColumnIfExists('', 'doc128', 'us_domain');
+SELECT pg_temp.dropColumnIfExists('', 'doc127', 'us_iddomain');
+SELECT pg_temp.dropColumnIfExists('', 'doc127', 'us_domain');
 select pg_temp.addIndexIfNotExists('', 'users', 'users_login', true, '(login)');
 
 --
@@ -71,3 +75,13 @@ UPDATE doc127 SET name = 'GADMIN'     WHERE us_whatid = '4';
 UPDATE doc127 SET name = 'GDEFAULT'   WHERE us_whatid = '2';
 UPDATE doc128 SET name = 'USER_ADMIN' WHERE us_whatid = '1';
 UPDATE doc128 SET name = 'USER_GUEST' WHERE us_whatid = '3';
+
+--
+-- Delete deprecated default values
+--
+UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where defval ~ 'us_iddomain';
+UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where defval ~ 'us_iddomain';
+UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where defval ~ 'us_domain';
+UPDATE docfam set defval=replace(defval, '[us_domain|externe]', '') where defval ~ 'us_domain';
+
+
