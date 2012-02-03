@@ -370,7 +370,7 @@ input[type="image"] {
 
 .document .tabsh span {
     font-weight: bold;
-    /*font-size: [SIZE_MEDIUM];*/
+    font-size: 90%;
     -moz-border-radius: 0px;
     border-left-width: 1px ;
     border-left-style: solid;
