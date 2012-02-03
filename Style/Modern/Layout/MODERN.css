@@ -333,8 +333,9 @@ input[type="image"] {
     padding-left: 3px !important;
 }
 
-.document td {
-    border: 0px !important;
+.document .tarray tr td {
+    border-style: inherit !important;
+    border-color: inherit !important;
 }
 
 .document td,.document th {
@@ -345,6 +346,12 @@ input[type="image"] {
     border: 0;
 }
 
+.document .tarray tbody tr {
+    border-bottom: solid 1px [COLOR_B3];
+}
+.document .tarray tbody tr:last-child {
+    border-bottom: none 0px white;
+}
 .document .border {
     border-width: 1px;
     border-style: solid;

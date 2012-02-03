@@ -67,11 +67,15 @@ table.tarray tfoot tr td.hiddenAttribute{
 }
 table.tarray div.drag-button {
   cursor:move;
-  display:inline;
+  float:left;
+  margin-top:3px;
   background : url('[IMG:drag22.png]') no-repeat;
- width:12px;
+  width:12px;
 }
-
+table.tarray input[type="radio"] {
+    width: auto;
+    height: auto;
+}
 tbody[moving="true"] {
     cursor:move!important;
 }
