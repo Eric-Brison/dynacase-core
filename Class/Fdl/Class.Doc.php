@@ -1356,11 +1356,16 @@ create unique index i_docir on doc(initid, revision);";
      */
     public function getParamValue($idp, $def = "")
     {
-        if ($this->doctype == 'C') return $this->getParamValue($idp, $def);
-        if (!$this->fromid) return false;
-        $fdoc = $this->getFamDoc();
-        if (!$fdoc->isAlive()) return false;
-        return $fdoc->getParamValue($idp, $def);
+        $r = $def;
+        if ($this->doctype == 'C') $r = $this->getParamValue($idp, $def);
+        else {
+            if (!$this->fromid) return false;
+            $fdoc = $this->getFamDoc();
+            if (!$fdoc->isAlive()) $r = false;
+            else $r = $fdoc->getParamValue($idp, $def);
+        }
+        if ($r) $r = $this->getValueMethod($r, $r);
+        return $r;
     }
     /**
      * return similar documents
@@ -3506,8 +3511,16 @@ create unique index i_docir on doc(initid, revision);";
                                     if (is_object($mapped)) $nextArg = & $mapArgs[$input->name];
                                     else $nextArg = $mapArgs[$input->name];
                                 } elseif ($attr = $this->getAttribute($input->name)) {
-                                    if ($attr->inArray()) $nextArg = $this->getTValue($input->name, "", $index);
-                                    else $nextArg = $this->GetValue($input->name);
+                                    if ($attr->usefor == 'Q') {
+                                        if ($attr->inArray()) {
+                                            $pas = $this->_val2array($this->getParamValue($input->name));
+                                            if ($index == - 1) $nextArg = $pas;
+                                            else $nextArg = $pas[$index];
+                                        } else $nextArg = $this->getParamValue($input->name);
+                                    } else {
+                                        if ($attr->inArray()) $nextArg = $this->getTValue($input->name, "", $index);
+                                        else $nextArg = $this->GetValue($input->name);
+                                    }
                                 } else {
                                     if ($input->name == 'THIS') {
                                         $nextArg = & $this;

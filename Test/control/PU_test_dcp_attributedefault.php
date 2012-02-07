@@ -35,11 +35,28 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
         static $d = null;
         if ($d === null) {
             $d = createDoc(self::$dbaccess, $this->famName);
-            $this->assertTrue(is_object($d) , sprintf("cannot create TST_DEFAULTFAMILY1 document", $this->famName));
+            $this->assertTrue(is_object($d) , sprintf("cannot create %s document", $this->famName));
         }
         $oa = $d->getAttribute($attrid);
         $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $this->famName));
         $value = $d->getValue($oa->id);
+        $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
+        
+        return $d;
+    }
+    /**
+     * @dataProvider dataDefaultParamValues
+     */
+    public function testDefaultParamValue($attrid, $expectedvalue)
+    {
+        static $d = null;
+        if ($d === null) {
+            $d = createDoc(self::$dbaccess, $this->famName, false, false);
+            $this->assertTrue(is_object($d) , sprintf("cannot create %s1 document", $this->famName));
+        }
+        $oa = $d->getAttribute($attrid);
+        $this->assertNotEmpty($oa, sprintf("attribute %s not found in %s family", $attrid, $this->famName));
+        $value = $d->getParamValue($oa->id);
         $this->assertEquals($expectedvalue, $value, sprintf("not the expected default value attribute %s", $attrid));
         
         return $d;
@@ -87,6 +104,10 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
                 '6'
             ) ,
             array(
+                'TST_NUMBER9',
+                '11'
+            ) ,
+            array(
                 'TST_TEXT1',
                 'TST_TITLE'
             ) ,
@@ -109,6 +130,24 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             array(
                 'TST_TEXT6',
                 '[:TST_TITLE:]'
+            )
+        );
+    }
+    
+    public function dataDefaultParamValues()
+    {
+        return array(
+            array(
+                'TST_P1',
+                'test one'
+            ) ,
+            array(
+                'TST_P2',
+                '10'
+            ) ,
+            array(
+                'TST_P3',
+                '11'
             )
         );
     }
