@@ -264,6 +264,7 @@ create unique index idx_idfam on docfam(id);";
          */
         final public function getParamValue($idp, $def = "")
         {
+            if ($def == "") $def = $this->getDefValue($idp);
             return $this->getXValue("param", $idp, $def);
         }
         /**
