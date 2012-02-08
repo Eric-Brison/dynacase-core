@@ -29,9 +29,9 @@ function edittpl(Action & $action)
 {
     $zone = $action->getArgument("zone");
     $docid = $action->getArgument("id");
-    if (!$docid) $docid = $action->getArgument("famid");
+    $famid = $action->getArgument("famid");
     if (!$zone) $action->addWarningMsg(_("no template defined"));
-    if (!$docid) $action->addWarningMsg(sprintf(_("template %s no document found") , $zone));
+    if ((!$docid) && (!$famid)) $action->addWarningMsg(sprintf(_("template %s no document found") , $zone));
     $dbaccess = $action->getParam("FREEDOM_DB");
     
     $reg = Doc::parseZone($zone);
@@ -44,18 +44,26 @@ function edittpl(Action & $action)
             setHttpVar($k, $v);
         }
     }
-    
-    $doc = new_doc($dbaccess, $docid);
-    if ($doc->isAlive()) {
-        $action->lay = new Layout($doc->getZoneFile($zone) , $action);
-        $doc->lay = & $action->lay;
-        
-        $method = strtok(strtolower($reg['layout']) , '.');
-        if (method_exists($doc, $method)) {
-            $doc->$method();
+    if ($docid) {
+        $doc = new_doc($dbaccess, $docid);
+    } else {
+        $doc = createDoc($dbaccess, $famid);
+    }
+    if ($doc) {
+        $zonefile = $doc->getZoneFile($zone);
+        if (!$zonefile) {
+            addWarningMsg(sprintf(_("cannot access edit template file %s") , $zone));
         } else {
-            $doc->editattr($doc->getZoneOption($zone) == "U");
-            $doc->viewprop();
+            $action->lay = new Layout($zonefile, $action);
+            $doc->lay = & $action->lay;
+            
+            $method = strtok(strtolower($reg['layout']) , '.');
+            if (method_exists($doc, $method)) {
+                $doc->$method();
+            } else {
+                $doc->editattr($doc->getZoneOption($zone) == "U");
+                $doc->viewprop();
+            }
         }
     }
 }

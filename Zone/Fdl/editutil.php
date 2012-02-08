@@ -1149,8 +1149,14 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $lay->set("tableWidth", $oattr->getOption("twidth", '100%'));
                 $lay->set("tableStyle", $oattr->getOption("tstyle", ''));
                 // get default values
-                $fdoc = $doc->getFamDoc();
-                $defval = $fdoc->getDefValues();
+                if ($doc->doctype == 'C') {
+                    
+                    $defval = $doc->getDefValues();
+                } else {
+                    
+                    $fdoc = $doc->getFamDoc();
+                    $defval = $fdoc->getDefValues();
+                }
                 
                 $tvattr = array();
                 for ($k = 0; $k < $nbitem; $k++) {
