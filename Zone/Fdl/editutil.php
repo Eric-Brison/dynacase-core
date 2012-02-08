@@ -1077,13 +1077,13 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 
                 $dxml = new DomDocument();
                 $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
-                if (! file_exists($rowlayfile)) {
-                    $lay->template=sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
-                                AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
-                                return;
-                            }
+                if (!file_exists($rowlayfile)) {
+                    $lay->template = sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
+                    AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
+                    return;
+                }
                 if (!@$dxml->load($rowlayfile)) {
-                    AddwarningMsg(sprintf(_("cannot load xml template : %s") ,print_r(libxml_get_last_error (),true)));
+                    AddwarningMsg(sprintf(_("cannot load xml template : %s") , print_r(libxml_get_last_error() , true)));
                     $lay->template = sprintf(_("cannot load xml %s layout file") , $rowlayfile);
                     return;
                 }
@@ -1203,6 +1203,9 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $lay->set("readonly", ($oattr->mvisibility == 'U'));
                 $lay->set("useadd", ($oattr->getOption("userowadd") != "no"));
                 if (count($tvattr) > 0) $lay->setBlockData("EATTR", $tvattr);
+                
+                if ($oattr->getOption("vlabel", "up") == "up") $lay->set("caption", $oattr->getLabel());
+                else $lay->set("caption", "");
             } else {
                 addWarningMsg(sprintf(_("roweditzone syntax %s is invalid") , $zone));
             }
@@ -1229,7 +1232,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 if (!isset($doc->$sl)) return "[$s]";
                 if ($index == - 1) $v = $doc->getValue($sl);
                 else $v = $doc->getTValue($sl, "", $index);
-                $v=str_replace('"','&quot;',$v);
+                $v = str_replace('"', '&quot;', $v);
             }
             return $v;
         }
