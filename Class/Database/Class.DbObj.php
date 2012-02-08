@@ -700,9 +700,15 @@ class DbObj
         }
         
         if ($this->msg_err && ($lvl == 0)) {
-            if ($this->tryCreate()) {
-                // redo the query if create table is done
-                $this->msg_err = $this->exec_query($sql, 1, $prepare);
+            $orierr = $this->msg_err;
+            try {
+                if ($this->tryCreate()) {
+                    // redo the query if create table is done
+                    $this->msg_err = $this->exec_query($sql, 1, $prepare);
+                }
+            }
+            catch(Exception $e) {
+                $this->msg_err = $orierr;
             }
         }
         if ($this->msg_err != "") {
