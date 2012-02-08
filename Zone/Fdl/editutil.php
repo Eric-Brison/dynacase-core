@@ -1077,10 +1077,14 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 
                 $dxml = new DomDocument();
                 $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
-                
+                if (! file_exists($rowlayfile)) {
+                    $lay->template=sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
+                                AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
+                                return;
+                            }
                 if (!@$dxml->load($rowlayfile)) {
-                    AddwarningMsg(sprintf(_("cannot open %s layout file") , DEFAULT_PUBDIR . "/$rowlayfile"));
-                    $lay->template = sprintf(_("cannot open %s layout file") , $zone);
+                    AddwarningMsg(sprintf(_("cannot load xml template : %s") ,print_r(libxml_get_last_error (),true)));
+                    $lay->template = sprintf(_("cannot load xml %s layout file") , $rowlayfile);
                     return;
                 }
                 $theads = $dxml->getElementsByTagName('table-head');
@@ -1153,9 +1157,9 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                     $tvattr[] = array(
                         "bevalue" => "bevalue_$k",
                         "index" => $k,
-                        cellattrid => '',
-                        cellmultiple => '',
-                        cellatype => ''
+                        "cellattrid" => '',
+                        "cellmultiple" => '',
+                        "cellatype" => ''
                     );
                     $tivalue = array();
                     
@@ -1225,6 +1229,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 if (!isset($doc->$sl)) return "[$s]";
                 if ($index == - 1) $v = $doc->getValue($sl);
                 else $v = $doc->getTValue($sl, "", $index);
+                $v=str_replace('"','&quot;',$v);
             }
             return $v;
         }
