@@ -462,11 +462,11 @@ class NormalAttribute extends BasicAttribute
      */
     function getXmlValue(Doc & $doc, $opt = false)
     {
-        if ($opt->index > - 1) $v = $doc->getTvalue($this->id, '', $opt->index);
-        else $v = $doc->getValue($this->id);
+        if ($opt->index > - 1) $v = $doc->getTvalue($this->id, null, $opt->index);
+        else $v = $doc->getValue($this->id, null);
         //if (! $v) return sprintf("<!-- no value %s -->",$this->id);
         if ($this->getOption("autotitle") == "yes") return sprintf("<!--autotitle %s %s -->", $this->id, $v);
-        if ((!$v) && ($this->type != 'array')) {
+        if (($v === null) && ($this->type != 'array')) {
             if (($this->type == 'file') || ($this->type == 'image')) return sprintf('<%s mime="" title="" xsi:nil="true"/>', $this->id);
             else return sprintf('<%s xsi:nil="true"/>', $this->id);
         }

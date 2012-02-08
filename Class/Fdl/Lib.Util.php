@@ -211,6 +211,9 @@ function stringDateToIso($date, $format = "")
         $localeconfig = getLocaleConfig();
         if ($localeconfig !== false) {
             $format = $localeconfig['dateTimeFormat'];
+            if (strlen($date) < strlen($format)) {
+                $format = $localeconfig['dateFormat'];
+            }
         }
     }
     if (!empty($format)) {

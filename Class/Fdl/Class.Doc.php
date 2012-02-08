@@ -2510,15 +2510,15 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function getTValue($idAttr, $def = "", $index = - 1)
     {
-        $v = $this->getValue("$idAttr", $def);
-        if ($v == "") {
+        $v = $this->getValue("$idAttr", null);
+        if ($v === null) {
             if ($index == - 1) return array();
             else return $def;
         } else if ($v == "\t") {
             if ($index == - 1) return array(
                 ""
             );
-            else return "";
+            else return $def;
         }
         $t = $this->_val2array($v);
         if ($index == - 1) {

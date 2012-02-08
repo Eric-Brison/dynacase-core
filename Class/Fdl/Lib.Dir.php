@@ -46,12 +46,24 @@ function getChildDir($dbaccess, $userid, $dirid, $notfldsearch = false, $restype
         // just folder no serach
         return getChildDoc($dbaccess, $dirid, "0", "ALL", array() , $userid, $restype, 2, false, "title");
     } else {
+        $folders = array();
+        $searches = array();
         // with folder and searches
-        return array_merge(getChildDoc($dbaccess, $dirid, "0", "ALL", array(
-            "doctype='D'"
-        ) , $userid, $restype, 2, false, "title") , getChildDoc($dbaccess, $dirid, "0", "ALL", array(
-            "doctype='S'"
-        ) , $userid, $restype, 5, false, "title"));
+        try {
+            $folders = getChildDoc($dbaccess, $dirid, "0", "ALL", array(
+                "doctype='D'"
+            ) , $userid, $restype, 2, false, "title");
+        }
+        catch(Exception $e) {
+        }
+        try {
+            $searches = getChildDoc($dbaccess, $dirid, "0", "ALL", array(
+                "doctype='S'"
+            ) , $userid, $restype, 5, false, "title");
+        }
+        catch(Exception $e) {
+        }
+        return array_merge($folders, $searches);
     }
 }
 
@@ -443,7 +455,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                 }
                 if ($fromid != "") {
                     if ($fromid == - 1) {
-                        include_once "FDL$GEN/Class.DocFam.php";
+                        include_once "FDL/Class.DocFam.php";
                         $fromid = "Fam";
                     } else {
                         $fromid = abs($fromid);
@@ -643,7 +655,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
     {
         $tableid = array();
         
-        $tdir = getChildDoc($dbaccess, $dirid, "0", "ALL", array() , $userid, "TABLE", 2);
+        $tdir = getChildDoc($dbaccess, $dirid, "0", "ALL", array() , $userid = 1, "TABLE", 2);
         
         foreach ($tdir as $k => $v) {
             $tableid[] = $v["id"];
@@ -718,14 +730,19 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                 if (preg_match("/select (.+) from (.+)/", $oquery, $reg)) {
                     if (preg_match("/doctype( *)=/", $reg[2], $treg)) return false; // do not test if special doctype searches
                     $nq = sprintf("select count(%s) from %s and ((doctype='D')or(doctype='S')) limit 1", $reg[1], $reg[2]);
-                    $count = $query->Query(0, 0, "TABLE", $nq);
-                    if (($query->nb > 0) && (is_array($count)) && ($count[0]["count"] > 0)) return true;
+                    try {
+                        $count = $query->Query(0, 0, "TABLE", $nq);
+                        if (($query->nb > 0) && (is_array($count)) && ($count[0]["count"] > 0)) return true;
+                    }
+                    catch(Exception $e) {
+                        return false;
+                    }
                 }
             }
         } else {
             $qfld = new QueryDb($dbaccess, "QueryDir");
             $qfld->AddQuery("qtype='S'");
-            $qfld->AddQuery("fld.dirid=$dirid");
+            $qfld->AddQuery(sprintf("fld.dirid=%d", $dirid));
             $qfld->AddQuery("doctype='D' or doctype='S'");
             $lq = $qfld->Query(0, 1, "TABLE");
             
