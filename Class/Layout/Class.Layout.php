@@ -391,7 +391,7 @@ class Layout
             $this->action->parent->ClearLogMsg();
             // Add warning messages
             $list = $this->action->parent->GetWarningMsg();
-            if (count($list) > 0) $out.= "displayWarningMsg('" . implode("\\n---------\\n", $list) . "');\n";
+            if (count($list) > 0) $out.= "displayWarningMsg('" . implode("\\n---------\\n", array_unique($list)) . "');\n";
             $this->action->parent->ClearWarningMsg();
         }
         if (!$onlylog) {

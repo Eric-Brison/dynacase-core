@@ -12,7 +12,7 @@
         </thead>
         <tbody id="tbody[aid]" [IFNOT ISIE][IF tableheight]class="overflow" style="height:[tableheight];"[ENDIF tableheight][ENDIF ISIE] >
             [BLOCK EATTR]<tr>
-                [BLOCK [bevalue]]<td style="color:[color];background-color:[bgcolor];text-align:[align];[tdstyle]">
+                [BLOCK [bevalue]]<td style="color:[color];background-color:[bgcolor];text-align:[align];[tdstyle]"[IF tdclass] class="[tdclass]"[ENDIF tdclass]>
                     [evalue]
                 </td>[ENDBLOCK [bevalue]]
             </tr>[ENDBLOCK EATTR]

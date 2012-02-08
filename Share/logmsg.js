@@ -227,9 +227,13 @@ function sendActionNotification(code,arg) {
   }
 
   if (window.opener) {
+      try {
     if (window.opener.receiptActionNotification) {
       window.opener.receiptActionNotification(code,arg);
     }
+      } catch (e) {
+
+      }
   }
   if (window.parent && (window != window.parent)) {
     if (window.parent.receiptActionNotification) {

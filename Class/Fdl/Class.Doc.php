@@ -5000,22 +5000,6 @@ create unique index i_docir on doc(initid, revision);";
             }
             return $a;
         }
-        final private function rowattrReplace($s, $index)
-        {
-            if (substr($s, 0, 2) == "L_") return "[$s]";
-            if (substr($s, 0, 2) == "V_") {
-                $sl = substr(strtolower($s) , 2);
-                $vis = $this->getAttribute($sl)->mvisibility;
-                
-                if (($vis == "H") || ($vis == "I") || ($vis == "O")) $v = "";
-                else $v = $this->GetHtmlAttrValue($sl, "_self", 2, $index);
-            } else {
-                $sl = strtolower($s);
-                if (!isset($this->$sl)) return "[$s]";
-                $v = $this->getTValue($sl, "", $index);
-            }
-            return $v;
-        }
         /**
          * @param NormalAttribute $oattr
          * @param string $value

@@ -1069,6 +1069,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             $lay->set("tableheight", $height);
             $lay->set("readonly", ($oattr->mvisibility == 'U'));
             $lay->set("thspan", "1");
+            $lay->set("aehelp", false);
             
             if (($zone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $zone, $reg)) {
                 $attrid = $oattr->id;
@@ -1076,8 +1077,14 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 
                 $dxml = new DomDocument();
                 $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
+                if (!file_exists($rowlayfile)) {
+                    $lay->template = sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
+                    AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
+                    return;
+                }
                 if (!@$dxml->load($rowlayfile)) {
-                    AddwarningMsg(sprintf(_("cannot open %s layout file") , DEFAULT_PUBDIR . "/$rowlayfile"));
+                    AddwarningMsg(sprintf(_("cannot load xml template : %s") , print_r(libxml_get_last_error() , true)));
+                    $lay->template = sprintf(_("cannot load xml %s layout file") , $rowlayfile);
                     return;
                 }
                 $theads = $dxml->getElementsByTagName('table-head');
@@ -1095,12 +1102,13 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                         $iti = $theadcells->item($i);
                         $th = xt_innerXML($iti);
                         $thstyle = $iti->getAttribute("style");
+                        $thclass = $iti->getAttribute("class");
                         
                         $talabel[] = array(
                             "alabel" => $th,
                             "ahw" => "auto",
                             "astyle" => $thstyle,
-                            "ahclass" => "",
+                            "ahclass" => $thclass,
                             "ahvis" => "visible"
                         );
                     }
@@ -1108,7 +1116,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 }
                 
                 $tbodies = $dxml->getElementsByTagName('table-body');
-                $tr = $tcellstyle = array();
+                $tr = $tcellstyle = $tcellclass = array();
                 if ($tbodies->length > 0) {
                     /**
                      * @var DOMElement $tbody
@@ -1122,6 +1130,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                         $iti = $tbodycells->item($i);
                         $tr[] = xt_innerXML($iti);
                         $tcellstyle[] = $iti->getAttribute("style");
+                        $tcellclass[] = $iti->getAttribute("class");
                     }
                 }
                 
@@ -1146,7 +1155,11 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $tvattr = array();
                 for ($k = 0; $k < $nbitem; $k++) {
                     $tvattr[] = array(
-                        "bevalue" => "bevalue_$k"
+                        "bevalue" => "bevalue_$k",
+                        "index" => $k,
+                        "cellattrid" => '',
+                        "cellmultiple" => '',
+                        "cellatype" => ''
                     );
                     $tivalue = array();
                     
@@ -1156,6 +1169,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                             "eivalue" => $val,
                             "ehvis" => "visible",
                             "tdstyle" => $tcellstyle[$kd],
+                            "eiclass" => $tcellclass[$kd],
                             "bgcolor" => "inherit",
                             "vhw" => "auto"
                         );
@@ -1189,6 +1203,11 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $lay->set("readonly", ($oattr->mvisibility == 'U'));
                 $lay->set("useadd", ($oattr->getOption("userowadd") != "no"));
                 if (count($tvattr) > 0) $lay->setBlockData("EATTR", $tvattr);
+                
+                if ($oattr->getOption("vlabel", "up") == "up") $lay->set("caption", $oattr->getLabel());
+                else $lay->set("caption", "");
+            } else {
+                addWarningMsg(sprintf(_("roweditzone syntax %s is invalid") , $zone));
             }
         }
         /**
@@ -1213,6 +1232,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 if (!isset($doc->$sl)) return "[$s]";
                 if ($index == - 1) $v = $doc->getValue($sl);
                 else $v = $doc->getTValue($sl, "", $index);
+                $v = str_replace('"', '&quot;', $v);
             }
             return $v;
         }

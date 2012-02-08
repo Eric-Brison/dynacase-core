@@ -615,8 +615,14 @@ class DocHtmlFormat
             // detect special row zone
             $dxml = new DomDocument();
             $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
+            if (!file_exists($rowlayfile)) {
+                $htmlval = sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
+                AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
+                return $htmlval;
+            }
             if (!@$dxml->load($rowlayfile)) {
-                AddwarningMsg(sprintf(_("cannot open %s layout file") , DEFAULT_PUBDIR . "/$rowlayfile"));
+                AddwarningMsg(sprintf(_("cannot load xml template : %s") , print_r(libxml_get_last_error() , true)));
+                $htmlval = sprintf(_("cannot load xml layout file : %s") , $rowlayfile);
                 return $htmlval;
             }
             $theads = $dxml->getElementsByTagName('table-head');
@@ -634,7 +640,9 @@ class DocHtmlFormat
                     $item = $theadcells->item($i);
                     $th = xt_innerXML($item);
                     $thstyle = $item->getAttribute("style");
+                    $thclass = $item->getAttribute("class");
                     if ($thstyle != "") $thstyle = "style=\"$thstyle\"";
+                    if ($thclass) $thstyle.= ' class="' . $thclass . '"';
                     $talabel[] = array(
                         "alabel" => $th,
                         "astyle" => $thstyle,
@@ -645,7 +653,7 @@ class DocHtmlFormat
             }
             
             $tbodies = $dxml->getElementsByTagName('table-body');
-            $tr = $tcellstyle = array();
+            $tr = $tcellstyle = $tcellclass = array();
             
             if ($tbodies->length > 0) {
                 /**
@@ -660,6 +668,7 @@ class DocHtmlFormat
                     $item = $tbodycells->item($i);
                     $tr[] = xt_innerXML($item);
                     $tcellstyle[] = $item->getAttribute("style");
+                    $tcellclass[] = $item->getAttribute("class");
                 }
             }
             $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
@@ -681,12 +690,12 @@ class DocHtmlFormat
                 
                 foreach ($tr as $kd => $vd) {
                     
-                    $hval = preg_replace('/\[([^\]]*)\]/e', "\$this->doc->rowattrReplace('\\1',$k)", $vd);
-                    $tdstyle = $tcellstyle[$kd];
+                    $hval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace('\\1',$k)", $vd);
                     $tivalue[] = array(
                         "evalue" => $hval,
                         "color" => "inherit",
-                        "tdstyle" => $tdstyle,
+                        "tdstyle" => $tcellstyle[$kd],
+                        "tdclass" => $tcellclass[$kd],
                         "bgcolor" => "inherit",
                         "align" => "inherit"
                     );
@@ -694,8 +703,13 @@ class DocHtmlFormat
                 $lay->setBlockData("bevalue_$k", $tivalue);
             }
             $lay->setBlockData("EATTR", $tvattr);
-            if ($nbitem > 10) $lay->set("caption", $this->oattr->getLabel() . " ($nbitem)");
+            $caption = '';
+            if ($this->oattr->getOption("vlabel") == "up") {
+                $caption = $this->oattr->getLabel();
+            }
             
+            if ($nbitem > 10) $caption.= " ($nbitem)";
+            $lay->set("caption", $caption);
             $htmlval = $lay->gen();
         } else {
             $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
@@ -1001,6 +1015,22 @@ class DocHtmlFormat
     {
         $htmlval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
         return $htmlval;
+    }
+    private function rowattrReplace($s, $index)
+    {
+        if (substr($s, 0, 2) == "L_") return "[$s]";
+        if (substr($s, 0, 2) == "V_") {
+            $sl = substr(strtolower($s) , 2);
+            $vis = $this->doc->getAttribute($sl)->mvisibility;
+            
+            if (($vis == "H") || ($vis == "I") || ($vis == "O")) $v = "";
+            else $v = $this->doc->GetHtmlAttrValue($sl, "_self", 2, $index);
+        } else {
+            $sl = strtolower($s);
+            if (!isset($this->doc->$sl)) return "[$s]";
+            $v = $this->doc->getTValue($sl, "", $index);
+        }
+        return $v;
     }
 }
 ?>
