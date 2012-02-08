@@ -1069,6 +1069,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             $lay->set("tableheight", $height);
             $lay->set("readonly", ($oattr->mvisibility == 'U'));
             $lay->set("thspan", "1");
+            $lay->set("aehelp", false);
             
             if (($zone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $zone, $reg)) {
                 $attrid = $oattr->id;
@@ -1076,8 +1077,10 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 
                 $dxml = new DomDocument();
                 $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
+                
                 if (!@$dxml->load($rowlayfile)) {
                     AddwarningMsg(sprintf(_("cannot open %s layout file") , DEFAULT_PUBDIR . "/$rowlayfile"));
+                    $lay->template = sprintf(_("cannot open %s layout file") , $zone);
                     return;
                 }
                 $theads = $dxml->getElementsByTagName('table-head');
@@ -1095,12 +1098,13 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                         $iti = $theadcells->item($i);
                         $th = xt_innerXML($iti);
                         $thstyle = $iti->getAttribute("style");
+                        $thclass = $iti->getAttribute("class");
                         
                         $talabel[] = array(
                             "alabel" => $th,
                             "ahw" => "auto",
                             "astyle" => $thstyle,
-                            "ahclass" => "",
+                            "ahclass" => $thclass,
                             "ahvis" => "visible"
                         );
                     }
@@ -1108,7 +1112,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 }
                 
                 $tbodies = $dxml->getElementsByTagName('table-body');
-                $tr = $tcellstyle = array();
+                $tr = $tcellstyle = $tcellclass = array();
                 if ($tbodies->length > 0) {
                     /**
                      * @var DOMElement $tbody
@@ -1122,6 +1126,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                         $iti = $tbodycells->item($i);
                         $tr[] = xt_innerXML($iti);
                         $tcellstyle[] = $iti->getAttribute("style");
+                        $tcellclass[] = $iti->getAttribute("class");
                     }
                 }
                 
@@ -1146,7 +1151,11 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $tvattr = array();
                 for ($k = 0; $k < $nbitem; $k++) {
                     $tvattr[] = array(
-                        "bevalue" => "bevalue_$k"
+                        "bevalue" => "bevalue_$k",
+                        "index" => $k,
+                        cellattrid => '',
+                        cellmultiple => '',
+                        cellatype => ''
                     );
                     $tivalue = array();
                     
@@ -1156,6 +1165,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                             "eivalue" => $val,
                             "ehvis" => "visible",
                             "tdstyle" => $tcellstyle[$kd],
+                            "eiclass" => $tcellclass[$kd],
                             "bgcolor" => "inherit",
                             "vhw" => "auto"
                         );
@@ -1189,6 +1199,8 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $lay->set("readonly", ($oattr->mvisibility == 'U'));
                 $lay->set("useadd", ($oattr->getOption("userowadd") != "no"));
                 if (count($tvattr) > 0) $lay->setBlockData("EATTR", $tvattr);
+            } else {
+                addWarningMsg(sprintf(_("roweditzone syntax %s is invalid") , $zone));
             }
         }
         /**
