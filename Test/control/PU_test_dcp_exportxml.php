@@ -54,7 +54,6 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 $export->exportFromSelection($s);
                 $this->dom = new \DOMDocument();
                 $this->dom->load($export->getOutputFile());
-                
                 @unlink($export->getOutputFile());
                 return $this->dom;
             }
@@ -99,7 +98,7 @@ class TestExportXml extends TestCaseDcpCommonFamily
     {
         
         $dom = $this->getExportedSearchDom();
-        $this->domTestExportRelation($dom, $docName, $attrName, $expectedValue);
+        $this->domTestExportValue($dom, $docName, $attrName, 'name', $expectedValue);
     }
     /**
      * @dataProvider dataDocumentFiles
@@ -108,10 +107,18 @@ class TestExportXml extends TestCaseDcpCommonFamily
     {
         
         $dom = $this->getExportedSelectionDom();
-        $this->domTestExportRelation($dom, $docName, $attrName, $expectedValue);
+        $this->domTestExportValue($dom, $docName, $attrName, 'name', $expectedValue);
     }
-    
-    private function domTestExportRelation(\DOMDocument $dom, $docName, $attrName, $expectedValue)
+    /**
+     * @dataProvider dataValues
+     */
+    public function testExportSimpleValue($docName, $attrName, $expectedValue)
+    {
+        
+        $dom = $this->getExportedSearchDom();
+        $this->domTestExportValue($dom, $docName, $attrName, 'content', $expectedValue);
+    }
+    private function domTestExportValue(\DOMDocument $dom, $docName, $attrName, $domAttr, $expectedValue)
     {
         
         $docs = $dom->getElementsByTagName("tst_exportfam1");
@@ -145,9 +152,12 @@ class TestExportXml extends TestCaseDcpCommonFamily
             /**
              * @var \DOMElement $attr
              */
-            
-            $value = $attr->getAttribute('name');
-            $this->assertEquals($expectedValue[$ka], $value, sprintf("incorrect value for attribute %s in %s document", $attrName, $docName));
+            if ($domAttr == 'content') {
+                $value = $attr->nodeValue;
+            } else {
+                $value = $attr->getAttribute($domAttr);
+            }
+            $this->assertTrue($expectedValue[$ka] === $value, sprintf("incorrect value for attribute %s in %s document", $attrName, $docName));
             $ka++;
         }
     }
@@ -182,6 +192,32 @@ class TestExportXml extends TestCaseDcpCommonFamily
                     "TST_OUTREL1,TST_OUTREL3",
                     "TST_OUTREL1,TST_OUTREL2,TST_OUTREL3"
                 )
+            )
+        );
+    }
+    
+    public function dataValues()
+    {
+        return array(
+            array(
+                "TST_NUM1",
+                "tst_number",
+                "1"
+            ) ,
+            array(
+                "TST_NUM0",
+                "tst_number",
+                "0"
+            ) ,
+            array(
+                "TST_DATE1",
+                "tst_date",
+                "2012-02-20"
+            ) ,
+            array(
+                "TST_DATE1",
+                "tst_number",
+                ""
             )
         );
     }
