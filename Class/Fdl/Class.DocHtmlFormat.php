@@ -615,8 +615,14 @@ class DocHtmlFormat
             // detect special row zone
             $dxml = new DomDocument();
             $rowlayfile = getLayoutFile($reg[1], ($reg[2]));
+            if (! file_exists($rowlayfile)) {
+                $htmlval=sprintf(_("cannot open %s layout file : %s") , $rowlayfile);
+                AddwarningMsg(sprintf(_("cannot open %s layout file : %s") , $rowlayfile));
+                return $htmlval;
+            }
             if (!@$dxml->load($rowlayfile)) {
-                AddwarningMsg(sprintf(_("cannot open %s layout file") , DEFAULT_PUBDIR . "/$rowlayfile"));
+                AddwarningMsg(sprintf(_("cannot load xml template : %s") , print_r(libxml_get_last_error (),true)));
+                $htmlval=sprintf(_("cannot load xml layout file : %s") , $rowlayfile);
                 return $htmlval;
             }
             $theads = $dxml->getElementsByTagName('table-head');
