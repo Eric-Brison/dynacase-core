@@ -634,7 +634,9 @@ class DocHtmlFormat
                     $item = $theadcells->item($i);
                     $th = xt_innerXML($item);
                     $thstyle = $item->getAttribute("style");
+                    $thclass = $item->getAttribute("class");
                     if ($thstyle != "") $thstyle = "style=\"$thstyle\"";
+                    if ($thclass) $thstyle.= ' class="' . $thclass . '"';
                     $talabel[] = array(
                         "alabel" => $th,
                         "astyle" => $thstyle,
@@ -645,7 +647,7 @@ class DocHtmlFormat
             }
             
             $tbodies = $dxml->getElementsByTagName('table-body');
-            $tr = $tcellstyle = array();
+            $tr = $tcellstyle = $tcellclass = array();
             
             if ($tbodies->length > 0) {
                 /**
@@ -660,6 +662,7 @@ class DocHtmlFormat
                     $item = $tbodycells->item($i);
                     $tr[] = xt_innerXML($item);
                     $tcellstyle[] = $item->getAttribute("style");
+                    $tcellclass[] = $item->getAttribute("class");
                 }
             }
             $ta = $this->doc->attributes->getArrayElements($this->oattr->id);
@@ -681,12 +684,12 @@ class DocHtmlFormat
                 
                 foreach ($tr as $kd => $vd) {
                     
-                    $hval = preg_replace('/\[([^\]]*)\]/e', "\$this->doc->rowattrReplace('\\1',$k)", $vd);
-                    $tdstyle = $tcellstyle[$kd];
+                    $hval = preg_replace('/\[([^\]]*)\]/e', "\$this->rowattrReplace('\\1',$k)", $vd);
                     $tivalue[] = array(
                         "evalue" => $hval,
                         "color" => "inherit",
-                        "tdstyle" => $tdstyle,
+                        "tdstyle" => $tcellstyle[$kd],
+                        "tdclass" => $tcellclass[$kd],
                         "bgcolor" => "inherit",
                         "align" => "inherit"
                     );
@@ -1001,6 +1004,22 @@ class DocHtmlFormat
     {
         $htmlval = sprintf("<span style=\"background-color:%s\">%s</span>", $avalue, $avalue);
         return $htmlval;
+    }
+    private function rowattrReplace($s, $index)
+    {
+        if (substr($s, 0, 2) == "L_") return "[$s]";
+        if (substr($s, 0, 2) == "V_") {
+            $sl = substr(strtolower($s) , 2);
+            $vis = $this->doc->getAttribute($sl)->mvisibility;
+            
+            if (($vis == "H") || ($vis == "I") || ($vis == "O")) $v = "";
+            else $v = $this->doc->GetHtmlAttrValue($sl, "_self", 2, $index);
+        } else {
+            $sl = strtolower($s);
+            if (!isset($this->doc->$sl)) return "[$s]";
+            $v = $this->doc->getTValue($sl, "", $index);
+        }
+        return $v;
     }
 }
 ?>
