@@ -176,7 +176,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 }
             } else {
                 header('HTTP/1.0 503 Application unavalaible');
-                printf("Fail to find application %s.", $name);
+                printf("Fail to find application %s.\n", $name);
                 exit;
                 //throw new Exception(sprintf("Fail to find application %s",$name));
                 
