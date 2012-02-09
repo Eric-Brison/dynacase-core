@@ -3641,7 +3641,7 @@ create unique index i_docir on doc(initid, revision);";
             return $err;
         }
         /** return the first attribute of type 'file'
-         * @return Attribute
+         * @return NormalAttribute|bool
          */
         final public function getFirstFileAttributes()
         {
