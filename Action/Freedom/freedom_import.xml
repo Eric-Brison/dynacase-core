@@ -3,13 +3,7 @@
 
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
    <title>[TEXT:Import Result] </title>
-
-
-[CSS:REF]
-
-
    <style type="text/css">
-[CSS:CODE]
 TR.updated TD{
    background-color:#efef53;
 }
@@ -25,6 +19,12 @@ LI {
 LI.no {
         color:#d0d0d0
         }
+TD, TH {
+       font-size:10pt;
+       font-family:sans;
+       border-top: solid grey 1px;
+       empty-cells:show;
+       }
    </style>
 
 [JS:REF]
@@ -53,15 +53,11 @@ LI.no {
 
 <body class="freedom">
 
-                         
-
-
-      
 
    <H1>[TEXT:Result Import Documents]</H1>
 <H3>[nbdoc] [TEXT:documents to examine].</H3>
 
-<table class="rows" width="100%" >
+<table width="100%" >
 
 <thead><tr><th>[TEXT:line]</th>
 <th>[TEXT:doctitle]</th>

@@ -22,13 +22,13 @@ define("TARUPLOAD", getTmpDir() . "/upload/");
 define("TAREXTRACT", "/extract/");
 define("TARTARS", "/tars/");
 
-function getTarUploadDir(&$action)
+function getTarUploadDir(Action & $action)
 {
     $dtar = $action->getParam("FREEDOM_UPLOADDIR");
     if ($dtar == "") $dtar = TARUPLOAD;
     return $dtar . "/" . $action->user->login . TARTARS;
 }
-function getTarExtractDir(&$action, $tar)
+function getTarExtractDir(Action & $action, $tar)
 {
     $dtar = $action->getParam("FREEDOM_UPLOADDIR");
     if ($dtar == "") $dtar = TARUPLOAD;
@@ -57,10 +57,9 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
     if (is_dir($ldir)) {
         if ($handle = opendir($ldir)) {
             $lfamid = 0;
+            $lfldid = 0;
             while (false !== ($file = readdir($handle))) {
-                $absfile = "$ldir/$file";
                 $absfile = str_replace("//", "/", "$ldir/$file");
-                
                 if (is_file($absfile) && ($file == "fdl.csv")) {
                     $tr = analyze_csv($absfile, $dbaccess, $dirid, $lfamid, $lfldid, $analyze);
                 }
@@ -71,6 +70,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
             /* This is the correct way to loop over the directory. */
             $defaultdoc = createDoc($dbaccess, $famid);
             if (!$defaultdoc) $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of document") , $famid));
+            $fimgattr = null;
             if (($lfamid == 0) && ($famid == 7)) {
                 $defaultimg = createDoc($dbaccess, "IMAGE");
                 $fimgattr = $defaultimg->GetFirstFileAttributes();
@@ -79,7 +79,11 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
             if (!$newdir) $action->AddWarningMsg(sprintf(_("you cannot create this kind [%s] of folder") , $dfldid));
             $ffileattr = $defaultdoc->GetFirstFileAttributes();
             
+            $dir = null;
             if ($dirid > 0) {
+                /**
+                 * @var Dir $dir
+                 */
                 $dir = new_Doc($dbaccess, $dirid);
             }
             
@@ -103,7 +107,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                 "specmsg" => "",
                                 "id" => 0,
                                 "anaclass" => "fileclass",
-                                "familyid" => $ddoc->fromid,
+                                "familyid" => 0,
                                 "familyname" => "",
                                 "action" => ""
                             );
@@ -119,17 +123,18 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                                     $ddoc = & $defaultdoc;
                                     $fattr = $ffileattr->id;
                                 }
+                                $tr[$index]["familyname"] = $ddoc->getTitle();
                                 $tr[$index]["familyid"] = $ddoc->fromid;
-                                $tr[$index]["action"] = _("to be add");
+                                $tr[$index]["action"] = N_("to be add");
                                 if (!$analyze) {
                                     $ddoc->Init();
                                     $ddoc->setValue($fattr, $vfid);
                                     $err = $ddoc->Add();
                                     if ($err != "") {
-                                        $tr[$index]["action"] = _("not added");
+                                        $tr[$index]["action"] = N_("not added");
                                     } else {
                                         $ddoc->addComment(sprintf("create by import from archive %s", substr(basename($ldir) , 0, -2)));
-                                        $tr[$index]["action"] = _("added");
+                                        $tr[$index]["action"] = N_("added");
                                         $tr[$index]["id"] = $ddoc->id;
                                         $ddoc->PostModify();
                                         $ddoc->Modify();
@@ -162,16 +167,16 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
                             "anaclass" => "fldclass",
                             "familyid" => $newdir->fromid,
                             "familyname" => "",
-                            "action" => _("to be add")
+                            "action" => N_("to be add")
                         );
                         if (!$analyze) {
                             $newdir->Init();
                             $newdir->setTitle($file);
                             $err = $newdir->Add();
                             if ($err != "") {
-                                $tr[$index]["action"] = _("not added");
+                                $tr[$index]["action"] = N_("not added");
                             } else {
-                                $tr[$index]["action"] = _("added");
+                                $tr[$index]["action"] = N_("added");
                                 if ($dirid > 0) {
                                     $dir->AddFile($newdir->id);
                                 }
@@ -192,6 +197,7 @@ function import_directory(&$action, $ldir, $dirid = 0, $famid = 7, $dfldid = 2, 
             "err" => $err
         );
     }
+    return array();
 }
 
 function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze)
@@ -200,10 +206,27 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze)
     $fcsv = fopen($fdlcsv, "r");
     if ($fcsv) {
         $ldir = dirname($fdlcsv);
+        $nline = 0;
+        $nbdoc = 0;
+        $tcolorder = array();
         while ($data = fgetcsv($fcsv, 0, ";")) {
             $nline++;
             $level = substr_count($ldir, "/");
             $index = "c$level/$nline";
+            $tr[$index] = array(
+                "err" => "",
+                "msg" => "",
+                "specmsg" => "",
+                "folderid" => 0,
+                "foldername" => "",
+                "filename" => "",
+                "title" => "",
+                "id" => "",
+                "values" => array() ,
+                "familyid" => 0,
+                "familyname" => "",
+                "action" => "-"
+            );
             switch ($data[0]) {
                     // -----------------------------------
                     
@@ -249,7 +272,7 @@ function analyze_csv($fdlcsv, $dbaccess, $dirid, &$famid, &$dfldid, $analyze)
                     );
                     $tr[$index] = csvAddDoc($dbaccess, $data, $dirid, $analyze, $ldir, "update", $tk, array() , $tcolorder[$fromid]);
                     if ($tr[$index]["err"] == "") $nbdoc++;
-                    if ($tr[$index]["action"] != "") $tr[$index]["action"] = _($tr[$index]["action"]);
+                    
                     break;
                 }
             }
