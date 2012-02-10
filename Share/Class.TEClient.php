@@ -71,7 +71,6 @@ class TransformationEngine
             );
             return $err;
         }
-
         /* Lit l'adresse IP du serveur de destination */
         $address = gethostbyname($this->host);
         $service_port = $this->port;
@@ -80,7 +79,7 @@ class TransformationEngine
         //    $result = socket_connect($socket, $address, $service_port);
         $timeout = floatval(getParam("TE_TIMEOUT", 3));
         $fp = @stream_socket_client("tcp://$address:$service_port", $errno, $errstr, $timeout);
-
+        
         if (!$fp) {
             $err = _("socket creation error") . " : $errstr ($errno)\n";
             $info = array(
@@ -88,40 +87,37 @@ class TransformationEngine
             );
             return $err;
         }
-
         /*
          * TE server should speak first with a "Continue" response
-         */
+        */
         $out = fgets($fp, 2048);
-        if ($out === false ) {
-            $err = sprintf(_("Error sending file")." (error reading expected 'Continue' response)");
+        if ($out === false) {
+            $err = sprintf(_("Error sending file") . " (error reading expected 'Continue' response)");
             $info = array(
                 "status" => self::error_sendfile
             );
             return $err;
         }
         if (trim($out) != 'Continue') {
-            $err = sprintf(_("Error sending file")." (unexpected response from server: [%s])(server at %s:%s might not be a TE server?)", $out, $address, $service_port);
+            $err = sprintf(_("Error sending file") . " (unexpected response from server: [%s])(server at %s:%s might not be a TE server?)", $out, $address, $service_port);
             $info = array(
                 "status" => self::error_sendfile
             );
             return $err;
         }
-
         /*
          * Send CONVERT request
-         */
+        */
         $basename = str_replace('"', '_', basename($filename));
         $mime = getSysMimeFile($filename, $basename);
-
+        
         $in = "CONVERT\n";
         fputs($fp, $in);
         $in = "<TE name=\"$te_name\" fkey=\"$fkey\" fname=\"$basename\" size=\"$size\" mime=\"$mime\" callback=\"$callback\"/>\n";
         fputs($fp, $in);
-
         /*
          * Receive CONVERT response
-         */
+        */
         $out = trim(fgets($fp));
         $status = "KO";
         if (preg_match("/status=[ ]*\"([^\"]*)\"/i", $out, $match)) {
@@ -138,7 +134,7 @@ class TransformationEngine
                     }
                     fclose($handle);
                 }
-
+                
                 fflush($fp);
                 //echo "OK.\n";
                 // echo "Lire la réponse : \n\n";
@@ -146,18 +142,21 @@ class TransformationEngine
                 if (preg_match("/status=[ ]*\"([^\"]*)\"/i", $out, $match)) {
                     $status = $match[1];
                 }
+                $outmsg = '';
                 if (preg_match("/<response[^>]*>(.*)<\/response>/i", $out, $match)) {
                     $outmsg = $match[1];
                 }
                 //echo "Response [$status]\n";
                 //echo "Message [$outmsg]\n";
                 if ($status == "OK") {
+                    $tid = 0;
                     if (preg_match("/ id=[ ]*\"([^\"]*)\"/i", $outmsg, $match)) {
                         $tid = $match[1];
                     }
                     if (preg_match("/status=[ ]*\"([^\"]*)\"/i", $outmsg, $match)) {
                         $status = $match[1];
                     }
+                    $comment = '';
                     if (preg_match("/<comment>(.*)<\/comment>/i", $outmsg, $match)) {
                         $comment = $match[1];
                     }
@@ -167,7 +166,7 @@ class TransformationEngine
                         "comment" => $comment
                     );
                 } else {
-                    $err = $outcode . " [$outmsg]";
+                    $err = " [$outmsg]";
                 }
             }
         } else {
@@ -184,10 +183,9 @@ class TransformationEngine
                 );
             }
         }
-
         //echo "Fermeture de la socket...";
         fclose($fp);
-
+        
         return $err;
     }
     /**
@@ -227,6 +225,7 @@ class TransformationEngine
                 fputs($fp, $in);
                 
                 $out = trim(fgets($fp));
+                $status = '';
                 if (preg_match("/status=[ ]*\"([^\"]*)\"/i", $out, $match)) {
                     $status = $match[1];
                 }
@@ -316,29 +315,37 @@ class TransformationEngine
                 //echo "Recept du file size ...";
                 $out = trim(fgets($fp, 2048));
                 //echo "[$out]\n";
+                $status = '';
                 if (preg_match("/status=[ ]*\"([^\"]*)\"/i", $out, $match)) {
                     $status = $match[1];
                 }
                 if ($status == "OK") {
-                    
+                    $size = 0;
                     if (preg_match("/size=[ ]*\"([^\"]*)\"/i", $out, $match)) {
                         $size = $match[1];
                     }
                     //echo "Recept du fichier $filename ...";
                     if ($handle) {
                         $trbytes = 0;
+                        $orig_size = $size;
                         do {
                             if ($size >= 2048) {
                                 $rsize = 2048;
                             } else {
                                 $rsize = $size;
                             }
-                            
-                            $buf = fread($fp, $rsize);
-                            $l = strlen($buf);
-                            $trbytes+= $l;
-                            $size-= $l;
-                            $wb = fwrite($handle, $buf);
+                            if ($rsize > 0) {
+                                $buf = fread($fp, $rsize);
+                                if ($buf === false || $buf === "") {
+                                    $err = sprintf("error reading from msgsock (%s/%s bytes transferred))", $trbytes, $orig_size);
+                                    break;
+                                }
+                                
+                                $l = strlen($buf);
+                                $trbytes+= $l;
+                                $size-= $l;
+                                $wb = fwrite($handle, $buf);
+                            }
                             //echo "file:$l []";
                             
                         } while ($size > 0);
@@ -352,6 +359,7 @@ class TransformationEngine
                         $status = $match[1];
                     }
                     if ($status != "OK") {
+                        $msg = "";
                         if (preg_match("/<response[^>]*>(.*)<\/response>/i", $out, $match)) {
                             $msg = $match[1];
                         }
@@ -410,6 +418,7 @@ class TransformationEngine
                 fputs($fp, $in);
                 
                 $out = trim(fgets($fp));
+                $status = '';
                 if (preg_match("/status=[ ]*\"([^\"]*)\"/i", $out, $match)) {
                     $status = $match[1];
                 }
