@@ -28,15 +28,15 @@ include_once ("WHAT/Class.TEClient.php");
  * @global tid Http var : task identificator
  *
  */
-function settxtfile(&$action)
+function settxtfile(Action & $action)
 {
-    $docid = GetHttpVars("docid");
-    $attrid = GetHttpVars("attrid");
-    $index = GetHttpVars("index", -1);
-    $tid = GetHttpVars("tid");
+    $docid = $action->getArgument("docid");
+    $attrid = $action->getArgument("attrid");
+    $index = $action->getArgument("index", -1);
+    $tid = $action->getArgument("tid");
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    
-    if (!$tid) $$err = _("no task identificator found");
+    $err = '';
+    if (!$tid) $err = _("no task identificator found");
     else {
         $ot = new TransformationEngine($action->getParam("TE_HOST") , $action->getParam("TE_PORT"));
         
