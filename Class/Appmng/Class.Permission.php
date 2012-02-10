@@ -219,7 +219,10 @@ create index permission_idx4 on permission(computed);
         $list = $query->Query();
         $this->log->debug("DEL APP PERM");
         if ($query->nb > 0) {
-            while (list($k, $v) = each($list)) {
+            /**
+             * @var Permission $v
+             */
+            foreach ($list as $k => $v) {
                 $v->Delete();
             }
         } else {
@@ -267,8 +270,10 @@ create index permission_idx4 on permission(computed);
         );
         $res = $query->Query();
         $aclList = array();
-        foreach ($res as $k => $v) {
-            $aclList[] = $v->id;
+        if ($query->nb > 0) {
+            foreach ($res as $k => $v) {
+                $aclList[] = $v->id;
+            }
         }
         return $aclList;
     }
@@ -328,7 +333,7 @@ create index permission_idx4 on permission(computed);
             }
             if ($privileges !== "") {
                 $this->privileges = $privileges;
-                return;
+                return $this->privileges;
             }
         }
         $this->privileges = array();
@@ -358,7 +363,7 @@ create index permission_idx4 on permission(computed);
         $query->basic_elem->sup_where = array(
             "id_application='{$this->id_application}'",
             "id_user='{$this->id_user}'",
-            (!$computed) ? "( computed = FALSE OR computed IS NULL )" : ""
+            (!$computed) ? "( computed = FALSE OR computed IS NULL )" : "true"
         );
         $list = $query->Query();
         if ($query->nb > 0) {

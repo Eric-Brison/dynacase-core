@@ -20,23 +20,33 @@
  */
 include_once ("Class.Application.php");
 
-$appname = GetHttpVars("appname", "");
-$method = GetHttpVars("method", "init");
+$usage = new ApiUsage();
+$usage->setText("Manage application");
+$appname = $usage->addNeeded("appname", "application name");
+$method = $usage->addOption("method", "action to do", array(
+    "init",
+    "update",
+    "reinit",
+    "delete"
+) , "init");
 
-if ($appname == "") {
-    echo "[appadmin::$method] missing application. Please set it whith --appname=<application name>\n";
-    exit;
-}
-if ($method != "init" && $method != "reinit" && $method != "update" && $method != "delete") {
-    echo "[appadmin] allowed method : init reinit update delete.\n";
-    exit;
-}
+$usage->verify();
+
 echo " $appname...$method\n";
 $app = new Application();
 
 $Null = "";
-$app->Set($appname, $Null, null, true);
-if ($method == "reinit") $app->InitApp($appname, false, null, true);
-if ($method == "update") $app->InitApp($appname, true);
-if ($method == "delete") $app->DeleteApp();
+if ($method != "delete") {
+    $app->Set($appname, $Null, null, true);
+    if ($method == "reinit") $app->InitApp($appname, false, null, true);
+    if ($method == "update") $app->InitApp($appname, true);
+}
+if ($method == "delete") {
+    $app->Set($appname, $Null, null, false);
+    if ($app->isAffected()) {
+        $app->DeleteApp();
+    } else {
+        echo "already deleted";
+    }
+}
 ?>

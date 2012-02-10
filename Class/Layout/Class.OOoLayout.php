@@ -379,7 +379,7 @@ class OOoLayout extends Layout
     function ParseKey()
     {
         if (isset($this->rkey)) {
-            $this->template = preg_replace($this->pkey, $this->rkey, $this->template);
+            $this->template = str_replace($this->pkey, $this->rkey, $this->template);
         }
     }
     
@@ -538,7 +538,7 @@ class OOoLayout extends Layout
     {
         if (!isUTF8($val)) $val = utf8_encode($val);
         if (!$this->isXml($val)) {
-            $this->pkey[$tag] = "/\[$tag\]/";
+            $this->pkey[$tag] = "[$tag]";
             if (is_array($val)) $val = implode('<text:tab/>', $val);
             $this->rkey[$tag] = $val;
         } else {

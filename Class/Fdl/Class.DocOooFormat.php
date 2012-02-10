@@ -63,8 +63,6 @@ class DocOooFormat
         }
         $this->attrid = $this->oattr->id;
         
-        $this->cFormat = $this->oattr->format;
-        
         $thtmlval = array();
         foreach ($tvalues as $kvalue => $avalue) {
             $oooval = "";
@@ -160,7 +158,7 @@ class DocOooFormat
             
             if (($this->cFormat != "") && ($atype != "doc") && ($atype != "array") && ($atype != "option")) {
                 //printf($oooval);
-                $oooval = sprintf($this->cFormat, $oooval);
+                $oooval = sprintf($this->xmlEncode($this->cFormat) , $oooval);
             }
             
             $thtmlval[$kvalue] = $oooval;
@@ -175,17 +173,24 @@ class DocOooFormat
      */
     public function formatDefault($avalue)
     {
-        $oooval = $avalue;
-        $oooval = str_replace(array(
-            "<",
-            ">",
-            '&'
-        ) , array(
-            "&lt;",
-            "&gt;",
-            "&amp;"
-        ) , $oooval);
+        $oooval = $this->xmlEncode($avalue);
+        //$oooval=str_replace('"','&quot;',$oooval);
         return $oooval;
+    }
+    
+    public static function xmlEncode($s)
+    {
+        return str_replace(array(
+            '&',
+            '"',
+            "<",
+            ">"
+        ) , array(
+            "&amp;",
+            '&quot;',
+            "&lt;",
+            "&gt;"
+        ) , $s);
     }
     /**
      * format Idoc attribute
