@@ -85,6 +85,17 @@ tbody[moving="true"] input {
 tr[moving="true"]  {
     background-color:[COLOR_B5];
 }
+[IF ISCHROME]
+select.multidoc[size="1"] {
+    height:1.5em;
+}
+select.multidoc[size="2"] {
+    height:3em;
+}
+select.multidoc[size="3"] {
+    height:4.4em;
+}
+[ENDIF ISCHROME]
 
 table.tarray thead tr td.tools,
 table.tarray tbody tr td.tools ,

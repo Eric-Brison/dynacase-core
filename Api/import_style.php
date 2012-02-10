@@ -137,7 +137,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
         }
     }
     
-    $inputlay = new Layout("STYLE/$name/Layout/$name.css", $action);
+    $inputlay = new Layout("STYLE/$name/Layout/$name.css", ($sty->parsable) ? null : $action);
     if ($sty_inherit) {
         if ($inputlay->file == "") {
             $inputlay = new Layout("STYLE/$sty_inherit/Layout/$sty_inherit.css", $action);
