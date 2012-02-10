@@ -16,13 +16,26 @@ require_once 'PU_testcase_dcp.php';
 
 class TestApplicationParameters extends TestCaseDcp
 {
+    
+    const appName = "DCPTEST1";
+    /**
+     * @return \Application
+     */
+    private function initTestApplication()
+    {
+        $appTest = new \Application(self::$dbaccess);
+        $appTest->name = self::appName;
+        $appTest->Add();
+        $appTest->set(self::appName, $parent = null);
+        return $appTest;
+    }
     /**
      * @dataProvider dataParameters
      */
     public function testGetParam($parameters, array $expectedValues)
     {
-        $appTest = new \Application(self::$dbaccess);
-        $appTest->set("DCPTEST", $parent = null);
+        
+        $appTest = $this->initTestApplication();
         $this->assertTrue($appTest->isAffected() , sprintf("DCPTEST app not found"));
         $appTest->param->DelStatic($appTest->id);
         $appTest->InitAllParam($parameters, $update = true);
@@ -36,8 +49,8 @@ class TestApplicationParameters extends TestCaseDcp
      */
     public function testGlobParam(array $parameters, array $expectedGlob, array $expectedNoGlob)
     {
-        $appTest = new \Application(self::$dbaccess);
-        $appTest->set("DCPTEST", $parent = null);
+        
+        $appTest = $this->initTestApplication();
         $this->assertTrue($appTest->isAffected() , sprintf("DCPTEST app not found"));
         $appTest->InitAllParam($parameters, $update = true);
         $this->globParamTest($appTest, $expectedGlob, $expectedNoGlob);
@@ -47,8 +60,8 @@ class TestApplicationParameters extends TestCaseDcp
      */
     public function testGlobMigrParam(array $parameters1, array $parameters2, array $expectedGlob, array $expectedNoGlob)
     {
-        $appTest = new \Application(self::$dbaccess);
-        $appTest->set("DCPTEST", $parent = null);
+        
+        $appTest = $this->initTestApplication();
         $this->assertTrue($appTest->isAffected() , sprintf("DCPTEST app not found"));
         $appTest->InitAllParam($parameters1, $update = true);
         $appTest->InitAllParam($parameters2, $update = true);
