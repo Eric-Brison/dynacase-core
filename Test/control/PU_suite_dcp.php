@@ -20,6 +20,7 @@ class SuiteDcp
         
         $suite->addTestSuite('PU\TestDocument');
         $suite->addTestSuite('PU\TestOooLayout');
+        $suite->addTestSuite('PU\TestOooSimpleLayout');
         $suite->addTestSuite('PU\TestFolder');
         $suite->addTestSuite('PU\TestSearch');
         $suite->addTestSuite('PU\TestSimpleQuery');
