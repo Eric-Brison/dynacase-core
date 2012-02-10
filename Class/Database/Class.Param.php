@@ -112,6 +112,19 @@ class Param extends DbObj
         if ($paramt->isAffected()) $this->Modify();
         else $this->Add();
         
+        $otype = '';
+        if ($type == PARAM_GLB) $otype = PARAM_APP;
+        elseif ($type == PARAM_APP) $otype = PARAM_GLB;
+        if ($otype) {
+            // delete incompatible parameter
+            $paramo = new Param($this->dbaccess, array(
+                $name,
+                $otype,
+                $appid
+            ));
+            if ($paramo->isAffected()) $paramo->delete();
+        }
+        
         $this->buffer[$name] = $val;
     }
     

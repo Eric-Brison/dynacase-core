@@ -753,6 +753,7 @@ create sequence SEQ_ID_APPLICATION start 10;
     {
         // add new param definition
         $pdef = new ParamDef($this->dbaccess, $key);
+        $oldValues = array();
         if (!$pdef->isAffected()) {
             $pdef->name = $key;
             $pdef->isuser = "N";
@@ -761,18 +762,38 @@ create sequence SEQ_ID_APPLICATION start 10;
             $pdef->appid = $this->id;
             $pdef->descr = "";
             $pdef->kind = "text";
+        } else {
+            $oldValues = $pdef->getValues();
         }
         
         if (is_array($val)) {
             if (isset($val["kind"])) $pdef->kind = $val["kind"];
             if (isset($val["user"]) && $val["user"] == "Y") $pdef->isuser = "Y";
+            else $pdef->isuser = "N";
             if (isset($val["style"]) && $val["style"] == "Y") $pdef->isstyle = "Y";
+            else $pdef->isstyle = "N";
             if (isset($val["descr"])) $pdef->descr = $val["descr"];
             if (isset($val["global"]) && $val["global"] == "Y") $pdef->isglob = "Y";
+            else $pdef->isglob = "N";
         }
         
-        if ($pdef->isAffected()) $pdef->Modify();
-        else $pdef->Add();
+        if ($pdef->isAffected()) {
+            $pdef->Modify();
+            // migrate paramv values in case of type changes
+            $newValues = $pdef->getValues();
+            if ($oldValues['isglob'] != $newValues['isglob']) {
+                $ptype = $oldValues['isglob'] == 'Y' ? PARAM_GLB : PARAM_APP;
+                $ptypeNew = $newValues['isglob'] == 'Y' ? PARAM_GLB : PARAM_APP;
+                $pv = new Param($this->dbaccess, array(
+                    $pdef->name,
+                    $ptype,
+                    $pdef->appid
+                ));
+                if ($pv->isAffected()) {
+                    $pv->set($pv->name, $pv->val, $ptypeNew, $pv->appid);
+                }
+            }
+        } else $pdef->Add();
     }
     function SetVolatileParam($key, $val)
     {
@@ -800,7 +821,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $this->SetParamDef($k, $v); // update definition
                 if ($update) {
                     // don't modify old parameters
-                    if ($this->param->Get($k) == "") $this->SetParam($k, $v); // set only new parameters or static variable like VERSION
+                    if ($this->param->Get($k, null) === null) $this->SetParam($k, $v); // set only new parameters or static variable like VERSION
                     
                 } else {
                     $this->SetParam($k, $v);
