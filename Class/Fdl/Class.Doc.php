@@ -538,6 +538,10 @@ class Doc extends DocCtrl
      */
     public $fromname;
     /**
+     * @var string fulltext vector
+     */
+    public $fulltext;
+    /**
      * identification of special views
      *
      * @var array
