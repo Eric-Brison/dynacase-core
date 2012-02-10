@@ -221,14 +221,15 @@ class Param extends DbObj
     {
         
         $query = new QueryDb($this->dbaccess, "Param");
-        $list = $query->Query(0, 0, "LIST", "select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramdef.isuser!='Y' and paramv.appid=$appid;");
+        $sql = sprintf("select paramv.*  from paramv, paramdef where paramdef.name=paramv.name and paramdef.kind='static' and paramdef.isuser!='Y' and paramv.appid=%d", $appid);
+        $list = $query->Query(0, 0, "LIST", $sql);
         
         if ($query->nb != 0) {
             reset($list);
             /**
              * @var Param $v
              */
-            while (list($k, $v) = each($list)) {
+            foreach ($list as $k => $v) {
                 $v->Delete();
                 if (isset($this->buffer[$v->name])) unset($this->buffer[$v->name]);
             }
