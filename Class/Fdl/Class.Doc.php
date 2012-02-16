@@ -1795,7 +1795,7 @@ create unique index i_docir on doc(initid, revision);";
         $oas = $this->getAttributes();
         if (is_array($oas)) {
             foreach ($oas as $k => $v) {
-                if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet)?$v->fieldSet->fieldSet->mvisibility:'' );
+                if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
             }
         }
         if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) return;
@@ -1829,7 +1829,7 @@ create unique index i_docir on doc(initid, revision);";
                 // recompute loosed attributes
                 foreach ($tdiff as $k) {
                     $v = $oas[$k];
-                    $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet)?$v->fieldSet->fieldSet->mvisibility:'');
+                    $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
                 }
                 // modify needed attribute also
                 $tneed = $mdoc->getNeedeeds();
@@ -5139,7 +5139,9 @@ create unique index i_docir on doc(initid, revision);";
                             }
                             $height = $oattr->getOption("height", false);
                             $lay->set("tableheight", $height);
-                            $lay->set("caption", $oattr->getLabel());
+                            $caption = '';
+                            if (($oattr->getOption("vlabel", "up") == "up")) $caption = $oattr->getLabel();
+                            $lay->set("caption", $caption);
                             $lay->set("aid", $oattr->id);
                             
                             if (($viewzone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $viewzone, $reg)) {
