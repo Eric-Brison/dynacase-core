@@ -55,7 +55,7 @@ function viewframe(&$action)
     $foa = $doc->getAttribute($frameid);
     if (!$foa) $action->exitError(sprintf("attribute %s not found") , $frameid);
     if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
-    else $action->lay->set("flabel", ucfirst($foa->getLabel()));
+    else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
     
     $tval = array();
     foreach ($listattr as $k => $v) {

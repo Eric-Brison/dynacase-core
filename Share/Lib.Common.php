@@ -185,7 +185,18 @@ function getLayoutFile($app, $layfile)
     
     return "";
 }
-
+/**
+ * like ucfirst for utf-8
+ * @param $s
+ * @return string
+ */
+function mb_ucfirst($s)
+{
+    if ($s) {
+        $s = mb_strtoupper(mb_substr($s, 0, 1, 'UTF-8') , 'UTF-8') . mb_substr($s, 1, mb_strlen($s) , 'UTF-8');
+    }
+    return $s;
+}
 function microtime_diff($a, $b)
 {
     list($a_micro, $a_int) = explode(' ', $a);
