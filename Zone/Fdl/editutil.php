@@ -412,7 +412,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
 
                     case "auto":
                         $lay = new Layout("FDL/Layout/editenumauto.xml", $action);
-                        $notd = true;
+                        //$notd = true;
                         break;
 
                     case "bool":
