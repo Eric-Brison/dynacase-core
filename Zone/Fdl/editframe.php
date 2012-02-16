@@ -23,7 +23,7 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/editutil.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function editframe(&$action)
+function editframe(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters
@@ -56,13 +56,16 @@ function editframe(&$action)
     
     $thval = array();
     $tval = array();
+    $foa = $doc->getAttribute($frameid);
+    if (!$foa) $action->exitError(sprintf("attribute %s not found") , $frameid);
+    if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
+    else $action->lay->set("flabel", ucfirst($foa->getLabel()));
+    $action->lay->set("frameid", $foa->id);
     while (list($k, $v) = each($listattr)) {
         
         if (($v->fieldSet->id != $frameid)) continue;
         if ($v->inArray()) continue;
         if ($v->mvisibility == "I") continue; // not editable
-        $action->lay->set("flabel", $v->fieldSet->getLabel());
-        $action->lay->set("frameid", $v->fieldSet->id);
         //------------------------------
         // Set the table value elements
         $value = chop($doc->GetValue($v->id));

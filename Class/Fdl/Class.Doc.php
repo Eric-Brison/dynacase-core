@@ -7040,6 +7040,7 @@ create unique index i_docir on doc(initid, revision);";
                             $k = 0; // number of frametext
                             $v = 0; // number of value in one frametext
                             $currentFrameId = "";
+                            $currentFrameText = "";
                             $currentFrame = null;
                             $changeframe = false;
                             $ih = 0; // index for hidden values
@@ -7069,13 +7070,15 @@ create unique index i_docir on doc(initid, revision);";
                                         $changeframe = true;
                                         $currentFrameId = $attr->fieldSet->id;
                                         $currentFrame = $attr->fieldSet;
+                                        if ($currentFrame->getOption("vlabel") == "none") $currentFrameText = '';
+                                        else $currentFrameText = ucfirst($currentFrame->GetLabel());
                                         $v++;
                                     } elseif ($currentFrameId != "") $changeframe = true;
                                 }
                                 if ($changeframe) { // to generate final frametext
                                     $changeframe = false;
                                     if ($v > 0) { // one value detected
-                                        $frames[$k]["frametext"] = ucfirst($this->GetLabel($currentFrameId));
+                                        $frames[$k]["frametext"] = $currentFrameText;
                                         $frames[$k]["frameid"] = $currentFrameId;
                                         $frames[$k]["tag"] = "";
                                         $frames[$k]["TAB"] = false;
@@ -7105,6 +7108,8 @@ create unique index i_docir on doc(initid, revision);";
                                     // Set the table value elements
                                     $currentFrameId = $listattr[$i]->fieldSet->id;
                                     $currentFrame = $listattr[$i]->fieldSet;
+                                    if ($currentFrame->getOption("vlabel") == "none") $currentFrameText = '';
+                                    else $currentFrameText = ucfirst($currentFrame->GetLabel());
                                     if (($listattr[$i]->mvisibility == "H") || ($listattr[$i]->mvisibility == "R")) {
                                         // special case for hidden values
                                         $thidden[$ih]["hname"] = "_" . $listattr[$i]->id;
@@ -7159,7 +7164,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                             // Out
                             if ($v > 0) { // latest fieldset
-                                $frames[$k]["frametext"] = ucfirst($this->GetLabel($currentFrameId));
+                                $frames[$k]["frametext"] = $currentFrameText;
                                 $frames[$k]["frameid"] = $currentFrameId;
                                 $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
                                 $frames[$k]["tag"] = "";

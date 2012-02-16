@@ -1,7 +1,7 @@
 <!-- TABLEBODY -->
 <input type="hidden" name="title" value="[title]">
 [BLOCK TABLEBODY]
-<fieldset id="F[frameid]" [IF TAB]name="[tag]" [ENDIF TAB]   style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB]display:none;[ENDIF TAB]" class="frame" ><legend style="cursor:pointer" onclick="viewornot('T[frameid]')">[frametext]</legend>
+<fieldset id="F[frameid]" [IF TAB]name="[tag]" [ENDIF TAB]   style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB]display:none;[ENDIF TAB]" class="frame" >[IF frametext]<legend style="cursor:pointer" onclick="viewornot('T[frameid]')">[frametext]</legend>[ENDIF frametext]
 [IF edittpl]<div width="100%" cellspacing="0" id="T[frameid]" >[zonetpl]</div>[ENDIF edittpl]
 [IFNOT edittpl]<div id="T[frameid]" >
             [BLOCK [TABLEVALUE]]
