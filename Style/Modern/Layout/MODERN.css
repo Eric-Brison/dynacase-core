@@ -493,12 +493,12 @@ input[type="image"] {
 }
 
 .document input.normal {
-    background-image: url(lib/ext/resources/images/default/button/btn.gif);
+    background-image: url(STYLE/MODERN/Images/btn.gif);
 }
 
 .document th ,
 .barmenu td{
-    background-image: url(lib/ext/resources/images/default/panel/top-bottom.gif);
+    background-image: url(STYLE/MODERN/Images/top-bottom.gif);
     border-color: #99BBE8 !important;
 }
 
@@ -524,34 +524,34 @@ input[type="image"] {
 }
 
 .document input[type=button].add-doc {
-   /* background : url('lib/ui/icon/add.png') no-repeat;*/
+   /* background : url('Images/add.png') no-repeat;*/
     width:16px;
 }
 .document input[type=button].view-doc {
-   /* background : url('lib/ui/icon/accept.png') no-repeat; */
+   /* background : url('Images/accept.png') no-repeat; */
     width:16px;
 }
 .document .tarray .add-button,.document .tarray .add-button:HOVER {
-    background-image: url(lib/ui/icon/add.png) ;
+    background-image: url(Images/add.png) ;
 }
 
 .document .tarray .trash-button,.document .tarray .trash-button:HOVER {
     background-color: transparent;
-    background-image: url(lib/ui/icon/bin.png);
+    background-image: url(Images/bin.png);
 }
 
 .document .tarray .select-button,.document .tarray .select-button:HOVER {
     background-color: transparent ;
     border:none;
-   /* background-image: url(lib/ui/icon/application_get.png);*/
+   /* background-image: url(Images/application_get.png);*/
 }
 
 .document .tarray .unselect-button,.document .tarray .unselect-button:HOVER {
-    background-image: url(lib/ui/icon/application_put.png) ;
+    background-image: url(Images/application_put.png) ;
 }
 
 .document .tarray .duplicate-button,.document .tarray .duplicate-button:HOVER {
-    background-image: url(lib/ui/icon/application_double.png);
+    background-image: url(Images/application_double.png);
 }
 
 .document tr.selecta td {

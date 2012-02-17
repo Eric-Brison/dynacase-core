@@ -5,7 +5,6 @@
   <description lang="fr">Serveur d'application dynacase platform</description>
 
   <replaces>
-        <module name="freedom-extui" />
         <module name="freedom-toolbox" />
   	<module name="freedom-core" />
   	<module name="freedom-api" />
@@ -17,7 +16,6 @@
 
   <requires>
     <installer version="1.1.5" comp="ge"/>
-    <module name="dynacase-extjs" />
     <module name="dynacase-jquery" />
   </requires>
 
@@ -121,7 +119,6 @@ This can be solved by:<br/>
     <process command="programs/record_application FREEDOM I" />
     <process command="programs/record_application FGSEARCH I" />
     <process command="programs/record_application DATA  I" />
-    <process command="programs/record_application EXTUI I" />
     <process command="programs/record_application VAULT I" />
     <process command="programs/record_application DAV I" />
     <process command="programs/record_application FDC I" />
@@ -277,10 +274,6 @@ This can be solved by:<br/>
     <process command="programs/pre_migration DATA" />
     <process command="programs/record_application DATA U" />
     <process command="programs/post_migration DATA" />
-    
-    <process command="programs/pre_migration EXTUI" />
-    <process command="programs/record_application EXTUI U" />
-    <process command="programs/post_migration EXTUI" />
     
     <process command="programs/pre_migration VAULT" />
     <process command="programs/record_application VAULT U" />

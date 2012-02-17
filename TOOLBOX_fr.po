@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-09 18:19+0100\n"
+"POT-Creation-Date: 2012-02-16 18:09+0100\n"
 "PO-Revision-Date: 2012-01-09 18:20+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -389,9 +389,6 @@ msgstr "&gt; ou égal"
 
 msgid "&lt; or equal"
 msgstr "&lt; ou égal"
-
-msgid "(.*)\\"
-msgstr ""
 
 msgid "(Other input)"
 msgstr "(Autre)"
@@ -1671,12 +1668,6 @@ msgid "Export archive file with data file - fdl.csv- and attached files"
 msgstr ""
 "Export d'une archive avec le fichier de description -fdl.csv- et les "
 "fichiers attachés"
-
-msgid "Ext ui api"
-msgstr ""
-
-msgid "Ext user interface api"
-msgstr ""
 
 msgid "Failed to copy $infile to $f"
 msgstr "Echec de la copie de $infile vers $f"
@@ -5405,108 +5396,6 @@ msgstr "erreur dans la format pzone %s"
 msgid "error sending text conversion"
 msgstr "erreur lors de l'envoi de la conversion texte"
 
-msgid "eui:Abstract display"
-msgstr "Résumé"
-
-msgid "eui:Cancel deletion"
-msgstr "Annuler la suppression"
-
-msgid "eui:Cancel locking"
-msgstr "Annuler le verrouillage"
-
-msgid "eui:Cancel remove"
-msgstr "Annuler"
-
-msgid "eui:Create a search"
-msgstr "Créer une recherche"
-
-msgid "eui:Delete"
-msgstr "Supprimer"
-
-msgid "eui:Display"
-msgstr "Affichage"
-
-msgid "eui:Document Selection"
-msgstr "Sélection"
-
-msgid "eui:Duplicate document"
-msgstr "Dupliquer"
-
-msgid "eui:Edit document"
-msgstr "Modifier"
-
-msgid "eui:Export all documents"
-msgstr "Exporter le contenu du dossier"
-
-msgid "eui:Export selected documents"
-msgstr "Exporter les documents sélectionnés"
-
-msgid "eui:Grid display"
-msgstr "Grille"
-
-msgid "eui:Historic"
-msgstr "Historique"
-
-msgid "eui:Icon display"
-msgstr "Icones"
-
-msgid "eui:Lock"
-msgstr "Verrouiller"
-
-msgid "eui:Lock selected documents"
-msgstr "Verrouiller les documents sélectionnés"
-
-msgid "eui:Lock selection"
-msgstr "Verrouiller la sélection"
-
-msgid "eui:Remove from folder"
-msgstr "Retirer du dossier"
-
-msgid "eui:Rss Link"
-msgstr "Lien RSS"
-
-msgid "eui:Selection"
-msgstr "Sélection"
-
-msgid "eui:Send Mail"
-msgstr "Envoyer un mail"
-
-msgid "eui:Sure delete ?"
-msgstr "Etes vous sûr de vouloir supprimer ?"
-
-msgid "eui:Sure lock selected document ?"
-msgstr "Etes vous sûr de verrouiller les documents sélectionnés ?"
-
-msgid "eui:Sure remove from folder ?"
-msgstr "Etes vous sûr de vouloir enlever le document du dossier ?"
-
-msgid "eui:Tools"
-msgstr "Outils"
-
-msgid "eui:Tree display"
-msgstr "Arbre"
-
-msgid "eui:Unlock"
-msgstr "Déverrouiller"
-
-msgid "eui:View Document"
-msgstr "Voir"
-
-msgid "eui:View Properties"
-msgstr "Propriétés"
-
-msgid "eui:View print version"
-msgstr "Version imprimable"
-
-msgid "eui:itemlistmenu tag not found"
-msgstr "itemlistmenu tag non trouvé"
-
-msgid "eui:no id in itemlistmenu"
-msgstr "Pas d'identifiant dans itemlistmenu"
-
-msgid "eui:no itemmenu tags found"
-msgstr "Aucun tag itemmenu trouvé"
-
 msgid "exec plan"
 msgstr "Planification des processus"
 
@@ -5579,6 +5468,9 @@ msgstr "Les préférences d'exportation ont été effacées"
 #, c-format
 msgid "exportXml : cannot write file %s"
 msgstr "exportXml : ne peut écrire le fichier %s"
+
+msgid "This action requires the installation of Dynacase Extui module"
+msgstr "Cette action nécessite l'installation du module Dynacase Extui"
 
 msgid "familly"
 msgstr "famille"
@@ -8825,13 +8717,6 @@ msgstr "qualifié"
 msgid "write only"
 msgstr "écriture seule"
 
-msgid "xml menu parsing"
-msgstr ""
-
-#, c-format
-msgid "xml parse error %s"
-msgstr ""
-
 #, fuzzy
 msgid "yes"
 msgstr ""
@@ -8930,74 +8815,3 @@ msgstr "l'identifiant système {left} est différent de {right}"
 
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
-
-#~ msgid "Authentification failure before account desactivation"
-#~ msgstr ""
-#~ "Nombre de connexion avec mot de passe incorrect avant désactivation du "
-#~ "compte"
-
-#~ msgid "Book in my space"
-#~ msgstr "Réserver dans mon espace"
-
-#~ msgid "Domain %s"
-#~ msgstr "Domaine %s"
-
-#~ msgid "No privilege to define accessibilities"
-#~ msgstr "Aucun privilège pour définir les droits d'accès"
-
-#~ msgid "Only owner of document can restore it"
-#~ msgstr "Seul le propriétaire peut restaurer un document"
-
-#~ msgid "Set in my space to read it"
-#~ msgstr "Mettre dans mon espace"
-
-#~ msgid "access to documents of my space"
-#~ msgstr "Accéder aux documents de mon espace"
-
-#~ msgid "authentication failed"
-#~ msgstr "échec d'authentification"
-
-#~ msgid "book the document to modify it with offline application"
-#~ msgstr "réserver le document pour le modifier avec l'application offline"
-
-#~ msgid ""
-#~ "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
-#~ msgstr "le fichier %s [%d] (rév. %d) est figé. Utilisez la dernière version"
-
-#~ msgid "cannot lock file %s [%d] : already locked by %s."
-#~ msgstr "le fichier %s [%d] est déjà verrouillé par %s."
-
-#~ msgid "cannot open %s configuration file"
-#~ msgstr "ne peut ouvrir le fichier de configuration %s"
-
-#~ msgid "drag to move. Use ctrl-&uarr; &darr; to up/down"
-#~ msgstr ""
-#~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
-#~ "descendre"
-
-#~ msgid "elinkEncode::attribute not found %s"
-#~ msgstr "elinkEncode :  attribut non trouvé %s"
-
-#~ msgid "insert the document to see it with offline application"
-#~ msgstr "insérer le document pour le voir avec l'application offline"
-
-#~ msgid "no trash image"
-#~ msgstr "image de la poubelle non trouvée"
-
-#~ msgid "remove from my space"
-#~ msgstr "Enlever de mon espace"
-
-#~ msgid "remove the document from my space"
-#~ msgstr "Enlever le document de mon espace"
-
-#~ msgid "select"
-#~ msgstr "sélectionner"
-
-#~ msgid "the file %s (rev %d) must be locked before"
-#~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
-
-#~ msgid "toedit"
-#~ msgstr "éditer"
-
-#~ msgid "view my space"
-#~ msgstr "Voir mon espace"
