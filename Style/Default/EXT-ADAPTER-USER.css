@@ -57,7 +57,7 @@
 }
 .document input,.document select,.document textarea,.document file {
 	background-color: #FFFFFF;
-	background: url(../../../lib/ext/resources/images/default/form/text-bg.gif);
+	background: url(../../../STYLE/DEFAULT/Images/text-bg.gif);
 	background-repeat: repeat-x;
 	border-color: #B5B8C8;
 }
@@ -68,7 +68,7 @@
 }
 
 .document input[type=button] {
-	background-image: url(../../../lib/ext/resources/images/default/form/trigger-tpl.gif);
+	background-image: url(../../../STYLE/DEFAULT/Images/trigger-tpl.gif);
 }
 
 .document input.constraint {
@@ -91,11 +91,11 @@
 }
 
 .document input.normal {
-	background-image: url(../../../lib/ext/resources/images/default/button/btn.gif);
+	background-image: url(../../../STYLE/DEFAULT/Images/btn.gif);
 }
 
 .document th {
-	background-image: url(../../../lib/ext/resources/images/default/panel/top-bottom.gif);
+	background-image: url(../../../STYLE/DEFAULT/Images/top-bottom.gif);
 	border-color: #99BBE8 !important;
 }
 
@@ -113,33 +113,33 @@
 	color: #15428B;
 	border-left-color: #99BBE8;
 	border-right-color: #99BBE8;
-	background-image: url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif);
+	background-image: url(../../../STYLE/DEFAULT/Images/tabs-sprite.gif);
 }
 
 .document .tabsh .tabsel {
-	background-image: url(../../../lib/ext/resources/images/default/tabs/tabs-sprite.gif);
+	background-image: url(../../../STYLE/DEFAULT/Images/tabs-sprite.gif);
 }
 
 .document .tarray .add-button,.document .tarray .add-button:HOVER {
-	background-image: url(../../../lib/ui/icon/add.png);
+	background-image: url(../../../STYLE/DEFAULT/Images/add.png);
 }
 
 .document .tarray .trash-button,.document .tarray .trash-button:HOVER {
 	background-color: transparent;
-	background-image: url(../../../lib/ui/icon/bin.png);
+	background-image: url(../../../STYLE/DEFAULT/Images/bin.png);
 }
 
 .document .tarray .select-button,.document .tarray .select-button:HOVER {
 	background-color: transparent;
-	background-image: url(../../../lib/ui/icon/application_get.png);
+	background-image: url(../../../STYLE/DEFAULT/Images/application_get.png);
 }
 
 .document .tarray .unselect-button,.document .tarray .unselect-button:HOVER {
-	background-image: url(../../../lib/ui/icon/application_put.png);
+	background-image: url(../../../STYLE/DEFAULT/Images/application_put.png);
 }
 
 .document .tarray .duplicate-button,.document .tarray .duplicate-button:HOVER {
-	background-image: url(../../../lib/ui/icon/application_double.png);
+	background-image: url(../../../STYLE/DEFAULT/Images/application_double.png);
 }
 
 .document tr.selecta td {
@@ -151,7 +151,7 @@
 }
 
 #POPDOC_b {
-	background-image: url("../../../lib/ext/resources/images/default/window/top-bottom.png");
+	background-image: url("../../../STYLE/DEFAULT/Images/top-bottom.png");
 	border: 1px solid #8EA4C1 !important;
 	border-top: 0px !important;
 }
@@ -174,21 +174,21 @@
 }
 
 .btn_min {
-	background-image: url("../../../lib/ext/resources/images/default/panel/tool-sprites.gif") !important;
+	background-image: url("../../../STYLE/DEFAULT/Images/tool-sprites.gif") !important;
 	background-position: 0 -15px !important;
 	height: 15px !important;
 	width: 15px !important;
 }
 
 .btn_max {
-	background-image: url("../../../lib/ext/resources/images/default/panel/tool-sprites.gif") !important;
+	background-image: url("../../../STYLE/DEFAULT/Images/tool-sprites.gif") !important;
 	background-position: 0 -285px !important;
 	height: 15px !important;
 	width: 15px !important;
 }
 
 .btn_cls {
-	background-image: url("../../../lib/ext/resources/images/default/panel/tool-sprites.gif") !important;
+	background-image: url("../../../STYLE/DEFAULT/Images/tool-sprites.gif") !important;
 	background-position: 0 0 !important;
 	height: 15px !important;
 	width: 15px !important;
@@ -204,11 +204,11 @@
 
 #fedit input,#fedit select,#fedit textarea,#fedit file {
 	background-color: #FFFFFF;
-	background:	url(../../../lib/ext/resources/images/default/form/text-bg.gif);
+	background:	url(../../../STYLE/DEFAULT/Images/text-bg.gif);
 	background-repeat: repeat-x;
 	border-color: #B5B8C8;
 }
 
 #fedit input[type=button] {
-	background-image: url(../../../lib/ext/resources/images/default/form/trigger-tpl.gif);
+	background-image: url(../../../STYLE/DEFAULT/Images/trigger-tpl.gif);
 } */

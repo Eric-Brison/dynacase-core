@@ -26,6 +26,11 @@ include_once ("EXTUI/eui_xmlmenu.php");
  */
 function onefam_ext_menu(&$action)
 {
+	if (!file_exists('lib/ui/freedom-extui.js')) {
+		$err = _("This action requires the installation of Dynacase Extui module");
+		$action->ExitError($err);
+	}
+
     $fldid = $action->getArgument("fldid");
     $famid = $action->getArgument("famid");
     $menuxml = $action->getArgument("menuxml", "EXTUI:default-collection-menu.xml");
