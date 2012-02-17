@@ -59,6 +59,11 @@ class DocUtag extends DbObj
      * @public int
      */
     public $fromuid;
+    /**
+     * value/comment of tag
+     * @public string
+     */
+    public $comment;
     
     public $fixed = 'false';
     

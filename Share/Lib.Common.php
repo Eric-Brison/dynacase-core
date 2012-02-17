@@ -58,6 +58,18 @@ function addWarningMsg($msg)
     if (isset($action->parent)) $action->parent->addWarningMsg($msg);
 }
 /**
+ * like ucfirst for utf-8
+ * @param $s
+ * @return string
+ */
+function mb_ucfirst($s)
+{
+    if ($s) {
+        $s = mb_strtoupper(mb_substr($s, 0, 1, 'UTF-8') , 'UTF-8') . mb_substr($s, 1, mb_strlen($s) , 'UTF-8');
+    }
+    return $s;
+}
+/**
  * get mail addr of a user
  * @param int $userid system user identificator
  * @param bool $full if true email is like : "John Doe" <John.doe@blackhole.net> else only system email address : john.doe@blackhole.net

@@ -23,14 +23,14 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/editutil.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function editframe(&$action)
+function editframe(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters
-    $docid = GetHttpVars("id", 0);
-    $classid = GetHttpVars("classid");
-    $frameid = strtolower(GetHttpVars("frameid"));
-    $vid = GetHttpVars("vid"); // special controlled view
+    $docid = $action->getArgument("id", 0);
+    $classid = $action->getArgument("classid");
+    $frameid = strtolower($action->getArgument("frameid"));
+    $vid = $action->getArgument("vid"); // special controlled view
     // Set the globals elements
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
@@ -40,7 +40,10 @@ function editframe(&$action)
     } else $doc = new_Doc($dbaccess, $docid);
     
     if (($vid != "") && ($doc->cvid > 0)) {
-        // special controlled view
+        /**
+         * special controled view
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $tview = $cvdoc->getView($vid);
         if ($tview) $doc->setMask($tview["CV_MSKID"]);
@@ -48,7 +51,7 @@ function editframe(&$action)
     
     $listattr = $doc->GetNormalAttributes();
     
-    if (GetHttpVars("viewconstraint") == "Y") { // from modcard function if constraint error
+    if ($action->getArgument("viewconstraint") == "Y") { // from modcard function if constraint error
         include_once ("FDL/modcard.php");
         setPostVars($doc); // HTTP VARS comes from previous edition
         
@@ -58,13 +61,20 @@ function editframe(&$action)
     
     $thval = array();
     $tval = array();
-    while (list($k, $v) = each($listattr)) {
-        
+    
+    $foa = $doc->getAttribute($frameid);
+    if (!$foa) $action->exitError(sprintf("attribute %s not found") , $frameid);
+    if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
+    else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
+    $action->lay->set("frameid", $foa->id);
+    
+    foreach ($listattr as $k => $v) {
+        /**
+         * @var NormalAttribute $v
+         */
         if (($v->fieldSet->id != $frameid)) continue;
         if ($v->inArray()) continue;
         if ($v->mvisibility == "I") continue; // not editable
-        $action->lay->set("flabel", $v->fieldSet->getLabel());
-        $action->lay->set("frameid", $v->fieldSet->id);
         $action->lay->set("ehelp", ($help->isAlive()) ? $help->getAttributeHelpUrl($v->fieldSet->id) : false);
         $action->lay->set("ehelpid", ($help->isAlive()) ? $help->id : false);
         //------------------------------

@@ -3,7 +3,7 @@
 [BLOCK FIELDSET]
 <tr >
   <td  colspan="3" >
- <div class="frame" style="cursor:[cursor];"><div class="legend" onclick="viewornot('T[frameid]')">[flabel]</div>
+ <div class="frame" style="cursor:[cursor];">[IF flabel]<div class="legend" onclick="viewornot('T[frameid]')">[flabel]</div>[ENDIF flabel]
 <div class="content"><table id="T[frameid]" cellspacing="0" width="100%" >
 <tr class="FREEDOMBack1"><td colspan="3"  height="1px"></td></tr>
 [BLOCK FVALUES]
