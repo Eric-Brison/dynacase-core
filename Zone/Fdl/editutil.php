@@ -418,7 +418,6 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
 
                     case "auto":
                         $lay = new Layout("FDL/Layout/editenumauto.xml", $action);
-                        $notd = true;
                         break;
 
                     case "bool":
@@ -1150,7 +1149,9 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 $lay->set("tableStyle", $oattr->getOption("tstyle", ''));
                 // get default values
                 if ($doc->doctype == 'C') {
-                    
+                    /**
+                     * @var DocFam $doc
+                     */
                     $defval = $doc->getDefValues();
                 } else {
                     
