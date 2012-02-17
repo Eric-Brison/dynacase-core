@@ -26,3 +26,7 @@ img.onefamico[selected="1"] {
     float: left;
     cursor: pointer;
 }
+
+body.onefam {
+    [IF ISIE]overflow-y:hidden;[ENDIF ISIE]
+}
