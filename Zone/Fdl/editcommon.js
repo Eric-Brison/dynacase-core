@@ -1179,28 +1179,37 @@ function deleteInputValue(id){
 	return err;
 }
 
-function addEnum(th,cible,docid,attrid,key) {
-  if (cible) {
-    if (key.style.display=='none') {
-      key.style.display='';
-      key.focus();
-      if (th) {
-	th.value='>';
-	th.title='[TEXT:Add new entry]';
-      }
-    } else {
-      if (trim(key.value)=='') {
-	alert('[TEXT:Item cannot be empty]');
-      } else {
-	var corestandurl=window.location.pathname+'?sole=Y';      
-	var url=corestandurl+'&app=FDL&action=ADDENUMITEM&docid='+docid+'&aid='+attrid+'&key='+key.value;
-        enableSynchro();
-	requestUrlSend(cible.parentNode,url);
-	disableSynchro();
-	disableReadAttribute();
-      }
+function addEnum(th,cible,docid,attrid,key,index) {
+    if (cible) {
+        if (key.style.display=='none') {
+            key.style.display='';
+            key.focus();
+            if (th) {
+                th.value='>';
+                th.title='[TEXT:Add new entry]';
+            }
+        } else {
+            if (trim(key.value)=='') {
+                alert('[TEXT:Item cannot be empty]');
+            } else {
+                var corestandurl=window.location.pathname+'?sole=Y';
+                var url=corestandurl+'&app=FDL&action=ADDENUMITEM&docid='+docid+'&aid='+attrid+'&index='+index+'&key='+key.value;
+                enableSynchro();
+                requestUrlSend(cible.parentNode,url);
+                disableSynchro();
+                disableReadAttribute();
+                var footIndex='__1x_';
+                var footEnum=document.getElementById('sp_'+attrid+'___1x_');
+                if (footEnum) {
+                    url=corestandurl+'&app=FDL&action=ADDENUMITEM&docid='+docid+'&aid='+attrid+'&index='+footIndex;
+
+                    enableSynchro();
+                    requestUrlSend(footEnum,url);
+                    disableSynchro();
+                } 
+            }
+        }
     }
-  }
 }
 
 

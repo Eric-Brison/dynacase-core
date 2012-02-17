@@ -1,7 +1,5 @@
-<span id="sp_[id]"><input type="hidden" id="[id]" name="[name]" value="[value]"><input class="fullresize" type="text" id="li_[id]" name="_li[name]" value="[lvalue]" autocomplete="off" onfocus="activeAuto(event,'[docid]',this,'&enum=[idi]')" onblur="clearEmptyEnum('[id]','li_[id]')"></span></td><td class="nowrap"><input id="ic_[id]" type="button" value="&#133"
+<span id="sp_[id]" style="white-space:nowrap"><input type="hidden" id="[id]" name="[name]" value="[value]"><input type="text" id="li_[id]" name="_li[name]" value="[lvalue]" autocomplete="off" onfocus="activeAuto(event,'[docid]',this,'&enum=[idi]')" onblur="clearEmptyEnum('[id]','li_[id]')"><input id="ic_[id]" type="button" value="&#133"
 	  title="[TEXT:View selection]"
 	  onclick="sendAutoChoice(event,'[docid]',this,'li_[id]','&enum=[idi]')"><input id="ix_[id]" type="button" value="&times;"
 	      title="[TEXT:clear inputs]"
-	      onclick="clearInputs(['[idi]','li_[idi]'],'[index]','li_[id]')">
-[IF isopen]
-<input style="display:none" title="[TEXT:Set new entry]" onkeypress="if (trackCR(event)) {addEnum(false,document.getElementById('sp_[id]'),'[docid]','[idi]',this);return false}" type="text" id="keysp_[id]"><input type="button" onclick="addEnum(this,document.getElementById('sp_[id]'),'[docid]','[idi]',document.getElementById('keysp_[id]'));return false" title="[TEXT:Add new entry]" value="+">[ENDIF isopen]
+	      onclick="clearInputs(['[idi]','li_[idi]'],'[index]','li_[id]')">[IF isopen]<input style="display:none" title="[TEXT:Set new entry]" onkeypress="if (trackCR(event)) {addEnum(false,document.getElementById('sp_[id]'),'[docid]','[idi]',this,'[index]');this.style.display='none';return false}" type="text" id="keysp_[id]"><input type="button" onclick="addEnum(this,document.getElementById('sp_[id]'),'[docid]','[idi]',document.getElementById('keysp_[id]'),'[index]');return false" title="[TEXT:Add new entry]" value="+">[ENDIF isopen]

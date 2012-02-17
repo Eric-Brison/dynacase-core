@@ -412,7 +412,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
 
                     case "auto":
                         $lay = new Layout("FDL/Layout/editenumauto.xml", $action);
-                        $notd = true;
+                        //$notd = true;
                         break;
 
                     case "bool":
@@ -974,7 +974,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             $lay->setBlockData("TATTR", $talabel);
             $lay->setBlockData("IATTR", $tilabel);
             $lay->set("attrid", $attrid);
-            if (($oattr->getOption("vlabel") == "") || ($oattr->getOption("vlabel") == "up")) $lay->set("caption", $oattr->getLabel());
+            if ($oattr->getOption("vlabel", "up") == "up") $lay->set("caption", $oattr->getLabel());
             else $lay->set("caption", "");
             $lay->set("footspan", count($ta) * 2);
             
@@ -1083,7 +1083,9 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
                 }
                 
                 $lay->set("attrid", $attrid);
-                $lay->set("caption", $oattr->getLabel());
+                
+                if ($oattr->getOption("vlabel", "up") == "up") $lay->set("caption", $oattr->getLabel());
+                else $lay->set("caption", "");
                 $lay->set("footspan", count($ta) * 2);
                 $lay->set("eiclass", '');
                 $lay->set("tableWidth", $oattr->getOption("twidth", '100%'));

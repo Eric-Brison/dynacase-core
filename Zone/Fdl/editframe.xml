@@ -1,7 +1,7 @@
 [BLOCK FRAME]
 
 <tr >
-  <td  colspan="2" ><fieldset class="frame"><legend style="cursor:pointer" onclick="viewornot('T[frameid]')">[flabel]</legend>
+  <td  colspan="2" ><fieldset class="frame">[IF flabel]<legend style="cursor:pointer" onclick="viewornot('T[frameid]')">[flabel]</legend>[ENDIF flabel]
 <table width="100%" id="T[frameid]">
 [BLOCK FVALUES]
 <tr class="FREEDOMBack1">

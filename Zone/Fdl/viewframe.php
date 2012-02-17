@@ -52,13 +52,15 @@ function viewframe(&$action)
     
     $listattr = $doc->GetNormalAttributes(); // get frame attribute also
     
+    $foa = $doc->getAttribute($frameid);
+    if (!$foa) $action->exitError(sprintf("attribute %s not found") , $frameid);
+    if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
+    else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
+    
     $tval = array();
-    while (list($k, $v) = each($listattr)) {
+    foreach ($listattr as $k => $v) {
         
         if ($v->fieldSet->id != $frameid) continue;
-        
-        $action->lay->set("flabel", ucfirst($v->fieldSet->getLabel()));
-        $action->lay->set("frameid", $v->fieldSet->id);
         
         $value = chop($doc->GetValue($v->id));
         

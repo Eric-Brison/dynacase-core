@@ -23,11 +23,12 @@ include_once ("FDL/editutil.php");
  * @global docid Http var : document id
  * @global aid Http var : attribute id
  */
-function addenumitem(&$action)
+function addenumitem(Action & $action)
 {
     $docid = GetHttpVars("docid");
     $attrid = GetHttpVars("aid");
     $key = GetHttpVars("key");
+    $index = GetHttpVars("index");
     
     $key = trim(str_replace('"', '', $key));
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -39,12 +40,15 @@ function addenumitem(&$action)
         $oa = $doc->getAttribute($attrid);
         if ($oa) {
             $err = $oa->addEnum($dbaccess, str_replace('.', '\.', $key) , $key);
-            if ($oa->repeat) {
+            if ($oa->repeat && (!$oa->inArray())) {
                 $v = $doc->getValue($oa->id);
                 if ($v != "") $v.= "\n$key";
                 else $v = $key;
-            } else $v = $key;
-            $i = getHtmlInput($doc, $oa, $v);
+            } else {
+                $v = $key;
+            }
+            
+            $i = getHtmlInput($doc, $oa, $v, $index);
             $action->lay->noparse = true;
             $action->lay->template = $i;
         }

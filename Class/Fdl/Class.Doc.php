@@ -1795,7 +1795,7 @@ create unique index i_docir on doc(initid, revision);";
         $oas = $this->getAttributes();
         if (is_array($oas)) {
             foreach ($oas as $k => $v) {
-                if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet)?$v->fieldSet->fieldSet->mvisibility:'' );
+                if ($oas[$k]) $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
             }
         }
         if ((!$force) && (($this->doctype == 'C') || (($this->doctype == 'T') && ($mid == 0)))) return;
@@ -1829,7 +1829,7 @@ create unique index i_docir on doc(initid, revision);";
                 // recompute loosed attributes
                 foreach ($tdiff as $k) {
                     $v = $oas[$k];
-                    $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet)?$v->fieldSet->fieldSet->mvisibility:'');
+                    $oas[$k]->mvisibility = ComputeVisibility($v->visibility, $v->fieldSet->mvisibility, ($v->fieldSet->fieldSet) ? $v->fieldSet->fieldSet->mvisibility : '');
                 }
                 // modify needed attribute also
                 $tneed = $mdoc->getNeedeeds();
@@ -5139,7 +5139,9 @@ create unique index i_docir on doc(initid, revision);";
                             }
                             $height = $oattr->getOption("height", false);
                             $lay->set("tableheight", $height);
-                            $lay->set("caption", $oattr->getLabel());
+                            $caption = '';
+                            if (($oattr->getOption("vlabel", "up") == "up")) $caption = $oattr->getLabel();
+                            $lay->set("caption", $caption);
                             $lay->set("aid", $oattr->id);
                             
                             if (($viewzone != "") && preg_match("/([A-Z_-]+):([^:]+):{0,1}[A-Z]{0,1}/", $viewzone, $reg)) {
@@ -5183,7 +5185,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $tval[$k] = $this->getTValue($k);
                                     $nbitem = max($nbitem, count($tval[$k]));
                                     if ($emptyarray && ($this->getValue($k) != "")) $emptyarray = false;
-                                    $lay->set("L_" . strtoupper($v->id) , ucfirst($v->getLabel()));
+                                    $lay->set("L_" . strtoupper($v->id) , mb_ucfirst($v->getLabel()));
                                 }
                                 // view values
                                 $tvattr = array();
@@ -5222,7 +5224,7 @@ create unique index i_docir on doc(initid, revision);";
                                 foreach ($ta as $k => $v) {
                                     if (($v->mvisibility == "H") || ($v->mvisibility == "I") || ($v->mvisibility == "O")) continue;
                                     $talabel[] = array(
-                                        "alabel" => ucfirst($v->getLabel()) ,
+                                        "alabel" => mb_ucfirst($v->getLabel()) ,
                                         "astyle" => $v->getOption("cellheadstyle") ,
                                         "cwidth" => $v->getOption("cwidth", "auto")
                                     );
@@ -6437,7 +6439,7 @@ create unique index i_docir on doc(initid, revision);";
                                 $changeframe = false;
                                 if (($v + $nbimg) > 0) { // one value detected
                                     $oaf = $this->getAttribute($currentFrameId);
-                                    $frames[$k]["frametext"] = ($oaf && $oaf->getOption("vlabel") != "none") ? ucfirst($this->GetLabel($currentFrameId)) : "";
+                                    $frames[$k]["frametext"] = ($oaf && $oaf->getOption("vlabel") != "none") ? mb_ucfirst($this->GetLabel($currentFrameId)) : "";
                                     $frames[$k]["frameid"] = $currentFrameId;
                                     $frames[$k]["bgcolor"] = $oaf ? $oaf->getOption("bgcolor", false) : false;
                                     
@@ -6448,7 +6450,7 @@ create unique index i_docir on doc(initid, revision);";
                                         $frames[$k]["TAB"] = true;
                                         $ttabs[$currentFrame->fieldSet->id] = array(
                                             "tabid" => $currentFrame->fieldSet->id,
-                                            "tabtitle" => ucfirst($currentFrame->fieldSet->getLabel())
+                                            "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
                                         );
                                     }
                                     $frames[$k]["viewtpl"] = ($frametpl != "");
@@ -6552,7 +6554,7 @@ create unique index i_docir on doc(initid, revision);";
                             if (($v + $nbimg) > 0) // // last fieldset
                             {
                                 $oaf = $this->getAttribute($currentFrameId);
-                                if ($oaf) $frames[$k]["frametext"] = ($oaf->getOption("vlabel") != "none") ? ucfirst($this->GetLabel($currentFrameId)) : "";
+                                if ($oaf) $frames[$k]["frametext"] = ($oaf->getOption("vlabel") != "none") ? mb_ucfirst($this->GetLabel($currentFrameId)) : "";
                                 else $frames[$k]["frametext"] = '';
                                 $frames[$k]["frameid"] = $currentFrameId;
                                 $frames[$k]["tag"] = "";
@@ -6566,7 +6568,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $frames[$k]["TAB"] = true;
                                     $ttabs[$currentFrame->fieldSet->id] = array(
                                         "tabid" => $currentFrame->fieldSet->id,
-                                        "tabtitle" => ucfirst($currentFrame->fieldSet->getLabel())
+                                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
                                     );
                                 }
                                 $frames[$k]["rowspan"] = $v + 1; // for images cell
@@ -7038,6 +7040,7 @@ create unique index i_docir on doc(initid, revision);";
                             $k = 0; // number of frametext
                             $v = 0; // number of value in one frametext
                             $currentFrameId = "";
+                            $currentFrameText = "";
                             $currentFrame = null;
                             $changeframe = false;
                             $ih = 0; // index for hidden values
@@ -7067,13 +7070,15 @@ create unique index i_docir on doc(initid, revision);";
                                         $changeframe = true;
                                         $currentFrameId = $attr->fieldSet->id;
                                         $currentFrame = $attr->fieldSet;
+                                        if ($currentFrame->getOption("vlabel") == "none") $currentFrameText = '';
+                                        else $currentFrameText = mb_ucfirst($currentFrame->GetLabel());
                                         $v++;
                                     } elseif ($currentFrameId != "") $changeframe = true;
                                 }
                                 if ($changeframe) { // to generate final frametext
                                     $changeframe = false;
                                     if ($v > 0) { // one value detected
-                                        $frames[$k]["frametext"] = ucfirst($this->GetLabel($currentFrameId));
+                                        $frames[$k]["frametext"] = $currentFrameText;
                                         $frames[$k]["frameid"] = $currentFrameId;
                                         $frames[$k]["tag"] = "";
                                         $frames[$k]["TAB"] = false;
@@ -7087,7 +7092,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $frames[$k]["TAB"] = true;
                                             $ttabs[$currentFrame->fieldSet->id] = array(
                                                 "tabid" => $currentFrame->fieldSet->id,
-                                                "tabtitle" => ucfirst($currentFrame->fieldSet->getLabel())
+                                                "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
                                             );
                                         }
                                         $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
@@ -7103,6 +7108,8 @@ create unique index i_docir on doc(initid, revision);";
                                     // Set the table value elements
                                     $currentFrameId = $listattr[$i]->fieldSet->id;
                                     $currentFrame = $listattr[$i]->fieldSet;
+                                    if ($currentFrame->getOption("vlabel") == "none") $currentFrameText = '';
+                                    else $currentFrameText = mb_ucfirst($currentFrame->GetLabel());
                                     if (($listattr[$i]->mvisibility == "H") || ($listattr[$i]->mvisibility == "R")) {
                                         // special case for hidden values
                                         $thidden[$ih]["hname"] = "_" . $listattr[$i]->id;
@@ -7116,19 +7123,19 @@ create unique index i_docir on doc(initid, revision);";
                                         $tableframe[$v]["value"] = chop(htmlentities($value, ENT_COMPAT, "UTF-8"));
                                         $label = $listattr[$i]->getLabel();
                                         $tableframe[$v]["attrid"] = $listattr[$i]->id;
-                                        $tableframe[$v]["name"] = ucfirst($label);
+                                        $tableframe[$v]["name"] = mb_ucfirst($label);
                                         
                                         if ($listattr[$i]->needed) $tableframe[$v]["labelclass"] = "FREEDOMLabelNeeded";
                                         else $tableframe[$v]["labelclass"] = "FREEDOMLabel";
                                         $elabel = $listattr[$i]->getoption("elabel");
                                         $elabel = str_replace("'", "&rsquo;", $elabel);
-                                        $tableframe[$v]["elabel"] = ucfirst(str_replace('"', "&rquot;", $elabel));
+                                        $tableframe[$v]["elabel"] = mb_ucfirst(str_replace('"', "&rquot;", $elabel));
                                         $tableframe[$v]["helpid"] = $helpid;
                                         $tableframe[$v]["ehelp"] = ($helpid != false) && (in_array($listattr[$i]->id, $helpattr));
                                         
                                         $tableframe[$v]["multiple"] = ($attr->getOption("multiple") == "yes") ? "true" : "false";
                                         $tableframe[$v]["atype"] = $attr->type;
-                                        $tableframe[$v]["name"] = ucfirst($label);
+                                        $tableframe[$v]["name"] = mb_ucfirst($label);
                                         $tableframe[$v]["classback"] = ($attr->usefor == "O") ? "FREEDOMOpt" : "FREEDOMBack1";
                                         //$tableframe[$v]["name"]=$action->text($label);
                                         $tableframe[$v]["SINGLEROW"] = true;
@@ -7157,7 +7164,7 @@ create unique index i_docir on doc(initid, revision);";
                             }
                             // Out
                             if ($v > 0) { // latest fieldset
-                                $frames[$k]["frametext"] = ucfirst($this->GetLabel($currentFrameId));
+                                $frames[$k]["frametext"] = $currentFrameText;
                                 $frames[$k]["frameid"] = $currentFrameId;
                                 $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
                                 $frames[$k]["tag"] = "";
@@ -7172,7 +7179,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $frames[$k]["TAB"] = true;
                                     $ttabs[$currentFrame->fieldSet->id] = array(
                                         "tabid" => $currentFrame->fieldSet->id,
-                                        "tabtitle" => ucfirst($currentFrame->fieldSet->getLabel())
+                                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
                                     );
                                 }
                                 $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
