@@ -3,12 +3,12 @@
 <tr >
   <td  colspan="2" >
       <fieldset id="F[frameid]" class="frame" opened="true">
-          <legend style="cursor:pointer">
+          [IF flabel]<legend style="cursor:pointer">
             <span class="dyp-frame-opener" onclick="viewornot('T[frameid]', ['F[frameid]'])">[flabel]</span>
             [IF ehelp]
             <span title="[TEXT:Online help]" class="dyp-help-hint" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'help[ehelpid]','[ehelp]')"></span>
             [ENDIF ehelp]
-          </legend>
+          </legend>[ENDIF flabel]
 <table width="100%" id="T[frameid]" opened="true">
 [BLOCK FVALUES]
 <tr class="FREEDOMBack1">

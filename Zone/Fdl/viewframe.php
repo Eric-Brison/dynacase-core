@@ -25,7 +25,7 @@ include_once ("FDL/Class.DocAttr.php");
 include_once ("FDL/freedom_util.php");
 // Compute frame values to be inserted in a specific layout
 // -----------------------------------
-function viewframe(&$action)
+function viewframe(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters
@@ -43,7 +43,10 @@ function viewframe(&$action)
     
     $doc = new_Doc($dbaccess, $docid);
     if (($vid != "") && ($doc->cvid > 0)) {
-        // special controlled view
+        /**
+         * special controled view
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $tview = $cvdoc->getView($vid);
         
@@ -51,14 +54,17 @@ function viewframe(&$action)
     }
     
     $listattr = $doc->GetNormalAttributes(); // get frame attribute also
+    $foa = $doc->getAttribute($frameid);
+    if (!$foa) $action->exitError(sprintf("attribute %s not found") , $frameid);
+    if ($foa->getOption("vlabel") == "none") $action->lay->set("flabel", '');
+    else $action->lay->set("flabel", mb_ucfirst($foa->getLabel()));
     
     $tval = array();
-    while (list($k, $v) = each($listattr)) {
-        
+    foreach ($listattr as $k => $v) {
+        /**
+         * @var NormalAttribute $v
+         */
         if ($v->fieldSet->id != $frameid) continue;
-        
-        $action->lay->set("flabel", ucfirst($v->fieldSet->getLabel()));
-        $action->lay->set("frameid", $v->fieldSet->id);
         
         $value = chop($doc->GetValue($v->id));
         

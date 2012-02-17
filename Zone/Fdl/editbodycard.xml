@@ -3,7 +3,7 @@
 [BLOCK TABLEBODY]
 <fieldset id="F[frameid]" [IF TAB]name="[tag]" [ENDIF TAB]   style="[IF bgcolor]background-color:[bgcolor];[ENDIF bgcolor][IF TAB]display:none;[ENDIF TAB]" class="frame" opened="true">
     <legend style="cursor:pointer">
-        <span class="dyp-frame-opener" onclick="viewornot('T[frameid]',['F[frameid]'])">[frametext]</span>
+        [IF frametext]<span class="dyp-frame-opener" onclick="viewornot('T[frameid]',['F[frameid]'])">[frametext]</span>[ENDIF frametext]
         [IF ehelp]
         <span title="[TEXT:Online help]" class="dyp-help-hint" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'help[ehelpid]','[ehelp]')"></span>
         [ENDIF ehelp]
