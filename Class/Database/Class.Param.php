@@ -130,7 +130,8 @@ class Param extends DbObj
     
     function SetVolatile($name, $val)
     {
-        $this->buffer[$name] = $val;
+        if ($val !== null) $this->buffer[$name] = $val;
+        else unset($this->buffer[$name]);
     }
     
     function Get($name, $def = "")
