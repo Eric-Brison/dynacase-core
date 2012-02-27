@@ -19,7 +19,6 @@
 // $Id: expandfld.php,v 1.18 2005/09/27 16:16:50 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Freedom/expandfld.php,v $
 // ---------------------------------------------------------------
-
 include_once ("FREEDOM/folders.php");
 // -----------------------------------
 function expandfld(&$action)
@@ -92,7 +91,7 @@ function expandfld(&$action)
             if (hasChildFld($dbaccess, $doc["initid"], ($doc["doctype"] == 'S'))) $hasChild = 'true';
             
             $ftype = $dir->getIcon($doc["icon"]);
-            $stree.= "ffolder.insFld(fldtop, ffolder.gFld(\"" . str_replace('"', '\"', $doc["title"]) . "\", \"#\"," . $doc["initid"] . ",\"$ftype\",$hasChild))\n";
+            $stree.= "ffolder.insFld(fldtop, ffolder.gFld(" . json_encode(str_replace("\n", " ", $doc["title"])) . ", \"#\"," . $doc["initid"] . ",\"$ftype\",$hasChild))\n";
         }
     }
     // define icon from style
