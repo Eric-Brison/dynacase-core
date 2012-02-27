@@ -22,6 +22,7 @@ include_once ("Lib.Color.php");
 
 function getStyleInherit($name, &$sty_colorsh, &$sty_consth, &$sty_localsh)
 {
+    $sty_const = $sty_colors = $sty_local = array();
     if (file_exists(GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$name}/{$name}.sty")) {
         //  global $sty_desc,$sty_const,$sty_colors,$sty_local;
         include ("STYLE/{$name}/{$name}.sty");
@@ -36,7 +37,9 @@ $name = GetHttpVars("name");
 $html = (GetHttpVars("html") != "");
 $thparam = array(); // array of inherited paramters
 $param = new Param();
-
+/**
+ * @var Action $action
+ */
 if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$name}/{$name}.sty")) {
     //  global $sty_desc,$sty_const,$sty_colors,$sty_local;
     include ("STYLE/{$name}/{$name}.sty");
@@ -55,8 +58,8 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
         if (!isset($sty_colors)) $sty_colors = $sty_colors_inherit;
     }
     
+    $sty = new Style("", $name);
     if (sizeof($sty_desc) > 0) {
-        $sty = new Style("", $name);
         reset($sty_desc);
         while (list($k, $v) = each($sty_desc)) {
             $sty->$k = $v;
@@ -115,6 +118,10 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
         }
     }
     
+    if (strtolower($sty->parsable) == "y") {
+        // delete ISIE, ISCHROME, ... parameters
+        initExplorerParam($action->parent, null);
+    }
     if (isset($sty_const)) {
         reset($sty_const);
         while (list($k, $v) = each($sty_const)) {
@@ -136,8 +143,7 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
             
         }
     }
-    
-    $inputlay = new Layout("STYLE/$name/Layout/$name.css", ($sty->parsable) ? null : $action);
+    $inputlay = new Layout("STYLE/$name/Layout/$name.css", $action);
     if ($sty_inherit) {
         if ($inputlay->file == "") {
             $inputlay = new Layout("STYLE/$sty_inherit/Layout/$sty_inherit.css", $action);
@@ -153,10 +159,10 @@ if (file_exists($action->GetParam("CORE_PUBDIR", DEFAULT_PUBDIR) . "/STYLE/{$nam
     
     $out = $inputlay->gen();
     
-    if (!is_dir($action->GetParam("CORE_PUBDIR") . "/STYLE/$name/Layout")) {
-        mkdir($action->GetParam("CORE_PUBDIR") . "/STYLE/$name/Layout");
+    if (!is_dir(DEFAULT_PUBDIR . "/STYLE/$name/Layout")) {
+        mkdir(DEFAULT_PUBDIR . "/STYLE/$name/Layout");
     }
-    file_put_contents($action->GetParam("CORE_PUBDIR") . "/STYLE/$name/Layout/gen.css", $out);
+    file_put_contents(DEFAULT_PUBDIR . "/STYLE/$name/Layout/gen.css", $out);
     // update style list for STYLE parameter definition
     $query = new QueryDb("", "Style");
     $list = $query->Query();

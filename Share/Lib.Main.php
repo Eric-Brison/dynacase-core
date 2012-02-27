@@ -165,18 +165,19 @@ function getMainAction($auth, &$action)
 /**
  * init user agent volatile param
  * @param Application $app
+ * @param mixed $defaultValue
  */
-function initExplorerParam(Application & $app)
+function initExplorerParam(Application & $app, $defaultValue = false)
 {
-    $app->SetVolatileParam("ISIE", false);
-    $app->SetVolatileParam("ISIE6", false);
-    $app->SetVolatileParam("ISIE7", false);
-    $app->SetVolatileParam("ISIE8", false);
-    $app->SetVolatileParam("ISIE9", false);
-    $app->SetVolatileParam("ISIE10", false);
-    $app->SetVolatileParam("ISAPPLEWEBKIT", false);
-    $app->SetVolatileParam("ISSAFARI", false);
-    $app->SetVolatileParam("ISCHROME", false);
+    $app->SetVolatileParam("ISIE", $defaultValue);
+    $app->SetVolatileParam("ISIE6", $defaultValue);
+    $app->SetVolatileParam("ISIE7", $defaultValue);
+    $app->SetVolatileParam("ISIE8", $defaultValue);
+    $app->SetVolatileParam("ISIE9", $defaultValue);
+    $app->SetVolatileParam("ISIE10", $defaultValue);
+    $app->SetVolatileParam("ISAPPLEWEBKIT", $defaultValue);
+    $app->SetVolatileParam("ISSAFARI", $defaultValue);
+    $app->SetVolatileParam("ISCHROME", $defaultValue);
     if ($_SERVER["HTTP_HOST"]) {
         initExplorerWebParam($app);
     }
