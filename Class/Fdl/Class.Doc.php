@@ -4654,12 +4654,10 @@ create unique index i_docir on doc(initid, revision);";
                 $fromid = $this->initid;
                 if ($this->icon != "") {
                     // need disabled triggers to increase speed
-                    $qt[] = "begin";
                     $qt[] = "ALTER TABLE doc$fromid DISABLE TRIGGER ALL";
                     $qt[] = "update doc$fromid set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and ((icon='" . $this->icon . "') or (icon is null))";
                     $qt[] = "ALTER TABLE doc$fromid ENABLE TRIGGER ALL";
                     $qt[] = "update docread set icon='$icon' where (fromid=" . $fromid . ") AND (doctype != 'C') and ((icon='" . $this->icon . "') or (icon is null))";
-                    $qt[] = "commit";
                     
                     $this->exec_query(implode(";", $qt));
                 } else {
