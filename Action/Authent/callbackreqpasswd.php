@@ -40,7 +40,7 @@ function callbackreqpasswd(&$action)
     }
     // If this token has expired, remove all expired tokens
     $now = time();
-    $expire = FrenchDateToUnixTs($utok->expire);
+    $expire = stringDateToUnixTs($utok->expire);
     if ($now > $expire) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Token " . $utok->token . " has expired (expire = " . $utok->expire . ")");
         $action->lay->set('CALLBACK_NOT_OK', True);

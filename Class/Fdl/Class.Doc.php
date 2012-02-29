@@ -2728,7 +2728,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $localeconfig = getLocaleConfig();
                                             if ($localeconfig !== false) {
                                                 $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateFormat']);
-                                                $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
+                                                if (getLcdate() != "iso") $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
                                             } else {
                                                 return sprintf(_("value [%s] is not a valid date") , $avalue);
                                             }
@@ -2739,11 +2739,10 @@ create unique index i_docir on doc(initid, revision);";
                                         if (trim($avalue) == "") {
                                             if (!$oattr->repeat) $tvalues[$kvalue] = "";
                                         } else {
-                                            
                                             $localeconfig = getLocaleConfig();
                                             if ($localeconfig !== false) {
                                                 $tvalues[$kvalue] = stringDateToIso($avalue, $localeconfig['dateTimeFormat']);
-                                                $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
+                                                if (getLcdate() != "iso") $tvalues[$kvalue] = preg_replace('#^([0-9]{4})-([0-9]{2})-([0-9]{2})#', '$3/$2/$1', $tvalues[$kvalue]);
                                             } else {
                                                 return sprintf(_("value [%s] is not a valid timestamp") , $avalue);
                                             }
@@ -5393,12 +5392,13 @@ create unique index i_docir on doc(initid, revision);";
 
                         case 'date':
                             if (($aformat != "") && (trim($avalue) != "")) {
-                                if ($avalue) $htmlval = strftime($aformat, FrenchDateToUnixTs($avalue));
+                                if ($avalue) $htmlval = strftime($aformat, stringDateToUnixTs($avalue));
                                 else $htmlval = $avalue;
                             } elseif (trim($avalue) == "") {
                                 $htmlval = "";
                             } else {
-                                $htmlval = FrenchDateToLocaleDate($avalue);
+                                
+                                $htmlval = stringDateToLocaleDate($avalue);
                             }
                             $aformat = "";
                             break;
@@ -5416,12 +5416,12 @@ create unique index i_docir on doc(initid, revision);";
 
                         case 'timestamp':
                             if (($aformat != "") && (trim($avalue) != "")) {
-                                if ($avalue) $htmlval = strftime($aformat, FrenchDateToUnixTs($avalue));
+                                if ($avalue) $htmlval = strftime($aformat, stringDateToUnixTs($avalue));
                                 else $htmlval = $avalue;
                             } elseif (trim($avalue) == "") {
                                 $htmlval = "";
                             } else {
-                                $htmlval = FrenchDateToLocaleDate($avalue);
+                                $htmlval = stringDateToLocaleDate($avalue);
                             }
                             $aformat = "";
                             break;
@@ -5820,12 +5820,12 @@ create unique index i_docir on doc(initid, revision);";
 
                             case 'date':
                                 if (($aformat != "") && (trim($avalue) != "")) {
-                                    if ($avalue) $htmlval = strftime($aformat, FrenchDateToUnixTs($avalue));
+                                    if ($avalue) $htmlval = strftime($aformat, stringDateToUnixTs($avalue));
                                     else $htmlval = $avalue;
                                 } elseif (trim($avalue) == "") {
                                     $htmlval = "";
                                 } else {
-                                    $htmlval = FrenchDateToLocaleDate($avalue);
+                                    $htmlval = stringDateToLocaleDate($avalue);
                                 }
                                 $aformat = "";
                                 break;
@@ -5844,12 +5844,12 @@ create unique index i_docir on doc(initid, revision);";
 
                             case 'timestamp':
                                 if (($aformat != "") && (trim($avalue) != "")) {
-                                    if ($avalue) $htmlval = strftime($aformat, FrenchDateToUnixTs($avalue));
+                                    if ($avalue) $htmlval = strftime($aformat, stringDateToUnixTs($avalue));
                                     else $htmlval = $avalue;
                                 } elseif (trim($avalue) == "") {
                                     $htmlval = "";
                                 } else {
-                                    $htmlval = FrenchDateToLocaleDate($avalue);
+                                    $htmlval = stringDateToLocaleDate($avalue);
                                 }
                                 $aformat = "";
                                 break;
@@ -6464,7 +6464,7 @@ create unique index i_docir on doc(initid, revision);";
                                         $frames[$k]["TAB"] = true;
                                         $ttabs[$currentFrame->fieldSet->id] = array(
                                             "tabid" => $currentFrame->fieldSet->id,
-                                            "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
+                                            "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($currentFrame->fieldSet->getLabel())
                                         );
                                     }
                                     $frames[$k]["viewtpl"] = ($frametpl != "");
@@ -6582,7 +6582,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $frames[$k]["TAB"] = true;
                                     $ttabs[$currentFrame->fieldSet->id] = array(
                                         "tabid" => $currentFrame->fieldSet->id,
-                                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
+                                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($currentFrame->fieldSet->getLabel())
                                     );
                                 }
                                 $frames[$k]["rowspan"] = $v + 1; // for images cell
@@ -7106,7 +7106,7 @@ create unique index i_docir on doc(initid, revision);";
                                             $frames[$k]["TAB"] = true;
                                             $ttabs[$currentFrame->fieldSet->id] = array(
                                                 "tabid" => $currentFrame->fieldSet->id,
-                                                "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
+                                                "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($currentFrame->fieldSet->getLabel())
                                             );
                                         }
                                         $frames[$k]["TABLEVALUE"] = "TABLEVALUE_$k";
@@ -7193,7 +7193,7 @@ create unique index i_docir on doc(initid, revision);";
                                     $frames[$k]["TAB"] = true;
                                     $ttabs[$currentFrame->fieldSet->id] = array(
                                         "tabid" => $currentFrame->fieldSet->id,
-                                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel")=="none")?'&nbsp;':mb_ucfirst($currentFrame->fieldSet->getLabel())
+                                        "tabtitle" => ($currentFrame->fieldSet->getOption("vlabel") == "none") ? '&nbsp;' : mb_ucfirst($currentFrame->fieldSet->getLabel())
                                     );
                                 }
                                 $this->lay->SetBlockData($frames[$k]["TABLEVALUE"], $tableframe);
@@ -7914,7 +7914,7 @@ create unique index i_docir on doc(initid, revision);";
                          * @param int $dayhour hours of day
                          * @param int $daymin minutes of day
                          * @param bool $getlocale whether to return locale date or not
-                         * @return string DD/MM/YYYY or locale date
+                         * @return string YYYY-MM-DD or DD/MM/YYYY (depend of CORE_LCDATE parameter) or locale date
                          */
                         public static function getDate($daydelta = 0, $dayhour = "", $daymin = "", $getlocale = false)
                         {
@@ -7926,7 +7926,7 @@ create unique index i_docir on doc(initid, revision);";
                             } else {
                                 $nd = time();
                             }
-                            
+                            $isIsoDate = (getLcdate() == "iso");
                             if ($dayhour !== "") {
                                 $delta = abs(intval($dayhour));
                                 if ($dayhour > 0) {
@@ -7942,15 +7942,17 @@ create unique index i_docir on doc(initid, revision);";
                                 }
                                 
                                 if ($getlocale) {
-                                    return FrenchDateToLocaleDate(date("d/m/Y H:i", $nd));
+                                    return stringDateToLocaleDate(date("Y-m-d H:i", $nd));
                                 } else {
-                                    return date("d/m/Y H:i", $nd);
+                                    if ($isIsoDate) return date("Y-m-d H:i", $nd);
+                                    else return date("d/m/Y H:i", $nd);
                                 }
                             } else {
                                 if ($getlocale) {
-                                    return FrenchDateToLocaleDate(date("d/m/Y", $nd));
+                                    return stringDateToLocaleDate(date("Y-m-d", $nd));
                                 } else {
-                                    return date("d/m/Y", $nd);
+                                    if ($isIsoDate) return date("Y-m-d", $nd);
+                                    else return date("d/m/Y", $nd);
                                 }
                             }
                         }
@@ -7963,8 +7965,13 @@ create unique index i_docir on doc(initid, revision);";
                         public static function getTimeDate($hourdelta = 0, $second = false)
                         {
                             $delta = abs(intval($hourdelta));
-                            if ($second) $format = "d/m/Y H:i:s";
-                            else $format = "d/m/Y H:i";
+                            if ((getLcdate() == "iso")) {
+                                if ($second) $format = "Y-m-d H:i:s";
+                                else $format = "Y-m-d H:i";
+                            } else {
+                                if ($second) $format = "d/m/Y H:i:s";
+                                else $format = "d/m/Y H:i";
+                            }
                             if ($hourdelta > 0) {
                                 if (is_float($hourdelta)) {
                                     $dm = intval((abs($hourdelta) - $delta) * 60);

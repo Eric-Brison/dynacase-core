@@ -784,6 +784,14 @@ function mkpasswd($length = 8, $charspace = "")
     return $passwd;
 }
 /**
+ * return lcdate use in database : iso or dmy
+ * @return string
+ */
+function getLcdate()
+{
+    return substr(getParam("CORE_LCDATE") , 0, 3);
+}
+/**
  *
  * @param string $core_lang
  */

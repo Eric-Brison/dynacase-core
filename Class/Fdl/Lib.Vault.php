@@ -131,8 +131,8 @@ function vault_uniqname($idfile, $teng_name = "")
     $FREEDOM_VAULT->Show($idfile, $info, $teng_name);
     if ($info->name) {
         
-        $m2009 = FrenchDateToUnixTs("01/01/2009");
-        $mdate = FrenchDateToUnixTs($info->mdate);
+        $m2009 = iso8601DateToUnixTs("2009-01-01");
+        $mdate = stringDateToUnixTs($info->mdate);
         $check = base_convert($mdate - $m2009, 10, 34);
         $pos = strrpos($info->name, '.');
         //    $check= md5_file($info->path);

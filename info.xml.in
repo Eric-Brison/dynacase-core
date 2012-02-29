@@ -23,6 +23,7 @@
     <param name="client_name" label="client name" type="text" />
     <param name="core_db" label="database postgresql service name" default="@CONTEXT_NAME" type="text" needed="Y" />
     <param name="authtype" label="authenticate default mode" default="html" type="enum" values="html|basic" needed="Y" />
+    <param name="lcdate" label="output representation of date in database" default="iso : standard format 8601" type="enum" values="iso : standard format 8601|dmy : french notation use only for compatibility with old version" needed="N" oninstall="W" onupgrade="H" onedit="H" />
     <param name="apacheuser" label="apache system user" default="www-data" type="text" needed="Y" />
     <param name="core_tmpdir" label="temporary folder" default="/tmp" type="text" needed="Y" />
     <param name="core_admin_passwd" label="Admin password" default="anakeen" type="text" volatile="yes" oninstall="W" onupgrade="H" onedit="H" />
@@ -125,6 +126,7 @@ This can be solved by:<br/>
     
     <process command="programs/update_catalog"><label lang="en">Generate traduction catalog</label></process>
     <process command="programs/set_param CORE_CLIENT client_name" ><label lang="en">Register client name</label></process>
+    <process command="programs/set_param CORE_LCDATE lcdate" ><label lang="en">Set locale date</label></process>
     <process command="programs/set_param CORE_TMPDIR core_tmpdir" ><label lang="en">Register temporary folder</label></process>
     
     <process command="programs/app_post FDL I" />

@@ -126,9 +126,9 @@ class Fdl_Document
                         } elseif ($isoDate && ($v->type == 'date' || $v->type == 'timestamp')) {
                             if (is_array($lvalues[$v->id])) {
                                 foreach ($lvalues[$v->id] as $kd => $vd) {
-                                    $lvalues[$v->id][$kd] = FrenchDateToIso($vd, false);
+                                    $lvalues[$v->id][$kd] = StringDateToIso($vd, false);
                                 }
-                            } else $lvalues[$v->id] = FrenchDateToIso($lvalues[$v->id], false);
+                            } else $lvalues[$v->id] = stringDateToIso($lvalues[$v->id], false);
                         }
                     }
                 }
@@ -248,9 +248,9 @@ class Fdl_Document
                 if ($props["domainid"]) $props["domainid"] = $this->doc->_val2array($props["domainid"]);
                 else $props["domainid"] = array();
                 if (getParam("DATA_LCDATE") == "iso") {
-                    $props["cdate"] = FrenchDateToIso($props["cdate"], false);
-                    $props["mdate"] = FrenchDateToIso($props["mdate"], false);
-                    $props["adate"] = FrenchDateToIso($props["adate"], false);
+                    $props["cdate"] = stringDateToIso($props["cdate"], false);
+                    $props["mdate"] = stringDateToIso($props["mdate"], false);
+                    $props["adate"] = stringDateToIso($props["adate"], false);
                 }
                 
                 if ($props["allocated"] > 0) $props["allocatedname"] = USER::getDisplayName(abs($props["allocated"]));

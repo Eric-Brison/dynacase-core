@@ -195,64 +195,75 @@ Fdl.Document.prototype = {
     getDisplayValue: function(id,config) {
     	var oa=this.getAttribute(id);
     	var i=0,vs=null,tv=[];
-    	if (oa) {
-    		if (oa.toString() == 'Fdl.RelationAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
-    		if (oa.toString() == 'Fdl.ThesaurusAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
-    		if (oa.toString() == 'Fdl.EnumAttribute') {
-    			if (oa.inArray() || oa.isMultiple()) {
-    				 tv=[];
-    				 vs=this._data.values[id];
-    				if (vs) {
-    				for (i=0;i<vs.length;i++) {   
-    					tv.push(oa.getEnumLabel({key:vs[i]}));
-    				}
-    				}
-    				return tv;
-    			} else {
-    			return oa.getEnumLabel({key:this._data.values[id]});
-    			}
-    		}
-    		if (oa.toString() == 'Fdl.FileAttribute') {
-    			if (oa.inArray()) {
-    				 tv=[];
-    				 vs=this._data.values[id];
-    				if (vs) {
-    				for (i=0;i<vs.length;i++) {   					
-    					if (config && config.url) {
-    						if (config.dav) {
-        						tv.push(oa.getDavUrl(vs[i],this.id));
-    						} else {
-    						config.index=i;
-    						tv.push(oa.getUrl(vs,this.id,config));
-    						}
-    					} else tv.push(Fdl.encodeHtmlTags(oa.getFileName(vs[i])));
-    				}
-    				}
-    				return tv;
-    			} else {
-    			if (config && config.url) {
-    				if (config.dav) return oa.getDavUrl(this._data.values[id],this.id);
-    				else return oa.getUrl(this._data.values[id],this.id,config);
-    			} else return Fdl.encodeHtmlTags(oa.getFileName(this._data.values[id]));
-    			}
-    		}
-    		if (oa.toString() == 'Fdl.DateAttribute') {
-    			var fmt=this.context.getUser().getLocaleFormat();
-    			var dateFmt='';
-    			if (oa.type=='date') {
-    				dateFmt=fmt.dateFormat;
-    			} else if (oa.type=='timestamp') {
-    				dateFmt=fmt.dateTimeFormat;
-    			}  else if (oa.type=='time') {
-    				dateFmt=fmt.timeFormat;
-    			}  
-    			if (dateFmt) {
-    				return Fdl.formatDate(this._data.values[id],dateFmt);
-    			} 
-    			
-    		}
-    	}
-    	return Fdl.encodeHtmlTags(this._data.values[id]);
+        if (oa) {
+
+            if (! this._data.values[id]) return this._data.values[id];
+            if (oa.toString() == 'Fdl.RelationAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
+            if (oa.toString() == 'Fdl.ThesaurusAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
+            if (oa.toString() == 'Fdl.EnumAttribute') {
+                if (oa.inArray() || oa.isMultiple()) {
+                    tv=[];
+                    vs=this._data.values[id];
+                    if (vs) {
+                        for (i=0;i<vs.length;i++) {
+                            tv.push(oa.getEnumLabel({key:vs[i]}));
+                        }
+                    }
+                    return tv;
+                } else {
+                    return oa.getEnumLabel({key:this._data.values[id]});
+                }
+            }
+            if (oa.toString() == 'Fdl.FileAttribute') {
+                if (oa.inArray()) {
+                    tv=[];
+                    vs=this._data.values[id];
+                    if (vs) {
+                        for (i=0;i<vs.length;i++) {
+                            if (config && config.url) {
+                                if (config.dav) {
+                                    tv.push(oa.getDavUrl(vs[i],this.id));
+                                } else {
+                                    config.index=i;
+                                    tv.push(oa.getUrl(vs,this.id,config));
+                                }
+                            } else tv.push(Fdl.encodeHtmlTags(oa.getFileName(vs[i])));
+                        }
+                    }
+                    return tv;
+                } else {
+                    if (config && config.url) {
+                        if (config.dav) return oa.getDavUrl(this._data.values[id],this.id);
+                        else return oa.getUrl(this._data.values[id],this.id,config);
+                    } else return Fdl.encodeHtmlTags(oa.getFileName(this._data.values[id]));
+                }
+            }
+            if (oa.toString() == 'Fdl.DateAttribute') {
+                var fmt=this.context.getUser().getLocaleFormat();
+                var dateFmt='';
+                if (oa.type=='date') {
+                    dateFmt=fmt.dateFormat;
+                } else if (oa.type=='timestamp') {
+                    dateFmt=fmt.dateTimeFormat;
+                }  else if (oa.type=='time') {
+                    dateFmt=fmt.timeFormat;
+                }
+                if (dateFmt) {
+                    if (oa.inArray()) {
+                        vs=this._data.values[id];
+                        tv=[];
+                        for (i=0;i<vs.length;i++) {
+                            tv.push(Fdl.formatDate(vs[i],dateFmt));
+                        }
+                        return tv;
+                    } else {
+                        return Fdl.formatDate(this._data.values[id],dateFmt);
+                    }
+                }
+
+            }
+        }
+        return Fdl.encodeHtmlTags(this._data.values[id]);
     },
     
     /**
