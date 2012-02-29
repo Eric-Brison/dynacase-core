@@ -428,10 +428,10 @@ class DocHtmlFormat
                         //$errconvert=trim(file_get_contents($info->path));
                         //$errconvert=sprintf('<p>%s</p>',str_replace(array("'","\r","\n"),array("&rsquo;",""),nl2br(htmlspecialchars($errconvert,ENT_COMPAT,"UTF-8"))));
                         if ($fileInfo->teng_state > 1) $waiting = "<img class=\"mime\" src=\"Images/loading.gif\">";
-                        else $waiting = "<img class=\"mime\" needresize=1 src=\"lib/ui/icon/bullet_error.png\">";;
+                        else $waiting = "<img class=\"mime\" needresize=1 src=\"Images/bullet_error.png\">";;
                         $htmlval = sprintf('<a _href_="%s" vid="%d" onclick="popdoc(event,this.getAttribute(\'_href_\')+\'&inline=yes\',\'%s\')">%s %s</a>', $this->doc->getFileLink($this->oattr->id, $this->index) , $fileInfo->id_file, str_replace("'", "&rsquo;", _("file status")) , $waiting, $textval);
                         if ($fileInfo->teng_state < 0) {
-                            $htmlval.= sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>', $this->doc->id, $this->oattr->id, $this->index, _("retry file conversion") , "lib/ui/icon/arrow_refresh.png");
+                            $htmlval.= sprintf('<a href="?app=FDL&action=FDL_METHOD&id=%d&method=resetConvertVaultFile(\'%s,%s)"><img class="mime" title="%s" src="%s"></a>', $this->doc->id, $this->oattr->id, $this->index, _("retry file conversion") , "Images/arrow_refresh.png");
                         }
                     } else {
                         $htmlval = $textval;
