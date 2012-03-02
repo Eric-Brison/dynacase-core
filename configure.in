@@ -136,7 +136,6 @@ AC_OUTPUT(Makefile \
           App/Authent/AUTHENT_init.php \
           App/Core/CORE_init.php \
           App/Data/DATA_init.php \
-          App/Extui/EXTUI_init.php \
           App/Dav/DAV_init.php \
           App/Dav/DAV_conf.apache \
           App/Fdl/FDL_init.php \

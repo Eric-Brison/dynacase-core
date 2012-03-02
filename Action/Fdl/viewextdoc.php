@@ -38,6 +38,10 @@ include_once ("FDL/popupfamdetail.php");
  */
 function viewextdoc(&$action)
 {
+    if (!file_exists('lib/ui/freedom-extui.js')) {
+        $err = _("This action requires the installation of Dynacase Extui module");
+        $action->ExitError($err);
+    }
     
     $ec = getHttpVars("extconfig");
     if ($ec) {

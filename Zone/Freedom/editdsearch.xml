@@ -71,7 +71,7 @@ select.perso {
 
 <tr id="newcond" style="display:none">
 <td class="und" align="left">
-  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="lib/ui/icon/bin.png">
+  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="FREEDOM/Images/bin.png">
 </td>
 <td class="und">
 		 <select class="modeperso" name="_se_ols[]"   >
@@ -111,7 +111,7 @@ select.perso {
     
 <tr id="newstate" style="display:none">
 <td class="und" align="left">
-  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="lib/ui/icon/bin.png">
+  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="FREEDOM/Images//bin.png">
 </td>
 <td>
 		 <select class="modeperso" name="_se_ols[]"   >
@@ -172,7 +172,7 @@ select.perso {
 <tbody id="condlist">
 [BLOCK CONDITIONS]<tr id="ART[ak]">
 <td class="und">
-  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="lib/ui/icon/bin.png"></td>
+  <img title="[TEXT:delete]" onclick="delart(this); refreshCondList();" src="FREEDOM/Images/bin.png"></td>
 	<td class="und">
 		 <select class="modeperso" name="_se_ols[]"   >
   <option selected  value="">[TEXT:OP_GLOB]</option>
