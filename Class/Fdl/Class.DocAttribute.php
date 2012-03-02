@@ -881,9 +881,14 @@ class NormalAttribute extends BasicAttribute
             $convertDate = function ($date) use ($dateFormat)
             {
                 if (strtoupper($dateFormat) == "US") {
-                    $date = FrenchDateToIso($date, false);
+                    // it is not US is ISO without T
+                    $date = stringDateToIso($date, false);
                 } elseif (strtoupper($dateFormat) == "ISO") {
-                    $date = FrenchDateToIso($date);
+                    $date = stringDateToIso($date, false, true);
+                } elseif (getLcdate() == "iso") { // FR
+                    $ldate = stringDateToLocaleDate($date, '%d/%m/%Y %H:%M');
+                    if (strlen($date) < 11) $date = substr($ldate, 0, strlen($date));
+                    else $date = $ldate;
                 }
                 return $date;
             };

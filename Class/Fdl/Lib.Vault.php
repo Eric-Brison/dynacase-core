@@ -65,9 +65,10 @@ function getOpenTeUrl($context = array())
  */
 function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $docid = '')
 {
+    $err='';
     if (($vidin > 0) && ($vidout > 0)) {
         $tea = getParam("TE_ACTIVATE");
-        if ($tea != "yes") return;
+        if ($tea != "yes") return '';
         global $action;
         include_once ("FDL/Class.TaskRequest.php");
         $of = new VaultDiskStorage($dbaccess, $vidin);
@@ -80,7 +81,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
         $urlindex = getOpenTeUrl();
         $callback = $urlindex . "&sole=Y&app=FDL&action=INSERTFILE&engine=$engine&vidin=$vidin&vidout=$vidout&isimage=$isimage&docid=$docid";
         $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
-        $err = $ot->sendTransformation($engine, $vid, $filename, $callback, $info);
+        $err = $ot->sendTransformation($engine, $vidout, $filename, $callback, $info);
         if ($err == "") {
             $tr = new TaskRequest($dbaccess);
             $tr->tid = $info["tid"];
@@ -95,6 +96,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             $filename = uniqid(getTmpDir() . "/txt-" . $vidout . '-');
             file_put_contents($filename, $err);
             //$vf->rename($vidout,"toto.txt");
+            $infofile=null;
             $vf->Retrieve($vidout, $infofile);
             $err.= $vf->Save($filename, false, $vidout);
             @unlink($filename);
@@ -131,8 +133,8 @@ function vault_uniqname($idfile, $teng_name = "")
     $FREEDOM_VAULT->Show($idfile, $info, $teng_name);
     if ($info->name) {
         
-        $m2009 = FrenchDateToUnixTs("01/01/2009");
-        $mdate = FrenchDateToUnixTs($info->mdate);
+        $m2009 = iso8601DateToUnixTs("2009-01-01");
+        $mdate = stringDateToUnixTs($info->mdate);
         $check = base_convert($mdate - $m2009, 10, 34);
         $pos = strrpos($info->name, '.');
         //    $check= md5_file($info->path);
@@ -230,6 +232,7 @@ function convertFile($infile, $engine, $outfile, &$info)
             
             $callback = "";
             $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
+            $vid='';
             $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
             if ($err == "") {
                 include_once ("FDL/Class.TaskRequest.php");

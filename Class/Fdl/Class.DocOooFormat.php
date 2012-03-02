@@ -530,12 +530,12 @@ class DocOooFormat
     {
         
         if (($this->cFormat != "") && (trim($avalue) != "")) {
-            if ($avalue) $oooval = strftime($this->cFormat, FrenchDateToUnixTs($avalue));
+            if ($avalue) $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
             else $oooval = $avalue;
         } elseif (trim($avalue) == "") {
             $oooval = "";
         } else {
-            $oooval = FrenchDateToLocaleDate($avalue);
+            $oooval = stringDateToLocaleDate($avalue);
         }
         $this->cFormat = "";
         return $oooval;
@@ -569,12 +569,12 @@ class DocOooFormat
     {
         
         if (($this->cFormat != "") && (trim($avalue) != "")) {
-            if ($avalue) $oooval = strftime($this->cFormat, FrenchDateToUnixTs($avalue));
+            if ($avalue) $oooval = strftime($this->cFormat, stringDateToUnixTs($avalue));
             else $oooval = $avalue;
         } elseif (trim($avalue) == "") {
             $oooval = "";
         } else {
-            $oooval = FrenchDateToLocaleDate($avalue);
+            $oooval = stringDateToLocaleDate($avalue);
         }
         $this->cFormat = "";
         return $oooval;

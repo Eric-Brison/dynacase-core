@@ -151,7 +151,7 @@ function getCoreParam($name, $def = "")
  *
  * @param string $name the variable
  * @param string $def default value if variable is not defined
- * @return unknown_type
+ * @return mixed
  */
 function getSessionValue($name, $def = "")
 {
@@ -591,13 +591,13 @@ function getJsVersion()
 }
 /**
  * produce an anchor mailto '<a ...>'
- * @param string to a valid mail address or list separated by comma -supported by client-
- * @param string anchor content <a...>anchor content</a>
- * @param string subject
- * @param string cc
- * @param string bcc
- * @param array treated as html anchor attribute : key is attribute name and value.. value
- * @param string force link to be produced according the value
+ * @param string $to a valid mail address or list separated by comma -supported by client-
+ * @param string $anchor content <a...>anchor content</a>
+ * @param string $subject
+ * @param string $cc
+ * @param string $bcc
+ * @param array $treated as html anchor attribute : key is attribute name and value.. value
+ * @param string $force link to be produced according the value
  * @return string like user admin dbname anakeen
  */
 function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = "", $from = "", $anchorattr = array() , $forcelink = "")
@@ -668,7 +668,7 @@ function setMailtoAnchor($to, $acontent = "", $subject = "", $cc = "", $bcc = ""
  * if (!$isUTF8) --> we need to apply utf8_encode() to be in UTF8
  * else --> we are in UTF8 :)
  * </code>
- * @param mixed A string, or an array from a file() function.
+ * @param mixed $string, or an array from a file() function.
  * @return boolean
  */
 function isUTF8($string)
@@ -775,9 +775,18 @@ function mkpasswd($length = 8, $charspace = "")
     for ($i = 0; $i < $length; $i++) {
         $passwd.= substr($charspace, rand(0, strlen($charspace) - 1) , 1);
     }
-    
+
     return $passwd;
 }
+ /**
++ * return lcdate use in database : iso or dmy
++ * @return string
++ */
+function getLcdate()
+{
+    return substr(getParam("CORE_LCDATE") , 0, 3);
+}
+
 /**
  *
  * @param string $core_lang

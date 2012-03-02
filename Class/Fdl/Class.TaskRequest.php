@@ -32,6 +32,9 @@ class TaskRequest extends DbObj
         "date", // date of entry
         
     );
+    public $comment;
+    public $fkey;
+    public $status;
     /**
      * identificator of task
      * @public int

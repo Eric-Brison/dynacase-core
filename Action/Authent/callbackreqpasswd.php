@@ -16,7 +16,7 @@
 /**
  */
 
-function callbackreqpasswd(&$action)
+function callbackreqpasswd(Action &$action)
 {
     include_once ('FDL/Lib.Dir.php');
     include_once ('WHAT/Class.UserToken.php');
@@ -42,7 +42,7 @@ function callbackreqpasswd(&$action)
     }
     // If this token has expired, remove all expired tokens
     $now = time();
-    $expire = FrenchDateToUnixTs($utok->expire);
+    $expire = stringDateToUnixTs($utok->expire);
     if ($now > $expire) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Token " . $utok->token . " has expired (expire = " . $utok->expire . ")");
         $action->lay->set('CALLBACK_NOT_OK', True);
@@ -57,9 +57,12 @@ function callbackreqpasswd(&$action)
         return "";
     }
     // Retrieve the IUSER document associated with the token
+    /**
+     * @var _IUSER $iuser
+     */
     $iuser = new_Doc($freedomdb, $utok->userid);
     if (!is_object($iuser)) {
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "new Doc(" . $userid . ") returned with error : " . $iuser);
+        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "new Doc(" . $utok->userid . ") returned with error : " . $iuser);
         $action->lay->set('CALLBACK_NOT_OK', True);
         return "";
     }
@@ -96,7 +99,7 @@ function callbackreqpasswd(&$action)
     return "";
 }
 
-function sendResponse($action, $userdoc, $layoutPath, $password)
+function sendResponse(Action $action, Doc $userdoc, $layoutPath, $password)
 {
     include_once ('WHAT/Class.UserToken.php');
     include_once ("FDL/sendmail.php");
