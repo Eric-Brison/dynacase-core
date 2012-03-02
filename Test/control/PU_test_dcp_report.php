@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace PU;
 /**
@@ -90,11 +90,11 @@ class TestReport extends TestCaseDcpAction
         $this->setCurrentParameters('dateFormat', 'ISO');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__ . "_ISO", $csvContent);
-        $this->assertEquals($this->readExampleFile("dateISO_report.csv") , $csvContent);
+        $this->assertEquals($this->readExampleFile("dateISO_report.csv") , $csvContent, "ISO DATE");
         $this->setCurrentParameters('dateFormat', 'FR');
         $csvContent = $this->testAction->execute();
         $this->saveReport(__METHOD__ . "_FR", $csvContent);
-        $this->assertEquals($this->readExampleFile("dateFR_report.csv") , $csvContent);
+        $this->assertEquals($this->readExampleFile("dateFR_report.csv") , $csvContent, "FR DATE");
     }
     /**
      * Test report with custom date format

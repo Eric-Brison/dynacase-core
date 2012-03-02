@@ -1,5 +1,5 @@
 titre;color;date;docid;docid_multiple;double;enum;htmltext;integer;longtext;money;text;time;timestamp;"color _array";"date _array";"docid _array";"docid_multiple _array";"double _array";"enum _array";"htmltext _array";"integer _array";"longtext _array";"money _array";"text _array";"timestamp _array";"time _array"
-ééééèèèttt;;15/09/2011;ééééèèèttt;"ééééèèèttt, test2";12.25;"Iles Cocos, Centre-Afrique, Congo, Suisse, Côte d'Ivoire, Iles Cook, Chili";jjhgh;1212;gfgdgfd;12.25;ééééèèèttt;12:00:00;"29/09/2011 18:01:00";"#FFD970
+ééééèèèttt;;15/09/2011;ééééèèèttt;"ééééèèèttt, test2";12.25;"Iles Cocos, Centre-Afrique, Congo, Suisse, Côte d'Ivoire, Iles Cook, Chili";jjhgh;1212;gfgdgfd;12.25;ééééèèèttt;12:00:00;"29/09/2011 18:01";"#FFD970
 #75FFFF";"16/09/2011
 30/09/2011";"ééééèèèttt
 ";"ééééèèèttt, test2
@@ -13,4 +13,4 @@ tempjhhjjh";"12
 uuuu";"29/09/2011 17:32
 02/09/2011 17:32";"12:00
 01:00"
-test2;#9CC3FF;22/09/2011;;"ééééèèèttt, test2";12.25;"Andorre, Emirats Arabes unis";tarattaa;121221;iuhhjhjh;121;test2;12:00:00;"14/09/2011 17:34:00";#FFD36E;06/09/2011;ééééèèèttt;ééééèèèttt;12.25;"Emirats Arabes unis";123456789;12;kjhk;12.25;iiii;"16/09/2011 17:35";01:30
+test2;#9CC3FF;22/09/2011;;"ééééèèèttt, test2";12.25;"Andorre, Emirats Arabes unis";tarattaa;121221;iuhhjhjh;121;test2;12:00:00;"14/09/2011 17:34";#FFD36E;06/09/2011;ééééèèèttt;ééééèèèttt;12.25;"Emirats Arabes unis";123456789;12;kjhk;12.25;iiii;"16/09/2011 17:35";01:30
