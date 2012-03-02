@@ -2715,6 +2715,9 @@ create unique index i_docir on doc(initid, revision);";
         $oattr = $this->GetAttribute($attrid);
         if ($index > - 1) { // modify one value in a row
             $tval = $this->getTValue($attrid);
+            if (($index + 1) > count($tval)) {
+                $tval = array_pad($tval, $index + 1, "");
+            }
             $tval[$index] = $value;
             $value = $tval;
         }
