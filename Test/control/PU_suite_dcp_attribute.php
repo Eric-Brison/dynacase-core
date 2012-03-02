@@ -26,6 +26,7 @@ class SuiteDcpAttribute
         $suite->addTestSuite('PU\TestAttributeValue');
         $suite->addTestSuite('PU\TestAttributeDefault');
         $suite->addTestSuite('PU\TestAttributeCompute');
+        $suite->addTestSuite('PU\TestAttributeDate');
         // $suite->addTestSuite('PU\TestAutocompletion'); // This test requires a bootstrap.php with ob_start()
         // ...
         return $suite;

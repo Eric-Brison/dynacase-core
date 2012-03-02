@@ -1316,7 +1316,7 @@ function getHtmlInput(&$doc, &$oattr, $value, $index = "", $jsevent = "", $notd 
             if ($localeconfig != false) {
                 $lay->set("dateformat", $localeconfig['dateFormat']);
                 $lay->set("datetimeformat", $localeconfig['dateTimeFormat']);
-                $value = FrenchDateToLocaleDate($value);
+                $value = stringDateToLocaleDate($value);
             } else {
                 $lay->set("dateformat", '');
                 $lay->set("datetimeformat", '');

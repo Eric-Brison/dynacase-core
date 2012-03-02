@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace PU;
 /**
@@ -36,7 +36,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider logicalName
-     * @---depends testAlive
+     * @depends testAlive
      */
     public function testLogicalName($file, $ln)
     {
@@ -48,7 +48,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider provider
-     * @---depends testAlive
+     * @depends testAlive
      */
     public function testLock($a)
     {
@@ -69,7 +69,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider provider
-     * @---depends testAlive
+     * @depends testAlive
      */
     public function testunLock($a)
     {
@@ -89,7 +89,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider provider
-     * @---depends testAlive
+     * @depends testAlive
      */
     public function testautoLock($a)
     {

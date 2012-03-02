@@ -57,22 +57,6 @@ if [ "$1" = "I" ] ; then
 	exit $RET
     fi
 
-    log "Checking if DateStyle is 'SQL, DMY'..."
-    DATESTYLE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_setting('datestyle');" 2> /dev/null`
-    RET=$?
-    if [ $RET -ne 0 ]; then
-	echo "An error occured while querying DateStyle : $RET"
-	exit $RET
-    fi
-    if [ "$DATESTYLE" != "SQL, DMY" ]; then
-	log "Trying to set DateStyle to 'SQL, DMY'..."	
-	PGSERVICE="$pgservice_core" psql -c "ALTER DATABASE \"$DATABASE\" SET DateStyle='SQL, DMY';" 2> /dev/null
-	RET=$?
-	if [ $RET -ne 0 ]; then
-	    echo "An error occured while setting DateStyle to 'SQL, DMY'"
-	    exit $RET
-	fi
-    fi
     $wpub/programs/core_appinitialize
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Application
     $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_core'" --class=Action

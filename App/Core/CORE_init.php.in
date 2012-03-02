@@ -84,7 +84,14 @@ $app_const = array(
         "kind" => "enum(unpersistent|persistent)",
         "global" => "Y"
     ) ,
-    
+    "CORE_LCDATE" => array(
+        "val" => "dmy : french notation use only for compatibility with old version", # default is dmy for update , it is reset by info.xml when install
+        "descr" => N_("database record date style") ,
+        "user" => "N",
+        "style" => "N",
+        "kind" => "static",
+        "global" => "Y"
+    ) ,
     "CORE_SQLSTRICT" => array(
         "val" => "yes",
         "descr" => N_("stop on sql error") ,
@@ -405,6 +412,7 @@ $app_const = array(
 @include_once ('WHAT/Lib.Prefix.php');
 @include_once ("CORE/lang.php");
 if (isset($lang)) {
+    $tl=array();
     foreach ($lang as $k => $v) {
         $tl[] = $k;
     }

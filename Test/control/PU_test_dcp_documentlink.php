@@ -3,7 +3,7 @@
  * @author anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace PU;
 /**
@@ -54,37 +54,39 @@ class TestLink extends TestCaseDcpDocument
         $url = $doc->urlWhatEncode($link);
         $this->assertEquals($expectedLink, $url, "url link is not correctly encoded");
     }
-
     /**
      * @dataProvider dataParamLinks
      */
     public function testParamLinkCompose($docName, $link, array $params, $expectedLink)
     {
-
+        
         $doc = new_doc(self::$dbaccess, $docName);
         $this->assertTrue($doc->isAlive() , "document $docName is not alive");
-        foreach ($params as $k=>$v) {
-            $this->getApplication()->SetVolatileParam($k,$v);
+        foreach ($params as $k => $v) {
+            $this->getApplication()->SetVolatileParam($k, $v);
         }
-
+        
         $url = $doc->urlWhatEncode($link);
         $this->assertEquals($expectedLink, $url, "url link is not correctly encoded");
     }
-
-
+    
     public function dataParamLinks()
     {
         return array(
             array(
                 "linkOne",
                 "http://www.test.com/{PU_TEST1}",
-                array("PU_TEST1"=>"testOne"),
+                array(
+                    "PU_TEST1" => "testOne"
+                ) ,
                 "http://www.test.com/testOne"
-            ),
+            ) ,
             array(
                 "linkOne",
                 "http://www.test.com/{PU_TEST2}",
-                array("PU_TEST2"=>"test Two"),
+                array(
+                    "PU_TEST2" => "test Two"
+                ) ,
                 "http://www.test.com/test%20Two"
             )
         );
@@ -125,28 +127,28 @@ class TestLink extends TestCaseDcpDocument
             array(
                 "linkTwo",
                 "http://test.com/?date=%tst_coldate%",
-                "http://test.com/?date=01%2F11%2F2011%5Cn02%2F11%2F2011"
+                getLcDate() == 'iso' ? 'http://test.com/?date=2011-11-01%5Cn2011-11-02' : "http://test.com/?date=01%2F11%2F2011%5Cn02%2F11%2F2011"
             ) ,
             array(
                 "linkTwo",
                 "http://test.com/?date=%tst_nothing%",
                 false
-            ),
+            ) ,
             array(
                 "linkTwo",
                 "http://test.com/?title=%title%",
                 "http://test.com/?title=Joe%20%26%20Jane"
-            ),
+            ) ,
             array(
                 "linkTwo",
                 "http://test.com/?title=%TITLE%",
                 "http://test.com/?title=Joe%20%26%20Jane"
-            ),
+            ) ,
             array(
                 "linkTwo",
                 "http://test.com/?title=%T%",
                 "http://test.com/?title=Joe%20%26%20Jane"
-            ),
+            ) ,
             array(
                 "linkTwo",
                 "http://test.com/?title=%%25",

@@ -946,12 +946,12 @@ class DocHtmlFormat
     public function formatDate($kvalue, $avalue)
     {
         if (($this->cFormat != "") && (trim($avalue) != "")) {
-            if ($avalue) $htmlval = strftime($this->cFormat, FrenchDateToUnixTs($avalue));
+            if ($avalue) $htmlval = strftime($this->cFormat, stringDateToUnixTs($avalue));
             else $htmlval = $avalue;
         } elseif (trim($avalue) == "") {
             $htmlval = "";
         } else {
-            $htmlval = FrenchDateToLocaleDate($avalue);
+            $htmlval = stringDateToLocaleDate($avalue);
         }
         $this->cFormat = "";
         return $htmlval;
@@ -981,12 +981,12 @@ class DocHtmlFormat
     public function formatTimestamp($kvalue, $avalue)
     {
         if (($this->cFormat != "") && (trim($avalue) != "")) {
-            if ($avalue) $htmlval = strftime($this->cFormat, FrenchDateToUnixTs($avalue));
+            if ($avalue) $htmlval = strftime($this->cFormat, stringDateToUnixTs($avalue));
             else $htmlval = $avalue;
         } elseif (trim($avalue) == "") {
             $htmlval = "";
         } else {
-            $htmlval = FrenchDateToLocaleDate($avalue);
+            $htmlval = stringDateToLocaleDate($avalue);
         }
         $this->cFormat = "";
         return $htmlval;

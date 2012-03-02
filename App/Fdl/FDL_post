@@ -46,9 +46,25 @@ if [ "$1" = "I" ] ; then
     for CLASS in \
         Doc \
         DocRead \
-    ; do
+	; do
         $wpub/wsh.php --api=updateclass --dbcoord="service='$pgservice_freedom'" --appc=FDL "--class=$CLASS"
     done
+    log "Setting database date locale..."
+    LCDATE=`$wpub/wsh.php --api=get_param --param=CORE_LCDATE| cut -f1 -d" "`
+
+    if [ "$LCDATE" = "iso" ]; then
+	PGDATESTYLE='ISO, DMY'
+    else
+	PGDATESTYLE='SQL, DMY'
+    fi
+    DATABASE=`PGSERVICE="$pgservice_core" psql -At -c "SELECT current_database();" 2> /dev/null`
+    PGSERVICE="$pgservice_freedom" psql -c "ALTER DATABASE \"$DATABASE\" SET DateStyle='$PGDATESTYLE';" #2> /dev/null
+    RET=$?
+    if [ $RET -ne 0 ]; then
+	echo "An error occured while setting DateStyle to '$PGDATESTYLE'"
+	exit $RET
+    fi
+
 
     PGSERVICE="$pgservice_freedom" pgExecuteSqlFile "$wpub/WHAT/getprivilege.sql"
     RET=$?

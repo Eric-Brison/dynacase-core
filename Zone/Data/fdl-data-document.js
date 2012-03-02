@@ -212,6 +212,7 @@ Fdl.Document.prototype = {
     	var oa=this.getAttribute(id);
     	var i=0,vs=null,tv=[];
     	if (oa) {
+            if (! this._data.values[id]) return this._data.values[id];
     		if (oa.toString() == 'Fdl.RelationAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
     		if (oa.toString() == 'Fdl.ThesaurusAttribute') return Fdl.encodeHtmlTags(this.getValue(id+'_title',this._data.values[id]));
     		if (oa.toString() == 'Fdl.EnumAttribute') {
@@ -261,10 +262,19 @@ Fdl.Document.prototype = {
     				dateFmt=fmt.dateTimeFormat;
     			}  else if (oa.type=='time') {
     				dateFmt=fmt.timeFormat;
-    			}  
-    			if (dateFmt) {
-    				return Fdl.formatDate(this._data.values[id],dateFmt);
-    			} 
+    			}
+                if (dateFmt) {
+                    if (oa.inArray()) {
+                        vs=this._data.values[id];
+                        tv=[];
+                        for (i=0;i<vs.length;i++) {
+                            tv.push(Fdl.formatDate(vs[i],dateFmt));
+                        }
+                        return tv;
+                    } else {
+                        return Fdl.formatDate(this._data.values[id],dateFmt);
+                    }
+                }
     			
     		}
     	}
