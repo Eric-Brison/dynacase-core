@@ -736,7 +736,13 @@ create unique index i_docir on doc(initid, revision);";
      */
     private $_maskApplied = false; // optimize: compute mask if needed only
     
-    
+    /**
+     * By default, setValue() will call completeArrayRow when setting
+     * values of arrays columns.
+     * @var bool
+     * @access private
+     */
+    private $_setValueCompleteArrayRow = true;
     /**
      * Increment sequence of family and call to {@see PostCreated()}
      *
@@ -2612,6 +2618,14 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function completeArrayRow($idAttr)
     {
+        /* Prevent recursive calls of completeArrayRow() by setValue() */
+        static $calls = array();
+        if (array_key_exists(strtolower($idAttr) , $calls)) {
+            return '';
+        } else {
+            $calls[strtolower($idAttr) ] = 1;
+        }
+        
         $err = '';
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
@@ -2638,8 +2652,11 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             
+            unset($calls[strtolower($idAttr) ]);
             return $err;
         }
+        
+        unset($calls[strtolower($idAttr) ]);
         return sprintf(_("%s is not an array attribute") , $idAttr);
     }
     /**
@@ -2653,6 +2670,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addArrayRow($idAttr, $tv, $index = - 1)
     {
+        $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
+        $this->_setValueCompleteArrayRow = false;
+        
         $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
@@ -2682,8 +2702,10 @@ create unique index i_docir on doc(initid, revision);";
                     $err = $this->completeArrayRow($idAttr);
                 }
             }
+            $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
             return $err;
         }
+        $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
         return sprintf(_("%s is not an array attribute") , $idAttr);
     }
     /**
@@ -2952,6 +2974,10 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
             }
+            if ($this->_setValueCompleteArrayRow && $oattr->inArray()) {
+                return $this->completeArrayRow($oattr->fieldSet->id);
+            }
+            return '';
         }
         /**
          * clear $attrid_txt and $attrid_vec
