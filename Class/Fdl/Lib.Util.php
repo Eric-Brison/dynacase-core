@@ -213,16 +213,23 @@ function stringDateToUnixTs($isodate, $utc = false)
 /**
  * convert string date to iso
  *
- * @param string $date DD/MM/YYYY HH:MM
+ * @param string $date DD/MM/YYYY HH:MM*
+ * @param string $format to indicate locale
+ * @param bool $withT to add a T : YYYY-MM-DDTHH:MM
  * @return string YYYY-MM-DD HH:MM
  */
-function stringDateToIso($date, $format = false)
+function stringDateToIso($date, $format = false, $withT = false)
 {
     if ($format === false) {
         if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/", $date, $r)) {
+            if ($withT) {
+                if (strlen($date) > 11) {
+                    $date[10] = 'T';
+                }
+            }
             return $date;
         } else {
-            $dt = FrenchDateToIso($date, false);
+            $dt = FrenchDateToIso($date, $withT);
             if (!$dt) return $date;
             return $dt;
         }
@@ -231,6 +238,9 @@ function stringDateToIso($date, $format = false)
         $localeconfig = getLocaleConfig();
         if ($localeconfig !== false) {
             $format = $localeconfig['dateTimeFormat'];
+            if (strlen($date) < strlen($format)) {
+                $format = $localeconfig['dateFormat'];
+            }
         }
     }
     if (!empty($format)) {
@@ -260,14 +270,14 @@ function stringDateToIso($date, $format = false)
         $m = strpos($format, '%M');
         $s = strpos($format, '%S');
         if ($h !== false && $m !== false) {
-            $dt.= ' ' . substr($date, $h, 2) . ':' . substr($date, $m, 2);
+            $dt.= ($withT ? 'T' : ' ') . substr($date, $h, 2) . ':' . substr($date, $m, 2);
             if ($s !== false) {
                 $dt.= ':' . substr($date, $s, 2);
             }
         }
         return $dt;
     } else {
-        $dt = FrenchDateToIso($date, false);
+        $dt = FrenchDateToIso($date, $withT);
         if (!$dt) return $date;
         return $dt;
     }
