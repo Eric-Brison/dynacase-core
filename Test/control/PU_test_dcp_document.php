@@ -23,7 +23,10 @@ class TestDocument extends TestCaseDcpCommonFamily
      */
     protected static function getCommonImportFile()
     {
-        return "PU_data_dcp_somebasicdoc.ods";
+        return array(
+            "PU_data_dcp_somebasicdoc.ods",
+            "PU_data_dcp_fileattr.ods"
+        );
     }
     /**
      * @dataProvider provider
@@ -182,6 +185,77 @@ class TestDocument extends TestCaseDcpCommonFamily
         $err = $nd->revive();
         $this->assertNotEmpty($err, sprintf("error when revive document BASE : %s", $err));
     }
+    /**
+     * @dataProvider dataStoreFile
+     */
+    public function testStoreFile($docId, $attrName, $filePathName, $fileName, $index = - 1)
+    {
+        $doc = new_doc(self::$dbaccess, $docId);
+        $this->assertTrue($doc->isAlive() , sprintf("could not get document with id '%s'", $docId));
+        
+        $err = $doc->storeFile($attrName, $filePathName, $fileName, $index);
+        $this->assertEmpty($err, sprintf("storeFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
+        
+        $value = $doc->getTValue($attrName, '', $index);
+        $this->assertNotEmpty($value, sprintf("value of '%s' at index %s should not be empty", $attrName, $index));
+    }
+    /**
+     * @dataProvider dataSaveFile
+     */
+    public function testSaveFile($docId, $attrName, $filePathName, $fileName = '', $index = - 1)
+    {
+        $fd = @fopen($filePathName, 'r');
+        $this->assertFalse(($fd === false) , sprintf("error openging file '%s': %s", $filePathName, $php_errormsg));
+        
+        $doc = new_doc(self::$dbaccess, $docId);
+        $this->assertTrue($doc->isAlive() , sprintf("could not get document with id '%s'", $docId));
+        
+        $err = $doc->saveFile($attrName, $fd, $fileName, $index);
+        $this->assertEmpty($err, sprintf("saveFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
+        
+        $value = $doc->getTValue($attrName, '', $index);
+        $this->assertNotEmpty($value, sprintf("value of '%s' at index %s should not be empty", $attrName, $index));
+    }
+    /**
+     * @dataProvider dataSetFile
+     */
+    public function testSetFile($docId, $attrName, $filePathName, $fileName, $index = - 1)
+    {
+        $doc = new_doc(self::$dbaccess, $docId);
+        $this->assertTrue($doc->isAlive() , sprintf("could not get document with id '%s'", $docId));
+        
+        $err = $doc->setFile($attrName, $filePathName, $fileName, $index);
+        $this->assertEmpty($err, sprintf("setFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
+        
+        $value = $doc->getTValue($attrName, '', $index);
+        $this->assertNotEmpty($value, sprintf("value of '%s' at index %s should not be empty", $attrName, $index));
+    }
+    /**
+     * @dataProvider dataVaultRegisterFile
+     */
+    public function testVaultRegisterFile($docId, $filename, $ftitle, $expectedFileName, $expectSuccess)
+    {
+        $doc = new_doc(self::$dbaccess, $docId);
+        $this->assertTrue($doc->isAlive() , sprintf("could not get document with id '%s'", $docId));
+        
+        $exception = '';
+        $vid = '';
+        $info = null;
+        try {
+            $vid = $doc->vaultRegisterFile($filename, $ftitle, $info);
+        }
+        catch(\Exception $e) {
+            $exception = $e->getMessage();
+        }
+        if ($expectSuccess) {
+            $this->assertEmpty($exception, sprintf("vaultRegisterFile thrown exception for file '%s': %s", $filename, $exception));
+            $ret = preg_match('/^.*|\d+|.*$/', $vid);
+            $this->assertTrue((($ret !== false) && ($ret > 0)), sprintf("vaultRegisterFile returned a malformed VID '%s' for file '%s'", $vid, $filename));
+            $this->assertTrue(($expectedFileName == $info->name), sprintf("Stored file name '%s' does not match expected file name '%s'.", $info->name, $data['expect:name']));
+        } else {
+            $this->assertNotEmpty($exception, sprintf("vaultRegisterFile did not thrown expected exception for file '%s'", $filename));
+        }
+    }
     public function provider()
     {
         return array(
@@ -217,7 +291,6 @@ class TestDocument extends TestCaseDcpCommonFamily
             )
         );
     }
-    
     public function logicalName()
     {
         return array(
@@ -227,6 +300,110 @@ class TestDocument extends TestCaseDcpCommonFamily
                     'TST_ONE',
                     'TST_TWO'
                 )
+            )
+        );
+    }
+    public function dataStoreFile()
+    {
+        return array(
+            array(
+                "TST_STOREFILE_1",
+                "tst_single_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_single_file.odt",
+                "-1"
+            ) ,
+            array(
+                "TST_STOREFILE_1",
+                "tst_array_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_array_file.odt",
+                "3"
+            ) ,
+            array(
+                "TST_STOREFILE_1",
+                "tst_multiple_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_multiple_file.odt",
+                "3"
+            )
+        );
+    }
+    public function dataSaveFile()
+    {
+        return array(
+            array(
+                "TST_SAVEFILE_1",
+                "tst_single_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_single_file.odt",
+                "-1"
+            ) ,
+            array(
+                "TST_SAVEFILE_1",
+                "tst_array_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_array_file.odt",
+                "3"
+            ) ,
+            array(
+                "TST_SAVEFILE_1",
+                "tst_multiple_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_multiple_file.odt",
+                "3"
+            )
+        );
+    }
+    public function dataSetFile()
+    {
+        return array(
+            array(
+                "TST_SETFILE_1",
+                "tst_single_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_single_file.odt",
+                "-1"
+            ) ,
+            array(
+                "TST_SETFILE_1",
+                "tst_array_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_array_file.odt",
+                "3"
+            ) ,
+            array(
+                "TST_STOREFILE_1",
+                "tst_multiple_file",
+                "DCPTEST/Layout/tst_file.odt",
+                "tst_file_multiple_file.odt",
+                "3"
+            )
+        );
+    }
+    public function dataVaultRegisterFile()
+    {
+        return array(
+            array(
+                "TST_VAULTREGISTERFILE_1",
+                "DCPTEST/Layout/tst_file.odt",
+                "",
+                "tst_file.odt",
+                true
+            ) ,
+            array(
+                "TST_VAULTREGISTERFILE_1",
+                "DCPTEST/Layout/tst_file.odt",
+                "a new name.odt",
+                "a new name.odt",
+                true
+            ) ,
+            array(
+                "TST_VAULTREGISTERFILE_1",
+                "DCPTEST/Layout/this_file_does_not_exists.odt",
+                "error",
+                "error",
+                false
             )
         );
     }

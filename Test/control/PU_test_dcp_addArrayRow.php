@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 
 namespace PU;
 /**
@@ -45,8 +45,8 @@ class TestAddArrayRow extends TestCaseDcpDocument
         $this->assertEmpty($err, sprintf("Error setting logical identificator '%s' on new document: %s", $data['name'], $err));
         
         foreach ($data['rows'] as & $row) {
-            $err = $doc->addArrayRow($data['array_attr_name'], $row);
-            $this->assertEmpty($err, sprintf("Error adding row {%s} to '%s': %s", join(', ', $row) , $data['name'], $err));
+            $err = $doc->addArrayRow($data['array_attr_name'], $row['data'], $row['index']);
+            $this->assertEmpty($err, sprintf("Error adding row {%s} to '%s': %s", join(', ', $row['data']) , $data['name'], $err));
         }
         unset($row);
         
@@ -84,19 +84,31 @@ class TestAddArrayRow extends TestCaseDcpDocument
                     'array_attr_name' => 'ARR',
                     'rows' => array(
                         array(
-                            'COL_1' => '1_1',
-                            'COL_2' => '1_2',
-                            'COL_3' => '1_3',
-                            'COL_4' => '1_4'
+                            'index' => - 1,
+                            'data' => array(
+                                'COL_1' => '1_1',
+                                'COL_2' => '1_2',
+                                'COL_3' => '1_3',
+                                'COL_4' => '1_4'
+                            )
                         ) ,
                         array(
-                            'cOl_1' => '2_1'
+                            'index' => - 1,
+                            'data' => array(
+                                'cOl_1' => '2_1'
+                            )
                         ) ,
-                        array() ,
                         array(
-                            'col_2' => '4_2',
-                            'col_3' => '4_3',
-                            'col_4' => '4_4'
+                            'index' => - 1,
+                            'data' => array()
+                        ) ,
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'col_2' => '4_2',
+                                'col_3' => '4_3',
+                                'col_4' => '4_4'
+                            )
                         )
                     ) ,
                     'expected_tvalues' => array(
@@ -123,6 +135,130 @@ class TestAddArrayRow extends TestCaseDcpDocument
                             '',
                             '',
                             '4_4'
+                        )
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    'fam' => 'TST_ADDARRAYROW',
+                    'name' => 'TST_ADDARRAYROW_DOC_02',
+                    'array_attr_name' => 'ARR',
+                    'rows' => array(
+                        array(
+                            'index' => 0,
+                            'data' => array(
+                                'col_2' => '4_2',
+                                'col_3' => '4_3',
+                                'col_4' => '4_4'
+                            )
+                        ) ,
+                        array(
+                            'index' => 0,
+                            'data' => array()
+                        ) ,
+                        array(
+                            'index' => 0,
+                            'data' => array(
+                                'cOl_1' => '2_1'
+                            )
+                        ) ,
+                        array(
+                            'index' => 0,
+                            'data' => array(
+                                'COL_1' => '1_1',
+                                'COL_2' => '1_2',
+                                'COL_3' => '1_3',
+                                'COL_4' => '1_4'
+                            )
+                        )
+                    ) ,
+                    'expected_tvalues' => array(
+                        'col_1' => array(
+                            '1_1',
+                            '2_1',
+                            '',
+                            ''
+                        ) ,
+                        'col_2' => array(
+                            '1_2',
+                            '',
+                            '',
+                            '4_2'
+                        ) ,
+                        'col_3' => array(
+                            '1_3',
+                            '',
+                            '',
+                            '4_3'
+                        ) ,
+                        'col_4' => array(
+                            '1_4',
+                            '',
+                            '',
+                            '4_4'
+                        )
+                    )
+                )
+            ) ,
+            array(
+                array(
+                    'fam' => 'TST_ADDARRAYROW',
+                    'name' => 'TST_ADDARRAYROW_DOC_03',
+                    'array_attr_name' => 'ARR',
+                    'rows' => array(
+                        array(
+                            'index' => - 1,
+                            'data' => array(
+                                'col_2' => '2_2',
+                                'col_3' => '2_3',
+                                'col_4' => '2_4'
+                            )
+                        ) ,
+                        array(
+                            'index' => 1,
+                            'data' => array()
+                        ) ,
+                        array(
+                            'index' => 2,
+                            'data' => array(
+                                'cOl_1' => '4_1'
+                            )
+                        ) ,
+                        array(
+                            'index' => 0,
+                            'data' => array(
+                                'COL_1' => '1_1',
+                                'COL_2' => '1_2',
+                                'COL_3' => '1_3',
+                                'COL_4' => '1_4'
+                            )
+                        )
+                    ) ,
+                    'expected_tvalues' => array(
+                        'col_1' => array(
+                            '1_1',
+                            '',
+                            '',
+                            '4_1'
+                        ) ,
+                        'col_2' => array(
+                            '1_2',
+                            '2_2',
+                            '',
+                            ''
+                        ) ,
+                        'col_3' => array(
+                            '1_3',
+                            '2_3',
+                            '',
+                            ''
+                        ) ,
+                        'col_4' => array(
+                            '1_4',
+                            '2_4',
+                            '',
+                            ''
                         )
                     )
                 )
