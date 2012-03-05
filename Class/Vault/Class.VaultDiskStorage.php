@@ -178,6 +178,12 @@ class VaultDiskStorage extends DbObj
         // --------------------------------------------------------------------
         include_once ("WHAT/Lib.FileMime.php");
         
+        if (!is_file($infile)) {
+            return ErrorCode::getError('FILE0007', $infile);
+        }
+        if (!is_readable($infile)) {
+            return ErrorCode::getError('FILE0008', $infile);
+        }
         $this->size = filesize($infile);
         $msg = $this->fs->SetFreeFs($this->size, $id_fs, $id_dir, $f_path, $fsname);
         if ($msg != '') {

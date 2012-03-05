@@ -736,7 +736,13 @@ create unique index i_docir on doc(initid, revision);";
      */
     private $_maskApplied = false; // optimize: compute mask if needed only
     
-    
+    /**
+     * By default, setValue() will call completeArrayRow when setting
+     * values of arrays columns.
+     * @var bool
+     * @access private
+     */
+    private $_setValueCompleteArrayRow = true;
     /**
      * Increment sequence of family and call to {@see PostCreated()}
      *
@@ -2612,6 +2618,14 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function completeArrayRow($idAttr)
     {
+        /* Prevent recursive calls of completeArrayRow() by setValue() */
+        static $calls = array();
+        if (array_key_exists(strtolower($idAttr) , $calls)) {
+            return '';
+        } else {
+            $calls[strtolower($idAttr) ] = 1;
+        }
+        
         $err = '';
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
@@ -2638,8 +2652,11 @@ create unique index i_docir on doc(initid, revision);";
                 }
             }
             
+            unset($calls[strtolower($idAttr) ]);
             return $err;
         }
+        
+        unset($calls[strtolower($idAttr) ]);
         return sprintf(_("%s is not an array attribute") , $idAttr);
     }
     /**
@@ -2653,6 +2670,9 @@ create unique index i_docir on doc(initid, revision);";
      */
     final public function addArrayRow($idAttr, $tv, $index = - 1)
     {
+        $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
+        $this->_setValueCompleteArrayRow = false;
+        
         $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
@@ -2682,8 +2702,10 @@ create unique index i_docir on doc(initid, revision);";
                     $err = $this->completeArrayRow($idAttr);
                 }
             }
+            $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
             return $err;
         }
+        $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
         return sprintf(_("%s is not an array attribute") , $idAttr);
     }
     /**
@@ -2715,6 +2737,9 @@ create unique index i_docir on doc(initid, revision);";
         $oattr = $this->GetAttribute($attrid);
         if ($index > - 1) { // modify one value in a row
             $tval = $this->getTValue($attrid);
+            if (($index + 1) > count($tval)) {
+                $tval = array_pad($tval, $index + 1, "");
+            }
             $tval[$index] = $value;
             $value = $tval;
         }
@@ -2949,6 +2974,10 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
             }
+            if ($this->_setValueCompleteArrayRow && $oattr->inArray()) {
+                return $this->completeArrayRow($oattr->fieldSet->id);
+            }
+            return '';
         }
         /**
          * clear $attrid_txt and $attrid_vec
@@ -3271,29 +3300,51 @@ create unique index i_docir on doc(initid, revision);";
             return false;
         }
         /**
-         * store new file in an file attribute
+         * Register (store) a file in the vault and return the file's vault's informations
          *
-         * @param string $idAttr identificator of file attribute
+         * @param string $filename the file pathname
+         * @param string $ftitle override the stored file name or empty string to keep the original file name
+         * @param VaultFileInfo $info the vault's informations for the stored file or null if could not get informations
+         * @return string trigram of the file in the vault: "mime_s|id_file|name"
+         * @throws \Exception on error
+         */
+        final public function vaultRegisterFile($filename, $ftitle = "", &$info = null)
+        {
+            $vaultid = 0;
+            $err = vault_store($filename, $vaultid, $ftitle);
+            if ($err != '') {
+                throw new \Exception(ErrorCode::getError('FILE0009', $filename, $err));
+            }
+            $info = vault_properties($vaultid);
+            if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
+                throw new \Exception(ErrCode::getError('FILE0010', $filename));
+            }
+
+
+            return sprintf("%s|%s|%s", $info->mime_s, $info->id_file, $info->name);
+        }
+        /**
+         * Store a file in a file attribute
+         *
+         * @param string $attrid identificator of file attribute
          * @param string $filename file path
          * @param string $ftitle basename of file
          * @param int $index only for array values affect value in a specific row
+         * @internal param string $idAttr identificator of file attribute
          * @return string error message, if no error empty string
          */
-        final public function storeFile($attrid, $filename, $ftitle = "", $index = - 1)
+        final public function setFile($attrid, $filename, $ftitle = "", $index = - 1)
         {
-            if (is_file($filename)) {
-                include_once ("FDL/Lib.Vault.php");
-                
+            include_once ("FDL/Lib.Vault.php");
+            
+            $err = '';
+            try {
                 $a = $this->getAttribute($attrid);
                 if ($a) {
                     if (($a->type == "file") || ($a->type == "image")) {
-                        $err = vault_store($filename, $vaultid, $ftitle);
-                        if ($err == "") {
-                            $info = vault_properties($vaultid);
-                            $mime = $info->mime_s;
-                            if (!$ftitle) $ftitle = $info->name;
-                            $this->setValue($attrid, "$mime|$vaultid|$ftitle", $index);
-                        }
+                        $info = null;
+                        $vaultid = $this->vaultRegisterFile($filename, $ftitle, $info);
+                        $err = $this->setValue($attrid, $vaultid, $index);
                     } else {
                         $err = sprintf(_("attribute %s is not a file attribute") , $a->getLabel());
                     }
@@ -3301,18 +3352,42 @@ create unique index i_docir on doc(initid, revision);";
                     $err = sprintf(_("unknow attribute %s") , $attrid);
                 }
             }
+            catch(\Exception $e) {
+                $err = $e->getMessage();
+            }
             return $err;
+        }
+        /**
+         * store new file in an file attribute
+         *
+         * @deprecated use setFile() instead
+         *
+         * @param string $attrid identificator of file attribute
+         * @param string $filename file path
+         * @param string $ftitle basename of file
+         * @param int $index only for array values affect value in a specific row
+         * @return string error message, if no error empty string
+         */
+        final public function storeFile($attrid, $filename, $ftitle = "", $index = - 1)
+        {
+            deprecatedFunction();
+            
+            return $this->setFile($attrid, $filename, $ftitle, $index);
         }
         /**
          * store multiples new files in an file array attribute
          *
-         * @param string $idAttr identificator of file attribute
-         * @param array $filename file path
-         * @param array $ftitle basename of file
+         * @deprecated use setFile() instead
+         *
+         * @param string $attrid identificator of file attribute
+         * @param array $filenames file path
+         * @param array|string $ftitle basename of file
          * @return string error message, if no error empty string
          */
         final public function storeFiles($attrid, $filenames, $ftitle = "")
         {
+            deprecatedFunction();
+            
             if (!is_array($filenames)) return _("no files");
             
             $a = $this->getAttribute($attrid);
