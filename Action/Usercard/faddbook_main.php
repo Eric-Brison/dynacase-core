@@ -248,7 +248,7 @@ function faddbook_main(&$action)
         $dline[$il]["canChange"] = $attchange;
         $dline[$il]["fabzone"] = $pzone;
         $dline[$il]["etarget"] = ($etarget) ? $etarget : "edit" . $v["id"];
-        $dline[$il]["title"] = mb_convert_case(mb_strtolower($v["title"]) , MB_CASE_TITLE);
+        $dline[$il]["title"] = xml_entity_encode(mb_convert_case(mb_strtolower($v["title"]) , MB_CASE_TITLE));
         $dline[$il]["Line"] = $il;
         $dline[$il]["icop"] = $dnfam->GetIcon($v["icon"]);
         $il++;

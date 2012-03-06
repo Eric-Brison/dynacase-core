@@ -460,6 +460,7 @@ class CheckAttr extends CheckData
         $phpFile = trim($this->structAttr->phpfile);
         $type = $this->getType();
         
+        if ($this->isModAttr && (!$type)) return; // cannot really test if has not type
         $oParse = new parseFamilyMethod();
         $strucFunc = $oParse->parse($phpFunc, ($type == 'enum'));
         if ($strucFunc->getError()) {

@@ -6269,13 +6269,13 @@ create unique index i_docir on doc(initid, revision);";
                     // new document
                     if ($this->fromid > 0) {
                         $cdoc = $this->getFamDoc();
-                        $this->lay->Set("title", sprintf(_("new %s") , $cdoc->title));
+                        $this->lay->Set("title", sprintf(_("new %s") , $cdoc->getHtmlTitle()));
                     }
                 } else {
                     // when modification
                     global $action;
                     if (!$this->isAlive()) $action->ExitError(_("document not referenced"));
-                    $this->lay->Set("title", $this->title);
+                    $this->lay->Set("title", $this->getHtmlTitle());
                 }
                 $this->lay->Set("id", $docid);
                 $this->lay->Set("classid", $this->fromid);
