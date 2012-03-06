@@ -84,6 +84,31 @@ else
     fi
 fi
 
+log "Setting DateStyle to match CORE_LCDATE..."
+CURRENT_DATABASE=`PGSERVICE="$core_db" psql -tA -c "SELECT current_database()"`
+CORE_LCDATE=`$wpub/wsh.php --api=get_param --param=CORE_LCDATE| cut -f1 -d" "`
+if [ -z "$CURRENT_DATABASE" ]; then
+    echo "Could not get current_database from PGSERVICE=$core_db"
+    exit 1
+fi
+if [ -n "$CORE_LCDATE" ]; then
+    if [ "$CORE_LCDATE" = "iso" ]; then
+        PG_DATESTYLE="ISO, DMY"
+    else
+        PG_DATESTYLE="SQL, DMY"
+    fi
+    PGSERVICE="$core_db" psql -c "ALTER DATABASE \"$CURRENT_DATABASE\" SET DateStyle = '$PG_DATESTYLE'"
+    RET=$?
+    if [ $RET -ne 0 ]; then
+        echo "Error setting DateStyle to '$PG_DATESTYLE' on current database \"$CURRENT_DATABASE\""
+        exit $RET
+    fi
+fi
+
+log "Setting session.save_path..."
+if [ -f "${WIFF_CONTEXT_ROOT}/.htaccess" ]; then
+    sed -i.orig -e "s;^\([[:space:]]*php_value[[:space:]][[:space:]]*session\.save_path[[:space:]][[:space:]]*\).*$;\1\"${WIFF_CONTEXT_ROOT}/session\";" "${WIFF_CONTEXT_ROOT}/.htaccess"
+fi
 
 if [ "$user_login" != "" ]; then
   "$WIFF_CONTEXT_ROOT"/wsh.php --api=fdl_resetprofiling --login="$user_login" --password="$user_password"
