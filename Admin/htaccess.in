@@ -8,7 +8,7 @@ AuthName "Dynacase Platform Administration"
 AuthUserFile @prefix@/admin/.htpasswd
 Require valid-user
 
-DirectoryIndex winit.php
+DirectoryIndex index.html
 
 <FilesMatch ".*">
   Order Deny,Allow

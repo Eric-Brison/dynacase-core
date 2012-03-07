@@ -4,8 +4,6 @@
 
 # get the new appname (basename in uppercase)
 
-
-
 include $(utildir)/PubRule
 
 

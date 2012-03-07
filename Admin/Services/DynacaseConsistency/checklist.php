@@ -36,7 +36,7 @@ a.context:hover {
 </head>
 <body>
 <?php
-include ("../WHAT/Lib.Common.php");
+include ("../../../WHAT/Lib.Common.php");
 //---------------------------------------------------
 //------------------- MAIN -------------------------
 $dbaccess = getDbAccess();

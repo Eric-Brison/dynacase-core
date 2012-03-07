@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="Images/dynacase.ico" >
+    <title>Context administration and exploitation center</title>
+    <link rel="stylesheet" type="text/css" href="admin.css" />  
+    <script type='text/javascript' src='../lib/jquery/jquery.js'></script>
+    <script type='text/javascript' src='knockout-2.0.0.js'></script>
+    <script type='text/javascript' src='admin.js'></script>
+  </head>
+  
+  <body>
+    <div id="header">Context administration and exploitation center
+      <div id="current-service-description" class="title">&nbsp;</div>
+    </div>
+    <div id="page">
+      <div id="right-block">
+	
+	<iframe id="targetFrame" style="height:100%"></iframe>
+      </div>
+      <div style="clear:both;"></div>
+      <div id="left-block">
+	<div class="title">Available services</div>
+	<ul data-bind="foreach: pages">
+	  <li data-bind="text: service, click : $parent.selectService, attr: { title : description }" ></li>
+	</ul>
+      </div>
+    </div> <!-- page -->
+    <div id="anakeen"><img src="Images/anakeen-logo.png" style="width:20px;padding-right:10px;" /><a href="http://www.anakeen.com">&copy; anakeen 2012</a></div>
+    <div id="log-zone"></div>
+  </body>
+<script>
+  ko.applyBindings(new AdminCenterViewModel());
+//  $('li').tipsy();
+</script>
+</html>

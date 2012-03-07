@@ -13,14 +13,16 @@ div.menu {
 table > thead {
   background-color: lightgray;
 }
+.bar { text-align:right; }
 </style>
 </head>
 <body>
+<div class="bar"><a href="#" onclick="window.location.reload()">refresh page</a></div>
 <?php
 
 define('PG_PAGE_SIZE', 8 * 1024);
 
-include("../WHAT/Lib.Common.php");
+include("../../../WHAT/Lib.Common.php");
 
 $pgservice_core = getServiceCore();
 
