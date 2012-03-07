@@ -19,7 +19,7 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.VGroup.php");
 // -----------------------------------
-function freedom_gaccess(&$action)
+function freedom_gaccess(Action & $action)
 {
     // -----------------------------------
     //
@@ -47,8 +47,12 @@ function freedom_gaccess(&$action)
     // contruct headline
     reset($acls);
     $hacl = array();
+    $title = array();
     $width = floor(70 / count($acls));
     $action->lay->set("cellwidth", $width . '%');
+    /**
+     * @var $v string
+     */
     foreach ($acls as $k => $v) {
         $hacl[$k]["aclname"] = ucfirst(_($v));
         $hacl[$k]["acldesc"] = ucfirst(_($doc->dacls[$v]["description"]));
@@ -68,7 +72,7 @@ function freedom_gaccess(&$action)
         
         $q = new QueryDb($dbaccess, "DocPerm");
         $q->AddQuery("docid=" . $doc->id);
-        $q->AddQuery("upacl != 0 OR unacl != 0");
+        $q->AddQuery("upacl != 0");
         $l = $q->Query(0, 0, "TABLE");
         
         $lu = array();
@@ -200,14 +204,22 @@ function freedom_gaccess(&$action)
     $action->lay->set("allgreen", getHttpVars("allgreen", "N"));
     $action->lay->set("isgreen", $green);
     $err = $doc->control("modifyacl");
-    if ($err == "") {
-        $action->lay->setBlockData("MODIFY", array(
-            array(
-                "zou"
-            )
-        ));
+    if ($err == "" && (!$doc->dprofid)) {
+        $action->lay->set("MODIFY", true);
         $action->lay->set("dmodify", "");
-    } else $action->lay->set("dmodify", "none");
+    } else {
+        $action->lay->set("dmodify", "none");
+        $action->lay->set("MODIFY", false);
+    }
+    
+    $action->lay->Set("toOrigin", $doc->getDocAnchor($doc->id, 'account', true, false, false, 'latest', true));
+    if ($doc->dprofid) {
+        $action->lay->Set("dynamic", true);
+        $action->lay->Set("dprofid", $doc->dprofid);
+        $action->lay->Set("toDynProfil", $doc->getHtmlTitle($doc->dprofid));
+    } else {
+        $action->lay->Set("dynamic", false);
+    }
 }
 //--------------------------------------------
 function getTableG($hg, $id, $level = 0)
@@ -238,7 +250,7 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid)
         $docid,
         $gid
     ));
-    
+    $tableacl = array();
     foreach ($acls as $k => $v) {
         $tableacl[$k]["aclname"] = $v;
         $pos = $dacls[$v]["pos"];
@@ -253,9 +265,6 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid)
             $tableacl[$k]["selected"] = "";
             if ($perm->ControlU($pos)) {
                 $tableacl[$k]["bimg"] = "bgrey.png";
-            } else {
-                if ($perm->ControlUn($pos)) $tableacl[$k]["bimg"] = "bred.png";
-                else $tableacl[$k]["bimg"] = "1x1.gif";
             }
         }
     }

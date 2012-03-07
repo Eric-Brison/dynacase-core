@@ -22,20 +22,20 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function viewacl(&$action)
+function viewacl(Action & $action)
 {
     // ------------------------
-    $docid = intval(GetHttpVars("docid"));
-    $userid = intval(GetHttpVars("userid"));
+    $docid = intval($action->getArgument("docid"));
+    $userid = intval($action->getArgument("userid"));
     
     $action->lay->Set("docid", $docid);
     $action->lay->Set("userid", $userid);
     
-    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/viewacl.js");
-    
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $doc = new_Doc($dbaccess, $docid);
+    $err = $doc->control('viewacl');
+    if ($err) $action->exitError($err);
     //-------------------
     $perm = new DocPerm($dbaccess, array(
         $docid,
@@ -49,35 +49,27 @@ function viewacl(&$action)
     
     reset($acls);
     while (list($k, $v) = each($acls)) {
-        $tableacl[$k]["aclname"] = _($v);
+        $tableacl[$k]["aclname"] = mb_ucfirst(_($v));
         $tableacl[$k]["acldesc"] = " (" . _($doc->dacls[$v]["description"]) . ")";
         
         $pos = $doc->dacls[$v]["pos"];
         
         $tableacl[$k]["aclid"] = $pos;
         $tableacl[$k]["iacl"] = $k; // index for table in xml
-        if ($perm->ControlU($pos)) {
-            $tableacl[$k]["selected"] = "checked";
-        } else {
-            $tableacl[$k]["selected"] = "";
-        }
-        if ($perm->ControlUn($pos)) {
-            $tableacl[$k]["selectedun"] = "checked";
-        } else {
-            $tableacl[$k]["selectedun"] = "";
-        }
         if ($perm->ControlUp($pos)) {
+            
             $tableacl[$k]["selectedup"] = "checked";
+            $tableacl[$k]["imgacl"] = "bgreen.png";
         } else {
             $tableacl[$k]["selectedup"] = "";
-        }
-        if ($perm->ControlG($pos)) {
-            $tableacl[$k]["selectedg"] = "checked";
-        } else {
-            $tableacl[$k]["selectedg"] = "";
+            if ($perm->ControlU($pos)) {
+                $tableacl[$k]["imgacl"] = "bgrey.png";
+            } else {
+                $tableacl[$k]["imgacl"] = "bred.png";
+            }
         }
     }
-    
+    $action->lay->set("readonly", ($doc->control("modifyacl") != '' || $doc->dprofid));
     $action->lay->SetBlockData("SELECTACL", $tableacl);
 }
 ?>

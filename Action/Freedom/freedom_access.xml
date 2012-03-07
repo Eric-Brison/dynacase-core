@@ -1,23 +1,32 @@
 [ZONE CORE:HTMLHEAD?title=[TEXT:Detail Permissions]:[title]]
 
+
+
+<form  id="fedit"
+      class="fborder"
+      name="affect"
+      target="_parent"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="[CORE_STANDURL]&app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]" >
+       [TEXT:Choose User]&nbsp;:&nbsp;[ZONE FDL:INPUTATTRIBUTE?type=docid("IUSER")&id=userid&esize=30&phpfile=fdl.php&phpfunc=getAccounts(D,CT):CT,userid]
+    <input type="submit" value="[TEXT:Change user]">
+       </form>
 <table style="margin-bottom:2px" cellspacing="0" cellpadding="0" width="100%" border="1">
 
-<TR align="center" >
+<tr align="center" >
    
-    <TD class="CORETblHeadCell"  align="left">
-           <select name="suserid" onChange="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]&userid='+this.options[this.selectedIndex].value">
-        [BLOCK USER]
-	<option value="[suserid]" [selecteduser]>[descuser]</option>
-        [ENDBLOCK USER]
-	</select>
+    <TD   align="left">
+
+[TEXT:Account]: <strong>[fid]</strong>
+
      
 
     </TD>
 
-    <TD class="CORETblHeadCell" align="right"><B class="CORETblHead">[title]</B></td>
+    <td  align="right">[TEXT: Profil for] <strong>[toProfil]</strong>[IF dynamic]. [TEXT:Computed from] <a target="access[dprofid]" href="?app=FREEDOM&action=FREEDOM_ACCESS&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic]</td>
   
-<TR>
-</TABLE>
+</tr>
+</table>
 
 [ZONE FDL:VIEWACL?docid=[docid]&userid=[userid]]
 

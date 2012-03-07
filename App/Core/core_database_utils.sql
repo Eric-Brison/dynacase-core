@@ -69,7 +69,7 @@ $$ LANGUAGE plpgsql;
 --
 -- dropColumnIfExists function
 --
-CREATE OR REPLACE FUNCTION pg_temp.dropColumnIfExists(arg_schema text, arg_table text, arg_column text)
+CREATE OR REPLACE FUNCTION pg_temp.dropColumnIfExists(arg_schema text, arg_table text, arg_column text, arg_cascade text)
 RETURNS BOOLEAN AS
 $$
 DECLARE
@@ -94,7 +94,7 @@ BEGIN
   ;
 
   IF FOUND THEN
-    query := 'ALTER TABLE "' || t_schema || '"."' || arg_table || '" DROP COLUMN "' || arg_column || '"' || ';';
+    query := 'ALTER TABLE "' || t_schema || '"."' || arg_table || '" DROP COLUMN "' || arg_column || '"' || ' ' || arg_cascade || ';';
     RAISE NOTICE 'Executing: %', query;
     EXECUTE query;
     RETURN TRUE;
@@ -104,6 +104,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+--
+-- dropColumnIfExists function
+--
+CREATE OR REPLACE FUNCTION pg_temp.dropColumnIfExists(arg_schema text, arg_table text, arg_column text)
+RETURNS BOOLEAN AS
+$$
+DECLARE
+BEGIN
+  RETURN pg_temp.dropColumnIfExists(arg_schema, arg_table, arg_column, '');
+END;
+$$ LANGUAGE plpgsql;
 --
 -- addIndexIfNotExists function
 --

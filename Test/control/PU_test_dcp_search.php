@@ -83,7 +83,7 @@ class TestSearch extends TestCaseDcpDocument
      * @param integer $count expected results count
      * @return void
      * @dataProvider countCriteria
-     * @---depends testCountSearch
+     * @depends testCountSearch
      */
     public function testOnlyCountSearch($criteria, $arg, $family, $count)
     {
@@ -105,7 +105,7 @@ class TestSearch extends TestCaseDcpDocument
      * @param array $data test specification
      * @return void
      * @dataProvider onlyCountWithNoViewControlCriteria
-     * @---depends testCountSearch
+     * @depends testCountSearch
      */
     public function testOnlyCountWithNoViewControlSearch($data)
     {
@@ -130,7 +130,7 @@ class TestSearch extends TestCaseDcpDocument
                 $s->noViewControl();
             }
             $count = $s->onlyCount();
-            $this->assertEquals($count, $test['expect:count'], sprintf("test#%s> Result size is %s while expecting %s.", $i, $count, $test['expect:count']));
+            $this->assertEquals($count, $test['expect:count'], sprintf("test#%s> Result size is %s while expecting %s. [%s]", $i, $count, $test['expect:count'], print_r($s->getSearchInfo() , true)));
             
             if (isset($test['sudo'])) {
                 $this->exitSudo();
@@ -143,7 +143,7 @@ class TestSearch extends TestCaseDcpDocument
      * @param array $data test specification
      * @return void
      * @dataProvider onlyCountFilterCriteria
-     * @---depends testCountSearch
+     * @depends testCountSearch
      */
     public function testOnlyCountFilterSearch($data)
     {
@@ -172,7 +172,7 @@ class TestSearch extends TestCaseDcpDocument
                 }
             }
             $count = $s->onlyCount();
-            $this->assertEquals($count, $test['expect:count'], sprintf("test#%s> Result size is %s while expecting %s.", $i, $count, $test['expect:count']));
+            $this->assertEquals($count, $test['expect:count'], sprintf("test#%s> Result size is %s while expecting %s. [%s]", $i, $count, $test['expect:count'], print_r($s->getSearchInfo() , true)));
             
             if (isset($test['sudo'])) {
                 $this->exitSudo();
@@ -337,19 +337,19 @@ class TestSearch extends TestCaseDcpDocument
                     "tests" => array(
                         array(
                             "search:family" => "TST_SEARCH_NOVIEWCONTROL",
-                            "expect:count" => 5
+                            "expect:count" => 6
                         ) ,
                         array(
                             "sudo" => "anonymous",
                             "search:family" => "TST_SEARCH_NOVIEWCONTROL",
-                            "expect:count" => 3
+                            "expect:count" => 4
                         ) ,
                         array(
                             "import" => "PU_data_dcp_search.ods",
                             "sudo" => "anonymous",
                             "search:family" => "TST_SEARCH_NOVIEWCONTROL",
                             "search:noviewcontrol" => true,
-                            "expect:count" => 5
+                            "expect:count" => 6
                         )
                     )
                 )

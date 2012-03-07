@@ -7,4 +7,22 @@ fi
 
 PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'enum' where type='enumlist' and docid < 200;"
 PGSERVICE="$pgservice_core" psql -t -c "update docattr set type= 'text' where type='textlist' and docid < 200;"
+PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='U' where isgroup is null or isgroup != 'Y';"
+PGSERVICE="$pgservice_core" psql -t -c "update users set accounttype='G' where isgroup = 'Y';"
+PGSERVICE="$pgservice_core" psql -t -c "drop TRIGGER tinitacl on docperm;"
+PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
+
+
+
+--
+-- Delete deprecated default values
+--
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_domain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where defval ~ 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where defval ~ 'us_iddomain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where defval ~ 'us_domain';"
+PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|externe]', '') where defval ~ 'us_domain';"
+
+
 echo "change old attribute syntax type enumlist, textlist"

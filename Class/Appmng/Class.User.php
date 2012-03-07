@@ -38,6 +38,8 @@ class User extends DbObj
         "login",
         "password",
         "isgroup",
+        "accounttype",
+        "memberof",
         "expires",
         "passdelay",
         "status",
@@ -50,12 +52,21 @@ class User extends DbObj
     public $firstname;
     public $login;
     public $password;
+    /**
+     * @deprecated
+     * @var string
+     */
     public $isgroup;
     public $expires;
     public $passdelay;
     public $status;
     public $mail;
     public $fid;
+    public $memberof;
+    /**
+     * @var string U|G|R
+     */
+    public $accounttype;
     /**
      * family identificator of user document default is IUSER/IGROUP
      * @var string
@@ -87,6 +98,8 @@ create table users ( id      int not null,
                         login      text not null,
                         password   text not null,
                         isgroup    char,
+                        accounttype char,
+                        memberof   int[],
                         expires    int,
                         passdelay  int,
                         status     char,
@@ -185,7 +198,6 @@ create sequence seq_id_users start 10;";
         // not added here it is added by freedom (generally)
         //    if (! $this->fid)   $group->Add();
         $err = $this->FreedomWhatUser();
-        
         return $err;
     }
     
@@ -216,9 +228,8 @@ create sequence seq_id_users start 10;";
         $ugroups = $group->groups;
         $err = $group->Delete();
         if ($err == "") {
-            if (usefreedomuser()) {
-                refreshGroups($ugroups, true);
-            }
+            
+            refreshGroups($ugroups, true);
         }
         
         global $action;
@@ -251,7 +262,7 @@ create sequence seq_id_users start 10;";
     /**
      * return display name of a user
      * @param int $uid user identificator
-     * @return string firstname and lastname
+     * @return string|null firstname and lastname or false if not found
      */
     static function getDisplayName($uid)
     {
@@ -268,8 +279,23 @@ create sequence seq_id_users start 10;";
                 else $tdn[$uid] = $arr["lastname"];
                 return $tdn[$uid];
             }
-            return false;
+            return null;
         }
+        return null;
+    }
+    /**
+     * return system user identificator from user document reference
+     * @static
+     * @param $fid
+     * @return int
+     */
+    static function getUidFromFid($fid)
+    {
+        $uid = 0;
+        if ($fid) {
+            simpleQuery('', sprintf("select id from users where fid=%d", $fid) , $uid, true, true);
+        }
+        return $uid;
     }
     /**
      * update user from IUSER document
@@ -289,7 +315,7 @@ create sequence seq_id_users start 10;";
      * @param string $expires expiration date
      * @param int $passdelay password delay
      * @param string $login login
-     * @param char $status 'A' (Activate) , 'D' (Desactivated)
+     * @param string $status 'A' (Activate) , 'D' (Desactivated)
      * @param string $pwd1 password one
      * @param string $pwd2 password two
      * @param string $extmail mail address
@@ -344,6 +370,7 @@ create sequence seq_id_users start 10;";
         $this->fid = $fid;
         if (!$this->isAffected()) {
             $this->isgroup = "Y";
+            $this->accounttype = 'G';
             $err = $this->Add();
         } else {
             $err = $this->Modify();
@@ -366,43 +393,45 @@ create sequence seq_id_users start 10;";
     
     function FreedomWhatUser()
     {
-        if (usefreedomuser()) {
-            $dbaccess = GetParam("FREEDOM_DB");
-            if ($dbaccess == "") return _("no freedom DB access");
-            if ($this->fid <> "") {
-                $iuser = new_Doc($dbaccess, $this->fid);
-                
+        $err = '';
+        $dbaccess = GetParam("FREEDOM_DB");
+        if ($dbaccess == "") return _("no freedom DB access");
+        if ($this->fid <> "") {
+            /**
+             * @var _IUSER $iuser
+             */
+            $iuser = new_Doc($dbaccess, $this->fid);
+            
+            $err = $iuser->RefreshDocUser();
+        } //Update from what
+        else {
+            include_once ("FDL/Lib.Dir.php");
+            if ($this->famid != "") $fam = $this->famid;
+            elseif ($this->isgroup == "Y") $fam = "IGROUP";
+            else $fam = "IUSER";;
+            $filter = array(
+                "us_whatid = '" . $this->id . "'"
+            );
+            $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $fam);
+            if (count($tdoc) == 0) {
+                //Create a new doc IUSER
+                $iuser = createDoc($dbaccess, $fam);
+                $iuser->SetValue("US_WHATID", $this->id);
+                $iuser->Add();
+                $this->fid = $iuser->id;
+                $this->modify(true, array(
+                    'fid'
+                ) , true);
                 $err = $iuser->RefreshDocUser();
-            } //Update from what
-            else {
-                include_once ("FDL/Lib.Dir.php");
-                if ($this->famid != "") $fam = $this->famid;
-                elseif ($this->isgroup == "Y") $fam = "IGROUP";
-                else $fam = "IUSER";;
-                $filter = array(
-                    "us_whatid = '" . $this->id . "'"
-                );
-                $tdoc = getChildDoc($dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $fam);
-                if (count($tdoc) == 0) {
-                    //Create a new doc IUSER
-                    $iuser = createDoc($dbaccess, $fam);
-                    $iuser->SetValue("US_WHATID", $this->id);
-                    $iuser->Add();
-                    $this->fid = $iuser->id;
-                    $this->modify(true, array(
-                        'fid'
-                    ) , true);
-                    $err = $iuser->RefreshDocUser();
-                } else {
-                    $this->fid = $tdoc[0]->id;
-                    $this->modify(true, array(
-                        'fid'
-                    ) , true);
-                    $err = $tdoc[0]->RefreshDocUser();
-                }
+            } else {
+                $this->fid = $tdoc[0]->id;
+                $this->modify(true, array(
+                    'fid'
+                ) , true);
+                $err = $tdoc[0]->RefreshDocUser();
             }
-            return $err;
         }
+        return $err;
     }
     // --------------------------------------------------------------------
     function computepass($pass, &$passk)
@@ -455,6 +484,7 @@ create sequence seq_id_users start 10;";
         $this->firstname = "";
         $this->login = "all";
         $this->isgroup = "Y";
+        $this->accounttype = "G";
         $this->Add(true);
         $group->idgroup = $this->id;
         $group->Add(true);
@@ -464,6 +494,7 @@ create sequence seq_id_users start 10;";
         $this->firstname = "guest";
         $this->login = "anonymous";
         $this->isgroup = "N";
+        $this->accounttype = "G";
         $this->Add(true);
         // Create admin group
         $this->id = GADMIN_ID;
@@ -471,6 +502,7 @@ create sequence seq_id_users start 10;";
         $this->firstname = "";
         $this->login = "gadmin";
         $this->isgroup = "Y";
+        $this->accounttype = "G";
         $this->Add(true);
         $group->idgroup = GALL_ID;
         $group->iduser = GADMIN_ID;
@@ -483,7 +515,7 @@ create sequence seq_id_users start 10;";
     {
         $query = new QueryDb($this->dbaccess, "User");
         $query->order_by = "lastname";
-        $query->AddQuery("(isgroup != 'Y') OR (isgroup isnull)");
+        $query->AddQuery("(accountType='U')");
         if ($filteruser) $query->AddQuery("(login ~* '" . pg_escape_string($filteruser) . "')" . " or " . "(lastname ~* '" . pg_escape_string($filteruser) . "')");
         return ($query->Query($start, $slice, $qtype));
     }
@@ -492,13 +524,15 @@ create sequence seq_id_users start 10;";
     {
         $query = new QueryDb($this->dbaccess, "User");
         $query->order_by = "lastname";
-        $query->AddQuery("isgroup = 'Y'");
+        $query->AddQuery("(accountType='G')");
         return ($query->Query(0, 0, $qtype));
     }
     // get All users & groups
     function getUserAndGroupList($qtype = "LIST")
     {
         $query = new QueryDb($this->dbaccess, "User");
+        $query->AddQuery("(accountType='G' or accountType='U')");
+        
         $query->order_by = "isgroup desc, lastname";
         return ($query->Query(0, 0, $qtype));
     }
@@ -586,11 +620,70 @@ create sequence seq_id_users start 10;";
         $condname = "";
         
         $sort = 'lastname';
-        $sql = sprintf("SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and isgroup != 'Y' order by %s", $sort, $cond, $condname, $sort);
+        $sql = sprintf("SELECT distinct on (%s, users.id) users.id, users.login, users.firstname , users.lastname, users.mail,users.fid from users, groups where %s and (groups.iduser=users.id) %s and accounttype='U' order by %s", $sort, $cond, $condname, $sort);
         
         $err = simpleQuery($this->dbaccess, $sql, $result);
         if ($err != "") return $err;
         return $result;
+    }
+    /**
+     * update memberof fields with all group/role of user
+     * @return array
+     * @throws Exception
+     */
+    public function updateMemberOf()
+    {
+        
+        $err = simpleQuery($this->dbaccess, sprintf("select idgroup from groups where iduser=%d", $this->id) , $gids, true, false);
+        
+        $g = new Group($this->dbaccess);
+        $lg = $gids;
+        foreach ($gids as $gid) {
+            $lg = array_merge($g->getParentsGroupId($gid) , $lg);
+        }
+        //$lg[] = $this->id;
+        $lg = array_values(array_unique($lg));
+        $this->memberof = '{' . implode(',', $lg) . '}';
+        $err = $this->modify(false, array(
+            'memberof'
+        ) , true);
+        if ($err) throw new Exception($err);
+        return $lg;
+    }
+    /**
+     * return id of group/role id
+     * @return array
+     */
+    public function getMemberOf()
+    {
+        $memberOf = array();
+        if (strlen($this->memberof) > 2) {
+            $memberOf = explode(',', substr($this->memberof, 1, -1));
+        }
+        return $memberOf;
+    }
+    /**
+     * return list of account (group/role) member for a user
+     * return null if user not exists
+     * @static
+     * @param int $uid user identificator
+     * @return array|null
+     */
+    public static function getUserMemberOf($uid)
+    {
+        global $action;
+        $memberOf = array();
+        if ($action->user->id == $uid) {
+            $memberOf = $action->user->getMemberOf();
+        } else {
+            $u = new User('', $uid);
+            if ($u->isAffected()) {
+                $memberOf = $u->getMemberOf();
+            } else {
+                return null;
+            }
+        }
+        return $memberOf;
     }
     /**
      * verify if user is member of group (recursive)
@@ -640,6 +733,7 @@ create sequence seq_id_users start 10;";
         include_once ('WHAT/Class.UserToken.php');
         include_once ('WHAT/Class.QueryDb.php');
         $create = false;
+        $tu = array();
         if (!$oneshot) {
             $q = new QueryDb($this->dbaccess, "UserToken");
             $q->addQuery("userid=" . $this->id);

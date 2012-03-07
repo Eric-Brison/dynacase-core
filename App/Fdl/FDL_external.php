@@ -288,12 +288,12 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
             $only = true;
             $famid = substr($famid, 1);
         }
-
+        
         if (!is_numeric($famid)) {
             $famName = $famid;
             $famid = getFamIdFromName($dbaccess, $famName);
             if ($famid <= 0) {
-                return sprintf(_("family %s not found"), $famName);
+                return sprintf(_("family %s not found") , $famName);
             }
         }
         if ($name != "" && is_string($name)) {
@@ -403,6 +403,39 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
             );
         }
         return $tr;
+    }
+    
+    function getAccounts($db, $filterName = '', $limit = 10)
+    {
+        $tout = array();
+        $s = new SearchDoc($db, 'IUSER');
+        if ($filterName) $s->addFilter("title ~* '%s'", $filterName);
+        $s->setSlice($limit);
+        $ta = $s->search();
+        $doc = new Doc();
+        foreach ($ta as $k => $v) {
+            $tout[] = array(
+                sprintf('<img width="10px" src="%s">%s', $doc->getIcon($v["icon"], 10) , $v["title"]) ,
+                $v["title"],
+                $v["id"]
+            );
+        }
+        
+        if (count($tout) < $limit) {
+            
+            $s = new SearchDoc($db, 'IGROUP');
+            if ($filterName) $s->addFilter("title ~* '%s'", $filterName);
+            $s->setSlice($limit - count($tout));
+            $ta = $s->search();
+            foreach ($ta as $k => $v) {
+                $tout[] = array(
+                    sprintf('<img width="10px" src="%s">%s', $doc->getIcon($v["icon"], 10) , $v["title"]) ,
+                    $v["title"],
+                    $v["id"]
+                );
+            }
+        }
+        return $tout;
     }
     /**
      * return list of string for multiple static choice

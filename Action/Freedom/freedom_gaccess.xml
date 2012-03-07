@@ -52,7 +52,10 @@ TABLE.hborder THEAD td.odd {
 }
 TABLE.hborder td.headaccess {
   background-color:[COLOR_B7];
-  font-weight: bold;
+  /*font-weight: bold;*/
+}
+span.computed {
+  padding-left:30px;
 }
 </style>
 <form  name="edit" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_MODACCESS">
@@ -64,7 +67,8 @@ TABLE.hborder td.headaccess {
 <thead>
 
 <TR >
-<TD colspan="2" class="headaccess"><a title="[TEXT:View profil definition]" href="[CORE_STANDURL]app=FDL&action=FDL_CARD&id=[docid]" target="_blank">[title]</a></TD>
+<TD colspan="2" class="headaccess"><strong>[toOrigin]</strong>[IF dynamic].<br/><span class="computed">[TEXT:Computed from] <a target="access[dprofid]"
+    href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic]</span></TD>
  [BLOCK DACLS]<TD class="[oddoreven]" align="center" valign="top" title="[acldesc]" style="cursor:help">[aclname]</TD>
  [ENDBLOCK DACLS]
 [IFNOT ISIE]<td style="width:20px;visibility:visible"></td>[ENDIF ISIE]
@@ -96,12 +100,12 @@ TABLE.hborder td.headaccess {
   [ENDBLOCK GROUPS]
 </tbody>
 </TABLE>
-[BLOCK MODIFY]
+[IF MODIFY]
 <input class="CORETblHead" type="submit" 
          name="Modify" value="[TEXT:Validate]"  >
 
 <input class="CORETblHead" type="button" onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=[allgreen]'" title="[TEXT:Reload page]" value="[TEXT:Reset]" >
-[ENDBLOCK MODIFY]
+[ENDIF MODIFY]
 [IFNOT isgreen]
 <input class="CORETblHead" type="button" 
          name="Modify"  onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=Y'" title="[TEXT:View only access set. Green or Red flag]" value="[TEXT:All set only]"  >[ENDIF isgreen]

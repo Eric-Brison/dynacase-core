@@ -26,14 +26,9 @@ class DocPerm extends DbObj
     var $fields = array(
         "docid",
         "userid",
-        "upacl",
-        "unacl",
-        "cacl"
+        "upacl"
     );
     
-    var $sup_fields = array(
-        "getuperm(userid,docid) as uperm"
-    );
     var $id_fields = array(
         "docid",
         "userid"
@@ -41,10 +36,7 @@ class DocPerm extends DbObj
     public $docid;
     public $userid;
     public $upacl;
-    public $unacl;
-    public $cacl;
     public $uperm;
-    public $gacl;
     
     var $dbtable = "docperm";
     
@@ -55,12 +47,9 @@ class DocPerm extends DbObj
 create table docperm ( 
                      docid int check (docid > 0),
                      userid int check (userid > 1),
-                     upacl int  not null,
-                     unacl int  not null,
-                     cacl int not null
+                     upacl int  not null
                    );
-create unique index idx_perm on docperm(docid, userid);
-create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE PROCEDURE initacl();";
+create unique index idx_perm on docperm(docid, userid);";
     
     function preSelect($tid)
     {
@@ -73,9 +62,6 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
     function preInsert()
     {
         if ($this->userid == 1) return _("not perm for admin");
-        if (($this->upacl == 0) && ($this->unacl == 0)) return "";
-        if ($this->unacl === "") $this->unacl = "0";
-        if ($this->cacl === "") $this->cacl = "0";
         return '';
     }
     
@@ -84,42 +70,58 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
         return $this->preInsert();
     }
     /**
-     * reinitialize computed acl
-     * @param integer $docid docid acl to reset
+     * return account vector for current user
+     * to be use in getaperm sql function
+     * @static
+     * @param int $uid user identificator
+     * @return string
      */
-    function resetComputed($docid = "")
+    public static function getMemberOfVector($uid = 0)
     {
-        $err = "";
-        if (!$docid) $docid = $this->docid;
-        if ($docid > 0) {
-            $err = $this->exec_query(sprintf("update docperm set cacl=0 where docid=%d and cacl != 0;", $docid));
+        if ($uid == 0) {
+            global $action;
+            $mof = $action->user->getMemberOf();
+            $mof[] = $action->user->id;
+        } else {
+            
+            $mof = User::getUserMemberOf($uid);
+            $mof[] = $uid;
         }
-        return $err;
+        return '{' . implode(',', $mof) . '}';
     }
-    function getUperm($docid, $userid)
+    
+    public static function getUperm($profid, $userid)
     {
-        $q = new QueryDb($this->dbaccess, "docperm");
-        $t = $q->Query(0, 1, "TABLE", "select getuperm($userid,$docid) as uperm");
+        if ($userid == 1) return -1;
+        $userMember = DocPerm::getMemberOfVector($userid);
+        $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
+        simpleQuery(getDbAccess() , $sql, $uperm, true, true);
+        if ($uperm === false) return 0;
         
-        return (($q->nb > 0) ? $t[0]["uperm"] : 0);
+        return $uperm;
     }
-    function recomputeControl()
-    {
-        if ($this->docid > 0) $this->exec_query("select getuperm(userid,docid) as uperm from docperm where docid=" . $this->docid);
-    }
-    // --------------------------------------------------------------------
+    /**
+     * control access at $pos position (direct or indirect) (green or grey)
+     * @param $pos
+     * @return bool
+     */
     function ControlU($pos)
     {
-        // --------------------------------------------------------------------
-        if ($this->cacl == 0) {
-            $this->cacl = $this->getUperm($this->docid, $this->userid);
+        if ($this->uperm == 0) {
+            $this->uperm = $this->getUperm($this->docid, $this->userid);
         }
-        return ($this->ControlMask($this->cacl, $pos));
+        return ($this->ControlMask($this->uperm, $pos));
     }
     // --------------------------------------------------------------------
+    
+    /**
+     * @param $pos
+     * @deprecated
+     * @return bool
+     */
     function ControlG($pos)
     {
-        // --------------------------------------------------------------------
+        return false;
         if (!isset($this->gacl)) {
             $q = new QueryDb($this->dbaccess, "docperm");
             $t = $q->Query(0, 1, "TABLE", "select computegperm({$this->userid},{$this->docid}) as uperm");
@@ -129,7 +131,11 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
         
         return ($this->ControlMask($this->gacl, $pos));
     }
-    // --------------------------------------------------------------------
+    /**
+     * control access at $pos position direct inly (green)
+     * @param $pos
+     * @return bool
+     */
     function ControlUp($pos)
     {
         // --------------------------------------------------------------------
@@ -139,18 +145,8 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
         return false;
     }
     // --------------------------------------------------------------------
-    function ControlUn($pos)
-    {
-        // --------------------------------------------------------------------
-        if ($this->isAffected()) {
-            return ($this->ControlMask($this->unacl, $pos));
-        }
-        return false;
-    }
-    // --------------------------------------------------------------------
     function ControlMask($acl, $pos)
     {
-        // --------------------------------------------------------------------
         return (($acl & (1 << ($pos))) != 0);
     }
     /**
@@ -159,8 +155,6 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
     function UnSetControl()
     {
         $this->upacl = 0;
-        $this->unacl = 0;
-        $this->cacl = 1;
     }
     /**
      * set positive ACL in specified position
@@ -169,7 +163,6 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
     function SetControlP($pos)
     {
         $this->upacl = $this->upacl | (1 << $pos);
-        $this->UnSetControlN($pos);
     }
     /**
      * unset positive ACL in specified position
@@ -179,22 +172,4 @@ create trigger tinitacl AFTER INSERT OR UPDATE ON docperm FOR EACH ROW EXECUTE P
     {
         $this->upacl = $this->upacl & (~(1 << $pos));
     }
-    /**
-     * set negative ACL in specified position
-     * @param int $pos column number (0 is the first right column)
-     */
-    function SetControlN($pos)
-    {
-        $this->unacl = $this->unacl | (1 << $pos);
-        $this->UnSetControlP($pos);
-    }
-    /**
-     * unset negative ACL in specified position
-     * @param int $pos column number (0 is the first right column)
-     */
-    function UnSetControlN($pos)
-    {
-        $this->unacl = $this->unacl & (~(1 << $pos));
-    }
 }
-?>

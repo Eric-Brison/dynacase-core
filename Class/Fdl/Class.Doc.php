@@ -90,6 +90,7 @@ class Doc extends DocCtrl
         "cvid",
         "name",
         "dprofid",
+        "views",
         "atags",
         "prelid",
         "confidential",
@@ -415,6 +416,11 @@ class Doc extends DocCtrl
      */
     public $profid;
     /**
+     * user/group/role which can view document
+     * @var string
+     */
+    public $views;
+    /**
      * to precise a special use of the document
      * @var char
      */
@@ -665,6 +671,7 @@ create table doc ( id int not null,
                    cvid int,
                    name text,
                    dprofid int DEFAULT 0,
+                   views int[],
                    prelid int DEFAULT 0,
                    atags text,
                    confidential int DEFAULT 0,
@@ -838,7 +845,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->doctype == "") $this->doctype = $this->defDoctype;
         if ($this->revision == "") $this->revision = "0";
         
-        if ($this->profid == "") $this->profid = "0";
+        if ($this->profid == "") {
+            $this->views = "{0}";
+            $this->profid = "0";
+        }
         if ($this->usefor == "") $this->usefor = "N";
         
         if ($this->lmodify == "") $this->lmodify = "N";
@@ -3319,8 +3329,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
                 throw new \Exception(ErrCode::getError('FILE0010', $filename));
             }
-
-
+            
             return sprintf("%s|%s|%s", $info->mime_s, $info->id_file, $info->name);
         }
         /**
@@ -7189,15 +7198,14 @@ create unique index i_docir on doc(initid, revision);";
                         return stringDateToLocaleDate(date("Y-m-d H:i", $nd));
                     } else {
                         if ($isIsoDate) return date("Y-m-d H:i", $nd);
-                                   else return date("d/m/Y H:i", $nd);
-
+                        else return date("d/m/Y H:i", $nd);
                     }
                 } else {
                     if ($getlocale) {
                         return stringDateToLocaleDate(date("Y-m-d", $nd));
                     } else {
                         if ($isIsoDate) return date("Y-m-d", $nd);
-                                    else return date("d/m/Y", $nd);
+                        else return date("d/m/Y", $nd);
                     }
                 }
             }
@@ -7209,13 +7217,14 @@ create unique index i_docir on doc(initid, revision);";
              */
             public static function getTimeDate($hourdelta = 0, $second = false)
             {
-                $delta = abs(intval($hourdelta));if ((getLcdate() == "iso")) {
-                                if ($second) $format = "Y-m-d H:i:s";
-                                else $format = "Y-m-d H:i";
-                            } else {
-                if ($second) $format = "d/m/Y H:i:s";
-                else $format = "d/m/Y H:i";
-            }
+                $delta = abs(intval($hourdelta));
+                if ((getLcdate() == "iso")) {
+                    if ($second) $format = "Y-m-d H:i:s";
+                    else $format = "Y-m-d H:i";
+                } else {
+                    if ($second) $format = "d/m/Y H:i:s";
+                    else $format = "d/m/Y H:i";
+                }
                 if ($hourdelta > 0) {
                     if (is_float($hourdelta)) {
                         $dm = intval((abs($hourdelta) - $delta) * 60);

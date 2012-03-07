@@ -37,13 +37,17 @@ a.context:hover {
 <body>
 <?php
 include ("../../../WHAT/Lib.Common.php");
+require_once 'WHAT/autoload.php';
+
 //---------------------------------------------------
 //------------------- MAIN -------------------------
 $dbaccess = getDbAccess();
 print "<H1>Check Database <i>$dbaccess</i> </H1>";
 
 include_once "Class.CheckDb.php";
+
 $a = new checkDb($dbaccess);
+
 $tout = $a->getFullAnalyse();
 
 print '<table border=1 rules="all">';

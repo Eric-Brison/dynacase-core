@@ -105,7 +105,7 @@ class SearchDoc
     /**
      *
      * Iterator document
-     * @var Array of doc
+     * @var Doc[]
      */
     private $cacheDocuments = array();
     /**
@@ -116,6 +116,7 @@ class SearchDoc
     private $count = - 1;
     private $index = 0;
     private $result;
+    private $searchmode;
     /**
      * initialize with family
      *
@@ -139,6 +140,9 @@ class SearchDoc
     public function onlyCount()
     {
         if (!$this->result) {
+            /**
+             * @var Dir $fld
+             */
             $fld = new_Doc($this->dbaccess, $this->dirid);
             $userid = $this->userid;
             if ($fld->fromid != getFamIdFromName($this->dbaccess, "SSEARCH")) {
@@ -160,8 +164,9 @@ class SearchDoc
                         
                         $mainid = ($maintable) ? "$maintable.id" : "id";
                         $sql = preg_replace('/^\s*select\s+(.*?)\s+from\s/i', "select count($mainid) from ", $sql, 1);
-                        
-                        if ($userid != 1) $sql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
+                        if ($userid != 1) {
+                            $sql.= sprintf(" and (%sviews && '%s')", $maintabledot, $this->getUserViewVector($userid));
+                        }
                         $dbid = getDbid($this->dbaccess);
                         $mb = microtime(true);
                         $q = @pg_query($dbid, $sql);
@@ -171,6 +176,7 @@ class SearchDoc
                         } else {
                             $result = pg_fetch_array($q, 0, PGSQL_ASSOC);
                             $count+= $result["count"];
+                            $this->debuginfo["query"] = $sql;
                             $this->debuginfo["delay"] = sprintf("%.03fs", microtime(true) - $mb);
                         }
                     }
@@ -182,6 +188,21 @@ class SearchDoc
             }
         } else $this->count();
         return $this->count;
+    }
+    /**
+     * @static
+     * @param $uid
+     * @return string
+     */
+    public static function getUserViewVector($uid)
+    {
+        $memberOf = User::getUserMemberOf($uid);
+        if ($memberOf === null) {
+            return '';
+        }
+        $memberOf[] = 0;
+        $memberOf[] = $uid;
+        return '{' . implode(',', $memberOf) . '}';
     }
     /**
      * return original sql query before test permissions
@@ -281,6 +302,9 @@ class SearchDoc
             else $this->fromid = $fromid;
         }
         if ($this->recursiveSearch && $this->dirid) {
+            /**
+             * @var DocSearch $tmps
+             */
             $tmps = createTmpDoc($this->dbaccess, "SEARCH");
             $tmps->setValue("se_idfld", $this->dirid);
             $tmps->setValue("se_latest", "yes");
@@ -551,7 +575,9 @@ class SearchDoc
     function excludeConfidential($exclude = true)
     {
         if ($exclude) {
-            if ($this->userid != 1) $this->excludeFilter = sprintf("confidential is null or hasdocprivilege(%d, profid,%d)", $this->userid, 1 << POS_CONF);
+            if ($this->userid != 1) {
+                $this->excludeFilter = sprintf("confidential is null or hasaprivilege('%s', profid,%d)", DocPerm::getMemberOfVector($this->userid) , 1 << POS_CONF);
+            }
         } else {
             $this->excludeFilter = '';
         }

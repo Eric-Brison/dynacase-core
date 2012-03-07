@@ -44,6 +44,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     var $groups = array(); // user groups
     public $iduser;
     public $idgroup;
+    private $allgroups;
+    private $levgid;
     /**
      * get groups of a user
      * set groups attribute. This attribute containt id of group of a user
@@ -80,11 +82,10 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             $err = $this->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
             $err = $this->exec_query("delete from sessions where userid=$uid");
             
-            if (usefreedomuser()) {
-                $dbf = getParam("FREEDOM_DB");
-                $g = new Group($dbf);
-                $err = $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
-            }
+            $dbf = getParam("FREEDOM_DB");
+            $g = new Group($dbf);
+            $err = $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=$uid");
+            
             if (!$nopost) $this->PostDelete($uid);
         }
         return $err;
@@ -110,27 +111,24 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     
     function PostDelete($uid = 0)
     {
-        if (usefreedomuser()) {
-            if ($uid) $u = new User("", $uid);
-            else $u = new User("", $this->iduser);
-            if ($u->isgroup == "Y") {
-                // recompute all doc profil
-                $this->FreedomCopyGroup();
-            } else {
-                $dbf = getParam("FREEDOM_DB");
-                $g = new Group($dbf);
-                $g->iduser = $this->iduser;
-                $g->idgroup = $this->idgroup;
-                $err = $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=" . $u->id);
-                if ($err == "") {
-                    // if it is a user (not a group)
-                    $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=" . $g->iduser);
-                    $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=" . $g->iduser);
-                    $g->exec_query("delete from permission where computed");
-                    
-                    $p = new Permission($this->dbaccess);
-                    $p->deletePermission($g->iduser, null, null, true);
-                }
+        if ($uid) $u = new User("", $uid);
+        else $u = new User("", $this->iduser);
+        $u->updateMemberOf();
+        if ($u->isgroup == "Y") {
+            // recompute all doc profil
+            $this->resetAccountMemberOf();
+        } else {
+            $dbf = getParam("FREEDOM_DB");
+            $g = new Group($dbf);
+            $g->iduser = $this->iduser;
+            $g->idgroup = $this->idgroup;
+            $err = $g->exec_query("delete from groups where idgroup=" . $this->iduser . " and iduser=" . $u->id);
+            if ($err == "") {
+                // if it is a user (not a group)
+                $g->exec_query("delete from permission where computed");
+                
+                $p = new Permission($this->dbaccess);
+                $p->deletePermission($g->iduser, null, null, true);
             }
         }
     }
@@ -139,45 +137,46 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     {
         $err = $this->exec_query("delete from sessions where userid=" . $this->iduser);
         //    $this->FreedomCopyGroup();
-        if (usefreedomuser()) {
-            $u = new User("", $this->iduser);
-            if ($u->isgroup == "Y") {
-                // recompute all doc profil
-                $this->FreedomCopyGroup();
-            } else {
-                $dbf = getParam("FREEDOM_DB");
-                $g = new Group($dbf);
-                $g->iduser = $this->iduser;
-                $g->idgroup = $this->idgroup;
-                $err = $g->Add(true);
-                if ($err == "" || $err == "OK") {
-                    // if it is a user (not a group)
-                    $g->exec_query("delete from docperm where  upacl=0 and unacl=0 and userid=" . $g->iduser);
-                    $g->exec_query("update docperm set cacl=0 where cacl != 0 and userid=" . $g->iduser);
-                    $g->exec_query("delete from permission where computed");
-                    
-                    $p = new Permission($this->dbaccess);
-                    $p->deletePermission($g->iduser, null, null, true);
-                }
+        $u = new User("", $this->iduser);
+        
+        $u->updateMemberOf();
+        if ($u->isgroup == "Y") {
+            // recompute all doc profil
+            $this->resetAccountMemberOf();
+        } else {
+            $dbf = getParam("FREEDOM_DB");
+            $g = new Group($dbf);
+            $g->iduser = $this->iduser;
+            $g->idgroup = $this->idgroup;
+            $err = $g->Add(true);
+            if ($err == "" || $err == "OK") {
+                // if it is a user (not a group)
+                $g->exec_query("delete from permission where computed");
+                
+                $p = new Permission($this->dbaccess);
+                $p->deletePermission($g->iduser, null, null, true);
             }
         }
+        
         return $err;
     }
-    
-    function FreedomCopyGroup()
+    /**
+     * recompute all memberof properties of user accounts
+     */
+    function resetAccountMemberOf()
     {
-        $err = $this->exec_query("delete from sessions where userid=" . $this->iduser);
+        $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
+        $err = $this->exec_query("delete from permission where computed");
         
-        if (usefreedomuser()) {
-            $wsh = getWshCmd();
-            $cmd = $wsh . " --api=freedom_groups";
-            
-            exec($cmd);
-            //       $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
-            //       $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
-            //       exec($cmd);
-            
-        }
+        $wsh = getWshCmd();
+        $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
+        
+        exec($cmd);
+        //       $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
+        //       $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
+        //       exec($cmd);
+        
+        
     }
     /**
      * get ascendant direct group and group of group
@@ -197,9 +196,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      * get all child (descendant) group of this group
      * @return array id
      */
-    function getChildsGroupId($pgid = "")
+    function getChildsGroupId($pgid)
     {
-        if ($pgid == "") $pgid = $this->id;
         $this->_initAllGroup();
         
         $groupsid = array();
@@ -220,9 +218,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
      * get all parent (ascendant) group of this group
      * @return array id
      */
-    function getParentsGroupId($pgid = "", $level = 0)
+    function getParentsGroupId($pgid, $level = 0)
     {
-        if ($pgid == "") $pgid = $this->id;
         $this->_initAllGroup();
         
         $groupsid = array();
