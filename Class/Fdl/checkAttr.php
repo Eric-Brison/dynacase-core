@@ -476,7 +476,9 @@ class CheckAttr extends CheckData
     {
         $constraint = trim($this->structAttr->constraint);
         if ($constraint) {
-            
+            if ($this->isModAttr && $constraint == '-') {
+                return;
+            }
             $oParse = new parseFamilyMethod();
             $strucFunc = $oParse->parse($constraint, true);
             if ($strucFunc->getError()) {
