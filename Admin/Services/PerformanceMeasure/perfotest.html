@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Performance tests</title>
+<link rel="stylesheet" type="text/css" href="perfotest.css" />  
+<script type="text/javascript" src="../../../lib/data/fdl-data.js"></script>
+<script type="text/javascript" src="../../../lib/jquery/jquery.js"></script>
+
+<script>
+	if (!("console" in window)) {
+		window.console = {
+			'log' : function(s) {
+			}
+		}
+	}
+</script>
+<script>
+
+  var C = null; // the context
+  var totalTime={all:0,js:0,server:0,network:0};
+
+
+  function tracemsg(msg) {
+   
+     if (document.getElementById('error')) document.getElementById('error').innerHTML = document.getElementById('error').innerHTML + '<div>'+msg+'</div>';
+
+  }
+
+  function connect()   {
+
+    console.log('Connect()');
+  
+    var urld = window.location.protocol+'//'+window.location.hostname+window.location.pathname.substr(0,window.location.pathname.indexOf('/admin/'));
+ 
+   document.getElementById('authent').style.display = 'none'; 
+
+   if (C==null) {
+     tracemsg('Contacting Dynacase : '+urld);
+      C=new Fdl.Context({url:urld});
+      if (!C.isConnected()) {
+         tracemsg('Connection error '+C.getLastErrorMessage());
+         C = null;
+         return;
+      }
+      tracemsg('Connection done.');
+    }
+
+    C.debug=true;
+    if (!C.isAuthenticated()) {
+
+       if (document.getElementById('pwdadmin').value == '') {
+          document.getElementById('authent').style.display = 'block';
+          return;
+       } else {
+          var password =  document.getElementById('pwdadmin').value;
+  	  var u = C.setAuthentification( { login : 'admin', password : password });
+          if (!u) {
+             tracemsg('Authentication : '+C.getLastErrorMessage());
+             document.getElementById('pwdadmin').value = '';
+            connect();
+             return;
+          }
+        }
+      }
+    
+    tracemsg('Authentication success');
+    document.getElementById('authent').style.display = 'none';
+    document.getElementById('redo').style.display='block';
+  }
+ 
+function redoperfounit() {
+  $('#redo').css('display', 'none');
+  $('#inprogress').css('display', 'block');
+  $('#content').css('display', 'block');
+  perfounit();
+  $('#inprogress').css('display', 'none');
+}
+	function getDocuments(ids) {
+		var now;
+		for ( var i = 0; i < ids.length; i++) {
+			
+			now=new Date().getTime();
+			var d = C.getDocument( {
+				id : ids[i]
+			});
+	console.log(d);
+			
+			displayDocumentTime(d._data.debuginfo,(new Date().getTime() - now)/1000 , d._data.evalDebugTime, 'result');
+		}
+
+	}
+	function getContentDocuments(ids) {
+		var date=new Date();
+		var now;
+		for ( var i = 0; i < ids.length; i++) {
+			date=new Date();
+			now=date.getTime();
+			var d = C.getDocument( {
+				id : ids[i],
+				contentStore:true,
+				contentConfig:{slice:25}
+			});
+			console.log(d);
+			var ld=d.getStoredContent();
+			date=new Date();
+			console.log(ld.count(),ld.content.length,d);
+			displayDocumentTime(d._data.debuginfo,(date.getTime() - now)/1000 ,d._data.evalDebugTime,'resultcontent');
+		}
+	}
+	function searchDocuments(criteria) {
+		var date=new Date();
+		var now;
+		for ( var i = 0; i < criteria.length; i++) {
+			date=new Date();
+			now=date.getTime();
+			
+			var d = C.getSearchDocument();
+			console.log(d);
+			var ld=d.search(criteria[i]);
+			if (!ld) alert(C.getLastErrorMessage());
+			else {
+			console.log(ld);
+			console.log(ld.count,ld.content.length);
+			displayDocumentTime(ld.debuginfo,(new Date().getTime() - now)/1000 ,ld.evalDebugTime,'resultsearch');
+			}
+		}
+	}
+
+	function displayDocumentTime(debug,abstime,evaltime,bodyid) {
+		
+		var t=document.getElementById(bodyid);
+		console.log(evaltime);
+		totalTime.all+=abstime*1000;
+		totalTime.js+=evaltime;
+		totalTime.network+=parseInt(((abstime-parseFloat(debug.all))*1000)-evaltime);
+		totalTime.server+=parseFloat(debug.all)*1000;
+		viewTotal();
+		t.innerHTML+='<tr><td>'+abstime*1000+'ms</td><td>'+parseInt(((abstime-parseFloat(debug.all))*1000)-evaltime)+'ms</td><td>'+evaltime+'ms</td><td>'+debug.all+'</td><td>'+debug.queries+'</td><td>'+debug.action+'</td><td>'+debug.initauthent+'</td><td>'+debug.memory+'</td></tr>';
+	}
+	function perfounit() {
+
+console.log('progress visible');
+        totalTime={all:0,js:0,server:0,network:0};
+        document.getElementById('resultsearch').innerHTML='';
+        document.getElementById('resultcontent').innerHTML='';
+        document.getElementById('result').innerHTML='';
+		getDocuments( [ 9, 10, 11, 12, 13 , 501, 501, 502, 503, 504, 505, 506, 507]);
+		getContentDocuments( [ 9, 10, 11, 12, 13 ]);
+		searchDocuments([{
+			key : 'cheval',
+			withHighlight : false,
+			slice : 25
+		},{
+			key : 'cheval',
+			withHighlight : true,
+			slice : 25
+		},{
+			famid : 'DIR',
+			withHighlight : false,
+			slice : 25
+		},{family:'DIR strict', slice:25,
+		      criteria:[{operator:'!~*',
+				 left:'ba_desc',
+				 right:'imp'}]}]);
+	viewTotal();
+		 console.log('total',totalTime);
+    document.getElementById('redo').value='Redo the test';
+		 document.getElementById('redo').style.display='block';
+  
+	}
+
+	function viewTotal() {
+		var tt=parseInt(totalTime.all)/1000;
+		var tjs=parseInt(totalTime.js)/1000;
+		var tsrv=parseInt(totalTime.server)/1000;
+		var tnet=parseInt(totalTime.network)/1000;
+		 document.getElementById('totalTime').innerHTML=(tt)+'s';
+		 document.getElementById('totalJsTime').innerHTML=(tjs)+'s ('+parseInt(tjs/tt*100)+'%)';
+		 document.getElementById('totalServerTime').innerHTML=(tsrv)+'s ('+parseInt(tsrv/tt*100)+'%)';
+		 document.getElementById('totalNetworkTime').innerHTML=(tnet)+'s ('+parseInt(tnet/tt*100)+'%)';
+	}
+</script>
+
+</head>
+
+<body>
+
+<div id="header">
+  <div id="error"></div>
+  <form id="authent" onsubmit="return false;" style="display:none;">
+    <div id="connect"></div>
+    Enter Dynacase admin password : <input type="password" id="pwdadmin" /><a href="#" onclick="connect();">log in</a>
+  </form>
+  <input type="button" id="redo" style="display:none" onclick="redoperfounit()" value="Start the test"></input>
+  <div id="inprogress" style="display:none">
+    <div>Test in progress...</div>
+    <img src="../../Images/wait.gif" />
+  </div>
+</div>
+<div id="content" style="display:none">
+  <table rules="all" class="total" > 
+    <tr><td>total time</td><td>total network time</td><td>total js time</td><td>total server time</td></tr>
+    <tr><td id='totalTime'></td><td id='totalNetworkTime'></td><td id='totalJsTime'></td><td id='totalServerTime'></td></tr></table>
+  <h2>getDocument</h2>
+  <table rules="all" border="1">
+    <thead><tr><td>All</td><td>Transport</td><td>Javascript</td><td>Server</td><td>Queries</td><td>Action</td><td>Authent</td><td>memory</td></tr></thead>
+    <tbody id="result"></tbody>
+  </table>
+  <br/>
+  <h2>getContent</h2>
+  <table rules="all" border="1">
+    <thead><tr><td>All</td><td>Transport</td><td>Javascript</td><td>Server</td><td>Queries</td><td>Action</td><td>Authent</td><td>memory</td></tr></thead>
+    <tbody id="resultcontent"></tbody>
+  </table>
+  <br/>
+  <h2>searchDocument</h2>
+  <table rules="all" border="1">
+    <thead><tr><td>All</td><td>Transport</td><td>Javascript</td><td>Server</td><td>Queries</td><td>Action</td><td>Authent</td><td>memory</td></tr></thead>
+    <tbody id="resultsearch"></tbody>
+  </table>
+  </div>
+</body>
+<script>connect();</script>
+</html>

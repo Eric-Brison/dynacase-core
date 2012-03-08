@@ -226,7 +226,7 @@ class checkDb
         $ldapport = $this->getGlobalParam("NU_LDAP_PORT");
         $ldapmode = $this->getGlobalParam("NU_LDAP_MODE");
         if ($nuAppExists && $ldaphost) {
-            include_once ('../NU/Lib.NU.php');
+            include_once ('../../../NU/Lib.NU.php');
             
             $ldapBindDn = $this->getGlobalParam('NU_LDAP_BINDDN');
             $ldapPassword = $this->getGlobalParam('NU_LDAP_PASSWORD');
@@ -386,7 +386,7 @@ class checkDb
     public function checkAttributeType()
     {
         $testName = 'attribute type';
-        include_once ("../FDL/Class.Doc.php");
+        include_once ("../../../FDL/Class.Doc.php");
         $err = simpleQuery('', "select id from docfam", $families, true);
         
         foreach ($families as $famid) {

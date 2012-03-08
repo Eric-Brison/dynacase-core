@@ -6,11 +6,19 @@
 
 appname = admin
 export appname
-SUBDIR= Images
+SUBDIR= Images Services
 include $(utildir)/PubRule
-DISTFILES += $(SUBDIR) winit.php shttpd htaccess htaccess.in
+DISTFILES += $(SUBDIR) index.html admin.css admin.js getServices.php knockout-2.0.0.js shttpd htaccess htaccess.in
 
-$(pubdir)/admin/winit.php: winit.php $(pubdir)/admin
+$(pubdir)/admin/index.html: index.html $(pubdir)/admin
+	cp $< $@
+$(pubdir)/admin/admin.css: admin.css $(pubdir)/admin
+	cp $< $@
+$(pubdir)/admin/admin.js: admin.js $(pubdir)/admin
+	cp $< $@
+$(pubdir)/admin/getServices.php: getServices.php $(pubdir)/admin
+	cp $< $@
+$(pubdir)/admin/knockout-2.0.0.js: knockout-2.0.0.js $(pubdir)/admin
 	cp $< $@
 $(pubdir)/admin/shttpd: shttpd $(pubdir)/admin
 	cp $< $@
@@ -23,4 +31,4 @@ $(pubdir)/admin/mime.conf: mime.conf $(pubdir)/admin
 $(pubdir)/admin/mime-user.conf.sample: mime-user.conf.sample $(pubdir)/admin
 	cp $< $@
 
-publish:   $(pubdir)/admin/winit.php $(pubdir)/admin/shttpd $(pubdir)/admin/.htaccess $(pubdir)/admin/.htaccess.in $(pubdir)/admin/mime.conf $(pubdir)/admin/mime-user.conf.sample
+publish:  $(pubdir)/admin/index.html $(pubdir)/admin/admin.css $(pubdir)/admin/admin.js $(pubdir)/admin/getServices.php $(pubdir)/admin/knockout-2.0.0.js $(pubdir)/admin/shttpd $(pubdir)/admin/.htaccess $(pubdir)/admin/.htaccess.in $(pubdir)/admin/mime.conf $(pubdir)/admin/mime-user.conf.sample
