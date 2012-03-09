@@ -96,7 +96,7 @@ class ApiUsage
      * @param string $argName argument name
      * @param string $argDefinition argument définition
      *
-     * @return argument value
+     * @return string argument value
      */
     public function addHidden($argName, $argDefinition)
     {
@@ -113,7 +113,7 @@ class ApiUsage
      * @param string $argDefinition argument définition
      * @param array $restriction optionnal enumeration for argument
      *
-     * @return argument value
+     * @return string argument value
      */
     public function addNeeded($argName, $argDefinition, array $restriction = null)
     {
@@ -132,7 +132,7 @@ class ApiUsage
      * @param array $restriction optionnal enumeration for argument
      * @param string $default default value if no value set
      *
-     * @return argument value
+     * @return string argument value
      */
     public function addOption($argName, $argDefinition, array $restriction = null, $default = null)
     {

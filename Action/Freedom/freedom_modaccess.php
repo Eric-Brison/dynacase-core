@@ -129,7 +129,6 @@ function freedom_modaccess(Action & $action)
         }
         if (count($tc) > 0) $doc->addComment(sprintf(_("Change control :\n %s") , implode("\n", $tc)));
     }
-    RedirectSender($action); // return to sender
-    
+    redirect($action, "FREEDOM", sprintf("FREEDOM_GACCESS&id=%s&allgreen=%s&group=%s", $docid, $action->getArgument("allgreen", "N") , $action->getArgument("group", "N")));
 }
 ?>

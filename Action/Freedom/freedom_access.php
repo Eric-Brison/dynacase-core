@@ -50,15 +50,23 @@ function freedom_access(Action & $action)
     $action->lay->Set("title", $doc->getHtmlTitle());
     // contruct user id list
     $ouser = new User('', $userId);
+    if (!$ouser->isAffected()) $action->exitError(sprintf(_("unknow user #%s") , $userId));
     $tiduser = $ouser->GetUserAndGroupList();
     
     $action->lay->Set("docid", $doc->id);
+    $action->lay->Set("userid", $ouser->id);
     
     $action->lay->Set("toProfil", $doc->getDocAnchor($doc->id, 'account', true, false, false, 'latest', true));
     if ($doc->dprofid) {
         $action->lay->Set("dynamic", true);
         $action->lay->Set("dprofid", $doc->dprofid);
+        $action->lay->Set("ComputedFrom", _("Computed from"));
         $action->lay->Set("toDynProfil", $doc->getHTMLTitle($doc->dprofid));
+    } elseif ($doc->profid != $doc->id) {
+        $action->lay->Set("dynamic", true);
+        $action->lay->Set("dprofid", $doc->profid);
+        $action->lay->Set("ComputedFrom", _("Linked from"));
+        $action->lay->Set("toDynProfil", $doc->getHTMLTitle($doc->profid));
     } else {
         $action->lay->Set("dynamic", false);
     }

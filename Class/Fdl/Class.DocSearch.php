@@ -255,7 +255,7 @@ class DocSearch extends PDocSearch
                 if (strstr($key, '"') !== false) {
                     // add more filter for search complete and exact expression
                     if (strstr($key, '|') === false) {
-                        $sqlfiltersbrut[] = "svalues ~* '\\\\y" . pg_escape_string(str_replace(array(
+                        $sqlfiltersbrut[] = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',
@@ -268,7 +268,7 @@ class DocSearch extends PDocSearch
                         ) , $key)) . "\\\\y' ";
                     } else {
                         list($left, $right) = explode("|", $key);
-                        if (strstr($left, '"') !== false) $q1 = "svalues ~* '\\\\y" . pg_escape_string(str_replace(array(
+                        if (strstr($left, '"') !== false) $q1 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',
@@ -280,7 +280,7 @@ class DocSearch extends PDocSearch
                             ''
                         ) , $left)) . "\\\\y' ";
                         else $q1 = "";
-                        if (strstr($right, '"') !== false) $q2 = "svalues ~* '\\\\y" . pg_escape_string(str_replace(array(
+                        if (strstr($right, '"') !== false) $q2 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',

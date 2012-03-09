@@ -124,7 +124,7 @@ function autocompletion(Action & $action)
                 '&lpar;',
                 '&comma;'
             ) , $skey) , $oattr->id, $oattr->id);
-        } elseif ($oattr->type == "docid") {
+        } elseif ($oattr->type == "docid" || $oattr->type == "account") {
             $aname = $oattr->id;
             $famid = $oattr->format;
             $multi = $oattr->getOption("multiple");

@@ -19,7 +19,7 @@
 include_once ("FDL/popupdocdetail.php");
 include_once ("FDL/popupfamdetail.php");
 
-function viewbarmenu(&$action)
+function viewbarmenu(Action & $action)
 {
     $docid = GetHttpVars("id");
     $dbaccess = $action->GetParam("FREEDOM_DB");

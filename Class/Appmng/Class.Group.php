@@ -56,22 +56,17 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         $query = new QueryDb($this->dbaccess, "Group");
         
         $query->AddQuery("iduser='{$this->iduser}'");
+        $sql = sprintf("SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d", $this->iduser);
+        simpleQuery($this->dbaccess, $sql, $groupIds, true, false);
+        $this->groups = $groupIds;
         
-        $list = $query->Query();
-        if ($query->nb > 0) {
-            while (list($k, $v) = each($list)) {
-                $this->groups[] = $v->idgroup;
-            }
-        } else {
-            return false;
-        }
-        
-        return true;
+        return (count($groupIds) > 0);
     }
     /**
      * suppress a user from the group
      *
      * @param int $uid user identificator to suppress
+     * @param bool $nopost set to to true to not perform postDelete methods
      * @return string error message
      */
     function SuppressUser($uid, $nopost = false)
@@ -114,7 +109,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         if ($uid) $u = new User("", $uid);
         else $u = new User("", $this->iduser);
         $u->updateMemberOf();
-        if ($u->isgroup == "Y") {
+        if ($u->accounttype != "U") {
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
@@ -135,12 +130,13 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     
     function PostInsert()
     {
-        $err = $this->exec_query("delete from sessions where userid=" . $this->iduser);
+        $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         //    $this->FreedomCopyGroup();
         $u = new User("", $this->iduser);
         
         $u->updateMemberOf();
-        if ($u->isgroup == "Y") {
+
+        if ($u->accounttype != "U") {
             // recompute all doc profil
             $this->resetAccountMemberOf();
         } else {
@@ -163,18 +159,25 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     /**
      * recompute all memberof properties of user accounts
      */
-    function resetAccountMemberOf()
+    function resetAccountMemberOf($synchro=false)
     {
         $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         $err = $this->exec_query("delete from permission where computed");
-        
+
+        if ($synchro) {
+            simpleQuery($this->dbaccess, "select * from users order by id", $tusers);
+            $u = new User($this->dbaccess);
+            foreach ($tusers as $tu) {
+                $u->affect($tu);
+                $u->updateMemberOf();
+            }
+        } else {
         $wsh = getWshCmd();
         $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
-        
-        exec($cmd);
-        //       $wsh = "nice -n 1 ".GetParam("CORE_PUBDIR")."/wsh.php";
-        //       $cmd = $wsh . " --api=usercard_iuser >/dev/null 2>&1 &";
-        //       exec($cmd);
+
+
+        bgexec(array($cmd), $result, $err);
+        }
         
         
     }
@@ -254,7 +257,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         }
         return $groupsid;
     }
-    function _initAllGroup()
+    
+    private function _initAllGroup()
     {
         if (!isset($this->allgroups)) {
             /* alone groups : not needed
@@ -267,7 +271,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
             }
             */
             $query = new QueryDb($this->dbaccess, "Group");
-            $list = $query->Query(0, 0, "TABLE", "select * from groups where iduser in (select id from users where isgroup='Y')");
+            $list = $query->Query(0, 0, "TABLE", "select * from groups where iduser in (select id from users where accounttype='G')");
             if ($list) {
                 foreach ($list as $v) {
                     $this->allgroups[] = $v;
@@ -276,4 +280,3 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         }
     }
 }
-?>

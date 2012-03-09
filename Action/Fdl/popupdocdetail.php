@@ -222,7 +222,7 @@ function getpopupdocdetail(&$action, $docid)
         ) ,
         "access" => array(
             "descr" => _("goaccess") ,
-            "url" => "$surl&app=FREEDOM&action=FREEDOM_GACCESS&id=" . $doc->profid,
+            "url" => "$surl&app=FREEDOM&action=FREEDOM_GACCESS&id=" . $doc->id,
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",

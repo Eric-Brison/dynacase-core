@@ -80,6 +80,10 @@ function modcard(Action & $action, &$ndocid, &$info = array())
     // apply specified mask
     if (($vid != "") && ($doc->cvid > 0)) {
         // special controlled view
+        
+        /**
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $cvdoc->Set($doc);
         $err = $cvdoc->control($vid); // control special view
@@ -127,89 +131,97 @@ function modcard(Action & $action, &$ndocid, &$info = array())
         }
     }
     if ($err == "") {
-        if ($docid == 0) {
-            // now can create new doc
-            $err = $doc->Add();
-            if ($err != "") {
-                if ($noredirect) {
-                    //$action->addWarningMsg($err);
-                    return $err;
-                } else {
-                    $action->ExitError($err);
-                }
-            }
-            $doc->disableEditControl(); // in case of dynamic profil from computed attributes
-            $doc->initid = $doc->id; // it is initial doc
-            $ndocid = $doc->id;
-        }
-        
-        $doc->lmodify = 'Y'; // locally modified
-        $ndocid = $doc->id;
-        if (!$quicksave) { // else quick save
-            $doc->refresh();
-            if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
-            $msg = $doc->PostModify();
-            if ($msg) $action->addWarningMsg($msg);
-            // add trace to know when and who modify the document
+        try {
             if ($docid == 0) {
-                //$doc->Addcomment(_("creation"));
-                
-            } else {
-                $olds = $doc->getOldValues();
-                if (is_array($olds)) {
-                    $keys = array();
-                    foreach ($olds as $ka => $va) {
-                        $oa = $doc->getAttribute($ka);
-                        $keys[] = $oa->getLabel();
-                    }
-                    $skeys = implode(", ", $keys);
-                    $doc->Addcomment(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
-                } else {
-                    $doc->Addcomment(_("change") , HISTO_INFO, "MODIFY");
-                }
-            }
-            if ($err == "") {
-                $err.= $doc->Modify();
-            }
-            // if ( $docid == 0 ) $err=$doc-> PostCreated();
-            $doc->unlock(true); // disabled autolock
-            if (($err == "") && ($doc->doctype != 'T')) {
-                // change state if needed
-                $newstate = GetHttpVars("newstate", "");
-                $comment = GetHttpVars("comment", "");
-                
-                $err = "";
-                
-                if (($newstate != "") && ($newstate != "-")) {
-                    
-                    if ($doc->wid > 0) {
-                        if ($newstate != "-") {
-                            $wdoc = new_Doc($dbaccess, $doc->wid);
-                            
-                            $wdoc->Set($doc);
-                            $wdoc->disableEditControl(); // only to pass ask parameters
-                            setPostVars($wdoc, $info); // set for ask values
-                            $wdoc->enableEditControl();
-                            $err = $wdoc->ChangeState($newstate, $comment, $force);
-                        }
-                    }
-                } else {
-                    // test if auto revision
-                    $fdoc = $doc->getFamDoc();
-                    
-                    if ($fdoc->schar == "R") {
-                        $doc->AddRevision(sprintf("%s : %s", _("auto revision") , $comment));
+                // now can create new doc
+                $err = $doc->Add();
+                if ($err != "") {
+                    if ($noredirect) {
+                        //$action->addWarningMsg($err);
+                        return $err;
                     } else {
-                        if ($comment != "") $doc->AddComment($comment);
+                        $action->ExitError($err);
                     }
                 }
+                $doc->disableEditControl(); // in case of dynamic profil from computed attributes
+                $doc->initid = $doc->id; // it is initial doc
                 $ndocid = $doc->id;
             }
-        } else {
-            // just quick save
-            if ($err == "") {
-                $err.= $doc->Modify();
+            
+            $doc->lmodify = 'Y'; // locally modified
+            $ndocid = $doc->id;
+            if (!$quicksave) { // else quick save
+                $doc->refresh();
+                if ($doc->hasNewFiles) $doc->refreshRn(); // hasNewFiles set by insertFile below
+                $msg = $doc->PostModify();
+                if ($msg) $action->addWarningMsg($msg);
+                // add trace to know when and who modify the document
+                if ($docid == 0) {
+                    //$doc->Addcomment(_("creation"));
+                    
+                } else {
+                    $olds = $doc->getOldValues();
+                    if (is_array($olds)) {
+                        $keys = array();
+                        foreach ($olds as $ka => $va) {
+                            $oa = $doc->getAttribute($ka);
+                            $keys[] = $oa->getLabel();
+                        }
+                        $skeys = implode(", ", $keys);
+                        $doc->Addcomment(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
+                    } else {
+                        $doc->Addcomment(_("change") , HISTO_INFO, "MODIFY");
+                    }
+                }
+                if ($err == "") {
+                    $err.= $doc->Modify();
+                }
+                // if ( $docid == 0 ) $err=$doc-> PostCreated();
+                $doc->unlock(true); // disabled autolock
+                if (($err == "") && ($doc->doctype != 'T')) {
+                    // change state if needed
+                    $newstate = GetHttpVars("newstate", "");
+                    $comment = GetHttpVars("comment", "");
+                    
+                    $err = "";
+                    
+                    if (($newstate != "") && ($newstate != "-")) {
+                        
+                        if ($doc->wid > 0) {
+                            if ($newstate != "-") {
+                                /**
+                                 * @var WDoc $wdoc
+                                 */
+                                $wdoc = new_Doc($dbaccess, $doc->wid);
+                                
+                                $wdoc->Set($doc);
+                                $wdoc->disableEditControl(); // only to pass ask parameters
+                                setPostVars($wdoc, $info); // set for ask values
+                                $wdoc->enableEditControl();
+                                $err = $wdoc->ChangeState($newstate, $comment, $force);
+                            }
+                        }
+                    } else {
+                        // test if auto revision
+                        $fdoc = $doc->getFamDoc();
+                        
+                        if ($fdoc->schar == "R") {
+                            $doc->AddRevision(sprintf("%s : %s", _("auto revision") , $comment));
+                        } else {
+                            if ($comment != "") $doc->AddComment($comment);
+                        }
+                    }
+                    $ndocid = $doc->id;
+                }
+            } else {
+                // just quick save
+                if ($err == "") {
+                    $err.= $doc->Modify();
+                }
             }
+        }
+        catch(Exception $e) {
+            $err = $e->getMessage();
         }
     }
     
@@ -310,7 +322,7 @@ function setPostVars(Doc & $doc, &$info = array())
 /**
  * insert file in VAULT from HTTP upload
  */
-function insert_file(Doc &$doc, $attrid, $strict = false)
+function insert_file(Doc & $doc, $attrid, $strict = false)
 {
     
     global $action;
@@ -349,7 +361,7 @@ function insert_file(Doc &$doc, $attrid, $strict = false)
         $tuserfiles[] = $postfiles;
     }
     
-    $rt = array(); // array of file to be returned
+    $rt = $rtold = array(); // array of file to be returned
     if ($doc) $rtold = $doc->_val2array($doc->getOldValue(substr($attrid, 4))); // special in case of file modification by DAV in revised document
     $oa = $doc->getAttribute(substr($attrid, 4));
     $rt = $doc->getTvalue($attrid); // in case of modified only a part of array files
@@ -427,7 +439,7 @@ function insert_file(Doc &$doc, $attrid, $strict = false)
                 
                 if ($err != "") {
                     AddWarningMsg($err);
-                    $doc->AddComment(sprintf(_("file %s : %s"),$userfile['name'], $err) ,HISTO_WARNING);
+                    $doc->AddComment(sprintf(_("file %s : %s") , $userfile['name'], $err) , HISTO_WARNING);
                 } else {
                     if ($oa && $oa->getOption('preventfilechange') == "yes") {
                         if (preg_match(PREGEXPFILE, $userfile["oldvalue"], $reg)) {
@@ -476,7 +488,7 @@ function searchmorerecent($rt, $file)
     return false;
 }
 // -----------------------------------
-function specialmodcard(&$action, $usefor)
+function specialmodcard(Action & $action, $usefor)
 {
     
     global $_POST;
@@ -484,7 +496,9 @@ function specialmodcard(&$action, $usefor)
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $classid = GetHttpVars("classid", 0);
-    
+    /**
+     * @var DocFam $cdoc
+     */
     $cdoc = new_Doc($dbaccess, $classid); // family doc
     $tmod = array();
     
@@ -525,6 +539,7 @@ function specialmodcard(&$action, $usefor)
     
     $cdoc->modify();
     if (count($tmod) > 0) {
+        $s = '';
         if ($usefor == "D") $s = _("modify default values :");
         else if ($usefor == "Q") $s = _("modify parameters :");
         $s.= " ";

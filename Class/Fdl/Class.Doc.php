@@ -2708,9 +2708,35 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $err.= $this->setValue($k, $tnv);
                 }
-                if ($err = "") {
+                if ($err == "") {
                     $err = $this->completeArrayRow($idAttr);
                 }
+            }
+            $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+            return $err;
+        }
+        $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+        return sprintf(_("%s is not an array attribute") , $idAttr);
+    }
+    /**
+     * delete all attributes values of an array
+     *
+     * the attribute must be an array type
+     * @param string $idAttr identificator of array attribute
+     * @return string error message, if no error empty string
+     */
+    final public function deleteArray($idAttr)
+    {
+        $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
+        $this->_setValueCompleteArrayRow = false;
+        
+        $a = $this->getAttribute($idAttr);
+        if ($a->type == "array") {
+            $ta = $this->attributes->getArrayElements($a->id);
+            $err = "";
+            // delete each columns
+            foreach ($ta as $k => $v) {
+                $err.= $this->deleteValue($k);
             }
             $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
             return $err;
@@ -2984,7 +3010,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
             }
-            if ($this->_setValueCompleteArrayRow && $oattr->inArray()) {
+            if ($this->_setValueCompleteArrayRow && $oattr && $oattr->inArray()) {
                 return $this->completeArrayRow($oattr->fieldSet->id);
             }
             return '';

@@ -1,4 +1,12 @@
 <style>
+    table.acl {
+       border:solid 1px [COLOR_B0];
+    }
+    table.acl tbody td {
+       border-style: none none solid none;
+       border-width: 1px ;
+    }
+
     table.acl thead td {
     white-space : nowrap;
     }
@@ -20,7 +28,7 @@
             [IFNOT readonly]
             <TD width="20px">[TEXT:Privilege input]</TD>[ENDIF readonly]
             <TD>[TEXT:Access name]</TD>
-            <TD align="">[TEXT:Access description]</TD>
+            <TD align="">[TEXT:Access explanation]</TD>
 
             <TR>
         </THEAD>
@@ -38,8 +46,8 @@
                     [selectedup] ">
                 </TD>[ENDIF readonly]
 
-                <TD>[aclname]</TD>
-                <TD>[acldesc]</TD>
+                <TD title="[acldesc]">[aclname]</TD>
+                <TD>[aclcause]</TD>
             </tr>
             [ENDBLOCK SELECTACL]
         </tbody>

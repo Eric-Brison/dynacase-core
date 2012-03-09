@@ -259,8 +259,12 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             }
         }
     }
-    
-    $res = call_user_func_array($callfunc, $arg);
+    try {
+        $res = call_user_func_array($callfunc, $arg);
+    }
+    catch(Exception $e) {
+        $res = $e->getMessage();
+    }
     
     if (is_array($res) && (count($res) > 0)) {
         // addslahes for JS array
@@ -301,6 +305,8 @@ function getResPhpFunc(Doc & $doc, NormalAttribute & $oattr, &$rargids, &$tselec
             $tval[$k]["attrv"] = "['" . implode("','", $v) . "']";
             $ki++;
         }
+    } else {
+        $res = BasicAttribute::encodeXml($res, true);
     }
     
     return $res;

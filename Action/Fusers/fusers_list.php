@@ -17,7 +17,7 @@
  */
 
 include_once ("FDL/Lib.Dir.php");
-function fusers_list(&$action)
+function fusers_list(Action & $action)
 {
     
     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/common.js");
@@ -35,10 +35,10 @@ function fusers_list(&$action)
     $user = new User();
     //$ugroup=$user->GetGroupsId();
     $q2 = new queryDb("", "User");
-    $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser  and users.isgroup='Y'");
-    
+    $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser  and users.accounttype='G'");
+    // top group
     $q2 = new queryDb("", "User");
-    $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where isgroup='Y' and id not in (select iduser from groups)");
+    $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where accounttype='G' and id not in (select iduser from groups, users u where groups.idgroup = u.id and u.accounttype='G')");
     
     if ($groups) {
         foreach ($groups as $k => $v) {

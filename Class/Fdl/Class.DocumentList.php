@@ -16,9 +16,18 @@
  */
 class DocumentList implements Iterator
 {
+    /**
+     * @var null|SearchDoc
+     */
     private $search = null;
+    /**
+     * @var null|Doc
+     */
     private $currentDoc = null;
-    /** anonymous function */
+    /**
+     * anonymous function
+     * @var Closure
+     */
     private $hookFunction = null;
     
     private $init = false;
@@ -70,6 +79,9 @@ class DocumentList implements Iterator
         $this->initSearch();
         $this->getCurrentDoc();
     }
+    /**
+     * @return Doc|null
+     */
     public function next()
     {
         $this->getCurrentDoc();
@@ -82,19 +94,29 @@ class DocumentList implements Iterator
             $h = $this->hookFunction;
             return $h($this->currentDoc);
         }
+        return true;
     }
     public function key()
     {
         return $this->currentDoc->id;
     }
+    /**
+     * @return Doc
+     */
     public function current()
     {
         return $this->currentDoc;
     }
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return $this->currentDoc != false;
     }
+    /**
+     * @return null|SearchDoc
+     */
     public function getSearchDocument()
     {
         return $this->search;
@@ -119,6 +141,7 @@ class DocumentList implements Iterator
     /**
      * apply a callback on each document
      * if callback return false, the document is skipped from list
+     * @param Closure $hookfunction
      * @return void
      */
     public function listMap($hookFunction)

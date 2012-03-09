@@ -112,12 +112,14 @@ class DocHtmlFormat
                     break;
 
                 case "doc":
-                    
                     $htmlval = $this->formatDoc($kvalue, $avalue);
                     break;
 
+                case "account":
+                    $htmlval = $this->formatAccount($kvalue, $avalue);
+                    break;
+
                 case "docid":
-                    
                     $htmlval = $this->formatDocid($kvalue, $avalue);
                     break;
 
@@ -774,6 +776,7 @@ class DocHtmlFormat
                             "tdstyle" => $va->getOption("cellbodystyle") ,
                             "color" => $va->getOption("color", "inherit") ,
                             "bgcolor" => $va->getOption("bgcolor", "inherit") ,
+                            "tdclass" => $va->getOption("className", '') ,
                             "align" => $va->getOption("align", "inherit")
                         );
                     }
@@ -811,6 +814,17 @@ class DocHtmlFormat
             }
         }
         return $htmlval;
+    }
+    /**
+     * format Account attribute
+     * @param $kvalue
+     * @param $avalue
+     * @return string HTML value
+     */
+    public function formatAccount($kvalue, $avalue)
+    {
+        if (!$this->oattr->format) $this->oattr->format = "x";
+        return $this->formatDocid($kvalue, $avalue);
     }
     /**
      * format Docid attribute

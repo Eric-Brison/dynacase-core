@@ -34,10 +34,7 @@ class importDocumentDescription
      * @var StructAttribute
      */
     private $structAttr = null;
-    /**
-     * @var SyntaxAttribute
-     */
-    private $syntaxAttr = null;
+
     /**
      * @var array
      */
@@ -100,7 +97,6 @@ class importDocumentDescription
         $this->nbDoc = 0; // number of imported document
         $this->dbaccess = GetParam("FREEDOM_DB");
         $this->structAttr = null;
-        $this->syntaxAttr = null;
         $this->colOrders = array();
         $this->cvsFile = "";
         
@@ -739,9 +735,11 @@ class importDocumentDescription
         $defv = str_replace(array(
             '\n',
             ALTSEPCHAR
+            //,'\\'
         ) , array(
             "\n",
             SEPCHAR
+            //,'\\\\'
         ) , $data[2]);
         $this->doc->setDefValue($attrid, $defv);
         $force = (str_replace(" ", "", trim(strtolower($data[3]))) == "force=yes");

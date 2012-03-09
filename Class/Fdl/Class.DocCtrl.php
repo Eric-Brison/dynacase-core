@@ -613,6 +613,7 @@ class DocCtrl extends DocLDAP
             if ($this->getValue("dpdoc_famid") > 0) {
                 // dynamic profil
                 // recompute associated documents
+                ini_set("max_execution_time", -1);
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();

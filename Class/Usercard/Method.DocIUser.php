@@ -21,6 +21,20 @@
  */
 class _IUSER extends _USER
 {
+    public $wuser;
+    public function setGroups()
+    {
+    }
+    /**
+     * @param bool $real
+     * @return User
+     */
+    public function getWUser($real = false)
+    {
+    }
+    public function getSystemIds(array $accountIds)
+    {
+    }
     /*
      * @end-method-ignore
     */
@@ -32,14 +46,13 @@ class _IUSER extends _USER
     );
     var $defaultview = "FDL:VIEWBODYCARD";
     var $defaultedit = "FDL:EDITBODYCARD";
-    
-    function SpecRefresh()
+    function specRefresh()
     {
         $err = _USER::SpecRefresh();
         
         $this->AddParamRefresh("US_WHATID", "US_LOGIN,US_GROUP");
         $this->AddParamRefresh("US_AUTOMAIL", "US_EXTMAIL");
-
+        
         if ($this->getValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is desactivated");
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
@@ -49,6 +62,9 @@ class _IUSER extends _USER
             if (!$user->isAffected()) return sprintf(_("user #%d does not exist") , $iduser);
         } else {
             if ($this->getValue("us_login") != '-') $err = _("user has not identificator");
+            /**
+             * @var NormalAttribute $oa
+             */
             $oa = $this->getAttribute("us_passwd1");
             if ($oa) $oa->needed = true;
             $oa = $this->getAttribute("us_passwd2");
@@ -135,6 +151,9 @@ class _IUSER extends _USER
     {
         $tgid = $this->getTValue("US_IDGROUP");
         foreach ($tgid as $gid) {
+            /**
+             * @var _IGROUP $gdoc
+             */
             $gdoc = new_Doc($this->dbaccess, $gid);
             if ($gdoc->isAlive()) {
                 $gdoc->insertGroups();
@@ -144,7 +163,7 @@ class _IUSER extends _USER
     /**
      * recompute intranet values from USER database
      */
-    function RefreshDocUser()
+    function refreshDocUser()
     {
         
         $err = "";
@@ -164,12 +183,15 @@ class _IUSER extends _USER
                 $this->SetValue("US_PASSDELAY", $wuser->passdelay);
                 $this->SetValue("US_EXPIRES", $wuser->expires);
                 $this->SetValue("US_DAYDELAY", $wuser->passdelay / 3600 / 24);
-
+                
+                $rolesIds = $wuser->getRoles(false);
+                $this->SetValue("us_roles", $rolesIds);
+                
                 $mail = $wuser->getMail();
                 if (!$mail) $this->DeleteValue("US_MAIL");
                 else $this->SetValue("US_MAIL", $mail);
                 if ($wuser->passdelay <> 0) {
-                    $this->SetValue("US_EXPIRESD", strftime("%d/%m/%Y", $wuser->expires));
+                    $this->SetValue("US_EXPIRESD", strftime("%Y-%m-%d", $wuser->expires));
                     $this->SetValue("US_EXPIREST", strftime("%H:%M", $wuser->expires));
                 } else {
                     $this->SetValue("US_EXPIRESD", " ");
@@ -179,18 +201,17 @@ class _IUSER extends _USER
                 $this->SetValue("US_MEID", $this->id);
                 // search group of the user
                 $g = new Group("", $wid);
-                
+                $tgid = array();
                 if (count($g->groups) > 0) {
+                    $gt = new User($this->dbaccess);
                     foreach ($g->groups as $gid) {
-                        $gt = new User("", $gid);
-                        $tgid[$gid] = $gt->fid;
-                        $tglogin[$gid] = $this->getTitle($gt->fid);
+                        $gt->select($gid);
+                        $tgid[] = $gt->fid;
                     }
-                    $this->SetValue("US_GROUP", $tglogin);
-                    $this->SetValue("US_IDGROUP", $tgid);
+                    $this->deleteArray("us_groups");
+                    $this->SetValue("us_idgroup", $tgid);
                 } else {
-                    $this->SetValue("US_GROUP", " ");
-                    $this->SetValue("US_IDGROUP", " ");
+                    $this->deleteArray("us_groups");
                 }
                 $err = $this->modify();
             } else {
@@ -206,7 +227,11 @@ class _IUSER extends _USER
     function setToDefaultGroup()
     {
         $grpid = $this->getParamValue("us_defaultgroup");
+        $err = '';
         if ($grpid) {
+            /**
+             * @var _IGROUP $grp
+             */
             $grp = new_doc($this->dbaccess, $grpid);
             if ($grp->isAlive()) {
                 $err = $grp->addFile($this->initid);
@@ -230,29 +255,38 @@ class _IUSER extends _USER
         return $err;
     }
     /**
+     * update/synchro system user
+     */
+    public function postModify()
+    {
+        $err = $this->synchronizeSystemUser();
+        if (!$err) $this->refreshRoles();
+    }
+    /**
      * Modify IUSER via Freedom
      */
-    function PostModify()
+    function synchronizeSystemUser()
     {
         $err = '';
-        $uid = $this->GetValue("US_WHATID");
-        $lname = $this->GetValue("US_LNAME");
-        $fname = $this->GetValue("US_FNAME");
-        $pwd1 = $this->GetValue("US_PASSWD1");
-        $pwd2 = $this->GetValue("US_PASSWD2");
-        $pwd = $this->GetValue("US_PASSWD");
-        $expires = $this->GetValue("US_EXPIRES");
-        $daydelay = $this->GetValue("US_DAYDELAY");
+        $uid = $this->getValue("us_whatid");
+        $lname = $this->getValue("us_lname");
+        $fname = $this->getValue("us_fname");
+        $pwd1 = $this->getValue("us_passwd1");
+        $pwd2 = $this->getValue("us_passwd2");
+        $pwd = $this->getValue("us_passwd");
+        $expires = $this->getValue("us_expires");
+        $daydelay = $this->getValue("us_daydelay");
         if ($daydelay == - 1) $passdelay = $daydelay;
         else $passdelay = intval($daydelay) * 3600 * 24;
-        $status = $this->GetValue("US_STATUS");
-        $login = $this->GetValue("US_LOGIN");
-        $extmail = $this->GetValue("US_EXTMAIL", $this->getValue("us_homemail", " "));
+        $status = $this->getValue("us_status");
+        $login = $this->getValue("us_login");
+        $allRoles = $this->getAValues("us_t_roles");
+        $extmail = $this->getValue("us_extmail", $this->getValue("us_homemail", " "));
         
         if ($login != "-") {
             // compute expire for epoch
-            $expiresd = $this->GetValue("US_EXPIRESD");
-            $expirest = $this->GetValue("US_EXPIREST", "00:00");
+            $expiresd = $this->getValue("us_expiresd");
+            $expirest = $this->getValue("us_expirest", "00:00");
             //convert date
             $expdate = $expiresd . " " . $expirest . ":00";
             $expires = 0;
@@ -272,7 +306,14 @@ class _IUSER extends _USER
                 $this->wuser = & $user;
                 $newuser = true;
             }
-            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail);
+            // get direct system role ids
+            $roles = array();
+            foreach ($allRoles as $arole) {
+                if ($arole["us_rolesorigin"] != "group") $roles[] = $arole["us_roles"];
+            }
+            $roleIds = $this->getSystemIds($roles);
+            // perform update system User table
+            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds);
             if ($err == "") {
                 if ($user) {
                     $this->setValue("US_WHATID", $user->id);
@@ -328,7 +369,60 @@ class _IUSER extends _USER
         }
     }
     
-    function ConstraintPassword($pwd1, $pwd2, $login)
+    public function preconsultation()
+    {
+        $this->refreshRoles();
+    }
+    public function preEdition()
+    {
+        $allRoles = $this->getAValues("us_t_roles");
+        $this->deleteArray("us_t_roles");
+        // get direct system role ids
+        $roles = array();
+        foreach ($allRoles as $arole) {
+            if ($arole["us_rolesorigin"] != "group") $roles[] = $arole["us_roles"];
+        }
+        $this->setValue("us_roles", $roles);
+    }
+    /**
+     * recompute role attributes from system role
+     */
+    public function refreshRoles()
+    {
+        $u = $this->getWUser();
+        $directRoleIds = $u->getRoles();
+        $allParents = $u->getUserParents();
+        $allRoles = $allGroup = array();
+        foreach ($allParents as $aParent) {
+            if ($aParent["accounttype"] == 'R') $allRoles[] = $aParent;
+            else $allGroup[] = $aParent;
+        }
+        
+        $this->deleteArray("us_t_roles");
+        foreach ($allRoles as $role) {
+            if (in_array($role["id"], $directRoleIds)) {
+                $group = '';
+                $status = 'internal';
+            } else {
+                $group = '';
+                $rid = $role["id"];
+                $tgroup = array();
+                foreach ($allGroup as $aGroup) {
+                    if (preg_match("/$rid/", $aGroup["memberof"])) {
+                        $tgroup[] = $aGroup["fid"];
+                    }
+                }
+                if ($tgroup) $group = implode('<BR>', $tgroup);
+                $status = 'group';
+            }
+            $this->addArrayRow("us_t_roles", array(
+                "us_roles" => $role["fid"],
+                "us_rolesorigin" => $status,
+                "us_rolegorigin" => $group
+            ));
+        }
+    }
+    function constraintPassword($pwd1, $pwd2, $login)
     {
         $sug = array();
         $err = "";
@@ -345,8 +439,9 @@ class _IUSER extends _USER
         );
     }
     
-    function ConstraintExpires($expiresd, $expirest, $daydelay)
+    function constraintExpires($expiresd, $expirest, $daydelay)
     {
+        $err = '';
         $sug = array();
         if (($expiresd <> "") && ($daydelay == 0)) {
             $err = _("Expiration delay must not be 0 to keep expiration date");
@@ -367,12 +462,11 @@ class _IUSER extends _USER
         $this->attributes->attr['us_tab_system']->visibility = 'R';
         $this->attributes->attr['us_fr_userchange']->visibility = 'R';
         $this->ApplyMask();
-
-            $this->attributes->attr['us_extmail']->mvisibility = 'W';
-            $this->attributes->attr['us_extmail']->fieldSet = $this->attributes->attr['us_fr_coord'];
-            $this->attributes->attr['us_extmail']->ordered = $this->attributes->attr['us_pphone']->ordered - 1;
-            uasort($this->attributes->attr, "tordered");
-
+        
+        $this->attributes->attr['us_extmail']->mvisibility = 'W';
+        $this->attributes->attr['us_extmail']->fieldSet = $this->attributes->attr['us_fr_coord'];
+        $this->attributes->attr['us_extmail']->ordered = $this->attributes->attr['us_pphone']->ordered - 1;
+        uasort($this->attributes->attr, "tordered");
         
         $this->editbodycard($target, $ulink, $abstract);
     }
@@ -610,7 +704,7 @@ class _IUSER extends _USER
      */
     function increaseLoginFailure()
     {
-        if (!$this->canExecute(FUSERS, FUSERS_IUSER)) return "";
+        if (!$this->canExecute("FUSERS", "FUSERS_IUSER")) return "";
         if ($this->getValue("us_whatid") == 1) return ""; // it makes non sense for admin
         $this->disableEditControl();
         $lf = $this->getValue("us_loginfailure", 0) + 1;
@@ -657,7 +751,7 @@ class _IUSER extends _USER
     }
     function activateAccount()
     {
-        if (!$this->canExecute(FUSERS, FUSERS_IUSER)) return "";
+        if (!$this->canExecute("FUSERS", "FUSERS_IUSER")) return "";
         if ($this->getValue("us_whatid") == 1) return "";
         $this->disableEditControl();
         $err = $this->SetValue("us_status", 'A');
@@ -676,7 +770,7 @@ class _IUSER extends _USER
     }
     function desactivateAccount()
     {
-        if (!$this->canExecute(FUSERS, FUSERS_IUSER)) return "";
+        if (!$this->canExecute("FUSERS", "FUSERS_IUSER")) return "";
         if ($this->getValue("us_whatid") == 1) return "";
         $this->disableEditControl();
         $err = $this->SetValue("us_status", 'D');
@@ -691,7 +785,7 @@ class _IUSER extends _USER
     function accountHasExpired()
     {
         if ($this->getValue("us_whatid") == 1) return false;
-        $expd = $this->GetValue("us_accexpiredate");
+        $expd = $this->getValue("us_accexpiredate");
         //convert date
         $expires = 0;
         if ($expd != "") {

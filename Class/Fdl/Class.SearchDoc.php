@@ -128,7 +128,7 @@ class SearchDoc
     {
         if ($dbaccess == "") $dbaccess = getDbAccess();
         $this->dbaccess = $dbaccess;
-        $this->fromid = $fromid;
+        $this->fromid = trim($fromid);
         $this->orderby = 'title';
         $this->userid = getUserId();
     }

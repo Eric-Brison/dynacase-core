@@ -27,10 +27,20 @@ function freedom_gaccess(Action & $action)
     // ---------------------
     // Get all the params
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $docid = GetHttpVars("id");
-    $gid = GetHttpVars("gid"); // view user access for the gid group (view all groups if null)
-    $green = (GetHttpVars("allgreen") == "Y"); // view only up or un acl
-    //
+    $usage = new ActionUsage($action);
+    $usage->setText("view or modify document accessibilities");
+    $docid = $usage->addNeeded("id", "document identificator to profil");
+    $gid = $usage->addOption("gid", "group identificator, view user access for this group");
+    $green = ($usage->addOption("allgreen", "view only up acl", array(
+        "Y",
+        "N"
+    ) , "N") == "Y");
+    $viewgroup = ($usage->addOption("group", "view group", array(
+        "Y",
+        "N"
+    ) , "N") == "Y");
+    $limit = $usage->addOption("memberLimit", "when gid option is set, limit members to display", array() , 100);
+    $usage->verify();
     // edition of group accessibilities
     // ---------------------
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
@@ -61,74 +71,64 @@ function freedom_gaccess(Action & $action)
     
     $action->lay->SetBlockData("DACLS", $hacl);
     $action->lay->Set("title", $doc->title);
+    $action->lay->Set("hasgid", ($gid > 0));
     $action->lay->Set("stitle", str_replace(array(
         "[",
         "]"
     ) , "", $doc->title));
     $tg = array(); // users or group list
     if ($green) {
-        $ouser = new User("", $gid);
-        $tusers = $ouser->GetUserAndGroupList("TABLE");
         
-        $q = new QueryDb($dbaccess, "DocPerm");
-        $q->AddQuery("docid=" . $doc->id);
-        $q->AddQuery("upacl != 0");
-        $l = $q->Query(0, 0, "TABLE");
+        $sql = sprintf("SELECT users.* from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0", $doc->profid);
+        simpleQuery($dbaccess, $sql, $tusers);
         
-        $lu = array();
-        if ($q->nb > 0) {
-            foreach ($l as $lp) {
-                $lu[] = $lp["userid"];
-            }
-            if ($tusers) {
-                foreach ($tusers as $k => $v) {
-                    if (in_array($v["id"], $lu)) {
-                        $title[$v["id"]] = $v["firstname"] . " " . $v["lastname"];
-                        $tg[] = array(
-                            "level" => 10,
-                            "gid" => $v["id"],
-                            "displaydyn" => "none",
-                            "isdyngroup" => false,
-                            "displayuser" => ($v["isgroup"] != "Y") ? "inline" : "none",
-                            "displaygroup" => ($v["isgroup"] == "Y") ? "inline" : "none"
-                        );
-                    }
-                }
-            }
+        foreach ($tusers as $k => $v) {
+            
+            $title[$v["id"]] = $v["firstname"] . " " . $v["lastname"];
+            $tg[] = array(
+                "level" => 10,
+                "gid" => $v["id"],
+                "isdyn" => false,
+                "accountType" => $v["accounttype"],
+                "displaygroup" => ($v["accounttype"] != "U") ? "inline" : "none"
+            );
         }
     } else if ($gid == 0) {
         //-----------------------
         // contruct grouplist
         $ouser = new User();
-        $tiduser = $ouser->GetGroupList("TABLE");
+        if ($viewgroup) {
+            $tidAccount = array_merge($ouser->GetGroupList("TABLE") , $ouser->GetRoleList("TABLE"));
+        } else {
+            $tidAccount = $ouser->GetRoleList("TABLE");
+        }
         $hg = array();
         $userids = array();
         $sgroup = array(); // all group which are in a group i.e. not the root group
-        foreach ($tiduser as $k => $v) {
+        foreach ($tidAccount as $k => $v) {
             $g = new Group("", $v["id"]);
             
             $title[$v["id"]] = $v["firstname"] . " " . $v["lastname"];
             foreach ($g->groups as $kg => $gid) {
                 
-                $hg[$gid][$v["id"]] = $v["id"];
+                $hg[$gid][$v["id"]] = $v;
                 $sgroup[$v["id"]] = $v["id"]; // to define root group
                 
             }
         }
         //    foreach($hg as $k=>$v) {
-        foreach ($tiduser as $k => $v) {
+        foreach ($tidAccount as $k => $v) {
             if (!in_array($v["id"], $sgroup)) {
                 // it's a root group
-                $tg = array_merge($tg, getTableG($hg, $v["id"]));
+                $tg = array_merge($tg, getTableG($hg, $v["id"], $v["accounttype"]));
             }
         }
         if ($action->user->id > 1) {
             $tg[] = array(
                 "level" => 0,
                 "gid" => $action->user->id,
-                "displayuser" => "inline",
-                "displaydyn" => "none",
-                "isdyngroup" => false,
+                "isdyn" => false,
+                "accountType" => "U",
                 "displaygroup" => "none"
             );
             $title[$action->user->id] = $action->user->firstname . " " . $action->user->lastname;
@@ -137,14 +137,18 @@ function freedom_gaccess(Action & $action)
         //-----------------------
         // contruct user list
         $ouser = new User("", $gid);
-        $tusers = $ouser->getGroupUserList("TABLE");
+        if ($ouser->accounttype == 'G') {
+            $tusers = $ouser->getGroupUserList("TABLE", false, $limit);
+        } else {
+            $tusers = $ouser->getAllMembers($limit);
+        }
+        if (count($tusers) == $limit) $action->AddWarningMsg(sprintf(_("limit reached, only %d members has been displayed") , $limit));
         
         $tg[] = array(
             "level" => 0,
             "gid" => $gid,
-            "displayuser" => "none",
-            "displaydyn" => "none",
-            "isdyngroup" => false,
+            "isdyn" => false,
+            "accountType" => $ouser->accounttype,
             "displaygroup" => "inline"
         );
         $title[$gid] = $ouser->firstname . " " . $ouser->lastname;
@@ -159,9 +163,8 @@ function freedom_gaccess(Action & $action)
                 $tg[] = array(
                     "level" => 10,
                     "gid" => $v["id"],
-                    "displaydyn" => "none",
-                    "isdyngroup" => false,
-                    "displayuser" => "inline",
+                    "isdyn" => false,
+                    "accountType" => $v["accounttype"],
                     "displaygroup" => "none"
                 );
             }
@@ -182,9 +185,8 @@ function freedom_gaccess(Action & $action)
             $tg[] = array(
                 "level" => 0,
                 "gid" => $vg->num,
-                "isdyngroup" => $v->inArray() ,
-                "displaydyn" => "inline",
-                "displayuser" => "none",
+                "isdyn" => true,
+                "accountType" => $v->inArray() ? "M" : "D",
                 "displaygroup" => "none"
             );
             $title[$vg->num] = $v->getLabel();
@@ -192,7 +194,7 @@ function freedom_gaccess(Action & $action)
     }
     // add  group title
     foreach ($tg as $k => $v) {
-        $tacl[$v["gid"]] = getTacl($dbaccess, $doc->dacls, $acls, $docid, $v["gid"]);
+        $tacl[$v["gid"]] = getTacl($dbaccess, $doc->dacls, $acls, $doc->profid, $v["gid"]);
         $tg[$k]["gname"] = $title[$v["gid"]];
         $tg[$k]["ACLS"] = "ACL$k";
         $action->lay->setBlockData("ACL$k", $tacl[$v["gid"]]);
@@ -201,10 +203,12 @@ function freedom_gaccess(Action & $action)
     $action->lay->setBlockData("GROUPS", $tg);
     $action->lay->set("docid", $docid);
     
-    $action->lay->set("allgreen", getHttpVars("allgreen", "N"));
+    $action->lay->set("allgreen", $action->getArgument("allgreen", "N"));
+    $action->lay->set("viewgroup", $viewgroup);
+    $action->lay->set("group", $action->getArgument("group", "N"));
     $action->lay->set("isgreen", $green);
     $err = $doc->control("modifyacl");
-    if ($err == "" && (!$doc->dprofid)) {
+    if ($err == "" && (!$doc->dprofid) && ($doc->profid == $doc->id)) {
         $action->lay->set("MODIFY", true);
         $action->lay->set("dmodify", "");
     } else {
@@ -217,26 +221,32 @@ function freedom_gaccess(Action & $action)
         $action->lay->Set("dynamic", true);
         $action->lay->Set("dprofid", $doc->dprofid);
         $action->lay->Set("toDynProfil", $doc->getHtmlTitle($doc->dprofid));
+        $action->lay->Set("ComputedFrom", _("Computed from"));
+    } elseif ($doc->profid != $doc->id) {
+        
+        $action->lay->Set("dynamic", true);
+        $action->lay->Set("dprofid", $doc->profid);
+        $action->lay->Set("toDynProfil", $doc->getHtmlTitle($doc->profid));
+        $action->lay->Set("ComputedFrom", _("Linked from"));
     } else {
         $action->lay->Set("dynamic", false);
     }
 }
 //--------------------------------------------
-function getTableG($hg, $id, $level = 0)
+function getTableG($hg, $id, $type, $level = 0)
 {
     //--------------------------------------------
     $r[] = array(
         "gid" => $id,
         "level" => $level * 10,
-        "displayuser" => "none",
-        "displaydyn" => "none",
-        "isdyngroup" => false,
+        "isdyn" => false,
+        "accountType" => $type,
         "displaygroup" => "inline"
     );
+    
     if (isset($hg[$id])) {
-        reset($hg[$id]);
-        while (list($kg, $gid) = each($hg[$id])) {
-            $r = array_merge($r, getTableG($hg, $gid, $level + 1));
+        foreach ($hg[$id] as $kg => $account) {
+            $r = array_merge($r, getTableG($hg, $kg, $account["accounttype"], $level + 1));
         }
     }
     
@@ -254,7 +264,8 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid)
     foreach ($acls as $k => $v) {
         $tableacl[$k]["aclname"] = $v;
         $pos = $dacls[$v]["pos"];
-        
+        $tableacl[$k]["selected"] = "";
+        $tableacl[$k]["bimg"] = "1x1.gif";
         $tableacl[$k]["oddoreven"] = ($k % 2) ? "even" : "odd";
         $tableacl[$k]["aclid"] = $pos;
         $tableacl[$k]["iacl"] = $k; // index for table in xml
@@ -262,7 +273,6 @@ function getTacl($dbaccess, $dacls, $acls, $docid, $gid)
             $tableacl[$k]["selected"] = "checked";
             $tableacl[$k]["bimg"] = "bgreen.png";
         } else {
-            $tableacl[$k]["selected"] = "";
             if ($perm->ControlU($pos)) {
                 $tableacl[$k]["bimg"] = "bgrey.png";
             }

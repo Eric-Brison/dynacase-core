@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-09 14:46+0100\n"
-"PO-Revision-Date: 2012-03-09 15:11+0100\n"
+"POT-Creation-Date: 2012-03-16 12:05+0100\n"
+"PO-Revision-Date: 2012-03-16 12:07+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -35,9 +35,6 @@ msgstr "Pas de privilège pour modifier les droits d'accès à la famille"
 
 msgid " Please, see your manager"
 msgstr "Contactez votre administrateur"
-
-msgid " Profil for"
-msgstr "Profil pour"
 
 msgid " any familly"
 msgstr "toute famille"
@@ -493,8 +490,8 @@ msgstr ""
 "Accès refusé\n"
 "ACL %s nécessaire pour l'action %s [%s]"
 
-msgid "Access description"
-msgstr "Description"
+msgid "Access explanation"
+msgstr "Explications"
 
 msgid "Access for exchange documents"
 msgstr "Accès aux échanges de documents"
@@ -513,9 +510,6 @@ msgstr "Accès aux fonctions de raffraichissement des utilisateurs"
 
 msgid "Accord"
 msgstr "Accord"
-
-msgid "Account"
-msgstr "Compte"
 
 #, c-format
 msgid "Acl [%s] not available for App %s"
@@ -1372,6 +1366,10 @@ msgstr "Dir::insertFolder l'identificateur [%s] doit être numérique"
 msgid "Direct Import"
 msgstr "Import direct"
 
+#, c-format
+msgid "Direct set through document itself \"%s\""
+msgstr "Pose directe par le document lui-même \"%s\""
+
 msgid "Directory"
 msgstr "Répertoire"
 
@@ -1844,6 +1842,9 @@ msgstr "Dossier vidé"
 msgid "For %s of %s"
 msgstr "Pour %s de %s"
 
+msgid "For Account"
+msgstr "pour le compte"
+
 msgid "For export functions"
 msgstr "Pour les fonctions d'export"
 
@@ -1957,6 +1958,14 @@ msgstr "Aller aux archives"
 msgid "Group"
 msgstr "Groupe"
 
+#, c-format
+msgid "Group \"%s\""
+msgstr "le groupe \"%s\""
+
+#, c-format
+msgid "Group '%s' not exists"
+msgstr "Le groupe '%s' n'existe pas"
+
 msgid "Group Access"
 msgstr "Accès des groupes"
 
@@ -1974,6 +1983,9 @@ msgstr "Nom de l'aide"
 
 msgid "Helps"
 msgstr "Aides"
+
+msgid "Hide group access"
+msgstr "Masquer les groupes"
 
 msgid "Histo:Comment"
 msgstr "Message"
@@ -2214,6 +2226,9 @@ msgstr ""
 
 msgid "Link"
 msgstr "Lien"
+
+msgid "Linked from"
+msgstr "Lié par"
 
 msgid "List view"
 msgstr "Vue en liste"
@@ -2648,7 +2663,7 @@ msgid "Print"
 msgstr "Imprimer"
 
 msgid "Privilege input"
-msgstr "Privilège utilisateur"
+msgstr "Droits"
 
 msgid "Privilege view"
 msgstr "Statut"
@@ -2839,6 +2854,14 @@ msgstr "Retour au document de référence"
 msgid "Revise"
 msgstr "Réviser"
 
+#, c-format
+msgid "Role \"%s\""
+msgstr "le rôle \"%s\""
+
+#, c-format
+msgid "Role '%s' not exists"
+msgstr "Le rôle '%s' n'existe pas"
+
 msgid "Root folder"
 msgstr "Dossier racine"
 
@@ -2942,8 +2965,14 @@ msgstr "Sécurité"
 msgid "See below information about conversion"
 msgstr ""
 
+msgid "See detail for "
+msgstr "Voir le détail pour"
+
 msgid "See latest information about it."
-msgstr ""
+msgstr "Voir les dernières informations"
+
+msgid "See members detail"
+msgstr "Voir les membres"
 
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
 msgstr ""
@@ -2994,8 +3023,33 @@ msgstr "facility (syslog) de journalisation des authentifications"
 msgid "Set autonome profil"
 msgstr "Profil dédié"
 
+#, c-format
+msgid "Set by \"%s\" attribute (%s) from template profil \"%s\""
+msgstr ""
+"Obtenu par l'attribut \"%s\" (\"%s\") depuis le profil dynamique \"%s\""
+
+#, c-format
+msgid "Set by \"%s\" attribute from template profil \"%s\""
+msgstr "Obtenu par l'attribut \"%s\" depuis le profil dynamique \"%s\""
+
+#, c-format
+msgid "Set by %s through \"%s\" linked profil"
+msgstr "Obtenu par %s depuis le profil lié \"%s\""
+
+#, c-format
+msgid "Set by %s through document itself \"%s\""
+msgstr "Obtenu par %s depuis le document même \"%s\""
+
+#, c-format
+msgid "Set by %s through template profil \"%s\""
+msgstr "Obtenu par \"%s\" depuis le profil dynamique \"%s\""
+
 msgid "Set default values"
 msgstr "Valeurs par défaut"
+
+#, c-format
+msgid "Set from template profil \"%s\""
+msgstr "Obtenu par le modèle de template \"%s\""
 
 msgid "Set new entry"
 msgstr "Saisissez une nouvelle entrée"
@@ -3005,6 +3059,10 @@ msgstr "Rendre privé"
 
 msgid "Set public"
 msgstr "Rendre publique"
+
+#, c-format
+msgid "Set through \"%s\" linked profil"
+msgstr "Obtenu depuis le profil lié \"%s\""
 
 #, c-format
 msgid "SetBlock:error [%s]"
@@ -3036,6 +3094,10 @@ msgid ""
 msgstr ""
 "Certaines contraintes d'attributs ne sont pas respectées\n"
 "Vous devez corriger ces valeurs avant de sauver le document"
+
+#, c-format
+msgid "Something wrong. No acl found in %s (user #%d)"
+msgstr ""
 
 msgid "Sorry but this section key already exists !"
 msgstr "Désolé mais cette clé de rubrique existe déjà !"
@@ -3449,6 +3511,9 @@ msgstr "Voir le contenu du dossier"
 msgid "View folder properties"
 msgstr "Voir les propriétés du dossier"
 
+msgid "View group access"
+msgstr "Voir les groupes"
+
 msgid "View headers"
 msgstr "Voir entête"
 
@@ -3473,8 +3538,8 @@ msgstr "voir les documents suivants..."
 msgid "View notice messages"
 msgstr "Voir tous les messages"
 
-msgid "View only access set. Green or Red flag"
-msgstr "Voir que les accès définis. Les cercles verts ou rouges."
+msgid "View only access set. Green flag"
+msgstr ""
 
 msgid "View postit"
 msgstr "Voir le post-it"
@@ -6177,6 +6242,10 @@ msgstr "dernier texte tapé pour la recherche"
 msgid "level"
 msgstr "niveau"
 
+#, c-format
+msgid "limit reached, only %d members has been displayed"
+msgstr "Limite atteinte, seuls %d utilisateurs sont affichés"
+
 msgid "line"
 msgstr "ligne"
 
@@ -6629,6 +6698,10 @@ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
 
 msgid "no document family"
 msgstr "Aucune famille de document"
+
+#, c-format
+msgid "no document match '%s'"
+msgstr ""
 
 msgid "no document reference"
 msgstr "pas de référence au document"
@@ -7456,6 +7529,10 @@ msgstr "révision du document"
 msgid "revival document"
 msgstr "restauration du document"
 
+#, c-format
+msgid "role %s id is already used"
+msgstr ""
+
 msgid "root"
 msgstr "racine"
 
@@ -8223,6 +8300,10 @@ msgid "unknow set for attribute %s %s"
 msgstr "Attribut structurant inconnu %s %s"
 
 #, c-format
+msgid "unknow user #%s"
+msgstr ""
+
+#, c-format
 msgid "unknow virtual user identificateur %s"
 msgstr "identificateur [%s] inconnu comme utilisateur virtuel"
 
@@ -8801,6 +8882,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid " 0 means no delay"
 #~ msgstr " 0 signifie pas de limite"
 
+#~ msgid " Profil for"
+#~ msgstr "Profil pour"
+
 #~ msgid " Profil for "
 #~ msgstr "Profil pour"
 
@@ -8809,6 +8893,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Access To All Users in my domain"
 #~ msgstr "Acces aux utilisateurs de mon domaine"
+
+#~ msgid "Access description"
+#~ msgstr "Description"
+
+#~ msgid "Account"
+#~ msgstr "Compte"
 
 #~ msgid "Authentification failure before account desactivation"
 #~ msgstr ""
@@ -8838,6 +8928,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
+
+#~ msgid "View only access set. Green or Red flag"
+#~ msgstr "Voir que les accès définis. Les cercles verts ou rouges."
 
 #~ msgid "View profil definition"
 #~ msgstr "Voir la définition du profil"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-09 14:46+0100\n"
+"POT-Creation-Date: 2012-03-16 12:05+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -35,9 +35,6 @@ msgstr ""
 
 msgid " Please, see your manager"
 msgstr "Please, see your manager"
-
-msgid " Profil for"
-msgstr ""
 
 #, fuzzy
 msgid " any familly"
@@ -514,7 +511,7 @@ msgid ""
 "Need ACL %s for action %s [%s]"
 msgstr ""
 
-msgid "Access description"
+msgid "Access explanation"
 msgstr ""
 
 msgid "Access for exchange documents"
@@ -534,9 +531,6 @@ msgid "Access to user refresh function"
 msgstr ""
 
 msgid "Accord"
-msgstr ""
-
-msgid "Account"
 msgstr ""
 
 #, c-format
@@ -1455,6 +1449,10 @@ msgstr ""
 msgid "Direct Import"
 msgstr "Import"
 
+#, c-format
+msgid "Direct set through document itself \"%s\""
+msgstr ""
+
 msgid "Directory"
 msgstr ""
 
@@ -1936,6 +1934,9 @@ msgstr "Delete"
 msgid "For %s of %s"
 msgstr ""
 
+msgid "For Account"
+msgstr ""
+
 msgid "For export functions"
 msgstr ""
 
@@ -2052,6 +2053,14 @@ msgstr "Import"
 msgid "Group"
 msgstr ""
 
+#, c-format
+msgid "Group \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Group '%s' not exists"
+msgstr ""
+
 msgid "Group Access"
 msgstr ""
 
@@ -2068,6 +2077,9 @@ msgid "Help name"
 msgstr ""
 
 msgid "Helps"
+msgstr ""
+
+msgid "Hide group access"
 msgstr ""
 
 msgid "Histo:Comment"
@@ -2325,6 +2337,9 @@ msgstr ""
 #, fuzzy
 msgid "Link"
 msgstr "Delete"
+
+msgid "Linked from"
+msgstr ""
 
 msgid "List view"
 msgstr ""
@@ -2994,6 +3009,14 @@ msgstr ""
 msgid "Revise"
 msgstr "Created by"
 
+#, c-format
+msgid "Role \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Role '%s' not exists"
+msgstr ""
+
 #, fuzzy
 msgid "Root folder"
 msgstr "Modify"
@@ -3116,7 +3139,13 @@ msgstr ""
 msgid "See below information about conversion"
 msgstr ""
 
+msgid "See detail for "
+msgstr ""
+
 msgid "See latest information about it."
+msgstr ""
+
+msgid "See members detail"
 msgstr ""
 
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
@@ -3167,9 +3196,33 @@ msgstr "Session authentication log facility"
 msgid "Set autonome profil"
 msgstr ""
 
+#, c-format
+msgid "Set by \"%s\" attribute (%s) from template profil \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Set by \"%s\" attribute from template profil \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Set by %s through \"%s\" linked profil"
+msgstr ""
+
+#, c-format
+msgid "Set by %s through document itself \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Set by %s through template profil \"%s\""
+msgstr ""
+
 #, fuzzy
 msgid "Set default values"
 msgstr "Delete"
+
+#, c-format
+msgid "Set from template profil \"%s\""
+msgstr ""
 
 #, fuzzy
 msgid "Set new entry"
@@ -3180,6 +3233,10 @@ msgid "Set private"
 msgstr "Create"
 
 msgid "Set public"
+msgstr ""
+
+#, c-format
+msgid "Set through \"%s\" linked profil"
 msgstr ""
 
 #, c-format
@@ -3208,6 +3265,10 @@ msgstr ""
 msgid ""
 "Some constraint attribute are not respected.\n"
 "You must correct these values before save document."
+msgstr ""
+
+#, c-format
+msgid "Something wrong. No acl found in %s (user #%d)"
 msgstr ""
 
 msgid "Sorry but this section key already exists !"
@@ -3626,6 +3687,9 @@ msgstr "Edit"
 msgid "View folder properties"
 msgstr "Import"
 
+msgid "View group access"
+msgstr ""
+
 msgid "View headers"
 msgstr ""
 
@@ -3652,7 +3716,7 @@ msgstr ""
 msgid "View notice messages"
 msgstr ""
 
-msgid "View only access set. Green or Red flag"
+msgid "View only access set. Green flag"
 msgstr ""
 
 #, fuzzy
@@ -6558,6 +6622,10 @@ msgstr ""
 msgid "level"
 msgstr ""
 
+#, c-format
+msgid "limit reached, only %d members has been displayed"
+msgstr ""
+
 #, fuzzy
 msgid "line"
 msgstr "Delete"
@@ -7055,6 +7123,10 @@ msgstr ""
 #, fuzzy
 msgid "no document family"
 msgstr "Start search"
+
+#, c-format
+msgid "no document match '%s'"
+msgstr ""
 
 #, fuzzy
 msgid "no document reference"
@@ -7946,6 +8018,10 @@ msgstr ""
 msgid "revival document"
 msgstr "Organisation"
 
+#, c-format
+msgid "role %s id is already used"
+msgstr ""
+
 msgid "root"
 msgstr "Root"
 
@@ -8748,6 +8824,10 @@ msgstr ""
 
 #, c-format
 msgid "unknow set for attribute %s %s"
+msgstr ""
+
+#, c-format
+msgid "unknow user #%s"
 msgstr ""
 
 #, c-format

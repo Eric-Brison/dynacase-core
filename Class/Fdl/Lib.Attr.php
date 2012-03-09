@@ -225,6 +225,13 @@ function AttrToPhp($dbaccess, $tdoc)
                             $v->phpconstraint = sprintf("::isFloat(%s)", $v->id);
                         }
                     }
+                    if ($atype == "account") {
+                        if (!$v->phpfile) {
+                            $v->phpfile = 'fdl.php';
+                            
+                            $v->phpfunc = str_replace('"', '\"', sprintf('fdlGetAccounts(CT,15,"%s"):%s,CT', $v->options, $v->id));
+                        }
+                    }
                     $tnormal[($v->id) ] = array(
                         "attrid" => ($v->id) ,
                         "label" => str_replace("\"", "\\\"", $v->labeltext) ,
