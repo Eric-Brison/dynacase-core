@@ -32,4 +32,6 @@ ini_set("upload_max_filesize", "80M");
 //ini_set("error_reporting", ini_get("error_reporting") & ~E_NOTICE);
 define("DEFAULT_PUBDIR", $pubdir);
 define("HTTP_USER", "@HTTPUSER@");
+// Maximum length of a filename (should match your system NAME_MAX constant)
+define("MAX_FILENAME_LEN", 255);
 ?>
