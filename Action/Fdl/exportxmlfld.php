@@ -156,7 +156,14 @@ function exportxmlfld(Action & $action, $aflid = "0", $famid = "", SearchDoc $sp
                 '*',
                 ':'
             ) , '-', $doc->getTitle());
-            $fname = sprintf("%s/%s{%d}.xml", $foutdir, $ftitle, $doc->id);
+            /*
+             * The file name should not exceed MAX_FILENAME_LEN bytes and, as the string is in UTF-8,
+             * we must take care not to cut in the middle of a multi-byte char.
+            */
+            $suffix = sprintf("{%d}.xml", $doc->id);
+            $maxBytesLen = MAX_FILENAME_LEN - strlen($suffix);
+            $fname = sprintf("%s/%s%s", $foutdir, mb_strcut($ftitle, 0, $maxBytesLen, 'UTF-8') , $suffix);
+            
             $err = $doc->exportXml($xml, $wfile, $fname, $wident, $flat, $exportAttribute);
             // file_put_contents($fname,$doc->exportXml($wfile));
             if ($err) exportExit($action, $err);

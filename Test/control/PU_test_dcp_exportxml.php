@@ -24,7 +24,8 @@ class TestExportXml extends TestCaseDcpCommonFamily
     {
         return array(
             "PU_data_dcp_exportfamily.ods",
-            "PU_data_dcp_exportrelation.ods"
+            "PU_data_dcp_exportrelation.ods",
+            "PU_data_dcp_exporttitlelimits.ods"
         );
     }
     /**
@@ -161,6 +162,26 @@ class TestExportXml extends TestCaseDcpCommonFamily
             $ka++;
         }
     }
+    /**
+     * @dataProvider dataExportTitleLimits
+     */
+    function testExportTitleLimits($folderId)
+    {
+        $export = new \exportXmlFolder();
+        $catchedMessage = '';
+        try {
+            $export->setOutputFormat(\exportXmlFolder::xmlFormat);
+            $export->useIdentificator(false);
+            $export->exportFromFolder($folderId);
+            $this->dom = new \DOMDocument();
+            $this->dom->load($export->getOutputFile());
+            @unlink($export->getOutputFile());
+        }
+        catch(\Exception $e) {
+            $catchedMessage = $e->getMessage();
+        }
+        $this->assertNotNull($this->dom->documentElement, sprintf("Invalid XML export for folder '%s': %s", $folderId, ($catchedMessage != '') ? $catchedMessage : '<no-error-message>'));
+    }
     
     public function dataDocumentFiles()
     {
@@ -218,6 +239,15 @@ class TestExportXml extends TestCaseDcpCommonFamily
                 "TST_DATE1",
                 "tst_number",
                 ""
+            )
+        );
+    }
+    
+    public function dataExportTitleLimits()
+    {
+        return array(
+            array(
+                "TST_EXPORTTITLELIMITS_DIR"
             )
         );
     }
