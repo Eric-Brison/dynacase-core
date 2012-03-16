@@ -82,8 +82,20 @@ function initZone() {
 </script>
 
 <div id="zonehelp" class="zhelp" style="visibility:hidden">
-  <div class="title">Aide &agrave; la connexion </div>
+  <div class="title">[TEXT:Help to the connection]</div>
   <div class="content">
+      [IF isEnglish]
+      <p>
+          This window allows you to log on the application, that is indicate to the applications whom you are.
+          </p>
+      <p>
+This is necessary to guarantee that yours informations are accessible only by you. To log on, it is necessary to fill the login and password (If you do not possess it contact your administrator). </p>
+<p>Pay attention, this password is your identification : be sure to keep it safe and do not spread it ! </p>
+<p>Mind the case (use of the characters capital letter and small letter) during the fill of your login and password!
+</p>
+
+      [ENDIF isEnglish]
+      [IFNOT isEnglish]
       <p>
           Cette fen&ecirc;tre permet de vous identifier.
       </p>
@@ -102,8 +114,9 @@ function initZone() {
           majuscules et minuscules) lors de la saisie de votre nom d'utilisateur et
           mot de passe.
       </p>
+      [ENDIF isEnglish]
   </div>
-  <div class="close"><a href="javascript:close_help()">fermer l'aide</a></div>
+  <div class="close"><a href="javascript:close_help()">[TEXT:Close help]</a></div>
 </div>
 
 <form action="[CORE_BASEURL]app=AUTHENT&amp;action=CHECKAUTH" method="post" name="loginform" style="display:inline">

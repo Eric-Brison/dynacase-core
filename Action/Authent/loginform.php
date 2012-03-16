@@ -39,7 +39,7 @@ function loginform(&$action)
     } else {
         $ulang = getParam('CORE_LANG');
     }
-    
+    $action->lay->set("isEnglish", substr($ulang,0,2)=="en");
     $error = GetHttpVars("error", 0);
     $merr = "";
     if ($error > 0) {

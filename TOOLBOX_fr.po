@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-16 18:09+0100\n"
-"PO-Revision-Date: 2012-01-09 18:20+0100\n"
+"POT-Creation-Date: 2012-03-16 18:43+0100\n"
+"PO-Revision-Date: 2012-03-16 18:44+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1092,6 +1092,9 @@ msgstr "Fermer"
 msgid "Close archive"
 msgstr "Clôture de l'archive"
 
+msgid "Close help"
+msgstr "Fermer l'aide"
+
 msgid "Column mode"
 msgstr "Mode colonne"
 
@@ -1913,6 +1916,9 @@ msgstr "Description de l'aide"
 
 msgid "Help name"
 msgstr "Nom de l'aide"
+
+msgid "Help to the connection"
+msgstr "Aide à la connexion"
 
 msgid "Helps"
 msgstr "Aides"
@@ -3116,6 +3122,9 @@ msgstr "Ce compte a expiré."
 msgid "This account is deactivated."
 msgstr "Ce compte est désactivé."
 
+msgid "This action requires the installation of Dynacase Extui module"
+msgstr "Cette action nécessite l'installation du module Dynacase Extui"
+
 msgid "This document has been deleted"
 msgstr "Ce document a été supprimé"
 
@@ -4130,10 +4139,6 @@ msgid "cannot contact server"
 msgstr "ne peut contacter le serveur"
 
 #, c-format
-msgid "cannot control : object not initialized : %s"
-msgstr "contrôle impossible : objet non initialisé : %s"
-
-#, c-format
 msgid "cannot copy %s"
 msgstr "écriture impossible : %s"
 
@@ -4746,6 +4751,9 @@ msgstr ""
 
 msgid "database access for webdav"
 msgstr "coordonnées d'accès à la base de données webdav"
+
+msgid "database record date style"
+msgstr ""
 
 msgid "date"
 msgstr "date"
@@ -5468,9 +5476,6 @@ msgstr "Les préférences d'exportation ont été effacées"
 #, c-format
 msgid "exportXml : cannot write file %s"
 msgstr "exportXml : ne peut écrire le fichier %s"
-
-msgid "This action requires the installation of Dynacase Extui module"
-msgstr "Cette action nécessite l'installation du module Dynacase Extui"
 
 msgid "familly"
 msgstr "famille"
@@ -8815,3 +8820,6 @@ msgstr "l'identifiant système {left} est différent de {right}"
 
 msgid "{left} title include {right}"
 msgstr "le titre de {left} inclus {right}"
+
+#~ msgid "cannot control : object not initialized : %s"
+#~ msgstr "contrôle impossible : objet non initialisé : %s"
