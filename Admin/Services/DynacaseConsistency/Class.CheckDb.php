@@ -67,11 +67,30 @@ class checkDb
             "msg" => $msg
         );
     }
-    
+
+    public function checkDateStyle() {
+         $result = pg_query($this->r, "show DateStyle;");
+        $row = pg_fetch_array($result, NULL);
+        $msg=$dateStyle=$row[0];
+        $result = pg_query($this->r, "SELECT val from paramv where name = 'CORE_LCDATE'");
+        $row = pg_fetch_array($result, NULL);
+        $lcDate=substr($row[0],0,3);
+        if (($lcDate == 'iso') && ($dateStyle=="ISO, DMY")) $status=self::OK;
+        else if ($dateStyle=="SQL, DMY") $status=self::OK;
+        else {
+            $status=self::KO;
+            $msg=sprintf("Mismatch locale : database : %s, application : %s",$dateStyle, $lcDate);
+        }
+
+        $this->tout["dateStyle"] = array(
+            "status" => $status,
+            "msg" => $msg
+        );
+
+    }
     public function checkUserAsGroup()
     {
-        
-        $result = pg_query($this->r, "SELECT distinct(idgroup) from groups where idgroup not in (select id from users where isgroup='Y');");
+        $result = pg_query($this->r, "SELECT distinct(idgroup) from groups where idgroup not in (select id from users where accounttype!='U');");
         $pout = array();
         while ($row = pg_fetch_array($result, NULL, PGSQL_ASSOC)) {
             $pout[] = $row["idgroup"];
@@ -407,6 +426,7 @@ class checkDb
     public function getFullAnalyse()
     {
         if ($this->checkConnection()) {
+            $this->checkDateStyle();
             $this->checkUnreferenceUsers();
             $this->checkUserAsGroup();
             $this->checkUnreferencedAction();
