@@ -819,5 +819,14 @@ class DocCtrl extends DocLDAP
         if ($r) return MENU_ACTIVE;
         return MENU_INVISIBLE;
     }
+    /**
+     * Check if the document is a real profile.
+     *
+     * @return bool true if the document is a profile, false if not a profile
+     */
+    function isRealProfile()
+    {
+        return ($this->getAttribute('dpdoc_famid') != null);
+    }
 }
 ?>
