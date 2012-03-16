@@ -5902,15 +5902,29 @@ create unique index i_docir on doc(initid, revision);";
                     {
                         // --------------------------------------------------------------------
                         if (($this->IsAffected())) {
-                            
-                            if (($this->profid <= 0) || ($this->userid == 1)) return ""; // no profil or admin
+
+                            if (($this->profid <= 0) || ($this->userid == 1)) {
+                                // No control if there is no profile or it's the admin user
+                                return "";
+                            }
                             $err = $this->controlId($this->profid, $aclname);
-                            if (($err != "") && ($this->isConfidential())) $err = sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
-                            
-                            return $err;
+                            if ($err != '') {
+                                if ($this->isConfidential()) {
+                                    return sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
+                                } else {
+                                    return $err;
+                                }
+                            }
+                            // Edit rights on profiles must also be controlled by the 'modifyacl' acl
+                            if ($aclname == 'edit' && $this->isRealProfile()) {
+                                $err = $this->controlId($this->profid, 'modifyacl');
+                                if ($err != '') {
+                                    return $err;
+                                }
+                            }
                         }
+
                         return "";
-                        return sprintf(_("cannot control : object not initialized : %s") , $aclname);
                     }
                     /**
                      * Control Access privilege for document for other user
