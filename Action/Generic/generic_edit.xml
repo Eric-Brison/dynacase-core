@@ -7,7 +7,7 @@
 	<meta name="document-id" content="[id]"/>
 	<meta name="document-initid" content="[initid]"/>
 	<meta name="document-icon" content="[docicon]"/>
-   <title>[TEXT:edition: ] [title]</title>
+   <title>[title]</title>
    <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
 <link rel="shortcut icon" href="[shorticon]">
 
