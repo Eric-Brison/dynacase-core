@@ -5187,19 +5187,19 @@ create unique index i_docir on doc(initid, revision);";
          * @param string $aclname identificator of the privilege to test
          * @return string empty means access granted else it is an error message (access unavailable)
          */
-        public function Control($aclname)
+        public function control($aclname)
         {
-            // --------------------------------------------------------------------
-            if (($this->IsAffected())) {
-                
+            $err='';
+            if (($this->isAffected())) {
                 if (($this->profid <= 0) || ($this->userid == 1)) return ""; // no profil or admin
                 $err = $this->controlId($this->profid, $aclname);
                 if (($err != "") && ($this->isConfidential())) $err = sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
-                
-                return $err;
+                // Edit rights on profiles must also be controlled by the 'modifyacl' acl
+                if (($err == "") && ($aclname == 'edit'  || $aclname == 'delete'  || $aclname == 'unlock') && $this->isRealProfil()) {
+                    $err = $this->controlId($this->profid, 'modifyacl');
+                }
             }
-            return "";
-            return sprintf(_("cannot control : object not initialized : %s") , $aclname);
+            return $err;
         }
         /**
          * Control Access privilege for document for other user
@@ -5208,7 +5208,7 @@ create unique index i_docir on doc(initid, revision);";
          * @param string $aclname identificator of the privilege to test
          * @return string empty means access granted else it is an error message (access unavailable)
          */
-        public function ControlUser($uid, $aclname)
+        public function controlUser($uid, $aclname)
         {
             // --------------------------------------------------------------------
             if ($this->IsAffected()) {
