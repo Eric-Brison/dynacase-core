@@ -65,7 +65,7 @@ function getOpenTeUrl($context = array())
  */
 function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $docid = '')
 {
-    $err='';
+    $err = '';
     if (($vidin > 0) && ($vidout > 0)) {
         $tea = getParam("TE_ACTIVATE");
         if ($tea != "yes") return '';
@@ -96,7 +96,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
             $filename = uniqid(getTmpDir() . "/txt-" . $vidout . '-');
             file_put_contents($filename, $err);
             //$vf->rename($vidout,"toto.txt");
-            $infofile=null;
+            $infofile = null;
             $vf->Retrieve($vidout, $infofile);
             $err.= $vf->Save($filename, false, $vidout);
             @unlink($filename);
@@ -112,7 +112,7 @@ function vault_generate($dbaccess, $engine, $vidin, $vidout, $isimage = false, $
  * return various informations for a file stored in VAULT
  * @param int $idfile vault file identificator
  * @param string $teng_name transformation engine name
- * @return array
+ * @return vaultFileInfo
  */
 function vault_properties($idfile, $teng_name = "")
 {
@@ -232,7 +232,7 @@ function convertFile($infile, $engine, $outfile, &$info)
             
             $callback = "";
             $ot = new TransformationEngine(getParam("TE_HOST") , getParam("TE_PORT"));
-            $vid='';
+            $vid = '';
             $err = $ot->sendTransformation($engine, $vid, $infile, $callback, $info);
             if ($err == "") {
                 include_once ("FDL/Class.TaskRequest.php");

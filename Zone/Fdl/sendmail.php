@@ -60,7 +60,7 @@ function sendmail($to, $from, $cc, $bcc, $subject, &$mimemail, $multipart = null
     }
     /* Send the 'MAIL FROM:' SMTP command. */
     $smtp_from = $from;
-    if( preg_match('/<(?<from>[^>]*)>/', $from, $reg) ) {
+    if (preg_match('/<(?<from>[^>]*)>/', $from, $reg)) {
         $smtp_from = $reg['from'];
     }
     if (PEAR::isError($smtp->mailFrom($smtp_from))) {
@@ -212,9 +212,9 @@ class Fdl_Mail_mime extends Mail_mime
      * Adds an attachment subpart to a mimePart object
      * and returns it during the build process.
      *
-     * @param  object  The mimePart to add the image to
-     * @param  array   The attachment information
-     * @return object  The image mimePart object
+     * @param  Fdl_Mail_mimePart  $obj The mimePart to add the image to
+     * @param  array  $value The attachment information
+     * @return Fdl_Mail_mimePart  The image mimePart object
      * @access private
      */
     function &_addAttachmentPart(&$obj, $value)
@@ -273,7 +273,11 @@ class Fdl_Mail_mimePart extends Mail_mimePart
         
         parent::Mail_mimePart($body, $params);
     }
-    
+    /**
+     * @param string $body
+     * @param array $params
+     * @return Fdl_Mail_mimePart
+     */
     function &addSubpart($body, $params)
     {
         if (!property_exists('Mail_mimePart', '_body_file') && isset($params['body_file'])) {
