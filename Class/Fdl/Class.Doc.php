@@ -5916,7 +5916,7 @@ create unique index i_docir on doc(initid, revision);";
                                 }
                             }
                             // Edit rights on profiles must also be controlled by the 'modifyacl' acl
-                            if ($aclname == 'edit' && $this->isRealProfile()) {
+                            if (($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock')  && $this->isRealProfile()) {
                                 $err = $this->controlId($this->profid, 'modifyacl');
                                 if ($err != '') {
                                     return $err;
