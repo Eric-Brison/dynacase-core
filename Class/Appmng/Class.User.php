@@ -472,12 +472,33 @@ create sequence seq_id_users start 10;";
     }
     /**
      * return mail adress
-     * @param bool $reinit recompute adress from mail account
+     * @param bool $rawmail set to false to have long mail with firstname and lastname
      * @return string mail address empty if no mail
      */
-    function getMail()
+    function getMail($rawmail = true)
     {
-        return $this->mail;
+        if ($this->accounttype == 'U') {
+            if ($rawmail) {
+                return $this->mail;
+            } else {
+                $dn = trim($this->firstname . ' ' . $this->lastname);
+                $mail = sprintf('"%s" <%s>', str_replace('"', '-', $dn) , $rawmail);
+                return $mail;
+            }
+        } else {
+            $sql = sprintf("with recursive amembers(uid) as (
+ select iduser, users.login, users.mail from groups,users where idgroup = %d and users.id=groups.iduser
+union
+ select iduser, users.login, users.mail from groups,users, amembers where groups.idgroup = amembers.uid and users.id=groups.iduser
+) select users.firstname, users.lastname, users.mail from amembers, users where users.id=amembers.uid and users.accounttype='U' and users.mail is not null;", $this->id);
+            simpleQuery($this->dbaccess, $sql, $umail);
+            $tMail = array();
+            foreach ($umail as $aMail) {
+                $dn = trim($aMail["firstname"] . ' ' . $aMail["lastname"]);
+                $tMail[] = sprintf('"%s" <%s>', str_replace('"', '-', $dn) , $aMail["mail"]);
+            }
+            return implode(',', $tMail);
+        }
     }
     
     function PostInit()
@@ -553,8 +574,8 @@ create sequence seq_id_users start 10;";
         $query = new QueryDb(getDbAccess() , "User");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='G')");
-        $l=$query->Query(0, 0, $qtype);
-        return ($query->nb>0)?$l:array();
+        $l = $query->Query(0, 0, $qtype);
+        return ($query->nb > 0) ? $l : array();
     }
     /**
      * get All Roles
@@ -566,8 +587,8 @@ create sequence seq_id_users start 10;";
         $query = new QueryDb(getDbAccess() , "User");
         $query->order_by = "login";
         $query->AddQuery("(accountType='R')");
-        $l=$query->Query(0, 0, $qtype);
-        return ($query->nb>0)?$l:array();
+        $l = $query->Query(0, 0, $qtype);
+        return ($query->nb > 0) ? $l : array();
     }
     /**
      * get All users & groups (except role)
@@ -708,7 +729,9 @@ union
         $lg = $gids;
         $lg = array_values(array_unique($lg));
         $this->memberof = '{' . implode(',', $lg) . '}';
-        $err = $this->modify(true, array('memberof') , true);
+        $err = $this->modify(true, array(
+            'memberof'
+        ) , true);
         if ($err) throw new Exception($err);
         return $lg;
     }

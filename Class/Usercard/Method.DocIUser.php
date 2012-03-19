@@ -408,7 +408,8 @@ class _IUSER extends _USER
                 $rid = $role["id"];
                 $tgroup = array();
                 foreach ($allGroup as $aGroup) {
-                    if (preg_match("/$rid/", $aGroup["memberof"])) {
+                    simpleQuery($this->dbaccess, sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
+                    if ($gr) {
                         $tgroup[] = $aGroup["fid"];
                     }
                 }
@@ -421,6 +422,18 @@ class _IUSER extends _USER
                 "us_rolegorigin" => $group
             ));
         }
+    }
+    /**
+     * return main mail address
+     * @return string
+     */
+    public function getMail($rawmail = false)
+    {
+        $wu = $this->getWUser();
+        if ($wu->isAffected()) {
+            return $wu->getMail($rawmail);
+        }
+        return '';
     }
     function constraintPassword($pwd1, $pwd2, $login)
     {

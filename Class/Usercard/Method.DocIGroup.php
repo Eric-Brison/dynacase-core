@@ -205,6 +205,35 @@ class _IGROUP extends _GROUP
         return $err;
     }
     /**
+     * compute the mail of the group
+     * concatenation of each user mail and group member mail
+     *
+     *
+     * @return string error message, if no error empty string
+     */
+    public function setGroupMail($nomail = false)
+    {
+        // no compute all members now
+        $this->deleteValue("GRP_IDRUSER");
+        $this->deleteValue("GRP_RUSER");
+        if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
+        if (!$nomail) {
+            $this->setValue("grp_mail", $this->getMail());
+        }
+    }
+    /**
+     * return concatenation of mail addresses
+     * @return string
+     */
+    public function getMail($rawmail = false)
+    {
+        $wu = $this->getWUser();
+        if ($wu->isAffected()) {
+            return $wu->getMail($rawmail);
+        }
+        return '';
+    }
+    /**
      * update LDAP menbers after imodification of containt
      */
     function specPostInsert()
