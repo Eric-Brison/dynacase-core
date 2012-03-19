@@ -2624,9 +2624,10 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute must an array type
      * fill uncomplete column with null values
      * @param string $idAttr identificator of array attribute
+     * @param bool $deleteLastEmptyRows by default empty rows which are in the end are deleted
      * @return string error message, if no error empty string
      */
-    final public function completeArrayRow($idAttr)
+    final public function completeArrayRow($idAttr, $deleteLastEmptyRows = true)
     {
         /* Prevent recursive calls of completeArrayRow() by setValue() */
         static $calls = array();
@@ -2643,8 +2644,19 @@ create unique index i_docir on doc(initid, revision);";
             
             $max = - 1;
             $maxdiff = false;
+            $tValues = array();
+            foreach ($ta as $k => $v) { // delete empty end values
+                $tValues[$k] = $this->getTValue($k);
+                if ($deleteLastEmptyRows) {
+                    $c = count($tValues[$k]);
+                    for ($i = $c - 1; $i >= 0; $i--) {
+                        if ($tValues[$k][$i] === '') unset($tValues[$k][$i]);
+                        else break;
+                    }
+                }
+            }
             foreach ($ta as $k => $v) { // detect uncompleted rows
-                $c = count($this->getTValue($k));
+                $c = count($tValues[$k]);
                 if ($max < 0) $max = $c;
                 else {
                     if ($c != $max) $maxdiff = true;
@@ -2653,11 +2665,10 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($maxdiff) {
                 foreach ($ta as $k => $v) { // fill uncompleted rows
-                    $c = count($this->getTValue($k));
+                    $c = count($tValues[$k]);
                     if ($c < $max) {
-                        $t = $this->getTValue($k);
-                        $t = array_pad($t, $max, "");
-                        $err.= $this->setValue($k, $t);
+                        $nt = array_pad($tValues[$k], $max, "");
+                        $err.= $this->setValue($k, $nt);
                     }
                 }
             }
@@ -2686,7 +2697,7 @@ create unique index i_docir on doc(initid, revision);";
         $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
-            $err = $this->completeArrayRow($idAttr);
+            $err = $this->completeArrayRow($idAttr, false);
             if ($err == "") {
                 $ta = $this->attributes->getArrayElements($a->id);
                 $ti = array();
@@ -2709,7 +2720,7 @@ create unique index i_docir on doc(initid, revision);";
                     $err.= $this->setValue($k, $tnv);
                 }
                 if ($err == "") {
-                    $err = $this->completeArrayRow($idAttr);
+                    $err = $this->completeArrayRow($idAttr, false);
                 }
             }
             $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
@@ -5189,13 +5200,13 @@ create unique index i_docir on doc(initid, revision);";
          */
         public function control($aclname)
         {
-            $err='';
+            $err = '';
             if (($this->isAffected())) {
                 if (($this->profid <= 0) || ($this->userid == 1)) return ""; // no profil or admin
                 $err = $this->controlId($this->profid, $aclname);
                 if (($err != "") && ($this->isConfidential())) $err = sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
                 // Edit rights on profiles must also be controlled by the 'modifyacl' acl
-                if (($err == "") && ($aclname == 'edit'  || $aclname == 'delete'  || $aclname == 'unlock') && $this->isRealProfil()) {
+                if (($err == "") && ($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfil()) {
                     $err = $this->controlId($this->profid, 'modifyacl');
                 }
             }
