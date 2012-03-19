@@ -42,7 +42,7 @@ class _IUSER extends _USER
         if ($this->getValue("US_IDDOMAIN", 1) > 1) $this->AddParamRefresh("US_WHATID", "US_DOMAIN");
         $this->AddParamRefresh("US_IDDOMAIN", "US_DOMAIN");
         
-        if ($this->getValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is desactivated");
+        if ($this->getValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
         $iduser = $this->getValue("US_WHATID");
@@ -621,17 +621,14 @@ class _IUSER extends _USER
      */
     function increaseLoginFailure()
     {
-        if (!$this->canExecute(FUSERS, FUSERS_IUSER)) return "";
         if ($this->getValue("us_whatid") == 1) return ""; // it makes non sense for admin
-        $this->disableEditControl();
         $lf = $this->getValue("us_loginfailure", 0) + 1;
         $err = $this->SetValue("us_loginfailure", $lf);
         if ($err == "") {
-            $err = $this->modify(true, array(
+            $err = $this->modify(false, array(
                 "us_loginfailure"
-            ) , true);
+            ) , false);
         }
-        $this->enableEditControl();
         return "";
     }
     /**
@@ -641,22 +638,78 @@ class _IUSER extends _USER
     {
         if ($this->getValue("us_whatid") == 1) return ""; // it makes non sense for admin
         if (intval($this->getValue("us_loginfailure")) > 0) {
-            $this->disableEditControl();
             $err = $this->setValue("us_loginfailure", 0);
             if ($err == "") {
-                $err = $this->modify(true, array(
+                $err = $this->modify(false, array(
                     "us_loginfailure"
-                ) , true);
+                ) , false);
             }
-            $this->enableEditControl();
         }
         return "";
     }
-    
-    function canResetLoginFailure()
+    /*
+    * Securitys menus visibilities
+    */
+    function menuResetLoginFailure()
     {
-        if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
-        return ($this->getValue("us_loginfailure") > 0 ? true : false);
+        // Do not show the menu if the user has no FUSERS privileges
+        global $action;
+        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu if the user has no edit rights on the document
+        if ($this->canEdit() != '') {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu on the 'admin' user
+        if ($this->getValue('us_whatid') == 1) {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu if the account had no failures
+        if ($this->getValue("us_loginfailure") <= 0) {
+            return MENU_INVISIBLE;
+        }
+        return MENU_ACTIVE;
+    }
+    function menuActivateAccount() {
+        // Do not show the menu if the user has no FUSERS privileges
+        global $action;
+        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu if the user has no edit rights on the document
+        if ($this->canEdit() != '') {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu on the 'admin' user
+        if ($this->getValue('us_whatid') == 1) {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu if the account is already active
+        if ($this->getValue('us_status', 'A') == 'A') {
+            return MENU_INVISIBLE;
+        }
+        return MENU_ACTIVE;
+    }
+    function menuDeactivateAccount() {
+        // Do not show the menu if the user has no FUSERS privileges
+        global $action;
+        if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu if the user has no edit rights on the document
+        if ($this->canEdit() != '') {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu on the 'admin' user
+        if ($this->getValue('us_whatid') == 1) {
+            return MENU_INVISIBLE;
+        }
+        // Do not show the menu if the account is already inactive
+        if ($this->getValue('us_status', 'A') != 'A') {
+            return MENU_INVISIBLE;
+        }
+        return MENU_ACTIVE;
     }
     /**
      * Manage account security
@@ -668,16 +721,21 @@ class _IUSER extends _USER
     }
     function activateAccount()
     {
-        if (!$this->canExecute(FUSERS, FUSERS_IUSER)) return "";
-        if ($this->getValue("us_whatid") == 1) return "";
-        $this->disableEditControl();
+        // Check that the user has FUSERS privileges
+        global $action;
+        if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
+            return '';
+        }
+        // The 'admin' account cannot be deactivated
+        if ($this->getValue("us_whatid") == 1) {
+            return '';
+        }
         $err = $this->SetValue("us_status", 'A');
         if ($err == "") {
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
         }
-        $this->enableEditControl();
         return "";
     }
     function isAccountInactive()
@@ -685,18 +743,23 @@ class _IUSER extends _USER
         if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
         return ($this->getValue("us_status", 'A') != 'A');
     }
-    function desactivateAccount()
+    function deactivateAccount()
     {
-        if (!$this->canExecute(FUSERS, FUSERS_IUSER)) return "";
-        if ($this->getValue("us_whatid") == 1) return "";
-        $this->disableEditControl();
+        // Check that the user has FUSERS privileges
+        global $action;
+        if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
+            return '';
+        }
+        // The 'admin' account cannot be deactivated
+        if ($this->getValue("us_whatid") == 1) {
+            return '';
+        }
         $err = $this->SetValue("us_status", 'D');
         if ($err == "") {
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
         }
-        $this->enableEditControl();
         return "";
     }
     function accountHasExpired()

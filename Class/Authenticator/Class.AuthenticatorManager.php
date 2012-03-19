@@ -90,7 +90,9 @@ abstract class AuthenticatorManager
                         include_once ("FDL/freedom_util.php");
                         $du = new_Doc(getParam("FREEDOM_DB") , $wu->fid);
                         if ($du->isAlive()) {
+                            $du->disableEditControl();
                             $du->increaseLoginFailure();
+                            $du->enableEditControl();
                         }
                     }
                 }
@@ -135,7 +137,9 @@ abstract class AuthenticatorManager
                 return 2;
             }
             // authen OK, max login failure OK => reset count of login failure
+            $du->disableEditControl();
             $du->resetLoginFailure();
+            $du->enableEditControl();
         }
         /*
          * All authenticators are not necessarily based on sessions (i.e. 'basic')

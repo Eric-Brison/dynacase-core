@@ -3280,8 +3280,8 @@ msgstr ""
 msgid "This account has expired."
 msgstr "This account has expired."
 
-msgid "This account is desactivated."
-msgstr "This account is desactivated."
+msgid "This account is deactivated."
+msgstr "This account is deactivated."
 
 msgid "This document has been deleted"
 msgstr ""
@@ -8901,7 +8901,7 @@ msgstr ""
 msgid "user has not identificator"
 msgstr ""
 
-msgid "user is desactivated"
+msgid "user is deactivated"
 msgstr ""
 
 msgid "user not initialized"

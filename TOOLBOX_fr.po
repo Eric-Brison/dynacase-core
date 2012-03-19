@@ -3113,7 +3113,7 @@ msgstr ""
 msgid "This account has expired."
 msgstr "Ce compte a expiré."
 
-msgid "This account is desactivated."
+msgid "This account is deactivated."
 msgstr "Ce compte est désactivé."
 
 msgid "This document has been deleted"
@@ -8398,7 +8398,7 @@ msgstr "modifier compte utilisateur"
 msgid "user has not identificator"
 msgstr "L'utilisateur n'a pas d'identificateur"
 
-msgid "user is desactivated"
+msgid "user is deactivated"
 msgstr "l'utilisateur est désactivé"
 
 msgid "user not initialized"
