@@ -79,7 +79,7 @@ function freedom_gaccess(Action & $action)
     $tg = array(); // users or group list
     if ($green) {
         
-        $sql = sprintf("SELECT users.* from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0", $doc->profid);
+        $sql = sprintf("SELECT users.* from docperm,users where docperm.docid=%d and users.id=docperm.userid and docperm.upacl != 0 order by users.lastname", $doc->profid);
         simpleQuery($dbaccess, $sql, $tusers);
         
         foreach ($tusers as $k => $v) {
@@ -98,9 +98,9 @@ function freedom_gaccess(Action & $action)
         // contruct grouplist
         $ouser = new User();
         if ($viewgroup) {
-            $tidAccount = array_merge($ouser->GetGroupList("TABLE") , $ouser->GetRoleList("TABLE"));
+            $tidAccount = array_merge($ouser->getGroupList("TABLE") , $ouser->getRoleList("TABLE"));
         } else {
-            $tidAccount = $ouser->GetRoleList("TABLE");
+            $tidAccount = $ouser->getRoleList("TABLE");
         }
         $hg = array();
         $userids = array();

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-16 12:05+0100\n"
+"POT-Creation-Date: 2012-03-20 09:45+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1004,6 +1004,9 @@ msgstr ""
 msgid "Change icon"
 msgstr "Start search"
 
+msgid "Change logical name"
+msgstr ""
+
 msgid "Change my ask"
 msgstr ""
 
@@ -1459,10 +1462,6 @@ msgstr ""
 msgid "Directory already exists"
 msgstr ""
 
-#, c-format
-msgid "Disease of %s "
-msgstr ""
-
 msgid "Display available choices"
 msgstr ""
 
@@ -1501,6 +1500,10 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Document %s is not alive"
 msgstr "Import"
+
+#, c-format
+msgid "Document %s is not dead"
+msgstr ""
 
 #, fuzzy, c-format
 msgid "Document %s umounted"
@@ -4514,10 +4517,6 @@ msgid "cannot compare two document which comes from two different family"
 msgstr ""
 
 msgid "cannot contact server"
-msgstr ""
-
-#, c-format
-msgid "cannot control : object not initialized : %s"
 msgstr ""
 
 #, fuzzy, c-format
@@ -8286,6 +8285,10 @@ msgstr "Lastname"
 msgid "set logical name identificator"
 msgstr ""
 
+#, c-format
+msgid "set logical name to %s"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "set primary folder to '%s'"
 msgstr "Delete"
@@ -8926,6 +8929,10 @@ msgstr "Update Title Cards"
 
 #, c-format
 msgid "update id [%d] "
+msgstr ""
+
+#, c-format
+msgid "update logical name from %s to %s"
 msgstr ""
 
 #, c-format

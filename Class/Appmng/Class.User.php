@@ -490,14 +490,22 @@ create sequence seq_id_users start 10;";
  select iduser, users.login, users.mail from groups,users where idgroup = %d and users.id=groups.iduser
 union
  select iduser, users.login, users.mail from groups,users, amembers where groups.idgroup = amembers.uid and users.id=groups.iduser
-) select users.firstname, users.lastname, users.mail from amembers, users where users.id=amembers.uid and users.accounttype='U' and users.mail is not null;", $this->id);
+) select users.firstname, users.lastname, users.mail from amembers, users where users.id=amembers.uid and users.accounttype='U' and users.mail is not null order by users.mail;", $this->id);
             simpleQuery($this->dbaccess, $sql, $umail);
             $tMail = array();
-            foreach ($umail as $aMail) {
-                $dn = trim($aMail["firstname"] . ' ' . $aMail["lastname"]);
-                $tMail[] = sprintf('"%s" <%s>', str_replace('"', '-', $dn) , $aMail["mail"]);
+            if ($rawmail) {
+                foreach ($umail as $aMail) {
+                    
+                    $tMail[] = $aMail["mail"];
+                }
+                $tMail = array_unique($tMail);
+            } else {
+                foreach ($umail as $aMail) {
+                    $dn = trim($aMail["firstname"] . ' ' . $aMail["lastname"]);
+                    $tMail[] = sprintf('"%s" <%s>', str_replace('"', '-', $dn) , $aMail["mail"]);
+                }
             }
-            return implode(',', $tMail);
+            return implode(', ', $tMail);
         }
     }
     
@@ -585,7 +593,7 @@ union
     public static function getRoleList($qtype = "LIST")
     {
         $query = new QueryDb(getDbAccess() , "User");
-        $query->order_by = "login";
+        $query->order_by = "lastname";
         $query->AddQuery("(accountType='R')");
         $l = $query->Query(0, 0, $qtype);
         return ($query->nb > 0) ? $l : array();
@@ -989,6 +997,19 @@ union
         $sql = sprintf("SELECT users.%s from users, groups where groups.iduser=%d and users.id = groups.idgroup and users.accounttype='R'", $returnColumn, $this->id);
         simpleQuery($this->dbaccess, $sql, $rids, true, false);
         return $rids;
+    }
+    /**
+     * return direct and indirect role which comes from groups
+     * @param bool $useSystemId if true return system id else return document ids
+     * @return array of users properties
+     */
+    function getAllRoles()
+    {
+        $mo = $this->getMemberOf();
+        
+        $sql = sprintf("SELECT * from users where id in (%s) and accounttype='R'", implode(',', $mo));
+        simpleQuery($this->dbaccess, $sql, $rusers);
+        return $rusers;
     }
     /**
      * delete all role of a user/group

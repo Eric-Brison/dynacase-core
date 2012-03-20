@@ -20,7 +20,7 @@ class _ROLE extends Doc
     /**
      * @var User system role
      */
-    public $sysRole = null;
+    protected $sysRole = null;
     
     public function PreCreated()
     {
@@ -36,7 +36,19 @@ class _ROLE extends Doc
             $this->lowerLogin();
         }
     }
-    
+    /**
+     * return concatenation of mail addresses
+     * @param bool $rawmail if true get mail address only else get mail address with name
+     * @return string
+     */
+    public function getMail($rawmail = false)
+    {
+        $wu = $this->getSystemRole();
+        if ($wu->isAffected()) {
+            return $wu->getMail($rawmail);
+        }
+        return '';
+    }
     private function lowerLogin()
     {
         $login = $this->getValue("role_login");
@@ -57,36 +69,39 @@ class _ROLE extends Doc
         $err = $this->userSynchronize();
         return $err;
     }
-    
+    /**
+     * update/create system role from document role
+     * @return string error message
+     */
     public function userSynchronize()
     {
-        if ($this->id) {
-        $sR = $this->getSystemRole();
-        
         $err = '';
-        if (!$sR) {
-            // try create it
-            $sR = new User();
-            $sR->login = $this->getValue('role_login');
-            $sR->lastname = $this->getValue('role_name');
-            $sR->fid = $this->initid;
-            $sR->accounttype = 'R';
-            $sR->password_new = uniqid("role");
-            $sR->isgroup = 'N';
-            $err = $sR->add();
-            if ($err == "") {
-                $this->setValue("us_whatid", $sR->id);
-                $this->modify(true, array(
-                    "us_whatid"
-                ) , true);
+        if ($this->id) {
+            $sR = $this->getSystemRole();
+            
+            if (!$sR) {
+                // try create it
+                $sR = new User();
+                $sR->login = $this->getValue('role_login');
+                $sR->lastname = $this->getValue('role_name');
+                $sR->fid = $this->initid;
+                $sR->accounttype = 'R';
+                $sR->password_new = uniqid("role");
+                $sR->isgroup = 'N';
+                $err = $sR->add();
+                if ($err == "") {
+                    $this->setValue("us_whatid", $sR->id);
+                    $this->modify(true, array(
+                        "us_whatid"
+                    ) , true);
+                }
+            } else {
+                // update it
+                $sR->login = $this->getValue('role_login');
+                $sR->lastname = $this->getValue('role_name');
+                $sR->fid = $this->initid;
+                $err = $sR->modify();
             }
-        } else {
-            // update it
-            $sR->login = $this->getValue('role_login');
-            $sR->lastname = $this->getValue('role_name');
-            $sR->fid = $this->initid;
-            $err = $sR->modify();
-        }
         }
         
         return $err;
@@ -108,13 +123,13 @@ class _ROLE extends Doc
         }
     }
     /**
-     * return what user object conform to whatid
+     * return system user object conform to whatid
+     * @param bool $nocache
      * @return User|null return null if not found
      */
     function getSystemRole($nocache = false)
     {
         if ($nocache) {
-            $u = new User();
             unset($this->sysRole); // needed for reaffect new values
             
         }
@@ -127,10 +142,13 @@ class _ROLE extends Doc
         if (!$this->sysRole) return null;
         return $this->sysRole;
     }
-    
+    /**
+     * constraint to detect unique login
+     * @param $login
+     * @return string
+     */
     public function isUniqueLogin($login)
     {
-        
         $err = "";
         $sql = sprintf("select id from users where login = '%s' and id != %d", mb_strtolower(pg_escape_string($login)) , $this->getValue("us_whatid"));
         simpleQuery('', $sql, $id, true, true);

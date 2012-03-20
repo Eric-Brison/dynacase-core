@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-16 12:05+0100\n"
-"PO-Revision-Date: 2012-03-16 12:07+0100\n"
+"POT-Creation-Date: 2012-03-20 09:45+0100\n"
+"PO-Revision-Date: 2012-03-20 09:46+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -830,7 +830,7 @@ msgstr "Spécification fichier CSV"
 
 #, c-format
 msgid "CVID : %s"
-msgstr ""
+msgstr "CVID : %s"
 
 #, c-format
 msgid "CVID : view control '%s' is not a view control"
@@ -959,6 +959,9 @@ msgstr "Changer d'énuméré"
 
 msgid "Change icon"
 msgstr "Changer d'icone"
+
+msgid "Change logical name"
+msgstr "Modifier le nom logique"
 
 msgid "Change my ask"
 msgstr "Changer mon opinion"
@@ -1376,10 +1379,6 @@ msgstr "Répertoire"
 msgid "Directory already exists"
 msgstr "Répertoire déjà existant"
 
-#, c-format
-msgid "Disease of %s "
-msgstr ""
-
 msgid "Display available choices"
 msgstr "Afficher les choix possibles"
 
@@ -1417,6 +1416,10 @@ msgstr "Document %s est en cours de modification par %s"
 #, c-format
 msgid "Document %s is not alive"
 msgstr "Le document [%s] n'est pas vivant"
+
+#, c-format
+msgid "Document %s is not dead"
+msgstr ""
 
 #, c-format
 msgid "Document %s umounted"
@@ -3097,7 +3100,7 @@ msgstr ""
 
 #, c-format
 msgid "Something wrong. No acl found in %s (user #%d)"
-msgstr ""
+msgstr "Incohérence: Pas d'acl trouvée dans \"%s\" (utilisateur n°%d)"
 
 msgid "Sorry but this section key already exists !"
 msgstr "Désolé mais cette clé de rubrique existe déjà !"
@@ -4295,10 +4298,6 @@ msgstr ""
 
 msgid "cannot contact server"
 msgstr "ne peut contacter le serveur"
-
-#, c-format
-msgid "cannot control : object not initialized : %s"
-msgstr "contrôle impossible : objet non initialisé : %s"
 
 #, c-format
 msgid "cannot copy %s"
@@ -7766,6 +7765,10 @@ msgid "set logical name identificator"
 msgstr "Affecter un identifiant logique"
 
 #, c-format
+msgid "set logical name to %s"
+msgstr "Nom logique mis à \"%s\""
+
+#, c-format
 msgid "set primary folder to '%s'"
 msgstr "affecte le dossier primaire à '%s'"
 
@@ -8395,6 +8398,10 @@ msgid "update id [%d] "
 msgstr "mise à jour id [%d] "
 
 #, c-format
+msgid "update logical name from %s to %s"
+msgstr "Modification du nom logique de \"%s\" à \"%s\""
+
+#, c-format
 msgid "update of %s catalogue has failed,"
 msgstr "La mise à jour du catalogue %s a échoué."
 
@@ -8480,7 +8487,7 @@ msgid "user is desactivated"
 msgstr "l'utilisateur est désactivé"
 
 msgid "user not initialized"
-msgstr ""
+msgstr "utilisateur non initialisé"
 
 msgid "user not know"
 msgstr "utilisateur inconnu"
@@ -8525,7 +8532,7 @@ msgstr "la valeur [%s] n'est pas une date valide"
 
 #, c-format
 msgid "value [%s] is not a valid time"
-msgstr ""
+msgstr "la valeur [%s] n'est pas une heure valide"
 
 #, c-format
 msgid "value [%s] is not a valid timestamp"
@@ -8760,7 +8767,7 @@ msgstr "Le cycle de vie associé %s [%d] est corrompu"
 
 #, c-format
 msgid "workflow file %s is not writable"
-msgstr ""
+msgstr "le fichier \"%s\" du workflow n'est pas modifiable"
 
 msgid "workflow has been recomposed"
 msgstr "le cycle de vie a été regénéré"
@@ -8958,6 +8965,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "cannot connect to %s"
 #~ msgstr "ne peut se connecter à %s"
+
+#~ msgid "cannot control : object not initialized : %s"
+#~ msgstr "contrôle impossible : objet non initialisé : %s"
 
 #~ msgid ""
 #~ "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
