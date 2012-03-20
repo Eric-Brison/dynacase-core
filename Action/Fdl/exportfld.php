@@ -354,7 +354,7 @@ function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, 
         $trans = array_flip($trans);
         $trans = array_map("utf8_encode", $trans);
     }
-    $efldid = '-';
+    $efldid = '';
     $dbaccess = $doc->dbaccess;
     if ($prevfromid != $doc->fromid) {
         if (($eformat != "I") && ($prevfromid > 0)) fputs_utf8($fout, "\n");
