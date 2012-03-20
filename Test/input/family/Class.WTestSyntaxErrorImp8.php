@@ -9,15 +9,15 @@ include_once ("FDL/Class.WDoc.php");
 
 Class WTestSyntax extends WDoc
 {
-    var $attrPrefix = "WAN"const alive = "alive"; # N_("alive")
-    const dead = "dead"; # N_("dead")
-    const transfered = "transfered"; # N_("transfered")
-    const sick = "sick"; # N_("sick")
-    const convalescent = "convalescent"; # N_("convalescent")
-    const T1 = "T1"; # N_("T1")
-    const Tsick = "Tsick"; # N_("Tsick")
-    const Tconvalescent = "Tconvalescent"; # N_("Tconvalescent")
-    const T3 = "T3"; # N_("T3")
+    var $attrPrefix = "WAN"const alive = "alive"; // N_("alive")
+    const dead = "dead"; // N_("dead")
+    const transfered = "transfered"; // N_("transfered")
+    const sick = "sick"; // N_("sick")
+    const convalescent = "convalescent"; // N_("convalescent")
+    const T1 = "T1"; // N_("T1")
+    const Tsick = "Tsick"; // N_("Tsick")
+    const Tconvalescent = "Tconvalescent"; // N_("Tconvalescent")
+    const T3 = "T3"; // N_("T3")
     var $firstState = self::alive;
     var $transitions = array(
         self::T1 => array() ,
@@ -80,7 +80,7 @@ Class WTestSyntax extends WDoc
         global $action;
         include_once ("FDL/mailcard.php");
         
-        $subject = sprintf(_("Disease of %s ") , $this->doc->title);
+        $subject = sprintf(("Disease of %s ") , $this->doc->title);
         $zone = "ZOO:DE_MAIL_SICK:S";
         
         $to = $this->GetRValue("WAN_IDVETO:US_MAIL");
