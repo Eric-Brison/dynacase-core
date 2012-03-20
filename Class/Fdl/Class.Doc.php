@@ -4861,7 +4861,7 @@ create unique index i_docir on doc(initid, revision);";
             $err = $this->SpecRefresh();
             // if ($this->id == 0) return; // no refresh for no created document
             $err.= $this->SpecRefreshGen();
-            if ($this->hasChanged) {
+            if ($this->hasChanged && $this->id > 0) {
                 $err.= $this->modify(); // refresh title
                 
             }
@@ -6041,7 +6041,7 @@ create unique index i_docir on doc(initid, revision);";
                 if (is_numeric($this->state) && ($this->state > 0) && (!$this->wid)) {
                     $this->lay->set("freestate", $this->state);
                 } else $this->lay->set("freestate", false);
-                $this->lay->set("setname", ($this->name == "") && $action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
+                $this->lay->set("setname", $action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
                 $this->lay->set("hasrevision", ($this->revision > 0));
                 $this->lay->Set("moddate", strftime("%d/%m/%Y %H:%M:%S", $this->revdate));
                 $this->lay->set("moddatelabel", _("last modification date"));
