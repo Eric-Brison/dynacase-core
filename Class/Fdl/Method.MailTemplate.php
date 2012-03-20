@@ -127,9 +127,16 @@ class _MAILTEMPLATE extends Doc
                             if (strpos($vdocid, "\n")) {
                                 $tvdoc = $this->_val2array($vdocid);
                                 $tmail = array();
-                                foreach ($tvdoc as $docid) {
-                                    $umail = $udoc->getDocValue($docid, 'us_mail', '');
-                                    if (!$umail) $umail = $udoc->getDocValue($docid, 'grp_mail', '');
+                                $it = new DocumentList();
+                                $it->addDocumentIdentificators($tvdoc);
+                                /**
+                                 * @var _IUSER|_IGROUP|_ROLE $aDoc
+                                 */
+                                foreach ($it as $aDoc) {
+                                    $umail = '';
+                                    if (method_exists($aDoc, "getMail")) $umail = $aDoc->getMail();
+                                    if (!$umail) $umail = $aDoc->getValue('us_mail', '');
+                                    if (!$umail) $umail = $aDoc->getValue('grp_mail', '');
                                     if ($umail) $tmail[] = $umail;
                                 }
                                 $mail = implode(",", $tmail);
