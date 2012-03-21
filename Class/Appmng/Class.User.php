@@ -539,7 +539,7 @@ union
         $this->firstname = "guest";
         $this->login = "anonymous";
         $this->isgroup = "N";
-        $this->accounttype = "G";
+        $this->accounttype = "U";
         $this->Add(true);
         // Create admin group
         $this->id = GADMIN_ID;
