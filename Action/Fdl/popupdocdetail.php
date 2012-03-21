@@ -644,7 +644,7 @@ function addDocOfflinePopup(&$tlink, Doc & $doc, $target = "_self", $menu = 'off
 /**
  * Add control view menu
  */
-function changeMenuVisibility(&$action, &$tlink, &$doc)
+function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
 {
     $cuf = ($doc->CanUnLockFile() == "");
     $cud = ($doc->CanEdit() == "");
@@ -707,9 +707,9 @@ function changeMenuVisibility(&$action, &$tlink, &$doc)
         if ($doc->doctype != 'Z') {
             $tmpdoc = new_Doc($doc->dbaccess, $doc->initid, true);
             if ($tmpdoc->Control("view") == "") {
-                $tlink["latest"]["visibility"] = POPUP_ACTIVE;
+                if (!$tmpdoc->preRevive()) $tlink["latest"]["visibility"] = POPUP_ACTIVE;
             }
-        } else $tlink["restore"]["visibility"] = POPUP_ACTIVE;
+        } elseif (!$doc->preRevive()) $tlink["restore"]["visibility"] = POPUP_ACTIVE;
         $tlink["editdoc"]["visibility"] = POPUP_INVISIBLE;
         $tlink["delete"]["visibility"] = POPUP_INVISIBLE;
         $tlink["editprof"]["visibility"] = POPUP_INVISIBLE;

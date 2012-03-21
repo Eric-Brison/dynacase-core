@@ -1557,6 +1557,8 @@ create unique index i_docir on doc(initid, revision);";
         $err = "";
         if (($this->control('delete') == "") || ($this->userid == 1)) {
             if (!$this->isAlive()) {
+                $err = $this->preRevive();
+                if ($err) return $err;
                 $err = simpleQuery($this->dbaccess, sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1", $this->fromid, $this->initid) , $latestId, true, true);
                 if ($err == "") {
                     if (!$latestId) $err = sprintf(_("document %s [%d] is strange") , $this->title, $this->id);
@@ -1571,7 +1573,8 @@ create unique index i_docir on doc(initid, revision);";
                             "lmodify"
                         ) , true);
                         $this->AddComment(_("revival document") , HISTO_MESSAGE, "REVIVE");
-                        
+                        $msg = $this->postRevive();
+                        if ($msg) $this->addComment($msg);
                         $this->addLog('revive');
                         $rev = $this->getRevisions();
                         /**
@@ -2461,6 +2464,22 @@ create unique index i_docir on doc(initid, revision);";
      * @return string warning message, if no warning empty string
      */
     function postImport()
+    {
+    }
+    /**
+     * call when doc is being revive
+     * if return non null string revive will ne aborted
+     * @return string error message, if no error empty string
+     */
+    function preRevive()
+    {
+    }
+    /**
+     * call when doc is revived after resurrection in database
+     * the error message will appeared like message
+     * @return string warning message, if no warning empty string
+     */
+    function postRevive()
     {
     }
     /**

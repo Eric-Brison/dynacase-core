@@ -81,6 +81,11 @@ class _IUSER extends _USER
     {
         return ($this->getValue("US_STATUS") != 'D');
     }
+    
+    public function preRevive()
+    {
+        return _("user cannot be revived");
+    }
     /**
      * @deprecated
      */
@@ -390,6 +395,7 @@ class _IUSER extends _USER
     public function refreshRoles()
     {
         $u = $this->getWUser();
+        if (!$u) return;
         $directRoleIds = $u->getRoles();
         $allParents = $u->getUserParents();
         $allRoles = $allGroup = array();

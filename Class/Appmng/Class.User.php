@@ -224,6 +224,7 @@ create sequence seq_id_users start 10;";
     {
         
         include_once ("WHAT/Class.Session.php");
+        include_once ("FDL/Lib.Usercard.php");
         // delete reference in group table
         $group = new Group($this->dbaccess, $this->id);
         $ugroups = $group->groups;
@@ -726,6 +727,7 @@ union
      */
     public function updateMemberOf()
     {
+        if (!$this->id) return array();
         // get all ascendants groupe,role of a user
         $sql = sprintf("with recursive agroups(gid, login, actype) as (
  select idgroup, users.login, users.accounttype from groups,users where iduser = %d and users.id=groups.idgroup

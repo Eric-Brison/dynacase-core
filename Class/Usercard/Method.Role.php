@@ -36,6 +36,11 @@ class _ROLE extends Doc
             $this->lowerLogin();
         }
     }
+    
+    public function preRevive()
+    {
+        return _("role cannot be revived");
+    }
     /**
      * return concatenation of mail addresses
      * @param bool $rawmail if true get mail address only else get mail address with name

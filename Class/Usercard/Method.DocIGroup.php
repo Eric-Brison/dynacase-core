@@ -73,6 +73,10 @@ class _IGROUP extends _GROUP
         if ($this->getValue("grp_isrefreshed") == "0") $err.= _("this groups must be refreshed");
         return $err;
     }
+    public function preRevive()
+    {
+        return _("group cannot be revived");
+    }
     /**
      * test if the document can be set in LDAP
      */
