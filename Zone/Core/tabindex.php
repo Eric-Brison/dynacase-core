@@ -16,66 +16,9 @@
 /**
  */
 // ---------------------------------------------------------------
-// $Id: tabindex.php,v 1.3 2004/03/22 15:21:40 eric Exp $
-// $Source: /home/cvsroot/anakeen/freedom/core/Zone/Core/tabindex.php,v $
-// ---------------------------------------------------------------
-// $Log: tabindex.php,v $
-// Revision 1.3  2004/03/22 15:21:40  eric
-// change HTTP variable name to put register_globals = Off
-//
-// Revision 1.2  2003/08/18 15:46:42  eric
-// phpdoc
-//
-// Revision 1.1  2002/01/08 12:41:34  eric
-// first
-//
-// Revision 1.13  2001/10/17 14:45:16  eric
-// mise en place de i18n via gettext
-//
-// Revision 1.12  2001/08/30 15:07:45  eric
-// correction = / ==
-//
-// Revision 1.11  2001/08/29 16:07:57  yannick
-// See changelog
-//
-// Revision 1.10  2001/08/29 12:51:04  yannick
-// Bouchage du trou dans tabindex
-//
-// Revision 1.9  2000/11/14 17:35:31  yannick
-// Affichage des TabIndex
-//
-// Revision 1.8  2000/11/13 11:36:19  marc
-// Gestion des droits pour affichage dans Tabindex
-//
-// Revision 1.7  2000/11/08 11:33:44  marc
-// Show tabs according acl
-//
-// Revision 1.6  2000/10/23 14:11:22  yannick
-// Gestion des droits
-//
-// Revision 1.5  2000/10/22 14:19:06  marc
-// Gestion des langues
-//
-// Revision 1.4  2000/10/19 16:45:39  marc
-// Mise au point
-//
-// Revision 1.3  2000/10/11 19:44:41  marc
-// Mise au point (accès graphiques, Css pour TABINDEX...)
-//
-// Revision 1.2  2000/10/10 19:09:11  marc
-// Mise au point
-//
-// Revision 1.1  2000/10/09 19:00:33  marc
-// Creation
-//
-// Revision 1.1  2000/10/06 19:37:44  marc
-// Creation
-//
-//
-// ---------------------------------------------------------------
 include_once ("Class.Action.php");
 // -----------------------------------
-function tabindex(&$action)
+function tabindex(Action & $action)
 {
     // -----------------------------------
     global $_GET;

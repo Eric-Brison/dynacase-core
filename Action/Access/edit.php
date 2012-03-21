@@ -25,18 +25,21 @@ include_once ("Class.User.php");
 include_once ("Class.ControlObject.php");
 include_once ("Class.ObjectPermission.php");
 // -----------------------------------
-function edit(&$action)
+function edit(Action & $action)
 {
     // -----------------------------------
-    $group = (GetHttpVars("group") == "yes");
+    $accountType = getHttpVars("accountType");
     $isclass = (GetHttpVars("isclass") == "yes");
     $coid = intval(GetHttpVars("oid"));
     // the modification can come from action user_access or appl_access
     if (GetHttpVars("mod") == "user") {
         $appId = GetHttpVars("id");
         $filteruser = getHttpVars("userfilter");
-        if ($group) {
+        if ($accountType == "G") {
             $action->lay->Set("returnact", "GROUP_ACCESS&userfilter=$filteruser");
+            $userId = $action->Read("access_group_id");
+        } elseif ($accountType == "R") {
+            $action->lay->Set("returnact", "ROLE_ACCESS&userfilter=$filteruser");
             $userId = $action->Read("access_group_id");
         } else {
             $action->lay->Set("returnact", "USER_ACCESS&userfilter=$filteruser"); // for return previous page
@@ -67,7 +70,23 @@ function edit(&$action)
     }
     // write title : user name
     $user = new User($action->GetParam("CORE_DB") , $userId);
-    $action->lay->Set("title", $action->text("user") . " : " . $user->firstname . " " . $user->lastname);
+    switch ($user->accounttype) {
+        case "U":
+            $action->lay->set("accountLabel", _("User"));
+            break;
+
+        case "G":
+            $action->lay->set("accountLabel", _("Group"));
+            break;
+
+        case "R":
+            $action->lay->set("accountLabel", _("Role"));
+            break;
+
+        default:
+            $action->lay->set("accountLabel", "");
+    }
+    $action->lay->Set("title", $user->firstname . " " . $user->lastname);
     edit_main($action, $userId, $appId, $coid);
 }
 // -----------------------------------

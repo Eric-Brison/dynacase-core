@@ -112,7 +112,7 @@ addEvent(window,"load",findtarget);
 <input type="hidden" name="userid" value="[userid]">
 <input type="hidden" name="oid" value="[oid]">
 <H3 style="text-align:center">[TEXT:accessfor] <br><i>[appname]</i></H3>
-<H4 style="text-align:center">[title]</H4>
+<H4 style="text-align:center">[accountLabel] : <em>[title]</em></H4>
 
 
         <H5 style="text-align:center">[dboperm]</H5>

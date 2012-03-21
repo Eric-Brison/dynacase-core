@@ -24,20 +24,17 @@ include_once ("Class.QueryGen.php");
 include_once ("Class.SubForm.php");
 include_once ("Class.TableLayout.php");
 // -----------------------------------
-function user_access(&$action, $group = false)
+function user_access(Action & $action, $accountType = "U")
 {
     // -----------------------------------
     $baseurl = $action->GetParam("CORE_BASEURL");
     $standurl = $action->GetParam("CORE_STANDURL");
     $filteruser = getHttpVars("userfilter");
+    
     $user_id = getHttpVars("uid");
     $action->lay->set("userfilter", $filteruser);
     // Set the edit form element
-    if ($group) {
-        $paramedit = "&group=yes";
-    } else {
-        $paramedit = "&group=no";
-    }
+    $paramedit = "&accountType=$accountType";
     
     $form = new SubForm("edit", 500, 330, "app=ACCESS&action=MODIFY$paramedit", $standurl . "app=ACCESS&action=EDIT&mod=user&userfilter=$filteruser$paramedit");
     
@@ -62,16 +59,23 @@ function user_access(&$action, $group = false)
     $action->lay->set("usefilter", false);
     // affect the select form elements
     $u = new User();
-    if ($group) {
+    if ($accountType == "G") {
         $list = $u->GetGroupList("TABLE");
         $varreg = "access_group_id";
-        $action->lay->set("imgaccess", $action->GetIcon("access2.gif", "modify", 20));
+        $action->lay->set("imgaccess", $action->GetImageUrl("access2.gif", true, 20));
+        $action->lay->set("changeLabel", _("Select Group Access"));
+    } elseif ($accountType == "R") {
+        $list = $u->GetRoleList("TABLE");
+        $varreg = "access_group_id";
+        $action->lay->set("imgaccess", $action->GetImageUrl("access2.gif", true, 20));
+        $action->lay->set("changeLabel", _("Select Role Access"));
     } else {
         $list = $u->GetUserList("TABLE", 0, 30, $filteruser);
         $action->lay->set("maxreach", (count($list) == 30));
         $action->lay->set("usefilter", true);
         $varreg = "access_user_id";
-        $action->lay->set("imgaccess", $action->GetIcon("access.gif", "modify", 18));
+        $action->lay->set("imgaccess", $action->GetImageUrl("access.gif", true, 20));
+        $action->lay->set("changeLabel", _("Select User Access"));
     }
     // select the first user if not set
     if ($user_id == "") $user_id = $action->Read($varreg);
@@ -130,7 +134,9 @@ function user_access(&$action, $group = false)
             "description",
             "edit"
         );
-        $query->slice = 20;
+        $query->order_by = "name";
+        $query->slice = 100;
+        $query->placeHolder = _("Application filter");
         
         $query->Query();
         // 2) Get all acl for all application

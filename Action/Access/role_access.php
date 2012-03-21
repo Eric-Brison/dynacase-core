@@ -6,8 +6,8 @@
 */
 
 include_once ("ACCESS/user_access.php");
-function group_access(Action & $action)
+function role_access(Action & $action)
 {
-    user_access($action, "G");
+    user_access($action, "R");
 }
 ?>

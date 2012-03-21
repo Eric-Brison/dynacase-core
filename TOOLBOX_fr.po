@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-20 09:45+0100\n"
-"PO-Revision-Date: 2012-03-20 09:46+0100\n"
+"POT-Creation-Date: 2012-03-20 17:42+0100\n"
+"PO-Revision-Date: 2012-03-21 10:49+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -511,6 +511,9 @@ msgstr "Accès aux fonctions de raffraichissement des utilisateurs"
 msgid "Accord"
 msgstr "Accord"
 
+msgid "Account filter"
+msgstr "Rechercher un compte"
+
 #, c-format
 msgid "Acl [%s] not available for App %s"
 msgstr "ACL %s non valable pour l'application %s"
@@ -680,6 +683,9 @@ msgstr "Application %s (%s) non disponible"
 
 msgid "Application Access"
 msgstr "Accès des applications"
+
+msgid "Application filter"
+msgstr "Filtrer les applications"
 
 msgid "Application list"
 msgstr "Liste des applications"
@@ -2346,6 +2352,9 @@ msgstr "Modifier"
 msgid "Modify Attributes"
 msgstr "Modification des attributs"
 
+msgid "Modify access"
+msgstr "Modifier les droits d'accès"
+
 msgid "Modify acls"
 msgstr "Modifier les droits"
 
@@ -2857,6 +2866,9 @@ msgstr "Retour au document de référence"
 msgid "Revise"
 msgstr "Réviser"
 
+msgid "Role"
+msgstr ""
+
 #, c-format
 msgid "Role \"%s\""
 msgstr "le rôle \"%s\""
@@ -2864,6 +2876,9 @@ msgstr "le rôle \"%s\""
 #, c-format
 msgid "Role '%s' not exists"
 msgstr "Le rôle '%s' n'existe pas"
+
+msgid "Role Access"
+msgstr "Accès des rôles"
 
 msgid "Root folder"
 msgstr "Dossier racine"
@@ -2977,10 +2992,22 @@ msgstr "Voir les dernières informations"
 msgid "See members detail"
 msgstr "Voir les membres"
 
+msgid "Select Application Access"
+msgstr "Application"
+
+msgid "Select Group Access"
+msgstr "Groupe"
+
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
 msgstr ""
 "Sélectionnez avec profil pour une réutilisation dans une autre base ou pour "
 "une sauvegarde"
+
+msgid "Select Role Access"
+msgstr "Rôle"
+
+msgid "Select User Access"
+msgstr "Utilisateur"
 
 msgid "Select all columns"
 msgstr "Sélectionner tout"
@@ -3418,6 +3445,9 @@ msgstr "Utilisation du dossier personnel <%s> à la place"
 msgid "Used"
 msgstr "Utilisé"
 
+msgid "User"
+msgstr "Utilisateur"
+
 msgid "User Access"
 msgstr "Accès des utilisateurs"
 
@@ -3769,7 +3799,7 @@ msgid ""
 msgstr ""
 
 msgid "actions"
-msgstr "actions"
+msgstr "les actions"
 
 msgid "add"
 msgstr "ajout"
@@ -4592,9 +4622,6 @@ msgstr "choix d'une action à partir d'un traitement"
 msgid "choose colums"
 msgstr "Choix des colonnes affichées"
 
-msgid "choose document"
-msgstr "choisi un document"
-
 msgid "choose for edit enum attribute"
 msgstr "choix pour editer les attributs énumérés"
 
@@ -5340,9 +5367,6 @@ msgstr "édition des arguments des actions dans l'édition des cycles"
 
 msgid "edit attribute inline"
 msgstr "Éditer les attribut en ligne"
-
-msgid "edit by object"
-msgstr "édition par objet"
 
 msgid "edit contact card"
 msgstr "éditer la fiche"
@@ -6107,9 +6131,6 @@ msgstr "Importation Vcard"
 
 msgid "impossible conversion"
 msgstr "conversion impossible"
-
-msgid "in database"
-msgstr "dans la base de données"
 
 #, c-format
 msgid "in domain %s"
@@ -8449,9 +8470,6 @@ msgstr ""
 msgid "use what gate"
 msgstr ""
 
-msgid "user"
-msgstr "utilisateur"
-
 #, c-format
 msgid "user #%d does not exist"
 msgstr "l'utilisateur n°%d n'existe pas"
@@ -8985,6 +9003,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "changegroup"
 #~ msgstr "Changement de groupe"
 
+#~ msgid "choose document"
+#~ msgstr "choisi un document"
+
 #~ msgid "clear"
 #~ msgstr "Effacer"
 
@@ -9001,6 +9022,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
 #~ "descendre"
+
+#~ msgid "edit by object"
+#~ msgstr "édition par objet"
 
 #~ msgid "elinkEncode::attribute not found %s"
 #~ msgstr "elinkEncode :  attribut non trouvé %s"
@@ -9148,6 +9172,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "if not set, will be the current date more delay"
 #~ msgstr "si vide, ce sera la date courante plus le délai"
 
+#~ msgid "in database"
+#~ msgstr "dans la base de données"
+
 #~ msgid "insert the document to see it with offline application"
 #~ msgstr "insérer le document pour le voir avec l'application offline"
 
@@ -9219,6 +9246,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "too many similar document %s <B>ignored</B> "
 #~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
+
+#~ msgid "user"
+#~ msgstr "utilisateur"
 
 #~ msgid "user account edition"
 #~ msgstr "modifier compte utilisateur"

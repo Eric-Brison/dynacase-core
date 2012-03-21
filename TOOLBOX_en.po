@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-20 09:45+0100\n"
+"POT-Creation-Date: 2012-03-20 17:42+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -533,6 +533,9 @@ msgstr ""
 msgid "Accord"
 msgstr ""
 
+msgid "Account filter"
+msgstr ""
+
 #, c-format
 msgid "Acl [%s] not available for App %s"
 msgstr ""
@@ -715,6 +718,9 @@ msgid "Application %s (%s) not available"
 msgstr ""
 
 msgid "Application Access"
+msgstr ""
+
+msgid "Application filter"
 msgstr ""
 
 #, fuzzy
@@ -2463,6 +2469,9 @@ msgstr "Modify"
 msgid "Modify Attributes"
 msgstr "Update Title Cards"
 
+msgid "Modify access"
+msgstr ""
+
 msgid "Modify acls"
 msgstr ""
 
@@ -3012,12 +3021,18 @@ msgstr ""
 msgid "Revise"
 msgstr "Created by"
 
+msgid "Role"
+msgstr ""
+
 #, c-format
 msgid "Role \"%s\""
 msgstr ""
 
 #, c-format
 msgid "Role '%s' not exists"
+msgstr ""
+
+msgid "Role Access"
 msgstr ""
 
 #, fuzzy
@@ -3151,7 +3166,19 @@ msgstr ""
 msgid "See members detail"
 msgstr ""
 
+msgid "Select Application Access"
+msgstr ""
+
+msgid "Select Group Access"
+msgstr ""
+
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
+msgstr ""
+
+msgid "Select Role Access"
+msgstr ""
+
+msgid "Select User Access"
 msgstr ""
 
 msgid "Select all columns"
@@ -3582,6 +3609,9 @@ msgid "Use your home folder instead <%s>"
 msgstr ""
 
 msgid "Used"
+msgstr ""
+
+msgid "User"
 msgstr ""
 
 msgid "User Access"
@@ -4810,9 +4840,6 @@ msgstr "Delete"
 msgid "choose colums"
 msgstr "Start search"
 
-msgid "choose document"
-msgstr ""
-
 msgid "choose for edit enum attribute"
 msgstr ""
 
@@ -5642,10 +5669,6 @@ msgid "edit attribute inline"
 msgstr "Update Title Cards"
 
 #, fuzzy
-msgid "edit by object"
-msgstr "object"
-
-#, fuzzy
 msgid "edit contact card"
 msgstr "Create"
 
@@ -6469,9 +6492,6 @@ msgid "import vcard"
 msgstr "Import"
 
 msgid "impossible conversion"
-msgstr ""
-
-msgid "in database"
 msgstr ""
 
 #, c-format
@@ -8985,9 +9005,6 @@ msgstr ""
 msgid "use what gate"
 msgstr ""
 
-msgid "user"
-msgstr "user"
-
 #, c-format
 msgid "user #%d does not exist"
 msgstr ""
@@ -9479,6 +9496,10 @@ msgstr ""
 #~ msgid "domaingroup"
 #~ msgstr "Domain"
 
+#, fuzzy
+#~ msgid "edit by object"
+#~ msgstr "object"
+
 #~ msgid "err_add_user"
 #~ msgstr "Can't create user"
 
@@ -9656,6 +9677,9 @@ msgstr ""
 
 #~ msgid "titleuser"
 #~ msgstr "User List"
+
+#~ msgid "user"
+#~ msgstr "user"
 
 #, fuzzy
 #~ msgid "user account edition"

@@ -1,28 +1,12 @@
-<table width="[CORE_FULLWIDTH]" align="left" border="0" cellspacing="0" cellpadding="0">
-<tr><td>
+<div width="[CORE_FULLWIDTH]" align="left" border="0" cellspacing="0" cellpadding="0">
 
-
-<table align="left" border="0" cellspacing="0" cellpadding="0">
-<tr>
 [BLOCK TAG]
-  <td class="[TAG_CELLBGCLASS]" valign="middle">&nbsp;
+  <div class="[TAG_CELLBGCLASS]" valign="middle">&nbsp;
        <a href="[TAG_ENTRYURLROOT]app=[TAG_ENTRYAPP]&action=[TAG_ENTRYPAGE]" target="[TARGET]">
           <span class="[TAG_LABELCLASS]">[TAG_ENTRYLABEL]</span>
-       </a></td>
-  <td class="[TAG_CELLBGCLASS]" valign="top"><img src="[IMG:corner.gif]"  border="0"></td>
+       </a></div>
+
 [ENDBLOCK TAG]
-</tr>
+</div>
 
 
-<tr>
-[BLOCK NOTAG] 
-  <td valign="middle">
- [TAG_NONE]
-  </td>
-[ENDBLOCK NOTAG]
-</tr>
-</table>
-
-</td></tr>
-<tr><td width="[CORE_FULLWIDTH]" class="TABBackgroundSelected" height="2"><img src="[IMG:1x1.png]" border="0" align="absbottom"></td></tr>
-</table>
