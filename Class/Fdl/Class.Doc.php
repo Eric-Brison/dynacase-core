@@ -6042,6 +6042,7 @@ create unique index i_docir on doc(initid, revision);";
                     $this->lay->set("freestate", $this->state);
                 } else $this->lay->set("freestate", false);
                 $this->lay->set("setname", $action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
+                $this->lay->set("lname", $this->name);
                 $this->lay->set("hasrevision", ($this->revision > 0));
                 $this->lay->Set("moddate", strftime("%d/%m/%Y %H:%M:%S", $this->revdate));
                 $this->lay->set("moddatelabel", _("last modification date"));
