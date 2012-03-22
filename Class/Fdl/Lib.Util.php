@@ -35,9 +35,11 @@ function getGen($dbaccess)
  * @param string $fdate DD/MM/YYYY HH:MM:SS (CET)
  * @param string $wtz with timezone add time zone in the end if true
  * @return string date YYYY-MM-DD HH:MM:SS
+ * @deprecated use stringDateToIso() instead
  */
 function toIso8601($fdate, $wtz = false)
 {
+    deprecatedFunction();
     $isoDate = "";
     if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s(\d\d)?:?(\d\d)?:?(\d\d)?\s+?(\w+)?$/", $fdate, $reg)) {
         $isoDate = sprintf("%04d-%02d-%02d %02d:%02d:%02d", $reg[3], $reg[2], $reg[1], $reg[4], $reg[5], $reg[6]);
@@ -63,7 +65,7 @@ function StringDateToJD($sdate)
  */
 function FrenchDateToJD($fdate)
 {
-    if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?(\.\d)*\s?(\w+)?$/", $fdate, $reg)) {
+    if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?(\.\d)*/", $fdate, $reg)) {
         return cal2jd("CE", $reg[3], $reg[2], $reg[1], $reg[4], $reg[5], 0);
     }
     return false;
@@ -76,7 +78,7 @@ function FrenchDateToJD($fdate)
  */
 function FrenchDateToUnixTs($fdate, $utc = false)
 {
-    if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/", $fdate, $r)) {
+    if (preg_match("/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/", $fdate, $r)) {
         if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
         else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[1], $r[3]);
     } else {
@@ -87,7 +89,7 @@ function FrenchDateToUnixTs($fdate, $utc = false)
 
 function stringDateToLocaleDate($fdate, $format = '')
 {
-    if (preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/', $fdate, $r)) {
+    if (preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?/', $fdate, $r)) {
         // convert to french
         $yy = $r[1];
         $mo = $r[2];
@@ -170,7 +172,7 @@ function FrenchDateToLocaleDate($fdate, $format = '')
 function FrenchDateToIso($fdate, $withT = true)
 {
     if (!$fdate) return '';
-    if (preg_match('/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/', $fdate, $r)) {
+    if (preg_match('/^(\d\d)\/(\d\d)\/(\d\d\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/', $fdate, $r)) {
         
         if ($r[4] == "") $dt = sprintf("%04d-%02d-%02d", $r[3], $r[2], $r[1]);
         else $dt = sprintf("%04d-%02d-%02d%s%02d:%02d:%02d", $r[3], $r[2], $r[1], ($withT) ? 'T' : ' ', $r[4], $r[5], $r[6]);
@@ -187,7 +189,7 @@ function FrenchDateToIso($fdate, $withT = true)
  */
 function iso8601DateToUnixTs($isodate, $utc = false)
 {
-    if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/", $isodate, $r)) {
+    if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?/", $isodate, $r)) {
         if ($utc) $dt = gmmktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
         else $dt = mktime($r[4], $r[5], $r[6], $r[2], $r[3], $r[1]);
     } else {
@@ -233,7 +235,7 @@ function isValidDate($date)
 function stringDateToIso($date, $format = false, $withT = false)
 {
     if ($format === false) {
-        if (preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/', $date, $r)) {
+        if (preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)[\s|T]?(\d\d)?:?(\d\d)?:?(\d\d)?/', $date, $r)) {
             if ($withT) {
                 if (strlen($date) > 11) {
                     $date[10] = 'T';
@@ -302,7 +304,7 @@ function stringDateToIso($date, $format = false, $withT = false)
  */
 function Iso8601ToJD($isodate)
 {
-    if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?\s?(\w+)?$/", $isodate, $reg)) {
+    if (preg_match("/^(\d\d\d\d)-(\d\d)-(\d\d)\s?(\d\d)?:?(\d\d)?:?(\d\d)?/", $isodate, $reg)) {
         return cal2jd("CE", $reg[1], $reg[2], $reg[3], $reg[4], $reg[5], 0);
     }
     return false;
