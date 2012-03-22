@@ -2,61 +2,53 @@
   $Id: user_access.xml,v 1.9 2007/02/16 08:32:08 eric Exp $
   $Source: /home/cvsroot/anakeen/freedom/core/Action/Access/user_access.xml,v $
 -->
+<style>
+table.access input:-moz-placeholder {
+      color: #82A0B5;
+}
+table.access {
+    border :solid 1px [COLOR_BLACK];
+}
+table.access thead {
+    border :solid 2px [COLOR_B0];
+}
+tr.aclhead {
+       border-bottom :solid 2px [COLOR_BLACK];
+}
+table.access form {
+     display:inline;
+    }
+    table.access label {
+     font-weight:bold;
+    }
+a.access img {
+    border:none;
+    }
+input[name="text"] {
+    width:200px;
+}
+</style>
 
-<table cellspacing="0" cellpadding="0" border="0" width="[CORE_FULLWIDTH]">
-<tr><td colspan="8">
-[ZONE CORE:TABINDEX] 
-</td></tr>
 
-<tr>
-  <td width="100" valign="top">
-     [QUERY_FORM]
-     
-     <font size="-1">
-      [FULLTEXTFORM]
-     </font>
-  </td>
-  <td>
+[ZONE CORE:TABINDEX]
+<br/>
 
-
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
+<table class="access" border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
     <tr> 
       <td  valign="middle" class="CORETblHeadCell">
-    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=[ACTION_CHG]">
-       <select name="id" onChange="submit()">
+    <form style="display:inline" name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=[ACTION_CHG]">
+       <label for="id">[changeLabel] : </label><select name="id" onChange="submit()">
 [BLOCK SELUSER]
          <option [selected] value="[id]">[text]</option> [ENDBLOCK SELUSER]
         [IF maxreach]<option disabled value="">[TEXT:Max user reach. Use search filter]</option>[ENDIF maxreach]
        </select>
-       [IF usefilter][TEXT:Search]:<input value="[userfilter]" title="[TEXT:filter on login and lastname]" name="userfilter">[ENDIF usefilter]
-    </form>  
+       [IF usefilter][TEXT:Search]:<input value="[userfilter]" placeholder="[TEXT:filter on login and lastname]" title="[TEXT:filter on login and lastname]" name="userfilter">[ENDIF usefilter]
+    </form>
       </td>
-[BLOCK ZONOID]    
-      <td   class="CORETblHeadCell" >
-    <form name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=OBJECT_ACCESS">
-[BLOCK ZONSELOID] 
-       <select name="oid" onChange="if (this.options[this.selectedIndex] != '0') submit()">
-         <option value="0">[TEXT:choose document]</option>
-[BLOCK OID]
-         <option [selectedoid] value="[coid]">[descoid]</option> [ENDBLOCK OID]
-       </select>        
-        <a href="#" 
-           onClick="subwindow(300,500,'access_oid','[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[soid]&userid=2&appid=[appid]')">
-          <img align="absmiddle" height="22" alt="[TEXT:edit by object]" title="[TEXT:edit by object]" border="0" src="[IMG:access.gif]">
-        </a>       
-[ENDBLOCK ZONSELOID] 
-        <input type="hidden" value="[dboperm]" name="dboperm"></input>
-       <span class="CORETblHead">[TEXT:in database]</span>
-       <select name="dbopname" onChange="submit()"> 
-[BLOCK DBNAME]
-         <option [selecteddb] value="[dbopname]">[dbopname]</option>
-[ENDBLOCK DBNAME]
-       </select>  
-    </form>        
-      </td>   
-[ENDBLOCK ZONOID] 
+
       <td  valign="baseline"  align="right" class="CORETblHeadCell">
+          [QUERY_FORM]
+               <font size="-1">[FULLTEXTFORM] </font>
        <span class="CORETblHead">
         <a href="#" onclick="self.print()">
           <img height="22" alt="[TEXT:print]" title="[TEXT:print]" border="0" src="[IMG:print.gif]">
@@ -66,19 +58,20 @@
       </td>
      </tr>
 </table>
+
 [IF hasuser]
 <table   border="0" cellspacing="0" cellpadding="0" width="[CORE_FULLWIDTH]">
 <!-- TABLEPAGING -->
-
+<thead>
 <tr>
 
-  <td align="left" class="CORETblCell">
+  <td align="left">
 
   &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
 
   </td>
      
-  <td align="right" colspan="2" class="CORETblCell">
+  <td align="right" colspan="2">
 
   &nbsp;[TABLE_NEXT]&nbsp;[TABLE_LAST]
 
@@ -87,22 +80,21 @@
 <!-- /TABLEPAGING -->
 
 <!-- TABLEHEAD -->
-<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
 
-<tr>
-  <td  class="CORETblCell"><span class="CORETblBold">[shortname]</span></td>
-  <td  class="CORETblCell"><span class="CORETblBold">[desc]</span></td>
-  <td  class="CORETblCell"><span class="CORETblBold">[permission]</span></td>
+<tr class="aclhead">
+  <td ><span class="CORETblBold">[shortname]</span></td>
+  <td ><span class="CORETblBold">[desc]</span></td>
+  <td ><span class="CORETblBold">[permission]</span></td>
 </tr>
 
 <!-- /TABLEHEAD -->
 
-<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
-
+</thead>
+<tbody>
 <!-- TABLEBODY -->
 [BLOCK TABLEBODY]
 <tr>
-  <td class="[CLASS]" ><a href="#" OnClick="[edit]">[imgaccess]</a><span class="CORETbl">[name]</span></td>
+  <td class="[CLASS]" ><a href="#" class="access" OnClick="[edit]" title="[TEXT:Modify access]"><img src="[imgaccess]"></a><span class="CORETbl">[name]</span></td>
   <td class="[CLASS]" ><span class="CORETbl">[description]</span></td>
   <td class="[CLASS]" ><span class="CORETbl">
 
@@ -118,15 +110,15 @@
 
 <!-- TABLEPAGING -->
 <tr>
-  <td align="left"  class="CORETblCell">
+  <td align="left" >
 
   &nbsp;[TABLE_FIRST]&nbsp;[TABLE_PREV]
 
   </td>
-  <td class="CORETblCell">
+  <td>
    [TABLE_NUM]/[TABLE_NB]
   </td>
-  <td align="right"  class="CORETblCell">
+  <td align="right" >
 
   &nbsp;[TABLE_NEXT]&nbsp;[TABLE_LAST]
 
@@ -136,9 +128,8 @@
 <!-- /TABLEPAGING -->
 <tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td></tr>
 
-
+</tbody>
 </table>[ENDIF hasuser]
 [IFNOT hasuser]<p>[TEXT:No user found]</p>[ENDIF hasuser]
-</td></tr>
-</table>
+
 

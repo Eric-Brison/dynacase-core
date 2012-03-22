@@ -20,8 +20,9 @@
 // $Source: /home/cvsroot/anakeen/freedom/freedom/Action/Freedom/freedom_access.php,v $
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
+include_once "FDL/editutil.php";
 // -----------------------------------
-function freedom_access(&$action)
+function freedom_access(Action & $action)
 {
     // -----------------------------------
     // export all selected card in a tempory file
@@ -29,30 +30,49 @@ function freedom_access(&$action)
     // -----------------------------------
     // Get all the params
     $dbaccess = $action->GetParam("FREEDOM_DB");
-    $docid = GetHttpVars("id");
-    $userId = GetHttpVars("userid", $action->user->id);
+    $docid = $action->getArgument("id");
+    $userId = $action->getArgument("userid");
+    if (!$userId) {
+        $duid = $action->getArgument("_userid");
+        if ($duid) {
+            $userId = User::getUidFromFid($duid);
+        }
+    }
+    if (!$userId) {
+        $userId = $action->user->id;
+    }
     
     $doc = new_Doc($dbaccess, $docid);
     // test if current user can view ACL
     $err = $doc->Control("viewacl");
     if ($err != "") $action->exitError($err);
-    
-    $action->lay->Set("title", $doc->title);
+    editmode($action);
+    $action->lay->Set("title", $doc->getHtmlTitle());
     // contruct user id list
-    $ouser = new User();
+    $ouser = new User('', $userId);
+    if (!$ouser->isAffected()) $action->exitError(sprintf(_("unknow user #%s") , $userId));
     $tiduser = $ouser->GetUserAndGroupList();
-    $userids = array();
-    while (list($k, $v) = each($tiduser)) {
-        if ($v->id == 1) continue; // except admin : don't need privilege
-        if ($v->id == $userId) $userids[$k]["selecteduser"] = "selected";
-        else $userids[$k]["selecteduser"] = "";
-        $userids[$k]["suserid"] = $v->id;
-        $userids[$k]["descuser"] = $v->firstname . " " . $v->lastname;
-    }
     
     $action->lay->Set("docid", $doc->id);
-    $action->lay->Set("userid", ($userId == 1) ? $tiduser[0]->id : $userId);
+    $action->lay->Set("userid", $ouser->id);
     
-    $action->lay->SetBlockData("USER", $userids);
+    $action->lay->Set("toProfil", $doc->getDocAnchor($doc->id, 'account', true, false, false, 'latest', true));
+    if ($doc->dprofid) {
+        $action->lay->Set("dynamic", true);
+        $action->lay->Set("dprofid", $doc->dprofid);
+        $action->lay->Set("ComputedFrom", _("Computed from"));
+        $action->lay->Set("toDynProfil", $doc->getHTMLTitle($doc->dprofid));
+    } elseif ($doc->profid != $doc->id) {
+        $action->lay->Set("dynamic", true);
+        $action->lay->Set("dprofid", $doc->profid);
+        $action->lay->Set("ComputedFrom", _("Linked from"));
+        $action->lay->Set("toDynProfil", $doc->getHTMLTitle($doc->profid));
+    } else {
+        $action->lay->Set("dynamic", false);
+    }
+    
+    $action->lay->Set("fid", $doc->getDocAnchor($ouser->fid, 'account', true, false, false, 'latest', true));
+    $action->lay->Set("userid", ($userId == 1) ? $tiduser[0]->id : $userId);
+    $action->lay->Set("username", User::getDisplayName($userId));
 }
 ?>

@@ -41,6 +41,12 @@ class QueryDir extends DbObj
         "childid"
     );
     
+    public $dirid;
+    public $query;
+    public $childid;
+    public $fromid;
+    public $qtype;
+    public $doctype;
     var $dbtable = "fld";
     
     var $order_by = "dirid";
@@ -64,7 +70,6 @@ create unique index fld_u on fld(qtype,dirid,childid);
 create sequence seq_id_fld start 100;
 CREATE TRIGGER tfldfrom before insert on fld FOR EACH ROW execute procedure fromfld();";
     #CREATE TRIGGER tfldrel after insert or update or delete on fld FOR EACH ROW execute procedure relfld();";
-    
     function PreInsert()
     {
         // test if not already exist
@@ -82,8 +87,8 @@ CREATE TRIGGER tfldfrom before insert on fld FOR EACH ROW execute procedure from
                 return true; // just to say it is not a real error
                 
             }
-            return false;
         }
+        return false;
     }
 }
 ?>

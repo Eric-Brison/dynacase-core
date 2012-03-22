@@ -69,7 +69,7 @@ function refreshOneGroup($gid, $refresh)
 {
     global $_SERVER;
     $g = new User("", $gid);
-    if ($g->fid > 0) {
+    if ($g->fid > 0 && $g->accounttype == 'G') {
         $dbaccess = GetParam("FREEDOM_DB");
         /**
          * @var _IGROUP $doc

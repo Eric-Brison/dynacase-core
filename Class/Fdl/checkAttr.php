@@ -41,7 +41,8 @@ class CheckAttr extends CheckData
         "menu",
         "action",
         "docid",
-        "htmltext"
+        "htmltext",
+        "account"
     );
     
     private $noValueTypes = array(

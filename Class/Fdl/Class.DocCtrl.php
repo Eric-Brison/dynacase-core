@@ -128,6 +128,9 @@ class DocCtrl extends DocLDAP
      * @var int dynamic profil identificator
      */
     public $dprofid;
+    public $views;
+    public $attributes;
+    public $doctype;
     /**
      * @var int document identificator
      */
@@ -194,8 +197,6 @@ class DocCtrl extends DocLDAP
             $perm->docid = $this->id;
             $perm->userid = $this->userid;
             $perm->upacl = - 2; // all privileges
-            $perm->unacl = 0;
-            $perm->cacl = 0;
             if (!$perm->IsAffected()) {
                 // add all privileges to current user
                 $perm->Add();
@@ -215,7 +216,7 @@ class DocCtrl extends DocLDAP
     /**
      * set profil for document
      *
-     * @param int profid identificator for profil document
+     * @param int $profid identificator for profil document
      */
     function setProfil($profid, $fromdocidvalues = 0)
     {
@@ -223,6 +224,8 @@ class DocCtrl extends DocLDAP
         if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
         if (empty($profid)) {
             $profid = 0;
+            $this->dprofid = 0;
+            $this->views = '{0}';
         }
         $this->profid = $profid;
         if (($profid > 0) && ($profid != $this->id)) {
@@ -236,23 +239,26 @@ class DocCtrl extends DocLDAP
                 
             } else {
                 $this->dprofid = 0;
+                $this->setViewProfil();
             }
             if ($pdoc->profid == 0) $this->profid = - $profid; // inhibition
             
         } elseif (($profid > 0) && ($profid == $this->id)) {
             $this->dprofid = 0;
+            $this->setViewProfil();
         }
         if ($this->id > 0) {
             $err = $this->modify(true, array(
                 "profid",
-                "dprofid"
+                "dprofid",
+                "views"
             ) , true);
         }
     }
     /**
      * reset right for dynamic profil
      *
-     * @param int dprofid identificator for dynamic profil document
+     * @param int $dprofid identificator for dynamic profil document
      * @return string error message
      */
     function computeDProfil($dprofid = 0, $fromdocidvalues = 0)
@@ -263,7 +269,6 @@ class DocCtrl extends DocLDAP
         if ($dprofid <= 0) return '';
         $perm = null;
         $vupacl = array();
-        $vunacl = array();
         $tnum = array();
         $pdoc = new_Doc($this->dbaccess, $dprofid);
         $pfamid = $pdoc->getValue("DPDOC_FAMID");
@@ -300,6 +305,7 @@ class DocCtrl extends DocLDAP
             }
             $this->exec_query("delete from docperm where docid=" . $this->id);
             if ($fromdocidvalues == 0) $fromdocidvalues = & $this;
+            $greenUid = array();
             foreach ($tacl as $v) {
                 
                 if ($v["userid"] < STARTIDVGROUP) {
@@ -309,11 +315,14 @@ class DocCtrl extends DocLDAP
                 } else {
                     $tuid = array();
                     $aid = $tnum[$v["userid"]];
+                    /**
+                     * @var Doc $fromdocidvalues
+                     */
                     $duid = $fromdocidvalues->getValue($aid);
                     if ($duid == "") $duid = $fromdocidvalues->getParamValue($aid);
                     if ($duid != "") {
                         $duid = str_replace("<BR>", "\n", $duid); // docid multiple
-                        $tduid = $this->_val2array($duid);
+                        $tduid = Doc::_val2array($duid);
                         foreach ($tduid as $duid) {
                             if ($duid > 0) {
                                 $docu = getTDoc($fromdocidvalues->dbaccess, intval($duid)); // not for idoc list for the moment
@@ -326,21 +335,19 @@ class DocCtrl extends DocLDAP
                 }
                 foreach ($tuid as $ku => $uid) {
                     // add right in case of multiple use of the same user : possible in dynamic profile
+                    if (($v["upacl"] & 2) && $uid) $greenUid[$uid] = $uid;
                     $vupacl[$uid] = (intval($vupacl[$uid]) | intval($v["upacl"]));
-                    $vunacl[$uid] = (intval($vunacl[$uid]) | intval($v["unacl"]));
                     
                     if ($uid > 0) {
                         $perm = new DocPerm($this->dbaccess, array(
                             $this->id,
                             $uid
                         ));
-                        $perm->cacl = "0";
                         $perm->upacl = $vupacl[$uid];
-                        $perm->unacl = $vunacl[$uid];
                         //   print "<BR>set perm $uid : ".$this->id."/".$perm->upacl;
                         if ($perm->isAffected()) $err = $perm->modify();
                         else {
-                            if ($perm->upacl || $perm->unacl) {
+                            if ($perm->upacl) {
                                 // add if necessary
                                 $err = $perm->Add();
                             }
@@ -348,18 +355,55 @@ class DocCtrl extends DocLDAP
                     }
                 }
             }
-            if ($perm) {
-                // reinit computed
-                $err = $perm->resetComputed();
-            }
+            $this->views = '{' . implode(',', $greenUid) . '}';
+            $this->Modify(true, array(
+                'views'
+            ) , true);
         }
         unset($this->uperm); // force recompute privileges
         return $err;
     }
     /**
+     * recompute view vector privilege
+     */
+    public function setViewProfil()
+    {
+        if ($this->dprofid) {
+            $this->computeDProfil();
+        } else {
+            if ($this->profid == $this->id) {
+                $err = simpleQuery($this->dbaccess, sprintf("select userid from docperm where docid=%d and upacl & 2 != 0", $this->id) , $uids, true, false);
+                $this->views = '{' . implode(',', $uids) . '}';
+                $err = $this->modify(true, array(
+                    'views'
+                ) , true);
+                if ($this->isRealProfil()) {
+                    //propagate static profil views on linked documents
+                    $err = simpleQuery($this->dbaccess, sprintf("update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->views, $this->id));
+                }
+            } else {
+                // static profil
+                if ($this->profid > 0) {
+                    $err = simpleQuery($this->dbaccess, sprintf("select views from docread where id=%d", $this->profid) , $view, true, true);
+                } else {
+                    $view = '{0}';
+                }
+                $this->views = $view;
+                if ($this->id) $err = $this->modify(true, array(
+                    'views'
+                ) , true);
+            }
+        }
+    }
+    
+    public function isRealProfil()
+    {
+        return ($this->getAttribute("dpdoc_famid") != null);
+    }
+    /**
      * modify control for a specific user
      *
-     * @param int uid user identificator
+     * @param int $uid user identificator
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $deletecontrol set true if want delete a control
      * @param bool $negativecontrol set true if want add a negative control (explicit no permission)
@@ -404,10 +448,10 @@ class DocCtrl extends DocLDAP
                 $uid
             ));
             if ($deletecontrol) {
-                if ($negativecontrol) $perm->UnsetControlN($pos);
+                if ($negativecontrol); // deprecated
                 else $perm->UnsetControlP($pos);
             } else {
-                if ($negativecontrol) $perm->SetControlN($pos);
+                if ($negativecontrol); // deprecated;
                 else $perm->SetControlP($pos);
             }
             if ($perm->isAffected()) $err = $perm->modify();
@@ -415,12 +459,13 @@ class DocCtrl extends DocLDAP
                 $err = $perm->Add();
             }
         }
+        $this->setViewProfil();
         return $err;
     }
     /**
      * add control for a specific user
      *
-     * @param int uid user identificator
+     * @param int $uid user identificator
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $negativecontrol set true if want add a negative control (explicit no permission)
      * @return string error message (empty if no errors)
@@ -433,7 +478,7 @@ class DocCtrl extends DocLDAP
      * suppress control for a specific user
      *
      * is not a negative control
-     * @param int uid user identificator
+     * @param int $uid user identificator
      * @param string $aclname name of the acl (edit, view,...)
      * @param bool $negativecontrol set true if want suppress a negative control
      * @return string error message (empty if no errors)
@@ -445,7 +490,7 @@ class DocCtrl extends DocLDAP
     /**
      * set control view for document
      *
-     * @param int cvid identificator for control view document
+     * @param int $cvid identificator for control view document
      */
     function setCvid($cvid)
     {
@@ -463,21 +508,11 @@ class DocCtrl extends DocLDAP
     {
         if ($this->profid == $docid) {
             if (!isset($this->uperm)) {
-                $perm = new DocPerm($this->dbaccess, array(
-                    $docid,
-                    $this->userid
-                ));
-                if ($perm->IsAffected()) $this->uperm = $perm->uperm;
-                else $this->uperm = $perm->getUperm($docid, $this->userid);
+                $this->uperm = DocPerm::getUperm($docid, $this->userid);
             }
             return $this->ControlUp($this->uperm, $aclname);
         } else {
-            $perm = new DocPerm($this->dbaccess, array(
-                $docid,
-                $this->userid
-            ));
-            if ($perm->isAffected()) $uperm = $perm->uperm;
-            else $uperm = $perm->getUperm($docid, $this->userid);
+            $uperm = DocPerm::getUperm($docid, $this->userid);
             return $this->ControlUp($uperm, $aclname);
         }
     }
@@ -573,15 +608,16 @@ class DocCtrl extends DocLDAP
      */
     public function recomputeProfiledDocument()
     {
-        if ($this->getAttribute("dpdoc_famid")) {
-            
+        if ($this->isRealProfil()) {
             include_once ("FDL/Class.SearchDoc.php");
             if ($this->getValue("dpdoc_famid") > 0) {
                 // dynamic profil
                 // recompute associated documents
+                ini_set("max_execution_time", -1);
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();
+                $s->noViewControl();
                 $s->search();
                 while ($doc = $s->nextDoc()) {
                     $doc->computeDProfil();
@@ -590,6 +626,7 @@ class DocCtrl extends DocLDAP
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("profid = %d", $this->id);
                 $s->setObjectReturn();
+                $s->noViewControl();
                 $s->search();
                 while ($doc = $s->nextDoc()) {
                     $doc->setProfil($this->id);
@@ -600,6 +637,7 @@ class DocCtrl extends DocLDAP
                 $s = new SearchDoc($this->dbaccess);
                 $s->addFilter("dprofid = %d", $this->id);
                 $s->setObjectReturn();
+                $s->noViewControl();
                 $s->search();
                 while ($doc = $s->nextDoc()) {
                     $doc->setProfil($this->id);
@@ -644,7 +682,7 @@ class DocCtrl extends DocLDAP
     }
     /** 
      * return true if the date is in the future (one day after at less)
-     * @param string date date JJ/MM/AAAA
+     * @param string $date date JJ/MM/AAAA
      */
     static public function isFutureDate($date)
     {
@@ -674,8 +712,8 @@ class DocCtrl extends DocLDAP
     }
     /** 
      * verify if a document title and its link are for the same document
-     * @param string document title use for verification
-     * @param string document identificator use for verification
+     * @param string $title document title use for verification
+     * @param string $docid document identificator use for verification
      */
     public function isDocLinked($title, $docid)
     {
@@ -700,8 +738,8 @@ class DocCtrl extends DocLDAP
     }
     /** 
      * verify if a link of document is alive
-     * @param string document title use for verification
-     * @param string document identificator use for verification
+     * @param string $title document title use for verification
+     * @param string $docid document identificator use for verification
      */
     public function isValidLink($title, $docid)
     {
@@ -762,8 +800,9 @@ class DocCtrl extends DocLDAP
         return $err;
     }
     /** 
-     * return true it is a number
-     * @param string date date JJ/MM/AAAA
+     * return true if string match regexp
+     * @param string $x
+     * @param string $p regexp pattern
      */
     static public function isString($x, $p)
     {

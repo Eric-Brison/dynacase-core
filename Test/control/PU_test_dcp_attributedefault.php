@@ -25,7 +25,7 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
     {
         return "PU_data_dcp_familydefault.ods";
     }
-    
+
     protected $famName = 'TST_DEFAULTFAMILY1';
     /**
      * @dataProvider dataDefaultValues

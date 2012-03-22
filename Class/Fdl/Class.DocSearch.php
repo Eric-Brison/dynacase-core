@@ -138,13 +138,13 @@ class DocSearch extends PDocSearch
         $filters = array();
         
         $acls = $this->getTValue("se_acl");
-        if (count($acls) > 0) {
+        if ((count($acls) > 0 && ($this->userid != 1))) {
             //      print_r2($acls);
             foreach ($acls as $acl) {
                 $dacl = $this->dacls[$acl];
                 if ($dacl) {
                     $posacl = $dacl["pos"];
-                    $filters[] = "hasdocprivilege(" . $this->userid . ",profid," . (1 << intval($posacl)) . ")";
+                    $filters[] = sprintf("hasaprivilege('%s', profid, %d)", DocPerm::getMemberOfVector($this->userid) , (1 << intval($posacl)));
                 }
             }
         }
@@ -187,6 +187,7 @@ class DocSearch extends PDocSearch
                 // transform conjonction
                 $tkey = explode(" ", $keyword);
                 $ing = false;
+                $ckey = '';
                 foreach ($tkey as $k => $v) {
                     if ($ing) {
                         if ($v[strlen($v) - 1] == '"') {
@@ -234,23 +235,11 @@ class DocSearch extends PDocSearch
         }
         $tkeys = array();
         $sqlfilters = array();
-        if (count($tstatickeys) > 2) {
-            //each odd
-            $keyword = "";
-            foreach ($tstatickeys as $k => $v) {
-                if (($k % 2) == 1) {
-                    $tkeybrut[] = $v;
-                    
-                    $keyword.= " (\"" . str_replace(" ", "&", trim($v)) . "\")";
-                } else {
-                    $keyword.= " " . trim($v);
-                }
-            }
-        }
         
         $keyword = preg_replace('/\s+(OR)\s+/', '|', $keyword);
         $tkeys = explode(" ", $keyword);
         $sqlfiltersbrut = array();
+        $tsearchkeys = array();
         foreach ($tkeys as $k => $key) {
             $key = trim($key);
             if ($key) {
@@ -266,7 +255,7 @@ class DocSearch extends PDocSearch
                 if (strstr($key, '"') !== false) {
                     // add more filter for search complete and exact expression
                     if (strstr($key, '|') === false) {
-                        $sqlfiltersbrut[] = "svalues ~* '\\\\y" . pg_escape_string(str_replace(array(
+                        $sqlfiltersbrut[] = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',
@@ -279,7 +268,7 @@ class DocSearch extends PDocSearch
                         ) , $key)) . "\\\\y' ";
                     } else {
                         list($left, $right) = explode("|", $key);
-                        if (strstr($left, '"') !== false) $q1 = "svalues ~* '\\\\y" . pg_escape_string(str_replace(array(
+                        if (strstr($left, '"') !== false) $q1 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',
@@ -291,7 +280,7 @@ class DocSearch extends PDocSearch
                             ''
                         ) , $left)) . "\\\\y' ";
                         else $q1 = "";
-                        if (strstr($right, '"') !== false) $q2 = "svalues ~* '\\\\y" . pg_escape_string(str_replace(array(
+                        if (strstr($right, '"') !== false) $q2 = "svalues ~* E'\\\\y" . pg_escape_string(str_replace(array(
                             '"',
                             '&',
                             '(',
@@ -396,6 +385,9 @@ class DocSearch extends PDocSearch
         $famid = $this->getValue("se_famid");
         $classid = 0;
         if ($dirid > 0) {
+            /**
+             * @var Dir $dir
+             */
             $dir = new_Doc($this->dbaccess, $dirid);
             if (method_exists($dir, "isAuthorized")) {
                 if ($dir->isAuthorized($classid)) {
@@ -419,7 +411,7 @@ class DocSearch extends PDocSearch
         }
         
         $this->lay->set("selfam", _("no family"));
-        
+        $selectclass = array();
         foreach ($tclassdoc as $k => $cdoc) {
             $selectclass[$k]["idcdoc"] = $cdoc["id"];
             $selectclass[$k]["classname"] = $cdoc["title"];

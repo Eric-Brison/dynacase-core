@@ -1,56 +1,70 @@
-[JS:REF]
-<form  name="edit" method="POST" action="[CORE_STANDURL]app=FDL&action=MODACL">
+<style>
+    table.acl {
+       border:solid 1px [COLOR_B0];
+    }
+    table.acl tbody td {
+       border-style: none none solid none;
+       border-width: 1px ;
+    }
 
+    table.acl thead td {
+    white-space : nowrap;
+    }
+    table.acl thead tr {
+    background-color:[COLOR_B4];
+    }
+    table.acl tbody tr:hover {
+    background-color:[COLOR_C4];
+    }
+</style>
 
+<form name="edit" method="POST" action="[CORE_STANDURL]app=FDL&amp;action=MODACL">
 
-<TABLE width="100%" cellspacing="0" cellpadding="0">
-<THEAD>
-<TR align="center">
-    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">G</span></TD>
-    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
-    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">UP</span></TD>
-    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
-    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">UN</span></TD>
-    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
-    <TD class="CORETblHeadCell" width="20px"><span class="CORETblHead">R</span></TD>
-    <TD class="CORETblHeadCell" width="20px">&nbsp;</TD>
-    <TD class="CORETblHeadCell" align="right">&nbsp;
-    
-     
-     
+<div align="center">
+    <TABLE class="acl" cellspacing="0" cellpadding="3">
+        <THEAD>
+            <TR align="center">
+            <TD width="20px">[TEXT:Privilege view]</TD>
+            [IFNOT readonly]
+            <TD width="20px">[TEXT:Privilege input]</TD>[ENDIF readonly]
+            <TD>[TEXT:Access name]</TD>
+            <TD align="">[TEXT:Access explanation]</TD>
 
-    </TD>
-  
-<TR>
-</THEAD>
-<TBODY>
-                                [BLOCK SELECTACL]
-<TR>
-  <TD align="center" ><input   type="checkbox"  name="aclg[[iacl]]" value="[aclid]" [selectedg] onClick="inhib(this)" disabled></input>
-  </TD>
-  <TD align="center">+</TD>
-  <TD align="center">
-     <input align="top" type="checkbox"  name="aclup[[iacl]]" value="[aclid]" [selectedup] onClick="plusacl([iacl])">
-  </TD>
-  <TD align="center">-</TD>
-  <TD align="center">
-    <input align="top" type="checkbox" name="aclun[[iacl]]" value="[aclid]" [selectedun] onClick="moinsacl([iacl])">
-  </TD>
-  <TD align="center">=</TD>
-  <TD align="center">
-      <input align="top" type="checkbox" name="acls[[iacl]]" value="[aclid]" [selected] onClick="globacl([iacl])">
-  </TD>
-  <TD class="CORETblCell"><span class="CORETbl">[aclname]</span></TD>
-  <TD class="CORETblCell" align="right"><span class="CORETbl">[acldesc]</span></TD>
-</TR>
-                                [ENDBLOCK SELECTACL]
-</TBODY>
-</TABLE>
-<input type="hidden" name="userid" value="[userid]">
-<input type="hidden" name="docid" value="[docid]">
-<p style="text-align:left">
-<input class="CORETblHead" type="submit" 
-         name="Modify" value="[TEXT:Validate]"  >
-<input class="CORETblHead" type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
-</p>
+            <TR>
+        </THEAD>
+        <tbody>
+            [BLOCK SELECTACL]
+            <tr>
+
+                <TD align="center">
+
+                    <img src="Images/[imgacl]"></img>
+
+                </TD>[IFNOT readonly]
+                <TD align="center">
+                    <input align="top" type="checkbox" name="aclup[[iacl]]" value="[aclid]"
+                    [selectedup] ">
+                </TD>[ENDIF readonly]
+
+                <TD title="[acldesc]">[aclname]</TD>
+                <TD>[aclcause]</TD>
+            </tr>
+            [ENDBLOCK SELECTACL]
+        </tbody>
+        <tfoot>
+            <tr>
+                <TD colspan="5">
+                    <input type="hidden" name="userid" value="[userid]">
+                    <input type="hidden" name="docid" value="[docid]">
+                    <p style="text-align:left">
+                        [IFNOT readonly]<input type="submit"
+                               name="Modify" value="[TEXT:Change privilege]">[ENDIF readonly]
+                        <input type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
+                    </p>
+                </TD>
+            </tr>
+        </tfoot>
+    </TABLE>
+</div>
+
 </form>

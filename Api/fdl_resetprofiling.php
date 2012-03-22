@@ -22,7 +22,9 @@
 include_once ("FDL/Class.Doc.php");
 
 $usage = "usage  --login=<user login> --password=<user password>";
-
+/**
+ * @var Action $action
+ */
 $dbaccess = $action->GetParam("FREEDOM_DB");
 $coreaccess = $action->GetParam("CORE_DB");
 
@@ -39,6 +41,7 @@ if (empty($password)) $action->exitError("password needed :\n $usage");
 $u = new User($coreaccess);
 $u->setLoginName($user);
 $uid = $u->id;
+$err = '';
 if (!$uid) {
     $du = createDoc($dbaccess, "IUSER");
     if ($du) {
@@ -54,6 +57,10 @@ if (!$uid) {
                 $err = $du->modify();
                 if ($err == "") {
                     printf(_("new user # %d") , $du->getValue("us_whatid")); // affichage de l'identifiant système
+                    
+                    /**
+                     * @var Dir $g
+                     */
                     $g = new_Doc($dbaccess, "GDEFAULT");
                     if ($g) {
                         $err = $g->addFile($du->initid);
@@ -85,8 +92,6 @@ if ($uid > 0) {
                 $perm->docid = $pdoc->id;
                 $perm->userid = $uid;
                 $perm->upacl = - 2 & (~(1 << 2)); // all privileges except read => read only
-                $perm->unacl = 0;
-                $perm->cacl = 0;
                 // add all privileges to  user
                 $err = $perm->Add();
                 if ($err == "") {

@@ -193,7 +193,9 @@ TD.editbutton, TD.nowrap {
   [IF ISIE]width:50px;[ENDIF ISIE]
 }
 TD[type=docid][multiple=true]+TD.editbutton, 
-TABLE[type=docid][multiple=true] TD.editbutton {
+TABLE[type=docid][multiple=true] TD.editbutton,
+TD[type=account][multiple=true]+TD.editbutton,
+TABLE[type=account][multiple=true] TD.editbutton  {
     vertical-align:bottom;
 }
 

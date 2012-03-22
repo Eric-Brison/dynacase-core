@@ -90,6 +90,7 @@ class Doc extends DocCtrl
         "cvid",
         "name",
         "dprofid",
+        "views",
         "atags",
         "prelid",
         "confidential",
@@ -415,6 +416,11 @@ class Doc extends DocCtrl
      */
     public $profid;
     /**
+     * user/group/role which can view document
+     * @var string
+     */
+    public $views;
+    /**
      * to precise a special use of the document
      * @var char
      */
@@ -665,6 +671,7 @@ create table doc ( id int not null,
                    cvid int,
                    name text,
                    dprofid int DEFAULT 0,
+                   views int[],
                    prelid int DEFAULT 0,
                    atags text,
                    confidential int DEFAULT 0,
@@ -838,7 +845,10 @@ create unique index i_docir on doc(initid, revision);";
         if ($this->doctype == "") $this->doctype = $this->defDoctype;
         if ($this->revision == "") $this->revision = "0";
         
-        if ($this->profid == "") $this->profid = "0";
+        if ($this->profid == "") {
+            $this->views = "{0}";
+            $this->profid = "0";
+        }
         if ($this->usefor == "") $this->usefor = "N";
         
         if ($this->lmodify == "") $this->lmodify = "N";
@@ -1547,6 +1557,8 @@ create unique index i_docir on doc(initid, revision);";
         $err = "";
         if (($this->control('delete') == "") || ($this->userid == 1)) {
             if (!$this->isAlive()) {
+                $err = $this->preRevive();
+                if ($err) return $err;
                 $err = simpleQuery($this->dbaccess, sprintf("SELECT id from only doc%d where initid = %d order by id desc limit 1", $this->fromid, $this->initid) , $latestId, true, true);
                 if ($err == "") {
                     if (!$latestId) $err = sprintf(_("document %s [%d] is strange") , $this->title, $this->id);
@@ -1561,7 +1573,8 @@ create unique index i_docir on doc(initid, revision);";
                             "lmodify"
                         ) , true);
                         $this->AddComment(_("revival document") , HISTO_MESSAGE, "REVIVE");
-                        
+                        $msg = $this->postRevive();
+                        if ($msg) $this->addComment($msg);
                         $this->addLog('revive');
                         $rev = $this->getRevisions();
                         /**
@@ -2454,6 +2467,22 @@ create unique index i_docir on doc(initid, revision);";
     {
     }
     /**
+     * call when doc is being revive
+     * if return non null string revive will ne aborted
+     * @return string error message, if no error empty string
+     */
+    function preRevive()
+    {
+    }
+    /**
+     * call when doc is revived after resurrection in database
+     * the error message will appeared like message
+     * @return string warning message, if no warning empty string
+     */
+    function postRevive()
+    {
+    }
+    /**
      * recompute values from title
      * the first value of type text use for title will be modify to have the new title
      * @param string $title new title
@@ -2614,9 +2643,10 @@ create unique index i_docir on doc(initid, revision);";
      * the attribute must an array type
      * fill uncomplete column with null values
      * @param string $idAttr identificator of array attribute
+     * @param bool $deleteLastEmptyRows by default empty rows which are in the end are deleted
      * @return string error message, if no error empty string
      */
-    final public function completeArrayRow($idAttr)
+    final public function completeArrayRow($idAttr, $deleteLastEmptyRows = true)
     {
         /* Prevent recursive calls of completeArrayRow() by setValue() */
         static $calls = array();
@@ -2633,8 +2663,19 @@ create unique index i_docir on doc(initid, revision);";
             
             $max = - 1;
             $maxdiff = false;
+            $tValues = array();
+            foreach ($ta as $k => $v) { // delete empty end values
+                $tValues[$k] = $this->getTValue($k);
+                if ($deleteLastEmptyRows) {
+                    $c = count($tValues[$k]);
+                    for ($i = $c - 1; $i >= 0; $i--) {
+                        if ($tValues[$k][$i] === '') unset($tValues[$k][$i]);
+                        else break;
+                    }
+                }
+            }
             foreach ($ta as $k => $v) { // detect uncompleted rows
-                $c = count($this->getTValue($k));
+                $c = count($tValues[$k]);
                 if ($max < 0) $max = $c;
                 else {
                     if ($c != $max) $maxdiff = true;
@@ -2643,11 +2684,10 @@ create unique index i_docir on doc(initid, revision);";
             }
             if ($maxdiff) {
                 foreach ($ta as $k => $v) { // fill uncompleted rows
-                    $c = count($this->getTValue($k));
+                    $c = count($tValues[$k]);
                     if ($c < $max) {
-                        $t = $this->getTValue($k);
-                        $t = array_pad($t, $max, "");
-                        $err.= $this->setValue($k, $t);
+                        $nt = array_pad($tValues[$k], $max, "");
+                        $err.= $this->setValue($k, $nt);
                     }
                 }
             }
@@ -2676,7 +2716,7 @@ create unique index i_docir on doc(initid, revision);";
         $tv = array_change_key_case($tv, CASE_LOWER);
         $a = $this->getAttribute($idAttr);
         if ($a->type == "array") {
-            $err = $this->completeArrayRow($idAttr);
+            $err = $this->completeArrayRow($idAttr, false);
             if ($err == "") {
                 $ta = $this->attributes->getArrayElements($a->id);
                 $ti = array();
@@ -2698,9 +2738,35 @@ create unique index i_docir on doc(initid, revision);";
                     }
                     $err.= $this->setValue($k, $tnv);
                 }
-                if ($err = "") {
-                    $err = $this->completeArrayRow($idAttr);
+                if ($err == "") {
+                    $err = $this->completeArrayRow($idAttr, false);
                 }
+            }
+            $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+            return $err;
+        }
+        $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
+        return sprintf(_("%s is not an array attribute") , $idAttr);
+    }
+    /**
+     * delete all attributes values of an array
+     *
+     * the attribute must be an array type
+     * @param string $idAttr identificator of array attribute
+     * @return string error message, if no error empty string
+     */
+    final public function deleteArray($idAttr)
+    {
+        $old_setValueCompleteArrayRow = $this->_setValueCompleteArrayRow;
+        $this->_setValueCompleteArrayRow = false;
+        
+        $a = $this->getAttribute($idAttr);
+        if ($a->type == "array") {
+            $ta = $this->attributes->getArrayElements($a->id);
+            $err = "";
+            // delete each columns
+            foreach ($ta as $k => $v) {
+                $err.= $this->deleteValue($k);
             }
             $this->_setValueCompleteArrayRow = $old_setValueCompleteArrayRow;
             return $err;
@@ -2974,7 +3040,7 @@ create unique index i_docir on doc(initid, revision);";
                     }
                 }
             }
-            if ($this->_setValueCompleteArrayRow && $oattr->inArray()) {
+            if ($this->_setValueCompleteArrayRow && $oattr && $oattr->inArray()) {
                 return $this->completeArrayRow($oattr->fieldSet->id);
             }
             return '';
@@ -3319,8 +3385,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!is_object($info) || !is_a($info, 'VaultFileInfo')) {
                 throw new \Exception(ErrCode::getError('FILE0010', $filename));
             }
-
-
+            
             return sprintf("%s|%s|%s", $info->mime_s, $info->id_file, $info->name);
         }
         /**
@@ -4815,7 +4880,7 @@ create unique index i_docir on doc(initid, revision);";
             $err = $this->SpecRefresh();
             // if ($this->id == 0) return; // no refresh for no created document
             $err.= $this->SpecRefreshGen();
-            if ($this->hasChanged) {
+            if ($this->hasChanged && $this->id > 0) {
                 $err.= $this->modify(); // refresh title
                 
             }
@@ -5152,19 +5217,19 @@ create unique index i_docir on doc(initid, revision);";
          * @param string $aclname identificator of the privilege to test
          * @return string empty means access granted else it is an error message (access unavailable)
          */
-        public function Control($aclname)
+        public function control($aclname)
         {
-            // --------------------------------------------------------------------
-            if (($this->IsAffected())) {
-                
+            $err = '';
+            if (($this->isAffected())) {
                 if (($this->profid <= 0) || ($this->userid == 1)) return ""; // no profil or admin
                 $err = $this->controlId($this->profid, $aclname);
                 if (($err != "") && ($this->isConfidential())) $err = sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
-                
-                return $err;
+                // Edit rights on profiles must also be controlled by the 'modifyacl' acl
+                if (($err == "") && ($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfil()) {
+                    $err = $this->controlId($this->profid, 'modifyacl');
+                }
             }
-            return "";
-            return sprintf(_("cannot control : object not initialized : %s") , $aclname);
+            return $err;
         }
         /**
          * Control Access privilege for document for other user
@@ -5173,7 +5238,7 @@ create unique index i_docir on doc(initid, revision);";
          * @param string $aclname identificator of the privilege to test
          * @return string empty means access granted else it is an error message (access unavailable)
          */
-        public function ControlUser($uid, $aclname)
+        public function controlUser($uid, $aclname)
         {
             // --------------------------------------------------------------------
             if ($this->IsAffected()) {
@@ -5995,7 +6060,8 @@ create unique index i_docir on doc(initid, revision);";
                 if (is_numeric($this->state) && ($this->state > 0) && (!$this->wid)) {
                     $this->lay->set("freestate", $this->state);
                 } else $this->lay->set("freestate", false);
-                $this->lay->set("setname", ($this->name == "") && $action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
+                $this->lay->set("setname", $action->parent->Haspermission("FREEDOM_MASTER", "FREEDOM"));
+                $this->lay->set("lname", $this->name);
                 $this->lay->set("hasrevision", ($this->revision > 0));
                 $this->lay->Set("moddate", strftime("%d/%m/%Y %H:%M:%S", $this->revdate));
                 $this->lay->set("moddatelabel", _("last modification date"));
@@ -7189,15 +7255,14 @@ create unique index i_docir on doc(initid, revision);";
                         return stringDateToLocaleDate(date("Y-m-d H:i", $nd));
                     } else {
                         if ($isIsoDate) return date("Y-m-d H:i", $nd);
-                                   else return date("d/m/Y H:i", $nd);
-
+                        else return date("d/m/Y H:i", $nd);
                     }
                 } else {
                     if ($getlocale) {
                         return stringDateToLocaleDate(date("Y-m-d", $nd));
                     } else {
                         if ($isIsoDate) return date("Y-m-d", $nd);
-                                    else return date("d/m/Y", $nd);
+                        else return date("d/m/Y", $nd);
                     }
                 }
             }
@@ -7209,13 +7274,14 @@ create unique index i_docir on doc(initid, revision);";
              */
             public static function getTimeDate($hourdelta = 0, $second = false)
             {
-                $delta = abs(intval($hourdelta));if ((getLcdate() == "iso")) {
-                                if ($second) $format = "Y-m-d H:i:s";
-                                else $format = "Y-m-d H:i";
-                            } else {
-                if ($second) $format = "d/m/Y H:i:s";
-                else $format = "d/m/Y H:i";
-            }
+                $delta = abs(intval($hourdelta));
+                if ((getLcdate() == "iso")) {
+                    if ($second) $format = "Y-m-d H:i:s";
+                    else $format = "Y-m-d H:i";
+                } else {
+                    if ($second) $format = "d/m/Y H:i:s";
+                    else $format = "d/m/Y H:i";
+                }
                 if ($hourdelta > 0) {
                     if (is_float($hourdelta)) {
                         $dm = intval((abs($hourdelta) - $delta) * 60);

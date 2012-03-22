@@ -3,7 +3,7 @@
 <input type="image"  src="[IMG:plus.gif]" value="+" onclick="expandTree('gtree');return false" title="[TEXT:expand all]">
 <input type="image" src="[IMG:minus.gif]" value="-" onclick="collapseTree('gtree');return false" title="[TEXT:collapse all]">
 <iframe style="position:fixed;float: right;right:0;bottom:auto;left:auto;top:50px;width:40%;height:50%;display:none" id="iviewgroup" src="[IMG:info.gif]"></iframe>
-<UL class="mktree" id="gtree" >[BLOCK LI]<LI  name="LI[id]" ><img class="click" width="14" title="[TEXT:view detail] ([login]@[domain])" src="[icon]" onclick="viewgroup([fid])"><span onmouseover="this.style.textDecoration='underline overline'" onmouseout="this.style.textDecoration=''" onclick="selectcb('[id]')" title="[login]@[domain]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span>[SUBUL]</LI>[ENDBLOCK LI]</UL>
+<UL class="mktree" id="gtree" >[BLOCK LI]<LI  name="LI[id]" ><img class="click" width="14" title="[TEXT:view detail] ([login])" src="[icon]" onclick="viewgroup([fid])"><span onmouseover="this.style.textDecoration='underline overline'" onmouseout="this.style.textDecoration=''" onclick="selectcb('[id]')" title="[login]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span>[SUBUL]</LI>[ENDBLOCK LI]</UL>
 
 <script>addEvent(window,"load",convertTrees)</script>
 <input  style="display:none" type="checkbox" checked name="gidnew" value="Y"></input>

@@ -69,7 +69,7 @@ TABLE.tableborder TBODY TR TD{
 <div class="do" id="DGroups" style="display:none">
 <button onclick="subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid=IGROUP')">[TEXT:Create new group]</button>
 <UL id="gtree" class="mktree">[BLOCK LI]<LI name="LI[id]" >
-<img class="click" title="[TEXT:view detail] ([login]@[domain])"  src="[icon]" width="12px" onclick="viewdoc('[fid]')"><a onclick="viewfld('[fid]')"><span  title="[login]@[domain]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span></A>
+<img class="click" title="[TEXT:view detail] ([login])"  src="[icon]" width="12px" onclick="viewdoc('[fid]')"><a onclick="viewfld('[fid]')"><span  title="[login]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span></A>
 [SUBUL]</LI>[ENDBLOCK LI]</UL>
 <script>addEvent(window,"load",convertTrees)</script>
 </div>

@@ -114,6 +114,7 @@ function lmail($dbaccess, $name)
     }
     return $tr;
 }
+
 function tplmail($dbaccess, $type, $famid, $wfamid, $name)
 {
     switch ($type) {
@@ -161,6 +162,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         }
         return "error tplmail($dbaccess,$type,$famid, $name)";
     }
+    
     function tpluser($dbaccess, $type, $famid, $wfamid, $name)
     {
         switch ($type) {
@@ -176,6 +178,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
                 return tplmail($dbaccess, $type, $famid, $wfamid, $name);
         }
     }
+    
     function getGlobalsParameters($name)
     {
         include_once ("Class.QueryDb.php");
@@ -288,12 +291,12 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
             $only = true;
             $famid = substr($famid, 1);
         }
-
+        
         if (!is_numeric($famid)) {
             $famName = $famid;
             $famid = getFamIdFromName($dbaccess, $famName);
             if ($famid <= 0) {
-                return sprintf(_("family %s not found"), $famName);
+                return sprintf(_("family %s not found") , $famName);
             }
         }
         if ($name != "" && is_string($name)) {
@@ -402,6 +405,129 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
                 $v["title"]
             );
         }
+        return $tr;
+    }
+    /**
+     * return account documents
+     * @param string $filterName title filter key
+     * @param int $limit max account returned
+     * @return array
+     */
+    function fdlGetDocuments($families, $filterName = '', $limit = 15, $extraFilter = '')
+    {
+        $tout = array();
+        $famname = explode('|', $families);
+        
+        foreach ($famname as $famid) {
+            if (count($tout) < $limit) {
+                $s = new SearchDoc(getDbAccess() , $famid);
+                if ($filterName) $s->addFilter("title ~* '%s'", $filterName);
+                if ($extraFilter) $s->addFilter($extraFilter);
+                $s->setSlice($limit);
+                $s->setObjectReturn();
+                $s->search();
+                if ($s->getError()) return $s->getError();
+                
+                while ($doc = $s->nextDoc()) {
+                    $title = $doc->getHTMLTitle();
+                    $tout[] = array(
+                        sprintf('<img width="10px" src="%s">%s', $doc->getIcon('', 10) , $title) ,
+                        $doc->initid,
+                        $title
+                    );
+                }
+            }
+        }
+        if ((count($tout) == 0) && ($filterName != '')) return sprintf(_("no document match '%s'") , $filterName);
+        return $tout;
+    }
+    /**
+     * return account list
+     * @param string $filterName filter key
+     * @param int $limit max result limit
+     * @param string $options option for role or group
+     * @return array|string
+     */
+    function fdlGetAccounts($filterName = '', $limit = 15, $options = '')
+    {
+        $sort = 'lastname';
+        $searchinmail = false;
+        $dbaccess = getDbAccess();
+        $ofs = array();
+        if (preg_match('/role\s*=([^|]*)/', $options, $regRole)) {
+            $roles = explode(',', $regRole[1]);
+            
+            foreach ($roles as $role) {
+                simpleQuery($dbaccess, sprintf("select id from users where login='%s' and accounttype='R'", pg_escape_string(trim($role))) , $rid, true, true);
+                if ($rid) $ofs[] = $rid;
+                else return sprintf(_("Role '%s' not exists") , $role);
+            }
+        }
+        if (preg_match('/group\s*=([^|]*)/', $options, $regGroup)) {
+            $groups = explode(',', $regGroup[1]);
+            
+            foreach ($groups as $group) {
+                simpleQuery($dbaccess, sprintf("select id from users where login='%s' and accounttype='G'", pg_escape_string(trim($group))) , $rid, true, true);
+                if ($rid) $ofs[] = $rid;
+                else return sprintf(_("Group '%s' not exists") , $group);
+            }
+        }
+        $condMatch = "accounttype='U'";
+        if (preg_match('/match\s*=([^|]*)/', $options, $regMatch)) {
+            $match = trim($regMatch[1]);
+            switch ($match) {
+                case 'all':
+                    $condMatch = '';
+                    break;
+
+                case 'group':
+                    $condMatch = "accounttype='G'";
+                    break;
+
+                case 'role':
+                    $condMatch = "accounttype='R'";
+                    break;
+
+                default:
+                    $condMatch = "accounttype='U'";
+            }
+        }
+        
+        $tr = array();
+        
+        $cond = "true";
+        if (count($ofs) > 0) {
+            $cond = sprintf("memberof && '{%s}'", implode(',', $ofs));
+        }
+        $condName = "";
+        if ($filterName) {
+            $tname = explode(' ', $filterName);
+            $filterName = pg_escape_string($filterName);
+            $condmail = '';
+            if ($searchinmail) $condmail = sprintf("or (mail ~* '%s')", $filterName);
+            if (count($tname) > 1) {
+                $condName = sprintf("and (coalesce(firstname,'') || ' ' || coalesce(lastname,'') ~* '%s' $condmail)", $filterName);
+            } else {
+                $condName = sprintf("and (firstname ~* '%s' or lastname ~* '%s' $condmail)", $filterName, $filterName);
+            }
+        }
+        
+        if ($condMatch) $condName.= ' and ' . $condMatch;
+        if ($sort) $sort = pg_escape_string($sort);
+        else $sort = 'lastname';
+        $sql = sprintf("SELECT users.fid, users.firstname, users.lastname, users.mail,users.fid from users where %s %s order by %s limit %d", $cond, $condName, $sort, $limit);
+        $err = simpleQuery($dbaccess, $sql, $result);
+        if ($err != "") return $err;
+        //$tr[]=array($sql,'z','zs');
+        foreach ($result as $k => $v) {
+            $mail = $v["mail"] ? (' (' . $v["mail"] . ')') : '';
+            $tr[] = array(
+                $v["firstname"] . " " . $v["lastname"] . $mail,
+                $v["fid"],
+                $v["lastname"] . " " . $v["firstname"]
+            );
+        }
+        
         return $tr;
     }
     /**
@@ -677,6 +803,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         }
         return $tr;
     }
+    
     function _getParentLabel($oa)
     {
         if ($oa && $oa->fieldSet && $oa->fieldSet->id != 'FIELD_HIDDENS') {
@@ -766,6 +893,9 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         
         $tr = array();
         if ($doc && method_exists($doc, "getStates")) {
+            /**
+             * @var WDoc $doc
+             */
             $states = $doc->getStates();
             // HERE HERE HERE
             $pattern_name = preg_quote($name);
@@ -779,6 +909,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         
         return $tr;
     }
+    
     function ldocstates($dbaccess, $docid, $name = "")
     {
         $doc = new_doc($dbaccess, $docid);
@@ -786,6 +917,9 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         if ($doc->isAlive() && $doc->wid) {
             $wdoc = new_doc($dbaccess, $doc->wid, false);
             if ($wdoc && method_exists($wdoc, "getStates")) {
+                /**
+                 * @var WDoc $wdoc
+                 */
                 $states = $wdoc->getStates();
                 // HERE HERE HERE
                 $pattern_name = preg_quote($name);
@@ -799,6 +933,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         } else return sprintf(_("no workflow for this document"));
         return $tr;
     }
+    
     function lmethods($dbaccess, $famid, $name = "")
     {
         $doc = createDoc($dbaccess, $famid, false);

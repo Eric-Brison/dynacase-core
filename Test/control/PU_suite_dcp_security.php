@@ -15,6 +15,7 @@ class SuiteDcpSecurity
         
         $suite->addTestSuite('PU\TestAccess');
         $suite->addTestSuite('PU\TestDocControl');
+        $suite->addTestSuite('PU\TestRole');
         // ...
         return $suite;
     }

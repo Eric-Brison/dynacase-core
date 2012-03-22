@@ -21,6 +21,23 @@
  */
 class _IGROUP extends _GROUP
 {
+    public $wuser;
+    public function setGroups()
+    {
+    }
+    /**
+     * @param array $accountIds
+     */
+    public function getSystemIds(array $accountIds)
+    {
+    }
+    /**
+     * @param bool $real
+     * @return User
+     */
+    public function getWUser($real = false)
+    {
+    }
     /*
      * @end-method-ignore
     */
@@ -30,7 +47,7 @@ class _IGROUP extends _GROUP
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
-    var $defaultedit = "FUSERS:FUSERS_EIGROUP:T";
+    // var $defaultedit = "FUSERS:FUSERS_EIGROUP:T";
     var $exportLdap = array(
         // posixGroup
         "gidNumber" => "GRP_GIDNUMBER",
@@ -43,7 +60,6 @@ class _IGROUP extends _GROUP
         //  $err=$this->ComputeGroup();
         $err = "";
         $this->AddParamRefresh("US_WHATID", "GRP_MAIL,US_LOGIN");
-
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
         $iduser = $this->getValue("US_WHATID");
@@ -56,6 +72,10 @@ class _IGROUP extends _GROUP
         
         if ($this->getValue("grp_isrefreshed") == "0") $err.= _("this groups must be refreshed");
         return $err;
+    }
+    public function preRevive()
+    {
+        return _("group cannot be revived");
     }
     /**
      * test if the document can be set in LDAP
@@ -98,10 +118,10 @@ class _IGROUP extends _GROUP
      */
     function RefreshGroup()
     {
-        if ($this->norefreshggroup) return '';
+        //if ($this->norefreshggroup) return '';
         include_once ("FDL/Lib.Usercard.php");
         //  $err=_GROUP::RefreshGroup();
-        $err= $this->RefreshDocUser();
+        $err = $this->RefreshDocUser();
         //$err.=$this->refreshMembers();
         // refreshGroups(array($this->getValue("us_whatid")));
         $err.= $this->insertGroups();
@@ -123,17 +143,26 @@ class _IGROUP extends _GROUP
     {
         $tgid = $this->getTValue("GRP_IDPGROUP");
         foreach ($tgid as $gid) {
+            /**
+             * @var _IGROUP $gdoc
+             */
             $gdoc = new_Doc($this->dbaccess, $gid);
             if ($gdoc->isAlive()) {
                 $gdoc->insertGroups();
             }
         }
     }
-    function postModify()
+    public function postModify()
+    {
+        return $this->synchronizeSystemGroup();
+    }
+    
+    public function synchronizeSystemGroup()
     {
         $uid = $this->GetValue("US_WHATID");
         $gname = $this->GetValue("GRP_NAME");
         $login = $this->GetValue("US_LOGIN");
+        $roles = $this->GetTValue("grp_roles");
         
         $fid = $this->id;
         /**
@@ -144,7 +173,9 @@ class _IGROUP extends _GROUP
             $user = new User(""); // create new user
             $this->wuser = & $user;
         }
-        $err = $user->SetGroups($fid, $gname, $login);
+        // get system role ids
+        $roleIds = $this->getSystemIds($roles);
+        $err = $user->SetGroups($fid, $gname, $login, $roleIds);
         if ($err == "") {
             $this->setValue("US_WHATID", $user->id);
             $this->modify(false, array(
@@ -161,6 +192,9 @@ class _IGROUP extends _GROUP
             $fdoc = $this->getFamdoc();
             $dfldid = $fdoc->dfldid;
             if ($dfldid != "") {
+                /**
+                 * @var Dir $dfld
+                 */
                 $dfld = new_doc($this->dbaccess, $dfldid);
                 if ($dfld->isAlive()) {
                     if (count($tgid) == 0) $dfld->AddFile($this->initid);
@@ -173,6 +207,35 @@ class _IGROUP extends _GROUP
         
         if ($err == "") $err = "-"; // don't do modify after because it is must be set by USER::setGroups
         return $err;
+    }
+    /**
+     * compute the mail of the group
+     * concatenation of each user mail and group member mail
+     *
+     *
+     * @return string error message, if no error empty string
+     */
+    public function setGroupMail($nomail = false)
+    {
+        // no compute all members now
+        $this->deleteValue("GRP_IDRUSER");
+        $this->deleteValue("GRP_RUSER");
+        if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
+        if (!$nomail) {
+            $this->setValue("grp_mail", $this->getMail());
+        }
+    }
+    /**
+     * return concatenation of mail addresses
+     * @return string
+     */
+    public function getMail($rawmail = false)
+    {
+        $wu = $this->getWUser();
+        if ($wu->isAffected()) {
+            return $wu->getMail($rawmail);
+        }
+        return '';
     }
     /**
      * update LDAP menbers after imodification of containt
@@ -191,6 +254,9 @@ class _IGROUP extends _GROUP
         if ($multiple == false) {
             $gid = $this->getValue("US_WHATID");
             if ($gid > 0) {
+                /**
+                 * @var _IUSER $du
+                 */
                 $du = new_Doc($this->dbaccess, $docid);
                 $uid = $du->getValue("us_whatid");
                 if ($uid > 0) {
@@ -222,6 +288,9 @@ class _IGROUP extends _GROUP
             
             $g = new Group("");
             foreach ($tdocid as $k => $docid) {
+                /**
+                 * @var _IUSER $du
+                 */
                 $du = new_Doc($this->dbaccess, $docid);
                 $uid = $du->getValue("us_whatid");
                 if ($uid > 0) {
@@ -246,6 +315,9 @@ class _IGROUP extends _GROUP
         $err = "";
         $gid = $this->getValue("US_WHATID");
         if ($gid > 0) {
+            /**
+             * @var _IUSER $du
+             */
             $du = new_Doc($this->dbaccess, $docid);
             $uid = $du->getValue("us_whatid");
             if ($uid > 0) {
@@ -340,12 +412,11 @@ class _IGROUP extends _GROUP
                 $this->SetValue("GRP_NAME", $wuser->lastname);
                 //   $this->SetValue("US_FNAME",$wuser->firstname);
                 $this->SetValue("US_LOGIN", $wuser->login);
-
                 
                 $this->SetValue("US_MEID", $this->id);
                 // search group of the group
                 $g = new Group("", $wid);
-                
+                $tglogin = $tgid = array();
                 if (count($g->groups) > 0) {
                     foreach ($g->groups as $gid) {
                         $gt = new User("", $gid);
@@ -387,6 +458,7 @@ class _IGROUP extends _GROUP
             $u = $this->getWUser(true);
             
             $tu = $u->GetUsersGroupList($wid, $norefresh);
+            $tulogin = $tglogin = '';
             if (count($tu) > 0) {
                 
                 foreach ($tu as $uid => $tvu) {
@@ -442,7 +514,7 @@ class _IGROUP extends _GROUP
             $oa->setVisibility('H');
         }
     }
-
+    
     function fusers_eigroup()
     {
         global $action;
@@ -462,12 +534,11 @@ class _IGROUP extends _GROUP
             "grp_hasmembers"
         );
         
-
         $this->lay->set("hasdomain", false);
         
         $this->lay->set("firsttab", $firsttab);
         $la = $this->getNormalAttributes();
-        $to = array();
+        $to = $th = array();
         $tabs = array();
         foreach ($la as $k => $v) {
             $va = $this->getValue($v->id);

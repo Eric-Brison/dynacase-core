@@ -34,12 +34,14 @@ $action_desc = array (
    "name"               =>"PARAM_ALIST",
    "short_name"         =>N_("application parameters"),
    "toc"                =>"Y",
+      "toc_order" => 1,
    "acl"                =>"ADMIN"
   ) ,
   array(
    "name"               =>"PARAM_ULIST",
    "short_name"         =>N_("user parameters"),
    "toc"                =>"Y",
+      "toc_order" => 5,
    "acl"                =>"ADMIN"
   ) ,
   array(
@@ -64,6 +66,7 @@ $action_desc = array (
    "name"               =>"PARAM_CULIST",
    "short_name"         =>N_("current user parameters"),
    "toc"                =>"Y",
+      "toc_order" => 2,
    "root"		=>"Y",
    "acl"                =>"USER"
   ) ,
@@ -77,11 +80,13 @@ $action_desc = array (
    "name"               =>"ACTIONLIST",
    "short_name"         =>N_("actions"),
    "toc"                =>"Y",
+      "toc_order" => 4,
    "acl"                =>"ADMIN"
   ) ,
   array( 
    "name"		=>"APPLIST",
    "toc"                =>"Y",
+      "toc_order" => 3,
    "short_name"		=>N_("applications"),
    "acl"		=>"ADMIN"
   ) ,

@@ -52,12 +52,16 @@ function opendoc(Action & $action)
         case 'edit':
             $action->parent->set("GENERIC", $action->parent->parent);
             $action->set("GENERIC_EDIT", $action->parent);
-            $action->execute();
+            $gen = $action->execute();
+            $action->lay->template = $gen;
+            $action->lay->noparse = true;
             break;
 
         case 'view':
             $action->set("FDL_CARD", $action->parent);
-            $action->execute();
+            $gen = $action->execute();
+            $action->lay->template = $gen;
+            $action->lay->noparse = true;
             break;
     }
 }

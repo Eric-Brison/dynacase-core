@@ -331,7 +331,7 @@ function getFromName($dbaccess, $id)
     if (!is_numeric($id)) return false;
     $dbid = getDbid($dbaccess);
     $fromname = false;
-    $result = pg_query($dbid, sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d", $id));
+    $result = pg_query($dbid, sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d)", $id));
     
     if (pg_numrows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
@@ -387,8 +387,8 @@ function getTDoc($dbaccess, $id, $sqlfilters = array() , $result = array())
     $sqlcond = "";
     if (count($sqlfilters) > 0) $sqlcond = "and (" . implode(") and (", $sqlfilters) . ")";
     if (count($result) == 0) {
-        $userid = $action->user->id;
-        $sql = "select *,getuperm($userid,profid) as uperm from only $table where id=$id $sqlcond;";
+        $userMemberOf = DocPerm::getMemberOfVector();
+        $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where id=%d %s", $userMemberOf, $table, $id, $sqlcond);
     } else {
         $scol = implode($result, ",");
         $sql = "select $scol from only $table where id=$id $sqlcond;";
@@ -487,24 +487,22 @@ function cmp_cvorder3($a, $b)
  * @param string $aclname identificator of the privilege to test
  * @return bool true if current user has privilege
  */
-function controlTdoc($tdoc, $aclname)
+function controlTdoc(&$tdoc, $aclname)
 {
+    global $action;
     static $_ODocCtrol = false;
-    static $_Ocuid = false; // current user
+    static $_memberOf = false; // current user
     if (!$_ODocCtrol) {
         $cd = new DocCtrl();
         $_ODocCtrol = $cd;
-        $_Ocuid = $cd->userid;
+        $_memberOf = DocPerm::getMemberOfVector();
     }
     
-    if (($tdoc["profid"] <= 0) || ($_Ocuid == 1)) return true;
+    if (($tdoc["profid"] <= 0) || ($action->user->id == 1)) return true;
     if (!isset($tdoc["uperm"])) {
-        $dbid = getDbid(getDbAccessFreedom());
-        $result = @pg_query($dbid, sprintf("select getuperm(%d,%d) as uperm", $_Ocuid, $tdoc['profid']));
-        if ($result && (pg_numrows($result) > 0)) {
-            $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
-            $tdoc["uperm"] = $arr["uperm"];
-        }
+        $sql = sprintf("select getaperm('%s',%d) as uperm", $_memberOf, $tdoc['profid']);
+        $err = simpleQuery($action->dbaccess, $sql, $uperm, true, true);
+        if (!$err) $tdoc["uperm"] = $uperm;
     }
     $err = $_ODocCtrol->ControlUp($tdoc["uperm"], $aclname);
     
@@ -780,11 +778,13 @@ function getLatestTDoc($dbaccess, $initid, $sqlfilters = array() , $fromid = fal
     
     $userid = $action->user->id;
     if ($userid) {
-        $result = @pg_query($dbid, "select *,getuperm($userid,profid) as uperm  from only $table where initid=$initid and doctype != 'T' and locked != -1 $sqlcond;");
-        if ($result && (pg_numrows($result) > 0)) {
-            if (pg_numrows($result) > 1) addWarningMsg(sprintf("document %d : multiple alive revision", $initid));
+        $userMember = DocPerm::getMemberOfVector();
+        $sql = sprintf("select *,getaperm('%s',profid) as uperm  from only %s where initid=%d and doctype != 'T' and locked != -1 ", $userMember, $table, $initid, $sqlcond);
+        $err = simpleQuery($dbaccess, $sql, $result);
+        if ($result && (count($result) > 0)) {
+            if (count($result) > 1) addWarningMsg(sprintf("document %d : multiple alive revision", $initid));
             
-            $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
+            $arr = $result[0];
             
             return $arr;
         }
@@ -853,12 +853,11 @@ function getRevTDoc($dbaccess, $initid, $rev)
     if ($fromid > 0) $table = "doc$fromid";
     else if ($fromid == - 1) $table = "docfam";
     
-    $userid = $action->user->id;
-    $result = pg_query($dbid, "select *,getuperm($userid,profid) as uperm  from only $table where initid=$initid and revision=$rev;");
-    if (pg_numrows($result) > 0) {
-        $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
-        
-        return $arr;
+    $userMember = DocPerm::getMemberOfVector();
+    $sql = sprintf("select *,getaperm('%s',profid) as uperm from only %s where initid=%d and revision=%d ", $userMember, $table, $initid, $rev);
+    $err = simpleQuery($dbaccess, $sql, $result, false, true);
+    if ($result) {
+        return $result;
     }
     return false;
 }

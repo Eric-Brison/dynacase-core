@@ -128,7 +128,7 @@ function lpersonnesociety($dbaccess, $idsociety, $name = "")
     
     if ($name != "") $filter[] = "title ~* '$name'";
     
-    $tinter = getChildDoc($dbaccess, 0, 0, 100, $filter, $action->user->id, "TABLE", getFamIdFromName($dbaccess, "USER"));
+    $tinter = getChildDoc($dbaccess, 0, 0, 100, $filter, getUserId() , "TABLE", getFamIdFromName($dbaccess, "USER"));
     
     $tr = array();
     
@@ -175,6 +175,9 @@ function enumscatg()
     $soc = new_Doc($dbaccess, 124);
     
     if ($soc->isAffected()) {
+        /**
+         * @var NormalAttribute $a
+         */
         $a = $soc->getAttribute("si_catg");
         return $a->phpfunc;
     }
@@ -248,7 +251,6 @@ function members($dbaccess, $groupid, $name = "", $sort = 'lastname', $searchinm
     
     return $tr;
 }
-
 //return my groups
 function mygroups($name = "")
 {

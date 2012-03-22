@@ -38,7 +38,7 @@
         <check type="phpversion" predicate="ge" version="5.3.0">
             <label lang="en">Check PHP version &gt;= 5.3.0</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0">
+        <check type="pgversion" service="@core_db" predicate="ge" version="8.4.0">
             <label lang="en">Check database access</label>
         </check>
 
@@ -282,7 +282,7 @@ This can be solved by:<br/>
         <check type="phpversion" predicate="ge" version="5.3.0">
             <label lang="en">Check PHP version &gt;= 5.3.0</label>
         </check>
-        <check type="pgversion" service="@core_db" predicate="ge" version="8.3.0">
+        <check type="pgversion" service="@core_db" predicate="ge" version="8.4.0">
             <label lang="en">Check database access</label>
         </check>
 

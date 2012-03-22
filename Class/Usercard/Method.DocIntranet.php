@@ -25,6 +25,10 @@ class _IGROUPUSER extends Doc
      * @end-method-ignore
     */
     /**
+     * @var User
+     */
+    public $wuser;
+    /**
      * verify if the login syntax is correct and if the login not already exist
      * @param string $login login to test
      * @return array 2 items $err & $sug for view result of the constraint
@@ -34,7 +38,7 @@ class _IGROUPUSER extends Doc
         $sug = array(
             "-"
         );
-        
+        $err = '';
         if ($login == "") {
             $err = _("the login must not be empty");
         } else if ($login == "-") {
@@ -59,13 +63,13 @@ class _IGROUPUSER extends Doc
     function ExistsLogin($login, $unused = 0)
     {
         $sug = array();
-
+        
         $id = $this->GetValue("US_WHATID");
-
+        
         $q = new QueryDb("", "User");
         $q->AddQuery("login='" . strtolower(pg_escape_string($login)) . "'");
         if ($id) $q->AddQuery("id != $id");
-
+        
         $q->Query(0, 0, "TABLE");
         $err = $q->basic_elem->msg_err;
         if (($err == "") && ($q->nb > 0)) $err = _("login yet use");
@@ -87,6 +91,7 @@ class _IGROUPUSER extends Doc
             $tdoc = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "TABLE", $this->fromid);
             if (count($tdoc) > 0) return _("what id already set in freedom\nThis kind of document can not be duplicated");
         }
+        return '';
     }
     /**
      * avoid deletion of system document
@@ -101,6 +106,24 @@ class _IGROUPUSER extends Doc
         return $err;
     }
     /**
+     * get system id account from doculnet id account
+     * @param array $accountIds
+     * @return array
+     */
+    public function getSystemIds(array $accountIds)
+    {
+        $accountIds = array_unique($accountIds);
+        $kr = array_search('', $accountIds);
+        if ($kr !== false) unset($accountIds[$kr]);
+        $sysIds = array();
+        if (count($accountIds) > 0) {
+            $sql = sprintf("select id from users where fid in (%s)", implode(',', $accountIds));
+            simpleQuery($this->dbaccess, $sql, $sysIds, true, false);
+            $sysIds = array_unique($sysIds);
+        }
+        return $sysIds;
+    }
+    /**
      * interface to affect group for an user
      *
      * @param string $target window target name for hyperlink destination
@@ -112,7 +135,7 @@ class _IGROUPUSER extends Doc
         global $action;
         
         $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/mktree.js");
-        
+        $err = '';
         $iduser = $this->getValue("US_WHATID");
         if ($iduser > 0) {
             $user = $this->getWUser();
@@ -125,14 +148,14 @@ class _IGROUPUSER extends Doc
             ); // default what group
             
         }
-        
+        $tgroup = array();
         $this->lay->set("wid", ($iduser == "") ? "0" : $iduser);
         
         $q2 = new queryDb("", "User");
-        $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser and users.isgroup='Y'");
+        $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser and users.accounttype='G'");
         
         $q2 = new queryDb("", "User");
-        $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where  isgroup='Y' and id not in (select iduser from groups)");
+        $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where accounttype='G' and id not in (select iduser from groups, users u where groups.idgroup = u.id and u.accounttype='G')");
         
         if ($groups) {
             foreach ($groups as $k => $v) {
@@ -166,6 +189,7 @@ class _IGROUPUSER extends Doc
             "_cmpgroup"
         ));
         $this->lay->setBlockData("SELECTGROUP", $groupuniq);
+        return $err;
     }
     /**
      * internal function use for choosegroup
@@ -217,10 +241,13 @@ class _IGROUPUSER extends Doc
         include_once ("FDL/Lib.Usercard.php");
         
         global $_POST;
-        $err='';
+        $err = '';
         $gidnew = $_POST["gidnew"];
         $tgid = array(); // group ids will be modified
         if ($gidnew == "Y") {
+            /**
+             * @var int $gid
+             */
             $gid = $_POST["gid"];
             if ($gid == "") $gid = array();
             
@@ -234,7 +261,7 @@ class _IGROUPUSER extends Doc
                 foreach ($gadd as $gid) {
                     $g->iduser = $user->id;
                     $g->idgroup = $gid;
-                    $aerr='';
+                    $aerr = '';
                     if ($aerr == "") {
                         // insert in folder group
                         $gdoc = $this->getDocUser($gid);
@@ -268,7 +295,7 @@ class _IGROUPUSER extends Doc
     /**
      * return document objet from what id (user or group)
      * @param int $wid what identificator
-     * @return Doc the object document (false if not found)
+     * @return _IUSER|_IGROUP the object document (false if not found)
      */
     function getDocUser($wid)
     {
@@ -288,7 +315,6 @@ class _IGROUPUSER extends Doc
     function getWuser($nocache = false)
     {
         if ($nocache) {
-            $u = new User();
             unset($this->wuser); // needed for reaffect new values
             
         }

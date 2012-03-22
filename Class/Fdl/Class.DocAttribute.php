@@ -872,7 +872,7 @@ class NormalAttribute extends BasicAttribute
          *
          * @param Doc $doc class doc
          * @param int $index current index of the element if multiple
-         * @param string dateFormat US/ISO/FR
+         * @param string $dateFormat US/ISO/FR
          *
          * @return string
          */
@@ -1077,8 +1077,8 @@ class NormalAttribute extends BasicAttribute
                         $enumKey = trim($enumKey);
                         if (strlen($enumKey) == 0) $enumKey = " ";
                         $enumValue = trim($enumValue);
-                        $translatedEnumValue = _($br . $enumValue);
-                        if ($translatedEnumValue != $br . $enumValue) {
+                        $translatedEnumValue = _($br . $enumKey);
+                        if ($translatedEnumValue != $br . $enumKey) {
                             $enumValue = $translatedEnumValue;
                         }
                         
@@ -1289,14 +1289,14 @@ class NormalAttribute extends BasicAttribute
          * Constructor
          *
          * @param string $id logical name
-         * @param id $docid famid
+         * @param $id $docid famid
          * @param string $label default translation key
          * @param string $visibility visibility option
          * @param string $usefor Attr or Param usage
          * @param string $type kind of
          * @param FieldSetAttribute &$fieldSet parent field
          * @param string $options option string
-         * @param unknown_type $docname
+         * @param string $docname
          */
         function __construct($id, $docid, $label, $visibility = "", $usefor = "", $type = "frame", &$fieldSet = null, $options = "", $docname = "")
         {

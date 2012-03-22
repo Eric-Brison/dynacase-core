@@ -59,12 +59,13 @@ class QueryGen
     var $fulltext = "";
     var $fulltextfields = array();
     var $freedata = "";
+    var $placeHolder = "";
     
     var $fulltextform = '
 <form name="fulltext" method="post" 
                       action="javascript:set_form_par(\'query\',\'fulltext\',self.document.fulltext.text.value,0);set_form_par(\'query\',\'start\',0,0);set_form_par(\'query\',\'all\',\'\',1);"
                       onreset="javascript:set_form_par(\'query\',\'fulltext\',\'\',0);set_form_par(\'query\',\'start\',0,0);set_form_par(\'query\',\'all\',\'\',1);">
-  <input name="text" type="text" value="%s" size="10">
+  <input name="text" type="text" value="%s" size="10" placeholder="%s">
 </form>';
     
     var $up = "&nbsp;^";
@@ -123,7 +124,7 @@ class QueryGen
     
     function SetFullTextForm($text)
     {
-        $this->table->lay->set("FULLTEXTFORM", sprintf($this->fulltextform, $text));
+        $this->table->lay->set("FULLTEXTFORM", sprintf($this->fulltextform, $text, $this->placeHolder));
     }
     
     function GenMainForm($name, $height, $width, $mainurl, $suburl = "")

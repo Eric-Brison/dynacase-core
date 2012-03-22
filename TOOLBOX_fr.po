@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-25 18:04+0100\n"
-"PO-Revision-Date: 2012-02-09 13:25+0100\n"
+"POT-Creation-Date: 2012-03-20 17:42+0100\n"
+"PO-Revision-Date: 2012-03-21 10:49+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -387,9 +387,6 @@ msgstr "&gt; ou égal"
 msgid "&lt; or equal"
 msgstr "&lt; ou égal"
 
-msgid "(.*)\\"
-msgstr ""
-
 msgid "(Other input)"
 msgstr "(Autre)"
 
@@ -493,8 +490,14 @@ msgstr ""
 "Accès refusé\n"
 "ACL %s nécessaire pour l'action %s [%s]"
 
+msgid "Access explanation"
+msgstr "Explications"
+
 msgid "Access for exchange documents"
 msgstr "Accès aux échanges de documents"
+
+msgid "Access name"
+msgstr "Privilège"
 
 msgid "Access path list"
 msgstr "Liste des chemins d'accès"
@@ -507,6 +510,9 @@ msgstr "Accès aux fonctions de raffraichissement des utilisateurs"
 
 msgid "Accord"
 msgstr "Accord"
+
+msgid "Account filter"
+msgstr "Rechercher un compte"
 
 #, c-format
 msgid "Acl [%s] not available for App %s"
@@ -678,6 +684,9 @@ msgstr "Application %s (%s) non disponible"
 msgid "Application Access"
 msgstr "Accès des applications"
 
+msgid "Application filter"
+msgstr "Filtrer les applications"
+
 msgid "Application list"
 msgstr "Liste des applications"
 
@@ -827,7 +836,7 @@ msgstr "Spécification fichier CSV"
 
 #, c-format
 msgid "CVID : %s"
-msgstr ""
+msgstr "CVID : %s"
 
 #, c-format
 msgid "CVID : view control '%s' is not a view control"
@@ -957,8 +966,14 @@ msgstr "Changer d'énuméré"
 msgid "Change icon"
 msgstr "Changer d'icone"
 
+msgid "Change logical name"
+msgstr "Modifier le nom logique"
+
 msgid "Change my ask"
 msgstr "Changer mon opinion"
+
+msgid "Change privilege"
+msgstr "Modifier les privilèges"
 
 #, c-format
 msgid "Change profil to %s [%d]"
@@ -1005,6 +1020,9 @@ msgstr "changer l'état du document en"
 msgid "Change title"
 msgstr "Changer de titre"
 
+msgid "Change user"
+msgstr "Changer de compte"
+
 #, c-format
 msgid "Change view control  to %s [%d]"
 msgstr "Changement du contrôle de vue %s [%d]"
@@ -1031,6 +1049,9 @@ msgstr "Choisir l'archive"
 
 msgid "Choose Gate Urls"
 msgstr "Choix des URLs"
+
+msgid "Choose User"
+msgstr "Choisissez un compte"
 
 msgid "Choose Worflow"
 msgstr "Cycle de vie"
@@ -1132,6 +1153,9 @@ msgstr "Vue complète"
 
 msgid "Composing the email"
 msgstr "Composition du couriel"
+
+msgid "Computed from"
+msgstr "Calculé depuis"
 
 msgid "Conditions"
 msgstr "Conditions"
@@ -1351,15 +1375,15 @@ msgstr "Dir::insertFolder l'identificateur [%s] doit être numérique"
 msgid "Direct Import"
 msgstr "Import direct"
 
+#, c-format
+msgid "Direct set through document itself \"%s\""
+msgstr "Pose directe par le document lui-même \"%s\""
+
 msgid "Directory"
 msgstr "Répertoire"
 
 msgid "Directory already exists"
 msgstr "Répertoire déjà existant"
-
-#, c-format
-msgid "Disease of %s "
-msgstr ""
 
 msgid "Display available choices"
 msgstr "Afficher les choix possibles"
@@ -1398,6 +1422,10 @@ msgstr "Document %s est en cours de modification par %s"
 #, c-format
 msgid "Document %s is not alive"
 msgstr "Le document [%s] n'est pas vivant"
+
+#, c-format
+msgid "Document %s is not dead"
+msgstr ""
 
 #, c-format
 msgid "Document %s umounted"
@@ -1613,7 +1641,7 @@ msgstr "Erreur : Nettoyage %s état %d"
 
 #, c-format
 msgid "Error : Process %s [%d]: status %d"
-msgstr "Erreur : Processus %s [%d]: status %d"
+msgstr "Erreur : Processus %s [%d]: statut %d"
 
 msgid "Error : need edit privilege to execute"
 msgstr "Erreur ; privilege edit requis pour l'exécution"
@@ -1700,12 +1728,6 @@ msgid "Export archive file with data file - fdl.csv- and attached files"
 msgstr ""
 "Export d'une archive avec le fichier de description -fdl.csv- et les "
 "fichiers attachés"
-
-msgid "Ext ui api"
-msgstr ""
-
-msgid "Ext user interface api"
-msgstr ""
 
 #, c-format
 msgid "Failed to copy %s to %s"
@@ -1829,6 +1851,9 @@ msgstr "Dossier vidé"
 msgid "For %s of %s"
 msgstr "Pour %s de %s"
 
+msgid "For Account"
+msgstr "pour le compte"
+
 msgid "For export functions"
 msgstr "Pour les fonctions d'export"
 
@@ -1942,6 +1967,14 @@ msgstr "Aller aux archives"
 msgid "Group"
 msgstr "Groupe"
 
+#, c-format
+msgid "Group \"%s\""
+msgstr "le groupe \"%s\""
+
+#, c-format
+msgid "Group '%s' not exists"
+msgstr "Le groupe '%s' n'existe pas"
+
 msgid "Group Access"
 msgstr "Accès des groupes"
 
@@ -1959,6 +1992,9 @@ msgstr "Nom de l'aide"
 
 msgid "Helps"
 msgstr "Aides"
+
+msgid "Hide group access"
+msgstr "Masquer les groupes"
 
 msgid "Histo:Comment"
 msgstr "Message"
@@ -2200,6 +2236,9 @@ msgstr ""
 msgid "Link"
 msgstr "Lien"
 
+msgid "Linked from"
+msgstr "Lié par"
+
 msgid "List view"
 msgstr "Vue en liste"
 
@@ -2313,6 +2352,9 @@ msgstr "Modifier"
 msgid "Modify Attributes"
 msgstr "Modification des attributs"
 
+msgid "Modify access"
+msgstr "Modifier les droits d'accès"
+
 msgid "Modify acls"
 msgstr "Modifier les droits"
 
@@ -2364,6 +2406,12 @@ msgstr "Non effacé"
 
 msgid "Name of table cannot be empty"
 msgstr "Le nom de la table ne doit pas être vide"
+
+msgid "Name of the glob"
+msgstr ""
+
+msgid "Name of the zoo"
+msgstr ""
 
 msgid "New GATE page"
 msgstr "Portail"
@@ -2626,6 +2674,12 @@ msgstr "Précédent"
 msgid "Print"
 msgstr "Imprimer"
 
+msgid "Privilege input"
+msgstr "Droits"
+
+msgid "Privilege view"
+msgstr "Statut"
+
 #, c-format
 msgid "Process %s [%d] executed"
 msgstr "Processus %s [%d] exécuté"
@@ -2812,6 +2866,20 @@ msgstr "Retour au document de référence"
 msgid "Revise"
 msgstr "Réviser"
 
+msgid "Role"
+msgstr ""
+
+#, c-format
+msgid "Role \"%s\""
+msgstr "le rôle \"%s\""
+
+#, c-format
+msgid "Role '%s' not exists"
+msgstr "Le rôle '%s' n'existe pas"
+
+msgid "Role Access"
+msgstr "Accès des rôles"
+
 msgid "Root folder"
 msgstr "Dossier racine"
 
@@ -2915,13 +2983,31 @@ msgstr "Sécurité"
 msgid "See below information about conversion"
 msgstr ""
 
+msgid "See detail for "
+msgstr "Voir le détail pour"
+
 msgid "See latest information about it."
-msgstr ""
+msgstr "Voir les dernières informations"
+
+msgid "See members detail"
+msgstr "Voir les membres"
+
+msgid "Select Application Access"
+msgstr "Application"
+
+msgid "Select Group Access"
+msgstr "Groupe"
 
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
 msgstr ""
 "Sélectionnez avec profil pour une réutilisation dans une autre base ou pour "
 "une sauvegarde"
+
+msgid "Select Role Access"
+msgstr "Rôle"
+
+msgid "Select User Access"
+msgstr "Utilisateur"
 
 msgid "Select all columns"
 msgstr "Sélectionner tout"
@@ -2967,8 +3053,33 @@ msgstr "facility (syslog) de journalisation des authentifications"
 msgid "Set autonome profil"
 msgstr "Profil dédié"
 
+#, c-format
+msgid "Set by \"%s\" attribute (%s) from template profil \"%s\""
+msgstr ""
+"Obtenu par l'attribut \"%s\" (\"%s\") depuis le profil dynamique \"%s\""
+
+#, c-format
+msgid "Set by \"%s\" attribute from template profil \"%s\""
+msgstr "Obtenu par l'attribut \"%s\" depuis le profil dynamique \"%s\""
+
+#, c-format
+msgid "Set by %s through \"%s\" linked profil"
+msgstr "Obtenu par %s depuis le profil lié \"%s\""
+
+#, c-format
+msgid "Set by %s through document itself \"%s\""
+msgstr "Obtenu par %s depuis le document même \"%s\""
+
+#, c-format
+msgid "Set by %s through template profil \"%s\""
+msgstr "Obtenu par \"%s\" depuis le profil dynamique \"%s\""
+
 msgid "Set default values"
 msgstr "Valeurs par défaut"
+
+#, c-format
+msgid "Set from template profil \"%s\""
+msgstr "Obtenu par le modèle de template \"%s\""
 
 msgid "Set new entry"
 msgstr "Saisissez une nouvelle entrée"
@@ -2978,6 +3089,10 @@ msgstr "Rendre privé"
 
 msgid "Set public"
 msgstr "Rendre publique"
+
+#, c-format
+msgid "Set through \"%s\" linked profil"
+msgstr "Obtenu depuis le profil lié \"%s\""
 
 #, c-format
 msgid "SetBlock:error [%s]"
@@ -3009,6 +3124,10 @@ msgid ""
 msgstr ""
 "Certaines contraintes d'attributs ne sont pas respectées\n"
 "Vous devez corriger ces valeurs avant de sauver le document"
+
+#, c-format
+msgid "Something wrong. No acl found in %s (user #%d)"
+msgstr "Incohérence: Pas d'acl trouvée dans \"%s\" (utilisateur n°%d)"
 
 msgid "Sorry but this section key already exists !"
 msgstr "Désolé mais cette clé de rubrique existe déjà !"
@@ -3177,6 +3296,9 @@ msgstr "Ce compte a expiré."
 msgid "This account is desactivated."
 msgstr "Ce compte est désactivé."
 
+msgid "This action requires the installation of Dynacase Extui module"
+msgstr ""
+
 msgid "This document has been deleted"
 msgstr "Ce document a été supprimé"
 
@@ -3323,6 +3445,9 @@ msgstr "Utilisation du dossier personnel <%s> à la place"
 msgid "Used"
 msgstr "Utilisé"
 
+msgid "User"
+msgstr "Utilisateur"
+
 msgid "User Access"
 msgstr "Accès des utilisateurs"
 
@@ -3419,6 +3544,9 @@ msgstr "Voir le contenu du dossier"
 msgid "View folder properties"
 msgstr "Voir les propriétés du dossier"
 
+msgid "View group access"
+msgstr "Voir les groupes"
+
 msgid "View headers"
 msgstr "Voir entête"
 
@@ -3443,17 +3571,14 @@ msgstr "voir les documents suivants..."
 msgid "View notice messages"
 msgstr "Voir tous les messages"
 
-msgid "View only access set. Green or Red flag"
-msgstr "Voir que les accès définis. Les cercles verts ou rouges."
+msgid "View only access set. Green flag"
+msgstr ""
 
 msgid "View postit"
 msgstr "Voir le post-it"
 
 msgid "View print version"
 msgstr "Version imprimable"
-
-msgid "View profil definition"
-msgstr "Voir la définition du profil"
 
 msgid "View properties"
 msgstr "Voir les propriétés"
@@ -3674,7 +3799,7 @@ msgid ""
 msgstr ""
 
 msgid "actions"
-msgstr "actions"
+msgstr "les actions"
 
 msgid "add"
 msgstr "ajout"
@@ -4175,6 +4300,10 @@ msgstr "connexion à la base de données mnogosearch impossible"
 msgid "cancel"
 msgstr "Annuler"
 
+#, c-format
+msgid "cannot access edit template file %s"
+msgstr ""
+
 msgid "cannot access to  database $db\n"
 msgstr "accès à la base de données $db refusé\n"
 
@@ -4199,10 +4328,6 @@ msgstr ""
 
 msgid "cannot contact server"
 msgstr "ne peut contacter le serveur"
-
-#, c-format
-msgid "cannot control : object not initialized : %s"
-msgstr "contrôle impossible : objet non initialisé : %s"
 
 #, c-format
 msgid "cannot copy %s"
@@ -4292,6 +4417,18 @@ msgid "cannot lauch <b>%s</b> transformation"
 msgstr "Échec du lancement de la conversion <b>%s</b>"
 
 #, c-format
+msgid "cannot load xml %s layout file"
+msgstr ""
+
+#, c-format
+msgid "cannot load xml layout file : %s"
+msgstr ""
+
+#, c-format
+msgid "cannot load xml template : %s"
+msgstr ""
+
+#, c-format
 msgid "cannot modify forum %s"
 msgstr "modification du forum impossible : %s"
 
@@ -4300,8 +4437,8 @@ msgid "cannot object update %s"
 msgstr "ne peut mettre à jour %s"
 
 #, c-format
-msgid "cannot open %s layout file"
-msgstr "ne peut ouvrir le fichier template %s"
+msgid "cannot open %s layout file : %s"
+msgstr ""
 
 msgid "cannot produce sql request"
 msgstr ""
@@ -4484,9 +4621,6 @@ msgstr "choix d'une action à partir d'un traitement"
 
 msgid "choose colums"
 msgstr "Choix des colonnes affichées"
-
-msgid "choose document"
-msgstr "choisi un document"
 
 msgid "choose for edit enum attribute"
 msgstr "choix pour editer les attributs énumérés"
@@ -4818,6 +4952,9 @@ msgstr ""
 
 msgid "database access for webdav"
 msgstr "coordonnées d'accès à la base de données webdav"
+
+msgid "database record date style"
+msgstr ""
 
 msgid "date"
 msgstr "date"
@@ -5231,9 +5368,6 @@ msgstr "édition des arguments des actions dans l'édition des cycles"
 msgid "edit attribute inline"
 msgstr "Éditer les attribut en ligne"
 
-msgid "edit by object"
-msgstr "édition par objet"
-
 msgid "edit contact card"
 msgstr "éditer la fiche"
 
@@ -5444,108 +5578,6 @@ msgstr "erreur dans la format pzone %s"
 msgid "error sending text conversion"
 msgstr "erreur lors de l'envoi de la conversion texte"
 
-msgid "eui:Abstract display"
-msgstr "Résumé"
-
-msgid "eui:Cancel deletion"
-msgstr "Annuler la suppression"
-
-msgid "eui:Cancel locking"
-msgstr "Annuler le verrouillage"
-
-msgid "eui:Cancel remove"
-msgstr "Annuler"
-
-msgid "eui:Create a search"
-msgstr "Créer une recherche"
-
-msgid "eui:Delete"
-msgstr "Supprimer"
-
-msgid "eui:Display"
-msgstr "Affichage"
-
-msgid "eui:Document Selection"
-msgstr "Sélection"
-
-msgid "eui:Duplicate document"
-msgstr "Dupliquer"
-
-msgid "eui:Edit document"
-msgstr "Modifier"
-
-msgid "eui:Export all documents"
-msgstr "Exporter le contenu du dossier"
-
-msgid "eui:Export selected documents"
-msgstr "Exporter les documents sélectionnés"
-
-msgid "eui:Grid display"
-msgstr "Grille"
-
-msgid "eui:Historic"
-msgstr "Historique"
-
-msgid "eui:Icon display"
-msgstr "Icones"
-
-msgid "eui:Lock"
-msgstr "Verrouiller"
-
-msgid "eui:Lock selected documents"
-msgstr "Verrouiller les documents sélectionnés"
-
-msgid "eui:Lock selection"
-msgstr "Verrouiller la sélection"
-
-msgid "eui:Remove from folder"
-msgstr "Retirer du dossier"
-
-msgid "eui:Rss Link"
-msgstr "Lien RSS"
-
-msgid "eui:Selection"
-msgstr "Sélection"
-
-msgid "eui:Send Mail"
-msgstr "Envoyer un mail"
-
-msgid "eui:Sure delete ?"
-msgstr "Etes vous sûr de vouloir supprimer ?"
-
-msgid "eui:Sure lock selected document ?"
-msgstr "Etes vous sûr de verrouiller les documents sélectionnés ?"
-
-msgid "eui:Sure remove from folder ?"
-msgstr "Etes vous sûr de vouloir enlever le document du dossier ?"
-
-msgid "eui:Tools"
-msgstr "Outils"
-
-msgid "eui:Tree display"
-msgstr "Arbre"
-
-msgid "eui:Unlock"
-msgstr "Déverrouiller"
-
-msgid "eui:View Document"
-msgstr "Voir"
-
-msgid "eui:View Properties"
-msgstr "Propriétés"
-
-msgid "eui:View print version"
-msgstr "Version imprimable"
-
-msgid "eui:itemlistmenu tag not found"
-msgstr "itemlistmenu tag non trouvé"
-
-msgid "eui:no id in itemlistmenu"
-msgstr "Pas d'identifiant dans itemlistmenu"
-
-msgid "eui:no itemmenu tags found"
-msgstr "Aucun tag itemmenu trouvé"
-
 msgid "exec plan"
 msgstr "Planification des processus"
 
@@ -5699,12 +5731,6 @@ msgstr "le fichier {left} contient le mot {right}"
 
 msgid "filename"
 msgstr "fichier"
-
-#, c-format
-msgid ""
-"filename %s does not contain freedom_authtypeparams variable. May be old "
-"syntax for configuration file"
-msgstr ""
 
 msgid "filename or type include"
 msgstr "nom du fichier ou type du fichier contient"
@@ -6106,9 +6132,6 @@ msgstr "Importation Vcard"
 msgid "impossible conversion"
 msgstr "conversion impossible"
 
-msgid "in database"
-msgstr "dans la base de données"
-
 #, c-format
 msgid "in domain %s"
 msgstr "dans le domain %s"
@@ -6238,6 +6261,10 @@ msgstr "dernier texte tapé pour la recherche"
 
 msgid "level"
 msgstr "niveau"
+
+#, c-format
+msgid "limit reached, only %d members has been displayed"
+msgstr "Limite atteinte, seuls %d utilisateurs sont affichés"
 
 msgid "line"
 msgstr "ligne"
@@ -6692,6 +6719,10 @@ msgstr "pas de durée spécifiée dans le minuteur %s [%d]"
 msgid "no document family"
 msgstr "Aucune famille de document"
 
+#, c-format
+msgid "no document match '%s'"
+msgstr ""
+
 msgid "no document reference"
 msgstr "pas de référence au document"
 
@@ -6718,6 +6749,9 @@ msgstr ""
 
 msgid "no father category (its a top category)"
 msgstr "pas de catégorie père (catégorie primaire)"
+
+msgid "no file"
+msgstr ""
 
 #, c-format
 msgid "no file referenced for %s document"
@@ -7515,6 +7549,10 @@ msgstr "révision du document"
 msgid "revival document"
 msgstr "restauration du document"
 
+#, c-format
+msgid "role %s id is already used"
+msgstr ""
+
 msgid "root"
 msgstr "racine"
 
@@ -7524,6 +7562,10 @@ msgstr "Identificateur du dossier racine"
 #, c-format
 msgid "root for %s"
 msgstr "racine pour %s"
+
+#, c-format
+msgid "roweditzone syntax %s is invalid"
+msgstr ""
 
 msgid "rss avaible for users"
 msgstr "Le flux RSS est maintenant accessible pour les utilisateurs"
@@ -7742,6 +7784,10 @@ msgstr "affecter un nom logique"
 
 msgid "set logical name identificator"
 msgstr "Affecter un identifiant logique"
+
+#, c-format
+msgid "set logical name to %s"
+msgstr "Nom logique mis à \"%s\""
 
 #, c-format
 msgid "set primary folder to '%s'"
@@ -8278,6 +8324,10 @@ msgid "unknow set for attribute %s %s"
 msgstr "Attribut structurant inconnu %s %s"
 
 #, c-format
+msgid "unknow user #%s"
+msgstr ""
+
+#, c-format
 msgid "unknow virtual user identificateur %s"
 msgstr "identificateur [%s] inconnu comme utilisateur virtuel"
 
@@ -8369,6 +8419,10 @@ msgid "update id [%d] "
 msgstr "mise à jour id [%d] "
 
 #, c-format
+msgid "update logical name from %s to %s"
+msgstr "Modification du nom logique de \"%s\" à \"%s\""
+
+#, c-format
 msgid "update of %s catalogue has failed,"
 msgstr "La mise à jour du catalogue %s a échoué."
 
@@ -8416,9 +8470,6 @@ msgstr ""
 msgid "use what gate"
 msgstr ""
 
-msgid "user"
-msgstr "utilisateur"
-
 #, c-format
 msgid "user #%d does not exist"
 msgstr "l'utilisateur n°%d n'existe pas"
@@ -8454,7 +8505,7 @@ msgid "user is desactivated"
 msgstr "l'utilisateur est désactivé"
 
 msgid "user not initialized"
-msgstr ""
+msgstr "utilisateur non initialisé"
 
 msgid "user not know"
 msgstr "utilisateur inconnu"
@@ -8499,7 +8550,7 @@ msgstr "la valeur [%s] n'est pas une date valide"
 
 #, c-format
 msgid "value [%s] is not a valid time"
-msgstr ""
+msgstr "la valeur [%s] n'est pas une heure valide"
 
 #, c-format
 msgid "value [%s] is not a valid timestamp"
@@ -8734,7 +8785,7 @@ msgstr "Le cycle de vie associé %s [%d] est corrompu"
 
 #, c-format
 msgid "workflow file %s is not writable"
-msgstr ""
+msgstr "le fichier \"%s\" du workflow n'est pas modifiable"
 
 msgid "workflow has been recomposed"
 msgstr "le cycle de vie a été regénéré"
@@ -8758,13 +8809,6 @@ msgstr "qualifié"
 
 msgid "write only"
 msgstr "écriture seule"
-
-msgid "xml menu parsing"
-msgstr ""
-
-#, c-format
-msgid "xml parse error %s"
-msgstr ""
 
 msgid "yes"
 msgstr "oui"
@@ -8863,11 +8907,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid " 0 means no delay"
 #~ msgstr " 0 signifie pas de limite"
 
+#~ msgid " Profil for"
+#~ msgstr "Profil pour"
+
+#~ msgid " Profil for "
+#~ msgstr "Profil pour"
+
 #~ msgid "Access To All Users"
 #~ msgstr "Accès à tous les utilisateurs"
 
 #~ msgid "Access To All Users in my domain"
 #~ msgstr "Acces aux utilisateurs de mon domaine"
+
+#~ msgid "Access description"
+#~ msgstr "Description"
+
+#~ msgid "Account"
+#~ msgstr "Compte"
 
 #~ msgid "Authentification failure before account desactivation"
 #~ msgstr ""
@@ -8898,6 +8954,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
 
+#~ msgid "View only access set. Green or Red flag"
+#~ msgstr "Voir que les accès définis. Les cercles verts ou rouges."
+
+#~ msgid "View profil definition"
+#~ msgstr "Voir la définition du profil"
+
 #~ msgid "What User Management"
 #~ msgstr "Gestion des utilisateurs"
 
@@ -8922,6 +8984,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot connect to %s"
 #~ msgstr "ne peut se connecter à %s"
 
+#~ msgid "cannot control : object not initialized : %s"
+#~ msgstr "contrôle impossible : objet non initialisé : %s"
+
 #~ msgid ""
 #~ "cannot lock document %s [%d] (rev %d) : fixed. Get the latest version"
 #~ msgstr "le fichier %s [%d] (rév. %d) est figé. Utilisez la dernière version"
@@ -8932,8 +8997,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot open %s configuration file"
 #~ msgstr "ne peut ouvrir le fichier de configuration %s"
 
+#~ msgid "cannot open %s layout file"
+#~ msgstr "ne peut ouvrir le fichier template %s"
+
 #~ msgid "changegroup"
 #~ msgstr "Changement de groupe"
+
+#~ msgid "choose document"
+#~ msgstr "choisi un document"
 
 #~ msgid "clear"
 #~ msgstr "Effacer"
@@ -8952,11 +9023,116 @@ msgstr "le titre de {left} inclus {right}"
 #~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
 #~ "descendre"
 
+#~ msgid "edit by object"
+#~ msgstr "édition par objet"
+
 #~ msgid "elinkEncode::attribute not found %s"
 #~ msgstr "elinkEncode :  attribut non trouvé %s"
 
 #~ msgid "err_add_user"
 #~ msgstr "Impossible de creer l'utilisateur"
+
+#~ msgid "eui:Abstract display"
+#~ msgstr "Résumé"
+
+#~ msgid "eui:Cancel deletion"
+#~ msgstr "Annuler la suppression"
+
+#~ msgid "eui:Cancel locking"
+#~ msgstr "Annuler le verrouillage"
+
+#~ msgid "eui:Cancel remove"
+#~ msgstr "Annuler"
+
+#~ msgid "eui:Create a search"
+#~ msgstr "Créer une recherche"
+
+#~ msgid "eui:Delete"
+#~ msgstr "Supprimer"
+
+#~ msgid "eui:Display"
+#~ msgstr "Affichage"
+
+#~ msgid "eui:Document Selection"
+#~ msgstr "Sélection"
+
+#~ msgid "eui:Duplicate document"
+#~ msgstr "Dupliquer"
+
+#~ msgid "eui:Edit document"
+#~ msgstr "Modifier"
+
+#~ msgid "eui:Export all documents"
+#~ msgstr "Exporter le contenu du dossier"
+
+#~ msgid "eui:Export selected documents"
+#~ msgstr "Exporter les documents sélectionnés"
+
+#~ msgid "eui:Grid display"
+#~ msgstr "Grille"
+
+#~ msgid "eui:Historic"
+#~ msgstr "Historique"
+
+#~ msgid "eui:Icon display"
+#~ msgstr "Icones"
+
+#~ msgid "eui:Lock"
+#~ msgstr "Verrouiller"
+
+#~ msgid "eui:Lock selected documents"
+#~ msgstr "Verrouiller les documents sélectionnés"
+
+#~ msgid "eui:Lock selection"
+#~ msgstr "Verrouiller la sélection"
+
+#~ msgid "eui:Remove from folder"
+#~ msgstr "Retirer du dossier"
+
+#~ msgid "eui:Rss Link"
+#~ msgstr "Lien RSS"
+
+#~ msgid "eui:Selection"
+#~ msgstr "Sélection"
+
+#~ msgid "eui:Send Mail"
+#~ msgstr "Envoyer un mail"
+
+#~ msgid "eui:Sure delete ?"
+#~ msgstr "Etes vous sûr de vouloir supprimer ?"
+
+#~ msgid "eui:Sure lock selected document ?"
+#~ msgstr "Etes vous sûr de verrouiller les documents sélectionnés ?"
+
+#~ msgid "eui:Sure remove from folder ?"
+#~ msgstr "Etes vous sûr de vouloir enlever le document du dossier ?"
+
+#~ msgid "eui:Tools"
+#~ msgstr "Outils"
+
+#~ msgid "eui:Tree display"
+#~ msgstr "Arbre"
+
+#~ msgid "eui:Unlock"
+#~ msgstr "Déverrouiller"
+
+#~ msgid "eui:View Document"
+#~ msgstr "Voir"
+
+#~ msgid "eui:View Properties"
+#~ msgstr "Propriétés"
+
+#~ msgid "eui:View print version"
+#~ msgstr "Version imprimable"
+
+#~ msgid "eui:itemlistmenu tag not found"
+#~ msgstr "itemlistmenu tag non trouvé"
+
+#~ msgid "eui:no id in itemlistmenu"
+#~ msgstr "Pas d'identifiant dans itemlistmenu"
+
+#~ msgid "eui:no itemmenu tags found"
+#~ msgstr "Aucun tag itemmenu trouvé"
 
 #~ msgid "expire date"
 #~ msgstr "date d'expiration"
@@ -8995,6 +9171,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "if not set, will be the current date more delay"
 #~ msgstr "si vide, ce sera la date courante plus le délai"
+
+#~ msgid "in database"
+#~ msgstr "dans la base de données"
 
 #~ msgid "insert the document to see it with offline application"
 #~ msgstr "insérer le document pour le voir avec l'application offline"
@@ -9067,6 +9246,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "too many similar document %s <B>ignored</B> "
 #~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
+
+#~ msgid "user"
+#~ msgstr "utilisateur"
 
 #~ msgid "user account edition"
 #~ msgstr "modifier compte utilisateur"

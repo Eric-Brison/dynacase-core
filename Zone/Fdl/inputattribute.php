@@ -118,7 +118,6 @@ function inputattribute(&$action)
         if (!$options) $options = "elabel=" . ($label);
         if ($esize) $options.= "|esize=$esize";
         $oattr = new NormalAttribute($attrid, $doc->id, $label, $type, $format, $repeat, $order, $link, $visibility, $needed, $isInTitle, $isInAbstract, $fieldSet, $phpfile, $phpfunc, $elink, $phpconstraint, $usefor, $eformat, $options);
-        
         $doc->attr[$attrid] = $oattr;
     }
     

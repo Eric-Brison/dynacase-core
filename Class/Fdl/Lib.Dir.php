@@ -419,7 +419,8 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     $maintabledot = ($maintable) ? $maintable . '.' : '';
                     $sqlfields = implode(", ", $tsqlfields);
                     if ($userid > 1) { // control view privilege
-                        $qsql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
+                        // $qsql.= " and (${maintabledot}profid <= 0 or hasviewprivilege($userid, ${maintabledot}profid))";
+                        $qsql.= sprintf(" and (%sviews && '%s')", $maintabledot, searchDoc::getUserViewVector($userid));
                         // no compute permission here, just test it
                         $qsql = str_replace("* from ", "$sqlfields  from ", $qsql);
                     } else {
@@ -447,9 +448,11 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                 } else {
                     // families
                     if ($userid > 1) { // control view privilege
-                        $qsql.= " and (profid <= 0 or hasviewprivilege($userid, profid))";
+                        //$qsql.= " and (profid <= 0 or hasviewprivilege($userid, profid))";
+                        $qsql.= sprintf(" and (views && '%s')", searchDoc::getUserViewVector($userid));
                         // and get permission
-                        $qsql = str_replace("* from ", "* ,getuperm($userid,profid) as uperm from ", $qsql);
+                        //$qsql = str_replace("* from ", "* ,getuperm($userid,profid) as uperm from ", $qsql);
+                        
                     }
                     $qsql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                 }
@@ -778,9 +781,8 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
             $cdoc = new DocFam($dbaccess, $classid);
             $query->AddQuery("usefor = '" . $cdoc->usefor . "'");
         }
-        
-        if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",docfam.profid)");
-        
+        // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",docfam.profid)");
+        if ($userid > 1) $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
         if ($qtype == "TABLE") {
             $t = $query->Query(0, 0, $qtype);
             foreach ($t as $k => $v) {
@@ -827,7 +829,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
      *
      * @param string $dbaccess database specification
      * @param int $uid user identificator
-     * @param array restriction of this set of family id
+     * @param array $tfid restriction of this set of family id
      * @return array of family identificators
      */
     function getFamilyCreationIds($dbaccess, $uid, $tfid = array())
@@ -837,10 +839,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         if (count($tfid) > 0) {
             $query->AddQuery(GetSqlCond($tfid, "id"));
         }
-        $perm = (2 << (POS_CREATE - 1)) + (2 << (POS_ICREATE - 1));
-        
-        $query->AddQuery("((profid = 0) OR hasdocprivilege($uid, profid, $perm))");
-        
+        if ($uid != 1) {
+            $perm = (2 << (POS_CREATE - 1)) + (2 << (POS_ICREATE - 1));
+            $query->AddQuery(sprintf("((profid = 0) OR hasaprivilege('%s', profid, %d))", DocPerm::getMemberOfVector($uid) , $perm));
+        }
         $l = $query->Query(0, 0, "TABLE");
         
         $lid = array();
@@ -889,7 +891,8 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         $query = new QueryDb($dbaccess, "DocRead");
         $query->AddQuery("initid in (" . implode(",", $ids) . ')');
         $query->AddQuery("locked != -1");
-        if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",profid)");
+        // if ($userid > 1) $query->AddQuery("hasviewprivilege(" . $userid . ",profid)");
+        if ($userid > 1) $query->AddQuery(sprintf("views && '%s'", searchDoc::getUserViewVector($userid)));
         
         $tdoc = $query->Query(0, 0, "TABLE");
         

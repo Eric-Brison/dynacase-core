@@ -136,7 +136,7 @@ class DocFormFormat
         $this->onChange = $this->jsEvents . " onchange=\"document.isChanged=true\" "; // use in "pleaseSave" js function
         if ($docid == 0) {
             // case of specific interface
-            $this->iOptions = '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel());
+            $this->iOptions = str_replace('\"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
         } else $this->iOptions = "";
         if (($this->oattr->type != "array") && ($this->oattr->type != "htmltext") && ($this->oattr->type != "docid")) {
             if ($this->visibility != "S") {
@@ -166,17 +166,14 @@ class DocFormFormat
                 break;
 
             case "htmltext":
-                
                 $input = $this->formatHtmlText($value);
                 break;
 
             case "idoc":
-                
                 $input.= $this->getLayIdoc($this->doc, $this->oattr, $attridk, $attrin, $value);
                 break;
 
             case "array":
-                
                 $input = $this->formatArray($value);
                 break;
 
@@ -190,6 +187,10 @@ class DocFormFormat
 
             case "docid":
                 $input = $this->formatDocid($value);
+                break;
+
+            case "account":
+                $input = $this->formatAccount($value);
                 break;
 
             case "enum":
@@ -676,6 +677,18 @@ class DocFormFormat
             return $input;
         }
         /**
+         * HTML input for Account attribute
+         * @param string $value the row value of input
+         * @return string HTML input fragment
+         */
+        private function formatAccount($value)
+        {
+            if (!$this->oattr->format) $this->oattr->format = 'IUSER';
+            if (!$this->oattr->phpfile) {
+            }
+            return $this->formatDocid($value);
+        }
+        /**
          * HTML input for Docid attribute
          * @param string $value the row value of input
          * @return string HTML input fragment
@@ -725,7 +738,7 @@ class DocFormFormat
                     }
                     if ($this->docid == 0) {
                         // case of specific interface
-                        $this->iOptions = '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel());
+                        $this->iOptions = str_replace('\"', '&quot;', '&phpfile=' . $this->oattr->phpfile . '&phpfunc=' . $this->oattr->phpfunc . '&label=' . ($this->oattr->getLabel()));
                     }
                     $autocomplete = " autocomplete=\"off\" autoinput=\"1\" onfocus=\"activeAuto(event," . $this->docid . ",this,'{$this->iOptions}','{$this->attrid}','{$this->index}')\" ";
                     $this->onChange.= $autocomplete;

@@ -22,13 +22,17 @@
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 // -----------------------------------
-function freedom_modaccess(&$action)
+function freedom_modaccess(Action & $action)
 {
     // -----------------------------------
     global $_SERVER;
     // get all parameters
-    $acls = GetHttpVars("acls", array());
-    $docid = GetHttpVars("docid"); // id for controlled object
+    
+    /**
+     * @var array $acls
+     */
+    $acls = $action->getArgument("acls", array());
+    $docid = $action->getArgument("docid"); // id for controlled object
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
     $doc = new_Doc($dbaccess, $docid);
@@ -49,8 +53,7 @@ function freedom_modaccess(&$action)
             ));
             
             $before[$userid] = array(
-                $perm->upacl,
-                $perm->unacl
+                $perm->upacl
             );
             $perm->UnsetControl();
             
@@ -63,14 +66,17 @@ function freedom_modaccess(&$action)
                 if ($perm->isAffected()) $err = $perm->delete();
             }
             $after[$userid] = array(
-                $perm->upacl,
-                $perm->unacl
+                $perm->upacl
             );
         }
         if ($err != "") $action->exitError($err);
+        
+        $doc->setViewProfil();
         // recompute all related profile
         $doc->recomputeProfiledDocument();
-        // find username
+        //-------------------------------
+        // compose history
+        //** find username
         $tuid = array();
         foreach ($acls as $userid => $aclon) {
             $tuid[] = $userid;
@@ -123,7 +129,6 @@ function freedom_modaccess(&$action)
         }
         if (count($tc) > 0) $doc->addComment(sprintf(_("Change control :\n %s") , implode("\n", $tc)));
     }
-    RedirectSender($action); // return to sender
-    
+    redirect($action, "FREEDOM", sprintf("FREEDOM_GACCESS&id=%s&allgreen=%s&group=%s", $docid, $action->getArgument("allgreen", "N") , $action->getArgument("group", "N")));
 }
 ?>

@@ -697,18 +697,6 @@ function seems_utf8($Str)
     return true;
 }
 /**
- * return true if it is possible to manage USER by FREEDOM
- *
- */
-function usefreedomuser()
-{
-    if (@include_once ('FDL/Lib.Usercard.php')) {
-        $usefreedom = (GetParam("USE_FREEDOM_USER") != "no");
-        return $usefreedom;
-    }
-    return false;
-}
-/**
  * Initialise WHAT : set global $action whithout an authorized user
  *
  */
@@ -775,18 +763,18 @@ function mkpasswd($length = 8, $charspace = "")
     for ($i = 0; $i < $length; $i++) {
         $passwd.= substr($charspace, rand(0, strlen($charspace) - 1) , 1);
     }
-
+    
     return $passwd;
 }
- /**
-+ * return lcdate use in database : iso or dmy
-+ * @return string
-+ */
+/**
+ + * return lcdate use in database : iso or dmy
+ + * @return string
+ +
+ */
 function getLcdate()
 {
     return substr(getParam("CORE_LCDATE") , 0, 3);
 }
-
 /**
  *
  * @param string $core_lang

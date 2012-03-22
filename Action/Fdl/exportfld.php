@@ -32,6 +32,7 @@ include_once ("FDL/import_file.php");
  * @global wcolumn Http var :  if - export preferences are ignored
  * @global eformat Http var :  (I|R|F) I: for reimport, R: Raw data, F: Formatted data
  * @global selection Http var :  JSON document selection object
+ * @return void
  */
 function exportfld(Action & $action, $aflid = "0", $famid = "")
 {
@@ -47,7 +48,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     if ($eformat == "X") {
         // XML redirect
         include_once ("FDL/exportxmlfld.php");
-        return exportxmlfld($action, $aflid, $famid);
+        exportxmlfld($action, $aflid, $famid);
     }
     
     if ((!$fldid) && $selection) {
@@ -75,7 +76,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
         $tdoc = getChildDoc($dbaccess, $fldid, "0", "ALL", array() , $action->user->id, "TABLE", $famid);
     }
     usort($tdoc, "orderbyfromid");
-    
+    $foutdir = '';
     if ($wfile) {
         $foutdir = uniqid(getTmpDir() . "/exportfld");
         if (!mkdir($foutdir)) exit();
@@ -88,6 +89,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     // set encoding
     if (!$wutf8) fputs_utf8($fout, "", true);
     
+    $ef = array(); //   files to export
     if (count($tdoc) > 0) {
         
         $send = "\n"; // string to be writed in last
@@ -95,7 +97,6 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
         // compose the csv file
         reset($tdoc);
         
-        $ef = array(); //   files to export
         $tmoredoc = array();
         foreach ($tdoc as $k => $zdoc) {
             if (!is_array($zdoc)) continue;
@@ -104,6 +105,9 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
                 $cvname = "";
                 $cpname = "";
                 $fpname = "";
+                /**
+                 * @var Docfam $doc
+                 */
                 $doc->Affect($zdoc, true);
                 // it is a family
                 if ($wprof) {
@@ -206,6 +210,7 @@ function exportfld(Action & $action, $aflid = "0", $famid = "")
     }
     fclose($fout);
     if ($wfile) {
+        $err = '';
         foreach ($ef as $info) {
             $source = $info["path"];
             $ddir = $foutdir . '/' . $info["ldir"];
@@ -250,7 +255,7 @@ function orderbyfromid($a, $b)
 /**
  * Removes content of the directory (not sub directory)
  *
- * @param string the directory name to remove
+ * @param string $dirname the directory name to remove
  * @return boolean True/False whether the directory was deleted.
  */
 function deleteContentDirectory($dirname)
@@ -271,7 +276,7 @@ function deleteContentDirectory($dirname)
         closedir($d);
     }
     
-    return true;;
+    return true;
 }
 function exportProfil($fout, $dbaccess, $docid)
 {
@@ -291,13 +296,11 @@ function exportProfil($fout, $dbaccess, $docid)
     if ($acls) {
         foreach ($acls as $va) {
             $up = $va["upacl"];
-            $un = $va["unacl"];
             $uid = $va["userid"];
             
             foreach ($doc->acls as $acl) {
                 $bup = ($doc->ControlUp($up, $acl) == "");
-                $bun = ($doc->ControlUp($un, $acl) == "");
-                if ($bup || $bun) {
+                if ($bup) {
                     if ($uid >= STARTIDVGROUP) {
                         $vg = new Vgroup($dbaccess, $uid);
                         $qvg = new QueryDb($dbaccess, "VGroup");
@@ -333,7 +336,7 @@ function getUserLogicName($dbaccess, $uid)
     }
     return $uid;
 }
-function exportonedoc(&$doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
+function exportonedoc(Doc & $doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopref, $eformat)
 {
     static $prevfromid = - 1;
     static $lattr;
@@ -351,7 +354,7 @@ function exportonedoc(&$doc, &$ef, $fout, $wprof, $wfile, $wident, $wutf8, $nopr
         $trans = array_flip($trans);
         $trans = array_map("utf8_encode", $trans);
     }
-    $efldid = '-';
+    $efldid = '';
     $dbaccess = $doc->dbaccess;
     if ($prevfromid != $doc->fromid) {
         if (($eformat != "I") && ($prevfromid > 0)) fputs_utf8($fout, "\n");

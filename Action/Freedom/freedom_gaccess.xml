@@ -44,70 +44,149 @@ TABLE.hborder TBODY td.odd {
 }
 TABLE.hborder THEAD td.even {
   background-color:[COLOR_B8];
-  width:[cellwidth];
+  overflow:ellipsis;
 }
 TABLE.hborder THEAD td.odd {
   background-color:[COLOR_B9];
+  overflow:ellipsis;
+}
+TABLE.hborder td.odd,  TABLE.hborder td.even {
   width:[cellwidth];
 }
 TABLE.hborder td.headaccess {
   background-color:[COLOR_B7];
-  font-weight: bold;
+  /*font-weight: bold;*/
+  min-width:100px;
+}
+span.computed {
+  padding-left:30px;
+}
+span[accountType="G"] {
+    padding-left:15px;
+	background-repeat: no-repeat;
+    background-image: url('[IMG:bblue.png|10]');
+    background-position:left center;
+}
+span[accountType="U"] {
+    padding-left:15px;
+	background-repeat: no-repeat;
+    background-image: url('[IMG:bgreen.png|10]');
+    background-position:left center;
+}
+span[accountType="R"] {
+    padding-left:15px;
+	background-repeat: no-repeat;
+    background-image: url('[IMG:bpink.png|10]');
+    background-position:left center;
+}
+span[accountType="D"] {
+    padding-left:15px;
+	background-repeat: no-repeat;
+    background-image: url('[IMG:byellow.png|10]');
+    background-position:left center;
+}
+span[accountType="M"] {
+    padding-left:15px;
+	background-repeat: no-repeat;
+    background-image: url('[IMG:borange.png|10]');
+    background-position:left center;
+}
+table.acls {
+    margin-bottom:2px ;
+       width:100%;
+}
+table.headacl {
+  position:fixed;
+  /*height:40px;*/
+}
+table.bodyacl {
+  /*padding-top:40px;*/
+    margin:top:10px;
+}
+table.bodyacl thead {
+   visibility:hidden;
 }
 </style>
+        <script>
+        function openGroupAcl(gid) {
+          subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'gaccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&gid='+gid);
+        }
+        function openDetailAcl(gid) {
+          subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'daccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]&userid='+gid);
+        }
+        </script>
+<table class="hborder acls headacl"  cellspacing="0" cellpadding="0">
+    <thead>
+    <tr>
+    <td colspan="2" class="headaccess"><strong>[toOrigin]</strong>[IF dynamic].<br/><span class="computed">[ComputedFrom] <a target="access[dprofid]"
+        href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic]</span></td>
+     [BLOCK DACLS]<td class="[oddoreven]" align="center" valign="top" title="[acldesc]" style="cursor:help">[aclname]</td>
+     [ENDBLOCK DACLS]
+    </tr>
+    </thead>
+</table>
 <form  name="edit" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_MODACCESS">
-<input type="hidden" name="docid" value="[docid]">
-<input type="hidden" name="allgreen" value="[allgreen]">
 
-<table class="hborder" style="margin-bottom:2px" cellspacing="0" cellpadding="0" 
-       width="100%" >
-<thead>
 
-<TR >
-<TD colspan="2" class="headaccess"><a title="[TEXT:View profil definition]" href="[CORE_STANDURL]app=FDL&action=FDL_CARD&id=[docid]" target="_blank">[title]</a></TD>
- [BLOCK DACLS]<TD class="[oddoreven]" align="center" valign="top" title="[acldesc]" style="cursor:help">[aclname]</TD>
- [ENDBLOCK DACLS]
-[IFNOT ISIE]<td style="width:20px;visibility:visible"></td>[ENDIF ISIE]
-</TR>
-</thead>
-<tbody id="idtbody"  [IFNOT ISIE]class="overflow" style="height:100%;"[ENDIF ISIE]>
+<table class="hborder acls bodyacl" cellspacing="0" cellpadding="0" >
+    <thead>
+    <tr>
+    <td colspan="2" class="headaccess"><strong>[toOrigin]</strong>[IF dynamic].<br/><span class="computed">[ComputedFrom] <a target="access[dprofid]"
+        href="?app=FREEDOM&action=FREEDOM_GACCESS&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic]</span></td>
+     [BLOCK DACLS]<td class="[oddoreven]" align="center" valign="top" title="[acldesc]" style="cursor:help">[aclname]</td>
+     [ENDBLOCK DACLS]
+    </tr>
+    </thead>
+<tbody id="idtbody" >
    [BLOCK GROUPS]
-<TR >
-    <TD   align="left" class="left" >
-    <span style="margin:0px 0px 0px [level]px">
-      <img style="display:[displaygroup];cursor:pointer" src="[IMG:bblue.png]" width="10" height="10" onclick="subwindow(300,600,'gaccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&gid=[gid]')" >
-      <img style="display:[displayuser]" src="[IMG:bgreen.png]" width="10" height="10"  >
-      <img style="display:[displaydyn]" src="[IF isdyngroup][IMG:borange.png][ENDIF isdyngroup][IFNOT isdyngroup][IMG:byellow.png][ENDIF isdyngroup]" width="10" height="10"  >
-      <A  href="#" onclick="subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'uaccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]&userid=[gid]')"
-           >[gname]</A></span>
-    <input id="acls_[gid]_nc" type="hidden" disabled name="acls[[gid]][500]" value="nc"></TD>
+<tr>
+    <td   align="left" class="left" >
+    <span style="margin:0px 0px 0px [level]px" accountType="[accountType]">
+        <a style="display:[displaygroup];cursor:pointer"  onclick="openGroupAcl('[gid]')" title="[TEXT:See members detail]">+</a>
+      [IFNOT isdyn]<A   onclick="openDetailAcl('[gid]')" title="[TEXT:See detail for ][gname]">[gname]</A>[ENDIF isdyn][IF isdyn][gname][ENDIF isdyn]</span>
+    <input id="acls_[gid]_nc" type="hidden" disabled name="acls[[gid]][500]" value="nc"></td>
 
-   <TD align="right"  class="left"  >
-     <button style="display:[dmodify]" onclick="enablefrom(this.parentNode.parentNode);"  type="button" >&there4;</button></TD>
+   <td align="right"  class="left"  >
+     <button style="display:[dmodify]" onclick="enablefrom(this.parentNode.parentNode);"  type="button" >&there4;</button></td>
     [BLOCK [ACLS]]
-    <TD  align="center" class="[oddoreven]">
+    <td  align="center" class="[oddoreven]">
       <img  src="[IMG:[bimg]]" width="10px" height="10px"  >
       <input id="acls_[gid]_[iacl]" align="top" style="display:none" disabled type="checkbox" name="acls[[gid]][[iacl]]" value="[aclid]" [selected] >
-  </TD>
+  </td>
     [ENDBLOCK [ACLS]]
     
   
-</TR>
+</tr>
   [ENDBLOCK GROUPS]
 </tbody>
 </TABLE>
-[BLOCK MODIFY]
-<input class="CORETblHead" type="submit" 
-         name="Modify" value="[TEXT:Validate]"  >
-
-<input class="CORETblHead" type="button" onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=[allgreen]'" title="[TEXT:Reload page]" value="[TEXT:Reset]" >
-[ENDBLOCK MODIFY]
-[IFNOT isgreen]
-<input class="CORETblHead" type="button" 
-         name="Modify"  onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=Y'" title="[TEXT:View only access set. Green or Red flag]" value="[TEXT:All set only]"  >[ENDIF isgreen]
-[IF isgreen]
-<input class="CORETblHead" type="button" 
-         name="Modify" onmousedown="document.location.href='[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS&id=[docid]&allgreen=N'" value="[TEXT:Normal view]"  >[ENDIF isgreen]
+[IF MODIFY]
+        <input class="CORETblHead" type="submit" name="Modify" value="[TEXT:Validate]"  >
+        <input class="CORETblHead" type="button" onclick="document.location.reload()" title="[TEXT:Reload page]" value="[TEXT:Reset]" >
+        [ENDIF MODIFY]
+<input type="hidden" name="docid" value="[docid]">
+<input type="hidden" name="allgreen" value="[allgreen]">
+  <input type="hidden" name="group" value="[group]">
 </form>
+<form  name="view" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS">
+  <input type="hidden" name="id" value="[docid]">
+  <input type="hidden" name="allgreen" value="[allgreen]">
+  <input type="hidden" name="group" value="[group]">
+
+[IFNOT isgreen]
+        <input class="CORETblHead" type="button"
+                 name="Modify"  onclick="document.view.allgreen.value='Y';document.view.submit()" title="[TEXT:View only access set. Green flag]" value="[TEXT:All set only]"  >[ENDIF isgreen]
+[IF isgreen]
+        <input class="CORETblHead" type="button"
+                 name="Modify" onclick="document.view.allgreen.value='N';document.view.submit()" value="[TEXT:Normal view]"  >[ENDIF isgreen]
+[IFNOT hasgid][IFNOT isgreen]
+            [IFNOT viewgroup]
+        <input class="CORETblHead" type="button"
+                 name="Modify"  onclick="document.view.group.value='Y';document.view.submit()" title="[TEXT:View group access]" value="[TEXT:View group access]"  >[ENDIF viewgroup]
+[IF viewgroup]
+        <input class="CORETblHead" type="button"
+                 name="Modify" onclick="document.view.group.value='N';document.view.submit()" value="[TEXT:Hide group access]"  >[ENDIF viewgroup]
+            [ENDIF isgreen][ENDIF hasgid]
+
 
 [ZONE CORE:HTMLFOOT]

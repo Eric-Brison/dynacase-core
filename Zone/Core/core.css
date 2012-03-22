@@ -122,15 +122,23 @@ IMG.click:hover {
  * ------------------------------------------
  */
 .TABBackgroundSelected {
-  background-color: [CORE_FGCOLOR];
-[IFNOT ISIE]  background-image: url('CORE/Images/tab.png');[ENDIF ISIE]
-  
-  color: [CORE_TEXTFGCOLOR];
-  font-weight: bold;
+    background-color: [COLOR_B0];
+    border-radius: 0 20px 0 0;
+    padding: 0 20px 0 0;
+    float:left;
+    margin-right:3px;
+[IFNOT ISIE]  background-image: url('CORE/Images/tabvg.png');[ENDIF ISIE]
+
+color: [CORE_TEXTFGCOLOR];
+    font-weight: bold;
 }
 .TABBackground {
-  background: [CORE_BGCOLORALTERN];
-[IFNOT ISIE]  background-image: url('CORE/Images/tab.png');[ENDIF ISIE]
+    background: [COLOR_B6];
+    border-radius: 0 20px 0 0;
+    padding: 0 20px 0 0;
+    float:left;
+    margin-right:3px;
+[IFNOT ISIE]  background-image: url('CORE/Images/tabvg.png');[ENDIF ISIE]
   
 
   color: [CORE_TEXTBGCOLOR];
@@ -138,8 +146,8 @@ IMG.click:hover {
 .TABOdd {
   background: [CORE_BGCOLORALTERN];
   border-color: [CORE_BGCOLORALTERN];
-  border-style:inset none none none;;
-  border-width: 2px 0pt 0pt 0pt;
+  border-style:solid none none none;;
+  border-width: 1px 0pt 0pt 0pt;
   color: [CORE_TEXTBGCOLOR];
 }
 .TABLabelSelected {

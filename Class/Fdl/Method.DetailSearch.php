@@ -350,7 +350,7 @@ class _DSEARCH extends DocSearch
 
             case "~y":
                 if (!is_array($val)) $val = $this->_val2array($val);
-                if (count($val) > 0) $cond = " " . $col . " ~ '\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
+                if (count($val) > 0) $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $val)) . ")\\\\y' ";
                 
                 break;
 
@@ -455,13 +455,13 @@ class _DSEARCH extends DocSearch
                             
                             if ($op == '=') {
                                 if ($oa->repeat) {
-                                    $cond = " " . $col . " ~ '\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
+                                    $cond = " " . $col . " ~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
                                 } else {
                                     $cond = " $col='" . implode("' or $col='", $tkids) . "'";
                                 }
                             } elseif ($op == '!=') {
                                 if ($oa->repeat) {
-                                    $cond1 = " " . $col . " !~ '\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
+                                    $cond1 = " " . $col . " !~ E'\\\\y(" . pg_escape_string(implode('|', $tkids)) . ")\\\\y' ";
                                 } else {
                                     $cond1 = " $col !='" . implode("' and $col != '", $tkids) . "'";
                                 }

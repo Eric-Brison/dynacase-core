@@ -26,6 +26,7 @@ class _MAILTEMPLATE extends Doc
     */
     public $ifiles = array();
     public $sendercopy = true;
+    public $keys = array();
     
     function preEdition()
     {
@@ -39,12 +40,13 @@ class _MAILTEMPLATE extends Doc
      * send document by email using this template
      * @return string error - empty if no error -
      */
-    function sendDocument(&$doc, $keys = array())
+    function sendDocument(Doc & $doc, $keys = array())
     {
         global $action;
         
         include_once ("FDL/sendmail.php");
         include_once ("FDL/Lib.Vault.php");
+        $err = '';
         if ($doc->isAffected()) {
             $this->keys = $keys;
             
@@ -71,8 +73,11 @@ class _MAILTEMPLATE extends Doc
                     "tmail_recip" => $from
                 );
             }
-            
+            $wdoc = null;
             if ($doc->wid) {
+                /**
+                 * @var WDoc $wdoc
+                 */
                 $wdoc = new_doc($this->dbaccess, $doc->wid);
             }
             
@@ -112,6 +117,7 @@ class _MAILTEMPLATE extends Doc
                     case 'D': // user relations
                         
                     case 'WD': // user relations
+                        $udoc = null;
                         if ($type == 'D') $udoc = & $doc;
                         elseif ($wdoc) $udoc = & $wdoc;
                         if ($udoc) {
@@ -121,9 +127,16 @@ class _MAILTEMPLATE extends Doc
                             if (strpos($vdocid, "\n")) {
                                 $tvdoc = $this->_val2array($vdocid);
                                 $tmail = array();
-                                foreach ($tvdoc as $docid) {
-                                    $umail = $udoc->getDocValue($docid, 'us_mail', '');
-                                    if (!$umail) $umail = $udoc->getDocValue($docid, 'grp_mail', '');
+                                $it = new DocumentList();
+                                $it->addDocumentIdentificators($tvdoc);
+                                /**
+                                 * @var _IUSER|_IGROUP|_ROLE $aDoc
+                                 */
+                                foreach ($it as $aDoc) {
+                                    $umail = '';
+                                    if (method_exists($aDoc, "getMail")) $umail = $aDoc->getMail();
+                                    if (!$umail) $umail = $aDoc->getValue('us_mail', '');
+                                    if (!$umail) $umail = $aDoc->getValue('grp_mail', '');
                                     if ($umail) $tmail[] = $umail;
                                 }
                                 $mail = implode(",", $tmail);
@@ -186,7 +199,7 @@ class _MAILTEMPLATE extends Doc
                 // ---------------------------
                 // add inserted image
                 foreach ($this->ifiles as $k => $v) {
-                    if (file_exists($pubdir . "/$v")) {
+                    if (file_exists(DEFAULT_PUBDIR . "/$v")) {
                         
                         $multi_rel->addSubpart('', array(
                             'body_file' => $v,
@@ -246,11 +259,11 @@ class _MAILTEMPLATE extends Doc
                     $doc->addComment(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , HISTO_ERROR);
                     addWarningMsg(sprintf(_("cannot send mail %s") , $err));
                 }
-                return $err;
             }
+            return $err;
         }
         
-        function generateMailInstance(&$doc, $tpl)
+        function generateMailInstance(Doc & $doc, $tpl)
         {
             global $action;
             $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in Doc::setValue()

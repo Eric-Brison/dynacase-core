@@ -34,24 +34,24 @@ $$ language 'plpgsql';
 
 
 -- change type of column
-create or replace function alter_table_column(text, text, text) 
-returns bool as '
+create or replace function alter_table_column(text, text, text)
+returns bool as $$
 declare 
   t alias for $1;
   col alias for $2;
   ctype alias for $3;
 begin
-   EXECUTE ''ALTER TABLE '' || quote_ident(t) || '' RENAME COLUMN   '' || col || '' TO zou'' || col;
-   EXECUTE ''ALTER TABLE '' || quote_ident(t) || '' ADD COLUMN   '' || col || '' '' || ctype;	
-   EXECUTE ''UPDATE '' || quote_ident(t) || '' set '' || col || ''='' || ''zou'' || col|| ''::'' || ctype;
-   EXECUTE ''ALTER TABLE '' || quote_ident(t) || '' DROP COLUMN   zou'' || col ;		
+   EXECUTE 'ALTER TABLE ' || quote_ident(t) || ' RENAME COLUMN ' || col || ' TO zou' || col;
+   EXECUTE 'ALTER TABLE ' || quote_ident(t) || ' ADD COLUMN '  || col || ' ' || ctype;
+   EXECUTE 'UPDATE ' || quote_ident(t) || ' set ' || col || ' = ' || 'zou' || col|| '::' || ctype;
+   EXECUTE 'ALTER TABLE ' || quote_ident(t) ||  'DROP COLUMN  zou' || col ;
  
    return true;
 end;
-' language 'plpgsql';
+$$ language 'plpgsql';
 
 create or replace function flog(int, int) 
-returns bool as '
+returns bool as $$
 declare 
   tlog int;
 begin
@@ -67,164 +67,49 @@ return true;
 
 
 end;
-' language 'plpgsql' ;
+$$ language 'plpgsql' ;
 
-create or replace function computegperm(int, int) 
-returns int as '
-declare 
-  a_userid alias for $1;
+
+
+create or replace function getaperm(int[], int)
+returns int as $$
+declare
+  a_accounts alias for $1;
   a_profid alias for $2;
   uperm int;
-  xgroup RECORD;
-  gperm int;
-  
 begin
-   if (a_userid = 1) or (a_profid <= 0) then 
-     return -1; -- it is admin user or no controlled object
+   if (a_profid <= 0) then
+     return -1; -- it is no controlled object
    end if;
-  
-   uperm := 0;
-   for xgroup in select idgroup from groups where iduser=a_userid loop
-     gperm := getuperm(xgroup.idgroup, a_profid);
-  
-     uperm := gperm | uperm;
-    
-   end loop;
-
-
-   return uperm;
-end;
-' language 'plpgsql';
-
-
-
-create or replace function getuperm(int, int) 
-returns int as '
-declare 
-  a_userid alias for $1;
-  a_profid alias for $2;
-  uperm int;
-  gperm int;
-  upperm int;
-  unperm int;
-  tlog int;
-begin
-   if (a_userid = 1) or (a_profid <= 0) then 
-     return -1; -- it is admin user or no controlled object
-   end if;
-  
-   select into uperm, upperm, unperm cacl, upacl, unacl from docperm where docid=a_profid and userid=a_userid;
+   -- can use intset(userid) instead of ('{'||userid||'}') if intarray module installed
+   select into uperm bit_or(upacl) from docperm where docid=a_profid and ('{'||userid||'}')::int[] && a_accounts;
 
    if (uperm is null) then
-     uperm := computegperm(a_userid,a_profid);
-     uperm := uperm | 1;
-     begin
-     insert into docperm (docid, userid, upacl, unacl, cacl) values (a_profid,a_userid,0,0,uperm); 
-     EXCEPTION WHEN unique_violation THEN
-            -- do nothing parallele computing
-     end;
-     return uperm;
-   end if;
-
-   if (uperm = 0) then
-     gperm := computegperm(a_userid,a_profid);    
-     uperm := ((gperm | upperm) & (~ unperm)) | 1;
-     update docperm set cacl=uperm where docid=a_profid and userid=a_userid;
+     return 0;
    end if;
 
    return uperm;
 end;
-' language 'plpgsql' ;
+$$ language 'plpgsql';
 
-create or replace function viewuperm(int, int, int) 
+
+
+
+create or replace function hasaprivilege(int[], int, int)
 returns bool as $$
-declare 
-  a_userid alias for $1;
-  a_profid alias for $2;
-  a_pos alias for $3; -- binary mask say 1024 for 11th bit
-  uperm int;
-  gperm int;
-  upperm int;
-  unperm int;
-begin
-   if (a_userid = 1) or (a_profid <= 0) then 
-     return true; -- it is admin user or no controlled object
-   end if;
-  
-   select into uperm, upperm, unperm cacl, upacl, unacl from docperm where docid=a_profid and userid=a_userid ;
-
-   if (uperm is null) then
-     return viewgperm(a_userid,a_profid, a_pos); 
-   end if;
-
-   if ((upperm & a_pos) != 0) then
-     return true;
-   end if;
-   if ((uperm & a_pos) != 0) then
-      return true;
-   end if;
-
-   if (uperm = 0) then
-     return viewgperm(a_userid,a_profid,a_pos);         
-   end if;
-
-   return false;
-end;
-$$ language 'plpgsql' STABLE;
-
-create or replace function viewgperm(int, int, int) 
-returns bool as $$
-declare 
-  a_userid alias for $1;
-  a_profid alias for $2;
-  a_pos alias for $3;
-  xgroup RECORD;
-  gperm bool;  
-begin
-   if (a_userid = 1) or (a_profid <= 0) then 
-     return true; -- it is admin user or no controlled object
-   end if;
-  
-   for xgroup in select idgroup from groups where iduser=a_userid loop
-     gperm := viewuperm(xgroup.idgroup, a_profid, a_pos);
-     if (gperm ) then
-        return true;    
-     end if;
-   end loop;
-
-   return false;
-end;
-$$ language 'plpgsql' STABLE;
-
-
-create or replace function hasviewprivilege(int, int) 
-returns bool as $$
-declare 
-  a_userid alias for $1;
-  a_profid alias for $2;
-  uperm int;
-begin   
-   return viewuperm(a_userid, a_profid,2);
-end;
-$$ language 'plpgsql' STABLE;
-
-create or replace function hasdocprivilege(int, int, int) 
-returns bool as '
-declare 
-  a_userid alias for $1;
+declare
+  a_account alias for $1;
   a_profid alias for $2;
   a_pos alias for $3;
   uperm int;
 begin
-   
-   uperm := getuperm(a_userid, a_profid);
+
+   uperm := getaperm(a_account, a_profid);
 
 
    return ((uperm & a_pos) = a_pos);
 end;
-' language 'plpgsql' ;
-
-
+$$ language 'plpgsql' ;
 
 -- The TRIGGERS -----------
 
@@ -390,9 +275,9 @@ if ((TG_OP = ''UPDATE'') OR (TG_OP = ''INSERT'')) then
   if  NEW.doctype != ''T'' then
      select into lid id from docread where id= NEW.id;
      if (lid = NEW.id) then 
-	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,attrids=NEW.attrids,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,forumid=NEW.forumid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,values=NEW.values,fulltext=NEW.fulltext,svalues=NEW.svalues where id=NEW.id;
+	update docread set id=NEW.id,owner=NEW.owner,title=NEW.title,revision=NEW.revision,initid=NEW.initid,fromid=NEW.fromid,doctype=NEW.doctype,locked=NEW.locked,allocated=NEW.allocated,archiveid=NEW.archiveid,icon=NEW.icon,lmodify=NEW.lmodify,profid=NEW.profid,views=NEW.views,usefor=NEW.usefor,revdate=NEW.revdate,version=NEW.version,cdate=NEW.cdate,adate=NEW.adate,classname=NEW.classname,state=NEW.state,wid=NEW.wid,attrids=NEW.attrids,postitid=NEW.postitid,lockdomainid=NEW.lockdomainid,domainid=NEW.domainid,forumid=NEW.forumid,cvid=NEW.cvid,name=NEW.name,dprofid=NEW.dprofid,prelid=NEW.prelid,atags=NEW.atags,confidential=NEW.confidential,ldapdn=NEW.ldapdn,values=NEW.values,fulltext=NEW.fulltext,svalues=NEW.svalues where id=NEW.id;
      else 
-	insert into docread(id,owner,title,revision,initid,fromid,doctype,locked,allocated,archiveid,icon,lmodify,profid,usefor,revdate,version,cdate,adate,classname,state,wid,attrids,postitid,lockdomainid,domainid,forumid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,values,fulltext,svalues) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.attrids,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.forumid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.values,NEW.fulltext,NEW.svalues);
+	insert into docread(id,owner,title,revision,initid,fromid,doctype,locked,allocated,archiveid,icon,lmodify,profid,views,usefor,revdate,version,cdate,adate,classname,state,wid,attrids,postitid,lockdomainid,domainid,forumid,cvid,name,dprofid,prelid,atags,confidential,ldapdn,values,fulltext,svalues) values (NEW.id,NEW.owner,NEW.title,NEW.revision,NEW.initid,NEW.fromid,NEW.doctype,NEW.locked,NEW.allocated,NEW.archiveid,NEW.icon,NEW.lmodify,NEW.profid,NEW.views,NEW.usefor,NEW.revdate,NEW.version,NEW.cdate,NEW.adate,NEW.classname,NEW.state,NEW.wid,NEW.attrids,NEW.postitid,NEW.lockdomainid,NEW.domainid,NEW.forumid,NEW.cvid,NEW.name,NEW.dprofid,NEW.prelid,NEW.atags,NEW.confidential,NEW.ldapdn,NEW.values,NEW.fulltext,NEW.svalues);
      end if;
   end if;
 --RAISE NOTICE ''coucou %'',replace(NEW.values,''£'','' '');
@@ -685,7 +570,7 @@ end;
 $$ language 'plpgsql';
 
 create or replace function getreldocfld(int)
-returns int[] as '
+returns int[] as $$
 declare 
   thechildid alias for $1;
   allfld int[];
@@ -693,7 +578,7 @@ declare
   rc record;
 begin
   i=0;
- FOR rc IN EXECUTE ''select * from fld where childid= '' || thechildid  LOOP 
+ FOR rc IN EXECUTE 'select * from fld where childid=' || thechildid  LOOP
   BEGIN
      allfld[i]=rc.dirid;
      i=i+1;
@@ -701,4 +586,4 @@ begin
  END LOOP; 
 return allfld;
 end;
-' language 'plpgsql';
+$$ language 'plpgsql';

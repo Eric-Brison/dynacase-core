@@ -22,8 +22,9 @@
 include_once ("Class.QueryDb.php");
 include_once ("Class.SubForm.php");
 include_once ("Class.QueryGen.php");
+include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function appl_access(&$action, $oid = 0)
+function appl_access(Action & $action, $oid = 0)
 {
     // -----------------------------------
     $baseurl = $action->GetParam("CORE_BASEURL");
@@ -42,6 +43,7 @@ function appl_access(&$action, $oid = 0)
         $varreg = "access_class_id";
         $paramedit = "&isclass=yes&oid=$oid";
     }
+    $query->order_by = 'name';
     $applist = $query->Query();
     unset($query);
     
@@ -60,38 +62,38 @@ function appl_access(&$action, $oid = 0)
     $action->parent->AddJsCode($form->GetMainJs());
     $jsscript = $form->GetLinkJsMainCall();
     
+    $action->lay->set("changeLabel", _("Select Application Access"));
     $action->lay->set("hasuser", true);
     // display application / object class
     $tab = array();
     $appl_sel = "";
     $i = 0;
     if (is_array($applist)) {
-        reset($applist);
-        while (list($k, $v) = each($applist)) {
+        /**
+         * @var Application $v
+         */
+        foreach ($applist as $k => $v) {
             
-            if (($v->objectclass == "Y") || (true)) {
-                $query = new QueryDb("", "Acl");
-                $query->basic_elem->sup_where = array(
-                    "id_application={$v->id}"
-                );
-                $acl_list = $query->Query("", "", "TABLE");
-                if ($query->nb == 0) continue;
-                if ($appl_id == 0) {
-                    $appl_id = $v->id;
-                    $action->Register($varreg, $appl_id);
-                }
-                if ($oid != 0) $tab[$i]["text"] = _($v->short_name);
-                else $tab[$i]["text"] = $v->name;
-                $tab[$i]["id"] = $v->id;
-                if ($appl_id == $v->id) {
-                    $appl_sel = $v;
-                    $appl_sel->acl = $acl_list;
-                    $tab[$i]["selected"] = "selected";
-                } else {
-                    $tab[$i]["selected"] = "";
-                }
-                $i++;
+            $query = new QueryDb("", "Acl");
+            $query->basic_elem->sup_where = array(
+                "id_application={$v->id}"
+            );
+            $acl_list = $query->Query("", "", "TABLE");
+            if ($query->nb == 0) continue;
+            if ($appl_id == 0) {
+                $appl_id = $v->id;
+                $action->Register($varreg, $appl_id);
             }
+            $tab[$i]["text"] = $v->name;
+            $tab[$i]["id"] = $v->id;
+            if ($appl_id == $v->id) {
+                $appl_sel = $v;
+                $appl_sel->acl = $acl_list;
+                $tab[$i]["selected"] = "selected";
+            } else {
+                $tab[$i]["selected"] = "";
+            }
+            $i++;
         }
         
         $action->lay->SetBlockData("SELUSER", $tab);
@@ -120,26 +122,31 @@ function appl_access(&$action, $oid = 0)
             "desc" => _("username") ,
             "permission" => _("permissions")
         );
+        $query->placeHolder = _("Account filter");
         // 1) Get all users except admin
         $query->AddQuery("id != 1");
-        $query->slice = 20;
+        $query->order_by = 'accounttype, login';
+        $query->slice = 200;
         $query->Query();
         // 2) Get all acl for all users
         reset($query->table->array);
         unset($tab);
         
-        while (list($k, $v) = each($query->table->array)) {
+        $dr = new_doc($action->dbaccess, "ROLE");
+        $du = new_doc($action->dbaccess, "IUSER");
+        $dg = new_doc($action->dbaccess, "IGROUP");
+        $drIcon = $dr->getIcon('', 18);
+        $duIcon = $du->getIcon('', 18);
+        $dgIcon = $dg->getIcon('', 18);
+        
+        foreach ($query->table->array as $k => $v) {
             if (!isset($v["login"])) continue;
             
-            if ($oid == 0) $uperm = new Permission($action->dbaccess, array(
+            $uperm = new Permission($action->dbaccess, array(
                 $v["id"],
                 $appl_sel->id
             ));
-            else $uperm = new ObjectPermission($action->dbaccess, array(
-                $v["id"],
-                $oid,
-                $appl_sel->id
-            ));
+            
             $name = $v["login"];
             
             $tab = array();
@@ -150,7 +157,7 @@ function appl_access(&$action, $oid = 0)
                 );
             }
             
-            while (list($k2, $v2) = each($aclids)) {
+            foreach ($aclids as $k2 => $v2) {
                 $tab[$k2]["aclid"] = $v2;
                 
                 if ($v2 == 0) {
@@ -170,10 +177,21 @@ function appl_access(&$action, $oid = 0)
             if (!isset($v["lastname"])) $v["lastname"] = "";
             $query->table->array[$k]["description"] = $v["firstname"] . " " . $v["lastname"];
             $query->table->array[$k]["edit"] = str_replace("[id]", $v["id"], $jsscript);
-            if ($v["isgroup"] == "Y") {
-                $query->table->array[$k]["imgaccess"] = $action->GetIcon("access2.gif", "modify", 20);
-            } else {
-                $query->table->array[$k]["imgaccess"] = $action->GetIcon("access.gif", "modify", 18);
+            switch ($v["accounttype"]) {
+                case 'U':
+                    $query->table->array[$k]["imgaccess"] = $duIcon;
+                    break;
+
+                case 'G':
+                    $query->table->array[$k]["imgaccess"] = $dgIcon;
+                    break;
+
+                case 'R':
+                    $query->table->array[$k]["imgaccess"] = $drIcon;
+                    break;
+
+                default:
+                    $query->table->array[$k]["imgaccess"] = "Images/access.gif";
             }
         }
         

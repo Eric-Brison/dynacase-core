@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-25 18:04+0100\n"
+"POT-Creation-Date: 2012-03-20 17:42+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -402,9 +402,6 @@ msgstr ""
 msgid "&lt; or equal"
 msgstr ""
 
-msgid "(.*)\\"
-msgstr ""
-
 msgid "(Other input)"
 msgstr ""
 
@@ -514,7 +511,13 @@ msgid ""
 "Need ACL %s for action %s [%s]"
 msgstr ""
 
+msgid "Access explanation"
+msgstr ""
+
 msgid "Access for exchange documents"
+msgstr ""
+
+msgid "Access name"
 msgstr ""
 
 #, fuzzy
@@ -528,6 +531,9 @@ msgid "Access to user refresh function"
 msgstr ""
 
 msgid "Accord"
+msgstr ""
+
+msgid "Account filter"
 msgstr ""
 
 #, c-format
@@ -712,6 +718,9 @@ msgid "Application %s (%s) not available"
 msgstr ""
 
 msgid "Application Access"
+msgstr ""
+
+msgid "Application filter"
 msgstr ""
 
 #, fuzzy
@@ -1001,7 +1010,13 @@ msgstr ""
 msgid "Change icon"
 msgstr "Start search"
 
+msgid "Change logical name"
+msgstr ""
+
 msgid "Change my ask"
+msgstr ""
+
+msgid "Change privilege"
 msgstr ""
 
 #, fuzzy, c-format
@@ -1055,6 +1070,9 @@ msgstr "Category"
 msgid "Change title"
 msgstr "Category"
 
+msgid "Change user"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "Change view control  to %s [%d]"
 msgstr "Start search"
@@ -1079,6 +1097,9 @@ msgid "Choose Archive"
 msgstr "Import"
 
 msgid "Choose Gate Urls"
+msgstr ""
+
+msgid "Choose User"
 msgstr ""
 
 #, fuzzy
@@ -1197,6 +1218,9 @@ msgid "Complete view"
 msgstr "Create"
 
 msgid "Composing the email"
+msgstr ""
+
+msgid "Computed from"
 msgstr ""
 
 #, fuzzy
@@ -1434,14 +1458,14 @@ msgstr ""
 msgid "Direct Import"
 msgstr "Import"
 
+#, c-format
+msgid "Direct set through document itself \"%s\""
+msgstr ""
+
 msgid "Directory"
 msgstr ""
 
 msgid "Directory already exists"
-msgstr ""
-
-#, c-format
-msgid "Disease of %s "
 msgstr ""
 
 msgid "Display available choices"
@@ -1482,6 +1506,10 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Document %s is not alive"
 msgstr "Import"
+
+#, c-format
+msgid "Document %s is not dead"
+msgstr ""
 
 #, fuzzy, c-format
 msgid "Document %s umounted"
@@ -1788,12 +1816,6 @@ msgstr "Delete"
 msgid "Export archive file with data file - fdl.csv- and attached files"
 msgstr ""
 
-msgid "Ext ui api"
-msgstr ""
-
-msgid "Ext user interface api"
-msgstr ""
-
 #, c-format
 msgid "Failed to copy %s to %s"
 msgstr ""
@@ -1921,6 +1943,9 @@ msgstr "Delete"
 msgid "For %s of %s"
 msgstr ""
 
+msgid "For Account"
+msgstr ""
+
 msgid "For export functions"
 msgstr ""
 
@@ -2037,6 +2062,14 @@ msgstr "Import"
 msgid "Group"
 msgstr ""
 
+#, c-format
+msgid "Group \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Group '%s' not exists"
+msgstr ""
+
 msgid "Group Access"
 msgstr ""
 
@@ -2053,6 +2086,9 @@ msgid "Help name"
 msgstr ""
 
 msgid "Helps"
+msgstr ""
+
+msgid "Hide group access"
 msgstr ""
 
 msgid "Histo:Comment"
@@ -2311,6 +2347,9 @@ msgstr ""
 msgid "Link"
 msgstr "Delete"
 
+msgid "Linked from"
+msgstr ""
+
 msgid "List view"
 msgstr ""
 
@@ -2430,6 +2469,9 @@ msgstr "Modify"
 msgid "Modify Attributes"
 msgstr "Update Title Cards"
 
+msgid "Modify access"
+msgstr ""
+
 msgid "Modify acls"
 msgstr ""
 
@@ -2484,6 +2526,12 @@ msgid "NOT Clear"
 msgstr ""
 
 msgid "Name of table cannot be empty"
+msgstr ""
+
+msgid "Name of the glob"
+msgstr ""
+
+msgid "Name of the zoo"
 msgstr ""
 
 msgid "New GATE page"
@@ -2769,6 +2817,12 @@ msgstr "Organisation"
 msgid "Print"
 msgstr "Print this page"
 
+msgid "Privilege input"
+msgstr ""
+
+msgid "Privilege view"
+msgstr ""
+
 #, c-format
 msgid "Process %s [%d] executed"
 msgstr ""
@@ -2967,6 +3021,20 @@ msgstr ""
 msgid "Revise"
 msgstr "Created by"
 
+msgid "Role"
+msgstr ""
+
+#, c-format
+msgid "Role \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Role '%s' not exists"
+msgstr ""
+
+msgid "Role Access"
+msgstr ""
+
 #, fuzzy
 msgid "Root folder"
 msgstr "Modify"
@@ -3089,10 +3157,28 @@ msgstr ""
 msgid "See below information about conversion"
 msgstr ""
 
+msgid "See detail for "
+msgstr ""
+
 msgid "See latest information about it."
 msgstr ""
 
+msgid "See members detail"
+msgstr ""
+
+msgid "Select Application Access"
+msgstr ""
+
+msgid "Select Group Access"
+msgstr ""
+
 msgid "Select Profil if it is to globaly reuse file to reinitialize profil"
+msgstr ""
+
+msgid "Select Role Access"
+msgstr ""
+
+msgid "Select User Access"
 msgstr ""
 
 msgid "Select all columns"
@@ -3140,9 +3226,33 @@ msgstr "Session authentication log facility"
 msgid "Set autonome profil"
 msgstr ""
 
+#, c-format
+msgid "Set by \"%s\" attribute (%s) from template profil \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Set by \"%s\" attribute from template profil \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Set by %s through \"%s\" linked profil"
+msgstr ""
+
+#, c-format
+msgid "Set by %s through document itself \"%s\""
+msgstr ""
+
+#, c-format
+msgid "Set by %s through template profil \"%s\""
+msgstr ""
+
 #, fuzzy
 msgid "Set default values"
 msgstr "Delete"
+
+#, c-format
+msgid "Set from template profil \"%s\""
+msgstr ""
 
 #, fuzzy
 msgid "Set new entry"
@@ -3153,6 +3263,10 @@ msgid "Set private"
 msgstr "Create"
 
 msgid "Set public"
+msgstr ""
+
+#, c-format
+msgid "Set through \"%s\" linked profil"
 msgstr ""
 
 #, c-format
@@ -3181,6 +3295,10 @@ msgstr ""
 msgid ""
 "Some constraint attribute are not respected.\n"
 "You must correct these values before save document."
+msgstr ""
+
+#, c-format
+msgid "Something wrong. No acl found in %s (user #%d)"
 msgstr ""
 
 msgid "Sorry but this section key already exists !"
@@ -3344,6 +3462,9 @@ msgstr "This account has expired."
 msgid "This account is desactivated."
 msgstr "This account is desactivated."
 
+msgid "This action requires the installation of Dynacase Extui module"
+msgstr ""
+
 msgid "This document has been deleted"
 msgstr ""
 
@@ -3490,6 +3611,9 @@ msgstr ""
 msgid "Used"
 msgstr ""
 
+msgid "User"
+msgstr ""
+
 msgid "User Access"
 msgstr ""
 
@@ -3596,6 +3720,9 @@ msgstr "Edit"
 msgid "View folder properties"
 msgstr "Import"
 
+msgid "View group access"
+msgstr ""
+
 msgid "View headers"
 msgstr ""
 
@@ -3622,7 +3749,7 @@ msgstr ""
 msgid "View notice messages"
 msgstr ""
 
-msgid "View only access set. Green or Red flag"
+msgid "View only access set. Green flag"
 msgstr ""
 
 #, fuzzy
@@ -3630,9 +3757,6 @@ msgid "View postit"
 msgstr "Edit"
 
 msgid "View print version"
-msgstr ""
-
-msgid "View profil definition"
 msgstr ""
 
 msgid "View properties"
@@ -4398,6 +4522,10 @@ msgstr ""
 "#-#-#-#-#  WHAT_en.po (WHAT 1.3)  #-#-#-#-#\n"
 "Acl"
 
+#, c-format
+msgid "cannot access edit template file %s"
+msgstr ""
+
 msgid "cannot access to  database $db\n"
 msgstr ""
 
@@ -4419,10 +4547,6 @@ msgid "cannot compare two document which comes from two different family"
 msgstr ""
 
 msgid "cannot contact server"
-msgstr ""
-
-#, c-format
-msgid "cannot control : object not initialized : %s"
 msgstr ""
 
 #, fuzzy, c-format
@@ -4503,6 +4627,18 @@ msgstr ""
 msgid "cannot lauch <b>%s</b> transformation"
 msgstr ""
 
+#, c-format
+msgid "cannot load xml %s layout file"
+msgstr ""
+
+#, c-format
+msgid "cannot load xml layout file : %s"
+msgstr ""
+
+#, c-format
+msgid "cannot load xml template : %s"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "cannot modify forum %s"
 msgstr "Category"
@@ -4511,9 +4647,9 @@ msgstr "Category"
 msgid "cannot object update %s"
 msgstr ""
 
-#, fuzzy, c-format
-msgid "cannot open %s layout file"
-msgstr "Category"
+#, c-format
+msgid "cannot open %s layout file : %s"
+msgstr ""
 
 msgid "cannot produce sql request"
 msgstr ""
@@ -4703,9 +4839,6 @@ msgstr "Delete"
 #, fuzzy
 msgid "choose colums"
 msgstr "Start search"
-
-msgid "choose document"
-msgstr ""
 
 msgid "choose for edit enum attribute"
 msgstr ""
@@ -5070,6 +5203,9 @@ msgid "data:getsubfamilies no family parameter"
 msgstr ""
 
 msgid "database access for webdav"
+msgstr ""
+
+msgid "database record date style"
 msgstr ""
 
 #, fuzzy
@@ -5533,10 +5669,6 @@ msgid "edit attribute inline"
 msgstr "Update Title Cards"
 
 #, fuzzy
-msgid "edit by object"
-msgstr "object"
-
-#, fuzzy
 msgid "edit contact card"
 msgstr "Create"
 
@@ -5764,108 +5896,6 @@ msgstr ""
 msgid "error sending text conversion"
 msgstr ""
 
-msgid "eui:Abstract display"
-msgstr "Abstract"
-
-msgid "eui:Cancel deletion"
-msgstr "Cancel deletion"
-
-msgid "eui:Cancel locking"
-msgstr "Cancel locking"
-
-msgid "eui:Cancel remove"
-msgstr "Cancel remove"
-
-msgid "eui:Create a search"
-msgstr "Create a search"
-
-msgid "eui:Delete"
-msgstr "Delete"
-
-msgid "eui:Display"
-msgstr "Display"
-
-msgid "eui:Document Selection"
-msgstr "Document selection"
-
-msgid "eui:Duplicate document"
-msgstr "Duplicate document"
-
-msgid "eui:Edit document"
-msgstr "Edit document"
-
-msgid "eui:Export all documents"
-msgstr "Export all documents"
-
-msgid "eui:Export selected documents"
-msgstr "Export selected documents"
-
-msgid "eui:Grid display"
-msgstr "Grid"
-
-msgid "eui:Historic"
-msgstr "Historic"
-
-msgid "eui:Icon display"
-msgstr "Icon"
-
-msgid "eui:Lock"
-msgstr "Lock"
-
-msgid "eui:Lock selected documents"
-msgstr "Lock selected documents"
-
-msgid "eui:Lock selection"
-msgstr "Lock selection"
-
-msgid "eui:Remove from folder"
-msgstr "Remove from folder"
-
-msgid "eui:Rss Link"
-msgstr "RSS Link"
-
-msgid "eui:Selection"
-msgstr "Selection"
-
-msgid "eui:Send Mail"
-msgstr "Send Mail"
-
-msgid "eui:Sure delete ?"
-msgstr "Are you sure you want to delete ?"
-
-msgid "eui:Sure lock selected document ?"
-msgstr "Are you sure you want to lock selected document ?"
-
-msgid "eui:Sure remove from folder ?"
-msgstr "Are you sure you want to remove from folder ?"
-
-msgid "eui:Tools"
-msgstr "Tools"
-
-msgid "eui:Tree display"
-msgstr "Tree"
-
-msgid "eui:Unlock"
-msgstr "Unlock"
-
-msgid "eui:View Document"
-msgstr "View Document"
-
-msgid "eui:View Properties"
-msgstr "View properties"
-
-msgid "eui:View print version"
-msgstr "View print version"
-
-msgid "eui:itemlistmenu tag not found"
-msgstr "Itemlistmenu tag not found"
-
-msgid "eui:no id in itemlistmenu"
-msgstr "No id in itemlistmenu"
-
-msgid "eui:no itemmenu tags found"
-msgstr "No itemmenu tags found"
-
 msgid "exec plan"
 msgstr ""
 
@@ -6032,12 +6062,6 @@ msgstr ""
 #, fuzzy
 msgid "filename"
 msgstr "Firstname"
-
-#, c-format
-msgid ""
-"filename %s does not contain freedom_authtypeparams variable. May be old "
-"syntax for configuration file"
-msgstr ""
 
 msgid "filename or type include"
 msgstr ""
@@ -6470,9 +6494,6 @@ msgstr "Import"
 msgid "impossible conversion"
 msgstr ""
 
-msgid "in database"
-msgstr ""
-
 #, c-format
 msgid "in domain %s"
 msgstr ""
@@ -6618,6 +6639,10 @@ msgid "last search text typed"
 msgstr ""
 
 msgid "level"
+msgstr ""
+
+#, c-format
+msgid "limit reached, only %d members has been displayed"
 msgstr ""
 
 #, fuzzy
@@ -7118,6 +7143,10 @@ msgstr ""
 msgid "no document family"
 msgstr "Start search"
 
+#, c-format
+msgid "no document match '%s'"
+msgstr ""
+
 #, fuzzy
 msgid "no document reference"
 msgstr "Delete"
@@ -7145,6 +7174,9 @@ msgid "no family identificator"
 msgstr ""
 
 msgid "no father category (its a top category)"
+msgstr ""
+
+msgid "no file"
 msgstr ""
 
 #, fuzzy, c-format
@@ -8005,6 +8037,10 @@ msgstr ""
 msgid "revival document"
 msgstr "Organisation"
 
+#, c-format
+msgid "role %s id is already used"
+msgstr ""
+
 msgid "root"
 msgstr "Root"
 
@@ -8015,6 +8051,10 @@ msgstr "Modify"
 #, fuzzy, c-format
 msgid "root for %s"
 msgstr "Modify"
+
+#, c-format
+msgid "roweditzone syntax %s is invalid"
+msgstr ""
 
 msgid "rss avaible for users"
 msgstr ""
@@ -8263,6 +8303,10 @@ msgid "set logical name"
 msgstr "Lastname"
 
 msgid "set logical name identificator"
+msgstr ""
+
+#, c-format
+msgid "set logical name to %s"
 msgstr ""
 
 #, fuzzy, c-format
@@ -8806,6 +8850,10 @@ msgid "unknow set for attribute %s %s"
 msgstr ""
 
 #, c-format
+msgid "unknow user #%s"
+msgstr ""
+
+#, c-format
 msgid "unknow virtual user identificateur %s"
 msgstr ""
 
@@ -8904,6 +8952,10 @@ msgid "update id [%d] "
 msgstr ""
 
 #, c-format
+msgid "update logical name from %s to %s"
+msgstr ""
+
+#, c-format
 msgid "update of %s catalogue has failed,"
 msgstr ""
 
@@ -8952,9 +9004,6 @@ msgstr ""
 
 msgid "use what gate"
 msgstr ""
-
-msgid "user"
-msgstr "user"
 
 #, c-format
 msgid "user #%d does not exist"
@@ -9329,13 +9378,6 @@ msgstr ""
 msgid "write only"
 msgstr ""
 
-msgid "xml menu parsing"
-msgstr ""
-
-#, c-format
-msgid "xml parse error %s"
-msgstr ""
-
 msgid "yes"
 msgstr "Yes"
 
@@ -9437,6 +9479,10 @@ msgstr ""
 #~ msgid "adduser"
 #~ msgstr "New user"
 
+#, fuzzy
+#~ msgid "cannot open %s layout file"
+#~ msgstr "Category"
+
 #~ msgid "changegroup"
 #~ msgstr "Group Change"
 
@@ -9450,8 +9496,114 @@ msgstr ""
 #~ msgid "domaingroup"
 #~ msgstr "Domain"
 
+#, fuzzy
+#~ msgid "edit by object"
+#~ msgstr "object"
+
 #~ msgid "err_add_user"
 #~ msgstr "Can't create user"
+
+#~ msgid "eui:Abstract display"
+#~ msgstr "Abstract"
+
+#~ msgid "eui:Cancel deletion"
+#~ msgstr "Cancel deletion"
+
+#~ msgid "eui:Cancel locking"
+#~ msgstr "Cancel locking"
+
+#~ msgid "eui:Cancel remove"
+#~ msgstr "Cancel remove"
+
+#~ msgid "eui:Create a search"
+#~ msgstr "Create a search"
+
+#~ msgid "eui:Delete"
+#~ msgstr "Delete"
+
+#~ msgid "eui:Display"
+#~ msgstr "Display"
+
+#~ msgid "eui:Document Selection"
+#~ msgstr "Document selection"
+
+#~ msgid "eui:Duplicate document"
+#~ msgstr "Duplicate document"
+
+#~ msgid "eui:Edit document"
+#~ msgstr "Edit document"
+
+#~ msgid "eui:Export all documents"
+#~ msgstr "Export all documents"
+
+#~ msgid "eui:Export selected documents"
+#~ msgstr "Export selected documents"
+
+#~ msgid "eui:Grid display"
+#~ msgstr "Grid"
+
+#~ msgid "eui:Historic"
+#~ msgstr "Historic"
+
+#~ msgid "eui:Icon display"
+#~ msgstr "Icon"
+
+#~ msgid "eui:Lock"
+#~ msgstr "Lock"
+
+#~ msgid "eui:Lock selected documents"
+#~ msgstr "Lock selected documents"
+
+#~ msgid "eui:Lock selection"
+#~ msgstr "Lock selection"
+
+#~ msgid "eui:Remove from folder"
+#~ msgstr "Remove from folder"
+
+#~ msgid "eui:Rss Link"
+#~ msgstr "RSS Link"
+
+#~ msgid "eui:Selection"
+#~ msgstr "Selection"
+
+#~ msgid "eui:Send Mail"
+#~ msgstr "Send Mail"
+
+#~ msgid "eui:Sure delete ?"
+#~ msgstr "Are you sure you want to delete ?"
+
+#~ msgid "eui:Sure lock selected document ?"
+#~ msgstr "Are you sure you want to lock selected document ?"
+
+#~ msgid "eui:Sure remove from folder ?"
+#~ msgstr "Are you sure you want to remove from folder ?"
+
+#~ msgid "eui:Tools"
+#~ msgstr "Tools"
+
+#~ msgid "eui:Tree display"
+#~ msgstr "Tree"
+
+#~ msgid "eui:Unlock"
+#~ msgstr "Unlock"
+
+#~ msgid "eui:View Document"
+#~ msgstr "View Document"
+
+#~ msgid "eui:View Properties"
+#~ msgstr "View properties"
+
+#~ msgid "eui:View print version"
+#~ msgstr "View print version"
+
+#~ msgid "eui:itemlistmenu tag not found"
+#~ msgstr "Itemlistmenu tag not found"
+
+#~ msgid "eui:no id in itemlistmenu"
+#~ msgstr "No id in itemlistmenu"
+
+#~ msgid "eui:no itemmenu tags found"
+#~ msgstr "No itemmenu tags found"
 
 #, fuzzy
 #~ msgid "expire date"
@@ -9525,6 +9677,9 @@ msgstr ""
 
 #~ msgid "titleuser"
 #~ msgstr "User List"
+
+#~ msgid "user"
+#~ msgstr "user"
 
 #, fuzzy
 #~ msgid "user account edition"

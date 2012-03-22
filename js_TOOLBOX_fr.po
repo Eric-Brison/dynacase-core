@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: data 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-25 18:04+0100\n"
+"POT-Creation-Date: 2012-03-20 17:42+0100\n"
 "PO-Revision-Date: 2012-01-25 18:05+0100\n"
 "Last-Translator: anakeen <devel@anakeen.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,101 +34,101 @@ msgstr "l'identificateur du document ne doit pâs être un objet"
 msgid "data:document id not set"
 msgstr "l'identificateur du document ne doit pâs être un objet"
 
-msgid "eui::Administrator"
-msgstr "Administrateur"
-
-msgid "eui::Content"
-msgstr "Contenu"
-
-msgid "eui::Create Search"
-msgstr "Créer Recherche"
-
-msgid "eui::Create search :"
-msgstr "Créer Recherche :"
-
-msgid "eui::Creation :"
-msgstr "Création :"
-
-msgid "eui::Display"
-msgstr "Disposition"
-
-msgid "eui::Duplicate"
-msgstr "Dupliquer"
-
-msgid "eui::Edit search :"
-msgstr "Éditer la Recherche"
-
-msgid "eui::Enter search name"
-msgstr "Entrez le nom de la Recherche"
-
-msgid "eui::Evaluate"
-msgstr "Évaluer"
-
-msgid "eui::Families"
-msgstr "Familles"
-
-msgid "eui::Horizontal"
-msgstr "Horizontal"
-
-msgid "eui::Informations"
-msgstr "Informations"
-
-msgid "eui::Link"
-msgstr "Lier"
-
-msgid "eui::Move"
-msgstr "Déplacer"
-
-msgid "eui::Save"
-msgstr "Sauver"
-
-msgid "eui::Search"
-msgstr "Recherche"
-
-msgid "eui::Search by exp"
-msgstr "Recherche par expression"
-
-msgid "eui::Search by word"
-msgstr "Recherche par mot"
-
-msgid "eui::ToEdit"
-msgstr "Éditer"
-
-msgid "eui::User"
-msgstr "Utilisateur"
-
-msgid "eui::Vertical"
-msgstr "Vertical"
-
-msgid "eui::You cannot access to this document"
-msgstr "Vous ne pouvez pas accéder à ce document"
-
-msgid "eui::You have no right to access this document"
-msgstr "Vous n'avez pas les droits requis pour consulter ce document"
-
-msgid "eui::delete"
-msgstr "Supprimer"
-
-msgid "eui::documents"
-msgstr "documents"
-
-msgid "eui::infolder"
-msgstr "Dans"
-
-msgid "eui::lock_as_name"
-msgstr "verrou"
-
-msgid "eui::missing right"
-msgstr "Droit manquant"
-
-msgid "eui::totrash"
-msgstr "Dans la Corbeille"
-
-msgid "eui:cannot delete"
-msgstr "Suppression impossible"
-
 msgid "save : document is fixed"
 msgstr ""
 
 msgid "setValue: document is fixed"
 msgstr ""
+
+#~ msgid "eui::Administrator"
+#~ msgstr "Administrateur"
+
+#~ msgid "eui::Content"
+#~ msgstr "Contenu"
+
+#~ msgid "eui::Create Search"
+#~ msgstr "Créer Recherche"
+
+#~ msgid "eui::Create search :"
+#~ msgstr "Créer Recherche :"
+
+#~ msgid "eui::Creation :"
+#~ msgstr "Création :"
+
+#~ msgid "eui::Display"
+#~ msgstr "Disposition"
+
+#~ msgid "eui::Duplicate"
+#~ msgstr "Dupliquer"
+
+#~ msgid "eui::Edit search :"
+#~ msgstr "Éditer la Recherche"
+
+#~ msgid "eui::Enter search name"
+#~ msgstr "Entrez le nom de la Recherche"
+
+#~ msgid "eui::Evaluate"
+#~ msgstr "Évaluer"
+
+#~ msgid "eui::Families"
+#~ msgstr "Familles"
+
+#~ msgid "eui::Horizontal"
+#~ msgstr "Horizontal"
+
+#~ msgid "eui::Informations"
+#~ msgstr "Informations"
+
+#~ msgid "eui::Link"
+#~ msgstr "Lier"
+
+#~ msgid "eui::Move"
+#~ msgstr "Déplacer"
+
+#~ msgid "eui::Save"
+#~ msgstr "Sauver"
+
+#~ msgid "eui::Search"
+#~ msgstr "Recherche"
+
+#~ msgid "eui::Search by exp"
+#~ msgstr "Recherche par expression"
+
+#~ msgid "eui::Search by word"
+#~ msgstr "Recherche par mot"
+
+#~ msgid "eui::ToEdit"
+#~ msgstr "Éditer"
+
+#~ msgid "eui::User"
+#~ msgstr "Utilisateur"
+
+#~ msgid "eui::Vertical"
+#~ msgstr "Vertical"
+
+#~ msgid "eui::You cannot access to this document"
+#~ msgstr "Vous ne pouvez pas accéder à ce document"
+
+#~ msgid "eui::You have no right to access this document"
+#~ msgstr "Vous n'avez pas les droits requis pour consulter ce document"
+
+#~ msgid "eui::delete"
+#~ msgstr "Supprimer"
+
+#~ msgid "eui::documents"
+#~ msgstr "documents"
+
+#~ msgid "eui::infolder"
+#~ msgstr "Dans"
+
+#~ msgid "eui::lock_as_name"
+#~ msgstr "verrou"
+
+#~ msgid "eui::missing right"
+#~ msgstr "Droit manquant"
+
+#~ msgid "eui::totrash"
+#~ msgstr "Dans la Corbeille"
+
+#~ msgid "eui:cannot delete"
+#~ msgstr "Suppression impossible"

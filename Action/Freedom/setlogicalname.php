@@ -25,14 +25,15 @@ function setlogicalname(Action & $action)
     $docid = GetHttpVars("id");
     $name = GetHttpVars("name");
     if ($docid && $name) {
-        if (!preg_match("/^[A-Z][[0-9A-Z\-_]*$/i", $name)) {
+        if (!preg_match('/^[A-Z][[0-9A-Z\-_]*$/i', $name)) {
             $action->addWarningMsg(sprintf(_("name must containt only alphanumeric characters: invalid  [%s]") , $name));
         } else {
             $doc = new_Doc($dbaccess, $docid, true);
             if (!$doc->isAffected()) $action->addWarningMsg(sprintf(_("cannot see unknow reference %s") , $docid));
             else {
-                if (($doc->name != "") && ($doc->doctype != 'Z')) {
-                    $action->addWarningMsg(sprintf(_("Logical name %s already set for %s") , $name, $doc->title));
+                $oldName = $doc->name;
+                if (!$doc->isAlive()) {
+                    $action->addWarningMsg(sprintf(_("Document %s is not dead") , $doc->getTitle()));
                 } else {
                     // verify not use yet
                     $q = $doc->exec_query("select id from doc where doctype != 'Z' and name='" . pg_escape_string($name) . "'");
@@ -42,6 +43,13 @@ function setlogicalname(Action & $action)
                             "name"
                         ) , true);
                         if ($err != "") $action->addWarningMsg($err);
+                        else {
+                            if ($oldName) {
+                                $doc->addComment(sprintf(_("update logical name from %s to %s") , $oldName, $doc->name));
+                            } else {
+                                $doc->addComment(sprintf(_("set logical name to %s") , $doc->name));
+                            }
+                        }
                     } else {
                         $action->addWarningMsg(sprintf(_("Logical name %s already use other document") , $name, $doc->title));
                     }
