@@ -7,6 +7,9 @@
 [CSS:REF]
    <style type="text/css">
 [CSS:CODE]
+       td.help {
+       cursor:help;
+       }
    </style>
 [JS:REF]
 <script language="JavaScript">
@@ -121,10 +124,10 @@ addEvent(window,"load",findtarget);
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 
 <TR align="center">
-    <TD class="CORETblHeadCell"><span class="CORETblHead">G</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
-    <TD class="CORETblHeadCell"><span class="CORETblHead">UP</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
-    <TD class="CORETblHeadCell"><span class="CORETblHead">UN</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
-    <TD class="CORETblHeadCell"><span class="CORETblHead">R</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell help" title="[TEXT:Inherited grant]"><span class="CORETblHead">G</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell help" title="[TEXT:Positive grant]"><span class="CORETblHead">UP</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell help" title="[TEXT:Negative grant]"><span class="CORETblHead">UN</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
+    <TD class="CORETblHeadCell help" title="[TEXT:Result grant]"><span class="CORETblHead">R</span></TD><TD class="CORETblHeadCell">&nbsp;</TD>
     <TD class="CORETblHeadCell" align="right">&nbsp;
       [BLOCK USERS]
        <select name="suserid" onChange="document.location.href='[CORE_STANDURL]app=ACCESS&action=EDIT_OBJECT_USER&oid=[oid]&appid=[appid]&userid='+this.options[this.selectedIndex].value">

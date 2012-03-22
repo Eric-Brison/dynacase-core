@@ -140,7 +140,7 @@ function freedom_gaccess(Action & $action)
         if ($ouser->accounttype == 'G') {
             $tusers = $ouser->getGroupUserList("TABLE", false, $limit);
         } else {
-            $tusers = $ouser->getAllMembers($limit);
+            $tusers = $ouser->getAllMembers($limit, false);
         }
         if (count($tusers) == $limit) $action->AddWarningMsg(sprintf(_("limit reached, only %d members has been displayed") , $limit));
         
@@ -149,7 +149,7 @@ function freedom_gaccess(Action & $action)
             "gid" => $gid,
             "isdyn" => false,
             "accountType" => $ouser->accounttype,
-            "displaygroup" => "inline"
+            "displaygroup" => "none"
         );
         $title[$gid] = $ouser->firstname . " " . $ouser->lastname;
         if ($tusers) {
@@ -186,7 +186,7 @@ function freedom_gaccess(Action & $action)
                 "level" => 0,
                 "gid" => $vg->num,
                 "isdyn" => true,
-                "accountType" => $v->inArray() ? "M" : "D",
+                "accountType" => $v->isMultiple() ? "M" : "D",
                 "displaygroup" => "none"
             );
             $title[$vg->num] = $v->getLabel();
@@ -208,9 +208,23 @@ function freedom_gaccess(Action & $action)
     $action->lay->set("group", $action->getArgument("group", "N"));
     $action->lay->set("isgreen", $green);
     $err = $doc->control("modifyacl");
+    $action->lay->set("profcount", "");
     if ($err == "" && (!$doc->dprofid) && ($doc->profid == $doc->id)) {
         $action->lay->set("MODIFY", true);
         $action->lay->set("dmodify", "");
+        if ($doc->isRealProfile()) {
+            if ($doc->getValue("dpdoc_famid")) {
+                
+                simpleQuery($dbaccess, sprintf("select count(id) from docread where dprofid=%d", $doc->id) , $cont, true, true);
+            } else {
+                simpleQuery($dbaccess, sprintf("select count(id) from docread where profid=%d", $doc->id) , $cont, true, true);
+                $cont--;
+            }
+            if ($cont > 0) {
+                if ($cont > 1) $action->lay->set("profcount", sprintf(_("%d documents linked to the profil") , $cont));
+                else $action->lay->set("profcount", _("only one document linked to the profil"));
+            }
+        }
     } else {
         $action->lay->set("dmodify", "none");
         $action->lay->set("MODIFY", false);

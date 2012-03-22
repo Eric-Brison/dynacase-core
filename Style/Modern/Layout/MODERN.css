@@ -63,7 +63,7 @@ OPTION {
    color:[input-text-normal-color];
    background-color:[input-background-normal-color];
 }
-BUTTON, input[type="button"], input[type="submit"] { 
+BUTTON, input[type="button"], input[type="submit"], input[type="reset"] {
   /*-moz-border-radius:25px;*/
   padding:0pt;
   margin:0px;

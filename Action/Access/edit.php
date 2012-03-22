@@ -123,11 +123,13 @@ function edit_oid(&$action)
     edit_main($action, $userId, $oid->id_class, $coid);
 }
 // -----------------------------------
-function edit_main(&$action, $userId, $appId, $coid)
+function edit_main(Action & $action, $userId, $appId, $coid)
 {
     // ------------------------
     //  print "$userId -  $appId - $coid";
     // Get all the params
+    if (!$appId) $action->exitError(_("Cannot edit access. No application parameter."));
+    if (!$userId) $action->exitError(_("Cannot edit access. No user parameter."));
     $isclass = (GetHttpVars("isclass") == "yes");
     //-------------------
     // contruct object id list

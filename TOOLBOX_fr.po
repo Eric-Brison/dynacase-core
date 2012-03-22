@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-20 17:42+0100\n"
-"PO-Revision-Date: 2012-03-21 10:49+0100\n"
+"POT-Creation-Date: 2012-03-22 15:34+0100\n"
+"PO-Revision-Date: 2012-03-22 15:48+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -158,6 +158,10 @@ msgstr "%d document"
 #, c-format
 msgid "%d documents"
 msgstr "%d documents"
+
+#, c-format
+msgid "%d documents linked to the profil"
+msgstr "%d documents liés à ce profil"
 
 #, c-format
 msgid "%d group(s) to update\n"
@@ -2114,6 +2118,9 @@ msgstr "Augmenter le FS"
 msgid "Increase vault size"
 msgstr "Augmenter la taille du coffre"
 
+msgid "Inherited grant"
+msgstr "Droits hérités"
+
 msgid "Initialize acls"
 msgstr "Initialiser les droits"
 
@@ -2413,6 +2420,9 @@ msgstr ""
 msgid "Name of the zoo"
 msgstr ""
 
+msgid "Negative grant"
+msgstr "Droits négatifs"
+
 msgid "New GATE page"
 msgstr "Portail"
 
@@ -2650,6 +2660,9 @@ msgstr "Chemise"
 msgid "PortFolio search"
 msgstr "Recherche dans la chemise"
 
+msgid "Positive grant"
+msgstr "Droits positifs"
+
 msgid "Possible file upload attack!  Here's some debugging info:\n"
 msgstr "Possibilité d'attaque 'upload' : voir infos suivantes\n"
 
@@ -2845,9 +2858,6 @@ msgstr "Réouverture de l'archive"
 msgid "Replace address book card if has permission else duplicate"
 msgstr "Remplace la carte si permission accordée sinon duplication"
 
-msgid "Reset"
-msgstr "Réinitialisation"
-
 msgid "Rest delay"
 msgstr "Durée restante"
 
@@ -2859,6 +2869,9 @@ msgstr " Résultat de l'importation de documents"
 
 msgid "Result Import TAR Documents"
 msgstr "Résultat de l'importation d'archives"
+
+msgid "Result grant"
+msgstr "Droits résultants"
 
 msgid "Return to reference document"
 msgstr "Retour au document de référence"
@@ -3421,6 +3434,12 @@ msgstr "Historique des minuteurs vieux de plus de n jours"
 
 msgid "Up"
 msgstr "Monter"
+
+msgid "Update Access in progress"
+msgstr "Mise à jour des droits en cours"
+
+msgid "Update access"
+msgstr "Modifier les privilèges"
 
 msgid "Update by importation"
 msgstr "Mise à jour par importation"
@@ -6013,6 +6032,9 @@ msgstr "le groupe n°%d n'existe pas"
 msgid "group %d does not exist"
 msgstr "le groupe n°%d n'existe pas"
 
+msgid "group cannot be revived"
+msgstr ""
+
 msgid "group document request"
 msgstr "requête groupée de documents"
 
@@ -7022,6 +7044,9 @@ msgstr ""
 msgid "only latest revision"
 msgstr "seulement la dernière révision"
 
+msgid "only one document linked to the profil"
+msgstr "Un seul document lié à ce profil"
+
 msgid "only user parameters can be deleted with its action"
 msgstr ""
 "seul les paramêtres utilisateurs peuvent être supprimés avec cette action"
@@ -7551,6 +7576,9 @@ msgstr "restauration du document"
 
 #, c-format
 msgid "role %s id is already used"
+msgstr ""
+
+msgid "role cannot be revived"
 msgstr ""
 
 msgid "root"
@@ -8498,6 +8526,9 @@ msgstr "l'utilisateur %s %s a été modifié\n"
 msgid "user %s not found"
 msgstr ""
 
+msgid "user cannot be revived"
+msgstr ""
+
 msgid "user has not identificator"
 msgstr "L'utilisateur n'a pas d'identificateur"
 
@@ -8950,6 +8981,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Only owner of document can restore it"
 #~ msgstr "Seul le propriétaire peut restaurer un document"
+
+#~ msgid "Reset"
+#~ msgstr "Réinitialisation"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"

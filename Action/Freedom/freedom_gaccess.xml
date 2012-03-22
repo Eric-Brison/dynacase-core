@@ -11,21 +11,14 @@ function enablefrom(th) {
   // undisplay button images
   var imgs = th.getElementsByTagName("img");
 
-  for (var i=2; i < imgs.length; i++)  {
+  for (var i=0; i < imgs.length; i++)  {
     imgs[i].style.display='none';
   }
+
+    document.getElementById('iCancel').disabled=false;
+    document.getElementById('iSubmit').disabled=false;
 }
-[IFNOT ISIE]
-function resizetbody() {
-  var eiurl=document.getElementById("idtbody");
-  var xy=getAnchorPosition("idtbody");
-  var hiurl=getFrameHeight();
-  var nh=hiurl - xy.y - 50; // offset for scrollbar
-  
-  eiurl.style.height=nh;
-}
-addEvent(window,"load",resizetbody);
-addEvent(window,"resize",resizetbody);[ENDIF ISIE]
+
 </script>
 <style>
 TABLE.hborder td {
@@ -106,6 +99,12 @@ table.bodyacl {
 table.bodyacl thead {
    visibility:hidden;
 }
+form {
+  display:inline;
+}
+#fView {
+  float:right;
+}
 </style>
         <script>
         function openGroupAcl(gid) {
@@ -113,6 +112,12 @@ table.bodyacl thead {
         }
         function openDetailAcl(gid) {
           subwindow([FDL_VD2SIZE],[FDL_HD2SIZE],'daccess','[CORE_STANDURL]app=FREEDOM&action=FREEDOM_ACCESS&id=[docid]&userid='+gid);
+        }
+        function disableAccess(submit) {
+          submit.disabled=true;
+          submit.value="[TEXT:Update Access in progress]";
+          document.getElementById('iCancel').style.display='none';
+          document.getElementById('fView').style.display='none';
         }
         </script>
 <table class="hborder acls headacl"  cellspacing="0" cellpadding="0">
@@ -142,7 +147,7 @@ table.bodyacl thead {
 <tr>
     <td   align="left" class="left" >
     <span style="margin:0px 0px 0px [level]px" accountType="[accountType]">
-        <a style="display:[displaygroup];cursor:pointer"  onclick="openGroupAcl('[gid]')" title="[TEXT:See members detail]">+</a>
+        <a style="display:[displaygroup];cursor:pointer"  onclick="openGroupAcl('[gid]')" title="[TEXT:See members detail]">&rArr;</a>
       [IFNOT isdyn]<A   onclick="openDetailAcl('[gid]')" title="[TEXT:See detail for ][gname]">[gname]</A>[ENDIF isdyn][IF isdyn][gname][ENDIF isdyn]</span>
     <input id="acls_[gid]_nc" type="hidden" disabled name="acls[[gid]][500]" value="nc"></td>
 
@@ -161,14 +166,14 @@ table.bodyacl thead {
 </tbody>
 </TABLE>
 [IF MODIFY]
-        <input class="CORETblHead" type="submit" name="Modify" value="[TEXT:Validate]"  >
-        <input class="CORETblHead" type="button" onclick="document.location.reload()" title="[TEXT:Reload page]" value="[TEXT:Reset]" >
+<p>[profcount]</p><input id="iSubmit" disabled="disabled" class="CORETblHead" type="submit" onclick="disableAccess(this)" name="Modify" value="[TEXT:Update access]"  >
+        <input id="iCancel"  disabled="disabled" class="CORETblHead" type="button" onclick="document.location.reload()" title="[TEXT:Reload page]" value="[TEXT:Cancel]" >
         [ENDIF MODIFY]
 <input type="hidden" name="docid" value="[docid]">
 <input type="hidden" name="allgreen" value="[allgreen]">
   <input type="hidden" name="group" value="[group]">
 </form>
-<form  name="view" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS">
+<form id="fView"  name="view" method="POST" action="[CORE_STANDURL]app=FREEDOM&action=FREEDOM_GACCESS">
   <input type="hidden" name="id" value="[docid]">
   <input type="hidden" name="allgreen" value="[allgreen]">
   <input type="hidden" name="group" value="[group]">
