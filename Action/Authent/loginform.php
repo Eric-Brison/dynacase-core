@@ -48,7 +48,7 @@ function loginform(&$action)
                 break;
 
             case 3:
-                $merr = _("This account is desactivated.") . _(" Please, see your manager");
+                $merr = _("This account is deactivated.") . _(" Please, see your manager");
                 break;
 
             case 4:
