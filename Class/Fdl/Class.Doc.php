@@ -2057,11 +2057,14 @@ create unique index i_docir on doc(initid, revision);";
         $wopt = false;
         if (isset($this->attributes->attr)) {
             foreach ($this->attributes->attr as $k => $v) {
-                if ((get_class($v) == "NormalAttribute") && ($v->type == "docid")) {
+                if ($v->type == "docid") {
                     if ($v->getOption("isuser") != "") {
                         if ($v->getOption("isuser") == "yes") $tsb[$v->id] = $v;
                         $wopt = true;
                     } else $tsa[$v->id] = $v;
+                } elseif ($v->type == "account") {
+                    $wopt = true;
+                    if ($v->getOption("isuser") != "no") $tsb[$v->id] = $v;
                 }
             }
         }

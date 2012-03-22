@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-20 17:42+0100\n"
+"POT-Creation-Date: 2012-03-22 15:34+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -175,6 +175,10 @@ msgstr "Import"
 #, fuzzy, c-format
 msgid "%d documents"
 msgstr "Import"
+
+#, c-format
+msgid "%d documents linked to the profil"
+msgstr ""
 
 #, fuzzy, c-format
 msgid "%d group(s) to update\n"
@@ -2219,6 +2223,9 @@ msgstr ""
 msgid "Increase vault size"
 msgstr ""
 
+msgid "Inherited grant"
+msgstr ""
+
 msgid "Initialize acls"
 msgstr ""
 
@@ -2534,6 +2541,9 @@ msgstr ""
 msgid "Name of the zoo"
 msgstr ""
 
+msgid "Negative grant"
+msgstr ""
+
 msgid "New GATE page"
 msgstr ""
 
@@ -2791,6 +2801,9 @@ msgstr "Modify"
 msgid "PortFolio search"
 msgstr "Modify"
 
+msgid "Positive grant"
+msgstr ""
+
 msgid "Possible file upload attack!  Here's some debugging info:\n"
 msgstr ""
 
@@ -2996,10 +3009,6 @@ msgstr ""
 msgid "Replace address book card if has permission else duplicate"
 msgstr ""
 
-#, fuzzy
-msgid "Reset"
-msgstr "Created by"
-
 msgid "Rest delay"
 msgstr ""
 
@@ -3013,6 +3022,9 @@ msgstr "Import"
 #, fuzzy
 msgid "Result Import TAR Documents"
 msgstr "Import"
+
+msgid "Result grant"
+msgstr ""
 
 msgid "Return to reference document"
 msgstr ""
@@ -3585,6 +3597,12 @@ msgid "Until done date"
 msgstr ""
 
 msgid "Up"
+msgstr ""
+
+msgid "Update Access in progress"
+msgstr ""
+
+msgid "Update access"
 msgstr ""
 
 #, fuzzy
@@ -6368,6 +6386,9 @@ msgstr ""
 msgid "group %d does not exist"
 msgstr ""
 
+msgid "group cannot be revived"
+msgstr ""
+
 msgid "group document request"
 msgstr ""
 
@@ -7464,6 +7485,9 @@ msgstr ""
 msgid "only latest revision"
 msgstr "Organisation"
 
+msgid "only one document linked to the profil"
+msgstr ""
+
 msgid "only user parameters can be deleted with its action"
 msgstr ""
 
@@ -8039,6 +8063,9 @@ msgstr "Organisation"
 
 #, c-format
 msgid "role %s id is already used"
+msgstr ""
+
+msgid "role cannot be revived"
 msgstr ""
 
 msgid "root"
@@ -9033,6 +9060,9 @@ msgstr ""
 msgid "user %s not found"
 msgstr ""
 
+msgid "user cannot be revived"
+msgstr ""
+
 msgid "user has not identificator"
 msgstr ""
 
@@ -9471,6 +9501,10 @@ msgstr ""
 
 msgid "{left} title include {right}"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Reset"
+#~ msgstr "Created by"
 
 #, fuzzy
 #~ msgid "active user"

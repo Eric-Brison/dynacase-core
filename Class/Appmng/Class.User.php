@@ -683,7 +683,7 @@ union
      * return all user members (recursive)
      * @return array of user values ["login"=>, "id"=>, "fid"=>,...)
      */
-    public function getUserMembers()
+    private function getUserMembers()
     {
         $tr = array();
         
@@ -807,7 +807,8 @@ union
     }
     /**
      * only use with group or role
-     * get all dircect user member of a group or user which has role directly
+     * if it is a group : get all direct user member of a group 
+     * if it is a role : het user which has role directly
      * @param string $qtype LIST|TABLE|ITEM
      * @param bool $withgroup set to true to return sub group also
      * @param int|string $limit max users returned
@@ -824,12 +825,17 @@ union
     /**
      * get all users of a group/role direct or indirect
      * @param int|string $limit max users returned
+     * @param bool $onlyUsers set to true to have also sub groups
      * @return array of user properties
      */
-    function getAllMembers($limit = "all")
+    function getAllMembers($limit = "all", $onlyUsers = true)
     {
         if ($limit != 'all') $limit = intval($limit);
-        $sql = sprintf("SELECT * from users where memberof && '{%d}' and accounttype='U' order by lastname limit %s", $this->id, $limit);
+        if ($onlyUsers) {
+            $sql = sprintf("select * from users where memberof && '{%d}' and accounttype='U' order by lastname limit %s", $this->id, $limit);
+        } else {
+            $sql = sprintf("select * from users where memberof && '{%d}' order by accounttype, lastname limit %s", $this->id, $limit);
+        }
         simpleQuery($this->dbaccess, $sql, $users);
         return $users;
     }

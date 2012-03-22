@@ -395,7 +395,10 @@ class DocCtrl extends DocLDAP
             }
         }
     }
-    
+    /**
+     * return true if document is profile document PDOC, PDIR, ...
+     * @return bool
+     */
     public function isRealProfile()
     {
         return ($this->getAttribute("dpdoc_famid") != null);
