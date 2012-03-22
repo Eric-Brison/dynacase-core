@@ -5225,7 +5225,7 @@ create unique index i_docir on doc(initid, revision);";
                 $err = $this->controlId($this->profid, $aclname);
                 if (($err != "") && ($this->isConfidential())) $err = sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
                 // Edit rights on profiles must also be controlled by the 'modifyacl' acl
-                if (($err == "") && ($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfil()) {
+                if (($err == "") && ($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfile()) {
                     $err = $this->controlId($this->profid, 'modifyacl');
                 }
             }

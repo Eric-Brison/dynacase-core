@@ -377,7 +377,7 @@ class DocCtrl extends DocLDAP
                 $err = $this->modify(true, array(
                     'views'
                 ) , true);
-                if ($this->isRealProfil()) {
+                if ($this->isRealProfile()) {
                     //propagate static profil views on linked documents
                     $err = simpleQuery($this->dbaccess, sprintf("update doc set views='%s' where profid=%d and (dprofid is null or dprofid = 0)", $this->views, $this->id));
                 }
@@ -396,7 +396,7 @@ class DocCtrl extends DocLDAP
         }
     }
     
-    public function isRealProfil()
+    public function isRealProfile()
     {
         return ($this->getAttribute("dpdoc_famid") != null);
     }
@@ -608,7 +608,7 @@ class DocCtrl extends DocLDAP
      */
     public function recomputeProfiledDocument()
     {
-        if ($this->isRealProfil()) {
+        if ($this->isRealProfile()) {
             include_once ("FDL/Class.SearchDoc.php");
             if ($this->getValue("dpdoc_famid") > 0) {
                 // dynamic profil
