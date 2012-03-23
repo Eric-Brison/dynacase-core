@@ -99,6 +99,7 @@ class _DSEARCH extends DocSearch
             $filter = $filters[0];
             $filterType = $filtersType[0];
             if ($filterType != "generated") {
+                $famid = '';
                 $root = simplexml_load_string($filter);
                 $std = $this->simpleXml2StdClass($root);
                 if ($std->family) {
@@ -218,6 +219,9 @@ class _DSEARCH extends DocSearch
             $type = $this->getTvalue("se_typefilter");
             if ($type[0] != "generated") {
                 $this->defaultedit = "FDL:EDITBODYCARD";
+                /**
+                 * @var NormalAttribute $oa
+                 */
                 $this->getAttribute('se_t_detail', $oa);
                 $oa->setVisibility('R');
                 $this->getAttribute('se_t_filters', $oa);
@@ -431,7 +435,7 @@ class _DSEARCH extends DocSearch
                     if (trim($val) != "") {
                         $tstatickeys = explode(' ', $val);
                         if (count($tstatickeys) > 1) {
-                            $keyword.= str_replace(" ", "&", trim($val));
+                            $keyword = str_replace(" ", "&", trim($val));
                         } else {
                             $keyword = trim($val);
                         }
@@ -653,7 +657,12 @@ class _DSEARCH extends DocSearch
                     }
                     return $this->getValue("ba_title") . $l;
                 }
-                
+                /**
+                 * @templateController default detailed search view
+                 * @param string $target
+                 * @param bool $ulink
+                 * @param bool $abstract
+                 */
                 function viewdsearch($target = "_self", $ulink = true, $abstract = false)
                 {
                     // Compute value to be inserted in a  layout
@@ -713,6 +722,7 @@ class _DSEARCH extends DocSearch
                 {
                     // Compute value to be inserted in a  layout
                     $this->viewattr();
+                    $tparm = $tcond = array();
                     //-----------------------------------------------
                     // display already condition written
                     $tkey = $this->getTValue("SE_KEYS");
@@ -795,11 +805,16 @@ class _DSEARCH extends DocSearch
                     }
                 }
                 // -----------------------------------
+                
+                /**
+                 *
+                 * @templateController default detailed search edit view
+                 */
                 function editdsearch()
                 {
                     global $action;
                     
-                    $famid = GetHttpVars("sfamid", $this->getValue("SE_FAMID", 1));
+                    $classid = $famid = GetHttpVars("sfamid", $this->getValue("SE_FAMID", 1));
                     $onlysubfam = GetHttpVars("onlysubfam"); // restricy to sub fam of
                     $dirid = GetHttpVars("dirid");
                     $this->lay->set("ACTION", $action->name);
@@ -809,6 +824,9 @@ class _DSEARCH extends DocSearch
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
                     
                     if ($dirid > 0) {
+                        /**
+                         * @var Dir $dir
+                         */
                         $dir = new_Doc($this->dbaccess, $dirid);
                         if (method_exists($dir, "isAuthorized")) {
                             if ($dir->isAuthorized($classid)) {

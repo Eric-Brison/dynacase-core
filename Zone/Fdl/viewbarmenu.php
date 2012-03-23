@@ -25,6 +25,7 @@ function viewbarmenu(Action & $action)
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $doc = new_Doc($dbaccess, $docid);
     if ($docid == "") $action->exitError(_("No identificator"));
+    $popup = '';
     if ($doc->doctype == 'C') $popup = getpopupfamdetail($action, $docid);
     else {
         if ($doc->specialmenu) {

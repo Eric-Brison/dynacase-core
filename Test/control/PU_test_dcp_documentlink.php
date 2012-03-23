@@ -28,6 +28,7 @@ class TestLink extends TestCaseDcpDocument
         // nothing
         
     }
+    
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -39,6 +40,7 @@ class TestLink extends TestCaseDcpDocument
         // three documents : linkOne, linkTwo and linkThree
         self::importDocument("PU_data_dcp_documentslink.xml");
     }
+    
     public static function tearDownAfterClass()
     {
         self::rollbackTransaction();
@@ -91,6 +93,7 @@ class TestLink extends TestCaseDcpDocument
             )
         );
     }
+    
     public function dataAttrLinks()
     {
         return array(
@@ -151,8 +154,23 @@ class TestLink extends TestCaseDcpDocument
             ) ,
             array(
                 "linkTwo",
-                "http://test.com/?title=%%25",
-                "http://test.com/?title=%25"
+                "http://test.com/?title=%%2T",
+                "http://test.com/?title=%2T"
+            ) ,
+            array(
+                "linkTwo",
+                "http://test.com/?title=%3A",
+                "http://test.com/?title=%3A"
+            ) ,
+            array(
+                "linkTwo",
+                "http://test.com/?title=%3A%3ATest%28%29",
+                "http://test.com/?title=%3A%3ATest%28%29"
+            ) ,
+            array(
+                "linkTwo",
+                "http://test.com/?title=%3A%3A%T%%28%29",
+                "http://test.com/?title=%3A%3AJoe%20%26%20Jane%28%29"
             )
         );
     }

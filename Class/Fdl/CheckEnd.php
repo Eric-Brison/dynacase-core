@@ -30,6 +30,7 @@ class CheckEnd extends CheckData
         $this->checkSetAttributes();
         $this->checkComputedConstraintAttributes();
         $this->checkDefault();
+        $this->checkLinks();
         return $this;
     }
     
@@ -74,10 +75,10 @@ class CheckEnd extends CheckData
         $this->doc->getAttributes(); // force reattach attributes
         $la = $this->doc->GetNormalAttributes();
         foreach ($la as & $oa) {
-            if (($oa->phpfile == '' || $oa->phpfile == '-') && (preg_match('/^[a-z0-9_]*::/', $oa->phpfunc))) {
+            if (($oa->phpfile == '' || $oa->phpfile == '-') && (preg_match('/^[a-z0-9_]*::/i', $oa->phpfunc))) {
                 $this->checkMethod($oa);
             }
-            if (preg_match('/^[a-z0-9_]*::/', $oa->phpconstraint)) {
+            if (preg_match('/^[a-z0-9_]*::/i', $oa->phpconstraint)) {
                 $this->checkConstraint($oa);
             }
         }
@@ -102,7 +103,54 @@ class CheckEnd extends CheckData
             }
         }
     }
-    
+    /**
+     * Verify all links which references document's method
+     */
+    protected function checkLinks()
+    {
+        $la = $this->doc->getAttributes();
+        foreach ($la as & $oa) {
+            if ($oa) $this->checkLinkMethod($oa);
+        }
+    }
+    /**
+     * check method validity for phpfunc property
+     * @param NormalAttribute|MenuAttribute $oa
+     */
+    private function checkLinkMethod(BasicAttribute & $oa)
+    {
+        if (!$oa->link) return;
+        $link = '';
+        if (preg_match('/action=FDL_METHOD&.*method=([^&]*)/', $oa->link, $reg)) {
+            $link = urldecode($reg[1]);
+            if (preg_match('/^[a-z0-9_]+$/i', $link)) $link = '::' . $link . '()';
+        } elseif (preg_match('/^[a-z0-9_]*::/i', $oa->link, $reg)) {
+            $link = $oa->link;
+        }
+        if (!$link) return;
+        //og($oa->id. '=>'.$oa->link);
+        $oParse = new parseFamilyMethod();
+        $strucLink = $oParse->parse($link);
+        $error = $oParse->getError();
+        if ($error) {
+            $this->addError(ErrorCode::getError('ATTR1000', $link, $oa->id, $error));
+        } else {
+            /**
+             * @var ReflectionMethod $refMeth
+             */
+            $err = $this->verifyMethod($strucLink, $oa, $refMeth);
+            if ($err) {
+                $this->addError($err);
+                $this->addError(ErrorCode::getError('ATTR1001', $this->doc->name, $err));
+            } else {
+                $methodComment = $refMeth->getDocComment();
+                if (!preg_match('/@apiExpose\b/', $methodComment)) {
+                    $completeMethod = $refMeth->getDeclaringClass()->getName() . '::' . $refMeth->getName() . '()';
+                    $this->addError(ErrorCode::getError('ATTR1002', $completeMethod, $oa->id));
+                }
+            }
+        }
+    }
     private function checkDefault()
     {
         $defaults = $this->doc->getDefValues();
@@ -128,7 +176,7 @@ class CheckEnd extends CheckData
         }
     }
     
-    private function verifyMethod($strucFunc, $oa)
+    private function verifyMethod($strucFunc, $oa, &$refMeth = null)
     {
         $err = '';
         $phpMethName = $strucFunc->methodName;

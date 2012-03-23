@@ -49,6 +49,7 @@ class _REPORT extends _DSEARCH
     }
     /**
      * Compute the values fo the edit display
+     * @templateController
      *
      */
     public function editreport()
@@ -99,6 +100,7 @@ class _REPORT extends _DSEARCH
     }
     /**
      * Compute the values for the view display
+     * @templateController
      *
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
@@ -304,7 +306,7 @@ class _REPORT extends _DSEARCH
             "dateFormat" => $dateFormat,
             'decimalSeparator' => $separator
         );
-
+        
         $pivotColumnName = uniqid();
         
         $singleAttributes = array();
@@ -417,7 +419,7 @@ class _REPORT extends _DSEARCH
             "dateFormat" => $dateFormat,
             'decimalSeparator' => $separator
         );
-
+        
         $twoDimStruct = new TwoDimensionStruct();
         $firstRow = array();
         $internals = $this->_getInternals();
@@ -463,6 +465,7 @@ class _REPORT extends _DSEARCH
     }
     /**
      * Compute the values for the mini view display (portal)
+     * @templateController
      *
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated

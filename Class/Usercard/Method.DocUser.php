@@ -29,7 +29,12 @@ class _USER extends Doc
     var $cviews = array(
         "USERCARD:VIEWABSTRACTCARD"
     );
-    // -----------------------------------
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param string $abstract
+     */
     function viewabstractcard($target = "finfo", $ulink = true, $abstract = "Y")
     {
         // -----------------------------------
@@ -40,8 +45,6 @@ class _USER extends Doc
     
     function PostModify()
     {
-        $err = "";
-        
         $err = $this->RefreshLdapCard();
         
         $this->SetPrivacity(); // set doc properties in concordance with its privacity
@@ -92,11 +95,13 @@ class _USER extends Doc
     function canUpdateLdapCard()
     {
         // $priv=$this->GetValue("US_PRIVCARD");
+        $priv = '';
         if ($priv == "S") return false;
         return true;
     }
     /**
      * return different DN if is a private or not private card
+     * @return string
      */
     function getUserLDAPDN($rdn, $path = "")
     {
@@ -123,6 +128,7 @@ class _USER extends Doc
         } else {
             return $this->getLDAPDN($rdn, $path);
         }
+        return '';
     }
     /**
      * recompute profil with privacy attribute value

@@ -24,7 +24,12 @@ class _SOCIETYBOOK extends Doc
     */
     var $faddbook_card = "USERCARD:FADDBOOKSOC_CARD:U";
     var $faddbook_resume = "USERCARD:FADDBOOKSOC_RESUME:T";
-    
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param string $abstract
+     */
     function faddbooksoc_card($target = "finfo", $ulink = true, $abstract = "Y")
     {
         global $action;

@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * Ooo Layout test
  *
@@ -28,7 +28,10 @@ class __TST_OOOLAYOUT extends Doc
     /**
      * @end-method-ignore
      */
-    
+    /**
+     * @templateController
+     * @param $target
+     */
     function PU_dcp_data_RepeatMulti($target)
     {
         
@@ -93,7 +96,10 @@ class __TST_OOOLAYOUT extends Doc
         
         $this->lay->setRepeatable($repeatColor);
     }
-    
+    /**
+     *
+     * @templateController
+     */
     function PU_dcp_data_repeatOne($target)
     {
         
@@ -149,7 +155,12 @@ class __TST_OOOLAYOUT extends Doc
         
         $this->lay->setRepeatable($repeatColor);
     }
-    
+    /**
+     *
+     * @templateController
+     * @param $target
+     * @return mixed
+     */
     function PU_dcp_data_IfOooLayout($target)
     {
         if (!$this->lay->file) return;
@@ -174,7 +185,10 @@ class __TST_OOOLAYOUT extends Doc
         //$this->lay->set("V_OOO_IMAGE_ENTETE", $this->lay->get("V_OOO_IMAGE"));
         
     }
-    
+    /**
+     * @templateController
+     * @param $target
+     */
     function PU_dcp_data_RowOooLayout($target)
     {
         
@@ -191,7 +205,10 @@ class __TST_OOOLAYOUT extends Doc
         
         $this->viewDefaultCard($target);
     }
-    
+    /**
+     * @templateController
+     * @param $target
+     */
     function PU_dcp_data_RepeatOooLayout($target)
     {
         

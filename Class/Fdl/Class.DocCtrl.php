@@ -607,6 +607,7 @@ class DocCtrl extends DocLDAP
     }
     /**
      * apply computeDProfil in all documents with this profile
+     * @apiExpose to force apply profiling
      * @return void
      */
     public function recomputeProfiledDocument()

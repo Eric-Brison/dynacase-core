@@ -18,7 +18,7 @@
 
 include_once ("FDL/popupdoc.php");
 include_once ("FDL/Class.SearchDoc.php");
-function popupdocdetail(&$action)
+function popupdocdetail(Action & $action)
 {
     $docid = GetHttpVars("id");
     if ($docid == "") $action->exitError(_("No identificator"));
@@ -26,7 +26,7 @@ function popupdocdetail(&$action)
     
     popupdoc($action, $popup);
 }
-function getpopupdocdetail(&$action, $docid)
+function getpopupdocdetail(Action & $action, $docid)
 {
     // define accessibility
     $zone = GetHttpVars("zone"); // special zone
@@ -378,7 +378,7 @@ function getpopupdocdetail(&$action, $docid)
 /**
  * Add control view menu
  */
-function addArchivePopup(&$tlink, &$doc, $target = "_self")
+function addArchivePopup(&$tlink, Doc & $doc, $target = "_self")
 {
     if ($doc->fromname == "ARCHIVING") return; // no archive archive
     if ($doc->archiveid > 0) return;
@@ -422,7 +422,7 @@ function addArchivePopup(&$tlink, &$doc, $target = "_self")
 /**
  * Add control view menu
  */
-function addCvPopup(&$tlink, &$doc, $target = "_self")
+function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
 {
     
     $rvid = getHttpVars("vid"); // for the return
@@ -431,6 +431,9 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
         $surl = getParam("CORE_STANDURL");
         $cud = ($doc->CanEdit() == "");
         $docid = $doc->id;
+        /**
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($doc->dbaccess, $doc->cvid);
         $cvdoc->set($doc);
         $ti = $cvdoc->getTValue("CV_IDVIEW");
@@ -517,10 +520,13 @@ function addCvPopup(&$tlink, &$doc, $target = "_self")
 /**
  * Add control view menu
  */
-function addStatesPopup(&$tlink, &$doc)
+function addStatesPopup(&$tlink, Doc & $doc)
 {
     
     if ($doc->wid > 0) {
+        /**
+         * @var WDoc $wdoc
+         */
         $wdoc = new_Doc($doc->dbaccess, $doc->wid);
         $wdoc->Set($doc);
         $fstate = $wdoc->GetFollowingStates();
@@ -555,12 +561,10 @@ function addStatesPopup(&$tlink, &$doc)
         }
     }
 }
-function addFamilyPopup(&$tlink, &$doc)
+function addFamilyPopup(&$tlink, Doc & $doc)
 {
     $lmenu = $doc->GetMenuAttributes(true);
-    
     foreach ($lmenu as $k => $v) {
-        
         $confirm = false;
         $control = false;
         if (($v->getOption("onlyglobal") == "yes") && ($doc->doctype != "C")) continue;

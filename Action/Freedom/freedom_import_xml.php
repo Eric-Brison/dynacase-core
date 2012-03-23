@@ -22,6 +22,7 @@ include_once ('FDL/Class.XMLSplitter.php');
  * export global xml file
  * @param Action $action main action
  * @param string $filename xml filename to import
+ * @return array
  */
 function freedom_import_xml(Action & $action, $filename = "")
 {

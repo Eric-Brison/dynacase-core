@@ -25,6 +25,11 @@ class DocLDAP extends DbObj
     var $racine;
     var $rootdn;
     var $rootpw;
+    public $useldap = false;
+    public $infoldap = array();
+    public $cindex = false;
+    public $ldapmap;
+    public $ldapdn;
     /**
      * init society organization of the tree
      * @return bool true if organization has been created or its already created
@@ -97,7 +102,7 @@ class DocLDAP extends DbObj
      * suppress old DNs card from LDAP if exists
      * @param resource $ds LDAP connection ressouce
      * @param array $tdn array of DN new DN
-     * @return void
+     * @return string
      */
     function setDNs($ds, $tdn)
     {
@@ -115,6 +120,14 @@ class DocLDAP extends DbObj
             "ldapdn"
         ) , true);
         return $err;
+    }
+    /**
+     * test if the document can be set in LDAP
+     * to be defined in child families
+     */
+    function canUpdateLdapCard()
+    {
+        return false;
     }
     /**
      * update or delete LDAP card
@@ -135,10 +148,11 @@ class DocLDAP extends DbObj
     }
     /**
      * delete LDAP cards of document
+     * @return void
      */
     function DeleteLdapCard()
     {
-        if (!$this->UseLdap()) return false;
+        if (!$this->UseLdap()) return;
         if (!$this->useldap) return;
         
         if (($this->serveur != "") && ($this->id > 0)) {
@@ -234,6 +248,7 @@ class DocLDAP extends DbObj
                                     case "image":
                                         if (preg_match(PREGEXPFILE, $value, $reg)) {
                                             $vf = newFreeVaultFile($this->dbaccess);
+                                            $info = null;
                                             if ($vf->Retrieve($reg[2], $info) == "") {
                                                 $fd = fopen($info->path, "r");
                                                 if ($fd) {

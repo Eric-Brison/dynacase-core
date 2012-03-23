@@ -26,11 +26,12 @@ class _ARCHIVING extends Dir
     */
     /**
      * all document's folder are archieved
+     * @apiExpose
      * @return string error message empty message if no error
      */
     function arc_close()
     {
-        $err = "";
+        $err = $this->canEdit();
         if (!$err) {
             include_once ("FDL/Class.SearchDoc.php");
             
@@ -45,74 +46,95 @@ class _ARCHIVING extends Dir
                 $err.= $doc->archive($this);
                 $doc->enableEditControl();
             }
+            
+            $err = $this->setValue("arc_status", "C");
+            $err = $this->setValue("arc_clotdate", $this->getDate());
+            if (!$err) $err = $this->modify();
+            $this->addComment(sprintf(_("Close archive")));
         }
-        
-        $err = $this->setValue("arc_status", "C");
-        $err = $this->setValue("arc_clotdate", $this->getDate());
-        if (!$err) $err = $this->modify();
-        $this->addComment(sprintf(_("Close archive")));
         return $err;
     }
     /**
      * all document's archivied by it are unarchieved
+     * @apiExpose
      * @return string error message empty message if no error
      */
     function arc_reopen()
     {
-        $err = $this->setValue("arc_status", "O");
-        $err = $this->deleteValue("arc_clotdate");
-        if (!$err) $err = $this->modify();
+        $err = $this->canEdit();
         if (!$err) {
-            include_once ("FDL/Class.SearchDoc.php");
-            
-            $s = new SearchDoc($this->dbaccess);
-            $s->addFilter("archiveid=%d", $this->id);
-            $s->orderby = '';
-            $s->setObjectReturn();
-            $s->search();
-            if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
-            while ($doc = $s->nextDoc()) {
-                $doc->disableEditControl();
-                $err.= $doc->unArchive($this);
-                $doc->enableEditControl();
+            $err = $this->setValue("arc_status", "O");
+            $err = $this->deleteValue("arc_clotdate");
+            if (!$err) $err = $this->modify();
+            if (!$err) {
+                include_once ("FDL/Class.SearchDoc.php");
+                
+                $s = new SearchDoc($this->dbaccess);
+                $s->addFilter("archiveid=%d", $this->id);
+                $s->orderby = '';
+                $s->setObjectReturn();
+                $s->search();
+                if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
+                while ($doc = $s->nextDoc()) {
+                    $doc->disableEditControl();
+                    $err.= $doc->unArchive($this);
+                    $doc->enableEditControl();
+                }
             }
+            $this->addComment(sprintf(_("Reopen archive")));
         }
-        $this->addComment(sprintf(_("Reopen archive")));
         return $err;
     }
     /**
      * all document's archivied by it are unarchieved
+     * @apiExpose
      * @return string error message empty message if no error
      */
     function arc_purge()
     {
-        $err = $this->setValue("arc_status", "P");
-        $err = $this->setValue("arc_purgedate", $this->getDate());
-        if (!$err) $err = $this->modify();
+        $err = $this->canEdit();
         if (!$err) {
-            include_once ("FDL/Class.SearchDoc.php");
-            
-            $s = new SearchDoc($this->dbaccess);
-            $s->addFilter("archiveid=%d", $this->id);
-            $s->orderby = '';
-            $s->setObjectReturn();
-            $s->search();
-            if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
-            $t = "<ol>";
-            while ($doc = $s->nextDoc()) {
-                if ($doc->doctype != 'C') {
-                    $t.= sprintf('<li><a href="?app=FDL&action=VIEWDESTROYDOC&id=%d">%s</a></li> ', $doc->id, $doc->title);
-                    $doc->disableEditControl();
-                    $doc->addComment(sprintf(_("destroyed by archive purge from %s") , $this->getTitle()));
-                    $err.= $doc->delete(true, false);
-                    $doc->enableEditControl();
-                }
-            }
-            $t.= "</ol>";
-            $err = $this->setValue("arc_purgemanif", $t);
+            $err = $this->setValue("arc_status", "P");
+            $err.= $this->setValue("arc_purgedate", $this->getDate());
             if (!$err) $err = $this->modify();
-            $this->clear();
-            $this->addComment(sprintf(_("Purge archive")));
+            if (!$err) {
+                include_once ("FDL/Class.SearchDoc.php");
+                
+                $s = new SearchDoc($this->dbaccess);
+                $s->addFilter("archiveid=%d", $this->id);
+                $s->orderby = '';
+                $s->setObjectReturn();
+                $s->search();
+                if (ini_get("max_execution_time") < 3600) ini_set("max_execution_time", 3600);
+                $t = "<ol>";
+                while ($doc = $s->nextDoc()) {
+                    if ($doc->doctype != 'C') {
+                        $t.= sprintf('<li><a href="?app=FDL&action=VIEWDESTROYDOC&id=%d">%s</a></li> ', $doc->id, $doc->title);
+                        $doc->disableEditControl();
+                        $doc->addComment(sprintf(_("destroyed by archive purge from %s") , $this->getTitle()));
+                        $err.= $doc->delete(true, false);
+                        $doc->enableEditControl();
+                    }
+                }
+                $t.= "</ol>";
+                $err = $this->setValue("arc_purgemanif", $t);
+                if (!$err) $err = $this->modify();
+                $this->clear();
+                $this->addComment(sprintf(_("Purge archive")));
+            }
+        }
+        return $err;
+    }
+    /**
+     * delete all archive contain
+     * @apiExpose
+     * @return string
+     */
+    function arc_clear()
+    {
+        $err = $this->canEdit();
+        if (!$err) {
+            $err = $this->Clear();
         }
         return $err;
     }

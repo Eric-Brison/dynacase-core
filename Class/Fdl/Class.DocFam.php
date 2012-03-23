@@ -142,8 +142,13 @@ create unique index idx_idfam on docfam(id);";
             }
         }
     }
-    // -----------------------------------
-    function viewfamcard($target = "_self", $ulink = true, $abstract = false)
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
+   function viewfamcard($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
         global $action;
@@ -449,6 +454,7 @@ create unique index idx_idfam on docfam(id);";
                 }
                 fclose($tmpstream);
                 $vf = newFreeVaultFile($this->dbaccess);
+                $info=null;
                 $err = $vf->Retrieve($vid, $info);
                 if ($err == "") $err = $vf->Save($filename, false, $vid);
                 unlink($filename);
@@ -466,8 +472,7 @@ create unique index idx_idfam on docfam(id);";
                     $famfile = DEFAULT_PUBDIR . sprintf("/families/%s.fam", $this->name);
                     if (!@$dxml->load($famfile)) {
                         return null;
-                        
-                        return $o;
+
                     } else {
                         $properties = $dxml->getElementsByTagName('property');
                         foreach ($properties as $prop) {
