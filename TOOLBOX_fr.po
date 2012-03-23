@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 15:34+0100\n"
-"PO-Revision-Date: 2012-03-22 15:48+0100\n"
+"POT-Creation-Date: 2012-03-22 17:51+0100\n"
+"PO-Revision-Date: 2012-03-22 18:11+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -898,6 +898,12 @@ msgid "Cannot do this action. The function of parent window is not found"
 msgstr ""
 "Ne peut faire cette action. La fonction de la fenêtre parent est introuvable"
 
+msgid "Cannot edit access. No application parameter."
+msgstr "Accès aux privilèges impossible : identifiant de l'application non définit."
+
+msgid "Cannot edit access. No user parameter."
+msgstr "Accès aux privilèges impossible : identifiant de l'utilisateur non définit."
+
 #, c-format
 msgid "Cannot find help function %s"
 msgstr "Fonction d'aide %s introuvable"
@@ -1132,6 +1138,9 @@ msgstr "Fermer"
 
 msgid "Close archive"
 msgstr "Clôture de l'archive"
+
+msgid "Close help"
+msgstr "Fermer l'aide"
 
 msgid "Column mode"
 msgstr "Mode colonne"
@@ -1993,6 +2002,9 @@ msgstr "Description de l'aide"
 
 msgid "Help name"
 msgstr "Nom de l'aide"
+
+msgid "Help to the connection"
+msgstr "Aide à la connexion"
 
 msgid "Helps"
 msgstr "Aides"
@@ -3310,7 +3322,7 @@ msgid "This account is deactivated."
 msgstr "Ce compte est désactivé."
 
 msgid "This action requires the installation of Dynacase Extui module"
-msgstr ""
+msgstr "Cette action nécessite l'installation du module Dynacase Extui"
 
 msgid "This document has been deleted"
 msgstr "Ce document a été supprimé"

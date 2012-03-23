@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 15:34+0100\n"
+"POT-Creation-Date: 2012-03-22 17:51+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -903,9 +903,8 @@ msgstr ""
 msgid "Cancel changes and quit edit mode"
 msgstr ""
 
-#, fuzzy
 msgid "Cancel the change state"
-msgstr "Category"
+msgstr "Cancel next step"
 
 msgid "Cannot access to vault file system"
 msgstr ""
@@ -937,6 +936,12 @@ msgstr ""
 msgid "Cannot do this action. The function of parent window is not found"
 msgstr ""
 
+msgid "Cannot edit access. No application parameter."
+msgstr ""
+
+msgid "Cannot edit access. No user parameter."
+msgstr ""
+
 #, c-format
 msgid "Cannot find help function %s"
 msgstr ""
@@ -966,9 +971,8 @@ msgstr ""
 msgid "Certain attribute can be not use for import"
 msgstr ""
 
-#, fuzzy
 msgid "Change State"
-msgstr "Category"
+msgstr "Next step"
 
 #, fuzzy
 msgid "Change category"
@@ -1051,20 +1055,19 @@ msgstr "Category"
 msgid "Change root folder"
 msgstr "Delete"
 
-#, fuzzy
 msgid "Change state"
-msgstr "Category"
+msgstr "Next step"
 
 #, c-format
 msgid "Change state %s"
-msgstr ""
+msgstr "Next step %s"
 
 msgid "Change state to"
-msgstr ""
+msgstr "Next step to"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Change state to %s"
-msgstr "Category"
+msgstr "Next step to %s"
 
 #, fuzzy
 msgid "Change the document state to"
@@ -1194,6 +1197,9 @@ msgstr ""
 "Close"
 
 msgid "Close archive"
+msgstr ""
+
+msgid "Close help"
 msgstr ""
 
 #, fuzzy
@@ -1402,7 +1408,7 @@ msgid "Creation aborded : unknow family %s"
 msgstr "Category"
 
 msgid "Current_state"
-msgstr ""
+msgstr "Current step"
 
 msgid "Data api"
 msgstr ""
@@ -1476,10 +1482,10 @@ msgid "Display available choices"
 msgstr ""
 
 msgid "Do choice"
-msgstr ""
+msgstr "Select"
 
 msgid "Do connection"
-msgstr ""
+msgstr "Connect"
 
 msgid "DocProperties"
 msgstr "Properties"
@@ -2087,6 +2093,9 @@ msgid "Help description"
 msgstr ""
 
 msgid "Help name"
+msgstr ""
+
+msgid "Help to the connection"
 msgstr ""
 
 msgid "Helps"
@@ -4848,7 +4857,7 @@ msgid "changes"
 msgstr "Start search"
 
 msgid "chgstates"
-msgstr "Change state"
+msgstr "Next step"
 
 #, fuzzy
 msgid "choose action from batch document"
@@ -5152,9 +5161,8 @@ msgstr ""
 msgid "create vault %s"
 msgstr ""
 
-#, fuzzy
 msgid "createdate"
-msgstr "Create"
+msgstr "Creation date"
 
 #, fuzzy
 msgid "creation"
@@ -5442,9 +5450,8 @@ msgstr "Displayable"
 msgid "doc %d indexed"
 msgstr ""
 
-#, fuzzy
 msgid "doctitle"
-msgstr "Update Title Cards"
+msgstr "Title"
 
 #, fuzzy
 msgid "document"
@@ -7207,9 +7214,8 @@ msgstr "Delete"
 msgid "no file specified : change icon aborted"
 msgstr ""
 
-#, fuzzy
 msgid "no filename"
-msgstr "Firstname"
+msgstr "No file"
 
 #, fuzzy
 msgid "no files"
@@ -8030,9 +8036,8 @@ msgstr ""
 msgid "rev"
 msgstr "Create"
 
-#, fuzzy
 msgid "revdate"
-msgstr "Create"
+msgstr "Revision date"
 
 #, fuzzy
 msgid "revised by"
