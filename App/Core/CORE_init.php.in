@@ -85,11 +85,11 @@ $app_const = array(
         "global" => "Y"
     ) ,
     "CORE_LCDATE" => array(
-        "val" => "dmy : french notation use only for compatibility with old version", # default is dmy for update , it is reset by info.xml when install
+        "val" => "iso : standard format 8601", # Set at install time by info.xml
         "descr" => N_("database record date style") ,
         "user" => "N",
         "style" => "N",
-        "kind" => "static",
+        "kind" => "readonly",
         "global" => "Y"
     ) ,
     "CORE_SQLSTRICT" => array(

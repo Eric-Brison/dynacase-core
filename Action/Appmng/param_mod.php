@@ -51,7 +51,7 @@ function param_mod(&$action)
         if (($pdef->kind == "password") && ($val == '*****')) {
             $action->lay->set("textModify", _("param not changed"));
         } else {
-            if ($ParamCour->val == $val) {
+            if ($ParamCour->val == $val || $pdef == 'static' || $pdef == 'readonly') {
                 $action->lay->set("textModify", _("param not changed"));
             } else {
                 $ParamCour->val = $val;
