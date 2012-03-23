@@ -132,7 +132,7 @@ function AttrToPhp($dbaccess, $tdoc)
                             
                             }*/
                             $method = $reg[1];
-                            $v->link = "%S%app=FDL&action=FDL_METHOD&id=%I%&method=$method";
+                            $v->link = "%S%app=FDL&action=FDL_METHOD&id=%I%&method=" . urlencode($v->link);
                         }
                     }
                     $tmenu[strtolower($v->id) ] = array(

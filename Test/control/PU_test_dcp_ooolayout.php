@@ -61,7 +61,7 @@ class TestOooLayout extends TestCaseDcpDocument
         $this->assertTrue($instance->isAlive() , "document $lname is not alive");
         foreach ($templates as $template) {
             $file = $instance->viewDoc("DCPTEST:" . $template . ":B");
-            $this->assertTrue(file_exists($file) , "fail layout $template");
+            $this->assertTrue(file_exists($file) , "fail layout $template : $file");
             // print "ooffice $file\n";
             $this->saveFileResult($file, sprintf("%s_%s.odt", str_replace('.odt', '', $template) , $lname));
         }

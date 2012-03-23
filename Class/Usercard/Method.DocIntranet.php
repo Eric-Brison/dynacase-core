@@ -125,7 +125,7 @@ class _IGROUPUSER extends Doc
     }
     /**
      * interface to affect group for an user
-     *
+     * @templateController
      * @param string $target window target name for hyperlink destination
      * @param bool $ulink if false hyperlink are not generated
      * @param bool $abstract if true only abstract attribute are generated

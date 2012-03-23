@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 17:51+0100\n"
+"POT-Creation-Date: 2012-03-23 18:31+0100\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2465,6 +2465,14 @@ msgstr ""
 msgid "Message to indicate invalid configuration"
 msgstr ""
 
+#, c-format
+msgid "Method %s::%s() not contains %s tag comment"
+msgstr ""
+
+#, c-format
+msgid "Method %s::%s() not contains @templateController tag comment"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "Method [%s] not exists"
 msgstr "Import"
@@ -2784,10 +2792,6 @@ msgstr ""
 
 #, fuzzy
 msgid "Permissions"
-msgstr "Organisation"
-
-#, fuzzy
-msgid "Person"
 msgstr "Organisation"
 
 #, fuzzy, c-format
@@ -6816,11 +6820,19 @@ msgid "method %s applied to document %s #%d"
 msgstr ""
 
 #, c-format
+msgid "method %s executed"
+msgstr ""
+
+#, c-format
 msgid "method %s executed for %s "
 msgstr ""
 
 #, c-format
 msgid "method %s not defined"
+msgstr ""
+
+#, c-format
+msgid "method %s not executed : %s"
 msgstr ""
 
 #, fuzzy, c-format
@@ -7366,9 +7378,6 @@ msgstr ""
 msgid "no zone specified"
 msgstr ""
 
-msgid "nomail"
-msgstr "No mail account"
-
 msgid "none"
 msgstr "None"
 
@@ -7640,10 +7649,6 @@ msgstr "Permission"
 
 msgid "phone of our society"
 msgstr ""
-
-#, fuzzy
-msgid "phones"
-msgstr "Phone"
 
 #, c-format
 msgid "php file %s needed for request not found"
@@ -9508,6 +9513,10 @@ msgid "{left} title include {right}"
 msgstr ""
 
 #, fuzzy
+#~ msgid "Person"
+#~ msgstr "Organisation"
+
+#, fuzzy
 #~ msgid "Reset"
 #~ msgstr "Created by"
 
@@ -9685,11 +9694,18 @@ msgstr ""
 #~ msgid "no mail"
 #~ msgstr "Email"
 
+#~ msgid "nomail"
+#~ msgstr "No mail account"
+
 #~ msgid "othergroup"
 #~ msgstr "Others"
 
 #~ msgid "password"
 #~ msgstr "Password"
+
+#, fuzzy
+#~ msgid "phones"
+#~ msgstr "Phone"
 
 #, fuzzy
 #~ msgid "pre-import:%s"

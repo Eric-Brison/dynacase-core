@@ -130,6 +130,22 @@ class ErrorCodeATTR
      */
     const ATTR0902 = 'isNeeded cannot be set for  attribute included in array "%s"';
     /**
+     * syntaxt error in method describe in link
+     */
+    const ATTR1000 = 'method syntax error in link "%s" for attribute "%s":%s';
+    /**
+     * call method in link property must be defined in file method or in another class if precised
+     * @see ATTR1260
+     * @see ATTR1261
+     * @see ATTR1262
+     * @see ATTR1263
+     */
+    const ATTR1001 = 'link method error in "%s" family : %s';
+    /**
+     * Method use in link must have @apiExpose tag comment in their description
+     */
+    const ATTR1002 = 'method "%s" in attribute link "%s" is not an exposable method';
+    /**
      * The input help file must exists before declared it
      */
     const ATTR1100 = 'the input help file "%s" not exists, in attribute "%s"';

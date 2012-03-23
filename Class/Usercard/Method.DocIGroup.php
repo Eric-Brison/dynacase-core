@@ -113,6 +113,7 @@ class _IGROUP extends _GROUP
     /**
      * recompute only parent group
      * call {@see ComputeGroup()}
+     * @apiExpose
      *
      * @return string error message, if no error empty string
      */

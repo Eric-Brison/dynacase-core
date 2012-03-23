@@ -24,7 +24,13 @@ class _USERBOOK extends Doc
     */
     public $faddbook_card = "USERCARD:VIEWPERSON:T";
     public $faddbook_resume = "USERCARD:FADDBOOK_RESUME:U";
-    
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     * @return mixed
+     */
     function faddbook_resume($target = "finfo", $ulink = true, $abstract = false)
     {
         
@@ -70,7 +76,12 @@ class _USERBOOK extends Doc
         
         return;
     }
-    
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
     function faddbook_card($target = "finfo", $ulink = true, $abstract = false)
     {
         // list of attributes displayed directly in layout
@@ -141,7 +152,12 @@ class _USERBOOK extends Doc
         }
         $this->lay->setBlockData("TABS", $ltabs);
     }
-    
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
     function viewperson($target = "finfo", $ulink = true, $abstract = false)
     {
         $this->viewdefaultcard($target, $ulink, $abstract);

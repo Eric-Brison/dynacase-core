@@ -30,7 +30,12 @@ class _IMAGE extends Doc
     var $cviews = array(
         "FDL:VIEWIMGCARD:T"
     );
-    // -----------------------------------
+    /**
+     * @templateController default view image fit to window
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
     function viewimgcard($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------

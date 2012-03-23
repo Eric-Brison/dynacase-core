@@ -37,7 +37,7 @@ class _GROUP extends Dir
     }
     /**
      * recompute only parent group
-     *
+     * @apiExpose
      *
      * @return string error message, if no error empty string
      */

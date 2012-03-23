@@ -28,6 +28,13 @@ class _POSTIT extends Doc
     var $defaultview = "FDL:VIEWPOSTIT:T";
     var $defaultedit = "FDL:EDITPOSTIT:T";
     // -----------------------------------
+    
+    /**
+     * @templateController special view postit
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
     function viewpostit($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
@@ -55,6 +62,10 @@ class _POSTIT extends Doc
         // Out
         $this->lay->SetBlockData("TEXT", $tlaycomment);
     }
+    /**
+     *
+     * @templateController special view postit
+     */
     function editpostit()
     {
         $this->editattr();

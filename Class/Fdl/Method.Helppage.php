@@ -162,7 +162,7 @@ class _HELPPAGE extends Doc
         return $helps;
     }
     /**
-     *
+     * @templateController special edit help page
      */
     public function edithelppage()
     {
@@ -274,6 +274,7 @@ class _HELPPAGE extends Doc
     }
     /**
      *
+     * @templateController for paper
      * @global <type> $action
      * @param <type> $target
      * @param <type> $ulink
@@ -285,6 +286,7 @@ class _HELPPAGE extends Doc
     }
     /**
      *
+     * @templateController special view help page
      * @global <type> $action
      * @param <type> $target
      * @param <type> $ulink

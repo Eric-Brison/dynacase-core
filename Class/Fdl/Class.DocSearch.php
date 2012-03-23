@@ -367,6 +367,10 @@ class DocSearch extends PDocSearch
         if ($err == "") $err = $this->getSqlParseError();
         return $err;
     }
+    /**
+     * @templateController
+     * @return string
+     */
     function editsearch()
     {
         global $action;
@@ -426,7 +430,10 @@ class DocSearch extends PDocSearch
         
         $this->editattr();
     }
-    
+    /**
+     * @templateController
+     * @return string
+     */
     function editspeedsearch()
     {
         return $this->editsearch();

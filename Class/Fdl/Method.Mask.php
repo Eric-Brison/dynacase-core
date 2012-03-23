@@ -117,8 +117,7 @@ class _MASK extends Doc
             if ($tvisid[$k] == "-") $vis = $attr->visibility;
             else $vis = $tvisid[$k];
             
-            $tvisibilities[$v] = ComputeVisibility($vis, $tvisibilities[$fvisid],
-                $attr->fieldSet->fieldSet ? $attr->fieldSet->fieldSet->mvisibility : '');
+            $tvisibilities[$v] = ComputeVisibility($vis, $tvisibilities[$fvisid], $attr->fieldSet->fieldSet ? $attr->fieldSet->fieldSet->mvisibility : '');
         }
         return $tvisibilities;
     }
@@ -133,7 +132,12 @@ class _MASK extends Doc
         }
         return $tvisibilities;
     }
-    
+    /**
+     * @templateController view attributes differences
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
     function viewmask($target = "_self", $ulink = true, $abstract = false)
     {
         
@@ -214,7 +218,9 @@ class _MASK extends Doc
         ));
         $this->lay->SetBlockData("MASK", $tmask);
     }
-    
+    /**
+     * @templateController special edition for mask
+     */
     function editmask()
     {
         global $action;

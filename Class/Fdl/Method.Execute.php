@@ -27,6 +27,7 @@ class _EXEC extends Doc
     private $execuserid;
     /**
      * execute the action describe in the object
+     * @apiExpose
      * @return int shell status (0 means OK).
      */
     function bgExecute($comment = "")
@@ -47,8 +48,13 @@ class _EXEC extends Doc
             else AddWarningMsg(sprintf(_("Error : Process %s [%d]: status %d") , $this->title, $this->id, $status));
             return $status;
         }
+        return -2;
     }
-    
+    /**
+     * cancel next execution
+     * @apiExpose
+     * @return string
+     */
     function resetExecute()
     {
         $this->deleteValue("exec_status");
@@ -108,15 +114,15 @@ class _EXEC extends Doc
     }
     /**
      * return the next date to execute process
-     * @return date
+     * @return string date
      */
     function getNextExecDate()
     {
         $ndh = $this->getValue("exec_handnextdate");
         if ($ndh == "") {
-            $nday = $this->getValue("exec_periodday", 0);
-            $nhour = $this->getValue("exec_periodhour", 0);
-            $nmin = $this->getValue("exec_periodmin", 0);
+            $nday = intval($this->getValue("exec_periodday", 0));
+            $nhour = intval($this->getValue("exec_periodhour", 0));
+            $nmin = intval($this->getValue("exec_periodmin", 0));
             if (($nday + $nhour + $nmin) > 0) {
                 $ndh = $this->getDate($nday, $nhour, $nmin);
             } else {
@@ -135,6 +141,7 @@ class _EXEC extends Doc
             
             return $ndh;
         }
+        return '';
     }
     
     function isLatestExec()

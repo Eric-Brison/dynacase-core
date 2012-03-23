@@ -25,7 +25,9 @@ class _MAIL extends Doc
      * @end-method-ignore
     */
     var $defaultedit = "FDL:EDITMAILDOC";
-    
+    /**
+     * @templateController
+     */
     function editmaildoc()
     {
         $this->editattr();

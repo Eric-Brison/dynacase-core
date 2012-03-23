@@ -2252,7 +2252,7 @@ create unique index i_docir on doc(initid, revision);";
     /** return all the attributes object for popup menu
      * the attribute can be defined in fathers
      * @param boolean $viewhidden set to true if need all defined menu (hidden also)
-     * @return BasicAttribute[]
+     * @return MenuAttribute[]
      */
     function getMenuAttributes($viewhidden = false)
     {
@@ -4944,7 +4944,11 @@ create unique index i_docir on doc(initid, revision);";
                             $urllink.= "%"; // %% is %
                             
                         } else {
-                            if ($link[$i + 1] == "%") {
+                            if (preg_match('/[0-9A-F][0-9A-F]/', $link[$i] . $link[$i + 1])) {
+                                // hexa code
+                                $urllink.= '%' . $link[$i] . $link[$i + 1];
+                                $i++;
+                            } elseif ($link[$i + 1] == "%") {
                                 // special link
                                 switch ($link[$i]) {
                                     case "B": // baseurl
@@ -5591,10 +5595,16 @@ create unique index i_docir on doc(initid, revision);";
             
             $this->lay->set("_readonly", ($this->Control('edit') != ""));
             $method = strtok(strtolower($reg['layout']) , '.');
-            
             if (method_exists($this, $method)) {
                 try {
-                    $this->$method($target, $ulink, $abstract);
+                    $refMeth = new ReflectionMethod(get_class($this) , $method);
+                    if (preg_match('/@templateController\b/', $refMeth->getDocComment())) {
+                        $this->$method($target, $ulink, $abstract);
+                    } else {
+                        $err = sprintf(_("Method %s::%s() not contains @templateController tag comment") , $refMeth->getDeclaringClass()->getName() , $refMeth->getName());
+                        
+                        return $err;
+                    }
                 }
                 catch(Exception $e) {
                     if ((!file_exists($this->lay->file) && (!$this->lay->template))) {
@@ -5643,6 +5653,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * default construct layout for view card containt
          *
+         * @templateController
          * @param string $target window target name for hyperlink destination
          * @param bool $ulink if false hyperlink are not generated
          * @param bool $abstract if true only abstract attribute are generated
@@ -5658,6 +5669,7 @@ create unique index i_docir on doc(initid, revision);";
         /**
          * construct layout for view card containt
          *
+         * @templateController
          * @param string $target window target name for hyperlink destination
          * @param bool $ulink if false hyperlink are not generated
          * @param bool $abstract if true only abstract attribute are generated
@@ -6030,6 +6042,7 @@ create unique index i_docir on doc(initid, revision);";
                 return strcasecmp($a["comment"] . $a["uname"], $b["comment"] . $b["uname"]);
             }
             /**
+             * @templateController
              * write layout for properties view
              */
             function viewproperties($target = "finfo", $ulink = true, $abstract = true)
@@ -6142,6 +6155,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lay->Set("Timers", (count($tms) > 0));
             }
             /**
+             * @templateController
              * write layout for abstract view
              */
             function viewabstractcard($target = "finfo", $ulink = true, $abstract = true)
@@ -6306,6 +6320,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * view only option values
+             * @templateController
              * @param int $dirid   directory to place doc if new doc
              * @param bool $onlyopt if true only optionnal attributes are displayed
              */
@@ -6315,6 +6330,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * edit only option
+             * @templateController
              * @param int $dirid   directory to place doc if new doc
              * @param bool $onlyopt if true only optionnal attributes are displayed
              */
@@ -6324,6 +6340,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * value for edit interface
+             * @templateController
              * @param bool $onlyopt if true only optionnal attributes are displayed
              */
             function editbodycard($target = "_self", $ulink = true, $abstract = false, $onlyopt = false)

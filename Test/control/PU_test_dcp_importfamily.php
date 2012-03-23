@@ -238,7 +238,11 @@ class TestImportFamily extends TestCaseDcpDocument
                     "ATTR1402",
                     "DFLT0004",
                     "DFLT0005",
-                    "tst_notfound"
+                    "tst_notfound",
+                    "badCall",
+                    "ATTR1001",
+                    "ATTR1002",
+                    "goodCompute1"
                 )
             ) ,
             // method control in the end

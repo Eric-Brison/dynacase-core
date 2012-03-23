@@ -735,19 +735,23 @@ class _IUSER extends _USER
     }
     /**
      * Reset login failure count
+     * @apiExpose
      */
     function resetLoginFailure()
     {
         if ($this->getValue("us_whatid") == 1) return ""; // it makes non sense for admin
-        if (intval($this->getValue("us_loginfailure")) > 0) {
-            $err = $this->setValue("us_loginfailure", 0);
-            if ($err == "") {
-                $err = $this->modify(false, array(
-                    "us_loginfailure"
-                ) , false);
+        $err = $this->canEdit();
+        if ($err == '') {
+            if (intval($this->getValue("us_loginfailure")) > 0) {
+                $err = $this->setValue("us_loginfailure", 0);
+                if ($err == "") {
+                    $err = $this->modify(false, array(
+                        "us_loginfailure"
+                    ) , false);
+                }
             }
         }
-        return "";
+        return $err;
     }
     /**
      * Security menus visibilities
@@ -773,7 +777,8 @@ class _IUSER extends _USER
         }
         return MENU_ACTIVE;
     }
-    function menuActivateAccount() {
+    function menuActivateAccount()
+    {
         // Do not show the menu if the user has no FUSERS privileges
         global $action;
         if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
@@ -793,7 +798,8 @@ class _IUSER extends _USER
         }
         return MENU_ACTIVE;
     }
-    function menuDeactivateAccount() {
+    function menuDeactivateAccount()
+    {
         // Do not show the menu if the user has no FUSERS privileges
         global $action;
         if (!$action->parent->hasPermission('FUSERS', 'FUSERS')) {
@@ -821,6 +827,10 @@ class _IUSER extends _USER
         if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
         return ($this->getValue("us_status", 'A') == 'A');
     }
+    /**
+     * @apiExpose
+     * @return string
+     */
     function activateAccount()
     {
         // Check that the user has FUSERS privileges
@@ -845,6 +855,10 @@ class _IUSER extends _USER
         if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
         return ($this->getValue("us_status", 'A') != 'A');
     }
+    /**
+     * @apiExpose
+     * @return string
+     */
     function deactivateAccount()
     {
         // Check that the user has FUSERS privileges
