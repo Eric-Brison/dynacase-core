@@ -70,7 +70,7 @@ function generic_edit(Action & $action)
             $cdoc = new_Doc($dbaccess, $classid);
             if ($cdoc->control('create') != "") $action->exitError(sprintf(_("no privilege to create this kind (%s) of document") , $cdoc->gettitle()));
             if ($cdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $cdoc->gettitle()));
-            $action->lay->Set("title", sprintf(_("creation %s") , $cdoc->gettitle()));
+            $action->lay->Set("title", mb_convert_case(sprintf(_("creation %s") , $cdoc->getHTMLTitle()),  MB_CASE_TITLE, 'UTF-8'));
         } else {
             $action->lay->Set("title", _("new card"));
         }
@@ -176,7 +176,8 @@ function generic_edit(Action & $action)
         $action->lay->Set("wid", ($doc->wid > 0) ? $doc->wid : $doc->state);
     }
     $action->lay->Set("version", $doc->version);
-    
+
+    $action->lay->Set("initid", ($doc->initid != '') ? $doc->initid : 0);
     $action->lay->Set("id", $docid);
     $action->lay->Set("dirid", $dirid);
     
