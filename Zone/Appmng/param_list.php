@@ -102,7 +102,7 @@ function param_list(&$action)
                     "&quot;"
                 ) , $v["val"]);
                 
-                $tincparam[$k]["colorstatic"] = ($v["kind"] == "static") ? "#666666" : "";
+                $tincparam[$k]["colorstatic"] = ($v["kind"] == "static" || $v["kind"] == "readonly") ? "#666666" : "";
                 // force type user if user mode
                 if ($userid > 0) $tincparam[$k]["type"] = PARAM_USER . $userid;
                 else if ($styleid != "") $tincparam[$k]["type"] = PARAM_STYLE . $styleid;

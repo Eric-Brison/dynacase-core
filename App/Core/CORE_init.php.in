@@ -90,7 +90,7 @@ $app_const = array(
         "descr" => N_("database record date style") ,
         "user" => "N",
         "style" => "N",
-        "kind" => "static",
+        "kind" => "readonly",
         "global" => "Y"
     ) ,
     

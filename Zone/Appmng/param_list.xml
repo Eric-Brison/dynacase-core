@@ -2,12 +2,12 @@
   $Id:  $
 -->
 <div id="dedit" style="display:none">
-<form name="fedit" target="saveparam" id="fedit" method="POST"  action="[CORE_BASEURL]app=APPMNG&action=[ACTIONMOD]">
-<input type="hidden" name="appid" >
-<input type="hidden" name="atype" >
-<input type="hidden" name="aname" >
-<input type="hidden" name="direct" value="yes" >
-<input type="text" size="35" name="val" id="val" value="" onblur="if (this.value != this.getAttribute('originvalue')) { submiting=true;this.form.submit();}">     
+<form name="fedit" target="saveparam" id="fedit" method="POST"  action="[CORE_BASEURL]app=APPMNG&amp;action=[ACTIONMOD]">
+<input type="hidden" name="appid" />
+<input type="hidden" name="atype" />
+<input type="hidden" name="aname" />
+<input type="hidden" name="direct" value="yes" />
+<input type="text" size="35" name="val" id="val" value="" onblur="if (this.value != this.getAttribute('originvalue')) { submiting=true;this.form.submit();}" />
 </form>
 </div>
 
@@ -33,7 +33,7 @@ function pickOption(value) {
 var editedParam='';
 function movediv(th,Aname,Atype,Appid,Kind,Value) {
   if (submiting) return; // wait return of submit
-  if (Kind == 'static') {
+  if (Kind == 'static' || Kind == 'readonly') {
     alert('[TEXT:unmodifiable parameter]');
     return;
   } 
@@ -116,7 +116,7 @@ TD.highlight {
   background-color: [CORE_BGCOLORHIGH];
   cursor:pointer;
 }
-TD.static {  
+TD.static {
   cursor:not-allowed;
 }
 SPAN.changed {
@@ -129,7 +129,7 @@ SPAN.changed {
 <!-- /TABLEPAGING -->
 
 <!-- TABLEHEAD -->
-<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0" /></td> </tr>
 
 <tr>
   <td width="40" class="CORETblCell">&nbsp;</td>
@@ -139,20 +139,20 @@ SPAN.changed {
 
 <!-- /TABLEHEAD -->
 
-<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0" /></td> </tr>
 [BLOCK APPLI] 
 <tr title="[appname] : [appdesc]" id="[appname]" style="cursor:pointer;" onclick="switchVisibility('[appname]')" class="CORETblCellAltern">
-<td colspan="2" width="15%"><img border="0" width="25" src="[appicon]">[appdesc]</td><td align="right"><!-- [appname] --></td></tr>
+<td colspan="2" width="15%"><img border="0" width="25" src="[appicon]" />[appdesc]</td><td align="right"><!-- [appname] --></td></tr>
 <tr><td colspan="3" ><table style="display:none" id="P[appname]" width="100%">
 <!-- TABLEBODY -->
 [BLOCK [PARAM]]
 <tr title="[tooltip]" >
   <td width="5%"  >       
-       <a href="[CORE_STANDURL]&app=APPMNG&action=[ACTIONDEL]&id=[name]&appid=[appid]&atype=[type]" onClick="return confirm('[TEXT:delconfirmparam] [name]')"><img class="[classtype]" border=0 src="[IMG:delete.gif]" title="[TEXT:delete]"></a> </td>
+       <a href="[CORE_STANDURL]&amp;app=APPMNG&amp;action=[ACTIONDEL]&amp;id=[name]&amp;appid=[appid]&amp;atype=[type]" onClick="return confirm('[TEXT:delconfirmparam] [name]')"><img class="[classtype]" border="0" src="[IMG:delete.gif]" title="[TEXT:delete]" /></a> </td>
   <td  width="40%" class="[classtype]"><span class="CORETbl" style="color:[colorstatic]">[descr]</span></td>
   <td  width="55%"  id="v[name]" 
-       class="[classtype]";
-       onmouseover="if ('[kind]'!='static') this.className='highlight'; else this.className='static'"
+       class="[classtype]"
+       onmouseover="if ('[kind]'!='static' &amp;&amp; '[kind]'!='readonly') this.className='highlight'; else this.className='static'"
        onmouseout="this.className='[classtype]'" avalue="[sval]"
        onclick="movediv(this,'[name]','[type]','[appid]','[kind]',this.getAttribute('avalue'))"><span style="color:[colorstatic]">[val]</span></td>
 </tr>
@@ -161,7 +161,7 @@ SPAN.changed {
 [ENDBLOCK APPLI]
 <!-- /TABLEBODY -->
 
-<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0"></td> </tr>
+<tr><td colspan="3" class="CORETblHeadCell"><img src="[IMG:1x1.png]" border="0" /></td> </tr>
 
 
 
