@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-22 17:51+0100\n"
-"PO-Revision-Date: 2012-03-22 18:11+0100\n"
+"POT-Creation-Date: 2012-03-23 18:31+0100\n"
+"PO-Revision-Date: 2012-03-23 18:45+0100\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -899,10 +899,12 @@ msgstr ""
 "Ne peut faire cette action. La fonction de la fenêtre parent est introuvable"
 
 msgid "Cannot edit access. No application parameter."
-msgstr "Accès aux privilèges impossible : identifiant de l'application non définit."
+msgstr ""
+"Accès aux privilèges impossible : identifiant de l'application non définit."
 
 msgid "Cannot edit access. No user parameter."
-msgstr "Accès aux privilèges impossible : identifiant de l'utilisateur non définit."
+msgstr ""
+"Accès aux privilèges impossible : identifiant de l'utilisateur non définit."
 
 #, c-format
 msgid "Cannot find help function %s"
@@ -2355,6 +2357,14 @@ msgid "Message to indicate invalid configuration"
 msgstr ""
 
 #, c-format
+msgid "Method %s::%s() not contains %s tag comment"
+msgstr "La méthode %s::%s ne contient pas le code \"%s\" dans le commentaire"
+
+#, c-format
+msgid "Method %s::%s() not contains @templateController tag comment"
+msgstr "La méthode %s::%s() ne contient pas @templateController dans son commentaire "
+
+#, c-format
 msgid "Method [%s] not exists"
 msgstr "la méthode [%s] n'existe pas"
 
@@ -2653,9 +2663,6 @@ msgstr "Mot de passe"
 msgid "Permissions"
 msgstr "Droits"
 
-msgid "Person"
-msgstr "Personne"
-
 #, c-format
 msgid "Personal profile for %s %s"
 msgstr "Profil personnel de %s %s"
@@ -2892,7 +2899,7 @@ msgid "Revise"
 msgstr "Réviser"
 
 msgid "Role"
-msgstr ""
+msgstr "Rôle"
 
 #, c-format
 msgid "Role \"%s\""
@@ -4056,10 +4063,10 @@ msgstr "Description"
 
 #, c-format
 msgid "application %s not defined"
-msgstr ""
+msgstr "l'application %s n'est pas définie"
 
 msgid "application name not set"
-msgstr ""
+msgstr "Le nom de l'application n'est pas renseigné"
 
 msgid "application not initialized"
 msgstr "application non initialisée"
@@ -4190,7 +4197,7 @@ msgstr "l'identifiant de l'attribut est nul"
 
 #, c-format
 msgid "attribute unknow %s"
-msgstr ""
+msgstr "attribut %s inconnu"
 
 msgid "attributes"
 msgstr "attributs"
@@ -6045,7 +6052,7 @@ msgid "group %d does not exist"
 msgstr "le groupe n°%d n'existe pas"
 
 msgid "group cannot be revived"
-msgstr ""
+msgstr "Un groupe ne peut être restauré"
 
 msgid "group document request"
 msgstr "requête groupée de documents"
@@ -6430,11 +6437,19 @@ msgid "method %s applied to document %s #%d"
 msgstr "méthode %s appliqué au document %s n°%d"
 
 #, c-format
+msgid "method %s executed"
+msgstr ""
+
+#, c-format
 msgid "method %s executed for %s "
 msgstr "méthode %s exécuté pour %s"
 
 #, c-format
 msgid "method %s not defined"
+msgstr ""
+
+#, c-format
+msgid "method %s not executed : %s"
 msgstr ""
 
 #, c-format
@@ -6938,9 +6953,6 @@ msgstr "pas de cycle de vie pour ce document"
 msgid "no zone specified"
 msgstr "pas de zone spécifiée"
 
-msgid "nomail"
-msgstr "pas d'email"
-
 msgid "none"
 msgstr "Aucun"
 
@@ -7190,9 +7202,6 @@ msgstr "Droits"
 
 msgid "phone of our society"
 msgstr "téléphone de votre société"
-
-msgid "phones"
-msgstr "Téléphones"
 
 #, c-format
 msgid "php file %s needed for request not found"
@@ -8994,6 +9003,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Only owner of document can restore it"
 #~ msgstr "Seul le propriétaire peut restaurer un document"
 
+#~ msgid "Person"
+#~ msgstr "Personne"
+
 #~ msgid "Reset"
 #~ msgstr "Réinitialisation"
 
@@ -9242,11 +9254,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "no trash image"
 #~ msgstr "image de la poubelle non trouvée"
 
+#~ msgid "nomail"
+#~ msgstr "pas d'email"
+
 #~ msgid "othergroup"
 #~ msgstr "Autres"
 
 #~ msgid "password"
 #~ msgstr "Mot de passe"
+
+#~ msgid "phones"
+#~ msgstr "Téléphones"
 
 #~ msgid "pre-import:%s"
 #~ msgstr "pré-Import:%s"

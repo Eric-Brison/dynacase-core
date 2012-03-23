@@ -102,10 +102,12 @@ function redoperfounit() {
 				contentConfig:{slice:25}
 			});
 			console.log(d);
+            if (d) {
 			var ld=d.getStoredContent();
 			date=new Date();
 			console.log(ld.count(),ld.content.length,d);
 			displayDocumentTime(d._data.debuginfo,(date.getTime() - now)/1000 ,d._data.evalDebugTime,'resultcontent');
+            }
 		}
 	}
 	function searchDocuments(criteria) {
@@ -116,6 +118,7 @@ function redoperfounit() {
 			now=date.getTime();
 			
 			var d = C.getSearchDocument();
+            if (d) {
 			console.log(d);
 			var ld=d.search(criteria[i]);
 			if (!ld) alert(C.getLastErrorMessage());
@@ -124,6 +127,7 @@ function redoperfounit() {
 			console.log(ld.count,ld.content.length);
 			displayDocumentTime(ld.debuginfo,(new Date().getTime() - now)/1000 ,ld.evalDebugTime,'resultsearch');
 			}
+            }
 		}
 	}
 
@@ -145,8 +149,8 @@ console.log('progress visible');
         document.getElementById('resultsearch').innerHTML='';
         document.getElementById('resultcontent').innerHTML='';
         document.getElementById('result').innerHTML='';
-		getDocuments( [ 9, 10, 11, 12, 13 , 501, 501, 502, 503, 504, 505, 506, 507]);
-		getContentDocuments( [ 9, 10, 11, 12, 13 ]);
+		getDocuments( [ 9, 11, 12, 13 , 14, 501, 501, 502, 503, 504, 505, 506, 507]);
+		getContentDocuments( [ 9, 121, 11, 12, 13 ]);
 		searchDocuments([{
 			key : 'cheval',
 			withHighlight : false,
