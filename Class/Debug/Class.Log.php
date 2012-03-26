@@ -182,6 +182,10 @@ class Log
                 openlog("{$appf}", 0, $facility);
                 syslog($pri, "[{$addr}] " . $str);
                 closelog();
+                if ($sta == "E") {
+                    error_log($str); // use apache syslog also
+                    
+                }
             }
         }
     }
