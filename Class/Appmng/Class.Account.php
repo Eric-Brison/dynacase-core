@@ -112,14 +112,14 @@ create index users_idx2 on users(lastname);
 CREATE UNIQUE INDEX users_login on users (login);
 create sequence seq_id_users start 10;";
     /**
-     * affect user from login name
+     * affect account from login name
      * @param string $login login
      * @return boolean true if ok
      */
     function setLoginName($login)
     {
         $login = trim(mb_strtolower($login));
-        $query = new QueryDb($this->dbaccess, "User");
+        $query = new QueryDb($this->dbaccess, "Account");
         $query->AddQuery("login='" . pg_escape_string($login) . "'");
         
         $list = $query->Query(0, 0, "TABLE");
@@ -131,7 +131,7 @@ create sequence seq_id_users start 10;";
         return false;
     }
     /**
-     * affect user from its login
+     * affect account from its login
      *
      * @param string $login login
      * @deprecated
@@ -142,14 +142,14 @@ create sequence seq_id_users start 10;";
         return $this->setLoginName($login);
     }
     /**
-     * affect user from its document id
+     * affect account from its document id
      *
      * @param int $fid
      * @return boolean true if ok
      */
     function setFid($fid)
     {
-        $query = new QueryDb($this->dbaccess, "User");
+        $query = new QueryDb($this->dbaccess, "Account");
         $query->AddQuery(sprintf("fid = %d", $fid));
         $list = $query->Query(0, 0, "TABLE");
         if ($query->nb != 0) {
@@ -257,7 +257,7 @@ create sequence seq_id_users start 10;";
      */
     function CheckLogin($login, $unused, $whatid)
     {
-        $query = new QueryDb($this->dbaccess, "User");
+        $query = new QueryDb($this->dbaccess, "Account");
         
         $query->basic_elem->sup_where = array(
             "login='" . pg_escape_string($login) . "'"
@@ -576,7 +576,7 @@ union
      */
     public static function getUserList($qtype = "LIST", $start = 0, $slice = 0, $filteruser = '')
     {
-        $query = new QueryDb(getDbAccess() , "User");
+        $query = new QueryDb(getDbAccess() , "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='U')");
         if ($filteruser) $query->AddQuery("(login ~* '" . pg_escape_string($filteruser) . "')" . " or " . "(lastname ~* '" . pg_escape_string($filteruser) . "')");
@@ -589,7 +589,7 @@ union
      */
     public static function getGroupList($qtype = "LIST")
     {
-        $query = new QueryDb(getDbAccess() , "User");
+        $query = new QueryDb(getDbAccess() , "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='G')");
         $l = $query->Query(0, 0, $qtype);
@@ -602,7 +602,7 @@ union
      */
     public static function getRoleList($qtype = "LIST")
     {
-        $query = new QueryDb(getDbAccess() , "User");
+        $query = new QueryDb(getDbAccess() , "Account");
         $query->order_by = "lastname";
         $query->AddQuery("(accountType='R')");
         $l = $query->Query(0, 0, $qtype);
@@ -615,7 +615,7 @@ union
      */
     public static function getUserAndGroupList($qtype = "LIST")
     {
-        $query = new QueryDb(getDbAccess() , "User");
+        $query = new QueryDb(getDbAccess() , "Account");
         $query->AddQuery("(accountType='G' or accountType='U')");
         
         $query->order_by = "isgroup desc, lastname";
@@ -643,11 +643,11 @@ union
     /**
      * for group :: get All user & groups ids in all descendant(recursive);
      * @param int $id group identificator
-     * @return array of user array
+     * @return array of account array
      */
     function getRUsersList($id, $r = array())
     {
-        $query = new QueryDb($this->dbaccess, "User");
+        $query = new QueryDb($this->dbaccess, "Account");
         $list = $query->Query(0, 0, "TABLE", "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup=$id ;");
         
         $uid = array();
@@ -673,7 +673,7 @@ union
      */
     function getUsersGroupList($gid, $onlygroup = false)
     {
-        $query = new QueryDb($this->dbaccess, "User");
+        $query = new QueryDb($this->dbaccess, "Account");
         $optgroup = '';
         if ($onlygroup) $optgroup = " and users.isgroup='Y' ";
         
@@ -825,7 +825,7 @@ union
      */
     function getGroupUserList($qtype = "LIST", $withgroup = false, $limit = "all")
     {
-        $query = new QueryDb($this->dbaccess, "User");
+        $query = new QueryDb($this->dbaccess, "Account");
         $query->order_by = "accounttype desc, lastname";
         $selgroup = "and (accounttype='U')";
         if ($withgroup) $selgroup = "";

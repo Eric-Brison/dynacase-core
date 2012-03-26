@@ -260,15 +260,6 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     private function _initAllGroup()
     {
         if (!isset($this->allgroups)) {
-            /* alone groups : not needed
-            $query = new QueryDb($this->dbaccess, "User");
-            $query->AddQuery("isgroup='Y'");
-            $list= $query->Query(0,0,"TABLE");
-            
-            foreach ($list as $v) {
-            $this->allgroups[$v["id"]]="";
-            }
-            */
             $query = new QueryDb($this->dbaccess, "Group");
             $list = $query->Query(0, 0, "TABLE", "select * from groups where iduser in (select id from users where accounttype='G')");
             if ($list) {

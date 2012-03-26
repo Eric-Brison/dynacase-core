@@ -34,10 +34,10 @@ function fusers_list(Action & $action)
     
     $user = new Account();
     //$ugroup=$user->GetGroupsId();
-    $q2 = new queryDb("", "User");
+    $q2 = new queryDb("", "Account");
     $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser  and users.accounttype='G'");
     // top group
-    $q2 = new queryDb("", "User");
+    $q2 = new queryDb("", "Account");
     $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where accounttype='G' and id not in (select iduser from groups, users u where groups.idgroup = u.id and u.accounttype='G')");
     
     if ($groups) {

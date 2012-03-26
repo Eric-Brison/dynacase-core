@@ -32,7 +32,7 @@ if ($dbaccess == "") {
 $whatid = GetHttpVars("whatid", ""); // document
 $fbar = GetHttpVars("bar"); // for progress bar
 $onlygroup = (GetHttpVars("onlygroup") != ""); // for progress bar
-$query = new QueryDb("", "User");
+$query = new QueryDb("", "Account");
 
 if ($whatid > 0) {
     $query->AddQuery("id=$whatid");

@@ -81,7 +81,7 @@ function freedom_modaccess(Action & $action)
         foreach ($acls as $userid => $aclon) {
             $tuid[] = $userid;
         }
-        $q = new QueryDb("", "User");
+        $q = new QueryDb("", "Account");
         $q->AddQuery(getsqlcond($tuid, "id"));
         $l = $q->Query(0, 0, "TABLE");
         
