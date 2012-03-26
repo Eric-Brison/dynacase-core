@@ -751,6 +751,14 @@ create unique index i_docir on doc(initid, revision);";
      */
     private $_setValueCompleteArrayRow = true;
     /**
+     * display document main properties as string
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s "%s" [#%d]', $this->fromname, $this->getTitle() , $this->id);
+    }
+    /**
      * Increment sequence of family and call to {@see PostCreated()}
      *
      *
@@ -5601,8 +5609,10 @@ create unique index i_docir on doc(initid, revision);";
                     if (preg_match('/@templateController\b/', $refMeth->getDocComment())) {
                         $this->$method($target, $ulink, $abstract);
                     } else {
-                        $err = sprintf(_("Method %s::%s() not contains @templateController tag comment") , $refMeth->getDeclaringClass()->getName() , $refMeth->getName());
-                        
+                        global $action;
+                        $syserr = ErrorCode::getError("DOC1101", $refMeth->getDeclaringClass()->getName() , $refMeth->getName() , $this);
+                        $action->log->error($syserr);
+                        $err = sprintf(_("Layout \"%s\" : Controller not allowed") , $layout);
                         return $err;
                     }
                 }
