@@ -160,6 +160,10 @@ create sequence seq_id_users start 10;";
     function preInsert()
     {
         $err = '';
+        if ((!$this->login) && $this->accounttype == 'R') {
+            // compute auto role reference
+            $this->login = uniqid('role');
+        }
         if ($this->setloginName($this->login)) return _("this login exists");
         if ($this->login == "") return _("login must not be empty");
         if ($this->id == "") {
@@ -222,17 +226,16 @@ create sequence seq_id_users start 10;";
     
     function postDelete()
     {
-        
         include_once ("WHAT/Class.Session.php");
         include_once ("FDL/Lib.Usercard.php");
-        // delete reference in group table
+        $err = '';
         $group = new Group($this->dbaccess, $this->id);
         $ugroups = $group->groups;
-        $err = $group->Delete();
-        if ($err == "") {
-            
-            refreshGroups($ugroups, true);
-        }
+        // delete reference in group table
+        $sql = sprintf("delete from groups where iduser=%d or idgroup=%d", $this->id, $this->id);
+        simpleQuery($this->dbaccess, $sql);
+        
+        refreshGroups($ugroups, true);
         
         global $action;
         $action->session->CloseUsers($this->id);
@@ -716,7 +719,7 @@ union
  select idgroup from groups,users where iduser = %d and users.id=groups.idgroup
 union
  select idgroup from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.idgroup
-) select users.* from agroups, users where users.id=agroups.gid %s", $this->id, $acond);
+) select users.* from agroups, users where users.id=agroups.gid %s order by lastname", $this->id, $acond);
         simpleQuery($this->dbaccess, $sql, $parents);
         return $parents;
     }
@@ -807,7 +810,7 @@ union
     }
     /**
      * only use with group or role
-     * if it is a group : get all direct user member of a group 
+     * if it is a group : get all direct user member of a group
      * if it is a role : het user which has role directly
      * @param string $qtype LIST|TABLE|ITEM
      * @param bool $withgroup set to true to return sub group also

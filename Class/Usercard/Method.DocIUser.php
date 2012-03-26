@@ -409,24 +409,30 @@ class _IUSER extends _USER
             if (in_array($role["id"], $directRoleIds)) {
                 $group = '';
                 $status = 'internal';
-            } else {
-                $group = '';
-                $rid = $role["id"];
-                $tgroup = array();
-                foreach ($allGroup as $aGroup) {
-                    simpleQuery($this->dbaccess, sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
-                    if ($gr) {
-                        $tgroup[] = $aGroup["fid"];
-                    }
-                }
-                if ($tgroup) $group = implode('<BR>', $tgroup);
-                $status = 'group';
+                $this->addArrayRow("us_t_roles", array(
+                    "us_roles" => $role["fid"],
+                    "us_rolesorigin" => $status,
+                    "us_rolegorigin" => $group
+                ));
             }
-            $this->addArrayRow("us_t_roles", array(
-                "us_roles" => $role["fid"],
-                "us_rolesorigin" => $status,
-                "us_rolegorigin" => $group
-            ));
+            $group = '';
+            $rid = $role["id"];
+            $tgroup = array();
+            foreach ($allGroup as $aGroup) {
+                simpleQuery($this->dbaccess, sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
+                if ($gr) {
+                    $tgroup[] = $aGroup["fid"];
+                }
+            }
+            if ($tgroup) {
+                $status = 'group';
+                $group = implode('<BR>', $tgroup);
+                $this->addArrayRow("us_t_roles", array(
+                    "us_roles" => $role["fid"],
+                    "us_rolesorigin" => $status,
+                    "us_rolegorigin" => $group
+                ));
+            }
         }
     }
     /**

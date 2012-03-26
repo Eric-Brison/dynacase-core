@@ -36,7 +36,12 @@ class _ROLE extends Doc
             $this->lowerLogin();
         }
     }
-    
+    public function PostDelete()
+    {
+        
+        $role = $this->getSystemRole();
+        if ($role) $role->Delete();
+    }
     public function preRevive()
     {
         return _("role cannot be revived");
@@ -99,6 +104,7 @@ class _ROLE extends Doc
                     $this->modify(true, array(
                         "us_whatid"
                     ) , true);
+                    $this->refreshDocUser();
                 }
             } else {
                 // update it
@@ -124,6 +130,7 @@ class _ROLE extends Doc
                 $this->SetValue("us_whatid", $wuser->id);
                 $this->SetValue("role_login", $wuser->login);
                 $this->SetValue("role_name", $wuser->lastname);
+                $this->modify(true, "", true);
             }
         }
     }

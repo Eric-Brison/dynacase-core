@@ -56,7 +56,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         $query = new QueryDb($this->dbaccess, "Group");
         
         $query->AddQuery("iduser='{$this->iduser}'");
-        $sql = sprintf("SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d", $this->iduser);
+        $sql = sprintf("SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d order by accounttype, lastname", $this->iduser);
         simpleQuery($this->dbaccess, $sql, $groupIds, true, false);
         $this->groups = $groupIds;
         
@@ -135,7 +135,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         $u = new User("", $this->iduser);
         
         $u->updateMemberOf();
-
+        
         if ($u->accounttype != "U") {
             // recompute all doc profil
             $this->resetAccountMemberOf();
@@ -159,11 +159,11 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     /**
      * recompute all memberof properties of user accounts
      */
-    function resetAccountMemberOf($synchro=false)
+    function resetAccountMemberOf($synchro = false)
     {
         $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         $err = $this->exec_query("delete from permission where computed");
-
+        
         if ($synchro) {
             simpleQuery($this->dbaccess, "select * from users order by id", $tusers);
             $u = new User($this->dbaccess);
@@ -172,14 +172,13 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
                 $u->updateMemberOf();
             }
         } else {
-        $wsh = getWshCmd();
-        $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
-
-
-        bgexec(array($cmd), $result, $err);
+            $wsh = getWshCmd();
+            $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
+            
+            bgexec(array(
+                $cmd
+            ) , $result, $err);
         }
-        
-        
     }
     /**
      * get ascendant direct group and group of group

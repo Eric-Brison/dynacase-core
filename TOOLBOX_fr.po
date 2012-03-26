@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-23 18:31+0100\n"
-"PO-Revision-Date: 2012-03-23 18:45+0100\n"
+"POT-Creation-Date: 2012-03-26 13:38+0200\n"
+"PO-Revision-Date: 2012-03-26 13:39+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -2247,6 +2247,10 @@ msgstr "Nom"
 msgid "Lauch Import"
 msgstr "Lancer l'import"
 
+#, c-format
+msgid "Layout \"%s\" : Controller not allowed"
+msgstr "Layout \"%s\" : L'accès au contrôleur n'est pas autorisé"
+
 msgid "Left Right"
 msgstr "Gauche droite"
 
@@ -2357,12 +2361,8 @@ msgid "Message to indicate invalid configuration"
 msgstr ""
 
 #, c-format
-msgid "Method %s::%s() not contains %s tag comment"
-msgstr "La méthode %s::%s ne contient pas le code \"%s\" dans le commentaire"
-
-#, c-format
-msgid "Method %s::%s() not contains @templateController tag comment"
-msgstr "La méthode %s::%s() ne contient pas @templateController dans son commentaire "
+msgid "Method %s cannot be call by client. Must be exposable method"
+msgstr "La méthode \"%s\" n'est pas accessible depuis le client. Elle doit être déclarée \"exposable\""
 
 #, c-format
 msgid "Method [%s] not exists"
@@ -8990,6 +8990,15 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Failed to copy $infile to $f"
 #~ msgstr "Echec de la copie de $infile vers $f"
+
+#~ msgid "Method %s::%s() not contains %s tag comment"
+#~ msgstr ""
+#~ "La méthode %s::%s ne contient pas le code \"%s\" dans le commentaire"
+
+#~ msgid "Method %s::%s() not contains @templateController tag comment"
+#~ msgstr ""
+#~ "La méthode %s::%s() ne contient pas @templateController dans son "
+#~ "commentaire "
 
 #~ msgid "No identificator found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"

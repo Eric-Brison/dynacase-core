@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-23 18:31+0100\n"
+"POT-Creation-Date: 2012-03-26 13:38+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2353,6 +2353,10 @@ msgstr "Lastname"
 msgid "Lauch Import"
 msgstr "Import"
 
+#, c-format
+msgid "Layout \"%s\" : Controller not allowed"
+msgstr ""
+
 msgid "Left Right"
 msgstr ""
 
@@ -2466,11 +2470,7 @@ msgid "Message to indicate invalid configuration"
 msgstr ""
 
 #, c-format
-msgid "Method %s::%s() not contains %s tag comment"
-msgstr ""
-
-#, c-format
-msgid "Method %s::%s() not contains @templateController tag comment"
+msgid "Method %s cannot be call by client. Must be exposable method"
 msgstr ""
 
 #, fuzzy, c-format
