@@ -47,7 +47,7 @@ if ($accountOnly) {
 $card = count($tusers);
 printf("\n%d user privilege to update.\n", $card);
 
-$u = new User($dbaccess);
+$u = new Account($dbaccess);
 foreach ($tusers as $tu) {
     printf("%d) %s \n", $card, $tu["login"]);
     $u->affect($tu);

@@ -68,7 +68,7 @@ function array_unset(&$t, $vp)
 function refreshOneGroup($gid, $refresh)
 {
     global $_SERVER;
-    $g = new User("", $gid);
+    $g = new Account("", $gid);
     if ($g->fid > 0 && $g->accounttype == 'G') {
         $dbaccess = GetParam("FREEDOM_DB");
         /**

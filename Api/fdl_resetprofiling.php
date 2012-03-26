@@ -38,7 +38,7 @@ $password = $action->getArgument("password"); // number of childs
 if (empty($user)) $action->exitError("login needed :\n $usage");
 if (empty($password)) $action->exitError("password needed :\n $usage");
 
-$u = new User($coreaccess);
+$u = new Account($coreaccess);
 $u->setLoginName($user);
 $uid = $u->id;
 $err = '';

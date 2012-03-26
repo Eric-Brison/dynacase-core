@@ -178,7 +178,7 @@ function viewcard(Action & $action)
     else if ($doc->locked == 0) {
         $action->lay->Set("locked", _("not locked"));
     } else {
-        $user = new User("", abs($doc->locked));
+        $user = new Account("", abs($doc->locked));
         $action->lay->Set("locked", $user->firstname . " " . $user->lastname);
         $action->lay->Set("lockedid", $user->fid);
     }

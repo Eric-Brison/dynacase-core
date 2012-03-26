@@ -47,7 +47,7 @@ function viewacl(Action & $action)
     $acls[] = "modifyacl"; //add this acl global for every document
     $tableacl = array();
     
-    $user = new User($dbaccess, $userid);
+    $user = new Account($dbaccess, $userid);
     foreach ($acls as $k => $acl) {
         $tableacl[$k]["aclname"] = mb_ucfirst(_($acl));
         $tableacl[$k]["acldesc"] = " (" . _($doc->dacls[$acl]["description"]) . ")";

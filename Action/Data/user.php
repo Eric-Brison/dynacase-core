@@ -43,7 +43,7 @@ function user(&$action)
         case 'authent':
             $login = getHttpVars("login");
             $password = getHttpVars("password");
-            $u = new User();
+            $u = new Account();
             if ($u->setLoginname($login)) {
                 include_once ('WHAT/Class.htmlAuthenticator.php');
                 

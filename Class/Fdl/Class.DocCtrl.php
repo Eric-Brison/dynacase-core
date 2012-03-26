@@ -585,7 +585,7 @@ class DocCtrl extends DocLDAP
         $query->AddQuery("docid=" . $pdocid);
         $query->AddQuery(sprintf("(upacl & %d) != 0", 1 << $pos));
         $tperm = $query->Query(0, 0, "TABLE");
-        $u = new User("");
+        $u = new Account("");
         $ru = array();
         if ($query->nb > 0) {
             foreach ($tperm as $perm) {

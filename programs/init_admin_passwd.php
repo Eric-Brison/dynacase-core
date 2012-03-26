@@ -38,7 +38,7 @@ if ($admin_passwd == '') {
 
 $dbaccess = getParam('CORE_DB');
 
-$user = new User($dbaccess, 1);
+$user = new Account($dbaccess, 1);
 if (!is_object($user) || !$user->isAffected()) {
     print "Could not find user with id '1' (admin).";
     exit(1);

@@ -96,7 +96,7 @@ function freedom_gaccess(Action & $action)
     } else if ($gid == 0) {
         //-----------------------
         // contruct grouplist
-        $ouser = new User();
+        $ouser = new Account();
         if ($viewgroup) {
             $tidAccount = array_merge($ouser->getGroupList("TABLE") , $ouser->getRoleList("TABLE"));
         } else {
@@ -136,7 +136,7 @@ function freedom_gaccess(Action & $action)
     } else {
         //-----------------------
         // contruct user list
-        $ouser = new User("", $gid);
+        $ouser = new Account("", $gid);
         if ($ouser->accounttype == 'G') {
             $tusers = $ouser->getGroupUserList("TABLE", false, $limit);
         } else {

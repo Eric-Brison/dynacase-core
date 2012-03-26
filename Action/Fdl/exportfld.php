@@ -329,7 +329,7 @@ function exportProfil($fout, $dbaccess, $docid)
 
 function getUserLogicName($dbaccess, $uid)
 {
-    $u = new User("", $uid);
+    $u = new Account("", $uid);
     if ($u->isAffected()) {
         $du = getTDoc($dbaccess, $u->fid);
         if (($du["name"] != "") && ($du["us_whatid"] == $uid)) return $du["name"];

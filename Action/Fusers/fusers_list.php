@@ -32,7 +32,7 @@ function fusers_list(Action & $action)
     
     $action->lay->set("isMaster", $action->parent->Haspermission("FUSERS_MASTER"));
     
-    $user = new User();
+    $user = new Account();
     //$ugroup=$user->GetGroupsId();
     $q2 = new queryDb("", "User");
     $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser  and users.accounttype='G'");

@@ -117,7 +117,7 @@ class Session extends DbObj
         }
         
         if ($createNewSession) {
-            $u = new User();
+            $u = new Account();
             if ($u->SetLoginName($_SERVER['PHP_AUTH_USER'])) {
                 $this->open($u->id);
             } else {
@@ -358,7 +358,7 @@ class Session extends DbObj
     function setuid($uid)
     {
         if (!is_numeric($uid)) {
-            $u = new User();
+            $u = new Account();
             if ($u->SetLoginName($uid)) {
                 $uid = $u->id;
             } else {

@@ -72,10 +72,10 @@ if ($core->dbid < 0) {
     exit(1);
 }
 
-if (isset($_GET["userid"])) $core->user = new User("", $_GET["userid"]); //special user
+if (isset($_GET["userid"])) $core->user = new Account("", $_GET["userid"]); //special user
 $core->Set("CORE", $CoreNull);
 $core->session = new Session();
-if (!isset($_GET["userid"])) $core->user = new User("", 1); //admin
+if (!isset($_GET["userid"])) $core->user = new Account("", 1); //admin
 $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
 
 $hostname = LibSystem::getHostName();

@@ -785,7 +785,7 @@ union
         if ($action->user->id == $uid) {
             $memberOf = $action->user->getMemberOf();
         } else {
-            $u = new User('', $uid);
+            $u = new Account('', $uid);
             if ($u->isAffected()) {
                 $memberOf = $u->getMemberOf();
             } else {
@@ -995,7 +995,7 @@ union
         if ($this->accounttype == 'G') {
             // must propagate to users
             $lu = $this->getUserMembers();
-            $uw = new User($this->dbaccess);
+            $uw = new Account($this->dbaccess);
             foreach ($lu as $u) {
                 $uw->id = $u["id"];
                 $uw->updateMemberOf();

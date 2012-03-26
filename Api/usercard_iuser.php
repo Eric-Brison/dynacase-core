@@ -164,7 +164,7 @@ if ($query->nb > 0) {
         }
         
         if (($v["fid"] == 0) && ($fid > 0)) {
-            $u = new User("", $v["id"]);
+            $u = new Account("", $v["id"]);
             $u->fid = $fid;
             $u->modify();
             unset($u);

@@ -106,8 +106,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     
     function PostDelete($uid = 0)
     {
-        if ($uid) $u = new User("", $uid);
-        else $u = new User("", $this->iduser);
+        if ($uid) $u = new Account("", $uid);
+        else $u = new Account("", $this->iduser);
         $u->updateMemberOf();
         if ($u->accounttype != "U") {
             // recompute all doc profil
@@ -132,7 +132,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     {
         $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         //    $this->FreedomCopyGroup();
-        $u = new User("", $this->iduser);
+        $u = new Account("", $this->iduser);
         
         $u->updateMemberOf();
         
@@ -166,7 +166,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         
         if ($synchro) {
             simpleQuery($this->dbaccess, "select * from users order by id", $tusers);
-            $u = new User($this->dbaccess);
+            $u = new Account($this->dbaccess);
             foreach ($tusers as $tu) {
                 $u->affect($tu);
                 $u->updateMemberOf();

@@ -77,7 +77,7 @@ function mb_ucfirst($s)
  */
 function getMailAddr($userid, $full = false)
 {
-    $user = new User("", $userid);
+    $user = new Account("", $userid);
     
     if ($user->isAffected()) {
         $pren = $postn = "";
@@ -724,7 +724,7 @@ function setSystemLogin($login)
     include_once ('Class.Session.php');
     
     if ($login != "") {
-        $action->user = new User(); //create user
+        $action->user = new Account(); //create user
         $action->user->setLoginName($login);
     }
 }

@@ -860,7 +860,7 @@ function bench_info($stat)
     for ($i = 0; $i < count($all_groups_list); $i++) {
         $gid = $all_groups_list[$i];
         $group_count++;
-        $group = new User($dbaccess_core, $gid);
+        $group = new Account($dbaccess_core, $gid);
         if (!is_object($group)) {
             error_log(__FILE__ . " " . sprintf("Error: invalid group with id '%s'"));
             return false;

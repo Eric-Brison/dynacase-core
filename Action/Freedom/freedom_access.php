@@ -49,7 +49,7 @@ function freedom_access(Action & $action)
     editmode($action);
     $action->lay->Set("title", $doc->getHtmlTitle());
     // contruct user id list
-    $ouser = new User('', $userId);
+    $ouser = new Account('', $userId);
     if (!$ouser->isAffected()) $action->exitError(sprintf(_("unknow user #%s") , $userId));
     $tiduser = $ouser->GetUserAndGroupList();
     

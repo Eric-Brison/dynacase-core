@@ -46,7 +46,7 @@ function viewhisto(&$action)
     $iversion = 0;
     foreach ($ldoc as $k => $zdoc) {
         $rdoc = getDocObject($dbaccess, $zdoc);
-        $owner = new User("", $rdoc->owner);
+        $owner = new Account("", $rdoc->owner);
         $trdoc[$k]["owner"] = $owner->firstname . " " . $owner->lastname;
         if ($k == 0) $trdoc[$k]["owner"] = _("Modification date");
         

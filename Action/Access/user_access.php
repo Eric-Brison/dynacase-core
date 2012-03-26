@@ -58,7 +58,7 @@ function user_access(Action & $action, $accountType = "U")
     $action->lay->set("maxreach", false);
     $action->lay->set("usefilter", false);
     // affect the select form elements
-    $u = new User();
+    $u = new Account();
     if ($accountType == "G") {
         $list = $u->GetGroupList("TABLE");
         $varreg = "access_group_id";

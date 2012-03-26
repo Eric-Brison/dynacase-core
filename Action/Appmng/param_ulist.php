@@ -26,7 +26,7 @@ function param_ulist(&$action)
     $userid = GetHttpVars("userid");
     
     $action->register("PARAM_ACT", "PARAM_ULIST&userid=$userid");
-    $u = new User();
+    $u = new Account();
     $list = $u->GetUserList("TABLE");
     // select the wanted user
     while (list($k, $v) = each($list)) {
