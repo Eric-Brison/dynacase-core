@@ -33,9 +33,9 @@ class _IGROUP extends _GROUP
     }
     /**
      * @param bool $real
-     * @return User
+     * @return Account
      */
-    public function getWUser($real = false)
+    public function getAccount($real = false)
     {
     }
     /*
@@ -64,7 +64,7 @@ class _IGROUP extends _GROUP
         $this->SetValue("US_MEID", $this->id);
         $iduser = $this->getValue("US_WHATID");
         if ($iduser > 0) {
-            $user = $this->getWUser();
+            $user = $this->getAccount();
             if (!$user) return sprintf(_("group #%d does not exist") , $iduser);
         } else {
             return _("group has not identificator");
@@ -167,11 +167,11 @@ class _IGROUP extends _GROUP
         
         $fid = $this->id;
         /**
-         * @var User $user
+         * @var Account $user
          */
-        $user = $this->getWUser();
+        $user = $this->getAccount();
         if (!$user) {
-            $user = new User(""); // create new user
+            $user = new Account(""); // create new user
             $this->wuser = & $user;
         }
         // get system role ids
@@ -232,7 +232,7 @@ class _IGROUP extends _GROUP
      */
     public function getMail($rawmail = false)
     {
-        $wu = $this->getWUser();
+        $wu = $this->getAccount();
         if ($wu->isAffected()) {
             return $wu->getMail($rawmail);
         }
@@ -333,11 +333,11 @@ class _IGROUP extends _GROUP
         }
         return $err;
     }
-    function PostDelete()
+    function postDelete()
     {
         
-        $user = $this->getWUser();
-        if ($user) $user->Delete();
+        $gAccount = $this->getAccount();
+        if ($gAccount) $gAccount->Delete();
     }
     /**
      * (re)insert members of the group in folder from USER databasee
@@ -346,10 +346,10 @@ class _IGROUP extends _GROUP
      */
     function insertGroups()
     {
-        $user = $this->getWUser();
+        $gAccount = $this->getAccount();
         $err = "";
         // get members
-        $tu = $user->GetUsersGroupList($user->id);
+        $tu = $gAccount->GetUsersGroupList($gAccount->id);
         
         if (is_array($tu)) {
             $this->Clear();
@@ -402,12 +402,12 @@ class _IGROUP extends _GROUP
     /**
      * recompute intranet values from USER database
      */
-    function RefreshDocUser()
+    function refreshDocUser()
     {
         $err = "";
         $wid = $this->getValue("us_whatid");
         if ($wid > 0) {
-            $wuser = $this->getWUser(true);
+            $wuser = $this->getAccount(true);
             if ($wuser->isAffected()) {
                 $this->SetValue("US_WHATID", $wuser->id);
                 $this->SetValue("GRP_NAME", $wuser->lastname);
@@ -420,7 +420,7 @@ class _IGROUP extends _GROUP
                 $tglogin = $tgid = array();
                 if (count($g->groups) > 0) {
                     foreach ($g->groups as $gid) {
-                        $gt = new User("", $gid);
+                        $gt = new Account("", $gid);
                         $tgid[$gid] = $gt->fid;
                         $tglogin[$gid] = $this->getTitle($gt->fid);
                     }
@@ -456,7 +456,7 @@ class _IGROUP extends _GROUP
         }
         $wid = $this->getValue("us_whatid");
         if ($wid > 0) {
-            $u = $this->getWUser(true);
+            $u = $this->getAccount(true);
             
             $tu = $u->GetUsersGroupList($wid, $norefresh);
             $tulogin = $tglogin = '';

@@ -18,7 +18,7 @@ class _ROLE extends Doc
      * @end-method-ignore
     */
     /**
-     * @var User system role
+     * @var Account system role
      */
     protected $sysRole = null;
     
@@ -39,7 +39,7 @@ class _ROLE extends Doc
     public function PostDelete()
     {
         
-        $role = $this->getSystemRole();
+        $role = $this->getAccount();
         if ($role) $role->Delete();
     }
     public function preRevive()
@@ -53,7 +53,7 @@ class _ROLE extends Doc
      */
     public function getMail($rawmail = false)
     {
-        $wu = $this->getSystemRole();
+        $wu = $this->getAccount();
         if ($wu->isAffected()) {
             return $wu->getMail($rawmail);
         }
@@ -87,11 +87,11 @@ class _ROLE extends Doc
     {
         $err = '';
         if ($this->id) {
-            $sR = $this->getSystemRole();
+            $sR = $this->getAccount();
             
             if (!$sR) {
                 // try create it
-                $sR = new User();
+                $sR = new Account();
                 $sR->login = $this->getValue('role_login');
                 $sR->lastname = $this->getValue('role_name');
                 $sR->fid = $this->initid;
@@ -124,7 +124,7 @@ class _ROLE extends Doc
     {
         $wid = $this->getValue("us_whatid");
         if ($wid > 0) {
-            $wuser = $this->getSystemRole(true);
+            $wuser = $this->getAccount(true);
             
             if ($wuser && $wuser->isAffected()) {
                 $this->SetValue("us_whatid", $wuser->id);
@@ -137,9 +137,9 @@ class _ROLE extends Doc
     /**
      * return system user object conform to whatid
      * @param bool $nocache
-     * @return User|null return null if not found
+     * @return Account|null return null if not found
      */
-    function getSystemRole($nocache = false)
+    function getAccount($nocache = false)
     {
         if ($nocache) {
             unset($this->sysRole); // needed for reaffect new values
@@ -148,7 +148,7 @@ class _ROLE extends Doc
         if (!$this->sysRole) {
             $wid = $this->getValue("us_whatid");
             if ($wid > 0) {
-                $this->sysRole = new User("", $wid);
+                $this->sysRole = new Account("", $wid);
             }
         }
         if (!$this->sysRole) return null;
