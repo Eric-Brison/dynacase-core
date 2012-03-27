@@ -5142,7 +5142,7 @@ create unique index i_docir on doc(initid, revision);";
                                 $ul.= "&state=" . $matches[1];
                             }
                         }
-                        $ul.= "&app=FDL&action=FDL_CARD&id=$id";
+                        $ul.= "&app=FDL&action=OPENDOC&mode=view&id=$id";
                         if ($js) $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
                         else $ajs = "";
                         
