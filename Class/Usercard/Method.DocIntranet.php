@@ -250,15 +250,15 @@ class _IGROUPUSER extends Doc
             $gid = $_POST["gid"];
             if ($gid == "") $gid = array();
             
-            $user = $this->getAccount();
-            $rgid = $user->GetGroupsId();
+            $gAccount = $this->getAccount();
+            $rgid = $gAccount->GetGroupsId();
             if ((count($rgid) != count($gid)) || (count(array_diff($rgid, $gid)) != 0)) {
                 $gdel = array_diff($rgid, $gid);
                 $gadd = array_diff($gid, $rgid);
                 // add group
-                $g = new Group("", $user->id);
+                $g = new Group("", $gAccount->id);
                 foreach ($gadd as $gid) {
-                    $g->iduser = $user->id;
+                    $g->iduser = $gAccount->id;
                     $g->idgroup = $gid;
                     $aerr = '';
                     if ($aerr == "") {
