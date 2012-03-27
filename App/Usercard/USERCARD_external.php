@@ -201,7 +201,7 @@ function members($dbaccess, $groupid, $name = "", $sort = 'lastname', $searchinm
     $name = trim($name);
     $gid = $doc->getValue("us_whatid");
     if ($gid) {
-        $u = new User("", $gid);
+        $u = new Account("", $gid);
         if (!$u->isAffected()) return sprintf(_("no valid group : %s") , $gid);
         $g = new Group();
         $lg = $g->getChildsGroupId($u->id);

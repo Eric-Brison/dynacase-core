@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-23 18:31+0100\n"
+"POT-Creation-Date: 2012-03-27 10:38+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -988,6 +988,14 @@ msgid ""
 " %s"
 msgstr ""
 
+#, c-format
+msgid "Change control for %s user. No one privilege"
+msgstr ""
+
+#, c-format
+msgid "Change control for %s user. Set %s privileges"
+msgstr ""
+
 #, fuzzy, c-format
 msgid "Change creation profil to %s [%d]"
 msgstr "Category"
@@ -1230,7 +1238,7 @@ msgstr "Create"
 msgid "Composing the email"
 msgstr ""
 
-msgid "Computed from"
+msgid "Computed from profil"
 msgstr ""
 
 #, fuzzy
@@ -1524,6 +1532,9 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Document %s umounted"
 msgstr "Import"
+
+msgid "Document Profile"
+msgstr ""
 
 #, fuzzy
 msgid "Document basket"
@@ -2353,6 +2364,10 @@ msgstr "Lastname"
 msgid "Lauch Import"
 msgstr "Import"
 
+#, c-format
+msgid "Layout \"%s\" : Controller not allowed"
+msgstr ""
+
 msgid "Left Right"
 msgstr ""
 
@@ -2363,7 +2378,7 @@ msgstr ""
 msgid "Link"
 msgstr "Delete"
 
-msgid "Linked from"
+msgid "Linked from profil"
 msgstr ""
 
 msgid "List view"
@@ -2466,11 +2481,7 @@ msgid "Message to indicate invalid configuration"
 msgstr ""
 
 #, c-format
-msgid "Method %s::%s() not contains %s tag comment"
-msgstr ""
-
-#, c-format
-msgid "Method %s::%s() not contains @templateController tag comment"
+msgid "Method %s cannot be call by client. Must be exposable method"
 msgstr ""
 
 #, fuzzy, c-format
@@ -2871,6 +2882,9 @@ msgstr ""
 msgid "Profile"
 msgstr "Update Title Cards"
 
+msgid "Profile of"
+msgstr ""
+
 msgid "Progress bar"
 msgstr ""
 
@@ -3256,7 +3270,7 @@ msgid "Set by \"%s\" attribute (%s) from template profil \"%s\""
 msgstr ""
 
 #, c-format
-msgid "Set by \"%s\" attribute from template profil \"%s\""
+msgid "Set by %s from template profil \"%s\""
 msgstr ""
 
 #, c-format
@@ -3625,6 +3639,13 @@ msgstr "Update LDAP server"
 msgid "Update document if has permission else ignored"
 msgstr ""
 
+msgid "Update profiling is in progress."
+msgstr ""
+
+#, c-format
+msgid "Update profiling of %d documents is in progress."
+msgstr ""
+
 msgid "Upload access acl"
 msgstr ""
 
@@ -3919,6 +3940,9 @@ msgid "Xml schema"
 msgstr ""
 
 msgid "Y"
+msgstr ""
+
+msgid "You can close window now or waiting the end of processing"
 msgstr ""
 
 msgid "You must clear navigator cache."
@@ -5954,6 +5978,9 @@ msgstr ""
 #, fuzzy
 msgid "expand folder tree"
 msgstr "Delete"
+
+msgid "explicit privilege"
+msgstr ""
 
 #, c-format
 msgid "export Xml : cannot unzip %s : %s"
@@ -8591,6 +8618,10 @@ msgid "the '%s' parameter cannot be removed"
 msgstr ""
 
 msgid "the 2 passwords are not the same"
+msgstr ""
+
+#, c-format
+msgid "the attribute %s"
 msgstr ""
 
 #, c-format

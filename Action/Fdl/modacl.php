@@ -21,14 +21,13 @@
 // ---------------------------------------------------------------
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function modacl(&$action)
+function modacl(Action & $action)
 {
     // -----------------------------------
     // get all parameters
     $userid = GetHttpVars("userid");
     
     $aclp = GetHttpVars("aclup"); // ACL + (more access)
-    $acln = GetHttpVars("aclun"); // ACL - (less access)
     $docid = GetHttpVars("docid"); // oid for controlled object
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
@@ -49,15 +48,24 @@ function modacl(&$action)
             $perm->SetControlP($v);
         }
     }
-    if (is_array($acln)) {
-        while (list($k, $v) = each($acln)) {
-            $perm->SetControlN($v);
-        }
-    }
     
     if ($perm->isAffected()) $perm->modify();
     else $perm->Add();
-    
+    $doc->setViewProfil();
+    // recompute all related profile
+    $doc->recomputeProfiledDocument();
+    if (is_array($aclp) && (count($aclp) > 0)) {
+        $aclName = array();
+        foreach ($doc->dacls as $aclK => $aclInfo) {
+            if (in_array($aclInfo["pos"], $aclp)) {
+                $aclName[] = _($aclK);
+            }
+        }
+        
+        $doc->addComment(sprintf(_("Change control for %s user. Set %s privileges") , Account::getDisplayName($userid) , implode(', ', $aclName)));
+    } else {
+        $doc->addComment(sprintf(_("Change control for %s user. No one privilege") , Account::getDisplayName($userid)));
+    }
     RedirectSender($action);
 }
 ?>

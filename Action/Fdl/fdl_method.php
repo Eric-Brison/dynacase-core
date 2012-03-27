@@ -35,12 +35,11 @@ function fdl_method(Action & $action)
         if ($err != "") $action->exitError($err);
         if (!strpos($method, '(')) $method.= '()';
         if (strpos($method, '::') === false) $method = '::' . $method;
-        $err = commentMethodMatch($doc, $method, '@apiExpose');
-        if (!$err) {
+        $match = commentMethodMatch($doc, $method, '@apiExpose');
+        if ($match) {
             $err = $doc->ApplyMethod($method);
         } else {
-            // $err=sprintf(_("Method %s cannot be call by client. Must be exposable method"),$method);
-            
+            $err = sprintf(_("Method %s cannot be call by client. Must be exposable method") , $method);
         }
     }
     
@@ -67,7 +66,7 @@ function fdl_method(Action & $action)
  * @param $object
  * @param string $method like "::test()"
  * @param string $comment
- * @return string
+ * @return bool
  */
 function commentMethodMatch(&$object, $method, $comment)
 {
@@ -84,12 +83,15 @@ function commentMethodMatch(&$object, $method, $comment)
         $refMeth = new ReflectionMethod($staticClass, $methodName);
         $mComment = $refMeth->getDocComment();
         if (!preg_match('/' . $comment . '\b/', $mComment)) {
-            $err = sprintf(_("Method %s::%s() not contains %s tag comment") , $refMeth->getDeclaringClass()->getName() , $refMeth->getName() , $comment);
+            global $action;
+            $syserr = ErrorCode::getError("DOC1100", $refMeth->getDeclaringClass()->getName() , $refMeth->getName() , $object);
+            $action->log->error($syserr);
+            return false;
         }
     }
     catch(Exception $e) {
         $err = $e->getMessage();
     }
-    return $err;
+    return true;
 }
 ?>

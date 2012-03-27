@@ -88,7 +88,7 @@ abstract class AuthenticatorManager
             self::secureLog("failure", "invalid credential", self::$auth->provider->parms['type'] . "/" . self::$auth->provider->parms['provider'], $_SERVER["REMOTE_ADDR"], $_REQUEST["auth_user"], $_SERVER["HTTP_USER_AGENT"]);
             // count login failure
             if (getParam("AUTHENT_FAILURECOUNT") > 0) {
-                $wu = new User();
+                $wu = new Account();
                 if ($wu->SetLoginName(self::$auth->getAuthUser())) {
                     if ($wu->id != 1) {
                         include_once ("FDL/freedom_util.php");
@@ -106,7 +106,7 @@ abstract class AuthenticatorManager
         }
         // Authentication success
         $login = self::$auth->getAuthUser();
-        $wu = new User();
+        $wu = new Account();
         $existu = false;
         if ($wu->SetLoginName($login)) {
             $existu = true;

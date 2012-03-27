@@ -140,4 +140,14 @@ class ErrorCodeDOC
      * the mask cannot be applied from its logical mask
      */
     const DOC1004 = '"%s" mask is not found , cannot apply it to "%s" document';
+    /**
+     * A method call by client must has a specific declaration in the comment part : @apiExpose
+     *
+     */
+    const DOC1100 = 'Method %s::%s() not contains @apiExpose tag comment. Document %s';
+    /**
+     * A controller view method must has a specific declaration in the comment part : @templateController
+     *
+     */
+    const DOC1101 = 'Method %s::%s() not contains @templateController tag comment. Document %s';
 }

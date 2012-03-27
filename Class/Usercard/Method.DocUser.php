@@ -107,7 +107,7 @@ class _USER extends Doc
     {
         $priv = $this->GetValue("US_PRIVCARD");
         if ($priv == "P") {
-            $u = new User("", $this->owner);
+            $u = new Account("", $this->owner);
             if ($u->isAffected()) {
                 $this->infoldap[$this->cindex]["ou"] = $u->login;
                 return sprintf("%s=%s,ou=%s,%s,%s", $rdn, $this->infoldap[$this->cindex][$rdn], $u->login, $path, $this->racine);

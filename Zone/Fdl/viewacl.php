@@ -47,7 +47,7 @@ function viewacl(Action & $action)
     $acls[] = "modifyacl"; //add this acl global for every document
     $tableacl = array();
     
-    $user = new User($dbaccess, $userid);
+    $user = new Account($dbaccess, $userid);
     foreach ($acls as $k => $acl) {
         $tableacl[$k]["aclname"] = mb_ucfirst(_($acl));
         $tableacl[$k]["acldesc"] = " (" . _($doc->dacls[$acl]["description"]) . ")";
@@ -72,9 +72,10 @@ function viewacl(Action & $action)
     }
     $action->lay->set("readonly", ($doc->control("modifyacl") != '' || $doc->dprofid || $doc->profid != $doc->id));
     $action->lay->SetBlockData("SELECTACL", $tableacl);
+    $action->lay->set("updateWaitText", sprintf(_("Update profiling is in progress.")));
 }
 
-function getAclCause($acl, Doc & $doc, DocPerm & $perm, User & $user)
+function getAclCause($acl, Doc & $doc, DocPerm & $perm, Account & $user)
 {
     $Aclpos = $doc->dacls[$acl]["pos"];
     $msg = '?';
@@ -88,32 +89,39 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, User & $user)
                 $msg = sprintf(_("Set through \"%s\" linked profil") , $doc->getHtmlTitle($doc->profid));
             }
         } else {
+            // Dynamimc profiling
             $dperm = new DocPerm($perm->dbaccess, array(
                 $doc->dprofid,
                 $perm->userid
             ));
+            
+            $tAtt = array();
             if ($dperm->isAffected()) {
                 if ($dperm->ControlUp($Aclpos)) {
+                    $tAtt[] = sprintf(_("explicit privilege"));
                     $msg = sprintf(_("Set from template profil \"%s\"") , $doc->getHtmlTitle($doc->dprofid));
                 } else {
                     $msg = sprintf(_("Something wrong. No acl found in %s (user #%d)") , $doc->getHtmlTitle($doc->dprofid) , $perm->userid);
                 }
-            } else {
-                // search in dynamic
-                $sql = sprintf('select vgroup.id as aid from docperm,vgroup where docid=%d and userid >= %d and upacl & %d != 0 and docperm.userid=vgroup.num', $doc->dprofid, STARTIDVGROUP, 1 << $Aclpos);
-                simpleQuery($perm->dbaccess, $sql, $dynAids, true);
-                foreach ($dynAids as $aid) {
-                    $va = $doc->getValue($aid);
-                    if ($va) {
-                        $tva = explode("\n", str_replace('<BR>', "\n", $va));
-                        if (in_array($user->fid, $tva)) {
-                            $oa = $doc->getAttribute($aid);
-                            if ($oa) $alabel = $oa->getLabel();
-                            else $alabel = $aid;
-                            $msg = sprintf(_("Set by \"%s\" attribute from template profil \"%s\"") , $alabel, $doc->getHtmlTitle($doc->dprofid));
-                        }
+            }
+            // search in dynamic
+            $sql = sprintf('select vgroup.id as aid from docperm,vgroup where docid=%d and userid >= %d and upacl & %d != 0 and docperm.userid=vgroup.num', $doc->dprofid, STARTIDVGROUP, 1 << $Aclpos);
+            simpleQuery($perm->dbaccess, $sql, $dynAids, true);
+            foreach ($dynAids as $aid) {
+                $va = $doc->getValue($aid);
+                if ($va) {
+                    $tva = explode("\n", str_replace('<BR>', "\n", $va));
+                    if (in_array($user->fid, $tva)) {
+                        $oa = $doc->getAttribute($aid);
+                        if ($oa) $alabel = $oa->getLabel();
+                        else $alabel = $aid;
+                        $tAtt[] = sprintf(_("the attribute %s") , $alabel);
                     }
                 }
+            }
+            if (count($tAtt) > 0) {
+                $sAtt = '<ul><li>' . implode('</li><li>', $tAtt) . '</li></ul>';
+                $msg = sprintf(_("Set by %s from template profil \"%s\"") , $sAtt, $doc->getHtmlTitle($doc->dprofid));
             }
         }
     } else if ($perm->ControlU($Aclpos)) {
@@ -139,7 +147,11 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, User & $user)
                         $tFrom[] = sprintf(_("Group \"%s\"") , $as["lastname"]);
                     }
                 }
-                $sFrom = implode(', ', $tFrom);
+                if (count($tFrom) > 0) {
+                    $sFrom = '<ul><li>' . implode('</li><li>', $tFrom) . '</li></ul>';
+                } else {
+                    $sFrom = implode(', ', $tFrom);
+                }
             }
             if ($doc->profid == $doc->id) {
                 $msg = sprintf(_("Set by %s through document itself \"%s\"") , $sFrom, $doc->getHtmlTitle());
@@ -167,7 +179,11 @@ function getAclCause($acl, Doc & $doc, DocPerm & $perm, User & $user)
                         $tFrom[] = sprintf(_("Group \"%s\"") , $as["lastname"]);
                     }
                 }
-                $sFrom = implode(', ', $tFrom);
+                if (count($tFrom) > 0) {
+                    $sFrom = '<ul><li>' . implode('</li><li>', $tFrom) . '</li></ul>';
+                } else {
+                    $sFrom = implode(', ', $tFrom);
+                }
                 $msg = sprintf(_("Set by %s through template profil \"%s\"") , $sFrom, $doc->getHtmlTitle($doc->dprofid));
             } else {
                 $msg = sprintf(_("Set by %s through template profil \"%s\"") , $sFrom, $doc->getHtmlTitle($doc->dprofid));

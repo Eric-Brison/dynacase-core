@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-23 18:31+0100\n"
-"PO-Revision-Date: 2012-03-23 18:45+0100\n"
+"POT-Creation-Date: 2012-03-27 10:38+0200\n"
+"PO-Revision-Date: 2012-03-27 10:40+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -658,7 +658,7 @@ msgid "All manuals"
 msgstr "Tous les manuels"
 
 msgid "All set only"
-msgstr "Seulement les cochés"
+msgstr "Voir les droits explicites"
 
 msgid "Allocate"
 msgstr "Affecter"
@@ -953,6 +953,14 @@ msgstr ""
 " %s"
 
 #, c-format
+msgid "Change control for %s user. No one privilege"
+msgstr "Suppression des droits pour l'utilisateur %s."
+
+#, c-format
+msgid "Change control for %s user. Set %s privileges"
+msgstr "Modification des droits pour l'utilisateur %s. Nouveaux privilèges : %s"
+
+#, c-format
 msgid "Change creation profil to %s [%d]"
 msgstr "Changement du profile de création par %s [%d]"
 
@@ -1169,8 +1177,8 @@ msgstr "Vue complète"
 msgid "Composing the email"
 msgstr "Composition du couriel"
 
-msgid "Computed from"
-msgstr "Calculé depuis"
+msgid "Computed from profil"
+msgstr "Calculé depuis le profil"
 
 msgid "Conditions"
 msgstr "Conditions"
@@ -1445,6 +1453,9 @@ msgstr ""
 #, c-format
 msgid "Document %s umounted"
 msgstr "Document %s enlevé"
+
+msgid "Document Profile"
+msgstr "Profil du document"
 
 msgid "Document basket"
 msgstr "Porte-document"
@@ -2247,6 +2258,10 @@ msgstr "Nom"
 msgid "Lauch Import"
 msgstr "Lancer l'import"
 
+#, c-format
+msgid "Layout \"%s\" : Controller not allowed"
+msgstr "Layout \"%s\" : L'accès au contrôleur n'est pas autorisé"
+
 msgid "Left Right"
 msgstr "Gauche droite"
 
@@ -2257,8 +2272,8 @@ msgstr ""
 msgid "Link"
 msgstr "Lien"
 
-msgid "Linked from"
-msgstr "Lié par"
+msgid "Linked from profil"
+msgstr "Lié par le profil"
 
 msgid "List view"
 msgstr "Vue en liste"
@@ -2357,12 +2372,10 @@ msgid "Message to indicate invalid configuration"
 msgstr ""
 
 #, c-format
-msgid "Method %s::%s() not contains %s tag comment"
-msgstr "La méthode %s::%s ne contient pas le code \"%s\" dans le commentaire"
-
-#, c-format
-msgid "Method %s::%s() not contains @templateController tag comment"
-msgstr "La méthode %s::%s() ne contient pas @templateController dans son commentaire "
+msgid "Method %s cannot be call by client. Must be exposable method"
+msgstr ""
+"La méthode \"%s\" n'est pas accessible depuis le client. Elle doit être "
+"déclarée \"exposable\""
 
 #, c-format
 msgid "Method [%s] not exists"
@@ -2732,6 +2745,9 @@ msgstr "Profil pour l'archive %s"
 msgid "Profile"
 msgstr "Profil"
 
+msgid "Profile of"
+msgstr "Profil de"
+
 msgid "Progress bar"
 msgstr "Barre de progression"
 
@@ -3091,8 +3107,8 @@ msgstr ""
 "Obtenu par l'attribut \"%s\" (\"%s\") depuis le profil dynamique \"%s\""
 
 #, c-format
-msgid "Set by \"%s\" attribute from template profil \"%s\""
-msgstr "Obtenu par l'attribut \"%s\" depuis le profil dynamique \"%s\""
+msgid "Set by %s from template profil \"%s\""
+msgstr "Obtenu par %s depuis le profil dynamique \"%s\""
 
 #, c-format
 msgid "Set by %s through \"%s\" linked profil"
@@ -3104,7 +3120,7 @@ msgstr "Obtenu par %s depuis le document même \"%s\""
 
 #, c-format
 msgid "Set by %s through template profil \"%s\""
-msgstr "Obtenu par \"%s\" depuis le profil dynamique \"%s\""
+msgstr "Obtenu par %s depuis le profil dynamique \"%s\""
 
 msgid "Set default values"
 msgstr "Valeurs par défaut"
@@ -3467,6 +3483,13 @@ msgid "Update document if has permission else ignored"
 msgstr ""
 "Mets à jour le document si permission accordée sinon modification ignorée"
 
+msgid "Update profiling is in progress."
+msgstr "Mise à jour des privilèges en cours"
+
+#, c-format
+msgid "Update profiling of %d documents is in progress."
+msgstr "Mise à jour des privilèges pour %d documents en cours."
+
 msgid "Upload access acl"
 msgstr "Importer un fichier de configuration de droits applicatifs"
 
@@ -3610,7 +3633,7 @@ msgid "View notice messages"
 msgstr "Voir tous les messages"
 
 msgid "View only access set. Green flag"
-msgstr ""
+msgstr "Voir les droits posés. (puces vertes)"
 
 msgid "View postit"
 msgstr "Voir le post-it"
@@ -3740,6 +3763,10 @@ msgstr "Xml Schéma"
 
 msgid "Y"
 msgstr "O"
+
+msgid "You can close window now or waiting the end of processing"
+msgstr ""
+"Vous pouvez fermer la fenêtre maintenant ou attendre la fin du traitement"
 
 msgid "You must clear navigator cache."
 msgstr "Vous devez effacer le cache de votre navigateur."
@@ -5643,6 +5670,9 @@ msgstr "déplier tout"
 msgid "expand folder tree"
 msgstr "développer une branche"
 
+msgid "explicit privilege"
+msgstr "droit explicite"
+
 #, c-format
 msgid "export Xml : cannot unzip %s : %s"
 msgstr ""
@@ -6685,7 +6715,7 @@ msgstr "Nouvelle obligation"
 
 #, c-format
 msgid "new profil %d"
-msgstr "nouveau profile %d"
+msgstr "nouveau profil %d"
 
 msgid "new profile document"
 msgstr "nouveau profil de document"
@@ -8077,6 +8107,10 @@ msgid "the 2 passwords are not the same"
 msgstr "Les deux mots de passes ne sont pas identiques"
 
 #, c-format
+msgid "the attribute %s"
+msgstr "l'attribut \"%s\""
+
+#, c-format
 msgid "the date %s is in the past: today is %s"
 msgstr "La date %s est dans le passé. La date d'aujourd'hui est %s"
 
@@ -8985,11 +9019,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Book in my space"
 #~ msgstr "Réserver dans mon espace"
 
+#~ msgid "Computed from"
+#~ msgstr "Calculé depuis"
+
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
 #~ msgid "Failed to copy $infile to $f"
 #~ msgstr "Echec de la copie de $infile vers $f"
+
+#~ msgid "Linked from"
+#~ msgstr "Lié par"
+
+#~ msgid "Method %s::%s() not contains %s tag comment"
+#~ msgstr ""
+#~ "La méthode %s::%s ne contient pas le code \"%s\" dans le commentaire"
+
+#~ msgid "Method %s::%s() not contains @templateController tag comment"
+#~ msgstr ""
+#~ "La méthode %s::%s() ne contient pas @templateController dans son "
+#~ "commentaire "
 
 #~ msgid "No identificator found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
@@ -9008,6 +9057,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Reset"
 #~ msgstr "Réinitialisation"
+
+#~ msgid "Set by \"%s\" attribute from template profil \"%s\""
+#~ msgstr "Obtenu par l'attribut \"%s\" depuis le profil dynamique \"%s\""
+
+#~ msgid "Set by %s attribute from template profil \"%s\""
+#~ msgstr "Obtenu par l'attribut %s depuis le profil dynamique \"%s\""
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"

@@ -99,7 +99,7 @@ function appl_access(Action & $action, $oid = 0)
         $action->lay->SetBlockData("SELUSER", $tab);
         $action->parent->AddJsRef("change_acl.js");
         // Init a querygen object to select users
-        $query = new QueryGen($action->dbaccess, "User", $action);
+        $query = new QueryGen($action->dbaccess, "Account", $action);
         //
         // Give some global elements for the table layout
         $query->table->fields = array(

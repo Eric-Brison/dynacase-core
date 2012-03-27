@@ -37,7 +37,7 @@ $core->Set("CORE", $CoreNull);
 $action = new Action();
 $action->Set("", $core);
 
-$core->user = new User();
+$core->user = new Account();
 $core->user->setLoginName($_POST["login"]);
 
 if (!$core->user->isAffected()) {

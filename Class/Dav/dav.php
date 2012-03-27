@@ -101,7 +101,7 @@ function whatLogin($login)
     include_once ('Class.Session.php');
     
     if ($login != "") {
-        $action->user = new User(); //create user
+        $action->user = new Account(); //create user
         $action->user->setLoginName($login);
     }
 }

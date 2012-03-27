@@ -161,7 +161,7 @@ create index permission_idx4 on permission(computed);
         $res = array();
         $i = 0;
         while ($i < $query->nb) {
-            $res[$i] = new User($this->dbaccess, $list[$i]->id_user);
+            $res[$i] = new Account($this->dbaccess, $list[$i]->id_user);
             $i++;
         }
         return ($res);

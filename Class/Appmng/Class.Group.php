@@ -56,7 +56,7 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
         $query = new QueryDb($this->dbaccess, "Group");
         
         $query->AddQuery("iduser='{$this->iduser}'");
-        $sql = sprintf("SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d", $this->iduser);
+        $sql = sprintf("SELECT groups.idgroup as gid from groups, users where groups.idgroup=users.id and users.accounttype!='R' and groups.iduser=%d order by accounttype, lastname", $this->iduser);
         simpleQuery($this->dbaccess, $sql, $groupIds, true, false);
         $this->groups = $groupIds;
         
@@ -106,8 +106,8 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     
     function PostDelete($uid = 0)
     {
-        if ($uid) $u = new User("", $uid);
-        else $u = new User("", $this->iduser);
+        if ($uid) $u = new Account("", $uid);
+        else $u = new Account("", $this->iduser);
         $u->updateMemberOf();
         if ($u->accounttype != "U") {
             // recompute all doc profil
@@ -132,10 +132,10 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     {
         $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         //    $this->FreedomCopyGroup();
-        $u = new User("", $this->iduser);
+        $u = new Account("", $this->iduser);
         
         $u->updateMemberOf();
-
+        
         if ($u->accounttype != "U") {
             // recompute all doc profil
             $this->resetAccountMemberOf();
@@ -159,27 +159,26 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     /**
      * recompute all memberof properties of user accounts
      */
-    function resetAccountMemberOf($synchro=false)
+    function resetAccountMemberOf($synchro = false)
     {
         $err = $this->exec_query(sprintf("delete from sessions where userid=%d", $this->iduser));
         $err = $this->exec_query("delete from permission where computed");
-
+        
         if ($synchro) {
             simpleQuery($this->dbaccess, "select * from users order by id", $tusers);
-            $u = new User($this->dbaccess);
+            $u = new Account($this->dbaccess);
             foreach ($tusers as $tu) {
                 $u->affect($tu);
                 $u->updateMemberOf();
             }
         } else {
-        $wsh = getWshCmd();
-        $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
-
-
-        bgexec(array($cmd), $result, $err);
+            $wsh = getWshCmd();
+            $cmd = $wsh . " --api=initViewPrivileges --reset-account=yes";
+            
+            bgexec(array(
+                $cmd
+            ) , $result, $err);
         }
-        
-        
     }
     /**
      * get ascendant direct group and group of group
@@ -261,15 +260,6 @@ create trigger t_nogrouploop before insert or update on groups for each row exec
     private function _initAllGroup()
     {
         if (!isset($this->allgroups)) {
-            /* alone groups : not needed
-            $query = new QueryDb($this->dbaccess, "User");
-            $query->AddQuery("isgroup='Y'");
-            $list= $query->Query(0,0,"TABLE");
-            
-            foreach ($list as $v) {
-            $this->allgroups[$v["id"]]="";
-            }
-            */
             $query = new QueryDb($this->dbaccess, "Group");
             $list = $query->Query(0, 0, "TABLE", "select * from groups where iduser in (select id from users where accounttype='G')");
             if ($list) {

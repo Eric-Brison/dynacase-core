@@ -25,7 +25,7 @@ class _IGROUPUSER extends Doc
      * @end-method-ignore
     */
     /**
-     * @var User
+     * @var Account
      */
     public $wuser;
     /**
@@ -66,10 +66,9 @@ class _IGROUPUSER extends Doc
         
         $id = $this->GetValue("US_WHATID");
         
-        $q = new QueryDb("", "User");
+        $q = new QueryDb("", "Account");
         $q->AddQuery("login='" . strtolower(pg_escape_string($login)) . "'");
         if ($id) $q->AddQuery("id != $id");
-        
         $q->Query(0, 0, "TABLE");
         $err = $q->basic_elem->msg_err;
         if (($err == "") && ($q->nb > 0)) $err = _("login yet use");
@@ -138,11 +137,11 @@ class _IGROUPUSER extends Doc
         $err = '';
         $iduser = $this->getValue("US_WHATID");
         if ($iduser > 0) {
-            $user = $this->getWUser();
+            $user = $this->getAccount();
             if (!$user->isAffected()) return sprintf(_("user #%d does not exist") , $iduser);
             $ugroup = $user->GetGroupsId();
         } else {
-            $user = new User();
+            $user = new Account();
             $ugroup = array(
                 "2"
             ); // default what group
@@ -151,10 +150,10 @@ class _IGROUPUSER extends Doc
         $tgroup = array();
         $this->lay->set("wid", ($iduser == "") ? "0" : $iduser);
         
-        $q2 = new queryDb("", "User");
+        $q2 = new queryDb("", "Account");
         $groups = $q2->Query(0, 0, "TABLE", "select users.*, groups.idgroup from users, groups where users.id = groups.iduser and users.accounttype='G'");
         
-        $q2 = new queryDb("", "User");
+        $q2 = new queryDb("", "Account");
         $mgroups = $q2->Query(0, 0, "TABLE", "select users.* from users where accounttype='G' and id not in (select iduser from groups, users u where groups.idgroup = u.id and u.accounttype='G')");
         
         if ($groups) {
@@ -233,8 +232,8 @@ class _IGROUPUSER extends Doc
     }
     /**
      * affect new groups to the user
-     * @global gidnew  Http var : egual Y to say effectif change (to not suppress group if gid not set)
-     * @global gid Http var : array of new groups id
+     * @global gidnew  string Http var : egual Y to say effectif change (to not suppress group if gid not set)
+     * @global gid string Http var : array of new groups id
      */
     function setGroups()
     {
@@ -251,7 +250,7 @@ class _IGROUPUSER extends Doc
             $gid = $_POST["gid"];
             if ($gid == "") $gid = array();
             
-            $user = $this->getWUser();
+            $user = $this->getAccount();
             $rgid = $user->GetGroupsId();
             if ((count($rgid) != count($gid)) || (count(array_diff($rgid, $gid)) != 0)) {
                 $gdel = array_diff($rgid, $gid);
@@ -299,7 +298,7 @@ class _IGROUPUSER extends Doc
      */
     function getDocUser($wid)
     {
-        $u = new User("", $wid);
+        $u = new Account("", $wid);
         if ($u->isAffected()) {
             if ($u->fid > 0) {
                 $du = new_Doc($this->dbaccess, $u->fid);
@@ -310,9 +309,9 @@ class _IGROUPUSER extends Doc
     }
     /** 
      * return what user object conform to whatid
-     * @return User return false if not found
+     * @return Account return false if not found
      */
-    function getWuser($nocache = false)
+    function getAccount($nocache = false)
     {
         if ($nocache) {
             unset($this->wuser); // needed for reaffect new values
@@ -321,11 +320,20 @@ class _IGROUPUSER extends Doc
         if (!isset($this->wuser)) {
             $wid = $this->getValue("us_whatid");
             if ($wid > 0) {
-                $this->wuser = new User("", $wid);
+                $this->wuser = new Account("", $wid);
             }
         }
         if (!isset($this->wuser)) return false;
         return $this->wuser;
+    }
+    /**
+     * return what user object conform to whatid
+     * @deprecated
+     * @return Account return false if not found
+     */
+    function getWuser($nocache = false)
+    {
+        return $this->getAccount($nocache);
     }
     /**
      * reset wuser

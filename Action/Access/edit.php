@@ -69,7 +69,7 @@ function edit(Action & $action)
         ));
     }
     // write title : user name
-    $user = new User($action->GetParam("CORE_DB") , $userId);
+    $user = new Account($action->GetParam("CORE_DB") , $userId);
     switch ($user->accounttype) {
         case "U":
             $action->lay->set("accountLabel", _("User"));
@@ -148,7 +148,7 @@ function edit_main(Action & $action, $userId, $appId, $coid)
         
         $action->lay->SetBlockData("OID", $oids);
         // contruct user id list
-        $ouser = new User();
+        $ouser = new Account();
         $tiduser = $ouser->GetUserAndGroupList();
         $userids = array();
         while (list($k, $v) = each($tiduser)) {

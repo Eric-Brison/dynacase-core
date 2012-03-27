@@ -75,7 +75,7 @@ class ldapProvider extends Provider
         $core->session = new Session();
         $action = new Action();
         $action->Set("", $core);
-        $action->user = new User("", 1); //create user as admin
+        $action->user = new Account("", 1); //create user as admin
         $whatuser->firstname = '--';
         $whatuser->lastname = '(from ldap) ' . $username;
         $whatuser->login = $username;

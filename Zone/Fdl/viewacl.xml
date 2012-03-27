@@ -16,8 +16,23 @@
     table.acl tbody tr:hover {
     background-color:[COLOR_C4];
     }
+    table.acl li {
+      list-style-type:square;
+    }
+    table.acl ul {
+      margin:0;
+    }
 </style>
-
+<script>
+function disableAccess(submit) {
+          submit.disabled=true;
+          submit.value="[TEXT:Update Access in progress]";
+          globalcursor('wait');
+          setTimeout(function () {
+              alert("[updateWaitText]\n[TEXT:You can close window now or waiting the end of processing]");
+            },5000);
+        }
+</script>
 <form name="edit" method="POST" action="[CORE_STANDURL]app=FDL&amp;action=MODACL">
 
 <div align="center">
@@ -57,7 +72,7 @@
                     <input type="hidden" name="userid" value="[userid]">
                     <input type="hidden" name="docid" value="[docid]">
                     <p style="text-align:left">
-                        [IFNOT readonly]<input type="submit"
+                        [IFNOT readonly]<input type="submit" onclick="disableAccess(this)"
                                name="Modify" value="[TEXT:Change privilege]">[ENDIF readonly]
                         <input type="reset" onClick="self.close()" name="Fermer" value="[TEXT:Close]">
                     </p>

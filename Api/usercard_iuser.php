@@ -32,7 +32,7 @@ if ($dbaccess == "") {
 $whatid = GetHttpVars("whatid", ""); // document
 $fbar = GetHttpVars("bar"); // for progress bar
 $onlygroup = (GetHttpVars("onlygroup") != ""); // for progress bar
-$query = new QueryDb("", "User");
+$query = new QueryDb("", "Account");
 
 if ($whatid > 0) {
     $query->AddQuery("id=$whatid");
@@ -164,7 +164,7 @@ if ($query->nb > 0) {
         }
         
         if (($v["fid"] == 0) && ($fid > 0)) {
-            $u = new User("", $v["id"]);
+            $u = new Account("", $v["id"]);
             $u->fid = $fid;
             $u->modify();
             unset($u);

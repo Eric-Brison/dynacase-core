@@ -751,6 +751,14 @@ create unique index i_docir on doc(initid, revision);";
      */
     private $_setValueCompleteArrayRow = true;
     /**
+     * display document main properties as string
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s "%s" [#%d]', $this->fromname, $this->getTitle() , $this->id);
+    }
+    /**
      * Increment sequence of family and call to {@see PostCreated()}
      *
      *
@@ -1252,7 +1260,7 @@ create unique index i_docir on doc(initid, revision);";
         else {
             if ($this->withoutControl) return ""; // no more test if disableEditControl activated
             if (($this->locked != 0) && (abs($this->locked) != $this->userid)) {
-                $user = new User("", abs($this->locked));
+                $user = new Account("", abs($this->locked));
                 if ($this->locked < - 1) $err = sprintf(_("Document %s is in edition by %s.") , $this->getTitle() , $user->firstname . " " . $user->lastname);
                 else $err = sprintf(_("you are not allowed to update the file %s (rev %d) is locked by %s.") , $this->getTitle() , $this->revision, $user->firstname . " " . $user->lastname);
             } else {
@@ -3821,7 +3829,7 @@ create unique index i_docir on doc(initid, revision);";
             $h->comment = $comment;
             $h->date = date("d-m-Y H:i:s");
             if ($uid > 0) {
-                $u = new User("", $uid);
+                $u = new Account("", $uid);
                 $h->uid = $u->id;
                 $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
             } else {
@@ -3860,7 +3868,7 @@ create unique index i_docir on doc(initid, revision);";
             $h->comment = $comment;
             
             if ($uid > 0) {
-                $u = new User("", $uid);
+                $u = new Account("", $uid);
                 $h->uid = $u->id;
                 $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
             } else {
@@ -3972,7 +3980,7 @@ create unique index i_docir on doc(initid, revision);";
             $h->fixed = ($allrevision) ? 'false' : 'true';
             $h->date = date("d-m-Y H:i:s");
             if ($uid > 0) {
-                $u = new User("", $uid);
+                $u = new Account("", $uid);
                 $h->uid = $u->id;
                 $h->uname = sprintf("%s %s", $u->firstname, $u->lastname);
             }
@@ -4676,7 +4684,7 @@ create unique index i_docir on doc(initid, revision);";
             $err = $this->canEdit();
             if ($err != "") $err = _("Affectation aborded") . "\n" . $err;
             if ($err == "") {
-                $u = new User("", $userid);
+                $u = new Account("", $userid);
                 if ($u->isAffected()) {
                     if ($err != "") $err = _("Affectation aborded") . "\n" . $err;
                     // no test if allocated can edit document
@@ -4735,7 +4743,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             
             if ($err == "") {
-                $u = new User("", $this->allocated);
+                $u = new Account("", $this->allocated);
                 if ($u->isAffected()) {
                     $err = $this->unlock();
                     if ($err == "") {
@@ -5134,7 +5142,7 @@ create unique index i_docir on doc(initid, revision);";
                                 $ul.= "&state=" . $matches[1];
                             }
                         }
-                        $ul.= "&app=FDL&action=FDL_CARD&id=$id";
+                        $ul.= "&app=FDL&action=OPENDOC&mode=view&id=$id";
                         if ($js) $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
                         else $ajs = "";
                         
@@ -5601,8 +5609,10 @@ create unique index i_docir on doc(initid, revision);";
                     if (preg_match('/@templateController\b/', $refMeth->getDocComment())) {
                         $this->$method($target, $ulink, $abstract);
                     } else {
-                        $err = sprintf(_("Method %s::%s() not contains @templateController tag comment") , $refMeth->getDeclaringClass()->getName() , $refMeth->getName());
-                        
+                        global $action;
+                        $syserr = ErrorCode::getError("DOC1101", $refMeth->getDeclaringClass()->getName() , $refMeth->getName() , $this);
+                        $action->log->error($syserr);
+                        $err = sprintf(_("Layout \"%s\" : Controller not allowed") , $layout);
                         return $err;
                     }
                 }
@@ -6052,7 +6062,7 @@ create unique index i_docir on doc(initid, revision);";
                 $this->lay->set("iconsrc", $this->getIcon());
                 $fdoc = $this->getFamDoc();
                 $this->lay->Set("ficonsrc", $fdoc->getIcon());
-                $owner = new User("", abs($this->owner));
+                $owner = new Account("", abs($this->owner));
                 $this->lay->Set("username", $owner->firstname . " " . $owner->lastname);
                 $this->lay->Set("userid", $owner->fid);
                 $this->lay->Set("lockedby", $this->lay->get("locked"));
@@ -6061,7 +6071,7 @@ create unique index i_docir on doc(initid, revision);";
                 if ($this->locked == - 1) {
                     $this->lay->Set("lockedid", false);
                 } else {
-                    $user = new User("", abs($this->locked));
+                    $user = new Account("", abs($this->locked));
                     // $this->lay->Set("locked", $user->firstname." ".$user->lastname);
                     if ($this->lockdomainid) {
                         $this->lay->Set("lockdomain", sprintf(_("in domain %s") , $this->getDocAnchor($this->lockdomainid, '_blank', true, '', false, true, true)));
@@ -6132,7 +6142,7 @@ create unique index i_docir on doc(initid, revision);";
                     $this->lay->Set("allocate", _("no allocate"));
                     $this->lay->Set("allocateid", false);
                 } else {
-                    $user = new User("", ($this->allocated));
+                    $user = new Account("", ($this->allocated));
                     $this->lay->Set("allocate", $user->firstname . " " . $user->lastname);
                     $this->lay->Set("allocateid", $user->fid);
                 }

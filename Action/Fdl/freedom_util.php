@@ -694,7 +694,7 @@ function getDocFromUserId($dbaccess, $userid)
     if ($userid == "") return false;
     include_once ("FDL/Lib.Dir.php");
     $tdoc = array();
-    $user = new User("", $userid);
+    $user = new Account("", $userid);
     if (!$user->isAffected()) return false;
     if ($user->isgroup == "Y") {
         $filter = array(

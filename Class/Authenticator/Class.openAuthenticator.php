@@ -59,7 +59,7 @@ class openAuthenticator extends Authenticator
         }
         
         $uid = $token->userid;
-        $user = new User('', $uid);
+        $user = new Account('', $uid);
         if (!is_object($user) || !$user->isAffected()) {
             error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Could not get user with uid '%s' for token '%s'.", $uid, $privatekey));
             return false;

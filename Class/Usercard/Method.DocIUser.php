@@ -27,9 +27,9 @@ class _IUSER extends _USER
     }
     /**
      * @param bool $real
-     * @return User
+     * @return Account
      */
-    public function getWUser($real = false)
+    public function getAccount($real = false)
     {
     }
     public function getSystemIds(array $accountIds)
@@ -58,7 +58,7 @@ class _IUSER extends _USER
         $this->SetValue("US_MEID", $this->id);
         $iduser = $this->getValue("US_WHATID");
         if ($iduser > 0) {
-            $user = $this->getWUser();
+            $user = $this->getAccount();
             if (!$user->isAffected()) return sprintf(_("user #%d does not exist") , $iduser);
         } else {
             if ($this->getValue("us_login") != '-') $err = _("user has not identificator");
@@ -174,7 +174,7 @@ class _IUSER extends _USER
         $err = "";
         $wid = $this->getValue("us_whatid");
         if ($wid > 0) {
-            $wuser = $this->getWuser(true);
+            $wuser = $this->getAccount(true);
             
             if ($wuser->isAffected()) {
                 $this->SetValue("US_WHATID", $wuser->id);
@@ -208,7 +208,7 @@ class _IUSER extends _USER
                 $g = new Group("", $wid);
                 $tgid = array();
                 if (count($g->groups) > 0) {
-                    $gt = new User($this->dbaccess);
+                    $gt = new Account($this->dbaccess);
                     foreach ($g->groups as $gid) {
                         $gt->select($gid);
                         $tgid[] = $gt->fid;
@@ -305,9 +305,9 @@ class _IUSER extends _USER
             
             $fid = $this->id;
             $newuser = false;
-            $user = $this->getWUser();
+            $user = $this->getAccount();
             if (!$user) {
-                $user = new User(""); // create new user
+                $user = new Account(""); // create new user
                 $this->wuser = & $user;
                 $newuser = true;
             }
@@ -359,7 +359,7 @@ class _IUSER extends _USER
     {
         _USER::PostDelete();
         
-        $user = $this->getWUser();
+        $user = $this->getAccount();
         if ($user) $user->Delete();
     }
     /**
@@ -394,7 +394,7 @@ class _IUSER extends _USER
      */
     public function refreshRoles()
     {
-        $u = $this->getWUser();
+        $u = $this->getAccount();
         if (!$u) return;
         $directRoleIds = $u->getRoles();
         $allParents = $u->getUserParents();
@@ -409,24 +409,30 @@ class _IUSER extends _USER
             if (in_array($role["id"], $directRoleIds)) {
                 $group = '';
                 $status = 'internal';
-            } else {
-                $group = '';
-                $rid = $role["id"];
-                $tgroup = array();
-                foreach ($allGroup as $aGroup) {
-                    simpleQuery($this->dbaccess, sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
-                    if ($gr) {
-                        $tgroup[] = $aGroup["fid"];
-                    }
-                }
-                if ($tgroup) $group = implode('<BR>', $tgroup);
-                $status = 'group';
+                $this->addArrayRow("us_t_roles", array(
+                    "us_roles" => $role["fid"],
+                    "us_rolesorigin" => $status,
+                    "us_rolegorigin" => $group
+                ));
             }
-            $this->addArrayRow("us_t_roles", array(
-                "us_roles" => $role["fid"],
-                "us_rolesorigin" => $status,
-                "us_rolegorigin" => $group
-            ));
+            $group = '';
+            $rid = $role["id"];
+            $tgroup = array();
+            foreach ($allGroup as $aGroup) {
+                simpleQuery($this->dbaccess, sprintf("select idgroup from groups where iduser=%d and idgroup=%d", $aGroup["id"], $rid) , $gr);
+                if ($gr) {
+                    $tgroup[] = $aGroup["fid"];
+                }
+            }
+            if ($tgroup) {
+                $status = 'group';
+                $group = implode('<BR>', $tgroup);
+                $this->addArrayRow("us_t_roles", array(
+                    "us_roles" => $role["fid"],
+                    "us_rolesorigin" => $status,
+                    "us_rolegorigin" => $group
+                ));
+            }
         }
     }
     /**
@@ -435,7 +441,7 @@ class _IUSER extends _USER
      */
     public function getMail($rawmail = false)
     {
-        $wu = $this->getWUser();
+        $wu = $this->getAccount();
         if ($wu->isAffected()) {
             return $wu->getMail($rawmail);
         }
@@ -696,7 +702,7 @@ class _IUSER extends _USER
     {
         $idwuser = $this->getValue("US_WHATID");
         
-        $wuser = $this->getWUser();
+        $wuser = $this->getAccount();
         if (!$wuser->isAffected()) {
             return sprintf(_("user #%d does not exist") , $idwuser);
         }

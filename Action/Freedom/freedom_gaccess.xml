@@ -105,6 +105,9 @@ form {
 #fView {
   float:right;
 }
+#idtbody tr:hover td {
+  border-color:[COLOR_A0]!important;
+}
 </style>
         <script>
         function openGroupAcl(gid) {
@@ -118,6 +121,10 @@ form {
           submit.value="[TEXT:Update Access in progress]";
           document.getElementById('iCancel').style.display='none';
           document.getElementById('fView').style.display='none';
+          globalcursor('wait');
+          setTimeout(function () {
+              alert("[updateWaitText]\n[TEXT:You can close window now or waiting the end of processing]");
+            },5000);
         }
         </script>
 <table class="hborder acls headacl"  cellspacing="0" cellpadding="0">

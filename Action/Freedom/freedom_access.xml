@@ -19,7 +19,7 @@
        </form></div>
 <div class="aclhead" >
 
-     [TEXT:Profile] <strong>[toProfil]</strong>[IF dynamic]. [ComputedFrom] <a target="access[dprofid]" href="?app=FREEDOM&action=FREEDOM_ACCESS&userid=[userid]&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic] [TEXT:For Account]: <strong>[fid]</strong>
+     [profprefix] <strong>[toProfil]</strong>[IF dynamic]. [ComputedFrom] <a target="access[dprofid]" href="?app=FREEDOM&action=FREEDOM_ACCESS&userid=[userid]&id=[dprofid]">[toDynProfil]</a>[ENDIF dynamic] [TEXT:For Account]: <strong>[fid]</strong>
 
 [ZONE FDL:VIEWACL?docid=[docid]&userid=[userid]]
 

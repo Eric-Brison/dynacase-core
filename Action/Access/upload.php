@@ -63,7 +63,7 @@ function changeuser(&$action, $line, $verbose = false)
     // eric.brison@local|hb7Qj/yFqxCGs|eric|brison|N|all@local;
     $uname = $col[0];
     
-    $use = new User($action->dbaccess);
+    $use = new Account($action->dbaccess);
     
     $use->SetLoginName($uname);
     $use->password = $col[1];
@@ -89,7 +89,7 @@ function changeuser(&$action, $line, $verbose = false)
     
     while (list($kg, $gd) = each($groups)) {
         
-        $gr = new User($action->dbaccess);
+        $gr = new Account($action->dbaccess);
         
         $gr->SetLoginName($gd);
         if ($gr->IsAffected()) {
@@ -110,7 +110,7 @@ function changeacl(&$action, $line, $verbose = false)
     $app->Set($col[0], $action->parent);
     $uname = $col[1];
     
-    $use = new User($action->dbaccess);
+    $use = new Account($action->dbaccess);
     
     $use->SetLoginname($uname);
     // update the permission in database

@@ -50,7 +50,7 @@ function edit_object(&$action)
     }
     $action->lay->SetBlockData("DEFACL", $tacldef);
     // define ACL for  each user
-    $ouser = new User();
+    $ouser = new Account();
     if ($viewuser) $tiduser = $ouser->GetUserList();
     else $tiduser = $ouser->GetGroupList();
     $userids = array();
