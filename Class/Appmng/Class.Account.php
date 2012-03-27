@@ -163,10 +163,10 @@ create sequence seq_id_users start 10;";
     function preInsert()
     {
         $err = '';
-        if ((! $this->login) && $this->accounttype=='R') {
-                    // compute auto role reference
-                    $this->login=uniqid('role');
-                }
+        if ((!$this->login) && $this->accounttype == 'R') {
+            // compute auto role reference
+            $this->login = uniqid('role');
+        }
         if ($this->setloginName($this->login)) return _("this login exists");
         if ($this->login == "") return _("login must not be empty");
         if ($this->id == "") {
@@ -184,7 +184,6 @@ create sequence seq_id_users start 10;";
         }
         if (!$this->accounttype) $this->accounttype = 'U';
         $this->login = mb_strtolower($this->login);
-
         
         if (isset($this->password_new) && ($this->password_new != "")) {
             $this->computepass($this->password_new, $this->password);
@@ -232,16 +231,14 @@ create sequence seq_id_users start 10;";
     {
         include_once ("WHAT/Class.Session.php");
         include_once ("FDL/Lib.Usercard.php");
-        $err='';
+        $err = '';
         $group = new Group($this->dbaccess, $this->id);
         $ugroups = $group->groups;
         // delete reference in group table
-        $sql=sprintf("delete from groups where iduser=%d or idgroup=%d",$this->id, $this->id);
-        simpleQuery($this->dbaccess,$sql);
-
-            
-            refreshGroups($ugroups, true);
-
+        $sql = sprintf("delete from groups where iduser=%d or idgroup=%d", $this->id, $this->id);
+        simpleQuery($this->dbaccess, $sql);
+        
+        refreshGroups($ugroups, true);
         
         global $action;
         $action->session->CloseUsers($this->id);
@@ -339,7 +336,7 @@ create sequence seq_id_users start 10;";
         $this->lastname = $lname;
         $this->firstname = $fname;
         $this->status = $status;
-        if ($this->login == "") $this->login = $login;
+        if ($login != "") $this->login = $login;
         //don't modify password in database even if force constraint
         if ($pwd1 == $pwd2 and $pwd1 <> "") {
             $this->password_new = $pwd2;
@@ -467,10 +464,13 @@ create sequence seq_id_users start 10;";
         $salt.= $salt_space[rand(0, strlen($salt_space) - 1) ];
         $passk = crypt($pass, $salt);
     }
-    
+    /**
+     * @param string $pass clear password to test
+     * @return bool
+     */
     function checkpassword($pass)
     {
-        if ($this->isgroup == 'Y') return false; // don't log in group
+        if ($this->accounttype != 'U') return false; // don't log in group or role
         return ($this->checkpass($pass, $this->password));
     }
     // --------------------------------------------------------------------
@@ -618,7 +618,7 @@ union
         $query = new QueryDb(getDbAccess() , "Account");
         $query->AddQuery("(accountType='G' or accountType='U')");
         
-        $query->order_by = "isgroup desc, lastname";
+        $query->order_by = "accounttype, lastname";
         return ($query->Query(0, 0, $qtype));
     }
     /**
@@ -626,18 +626,9 @@ union
      */
     function getGroupsId()
     {
-        $query = new QueryDb($this->dbaccess, "Group");
-        $query->AddQuery("iduser='{$this->id}'");
         
-        $list = $query->Query(0, 0, "TABLE");
-        $groupsid = array();
-        
-        if ($query->nb > 0) {
-            while (list($k, $v) = each($list)) {
-                $groupsid[$v["idgroup"]] = $v["idgroup"];
-            }
-        }
-        
+        $sql = sprintf("select idgroup from groups, users where groups.idgroup=users.id and users.accounttype='G' and groups.iduser=%d", $this->id);
+        simpleQuery($this->dbaccess, $sql, $groupsid, true, false);
         return $groupsid;
     }
     /**
@@ -816,7 +807,7 @@ union
     }
     /**
      * only use with group or role
-     * if it is a group : get all direct user member of a group 
+     * if it is a group : get all direct user member of a group
      * if it is a role : het user which has role directly
      * @param string $qtype LIST|TABLE|ITEM
      * @param bool $withgroup set to true to return sub group also
@@ -984,7 +975,7 @@ union
                     
                     $g->idgroup = $rid;
                     $g->iduser = $this->id;
-                    $gerr = $g->add();
+                    $gerr = $g->add(true);
                     if ($gerr == 'OK') $gerr = '';
                     $err.= $gerr;
                 }

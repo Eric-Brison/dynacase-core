@@ -50,9 +50,6 @@ class _IUSER extends _USER
     {
         $err = _USER::SpecRefresh();
         
-        $this->AddParamRefresh("US_WHATID", "US_LOGIN,US_GROUP");
-        $this->AddParamRefresh("US_AUTOMAIL", "US_EXTMAIL");
-        
         if ($this->getValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
         // refresh MEID itself
         $this->SetValue("US_MEID", $this->id);
@@ -268,7 +265,7 @@ class _IUSER extends _USER
         if (!$err) $this->refreshRoles();
     }
     /**
-     * Modify IUSER via Freedom
+     * Modify system account from document IUSER
      */
     function synchronizeSystemUser()
     {
@@ -477,7 +474,12 @@ class _IUSER extends _USER
             "sug" => $sug
         );
     }
-    
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param string $abstract
+     */
     function editlikeperson($target = "finfo", $ulink = true, $abstract = "Y")
     {
         global $action;
@@ -579,12 +581,16 @@ class _IUSER extends _USER
     }
     /**
      * interface to only modify name and password
+     * @templateController
      */
     function editchangepassword()
     {
         $this->viewprop();
         $this->editattr(false);
     }
+    /**
+     * @templateController
+     */
     function fusers_eiuser()
     {
         global $action;
