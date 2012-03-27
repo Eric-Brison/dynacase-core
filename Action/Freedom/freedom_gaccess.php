@@ -209,6 +209,8 @@ function freedom_gaccess(Action & $action)
     $action->lay->set("isgreen", $green);
     $err = $doc->control("modifyacl");
     $action->lay->set("profcount", "");
+    
+    $action->lay->set("updateWaitText", sprintf(_("Update profiling is in progress.")));
     if ($err == "" && (!$doc->dprofid) && ($doc->profid == $doc->id)) {
         $action->lay->set("MODIFY", true);
         $action->lay->set("dmodify", "");
@@ -223,6 +225,7 @@ function freedom_gaccess(Action & $action)
             if ($cont > 0) {
                 if ($cont > 1) $action->lay->set("profcount", sprintf(_("%d documents linked to the profil") , $cont));
                 else $action->lay->set("profcount", _("only one document linked to the profil"));
+                $action->lay->set("updateWaitText", sprintf(_("Update profiling of %d documents is in progress.") , $cont));
             }
         }
     } else {
@@ -231,17 +234,18 @@ function freedom_gaccess(Action & $action)
     }
     
     $action->lay->Set("toOrigin", $doc->getDocAnchor($doc->id, 'account', true, false, false, 'latest', true));
+    
     if ($doc->dprofid) {
         $action->lay->Set("dynamic", true);
         $action->lay->Set("dprofid", $doc->dprofid);
         $action->lay->Set("toDynProfil", $doc->getHtmlTitle($doc->dprofid));
-        $action->lay->Set("ComputedFrom", _("Computed from"));
+        $action->lay->Set("ComputedFrom", _("Computed from profil"));
     } elseif ($doc->profid != $doc->id) {
         
         $action->lay->Set("dynamic", true);
         $action->lay->Set("dprofid", $doc->profid);
         $action->lay->Set("toDynProfil", $doc->getHtmlTitle($doc->profid));
-        $action->lay->Set("ComputedFrom", _("Linked from"));
+        $action->lay->Set("ComputedFrom", _("Linked from profil"));
     } else {
         $action->lay->Set("dynamic", false);
     }

@@ -60,15 +60,22 @@ function freedom_access(Action & $action)
     if ($doc->dprofid) {
         $action->lay->Set("dynamic", true);
         $action->lay->Set("dprofid", $doc->dprofid);
-        $action->lay->Set("ComputedFrom", _("Computed from"));
+        $action->lay->Set("ComputedFrom", _("Computed from profil"));
         $action->lay->Set("toDynProfil", $doc->getHTMLTitle($doc->dprofid));
     } elseif ($doc->profid != $doc->id) {
         $action->lay->Set("dynamic", true);
         $action->lay->Set("dprofid", $doc->profid);
-        $action->lay->Set("ComputedFrom", _("Linked from"));
+        $action->lay->Set("ComputedFrom", _("Linked from profil"));
         $action->lay->Set("toDynProfil", $doc->getHTMLTitle($doc->profid));
     } else {
         $action->lay->Set("dynamic", false);
+    }
+    if ($doc->isRealProfile()) {
+        $action->lay->Set("profprefix", _("Profile of"));
+        $origin = $action->lay->get("toProfil");
+        $action->lay->Set("toProfil", preg_replace('/href="([^"]*)"/', 'href="?app=FREEDOM&action=FREEDOM_GACCESS&id=' . $doc->id . '"', $origin));
+    } else {
+        $action->lay->Set("profprefix", _("Document Profile"));
     }
     
     $action->lay->Set("fid", $doc->getDocAnchor($ouser->fid, 'account', true, false, false, 'latest', true));
