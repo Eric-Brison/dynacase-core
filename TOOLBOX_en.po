@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-27 10:38+0200\n"
+"POT-Creation-Date: 2012-03-27 16:53+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2453,9 +2453,6 @@ msgstr ""
 msgid ""
 "Master document has been closed.\n"
 "Close window ?"
-msgstr ""
-
-msgid "Max user reach. Use search filter"
 msgstr ""
 
 msgid "Maximum 20 views by control"
@@ -7158,6 +7155,10 @@ msgid "no access control"
 msgstr ""
 
 #, c-format
+msgid "no account match '%s'"
+msgstr ""
+
+#, c-format
 msgid "no action found for %s document"
 msgstr ""
 
@@ -7167,6 +7168,10 @@ msgstr ""
 #, fuzzy
 msgid "no allocate"
 msgstr "Email"
+
+#, c-format
+msgid "no application match '%s'"
+msgstr ""
 
 #, fuzzy
 msgid "no attribute file found"

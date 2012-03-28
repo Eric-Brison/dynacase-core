@@ -17,7 +17,7 @@ function access_user_chg(Action & $action)
     // -----------------------------------
     // select the first user if not set
     // What user are we working on ? ask session.
-    $user_id = GetHttpVars("id");
+    $user_id = GetHttpVars("id", getHttpVars('_accountid'));
     $accountType = $action->getArgument("accountType");
     $filteruser = getHttpVars("userfilter");
     
@@ -27,7 +27,7 @@ function access_user_chg(Action & $action)
         $action->Register("access_group_id", $user_id);
         redirect($action, "ACCESS", "GROUP_ACCESS");
     } else if ($accountType == "R") {
-        $action->Register("access_group_id", $user_id);
+        $action->Register("access_role_id", $user_id);
         redirect($action, "ACCESS", "ROLE_ACCESS");
     } else {
         $action->Register("access_user_id", $user_id);

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-27 10:38+0200\n"
-"PO-Revision-Date: 2012-03-27 10:40+0200\n"
+"POT-Creation-Date: 2012-03-27 16:53+0200\n"
+"PO-Revision-Date: 2012-03-27 16:55+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -958,7 +958,8 @@ msgstr "Suppression des droits pour l'utilisateur %s."
 
 #, c-format
 msgid "Change control for %s user. Set %s privileges"
-msgstr "Modification des droits pour l'utilisateur %s. Nouveaux privilèges : %s"
+msgstr ""
+"Modification des droits pour l'utilisateur %s. Nouveaux privilèges : %s"
 
 #, c-format
 msgid "Change creation profil to %s [%d]"
@@ -2346,9 +2347,6 @@ msgid ""
 msgstr ""
 "Le document maître a été fermé.\n"
 "Voulez-vous fermer la fenêtre ?"
-
-msgid "Max user reach. Use search filter"
-msgstr "Utiliser la recherche pour voir la suite"
 
 msgid "Maximum 20 views by control"
 msgstr "Maximum 20 vues par contrôle"
@@ -6750,6 +6748,10 @@ msgid "no access control"
 msgstr "pas de contrôle d'accès"
 
 #, c-format
+msgid "no account match '%s'"
+msgstr "Aucun compte ne correspond à '%s'"
+
+#, c-format
 msgid "no action found for %s document"
 msgstr "pas d'actions trouvée pour le document %s"
 
@@ -6758,6 +6760,10 @@ msgstr "référence à un document mort"
 
 msgid "no allocate"
 msgstr "pas d'affectation"
+
+#, c-format
+msgid "no application match '%s'"
+msgstr "Aucune application ne correspond à '%s'"
 
 msgid "no attribute file found"
 msgstr "Aucun attribut de type fichier trouvé"
@@ -9030,6 +9036,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Linked from"
 #~ msgstr "Lié par"
+
+#~ msgid "Max user reach. Use search filter"
+#~ msgstr "Utiliser la recherche pour voir la suite"
 
 #~ msgid "Method %s::%s() not contains %s tag comment"
 #~ msgstr ""

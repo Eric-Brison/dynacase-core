@@ -40,7 +40,7 @@ function edit(Action & $action)
             $userId = $action->Read("access_group_id");
         } elseif ($accountType == "R") {
             $action->lay->Set("returnact", "ROLE_ACCESS&userfilter=$filteruser");
-            $userId = $action->Read("access_group_id");
+            $userId = $action->Read("access_role_id");
         } else {
             $action->lay->Set("returnact", "USER_ACCESS&userfilter=$filteruser"); // for return previous page
             $userId = $action->Read("access_user_id");
