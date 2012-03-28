@@ -285,7 +285,7 @@ class DocFormFormat
                         $phpfunc = $this->oattr->phpfunc;
                         
                         $linkPrefixCT = "ilink_";
-                        $phpfunc = preg_replace('/([\s|,|:])CT\[([^]]+)\]/e', "'\\1'.$linkPrefixCT.strtolower('\\2')", $phpfunc);
+                        $phpfunc = preg_replace('/([\s|,|:|\(])CT\[([^]]+)\]/e', "'\\1'.$linkPrefixCT.strtolower('\\2')", $phpfunc);
                         // capture title
                         //if (isUTF8($oattr->getLabel())) $oattr->labelText=utf8_decode($oattr->getLabel());
                         $ititle = sprintf(_("choose inputs for %s") , ($this->oattr->getLabel()));
@@ -731,7 +731,7 @@ class DocFormFormat
                         $this->oattr->phpfile = "fdl.php";
                         $this->oattr->phpfunc = "lfamily(D,$famid,{$this->linkPrefix}{$this->attrid}):${cible}{$this->attrid},{$this->linkPrefix}{$this->attrid}";
                     } else {
-                        $phpfunc = preg_replace('/([\s|,|:])CT([\s|,|\)]|$)/', '$1' . $this->linkPrefix . $this->attrid . '$2', $this->oattr->phpfunc);
+                        $phpfunc = preg_replace('/([\s|,|:|\(])CT([\s|,|\)]|$)/', '$1' . $this->linkPrefix . $this->attrid . '$2', $this->oattr->phpfunc);
                         $phpfunc = str_replace("):{$this->attrid},", "):${cible}{$this->attrid},", $phpfunc);
                         $phpfunc = str_replace("):" . strtoupper($this->attrid) . ",", "):${cible}{$this->attrid},", $phpfunc);
                         $this->oattr->phpfunc = $phpfunc;

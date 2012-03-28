@@ -28,7 +28,26 @@ input[name="text"] {
     width:200px;
 }
 </style>
-
+        <script>
+        function setDisplayName(value) {
+           var inp=document.getElementById('ilink_accountid');
+           if (inp) inp.value=value;
+           inp=document.getElementById('ilink_appid');
+           if (inp) inp.value=value;
+        }
+        function submitOnChange(o) {
+          if (o) {
+            if (o.value != '' && o.value!=' ') {
+               globalcursor('wait');
+               document.body.style.opacity=0.5;
+               o.form.submit();
+            }
+          }
+        }
+       addEvent(window, 'load', function () {
+setDisplayName("[displayName]");
+        });
+        </script>
 
 [ZONE CORE:TABINDEX]
 <br/>
@@ -37,11 +56,13 @@ input[name="text"] {
     <tr> 
       <td  valign="middle" class="CORETblHeadCell">
     <form style="display:inline" name="access_chg" method="POST" action="[CORE_BASEURL]app=ACCESS&action=[ACTION_CHG]">
-       <label for="id">[changeLabel] : </label><select name="id" onChange="submit()">
-[BLOCK SELUSER]
-         <option [selected] value="[id]">[text]</option> [ENDBLOCK SELUSER]
-        [IF maxreach]<option disabled value="">[TEXT:Max user reach. Use search filter]</option>[ENDIF maxreach]
-       </select>
+       <label for="id">[changeLabel] : </label>
+        [IF URG]
+        [ZONE FDL:INPUTATTRIBUTE?type=docid("IUSER")&id=accountid&jsevent=onchange="submitOnChange(this)"&esize=40&phpfile=haccess.php&label=[changeLabel]&phpfunc=accessGetAccounts("[accountType]",CT):accountid,CT]
+        [ENDIF URG]
+        [IFNOT URG]
+                [ZONE FDL:INPUTATTRIBUTE?type=docid("x")&id=appid&jsevent=onchange="submitOnChange(this)"&esize=40&phpfile=haccess.php&label=[changeLabel]&phpfunc=accessGetApps(CT):appid,CT]
+        [ENDIF URG]
        [IF usefilter][TEXT:Search]:<input value="[userfilter]" placeholder="[TEXT:filter on login and lastname]" title="[TEXT:filter on login and lastname]" name="userfilter">[ENDIF usefilter]
     </form>
       </td>

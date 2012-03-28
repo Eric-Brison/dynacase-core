@@ -151,6 +151,7 @@ class DbObj
     
     function Select($id)
     {
+        if (!$id) return false;
         if ($this->dbid == - 1) return FALSE;
         
         $msg = $this->PreSelect($id);

@@ -505,7 +505,7 @@ function addTableRow(config) {
 		//var texbody = document.getElementById('tbodyid_t_applicable_document');
 		if (!texbody) {
 			alert('array of documents not found');
-			return;
+			return false;
 		}
 		// serach unique attribut
 		var uniqattr=false,uniqvalue=false;
@@ -1147,6 +1147,10 @@ function clearInputs(tinput, idx,attrid, tOutsideInput) {
 	if (attrid && document.getElementById(attrid)) {
 	    
 	    try {document.getElementById(attrid).focus();} catch (exception) {} ;
+        var ct='ilink_'+attrid;
+        if (document.getElementById(ct)) {
+            try {document.getElementById(ct).focus();} catch (exception) {} ;
+        }
 	}
 
 }
