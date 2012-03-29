@@ -19,105 +19,33 @@ include_once ("WHAT/Class.Provider.php");
 
 class freedomProvider extends Provider
 {
-    
+    /**
+     * checks user login and password
+     *
+     * @param string $username user login
+     * @param string $password user password
+     * @return bool true if ok
+     */
     public function validateCredential($username, $password)
     {
-        $dbh = pg_connect($this->parms{'connection'});
-        if ($dbh == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: failed connection to database");
-            $this->errno = 0;
-            return FALSE;
+        $user = new User();
+        if ($user->setLoginName($username)) {
+            return $user->checkpassword($password);
         }
-        $stmt = pg_prepare($dbh, "check_bug_639", "SELECT login FROM users WHERE login = \$1 AND password !~ '^[a-zA-Z0-9./]{2}'");
-        if ($stmt == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: pg_preapare(check_bug_639) returned false");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $res = pg_execute($dbh, "check_bug_639", array(
-            $username
-        ));
-        if ($res == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: pg_execute(check_bug_639) returned false. User $username not found ?");
-            $this->errno = 0;
-            return FALSE;
-        }
-        if (pg_num_rows($res) > 0) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: found bug #639 for user '$username'");
-            $this->errno = Provider::ERRNO_BUG_639;
-            return FALSE;
-        }
-        
-        $stmt = pg_prepare($dbh, "get_password", 'SELECT password FROM users WHERE login = $1');
-        if ($stmt == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: pg_prepare(get_password) returned false");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $res = pg_execute($dbh, "get_password", array(
-            $username
-        ));
-        if ($res == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: pg_execute(get_password) returned false. User $username not found ?");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $encrypted_password = pg_fetch_result($res, 0);
-        if ($encrypted_password == "") {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: User $username not found");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $ret = preg_match("/^(..)/", $encrypted_password, $salt);
-        if ($ret == 0) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error: could not get salt from encrypted password for user $username");
-            $this->errno = 0;
-            return FALSE;
-        }
-        if ($encrypted_password == crypt($password, $salt[0])) {
-            $this->errno = 0;
-            return TRUE;
-        }
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . sprintf("Password mismatch for user %s", $username));
-        $this->errno = 0;
         return FALSE;
     }
-    
+    /**
+     * checks if a user can't connect to Dynacase
+     *
+     * @return bool true if ok
+     */
     public function validateAuthorization($opt)
     {
-        if (!array_key_exists('username', $opt)) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Missing username key in opt array");
-            $this->errno = 0;
-            return FALSE;
+        if (array_key_exists('username', $opt)) {
+            $user = new User();
+            if ($user->setLoginName($opt['username'])) return ($user->status != 'D');
         }
-        $dbh = pg_connect($this->parms{'connection'});
-        if ($dbh == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error connecting to database");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $stmt = pg_prepare($dbh, "get_status", 'SELECT status FROM users WHERE login = $1');
-        if ($stmt == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error preparing select statement");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $res = pg_execute($dbh, "get_status", array(
-            $opt['username']
-        ));
-        if ($res == FALSE) {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Error in result of get_status");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $status = pg_fetch_result($res, 0);
-        if ($status == 'D') {
-            error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Account " . $opt['username'] . " has been suspended");
-            $this->errno = 0;
-            return FALSE;
-        }
-        $this->errno = 0;
-        return TRUE;
+        return FALSE;
     }
 }
 ?>

@@ -23,7 +23,6 @@ include_once ('Class.Application.php');
 include_once ('Class.Group.php');
 
 require_once 'PEAR.php';
-require_once 'Crypt/CHAP.php';
 
 define("GALL_ID", 2);
 define("ANONYMOUS_ID", 3);
@@ -114,7 +113,7 @@ create sequence seq_id_users start 10;";
     /**
      * affect account from login name
      * @param string $login login
-     * @return boolean true if ok
+     * @return bool true if ok
      */
     function setLoginName($login)
     {
@@ -135,7 +134,7 @@ create sequence seq_id_users start 10;";
      *
      * @param string $login login
      * @deprecated
-     * @return boolean true if ok
+     * @return bool true if ok
      */
     function setLogin($login, $unused = '0')
     {
@@ -145,7 +144,7 @@ create sequence seq_id_users start 10;";
      * affect account from its document id
      *
      * @param int $fid
-     * @return boolean true if ok
+     * @return bool true if ok
      */
     function setFid($fid)
     {
@@ -458,11 +457,11 @@ create sequence seq_id_users start 10;";
     // --------------------------------------------------------------------
     function computepass($pass, &$passk)
     {
-        $salt_space = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./";
+        $salt = '';
+        $salt_space = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./";
         srand((double)microtime() * 1000000);
-        $salt = $salt_space[rand(0, strlen($salt_space) - 1) ];
-        $salt.= $salt_space[rand(0, strlen($salt_space) - 1) ];
-        $passk = crypt($pass, $salt);
+        for ($i = 0; $i < 16; $i++) $salt.= $salt_space[rand(0, strlen($salt_space) - 1) ];
+        $passk = crypt($pass, "\$5\${$salt}");
     }
     /**
      * @param string $pass clear password to test
@@ -476,8 +475,26 @@ create sequence seq_id_users start 10;";
     // --------------------------------------------------------------------
     function checkpass($pass, $passk)
     {
-        $salt = substr($passk, 0, 2);
-        $passres = crypt($pass, $salt);
+        if (substr($passk, 0, 3) != '$5$') {
+            /* Old DES crypted passwords => SSHA256 crypting*/
+            $salt = substr($passk, 0, 2);
+            $passres = crypt($pass, $salt);
+            if ($passres == $passk) {
+                $this->computepass($pass, $this->password);
+                $err = $this->modify(true, array(
+                    'password'
+                ) , true);
+                if ($err == '') {
+                    if ($this->id == 1) $this->setAdminHtpasswd($pass);
+                    $log = new Log("", "Session", "Authentication");
+                    $facility = constant(getParam("AUTH_LOGFACILITY", "LOG_AUTH"));
+                    $log->wlog("S", sprintf('User %s password crypted with salted SHA256 algorithm.', $this->login) , NULL, $facility);
+                }
+            }
+        } else {
+            $salt = substr($passk, 3, 19);
+            $passres = crypt($pass, "\$5\${$salt}");
+        }
         return ($passres == $passk);
     }
     /**
@@ -787,7 +804,7 @@ union
     }
     /**
      * verify if user is member of group (recursive)
-     * @return boolean
+     * @return bool
      */
     public function isMember($uid)
     {
