@@ -86,7 +86,7 @@ class _ROLE extends Doc
     public function userSynchronize()
     {
         $err = '';
-        if ($this->id) {
+        if ($this->isAffected()) {
             $sR = $this->getAccount();
             
             if (!$sR) {
