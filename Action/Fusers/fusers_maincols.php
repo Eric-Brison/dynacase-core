@@ -1,23 +1,16 @@
 <?php
 /*
+ * Choose attribute column to display
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Choose attribute column to display
- *
- * @author Anakeen 2005
- * @version $Id: faddbook_maincols.php,v 1.7 2008/08/14 09:59:14 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage USERCARD
- */
+
 /**
  */
 include_once ("FDL/Lib.Dir.php");
 
-function faddbook_maincols(&$action)
+function fusers_maincols(Action &$action)
 {
     
     global $_GET, $_POST, $ZONE_ARGS;
@@ -41,19 +34,19 @@ function faddbook_maincols(&$action)
     }
     
     $dfam = createDoc($dbaccess, $sfam, false);
-    $fattr = $dfam->GetAttributes();
+    $fattr = $dfam->GetNormalAttributes();
     $cols = array();
     foreach ($fattr as $k => $v) {
-        if ($v->type != "menu" && $v->type != "frame" && $v->visibility != "H" && $v->visibility != "O" && $v->visibility != "I") {
+        if ($v->type != "menu" && $v->type != "frame" && $v->type != "array" && $v->visibility != "H" && $v->visibility != "O" && $v->visibility != "I") {
             $cols[$v->id] = array(
                 "l" => ($v->isInAbstract == 1 ? 1 : 0) ,
                 "order" => $v->ordered,
-                "label" => $v->getLabel()
+                "label" => $v->fieldSet->getLabel().'/'.$v->getLabel()
             );
         }
     }
     
-    $pc = $action->getParam("FADDBOOK_MAINCOLS", "");
+    $pc = $action->getParam("FUSERS_MAINCOLS", "");
     if (count($ncols) > 0 || $reset == 1) { // Modified state
         $allcol = array();
         foreach ($cols as $k => $v) {
@@ -61,7 +54,7 @@ function faddbook_maincols(&$action)
             if (isset($ncols[$sfam][$k])) $cols[$k]["l"] = ($ncols[$sfam][$k] != "" ? $ncols[$sfam][$k] : 0);
             if ($cols[$k]["l"] == 1) $allcol[] = $sfam . "%" . $k;
         }
-        //     AddWarningMsg("FADDBOOK_MAINCOLS = [$scol]");
+        //     AddWarningMsg("FUSERS_MAINCOLS = [$scol]");
         if ($pc != "") {
             $tccols = explode("|", $pc);
             foreach ($tccols as $k => $v) {
@@ -71,8 +64,8 @@ function faddbook_maincols(&$action)
             }
         }
         $scol = implode("|", $allcol);
-        if ($action->user->id == 1) $action->parent->param->Set("FADDBOOK_MAINCOLS", $scol, PARAM_APP, $action->parent->id);
-        $action->parent->param->set("FADDBOOK_MAINCOLS", $scol, PARAM_USER . $action->user->id, $action->parent->id);
+        if ($action->user->id == 1) $action->parent->param->Set("FUSERS_MAINCOLS", $scol, PARAM_APP, $action->parent->id);
+        $action->parent->param->set("FUSERS_MAINCOLS", $scol, PARAM_USER . $action->user->id, $action->parent->id);
     } else { // User initial state
         if ($pc != "") {
             $tccols = explode("|", $pc);
@@ -88,7 +81,7 @@ function faddbook_maincols(&$action)
             }
         }
     }
-    
+    $vcols=array();
     foreach ($cols as $k => $v) {
         $vcols[] = array(
             "id" => $k,

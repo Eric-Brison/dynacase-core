@@ -29,7 +29,7 @@ function viewdoc(id) {
   subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=FDL&action=FDL_CARD&id='+id);
 }
 function viewfld(id) {
-  subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAIN&dfam=IUSER&target=finfo2&etarget=finfo2&usedefaultview=Y&dirid='+id);
+  subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=[APPNAME]&action=FUSERS_MAIN&dfam=IUSER&target=finfo2&etarget=finfo2&usedefaultview=Y&dirid='+id);
 }
 function focuskey() {
   var o=document.getElementById("kid");
@@ -55,7 +55,7 @@ TABLE.tableborder TBODY TR TD{
 
 <div  class="tabh">
 <span  class="tabsel" onclick="showDiv(this,'DUsers');"><img width="14"  src="[IMG:dynacase-iuser.png]">[TEXT:Users]</span>
-<span  onclick="showDiv(this,'DGroups');"><img width="14"  src="[IMG:igroup.gif]">[TEXT:Groups]</span>
+<span  onclick="showDiv(this,'DGroups');"><img width="14"  src="[iconGroup]">[TEXT:Groups]</span>
 [IF isMaster]<span  onclick="showDiv(this,'DAdmin');"><img width="14"  src="[IMG:freeaction.gif]">[TEXT:Admin]</span>[ENDIF isMaster]
 </div>
 
@@ -64,12 +64,12 @@ TABLE.tableborder TBODY TR TD{
 
 
 <div class="do" style="height:100%" id="DUsers">
-<iframe id="fiuser" style="border:none" scrolling="needed" width="95%" height="95%" src="[CORE_STANDURL]&app=[APPNAME]&action=FADDBOOK_MAIN&dfam=IUSER&usedefaultview=Y&etarget=finfo[APPNAME]&cols=us_login&viewone=Y&target=finfo[APPNAME]&createsubfam=Y"></iframe>
+<iframe id="fiuser" style="border:none" scrolling="needed" width="95%" height="95%" src="[CORE_STANDURL]&app=[APPNAME]&action=FUSERS_MAIN&dfam=IUSER&usedefaultview=Y&etarget=finfo[APPNAME]&cols=us_login&viewone=Y&target=finfo[APPNAME]&createsubfam=Y"></iframe>
 </div>
 <div class="do" id="DGroups" style="display:none">
 <button onclick="subwindow(100,100,'finfo[APPNAME]','[CORE_STANDURL]&app=GENERIC&action=GENERIC_EDIT&classid=IGROUP')">[TEXT:Create new group]</button>
 <UL id="gtree" class="mktree">[BLOCK LI]<LI name="LI[id]" >
-<img class="click" title="[TEXT:view detail] ([login])"  src="[icon]" width="12px" onclick="viewdoc('[fid]')"><a onclick="viewfld('[fid]')"><span  title="[login]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span></A>
+<img class="click" title="[TEXT:view detail] ([login])"  src="[icon]" width="14px" onclick="viewdoc('[fid]')"><a onclick="viewfld('[fid]')"><span  title="[login]" id="SPAN[id]" name="SPAN[id]">[firstname] [lastname]</span></A>
 [SUBUL]</LI>[ENDBLOCK LI]</UL>
 <script>addEvent(window,"load",convertTrees)</script>
 </div>

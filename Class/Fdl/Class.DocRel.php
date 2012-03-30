@@ -54,6 +54,11 @@ class DocRel extends DbObj
     );
     
     public $dbtable = "docrel";
+    public $ctitle;
+    public $cicon;
+    public $stitle;
+    public $sicon;
+    public $doctype;
     
     public $sqlcreate = "
 create table docrel ( sinitid int not null,                   
@@ -118,7 +123,7 @@ create unique index docrel_u on docrel(sinitid,cinitid,type);
     {
         $nattr = $doc->GetNormalAttributes();
         foreach ($nattr as $k => $v) {
-            if (isset($doc->$k) && ($doc->$k != "") && ($v->type == "docid")) {
+            if (isset($doc->$k) && ($doc->$k != "") && ($v->type == "docid" || $v->type == "account")) {
                 
                 if (!$force) {
                     if ($doc->getOldValue($v->id) === false) {

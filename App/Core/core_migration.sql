@@ -71,6 +71,7 @@ SELECT pg_temp.addColumnIfNotExists('', 'users', 'accounttype', 'char');
 --SELECT pg_temp.dropColumnIfExists('', 'doc127', 'us_iddomain','cascade');
 --SELECT pg_temp.dropColumnIfExists('', 'doc127', 'us_domain','cascade');
 select pg_temp.addIndexIfNotExists('', 'users', 'users_login', true, '(login)');
+SELECT pg_temp.changeColumnType('', 'users', 'password', 'text', '');
 
 
 SELECT pg_temp.dropColumnIfExists('', 'docperm', 'unacl');
@@ -83,6 +84,22 @@ UPDATE doc127 SET name = 'GADMIN'     WHERE us_whatid = '4';
 UPDATE doc127 SET name = 'GDEFAULT'   WHERE us_whatid = '2';
 UPDATE doc128 SET name = 'USER_ADMIN' WHERE us_whatid = '1';
 UPDATE doc128 SET name = 'USER_GUEST' WHERE us_whatid = '3';
+delete from docattr where id in ('grp_toomany',
+'grp_users',
+'grp_iduser',
+'grp_user',
+'grp_rusers',
+'grp_idruser',
+'grp_ruser',
+'grp_group',
+':grp_groups',
+'grp_t_roles',
+'grp_pgroup',
+'grp_parent',
+'grp_groups',
+'grp_hasmembers');
+
+
 
 
 

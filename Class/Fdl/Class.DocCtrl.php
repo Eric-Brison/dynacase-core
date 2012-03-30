@@ -435,7 +435,7 @@ class DocCtrl extends DocLDAP
                 // try to add
                 $ddoc = new_Doc($this->dbaccess, $this->getValue("dpdoc_famid"));
                 $oa = $ddoc->getAttribute($uid);
-                if ($oa->type == "docid") {
+                if (($oa->type == "docid") || ($oa->type == "account")) {
                     $vg->id = $oa->id;
                     $vg->Add();
                     $uid = $vg->num;

@@ -146,9 +146,9 @@ table.defattr tr.frame .iorder, table.defattr tr.tab .iorder, table.defattr tr.m
    <td style="white-space : nowrap">
    <input type="hidden" name="attrid[[neweltid]]" value="[attrid]" >
    	[profundator]
-      <input type="text" class="iname" name="nattrid[[neweltid]]" value="[attrid]"  [disabledid]>
+      <input type="[idtype]" class="iname" name="nattrid[[neweltid]]" value="[attrid]"  [disabledid]/>[attrid]
    </td>
-   <td  >
+   <td>
 
       <input class="iorder" type="text" name="order[[neweltid]]" value="[order]" size="3" [disabled]>
    </td>

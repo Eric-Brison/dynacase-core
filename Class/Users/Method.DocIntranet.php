@@ -164,6 +164,7 @@ class _IGROUPUSER extends Doc
             }
         }
         if (!$groups) $groups = array();
+        $iconGroup=$this->getIcon('',14);
         if ($mgroups) {
             foreach ($mgroups as $k => $v) {
                 $cgroup = $this->_getChildsGroup($v["id"], $groups);
@@ -172,10 +173,10 @@ class _IGROUPUSER extends Doc
                 $fid = $v["fid"];
                 if ($fid) {
                     $tdoc = getTDoc($this->dbaccess, $fid);
-                    $icon = $this->getIcon($tdoc["icon"]);
+                    $icon = $this->getIcon($tdoc["icon"],14);
                     $tgroup[$k]["icon"] = $icon;
                 } else {
-                    $tgroup[$k]["icon"] = "Images/igroup.gif";
+                    $tgroup[$k]["icon"] = $iconGroup;
                 }
                 $groupuniq[$v["id"]] = $v;
                 $groupuniq[$v["id"]]["checkbox"] = "";

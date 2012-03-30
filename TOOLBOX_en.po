@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-27 16:53+0200\n"
+"POT-Creation-Date: 2012-03-30 15:37+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -485,13 +485,7 @@ msgstr "Delete"
 msgid "Access To Generic Management"
 msgstr ""
 
-msgid "Access To Import Contacts"
-msgstr ""
-
 msgid "Access To Main Interface"
-msgstr ""
-
-msgid "Access To Manage Address Book"
 msgstr ""
 
 msgid "Access To My Own account"
@@ -501,9 +495,6 @@ msgid "Access To Read Card"
 msgstr ""
 
 msgid "Access To Read Only"
-msgstr ""
-
-msgid "Access To View Address Book"
 msgstr ""
 
 msgid "Access choose masters families"
@@ -598,9 +589,6 @@ msgstr "Modify"
 msgid "Add it in %s folder"
 msgstr "Modify"
 
-msgid "Add new card (duplicate title)"
-msgstr ""
-
 msgid "Add new document (similar document)"
 msgstr ""
 
@@ -633,10 +621,6 @@ msgstr ""
 #, fuzzy
 msgid "Add top folder"
 msgstr "Modify"
-
-#, fuzzy
-msgid "Address book searches"
-msgstr "Start search"
 
 #, fuzzy
 msgid "Admin"
@@ -1308,9 +1292,6 @@ msgstr "Category"
 
 #, c-format
 msgid "Conversion as %s has failed "
-msgstr ""
-
-msgid "Coordonates"
 msgstr ""
 
 #, fuzzy
@@ -2209,14 +2190,6 @@ msgstr "Import"
 msgid "Import file"
 msgstr "Import"
 
-#, fuzzy
-msgid "Import from"
-msgstr "Import"
-
-#, fuzzy
-msgid "Import vcard"
-msgstr "Import"
-
 msgid "Import/Export"
 msgstr ""
 
@@ -2307,9 +2280,6 @@ msgid "Just states"
 msgstr "Create"
 
 msgid "Kb"
-msgstr ""
-
-msgid "Keep address book card"
 msgstr ""
 
 #, fuzzy
@@ -2465,13 +2435,6 @@ msgid "May"
 msgstr ""
 
 msgid "Mb"
-msgstr ""
-
-#, fuzzy
-msgid "Members"
-msgstr "No embed file"
-
-msgid "Members detection are disactived for the group"
 msgstr ""
 
 msgid "Message to indicate invalid configuration"
@@ -2713,9 +2676,6 @@ msgid "Only %s %s can view and edit"
 msgstr ""
 
 msgid "Only one line by document is authorized"
-msgstr ""
-
-msgid "Only one line by personn is authorized"
 msgstr ""
 
 msgid "Only these characters are allowed : a..z, A..Z, 0..9, _, -"
@@ -3030,8 +2990,9 @@ msgstr ""
 msgid "Reopen archive"
 msgstr ""
 
-msgid "Replace address book card if has permission else duplicate"
-msgstr ""
+#, fuzzy
+msgid "Reset"
+msgstr "Created by"
 
 msgid "Rest delay"
 msgstr ""
@@ -3541,16 +3502,6 @@ msgstr "Too many incorrect password attempts."
 msgid "Too many input file. The maximum accepted is"
 msgstr ""
 
-#, c-format
-msgid ""
-"Too many members to display there here (%d). Use Open menu to display them."
-msgstr ""
-
-msgid ""
-"Too many members to display there here. Use Open context menu to display "
-"them."
-msgstr ""
-
 #, fuzzy
 msgid "Tools"
 msgstr "Update Title Cards"
@@ -3666,12 +3617,6 @@ msgstr ""
 msgid "User Access"
 msgstr ""
 
-msgid "User Card"
-msgstr ""
-
-msgid "User Card Management"
-msgstr ""
-
 msgid "User must be authenticate"
 msgstr ""
 
@@ -3687,13 +3632,6 @@ msgstr ""
 msgid "Utilisateur fixe"
 msgstr ""
 
-msgid "VCARD"
-msgstr ""
-
-#, fuzzy
-msgid "VCARD Import Result"
-msgstr "Import"
-
 #, fuzzy
 msgid "Validate"
 msgstr "Edit"
@@ -3708,9 +3646,6 @@ msgid "Vault manager"
 msgstr ""
 
 msgid "Vault user"
-msgstr ""
-
-msgid "Vcard example"
 msgstr ""
 
 #, fuzzy
@@ -4136,10 +4071,6 @@ msgstr ""
 msgid "add to bookmarks"
 msgstr ""
 
-#, fuzzy
-msgid "add to prefered"
-msgstr "Modify"
-
 msgid "addState: missing parameter"
 msgstr ""
 
@@ -4161,32 +4092,6 @@ msgstr "New Parameter"
 #, fuzzy
 msgid "address"
 msgstr "Add new contact card"
-
-msgid "address book add a prefered contacts"
-msgstr ""
-
-msgid "address book choose main view column"
-msgstr ""
-
-#, fuzzy
-msgid "address book css"
-msgstr "Add new contact card"
-
-msgid "address book frame page"
-msgstr ""
-
-msgid "address book main page"
-msgstr ""
-
-msgid "address book prefered contacts"
-msgstr ""
-
-msgid "address book set user param"
-msgstr ""
-
-#, fuzzy
-msgid "address book speed search"
-msgstr "Start search"
 
 msgid "address of the webdav server for authenticate server"
 msgstr ""
@@ -4773,13 +4678,6 @@ msgstr ""
 msgid "case sensitive"
 msgstr ""
 
-#, fuzzy
-msgid "categorie"
-msgstr "Category"
-
-msgid "category"
-msgstr "Category"
-
 msgid "cdate"
 msgstr ""
 
@@ -4937,9 +4835,6 @@ msgstr ""
 msgid "click to change option"
 msgstr "Start search"
 
-msgid "click to reload favorites"
-msgstr ""
-
 #, fuzzy
 msgid "client logo"
 msgstr "Lastname"
@@ -4999,14 +4894,6 @@ msgstr "Delete"
 msgid "config file %s not found"
 msgstr ""
 
-#, fuzzy
-msgid "confirm delete"
-msgstr "Delete"
-
-#, fuzzy
-msgid "confirm delete all favorite"
-msgstr "Delete"
-
 msgid "confirm mail sended before change state"
 msgstr ""
 
@@ -5042,10 +4929,6 @@ msgstr ""
 #, fuzzy
 msgid "construct batch document"
 msgstr "Delete"
-
-#, fuzzy
-msgid "contact"
-msgstr "Edit"
 
 msgid "containt of searches cannot be modified"
 msgstr ""
@@ -5364,10 +5247,6 @@ msgid "delete %s on server %s...\n"
 msgstr ""
 
 #, fuzzy
-msgid "delete all favorites"
-msgstr "Start search"
-
-#, fuzzy
 msgid "delete archive"
 msgstr "Start search"
 
@@ -5381,10 +5260,6 @@ msgstr "Delete"
 
 msgid "delete file query into directory"
 msgstr ""
-
-#, fuzzy
-msgid "delete from prefered"
-msgstr "Delete"
 
 #, fuzzy
 msgid "delete imported tar"
@@ -5442,10 +5317,6 @@ msgstr "Delete"
 
 msgid "differents view mode by family"
 msgstr ""
-
-#, fuzzy
-msgid "direct"
-msgstr "Edit"
 
 msgid "directory to upload archive"
 msgstr ""
@@ -5651,9 +5522,6 @@ msgid "dotSize"
 msgstr "Update Title Cards"
 
 msgid "dotType"
-msgstr ""
-
-msgid "double click to edit"
 msgstr ""
 
 msgid "double-clic to update document"
@@ -6136,10 +6004,6 @@ msgstr ""
 msgid "first"
 msgstr ""
 
-#, fuzzy
-msgid "first family used"
-msgstr "Category"
-
 msgid "fixed"
 msgstr ""
 
@@ -6260,9 +6124,6 @@ msgstr ""
 #, fuzzy, c-format
 msgid "free item %s"
 msgstr "Create"
-
-msgid "freedom address book"
-msgstr "Dynacase address book"
 
 msgid "freedom cron try execute"
 msgstr "Trying cron execution"
@@ -6543,10 +6404,6 @@ msgstr "Import"
 msgid "import results"
 msgstr "Import"
 
-#, fuzzy
-msgid "import vcard"
-msgstr "Import"
-
 msgid "impossible conversion"
 msgstr ""
 
@@ -6664,6 +6521,12 @@ msgstr ""
 #, fuzzy
 msgid "item already set"
 msgstr "Delete"
+
+msgid "iuser choose main view column"
+msgstr ""
+
+msgid "iuser list main page"
+msgstr ""
 
 msgid "keyword"
 msgstr ""
@@ -6993,9 +6856,6 @@ msgid "mozilla site"
 msgstr ""
 
 msgid "multiple document"
-msgstr ""
-
-msgid "my favorites"
 msgstr ""
 
 msgid "my id"
@@ -7393,9 +7253,6 @@ msgstr ""
 msgid "no vault initialised."
 msgstr ""
 
-msgid "no vcard file specified"
-msgstr ""
-
 #, fuzzy
 msgid "no view control"
 msgstr "Start search"
@@ -7479,9 +7336,6 @@ msgid "nothing to unlink"
 msgstr ""
 
 msgid "number of card by page"
-msgstr ""
-
-msgid "number of members"
 msgstr ""
 
 #, c-format
@@ -7591,27 +7445,11 @@ msgstr ""
 msgid "order"
 msgstr "Delete"
 
-#, fuzzy
-msgid "other"
-msgstr "Delete"
-
 msgid "other families"
 msgstr ""
 
 msgid "other folders"
 msgstr ""
-
-msgid "other infos"
-msgstr ""
-
-msgid "other sites"
-msgstr ""
-"<p>You new password is now:</p>\n"
-"<pre>\n"
-"[PASSWORD]\n"
-"</pre>\n"
-"<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</a></"
-"p>"
 
 msgid "others..."
 msgstr ""
@@ -7728,10 +7566,6 @@ msgstr "Import"
 
 #, fuzzy
 msgid "precise search"
-msgstr "Start search"
-
-#, fuzzy
-msgid "prefered contacts"
 msgstr "Start search"
 
 #, fuzzy
@@ -7922,10 +7756,6 @@ msgstr ""
 
 msgid "quick save not possible"
 msgstr ""
-
-#, fuzzy
-msgid "quick search"
-msgstr "Start search"
 
 #, fuzzy
 msgid "read disabled"
@@ -8211,9 +8041,6 @@ msgstr "Start search"
 msgid "search fulltext"
 msgstr "Start search"
 
-msgid "search in all contact fields"
-msgstr ""
-
 msgid "search in inherited family by family"
 msgstr ""
 
@@ -8252,10 +8079,6 @@ msgstr "at "
 
 msgid "second background color"
 msgstr ""
-
-#, fuzzy
-msgid "second family used"
-msgstr "Start search"
 
 #, fuzzy
 msgid "security"
@@ -8422,10 +8245,6 @@ msgid "simple"
 msgstr "Update Title Cards"
 
 #, fuzzy
-msgid "society"
-msgstr "Locality"
-
-#, fuzzy
 msgid "society style"
 msgstr "Modify"
 
@@ -8579,9 +8398,6 @@ msgid "system identificator not equal"
 msgstr ""
 
 msgid "t"
-msgstr ""
-
-msgid "tab usercard"
 msgstr ""
 
 #, c-format
@@ -9138,9 +8954,6 @@ msgstr ""
 msgid "user ressource"
 msgstr ""
 
-msgid "usercard home page"
-msgstr ""
-
 msgid "userlogin"
 msgstr "Login"
 
@@ -9192,10 +9005,6 @@ msgstr ""
 
 msgid "vconstraint input not found id="
 msgstr ""
-
-#, fuzzy
-msgid "vcs file"
-msgstr "Update Title Cards"
 
 msgid "verify constraint attribute"
 msgstr ""
@@ -9347,10 +9156,6 @@ msgstr "Start search"
 msgid "viewDoc did not returned a valid file"
 msgstr ""
 
-#, fuzzy
-msgid "view_detail"
-msgstr "Start search"
-
 msgid "viewacl"
 msgstr ""
 
@@ -9361,9 +9166,6 @@ msgstr "Group List"
 #, fuzzy
 msgid "viewuser"
 msgstr "User List"
-
-msgid "visibility"
-msgstr "Visibility"
 
 #, c-format
 msgid "visibility %s does not allow modify attribute %s for document %s"
@@ -9390,9 +9192,6 @@ msgid "warning_pass"
 msgstr "Your password is required"
 
 msgid "wask"
-msgstr ""
-
-msgid "web"
 msgstr ""
 
 msgid "welcome"
@@ -9549,16 +9348,44 @@ msgid "{left} title include {right}"
 msgstr ""
 
 #, fuzzy
+#~ msgid "Address book searches"
+#~ msgstr "Start search"
+
+#, fuzzy
+#~ msgid "Import from"
+#~ msgstr "Import"
+
+#, fuzzy
+#~ msgid "Import vcard"
+#~ msgstr "Import"
+
+#, fuzzy
+#~ msgid "Members"
+#~ msgstr "No embed file"
+
+#, fuzzy
 #~ msgid "Person"
 #~ msgstr "Organisation"
 
 #, fuzzy
-#~ msgid "Reset"
-#~ msgstr "Created by"
+#~ msgid "VCARD Import Result"
+#~ msgstr "Import"
 
 #, fuzzy
 #~ msgid "active user"
 #~ msgstr "User List"
+
+#, fuzzy
+#~ msgid "add to prefered"
+#~ msgstr "Modify"
+
+#, fuzzy
+#~ msgid "address book css"
+#~ msgstr "Add new contact card"
+
+#, fuzzy
+#~ msgid "address book speed search"
+#~ msgstr "Start search"
 
 #~ msgid "adduser"
 #~ msgstr "New user"
@@ -9567,12 +9394,43 @@ msgstr ""
 #~ msgid "cannot open %s layout file"
 #~ msgstr "Category"
 
+#, fuzzy
+#~ msgid "categorie"
+#~ msgstr "Category"
+
+#~ msgid "category"
+#~ msgstr "Category"
+
 #~ msgid "changegroup"
 #~ msgstr "Group Change"
 
 #, fuzzy
 #~ msgid "clear"
 #~ msgstr "Close"
+
+#, fuzzy
+#~ msgid "confirm delete"
+#~ msgstr "Delete"
+
+#, fuzzy
+#~ msgid "confirm delete all favorite"
+#~ msgstr "Delete"
+
+#, fuzzy
+#~ msgid "contact"
+#~ msgstr "Edit"
+
+#, fuzzy
+#~ msgid "delete all favorites"
+#~ msgstr "Start search"
+
+#, fuzzy
+#~ msgid "delete from prefered"
+#~ msgstr "Delete"
+
+#, fuzzy
+#~ msgid "direct"
+#~ msgstr "Edit"
 
 #~ msgid "domain"
 #~ msgstr "Domain"
@@ -9697,8 +9555,15 @@ msgstr ""
 #~ msgid "expires"
 #~ msgstr "Your login has expired"
 
+#, fuzzy
+#~ msgid "first family used"
+#~ msgstr "Category"
+
 #~ msgid "firstname"
 #~ msgstr "Firstname"
+
+#~ msgid "freedom address book"
+#~ msgstr "Dynacase address book"
 
 #, fuzzy
 #~ msgid "full text search document"
@@ -9720,6 +9585,10 @@ msgstr ""
 #~ msgid "groups"
 #~ msgstr "Groups"
 
+#, fuzzy
+#~ msgid "import vcard"
+#~ msgstr "Import"
+
 #~ msgid "lastname"
 #~ msgstr "Lastname"
 
@@ -9732,6 +9601,19 @@ msgstr ""
 
 #~ msgid "nomail"
 #~ msgstr "No mail account"
+
+#, fuzzy
+#~ msgid "other"
+#~ msgstr "Delete"
+
+#~ msgid "other sites"
+#~ msgstr ""
+#~ "<p>You new password is now:</p>\n"
+#~ "<pre>\n"
+#~ "[PASSWORD]\n"
+#~ "</pre>\n"
+#~ "<p>You can now log in at <a href=\"[CORE_EXTERNURL]\">[CORE_EXTERNURL]</"
+#~ "a></p>"
 
 #~ msgid "othergroup"
 #~ msgstr "Others"
@@ -9748,8 +9630,24 @@ msgstr ""
 #~ msgstr "Import"
 
 #, fuzzy
+#~ msgid "prefered contacts"
+#~ msgstr "Start search"
+
+#, fuzzy
+#~ msgid "quick search"
+#~ msgstr "Start search"
+
+#, fuzzy
+#~ msgid "second family used"
+#~ msgstr "Start search"
+
+#, fuzzy
 #~ msgid "set view control to '%s'"
 #~ msgstr "Start search"
+
+#, fuzzy
+#~ msgid "society"
+#~ msgstr "Locality"
 
 #~ msgid "titlecreateg"
 #~ msgstr "Add group"
@@ -9779,3 +9677,14 @@ msgstr ""
 #, fuzzy
 #~ msgid "user status"
 #~ msgstr "Login"
+
+#, fuzzy
+#~ msgid "vcs file"
+#~ msgstr "Update Title Cards"
+
+#, fuzzy
+#~ msgid "view_detail"
+#~ msgstr "Start search"
+
+#~ msgid "visibility"
+#~ msgstr "Visibility"

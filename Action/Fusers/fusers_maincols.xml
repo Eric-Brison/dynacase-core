@@ -1,0 +1,38 @@
+<html>
+<head>
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS&layout=FUSERS:fusers.css">
+<link rel="shortcut icon" href="[DYNACASE_FAVICO]">
+[JS:REF]
+<script type="text/javascript">
+[JS:CODE]
+</script>
+
+</head>
+<body class="fabbody">
+
+<form id="maincols" name="maincols" method="POST" target="_self" action="[CORE_STANDURL]&app=[APPNAME]&action=FUSERS_MAINCOLS">
+<input type="hidden" id="resetcols" name="resetcols" value="0"><input type="hidden" id="dfam" name="dfam" value="[dfam]">
+
+<div class="fabzone">[TEXT:choose colums] ([dfamname])</div>
+
+<table width="100%" cellspacing="0">
+
+[BLOCK Columns]<tr><td><input title="[TEXT:select to view colum] [label]" type="checkbox" name="faddb_cols_[id]" id="idols_[id]" [l_view]><label for="idols_[id]">[label]</label></td></tr>[ENDBLOCK Columns]
+
+<tr class="fabzone">
+<td colspan="2" align="right">
+    <input type="submit" value="[TEXT:Save]" title="[TEXT:save modifications]" />
+    <input type="reset" value="[TEXT:Reset]" title="[TEXT:reset to default]" onclick="document.getElementById('resetcols').value=1; this.form.submit()"/>
+
+   </td>
+</tr>
+
+</table>
+
+
+</form>
+<iframe name="fusers_maincols_hidden" id="fusers_maincols_hidden" style="display:none" src="[IMG:1x1.gif]"></iframe>
+</body>
+</html>
+      

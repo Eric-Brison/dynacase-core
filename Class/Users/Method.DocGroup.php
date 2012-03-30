@@ -106,75 +106,25 @@ class _GROUP extends Dir
         $tmail = array();
         
         if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
-        //------------------------------------------------------
-        // first compute mail from users members
-        $tiduser = $this->getTValue("GRP_IDUSER");
-        $tuser = $this->getTValue("GRP_USER");
-        if (count($tiduser) > 0) {
-            if (!$nomail) {
-                foreach ($tiduser as $k => $v) {
-                    
-                    $udoc = getTDoc($this->dbaccess, $v);
-                    if ($udoc) {
-                        
-                        $mail = getv($udoc, "us_mail");
-                        
-                        if ($mail != "") $tmail[] = $mail;
-                    } else {
-                        if ($tuser[$k] != "") $err.= sprintf("%s does not exist", $tuser[$k]);
-                    }
-                }
-                $gmail = implode(", ", array_unique($tmail));
-            }
+         if (!$nomail)  {
+
+             $s=new SearchDoc($this->dbaccess);
+             $s->useCollection($this->initid);
+             $r=$s->search();
+             foreach ($r as $account) {
+                 $mail=$account["us_mail"];
+                 if (!$mail) $account["grp_mail"];
+                 if ($mail)  $tmail[]=$mail;
+             }
+             $gmail = implode(", ", array_unique($tmail));
+             $this->SetValue("GRP_MAIL", $gmail);
+
         }
-        $nodetectmembers = ($this->getValue("grp_hasmembers") == "no");
-        // add mail groups
-        //------------------------------------------------------
-        // second compute mail from groups members
-        $tgmemberid = $tiduser; // affiliated members ids
-        $tgmember = $tuser; // affiliated members
-        $tiduser = $this->getTValue("GRP_IDGROUP");
-        if (count($tiduser) > 0) {
-            while (list($k, $v) = each($tiduser)) {
-                $udoc = new_Doc($this->dbaccess, $v);
-                if ($udoc && $udoc->isAlive()) {
-                    if (!$nomail) {
-                        $mail = $udoc->getValue("GRP_MAIL");
-                        if ($mail != "") {
-                            $tmail1 = explode(",", str_replace(" ", "", $mail));
-                            $tmail = array_merge($tmail, $tmail1);
-                        }
-                    }
-                    if (!$nodetectmembers) {
-                        $tgmemberid = array_merge($tgmemberid, $udoc->getTValue("GRP_IDRUSER"));
-                        $tgmember = array_merge($tgmember, $udoc->getTValue("GRP_RUSER"));
-                    }
-                }
-            }
-            
-            $gmail = implode(", ", array_unique($tmail));
-        }
-        $tgmembers = array();
-        reset($tgmemberid);
-        while (list($k, $v) = each($tgmemberid)) {
-            $tgmembers[$v] = $tgmember[$k];
-        }
+
         
-        if ($nodetectmembers) {
-            $this->DeleteValue("GRP_IDRUSER");
-            $this->DeleteValue("GRP_RUSER");
-        } else {
-            if (count($tgmembers) > 0) {
-                $this->SetValue("GRP_IDRUSER", array_keys($tgmembers));
-                $this->SetValue("GRP_RUSER", $tgmembers);
-            } else {
-                $this->DeleteValue("GRP_IDRUSER");
-                $this->DeleteValue("GRP_RUSER");
-            }
-        }
+
         
-        if (!$nomail) $this->SetValue("GRP_MAIL", $gmail);
-        else if ($this->getValue("grp_hasmail") == "no") $this->deleteValue("GRP_MAIL");
+        if ($this->getValue("grp_hasmail") == "no") $this->deleteValue("GRP_MAIL");
         
         return $err;
     }
@@ -189,19 +139,21 @@ class _GROUP extends Dir
         include_once ("FDL/freedom_util.php");
         include_once ("FDL/Lib.Dir.php");
         
-        $sqlfilters[] = "in_textlist(grp_idgroup,{$this->id})";
+        $sqlfilters[] = sprintf("in_textlist(grp_idgroup,'%s')",$this->id);
         // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
         $tgroup = getChildDoc($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "LIST", getFamIdFromName($this->dbaccess, "GROUP"));
         
         $tpgroup = array();
         $tidpgroup = array();
+        /**
+         * @var _GROUP $v
+         */
         while (list($k, $v) = each($tgroup)) {
             $v->RefreshGroup();
             $tpgroup[] = $v->title;
             $tidpgroup[] = $v->id;
         }
-        
-        $this->SetValue("GRP_PGROUP", implode("\n", $tpgroup));
+
         $this->SetValue("GRP_IDPGROUP", implode("\n", $tidpgroup));
         return $tgroup;
     }
@@ -211,22 +163,7 @@ class _GROUP extends Dir
     function refreshMembers()
     {
         include_once ("FDL/Lib.Dir.php");
-        // 1)users
-        $tu = getChildDoc($this->dbaccess, $this->initid, "0", "ALL", array() , 1, "TABLE", "USER");
-        
-        if (count($tu) > 0) {
-            foreach ($tu as $k => $v) {
-                $tmemid[] = $v["id"];
-                $tmem[] = $v["title"];
-            }
-            $this->SetValue("GRP_USER", $tmem);
-            $this->SetValue("GRP_IDUSER", $tmemid);
-        } else {
-            $this->DeleteValue("GRP_USER");
-            $this->DeleteValue("GRP_IDUSER");
-            $this->DeleteValue("GRP_GROUP");
-            $this->DeleteValue("GRP_IDGROUP");
-        }
+
         // 2)groups
         $tu = getChildDoc($this->dbaccess, $this->initid, "0", "ALL", array() , 1, "TABLE", "GROUP");
         $tmemid = array();
@@ -236,10 +173,8 @@ class _GROUP extends Dir
                 $tmemid[] = $v["id"];
                 $tmem[] = $v["title"];
             }
-            $this->SetValue("GRP_GROUP", $tmem);
             $this->SetValue("GRP_IDGROUP", $tmemid);
         } else {
-            $this->DeleteValue("GRP_GROUP");
             $this->DeleteValue("GRP_IDGROUP");
         }
         $err = $this->modify();

@@ -146,7 +146,6 @@ AC_OUTPUT(Makefile \
           App/Fusers/FUSERS_init.php \
           App/Generic/GENERIC_init.php \
           App/Onefam/ONEFAM_init.php \
-          App/Usercard/USERCARD_init.php \
           App/Vault/VAULT_init.php \
           Api/SetDocVaultIndex.php \
           Api/updateclass.php \

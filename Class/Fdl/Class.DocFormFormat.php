@@ -683,8 +683,36 @@ class DocFormFormat
          */
         private function formatAccount($value)
         {
-            if (!$this->oattr->format) $this->oattr->format = 'IUSER';
+            if (!$this->oattr->format) {
+                $match = $this->oattr->getOption("match");
+                switch ($match) {
+                    case 'user':
+                        $this->oattr->format = 'IUSER';
+                        break;
+
+                    case 'role':
+                        $this->oattr->format = 'ROLE';
+                        break;
+
+                    case 'group':
+                        $this->oattr->format = 'IGROUP';
+                        break;
+
+                    case 'all':
+                        $this->oattr->format = 'IUSER|IGROUP|ROLE';
+                        break;
+
+                    default:
+                        $this->oattr->format = 'IUSER';
+                        break;
+                }
+                $this->oattr->format = 'IUSER';
+            }
+            
             if (!$this->oattr->phpfile) {
+                // it is already set in Lib.Attr.php when create family class
+                // use fdlGetAccounts phpfunc
+                
             }
             return $this->formatDocid($value);
         }

@@ -35,7 +35,7 @@ $app_const = array(
         "global" => "Y",
         "kind" => "enum(yes|no)"
     ) ,
-
+    
     "FDL_HD2SIZE" => array(
         "val" => "600",
         "descr" => N_("horizontal size for secondary windows") ,
@@ -131,7 +131,7 @@ $app_const = array(
         "user" => "N",
         "descr" => N_("SMTP password")
     ) ,
-
+    
     "SMTP_FROM" => array(
         "val" => "",
         "global" => "Y",
@@ -188,11 +188,43 @@ $app_const = array(
         "descr" => N_("hour number where timer can be execute until date is reached") ,
         "user" => "N",
         "global" => "Y"
-    ),
+    ) ,
     "REPORT_DEFAULT_CSV" => array(
         "val" => "[]",
         "descr" => N_("fulltext index mode") ,
         "user" => "Y"
-    )
+    ) ,
+    "LDAP_SERVEUR" => array(
+        "val" => "localhost",
+        "descr" => N_("LDAP server name") ,
+        "global" => "Y"
+    ) ,
+    "LDAP_PORT" => array(
+        "val" => "389",
+        "descr" => N_("LDAP server port") ,
+        "global" => "Y"
+    ) ,
+    "LDAP_ROOT" => array(
+        "val" => "o=Anakeen,c=fr",
+        "descr" => N_("LDAP server root") ,
+        "global" => "Y"
+    ) ,
+    "LDAP_ROOTDN" => array(
+        "val" => "cn=Manager,o=Anakeen,c=fr",
+        "descr" => N_("LDAP admin identificatot") ,
+        "global" => "Y"
+    ) ,
+    "LDAP_ROOTPW" => array(
+        "val" => "secret",
+        "descr" => N_("LDAP admin passord") ,
+        "kind" => "password",
+        "global" => "Y"
+    ) ,
+    "LDAP_ENABLED" => array(
+        "val" => "no",
+        "descr" => N_("LDAP activated") ,
+        "kind" => "enum(yes|no)",
+        "global" => "Y"
+    ) ,
 );
 ?>
