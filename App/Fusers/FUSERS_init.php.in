@@ -1,25 +1,34 @@
 <?php
-
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+*/
 /**
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
-
 // ---------------------------------------------------------------
 // $Id: FUSERS_init.php.in,v 1.2 2005/10/27 14:38:15 eric Exp $
 // $Source: /home/cvsroot/anakeen/freedom/freedom/App/Fusers/FUSERS_init.php.in,v $
 // ---------------------------------------------------------------
-
 global $app_const;
 
-
-$app_const= array(
-  "INIT" => "yes",
-  "VERSION"			=>"@VERSION@-@RELEASE@",
-
-  "USERCARD_FIRSTFAM" => "IUSER",
-  "USERCARD_SECONDFAM" => "IGROUP"
+$app_const = array(
+    "INIT" => "yes",
+    "VERSION" => "@VERSION@-@RELEASE@",
+    
+    "FUSERS_MAINLINE" => array(
+        "kind" => "static",
+        "val" => "25",
+        "descr" => N_("main view line displayed") ,
+        "user" => "Y"
+    ) ,
+    "FUSERS_MAINCOLS" => array(
+        "kind" => "static",
+        "val" => "",
+        "descr" => N_("main view columns") ,
+        "user" => "Y"
+    )
 );
-
-
 ?>

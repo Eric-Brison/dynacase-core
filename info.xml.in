@@ -198,7 +198,6 @@ This can be solved by:<br/>
         </process>
 
         <process command="programs/record_application FDL I"/>
-        <process command="programs/record_application USERCARD I"/>
         <process command="programs/record_application ONEFAM I"/>
         <process command="programs/record_application GENERIC I"/>
         <process command="programs/record_application FUSERS I"/>
@@ -241,18 +240,15 @@ This can be solved by:<br/>
         <process command="programs/app_post FDL U"/>
 
 
-        <process command="./wsh.php --api=importDocuments --file=./USERCARD/usercard.ods">
-            <label>Create User families</label>
+        <process command="./wsh.php --api=importDocuments --file=./FUSERS/account.ods">
+            <label>Create Account families</label>
         </process>
 
         <process command="./wsh.php --api=usercard_iuser">
             <label>Update user account documents</label>
         </process>
-        <process command="./wsh.php --api=importDocuments --file=./USERCARD/userinit.ods">
-            <label>Create admin profli</label>
-        </process>
-        <process command="./wsh.php --api=importDocuments --file=./USERCARD/personnldap.ods">
-            <label>Create user LDAP mapping</label>
+        <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountinit.ods">
+            <label>Create admin profil</label>
         </process>
 
         <process command="./wsh.php --api=importDocuments --file=./FDL/defaultprofil.ods">
@@ -466,10 +462,8 @@ This can be solved by:<br/>
         <process command="programs/app_post FDL U"/>
         <process command="programs/post_migration FDL"/>
 
-        <process command="programs/pre_migration USERCARD"/>
-        <process command="programs/record_application USERCARD U"/>
-        <process command="./wsh.php --api=importDocuments --file=./USERCARD/usercard.ods">
-            <label>Update User families</label>
+        <process command="./wsh.php --api=importDocuments --file=./FUSERS/account.ods">
+            <label>Update Account families</label>
         </process>
         <process command="programs/pre_migration GENERIC"/>
         <process command="programs/record_application GENERIC U"/>

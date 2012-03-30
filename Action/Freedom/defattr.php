@@ -20,7 +20,7 @@ include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.DocAttr.php");
 
-function defattr(&$action)
+function defattr(Action & $action)
 {
     $dbaccess = $action->GetParam("FREEDOM_DB");
     $docid = GetHttpVars("id", 0);
@@ -102,6 +102,7 @@ function defattr(&$action)
                 $newelem[$k]["attrid"] = $attr->id;
                 $newelem[$k]["attrname"] = $attr->getLabel();
                 $newelem[$k]["neweltid"] = $k;
+                $newelem[$k]["idtype"] = "hidden";
                 $newelem[$k]["visibility"] = $attr->visibility;
                 $newelem[$k]["options"] = $attr->options;
                 $newelem[$k]["typevalue"] = $attr->type;
@@ -153,6 +154,7 @@ function defattr(&$action)
                 $selectframe[$k]["selected"] = "";
             }
             $newelem[$k]["attrid"] = $attr->id;
+            $newelem[$k]["idtype"] = "hidden";
             $newelem[$k]["attrname"] = $attr->getLabel();
             $newelem[$k]["order"] = $attr->ordered;
             $newelem[$k]["displayorder"] = $attr->ordered;
@@ -242,6 +244,7 @@ function defattr(&$action)
             $newelem[$k]["attrid"] = $attr->id;
             $newelem[$k]["attrname"] = $attr->getLabel();
             $newelem[$k]["neweltid"] = $k;
+            $newelem[$k]["idtype"] = "hidden";
             $newelem[$k]["visibility"] = $attr->visibility;
             $newelem[$k]["typevalue"] = $attr->type;
             $newelem[$k]["classvalue"] = $attr->type;
@@ -275,6 +278,7 @@ function defattr(&$action)
         if ($attr->docid > 0) {
             $newelem[$k]["attrid"] = $attr->id;
             $newelem[$k]["attrname"] = $attr->getLabel();
+            $newelem[$k]["idtype"] = "hidden";
             $newelem[$k]["neweltid"] = $k;
             $newelem[$k]["visibility"] = $attr->visibility;
             $newelem[$k]["typevalue"] = $attr->type;
@@ -303,6 +307,7 @@ function defattr(&$action)
     }
     // add 3 new attributes to be defined
     for ($k = $ka; $k < 3 + $ka; $k++) {
+        $newelem[$k]["idtype"] = "text";
         $newelem[$k]["neweltid"] = $k;
         $newelem[$k]["attrname"] = "";
         $newelem[$k]["disabledid"] = "";

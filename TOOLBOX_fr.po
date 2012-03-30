@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-27 16:53+0200\n"
+"POT-Creation-Date: 2012-03-30 15:37+0200\n"
 "PO-Revision-Date: 2012-03-27 16:55+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
@@ -462,14 +462,8 @@ msgstr "Liste des chemins d'accès"
 msgid "Access To Generic Management"
 msgstr "Accès à la gestion générique"
 
-msgid "Access To Import Contacts"
-msgstr "Accès à l'importation des utilisateurs"
-
 msgid "Access To Main Interface"
 msgstr "Accès en l'interface principale"
-
-msgid "Access To Manage Address Book"
-msgstr "Accès à la gestion du carnet d'adresses"
 
 msgid "Access To My Own account"
 msgstr "Accès à mon compte"
@@ -479,9 +473,6 @@ msgstr "Accès à la lecture"
 
 msgid "Access To Read Only"
 msgstr "Accès en lecture seule"
-
-msgid "Access To View Address Book"
-msgstr "Accès pour voir le carnet d'adresses"
 
 msgid "Access choose masters families"
 msgstr "Accès au choix des familles visibles administratives"
@@ -573,9 +564,6 @@ msgstr "Ajouter une condition"
 msgid "Add it in %s folder"
 msgstr "Ajout dans dossier %s"
 
-msgid "Add new card (duplicate title)"
-msgstr "Ajout nouvelle carte (titre dupliqué)"
-
 msgid "Add new document (similar document)"
 msgstr "Ajout nouveau document (document similaire)"
 
@@ -605,9 +593,6 @@ msgstr "Ajouter au porte-documents"
 
 msgid "Add top folder"
 msgstr "Ajouter un dossier racine"
-
-msgid "Address book searches"
-msgstr "Adress book : recherche rapide"
 
 msgid "Admin"
 msgstr "Admin"
@@ -1243,9 +1228,6 @@ msgstr "Contrôle de vue pour les nouveaux documents"
 #, c-format
 msgid "Conversion as %s has failed "
 msgstr ""
-
-msgid "Coordonates"
-msgstr "Coordonnées"
 
 msgid "Copy reference"
 msgstr "Copier la référence"
@@ -2112,12 +2094,6 @@ msgstr "Importer des documents"
 msgid "Import file"
 msgstr "Fichier à importer"
 
-msgid "Import from"
-msgstr "Importation à partir de"
-
-msgid "Import vcard"
-msgstr "Importation Vcard"
-
 msgid "Import/Export"
 msgstr "Import/Export"
 
@@ -2207,9 +2183,6 @@ msgstr "Que les états"
 
 msgid "Kb"
 msgstr "Ko"
-
-msgid "Keep address book card"
-msgstr "Garde la carte originale"
 
 msgid "Keep original document"
 msgstr "Garde le document original"
@@ -2359,12 +2332,6 @@ msgstr "Mai"
 
 msgid "Mb"
 msgstr "Mo"
-
-msgid "Members"
-msgstr "Membres"
-
-msgid "Members detection are disactived for the group"
-msgstr "La récupération des membres est désactivé pour ce groupe"
 
 msgid "Message to indicate invalid configuration"
 msgstr ""
@@ -2592,9 +2559,6 @@ msgstr "Seul %s %s peut voir et éditer le document"
 
 msgid "Only one line by document is authorized"
 msgstr "Une seule ligne par document est autorisée"
-
-msgid "Only one line by personn is authorized"
-msgstr "Une seule ligne par personne est autorisée"
 
 msgid "Only these characters are allowed : a..z, A..Z, 0..9, _, -"
 msgstr "Seuls ces caractères sont autorisés : a..z, A..Z, 0..9, _, -"
@@ -2888,8 +2852,8 @@ msgstr "Renommer le fichier en %s"
 msgid "Reopen archive"
 msgstr "Réouverture de l'archive"
 
-msgid "Replace address book card if has permission else duplicate"
-msgstr "Remplace la carte si permission accordée sinon duplication"
+msgid "Reset"
+msgstr "Réinitialisation"
 
 msgid "Rest delay"
 msgstr "Durée restante"
@@ -3384,20 +3348,6 @@ msgstr "Trop de tentative avec un mot de passe incorrect."
 msgid "Too many input file. The maximum accepted is"
 msgstr "Trop de champs de type fichier dans le formulaire.\\nLe maximum est de"
 
-#, c-format
-msgid ""
-"Too many members to display there here (%d). Use Open menu to display them."
-msgstr ""
-"Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu "
-"ouvrir pour les voir."
-
-msgid ""
-"Too many members to display there here. Use Open context menu to display "
-"them."
-msgstr ""
-"Il y a trop de membres dans le groupe pour afficher la liste ici. Utiliser "
-"le menu \"Ouvrir\" à partir du menu contextuel."
-
 msgid "Tools"
 msgstr "Outils"
 
@@ -3510,12 +3460,6 @@ msgstr "Utilisateur"
 msgid "User Access"
 msgstr "Accès des utilisateurs"
 
-msgid "User Card"
-msgstr "Carnet d'adresses"
-
-msgid "User Card Management"
-msgstr "Carnet d'adresses"
-
 msgid "User must be authenticate"
 msgstr "L'utilisateur doit être authentifié"
 
@@ -3531,12 +3475,6 @@ msgstr "Gestion des utilisateurs"
 msgid "Utilisateur fixe"
 msgstr "Utilisateur fixe"
 
-msgid "VCARD"
-msgstr "VCARD"
-
-msgid "VCARD Import Result"
-msgstr "Résultat de l'importation VCARD"
-
 msgid "Validate"
 msgstr "Valider"
 
@@ -3551,9 +3489,6 @@ msgstr "Administrateur du Coffre"
 
 msgid "Vault user"
 msgstr "Utilisateur du Coffre"
-
-msgid "Vcard example"
-msgstr "Exemple de Vcard"
 
 msgid "Version"
 msgstr "Version"
@@ -3945,9 +3880,6 @@ msgstr "ajout d'un nouveau profil %s"
 msgid "add to bookmarks"
 msgstr "Marquer ce dossier"
 
-msgid "add to prefered"
-msgstr "ajouter à mes préférés"
-
 msgid "addState: missing parameter"
 msgstr "addState: paramètre manquant"
 
@@ -3966,30 +3898,6 @@ msgstr "Ajouter un param&egrave;tre"
 
 msgid "address"
 msgstr "Adresse..."
-
-msgid "address book add a prefered contacts"
-msgstr "Adress book : ajout d'un préféré"
-
-msgid "address book choose main view column"
-msgstr "Carnet d'adresse : choisir les colonnes"
-
-msgid "address book css"
-msgstr "CSS carnet d'adresse"
-
-msgid "address book frame page"
-msgstr "Adress book : frames"
-
-msgid "address book main page"
-msgstr "Adress book : page principale"
-
-msgid "address book prefered contacts"
-msgstr "Adress book : préférés"
-
-msgid "address book set user param"
-msgstr "Adress book : position du p. utilisteur"
-
-msgid "address book speed search"
-msgstr "Adress book : recherche rapide"
 
 msgid "address of the webdav server for authenticate server"
 msgstr "adresse du serveur webdav pour le serveur authentifié"
@@ -4578,12 +4486,6 @@ msgstr ""
 msgid "case sensitive"
 msgstr " tenir compte de la casse"
 
-msgid "categorie"
-msgstr "Catégorie"
-
-msgid "category"
-msgstr "catégorie"
-
 msgid "cdate"
 msgstr "Date de création"
 
@@ -4725,9 +4627,6 @@ msgstr "Création...."
 msgid "click to change option"
 msgstr "Cliquez pour changer les options"
 
-msgid "click to reload favorites"
-msgstr "Cliquer ici pour raffraichir mes favoris"
-
 msgid "client logo"
 msgstr "logo du client"
 
@@ -4779,12 +4678,6 @@ msgstr "confidentialité"
 msgid "config file %s not found"
 msgstr ""
 
-msgid "confirm delete"
-msgstr "retirer des préférés ?"
-
-msgid "confirm delete all favorite"
-msgstr "Vider la liste des préférés ?"
-
 msgid "confirm mail sended before change state"
 msgstr "confirmation envoi email avant changement d'état"
 
@@ -4818,9 +4711,6 @@ msgstr "contraite non validée pour l'attribut %s"
 
 msgid "construct batch document"
 msgstr "construction d'un document lot"
-
-msgid "contact"
-msgstr "Contact..."
 
 msgid "containt of searches cannot be modified"
 msgstr "les contenus de recherches ne peuvent être modifiés"
@@ -5108,9 +4998,6 @@ msgstr "suppression %s pour %s"
 msgid "delete %s on server %s...\n"
 msgstr "suppression de %s sur le serveur %s...\n"
 
-msgid "delete all favorites"
-msgstr "Suppression des préférés (tous)"
-
 msgid "delete archive"
 msgstr "supprimer l'archive"
 
@@ -5123,9 +5010,6 @@ msgstr "supprimer le document"
 
 msgid "delete file query into directory"
 msgstr "supprimer un document dans un dossier"
-
-msgid "delete from prefered"
-msgstr "supprimer des contacts préférés"
 
 msgid "delete imported tar"
 msgstr "supression des archives"
@@ -5172,9 +5056,6 @@ msgstr "différence entre 2 documents"
 
 msgid "differents view mode by family"
 msgstr "mode de vues par familles"
-
-msgid "direct"
-msgstr "direct"
 
 msgid "directory to upload archive"
 msgstr "Répertoire de stockage de l'archive"
@@ -5370,9 +5251,6 @@ msgstr "Taille"
 
 msgid "dotType"
 msgstr "Type"
-
-msgid "double click to edit"
-msgstr "Double clic pour éditer"
 
 msgid "double-clic to update document"
 msgstr "double-cliquez pour mettre à jour le document"
@@ -5817,9 +5695,6 @@ msgstr "%s trouvé plus d'une fois, création abandonnée\n"
 msgid "first"
 msgstr "premier"
 
-msgid "first family used"
-msgstr "première famille utilisée"
-
 msgid "fixed"
 msgstr "figé"
 
@@ -5924,9 +5799,6 @@ msgstr "taille de la fenêtre"
 #, c-format
 msgid "free item %s"
 msgstr "insérer [%s]"
-
-msgid "freedom address book"
-msgstr "Carnet d'Adresses Dynacase"
 
 msgid "freedom cron try execute"
 msgstr "Cron Dynacase essai d'execution"
@@ -6195,9 +6067,6 @@ msgstr "clefs d'import"
 msgid "import results"
 msgstr "Résultats de l'importation"
 
-msgid "import vcard"
-msgstr "Importation Vcard"
-
 msgid "impossible conversion"
 msgstr "conversion impossible"
 
@@ -6300,6 +6169,12 @@ msgstr "dernier"
 
 msgid "item already set"
 msgstr "élément déjà présent"
+
+msgid "iuser choose main view column"
+msgstr ""
+
+msgid "iuser list main page"
+msgstr ""
 
 msgid "keyword"
 msgstr "mot-clef"
@@ -6600,9 +6475,6 @@ msgstr "site de Mozilla"
 
 msgid "multiple document"
 msgstr ""
-
-msgid "my favorites"
-msgstr "Mes préférés..."
 
 msgid "my id"
 msgstr "mon identificateur"
@@ -6974,9 +6846,6 @@ msgstr "Pas de système de fichier trouvé"
 msgid "no vault initialised."
 msgstr "Aucun coffre d'initialisé"
 
-msgid "no vcard file specified"
-msgstr "pas de fichier vcard spécifié"
-
 msgid "no view control"
 msgstr "pas de contrôle de vues"
 
@@ -7055,9 +6924,6 @@ msgstr "rien à supprimer"
 
 msgid "number of card by page"
 msgstr "nombre de cartes par page"
-
-msgid "number of members"
-msgstr "Nombre de membres"
 
 #, c-format
 msgid "number of waiting answers %d"
@@ -7158,20 +7024,11 @@ msgstr "ou"
 msgid "order"
 msgstr "ordre"
 
-msgid "other"
-msgstr "Autres..."
-
 msgid "other families"
 msgstr "Autres familles"
 
 msgid "other folders"
 msgstr ""
-
-msgid "other infos"
-msgstr "Autres informations..."
-
-msgid "other sites"
-msgstr "Autres sites..."
 
 msgid "others..."
 msgstr "autres..."
@@ -7287,9 +7144,6 @@ msgstr "post-it de %s"
 
 msgid "precise search"
 msgstr "Précisez la recherche"
-
-msgid "prefered contacts"
-msgstr "Préférés"
 
 msgid "prefered search"
 msgstr "Recherche préférée"
@@ -7474,9 +7328,6 @@ msgstr "demande d'import d'archive"
 
 msgid "quick save not possible"
 msgstr "Sauvegarde rapide impossible"
-
-msgid "quick search"
-msgstr "recherche rapide"
 
 msgid "read disabled"
 msgstr "statique"
@@ -7723,9 +7574,6 @@ msgstr "recherche de "
 msgid "search fulltext"
 msgstr "recherche plein texte"
 
-msgid "search in all contact fields"
-msgstr "recherche dans tout les champs"
-
 msgid "search in inherited family by family"
 msgstr "recherche dans les familles héritées par famille"
 
@@ -7759,9 +7607,6 @@ msgstr "exécutée le "
 
 msgid "second background color"
 msgstr "couleur secondaire pour le fond"
-
-msgid "second family used"
-msgstr "seconde famille utilisée"
 
 msgid "security"
 msgstr "sécurité"
@@ -7916,9 +7761,6 @@ msgstr "document similaire à %s a été trouve. L'original est conservé"
 msgid "simple"
 msgstr "Simple"
 
-msgid "society"
-msgstr "société"
-
 msgid "society style"
 msgstr "style société"
 
@@ -8066,9 +7908,6 @@ msgstr "l'identifiant système n'est pas égal"
 
 msgid "t"
 msgstr "t"
-
-msgid "tab usercard"
-msgstr "onglets carnet d'adresses"
 
 #, c-format
 msgid "target folder [%s] is not a folder"
@@ -8617,9 +8456,6 @@ msgstr "préférence utilisateur pour l'exportation de document"
 msgid "user ressource"
 msgstr "ressource utilisateur"
 
-msgid "usercard home page"
-msgstr "Annuaire"
-
 msgid "userlogin"
 msgstr "Login"
 
@@ -8668,9 +8504,6 @@ msgstr "fichier du coffre non initialisé"
 
 msgid "vconstraint input not found id="
 msgstr "entrée vconstraint non trouvé id="
-
-msgid "vcs file"
-msgstr "fichier VCS"
 
 msgid "verify constraint attribute"
 msgstr "vérifie les contraintes d'attributs"
@@ -8799,9 +8632,6 @@ msgstr "voir XML"
 msgid "viewDoc did not returned a valid file"
 msgstr "viewDoc n'a pas retourné de fichier valide"
 
-msgid "view_detail"
-msgstr "détails"
-
 msgid "viewacl"
 msgstr "voir les droits"
 
@@ -8810,9 +8640,6 @@ msgstr "Voir les groupes"
 
 msgid "viewuser"
 msgstr "Voir les utilisateurs"
-
-msgid "visibility"
-msgstr "visibilité"
 
 #, c-format
 msgid "visibility %s does not allow modify attribute %s for document %s"
@@ -8839,9 +8666,6 @@ msgstr "la saisie de votre mot de passe est obligatoire."
 
 msgid "wask"
 msgstr "Voir les réponses"
-
-msgid "web"
-msgstr "Web"
 
 msgid "welcome"
 msgstr "Bienvenue !"
@@ -9011,11 +8835,26 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Access To All Users in my domain"
 #~ msgstr "Acces aux utilisateurs de mon domaine"
 
+#~ msgid "Access To Import Contacts"
+#~ msgstr "Accès à l'importation des utilisateurs"
+
+#~ msgid "Access To Manage Address Book"
+#~ msgstr "Accès à la gestion du carnet d'adresses"
+
+#~ msgid "Access To View Address Book"
+#~ msgstr "Accès pour voir le carnet d'adresses"
+
 #~ msgid "Access description"
 #~ msgstr "Description"
 
 #~ msgid "Account"
 #~ msgstr "Compte"
+
+#~ msgid "Add new card (duplicate title)"
+#~ msgstr "Ajout nouvelle carte (titre dupliqué)"
+
+#~ msgid "Address book searches"
+#~ msgstr "Adress book : recherche rapide"
 
 #~ msgid "Authentification failure before account desactivation"
 #~ msgstr ""
@@ -9028,17 +8867,35 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Computed from"
 #~ msgstr "Calculé depuis"
 
+#~ msgid "Coordonates"
+#~ msgstr "Coordonnées"
+
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
 #~ msgid "Failed to copy $infile to $f"
 #~ msgstr "Echec de la copie de $infile vers $f"
 
+#~ msgid "Import from"
+#~ msgstr "Importation à partir de"
+
+#~ msgid "Import vcard"
+#~ msgstr "Importation Vcard"
+
+#~ msgid "Keep address book card"
+#~ msgstr "Garde la carte originale"
+
 #~ msgid "Linked from"
 #~ msgstr "Lié par"
 
 #~ msgid "Max user reach. Use search filter"
 #~ msgstr "Utiliser la recherche pour voir la suite"
+
+#~ msgid "Members"
+#~ msgstr "Membres"
+
+#~ msgid "Members detection are disactived for the group"
+#~ msgstr "La récupération des membres est désactivé pour ce groupe"
 
 #~ msgid "Method %s::%s() not contains %s tag comment"
 #~ msgstr ""
@@ -9058,14 +8915,17 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Not Allowed Access Attempt : need DOMAIN_MASTER privilege"
 #~ msgstr "Non autorisé : nécessite le privilège DOMAIN_MASTER"
 
+#~ msgid "Only one line by personn is authorized"
+#~ msgstr "Une seule ligne par personne est autorisée"
+
 #~ msgid "Only owner of document can restore it"
 #~ msgstr "Seul le propriétaire peut restaurer un document"
 
 #~ msgid "Person"
 #~ msgstr "Personne"
 
-#~ msgid "Reset"
-#~ msgstr "Réinitialisation"
+#~ msgid "Replace address book card if has permission else duplicate"
+#~ msgstr "Remplace la carte si permission accordée sinon duplication"
 
 #~ msgid "Set by \"%s\" attribute from template profil \"%s\""
 #~ msgstr "Obtenu par l'attribut \"%s\" depuis le profil dynamique \"%s\""
@@ -9075,6 +8935,35 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
+
+#~ msgid ""
+#~ "Too many members to display there here (%d). Use Open menu to display "
+#~ "them."
+#~ msgstr ""
+#~ "Trop de membres (%d) dans ce groupe pour être affichés. Utiliser le menu "
+#~ "ouvrir pour les voir."
+
+#~ msgid ""
+#~ "Too many members to display there here. Use Open context menu to display "
+#~ "them."
+#~ msgstr ""
+#~ "Il y a trop de membres dans le groupe pour afficher la liste ici. "
+#~ "Utiliser le menu \"Ouvrir\" à partir du menu contextuel."
+
+#~ msgid "User Card"
+#~ msgstr "Carnet d'adresses"
+
+#~ msgid "User Card Management"
+#~ msgstr "Carnet d'adresses"
+
+#~ msgid "VCARD"
+#~ msgstr "VCARD"
+
+#~ msgid "VCARD Import Result"
+#~ msgstr "Résultat de l'importation VCARD"
+
+#~ msgid "Vcard example"
+#~ msgstr "Exemple de Vcard"
 
 #~ msgid "View only access set. Green or Red flag"
 #~ msgstr "Voir que les accès définis. Les cercles verts ou rouges."
@@ -9090,6 +8979,33 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "active user"
 #~ msgstr "Utilisateur activé"
+
+#~ msgid "add to prefered"
+#~ msgstr "ajouter à mes préférés"
+
+#~ msgid "address book add a prefered contacts"
+#~ msgstr "Adress book : ajout d'un préféré"
+
+#~ msgid "address book choose main view column"
+#~ msgstr "Carnet d'adresse : choisir les colonnes"
+
+#~ msgid "address book css"
+#~ msgstr "CSS carnet d'adresse"
+
+#~ msgid "address book frame page"
+#~ msgstr "Adress book : frames"
+
+#~ msgid "address book main page"
+#~ msgstr "Adress book : page principale"
+
+#~ msgid "address book prefered contacts"
+#~ msgstr "Adress book : préférés"
+
+#~ msgid "address book set user param"
+#~ msgstr "Adress book : position du p. utilisteur"
+
+#~ msgid "address book speed search"
+#~ msgstr "Adress book : recherche rapide"
 
 #~ msgid "adduser"
 #~ msgstr "Ajouter un utilisateur"
@@ -9122,6 +9038,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "cannot open %s layout file"
 #~ msgstr "ne peut ouvrir le fichier template %s"
 
+#~ msgid "categorie"
+#~ msgstr "Catégorie"
+
+#~ msgid "category"
+#~ msgstr "catégorie"
+
 #~ msgid "changegroup"
 #~ msgstr "Changement de groupe"
 
@@ -9131,14 +9053,38 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "clear"
 #~ msgstr "Effacer"
 
+#~ msgid "click to reload favorites"
+#~ msgstr "Cliquer ici pour raffraichir mes favoris"
+
+#~ msgid "confirm delete"
+#~ msgstr "retirer des préférés ?"
+
+#~ msgid "confirm delete all favorite"
+#~ msgstr "Vider la liste des préférés ?"
+
+#~ msgid "contact"
+#~ msgstr "Contact..."
+
+#~ msgid "delete all favorites"
+#~ msgstr "Suppression des préférés (tous)"
+
+#~ msgid "delete from prefered"
+#~ msgstr "supprimer des contacts préférés"
+
 #~ msgid "desactived user"
 #~ msgstr "Utilisateur désactivé"
+
+#~ msgid "direct"
+#~ msgstr "direct"
 
 #~ msgid "domain"
 #~ msgstr "Domaine"
 
 #~ msgid "domaingroup"
 #~ msgstr "Domaine"
+
+#~ msgid "double click to edit"
+#~ msgstr "Double clic pour éditer"
 
 #~ msgid "drag to move. Use ctrl-&uarr; &darr; to up/down"
 #~ msgstr ""
@@ -9270,8 +9216,14 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "expires"
 #~ msgstr "expiration"
 
+#~ msgid "first family used"
+#~ msgstr "première famille utilisée"
+
 #~ msgid "firstname"
 #~ msgstr "Prénom"
+
+#~ msgid "freedom address book"
+#~ msgstr "Carnet d'Adresses Dynacase"
 
 #~ msgid "full text search document"
 #~ msgstr "recherche plein texte"
@@ -9294,6 +9246,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "if not set, will be the current date more delay"
 #~ msgstr "si vide, ce sera la date courante plus le délai"
 
+#~ msgid "import vcard"
+#~ msgstr "Importation Vcard"
+
 #~ msgid "in database"
 #~ msgstr "dans la base de données"
 
@@ -9309,6 +9264,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "mail will be calculated from domain"
 #~ msgstr "l'adresse email sera calculée à partir du domaine"
 
+#~ msgid "my favorites"
+#~ msgstr "Mes préférés..."
+
 #~ msgid "no import file specified"
 #~ msgstr "pas de fichier d'import spécifié"
 
@@ -9318,8 +9276,23 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "no trash image"
 #~ msgstr "image de la poubelle non trouvée"
 
+#~ msgid "no vcard file specified"
+#~ msgstr "pas de fichier vcard spécifié"
+
 #~ msgid "nomail"
 #~ msgstr "pas d'email"
+
+#~ msgid "number of members"
+#~ msgstr "Nombre de membres"
+
+#~ msgid "other"
+#~ msgstr "Autres..."
+
+#~ msgid "other infos"
+#~ msgstr "Autres informations..."
+
+#~ msgid "other sites"
+#~ msgstr "Autres sites..."
 
 #~ msgid "othergroup"
 #~ msgstr "Autres"
@@ -9333,17 +9306,35 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "pre-import:%s"
 #~ msgstr "pré-Import:%s"
 
+#~ msgid "prefered contacts"
+#~ msgstr "Préférés"
+
+#~ msgid "quick search"
+#~ msgstr "recherche rapide"
+
 #~ msgid "remove from my space"
 #~ msgstr "Enlever de mon espace"
 
 #~ msgid "remove the document from my space"
 #~ msgstr "Enlever le document de mon espace"
 
+#~ msgid "search in all contact fields"
+#~ msgstr "recherche dans tout les champs"
+
+#~ msgid "second family used"
+#~ msgstr "seconde famille utilisée"
+
 #~ msgid "select"
 #~ msgstr "sélectionner"
 
 #~ msgid "set view control to '%s'"
 #~ msgstr "affecte le contrôle de vue à '%s'"
+
+#~ msgid "society"
+#~ msgstr "société"
+
+#~ msgid "tab usercard"
+#~ msgstr "onglets carnet d'adresses"
 
 #~ msgid "the file %s (rev %d) must be locked before"
 #~ msgstr "le fichier %s (rév %d) doit être verrouillé au préalable"
@@ -9393,5 +9384,20 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "user status"
 #~ msgstr "état utilisateur"
 
+#~ msgid "usercard home page"
+#~ msgstr "Annuaire"
+
+#~ msgid "vcs file"
+#~ msgstr "fichier VCS"
+
 #~ msgid "view my space"
 #~ msgstr "Voir mon espace"
+
+#~ msgid "view_detail"
+#~ msgstr "détails"
+
+#~ msgid "visibility"
+#~ msgstr "visibilité"
+
+#~ msgid "web"
+#~ msgstr "Web"

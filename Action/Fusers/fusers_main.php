@@ -1,20 +1,10 @@
 <?php
 /*
+ * Iuser list
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * Freedom Address Book
- *
- * @author Anakeen 2000
- * @version $Id: faddbook_main.php,v 1.27 2008/08/14 09:59:14 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage USERCARD
- */
-/**
- */
 
 include_once ("FDL/freedom_util.php");
 include_once ("FDL/Lib.Dir.php");
@@ -32,7 +22,7 @@ include_once ("FDL/Lib.Dir.php");
  * @global viewone Http var : (Y|N) set Y if want display detail doc if only one found
  * @global createsubfam Http var : (Y|N) set N if no want view possibility to create subfamily
  */
-function faddbook_main(&$action)
+function fusers_main(Action &$action)
 {
     global $_POST;
     
@@ -43,6 +33,8 @@ function faddbook_main(&$action)
     
     $dbaccess = $action->getParam("FREEDOM_DB");
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/subwindow.js");
+    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL")."/FDC/Layout/setparamu.js");
+
     
     $pstart = GetHttpVars("sp", 0);
     $action->lay->set("choosecolumn", ($action->Haspermission("USERCARD_MANAGER", "USERCARD") == 1 ? true : false));
@@ -64,7 +56,7 @@ function faddbook_main(&$action)
     }
     $action->lay->set("viewpref", ($cols == ""));
     // Init page lines
-    $lpage = $action->getParam("FADDBOOK_MAINLINE", 25);
+    $lpage = $action->getParam("FUSERS_MAINLINE", 25);
     $action->lay->set("linep", $lpage);
     $choicel = array(
         10,
@@ -108,7 +100,7 @@ function faddbook_main(&$action)
         $action->lay->set("choosecolumn", false); // don't see choose column
         
     } else {
-        $pc = $action->getParam("FADDBOOK_MAINCOLS", "");
+        $pc = $action->getParam("FUSERS_MAINCOLS", "");
         if ($pc != "") {
             $tccols = explode("|", $pc);
             foreach ($tccols as $k => $v) {
@@ -128,7 +120,7 @@ function faddbook_main(&$action)
     // add sub families for creation
     $child = array();
     if (($dnfam->control("create") == "") && ($dnfam->control("icreate") == "")) {
-        $child[$famid] = array(
+        $child[] = array(
             "title" => $dnfam->title,
             "id" => $dnfam->id
         );
@@ -210,7 +202,7 @@ function faddbook_main(&$action)
     $il = 0;
     
     $action->lay->set("idone", ($viewone && (count($cl) == 1)) ? $cl[0]["id"] : false);
-    
+    $pzone='';
     foreach ($cl as $k => $v) {
         if ($il >= $lpage) continue;
         $dcol = array();

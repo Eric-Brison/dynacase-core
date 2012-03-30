@@ -34,7 +34,6 @@ class importDocumentDescription
      * @var StructAttribute
      */
     private $structAttr = null;
-
     /**
      * @var array
      */
@@ -736,10 +735,12 @@ class importDocumentDescription
             '\n',
             ALTSEPCHAR
             //,'\\'
+            
         ) , array(
             "\n",
             SEPCHAR
             //,'\\\\'
+            
         ) , $data[2]);
         $this->doc->setDefValue($attrid, $defv);
         $force = (str_replace(" ", "", trim(strtolower($data[3]))) == "force=yes");
@@ -968,6 +969,22 @@ class importDocumentDescription
         $this->tcr[$this->nLine]["err"].= $err;
     }
     /**
+     * Verify compatibility between 2 type
+     * @param string $curType
+     * @param string $newType
+     */
+    protected function isTypeCompatible($curType, $newType)
+    {
+        $tc = array(
+            "docid" => "account",
+            "text" => "longtext",
+            "longtext" => "htmltext",
+            "file" => "image",
+            "image" => "file"
+        );
+        return $tc[$curType] == $newType;
+    }
+    /**
      * analyze IATTR
      * @param array $data line of description file
      */
@@ -1005,7 +1022,7 @@ class importDocumentDescription
                 // modification of type is forbidden
                 $curType = trim(strtok($oattr->type, '('));
                 $newType = trim(strtok($this->structAttr->type, '('));
-                if ($curType != $newType) {
+                if ($curType != $newType && (!$this->isTypeCompatible($curType, $newType))) {
                     $this->tcr[$this->nLine]["err"].= sprintf("cannot change attribute %s type definition from %s to %s", $this->structAttr->id, $curType, $newType);
                 }
                 // modification of target is forbidden

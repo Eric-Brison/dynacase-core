@@ -38,9 +38,7 @@ class _IUSER extends _USER
     /*
      * @end-method-ignore
     */
-    var $cviews = array(
-        "FUSERS:FUSERS_IUSER"
-    );
+   
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
@@ -83,23 +81,7 @@ class _IUSER extends _USER
     {
         return _("user cannot be revived");
     }
-    /**
-     * @deprecated
-     */
-    function getOtherGroups()
-    {
-        deprecatedFunction();
-        if ($this->id == 0) return array();
-        
-        include_once ("FDL/freedom_util.php");
-        include_once ("FDL/Lib.Dir.php");
-        
-        $sqlfilters[] = "in_textlist(grp_idruser,{$this->id})";
-        // $sqlfilters[]="fromid !=".getFamIdFromName($this->dbaccess,"IGROUP");
-        $tgroup = getChildDoc($this->dbaccess, 0, "0", "ALL", $sqlfilters, 1, "TABLE", getFamIdFromName($this->dbaccess, "GROUP"));
-        
-        return $tgroup;
-    }
+
     /**
      * get all direct group document identificators of the isuser
      * @return @array of group document id, the index of array is the system identificator
@@ -498,87 +480,7 @@ class _IUSER extends _USER
         $this->editbodycard($target, $ulink, $abstract);
     }
     
-    function fusers_iuser($target = "finfo", $ulink = true, $abstract = "Y")
-    {
-        global $action;
-        //setHttpVar("specialmenu","menuab");
-        $this->viewdefaultcard($target, $ulink, $abstract);
-        $action->parent->AddCssRef("USERCARD:faddbook.css", true);
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/USERCARD/Layout/faddbook.js");
-        // list of attributes displayed directly in layout
-        $ta = array(
-            "us_workweb",
-            "us_photo",
-            "us_lname",
-            "us_fname",
-            "us_society",
-            "us_civility",
-            "us_mail",
-            "us_phone",
-            "us_mobile",
-            "us_fax",
-            "us_intphone",
-            "us_workaddr",
-            "us_workcedex",
-            "us_country",
-            "us_workpostalcode",
-            "us_worktown",
-            "us_groups",
-            "us_whatid",
-            "us_state",
-            "us_login",
-            "us_status",
-            "us_expiresd",
-            "us_expirest",
-            "us_daydelay",
-            "us_idsociety"
-        );
-        //$ta["ident"]=array("us_lo
-        $la = $this->getAttributes();
-        $to = array();
-        $tabs = array();
-        foreach ($la as $k => $v) {
-            $va = $this->getValue($v->id);
-            if (($va || ($v->type == "array")) && (!in_array($v->id, $ta)) && (!$v->inArray())) {
-                
-                if ((($v->mvisibility == "R") || ($v->mvisibility == "W"))) {
-                    if ($v->type == "array") {
-                        $hv = $this->getHtmlValue($v, $va, $target, $ulink);
-                        if ($hv) {
-                            $to[] = array(
-                                "lothers" => $v->labelText,
-                                "aid" => $v->id,
-                                "vothers" => $hv,
-                                "isarray" => true
-                            );
-                            $tabs[$v->fieldSet->labelText][] = $v->id;
-                        }
-                    } else {
-                        $to[] = array(
-                            "lothers" => $v->labelText,
-                            "aid" => $v->id,
-                            "vothers" => $this->getHtmlValue($v, $va, $target, $ulink) ,
-                            "isarray" => false
-                        );
-                        $tabs[$v->fieldSet->labelText][] = $v->id;
-                    }
-                }
-            }
-        }
-        $this->lay->setBlockData("OTHERS", $to);
-        $this->lay->set("HasOTHERS", (count($to) > 0));
-        $this->lay->set("HasDOMAIN", false);
-        $this->lay->set("HasDPassword", (intval($this->getValue("US_DAYDELAY")) != 0));
-        $ltabs = array();
-        foreach ($tabs as $k => $v) {
-            $ltabs[$k] = array(
-                "tabtitle" => $k,
-                "aids" => "['" . implode("','", $v) . "']"
-            );
-        }
-        $this->lay->setBlockData("TABS", $ltabs);
-        $this->lay->set("CanEdit", ($this->control("edit") == ""));
-    }
+
     /**
      * interface to only modify name and password
      * @templateController
@@ -588,119 +490,7 @@ class _IUSER extends _USER
         $this->viewprop();
         $this->editattr(false);
     }
-    /**
-     * @templateController
-     */
-    function fusers_eiuser()
-    {
-        global $action;
-        $this->editattr();
-        $action->parent->AddCssRef("USERCARD:faddbook.css", true);
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/USERCARD/Layout/faddbook.js");
-        $firsttab = getHttpVars("tab"); // first tab displayed
-        // list of attributes displayed directly in layout
-        $ta = array(
-            "us_workweb",
-            "us_photo",
-            "us_lname",
-            "us_fname",
-            "us_society",
-            "us_idsociety",
-            "us_civility",
-            "us_mail",
-            "us_phone",
-            "us_mobile",
-            "us_fax",
-            "us_intphone",
-            "us_workaddr",
-            "us_workcedex",
-            "us_country",
-            "us_workpostalcode",
-            "us_worktown",
-            "us_groups",
-            "us_whatid",
-            "us_state",
-            "us_login",
-            "us_status",
-            "us_expiresd",
-            "us_expirest",
-            "us_daydelay",
-            "us_passwd1",
-            "us_passwd2",
-            "us_extmail",
-            "us_role",
-            "us_scatg",
-            "us_pfax",
-            "us_pphone",
-            "us_job",
-            "us_type",
-            "us_initials",
-            "us_service",
-            "us_idservice",
-            "us_socaddr"
-        );
-        //$ta["ident"]=array("us_lo
-        $la = $this->getNormalAttributes();
-        
-        $this->lay->set("editgroup", ($la["us_group"]->mvisibility == "W"));
-        $this->lay->set("firsttab", $firsttab);
-        $to = array();
-        $th = array();
-        $tabs = array();
-        foreach ($la as $k => $v) {
-            $va = $this->getValue($v->id);
-            if (!$v->inArray() && (!in_array($v->id, $ta))) {
-                if ($v->mvisibility != "I") {
-                    if ($v->type == "array") {
-                        $hv = getHtmlInput($this, $v, $va);
-                        if ($hv) {
-                            if ($v->mvisibility != "H") {
-                                $to[] = array(
-                                    "lothers" => $v->labelText,
-                                    "aid" => $v->id,
-                                    "vothers" => $hv,
-                                    "isarray" => true
-                                );
-                                $tabs[$v->fieldSet->labelText][] = $v->id;
-                            } else {
-                                $th[] = array(
-                                    "aid" => $v->id,
-                                    "vothers" => getHtmlInput($this, $v, $va)
-                                );
-                            }
-                        }
-                    } else {
-                        if ($v->mvisibility != "H") {
-                            $to[] = array(
-                                "lothers" => $v->labelText,
-                                "aid" => $v->id,
-                                "vothers" => getHtmlInput($this, $v, $va) ,
-                                "isarray" => false
-                            );
-                            $tabs[$v->fieldSet->labelText][] = $v->id;
-                        } else {
-                            $th[] = array(
-                                "aid" => $v->id,
-                                "vothers" => getHtmlInput($this, $v, $va)
-                            );
-                        }
-                    }
-                }
-            }
-        }
-        $this->lay->setBlockData("OTHERS", $to);
-        $this->lay->setBlockData("IHIDDENS", $th);
-        $this->lay->set("HasOTHERS", (count($to) > 0));
-        $ltabs = array();
-        foreach ($tabs as $k => $v) {
-            $ltabs[$k] = array(
-                "tabtitle" => $k,
-                "aids" => "['" . implode("','", $v) . "']"
-            );
-        }
-        $this->lay->setBlockData("TABS", $ltabs);
-        $this->viewprop();
-    }
+
     /**
      * Set/change user password
      */

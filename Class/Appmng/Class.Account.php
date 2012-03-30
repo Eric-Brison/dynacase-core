@@ -127,7 +127,6 @@ create sequence seq_id_users start 10;";
             $this->Affect($list[0]);
             return true;
         }
-        
         return false;
     }
     /**
@@ -666,7 +665,7 @@ union
     {
         $query = new QueryDb($this->dbaccess, "Account");
         $optgroup = '';
-        if ($onlygroup) $optgroup = " and users.isgroup='Y' ";
+        if ($onlygroup) $optgroup = " and users.accounttype='G' ";
         
         $list = $query->Query(0, 0, "TABLE", "select users.* from users, groups where " . "groups.iduser=users.id and " . "idgroup=$gid $optgroup;");
         

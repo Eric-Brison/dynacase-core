@@ -1,20 +1,10 @@
 <?php
 /*
+ * display users and groups list
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
-/**
- * display users and groups list
- *
- * @author Anakeen 2000
- * @version $Id: fusers_list.php,v 1.12 2008/08/14 09:59:14 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage FUSERS
- */
-/**
- */
 
 include_once ("FDL/Lib.Dir.php");
 function fusers_list(Action & $action)
@@ -49,20 +39,23 @@ function fusers_list(Action & $action)
         }
     }
     if (!$groups) $groups = array();
+    $group = new_doc($action->dbaccess, "IGROUP");
+    $groupIcon = $group->getIcon('', 14);
+    $action->lay->set("iconGroup", $groupIcon);
     if ($mgroups) {
         $doc = createTmpDoc($dbaccess, 1);
         uasort($mgroups, "cmpgroup");
         foreach ($mgroups as $k => $v) {
-            $cgroup = fusers_getChildsGroup($v["id"], $groups);
+            $cgroup = fusers_getChildsGroup($v["id"], $groups, $groupIcon);
             $tgroup[$k] = $v;
             $tgroup[$k]["SUBUL"] = $cgroup;
             $fid = $v["fid"];
             if ($fid) {
                 $tdoc = getTDoc($dbaccess, $fid);
-                $icon = $doc->getIcon($tdoc["icon"]);
+                $icon = $doc->getIcon($tdoc["icon"], 14);
                 $tgroup[$k]["icon"] = $icon;
             } else {
-                $tgroup[$k]["icon"] = "Images/igroup.gif";
+                $tgroup[$k]["icon"] = $groupIcon;
             }
             $groupuniq[$v["id"]] = $v;
             $groupuniq[$v["id"]]["checkbox"] = "";
@@ -107,7 +100,7 @@ function fusers_list(Action & $action)
  * internal function use for choosegroup
  * use to compute displayed group tree
  */
-function fusers_getChildsGroup($id, $groups)
+function fusers_getChildsGroup($id, $groups, $groupIcon)
 {
     static $dbaccess;
     static $doc;
@@ -117,14 +110,14 @@ function fusers_getChildsGroup($id, $groups)
     foreach ($groups as $k => $v) {
         if ($v["idgroup"] == $id) {
             $tlay[$k] = $v;
-            $tlay[$k]["SUBUL"] = fusers_getChildsGroup($v["id"], $groups);
+            $tlay[$k]["SUBUL"] = fusers_getChildsGroup($v["id"], $groups, $groupIcon);
             $fid = $v["fid"];
             if ($fid) {
                 $tdoc = getTDoc($dbaccess, $fid);
-                $icon = $doc->getIcon($tdoc["icon"]);
+                $icon = $doc->getIcon($tdoc["icon"], 14);
                 $tlay[$k]["icon"] = $icon;
             } else {
-                $tlay[$k]["icon"] = "Images/igroup.gif";
+                $tlay[$k]["icon"] = $groupIcon;
             }
         }
     }

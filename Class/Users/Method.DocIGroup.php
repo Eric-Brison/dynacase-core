@@ -47,7 +47,6 @@ class _IGROUP extends _GROUP
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
-    // var $defaultedit = "FUSERS:FUSERS_EIGROUP:T";
     var $exportLdap = array(
         // posixGroup
         "gidNumber" => "GRP_GIDNUMBER",
@@ -97,10 +96,11 @@ class _IGROUP extends _GROUP
      */
     function getLDAPMember()
     {
-        $t = $this->getTValue("GRP_IDUSER");
+        $g=$this->getAccount();
+        $g->getAllMembers();
         $tdn = array();
-        foreach ($t as $k => $v) {
-            $du = getTDoc($this->dbaccess, $v);
+        foreach ($g as $k => $v) {
+            $du = getTDoc($this->dbaccess, $v["fid"]);
             $tdnu = explode("\n", $du["ldapdn"]);
             if (count($tdnu) > 0) {
                 $dnu = $tdnu[0];
@@ -218,9 +218,6 @@ class _IGROUP extends _GROUP
      */
     public function setGroupMail($nomail = false)
     {
-        // no compute all members now
-        $this->deleteValue("GRP_IDRUSER");
-        $this->deleteValue("GRP_RUSER");
         if (!$nomail) $nomail = ($this->getValue("grp_hasmail") == "no");
         if (!$nomail) {
             $this->setValue("grp_mail", $this->getMail());
@@ -424,10 +421,8 @@ class _IGROUP extends _GROUP
                         $tgid[$gid] = $gt->fid;
                         $tglogin[$gid] = $this->getTitle($gt->fid);
                     }
-                    $this->SetValue("GRP_PGROUP", $tglogin);
                     $this->SetValue("GRP_IDPGROUP", $tgid);
                 } else {
-                    $this->SetValue("GRP_PGROUP", " ");
                     $this->SetValue("GRP_IDPGROUP", " ");
                 }
                 $err = $this->modify(true, array(
@@ -435,7 +430,6 @@ class _IGROUP extends _GROUP
                     "grp_name",
                     "us_login",
                     "us_meid",
-                    "grp_pgroup",
                     "grp_idgroup"
                 ));
             } else {
@@ -449,153 +443,41 @@ class _IGROUP extends _GROUP
      */
     function refreshMembers()
     {
-        $norefresh = ($this->getValue("grp_hasmembers") == "no");
-        if ($norefresh) {
-            $this->DeleteValue("GRP_USER");
-            $this->DeleteValue("GRP_IDUSER");
-        }
+        $err='';
+
         $wid = $this->getValue("us_whatid");
         if ($wid > 0) {
             $u = $this->getAccount(true);
             
-            $tu = $u->GetUsersGroupList($wid, $norefresh);
+            $tu = $u->GetUsersGroupList($wid, true);
             $tulogin = $tglogin = '';
             if (count($tu) > 0) {
                 
                 foreach ($tu as $uid => $tvu) {
-                    if ($tvu["isgroup"] == "Y") {
+                    if ($tvu["accounttype"] == "G") {
                         $tgid[$uid] = $tvu["fid"];
                         //	  $tglogin[$uid]=$this->getTitle($tvu["fid"]);
                         $tglogin[$tvu["fid"]] = $tvu["lastname"];
-                    } else {
-                        $tuid[$uid] = $tvu["fid"];
-                        //	  $tulogin[$uid]=$this->getTitle($tvu["fid"]);
-                        $tulogin[$tvu["fid"]] = trim($tvu["lastname"] . " " . $tvu["firstname"]);
                     }
                 }
             }
-            if (is_array($tulogin)) {
-                uasort($tulogin, "strcasecmp");
-                $this->SetValue("GRP_USER", $tulogin);
-                $this->SetValue("GRP_IDUSER", array_keys($tulogin));
-            } else {
-                $this->DeleteValue("GRP_USER");
-                $this->DeleteValue("GRP_IDUSER");
-            }
+
             if (is_array($tglogin)) {
                 uasort($tglogin, "strcasecmp");
-                $this->SetValue("GRP_GROUP", $tglogin);
                 $this->SetValue("GRP_IDGROUP", array_keys($tglogin));
             } else {
-                $this->DeleteValue("GRP_GROUP");
                 $this->DeleteValue("GRP_IDGROUP");
             }
             
-            $user = $this->getTvalue("grp_ruser");
-            $toomany = (count($user) > 100);
-            if ($norefresh) $this->setValue("grp_toomany", sprintf(_("Members detection are disactived for the group")));
-            elseif ($toomany) $this->setValue("grp_toomany", sprintf(_("Too many members to display there here (%d). Use Open menu to display them.") , count($user)));
-            else $this->deleteValue("grp_toomany");
+
             $err = $this->modify();
         }
+        return $err;
     }
     
-    function preConsultation()
-    {
-        $user = $this->getTvalue("grp_ruser");
-        $toomany = (count($user) > 100);
-        if ($toomany) {
-            $oa = $this->getAttribute("grp_users");
-            $oa->setVisibility('H');
-            $oa = $this->getAttribute("grp_rusers");
-            $oa->setVisibility('H');
-            $oa = $this->getAttribute("grp_user");
-            $oa->setVisibility('H');
-            $oa = $this->getAttribute("grp_ruser");
-            $oa->setVisibility('H');
-        }
-    }
+
     
-    function fusers_eigroup()
-    {
-        global $action;
-        $this->editattr();
-        $action->parent->AddCssRef("USERCARD:faddbook.css", true);
-        $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/USERCARD/Layout/faddbook.js");
-        $firsttab = getHttpVars("tab"); // first tab displayed
-        // list of attributes displayed directly in layout
-        $ta = array(
-            "us_login",
-            "us_whatid",
-            "grp_mail",
-            "grp_name",
-            "grp_role",
-            "grp_type",
-            "grp_hasmail",
-            "grp_hasmembers"
-        );
-        
-        $this->lay->set("hasdomain", false);
-        
-        $this->lay->set("firsttab", $firsttab);
-        $la = $this->getNormalAttributes();
-        $to = $th = array();
-        $tabs = array();
-        foreach ($la as $k => $v) {
-            $va = $this->getValue($v->id);
-            if (!$v->inArray() && (!in_array($v->id, $ta))) {
-                if ($v->mvisibility != "I") {
-                    if ($v->type == "array") {
-                        $hv = getHtmlInput($this, $v, $va);
-                        if ($hv) {
-                            if ($v->mvisibility != "H") {
-                                $to[] = array(
-                                    "lothers" => $v->labelText,
-                                    "aid" => $v->id,
-                                    "vothers" => $hv,
-                                    "isarray" => true
-                                );
-                                $tabs[$v->fieldSet->labelText][] = $v->id;
-                            } else {
-                                $th[] = array(
-                                    "aid" => $v->id,
-                                    "vothers" => getHtmlInput($this, $v, $va)
-                                );
-                            }
-                        }
-                    } else {
-                        if ($v->mvisibility != "H") {
-                            $to[] = array(
-                                "lothers" => $v->labelText,
-                                "aid" => $v->id,
-                                "vothers" => getHtmlInput($this, $v, $va) ,
-                                "isarray" => false
-                            );
-                            $tabs[$v->fieldSet->labelText][] = $v->id;
-                        } else {
-                            $th[] = array(
-                                "aid" => $v->id,
-                                "vothers" => getHtmlInput($this, $v, $va)
-                            );
-                        }
-                    }
-                }
-            }
-        }
-        $this->lay->setBlockData("OTHERS", $to);
-        $this->lay->setBlockData("IHIDDENS", $th);
-        $ltabs = array();
-        foreach ($tabs as $k => $v) {
-            $ltabs[$k] = array(
-                "tabtitle" => $k,
-                "aids" => "['" . implode("','", $v) . "']"
-            );
-        }
-        $this->lay->setBlockData("TABS", $ltabs);
-        $this->viewprop();
-        $this->lay->set("HasOTHERS", (count($to) > 0));
-        $this->lay->set("ICON", $this->getIcon());
-    }
+
     /**
      * @begin-method-ignore
      * this part will be deleted when construct document class until end-method-ignore
