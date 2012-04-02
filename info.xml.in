@@ -101,7 +101,6 @@ This can be solved by:<br/>
                 PHP.
             </help>
         </check>
-        <!--<check type="phpfunction" function="mhash"><help>You might need to install a php-mhash package from your distribution in order to have mash support in PHP.</help></check>-->
         <check type="phpfunction" function="ldap_connect">
             <help>You might need to install a php-ldap package from your distribution in order to have LDAP support in
                 PHP.
@@ -121,11 +120,6 @@ This can be solved by:<br/>
         <check type="phpfunction" function="mb_get_info">
             <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
                 support in PHP.
-            </help>
-        </check>
-        <check type="phpfunction" function="mcrypt_module_open">
-            <help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support
-                in PHP.
             </help>
         </check>
         <check type="phpfunction" function="gd_info">
@@ -357,11 +351,6 @@ This can be solved by:<br/>
         <check type="phpfunction" function="mb_get_info">
             <help>You might need to install a php-mbstring package from your distribution in order to have mbstring
                 support in PHP.
-            </help>
-        </check>
-        <check type="phpfunction" function="mcrypt_module_open">
-            <help>You might need to install a php-mcrypt package from your distribution in order to have mcrypt support
-                in PHP.
             </help>
         </check>
         <check type="phpfunction" function="gd_info">
