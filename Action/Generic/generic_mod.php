@@ -42,7 +42,7 @@ function generic_mod(Action & $action)
     $action->parent->addJsRef("GENERIC:generic_mod.js", true);
     $err = modcard($action, $ndocid, $info); // ndocid change if new doc
     if (!$noredirect) $action->AddWarningMsg($err);
-    
+    $doc = null;
     if ($err == "") {
         $doc = new_Doc($dbaccess, $ndocid);
         if ($docid > 0) AddLogMsg(sprintf(_("%s has been modified") , $doc->title));
@@ -53,6 +53,9 @@ function generic_mod(Action & $action)
             $cdoc = $doc->getFamDoc();
             //if (($cdoc->dfldid>0) && ($dirid==0))  $dirid=$cdoc->dfldid;// we not insert in defaut folder
             if ($dirid > 0) {
+                /**
+                 * @var Dir $fld
+                 */
                 $fld = new_Doc($dbaccess, $dirid);
                 if ($fld->locked == - 1) { // it is revised document
                     $dirid = $fld->latestId();
@@ -77,7 +80,7 @@ function generic_mod(Action & $action)
                     }
                 } else {
                     //try in home folder
-                    $fld = new_Doc($dbaccess, UNCLASS_FLD);
+                    $fld = new Dir($dbaccess);
                     $home = $fld->getHome(false);
                     if ($home && ($home->id > 0)) {
                         $fld = $home;
@@ -89,7 +92,7 @@ function generic_mod(Action & $action)
     }
     
     if ($noredirect) {
-        if ((!$err) && $updateAttrid) {
+        if ((!$err) && $updateAttrid && $doc) {
             $action->lay->set("updateData", json_encode(array(
                 "id" => $doc->id,
                 "title" => $doc->getTitle() ,
