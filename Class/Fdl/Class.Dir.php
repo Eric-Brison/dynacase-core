@@ -18,10 +18,6 @@
 include_once ("FDL/Class.PDir.php");
 include_once ("FDL/Class.QueryDir.php");
 /**
- * default folder to place document
- */
-define("UNCLASS_FLD", 10);
-/**
  * Folder document Class
  *
  */

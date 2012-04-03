@@ -21,7 +21,7 @@ include_once ("FDL/modcard.php");
 include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocFam.php");
 // -----------------------------------
-function freedom_mod(&$action)
+function freedom_mod(Action & $action)
 {
     // -----------------------------------
     // Get all the params
@@ -39,7 +39,11 @@ function freedom_mod(&$action)
         
         if ($docid == 0) {
             AddLogMsg(sprintf(_("%s has been created") , $doc->title));
+            $fld = null;
             if ($dirid > 0) {
+                /**
+                 * @var Dir $fld
+                 */
                 $fld = new_Doc($dbaccess, $dirid);
                 if ($fld->doctype != 'D') $dirid = 0;
             }
@@ -68,7 +72,7 @@ function freedom_mod(&$action)
             */
             // third try in home folder
             if ($dirid == 0) {
-                $fld = new_Doc($dbaccess, UNCLASS_FLD);
+                $fld = new Dir($dbaccess);
                 $home = $fld->getHome();
                 
                 if ($home->id > 0) $fld = $home;
