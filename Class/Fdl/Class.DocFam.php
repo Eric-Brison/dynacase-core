@@ -15,7 +15,10 @@
 /**
  */
 include_once ('FDL/Class.PFam.php');
-
+/**
+ * @class DocFam
+ * @method string createProfileAttribute
+ */
 class DocFam extends PFam
 {
     
@@ -67,7 +70,7 @@ create unique index idx_idfam on docfam(id);";
     public $param;
     public $schar;
     public $maxrev;
-    
+    private $_configuration;
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
     {
         
@@ -134,9 +137,12 @@ create unique index idx_idfam on docfam(id);";
     function postImport()
     {
         if ($this->usefor == 'W') {
+            /**
+             * @var WDoc $w
+             */
             $w = createDoc($this->dbaccess, $this->id);
             if ($w) {
-                if (method_exists($w, "createProfileAttribute")) {
+                if (is_a($w, "WDoc")) {
                     $w->createProfileAttribute();
                 }
             }
@@ -148,7 +154,7 @@ create unique index idx_idfam on docfam(id);";
      * @param bool $ulink
      * @param bool $abstract
      */
-   function viewfamcard($target = "_self", $ulink = true, $abstract = false)
+    function viewfamcard($target = "_self", $ulink = true, $abstract = false)
     {
         // -----------------------------------
         global $action;
@@ -160,7 +166,7 @@ create unique index idx_idfam on docfam(id);";
             
             $this->lay->set("$v", $this->$v ? $this->$v : false);
             switch ($v) {
-                case cprofid:
+                case 'cprofid':
                     if ($this->$v > 0) {
                         $tdoc = new_Doc($this->dbaccess, $this->$v);
                         
@@ -175,7 +181,7 @@ create unique index idx_idfam on docfam(id);";
                     }
                     break;
 
-                case cfldid:
+                case 'cfldid':
                     if ($this->$v > 0) {
                         $tdoc = new_Doc($this->dbaccess, $this->$v);
                         $this->lay->set("cfldtitle", $tdoc->title);
@@ -185,7 +191,7 @@ create unique index idx_idfam on docfam(id);";
                     }
                     break;
 
-                case dfldid:
+                case 'dfldid':
                     if ($this->$v > 0) {
                         $tdoc = new_Doc($this->dbaccess, $this->$v);
                         $this->lay->set("dfldtitle", $tdoc->title);
@@ -195,8 +201,11 @@ create unique index idx_idfam on docfam(id);";
                     }
                     break;
 
-                case wid:
+                case 'wid':
                     if ($this->$v > 0) {
+                        /**
+                         * @var WDoc $tdoc
+                         */
                         $tdoc = new_Doc($this->dbaccess, $this->$v);
                         $this->lay->set("wtitle", $tdoc->title);
                         $this->lay->set("wdisplay", true);
@@ -234,7 +243,7 @@ create unique index idx_idfam on docfam(id);";
                     }
                     break;
 
-                case ccvid:
+                case 'ccvid':
                     if ($this->$v > 0) {
                         $tdoc = new_Doc($this->dbaccess, $this->$v);
                         $this->lay->set("cvtitle", $tdoc->title);
@@ -244,11 +253,11 @@ create unique index idx_idfam on docfam(id);";
                     }
                     break;
 
-                case forumid:
+                case 'forumid':
                     $this->lay->set("forum", ($this->forumid == "" ? _("disable forum") : _("enable forum")));
                     break;
 
-                case maxrev:
+                case 'maxrev':
                     if (!$this->maxrev) {
                         if ($this->schar == 'S') $this->lay->set("maxrevision", _("no revisable"));
                         else $this->lay->set("maxrevision", _("unlimited revisions"));
@@ -351,7 +360,7 @@ create unique index idx_idfam on docfam(id);";
          */
         function getXValue($X, $idp, $def = "")
         {
-            $tval = "t$X";
+            $tval = "_xt$X";
             if (!isset($this->$tval)) $this->getXValues($X);
             
             $tval2 = $this->$tval;
@@ -366,22 +375,55 @@ create unique index idx_idfam on docfam(id);";
          */
         function getXValues($X)
         {
-            $tval = "t$X";
+            static $xInherits = array();
+            $Xval = "_xt$X";
             $defval = $this->$X;
             if (!$defval) return array();
-            $tdefattr = explode("][", substr($defval, 1, strlen($defval) - 2));
-            $this->$tval = array();
             
-            $txval = array();
-            foreach ($tdefattr as $k => $v) {
-                
-                $aid = substr($v, 0, strpos($v, '|'));
-                $dval = substr(strstr($v, '|') , 1);
-                if ($aid) $txval[$aid] = $dval;
+            if ($this->$Xval) return $this->$Xval;
+            $XS[$this->id] = $defval;
+            $this->$Xval = array();
+            $inhIds = array();
+            if ($this->attributes->fromids) {
+                $sql = sprintf("select id,%s from docfam where id in (%s)", pg_escape_string($X) , implode(',', $this->attributes->fromids));
+                simpleQuery($this->dbaccess, $sql, $rx, false, false);
+                foreach ($rx as $r) {
+                    $XS[$r["id"]] = $r[$X];
+                }
+                $inhIds = array_reverse($this->attributes->fromids);
             }
-            $this->$tval = $txval;
+            $inhIds[] = $this->id;
+            $txval = array();
             
-            return $this->$tval;
+            foreach ($inhIds as $famId) {
+                
+                $tdefattr = explode("][", substr($XS[$famId], 1, strlen($XS[$famId]) - 2));
+                foreach ($tdefattr as $k => $v) {
+                    
+                    $aid = substr($v, 0, strpos($v, '|'));
+                    $dval = substr(strstr($v, '|') , 1);
+                    if ($aid) $txval[$aid] = ($dval == '-') ? '' : $dval;
+                }
+            }
+            
+            uksort($txval, array(
+                $this,
+                "compareXOrder"
+            ));
+            $this->$Xval = $txval;
+            
+            return $this->$Xval;
+        }
+        
+        public function compareXOrder($a1, $a2)
+        {
+            $oa1 = $this->getAttribute($a1);
+            $oa2 = $this->getAttribute($a2);
+            if ($oa1 && $oa2) {
+                if ($oa1->ordered > $oa2->ordered) return 1;
+                else if ($oa1->ordered < $oa2->ordered) return -1;
+            }
+            return 0;
         }
         /**
          * set family default value
@@ -454,12 +496,13 @@ create unique index idx_idfam on docfam(id);";
                 }
                 fclose($tmpstream);
                 $vf = newFreeVaultFile($this->dbaccess);
-                $info=null;
+                $info = null;
                 $err = $vf->Retrieve($vid, $info);
                 if ($err == "") $err = $vf->Save($filename, false, $vid);
                 unlink($filename);
                 return $err;
             }
+            return '';
         }
         /**
          * read xml configuration file
@@ -472,15 +515,21 @@ create unique index idx_idfam on docfam(id);";
                     $famfile = DEFAULT_PUBDIR . sprintf("/families/%s.fam", $this->name);
                     if (!@$dxml->load($famfile)) {
                         return null;
-
                     } else {
+                        $o = null;
                         $properties = $dxml->getElementsByTagName('property');
+                        /**
+                         * @var DOMElement $prop
+                         */
                         foreach ($properties as $prop) {
                             $name = $prop->getAttribute('name');
                             $value = $prop->nodeValue;
                             $o->properties[$name] = $value;
                         }
                         $views = $dxml->getElementsByTagName('view');
+                        /**
+                         * @var DOMElement $view
+                         */
                         foreach ($views as $view) {
                             $name = $view->getAttribute('name');
                             foreach ($view->attributes as $a) {
@@ -527,4 +576,4 @@ create unique index idx_idfam on docfam(id);";
             return ($lay->gen());
         }
     }
-?>
+    

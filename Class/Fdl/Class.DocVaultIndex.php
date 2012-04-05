@@ -36,7 +36,8 @@ class DocVaultIndex extends DbObj
     var $dbtable = "docvaultindex";
     
     var $order_by = "docid";
-    
+    public $docid;
+    public $vaultid;
     var $sqlcreate = "
 create table docvaultindex ( docid  int not null,
                              vaultid int not null

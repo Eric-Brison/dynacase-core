@@ -44,6 +44,12 @@ define("POS_WF", 12); // begin of workflow privilege definition
 /**
  * Control Access Document Class
  * @package FDL
+ * @class DocCtrl
+ * @method getValue
+ * @method getAttribute
+ * @method canEdit
+ * @method control
+ * @property string title
  *
  */
 class DocCtrl extends DocLDAP
@@ -143,6 +149,10 @@ class DocCtrl extends DocLDAP
      * @var string  view control identificator
      */
     public $cvid;
+    /**
+     * @var Doc profil
+     */
+    private $pdoc;
     // --------------------------------------------------------------------
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0)
     {
@@ -561,6 +571,8 @@ class DocCtrl extends DocLDAP
      */
     function getUsersForAcl($aclname)
     {
+        $pos = 0;
+        $pdoc = null;
         if (isset($this->dacls[$aclname])) {
             $pos = $this->dacls[$aclname]["pos"];
             
@@ -591,7 +603,7 @@ class DocCtrl extends DocLDAP
             foreach ($tperm as $perm) {
                 $u->select($perm["userid"]);
                 if ($u->login) {
-                    if ($u->isgroup == 'Y') {
+                    if ($u->accounttype != 'U') {
                         $ru+= $u->GetRUsersList($u->id);
                     } else {
                         $ru[$u->id] = $u->getValues();
