@@ -1,0 +1,71 @@
+<style>
+    table.defaultValues {
+      margin:10px;
+      width:100%;
+    }
+    table.defaultValues tr td{
+      border:solid 1px [COLOR_B0];
+    }
+    table.defaultValues td.noone{
+      text-align:center;
+    }
+    thead.parameter : {
+       margin-top:40px;
+    }
+    div.defaultValues {
+     /*text-align:center;*/
+     width:100%;
+    }
+</style>
+        [IF canEdit]
+<div class="barmenu">
+<a href="?app=GENERIC&amp;action=GENERIC_EDIT&amp;usefor=D&amp;classid=[docid]&amp;rzone=%26action%3DIMPCARD%26zone%3DFDL%3AVIEWDEFAULTVALUES%26id%3D[docid]">[TEXT:Modify default Values]</a>
+[IFNOT NOPAR]<a href="?app=GENERIC&amp;action=GENERIC_EDIT&amp;usefor=Q&amp;classid=[docid]&amp;rzone=%26action%3DIMPCARD%26zone%3DFDL%3AVIEWDEFAULTVALUES%26id%3D[docid]">[TEXT:Modify parameters Values]</a>[ENDIF NOPAR]
+</div>[ENDIF canEdit]
+<h1>[TEXT:Default Values and Parameters]</h1>
+<div class="defaultValues" align="center">
+<table class="defaultValues" rules="all">
+    <thead class="values">
+        <th>[TEXT:Attribute]</th>
+        <th>[TEXT:Label]</th>
+        <th>[TEXT:Own Default Value]</th>
+        [IF hasAncestor]<th>[TEXT:Inherit value]</th>[ENDIF hasAncestor]
+        <th>[TEXT:Result value]</th>
+    </thead>
+    <tbody>
+        [BLOCK DEFVAL]
+        <tr>
+            <td>[aid]</td>
+            <td>[alabel]</td>
+            <td>[defown]</td>
+            [IF hasAncestor]<td>[definh]</td>[ENDIF hasAncestor]
+            <td>[defresult]</td>
+        </tr>
+        [ENDBLOCK DEFVAL]
+                <tr><td class="noone" colspan="4">[IF NOVAL][TEXT:No one default values][ENDIF NOVAL][IFNOT NOVAL]&nbsp;[ENDIF NOVAL]</td></tr>
+    </tbody>
+
+    <thead class="parameter">
+        <th>[TEXT:Parameter]</th>
+        <th>[TEXT:Label]</th>
+        <th>[TEXT:Own Parameter Value]</th>
+        [IF hasAncestor]<th>[TEXT:Inherit value]</th>[ENDIF hasAncestor]
+        <th>[TEXT:Result value]</th>
+    </thead>
+    <tbody>
+        [BLOCK DEFPAR]
+        <tr>
+            <td>[aid]</td>
+            <td>[alabel]</td>
+            <td>[defown]</td>
+            [IF hasAncestor]<td>[definh]</td>[ENDIF hasAncestor]
+            <td>[defresult]</td>
+        </tr>
+        [ENDBLOCK DEFPAR]
+        [IF NOPAR]
+        <tr><td class="noone" colspan="4">[TEXT:No one parameters]</td></tr>[ENDIF NOPAR]
+    </tbody>
+</table>
+
+
+</div>

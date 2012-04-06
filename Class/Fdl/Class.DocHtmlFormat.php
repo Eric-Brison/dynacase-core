@@ -511,7 +511,7 @@ class DocHtmlFormat
                         $opt = "";
                         $inline = $this->oattr->getOption("inline");
                         if ($inline == "yes") $opt = "&inline=yes";
-                        $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"" . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes")) . "\">";
+                        $htmlval = "<a onmousedown=\"document.noselect=true;\" title=\"$size\" target=\"$utarget\" type=\"$mime\" href=\"" . $this->doc->getFileLink($this->oattr->id, $idx, false, ($inline == "yes") , $avalue) . "\">";
                         if ($mimeicon) $htmlval.= "<img class=\"mime\" needresize=1  src=\"Images/$mimeicon\">&nbsp;";
                         $htmlval.= $fname . "</a>";
                     }

@@ -141,7 +141,7 @@ function editcard(Action & $action)
     $action->lay->Set("usefor", $usefor);
     
     if ($usefor == "D") {
-        $doc->SetWriteVisibility();
+        setDocDefaultValues($doc);
         // contruct js functions
         $jsfile = $action->GetLayoutFile("editcard.js");
         $jslay = new Layout($jsfile, $action);
@@ -154,6 +154,9 @@ function editcard(Action & $action)
         if ($doc->id == 0) {
             if (fdl_setHttpVars($doc)) $doc->refresh();
         }
+        if ($usefor == "Q") {
+            useOwnParamters($doc);
+        }
         setRefreshAttributes($action, $doc);
         $action->lay->Set("ZONEBODYCARD", $doc->viewDoc($zonebodycard));
         setNeededAttributes($action, $doc);
@@ -163,7 +166,75 @@ function editcard(Action & $action)
     // compute modify condition js
     
 }
-
+/**
+ * set with own parameters
+ * @param Doc $doc
+ */
+function useOwnParamters(Doc & $doc)
+{
+    $listattr = $doc->getParamAttributes();
+    foreach ($listattr as $aid => $attr) {
+        
+        $doc->DeleteValue($attr->id); // delete all value to set only own default values
+        
+    }
+    
+    if (is_a($doc, "DocFam")) {
+        /**
+         * @var DocFam $doc
+         */
+        $defVal = $doc->getOwnParams();
+    } else {
+        $fam = $doc->getFamDoc();
+        $defVal = $fam->getOwnParams();
+    }
+    foreach ($defVal as $aid => $value) {
+        $doc->$aid=$value; // use raw affect to see method declaration
+    }
+}
+/**
+ * set all attribute in W visibility
+ *
+ *
+ */
+function setDocDefaultValues(Doc & $doc)
+{
+    // transform hidden to writted attribut for default document
+    $listattr = $doc->GetAttributes();
+    foreach ($listattr as $aid => $attr) {
+        $attr->setVisibility("W");
+        
+        if (is_a($attr, "NormalAttribute")) {
+            /**
+             * @var NormalAttribute $attr
+             */
+            if ($attr->type == "enum") {
+                $attr->setOption("eunset", "yes");
+                $attr->setOption("eformat", "list");
+                if (($attr->phpfile == "") || ($attr->phpfile == "-")) {
+                    $attr->phpfunc = ' |' . _("No default value") . ',' . $attr->phpfunc;
+                    $attr->resetEnum();
+                }
+            } elseif ($attr->type == "array") {
+                $attr->setOption("empty", "yes");
+            }
+            $doc->DeleteValue($attr->id); // delete all value to set only own default values
+            
+        }
+    }
+    if (is_a($doc, "DocFam")) {
+        /**
+         * @var DocFam $doc
+         */
+        $defVal = $doc->getOwnDefValues();
+    } else {
+        $fam = $doc->getFamDoc();
+        $defVal = $fam->getOwnDefValues();
+    }
+    foreach ($defVal as $aid => $value) {
+        $doc->$aid=$value;// use raw affect to see method declaration
+    }
+}
 function setNeededAttributes(Action & $action, Doc & $doc)
 {
     $attrn = $doc->GetNeededAttributes($doc->usefor == 'Q');

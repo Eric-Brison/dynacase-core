@@ -1603,7 +1603,6 @@ class DocFormFormat
                 if (($etype == "free") && ($eformat != "auto")) {
                     $enuml['...'] = _("Other...");
                 }
-                
                 if (($eformat == "") && ($value == " ") && ($oattr->getOption("eunset") == "yes")) {
                     $enuml[' '] = _("Do choice");
                 }

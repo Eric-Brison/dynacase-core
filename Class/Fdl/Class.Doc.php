@@ -5063,11 +5063,16 @@ create unique index i_docir on doc(initid, revision);";
          * @param bool $inline set to true if file must be displayed in web browser
          * @return string the url anchor
          */
-        public function getFileLink($attrid, $index = - 1, $cache = false, $inline = false)
+        public function getFileLink($attrid, $index = - 1, $cache = false, $inline = false, $otherValue = '')
         {
             global $action;
-            if ($index >= 0) $avalue = $this->getTValue($attrid, "", $index);
-            else $avalue = $this->getValue($attrid);
+            if (!$otherValue) {
+                if ($index >= 0) $avalue = $this->getTValue($attrid, "", $index);
+                else $avalue = $this->getValue($attrid);
+            } else {
+                if ($index >= 0) $avalue = $$otherValue[$index];
+                else $avalue = $otherValue;
+            }
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
                 $vid = $reg[2];
                 if (true) {
@@ -5509,21 +5514,6 @@ create unique index i_docir on doc(initid, revision);";
                 ) , true);
             }
             return $err;
-        }
-        /**
-         * set all attribute in W visibility
-         *
-         *
-         */
-        function SetWriteVisibility()
-        {
-            // transform hidden to writted attribut for default document
-            $listattr = $this->GetAttributes();
-            foreach ($listattr as $i => $attr) {
-                if (($attr->mvisibility == "H") || ($attr->mvisibility == "I") || ($attr->mvisibility == "R") || ($attr->mvisibility == "S")) {
-                    $this->attributes->attr[$i]->mvisibility = "W";
-                }
-            }
         }
         /**
          * Return the main path relation

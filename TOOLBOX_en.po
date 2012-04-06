@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-30 15:37+0200\n"
+"POT-Creation-Date: 2012-04-06 11:16+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1418,6 +1418,9 @@ msgstr ""
 msgid "December"
 msgstr ""
 
+msgid "Default Values and Parameters"
+msgstr ""
+
 msgid "Default delay for account expiration (days)"
 msgstr "Default delay for account expiration (days)"
 
@@ -2216,6 +2219,9 @@ msgstr ""
 msgid "Increase vault size"
 msgstr ""
 
+msgid "Inherit value"
+msgstr ""
+
 msgid "Inherited grant"
 msgstr ""
 
@@ -2314,6 +2320,9 @@ msgid "LDAP server port"
 msgstr "Import"
 
 msgid "LDAP server root"
+msgstr ""
+
+msgid "Label"
 msgstr ""
 
 msgid "Last History"
@@ -2483,7 +2492,13 @@ msgstr ""
 msgid "Modify categories"
 msgstr "Category"
 
+msgid "Modify default Values"
+msgstr ""
+
 msgid "Modify object access"
+msgstr ""
+
+msgid "Modify parameters Values"
 msgstr ""
 
 msgid "Modify table"
@@ -2578,6 +2593,9 @@ msgstr ""
 msgid "No columns has been defined"
 msgstr ""
 
+msgid "No default value"
+msgstr ""
+
 #, c-format
 msgid "No document found for <b>%s</b>%s"
 msgstr "No document for \"<b>%s</b>\"%s"
@@ -2596,6 +2614,12 @@ msgstr ""
 #, fuzzy
 msgid "No need to refresh group"
 msgstr "Delete"
+
+msgid "No one default values"
+msgstr ""
+
+msgid "No one parameters"
+msgstr ""
 
 msgid "No privilege to change acls"
 msgstr ""
@@ -2720,6 +2744,12 @@ msgstr ""
 msgid "Output file '%s' is already opened."
 msgstr ""
 
+msgid "Own Default Value"
+msgstr ""
+
+msgid "Own Parameter Value"
+msgstr ""
+
 #, c-format
 msgid "PDF conversion failed for %s"
 msgstr ""
@@ -2738,6 +2768,9 @@ msgstr ""
 #, fuzzy
 msgid "Page"
 msgstr "Start search"
+
+msgid "Parameter"
+msgstr ""
 
 msgid "Parameter name does not include spaces"
 msgstr ""
@@ -3009,6 +3042,9 @@ msgid "Result Import TAR Documents"
 msgstr "Import"
 
 msgid "Result grant"
+msgstr ""
+
+msgid "Result value"
 msgstr ""
 
 msgid "Return to reference document"
@@ -3687,6 +3723,9 @@ msgid "View answers"
 msgstr ""
 
 msgid "View cycle graph"
+msgstr ""
+
+msgid "View default values and parameters"
 msgstr ""
 
 msgid "View document reference"
@@ -5196,6 +5235,9 @@ msgid "default start application"
 msgstr ""
 
 msgid "default style"
+msgstr ""
+
+msgid "default value"
 msgstr ""
 
 #, fuzzy

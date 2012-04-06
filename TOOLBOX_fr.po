@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-30 15:37+0200\n"
-"PO-Revision-Date: 2012-03-27 16:55+0200\n"
+"POT-Creation-Date: 2012-04-06 11:16+0200\n"
+"PO-Revision-Date: 2012-04-06 11:19+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1345,6 +1345,9 @@ msgstr "DbObj::Adds erreur dans insertion multiple"
 msgid "December"
 msgstr "Décembre"
 
+msgid "Default Values and Parameters"
+msgstr "Valeurs par défaut et paramètres"
+
 msgid "Default delay for account expiration (days)"
 msgstr "Délai par défaut avant expiration du compte (jours)"
 
@@ -2120,6 +2123,9 @@ msgstr "Augmenter le FS"
 msgid "Increase vault size"
 msgstr "Augmenter la taille du coffre"
 
+msgid "Inherit value"
+msgstr "Valeur des parents"
+
 msgid "Inherited grant"
 msgstr "Droits hérités"
 
@@ -2215,6 +2221,9 @@ msgstr "n° de port du serveur LDAP"
 
 msgid "LDAP server root"
 msgstr "racine du serveur LDAP"
+
+msgid "Label"
+msgstr "Libellé"
 
 msgid "Last History"
 msgstr "Derniers historiques"
@@ -2377,8 +2386,14 @@ msgstr "Modifier n'importe quel objet"
 msgid "Modify categories"
 msgstr "Modifier les catégories"
 
+msgid "Modify default Values"
+msgstr "Modifier les valeurs par défaut"
+
 msgid "Modify object access"
 msgstr "Modifier certains objets"
+
+msgid "Modify parameters Values"
+msgstr "Modifier les paramètres"
 
 msgid "Modify table"
 msgstr "Modification table"
@@ -2465,6 +2480,9 @@ msgstr "Pas de droits définis pour les nouveaux documents de cette famille"
 msgid "No columns has been defined"
 msgstr "Aucunes colonnes ont été définies"
 
+msgid "No default value"
+msgstr "Aucune valeurs par défaut"
+
 #, c-format
 msgid "No document found for <b>%s</b>%s"
 msgstr "Aucun document pour la recherche \"<b>%s</b>\"%s"
@@ -2481,6 +2499,12 @@ msgstr ""
 
 msgid "No need to refresh group"
 msgstr "Tous les groupes sont actualisés"
+
+msgid "No one default values"
+msgstr "Aucune valeur par défaut"
+
+msgid "No one parameters"
+msgstr "Aucun paramètre"
 
 msgid "No privilege to change acls"
 msgstr "Pas de privilège pour modifier les droits"
@@ -2599,6 +2623,12 @@ msgstr "Le fichier de sortie '%s' existe déjà."
 msgid "Output file '%s' is already opened."
 msgstr "Le fichier de sortie '%s' est déjà ouvert."
 
+msgid "Own Default Value"
+msgstr "Valeur par défaut indiquée"
+
+msgid "Own Parameter Value"
+msgstr "Valeur du paramètre indiqué"
+
 #, c-format
 msgid "PDF conversion failed for %s"
 msgstr "conversion PDF a échoué pour %s"
@@ -2616,6 +2646,9 @@ msgstr "Erreur PG : connexion au pg service temporaire '%s' en échec !"
 
 msgid "Page"
 msgstr "Page"
+
+msgid "Parameter"
+msgstr "Paramètre"
 
 msgid "Parameter name does not include spaces"
 msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
@@ -2869,6 +2902,9 @@ msgstr "Résultat de l'importation d'archives"
 
 msgid "Result grant"
 msgstr "Droits résultants"
+
+msgid "Result value"
+msgstr "Valeur résultante"
 
 msgid "Return to reference document"
 msgstr "Retour au document de référence"
@@ -3525,6 +3561,9 @@ msgstr "Voir les réponses"
 
 msgid "View cycle graph"
 msgstr "Voir le graphe du cycle de vie"
+
+msgid "View default values and parameters"
+msgstr "Valeurs par défaut et paramètres"
 
 msgid "View document reference"
 msgstr "Voir le document de référence"
@@ -4957,6 +4996,9 @@ msgstr "Application lancée au démarrage"
 
 msgid "default style"
 msgstr "style par défaut"
+
+msgid "default value"
+msgstr "valeur par défaut"
 
 msgid "default values"
 msgstr "Valeurs par défaut"

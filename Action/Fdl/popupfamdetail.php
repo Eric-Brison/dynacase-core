@@ -99,8 +99,8 @@ function getpopupfamdetail(&$action, $docid)
             "barmenu" => "false"
         ) ,
         "defval" => array(
-            "descr" => _("Set default values") ,
-            "url" => "$surl&app=GENERIC&action=GENERIC_EDIT&usefor=D&classid=$docid",
+            "descr" => _("View default values and parameters") ,
+            "url" => "$surl&app=FDL&action=IMPCARD&zone=FDL:VIEWDEFAULTVALUES&id=$docid",
             "confirm" => "false",
             "control" => "false",
             "tconfirm" => "",
@@ -109,6 +109,7 @@ function getpopupfamdetail(&$action, $docid)
             "submenu" => "",
             "barmenu" => "false"
         ) ,
+        /*
         "param" => array(
             "descr" => _("Parameters values") ,
             "url" => "$surl&app=GENERIC&action=GENERIC_EDIT&usefor=Q&classid=$docid",
@@ -119,7 +120,7 @@ function getpopupfamdetail(&$action, $docid)
             "visibility" => POPUP_ACTIVE,
             "submenu" => "",
             "barmenu" => "false"
-        ) ,
+        ) ,*/
         "chgtitle" => array(
             "descr" => _("Rename") ,
             "url" => "$surl&app=FREEDOM&action=QUERYTITLE&id=$docid",

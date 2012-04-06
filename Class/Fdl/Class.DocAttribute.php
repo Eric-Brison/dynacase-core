@@ -1157,6 +1157,15 @@ class NormalAttribute extends BasicAttribute
             return $this->enum;
         }
         /**
+         * reset Enum cache
+         */
+        function resetEnum()
+        {
+            global $__tenum;
+            $__tenum[$this->id] = $this->enum;
+            $__tlenum[$this->id] = $this->enumlabel;
+        }
+        /**
          * return array of enumeration definition
          * the array'skeys are the enum single key and the values are the complete labels
          *

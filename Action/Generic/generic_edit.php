@@ -24,13 +24,13 @@ include_once ("GENERIC/generic_util.php");
 /**
  * Edit a document
  * @param Action &$action current action
- * @global id Http var : document identificator to see
- * @global zone Http var : if set, special edit with special zone
- * @global rzone Http var : if set, to return view with special zone
- * @global rtarget Http var : if set, to return result in another window (the window will be closed)
- * @global vid Http var : if set, edit represention describe in view control (can be use only if doc has controlled view)
- * @global mskid Http var : is set special mask applied for edition
- * @global autoclose Http var : set to yes to close window after modification
+ * @global id string Http var : document identificator to see
+ * @global zone string Http var : if set, special edit with special zone
+ * @global rzone string Http var : if set, to return view with special zone
+ * @global rtarget string Http var : if set, to return result in another window (the window will be closed)
+ * @global vid string Http var : if set, edit represention describe in view control (can be use only if doc has controlled view)
+ * @global mskid string Http var : is set special mask applied for edition
+ * @global autoclose string Http var : set to yes to close window after modification
  */
 function generic_edit(Action & $action)
 {
@@ -70,7 +70,7 @@ function generic_edit(Action & $action)
             $cdoc = new_Doc($dbaccess, $classid);
             if ($cdoc->control('create') != "") $action->exitError(sprintf(_("no privilege to create this kind (%s) of document") , $cdoc->gettitle()));
             if ($cdoc->control('icreate') != "") $action->exitError(sprintf(_("no privilege to create interactivaly this kind (%s) of document") , $cdoc->gettitle()));
-            $action->lay->Set("title", mb_convert_case(sprintf(_("creation %s") , $cdoc->getHTMLTitle()),  MB_CASE_TITLE, 'UTF-8'));
+            $action->lay->Set("title", mb_convert_case(sprintf(_("creation %s") , $cdoc->getHTMLTitle()) , MB_CASE_TITLE, 'UTF-8'));
         } else {
             $action->lay->Set("title", _("new card"));
         }
@@ -112,6 +112,9 @@ function generic_edit(Action & $action)
     $action->lay->Set("STITLE", addJsSlashes($action->lay->get("title"))); // for include in JS
     if ($zonebodycard == "") {
         if ($doc->cvid > 0) {
+            /**
+             * @var CVDoc $cvdoc
+             */
             $cvdoc = new_Doc($dbaccess, $doc->cvid);
             $cvdoc->set($doc);
             if ($vid == "") {
@@ -176,7 +179,7 @@ function generic_edit(Action & $action)
         $action->lay->Set("wid", ($doc->wid > 0) ? $doc->wid : $doc->state);
     }
     $action->lay->Set("version", $doc->version);
-
+    
     $action->lay->Set("initid", ($doc->initid != '') ? $doc->initid : 0);
     $action->lay->Set("id", $docid);
     $action->lay->Set("dirid", $dirid);

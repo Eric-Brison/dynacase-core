@@ -48,6 +48,7 @@ function editbarmenu(&$action)
         else $zonebodycard = $doc->defaultedit;
     }
     
+    if ((!$docid) && (($usefor == "Q") || ($usefor == "D"))) $action->lay->set("id", $classid);
     $action->lay->Set("boverdisplay", "none");
     $action->lay->Set("INPUTCONSTRAINT", false);
     $action->lay->Set("rzone", $rzone);

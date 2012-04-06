@@ -71,6 +71,7 @@ create unique index idx_idfam on docfam(id);";
     public $schar;
     public $maxrev;
     private $_configuration;
+    
     function __construct($dbaccess = '', $id = '', $res = '', $dbid = 0, $include = true)
     {
         
@@ -91,6 +92,7 @@ create unique index idx_idfam on docfam(id);";
             }
         }
     }
+    
     function preDocDelete()
     {
         return _("cannot delete family");
@@ -115,11 +117,13 @@ create unique index idx_idfam on docfam(id);";
         if ($i != $r) return $i;
         return $values["title"];
     }
+    
     function PostModify()
     {
         include_once ("FDL/Lib.Attr.php");
         return refreshPhpPgDoc($this->dbaccess, $this->id);
     }
+    
     function preCreated()
     {
         $cdoc = $this->getFamDoc();
@@ -137,16 +141,94 @@ create unique index idx_idfam on docfam(id);";
     function postImport()
     {
         if ($this->usefor == 'W') {
-            /**
-             * @var WDoc $w
-             */
             $w = createDoc($this->dbaccess, $this->id);
             if ($w) {
                 if (is_a($w, "WDoc")) {
+                    /**
+                     * @var WDoc $w
+                     */
                     $w->createProfileAttribute();
                 }
             }
         }
+    }
+    /**
+     * @templateController
+     * @param string $target
+     * @param bool $ulink
+     * @param bool $abstract
+     */
+    function viewDefaultValues($target = "_self", $ulink = true, $abstract = false)
+    {
+        $d = createDoc($this->dbaccess, $this->id, false, true, false);
+        $defValues = $this->getDefValues();
+        $ownDefValues = $this->explodeX($this->defval);
+        $ownParValues = $this->explodeX($this->param);
+        $tDefVal = $tDefPar = array();
+        
+        $tp = $this->getParamAttributes();
+        foreach ($tp as $aid => & $oa) {
+            $tDefPar[$aid] = array(
+                "aid" => $aid,
+                "alabel" => $oa->getLabel() ,
+                "defown" => $this->getParamValue($aid) ,
+                "definh" => '',
+                "defresult" => $this->getHtmlValue($oa, $this->getParamValue($aid))
+            );
+        }
+        $parent = null;
+        if ($this->fromid > 0) {
+            $parent = $this->getFamDoc();
+        }
+        foreach ($defValues as $aid => $dv) {
+            $oa = $d->getAttribute($aid);
+            $value = $d->getValue($aid);
+            $ownValue = $ownDefValues[$aid];
+            
+            if ($oa) {
+                $oa->setVisibility('R');
+                $label = $oa->getLabel();
+                if ($oa->usefor == 'Q') {
+                    $value = $this->getParamValue($aid);
+                    if ($ownParValues[$aid]) {
+                        $ownValue = $ownParValues[$aid];
+                    } else {
+                        if ($ownValue) $ownValue.= ' <em>(' . _("default value") . ")</em>";
+                    }
+                }
+            } else {
+                $label = '-';
+            }
+            $inhValue = '';
+            if ($parent) {
+                if ($oa->usefor == 'Q') {
+                    
+                    $inhValue = $parent->getParamValue($aid);
+                } else {
+                    $inhValue = $parent->getDefValue($aid);
+                }
+            }
+            $t = array(
+                "aid" => $aid,
+                "alabel" => $label,
+                "defown" => $ownValue,
+                "definh" => $inhValue,
+                "defresult" => $this->getHtmlValue($oa, $value)
+            );
+            if ($oa && $oa->usefor == 'Q') {
+                
+                $tDefPar[$aid] = $t;
+            } else {
+                $tDefVal[$aid] = $t;
+            }
+        }
+        $this->lay->set("hasAncestor", $this->fromid > 0);
+        $this->lay->set("docid", $this->id);
+        $this->lay->SetBlockData("DEFVAL", $tDefVal);
+        $this->lay->SetBlockData("DEFPAR", $tDefPar);
+        $this->lay->Set("NOVAL", count($tDefVal) == 0);
+        $this->lay->Set("NOPAR", count($tDefPar) == 0);
+        $this->lay->Set("canEdit", $this->canEdit() == "");
     }
     /**
      * @templateController
@@ -291,6 +373,15 @@ create unique index idx_idfam on docfam(id);";
             return $this->getXValues("param");
         }
         /**
+         * return own family parameters values
+         *
+         * @return array string parameter value
+         */
+        function getOwnParams()
+        {
+            return $this->explodeX($this->param);
+        }
+        /**
          * return the value of an list parameter document
          *
          * the parameter must be in an array or of a type '*list' like enumlist or textlist
@@ -340,6 +431,15 @@ create unique index idx_idfam on docfam(id);";
             return $this->getXValues("defval");
         }
         /**
+         * return own default value not inherit default
+         *
+         * @return array string default value
+         */
+        function getOwnDefValues()
+        {
+            return $this->explodeX($this->defval);
+        }
+        /**
          * set family default value
          *
          * @param string $idp parameter identificator
@@ -369,13 +469,29 @@ create unique index idx_idfam on docfam(id);";
             return $def;
         }
         /**
+         * explode param or defval string
+         * @param $sx
+         * @return array
+         */
+        private function explodeX($sx)
+        {
+            $txval = array();
+            $tdefattr = explode("][", substr($sx, 1, strlen($sx) - 2));
+            foreach ($tdefattr as $k => $v) {
+                
+                $aid = substr($v, 0, strpos($v, '|'));
+                $dval = substr(strstr($v, '|') , 1);
+                if ($aid) $txval[$aid] = ($dval == '-') ? '' : $dval;
+            }
+            return $txval;
+        }
+        /**
          * return all family default values
          *
          * @return array string default value
          */
         function getXValues($X)
         {
-            static $xInherits = array();
             $Xval = "_xt$X";
             $defval = $this->$X;
             if (!$defval) return array();
@@ -396,16 +512,11 @@ create unique index idx_idfam on docfam(id);";
             $txval = array();
             
             foreach ($inhIds as $famId) {
-                
-                $tdefattr = explode("][", substr($XS[$famId], 1, strlen($XS[$famId]) - 2));
-                foreach ($tdefattr as $k => $v) {
-                    
-                    $aid = substr($v, 0, strpos($v, '|'));
-                    $dval = substr(strstr($v, '|') , 1);
-                    if ($aid) $txval[$aid] = ($dval == '-') ? '' : $dval;
+                $txvalh = $this->explodeX($XS[$famId]);
+                foreach ($txvalh as $aid => $dval) {
+                    $txval[$aid] = $dval;
                 }
             }
-            
             uksort($txval, array(
                 $this,
                 "compareXOrder"
@@ -433,7 +544,7 @@ create unique index idx_idfam on docfam(id);";
          */
         function setXValue($X, $idp, $val)
         {
-            $tval = "t$X";
+            $tval = "_xt$X";
             if (is_array($val)) $val = $this->_array2val($val);
             
             if (!isset($this->$tval)) $this->getXValues($X);
