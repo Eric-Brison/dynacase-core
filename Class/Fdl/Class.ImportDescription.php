@@ -126,6 +126,7 @@ class importDocumentDescription
             $data[0] = trim($data[0]);
             if ($data[12][0] == '|') print_r2('[' . $data[12] . ']' . $buffer . "\n");
             $this->beginLine = 0;
+            
             switch ($data[0]) {
                     // -----------------------------------
                     
@@ -402,7 +403,7 @@ class importDocumentDescription
         }
     }
     /**
-     * analyze RESET
+     * analyze RESET²
      * @param array $data line of description file
      */
     protected function doReset(array $data)
@@ -412,15 +413,23 @@ class importDocumentDescription
         $check = new CheckReset();
         $err = $check->check($data, $this->doc)->getErrors();
         if (!$err) {
-            if (strtolower($data[1]) == "attributes") {
-                $this->tcr[$this->nLine]["msg"].= sprintf(_("reinit all attributes"));
-                if ($this->analyze) return;
-                $oattr = new DocAttr($this->dbaccess);
-                $oattr->docid = intval($this->doc->id);
-                if ($oattr->docid > 0) {
-                    $err = $oattr->exec_query("delete from docattr where docid=" . $oattr->docid);
+            switch (strtolower($data[1])) {
+                case 'attributes':
+                    
+                    $this->tcr[$this->nLine]["msg"].= sprintf(_("reinit all attributes"));
+                    if ($this->analyze) return;
+                    $oattr = new DocAttr($this->dbaccess);
+                    $oattr->docid = intval($this->doc->id);
+                    if ($oattr->docid > 0) {
+                        $err = $oattr->exec_query("delete from docattr where docid=" . $oattr->docid);
+                    }
+                    break;
+
+                case 'default':
+                    
+                    $this->doc->defval = '';
+                    break;
                 }
-            }
         }
         $this->tcr[$this->nLine]["err"].= $err;
     }
@@ -742,14 +751,19 @@ class importDocumentDescription
             //,'\\\\'
             
         ) , $data[2]);
-        $this->doc->setDefValue($attrid, $defv);
         $force = (str_replace(" ", "", trim(strtolower($data[3]))) == "force=yes");
-        if ($force || (!$this->doc->getParamValue($attrid))) {
-            $this->doc->setParam($attrid, $defv);
-            $this->tcr[$this->nLine]["msg"] = "reset default parameter";
+        $ownDef = $this->doc->getOwnDefValues();
+        if ($ownDef[$attrid] && (!$force)) {
+            // reset default
+            $this->tcr[$this->nLine]["msg"] = sprintf("keep default value %s : %s. No use %s", $attrid, $ownDef[$attrid], $data[2]);
+        } else {
+            $this->doc->setDefValue($attrid, $defv);
+            if ($force || (!$this->doc->getParamValue($attrid))) {
+                $this->doc->setParam($attrid, $defv);
+                $this->tcr[$this->nLine]["msg"] = "reset default parameter";
+            }
+            $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s") , $attrid, $data[2]);
         }
-        
-        $this->tcr[$this->nLine]["msg"].= sprintf(_("add default value %s %s") , $attrid, $data[2]);
     }
     /**
      * analyze ACCESS

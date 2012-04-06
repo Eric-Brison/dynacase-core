@@ -173,7 +173,7 @@ create unique index idx_idfam on docfam(id);";
                 "alabel" => $oa->getLabel() ,
                 "defown" => $this->getParamValue($aid) ,
                 "definh" => '',
-                "defresult" => $this->getHtmlValue($oa, $this->getParamValue($aid))
+                "defresult" => $this->getHtmlValue($oa, $d->getParamValue($aid))
             );
         }
         $parent = null;
@@ -189,7 +189,7 @@ create unique index idx_idfam on docfam(id);";
                 $oa->setVisibility('R');
                 $label = $oa->getLabel();
                 if ($oa->usefor == 'Q') {
-                    $value = $this->getParamValue($aid);
+                    $value = $d->getParamValue($aid);
                     if ($ownParValues[$aid]) {
                         $ownValue = $ownParValues[$aid];
                     } else {
@@ -419,7 +419,9 @@ create unique index idx_idfam on docfam(id);";
          */
         function getDefValue($idp, $def = "")
         {
-            return $this->getXValue("defval", $idp, $def);
+            $x = $this->getXValue("defval", $idp, $def);
+            
+            return $x;
         }
         /**
          * return all family default values
@@ -465,6 +467,7 @@ create unique index idx_idfam on docfam(id);";
             
             $tval2 = $this->$tval;
             $v = $tval2[strtolower($idp) ];
+            if ($v == "-") return $def;
             if ($v != "") return $v;
             return $def;
         }
@@ -481,7 +484,7 @@ create unique index idx_idfam on docfam(id);";
                 
                 $aid = substr($v, 0, strpos($v, '|'));
                 $dval = substr(strstr($v, '|') , 1);
-                if ($aid) $txval[$aid] = ($dval == '-') ? '' : $dval;
+                if ($aid) $txval[$aid] = $dval;
             }
             return $txval;
         }
@@ -514,7 +517,7 @@ create unique index idx_idfam on docfam(id);";
             foreach ($inhIds as $famId) {
                 $txvalh = $this->explodeX($XS[$famId]);
                 foreach ($txvalh as $aid => $dval) {
-                    $txval[$aid] = $dval;
+                    $txval[$aid] = ($dval == '-') ? '' : $dval;
                 }
             }
             uksort($txval, array(
