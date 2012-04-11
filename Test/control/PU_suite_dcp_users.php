@@ -20,6 +20,7 @@ class SuiteDcpUser
         
         $suite->addTestSuite('PU\TestUser');
         $suite->addTestSuite('PU\TestGroup');
+        $suite->addTestSuite('PU\TestUserDeactivateAccount');
         // ...
         return $suite;
     }
