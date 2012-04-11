@@ -17,7 +17,6 @@
  */
 
 $lang_dir = DEFAULT_PUBDIR . "/locale";
-
 $lang = array();
 $ret = load_lang($lang, $lang_dir);
 if ($ret === false) {

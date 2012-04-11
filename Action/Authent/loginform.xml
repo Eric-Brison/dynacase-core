@@ -139,7 +139,7 @@ This is necessary to guarantee that yours informations are accessible only by yo
       <table cellspacing="0">
         <tr>
           <td class="label">[TEXT:yourusername]</td>
-          <td class="input"><input id="auth_user" placeholder="[TEXT:Enter your login]" name="auth_user" type="text" value="[auth_user]" /></td>
+          <td class="input"><input id="auth_user" placeholder="[TEXT:Enter your login]" name="auth_user" type="text" autocapitalize="off" autocorrect="off"  value="[auth_user]" /></td>
         </tr>
         <tr>
           <td class="label">[TEXT:yourpassword]</td>
@@ -152,16 +152,16 @@ This is necessary to guarantee that yours informations are accessible only by yo
 
     <div class="buttons">
 
-      [IF AUTHENT_SHOW_LANG_SELECTION]
+      [IF authent_show_lang_selection]
       <select name="CORE_LANG" onchange="window.location.href='[CORE_BASEURL]app=AUTHENT&amp;action=LOGINFORM&amp;lang='+this.options[this.selectedIndex].value">
         [BLOCK LANG]
         <option value="[LANG_VALUE]" [IF LANG_IS_SELECTED]selected[ENDIF LANG_IS_SELECTED]>[LANG_LABEL]</option>
         [ENDBLOCK LANG]
       </select>
-      [ENDIF AUTHENT_SHOW_LANG_SELECTION]
-      [IF AUTHENT_SHOW_REQPASSWD]
+      [ENDIF authent_show_lang_selection]
+      [IF authent_show_reqpasswd]
       <a href="[CORE_BASEURL]app=AUTHENT&amp;action=REQPASSWD">[TEXT:authent reqpassword]</a>
-      [ENDIF AUTHENT_SHOW_REQPASSWD]
+      [ENDIF authent_show_reqpasswd]
       <a href="javascript:display_help()">[TEXT:help]</a>
       <a href="javascript:login(this.document.loginform,'[TEXT:warning_name]','[TEXT:warning_pass]');">[TEXT:Do connection]</a>
 
