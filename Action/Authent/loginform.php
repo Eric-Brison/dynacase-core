@@ -23,9 +23,8 @@ include_once ('Lib.Http.php');
 /**
  * PHP Authentification control
  *
- * @deprecated since HTTP Authentification
  */
-function loginform(&$action)
+function loginform(Action & $action)
 {
     $action->parent->AddCssRef("AUTHENT:loginform.css", true);
     $action->parent->AddJsRef($action->GetParam("CORE_JSURL") . "/resizeimg.js");
@@ -38,7 +37,7 @@ function loginform(&$action)
     } else {
         $ulang = getParam('CORE_LANG');
     }
-    $action->lay->set("isEnglish", substr($ulang,0,2)=="en");
+    $action->lay->set("isEnglish", substr($ulang, 0, 2) == "en");
     $error = GetHttpVars("error", 0);
     $merr = "";
     if ($error > 0) {
@@ -74,18 +73,11 @@ function loginform(&$action)
     $action->lay->set("passfocus", ($auth_user !== "" ? true : false));
     $action->lay->set("error", $merr);
     
-    if ($action->getParam('AUTHENT_SHOW_REQPASSWD') == 'yes') {
-        $action->lay->set('AUTHENT_SHOW_REQPASSWD', True);
-    } else {
-        $action->lay->set('AUTHENT_SHOW_REQPASSWD', False);
-    }
+    $action->lay->set('authent_show_reqpasswd', $action->getParam('AUTHENT_SHOW_REQPASSWD') != 'no');
     
-    if ($action->getParam('AUTHENT_SHOW_LANG_SELECTION') == 'yes') {
-        $action->lay->set('AUTHENT_SHOW_LANG_SELECTION', True);
-    } else {
-        $action->lay->set('AUTHENT_SHOW_LANG_SELECTION', False);
-    }
+    $action->lay->set('authent_show_lang_selection', $action->getParam('AUTHENT_SHOW_LANG_SELECTION') != 'no');
     
+    $lang = array();
     include_once ('CORE/lang.php');
     $lang_block = array();
     

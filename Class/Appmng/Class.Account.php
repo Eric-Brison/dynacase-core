@@ -268,7 +268,7 @@ create sequence seq_id_users start 10;";
     /**
      * return display name of a user
      * @param int $uid user identificator
-     * @return string|null firstname and lastname or false if not found
+     * @return string|null firstname and lastname or null if not found
      */
     static function getDisplayName($uid)
     {
@@ -486,7 +486,7 @@ create sequence seq_id_users start 10;";
                 if ($err == '') {
                     if ($this->id == 1) $this->setAdminHtpasswd($pass);
                     $log = new Log("", "Session", "Authentication");
-                    $facility = constant(getParam("AUTH_LOGFACILITY", "LOG_AUTH"));
+                    $facility = constant(getParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
                     $log->wlog("S", sprintf('User %s password crypted with salted SHA256 algorithm.', $this->login) , NULL, $facility);
                 }
             }

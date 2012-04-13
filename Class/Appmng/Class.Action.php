@@ -383,7 +383,6 @@ create sequence SEQ_ID_ACTION;
         }
         
         $query->Query();
-        
         return ($query->nb > 0);
     }
     

@@ -19,7 +19,7 @@
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
-class _IUSER extends _USER
+class _IUSER extends Doc
 {
     public $wuser;
     public function setGroups()
@@ -38,7 +38,7 @@ class _IUSER extends _USER
     /*
      * @end-method-ignore
     */
-   
+    
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
     );
@@ -46,7 +46,7 @@ class _IUSER extends _USER
     var $defaultedit = "FDL:EDITBODYCARD";
     function specRefresh()
     {
-        $err = _USER::SpecRefresh();
+        $err = parent::SpecRefresh();
         
         if ($this->getValue("US_STATUS") == 'D') $err.= ($err == "" ? "" : "\n") . _("user is deactivated");
         // refresh MEID itself
@@ -81,7 +81,6 @@ class _IUSER extends _USER
     {
         return _("user cannot be revived");
     }
-
     /**
      * get all direct group document identificators of the isuser
      * @return @array of group document id, the index of array is the system identificator
@@ -159,7 +158,6 @@ class _IUSER extends _USER
                 $this->SetValue("US_WHATID", $wuser->id);
                 $this->SetValue("US_LNAME", $wuser->lastname);
                 $this->SetValue("US_FNAME", $wuser->firstname);
-                $this->SetValue("US_PASSWD", $wuser->password);
                 $this->SetValue("US_PASSWD1", " ");
                 $this->SetValue("US_PASSWD2", " ");
                 $this->SetValue("US_LOGIN", $wuser->login);
@@ -231,7 +229,7 @@ class _IUSER extends _USER
         $ed = $action->getParam("AUTHENT_ACCOUNTEXPIREDELAY");
         if ($ed > 0) {
             $expdate = time() + ($ed * 24 * 3600);
-            $err = $this->SetValue("us_accexpiredate", strftime("%d/%m/%Y 00:00:00", $expdate));
+            $err = $this->SetValue("us_accexpiredate", strftime("%Y-%m-%d 00:00:00", $expdate));
             if ($err == '') $err = $this->modify(true, array(
                 "us_accexpiredate"
             ) , true);
@@ -257,7 +255,6 @@ class _IUSER extends _USER
         $fname = $this->getValue("us_fname");
         $pwd1 = $this->getValue("us_passwd1");
         $pwd2 = $this->getValue("us_passwd2");
-        $pwd = $this->getValue("us_passwd");
         $expires = $this->getValue("us_expires");
         $daydelay = $this->getValue("us_daydelay");
         if ($daydelay == - 1) $passdelay = $daydelay;
@@ -307,12 +304,6 @@ class _IUSER extends _USER
                     $err = $this->setGroups(); // set groups (add and suppress) may be long
                     if ($newuser) $err.= $this->setToDefaultGroup();
                 }
-                if (($pwd1 == "") && ($pwd1 == $pwd2) && ($pwd != "")) {
-                    if (($pwd != $user->password) && (strlen($pwd) > 12)) {
-                        $user->password = $pwd;
-                        $err = $user->modify();
-                    }
-                }
             }
             
             if ($err == "") {
@@ -336,7 +327,7 @@ class _IUSER extends _USER
     
     function PostDelete()
     {
-        _USER::PostDelete();
+        parent::PostDelete();
         
         $user = $this->getAccount();
         if ($user) $user->Delete();
@@ -426,8 +417,21 @@ class _IUSER extends _USER
         }
         return '';
     }
+    /**
+     * return crypted password
+     * @return string
+     */
+    public function getCryptPassword()
+    {
+        $wu = $this->getAccount();
+        if ($wu->isAffected()) {
+            return $wu->password;
+        }
+        return '';
+    }
     function constraintPassword($pwd1, $pwd2, $login)
     {
+        if ($this->testForcePassword($pwd1)) return '';
         $sug = array();
         $err = "";
         
@@ -442,7 +446,75 @@ class _IUSER extends _USER
             "sug" => $sug
         );
     }
-    
+    public function testForcePassword($pwd)
+    {
+        $minLength = intval(getParam("AUTHENT_PWDMINLENGTH"));
+        $minDigitLength = intval(getParam("AUTHENT_PWDMINDIGITLENGTH"));
+        $minUpperLength = intval(getParam("AUTHENT_PWDMINUPPERALPHALENGTH"));
+        $minLowerLength = intval(getParam("AUTHENT_PWDMINLOWERALPHALENGTH"));
+        $minSymbolLength = intval(getParam("AUTHENT_PWDMINSYMBOLLENGTH"));
+        
+        if (preg_match('/[\p{C}]/u', $pwd)) {
+            return _("Control characters are not allowed");
+        }
+        
+        $msg = sprintf(_("Your password is not secure."));
+        if ($minLength > 0) $msg.= "\n " . sprintf(_("It must contains at least %d characters (total length)") , $minLength);
+        if ($minDigitLength + $minUpperLength + $minLowerLength + $minSymbolLength > 0) $msg.= " " . sprintf(_("with these conditions"));
+        if ($minDigitLength) {
+            if ($minDigitLength > 1) $msg.= "\n  - " . sprintf(_("at least %d digits") , $minDigitLength);
+            else $msg.= "\n  - " . sprintf(_("at least one digit"));
+        }
+        if ($minUpperLength) {
+            if ($minUpperLength > 1) $msg.= "\n  - " . sprintf(_("at least %d uppercase alpha characters") , $minUpperLength);
+            else $msg.= "\n  - " . sprintf(_("at least one uppercase alpha character"));
+        }
+        if ($minLowerLength) {
+            if ($minLowerLength > 1) $msg.= "\n  - " . sprintf(_("at least %d lowercase alpha characters") , $minLowerLength);
+            else $msg.= "\n  - " . sprintf(_("at least one lowercase alpha character"));
+        }
+        if ($minSymbolLength) {
+            if ($minSymbolLength > 1) $msg.= "\n  - " . sprintf(_("at least %d symbol characters") , $minSymbolLength);
+            else $msg.= "\n  - " . sprintf(_("at least one symbol character"));
+        }
+        if (mb_strlen($pwd) < $minLength) {
+            $err = _("Not enough characters.") . "\n";
+            return nl2br($err . $msg);
+        }
+        $alphanum = 0;
+        
+        if ($minDigitLength) {
+            preg_match_all('/[0-9]/', $pwd, $matches);
+            $alphanum+= count($matches[0]);
+            if (count($matches[0]) < $minDigitLength) {
+                $err = _("Not enough digits.") . "\n";
+                return nl2br($err . $msg);
+            }
+        }
+        if ($minUpperLength) {
+            preg_match_all('/[\p{Lu}]/u', $pwd, $matches);
+            $alphanum+= count($matches[0]);
+            if (count($matches[0]) < $minUpperLength) {
+                $err = _("Not enough uppercase characters.") . "\n";
+                return nl2br($err . $msg);
+            }
+        }
+        if ($minLowerLength) {
+            preg_match_all('/[\p{Ll}]/u', $pwd, $matches);
+            $alphanum+= count($matches[0]);
+            if (count($matches[0]) < $minLowerLength) {
+                $err = _("Not enough lowercase characters.") . "\n";
+                return nl2br($err . $msg);
+            }
+        }
+        if ($minSymbolLength) {
+            if ((mb_strlen($pwd) - $alphanum) < $minSymbolLength) {
+                $err = _("Not enough special characters.") . "\n";
+                return nl2br($err . $msg);
+            }
+        }
+        return '';
+    }
     function constraintExpires($expiresd, $expirest, $daydelay)
     {
         $err = '';
@@ -479,8 +551,6 @@ class _IUSER extends _USER
         
         $this->editbodycard($target, $ulink, $abstract);
     }
-    
-
     /**
      * interface to only modify name and password
      * @templateController
@@ -490,7 +560,6 @@ class _IUSER extends _USER
         $this->viewprop();
         $this->editattr(false);
     }
-
     /**
      * Set/change user password
      */
@@ -505,15 +574,6 @@ class _IUSER extends _USER
         // Change what user password
         $wuser->password_new = $password;
         $err = $wuser->modify();
-        if ($err != "") {
-            return $err;
-        }
-        // Change IUSER password
-        $err = $this->SetValue("US_PASSWD", $password);
-        if ($err != "") {
-            return $err;
-        }
-        $err = $this->modify();
         if ($err != "") {
             return $err;
         }

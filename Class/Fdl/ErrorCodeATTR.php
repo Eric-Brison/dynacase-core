@@ -298,9 +298,9 @@ class ErrorCodeATTR
      */
     const ATTR1401 = 'not enought argument call to use constraint "%s" (need %d arguments) for "%s" attribute';
     /**
-     * call contraint method must be defined in file method or in another class if precised
+     * call constraint method must be defined in file method or in another class if precised
      */
-    const ATTR1402 = 'contraint method "%s" is not found for "%s" attribute';
+    const ATTR1402 = 'constraint method "%s" is not found for "%s" attribute';
     /**
      * the phpfunc method must be static if a classname is set
      * @note example : myClass::myStaticMethod()
