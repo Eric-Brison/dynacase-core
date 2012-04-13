@@ -35,6 +35,7 @@ function submitreqpasswd(Action & $action)
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
     
     $userdoc = retrieveUserDoc($action, $submitted_login, $submitted_email);
+
     if ($userdoc == NULL) {
         $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', True);
         return;
@@ -98,8 +99,7 @@ function retrieveUserDoc(Action $action, $login = "", $email = "")
      * @var _IUSER $uDoc
      */
     $uDoc = $s->nextDoc();
-    $email = $uDoc->getMail();;
-    
+    $email = $uDoc->getMail();
     if ($email == "") {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for docid '" . $uDoc->id . "'");
         return NULL;
