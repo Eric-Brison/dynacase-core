@@ -66,6 +66,7 @@ SELECT pg_temp.dropColumnIfExists('', 'users', 'ntpasswordhash');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'lmpasswordhash');
 SELECT pg_temp.addColumnIfNotExists('', 'users', 'memberof', 'int[]');
 SELECT pg_temp.addColumnIfNotExists('', 'users', 'accounttype', 'char');
+-- SELECT pg_temp.dropColumnIfExists('', 'doc128', 'us_passwd','cascade');
 --SELECT pg_temp.dropColumnIfExists('', 'doc128', 'us_iddomain','cascade');
 --SELECT pg_temp.dropColumnIfExists('', 'doc128', 'us_domain','cascade');
 --SELECT pg_temp.dropColumnIfExists('', 'doc127', 'us_iddomain','cascade');
@@ -84,6 +85,7 @@ UPDATE doc127 SET name = 'GADMIN'     WHERE us_whatid = '4';
 UPDATE doc127 SET name = 'GDEFAULT'   WHERE us_whatid = '2';
 UPDATE doc128 SET name = 'USER_ADMIN' WHERE us_whatid = '1';
 UPDATE doc128 SET name = 'USER_GUEST' WHERE us_whatid = '3';
+delete from docattr where id='us_passwd' and docid=128;
 delete from docattr where id in ('grp_toomany',
 'grp_users',
 'grp_iduser',

@@ -158,7 +158,6 @@ class _IUSER extends Doc
                 $this->SetValue("US_WHATID", $wuser->id);
                 $this->SetValue("US_LNAME", $wuser->lastname);
                 $this->SetValue("US_FNAME", $wuser->firstname);
-                $this->SetValue("US_PASSWD", $wuser->password);
                 $this->SetValue("US_PASSWD1", " ");
                 $this->SetValue("US_PASSWD2", " ");
                 $this->SetValue("US_LOGIN", $wuser->login);
@@ -256,7 +255,6 @@ class _IUSER extends Doc
         $fname = $this->getValue("us_fname");
         $pwd1 = $this->getValue("us_passwd1");
         $pwd2 = $this->getValue("us_passwd2");
-        $pwd = $this->getValue("us_passwd");
         $expires = $this->getValue("us_expires");
         $daydelay = $this->getValue("us_daydelay");
         if ($daydelay == - 1) $passdelay = $daydelay;
@@ -305,12 +303,6 @@ class _IUSER extends Doc
                     ));
                     $err = $this->setGroups(); // set groups (add and suppress) may be long
                     if ($newuser) $err.= $this->setToDefaultGroup();
-                }
-                if (($pwd1 == "") && ($pwd1 == $pwd2) && ($pwd != "")) {
-                    if (($pwd != $user->password) && (strlen($pwd) > 12)) {
-                        $user->password = $pwd;
-                        $err = $user->modify();
-                    }
                 }
             }
             
@@ -422,6 +414,18 @@ class _IUSER extends Doc
         $wu = $this->getAccount();
         if ($wu->isAffected()) {
             return $wu->getMail($rawmail);
+        }
+        return '';
+    }
+    /**
+     * return crypted password
+     * @return string
+     */
+    public function getCryptPassword()
+    {
+        $wu = $this->getAccount();
+        if ($wu->isAffected()) {
+            return $wu->password;
         }
         return '';
     }
@@ -570,15 +574,6 @@ class _IUSER extends Doc
         // Change what user password
         $wuser->password_new = $password;
         $err = $wuser->modify();
-        if ($err != "") {
-            return $err;
-        }
-        // Change IUSER password
-        $err = $this->SetValue("US_PASSWD", $password);
-        if ($err != "") {
-            return $err;
-        }
-        $err = $this->modify();
         if ($err != "") {
             return $err;
         }
