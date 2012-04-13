@@ -45,7 +45,7 @@ class TestSearch extends TestCaseDcpDocument
             "Banane"
         );
         foreach ($societies as $socTitle) {
-            $d1 = createDoc(self::$dbaccess, "SOCIETY", false);
+            $d1 = createDoc(self::$dbaccess, "BASE", false);
             $d1->setTitle($socTitle);
             $err = $d1->add();
             if ($err != "") return false;
@@ -311,19 +311,19 @@ class TestSearch extends TestCaseDcpDocument
             array(
                 "title ~* '%s'",
                 "Pomme",
-                "SOCIETY",
+                "BASE",
                 2
             ) ,
             array(
                 "title ~ '%s'",
                 "Poire|Pomme|Cerise|Banane",
-                "SOCIETY",
+                "BASE",
                 5
             ) ,
             array(
                 "title = '%s'",
                 "Pomme",
-                "SOCIETY",
+                "BASE",
                 1
             )
         );
