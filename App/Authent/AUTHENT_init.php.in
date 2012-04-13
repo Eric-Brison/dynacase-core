@@ -33,12 +33,7 @@ $app_const = array(
         "global" => "N"
     ) ,
     
-    "AUTHENT_CALLBACKREQPASSWD_MAIL_SUBJECT" => array(
-        "val" => "Mot de passe ré-initialisé",
-        "descr" => N_("subject for new password response") ,
-        "kind" => "text",
-        "global" => "N"
-    ) ,
+
     "AUTHENT_SHOW_LANG_SELECTION" => array(
         "val" => "yes",
         "descr" => N_("show language selection") ,
@@ -98,12 +93,6 @@ $app_const = array(
     "AUTHENT_PWDMINSYMBOLLENGTH" => array(
         "val" => "0",
         "descr" => N_("Minimum symbol (no alpha, no digit) needed for user password") ,
-        "kind" => "text",
-        "global" => "Y"
-    ) ,
-    "AUTHENT_PWDAUTOLENGTH" => array(
-        "val" => "12",
-        "descr" => N_("Character length set to generate a user password") ,
         "kind" => "text",
         "global" => "Y"
     )

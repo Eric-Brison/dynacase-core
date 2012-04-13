@@ -114,45 +114,7 @@ function callbackreqpasswd(Action & $action)
     return "";
 }
 
-function sendResponse(Action $action, Doc $userdoc, $layoutPath, $password)
-{
-    include_once ('WHAT/Class.UserToken.php');
-    include_once ("FDL/sendmail.php");
-    
-    $us_mail = $userdoc->getValue('us_mail');
-    $us_fname = $userdoc->getValue('us_fname');
-    $us_lname = $userdoc->getValue('us_lname');
-    
-    if ($us_mail == "") {
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for user " . $userdoc->getValue('id'));
-        return "Empty us_mail for user " . $userdoc->getValue('id');
-    }
-    
-    $from = $action->getParam('SMTP_FROM');
-    $subject = $action->getParam('AUTHENT_CALLBACKREQPASSWD_MAIL_SUBJECT');
-    
-    $layout = new Layout($layoutPath, $action);
-    if ($layout == NULL) {
-        return "error creating new Layout from $layoutPath";
-    }
-    
-    $layout->set('US_MAIL', $us_mail);
-    $layout->set('US_FNAME', $us_fname);
-    $layout->set('US_LNAME', $us_lname);
-    $layout->set('PASSWORD', $password);
-    
-    $content = $layout->gen();
-    
-    $mimemail = new Fdl_Mail_Mime("\r\n");
-    $mimemail->setHTMLBody($content);
-    
-    $ret = sendmail($us_mail, $from, NULL, NULL, $subject, $mimemail, NULL);
-    if ($ret != "") {
-        return "Error: sendmail() returned with $ret";
-    }
-    
-    return "";
-}
+
 function authLog($txt)
 {
     $log = new Log("", "Authent", "ChangePassword");
