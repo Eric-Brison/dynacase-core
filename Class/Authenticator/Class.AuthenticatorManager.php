@@ -216,7 +216,7 @@ abstract class AuthenticatorManager
     {
         global $_GET;
         $log = new Log("", "Session", "Authentication");
-        $facility = constant(getParam("AUTH_LOGFACILITY", "LOG_AUTH"));
+        $facility = constant(getParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
         $log->wlog("S", sprintf("[%s] [%s] [%s] [%s] [%s] [%s]", $status, $additionalMessage, $provider, $clientIp, $account, $userAgent) , NULL, $facility);
         return 0;
     }

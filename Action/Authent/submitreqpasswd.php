@@ -18,23 +18,23 @@
 /**
  */
 
-function submitreqpasswd(&$action)
+function submitreqpasswd(Action & $action)
 {
     include_once ('FDL/Lib.Dir.php');
     include_once ('FDL/freedom_util.php');
     
     $submitted_login = GetHttpVars('form_login');
     $submitted_email = GetHttpVars('form_email');
-
+    
     $action->parent->AddCssRef('AUTHENT:submitreqpasswd.css');
-
+    
     $action->lay->set('FORM_SEND_OK', False);
     $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', False);
     $action->lay->set('FORM_SEND_ERROR_UNKNOWN', False);
     $action->lay->set('FORM_SEND_ERROR_EXTERNAL_AUTH', False);
     $action->lay->set('ON_ERROR_CONTACT', $action->getParam('SMTP_FROM'));
     
-    $userdoc = getUserDoc($action, $submitted_login, $submitted_email);
+    $userdoc = retrieveUserDoc($action, $submitted_login, $submitted_email);
     if ($userdoc == NULL) {
         $action->lay->set('FORM_SEND_ERROR_INVALID_ARGS', True);
         return;
@@ -42,78 +42,86 @@ function submitreqpasswd(&$action)
     
     $providerList = getAuthProviderList();
     $ldapUserFamId = getIdFromName($action->dbaccess, 'LDAPUSER');
-    if (!in_array('freedom', $providerList) || ($ldapUserFamId !== false && $userdoc['fromid'] == $ldapUserFamId)) {
+    if (!in_array('freedom', $providerList) || ($ldapUserFamId !== false && $userdoc->fromid == $ldapUserFamId)) {
         $action->lay->set('FORM_SEND_ERROR_EXTERNAL_AUTH', True);
         return;
     }
     
     $ret = sendCallback($action, $userdoc, 'AUTHENT/Layout/submitreqpasswd_mail.xml');
     if ($ret != "") {
+        error_log(__FUNCTION__ . " $ret");
         $action->lay->set('FORM_SEND_ERROR_UNKNOWN', True);
         return;
     }
-    
+    $log = new Log("", "Authent", "ChangePassword");
+    $facility = constant(getParam("AUTHENT_LOGFACILITY", "LOG_AUTH"));
+    $txt=sprintf("ask change password for %s [%d]", $userdoc->getAccount()->login, $userdoc->getAccount()->id);
+    $log->wlog("S", $txt, NULL, $facility);
     $action->lay->set('FORM_SEND_OK', True);
     return;
 }
-
-function getUserDoc($action, $login = "", $email = "")
+/**
+ * @param Action $action
+ * @param string $login
+ * @param string $email
+ * @return _IUSER|null
+ */
+function retrieveUserDoc(Action $action, $login = "", $email = "")
 {
-    $dbaccess = $action->getParam('FREEDOM_DB');
     
-    $filter = array();
-    
-    if ($login != "") {
-        $filter[] = "us_login = '" . pg_escape_string($login) . "'";
-    }
-    if ($email != "") {
-        $filter[] = "us_mail = '" . pg_escape_string($email) . "'";
-    }
-    
-    if (count($filter) <= 0) {
+    if (!$login && !$email) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Undefined email and login args.");
         return NULL;
     }
-    $res = getChildDoc($dbaccess, 0, '0', 'ALL', $filter, 1, 'TABLE', 'IUSER');
-    if (count($res) <= 0) {
+    
+    $s = new SearchDoc($action->dbaccess, "IUSER");
+    if ($login != "") {
+        $s->addFilter("us_login = '%s'", $login);
+    }
+    if ($email != "") {
+        $s->addFilter("us_mail = '%s'", $email);
+    }
+    
+    $s->setObjectReturn();
+    $s->noViewControl();
+    $s->search();
+    if ($s->count() <= 0) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty search result");
         return NULL;
     }
     
-    if (count($res) > 1) {
+    if ($s->count() > 1) {
         error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Result contains more than 1 element");
         return NULL;
     }
-    
-    $email = $res[0]['us_mail'];
+    /**
+     * @var _IUSER $uDoc
+     */
+    $uDoc = $s->nextDoc();
+    $email = $uDoc->getMail();;
     
     if ($email == "") {
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for docid '" . $res[0]['id'] . "'");
+        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for docid '" . $uDoc->id . "'");
         return NULL;
     }
     
-    return $res[0];
+    return $uDoc;
 }
 
-function sendCallback($action, $userdoc, $layoutPath)
+function sendCallback(Action $action, _IUSER $userdoc)
 {
     include_once ('WHAT/Class.UserToken.php');
     include_once ("FDL/sendmail.php");
     
-    $us_mail = $userdoc['us_mail'];
-    $us_fname = $userdoc['us_fname'];
-    $us_lname = $userdoc['us_lname'];
-    
+    $us_mail = $userdoc->getMail();
+    $uid = $userdoc->getValue("us_whatid");
     if ($us_mail == "") {
-        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for user " . $userdoc['id']);
-        return "Empty us_mail for user " . $userdoc['id'];
+        error_log(__CLASS__ . "::" . __FUNCTION__ . " " . "Empty us_mail for user " . $uid);
+        return "Empty us_mail for user " . $uid;
     }
     
-    $from = $action->getParam('SMTP_FROM');
-    $subject = $action->getParam('AUTHENT_SUBMITREQPASSWD_MAIL_SUBJECT');
-    
     $token = new UserToken();
-    $token->userid = $userdoc['id'];
+    $token->userid = $uid;
     $token->token = $token->genToken();
     $token->setExpiration();
     $token->expendable = 1;
@@ -129,28 +137,21 @@ function sendCallback($action, $userdoc, $layoutPath)
     }
     
     $callback_token = $token->getToken();
-    
-    $layout = new Layout($layoutPath, $action);
-    if ($layout == NULL) {
-        return "error creating new Layout from $layoutPath";
+    /**
+     * @var _MAILTEMPLATE $mt
+     */
+    $mt = new_doc($action->dbaccess, $action->GetParam("AUTHENT_MAILASKPWD"));
+    if (!$mt->isAlive()) {
+        return sprintf("Cannot found mail template from AUTHENT_MAILASKPWD parameter");
     }
-    
-    $layout->set('US_MAIL', $us_mail);
-    $layout->set('US_FNAME', $us_fname);
-    $layout->set('US_LNAME', $us_lname);
-    $layout->set('CALLBACK_TOKEN', $callback_token);
-    
-    $content = $layout->gen();
-    
-    $mimemail = new Fdl_Mail_Mime("\r\n");
-    $mimemail->setHTMLBody($content);
-    
-    $ret = sendmail($us_mail, $from, NULL, NULL, $subject, $mimemail, NULL);
-    if ($ret != "") {
-        # $action->exitError("Error: sendmail() returned with $ret");
-        return "Error: sendmail() returned with $ret";
+    if (!is_a($mt, '_MAILTEMPLATE')) {
+        return sprintf("AUTHENT_MAILASKPWD parameter not reference a mail template");
     }
+    $keys = array(
+        "LINK_CHANGE_PASSWORD" => sprintf("%sguest.php?app=AUTHENT&action=CALLBACKREQPASSWD&token=%s", $action->GetParam("CORE_EXTERNURL") , $callback_token)
+    );
+    $err = $mt->sendDocument($userdoc, $keys);
     
-    return "";
+    return $err;
 }
 ?>

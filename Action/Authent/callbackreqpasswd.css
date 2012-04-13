@@ -6,11 +6,24 @@
     font-family: sans-serif;
     font-size: 1.25em;
 }
-.error-true {
+.error {
     background-color: #ffaaaa;
     border: 0.25em solid #cc0000;
+    color: inherit;
+    float: left;
 }
-.error-false {
+.success {
     background-color: #aaffaa;
     border: 0.25em solid #00cc00;
+}
+form.password {
+    display:inline;
+    float:left;
+}
+form.password label {
+   display: block;
+    float: left;
+    text-align: right;
+    width: 200px;
+    margin-right: 5px;
 }

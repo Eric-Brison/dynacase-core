@@ -10,6 +10,8 @@ export appname
 
 include $(utildir)/PubRule
 
+$(pubdir)/$(appname)/%.ods : %.ods 
+	cp  $< $@
 
-DISTFILES = Makefile  $(appname).app $(appname)_init.php.in
+DISTFILES = Makefile  $(appname).app $(appname)_init.php.in authent.ods
 

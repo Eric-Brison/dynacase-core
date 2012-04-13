@@ -1,13 +1,89 @@
-<div class="page">
-[IF CALLBACK_OK]
-<div id="callback_ok" class="text error-false">
-[TEXT:callbackreqpasswd_callback_ok]
-</div>
-[ENDIF CALLBACK_OK]
+[ZONE CORE:HTMLHEAD?title=[TEXT:Change password]]
 
-[IF CALLBACK_NOT_OK]
-<div id="callback_not_ok" class="text error-true">
-[TEXT:callbackreqpasswd_callback_not_ok]
+<style>
+    div.authmain {
+       margin:40px auto;
+       width:100%;
+       text-align:center;
+    }
+    div.form {
+      /* margin:40px auto;*/
+       text-align:center;
+    }
+    div.errormsg {
+    margin : 10px;
+    padding : 10px;
+    color : [COLOR_ERRORCOLOR];
+    text-align:left;
+    }
+    div.errormsg:first-line{
+    font-weight : bold;
+    }
+</style>
+
+
+        [IF finish]<div id="authform" class="authmain">
+        <center>
+      <div class="success form">
+       [TEXT:Password has been cnanged].<br/>
+       <a href=".">[TEXT:Connect now]</a>
+      </div> [ENDIF finish]
+        </center></div>
+        [IFNOT finish]
+<form class="password"
+      name="chgpwd"
+      method="POST" ENCTYPE="multipart/form-data"
+      action="?app=AUTHENT&amp;action=CALLBACKREQPASSWD">
+
+<input type="hidden" name="uid" value="[uid]"/>
+<input type="hidden" name="token" value="[token]"/>
+<div id="authform" class="authmain">
+<center>
+  <div class="form">
+
+    <div class="banner">
+      <table cellspacing="0"><tr>
+        <td><img width="48px" src="[CORE_LOGOCLIENT]" needresize="1"/></td>
+        <td><span class="societe">[CORE_CLIENT]</span><br/>[TEXT: Change password for] <strong>[username]</strong></td>
+      </tr></table>
+    </div>
+
+    <div class="zoneinput">
+      <table cellspacing="0">
+        <tr>
+            <div class="pwd1">
+
+                </div>
+                <div class="pwd1">
+
+                </div>
+          <td class="label"><label for="pwd1">[TEXT:New password] : </label></td>
+          <td class="input"><input autocomplete="off"  type="password" name ="pwd1" id="pwd1"/></td>
+        </tr>
+        <tr>
+          <td class="label"><label for="pwd2">[TEXT:Confirm password] : </label></td>
+          <td class="input"><input  autocomplete="off" type="password" name ="pwd2" id="pwd2"/></td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="msgerr" class="errormsg">[errortxt]</div>
+
+    <div class="buttons">
+
+      <a href="javascript:document.chgpwd.submit();">[TEXT:Change password]</a>
+
+    </div>
+
+  </div>
+</center>
 </div>
-[ENDIF CALLBACK_NOT_OK]
-</div>
+<input style="visibility:hidden" type="submit"/>
+</form>  [ENDIF finish]
+
+<script>
+//addEvent(window,'load',initZone);
+//addEvent(window,'resize',centerZone);
+</script>
+
+        [ZONE CORE:HTMLFOOT]

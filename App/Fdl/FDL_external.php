@@ -127,6 +127,7 @@ function tplmail($dbaccess, $type, $famid, $wfamid, $name)
         case 'D': // value of attribute
             if (!$famid) return _("family must be defined");
             $ta = getFamAttribute($dbaccess, $famid, 'docid', false, $name);
+            $ta = array_merge($ta, getFamAttribute($dbaccess, $famid, 'account', false, $name));
             return $ta;
         case 'G': // value of attribute
             if (!$famid) return _("family must be defined");

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-06 11:16+0200\n"
-"PO-Revision-Date: 2012-04-06 11:19+0200\n"
+"POT-Creation-Date: 2012-04-13 11:02+0200\n"
+"PO-Revision-Date: 2012-04-13 11:03+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -17,6 +17,9 @@ msgstr ""
 
 msgid " Access Control for"
 msgstr "Contrôle des accès pour"
+
+msgid " Change password for"
+msgstr "Modification du mot de passe pour"
 
 msgid " Choose an existing document profil"
 msgstr "Choisir un document profil existant"
@@ -850,6 +853,9 @@ msgstr "Annuler les changements et quitter le mode édition"
 msgid "Cancel the change state"
 msgstr "Annulation du changement d'état"
 
+msgid "Cannot access interface to change password"
+msgstr ""
+
 msgid "Cannot access to vault file system"
 msgstr "Accès au coffre des fichiers impossible"
 
@@ -978,6 +984,12 @@ msgstr "Modifier le nom logique"
 msgid "Change my ask"
 msgstr "Changer mon opinion"
 
+msgid "Change password"
+msgstr ""
+
+msgid "Change password by token"
+msgstr ""
+
 msgid "Change privilege"
 msgstr "Modifier les privilèges"
 
@@ -1046,6 +1058,9 @@ msgstr ""
 
 msgid "Changes will be loosed if you continue"
 msgstr "Les modifications seront perdues si vous continuez"
+
+msgid "Character length set to generate a user password"
+msgstr ""
 
 msgid "Characteristic"
 msgstr "Caractéristiques"
@@ -1191,11 +1206,17 @@ msgstr ""
 msgid "Confirm"
 msgstr "Confirmez"
 
+msgid "Confirm password"
+msgstr "Confirmation du mot de passe"
+
 msgid "Confirm unattach activated timers matched "
 msgstr "Confirmer l'annulation des minuteurs provenant des documents "
 
 msgid "Confirm unattach all activated timers"
 msgstr "Confirmer l'annulation de tous les minuteurs actifs"
+
+msgid "Connect now"
+msgstr "Se connecter maintenant"
 
 #, c-format
 msgid "Connection to freedom pg service '%s' OK !"
@@ -1221,6 +1242,9 @@ msgstr "Contexte : [%s]"
 
 msgid "Continue (Y|N) ?"
 msgstr "Continuer (Y (oui) |N (non)) ?"
+
+msgid "Control characters are not allowed"
+msgstr ""
 
 msgid "Control view for new document"
 msgstr "Contrôle de vue pour les nouveaux documents"
@@ -2169,6 +2193,10 @@ msgstr "Ce champ ne peut être vide"
 msgid "It is not the latest document"
 msgstr "La fichier ne provient pas de la dernière version"
 
+#, c-format
+msgid "It must contains at least %d characters (total length)"
+msgstr "Il doit contenir au moins %d caractères"
+
 msgid "Item cannot be empty"
 msgstr "L\\'entrée ne peut être vide"
 
@@ -2308,6 +2336,12 @@ msgstr "Copie à"
 msgid "MB_To"
 msgstr "À"
 
+msgid "Mail template document reference to ask new password"
+msgstr ""
+
+msgid "Mail template document reference to receive new password"
+msgstr ""
+
 msgid "Make references ..."
 msgstr "Fabrication des références ..."
 
@@ -2354,6 +2388,24 @@ msgstr ""
 #, c-format
 msgid "Method [%s] not exists"
 msgstr "la méthode [%s] n'existe pas"
+
+msgid "Minimum character length needed for user password"
+msgstr "Nombre minimum de caractères pour le mot de passe d'un utilisateur"
+
+msgid "Minimum digit number needed for user password"
+msgstr "Nombre minimum de chiffres pour le mot de passe d'un utilisateur"
+
+msgid "Minimum lowercase alpha needed for user password"
+msgstr ""
+"Nombre minimum de lettres minuscules pour le mot de passe d'un utilisateur"
+
+msgid "Minimum symbol (no alphe, no digit) needed for user password"
+msgstr ""
+"Nombre minimum de caractère spéciaux pour le mot de passe d'un utilisateur"
+
+msgid "Minimum uppercase alpha needed for user password"
+msgstr ""
+"Nombre minimum de lettres majuscules pour le mot de passe d'un utilisateur"
 
 msgid "Modification date"
 msgstr "Date de dernière modification"
@@ -2447,6 +2499,9 @@ msgstr "Nouveau coffre"
 msgid "New directory"
 msgstr "Nouveau répertoire"
 
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
 msgid "New report"
 msgstr "Nouveau rapport"
 
@@ -2538,6 +2593,21 @@ msgstr ""
 
 msgid "Not enough access to define privileges"
 msgstr "Droits insuffisants pour initialiser les privilèges"
+
+msgid "Not enough characters."
+msgstr "Pas assez de caractères"
+
+msgid "Not enough digits."
+msgstr "Pas assez de chiffres"
+
+msgid "Not enough lowercase characters."
+msgstr "Pas assez de minuscules"
+
+msgid "Not enough special characters."
+msgstr "Pas assez de charactères spéciaux"
+
+msgid "Not enough uppercase characters."
+msgstr "Pas assez de majuscules"
 
 msgid "November"
 msgstr "Novembre"
@@ -2667,6 +2737,9 @@ msgstr "Relation paramètre cycle"
 
 msgid "Password"
 msgstr "Mot de passe"
+
+msgid "Password has been cnanged"
+msgstr "Votre nouveau mot de passe a été enregistré"
 
 msgid "Permissions"
 msgstr "Droits"
@@ -3772,6 +3845,9 @@ msgstr ""
 "Votre navigateur n'accepte pas les cookies.\n"
 "Vous devez autoriser les cookies pour utiliser correctement l'application."
 
+msgid "Your password is not secure."
+msgstr "Votre de mot de passe n'est pas valide"
+
 msgid "Zip Archive cannot be created"
 msgstr "L'archive Zip n'a pas pu être créée"
 
@@ -3818,6 +3894,9 @@ msgstr "Acces libre"
 
 msgid "accessfor"
 msgstr "Contrôle des accès pour"
+
+msgid "acking detection : clear token"
+msgstr ""
 
 msgid "acl"
 msgstr "Acl"
@@ -4092,6 +4171,34 @@ msgid "assigned workflow is not alive"
 msgstr "Le cycle de vie associé n'est pas vivant"
 
 #, c-format
+msgid "at least %d digits"
+msgstr "au moins %d chiffres"
+
+#, c-format
+msgid "at least %d lowercase alpha characters"
+msgstr "au moins %s lettres minuscules"
+
+#, c-format
+msgid "at least %d symbol characters"
+msgstr "au moins %d caractères spéciaux"
+
+#, c-format
+msgid "at least %d uppercase alpha characters"
+msgstr "au moins %d lettres majuscules"
+
+msgid "at least one digit"
+msgstr "au moins un chiffre"
+
+msgid "at least one lowercase alpha character"
+msgstr "au moins une lettre minuscule"
+
+msgid "at least one symbol character"
+msgstr "au moins un caractère spécial"
+
+msgid "at least one uppercase alpha character"
+msgstr "au moins une lettre majuscule"
+
+#, c-format
 msgid "attach timer %s [%d]"
 msgstr "Attachement minuteur %s [%d]"
 
@@ -4140,11 +4247,11 @@ msgstr "l'attribut %s n'a pas été trouvé [%s]"
 
 #, c-format
 msgid "attribute %s unknow in family %s [%d]"
-msgstr "attribu %s inconnu pour la famille %s [%d]"
+msgstr "attribut %s inconnu pour la famille %s [%d]"
 
 #, c-format
 msgid "attribute [%s] already exists : cannot add it"
-msgstr ""
+msgstr "attribut [%s] déjà présent : ne peut être ajouté"
 
 #, c-format
 msgid ""
@@ -4194,7 +4301,7 @@ msgstr "Mot de passe oublié ?"
 
 #, c-format
 msgid "authentication failed for %s"
-msgstr ""
+msgstr "échec d'authentification pour %s"
 
 msgid "author"
 msgstr "auteur"
@@ -4275,20 +4382,6 @@ msgstr "Créer"
 msgid "butmodify"
 msgstr "Modifier"
 
-msgid "callbackreqpasswd_callback_not_ok"
-msgstr ""
-"<p>Le système n'a pas pu traiter votre demande.</p>\n"
-"<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus valide. "
-"Dans ce cas, veuillez renouveller votre demande.</p>\n"
-"<p>Si le problème persiste, veuillez prendre contact avec <a href=\"mailto:"
-"[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot%20de%20passe\">"
-"[ON_ERROR_CONTACT]</a></p>"
-
-msgid "callbackreqpasswd_callback_ok"
-msgstr ""
-"<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe vous a "
-"été envoyé par mail.</p>"
-
 msgid "callbackreqpasswd_mail_hello"
 msgstr "Bonjour"
 
@@ -4312,7 +4405,7 @@ msgstr "Annuler"
 
 #, c-format
 msgid "cannot access edit template file %s"
-msgstr ""
+msgstr "ne peut accéder à la modification du fichier modèle %s"
 
 msgid "cannot access to  database $db\n"
 msgstr "accès à la base de données $db refusé\n"
@@ -4361,7 +4454,7 @@ msgstr "création de document impossible pour la famille [%s]"
 
 #, c-format
 msgid "cannot create from family [%s]"
-msgstr ""
+msgstr "création impossible depuis la famille [%s]"
 
 #, c-format
 msgid "cannot create user %s: %s"
@@ -4404,11 +4497,11 @@ msgstr "ne peut exécuter le minuteur : %s non trouvé"
 
 #, c-format
 msgid "cannot extract archive %s: status : %s"
-msgstr ""
+msgstr "L'archive %s n'a pas pu être extraite: statut : %s"
 
 #, c-format
 msgid "cannot extract archive file %s"
-msgstr "L'archive %s n'a pas pue être extraite"
+msgstr "L'archive %s n'a pas pu être extraite"
 
 #, c-format
 msgid ""
@@ -4683,7 +4776,7 @@ msgstr "replier tout"
 
 #, c-format
 msgid "collection %s not exists"
-msgstr ""
+msgstr "la collection %s n'existe pas"
 
 msgid "color picker"
 msgstr "choix de couleur"
@@ -4715,7 +4808,7 @@ msgstr "confidentialité"
 
 #, c-format
 msgid "config file %s not found"
-msgstr ""
+msgstr "le fichier de configuration %s non trouvé"
 
 msgid "confirm mail sended before change state"
 msgstr "confirmation envoi email avant changement d'état"
@@ -4793,7 +4886,7 @@ msgstr "conversion png non trouvé pour %s"
 
 #, c-format
 msgid "convert file %s as %s failed"
-msgstr ""
+msgstr "La conversion du fichier %s en %s a échoué"
 
 #, c-format
 msgid "convert file %s as %s failed : %s"
@@ -4946,7 +5039,7 @@ msgid "database access for webdav"
 msgstr "coordonnées d'accès à la base de données webdav"
 
 msgid "database record date style"
-msgstr ""
+msgstr "style de la date pour la base de donnée"
 
 msgid "date"
 msgstr "date"
@@ -7125,6 +7218,9 @@ msgstr ""
 msgid "password are not identicals : not changed"
 msgstr "les mots de passes ne sont pas identiques : mot de passe inchangé"
 
+msgid "password must not be empty"
+msgstr "Le mot de passe ne doit pas être vide"
+
 msgid "passwords must not be empty"
 msgstr "Le mot de passe ne doît pas être vide"
 
@@ -7905,19 +8001,6 @@ msgstr ""
 "<p>Vous allez recevoir un e-mail vous indiquant la procédure à suivre pour "
 "finaliser la ré-initialisation de votre mot de passe.</p>"
 
-msgid "submitreqpasswd_mail_callbackurl"
-msgstr ""
-"<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce n'est "
-"pas le cas, veuillez détruire ce message.</p>\n"
-"<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
-"suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
-"[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]\">"
-"[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
-"app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
-
-msgid "submitreqpasswd_mail_hello"
-msgstr "Bonjour"
-
 msgid "substring"
 msgstr "contenant..."
 
@@ -8096,6 +8179,9 @@ msgstr "L'état restera inchangé"
 #, c-format
 msgid "the title of document [%s] is not conform to original [%s]"
 msgstr "le titre du document [%s] n'est pas conforme à l'original [%s]"
+
+msgid "the two passwords must be the same"
+msgstr "Les deux mots de passe doivent être identique"
 
 msgid "these needed attributes are empty"
 msgstr "Ces attributs obligatoires sont vides :"
@@ -8728,6 +8814,9 @@ msgstr ""
 "largeur de la fenêtre pour l'affichage des listes de documents (découpage "
 "vertical)"
 
+msgid "with these conditions"
+msgstr "avec les conditions suivantes"
+
 msgid "word"
 msgstr "entiers"
 
@@ -8870,6 +8959,18 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid " Profil for "
 #~ msgstr "Profil pour"
+
+#~ msgid "%d digits"
+#~ msgstr "%d chiffres"
+
+#~ msgid "%d lowercase alpha characters"
+#~ msgstr "%d lettres minuscules"
+
+#~ msgid "%d symbol characters"
+#~ msgstr "%d caractères spéciaux"
+
+#~ msgid "%d uppercase alpha characters"
+#~ msgstr "%d lettres majuscules"
 
 #~ msgid "Access To All Users"
 #~ msgstr "Accès à tous les utilisateurs"
@@ -9060,6 +9161,20 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "book the document to modify it with offline application"
 #~ msgstr "réserver le document pour le modifier avec l'application offline"
+
+#~ msgid "callbackreqpasswd_callback_not_ok"
+#~ msgstr ""
+#~ "<p>Le système n'a pas pu traiter votre demande.</p>\n"
+#~ "<p>Le lien que vous avez utilisé est peut être expiré ou n'est plus "
+#~ "valide. Dans ce cas, veuillez renouveller votre demande.</p>\n"
+#~ "<p>Si le problème persiste, veuillez prendre contact avec <a href="
+#~ "\"mailto:[ON_ERROR_CONTACT]?subject=Problème%20ré-initialisation%20mot"
+#~ "%20de%20passe\">[ON_ERROR_CONTACT]</a></p>"
+
+#~ msgid "callbackreqpasswd_callback_ok"
+#~ msgstr ""
+#~ "<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe "
+#~ "vous a été envoyé par mail.</p>"
 
 #~ msgid "cannot connect to %s"
 #~ msgstr "ne peut se connecter à %s"
@@ -9374,6 +9489,19 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "society"
 #~ msgstr "société"
+
+#~ msgid "submitreqpasswd_mail_callbackurl"
+#~ msgstr ""
+#~ "<p>Vous avez demandé la ré-initialisation de votre mot de passe. Si ce "
+#~ "n'est pas le cas, veuillez détruire ce message.</p>\n"
+#~ "<p>Pour poursuivre la ré-initialisation de votre mot de passe, veuillez "
+#~ "suivre le lien suivant:<br /><a href=\"[CORE_EXTERNURL]guest.php"
+#~ "[CORE_BASEURL]app=AUTHENT&action=CALLBACKREQPASSWD&token="
+#~ "[CALLBACK_TOKEN]\">[CORE_EXTERNURL]guest.php[CORE_BASEURL]"
+#~ "app=AUTHENT&action=CALLBACKREQPASSWD&token=[CALLBACK_TOKEN]</a></p>"
+
+#~ msgid "submitreqpasswd_mail_hello"
+#~ msgstr "Bonjour"
 
 #~ msgid "tab usercard"
 #~ msgstr "onglets carnet d'adresses"
