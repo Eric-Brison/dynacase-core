@@ -63,11 +63,11 @@ $app_const = array(
         "val" => "AUTH_TPLMAILASKPWD",
         "descr" => N_("Mail template document reference to ask new password") ,
         "kind" => "text",
-        "global" => "Y"
+        "global" => "N"
     ) ,
     
     "AUTHENT_PWDMINLENGTH" => array(
-        "val" => "7",
+        "val" => "0",
         "descr" => N_("Minimum character length needed for user password") ,
         "kind" => "text",
         "global" => "Y"

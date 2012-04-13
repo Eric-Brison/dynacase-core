@@ -20,6 +20,7 @@ PGSERVICE="$pgservice_core" psql -f "$wpub/FDL/fdl.sql"
 --
 PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_iddomain';"
 PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_domain';"
+PGSERVICE="$pgservice_core" psql -t -c "delete from docattr where id= 'us_passwd';"
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|0]', '') where defval ~ 'us_iddomain';"
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_iddomain|1]', '') where defval ~ 'us_iddomain';"
 PGSERVICE="$pgservice_core" psql -t -c "UPDATE docfam set defval=replace(defval, '[us_domain|local]', '') where defval ~ 'us_domain';"

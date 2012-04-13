@@ -229,7 +229,7 @@ class _IUSER extends Doc
         $ed = $action->getParam("AUTHENT_ACCOUNTEXPIREDELAY");
         if ($ed > 0) {
             $expdate = time() + ($ed * 24 * 3600);
-            $err = $this->SetValue("us_accexpiredate", strftime("%d/%m/%Y 00:00:00", $expdate));
+            $err = $this->SetValue("us_accexpiredate", strftime("%Y-%m-%d 00:00:00", $expdate));
             if ($err == '') $err = $this->modify(true, array(
                 "us_accexpiredate"
             ) , true);
