@@ -504,6 +504,7 @@ create sequence seq_id_users start 10;";
     function getMail($rawmail = true)
     {
         if ($this->accounttype == 'U') {
+            if (! $this->mail) return '';
             if ($rawmail) {
                 return $this->mail;
             } else {
