@@ -143,8 +143,13 @@ This can be solved by:<br/>
         </check>
 
         <check type="phpclass" class="XSLTProcessor">
-            <help>You might need to install a php-xsl package form your distribution in order to have XSLT support in
+            <help>You might need to install a php-xsl package from your distribution in order to have XSLT support in
                 PHP.
+            </help>
+        </check>
+        <check type="phpclass" class="Collator">
+            <help>You might need to install a php-intl package from your distribution in order to have
+              Internationalization (Collator class) support in PHP.
             </help>
         </check>
 
@@ -375,8 +380,13 @@ This can be solved by:<br/>
         </check>
 
         <check type="phpclass" class="XSLTProcessor">
-            <help>You might need to install a php-xsl package form your distribution in order to have XSLT support in
+            <help>You might need to install a php-xsl package from your distribution in order to have XSLT support in
                 PHP.
+            </help>
+        </check>
+        <check type="phpclass" class="Collator">
+            <help>You might need to install a php-intl package from your distribution in order to have
+              Internationalization (Collator class) support in PHP.
             </help>
         </check>
 
