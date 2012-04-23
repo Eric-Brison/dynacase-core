@@ -152,6 +152,7 @@ $famid = "") // folder containt special fam id
             $docid = $doc->id;
             
             $tdoc[$k]["id"] = $docid;
+            $tdoc[$k]["fromid"] = $doc->fromid;
             // search title for freedom item
             $title = $doc->getHtmlTitle();
             $tdoc[$k]["title"] = $title;
@@ -286,41 +287,40 @@ $famid = "") // folder containt special fam id
             //                 COLUMN MODE
             // ----------------------------------------------------------
             if ($column) {
-                if ($doc->fromid != $prevFromId) {
-                    if (($column == 1) || (count($tfamdoc) == 0)) {
-                        $adoc = $doc->getFamDoc();
-                        if (count($tdoc) > 1) {
-                            $doct = $tdoc[$k];
-                            array_pop($tdoc);
-                            $action->lay->SetBlockData("BVAL" . $prevFromId, $tdoc);
-                            $tdoc = array();
-                            
-                            $tdoc[$k] = $doct;
-                        }
-                        $prevFromId = $doc->fromid;
-                        $tfamdoc[] = array(
-                            "iconfamsrc" => $tdoc[$k]["iconsrc"],
-                            "ftitle" => $adoc->title,
-                            "fid" => $doc->fromid,
-                            "blockattr" => "BATT" . $doc->fromid,
-                            "blockvalue" => "BVAL" . $doc->fromid
-                        );
-                        // create the TR head
-                        $lattr = $adoc->GetAbstractAttributes();
-                        $taname = array();
-                        $emptytableabstract = array();
-                        foreach ($lattr as $ka => $attr) {
-                            if (($attr->mvisibility == 'H') || ($attr->mvisibility == 'I')) unset($lattr[$ka]);
-                        }
-                        
-                        foreach ($lattr as $ka => $attr) {
-                            $emptytableabstract[$attr->id]["value"] = "-";
-                            $taname[$attr->id]["aname"] = $attr->getLabel();
-                        }
-                        $action->lay->SetBlockData("BATT" . $doc->fromid, $taname);
+                $adoc = $doc->getFamDoc();
+                /* Check if the family header has already been generated */
+                $famdocAlreadyExists = false;
+                foreach ($tfamdoc as $famdoc) {
+                    if ($famdoc['fid'] == $doc->fromid) {
+                        $famdocAlreadyExists = true;
+                        break;
                     }
                 }
-                
+                if (!$famdocAlreadyExists) {
+                    /* Generate the family header */
+                    $tfamdoc[] = array(
+                        "iconfamsrc" => $tdoc[$k]["iconsrc"],
+                        "ftitle" => $adoc->title,
+                        "fid" => $doc->fromid,
+                        "blockattr" => "BATT" . $doc->fromid,
+                        "blockvalue" => "BVAL" . $doc->fromid
+                    );
+                    // create the TR head
+                    $lattr = $adoc->GetAbstractAttributes();
+                    $taname = array();
+                    $emptytableabstract = array();
+                    foreach ($lattr as $ka => $attr) {
+                        if (($attr->mvisibility == 'H') || ($attr->mvisibility == 'I')) unset($lattr[$ka]);
+                    }
+
+                    foreach ($lattr as $ka => $attr) {
+                        $emptytableabstract[$attr->id]["value"] = "-";
+                        $taname[$attr->id]["aname"] = $attr->getLabel();
+                    }
+                    $action->lay->SetBlockData("BATT" . $doc->fromid, $taname);
+                }
+
+                /* Stack up the documents values in tdoc */
                 $tvalues = array();
                 
                 if ($doc->isConfidential()) {
@@ -336,12 +336,31 @@ $famid = "") // folder containt special fam id
                 }
                 $tdoc[$k]["values"] = implode('</td><td class="tlist">', $tvalues);
             }
+
             $k++;
-            //if ($column == 1) $prevFromId=$doc->fromid;
-            
         }
+
         if ($column == 1) {
-            usort($tdoc, "orderbyfromid");
+            /* Order tdoc by 'fromid', 'title' */
+            $collator = new Collator($action->GetParam("CORE_LANG", "fr_FR"));
+            usort($tdoc, function($a, $b) use ($collator) {
+                $cmp = ($a['fromid'] - $b['fromid']);
+                return ($cmp == 0) ? $collator->compare($a['title'], $b['title']) : $cmp;
+            });
+            /*
+             * Sort documents with same fromid into separate lists
+             */
+            $tdocByFromId = array();
+            foreach ($tdoc as $doc) {
+                $tdocByFromId[$doc['fromid']] []= $doc;
+            }
+            /*
+             * Set the BVAL<fromid> blocks with the list of
+             * documents from the same family
+             */
+            foreach ($tdocByFromId as $fromid => $documentList) {
+                $action->lay->SetBlockData("BVAL" . $fromid, $documentList);
+            }
         } else {
             if ((GetHttpVars("sqlorder") == "") && ($slice >= $action->GetParam("FDL_FOLDERMAXITEM", 1000))) uasort($tdoc, "orderbytitle");
         }
@@ -358,7 +377,11 @@ $famid = "") // folder containt special fam id
     
     $action->lay->Set("nbdiv", $kdiv - 1);
     if ($column) {
-        $action->lay->SetBlockData("BVAL" . $prevFromId, $tdoc);
+        /* Order tfamdoc by 'ftitle' */
+        $collator = new Collator($action->GetParam("CORE_LANG", "fr_FR"));
+        usort($tfamdoc, function($a, $b) use ($collator) {
+            return $collator->compare($a['ftitle'], $b['ftitle']);
+        });
         $action->lay->SetBlockData("TABLEBODY", $tfamdoc);
     } else $action->lay->SetBlockData("TABLEBODY", $tdoc);
     
@@ -385,16 +408,10 @@ $famid = "") // folder containt special fam id
     return $nbdoc;
 }
 
-function orderbyfromid($a, $b)
+function orderbyfromidtitle($a, $b)
 {
-    
-    if ($a["fromid"] == $b["fromid"]) {
-        return strcasecmp($a["title"], $b["title"]);
-        return 0;
-    }
-    if ($a["fromid"] > $b["fromid"]) return 1;
-    
-    return -1;
+    $cmp = ($a['fromid'] - $b['fromid']);
+    return ($cmp == 0) ? strcasecmp($a['title'], $b['title']) : $cmp;
 }
 
 function orderbytitle($a, $b)
