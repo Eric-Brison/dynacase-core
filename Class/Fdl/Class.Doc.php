@@ -1407,9 +1407,9 @@ create unique index i_docir on doc(initid, revision);";
         include_once ("FDL/Lib.Dir.php");
         // --------------------------------------------------------------------
         $filter[] = "doctype!='T'";
-        if ($this->initid > 0) $filter[] = "initid !='" . $this->initid . "'"; // not itself
-        $filter[] = "$key1='" . addslashes($this->getValue($key1)) . "'";
-        if ($key2 != "") $filter[] = "$key2='" . addslashes($this->getValue($key2)) . "'";
+        if ($this->initid > 0) $filter[] = sprintf("initid != %d",  $this->initid ); // not itself
+        $filter[] = sprintf("%s=E'%s'", $key1, pg_escape_string($this->getValue($key1)));
+        if ($key2 != "") $filter[] = sprintf("%s=E'%s'", $key2, pg_escape_string($this->getValue($key2)));
         $tpers = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $this->fromid);
         
         return $tpers;
