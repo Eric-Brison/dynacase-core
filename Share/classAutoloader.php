@@ -47,7 +47,7 @@ interface IClassHunter {
     /**
      * Find all classes in given file
      *
-     * @param text $pFileName file name
+     * @param string $pFileName file name
      *
      * @return array of strings
      *
@@ -65,7 +65,7 @@ class ClassHunterForPHP5_3 implements IClassHunter
     /**
      * Find all classes in given file
      *
-     * @param text $pFileName file name
+     * @param string $pFileName file name
      *
      * @return array of strings
      *
@@ -120,13 +120,16 @@ class DirectoriesAutoloaderException extends \Exception
 }
 class DirectoriesAutoloader
 {
+    /**
+     * @var \dcp\ClassHunterForPHP5_3
+     */
     private $_classHunterStrategy;
     //--- Singleton
     
     /**
      * make constructor private
      *
-     * @return void
+     * @return \dcp\DirectoriesAutoloader
      */
     private function __construct()
     {
@@ -142,7 +145,7 @@ class DirectoriesAutoloader
      * @param string $pTmpPath     path to tmp dir
      * @param string $pTmpFileName tmp file name
      *
-     * @return dcp\DirectoriesAutoloader
+     * @return \dcp\DirectoriesAutoloader
      */
     public static function instance($pTmpPath, $pTmpFileName = 'directoriesautoloader.cache.php')
     {
@@ -171,7 +174,7 @@ class DirectoriesAutoloader
     /**
      * force autoloader to regenerate cache now!
      *
-     * @return dcp\DirectoriesAutoloader
+     * @return \dcp\DirectoriesAutoloader
      */
     public function forceRegenerate()
     {
@@ -227,9 +230,9 @@ class DirectoriesAutoloader
      *
      * @param string $pCustomFilterClass className of customFilter to add
      *
-     * @throws dcp\DirectoriesAutoloaderException
+     * @throws \dcp\DirectoriesAutoloaderException
      *
-     * @return dcp\DirectoriesAutoloader
+     * @return \dcp\DirectoriesAutoloader
      */
     public function addCustomFilter($pCustomFilterClass)
     {
@@ -269,6 +272,7 @@ class DirectoriesAutoloader
         if ($this->_canRegenerate) {
             $this->_canRegenerate = false; //avoid loops
             $this->_includesAll();
+            $this->addFamilies('FDLGEN');
             $this->_saveInCache();
             return $this->autoload($pClassName);
         }
@@ -345,7 +349,7 @@ class DirectoriesAutoloader
      * @see DirectoriesAutoloader::_classes
      * @see DirectoriesAutoloader::getCacheFilePath
      *
-     * @throws dcp\DirectoriesAutoloaderException
+     * @throws \dcp\DirectoriesAutoloaderException
      *
      * @return void
      */
@@ -379,7 +383,8 @@ class DirectoriesAutoloader
         if (count($this->_classes) === 0) {
             if (is_readable($this->getCacheFilePath())) {
                 //error_log('Loading classes from [' . $this->getCacheFilePath() . ']');
-                require $this->getCacheFilePath();
+                $classes = array();
+                require $this->getCacheFilePath(); // load $classes here
                 $this->_classes = $classes;
             }
         }
@@ -396,9 +401,9 @@ class DirectoriesAutoloader
      * @param string  $pDirectory directory path
      * @param boolean $pRecursive should we recursively scan this directory
      *
-     * @throws dcp\DirectoriesAutoloaderException
+     * @throws \dcp\DirectoriesAutoloaderException
      *
-     * @return dcp\DirectoriesAutoloader
+     * @return \dcp\DirectoriesAutoloader
      */
     public function addDirectory($pDirectory, $pRecursive = true)
     {
@@ -406,6 +411,27 @@ class DirectoriesAutoloader
             throw new DirectoriesAutoloaderException('Cannot read from [' . $pDirectory . ']');
         }
         $this->_directories[$pDirectory] = $pRecursive ? true : false;
+        return self::$_instance;
+    }
+    /**
+     * add Family classes in cache
+     * @param string $genDirectory generate family directory
+     * @return bool|DirectoriesAutoloader
+     * @throws DirectoriesAutoloaderException
+     */
+    public function addFamilies($genDirectory)
+    {
+        include_once ("Lib.Common.php");
+        $sql = 'select id, "name" from docfam where name is not null order by id';
+        $err = \simpleQuery('', $sql, $famNames);
+        if ($err) {
+            throw new DirectoriesAutoloaderException('Cannot access family name [' . $err . ']');
+        }
+        foreach ($famNames as $aFam) {
+            $aFamName = $aFam["name"];
+            $aFamId = $aFam["id"];
+            $this->_classes['_' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
+        }
         return self::$_instance;
     }
     private $_directories = array();
@@ -417,7 +443,7 @@ class ClassHunterFactory
      *
      * @param string $version php version
      *
-     * @return \dcp\ClassHunterForPHP5_3|\dcp\ClassHunterForPHP5_2
+     * @return \dcp\ClassHunterForPHP5_3
      */
     public static function create($version)
     {
