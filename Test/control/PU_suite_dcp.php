@@ -48,6 +48,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestVolatileParam');
         $suite->addTestSuite('PU\TestApplicationParameters');
         $suite->addTestSuite('PU\TestVaultDiskStorage');
+        $suite->addTestSuite('PU\TestAutoloader');
         // ...
         return $suite;
     }
