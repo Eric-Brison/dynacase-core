@@ -88,7 +88,8 @@ This can be solved by:<br/>
     <check type="phpfunction" function="json_encode"><help>You might need to install a php-json package in order to have JSON support in PHP.</help></check>
     <check type="phpfunction" function="simplexml_load_file"><help>You might need to install a php-simplexml package in order to have SimpleXML support in PHP.</help></check>
     
-    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package form your distribution in order to have XSLT support in PHP.</help></check>
+    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package from your distribution in order to have XSLT support in PHP.</help></check>
+    <check type="phpclass" class="Collator"><help>You might need to install a php-intl package from your distribution in order to have Internationalization (Collator class) support in PHP.</help></check>
     
     <!-- Check PEAR modules -->
     
@@ -209,7 +210,8 @@ This can be solved by:<br/>
     <check type="phpfunction" function="cal_info"><help>You might need to install a php-calendar package from your distribution in order to have calendar and date manipulation support in PHP.</help></check>
     <check type="phpfunction" function="json_encode"><help>You might need to install a php-json package in order to have JSON support in PHP.</help></check>
     
-    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package form your distribution in order to have XSLT support in PHP.</help></check>
+    <check type="phpclass" class="XSLTProcessor"><help>You might need to install a php-xsl package from your distribution in order to have XSLT support in PHP.</help></check>
+    <check type="phpclass" class="Collator"><help>You might need to install a php-intl package from your distribution in order to have Internationalization (Collator class) support in PHP.</help></check>
     
     <!-- Check PEAR modules -->
     
