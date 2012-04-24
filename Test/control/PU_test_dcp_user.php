@@ -17,10 +17,11 @@ class TestUser extends TestCaseDcpDocument
 {
     /**
      * @dataProvider dataUserCreate
+     * @param string $login login of user
+     * @param string $password password of user
      */
     public function testCreateUser($login, $password)
     {
-        
         $doc = createDoc(self::$dbaccess, "IUSER");
         $this->assertTrue(is_object($doc) , "cannot create user");
         $err = $doc->setValue("us_login", $login);
@@ -31,7 +32,7 @@ class TestUser extends TestCaseDcpDocument
         $err = $doc->store();
         $this->assertEmpty($err, sprintf("cannot store iuser %s", $err));
         
-        $u = new \User();
+        $u = new \Account();
         $this->assertTrue($u->setLoginName($login) , "system user not found");
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document iuser reference");
@@ -39,6 +40,8 @@ class TestUser extends TestCaseDcpDocument
     }
     /**
      * @dataProvider dataNotUserCreate
+     * @param string $login login of user
+     * @param string $password password of user
      */
     public function testNotCreateUser($login, $password)
     {
@@ -53,7 +56,7 @@ class TestUser extends TestCaseDcpDocument
         $err = $doc->store();
         $this->assertNotEmpty($err, sprintf("must be impossible to store iuser"));
         
-        $u = new \User();
+        $u = new \Account();
         $this->assertTrue($u->setLoginName($login) , "system user not found");
         $this->assertEquals($login, $u->login);
     }
@@ -71,6 +74,7 @@ class TestUser extends TestCaseDcpDocument
             )
         );
     }
+    
     public function dataNotUserCreate()
     {
         return array(
