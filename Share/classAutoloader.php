@@ -422,15 +422,19 @@ class DirectoriesAutoloader
     public function addFamilies($genDirectory)
     {
         include_once ("Lib.Common.php");
-        $sql = 'select id, "name" from docfam where name is not null order by id';
-        $err = \simpleQuery('', $sql, $famNames);
-        if ($err) {
-            throw new DirectoriesAutoloaderException('Cannot access family name [' . $err . ']');
-        }
-        foreach ($famNames as $aFam) {
-            $aFamName = $aFam["name"];
-            $aFamId = $aFam["id"];
-            $this->_classes['_' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
+        $sql = "select * from pg_tables where tablename = 'docfam'";
+        $err = \simpleQuery('', $sql, $exists);
+        if (count($exists) > 0) {
+            $sql = 'select id, "name" from docfam where name is not null order by id';
+            $err = \simpleQuery('', $sql, $famNames);
+            if ($err) {
+                throw new DirectoriesAutoloaderException('Cannot access family name [' . $err . ']');
+            }
+            foreach ($famNames as $aFam) {
+                $aFamName = $aFam["name"];
+                $aFamId = $aFam["id"];
+                $this->_classes['_' . strtolower($aFamName) ] = sprintf("%s/Class.Doc%d.php", $genDirectory, $aFamId);
+            }
         }
         return self::$_instance;
     }
