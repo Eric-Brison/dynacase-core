@@ -38,7 +38,7 @@ class TestSimpleQuery extends TestCaseDcpDocument
      * @return void
      * @dataProvider dataSimpleQuery
      */
-    public function testSimpleQuery($query, array $arg, $expectedCount)
+    public function testExecuteSimpleQuery($query, array $arg, $expectedCount)
     {
         $result = array();
         $sql = vsprintf($query, $arg);

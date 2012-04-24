@@ -74,7 +74,7 @@ class TestGetResPhpFunc extends TestCaseDcp
     /**
      * @dataProvider dataGetResPhpFunc
      */
-    public function testGetResPhpFunc($data)
+    public function testExecuteGetResPhpFunc($data)
     {
         global $ZONE_ARGS;
         $ZONE_ARGS = array();

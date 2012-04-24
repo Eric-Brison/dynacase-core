@@ -36,7 +36,7 @@ class TestImportAccess extends TestCaseDcpDocument
     /**
      * @dataProvider dataGoodFamilyFiles
      */
-    public function testImportAccess($familyFile, $userid, $appName, array $acls)
+    public function testExecuteImportAccess($familyFile, $userid, $appName, array $acls)
     {
         $err = '';
         try {

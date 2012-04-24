@@ -36,7 +36,7 @@ class TestImportProfil extends TestCaseDcpDocument
     /**
      * @dataProvider dataGoodFamilyFiles
      */
-    public function testImportProfil($familyFile)
+    public function testExecuteImportProfil($familyFile)
     {
         $err = '';
         try {

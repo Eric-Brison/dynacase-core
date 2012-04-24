@@ -33,7 +33,7 @@ class TestAddArrayRow extends TestCaseDcpDocument
     /**
      * @dataProvider dataAddArrayRow
      */
-    public function testAddArrayRow($data)
+    public function testExecuteAddArrayRow($data)
     {
         $doc = createDoc(self::$dbaccess, $data['fam'], false);
         $this->assertTrue(is_object($doc) , sprintf("Could not create new document from family '%s'.", $data['fam']));

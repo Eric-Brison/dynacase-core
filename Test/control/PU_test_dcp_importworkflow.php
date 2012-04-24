@@ -37,7 +37,7 @@ class TestImportWorkflow extends TestCaseDcpDocument
      * test import workflow
      * @dataProvider dataGoodFamilyFiles
      */
-    public function testImportWorkflow($familyFile, $familyName)
+    public function testExecuteImportWorkflow($familyFile, $familyName)
     {
         $err = '';
         try {
