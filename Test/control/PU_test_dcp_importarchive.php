@@ -29,7 +29,7 @@ class TestImportArchive extends TestCaseDcp
     /**
      * @dataProvider dataDocumentFiles
      */
-    public function testImportArchive($archiveFile, $resultDocuments)
+    public function testExecuteImportArchive($archiveFile, $resultDocuments)
     {
         
         $oImport = new \ImportDocument();

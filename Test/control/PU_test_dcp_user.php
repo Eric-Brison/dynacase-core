@@ -17,10 +17,26 @@ class TestUser extends TestCaseDcpDocument
 {
     /**
      * @dataProvider dataUserCreate
+     * @param string $login
+     * @param string $password
+     */
+    public function testDeleteUser($login, $password)
+    {
+        $user = $this->testCreateUser($login, $password);
+        $err = $user->Delete();
+        $this->assertEmpty($err, sprintf("cannot delete iuser %s", $err));
+    }
+    /**
+     * @dataProvider dataUserCreate
+     * @param string $login login of user
+     * @param string $password password of user
+     * @return \_IUSER|\Doc
      */
     public function testCreateUser($login, $password)
     {
-        
+        /**
+         * @var \_IUSER $doc
+         */
         $doc = createDoc(self::$dbaccess, "IUSER");
         $this->assertTrue(is_object($doc) , "cannot create user");
         $err = $doc->setValue("us_login", $login);
@@ -31,14 +47,17 @@ class TestUser extends TestCaseDcpDocument
         $err = $doc->store();
         $this->assertEmpty($err, sprintf("cannot store iuser %s", $err));
         
-        $u = new \User();
+        $u = new \Account();
         $this->assertTrue($u->setLoginName($login) , "system user not found");
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document iuser reference");
         $this->assertEquals($doc->getValue("us_whatid") , $u->id, "mismatch system iuser reference");
+        return $doc;
     }
     /**
      * @dataProvider dataNotUserCreate
+     * @param string $login login of user
+     * @param string $password password of user
      */
     public function testNotCreateUser($login, $password)
     {
@@ -53,7 +72,7 @@ class TestUser extends TestCaseDcpDocument
         $err = $doc->store();
         $this->assertNotEmpty($err, sprintf("must be impossible to store iuser"));
         
-        $u = new \User();
+        $u = new \Account();
         $this->assertTrue($u->setLoginName($login) , "system user not found");
         $this->assertEquals($login, $u->login);
     }
@@ -71,6 +90,7 @@ class TestUser extends TestCaseDcpDocument
             )
         );
     }
+    
     public function dataNotUserCreate()
     {
         return array(

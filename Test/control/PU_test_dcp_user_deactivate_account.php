@@ -24,10 +24,12 @@ class TestUserDeactivateAccount extends TestCaseDcpCommonFamily
     /**
      * @dataProvider dataUserDeactivateAccount
      */
-    public function testUserDeactivateAccount($effectiveUserLogin, $targetUserId)
+    public function testExecuteUserDeactivateAccount($effectiveUserLogin, $targetUserId)
     {
         $this->sudo($effectiveUserLogin);
-        
+        /**
+         * @var \_IUSER $user
+         */
         $user = new_Doc(self::$dbaccess, $targetUserId, true);
         $this->assertTrue($user->isAlive() , sprintf("Could not get user with id '%s'.", $targetUserId));
         
@@ -43,7 +45,9 @@ class TestUserDeactivateAccount extends TestCaseDcpCommonFamily
     public function testUserActivateAccount($effectiveUserLogin, $targetUserId)
     {
         $this->sudo($effectiveUserLogin);
-        
+        /**
+         * @var \_IUSER $user
+         */
         $user = new_Doc(self::$dbaccess, $targetUserId, true);
         $this->assertTrue($user->isAlive() , sprintf("Could not get user with id '%s'.", $targetUserId));
         

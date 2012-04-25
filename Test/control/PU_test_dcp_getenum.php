@@ -23,7 +23,7 @@ class TestGetEnum extends TestCaseDcpCommonFamily
     /**
      * @dataProvider dataGetEnum
      */
-    public function testGetEnum($famid, $attrid, array $expectedKeys, array $expectedLabel)
+    public function testExecuteGetEnum($famid, $attrid, array $expectedKeys, array $expectedLabel)
     {
         $fam = new_doc(self::$dbaccess, $famid);
         $this->assertTrue($fam->isAlive() , sprintf("family %s not found", $famid));
