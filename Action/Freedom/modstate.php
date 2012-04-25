@@ -21,19 +21,19 @@ include_once ("FDL/modcard.php");
 /**
  * Edition to send mail
  * @param Action &$action current action
- * @global id Http var : document id to change
- * @global state Http var : new state
- * @global comment Http var : additionnal comment for history
- * @global force Http var : to force transition [Y|N]
+ * @global string $id id Http var : document id to change
+ * @global string $state Http var : new state
+ * @global string $comment Http var : additionnal comment for history
+ * @global string $force Http var : to force transition [Y|N]
  */
-function modstate(&$action)
+function modstate(Action & $action)
 {
     // Get all the params
-    $docid = GetHttpVars("id");
-    $state = GetHttpVars("newstate"); // new state
-    $comment = GetHttpVars("comment"); // comment
+    $docid = $action->getArgument("id");
+    $state = $action->getArgument("newstate"); // new state
+    $comment = $action->getArgument("comment"); // comment
     $comment = rawurldecode($comment);
-    $force = (GetHttpVars("fstate", "no") == "yes"); // force change
+    $force = ($action->getArgument("fstate", "no") == "yes"); // force change
     if ($docid == 0) $action->exitError(_("the document is not referenced: cannot apply state modification"));
     
     $dbaccess = $action->GetParam("FREEDOM_DB");
@@ -42,13 +42,18 @@ function modstate(&$action)
     
     if ($doc->wid > 0) {
         if ($state != "-") {
+            /**
+             * @var Wdoc $wdoc
+             */
             $wdoc = new_Doc($dbaccess, $doc->wid);
             $wdoc->Set($doc);
             $wdoc->disableEditControl(); // only to pass ask parameters
             setPostVars($wdoc);
             $wdoc->enableEditControl();
-            $err = $wdoc->ChangeState($state, $comment, $force);
+            $msg = '';
+            $err = $wdoc->ChangeState($state, $comment, $force, true, true, true, true, true, true, $msg);
             if ($err != "") $action->AddWarningMsg($err);
+            if ($msg != "") $action->AddWarningMsg($msg);
             else $action->info(sprintf("Change state %s [%d] : %s", $doc->title, $doc->id, $state));
         } else {
             if ($comment != "") {
@@ -60,6 +65,6 @@ function modstate(&$action)
         $action->AddLogMsg(sprintf(_("the document %s is not related to a workflow") , $doc->title));
     }
     
-    redirect($action, GetHttpVars("redirect_app", "FDL") , GetHttpVars("redirect_act", "FDL_CARD&refreshfld=Y&id=" . $doc->id) , $action->GetParam("CORE_STANDURL"));
+    redirect($action, $action->getArgument("redirect_app", "FDL") , $action->getArgument("redirect_act", "FDL_CARD&refreshfld=Y&id=" . $doc->id) , $action->GetParam("CORE_STANDURL"));
 }
 ?>

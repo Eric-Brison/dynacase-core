@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.Doc.php");
 // -----------------------------------
-function popupdoc(&$action, $tlink, $tsubmenu = array())
+function popupdoc(Action & $action, $tlink, $tsubmenu = array())
 {
     if ($action->getmenulink) { // to be use in viewbarmenu function
         $action->menulink = $tlink;
@@ -53,6 +53,16 @@ function popupdoc(&$action, $tlink, $tsubmenu = array())
         if ($onlysub) {
             if ($v["submenu"] != $onlysub) $v["visibility"] = POPUP_INVISIBLE;
             else $v["submenu"] = "";
+        }
+        if ($v["visibility"] == POPUP_INACTIVE) {
+            if ($v["title"]) {
+                $v["url"] = '';
+                $v["jsfunction"] = sprintf("alert('%s')", str_replace("'", "&rsquo;", $v["title"]));
+            } else {
+                $v["url"] = '#';
+                $v["jsfunction"] = '';
+            }
+            $v["confirm"] = 'false';
         }
         if ($v["visibility"] != POPUP_INVISIBLE) {
             if ($v["submenu"] == "") {

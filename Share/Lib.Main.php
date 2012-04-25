@@ -15,7 +15,7 @@
  */
 /**
  */
-include_once ("Lib.Common.php");
+include_once ("WHAT/Lib.Common.php");
 /**
  * @param Authenticator $auth
  * @param Action $action

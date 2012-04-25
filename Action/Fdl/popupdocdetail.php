@@ -26,6 +26,7 @@ function popupdocdetail(Action & $action)
     
     popupdoc($action, $popup);
 }
+
 function getpopupdocdetail(Action & $action, $docid)
 {
     // define accessibility
@@ -420,7 +421,10 @@ function addArchivePopup(&$tlink, Doc & $doc, $target = "_self")
     }
 }
 /**
- * Add control view menu
+ * Additionnal menu for if document has an associated view controller
+ * @param array $tlink
+ * @param \Doc $doc
+ * @param string $target
  */
 function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
 {
@@ -518,7 +522,9 @@ function addCvPopup(&$tlink, Doc & $doc, $target = "_self")
     }
 }
 /**
- * Add control view menu
+ * Additionnal menu when workflow is detected
+ * @param array $tlink
+ * @param \Doc $doc
  */
 function addStatesPopup(&$tlink, Doc & $doc)
 {
@@ -543,24 +549,43 @@ function addStatesPopup(&$tlink, Doc & $doc)
             } else {
                 $jsf = sprintf("subwindow(100,100,'_self','$surl&app=FREEDOM&action=MODSTATE&newstate=$v&id=$docid');");
             }
-            
+            $visibility = POPUP_ACTIVE;
+            $tooltip = $wdoc->getActivity($v, ucfirst(_($v)));
+            $icon = (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "");
+            if ($tr && $tr["m0"]) {
+                // verify m0
+                $err = call_user_func(array(
+                    $wdoc,
+                    $tr["m0"],
+                ) , $tr["e2"], $wdoc->doc->state);
+                if ($err) {
+                    $visibility = POPUP_INACTIVE;
+                    $tooltip = $err;
+                    $icon = "Images/nowaccess.png";
+                }
+            }
             $tlink[$v] = array(
-                "title" => $wdoc->getActivity($v, ucfirst(_($v))) ,
-                "descr" => $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, ucfirst(_($v))) ,
+                "title" => $tooltip,
+                "descr" => $tr['id'] ? _($tr['id']) : $wdoc->getActivity($v, mb_ucfirst(_($v))) ,
                 "jsfunction" => $jsf,
                 "confirm" => "false",
                 "control" => "false",
                 "color" => $wdoc->getColor($v) ,
                 "tconfirm" => "",
-                "icon" => (!$tr) ? "Images/noaccess.png" : ((is_array($tr["ask"])) ? "Images/miniask.png" : "") ,
+                "icon" => $icon,
                 "target" => "_self",
-                "visibility" => POPUP_ACTIVE,
+                "visibility" => $visibility,
                 "submenu" => "chgstates", #_("chgstates")
                 "barmenu" => "false"
             );
         }
     }
 }
+/**
+ * additional menu for family documents
+ * @param array $tlink
+ * @param Doc $doc
+ */
 function addFamilyPopup(&$tlink, Doc & $doc)
 {
     $lmenu = $doc->GetMenuAttributes(true);
@@ -637,7 +662,13 @@ function addFamilyPopup(&$tlink, Doc & $doc)
         if ($v->precond != "") $tlink[$k]["visibility"] = $doc->ApplyMethod($v->precond, POPUP_ACTIVE);
     }
 }
-
+/**
+ * additionnal menus when offline is installed
+ * @param array $tlink
+ * @param Doc $doc
+ * @param string $target
+ * @param string $menu
+ */
 function addDocOfflinePopup(&$tlink, Doc & $doc, $target = "_self", $menu = 'offline')
 {
     if (file_exists("OFFLINE/off_popupdocfolder.php")) {
@@ -647,6 +678,9 @@ function addDocOfflinePopup(&$tlink, Doc & $doc, $target = "_self", $menu = 'off
 }
 /**
  * Add control view menu
+ * @param \Action $action
+ * @param array $tlink
+ * @param \Doc $doc
  */
 function changeMenuVisibility(Action & $action, &$tlink, Doc & $doc)
 {

@@ -77,6 +77,14 @@ class ErrorCodeWFL
      */
     const WFL0107 = 'workflow transition nr property is not a boolean for transition model %s in class %s';
     /**
+     * m0 property must be a worflow method
+     */
+    const WFL0108 = 'workflow unknow m0 method %s for transition model %s in class %s';
+    /**
+     * m3 property must be a worflow method
+     */
+    const WFL0109 = 'workflow unknow m3 method %s for transition model %s in class %s';
+    /**
      *
      */
     const WFL0050 = 'workflow transition or state key %s syntax error for %s (limit to %d alpha characters)';

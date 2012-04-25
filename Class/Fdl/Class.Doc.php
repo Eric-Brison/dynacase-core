@@ -4360,10 +4360,14 @@ create unique index i_docir on doc(initid, revision);";
          * @param bool $withcontrol set to false if you want to not verify control permission ot transition
          * @param bool $wm1 set to false if you want to not apply m1 methods
          * @param bool $wm2 set to false if you want to not apply m2 methods
-         * @param bool $need set to false if you want to not verify needed attribute are set
-         * @return string the state - empty if no state
+         * @param bool $wneed set to false to not test required attributes
+         * @param bool $wm0 set to false if you want to not apply m0 methods
+         * @param bool $wm3 set to false if you want to not apply m3 methods
+         * @param string $msg return message from m2 or m3
+         * @internal param bool $need set to false if you want to not verify needed attribute are set
+         * @return string error message empty if no error
          */
-        final public function setState($newstate, $comment = '', $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true)
+        final public function setState($newstate, $comment = '', $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
         {
             if ($newstate == "") return _("no state specified");
             if (!$this->wid) return _("document is not controlled by a workflow");
@@ -4374,7 +4378,7 @@ create unique index i_docir on doc(initid, revision);";
             if (!$wdoc->isAlive()) return _("assigned workflow is not alive");
             try {
                 $wdoc->Set($this);
-                $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed);
+                $err = $wdoc->ChangeState($newstate, $comment, $force, $withcontrol, $wm1, $wm2, $wneed, $wm0, $wm3, $msg);
             }
             catch(Exception $e) {
                 $err = sprintf(_("workflow associated %s [%d] is corrupted") , $wdoc->title, $wdoc->id);

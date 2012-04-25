@@ -34,8 +34,10 @@ class CheckWorkflow
      * @var array
      */
     private $transitionModelProperties = array(
+        'm0',
         'm1',
         'm2',
+        'm3',
         'ask',
         'nr'
     );
@@ -122,6 +124,7 @@ class CheckWorkflow
     }
     /**
      * verify validity with attributes
+     * @return string
      */
     public function verifyWorkflowComplete()
     {
@@ -195,6 +198,13 @@ class CheckWorkflow
                 if ($transition["ask"] && (!is_array($transition["ask"]))) {
                     $this->addCodeError('WFL0103', $tkey, $this->className);
                 }
+                
+                if ($transition["m0"]) {
+                    if (!method_exists($this->wdoc, $transition["m0"])) {
+                        
+                        $this->addCodeError('WFL0108', $transition["m0"], $tkey, $this->className);
+                    }
+                }
                 if ($transition["m1"]) {
                     if (!method_exists($this->wdoc, $transition["m1"])) {
                         
@@ -205,6 +215,12 @@ class CheckWorkflow
                     if (!method_exists($this->wdoc, $transition["m2"])) {
                         
                         $this->addCodeError('WFL0106', $transition["m2"], $tkey, $this->className);
+                    }
+                }
+                if ($transition["m3"]) {
+                    if (!method_exists($this->wdoc, $transition["m3"])) {
+                        
+                        $this->addCodeError('WFL0109', $transition["m3"], $tkey, $this->className);
                     }
                 }
                 if (in_array("nr", $props)) {

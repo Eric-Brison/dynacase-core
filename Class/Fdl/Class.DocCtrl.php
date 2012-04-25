@@ -227,8 +227,9 @@ class DocCtrl extends DocLDAP
      * set profil for document
      *
      * @param int $profid identificator for profil document
+     * @param Doc $fromdocidvalues
      */
-    function setProfil($profid, $fromdocidvalues = 0)
+    function setProfil($profid, $fromdocidvalues = null)
     {
         
         if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
@@ -269,9 +270,10 @@ class DocCtrl extends DocLDAP
      * reset right for dynamic profil
      *
      * @param int $dprofid identificator for dynamic profil document
+     * @param Doc $fromdocidvalues other document to reference dynamic profiling (default itself)
      * @return string error message
      */
-    function computeDProfil($dprofid = 0, $fromdocidvalues = 0)
+    function computeDProfil($dprofid = 0, $fromdocidvalues = null)
     {
         $err = '';
         if ($this->id == 0) return '';
@@ -314,7 +316,7 @@ class DocCtrl extends DocLDAP
                 }
             }
             $this->exec_query("delete from docperm where docid=" . $this->id);
-            if ($fromdocidvalues == 0) $fromdocidvalues = & $this;
+            if ($fromdocidvalues == null) $fromdocidvalues = & $this;
             $greenUid = array();
             foreach ($tacl as $v) {
                 

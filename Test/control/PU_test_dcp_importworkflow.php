@@ -124,7 +124,13 @@ class TestImportWorkflow extends TestCaseDcpDocument
                     "WFL0101",
                     "WFL0103",
                     "WFL0105",
+                    "unknowM1",
                     "WFL0106",
+                    "unknowM2",
+                    "WFL0108",
+                    "unknowM0",
+                    "WFL0109",
+                    "unknowM3",
                     "WFL0050"
                 )
             ) ,

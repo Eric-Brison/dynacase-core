@@ -51,16 +51,15 @@ class WDoc extends Doc
     var $firstState = ""; // first state in workflow
     var $viewnext = "list"; // view interface as select list may be (list|button)
     var $nosave = array(); // states where it is not permitted to save and stay (force next state)
+    
     /**
      * @var array
      */
-    public $states=null;
-
+    public $states = null;
     /**
      * @var WDoc|null
      */
-    private $pdoc=null;
-    
+    private $pdoc = null;
     /**
      * document instance
      * @var Doc
@@ -106,10 +105,11 @@ class WDoc extends Doc
     /**
      * change profil according to state
      * @param string $newstate new state of document
+     * @return string
      */
     function changeProfil($newstate)
     {
-        $err='';
+        $err = '';
         if ($newstate != "") {
             $profid = $this->getValue($this->_Aid("_ID", $newstate));
             if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
@@ -131,7 +131,7 @@ class WDoc extends Doc
             $auserref = trim($this->getValue($this->_Aid("_AFFECTREF", $newstate)));
             if ($auserref) {
                 $uid = $this->getAllocatedUser($newstate);
-                $wuid=0;
+                $wuid = 0;
                 if ($uid) $wuid = $this->getDocValue($uid, "us_whatid");
                 if ($wuid > 0) {
                     $lock = (trim($this->getValue($this->_Aid("_AFFECTLOCK", $newstate))) == "yes");
@@ -144,7 +144,7 @@ class WDoc extends Doc
                             if (!$to) addWarningMsg(sprintf(_("%s has no email address") , $this->getTitle($uid)));
                             else {
                                 $subject = sprintf(_("allocation for %s document") , $this->doc->title);
-                                $commentaction='';
+                                $commentaction = '';
                                 $err = sendCard($action, $this->doc->id, $to, "", $subject, "", true, $commentaction, "", "", "htmlnotif");
                                 if ($err != "") addWarningMsg($err);
                             }
@@ -162,7 +162,7 @@ class WDoc extends Doc
         $type = trim($this->getValue($this->_Aid("_AFFECTTYPE", $newstate)));
         if (!$auserref) return false;
         $aid = strtok($auserref, " ");
-        $uid=false;
+        $uid = false;
         switch ($type) {
             case 'F': // fixed address
                 //	$wuid=$this->getDocValue($aid,"us_whatid");
@@ -683,23 +683,28 @@ class WDoc extends Doc
      * change state of a document
      * the method {@link set()} must be call before
      * @param string $newstate the next state
-     * @param string $comment comment to be set in history (describe why change state)
+     * @param string $addcomment
      * @param bool $force is true when it is the second passage (without interactivity)
      * @param bool $withcontrol set to false if you want to not verify control permission ot transition
      * @param bool $wm1 set to false if you want to not apply m1 methods
      * @param bool $wm2 set to false if you want to not apply m2 methods
-     * @param bool $need set to false if you want to not verify needed attribute are set
+     * @param bool $wneed set to false to not test required attributes
+     * @param bool $wm0 set to false if you want to not apply m0 methods
+     * @param bool $wm3 set to false if you want to not apply m3 methods
+     * @param string $msg return message from m2 or m3 methods
+     * @internal param string $comment comment to be set in history (describe why change state)
+     * @internal param bool $need set to false if you want to not verify needed attribute are set
      * @return string error message, if no error empty string
      */
-    function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true)
+    function changeState($newstate, $addcomment = "", $force = false, $withcontrol = true, $wm1 = true, $wm2 = true, $wneed = true, $wm0 = true, $wm3 = true, &$msg = '')
     {
-        $err='';
+        $err = '';
         // if ($this->doc->state == $newstate) return ""; // no change => no action
         // search if possible change in concordance with transition array
         $foundFrom = false;
         $foundTo = false;
-        $tname='';
-        $tr=array();
+        $tname = '';
+        $tr = array();
         reset($this->cycle);
         while (list($k, $trans) = each($this->cycle)) {
             if (($this->doc->state == $trans["e1"])) {
@@ -725,6 +730,20 @@ class WDoc extends Doc
         // verify if privilege granted
         if ($withcontrol) $err = $this->control($tname);
         if ($err != "") return $err;
+        
+        if ($wm0 && ($tr["m0"] != "")) {
+            // apply first method (condition for the change)
+            if (!method_exists($this, $tr["m0"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m0"], get_class($this)));
+            
+            $err = call_user_func(array(
+                $this,
+                $tr["m0"]
+            ) , $newstate, $this->doc->state, $addcomment);
+            if ($err != "") {
+                $this->doc->unlock(true);
+                return (sprintf(_("The change state to %s has been aborted.\n%s") , _($newstate) , $err));
+            }
+        }
         
         if ($wm1 && ($tr["m1"] != "")) {
             // apply first method (condition for the change)
@@ -787,15 +806,17 @@ class WDoc extends Doc
         
         $this->doc->enableEditControl();
         // post action
+        $msg2 = '';
         if ($wm2 && ($tr["m2"] != "")) {
             if (!method_exists($this, $tr["m2"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m2"], get_class($this)));
-            $err = call_user_func(array(
+            $msg2 = call_user_func(array(
                 $this,
                 $tr["m2"]
             ) , $newstate, $oldstate, $addcomment);
             
-            if ($err == "->") $err = ""; //it is not a real error
-            if ($err != "") $err = sprintf(_("The change state to %s has been realized. But the following warning is appeared.\n%s") , _($newstate) , $err);
+            if ($msg2 == "->") $msg2 = ""; //it is not a real error
+            if ($msg2) $this->doc->addComment($msg2);
+            if ($msg2 != "") $msg2 = sprintf(_("The change state to %s has been realized. But the following warning is appeared.\n%s") , _($newstate) , $msg2);
         }
         $this->doc->addLog("state", array(
             "id" => $this->id,
@@ -803,17 +824,36 @@ class WDoc extends Doc
             "revision" => $this->revision,
             "title" => $this->title,
             "state" => $this->state,
-            "message" => $err
+            "message" => $msg2
         ));
         $this->doc->disableEditControl();
         if (!$this->domainid) $this->doc->unlock(false, true);
         $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
         $this->workflowAttachTimer($newstate, $tname);
         $err.= $this->changeAllocateUser($newstate);
+        // post action
+        $msg3 = '';
+        if ($wm3 && ($tr["m3"] != "")) {
+            if (!method_exists($this, $tr["m3"])) return (sprintf(_("the method '%s' is not known for the object class %s") , $tr["m3"], get_class($this)));
+            $msg3 = call_user_func(array(
+                $this,
+                $tr["m3"]
+            ) , $newstate, $oldstate, $addcomment);
+            
+            if ($msg3 == "->") $msg3 = ""; //it is not a real error
+            if ($msg3) $this->doc->addComment($msg3);
+            if ($msg3 != "") $msg3 = sprintf(_("The change state to %s has been realized. But the following warning is appeared.\n%s") , _($newstate) , $msg3);
+        }
+        $msg = $msg2;
+        if ($msg && $msg3) $msg.= "\n";
+        $msg.= $msg3;
         $this->doc->enableEditControl();
         return $err;
     }
-    // --------------------------------------------------------------------
+    /**
+     * return an array of next states availables from current state
+     * @return array
+     */
     function getFollowingStates()
     {
         // search if following states in concordance with transition array
@@ -832,13 +872,15 @@ class WDoc extends Doc
         }
         return $fstate;
     }
-    
+    /**
+     * return an array of all states availables for the workflow
+     * @return array
+     */
     function getStates()
     {
         if ($this->states === null) {
             $this->states = array();
-            reset($this->cycle);
-            while (list($k, $tr) = each($this->cycle)) {
+            foreach ($this->cycle as $k => $tr) {
                 if ($tr["e1"] != "") $this->states[$tr["e1"]] = $tr["e1"];
                 if ($tr["e2"] != "") $this->states[$tr["e2"]] = $tr["e2"];
             }
@@ -924,12 +966,12 @@ class WDoc extends Doc
      * send associated mail of a state
      * @param string $state the state
      * @param string $comment reason of change state
-     * @param array $tname transition name
-     * @return Doc
+     * @param string $tname transition name
+     * @return string
      */
     function workflowSendMailTemplate($state, $comment = "", $tname = "")
     {
-        $err='';
+        $err = '';
         $tmtid = $this->getTValue($this->_Aid("_TRANS_MTID", $tname));
         
         $tr = $this->transitions[$tname];
@@ -975,17 +1017,20 @@ class WDoc extends Doc
     /**
      * attach timer to a document
      * @param string $state the state
-     * @param array $tname transition name
-     * @return Doc
+     * @param string $tname transition name
+     * @return string
      */
     function workflowAttachTimer($state, $tname = "")
     {
-        $err='';
+        $err = '';
         $mtid = $this->getValue($this->_Aid("_TRANS_TMID", $tname));
         
         $this->doc->unattachAllTimers($this);
         $tr = $this->transitions[$tname];
         if ($mtid) {
+            /**
+             * @var _TIMER $mt
+             */
             $mt = new_doc($this->dbaccess, $mtid);
             if ($mt->isAlive()) {
                 $err = $this->doc->attachTimer($mt, $this);
@@ -1021,10 +1066,16 @@ class WDoc extends Doc
         }
         return $err;
     }
-    
+    /**
+     * to change state of a document from this workflow
+     * @param $docid
+     * @param $newstate
+     * @param string $comment
+     * @return string
+     */
     function changeStateOfDocid($docid, $newstate, $comment = "")
     {
-        $err='';
+        $err = '';
         $cmd = new_Doc($this->dbaccess, $docid);
         $cmdid = $cmd->latestId(); // get the latest
         $cmd = new_Doc($this->dbaccess, $cmdid);
@@ -1067,6 +1118,8 @@ class WDoc extends Doc
     }
     /**
      * Special control in case of dynamic controlled profil
+     * @param string $aclname
+     * @return string error message
      */
     function Control($aclname)
     {
@@ -1074,7 +1127,7 @@ class WDoc extends Doc
         if ($err == "") return $err; // normal case
         if ($this->getValue("DPDOC_FAMID") > 0) {
             // special control for dynamic users
-            if ($this->pdoc===null) {
+            if ($this->pdoc === null) {
                 $pdoc = createDoc($this->dbaccess, $this->fromid, false);
                 $pdoc->doctype = "T"; // temporary
                 //	$pdoc->setValue("DPDOC_FAMID",$this->getValue("DPDOC_FAMID"));
@@ -1107,6 +1160,7 @@ class WDoc extends Doc
     /**
      * get value of instanced document
      * @param string $attrid attribute identificator
+     * @param bool $def default value if no value
      * @return string return the value, false if attribute not exist or document not set
      */
     function getInstanceValue($attrid, $def = false)

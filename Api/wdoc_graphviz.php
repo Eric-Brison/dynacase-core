@@ -14,11 +14,11 @@
  * @subpackage
  */
 /**
- * @global id Http var : document id to affect
- * @global type Http var : type of graph
- * @global format Http var : file format pnh or svg
- * @global orient Http var :orientation TB (TopBottom)  or LR (LeftRight)
- * @global size Http var : global size of graph
+ * @global string $id Http var : document id to affect
+ * @global string $type Http var : type of graph
+ * @global string $format Http var : file format pnh or svg
+ * @global string $orient Http var :orientation TB (TopBottom)  or LR (LeftRight)
+ * @global string $size Http var : global size of graph
  */
 // refreah for a classname
 // use this only if you have changed title attributes
@@ -29,26 +29,58 @@ $style = array(
     'autonext-color' => '#006400', // darkgreen
     'arrow-label-font-color' => '#555555', // dark grey
     'arrow-color' => '#00008b', // darkblue
-    'condition-color' => '#ffff00', // yellow
-    'action-color' => '#ffa500', // orange
+    'ask-color' => '#00008b', // darkblue
+    'condition-color0' => '#6df8ab', // green
+    'condition-color1' => '#ffff00', // yellow
+    'action-color2' => '#ffa500', // orange
+    'action-color3' => '#74c0ec', // light blue
     'mail-color' => '#a264d2', // light violet
     'timer-color' => '#64a2d2', // light blue
     'start-color' => '#0000ff', // blue
     
 );
-
+/**
+ * @var Application $appl
+ */
 $dbaccess = $appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
 }
 
-$docid = GetHttpVars("docid", 0); // special docid
-$type = GetHttpVars("type"); // type of graph
-$orient = GetHttpVars("orient", "LR"); // type of graph
-$isize = GetHttpVars("size", "10"); // size of graph
-$ratio = GetHttpVars("ratio", "auto"); // ratio of graph
+$usage = new ApiUsage();
+$usage->setText("Create graph image for workflow");
+$docid = $usage->addNeeded("docid", "workflow identificator");
+$orient = $usage->addOption("orient", "orientation", array(
+    "LR",
+    "TB",
+    "BT",
+    "RL"
+) , "LR");
+
+$ratio = $usage->addOption("ratio", "ratio", array(
+    "auto",
+    "fill",
+    "compress",
+    "expand"
+) , "auto");
+$isize = $usage->addOption("size", "image size", array() , "10");
+$format = $usage->addOption("format", "output format", array(
+    "png",
+    "svg",
+    "dot"
+) , "png");
+
+$type = $usage->addOption("type", "type of output", array(
+    "complet",
+    "activity",
+    "simple"
+) , "complet");
 $label = ($type == "complet");
+$usage->verify();
+/**
+ * @var WDoc $doc
+ */
 $doc = new_doc($dbaccess, $docid);
 
 $rankdir = $orient;
@@ -99,8 +131,11 @@ foreach ($doc->cycle as $k => $v) {
             $e1 = $tact[$v["e1"]];
         }
         
+        $m0 = $doc->transitions[$v["t"]]["m0"];
         $m1 = $doc->transitions[$v["t"]]["m1"];
         $m2 = $doc->transitions[$v["t"]]["m2"];
+        $m3 = $doc->transitions[$v["t"]]["m3"];
+        $asks = $doc->transitions[$v["t"]]["ask"];
         
         $ttrans = array();
         $tm = $doc->getValue($doc->attrPrefix . "_TRANS_TMID" . $v["t"]);
@@ -108,16 +143,34 @@ foreach ($doc->cycle as $k => $v) {
         $ttrans = array_merge($ttrans, $doc->getTValue($doc->attrPrefix . "_TRANS_PA_TMID" . $v["t"]));
         $mtrans = $doc->getTValue($doc->attrPrefix . "_TRANS_MTID" . $v["t"]);
         
+        if ($asks && (count($asks) > 0)) {
+            $aski = 'ask' . $k;
+            $tmlabel = _("ask ");
+            foreach ($asks as $aAsk) {
+                $oa = $doc->getAttribute($aAsk);
+                if ($oa) $tmlabel.= "\\n" . $oa->getLabel();
+            }
+            $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/wask.png"';
+            $line[] = '"' . str_replace(" ", "\\n", $aski) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=egg,color="' . $style['ask-color'] . '"' . $timgt . ' ];';
+            $line[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', str_replace(" ", "\\n", $e1) , str_replace(" ", "\\n", $aski) , $style['arrow-label-font-color'], $style['arrow-color']);
+            $e1 = $aski;
+        }
+        if ($m0) {
+            $line[] = '"' . str_replace(" ", "\\n", $m0 . $k) . '" [ label="' . $m0 . '", fixedsize=false,shape=Mdiamond,color="' . $style['condition-color0'] . '" ];';
+            
+            $line[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",  labelfontname=sans, label="%s"];', str_replace(" ", "\\n", $e1) , str_replace(" ", "\\n", $m0 . $k) , $style['arrow-label-font-color'], $style['arrow-color'], _($v["t"]));
+            $e1 = $m0 . $k;
+        }
         if ($m1) {
             //      if ($tmain) $tmain.=",";
             //      $tmain.="taillabel=$m1";
-            $line[] = '"' . str_replace(" ", "\\n", $m1 . $k) . '" [ label="' . $m1 . '", fixedsize=false,shape=diamond,color="' . $style['condition-color'] . '" ];';
+            $line[] = '"' . str_replace(" ", "\\n", $m1 . $k) . '" [ label="' . $m1 . '", fixedsize=false,shape=diamond,color="' . $style['condition-color1'] . '" ];';
             
             $line[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",  labelfontname=sans, label="%s"];', str_replace(" ", "\\n", $e1) , str_replace(" ", "\\n", $m1 . $k) , $style['arrow-label-font-color'], $style['arrow-color'], _($v["t"]));
             $e1 = $m1 . $k;
         }
         if ($m2) {
-            $line[] = '"' . str_replace(" ", "\\n", $m2 . $k) . '" [ label="' . $m2 . '",fixedsize=false,shape=box,color="' . $style['action-color'] . '"];';
+            $line[] = '"' . str_replace(" ", "\\n", $m2 . $k) . '" [ label="' . $m2 . '",fixedsize=false,shape=box,color="' . $style['action-color2'] . '"];';
             $line[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', str_replace(" ", "\\n", $e1) , str_replace(" ", "\\n", $m2 . $k) , $style['arrow-label-font-color'], $style['arrow-color']);
             $e1 = $m2 . $k;
         }
@@ -164,6 +217,7 @@ foreach ($doc->cycle as $k => $v) {
             $line[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",labelfontname=sans];', str_replace(" ", "\\n", $e1) , str_replace(" ", "\\n", $ex) , $style['arrow-label-font-color'], $style['arrow-color']);
             $e1 = $ex;
         }
+        
         if (count($ttrans) > 0) {
             $ex = 'tm' . $k;
             $tmlabel = "tumer";
@@ -177,6 +231,11 @@ foreach ($doc->cycle as $k => $v) {
             $e1 = $ex;
         }
         
+        if ($m3) {
+            $line[] = '"' . str_replace(" ", "\\n", $m3 . $k) . '" [ label="' . $m3 . '",fixedsize=false,shape=box,color="' . $style['action-color3'] . '"];';
+            $line[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', str_replace(" ", "\\n", $e1) , str_replace(" ", "\\n", $m3 . $k) , $style['arrow-label-font-color'], $style['arrow-color']);
+            $e1 = $m3 . $k;
+        }
         $line[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans,label="%s" %s];', str_replace(" ", "\\n", $e1) , str_replace(" ", "\\n", $e2) , $style['arrow-label-font-color'], $style['arrow-color'], _($v["t"]) , $tmain);
     } else {
         $e1 = _($v["e1"]);

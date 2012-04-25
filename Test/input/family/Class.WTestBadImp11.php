@@ -10,15 +10,16 @@ include_once ("FDL/Class.WDoc.php");
 Class WTestBadImp11 extends WDoc
 {
     var $attrPrefix = "WTST";
-    const alive = "alive"; # N_("alive")
-    const dead = "dead"; # N_("dead")
-    const transfered = "transfered"; # N_("transfered")
-    const sick = "sick"; # N_("sick")
-    const convalescent = "convalescent"; # N_("convalescent")
+    const alive = "alive"; #
+    const dead = "dead"; #
+    const transfered = "transfered"; #
+    const sick = "sick"; #
+    const convalescent = "convalescent"; #
     const T1 = "T1"; # N_("T1")
-    const Tsick = "T sick"; # N_("Tsick")// <-- TRANSITION SYNTAX NAME ERROR
-    const Tconvalescent = "Tconvalescent"; # N_("Tconvalescent")
-    const T3 = "T3"; # N_("T3")
+    const Tsick = "T sick"; # // <-- TRANSITION SYNTAX NAME ERROR
+    const Tconvalescent = "Tconvalescent"; #
+    const T3 = "T3";
+    const T4 = "T4";
     var $firstState = self::alive;
     var $transitions = array(
         self::T1 => array() ,
@@ -38,11 +39,16 @@ Class WTestBadImp11 extends WDoc
         ) ,
         
         self::T3 => array(
-            "m1" => "A2",
+            "m1" => "unknowM1",
             "m5" => "Z", // <-- TRANSITION PROP ERROR
-            "m2" => "notFound"
+            "m2" => "unknowM2"
             // <-- TRANSITION PROP ERROR
             
+        ) ,
+        
+        self::T4 => array(
+            "m0" => "unknowM0",
+            "m3" => "unknowM3"
         )
     );
     
