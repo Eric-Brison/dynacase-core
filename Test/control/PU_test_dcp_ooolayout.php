@@ -49,8 +49,12 @@ class TestOooLayout extends TestCaseDcpDocument
     }
     /**
      * @dataProvider dataSimpleLayout
+     * @param string $family
+     * @param string $instances
+     * @param string $lname
+     * @param array $templates
      */
-    public function testSimpleLayout($family, $instances, $lname, $templates)
+    public function testSimpleLayout($family, $instances, $lname, array $templates)
     {
         //$this->importDocument($family);
         $df = new_doc(self::$dbaccess, "TST_OOOLAYOUT");

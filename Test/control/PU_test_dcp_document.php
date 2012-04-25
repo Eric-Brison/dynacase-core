@@ -30,6 +30,8 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider provider
+     * @param string $a
+     * @return \Doc
      */
     public function testAlive($a)
     {
@@ -40,8 +42,10 @@ class TestDocument extends TestCaseDcpCommonFamily
     /**
      * @dataProvider logicalName
      * @depends testAlive
+     * @param string $file
+     * @param array $ln
      */
-    public function testLogicalName($file, $ln)
+    public function testLogicalName($file, array $ln)
     {
         $this->importDocument($file);
         
@@ -52,6 +56,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     /**
      * @dataProvider provider
      * @depends testAlive
+     * @param string $a
      */
     public function testLock($a)
     {
@@ -73,6 +78,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     /**
      * @dataProvider provider
      * @depends testAlive
+     * @param string $a
      */
     public function testunLock($a)
     {
@@ -93,6 +99,7 @@ class TestDocument extends TestCaseDcpCommonFamily
     /**
      * @dataProvider provider
      * @depends testAlive
+     * @param string $a
      */
     public function testautoLock($a)
     {
@@ -117,6 +124,8 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataDelete
+     * @param string $name
+     * @param string $familyName
      */
     public function testDelete($name, $familyName)
     {
@@ -151,6 +160,8 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataDelete
+     * @param string $name
+     * @param string $familyName
      */
     public function testReallyDelete($name, $familyName)
     {
@@ -187,13 +198,18 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataStoreFile
+     * @param string $docId
+     * @param string $attrName
+     * @param string $filePathName
+     * @param string $fileName
+     * @param int $index
      */
     public function testStoreFile($docId, $attrName, $filePathName, $fileName, $index = - 1)
     {
         $doc = new_doc(self::$dbaccess, $docId);
         $this->assertTrue($doc->isAlive() , sprintf("could not get document with id '%s'", $docId));
         
-        $err = $doc->storeFile($attrName, $filePathName, $fileName, $index);
+        $err = $doc->setFile($attrName, $filePathName, $fileName, $index);
         $this->assertEmpty($err, sprintf("storeFile(%s, %s, %s, %s) returned with error: %s", $attrName, $filePathName, $fileName, $index, $err));
         
         $value = $doc->getTValue($attrName, '', $index);
@@ -201,9 +217,17 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataSaveFile
+     * @param string $docId
+     * @param string $attrName
+     * @param string $filePathName
+     * @param string $fileName
+     * @param int $index
      */
     public function testSaveFile($docId, $attrName, $filePathName, $fileName = '', $index = - 1)
     {
+        /**
+         * @var \stream $fd
+         */
         $fd = @fopen($filePathName, 'r');
         $this->assertFalse(($fd === false) , sprintf("error openging file '%s': %s", $filePathName, $php_errormsg));
         
@@ -218,6 +242,11 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataSetFile
+     * @param string $docId
+     * @param string $attrName
+     * @param string $filePathName
+     * @param string $fileName
+     * @param int $index
      */
     public function testSetFile($docId, $attrName, $filePathName, $fileName, $index = - 1)
     {
@@ -232,6 +261,11 @@ class TestDocument extends TestCaseDcpCommonFamily
     }
     /**
      * @dataProvider dataVaultRegisterFile
+     * @param string $docId
+     * @param string $filename
+     * @param string $ftitle
+     * @param string $expectedFileName
+     * @param string $expectSuccess
      */
     public function testVaultRegisterFile($docId, $filename, $ftitle, $expectedFileName, $expectSuccess)
     {
@@ -250,8 +284,8 @@ class TestDocument extends TestCaseDcpCommonFamily
         if ($expectSuccess) {
             $this->assertEmpty($exception, sprintf("vaultRegisterFile thrown exception for file '%s': %s", $filename, $exception));
             $ret = preg_match('/^.*|\d+|.*$/', $vid);
-            $this->assertTrue((($ret !== false) && ($ret > 0)), sprintf("vaultRegisterFile returned a malformed VID '%s' for file '%s'", $vid, $filename));
-            $this->assertTrue(($expectedFileName == $info->name), sprintf("Stored file name '%s' does not match expected file name '%s'.", $info->name, $data['expect:name']));
+            $this->assertTrue((($ret !== false) && ($ret > 0)) , sprintf("vaultRegisterFile returned a malformed VID '%s' for file '%s'", $vid, $filename));
+            $this->assertTrue(($expectedFileName == $info->name) , sprintf("Stored file name '%s' does not match expected file name '%s'.", $info->name, $expectedFileName));
         } else {
             $this->assertNotEmpty($exception, sprintf("vaultRegisterFile did not thrown expected exception for file '%s'", $filename));
         }
