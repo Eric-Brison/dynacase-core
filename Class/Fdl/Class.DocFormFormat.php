@@ -90,6 +90,7 @@ class DocFormFormat
      * @param NormalAttribute &$oattr attribute to edit
      * @param string $value value of the attribute
      * @param string $index in case of array : row of the array
+     * @return mixed|string
      */
     function getHtmlInput(&$oattr, $value, $index = "")
     {
@@ -469,8 +470,6 @@ class DocFormFormat
                     $fname = str_replace("<img", '<img id="img_' . $this->attridk . '" style="vertical-align:bottom"', $fname);
                 }
             }
-            
-            $input = $fname;
             
             $input = "<span id=\"IFERR" . $this->attridk . "\" class=\"Error\"></span><span class=\"FREEDOMText\">" . $fname . "</span><br/>";
             $input.= $originalname;
@@ -1589,6 +1588,7 @@ class DocFormFormat
                 $etype = $oattr->getOption("etype");
                 $eformat = $oattr->getOption("eformat");
                 $multiple = $oattr->getOption("multiple");
+                $esort = $oattr->getOption("esort", "none");
                 if (($eformat == "auto") && ($multiple != "yes")) $doc->addParamRefresh($oattr->id, "li_" . $oattr->id);
                 
                 $lay->set("isopen", ($etype == "open"));
@@ -1598,6 +1598,9 @@ class DocFormFormat
                 
                 $lay->set("lvalue", $value);
                 $enuml = $oattr->getenumlabel();
+                if ($esort == 'key' || $esort == 'label') {
+                    $enuml = $this->sortEnumMap($enuml, $esort);
+                }
                 
                 $enumk = array_keys($enuml);
                 if (($etype == "free") && ($eformat != "auto")) {
@@ -1758,7 +1761,10 @@ class DocFormFormat
              * generate HTML for idoc attribute
              * @param Doc $doc
              * @param NormalAttribute $oattr current attribute for input
+             * @param string $attridk id suffix of the generated HTML tag
+             * @param string $attrin name of the generated HTML tag
              * @param string $value value of the attribute to display (generaly the value comes from current document)
+             * @param string $zone
              * @return String the formated output
              */
             private function getLayIdoc(&$doc, &$oattr, $attridk, $attrin, $value, $zone = "")
@@ -1782,7 +1788,12 @@ class DocFormFormat
             /**
              * add button to create/modify document relation
              *
-             * @param NormalAttribute $oattr
+             * @param \BasicAttribute|\NormalAttribute $oattr
+             * @param \Doc $doc
+             * @param $attridk id suffix of the <input/> tag
+             * @param string $value
+             * @param integer $index
+             * @return string
              */
             private function addDocIdCreate(BasicAttribute & $oattr, Doc & $doc, $attridk, $value, $index)
             {
@@ -1836,6 +1847,38 @@ class DocFormFormat
                     }
                 }
                 return '';
+            }
+            /**
+             * Sort an enum's (key => label) mapping structure by 'key' or 'label'.
+             *
+             * @param array $enumMap an enum mapping structure as returned by NormalAttribute::getEnumLabel() method
+             * @param string $sortBy 'key' to sort by key, 'label' to sort by label
+             * @return array the sorted enum's mapping structure
+             */
+            function sortEnumMap($enumMap, $sortBy)
+            {
+                global $action;
+                
+                switch ($sortBy) {
+                    case 'key':
+                        uksort($enumMap, function ($a, $b)
+                        {
+                            return strcmp($a, $b);
+                        });
+                        break;
+
+                    case 'label':
+                        $collator = new Collator($action->GetParam('CORE_LANG', 'fr_FR'));
+                        uasort($enumMap, function ($a, $b) use ($collator)
+                        {
+                            /**
+                             * @var Collator $collator
+                             */
+                            return $collator->compare($a, $b);
+                        });
+                        break;
+                }
+                return $enumMap;
             }
         }
 ?>
