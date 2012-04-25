@@ -17,11 +17,26 @@ class TestUser extends TestCaseDcpDocument
 {
     /**
      * @dataProvider dataUserCreate
+     * @param string $login
+     * @param string $password
+     */
+    public function testDeleteUser($login, $password)
+    {
+        $user = $this->testCreateUser($login, $password);
+        $err = $user->Delete();
+        $this->assertEmpty($err, sprintf("cannot delete iuser %s", $err));
+    }
+    /**
+     * @dataProvider dataUserCreate
      * @param string $login login of user
      * @param string $password password of user
+     * @return \_IUSER|\Doc
      */
     public function testCreateUser($login, $password)
     {
+        /**
+         * @var \_IUSER $doc
+         */
         $doc = createDoc(self::$dbaccess, "IUSER");
         $this->assertTrue(is_object($doc) , "cannot create user");
         $err = $doc->setValue("us_login", $login);
@@ -37,6 +52,7 @@ class TestUser extends TestCaseDcpDocument
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document iuser reference");
         $this->assertEquals($doc->getValue("us_whatid") , $u->id, "mismatch system iuser reference");
+        return $doc;
     }
     /**
      * @dataProvider dataNotUserCreate

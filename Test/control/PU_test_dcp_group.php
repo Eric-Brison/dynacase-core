@@ -16,13 +16,13 @@ require_once 'PU_testcase_dcp_document.php';
 class TestGroup extends TestCaseDcpDocument
 {
     /**
-     * @dataProvider datagroupDelete
+     * @dataProvider datagroupWithUserDelete
      * @param string $login
      * @param array $groupLoginsToCreate
      * @param array $groupLoginsToDelete
      * @param array $groupLoginsResult
      */
-    public function testDeleteGroup($login, array $groupLoginsToCreate, array $groupLoginsToDelete, array $groupLoginsResult)
+    public function testDeleteGroupWithUser($login, array $groupLoginsToCreate, array $groupLoginsToDelete, array $groupLoginsResult)
     {
         // create user
         $user = createDoc(self::$dbaccess, "IUSER");
@@ -74,11 +74,24 @@ class TestGroup extends TestCaseDcpDocument
     }
     /**
      * @dataProvider datagroupCreate
+     * @param string $login
+     */
+    public function testDeleteGroup($login)
+    {
+        $group = $this->testCreateGroup($login);
+        $err = $group->Delete();
+        $this->assertEmpty($err, sprintf("cannot delete igroup %s", $err));
+    }
+    /**
+     * @dataProvider datagroupCreate
      * @param string $login login for user and group
+     * @return \_IGROUP
      */
     public function testCreateGroup($login)
     {
-        
+        /**
+         * @var \_IGROUP $doc
+         */
         $doc = createDoc(self::$dbaccess, "IGROUP");
         $this->assertTrue(is_object($doc) , "cannot create group");
         $err = $doc->setValue("us_login", $login);
@@ -92,6 +105,7 @@ class TestGroup extends TestCaseDcpDocument
         $this->assertEquals($login, $u->login);
         $this->assertEquals($doc->id, $u->fid, "mismatch document igroup reference");
         $this->assertEquals($doc->getValue("us_whatid") , $u->id, "mismatch system igroup reference");
+        return $doc;
     }
     /**
      * @param string $userLogin
@@ -155,7 +169,7 @@ class TestGroup extends TestCaseDcpDocument
         $this->assertEquals($login, $u->login);
     }
     
-    public function datagroupDelete()
+    public function datagroupWithUserDelete()
     {
         return array(
             array(
