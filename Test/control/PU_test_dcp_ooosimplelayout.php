@@ -86,6 +86,9 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
     }
     /**
      * @dataProvider dataContent
+     * @param string $docName
+     * @param string $template
+     * @param array $expectedValues
      */
     public function testContent($docName, $template, array $expectedValues)
     {
@@ -97,6 +100,9 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
     }
     /**
      * @dataProvider dataMeta
+     * @param string $docName
+     * @param string $template
+     * @param array $expectedValues
      */
     public function testMeta($docName, $template, array $expectedValues)
     {
@@ -241,6 +247,32 @@ class TestOooSimpleLayout extends TestCaseDcpDocument
                     array(
                         "office:body//table:table/table:table-row[5]/table:table-cell[2]//text:p/text:span",
                         "Column four"
+                    )
+                )
+            ) ,
+            array(
+                "TST_OOOS3",
+                "PU_dcp_data_simple1.odt",
+                array(
+                    array(
+                        "office:body/office:text/text:p/text:span",
+                        '$Third Test$'
+                    ) ,
+                    array(
+                        "office:body/office:text/text:p/text:span",
+                        "42.00 %"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:p/text:span",
+                        "rouge"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//text:span",
+                        "Bold"
+                    ) ,
+                    array(
+                        "office:body/office:text/text:section//text:span[@text:style-name='Tbold']",
+                        "Bold"
                     )
                 )
             )
