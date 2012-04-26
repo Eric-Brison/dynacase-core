@@ -261,6 +261,24 @@ class WDoc extends Doc
         return $this->getValue($this->_Aid("_tmid", $state));
     }
     /**
+     * get the timers ids according to transition
+     * @param string $transName transition name
+     * @return array
+     */
+    public function getTransitionTimers($transName)
+    {
+        return $this->getTValue($this->_Aid("_trans_pa_tmid", $transName));
+    }
+    /**
+     * get the mail ids according to transition
+     * @param string $transName transition name
+     * @return array
+     */
+    public function getTransitionMailTemplates($transName)
+    {
+        return $this->getTValue($this->_Aid("_trans_pa_mtid", $transName));
+    }
+    /**
      * get the mail templates ids according to state
      * @param string $state
      * @return array

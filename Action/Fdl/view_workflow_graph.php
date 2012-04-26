@@ -38,7 +38,7 @@ function view_workflow_graph(&$action)
     $ratio = GetHttpVars("ratio", "auto"); // ratio of graph
     $dbaccess = $action->GetParam("FREEDOM_DB");
     
-    if ($type != 'simple' && $type != 'activity' && $type != 'complet') {
+    if ($type != 'simple' && $type != 'activity' && $type != 'complet' && $type != 'cluster') {
         return $action->exitError(sprintf("Invalid type '%s'", htmlspecialchars($type)));
     }
     if ($format != 'dot' && $format != 'png' && $format != 'svg') {

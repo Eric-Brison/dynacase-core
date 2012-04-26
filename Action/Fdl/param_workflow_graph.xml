@@ -1,18 +1,21 @@
 [ZONE CORE:HTMLHEAD?title=[TEXT:Workflow - parameters]]
 
 <form 
-      name="fwkf"style="display:inline"
-      method="POST" ENCTYPE="multipart/form-data"
+      name="fwkf" style="display:inline"
+      method="GET"
       action="[CORE_STANDURL]&app=FDL&action=VIEW_WORKFLOW_GRAPH"
    onsubmit="setifit()"
    target="wkf[id]"
        >
+<input type="hidden" value="FDL" name="app">
+<input type="hidden" value="VIEW_WORKFLOW_GRAPH" name="action">
 <input type="hidden" value="[id]" name="id">
 
 <select title="[TEXT:dotType]" name="type">
   <option value="simple">[TEXT:Just states]</option>
   <option value="activity">[TEXT:With Activity]</option>
   <option value="complet">[TEXT:With conditions]</option>
+  <option value="cluster">[TEXT:Complete (cluster)]</option>
   </select>
 <select title="[TEXT:dotFormat]" name="format">
   <option value="svg">[TEXT:SVG]</option>
@@ -54,6 +57,8 @@ function setifit() {
     var fh=(getFrameHeight(window.parent.wkf[id]))-(margebody*2);
     var wcm=(fw/normDPI)*2.54;
     var hcm=(fh/normDPI)*2.54;
+    wcm=Math.round(wcm*100)/100;
+    hcm=Math.round(hcm*100)/100;
     optfit.value=wcm+','+hcm;
 
   }
