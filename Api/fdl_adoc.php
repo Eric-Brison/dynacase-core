@@ -28,8 +28,11 @@ if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
 }
+$usage = new ApiUsage();
+$usage->setText("Generate Php Document Classes");
+$docid = $usage->addOption("docid", "special docid", null, 0);
+$usage->verify();
 
-$docid = GetHttpVars("docid", 0); // special docid
 if (($docid !== 0) && (!is_numeric($docid))) {
     $odocid = $docid;
     $docid = getFamIdFromName($dbaccess, $docid);

@@ -16,7 +16,12 @@
  */
 /**
  */
+$usage = new ApiUsage();
 
-$parname = GetHttpVars("param"); // familly filter
+$usage->setText("get parameter value");
+$parname = $usage->addOption("param", "Parameter name");
+
+$usage->verify();
+
 print getParam($parname) . "\n";
 ?>

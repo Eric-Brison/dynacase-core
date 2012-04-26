@@ -17,11 +17,16 @@
 /**
  */
 include_once ("Class.QueryDb.php");
+$usage = new ApiUsage();
 
-$parname = GetHttpVars("param"); // parameter name
-$parval = GetHttpVars("value"); // parameter value
+$usage->setText("set applicative parameter value");
+$parname = $usage->addNeeded("param", "parameter name"); // parameter name
+$parval = $usage->addNeeded("value", "parameter value to set"); // parameter value
 $paruser = GetHttpVars("userid"); // parameter user id (option)
-$parapp = GetHttpVars("appname"); // parameter app name (option)
+$parapp = $usage->addOption("appname", "Parameter's application's name"); // parameter app name (option)
+
+$usage->verify();
+
 if ($parapp != "") {
     $appid = $core->GetIdFromName($parapp);
 }

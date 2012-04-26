@@ -22,6 +22,12 @@ include_once ('FDL/Class.DocFam.php');
 include_once ('FDL/Class.DocVaultIndex.php');
 include_once ('VAULT/Class.VaultFile.php');
 
+$usage = new ApiUsage();
+
+$usage->setText("Reinit vault files");
+
+$usage->verify();
+
 $dbaccess = GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";

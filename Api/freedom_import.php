@@ -20,7 +20,14 @@ global $appl, $action;
 
 include_once ("FDL/import_file.php");
 
-$to = GetHttpVars("to");
+$usage = new ApiUsage();
+
+$usage->setText("importation of documents");
+$to = $usage->addOption("to", "Adress to send mail");
+$htmlMode = $usage->addOption("htmlmode", "Html mode");
+
+$usage->verify();
+
 // mode HTML
 $appl = new Application();
 $appl->Set("FREEDOM", $core);
@@ -39,9 +46,9 @@ if ($to) {
     if ($from == "") $from = $action->user->login . '@' . php_uname('n');
     
     $subject = sprintf(_("result of import  %s") , basename(GetHttpVars("file")));
-    $err = sendmail($to, $from, $cc, $bcc, $subject, $themail);
+    $err = sendmail($to, $from, "", "", $subject, $themail);
     if ($err) error_log("import sending mail: Error:$err");
 } else {
-    if (GetHttpVars("htmlmode") == "Y") print $out;
+    if ($htmlMode == "Y") print $out;
 }
 ?>

@@ -9,6 +9,10 @@ ini_set("max_execution_time", "36000");
 
 include_once ('FDL/freedom_util.php');
 
+$usage = new ApiUsage();
+$usage->setText("Fixed multiple alive revision problem");
+$usage->verify();
+
 $dbaccess = GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
     error_log("Freedom Database not found : param FREEDOM_DB");

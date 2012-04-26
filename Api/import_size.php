@@ -22,8 +22,13 @@
 // ---------------------------------------------------------------
 include_once ("Class.Style.php");
 include_once ("Lib.Color.php");
+global $action;
 
-$name = GetHttpVars("name");
+$usage = new ApiUsage();
+
+$usage->setText("update list of available font style");
+
+$usage->verify();
 
 $param = new Param();
 

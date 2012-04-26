@@ -23,7 +23,13 @@
 include_once ("Lib.Http.php");
 include_once ("ACCESS/upload.php");
 
-$filename = GetHttpVars("filename");
+$usage = new ApiUsage();
+
+$usage->setText("import USER login and acl");
+$filename = $usage->addNeeded("filename", "File name");
+
+$usage->verify();
+
 $content = file($filename);
 
 $tnewacl = array();

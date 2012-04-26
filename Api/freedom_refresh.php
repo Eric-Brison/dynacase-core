@@ -19,6 +19,7 @@
 // use this only if you have changed title attributes
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.SearchDoc.php");
+global $action;
 
 $usage = new ApiUsage();
 $usage->setText("Refresh documents");

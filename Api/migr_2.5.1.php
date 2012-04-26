@@ -20,6 +20,10 @@
 include_once ("FDL/Class.Dir.php");
 include_once ("FDL/Class.DocFam.php");
 
+$usage = new ApiUsage();
+$usage->setText("Migration 2.5.1");
+$usage->verify();
+
 function addFamIndexes($dbaccess)
 {
     

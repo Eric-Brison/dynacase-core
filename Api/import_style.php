@@ -32,9 +32,14 @@ function getStyleInherit($name, &$sty_colorsh, &$sty_consth, &$sty_localsh)
         $sty_localsh = $sty_local;
     }
 }
+$usage = new ApiUsage();
 
-$name = GetHttpVars("name");
-$html = (GetHttpVars("html") != "");
+$usage->setText("update list of available style");
+$name = $usage->addNeeded("name", "name of style file");
+$html = ($usage->addOption("html", "html") != "");
+
+$usage->verify();
+
 $thparam = array(); // array of inherited paramters
 $param = new Param();
 /**

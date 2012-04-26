@@ -21,7 +21,13 @@
 
 include_once ("FDL/Class.Doc.php");
 
-$usage = "usage  --login=<user login> --password=<user password>";
+$usage = new ApiUsage();
+
+$usage->setText("Reset profiling use when restore context from archive");
+$user = $usage->addNeeded("login", "login");
+$password = $usage->addNeeded("password", "password");
+
+$usage->verify();
 /**
  * @var Action $action
  */
@@ -32,11 +38,6 @@ if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
 }
-
-$user = $action->getArgument("login"); // special docid
-$password = $action->getArgument("password"); // number of childs
-if (empty($user)) $action->exitError("login needed :\n $usage");
-if (empty($password)) $action->exitError("password needed :\n $usage");
 
 $u = new Account($coreaccess);
 $u->setLoginName($user);

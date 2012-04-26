@@ -19,14 +19,14 @@
 // use this only if you have changed title attributes
 include_once ("FDL/Class.Doc.php");
 
-$className = GetHttpVars("class", "-"); // classname filter
-$famId = GetHttpVars("famid", 0); // familly filter
-if (($className == "-") && ($famId == 0)) {
-    print "arg class needed :usage --class=<class name> --famid=<familly id>";
-    return;
-}
+$usage = new ApiUsage();
 
-$famId = GetHttpVars("famid", 0); // output file
+$usage->setText("Update titles");
+$className = $usage->addNeeded("class", "classname filter"); // classname filter
+$famId = $usage->addNeeded("famid", "family filter"); // familly filter
+
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("FDL", $core);
 
@@ -46,6 +46,9 @@ $table1 = $query->Query();
 
 if ($query->nb > 0) {
     while (list($k, $v) = each($table1)) {
+        /**
+         * @var Doc $v
+         */
         print $v->title . "-";
         $v->refreshTitle();
         $v->Modify();

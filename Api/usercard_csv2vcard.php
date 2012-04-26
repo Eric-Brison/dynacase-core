@@ -18,9 +18,16 @@
 // remove all tempory doc and orphelines values
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.UsercardVcard.php");
+global $action;
 
-$fimport = GetHttpVars("ifile"); // file to convert
-$fvcf = GetHttpVars("ofile", "php://stdin"); // output file
+$usage = new ApiUsage();
+
+$usage->setText("Change usercard from csv to vcard");
+$fimport = $usage->addNeeded("ifile", "file to convert"); // file to convert
+$fvcf = $usage->addOption("ofile", "output file", null, "php://stdin"); // output file
+
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("USERCARD", $core);
 

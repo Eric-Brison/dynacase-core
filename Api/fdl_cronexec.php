@@ -21,6 +21,10 @@ include_once ("FDL/Class.DocFam.php");
 include_once ("FDL/Class.DocTimer.php");
 include_once ("FDL/Class.SearchDoc.php");
 
+$usage = new ApiUsage();
+$usage->setText("Execute Freedom Processes when needed");
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("FDL", $core);
 

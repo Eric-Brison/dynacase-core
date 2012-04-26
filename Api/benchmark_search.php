@@ -38,7 +38,16 @@ $default_limit = 10;
 $default_resetcperm = 'no';
 
 $parms = array();
-$parms['famid'] = getHttpVars('famid', $default_famid);
+
+$usage = new ApiUsage();
+$usage->setText("Benchmark search");
+$parms['famid'] = $usage->addOption("famid", "family id", null, $default_famid);
+$parms['word'] = $usage->addOption("word", "word to search", null, $default_word);
+$parms['limit'] = $usage->addOption("limit", "number of element to search", null, $default_limit);
+$parms['resetcperm'] = $usage->addOption("resetcperm", "reseting permission", null, $default_resetcperm);
+
+$usage->verify();
+
 if (!is_numeric($parms['famid'])) {
     $id = getFamIdFromName($dbaccess_freedom, $parms['famid']);
     if ($id === 0) {
@@ -47,18 +56,15 @@ if (!is_numeric($parms['famid'])) {
     }
 }
 
-$parms['word'] = getHttpVars('word', $default_word);
 if ($parms['word'] == "") {
     $parms['word'] = $default_word;
 }
 
-$parms['limit'] = getHttpVars('limit', $default_limit);
 if (!is_numeric($parms['limit']) || $parms['limit'] <= 0) {
     error_log(__FILE__ . " " . sprintf("Error: limit should be numeric and >= 1"));
     exit(1);
 }
 
-$parms['resetcperm'] = getHttpVars('resetcperm', 'no');
 if ($parms['resetcperm'] != 'yes' && $parms['resetcperm'] != 'no') {
     error_log(__FILE__ . " " . sprintf("Error: resetcperm '%s' should be 'yes' or 'no'", $parms['resetcperm']));
     exit(1);

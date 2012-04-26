@@ -29,8 +29,12 @@ if ($dbaccess == "") {
     exit;
 }
 
-$docid = GetHttpVars("docid", 0); // special docid
-$comment = base64_decode(GetHttpVars("comment")); // additionnal comment
+$usage = new ApiUsage();
+$usage->setText("Execute Freedom Processes");
+$docid = $usage->addOption("docid", "special docid", null, 0);
+$comment = base64_decode($usage->addOption("comment", "additionnal comment", null, ""));
+$usage->verify();
+
 if (($docid == 0) && (!is_numeric($docid))) $docid = getFamIdFromName($dbaccess, $docid);
 
 if ($docid > 0) {

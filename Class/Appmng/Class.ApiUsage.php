@@ -25,6 +25,7 @@
  $usage->verify();
  * @endcode
  */
+define("THROW_EXITHELP", 1988);
 class ApiUsage
 {
     /**
@@ -78,6 +79,9 @@ class ApiUsage
         $this->action = & $action;
         $this->addHidden("api", "api file to use");
         $this->addOption('userid', "user system id to execute function - default is (admin)", array() , 1);
+        /*TODO: Adding add empty*/
+        //$this->addOption('help', "Show usage", array() , 1);
+        
     }
     /**
      * add textual definition of program
@@ -201,6 +205,9 @@ class ApiUsage
             } else {
                 $error.= $usage;
             }
+            if ($this->action->getArgument("help") == true) {
+                throw new Exception($usage, THROW_EXITHELP);
+            }
             $this->action->exitError($error);
         } else {
             // no usage when use exception mode
@@ -242,6 +249,9 @@ class ApiUsage
     public function verify($useException = false)
     {
         $this->useException = $useException;
+        if ($this->action->getArgument("help") == true) {
+            $this->exitError();
+        }
         foreach ($this->needArgs as $arg) {
             $value = $this->action->getArgument($arg["name"]);
             if ($value == '') {
