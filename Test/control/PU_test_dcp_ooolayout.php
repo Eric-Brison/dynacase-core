@@ -49,10 +49,12 @@ class TestOooLayout extends TestCaseDcpDocument
     }
     /**
      * @dataProvider dataSimpleLayout
+     * @param string $instances
+     * @param string $lname
+     * @param array $templates
      */
-    public function testSimpleLayout($family, $instances, $lname, $templates)
+    public function testSimpleLayout($instances, $lname, array $templates)
     {
-        //$this->importDocument($family);
         $df = new_doc(self::$dbaccess, "TST_OOOLAYOUT");
         $this->assertTrue($df->isAlive() , "family TST_OOOLAYOUT is not alive");
         $this->importDocument($instances);
@@ -73,7 +75,6 @@ class TestOooLayout extends TestCaseDcpDocument
     {
         return array(
             array(
-                "PU_data_dcp_oooLayout.ods",
                 "PU_dcp_data_simpleOooLayout.xml",
                 "TST_SIMPLEODT",
                 array(
@@ -88,7 +89,6 @@ class TestOooLayout extends TestCaseDcpDocument
             ) ,
             
             array(
-                "PU_data_dcp_oooLayout.ods",
                 "PU_dcp_data_multipleOooLayout.xml",
                 "TST_MULTIPLEODT",
                 array(
@@ -96,7 +96,6 @@ class TestOooLayout extends TestCaseDcpDocument
                 )
             ) ,
             array(
-                "PU_data_dcp_oooLayout.ods",
                 "PU_dcp_data_simpleOooLayout.xml",
                 "TST_TABLEODT",
                 array(
@@ -105,7 +104,6 @@ class TestOooLayout extends TestCaseDcpDocument
                 )
             ) ,
             array(
-                "PU_data_dcp_oooLayout.ods",
                 "PU_dcp_data_simpleOooLayout.xml",
                 "TST_PUCEODT",
                 array(
