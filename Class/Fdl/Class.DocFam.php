@@ -240,6 +240,9 @@ create unique index idx_idfam on docfam(id);";
     {
         // -----------------------------------
         global $action;
+        //Checking if document has acls
+        simpleQuery($this->dbaccess, "SELECT count(*) FROM docperm WHERE docid=" . $this->id, $nb_acl, true, true);
+        $this->lay->set("hasAcl", ($nb_acl != "0"));
         
         $this->lay->set("modifyacl", ($this->control("modifyacl") == ""));
         $this->lay->set("canInitProfil", $action->HasPermission("FREEDOM_ADMIN", "FREEDOM"));

@@ -46,7 +46,7 @@ li.warning {
 [ENDIF profid]
 [IFNOT profid]<li class="warning" title="[TEXT:No acl for family]">
 [IF canInitProfil]
-  <a  target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&docid=[id]&profid=[id]">[TEXT:Initialize acls]</a> <a style="display:none" target="_self" href="[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&id=[id]">[TEXT: Choose an existing family profil]</a> 
+  <a  target="_self" href="[CORE_STANDURL]app=FREEDOM&action=MODPROF&docid=[id]&profid=[id]">[IF hasAcl][TEXT:Activate acls][ENDIF hasAcl][IFNOT hasAcl][TEXT:Initialize acls][ENDIF hasAcl]</a> <a style="display:none" target="_self" href="[CORE_STANDURL]&app=FREEDOM&action=EDITPROF&id=[id]">[TEXT: Choose an existing family profil]</a>
 [ENDIF canInitProfil]
 [IFNOT canInitProfil]
     [TEXT:Not enough access to define privileges]

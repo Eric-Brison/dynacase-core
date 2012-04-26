@@ -820,6 +820,7 @@ create unique index i_docir on doc(initid, revision);";
     {
         $this->hasChanged = true;
     }
+    
     function isChanged()
     {
         return ($this->hasChanged === true);
@@ -1407,7 +1408,7 @@ create unique index i_docir on doc(initid, revision);";
         include_once ("FDL/Lib.Dir.php");
         // --------------------------------------------------------------------
         $filter[] = "doctype!='T'";
-        if ($this->initid > 0) $filter[] = sprintf("initid != %d",  $this->initid ); // not itself
+        if ($this->initid > 0) $filter[] = sprintf("initid != %d", $this->initid); // not itself
         $filter[] = sprintf("%s=E'%s'", $key1, pg_escape_string($this->getValue($key1)));
         if ($key2 != "") $filter[] = sprintf("%s=E'%s'", $key2, pg_escape_string($this->getValue($key2)));
         $tpers = getChildDoc($this->dbaccess, 0, 0, "ALL", $filter, 1, "LIST", $this->fromid);
@@ -3556,6 +3557,7 @@ create unique index i_docir on doc(initid, revision);";
             if (isset($this->_oldvalue[$attrid])) return $this->_oldvalue[$attrid];
             return false;
         }
+        
         final public function getOldValues()
         {
             if (isset($this->_oldvalue)) return $this->_oldvalue;
@@ -5221,6 +5223,7 @@ create unique index i_docir on doc(initid, revision);";
             if ($v == "") return $v;
             return $this->getOooValue($this->getAttribute($attrid) , $v, $target, $htmllink, $index);
         }
+        
         final public function getOooValue($oattr, $value, $target = "_self", $htmllink = false, $index = - 1)
         {
             
@@ -6104,7 +6107,7 @@ create unique index i_docir on doc(initid, revision);";
                             
                             $this->lay->Set("profile", $this->getDocAnchor(abs($this->profid) , '_blank', true, _("specific control") , false, 'latest', true));
                         } else {
-                            $this->lay->Set("profile", $this->getDocAnchor(abs($this->dprofid) , '_blank', true, _("dynamic control") , false, 'latest', true));
+                            $this->lay->Set("profile", $this->getDocAnchor(abs($this->dprofid) , '_blank', true, _("dynamic control") . " (" . $this->getHTMLTitle(abs($this->dprofid)) . ")", false, 'latest', true));
                         }
                     }
                 }
