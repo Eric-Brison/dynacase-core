@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-13 11:02+0200\n"
-"PO-Revision-Date: 2012-04-13 14:33+0200\n"
+"POT-Creation-Date: 2012-04-27 12:12+0200\n"
+"PO-Revision-Date: 2012-04-27 12:14+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1059,9 +1059,6 @@ msgstr ""
 msgid "Changes will be loosed if you continue"
 msgstr "Les modifications seront perdues si vous continuez"
 
-msgid "Character length set to generate a user password"
-msgstr ""
-
 msgid "Characteristic"
 msgstr "Caractéristiques"
 
@@ -1171,6 +1168,9 @@ msgstr ""
 
 msgid "Common functions"
 msgstr "Fonctions communes"
+
+msgid "Complete (cluster)"
+msgstr "Avec les traitements (cadre)"
 
 msgid "Complete view"
 msgstr "Vue complète"
@@ -2337,10 +2337,9 @@ msgid "MB_To"
 msgstr "À"
 
 msgid "Mail template document reference to ask new password"
-msgstr "Référence du modèle de mail utilisé pour la demande de changement de mot de passe"
-
-msgid "Mail template document reference to receive new password"
 msgstr ""
+"Référence du modèle de mail utilisé pour la demande de changement de mot de "
+"passe"
 
 msgid "Make references ..."
 msgstr "Fabrication des références ..."
@@ -3917,6 +3916,10 @@ msgstr ""
 msgid "actions"
 msgstr "les actions"
 
+#, c-format
+msgid "activity for %s"
+msgstr "Activité pour %s"
+
 msgid "add"
 msgstr "ajout"
 
@@ -5428,12 +5431,6 @@ msgstr "contrôle dynamique"
 
 msgid "dynlabel"
 msgstr ""
-
-msgid "e1"
-msgstr "e1"
-
-msgid "e2"
-msgstr "e2"
 
 msgid "edit"
 msgstr "Modifier"
@@ -7964,12 +7961,6 @@ msgstr "feuille de style"
 msgid "styles parameters"
 msgstr "paramètres de style"
 
-msgid "subject for new password request"
-msgstr "Le sujet du mail pour les demandes de mot de passe"
-
-msgid "subject for new password response"
-msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
-
 msgid "submenu"
 msgstr "sous-menu"
 
@@ -9248,6 +9239,12 @@ msgstr "le titre de {left} inclus {right}"
 #~ "glisser/déposer pour déplacer. Utiliser ctrl-&uarr; &darr; pour monter/"
 #~ "descendre"
 
+#~ msgid "e1"
+#~ msgstr "e1"
+
+#~ msgid "e2"
+#~ msgstr "e2"
+
 #~ msgid "edit by object"
 #~ msgstr "édition par objet"
 
@@ -9489,6 +9486,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "society"
 #~ msgstr "société"
+
+#~ msgid "subject for new password request"
+#~ msgstr "Le sujet du mail pour les demandes de mot de passe"
+
+#~ msgid "subject for new password response"
+#~ msgstr "Le sujet du mail pour les réponses aux demandes de mot de passe"
 
 #~ msgid "submitreqpasswd_mail_callbackurl"
 #~ msgstr ""

@@ -58,7 +58,7 @@ function view_workflow_graph(&$action)
         $action->lay->template = _("no cycle defined");
     } else {
         
-        $cmd.= sprintf("--api=wdoc_graphviz --size=%d --ratio=%s --type=%s --orient=%s --docid=%d", $size, escapeshellarg($ratio) , escapeshellarg($type) , escapeshellarg($orient) , $doc->id);
+        $cmd.= sprintf("--api=wdoc_graphviz --size=%s --ratio=%s --type=%s --orient=%s --docid=%d", $size, escapeshellarg($ratio) , escapeshellarg($type) , escapeshellarg($orient) , $doc->id);
         $svgfile = "img-cache/w$type-" . $action->getParam("CORE_LANG") . "-" . $doc->id . ".$format";
         if ($format == "dot") $svgfile.= ".txt"; // conflict with document template
         $dest = DEFAULT_PUBDIR . "/$svgfile";

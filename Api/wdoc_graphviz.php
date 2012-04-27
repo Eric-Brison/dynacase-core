@@ -64,7 +64,7 @@ class DotWorkflow
      */
     public function generate()
     {
-        if (! $this->wdoc) {
+        if (!$this->wdoc) {
             throw new Exception('need workflow');
         }
         $ft = $this->wdoc->firstState;
@@ -73,18 +73,18 @@ class DotWorkflow
             case 'cluster':
             case 'complet':
 
-               $ft = "D";
+                $ft = "D";
                 $this->setActivity();
-                        $this->setStartPoint();
+                $this->setStartPoint();
                 $this->setEndPoint();
                 $this->setTransitionLines();
-                if ($this->type=='cluster') $this->drawCluster();
+                if ($this->type == 'cluster') $this->drawCluster();
                 break;
 
             case 'simple':
                 $this->setStates();
                 $this->setTransitionLines();
-                $this->lines[]=sprintf('%s [shape=doublecircle]', $this->wdoc->firstState);
+                $this->lines[] = sprintf('%s [shape=doublecircle]', $this->wdoc->firstState);
                 break;
 
             case 'activity':
@@ -93,15 +93,15 @@ class DotWorkflow
                 $this->setTransitionLines();
                 break;
         }
-
         $dot = "digraph \"" . $this->wdoc->getTitle() . "\" {
         ratio=\"{$this->ratio}\";
-	rankdir={$this->orient};
+	    rankdir={$this->orient};
         {$this->size}
         bgcolor=\"transparent\";
         {rank=1; \"$ft\";}
-        splines=true;
-	node [shape = circle, style=filled, fixedsize=true,width=1.5,   fontname=sans];\n";
+        splines=true; fontsize={$this->conditionfontsize}; fontname=sans;
+	node [shape = circle, style=filled, fixedsize=true,fontsize={$this->fontsize},fontname=sans];
+	edge [shape = circle, style=filled, fixedsize=true,fontsize={$this->conditionfontsize},fontname=sans];\n";
 
         $dot .= implode($this->lines, "\n");
         $dot .= "\n}";
@@ -128,38 +128,39 @@ class DotWorkflow
         }
     }
 
-/**
- * search attach point to activity
- * the node which are branch to activity
- * @param $startPoint
- * @param $end
- */
-    private function  setAttachStart($startPoint, $end)
+    /**
+     * search attach point to activity
+     * the node which are branch to activity
+     * @param $startPoint
+     * @param $end
+     */
+    private function  setAttachStart($startPoint, $end, $limitIndex=-1)
     {
+        $transitionLink=array();
         foreach ($this->wdoc->cycle as $k => $v) {
             if ($v["e2"] == $startPoint) {
                 $t = $this->wdoc->transitions[$v["t"]];
                 if ($t["m3"]) $start = "m3" . $k;
                 else {
-                        $tmids = $this->wdoc->getTransitionTimers($v["t"]);
-                    if ($tmids) $start = "tm".$k;
+                    $tmids = $this->wdoc->getTransitionTimers($v["t"]);
+                    if ($tmids) $start = "tm" . $k;
                     else {
                         $tmid = $this->wdoc->getStateTimers($v["e2"]);
 
-                        if ($tmid) $start = "tmf".$k;
+                        if ($tmid) $start = "tmf" . $k;
                         else {
                             $tmid = $this->wdoc->getTransitionMailTemplates($v["t"]);
 
 
-                            if ($tmid) $start = "mt".$k;
+                            if ($tmid) $start = "mt" . $k;
                             else {
                                 $tmid = $this->wdoc->getStateMailTemplate($v["e2"]);
 
-                                if ($tmid) $start = "mtf".$k;
+                                if ($tmid) $start = "mtf" . $k;
                                 else {
 
                                     if ($t["m2"]) $start = "m2" . $k;
-                                                        else $start = $v["e2"].$k;
+                                    else $start = $v["e2"] . $k;
 
                                 }
 
@@ -169,12 +170,14 @@ class DotWorkflow
                     }
 
                 }
-
+                if ($start&&(($limitIndex==-1) || (!$transitionLink[$v["t"].$v["e2"]]))) {
+                    $transitionLink[$v["t"].$v["e2"]]=true;
                 if (!$this->memoTr[$start][$end]) {
                     $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans, label="%s"];',
                         $start, $end, $this->style['arrow-label-font-color'], $this->style['arrow-color'], "");
 
                     $this->memoTr[$start][$end] = true;
+                }
                 }
             }
         }
@@ -185,22 +188,48 @@ class DotWorkflow
      * @param $e1
      * @param $index
      */
-    private function setTransitionState($e1, $index) {
+    private function setTransitionState($e1, $index)
+    {
         $color = $this->wdoc->getColor($e1);
-                    $saction = $this->getActivity($e1);
-                    $tt = sprintf('label="%s"', $this->_n($e1));
-                    $tt .= ',shape = circle, style=filled, fixedsize=true,width=1.5,   fontname=sans';
-                    if ($saction) $tt .= ', tooltip="' . $this->_n($e1) . '"';
+        $saction = $this->getActivity($e1);
+        $tt = sprintf('label="%s"', $this->_n($e1));
+        $tt .= ',shape = circle, style=filled, fixedsize=true,width=1.5,   fontname=sans';
+        if ($saction) $tt .= ', tooltip="' . $this->_n($e1) . '"';
 
 
-                    if ($color) $tt .= ',fillcolor="' . $color . '"';
+        if ($color) $tt .= ',fillcolor="' . $color . '"';
 
-                    $this->lines[] = '"' . $e1.$index . '" [' . $tt . '];';
+        $this->lines[] = '"' . $e1 . $index . '" [' . $tt . '];';
 
-        $this->clusters[$index][]=$e1.$index;
-        $this->clusterProps[$index]=sprintf('color="%s";label="%s";',$color,$index);
+        $this->clusters[$index][] = $e1 . $index;
+        $this->clusterProps[$index] = sprintf('color="%s";fillcolor="blue:yellow";label="%s";', $color, $index);
 
 
+    }
+
+    private function existsTransition($e1,$e2,$t) {
+        foreach ($this->wdoc->cycle as $k => $v) {
+            if (($v["e1"]==$e1) && ($v["e2"]==$e2) && ($v["t"]==$t)) return true;
+        }
+        return false;
+    }
+    private function linkSameTransition($tr, $index)
+    {
+        foreach ($this->wdoc->cycle as $k => $v) {
+            if (($k < $index) && ($v["e2"] == $tr["e2"]) && ($v["t"] == $tr["t"])) {
+                $e2 = $v["e2"] . $k;
+                $t = $this->wdoc->transitions[$tr["t"]];
+                if ($t["m0"]) $e2 = "m0" . $k;
+                elseif ($t["m0"]) $e2 = "m1" . $k;
+                $e1 = $this->getActivity($tr["e1"]);
+                if ($this->existsTransition($tr["e2"],$tr["e1"],$tr["t"])) continue;
+
+                $this->lines[] = sprintf('"%s" -> "%s" [labelfontsize=6,color="%s" ,labelfontname=sans, label="%s"];', $e1, $e2, $this->style['arrow-color'],
+$this->_n($tr["t"]));
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -222,6 +251,11 @@ class DotWorkflow
         $act = $this->getActivity($e1);
 
 
+        if ($this->linkSameTransition($tr, $index)) {
+
+               $this->setAttachStart($e1, $act);
+            return;
+        }
 
         $this->setTransitionState($e2, $index);
         $this->setM0M3($t, $index);
@@ -237,7 +271,6 @@ class DotWorkflow
 
             $e1 = $act;
         }
-
 
 
         if ($ask) {
@@ -271,7 +304,7 @@ class DotWorkflow
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",  labelfontname=sans, label="%s"];', $e1, $mi, $this->style['arrow-label-font-color'], $this->style['arrow-color'], _($tr["t"]));
             $e1 = $mi;
         }
-        $e2p=$e2.$index;
+        $e2p = $e2 . $index;
         if (!$this->memoTr[$e1][$e2p]) {
 
             if (!$startedPoint) {
@@ -284,7 +317,7 @@ class DotWorkflow
                 $this->style['arrow-color'], $tmain, _($tr["t"]));
             $this->memoTr[$e1][$e2p] = true;
         }
-        $e2=$e2p;
+        $e2 = $e2p;
         if ($m2) {
             $mi = "m2" . $index;
             $this->lines[] = '#M2';
@@ -303,47 +336,51 @@ class DotWorkflow
         }
 
     }
-/**
- * declare end state and add red node to see it
- */
-    private function setEndPoint() {
 
-        $end=$start=array();
-        foreach ($this->wdoc->cycle as $k=>$t) {
-            $start[]=$t["e1"];
-            $end[]=$t["e2"];
+    /**
+     * declare end state and add red node to see it
+     */
+    private function setEndPoint()
+    {
+
+        $end = $start = array();
+        foreach ($this->wdoc->cycle as $k => $t) {
+            $start[] = $t["e1"];
+            $end[] = $t["e2"];
         }
-        $end=array_unique($end);
-        $start=array_unique($start);
-        $endState=array_diff(($end),($start));
+        $end = array_unique($end);
+        $start = array_unique($start);
+        $endState = array_diff(($end), ($start));
         //print_r2($endState);
-        $see=array();
-        $ends=array();
+        $see = array();
+        $ends = array();
         foreach ($endState as $e) {
-            foreach ($this->wdoc->cycle as $k=>$t) {
-                if ($t["e2"]==$e && (! $see[$e])) {
-            $end='E'.$e.$k;
-            $this->lines[] = '"' .  $end. '" [shape = square,style=filled, width=0.3,label="", fixedsize=true,fontname=sans,color="' . $this->style['end-color'] . '"];';
-    $see[$e]=true;
+            foreach ($this->wdoc->cycle as $k => $t) {
+                if ($t["e2"] == $e && (!$see[$e]) && (!$see[$t["t"] . $t["e2"]])) {
+                    $end = 'E' . $e . $k;
+                    $this->lines[] = '"' . $end . '" [shape = square,style=filled, width=0.3,label="", fixedsize=true,fontname=sans,color="' . $this->style['end-color'] . '"];';
+                    $see[$e] = true;
+                    $see[$t["t"] . $t["e2"]] = true;
 
-                    $ends[]=$end;
-                $this->setAttachStart($t["e2"],$end);
-
-        }
+                    $ends[] = $end;
+                    $this->setAttachStart($t["e2"], $end, $k);
+                }
             }
         }
-        if (count($ends)>0) {
-           // $this->lines[] = sprintf('{rank=max; %s}', implode(',',$ends));
+        if (count($ends) > 0) {
+            // $this->lines[] = sprintf('{rank=max; %s}', implode(',',$ends));
         }
     }
-/**
- * draw cluster around transition
- */
-    private function drawCluster() {
+
+    /**
+     * draw cluster around transition
+     */
+    private function drawCluster()
+    {
         foreach ($this->clusters as $kc => $aCluster) {
             $sCluster = sprintf('subgraph cluster_%d {
-        		style=rounded;
-        		%s', $kc, $this->clusterProps[$kc],$kc);
+        		style="rounded"; %s label="%s"',
+                $kc, $this->clusterProps[$kc], $kc);
             $sCluster .= '"' . implode('";"', $aCluster) . '"';
             $sCluster .= '}';
             $this->lines[] = $sCluster;
@@ -353,80 +390,81 @@ class DotWorkflow
     /**
      * define starting of workflow
      */
-    private function setStartPoint() {
+    private function setStartPoint()
+    {
 
         $aid = strtolower($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState);
-            $tm = $this->wdoc->getTValue($aid);
-            $aid = strtolower($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState);
-            $mt = $this->wdoc->getTValue($aid);
-            $e1 = "D";
+        $tm = $this->wdoc->getTValue($aid);
+        $aid = strtolower($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState);
+        $mt = $this->wdoc->getTValue($aid);
+        $e1 = "D";
 
-                $this->lines[] = '"' .  $e1. '" [shape = point,style=filled, width=0.3, fixedsize=true,fontname=sans,color="' . $this->style['start-color'] . '"];';
-                ;
+        $this->lines[] = '"' . $e1 . '" [shape = point,style=filled, width=0.3, fixedsize=true,fontname=sans,color="' . $this->style['start-color'] . '"];';
+        ;
 
-            $e2='D'.$this->wdoc->firstState;
-            $this->lines[] = sprintf('"%s" [label="%s",shape = doublecircle,style=filled, width=1.5, fixedsize=true,fontname=sans,color="%s"];',$e2,$this->_n($this->wdoc->firstState),$this->wdoc->getColor($this->wdoc->firstState));
-            $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];',  $e1,  $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-            $e1=$e2;
+        $e2 = 'D' . $this->wdoc->firstState;
+        $this->lines[] = sprintf('"%s" [label="%s",shape = doublecircle, style=filled, width=1.5, fixedsize=true,fontname=sans,fillcolor="%s"];', $e2, $this->_n($this->wdoc->firstState), $this->wdoc->getColor($this->wdoc->firstState));
+        $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+        $e1 = $e2;
 
-            if (count($tm) > 0) {
-                $e2 = 'tmfirst';
+        if (count($tm) > 0) {
+            $e2 = 'tmfirst';
 
-                $tmlabel = str_replace(array(
-                    "\n",
-                    '<BR>'
-                ), "\\n", $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState), $this->wdoc->_array2val($tm), '_self', false));
-                $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
-                $this->lines[] = '"' . str_replace(" ", "\\n", $e2) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=octagon,color="' . $this->style['timer-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
-                $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];',  $e1,  $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-                $e1 = $e2;
-            }
-            if (count($mt) > 0) {
-                $e2 = 'mtfirst';
-                $tmlabel = str_replace(array(
-                    "\n",
-                    '<BR>'
-                ), "\\n", $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState), $this->wdoc->_array2val($mt), '_self', false));
-                $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
-                $this->lines[] = '"' .  $e2 . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=house,color="' . $this->style['mail-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
-                $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-                $e1 = $e2;
-            }
+            $tmlabel = str_replace(array(
+                "\n",' ',
+                '<BR>'
+            ), array("\\n,","\\n",",\\n"), $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TMID" . $this->wdoc->firstState), $this->wdoc->_array2val($tm), '_self', false));
+            $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
+            $this->lines[] = '"' . str_replace(" ", "\\n", $e2) . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=octagon,color="' . $this->style['timer-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
+            $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+            $e1 = $e2;
+        }
+        if (count($mt) > 0) {
+            $e2 = 'mtfirst';
+            $tmlabel = str_replace(array(
+                "\n",' ',
+                '<BR>'
+            ), array("\\n,","\\n",",\\n"), $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $this->wdoc->firstState), $this->wdoc->_array2val($mt), '_self', false));
+            $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
+            $this->lines[] = '"' . $e2 . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,shape=house,color="' . $this->style['mail-color'] . '", fontsize=' . $this->conditionfontsize . $timgt . ' ];';
+            $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+            $e1 = $e2;
+        }
 
-            if ($e1 != 'D') {
-                //attach to first state
-                $e2 = $this->getActivity($this->wdoc->firstState);
-                $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];',  $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-            }
+        if ($e1 != 'D') {
+            //attach to first state
+            $e2 = $this->getActivity($this->wdoc->firstState);
+            $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
+        }
     }
-/**
- * define mail node
- * @param string $e2 state
- * @param array $t transition
- * @param int $index index
- * @return string new node id
- */
+
+    /**
+     * define mail node
+     * @param string $e2 state
+     * @param array $t transition
+     * @param int $index index
+     * @return string new node id
+     */
     private function setTransitionMail($e2, $t, $index)
     {
         $ttrans = array();
-        $tm = $this->wdoc->getValue($this->wdoc->attrPrefix . "_TRANS_TMID" . $t["t"]);
+        $tm = $this->wdoc->getStateMailTemplate($t["t"]);
         if ($tm) $ttrans[] = $tm;
-        $ttrans = array_merge($ttrans, $this->wdoc->getTValue($this->wdoc->attrPrefix . "_TRANS_PA_TMID" . $t["t"]));
-        $mtrans = $this->wdoc->getTValue($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]);
+        $mtrans = $this->wdoc->getTransitionMailTemplates( $t["t"]);
 
         if (count($mtrans) > 0) {
             $ex = 'mt' . $index;
             $tmlabel = "mail";
 
             $tmlabel = str_replace(array(
-                "\n",
-                '<BR>'
-            ), "\\n", $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]), $this->wdoc->_array2val($mtrans), '_self', false));
+                "\n",' ',
+                '<BR>',
+            ), array("\\n,","\\n",",\\n"), $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]), $this->wdoc->_array2val($mtrans), '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
 
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false, tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false,color="%s",labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-            $this->clusters[$index][]=$ex;
+            $this->clusters[$index][] = $ex;
             $e2 = $ex;
         }
 
@@ -442,25 +480,25 @@ class DotWorkflow
      */
     private function setStateMail($e2, $t, $index)
     {
-        $aid = strtolower($this->wdoc->attrPrefix . "_MTID" . $t["e2"]);
-        $mt = $this->wdoc->getTValue($aid);
+        $mt = $this->wdoc->getStateMailTemplate($t["e2"]);
         if (count($mt) > 0) {
             $ex = 'mtf' . $index;
 
             $tmlabel = str_replace(array(
-                "\n",
+                "\n",' ',
                 '<BR>'
-            ), "\\n", $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]), $this->wdoc->_array2val($mt), '_self', false));
+            ), array("\\n,","\\n",",\\n"), $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]), $this->wdoc->_array2val($mt), '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/tmail.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="mail",style=bold,shape=house,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
 
-            $this->clusters[$index][]=$ex;
+            $this->clusters[$index][] = $ex;
             $e2 = $ex;
         }
 
         return $e2;
     }
+
     /**
      * define timer node
      * @param string $e2 state
@@ -476,18 +514,19 @@ class DotWorkflow
             $ex = 'tmf' . $index;
 
             $tmlabel = str_replace(array(
-                "\n",
+                "\n",' ',
                 '<BR>'
-            ), "\\n", $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]), $this->wdoc->_array2val($mt), '_self', false));
+            ), array("\\n,","\\n",",\\n"), $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_MTID" . $t["e2"]), $this->wdoc->_array2val($mt), '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,tooltip="timer",style=bold,shape=octagon,color="' . $this->style['mail-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-            $this->clusters[$index][]=$ex;
+            $this->clusters[$index][] = $ex;
             $e2 = $ex;
         }
 
         return $e2;
     }
+
     /**
      * define timer node
      * @param string $e2 state
@@ -506,13 +545,13 @@ class DotWorkflow
             $ex = 'tm' . $index;
             $tmlabel = "tumer";
             $tmlabel = str_replace(array(
-                "\n",
+                "\n",' ',
                 '<BR>'
-            ), "\\n", $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]), $this->wdoc->_array2val($ttrans), '_self', false));
+            ), array("\\n,","\\n",",\\n"), $this->wdoc->getHtmlValue($this->wdoc->getAttribute($this->wdoc->attrPrefix . "_TRANS_MTID" . $t["t"]), $this->wdoc->_array2val($ttrans), '_self', false));
             $timgt = ' image="' . DEFAULT_PUBDIR . '/Images/timer.png"';
             $this->lines[] = '"' . $ex . '" [ label="' . $tmlabel . '",fixedsize=false,style=bold,tooltip="timer",shape=octagon,color="' . $this->style['timer-color'] . '"' . $timgt . ' ];';
             $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s",labelfontname=sans];', $e2, $ex, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
-            $this->clusters[$index][]=$ex;
+            $this->clusters[$index][] = $ex;
             $e2 = $ex;
         }
 
@@ -535,13 +574,15 @@ class DotWorkflow
             $this->style['arrow-color'], $tmain, _($tr["t"]));
     }
 
-    private function getActivity($e) {
-        $act=$this->wdoc->getActivity($e);
-        if (! $act) {
-            return sprintf(_("activity for %s"),_($e));
+    private function getActivity($e)
+    {
+        $act = $this->wdoc->getActivity($e);
+        if (!$act) {
+            return sprintf(_("activity for %s"), _($e));
         }
         return $act;
     }
+
     private function setActivityTransitionLine($index, $tr)
     {
         $this->lines[] = sprintf('# activity %d %s %s->%s', $index, $tr["t"], $tr["e1"], $tr["e2"]);
@@ -597,9 +638,9 @@ class DotWorkflow
             $color = $this->wdoc->getColor($v);
             $sact = $this->getActivity($v);
             if (!$sact) {
-                 //$sact = "activity $v";
+                //$sact = "activity $v";
             }
-            if ($this->wdoc->getActivity($v) || (! $this->isEndState($v))) {
+            if ($this->wdoc->getActivity($v) || (!$this->isEndState($v))) {
                 $tt = 'shape = box, style=filled, fixedsize=false,width=1.5,   fontname=sans';
                 if ($sact) $tt .= sprintf(',label="%s"', $this->_n($sact));
 
@@ -611,50 +652,53 @@ class DotWorkflow
         }
     }
 
-    private function isEndState($e) {
+    private function isEndState($e)
+    {
         foreach ($this->wdoc->cycle as $t) {
-            if ($t["e1"]==$e) return false;
+            if ($t["e1"] == $e) return false;
         }
         return true;
     }
+
     private function setM0M3($tr, $k)
     {
 
+        $tt=sprintf('fixedsize=false,fontsize="%s"',$this->conditionfontsize);
         if ($tr["m0"]) {
             $mi = "m0" . $k;
-            $this->lines[] = sprintf('"%s" [label="%s", fixedsize=false,shape=Mdiamond,tooltip="m0",color="%s"];',
-                $mi, $this->_n($tr["m0"]), $this->style['condition-color0']);
+            $this->lines[] = sprintf('"%s" [%s,label="%s",  shape=Mdiamond,tooltip="m0",color="%s"];',
+                $mi,$tt, $this->_n($tr["m0"]), $this->style['condition-color0']);
 
-            $this->clusters[$k][]=$mi;
+            $this->clusters[$k][] = $mi;
         }
         if ($tr["m1"]) {
             $mi = "m1" . $k;
-            $this->lines[] = sprintf('"%s" [label="%s", fixedsize=false,tooltip="m1",shape=diamond,color="%s"];',
-                $mi, $this->_n($tr["m1"]), $this->style['condition-color1']);
-            $this->clusters[$k][]=$mi;
+            $this->lines[] = sprintf('"%s" [%s,label="%s", tooltip="m1",shape=diamond,color="%s"];',
+                $mi,$tt, $this->_n($tr["m1"]), $this->style['condition-color1']);
+            $this->clusters[$k][] = $mi;
         }
         if ($tr["m2"]) {
             $mi = "m2" . $k;
-            $this->lines[] = sprintf('"%s" [label="%s", fixedsize=false,tooltip="m2",shape=box,color="%s"];',
-                $mi, $this->_n($tr["m2"]), $this->style['action-color2']);
-            $this->clusters[$k][]=$mi;
+            $this->lines[] = sprintf('"%s" [%s,label="%s",tooltip="m2",shape=box,color="%s"];',
+               $mi,  $tt,$this->_n($tr["m2"]), $this->style['action-color2']);
+            $this->clusters[$k][] = $mi;
         }
         if ($tr["m3"]) {
             $mi = "m3" . $k;
-            $this->lines[] = sprintf('"%s" [label="%s", fixedsize=false,tooltip="m3",shape=box,color="%s"];',
-                $mi, $this->_n($tr["m3"]), $this->style['action-color3']);
-            $this->clusters[$k][]=$mi;
+            $this->lines[] = sprintf('"%s" [%s,label="%s",tooltip="m3",shape=box,color="%s"];',
+               $mi,  $tt,$this->_n($tr["m3"]), $this->style['action-color3']);
+            $this->clusters[$k][] = $mi;
         }
         if ($tr["ask"] && count($tr["ask"]) > 0) {
             $mi = "ask" . $k;
             $askLabel = array();
             foreach ($tr["ask"] as $aAsk) {
                 $oa = $this->wdoc->getAttribute($aAsk);
-                if ($oa) $askLabel []= $oa->getLabel();
+                if ($oa) $askLabel [] = $oa->getLabel();
             }
-            $this->lines[] = sprintf('"%s" [label="%s", style="rounded",tooltip="ask",fixedsize=false,shape=egg,color="%s", image="%s"];',
-                $mi, implode('\\n',$askLabel), $this->style['ask-color'], DEFAULT_PUBDIR . '/Images/wask.png');
-            $this->clusters[$k][]=$mi;
+            $this->lines[] = sprintf('"%s" [%s,label="%s", style="rounded",tooltip="ask",shape=egg,color="%s", image="%s"];',
+                $mi, $tt,implode('\\n', $askLabel), $this->style['ask-color'], DEFAULT_PUBDIR . '/Images/wask.png');
+            $this->clusters[$k][] = $mi;
         }
 
 
@@ -692,12 +736,13 @@ class DotWorkflow
         if ($isize == "auto") $this->size = "";
         else {
             if ($isize == "A4") {
+                $this->fontsize=20;
                 $this->size = "size=\"7.6,11!\";"; // A4 whith 1.5cm margin
 
             } else {
                 if (preg_match("/([0-9\.]+),([0-9\.]+)/", $isize, $reg)) {
-
-                    $this->fontsize = intval(min($reg[1], $reg[2]) / 2);
+                    $this->fontsize = intval(min($reg[1], $reg[2]) / 1);
+                     $this->fontsize = 16;
                     $this->size = sprintf("size=\"%.2f,%.2f!\";", floatval($reg[1]) / 2.55, floatval($reg[2]) / 2.55);
                 } else {
                     $isize = sprintf("%.2f", floatval($isize) / 2.55);
