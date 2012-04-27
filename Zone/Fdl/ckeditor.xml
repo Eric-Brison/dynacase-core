@@ -1,0 +1,12 @@
+
+<textarea id="[aid]" name="[aname]" type="htmltext" onchange="fck_setData_[aid](this)">[Value]</textarea>
+
+[IFNOT isInDuplicableTableLine]
+<script type="text/javascript">
+	addEvent(window,'load', function()
+		{
+			window.htmlText.initEditor("[aid]");
+		}
+	);
+</script>
+[ENDIF isInDuplicableTableLine]

@@ -20,7 +20,8 @@ function alleditjs(Action & $action)
 {
     $jurl = "WHAT/Layout";
     $statics = array(
-        "fckeditor/fckeditor.js",
+        "FDL/Layout/ckeditorStaticEnvVar.js",
+        "ckeditor/ckeditor.js",
         "$jurl/subwindow.js",
         "$jurl/geometry.js",
         "$jurl/AnchorPosition.js",
@@ -54,6 +55,7 @@ function alleditjs(Action & $action)
         "FDL/Layout/editidoc.js",
         "FDL/Layout/enum_choice.js",
         "FDL/Layout/viewdoc.js",
+        "FDL/Layout/edithtmltext.js"
     );
     
     viewdocjs($action);
