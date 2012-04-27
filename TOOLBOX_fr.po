@@ -2477,6 +2477,9 @@ msgstr "Déplacer le fichier depuis %s vers %s"
 msgid "Move reference"
 msgstr "Déplacer la référence"
 
+msgid "My user account id"
+msgstr "Identifiant de mon compte utilisateur"
+
 msgid "N"
 msgstr "N"
 
@@ -5985,9 +5988,6 @@ msgstr "fonction '%s' déclaré dans le %s est introuvable"
 msgid "function [%s] not exists"
 msgstr "la fonction [%s] n'existe pas"
 
-msgid "function examples"
-msgstr "exemples de fonctions"
-
 msgid "fusers list window"
 msgstr "fuser fenetre liste"
 
@@ -6058,6 +6058,9 @@ msgstr "récupération du menu de famille"
 
 msgid "get preferences"
 msgstr "récupération des préférences"
+
+msgid "get search methods"
+msgstr "récupération des méthodes de recherche"
 
 msgid "get value for an attribute of document"
 msgstr ""
@@ -6625,12 +6628,6 @@ msgstr "site de Mozilla"
 
 msgid "multiple document"
 msgstr ""
-
-msgid "my id"
-msgstr "mon identificateur"
-
-msgid "my last name"
-msgstr "mon nom de famille"
 
 msgid "my parameters"
 msgstr "mes paramètres"
@@ -7733,6 +7730,9 @@ msgstr "recherche dans les familles héritées par famille"
 #, c-format
 msgid "search join syntax error : %s"
 msgstr ""
+
+msgid "search methods"
+msgstr "Méthodes de recherche"
 
 msgid "search mode"
 msgstr "mode de recherche"
@@ -9058,6 +9058,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ "La méthode %s::%s() ne contient pas @templateController dans son "
 #~ "commentaire "
 
+#~ msgid "My firstname and lastname"
+#~ msgstr "Mon prénom et mon nom"
+
 #~ msgid "No identificator found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
 
@@ -9087,6 +9090,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
+
+#~ msgid "Today's date"
+#~ msgstr "Aujourd'hui"
 
 #~ msgid ""
 #~ "Too many members to display there here (%d). Use Open menu to display "
@@ -9403,6 +9409,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "fullname"
 #~ msgstr "Utilisateur"
 
+#~ msgid "function examples"
+#~ msgstr "exemples de fonctions"
+
 #~ msgid "group"
 #~ msgstr "Groupe"
 
@@ -9438,6 +9447,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "my favorites"
 #~ msgstr "Mes préférés..."
+
+#~ msgid "my id"
+#~ msgstr "mon identificateur"
+
+#~ msgid "my last name"
+#~ msgstr "mon nom de famille"
 
 #~ msgid "no import file specified"
 #~ msgstr "pas de fichier d'import spécifié"

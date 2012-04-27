@@ -526,11 +526,18 @@ class _DSEARCH extends DocSearch
                     if ((count($taid) > 1) || ($taid[0] != "")) {
                         // special loop for revdate
                         foreach ($tkey as $k => $v) {
-                            if (strtolower(substr($v, 0, 5)) == "::get") { // only get method allowed
+                            // Does it looks like a method name?
+                            $methodName = $this->getMethodName($v);
+                            if ($methodName != '') {
                                 // it's method call
                                 $workdoc = $this->getSearchFamilyDocument();
-                                if ($workdoc) $rv = $workdoc->ApplyMethod($v);
-                                else $rv = $this->ApplyMethod($v);
+                                if (!$workdoc) {
+                                    $workdoc = $this;
+                                }
+                                if (!$workdoc->isValidSearchMethod($workdoc, $methodName)) {
+                                    return 'false';
+                                }
+                                $rv = $workdoc->ApplyMethod($v);
                                 $tkey[$k] = $rv;
                             }
                             if (substr($v, 0, 1) == "?") {
@@ -819,9 +826,9 @@ class _DSEARCH extends DocSearch
                     $dirid = GetHttpVars("dirid");
                     $this->lay->set("ACTION", $action->name);
                     $tclassdoc = array();
+                    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FDL/Layout/edittable.js");
                     $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/FREEDOM/Layout/editdsearch.js");
-                    $action->parent->AddJsRef($action->GetParam("CORE_PUBURL") . "/lib/jquery/jquery.js");
                     
                     if ($dirid > 0) {
                         /**
@@ -949,6 +956,7 @@ class _DSEARCH extends DocSearch
                     }
                     
                     $fdoc = new_Doc($this->dbaccess, abs($famid));
+                    $tmpDoc = createTmpDoc($this->dbaccess, abs($famid));
                     $zpi = $fdoc->GetNormalAttributes();
                     $lastSet = array();
                     foreach ($zpi as $k => $v) {
@@ -1181,11 +1189,27 @@ class _DSEARCH extends DocSearch
                                 $tcond[$k]["DOCID_AID"] = $docid_aid;
                                 $tcond[$k]["DOCID_TITLE"] = $this->getTitle($v);
                                 $tcond[$k]["FAMID"] = abs($famid);
+                                $tcond[$k]["ISSEARCHMETHOD"] = false;
                             } else {
                                 $tcond[$k]["ISDOCID"] = false;
                                 $tcond[$k]["DOCID_AID"] = 0;
                                 $tcond[$k]["DOCID_TITLE"] = '';
                                 $tcond[$k]["FAMID"] = abs($famid);
+
+                                $attrType = $oa->type;
+                                if ($oa->format != '') {
+                                    // Recompose full attr spec: <attrType>("<format>")
+                                    $attrType = sprintf('%s("%s")', $attrType, $oa->format);
+                                }
+                                $methods = $tmpDoc->getSearchMethods($oa->id, $attrType);
+                                $isSearchMethod = false;
+                                foreach ($methods as $method) {
+                                    if ($method['method'] == $v) {
+                                        $isSearchMethod = true;
+                                        break;
+                                    }
+                                }
+                                $tcond[$k]["ISSEARCHMETHOD"] = $isSearchMethod;
                             }
                         }
                     }
@@ -1239,6 +1263,17 @@ class _DSEARCH extends DocSearch
                         }
                     }
                     return $tset;
+                }
+                
+                private function getMethodName($methodStr)
+                {
+                    $parseMethod = new parseFamilyMethod();
+                    $parseMethod->parse($methodStr);
+                    $err = $parseMethod->getError();
+                    if ($err) {
+                        return '';
+                    }
+                    return $parseMethod->methodName;
                 }
                 /**
                  * @begin-method-ignore

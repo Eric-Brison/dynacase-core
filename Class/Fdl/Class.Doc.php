@@ -7248,9 +7248,14 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * return the today date with european format DD/MM/YYYY
+             *
+             * @searchLabel today
+             * @searchType date
+             * @searchType timestamp
+             *
              * @param int $daydelta to have the current date more or less day (-1 means yesterday, 1 tomorrow)
-             * @param int $dayhour hours of day
-             * @param int $daymin minutes of day
+             * @param int|string $dayhour hours of day
+             * @param int|string $daymin minutes of day
              * @param bool $getlocale whether to return locale date or not
              * @return string YYYY-MM-DD or DD/MM/YYYY (depend of CORE_LCDATE parameter) or locale dateDD/MM/YYYY or locale date
              */
@@ -7361,6 +7366,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * return the user last name
+             *
              * @param bool $withfirst if true compose first below last name
              * @return string
              */
@@ -7372,6 +7378,7 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * return the personn doc id conform to firstname & lastname of the user
+             *
              * @return int
              */
             public static function userDocId()
@@ -7382,6 +7389,10 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * alias for @see Doc:userDocId
+             * @searchLabel My user account id
+             * @searchType account
+             * @searchType docid("IUSER")
+             *
              * @return int
              */
             public static function getUserId()
@@ -7402,6 +7413,8 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * return system user id
+             * @searchLabel My system user id
+             * @searchType uid
              * @return int
              */
             public static function getSystemUserId()
@@ -7771,6 +7784,135 @@ create unique index i_docir on doc(initid, revision);";
                     $helpId = $help[0]["id"];
                 }
                 return new_Doc($this->dbaccess, $helpId);
+            }
+            /**
+             * Get the list of compatible search methods for a given attribute type
+             *
+             * @param string $attrId attribute name
+             * @param string $attrType empty string to returns all methods or attribute type (e.g. 'date', 'docid', 'docid("IUSER")', etc.) to restrict search to methods supporting this type
+             * @return array list of array('method' => '::foo()', 'label' => 'Foo Bar Baz')
+             */
+            public function getSearchMethods($attrId, $attrType = '')
+            {
+                include_once ('FDL/Lib.Attr.php');
+                
+                global $action;
+                // Strip format strings for non-docid types
+                $pType = parseType($attrType);
+                if ($pType['type'] != 'docid') {
+                    $attrType = $pType['type'];
+                }
+                
+                $collator = new Collator($action->GetParam('CORE_LANG', 'fr_FR'));
+                
+                $compatibleMethods = array();
+                
+                if ($attrType == 'date' || $attrType == 'timestamp') {
+                    $compatibleMethods = array_merge($compatibleMethods, array(
+                        array(
+                            'label' => _("yesterday") ,
+                            'method' => '::getDate(-1)'
+                        ) ,
+                        array(
+                            'label' => _("tomorrow") ,
+                            'method' => '::getDate(1)'
+                        )
+                    ));
+                }
+                
+                try {
+                    $rc = new ReflectionClass(get_class($this));
+                }
+                catch(Exception $e) {
+                    return $compatibleMethods;
+                }
+                
+                $methods = array_filter($rc->getMethods() , function ($method)
+                {
+                    $methodName = $method->getName();
+                    return ($method->isPublic() && $methodName != '__construct');
+                });
+                
+                foreach ($methods as $method) {
+                    $tags = self::getDocCommentTags($method->getDocComment());
+                    
+                    $searchLabel = null;
+                    $searchTypes = array();
+                    
+                    foreach ($tags as $tag) {
+                        if ($tag['name'] == 'searchLabel') {
+                            $searchLabel = $tag['value'];
+                        } elseif ($tag['name'] == 'searchType') {
+                            $searchTypes[] = $tag['value'];
+                        }
+                    }
+                    
+                    if ($searchLabel === null) {
+                        continue;
+                    }
+                    
+                    if ($attrType == '' || in_array($attrType, $searchTypes)) {
+                        $compatibleMethods[] = array(
+                            'label' => _($searchLabel) ,
+                            'method' => sprintf('::%s()', $method->getName())
+                        );
+                    }
+                }
+                
+                usort($compatibleMethods, function ($a, $b) use ($collator)
+                {
+                    return $collator->compare($a['label'], $b['label']);
+                });
+                
+                return $compatibleMethods;
+            }
+            /**
+             * Check if a specific method from a specific class is a valid search method
+             *
+             * @param string|object $className the class name
+             * @param string $methodName the method name
+             * @return bool boolean 'true' if valid, boolean 'false' is not valid
+             */
+            public function isValidSearchMethod($className, $methodName)
+            {
+                if (is_object($className)) {
+                    $className = get_class($className);
+                }
+                try {
+                    $rc = new ReflectionClass($className);
+                    $method = $rc->getMethod($methodName);
+                    $tags = self::getDocCommentTags($method->getDocComment());
+                    foreach ($tags as $tag) {
+                        if ($tag['name'] == 'searchLabel') {
+                            return true;
+                        }
+                    }
+                }
+                catch(Exception $e) {
+                    return false;
+                }
+                return false;
+            }
+            /**
+             * Extract tags names/values from methods doc comments text
+             * @static
+             * @param string $docComment the doc comment text
+             * @return array|null list of array('name' => $tagName, 'value' => $tagValue)
+             */
+            final private static function getDocCommentTags($docComment = '')
+            {
+                if (!preg_match_all('/^.*?@(?P<name>[a-zA-Z0-9_-]+)\s+(?P<value>.*?)\s*$/m', $docComment, $tags, PREG_SET_ORDER)) {
+                    return array();
+                }
+                $tags = array_map(function ($tag)
+                {
+                    return array(
+                        'name' => $tag['name'],
+                        'value' => $tag['value']
+                    );
+                }
+                , $tags);
+                return $tags;
             }
         }
 ?>

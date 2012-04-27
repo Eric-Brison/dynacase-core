@@ -2581,6 +2581,9 @@ msgstr ""
 msgid "Move reference"
 msgstr "Delete"
 
+msgid "My user account id"
+msgstr ""
+
 msgid "N"
 msgstr ""
 
@@ -6309,9 +6312,6 @@ msgstr ""
 msgid "function [%s] not exists"
 msgstr ""
 
-msgid "function examples"
-msgstr ""
-
 msgid "fusers list window"
 msgstr ""
 
@@ -6381,6 +6381,9 @@ msgid "get menu with family concordance"
 msgstr ""
 
 msgid "get preferences"
+msgstr ""
+
+msgid "get search methods"
 msgstr ""
 
 msgid "get value for an attribute of document"
@@ -7002,13 +7005,6 @@ msgstr ""
 
 msgid "multiple document"
 msgstr ""
-
-msgid "my id"
-msgstr ""
-
-#, fuzzy
-msgid "my last name"
-msgstr "Lastname"
 
 #, fuzzy
 msgid "my parameters"
@@ -8195,6 +8191,9 @@ msgstr ""
 #, c-format
 msgid "search join syntax error : %s"
 msgstr ""
+
+msgid "search methods"
+msgstr "Search methods"
 
 #, fuzzy
 msgid "search mode"
@@ -9743,6 +9742,10 @@ msgstr ""
 
 #~ msgid "login"
 #~ msgstr "Login name"
+
+#, fuzzy
+#~ msgid "my last name"
+#~ msgstr "Lastname"
 
 #, fuzzy
 #~ msgid "no mail"
