@@ -1,6 +1,0 @@
-
-
-<script type="text/javascript">
-if ('[err]'=='') alert('[err]');
-else window.parent.OnUploadCompleted(0,window.location.pathname+"?sole=A&app=FDL&action=EXPORTFILE&cache=no&docid=[docid]&attrid=img_file&index=-1","[title]", "") ;
-</script>
