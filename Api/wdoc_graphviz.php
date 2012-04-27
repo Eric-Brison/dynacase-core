@@ -91,8 +91,10 @@ class DotWorkflow
                 $this->setStates();
                 $this->setActivity();
                 $this->setTransitionLines();
+                $this->lines[] = sprintf('%s [shape=doublecircle]', $this->wdoc->firstState);
                 break;
         }
+        //if ($this->ratio=="auto") $this->size='';
         $dot = "digraph \"" . $this->wdoc->getTitle() . "\" {
         ratio=\"{$this->ratio}\";
 	    rankdir={$this->orient};
@@ -193,7 +195,7 @@ class DotWorkflow
         $color = $this->wdoc->getColor($e1);
         $saction = $this->getActivity($e1);
         $tt = sprintf('label="%s"', $this->_n($e1));
-        $tt .= ',shape = circle, style=filled, fixedsize=true,width=1.5,   fontname=sans';
+        $tt .= ',shape = circle, style=filled, fixedsize=true,width=1.0,   fontname=sans';
         if ($saction) $tt .= ', tooltip="' . $this->_n($e1) . '"';
 
 
@@ -403,7 +405,7 @@ $this->_n($tr["t"]));
         ;
 
         $e2 = 'D' . $this->wdoc->firstState;
-        $this->lines[] = sprintf('"%s" [label="%s",shape = doublecircle, style=filled, width=1.5, fixedsize=true,fontname=sans,fillcolor="%s"];', $e2, $this->_n($this->wdoc->firstState), $this->wdoc->getColor($this->wdoc->firstState));
+        $this->lines[] = sprintf('"%s" [label="%s",shape = doublecircle, style=filled, width=1.0, fixedsize=true,fontname=sans,fillcolor="%s"];', $e2, $this->_n($this->wdoc->firstState), $this->wdoc->getColor($this->wdoc->firstState));
         $this->lines[] = sprintf('"%s" -> "%s" [labelfontcolor="%s",decorate=false, color="%s", labelfontname=sans];', $e1, $e2, $this->style['arrow-label-font-color'], $this->style['arrow-color']);
         $e1 = $e2;
 
@@ -620,7 +622,7 @@ $this->_n($tr["t"]));
             $color = $this->wdoc->getColor($v);
             $saction = $this->getActivity($v);
             $tt = sprintf('label="%s"', $this->_n($v));
-            $tt .= ',shape = circle, style=filled, fixedsize=true,width=1.5,   fontname=sans';
+            $tt .= ',shape = circle, style=filled, fixedsize=true,width=1.0,   fontname=sans';
             if ($saction) $tt .= ', tooltip="' . $saction . '"';
 
 
@@ -641,7 +643,7 @@ $this->_n($tr["t"]));
                 //$sact = "activity $v";
             }
             if ($this->wdoc->getActivity($v) || (!$this->isEndState($v))) {
-                $tt = 'shape = box, style=filled, fixedsize=false,width=1.5,   fontname=sans';
+                $tt = 'shape = box, style=filled, fixedsize=false,width=1.0,   fontname=sans';
                 if ($sact) $tt .= sprintf(',label="%s"', $this->_n($sact));
 
                 if ($color) $tt .= ',fillcolor="' . $color . '"';
@@ -742,7 +744,7 @@ $this->_n($tr["t"]));
             } else {
                 if (preg_match("/([0-9\.]+),([0-9\.]+)/", $isize, $reg)) {
                     $this->fontsize = intval(min($reg[1], $reg[2]) / 1);
-                     $this->fontsize = 16;
+                     $this->fontsize = 12;
                     $this->size = sprintf("size=\"%.2f,%.2f!\";", floatval($reg[1]) / 2.55, floatval($reg[2]) / 2.55);
                 } else {
                     $isize = sprintf("%.2f", floatval($isize) / 2.55);

@@ -22,7 +22,7 @@
   <option selected value="png">[TEXT:Image]</option>
   <option value="dot">[TEXT:Dot]</option>
   </select>
-<select title="[TEXT:dotOrient]" name="orient">
+<select id="orient" title="[TEXT:dotOrient]" name="orient">
   <option selected value="LR">[TEXT:Left Right]</option>
   <option value="TB">[TEXT:Top Bottom]</option>
   </select>
@@ -36,11 +36,19 @@
   <option value="40,40">40cmx40cm</option>
   <option selected id="fit" value="40">[TEXT:Fit to screen]</option>
   </select>
-<select title="[TEXT:dotRatio]" name="ratio">
+<select style="display:none" disabled title="[TEXT:dotRatio]" name="ratio">
   <option value="fill">fill</option>
-  <option selected value="compress">compress</option>
+  <option value="compress">compress</option>
   <option value="expand">expand</option>
-  <option selected value="auto">auto</option>
+  <option value="auto">auto</option>
+  </select>
+<select title="[TEXT:dotTool]" name="tool" onchange="disableOrient(this)">
+  <option value="dot">dot</option>
+  <option  value="sfdp">sfdp</option>
+  <option value="neato">neato</option>
+  <option value="circo">circo</option>
+  <option value="fdp">fdp</option>
+  <option value="twopi">twopi</option>
   </select>
 <input type="submit" value="[TEXT:Draw graph]">
 </form>
@@ -48,7 +56,15 @@
 <script>
 var normDPI = 96;
 
+function disableOrient(tool) {
+   var v=tool.options[tool.selectedIndex].value;
+   var disOrient=(v != 'dot')
+   var iOrient= document.getElementById('orient');
+   iOrient.disabled=disOrient;
+   if (disOrient) iOrient.style.visibility='hidden';
+   else iOrient.style.visibility='visible';
 
+}
 function setifit() {
   var optfit=document.getElementById('fit');
   if (optfit) {

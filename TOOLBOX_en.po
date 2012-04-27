@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-27 12:12+0200\n"
+"POT-Creation-Date: 2012-04-27 22:58+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -5653,6 +5653,9 @@ msgstr ""
 #, fuzzy
 msgid "dotSize"
 msgstr "Update Title Cards"
+
+msgid "dotTool"
+msgstr ""
 
 msgid "dotType"
 msgstr ""
