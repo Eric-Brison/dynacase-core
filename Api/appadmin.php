@@ -33,6 +33,7 @@ $method = $usage->addOption("method", "action to do", array(
 $usage->verify();
 
 echo " $appname...$method\n";
+
 $app = new Application();
 
 $Null = "";

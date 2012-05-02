@@ -10,24 +10,23 @@
  * @class ApiUsage
  * @brief Verify arguments for wsh programs
  * @code
- $usage = new ApiUsage();
- $usage->setText("Refresh documents ");
- $usage->addNeeded("famid", "the family filter");
- $usage->addOption("revision", "use all revision - default is no", array(
- "yes",
- "no"
- ));
- $usage->addOption("save", "use modify default is light", array(
- "complete",
- "light",
- "none"
- ));
- $usage->verify();
+$usage = new ApiUsage();
+$usage->setText("Refresh documents ");
+$usage->addNeeded("famid", "the family filter");
+$usage->addOption("revision", "use all revision - default is no", array(
+"yes",
+"no"
+));
+$usage->addOption("save", "use modify default is light", array(
+"complete",
+"light",
+"none"
+));
+$usage->verify();
  * @endcode
  */
 define("THROW_EXITHELP", 1988);
-class ApiUsage
-{
+class ApiUsage {
     /**
      * usage text
      *
@@ -40,6 +39,12 @@ class ApiUsage
      * @var array
      */
     private $optArgs = array();
+    /**
+     * empty arguments
+     *
+     * @var array
+     */
+    private $emptyArgs = array();
     /**
      * needed arguments
      *
@@ -70,19 +75,18 @@ class ApiUsage
      * @var boolean
      */
     protected $useException = false;
+
     /**
      * init action
      */
-    public function __construct()
-    {
+    public function __construct() {
         global $action;
         $this->action = & $action;
         $this->addHidden("api", "api file to use");
-        $this->addOption('userid', "user system id to execute function - default is (admin)", array() , 1);
-        /*TODO: Adding add empty*/
-        //$this->addOption('help', "Show usage", array() , 1);
-        
+        $this->addOption('userid', "user system id to execute function - default is (admin)", array(), 1);
+        $this->addEmpty('help', "Show usage");
     }
+
     /**
      * add textual definition of program
      *
@@ -90,10 +94,10 @@ class ApiUsage
      *
      * @return void
      */
-    public function setText($text)
-    {
+    public function setText($text) {
         $this->text = $text;
     }
+
     /**
      * add hidden argument (private arg not see them in usage)
      *
@@ -102,14 +106,14 @@ class ApiUsage
      *
      * @return string argument value
      */
-    public function addHidden($argName, $argDefinition)
-    {
+    public function addHidden($argName, $argDefinition) {
         $this->hiddenArgs[] = array(
             "name" => $argName,
             "def" => $argDefinition
         );
         return $this->action->getArgument($argName);
     }
+
     /**
      * add needed argument
      *
@@ -119,8 +123,7 @@ class ApiUsage
      *
      * @return string argument value
      */
-    public function addNeeded($argName, $argDefinition, array $restriction = null)
-    {
+    public function addNeeded($argName, $argDefinition, array $restriction = null) {
         $this->needArgs[] = array(
             "name" => $argName,
             "def" => $argDefinition,
@@ -128,6 +131,7 @@ class ApiUsage
         );
         return $this->action->getArgument($argName);
     }
+
     /**
      * add optionnal argument
      *
@@ -138,8 +142,7 @@ class ApiUsage
      *
      * @return string argument value
      */
-    public function addOption($argName, $argDefinition, array $restriction = null, $default = null)
-    {
+    public function addOption($argName, $argDefinition, array $restriction = null, $default = null) {
         $this->optArgs[] = array(
             "name" => $argName,
             "def" => $argDefinition,
@@ -148,15 +151,32 @@ class ApiUsage
         );
         return $this->action->getArgument($argName, $default);
     }
+
+    /**
+     * add empty argument (argument with boolean value)
+     *
+     * @param string $argName argument name
+     * @param string $argDefinition argument definition
+     *
+     * @return string argument value
+     */
+    public function addEmpty($argName, $argDefinition = "") {
+        $this->emptyArgs[] = array(
+            "name" => $argName,
+            "def" => $argDefinition
+        );
+        return $this->action->getArgument($argName);
+    }
+
     /**
      * get usage for a specific argument
      *
      * @param array $args argument
+     * @param bool $empty flag to see if argument array as values or not
      *
      * @return string
      */
-    private function getArgumentText(array $args)
-    {
+    private function getArgumentText(array $args, $empty = false) {
         $usage = '';
         foreach ($args as $arg) {
             $res = '';
@@ -167,25 +187,27 @@ class ApiUsage
             if ($arg["default"] !== null) {
                 $default = sprintf(", default is '%s'", $arg["default"]);
             }
-            $usage.= sprintf("\t--%s=<%s>%s%s\n", $arg["name"], $arg["def"], $res, $default);
+            $string = "\t--" . $arg["name"]. ($empty ? " (%s) " : "=<%s>");
+            $usage .= sprintf("$string%s%s\n", $arg["def"], $res, $default);
         }
         return $usage;
     }
+
     /**
      * return usage text for the action
      *
      * @return string
      */
-    public function getUsage()
-    {
+    public function getUsage() {
         $usage = $this->text;
-        $usage.= "\nUsage :\n";
-        $usage.= $this->getArgumentText($this->needArgs);
-        $usage.= "   Options:\n";
-        $usage.= $this->getArgumentText($this->optArgs);
-        
+        $usage .= "\nUsage :\n";
+        $usage .= $this->getArgumentText($this->needArgs);
+        $usage .= "   Options:\n";
+        $usage .= $this->getArgumentText($this->optArgs);
+        $usage .= $this->getArgumentText($this->emptyArgs, true);
         return $usage;
     }
+
     /**
      * exit when error
      *
@@ -193,17 +215,16 @@ class ApiUsage
      * @throw ApiUsageException
      * @return void
      */
-    public function exitError($error = '')
-    {
-        if ($error != '') $error.= "\n";
+    public function exitError($error = '') {
+        if ($error != '') $error .= "\n";
         $usage = $this->getUsage();
-        
+
         if ((!$this->useException)) {
             if ($_SERVER['HTTP_HOST'] != "") {
                 $usage = str_replace('--', '&', $usage);
-                $error.= '<pre>' . htmlspecialchars($usage) . '</pre>';
+                $error .= '<pre>' . htmlspecialchars($usage) . '</pre>';
             } else {
-                $error.= $usage;
+                $error .= $usage;
             }
             if ($this->action->getArgument("help") == true) {
                 throw new Exception($usage, THROW_EXITHELP);
@@ -214,19 +235,20 @@ class ApiUsage
             throw new ApiUsageException($error, 0, null, $usage);
         }
     }
+
     /**
      * list hidden keys
      *
      * @return array
      */
-    protected function getHiddenKeys()
-    {
+    protected function getHiddenKeys() {
         $keys = array();
         foreach ($this->hiddenArgs as $v) {
             $keys[] = $v["name"];
         }
         return $keys;
     }
+
     /**
      * set strict mode
      *
@@ -235,10 +257,10 @@ class ApiUsage
      *
      * @return void
      */
-    public function strict($strict = true)
-    {
+    public function strict($strict = true) {
         $this->strict = $strict;
     }
+
     /**
      * verify if wsh program argument are valids. If not wsh exit
      *
@@ -246,8 +268,7 @@ class ApiUsage
      *
      * @return void
      */
-    public function verify($useException = false)
-    {
+    public function verify($useException = false) {
         $this->useException = $useException;
         if ($this->action->getArgument("help") == true) {
             $this->exitError();
@@ -256,19 +277,19 @@ class ApiUsage
             $value = $this->action->getArgument($arg["name"]);
             if ($value == '') {
                 $error = sprintf("argument '%s' expected\n", $arg["name"]);
-                
+
                 $this->exitError($error);
             }
         }
         $allArgs = array_merge($this->needArgs, $this->optArgs);
         $argsKey = $this->getHiddenKeys();
-        
+
         foreach ($allArgs as $arg) {
             $value = $this->action->getArgument($arg["name"], null);
             if ($value !== null && $arg["restriction"]) {
                 if (!in_array($value, $arg["restriction"])) {
                     $error = sprintf("argument '%s' must be one of these values : %s\n", $arg["name"], implode(", ", $arg["restriction"]));
-                    
+
                     $this->exitError($error);
                 }
             }
@@ -278,7 +299,7 @@ class ApiUsage
             foreach ($_GET as $k => $v) {
                 if (!in_array($k, $argsKey)) {
                     $error = sprintf("argument '%s' is not defined\n", $k);
-                    
+
                     $this->exitError($error);
                 }
             }
@@ -286,18 +307,17 @@ class ApiUsage
     }
 }
 
-class ApiUsageException extends Exception
-{
+class ApiUsageException extends Exception {
     private $usage = '';
-    public function __construct($message, $code, $previous = null, $usage = '')
-    {
+
+    public function __construct($message, $code, $previous = null, $usage = '') {
         parent::__construct($message, (int)$code);
         $this->usage = $usage;
     }
-    
-    public function getUsage()
-    {
+
+    public function getUsage() {
         return $this->usage;
     }
 }
+
 ?>
