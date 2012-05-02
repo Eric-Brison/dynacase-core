@@ -43,12 +43,12 @@
   <option value="auto">auto</option>
   </select>
 <select title="[TEXT:dotTool]" name="tool" onchange="disableOrient(this)">
-  <option value="dot">dot</option>
-  <option  value="sfdp">sfdp</option>
-  <option value="neato">neato</option>
-  <option value="circo">circo</option>
-  <option value="fdp">fdp</option>
-  <option value="twopi">twopi</option>
+  <option value="dot">dot: [TEXT:Directed graph]</option>
+  <option  value="sfdp">sfdp: [TEXT:Large undirected graphs]</option>
+  <option value="circo">circo: [TEXT:Circular layout graphs]</option>
+  <option value="fdp">fdp: [TEXT:Undirected graphs]</option>
+  <option value="twopi">twopi: [TEXT:Radial layouts graphs]</option>
+  <option value="neato">neato: [TEXT:Undirected graphs]</option>
   </select>
 <input type="submit" value="[TEXT:Draw graph]">
 </form>

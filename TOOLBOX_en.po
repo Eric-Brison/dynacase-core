@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-27 22:58+0200\n"
+"POT-Creation-Date: 2012-05-02 10:51+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1169,6 +1169,9 @@ msgstr "Start search"
 msgid "Choose workflow"
 msgstr "Delete"
 
+msgid "Circular layout graphs"
+msgstr ""
+
 #, fuzzy
 msgid "Clear Folder"
 msgstr "Delete"
@@ -1486,6 +1489,9 @@ msgstr "Import"
 
 #, c-format
 msgid "Direct set through document itself \"%s\""
+msgstr ""
+
+msgid "Directed graph"
 msgstr ""
 
 msgid "Directory"
@@ -2353,6 +2359,9 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
+msgid "Large undirected graphs"
+msgstr ""
+
 msgid "Last History"
 msgstr ""
 
@@ -2973,6 +2982,9 @@ msgstr ""
 #, fuzzy
 msgid "RSS link"
 msgstr "Delete"
+
+msgid "Radial layouts graphs"
+msgstr ""
 
 #, fuzzy
 msgid "Raw archive"
@@ -3665,6 +3677,9 @@ msgid "Unarchiving from %s"
 msgstr ""
 
 msgid "Unattach Timers"
+msgstr ""
+
+msgid "Undirected graphs"
 msgstr ""
 
 #, fuzzy

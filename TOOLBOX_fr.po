@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-27 22:58+0200\n"
-"PO-Revision-Date: 2012-04-27 22:59+0200\n"
+"POT-Creation-Date: 2012-05-02 10:51+0200\n"
+"PO-Revision-Date: 2012-05-02 10:52+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1120,6 +1120,9 @@ msgstr "Choix des familles visibles"
 msgid "Choose workflow"
 msgstr "Choisir un cycle"
 
+msgid "Circular layout graphs"
+msgstr "Modèle circulaire de graphe"
+
 msgid "Clear Folder"
 msgstr "Vider le dossier"
 
@@ -1411,6 +1414,9 @@ msgstr "Import direct"
 #, c-format
 msgid "Direct set through document itself \"%s\""
 msgstr "Pose directe par le document lui-même \"%s\""
+
+msgid "Directed graph"
+msgstr "Graphe directionnel"
 
 msgid "Directory"
 msgstr "Répertoire"
@@ -2253,6 +2259,9 @@ msgstr "racine du serveur LDAP"
 msgid "Label"
 msgstr "Libellé"
 
+msgid "Large undirected graphs"
+msgstr "Grand graphe non-directionnel"
+
 msgid "Last History"
 msgstr "Derniers historiques"
 
@@ -2845,6 +2854,9 @@ msgstr ""
 
 msgid "RSS link"
 msgstr "S'abonner au lien RSS"
+
+msgid "Radial layouts graphs"
+msgstr "Modèle de graphe radial"
 
 msgid "Raw archive"
 msgstr "Archive brute"
@@ -3516,6 +3528,9 @@ msgstr "Désarchivé depuis %s"
 
 msgid "Unattach Timers"
 msgstr "Désactiver les minuteurs"
+
+msgid "Undirected graphs"
+msgstr "Graphe non-directionnel"
 
 msgid "Unlock"
 msgstr "Déverrouiller"

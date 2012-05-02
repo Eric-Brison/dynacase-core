@@ -64,6 +64,8 @@ function view_workflow_graph(Action &$action)
         $tool.= "  -Goverlap=prism";
     } elseif ($tool == "neato") {
         $tool.= " -Goverlap=prism";
+    } elseif ($tool == "twopi") {
+        $tool.= " -Granksep=3.0 -Gnodesep=2.0 -Goverlap=false";
     }
     /**
      * @var WDoc $doc
