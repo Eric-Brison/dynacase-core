@@ -1,11 +1,15 @@
 
-<textarea id="[aid]" name="[aname]" type="htmltext" onchange="fck_setData_[aid](this)">[Value]</textarea>
+<textarea id="[aid]" name="[aname]" type="htmltext" onchange="htmlText.setValue(this.id, this.value)" style="height : [editheight]">[Value]</textarea>
 
 [IFNOT isInDuplicableTableLine]
 <script type="text/javascript">
 	addEvent(window,'load', function()
 		{
-			window.htmlText.initEditor("[aid]");
+			window.htmlText.initEditor("[aid]", {
+				height : "[height]",
+				toolbar : "[toolbar]",
+				toolbarStartupExpanded : [toolbarexpand]
+			});
 		}
 	);
 </script>
