@@ -811,6 +811,7 @@ class DocFormFormat
 
                     case "auto":
                         $lay = new Layout("FDL/Layout/editenumlistauto.xml", $action);
+                        $this->doc->AddParamRefresh($this->oattr->id, "ic_" . $this->oattr->id);
                         break;
 
                     default:
@@ -835,6 +836,7 @@ class DocFormFormat
                     case "auto":
                         $lay = new Layout("FDL/Layout/editenumauto.xml", $action);
                         $this->notd = true;
+                        $this->doc->AddParamRefresh($this->oattr->id, "ic_" . $this->oattr->id);
                         break;
 
                     case "bool":
