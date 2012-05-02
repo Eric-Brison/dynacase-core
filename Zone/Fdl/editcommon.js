@@ -2260,16 +2260,37 @@ var specMovetr=null;
 function movetr(tr, sourcetr) {
 
     if (! sourcetr) sourcetr=seltr;
+
     var trnode= sourcetr;
     var pnode = tr;
+    var refreshHTMLText = function refreshHTMLText(node) {
+      var conf = {};
+      var i;
+      var textareas = node.getElementsByTagName('textarea');
+      for (i =0, length = textareas.length; i < length; i++) {
+         if (textareas[i].getAttribute('type') == 'htmltext') {
+            conf = window.htmlText.deactivateEditor(textareas[i].id, true);
+            window.htmlText.initEditor(textareas[i].id, conf);
+         }
+      }
+    };
+    var synchronizeHTMLText = function synchronizeHTMLText(node) {
+      var i;
+      var textareas = node.getElementsByTagName('textarea');
+      for (i =0, length = textareas.length; i < length; i++) {
+       window.htmlText.synchronizeWithTextArea(textareas[i].id);
+      }
+    };
     if (sourcetr) {
-
-        while (pnode && (pnode.nodeType != 1)) pnode = pnode.previousSibling; // case TEXT attribute in mozilla between TR ??
         if (pnode && trnode)  {
+            synchronizeHTMLText(trnode);
+            synchronizeHTMLText(pnode);
+
             trnode.parentNode.insertBefore(trnode,pnode);
 
-        }  else {
-            //trnode.parentNode.appendChild(trnode); // latest (cyclic)
+            window.setTimeout(refreshHTMLText, 1, trnode);
+            window.setTimeout(refreshHTMLText, 1, pnode);
+
         }
 
         resetTrInputs(trnode);
@@ -2740,7 +2761,7 @@ function droptr(event) {
         if (! event) event=window.event;
         var o= (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);
         if (o) {
-            while (o && o.tagName.toLowerCase() != 'tr') {
+            while (o && !(o.tagName.toLowerCase() == 'tr' && _SELROW.parentNode.id == o.parentNode.id)) {
                 o=o.parentNode;
             }
             if (o) {
@@ -2757,8 +2778,8 @@ function droptr(event) {
 function enddrag(event) {
 
     dro=null;
-    _SELROW.parentNode.setAttribute('moving',  "false");
-    _SELROW.setAttribute('moving',  "false");
+    _SELROW.parentNode.setAttribute('moving', "false");
+    _SELROW.setAttribute('moving', "false");
     _SELROW=null;
     delEvent(document,"mouseup",enddrag);
 

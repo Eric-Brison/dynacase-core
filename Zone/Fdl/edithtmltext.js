@@ -76,3 +76,9 @@ window.htmlText.getValue = function setValue(htmlTextId) {
         throw "unable to get content : "+htmlTextId+" doesn't exist";
     }
 }
+
+window.htmlText.deactivateEditor = function deactivateEditor(htmlTextId, noUpdate) {
+    var currentConfig = CKEDITOR.instances[htmlTextId].config;
+    CKEDITOR.instances[htmlTextId].destroy(noUpdate);
+    return currentConfig;
+}
