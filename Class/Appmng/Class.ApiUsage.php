@@ -166,7 +166,7 @@ class ApiUsage
             "name" => $argName,
             "def" => $argDefinition
         );
-        return $this->action->getArgument($argName);
+        return $this->action->getArgument($argName, false);
     }
     /**
      * get usage for a specific argument
