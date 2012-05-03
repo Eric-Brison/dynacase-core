@@ -724,7 +724,13 @@ class _DSEARCH extends DocSearch
                     if (!$fam) $fam = createTmpDoc($this->dbaccess, $this->getValue("SE_FAMID", 1));
                     return $fam;
                 }
-                
+
+                /**
+                 * @templateController
+                 * @param string $target
+                 * @param bool $ulink
+                 * @param bool $abstract
+                 */
                 function paramdsearch($target = "_self", $ulink = true, $abstract = false)
                 {
                     // Compute value to be inserted in a  layout
