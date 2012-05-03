@@ -21,6 +21,7 @@ class SuiteDcpUser
         $suite->addTestSuite('PU\TestUser');
         $suite->addTestSuite('PU\TestGroup');
         $suite->addTestSuite('PU\TestUserDeactivateAccount');
+        $suite->addTestSuite('PU\TestDocControlSubstitute');
         // ...
         return $suite;
     }

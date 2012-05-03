@@ -39,6 +39,7 @@ class Account extends DbObj
         "firstname",
         "login",
         "password",
+        "substitute",
         "isgroup",
         "accounttype",
         "memberof",
@@ -70,6 +71,10 @@ class Account extends DbObj
      */
     public $accounttype;
     /**
+     * @var int the substitute account identificator
+     */
+    public $substitute;
+    /**
      * family identificator of user document default is IUSER/IGROUP
      * @var string
      */
@@ -100,6 +105,7 @@ create table users ( id      int not null,
                         login      text not null,
                         password   text not null,
                         isgroup    char,
+                        substitute      int,
                         accounttype char,
                         memberof   int[],
                         expires    int,
@@ -127,6 +133,48 @@ create sequence seq_id_users start 10;";
             return true;
         }
         return false;
+    }
+    /**
+     * set substitute to this user
+     * this user become the incumbent of $substitute
+     * @param string $substitute login or user system id
+     * @return string error message (empty if not)
+     */
+    public function setSubstitute($substitute)
+    {
+        $err = '';
+        if (!$this->isAffected()) {
+            $err = sprintf(_("cannot set substitute account object not affected"));
+        }
+        if ($err) return $err;
+        if (!(is_numeric($substitute))) {
+            $sql = sprintf("select id from users where login = '%s'", pg_escape_string($substitute));
+            simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
+            if ($substituteId) $substitute = $substituteId;
+            else $err = sprintf(_("cannot set substitute %s login not found"));
+        }
+        if ($err) return $err;
+        if ($substitute) {
+            $sql = sprintf("select id from users where id = '%d'", $substitute);
+            simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
+            if (!$substituteId) $err = sprintf(_("cannot set substitute %s id not found"));
+        }
+        if ($err) return $err;
+        if ($this->substitute == $this->id) {
+            $err = sprintf(_("cannot substitute itself"));
+        }
+        if ($err) return $err;
+        $this->substitute = $substitute;
+        
+        $err = $this->modify();
+        if (!$err) {
+            $u = new \Account($this->dbaccess, $this->substitute);
+            $u->updateMemberOf();
+            // update global current user
+            global $action;
+            if ($action->user->id == $u->id) $action->user->revert();
+        }
+        return $err;
     }
     /**
      * affect account from its login
@@ -398,6 +446,15 @@ create sequence seq_id_users start 10;";
         }
         return $err;
     }
+    /**
+     * revert values from database
+     */
+    public function revert()
+    {
+        if ($this->isAffected()) {
+            $this->select($this->id);
+        }
+    }
     //Add and Update expires and passdelay for password
     //Call in PreUpdate and PreInsert
     function getExpires()
@@ -427,7 +484,8 @@ create sequence seq_id_users start 10;";
         else {
             include_once ("FDL/Lib.Dir.php");
             if ($this->famid != "") $fam = $this->famid;
-            elseif ($this->isgroup == "Y") $fam = "IGROUP";
+            elseif ($this->accounttype == "G") $fam = "IGROUP";
+            elseif ($this->accounttype == "R") $fam = "ROLE";
             else $fam = "IUSER";;
             $filter = array(
                 "us_whatid = '" . $this->id . "'"
@@ -504,7 +562,7 @@ create sequence seq_id_users start 10;";
     function getMail($rawmail = true)
     {
         if ($this->accounttype == 'U') {
-            if (! $this->mail) return '';
+            if (!$this->mail) return '';
             if ($rawmail) {
                 return $this->mail;
             } else {
@@ -738,6 +796,26 @@ union
         return $parents;
     }
     /**
+     * get memberof for user without substitutes
+     * @param int $uid if not set it is the current account object else use another account identificator
+     * @return array
+     * @throws Exception
+     */
+    private function getStrictMemberOf($uid = - 1)
+    {
+        if ($uid == - 1) $uid = $this->id;
+        if (!$uid) return array();
+        // get all ascendants groupe,role of a user
+        $sql = sprintf("with recursive agroups(gid, login, actype) as (
+ select idgroup, users.login, users.accounttype from groups,users where iduser = %d and users.id=groups.idgroup
+   union
+ select idgroup, users.login, users.accounttype from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.idgroup
+) select gid from agroups;", $uid);
+        
+        simpleQuery($this->dbaccess, $sql, $gids, true, false);
+        return $gids;
+    }
+    /**
      * update memberof fields with all group/role of user
      * @return array
      * @throws Exception
@@ -745,15 +823,17 @@ union
     public function updateMemberOf()
     {
         if (!$this->id) return array();
-        // get all ascendants groupe,role of a user
-        $sql = sprintf("with recursive agroups(gid, login, actype) as (
- select idgroup, users.login, users.accounttype from groups,users where iduser = %d and users.id=groups.idgroup
-   union
- select idgroup, users.login, users.accounttype from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.idgroup
-) select gid from agroups;", $this->id);
         
-        simpleQuery($this->dbaccess, $sql, $gids, true, false);
-        $lg = $gids;
+        $lg = $this->getStrictMemberOf();
+        // search incumbents
+        $sql = sprintf("select id from users where substitute=%d;", $this->id);
+        simpleQuery($this->dbaccess, $sql, $incumbents, true, false);
+        foreach ($incumbents as $aIncumbent) {
+            $lg[] = $aIncumbent;
+            // use strict no propagate substitutes
+            $lg = array_merge($lg, $this->getStrictMemberOf($aIncumbent));
+        }
+        
         $lg = array_values(array_unique($lg));
         $this->memberof = '{' . implode(',', $lg) . '}';
         $err = $this->modify(true, array(
