@@ -17,6 +17,10 @@
 /**
  */
 
+$usage = new ApiUsage();
+$usage->setText("regenerate js version file");
+$usage->verify();
+
 $nv = getJsVersion();
 
 $fjs = getParam("CORE_PUBDIR") . "/CORE/wversion.js.in";

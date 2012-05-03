@@ -26,6 +26,7 @@ function print_usage()
 {
     print "Usage\twsh.php --app=APPLICATION --action=ACTION [--ARG=VAL] ...:  execute an action\n" . "\twsh.php --api=API [--ARG=VAL] ....   :  execute an api function\n" . "\twsh.php --listapi                     : view api list\n";
 }
+
 wbar(1, -1, "initialisation");
 $log = new Log("", "index.php");
 
@@ -131,6 +132,11 @@ if (isset($_GET["api"])) {
                 case THROW_EXITERROR:
                     echo sprintf(_("Error : %s\n") , $e->getMessage());
                     exit(1);
+                    break;
+
+                case THROW_EXITHELP:
+                    echo sprintf($e->getMessage());
+                    exit(0);
                     break;
 
                 default:

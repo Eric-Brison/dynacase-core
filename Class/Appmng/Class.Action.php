@@ -23,7 +23,7 @@ include_once ('Class.QueryDb.php');
 include_once ('Class.Application.php');
 
 define("THROW_EXITERROR", 1968);
-
+define("THROW_EXITHELP", 1988);
 class Action extends DbObj
 {
     var $fields = array(

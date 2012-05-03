@@ -19,6 +19,16 @@
 // use this only if you have changed title attributes
 include_once ("FDL/Lib.Attr.php");
 
+$usage = new ApiUsage();
+
+$usage->setText("Return sql code to inject trigget in base");
+$docid = $usage->addOption("docid", "special docid", null, 0);
+$trigger = $usage->addOption("trigger", "trigger", null, "-");
+$trig = ($trigger != "-");
+$drop = ($trigger == "N");
+
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("FDL", $core);
 
@@ -27,10 +37,6 @@ if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
 }
-
-$docid = GetHttpVars("docid", 0); // special docid
-$trig = (GetHttpVars("trigger", "-") != "-");
-$drop = (GetHttpVars("trigger", "-") == "N");
 
 if ($docid != - 1) {
     $query = new QueryDb($dbaccess, "Doc");

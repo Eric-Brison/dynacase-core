@@ -19,6 +19,13 @@
 // use this only if you have changed title attributes
 include_once ("FDL/Class.DocFam.php");
 
+$usage = new ApiUsage();
+
+$usage->setText("Adding key to doc");
+$docid = $usage->addOption("docid", "special docid", null, 0);
+
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("FDL", $core);
 
@@ -27,8 +34,6 @@ if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
 }
-
-$docid = GetHttpVars("docid", 0); // special docid
 
 $query = new QueryDb($dbaccess, "DocFam");
 $query->AddQuery("doctype='C'");

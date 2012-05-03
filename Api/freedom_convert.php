@@ -19,27 +19,29 @@
 // use this only if you have changed title attributes
 include_once ("FDL/Class.Doc.php");
 
-$famId = GetHttpVars("tofamid", ""); // familly filter
-$docid = GetHttpVars("docid", ""); // document
-if (($docid == "") && ($famId == 0)) {
-    print "arg class needed :usage --tofamid=<family id> --docid=<doc id to be converted>\n";
-} else {
-    
-    $appl = new Application();
-    $appl->Set("FDL", $core);
-    
-    $dbaccess = $appl->GetParam("FREEDOM_DB");
-    if ($dbaccess == "") {
-        print "Database not found : param FREEDOM_DB";
-        exit;
-    }
-    
-    $doc = new_Doc($dbaccess, $docid);
-    if ($doc->isAffected()) {
-        if ($doc->convert($famId)) print $doc->title . " converted";
-        else print $doc->title . " NOT converted";
-    } else {
-        print "document  $docid not found";
-    }
+$usage = new ApiUsage();
+
+$usage->setText("Convert document");
+$famId = $usage->addNeeded("tofamid", "family filter"); // familly filter
+$docid = $usage->addNeeded("docid", "document id to be converted"); // document
+
+$usage->verify();
+
+$appl = new Application();
+$appl->Set("FDL", $core);
+
+$dbaccess = $appl->GetParam("FREEDOM_DB");
+if ($dbaccess == "") {
+    print "Database not found : param FREEDOM_DB";
+    exit;
 }
+
+$doc = new_Doc($dbaccess, $docid);
+if ($doc->isAffected()) {
+    if ($doc->convert($famId)) print $doc->title . " converted";
+    else print $doc->title . " NOT converted";
+} else {
+    print "document  $docid not found";
+}
+
 ?>

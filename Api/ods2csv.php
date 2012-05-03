@@ -120,6 +120,7 @@ function xmlcontent2csv($xmlcontent, &$fcsv)
     foreach ($rows as $k => $row) {
         $fcsv.= implode(SEPCHAR, $row) . "\n";
     }
+    return "";
 }
 
 function ods2content($odsfile, &$content)
@@ -137,14 +138,16 @@ function ods2content($odsfile, &$content)
     }
     
     rmdir($cibledir);
+    return "";
 }
 
-$odsfile = GetHttpVars("odsfile"); // file ods (input)
-$csvfile = GetHttpVars("csvfile"); // file xml (output)
-if ($odsfile == "") {
-    print "odsfile needed :usage  --odsfile=<ods file> [--csvfile=<csv file output>]\n";
-    return;
-}
+$usage = new ApiUsage();
+
+$usage->setText("Convert OpenDocument Spreadsheet to csv (semicolon)");
+$odsfile = $usage->addNeeded("odsfile", "ods file (input)"); // file ods (input)
+$csvfile = $usage->addOption("csvfile", "xml file (output)"); // file xml (output)
+
+$usage->verify();
 
 $err = ods2content($odsfile, $content);
 if ($err == "") {

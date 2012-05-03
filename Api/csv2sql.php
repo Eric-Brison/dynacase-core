@@ -18,12 +18,11 @@
 
 include_once ("FDL/import_file.php");
 
-$fimport = GetHttpVars("file");
+$usage = new ApiUsage();
+$usage->setText("to big importation");
+$fimport = $usage->addNeeded("file", "file name");
+$usage->verify();
 
-if (!$fimport) {
-    print "file needed :usage  --file=<csv file>\n";
-    exit(1);
-}
 if (seemsODS($fimport)) {
     $cvsfile = ods2csv($fimport);
     $fdoc = fopen($cvsfile, "r");

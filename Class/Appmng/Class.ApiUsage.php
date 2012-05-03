@@ -25,6 +25,7 @@
  $usage->verify();
  * @endcode
  */
+define("THROW_EXITHELP", 1988);
 class ApiUsage
 {
     /**
@@ -39,6 +40,12 @@ class ApiUsage
      * @var array
      */
     private $optArgs = array();
+    /**
+     * empty arguments
+     *
+     * @var array
+     */
+    private $emptyArgs = array();
     /**
      * needed arguments
      *
@@ -78,6 +85,7 @@ class ApiUsage
         $this->action = & $action;
         $this->addHidden("api", "api file to use");
         $this->addOption('userid', "user system id to execute function - default is (admin)", array() , 1);
+        $this->addEmpty('help', "Show usage");
     }
     /**
      * add textual definition of program
@@ -145,13 +153,30 @@ class ApiUsage
         return $this->action->getArgument($argName, $default);
     }
     /**
+     * add empty argument (argument with boolean value)
+     *
+     * @param string $argName argument name
+     * @param string $argDefinition argument definition
+     *
+     * @return string argument value
+     */
+    public function addEmpty($argName, $argDefinition = "")
+    {
+        $this->emptyArgs[] = array(
+            "name" => $argName,
+            "def" => $argDefinition
+        );
+        return $this->action->getArgument($argName, false);
+    }
+    /**
      * get usage for a specific argument
      *
      * @param array $args argument
+     * @param bool $empty flag to see if argument array as values or not
      *
      * @return string
      */
-    private function getArgumentText(array $args)
+    private function getArgumentText(array $args, $empty = false)
     {
         $usage = '';
         foreach ($args as $arg) {
@@ -163,7 +188,9 @@ class ApiUsage
             if ($arg["default"] !== null) {
                 $default = sprintf(", default is '%s'", $arg["default"]);
             }
-            $usage.= sprintf("\t--%s=<%s>%s%s\n", $arg["name"], $arg["def"], $res, $default);
+            $string = "\t--" . $arg["name"] . ($empty ? " (%s) " : "=<%s>");
+            
+            $usage.= sprintf("$string%s%s\n", $arg["def"], $res, $default);
         }
         return $usage;
     }
@@ -179,7 +206,7 @@ class ApiUsage
         $usage.= $this->getArgumentText($this->needArgs);
         $usage.= "   Options:\n";
         $usage.= $this->getArgumentText($this->optArgs);
-        
+        $usage.= $this->getArgumentText($this->emptyArgs, true);
         return $usage;
     }
     /**
@@ -200,6 +227,9 @@ class ApiUsage
                 $error.= '<pre>' . htmlspecialchars($usage) . '</pre>';
             } else {
                 $error.= $usage;
+            }
+            if ($this->action->getArgument("help") == true) {
+                throw new Exception($usage, THROW_EXITHELP);
             }
             $this->action->exitError($error);
         } else {
@@ -242,6 +272,9 @@ class ApiUsage
     public function verify($useException = false)
     {
         $this->useException = $useException;
+        if ($this->action->getArgument("help") == true) {
+            $this->exitError();
+        }
         foreach ($this->needArgs as $arg) {
             $value = $this->action->getArgument($arg["name"]);
             if ($value == '') {
@@ -279,6 +312,7 @@ class ApiUsage
 class ApiUsageException extends Exception
 {
     private $usage = '';
+    
     public function __construct($message, $code, $previous = null, $usage = '')
     {
         parent::__construct($message, (int)$code);

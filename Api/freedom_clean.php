@@ -18,6 +18,14 @@
 // remove all tempory doc and orphelines values
 include_once ("FDL/Class.Doc.php");
 include_once ("WHAT/Class.SessionUtils.php");
+global $action;
+
+$usage = new ApiUsage();
+
+$usage->setText("Clean base");
+$real = ($usage->addOption("real", "real (yes or no)") == "yes");
+
+$usage->verify();
 
 $dbaccess = $action->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
@@ -33,7 +41,6 @@ simpleQuery($dbaccess, $logdelete);
 
 global $_SERVER;
 $dir = dirname($_SERVER["argv"][0]);
-$real = (getHttpVars("real") == "yes");
 
 $dbfreedom = getServiceName($dbaccess);
 if ($real) system(sprintf("PGSERVICE=%s psql -f %s/API/freedom_realclean.sql", escapeshellarg($dbfreedom) , escapeshellarg($dir)));

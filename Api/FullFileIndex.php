@@ -19,12 +19,18 @@ ini_set("max_execution_time", "36000");
 
 include_once ('FDL/Class.Doc.php');
 include_once ("FDL/Lib.Dir.php");
+global $action;
 
 define("REDCOLOR", '[1;31;40m');
 define("UPDTCOLOR", '[1;32;40m');
 define("STOPCOLOR", '[0m');
 
-$force = getHttpVars("force") == "yes";
+$usage = new ApiUsage();
+
+$usage->setText("Detect file which are not indexed and index them");
+$force = ($usage->addOption("force", "force (yes or no)") == "yes");
+
+$usage->verify();
 
 $dbaccess = GetParam("FREEDOM_DB");
 if ($dbaccess == "") {

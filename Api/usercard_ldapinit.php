@@ -22,8 +22,15 @@ include_once ("FDL/Lib.Dir.php");
 define("SKIPCOLOR", '[1;31;40m');
 define("UPDTCOLOR", '[1;32;40m');
 define("STOPCOLOR", '[0m');
+global $action;
 
-$clean = (GetHttpVars("clean", "no") == "yes"); // clean databases option
+$usage = new ApiUsage();
+
+$usage->setText("Initiate LDAP database");
+$clean = ($usage->addOption("clean", "clean database option", array("yes", "no"), "no") == "yes"); // clean databases option
+
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("USERCARD", $core);
 
@@ -46,15 +53,15 @@ $ldappw = $action->GetParam("LDAP_ROOTPW");
 $ldapdn = $action->GetParam("LDAP_ROOTDN");
 $ldapr = $action->GetParam("LDAP_ROOT");
 if ($clean) {
-    $msg = sprintf(_("delete %s on server %s...\n") , $ldapr, $ldaphost);
+    $msg = sprintf(_("delete %s on server %s...\n"), $ldapr, $ldaphost);
     print $msg;
     wbar(1, -1, $msg);
-    system(sprintf("ldapdelete -r -h %s -D %s -x -w %s %s", escapeshellarg($ldaphost) , escapeshellarg($ldapdn) , escapeshellarg($ldappw) , escapeshellarg($ldapr)));
+    system(sprintf("ldapdelete -r -h %s -D %s -x -w %s %s", escapeshellarg($ldaphost), escapeshellarg($ldapdn), escapeshellarg($ldappw), escapeshellarg($ldapr)));
     wbar(1, -1, _("LDAP cleaned"));
 }
 
-$ldoc1 = getChildDoc($dbaccess, 0, 0, "ALL", array() , $action->user->id, "ITEM", "USER");
-$ldoc2 = getChildDoc($dbaccess, 0, 0, "ALL", array() , $action->user->id, "ITEM", "IGROUP");
+$ldoc1 = getChildDoc($dbaccess, 0, 0, "ALL", array(), $action->user->id, "ITEM", "USER");
+$ldoc2 = getChildDoc($dbaccess, 0, 0, "ALL", array(), $action->user->id, "ITEM", "IGROUP");
 $ldoc = array_merge($ldoc1, $ldoc2);
 $reste = countDocs($ldoc);
 $total = $reste;
@@ -66,7 +73,7 @@ while ($doc = getNextDoc($dbaccess, $ldoc)) {
     if (($err == "") && ($err !== false)) print UPDTCOLOR . $reste . ")" . $doc->title . ": updated" . STOPCOLOR . "\n";
     else print SKIPCOLOR . $reste . ")" . $doc->title . ": skipped : $err" . STOPCOLOR . "\n";
     $reste--;
-    
+
     wbar($reste, $total);
 }
 

@@ -19,12 +19,19 @@
 
 include_once ("VAULT/Class.VaultFile.php");
 include_once ("FDL/Lib.Util.php");
+global $pubdir, $appl;
 
-$dirname = getHttpVars("path", "$pubdir/vaultfs");
-$fsname = getHttpVars("name", "FREEDOM");
-$size_in_bytes = getHttpVars("size", 500 * 1024 * 1024); // 500Mb
+$usage = new ApiUsage();
+
+$usage->setText("Initialisation of the FREEDOM VAULT based on the VAULT/FREEDOM.vault file");
+$dirname = $usage->addOption("path", "path to vault", null, "$pubdir/vaultfs");
+$fsname = $usage->addOption("name", "Fs name", null, "FREEDOM");
+$size_in_bytes = $usage->addOption("size", "Vault size", null, 500 * 1024 * 1024); // 500Mb
+
+$usage->verify();
+
 $dbaccess = $appl->GetParam("FREEDOM_DB");
-
+$err = "";
 if (!is_dir($dirname)) {
     if (is_dir(dirname($dirname))) {
         print sprintf(_("create directory %s\n") , $dirname);

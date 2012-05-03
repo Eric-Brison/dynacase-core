@@ -26,12 +26,14 @@
 // ---------------------------------------------------------------
 include_once ("Class.Application.php");
 
-$appname = GetHttpVars("appname", "");
-$actionname = GetHttpVars("actname", "");
-$attribute = GetHttpVars("attribute", "");
-$value = GetHttpVars("value", "");
+$usage = new ApiUsage();
+$usage->setText("Change an attribute of an WHAT Action");
+$appname = $usage->addNeeded("appname", "application name");
+$actionname = $usage->addNeeded("actname", "action name");
+$attribute = $usage->addNeeded("attribute", "attribute name");
+$value = $usage->addOption("value", "value to set", null, "");
+$usage->verify();
 
-if ($appname == "" || $actionname == "" || $attribute == "") return false;
 $app = new Application();
 $null = "";
 $app->Set($appname, $null);

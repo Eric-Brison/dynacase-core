@@ -16,8 +16,16 @@
 /**
  */
 
+$usage = new ApiUsage();
+$usage->setText("Get database coordonate for freedom access by psql");
+$usage->verify();
+
 $dbaccess = getParam("FREEDOM_DB");
+$dbpsql = "";
 if ($dbaccess != "") {
+    $dbhost = "";
+    $dbport = "";
+    $dbname = "";
     if (preg_match('/dbname=[ ]*([a-z_0-9]*)/', $dbaccess, $reg)) {
         $dbname = $reg[1];
     }
@@ -27,7 +35,6 @@ if ($dbaccess != "") {
     if (preg_match('/port=[ ]*([a-z_0-9]*)/', $dbaccess, $reg)) {
         $dbport = $reg[1];
     }
-    $dbpsql = "";
     if ($dbhost != "") $dbpsql.= "--host $dbhost ";
     if ($dbport != "") $dbpsql.= "--port $dbport ";
     $dbpsql.= "--username anakeen --dbname $dbname ";

@@ -21,11 +21,17 @@ include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Lib.Dir.php");
 include_once ("FDL/Lib.Usercard.php");
 
+$usage = new ApiUsage();
+
+$usage->setText("Refresh groups to recompute members and mail attributes");
+$force = $usage->addOption("force", "force a refresh", array("yes", "no")); // force a refresh if set to 'yes'
+$fbar = $usage->addOption("bar", "for progress bar"); // for progress bar
+
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("FDL", $core);
 
-$force = GetHttpVars("force", ""); // force a refresh if set to 'yes'
-$fbar = GetHttpVars("bar"); // for progress bar
 $dbaccess = $appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";

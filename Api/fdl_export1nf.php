@@ -26,29 +26,26 @@ function usage()
     echo "      [--sqllog=<file>] (default none)\n";
     exit(1);
 }
+
+$usage = new ApiUsage();
+$usage->setText("Export 1nf");
 /**
  * Args
  */
 $parms = array(
-    'config' => '',
-    'outputsql' => '',
-    'outputpgservice' => '',
-    'tmppgservice' => 'tmp_1nf',
-    'tmpschemaname' => 'tmp_1nf',
-    'tmpemptydb' => 'yes',
-    'sqllog' => '',
+    'config' => $usage->addNeeded("config", "configuration file") ,
+    'outputsql' => $usage->addOption("outputsql", "File to output sql", null, "") ,
+    'outputpgservice' => $usage->addOption("outputpgservice", "Pgservice to output", null, "") ,
+    'tmppgservice' => $usage->addOption("tmppgservice", "Tmp pgservice name", null, 'tmp_1nf') ,
+    'tmpschemaname' => $usage->addOption('tmpschemaname', "Tmp shema name", null, 'tmp_1nf') ,
+    'tmpemptydb' => $usage->addOption("tmpemptydb", "Tmp empty database", null, "yes") ,
+    'sqllog' => $usage->addOption("sqllog", "File to log", null, "") ,
 );
 
-foreach ($parms as $key => $value) {
-    $parms[$key] = getHttpVars($key, $value);
-}
+$usage->verify();
 /**
  * Checks
  */
-if (empty($parms['config'])) {
-    $action->error(sprintf(_("Error: missing or empty --config")));
-    usage();
-}
 if (!is_file($parms['config'])) {
     $action->error(sprintf(_("Error: config file '%s' is not a file.", $parms['config'])));
     usage();

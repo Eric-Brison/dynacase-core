@@ -12,15 +12,19 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
  *
- * @global docid Http var : document identificator
- * @global newname Http var : new animal name
  /**
  */
 
 include_once ("FDL/Class.Doc.php");
 include_once ("FDL/Class.SearchDoc.php");
+global $appl;
 
-$usage = "usage  --mode=>[TABLE|OBJECT|ITEM]> --famid=<family idenificator> --slice=<number od document to retrieve>";
+$usage = new ApiUsage();
+$usage->setText("List Animal");
+$mode = $usage->addNeeded("mode", "Mode", array("TABLE", "OBJECT", "ITEM"));
+$family = $usage->addNeeded("famid", "family identificator");
+$slice = $usage->addOption("slice", "number of document to retrieve", null, 10);
+$usage->verify();
 
 $dbaccess = $appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
@@ -28,23 +32,21 @@ if ($dbaccess == "") {
     exit;
 }
 
-$mode = (GetHttpVars("mode"));
-if (($mode != 'TABLE') && ($mode != 'OBJECT') && ($mode != 'ITEM')) $action->exitError("mode needed :\n $usage");
-
 $FD = array();
 
-$family = GetHttpVars("famid");
-$slice = GetHttpVars("slice", 10);
 $s = new SearchDoc($dbaccess, $family);
 $s->slice = $slice;
 $s->orderby = 'id desc';
 //$s->setDebugMode();
 $t = $s->search();
 //print_r2($s->getDebugInfo());
+$ids = array();
 foreach ($t as $v) $ids[] = $v["id"];
 
 $time_start = microtime(true);
 $memory_start = memory_get_usage();
+$stat = array();
+$tf = array();
 foreach ($ids as $id) {
     if ($mode == "OBJECT") $d = new_doc($dbaccess, $id);
     if ($mode == "ITEM") {

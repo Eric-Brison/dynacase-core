@@ -28,8 +28,11 @@ if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
 }
+$usage = new ApiUsage();
+$usage->setText("Clean file name");
+$limitFamily = $usage->addOption("family", "Family to limit to", null, "");
 
-$limitFamily = $action->getArgument("family");
+$usage->verify();
 
 $o = new DbObj($dbaccess);
 

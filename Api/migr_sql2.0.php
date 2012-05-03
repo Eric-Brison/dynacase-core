@@ -172,8 +172,14 @@ function migrPerm()
     }
 }
 
-$table = (GetHttpVars("table", "no") == "yes"); //
-$perm = (GetHttpVars("perm", "no") == "yes"); //
+$usage = new ApiUsage();
+
+$usage->setText("Migrate sql base 2.0");
+$table = ($usage->addOption("table", "Migrate table?", array("yes", "no"), "no") == "yes"); //
+$perm = ($usage->addOption("perm", "Migrate permission", array("yes", "no"), "no") == "yes"); //
+
+$usage->verify();
+
 if ($table) migrTables();
 if ($perm) migrPerm();
 ?>

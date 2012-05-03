@@ -18,12 +18,17 @@
 
 include_once ("FDL/sendmail.php");
 
-$to = GetHttpVars("to");
-$cc = GetHttpVars("cc");
-$bcc = GetHttpVars("bcc");
-$subject = GetHttpVars("subject");
-$file = GetHttpVars("file");
-$htmlmode = GetHttpVars("htmlmode");
+$usage = new ApiUsage();
+
+$usage->setText("Send mail using freedom sendmail");
+$to = $usage->addOption("to", "email to send to");
+$cc = $usage->addOption("cc", "cc");
+$bcc = $usage->addOption("bcc", "bcc");
+$subject = $usage->addOption("subject", "subject");
+$file = $usage->addOption("file", "file (can be a file name or stdin");
+$htmlmode = $usage->addOption("htmlmode", "activacte htmlmode");
+
+$usage->verify();
 
 $from = getMailAddr($action->user->id);
 if ($from == "") $from = getParam('SMTP_FROM');

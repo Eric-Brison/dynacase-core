@@ -19,6 +19,12 @@
 include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
 
+$usage = new ApiUsage();
+$usage->setText("Delete family document and its documents");
+$docid = $usage->addNeeded("famid", "special docid");
+$force = ($usage->addOption("force", "force", null, "yes") == "yes") ? true : false;
+$usage->verify();
+
 $appl = new Application();
 $appl->Set("FDL", $core);
 
@@ -26,13 +32,6 @@ $dbaccess = $appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
     exit;
-}
-
-$docid = GetHttpVars("famid", 0); // special docid
-$force = (GetHttpVars("force") == "yes"); // force
-if (!$docid) {
-    print sprintf(_("usage %s --famid=<family id> [--force=yes]") . "\n", $argv[0]);
-    exit(1);
 }
 
 if (($docid !== 0) && (!is_numeric($docid))) {
@@ -67,6 +66,7 @@ function destroyFamily($dbaccess, $idfam, $force = false)
             "delete from docfam where id=$resid;"
         );
         if (!$force) $tsql[] = "commit;";
+        $res = "";
         foreach ($tsql as $sql) {
             print "$sql\n";
             $res = @pg_query($dbid, $sql);
