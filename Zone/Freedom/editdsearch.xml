@@ -29,7 +29,9 @@ span.perso-header {
 select.perso {
   display: none;
 }
-
+tr.FREEDOMBack2 td.opt {
+  width: 2em;
+}
 </style>
 
 <table width="100%" cellspacing="0">
@@ -98,7 +100,7 @@ select.perso {
   </select></td>
 <td class="und"  >
    <input id="thekey" type="text"  size="20"  name="_se_keys[]" ></td><td>
-   <input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
+   <input title="[TEXT:search methods]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
    </td>
    	<td class="und">
 		 <select  class="modeperso" name="_se_rightp[]"   >
@@ -139,7 +141,7 @@ select.perso {
   <select  name="_se_keys[]" >
   [BLOCK STATE]<option  value="[stateid]">[statename]</option>
   [ENDBLOCK STATE]
-  </select></td><td><input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)"></td>
+  </select></td><td><input title="[TEXT:search methods]" type="button" value="&Sigma;" onclick="callFunction(event,this)"></td>
 	<td class="und">
 		 <select class="modeperso" name="_se_rightp[]"   >
   <option selected  value="no"></option>
@@ -156,7 +158,7 @@ select.perso {
 <td>[L_SE_ATTRIDS]</td>
 <td>[L_SE_FUNCS]</td>
 <td>[L_SE_KEYS]</td>
-<td>[TEXT:Opt]</td>
+<td class="opt">[TEXT:Opt]</td>
 <td><span class="modeperso-header">&nbsp;)&nbsp;</span></td>
 </tr>
 [BLOCK ENUMS]
@@ -197,7 +199,7 @@ select.perso {
      <option [func_selected] ctype="[func_type]"  style="display:[func_display]" value="[func_id]">[func_name]</option>
   [ENDBLOCK [FUNCCOND]]
   </select></td>
-<td class="und"  >
+<td class="und" data-issearchmethod="[IF ISSEARCHMETHOD]yes[ENDIF ISSEARCHMETHOD][IFNOT ISSEARCHMETHOD]no[ENDIF ISSEARCHMETHOD]">
   [IFNOT ISENUM]
 	  [IFNOT ISDOCID]
 	   <input  type="text"  size="20" name="_se_keys[]" value="[key]">
@@ -214,7 +216,7 @@ select.perso {
   </select>  
   [ENDIF ISENUM]</td>
 <td>
-<input title="[TEXT:function examples]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
+<input title="[TEXT:search methods]" type="button" value="&Sigma;" onclick="callFunction(event,this)">
    
 </td>
 	<td class="und">
@@ -235,14 +237,9 @@ select.perso {
    <input   value="[TEXT:addcond]"   type="button" onclick="addrow('newcond','condlist'); refreshCondList();">
    <input  style="display:[dstate]" value="[TEXT:addstate]"   type="button" onclick="addrow('newstate','condlist'); refreshCondList();">
 
-<select id="example"  style="display:none" onchange="setKey(event,this)">
-           <option disabled style="font-weight: bold;" value="">[TEXT:function examples]</option>
+<select id="method-selector"  style="display:none" onchange="setKey(event,this)">
+           <option disabled style="font-weight: bold;" value="">[TEXT:search methods]</option>
            <option value=""></option>
-           <option value="::getUserId()">[TEXT:my id]</option>
-           <option value="::getUserName()">[TEXT:my last name]</option>
-           <option value="::getDate()">[TEXT:today]</option>
-           <option value="::getDate(-1)">[TEXT:yesterday]</option>
-           <option value="::getDate(1)">[TEXT:tomorrow]</option>
     </select>
 
  </td>

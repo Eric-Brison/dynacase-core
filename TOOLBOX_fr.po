@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-02 10:51+0200\n"
-"PO-Revision-Date: 2012-05-02 10:52+0200\n"
+"POT-Creation-Date: 2012-05-04 10:33+0200\n"
+"PO-Revision-Date: 2012-05-04 10:48+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "Language: fr\n"
@@ -1736,9 +1736,6 @@ msgstr "Erreur: le fichier de config '%s' n'est pas un fichier"
 msgid "Error: empty FREEDOM_DB"
 msgstr "Erreur: FREEDOM_DB vide"
 
-msgid "Error: missing or empty --config"
-msgstr "Erreur: --config manquant ou absent"
-
 msgid "Error: missing or empty --tmppgservice"
 msgstr "Erreur: --tmppgservice manquant ou absent"
 
@@ -2476,6 +2473,12 @@ msgstr "Déplacer le fichier depuis %s vers %s"
 
 msgid "Move reference"
 msgstr "Déplacer la référence"
+
+msgid "My system user id"
+msgstr "Identifiant système de mon compte utilisateur"
+
+msgid "My user account id"
+msgstr "Identifiant de mon compte utilisateur"
 
 msgid "N"
 msgstr "N"
@@ -3355,6 +3358,9 @@ msgstr ""
 msgid "Template [%s] not found"
 msgstr "Template [%s] non trouvé."
 
+msgid "The \"Foo\" string"
+msgstr ""
+
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
 "be parameter allowOverride is not set to All"
@@ -3501,6 +3507,9 @@ msgstr ""
 
 msgid "Tuesday"
 msgstr "Mardi"
+
+msgid "Two cents"
+msgstr ""
 
 msgid "Twprocess_private"
 msgstr "vers privé"
@@ -5985,9 +5994,6 @@ msgstr "fonction '%s' déclaré dans le %s est introuvable"
 msgid "function [%s] not exists"
 msgstr "la fonction [%s] n'existe pas"
 
-msgid "function examples"
-msgstr "exemples de fonctions"
-
 msgid "fusers list window"
 msgstr "fuser fenetre liste"
 
@@ -6058,6 +6064,9 @@ msgstr "récupération du menu de famille"
 
 msgid "get preferences"
 msgstr "récupération des préférences"
+
+msgid "get search methods"
+msgstr "récupération des méthodes de recherche"
 
 msgid "get value for an attribute of document"
 msgstr ""
@@ -6625,12 +6634,6 @@ msgstr "site de Mozilla"
 
 msgid "multiple document"
 msgstr ""
-
-msgid "my id"
-msgstr "mon identificateur"
-
-msgid "my last name"
-msgstr "mon nom de famille"
 
 msgid "my parameters"
 msgstr "mes paramètres"
@@ -7734,6 +7737,9 @@ msgstr "recherche dans les familles héritées par famille"
 msgid "search join syntax error : %s"
 msgstr ""
 
+msgid "search methods"
+msgstr "Méthodes de recherche"
+
 msgid "search mode"
 msgstr "mode de recherche"
 
@@ -8522,10 +8528,6 @@ msgstr "URL pour atteindre l'index du serveur web dynacase"
 msgid "url to reach http server index in open mode"
 msgstr "URL pour atteindre le serveur on authentification open"
 
-#, c-format
-msgid "usage %s --famid=<family id> [--force=yes]"
-msgstr "usage %s --famid=<family id> [--force=yes]"
-
 msgid "use ctrl key in popup menu"
 msgstr "utiliser la touche ctrl dans les menus popup"
 
@@ -9025,6 +9027,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
 
+#~ msgid "Error: missing or empty --config"
+#~ msgstr "Erreur: --config manquant ou absent"
+
 #~ msgid "Failed to copy $infile to $f"
 #~ msgstr "Echec de la copie de $infile vers $f"
 
@@ -9058,6 +9063,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ "La méthode %s::%s() ne contient pas @templateController dans son "
 #~ "commentaire "
 
+#~ msgid "My firstname and lastname"
+#~ msgstr "Mon prénom et mon nom"
+
 #~ msgid "No identificator found for relation %s"
 #~ msgstr "Aucun identificateur pour la relation %s"
 
@@ -9087,6 +9095,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Set in my space to read it"
 #~ msgstr "Mettre dans mon espace"
+
+#~ msgid "Today's date"
+#~ msgstr "Aujourd'hui"
 
 #~ msgid ""
 #~ "Too many members to display there here (%d). Use Open menu to display "
@@ -9403,6 +9414,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "fullname"
 #~ msgstr "Utilisateur"
 
+#~ msgid "function examples"
+#~ msgstr "exemples de fonctions"
+
 #~ msgid "group"
 #~ msgstr "Groupe"
 
@@ -9438,6 +9452,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "my favorites"
 #~ msgstr "Mes préférés..."
+
+#~ msgid "my id"
+#~ msgstr "mon identificateur"
+
+#~ msgid "my last name"
+#~ msgstr "mon nom de famille"
 
 #~ msgid "no import file specified"
 #~ msgstr "pas de fichier d'import spécifié"
@@ -9556,6 +9576,9 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "too many similar document %s <B>ignored</B> "
 #~ msgstr "trop de documents similaires trouvés %s <B>ignoré</B> "
+
+#~ msgid "usage %s --famid=<family id> [--force=yes]"
+#~ msgstr "usage %s --famid=<family id> [--force=yes]"
 
 #~ msgid "user"
 #~ msgstr "utilisateur"

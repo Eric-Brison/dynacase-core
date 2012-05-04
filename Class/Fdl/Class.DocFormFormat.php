@@ -1104,7 +1104,7 @@ class DocFormFormat
              * @param NormalAttribute $oattr
              * @param int $row
              */
-            private function getLayArray(&$lay, &$doc, &$oattr, $row = - 1)
+            public function getLayArray(&$lay, &$doc, &$oattr, $row = - 1)
             {
                 global $action;
                 

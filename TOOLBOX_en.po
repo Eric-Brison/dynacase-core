@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-02 10:51+0200\n"
+"POT-Creation-Date: 2012-05-04 10:33+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1817,9 +1817,6 @@ msgstr ""
 msgid "Error: empty FREEDOM_DB"
 msgstr ""
 
-msgid "Error: missing or empty --config"
-msgstr ""
-
 msgid "Error: missing or empty --tmppgservice"
 msgstr ""
 
@@ -2580,6 +2577,12 @@ msgstr ""
 #, fuzzy
 msgid "Move reference"
 msgstr "Delete"
+
+msgid "My system user id"
+msgstr ""
+
+msgid "My user account id"
+msgstr ""
 
 msgid "N"
 msgstr ""
@@ -3518,6 +3521,9 @@ msgstr ""
 msgid "Template [%s] not found"
 msgstr ""
 
+msgid "The \"Foo\" string"
+msgstr ""
+
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
 "be parameter allowOverride is not set to All"
@@ -3649,6 +3655,9 @@ msgid "Tsick"
 msgstr ""
 
 msgid "Tuesday"
+msgstr ""
+
+msgid "Two cents"
 msgstr ""
 
 msgid "Twprocess_private"
@@ -6309,9 +6318,6 @@ msgstr ""
 msgid "function [%s] not exists"
 msgstr ""
 
-msgid "function examples"
-msgstr ""
-
 msgid "fusers list window"
 msgstr ""
 
@@ -6381,6 +6387,9 @@ msgid "get menu with family concordance"
 msgstr ""
 
 msgid "get preferences"
+msgstr ""
+
+msgid "get search methods"
 msgstr ""
 
 msgid "get value for an attribute of document"
@@ -7002,13 +7011,6 @@ msgstr ""
 
 msgid "multiple document"
 msgstr ""
-
-msgid "my id"
-msgstr ""
-
-#, fuzzy
-msgid "my last name"
-msgstr "Lastname"
 
 #, fuzzy
 msgid "my parameters"
@@ -8196,6 +8198,9 @@ msgstr ""
 msgid "search join syntax error : %s"
 msgstr ""
 
+msgid "search methods"
+msgstr "Search methods"
+
 #, fuzzy
 msgid "search mode"
 msgstr "Start search"
@@ -9013,10 +9018,6 @@ msgstr ""
 msgid "url to reach http server index in open mode"
 msgstr ""
 
-#, c-format
-msgid "usage %s --famid=<family id> [--force=yes]"
-msgstr ""
-
 msgid "use ctrl key in popup menu"
 msgstr ""
 
@@ -9743,6 +9744,10 @@ msgstr ""
 
 #~ msgid "login"
 #~ msgstr "Login name"
+
+#, fuzzy
+#~ msgid "my last name"
+#~ msgstr "Lastname"
 
 #, fuzzy
 #~ msgid "no mail"

@@ -4,6 +4,11 @@
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  */
 
+if (!window.console) {
+	console = {};
+	console.log = function () {
+	};
+}
 
 // use when submit to avoid first unused item
 function deletenew() {
@@ -53,15 +58,172 @@ function sendsearch(faction,artarget) {
     
 		}
 }
-function callFunction(event,th) {
-	var pnode=getPrevElement(th.parentNode);
-	var ex=document.getElementById('example');
-	if (pnode) {
-		pnode.innerHTML='<input  type="text"  size="20" name="_se_keys[]">';
-		pnode.appendChild(ex);
-		ex.style.display='';
+
+/**
+ * Extend jQuery to add a stash/unstash function
+ * to move/restore childs from an element into a
+ * hidden <div/>
+ */
+(function($){
+	/**
+	 * Move childs nodes into an undisplayed <div class="stash"/>
+	 * and disable form elements from submission.
+	 */
+	$.fn.stash = function() {
+		return this.each(function() {
+			var stash = $(this).children('.stash').get(0);
+			if (!stash) {
+				stash = $('<div></div>').addClass('stash').css('display', 'none');
+				$(this).prepend(stash);
+			}
+			$(this).children().not('.stash').each(function(index, elmt) {
+				if (elmt.tagName == 'INPUT' || elmt.tagName == 'SELECT' || elmt.tagName == 'BUTTON' || elmt.tagName == 'TEXTAREA') {
+					var name = elmt.getAttribute('name');
+					if (name != null) {
+						elmt.setAttribute('data-stash-original-name', name);
+						elmt.removeAttribute('name');
+					}
+				}
+				$(elmt).remove();
+				$(stash).append(elmt);
+			});
+		});
 	}
-  
+
+	/**
+	 * Move back stashed elements as childs of an element
+	 */
+	$.fn.unstash = function() {
+		return this.each(function() {
+			var self = this;
+			var stash = $(this).children('.stash').get(0);
+			if (!stash) {
+				return;
+			}
+			$(this).children().not('.stash').remove();
+			$(stash).children().each(function(index, elmt) {
+				if (elmt.tagName == 'INPUT' || elmt.tagName == 'SELECT' || elmt.tagName == 'BUTTON' || elmt.tagName == 'TEXTAREA') {
+					var original_name = elmt.getAttribute('data-stash-original-name');
+					if (original_name != null) {
+						elmt.removeAttribute('data-stash-original-name');
+						elmt.setAttribute('name', original_name);
+					}
+				}
+				$(elmt).remove();
+				$(self).append(elmt);
+			});
+		});
+	}
+})(jQuery);
+
+function callFunction(event,th) {
+	var famid = $('#famid').get(0).value;
+	var attrid = $(th).parent().parent().find('select[name="_se_attrids[]"] option:selected').get(0).value;
+	var targetCell = getPrevElement($(th).parent().get(0));
+
+	if ($(targetCell).data('issearchmethod') == 'yes') {
+		// Get current input value
+		var input = $(targetCell).children('input').get(0);
+		var inputValue = $(input).val();
+		// Unstash
+		$(targetCell).unstash();
+		// Set back input value on unstashed input
+		input = $(targetCell).children('input').get(0);
+		if (input) {
+			$(input).val(inputValue);
+		}
+		// Unmark cell as being a search method
+		$(targetCell).data('issearchmethod', 'no');
+		return;
+	}
+
+	if (famid == '') {
+		alert('Empty famid value');
+		return;
+	}
+	if (attrid == '') {
+		alert('Empty attrid value');
+		return;
+	}
+
+	globalcursor('wait');
+	getSearchMethods({
+		famid: famid,
+		attrid: attrid,
+		cbdata: {
+			'td': targetCell
+		},
+		success: function (data, args) {
+			var targetCell = args.td;
+			if (!targetCell) {
+				unglobalcursor();
+				return;
+			}
+			// Get current input value
+			var input = $(targetCell).children('input').get(0);
+			var inputValue = $(input).val();
+			// Stash elements
+			$(targetCell).stash();
+			// Create input + select
+			var methodSelectElmt = $('#method-selector').get(0).cloneNode(true);
+			methodSelectElmt.removeAttribute('id');
+			var input = document.createElement('input');
+			input.setAttribute('type', 'text');
+			input.setAttribute('size', '20');
+			input.setAttribute('name', '_se_keys[]');
+			// Append input + select
+			$(targetCell).append(input);
+			$(targetCell).append(methodSelectElmt);
+			// Add options from the reponse data
+			for (var i = 0; i < data.length; i++) {
+				var option = document.createElement('option');
+				option.setAttribute('value', data[i].method);
+				if (inputValue != '' && data[i].method == inputValue) {
+					option.setAttribute("selected", "");
+				}
+				option.appendChild(document.createTextNode(data[i].label));
+				methodSelectElmt.appendChild(option);
+			}
+			// Set method select element in target cell
+			$(targetCell).append(methodSelectElmt);
+			$(methodSelectElmt).show();
+			// Set back current input value
+			$(input).val(inputValue);
+			// Mark cell as being a search method
+			$(targetCell).data('issearchmethod', 'yes');
+			unglobalcursor();
+		},
+		error: function (errmsg, args) {
+			alert(errmsg);
+			unglobalcursor();
+		}
+	});
+}
+function getSearchMethods(opts) {
+	$.getJSON(
+		'?',
+		{
+			app: 'FREEDOM',
+			action: 'GETSEARCHMETHODS',
+			famid: opts.famid,
+			attrid: opts.attrid
+		},
+		function (data) {
+			if (!data) {
+				return (typeof(opts.error) == 'function') ? (opts.error)("undefined data in response", opts.cbdata) : undefined;
+			}
+			if (data.error) {
+				return (typeof(opts.error) == 'function') ? (opts.error)(data.error, opts.cbdata) : undefined;
+			}
+			if (!data.data) {
+				return (typeof(opts.error) == 'function') ? (opts.error)("undefined data.data", opts.cbdata) : undefined;
+				return;
+			}
+			return (typeof(opts.success) == 'function') ? (opts.success)(data.data, opts.cbdata) : undefined;
+		}
+	).error(function () {
+		return (typeof(opts.error) == 'function') ? (opts.error)("error retrieving data", opts.cbdata) : undefined;
+	});
 }
 function setKey(event,th) {
 	var pnode;
@@ -114,7 +276,7 @@ function filterfunc(th) {
 	var aid=opt.value;
 	var sec,se;
 	var needresetselect=false,ifirst=0;
-	var ex=document.getElementById('example');
+	var ex=document.getElementById('method-selector');
 	var lc=document.getElementById('lastcell');
 
 	// move to tfoot to not be removed
@@ -309,3 +471,20 @@ function addGlobalOperator() {
 function refreshCondList() {
     $('#condlist select[name="_se_ols[]"]:eq(0)').toggle(false);
 }
+
+function initializeMethodSelectors() {
+	$('td[data-issearchmethod="yes"]').each(function(index, elmt) {
+		$(elmt).data('issearchmethod', 'no');
+		var sigmaCell = getNextElement(elmt);
+		if (sigmaCell) {
+			var input = $(sigmaCell).children('input').get(0);
+			if (input) {
+				callFunction(null, input);
+			}
+		}
+	});
+}
+
+$(document).ready(function () {
+	initializeMethodSelectors();
+});

@@ -51,7 +51,10 @@ function editarray(&$action)
     if (!$oattr) $action->lay->template = sprintf(_("attribute %s not found") , $arrayid);
     else {
         if ($oattr->type != "array") $action->lay->template = sprintf(_("attribute %s not an array") , $arrayid);
-        else getLayArray($action->lay, $doc, $oattr, $row);
+        else {
+            $form = new DocFormFormat($doc);
+            $form->getLayArray($action->lay, $doc, $oattr, $row);
+        }
     }
 }
 ?>

@@ -569,6 +569,12 @@ array(
    "short_name"		=>N_("set logical name identificator"),
    "acl"		=>"FREEDOM_MASTER"
   ) ,
-                      );
+  array(
+   "name"		=>"GETSEARCHMETHODS",
+   "short_name"		=>N_("get search methods"),
+   "acl"		=>"FREEDOM_READ"
+  ) ,
+
+);
    
 ?>
