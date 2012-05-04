@@ -76,21 +76,33 @@ create unique index idx_perm on docperm(docid, userid);";
      * @param int $uid user identificator
      * @return string
      */
-    public static function getMemberOfVector($uid = 0)
+    public static function getMemberOfVector($uid = 0, $strict = false)
     {
         if ($uid == 0) {
             global $action;
-            $mof = $action->user->getMemberOf();
+            if ($strict) $mof = $action->user->getStrictMemberOf();
+            else $mof = $action->user->getMemberOf();
             $mof[] = $action->user->id;
         } else {
             
-            $mof = User::getUserMemberOf($uid);
+            $mof = Account::getUserMemberOf($uid, $strict);
             $mof[] = $uid;
         }
         return '{' . implode(',', $mof) . '}';
     }
     
-    public static function getUperm($profid, $userid)
+    public static function getUperm($profid, $userid, $strict = false)
+    {
+        if ($userid == 1) return -1;
+        $userMember = DocPerm::getMemberOfVector($userid, $strict);
+        $sql = sprintf("select getaperm('%s',%d) as uperm", $userMember, $profid);
+        simpleQuery(getDbAccess() , $sql, $uperm, true, true);
+        if ($uperm === false) return 0;
+        
+        return $uperm;
+    }
+    
+    public static function getStrictUperm($profid, $userid)
     {
         if ($userid == 1) return -1;
         $userMember = DocPerm::getMemberOfVector($userid);

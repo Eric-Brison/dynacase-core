@@ -519,16 +519,21 @@ class DocCtrl extends DocLDAP
      * @param string $aclname name of the acl (edit, view,...)
      * @return string if empty access granted else error message
      */
-    function controlId($docid, $aclname)
+    function controlId($docid, $aclname, $strict = false)
     {
-        if ($this->profid == $docid) {
-            if (!isset($this->uperm)) {
-                $this->uperm = DocPerm::getUperm($docid, $this->userid);
-            }
-            return $this->ControlUp($this->uperm, $aclname);
-        } else {
-            $uperm = DocPerm::getUperm($docid, $this->userid);
+        if ($strict) {
+            $uperm = DocPerm::getUperm($docid, $this->userid, $strict);
             return $this->ControlUp($uperm, $aclname);
+        } else {
+            if ($this->profid == $docid) {
+                if (!isset($this->uperm)) {
+                    $this->uperm = DocPerm::getUperm($docid, $this->userid);
+                }
+                return $this->ControlUp($this->uperm, $aclname);
+            } else {
+                $uperm = DocPerm::getUperm($docid, $this->userid);
+                return $this->ControlUp($uperm, $aclname);
+            }
         }
     }
     /**

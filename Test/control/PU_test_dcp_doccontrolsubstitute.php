@@ -44,15 +44,12 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
     {
         $nu = $this->sudo($login);
         
-        $action = self::getAction();
         foreach ($incumbents as $aIncumbent) {
             $u = new \Account();
             $u->setLoginName($aIncumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
             $err = $u->setSubstitute($nu->id);
             $this->assertEmpty($err, "substitute error");
-            //$action->user->revert();
-            
         }
         $s = new \SearchDoc(self::$dbaccess, 'TST_SUBSTITUTE1');
         $s->setObjectReturn();
@@ -96,7 +93,29 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             $this->exitSudo();
         }
     }
-    
+    /**
+     * @dataProvider dataControlStrict
+     */
+    public function testControlStrict($login, array $incumbents, array $expectedDocNames)
+    {
+        
+        $nu = $this->sudo($login);
+        foreach ($incumbents as $aIncumbent) {
+            $u = new \Account();
+            $u->setLoginName($aIncumbent);
+            if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
+            $err = $u->setSubstitute($nu->id);
+            $this->assertEmpty($err, "substitute error");
+        }
+        clearCacheDoc();
+        foreach ($expectedDocNames as $docName => $expectControl) {
+            $d = new_doc(self::$dbaccess, $docName);
+            $this->assertEquals($expectControl["normal"], $d->control('view', false) == "", sprintf("not correct normal control view for %s", $docName));
+            
+            $this->assertEquals($expectControl["strict"], $d->control('view', true) == "", sprintf("not correct strict control view for %s", $docName));
+        }
+        $this->exitSudo();
+    }
     public function dataControlSubstitute()
     {
         return array(
@@ -260,6 +279,90 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
                     'TST_D7',
                     'TST_D8',
                     'TST_D5'
+                )
+            )
+        );
+    }
+    
+    public function dataControlStrict()
+    {
+        return array(
+            array(
+                "login" => "ured",
+                "incumbent" => array() ,
+                "expect" => array(
+                    'TST_D1' => array(
+                        "strict" => true,
+                        "normal" => true
+                    ) ,
+                    'TST_D2' => array(
+                        "strict" => true,
+                        "normal" => true
+                    ) ,
+                    'TST_D3' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                    'TST_D4' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                    'TST_D5' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                    'TST_D6' => array(
+                        "strict" => true,
+                        "normal" => true
+                    ) ,
+                    'TST_D7' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                    'TST_D8' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                )
+            ) ,
+            array(
+                "login" => "uyellow",
+                "incumbent" => array(
+                    "ured"
+                ) ,
+                "expect" => array(
+                    'TST_D1' => array(
+                        "strict" => false,
+                        "normal" => true
+                    ) ,
+                    'TST_D2' => array(
+                        "strict" => false,
+                        "normal" => true
+                    ) ,
+                    'TST_D3' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                    'TST_D4' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                    'TST_D5' => array(
+                        "strict" => true,
+                        "normal" => true
+                    ) ,
+                    'TST_D6' => array(
+                        "strict" => false,
+                        "normal" => true
+                    ) ,
+                    'TST_D7' => array(
+                        "strict" => false,
+                        "normal" => false
+                    ) ,
+                    'TST_D8' => array(
+                        "strict" => true,
+                        "normal" => true
+                    ) ,
                 )
             )
         );

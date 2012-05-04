@@ -5243,18 +5243,19 @@ create unique index i_docir on doc(initid, revision);";
          * Control Access privilege for document for current user
          *
          * @param string $aclname identificator of the privilege to test
+         * @param bool $strict set tio true to test without notion of account susbstitute
          * @return string empty means access granted else it is an error message (access unavailable)
          */
-        public function control($aclname)
+        public function control($aclname, $strict = false)
         {
             $err = '';
             if (($this->isAffected())) {
                 if (($this->profid <= 0) || ($this->userid == 1)) return ""; // no profil or admin
-                $err = $this->controlId($this->profid, $aclname);
+                $err = $this->controlId($this->profid, $aclname, $strict);
                 if (($err != "") && ($this->isConfidential())) $err = sprintf(_("no privilege %s for %s") , $aclname, $this->getTitle());
                 // Edit rights on profiles must also be controlled by the 'modifyacl' acl
                 if (($err == "") && ($aclname == 'edit' || $aclname == 'delete' || $aclname == 'unlock') && $this->isRealProfile()) {
-                    $err = $this->controlId($this->profid, 'modifyacl');
+                    $err = $this->controlId($this->profid, 'modifyacl', $strict);
                 }
             }
             return $err;

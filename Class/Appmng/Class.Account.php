@@ -135,6 +135,33 @@ create sequence seq_id_users start 10;";
         return false;
     }
     /**
+     * return substitute account
+     * return null if no susbtitute
+     * @return Account|null
+     */
+    public function getSubstitute()
+    {
+        if ($this->isAffected()) {
+            if ($this->substitute) {
+                return new Account($this->dbaccess, $this->substitute);
+            }
+        }
+        return null;
+    }
+    /**
+     * return incumbent ids account list (accounts which has this account as substitute)
+     * @return int[]
+     */
+    public function getIncumbents($returnSystemIds = true)
+    {
+        $incumbents = array();
+        if ($this->isAffected()) {
+            $sql = sprintf("select %s from users where substitute=%d;", $returnSystemIds ? 'id' : 'fid', $this->id);
+            simpleQuery($this->dbaccess, $sql, $incumbents, true, false);
+        }
+        return $incumbents;
+    }
+    /**
      * set substitute to this user
      * this user become the incumbent of $substitute
      * @param string $substitute login or user system id
@@ -373,10 +400,12 @@ create sequence seq_id_users start 10;";
      * @param string $pwd1 password one
      * @param string $pwd2 password two
      * @param string $extmail mail address
+     * @param array $roles
+     * @param int $substitute system substitute id
      * @return string error message
      */
     function updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail = '', array $roles = array(-1
-    ))
+    ) , $substitute = - 1)
     {
         
         $this->lastname = $lname;
@@ -393,7 +422,6 @@ create sequence seq_id_users start 10;";
         } else {
             $this->mail = $this->getMail();
         }
-        
         if ($expires > 0) $this->expires = $expires;
         if ($passdelay > 0) $this->passdelay = $passdelay;
         elseif ($passdelay == - 1) { // suppress expire date
@@ -414,6 +442,9 @@ create sequence seq_id_users start 10;";
             $this->updateMemberOf();
         }
         
+        if ($substitute > - 1) {
+            $this->setSubstitute($substitute);
+        }
         return $err;
     }
     /**
@@ -801,7 +832,7 @@ union
      * @return array
      * @throws Exception
      */
-    private function getStrictMemberOf($uid = - 1)
+    public function getStrictMemberOf($uid = - 1)
     {
         if ($uid == - 1) $uid = $this->id;
         if (!$uid) return array();
@@ -866,16 +897,18 @@ union
      * @param int $uid user identificator
      * @return array|null
      */
-    public static function getUserMemberOf($uid)
+    public static function getUserMemberOf($uid, $strict = false)
     {
         global $action;
         $memberOf = array();
         if ($action->user->id == $uid) {
-            $memberOf = $action->user->getMemberOf();
+            if ($strict) $memberOf = $action->user->getStrictMemberOf();
+            else $memberOf = $action->user->getMemberOf();
         } else {
             $u = new Account('', $uid);
             if ($u->isAffected()) {
-                $memberOf = $u->getMemberOf();
+                if ($strict) $memberOf = $u->getStrictMemberOf();
+                else $memberOf = $u->getMemberOf();
             } else {
                 return null;
             }
