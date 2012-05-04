@@ -67,7 +67,15 @@ class _IUSER extends Doc
             $oa = $this->getAttribute("us_tab_system");
             $oa->setOption("firstopen", "yes");
         }
+        $this->updateIncumbents();
         return $err;
+    }
+    public function updateIncumbents()
+    {
+        $u = $this->getAccount();
+        if ($u) {
+            $this->setValue("us_incumbents", $u->getIncumbents(false));
+        }
     }
     /**
      * test if the document can be set in LDAP
@@ -261,6 +269,7 @@ class _IUSER extends Doc
         else $passdelay = intval($daydelay) * 3600 * 24;
         $status = $this->getValue("us_status");
         $login = $this->getValue("us_login");
+        $substitute = $this->getValue("us_substitute");
         $allRoles = $this->getAValues("us_t_roles");
         $extmail = $this->getValue("us_extmail", $this->getValue("us_homemail", " "));
         
@@ -294,7 +303,8 @@ class _IUSER extends Doc
             }
             $roleIds = $this->getSystemIds($roles);
             // perform update system User table
-            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds);
+            if ($substitute) $substitute = $this->getDocValue($substitute, "us_whatid");
+            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
             if ($err == "") {
                 if ($user) {
                     $this->setValue("US_WHATID", $user->id);
