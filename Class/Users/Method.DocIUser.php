@@ -719,6 +719,7 @@ class _IUSER extends Doc
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
+            $this->synchronizeSystemUser();
         }
         return "";
     }
@@ -747,6 +748,7 @@ class _IUSER extends Doc
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
+            $this->synchronizeSystemUser();
         }
         return "";
     }
