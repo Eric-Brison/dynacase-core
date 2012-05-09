@@ -21,7 +21,7 @@ $usage = new ApiUsage();
 
 $usage->setText("set applicative parameter value");
 $parname = $usage->addNeeded("param", "parameter name"); // parameter name
-$parval = $usage->addNeeded("value", "parameter value to set"); // parameter value
+$parval = $usage->addOption("value", "parameter value to set"); // parameter value (option)
 $paruser = GetHttpVars("userid"); // parameter user id (option)
 $parapp = $usage->addOption("appname", "Parameter's application's name"); // parameter app name (option)
 
