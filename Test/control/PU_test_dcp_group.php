@@ -54,7 +54,7 @@ class TestGroup extends TestCaseDcpDocument
             $groups[$gLogin] = $group;
         }
         $u = new \Account("", $user->getValue("us_whatid"));
-        $this->assertTrue($u->isAffected());
+        $this->assertTrue($u->isAffected() , sprintf("cannot find %s account", $user->getValue("us_whatid")));
         $gids = $u->getGroupsId();
         
         $this->assertEmpty(array_diff($newGids, $gids) , "groups are not in new user");
@@ -67,8 +67,8 @@ class TestGroup extends TestCaseDcpDocument
         $userGroups = $u->getUserParents();
         //Checking result
         foreach ($userGroups as $uGroup) {
-            if ($uGroup["login"] != "all") {
-                $this->assertTrue(in_array($uGroup["login"], $groupLoginsResult));
+            if (($uGroup["login"] != "all") && ($uGroup["accounttype"] != 'R')) {
+                $this->assertTrue(in_array($uGroup["login"], $groupLoginsResult) , sprintf("login %s not in %s", $uGroup["login"], implode(',', $groupLoginsResult)));
             }
         }
     }

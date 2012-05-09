@@ -517,6 +517,7 @@ class DocCtrl extends DocLDAP
      *
      * @param int $docid profil identificator
      * @param string $aclname name of the acl (edit, view,...)
+     * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
      */
     function controlId($docid, $aclname, $strict = false)

@@ -174,30 +174,35 @@ create sequence seq_id_users start 10;";
             $err = sprintf(_("cannot set substitute account object not affected"));
         }
         if ($err) return $err;
-        if (!(is_numeric($substitute))) {
-            $sql = sprintf("select id from users where login = '%s'", pg_escape_string($substitute));
-            simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
-            if ($substituteId) $substitute = $substituteId;
-            else $err = sprintf(_("cannot set substitute %s login not found"));
-        }
-        if ($err) return $err;
         if ($substitute) {
+            if (!(is_numeric($substitute))) {
+                $sql = sprintf("select id from users where login = '%s'", pg_escape_string($substitute));
+                simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
+                if ($substituteId) $substitute = $substituteId;
+                else $err = sprintf(_("cannot set substitute %s login not found") , $substitute);
+            }
+            if ($err) return $err;
             $sql = sprintf("select id from users where id = '%d'", $substitute);
             simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
-            if (!$substituteId) $err = sprintf(_("cannot set substitute %s id not found"));
+            if (!$substituteId) $err = sprintf(_("cannot set substitute %s id not found") , $substitute);
         }
         if ($err) return $err;
         if ($this->substitute == $this->id) {
             $err = sprintf(_("cannot substitute itself"));
         }
         if ($err) return $err;
+        $oldSubstitute = $this->substitute;
         $this->substitute = $substitute;
         
         $err = $this->modify();
         if (!$err) {
             $u = new \Account($this->dbaccess, $this->substitute);
             $u->updateMemberOf();
-            // update global current user
+            if ($oldSubstitute) {
+                $u->select($oldSubstitute);
+                $u->updateMemberOf();
+            }
+            
             global $action;
             if ($action->user->id == $u->id) $action->user->revert();
         }
@@ -442,8 +447,8 @@ create sequence seq_id_users start 10;";
             $this->updateMemberOf();
         }
         
-        if ($substitute > - 1) {
-            $this->setSubstitute($substitute);
+        if ((!$err) && ($substitute > - 1)) {
+            $err = $this->setSubstitute($substitute);
         }
         return $err;
     }
@@ -848,10 +853,11 @@ union
     }
     /**
      * update memberof fields with all group/role of user
-     * @return array
+     * @param bool $updateSubstitute also update substitute by default
+     * @return array of memberof identificators
      * @throws Exception
      */
-    public function updateMemberOf()
+    public function updateMemberOf($updateSubstitute = true)
     {
         if (!$this->id) return array();
         
@@ -871,6 +877,11 @@ union
             'memberof'
         ) , true);
         if ($err) throw new Exception($err);
+        if ($updateSubstitute && $this->substitute) {
+            $u = new Account($this->dbaccess, $this->substitute);
+            $u->updateMemberOf(false);
+        }
+        
         return $lg;
     }
     /**

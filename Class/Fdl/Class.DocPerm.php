@@ -74,6 +74,7 @@ create unique index idx_perm on docperm(docid, userid);";
      * to be use in getaperm sql function
      * @static
      * @param int $uid user identificator
+     * @param bool $strict set to true to not use substitute
      * @return string
      */
     public static function getMemberOfVector($uid = 0, $strict = false)
@@ -90,7 +91,13 @@ create unique index idx_perm on docperm(docid, userid);";
         }
         return '{' . implode(',', $mof) . '}';
     }
-    
+    /**
+     * @static
+     * @param int $profid profil identificator
+     * @param int $userid user identificator
+     * @param bool $strict set to true to not use substitute
+     * @return int
+     */
     public static function getUperm($profid, $userid, $strict = false)
     {
         if ($userid == 1) return -1;
@@ -134,14 +141,6 @@ create unique index idx_perm on docperm(docid, userid);";
     function ControlG($pos)
     {
         return false;
-        if (!isset($this->gacl)) {
-            $q = new QueryDb($this->dbaccess, "docperm");
-            $t = $q->Query(0, 1, "TABLE", "select computegperm({$this->userid},{$this->docid}) as uperm");
-            
-            $this->gacl = $t[0]["uperm"];
-        }
-        
-        return ($this->ControlMask($this->gacl, $pos));
     }
     /**
      * control access at $pos position direct inly (green)

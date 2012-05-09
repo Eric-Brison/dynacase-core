@@ -49,13 +49,13 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             $u->setLoginName($aIncumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
             $err = $u->setSubstitute($nu->id);
-            $this->assertEmpty($err, "substitute error");
+            $this->assertEmpty($err, "substitute error: $err");
         }
         $s = new \SearchDoc(self::$dbaccess, 'TST_SUBSTITUTE1');
         $s->setObjectReturn();
         $s->search();
         $err = $s->getError();
-        $this->assertEmpty($err, "substitute search error");
+        $this->assertEmpty($err, "substitute search error: $err");
         
         $names = $this->getSearchName($s);
         
@@ -75,7 +75,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             $u->setLoginName($incumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $incumbent account");
             $err = $u->setSubstitute($aSubstitute);
-            $this->assertEmpty($err, "substitute error");
+            $this->assertEmpty($err, "substitute error : $err");
         }
         foreach ($expectedDocNamesByLogin as $login => $expectNames) {
             $this->sudo($login);
@@ -94,6 +94,21 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
         }
     }
     /**
+     * @dataProvider dataControlReSubstitute
+     */
+    public function testControlReSubstitute(array $previousSubstitues, array $substituts, array $expectedDocNamesByLogin)
+    {
+        
+        foreach ($previousSubstitues as $incumbent => $aSubstitute) {
+            $u = new \Account();
+            $u->setLoginName($incumbent);
+            if (!$u->isAffected()) $this->markTestIncomplete("cannot find $incumbent account");
+            $err = $u->setSubstitute($aSubstitute);
+            $this->assertEmpty($err, "substitute error : $err");
+        }
+        $this->testControlSubstitute($substituts, $expectedDocNamesByLogin);
+    }
+    /**
      * @dataProvider dataControlStrict
      */
     public function testControlStrict($login, array $incumbents, array $expectedDocNames)
@@ -105,7 +120,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             $u->setLoginName($aIncumbent);
             if (!$u->isAffected()) $this->markTestIncomplete("cannot find $aIncumbent account");
             $err = $u->setSubstitute($nu->id);
-            $this->assertEmpty($err, "substitute error");
+            $this->assertEmpty($err, "substitute error : $err");
         }
         clearCacheDoc();
         foreach ($expectedDocNames as $docName => $expectControl) {
@@ -115,6 +130,46 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             $this->assertEquals($expectControl["strict"], $d->control('view', true) == "", sprintf("not correct strict control view for %s", $docName));
         }
         $this->exitSudo();
+    }
+    
+    public function dataControlReSubstitute()
+    {
+        return array(
+            array(
+                
+                "previousSubstitutes" => array(
+                    "ured" => "ublue",
+                    "ublue" => "ured"
+                ) ,
+                "substitutes" => array(
+                    "ured" => "uyellow",
+                    "ublue" => "uyellow"
+                ) ,
+                "expect" => array(
+                    "ured" => array(
+                        'TST_D1',
+                        'TST_D2',
+                        'TST_D6'
+                    ) ,
+                    "ublue" => array(
+                        'TST_D2',
+                        'TST_D3',
+                        'TST_D4',
+                        'TST_D7'
+                    ) ,
+                    "uyellow" => array(
+                        'TST_D1',
+                        'TST_D2',
+                        'TST_D3',
+                        'TST_D4',
+                        'TST_D5',
+                        'TST_D6',
+                        'TST_D7',
+                        'TST_D8'
+                    )
+                )
+            )
+        );
     }
     public function dataControlSubstitute()
     {
