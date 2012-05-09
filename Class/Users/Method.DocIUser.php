@@ -626,6 +626,20 @@ class _IUSER extends Doc
         return $err;
     }
     /**
+     * the incumbent account documents cannot be modified by susbtitutes
+     * @param string $aclname
+     * @param bool $strict
+     * @return string
+     */
+    public function control($aclname, $strict = false)
+    {
+        if ($this->getAccount()->substitute == $this->getSystemUserId()) {
+            return parent::control($aclname, true);
+        } else {
+            return parent::control($aclname, $strict);
+        }
+    }
+    /**
      * Security menus visibilities
      */
     function menuResetLoginFailure()
