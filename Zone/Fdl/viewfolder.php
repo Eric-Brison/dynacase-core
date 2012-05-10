@@ -352,20 +352,6 @@ $famid = "") // folder containt special fam id
                 $cmp = ($a['fromid'] - $b['fromid']);
                 return ($cmp == 0) ? $collator->compare($a['title'], $b['title']) : $cmp;
             });
-            /*
-             * Sort documents with same fromid into separate lists
-             */
-            $tdocByFromId = array();
-            foreach ($tdoc as $doc) {
-                $tdocByFromId[$doc['fromid']] []= $doc;
-            }
-            /*
-             * Set the BVAL<fromid> blocks with the list of
-             * documents from the same family
-             */
-            foreach ($tdocByFromId as $fromid => $documentList) {
-                $action->lay->SetBlockData("BVAL" . $fromid, $documentList);
-            }
         } else {
             if ((GetHttpVars("sqlorder") == "") && ($slice >= $action->GetParam("FDL_FOLDERMAXITEM", 1000))) uasort($tdoc, "orderbytitle");
         }
@@ -382,13 +368,29 @@ $famid = "") // folder containt special fam id
     
     $action->lay->Set("nbdiv", $kdiv - 1);
     if ($column) {
+        /*
+        * Sort documents with same fromid into separate lists
+        */
+        $tdocByFromId = array();
+        foreach ($tdoc as $doc) {
+            $tdocByFromId[$doc['fromid']] []= $doc;
+        }
+        /*
+        * Set the BVAL<fromid> blocks with the list of
+        * documents from the same family
+        */
+        foreach ($tdocByFromId as $fromid => $documentList) {
+            $action->lay->SetBlockData("BVAL" . $fromid, $documentList);
+        }
         /* Order tfamdoc by 'ftitle' */
         $collator = new Collator($action->GetParam("CORE_LANG", "fr_FR"));
         usort($tfamdoc, function($a, $b) use ($collator) {
             return $collator->compare($a['ftitle'], $b['ftitle']);
         });
         $action->lay->SetBlockData("TABLEBODY", $tfamdoc);
-    } else $action->lay->SetBlockData("TABLEBODY", $tdoc);
+    } else {
+        $action->lay->SetBlockData("TABLEBODY", $tdoc);
+    }
     
     if ($with_popup) {
         // display popup js
