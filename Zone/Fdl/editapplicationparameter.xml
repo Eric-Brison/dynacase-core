@@ -1,0 +1,25 @@
+<div class="editapplicationparameter" data-parameter="[parameterid]">
+    <div data-type="label">
+        <label for="[parameterid]">[label]</label>
+    </div>
+    <div data-type="field">
+        <form method="POST" action="" data-on-change="[change]">
+            <input type="hidden" value="[appid]" id="app_[parameterid]"/>
+            <input type="hidden" value="[type]" id="type_[parameterid]"/>
+            [IF type_text]
+            <input type="text" name="_[parameterid]" id="[parameterid]" value="[value]" [on_change]/>
+            [ENDIF type_text]
+            [IF type_enum]
+            <select name="_[parameterid]" id="[parameterid]" [on_change]>
+                [BLOCK options]
+                <option value="[value]" [selected]>[value]</option>
+                [ENDBLOCK options]
+            </select>
+            [ENDIF type_enum]
+            [IF local_submit]
+            <input type="submit" value="[submit_label]" onclick="sendParameterApplicationData(this, '[parameterid]')" name="[parameterid]"/>
+            [ENDIF local_submit]
+        </form>
+    </div>
+
+</div>

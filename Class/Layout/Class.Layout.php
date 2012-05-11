@@ -154,6 +154,7 @@ class Layout
     {
         $this->zone = $zone;
     }
+    
     function SetBlockCorresp($p_nom_block, $p_nom_modele, $p_nom = NULL)
     {
         $this->corresp["$p_nom_block"]["[$p_nom_modele]"] = ($p_nom == NULL ? $p_nom_modele : "$p_nom");
@@ -182,6 +183,7 @@ class Layout
         if (isset($this->data["$p_nom_block"])) return $this->data["$p_nom_block"];
         return false;
     }
+    
     function SetBlock($name, $block)
     {
         if ($this->strip == 'Y') {
@@ -232,6 +234,7 @@ class Layout
         }
         return ($out);
     }
+    
     function ParseIf(&$out)
     {
         $out = preg_replace("/(?m)\[IF(NOT)?\s+([^\]]*)\](.*?)\[ENDIF\s*\\2\]/se", "\$this->TestIf('\\2','\\3','\\1')", $out);
@@ -312,6 +315,16 @@ class Layout
             if ($res == "") {
                 $res = $act->execute();
             }
+            
+            $jsRefs = $act->parent->getJsRef();
+            foreach ($jsRefs as $jsRefe) {
+                $this->action->parent->addJsRef($jsRefe);
+            }
+            $cssRefs = $act->parent->getCssRef();
+            foreach ($cssRefs as $cssRefe) {
+                $this->action->parent->addCssRef($cssRefe);
+            }
+            
             $ZONE_ARGS = $OLD_ZONE_ARGS; // restore old zone args
             return ($res);
         } else {
@@ -348,6 +361,7 @@ class Layout
         
         $out = preg_replace("/\[TEXT:([^\]]*)\]/e", "\$this->Text('\\1')", $out);
     }
+    
     function Text($s)
     {
         if ($s == "") return $s;
@@ -442,12 +456,14 @@ class Layout
         }
         return ($out);
     }
+    
     function ParseCss(&$out)
     {
         $out = preg_replace("/\[CSS:REF\]/e", "\$this->GenCssRef()", $out);
         
         $out = preg_replace("/\[CSS:CODE\]/e", "\$this->GenCssCode()", $out);
     }
+    
     function gen()
     {
         if ($this->noparse) return $this->template;

@@ -1,0 +1,3 @@
+<div class="editsubmit">
+    <input type="submit" value="[submit_label]" onclick="sendAllParameters()"/>
+</div>

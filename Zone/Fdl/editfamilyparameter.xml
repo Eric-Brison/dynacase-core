@@ -1,0 +1,15 @@
+<div class="editfamilyparameter" data-parameter="[attrid]">
+    <div data-type="label">
+        <label for="[attrid]">[label]</label>
+    </div>
+    <div data-type="field">
+        <form method="POST" action="" data-on-change="[change]">
+            <input type="hidden" value="[famid]" id="fam_[attrid]"/>
+            [input_field]
+            [IF local_submit]
+            <input type="submit" value="[submit_label]" onclick="sendParameterData(this, '[attrid]')" name="[attrid]"/>
+            [ENDIF local_submit]
+        </form>
+    </div>
+
+</div>
