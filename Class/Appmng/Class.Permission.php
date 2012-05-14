@@ -388,11 +388,38 @@ create index permission_idx4 on permission(computed);
         
         return ($this->privileges);
     }
-    
-    function HasPrivilege($idacl)
+    /**
+     * return true if user has this privilege
+     * @param string $idacl acl id
+     * @param bool $strict set to true to not use substitute user account property
+     * @return bool
+     */
+    function hasPrivilege($idacl, $strict = false)
     {
-        return (($this->id_user == 1) || // admin user
+        $grant = (($this->id_user == 1) || // admin user
         (in_array($idacl, $this->privileges)));
+        if ($grant) return true;
+        if ($strict) return $grant;
+        return $this->substituteHasPrivilege($idacl);
+    }
+    /**
+     * return true if incumbent user has this privilege
+     * @param string $idacl acl id
+     * @return bool
+     */
+    function substituteHasPrivilege($idacl)
+    {
+        $u = new Account($this->dbaccess, $this->id_user);
+        $incumbents = $u->getIncumbents();
+        foreach ($incumbents as $aIncumbent) {
+            $p = new Permission($this->dbaccess, array(
+                $aIncumbent,
+                $this->id_application
+            ));
+            $grant = $p->hasPrivilege($idacl, true);
+            if ($grant) return true;
+        }
+        return false;
     }
     // id_user field must be set before
     function AddUserPermission($appname, $aclname)
@@ -430,7 +457,7 @@ action.acl = acl.name where ";
         $sSql.= " action.id_application = '" . $this->id_application . "' AND ";
         $sSql.= " acl.id in ('" . implode("','", $acls) . "')";
         
-        $res = pg_exec($this->dbid, $sSql);
+        $res = pg_query($this->dbid, $sSql);
         
         $i = 0;
         while ($arr = pg_fetch_array($res, $i)) {
