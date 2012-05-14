@@ -120,7 +120,7 @@ create sequence SEQ_ID_ACTION;
     );
     /**
      * current user
-     * @var User
+     * @var Account
      */
     public $user;
     /**
@@ -264,7 +264,7 @@ create sequence SEQ_ID_ACTION;
      * set a new value for a user parameter
      * @param string $name parameter key
      * @param string $val new value for the parameter
-     * @return string error message if not succeeed else empty string
+     * @return string error message if not succeed else empty string
      */
     function setParamU($name, $val)
     {
@@ -385,11 +385,17 @@ create sequence SEQ_ID_ACTION;
         $query->Query();
         return ($query->nb > 0);
     }
-    
-    function HasPermission($acl_name = "", $app_name = "")
+    /**
+     * @param string $acl_name acl name
+     * return true if current user has acl privilege
+     * @param string $app_name app name to specify another appname (else current app name)
+     * @param bool $strict to not use substitute account information
+     * @return bool
+     */
+    function HasPermission($acl_name = "", $app_name = "", $strict = false)
     {
         if ($acl_name == "") return (true); // no control for this action
-        return ($this->parent->HasPermission($acl_name, $app_name));
+        return ($this->parent->HasPermission($acl_name, $app_name, $strict));
     }
     /** 
      * Check if the current user can execute the specified action.
@@ -642,7 +648,7 @@ create sequence SEQ_ID_ACTION;
      * retrieve the value of an argument fot the action
      * in web mode the value comes from http variable and in shell mode comes from args variable
      * @param string $k the argument name
-     * @param any $def default value if no argument is not set
+     * @param mixed $def default value if no argument is not set
      */
     static function getArgument($k, $def = '')
     {

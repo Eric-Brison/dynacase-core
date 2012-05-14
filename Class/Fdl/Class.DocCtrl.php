@@ -231,7 +231,7 @@ class DocCtrl extends DocLDAP
      */
     function setProfil($profid, $fromdocidvalues = null)
     {
-        
+        $err = '';
         if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
         if (empty($profid)) {
             $profid = 0;
@@ -265,6 +265,7 @@ class DocCtrl extends DocLDAP
                 "views"
             ) , true);
         }
+        return $err;
     }
     /**
      * reset right for dynamic profil

@@ -156,17 +156,17 @@ class CVDoc extends Doc
         $this->setValue("CV_IDVIEW", $ti);
     }
     
-    function DocControl($aclname)
+    function docControl($aclname, $strict=false)
     {
-        return Doc::Control($aclname);
+        return Doc::control($aclname, $strict);
     }
     /**
      * Special control in case of dynamic controlled profil
      */
-    function Control($aclname)
+    function control($aclname, $strict=false)
     {
         
-        $err = $this->DocControl($aclname);
+        $err = $this->docControl($aclname,$strict);
         if ($err == "") return $err; // normal case
         if ($this->getValue("DPDOC_FAMID") > 0) {
             if ($this->doc) {
@@ -182,7 +182,7 @@ class CVDoc extends Doc
                     
                     $this->pdoc = & $pdoc;
                 }
-                $err = $this->pdoc->DocControl($aclname);
+                $err = $this->pdoc->docControl($aclname, $strict);
             }
         }
         return $err;

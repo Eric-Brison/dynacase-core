@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-14 10:08+0200\n"
-"PO-Revision-Date: 2012-05-14 10:10+0200\n"
+"POT-Creation-Date: 2012-05-14 15:38+0200\n"
+"PO-Revision-Date: 2012-05-14 15:39+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -418,6 +418,10 @@ msgstr "(seulement)"
 
 msgid "(private)"
 msgstr "(privé)"
+
+#, c-format
+msgid "(substitute of %s) : "
+msgstr "(suppléant de %s) : "
 
 msgid "(title)"
 msgstr "(titre)"
@@ -1770,9 +1774,6 @@ msgstr "Erreur: le fichier de config '%s' n'est pas un fichier"
 
 msgid "Error: empty FREEDOM_DB"
 msgstr "Erreur: FREEDOM_DB vide"
-
-msgid "Error: missing or empty --config"
-msgstr "Erreur: --config manquant ou absent"
 
 msgid "Error: missing or empty --tmppgservice"
 msgstr "Erreur: --tmppgservice manquant ou absent"
@@ -6072,9 +6073,6 @@ msgstr "fonction '%s' déclaré dans le %s est introuvable"
 msgid "function [%s] not exists"
 msgstr "la fonction [%s] n'existe pas"
 
-msgid "function examples"
-msgstr "exemples de fonctions"
-
 msgid "fusers list window"
 msgstr "fuser fenetre liste"
 
@@ -6721,12 +6719,6 @@ msgstr "site de Mozilla"
 
 msgid "multiple document"
 msgstr ""
-
-msgid "my id"
-msgstr "mon identificateur"
-
-msgid "my last name"
-msgstr "mon nom de famille"
 
 msgid "my parameters"
 msgstr "mes paramètres"
@@ -8621,10 +8613,6 @@ msgstr "URL pour atteindre l'index du serveur web dynacase"
 msgid "url to reach http server index in open mode"
 msgstr "URL pour atteindre le serveur on authentification open"
 
-#, c-format
-msgid "usage %s --famid=<family id> [--force=yes]"
-msgstr "usage %s --famid=<family id> [--force=yes]"
-
 msgid "use ctrl key in popup menu"
 msgstr "utiliser la touche ctrl dans les menus popup"
 
@@ -9139,9 +9127,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error: missing or empty --config"
 #~ msgstr "Erreur: --config manquant ou absent"
 
-#~ msgid "Failed to copy $infile to $f"
-#~ msgstr "Echec de la copie de $infile vers $f"
-
 #~ msgid "Import from"
 #~ msgstr "Importation à partir de"
 
@@ -9537,9 +9522,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "function examples"
 #~ msgstr "exemples de fonctions"
-
-#~ msgid "group"
-#~ msgstr "Groupe"
 
 #~ msgid "group list"
 #~ msgstr "les groupes"

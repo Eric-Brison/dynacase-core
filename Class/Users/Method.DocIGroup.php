@@ -24,12 +24,14 @@ class _IGROUP extends _GROUP
     public $wuser;
     public function setGroups()
     {
+        return '';
     }
     /**
      * @param array $accountIds
      */
     public function getSystemIds(array $accountIds)
     {
+        return array();
     }
     /**
      * @param bool $real
@@ -96,7 +98,7 @@ class _IGROUP extends _GROUP
      */
     function getLDAPMember()
     {
-        $g=$this->getAccount();
+        $g = $this->getAccount();
         $g->getAllMembers();
         $tdn = array();
         foreach ($g as $k => $v) {
@@ -443,8 +445,8 @@ class _IGROUP extends _GROUP
      */
     function refreshMembers()
     {
-        $err='';
-
+        $err = '';
+        
         $wid = $this->getValue("us_whatid");
         if ($wid > 0) {
             $u = $this->getAccount(true);
@@ -461,7 +463,7 @@ class _IGROUP extends _GROUP
                     }
                 }
             }
-
+            
             if (is_array($tglogin)) {
                 uasort($tglogin, "strcasecmp");
                 $this->SetValue("GRP_IDGROUP", array_keys($tglogin));
@@ -469,15 +471,10 @@ class _IGROUP extends _GROUP
                 $this->DeleteValue("GRP_IDGROUP");
             }
             
-
             $err = $this->modify();
         }
         return $err;
     }
-    
-
-    
-
     /**
      * @begin-method-ignore
      * this part will be deleted when construct document class until end-method-ignore

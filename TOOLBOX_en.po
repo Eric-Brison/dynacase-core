@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-14 10:08+0200\n"
+"POT-Creation-Date: 2012-05-14 15:38+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -435,6 +435,10 @@ msgstr ""
 #, fuzzy
 msgid "(private)"
 msgstr "Create"
+
+#, c-format
+msgid "(substitute of %s) : "
+msgstr ""
 
 msgid "(title)"
 msgstr ""
@@ -1849,9 +1853,6 @@ msgid "Error: config file '%s' is not a file."
 msgstr ""
 
 msgid "Error: empty FREEDOM_DB"
-msgstr ""
-
-msgid "Error: missing or empty --config"
 msgstr ""
 
 msgid "Error: missing or empty --tmppgservice"
@@ -6393,9 +6394,6 @@ msgstr ""
 msgid "function [%s] not exists"
 msgstr ""
 
-msgid "function examples"
-msgstr ""
-
 msgid "fusers list window"
 msgstr ""
 
@@ -7095,13 +7093,6 @@ msgstr ""
 
 msgid "multiple document"
 msgstr ""
-
-msgid "my id"
-msgstr ""
-
-#, fuzzy
-msgid "my last name"
-msgstr "Lastname"
 
 #, fuzzy
 msgid "my parameters"
@@ -9107,10 +9098,6 @@ msgid "url to reach http server index"
 msgstr ""
 
 msgid "url to reach http server index in open mode"
-msgstr ""
-
-#, c-format
-msgid "usage %s --famid=<family id> [--force=yes]"
 msgstr ""
 
 msgid "use ctrl key in popup menu"

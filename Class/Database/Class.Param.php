@@ -109,8 +109,8 @@ class Param extends DbObj
             $type,
             $appid
         ));
-        if ($paramt->isAffected()) $this->Modify();
-        else $this->Add();
+        if ($paramt->isAffected()) $err=$this->Modify();
+        else $err=$this->Add();
         
         $otype = '';
         if ($type == PARAM_GLB) $otype = PARAM_APP;
@@ -126,6 +126,7 @@ class Param extends DbObj
         }
         
         $this->buffer[$name] = $val;
+        return $err;
     }
     
     function SetVolatile($name, $val)
