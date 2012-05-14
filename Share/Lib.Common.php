@@ -159,7 +159,15 @@ function getSessionValue($name, $def = "")
     if ($action) return $action->read($name, $def);
     return null;
 }
-
+/**
+ * return current log in user
+ * @return Account
+ */
+function getCurrentUser()
+{
+    global $action;
+    return $action->user;
+}
 function getLayoutFile($app, $layfile)
 {
     if (strstr($layfile, '..')) {
