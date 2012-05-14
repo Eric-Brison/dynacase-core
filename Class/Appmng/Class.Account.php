@@ -150,6 +150,7 @@ create sequence seq_id_users start 10;";
     }
     /**
      * return incumbent ids account list (accounts which has this account as substitute)
+     * @param bool $returnSystemIds set to true to return system account id, false to return document user id
      * @return int[]
      */
     public function getIncumbents($returnSystemIds = true)
@@ -248,7 +249,7 @@ create sequence seq_id_users start 10;";
         if ($this->setloginName($this->login)) return _("this login exists");
         if ($this->login == "") return _("login must not be empty");
         if ($this->id == "") {
-            $res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
+            $res = pg_query($this->dbid, "select nextval ('seq_id_users')");
             $arr = pg_fetch_array($res, 0);
             $this->id = $arr["nextval"];
         }
@@ -358,7 +359,7 @@ create sequence seq_id_users start 10;";
         if ($uid > 0) {
             if (isset($tdn[$uid])) return $tdn[$uid];
             $dbid = getDbId(getDbAccess());
-            $res = pg_exec($dbid, "select firstname, lastname  from users where id=$uid");
+            $res = pg_query($dbid, "select firstname, lastname  from users where id=$uid");
             if (pg_num_rows($res) > 0) {
                 $arr = pg_fetch_array($res, 0);
                 if ($arr["firstname"]) $tdn[$uid] = $arr["firstname"] . ' ' . $arr["lastname"];
@@ -412,7 +413,6 @@ create sequence seq_id_users start 10;";
     function updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail = '', array $roles = array(-1
     ) , $substitute = - 1)
     {
-        
         $this->lastname = $lname;
         $this->firstname = $fname;
         $this->status = $status;
@@ -675,6 +675,26 @@ union
         $group->Add(true);
         // Store error messages
         
+    }
+    /**
+     * get the first incumbent which has $acl privilege
+     * @param Action $action
+     * @param Doc $doc document to verify
+     * @param string $acl document acl name
+     * @return string incumbent's name which has privilege
+     */
+    function getIncumbentPrivilege(Doc & $doc, $acl)
+    {
+        if ($this->id == 1) return '';
+        if ($incumbents = $this->getIncumbents()) {
+            if ($doc->control($acl, true) != '') {
+                foreach ($incumbents as $aIncumbent) {
+                    $eErr = $doc->controlUserId($doc->profid, $aIncumbent, $acl);
+                    if (!$eErr) return Account::getDisplayName($aIncumbent);
+                }
+            }
+        }
+        return '';
     }
     /**
      * get All Users (not group not role)
@@ -1171,6 +1191,10 @@ union
         $err = '';
         $sql = sprintf("DELETE FROM groups USING users where groups.iduser=%d and users.id=groups.idgroup and users.accounttype='R'", $this->id);
         $err = simpleQuery($this->dbaccess, $sql);
+        if (!$err) {
+            
+            $err = simpleQuery($this->dbaccess, "delete from permission where computed");
+        }
         
         return $err;
     }

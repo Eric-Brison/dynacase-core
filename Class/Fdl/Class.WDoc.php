@@ -808,7 +808,8 @@ class WDoc extends Doc
                 }
             }
         }
-        
+        $incumbentName = getCurrentUser()->getIncumbentPrivilege($this, $tname);
+        if ($incumbentName) $revcomment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $revcomment;
         $err = $this->doc->AddRevision($revcomment);
         if ($err != "") {
             $this->doc->disableEditControl(); // restore old states
@@ -1129,19 +1130,26 @@ class WDoc extends Doc
         }
         return false;
     }
-    
-    function DocControl($aclname)
+    /**
+     * explicit original doc control
+     * @param $aclname
+     * @param bool $strict
+     * @see Doc::control()
+     * @return string
+     */
+    function docControl($aclname, $strict = false)
     {
-        return Doc::Control($aclname);
+        return Doc::Control($aclname, $strict);
     }
     /**
      * Special control in case of dynamic controlled profil
      * @param string $aclname
+     * @param bool $strict set to true to not use substitute informations
      * @return string error message
      */
-    function Control($aclname)
+    function control($aclname, $strict = false)
     {
-        $err = Doc::Control($aclname);
+        $err = Doc::control($aclname, $strict);
         if ($err == "") return $err; // normal case
         if ($this->getValue("DPDOC_FAMID") > 0) {
             // special control for dynamic users
@@ -1155,7 +1163,7 @@ class WDoc extends Doc
                 
                 $this->pdoc = & $pdoc;
             }
-            $err = $this->pdoc->DocControl($aclname);
+            $err = $this->pdoc->docControl($aclname, $strict);
         }
         return $err;
     }

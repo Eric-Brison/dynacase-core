@@ -771,7 +771,10 @@ create unique index i_docir on doc(initid, revision);";
         if (($this->revision == 0) && ($this->doctype != "T")) {
             // increment family sequence
             $this->nextSequence();
-            $this->Addcomment(_("document creation") , HISTO_INFO, "CREATE");
+            $incumbentName = getCurrentUser()->getIncumbentPrivilege($this->getFamDoc() , 'create');
+            $createComment = _("document creation");
+            if ($incumbentName) $createComment = sprintf(_("(substitute of %s) : ") , $incumbentName) . $createComment;
+            $this->Addcomment($createComment, HISTO_INFO, "CREATE");
             if ($this->wdoc) {
                 $this->wdoc->workflowSendMailTemplate($this->state, _("creation"));
                 $this->wdoc->workflowAttachTimer($this->state);
