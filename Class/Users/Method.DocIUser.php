@@ -35,9 +35,9 @@ class _IUSER extends Doc
     public function getSystemIds(array $accountIds)
     {
     }
-    /*
+    /**
      * @end-method-ignore
-    */
+     */
     
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
@@ -787,7 +787,7 @@ class _IUSER extends Doc
      * this part will be deleted when construct document class until end-method-ignore
      */
 }
-/*
+/**
  * @end-method-ignore
-*/
+ */
 ?>

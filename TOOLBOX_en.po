@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-15 12:09+0200\n"
+"POT-Creation-Date: 2012-05-14 10:08+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -205,6 +205,10 @@ msgstr ""
 
 #, c-format
 msgid "%d stored files"
+msgstr ""
+
+#, c-format
+msgid "%s (as substitute)"
 msgstr ""
 
 #, c-format
@@ -1845,6 +1849,9 @@ msgid "Error: config file '%s' is not a file."
 msgstr ""
 
 msgid "Error: empty FREEDOM_DB"
+msgstr ""
+
+msgid "Error: missing or empty --config"
 msgstr ""
 
 msgid "Error: missing or empty --tmppgservice"
@@ -4848,6 +4855,20 @@ msgid "cannot set free state in workflow controlled document %s"
 msgstr ""
 
 #, c-format
+msgid "cannot set substitute %s id not found"
+msgstr ""
+
+#, c-format
+msgid "cannot set substitute %s login not found"
+msgstr ""
+
+msgid "cannot set substitute account object not affected"
+msgstr ""
+
+msgid "cannot substitute itself"
+msgstr ""
+
+#, c-format
 msgid "cannot suppress archive file %s"
 msgstr ""
 
@@ -6372,6 +6393,9 @@ msgstr ""
 msgid "function [%s] not exists"
 msgstr ""
 
+msgid "function examples"
+msgstr ""
+
 msgid "fusers list window"
 msgstr ""
 
@@ -7071,6 +7095,13 @@ msgstr ""
 
 msgid "multiple document"
 msgstr ""
+
+msgid "my id"
+msgstr ""
+
+#, fuzzy
+msgid "my last name"
+msgstr "Lastname"
 
 #, fuzzy
 msgid "my parameters"
@@ -9076,6 +9107,10 @@ msgid "url to reach http server index"
 msgstr ""
 
 msgid "url to reach http server index in open mode"
+msgstr ""
+
+#, c-format
+msgid "usage %s --famid=<family id> [--force=yes]"
 msgstr ""
 
 msgid "use ctrl key in popup menu"

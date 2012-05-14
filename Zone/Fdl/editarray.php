@@ -23,7 +23,7 @@ include_once ("FDL/freedom_util.php");
 include_once ("FDL/editutil.php");
 // Compute value to be inserted in a specific layout
 // -----------------------------------
-function editarray(&$action)
+function editarray(Action & $action)
 {
     // -----------------------------------
     // GetAllParameters
@@ -41,7 +41,10 @@ function editarray(&$action)
     } else $doc = new_Doc($dbaccess, $docid);
     
     if (($vid != "") && ($doc->cvid > 0)) {
-        // special controlled view
+        /**
+         * special controlled view
+         * @var CVDoc $cvdoc
+         */
         $cvdoc = new_Doc($dbaccess, $doc->cvid);
         $tview = $cvdoc->getView($vid);
         if ($tview) $doc->setMask($tview["CV_MSKID"]);
@@ -52,8 +55,8 @@ function editarray(&$action)
     else {
         if ($oattr->type != "array") $action->lay->template = sprintf(_("attribute %s not an array") , $arrayid);
         else {
-            $form = new DocFormFormat($doc);
-            $form->getLayArray($action->lay, $doc, $oattr, $row);
+            $of = new DocFormFormat($doc);
+            $of->getLayArray($action->lay, $doc, $oattr, $row);
         }
     }
 }
