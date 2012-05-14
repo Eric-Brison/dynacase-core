@@ -140,6 +140,7 @@ $famid = "") // folder containt special fam id
         $prevFromId = - 2;
         
         $tfamdoc = array();
+        $lattr = array();
         
         $k = 0;
         while ($doc = $sd->nextDoc()) {
@@ -311,14 +312,15 @@ $famid = "") // folder containt special fam id
                         "blockvalue" => "BVAL" . $doc->fromid
                     );
                     // create the TR head
-                    $lattr = $adoc->GetAbstractAttributes();
+                    /* Store and remember abstract attributes for each new processed family */
+                    $lattr[$doc->fromid] = $adoc->GetAbstractAttributes();
                     $taname = array();
                     $emptytableabstract = array();
-                    foreach ($lattr as $ka => $attr) {
-                        if (($attr->mvisibility == 'H') || ($attr->mvisibility == 'I')) unset($lattr[$ka]);
+                    foreach ($lattr[$doc->fromid] as $ka => $attr) {
+                        if (($attr->mvisibility == 'H') || ($attr->mvisibility == 'I')) unset($lattr[$doc->fromid][$ka]);
                     }
 
-                    foreach ($lattr as $ka => $attr) {
+                    foreach ($lattr[$doc->fromid] as $ka => $attr) {
                         $emptytableabstract[$attr->id]["value"] = "-";
                         $taname[$attr->id]["aname"] = $attr->getLabel();
                     }
@@ -329,11 +331,11 @@ $famid = "") // folder containt special fam id
                 $tvalues = array();
                 
                 if ($doc->isConfidential()) {
-                    foreach ($lattr as $ka => $attr) {
+                    foreach ($lattr[$doc->fromid] as $ka => $attr) {
                         $tvalues[] = "x";
                     }
                 } else {
-                    foreach ($lattr as $ka => $attr) {
+                    foreach ($lattr[$doc->fromid] as $ka => $attr) {
                         //$tvalues[]=$doc->getValue($attr->id,"-");
                         if ($attr->type == "image") $tvalues[] = '<img src="' . $doc->getHtmlValue($attr, $doc->getValue($attr->id, "-") , $target) . '&height=30"  height="30">';
                         else $tvalues[] = ($doc->getValue($attr->id) ? $doc->getHtmlValue($attr, $doc->getValue($attr->id) , $target) : '-');
