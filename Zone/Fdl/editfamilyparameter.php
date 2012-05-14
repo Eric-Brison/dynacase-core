@@ -40,29 +40,27 @@ function editfamilyparameter(Action & $action)
             $action->lay->template = sprintf(_("Attribute [%s] is not found") , $attrid);
             return false;
         }
-        error_log("attr type is == " . var_export($attr->type, true));
         $action->lay->set("label", $attr->getLabel());
         
         if ($onChange == "no") {
             $onChange = "";
         } elseif ($onChange == "yes" || (!$onChange && !$localSubmit)) {
-            if (!$attr->isMultiple()) {
-                $onChange = 'onchange="sendParameterData(this,\'' . strtolower($attrid) . '\')"';
-            }
+            $onChange = "yes";
         }
         $action->lay->set("local_submit", $localSubmit);
         $action->lay->set("submit_label", $submitLabel);
-        error_log("onchange is == " . $onChange);
         
         if (!$value) {
             if ($default !== null) {
                 $value = $default;
             } else {
                 $value = $doc->getParamValue($attrid);
-                error_log("value is == " . var_export($value, true));
             }
         }
-        $input_field = getHtmlInput($doc, $attr, $value, "", $onChange, true);
+        $d = createTmpDoc($action->dbaccess, $doc->id);
+        $fdoc = $d->getFamDoc();
+        $d->setDefaultValues($fdoc->getParams() , false);
+        $input_field = getHtmlInput($d, $attr, $value, "", "", true);
         $action->lay->set("input_field", $input_field);
         $action->lay->set("change", ($onChange != ""));
     } else {
@@ -72,6 +70,5 @@ function editfamilyparameter(Action & $action)
     }
     $action->parent->addJsRef("FDL/Layout/editparameter.js");
     $action->parent->addJsRef("lib/jquery/jquery.js");
-    error_log("adding editparameter.js");
     return true;
 }

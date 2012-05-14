@@ -1,7 +1,24 @@
 function sendParameterData(elem, id) {
-    console.log("elem is == ", $(elem).parent(), this, $(elem).val());
-    $(elem).parent().submit(function () {
-        console.log("call to ajax");
+    var form = $(elem).parents("form");
+    if (!id) {
+        id = form.parents("div.editfamilyparameter").attr("data-parameter");
+    }
+    form.submit(function () {
+        var extractValueFromField = function (e, value) {
+            var attrid = $(e).attr("attrid");
+            var values = [];
+            $(e).find("input[type='text']").each(function (i, el) {
+                values.push($(el).val());
+            });
+            $(e).find("select").each(function (i, el) {
+                values.push($(el).val());
+            });
+            value.push({
+                "attrid":attrid,
+                "value":values
+            });
+            return value;
+        };
         var multiple = $("#mdocid_isel_" + id);
         var value = [];
         if (multiple.length > 0) {
@@ -10,27 +27,21 @@ function sendParameterData(elem, id) {
             });
         } else {
             var elem = $("#T" + id);
-            console.log("element id is == ", elem);
             if (elem.length > 0) {
-                elem.find("#tbody" + id).find("td.visibleAttribute").each(function (index, e) {
-                    var attrid = $(e).attr("attrid");
-                    var values = [];
-                    $(e).find("input").each(function (i, el) {
-                        values.push($(el).val());
+                var tbodyelem = elem.find("#tbody" + id).find("td.visibleAttribute");
+                if (tbodyelem.length > 0) {
+                    tbodyelem.each(function (index, e) {
+                        value = extractValueFromField(e, value);
                     });
-                    $(e).find("select").each(function (i, el) {
-                        values.push($(el).val());
+                } else {
+                    elem.find("tfoot").find("td.visibleAttribute").each(function (index, e) {
+                        value = extractValueFromField(e, value);
                     });
-                    value.push({
-                        "attrid":attrid,
-                        "value":values
-                    });
-                });
+                }
             } else {
                 value = $("#" + id).val();
             }
         }
-        console.log("id is == ", id, $(this), $("#fam_" + id).val());
         $.ajax({
             url:'?app=FDL&action=MODFAMILYPARAMETER',
             type:'POST',
@@ -41,7 +52,6 @@ function sendParameterData(elem, id) {
             },
             dataType:"xml",
             success:function (rsp, textStatus, jqXHR) {
-                console.log("succes response :: ", rsp, textStatus, jqXHR);
                 var $doc = $(rsp);
                 var $status = $doc.find("status");
                 var $data = $doc.find("data");
@@ -69,15 +79,16 @@ function sendParameterData(elem, id) {
         });
         return false;
     });
-    $(elem).parent().submit();
+    form.submit();
 }
 
 function sendParameterApplicationData(elem, id) {
-    console.log("elem is == ", $(elem).parent(), this, $(elem).val());
-    $(elem).parent().submit(function () {
-        console.log("call to ajax");
+    var form = $(elem).parents("form");
+    if (!id) {
+        id = form.parents("div.editapplicationparameter").attr("data-parameter");
+    }
+    form.submit(function () {
         var value = $("#" + id).val();
-        console.log("id is == ", id);
         $.ajax({
             url:'?app=FDL&action=MODAPPLICATIONPARAMETER',
             type:'POST',
@@ -89,7 +100,6 @@ function sendParameterApplicationData(elem, id) {
             },
             dataType:"xml",
             success:function (rsp, textStatus, jqXHR) {
-                console.log("succes response :: ", rsp, textStatus, jqXHR);
                 var $doc = $(rsp);
                 var $status = $doc.find("status");
                 var $data = $doc.find("data");
@@ -113,38 +123,103 @@ function sendParameterApplicationData(elem, id) {
                         "responseText":data.responseText ? data.responseText : data
                     }
                 });
-                console.log("error response :: ", error, data)
             }
         });
         return false;
     });
-    $(elem).parent().submit();
+    form.submit();
 }
 
 function sendAllParameters() {
-    var edit_family = $(".editfamilyparameter form");
-    var edit_application = $(".editapplicationparameter form");
+    var edit_family = $(".editfamilyparameter");
+    var edit_application = $(".editapplicationparameter");
     edit_family.each(function (index, element) {
-        var form = $(element);
+        var form = $(element).find("form");
         if (form.find(":submit").length > 0 || form.attr("data-on-change")) {
-            console.log("subnit or on change found for edit family");
+            console.log("submit or on change found for edit family");
             return true;
         }
-        sendParameterData(form.find('input[type="text"]'));
+        sendParameterData(form.children()[0], $(element).attr("data-parameter"));
     });
 
     edit_application.each(function (index, element) {
-        var form = $(element);
+        var form = $(element).find("form");
         if (form.find(":submit").length > 0 || form.attr("data-on-change")) {
-            console.log("subnit or on change found for edit application");
+            console.log("submit or on change found for edit application");
             return true;
         }
-        var select = form.find("select");
-        if (select.length > 0) {
-            sendParameterApplicationData(select);
-        } else {
-            sendParameterApplicationData(form.find('input[type="text"]'));
-        }
+        sendParameterApplicationData(form.children()[0], $(element).attr("data-parameter"));
 
     });
 }
+
+function addOnChange() {
+    var edit_family = $(".editfamilyparameter");
+    var edit_application = $(".editapplicationparameter");
+    edit_family.each(function (index, element) {
+        var form = $(element).find("form");
+        if (form.attr("data-on-change")) {
+            form.find("input[type='text']").each(function (index, elem) {
+                var f = function (e) {
+                    e = e || event;
+                    setTimeout("sendParameterData('#" + $(e.target).prop("id") + "');", 0)
+                };
+                if ("addEventListener" in elem) {
+                    elem.addEventListener("change", f, false);
+                }
+                else if (elem.attachEvent) {
+                    elem.attachEvent("onchange", f);
+                }
+            });
+            form.find("select").each(function (index, elem) {
+                var f = function (e) {
+                    e = e || event;
+                    setTimeout("sendParameterData('#" + $(e.target).prop("id") + "');", 0)
+                };
+                if ("addEventListener" in elem) {
+                    elem.addEventListener("change", f, false);
+                }
+                else if (elem.attachEvent) {
+                    elem.attachEvent("onchange", f);
+                }
+            });
+        }
+    });
+    edit_application.each(function (index, element) {
+        var form = $(element).find("form");
+        if (form.attr("data-on-change")) {
+            form.find("input[type='text']").each(function (index, elem) {
+                var f = function (e) {
+                    e = e || event;
+                    setTimeout("sendParameterApplicationData('#" + $(e.target).prop("id") + "');", 0)
+                };
+                if ("addEventListener" in elem) {
+                    elem.addEventListener("change", f, false);
+                }
+                else if (elem.attachEvent) {
+                    elem.attachEvent("onchange", f);
+                }
+            });
+            form.find("select").each(function (index, elem) {
+                var f = function (e) {
+                    e = e || event;
+                    setTimeout("sendParameterApplicationData('#" + $(e.target).prop("id") + "');", 0)
+                };
+                if ("addEventListener" in elem) {
+                    elem.addEventListener("change", f, false);
+                }
+                else if (elem.attachEvent) {
+                    elem.attachEvent("onchange", f);
+                }
+            });
+        }
+    });
+}
+
+$(function () {
+    addOnChange();
+});
+//add on change attribute to input field in new row of array
+specAddtr = "addOnChange()";
+//Call to server when line in array is deleted
+specDeltr = "sendParameterData(parent)";

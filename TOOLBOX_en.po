@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-09 10:42+0200\n"
+"POT-Creation-Date: 2012-05-14 14:59+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2885,6 +2885,14 @@ msgstr ""
 msgid "Parameter [%s] not found"
 msgstr ""
 
+#, c-format
+msgid "Parameter [%s] not found in family [%s]"
+msgstr ""
+
+#, c-format
+msgid "Parameter [%s] not found. Error message: [%s]"
+msgstr ""
+
 msgid "Parameter name does not include spaces"
 msgstr ""
 
@@ -4116,9 +4124,6 @@ msgstr ""
 msgid "access date"
 msgstr "Delete"
 
-msgid "access granted to  database $db\n"
-msgstr ""
-
 #, fuzzy
 msgid "access path folder list"
 msgstr "Delete"
@@ -4688,9 +4693,6 @@ msgstr ""
 
 #, c-format
 msgid "cannot access edit template file %s"
-msgstr ""
-
-msgid "cannot access to  database $db\n"
 msgstr ""
 
 msgid "cannot access to core database service [service='$pgservice_core']"

@@ -31,8 +31,11 @@ function editapplicationparameter(Action & $action)
     
     $paramdef = array();
     $err = simpleQuery($action->dbaccess, sprintf("SELECT * from paramdef where name='%s'", pg_escape_string($parameterid)) , $paramdef);
-    error_log("appid is == " . var_export($paramdef, true));
-    //$param = new Param($parameterid, $type[], $appid);
+    if ($err) {
+        $action->AddWarningMsg(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
+        $action->lay->template = sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err);
+        return false;
+    }
     $action->lay->set("type_text", ($paramdef[0]["kind"] == "text"));
     $enum = substr($paramdef[0]["kind"], 0, 4) == "enum";
     $action->lay->set("type_enum", $enum);
@@ -62,10 +65,12 @@ function editapplicationparameter(Action & $action)
     
     $val = array();
     $query = sprintf("SELECT * from paramv where name='%s' and appid='%s' and type='%s'", pg_escape_string($parameterid) , pg_escape_string($appid) , pg_escape_string($type));
-    error_log("QUERY IS == " . $query);
     $err = simpleQuery($action->dbaccess, $query, $val);
-    error_log("parameter is == " . var_export($val, true));
-    
+    if ($err) {
+        $action->AddWarningMsg(sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err));
+        $action->lay->template = sprintf(_("Parameter [%s] not found. Error message: [%s]") , $parameterid, $err);
+        return false;
+    }
     if (!$value) {
         if ($default !== null) {
             $value = $default;
@@ -77,13 +82,12 @@ function editapplicationparameter(Action & $action)
     if ($onChange == "no") {
         $onChange = "";
     } elseif ($onChange == "yes" || (!$onChange && !$localSubmit)) {
-        $onChange = 'onchange="sendParameterApplicationData(this,\'' . $parameterid . '\')"';
+        $onChange = "yes";
     }
-    error_log("onchange is == " . $onChange);
     
     $action->lay->set("local_submit", $localSubmit);
     $action->lay->set("submit_label", $submitLabel);
-    $action->lay->set("on_change", $onChange);
+    $action->lay->set("on_change", "");
     $action->lay->set("change", ($onChange != ""));
     if ($enum) {
         $matches = array();
@@ -103,7 +107,6 @@ function editapplicationparameter(Action & $action)
                 );
             }
         }
-        error_log("matches is === " . var_export($matches, true));
         $action->lay->SetBlockData("options", $values);
     } else {
         $action->lay->set("value", $value);

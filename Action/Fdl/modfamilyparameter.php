@@ -40,12 +40,26 @@ function modfamilyparameter(Action & $action)
             $out["success"] = false;
             $out["errors"] = sprintf(_("Parameter [%s] not found in family [%s]") , $attrid, $famid);
         } else {
-            if ($attr->type == "array") {
+            if ($attr->type == "array" && $value) {
                 $modify = false;
+                $result = array();
+                $i = 0;
                 /**
                  * @var array $value
                  */
                 foreach ($value as $v) {
+                    $key = $v["attrid"];
+                    if (!array_attrid_exists($key, $result)) {
+                        $result[$i]["attrid"] = $key;
+                        foreach ($value as $e) {
+                            if ($e["attrid"] == $key) {
+                                $result[$i]["value"][] = $e["value"][0];
+                            }
+                        }
+                        $i++;
+                    }
+                }
+                foreach ($result as $v) {
                     if (!empty($v["value"])) {
                         $val = $doc->_array2val($v["value"]);
                         if ($doc->getParam($v["attrid"]) != $val) {
@@ -85,4 +99,19 @@ function modfamilyparameter(Action & $action)
     $action->lay->set("parameterid", $out["parameterid"]);
     $action->lay->set("modify", $out["modify"]);
     $action->lay->set("delay", microtime_diff(microtime() , $mb));
+}
+/**
+ * Return true if key is in attrid of array
+ * @param string $key key to search
+ * @param array $array array to search in
+ * @return bool
+ */
+function array_attrid_exists($key, array $array)
+{
+    foreach ($array as $val) {
+        if ($val["attrid"] == $key) {
+            return true;
+        }
+    }
+    return false;
 }

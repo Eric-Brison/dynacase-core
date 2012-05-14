@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-09 10:42+0200\n"
-"PO-Revision-Date: 2012-05-14 16:56+0200\n"
+"POT-Creation-Date: 2012-05-14 14:59+0200\n"
+"PO-Revision-Date: 2012-05-14 15:09+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -684,7 +684,8 @@ msgstr "Identifiant de l'application"
 
 #, c-format
 msgid "Application [%s] not found. Error message: [%s]"
-msgstr "L'application [%s] n'a pas été trouvé. Le message d'erreur reçu est : [%s]"
+msgstr ""
+"L'application [%s] n'a pas été trouvé. Le message d'erreur reçu est : [%s]"
 
 msgid "Application filter"
 msgstr "Filtrer les applications"
@@ -2762,11 +2763,21 @@ msgstr "Paramètre"
 
 #, c-format
 msgid "Parameter [%s] is not global, an apllication muste be given"
-msgstr "Le paramètre [%s] n'est pas un paramètre global. Une application doit aussi être fournie"
+msgstr ""
+"Le paramètre [%s] n'est pas un paramètre global. Une application doit aussi "
+"être fournie"
 
 #, c-format
 msgid "Parameter [%s] not found"
 msgstr "Le paramètre [%s] est introuvable"
+
+#, c-format
+msgid "Parameter [%s] not found in family [%s]"
+msgstr "Le paramétre [%s] de la famille [%s] n'a pas été trouvé"
+
+#, c-format
+msgid "Parameter [%s] not found. Error message: [%s]"
+msgstr "Paramétre [%s] introuvable.Une erreur a été reçue: [%s]"
 
 msgid "Parameter name does not include spaces"
 msgstr "Le nom de paramètre ne doit pas inclure d'espaces"
@@ -3946,9 +3957,6 @@ msgstr "[%s] doit correspondre à /%s/"
 msgid "access date"
 msgstr "date de dernière consultation"
 
-msgid "access granted to  database $db\n"
-msgstr "accès à la base de données $db autorisé\n"
-
 msgid "access path folder list"
 msgstr "liste des chemin d'accès"
 
@@ -4338,11 +4346,11 @@ msgstr ""
 
 #, c-format
 msgid "attribute [%s] not exists : cannot delete it"
-msgstr ""
+msgstr "L'attribut [%s] n'existe pas : impossible de le supprimer"
 
 #, c-format
 msgid "attribute [%s] not exists : cannot modify it"
-msgstr ""
+msgstr "L'attribut [%s] n'existe pas : impossible de le modifier"
 
 #, c-format
 msgid "attribute [%s] visibility must be one of H,R,W,S,O,I,U"
@@ -4486,9 +4494,6 @@ msgstr "Annuler"
 #, c-format
 msgid "cannot access edit template file %s"
 msgstr "ne peut accéder à la modification du fichier modèle %s"
-
-msgid "cannot access to  database $db\n"
-msgstr "accès à la base de données $db refusé\n"
 
 msgid "cannot access to core database service [service='$pgservice_core']"
 msgstr ""
@@ -5357,7 +5362,7 @@ msgstr "Le document %s a le nouvel état %s"
 
 #, c-format
 msgid "document %s is not a family"
-msgstr ""
+msgstr "Le document [%s] n'est pas une famille"
 
 #, c-format
 msgid "document %s is not a folder"
@@ -5377,7 +5382,7 @@ msgstr "Le document %s n'existe pas"
 
 #, c-format
 msgid "document %s not found"
-msgstr ""
+msgstr "Le document [%s] est introuvable"
 
 #, c-format
 msgid "document '%s' [revision %d] has no state"
@@ -6092,13 +6097,13 @@ msgid "geometry saved : %s"
 msgstr "disposition sauvée : %s"
 
 msgid "get a value for a set of document"
-msgstr ""
+msgstr "Récupère une valeur pour un groupe de document"
 
 msgid "get all properties of document"
-msgstr ""
+msgstr "Récupère toutes les propriétés d'un document"
 
 msgid "get all values of document"
-msgstr ""
+msgstr "Récupère toutes les valeurs d'un document"
 
 msgid "get attribute for fck toobar"
 msgstr "récupère les attributs pour la barre d'outils FCK"
@@ -6556,11 +6561,11 @@ msgstr "méthode %s appliqué au document %s n°%d"
 
 #, c-format
 msgid "method %s executed"
-msgstr ""
+msgstr "Méthode %s exécutée"
 
 #, c-format
 msgid "method %s executed for %s "
-msgstr "méthode %s exécuté pour %s"
+msgstr "méthode %s exécutée pour %s"
 
 #, c-format
 msgid "method %s not defined"
@@ -7285,7 +7290,7 @@ msgstr "valeurs des paramètres"
 
 #, c-format
 msgid "parent attribute [%s] not exists : cannot add it"
-msgstr ""
+msgstr "L'attribut parent [%s] n'existe pas : impossible de l'ajouter"
 
 #, c-format
 msgid "parenthesis number mismatch : %d left, %d right"
@@ -9205,6 +9210,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "What User Management"
 #~ msgstr "Gestion des utilisateurs"
 
+#~ msgid "access granted to  database $db\n"
+#~ msgstr "accès à la base de données $db autorisé\n"
+
 #~ msgid "access to documents of my space"
 #~ msgstr "Accéder aux documents de mon espace"
 
@@ -9263,6 +9271,9 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgstr ""
 #~ "<p>Votre mot de passe a été ré-initialisé, et le nouveau mot de passe "
 #~ "vous a été envoyé par mail.</p>"
+
+#~ msgid "cannot access to  database $db\n"
+#~ msgstr "accès à la base de données $db refusé\n"
 
 #~ msgid "cannot connect to %s"
 #~ msgstr "ne peut se connecter à %s"

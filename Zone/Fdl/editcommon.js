@@ -21,12 +21,12 @@ var MDOCSCRUCT=new Array();
 
 document.isCancelled=false;
 document.isSubmitted=false;
-function createColorPicker() {  
+function createColorPicker() {
   if (window.pickColor)  colorPick = new ColorPicker();
 }
-function scruteadocs() { 
+function scruteadocs() {
   var newTa = document.getElementsByTagName('iframe');
-  for (var i=0; i < newTa.length; i++){ 
+  for (var i=0; i < newTa.length; i++){
     ofr=newTa[i];
     updateOfr(ofr,true);
   }
@@ -40,21 +40,21 @@ Array.prototype.getUnique = function () {
   return a;
 };
 
-function scrutemdocs() { 
+function scrutemdocs() {
 
-  
+
   if (MDOCSCRUCT.length > 0) {
     MDOCSCRUCT=MDOCSCRUCT.getUnique();
-    for (var i=0; i < MDOCSCRUCT.length; i++) { 
-      addmdocs(MDOCSCRUCT[i]);               
+    for (var i=0; i < MDOCSCRUCT.length; i++) {
+      addmdocs(MDOCSCRUCT[i]);
     }
-    setTimeout('scrutemdocs()',1000); 
+    setTimeout('scrutemdocs()',1000);
   }
-  
+
 }
 
 var addmdocsSemaphore = false; // avoid several launchs of addmdocs
-function addmdocs(n) {    
+function addmdocs(n) {
   var iid,tiid;
   var inpid,inptext,inpsel,inptitle;
   var itext,isel,ititle;
@@ -64,18 +64,18 @@ function addmdocs(n) {
 	  return;
   }
   addmdocsSemaphore = true;
-      
-  
+
+
   tiid=[];
   if (n.substr(n.length-1,1) == ']') {
       var postfix=n.substr(n.lastIndexOf('['));
       n=n.substr(0,n.lastIndexOf('['));
     if (isNetscape) tiid=document.getElementsByName('mdocid_work'+n+postfix);
     else  tiid = getInputsByName('mdocid_work'+n);
-  } else {		
-    tiid.push(document.getElementById('mdocid_work'+n.substr(1)));	
-  }            
-  for (var j=0; j < tiid.length; j++) { 
+  } else {
+    tiid.push(document.getElementById('mdocid_work'+n.substr(1)));
+  }
+  for (var j=0; j < tiid.length; j++) {
     inpid=tiid[j];
     if (inpid) {
       if (inpid.value != '') {
@@ -85,7 +85,7 @@ function addmdocs(n) {
 	isel='mdocid_isel_'+itext;
 	inptext=document.getElementById(itext);
 	inptitle=document.getElementById(ititle);
-	inpsel=document.getElementById(isel);	   
+	inpsel=document.getElementById(isel);
 	if (inpsel && inptext) {
 	  nid=inpid.value;
 	  if (! inptitle) ntitle=nid;
@@ -107,9 +107,9 @@ function addmdocs(n) {
     }
   }
   addmdocsSemaphore = false;
-    
+
 }
-function addmdocsattrid(attrid,nid,ntitle) { 
+function addmdocsattrid(attrid,nid,ntitle) {
   var isel;
   var inpsel,inptext;
   isel='mdocid_isel_'+attrid;
@@ -124,7 +124,7 @@ function addmdocsattrid(attrid,nid,ntitle) {
     if (! find)  addinlist(inpsel,ntitle,nid,false);
     //else alert('[TEXT:item already set]');
     transfertDocIdInputs(inpsel,inptext);
-  }  
+  }
 }
 function clearDocIdInputs(attrid,selid,th) {
     var inpsel=document.getElementById(selid);
@@ -140,7 +140,7 @@ function clearDocIdInputs(attrid,selid,th) {
             transfertDocIdInputs(inpsel,inptext);
         }
     }
-    var icrinput=document.getElementById('icr_'+attrid); 
+    var icrinput=document.getElementById('icr_'+attrid);
     if (icrinput) {
         icrinput.className='add-doc';
         icrinput.title=icrinput.getAttribute('titleedit');
@@ -157,7 +157,7 @@ function transfertDocIdInputs(inpsel,inptext) {
   if (inpsel.options.length == 0) inpsel.size=1;
   else if (inpsel.options.length < maxsize) inpsel.size=inpsel.options.length;
   else inpsel.size=maxsize;
-  
+
 
   inptext.value=nval.substr(0,nval.length - 1);
 }
@@ -197,14 +197,14 @@ function updateEnumauto(o,idsel,idval) {
   }
 }
 
-function updateIfr(ifr) { 
+function updateIfr(ifr) {
   var ofr=document.getElementById(ifr);
   if (ofr) updateOfr(ofr,false);
 }
 
-function updateOfr(ofr,onlyclose) {    
+function updateOfr(ofr,onlyclose) {
   if (ofr.id.substr(0,4)=="ifr_") {
-	  
+
       iid=ofr.id.substr(4);
       viid=document.getElementById(iid);
       if (viid) {
@@ -217,9 +217,9 @@ function updateOfr(ofr,onlyclose) {
 	}
 
 	if (ofr.src.substr(-10) != nurl.substr(-10) ) {
-	  ofr.src=nurl;	      
+	  ofr.src=nurl;
 	  if (/1x1.gif/i.test(nurl)) {
-	    ofr.style.display='';  
+	    ofr.style.display='';
 	    sdisplay='none';
 	  } else {
 	    sdisplay='';
@@ -227,11 +227,11 @@ function updateOfr(ofr,onlyclose) {
 	  nnode=ofr.nextSibling;
 	  while (nnode && (nnode.nodeType != 1)) nnode = nnode.nextSibling; //case TEXT node
 	  nnode.style.display=sdisplay;
-	      
+
 	}
       }
     }
-  
+
 }
 
 setInterval('scruteadocs()',1000);
@@ -312,14 +312,14 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
   var inp  = choiceButton.previousSibling;
   var index='';
   var attrid;
- 
+
   var domindex=''; // needed to set values in arrays
   // search the input button in previous element
- 
+
   var inid;
 
   if (enuminprogress) return;
-  enuminprogress=true;  
+  enuminprogress=true;
   //  inid= choiceButton.id.substr(3);
   inp=document.getElementById(attrid);
 
@@ -332,7 +332,7 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
     // it is an attribute in array
     attrid=inp.name.substr(1,inp.name.length-3);
     index=getRowNumber(choiceButton);
-    domindex = inp.id.substring(attrid.length);    
+    domindex = inp.id.substring(attrid.length);
   } else {
     attrid=inp.name.substr(1,inp.name.length-1);;
   }
@@ -345,7 +345,7 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
   oldtar = f.target;
   f.action = '[CORE_STANDURL]&app=FDL&action=ENUM_CHOICE&docid='+docid+'&attrid='+attrid+'&sorm='+sorm+'&index='+index+'&domindex='+domindex+options;
 
-  
+
 
   var xy= getAnchorWindowPosition(inp.id);
 
@@ -353,7 +353,7 @@ function sendEnumChoice(event,docid,  choiceButton ,attrid, sorm,options) {
     xy.y+=15; // add supposed decoration height
     // add body left width for IE sometimes ...
     if (parent.ffolder)  xy.x += parent.ffolder.document.body.clientWidth;
-    
+
   }
 
   wichoose = window.open('', 'wchoose', 'scrollbars=yes,resizable=yes,height=30,width=290,left='+xy.x+',top='+xy.y);
@@ -378,16 +378,16 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     h = (h) ? h : 30;
     w = (w) ? w : 290;
     var inp  = inp=document.getElementById(inpid);
-    
+
 
     var domindex=''; // needed to set values in arrays
     //search the input button in previous element
- 
+
     var inid;
     var f=null;
 
     if (enuminprogress) return;
-    enuminprogress=true;  
+    enuminprogress=true;
 
 
     if ((! inp)||(inp==null)) {
@@ -403,7 +403,7 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     } else {
         if (inp.name.substr(inp.name.length-1,1) == ']') {
             // it is an attribute in array
-            domindex = inp.id.substring(attrid.length);    
+            domindex = inp.id.substring(attrid.length);
         }
 
         f =inp.form;
@@ -420,7 +420,7 @@ function sendSpecialChoice(event,inpid,docid ,attrid,index,h,w) {
     var wname='helpi'+inp.id;
     // subwindow(30,290, wname, 'about:blank');
     subwindow(h,w, wname, '?app=CORE&action=BLANK');
-  
+
     f.target=wname;
 
     enableall();
@@ -453,7 +453,7 @@ function editRelation(famname, docid, attrid, opt) {
     } else {
         alert('[TEXT:Cannot open document]');
     }
-    
+
 
 }
 /**
@@ -501,7 +501,7 @@ function addTableRow(config) {
 				}
 			}
 		}
-		
+
 		//var texbody = document.getElementById('tbodyid_t_applicable_document');
 		if (!texbody) {
 			alert('array of documents not found');
@@ -588,7 +588,7 @@ function setFormValue(config) {
         if (inp && (inp.name == '_'+i)) {
             if (typeof config[i] == 'object') {
                 if (config[i].id) {
-                    inp.value = config[i].id;	
+                    inp.value = config[i].id;
                     if (config[i].title) {
                         var t=document.getElementById('ilink_'+inp.id);
                         if (t) t.value=config[i].title;
@@ -608,7 +608,7 @@ function setFormValue(config) {
     return false;
 }
 /**
- * set value in document form 
+ * set value in document form
  * @param attrid an id attribute
  * @return Any the value (null if not found)
  */
@@ -633,8 +633,8 @@ function getFormValue(attrid) {
 				 }
 			}
 		}
-		
-	
+
+
 	return null;
 }
 function _concat(a,b) {
@@ -667,7 +667,7 @@ function _matchName(s1,s2){
 
 function enableall() {
 	var f=document.getElementById('fedit');
-	for (var i=0; i< f.length; i++) {	
+	for (var i=0; i< f.length; i++) {
 		f.elements[i].oridisabled=f.elements[i].disabled;
 		f.elements[i].disabled=false;
 	}
@@ -675,7 +675,7 @@ function enableall() {
 }
 function restoreall() {
 	var f=document.getElementById('fedit');
-	for (var i=0; i< f.length; i++) {	
+	for (var i=0; i< f.length; i++) {
 		f.elements[i].disabled=f.elements[i].oridisabled;
 	}
 
@@ -707,8 +707,9 @@ function transfertValue(s,d) {
 }
 function resizeInputFields() {
   var w, newsize;
+    if (document.getElementById('fedit')) {
   with (document.getElementById('fedit')) {
-       for (i=0; i< length; i++) { 
+       for (i=0; i< length; i++) {
          if (elements[i].className == 'autoresize') {
 	   w=getObjectWidth(elements[i].parentNode);
 	   if (w > 45) {
@@ -722,6 +723,7 @@ function resizeInputFields() {
 	 }
        }
   }
+    }
 }
 
 // close auxillary window if open
@@ -760,7 +762,7 @@ function canmodify(withoutalert) {
         } else {
 	  // search in multiple values
 	  v=getInputValues(attrNid[i]);
-	  
+
 	  if ((v!==false) && ((v === '')||(v === ' '))) err +=  ' - '+attrNtitle[i]+'\n';
 	}
     }
@@ -776,10 +778,10 @@ function focusNeeded(inp) {
 	while (p && ((p.tagName != 'FIELDSET') || (! p.getAttribute('name'))) ) p=p.parentNode;
 	if (p) {
 	    var name=p.getAttribute('name');
-	    if (name) {		
+	    if (name) {
 		  var tab=window.document.getElementById('TAB'+name.substr(3));
 		  tab.onmousedown.apply(tab,[]);
-	    }	
+	    }
 	}
 	try {
 		if (! inp.disabled) {
@@ -792,7 +794,7 @@ function focusNeeded(inp) {
 		}
 	  } catch (exception) {
          }
-    } 
+    }
 }
 // to define which attributes must be disabled
 var tain= new Array();
@@ -835,11 +837,11 @@ function getInputValue(id,index) {
   return '';
 }
 
-// return values for input multiples 
+// return values for input multiples
 function getInputValues(n) {
  var v='';
  var ta;
-  
+
  ta = getInputsByName('_'+n);
  if (ta.length==0) ta = document.getElementsByName('_'+n);
  if (ta.length==0) return false;
@@ -872,55 +874,55 @@ function getInputLocked() {
     }
   }
   }
- 
+
   return (tlock);
 }
 
 function getInputsByName(n,node) {
 	if (! node) node=document;
-  var ti= node.getElementsByTagName("input");    
+  var ti= node.getElementsByTagName("input");
   var t = new Array();
   var ni;
   var pos;
-	
-  for (var i=0; i< ti.length; i++) { 
+
+  for (var i=0; i< ti.length; i++) {
     pos=ti[i].name.indexOf('[');
     if (pos==-1) ni=ti[i].name;
     else ni=ti[i].name.substr(0,pos);
-    if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {	
-     
+    if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {
+
       t.push(ti[i]);
     }
   }
 
-  if (t.length == 0) { 
+  if (t.length == 0) {
     // try with select
     ti= node.getElementsByTagName("select");
-    
-    for (var i=0; i< ti.length; i++) {       
+
+    for (var i=0; i< ti.length; i++) {
       pos=ti[i].name.indexOf('[');
       if (pos==-1) ni=ti[i].name;
       else ni=ti[i].name.substr(0,pos);
-      if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {		
+      if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {
 	t.push(ti[i]);
       }
-    }      
-  }  
+    }
+  }
 
-  if (t.length == 0) { 
+  if (t.length == 0) {
     // try with select
     ti= node.getElementsByTagName("textarea");
-    
-    for (var i=0; i< ti.length; i++) {       
+
+    for (var i=0; i< ti.length; i++) {
       pos=ti[i].name.indexOf('[');
       if (pos==-1) ni=ti[i].name;
       else ni=ti[i].name.substr(0,pos);
-      if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {		
+      if ((ni == n) && (ti[i].name.substr(ti[i].name.length-7,7) != '[__1x_]')) {
 	t.push(ti[i]);
       }
-    }      
+    }
   }
-  
+
   return t;
 }
 
@@ -928,19 +930,19 @@ function getIValue(i) {
   if (i) {
     if (i.tagName == "TEXTAREA") return i.value;
     if (i.tagName == "INPUT") {
-      if ((i.type=='radio')||(i.type=='checkbox')) return i.checked;      
+      if ((i.type=='radio')||(i.type=='checkbox')) return i.checked;
       return i.value;
     }
     if (i.tagName == "SELECT") {
       if (i.selectedIndex >= 0)   return i.options[i.selectedIndex].value;
       else return '';
-    } 
+    }
   }
   return false;
 }
 function setIValue(i,v) {
   if (i) {
-   
+
     if (i.tagName == "INPUT") {
       if ((i.type=='radio')||(i.type=='checkbox')) {
 	i.checked=v;
@@ -967,7 +969,7 @@ function isInputLocked(id) {
     }
     if (ndis) {
       // the attribute can lock others
-      
+
       for (var i=0; i< taout[c].length; i++) {
 	//	alert(tain[c][i] + '/' + id);
 	if (taout[c][i] == id) return true;
@@ -985,7 +987,7 @@ function disableReadAttribute() {
     var vin;
     var lin,aid;
     var inx,inc,ind,inb,incr; // input button
-    
+
     if (tain) {
         for (var c=0; c< tain.length; c++) {
             ndis = true;
@@ -1010,11 +1012,11 @@ function disableReadAttribute() {
                         inx=document.getElementById('ix_'+taout[c][i]);
                         ind=document.getElementById('id_'+taout[c][i]);
                         if (inc) inc.disabled=ndis;
-                        if (ind) ind.disabled=ndis;	 
+                        if (ind) ind.disabled=ndis;
                         disabledIE(iout);
                         if (ndis) {
                             // iout.style.backgroundColor='[CORE_BGCOLORALTERN]';
-                            //if (inc)  inc.style.backgroundColor='[CORE_BGCOLORALTERN]';	      	    
+                            //if (inc)  inc.style.backgroundColor='[CORE_BGCOLORALTERN]';
                         } else {
 
                             if (inc) inc.style.backgroundColor='';
@@ -1072,7 +1074,7 @@ function disableReadAttribute() {
                                 if (inb && (inb.type='checkbox')) inb.disabled=ndis;
                             }
 
-                            //lin[j].style.backgroundColor=(ndis)?'[CORE_BGCOLORALTERN]':'';		
+                            //lin[j].style.backgroundColor=(ndis)?'[CORE_BGCOLORALTERN]':'';
                         } else {
                             aid=lin[j].id;
                             // search radio
@@ -1087,11 +1089,11 @@ function disableReadAttribute() {
                                 }
                             }
                         }
-                    }	
+                    }
                 }
             }
         }
-    } 
+    }
 }
 
 // add a class for IE when disabled input
@@ -1145,7 +1147,7 @@ function clearInputs(tinput, idx,attrid, tOutsideInput) {
 
 	if (err != '')  alert('[TEXT:NOT Clear]'+err);
 	if (attrid && document.getElementById(attrid)) {
-	    
+
 	    try {document.getElementById(attrid).focus();} catch (exception) {} ;
         var ct='ilink_'+attrid;
         if (document.getElementById(ct)) {
@@ -1157,15 +1159,15 @@ function clearInputs(tinput, idx,attrid, tOutsideInput) {
 function deleteInputValue(id){
 	var err = "";
 	if (document.getElementById(id)) {
-		if (! isInputLocked(id)) {	
+		if (! isInputLocked(id)) {
 			var el = document.getElementById(id);
 			el.value = ' ';
-			
+
 			if ((el.tagName.toLowerCase()=='textarea') && (el.getAttribute('type')=='htmltext')) {
 			    var oFck=FCKeditorAPI.GetInstance(el.id);
 			    if (oFck) {
 			        oFck.SetData('');
-			    } 
+			    }
 			}
 			if( el.className.match(/^color\b/) ) {
 				el.style.backgroundColor = '';
@@ -1210,7 +1212,7 @@ function addEnum(th,cible,docid,attrid,key,index) {
                     enableSynchro();
                     requestUrlSend(footEnum,url);
                     disableSynchro();
-                } 
+                }
             }
         }
     }
@@ -1231,16 +1233,16 @@ function autoUnlock(docid) {
   var corestandurl=window.location.pathname+'?sole=Y';
   // branch for native XMLHttpRequest object
   if (window.XMLHttpRequest) {
-    r = new XMLHttpRequest(); 
+    r = new XMLHttpRequest();
   } else if (window.ActiveXObject) {
-    // branch for IE/Windows ActiveX version     
+    // branch for IE/Windows ActiveX version
     r = new ActiveXObject("Microsoft.XMLHTTP");
   }
-  if (r) {     
+  if (r) {
     r.open("GET", corestandurl+'&app=FDL&action=UNLOCKFILE&auto=Y&autoclose=Y&id='+docid,false);
-    //      req.setRequestHeader("Content-length", "1");     
+    //      req.setRequestHeader("Content-length", "1");
     r.send('');
-    if(r.status == 200) { 
+    if(r.status == 200) {
       if (r.responseXML) {
 	var xmlres=r.responseXML;
 	var elts = xmlres.getElementsByTagName("status");
@@ -1249,21 +1251,21 @@ function autoUnlock(docid) {
 	  var code=elt.getAttribute("code");
 	  var delay=elt.getAttribute("delay");
 	  var w=elt.getAttribute("warning");
-	  
+
 	  if (w != '') alert(w);
 	  if (code != 'OK') {
 	    alert('code not OK\n'+req.responseText);
 	    return false;
-	  }	
+	  }
 	  return true;
 	}
       }
       else {
 	//alert('no xml\n'+r.responseText);
-      } 
-    }    
-  }  	
-  return false;  
+      }
+    }
+  }
+  return false;
 }
 
 function refreshFCKs() {
@@ -1291,7 +1293,7 @@ function submitEdit(event,force) {
 				oEvent.initEvent("submit",false,false);
 				fedit.dispatchEvent(oEvent);
 			}
-			fedit.submit();			
+			fedit.submit();
 		}
 	}
 	return r;
@@ -1308,16 +1310,16 @@ function pleaseSave(event) {
 	var fedit= document.getElementById('fedit');
 	if (fedit.onsubmit) fedit.onsubmit();
 	fedit.submit();
-      
+
       } else {
 	alert('[TEXT:Data cannot be saved]');
 	return false;
       }
     }
   }
-  
+
   return true;
-  
+
 }
 
 var OattrNid=null; //original attrNid
@@ -1337,7 +1339,7 @@ function  hasTransitionAsk(thestate) {
 function askForTransition(event,thestate,thetitle,thecolor) {
   var th=document.getElementById('seltrans');
   var state=getIValue(th);
-  
+
   var wf=document.getElementById('hwfask');
   var nf=document.getElementById('wfask');
   var nfd=document.getElementById('dfask');
@@ -1359,9 +1361,9 @@ function askForTransition(event,thestate,thetitle,thecolor) {
       if (as1) as1.innerHTML=thestate;
     }
   }
-  
+
   if (!thecolor) {
-    if (th.tagName=='SELECT') {     
+    if (th.tagName=='SELECT') {
       thecolor=th.options[th.selectedIndex].style.backgroundColor;
       th.style.backgroundColor=thecolor;
     }
@@ -1373,17 +1375,17 @@ function askForTransition(event,thestate,thetitle,thecolor) {
     for (i=0;i<attrNid.length;i++) OattrNid.push(attrNid[i]);// memo  original
     for (i=0;i<attrNtitle.length;i++) OattrNtitle.push(attrNtitle[i]);
   }
-  
-    
+
+
   attrNid=new Array();
-  attrNtitle=new Array();  
+  attrNtitle=new Array();
   for (i=0;i<OattrNid.length;i++) attrNid.push(OattrNid[i]);// restore original
   for (i=0;i<OattrNtitle.length;i++) attrNtitle.push(OattrNtitle[i]);
-  
+
 
   if (askState) {
 
-      //nfd.style.visibility='hidden';	
+      //nfd.style.visibility='hidden';
     // display or not comment area
     if (state != '-') {document.getElementById('comment').style.visibility='visible';} else document.getElementById('comment').style.visibility='hidden';
 
@@ -1424,22 +1426,22 @@ function askForTransition(event,thestate,thetitle,thecolor) {
 	yfoot=50;
       }
       GetXY(event);
-      
-      //nfd.style.display='none';	
+
+      //nfd.style.display='none';
       nfd.style.display='';	// to refresh div
-      	
+
       //nfd.style.top='160px';
       //nf.style.top='300px';
       w=getObjectWidth(nfd);
       nx=Xpos-w+40;
       if (nx < 0) nx=0;
       //nfd.style.left=nx+'px';
-     
+
       if (yfoot < 100) {
 	if (ftable) h=getObjectHeight(ftable);
 	nfd.style.top=(yfoot+10+h)+'px';
       } else {
-	
+
 	//	alert(xy.y+'/'+h+'/'+(xy.y-h));
 	hnf=getObjectHeight(nfd);
 	//nfd.style.top=(yfoot-hnf)+'px';
@@ -1463,7 +1465,7 @@ function askForTransition(event,thestate,thetitle,thecolor) {
 	as.style.borderColor=thecolor;
 	as.innerHTML=thestate;
       }
-      //  nfd.style.display='none';	
+      //  nfd.style.display='none';
       nfd.style.display='';	// to refresh div
       //nfd.style.visibility='visible';
     } else {
@@ -1503,7 +1505,7 @@ function clearTime(nid) {
   var mm=document.getElementById('mm'+nid);
 
   if (t && hh && mm) {
-   
+
     hh.value='';hh.style.backgroundColor='[CORE_BGCOLORHIGH]';
     mm.value='';mm.style.backgroundColor='[CORE_BGCOLORHIGH]';
 
@@ -1512,15 +1514,15 @@ function clearTime(nid) {
 }
 function clearFile(o,nid) {
   var t=document.getElementById(nid);
-  if (t) {    
+  if (t) {
     if (t.value!=' ') {
-      t.value=' ';      
+      t.value=' ';
     } else {
-      t.value=document.getElementById('INIV'+nid).value;      
+      t.value=document.getElementById('INIV'+nid).value;
     }
     updatefilebutton(o,nid);
   }
-  
+
 }
 function updatefilebutton(o,nid) {
   var t=document.getElementById(nid);
@@ -1529,8 +1531,8 @@ function updatefilebutton(o,nid) {
   var t1,v1,t2,v2;
 
   if (t) {
-    p=t.previousSibling;   
-    while (p && (p.tagName!='SPAN') && (p.tagName!='A')) p=p.previousSibling;  
+    p=t.previousSibling;
+    while (p && (p.tagName!='SPAN') && (p.tagName!='A')) p=p.previousSibling;
     t2=o.getAttribute('title2');
     v2=o.getAttribute('value2');
     t1=o.getAttribute('title1');
@@ -1565,7 +1567,7 @@ function updatefilebutton(o,nid) {
 
       }
       o.setAttribute('title',t1);
-      o.value=v1; 
+      o.value=v1;
     }
   }
   disableReadAttribute();
@@ -1666,7 +1668,7 @@ function changeFile(o,nid,check) {
 		  }
 		  if (oe) oe.innerHTML=' [TEXT:It is not the latest document] - ';
 	      }
-	  } else {	      
+	  } else {
 	      if (oe) oe.innerHTML='';
 	      if (ori) ori.value=ori.getAttribute('orivalue');
 	  }
@@ -1676,7 +1678,7 @@ function changeFile(o,nid,check) {
   }
 }
 
-function checkinput(cid,check,iin,resetiin,thname) {    
+function checkinput(cid,check,iin,resetiin,thname) {
   var i=document.getElementById(cid);
   if (i) {
     if (!i.disabled) {
@@ -1697,7 +1699,7 @@ function updateEnumBoolCheck(icheck) {
         idx++;
         check=document.getElementById(idc+'_'+idx);
     }
-    
+
 }
 function updateEnumCheck(icheck) {
     var idc=icheck.id;
@@ -1705,7 +1707,7 @@ function updateEnumCheck(icheck) {
     if (ichecks.length==0) {
         // other method for IE
         ichecks=new Array();
-        var ti=icheck.parentNode.parentNode.parentNode.getElementsByTagName('input'); 
+        var ti=icheck.parentNode.parentNode.parentNode.getElementsByTagName('input');
         for (var i=0;i<ti.length;i++) {
             if (ti[i].name && (ti[i].name == idc)) {
                 ichecks.push(ti[i]);
@@ -1731,7 +1733,7 @@ function changeCheckClasses(th,iin,resetiin,thname) {
         if (icheck.length==0) {
             // other method for IE
             icheck=new Array();
-            var ti=th.parentNode.parentNode.parentNode.getElementsByTagName('input'); 
+            var ti=th.parentNode.parentNode.parentNode.getElementsByTagName('input');
             for (var i=0;i<ti.length;i++) {
                 if (ti[i].name && (ti[i].name == thname)) {
                     icheck.push(ti[i]);
@@ -1762,7 +1764,7 @@ function changeCheckClasses(th,iin,resetiin,thname) {
                 }
             }
             createOtherEnumInput(th,oi);
-        }    
+        }
     }
 }
 
@@ -1778,20 +1780,20 @@ function createOtherEnumInput(radio,ireal,initvalue) {
     else if ((radio.type == "checkbox") && (! radio.checked)) v=getIValue(radio);
     else v=radio.value;
   }
-  if (initvalue) v='...';      
-  
+  if (initvalue) v='...';
+
   var oid='other_'+ireal.id;
   var o=document.getElementById(oid);
 
   if (v=='...') {
 
-    if (! o) {      
+    if (! o) {
       o=document.createElement("input");
       o.id=oid;
       o.type='text';
       if (initvalue) o.value=getIValue(ireal);
       var cibleid='l'+ireal.id+'___';
-      var cible=document.getElementById(cibleid);     
+      var cible=document.getElementById(cibleid);
       if (! cible) cible=ireal;
       cible.parentNode.appendChild(o);
       if (radio && radio.tagName == "SELECT") addEvent(o,"change", function() {if (radio.multiple) selectinlist(radio,'...',true);addinlist(radio,this.value+' [TEXT:(Other input)]',this.value);o.style.display='none'});
@@ -1816,7 +1818,7 @@ function changeCheckBoolClasses(th,name) {
     var i=0;
     var p=th.previousSibling;
     while (p && (i<2)) {
-      if (p.name == name) {	
+      if (p.name == name) {
 	icheck[i]=p;
 	i++;
       }
@@ -1860,14 +1862,14 @@ function addinlist(sel,value,key,notselected) {
   sel.add(new Option(value,key, false, true),pos);
   if (notselected) {
     sel.options[sel.options.length - 1].selected=false;
-  } 
+  }
 }
 
 function removeinlist(inpsel,key) {
   if (inpsel) {
     for (var k=0;k<inpsel.options.length;k++) {
       if (inpsel.options[k].value==key) inpsel.remove(k--);
-    }    
+    }
   }
 }
 function selectinlist(inpsel,key,unselect) {
@@ -1875,12 +1877,12 @@ function selectinlist(inpsel,key,unselect) {
     unselect=(unselect)?true:false;
     for (var k=0;k<inpsel.options.length;k++) {
       if (inpsel.options[k].value==key) inpsel.options[k].selected=(!unselect);
-    }    
+    }
   }
 }
 
 function  nodereplacestr(n,s1,s2) {
-  
+
   var kids=n.childNodes;
   var ka;
   var avalue;
@@ -1892,49 +1894,50 @@ function  nodereplacestr(n,s1,s2) {
   rs1 = s1.replace('[','\\[');
   rs1 = rs1.replace(']','\\]');
   regs1 = new RegExp(rs1,'g');
-  
-  for (var i=0; i< kids.length; i++) {     
-    if (kids[i].nodeType==3) { 
+
+  for (var i=0; i< kids.length; i++) {
+    if (kids[i].nodeType==3) {
       // Node.TEXT_NODE
-      
+
 	if (kids[i].data.search(rs1) != -1) {
 	  tmp=kids[i].data; // need to copy to avoid recursive replace
-	  
+
 	  kids[i].data = tmp.replace(s1,s2);
 	}
-    } else if (kids[i].nodeType==1) { 
+    } else if (kids[i].nodeType==1) {
       // Node.ELEMENT_NODE
-	
+
 	// replace  attributes defined in attnames array
 	  for (iatt in attnames) {
-	    
+
 	    attr = kids[i].getAttributeNode(attnames[iatt]);
 	    if ((attr != null) && (attr.value != null) && (attr.value != 'null'))  {
-	      
-	      
-	      if (attr.value.search(rs1) != -1) {				
+
+
+	      if (attr.value.search(rs1) != -1) {
 		avalue=attr.value.replace(regs1,s2);
 
 		if (isIE && ((attr.name == 'onclick') || (attr.name == 'onmousedown') || (attr.name == 'onmouseover')|| (attr.name == 'onfocus'))) {
 			kids[i][attr.name]=new Function(avalue); // special for IE5.5+
 		} else  attr.value=avalue;
-		
+
 	      }
 	    }
 	  }
       nodereplacestr(kids[i],s1,s2);
-    } 
+    }
   }
 }
 
 
 
 //-------------------------------------------------------------
-// select tr (row table) 
-var seltr=false; 
+// select tr (row table)
+var seltr=false;
 var indextr=-1;
+var specAddtr = false;
 function addtr(trid, tbodyid) {
-  
+
   var ntr;
   with (document.getElementById(trid)) {
     // need to change display before because IE doesn't want after clonage
@@ -1945,26 +1948,26 @@ function addtr(trid, tbodyid) {
     if (isNetscape) {
       // bug :: Mozilla don't clone textarea values
       var newTa = ntr.getElementsByTagName('textarea');
-      for (var i=0; i < newTa.length; i++){ 
-	
+      for (var i=0; i < newTa.length; i++){
+
 	newTa[i].setAttribute('value',getElementsByTagName('textarea')[i].value);
 	// -- this next line is for N7 + Mozilla
 	newTa[i].defaultValue = getElementsByTagName('textarea')[i].value;
       }
     }
   }
-  
+
   ntr.id = '';
   ntable = document.getElementById(tbodyid);
   ntable.appendChild(ntr);
-    
+
     if (indextr==-1) indextr=ntable.childNodes.length;
     else indextr++;
   nodereplacestr(ntr,'-1]',']'); // replace name [-1] by []
   nodereplacestr(ntr,'-1',indextr);
   nodereplacestr(ntr,'_1x_',indextr);
   resizeInputFields(); // need to revaluate input width
- 
+
   if (seltr && (seltr.parentNode == ntr.parentNode))  {
     seltr.parentNode.insertBefore(ntr,seltr);
     resetTrInputs(ntr);
@@ -1978,15 +1981,31 @@ function addtr(trid, tbodyid) {
   }
   verifyMaxFileUpload(document.getElementById('fedit'));
   disableReadAttribute();
+    if (specAddtr) {
+                try {
+                    eval(specAddtr);
+                }
+                catch(exception) {
+                    alert(exception);
+                }
+            }
   return ntr;
-  
-}
 
+}
+var specDeltrUni = false;
 // use to delete an article
 function deltr(tr) {
-  if (indextr==-1) indextr=tr.parentNode.childNodes.length;
-  tr.parentNode.removeChild(tr);
-
+    var parent = tr.parentNode;
+  if (indextr==-1) indextr=parent.childNodes.length;
+  parent.removeChild(tr);
+    if (specDeltr) {
+                try {
+                    eval(specDeltrUni);
+                }
+                catch(exception) {
+                    alert(exception);
+                }
+            }
   return;
 }
 
@@ -1994,8 +2013,8 @@ function resetInputsByName(name) {
   if (! isNetscape) return;
   var la=document.getElementsByName(name);
   if (la) {
-    for (var i=0; i< la.length; i++) { 
-	    la[i].parentNode.insertBefore(la[i],la[i].nextSibling);      
+    for (var i=0; i< la.length; i++) {
+	    la[i].parentNode.insertBefore(la[i],la[i].nextSibling);
 	  }
   }
 }
@@ -2003,25 +2022,25 @@ function resetInputsByName(name) {
 function resetTrInputs(tr) {
   if (! isNetscape) return;
   var tin = tr.getElementsByTagName('input');
-  
-  for (var i=0; i< tin.length; i++) { 
+
+  for (var i=0; i< tin.length; i++) {
     if (tin[i].name) resetInputsByName(tin[i].name);
   }
 
   // add select input also
   tin = tr.getElementsByTagName('select');
-  
-  for (var i=0; i< tin.length; i++) { 
+
+  for (var i=0; i< tin.length; i++) {
     if (tin[i].name) resetInputsByName(tin[i].name);
   }
   // add select input also
   tin = tr.getElementsByTagName('textarea');
-  
-  for (var i=0; i< tin.length; i++) { 
+
+  for (var i=0; i< tin.length; i++) {
     if (tin[i].name) resetInputsByName(tin[i].name);
   }
 }
-// up tr order 
+// up tr order
 function uptr(trnode) {
 
   var pnode = trnode.previousSibling;
@@ -2031,15 +2050,15 @@ function uptr(trnode) {
 
   if (pnode)  {
     trnode.parentNode.insertBefore(trnode,pnode);
-    
+
   }  else {
     trnode.parentNode.appendChild(trnode); // latest (cyclic)
   }
   resetTrInputs(trnode);
-  return;  
+  return;
 }
 
-// down tr order 
+// down tr order
 function downtr(trnode) {
 
   var nnode = trnode.nextSibling;
@@ -2047,12 +2066,12 @@ function downtr(trnode) {
   while (nnode && (nnode.nodeType != 1)) nnode = nnode.nextSibling; // case TEXT attribute in mozilla between TR ??
 
   if (nnode ) {
-      nnnode = nnode.nextSibling; 
+      nnnode = nnode.nextSibling;
       while (nnnode && (nnnode.nodeType != 1)) nnnode = nnnode.nextSibling; // case TEXT attribute in mozilla between TR ??
 
-      if (nnnode) 
+      if (nnnode)
          trnode.parentNode.insertBefore(trnode,nnnode);
-      else 
+      else
          trnode.parentNode.appendChild(trnode); // latest
   } else {
       trnode.parentNode.insertBefore(trnode,trnode.parentNode.firstChild); // latest (cyclic)
@@ -2060,18 +2079,19 @@ function downtr(trnode) {
 
 
   resetTrInputs(trnode);
-  return;  
+  return;
 }
 
 // use to delete an article
 var specDeltr=false;
 function delseltr() {
   if (seltr) {
-    if (indextr==-1) indextr=seltr.parentNode.childNodes.length;
-    seltr.parentNode.removeChild(seltr);  
+      var parent = seltr.parentNode;
+      if (indextr==-1) indextr=parent.childNodes.length;
+    parent.removeChild(seltr);
     if (specDeltr) {
-      eval(specDeltr);
       try {
+          eval(specDeltr);
       }
       catch(exception) {
 	alert(exception);
@@ -2081,7 +2101,7 @@ function delseltr() {
   unseltr();
   seltr=null;
   return;
-  
+
 }
 var specDuptr=false;
 function duptr() {
@@ -2110,8 +2130,8 @@ function duptr() {
        // unseltr();
         disableReadAttribute();
         if (specDuptr) {
-            eval(specDuptr);
             try {
+                eval(specDuptr);
             }
             catch(exception) {
                 alert(exception);
@@ -2151,7 +2171,7 @@ function afterCloneBug(o1,o2) {
 
 // change input (id) value (v) in node n
 function chgInputValue(nid,id,v) {
-  
+
   var itag=new Array('input','textarea','select');
   var ti,t;
   var n=document.getElementById(nid);
@@ -2167,15 +2187,15 @@ function chgInputValue(nid,id,v) {
 	  setIValue(ti[i],v);
 	}
       }
-    
+
     }
   }
-  
-  
+
+
 }
 function visibilityinsert(n,d) {
   var ti = document.getElementsByName(n);
-  for (var i=0; i< ti.length; i++) { 
+  for (var i=0; i< ti.length; i++) {
     ti[i].style.visibility=d;
   }
 }
@@ -2188,43 +2208,43 @@ function selectUnselecttr(radio, tr) {
 }
 function selecttr(o,tr) {
 
-  
+
   visibilityinsert('trash','hidden');
   visibilityinsert('unselect','hidden');
   if (! o) {
       //search radio
       var trad = tr.getElementsByTagName('input');
-      for (var i=0; i< trad.length; i++) { 
+      for (var i=0; i< trad.length; i++) {
           if (trad[i].type=='radio') {
               o=trad[i];
               break;
           }
         }
   }
-  
+
   var ti = tr.parentNode.getElementsByTagName('input');
   //var ti = tr.parentNode.getElementsByTagName('img');
-  for (var i=0; i< ti.length; i++) { 
+  for (var i=0; i< ti.length; i++) {
       if (ti[i].name=='unselect') ti[i].style.visibility='visible';
   }
   ti = tr.parentNode.getElementsByTagName('textarea');
-  for (var i=0; i< ti.length; i++) { 
+  for (var i=0; i< ti.length; i++) {
       ti[i].rows=1;
       if (ti[i].id && document.getElementById('exp'+ti[i].id)) document.getElementById('exp'+ti[i].id).style.display='none';
   }
   if (seltr) {
       seltr.className='';
-  }   
+  }
 
   var trash=o.parentNode.firstChild;
-  while (trash && ((trash.nodeType != 1) || trash.name != 'trash')) trash = trash.nextSibling; // case TEXT attribute in mozilla between TR 
+  while (trash && ((trash.nodeType != 1) || trash.name != 'trash')) trash = trash.nextSibling; // case TEXT attribute in mozilla between TR
 
   if (trash) trash.style.visibility='visible';
 
   seltr=tr;
 
   seltr.className='selecta';
-  return;  
+  return;
 }
 
 //unselect selected
@@ -2245,7 +2265,7 @@ function unseltr() {
     visibilityinsert('unselect','hidden');
     seltr=false;
 
-    return;  
+    return;
 }
 var specMovetr=null;
 function movetr(tr, sourcetr) {
@@ -2253,7 +2273,7 @@ function movetr(tr, sourcetr) {
     if (! sourcetr) sourcetr=seltr;
     var trnode= sourcetr;
     var pnode = tr;
-    if (sourcetr) {  
+    if (sourcetr) {
 
         while (pnode && (pnode.nodeType != 1)) pnode = pnode.previousSibling; // case TEXT attribute in mozilla between TR ??
         if (pnode && trnode)  {
@@ -2273,7 +2293,7 @@ function movetr(tr, sourcetr) {
             }
         }
     }
-    return;  
+    return;
 }
 
 
@@ -2283,19 +2303,19 @@ function movetr(tr, sourcetr) {
 function submitinputs(faction, itarget) {
   var fedit = document.fedit;
   //  resetInputs();
-  
+
   with (document.modifydoc) {
     var editAction=action;
     var editTarget=target;
     wf=subwindow(100,390,itarget,'about:blank');
-    enableall();  
+    enableall();
     target=itarget;
     action=faction;
     submit();
     restoreall();
     target=editTarget;
     action=editAction;
-        
+
     return wf;
   }
 }
@@ -2311,21 +2331,21 @@ function vconstraint(cButton,famid,attrid) {
   var inid;
   var wf;
 
-  
+
   inid= cButton.id.substr(3);
   inp=document.getElementById(inid);
 
   if ((! inp)||(inp==null)) {
     alert('[TEXT:vconstraint input not found id=]'+inid);
   }
-  
+
   if (inp.name.substr(inp.name.length-1,1) == ']') {
     // it is an attribute in array
       index=getRowNumber(cButton,'tarray');
-    domindex = inp.id.substring(attrid.length);    
+    domindex = inp.id.substring(attrid.length);
   }
 
-  
+
   wf=submitinputs('[CORE_STANDURL]&app=FDL&action=VCONSTRAINT&famid='+famid+'&attrid='+attrid+'&index='+index+'&domindex='+domindex,'wchoose');
   if (wf) {
 	  var xy= getAnchorWindowPosition(inp.id);
@@ -2363,7 +2383,7 @@ function canceloption(said) {
   if (nfid && pdivopt) {
       pdivopt.style.display='';
       nfid.style.display='none';
-      nfid.src='about:blank';    
+      nfid.src='about:blank';
   }
 }
 
@@ -2375,7 +2395,7 @@ function fixedPosition() {
     var xy;
     var h;
 
-    if (isIE && ((document.body.scrollHeight) <= document.body.clientHeight)) {    
+    if (isIE && ((document.body.scrollHeight) <= document.body.clientHeight)) {
         if (fspan && ftable) {
             ftable.style.position='static';
             fspan.style.display='none';
@@ -2405,11 +2425,11 @@ function fixedPosition() {
 }
 
 function focusFirst() {
-  
+
   var fedit= document.getElementById('fedit');
   if (fedit) {
     for (var i=0;i<fedit.elements.length;i++) {
-      
+
       switch (fedit.elements[i].type) {
       case 'text':
       case 'select-one':
@@ -2432,7 +2452,7 @@ function focusFirst() {
       case 'undefined':
       case '':
 	break;
-      default:		  
+      default:
 	;
       }
     }
@@ -2447,14 +2467,14 @@ function mvbuttons(idnode1, idnode2) {
   var ti;
   var fc;
   if (node1 && node2) {
-     ti= node1.getElementsByTagName("input");  
+     ti= node1.getElementsByTagName("input");
      fc=node2.firstChild;
      while (ti.length>0) {
        node2.insertBefore(ti[0],fc);
      }
   }
 
-  
+
 }
 
 
@@ -2463,14 +2483,14 @@ function mvbuttonsState() {
   if (isub) isub.style.display='none';
 
   mvbuttons('editstatebutton','editbutton');
-  
+
 }
 
 function mvSaveAnchor() {
   var isub=document.getElementById('aSubmit');
   var isub2=document.getElementById('aSubmit2');
   if (isub) {
-    isub.style.display='none';    
+    isub.style.display='none';
     isub.parentNode.insertBefore(isub2,isub);
     isub2.innerHTML=isub.innerHTML;
   }
@@ -2487,16 +2507,16 @@ function applyFirstSelect(event) {
 function preview(faction,ntarget) {
   var fedit = document.fedit;
   //resetInputs();
-  
+
   with (document.modifydoc) {
     var editAction=action;
     var editTarget=target;
     if (! ntarget) ntarget='preview';
     wf=subwindowm(300,600,ntarget,'about:blank');
-    enableall();  
+    enableall();
     var na=document.getElementById('newart');
     if (na) {
-      disabledInput(na,true);        
+      disabledInput(na,true);
       var nt=document.getElementById('newtxt');
       disabledInput(nt,true);
     }
@@ -2508,25 +2528,25 @@ function preview(faction,ntarget) {
     target=editTarget;
     action=editAction;
     restoreall()
-    
+
     if (na) {
-      disabledInput(na,false);            
+      disabledInput(na,false);
       disabledInput(nt,false);
-    }    
+    }
   }
 }
 
 function quicksave() {
   if (canmodify()) {
-    with (document.modifydoc) {    
+    with (document.modifydoc) {
       var editTarget=target;
       if (isNaN(id.value) ) {
-	alert('[TEXT:quick save not possible]');	
+	alert('[TEXT:quick save not possible]');
       } else {
-	enableall();  
+	enableall();
 	var na=document.getElementById('newart');
 	if (na) {
-	  disabledInput(na,true);        
+	  disabledInput(na,true);
 	  var nt=document.getElementById('newtxt');
 	  disabledInput(nt,true);
 	}
@@ -2535,8 +2555,8 @@ function quicksave() {
 	document.modifydoc.noredirect.value=1;
 	document.modifydoc.quicksave.value=1;
 	// for htmlarea
-	submittextarea();	
-    
+	submittextarea();
+
 
 	submit();
 	document.modifydoc.noredirect.value=oldredirect;
@@ -2544,12 +2564,12 @@ function quicksave() {
 	document.isChanged=false;
 	target=editTarget;
 	restoreall()
-    
+
 	  if (na) {
-	    disabledInput(na,false);            
+	    disabledInput(na,false);
 	    disabledInput(nt,false);
-	  }    
-	viewwait(true);    
+	  }
+	viewwait(true);
 	return true;
       }
     }
@@ -2568,7 +2588,7 @@ function viewquick(event,view) {
   if (! event) event=window.event;
   if (document.modifydoc.id.value > 0) {
     var ctrlKey = event.ctrlKey;
-  
+
     if (view && ctrlKey) {
       document.getElementById('iQuicksave').style.display='';
       document.getElementById('iSubmit').style.display='none';
@@ -2585,7 +2605,7 @@ function trackKeysQuickSave(event) {
   var intKeyCode,ctrlKey;
 
   if (!event) event=window.event;
- 
+
   intKeyCode = event.which;
   if (!intKeyCode) intKeyCode= event.keyCode;
   //alert(intKeyCode);
@@ -2594,10 +2614,10 @@ function trackKeysQuickSave(event) {
     // Ctrl-S
     if (quicksave) quicksave();
     else if (window.parent.quicksave) window.parent.quicksave();
-    
-    //  window.parent.quicksave();  
+
+    //  window.parent.quicksave();
     if (stopPropagation) stopPropagation(event);
-    else if (window.parent.stopPropagation) window.parent.stopPropagation(event);    
+    else if (window.parent.stopPropagation) window.parent.stopPropagation(event);
   } else {
     document.isChanged=true;
   }
@@ -2629,7 +2649,7 @@ function trackKeys(event,onlystop)
   if (!onlystop) {
     if (((intKeyCode == 83)||(intKeyCode == 22)) && (altKey || ctrlKey)) {
       // Ctrl-S
-      quicksave(); 
+      quicksave();
       stop=true;
     }
   }
@@ -2639,7 +2659,7 @@ function trackKeys(event,onlystop)
       duptr();
       stop=true;
     }
-    
+
     if (((intKeyCode == 68)||(intKeyCode == 100)) && (altKey || ctrlKey)) {
       // Ctrl-D
        delseltr();
@@ -2647,7 +2667,7 @@ function trackKeys(event,onlystop)
     }
     if ( (intKeyCode == 38) && (altKey || ctrlKey)) {
       // Ctrl-Up
-      tm=seltr.previousSibling; 
+      tm=seltr.previousSibling;
       while (tm && (tm.nodeType != 1)) tm = tm.previousSibling;
       if (tm) movetr(tm);
       stop=true;
@@ -2664,7 +2684,7 @@ function trackKeys(event,onlystop)
   }
   if (onlystop ) {
     if (altKey || ctrlKey) {
-      if ((seltr && ((intKeyCode == 100) || 
+      if ((seltr && ((intKeyCode == 100) ||
 		     (intKeyCode == 118))) ||
 	  (intKeyCode == 115)) {
 	stop=true;
@@ -2677,8 +2697,8 @@ function trackKeys(event,onlystop)
   if ( stop) {
     stopPropagation(event);
     return false;
-  } 
-    
+  }
+
   return true;
 }
 
@@ -2691,7 +2711,7 @@ function increaselongtext(oid) {
       o.rows=9;
       if (ip) ip.style.display='';
     }
-    
+
   }
 }
 var _SELROW=null; // real tr to move
@@ -2719,9 +2739,9 @@ function begindrag(event,o) {
     _SELROWSELECTED=false;
     if (_SELROW.className=='selecta') {
         _SELROWSELECTED=true;
-    } 
+    }
     //selecttr(o,_SELROW);
-    addEvent(document,"mouseup",enddrag); 
+    addEvent(document,"mouseup",enddrag);
     _SELROW.parentNode.setAttribute('moving',  "true");
     _SELROW.setAttribute('moving',  "true");
     stopPropagation(event);
@@ -2752,7 +2772,7 @@ function enddrag(event) {
     _SELROW.setAttribute('moving',  "false");
     _SELROW=null;
     delEvent(document,"mouseup",enddrag);
-    
+
     //stopPropagation(event);
 }
 
@@ -2795,7 +2815,7 @@ function verifyMaxFileUpload(f) {
 			if (sid && sid.substring(sid.length - 4)=='_1x_') nifh++;
 		}
 	}
-	
+
 	if (nif > maxfile) {
 		alert("[TEXT:Too many input file. The maximum accepted is]"+" "+(maxfile-nifh));
 	    return false;
@@ -2826,7 +2846,7 @@ function documentsubmit(f) {
 
 // use when construct elink
 function elinkvalue(attrid) {
-  var v,d;  
+  var v,d;
   d=document.getElementById('mdocid_isel_'+attrid);
   if (d) { // special case of docid multiple
     v=getIValue(d);
