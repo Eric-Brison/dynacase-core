@@ -1,29 +1,23 @@
 <?php
 /*
+ * Mail template document
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
 */
 /**
- * Mail template document
- *
- * @author Anakeen 2009
- * @version $Id: Method.MailTemplate.php,v 1.11 2009/01/16 12:47:38 eric Exp $
- * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
- * @package FDL
- * @subpackage
- */
-/**
- */
-/**
  * @begin-method-ignore
  * this part will be deleted when construct document class until end-method-ignore
  */
+/**
+ * Mail template document
+ * @class _MAILTEMPLATE
+ */
 class _MAILTEMPLATE extends Doc
 {
-    /*
+    /**
      * @end-method-ignore
-    */
+     */
     public $ifiles = array();
     public $sendercopy = true;
     public $keys = array();
@@ -38,9 +32,11 @@ class _MAILTEMPLATE extends Doc
     }
     /**
      * send document by email using this template
+     * @param \Doc $doc documengt to send
+     * @param array $keys extra keys used for template
      * @return string error - empty if no error -
      */
-    function sendDocument(Doc & $doc, $keys = array())
+    public function sendDocument(Doc & $doc, $keys = array())
     {
         global $action;
         
@@ -180,12 +176,18 @@ class _MAILTEMPLATE extends Doc
                     $umail = getMailAddr($this->userid);
                     if ($umail != "") $dest['bcc'][] = $umail;
                 }
+                // delete empty address
+                $dest['to'] = array_filter($dest['to'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
+                $dest['cc'] = array_filter($dest['cc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
+                $dest['bcc'] = array_filter($dest['bcc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
+                $dest['from'] = array_filter($dest['from'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
                 
-                $to = implode(',', array_filter($dest['to'], create_function('$v', 'return!preg_match("/^\s*$/", $v);')));
-                $cc = implode(',', array_filter($dest['cc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);')));
-                $bcc = implode(',', array_filter($dest['bcc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);')));
-                $from = trim(implode(',', array_filter($dest['from'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'))));
+                $this->addSubstitutes($dest);
                 
+                $to = implode(',', $dest['to']);
+                $cc = implode(',', $dest['cc']);
+                $bcc = implode(',', $dest['bcc']);
+                $from = implode(',', $dest['from']); // only one value expected for from
                 if ($from == "") $from = getMailAddr($action->user->id);
                 if ($from == "") $from = getParam('SMTP_FROM');
                 if ($from == "") $from = $action->user->login . '@' . $_SERVER["HTTP_HOST"];
@@ -262,8 +264,13 @@ class _MAILTEMPLATE extends Doc
             }
             return $err;
         }
-        
-        function generateMailInstance(Doc & $doc, $tpl)
+        /**
+         * update template with document values
+         * @param Doc $doc
+         * @param string $tpl template content
+         * @return string
+         */
+        private function generateMailInstance(Doc & $doc, $tpl)
         {
             global $action;
             $tpl = str_replace("&#x5B;", "[", $tpl); // replace [ convverted in Doc::setValue()
@@ -279,14 +286,31 @@ class _MAILTEMPLATE extends Doc
             ) , "\$this->srcfile('\\1')", $body);
             return $body;
         }
-        
-        function specRefresh2()
+        /**
+         * add substitute account mail addresses
+         * @param array $dests
+         */
+        private function addSubstitutes(array & $dests)
         {
-            $err = $this->senddocument(new_doc($this->dbaccess, 24470, true));
-            return $err;
+            $sql = "SELECT incumbent.login as inlogin, incumbent.mail as inmail, substitut.firstname || ' ' || substitut.lastname as suname , substitut.mail as sumail from users as incumbent, users as substitut where substitut.id=incumbent.substitute and incumbent.substitute is not null and incumbent.mail is not null and substitut.mail is not null;";
+            simpleQuery($this->dbaccess, $sql, $substituteMails);
+            foreach (array(
+                "to",
+                "cc",
+                "bcc"
+            ) as $td) {
+                foreach ($dests[$td] as $kDest => $aDest) {
+                    foreach ($substituteMails as $aSumail) {
+                        $suName = str_replace('"', '', sprintf(_("%s (as substitute)") , $aSumail["suname"]));
+                        $dests[$td][$kDest] = str_replace(sprintf('<%s>', $aSumail["inmail"]) , sprintf('<%s>, "%s" <%s>', $aSumail["inmail"], $suName, $aSumail["sumail"]) , $aDest);
+                        
+                        $dests[$td][$kDest] = preg_replace(sprintf('/(^|,|\s)(%s)/', preg_quote($aSumail["inmail"])) , sprintf('\1\2, "%s" <%s>', $suName, $aSumail["sumail"]) , $dests[$td][$kDest]);
+                    }
+                }
+            }
         }
         
-        function srcfile($src)
+        private function srcfile($src)
         {
             $vext = array(
                 "gif",
@@ -337,7 +361,7 @@ class _MAILTEMPLATE extends Doc
          * this part will be deleted when construct document class until end-method-ignore
          */
     }
-    /*
+    /**
      * @end-method-ignore
-    */
+     */
 ?>
