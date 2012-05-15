@@ -20,8 +20,6 @@ class TestHelpUsage extends TestCaseDcp
         $output = array();
         exec(getWshCmd() . " --api=" . $api . " --help", $output);
         $this->assertTrue($output[1] == "Usage :", "String usage not found for api " . $api);
-        //error_log("OUTPUT IS == ".var_export($output, true));
-        
     }
     
     public function dataTextHelpUsage()
