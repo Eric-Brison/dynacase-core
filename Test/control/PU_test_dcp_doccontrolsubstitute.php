@@ -42,7 +42,8 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
      */
     public function testControlIncumbent($login, array $incumbents, array $expectedDocNames)
     {
-        $nu = $this->sudo($login);
+        $nu = new \Account();
+        $nu->setLoginName($login);
         
         foreach ($incumbents as $aIncumbent) {
             $u = new \Account();
@@ -51,6 +52,8 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             $err = $u->setSubstitute($nu->id);
             $this->assertEmpty($err, "substitute error: $err");
         }
+        
+        $this->sudo($login);
         $s = new \SearchDoc(self::$dbaccess, 'TST_SUBSTITUTE1');
         $s->setObjectReturn();
         $s->search();
@@ -113,8 +116,8 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
      */
     public function testControlStrict($login, array $incumbents, array $expectedDocNames)
     {
-        
-        $nu = $this->sudo($login);
+        $nu = new \Account();
+        $nu->setLoginName($login);
         foreach ($incumbents as $aIncumbent) {
             $u = new \Account();
             $u->setLoginName($aIncumbent);
@@ -123,6 +126,7 @@ class TestDocControlSubstitute extends TestCaseDcpCommonFamily
             $this->assertEmpty($err, "substitute error : $err");
         }
         clearCacheDoc();
+        $this->sudo($login);
         foreach ($expectedDocNames as $docName => $expectControl) {
             $d = new_doc(self::$dbaccess, $docName);
             $this->assertEquals($expectControl["normal"], $d->control('view', false) == "", sprintf("not correct normal control view for %s", $docName));
