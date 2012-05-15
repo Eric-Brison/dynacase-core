@@ -496,9 +496,10 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @param string $acl_name acl name to test
      * @param string $app_name application if test for other application
+     * @param bool $strict to not use substitute account information
      * @return bool true if permission granted
      */
-    function hasPermission($acl_name, $app_name = "")
+    function hasPermission($acl_name, $app_name = "", $strict = false)
     {
         if (!isset($this->user) || !is_object($this->user)) {
             $this->log->warning("Action {$this->parent->name}:{$this->name} requires authentification");
@@ -526,7 +527,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                 $this->permission = & $permission;
             }
             
-            return ($this->permission->HasPrivilege($acl->id));
+            return ($this->permission->HasPrivilege($acl->id, $strict));
         } else {
             // test permission for other application
             if (!is_numeric($app_name)) $appid = $this->GetIdFromName($app_name);
@@ -542,7 +543,7 @@ create sequence SEQ_ID_APPLICATION start 10;
                     $this->log->warning("Acl $acl_name not available for App $this->name");
                     return false;
                 } else {
-                    return ($wperm->HasPrivilege($acl->id));
+                    return ($wperm->HasPrivilege($acl->id, $strict));
                 }
             }
         }
@@ -743,11 +744,11 @@ create sequence SEQ_ID_APPLICATION start 10;
      *
      * @param string $key parameter identificator
      * @param string $val value
-     * @return void
+     * @return string error message
      */
     function setParamU($key, $val)
     {
-        $this->param->Set($key, $val, PARAM_USER . $this->user->id, $this->id);
+        return $this->param->Set($key, $val, PARAM_USER . $this->user->id, $this->id);
     }
     function setParamDef($key, $val)
     {

@@ -39,6 +39,7 @@ class Account extends DbObj
         "firstname",
         "login",
         "password",
+        "substitute",
         "isgroup",
         "accounttype",
         "memberof",
@@ -70,6 +71,10 @@ class Account extends DbObj
      */
     public $accounttype;
     /**
+     * @var int the substitute account identificator
+     */
+    public $substitute;
+    /**
      * family identificator of user document default is IUSER/IGROUP
      * @var string
      */
@@ -100,6 +105,7 @@ create table users ( id      int not null,
                         login      text not null,
                         password   text not null,
                         isgroup    char,
+                        substitute      int,
                         accounttype char,
                         memberof   int[],
                         expires    int,
@@ -127,6 +133,81 @@ create sequence seq_id_users start 10;";
             return true;
         }
         return false;
+    }
+    /**
+     * return substitute account
+     * return null if no susbtitute
+     * @return Account|null
+     */
+    public function getSubstitute()
+    {
+        if ($this->isAffected()) {
+            if ($this->substitute) {
+                return new Account($this->dbaccess, $this->substitute);
+            }
+        }
+        return null;
+    }
+    /**
+     * return incumbent ids account list (accounts which has this account as substitute)
+     * @param bool $returnSystemIds set to true to return system account id, false to return document user id
+     * @return int[]
+     */
+    public function getIncumbents($returnSystemIds = true)
+    {
+        $incumbents = array();
+        if ($this->isAffected()) {
+            $sql = sprintf("select %s from users where substitute=%d;", $returnSystemIds ? 'id' : 'fid', $this->id);
+            simpleQuery($this->dbaccess, $sql, $incumbents, true, false);
+        }
+        return $incumbents;
+    }
+    /**
+     * set substitute to this user
+     * this user become the incumbent of $substitute
+     * @param string $substitute login or user system id
+     * @return string error message (empty if not)
+     */
+    public function setSubstitute($substitute)
+    {
+        $err = '';
+        if (!$this->isAffected()) {
+            $err = sprintf(_("cannot set substitute account object not affected"));
+        }
+        if ($err) return $err;
+        if ($substitute) {
+            if (!(is_numeric($substitute))) {
+                $sql = sprintf("select id from users where login = '%s'", pg_escape_string($substitute));
+                simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
+                if ($substituteId) $substitute = $substituteId;
+                else $err = sprintf(_("cannot set substitute %s login not found") , $substitute);
+            }
+            if ($err) return $err;
+            $sql = sprintf("select id from users where id = '%d'", $substitute);
+            simpleQuery($this->dbaccess, $sql, $substituteId, true, true);
+            if (!$substituteId) $err = sprintf(_("cannot set substitute %s id not found") , $substitute);
+        }
+        if ($err) return $err;
+        if ($this->substitute == $this->id) {
+            $err = sprintf(_("cannot substitute itself"));
+        }
+        if ($err) return $err;
+        $oldSubstitute = $this->substitute;
+        $this->substitute = $substitute;
+        
+        $err = $this->modify();
+        if (!$err) {
+            $u = new \Account($this->dbaccess, $this->substitute);
+            $u->updateMemberOf();
+            if ($oldSubstitute) {
+                $u->select($oldSubstitute);
+                $u->updateMemberOf();
+            }
+            
+            global $action;
+            if ($action->user->id == $u->id) $action->user->revert();
+        }
+        return $err;
     }
     /**
      * affect account from its login
@@ -168,7 +249,7 @@ create sequence seq_id_users start 10;";
         if ($this->setloginName($this->login)) return _("this login exists");
         if ($this->login == "") return _("login must not be empty");
         if ($this->id == "") {
-            $res = pg_exec($this->dbid, "select nextval ('seq_id_users')");
+            $res = pg_query($this->dbid, "select nextval ('seq_id_users')");
             $arr = pg_fetch_array($res, 0);
             $this->id = $arr["nextval"];
         }
@@ -278,7 +359,7 @@ create sequence seq_id_users start 10;";
         if ($uid > 0) {
             if (isset($tdn[$uid])) return $tdn[$uid];
             $dbid = getDbId(getDbAccess());
-            $res = pg_exec($dbid, "select firstname, lastname  from users where id=$uid");
+            $res = pg_query($dbid, "select firstname, lastname  from users where id=$uid");
             if (pg_num_rows($res) > 0) {
                 $arr = pg_fetch_array($res, 0);
                 if ($arr["firstname"]) $tdn[$uid] = $arr["firstname"] . ' ' . $arr["lastname"];
@@ -325,12 +406,13 @@ create sequence seq_id_users start 10;";
      * @param string $pwd1 password one
      * @param string $pwd2 password two
      * @param string $extmail mail address
+     * @param array $roles
+     * @param int $substitute system substitute id
      * @return string error message
      */
     function updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail = '', array $roles = array(-1
-    ))
+    ) , $substitute = - 1)
     {
-        
         $this->lastname = $lname;
         $this->firstname = $fname;
         $this->status = $status;
@@ -345,7 +427,6 @@ create sequence seq_id_users start 10;";
         } else {
             $this->mail = $this->getMail();
         }
-        
         if ($expires > 0) $this->expires = $expires;
         if ($passdelay > 0) $this->passdelay = $passdelay;
         elseif ($passdelay == - 1) { // suppress expire date
@@ -366,6 +447,9 @@ create sequence seq_id_users start 10;";
             $this->updateMemberOf();
         }
         
+        if ((!$err) && ($substitute > - 1)) {
+            $err = $this->setSubstitute($substitute);
+        }
         return $err;
     }
     /**
@@ -398,6 +482,15 @@ create sequence seq_id_users start 10;";
         }
         return $err;
     }
+    /**
+     * revert values from database
+     */
+    public function revert()
+    {
+        if ($this->isAffected()) {
+            $this->select($this->id);
+        }
+    }
     //Add and Update expires and passdelay for password
     //Call in PreUpdate and PreInsert
     function getExpires()
@@ -427,7 +520,8 @@ create sequence seq_id_users start 10;";
         else {
             include_once ("FDL/Lib.Dir.php");
             if ($this->famid != "") $fam = $this->famid;
-            elseif ($this->isgroup == "Y") $fam = "IGROUP";
+            elseif ($this->accounttype == "G") $fam = "IGROUP";
+            elseif ($this->accounttype == "R") $fam = "ROLE";
             else $fam = "IUSER";;
             $filter = array(
                 "us_whatid = '" . $this->id . "'"
@@ -504,7 +598,7 @@ create sequence seq_id_users start 10;";
     function getMail($rawmail = true)
     {
         if ($this->accounttype == 'U') {
-            if (! $this->mail) return '';
+            if (!$this->mail) return '';
             if ($rawmail) {
                 return $this->mail;
             } else {
@@ -581,6 +675,26 @@ union
         $group->Add(true);
         // Store error messages
         
+    }
+    /**
+     * get the first incumbent which has $acl privilege
+     * @param Action $action
+     * @param Doc $doc document to verify
+     * @param string $acl document acl name
+     * @return string incumbent's name which has privilege
+     */
+    function getIncumbentPrivilege(Doc & $doc, $acl)
+    {
+        if ($this->id == 1) return '';
+        if ($incumbents = $this->getIncumbents()) {
+            if ($doc->control($acl, true) != '') {
+                foreach ($incumbents as $aIncumbent) {
+                    $eErr = $doc->controlUserId($doc->profid, $aIncumbent, $acl);
+                    if (!$eErr) return Account::getDisplayName($aIncumbent);
+                }
+            }
+        }
+        return '';
     }
     /**
      * get All Users (not group not role)
@@ -738,28 +852,56 @@ union
         return $parents;
     }
     /**
-     * update memberof fields with all group/role of user
+     * get memberof for user without substitutes
+     * @param int $uid if not set it is the current account object else use another account identificator
      * @return array
      * @throws Exception
      */
-    public function updateMemberOf()
+    public function getStrictMemberOf($uid = - 1)
     {
-        if (!$this->id) return array();
+        if ($uid == - 1) $uid = $this->id;
+        if (!$uid) return array();
         // get all ascendants groupe,role of a user
         $sql = sprintf("with recursive agroups(gid, login, actype) as (
  select idgroup, users.login, users.accounttype from groups,users where iduser = %d and users.id=groups.idgroup
    union
  select idgroup, users.login, users.accounttype from groups,users, agroups where groups.iduser = agroups.gid and users.id=groups.idgroup
-) select gid from agroups;", $this->id);
+) select gid from agroups;", $uid);
         
         simpleQuery($this->dbaccess, $sql, $gids, true, false);
-        $lg = $gids;
+        return $gids;
+    }
+    /**
+     * update memberof fields with all group/role of user
+     * @param bool $updateSubstitute also update substitute by default
+     * @return array of memberof identificators
+     * @throws Exception
+     */
+    public function updateMemberOf($updateSubstitute = true)
+    {
+        if (!$this->id) return array();
+        
+        $lg = $this->getStrictMemberOf();
+        // search incumbents
+        $sql = sprintf("select id from users where substitute=%d;", $this->id);
+        simpleQuery($this->dbaccess, $sql, $incumbents, true, false);
+        foreach ($incumbents as $aIncumbent) {
+            $lg[] = $aIncumbent;
+            // use strict no propagate substitutes
+            $lg = array_merge($lg, $this->getStrictMemberOf($aIncumbent));
+        }
+        
         $lg = array_values(array_unique($lg));
         $this->memberof = '{' . implode(',', $lg) . '}';
         $err = $this->modify(true, array(
             'memberof'
         ) , true);
         if ($err) throw new Exception($err);
+        if ($updateSubstitute && $this->substitute) {
+            $u = new Account($this->dbaccess, $this->substitute);
+            $u->updateMemberOf(false);
+        }
+        
         return $lg;
     }
     /**
@@ -786,16 +928,18 @@ union
      * @param int $uid user identificator
      * @return array|null
      */
-    public static function getUserMemberOf($uid)
+    public static function getUserMemberOf($uid, $strict = false)
     {
         global $action;
         $memberOf = array();
         if ($action->user->id == $uid) {
-            $memberOf = $action->user->getMemberOf();
+            if ($strict) $memberOf = $action->user->getStrictMemberOf();
+            else $memberOf = $action->user->getMemberOf();
         } else {
             $u = new Account('', $uid);
             if ($u->isAffected()) {
-                $memberOf = $u->getMemberOf();
+                if ($strict) $memberOf = $u->getStrictMemberOf();
+                else $memberOf = $u->getMemberOf();
             } else {
                 return null;
             }
@@ -1047,6 +1191,10 @@ union
         $err = '';
         $sql = sprintf("DELETE FROM groups USING users where groups.iduser=%d and users.id=groups.idgroup and users.accounttype='R'", $this->id);
         $err = simpleQuery($this->dbaccess, $sql);
+        if (!$err) {
+            
+            $err = simpleQuery($this->dbaccess, "delete from permission where computed");
+        }
         
         return $err;
     }

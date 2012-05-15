@@ -65,6 +65,7 @@ SELECT pg_temp.dropColumnIfExists('', 'users', 'iddomain');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'ntpasswordhash');
 SELECT pg_temp.dropColumnIfExists('', 'users', 'lmpasswordhash');
 SELECT pg_temp.addColumnIfNotExists('', 'users', 'memberof', 'int[]');
+SELECT pg_temp.addColumnIfNotExists('', 'users', 'substitute', 'int');
 SELECT pg_temp.addColumnIfNotExists('', 'users', 'accounttype', 'char');
 -- SELECT pg_temp.dropColumnIfExists('', 'doc128', 'us_passwd','cascade');
 --SELECT pg_temp.dropColumnIfExists('', 'doc128', 'us_iddomain','cascade');

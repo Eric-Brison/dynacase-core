@@ -44,7 +44,7 @@ $app_acl = array(
     array(
         "name" => "FUSERS_MASTER",
         "description" => N_("Access to user refresh function"),
-        "group_default" => "N"),
+        "group_default" => "N")
 );
 $action_desc = array(
 

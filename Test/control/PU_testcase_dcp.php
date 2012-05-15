@@ -155,11 +155,11 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
      *
      * @param string $login
      *
-     * @return void
+     * @return \Account
      */
     protected function sudo($login)
     {
-        $u = new \User(self::$dbaccess);
+        $u = new \Account(self::$dbaccess);
         if (!$u->setLoginName($login)) {
             throw new \Exception("login $login not exist");
         }
@@ -168,6 +168,7 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
         self::$user = $action->user;
         $action->user = $u;
         self::resetDocumentCache();
+        return $u;
     }
     /**
      * exit sudo
@@ -194,7 +195,8 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     protected static function importDocument($file)
     {
         if (is_array($file)) {
-            return self::importDocuments($file);
+            self::importDocuments($file);
+            return;
         }
         
         $cr = array();
@@ -227,7 +229,8 @@ class TestCaseDcp extends \PHPUnit_Framework_TestCase
     protected static function importDocuments($fileList)
     {
         if (!is_array($fileList)) {
-            return self::importDocument($fileList);
+            self::importDocument($fileList);
+            return;
         }
         
         foreach ($fileList as $file) {

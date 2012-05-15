@@ -231,7 +231,7 @@ class DocCtrl extends DocLDAP
      */
     function setProfil($profid, $fromdocidvalues = null)
     {
-        
+        $err = '';
         if (!is_numeric($profid)) $profid = getIdFromName($this->dbaccess, $profid);
         if (empty($profid)) {
             $profid = 0;
@@ -265,6 +265,7 @@ class DocCtrl extends DocLDAP
                 "views"
             ) , true);
         }
+        return $err;
     }
     /**
      * reset right for dynamic profil
@@ -517,18 +518,24 @@ class DocCtrl extends DocLDAP
      *
      * @param int $docid profil identificator
      * @param string $aclname name of the acl (edit, view,...)
+     * @param bool $strict set to true to not use substitute
      * @return string if empty access granted else error message
      */
-    function controlId($docid, $aclname)
+    function controlId($docid, $aclname, $strict = false)
     {
-        if ($this->profid == $docid) {
-            if (!isset($this->uperm)) {
-                $this->uperm = DocPerm::getUperm($docid, $this->userid);
-            }
-            return $this->ControlUp($this->uperm, $aclname);
-        } else {
-            $uperm = DocPerm::getUperm($docid, $this->userid);
+        if ($strict) {
+            $uperm = DocPerm::getUperm($docid, $this->userid, $strict);
             return $this->ControlUp($uperm, $aclname);
+        } else {
+            if ($this->profid == $docid) {
+                if (!isset($this->uperm)) {
+                    $this->uperm = DocPerm::getUperm($docid, $this->userid);
+                }
+                return $this->ControlUp($this->uperm, $aclname);
+            } else {
+                $uperm = DocPerm::getUperm($docid, $this->userid);
+                return $this->ControlUp($uperm, $aclname);
+            }
         }
     }
     /**

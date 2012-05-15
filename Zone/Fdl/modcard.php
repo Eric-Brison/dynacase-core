@@ -53,6 +53,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
         $ndocid = $classid;
         return "";
     }
+    $commentSubstitute = '';
     if ($docid == 0) {
         // add new document
         // search the good class of document
@@ -67,6 +68,9 @@ function modcard(Action & $action, &$ndocid, &$info = array())
             $doc->profid = "0"; // NO PROFILE ACCESS
             
         }
+        
+        $incumbentName = $action->user->getIncumbentPrivilege($fdoc, 'icreate');
+        if ($incumbentName) $commentSubstitute = sprintf(_("(substitute of %s) : ") , $incumbentName);
     } else {
         // initialise object
         $doc = new_Doc($dbaccess, $docid);
@@ -76,6 +80,8 @@ function modcard(Action & $action, &$ndocid, &$info = array())
         // test object permission before modify values (no access control on values yet)
         $err = $doc->canEdit();
         if ($err != "") $action->ExitError($err);
+        $incumbentName = $action->user->getIncumbentPrivilege($doc, 'edit');
+        if ($incumbentName) $commentSubstitute = sprintf(_("(substitute of %s) : ") , $incumbentName);
     }
     // apply specified mask
     if (($vid != "") && ($doc->cvid > 0)) {
@@ -168,9 +174,9 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                             $keys[] = $oa->getLabel();
                         }
                         $skeys = implode(", ", $keys);
-                        $doc->Addcomment(sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
+                        $doc->Addcomment($commentSubstitute . sprintf(_("change %s") , $skeys) , HISTO_INFO, "MODIFY");
                     } else {
-                        $doc->Addcomment(_("change") , HISTO_INFO, "MODIFY");
+                        $doc->Addcomment($commentSubstitute . _("change") , HISTO_INFO, "MODIFY");
                     }
                 }
                 if ($err == "") {
@@ -208,7 +214,7 @@ function modcard(Action & $action, &$ndocid, &$info = array())
                         if ($fdoc->schar == "R") {
                             $doc->AddRevision(sprintf("%s : %s", _("auto revision") , $comment));
                         } else {
-                            if ($comment != "") $doc->AddComment($comment);
+                            if ($comment != "") $doc->AddComment($commentSubstitute . $comment);
                         }
                     }
                     $ndocid = $doc->id;

@@ -35,9 +35,9 @@ class _IUSER extends Doc
     public function getSystemIds(array $accountIds)
     {
     }
-    /*
+    /**
      * @end-method-ignore
-    */
+     */
     
     var $eviews = array(
         "USERCARD:CHOOSEGROUP"
@@ -67,7 +67,15 @@ class _IUSER extends Doc
             $oa = $this->getAttribute("us_tab_system");
             $oa->setOption("firstopen", "yes");
         }
+        $this->updateIncumbents();
         return $err;
+    }
+    public function updateIncumbents()
+    {
+        $u = $this->getAccount();
+        if ($u) {
+            $this->setValue("us_incumbents", $u->getIncumbents(false));
+        }
     }
     /**
      * test if the document can be set in LDAP
@@ -261,6 +269,7 @@ class _IUSER extends Doc
         else $passdelay = intval($daydelay) * 3600 * 24;
         $status = $this->getValue("us_status");
         $login = $this->getValue("us_login");
+        $substitute = $this->getValue("us_substitute");
         $allRoles = $this->getAValues("us_t_roles");
         $extmail = $this->getValue("us_extmail", $this->getValue("us_homemail", " "));
         
@@ -294,7 +303,8 @@ class _IUSER extends Doc
             }
             $roleIds = $this->getSystemIds($roles);
             // perform update system User table
-            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds);
+            if ($substitute) $substitute = $this->getDocValue($substitute, "us_whatid");
+            $err.= $user->updateUser($fid, $lname, $fname, $expires, $passdelay, $login, $status, $pwd1, $pwd2, $extmail, $roleIds, $substitute);
             if ($err == "") {
                 if ($user) {
                     $this->setValue("US_WHATID", $user->id);
@@ -616,6 +626,20 @@ class _IUSER extends Doc
         return $err;
     }
     /**
+     * the incumbent account documents cannot be modified by susbtitutes
+     * @param string $aclname
+     * @param bool $strict
+     * @return string
+     */
+    public function control($aclname, $strict = false)
+    {
+        if ($this->getAccount()->substitute == $this->getSystemUserId()) {
+            return parent::control($aclname, true);
+        } else {
+            return parent::control($aclname, $strict);
+        }
+    }
+    /**
      * Security menus visibilities
      */
     function menuResetLoginFailure()
@@ -687,18 +711,22 @@ class _IUSER extends Doc
     function isAccountActive()
     {
         if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
-        return ($this->getValue("us_status", 'A') == 'A');
+        $u = $this->getAccount();
+        if ($u) {
+            return $u->status != 'D';
+        }
+        return false;
     }
     /**
      * @apiExpose
-     * @return string
+     * @return string error message
      */
     function activateAccount()
     {
         // Check that the user has FUSERS privileges
         global $action;
         if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return '';
+            return _("current user cannot deactivate account");
         }
         // The 'admin' account cannot be deactivated
         if ($this->getValue("us_whatid") == 1) {
@@ -709,24 +737,24 @@ class _IUSER extends Doc
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
+            $this->synchronizeSystemUser();
         }
         return "";
     }
     function isAccountInactive()
     {
-        if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
-        return ($this->getValue("us_status", 'A') != 'A');
+        return (!$this->isAccountActive());
     }
     /**
      * @apiExpose
-     * @return string
+     * @return string error message
      */
     function deactivateAccount()
     {
         // Check that the user has FUSERS privileges
         global $action;
         if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return '';
+            return _("current user cannot deactivate account");
         }
         // The 'admin' account cannot be deactivated
         if ($this->getValue("us_whatid") == 1) {
@@ -737,6 +765,7 @@ class _IUSER extends Doc
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
+            $this->synchronizeSystemUser();
         }
         return "";
     }
@@ -761,7 +790,7 @@ class _IUSER extends Doc
      * this part will be deleted when construct document class until end-method-ignore
      */
 }
-/*
+/**
  * @end-method-ignore
-*/
+ */
 ?>

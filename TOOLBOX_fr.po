@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-15 12:09+0200\n"
-"PO-Revision-Date: 2012-05-15 12:11+0200\n"
+"POT-Creation-Date: 2012-05-14 15:38+0200\n"
+"PO-Revision-Date: 2012-05-14 15:39+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -189,6 +189,10 @@ msgstr "%d minutes"
 #, c-format
 msgid "%d stored files"
 msgstr "%d fichiers stockés"
+
+#, c-format
+msgid "%s (as substitute)"
+msgstr "%s (suppléant)"
 
 #, c-format
 msgid "%s : file %s has been replaced by new file %s"
@@ -414,6 +418,10 @@ msgstr "(seulement)"
 
 msgid "(private)"
 msgstr "(privé)"
+
+#, c-format
+msgid "(substitute of %s) : "
+msgstr "(suppléant de %s) : "
 
 msgid "(title)"
 msgstr "(titre)"
@@ -4663,6 +4671,20 @@ msgid "cannot set free state in workflow controlled document %s"
 msgstr ""
 "l'affectation d'un état libre est impossible dans un document controlé par "
 "un cycle de vie : %s"
+
+#, c-format
+msgid "cannot set substitute %s id not found"
+msgstr "Ne peut pas modifier le suppléant %s id non trouvé"
+
+#, c-format
+msgid "cannot set substitute %s login not found"
+msgstr "Ne peut pas modifier le suppléant %s login non trouvé"
+
+msgid "cannot set substitute account object not affected"
+msgstr "Ne peut pas modifier le suppléant, objet non initialisé"
+
+msgid "cannot substitute itself"
+msgstr "Ne peut être suppléant de soi"
 
 #, c-format
 msgid "cannot suppress archive file %s"
@@ -9105,9 +9127,6 @@ msgstr "le titre de {left} inclus {right}"
 #~ msgid "Error: missing or empty --config"
 #~ msgstr "Erreur: --config manquant ou absent"
 
-#~ msgid "Failed to copy $infile to $f"
-#~ msgstr "Echec de la copie de $infile vers $f"
-
 #~ msgid "Import from"
 #~ msgstr "Importation à partir de"
 
@@ -9503,9 +9522,6 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "function examples"
 #~ msgstr "exemples de fonctions"
-
-#~ msgid "group"
-#~ msgstr "Groupe"
 
 #~ msgid "group list"
 #~ msgstr "les groupes"

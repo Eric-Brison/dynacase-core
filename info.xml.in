@@ -252,6 +252,9 @@ This can be solved by:<br/>
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountinit.ods">
             <label>Create admin profil</label>
         </process>
+        <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountprofil.ods">
+            <label>Profiling accounts</label>
+        </process>
 
         <process command="./wsh.php --api=importDocuments --file=./FDL/defaultprofil.ods">
             <label>Profiling system families</label>
@@ -473,6 +476,10 @@ This can be solved by:<br/>
 
         <process command="./wsh.php --api=importDocuments --file=./FUSERS/account.ods">
             <label>Update Account families</label>
+        </process>
+
+        <process command="./wsh.php --api=importDocuments --file=./FUSERS/accountprofil.ods">
+            <label>Profiling accounts</label>
         </process>
         <process command="programs/pre_migration GENERIC"/>
         <process command="programs/record_application GENERIC U"/>

@@ -64,6 +64,15 @@ class DocHisto extends DbObj
      * @public int
      */
     public $level;
+    public $initid;
+    /**
+     * @var string history key code
+     */
+    public $code;
+    /**
+     * @var string history message
+     */
+    public $comment;
     
     public $id_fields = array(
         "id"
