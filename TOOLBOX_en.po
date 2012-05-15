@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-14 14:59+0200\n"
+"POT-Creation-Date: 2012-05-15 12:09+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -1791,6 +1791,14 @@ msgstr ""
 msgid "Error : Process %s [%d]: status %d"
 msgstr ""
 
+#, c-format
+msgid "Error : User [%s] doesn't exists\n"
+msgstr ""
+
+#, c-format
+msgid "Error : User account [%s] is desactivated\n"
+msgstr ""
+
 msgid "Error : need edit privilege to execute"
 msgstr ""
 
@@ -2606,12 +2614,6 @@ msgstr ""
 #, fuzzy
 msgid "Move reference"
 msgstr "Delete"
-
-msgid "My system user id"
-msgstr ""
-
-msgid "My user account id"
-msgstr ""
 
 msgid "N"
 msgstr ""
@@ -3575,9 +3577,6 @@ msgstr ""
 msgid "Template [%s] not found"
 msgstr ""
 
-msgid "The \"Foo\" string"
-msgstr ""
-
 msgid ""
 "The apache configuration seems incorrect. I cannot read .htaccess file. May "
 "be parameter allowOverride is not set to All"
@@ -3709,9 +3708,6 @@ msgid "Tsick"
 msgstr ""
 
 msgid "Tuesday"
-msgstr ""
-
-msgid "Two cents"
 msgstr ""
 
 msgid "Twprocess_private"
