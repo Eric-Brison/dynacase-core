@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<status count="[count]" delay="[delay]" code="[success]" warning="[warning]">
+    <data parameterid="[parameterid]" modify="[modify]">
+    </data>
+</status>

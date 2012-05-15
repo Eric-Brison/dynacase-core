@@ -1,4 +1,25 @@
-[ZONE CORE:HTMLHEAD]
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+   <meta http-equiv="X-UA-Compatible" content="IE=100" > <!-- IE latest mode -->
+<LINK REL="icon" HREF="[DYNACASE_FAVICO]" >
+<LINK REL="SHORTCUT ICON" HREF="[DYNACASE_FAVICO]" >
+<LINK REL="stylesheet" type="text/css" HREF="[CORE_SBASEURL]app=CORE&action=CORE_CSS" >
+   <title>[TITLE]</title>
+[CSS:REF]
+   <style type="text/css">
+[CSS:CODE]
+   </style>
+[JS:REF]
+   <script language="JavaScript">
+  <!--
+    [JS:CODE]
+  //-->
+   </script>
+ </head>
+
+<body class="core">
 <script language="javascript">
 if (window.name == 'fhidden') {
   alert('[serror]');
@@ -28,4 +49,4 @@ div.COREError {
 
 
 </div>
-[ZONE CORE:HTMLFOOT]
+    </body></html>
