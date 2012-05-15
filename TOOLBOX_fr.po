@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-15 11:54+0200\n"
-"PO-Revision-Date: 2012-05-15 11:59+0200\n"
+"POT-Creation-Date: 2012-05-15 12:09+0200\n"
+"PO-Revision-Date: 2012-05-15 12:11+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -1708,11 +1708,13 @@ msgstr "Erreur : Nettoyage %s état %d"
 msgid "Error : Process %s [%d]: status %d"
 msgstr "Erreur : Processus %s [%d]: statut %d"
 
-msgid "Error : User account is desactivated\n"
-msgstr "Erreur: Compte utilisateur désactivé\n"
+#, c-format
+msgid "Error : User [%s] doesn't exists\n"
+msgstr "Erreur : L'utilisateur %s n'existe pas\n"
 
-msgid "Error : User doesn't exists\n"
-msgstr "Erreur: L'utilisateur n'existe pas\n"
+#, c-format
+msgid "Error : User account [%s] is desactivated\n"
+msgstr "Erreur : Le compte de l'utilisateur %s est désactivé\n"
 
 msgid "Error : need edit privilege to execute"
 msgstr "Erreur ; privilege edit requis pour l'exécution"
@@ -9093,6 +9095,12 @@ msgstr "le titre de {left} inclus {right}"
 
 #~ msgid "Domain %s"
 #~ msgstr "Domaine %s"
+
+#~ msgid "Error : User account is desactivated\n"
+#~ msgstr "Erreur: Compte utilisateur désactivé\n"
+
+#~ msgid "Error : User doesn't exists\n"
+#~ msgstr "Erreur: L'utilisateur n'existe pas\n"
 
 #~ msgid "Error: missing or empty --config"
 #~ msgstr "Erreur: --config manquant ou absent"

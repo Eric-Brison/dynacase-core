@@ -110,12 +110,12 @@ $core->SetVolatileParam("CORE_ASTANDURL", "$absindex?sole=Y&"); // absolute link
 initExplorerParam($core);
 
 if (!$core->user->isAffected()) {
-    echo sprintf(_("Error : User doesn't exists\n"));
+    echo sprintf(_("Error : User [%s] doesn't exists\n"), $_GET["userid"]);
     exit(2);
 }
 
 if ($core->user->status == "D") {
-    echo sprintf(_("Error : User account is desactivated\n"));
+    echo sprintf(_("Error : User account [%s] is desactivated\n"), $_GET["userid"]);
     exit(2);
 }
 
