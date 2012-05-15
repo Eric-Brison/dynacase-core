@@ -84,7 +84,7 @@ class ApiUsage
         global $action;
         $this->action = & $action;
         $this->addHidden("api", "api file to use");
-        $this->addOption('userid', "user system id to execute function - default is (admin)", array() , 1);
+        $this->addOption('userid', "user system id or login name to execute function - default is (admin)", array() , 1);
         $this->addEmpty('help', "Show usage");
     }
     /**
