@@ -1,4 +1,9 @@
 <?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
 /**
  * Construct vault index database
  *
@@ -6,29 +11,32 @@
  * @version $Id: SetDocVaultIndex.php.in,v 1.2 2008/05/07 10:24:02 jerome Exp $
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- * @subpackage 
+ * @subpackage
  */
- /**
+/**
  */
 ini_set("include_path", ".:@prefix@:@prefix@/WHAT:@PEAR@");
 ini_set("max_execution_time", "36000");
 
-include_once('Class.Action.php');
-include_once('Class.Application.php');
-include_once('Class.Session.php');
-include_once('Class.Log.php');
+include_once ('Class.Action.php');
+include_once ('Class.Application.php');
+include_once ('Class.Session.php');
+include_once ('Class.Log.php');
 
-include_once('FDL/Class.Doc.php');
-include_once('FDL/Class.DocVaultIndex.php');
+include_once ('FDL/Class.Doc.php');
+include_once ('FDL/Class.DocVaultIndex.php');
+
+$usage = new ApiUsage();
+$usage->setText("Construct vault index database");
+$usage->verify();
 
 $appl = new Application();
 $appl->Set("FDL", $core);
-$dbaccess=$appl->GetParam("FREEDOM_DB");
+$dbaccess = $appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-  print "Database not found : param FREEDOM_DB";
-  exit;
+    print "Database not found : param FREEDOM_DB";
+    exit;
 }
-
 
 $dvi = new DocVaultIndex($dbaccess);
 
@@ -36,52 +44,52 @@ $doc = new_Doc($dbaccess);
 $doc->exec_query("select * from doc where id > 0 and doctype!='Z'");
 $idoc = $doc->numrows();
 
-loclog("Base $dbaccess, ".$idoc." document".($idoc?"s":"")." to process");
+loclog("Base $dbaccess, " . $idoc . " document" . ($idoc ? "s" : "") . " to process");
 $dvi->exec_query("select * from docvaultindex");
-loclog("Doc/Vault Index contains ".$dvi->numrows()." associations");
+loclog("Doc/Vault Index contains " . $dvi->numrows() . " associations");
 
-
-for ($c=0; $c < $idoc; $c++) {
-  $row = $doc->fetch_array($c,PGSQL_ASSOC);
-  $tdoc = new_Doc($dbaccess, $row["id"]);
-  UpdateVaultIndex($c, $tdoc, $dvi);
-  unset($tdoc);
+for ($c = 0; $c < $idoc; $c++) {
+    $row = $doc->fetch_array($c, PGSQL_ASSOC);
+    $tdoc = new_Doc($dbaccess, $row["id"]);
+    UpdateVaultIndex($c, $tdoc, $dvi);
+    unset($tdoc);
 }
 $dvi->exec_query("select * from docvaultindex");
-loclog("Doc/Vault Index contains ".$dvi->numrows()." associations");
+loclog("Doc/Vault Index contains " . $dvi->numrows() . " associations");
 
 exit;
 
-
-function UpdateVaultIndex($i, &$doc, &$dvi) {
-  $vl = ""; $vic=0;
-  $err = $dvi->DeleteDoc($doc->id);
-  $fa = $doc->GetFileAttributes();
-  foreach ($fa as $aid=>$oattr) {
-    if ($oattr->inArray()) {
-      $ta=$doc->getTValue($aid);
-    } else {
-      $ta=array($doc->getValue($aid));
+function UpdateVaultIndex($i, &$doc, &$dvi)
+{
+    $vl = "";
+    $vic = 0;
+    $err = $dvi->DeleteDoc($doc->id);
+    $fa = $doc->GetFileAttributes();
+    foreach ($fa as $aid => $oattr) {
+        if ($oattr->inArray()) {
+            $ta = $doc->getTValue($aid);
+        } else {
+            $ta = array(
+                $doc->getValue($aid)
+            );
+        }
+        foreach ($ta as $k => $v) {
+            $vid = "";
+            if (preg_match(PREGEXPFILE, $v, $reg)) {
+                $vid = $reg[2];
+                $dvi->docid = $doc->id;
+                $dvi->vaultid = $vid;
+                $dvi->Add();
+                $vl.= " " . $vid;
+                $vic++;
+            }
+        }
     }
-    foreach ($ta as $k=>$v) {
-      $vid="";
-      if (preg_match("/(.*)\|(.*)/", $v, $reg)) {
-        $vid=$reg[2];
-        $dvi->docid = $doc->id;
-        $dvi->vaultid = $vid;
-        $dvi->Add();
-	$vl .= " ".$vid;
-	$vic++;
-      }
-    }
-  }
-  if ($vic>0)  loclog("[$i] document [".$doc->id."::".$doc->title."]  added vault file".($vic>1?"s":"")." ".$vl);
-  
+    if ($vic > 0) loclog("[$i] document [" . $doc->id . "::" . $doc->title . "]  added vault file" . ($vic > 1 ? "s" : "") . " " . $vl);
 }
 
-
-function loclog($s) {
-  echo "SetDocVaultIndex> $s\n";
+function loclog($s)
+{
+    echo "SetDocVaultIndex> $s\n";
 }
-
 ?>
