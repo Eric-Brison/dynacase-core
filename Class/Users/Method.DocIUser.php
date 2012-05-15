@@ -711,18 +711,22 @@ class _IUSER extends Doc
     function isAccountActive()
     {
         if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
-        return ($this->getValue("us_status", 'A') == 'A');
+        $u = $this->getAccount();
+        if ($u) {
+            return $u->status != 'D';
+        }
+        return false;
     }
     /**
      * @apiExpose
-     * @return string
+     * @return string error message
      */
     function activateAccount()
     {
         // Check that the user has FUSERS privileges
         global $action;
         if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return '';
+            return _("current user cannot deactivate account");
         }
         // The 'admin' account cannot be deactivated
         if ($this->getValue("us_whatid") == 1) {
@@ -739,19 +743,18 @@ class _IUSER extends Doc
     }
     function isAccountInactive()
     {
-        if ($this->getValue("us_whatid") == 1) return false; // it makes non sense for admin
-        return ($this->getValue("us_status", 'A') != 'A');
+        return (!$this->isAccountActive());
     }
     /**
      * @apiExpose
-     * @return string
+     * @return string error message
      */
     function deactivateAccount()
     {
         // Check that the user has FUSERS privileges
         global $action;
         if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return '';
+            return _("current user cannot deactivate account");
         }
         // The 'admin' account cannot be deactivated
         if ($this->getValue("us_whatid") == 1) {
