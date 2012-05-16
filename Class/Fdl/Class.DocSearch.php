@@ -220,6 +220,7 @@ class DocSearch extends PDocSearch
      * @param array &$sqlfilters return array of sql conditions
      * @param string &$sqlorder return sql order by
      * @param string &$fullkeys return tsearch2 keys for use it in headline sql function
+     * @return void
      */
     static function getFullSqlFilters($keyword, &$sqlfilters, &$sqlorder, &$fullkeys)
     {
@@ -237,6 +238,7 @@ class DocSearch extends PDocSearch
         $sqlfilters = array();
         
         $keyword = preg_replace('/\s+(OR)\s+/', '|', $keyword);
+        $keyword = preg_replace('/\s+(AND)\s+/', ' ', $keyword);
         $tkeys = explode(" ", $keyword);
         $sqlfiltersbrut = array();
         $tsearchkeys = array();

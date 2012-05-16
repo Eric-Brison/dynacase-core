@@ -332,14 +332,27 @@ class SearchDoc
         
         return $this->result;
     }
-    
+    /**
+     * return document iterator to be used in loop
+     * @code
+     *  $s=new \SearchDoc($dbaccess, $famName);
+     $s->setObjectReturn();
+     $s->search();
+     $dl=$s->getDocumentList();
+     foreach ($dl as $docId=>$doc) {
+     print $doc->getTitle();
+     }
+     * @endcode
+     * @return DocumentList
+     */
     public function getDocumentList()
     {
         include_once ("FDL/Class.DocumentList.php");
         return new DocumentList($this);
     }
     /**
-     *
+     * return error message
+     * @return string empty if no errors
      */
     public function searchError()
     {
@@ -499,7 +512,7 @@ class SearchDoc
      * @param string $args arguments of the filter string (arguments are escaped to avoid sql injection)
      * @return void
      */
-    public function addFilter($filter)
+    public function addFilter($filter, $args = '')
     {
         
         if ($filter != "") {
@@ -519,8 +532,67 @@ class SearchDoc
             $this->filters[] = $filter;
         }
     }
+    /**
+     * add global filter on any attribute value
+     * available example :
+     *   foo : filter all values with has the word foo
+     *   foo bar : the word foo and the word bar are set in document attributes
+     *   foo OR bar : the word foo or the word bar are set in a document attributes
+     *   foo OR (bar AND zou) : more complex logical expression
+     * @param string $filter
+     * @param bool $useSpell
+     */
+    public function addGeneralFilter($filter, $useSpell = false)
+    {
+        if ((strstr($filter, '"') == false) && (strstr($filter, '~') == false)) {
+            $this->addFullFilter($filter, $useSpell);
+        } else {
+            DocSearch::getFullSqlFilters($filter, $sqlFilters, $sqlOrder, $fullKeys);
+            foreach ($sqlFilters as $aFilter) {
+                $this->addFilter($aFilter);
+            }
+        }
+    }
     
-    static function sqlcond($values, $column, $integer = false)
+    public function addFullFilter($filter, $useSpell = false)
+    {
+        
+        $keyword = preg_replace('/\s+(OR)\s+/', '|', $filter);
+        $keyword = preg_replace('/\s+(AND)\s+/', '&', $keyword);
+        $keyword = preg_replace('/\s+/', '&', $keyword);
+        if ($useSpell) {
+            $keyword = preg_replace("/(?m)([\p{L}]+)/ue", "\$this->testSpell('\\1')", $keyword);
+        }
+        
+        $q3 = "fulltext @@ to_tsquery('french','" . pg_escape_string(unaccent($keyword)) . "') ";
+        $this->addFilter($q3);
+    }
+    
+    protected function testSpell($word)
+    {
+        static $pspell_link = null;
+        if (function_exists('pspell_new')) {
+            if (!$pspell_link) $pspell_link = pspell_new("fr", "", "", "utf-8", PSPELL_FAST);
+            if ((!is_numeric($word)) && (!pspell_check($pspell_link, $word))) {
+                $suggestions = pspell_suggest($pspell_link, $word);
+                $sug = $suggestions[0];
+                //foreach ($suggestions as $k=>$suggestion) {  echo "$k : $suggestion\n";  }
+                if ($sug && (unaccent($sug) != $word) && (!strstr($sug, ' '))) {
+                    $word = sprintf("(%s|%s)", $word, $sug);
+                }
+            }
+        }
+        return $word;
+    }
+    /**
+     * return where condition like : foo in ('x','y','z')
+     * @static
+     * @param array $values set of values
+     * @param string $column database column name
+     * @param bool $integer set to true if database column is numeric type
+     * @return string
+     */
+    public static function sqlcond(array $values, $column, $integer = false)
     {
         $sql_cond = "true";
         if (count($values) > 0) {
@@ -572,7 +644,7 @@ class SearchDoc
      * @param boolean $exclude set to true to exclude confidential
      * @return void
      */
-    function excludeConfidential($exclude = true)
+    public function excludeConfidential($exclude = true)
     {
         if ($exclude) {
             if ($this->userid != 1) {

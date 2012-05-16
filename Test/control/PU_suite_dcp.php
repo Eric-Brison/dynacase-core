@@ -23,6 +23,7 @@ class SuiteDcp
         $suite->addTestSuite('PU\TestOooSimpleLayout');
         $suite->addTestSuite('PU\TestFolder');
         $suite->addTestSuite('PU\TestSearch');
+        $suite->addTestSuite('PU\TestSearchDirective');
         $suite->addTestSuite('PU\TestSimpleQuery');
         $suite->addTestSuite('PU\TestProfil');
         $suite->addTestSuite('PU\TestTag');
