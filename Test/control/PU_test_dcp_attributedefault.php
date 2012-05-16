@@ -272,6 +272,10 @@ class TestAttributeDefault extends TestCaseDcpCommonFamily
             array(
                 'TST_TEXT6',
                 '[:TST_TITLE:]'
+            ) ,
+            array(
+                'TST_TEXT7',
+                "0"
             )
         );
     }

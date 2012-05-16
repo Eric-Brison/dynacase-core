@@ -52,6 +52,14 @@ class _TST_FAMILYDEFAULT extends Doc
         
         return implode(',', $tx);
     }
+    
+    public function searchOnFamily()
+    {
+        include_once ("FDL/Class.SearchDoc.php");
+        $s = new SearchDoc($this->dbaccess, "TST_DEFAULTFAMILY1");
+        $s->search();
+        return $s->count();
+    }
     /**
      * @begin-method-ignore
      * this part will be deleted when construct document class until end-method-ignore
