@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Toolbox\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-14 15:38+0200\n"
+"POT-Creation-Date: 2012-05-16 16:55+0200\n"
 "PO-Revision-Date: 2011-09-19 15:56+0200\n"
 "Last-Translator: Eric Brison <eric.brison@anakeen.com>\n"
 "Language-Team: english-anakeen <distrib@anakeen.com>\n"
@@ -2491,6 +2491,10 @@ msgstr ""
 msgid "MB_To"
 msgstr ""
 
+#, c-format
+msgid "Mail %s sent to %s"
+msgstr ""
+
 msgid "Mail template document reference to ask new password"
 msgstr ""
 
@@ -3378,6 +3382,40 @@ msgstr "Delete"
 #, fuzzy
 msgid "Send mail"
 msgstr "Email"
+
+#, c-format
+msgid "Send mail error : Attribute %s not found"
+msgstr ""
+
+#, c-format
+msgid "Send mail error : Attribute %s not found."
+msgstr ""
+
+#, c-format
+msgid "Send mail error : Parameter %s doesn't exists"
+msgstr ""
+
+#, c-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Incorrect relation "
+"key: %s"
+msgstr ""
+
+#, c-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Relation key %s doe'nt "
+"link to a document"
+msgstr ""
+
+#, c-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Relation key %s "
+"does'nt link to a document"
+msgstr ""
+
+#, c-format
+msgid "Send mail info : can't send mail %s: no sendee found"
+msgstr ""
 
 msgid "Send mail with template"
 msgstr ""
@@ -4840,6 +4878,10 @@ msgid "cannot send mail %s"
 msgstr ""
 
 #, c-format
+msgid "cannot send mail %s to %s : %s"
+msgstr ""
+
+#, c-format
 msgid "cannot send mail %s with template %s : %s"
 msgstr ""
 
@@ -5341,6 +5383,9 @@ msgstr ""
 #, fuzzy
 msgid "current user account"
 msgstr "Add parameter"
+
+msgid "current user cannot deactivate account"
+msgstr ""
 
 #, fuzzy
 msgid "current user parameters"

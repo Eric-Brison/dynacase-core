@@ -847,7 +847,7 @@ class WDoc extends Doc
         ));
         $this->doc->disableEditControl();
         if (!$this->domainid) $this->doc->unlock(false, true);
-        $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
+        $msg.= $this->workflowSendMailTemplate($newstate, $addcomment, $tname);
         $this->workflowAttachTimer($newstate, $tname);
         $err.= $this->changeAllocateUser($newstate);
         // post action
@@ -863,7 +863,7 @@ class WDoc extends Doc
             if ($msg3) $this->doc->addComment($msg3);
             if ($msg3 != "") $msg3 = sprintf(_("The change state to %s has been realized. But the following warning is appeared.\n%s") , _($newstate) , $msg3);
         }
-        $msg = $msg2;
+        $msg.= $msg2;
         if ($msg && $msg3) $msg.= "\n";
         $msg.= $msg3;
         $this->doc->enableEditControl();
@@ -1009,7 +1009,7 @@ class WDoc extends Doc
                             $keys[strtoupper($vpid) ] = $this->getValue($vpid);
                         }
                     }
-                    $err = $mt->sendDocument($this->doc, $keys);
+                    $err.= $mt->sendDocument($this->doc, $keys);
                 }
             }
         }
@@ -1027,7 +1027,7 @@ class WDoc extends Doc
                             $keys[strtoupper($vpid) ] = $this->getValue($vpid);
                         }
                     }
-                    $err = $mt->sendDocument($this->doc, $keys);
+                    $err.= $mt->sendDocument($this->doc, $keys);
                 }
             }
         }

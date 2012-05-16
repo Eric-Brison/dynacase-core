@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-14 15:38+0200\n"
-"PO-Revision-Date: 2012-05-14 15:39+0200\n"
+"POT-Creation-Date: 2012-05-16 16:55+0200\n"
+"PO-Revision-Date: 2012-05-16 17:17+0200\n"
 "Last-Translator: Anakeen <dev@anakeen.com>\n"
 "Language-Team: French <distrib@anakeen.com>\n"
 "MIME-Version: 1.0\n"
@@ -2388,6 +2388,10 @@ msgstr "Copie à"
 msgid "MB_To"
 msgstr "À"
 
+#, c-format
+msgid "Mail %s sent to %s"
+msgstr "Message %s envoyé à %s"
+
 msgid "Mail template document reference to ask new password"
 msgstr ""
 "Référence du modèle de mail utilisé pour la demande de changement de mot de "
@@ -3228,6 +3232,40 @@ msgstr "Envoi de la recherche de documents"
 
 msgid "Send mail"
 msgstr "Envoyer le mail"
+
+#, c-format
+msgid "Send mail error : Attribute %s not found"
+msgstr "Échec lors de l'envoi du mail: Attribut %s introuvable"
+
+#, c-format
+msgid "Send mail error : Attribute %s not found."
+msgstr "Échec lors de l'envoi du mail: Attribut %s introuvable."
+
+#, c-format
+msgid "Send mail error : Parameter %s doesn't exists"
+msgstr "Échec lors de l'envoi du mail: Paramètre %s n'existe pas"
+
+#, c-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Incorrect relation "
+"key: %s"
+msgstr "Échec lors de l'envoi du mail: La relation %s vers l'attribut %s est incorrect"
+
+#, c-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Relation key %s doe'nt "
+"link to a document"
+msgstr "Échec lors de l'envoi du mail: La relation vers l'attribut %s est introuvable: La clé %s n'est pas liée à un document"
+
+#, c-format
+msgid ""
+"Send mail error : Relation to attribute %s not found. Relation key %s "
+"does'nt link to a document"
+msgstr "Échec lors de l'envoi du mail:  La relation vers l'attribut %s est introuvable: La clé %s n'est pas liée à un document"
+
+#, c-format
+msgid "Send mail info : can't send mail %s: no sendee found"
+msgstr "Échec lors de l'envoi du mail %s: aucun destinataire trouvé"
 
 msgid "Send mail with template"
 msgstr "Envoi d'un courriel avec le modèle"
@@ -4651,6 +4689,10 @@ msgid "cannot send mail %s"
 msgstr "ne peut envoyer le courriel %s"
 
 #, c-format
+msgid "cannot send mail %s to %s : %s"
+msgstr ""
+
+#, c-format
 msgid "cannot send mail %s with template %s : %s"
 msgstr "ne peut envoyer le courriel %s avec le modèle %s :%s"
 
@@ -5117,6 +5159,9 @@ msgstr "courant (<i>%s</i>)"
 
 msgid "current user account"
 msgstr "mon compte"
+
+msgid "current user cannot deactivate account"
+msgstr ""
 
 msgid "current user parameters"
 msgstr "mes paramètres"
