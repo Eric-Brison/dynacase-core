@@ -112,6 +112,12 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 array(
                     "TST_FULL2"
                 )
+            ) ,
+            array(
+                '"fixe" mésons',
+                array(
+                    "TST_FULL2"
+                )
             )
         );
     }

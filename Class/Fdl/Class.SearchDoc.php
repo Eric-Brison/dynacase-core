@@ -544,15 +544,30 @@ class SearchDoc
      */
     public function addGeneralFilter($keywords, $useSpell = false)
     {
+        
+        $filter = $this->getGeneralFilter($keywords, $useSpell);
+        $this->addFilter($filter);
+    }
+    /**
+     * get global filter
+     * @see addGeneralFilter
+     * @static
+     * @param string $keywords
+     * @param bool $useSpell
+     * @return string sql filter
+     */
+    public static function getGeneralFilter($keywords, $useSpell = false)
+    {
         if ((strstr($keywords, '"') == false) && (strstr($keywords, '~') == false)) {
-            $this->addFullKeywords($keywords, $useSpell);
+            $filter = self::getFullKeywords($keywords, $useSpell);
         } else {
             
-            $this->addComplexKeyword($keywords, $useSpell);
+            $filter = self::getMiscKeyword($keywords, $useSpell);
         }
+        return $filter;
     }
     
-    protected function addComplexKeyword($keywords, $useSpell = false)
+    protected static function getMiscKeyword($keywords, $useSpell = false)
     {
         $workFilter = preg_replace('/\s+(OR)\s+/', '|||', $keywords);
         $workFilter = preg_replace('/\s+(AND)\s+/', '&&&', $workFilter);
@@ -586,7 +601,13 @@ class SearchDoc
             $filter = str_replace($aKey, $repl, $filter);
         }
         foreach ($fullsKeys as $aKey) {
-            $repl = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($aKey)));
+            if ($useSpell) {
+                $rKey = self::testSpell($aKey);
+            } else {
+                $rKey = $aKey;
+            }
+            $repl = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($rKey)));
+            
             $filter = str_replace($aKey, $repl, $filter);
         }
         foreach ($regexpKeys as $aKey) {
@@ -599,32 +620,24 @@ class SearchDoc
         $filter = preg_replace("/'\s+fulltext/", "' and fulltext", $filter);
         $filter = preg_replace("/'\s+svalues/", "' and svalues", $filter);
         
-        $this->addFilter($filter);
+        return ($filter);
     }
     
-    protected function filterSValues($keyword)
-    {
-        return sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string($keyword));
-    }
-    protected function filterFulltext($keyword)
-    {
-        return sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($keyword)));
-    }
-    protected function addFullKeywords($keywords, $useSpell = false)
+    protected static function getFullKeywords($keywords, $useSpell = false)
     {
         
         $filter = preg_replace('/\s+(OR)\s+/', '|', $keywords);
         $filter = preg_replace('/\s+(AND)\s+/', '&', $filter);
         $filter = preg_replace('/\s+/', '&', $filter);
         if ($useSpell) {
-            $filter = preg_replace("/(?m)([\p{L}]+)/ue", "\$this->testSpell('\\1')", $filter);
+            $filter = preg_replace("/(?m)([\p{L}]+)/ue", "self::testSpell('\\1')", $filter);
         }
         
         $q3 = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($filter)));
-        $this->addFilter($q3);
+        return $q3;
     }
     
-    protected function testSpell($word, $language = "fr")
+    protected static function testSpell($word, $language = "fr")
     {
         static $pspell_link = null;
         if (function_exists('pspell_new')) {
