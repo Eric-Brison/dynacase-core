@@ -42,7 +42,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $err = $s->getError();
         $this->assertEmpty($err, "search error : $err");
         $dl = $s->getDocumentList();
-        //print_r($s->getSearchInfo());
+        // print_r($s->getSearchInfo());
         $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
         $index = 0;
         /**
@@ -59,7 +59,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
     public function testSpellGeneralFilter($filter, array $expectedDocName)
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
-        if ($filter) $s->addGeneralFilter($filter, true);
+        if ($filter) $s->addGeneralFilter($filter, "en");
         $s->setObjectReturn();
         $s->search();
         
@@ -128,6 +128,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL8",
                     "TST_FULL7",
                     "TST_FULL2",
+                    "TST_FULL9",
                     "TST_FULL1"
                 )
             ) ,
@@ -159,7 +160,8 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             array(
                 "cheval",
                 array(
-                    "TST_FULL3"
+                    "TST_FULL3",
+                    "TST_FULL8"
                 )
             ) ,
             array(
@@ -185,17 +187,101 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 array(
                     "TST_FULL3",
                     "TST_FULL2",
-                    "TST_FULL1"
+                    "TST_FULL1",
+                    "TST_FULL8"
                 )
             ) ,
             array(
-                "téléphone OR (singe    AND rouge)",
+                "téléphone OR (jument    AND rouge)",
                 array(
                     "TST_FULL2",
                     "TST_FULL1",
                     "TST_FULL6"
                 )
             ) ,
+            array(
+                "téléphone OR (rouge jument)",
+                array(
+                    "TST_FULL2",
+                    "TST_FULL1",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                '"rouge"',
+                array(
+                    "TST_FULL4",
+                    "TST_FULL5",
+                    "TST_FULL6",
+                    "TST_FULL8",
+                    "TST_FULL7"
+                )
+            ) ,
+            array(
+                '"rouges" OR "cheval"',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL8",
+                )
+            ) ,
+            array(
+                '"rouges" OR "cheval" OR animaux',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL4",
+                    "TST_FULL5",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                '("rouges" OR "cheval") AND animaux',
+                array(
+                    "TST_FULL3",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                '~télé',
+                array(
+                    "TST_FULL1",
+                    "TST_FULL2",
+                    "TST_FULL9",
+                )
+            ) ,
+            array(
+                '~télé fixes',
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                '"fixe maison"',
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                '"maison fixe"',
+                array()
+            ) ,
+            array(
+                '"fixe" maisons',
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                'maisons "fixe"',
+                array(
+                    "TST_FULL2"
+                )
+            ) ,
+            array(
+                '~mais "fixe"',
+                array(
+                    "TST_FULL2"
+                )
+            )
         );
     }
 }
