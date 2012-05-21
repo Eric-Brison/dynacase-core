@@ -118,6 +118,11 @@ class SearchDoc
     private $result;
     private $searchmode;
     /**
+     *
+     * @var string pertinence order in case of full search
+     */
+    private $pertinenceOrder = '';
+    /**
      * initialize with family
      *
      * @param string $dbaccess database coordinate
@@ -545,8 +550,19 @@ class SearchDoc
     public function addGeneralFilter($keywords, $useSpell = false)
     {
         
-        $filter = $this->getGeneralFilter($keywords, $useSpell);
+        $filter = $this->getGeneralFilter($keywords, $useSpell, $this->pertinenceOrder);
         $this->addFilter($filter);
+    }
+    
+    public function setPertinenceOrder($keyword = '')
+    {
+        if ($keyword != '') {
+            $rank = preg_replace('/\s+(OR)\s+/', '|', $keyword);
+            $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
+            $rank = preg_replace('/\s+/', '&', $rank);
+            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string(unaccent($rank)));
+        }
+        if ($this->pertinenceOrder) $this->setOrder($this->pertinenceOrder);
     }
     /**
      * get global filter
@@ -554,20 +570,28 @@ class SearchDoc
      * @static
      * @param string $keywords
      * @param bool $useSpell
+     * @param string $pertinenceOrder return pertinence order
      * @return string sql filter
      */
-    public static function getGeneralFilter($keywords, $useSpell = false)
+    public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '')
     {
         if ((strstr($keywords, '"') == false) && (strstr($keywords, '~') == false)) {
-            $filter = self::getFullKeywords($keywords, $useSpell);
+            $filter = self::getFullFilter($keywords, $useSpell, $pertinenceOrder);
         } else {
             
-            $filter = self::getMiscKeyword($keywords, $useSpell);
+            $filter = self::getMiscFilter($keywords, $useSpell, $pertinenceOrder);
         }
         return $filter;
     }
-    
-    protected static function getMiscKeyword($keywords, $useSpell = false)
+    /**
+     * return sql filter from some words or expressions
+     * @static
+     * @param string $keywords
+     * @param bool $useSpell
+     * @param string $pertinenceOrder return pertinence order
+     * @return string sql filter
+     */
+    protected static function getMiscFilter($keywords, $useSpell = false, &$pertinenceOrder = '')
     {
         $workFilter = preg_replace('/\s+(OR)\s+/', '|||', $keywords);
         $workFilter = preg_replace('/\s+(AND)\s+/', '&&&', $workFilter);
@@ -595,10 +619,13 @@ class SearchDoc
         ));*/
         
         $filter = $keywords;
+        $rank = $keywords;
         foreach ($exactsKeys as $aKey) {
             $aKey = str_replace('&space;', ' ', $aKey);
             $repl = sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string(substr($aKey, 1, -1)));
             $filter = str_replace($aKey, $repl, $filter);
+            $repl = unaccent(substr($aKey, 1, -1));
+            $rank = str_replace($aKey, $repl, $rank);
         }
         foreach ($fullsKeys as $aKey) {
             if ($useSpell) {
@@ -609,34 +636,56 @@ class SearchDoc
             $repl = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($rKey)));
             
             $filter = str_replace($aKey, $repl, $filter);
+            $rank = str_replace($aKey, $rKey, $rank);
         }
         foreach ($regexpKeys as $aKey) {
             $repl = sprintf("svalues ~* E'%s'", pg_escape_string(substr($aKey, 1)));
             $filter = str_replace($aKey, $repl, $filter);
         }
         // add implicit AND
-        $filter = preg_replace("/'\)\s+svalues/", "') and svalues", $filter);
-        $filter = preg_replace("/'\)\s+fulltext/", "') and fulltext", $filter);
-        $filter = preg_replace("/'\s+fulltext/", "' and fulltext", $filter);
-        $filter = preg_replace("/'\s+svalues/", "' and svalues", $filter);
+        $filter = preg_replace("/'\\)\\s+svalues/", "') and svalues", $filter);
+        $filter = preg_replace("/'\\)\\s+fulltext/", "') and fulltext", $filter);
+        $filter = preg_replace("/'\\s+fulltext/", "' and fulltext", $filter);
+        $filter = preg_replace("/'\\s+svalues/", "' and svalues", $filter);
         
+        $rank = preg_replace('/\s+(OR)\s+/', '|', $rank);
+        $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
+        $rank = preg_replace('/\s+/', '&', $rank);
+        $rank = str_replace('~', '', $rank);
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", unaccent($rank));
         return ($filter);
     }
-    
-    protected static function getFullKeywords($keywords, $useSpell = false)
+    /**
+     * get full filter from some words
+     * @static
+     * @param string $words
+     * @param bool $useSpell
+     * @param string $pertinenceOrder return pertinence order
+     * @return string sql filter
+     */
+    protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '')
     {
         
-        $filter = preg_replace('/\s+(OR)\s+/', '|', $keywords);
+        $filter = preg_replace('/\s+(OR)\s+/', '|', $words);
         $filter = preg_replace('/\s+(AND)\s+/', '&', $filter);
         $filter = preg_replace('/\s+/', '&', $filter);
         if ($useSpell) {
             $filter = preg_replace("/(?m)([\p{L}]+)/ue", "self::testSpell('\\1')", $filter);
         }
-        
-        $q3 = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($filter)));
-        return $q3;
+        $fullKey = pg_escape_string(unaccent($filter));
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", $fullKey);
+        //print_r2($pertinenceOrder);
+        $q = sprintf("fulltext @@ to_tsquery('french','%s')", $fullKey);
+        return $q;
     }
-    
+    /**
+     * detect if word is a word of language
+     * if not the near word is set to do an OR condition
+     * @static
+     * @param string $word word to analyze
+     * @param string $language
+     * @return string word with its correction if it is not correct
+     */
     protected static function testSpell($word, $language = "fr")
     {
         static $pspell_link = null;

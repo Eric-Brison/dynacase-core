@@ -43,13 +43,46 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $this->assertEmpty($err, "search error : $err");
         $dl = $s->getDocumentList();
         // print_r($s->getSearchInfo());
-        $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+        if (count($expectedDocName) != $s->count()) {
+            $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+        }
         $index = 0;
         /**
          * @var \Doc $doc
          */
         foreach ($dl as $doc) {
             $this->assertEquals($expectedDocName[$index], $doc->name);
+            $index++;
+        }
+    }
+    /**
+     * @dataProvider dataGeneralSortFilter
+     */
+    public function testGeneralSortFilter($filter, $order, array $expectedDocName)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        if ($filter) $s->addGeneralFilter($filter);
+        $s->setObjectReturn();
+        $s->setPertinenceOrder($order);
+        $s->search();
+        print_r($s->getSearchInfo());
+        $err = $s->getError();
+        $this->assertEmpty($err, "search error : $err");
+        $dl = $s->getDocumentList();
+        
+        if (count($expectedDocName) > $s->count()) {
+            $this->assertLessThanOrEqual(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+        }
+        //   print_r($s->getSearchInfo());print $this->getFilterResult($dl);print_r($expectedDocName);
+        //$this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+        $index = 0;
+        /**
+         * @var \Doc $doc
+         */
+        foreach ($dl as $doc) {
+            if ($expectedDocName[$index]) {
+                $this->assertEquals($expectedDocName[$index], $doc->name);
+            }
             $index++;
         }
     }
@@ -65,7 +98,11 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         
         $err = $s->getError();
         $this->assertEmpty($err, "search error : $err");
+        
         $dl = $s->getDocumentList();
+        if (count($expectedDocName) != $s->count()) {
+            $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+        }
         //print_r($s->getSearchInfo());
         $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
         $index = 0;
@@ -131,11 +168,11 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL4",
                     "TST_FULL5",
                     "TST_FULL6",
-                    "TST_FULL8",
                     "TST_FULL7",
                     "TST_FULL2",
                     "TST_FULL9",
-                    "TST_FULL1"
+                    "TST_FULL1",
+                    "TST_FULL8"
                 )
             ) ,
             array(
@@ -167,7 +204,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 "cheval",
                 array(
                     "TST_FULL3",
-                    "TST_FULL8"
+                    "TST_FULL6"
                 )
             ) ,
             array(
@@ -177,8 +214,8 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL4",
                     "TST_FULL5",
                     "TST_FULL6",
-                    "TST_FULL8",
-                    "TST_FULL7"
+                    "TST_FULL7",
+                    "TST_FULL8"
                 )
             ) ,
             array(
@@ -192,25 +229,25 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 "portàble OR fixe OR cheval",
                 array(
                     "TST_FULL3",
+                    "TST_FULL6",
                     "TST_FULL2",
-                    "TST_FULL1",
-                    "TST_FULL8"
+                    "TST_FULL1"
                 )
             ) ,
             array(
                 "téléphone OR (jument    AND rouge)",
                 array(
+                    "TST_FULL6",
                     "TST_FULL2",
-                    "TST_FULL1",
-                    "TST_FULL6"
+                    "TST_FULL1"
                 )
             ) ,
             array(
                 "téléphone OR (rouge jument)",
                 array(
+                    "TST_FULL6",
                     "TST_FULL2",
-                    "TST_FULL1",
-                    "TST_FULL6"
+                    "TST_FULL1"
                 )
             ) ,
             array(
@@ -219,15 +256,15 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL4",
                     "TST_FULL5",
                     "TST_FULL6",
-                    "TST_FULL8",
-                    "TST_FULL7"
+                    "TST_FULL7",
+                    "TST_FULL8"
                 )
             ) ,
             array(
                 '"rouges" OR "cheval"',
                 array(
                     "TST_FULL3",
-                    "TST_FULL8",
+                    "TST_FULL6"
                 )
             ) ,
             array(
@@ -249,9 +286,9 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
             array(
                 '~télé',
                 array(
-                    "TST_FULL1",
                     "TST_FULL2",
                     "TST_FULL9",
+                    "TST_FULL1"
                 )
             ) ,
             array(
@@ -286,6 +323,76 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                 '~mais "fixe"',
                 array(
                     "TST_FULL2"
+                )
+            )
+        );
+    }
+    public function dataGeneralSortFilter()
+    {
+        return array(
+            array(
+                "rouge",
+                "",
+                array(
+                    "TST_FULL8",
+                    "TST_FULL5",
+                    "TST_FULL7",
+                    "TST_FULL3",
+                    "TST_FULL4",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                "animal cheval",
+                "",
+                array(
+                    "TST_FULL3",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                "rouge",
+                "cheval",
+                array(
+                    "TST_FULL3",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                "rouge",
+                "cheval OR canin",
+                array(
+                    "TST_FULL4",
+                    "TST_FULL3",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                '"rouge" OR "cheval"',
+                "",
+                array(
+                    "TST_FULL8",
+                    "TST_FULL5",
+                    "TST_FULL7",
+                    "TST_FULL6"
+                )
+            ) ,
+            array(
+                '"rouge" OR chevaux',
+                "",
+                array(
+                    "TST_FULL8",
+                    "TST_FULL3",
+                    "TST_FULL5"
+                )
+            ) ,
+            array(
+                '"rouge" OR chevaux OR ~télé',
+                "",
+                array(
+                    "TST_FULL8",
+                    "TST_FULL3",
+                    "TST_FULL5"
                 )
             )
         );
