@@ -1,16 +1,24 @@
+<textarea id="[aid]" name="[aname]" type="htmltext" onchange="htmlText.setValue(this.id, this.value)"
+          [IF height] style="height : [height]" [ENDIF height] >[Value]
+</textarea>
 
-<textarea id="[aid]" name="[aname]" type="htmltext" onchange="htmlText.setValue(this.id, this.value)" style="height : [editheight]">[Value]</textarea>
+[IF JSONConf]
+<textarea id="conf_[aid]" style="display : none;">[JSONConf]</textarea>
+[ENDIF JSONConf]
 
 [IFNOT isInDuplicableTableLine]
 <script type="text/javascript">
-	addEvent(window,'load', function()
-		{
-			window.htmlText.initEditor("[aid]", {
-				height : "[height]",
-				toolbar : "[toolbar]",
-				toolbarStartupExpanded : [toolbarexpand]
-			});
-		}
-	);
+addEvent(window,'load', function(){
+    [IFNOT JSONConf]
+    window.htmlText.initEditor("[aid]", {
+        height : "[height]",
+        toolbar : "[toolbar]",
+        toolbarStartupExpanded : [toolbarexpand]
+    });
+    [ENDIF JSONConf]
+    [IF JSONConf]
+    window.htmlText.initEditor("[aid]", JSON.parse(document.getElementById("conf_[aid]").value));
+    [ENDIF JSONConf]
+});
 </script>
 [ENDIF isInDuplicableTableLine]

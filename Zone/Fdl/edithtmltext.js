@@ -2,22 +2,7 @@ CKEDITOR_BASEPATH = 'ckeditor/';
 
 window.htmlText = {};
 
-window.htmlText.defaultOption = function (config) {
-    var property;
-    for (property in config) {
-        if (config.hasOwnProperty(property)) {
-            this[property] = config[property];
-        }
-    }
-};
-
-window.htmlText.defaultOption.prototype = {
-    language:'[CORE_LANG]'.substring(0, 2),
-    customConfig:'',
-    resize_enabled:false,
-    fullPage:false,
-    font_names:'serif;sans-serif;cursive;fantasy;monospace',
-    extraPlugins:'quicksave',
+window.htmlText.toolbars = {
     toolbar_Default:[
         { name:'document', items:[ 'quicksave', 'NewPage', 'DocProps', 'Print'] },
         { name:'clipboard', items:[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
@@ -40,9 +25,43 @@ window.htmlText.defaultOption.prototype = {
         { name:'links', items:[ 'Link', 'Unlink', 'Anchor' ] },
         { name:'insert', items:[ 'Image', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak', 'Iframe' ] },
         { name:'styles', items:[ 'Styles', 'Format', 'Font', 'FontSize' ] },
-        { name:'colors', items:[ 'TextColor', 'BGColor' ] },
-        { name:'tools', items:[ '-', 'About' ] }
-    ],
+        { name:'colors', items:[ 'TextColor', 'BGColor', '-', 'About' ] }
+    ]
+};
+
+
+window.htmlText.defaultOption = function (config) {
+    var property, i, length;
+
+    if (config.addPlugins && config.addPlugins.length > 0) {
+        this.extraPlugins = this.extraPlugins ? this.extraPlugins + "," + config.addPlugins.join(",") : config.addPlugins.join(",");
+        for (property in window.htmlText.toolbars) {
+            this[property] = [].concat(window.htmlText.toolbars[property], [
+                {name:'extension', items:config.addPlugins}
+            ]);
+        }
+    } else {
+        for (property in window.htmlText.toolbars) {
+            this[property] = window.htmlText.toolbars[property];
+        }
+    }
+    for (property in config) {
+            if (config.hasOwnProperty(property)) {
+                this[property] = config[property];
+            }
+     }
+};
+
+window.htmlText.defaultOption.prototype = {
+    language:'[CORE_LANG]'.substring(0, 2),
+    toolbar : 'Default',
+    height : '150px',
+    customConfig:'',
+    resize_enabled:false,
+    fullPage:false,
+    font_names:'serif;sans-serif;cursive;fantasy;monospace',
+    removePlugins:'elementspath',
+    extraPlugins:'quicksave',
     filebrowserImageBrowseUrl:'../../../?sole=Y&app=FDL&action=CKIMAGE',
     filebrowserImageUploadUrl:'../../../?sole=Y&app=FDL&action=CKUPLOAD',
     blockedKeystrokes:[
