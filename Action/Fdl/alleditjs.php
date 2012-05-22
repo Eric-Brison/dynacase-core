@@ -37,7 +37,8 @@ function alleditjs(Action & $action)
         "FDL/Layout/popupdoc.js",
         "FDL/Layout/popupdocmenu.js",
         "$jurl/resizeimg.js",
-        "lib/jscolor/jscolor.js"
+        "lib/jscolor/jscolor.js",
+        "lib/data/json2.js"
     );
     if ($action->Read("navigator") == "EXPLORER") {
         //$statics[]="$jurl/iehover.js";
