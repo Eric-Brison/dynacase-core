@@ -863,7 +863,7 @@ class WDoc extends Doc
             if ($msg3) $this->doc->addComment($msg3);
             if ($msg3 != "") $msg3 = sprintf(_("The change state to %s has been realized. But the following warning is appeared.\n%s") , _($newstate) , $msg3);
         }
-        $msg.= $msg2;
+        $msg.= ($msg ? '\n' : '') . $msg2;
         if ($msg && $msg3) $msg.= "\n";
         $msg.= $msg3;
         $this->doc->enableEditControl();

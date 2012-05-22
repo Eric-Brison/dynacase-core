@@ -39,8 +39,6 @@ class _MAILTEMPLATE extends Doc
      */
     private function checkAttributeExistsInRelation($values, array $doc)
     {
-        global $action;
-        
         $tattrid = explode(":", $values);
         if (count($tattrid) == 1) { //no relation
             if (!array_key_exists($tattrid[0], $doc)) return sprintf(_("Send mail error : Attribute %s not found.") , $tattrid[0]);
@@ -49,13 +47,13 @@ class _MAILTEMPLATE extends Doc
         $lattrid = array_pop($tattrid); // last attribute
         foreach ($tattrid as $v) {
             if (!array_key_exists($v, $doc)) return sprintf(_("Send mail error : Relation to attribute %s not found. Incorrect relation key: %s") , $lattrid, $v);
-            $docids = getLatestDocIds($action->dbaccess, array(
+            $docids = getLatestDocIds($this->dbaccess, array(
                 $doc[$v]
             ));
             if (!$docids) {
                 return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document") , $lattrid, $v);
             }
-            $doc = getTDoc($action->dbaccess, array_pop($docids));
+            $doc = getTDoc($this->dbaccess, array_pop($docids));
             if (!$doc) return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document") , $lattrid, $v);
         }
         if (!array_key_exists($lattrid, $doc)) return sprintf(_("Send mail error : Attribute %s not found.") , $lattrid);
@@ -119,7 +117,7 @@ class _MAILTEMPLATE extends Doc
 
                     case 'A': // text attribute
                         $aid = strtok($v["tmail_recip"], " ");
-                        $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($action->dbaccess, $doc->initid));
+                        $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $doc->initid));
                         if ($err) {
                             $action->log->error($err);
                             $doc->addComment($err);
@@ -131,7 +129,7 @@ class _MAILTEMPLATE extends Doc
                     case 'WA': // workflow text attribute
                         if ($wdoc) {
                             $aid = strtok($v["tmail_recip"], " ");
-                            $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($action->dbaccess, $wdoc->initid));
+                            $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $wdoc->initid));
                             if ($err) {
                                 $action->log->error($err);
                                 $wdoc->addComment($err);
@@ -286,7 +284,7 @@ class _MAILTEMPLATE extends Doc
                 //send attachment
                 $ta = $this->getTValue("tmail_attach");
                 foreach ($ta as $k => $v) {
-                    $err = $this->checkAttributeExistsInRelation(strtok($v, " ") , getLatestTDoc($action->dbaccess, $doc->initid));
+                    $err = $this->checkAttributeExistsInRelation(strtok($v, " ") , getLatestTDoc($this->dbaccess, $doc->initid));
                     if ($err) {
                         $action->log->error($err);
                         $doc->addComment($err);
