@@ -551,11 +551,10 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
         if ($q->nb > 0) {
             foreach ($tfld as $k => $v) {
                 $t[$v["childid"]] = getLatestTDoc($dbaccess, $v["childid"], $sqlfilters, ($v["doctype"] == "C") ? -1 : $v["fromid"]);
-                
                 if ($t[$v["childid"]] == false) unset($t[$v["childid"]]);
                 elseif ($t[$v["childid"]]["archiveid"]) unset($t[$v["childid"]]);
                 else {
-                    if (($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
+                    if ((getCurrentUser()->id != 1) && ($t[$v["childid"]]["uperm"] & (1 << POS_VIEW)) == 0) { // control view
                         unset($t[$v["childid"]]);
                     }
                 }
