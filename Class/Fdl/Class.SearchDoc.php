@@ -123,6 +123,16 @@ class SearchDoc
      */
     private $pertinenceOrder = '';
     /**
+     * @var string words used by SearchHighlight class
+     */
+    private $highlightWords = '';
+    private $resultPos = 0;
+    /**
+     * @var int query number (in ITEM mode)
+     */
+    
+    private $resultQPos = 0;
+    /**
      * initialize with family
      *
      * @param string $dbaccess database coordinate
@@ -194,6 +204,7 @@ class SearchDoc
         return $this->count;
     }
     /**
+     * return memberof to be used in profile filters
      * @static
      * @param $uid
      * @return string
@@ -234,12 +245,23 @@ class SearchDoc
     {
         if ($this->count == - 1) {
             if ($this->searchmode == "ITEM") {
-                $this->count = countDocs($this->result);
+                $this->count = $this->countDocs();
             } else {
                 $this->count = count($this->result);
             }
         }
         return $this->count;
+    }
+    /**
+     * count returned document in sql select ressources
+     * @return int
+     */
+    protected function countDocs()
+    {
+        $n = 0;
+        foreach ($this->result as $res) $n+= pg_num_rows($res);
+        reset($this->result);
+        return $n;
     }
     /** 
      *reset results to use another search
@@ -248,6 +270,8 @@ class SearchDoc
     public function reset()
     {
         $this->result = false;
+        $this->resultPos = 0;
+        $this->resultQPos = 0;
         $this->debuginfo = "";
     }
     /** 
@@ -331,7 +355,8 @@ class SearchDoc
         if ($this->searchmode == "TABLE") $this->count = count($this->result); // memo cause array is unset by shift
         $this->debuginfo = $debuginfo;
         if (($this->searchmode == "TABLE") && ($this->mode == "ITEM")) $this->mode = "TABLEITEM";
-        
+        $this->resultPos = 0;
+        $this->resultQPos = 0;
         if ($this->mode == "ITEM") return $this;
         
         return $this->result;
@@ -465,29 +490,54 @@ class SearchDoc
         return true;
     }
     /**
-     * can, be use in
+     * can, be use in loop
      * ::search must be call before
      *
-     * @return Doc or null if this is the end
+     * @return Doc|array or null if this is the end
      */
     public function nextDoc()
     {
         if ($this->mode == "ITEM") {
-            $n = current($this->result);
-            if ($n === false) return false;
-            $tdoc = pg_fetch_array($n, NULL, PGSQL_ASSOC);
+            $n = $this->result[$this->resultQPos];
+            if (!$n) return false;
+            $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);
             if ($tdoc === false) {
-                $n = next($this->result);
-                if ($n === false) return false;
-                $tdoc = pg_fetch_array($n, NULL, PGSQL_ASSOC);
+                $this->resultQPos++;
+                $n = $this->result[$this->resultQPos];
+                if (!$n) return false;
+                $this->resultPos = 0;
+                $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);
                 if ($tdoc === false) return false;
             }
+            $this->resultPos++;
             return $this->iDoc = $this->getNextDocument($tdoc);
         } elseif ($this->mode == "TABLEITEM") {
-            $tdoc = array_shift($this->result);
+            $tdoc = current(array_slice($this->result, $this->resultPos, 1));
             if (!is_array($tdoc)) return false;
+            $this->resultPos++;
             return $this->iDoc = $this->getNextDocument($tdoc);
-        } else return array_shift($this->result);
+        } else {
+            return current(array_slice($this->result, $this->resultPos++, 1));
+        }
+    }
+    
+    public function getIds()
+    {
+        $ids = array();
+        if ($this->mode == "ITEM") {
+            foreach ($this->result as $n) {
+                $c = pg_num_rows($n);
+                for ($i = 0; $i < $c; $i++) {
+                    $ids[] = pg_fetch_result($n, $i, "id");
+                }
+            }
+        } else {
+            
+            foreach ($this->result as $raw) {
+                $ids[] = $raw["id"];
+            }
+        }
+        return $ids;
     }
     /**
      * Return an object document from array of values
@@ -550,7 +600,7 @@ class SearchDoc
     public function addGeneralFilter($keywords, $useSpell = false)
     {
         
-        $filter = $this->getGeneralFilter($keywords, $useSpell, $this->pertinenceOrder);
+        $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
         $this->addFilter($filter);
     }
     
@@ -560,7 +610,7 @@ class SearchDoc
             $rank = preg_replace('/\s+(OR)\s+/', '|', $keyword);
             $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
             $rank = preg_replace('/\s+/', '&', $rank);
-            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", pg_escape_string(unaccent($rank)));
+            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(unaccent($rank)));
         }
         if ($this->pertinenceOrder) $this->setOrder($this->pertinenceOrder);
     }
@@ -571,12 +621,13 @@ class SearchDoc
      * @param string $keywords
      * @param bool $useSpell
      * @param string $pertinenceOrder return pertinence order
+     * @param string $highlightWords return words to be use by SearchHighlight class
      * @return string sql filter
      */
-    public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '')
+    public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
     {
         if ((strstr($keywords, '"') == false) && (strstr($keywords, '~') == false)) {
-            $filter = self::getFullFilter($keywords, $useSpell, $pertinenceOrder);
+            $filter = self::getFullFilter($keywords, $useSpell, $pertinenceOrder, $highlightWords);
         } else {
             
             $filter = self::getMiscFilter($keywords, $useSpell, $pertinenceOrder);
@@ -656,6 +707,27 @@ class SearchDoc
         return ($filter);
     }
     /**
+     * @param Doc $doc document to analyze
+     * @param string $beginTag delimiter begin tag
+     * @param string $endTag delimiter end tag
+     * @param int $limit file size limit to analyze
+     * @return mixed
+     */
+    public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200)
+    {
+        static $oh = null;
+        if (!$oh) {
+            $oh = new SearchHighlight();
+        }
+        if ($beginTag) $oh->beginTag = $beginTag;
+        if ($endTag) $oh->endTag = $endTag;
+        if ($limit > 0) $oh->setLimit($limit);
+        simpleQuery($this->dbaccess, sprintf("select svalues from docread where id=%d", $doc->id) , $text, true, true);
+        $h = $oh->highlight($text, $this->highlightWords);
+        
+        return $h;
+    }
+    /**
      * get full filter from some words
      * @static
      * @param string $words
@@ -663,17 +735,20 @@ class SearchDoc
      * @param string $pertinenceOrder return pertinence order
      * @return string sql filter
      */
-    protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '')
+    protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
     {
         
         $filter = preg_replace('/\s+(OR)\s+/', '|', $words);
         $filter = preg_replace('/\s+(AND)\s+/', '&', $filter);
+        $filter = preg_replace('/\s*\)\s*/', ')', $filter);
+        $filter = preg_replace('/\s*\(\s*/', '(', $filter);
         $filter = preg_replace('/\s+/', '&', $filter);
         if ($useSpell) {
             $filter = preg_replace("/(?m)([\p{L}]+)/ue", "self::testSpell('\\1')", $filter);
         }
         $fullKey = pg_escape_string(unaccent($filter));
-        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", $fullKey);
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", $fullKey);
+        $highlightWords = $fullKey;
         //print_r2($pertinenceOrder);
         $q = sprintf("fulltext @@ to_tsquery('french','%s')", $fullKey);
         return $q;

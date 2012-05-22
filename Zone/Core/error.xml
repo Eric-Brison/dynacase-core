@@ -21,7 +21,7 @@
 
 <body class="core">
 <script language="javascript">
-if (window.name == 'fhidden') {
+if (window.name == 'fhidden' || window.innerWidth == 0) {
   alert('[serror]');
 }
 

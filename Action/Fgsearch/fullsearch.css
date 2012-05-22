@@ -48,7 +48,7 @@ div.result div.number {
     font-weight:bold; 
 }
 div.iconresult { float:left;  }
-div.iconresult img { opacity:0.6; width:1.5em; padding:1em 1em 0 1em; }
+div.iconresult img { opacity:0.6; width:20px; padding:0.5em 1em 0 1em; }
 div.result span.title { font-size:120%; font-weight:bold; padding-left:5px; color:[COLOR_A2]; }
 div.result i { padding:0 0 0 40px; font-variant:italic; }
 div.result b { color:[COLOR_A2]; font-weight:bold; }
@@ -109,7 +109,8 @@ div.selectedresult  img { opacity:1 }
     border-color:  [COLOR_A4] [COLOR_A8] [COLOR_A8] [COLOR_A4];
 }
 div.inforesult,  div.textresult {
-    float:left;	
+    float:left;
+    width:80%;
 }
 div.number {
     float:left; 

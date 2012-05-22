@@ -36,7 +36,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
     {
         $s = new \SearchDoc(self::$dbaccess, $this->famName);
         if ($filter) $s->addGeneralFilter($filter);
-        $s->setObjectReturn();
+        $s->setObjectReturn(true);
         $s->search();
         
         $err = $s->getError();
@@ -56,6 +56,33 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         }
     }
     /**
+     * @dataProvider dataGeneralFilter
+     * @depends testGeneralFilter
+     */
+    public function testArrayGeneralFilter($filter, array $expectedDocName)
+    {
+        $s = new \SearchDoc(self::$dbaccess, $this->famName);
+        if ($filter) $s->addGeneralFilter($filter);
+        $s->setObjectReturn(false);
+        $s->search();
+        
+        $err = $s->getError();
+        $this->assertEmpty($err, "search error : $err");
+        $dl = $s->getDocumentList();
+        // print_r($s->getSearchInfo());
+        if (count($expectedDocName) != $s->count()) {
+            $this->assertEquals(count($expectedDocName) , $s->count() , "not correct count " . $this->getFilterResult($dl));
+        }
+        $index = 0;
+        /**
+         * @var \Doc $doc
+         */
+        foreach ($dl as $doc) {
+            $this->assertEquals($expectedDocName[$index], $doc["name"]);
+            $index++;
+        }
+    }
+    /**
      * @dataProvider dataGeneralSortFilter
      */
     public function testGeneralSortFilter($filter, $order, array $expectedDocName)
@@ -65,7 +92,7 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
         $s->setObjectReturn();
         $s->setPertinenceOrder($order);
         $s->search();
-        print_r($s->getSearchInfo());
+        
         $err = $s->getError();
         $this->assertEmpty($err, "search error : $err");
         $dl = $s->getDocumentList();
@@ -337,9 +364,9 @@ class TestSearchDirective extends TestCaseDcpCommonFamily
                     "TST_FULL8",
                     "TST_FULL5",
                     "TST_FULL7",
-                    "TST_FULL3",
+                    "TST_FULL6",
                     "TST_FULL4",
-                    "TST_FULL6"
+                    "TST_FULL3"
                 )
             ) ,
             array(

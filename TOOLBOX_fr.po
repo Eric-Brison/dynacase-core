@@ -1946,8 +1946,8 @@ msgid "Formated data"
 msgstr "Données formatées"
 
 #, c-format
-msgid "Found <b>%d</b>  Result for <b>%s</b>%s"
-msgstr "<b>%d</b> documents trouvés pour <b>%s</b>%s"
+msgid "Found <strong>%d</strong>  Result for <strong>%s</strong>%s"
+msgstr "<strong>%d</strong> documents trouvés pour <strong>%s</strong>%s"
 
 msgid "Free"
 msgstr "Libre"
@@ -2588,14 +2588,14 @@ msgid "No acl for new documents of this family"
 msgstr "Pas de droits définis pour les nouveaux documents de cette famille"
 
 msgid "No columns has been defined"
-msgstr "Aucunes colonnes ont été définies"
+msgstr "Aucunes colonnes ont étéx définies"
 
 msgid "No default value"
 msgstr "Aucune valeurs par défaut"
 
 #, c-format
-msgid "No document found for <b>%s</b>%s"
-msgstr "Aucun document pour la recherche \"<b>%s</b>\"%s"
+msgid "No document found for <strong>%s</strong>%s"
+msgstr "Aucun document pour la recherche \"<strong>%s</strong>\"%s"
 
 msgid "No family first"
 msgstr "Pas de famille ouverte par défaut"
@@ -2693,8 +2693,8 @@ msgid "One Familly Management"
 msgstr "Gestion par famille"
 
 #, c-format
-msgid "One document for <b>%s</b>%s"
-msgstr "Un document trouvé pour <b>%s</b>%s"
+msgid "One document for <strong>%s</strong>%s"
+msgstr "Un document trouvé pour <strong>%s</strong>%s"
 
 msgid "Onefam"
 msgstr "Une famille"
