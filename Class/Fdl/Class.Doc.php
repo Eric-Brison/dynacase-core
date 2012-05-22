@@ -5074,13 +5074,14 @@ create unique index i_docir on doc(initid, revision);";
          */
         public function getFileLink($attrid, $index = - 1, $cache = false, $inline = false, $otherValue = '')
         {
-            global $action;
             if (!$otherValue) {
                 if ($index >= 0) $avalue = $this->getTValue($attrid, "", $index);
                 else $avalue = $this->getValue($attrid);
             } else {
-                if ($index >= 0) $avalue = $$otherValue[$index];
-                else $avalue = $otherValue;
+                if ($index >= 0) {
+                    if (is_array($otherValue)) $avalue = $otherValue[$index];
+                    else $avalue = $otherValue;
+                } else $avalue = $otherValue;
             }
             if (preg_match(PREGEXPFILE, $avalue, $reg)) {
                 $vid = $reg[2];
@@ -5091,6 +5092,7 @@ create unique index i_docir on doc(initid, revision);";
                     return sprintf("%s?app=FDL&action=EXPORTFILE&cache=%s&inline=%s&vid=%s&docid=%s&attrid=%s&index=%d", "", $cache ? "yes" : "no", $inline ? "yes" : "no", $vid, $this->id, $attrid, $index);
                 }
             }
+            return '';
         }
         /**
          * return an html anchor to a document
