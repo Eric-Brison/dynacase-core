@@ -31,6 +31,35 @@ class _MAILTEMPLATE extends Doc
         }
     }
     /**
+     * Check if the relation is correct and the attribute does exists
+     *
+     * @param string $values Relation to check
+     * @param array $doc Field and values of document attributes
+     * @return string Error if attribute not found, else empty string
+     */
+    private function checkAttributeExistsInRelation($values, array $doc)
+    {
+        $tattrid = explode(":", $values);
+        if (count($tattrid) == 1) { //no relation
+            if (!array_key_exists($tattrid[0], $doc)) return sprintf(_("Send mail error : Attribute %s not found.") , $tattrid[0]);
+            return "";
+        }
+        $lattrid = array_pop($tattrid); // last attribute
+        foreach ($tattrid as $v) {
+            if (!array_key_exists($v, $doc)) return sprintf(_("Send mail error : Relation to attribute %s not found. Incorrect relation key: %s") , $lattrid, $v);
+            $docids = getLatestDocIds($this->dbaccess, array(
+                $doc[$v]
+            ));
+            if (!$docids) {
+                return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document") , $lattrid, $v);
+            }
+            $doc = getTDoc($this->dbaccess, array_pop($docids));
+            if (!$doc) return sprintf(_("Send mail error : Relation to attribute %s not found. Relation key %s does'nt link to a document") , $lattrid, $v);
+        }
+        if (!array_key_exists($lattrid, $doc)) return sprintf(_("Send mail error : Attribute %s not found.") , $lattrid);
+        return "";
+    }
+    /**
      * send document by email using this template
      * @param \Doc $doc documengt to send
      * @param array $keys extra keys used for template
@@ -88,24 +117,46 @@ class _MAILTEMPLATE extends Doc
 
                     case 'A': // text attribute
                         $aid = strtok($v["tmail_recip"], " ");
+                        $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $doc->initid));
+                        if ($err) {
+                            $action->log->error($err);
+                            $doc->addComment($err);
+                            return $err;
+                        }
                         $mail = $doc->getRValue($aid);
                         break;
 
                     case 'WA': // workflow text attribute
                         if ($wdoc) {
                             $aid = strtok($v["tmail_recip"], " ");
+                            $err = $this->checkAttributeExistsInRelation($aid, getLatestTDoc($this->dbaccess, $wdoc->initid));
+                            if ($err) {
+                                $action->log->error($err);
+                                $wdoc->addComment($err);
+                                return $err;
+                            }
                             $mail = $wdoc->getRValue($aid);
                         }
                         break;
 
                     case 'E': // text parameter
                         $aid = strtok($v["tmail_recip"], " ");
+                        if (!$doc->getAttribute($aid)) {
+                            $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            $doc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
+                        }
                         $mail = $doc->getparamValue($aid);
                         break;
 
                     case 'WE': // workflow text parameter
                         if ($wdoc) {
                             $aid = strtok($v["tmail_recip"], " ");
+                            if (!$wdoc->getAttribute($aid)) {
+                                $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                                $wdoc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                                return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
+                            }
                             $mail = $wdoc->getparamValue($aid);
                         }
                         break;
@@ -118,6 +169,11 @@ class _MAILTEMPLATE extends Doc
                         elseif ($wdoc) $udoc = & $wdoc;
                         if ($udoc) {
                             $aid = strtok($v["tmail_recip"], " ");
+                            if (!$udoc->getAttribute($aid)) {
+                                $action->log->error(sprintf(_("Send mail error : Attribute %s not found") , $aid));
+                                $doc->addComment(sprintf(_("Send mail error : Attribute %s not found") , $aid));
+                                return sprintf(_("Send mail error : Attribute %s not found") , $aid);
+                            }
                             $vdocid = $udoc->getValue($aid); // for array of users
                             $vdocid = str_replace('<BR>', "\n", $vdocid);
                             if (strpos($vdocid, "\n")) {
@@ -148,6 +204,11 @@ class _MAILTEMPLATE extends Doc
 
                     case 'P':
                         $aid = strtok($v["tmail_recip"], " ");
+                        if (!getParam($aid)) {
+                            $action->log->error(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            $doc->addComment(sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid));
+                            return sprintf(_("Send mail error : Parameter %s doesn't exists") , $aid);
+                        }
                         $mail = getParam($aid);
                         break;
                     }
@@ -171,11 +232,6 @@ class _MAILTEMPLATE extends Doc
                     ", "
                 ) , html_entity_decode($subject, ENT_COMPAT, "UTF-8"));
                 $pfout = $this->generateMailInstance($doc, $this->getValue("tmail_body"));
-                
-                if ($this->sendercopy && getParam("FDL_BCC") == "yes") {
-                    $umail = getMailAddr($this->userid);
-                    if ($umail != "") $dest['bcc'][] = $umail;
-                }
                 // delete empty address
                 $dest['to'] = array_filter($dest['to'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
                 $dest['cc'] = array_filter($dest['cc'], create_function('$v', 'return!preg_match("/^\s*$/", $v);'));
@@ -192,7 +248,15 @@ class _MAILTEMPLATE extends Doc
                 if ($from == "") $from = getParam('SMTP_FROM');
                 if ($from == "") $from = $action->user->login . '@' . $_SERVER["HTTP_HOST"];
                 
-                if (trim($to . $cc . $bcc) == "") return ""; //nobody to send data
+                if (trim($to . $cc . $bcc) == "") {
+                    $action->log->info(sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject));
+                    return sprintf(_("Send mail info : can't send mail %s: no sendee found") , $subject);
+                } //nobody to send data
+                if ($this->sendercopy && getParam("FDL_BCC") == "yes") {
+                    $umail = getMailAddr($this->userid);
+                    if ($umail != "") $bcc.= (trim($bcc) == "" ? "" : ",") . $umail;
+                }
+                
                 $multi_rel->addSubpart($pfout, array(
                     'content_type' => 'text/html',
                     'charset' => 'UTF-8',
@@ -220,6 +284,12 @@ class _MAILTEMPLATE extends Doc
                 //send attachment
                 $ta = $this->getTValue("tmail_attach");
                 foreach ($ta as $k => $v) {
+                    $err = $this->checkAttributeExistsInRelation(strtok($v, " ") , getLatestTDoc($this->dbaccess, $doc->initid));
+                    if ($err) {
+                        $action->log->error($err);
+                        $doc->addComment($err);
+                        return $err;
+                    }
                     $vf = $doc->getRValue(strtok($v, " "));
                     if ($vf) {
                         $tvf = $this->_val2array($vf);
@@ -255,10 +325,12 @@ class _MAILTEMPLATE extends Doc
                 if ($bcc) $recip.= ' ' . sprintf(_("sendmailbcc %s") , $bcc);
                 
                 if ($err == "") {
-                    $doc->addComment(sprintf(_("send mail %s with template %s") , $recip, $this->title));
+                    $doc->addComment(sprintf(_("send mail %s with template %s") , $recip, $this->title) , HISTO_INFO, "SENDMAIL");
+                    $action->log->info(sprintf(_("Mail %s sent to %s") , $subject, $recip));
                     addWarningMsg(sprintf(_("send mail %s") , $recip));
                 } else {
                     $doc->addComment(sprintf(_("cannot send mail %s with template %s : %s") , $recip, $this->title, $err) , HISTO_ERROR);
+                    $action->log->error(sprintf(_("cannot send mail %s to %s : %s") , $subject, $recip, $err));
                     addWarningMsg(sprintf(_("cannot send mail %s") , $err));
                 }
             }
