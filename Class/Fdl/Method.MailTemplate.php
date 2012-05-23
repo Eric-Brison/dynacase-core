@@ -105,7 +105,7 @@ class _MAILTEMPLATE extends Doc
                  */
                 $wdoc = new_doc($this->dbaccess, $doc->wid);
             }
-            
+            $udoc = null;
             foreach ($tdest as $k => $v) {
                 $toccbcc = $v["tmail_copymode"];
                 $type = $v["tmail_desttype"];
@@ -164,9 +164,8 @@ class _MAILTEMPLATE extends Doc
                     case 'D': // user relations
                         
                     case 'WD': // user relations
-                        $udoc = null;
-                        if ($type == 'D') $udoc = & $doc;
-                        elseif ($wdoc) $udoc = & $wdoc;
+                        if ($type == 'D') $udoc = $doc;
+                        elseif ($wdoc) $udoc = $wdoc;
                         if ($udoc) {
                             $aid = strtok($v["tmail_recip"], " ");
                             if (!$udoc->getAttribute($aid)) {
@@ -220,7 +219,6 @@ class _MAILTEMPLATE extends Doc
                         ""
                     ) , $mail);
                 }
-                
                 $subject = $this->generateMailInstance($doc, $this->getValue("tmail_subject"));
                 $subject = str_replace(array(
                     "\n",
