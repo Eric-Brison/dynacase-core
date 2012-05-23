@@ -1,0 +1,65 @@
+<?php
+/*
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package FDL
+ */
+
+namespace PU;
+/**
+ * @author Anakeen
+ * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
+ * @package DCP
+ */
+
+require_once 'PU_testcase_dcp_commonfamily.php';
+
+class TestSetLogicalName extends TestCaseDcpCommonFamily
+{
+    /**
+     * import TST_FAMSETVALUE family
+     * @static
+     * @return string
+     */
+    protected static function getCommonImportFile()
+    {
+        return "PU_data_dcp_goodfamilyfordoc.ods";
+    }
+    /**
+     * @dataProvider dataSetLogicalName
+     * @param string $oldname
+     * @param string $newname
+     */
+    public function testExecuteSetLogicalName($oldname, $newname)
+    {
+        $doc = createDoc(self::$dbaccess, "TST_GOODFAMIMPDOC");
+        $err = $doc->Add();
+        $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
+        $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));
+        
+        $err = $doc->setLogicalIdentificator($oldname);
+        $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $oldname, $doc->id, $err));
+        clearCacheDoc();
+        
+        $new_doc = new_Doc(self::$dbaccess, $oldname);
+        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $oldname));
+        
+        $err = $doc->setLogicalIdentificator($newname, true);
+        $this->assertEmpty($err, sprintf("Error when setting logical name %s for document %s : %s", $newname, $oldname, $err));
+        clearCacheDoc();
+        
+        $new_doc = new_Doc(self::$dbaccess, $newname);
+        $this->assertTrue($new_doc->isAlive() , sprintf("document %s not alive", $newname));
+        $this->assertEquals($doc->id, $new_doc->id, sprintf("New logical name is not set to document"));
+    }
+    
+    public function dataSetLogicalName()
+    {
+        return array(
+            array(
+                'TST_TEST_ONE',
+                'TST_NEW_TEST_ONE'
+            )
+        );
+    }
+}
