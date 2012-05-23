@@ -370,16 +370,10 @@ create sequence SEQ_ID_ACTION;
         $query = new QueryDb($this->dbaccess, "Action");
         
         if ($id_func != '') {
-            $query->basic_elem->sup_where = array(
-                "name='$name'",
-                "id!=$id_func",
-                "id_application=$idapp"
-            );
+            
+            $query->AddQuery(sprintf("name='%s' and id != %d and id_application=%d", pg_escape_string($name) , $id_func, $idapp));
         } else {
-            $query->basic_elem->sup_where = array(
-                "name='$name'",
-                "id_application=$idapp"
-            );
+            $query->AddQuery(sprintf("name='%s' and id_application=%d", pg_escape_string($name) , $idapp));
         }
         
         $query->Query();
