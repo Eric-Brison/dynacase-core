@@ -6301,17 +6301,18 @@ create unique index i_docir on doc(initid, revision);";
             }
             /**
              * affect a logical name that can be use as unique reference of a document independant of database
-             * @param string
+             * @param string $name new logical name
+             * @param bool $reset set to true to accept change
              * @return string error message if cannot be
              */
-            function setLogicalIdentificator($name)
+            function setLogicalIdentificator($name, $reset = false)
             {
                 if ($name) {
                     if (!preg_match("/^[A-Z]/i", $name)) {
                         return (sprintf(_("name must containt only alphanumeric characters: invalid  [%s]") , $name));
                     } elseif (!$this->isAffected()) {
                         return (sprintf(_("Cannot set logical name %s because object is not affected") , $name));
-                    } elseif ($this->isAffected() && ($this->name != "") && ($this->doctype != 'Z')) {
+                    } elseif ($this->isAffected() && ($this->name != "") && ($this->doctype != 'Z') && !$reset) {
                         return (sprintf(_("Logical name %s already set for %s") , $name, $this->title));
                     } else {
                         // verify not use yet
@@ -6319,6 +6320,9 @@ create unique index i_docir on doc(initid, revision);";
                         if ($d && $d["doctype"] != 'Z') {
                             return sprintf(_("Logical name %s already use in document %s") , $name, $d["title"]);
                         } else {
+                            if ($this->name) {
+                                simpleQuery($this->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($this->name)));
+                            }
                             $this->name = $name;
                             $err = $this->modify(true, array(
                                 "name"
@@ -6329,6 +6333,7 @@ create unique index i_docir on doc(initid, revision);";
                         }
                     }
                 }
+                return "";
             }
             /**
              * view only option values

@@ -38,6 +38,9 @@ function setlogicalname(Action & $action)
                     // verify not use yet
                     $q = $doc->exec_query("select id from doc where doctype != 'Z' and name='" . pg_escape_string($name) . "'");
                     if ($doc->numrows() == 0) {
+                        if ($oldName) {
+                            simpleQuery($action->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($oldName)));
+                        }
                         $doc->name = $name;
                         $err = $doc->modify(true, array(
                             "name"
