@@ -36,31 +36,19 @@ function setlogicalname(Action & $action)
                     $action->addWarningMsg(sprintf(_("Document %s is not dead") , $doc->getTitle()));
                 } else {
                     // verify not use yet
-                    $q = $doc->exec_query("select id from doc where doctype != 'Z' and name='" . pg_escape_string($name) . "'");
-                    if ($doc->numrows() == 0) {
+                    $err = $doc->setLogicalIdentificator($name, true);
+                    if ($err != "") $action->addWarningMsg($err);
+                    else {
                         if ($oldName) {
-                            simpleQuery($action->dbaccess, sprintf("UPDATE docname SET name = '%s' WHERE name = '%s'", pg_escape_string($name) , pg_escape_string($oldName)));
+                            $doc->addComment(sprintf(_("update logical name from %s to %s") , $oldName, $doc->name));
+                        } else {
+                            $doc->addComment(sprintf(_("set logical name to %s") , $doc->name));
                         }
-                        $doc->name = $name;
-                        $err = $doc->modify(true, array(
-                            "name"
-                        ) , true);
-                        if ($err != "") $action->addWarningMsg($err);
-                        else {
-                            if ($oldName) {
-                                $doc->addComment(sprintf(_("update logical name from %s to %s") , $oldName, $doc->name));
-                            } else {
-                                $doc->addComment(sprintf(_("set logical name to %s") , $doc->name));
-                            }
-                        }
-                    } else {
-                        $action->addWarningMsg(sprintf(_("Logical name %s already use other document") , $name, $doc->title));
                     }
                 }
             }
         }
     }
-    
     redirect($action, "FDL", "IMPCARD&zone=FDL:VIEWPROPERTIES:T&id=" . $docid);
 }
 ?>
