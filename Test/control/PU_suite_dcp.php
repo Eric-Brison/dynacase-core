@@ -19,6 +19,7 @@ class SuiteDcp
         $suite = new FrameworkDcp('Package');
         
         $suite->addTestSuite('PU\TestDocument');
+        $suite->addTestSuite('PU\TestSetLogicalName');
         $suite->addTestSuite('PU\TestOooLayout');
         $suite->addTestSuite('PU\TestOooSimpleLayout');
         $suite->addTestSuite('PU\TestFolder');
