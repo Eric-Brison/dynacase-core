@@ -739,7 +739,7 @@ class _IUSER extends Doc
             ) , true);
             $this->synchronizeSystemUser();
         }
-        return "";
+        return $err;
     }
     function isAccountInactive()
     {
@@ -767,7 +767,7 @@ class _IUSER extends Doc
             ) , true);
             $this->synchronizeSystemUser();
         }
-        return "";
+        return $err;
     }
     function accountHasExpired()
     {
