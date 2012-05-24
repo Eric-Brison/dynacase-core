@@ -32,7 +32,7 @@ if ($type == 'webdav') {
     webdav_auth();
 }
 
-error_log("======[ " . $_SERVER['REQUEST_METHOD'] . " ]=[ " . $_SERVER['PATH_INFO'] . " ]=======");
+error_log("   [ " . $_SERVER['REQUEST_METHOD'] . " ]=[ " . $_SERVER['PATH_INFO'] . " ]=======");
 whatInit();
 $s = new HTTP_WebDAV_Server_Freedom($action->getParam("WEBDAV_DB"));
 $s->setFolderMaxItem($action->getParam('WEBDAV_FOLDERMAXITEM'));
