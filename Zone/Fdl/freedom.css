@@ -27,7 +27,10 @@ margin:0;padding:0;
 }
 div.htmltext p:first-child, div.htmltext h1:first-child, div.htmltext h2:first-child, div.htmltext h3:first-child {
     margin-top:0px;
-} 
+}
+div.frame .content {
+    overflow: auto;
+}
 span.familyTitle {
   font-size:70%;
   font-style: italic;
