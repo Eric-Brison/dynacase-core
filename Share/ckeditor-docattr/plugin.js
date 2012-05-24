@@ -6,7 +6,7 @@ CKEDITOR.plugins.add('docattr', {
 
         editor.ui.addRichCombo('docattr',
             {
-                label:editor.lang.docattr.label,
+                label: editor.lang.docattr.label,
                 title:editor.lang.docattr.title,
                 multiSelect:false,
 
@@ -15,14 +15,12 @@ CKEDITOR.plugins.add('docattr', {
                 },
 
                 init:function () {
-                    var i, length;
+                    var property;
 
-                    if (window.FCK_DocAttr && window.FCK_DocAttr.split(';').length) {
+                    if (window.CK_DocAttr) {
                         this.startGroup(editor.lang.docattr.group);
-                        var aSizes = window.FCK_DocAttr.split(';');
-                        for (i = 0, length =  aSizes.length; i < length; i++) {
-                            var aSizeParts = aSizes[i].split('|');
-                            if (aSizeParts[0]) this.add(aSizeParts[0], aSizeParts[1] + '<pre> ' + aSizeParts[0].replace('<', '&lt;').replace('>', '&gt;') + '</pre>', aSizeParts[1]);
+                        for (property in window.CK_DocAttr) {
+                            this.add(property, window.CK_DocAttr[property].alabel, window.CK_DocAttr[property].alabel);
                         }
                     }else {
                         this.startGroup(editor.lang.docattr.nogroup);
@@ -31,13 +29,12 @@ CKEDITOR.plugins.add('docattr', {
                 onClick:function (value) {
                     editor.focus();
                     editor.fire('saveSnapshot');
-                    editor.insertHtml(value);
+                    editor.insertHtml(window.CK_DocAttr[value].aid);
                     editor.fire('saveSnapshot');
                 }
             });
     }
 });
-;
 
 CKEDITOR.plugins.setLang('docattr', 'en',
     {

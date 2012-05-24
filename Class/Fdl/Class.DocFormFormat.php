@@ -590,9 +590,9 @@ class DocFormFormat
                 $lay->set("isInDuplicableTableLine", $this->isInDuplicableTableLine ? "TRUE" : "");
                 $lay->set("label", ucFirst($this->oattr->getLabel()));
                 $lay->set("need", $this->oattr->needed);
-                $lay->set("JSONConf", $this->oattr->getOption("JSONConf"));
+                $lay->set("jsonconf", $this->oattr->getOption("jsonconf"));
                 $lay->set("height", $this->oattr->getOption("editheight", "150px"));
-                $lay->set("toolbar", $this->oattr->getOption("toolbar", "Default"));
+                $lay->set("toolbar", $this->oattr->getOption("toolbar", "Simple"));
                 $lay->set("toolbarexpand", (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");
                 $lay->set("aid", $this->attridk);
                 $lay->set("aname", $this->attrin);

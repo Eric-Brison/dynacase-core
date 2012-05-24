@@ -2,23 +2,23 @@
           [IF height] style="height : [height]" [ENDIF height] >[Value]
 </textarea>
 
-[IF JSONConf]
-<textarea id="conf_[aid]" style="display : none;">[JSONConf]</textarea>
-[ENDIF JSONConf]
+[IF jsonconf]
+<textarea id="conf_[aid]" style="display : none;">[jsonconf]</textarea>
+[ENDIF jsonconf]
 
 [IFNOT isInDuplicableTableLine]
 <script type="text/javascript">
 addEvent(window,'load', function(){
-    [IFNOT JSONConf]
+    [IFNOT jsonconf]
     window.htmlText.initEditor("[aid]", {
         height : "[height]",
         toolbar : "[toolbar]",
         toolbarStartupExpanded : [toolbarexpand]
     });
-    [ENDIF JSONConf]
-    [IF JSONConf]
+    [ENDIF jsonconf]
+    [IF jsonconf]
     window.htmlText.initEditor("[aid]", JSON.parse(document.getElementById("conf_[aid]").value));
-    [ENDIF JSONConf]
+    [ENDIF jsonconf]
 });
 </script>
 [ENDIF isInDuplicableTableLine]
