@@ -41,8 +41,9 @@ class DocFormFormat
      */
     private $visibility;
     /**
-    * @var boolean the attribute is in the non visible duplicable line
-    **/
+     * @var boolean the attribute is in the non visible duplicable line
+     *
+     */
     private $isInDuplicableTableLine = false;
     private $classname;
     /**
