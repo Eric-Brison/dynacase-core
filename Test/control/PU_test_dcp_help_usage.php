@@ -149,9 +149,6 @@ class TestHelpUsage extends TestCaseDcp
                 "updatetitles"
             ) ,
             array(
-                "usercard_csv2vcard"
-            ) ,
-            array(
                 "usercard_iuser"
             ) ,
             array(

@@ -23,7 +23,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
      */
     protected static function getCommonImportFile()
     {
-        return "PU_data_dcp_goodfamilyfordoc.ods";
+        return "";
     }
     /**
      * @dataProvider dataSetLogicalName
@@ -32,7 +32,7 @@ class TestSetLogicalName extends TestCaseDcpCommonFamily
      */
     public function testExecuteSetLogicalName($oldname, $newname)
     {
-        $doc = createDoc(self::$dbaccess, "TST_GOODFAMIMPDOC");
+        $doc = createDoc(self::$dbaccess, "BASE");
         $err = $doc->Add();
         $this->assertEmpty($err, sprintf("Error when creating document %s", $err));
         $this->assertTrue($doc->isAlive() , sprintf("document %s not alive", $doc->id));

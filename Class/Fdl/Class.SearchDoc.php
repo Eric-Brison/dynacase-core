@@ -118,11 +118,25 @@ class SearchDoc
     private $result;
     private $searchmode;
     /**
+     *
+     * @var string pertinence order in case of full search
+     */
+    private $pertinenceOrder = '';
+    /**
+     * @var string words used by SearchHighlight class
+     */
+    private $highlightWords = '';
+    private $resultPos = 0;
+    /**
+     * @var int query number (in ITEM mode)
+     */
+    
+    private $resultQPos = 0;
+    /**
      * initialize with family
      *
      * @param string $dbaccess database coordinate
-     * @param string $fromid family identificator to filter
-     *
+     * @param int|string $fromid family identificator to filter
      */
     public function __construct($dbaccess = '', $fromid = 0)
     {
@@ -190,6 +204,7 @@ class SearchDoc
         return $this->count;
     }
     /**
+     * return memberof to be used in profile filters
      * @static
      * @param $uid
      * @return string
@@ -230,12 +245,23 @@ class SearchDoc
     {
         if ($this->count == - 1) {
             if ($this->searchmode == "ITEM") {
-                $this->count = countDocs($this->result);
+                $this->count = $this->countDocs();
             } else {
                 $this->count = count($this->result);
             }
         }
         return $this->count;
+    }
+    /**
+     * count returned document in sql select ressources
+     * @return int
+     */
+    protected function countDocs()
+    {
+        $n = 0;
+        foreach ($this->result as $res) $n+= pg_num_rows($res);
+        reset($this->result);
+        return $n;
     }
     /** 
      *reset results to use another search
@@ -244,6 +270,8 @@ class SearchDoc
     public function reset()
     {
         $this->result = false;
+        $this->resultPos = 0;
+        $this->resultQPos = 0;
         $this->debuginfo = "";
     }
     /** 
@@ -327,19 +355,33 @@ class SearchDoc
         if ($this->searchmode == "TABLE") $this->count = count($this->result); // memo cause array is unset by shift
         $this->debuginfo = $debuginfo;
         if (($this->searchmode == "TABLE") && ($this->mode == "ITEM")) $this->mode = "TABLEITEM";
-        
+        $this->resultPos = 0;
+        $this->resultQPos = 0;
         if ($this->mode == "ITEM") return $this;
         
         return $this->result;
     }
-    
+    /**
+     * return document iterator to be used in loop
+     * @code
+     *  $s=new \SearchDoc($dbaccess, $famName);
+     $s->setObjectReturn();
+     $s->search();
+     $dl=$s->getDocumentList();
+     foreach ($dl as $docId=>$doc) {
+     print $doc->getTitle();
+     }
+     * @endcode
+     * @return DocumentList
+     */
     public function getDocumentList()
     {
         include_once ("FDL/Class.DocumentList.php");
         return new DocumentList($this);
     }
     /**
-     *
+     * return error message
+     * @return string empty if no errors
      */
     public function searchError()
     {
@@ -368,11 +410,12 @@ class SearchDoc
     /**
      * set recursive mode for folder searches
      *
+     * @param bool $recursiveMode set to true to use search in sub folders when collection is folder
      * @return void
      */
-    public function setRecursiveSearch($b = true)
+    public function setRecursiveSearch($recursiveMode = true)
     {
-        $this->recursiveSearch = $b;
+        $this->recursiveSearch = $recursiveMode;
     }
     /**
      * return debug info if debug mode enabled
@@ -447,29 +490,54 @@ class SearchDoc
         return true;
     }
     /**
-     * can, be use in
+     * can, be use in loop
      * ::search must be call before
      *
-     * @return Doc or null if this is the end
+     * @return Doc|array or null if this is the end
      */
     public function nextDoc()
     {
         if ($this->mode == "ITEM") {
-            $n = current($this->result);
-            if ($n === false) return false;
-            $tdoc = pg_fetch_array($n, NULL, PGSQL_ASSOC);
+            $n = $this->result[$this->resultQPos];
+            if (!$n) return false;
+            $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);
             if ($tdoc === false) {
-                $n = next($this->result);
-                if ($n === false) return false;
-                $tdoc = pg_fetch_array($n, NULL, PGSQL_ASSOC);
+                $this->resultQPos++;
+                $n = $this->result[$this->resultQPos];
+                if (!$n) return false;
+                $this->resultPos = 0;
+                $tdoc = @pg_fetch_array($n, $this->resultPos, PGSQL_ASSOC);
                 if ($tdoc === false) return false;
             }
+            $this->resultPos++;
             return $this->iDoc = $this->getNextDocument($tdoc);
         } elseif ($this->mode == "TABLEITEM") {
-            $tdoc = array_shift($this->result);
+            $tdoc = current(array_slice($this->result, $this->resultPos, 1));
             if (!is_array($tdoc)) return false;
+            $this->resultPos++;
             return $this->iDoc = $this->getNextDocument($tdoc);
-        } else return array_shift($this->result);
+        } else {
+            return current(array_slice($this->result, $this->resultPos++, 1));
+        }
+    }
+    
+    public function getIds()
+    {
+        $ids = array();
+        if ($this->mode == "ITEM") {
+            foreach ($this->result as $n) {
+                $c = pg_num_rows($n);
+                for ($i = 0; $i < $c; $i++) {
+                    $ids[] = pg_fetch_result($n, $i, "id");
+                }
+            }
+        } else {
+            
+            foreach ($this->result as $raw) {
+                $ids[] = $raw["id"];
+            }
+        }
+        return $ids;
     }
     /**
      * Return an object document from array of values
@@ -499,7 +567,7 @@ class SearchDoc
      * @param string $args arguments of the filter string (arguments are escaped to avoid sql injection)
      * @return void
      */
-    public function addFilter($filter)
+    public function addFilter($filter, $args = '')
     {
         
         if ($filter != "") {
@@ -519,8 +587,204 @@ class SearchDoc
             $this->filters[] = $filter;
         }
     }
+    /**
+     * add global filter based on keyword to match any attribute value
+     * available example :
+     *   foo : filter all values with has the word foo
+     *   foo bar : the word foo and the word bar are set in document attributes
+     *   foo OR bar : the word foo or the word bar are set in a document attributes
+     *   foo OR (bar AND zou) : more complex logical expression
+     * @param string $keywords
+     * @param bool $useSpell use spell french checker
+     */
+    public function addGeneralFilter($keywords, $useSpell = false)
+    {
+        
+        $filter = $this->getGeneralFilter(trim($keywords) , $useSpell, $this->pertinenceOrder, $this->highlightWords);
+        $this->addFilter($filter);
+    }
     
-    static function sqlcond($values, $column, $integer = false)
+    public function setPertinenceOrder($keyword = '')
+    {
+        if ($keyword != '') {
+            $rank = preg_replace('/\s+(OR)\s+/', '|', $keyword);
+            $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
+            $rank = preg_replace('/\s+/', '&', $rank);
+            $this->pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", pg_escape_string(unaccent($rank)));
+        }
+        if ($this->pertinenceOrder) $this->setOrder($this->pertinenceOrder);
+    }
+    /**
+     * get global filter
+     * @see addGeneralFilter
+     * @static
+     * @param string $keywords
+     * @param bool $useSpell
+     * @param string $pertinenceOrder return pertinence order
+     * @param string $highlightWords return words to be use by SearchHighlight class
+     * @return string sql filter
+     */
+    public static function getGeneralFilter($keywords, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
+    {
+        if ((strstr($keywords, '"') == false) && (strstr($keywords, '~') == false)) {
+            $filter = self::getFullFilter($keywords, $useSpell, $pertinenceOrder, $highlightWords);
+        } else {
+            
+            $filter = self::getMiscFilter($keywords, $useSpell, $pertinenceOrder);
+        }
+        return $filter;
+    }
+    /**
+     * return sql filter from some words or expressions
+     * @static
+     * @param string $keywords
+     * @param bool $useSpell
+     * @param string $pertinenceOrder return pertinence order
+     * @return string sql filter
+     */
+    protected static function getMiscFilter($keywords, $useSpell = false, &$pertinenceOrder = '')
+    {
+        $workFilter = preg_replace('/\s+(OR)\s+/', '|||', $keywords);
+        $workFilter = preg_replace('/\s+(AND)\s+/', '&&&', $workFilter);
+        $workFilter = preg_replace('/\s+/', '&space;', $workFilter);
+        // exacts keys
+        preg_match_all('/(?m)"([^"]+)"/u', $workFilter, $matches);
+        $exactsKeys = $matches[0];
+        // delete matches from keywords
+        $workFilter = preg_replace('/(?m)"([^"]+)"/u', "", $workFilter);
+        // regexp keys
+        preg_match_all('/(?m)~([\p{L}]+)/u', $workFilter, $matches);
+        $regexpKeys = $matches[0];
+        // delete matches from keywords
+        $workFilter = preg_replace('/(?m)~([\p{L}]+)/u', "", $workFilter);
+        // full word keys
+        preg_match_all('/(?m)([\p{L}]+)/u', $workFilter, $matches);
+        $fullsKeys = $matches[0];
+        // delete matches from keywords
+        $workFilter = preg_replace('/(?m)"([\p{L}]+)"/u', "", $workFilter);
+        /* print_r2(array(
+            "exact" => $exactsKeys,
+            "regexp" => $regexpKeys,
+            "full" => $fullsKeys,
+            "final"=>$workFilter
+        ));*/
+        
+        $filter = $keywords;
+        $rank = $keywords;
+        foreach ($exactsKeys as $aKey) {
+            $aKey = str_replace('&space;', ' ', $aKey);
+            $repl = sprintf("svalues ~* E'\\\\y%s\\\\y'", pg_escape_string(substr($aKey, 1, -1)));
+            $filter = str_replace($aKey, $repl, $filter);
+            $repl = unaccent(substr($aKey, 1, -1));
+            $rank = str_replace($aKey, $repl, $rank);
+        }
+        foreach ($fullsKeys as $aKey) {
+            if ($useSpell) {
+                $rKey = self::testSpell($aKey);
+            } else {
+                $rKey = $aKey;
+            }
+            $repl = sprintf("fulltext @@ to_tsquery('french','%s')", pg_escape_string(unaccent($rKey)));
+            
+            $filter = str_replace($aKey, $repl, $filter);
+            $rank = str_replace($aKey, $rKey, $rank);
+        }
+        foreach ($regexpKeys as $aKey) {
+            $repl = sprintf("svalues ~* E'%s'", pg_escape_string(substr($aKey, 1)));
+            $filter = str_replace($aKey, $repl, $filter);
+        }
+        // add implicit AND
+        $filter = preg_replace("/'\\)\\s+svalues/", "') and svalues", $filter);
+        $filter = preg_replace("/'\\)\\s+fulltext/", "') and fulltext", $filter);
+        $filter = preg_replace("/'\\s+fulltext/", "' and fulltext", $filter);
+        $filter = preg_replace("/'\\s+svalues/", "' and svalues", $filter);
+        
+        $rank = preg_replace('/\s+(OR)\s+/', '|', $rank);
+        $rank = preg_replace('/\s+(AND)\s+/', '&', $rank);
+        $rank = preg_replace('/\s+/', '&', $rank);
+        $rank = str_replace('~', '', $rank);
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc", unaccent($rank));
+        return ($filter);
+    }
+    /**
+     * @param Doc $doc document to analyze
+     * @param string $beginTag delimiter begin tag
+     * @param string $endTag delimiter end tag
+     * @param int $limit file size limit to analyze
+     * @return mixed
+     */
+    public function getHighLightText(Doc & $doc, $beginTag = '<b>', $endTag = '</b>', $limit = 200)
+    {
+        static $oh = null;
+        if (!$oh) {
+            $oh = new SearchHighlight();
+        }
+        if ($beginTag) $oh->beginTag = $beginTag;
+        if ($endTag) $oh->endTag = $endTag;
+        if ($limit > 0) $oh->setLimit($limit);
+        simpleQuery($this->dbaccess, sprintf("select svalues from docread where id=%d", $doc->id) , $text, true, true);
+        $h = $oh->highlight($text, $this->highlightWords);
+        
+        return $h;
+    }
+    /**
+     * get full filter from some words
+     * @static
+     * @param string $words
+     * @param bool $useSpell
+     * @param string $pertinenceOrder return pertinence order
+     * @return string sql filter
+     */
+    protected static function getFullFilter($words, $useSpell = false, &$pertinenceOrder = '', &$highlightWords = '')
+    {
+        
+        $filter = preg_replace('/\s+(OR)\s+/', '|', $words);
+        $filter = preg_replace('/\s+(AND)\s+/', '&', $filter);
+        $filter = preg_replace('/\s*\)\s*/', ')', $filter);
+        $filter = preg_replace('/\s*\(\s*/', '(', $filter);
+        $filter = preg_replace('/\s+/', '&', $filter);
+        if ($useSpell) {
+            $filter = preg_replace("/(?m)([\p{L}]+)/ue", "self::testSpell('\\1')", $filter);
+        }
+        $fullKey = pg_escape_string(unaccent($filter));
+        $pertinenceOrder = sprintf("ts_rank(fulltext,to_tsquery('french','%s')) desc, id desc", $fullKey);
+        $highlightWords = $fullKey;
+        //print_r2($pertinenceOrder);
+        $q = sprintf("fulltext @@ to_tsquery('french','%s')", $fullKey);
+        return $q;
+    }
+    /**
+     * detect if word is a word of language
+     * if not the near word is set to do an OR condition
+     * @static
+     * @param string $word word to analyze
+     * @param string $language
+     * @return string word with its correction if it is not correct
+     */
+    protected static function testSpell($word, $language = "fr")
+    {
+        static $pspell_link = null;
+        if (function_exists('pspell_new')) {
+            if (!$pspell_link) $pspell_link = pspell_new($language, "", "", "utf-8", PSPELL_FAST);
+            if ((!is_numeric($word)) && (!pspell_check($pspell_link, $word))) {
+                $suggestions = pspell_suggest($pspell_link, $word);
+                $sug = unaccent($suggestions[0]);
+                if ($sug && ($sug != unaccent($word)) && (!strstr($sug, ' '))) {
+                    $word = sprintf("(%s|%s)", $word, $sug);
+                }
+            }
+        }
+        return $word;
+    }
+    /**
+     * return where condition like : foo in ('x','y','z')
+     * @static
+     * @param array $values set of values
+     * @param string $column database column name
+     * @param bool $integer set to true if database column is numeric type
+     * @return string
+     */
+    public static function sqlcond(array $values, $column, $integer = false)
     {
         $sql_cond = "true";
         if (count($values) > 0) {
@@ -550,6 +814,7 @@ class SearchDoc
     /**
      * the return of ::search will be array of document's object
      *
+     * @param bool $returnobject set to true to return object, false to return raw data
      * @return void
      */
     public function setObjectReturn($returnobject = true)
@@ -572,7 +837,7 @@ class SearchDoc
      * @param boolean $exclude set to true to exclude confidential
      * @return void
      */
-    function excludeConfidential($exclude = true)
+    public function excludeConfidential($exclude = true)
     {
         if ($exclude) {
             if ($this->userid != 1) {
