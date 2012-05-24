@@ -67,7 +67,17 @@ function getMainAction($auth, &$action)
     if ($defaultapp && $core->GetParam("CORE_START_APP")) {
         $_GET["app"] = $core->GetParam("CORE_START_APP");
     }
-    ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "32") . "M");
+    $limit = ini_get("memory_limit");
+    if (is_string($limit)) {
+        $limitNum = intval(substr($limit, 0, -1));
+        $multipli = 1;
+        if (strcmp(substr($limit, -1), "G") == 0) {
+            $multipli = 1000;
+        }
+        if ($limitNum >= 0 && ($limitNum * $multipli) < intval($core->GetParam("MEMORY_LIMIT", "64"))) {
+            ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "64") . "M");
+        }
+    }
     //$core->SetSession($session);
     $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
     // ----------------------------------------
@@ -180,9 +190,11 @@ function getMainAction($auth, &$action)
                 case "6":
                     $ISIE6 = true;
                     break;
+
                 case "7":
                     $ISIE7 = true;
                     break;
+
                 case "8":
                     $ISIE8 = true;
                     break;
