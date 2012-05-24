@@ -41,7 +41,7 @@ function fckdocattr(&$action)
                 );
             } else {
                 $tatt[$k] = array(
-                    "aid" => "<a href=\"[V_" . strtoupper($k) . "]\">" . $v->getLabel() . "</a>",
+                    "aid" => "<a href=\"[V_" . strtoupper($k) . "]\">" . str_replace("'", "\\'", $v->getLabel()) . "</a>",
                     "alabel" => str_replace("'", "\\'", $v->getLabel())
                 );
             }
