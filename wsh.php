@@ -88,7 +88,7 @@ $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
 $hostname = LibSystem::getHostName();
 $puburl = $core->GetParam("CORE_PUBURL", "http://" . $hostname . "/freedom");
 
-ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "32") . "M");
+ini_set("memory_limit", -1);
 
 $absindex = $core->GetParam("CORE_URLINDEX");
 if ($absindex == '') {
