@@ -74,7 +74,7 @@ function getMainAction($auth, &$action) {
         $limitNum = intval(substr($limit, 0, -1));
         $multipli = 1;
         if (substr($limit, -1) == "G") {
-            $multipli = 1000;
+            $multipli = 1024;
         }
         if ($limitNum >= 0 && ($limitNum * $multipli) < intval($core->GetParam("MEMORY_LIMIT", "64"))) {
             ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "64") . "M");
