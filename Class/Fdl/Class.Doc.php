@@ -5118,7 +5118,7 @@ create unique index i_docir on doc(initid, revision);";
                         $a = "<a>" . sprintf(_("unknown document id %s") , $id) . "</a>";
                     }
                 } else {
-                    $ul = getParam("CORE_STANDURL");
+                    $ul = '?';
                     if ($target == "mail") {
                         $ul = GetParam("CORE_EXTERNURL") . "?";
                     }
@@ -5141,25 +5141,25 @@ create unique index i_docir on doc(initid, revision);";
                             }
                             $a = "<a $ajs onclick='parent.$ecu'>$title</a>";
                         } else {
-                            if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&latest=Y";
+                            if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
                             elseif ($docrev != "fixed") {
                                 // validate that docrev looks like state(xxx)
                                 if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
-                                    $ul.= "&state=" . $matches[1];
+                                    $ul.= "&amp;state=" . $matches[1];
                                 }
                             }
-                            $ul.= "&app=FDL&action=VIEWEXTDOC&id=$id";
+                            $ul.= "&amp;app=FDL&amp;action=VIEWEXTDOC&amp;id=$id";
                             $a = "<a href=\"$ul\">$title</a>";
                         }
                     } else {
-                        if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&latest=Y";
+                        if ($docrev == "latest" || $docrev == "" || !$docrev) $ul.= "&amp;latest=Y";
                         elseif ($docrev != "fixed") {
                             // validate that docrev looks like state(xxx)
                             if (preg_match("/^state\(([a-zA-Z0-9_:-]+)\)/", $docrev, $matches)) {
-                                $ul.= "&state=" . $matches[1];
+                                $ul.= "&amp;state=" . $matches[1];
                             }
                         }
-                        $ul.= "&app=FDL&action=OPENDOC&mode=view&id=$id";
+                        $ul.= "&amp;app=FDL&amp;action=OPENDOC&amp;mode=view&amp;id=$id";
                         if ($js) $ajs = "oncontextmenu=\"popdoc(event,'$ul');return false;\"";
                         else $ajs = "";
                         
