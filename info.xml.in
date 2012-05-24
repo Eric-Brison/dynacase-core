@@ -17,6 +17,7 @@
     <requires>
         <installer version="1.1.5" comp="ge"/>
         <module name="dynacase-jquery"/>
+        <module name="dynacase-ckeditor"/>
     </requires>
 
     <parameters>

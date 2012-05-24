@@ -1,0 +1,31 @@
+<textarea id="[aid]" name="[aname]" type="htmltext" onchange="htmlText.setValue(this.id, this.value)"
+          [IF height] style="height : [height]" [ENDIF height] >[Value]
+</textarea>
+
+[IF jsonconf]
+<textarea id="conf_[aid]" style="display : none;">[jsonconf]</textarea>
+[ENDIF jsonconf]
+
+[IF doclink]
+<textarea id="doclink_conf_[aid]" style="display : none;">[doclink]</textarea>
+[ENDIF doclink]
+
+
+[IFNOT isInDuplicableTableLine]
+<script type="text/javascript">
+addEvent(window,'load', function(){
+    [IFNOT jsonconf]
+    window.htmlText.initEditor("[aid]", {
+        height : "[height]",
+        toolbar : "[toolbar]",
+        toolbarStartupExpanded : [toolbarexpand][IF doclink],
+        doclink : JSON.parse(document.getElementById("doclink_conf_[aid]").value)
+        [ENDIF doclink]
+    });
+    [ENDIF jsonconf]
+    [IF jsonconf]
+    window.htmlText.initEditor("[aid]", JSON.parse(document.getElementById("conf_[aid]").value));
+    [ENDIF jsonconf]
+});
+</script>
+[ENDIF isInDuplicableTableLine]

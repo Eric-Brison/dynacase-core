@@ -938,9 +938,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format HTML attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatHtmltext($kvalue, $avalue)
     {
@@ -949,6 +952,25 @@ class DocHtmlFormat
         }
         $shtmllink = $this->htmlLink ? "true" : "false";
         $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->doc->getDocAnchor('\\2',\"$this->target\",$shtmllink)", $avalue);
+        if (stripos($avalue, "data-initid") !== false) {
+            $doc = new DOMDocument();
+            
+            $doc->loadHTML(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'));
+            
+            $aElements = $doc->getElementsByTagName("a");
+            
+            foreach ($aElements as $currentA) {
+                /* @var $currentA DOMElement */
+                if ($currentA->hasAttribute("data-initid")) {
+                    $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid") , $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
+                    $newAFragment = $doc->createDocumentFragment();
+                    $newAFragment->appendXML($newA);
+                    $currentA->parentNode->replaceChild($newAFragment, $currentA);
+                }
+            }
+            
+            $avalue = $doc->saveHTML();
+        }
         $htmlval = '<div class="htmltext">' . $avalue . '</div>';
         return $htmlval;
     }

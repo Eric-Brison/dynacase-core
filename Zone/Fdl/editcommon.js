@@ -10,8 +10,6 @@ if (!("console" in window)) {window.console = {'log': function(s) {}};};
 // auxilarry window to select choice
 var wichoose= false;
 
-var NB_FCKEDITORS=0;
-var FCKEDITORS=new Array();
 // current instance
 var colorPick ;
 //if (window.pickColor)  colorPick = new ColorPicker();
@@ -928,7 +926,12 @@ function getInputsByName(n,node) {
 
 function getIValue(i) {
   if (i) {
-    if (i.tagName == "TEXTAREA") return i.value;
+    if (i.tagName == "TEXTAREA") {
+      if (i.type == 'htmltext') {
+        window.htmltext.synchronizeWithTextArea(i.id);
+      }
+      return i.value;
+    }
     if (i.tagName == "INPUT") {
       if ((i.type=='radio')||(i.type=='checkbox')) return i.checked;
       return i.value;
@@ -1164,10 +1167,7 @@ function deleteInputValue(id){
 			el.value = ' ';
 
 			if ((el.tagName.toLowerCase()=='textarea') && (el.getAttribute('type')=='htmltext')) {
-			    var oFck=FCKeditorAPI.GetInstance(el.id);
-			    if (oFck) {
-			        oFck.SetData('');
-			    }
+			    window.htmlText.deleteContent(el.id);
 			}
 			if( el.className.match(/^color\b/) ) {
 				el.style.backgroundColor = '';
@@ -1268,13 +1268,6 @@ function autoUnlock(docid) {
   return false;
 }
 
-function refreshFCKs() {
-    var oEditor;
-    for (var i=0;i<FCKEDITORS.length;i++) {
-        oEditor = FCKeditorAPI.GetInstance(FCKEDITORS[i]);
-        if (oEditor) oEditor.UpdateLinkedField();
-    }
-}
 function submitEdit(event,force) {
 	var fedit= document.getElementById('fedit');
 	var r=true;
@@ -1282,7 +1275,7 @@ function submitEdit(event,force) {
 		var fedit= document.getElementById('fedit');
 
 		if (force) fedit.noconstraint.value='Y';
-		refreshFCKs();
+		window.htmlText.synchronizeWithTextArea();
 		//bsubmit.onclick.apply(null,[event]);
 		if (fedit.onsubmit) r=fedit.onsubmit();
 		if (r) {
@@ -1938,21 +1931,21 @@ var indextr=-1;
 var specAddtr = false;
 function addtr(trid, tbodyid) {
 
-  var ntr;
+  var ntr, i, length;
   with (document.getElementById(trid)) {
     // need to change display before because IE doesn't want after clonage
     style.display='';
 
     ntr = cloneNode(true);
     style.display='none';
-    if (isNetscape) {
-      // bug :: Mozilla don't clone textarea values
-      var newTa = ntr.getElementsByTagName('textarea');
-      for (var i=0; i < newTa.length; i++){
 
-	newTa[i].setAttribute('value',getElementsByTagName('textarea')[i].value);
-	// -- this next line is for N7 + Mozilla
-	newTa[i].defaultValue = getElementsByTagName('textarea')[i].value;
+  // bug :: Mozilla don't clone textarea values
+  if (isNetscape) {
+    var newTa = ntr.getElementsByTagName('textarea');
+    for (i=0, length = newTa.length; i < length; i++){
+        newTa[i].setAttribute('value',getElementsByTagName('textarea')[i].value);
+        // -- this next line is for N7 + Mozilla
+        newTa[i].defaultValue = getElementsByTagName('textarea')[i].value;
       }
     }
   }
@@ -1974,21 +1967,18 @@ function addtr(trid, tbodyid) {
   } else {
     var ltr = ntable.getElementsByTagName('tr');
     var ltrfil=new Array();
-    for (var i=0;i<ltr.length ;i++) {
+    for (i=0, length = ltr.length;i< length;i++) {
       if ((ltr[i].parentNode.id == tbodyid) || (ltr[i].parentNode.parentNode.id == tbodyid)) ltrfil.push(ltr[i]);
     }
     if (ltrfil.length > 1) ltrfil[ltrfil.length-2].parentNode.insertBefore(ntr,ltrfil[ltrfil.length-2]);
   }
   verifyMaxFileUpload(document.getElementById('fedit'));
   disableReadAttribute();
-    if (specAddtr) {
-                try {
-                    eval(specAddtr);
-                }
-                catch(exception) {
-                    alert(exception);
-                }
-            }
+    //Initiate htmltext
+  var newTa = ntr.getElementsByTagName('textarea');
+  for (i=0, length = newTa.length ; i < length; i++){
+      window.htmlText.initEditor(newTa[i].id);
+  }
   return ntr;
 
 }
@@ -2141,7 +2131,7 @@ function duptr() {
 }
 
 function afterCloneBug(o1,o2) {
-    var ti1,ti2,t=null,i;
+    var ti1,ti2,t=null,i,value;
     var itag=new Array('input','textarea','select');
 
     for (t in itag) {
@@ -2150,16 +2140,15 @@ function afterCloneBug(o1,o2) {
         for ( i=0; i< ti1.length; i++) {
             if ((ti1[i].type!='radio') || (!ti1[i].getAttribute('selector'))) {
                 if (ti1[i].tagName == 'TEXTAREA' && ti1[i].getAttribute('type') == 'htmltext') {
-                    /*
-                     * Use FCKeditorAPI for getting/setting text in HTML textareas
-                     */
-                    var fck1 = FCKeditorAPI.GetInstance(ti1[i].id);
-                    var value = (fck1) ? fck1.GetData('Text') : getIValue(ti1[i].id);
-                    var fck2 = FCKeditorAPI.GetInstance(ti2[i].id);
-                    if (fck2) {
-                        fck2.SetData(value);
-                    } else {
-                        setIValue(ti2[i], value);
+                    try {
+                      value = window.htmlText.getValue(ti1[i].id);
+                    } catch(e) {
+                      value = getIValue(ti1[i].id);
+                    }
+                    try {
+                      window.htmlText.setValue(ti2[i].id, value);
+                    } catch(e) {
+                      setIValue(ti2[i], value);
                     }
                 } else {
                     setIValue(ti2[i], getIValue(ti1[i]));
@@ -2271,16 +2260,37 @@ var specMovetr=null;
 function movetr(tr, sourcetr) {
 
     if (! sourcetr) sourcetr=seltr;
+
     var trnode= sourcetr;
     var pnode = tr;
+    var refreshHTMLText = function refreshHTMLText(node) {
+      var conf = {};
+      var i;
+      var textareas = node.getElementsByTagName('textarea');
+      for (i =0, length = textareas.length; i < length; i++) {
+         if (textareas[i].getAttribute('type') == 'htmltext') {
+            conf = window.htmlText.deactivateEditor(textareas[i].id, true);
+            window.htmlText.initEditor(textareas[i].id, conf);
+         }
+      }
+    };
+    var synchronizeHTMLText = function synchronizeHTMLText(node) {
+      var i;
+      var textareas = node.getElementsByTagName('textarea');
+      for (i =0, length = textareas.length; i < length; i++) {
+       window.htmlText.synchronizeWithTextArea(textareas[i].id);
+      }
+    };
     if (sourcetr) {
-
-        while (pnode && (pnode.nodeType != 1)) pnode = pnode.previousSibling; // case TEXT attribute in mozilla between TR ??
         if (pnode && trnode)  {
+            synchronizeHTMLText(trnode);
+            synchronizeHTMLText(pnode);
+
             trnode.parentNode.insertBefore(trnode,pnode);
 
-        }  else {
-            //trnode.parentNode.appendChild(trnode); // latest (cyclic)
+            window.setTimeout(refreshHTMLText, 1, trnode);
+            window.setTimeout(refreshHTMLText, 1, pnode);
+
         }
 
         resetTrInputs(trnode);
@@ -2751,7 +2761,7 @@ function droptr(event) {
         if (! event) event=window.event;
         var o= (event.target) ? event.target : ((event.srcElement) ? event.srcElement : null);
         if (o) {
-            while (o && o.tagName.toLowerCase() != 'tr') {
+            while (o && !(o.tagName.toLowerCase() == 'tr' && _SELROW.parentNode.id == o.parentNode.id)) {
                 o=o.parentNode;
             }
             if (o) {
@@ -2768,8 +2778,8 @@ function droptr(event) {
 function enddrag(event) {
 
     dro=null;
-    _SELROW.parentNode.setAttribute('moving',  "false");
-    _SELROW.setAttribute('moving',  "false");
+    _SELROW.parentNode.setAttribute('moving', "false");
+    _SELROW.setAttribute('moving', "false");
     _SELROW=null;
     delEvent(document,"mouseup",enddrag);
 

@@ -40,6 +40,11 @@ class DocFormFormat
      * @var string current attribute visibility
      */
     private $visibility;
+    /**
+     * @var boolean the attribute is in the non visible duplicable line
+     *
+     */
+    private $isInDuplicableTableLine = false;
     private $classname;
     /**
      * @var int current document id
@@ -111,6 +116,7 @@ class DocFormFormat
             if ($this->index == - 1) {
                 $attrin.= '[-1]';
                 $attridk = $this->oattr->id . '__1x_';
+                $this->isInDuplicableTableLine = true;
             } else $attrin.= "[{$this->index}]";
         }
         if (isset($this->oattr->mvisibility)) $this->visibility = $this->oattr->mvisibility;
@@ -121,6 +127,9 @@ class DocFormFormat
         
         if (!$this->notd) $classname = "class=\"fullresize\"";
         else $classname = "";
+        if ($this->isInDuplicableTableLine == false) {
+            $this->isInDuplicableTableLine = ($this->index == '__1x_');
+        }
         $this->attrid = $this->oattr->id;
         $this->docid = $docid;
         $this->attrin = $attrin;
@@ -563,7 +572,7 @@ class DocFormFormat
                 $input = "<div class=\"static\" name=\"{$this->attrin}\">$value</div>";
             } else {
                 global $action;
-                $lay = new Layout("FDL/Layout/fckeditor.xml", $action);
+                $lay = new Layout("FDL/Layout/ckeditor.xml", $action);
                 $lay->set("Value", str_replace(array(
                     "\n",
                     "\r",
@@ -579,8 +588,11 @@ class DocFormFormat
                     '&amp;lt;',
                     '&amp;gt;'
                 ) , $value));
+                $lay->set("isInDuplicableTableLine", $this->isInDuplicableTableLine ? "TRUE" : "");
                 $lay->set("label", ucFirst($this->oattr->getLabel()));
                 $lay->set("need", $this->oattr->needed);
+                $lay->set("jsonconf", $this->oattr->getOption("jsonconf"));
+                $lay->set("doclink", $this->oattr->getOption("doclink"));
                 $lay->set("height", $this->oattr->getOption("editheight", "150px"));
                 $lay->set("toolbar", $this->oattr->getOption("toolbar", "Simple"));
                 $lay->set("toolbarexpand", (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");

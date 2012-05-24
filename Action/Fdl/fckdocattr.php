@@ -18,7 +18,7 @@
 
 include_once ("FDL/Class.DocFam.php");
 
-function fckdocattr(&$action)
+function fckdocattr(Action &$action)
 {
     
     $docid = GetHttpVars("famid");
@@ -29,25 +29,25 @@ function fckdocattr(&$action)
         foreach ($listattr as $k => $v) {
             $tatt[$k] = array(
                 "aid" => "[V_" . strtoupper($k) . "]",
-                "alabel" => str_replace("'", "\\'", $v->getLabel())
+                "alabel" => str_replace('"', '\\"', $v->getLabel())
             );
         }
         $listattr = $doc->GetFileAttributes();
         foreach ($listattr as $k => $v) {
             if ($v->type == "image") {
                 $tatt[$k] = array(
-                    "aid" => "<img src=\"[V_" . strtoupper($k) . "]\">",
-                    "alabel" => str_replace("'", "\\'", $v->getLabel())
+                    "aid" => "<img src='[V_" . strtoupper($k) . "]'>",
+                    "alabel" => str_replace('"', '\\"', $v->getLabel())
                 );
             } else {
                 $tatt[$k] = array(
-                    "aid" => "<a href=\"[V_" . strtoupper($k) . "]\">" . $v->getLabel() . "</a>",
-                    "alabel" => str_replace("'", "\\'", $v->getLabel())
+                    "aid" => "<a href='[V_" . strtoupper($k) . "]'>" . $v->getLabel() . "</a>",
+                    "alabel" => str_replace('"', '\\"', $v->getLabel())
                 );
             }
         }
         
-        $action->lay->setBlockData("ATTR", $tatt);
+        $action->lay->set("DOCATTR", json_encode($tatt));
     }
 }
 ?>

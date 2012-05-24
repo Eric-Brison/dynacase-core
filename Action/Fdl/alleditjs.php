@@ -20,7 +20,8 @@ function alleditjs(Action & $action)
 {
     $jurl = "WHAT/Layout";
     $statics = array(
-        "fckeditor/fckeditor.js",
+        "FDL/Layout/ckeditorStaticEnvVar.js",
+        "ckeditor/ckeditor.js",
         "$jurl/subwindow.js",
         "$jurl/geometry.js",
         "$jurl/AnchorPosition.js",
@@ -36,7 +37,8 @@ function alleditjs(Action & $action)
         "FDL/Layout/popupdoc.js",
         "FDL/Layout/popupdocmenu.js",
         "$jurl/resizeimg.js",
-        "lib/jscolor/jscolor.js"
+        "lib/jscolor/jscolor.js",
+        "lib/data/json2.js"
     );
     if ($action->Read("navigator") == "EXPLORER") {
         //$statics[]="$jurl/iehover.js";
@@ -54,6 +56,7 @@ function alleditjs(Action & $action)
         "FDL/Layout/editidoc.js",
         "FDL/Layout/enum_choice.js",
         "FDL/Layout/viewdoc.js",
+        "FDL/Layout/edithtmltext.js"
     );
     
     viewdocjs($action);

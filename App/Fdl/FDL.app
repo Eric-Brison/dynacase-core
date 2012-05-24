@@ -445,74 +445,79 @@ $action_desc = array(
         "acl" => "NORMAL"
     ),
 
+  array(
+   "name"		=>"FDL_FORUMADDENTRY",
+   "short_name"		=>N_("add entry in a document forum"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"FDL_FORUMDELENTRY",
+   "short_name"		=>N_("del entry from a document forum"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"FDL_FORUMOPEN",
+   "short_name"		=>N_("open forum"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"FDL_FORUMCLOSE",
+   "short_name"		=>N_("close forum"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"FDL_FORUMCREATE",
+   "short_name"		=>N_("create forum"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"FDL_FORUMMENU",
+   "short_name"		=>N_("menu forum"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"   =>"CKIMAGE",
+   "short_name"   =>N_("ck image browser"),
+   "acl"    =>"EDIT"
+  ),
+  array(
+   "name"		=>"CKUPLOAD",
+   "short_name"		=>N_("ck image upload"),
+   "acl"		=>"EDIT"
+  ),
+  array(
+   "name"		=>"VERIFYCOMPUTEDFILES",
+   "short_name"		=>N_("verify files status"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"GETFILETRANSFORMATION",
+   "short_name"		=>N_("retrieve file converted"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"GETFILETRANSSTATUS",
+   "short_name"		=>N_("retrieve task status"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"FCKDOCATTR",
+   "short_name"		=>N_("get attribute for fck toobar"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+   "name"		=>"VIEWTIMERS",
+   "short_name"		=>N_("view timers attached to a document"),
+   "acl"		=>"NORMAL"
+  ),
+  array(
+      "name"	=> "REPORT_EXPORT_CSV",
+      "short_name" => N_("export a report"),
+      "acl" => "NORMAL"
+  ),
     array(
-        "name" => "FDL_FORUMADDENTRY",
-        "short_name" => N_("add entry in a document forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMDELENTRY",
-        "short_name" => N_("del entry from a document forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMOPEN",
-        "short_name" => N_("open forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMCLOSE",
-        "short_name" => N_("close forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMCREATE",
-        "short_name" => N_("create forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FDL_FORUMMENU",
-        "short_name" => N_("menu forum"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FCKIMAGE",
-        "short_name" => N_("fck image browser"),
-        "acl" => "EDIT"
-    ),
-    array(
-        "name" => "FCKUPLOAD",
-        "short_name" => N_("fck image upload"),
-        "acl" => "EDIT"
-    ),
-    array(
-        "name" => "VERIFYCOMPUTEDFILES",
-        "short_name" => N_("verify files status"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "GETFILETRANSFORMATION",
-        "short_name" => N_("retrieve file converted"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "GETFILETRANSSTATUS",
-        "short_name" => N_("retrieve task status"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "FCKDOCATTR",
-        "short_name" => N_("get attribute for fck toobar"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "VIEWTIMERS",
-        "short_name" => N_("view timers attached to a document"),
-        "acl" => "NORMAL"
-    ),
-    array(
-        "name" => "REPORT_EXPORT_CSV",
-        "short_name" => N_("export a report"),
+        "name"	=> "HTMLEDITSELECTDOC",
+        "short_name" => N_("select a doc"),
         "acl" => "NORMAL"
     )
 
