@@ -3,7 +3,7 @@
  * @author Anakeen
  * @license http://www.fsf.org/licensing/licenses/agpl-3.0.html GNU Affero General Public License
  * @package FDL
- */
+*/
 /**
  * Main first level function
  *
@@ -70,9 +70,14 @@ function getMainAction($auth, &$action)
     $limit = ini_get("memory_limit");
     if (is_string($limit)) {
         $limitNum = intval(substr($limit, 0, -1));
-        $limit = ($limitNum >= 0 && $limitNum < intval($core->GetParam("MEMORY_LIMIT", "64"))) ? $core->GetParam("MEMORY_LIMIT", "64") . "M": $limit;
+        $multipli = 1;
+        if (substr($limit, -1) == "G") {
+            $multipli = 1000;
+        }
+        if ($limitNum >= 0 && ($limitNum * $multipli) < intval($core->GetParam("MEMORY_LIMIT", "64"))) {
+            ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "64") . "M");
+        }
     }
-    ini_set("memory_limit", $limit);
     //$core->SetSession($session);
     $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
     // ----------------------------------------
@@ -105,7 +110,6 @@ function getMainAction($auth, &$action)
     $core->SetVolatileParam("CORE_STANDURL", "?sole=Y$add_args&");
     $core->SetVolatileParam("CORE_SSTANDURL", "?sole=Y&freedom_param={$session->id}$add_args&");
     $core->SetVolatileParam("CORE_ASTANDURL", "$puburl/$indexphp?sole=Y$add_args&"); // absolute links
-    
     // ----------------------------------------
     // Init Application & Actions Objects
     if (($standalone == "") || ($standalone == "N")) {
