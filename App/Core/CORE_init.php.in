@@ -184,7 +184,7 @@ $app_const = array (
 							"user"=>"N",
 							"style"=>"N",
 							"global"=>"Y"),
-		    "MEMORY_LIMIT"	        =>array("val"=>"32",
+		    "MEMORY_LIMIT"	        =>array("val"=>"64",
 							"descr"=>N_("memory max for PHP in Mo"),
 							"user"=>"N",
 							"style"=>"N",
