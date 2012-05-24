@@ -20,8 +20,7 @@ include_once ("WHAT/Lib.Common.php");
  * @param Authenticator $auth
  * @param Action $action
  */
-function getMainAction($auth, &$action)
-{
+function getMainAction($auth, &$action) {
     include_once ('Class.Action.php');
     include_once ('Class.Application.php');
     include_once ('Class.Session.php');
@@ -29,12 +28,12 @@ function getMainAction($auth, &$action)
     include_once ('Class.Log.php');
     include_once ('Class.DbObj.php');
     $indexphp = basename($_SERVER["SCRIPT_NAME"]);
-    
+
     $log = new Log("", $indexphp);
-    
+
     $CoreNull = "";
     global $CORE_LOGLEVEL;
-    
+
     global $_GET;
     $standalone = GetHttpVars("sole", "Y");
     $defaultapp = false;
@@ -49,18 +48,19 @@ function getMainAction($auth, &$action)
             $_GET["action"] = "INVALID";
         }
     }
-    
+
     if (isset($_COOKIE['freedom_param'])) $sess_num = $_COOKIE['freedom_param'];
     else $sess_num = GetHttpVars('freedom_param'); //$_GET["session"];
     $session = new Session();
     if (!$session->Set($sess_num)) {
         print "<strong>:~((</strong>";
         exit;
-    };
-    
+    }
+    ;
+
     $core = new Application();
     $core->Set("CORE", $CoreNull, $session);
-    
+
     if ($core->user->login != $_SERVER['PHP_AUTH_USER']) {
         // reopen a new session
         $session->Set("");
@@ -69,8 +69,17 @@ function getMainAction($auth, &$action)
     if ($defaultapp && $core->GetParam("CORE_START_APP")) {
         $_GET["app"] = $core->GetParam("CORE_START_APP");
     }
-    ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "32") . "M");
-    //$core->SetSession($session);
+    $limit = ini_get("memory_limit");
+    if (is_string($limit)) {
+        $limitNum = intval(substr($limit, 0, -1));
+        $multipli = 1;
+        if (substr($limit, -1) == "G") {
+            $multipli = 1024;
+        }
+        if ($limitNum >= 0 && ($limitNum * $multipli) < intval($core->GetParam("MEMORY_LIMIT", "64"))) {
+            ini_set("memory_limit", $core->GetParam("MEMORY_LIMIT", "64") . "M");
+        }
+    } //$core->SetSession($session);
     $CORE_LOGLEVEL = $core->GetParam("CORE_LOGLEVEL", "IWEF");
     // ----------------------------------------
     // Init PUBLISH URL from script name
@@ -86,13 +95,13 @@ function getMainAction($auth, &$action)
     }
     $add_args = "";
     if (array_key_exists('authtype', $_GET)) {
-        $add_args.= "&authtype=" . $_GET['authtype'];
+        $add_args .= "&authtype=" . $_GET['authtype'];
     }
-    
+
     $urlindex = $core->getParam("CORE_URLINDEX");
     if ($urlindex) $core->SetVolatileParam("CORE_EXTERNURL", $urlindex);
     else $core->SetVolatileParam("CORE_EXTERNURL", $puburl . "/");
-    
+
     $core->SetVolatileParam("CORE_PUBURL", "."); // relative links
     $core->SetVolatileParam("CORE_ABSURL", $puburl . "/"); // absolute links
     $core->SetVolatileParam("CORE_JSURL", "WHAT/Layout");
@@ -109,12 +118,12 @@ function getMainAction($auth, &$action)
         $action->Set("MAIN", $core, $session);
     } else {
         $appl = new Application();
-        $err = $appl->Set(getHttpVars("app") , $core, $session);
+        $err = $appl->Set(getHttpVars("app"), $core, $session);
         if ($err) {
             print $err;
             exit;
         }
-        
+
         if (($appl->machine != "") && ($_SERVER['SERVER_NAME'] != $appl->machine)) { // special machine to redirect
             if (substr($_SERVER['REQUEST_URI'], 0, 6) == "http:/") {
                 $aquest = parse_url($_SERVER['REQUEST_URI']);
@@ -123,7 +132,7 @@ function getMainAction($auth, &$action)
             } else {
                 $puburl = "http://" . $appl->machine . $_SERVER['REQUEST_URI'];
             }
-            
+
             Header("Location: $puburl");
             exit;
         }
@@ -137,14 +146,14 @@ function getMainAction($auth, &$action)
                 Header("Location: $sslurl");
                 exit;
             }
-            
+
             $core->SetVolatileParam("CORE_BGCOLOR", $core->GetParam("CORE_SSLBGCOLOR"));
         }
         // -----------------------------------------------
         // now we are in correct protocol (http or https)
         $action = new Action();
-        $action->Set(getHttpVars("action") , $appl, $session);
-        
+        $action->Set(getHttpVars("action"), $appl, $session);
+
         if ($auth) {
             $core_lang = $auth->getSessionVar('CORE_LANG');
             if ($core_lang != '') {
@@ -154,21 +163,21 @@ function getMainAction($auth, &$action)
             $action->auth = & $auth;
             $core->SetVolatileParam("CORE_BASICAUTH", '&authtype=basic');
         } else $core->SetVolatileParam("CORE_BASICAUTH", '');
-        
+
         initExplorerParam($core);
         // init for gettext
         setLanguage($action->Getparam("CORE_LANG"));
-        
+
         $action->log->debug("gettext init for " . $action->parent->name . $action->Getparam("CORE_LANG"));
     }
 }
+
 /**
  * init user agent volatile param
  * @param Application $app
  * @param mixed $defaultValue
  */
-function initExplorerParam(Application & $app, $defaultValue = false)
-{
+function initExplorerParam(Application & $app, $defaultValue = false) {
     $app->SetVolatileParam("ISIE", $defaultValue);
     $app->SetVolatileParam("ISIE6", $defaultValue);
     $app->SetVolatileParam("ISIE7", $defaultValue);
@@ -182,12 +191,12 @@ function initExplorerParam(Application & $app, $defaultValue = false)
         initExplorerWebParam($app);
     }
 }
+
 /**
  * set volatile patram to detect web user agent
  * @param Application $app
  */
-function initExplorerWebParam(Application & $app)
-{
+function initExplorerWebParam(Application & $app) {
     $nav = $_SERVER['HTTP_USER_AGENT'];
     $pos = strpos($nav, "MSIE");
     if ($app->session->Read("navigator", "") == "") {
@@ -203,7 +212,7 @@ function initExplorerWebParam(Application & $app)
             }
         }
     }
-    
+
     $ISIE6 = false;
     $ISIE7 = false;
     $ISIE8 = false;
@@ -242,7 +251,7 @@ function initExplorerWebParam(Application & $app)
             $ISSAFARI = true;
         }
     }
-    
+
     $app->SetVolatileParam("ISIE", ($app->session->read("navigator") == "EXPLORER"));
     $app->SetVolatileParam("ISIE6", ($ISIE6 === true));
     $app->SetVolatileParam("ISIE7", ($ISIE7 === true));
@@ -253,15 +262,15 @@ function initExplorerWebParam(Application & $app)
     $app->SetVolatileParam("ISSAFARI", ($ISSAFARI === true));
     $app->SetVolatileParam("ISCHROME", ($ISCHROME === true));
 }
+
 /**
  * execute action
  * app and action http param
  * @param Action $action
  * @param string $out
  */
-function executeAction(&$action, &$out = null)
-{
-    
+function executeAction(&$action, &$out = null) {
+
     $standalone = GetHttpVars("sole", "Y");
     if (($standalone == "Y") || ($standalone == "N") || ($standalone == "")) {
         if ($out !== null) $out = $action->execute();
@@ -273,9 +282,9 @@ function executeAction(&$action, &$out = null)
         global $_GET;
         $getargs = "";
         while (list($k, $v) = each($_GET)) {
-            if (($k != "freedom_param") && ($k != "app") && ($k != "sole") && ($k != "action")) $getargs.= "&" . $k . "=" . $v;
+            if (($k != "freedom_param") && ($k != "app") && ($k != "sole") && ($k != "action")) $getargs .= "&" . $k . "=" . $v;
         }
-        redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}" . urlencode($getargs) , $action->GetParam("CORE_STANDURL"));
+        redirect($action, "CORE", "MAIN&appd=${app}&actd=${act}" . urlencode($getargs), $action->GetParam("CORE_STANDURL"));
     } else if ($standalone == "A") {
         if ((isset($action->parent)) && ($action->parent->with_frame != "Y")) {
             // This document is not completed : does not contain header and footer
@@ -283,22 +292,22 @@ function executeAction(&$action, &$out = null)
             // achieve action
             $body = ($action->execute());
             // write HTML header
-            $head = new Layout($action->GetLayoutFile("htmltablehead.xml") , $action);
+            $head = new Layout($action->GetLayoutFile("htmltablehead.xml"), $action);
             // copy JS ref & code from action to header
             //$head->jsref = $action->parent->GetJsRef();
             //$head->jscode = $action->parent->GetJsCode();
             $head->set("TITLE", _($action->parent->short_name));
             if ($out !== null) {
                 $out = $head->gen();
-                $out.= $body;
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
-                $out.= $foot->gen();
+                $out .= $body;
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
+                $out .= $foot->gen();
             } else {
                 echo ($head->gen());
                 // write HTML body
                 echo ($body);
                 // write HTML footer
-                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml") , $action);
+                $foot = new Layout($action->GetLayoutFile("htmltablefoot.xml"), $action);
                 echo ($foot->gen());
             }
         } else {
@@ -308,4 +317,5 @@ function executeAction(&$action, &$out = null)
         }
     }
 }
+
 ?>
