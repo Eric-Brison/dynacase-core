@@ -252,7 +252,8 @@ class _IUSER extends _USER
         $status = $this->GetValue("US_STATUS");
         $login = $this->GetValue("US_LOGIN");
         $extmail = $this->GetValue("US_EXTMAIL", $this->getValue("us_homemail", " "));
-        
+        $err = "";
+
         if ($login != "-") {
             // compute expire for epoch
             $expiresd = $this->GetValue("US_EXPIRESD");
@@ -724,7 +725,7 @@ class _IUSER extends _USER
         // Check that the user has FUSERS privileges
         global $action;
         if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return '';
+            return _("current user cannot activate account");
         }
         // The 'admin' account cannot be deactivated
         if ($this->getValue("us_whatid") == 1) {
@@ -735,8 +736,9 @@ class _IUSER extends _USER
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
+            $this->PostModify();
         }
-        return "";
+        return $err;
     }
     function isAccountInactive()
     {
@@ -748,7 +750,7 @@ class _IUSER extends _USER
         // Check that the user has FUSERS privileges
         global $action;
         if ($this->canEdit() != '' || !$action->parent->hasPermission('FUSERS', 'FUSERS')) {
-            return '';
+            return _("current user cannot deactivate account");
         }
         // The 'admin' account cannot be deactivated
         if ($this->getValue("us_whatid") == 1) {
@@ -759,8 +761,9 @@ class _IUSER extends _USER
             $err = $this->modify(true, array(
                 "us_status"
             ) , true);
+            $this->PostModify();
         }
-        return "";
+        return $err;
     }
     function accountHasExpired()
     {
