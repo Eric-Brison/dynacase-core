@@ -1,0 +1,34 @@
+[ZONE CORE:HTMLHEAD?title=[TEXT:Link to doc]]
+<link rel="stylesheet" type="text/css" href="?app=FDL&action=ALLEDITCSS">
+<script src="?app=FDL&action=ALLEDITJS"></script>
+
+<script>
+    if (!window.currentDcpDocument) {
+        window.currentDcpDocument = {
+            initid : "[INITID]",
+            title : "[TITLE]",
+            docrev : "[DOCREV]"
+        };
+    }
+    function updateDcpDocument() {
+        window.currentDcpDocument.title = document.getElementById("ilink_docid").value;
+        window.currentDcpDocument.initid = document.getElementById("docid").value;
+    };
+    function updateIHM() {
+            document.getElementById("ilink_docid").value = window.currentDcpDocument.title;
+            document.getElementById("docid").value = window.currentDcpDocument.initid;
+     };
+    addEvent(window,'load',updateIHM);
+</script>
+
+<form style="display:inline" name="searchDoc" >
+<label for="_ilink_docid">[TEXT: Select a document]</label>&nbsp;:&nbsp;
+    [IFNOT FILTER]
+        [ZONE FDL:INPUTATTRIBUTE?type=docid("[FAM]")&id=docid&jsevent=onchange="updateDcpDocument()"&esize=40]
+    [ENDIF FILTER]
+    [IF FILTER]
+        [ZONE FDL:INPUTATTRIBUTE?type=docid("[FAM]")&id=docid&jsevent=onchange="updateDcpDocument()"&esize=40&phpfile=fdl.php&phpfunc=lfamily(D,"[FAM]",CT,0,"[FILTER]"):docid,CT]
+    [ENDIF FILTER]
+</form>
+
+[ZONE CORE:HTMLFOOT]

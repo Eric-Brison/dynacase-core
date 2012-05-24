@@ -3,8 +3,25 @@ CKEDITOR_BASEPATH = 'ckeditor/';
 window.htmlText = {};
 
 window.htmlText.toolbars = {
+    toolbar_Full:[
+        { name:'document', items:[ 'Source', '-', 'quicksave', 'NewPage', 'DocProps', 'Preview', 'Print', '-', 'Templates' ] },
+        { name:'clipboard', items:[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+        { name:'editing', items:[ 'Find', 'Replace', '-', 'SelectAll', '-' ] },
+        { name:'forms', items:[ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+            'HiddenField' ] },
+        '/',
+        { name:'basicstyles', items:[ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+        { name:'paragraph', items:[ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
+        { name:'links', items:[ 'Link', 'Unlink', 'Anchor' ] },
+        { name:'insert', items:[ 'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+        '/',
+        { name:'styles', items:[ 'Styles', 'Format', 'Font', 'FontSize' ] },
+        { name:'colors', items:[ 'TextColor', 'BGColor' ] },
+        { name:'tools', items:[ 'Maximize', 'ShowBlocks', '-', 'About' ] }
+    ],
     toolbar_Default:[
-        { name:'document', items:[ 'quicksave', 'NewPage', 'DocProps', 'Print'] },
+        { name:'document', items:[ 'quicksave', 'Source'] },
         { name:'clipboard', items:[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
         { name:'editing', items:[ 'Find', 'Replace', '-', 'SelectAll' ] },
         { name:'basicstyles', items:[ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
@@ -18,20 +35,36 @@ window.htmlText.toolbars = {
     ],
     toolbar_Simple:[
         { name:'document', items:[ 'quicksave'] },
-        { name:'clipboard', items:[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+        { name:'clipboard', items:['Undo', 'Redo' ] },
         { name:'basicstyles', items:[ 'Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat' ] },
-        { name:'paragraph', items:[ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
-            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
+        { name:'paragraph', items:[ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
+            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
         { name:'links', items:[ 'Link', 'Unlink', 'Anchor' ] },
-        { name:'insert', items:[ 'Image', 'Table', 'HorizontalRule', 'SpecialChar', 'PageBreak', 'Iframe' ] },
-        { name:'styles', items:[ 'Styles', 'Format', 'Font', 'FontSize' ] },
-        { name:'colors', items:[ 'TextColor', 'BGColor', '-', 'About' ] }
+        { name:'insert', items:[ 'Image', 'Table', 'SpecialChar' ] },
+        { name:'styles', items:[ 'Format', 'FontSize' ] },
+        { name:'colors', items:[ 'TextColor', 'BGColor' ] },
+        { name:'tools', items:[ 'Maximize','Source', '-', 'About' ] }
     ]
 };
 
-
 window.htmlText.defaultOption = function (config) {
-    var property, i, length;
+    var element, property, i, length, modedoclink = false;
+
+    if (config.doclink && (config.doclink.famId || config.doclink.URL)) {
+        this.extraPlugins = this.extraPlugins ? this.extraPlugins + ",doclink" : 'doclink';
+        if (!config.doclink.URL) {
+            config.doclink.URL = "?app=FDL&action=HTMLEDITSELECTDOC&fam=" + config.doclink.famId;
+            if (config.doclink.docrev) {
+                config.doclink.URL += "&docrev=" + config.doclink.docrev;
+            }
+            if (config.doclink.filter) {
+                config.doclink.URL += "&filter=" + config.doclink.filter;
+            }
+        } else {
+            config.doclink.URL = config.doclink.URL;
+        }
+        modedoclink = true;
+    }
 
     if (config.addPlugins && config.addPlugins.length > 0) {
         this.extraPlugins = this.extraPlugins ? this.extraPlugins + "," + config.addPlugins.join(",") : config.addPlugins.join(",");
@@ -39,23 +72,38 @@ window.htmlText.defaultOption = function (config) {
             this[property] = [].concat(window.htmlText.toolbars[property], [
                 {name:'extension', items:config.addPlugins}
             ]);
+            if (modedoclink) {
+                for (element in this[property]) {
+                    if (this[property][element].name == "links") {
+                        this[property][element].items.push("doclink");
+                    }
+                }
+            }
         }
     } else {
         for (property in window.htmlText.toolbars) {
             this[property] = window.htmlText.toolbars[property];
+            if (modedoclink) {
+                for (element in this[property]) {
+                    if (this[property][element].name == "links") {
+                        this[property][element].items.push("doclink");
+                    }
+                }
+            }
         }
     }
+
     for (property in config) {
-            if (config.hasOwnProperty(property)) {
-                this[property] = config[property];
-            }
-     }
+        if (config.hasOwnProperty(property)) {
+            this[property] = config[property];
+        }
+    }
 };
 
 window.htmlText.defaultOption.prototype = {
     language:'[CORE_LANG]'.substring(0, 2),
-    toolbar : 'Default',
-    height : '150px',
+    toolbar:'Simple',
+    height:'150px',
     customConfig:'',
     resize_enabled:false,
     fullPage:false,

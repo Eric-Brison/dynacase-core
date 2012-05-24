@@ -591,6 +591,7 @@ class DocFormFormat
                 $lay->set("label", ucFirst($this->oattr->getLabel()));
                 $lay->set("need", $this->oattr->needed);
                 $lay->set("jsonconf", $this->oattr->getOption("jsonconf"));
+                $lay->set("doclink", $this->oattr->getOption("doclink"));
                 $lay->set("height", $this->oattr->getOption("editheight", "150px"));
                 $lay->set("toolbar", $this->oattr->getOption("toolbar", "Simple"));
                 $lay->set("toolbarexpand", (strtolower($this->oattr->getOption("toolbarexpand")) == "no") ? "false" : "true");

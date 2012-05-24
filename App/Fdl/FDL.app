@@ -514,7 +514,12 @@ $action_desc = array(
       "name"	=> "REPORT_EXPORT_CSV",
       "short_name" => N_("export a report"),
       "acl" => "NORMAL"
-  )
+  ),
+    array(
+        "name"	=> "HTMLEDITSELECTDOC",
+        "short_name" => N_("select a doc"),
+        "acl" => "NORMAL"
+    )
 
 
 );

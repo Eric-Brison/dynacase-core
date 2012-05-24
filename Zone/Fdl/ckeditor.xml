@@ -6,6 +6,11 @@
 <textarea id="conf_[aid]" style="display : none;">[jsonconf]</textarea>
 [ENDIF jsonconf]
 
+[IF doclink]
+<textarea id="doclink_conf_[aid]" style="display : none;">[doclink]</textarea>
+[ENDIF doclink]
+
+
 [IFNOT isInDuplicableTableLine]
 <script type="text/javascript">
 addEvent(window,'load', function(){
@@ -13,7 +18,9 @@ addEvent(window,'load', function(){
     window.htmlText.initEditor("[aid]", {
         height : "[height]",
         toolbar : "[toolbar]",
-        toolbarStartupExpanded : [toolbarexpand]
+        toolbarStartupExpanded : [toolbarexpand][IF doclink],
+        doclink : JSON.parse(document.getElementById("doclink_conf_[aid]").value)
+        [ENDIF doclink]
     });
     [ENDIF jsonconf]
     [IF jsonconf]
