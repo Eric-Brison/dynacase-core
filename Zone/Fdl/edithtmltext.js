@@ -43,7 +43,10 @@ window.htmlText.toolbars = {
         { name:'insert', items:[ 'Image', 'Table', 'SpecialChar' ] },
         { name:'styles', items:[ 'Format', 'FontSize' ] },
         { name:'colors', items:[ 'TextColor', 'BGColor' ] },
-        { name:'tools', items:[ 'Maximize','Source', '-', 'About' ] }
+        { name:'tools', items:[ 'Maximize', 'Source', '-', 'About' ] }
+    ],
+    toolbar_Basic:[
+        { name:'links', items:['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'quicksave', 'About'] }
     ]
 };
 
