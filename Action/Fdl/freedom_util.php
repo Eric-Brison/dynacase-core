@@ -299,7 +299,7 @@ function getFromName($dbaccess, $id)
     if (!is_numeric($id)) return false;
     $dbid = getDbid($dbaccess);
     $fromname = false;
-    $result = pg_query($dbid, sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d", $id));
+    $result = pg_query($dbid, sprintf("SELECT name from docfam where id=(select fromid from docfrom where id=%d)", $id));
     
     if (pg_numrows($result) > 0) {
         $arr = pg_fetch_array($result, 0, PGSQL_ASSOC);
