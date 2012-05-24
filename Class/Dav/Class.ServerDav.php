@@ -41,6 +41,10 @@ require_once "DAV/_parse_lockinfo.php";
 
 class HTTP_WebDAV_Server
 {
+    /**
+     * @var bool set to true to see xml response in error_log
+     */
+    public $debug = false;
     // {{{ Member Variables
     
     /**
@@ -194,8 +198,15 @@ class HTTP_WebDAV_Server
         }
         
         if (method_exists($this, $wrapper) && ($method == "options" || method_exists($this, $method))) {
-            $this->$wrapper(); // call method by name
-            
+            if ($this->debug) {
+                ob_start();
+                $this->$wrapper(); // call method by name
+                $this->logContents();
+                ob_end_flush();
+            } else {
+                $this->$wrapper(); // call method by name
+                
+            }
         } else { // method not found/implemented
             if ($this->_SERVER["REQUEST_METHOD"] == "LOCK") {
                 $this->http_status("412 Precondition failed");
@@ -203,6 +214,17 @@ class HTTP_WebDAV_Server
                 $this->http_status("405 Method not allowed");
                 header("Allow: " . join(", ", $this->_allow())); // tell client what's allowed
                 
+            }
+        }
+    }
+    
+    private function logContents()
+    {
+        $a = ob_get_contents();
+        if (substr($a, 0, 5) == '<?xml') {
+            $c = explode("\n", $a);
+            foreach ($c as $s) {
+                error_log($s);
             }
         }
     }
@@ -1315,7 +1337,7 @@ class HTTP_WebDAV_Server
             $options["depth"] = "infinity";
         }
         // strip surrounding <>
-        $options["token"] = substr(trim($this->_SERVER["HTTP_LOCK_TOKEN"]) , 1, -1);
+        $options["token"] = trim($this->_SERVER["HTTP_LOCK_TOKEN"], '<> ');
         // call user method
         $stat = $this->UNLOCK($options);
         
