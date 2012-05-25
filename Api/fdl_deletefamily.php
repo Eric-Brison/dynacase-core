@@ -15,6 +15,7 @@
  */
 /**
  */
+global $action;
 
 include_once ("FDL/Lib.Attr.php");
 include_once ("FDL/Class.DocFam.php");
@@ -30,16 +31,14 @@ $appl->Set("FDL", $core);
 
 $dbaccess = $appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
-    print "Database not found : param FREEDOM_DB";
-    exit;
+    $action->exitError("Database not found : param FREEDOM_DB");
 }
 
 if (($docid !== 0) && (!is_numeric($docid))) {
     $odocid = $docid;
     $docid = getFamIdFromName($dbaccess, $docid);
     if (!$docid) {
-        print sprintf(_("family %s not found") . "\n", $odocid);
-        exit(1);
+        $action->exitError(sprintf(_("family %s not found") . "\n", $odocid));
     }
 }
 
@@ -47,6 +46,8 @@ destroyFamily($dbaccess, $docid, $force);
 
 function destroyFamily($dbaccess, $idfam, $force = false)
 {
+    global $action;
+
     $tdoc = getTDoc($dbaccess, $idfam);
     if ($tdoc) {
         $resid = $tdoc["id"];
@@ -66,6 +67,11 @@ function destroyFamily($dbaccess, $idfam, $force = false)
             "delete from docfam where id=$resid;"
         );
         if (!$force) $tsql[] = "commit;";
+        if (!unlink("FDLGEN/Class.Doc" . $tdoc["id"] . ".php")) {
+            $action->exitError("cannot destroy $idfam file");
+        } else {
+            print "delete FDLGEN file Class.Doc" . $tdoc["id"] . ".php\n";
+        }
         $res = "";
         foreach ($tsql as $sql) {
             print "$sql\n";
@@ -77,7 +83,7 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         }
         if ($res) printf("Family %s (id : %d) is destroyed.\n", $tdoc["name"], $tdoc["id"]);
     } else {
-        print "cannot destroy $idfam";
+        $action->exitError("cannot destroy $idfam\n");
     }
 }
 ?>
