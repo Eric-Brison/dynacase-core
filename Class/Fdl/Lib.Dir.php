@@ -475,7 +475,7 @@ $trash = "", $simplesearch = false, $folderRecursiveLevel = 2, $join = '')
                     $mb = microtime();
                     $tableq = $query->Query(0, 0, $qtype, $tqsql[0]);
                 } else {
-                    $usql = implode($tqsql, " union ");
+                    $usql = '(' . implode($tqsql, ") union (") . ')';
                     if ($orderby) $usql.= " ORDER BY $orderby LIMIT $slice OFFSET $start;";
                     else $usql.= " LIMIT $slice OFFSET $start;";
                     

@@ -3665,39 +3665,38 @@ create unique index i_docir on doc(initid, revision);";
                         foreach ($bargs as $extraArg) {
                             $inputs[] = new inputArgument($extraArg);
                         }
-                        foreach ($parseMethod->inputs as $input) {
-                            $nextArg = null;
+                        foreach ($parseMethod->inputs as $ki => $input) {
+                            $args[$ki] = null;
                             if ($input->type == "string") {
-                                $nextArg = $input->name;
+                                $args[$ki] = $input->name;
                             } else {
                                 $mapped = $mapArgs[$input->name];
                                 if ($mapped) {
-                                    if (is_object($mapped)) $nextArg = & $mapArgs[$input->name];
-                                    else $nextArg = $mapArgs[$input->name];
+                                    if (is_object($mapped)) $args[$ki] = & $mapArgs[$input->name];
+                                    else $args[$ki] = $mapArgs[$input->name];
                                 } elseif ($attr = $this->getAttribute($input->name)) {
                                     if ($attr->usefor == 'Q') {
                                         if ($attr->inArray()) {
                                             $pas = $this->_val2array($this->getParamValue($input->name));
-                                            if ($index == - 1) $nextArg = $pas;
-                                            else $nextArg = $pas[$index];
-                                        } else $nextArg = $this->getParamValue($input->name);
+                                            if ($index == - 1) $args[$ki] = $pas;
+                                            else $args[$ki] = $pas[$index];
+                                        } else $args[$ki] = $this->getParamValue($input->name);
                                     } else {
-                                        if ($attr->inArray()) $nextArg = $this->getTValue($input->name, "", $index);
-                                        else $nextArg = $this->GetValue($input->name);
+                                        if ($attr->inArray()) $args[$ki] = $this->getTValue($input->name, "", $index);
+                                        else $args[$ki] = $this->GetValue($input->name);
                                     }
                                 } else {
                                     if ($input->name == 'THIS') {
-                                        $nextArg = & $this;
+                                        $args[$ki] = & $this;
                                     } elseif ($input->name == 'K') {
-                                        $nextArg = $index;
+                                        $args[$ki] = $index;
                                     } else {
                                         
-                                        $nextArg = $input->name; // not an attribute just text
+                                        $args[$ki] = $input->name; // not an attribute just text
                                         
                                     }
                                 }
                             }
-                            $args[] = $nextArg;
                         }
                         
                         $value = call_user_func_array(array(
