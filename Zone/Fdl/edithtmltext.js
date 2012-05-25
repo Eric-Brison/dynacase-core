@@ -52,20 +52,9 @@ window.htmlText.toolbars = {
 window.htmlText.defaultOption = function (config) {
     var element, property, i, length, modedoclink = false;
 
-    if (config.doclink && (config.doclink.famId || config.doclink.URL)) {
-        this.extraPlugins = this.extraPlugins ? this.extraPlugins + ",doclink" : 'doclink';
-        if (!config.doclink.URL) {
-            config.doclink.URL = "?app=FDL&action=HTMLEDITSELECTDOC&fam=" + config.doclink.famId;
-            if (config.doclink.docrev) {
-                config.doclink.URL += "&docrev=" + config.doclink.docrev;
-            }
-            if (config.doclink.filter) {
-                config.doclink.URL += "&filter=" + config.doclink.filter;
-            }
-        } else {
-            config.doclink.URL = config.doclink.URL;
-        }
-        modedoclink = true;
+    if (config.doclink) {
+        config.addPlugins = config.addPlugins || [];
+        config.addPlugins.push("doclink");
     }
 
     if (config.addPlugins && config.addPlugins.length > 0) {
