@@ -26,8 +26,8 @@ $usage->setText("importation of documents");
 $to = $usage->addOption("to", "Adress to send mail");
 $htmlMode = $usage->addOption("htmlmode", "Html mode");
 
+$usage->strict(false);
 $usage->verify();
-
 // mode HTML
 $appl = new Application();
 $appl->Set("FREEDOM", $core);
