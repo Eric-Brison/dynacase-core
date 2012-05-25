@@ -31,7 +31,7 @@ $appl->Set("FDL", $core);
 $dbaccess = $appl->GetParam("FREEDOM_DB");
 if ($dbaccess == "") {
     print "Database not found : param FREEDOM_DB";
-    exit;
+    exit(1);
 }
 
 if (($docid !== 0) && (!is_numeric($docid))) {
@@ -66,6 +66,12 @@ function destroyFamily($dbaccess, $idfam, $force = false)
             "delete from docfam where id=$resid;"
         );
         if (!$force) $tsql[] = "commit;";
+        if (!unlink("FDLGEN/Class.Doc" . $tdoc["id"] . ".php")) {
+            print "cannot destroy $idfam file";
+            exit(1);
+        } else {
+            print "delete FDLGEN file Class.Doc" . $tdoc["id"] . ".php\n";
+        }
         $res = "";
         foreach ($tsql as $sql) {
             print "$sql\n";
@@ -77,7 +83,8 @@ function destroyFamily($dbaccess, $idfam, $force = false)
         }
         if ($res) printf("Family %s (id : %d) is destroyed.\n", $tdoc["name"], $tdoc["id"]);
     } else {
-        print "cannot destroy $idfam";
+        print "cannot destroy $idfam\n";
+        exit(1);
     }
 }
 ?>
