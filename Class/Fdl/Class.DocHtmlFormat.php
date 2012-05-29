@@ -287,12 +287,11 @@ class DocHtmlFormat
         $idocfamid = $this->oattr->format;
         $value = $avalue;
         if ($value != "") {
-            // printf("la ");
             $temp = base64_decode($value);
             $entete = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>";
             $xml = $entete;
             $xml.= $temp;
-            $title = recup_argument_from_xml($xml, "title"); //in freedom_util.php
+            //$title = recup_argument_from_xml($xml, "title"); //in freedom_util.php
             
         }
         $this->attrid = $this->attrid . $this->index;
@@ -901,8 +900,10 @@ class DocHtmlFormat
     }
     /**
      * format Option attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
      * @return string HTML value
      */
     public function formatOption($kvalue, $avalue)
@@ -922,9 +923,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Money attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatMoney($kvalue, $avalue)
     {
@@ -980,9 +984,11 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Date attribute
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatDate($kvalue, $avalue)
     {
@@ -998,9 +1004,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Time attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatTime($kvalue, $avalue)
     {
@@ -1015,9 +1024,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format TimeStamp attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatTimestamp($kvalue, $avalue)
     {
@@ -1033,9 +1045,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format IFile attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatIfile($kvalue, $avalue)
     {
@@ -1048,9 +1063,12 @@ class DocHtmlFormat
         return $htmlval;
     }
     /**
-     * format Image attribute
+     * format Color attribute
+     *
      * @param $kvalue
      * @param $avalue
+     *
+     * @return string
      */
     public function formatColor($kvalue, $avalue)
     {
