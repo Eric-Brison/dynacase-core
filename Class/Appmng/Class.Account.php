@@ -603,7 +603,7 @@ create sequence seq_id_users start 10;";
                 return $this->mail;
             } else {
                 $dn = trim($this->firstname . ' ' . $this->lastname);
-                $mail = sprintf('"%s" <%s>', str_replace('"', '-', $dn) , $rawmail);
+                $mail = sprintf('"%s" <%s>', str_replace('"', '-', $dn) , $this->mail);
                 return $mail;
             }
         } else {
