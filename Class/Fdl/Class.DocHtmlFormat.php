@@ -953,23 +953,28 @@ class DocHtmlFormat
         $shtmllink = $this->htmlLink ? "true" : "false";
         $avalue = preg_replace("/(\[|&#x5B;)ADOC ([^\]]*)\]/e", "\$this->doc->getDocAnchor('\\2',\"$this->target\",$shtmllink)", $avalue);
         if (stripos($avalue, "data-initid") !== false) {
-            $doc = new DOMDocument();
-            
-            $doc->loadHTML(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'));
-            
-            $aElements = $doc->getElementsByTagName("a");
-            
-            foreach ($aElements as $currentA) {
-                /* @var $currentA DOMElement */
-                if ($currentA->hasAttribute("data-initid")) {
-                    $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid") , $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
-                    $newAFragment = $doc->createDocumentFragment();
-                    $newAFragment->appendXML($newA);
-                    $currentA->parentNode->replaceChild($newAFragment, $currentA);
+            try {
+                $domDoc = new DOMDocument();
+
+                $domDoc->loadHTML(mb_convert_encoding($avalue, 'HTML-ENTITIES', 'UTF-8'));
+
+                $aElements = $domDoc->getElementsByTagName("a");
+
+                foreach ($aElements as $currentA) {
+                    /* @var $currentA DOMElement */
+                    if ($currentA->hasAttribute("data-initid")) {
+                        $newA = $this->doc->getDocAnchor($currentA->getAttribute("data-initid") , $this->target, $shtmllink, false, true, $currentA->getAttribute("data-docrev"));
+                        $newAFragment = $domDoc->createDocumentFragment();
+                        $newAFragment->appendXML($newA);
+                        $currentA->parentNode->replaceChild($newAFragment, $currentA);
+                    }
                 }
+
+                $avalue = $domDoc->saveHTML();
             }
-            
-            $avalue = $doc->saveHTML();
+            catch(Exception $e) {
+                error_log(sprintf("%s unable to parse/create html width docLink elements(document :%s, error %)s", __METHOD__, $this->doc->id, $e->getMessage()));
+            }
         }
         $htmlval = '<div class="htmltext">' . $avalue . '</div>';
         return $htmlval;
