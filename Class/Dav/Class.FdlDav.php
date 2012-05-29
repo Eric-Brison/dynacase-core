@@ -209,6 +209,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
         
         $fspath = $this->_unslashify($fspath);
         if (preg_match('/\/vid-([0-9]+)-([0-9]+)-[a-f0-9]+$/', $fspath, $reg)) {
+            // main directory
             $fid = $reg[1];
             $vid = $reg[2];
             //error_log("FSPATH4 :.$fspath vid:[$vid]");
@@ -218,19 +219,18 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
             //error_log("FSPATH3 :.$fspath vid:[$vid]");
             
         } else if (preg_match('/\/vid-([0-9]+)-([0-9]+)/', $fspath, $reg)) {
+            include_once('FDL/Lib.Vault.php');
             $fid = $reg[1];
             $tmpvid = $reg[2];
-            $query = sprintf("select initid from docread where id=%d and locked != -1", $fid);
-            simpleQuery($this->db_webdav, $query, $finitid, true, true);
-            $query = sprintf("SELECT path FROM dav.properties WHERE name='fid' and value = '%d'", $finitid);
-            $res = pg_query($this->db_res, $query);
+            $info=vault_properties($tmpvid);
+
             $fsbase = basename($fspath);
-            while ($row = pg_fetch_assoc($res)) {
-                $base = basename($row["path"]);
-                if ($base == $fsbase) $vid = $tmpvid;
+            if ($info->name == $fsbase) {
+                $vid = $tmpvid;
+            } else {
+                $fid=0;
             }
-            if (!$vid) $fid = 0;
-            //error_log("FSPATH3 :.$fspath vid:[$vid]");
+            // error_log("FSPATH3 :.$fspath vid:[$vid]");
             
         } else {
             if (!seems_utf8($fspath)) $fspath = utf8_encode($fspath);
@@ -756,6 +756,7 @@ class HTTP_WebDAV_Server_Freedom extends HTTP_WebDAV_Server
     {
         
         error_log("---------- >MKCOL :" . $options["path"]);
+        $err='';
         include_once ("FDL/Class.Doc.php");
         
         if (!empty($_SERVER["CONTENT_LENGTH"])) { // no body parsing yet
