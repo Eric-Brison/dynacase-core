@@ -16,7 +16,7 @@
   </replaces>
 
   <requires>
-    <installer version="1.1.1" comp="ge"/>
+    <installer version="1.1.5" comp="ge"/>
     <module name="dynacase-extjs" />
     <module name="dynacase-sizzle" />
   </requires>
@@ -41,6 +41,10 @@
     <check type="syscommand" command="mkdir" />
     <check type="syscommand" command="tar" />
     <check type="syscommand" command="zip" />
+    <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
+      <label lang="en">Check zip support for -Z store flag</label>
+      <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
+    </check>
     <check type="syscommand" command="unzip" />
     <check type="syscommand" command="dot" />
     <check type="syscommand" command="convert" />
@@ -158,6 +162,10 @@ This can be solved by:<br/>
     <check type="syscommand" command="mkdir" />
     <check type="syscommand" command="tar" />
     <check type="syscommand" command="zip" />
+    <check type="exec" cmd="zip -Z store &lt; /dev/null &gt; /dev/null 2&gt;&amp;1">
+      <label lang="en">Check zip support for -Z store flag</label>
+      <help>Your zip command does not seems to support the -Z store flag. Please install info-zip >= 3.0</help>
+    </check>
     <check type="syscommand" command="unzip" />
     <check type="syscommand" command="dot" />
     <check type="syscommand" command="convert" />
